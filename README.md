@@ -80,10 +80,21 @@ python3 scripts/lint.py --full     # 全記事の URL 監査
 
 ## ローカルプレビュー
 
-Ruby がある環境で:
+初回セットアップ(Ubuntu / WSL):
 
 ```sh
-cd docs && bundle install && bundle exec jekyll serve --baseurl /Imas_Daily_News
+sudo apt install -y ruby-full build-essential zlib1g-dev
+gem install --user-install bundler   # ~/.local/share/gem/ruby/<ver>/bin に入る。PATH を通すこと
+cd docs
+bundle config set --local path vendor/bundle   # gem をプロジェクト内(git 管理外)に閉じ込める
+bundle install
+```
+
+以後のプレビュー:
+
+```sh
+cd docs && bundle exec jekyll serve --baseurl /Imas_Daily_News
+# → http://127.0.0.1:4000/Imas_Daily_News/
 ```
 
 (本番ビルドは GitHub Pages 側で行われるため、ローカル Ruby は必須ではない)

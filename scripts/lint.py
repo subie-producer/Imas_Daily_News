@@ -224,9 +224,10 @@ def main() -> int:
             rep.error(path, f"slug '{fm['slug']}' がファイル名 '{fslug}' と不一致")
         if fm["edition"] != fdate:
             rep.error(path, f"edition '{fm['edition']}' がファイル名日付 '{fdate}' と不一致")
-        if fm["slug"] in posts:
-            rep.error(path, f"slug '{fm['slug']}' が重複({posts[fm['slug']][0].name})")
-        posts[fm["slug"]] = (path, fm, body)
+        pkey = f"{fm['edition']}/{fm['slug']}"  # URL は日付込みのため一意性は号内のみ要求
+        if pkey in posts:
+            rep.error(path, f"slug '{fm['slug']}' が同一号内で重複({posts[pkey][0].name})")
+        posts[pkey] = (path, fm, body)
         by_edition.setdefault(fm["edition"], []).append(fm)
 
         if len(fm["title"]) > TITLE_MAX:
@@ -363,7 +364,7 @@ def main() -> int:
             rep.error(path, "同日の社説(docs/_editorials/)が存在しない")
 
     # -- 記事側から号への整合 --
-    for slug, (path, fm, _) in posts.items():
+    for _k, (path, fm, _) in posts.items():
         if fm["edition"] not in editions:
             rep.error(path, f"号スナップショット docs/_editions/{fm['edition']}.md が存在しない")
 
@@ -391,23 +392,28 @@ def main() -> int:
                 if r_["delta"] != want:
                     rep.error(p, f"ranking「{r_['name']}」の delta は前号比 {want}(現: {r_['delta']})")
 
-    # -- candidates スキーマ+出典照合 --
-    candidate_urls = set()
+    # -- candidates スキーマ+出典照合(突合は記事の発行日±1日の窓のみ参照) --
+    candidate_urls_by_day = {}
     candidate_files = sorted(CANDIDATES.glob("*.json"))
     for path in candidate_files:
         data = json.loads(path.read_text(encoding="utf-8"))
         schema_check(rep, path, candidates_schema, data)
-        candidate_urls.update(c.get("url", "") for c in data)
+        candidate_urls_by_day[path.stem] = {c.get("url", "") for c in data}
 
     net_targets = [
-        (path, fm) for slug, (path, fm, _) in posts.items()
+        (path, fm) for _k, (path, fm, _) in posts.items()
         if args.full or str(path.relative_to(ROOT)) in changed
     ]
     for path, fm in net_targets:
-        if candidate_files:
+        ed_day = datetime.date.fromisoformat(fm["edition"])
+        window = {fm["edition"], (ed_day - datetime.timedelta(days=1)).isoformat()}
+        allowed = set()
+        for day in window:
+            allowed |= candidate_urls_by_day.get(day, set())
+        if allowed:
             for s in fm["sources"]:
-                if s["url"] not in candidate_urls:
-                    rep.error(path, f"出典 URL が candidates に存在しない: {s['url']}")
+                if s["url"] not in allowed:
+                    rep.error(path, f"出典 URL が発行日前後の candidates に存在しない: {s['url']}")
         if not args.no_net:
             for s in fm["sources"]:
                 host = urllib.parse.urlparse(s["url"]).hostname or ""

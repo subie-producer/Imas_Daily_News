@@ -29,7 +29,8 @@ defaults:
       type: posts
     values:
       layout: article
-      permalink: /articles/:slug/
+      # URL に日付を含める: slug の一意性は号内のみ要求され、永続的な名前空間の衝突を防ぐ
+      permalink: /articles/:year-:month-:day-:slug/
   - scope:
       path: ""
       type: editions

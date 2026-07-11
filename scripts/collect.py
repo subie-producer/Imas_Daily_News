@@ -35,7 +35,8 @@ ITEM_FORMAT = (
     '{"title":短い見出し,"brand":"general|765|cg|million|shiny|sidem|gaku|dsva|joint|other",'
     '"kind":"official|media|fan|trend","url":"実在するURL","event_date":"YYYY-MM-DD or 空文字",'
     '"deadline":"締切・終了日 YYYY-MM-DD or 空文字","facts":["確認できた事実(日付・期限・場所・価格を含める)"],'
-    '"dedup_key":"英小文字ハイフンの話題ID","engagement":"高|中|低","mentioned_idols":["言及アイドル名"]}。'
+    '"dedup_key":"英小文字ハイフンの話題ID(毎年ある定例企画は年を含める。例: shiny-summer-pair-2026)",'
+    '"engagement":"高|中|低","mentioned_idols":["言及アイドル名"]}。'
     "実在の情報のみ・憶測や未確認の噂は除外・個人への批判は除外。JSON以外のテキスト禁止。"
 )
 

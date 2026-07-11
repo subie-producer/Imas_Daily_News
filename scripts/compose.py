@@ -43,6 +43,29 @@ def todays_triggers(date: str) -> list[dict]:
     return out
 
 
+def prune_upcoming(date: str) -> None:
+    """過去日のトリガーを掃除し、トリガーも pending も無くなったエントリを落とす(無限成長対策)。"""
+    p = ROOT / "stock" / "upcoming.yml"
+    if not p.exists():
+        return
+    entries = yaml.safe_load(p.read_text(encoding="utf-8")) or []
+    kept = []
+    for e in entries:
+        trigs = []
+        for t in e.get("triggers", []):
+            td = t.get("date")
+            td = td.isoformat() if hasattr(td, "isoformat") else str(td)
+            if td >= date:
+                trigs.append(t)
+        e["triggers"] = trigs
+        if trigs or e.get("pending"):
+            kept.append(e)
+    header = ("# 続報キュー(PIPELINE.md §3)。初報の compose 時に未来トリガーを予約する。\n"
+              "# compose が毎朝、当日トリガーを消化し、過去日トリガーを掃除する。\n")
+    p.write_text(header + yaml.safe_dump(kept, allow_unicode=True, sort_keys=False,
+                                         default_flow_style=False), encoding="utf-8")
+
+
 def next_number() -> int:
     from pipelib import load_env
     if load_env().get("PAPER_STAGE", "test") != "live":
@@ -109,7 +132,7 @@ def codex_review(date: str, round_no: int) -> dict:
     checklist = (ROOT / "prompts" / "review-checklist.md").read_text(encoding="utf-8").replace("{DATE}", date)
     if round_no > 1:
         checklist += f"\n\nこれは再校閲({round_no}回目)です。前回の指摘への修正が反映されています。"
-    out = ROOT / "metrics" / f".review-{date}-{round_no}.json"
+    out = ROOT / "metrics" / f"review-{date}-{round_no}.json"
     r = subprocess.run(
         ["codex", "exec", "-m", REVIEW_MODEL,
          "--output-schema", str(ROOT / "prompts" / "review-schema.json"),
@@ -134,6 +157,8 @@ def main() -> int:
     if not args.plan and not checkout_edition_branch(date, "compose"):
         return 1
     triggers = todays_triggers(date)
+    if not args.plan:
+        prune_upcoming(date)
     number = next_number()
     prompt = build_prompt(date, number, triggers)
     if args.plan:

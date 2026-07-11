@@ -191,6 +191,19 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 スケジューラは **systemd user timer** を採用する(この WSL2 で systemd 稼働を確認済み)。`Persistent=yes` により PC がスリープしていた場合も復帰後に追い付き実行される。ユニット定義は実装時に `ops/systemd/` に置き、`systemctl --user enable --now` で有効化する(手順は README に記載予定)。Windows 側のスリープ設定によっては深夜帯に PC が起きていない点に注意(その場合 04:00 の発行は復帰後に遅延実行される)。
 
+## 9.5 命名規則と成長設計(ファイルは毎日増える前提)
+
+| 対象 | 規則 | 衝突・成長への配慮 |
+|------|------|--------------------|
+| 記事 | `docs/_posts/YYYY-MM-DD-<slug>.md` → URL `/articles/YYYY-MM-DD-<slug>/` | **URL に日付を含める**ため slug の一意性は号内のみ。過去全記事との衝突を構造的に排除 |
+| 号・社説 | `YYYY-MM-DD.{md}` | 日付キーで衝突なし |
+| candidates / metrics | `YYYY-MM-DD.json`(収集日) | 日付キー。lint の出典突合・derive のトレンド集計は**発行日±1日の窓**のみ参照(全期間を読まない) |
+| dedup_key / story_id | 英小文字ハイフン。**毎年ある定例企画は年を含める**(例: `shiny-summer-pair-2026`) | 年跨ぎの誤マージを防止 |
+| upcoming.yml | compose が毎朝、過去日トリガーを掃除し、空エントリを削除 | 無限成長しない |
+| stories.yml | 追記型 | **未解決**: 月次で `stock/archive/stories-YYYY-MM.yml` へ closed 分を退避するローテーションを創刊後に導入する |
+| ブランチ | `edition/YYYY-MM-DD` / `correction/YYYY-MM-DD-<slug>` | 日付キー |
+| **既知の負債** | Liquid テンプレが `site.posts` を全走査(号ページ・アーカイブ) | 記事 4,000 本規模(約1年)で Pages ビルドが分単位に劣化する見込み。ビルド3分超過を watch の監視項目にし、超えたら「号スナップショットに記事リストを持たせて参照を局所化」する改修を行う |
+
 ## 10. 実装ステップ(REQUIREMENTS 7章 Step 3〜4 の分解)
 
 | # | 作業 | 成果物 |

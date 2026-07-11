@@ -62,9 +62,13 @@ def compute(date: str) -> dict:
         for r in g.get("rows", []):
             paper_text += r.get("t", "") + r.get("d", "")
 
-    # トレンドテキスト(当日までの candidates の explore 由来)
+    # トレンドテキスト(「24時間」= 発行日と前日の candidates の explore 由来のみ)
     trend_text = ""
+    d = datetime.date.fromisoformat(date)
+    window = {date, (d - datetime.timedelta(days=1)).isoformat()}
     for cf in sorted((ROOT / "candidates").glob("*.json")):
+        if cf.stem not in window:
+            continue
         try:
             for c in json.loads(cf.read_text(encoding="utf-8")):
                 if c.get("origin") == "explore":

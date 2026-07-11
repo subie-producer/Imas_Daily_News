@@ -1,0 +1,115 @@
+# ストーリー台帳(話題単位の既報管理。PIPELINE.md §3)
+# compose は記事化した事実を published_facts に追記する。
+- story_id: 765-dual-twinlive-venue-cd
+  brand: "765"
+  subject: 765プロ dual twin live tour と会場オリジナルCD
+  status: active
+  first_published: { edition: 2026-07-12, slug: 765as-twinlive-venue-cd }
+  published_facts:
+    - 会場CD2種(ふたごぼしのつばさ/つみまつよるまち)を8月6日から各会場で発売
+    - 各3,500円・全11トラック・新曲各1曲(北極星をズラしちゃえ!/Binary Star)
+    - ツアーは大阪8/6-7・名古屋8/13-14・東京(羽田)8/27-28
+    - stage teaser公開、現地チケット先着発売中・リセール受付開始
+- story_id: million-9th-anniversary-mission
+  brand: million
+  subject: ミリシタ9周年アニバーサリーミッションとイベント「最上級:Invit@tion!」
+  status: active
+  first_published: { edition: 2026-07-12, slug: million-9th-anniversary-mission }
+  published_facts:
+    - アニバーサリーミッション累計390億pt達成
+    - イベント参加者全員に期間限定SSR確定ガシャチケット2枚を終了後配布
+    - イベントは7月12日23:59終了
+    - SHSガシャ「myブランド編 with glasses」実施中(三浦あずさ)
+- story_id: takatsuki-yayoi-ekicho-furusato
+  brand: "765"
+  subject: 高槻やよい1日駅長グッズセットのふるさと納税返礼品
+  status: active
+  first_published: { edition: 2026-07-12, slug: takatsuki-yayoi-ekicho-furusato }
+  published_facts:
+    - 高槻市の返礼品として7月10日10時提供開始、寄付額18,000円
+    - 内容は缶バッジ・ミニアクキー・アクスタ・クリアファイル各1点
+- story_id: tours-second-stage-illust-campaign
+  brand: joint
+  subject: ツアマス Second Stage 1弾カードイラストプレゼントCP
+  status: active
+  first_published: { edition: 2026-07-12, slug: tours-second-stage-illust-campaign }
+  published_facts:
+    - 期間7月9日〜7月20日23:59、フォロー&リポストでイラスト画像がランダム1枚
+    - A賞描き下ろし8種、B賞えらべるPay5,000円分×抽選10名、毎日1回参加可
+- story_id: shiny-summer-best-pair-2026
+  brand: shiny
+  subject: シャニマスサマーベストペア2026
+  status: active
+  first_published: { edition: 2026-07-12, slug: shiny-summer-best-pair-vote }
+  published_facts:
+    - スイカ割りテーマのペア投票を公式Xで実施、1日1回・予選は7月16日23:59まで
+    - 優勝ペアは描き下ろしイラスト公開予定
+- story_id: sidem-stage-costume-museum
+  brand: sidem
+  subject: SideM STAGE COSTUME MUSEUM
+  status: active
+  first_published: null            # 記事化はまだ(ダイジェスト言及のみ)
+  published_facts: []
+- story_id: imas-20th-iwsf2026
+  brand: general
+  subject: シリーズ20周年ライブ IWSF2026(7/24-26 京王アリーナ TOKYO)
+  status: active
+  first_published: null
+  published_facts: []
+- story_id: cg-15th-popup-annivroad
+  brand: cg
+  subject: CG15周年記念 POP UP SHOP in Annivroad(新宿・7/18-7/28)
+  status: active
+  first_published: { edition: 2026-07-12, slug: cg-popup-double-summer }
+  published_facts:
+    - 新宿マルイ アネックス2F Annivroadで7月18日〜28日開催
+    - 総選挙2026イラストの新商品・パネル展示・メッセージボード
+    - 1会計1,000円ごとにステッカー全11種ランダム1枚、投票券シリアル配布
+- story_id: cg-genka-yoenichi-popup
+  brand: cg
+  subject: 百鬼夜行テーマPOP UP『幻夏妖宴市』(東京8/1-8/16・大阪8/21-9/6)
+  status: active
+  first_published: { edition: 2026-07-12, slug: cg-popup-double-summer }
+  published_facts:
+    - 東京・秋葉原館8/1-8/16、大阪・日本橋店8/21-9/6
+    - 妖怪に扮した文香・芳乃・小梅・肇+ミニキャラ
+    - 税込2,000円ごとにポストカード特典、投票券シリアル付き商品予定
+- story_id: million-14th-live
+  brand: million
+  subject: ミリオン14thLIVE(9/19-20)とチケット先行
+  status: active
+  first_published: { edition: 2026-07-12, slug: million-14th-asobi-senko }
+  published_facts:
+    - 9月19日・20日開催、DAY1「夢咲くワンダーミラージュ」
+    - アソビストア一般会員先行(抽選)7/10 12:00〜7/30 23:59
+    - 当落発表8/11 13:00、入金8/11〜8/15、1公演2枚まで・デジタルのみ
+- story_id: shiny-msp-goods-presale
+  brand: shiny
+  subject: シャニマス ソロライブMSP公式グッズ事前販売
+  status: active
+  first_published: { edition: 2026-07-12, slug: shiny-msp-goods-final }
+  published_facts:
+    - 受注は7月12日まで(アソビストア特設ページ)
+- story_id: shanison-luka-ssr-gacha
+  brand: shiny
+  subject: シャニソン 斑鳩ルカ新SSRと夏ピックアップガシャ
+  status: active
+  first_published: { edition: 2026-07-12, slug: shanison-luka-ssr-gacha }
+  published_facts:
+    - 新SSRサポート【凪に浮く灯】斑鳩ルカ(7/11公開)
+    - ★3【波、衝動、夏――――】ピックアップガシャは8/10 11:59まで
+    - 復刻ガシャ(智代子・千雪の2024年限定)も並行開催
+- story_id: gaku-mitenui-jyuchu
+  brand: gaku
+  subject: 学マス公式ぬいぐるみ「みてぬい」受注
+  status: active
+  first_published: { edition: 2026-07-12, slug: gaku-mitenui-jyuchu }
+  published_facts:
+    - ASOBI STOREで受注中、期限は7月20日
+- story_id: sidem-11th-party-name
+  brand: sidem
+  subject: SideM 11th テラススイートPPPP「Party」名回答
+  status: active
+  first_published: { edition: 2026-07-12, slug: sidem-11th-party-name }
+  published_facts:
+    - チケット購入代表者へ回答用メール送付、期限は7月17日

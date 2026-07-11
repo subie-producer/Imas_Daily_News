@@ -17,6 +17,7 @@ import json
 import re
 import subprocess
 import sys
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -57,6 +58,8 @@ ABS_DATE_RE = re.compile(r"(\d{1,2})月(\d{1,2})日")
 
 URL_TIMEOUT = 15
 URL_UA = "Mozilla/5.0 (compatible; ImasNewsLint/1.0; +https://github.com/subie-producer/Imas_Daily_News)"
+# ログイン必須で機械的な生存確認ができないホスト(候補照合・出典明示は通常どおり)
+URL_CHECK_SKIP_HOSTS = {"x.com", "twitter.com", "www.x.com", "www.twitter.com"}
 
 
 class Report:
@@ -407,6 +410,9 @@ def main() -> int:
                     rep.error(path, f"出典 URL が candidates に存在しない: {s['url']}")
         if not args.no_net:
             for s in fm["sources"]:
+                host = urllib.parse.urlparse(s["url"]).hostname or ""
+                if host in URL_CHECK_SKIP_HOSTS:
+                    continue
                 ok, detail = url_alive(s["url"])
                 if not ok:
                     rep.error(path, f"出典 URL 生存確認に失敗({detail}): {s['url']}")

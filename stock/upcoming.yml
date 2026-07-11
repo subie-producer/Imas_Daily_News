@@ -1,0 +1,95 @@
+# 続報キュー(PIPELINE.md §3)。初報の compose 時に未来トリガーを予約する。
+# compose は毎朝「本日トリガーされたエントリ」を必ず記事化候補として処理する。
+# kind: 締切前(締切3日前) | 締切 | 開幕 | 千秋楽 | 発売 | 結果
+- dedup_key: million-9th-anniversary-mission
+  brand: million
+  subject: ミリシタ9周年 イベント「最上級:Invit@tion!」とSSR確定チケット
+  triggers:
+    - { date: 2026-07-12, kind: 締切, note: "イベント 23:59 終了(2026-07-12号で消化済み)" }
+  pending:
+    - SSR確定ガシャチケット2枚の配布日(イベント終了後・日付判明次第 triggers へ)
+- dedup_key: shiny-summer-best-pair-2026
+  brand: shiny
+  subject: シャニマスサマーベストペア2026 予選投票
+  triggers:
+    - { date: 2026-07-13, kind: 締切前, note: "予選締切(7/16 23:59)の3日前リマインド" }
+    - { date: 2026-07-16, kind: 締切, note: "予選投票 23:59 締切" }
+  pending:
+    - 本選日程・結果発表(判明次第 triggers へ)
+- dedup_key: tours-second-stage-illust-campaign
+  brand: joint
+  subject: ツアマス Second Stage 1弾 カードイラストプレゼントCP
+  triggers:
+    - { date: 2026-07-17, kind: 締切前, note: "CP終了(7/20 23:59)の3日前リマインド" }
+    - { date: 2026-07-20, kind: 締切, note: "キャンペーン 23:59 終了" }
+  pending:
+    - B賞「えらべるPay」抽選結果(判明次第 triggers へ)
+- dedup_key: imas-20th-iwsf2026
+  brand: general
+  subject: シリーズ20周年ライブ IWSF2026(京王アリーナ TOKYO)
+  triggers:
+    - { date: 2026-07-21, kind: 締切前, note: "開幕(7/24)3日前の予習・リマインド" }
+    - { date: 2026-07-24, kind: 開幕, note: "IWSF2026 DAY1" }
+    - { date: 2026-07-26, kind: 千秋楽, note: "DAY3。終了後に20周年SP生配信" }
+  pending:
+    - 各DAYのセットリスト・発表事項(結果として翌号で回収)
+- dedup_key: 765-dual-twinlive-venue-cd
+  brand: "765"
+  subject: 765プロ dual twin live tour と会場オリジナルCD
+  triggers:
+    - { date: 2026-08-03, kind: 締切前, note: "大阪開幕(8/6)3日前リマインド" }
+    - { date: 2026-08-06, kind: 開幕, note: "Zepp Namba 初日・会場CD2種発売開始" }
+    - { date: 2026-08-13, kind: 開幕, note: "Zepp Nagoya 初日" }
+    - { date: 2026-08-27, kind: 開幕, note: "Zepp Haneda 初日" }
+    - { date: 2026-08-28, kind: 千秋楽, note: "ツアー千秋楽" }
+- dedup_key: sidem-stage-costume-museum
+  brand: sidem
+  subject: SideM STAGE COSTUME MUSEUM
+  triggers: []
+  pending:
+    - 会期・DAY構成の全容が未取得(公式サイト確認後に 千秋楽 trigger を設定)
+- dedup_key: million-14th-live
+  brand: million
+  subject: ミリオン14thLIVE(9/19-20)とアソビストア先行
+  triggers:
+    - { date: 2026-07-27, kind: 締切前, note: "先行申込締切(7/30 23:59)の3日前リマインド" }
+    - { date: 2026-07-30, kind: 締切, note: "アソビストア一般会員先行 申込締切" }
+    - { date: 2026-08-11, kind: 結果, note: "当落発表13:00〜。入金は8/15まで" }
+    - { date: 2026-09-19, kind: 開幕, note: "14thLIVE DAY1 夢咲くワンダーミラージュ" }
+    - { date: 2026-09-20, kind: 千秋楽, note: "14thLIVE DAY2" }
+- dedup_key: cg-15th-popup-annivroad
+  brand: cg
+  subject: CG15周年 POP UP SHOP in Annivroad
+  triggers:
+    - { date: 2026-07-18, kind: 開幕, note: "新宿マルイ アネックス Annivroad で開幕" }
+    - { date: 2026-07-28, kind: 千秋楽, note: "会期最終日" }
+- dedup_key: cg-genka-yoenichi-popup
+  brand: cg
+  subject: 百鬼夜行POP UP『幻夏妖宴市』
+  triggers:
+    - { date: 2026-08-01, kind: 開幕, note: "東京・秋葉原館で開幕(〜8/16)" }
+    - { date: 2026-08-16, kind: 千秋楽, note: "東京会場 最終日" }
+    - { date: 2026-08-21, kind: 開幕, note: "大阪・日本橋店で開幕(〜9/6)" }
+    - { date: 2026-09-06, kind: 千秋楽, note: "大阪会場 最終日" }
+- dedup_key: shiny-msp-goods-presale
+  brand: shiny
+  subject: シャニマスMSP公式グッズ事前販売
+  triggers:
+    - { date: 2026-07-12, kind: 締切, note: "受注最終日(2026-07-12号で消化済み)" }
+- dedup_key: shanison-luka-ssr-gacha
+  brand: shiny
+  subject: シャニソン 夏ピックアップガシャ
+  triggers:
+    - { date: 2026-08-10, kind: 締切, note: "ピックアップガシャ 11:59終了" }
+- dedup_key: gaku-mitenui-jyuchu
+  brand: gaku
+  subject: 学マス「みてぬい」受注
+  triggers:
+    - { date: 2026-07-17, kind: 締切前, note: "受注締切(7/20)の3日前リマインド" }
+    - { date: 2026-07-20, kind: 締切, note: "ASOBI STORE 受注締切" }
+- dedup_key: sidem-11th-party-name
+  brand: sidem
+  subject: SideM 11th「Party」名回答
+  triggers:
+    - { date: 2026-07-14, kind: 締切前, note: "回答期限(7/17)の3日前リマインド" }
+    - { date: 2026-07-17, kind: 締切, note: "Party名回答期限" }

@@ -8,7 +8,7 @@ title: アイマスNEWS(α)
   <p>AI編集部が毎日自動発行する非公式アイドルマスターファン新聞(準備中)。</p>
   {% assign latest = site.editions | sort: "date" | last %}
   {% if latest %}
-  <p>最新号: <a href="{{ latest.url | relative_url }}">第{{ latest.no }}号 — {{ latest.date }}({{ latest.weekday }})</a></p>
+  <p>最新号: <a href="{{ latest.url | relative_url }}">第{{ latest.number }}号 — {{ latest.date | date: "%Y-%m-%d" }}({{ latest.weekday }})</a></p>
   {% endif %}
   <p><a href="{{ '/about/' | relative_url }}">編集方針と免責</a></p>
 </main>

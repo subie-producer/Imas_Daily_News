@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#fbfaf7;color:#1c1b18;font-family:'Zen Kaku Gothic New',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1c1b18;text-decoration:none}a:hover{color:#55524b}
+</style>
+</helmet>
+
+<div style="max-width:1200px;margin:0 auto;padding:0 20px 48px;box-sizing:border-box">
+
+  <!-- ========== ヘッダー ========== -->
+  <div style="padding-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a;letter-spacing:.06em">
+    <span>NO.0000 — YYYY.MM.DD AAA 06:00 JST</span>
+    <span>非公式ファンメディア / AI編集部発行・AI校閲</span>
+  </div>
+
+  <div style="margin-top:14px;display:flex;align-items:flex-end;justify-content:center;gap:10px">
+    <span style="font-family:'Shippori Mincho B1',serif;font-weight:800;font-size:clamp(34px,6vw,52px);line-height:1;letter-spacing:.06em">アイマスNEWS</span>
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:clamp(13px,2vw,18px);font-weight:600;color:#8a857a;padding-bottom:3px">(α)</span>
+  </div>
+  <div style="margin-top:8px;text-align:center;font-size:11px;letter-spacing:.08em;color:#55524b">YYYY年M月D日 曜日 ・ 第NNN号 ・ 全NN面 ── AI編集部が毎日自動発行する非公式ファン新聞です</div>
+  <div style="margin-top:12px;height:6px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+
+  <!-- ========== 面ナビ / 推しフィルタ ========== -->
+  <div style="margin-top:10px;display:flex;gap:2px 6px;flex-wrap:wrap;justify-content:center">
+    <sc-for list="{{ chips }}" as="chip" hint-placeholder-count="11">
+      <span onClick="{{ chip.select }}" style="cursor:pointer;padding:6px 8px 4px;font-size:11px;font-weight:{{ chip.weight }};color:{{ chip.ink }};border-bottom:{{ chip.bar }};letter-spacing:.02em;white-space:nowrap">{{ chip.label }}</span>
+    </sc-for>
+  </div>
+  <div style="margin-top:8px;border-bottom:1px solid #dedad0"></div>
+
+  <!-- ========== SP: 格納ダイジェストバー ========== -->
+  <sc-if value="{{ isSp }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ openDigest }}" style="margin-top:14px;border:1px solid #1c1b18;background:#fff;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer">
+      <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+        <span style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:13.5px;letter-spacing:.1em">本日の紙面</span>
+        <span style="font-size:11px;color:#55524b">{{ digestSummary }}</span>
+      </div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#6f6a60;flex:none">一覧 ▾</span>
+    </div>
+  </sc-if>
+
+  <!-- ========== TB: ダイジェストを紙面冒頭に常設 ========== -->
+  <sc-if value="{{ isTb }}" hint-placeholder-val="{{ false }}">
+    <div style="margin-top:16px;border:1px solid #1c1b18;background:#fff;padding:16px 18px 14px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <span style="font-family:'Shippori Mincho B1',serif;font-weight:800;font-size:16px;letter-spacing:.1em">本日の紙面</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8a857a">DIGEST — 紙面の目次</span>
+      </div>
+      <div style="margin-top:9px;border-top:2px solid #1c1b18"></div>
+      <div style="margin-top:4px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:4px 26px">
+        <sc-for list="{{ digestGroups }}" as="g" hint-placeholder-count="4">
+          <div style="margin-top:10px">
+            <div style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:11.5px;letter-spacing:.16em;color:{{ g.ink }};border-bottom:1px solid #e8e4d9;padding-bottom:3px">{{ g.label }} <span style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:#8a857a;letter-spacing:0">{{ g.count }}</span></div>
+            <div style="margin-top:7px;display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="3">
+                <div style="display:flex;gap:9px;align-items:flex-start">
+                  <span style="flex:none;width:17px;height:17px;border:1px solid {{ g.ink }};color:{{ g.ink }};font-family:'Shippori Mincho B1',serif;font-size:10px;display:flex;align-items:center;justify-content:center;margin-top:2px">{{ r.k }}</span>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:12.5px;line-height:1.55;font-weight:700;color:{{ g.ink }}">{{ r.t }}</div>
+                    <div style="font-size:11px;line-height:1.6;color:#8a857a">{{ r.d }}</div>
+                  </div>
+                  <span style="flex:none;width:7px;height:7px;background:{{ r.dot }};margin-top:6px"></span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ========== 本文 2カラム(SP/TBは縦積み) ========== -->
+  <div style="margin-top:18px;display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+    <!-- ---- 主コラム ---- -->
+    <div style="flex:10 1 560px;min-width:0">
+
+      <!-- リード記事 -->
+      <sc-if value="{{ lead }}" hint-placeholder-val="{{ true }}">
+        <div style="padding-bottom:20px;border-bottom:2px solid #1c1b18">
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <span style="width:58px;box-sizing:border-box;text-align:center;font-size:10px;font-weight:700;letter-spacing:.08em;padding:3px 0;background:{{ lead.srcBg }};color:{{ lead.srcInk }};border:{{ lead.srcBox }}">{{ lead.src }}</span>
+            <span style="font-size:11px;font-weight:700;border-bottom:{{ lead.catBar }};padding-bottom:1px">{{ lead.cat }}</span>
+          </div>
+          <a href="PH 記事.dc.html"><div style="margin-top:12px;font-family:'Shippori Mincho B1',serif;font-weight:800;font-size:clamp(22px,3.4vw,32px);line-height:1.55;letter-spacing:.01em">{{ lead.title }}</div></a>
+          <div style="margin-top:10px;font-size:14px;line-height:2;color:#44413a;max-width:640px">{{ lead.lede }}</div>
+          <div style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a">出典: {{ lead.source }}</div>
+        </div>
+      </sc-if>
+
+      <!-- large カード 2列 -->
+      <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:22px">
+        <sc-for list="{{ larges }}" as="a" hint-placeholder-count="2">
+          <div style="flex:1 1 250px;min-width:0;padding-bottom:16px;border-bottom:1px solid #dedad0">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <span style="width:58px;box-sizing:border-box;text-align:center;font-size:9.5px;font-weight:700;letter-spacing:.08em;padding:2px 0;background:{{ a.srcBg }};color:{{ a.srcInk }};border:{{ a.srcBox }}">{{ a.src }}</span>
+              <span style="font-size:10.5px;font-weight:700;border-bottom:{{ a.catBar }};padding-bottom:1px">{{ a.cat }}</span>
+            </div>
+            <a href="PH 記事.dc.html"><div style="margin-top:9px;font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:18px;line-height:1.6">{{ a.title }}</div></a>
+            <div style="margin-top:7px;font-size:12.5px;line-height:1.9;color:#55524b">{{ a.lede }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- medium リスト -->
+      <div style="margin-top:4px;display:flex;flex-direction:column">
+        <sc-for list="{{ mediums }}" as="a" hint-placeholder-count="3">
+          <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid #e8e4d9">
+            <span style="flex:none;width:58px;box-sizing:border-box;text-align:center;font-size:9.5px;font-weight:700;letter-spacing:.08em;padding:2px 0;background:{{ a.srcBg }};color:{{ a.srcInk }};border:{{ a.srcBox }};margin-top:3px">{{ a.src }}</span>
+            <div style="flex:1;min-width:0">
+              <a href="PH 記事.dc.html"><div style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:15.5px;line-height:1.65">{{ a.title }}</div></a>
+            </div>
+            <span style="flex:none;font-size:10px;font-weight:700;border-bottom:{{ a.catBar }};padding-bottom:1px;margin-top:5px">{{ a.cat }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- small 2列詰め -->
+      <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:0 26px">
+        <sc-for list="{{ smalls }}" as="a" hint-placeholder-count="4">
+          <div style="flex:1 1 250px;min-width:0;display:flex;gap:9px;align-items:baseline;padding:8px 0;border-bottom:1px dotted #d9d4c8">
+            <span style="flex:none;width:8px;height:8px;background:{{ a.dot }};align-self:center"></span>
+            <span style="flex:1;font-size:12.5px;line-height:1.7;font-weight:500">{{ a.title }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- 社説 -->
+      <div style="margin-top:24px;background:#fff;border:1px solid #dedad0;padding:18px 20px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <span style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:13px;letter-spacing:.16em">社説</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8a857a">EDITORIAL — 毎日1本</span>
+        </div>
+        <div style="margin-top:8px;font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:18px;line-height:1.6">社説見出しのダミーがここに入ります</div>
+        <div style="margin-top:6px;font-size:12.5px;line-height:2;color:#55524b">社説本文の冒頭ダミーです。紙面上ではおよそ八十字前後を抜粋して表示し、続きは社説面へ誘導します。文章の内容には意味がありません。</div>
+        <div style="margin-top:10px;font-size:11.5px;font-weight:700;letter-spacing:.06em"><a href="PH 社説.dc.html">全文を読む(社説面) →</a></div>
+      </div>
+
+    </div>
+
+    <!-- ---- 右カラム(PC) / 後続ブロック(SP・TB) ---- -->
+    <div style="flex:1 1 280px;max-width:100%;display:flex;flex-direction:column;gap:22px">
+
+      <!-- ダイジェスト(PCのみ常設) -->
+      <sc-if value="{{ isPc }}" hint-placeholder-val="{{ true }}">
+        <div style="border:1px solid #1c1b18;background:#fff;padding:16px 16px 12px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between">
+            <span style="font-family:'Shippori Mincho B1',serif;font-weight:800;font-size:15px;letter-spacing:.1em">本日の紙面</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8a857a">DIGEST</span>
+          </div>
+          <div style="margin-top:8px;border-top:2px solid #1c1b18"></div>
+          <sc-for list="{{ digestGroups }}" as="g" hint-placeholder-count="4">
+            <div style="margin-top:11px">
+              <div style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:11px;letter-spacing:.16em;color:{{ g.ink }};border-bottom:1px solid #e8e4d9;padding-bottom:3px">{{ g.label }} <span style="font-family:'IBM Plex Mono',monospace;font-size:8.5px;color:#8a857a;letter-spacing:0">{{ g.count }}</span></div>
+              <div style="margin-top:6px;display:flex;flex-direction:column;gap:7px">
+                <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="3">
+                  <div style="display:flex;gap:8px;align-items:flex-start">
+                    <span style="flex:none;width:16px;height:16px;border:1px solid {{ g.ink }};color:{{ g.ink }};font-family:'Shippori Mincho B1',serif;font-size:9px;display:flex;align-items:center;justify-content:center;margin-top:2px">{{ r.k }}</span>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-size:11.5px;line-height:1.5;font-weight:700;color:{{ g.ink }}">{{ r.t }}</div>
+                      <div style="font-size:10px;line-height:1.55;color:#8a857a">{{ r.d }}</div>
+                    </div>
+                    <span style="flex:none;width:6px;height:6px;background:{{ r.dot }};margin-top:5px"></span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- 24hランキング -->
+      <div style="border-top:2px solid #1c1b18;padding-top:10px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <span style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:13px;letter-spacing:.12em">24時間ランキング</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8a857a">前日比</span>
+        </div>
+        <div style="margin-top:9px;display:flex;flex-direction:column;gap:7px">
+          <sc-for list="{{ ranking }}" as="r" hint-placeholder-count="8">
+            <div style="display:flex;gap:9px;align-items:center;font-size:12.5px">
+              <span style="flex:none;width:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8a857a">{{ r.n }}</span>
+              <span style="flex:none;width:8px;height:8px;background:{{ r.dot }}"></span>
+              <span style="flex:1;min-width:0;font-weight:500">{{ r.name }}</span>
+              <span style="flex:none;font-size:10px;color:{{ r.deltaColor }}">{{ r.delta }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- 誕生日 -->
+      <div style="border-top:2px solid #1c1b18;padding-top:10px">
+        <div style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:13px;letter-spacing:.12em">きょうの誕生日</div>
+        <div style="margin-top:8px;display:flex;gap:4px 9px;align-items:center;font-size:12.5px;flex-wrap:wrap">
+          <span style="flex:none;width:8px;height:8px;background:#2681c8"></span>
+          <span style="font-weight:700;white-space:nowrap">アイドル名ダミー</span>
+          <span style="font-size:10.5px;color:#55524b">ブランド名 ── ひとことダミー</span>
+        </div>
+      </div>
+
+      <!-- バックナンバー -->
+      <div style="border-top:2px solid #1c1b18;padding-top:10px">
+        <div style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:13px;letter-spacing:.12em">バックナンバー</div>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;font-size:12px">
+          <a href="PH バックナンバー.dc.html" style="display:flex;justify-content:space-between;gap:8px"><span>第NNN号 M月D日(曜)</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a">NN件</span></a>
+          <a href="PH バックナンバー.dc.html" style="display:flex;justify-content:space-between;gap:8px"><span>第NNN号 M月D日(曜)</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a">NN件</span></a>
+          <a href="PH バックナンバー.dc.html" style="display:flex;justify-content:space-between;gap:8px"><span>第NNN号 M月D日(曜)</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a">NN件</span></a>
+        </div>
+        <div style="margin-top:9px;font-size:11.5px;font-weight:700"><a href="PH バックナンバー.dc.html">アーカイブ(全NNN号) →</a></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== フッター ========== -->
+  <div style="margin-top:36px;border-top:2px solid #1c1b18;padding-top:14px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:11px;color:#55524b;line-height:1.8">
+    <span>アイマスNEWS(α)はAIが執筆・校閲する非公式ファンメディアです。記事は削除せず、誤りは「おわびと訂正」で残します。<a href="#" style="font-weight:700">編集方針と免責 →</a></span>
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a">© YYYY アイマスNEWS(α) — UNOFFICIAL</span>
+  </div>
+</div>
+
+<!-- ========== SP: ダイジェスト全画面 ========== -->
+<sc-if value="{{ digestOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;background:#fbfaf7;z-index:50;display:flex;flex-direction:column;padding:20px 22px 16px;box-sizing:border-box;overflow:hidden">
+    <div style="display:flex;align-items:baseline;justify-content:space-between">
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <span style="font-family:'Shippori Mincho B1',serif;font-weight:800;font-size:19px;letter-spacing:.1em">本日の紙面</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:9.5px;color:#8a857a">NO.0000 / M.D AAA</span>
+      </div>
+      <span onClick="{{ closeDigest }}" style="cursor:pointer;font-size:15px;line-height:1;padding:6px 9px;border:1px solid #1c1b18">✕</span>
+    </div>
+    <div style="margin-top:10px;height:5px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+    <div style="margin-top:6px;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-evenly">
+      <sc-for list="{{ digestGroups }}" as="g" hint-placeholder-count="4">
+        <div>
+          <div style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:12px;letter-spacing:.16em;color:{{ g.ink }};border-bottom:1px solid #dedad0;padding-bottom:4px">{{ g.label }} <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8a857a;letter-spacing:0">{{ g.count }}</span></div>
+          <div style="margin-top:7px;display:flex;flex-direction:column;gap:6px">
+            <sc-for list="{{ g.rows }}" as="r" hint-placeholder-count="3">
+              <div style="display:flex;gap:9px;align-items:center;font-size:12.5px;line-height:1.5;color:{{ g.ink }}">
+                <span style="flex:none;width:17px;height:17px;border:1px solid {{ g.ink }};font-family:'Shippori Mincho B1',serif;font-size:10px;display:flex;align-items:center;justify-content:center">{{ r.k }}</span>
+                <span style="flex:1;min-width:0">{{ r.t }}</span>
+                <span style="flex:none;width:7px;height:7px;background:{{ r.dot }}"></span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="border-top:1px solid #dedad0;padding-top:9px;display:flex;justify-content:space-between;font-size:10px;color:#8a857a">
+      <span>各行タップで記事へ</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:9px">1 SCREEN / NO SCROLL</span>
+    </div>
+  </div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { digestOpen: false, brand: "all", mode: "pc" };
+
+  componentDidMount() {
+    this.calc = () => {
+      const w = window.innerWidth;
+      this.setState({ mode: w < 600 ? "sp" : w < 1024 ? "tb" : "pc" });
+    };
+    window.addEventListener("resize", this.calc);
+    this.calc();
+  }
+  componentWillUnmount() { window.removeEventListener("resize", this.calc); }
+
+  brands = [
+    { id: "all", label: "すべて", color: "#1c1b18" },
+    { id: "general", label: "総合", color: "#6b7280" },
+    { id: "765", label: "765AS", color: "#e94e6f" },
+    { id: "cg", label: "シンデレラ", color: "#2681c8" },
+    { id: "million", label: "ミリオン", color: "#f3c012" },
+    { id: "shiny", label: "シャニ", color: "#8fb3de" },
+    { id: "sidem", label: "SideM", color: "#10ae87" },
+    { id: "gaku", label: "学マス", color: "#e8a824" },
+    { id: "dsva", label: "876・ヴイアラ", color: "#b06fc9" },
+    { id: "joint", label: "合同", color: "#7d6f5c" },
+    { id: "other", label: "その他", color: "#9aa0a6" },
+  ];
+
+  srcStyles = {
+    "公式": { srcBg: "#1c1b18", srcInk: "#fbfaf7", srcBox: "1px solid #1c1b18" },
+    "報道": { srcBg: "transparent", srcInk: "#1c1b18", srcBox: "1px solid #1c1b18" },
+    "ファン": { srcBg: "transparent", srcInk: "#55524b", srcBox: "1px solid #8a857a" },
+    "もちより": { srcBg: "transparent", srcInk: "#55524b", srcBox: "1px dashed #8a857a" },
+    "未確認": { srcBg: "transparent", srcInk: "#8a6d14", srcBox: "1px dashed #b08d2a" },
+  };
+
+  articles = [
+    { brand: "general", src: "公式", cat: "総合", rank: "lead",
+      title: "リード記事の見出しダミーが入ります。長めの見出しを想定し、およそ四十五字までの折返しを確認するための文字列です",
+      lede: "リード文のダミーテキストです。記事の要点がおよそ六十字から八十字で入ります。毎日長さが変わっても紙面が崩れないことを確認するための文章で、内容に意味はありません。",
+      source: "出典元表記ダミー page/00_00000(YYYY年M月D日)" },
+    { brand: "sidem", src: "報道", cat: "SideM", rank: "large",
+      title: "見出しダミーが入ります。中程度の長さで、およそ二十八字前後を想定",
+      lede: "リード文ダミー。補足情報がおよそ三十字前後で入ります。",
+      source: "出典元表記ダミー(YYYY年M月D日)" },
+    { brand: "cg", src: "公式", cat: "シンデレラ", rank: "large",
+      title: "見出しダミーが入ります。二十字前後の長さを想定",
+      lede: "リード文ダミー。期日などの補足がここに入ります。",
+      source: "出典元表記ダミー page/00_00000(YYYY年M月D日)" },
+    { brand: "gaku", src: "ファン", cat: "学マス", rank: "medium",
+      title: "見出しダミーが入ります。二十五字前後の長さを想定した一行",
+      lede: "リード文ダミー。補足がおよそ二十五字で入ります。",
+      source: "出典元表記ダミー(YYYY年M月D日)" },
+    { brand: "million", src: "公式", cat: "ミリオン", rank: "medium",
+      title: "見出しダミーが入ります。やや長めの三十字前後を想定した一行です",
+      lede: "リード文ダミー。補足がおよそ二十五字で入ります。",
+      source: "出典元表記ダミー page/00_00000(YYYY年M月D日)" },
+    { brand: "dsva", src: "公式", cat: "876・ヴイアラ", rank: "medium",
+      title: "見出しダミーが入ります。二十字前後を想定",
+      lede: "リード文ダミー。補足がここに入ります。",
+      source: "出典元表記ダミー(YYYY年M月D日)" },
+    { brand: "shiny", src: "未確認", cat: "シャニ", rank: "small",
+      title: "見出しダミー。未確認ソース記事の例としての一行",
+      lede: "リード文ダミー。公開情報の観測である旨がここに入ります。",
+      source: "出典元表記ダミー(YYYY年M月D日)" },
+    { brand: "765", src: "公式", cat: "765AS", rank: "small",
+      title: "見出しダミー。短い一行の例",
+      lede: "リード文ダミー。",
+      source: "出典元表記ダミー(YYYY年M月D日)" },
+    { brand: "joint", src: "報道", cat: "合同", rank: "small",
+      title: "見出しダミー。合同面サンプルの一行",
+      lede: "リード文ダミー。",
+      source: "出典元表記ダミー(YYYY年M月D日)" },
+    { brand: "other", src: "ファン", cat: "その他", rank: "small",
+      title: "見出しダミー。その他面サンプルの一行",
+      lede: "リード文ダミー。",
+      source: "出典元表記ダミー(YYYY年M月D日)" },
+  ];
+
+  digest = [
+    { seg: "本日", strong: true, rows: [
+      { k: "誕", t: "項目ダミー(誕生日)", d: "補足ダミー ・ 〜M/D", dot: "#2681c8", brand: "cg" },
+      { k: "幕", t: "項目ダミー(開幕)", d: "場所ダミー ・ 〜M/D ・ 補足", dot: "#10ae87", brand: "sidem" },
+      { k: "替", t: "項目ダミー(切替)", d: "補足ダミーが入ります", dot: "#e8a824", brand: "gaku" },
+      { k: "配", t: "項目ダミー(配信)", d: "NN件 ・ 補足ダミー", dot: "#6b7280", brand: "general" },
+    ]},
+    { seg: "昨日", strong: false, rows: [
+      { k: "受", t: "項目ダミー(受注) N件", d: "補足ダミーが入ります", dot: "#9aa0a6", brand: "other" },
+      { k: "配", t: "項目ダミー(配信開始)", d: "補足ダミー", dot: "#6b7280", brand: "general" },
+      { k: "海", t: "項目ダミー(海外)", d: "N件 ・ 補足ダミー", dot: "#e94e6f", brand: "765" },
+    ]},
+    { seg: "継続中", strong: false, rows: [
+      { k: "受", t: "項目ダミー(受付中) N件", d: "〜M/D ・ 〜M/D", dot: "#2681c8", brand: "cg" },
+      { k: "展", t: "項目ダミー(会期中)", d: "場所ダミー ・ 〜M/D", dot: "#10ae87", brand: "sidem" },
+    ]},
+    { seg: "明日", strong: true, rows: [
+      { k: "売", t: "項目ダミー(発売)", d: "補足ダミー", dot: "#f3c012", brand: "million" },
+      { k: "験", t: "項目ダミー(体験会)", d: "補足ダミー ・ 事前抽選制", dot: "#e8a824", brand: "gaku" },
+    ]},
+  ];
+
+  rankingData = [
+    { name: "アイドル名A", dot: "#2681c8", d: "up" },
+    { name: "アイドル名B", dot: "#e8a824", d: "down" },
+    { name: "アイドル名C", dot: "#2681c8", d: "up" },
+    { name: "アイドル名D", dot: "#e94e6f", d: "stay" },
+    { name: "アイドル名E", dot: "#10ae87", d: "up" },
+    { name: "アイドル名F", dot: "#8fb3de", d: "down" },
+    { name: "アイドル名G", dot: "#f3c012", d: "stay" },
+    { name: "アイドル名H", dot: "#b06fc9", d: "up" },
+  ];
+
+  deco(a) {
+    const brandDef = this.brands.find((b) => b.id === a.brand);
+    return Object.assign({}, a, this.srcStyles[a.src], {
+      dot: brandDef.color,
+      catBar: "3px solid " + brandDef.color,
+    });
+  }
+
+  renderVals() {
+    const { brand, mode } = this.state;
+    const pass = (b) => brand === "all" || b === brand;
+    const filtered = this.articles.filter((a) => pass(a.brand)).map((a) => this.deco(a));
+    const lead = filtered[0] || null;
+    const rest = filtered.slice(1);
+    const digestGroups = this.digest.map((g) => {
+      const rows = g.rows.filter((r) => pass(r.brand));
+      return { label: g.seg, ink: g.strong ? "#1c1b18" : "#77726a", count: rows.length, rows };
+    }).filter((g) => g.count > 0);
+    const totals = this.digest.map((g) => g.rows.length);
+    return {
+      isSp: mode === "sp", isTb: mode === "tb", isPc: mode === "pc",
+      digestOpen: this.state.digestOpen && mode === "sp",
+      openDigest: () => this.setState({ digestOpen: true }),
+      closeDigest: () => this.setState({ digestOpen: false }),
+      digestSummary: "本日" + totals[0] + " ・ 昨日" + totals[1] + " ・ 継続" + totals[2] + " ・ 明日" + totals[3],
+      chips: this.brands.map((b) => ({
+        label: b.label,
+        weight: b.id === brand ? 700 : 500,
+        ink: b.id === brand ? "#1c1b18" : "#8a857a",
+        bar: b.id === brand ? "3px solid " + b.color : "3px solid transparent",
+        select: () => this.setState({ brand: b.id }),
+      })),
+      lead,
+      larges: rest.filter((a) => a.rank === "large" || a.rank === "lead").slice(0, 2),
+      mediums: rest.filter((a) => a.rank === "medium"),
+      smalls: rest.filter((a) => a.rank === "small"),
+      digestGroups,
+      ranking: this.rankingData.map((r, i) => ({
+        n: i + 1, name: r.name, dot: r.dot,
+        delta: r.d === "up" ? "▲" : r.d === "down" ? "▼" : "─",
+        deltaColor: r.d === "up" ? "#b0483f" : r.d === "down" ? "#3f6ab0" : "#8a857a",
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

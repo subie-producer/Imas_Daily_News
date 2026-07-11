@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "editorial.schema.json",
+  "title": "社説 frontmatter (docs/_editorials/YYYY-MM-DD.md)",
+  "description": "社説は毎日1本・全号保存。本文は Markdown 本文として frontmatter の後に書く。excerpt(80字目安)はトップ紙面の社説欄に掲出される抜粋。超過は lint が警告。",
+  "type": "object",
+  "required": ["edition", "title", "excerpt", "corrected", "corrections"],
+  "additionalProperties": false,
+  "properties": {
+    "edition": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "description": "所属号。ファイル名の日付と一致(lint 検査)" },
+    "title": { "type": "string", "minLength": 1 },
+    "excerpt": { "type": "string", "minLength": 1, "description": "紙面掲出用の冒頭抜粋(80字目安)" },
+    "corrected": { "type": "boolean" },
+    "corrections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["at", "by", "initial", "corrected_to"],
+        "additionalProperties": false,
+        "properties": {
+          "at": { "type": "string" },
+          "by": { "type": "string" },
+          "initial": { "type": "string" },
+          "corrected_to": { "type": "string" },
+          "note": { "type": "string" }
+        }
+      }
+    }
+  }
+}

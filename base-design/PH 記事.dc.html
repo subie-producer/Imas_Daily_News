@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#fbfaf7;color:#1c1b18;font-family:'Zen Kaku Gothic New',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1c1b18;text-decoration:none}a:hover{color:#55524b}
+</style>
+</helmet>
+
+<div style="max-width:720px;margin:0 auto;padding:0 20px 48px;box-sizing:border-box">
+
+  <!-- 小型ヘッダー -->
+  <div style="padding-top:14px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <a href="PH トップ.dc.html" style="display:flex;align-items:baseline;gap:6px">
+      <span style="font-family:'Shippori Mincho B1',serif;font-weight:800;font-size:20px;letter-spacing:.06em">アイマスNEWS</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:#8a857a">(α)</span>
+    </a>
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a;letter-spacing:.06em">NO.0000 — YYYY.MM.DD AAA</span>
+  </div>
+  <div style="margin-top:10px;height:5px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+
+  <!-- パンくず -->
+  <div style="margin-top:12px;display:flex;gap:8px;align-items:center;font-size:11px;color:#55524b;flex-wrap:wrap">
+    <a href="PH トップ.dc.html">第NNN号</a>
+    <span style="color:#c9c4b8">/</span>
+    <a href="#" style="font-weight:700;border-bottom:3px solid #10ae87;padding-bottom:1px">SideM面</a>
+  </div>
+
+  <!-- おわびと訂正(訂正済み記事のみ) -->
+  <sc-if value="{{ corrected }}" hint-placeholder-val="{{ true }}">
+    <div style="margin-top:16px;border:1px solid #b0483f;background:#faf1ef">
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid #e3c7c2">
+        <span style="width:58px;box-sizing:border-box;text-align:center;font-size:10px;font-weight:700;letter-spacing:.08em;padding:3px 0;background:#b0483f;color:#faf1ef">訂正</span>
+        <span style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:13px;letter-spacing:.08em;color:#8f3a33">おわびと訂正</span>
+      </div>
+      <div style="padding:12px 14px;font-size:12.5px;line-height:1.95;color:#5c4540">
+        初出時、〇〇を「誤記ダミーA」と記載していましたが、正しくは<b>「訂正後ダミーB」</b>です。おわびして訂正します。本文は修正済みです。
+        <div style="margin-top:6px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#a3766e">訂正: YYYY-MM-DD HH:MM JST ・ 校閲AIの指摘により</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- 記事ヘッダー -->
+  <div style="margin-top:20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    <span style="width:58px;box-sizing:border-box;text-align:center;font-size:10px;font-weight:700;letter-spacing:.08em;padding:3px 0;color:#1c1b18;border:1px solid #1c1b18">報道</span>
+    <span style="font-size:11px;font-weight:700;border-bottom:3px solid #10ae87;padding-bottom:1px">SideM</span>
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a">YYYY-MM-DD 06:00 JST 発行</span>
+  </div>
+
+  <h1 style="margin:14px 0 0;font-family:'Shippori Mincho B1',serif;font-weight:800;font-size:clamp(24px,5vw,34px);line-height:1.6;letter-spacing:.01em">記事見出しのダミーがここに入ります。長めの見出しで折返しを確認します</h1>
+
+  <div style="margin-top:14px;font-size:15px;line-height:2;color:#44413a;border-left:3px solid #1c1b18;padding-left:14px">リード文のダミーテキストです。記事の要点がおよそ八十字から百字で入ります。導入としての要約であり、本文とは独立して読める文章を想定しています。内容に意味はありません。</div>
+
+  <div style="margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a">
+    <span>執筆: AI編集部</span>
+    <span>校閲: AI(別モデル)</span>
+    <span>人間による確認なし</span>
+  </div>
+
+  <div style="margin-top:20px;border-top:1px solid #dedad0"></div>
+
+  <!-- 本文 -->
+  <div style="margin-top:20px;display:flex;flex-direction:column;gap:22px;font-size:14.5px;line-height:2.1;color:#2e2c27">
+    <p style="margin:0">本文段落のダミーテキストです。一段落はおよそ百二十字から百六十字を想定しています。事実の提示、日付や場所の明示、一次ソースへの参照という順序で構成される標準的な段落の長さを再現するための文字列であり、内容に意味はありません。</p>
+    <p style="margin:0">本文段落のダミーテキストです。二段落目はやや短く、およそ八十字から百字を想定しています。補足情報や経緯の説明が入る位置です。</p>
+    <div style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:18px;letter-spacing:.04em;border-bottom:1px solid #dedad0;padding-bottom:8px">中見出しのダミーがここに入ります</div>
+    <p style="margin:0">本文段落のダミーテキストです。訂正済み記事では、訂正箇所に<span style="background:#faf1ef;border-bottom:1px dashed #b0483f" title="訂正箇所の例">(初出「誤記ダミーA」から訂正)</span>のようなマークが入ります。読者が差分を本文中でも確認できるようにするための視覚言語です。</p>
+    <p style="margin:0">結びの段落ダミーです。詳細は下記の一次ソースを確認してほしい、という定型の誘導文がここに入ります。</p>
+  </div>
+
+  <!-- 出典 -->
+  <div style="margin-top:28px;border:1px solid #dedad0;background:#fff;padding:14px 16px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between">
+      <span style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:12px;letter-spacing:.14em">出典</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8a857a">SOURCES — 全記事に必須</span>
+    </div>
+    <div style="margin-top:10px;display:flex;flex-direction:column;gap:9px;font-size:12px;line-height:1.7">
+      <div style="display:flex;gap:9px;align-items:flex-start">
+        <span style="flex:none;width:58px;box-sizing:border-box;text-align:center;font-size:9.5px;font-weight:700;letter-spacing:.08em;padding:2px 0;background:#1c1b18;color:#fbfaf7;margin-top:2px">公式</span>
+        <a href="#" style="text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c9c4b8">出典元表記ダミー page/00_00000「告知タイトルダミー」(YYYY年M月D日)</a>
+      </div>
+      <div style="display:flex;gap:9px;align-items:flex-start">
+        <span style="flex:none;width:58px;box-sizing:border-box;text-align:center;font-size:9.5px;font-weight:700;letter-spacing:.08em;padding:2px 0;color:#1c1b18;border:1px solid #1c1b18;margin-top:2px">報道</span>
+        <a href="#" style="text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c9c4b8">出典元表記ダミー「記事タイトルダミー」(YYYY年M月D日)</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- タグ -->
+  <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap">
+    <a href="#" style="font-size:11px;color:#55524b;border:1px solid #d9d4c8;padding:3px 10px">#タグA</a>
+    <a href="#" style="font-size:11px;color:#55524b;border:1px solid #d9d4c8;padding:3px 10px">#タグB</a>
+    <a href="#" style="font-size:11px;color:#55524b;border:1px solid #d9d4c8;padding:3px 10px">#タグC</a>
+    <a href="#" style="font-size:11px;color:#55524b;border:1px solid #d9d4c8;padding:3px 10px">#タグD</a>
+  </div>
+
+  <!-- 同じ面の記事 -->
+  <div style="margin-top:28px;border-top:2px solid #1c1b18;padding-top:12px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between">
+      <span style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:13px;letter-spacing:.12em">SideM面のほかの記事</span>
+      <a href="#" style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a">面トップ →</a>
+    </div>
+    <div style="margin-top:8px;display:flex;flex-direction:column">
+      <a href="#" style="display:flex;gap:10px;align-items:baseline;padding:10px 0;border-bottom:1px dotted #d9d4c8">
+        <span style="flex:none;width:8px;height:8px;background:#10ae87;align-self:center"></span>
+        <span style="flex:1;font-size:13px;line-height:1.7;font-weight:500">関連記事見出しダミー、二十五字前後の一行</span>
+      </a>
+      <a href="#" style="display:flex;gap:10px;align-items:baseline;padding:10px 0;border-bottom:1px dotted #d9d4c8">
+        <span style="flex:none;width:8px;height:8px;background:#10ae87;align-self:center"></span>
+        <span style="flex:1;font-size:13px;line-height:1.7;font-weight:500">関連記事見出しダミー、やや短い一行の例</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 号ナビ -->
+  <div style="margin-top:24px;display:flex;justify-content:space-between;gap:12px;font-size:12px;font-weight:700">
+    <a href="#" style="flex:1;border:1px solid #dedad0;padding:10px 14px;background:#fff">← 前の記事<div style="margin-top:3px;font-weight:500;font-size:11px;color:#55524b">前の記事見出しダミー</div></a>
+    <a href="#" style="flex:1;border:1px solid #dedad0;padding:10px 14px;background:#fff;text-align:right">次の記事 →<div style="margin-top:3px;font-weight:500;font-size:11px;color:#55524b">次の記事見出しダミー</div></a>
+  </div>
+
+  <!-- フッター -->
+  <div style="margin-top:32px;border-top:2px solid #1c1b18;padding-top:12px;font-size:11px;color:#55524b;line-height:1.8">
+    アイマスNEWS(α)はAIが執筆・校閲する非公式ファンメディアです。記事は削除せず、誤りは「おわびと訂正」で残します。<a href="#" style="font-weight:700">編集方針と免責 →</a>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;corrected&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;記事状態&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    return { corrected: this.props.corrected ?? true };
+  }
+}
+</script>
+</body>
+</html>

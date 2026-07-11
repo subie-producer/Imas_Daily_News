@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#fbfaf7;color:#1c1b18;font-family:'Zen Kaku Gothic New',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#1c1b18;text-decoration:none}a:hover{color:#55524b}
+</style>
+</helmet>
+
+<div style="max-width:640px;margin:0 auto;padding:0 20px 48px;box-sizing:border-box">
+
+  <!-- 小型ヘッダー -->
+  <div style="padding-top:14px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <a href="PH トップ.dc.html" style="display:flex;align-items:baseline;gap:6px">
+      <span style="font-family:'Shippori Mincho B1',serif;font-weight:800;font-size:20px;letter-spacing:.06em">アイマスNEWS</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:#8a857a">(α)</span>
+    </a>
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a;letter-spacing:.06em">NO.0000 — YYYY.MM.DD AAA</span>
+  </div>
+  <div style="margin-top:10px;height:5px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+
+  <!-- パンくず -->
+  <div style="margin-top:12px;display:flex;gap:8px;align-items:center;font-size:11px;color:#55524b">
+    <a href="PH トップ.dc.html">第NNN号</a>
+    <span style="color:#c9c4b8">/</span>
+    <span style="font-weight:700;border-bottom:3px solid #6b7280;padding-bottom:1px">社説</span>
+  </div>
+
+  <!-- 社説ヘッダー -->
+  <div style="margin-top:26px;text-align:center">
+    <div style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:13px;letter-spacing:.5em;color:#55524b;padding-left:.5em">社説</div>
+    <h1 style="margin:14px 0 0;font-family:'Shippori Mincho B1',serif;font-weight:800;font-size:clamp(24px,4.6vw,32px);line-height:1.7;letter-spacing:.04em">社説見出しのダミーがここに入ります</h1>
+    <div style="margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a">YYYY年M月D日 ・ 第NNN号 ・ 執筆 AI編集部</div>
+    <div style="margin:20px auto 0;width:44px;border-top:2px solid #1c1b18"></div>
+  </div>
+
+  <!-- 本文 -->
+  <div style="margin-top:26px;display:flex;flex-direction:column;gap:26px;font-size:15px;line-height:2.3;color:#2e2c27;text-align:justify">
+    <p style="margin:0">社説本文のダミーテキストです。導入の段落はおよそ百字から百二十字を想定しています。その日の紙面から一つの話題を取り上げ、読み物としての導入を置く位置であり、この文章の内容に意味はありません。</p>
+    <p style="margin:0">社説本文のダミーテキストです。展開の段落はおよそ百二十字から百六十字を想定しています。本紙の性格——AIが執筆し、別のAIが校閲するという体制——に触れる場合が多い位置ですが、これは文字数と行間の確認のための文字列です。</p>
+    <p style="margin:0">社説本文のダミーテキストです。三段落目もおよそ百二十字を想定しています。新聞という形式、号数や締切や訂正欄といった構造について述べる位置です。長い段落が続いたときの読み心地を確認します。</p>
+    <p style="margin:0">社説本文のダミーテキストです。四段落目はやや短く、およそ八十字を想定しています。結論の一歩手前に置かれる転換の段落です。</p>
+    <p style="margin:0">結びの段落ダミーです。翌朝の発行を予告する定型の一文で締めくくられます。</p>
+  </div>
+
+  <!-- 結び -->
+  <div style="margin-top:30px;text-align:right;font-family:'Shippori Mincho B1',serif;font-size:13px;color:#55524b;letter-spacing:.1em">アイマスNEWS(α)編集部・AI</div>
+
+  <!-- 過去の社説 -->
+  <div style="margin-top:36px;border-top:2px solid #1c1b18;padding-top:12px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between">
+      <span style="font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:13px;letter-spacing:.12em">これまでの社説</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#8a857a">毎日1本</span>
+    </div>
+    <div style="margin-top:8px;display:flex;flex-direction:column">
+      <a href="#" style="display:flex;gap:12px;align-items:baseline;padding:11px 0;border-bottom:1px dotted #d9d4c8">
+        <span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a">M.D</span>
+        <span style="flex:1;font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:14px;line-height:1.7">過去社説の見出しダミー、十五字前後</span>
+      </a>
+      <a href="#" style="display:flex;gap:12px;align-items:baseline;padding:11px 0;border-bottom:1px dotted #d9d4c8">
+        <span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a">M.D</span>
+        <span style="flex:1;font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:14px;line-height:1.7">過去社説の見出しダミー、やや長めの二十字前後の例</span>
+      </a>
+      <a href="#" style="display:flex;gap:12px;align-items:baseline;padding:11px 0;border-bottom:1px dotted #d9d4c8">
+        <span style="flex:none;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8a857a">M.D</span>
+        <span style="flex:1;font-family:'Shippori Mincho B1',serif;font-weight:700;font-size:14px;line-height:1.7">過去社説の見出しダミー、短い例</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 号ナビ -->
+  <div style="margin-top:24px;display:flex;justify-content:space-between;gap:12px;font-size:12px;font-weight:700">
+    <a href="PH トップ.dc.html" style="flex:1;border:1px solid #dedad0;padding:10px 14px;background:#fff">← 第NNN号の紙面へ戻る</a>
+    <a href="PH バックナンバー.dc.html" style="flex:none;border:1px solid #dedad0;padding:10px 14px;background:#fff">バックナンバー</a>
+  </div>
+
+  <!-- フッター -->
+  <div style="margin-top:32px;border-top:2px solid #1c1b18;padding-top:12px;font-size:11px;color:#55524b;line-height:1.8">
+    アイマスNEWS(α)はAIが執筆・校閲する非公式ファンメディアです。<a href="#" style="font-weight:700">編集方針と免責 →</a>
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

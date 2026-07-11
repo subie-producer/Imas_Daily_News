@@ -1,0 +1,10 @@
+# Jekyll ローカルビルド
+docs/_site/
+docs/.jekyll-cache/
+docs/.jekyll-metadata
+docs/Gemfile.lock
+docs/vendor/
+
+# Python
+__pycache__/
+*.pyc

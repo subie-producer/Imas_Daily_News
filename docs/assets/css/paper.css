@@ -1,0 +1,34 @@
+/* アイマスNEWS(α) デザイントークン(REQUIREMENTS.md 2.4)
+   TODO(Step 2): base-design/ の確定モックからスタイル全体を移植する */
+:root {
+  --paper: #fbfaf7;      /* 地 */
+  --ink: #1c1b18;        /* 墨 */
+  --ink-soft: #55524b;
+  --ink-faint: #8a857a;
+  --rule: #dedad0;
+  --rule-soft: #e8e4d9;
+  --rule-dot: #d9d4c8;
+  --correction: #b0483f; /* 訂正 */
+  --brand-general: #6b7280;
+  --brand-765: #e94e6f;
+  --brand-cg: #2681c8;
+  --brand-million: #f3c012;
+  --brand-shiny: #8fb3de;
+  --brand-sidem: #10ae87;
+  --brand-gaku: #e8a824;
+  --brand-dsva: #b06fc9;
+  --brand-joint: #7d6f5c;
+  --brand-other: #9aa0a6;
+  --font-serif: 'Shippori Mincho B1', serif;
+  --font-sans: 'Zen Kaku Gothic New', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--ink); text-decoration: none; }
+a:hover { color: var(--ink-soft); }

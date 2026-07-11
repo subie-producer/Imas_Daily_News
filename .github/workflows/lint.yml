@@ -1,0 +1,37 @@
+# 紙面 lint(required check)。branch protection でこのジョブ名 "lint" を必須にする。
+# 赤なら auto-merge 用のキーがあってもマージ不可(REQUIREMENTS.md 4.4)。
+name: lint
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # 週1回の全記事 URL 監査(失敗は訂正フローの入力になる)。JST 月曜 09:00
+    - cron: "0 0 * * 1"
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml jsonschema
+      - name: 名鑑が原本と同期しているか
+        run: |
+          python3 scripts/build_idols.py
+          git diff --exit-code docs/_data/idols.json
+      - name: 紙面 lint
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            python3 scripts/lint.py --full
+          else
+            python3 scripts/lint.py
+          fi

@@ -1,0 +1,14 @@
+---
+layout: default
+---
+<!-- TODO(Step 2): base-design/PH 記事.dc.html を移植する。以下は仮表示 -->
+<main style="max-width:720px;margin:0 auto;padding:20px">
+  <p><a href="{{ '/' | relative_url }}">アイマスNEWS(α)</a></p>
+  <h1>{{ page.title }}</h1>
+  <p>{{ page.lede }}</p>
+  {{ content }}
+  <h2>出典</h2>
+  <ul>
+    {% for s in page.sources %}<li>{{ s.type }}: <a href="{{ s.url }}">{{ s.label }}</a></li>{% endfor %}
+  </ul>
+</main>

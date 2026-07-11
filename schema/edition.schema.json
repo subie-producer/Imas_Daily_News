@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "edition.schema.json",
+  "title": "号スナップショット frontmatter (docs/_editions/YYYY-MM-DD.md)",
+  "description": "REQUIREMENTS.md 3.2 のデータ契約。frontmatter のみの .md(Jekyll collection として /editions/YYYY-MM-DD/ に出力するため)。pages / article_count / corrected_count は機械算出であり lint が再計算・照合する。社説本文は docs/_editorials/YYYY-MM-DD.md に分離(editorial.schema.json)。",
+  "type": "object",
+  "required": ["number", "date", "weekday", "issued_at", "pages", "article_count", "corrected_count", "lead_slug", "digest", "ranking", "birthdays"],
+  "additionalProperties": false,
+  "properties": {
+    "number": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "通し号数。0 は試験発行(連番 lint の対象外)。キー名 no は YAML 1.1 で boolean に解釈されるため不採用"
+    },
+    "date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "weekday": { "enum": ["月", "火", "水", "木", "金", "土", "日"] },
+    "issued_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\+09:00$",
+      "description": "発行時刻。定時は date T06:00:00+09:00"
+    },
+    "pages": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "機械算出: 号内記事の brand の異なり数"
+    },
+    "article_count": { "type": "integer", "minimum": 0, "description": "機械算出: 号内記事数" },
+    "corrected_count": { "type": "integer", "minimum": 0, "description": "機械算出: 号内の corrected: true の記事数" },
+    "lead_slug": { "type": "string", "description": "一面リード記事の slug。rank: lead の記事と一致(lint 検査)" },
+    "digest": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "description": "「本日の紙面」。本日・昨日・継続中・明日の4群固定・この順",
+      "items": {
+        "type": "object",
+        "required": ["label", "rows"],
+        "additionalProperties": false,
+        "properties": {
+          "label": { "enum": ["本日", "昨日", "継続中", "明日"] },
+          "rows": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["k", "t", "d", "brand"],
+              "additionalProperties": false,
+              "properties": {
+                "k": {
+                  "enum": ["誕", "開", "終", "配", "売", "受", "締", "発", "演"],
+                  "description": "種別1文字(REQUIREMENTS.md 5.4。追加は要件書の改訂を要する)"
+                },
+                "t": { "type": "string", "minLength": 1, "maxLength": 20, "description": "行タイトル(20字以内)" },
+                "d": { "type": "string", "maxLength": 25, "description": "補足(25字以内)" },
+                "brand": { "enum": ["general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"] },
+                "slug": { "type": "string", "description": "タップ遷移先の記事 slug(任意。同号内の記事であること=lint 検査)" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ranking": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "description": "24時間ランキング。スクリプトが決定論的に算出(REQUIREMENTS.md 3.3)",
+      "items": {
+        "type": "object",
+        "required": ["n", "name", "brand", "delta"],
+        "additionalProperties": false,
+        "properties": {
+          "n": { "type": "integer", "minimum": 1, "maximum": 8 },
+          "name": { "type": "string", "description": "名鑑(docs/_data/idols.json)に存在する名前(lint 検査)" },
+          "brand": { "enum": ["general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"] },
+          "delta": { "enum": ["up", "down", "stay", "new"], "description": "前号比。前号が存在しない場合は全て new(lint 検査)" }
+        }
+      }
+    },
+    "birthdays": {
+      "type": "array",
+      "description": "きょうの誕生日。名鑑から機械算出(lint が照合)。該当なしの日は空配列",
+      "items": {
+        "type": "object",
+        "required": ["name", "brand"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "brand": { "enum": ["general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"] },
+          "note": { "type": "string", "description": "ひとこと(LLM 執筆)" }
+        }
+      }
+    }
+  }
+}

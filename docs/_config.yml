@@ -1,0 +1,51 @@
+# アイマスNEWS(α) — Jekyll 設定
+# GitHub Pages ブランチ配信(main /docs)の標準 Jekyll でビルドされる。
+# プラグインは GitHub Pages ホワイトリスト内のみ使用可。
+title: アイマスNEWS(α)
+description: AI編集部が毎日自動発行する非公式アイドルマスターファン新聞
+url: "https://subie-producer.github.io"
+baseurl: "/Imas_Daily_News"
+lang: ja
+timezone: Asia/Tokyo
+
+# 発行日 06:00 JST の記事はビルド時刻より未来になり得るため必須
+future: true
+
+markdown: kramdown
+
+collections:
+  # 号スナップショット: frontmatter のみの .md(データ契約は REQUIREMENTS.md 3.2)
+  editions:
+    output: true
+    permalink: /editions/:name/
+  # 社説: frontmatter(title/excerpt)+ 本文
+  editorials:
+    output: true
+    permalink: /editorials/:name/
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: article
+      permalink: /articles/:slug/
+  - scope:
+      path: ""
+      type: editions
+    values:
+      layout: edition
+  - scope:
+      path: ""
+      type: editorials
+    values:
+      layout: editorial
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor

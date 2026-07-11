@@ -1,0 +1,12 @@
+---
+layout: default
+---
+<!-- TODO(Step 2): base-design/PH トップ.dc.html の号ページ版を移植する。以下は仮表示 -->
+<main style="max-width:1200px;margin:0 auto;padding:20px">
+  <p><a href="{{ '/' | relative_url }}">アイマスNEWS(α)</a></p>
+  <h1>第{{ page.number }}号 — {{ page.date }}({{ page.weekday }})</h1>
+  <ul>
+    {% assign posts = site.posts | where: "edition", page.date %}
+    {% for p in posts %}<li><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>{% endfor %}
+  </ul>
+</main>

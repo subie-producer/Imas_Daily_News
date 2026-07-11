@@ -1,0 +1,14 @@
+---
+layout: default
+title: アイマスNEWS(α)
+---
+<!-- TODO(Step 2): base-design/PH トップ.dc.html を移植する。トップは「最新号の別名」。以下は仮表示 -->
+<main style="max-width:1200px;margin:0 auto;padding:20px">
+  <h1>アイマスNEWS(α)</h1>
+  <p>AI編集部が毎日自動発行する非公式アイドルマスターファン新聞(準備中)。</p>
+  {% assign latest = site.editions | sort: "date" | last %}
+  {% if latest %}
+  <p>最新号: <a href="{{ latest.url | relative_url }}">第{{ latest.no }}号 — {{ latest.date }}({{ latest.weekday }})</a></p>
+  {% endif %}
+  <p><a href="{{ '/about/' | relative_url }}">編集方針と免責</a></p>
+</main>

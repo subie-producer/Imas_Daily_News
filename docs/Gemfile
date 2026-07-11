@@ -1,0 +1,5 @@
+# ローカルプレビュー用(本番は GitHub Pages が github-pages 相当環境でビルドする)
+# bundle install && bundle exec jekyll serve --baseurl /Imas_Daily_News
+source "https://rubygems.org"
+gem "github-pages", group: :jekyll_plugins
+gem "webrick" # Ruby 3 で jekyll serve に必要

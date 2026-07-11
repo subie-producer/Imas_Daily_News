@@ -149,10 +149,11 @@ def codex_review(date: str, round_no: int) -> dict:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--plan", action="store_true", help="プロンプトを表示して終了(実行しない)")
+    ap.add_argument("--date", default=None, help="対象発行日(再試行用。既定: 次の06:00の日付)")
     ap.add_argument("--max-rounds", type=int, default=2)
     args = ap.parse_args()
     t0 = time.time()
-    date = edition_date()
+    date = args.date or edition_date()
     branch = f"edition/{date}"
     triggers = None
 
@@ -170,6 +171,19 @@ def main() -> int:
     if (ROOT / "docs" / "_editions" / f"{date}.md").exists():
         notify("compose", f"{date}: 号スナップショットが既に存在(compose 済み?)。中止")
         return 0
+
+    # 締切ガード(規程: 締切=04:00時点の candidates)。スイープ未実施なら警告して続行
+    latest = None
+    for md in sorted((ROOT / "metrics").glob("*.json"))[-2:]:
+        try:
+            for run in json.loads(md.read_text(encoding="utf-8")).get("collect", []):
+                latest = max(latest or run["at"], run["at"])
+        except Exception:
+            pass
+    stale = (latest is None or
+             (now_jst() - datetime.datetime.fromisoformat(latest)).total_seconds() > 7200)
+    if stale:
+        notify("compose", f"{date}: 直近2時間の collect 実行記録が無い(締切前スイープ未実施?)。手持ちの candidates で続行", ok=False)
 
     # 1. 執筆(Claude が lint 自己修正まで行う)
     log = claude_run(prompt)

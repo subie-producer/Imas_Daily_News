@@ -2,34 +2,10 @@
 layout: default
 title: アイマスNEWS(α)
 ---
-<!-- TODO(Step 2): base-design/PH トップ.dc.html を移植する。トップは「最新号の別名」。以下は仮表示 -->
+{% comment %} トップ=最新号の別名(REQUIREMENTS 2.2) {% endcomment %}
 {% assign latest = site.editions | sort: "date" | last %}
-<main style="max-width:1200px;margin:0 auto;padding:20px">
-  <h1>アイマスNEWS(α)</h1>
-  <p>AI編集部が毎日自動発行する非公式アイドルマスターファン新聞。</p>
-  {% if latest %}
-    {% assign date_s = latest.date | date: "%Y-%m-%d" %}
-    <h2>第{{ latest.number }}号 — {{ date_s }}({{ latest.weekday }}) 全{{ latest.pages }}面・{{ latest.article_count }}本</h2>
-    <ul>
-      {% assign ranks = "lead,large,medium,small" | split: "," %}
-      {% for r in ranks %}
-        {% for p in site.posts %}
-          {% assign p_ed = p.edition | date: "%Y-%m-%d" %}
-          {% if p_ed == date_s and p.rank == r %}
-            <li>
-              [{{ p.brand }}/{{ p.rank }}] <a href="{{ p.url | relative_url }}"><strong>{{ p.title }}</strong></a>
-              {% if p.rank == "lead" or p.rank == "large" %}<br>{{ p.lede }}{% endif %}
-            </li>
-          {% endif %}
-        {% endfor %}
-      {% endfor %}
-    </ul>
-    <p>
-      <a href="{{ '/editorials/' | append: date_s | append: '/' | relative_url }}">社説を読む</a> ・
-      <a href="{{ latest.url | relative_url }}">号ページ</a> ・
-      <a href="{{ '/about/' | relative_url }}">編集方針と免責</a>
-    </p>
-  {% else %}
-    <p>準備中。</p>
-  {% endif %}
-</main>
+{% if latest %}
+{% include paper.html ed=latest %}
+{% else %}
+<main style="max-width:720px;margin:40px auto;padding:0 20px"><p>準備中。</p></main>
+{% endif %}

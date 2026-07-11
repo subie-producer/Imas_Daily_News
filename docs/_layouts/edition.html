@@ -1,21 +1,5 @@
 ---
 layout: default
 ---
-<!-- TODO(Step 2): base-design/PH トップ.dc.html の号ページ版を移植する。以下は仮表示 -->
-{% assign date_s = page.date | date: "%Y-%m-%d" %}
-<main style="max-width:1200px;margin:0 auto;padding:20px">
-  <p><a href="{{ '/' | relative_url }}">アイマスNEWS(α)</a></p>
-  <h1>第{{ page.number }}号 — {{ date_s }}({{ page.weekday }})</h1>
-  <ul>
-    {% assign ranks = "lead,large,medium,small" | split: "," %}
-    {% for r in ranks %}
-      {% for p in site.posts %}
-        {% assign p_ed = p.edition | date: "%Y-%m-%d" %}
-        {% if p_ed == date_s and p.rank == r %}
-          <li>[{{ p.rank }}] <a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>
-        {% endif %}
-      {% endfor %}
-    {% endfor %}
-  </ul>
-  <p><a href="{{ '/editorials/' | append: date_s | append: '/' | relative_url }}">社説を読む</a></p>
-</main>
+{% comment %} 号ページ=過去号をトップと同一レイアウトで完全再現(REQUIREMENTS 2.2) {% endcomment %}
+{% include paper.html ed=page %}

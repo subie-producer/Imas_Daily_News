@@ -1,14 +1,135 @@
 ---
 layout: default
 ---
-<!-- TODO(Step 2): base-design/PH 記事.dc.html を移植する。以下は仮表示 -->
-<main style="max-width:720px;margin:0 auto;padding:20px">
-  <p><a href="{{ '/' | relative_url }}">アイマスNEWS(α)</a></p>
-  <h1>{{ page.title }}</h1>
-  <p>{{ page.lede }}</p>
-  {{ content }}
-  <h2>出典</h2>
-  <ul>
-    {% for s in page.sources %}<li>{{ s.type }}: <a href="{{ s.url }}">{{ s.label }}</a></li>{% endfor %}
-  </ul>
-</main>
+{% assign date_s = page.edition | date: "%Y-%m-%d" %}
+{% assign ed = nil %}
+{% for e in site.editions %}{% assign e_date = e.date | date: "%Y-%m-%d" %}{% if e_date == date_s %}{% assign ed = e %}{% endif %}{% endfor %}
+{% capture no4 %}0000{{ ed.number }}{% endcapture %}{% assign no4 = no4 | slice: -4, 4 %}
+{% assign bdef = site.data.brands | where: "id", page.brand | first %}
+{% assign ranks = "lead,large,medium,small" | split: "," %}
+{% assign eposts = "" | split: "" %}
+{% for r in ranks %}{% for p in site.posts %}{% assign p_ed = p.edition | date: "%Y-%m-%d" %}{% if p_ed == date_s and p.rank == r %}{% assign eposts = eposts | push: p %}{% endif %}{% endfor %}{% endfor %}
+
+<div style="max-width:720px;margin:0 auto;padding:0 20px 48px;box-sizing:border-box">
+
+  <!-- 小型ヘッダー -->
+  <div style="padding-top:14px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <a href="{{ '/' | relative_url }}" style="display:flex;align-items:baseline;gap:6px">
+      <span style="font-family:var(--font-serif);font-weight:800;font-size:20px;letter-spacing:.06em">アイマスNEWS</span>
+      <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:#8a857a">(α)</span>
+    </a>
+    <span style="font-family:var(--font-mono);font-size:10px;color:#8a857a;letter-spacing:.06em">NO.{{ no4 }} — {{ page.edition | date: "%Y.%m.%d" }} {{ ed.weekday }}</span>
+  </div>
+  <div style="margin-top:10px;height:5px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+
+  <!-- パンくず -->
+  <div style="margin-top:12px;display:flex;gap:8px;align-items:center;font-size:11px;color:#55524b;flex-wrap:wrap">
+    <a href="{{ ed.url | relative_url }}">第{{ ed.number }}号</a>
+    <span style="color:#c9c4b8">/</span>
+    <a href="{{ '/?brand=' | append: page.brand | relative_url }}" style="font-weight:700;border-bottom:3px solid {{ bdef.color }};padding-bottom:1px">{{ bdef.label }}面</a>
+  </div>
+
+  <!-- おわびと訂正(訂正済み記事のみ) -->
+  {% if page.corrected %}
+  <div style="margin-top:16px;border:1px solid #b0483f;background:#faf1ef">
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid #e3c7c2">
+      <span style="width:58px;box-sizing:border-box;text-align:center;font-size:10px;font-weight:700;letter-spacing:.08em;padding:3px 0;background:#b0483f;color:#faf1ef">訂正</span>
+      <span style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.08em;color:#8f3a33">おわびと訂正</span>
+    </div>
+    {% for c in page.corrections %}
+    <div style="padding:12px 14px;font-size:12.5px;line-height:1.95;color:#5c4540{% unless forloop.last %};border-bottom:1px dashed #e3c7c2{% endunless %}">
+      初出時、「{{ c.initial }}」と記載していましたが、正しくは<b>「{{ c.corrected_to }}」</b>です。おわびして訂正します。本文は修正済みです。{% if c.note %}({{ c.note }}){% endif %}
+      <div style="margin-top:6px;font-family:var(--font-mono);font-size:10px;color:#a3766e">訂正: {{ c.at }} ・ {{ c.by }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- 記事ヘッダー -->
+  <div style="margin-top:20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+    {% include src-badge.html src=page.src size="lead" %}
+    <span style="font-size:11px;font-weight:700;border-bottom:3px solid {{ bdef.color }};padding-bottom:1px">{{ bdef.label }}</span>
+    <span style="font-family:var(--font-mono);font-size:10px;color:#8a857a">{{ date_s }} 06:00 JST 発行</span>
+  </div>
+
+  <h1 style="margin:14px 0 0;font-family:var(--font-serif);font-weight:800;font-size:clamp(24px,5vw,34px);line-height:1.6;letter-spacing:.01em">{{ page.title }}</h1>
+
+  <div style="margin-top:14px;font-size:15px;line-height:2;color:#44413a;border-left:3px solid #1c1b18;padding-left:14px">{{ page.lede }}</div>
+
+  <div style="margin-top:14px;display:flex;gap:14px;flex-wrap:wrap;font-family:var(--font-mono);font-size:10px;color:#8a857a">
+    <span>執筆: AI編集部</span>
+    <span>校閲: AI(別モデル)</span>
+    <span>人間による確認なし</span>
+  </div>
+
+  <div style="margin-top:20px;border-top:1px solid #dedad0"></div>
+
+  <!-- 本文 -->
+  <div class="article-body" style="margin-top:20px">{{ content }}</div>
+
+  <!-- 出典 -->
+  <div style="margin-top:28px;border:1px solid #dedad0;background:#fff;padding:14px 16px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between">
+      <span style="font-family:var(--font-serif);font-weight:700;font-size:12px;letter-spacing:.14em">出典</span>
+      <span style="font-family:var(--font-mono);font-size:9px;color:#8a857a">SOURCES — 全記事に必須</span>
+    </div>
+    <div style="margin-top:10px;display:flex;flex-direction:column;gap:9px;font-size:12px;line-height:1.7">
+      {% for s in page.sources %}
+      <div style="display:flex;gap:9px;align-items:flex-start">
+        {% include src-badge.html src=s.type %}
+        <a href="{{ s.url }}" rel="noopener" style="text-decoration:underline;text-underline-offset:3px;text-decoration-color:#c9c4b8">{{ s.label }}</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- タグ -->
+  {% if page.tags and page.tags.size > 0 %}
+  <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap">
+    {% for t in page.tags %}
+    <span style="font-size:11px;color:#55524b;border:1px solid #d9d4c8;padding:3px 10px">#{{ t }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- 同じ面の記事 -->
+  {% assign same = "" | split: "" %}
+  {% for p in eposts %}{% if p.brand == page.brand and p.url != page.url %}{% assign same = same | push: p %}{% endif %}{% endfor %}
+  {% if same.size > 0 %}
+  <div style="margin-top:28px;border-top:2px solid #1c1b18;padding-top:12px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between">
+      <span style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.12em">{{ bdef.label }}面のほかの記事</span>
+      <a href="{{ '/?brand=' | append: page.brand | relative_url }}" style="font-family:var(--font-mono);font-size:10px;color:#8a857a">面トップ →</a>
+    </div>
+    <div style="margin-top:8px;display:flex;flex-direction:column">
+      {% for p in same limit: 4 %}
+      <a href="{{ p.url | relative_url }}" style="display:flex;gap:10px;align-items:baseline;padding:10px 0;border-bottom:1px dotted #d9d4c8">
+        <span style="flex:none;width:8px;height:8px;background:{{ bdef.color }};align-self:center"></span>
+        <span style="flex:1;font-size:13px;line-height:1.7;font-weight:500">{{ p.title }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- 号ナビ(号内の前後記事) -->
+  {% assign prev = nil %}{% assign next = nil %}{% assign hit = false %}
+  {% for p in eposts %}
+    {% if hit and next == nil %}{% assign next = p %}{% endif %}
+    {% if p.url == page.url %}{% assign hit = true %}{% endif %}
+    {% unless hit %}{% assign prev = p %}{% endunless %}
+  {% endfor %}
+  <div style="margin-top:24px;display:flex;justify-content:space-between;gap:12px;font-size:12px;font-weight:700">
+    {% if prev %}
+    <a href="{{ prev.url | relative_url }}" style="flex:1;border:1px solid #dedad0;padding:10px 14px;background:#fff">← 前の記事<div style="margin-top:3px;font-weight:500;font-size:11px;color:#55524b">{{ prev.title | truncate: 28 }}</div></a>
+    {% else %}<span style="flex:1"></span>{% endif %}
+    {% if next %}
+    <a href="{{ next.url | relative_url }}" style="flex:1;border:1px solid #dedad0;padding:10px 14px;background:#fff;text-align:right">次の記事 →<div style="margin-top:3px;font-weight:500;font-size:11px;color:#55524b">{{ next.title | truncate: 28 }}</div></a>
+    {% else %}<span style="flex:1"></span>{% endif %}
+  </div>
+
+  <!-- フッター -->
+  <div style="margin-top:32px;border-top:2px solid #1c1b18;padding-top:12px;font-size:11px;color:#55524b;line-height:1.8">
+    アイマスNEWS(α)はAIが執筆・校閲する非公式ファンメディアです。記事は削除せず、誤りは「おわびと訂正」で残します。<a href="{{ '/about/' | relative_url }}" style="font-weight:700">編集方針と免責 →</a>
+  </div>
+</div>

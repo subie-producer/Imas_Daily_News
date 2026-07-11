@@ -1,0 +1,65 @@
+---
+layout: default
+title: バックナンバー — アイマスNEWS(α)
+permalink: /archive/
+---
+{% assign eds = site.editions | sort: "date" | reverse %}
+{% assign months = eds | group_by_exp: "e", "e.date | date: '%Y.%m'" %}
+
+<div style="max-width:860px;margin:0 auto;padding:0 20px 48px;box-sizing:border-box">
+
+  <!-- 小型ヘッダー -->
+  <div style="padding-top:14px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <a href="{{ '/' | relative_url }}" style="display:flex;align-items:baseline;gap:6px">
+      <span style="font-family:var(--font-serif);font-weight:800;font-size:20px;letter-spacing:.06em">アイマスNEWS</span>
+      <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:#8a857a">(α)</span>
+    </a>
+    <span style="font-family:var(--font-mono);font-size:10px;color:#8a857a;letter-spacing:.06em">ARCHIVE — 全{{ eds | size }}号</span>
+  </div>
+  <div style="margin-top:10px;height:5px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+
+  <!-- ページ見出し -->
+  <div style="margin-top:22px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <h1 style="margin:0;font-family:var(--font-serif);font-weight:800;font-size:clamp(22px,4vw,30px);letter-spacing:.06em">バックナンバー</h1>
+    <span style="font-size:11.5px;color:#55524b">全号を発行当時の紙面のまま保存しています。訂正も当時の表示で残ります。</span>
+  </div>
+
+  <!-- 月ジャンプ -->
+  <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;font-family:var(--font-mono);font-size:10.5px">
+    {% for m in months %}
+    {% if forloop.first %}
+    <a href="#m{{ m.name | replace: '.', '' }}" style="padding:4px 10px;background:#1c1b18;color:#fbfaf7;font-weight:600">{{ m.name }}</a>
+    {% else %}
+    <a href="#m{{ m.name | replace: '.', '' }}" style="padding:4px 10px;border:1px solid #d9d4c8;color:#55524b">{{ m.name }}</a>
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  {% for m in months %}
+  <div style="margin-top:24px" id="m{{ m.name | replace: '.', '' }}">
+    <div style="display:flex;align-items:baseline;gap:10px;border-bottom:2px solid #1c1b18;padding-bottom:6px">
+      <span style="font-family:var(--font-serif);font-weight:800;font-size:17px;letter-spacing:.1em">{{ m.items[0].date | date: "%Y年%-m月" }}</span>
+      <span style="font-family:var(--font-mono);font-size:9.5px;color:#8a857a">{{ m.items | size }} EDITIONS</span>
+    </div>
+    <div style="display:flex;flex-direction:column">
+      {% for e in m.items %}
+      {% capture no4 %}0000{{ e.number }}{% endcapture %}{% assign no4 = no4 | slice: -4, 4 %}
+      {% assign e_date = e.date | date: "%Y-%m-%d" %}
+      {% assign leadp = nil %}
+      {% for p in site.posts %}{% assign p_ed = p.edition | date: "%Y-%m-%d" %}{% if p_ed == e_date and p.slug == e.lead_slug %}{% assign leadp = p %}{% endif %}{% endfor %}
+      <a href="{{ e.url | relative_url }}" style="display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;padding:13px 2px;border-bottom:1px solid #e8e4d9">
+        <span style="flex:none;width:66px;font-family:var(--font-mono);font-size:11px;color:#8a857a">NO.{{ no4 }}</span>
+        <span style="flex:none;font-size:12.5px;font-weight:700;white-space:nowrap">{{ e.date | date: "%-m月%-d日" }}({{ e.weekday }})</span>
+        <span style="flex:none;margin-left:auto;font-family:var(--font-mono);font-size:10px;color:#8a857a;white-space:nowrap">{{ e.article_count }}件{% if e.corrected_count > 0 %}<span style="color:#b0483f"> ・訂正{{ e.corrected_count }}</span>{% endif %}</span>
+        <span style="flex:1 1 300px;min-width:0;font-family:var(--font-serif);font-weight:700;font-size:13.5px;line-height:1.6;color:#33312c">{% if leadp %}{{ leadp.title }}{% endif %}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+
+  <!-- フッター -->
+  <div style="margin-top:36px;border-top:2px solid #1c1b18;padding-top:12px;font-size:11px;color:#55524b;line-height:1.8">
+    号ページは発行時のスナップショットから描画され、発行後のデータ変更の影響を受けません。<a href="{{ '/about/' | relative_url }}" style="font-weight:700">編集方針と免責 →</a>
+  </div>
+</div>

@@ -1,24 +1,18 @@
-/* アイマスNEWS(α) デザイントークン(REQUIREMENTS.md 2.4)
-   TODO(Step 2): base-design/ の確定モックからスタイル全体を移植する */
+/* アイマスNEWS(α) — base-design/ 確定モック由来のデザイントークンと基盤スタイル */
 :root {
-  --paper: #fbfaf7;      /* 地 */
-  --ink: #1c1b18;        /* 墨 */
+  --paper: #fbfaf7;
+  --ink: #1c1b18;
   --ink-soft: #55524b;
   --ink-faint: #8a857a;
+  --ink-dim: #6f6a60;
   --rule: #dedad0;
   --rule-soft: #e8e4d9;
   --rule-dot: #d9d4c8;
-  --correction: #b0483f; /* 訂正 */
-  --brand-general: #6b7280;
-  --brand-765: #e94e6f;
-  --brand-cg: #2681c8;
-  --brand-million: #f3c012;
-  --brand-shiny: #8fb3de;
-  --brand-sidem: #10ae87;
-  --brand-gaku: #e8a824;
-  --brand-dsva: #b06fc9;
-  --brand-joint: #7d6f5c;
-  --brand-other: #9aa0a6;
+  --rule-pale: #c9c4b8;
+  --correction: #b0483f;
+  --correction-bg: #faf1ef;
+  --up: #b0483f;
+  --down: #3f6ab0;
   --font-serif: 'Shippori Mincho B1', serif;
   --font-sans: 'Zen Kaku Gothic New', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
@@ -32,3 +26,29 @@ body {
 }
 a { color: var(--ink); text-decoration: none; }
 a:hover { color: var(--ink-soft); }
+
+/* レスポンシブ3モード(モックは JS 判定だった。静的化のため CSS メディアクエリで出し分け) */
+.only-sp, .only-tb, .only-pc { display: none !important; }
+@media (max-width: 599px)                     { .only-sp { display: block !important; } }
+@media (min-width: 600px) and (max-width: 1023px) { .only-tb { display: block !important; } }
+@media (min-width: 1024px)                    { .only-pc { display: block !important; } }
+
+/* SP ダイジェスト全画面オーバーレイ */
+#digest-overlay { display: none; }
+#digest-overlay.open { display: flex; }
+
+/* 推しフィルタで非表示になった要素 */
+.brand-hidden { display: none !important; }
+
+/* 記事本文(PH 記事.dc.html の本文スタイル) */
+.article-body { font-size: 14.5px; line-height: 2.1; color: #2e2c27; }
+.article-body p { margin: 0 0 22px; }
+.article-body h2 {
+  font-family: var(--font-serif); font-weight: 700; font-size: 18px;
+  letter-spacing: .04em; border-bottom: 1px solid var(--rule);
+  padding-bottom: 8px; margin: 22px 0;
+}
+
+/* 社説本文(PH 社説.dc.html) */
+.editorial-body { font-size: 15px; line-height: 2.3; color: #2e2c27; text-align: justify; }
+.editorial-body p { margin: 0 0 26px; }

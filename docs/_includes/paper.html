@@ -1,0 +1,294 @@
+{% comment %} 紙面(トップ/号ページ共用)。include.ed = 号スナップショット文書。base-design/PH トップ.dc.html 移植 {% endcomment %}
+{% assign ed = include.ed %}
+{% assign date_s = ed.date | date: "%Y-%m-%d" %}
+{% assign date_dot = ed.date | date: "%Y.%m.%d" %}
+{% assign date_jp = ed.date | date: "%Y年%-m月%-d日" %}
+{% capture no4 %}0000{{ ed.number }}{% endcapture %}{% assign no4 = no4 | slice: -4, 4 %}
+{% assign eposts = "" | split: "" %}
+{% assign ranks = "lead,large,medium,small" | split: "," %}
+{% for r in ranks %}{% for p in site.posts %}{% assign p_ed = p.edition | date: "%Y-%m-%d" %}{% if p_ed == date_s and p.rank == r %}{% assign eposts = eposts | push: p %}{% endif %}{% endfor %}{% endfor %}
+{% assign lead = eposts | where: "rank", "lead" | first %}
+{% assign larges = eposts | where: "rank", "large" %}
+{% assign mediums = eposts | where: "rank", "medium" %}
+{% assign smalls = eposts | where: "rank", "small" %}
+{% assign editorial = site.editorials | where_exp: "e", "e.edition == nil" | first %}
+{% for e in site.editorials %}{% assign e_ed = e.edition | date: "%Y-%m-%d" %}{% if e_ed == date_s %}{% assign editorial = e %}{% endif %}{% endfor %}
+
+<div style="max-width:1200px;margin:0 auto;padding:0 20px 48px;box-sizing:border-box">
+
+  <!-- ========== ヘッダー ========== -->
+  <div style="padding-top:16px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--font-mono);font-size:10px;color:#8a857a;letter-spacing:.06em">
+    <span>NO.{{ no4 }} — {{ date_dot }} {{ ed.weekday }} 06:00 JST</span>
+    <span>非公式ファンメディア / AI編集部発行・AI校閲</span>
+  </div>
+
+  <div style="margin-top:14px;display:flex;align-items:flex-end;justify-content:center;gap:10px">
+    <a href="{{ '/' | relative_url }}" style="display:flex;align-items:flex-end;gap:10px">
+      <span style="font-family:var(--font-serif);font-weight:800;font-size:clamp(34px,6vw,52px);line-height:1;letter-spacing:.06em">アイマスNEWS</span>
+      <span style="font-family:var(--font-mono);font-size:clamp(13px,2vw,18px);font-weight:600;color:#8a857a;padding-bottom:3px">(α)</span>
+    </a>
+  </div>
+  <div style="margin-top:8px;text-align:center;font-size:11px;letter-spacing:.08em;color:#55524b">{{ date_jp }} {{ ed.weekday }}曜日 ・ 第{{ ed.number }}号 ・ 全{{ ed.pages }}面 ── AI編集部が毎日自動発行する非公式ファン新聞です</div>
+  <div style="margin-top:12px;height:6px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+
+  <!-- ========== 面ナビ / 推しフィルタ ========== -->
+  <div style="margin-top:10px;display:flex;gap:2px 6px;flex-wrap:wrap;justify-content:center">
+    <span data-chip="all" data-color="#1c1b18" style="cursor:pointer;padding:6px 8px 4px;font-size:11px;font-weight:700;color:#1c1b18;border-bottom:3px solid #1c1b18;letter-spacing:.02em;white-space:nowrap">すべて</span>
+    {% for b in site.data.brands %}
+    <span data-chip="{{ b.id }}" data-color="{{ b.color }}" style="cursor:pointer;padding:6px 8px 4px;font-size:11px;font-weight:500;color:#8a857a;border-bottom:3px solid transparent;letter-spacing:.02em;white-space:nowrap">{{ b.label }}</span>
+    {% endfor %}
+  </div>
+  <div style="margin-top:8px;border-bottom:1px solid #dedad0"></div>
+
+  <!-- ========== SP: 格納ダイジェストバー ========== -->
+  <div class="only-sp">
+    <div id="digest-open" style="margin-top:14px;border:1px solid #1c1b18;background:#fff;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer">
+      <div style="display:flex;align-items:baseline;gap:10px;flex-wrap:wrap">
+        <span style="font-family:var(--font-serif);font-weight:700;font-size:13.5px;letter-spacing:.1em">本日の紙面</span>
+        <span style="font-size:11px;color:#55524b">{% for g in ed.digest %}{{ g.label }}{{ g.rows | size }}{% unless forloop.last %} ・ {% endunless %}{% endfor %}</span>
+      </div>
+      <span style="font-family:var(--font-mono);font-size:10px;color:#6f6a60;flex:none">一覧 ▾</span>
+    </div>
+  </div>
+
+  <!-- ========== TB: ダイジェストを紙面冒頭に常設 ========== -->
+  <div class="only-tb">
+    <div style="margin-top:16px;border:1px solid #1c1b18;background:#fff;padding:16px 18px 14px">
+      <div style="display:flex;align-items:baseline;justify-content:space-between">
+        <span style="font-family:var(--font-serif);font-weight:800;font-size:16px;letter-spacing:.1em">本日の紙面</span>
+        <span style="font-family:var(--font-mono);font-size:9px;color:#8a857a">DIGEST — 紙面の目次</span>
+      </div>
+      <div style="margin-top:9px;border-top:2px solid #1c1b18"></div>
+      <div style="margin-top:4px;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:4px 26px">
+        {% for g in ed.digest %}
+        {% assign gink = "#77726a" %}{% if g.label == "本日" or g.label == "明日" %}{% assign gink = "#1c1b18" %}{% endif %}
+        <div style="margin-top:10px" data-digest-group>
+          <div style="font-family:var(--font-serif);font-weight:700;font-size:11.5px;letter-spacing:.16em;color:{{ gink }};border-bottom:1px solid #e8e4d9;padding-bottom:3px">{{ g.label }} <span style="font-family:var(--font-mono);font-size:8.5px;color:#8a857a;letter-spacing:0" data-group-count>{{ g.rows | size }}</span></div>
+          <div style="margin-top:7px;display:flex;flex-direction:column;gap:8px">
+            {% for r in g.rows %}
+            {% assign bdef = site.data.brands | where: "id", r.brand | first %}
+            <div style="display:flex;gap:9px;align-items:flex-start" data-brand="{{ r.brand }}">
+              <span style="flex:none;width:17px;height:17px;border:1px solid {{ gink }};color:{{ gink }};font-family:var(--font-serif);font-size:10px;display:flex;align-items:center;justify-content:center;margin-top:2px">{{ r.k }}</span>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:12.5px;line-height:1.55;font-weight:700;color:{{ gink }}">{% if r.slug %}<a href="{{ '/articles/' | append: r.slug | append: '/' | relative_url }}" style="color:{{ gink }}">{{ r.t }}</a>{% else %}{{ r.t }}{% endif %}</div>
+                <div style="font-size:11px;line-height:1.6;color:#8a857a">{{ r.d }}</div>
+              </div>
+              <span style="flex:none;width:7px;height:7px;background:{{ bdef.color }};margin-top:6px"></span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 本文 2カラム(SP/TBは縦積み) ========== -->
+  <div style="margin-top:18px;display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start">
+
+    <!-- ---- 主コラム ---- -->
+    <div style="flex:10 1 560px;min-width:0">
+
+      {% if lead %}
+      {% assign bdef = site.data.brands | where: "id", lead.brand | first %}
+      <div style="padding-bottom:20px;border-bottom:2px solid #1c1b18" data-brand="{{ lead.brand }}">
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          {% include src-badge.html src=lead.src size="lead" %}
+          <span style="font-size:11px;font-weight:700;border-bottom:3px solid {{ bdef.color }};padding-bottom:1px">{{ bdef.label }}</span>
+        </div>
+        <a href="{{ lead.url | relative_url }}"><div style="margin-top:12px;font-family:var(--font-serif);font-weight:800;font-size:clamp(22px,3.4vw,32px);line-height:1.55;letter-spacing:.01em">{{ lead.title }}</div></a>
+        <div style="margin-top:10px;font-size:14px;line-height:2;color:#44413a;max-width:640px">{{ lead.lede }}</div>
+        <div style="margin-top:10px;font-family:var(--font-mono);font-size:10px;color:#8a857a">出典: {{ lead.sources[0].label | truncate: 60 }}</div>
+      </div>
+      {% endif %}
+
+      <!-- large カード 2列 -->
+      <div style="margin-top:20px;display:flex;flex-wrap:wrap;gap:22px">
+        {% for a in larges %}
+        {% assign bdef = site.data.brands | where: "id", a.brand | first %}
+        <div style="flex:1 1 250px;min-width:0;padding-bottom:16px;border-bottom:1px solid #dedad0" data-brand="{{ a.brand }}">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+            {% include src-badge.html src=a.src %}
+            <span style="font-size:10.5px;font-weight:700;border-bottom:3px solid {{ bdef.color }};padding-bottom:1px">{{ bdef.label }}</span>
+          </div>
+          <a href="{{ a.url | relative_url }}"><div style="margin-top:9px;font-family:var(--font-serif);font-weight:700;font-size:18px;line-height:1.6">{{ a.title }}</div></a>
+          <div style="margin-top:7px;font-size:12.5px;line-height:1.9;color:#55524b">{{ a.lede | truncate: 80 }}</div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- medium リスト -->
+      <div style="margin-top:4px;display:flex;flex-direction:column">
+        {% for a in mediums %}
+        {% assign bdef = site.data.brands | where: "id", a.brand | first %}
+        <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid #e8e4d9" data-brand="{{ a.brand }}">
+          {% include src-badge.html src=a.src %}
+          <div style="flex:1;min-width:0">
+            <a href="{{ a.url | relative_url }}"><div style="font-family:var(--font-serif);font-weight:700;font-size:15.5px;line-height:1.65">{{ a.title }}</div></a>
+          </div>
+          <span style="flex:none;font-size:10px;font-weight:700;border-bottom:3px solid {{ bdef.color }};padding-bottom:1px;margin-top:5px">{{ bdef.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- small 2列詰め -->
+      <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:0 26px">
+        {% for a in smalls %}
+        {% assign bdef = site.data.brands | where: "id", a.brand | first %}
+        <div style="flex:1 1 250px;min-width:0;display:flex;gap:9px;align-items:baseline;padding:8px 0;border-bottom:1px dotted #d9d4c8" data-brand="{{ a.brand }}">
+          <span style="flex:none;width:8px;height:8px;background:{{ bdef.color }};align-self:center"></span>
+          <a href="{{ a.url | relative_url }}" style="flex:1;font-size:12.5px;line-height:1.7;font-weight:500">{{ a.title }}</a>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- 社説 -->
+      {% if editorial and editorial.edition %}
+      <div style="margin-top:24px;background:#fff;border:1px solid #dedad0;padding:18px 20px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <span style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.16em">社説</span>
+          <span style="font-family:var(--font-mono);font-size:9px;color:#8a857a">EDITORIAL — 毎日1本</span>
+        </div>
+        <div style="margin-top:8px;font-family:var(--font-serif);font-weight:700;font-size:18px;line-height:1.6">{{ editorial.title }}</div>
+        <div style="margin-top:6px;font-size:12.5px;line-height:2;color:#55524b">{{ editorial.excerpt }}</div>
+        <div style="margin-top:10px;font-size:11.5px;font-weight:700;letter-spacing:.06em"><a href="{{ editorial.url | relative_url }}">全文を読む(社説面) →</a></div>
+      </div>
+      {% endif %}
+
+    </div>
+
+    <!-- ---- 右カラム(PC) / 後続ブロック(SP・TB) ---- -->
+    <div style="flex:1 1 280px;max-width:100%;display:flex;flex-direction:column;gap:22px">
+
+      <!-- ダイジェスト(PCのみ常設) -->
+      <div class="only-pc">
+        <div style="border:1px solid #1c1b18;background:#fff;padding:16px 16px 12px">
+          <div style="display:flex;align-items:baseline;justify-content:space-between">
+            <span style="font-family:var(--font-serif);font-weight:800;font-size:15px;letter-spacing:.1em">本日の紙面</span>
+            <span style="font-family:var(--font-mono);font-size:9px;color:#8a857a">DIGEST</span>
+          </div>
+          <div style="margin-top:8px;border-top:2px solid #1c1b18"></div>
+          {% for g in ed.digest %}
+          {% assign gink = "#77726a" %}{% if g.label == "本日" or g.label == "明日" %}{% assign gink = "#1c1b18" %}{% endif %}
+          <div style="margin-top:11px" data-digest-group>
+            <div style="font-family:var(--font-serif);font-weight:700;font-size:11px;letter-spacing:.16em;color:{{ gink }};border-bottom:1px solid #e8e4d9;padding-bottom:3px">{{ g.label }} <span style="font-family:var(--font-mono);font-size:8.5px;color:#8a857a;letter-spacing:0" data-group-count>{{ g.rows | size }}</span></div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:7px">
+              {% for r in g.rows %}
+              {% assign bdef = site.data.brands | where: "id", r.brand | first %}
+              <div style="display:flex;gap:8px;align-items:flex-start" data-brand="{{ r.brand }}">
+                <span style="flex:none;width:16px;height:16px;border:1px solid {{ gink }};color:{{ gink }};font-family:var(--font-serif);font-size:9px;display:flex;align-items:center;justify-content:center;margin-top:2px">{{ r.k }}</span>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:11.5px;line-height:1.5;font-weight:700;color:{{ gink }}">{% if r.slug %}<a href="{{ '/articles/' | append: r.slug | append: '/' | relative_url }}" style="color:{{ gink }}">{{ r.t }}</a>{% else %}{{ r.t }}{% endif %}</div>
+                  <div style="font-size:10px;line-height:1.55;color:#8a857a">{{ r.d }}</div>
+                </div>
+                <span style="flex:none;width:6px;height:6px;background:{{ bdef.color }};margin-top:5px"></span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- 24hランキング -->
+      <div style="border-top:2px solid #1c1b18;padding-top:10px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between">
+          <span style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.12em">24時間ランキング</span>
+          <span style="font-family:var(--font-mono);font-size:9px;color:#8a857a">前日比</span>
+        </div>
+        <div style="margin-top:9px;display:flex;flex-direction:column;gap:7px">
+          {% for r in ed.ranking %}
+          {% assign bdef = site.data.brands | where: "id", r.brand | first %}
+          <div style="display:flex;gap:9px;align-items:center;font-size:12.5px">
+            <span style="flex:none;width:16px;font-family:var(--font-mono);font-size:11px;color:#8a857a">{{ r.n }}</span>
+            <span style="flex:none;width:8px;height:8px;background:{{ bdef.color }}"></span>
+            <span style="flex:1;min-width:0;font-weight:500">{{ r.name }}</span>
+            {% case r.delta %}
+            {% when "up" %}<span style="flex:none;font-size:10px;color:#b0483f">▲</span>
+            {% when "down" %}<span style="flex:none;font-size:10px;color:#3f6ab0">▼</span>
+            {% when "stay" %}<span style="flex:none;font-size:10px;color:#8a857a">─</span>
+            {% else %}<span style="flex:none;font-family:var(--font-mono);font-size:9px;color:#8a857a">NEW</span>
+            {% endcase %}
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- 誕生日 -->
+      <div style="border-top:2px solid #1c1b18;padding-top:10px">
+        <div style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.12em">きょうの誕生日</div>
+        {% if ed.birthdays and ed.birthdays.size > 0 %}
+        {% for b in ed.birthdays %}
+        {% assign bdef = site.data.brands | where: "id", b.brand | first %}
+        <div style="margin-top:8px;display:flex;gap:4px 9px;align-items:center;font-size:12.5px;flex-wrap:wrap">
+          <span style="flex:none;width:8px;height:8px;background:{{ bdef.color }}"></span>
+          <span style="font-weight:700;white-space:nowrap">{{ b.name }}</span>
+          <span style="font-size:10.5px;color:#55524b">{{ bdef.label }}{% if b.note %} ── {{ b.note }}{% endif %}</span>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div style="margin-top:8px;font-size:11.5px;color:#8a857a">きょうが誕生日のアイドルはいません</div>
+        {% endif %}
+      </div>
+
+      <!-- バックナンバー -->
+      {% assign backs = site.editions | sort: "date" | reverse %}
+      <div style="border-top:2px solid #1c1b18;padding-top:10px">
+        <div style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.12em">バックナンバー</div>
+        <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;font-size:12px">
+          {% assign shown = 0 %}
+          {% for e in backs %}
+          {% assign e_date = e.date | date: "%Y-%m-%d" %}
+          {% if e_date != date_s and shown < 3 %}
+          {% assign shown = shown | plus: 1 %}
+          <a href="{{ e.url | relative_url }}" style="display:flex;justify-content:space-between;gap:8px"><span>第{{ e.number }}号 {{ e.date | date: "%-m月%-d日" }}({{ e.weekday }})</span><span style="font-family:var(--font-mono);font-size:10px;color:#8a857a">{{ e.article_count }}件</span></a>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <div style="margin-top:9px;font-size:11.5px;font-weight:700"><a href="{{ '/archive/' | relative_url }}">アーカイブ(全{{ site.editions | size }}号) →</a></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========== フッター ========== -->
+  <div style="margin-top:36px;border-top:2px solid #1c1b18;padding-top:14px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:11px;color:#55524b;line-height:1.8">
+    <span>アイマスNEWS(α)はAIが執筆・校閲する非公式ファンメディアです。記事は削除せず、誤りは「おわびと訂正」で残します。<a href="{{ '/about/' | relative_url }}" style="font-weight:700">編集方針と免責 →</a></span>
+    <span style="font-family:var(--font-mono);font-size:10px;color:#8a857a">© {{ ed.date | date: "%Y" }} アイマスNEWS(α) — UNOFFICIAL</span>
+  </div>
+</div>
+
+<!-- ========== SP: ダイジェスト全画面 ========== -->
+<div id="digest-overlay" style="position:fixed;inset:0;background:#fbfaf7;z-index:50;flex-direction:column;padding:20px 22px 16px;box-sizing:border-box;overflow:hidden">
+  <div style="display:flex;align-items:baseline;justify-content:space-between">
+    <div style="display:flex;align-items:baseline;gap:10px">
+      <span style="font-family:var(--font-serif);font-weight:800;font-size:19px;letter-spacing:.1em">本日の紙面</span>
+      <span style="font-family:var(--font-mono);font-size:9.5px;color:#8a857a">NO.{{ no4 }} / {{ ed.date | date: "%-m.%-d" }} {{ ed.weekday }}</span>
+    </div>
+    <span id="digest-close" style="cursor:pointer;font-size:15px;line-height:1;padding:6px 9px;border:1px solid #1c1b18">✕</span>
+  </div>
+  <div style="margin-top:10px;height:5px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+  <div style="margin-top:6px;flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-evenly">
+    {% for g in ed.digest %}
+    {% assign gink = "#77726a" %}{% if g.label == "本日" or g.label == "明日" %}{% assign gink = "#1c1b18" %}{% endif %}
+    <div data-digest-group>
+      <div style="font-family:var(--font-serif);font-weight:700;font-size:12px;letter-spacing:.16em;color:{{ gink }};border-bottom:1px solid #dedad0;padding-bottom:4px">{{ g.label }} <span style="font-family:var(--font-mono);font-size:9px;color:#8a857a;letter-spacing:0" data-group-count>{{ g.rows | size }}</span></div>
+      <div style="margin-top:7px;display:flex;flex-direction:column;gap:6px">
+        {% for r in g.rows %}
+        {% assign bdef = site.data.brands | where: "id", r.brand | first %}
+        <div style="display:flex;gap:9px;align-items:center;font-size:12.5px;line-height:1.5;color:{{ gink }}" data-brand="{{ r.brand }}">
+          <span style="flex:none;width:17px;height:17px;border:1px solid {{ gink }};font-family:var(--font-serif);font-size:10px;display:flex;align-items:center;justify-content:center">{{ r.k }}</span>
+          {% if r.slug %}<a href="{{ '/articles/' | append: r.slug | append: '/' | relative_url }}" style="flex:1;min-width:0;color:{{ gink }}">{{ r.t }}</a>{% else %}<span style="flex:1;min-width:0">{{ r.t }}</span>{% endif %}
+          <span style="flex:none;width:7px;height:7px;background:{{ bdef.color }}"></span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div style="border-top:1px solid #dedad0;padding-top:9px;display:flex;justify-content:space-between;font-size:10px;color:#8a857a">
+    <span>各行タップで記事へ</span>
+    <span style="font-family:var(--font-mono);font-size:9px">1 SCREEN / NO SCROLL</span>
+  </div>
+</div>
+<script src="{{ '/assets/js/paper.js' | relative_url }}"></script>

@@ -1,10 +1,74 @@
 ---
 layout: default
 ---
-<!-- TODO(Step 2): base-design/PH 社説.dc.html を移植する。以下は仮表示 -->
-<main style="max-width:640px;margin:0 auto;padding:20px">
-  <p><a href="{{ '/' | relative_url }}">アイマスNEWS(α)</a></p>
-  <p>社説 — {{ page.edition }}</p>
-  <h1>{{ page.title }}</h1>
-  {{ content }}
-</main>
+{% assign date_s = page.edition | date: "%Y-%m-%d" %}
+{% assign ed = nil %}
+{% for e in site.editions %}{% assign e_date = e.date | date: "%Y-%m-%d" %}{% if e_date == date_s %}{% assign ed = e %}{% endif %}{% endfor %}
+{% capture no4 %}0000{{ ed.number }}{% endcapture %}{% assign no4 = no4 | slice: -4, 4 %}
+
+<div style="max-width:640px;margin:0 auto;padding:0 20px 48px;box-sizing:border-box">
+
+  <!-- 小型ヘッダー -->
+  <div style="padding-top:14px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <a href="{{ '/' | relative_url }}" style="display:flex;align-items:baseline;gap:6px">
+      <span style="font-family:var(--font-serif);font-weight:800;font-size:20px;letter-spacing:.06em">アイマスNEWS</span>
+      <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:#8a857a">(α)</span>
+    </a>
+    <span style="font-family:var(--font-mono);font-size:10px;color:#8a857a;letter-spacing:.06em">NO.{{ no4 }} — {{ page.edition | date: "%Y.%m.%d" }} {{ ed.weekday }}</span>
+  </div>
+  <div style="margin-top:10px;height:5px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+
+  <!-- パンくず -->
+  <div style="margin-top:12px;display:flex;gap:8px;align-items:center;font-size:11px;color:#55524b">
+    <a href="{{ ed.url | relative_url }}">第{{ ed.number }}号</a>
+    <span style="color:#c9c4b8">/</span>
+    <span style="font-weight:700;border-bottom:3px solid #6b7280;padding-bottom:1px">社説</span>
+  </div>
+
+  <!-- 社説ヘッダー -->
+  <div style="margin-top:26px;text-align:center">
+    <div style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.5em;color:#55524b;padding-left:.5em">社説</div>
+    <h1 style="margin:14px 0 0;font-family:var(--font-serif);font-weight:800;font-size:clamp(24px,4.6vw,32px);line-height:1.7;letter-spacing:.04em">{{ page.title }}</h1>
+    <div style="margin-top:12px;font-family:var(--font-mono);font-size:10px;color:#8a857a">{{ page.edition | date: "%Y年%-m月%-d日" }} ・ 第{{ ed.number }}号 ・ 執筆 AI編集部</div>
+    <div style="margin:20px auto 0;width:44px;border-top:2px solid #1c1b18"></div>
+  </div>
+
+  <!-- 本文 -->
+  <div class="editorial-body" style="margin-top:26px">{{ content }}</div>
+
+  <!-- 結び -->
+  <div style="margin-top:30px;text-align:right;font-family:var(--font-serif);font-size:13px;color:#55524b;letter-spacing:.1em">アイマスNEWS(α)編集部・AI</div>
+
+  <!-- 過去の社説 -->
+  {% assign pasts = site.editorials | sort: "edition" | reverse %}
+  {% assign shown = 0 %}
+  <div style="margin-top:36px;border-top:2px solid #1c1b18;padding-top:12px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between">
+      <span style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.12em">これまでの社説</span>
+      <span style="font-family:var(--font-mono);font-size:9px;color:#8a857a">毎日1本</span>
+    </div>
+    <div style="margin-top:8px;display:flex;flex-direction:column">
+      {% for e in pasts %}
+      {% if e.url != page.url and shown < 5 %}
+      {% assign shown = shown | plus: 1 %}
+      <a href="{{ e.url | relative_url }}" style="display:flex;gap:12px;align-items:baseline;padding:11px 0;border-bottom:1px dotted #d9d4c8">
+        <span style="flex:none;font-family:var(--font-mono);font-size:10px;color:#8a857a">{{ e.edition | date: "%-m.%-d" }}</span>
+        <span style="flex:1;font-family:var(--font-serif);font-weight:700;font-size:14px;line-height:1.7">{{ e.title }}</span>
+      </a>
+      {% endif %}
+      {% endfor %}
+      {% if shown == 0 %}<div style="padding:11px 0;font-size:11.5px;color:#8a857a">まだありません</div>{% endif %}
+    </div>
+  </div>
+
+  <!-- 号ナビ -->
+  <div style="margin-top:24px;display:flex;justify-content:space-between;gap:12px;font-size:12px;font-weight:700">
+    <a href="{{ ed.url | relative_url }}" style="flex:1;border:1px solid #dedad0;padding:10px 14px;background:#fff">← 第{{ ed.number }}号の紙面へ戻る</a>
+    <a href="{{ '/archive/' | relative_url }}" style="flex:none;border:1px solid #dedad0;padding:10px 14px;background:#fff">バックナンバー</a>
+  </div>
+
+  <!-- フッター -->
+  <div style="margin-top:32px;border-top:2px solid #1c1b18;padding-top:12px;font-size:11px;color:#55524b;line-height:1.8">
+    アイマスNEWS(α)はAIが執筆・校閲する非公式ファンメディアです。<a href="{{ '/about/' | relative_url }}" style="font-weight:700">編集方針と免責 →</a>
+  </div>
+</div>

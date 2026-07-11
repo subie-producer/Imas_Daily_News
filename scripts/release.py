@@ -87,7 +87,7 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true", help="push せず手順の検証のみ")
     args = ap.parse_args()
     date = args.date or datetime.datetime.now(JST).strftime("%Y-%m-%d")
-    nxt = (datetime.date.fromisoformat(date) + datetime.timedelta(days=1)).isoformat()
+    nxt = "edition/" + (datetime.date.fromisoformat(date) + datetime.timedelta(days=1)).isoformat()
     branch = f"edition/{date}"
     dry = args.dry_run
 
@@ -136,7 +136,7 @@ def main() -> int:
 
     label = f"第{number}号" + ("(試験)" if number == 0 else "")
     if dry:
-        notify(f"[dry-run] {date}: {label}({count}本)を squash merge → push → {branch} 削除 → edition/{nxt} 作成、の手順を確認。実行は行わない")
+        notify(f"[dry-run] {date}: {label}({count}本)を squash merge → push → {branch} 削除 → {nxt} 作成、の手順を確認。実行は行わない")
         git("checkout", "main")
         return 0
 
@@ -156,7 +156,7 @@ def main() -> int:
         git("push", "origin", "--delete", branch, check=False)
     ensure_next_branch(nxt, dry=False)
 
-    notify(f"{date}: {label}({count}本)を発行しました。翌日ブランチ edition/{nxt} 準備済み")
+    notify(f"{date}: {label}({count}本)を発行しました。翌日ブランチ {nxt} 準備済み")
     return 0
 
 

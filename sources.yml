@@ -9,6 +9,7 @@
   enabled: true
 - id: columbia-imas
   brand: general
+  source_type: 準公式
   type: portal          # curl は遮断されるため Selenium で取得
   url: https://columbia.jp/idolmaster/
   base: https://columbia.jp/idolmaster

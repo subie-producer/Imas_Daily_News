@@ -3,18 +3,89 @@
   "items": {
     "type": "object",
     "properties": {
-      "title": { "type": "string", "description": "短い見出し" },
-      "brand": { "type": "string", "enum": ["general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"] },
-      "kind": { "type": "string", "enum": ["official", "media", "fan", "trend"], "description": "official=公式発表/media=報道/fan=ファン発/trend=現象" },
-      "url": { "type": "string", "description": "一次ソースまたは代表ポストのURL(実在するもののみ)" },
-      "event_date": { "type": "string", "description": "出来事・開始日 YYYY-MM-DD(不明なら空文字)" },
-      "deadline": { "type": "string", "description": "締切・終了日 YYYY-MM-DD(あれば。続報キューに使う)" },
-      "facts": { "type": "array", "items": { "type": "string" }, "description": "確認できた事実。日付・期限・場所・価格・数値を必ず含める" },
-      "dedup_key": { "type": "string", "description": "話題の正規化ID(英小文字とハイフン。例: shiny-msp-goods-presale)" },
-      "engagement": { "type": "string", "enum": ["高", "中", "低"], "description": "反応の大きさ" },
-      "mentioned_idols": { "type": "array", "items": { "type": "string" }, "description": "言及されたアイドルのフルネーム" }
+      "title": {
+        "type": "string",
+        "description": "短い見出し"
+      },
+      "brand": {
+        "type": "string",
+        "enum": [
+          "general",
+          "765",
+          "cg",
+          "million",
+          "shiny",
+          "sidem",
+          "gaku",
+          "dsva",
+          "joint",
+          "other"
+        ]
+      },
+      "kind": {
+        "type": "string",
+        "enum": [
+          "official",
+          "semi",
+          "party",
+          "media",
+          "fan",
+          "trend"
+        ],
+        "description": "official=アイマス公式のみ/semi=公式レーベル・公式ストア等/party=その他の当事者/media=報道/fan=ファン発/trend=現象"
+      },
+      "url": {
+        "type": "string",
+        "description": "一次ソースまたは代表ポストのURL(実在するもののみ)"
+      },
+      "event_date": {
+        "type": "string",
+        "description": "出来事・開始日 YYYY-MM-DD(不明なら空文字)"
+      },
+      "deadline": {
+        "type": "string",
+        "description": "締切・終了日 YYYY-MM-DD(あれば。続報キューに使う)"
+      },
+      "facts": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "確認できた事実。日付・期限・場所・価格・数値を必ず含める"
+      },
+      "dedup_key": {
+        "type": "string",
+        "description": "話題の正規化ID(英小文字とハイフン。例: shiny-msp-goods-presale)"
+      },
+      "engagement": {
+        "type": "string",
+        "enum": [
+          "高",
+          "中",
+          "低"
+        ],
+        "description": "反応の大きさ"
+      },
+      "mentioned_idols": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "言及されたアイドルのフルネーム"
+      }
     },
-    "required": ["title", "brand", "kind", "url", "facts", "dedup_key", "engagement", "event_date", "deadline", "mentioned_idols"],
+    "required": [
+      "title",
+      "brand",
+      "kind",
+      "url",
+      "facts",
+      "dedup_key",
+      "engagement",
+      "event_date",
+      "deadline",
+      "mentioned_idols"
+    ],
     "additionalProperties": false
   }
 }

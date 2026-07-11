@@ -4,7 +4,18 @@
   "title": "記事 frontmatter (docs/_posts/YYYY-MM-DD-<slug>.md)",
   "description": "REQUIREMENTS.md 3.1 のデータ契約。字数の目安(見出し45字・lede 60〜100字)は lint が警告として扱うためスキーマでは強制しない。",
   "type": "object",
-  "required": ["slug", "edition", "brand", "src", "rank", "title", "lede", "sources", "corrected", "corrections"],
+  "required": [
+    "slug",
+    "edition",
+    "brand",
+    "src",
+    "rank",
+    "title",
+    "lede",
+    "sources",
+    "corrected",
+    "corrections"
+  ],
   "additionalProperties": false,
   "properties": {
     "slug": {
@@ -19,48 +30,122 @@
       "description": "所属号(=発行日)。ファイル名の日付部と一致すること(lint 検査)"
     },
     "brand": {
-      "enum": ["general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"]
+      "enum": [
+        "general",
+        "765",
+        "cg",
+        "million",
+        "shiny",
+        "sidem",
+        "gaku",
+        "dsva",
+        "joint",
+        "other"
+      ]
     },
     "src": {
-      "enum": ["公式", "報道", "ファン", "もちより", "未確認"]
+      "enum": [
+        "公式",
+        "準公式",
+        "当事者",
+        "報道",
+        "ファン",
+        "もちより",
+        "未確認"
+      ]
     },
     "rank": {
-      "enum": ["lead", "large", "medium", "small"],
+      "enum": [
+        "lead",
+        "large",
+        "medium",
+        "small"
+      ],
       "description": "lead は号内で1本のみ(lint 検査)"
     },
-    "title": { "type": "string", "minLength": 1 },
-    "lede": { "type": "string", "minLength": 1 },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "lede": {
+      "type": "string",
+      "minLength": 1
+    },
     "tags": {
       "type": "array",
-      "items": { "type": "string", "minLength": 1 }
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
     },
     "sources": {
       "type": "array",
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["type", "label", "url"],
+        "required": [
+          "type",
+          "label",
+          "url"
+        ],
         "additionalProperties": false,
         "properties": {
-          "type": { "enum": ["公式", "報道", "ファン", "もちより", "未確認"] },
-          "label": { "type": "string", "minLength": 1 },
-          "url": { "type": "string", "pattern": "^https?://" }
+          "type": {
+            "enum": [
+              "公式",
+              "準公式",
+              "当事者",
+              "報道",
+              "ファン",
+              "もちより",
+              "未確認"
+            ]
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1
+          },
+          "url": {
+            "type": "string",
+            "pattern": "^https?://"
+          }
         }
       }
     },
-    "corrected": { "type": "boolean" },
+    "corrected": {
+      "type": "boolean"
+    },
     "corrections": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["at", "by", "initial", "corrected_to"],
+        "required": [
+          "at",
+          "by",
+          "initial",
+          "corrected_to"
+        ],
         "additionalProperties": false,
         "properties": {
-          "at": { "type": "string", "description": "訂正日時(ISO 8601, JST)" },
-          "by": { "type": "string", "description": "訂正の契機(読者指摘・校閲AIの再指摘 等)" },
-          "initial": { "type": "string", "description": "初出の表記" },
-          "corrected_to": { "type": "string", "description": "訂正後の表記" },
-          "note": { "type": "string" }
+          "at": {
+            "type": "string",
+            "description": "訂正日時(ISO 8601, JST)"
+          },
+          "by": {
+            "type": "string",
+            "description": "訂正の契機(読者指摘・校閲AIの再指摘 等)"
+          },
+          "initial": {
+            "type": "string",
+            "description": "初出の表記"
+          },
+          "corrected_to": {
+            "type": "string",
+            "description": "訂正後の表記"
+          },
+          "note": {
+            "type": "string"
+          }
         }
       }
     },

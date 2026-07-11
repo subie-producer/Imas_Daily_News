@@ -2,13 +2,13 @@
 slug: takatsuki-yayoi-ekicho-furusato
 edition: 2026-07-12
 brand: "765"
-src: 公式
+src: 当事者
 rank: medium
 title: "高槻やよいの「1日駅長グッズセット」、大阪府高槻市のふるさと納税返礼品に"
 lede: "たかつき観光大使を務める高槻やよいの「1日駅長 グッズセット」が、大阪府高槻市のふるさと納税返礼品に登場した。寄付金額は1万8,000円で、7月10日午前10時から受付が始まっている。"
 tags: [765AS, 高槻やよい, ふるさと納税, 高槻市]
 sources:
-  - type: 公式
+  - type: 当事者
     label: "楽天ふるさと納税 高槻市返礼品「たかつき観光大使『高槻やよい』1日駅長 グッズセット」商品ページ(2026年7月10日提供開始)"
     url: https://item.rakuten.co.jp/f272078-takatsuki/aodc009/
 corrected: false

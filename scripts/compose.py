@@ -84,7 +84,7 @@ def build_prompt(date: str, number: int, triggers: list[dict]) -> str:
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集部です。{date}({weekday}曜)号(number: {number})の紙面を、このリポジトリに作成してください。
 
 ## 必読(先に読むこと)
-- REQUIREMENTS.md の 3章(データ契約)と 5章(編集規程。特に規程1・2・8・9・10)
+- REQUIREMENTS.md の 3章(データ契約)と 5章(編集規程。特に規程1・2・8・9・10・11)
 - PIPELINE.md の §3(続報の制度化と記事化判定)
 - schema/*.json(機械可読契約)
 - 既存の号(docs/_posts/・docs/_editions/ の最新日付)を1つ開いて形式を確認
@@ -96,7 +96,7 @@ def build_prompt(date: str, number: int, triggers: list[dict]) -> str:
 {json.dumps(triggers, ensure_ascii=False, indent=2)}
 
 ## 作成物
-1. docs/_posts/{date}-<slug>.md … 記事(標準10〜14本・下限8本・lead は必ず1本。分量規程9)
+1. docs/_posts/{date}-<slug>.md … 記事(標準10〜14本・下限8本・lead は必ず1本。分量規程9・本数規程11)
 2. docs/_editions/{date}.md … 号スナップショット(frontmatter のみ。number: {number}, issued_at: "{date}T06:00:00+09:00"。
    pages/article_count/corrected_count/ranking/birthdays は後で scripts/derive.py が上書きするため仮値でよいが、スキーマは満たすこと。digest はあなたが本気で組む: 4群固定・SP1画面制約)
 3. docs/_editorials/{date}.md … 社説1本(その日の紙面から1題)
@@ -107,6 +107,8 @@ def build_prompt(date: str, number: int, triggers: list[dict]) -> str:
 - candidates の facts に無い事実を書かない(推測・一般知識での補完は禁止)
 - 相対表現(本日/昨日/明日)は発行日 {date} 基準。絶対日付と同一文で矛盾させない
 - X(x.com)の URL は公式アカウントの一次告知のみ出典に使える(バッジ「公式」)
+- バッジ「公式」は**アイマス公式**(公式ポータル・ブランド公式サイト・公式Xアカウント)のみ。レーベル・公式ストア(コロムビア・ランティス・アソビストア等)は「準公式」、その他の主催者・販売元・自治体・コラボ先は「当事者」(REQUIREMENTS 2.5)
+- 内規の文言(「全記事に必須」「毎日1本」等)を紙面に書かない(規程10)
 
 ## 仕上げ
 - `python3 scripts/derive.py --date {date} --write` を実行して機械算出フィールドを確定する

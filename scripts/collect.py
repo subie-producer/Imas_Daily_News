@@ -33,11 +33,11 @@ X_HOSTS = ("x.com", "twitter.com")
 ITEM_FORMAT = (
     "JSON配列だけを出力。各要素は "
     '{"title":短い見出し,"brand":"general|765|cg|million|shiny|sidem|gaku|dsva|joint|other",'
-    '"kind":"official|media|fan|trend","url":"実在するURL","event_date":"YYYY-MM-DD or 空文字",'
+    '"kind":"official|semi|party|media|fan|trend","url":"実在するURL","event_date":"YYYY-MM-DD or 空文字",'
     '"deadline":"締切・終了日 YYYY-MM-DD or 空文字","facts":["確認できた事実(日付・期限・場所・価格を含める)"],'
     '"dedup_key":"英小文字ハイフンの話題ID(毎年ある定例企画は年を含める。例: shiny-summer-pair-2026)",'
     '"engagement":"高|中|低","mentioned_idols":["言及アイドル名"]}。'
-    "実在の情報のみ・憶測や未確認の噂は除外・個人への批判は除外。JSON以外のテキスト禁止。"
+    "kindの定義: official=アイマス公式(公式ポータル・ブランド公式サイト・公式Xアカウント)のみ/semi=公式レーベル・公式ストア等(日本コロムビア・ランティス・アソビストア等)/party=主催者・販売元・自治体・コラボ先などその他の当事者/media=報道/fan=ファン発/trend=現象。実在の情報のみ・憶測や未確認の噂は除外・個人への批判は除外。JSON以外のテキスト禁止。"
 )
 
 
@@ -159,7 +159,7 @@ def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
 
 # ---- 正規化・記録 --------------------------------------------------------------
 
-KIND2SRC = {"official": "公式", "media": "報道", "fan": "ファン", "trend": "ファン"}
+KIND2SRC = {"official": "公式", "semi": "準公式", "party": "当事者", "media": "報道", "fan": "ファン", "trend": "ファン"}
 
 
 def is_x(url: str) -> bool:
@@ -221,7 +221,7 @@ def verify(cands: list[dict]) -> dict:
                 req = urllib.request.Request(c["url"], headers={"User-Agent": UA})
                 with urllib.request.urlopen(req, timeout=15) as res:
                     ok = res.status < 400
-                c["verify"] = "confirmed" if ok and c["source_type"] in ("公式", "報道") else ("unconfirmed" if ok else "failed")
+                c["verify"] = "confirmed" if ok and c["source_type"] in ("公式", "準公式", "当事者", "報道") else ("unconfirmed" if ok else "failed")
         except Exception:
             c["verify"] = "failed"
         counts[c["verify"]] += 1

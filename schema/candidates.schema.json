@@ -6,28 +6,86 @@
   "type": "array",
   "items": {
     "type": "object",
-    "required": ["id", "title", "brand", "source_type", "url", "found_at", "dedup_key", "verify"],
+    "required": [
+      "id",
+      "title",
+      "brand",
+      "source_type",
+      "url",
+      "found_at",
+      "dedup_key",
+      "verify"
+    ],
     "additionalProperties": false,
     "properties": {
-      "id": { "type": "string", "description": "候補の一意 ID" },
-      "title": { "type": "string" },
-      "brand": { "enum": ["general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"] },
-      "source_type": { "enum": ["公式", "報道", "ファン", "もちより", "未確認"] },
-      "url": { "type": "string", "pattern": "^https?://" },
-      "found_at": { "type": "string", "description": "発見日時(ISO 8601, JST)" },
-      "event_date": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
-      "dedup_key": { "type": "string", "description": "重複排除キー" },
+      "id": {
+        "type": "string",
+        "description": "候補の一意 ID"
+      },
+      "title": {
+        "type": "string"
+      },
+      "brand": {
+        "enum": [
+          "general",
+          "765",
+          "cg",
+          "million",
+          "shiny",
+          "sidem",
+          "gaku",
+          "dsva",
+          "joint",
+          "other"
+        ]
+      },
+      "source_type": {
+        "enum": [
+          "公式",
+          "準公式",
+          "当事者",
+          "報道",
+          "ファン",
+          "もちより",
+          "未確認"
+        ]
+      },
+      "url": {
+        "type": "string",
+        "pattern": "^https?://"
+      },
+      "found_at": {
+        "type": "string",
+        "description": "発見日時(ISO 8601, JST)"
+      },
+      "event_date": {
+        "type": "string",
+        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "dedup_key": {
+        "type": "string",
+        "description": "重複排除キー"
+      },
       "facts": {
         "type": "array",
-        "items": { "type": "string" },
+        "items": {
+          "type": "string"
+        },
         "description": "一次ソースから抽出した事実の列挙。記事はここに無い事実を書かない"
       },
       "origin": {
-        "enum": ["watch", "explore"],
+        "enum": [
+          "watch",
+          "explore"
+        ],
         "description": "watch=定点観測(sources.yml) / explore=探索(Web検索・Grok)。ランキングのトレンド分は explore 由来の言及を数える"
       },
       "via": {
-        "enum": ["watch", "claude", "grok"],
+        "enum": [
+          "watch",
+          "claude",
+          "grok"
+        ],
         "description": "収集経路(定点観測 / Claude探索 / Grok X調査)"
       },
       "deadline": {
@@ -36,7 +94,11 @@
         "description": "締切・終了日(続報キューのトリガー予約に使う)"
       },
       "verify": {
-        "enum": ["confirmed", "unconfirmed", "failed"],
+        "enum": [
+          "confirmed",
+          "unconfirmed",
+          "failed"
+        ],
         "description": "verify 層の照合結果。探索由来は登録時 unconfirmed"
       }
     }

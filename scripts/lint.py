@@ -44,7 +44,7 @@ BODY_RANGE = {
     "small": (150, 250),
 }
 RANK_BELOW = {"lead": "large", "large": "medium", "medium": "small", "small": "small"}
-# 記事本数の下限(編集規程10)。lead 欠落はエラー、下限割れは警告(publish が Discord 通知)
+# 記事本数の下限(編集規程11)。lead 欠落はエラー、下限割れは警告(publish が Discord 通知)
 ARTICLE_MIN = 8
 # SP ダイジェスト 1画面制約(2.1)。モック実測(4+3+2+2=11行)から導出した暫定値。
 DIGEST_MAX_ROWS_PER_GROUP = 4
@@ -428,9 +428,14 @@ def main() -> int:
     # -- append-only(基準コミットとの diff) --
     if base:
         watched = ("docs/_posts/", "docs/_editions/", "docs/_editorials/")
+        # 試験発行(number: 0)の号は検証用のため append-only 検査の対象外(REQUIREMENTS 2.1)
+        test_dates = {d for d, (_p, efm) in editions.items() if efm.get("number") == 0}
         for entry in diff_entries:
             status, p = entry[0], entry[1]
             if not p.startswith(watched):
+                continue
+            dm = re.search(r"(\d{4}-\d{2}-\d{2})", p)
+            if dm and dm.group(1) in test_dates:
                 continue
             if status == "D":
                 rep.error(ROOT / p, "append-only 違反: 紙面ファイルの削除は禁止")
@@ -453,7 +458,7 @@ def main() -> int:
                 else:  # 記事・社説: 訂正(corrections 追記)を伴う変更のみ許可
                     if len(new_fm.get("corrections", [])) <= len(old.get("corrections", [])):
                         rep.error(ROOT / p, "append-only 違反: 過去紙面の変更には corrections の追記が必要")
-                    for k in ("slug", "edition", "brand", "src", "rank"):
+                    for k in ("slug", "edition", "brand", "rank"):  # src はソース再分類の訂正を許容
                         if k in old and old.get(k) != new_fm.get(k):
                             rep.error(ROOT / p, f"append-only 違反: 訂正で {k} は変更できない")
 

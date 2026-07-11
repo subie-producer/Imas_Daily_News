@@ -2,13 +2,13 @@
 slug: 765as-twinlive-venue-cd
 edition: 2026-07-12
 brand: "765"
-src: 公式
+src: 準公式
 rank: lead
 title: "765プロのツインライブ会場CD2種、8月6日発売 亜美・真美とあずさ・律子の新曲を収録"
 lede: "ツアー「dual twin live tour」の各会場で、双海亜美・真美とあずさ・律子それぞれの公演名を冠したCD2作が8月6日から販売される。新曲各1曲を含む全11トラック構成だ。"
 tags: [765AS, CD, ライブ, dual twin live tour]
 sources:
-  - type: 公式
+  - type: 準公式
     label: "日本コロムビア アイドルマスター最新情報「765PRO ALLSTARS 会場オリジナルCD発売決定」(2026年7月10日)"
     url: https://columbia.jp/idolmaster/imasnews/260710.html
   - type: 公式

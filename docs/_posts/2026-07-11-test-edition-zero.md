@@ -2,13 +2,13 @@
 slug: test-edition-zero
 edition: 2026-07-11
 brand: general
-src: 公式
+src: 当事者
 rank: lead
 title: "アイマスNEWS(α)が試験発行 データ契約と検査体制の動作を確認"
 lede: "アイドルマスター関連ニュースを毎日自動発行する非公式ファン新聞「アイマスNEWS(α)」は、創刊に先立ち第0号の試験発行を行った。データ契約と検査体制の動作を確認するためのものである。"
 tags: [お知らせ, 試験発行]
 sources:
-  - type: 公式
+  - type: 当事者
     label: "アイマスNEWS(α) リポジトリ「Imas_Daily_News」(2026年7月11日)"
     url: https://github.com/subie-producer/Imas_Daily_News
 corrected: false

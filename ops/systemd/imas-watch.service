@@ -1,0 +1,9 @@
+[Unit]
+Description=アイマスNEWS 監視(発行忘れ・異常検知)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/git/Imas_Daily_News
+ExecStart=/usr/bin/python3 %h/git/Imas_Daily_News/scripts/watch.py

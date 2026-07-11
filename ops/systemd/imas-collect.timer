@@ -1,0 +1,13 @@
+[Unit]
+Description=アイマスNEWS 収集(日4回+締切前スイープ)
+
+[Timer]
+OnCalendar=*-*-* 07:30:00 Asia/Tokyo
+OnCalendar=*-*-* 12:30:00 Asia/Tokyo
+OnCalendar=*-*-* 18:30:00 Asia/Tokyo
+OnCalendar=*-*-* 23:30:00 Asia/Tokyo
+OnCalendar=*-*-* 03:30:00 Asia/Tokyo
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,31 @@
+# 定点観測先(collect.py A-1)。type: portal=Selenium レンダリング / html=正規表現リスト / rss
+# list_regex は (url, title) の2グループを持つこと。url は base で絶対化される。
+- id: imas-portal
+  brand: general
+  type: portal
+  url: https://idolmaster-official.jp/news
+  base: https://idolmaster-official.jp
+  list_regex: '<a[^>]+href="(/news/[0-9_]+)"[^>]*>(?:.*?)</a>'
+  enabled: true
+- id: columbia-imas
+  brand: general
+  type: portal          # curl は遮断されるため Selenium で取得
+  url: https://columbia.jp/idolmaster/
+  base: https://columbia.jp/idolmaster
+  list_regex: 'href="(imasnews/\d+\.html)"[^>]*>([^<]{0,120})'
+  enabled: true
+- id: bnam-tours
+  brand: joint
+  type: html
+  url: https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/
+  base: https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/
+  list_regex: 'href="(\d+\.html)"[^>]*>([^<]{0,120})'
+  enabled: true
+- id: imasnews765
+  brand: general
+  type: html
+  url: https://imasnews765.com/
+  base: https://imasnews765.com
+  list_regex: 'href="(https://imasnews765\.com/\?p=\d+)"[^>]*>([^<]{0,120})'
+  enabled: true
+  source_type: ファン   # まとめサイト=発見レイヤー。一次到達は facts 化の段で行う

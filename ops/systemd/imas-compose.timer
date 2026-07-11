@@ -1,0 +1,9 @@
+[Unit]
+Description=毎朝 04:00 JST に紙面生成
+
+[Timer]
+OnCalendar=*-*-* 04:00:00 Asia/Tokyo
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,32 @@
+# 探索クエリセット(PIPELINE.md §1)。ブランドは間引かない(10クエリ/回)。
+# claude(sonnet・Web検索)と grok(X調査)の両方が同じセットを使う。
+- key: 765as
+  brand: "765"
+  topic: "765PRO ALLSTARS(765ASブランド)。ライブ・CD・グッズ・コラボ・出演情報"
+- key: cinderella
+  brand: cg
+  topic: "シンデレラガールズ(デレステ・デレマス・ミュージカル・総選挙・POP UP)"
+- key: million
+  brand: million
+  topic: "ミリオンライブ(ミリシタ・ミリアニ・14thライブ等)"
+- key: shiny
+  brand: shiny
+  topic: "シャイニーカラーズ(シャニマス・シャニソン・ソロライブ・企画)"
+- key: sidem
+  brand: sidem
+  topic: "SideM(ゲーム・11thライブ・315プロコンテンツ・衣装展等)"
+- key: gakuen
+  brand: gaku
+  topic: "学園アイドルマスター(学マス。ゲーム・グッズ・リアルイベント・ツアー)"
+- key: dsva
+  brand: dsva
+  topic: "876プロ(ディアリースターズ)とヴイアライヴ(vα-liv)。露出が少ないので細かい動きも"
+- key: joint-other
+  brand: joint
+  topic: "ブランド横断・合同(アイドルマスター ツアーズ、20周年企画、IWSF、合同ライブ、ポプマス・KR・961等)"
+- key: trend
+  brand: general
+  topic: "アイドルマスター関連で世間的にトレンド入り・バズした話題(一般ワード・報道・現象)"
+- key: fan-culture
+  brand: general
+  topic: "エンゲージメントの高いファン創作・コスプレ・ノスタルジア・声優の逸話(ファン面とランキングのトレンド分の種)"

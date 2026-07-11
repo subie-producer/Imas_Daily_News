@@ -6,7 +6,9 @@ UNIT_DIR="$HOME/.config/systemd/user"
 mkdir -p "$UNIT_DIR"
 cp imas-*.service imas-*.timer "$UNIT_DIR/"
 systemctl --user daemon-reload
-systemctl --user enable --now imas-release.timer
+for t in imas-collect imas-compose imas-release imas-watch; do
+  systemctl --user enable --now "$t.timer"
+done
 # セッションを閉じても user systemd(timer)が生き続けるようにする
 loginctl enable-linger "$USER" 2>/dev/null || \
   echo "NOTE: linger を有効化できませんでした。'sudo loginctl enable-linger $USER' を実行してください"

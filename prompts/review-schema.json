@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "properties": {
+    "verdict": { "type": "string", "enum": ["approve", "block"] },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file": { "type": "string" },
+          "issue": { "type": "string" },
+          "quote": { "type": "string" }
+        },
+        "required": ["file", "issue", "quote"],
+        "additionalProperties": false
+      }
+    },
+    "comments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "file": { "type": "string" },
+          "issue": { "type": "string" }
+        },
+        "required": ["file", "issue"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["verdict", "blockers", "comments"],
+  "additionalProperties": false
+}

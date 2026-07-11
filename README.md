@@ -77,11 +77,14 @@ python3 scripts/lint.py --full     # 全記事の URL 監査
 
 (branch protection・auto-merge は使わない — 発行は main への直接 push)
 
-## 定時発行(systemd user timer)
+## 定時実行(systemd user timer)
 
-毎朝 06:00 JST に `scripts/release.py` が edition ブランチを main へ squash merge して push する(=発行)。導入は:
+collect(07:30/12:30/18:30/23:30/03:30)→ compose(04:00)→ release(06:00 発行)→ watch(09:00)。
+**自動ジョブは専用クローン `~/git/imas-ops` で動く**(このリポジトリの作業ツリーには触れない)。導入は:
 
 ```sh
+git clone git@github.com:subie-producer/Imas_Daily_News.git ~/git/imas-ops
+cp .env ~/git/imas-ops/ && (cd ~/git/imas-ops && python3 -m venv .venv && .venv/bin/pip install selenium)
 ops/systemd/install.sh   # ユニット配置+timer 有効化+linger 有効化
 ```
 

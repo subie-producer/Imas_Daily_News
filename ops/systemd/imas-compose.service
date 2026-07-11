@@ -5,7 +5,7 @@ After=network-online.target
 
 [Service]
 Type=oneshot
-WorkingDirectory=%h/git/Imas_Daily_News
+WorkingDirectory=%h/git/imas-ops
 Environment=PATH=%h/.local/bin:%h/.grok/bin:/usr/local/bin:/usr/bin:/bin
-ExecStart=/usr/bin/python3 %h/git/Imas_Daily_News/scripts/compose.py
+ExecStart=/usr/bin/python3 %h/git/imas-ops/scripts/compose.py
 TimeoutStartSec=100min

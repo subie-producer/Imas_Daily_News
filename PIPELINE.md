@@ -9,6 +9,7 @@
 - 執筆・探索 = Claude(`claude -p`)/ X 動向収集 = Grok(`grok -p`)/ **校閲 = Codex(`codex exec -m gpt-5.6-terra`、`.env` の REVIEW_MODEL)**。執筆と校閲が別ベンダー(Anthropic/OpenAI)となり、要件 4.5 を満たす。
 - ヘッドレス実行の作法(実測済み): `codex exec` は stdin を閉じる(`< /dev/null`)・`--output-schema` は全プロパティを required に含める。`grok -p` は JSON 前に前置き文が混ざるため `--json-schema` で構造を強制する。
 - ローカル秘匿値(Discord webhook 等)はリポジトリ直下の `.env` に置く(gitignore 済み。雛形は `.env.example`)。
+- **自動ジョブは専用クローン `~/git/imas-ops` で動く**(systemd unit の WorkingDirectory)。ジョブはブランチ切替を伴うため、人間が閲覧・編集する `~/git/Imas_Daily_News` とは作業ツリーを完全分離する(共有すると serve 中の画面がジョブの checkout で化ける)。ops 側にも `.env` と `.venv` を配置する。
 - PC が稼働していない日は収集も発行も止まる=事実上の休刊。異常はブランチ残存監視と Discord 通知で検知する(§7)。
 
 ```

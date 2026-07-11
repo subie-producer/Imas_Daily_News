@@ -5,5 +5,5 @@ After=network-online.target
 
 [Service]
 Type=oneshot
-WorkingDirectory=%h/git/Imas_Daily_News
-ExecStart=/usr/bin/python3 %h/git/Imas_Daily_News/scripts/watch.py
+WorkingDirectory=%h/git/imas-ops
+ExecStart=/usr/bin/python3 %h/git/imas-ops/scripts/watch.py

@@ -90,13 +90,13 @@ def build_prompt(date: str, number: int, triggers: list[dict]) -> str:
 - 既存の号(docs/_posts/・docs/_editions/ の最新日付)を1つ開いて形式を確認
 
 ## 素材
-- candidates/*.json … 収集済み候補(verify: failed は使用不可)。**出典に使う URL は必ず candidates に存在するものだけ**
+- candidates/*.json … 収集済み候補(verify: failed は使用不可)。**出典に使う URL は必ず candidates に存在するものだけ**。記事化基準(対象範囲・続報判定)を満たす候補は本数を理由に落とさないこと
 - stock/stories.yml … 既報台帳。published_facts と同内容の記事は書かない(規程8)
 - 本日トリガーの続報キュー(必ず記事化候補として処理。あふれは small へ):
 {json.dumps(triggers, ensure_ascii=False, indent=2)}
 
 ## 作成物
-1. docs/_posts/{date}-<slug>.md … 記事(標準10〜14本・下限8本・lead は必ず1本。分量規程9・本数規程11)
+1. docs/_posts/{date}-<slug>.md … 記事。**記事化基準を満たす話題は全部書く。「多いから落とす」ことは禁止**(紙面は無制限)。10〜14本は最低限の目安・上限なし、あふれる日は rank を small に寄せて全て載せる。下限8本・lead は必ず1本(分量規程9・本数規程11)
 2. docs/_editions/{date}.md … 号スナップショット(frontmatter のみ。number: {number}, issued_at: "{date}T06:00:00+09:00"。
    pages/article_count/corrected_count/ranking/birthdays は後で scripts/derive.py が上書きするため仮値でよいが、スキーマは満たすこと。digest はあなたが本気で組む: 4群固定・SP1画面制約)
 3. docs/_editorials/{date}.md … 社説1本(その日の紙面から1題)

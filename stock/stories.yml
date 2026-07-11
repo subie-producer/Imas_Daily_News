@@ -1,115 +1,377 @@
 # ストーリー台帳(話題単位の既報管理。PIPELINE.md §3)
-# compose は記事化した事実を published_facts に追記する。
 - story_id: 765-dual-twinlive-venue-cd
-  brand: "765"
+  brand: '765'
   subject: 765プロ dual twin live tour と会場オリジナルCD
   status: active
-  first_published: { edition: 2026-07-12, slug: 765as-twinlive-venue-cd }
+  first_published: '2026-07-12'
   published_facts:
-    - 会場CD2種(ふたごぼしのつばさ/つみまつよるまち)を8月6日から各会場で発売
-    - 各3,500円・全11トラック・新曲各1曲(北極星をズラしちゃえ!/Binary Star)
-    - ツアーは大阪8/6-7・名古屋8/13-14・東京(羽田)8/27-28
-    - stage teaser公開、現地チケット先着発売中・リセール受付開始
+  - ツアーは8/6-7 Zepp Namba、8/13-14 Zepp Nagoya、8/27-28 Zepp Haneda
+  - 双海亜美・真美CD(SACX-1140)新曲『北極星をズラしちゃえ!』
+  - 三浦あずさ・秋月律子CD(SACX-1139)新曲『Binary Star』
+  - 各3,500円(税抜3,182円)全11トラック、8/6発売
+  - 961PRODUCTION&KOHAKU&765PRO ALLSTARS盤(SACX-1149〜1150)4,000円、7/24先行販売
+  - stage teaser公開、現地チケット先着販売中、リセール受付も開始
 - story_id: million-9th-anniversary-mission
   brand: million
   subject: ミリシタ9周年アニバーサリーミッションとイベント「最上級:Invit@tion!」
   status: active
-  first_published: { edition: 2026-07-12, slug: million-9th-anniversary-mission }
+  first_published: '2026-07-12'
   published_facts:
-    - アニバーサリーミッション累計390億pt達成
-    - イベント参加者全員に期間限定SSR確定ガシャチケット2枚を終了後配布
-    - イベントは7月12日23:59終了
-    - SHSガシャ「myブランド編 with glasses」実施中(三浦あずさ)
+  - 9周年アニバーサリーミッションが累計390億pt達成
+  - イベント『最上級:Invit@tion!』参加者全員にSSR確定ガシャチケット2枚配布
+  - イベント期間は2026年7月12日23:59まで
 - story_id: takatsuki-yayoi-ekicho-furusato
-  brand: "765"
+  brand: '765'
   subject: 高槻やよい1日駅長グッズセットのふるさと納税返礼品
   status: active
-  first_published: { edition: 2026-07-12, slug: takatsuki-yayoi-ekicho-furusato }
+  first_published: '2026-07-12'
   published_facts:
-    - 高槻市の返礼品として7月10日10時提供開始、寄付額18,000円
-    - 内容は缶バッジ・ミニアクキー・アクスタ・クリアファイル各1点
+  - 高槻市ふるさと納税返礼品、寄付金額18,000円、2026年7月10日提供開始
+  - 内容は缶バッジ・ミニアクリルキーホルダー・アクリルスタンド・クリアファイル各1点
 - story_id: tours-second-stage-illust-campaign
   brand: joint
   subject: ツアマス Second Stage 1弾カードイラストプレゼントCP
   status: active
-  first_published: { edition: 2026-07-12, slug: tours-second-stage-illust-campaign }
+  first_published: '2026-07-12'
   published_facts:
-    - 期間7月9日〜7月20日23:59、フォロー&リポストでイラスト画像がランダム1枚
-    - A賞描き下ろし8種、B賞えらべるPay5,000円分×抽選10名、毎日1回参加可
+  - キャンペーン期間は2026年7月9日〜7月20日23:59
+  - 公式X(@TOURS_imas)フォロー&リポストでカードイラスト画像がランダムで届く(A賞)
+  - 抽選10名に『えらべるPay』5,000円分(B賞)、1日1回まで参加可能
 - story_id: shiny-summer-best-pair-2026
   brand: shiny
   subject: シャニマスサマーベストペア2026
   status: active
-  first_published: { edition: 2026-07-12, slug: shiny-summer-best-pair-vote }
+  first_published: '2026-07-12'
   published_facts:
-    - スイカ割りテーマのペア投票を公式Xで実施、1日1回・予選は7月16日23:59まで
-    - 優勝ペアは描き下ろしイラスト公開予定
+  - スイカ割りテーマの投票企画、公式Xフォロー&タップ投票で1日1回
+  - 予選投票は7/16 23:59まで、優勝ペアは描き下ろしイラスト公開予定
 - story_id: sidem-stage-costume-museum
   brand: sidem
   subject: SideM STAGE COSTUME MUSEUM
   status: active
-  first_published: null            # 記事化はまだ(ダイジェスト言及のみ)
-  published_facts: []
+  first_published: '2026-07-12'
+  published_facts:
+  - 渋谷BEAMで7/10〜7/27開催、歴代衣装約250着・49人の等身大パネル
+  - 入場チケット2,900円、グッズ付き8,900円
+  - 7/17は展示入れ替えで休場、当日券・一般発売2次も実施
 - story_id: imas-20th-iwsf2026
-  brand: general
+  brand: joint
   subject: シリーズ20周年ライブ IWSF2026(7/24-26 京王アリーナ TOKYO)
   status: active
-  first_published: null
-  published_facts: []
+  first_published: '2026-07-12'
+  published_facts:
+  - 開催日程は2026年7月24日〜26日、京王アリーナTOKYO
+  - シリーズ初の作品越境xRアイドルライブ、765PRO ALLSTARSが出演
+  - 現地チケット1公演12,000円(税込)、1公演2枚まで
+  - 一般販売(先着)は6/20 12:00〜7/19 23:59、限定グッズ付き18,000円・通常12,000円
+  - DAY1に876プロ・vα-livの上水流宇宙、DAY3にvα-livの灯里愛夏とディアリースターズの日高愛が出演
+  - 会場物販はグッズ・オリジナルCD・カードフォリオ、キッチンカーも出店
+  - コンプティーク2026年8月号がIWSF2026特集を掲載
 - story_id: cg-15th-popup-annivroad
   brand: cg
   subject: CG15周年記念 POP UP SHOP in Annivroad(新宿・7/18-7/28)
   status: active
-  first_published: { edition: 2026-07-12, slug: cg-popup-double-summer }
+  first_published: '2026-07-12'
   published_facts:
-    - 新宿マルイ アネックス2F Annivroadで7月18日〜28日開催
-    - 総選挙2026イラストの新商品・パネル展示・メッセージボード
-    - 1会計1,000円ごとにステッカー全11種ランダム1枚、投票券シリアル配布
+  - 新宿マルイ アネックス Annivroadで7/18〜7/28開催
+  - 総選挙2026イラスト使用の11名分ヴァイスシュヴァルツカードセット等
+  - 1,000円ごとにステッカー(全11種)、総選挙投票券引換シリアルも配布
 - story_id: cg-genka-yoenichi-popup
   brand: cg
   subject: 百鬼夜行テーマPOP UP『幻夏妖宴市』(東京8/1-8/16・大阪8/21-9/6)
   status: active
-  first_published: { edition: 2026-07-12, slug: cg-popup-double-summer }
+  first_published: '2026-07-12'
   published_facts:
-    - 東京・秋葉原館8/1-8/16、大阪・日本橋店8/21-9/6
-    - 妖怪に扮した文香・芳乃・小梅・肇+ミニキャラ
-    - 税込2,000円ごとにポストカード特典、投票券シリアル付き商品予定
+  - 東京(秋葉原館1F)8/1〜8/16、大阪(日本橋店1F)8/21〜9/6
+  - 鷺沢文香・依田芳乃・白坂小梅・藤原肇の妖怪扮装描き下ろし
+  - 税込2,000円ごとにポストカード特典、総選挙2026投票券引換シリアル付き商品を販売予定
 - story_id: million-14th-live
   brand: million
   subject: ミリオン14thLIVE(9/19-20)とチケット先行
   status: active
-  first_published: { edition: 2026-07-12, slug: million-14th-asobi-senko }
+  first_published: '2026-07-12'
   published_facts:
-    - 9月19日・20日開催、DAY1「夢咲くワンダーミラージュ」
-    - アソビストア一般会員先行(抽選)7/10 12:00〜7/30 23:59
-    - 当落発表8/11 13:00、入金8/11〜8/15、1公演2枚まで・デジタルのみ
+  - 14thLIVEは2026年9月19日・20日開催、DAY1公演名『夢咲くワンダーミラージュ』
+  - アソビストア一般会員先行(抽選)は7/10 12:00〜7/30 23:59
+  - 当落発表8/11 13:00〜、入金期間8/11 13:00〜8/15 23:59
+  - 1人1公演2枚まで、デジタルチケットのみ、全席スタンディング観覧可、未就学児入場不可
 - story_id: shiny-msp-goods-presale
   brand: shiny
   subject: シャニマス ソロライブMSP公式グッズ事前販売
   status: active
-  first_published: { edition: 2026-07-12, slug: shiny-msp-goods-final }
+  first_published: '2026-07-12'
   published_facts:
-    - 受注は7月12日まで(アソビストア特設ページ)
+  - ソロライブ『Master ShowPiece』(9/26・27京王アリーナTOKYO)公式グッズ事前販売ファイナル
+  - 受注期間は7/12まで、受付はアソビストア特設ページ
+  - ぬいぐるみ『ふわふぇいす』、杜野凛世・大崎甜花・和泉愛依・市川雛菜プロデュースアパレル等
 - story_id: shanison-luka-ssr-gacha
   brand: shiny
   subject: シャニソン 斑鳩ルカ新SSRと夏ピックアップガシャ
   status: active
-  first_published: { edition: 2026-07-12, slug: shanison-luka-ssr-gacha }
+  first_published: '2026-07-12'
   published_facts:
-    - 新SSRサポート【凪に浮く灯】斑鳩ルカ(7/11公開)
-    - ★3【波、衝動、夏――――】ピックアップガシャは8/10 11:59まで
-    - 復刻ガシャ(智代子・千雪の2024年限定)も並行開催
+  - 新SSRサポート【凪に浮く灯】斑鳩ルカを公開
+  - 新ピックアップガシャ(★3【波、衝動、夏――――】斑鳩ルカ)は8/10 11:59まで
+  - 復刻ピックアップ(園田智代子・桑山千雪)も並行開催
 - story_id: gaku-mitenui-jyuchu
   brand: gaku
   subject: 学マス公式ぬいぐるみ「みてぬい」受注
   status: active
-  first_published: { edition: 2026-07-12, slug: gaku-mitenui-jyuchu }
+  first_published: '2026-07-12'
   published_facts:
-    - ASOBI STOREで受注中、期限は7月20日
+  - ASOBI STOREでの受注期限は7/20
 - story_id: sidem-11th-party-name
   brand: sidem
   subject: SideM 11th テラススイートPPPP「Party」名回答
   status: active
-  first_published: { edition: 2026-07-12, slug: sidem-11th-party-name }
+  first_published: '2026-07-12'
   published_facts:
-    - チケット購入代表者へ回答用メール送付、期限は7月17日
+  - ASOBI STOREから回答用メール送付、回答期限は7/17
+- story_id: 20th-piano-collection-survey
+  brand: joint
+  subject: 20周年ピアノコレクション新規アレンジ曲アンケート
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 新規10曲中4曲(オーバーマスター/Hello!!/クリスタライン/GR@TITUDE)は決定済み
+  - 残り6曲は全31曲からの投票で選定、締切は2026年7月12日23:59
+  - アルバムは2026年12月中旬発売予定、収録曲は合計129曲
+- story_id: iwsf2026-20th-sp-livestream
+  brand: joint
+  subject: 20周年ありがとうSP生配信(IWSF2026 DAY3後)
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 7月26日のIWSF2026 DAY3終了後に京王アリーナTOKYOから実施予定(ファン報告)
+  - 約2年間の20周年イヤー記念企画を振り返る内容
+- story_id: tours-ssr-sailor-costume
+  brand: joint
+  subject: ツアマス新シリーズ第1弾 SSR衣装『セーラーミズギ』
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 対象は天海春香・渋谷凛・伊吹翼・風野灯織・藤田ことねの5名(ファン報告)
+  - 渋谷凛・伊吹翼・風野灯織・藤田ことねはパラレルカードイラストも公開
+- story_id: millionlive-9th-akihabara-festival
+  brand: million
+  subject: ミリシタ9周年 秋葉原っぱフェスティバル
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 開催期間は6/26〜7/12、秋葉原の複数店舗
+  - 秋葉原8箇所を巡るデジタルスタンプラリー、達成者にA4クリアファイル
+  - アトレ秋葉原ラッピング企画は7/9閉幕(52人のアイドル)
+- story_id: mirishita-second-hairstyle-gasha-glasses
+  brand: million
+  subject: セカンドヘアスタイルガシャ『myブランド編 with glasses』
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 三浦あずさが洋服とメガネをトータルプロデュース、メガネON/OFF可能
+  - 開催期間は2026年7月2日15:00〜7月13日14:59
+- story_id: mirishita-52week-cd-release-campaign
+  brand: million
+  subject: 52週連続CDリリース企画連動キャンペーン
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - ゲーム内連動キャンペーンは2026年6月28日15:00〜7月13日14:59
+  - ソロコレクションCD『SPECIAL SOLO RECORDS』は52週連続・全52枚リリース中(2025/7/23〜2026/7/15)
+- story_id: tabiro-aichi-cg-collab
+  brand: cg
+  subject: 『旅ろっ!愛知』×シンデレラガールズ コラボ
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 開催期間は2026年8月1日〜2027年3月31日
+  - 『あいちパックンチケット』販売、対象購入・体験でコラボステッカー(全6種)配布
+- story_id: dere-of-the-dead-archive-deadline
+  brand: cg
+  subject: ミュージカル『DERE of the DEAD』振り返りラジオ
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 7/10 21:00配信、アーカイブは7/13まで視聴可能
+  - 8枚組Blu-ray BOXが9/2発売予定
+- story_id: cinderella-girl-vote2026-schedule
+  brand: cg
+  subject: 15th Anniversary シンデレラガール総選挙2026
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 対象は全190人のアイドル、約3年ぶりのWEB投票開催
+  - ミッションチャレンジ期間7/1 12:00〜9/14 23:59
+  - 投票期間8/3 12:00〜9/18 23:59、上位5名がxRライブ出演権獲得
+  - プレミアムミッション上限は1人60,000枚
+- story_id: shiny-illumine-anisama2026
+  brand: shiny
+  subject: アニサマ2026にイルミネーションスターズ出演
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 7/12公演(Animelo Summer Live 2026 -Messenger-)に出演、会場は幕張メッセ
+  - 2024年以来2年ぶりの出演
+- story_id: shiny-pulse-collection-shibuya109
+  brand: shiny
+  subject: SHIBUYA109『PULSE COLLECTION』POP UP
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 6/26〜7/12開催、杜野凛世・大崎甘奈・福丸小糸・三峰結華の描き下ろしグッズ
+  - 2,000円ごとにポストカード(全16種)
+- story_id: shiny-admiral-collab-sneaker
+  brand: shiny
+  subject: シャニマス×Admiralコラボスニーカー
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 予約は6/26 12時よりマルイウェブチャネルで開始
+  - 渋谷モディPOP UPは6/26〜7/12、なんばマルイは8/14〜8/30開催予定
+  - 全8種、刺繍シューレースチャーム付き
+- story_id: shiny-283birthday-collection-vol6
+  brand: shiny
+  subject: 283Birthday Collection第6弾
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 受注は7/9〜7/20、対象は鈴木羽那・杜野凛世・樋口円香・福丸小糸・西城樹里(未確認情報)
+- story_id: shiny-stillblue-asobipremium-lottery
+  brand: shiny
+  subject: 『Still blue』アソビストアプレミアム会員先行当落
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 当落発表は2026年7月11日
+  - ファン報告では片日のみ当選するケースが多い(未確認情報)
+- story_id: shiny-twacolle-hazuki-summer
+  brand: shiny
+  subject: トワイライトコレクション 七草はづきS-SSR
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - S-SSR『ある夏の日のあなたは』7/10〜8/7 11:59(未確認情報)
+- story_id: shiny-refractions-chibigurumi-namekure
+  brand: shiny
+  subject: 'PJ: REFRAC7IONS ちびぐるみ ナムクレ先行'
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - ナムクレ先行は7/11 10時スタート(未確認情報)
+- story_id: sidem-12th-anniversary-livestream
+  brand: sidem
+  subject: SideM12周年生配信『Our cozy dozen YearZ』
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 7/17 19:00配信、朗読劇・11th STAGE最新情報を予定
+- story_id: sidem-summer-splash-popup
+  brand: sidem
+  subject: SideM『SUMMER SPLASH!POP UP SHOP』
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - タワーレコード新宿店10Fで7/17〜7/26開催
+- story_id: gaku-yurakucho-marui-popup2
+  brand: gaku
+  subject: 有楽町マルイ 学マスPOP UP第2弾
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 白いワンピース・ヒマワリテーマ
+  - 7/11・12は先着申込の入場制限、LINE『mogily』でデジタル整理券
+- story_id: gaku-official-shop-kuji-jul2026
+  brand: gaku
+  subject: アイマス公式ショップ抽選くじに学マス登場
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 7/12より登場、1回540円、4等級ではずれなし
+  - 取扱はアトレ秋葉原店等5店舗
+- story_id: gaku-hires-priceoff-campaign
+  brand: gaku
+  subject: 初星学園ハイレゾ作品プライスオフ
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - mora配信、期間は7/10〜8/26
+- story_id: gaku-shirube-finale-ticket-buzz
+  brand: gaku
+  subject: 学マス『標』ファイナル公演チケット当選バズ
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 7/9にSNSで当選報告が拡散(未確認情報)
+  - ファイナル公演は11/7・8開催、同日事前グッズ販売開始
+- story_id: manaka-birthday-live-2026-postponed
+  brand: dsva
+  subject: 灯里愛夏バースデー配信 延期
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - 当初7/1開催予定を負傷により延期、新日程未定
+  - 現地LV購入者へ返金対応
+- story_id: dsva-sorairo-digital-release
+  brand: dsva
+  subject: 876プロ新曲『ソライロ!』配信
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - Dearly Starsバージョン配信中、vα-livバージョン(550円)も同時配信
+- story_id: dsva-under-one-sky-album-release
+  brand: dsva
+  subject: 876PRO ALLSTARSメモリアルアルバム『UNDER ONE SKY!!!!!!』一般販売
+  status: active
+  first_published: '2026-07-12'
+  published_facts:
+  - Dearly Stars盤SACX-1137、税込4,000円、全13曲収録
+- story_id: starlight-dining-popup-2026
+  brand: joint
+  subject: ポップアップストア2026 Starlight Dining(アトレ川崎・7/10-7/20)
+  status: active
+  first_published:
+    edition: '2026-07-12'
+    slug: starlight-dining-popup-lottery
+  published_facts:
+  - アトレ川崎4Fで7/10〜7/20開催、日中同時開催、デレ+学マス9名の中華風メイド衣装
+  - 3,000円以上でPVCステッカー(全9種ランダム)特典
+  - 入場は7/13分まで事前抽選制、7/14以降は各日0時から抽選受付
+- story_id: 765as-sagamihara-collab-2026
+  brand: '765'
+  subject: 765AS×相模原市コラボ(6/19-7/31)
+  status: active
+  first_published:
+    edition: '2026-07-12'
+    slug: 765as-sagamihara-collab
+  published_facts:
+  - 会期6/19〜7/31、ソル・ルナ・ステラが市の魅力を発信
+  - グッズはクリアファイル・トート・アクキー13種、市内3店舗で販売
+- story_id: cg-marine-sailor-eeo-2026
+  brand: cg
+  subject: 下ツインテール3姉妹マリンセーラー新商品(eeo池袋 7/11-7/24)
+  status: active
+  first_published:
+    edition: '2026-07-12'
+    slug: cg-marine-sailor-eeo
+  published_facts:
+  - eeo Store池袋で7/11〜7/24販売(オンラインあり)
+  - 杏・凪・こずえのマリンセーラー描き下ろし+ミニキャラグッズ
+- story_id: mirishita-anniversary-deadline-2026
+  brand: million
+  subject: ミリシタ周年ミッション・9th記念プレゼント(〜7/12)
+  status: active
+  first_published:
+    edition: '2026-07-12'
+    slug: mirishita-anniversary-deadline
+  published_facts:
+  - 総合アニバーサリーミッション6/30〜7/12(7/1に前倒し達成・追加報酬予定)
+  - 9th記念プレゼント配布は6/29〜7/12 23:59
+- story_id: iwsf2026-venue-cd
+  brand: joint
+  subject: IWSF2026会場オリジナルCD(961&KOHAKU&765AS盤)
+  status: active
+  first_published:
+    edition: '2026-07-12'
+    slug: iwsf2026-venue-cd
+  published_facts:
+  - 2枚組SACX-1149-1150・4,000円・7/24から京王アリーナで先行販売
+  - Disc2にThe world is all one!!ソロリミックス収録

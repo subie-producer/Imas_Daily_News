@@ -56,5 +56,15 @@
    },
    "duration_s": 516
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-07-12T07:08:04+09:00",
+   "edition": "2026-07-12",
+   "rounds": 3,
+   "approved": false,
+   "lint_green": true,
+   "duration_s": 2217
+  }
  ]
 }

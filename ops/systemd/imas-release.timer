@@ -1,0 +1,10 @@
+[Unit]
+Description=毎朝 06:00 JST にアイマスNEWSを発行
+
+[Timer]
+OnCalendar=*-*-* 06:00:00 Asia/Tokyo
+# PC がスリープ等で 06:00 を逃した場合、復帰後に追い付き実行する
+Persistent=true
+
+[Install]
+WantedBy=timers.target

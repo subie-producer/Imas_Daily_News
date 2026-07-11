@@ -77,6 +77,18 @@ python3 scripts/lint.py --full     # 全記事の URL 監査
 
 (branch protection・auto-merge は使わない — 発行は main への直接 push)
 
+## 定時発行(systemd user timer)
+
+毎朝 06:00 JST に `scripts/release.py` が edition ブランチを main へ squash merge して push する(=発行)。導入は:
+
+```sh
+ops/systemd/install.sh   # ユニット配置+timer 有効化+linger 有効化
+```
+
+- 手動発行/検証: `python3 scripts/release.py [--date YYYY-MM-DD] [--dry-run]`
+- 状態確認: `systemctl --user list-timers 'imas-*'` / ログ: `journalctl --user -u imas-release`
+- 注意: Windows 再起動後は WSL を一度起動しないと timer も起きない(起動後は `Persistent=yes` が追い付き実行する)。実行時に作業ツリーが汚れていると安全のため発行を中止して通知する。
+
 ## 名鑑の更新
 
 アイドルの追加・修正は原本 `birthdays.json` を編集し、`python3 scripts/build_idols.py` で `docs/_data/idols.json` を再生成してコミットする(CI が同期を検査)。ブランド対応表はスクリプト内 `BRAND_ID_MAP`。

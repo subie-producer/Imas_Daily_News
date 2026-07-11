@@ -4,20 +4,20 @@
 
 ## 0. 実行環境と全体像
 
-**実行主体はローカルマシン(WSL)の cron。** 理由: 執筆・探索を担う `claude`(Claude Code)と、X動向収集・校閲を担う `grok`(Grok Build)の両 CLI がこのマシンでセッション認証済みであり、API キー運用なしで日々の実行が完結するため。GitHub 側の役割は **lint(required check)と Pages 配信のみ**。
+**実行主体はローカルマシン(WSL)のスケジューラ(systemd user timer)。** 理由: 下記3つの CLI がこのマシンでセッション認証済みであり、API キー運用なしで日々の実行が完結するため。GitHub 側の役割は **Pages 配信と、push 後の lint CI(事後検査)のみ**。マージ判定はローカルで完結し、main へ直接 push する(§5)。
 
-- 執筆 AI = Claude(`claude -p` ヘッドレス)/ 校閲 AI = Grok(`grok -p` ヘッドレス)。**別ベンダー校閲の要件(4.5)をこの分担で満たす。**
+- 執筆・探索 = Claude(`claude -p`)/ X 動向収集 = Grok(`grok -p`)/ **校閲 = Codex(`codex exec -m terra`)**。執筆と校閲が別ベンダー(Anthropic/OpenAI)となり、要件 4.5 を満たす。
+- ローカル秘匿値(Discord webhook 等)はリポジトリ直下の `.env` に置く(gitignore 済み。雛形は `.env.example`)。
 - PC が稼働していない日は収集も発行も止まる=事実上の休刊。異常はブランチ残存監視と Discord 通知で検知する(§7)。
-- クラウド Routine への移行は、grok の認証を非対話で持ち出せるようになった時点で再検討する。
 
 ```
 [cron 07:30/12:30/18:30/23:30 JST]   [cron 03:30]      [cron 04:00]
 scripts/collect.py                   collect.py        scripts/publish.py
  ├ A-1 定点観測(RSS/HTML差分)       (締切前スイープ)   ├ compose: claude -p(記事・号・社説生成)
- ├ A-2 探索: claude -p(Web検索)                       ├ ローカル lint → push → PR 作成
- ├ B   X動向: grok -p(構造化出力)                      ├ 校閲: grok -p(チェックリスト)
+ ├ A-2 探索: claude -p(Web検索)                       ├ ローカル lint(赤なら自己修正)
+ ├ B   X動向: grok -p(構造化出力)                      ├ 校閲: codex exec(チェックリスト)
  ├ verify(一次ソース照合)                              ├ 指摘→修正コミット(最大2往復)
- └ commit & push → edition/YYYY-MM-DD                  └ lint green+approve → squash merge
+ └ commit & push → edition/YYYY-MM-DD                  └ lint green+approve → main へ squash merge & push
                                                           → ブランチ削除 → 翌日ブランチ作成
 ```
 
@@ -103,18 +103,19 @@ X 由来の情報は原則「未確認」バッジ。verify が公式サイト�
 ## 5. ブランチ運用(1号=1ブランチ)
 
 - 号ごとに `edition/YYYY-MM-DD`(発行日)ブランチを **main から作成**。日中の collect コミットと早朝の compose コミットはすべてこのブランチに載る。
-- 発行 = PR を **squash merge**(マージコミット題: `第N号 YYYY-MM-DD 発行`)。main の履歴は「1号=1コミット」になり、candidates・stories の更新も同じコミットに同梱される。
+- 発行 = ローカルで `git merge --squash` により main へ取り込み、**main へ直接 push**(コミット題: `第N号 YYYY-MM-DD 発行`)。PR・branch protection・gh CLI は使わない。main の履歴は「1号=1コミット」になり、candidates・stories の更新も同じコミットに同梱される。
+- マージ前ゲートはローカルの lint green+校閲 approve。push 後の GitHub Actions lint は事後検査(すり抜け検知)として常時走らせる。
 - マージ直後に当該ブランチを削除し、**すぐに翌日のブランチを main から作成**する(publish.py の最終ステップ)。
-- **発行忘れ検知**: 朝の監視(09:00 cron)で「発行日が今日以前の edition ブランチが残っている」= 未発行として Discord 通知。
-- 発行後の訂正は `correction/<slug>` ブランチを main から切り、通常の lint+校閲を経てマージ(REQUIREMENTS 4.6)。
+- **発行忘れ検知**: 朝の監視(09:00)で「発行日が今日以前の edition ブランチが残っている」= 未発行として Discord 通知。
+- 発行後の訂正は `correction/<slug>` ブランチを main から切り、lint+校閲を経て main へ push(REQUIREMENTS 4.6)。
 
 ## 6. compose と校閲
 
 - **compose**(04:00): `claude -p` を `.claude/commands/compose.md` で起動。入力は検証済み candidates+stock+stories+前号までの紙面。出力は `_posts`/`_editions`/`_editorials` の新規ファイル+stories.yml 追記+機械算出フィールドはスクリプト(`scripts/derive.py`)で埋める。生成後ただちにローカル lint を回し、赤なら compose 内で自己修正させる。
-- **校閲**(04:30目安): `grok -p` に固定チェックリスト(`prompts/review-checklist.md`)+PR diff を渡す。判定は JSON(`--json-schema`)で受け取る。
+- **校閲**(04:30目安): `codex exec -m terra` に固定チェックリスト(`prompts/review-checklist.md`)+main との diff を渡し、判定を JSON(`--output-schema`)で受け取る。往復と判定結果は metrics に記録する。
   - **ブロック**: 出典にない事実/URL捏造/新事実なしの続報/個人攻撃・プライバシー/時制矛盾
   - **コメントのみ**: 表記ゆれ・字数・面白さ
-- 指摘→Claude が修正コミット→再校閲、最大2往復。lint green+校閲 approve で squash merge(gh CLI)。06:00 の Pages 配信に間に合わせる(実質締切 05:30)。
+- 指摘→Claude が修正コミット→再校閲、最大2往復。lint green+校閲 approve でローカル squash merge → main へ push。06:00 の Pages 配信に間に合わせる(実質締切 05:30)。
 
 ## 7. 異常時の扱い
 
@@ -122,7 +123,7 @@ X 由来の情報は原則「未確認」バッジ。verify が公式サイト�
 
 - candidates が 0 件/verify 全滅
 - 校閲 2 往復で未解決ブロックが残る
-- 05:30 までにマージ不能(lint 赤継続・PR 作成失敗等)
+- 05:30 までにマージ不能(lint 赤継続・push 失敗等)
 - 09:00 時点で edition ブランチ残存(発行忘れ・PC 停止)
 
 休刊日は欠番とせず、号数は発行実績の連番を維持する(lint の連番検査は日付ではなく発行順)。
@@ -137,10 +138,10 @@ X 由来の情報は原則「未確認」バッジ。verify が公式サイト�
 |------|--------|------|
 | 07:30 / 12:30 / 18:30 / 23:30 | collect | 定点観測+探索+Grok+verify → edition ブランチへ push |
 | 03:30 | collect(締切前) | 最終スイープ |
-| 04:00 | publish | compose → lint → PR → 校閲 → squash merge → 翌日ブランチ作成 |
+| 04:00 | publish | compose → lint → 校閲 → main へ squash push → 翌日ブランチ作成 |
 | 09:00 | watch | 発行忘れ・メトリクス閾値の監視 → Discord |
 
-cron は WSL 上で動かす(WSL2 では systemd timer 推奨。Windows 側タスクスケジューラで WSL を起こす構成も可)。設定手順は実装時に README へ記載。
+スケジューラは **systemd user timer** を採用する(この WSL2 で systemd 稼働を確認済み)。`Persistent=yes` により PC がスリープしていた場合も復帰後に追い付き実行される。ユニット定義は実装時に `ops/systemd/` に置き、`systemctl --user enable --now` で有効化する(手順は README に記載予定)。Windows 側のスリープ設定によっては深夜帯に PC が起きていない点に注意(その場合 04:00 の発行は復帰後に遅延実行される)。
 
 ## 10. 実装ステップ(REQUIREMENTS 7章 Step 3〜4 の分解)
 
@@ -155,7 +156,7 @@ cron は WSL 上で動かす(WSL2 では systemd timer 推奨。Windows 側タ�
 
 ### 必要な手作業(ユーザー側)
 
-1. `gh` CLI のインストールと subie-producer での認証(PR 作成・squash merge に使用)
-2. Discord webhook URL の払い出し(ローカル `.env` に保存、gitignore)
-3. branch protection(main: required check `lint`)+ リポジトリの auto-merge/ブランチ自動削除設定
-4. cron(または systemd timer)の登録
+1. Discord webhook URL の払い出し → リポジトリ直下の `.env` に記入(雛形: `.env.example`。`.env` は gitignore 済み)
+2. systemd user timer の有効化(実装時にユニット一式と1コマンドの手順を用意する)
+
+gh CLI・branch protection・auto-merge 設定は**不要**(発行は main への直接 push)。

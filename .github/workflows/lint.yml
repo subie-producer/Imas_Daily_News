@@ -1,11 +1,12 @@
-# 紙面 lint(required check)。branch protection でこのジョブ名 "lint" を必須にする。
-# 赤なら auto-merge 用のキーがあってもマージ不可(REQUIREMENTS.md 4.4)。
+# 紙面 lint(事後検査)。マージ前のゲートは publish がローカルで同じ lint を実行する
+# (REQUIREMENTS.md 4.4)。ここは main と edition ブランチへの push を常時検査し、
+# すり抜けを検知して知らせる役割。
 name: lint
 
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, "edition/**", "correction/**"]
   schedule:
     # 週1回の全記事 URL 監査(失敗は訂正フローの入力になる)。JST 月曜 09:00
     - cron: "0 0 * * 1"
@@ -28,7 +29,8 @@ jobs:
           git diff --exit-code docs/_data/idols.json
       - name: 紙面 lint
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          # PR は base、push は直前の main 先端を基準に append-only 検査を行う
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
           if [ "${{ github.event_name }}" = "schedule" ]; then
             python3 scripts/lint.py --full

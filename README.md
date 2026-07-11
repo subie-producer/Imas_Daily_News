@@ -16,10 +16,10 @@
 
 ```
 collect(コード・毎日数回) → verify(コード) → compose(Claude・発行日 04:00)
- → lint(コード・required check) → review(校閲=Grok) → squash merge → 06:00 JST 発行
+ → lint(ローカルゲート) → review(校閲=Codex) → main へ squash push → 06:00 JST 発行
 ```
 
-実行主体はローカル cron(`claude`/`grok` CLI のセッション認証がローカルにあるため)。GitHub 側は lint と Pages 配信のみ。号ごとに `edition/YYYY-MM-DD` ブランチで収集・生成し、発行時に squash merge(main は1号=1コミット)。運用設計の詳細は [PIPELINE.md](PIPELINE.md)。
+実行主体はローカルの systemd user timer(`claude`/`grok`/`codex` CLI のセッション認証がローカルにあるため)。GitHub 側は Pages 配信と push 後の lint CI(事後検査)のみ。号ごとに `edition/YYYY-MM-DD` ブランチで収集・生成し、発行時にローカルで squash merge して main へ直接 push(main は1号=1コミット)。秘匿値は `.env`(gitignore 済み、雛形 `.env.example`)。運用設計の詳細は [PIPELINE.md](PIPELINE.md)。
 
 現在の進捗: **Step 1 完了**(骨格・スキーマ・lint CI)+ 収集・発行の運用設計確定。次は Step 2(モックの Jekyll 移植)。全ステップは REQUIREMENTS.md 7章。
 
@@ -69,12 +69,13 @@ python3 scripts/lint.py --full     # 全記事の URL 監査
 
 検査項目: スキーマ検証/slug・号数の一意性と連番/lead 号内1本/機械算出フィールドの照合/時制(本日・昨日・明日と絶対日付の共起)/出典の生存と candidates 突合/ダイジェストの4群構成・字数・SP 1画面制約(群4行・全体12行)/ランキング8件・名鑑照合・前号比 delta/誕生日欄と名鑑の一致/append-only 違反(過去紙面の削除・訂正なし変更)。
 
-エラーはマージ不可、警告(見出し45字超など)は annotation のみ。
+エラーは発行不可(publish のローカルゲート)、警告(見出し45字超など)は annotation のみ。push 後の GitHub Actions は事後検査として同じ lint を実行する。
 
 **セットアップ(GitHub 側・手動)**:
 
 1. Settings → Pages → Source: `Deploy from a branch`, Branch: `main` / `docs`
-2. Settings → Branches → `main` の branch protection で required status check に **lint** を指定し、auto-merge を有効化
+
+(branch protection・auto-merge は使わない — 発行は main への直接 push)
 
 ## 名鑑の更新
 

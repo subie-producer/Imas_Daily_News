@@ -9,3 +9,6 @@ docs/.bundle/
 # Python
 __pycache__/
 *.pyc
+
+# ローカル環境変数(雛形は .env.example)
+.env

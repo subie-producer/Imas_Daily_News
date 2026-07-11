@@ -168,6 +168,8 @@ def main() -> int:
     args = ap.parse_args()
     import os
     base = args.base or os.environ.get("BASE_SHA") or None
+    if base and set(base) == {"0"}:  # push イベントの新規ブランチ等(ゼロSHA)
+        base = None
 
     rep = Report()
     article_schema = load_schema("article.schema.json")

@@ -151,7 +151,7 @@ collect(コード・毎日数回) → verify(コード) → compose(LLM・発行
  → lint(コード・required check) → review(校閲AI) → squash merge → Pages 配信
 ```
 
-実行主体はローカルマシンの cron(`claude`・`grok` CLI のセッション認証がローカルにあるため)。GitHub 側は lint(required check)と Pages 配信のみ。号ごとに `edition/YYYY-MM-DD` ブランチを main から作成し、収集・生成コミットはすべて同ブランチに載せ、発行時に **squash merge**(main は1号=1コミット)→ ブランチ削除 → 翌日ブランチ作成、とする。残存する edition ブランチが発行忘れの検知装置を兼ねる。運用詳細は [PIPELINE.md](PIPELINE.md)。
+実行主体はローカルマシンのスケジューラ(`claude`・`grok`・`codex` CLI のセッション認証がローカルにあるため)。GitHub 側は Pages 配信と push 後の lint CI(事後検査)のみで、マージ判定はローカルの lint+校閲で行い main へ直接 push する。号ごとに `edition/YYYY-MM-DD` ブランチを main から作成し、収集・生成コミットはすべて同ブランチに載せ、発行時にローカルで **squash merge**(main は1号=1コミット)→ ブランチ削除 → 翌日ブランチ作成、とする。残存する edition ブランチが発行忘れの検知装置を兼ねる。運用詳細は [PIPELINE.md](PIPELINE.md)。
 
 ### 4.1 collect
 
@@ -168,12 +168,12 @@ collect(コード・毎日数回) → verify(コード) → compose(LLM・発行
 ### 4.3 compose
 
 - 発行日早朝(04:00 目安)に Claude Code のヘッドレス実行(ローカル cron)が起動。締切は**当日 04:00 時点の candidates**。
-- 検証済み candidates+stock から、記事群・号スナップショット・社説・ダイジェストを生成し、`edition/YYYY-MM-DD` ブランチに push して PR を作成。
+- 検証済み candidates+stock から、記事群・号スナップショット・社説・ダイジェストを生成し、`edition/YYYY-MM-DD` ブランチにコミットする。
 - 生成基準日 = 発行日。「本日/昨日/明日」は発行日基準でのみ書く(生成日と発行日は常に一致)。
 
-### 4.4 lint(required check)
+### 4.4 lint
 
-branch protection に組み込み、**赤なら auto-merge 用のキーがあってもマージ不可**とする。
+publish がマージ前にローカルで実行し、**赤なら発行不可**とするゲート。push 後も GitHub Actions で常時検査し、すり抜けを事後検知する。
 
 - frontmatter・_editions のスキーマ検証(enum・必須・一意性・lead が号内1本)
 - 時制 lint: 本文・lede・digest 内の相対表現(本日/昨日/明日)と絶対日付の共起を edition 日付と照合
@@ -184,14 +184,14 @@ branch protection に組み込み、**赤なら auto-merge 用のキーがあっ
 
 ### 4.5 review(校閲AI)→ squash merge
 
-- 執筆とは**別ベンダーのモデル**が固定チェックリストで校閲する(執筆=Claude/校閲=Grok)。
+- 執筆とは**別ベンダーのモデル**が固定チェックリストで校閲する(執筆=Claude/校閲=Codex・モデル terra)。
 - **ブロック**: 出典にない事実/URL 捏造/新事実のない続報記事(5章8)/個人への攻撃・プライバシー侵害/(もちより面稼働後)掲載NG投稿の混入。**コメントのみ**: 表記ゆれ・文字数超過・面白さの過不足。
 - 指摘→修正コミット→再レビューを最大2往復。lint green+校閲 approve で squash merge し、06:00 の発行に間に合わせる。
 - 2往復で未解決・締切超過・candidates 0件などの異常時は Discord webhook で運営に通知し、人間判断(または休刊)とする。
 
 ### 4.6 訂正フロー(発行後)
 
-誤り検知(読者指摘・後日の再検証)→ 訂正 PR(corrections 追記+本文修正+corrected_count 加算)→ lint+校閲 → マージ。削除 PR は lint が拒否する。
+誤り検知(読者指摘・後日の再検証)→ `correction/<slug>` ブランチで訂正(corrections 追記+本文修正+corrected_count 加算)→ lint+校閲 → main へマージ。紙面ファイルの削除は lint が拒否する。
 
 ## 5. 編集規程(生成プロンプトの仕様)
 

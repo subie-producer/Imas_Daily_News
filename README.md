@@ -15,11 +15,13 @@
 ## パイプライン
 
 ```
-collect(コード・毎日数回) → verify(コード) → compose(LLM・発行日 04:00)
- → lint(コード・required check) → review(校閲AI) → auto-merge → 06:00 JST 発行
+collect(コード・毎日数回) → verify(コード) → compose(Claude・発行日 04:00)
+ → lint(コード・required check) → review(校閲=Grok) → squash merge → 06:00 JST 発行
 ```
 
-現在の進捗: **Step 1 完了**(骨格・スキーマ・lint CI)。次は Step 2(モックの Jekyll 移植)。全ステップは REQUIREMENTS.md 7章。
+実行主体はローカル cron(`claude`/`grok` CLI のセッション認証がローカルにあるため)。GitHub 側は lint と Pages 配信のみ。号ごとに `edition/YYYY-MM-DD` ブランチで収集・生成し、発行時に squash merge(main は1号=1コミット)。運用設計の詳細は [PIPELINE.md](PIPELINE.md)。
+
+現在の進捗: **Step 1 完了**(骨格・スキーマ・lint CI)+ 収集・発行の運用設計確定。次は Step 2(モックの Jekyll 移植)。全ステップは REQUIREMENTS.md 7章。
 
 ## ディレクトリ構成
 

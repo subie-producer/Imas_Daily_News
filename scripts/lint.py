@@ -35,6 +35,14 @@ IDOLS = DOCS / "_data" / "idols.json"
 TITLE_MAX = 45          # 見出し上限(警告)
 LEDE_RANGE = (60, 100)  # リード文の目安(警告)
 EXCERPT_MAX = 80        # 社説抜粋の目安(警告)
+# 記事本文の分量基準(編集規程9。本文のみ・中見出し行除く・警告)
+BODY_RANGE = {
+    "lead": (800, 1200),
+    "large": (500, 800),
+    "medium": (300, 500),
+    "small": (150, 250),
+}
+RANK_BELOW = {"lead": "large", "large": "medium", "medium": "small", "small": "small"}
 # SP ダイジェスト 1画面制約(2.1)。モック実測(4+3+2+2=11行)から導出した暫定値。
 DIGEST_MAX_ROWS_PER_GROUP = 4
 DIGEST_MAX_TOTAL_ROWS = 12
@@ -222,6 +230,15 @@ def main() -> int:
             rep.error(path, "corrected と corrections の有無が矛盾")
         if not body.strip():
             rep.error(path, "本文が空")
+        else:
+            # 分量基準: 中見出し行を除いた本文の非空白文字数
+            prose = re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)
+            body_len = len(re.sub(r"\s", "", prose))
+            lo, hi = BODY_RANGE[fm["rank"]]
+            if all(s["type"] == "報道" for s in fm["sources"]):
+                hi = BODY_RANGE[RANK_BELOW[fm["rank"]]][1]  # 報道由来のみは上限1ランク下(編集規程2)
+            if not (lo <= body_len <= hi):
+                rep.warn(path, f"本文が{body_len}字({fm['rank']} の基準 {lo}〜{hi}字)")
         for h in re.finditer(r"^(#{1,6}) ", body, re.MULTILINE):
             if len(h.group(1)) != 2:
                 rep.warn(path, f"本文の中見出しは h2(##)のみ(h{len(h.group(1))} を検出)")

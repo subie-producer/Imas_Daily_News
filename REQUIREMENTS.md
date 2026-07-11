@@ -148,15 +148,17 @@ corrections: []               # 記事と同じ訂正契約
 
 ```
 collect(コード・毎日数回) → verify(コード) → compose(LLM・発行日早朝)
- → lint(コード・required check) → review(校閲AI) → auto-merge → Pages 配信
+ → lint(コード・required check) → review(校閲AI) → squash merge → Pages 配信
 ```
+
+実行主体はローカルマシンの cron(`claude`・`grok` CLI のセッション認証がローカルにあるため)。GitHub 側は lint(required check)と Pages 配信のみ。号ごとに `edition/YYYY-MM-DD` ブランチを main から作成し、収集・生成コミットはすべて同ブランチに載せ、発行時に **squash merge**(main は1号=1コミット)→ ブランチ削除 → 翌日ブランチ作成、とする。残存する edition ブランチが発行忘れの検知装置を兼ねる。運用詳細は [PIPELINE.md](PIPELINE.md)。
 
 ### 4.1 collect
 
 - **定点観測**: `sources.yml` に宣言した公式ポータル・各ブランド公式ニュース・主要メディアの RSS/ページ差分を巡回。
-- **探索**: Claude の Web 検索(ブランド別クエリセット)+ Grok API(X 動向)。探索由来は `verify: unconfirmed` で登録。
-- 結果は `candidates/YYYY-MM-DD.json` に正規化して蓄積(id・title・brand・source_type・url・found_at・event_date・dedup_key・facts)。未来の予定は `stock/upcoming.yml` へ。
-- GitHub Actions cron で実行。1日2〜4回。
+- **探索**: Claude の Web 検索(`claude -p`・ブランド別クエリセット)+ Grok(`grok -p`・X 動向)。探索由来は `verify: unconfirmed` で登録。
+- 結果は `candidates/YYYY-MM-DD.json` に正規化して蓄積(id・title・brand・source_type・url・found_at・event_date・dedup_key・facts・origin)。未来の予定は `stock/upcoming.yml` へ、話題単位の既報管理は `stock/stories.yml` へ。
+- ローカル cron で実行。1日4回+発行日 03:30 の締切前スイープ。
 
 ### 4.2 verify
 
@@ -165,8 +167,8 @@ collect(コード・毎日数回) → verify(コード) → compose(LLM・発行
 
 ### 4.3 compose
 
-- 発行日早朝(04:00 目安)に Claude Code の Routine が起動。締切は**当日 04:00 時点の candidates**。
-- 検証済み candidates+stock から、記事群・号スナップショット・社説・ダイジェストを生成し、claude/ ブランチに push して PR を作成。
+- 発行日早朝(04:00 目安)に Claude Code のヘッドレス実行(ローカル cron)が起動。締切は**当日 04:00 時点の candidates**。
+- 検証済み candidates+stock から、記事群・号スナップショット・社説・ダイジェストを生成し、`edition/YYYY-MM-DD` ブランチに push して PR を作成。
 - 生成基準日 = 発行日。「本日/昨日/明日」は発行日基準でのみ書く(生成日と発行日は常に一致)。
 
 ### 4.4 lint(required check)
@@ -180,11 +182,11 @@ branch protection に組み込み、**赤なら auto-merge 用のキーがあっ
 - ランキング8件・delta 語彙・スクリプト算出値(3.3)との一致、append-only 違反(過去号ファイルの diff)検知
 - 見出し上限45字(警告)
 
-### 4.5 review(校閲AI)→ auto-merge
+### 4.5 review(校閲AI)→ squash merge
 
-- 執筆とは**別ベンダーのモデル**が固定チェックリストで校閲する。
-- **ブロック**: 出典にない事実/URL 捏造/個人への攻撃・プライバシー侵害/(もちより面稼働後)掲載NG投稿の混入。**コメントのみ**: 表記ゆれ・文字数超過・面白さの過不足。
-- 指摘→修正コミット→再レビューを最大2往復。lint green+校閲 approve で auto-merge し、06:00 の発行に間に合わせる。
+- 執筆とは**別ベンダーのモデル**が固定チェックリストで校閲する(執筆=Claude/校閲=Grok)。
+- **ブロック**: 出典にない事実/URL 捏造/新事実のない続報記事(5章8)/個人への攻撃・プライバシー侵害/(もちより面稼働後)掲載NG投稿の混入。**コメントのみ**: 表記ゆれ・文字数超過・面白さの過不足。
+- 指摘→修正コミット→再レビューを最大2往復。lint green+校閲 approve で squash merge し、06:00 の発行に間に合わせる。
 - 2往復で未解決・締切超過・candidates 0件などの異常時は Discord webhook で運営に通知し、人間判断(または休刊)とする。
 
 ### 4.6 訂正フロー(発行後)
@@ -200,6 +202,8 @@ branch protection に組み込み、**赤なら auto-merge 用のキーがあっ
 5. 炎上・係争は、読んだ人が嫌な気分になるものは載せない。載せる場合も事実のみ。
 6. 社説は毎日1本、その日の紙面から1題。AI 編集部という自己言及を織り込んでよい。
 7. 文体・見出し・各欄の字数は本書のデータ契約の上限に従う。
+8. **続報規程**: 続報は新事実がある場合のみ記事化する(`stock/stories.yml` の既報 facts と照合)。新事実のない話題はダイジェスト「継続中」行のみで扱い、記事にしない。開催中・受付中の定常経過は節目(開幕・締切前日・千秋楽・結果発表)のみ記事化する。
+9. **分量基準(本文のみ)**: lead 800〜1200字/large 500〜800字/medium 300〜500字/small 150〜250字。逸脱は lint 警告。報道メディア由来のみをソースとする記事は上限を1ランク下の値に抑える(規程2)。分量が足りない話題は膨らませず rank を下げる。
 
 ### 5.4 ダイジェスト種別語彙(k の1文字)
 

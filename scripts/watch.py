@@ -47,6 +47,15 @@ def main() -> int:
     if runs == 0:
         problems.append("直近2日間 collect の実行記録が無い(timer 停止?)")
 
+    # 4. ビルド劣化の先行監視: 記事総数が閾値超過(PIPELINE §9.5 の改修トリガー)
+    POSTS_THRESHOLD = 2500
+    r = git("ls-tree", "-r", "--name-only", "origin/main", "docs/_posts/")
+    n_posts = len([l for l in r.stdout.splitlines() if l.endswith(".md")])
+    if n_posts > POSTS_THRESHOLD:
+        problems.append(
+            f"記事総数 {n_posts} 本が閾値 {POSTS_THRESHOLD} を超過。"
+            "Pages ビルド劣化前に『号スナップショットへの記事リスト持たせ』改修を実施すること(PIPELINE §9.5)")
+
     if problems:
         notify("watch", "異常検知:\n- " + "\n- ".join(problems), ok=False)
         return 1

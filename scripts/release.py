@@ -48,7 +48,7 @@ def notify(msg: str, ok: bool = True) -> None:
             req = urllib.request.Request(
                 url,
                 data=json.dumps({"content": text}).encode(),
-                headers={"Content-Type": "application/json"},
+                headers={"Content-Type": "application/json", "User-Agent": "ImasNewsBot/1.0"},
             )
             urllib.request.urlopen(req, timeout=15)
         except Exception as e:  # 通知失敗は発行を止めない

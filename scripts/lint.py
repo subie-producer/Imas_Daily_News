@@ -43,6 +43,8 @@ BODY_RANGE = {
     "small": (150, 250),
 }
 RANK_BELOW = {"lead": "large", "large": "medium", "medium": "small", "small": "small"}
+# 記事本数の下限(編集規程10)。lead 欠落はエラー、下限割れは警告(publish が Discord 通知)
+ARTICLE_MIN = 8
 # SP ダイジェスト 1画面制約(2.1)。モック実測(4+3+2+2=11行)から導出した暫定値。
 DIGEST_MAX_ROWS_PER_GROUP = 4
 DIGEST_MAX_TOTAL_ROWS = 12
@@ -301,6 +303,8 @@ def main() -> int:
         arts = by_edition.get(date_s, [])
         if fm["article_count"] != len(arts):
             rep.error(path, f"article_count {fm['article_count']} ≠ 実記事数 {len(arts)}")
+        if fm["number"] >= 1 and len(arts) < ARTICLE_MIN:
+            rep.warn(path, f"記事本数が{len(arts)}本(下限{ARTICLE_MIN}本。発行は可・Discord 通知対象)")
         pages = len({a["brand"] for a in arts})
         if fm["pages"] != pages:
             rep.error(path, f"pages {fm['pages']} ≠ ブランド異なり数 {pages}")

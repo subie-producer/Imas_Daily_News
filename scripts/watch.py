@@ -47,7 +47,26 @@ def main() -> int:
     if runs == 0:
         problems.append("直近2日間 collect の実行記録が無い(timer 停止?)")
 
-    # 4. ビルド劣化の先行監視: 記事総数が閾値超過(PIPELINE §9.5 の改修トリガー)
+    # 4. 探索エンジンの静かな全滅検知: 直近の collect で claude/grok の取得数合計が 0
+    latest = None
+    for d in ((now_jst() - datetime.timedelta(days=1)).strftime("%Y-%m-%d"), today):
+        p = ROOT / "metrics" / f"{d}.json"
+        if p.exists():
+            try:
+                for run in json.loads(p.read_text(encoding="utf-8")).get("collect", []):
+                    if latest is None or run["at"] > latest["at"]:
+                        latest = run
+            except Exception:
+                pass
+    if latest:
+        for engine in ("claude", "grok"):
+            keys = [k for k in latest.get("per_query", {}) if k.startswith(engine + ":")]
+            if keys and sum(latest["per_query"][k] for k in keys) == 0:
+                problems.append(
+                    f"直近の collect({latest['at'][11:16]})で {engine} の取得が全クエリ0件"
+                    "(認証切れ・CLI仕様変更・引数エラーの疑い)")
+
+    # 4b. ビルド劣化の先行監視: 記事総数が閾値超過(PIPELINE §9.5 の改修トリガー)
     POSTS_THRESHOLD = 2500
     r = git("ls-tree", "-r", "--name-only", "origin/main", "docs/_posts/")
     n_posts = len([l for l in r.stdout.splitlines() if l.endswith(".md")])

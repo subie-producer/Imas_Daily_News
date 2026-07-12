@@ -55,6 +55,338 @@
     "failed": 3
    },
    "duration_s": 516
+  },
+  {
+   "at": "2026-07-12T07:40:04+09:00",
+   "edition": "2026-07-13",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0
+     },
+     "columbia-imas": {
+      "found": 335,
+      "new": 0
+     },
+     "bnam-tours": {
+      "found": 62,
+      "new": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0
+     }
+    },
+    "new": 0,
+    "facted": 0
+   },
+   "per_query": {
+    "claude:765as": 3,
+    "grok:765as": 0,
+    "claude:cinderella": 8,
+    "grok:cinderella": 0,
+    "claude:million": 2,
+    "grok:million": 0,
+    "claude:shiny": 5,
+    "grok:shiny": 0,
+    "claude:sidem": 5,
+    "grok:sidem": 0,
+    "claude:gakuen": 5,
+    "grok:gakuen": 0,
+    "claude:dsva": 2,
+    "grok:dsva": 0,
+    "claude:joint-other": 6,
+    "grok:joint-other": 0,
+    "claude:trend": 7,
+    "grok:trend": 0,
+    "claude:fan-culture": 8,
+    "grok:fan-culture": 0
+   },
+   "normalized": 41,
+   "added": 25,
+   "verify": {
+    "confirmed": 28,
+    "unconfirmed": 3,
+    "failed": 10
+   },
+   "duration_s": 573
+  },
+  {
+   "at": "2026-07-12T12:38:33+09:00",
+   "edition": "2026-07-13",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 1
+     },
+     "columbia-imas": {
+      "found": 335,
+      "new": 0
+     },
+     "bnam-tours": {
+      "found": 62,
+      "new": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0
+     }
+    },
+    "new": 1,
+    "facted": 1
+   },
+   "per_query": {
+    "claude:765as": 3,
+    "grok:765as": 0,
+    "claude:cinderella": 6,
+    "grok:cinderella": 0,
+    "claude:million": 5,
+    "grok:million": 0,
+    "claude:shiny": 7,
+    "grok:shiny": 0,
+    "claude:sidem": 4,
+    "grok:sidem": 0,
+    "claude:gakuen": 8,
+    "grok:gakuen": 0,
+    "claude:dsva": 1,
+    "grok:dsva": 0,
+    "claude:joint-other": 6,
+    "grok:joint-other": 0,
+    "claude:trend": 8,
+    "grok:trend": 0,
+    "claude:fan-culture": 4,
+    "grok:fan-culture": 0
+   },
+   "normalized": 47,
+   "added": 24,
+   "verify": {
+    "confirmed": 26,
+    "unconfirmed": 8,
+    "failed": 13
+   },
+   "duration_s": 483
+  },
+  {
+   "at": "2026-07-12T18:39:58+09:00",
+   "edition": "2026-07-13",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0
+     },
+     "columbia-imas": {
+      "found": 335,
+      "new": 0
+     },
+     "bnam-tours": {
+      "found": 62,
+      "new": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0
+     }
+    },
+    "new": 0,
+    "facted": 0
+   },
+   "per_query": {
+    "claude:765as": 3,
+    "grok:765as": 0,
+    "claude:cinderella": 7,
+    "grok:cinderella": 0,
+    "claude:million": 5,
+    "grok:million": 0,
+    "claude:shiny": 7,
+    "grok:shiny": 0,
+    "claude:sidem": 3,
+    "grok:sidem": 0,
+    "claude:gakuen": 3,
+    "grok:gakuen": 0,
+    "claude:dsva": 2,
+    "grok:dsva": 0,
+    "claude:joint-other": 3,
+    "grok:joint-other": 0,
+    "claude:trend": 5,
+    "grok:trend": 0,
+    "claude:fan-culture": 8,
+    "grok:fan-culture": 0
+   },
+   "normalized": 37,
+   "added": 11,
+   "verify": {
+    "confirmed": 29,
+    "unconfirmed": 1,
+    "failed": 7
+   },
+   "duration_s": 567
+  },
+  {
+   "at": "2026-07-12T19:26:22+09:00",
+   "edition": "2026-07-13",
+   "watch": {
+    "skipped": true
+   },
+   "per_query": {
+    "grok:765as": 0,
+    "grok:cinderella": 0,
+    "grok:million": 0,
+    "grok:shiny": 0,
+    "grok:sidem": 0,
+    "grok:gakuen": 0,
+    "grok:dsva": 0,
+    "grok:joint-other": 0,
+    "grok:trend": 0,
+    "grok:fan-culture": 0
+   },
+   "normalized": 0,
+   "added": 0,
+   "verify": {
+    "confirmed": 0,
+    "unconfirmed": 0,
+    "failed": 0
+   },
+   "duration_s": 433
+  },
+  {
+   "at": "2026-07-12T19:35:40+09:00",
+   "edition": "2026-07-13",
+   "watch": {
+    "skipped": true
+   },
+   "per_query": {
+    "grok:765as": 0,
+    "grok:cinderella": 0,
+    "grok:million": 0,
+    "grok:shiny": 0,
+    "grok:sidem": 0,
+    "grok:gakuen": 0,
+    "grok:dsva": 8,
+    "grok:joint-other": 0,
+    "grok:trend": 0,
+    "grok:fan-culture": 0
+   },
+   "normalized": 8,
+   "added": 8,
+   "verify": {
+    "confirmed": 7,
+    "unconfirmed": 1,
+    "failed": 0
+   },
+   "duration_s": 76
+  },
+  {
+   "at": "2026-07-12T19:43:20+09:00",
+   "edition": "2026-07-13",
+   "watch": {
+    "skipped": true
+   },
+   "per_query": {
+    "grok:765as": 0,
+    "grok:cinderella": 0,
+    "grok:million": 0,
+    "grok:shiny": 0,
+    "grok:sidem": 0,
+    "grok:gakuen": 0,
+    "grok:dsva": 8,
+    "grok:joint-other": 0,
+    "grok:trend": 0,
+    "grok:fan-culture": 0
+   },
+   "normalized": 8,
+   "added": 6,
+   "verify": {
+    "confirmed": 4,
+    "unconfirmed": 4,
+    "failed": 0
+   },
+   "duration_s": 72
+  },
+  {
+   "at": "2026-07-12T19:50:09+09:00",
+   "edition": "2026-07-13",
+   "watch": {
+    "skipped": true
+   },
+   "per_query": {
+    "grok:765as": 8,
+    "grok:cinderella": 8,
+    "grok:million": 8,
+    "grok:shiny": 8,
+    "grok:sidem": 8,
+    "grok:gakuen": 8,
+    "grok:dsva": 8,
+    "grok:joint-other": 8,
+    "grok:trend": 8,
+    "grok:fan-culture": 8
+   },
+   "normalized": 68,
+   "added": 42,
+   "verify": {
+    "confirmed": 49,
+    "unconfirmed": 14,
+    "failed": 5
+   },
+   "duration_s": 202
+  },
+  {
+   "at": "2026-07-12T23:40:53+09:00",
+   "edition": "2026-07-13",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0
+     },
+     "columbia-imas": {
+      "found": 335,
+      "new": 0
+     },
+     "bnam-tours": {
+      "found": 62,
+      "new": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 2
+     }
+    },
+    "new": 2,
+    "facted": 2
+   },
+   "per_query": {
+    "grok:765as": 8,
+    "grok:cinderella": 8,
+    "grok:million": 8,
+    "grok:shiny": 8,
+    "grok:sidem": 8,
+    "grok:gakuen": 8,
+    "grok:dsva": 8,
+    "grok:joint-other": 8,
+    "grok:trend": 8,
+    "grok:fan-culture": 8,
+    "claude:765as": 3,
+    "claude:cinderella": 4,
+    "claude:million": 6,
+    "claude:shiny": 6,
+    "claude:sidem": 4,
+    "claude:gakuen": 7,
+    "claude:dsva": 5,
+    "claude:joint-other": 7,
+    "claude:trend": 5,
+    "claude:fan-culture": 2
+   },
+   "normalized": 109,
+   "added": 51,
+   "verify": {
+    "confirmed": 75,
+    "unconfirmed": 23,
+    "failed": 11
+   },
+   "duration_s": 622
   }
  ],
  "compose": [

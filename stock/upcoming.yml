@@ -1,4 +1,5 @@
 # 続報キュー(PIPELINE.md §3)。初報の compose 時に未来トリガーを予約する。
+# compose が毎朝、当日トリガーを消化し、過去日トリガーを掃除する。
 - dedup_key: million-9th-anniversary-mission
   brand: million
   subject: ミリシタ9周年 イベント「最上級:Invit@tion!」とSSR確定チケット
@@ -9,9 +10,6 @@
   brand: shiny
   subject: シャニマスサマーベストペア2026 予選投票
   triggers:
-  - date: 2026-07-13
-    kind: 締切前
-    note: 予選締切(7/16 23:59)の3日前リマインド
   - date: 2026-07-16
     kind: 締切
     note: 予選投票 23:59 締切
@@ -27,6 +25,9 @@
   - date: 2026-07-20
     kind: 締切
     note: キャンペーン 23:59 終了
+  - date: 2026-07-27
+    kind: 開幕
+    note: TOURS Second Stage発表イベント&公開生配信(池袋サンシャインシティ)
   pending:
   - B賞「えらべるPay」抽選結果(判明次第 triggers へ)
 - dedup_key: imas-20th-iwsf2026
@@ -116,11 +117,6 @@
   - date: 2026-09-06
     kind: 千秋楽
     note: 大阪会場 最終日
-- dedup_key: shiny-msp-goods-presale
-  brand: shiny
-  subject: シャニマスMSP公式グッズ事前販売
-  triggers: []
-  pending: []
 - dedup_key: shanison-luka-ssr-gacha
   brand: shiny
   subject: シャニソン 夏ピックアップガシャ
@@ -151,26 +147,25 @@
 - dedup_key: mirishita-second-hairstyle-gasha-glasses
   brand: million
   subject: ミリシタ セカンドヘアスタイルガシャ myブランド編 with glasses
-  triggers:
-  - date: 2026-07-13
-    kind: 締切
-    note: ガシャ 14:59終了
+  triggers: []
   pending: []
 - dedup_key: mirishita-52week-cd-release-campaign
   brand: million
   subject: ミリシタ 52週連続CDリリース企画連動キャンペーン
+  triggers: []
+  pending: []
+- dedup_key: million-special-solo-records-52weeks-finale-2026
+  brand: million
+  subject: ソロコレクションCD『SPECIAL SOLO RECORDS』52週連続リリース最終弾(秋月律子)
   triggers:
-  - date: 2026-07-13
-    kind: 締切
-    note: ゲーム内連動キャンペーン 14:59終了
+  - date: 2026-07-15
+    kind: 発売
+    note: 最終第52弾(秋月律子)発売、ギネス世界記録挑戦の完結
   pending: []
 - dedup_key: dere-of-the-dead-archive-deadline
   brand: cg
   subject: ミュージカル『DERE of the DEAD』振り返りラジオ アーカイブ
-  triggers:
-  - date: 2026-07-13
-    kind: 締切
-    note: アーカイブ視聴期限
+  triggers: []
   pending: []
 - dedup_key: cinderella-girl-vote2026-schedule
   brand: cg
@@ -273,9 +268,6 @@
   brand: joint
   subject: ポップアップストア Starlight Dining(アトレ川崎)
   triggers:
-  - date: '2026-07-13'
-    kind: 締切
-    note: 事前抽選期間の最終日(7/14からは各日0時の当日抽選へ)
   - date: '2026-07-20'
     kind: 千秋楽
     note: 会期最終日
@@ -306,3 +298,123 @@
   - date: '2026-07-24'
     kind: 発売
     note: 京王アリーナTOKYOで先行販売開始
+- dedup_key: gakumas-duet-song-collection-2026
+  brand: gaku
+  subject: 学マス「Duet Song Collection」CD特装盤
+  triggers:
+  - date: '2026-07-15'
+    kind: 締切
+    note: ASOBI STORE特装盤予約締切
+  - date: '2026-10-14'
+    kind: 発売
+    note: 発売日
+- dedup_key: shiny-manekineko-collab-2026
+  brand: shiny
+  subject: シャニマス×カラオケまねきねこコラボ
+  triggers:
+  - date: '2026-07-14'
+    kind: 開幕
+    note: コラボキャンペーン開始
+  - date: '2026-08-27'
+    kind: 締切前
+    note: 開催終了(8/30)の3日前リマインド
+  - date: '2026-08-30'
+    kind: 千秋楽
+    note: コラボ開催終了
+- dedup_key: sidem-11th-stage-2026
+  brand: sidem
+  subject: SideM 11th STAGE ～EVER EVER＠FTER～
+  triggers:
+  - date: '2026-09-12'
+    kind: 開幕
+    note: DAY1(TOYOTA ARENA TOKYO)
+  - date: '2026-09-13'
+    kind: 千秋楽
+    note: DAY2
+- dedup_key: cg-toppa-base-popup-2026
+  brand: cg
+  subject: シンデレラガールズ TOPPA!!!BASE POPUP SHOP
+  triggers:
+  - date: '2026-08-27'
+    kind: 開幕
+    note: 秋葉原・札幌・仙台・名古屋・大阪・福岡で同時開幕
+  - date: '2026-09-14'
+    kind: 締切
+    note: 総選挙投票券シリアル配布終了(地方5店舗の会期最終日)
+  - date: '2026-09-16'
+    kind: 千秋楽
+    note: 秋葉原会場の会期最終日
+- dedup_key: joint-lantisdayz-shibuyalovez-2026
+  brand: joint
+  subject: 新会場Shibuya LOVEZ開業記念「Lantis DAYZ」
+  triggers:
+  - date: '2026-07-18'
+    kind: 開幕
+    note: DAY1(SideM出演)
+  - date: '2026-07-19'
+    kind: 千秋楽
+    note: DAY2(シャニマス ノクチル出演)
+- dedup_key: imas-taiwan-manga-expo-2026
+  brand: general
+  subject: アイマス、台湾「第25回漫画博覧会」参加
+  triggers:
+  - date: '2026-07-20'
+    kind: 締切前
+    note: 開幕(7/23)3日前の予習・リマインド
+  - date: '2026-07-23'
+    kind: 開幕
+    note: キャストステージ実施
+- dedup_key: cg-memorial-picture-september-2026
+  brand: cg
+  subject: メモリアルピクチャー4th Pict. September
+  triggers:
+  - date: '2026-07-23'
+    kind: 締切前
+    note: 受注締切(7/26)の3日前リマインド
+  - date: '2026-07-26'
+    kind: 締切
+    note: 受注締切
+- dedup_key: cosmo-dj-stream-3-2026-07-17
+  brand: dsva
+  subject: 上水流宇宙 第3回DJ配信
+  triggers:
+  - date: '2026-07-17'
+    kind: 開幕
+    note: IWSF2026向け「アイマス楽曲縛り」DJ配信
+- dedup_key: gaku-gomyway-yume-gacha-2026-07
+  brand: gaku
+  subject: 学マス ライブツアー限定ガシャ「GO MY WAY!!花海佑芽」
+  triggers:
+  - date: '2026-07-18'
+    kind: 締切前
+    note: 開催終了(7/21)の3日前リマインド
+  - date: '2026-07-21'
+    kind: 締切
+    note: ガシャ開催終了
+- dedup_key: cg-popn-toybox-goods-2026
+  brand: cg
+  subject: CONCEPT xR LIVE『Pop'n ToyBox!!』
+  triggers:
+  - date: '2026-07-20'
+    kind: 締切
+    note: 応援グッズ販売終了
+  - date: '2026-08-13'
+    kind: 開幕
+    note: DAY1(Shibuya LOVEZ)
+  - date: '2026-08-16'
+    kind: 千秋楽
+    note: 最終日
+- dedup_key: 765-namco-summer-market-hakuhinkan-2026
+  brand: '765'
+  subject: ナムコ ゲームセレクション サマーマーケット in 博品館TOY PARK
+  triggers:
+  - date: '2026-08-06'
+    kind: 千秋楽
+    note: 会期最終日
+- dedup_key: gaku-round1-collab-2026
+  brand: gaku
+  subject: 学マス×ROUND1コラボキャンペーン
+  triggers:
+  - date: '2026-10-12'
+    kind: 千秋楽
+    note: 開催終了

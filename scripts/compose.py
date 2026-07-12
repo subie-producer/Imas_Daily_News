@@ -4,15 +4,19 @@
   python3 scripts/compose.py [--plan] [--max-rounds 2]
 
 役割分担: 執筆=Claude(sonnet 系・ヘッドレス) / 機械算出=derive.py / 校閲=Codex。
+二段構成(執筆時コンタミの構造的排除):
 1. edition ブランチ同期 → 続報キュー(本日トリガー)と素材を整理
-2. claude -p が記事群・号・社説・stories/upcoming 更新を書き、lint 自己修正まで行う
-3. derive.py --write で機械算出フィールドを確定
-4. lint(ゲート) → codex 校閲 → block なら claude に修正させ再校閲(最大 --max-rounds 往復)
-5. commit & push(発行は 06:00 の release が行う)
+2. 選定: claude が候補全体から記事計画(slug→candidate_ids 対応表)を JSON で出力
+   → compose が機械検証(候補の実在・verify・blocklist・lead 一意)
+3. 個別執筆: 記事ごとに、計画で選ばれた候補 JSON だけを機械的に切り出して渡し、
+   独立した claude セッションが1本書く(他候補の情報がコンテキストに存在しない)
+4. 組版: 別セッションが号スナップショット(digest)・社説・stories/upcoming 更新
+5. derive.py --write → lint(ゲート) → codex 校閲往復 → commit & push(発行は 06:00 の release)
 """
 import argparse
 import datetime
 import json
+import re
 import subprocess
 import sys
 import time
@@ -79,47 +83,132 @@ def next_number() -> int:
     return max(nums) + 1 if nums else 1
 
 
-def build_prompt(date: str, number: int, triggers: list[dict]) -> str:
+BRANDS = {"general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"}
+RANKS = {"lead", "large", "medium", "small"}
+# 出典バッジの信頼順(強い順)。記事 src は素材候補のうち最も強いもの
+SRC_ORDER = ["公式", "準公式", "当事者", "報道", "ファン", "もちより", "未確認"]
+
+
+def load_window_candidates(date: str) -> dict:
+    """発行日±1日(=発行日と前日)の収集ファイルから id→候補 の索引を作る(lint の突合窓と同一)。"""
+    ed = datetime.date.fromisoformat(date)
+    items = {}
+    for day in ((ed - datetime.timedelta(days=1)).isoformat(), date):
+        p = ROOT / "candidates" / f"{day}.json"
+        if p.exists():
+            for c in json.loads(p.read_text(encoding="utf-8")):
+                if c.get("id"):
+                    items[c["id"]] = c
+    return items
+
+
+def load_blocklist() -> dict:
+    p = ROOT / "stock" / "blocklist.yml"
+    if not p.exists():
+        return {}
+    return {e["dedup_key"]: e.get("reason", "") for e in yaml.safe_load(p.read_text(encoding="utf-8")) or []}
+
+
+def plan_prompt(date: str, number: int, triggers: list[dict], feedback: str = "") -> str:
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集部です。{date}({weekday}曜)号(number: {number})の紙面を、このリポジトリに作成してください。
+    ed = datetime.date.fromisoformat(date)
+    files = ", ".join(f"candidates/{d}.json"
+                      for d in ((ed - datetime.timedelta(days=1)).isoformat(), date)
+                      if (ROOT / "candidates" / f"{d}.json").exists())
+    fb = f"\n## 前回計画の機械検証エラー(必ず解消すること)\n{feedback}\n" if feedback else ""
+    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集長です。{date}({weekday}曜)号の**記事計画**(どの話題を、どの候補を素材に、どの扱いで書くか)だけを作ってください。記事本文はまだ書きません。
 
-## 必読(先に読むこと)
-- REQUIREMENTS.md の 3章(データ契約)と 5章(編集規程。特に規程1・2・4・5・8・9・10・11)
-- PIPELINE.md の §3(続報の制度化と記事化判定)
-- schema/*.json(機械可読契約)
-- 既存の号(docs/_posts/・docs/_editions/ の最新日付)を1つ開いて形式を確認
-
-## 素材
-- candidates/*.json … 収集済み候補(verify: failed は使用不可)。**出典に使う URL は必ず candidates に存在するものだけ**。記事化基準(対象範囲・続報判定)を満たす候補は本数を理由に落とさないこと
-- stock/stories.yml … 既報台帳。published_facts と同内容の記事は書かない(規程8)
-- stock/blocklist.yml … 使用禁止候補。ここに載った dedup_key の候補は verify 値に関わらず出典に使わない
-- 本日トリガーの続報キュー(必ず記事化候補として処理。あふれは small へ):
+## 素材(読むもの)
+- {files} … 収集済み候補。各要素の id が候補IDです
+- stock/stories.yml … 既報台帳(published_facts と同内容=新事実なしの話題は記事化しない。編集規程8)
+- stock/blocklist.yml … 使用禁止候補(dedup_key 単位。verify 値に関わらず素材にしない)
+- REQUIREMENTS.md 5章(編集規程)
+- 本日トリガーの続報キュー(必ず記事化する。あふれは small へ):
 {json.dumps(triggers, ensure_ascii=False, indent=2)}
 
-## 作成物
-1. docs/_posts/{date}-<slug>.md … 記事。**記事化基準を満たす話題は全部書く。「多いから落とす」ことは禁止**(紙面は無制限)。10〜14本は最低限の目安・上限なし、あふれる日は rank を small に寄せて全て載せる。下限8本・lead は必ず1本(分量規程9・本数規程11)
-2. docs/_editions/{date}.md … 号スナップショット(frontmatter のみ。number: {number}, issued_at: "{date}T06:00:00+09:00"。
-   pages/article_count/corrected_count/ranking/birthdays は後で scripts/derive.py が上書きするため仮値でよいが、スキーマは満たすこと。digest はあなたが本気で組む: 4群固定・SP1画面制約)
-3. docs/_editorials/{date}.md … 社説1本(その日の紙面から1題)
-4. stock/stories.yml … 記事化した話題の published_facts を追記(新規話題はエントリ追加)
-5. stock/upcoming.yml … 新しく判明した未来日程をトリガー予約(締切前3日・締切・開幕・千秋楽・発売・結果)
+## 選定規則
+- verify が failed の候補・blocklist の候補は素材にしない
+- 同一話題を複数エンジンが観測している場合は1記事に統合し、その記事の candidate_ids に全部載せる
+- 記事化基準を満たす話題は**全部**計画に入れる(「多いから落とす」は禁止。紙面は無制限。編集規程11)。10〜14本は最低限の目安・下限8本
+- lead はちょうど1本。その日最も重要な話題に与える
+- 個人への攻撃・プライバシー侵害になり得る話題、読んだ人が嫌な気分になる炎上・係争は入れない。個人の SNS 投稿は単体で記事化しない(規程4・5。規程11より優先)
+- 声優個人のアイマス外活動・関係者の動向は対象外(規程4)
+{fb}
+## 出力
+`metrics/plan-{date}.json` に次の形式の JSON を書く(Write ツール使用。これ以外のファイルは作らない):
+{{
+  "articles": [
+    {{"slug": "英小文字ハイフンの記事ID(号内一意)",
+      "brand": "general|765|cg|million|shiny|sidem|gaku|dsva|joint|other",
+      "rank": "lead|large|medium|small",
+      "angle": "記事の切り口・見出しの方向性(1文)",
+      "dedup_key": "主話題の dedup_key",
+      "candidate_ids": ["素材にする候補の id(統合分は全部)"]}}
+  ],
+  "editorial_topic": "社説の主題(その日の紙面から1題・1文)"
+}}
+最後に記事本数と rank 内訳を1行で報告してください。
+"""
+
+
+def article_prompt(date: str, art: dict, materials: list[dict], story_facts: list[str],
+                   trigger: dict | None, src: str) -> str:
+    weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
+    from lint import BODY_RANGE  # 分量規程は lint と同一定義を使う
+    lo, hi = BODY_RANGE[art["rank"]]
+    trig = (f"\n- この記事は続報トリガー({trigger['kind']}: {trigger.get('note') or trigger['subject']})の消化です。"
+            "トリガーの当日性(締切・開幕等)を記事の軸にすること" if trigger else "")
+    prev = ("\n## 既報(この話題で報道済みの事実。同じ事実の繰り返しを記事の軸にしない)\n"
+            + "\n".join(f"- {f}" for f in story_facts)) if story_facts else ""
+    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の記者です。{date}({weekday}曜)号の記事を**1本だけ**書いてください。
+
+## 素材(この JSON がこの記事に使ってよい情報の全てです)
+{json.dumps(materials, ensure_ascii=False, indent=2)}
+{prev}
+
+## 執筆前の出典照合(必須)
+素材の各 url を WebFetch で開き、facts が実際にページで確認できるか照合する。
+ページで確認できない fact は使わない(素材の facts 自体が収集段階の誤りを含み得る)。
+x.com など取得不能な URL は例外(Grok 観測を出典として信頼する既定どおり)。
+**記事の存在理由になる中核の事実が確認できない場合は、ファイルを作らず「ABORT: 理由」とだけ出力して終了すること。**
+
+## 出力
+`docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
+- frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']} / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
+- title(全角換算〜28字)・lede(1文)・tags(2〜4個)・sources(素材の url から。label は内容がわかる短い日本語、type は各候補の source_type)・event_date(素材にあれば)は自分で書く
+- 本文は {lo}〜{hi} 字(rank: {art['rank']} の分量規程)。切り口: {art['angle']}{trig}
 
 ## 絶対規則
-- candidates の facts に無い事実を書かない(推測・一般知識での補完は禁止)
-- **執筆前の出典照合**: 記事にする各候補について、出典 URL を WebFetch で開き、facts が実際にページで確認できるか照合する。
-  ページで確認できない fact は candidates にあっても使わない(候補の facts 自体が収集段階の誤りを含み得る)。
-  facts の中核(記事の存在理由になる事実)が確認できない候補は記事化しない。
-  x.com など取得不能な URL は例外(Grok 観測を出典として信頼する既定どおり)
-- 相対表現(本日/昨日/明日)は発行日 {date} 基準。絶対日付と同一文で矛盾させない
-- X(x.com)の URL は公式アカウントの一次告知のみ出典に使える(バッジ「公式」)
-- バッジ「公式」は**アイマス公式**(公式ポータル・ブランド公式サイト・公式Xアカウント)のみ。レーベル・公式ストア(コロムビア・ランティス・アソビストア等)は「準公式」、その他の主催者・販売元・自治体・コラボ先は「当事者」(REQUIREMENTS 2.5)
-- 内規の文言(「全記事に必須」「毎日1本」等)を紙面に書かない(規程10)
-- 個人への攻撃・プライバシー侵害になり得る話題、読んだ人が嫌な気分になる炎上・係争は記事化しない。個人の SNS 投稿は単体で記事化しない(規程4・5)。「全部書く」(規程11)より優先する
+- 素材の facts(照合済みのもの)に無い事実を書かない。推測・一般知識での補完は禁止
+- 相対表現(本日/昨日/明日)は発行日 {date} 基準。絶対日付と同一文で相対語を併用しない(時制 lint)
+- 内規の文言(「全記事に必須」等)を紙面に書かない
+- 事実の伝聞元がファン発・未確認の場合は断定を避ける文体にする
+"""
+
+
+def assembly_prompt(date: str, number: int, editorial_topic: str, aborted: list[str]) -> str:
+    weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
+    ab = (f"\n- 計画されたが出典照合で不成立になり存在しない記事: {', '.join(aborted)}(digest 等から参照しないこと)"
+          if aborted else "")
+    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集部です。{date}({weekday}曜)号(number: {number})の記事群は docs/_posts/{date}-*.md に**執筆済み**です。組版と台帳更新だけを行ってください。
+
+## 作成物
+1. docs/_editions/{date}.md … 号スナップショット(frontmatter のみ。number: {number}, issued_at: "{date}T06:00:00+09:00"。
+   形式は直近の既存号と schema/edition.schema.json を確認。pages/article_count/corrected_count/ranking/birthdays は
+   後で scripts/derive.py が上書きするため仮値でよい。digest はあなたが本気で組む: 4群固定・SP1画面制約(各群4行・計12行)。
+   lead が存在しない場合のみ、最も重要な記事の rank を lead に昇格させ本文を lead の分量(800〜1200字)に加筆する)
+2. docs/_editorials/{date}.md … 社説1本。主題: {editorial_topic}
+3. stock/stories.yml … 記事化した各話題の published_facts を追記(新規話題はエントリ追加。dedup_key は記事 frontmatter の candidate_ids から candidates を引く)
+4. stock/upcoming.yml … 記事・候補から新しく判明した未来日程をトリガー予約(締切前3日・締切・開幕・千秋楽・発売・結果)
+
+## 注意
+- 記事本文の事実関係は校閲済みの前提で**書き換えない**(digest・社説は記事に書いてあることだけを使う)
+- 内規の文言を紙面に書かない{ab}
 
 ## 仕上げ
 - `python3 scripts/derive.py --date {date} --write` を実行して機械算出フィールドを確定する
 - `python3 scripts/lint.py --base origin/main` を実行し、エラー0まで自分で修正する(警告も可能な限り解消)
-- 完了したら、作成した記事本数と各 rank の内訳を最後に報告する
+- 完了したら digest 4群の見出しを最後に報告する
 """
 
 
@@ -128,6 +217,134 @@ def claude_run(prompt: str, timeout: int = 2400) -> str:
         ["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions"],
         capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
     return r.stdout
+
+
+def validate_plan(plan: dict, cands: dict, blocklist: dict) -> list[str]:
+    errors = []
+    arts = plan.get("articles") if isinstance(plan, dict) else None
+    if not arts:
+        return ["articles が空、または plan JSON の形式不正"]
+    slugs = [a.get("slug", "") for a in arts]
+    if len(set(slugs)) != len(slugs):
+        errors.append("slug が重複している")
+    leads = [a["slug"] for a in arts if a.get("rank") == "lead"]
+    if len(leads) != 1:
+        errors.append(f"lead はちょうど1本(現在 {len(leads)} 本: {leads})")
+    for a in arts:
+        slug = a.get("slug", "?")
+        if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", slug or ""):
+            errors.append(f"{slug}: slug が英小文字ハイフン形式でない")
+        if a.get("brand") not in BRANDS:
+            errors.append(f"{slug}: brand 不正({a.get('brand')})")
+        if a.get("rank") not in RANKS:
+            errors.append(f"{slug}: rank 不正({a.get('rank')})")
+        if not a.get("candidate_ids"):
+            errors.append(f"{slug}: candidate_ids が空")
+        for cid in a.get("candidate_ids", []):
+            c = cands.get(cid)
+            if c is None:
+                errors.append(f"{slug}: 候補 {cid} が発行日±1日の candidates に存在しない")
+                continue
+            if c.get("verify") == "failed":
+                errors.append(f"{slug}: 候補 {cid} は verify=failed(使用不可)")
+            if c.get("dedup_key") in blocklist:
+                errors.append(f"{slug}: 候補 {cid} は blocklist 対象({c.get('dedup_key')})")
+    return errors
+
+
+def parse_front_matter(path: Path) -> dict | None:
+    try:
+        text = path.read_text(encoding="utf-8")
+        m = re.match(r"\A---\n(.*?)\n---\n", text, re.DOTALL)
+        return yaml.safe_load(m.group(1)) if m else None
+    except Exception:
+        return None
+
+
+def validate_article_file(date: str, art: dict, cands: dict, src: str) -> list[str]:
+    """個別執筆の機械検収: 計画どおりの frontmatter か・出典が系譜内か。"""
+    path = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
+    if not path.exists():
+        return ["ファイル未作成"]
+    fm = parse_front_matter(path)
+    if not fm:
+        return ["frontmatter がパース不能"]
+    errors = []
+    for key, want in (("slug", art["slug"]), ("edition", date), ("brand", art["brand"]),
+                      ("rank", art["rank"]), ("src", src)):
+        got = fm.get(key)
+        got = got.isoformat() if hasattr(got, "isoformat") else got
+        if got != want:
+            errors.append(f"{key} が計画と不一致(計画 {want} / 実際 {got})")
+    if sorted(fm.get("candidate_ids") or []) != sorted(art["candidate_ids"]):
+        errors.append("candidate_ids が計画と不一致")
+    own_urls = {cands[cid].get("url", "") for cid in art["candidate_ids"] if cid in cands}
+    for s in fm.get("sources") or []:
+        if s.get("url") not in own_urls:
+            errors.append(f"出典 URL が素材候補群に無い(系譜外): {s.get('url')}")
+    return errors
+
+
+def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
+                   stories: dict, wave: int = 4) -> tuple[list[dict], list[str]]:
+    """記事ごとに素材を機械的に切り出して個別 claude セッションで執筆(wave 並列)。"""
+    trig_by_key = {t["dedup_key"]: t for t in triggers}
+    jobs = []
+    for art in plan["articles"]:
+        materials = [cands[cid] for cid in art["candidate_ids"]]
+        src = min((c.get("source_type", "未確認") for c in materials),
+                  key=lambda s: SRC_ORDER.index(s) if s in SRC_ORDER else len(SRC_ORDER))
+        dks = {c.get("dedup_key") for c in materials} | {art.get("dedup_key")}
+        facts = [f for dk in dks if dk in stories for f in stories[dk]]
+        jobs.append((art, src, article_prompt(date, art, materials, facts,
+                                              trig_by_key.get(art.get("dedup_key")), src)))
+    written, aborted = [], []
+    for i in range(0, len(jobs), wave):
+        procs = []
+        for art, src, prompt in jobs[i:i + wave]:
+            procs.append((art, src, subprocess.Popen(
+                ["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions"],
+                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True,
+                stdin=subprocess.DEVNULL, cwd=ROOT)))
+        for art, src, p in procs:
+            try:
+                out, _ = p.communicate(timeout=900)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                out = ""
+            if "ABORT:" in (out or "")[-2000:] and not (ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md").exists():
+                reason = out.rsplit("ABORT:", 1)[-1].strip()[:200]
+                print(f"記事 {art['slug']} は出典照合で不成立: {reason}", flush=True)
+                aborted.append(art["slug"])
+                continue
+            errs = validate_article_file(date, art, cands, src)
+            if errs:
+                # 検収エラーは同一素材で1回だけ書き直させる
+                fixp = (f"docs/_posts/{date}-{art['slug']}.md の機械検収エラーを修正してください(Edit ツール使用):\n- "
+                        + "\n- ".join(errs))
+                subprocess.run(["claude", "-p", fixp, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions"],
+                               capture_output=True, text=True, timeout=600,
+                               stdin=subprocess.DEVNULL, cwd=ROOT)
+                errs = validate_article_file(date, art, cands, src)
+            if errs:
+                print(f"記事 {art['slug']} 検収不合格: {errs}", flush=True)
+                aborted.append(art["slug"])
+                bad = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
+                if bad.exists():
+                    bad.unlink()
+            else:
+                written.append(art)
+    return written, aborted
+
+
+def load_story_facts() -> dict:
+    p = ROOT / "stock" / "stories.yml"
+    if not p.exists():
+        return {}
+    out = {}
+    for e in yaml.safe_load(p.read_text(encoding="utf-8")) or []:
+        out[e.get("story_id")] = e.get("published_facts", [])
+    return out
 
 
 def run_lint(date: str) -> tuple[int, str]:
@@ -169,9 +386,8 @@ def main() -> int:
     if not args.plan:
         prune_upcoming(date)
     number = next_number()
-    prompt = build_prompt(date, number, triggers)
     if args.plan:
-        print(prompt)
+        print(plan_prompt(date, number, triggers))
         return 0
 
     if (ROOT / "docs" / "_editions" / f"{date}.md").exists():
@@ -192,9 +408,44 @@ def main() -> int:
     if stale:
         notify("compose", f"{date}: 直近2時間の collect 実行記録が無い(締切前スイープ未実施?)。手持ちの candidates で続行", ok=False)
 
-    # 1. 執筆(Claude が lint 自己修正まで行う)
-    log = claude_run(prompt)
-    print(log[-1500:], flush=True)
+    # 1a. 選定: 記事計画の生成と機械検証(1回だけ再計画を許す)
+    cands = load_window_candidates(date)
+    blocklist = load_blocklist()
+    if not cands:
+        notify("compose", f"{date}: 発行日±1日の candidates が空。compose 続行不能", ok=False)
+        return 1
+    plan_path = ROOT / "metrics" / f"plan-{date}.json"
+    plan, errors = None, ["未実行"]
+    for attempt in (1, 2):
+        fb = "" if attempt == 1 else "\n".join(f"- {e}" for e in errors)
+        claude_run(plan_prompt(date, number, triggers, feedback=fb), timeout=1800)
+        try:
+            plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        except Exception:
+            errors = [f"{plan_path.name} が存在しないか JSON として読めない"]
+            continue
+        errors = validate_plan(plan, cands, blocklist)
+        if not errors:
+            break
+    if errors:
+        notify("compose", f"{date}: 記事計画が機械検証を通らず。人間判断が必要\n- " + "\n- ".join(errors[:8]), ok=False)
+        commit_and_push(branch, f"compose {date}: 計画不成立(要人間判断)", "compose")
+        return 1
+    n_plan = len(plan["articles"])
+    print(f"計画: {n_plan}本 (lead: {[a['slug'] for a in plan['articles'] if a['rank']=='lead']})", flush=True)
+
+    # 1b. 個別執筆: 記事ごとに素材を機械切り出しして独立セッションで書く
+    written, aborted = write_articles(date, plan, cands, triggers, load_story_facts())
+    print(f"執筆: {len(written)}/{n_plan}本(不成立 {len(aborted)}: {aborted})", flush=True)
+    if len(written) < 1 or (aborted and len(written) < 8):
+        notify("compose", f"{date}: 執筆成立 {len(written)}本/計画 {n_plan}本(不成立: {aborted})。下限割れの疑い", ok=False)
+    if not written:
+        commit_and_push(branch, f"compose {date}: 執筆全滅(要人間判断)", "compose")
+        return 1
+
+    # 1c. 組版: 号スナップショット・社説・台帳更新(lint 自己修正まで)
+    log = claude_run(assembly_prompt(date, number, plan.get("editorial_topic", ""), aborted))
+    print(log[-1000:], flush=True)
 
     # 2. 機械算出の確定 + lint ゲート
     subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
@@ -231,7 +482,8 @@ def main() -> int:
     code, _ = run_lint(date)
     ok = approved and code == 0
     append_metric("compose", {"edition": date, "rounds": rounds, "approved": bool(approved),
-                              "lint_green": code == 0, "duration_s": int(time.time() - t0)})
+                              "lint_green": code == 0, "planned": n_plan, "written": len(written),
+                              "aborted": aborted, "duration_s": int(time.time() - t0)})
     commit_and_push(branch, f"compose {date}: 紙面生成(校閲{'approve' if approved else '未approve'}・{rounds}往復)", "compose")
     if ok:
         notify("compose", f"{date}号 準備完了(校閲{rounds}往復で approve)。06:00 に発行されます")

@@ -394,11 +394,13 @@ def main() -> int:
 
     # -- candidates スキーマ+出典照合(突合は記事の発行日±1日の窓のみ参照) --
     candidate_urls_by_day = {}
+    candidate_items_by_day = {}
     candidate_files = sorted(CANDIDATES.glob("*.json"))
     for path in candidate_files:
         data = json.loads(path.read_text(encoding="utf-8"))
         schema_check(rep, path, candidates_schema, data)
         candidate_urls_by_day[path.stem] = {c.get("url", "") for c in data}
+        candidate_items_by_day[path.stem] = {c["id"]: c for c in data if c.get("id")}
 
     net_targets = [
         (path, fm) for _k, (path, fm, _) in posts.items()
@@ -414,6 +416,22 @@ def main() -> int:
             for s in fm["sources"]:
                 if s["url"] not in allowed:
                     rep.error(path, f"出典 URL が発行日前後の candidates に存在しない: {s['url']}")
+        # 系譜検査: candidate_ids がある記事は、出典 URL がその候補群の URL に限定される
+        if fm.get("candidate_ids"):
+            window_items = {}
+            for day in window:
+                window_items.update(candidate_items_by_day.get(day, {}))
+            own_urls = set()
+            for cid in fm["candidate_ids"]:
+                item = window_items.get(cid)
+                if item is None:
+                    rep.error(path, f"candidate_ids の {cid} が発行日前後の candidates に存在しない")
+                else:
+                    own_urls.add(item.get("url", ""))
+            if own_urls:
+                for s in fm["sources"]:
+                    if s["url"] not in own_urls:
+                        rep.error(path, f"出典 URL が candidate_ids の候補群に含まれない(系譜外): {s['url']}")
         if not args.no_net:
             for s in fm["sources"]:
                 host = urllib.parse.urlparse(s["url"]).hostname or ""

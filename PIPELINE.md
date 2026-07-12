@@ -159,7 +159,10 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 ## 6. compose と校閲
 
-- **compose**(04:00): `claude -p` を `.claude/commands/compose.md` で起動。入力は検証済み candidates+stock+stories+前号までの紙面。出力は `_posts`/`_editions`/`_editorials` の新規ファイル+stories.yml 追記+機械算出フィールドはスクリプト(`scripts/derive.py`)で埋める。生成後ただちにローカル lint を回し、赤なら compose 内で自己修正させる。
+- **compose**(04:00): `scripts/compose.py` が三段で実行する(執筆時コンタミの構造的排除):
+  1. **選定**: claude セッションが候補全体(発行日±1日の candidates)+stories+blocklist から記事計画 `metrics/plan-<date>.json`(slug→candidate_ids 対応表)を出力。compose が機械検証(候補の実在・verify≠failed・blocklist 除外・lead 一意・slug/brand/rank 形式)。不合格はエラーを添えて1回だけ再計画
+  2. **個別執筆**: 記事ごとに candidate_ids の JSON を機械的に切り出し、**その素材だけ**を渡した独立 claude セッションが1本書く(4並列)。執筆前に出典 URL を WebFetch 照合し、中核事実が確認できなければ ABORT(記事不成立として記録)。生成後は機械検収(frontmatter が計画どおりか・出典 URL が素材候補群の範囲内か=系譜検査)。記事 frontmatter に candidate_ids が残り、lint も同じ系譜検査を行う
+  3. **組版**: 別セッションが号スナップショット(digest)・社説・stories/upcoming 更新を行い、`scripts/derive.py` で機械算出フィールドを確定、lint 赤なら自己修正
 - **校閲**(04:30目安): `codex exec -m terra` に固定チェックリスト(`prompts/review-checklist.md`)+main との diff を渡し、判定を JSON(`--output-schema`)で受け取る。往復と判定結果は metrics に記録する。
   - **ブロック**: 出典にない事実/URL捏造/新事実なしの続報/個人攻撃・プライバシー/時制矛盾
   - **コメントのみ**: 表記ゆれ・字数・面白さ

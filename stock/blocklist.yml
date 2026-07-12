@@ -1,0 +1,6 @@
+# 使用禁止候補(編集部の失格判定)。candidates/ は観測記録なので書き換えない。
+# 「観測はあったが出典で確認できなかった・捏造だった」等の判断はこの層に分離する。
+# compose はここに載った dedup_key を verify 値に関わらず出典に使わない。
+- dedup_key: mirishita-52week-cd-release-campaign
+  reason: 出典ページ(lantis.jp/imas/ssr)に「ゲーム内連動キャンペーン」の記載が存在しない。実在するCD企画に別施策の期限形式が合成された探索段階のハルシネーション
+  decided: '2026-07-13'

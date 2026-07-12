@@ -92,6 +92,7 @@ def build_prompt(date: str, number: int, triggers: list[dict]) -> str:
 ## 素材
 - candidates/*.json … 収集済み候補(verify: failed は使用不可)。**出典に使う URL は必ず candidates に存在するものだけ**。記事化基準(対象範囲・続報判定)を満たす候補は本数を理由に落とさないこと
 - stock/stories.yml … 既報台帳。published_facts と同内容の記事は書かない(規程8)
+- stock/blocklist.yml … 使用禁止候補。ここに載った dedup_key の候補は verify 値に関わらず出典に使わない
 - 本日トリガーの続報キュー(必ず記事化候補として処理。あふれは small へ):
 {json.dumps(triggers, ensure_ascii=False, indent=2)}
 

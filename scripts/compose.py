@@ -417,6 +417,7 @@ def main() -> int:
     plan_path = ROOT / "metrics" / f"plan-{date}.json"
     plan, errors = None, ["未実行"]
     for attempt in (1, 2):
+        plan_path.unlink(missing_ok=True)  # 残骸の誤読防止(書込失敗時に旧計画を読まない)
         fb = "" if attempt == 1 else "\n".join(f"- {e}" for e in errors)
         claude_run(plan_prompt(date, number, triggers, feedback=fb), timeout=1800)
         try:

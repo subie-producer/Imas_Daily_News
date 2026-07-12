@@ -74,9 +74,9 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 ## 2. candidates のライフサイクル
 
-1. collect 実行ごとに `candidates/YYYY-MM-DD.json`(**収集日**)へ追記。`dedup_key`(正規化: ブランド+主題+イベント日)で系統間の重複を排除し、同一候補の再検出は `facts` の増分マージにする。
+1. collect 実行ごとに `candidates/YYYY-MM-DD.json`(**号日付**。その収集が寄与する号=次の06:00の日付)へ追記。1つの号の素材は常に1ファイルで、収集サイクル(07:30〜翌03:30)が暦日をまたいでも分割されない(2026-07-14号から。それ以前は収集日キー)。`dedup_key`(正規化: ブランド+主題+イベント日)で系統間の重複を排除し、同一候補の再検出は `facts` の増分マージにする。
 2. verify: 候補ごとに一次ソース URL をフェッチし、日付・内容の一致を照合 → `verify: confirmed / unconfirmed / failed`。**一次ソースに書かれていない事実は facts に入れない**(絶対規則)。
-3. candidates は**次号のための調査データ**であり、消費されるのは当該サイクル(発行日と前日の2ファイル)だけ。それより古いファイルをパイプラインが読むことはない。未来の予定は §3 の scheduled ストアへ素材ごと写す。
+3. candidates は**次号のための調査データ**であり、消費されるのは当該号の1ファイルだけ。過去のファイルをパイプラインが読むことはない。未来の予定は §3 の scheduled ストアへ素材ごと写し、既報かどうかの判定は stock/stories.yml(話題単位の圧縮台帳)が担う(過去記事の広範囲検索をしないための装置)。
 4. 締切: **発行日 04:00 時点の candidates**(前日分+当日未明分)。
 
 ## 3. 続報の制度化と鮮度ポリシー
@@ -194,7 +194,8 @@ scripts/collect.py                   collect.py        scripts/publish.py
 |------|------|--------------------|
 | 記事 | `docs/_posts/YYYY-MM-DD-<slug>.md` → URL `/articles/YYYY-MM-DD-<slug>/` | **URL に日付を含める**ため slug の一意性は号内のみ。過去全記事との衝突を構造的に排除 |
 | 号・社説 | `YYYY-MM-DD.{md}` | 日付キーで衝突なし |
-| candidates / metrics | `YYYY-MM-DD.json`(収集日) | 日付キー。lint の出典突合・derive のトレンド集計は**発行日±1日の窓**のみ参照(全期間を読まない) |
+| candidates | `YYYY-MM-DD.json`(**号日付**) | 1号=1ファイル。lint の出典突合・derive のトレンド集計も当該号ファイルのみ参照(全期間を読まない。2026-07-13以前の旧号のみ収集日キーのため前日窓) |
+| metrics | `YYYY-MM-DD.json`(実行日)+`plan-*.json`・`review-*.json` | 運用ログ。紙面データとは役割分離 |
 | dedup_key / story_id | 英小文字ハイフン。**毎年ある定例企画は年を含める**(例: `shiny-summer-pair-2026`) | 年跨ぎの誤マージを防止 |
 | scheduled/ | `YYYY-MM-DD.json`(発火日) | 日付キーで衝突なし。発行日のファイルしか読まないため蓄積しても走査コストが増えない。過去分は予約記録として残す |
 | stories.yml | 追記型 | **未解決**: 月次で `stock/archive/stories-YYYY-MM.yml` へ closed 分を退避するローテーションを創刊後に導入する |

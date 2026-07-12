@@ -414,9 +414,15 @@ def main() -> int:
         (path, fm) for _k, (path, fm, _) in posts.items()
         if args.full or str(path.relative_to(ROOT)) in changed
     ]
+    # 2026-07-14 号から candidates は号日付キー(1号=1ファイル)。それ以前は収集日キーで
+    # 1つの号の素材が2ファイルに割れていたため、旧号の検査のみ前日窓を残す
+    EDITION_KEYED_FROM = "2026-07-14"
     for path, fm in net_targets:
         ed_day = datetime.date.fromisoformat(fm["edition"])
-        window = {fm["edition"], (ed_day - datetime.timedelta(days=1)).isoformat()}
+        if fm["edition"] >= EDITION_KEYED_FROM:
+            window = {fm["edition"]}
+        else:
+            window = {fm["edition"], (ed_day - datetime.timedelta(days=1)).isoformat()}
         allowed = set()
         for day in window:
             allowed |= candidate_urls_by_day.get(day, set())

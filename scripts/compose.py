@@ -60,16 +60,14 @@ SRC_ORDER = ["公式", "準公式", "当事者", "報道", "ファン", "もち�
 
 
 def load_window_candidates(date: str) -> dict:
-    """当該号の素材索引(id→素材)。当サイクルの収集(発行日と前日=lint の突合窓と同一)+
-    当日の続報予約(stock/scheduled)のみ。それより古い candidates は読まない。"""
-    ed = datetime.date.fromisoformat(date)
+    """当該号の素材索引(id→素材)。号ファイル candidates/<date>.json(収集は号キーで蓄積)+
+    当日の続報予約(stock/scheduled)のみ。過去の candidates は読まない。"""
     items = {}
-    for day in ((ed - datetime.timedelta(days=1)).isoformat(), date):
-        p = ROOT / "candidates" / f"{day}.json"
-        if p.exists():
-            for c in json.loads(p.read_text(encoding="utf-8")):
-                if c.get("id"):
-                    items[c["id"]] = c
+    p = ROOT / "candidates" / f"{date}.json"
+    if p.exists():
+        for c in json.loads(p.read_text(encoding="utf-8")):
+            if c.get("id"):
+                items[c["id"]] = c
     for s in load_scheduled(date):
         items[s["id"]] = s
     return items
@@ -84,10 +82,7 @@ def load_blocklist() -> dict:
 
 def plan_prompt(date: str, number: int, triggers: list[dict], feedback: str = "") -> str:
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    ed = datetime.date.fromisoformat(date)
-    files = ", ".join(f"candidates/{d}.json"
-                      for d in ((ed - datetime.timedelta(days=1)).isoformat(), date)
-                      if (ROOT / "candidates" / f"{d}.json").exists())
+    files = f"candidates/{date}.json"
     fb = f"\n## 前回計画の機械検証エラー(必ず解消すること)\n{feedback}\n" if feedback else ""
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集長です。{date}({weekday}曜)号の**記事計画**(どの話題を、どの候補を素材に、どの扱いで書くか)だけを作ってください。記事本文はまだ書きません。
 

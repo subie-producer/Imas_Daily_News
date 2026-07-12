@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """collect: 定点観測+探索(Claude sonnet の Web 調査 10 クエリ+Grok の X 調査 10 クエリ)を
-まとめて candidates/<収集日>.json に記録し、edition ブランチへ push する。(PIPELINE §1〜2)
+まとめて candidates/<号日付>.json に記録し、edition ブランチへ push する。(PIPELINE §1〜2)
 
   python3 scripts/collect.py [--no-git] [--skip-watch] [--skip-claude] [--skip-grok]
 
 - 定点観測(A-1): sources.yml の一覧差分 → 新着 URL を facts 化(Claude 1コール)
 - 探索(A-2): claude -p(WebSearch)×10クエリ 並列
-- X 動向(B) : grok -p(--json-schema)×10クエリ 並列
+- X 動向(B) : grok -p(--output-format json --always-approve)×10クエリ ウェーブ実行
 - 正規化・URL 重複マージ → candidates へ追記 → 簡易 verify → commit & push
 """
 import argparse
@@ -122,7 +122,7 @@ def build_prompts() -> list[dict]:
 
 
 def parse_grok(out: str) -> list:
-    """grok --json-schema はエンベロープ {"text": <JSON文字列>} で返す。"""
+    """grok --output-format json はエンベロープ {"text": <本文>} で返す。素の JSON にも対応。"""
     try:
         obj = json.loads(out)
         out = obj.get("text", out)
@@ -271,7 +271,10 @@ def verify(cands: list[dict]) -> dict:
 
 
 def merge_into_day_file(cands: list[dict]) -> int:
-    day = now_jst().strftime("%Y-%m-%d")
+    """candidates は号(edition)日付でキーする。1つの号の素材=1ファイルで、収集サイクル
+    (07:30〜翌03:30)が暦日をまたいでも分割されない。パイプラインが前日以前の
+    ファイルを読む必要は無い(未来日程は stock/scheduled、既報判定は stock/stories.yml)。"""
+    day = edition_date()
     p = ROOT / "candidates" / f"{day}.json"
     existing = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
     by_url = {c["url"]: c for c in existing}

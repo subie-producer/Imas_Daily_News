@@ -65,7 +65,11 @@ def compute(date: str) -> dict:
     # トレンドテキスト(「24時間」= 発行日と前日の candidates の explore 由来のみ)
     trend_text = ""
     d = datetime.date.fromisoformat(date)
-    window = {date, (d - datetime.timedelta(days=1)).isoformat()}
+    # 2026-07-14 号から candidates は号日付キー(1号=1ファイル)。旧号のみ前日窓を残す
+    if date >= "2026-07-14":
+        window = {date}
+    else:
+        window = {date, (d - datetime.timedelta(days=1)).isoformat()}
     for cf in sorted((ROOT / "candidates").glob("*.json")):
         if cf.stem not in window:
             continue

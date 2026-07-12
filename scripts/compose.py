@@ -175,7 +175,8 @@ def main() -> int:
 
     # 締切ガード(規程: 締切=04:00時点の candidates)。スイープ未実施なら警告して続行
     latest = None
-    for md in sorted((ROOT / "metrics").glob("*.json"))[-2:]:
+    # 日付名ファイルのみ対象(review-*.json が辞書順で後ろに並び、誤検知するため)
+    for md in sorted((ROOT / "metrics").glob("????-??-??.json"))[-2:]:
         try:
             for run in json.loads(md.read_text(encoding="utf-8")).get("collect", []):
                 latest = max(latest or run["at"], run["at"])

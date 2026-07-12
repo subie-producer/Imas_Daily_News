@@ -149,11 +149,6 @@
   subject: ミリシタ セカンドヘアスタイルガシャ myブランド編 with glasses
   triggers: []
   pending: []
-- dedup_key: mirishita-52week-cd-release-campaign
-  brand: million
-  subject: ミリシタ 52週連続CDリリース企画連動キャンペーン
-  triggers: []
-  pending: []
 - dedup_key: million-special-solo-records-52weeks-finale-2026
   brand: million
   subject: ソロコレクションCD『SPECIAL SOLO RECORDS』52週連続リリース最終弾(秋月律子)

@@ -100,6 +100,10 @@
           "failed"
         ],
         "description": "verify 層の照合結果。探索由来は登録時 unconfirmed"
+      },
+      "verify_note": {
+        "type": "string",
+        "description": "verify 結果の補足(failed の理由など。人間とパイプラインの診断用)"
       }
     }
   }

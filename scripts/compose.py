@@ -84,7 +84,7 @@ def build_prompt(date: str, number: int, triggers: list[dict]) -> str:
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集部です。{date}({weekday}曜)号(number: {number})の紙面を、このリポジトリに作成してください。
 
 ## 必読(先に読むこと)
-- REQUIREMENTS.md の 3章(データ契約)と 5章(編集規程。特に規程1・2・8・9・10・11)
+- REQUIREMENTS.md の 3章(データ契約)と 5章(編集規程。特に規程1・2・4・5・8・9・10・11)
 - PIPELINE.md の §3(続報の制度化と記事化判定)
 - schema/*.json(機械可読契約)
 - 既存の号(docs/_posts/・docs/_editions/ の最新日付)を1つ開いて形式を確認
@@ -109,6 +109,7 @@ def build_prompt(date: str, number: int, triggers: list[dict]) -> str:
 - X(x.com)の URL は公式アカウントの一次告知のみ出典に使える(バッジ「公式」)
 - バッジ「公式」は**アイマス公式**(公式ポータル・ブランド公式サイト・公式Xアカウント)のみ。レーベル・公式ストア(コロムビア・ランティス・アソビストア等)は「準公式」、その他の主催者・販売元・自治体・コラボ先は「当事者」(REQUIREMENTS 2.5)
 - 内規の文言(「全記事に必須」「毎日1本」等)を紙面に書かない(規程10)
+- 個人への攻撃・プライバシー侵害になり得る話題、読んだ人が嫌な気分になる炎上・係争は記事化しない。個人の SNS 投稿は単体で記事化しない(規程4・5)。「全部書く」(規程11)より優先する
 
 ## 仕上げ
 - `python3 scripts/derive.py --date {date} --write` を実行して機械算出フィールドを確定する

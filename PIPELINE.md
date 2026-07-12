@@ -203,6 +203,7 @@ scripts/collect.py                   collect.py        scripts/publish.py
 | upcoming.yml | compose が毎朝、過去日トリガーを掃除し、空エントリを削除 | 無限成長しない |
 | stories.yml | 追記型 | **未解決**: 月次で `stock/archive/stories-YYYY-MM.yml` へ closed 分を退避するローテーションを創刊後に導入する |
 | ブランチ | `edition/YYYY-MM-DD` / `correction/YYYY-MM-DD-<slug>` | 日付キー |
+| 記事 tags | frontmatter に保持するが**紙面には表示しない**(消費する機能が現状無いため) | 将来タグ索引等で機能化する場合、執筆プロンプトに**既存タグ語彙の一覧参照**を組み込むこと(自由記述のままだと表記ゆれタグが量産され索引が崩壊する) |
 | **既知の負債** | Liquid テンプレが `site.posts` を全走査(号ページ・アーカイブ) | 記事 4,000 本規模(約1年)で Pages ビルドが分単位に劣化する見込み。ビルド3分超過を watch の監視項目にし、超えたら「号スナップショットに記事リストを持たせて参照を局所化」する改修を行う |
 
 ## 10. 実装ステップ(REQUIREMENTS 7章 Step 3〜4 の分解)

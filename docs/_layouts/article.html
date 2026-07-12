@@ -83,14 +83,8 @@ layout: default
     </div>
   </div>
 
-  <!-- タグ -->
-  {% if page.tags and page.tags.size > 0 %}
-  <div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap">
-    {% for t in page.tags %}
-    <span style="font-size:11px;color:#55524b;border:1px solid #d9d4c8;padding:3px 10px">#{{ t }}</span>
-    {% endfor %}
-  </div>
-  {% endif %}
+  <!-- タグは frontmatter の機械可読メタデータとしてのみ保持(表示しない)。
+       機能化(タグ索引)する場合は既存タグ語彙の参照を執筆プロンプトに入れること(PIPELINE §9.5) -->
 
   <!-- 同じ面の記事 -->
   {% assign same = "" | split: "" %}

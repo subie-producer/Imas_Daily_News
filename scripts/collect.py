@@ -26,6 +26,8 @@ from pipelib import (ROOT, CLAUDE_MODEL, JST, append_metric, checkout_edition_br
                      commit_and_push, edition_date, extract_json_array, git, notify, now_jst)
 
 SCHEMA_PATH = ROOT / "prompts" / "explore-item-schema.json"
+# grok の --json-schema はファイルパスではなく JSON 文字列を直接受け取る
+GROK_SCHEMA = json.dumps(json.loads(SCHEMA_PATH.read_text(encoding="utf-8")), ensure_ascii=False)
 STATE_PATH = ROOT / "stock" / "watch-state.json"
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
 X_HOSTS = ("x.com", "twitter.com")
@@ -114,6 +116,16 @@ def build_prompts() -> list[dict]:
     return queries
 
 
+def parse_grok(out: str) -> list:
+    """grok --json-schema はエンベロープ {"text": <JSON文字列>} で返す。"""
+    try:
+        obj = json.loads(out)
+        out = obj.get("text", out)
+    except (json.JSONDecodeError, AttributeError):
+        pass
+    return extract_json_array(out)
+
+
 def claude_exec(prompt: str, timeout: int = 300) -> list:
     r = subprocess.run(
         ["claude", "-p", prompt, "--model", CLAUDE_MODEL,
@@ -138,7 +150,7 @@ def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
             gp = (f"{window}のX(Twitter)上のアイドルマスター関連のうち「{q['topic']}」を調査し、"
                   f"公式告知とエンゲージメントの高い話題を最大8件。" + ITEM_FORMAT)
             procs.append((q["key"], "grok", subprocess.Popen(
-                ["grok", "-p", gp, "--json-schema", str(SCHEMA_PATH)],
+                ["grok", "-p", gp, "--json-schema", GROK_SCHEMA],
                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
     items, per = [], {}
@@ -146,7 +158,7 @@ def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
     for key, via, p in procs:
         try:
             out, _ = p.communicate(timeout=max(30, deadline - time.time()))
-            got = extract_json_array(out)
+            got = parse_grok(out) if via == "grok" else extract_json_array(out)
         except subprocess.TimeoutExpired:
             p.kill()
             got = []

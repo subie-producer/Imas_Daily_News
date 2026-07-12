@@ -1,0 +1,51 @@
+[
+ {
+  "id": "sched-2026-07-15-million-special-solo-records-52weeks-finale-2026-発売",
+  "dedup_key": "million-special-solo-records-52weeks-finale-2026",
+  "brand": "million",
+  "subject": "ソロコレクションCD『SPECIAL SOLO RECORDS』52週連続リリース最終弾(秋月律子)",
+  "kind": "発売",
+  "note": "最終第52弾(秋月律子)発売、ギネス世界記録挑戦の完結",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "2025年7月23日～2026年7月15日にかけて全52人分のソロコレクションCD「SPECIAL SOLO RECORDS」を52週連続でリリースする企画で、最終第52弾は秋月律子で2026年7月15日発売予定",
+   "同企画はギネス世界記録に挑戦している",
+   "エンゲージメント: 高",
+   "言及アイドル: 秋月律子"
+  ],
+  "title": "52週連続CD「SPECIAL SOLO RECORDS」が7月15日に完結",
+  "url": "https://lantis.jp/imas/ssr/",
+  "source_type": "準公式",
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130340-claude-94",
+  "event_date": "2026-07-15"
+ },
+ {
+  "id": "sched-2026-07-15-gakumas-duet-song-collection-2026-締切",
+  "dedup_key": "gakumas-duet-song-collection-2026",
+  "brand": "gaku",
+  "subject": "学マス「Duet Song Collection」CD特装盤",
+  "kind": "締切",
+  "note": "ASOBI STORE特装盤予約締切",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "公式が2026年7月12日にASOBI STORE特装盤の予約締切（7/15水まで）とCampus mode!!デュエット音源の一部公開を告知",
+   "発売日は2026年10月14日(水)",
+   "特装盤はギミック付き特殊パッケージでASOBI STORE限定",
+   "収録はゆめぱしー（倉本千奈・篠澤広）／REVERSI（葛城リーリヤ・紫雲清夏）／RippleSign（有村麻央・姫崎莉波）の3タイトル",
+   "特装盤税込3,500円／通常盤税込2,500円、3種同時購入セット税込10,500円",
+   "投稿はいいね約1697・リポスト約324・ブックマーク約245・閲覧約21万",
+   "エンゲージメント: 高",
+   "言及アイドル: 倉本千奈、篠澤広、葛城リーリヤ、紫雲清夏、有村麻央、姫崎莉波"
+  ],
+  "title": "初星学園 Duet Song Collection 特装盤予約締切間近",
+  "url": "https://x.com/gkmas_official/status/2076215398375268769",
+  "source_type": "公式",
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130340-grok-42",
+  "event_date": "2026-10-14",
+  "deadline": "2026-07-15"
+ }
+]

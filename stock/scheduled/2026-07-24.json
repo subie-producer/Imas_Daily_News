@@ -1,0 +1,56 @@
+[
+ {
+  "id": "sched-2026-07-24-imas-20th-iwsf2026-開幕",
+  "dedup_key": "imas-20th-iwsf2026",
+  "brand": "joint",
+  "subject": "シリーズ20周年ライブ IWSF2026(京王アリーナ TOKYO)",
+  "kind": "開幕",
+  "note": "IWSF2026 DAY1",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "シリーズ20周年を記念したアニバーサリーライブが2026年7月24日から3日間、京王アリーナ TOKYOで開催"
+  ],
+  "title": "アイドルマスターシリーズ20周年ライブ IWSF2026 7月24〜26日開催",
+  "url": "https://www.4gamer.net/games/865/G086581/20251215014/",
+  "source_type": "報道",
+  "via": "",
+  "verify": "confirmed",
+  "src_candidate_id": "20260712-4gamer-iwsf2026",
+  "event_date": "2026-07-24"
+ },
+ {
+  "id": "sched-2026-07-24-cg-marine-sailor-eeo-2026-締切",
+  "dedup_key": "cg-marine-sailor-eeo-2026",
+  "brand": "cg",
+  "subject": "マリンセーラー新商品(eeo池袋)",
+  "kind": "締切",
+  "note": "販売最終日 / 素材は既報台帳からの再掲(予約時の観測が窓外)。発火日は新観測と照合すること",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "eeo Store池袋で7/11〜7/24販売(オンラインあり)",
+   "杏・凪・こずえのマリンセーラー描き下ろし+ミニキャラグッズ"
+  ],
+  "title": "下ツインテール3姉妹マリンセーラー新商品(eeo池袋 7/11-7/24)",
+  "source_type": "未確認",
+  "verify": "unconfirmed"
+ },
+ {
+  "id": "sched-2026-07-24-iwsf2026-venue-cd-発売",
+  "dedup_key": "iwsf2026-venue-cd",
+  "brand": "joint",
+  "subject": "IWSF会場CD",
+  "kind": "発売",
+  "note": "京王アリーナTOKYOで先行販売開始 / 素材は既報台帳からの再掲(予約時の観測が窓外)。発火日は新観測と照合すること",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "2枚組SACX-1149-1150・4,000円・7/24から京王アリーナで先行販売",
+   "Disc2にThe world is all one!!ソロリミックス収録",
+   "876 PRODUCTION Dearly Stars盤(SACX-1148)・シンデレラガールズ各盤(SACX-1141〜1143、投票券500枚シリアル封入)も発売",
+   "物販時間は7/24 9:00〜18:30、7/25・26 9:00〜18:00、デジタル注文書は7/21 13:00開始",
+   "カードフォリオ「IWSF2026プレミアムパック」(単品600円・BOX6,000円)も同時販売"
+  ],
+  "title": "IWSF2026会場オリジナルCD(961&KOHAKU&765AS盤)",
+  "source_type": "未確認",
+  "verify": "unconfirmed"
+ }
+]

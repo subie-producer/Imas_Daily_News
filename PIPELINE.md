@@ -7,7 +7,7 @@
 **実行主体はローカルマシン(WSL)のスケジューラ(systemd user timer)。** 理由: 下記3つの CLI がこのマシンでセッション認証済みであり、API キー運用なしで日々の実行が完結するため。GitHub 側の役割は **Pages 配信と、push 後の lint CI(事後検査)のみ**。マージ判定はローカルで完結し、main へ直接 push する(§5)。
 
 - 執筆・探索 = Claude(`claude -p`)/ X 動向収集 = Grok(`grok -p`)/ **校閲 = Codex(`codex exec -m gpt-5.6-terra`、`.env` の REVIEW_MODEL)**。執筆と校閲が別ベンダー(Anthropic/OpenAI)となり、要件 4.5 を満たす。
-- ヘッドレス実行の作法(実測済み): `codex exec` は stdin を閉じる(`< /dev/null`)・`--output-schema` は全プロパティを required に含める。`grok -p` は JSON 前に前置き文が混ざるため `--json-schema` で構造を強制する。
+- ヘッドレス実行の作法(実測済み): `codex exec` は stdin を閉じる(`< /dev/null`)・`--output-schema` は全プロパティを required に含める。`grok -p` はヘッドレスでは `--always-approve --output-format json` が必須(承認待ちで Cancelled になる)。`--json-schema` は max_tokens 切りで全滅するため使わず、プロンプト指示+寛容パースで受ける(いずれも実測)。
 - ローカル秘匿値(Discord webhook 等)はリポジトリ直下の `.env` に置く(gitignore 済み。雛形は `.env.example`)。
 - **自動ジョブは専用クローン `~/git/imas-ops` で動く**(systemd unit の WorkingDirectory)。ジョブはブランチ切替を伴うため、人間が閲覧・編集する `~/git/Imas_Daily_News` とは作業ツリーを完全分離する(共有すると serve 中の画面がジョブの checkout で化ける)。ops 側にも `.env` と `.venv` を配置する。
 - PC が稼働していない日は収集も発行も止まる=事実上の休刊。異常はブランチ残存監視と Discord 通知で検知する(§7)。
@@ -33,7 +33,7 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 ### 系統B: Grok 経由(X/Twitter 系)
 
-`grok -p --json-schema <candidates準拠>` で X の動向を収集する(`origin: explore`)。担当領域:
+`grok -p --output-format json --always-approve`(プロンプトで candidates 準拠 JSON を指示)で X の動向を収集する(`origin: explore`)。担当領域:
 
 1. **公式アカウントのポスト**(サイトに載らない告知・リマインド)
 2. **トレンド・ファンの話題**(現象として扱えるもののみ。個人ポスト単体は記事化しない=編集規程4)
@@ -58,7 +58,7 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 - **ブランドは間引かない**。全ブランドを毎回のクエリセットに含める(並列実行なので所要時間は変わらない)。該当期間に動きのないブランドは空配列が返るだけでコストは小さい。
 - 各クエリ最大8件・エンゲージメント(高/中/低)と投稿日時を必須項目にする。合計目安 40〜60件/回。
-- 締切・受注期限つきの話題は、candidates 化と同時に `stock/upcoming.yml` へトリガーを予約する(§3)。
+- 締切・受注期限つきの話題は、compose(組版フェーズ)が `stock/scheduled/<日付>.json` へ素材スナップショット付きで続報予約する(§3)。
 
 ### sources.yml 初期セット(案)
 
@@ -76,26 +76,19 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 1. collect 実行ごとに `candidates/YYYY-MM-DD.json`(**収集日**)へ追記。`dedup_key`(正規化: ブランド+主題+イベント日)で系統間の重複を排除し、同一候補の再検出は `facts` の増分マージにする。
 2. verify: 候補ごとに一次ソース URL をフェッチし、日付・内容の一致を照合 → `verify: confirmed / unconfirmed / failed`。**一次ソースに書かれていない事実は facts に入れない**(絶対規則)。
-3. 未来の予定(発売日・イベント日が先のもの)は `stock/upcoming.yml` へも登録し、ダイジェスト「明日/継続中」と発売日リマインド記事の種にする。
+3. candidates は**次号のための調査データ**であり、消費されるのは当該サイクル(発行日と前日の2ファイル)だけ。それより古いファイルをパイプラインが読むことはない。未来の予定は §3 の scheduled ストアへ素材ごと写す。
 4. 締切: **発行日 04:00 時点の candidates**(前日分+当日未明分)。
 
 ## 3. 続報の制度化と鮮度ポリシー
 
 **続報はネタ切れ時の埋め草ではなく、毎日必ず回る制度である。** 初報を書いた時点で未来の続報が予約される。ニュースが薄い日ほど続報キューが紙面を支え、その内容(締切リマインド等)は薄い日の読者にこそ刺さる。これは新聞が本来やっていることそのものだ。
 
-### 続報キュー(`stock/upcoming.yml`)
+### 続報予約(`stock/scheduled/YYYY-MM-DD.json`)
 
-初報の compose 時に、話題の未来日程を**トリガー付きで登録**する。compose は毎朝、「本日トリガーされたエントリ」を機械的に受け取り、**必ず記事化候補として処理する**。
+初報の compose(組版フェーズ)時に、話題の未来日程を**発火日のファイルへ素材スナップショット付きで予約**する(形式は schema/scheduled.schema.json)。compose は毎朝 `scheduled/<発行日>.json` だけを読み、**必ず記事化候補として処理する**。
 
-```yaml
-- dedup_key: shiny-summer-best-pair-2026
-  brand: shiny
-  subject: シャニマスサマーベストペア2026 予選投票
-  triggers:
-    - { date: 2026-07-13, kind: 締切前, note: "予選締切(7/16)の3日前リマインド" }
-    - { date: 2026-07-16, kind: 締切, note: "予選投票 23:59 締切" }
-  pending: [結果発表(日付判明次第 trigger を追加)]
-```
+- **素材同梱が原則**: 予約には元候補の title/url/source_type/facts/src_candidate_id を写す。発火日のパイプラインは古い candidates を一切読まないため、予約ファイルが唯一の素材になる(+当日の新観測と統合)。candidates は次号で消費されて終わる調査データ、scheduled は未来の紙面のための編集予約、と役割を分ける
+- 予約は原則変更しない(予約時点で何を知っていたかの記録=検証可能性)。日付未確定の追跡事項は `stock/pending.yml`(watchlist)に置き、日付が判明したら scheduled へ移す
 
 トリガー種別と意味:
 
@@ -108,7 +101,7 @@ scripts/collect.py                   collect.py        scripts/publish.py
 | 発売 | 発売日・提供開始日 | 「本日発売」 |
 | 結果 | 投票結果・当落・達成の発表日 | 初報の回収 |
 
-- 日付が未定の続報(結果発表など)は `pending` に控えを書き、判明した時点で triggers に昇格させる。
+- 日付が未定の続報(結果発表など)は `stock/pending.yml` に控えを書き、判明した時点で scheduled へ予約して pending から消す。
 - トリガー由来の記事は「新事実なし」には当たらない(その日に起きること自体がニュース)。rank は原則 small〜medium、当日開幕・結果は内容次第で上位も可。
 
 ### ストーリー台帳 `stock/stories.yml`(重複防止)
@@ -119,7 +112,7 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 | # | 状況 | 扱い |
 |---|------|------|
-| 1 | 新規ストーリー | 記事化してよい(同時に upcoming.yml へ未来トリガーを予約する) |
+| 1 | 新規ストーリー | 記事化してよい(同時に scheduled へ未来日程を素材付きで予約する) |
 | 2 | **本日トリガーの続報キュー** | **必ず記事化候補として処理**(紙面あふれ時は small に吸収) |
 | 3 | 既存ストーリー+新事実あり(published_facts に無い fact) | 続報として記事化OK。本文は新事実中心、経緯要約は1段落まで |
 | 4 | 既存ストーリー+新事実なし・トリガーなし | 記事化NG。ダイジェスト「継続中」行のみ |
@@ -203,7 +196,7 @@ scripts/collect.py                   collect.py        scripts/publish.py
 | 号・社説 | `YYYY-MM-DD.{md}` | 日付キーで衝突なし |
 | candidates / metrics | `YYYY-MM-DD.json`(収集日) | 日付キー。lint の出典突合・derive のトレンド集計は**発行日±1日の窓**のみ参照(全期間を読まない) |
 | dedup_key / story_id | 英小文字ハイフン。**毎年ある定例企画は年を含める**(例: `shiny-summer-pair-2026`) | 年跨ぎの誤マージを防止 |
-| upcoming.yml | compose が毎朝、過去日トリガーを掃除し、空エントリを削除 | 無限成長しない |
+| scheduled/ | `YYYY-MM-DD.json`(発火日) | 日付キーで衝突なし。発行日のファイルしか読まないため蓄積しても走査コストが増えない。過去分は予約記録として残す |
 | stories.yml | 追記型 | **未解決**: 月次で `stock/archive/stories-YYYY-MM.yml` へ closed 分を退避するローテーションを創刊後に導入する |
 | ブランチ | `edition/YYYY-MM-DD` / `correction/YYYY-MM-DD-<slug>` | 日付キー |
 | 記事 tags | frontmatter に保持するが**紙面には表示しない**(消費する機能が現状無いため) | 将来タグ索引等で機能化する場合、執筆プロンプトに**既存タグ語彙の一覧参照**を組み込むこと(自由記述のままだと表記ゆれタグが量産され索引が崩壊する) |

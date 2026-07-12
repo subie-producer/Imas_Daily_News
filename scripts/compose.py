@@ -10,7 +10,7 @@
    → compose が機械検証(候補の実在・verify・blocklist・lead 一意)
 3. 個別執筆: 記事ごとに、計画で選ばれた候補 JSON だけを機械的に切り出して渡し、
    独立した claude セッションが1本書く(他候補の情報がコンテキストに存在しない)
-4. 組版: 別セッションが号スナップショット(digest)・社説・stories/upcoming 更新
+4. 組版: 別セッションが号スナップショット(digest)・社説・stories/scheduled 更新
 5. derive.py --write → lint(ゲート) → codex 校閲往復 → commit & push(発行は 06:00 の release)
 """
 import argparse
@@ -32,42 +32,12 @@ from pipelib import (ROOT, CLAUDE_MODEL, REVIEW_MODEL, append_metric,
 PAPER_STAGE = None  # main() で .env から
 
 
-def todays_triggers(date: str) -> list[dict]:
-    p = ROOT / "stock" / "upcoming.yml"
+def load_scheduled(date: str) -> list[dict]:
+    """発行日の続報予約(素材スナップショット同梱)。過去の candidates を遡らないための日付別ストア。"""
+    p = ROOT / "stock" / "scheduled" / f"{date}.json"
     if not p.exists():
         return []
-    out = []
-    for e in yaml.safe_load(p.read_text(encoding="utf-8")) or []:
-        for t in e.get("triggers", []):
-            td = t.get("date")
-            td = td.isoformat() if hasattr(td, "isoformat") else str(td)
-            if td == date:
-                out.append({"dedup_key": e["dedup_key"], "brand": e.get("brand"),
-                            "subject": e.get("subject"), "kind": t.get("kind"), "note": t.get("note")})
-    return out
-
-
-def prune_upcoming(date: str) -> None:
-    """過去日のトリガーを掃除し、トリガーも pending も無くなったエントリを落とす(無限成長対策)。"""
-    p = ROOT / "stock" / "upcoming.yml"
-    if not p.exists():
-        return
-    entries = yaml.safe_load(p.read_text(encoding="utf-8")) or []
-    kept = []
-    for e in entries:
-        trigs = []
-        for t in e.get("triggers", []):
-            td = t.get("date")
-            td = td.isoformat() if hasattr(td, "isoformat") else str(td)
-            if td >= date:
-                trigs.append(t)
-        e["triggers"] = trigs
-        if trigs or e.get("pending"):
-            kept.append(e)
-    header = ("# 続報キュー(PIPELINE.md §3)。初報の compose 時に未来トリガーを予約する。\n"
-              "# compose が毎朝、当日トリガーを消化し、過去日トリガーを掃除する。\n")
-    p.write_text(header + yaml.safe_dump(kept, allow_unicode=True, sort_keys=False,
-                                         default_flow_style=False), encoding="utf-8")
+    return json.loads(p.read_text(encoding="utf-8"))
 
 
 def next_number() -> int:
@@ -90,7 +60,8 @@ SRC_ORDER = ["公式", "準公式", "当事者", "報道", "ファン", "もち�
 
 
 def load_window_candidates(date: str) -> dict:
-    """発行日±1日(=発行日と前日)の収集ファイルから id→候補 の索引を作る(lint の突合窓と同一)。"""
+    """当該号の素材索引(id→素材)。当サイクルの収集(発行日と前日=lint の突合窓と同一)+
+    当日の続報予約(stock/scheduled)のみ。それより古い candidates は読まない。"""
     ed = datetime.date.fromisoformat(date)
     items = {}
     for day in ((ed - datetime.timedelta(days=1)).isoformat(), date):
@@ -99,6 +70,8 @@ def load_window_candidates(date: str) -> dict:
             for c in json.loads(p.read_text(encoding="utf-8")):
                 if c.get("id"):
                     items[c["id"]] = c
+    for s in load_scheduled(date):
+        items[s["id"]] = s
     return items
 
 
@@ -123,8 +96,10 @@ def plan_prompt(date: str, number: int, triggers: list[dict], feedback: str = ""
 - stock/stories.yml … 既報台帳(published_facts と同内容=新事実なしの話題は記事化しない。編集規程8)
 - stock/blocklist.yml … 使用禁止候補(dedup_key 単位。verify 値に関わらず素材にしない)
 - REQUIREMENTS.md 5章(編集規程)
-- 本日トリガーの続報キュー(必ず記事化する。あふれは small へ):
-{json.dumps(triggers, ensure_ascii=False, indent=2)}
+- stock/pending.yml … 日付未確定の追跡事項(新観測で日付が判明していたら計画に入れる)
+- 本日の続報予約(stock/scheduled/{date}.json。**必ず記事化する**。あふれは small へ。
+  各予約の id は素材スナップショットとして candidate_ids に使える。新観測があれば統合すること):
+{json.dumps([{k: t.get(k) for k in ("id", "dedup_key", "brand", "subject", "kind", "note")} for t in triggers], ensure_ascii=False, indent=2)}
 
 ## 選定規則
 - verify が failed の候補・blocklist の候補は素材にしない
@@ -199,7 +174,11 @@ def assembly_prompt(date: str, number: int, editorial_topic: str, aborted: list[
    lead が存在しない場合のみ、最も重要な記事の rank を lead に昇格させ本文を lead の分量(800〜1200字)に加筆する)
 2. docs/_editorials/{date}.md … 社説1本。主題: {editorial_topic}
 3. stock/stories.yml … 記事化した各話題の published_facts を追記(新規話題はエントリ追加。dedup_key は記事 frontmatter の candidate_ids から candidates を引く)
-4. stock/upcoming.yml … 記事・候補から新しく判明した未来日程をトリガー予約(締切前3日・締切・開幕・千秋楽・発売・結果)
+4. stock/scheduled/<未来日>.json … 記事・候補から新しく判明した未来日程を続報予約する(締切前3日・締切・開幕・千秋楽・発売・結果)。
+   **素材スナップショット同梱が必須**: 形式は schema/scheduled.schema.json と既存ファイルを確認し、元候補の
+   title/url/source_type/facts/src_candidate_id を必ず写す(発火日は古い candidates を読まないため、ここが唯一の素材になる)。
+   既に同じ id の予約がある場合は重複させない
+5. stock/pending.yml … 日付未確定の追跡事項の増減(日付が判明した項目は scheduled へ移して消す)
 
 ## 注意
 - 記事本文の事実関係は校閲済みの前提で**書き換えない**(digest・社説は記事に書いてあることだけを使う)
@@ -382,9 +361,7 @@ def main() -> int:
 
     if not args.plan and not checkout_edition_branch(date, "compose"):
         return 1
-    triggers = todays_triggers(date)
-    if not args.plan:
-        prune_upcoming(date)
+    triggers = load_scheduled(date)
     number = next_number()
     if args.plan:
         print(plan_prompt(date, number, triggers))

@@ -1,0 +1,140 @@
+[
+ {
+  "id": "sched-2026-07-17-tours-second-stage-illust-campaign-締切前",
+  "dedup_key": "tours-second-stage-illust-campaign",
+  "brand": "joint",
+  "subject": "ツアマス Second Stage 1弾 カードイラストプレゼントCP",
+  "kind": "締切前",
+  "note": "CP終了(7/20 23:59)の3日前リマインド",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "キャンペーン期間は2026年7月9日〜7月20日23:59",
+   "公式X(@TOURS_imas)をフォローし、キャンペーン投稿をリポストまたは引用リポストすると、リプライでカードイラスト画像がランダムで1枚届く",
+   "A賞は『アイドルマスター TOURS』描き下ろしカードイラスト画像8種からランダム1枚",
+   "B賞は「えらべるPay」5,000円分を抽選で10名",
+   "毎日1回まで繰り返し参加可能",
+   "実施は株式会社バンダイナムコエクスペリエンス",
+   "キャンペーン期間は2026年7月9日(木)〜7月20日(月)23:59",
+   "公式X(@TOURS_imas)のフォロー&対象ポストのリポストまたは引用リポストで参加可能",
+   "参加者にはリプライでカードイラスト画像8種からランダム1枚が届く(A賞)",
+   "抽選で10名に「えらべるPay」5,000円分が当たる(B賞)",
+   "1日1回まで繰り返し参加可能、実施はバンダイナムコエクスペリエンス",
+   "『アイドルマスター TOURS』は765プロ・シンデレラガールズ・ミリオンライブ・シャニマス・SideM・学マス等、複数ブランドのアイドルが登場するブランド横断タイトル",
+   "エンゲージメント: 中"
+  ],
+  "title": "アイドルマスター TOURS Second Stage 1弾 カードイラストプレゼントキャンペーン",
+  "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260709.html",
+  "source_type": "公式",
+  "via": "",
+  "verify": "confirmed",
+  "src_candidate_id": "20260712-bnam-tours-illust-cp",
+  "event_date": "2026-07-20"
+ },
+ {
+  "id": "sched-2026-07-17-gaku-mitenui-jyuchu-締切前",
+  "dedup_key": "gaku-mitenui-jyuchu",
+  "brand": "gaku",
+  "subject": "学マス「みてぬい」受注",
+  "kind": "締切前",
+  "note": "受注締切(7/20)の3日前リマインド",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "学園アイドルマスター公式Xが2026年7月10日19:00頃に公式ぬいぐるみ「みてぬい」の受注を告知",
+   "ASOBI STOREでの受注期限は2026年7月20日まで",
+   "店舗情報はアイドルマスターポータルのニュースに掲載",
+   "公式が2026-07-10〜12にかけて「みてぬい受注中」と連日告知",
+   "ASOBI STORE受注期間は2026年6月6日(土)〜7月20日(月)",
+   "初の公式ぬいぐるみ「みてぬい」第1弾",
+   "アソビストアのほかアニメイト・コトブキヤでも取扱い",
+   "7/10の公式投稿は約2,839いいね・470リポスト規模",
+   "エンゲージメント: 高",
+   "学園アイドルマスター公式@gkmas_officialが7/10・7/11・7/12に受注中を告知",
+   "ASOBI STORE受注は2026年7月20日(月)まで",
+   "公式ニュースでもアソビストア受注期間は2026年6月6日(土)～7月20日(月)と記載",
+   "アニメイト・コトブキヤ秋葉原館でも取扱（各店の期間は要確認）",
+   "7/10公式投稿は約2843いいね・約471RT"
+  ],
+  "title": "学マス 公式ぬいぐるみ「みてぬい」受注中",
+  "url": "https://x.com/gkmas_official/status/2075520405218181179",
+  "source_type": "公式",
+  "via": "",
+  "verify": "confirmed",
+  "src_candidate_id": "20260712-x-gaku-mitenui",
+  "event_date": "2026-07-20"
+ },
+ {
+  "id": "sched-2026-07-17-sidem-11th-party-name-締切",
+  "dedup_key": "sidem-11th-party-name",
+  "brand": "sidem",
+  "subject": "SideM 11th「Party」名回答",
+  "kind": "締切",
+  "note": "Party名回答期限",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "SideM公式Xが2026年7月10日に#SideM11th テラススイートPPPPの「Party」名回答を案内",
+   "チケット購入代表者へASOBI STOREから回答用メールを送付",
+   "回答期限は2026年7月17日"
+  ],
+  "title": "SideM 11th テラススイートPPPP「Party」名回答 7/17期限",
+  "url": "https://x.com/SideM_official/status/2075520416215355536",
+  "source_type": "公式",
+  "via": "",
+  "verify": "confirmed",
+  "src_candidate_id": "20260712-x-sidem-11th-party",
+  "event_date": "2026-07-17"
+ },
+ {
+  "id": "sched-2026-07-17-sidem-12th-anniversary-livestream-開幕",
+  "dedup_key": "sidem-12th-anniversary-livestream",
+  "brand": "sidem",
+  "subject": "SideM12周年生配信『Our cozy dozen YearZ』",
+  "kind": "開幕",
+  "note": "19:00より生配信 / 素材は既報台帳からの再掲(予約時の観測が窓外)。発火日は新観測と照合すること",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "7/17 19:00配信、朗読劇・11th STAGE最新情報を予定"
+  ],
+  "title": "SideM12周年生配信『Our cozy dozen YearZ』",
+  "source_type": "未確認",
+  "verify": "unconfirmed"
+ },
+ {
+  "id": "sched-2026-07-17-sidem-summer-splash-popup-開幕",
+  "dedup_key": "sidem-summer-splash-popup",
+  "brand": "sidem",
+  "subject": "SideM『SUMMER SPLASH!POP UP SHOP』(タワーレコード新宿店)",
+  "kind": "開幕",
+  "note": "タワーレコード新宿店10Fで開幕 / 素材は既報台帳からの再掲(予約時の観測が窓外)。発火日は新観測と照合すること",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "タワーレコード新宿店10Fで7/17〜7/26開催"
+  ],
+  "title": "SideM『SUMMER SPLASH!POP UP SHOP』",
+  "source_type": "未確認",
+  "verify": "unconfirmed"
+ },
+ {
+  "id": "sched-2026-07-17-cosmo-dj-stream-3-2026-07-17-開幕",
+  "dedup_key": "cosmo-dj-stream-3-2026-07-17",
+  "brand": "dsva",
+  "subject": "上水流宇宙 第3回DJ配信",
+  "kind": "開幕",
+  "note": "IWSF2026向け「アイマス楽曲縛り」DJ配信",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "上水流宇宙@KamizuruCosmo本人が第3回DJ配信の実施決定を発表",
+   "開催は2026年7月17日(金)夜21時",
+   "テーマはアイマスIWSF2026に向けた『アイマス楽曲縛り』DJ",
+   "投稿はいいね746・リポスト341と直近48時間で最も高い反応",
+   "エンゲージメント: 高",
+   "言及アイドル: 上水流宇宙"
+  ],
+  "title": "上水流宇宙が第3回DJ配信を7/17実施決定",
+  "url": "https://x.com/KamizuruCosmo/status/2076270124110426486",
+  "source_type": "公式",
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130340-grok-49",
+  "event_date": "2026-07-17"
+ }
+]

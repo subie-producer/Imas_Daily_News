@@ -1,0 +1,26 @@
+[
+ {
+  "id": "sched-2026-07-19-joint-lantisdayz-shibuyalovez-2026-千秋楽",
+  "dedup_key": "joint-lantisdayz-shibuyalovez-2026",
+  "brand": "joint",
+  "subject": "新会場Shibuya LOVEZ開業記念「Lantis DAYZ」",
+  "kind": "千秋楽",
+  "note": "DAY2(シャニマス ノクチル出演)",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "バンダイナムコグループの新ライブホール「Shibuya LOVEZ」が2026年6月27日に開業",
+   "オープニングシリーズ「Shibuya LOVEZ OPENING SERIES 『Lantis DAYZ』」DAY.1(7月18日)に『アイドルマスター SideM』が出演",
+   "DAY.2(7月19日)に『アイドルマスター シャイニーカラーズ』ノクチル(和久井優・土屋李央・田嶌紗蘭・岡咲美保)が出演、チケットは全席指定9,900円(税込)",
+   "エンゲージメント: 中",
+   "言及アイドル: 浅倉透、樋口円香、福丸小糸、市川雛菜"
+  ],
+  "title": "新会場Shibuya LOVEZ開業記念「Lantis DAYZ」にSideM＆シャニマス出演",
+  "url": "https://idolmaster-official.jp/news/01_18593",
+  "source_type": "公式",
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130340-claude-133",
+  "event_date": "2026-07-18",
+  "deadline": "2026-07-19"
+ }
+]

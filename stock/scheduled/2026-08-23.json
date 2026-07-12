@@ -1,0 +1,17 @@
+[
+ {
+  "id": "sched-2026-08-23-gaku-hires-priceoff-campaign-締切前",
+  "dedup_key": "gaku-hires-priceoff-campaign",
+  "brand": "gaku",
+  "subject": "学マス 初星学園ハイレゾ作品プライスオフ",
+  "kind": "締切前",
+  "note": "キャンペーン終了(8/26)の3日前リマインド / 素材は既報台帳からの再掲(予約時の観測が窓外)。発火日は新観測と照合すること",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "mora配信、期間は7/10〜8/26"
+  ],
+  "title": "初星学園ハイレゾ作品プライスオフ",
+  "source_type": "未確認",
+  "verify": "unconfirmed"
+ }
+]

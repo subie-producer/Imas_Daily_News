@@ -1,0 +1,26 @@
+[
+ {
+  "id": "sched-2026-09-13-sidem-11th-stage-2026-千秋楽",
+  "dedup_key": "sidem-11th-stage-2026",
+  "brand": "sidem",
+  "subject": "SideM 11th STAGE ～EVER EVER＠FTER～",
+  "kind": "千秋楽",
+  "note": "DAY2",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "2026年9月12日(土)・13日(日)、TOYOTA ARENA TOKYOにて開催",
+   "テーマは「語り継がれる物語」、CDシリーズ「TRANSCENDENT T@LES」と連動",
+   "チケットはテラススイートプレミアム(1室5万円)、テラススイート(5万円)、スイート指定席(2.5万円)、一般指定席(1.35万円)",
+   "アソビストアプレミアム会員先行が複数次にわたり実施され、公式グッズ事前販売も第2弾までスタート済み",
+   "エンゲージメント: 高"
+  ],
+  "title": "SideM 11th STAGE ～EVER EVER＠FTER～ 9月開催決定",
+  "url": "https://idolmaster-official.jp/live_event/sidem11th/",
+  "source_type": "公式",
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130340-claude-104",
+  "event_date": "2026-09-12",
+  "deadline": "2026-09-13"
+ }
+]

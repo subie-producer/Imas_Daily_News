@@ -1,0 +1,25 @@
+# 日付未確定の追跡事項(watchlist)。日付が判明したら compose が stock/scheduled/<日付>.json へ予約して、ここから消す。
+- dedup_key: million-9th-anniversary-mission
+  brand: million
+  subject: ミリシタ9周年 イベント「最上級:Invit@tion!」とSSR確定チケット
+  watch: SSR確定ガシャチケット2枚の配布日(イベント終了後・日付判明次第 triggers へ)
+- dedup_key: shiny-summer-best-pair-2026
+  brand: shiny
+  subject: シャニマスサマーベストペア2026 予選投票
+  watch: 本選日程・結果発表(判明次第 triggers へ)
+- dedup_key: tours-second-stage-illust-campaign
+  brand: joint
+  subject: ツアマス Second Stage 1弾 カードイラストプレゼントCP
+  watch: B賞「えらべるPay」抽選結果(判明次第 triggers へ)
+- dedup_key: imas-20th-iwsf2026
+  brand: joint
+  subject: シリーズ20周年ライブ IWSF2026(京王アリーナ TOKYO)
+  watch: 各DAYのセットリスト・発表事項(結果として翌号で回収)
+- dedup_key: cinderella-girl-vote2026-schedule
+  brand: cg
+  subject: 15th Anniversary シンデレラガール総選挙2026
+  watch: 投票結果・上位5名発表(判明次第 triggers へ)
+- dedup_key: manaka-birthday-live-2026-postponed
+  brand: dsva
+  subject: 灯里愛夏バースデーオンラインライブ 延期分
+  watch: 延期後の新日程が判明次第 triggers へ

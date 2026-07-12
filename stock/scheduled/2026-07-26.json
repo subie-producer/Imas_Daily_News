@@ -1,0 +1,61 @@
+[
+ {
+  "id": "sched-2026-07-26-imas-20th-iwsf2026-千秋楽",
+  "dedup_key": "imas-20th-iwsf2026",
+  "brand": "joint",
+  "subject": "シリーズ20周年ライブ IWSF2026(京王アリーナ TOKYO)",
+  "kind": "千秋楽",
+  "note": "DAY3。終了後に20周年SP生配信",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "シリーズ20周年を記念したアニバーサリーライブが2026年7月24日から3日間、京王アリーナ TOKYOで開催"
+  ],
+  "title": "アイドルマスターシリーズ20周年ライブ IWSF2026 7月24〜26日開催",
+  "url": "https://www.4gamer.net/games/865/G086581/20251215014/",
+  "source_type": "報道",
+  "via": "",
+  "verify": "confirmed",
+  "src_candidate_id": "20260712-4gamer-iwsf2026",
+  "event_date": "2026-07-24"
+ },
+ {
+  "id": "sched-2026-07-26-sidem-summer-splash-popup-千秋楽",
+  "dedup_key": "sidem-summer-splash-popup",
+  "brand": "sidem",
+  "subject": "SideM『SUMMER SPLASH!POP UP SHOP』(タワーレコード新宿店)",
+  "kind": "千秋楽",
+  "note": "会期最終日 / 素材は既報台帳からの再掲(予約時の観測が窓外)。発火日は新観測と照合すること",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "タワーレコード新宿店10Fで7/17〜7/26開催"
+  ],
+  "title": "SideM『SUMMER SPLASH!POP UP SHOP』",
+  "source_type": "未確認",
+  "verify": "unconfirmed"
+ },
+ {
+  "id": "sched-2026-07-26-cg-memorial-picture-september-2026-締切",
+  "dedup_key": "cg-memorial-picture-september-2026",
+  "brand": "cg",
+  "subject": "メモリアルピクチャー4th Pict. September",
+  "kind": "締切",
+  "note": "受注締切",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "ブランド公式が2026年7月12日に告知",
+   "対象は輿水幸子／横山千佳",
+   "受注締切は2026年7月26日(日)",
+   "販売ページ: shop.asobistore.jp/feature/cg_mp",
+   "ハッシュタグ #メモピク",
+   "エンゲージメント: 中",
+   "言及アイドル: 輿水幸子、横山千佳"
+  ],
+  "title": "メモリアルピクチャー 4th Pict. September受注告知",
+  "url": "https://x.com/imas_CGofficial/status/2076214980391673962",
+  "source_type": "公式",
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130340-grok-10",
+  "deadline": "2026-07-26"
+ }
+]

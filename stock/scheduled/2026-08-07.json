@@ -1,0 +1,25 @@
+[
+ {
+  "id": "sched-2026-08-07-shiny-twacolle-hazuki-summer-締切",
+  "dedup_key": "shiny-twacolle-hazuki-summer",
+  "brand": "shiny",
+  "subject": "トワイライトコレクション 七草はづきS-SSR",
+  "kind": "締切",
+  "note": "登場期間 11:59終了(未確認情報)",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "S-SSR「ある夏の日のあなたは」七草はづきが2026年7月10日〜8月7日11:59まで登場",
+   "Vocalアピール特化・ゲスト編成専用キャラで、Vocal上限+400、メンタル上限+250のマスタリースキルを持つ",
+   "エンゲージメント: 中",
+   "言及アイドル: 七草はづき"
+  ],
+  "title": "トワイライトコレクションにS-SSR七草はづき「ある夏の日のあなたは」が登場",
+  "url": "https://gameo.jp/imassc/164685",
+  "source_type": "ファン",
+  "via": "claude",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202607120338-claude-20",
+  "event_date": "2026-07-10",
+  "deadline": "2026-08-07"
+ }
+]

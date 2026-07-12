@@ -401,6 +401,14 @@ def main() -> int:
         schema_check(rep, path, candidates_schema, data)
         candidate_urls_by_day[path.stem] = {c.get("url", "") for c in data}
         candidate_items_by_day[path.stem] = {c["id"]: c for c in data if c.get("id")}
+    # 続報予約(素材スナップショット)は発行日の素材として candidates と同格に扱う
+    scheduled_schema = load_schema("scheduled.schema.json")
+    for path in sorted((ROOT / "stock" / "scheduled").glob("*.json")):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        schema_check(rep, path, scheduled_schema, data)
+        day = path.stem
+        candidate_urls_by_day.setdefault(day, set()).update(s.get("url", "") for s in data)
+        candidate_items_by_day.setdefault(day, {}).update({s["id"]: s for s in data if s.get("id")})
 
     net_targets = [
         (path, fm) for _k, (path, fm, _) in posts.items()

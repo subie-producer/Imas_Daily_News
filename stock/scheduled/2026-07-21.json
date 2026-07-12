@@ -1,0 +1,60 @@
+[
+ {
+  "id": "sched-2026-07-21-imas-20th-iwsf2026-締切前",
+  "dedup_key": "imas-20th-iwsf2026",
+  "brand": "joint",
+  "subject": "シリーズ20周年ライブ IWSF2026(京王アリーナ TOKYO)",
+  "kind": "締切前",
+  "note": "開幕(7/24)3日前の予習・リマインド",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "シリーズ20周年を記念したアニバーサリーライブが2026年7月24日から3日間、京王アリーナ TOKYOで開催"
+  ],
+  "title": "アイドルマスターシリーズ20周年ライブ IWSF2026 7月24〜26日開催",
+  "url": "https://www.4gamer.net/games/865/G086581/20251215014/",
+  "source_type": "報道",
+  "via": "",
+  "verify": "confirmed",
+  "src_candidate_id": "20260712-4gamer-iwsf2026",
+  "event_date": "2026-07-24"
+ },
+ {
+  "id": "sched-2026-07-21-cg-marine-sailor-eeo-2026-締切前",
+  "dedup_key": "cg-marine-sailor-eeo-2026",
+  "brand": "cg",
+  "subject": "マリンセーラー新商品(eeo池袋)",
+  "kind": "締切前",
+  "note": "販売終了(7/24)の3日前リマインド / 素材は既報台帳からの再掲(予約時の観測が窓外)。発火日は新観測と照合すること",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "eeo Store池袋で7/11〜7/24販売(オンラインあり)",
+   "杏・凪・こずえのマリンセーラー描き下ろし+ミニキャラグッズ"
+  ],
+  "title": "下ツインテール3姉妹マリンセーラー新商品(eeo池袋 7/11-7/24)",
+  "source_type": "未確認",
+  "verify": "unconfirmed"
+ },
+ {
+  "id": "sched-2026-07-21-gaku-gomyway-yume-gacha-2026-07-締切",
+  "dedup_key": "gaku-gomyway-yume-gacha-2026-07",
+  "brand": "gaku",
+  "subject": "学マス ライブツアー限定ガシャ「GO MY WAY!!花海佑芽」",
+  "kind": "締切",
+  "note": "ガシャ開催終了",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "ライブツアー限定「GO MY WAY!!花海佑芽」ガシャが2026年7月8日(水)～7月21日(火)の期間で「学園アイドルマスター」内にて開催中",
+   "新規pSSR「【GO MY WAY!!】花海佑芽」と関連サポートカードが実装",
+   "エンゲージメント: 高",
+   "言及アイドル: 花海佑芽"
+  ],
+  "title": "ゲーム内ガシャ「GO MY WAY!!花海佑芽」開催中",
+  "url": "https://skypenguin.net/2026/07/09/post-157579/",
+  "source_type": "報道",
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130340-claude-111",
+  "event_date": "2026-07-08",
+  "deadline": "2026-07-21"
+ }
+]

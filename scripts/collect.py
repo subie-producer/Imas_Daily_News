@@ -26,8 +26,9 @@ from pipelib import (ROOT, CLAUDE_MODEL, JST, append_metric, checkout_edition_br
                      commit_and_push, edition_date, extract_json_array, git, notify, now_jst)
 
 SCHEMA_PATH = ROOT / "prompts" / "explore-item-schema.json"
-# 注: grok に --json-schema を使うと応答が max_tokens 切りで CLI ごとエラーになる(実測)。
-# スキーマ強制はせず ITEM_FORMAT のプロンプト指示+寛容パース(parse_grok)で受ける。
+# 注: grok のヘッドレス実行には --always-approve が必須(無いとツール実行が承認待ちで
+# Cancelled になり前置きだけ返る)。--json-schema は max_tokens 切りで全滅するため使わず、
+# --output-format json のエンベロープを parse_grok で寛容にパースする。いずれも実測に基づく。
 STATE_PATH = ROOT / "stock" / "watch-state.json"
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
 X_HOSTS = ("x.com", "twitter.com")
@@ -161,7 +162,7 @@ def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
         wave = []
         for key, gp in grok_jobs[i:i + GROK_WAVE]:
             wave.append((key, subprocess.Popen(
-                ["grok", "-p", gp],
+                ["grok", "-p", gp, "--output-format", "json", "--always-approve"],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
         for key, p in wave:

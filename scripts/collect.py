@@ -136,36 +136,61 @@ def claude_exec(prompt: str, timeout: int = 300) -> list:
 
 def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
     queries = build_prompts()
-    procs = []
+    items, per = [], {}
+
+    # Claude は全クエリ並列で問題なし(サーバ側セッション)
+    claude_procs = []
+    grok_jobs = []
     for q in queries:
         window = "直近72時間" if q["key"] in ("trend", "fan-culture") else "直近48時間"
         if not skip_claude:
             cp = (f"{window}のアイドルマスター関連情報のうち「{q['topic']}」について、Web検索で公式サイト・報道・"
                   f"特設ページを調査し、確認できた事実を最大8件。" + ITEM_FORMAT)
-            procs.append((q["key"], "claude", subprocess.Popen(
+            claude_procs.append((q["key"], subprocess.Popen(
                 ["claude", "-p", cp, "--model", CLAUDE_MODEL, "--allowedTools", "WebSearch,WebFetch"],
                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
         if not skip_grok:
             gp = (f"{window}のX(Twitter)上のアイドルマスター関連のうち「{q['topic']}」を調査し、"
                   f"公式告知とエンゲージメントの高い話題を最大8件。" + ITEM_FORMAT)
-            procs.append((q["key"], "grok", subprocess.Popen(
+            grok_jobs.append((q["key"], gp))
+
+    # Grok は同時実行に弱い(10並列で9本即死を実測)ためウェーブ実行
+    GROK_WAVE = 4
+    for i in range(0, len(grok_jobs), GROK_WAVE):
+        wave = []
+        for key, gp in grok_jobs[i:i + GROK_WAVE]:
+            wave.append((key, subprocess.Popen(
                 ["grok", "-p", gp],
-                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
-    items, per = [], {}
+        for key, p in wave:
+            try:
+                out, err = p.communicate(timeout=360)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                out, err = "", "timeout"
+            got = parse_grok(out)
+            if not got:
+                print(f"grok:{key} 0件 stderr: {(err or '').strip()[:200]}", flush=True)
+            for it in got:
+                it["_via"] = "grok"
+            items += got
+            per[f"grok:{key}"] = len(got)
+
+    # Claude の回収
     deadline = time.time() + 600
-    for key, via, p in procs:
+    for key, p in claude_procs:
         try:
             out, _ = p.communicate(timeout=max(30, deadline - time.time()))
-            got = parse_grok(out) if via == "grok" else extract_json_array(out)
+            got = extract_json_array(out)
         except subprocess.TimeoutExpired:
             p.kill()
             got = []
         for it in got:
-            it["_via"] = via
+            it["_via"] = "claude"
         items += got
-        per[f"{via}:{key}"] = len(got)
+        per[f"claude:{key}"] = len(got)
     return items, per
 
 

@@ -17,6 +17,7 @@ import json
 import re
 import subprocess
 import sys
+import time
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -149,18 +150,26 @@ def check_tense(rep, path, text, edition_date, where):
 # ---- URL 生存確認 -------------------------------------------------------------
 
 def url_alive(url):
+    """(ok, detail, transient) を返す。
+
+    transient=True はネットワーク層の失敗(DNS 解決不能・接続不能・タイムアウト等)。
+    サーバが返した HTTP 4xx/5xx(=ページの死)とは区別し、呼び出し側は警告に
+    格下げする(一過性の回線事故が発行中止に直結しないため。捏造 URL の検査は
+    collect の verify と candidates 系譜検査が担っており、ここが最後の砦ではない)。
+    """
     req = urllib.request.Request(url, headers={"User-Agent": URL_UA})
-    for attempt in (1, 2):
+    last = (False, "unreachable", True)
+    for attempt in (1, 2, 3):
+        if attempt > 1:
+            time.sleep(5 * (attempt - 1))  # 5秒 → 10秒
         try:
             with urllib.request.urlopen(req, timeout=URL_TIMEOUT) as res:
-                return res.status < 400, f"HTTP {res.status}"
+                return res.status < 400, f"HTTP {res.status}", False
         except urllib.error.HTTPError as e:
-            if attempt == 2:
-                return False, f"HTTP {e.code}"
-        except Exception as e:  # DNS・タイムアウト等
-            if attempt == 2:
-                return False, str(e)
-    return False, "unreachable"
+            last = (False, f"HTTP {e.code}", False)
+        except Exception as e:  # DNS・接続・タイムアウト等のネットワーク層
+            last = (False, str(e), True)
+    return last
 
 
 # ---- メイン -------------------------------------------------------------------
@@ -451,9 +460,13 @@ def main() -> int:
                 host = urllib.parse.urlparse(s["url"]).hostname or ""
                 if host in URL_CHECK_SKIP_HOSTS:
                     continue
-                ok, detail = url_alive(s["url"])
+                ok, detail, transient = url_alive(s["url"])
                 if not ok:
-                    rep.error(path, f"出典 URL 生存確認に失敗({detail}): {s['url']}")
+                    if transient:
+                        rep.warn(path, f"出典 URL に到達できない(ネットワーク層の失敗: {detail})。"
+                                       f"死活未確認のまま通過: {s['url']}")
+                    else:
+                        rep.error(path, f"出典 URL 生存確認に失敗({detail}): {s['url']}")
     if not candidate_files and net_targets:
         rep.notice("candidates が空のため出典照合(candidates 突合)はスキップ(collect 稼働後に有効化)")
 

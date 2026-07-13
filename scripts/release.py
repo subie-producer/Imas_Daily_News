@@ -67,6 +67,18 @@ def branch_exists(name: str, remote: bool = False) -> bool:
     return git("show-ref", "--verify", "--quiet", ref, check=False).returncode == 0
 
 
+def lint_failure_summary(r: subprocess.CompletedProcess) -> str:
+    """lint 失敗時の通知文。エラーの中身(最大5件)まで載せる(「lint 赤」だけでは原因が追えない)。"""
+    errs = re.findall(r"^::error(?: file=([^:]*))?::(.*)$", r.stdout, re.MULTILINE)
+    if not errs:  # lint 自体のクラッシュ(traceback 等)
+        tail = (r.stderr.strip() or r.stdout.strip())[-500:]
+        return f"lint が異常終了(exit {r.returncode}):\n```\n{tail}\n```"
+    lines = [f"- {Path(f).name + ': ' if f else ''}{m}" for f, m in errs[:5]]
+    if len(errs) > 5:
+        lines.append(f"- …ほか {len(errs) - 5} 件")
+    return f"lint エラー {len(errs)} 件:\n" + "\n".join(lines)
+
+
 def ensure_next_branch(next_name: str, dry: bool) -> None:
     if branch_exists(next_name) or branch_exists(next_name, remote=True):
         print(f"翌日ブランチ {next_name} は既に存在", flush=True)
@@ -131,7 +143,7 @@ def main() -> int:
     )
     print(r.stdout[-2000:], flush=True)
     if r.returncode != 0:
-        notify(f"{date}: lint 赤のため発行中止(第{number}号)", ok=False)
+        notify(f"{date}: 発行中止(第{number}号)。{lint_failure_summary(r)}", ok=False)
         return 1
 
     label = f"第{number}号" + ("(試験)" if number == 0 else "")

@@ -452,7 +452,7 @@ def main() -> int:
                        cwd=ROOT, capture_output=True, text=True)
 
     approved = review and review.get("verdict") == "approve"
-    code, _ = run_lint(date)
+    code, lint_out = run_lint(date)
     ok = approved and code == 0
     append_metric("compose", {"edition": date, "rounds": rounds, "approved": bool(approved),
                               "lint_green": code == 0, "planned": n_plan, "written": len(written),
@@ -461,7 +461,16 @@ def main() -> int:
     if ok:
         notify("compose", f"{date}号 準備完了(校閲{rounds}往復で approve)。06:00 に発行されます")
         return 0
-    notify("compose", f"{date}号: 校閲未解決または lint 赤。発行前に人間判断が必要", ok=False)
+    reasons = []
+    if not approved:
+        blockers = (review or {}).get("blockers", [])
+        reasons.append(f"校閲{rounds}往復でも未 approve。残ブロック:\n"
+                       + json.dumps(blockers[:5], ensure_ascii=False, indent=2))
+    if code != 0:
+        errs = [l for l in lint_out.splitlines() if l.startswith("::error")]
+        reasons.append(f"lint エラー {len(errs)} 件:\n- " + "\n- ".join(
+            e.split("::", 2)[-1] for e in errs[:5]))
+    notify("compose", f"{date}号: 発行前に人間判断が必要。" + "\n".join(reasons), ok=False)
     return 1
 
 

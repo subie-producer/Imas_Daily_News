@@ -21,5 +21,24 @@
   "verify": "confirmed",
   "src_candidate_id": "20260712-x-shiny-summer-pair",
   "event_date": "2026-07-16"
+ },
+ {
+  "id": "sched-2026-07-16-gakuen-realescapegame-nagoya-2026-開幕",
+  "dedup_key": "gakuen-realescapegame-nagoya-2026",
+  "brand": "gaku",
+  "subject": "リアル脱出ゲーム×学園アイドルマスター 名古屋公演開幕",
+  "kind": "開幕",
+  "note": "名古屋会場初日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "名古屋会場は2026年7月16日(木)〜9月6日(日)、リアル脱出ゲーム名古屋店706ホールで開催",
+   "上演時間は約110分(制限時間70分)"
+  ],
+  "title": "学マス脱出ゲーム、名古屋公演7/16開幕",
+  "url": "https://realdgame.jp/s/gkmas/index01.html",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607140344-claude-101",
+  "event_date": "2026-07-16"
  }
 ]

@@ -160,5 +160,41 @@
   "src_candidate_id": "202607130340-grok-4",
   "event_date": "2026-07-11",
   "deadline": "2026-08-06"
+ },
+ {
+  "id": "sched-2026-08-06-imas-atre-akihabara-2026-千秋楽",
+  "dedup_key": "imas-atre-akihabara-2026",
+  "brand": "765",
+  "subject": "アイマス×アトレ秋葉原コラボ千秋楽",
+  "kind": "千秋楽",
+  "note": "コラボ最終日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "開催期間は2026年7月24日〜8月6日"
+  ],
+  "title": "アイマス×アトレ秋葉原コラボ開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19081",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607131841-grok-5",
+  "event_date": "2026-08-06"
+ },
+ {
+  "id": "sched-2026-08-06-shiny-smile-base-cafe-sporty-china-style-2026-開幕心斎橋",
+  "dedup_key": "shiny-smile-base-cafe-sporty-china-style-2026",
+  "brand": "shiny",
+  "subject": "シャニマス×SMILE BASE CAFE心斎橋店開幕",
+  "kind": "開幕",
+  "note": "心斎橋店開催初日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "心斎橋店は2026年8月6日〜8月21日開催予定"
+  ],
+  "title": "シャニマス×SMILE BASEカフェ名古屋栄店開催中",
+  "url": "https://smilebase.co.jp/12366/",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130742-claude-93",
+  "event_date": "2026-08-06"
  }
 ]

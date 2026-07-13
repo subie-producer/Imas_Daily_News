@@ -47,5 +47,62 @@
   "src_candidate_id": "202607130340-grok-42",
   "event_date": "2026-10-14",
   "deadline": "2026-07-15"
+ },
+ {
+  "id": "sched-2026-07-15-gaku-utahime-primastella-7-2026-締切",
+  "dedup_key": "gaku-utahime-primastella-7-2026",
+  "brand": "gaku",
+  "subject": "学マスオンリーイベント「歌姫のプリマステラ7」一次締切",
+  "kind": "締切",
+  "note": "一次参加締切当日(オンライン先着順)",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "学園アイドルマスターオンリーイベント「歌姫のプリマステラ７」の一次参加締切は2026年7月15日(水)",
+   "会場は大田区産業プラザPiO、開催は2026年9月20日12:00-15:30(予定)"
+  ],
+  "title": "「歌姫のプリマステラ７」一次締切迫る",
+  "url": "http://www.puniket.com/gakumas/",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130742-grok-46",
+  "event_date": "2026-07-15"
+ },
+ {
+  "id": "sched-2026-07-15-sidem-fantastic-battle-fes-bluray-2026-発売",
+  "dedup_key": "sidem-fantastic-battle-fes-bluray-2026",
+  "brand": "sidem",
+  "subject": "SideM LIVE Blu-ray「F@NTASTIC BATTLE FES」発売",
+  "kind": "発売",
+  "note": "発売当日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "「315 Production presents F@NTASTIC BATTLE FES ～Who goes first～ LIVE Blu-ray」が2026年7月15日発売(品番LABX-8814〜8816、税込26,400円)",
+   "2025年10月4日・5日幕張イベントホール、11月15日・16日大阪オリックス劇場の公演を収録"
+  ],
+  "title": "SideM LIVE Blu-ray、7/15発売",
+  "url": "https://www.lantis.jp/sidem/releaseinfo/",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607131841-claude-100",
+  "event_date": "2026-07-15"
+ },
+ {
+  "id": "sched-2026-07-15-shiny-cd-goods-tokyojiyukei-mytime-2026-締切",
+  "dedup_key": "shiny-cd-goods-tokyojiyukei-mytime-2026",
+  "brand": "shiny",
+  "subject": "「My time」CD発売記念グッズ通販締切",
+  "kind": "締切",
+  "note": "通販受付最終日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "CD「Song for Prism Tokyo自由系＊ガール/My time」発売記念グッズ通販の受付は2026年7月15日23:59まで",
+   "商品はユニットイメージTシャツ・フェイスタオル・アクリルスタンド・生徒手帳風パスケース・ランダム缶バッジ"
+  ],
+  "title": "「My time」CD記念グッズ通販、15日締切",
+  "url": "https://shinycolors.lantis.jp/goods/260701_1/",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607131841-claude-95",
+  "event_date": "2026-07-15"
  }
 ]

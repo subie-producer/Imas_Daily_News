@@ -1,8 +1,4 @@
 # 日付未確定の追跡事項(watchlist)。日付が判明したら compose が stock/scheduled/<日付>.json へ予約して、ここから消す。
-- dedup_key: million-9th-anniversary-mission
-  brand: million
-  subject: ミリシタ9周年 イベント「最上級:Invit@tion!」とSSR確定チケット
-  watch: SSR確定ガシャチケット2枚の配布日(イベント終了後・日付判明次第 triggers へ)
 - dedup_key: shiny-summer-best-pair-2026
   brand: shiny
   subject: シャニマスサマーベストペア2026 予選投票

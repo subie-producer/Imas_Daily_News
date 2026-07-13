@@ -135,5 +135,23 @@
   "verify": "confirmed",
   "src_candidate_id": "20260712-columbia-twinlive-cd",
   "event_date": "2026-08-06"
+ },
+ {
+  "id": "sched-2026-08-28-seabreeze-gakumas-collab-2026-締切前",
+  "dedup_key": "seabreeze-gakumas-collab-2026",
+  "brand": "gaku",
+  "subject": "SEA BREEZE×学マス特別賞応募締切3日前",
+  "kind": "締切前",
+  "note": "特別賞応募締切(8/31)の3日前リマインド",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "特別賞の応募締切は2026年8月31日(月)23:59、当選者発表は9月中旬以降DMで通知"
+  ],
+  "title": "SEA BREEZE×学マス コラボ実施中、8月31日締切",
+  "url": "https://seabreeze-gkmas-cp.jp/",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130742-claude-102",
+  "event_date": "2026-08-31"
  }
 ]

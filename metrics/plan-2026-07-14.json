@@ -1,0 +1,413 @@
+{
+  "articles": [
+    {
+      "slug": "iwsf2026-countdown-10days",
+      "brand": "joint",
+      "rank": "lead",
+      "angle": "シリーズ20周年フィナーレIWSF2026が開幕まで残り10日。ライブビューイング実施決定・20周年ありがとうSP生配信の配信プラットフォームと時刻も判明し、越境イベントへの機運が最高潮に達している",
+      "dedup_key": "imas-20th-iwsf2026",
+      "candidate_ids": [
+        "202607140344-grok-1",
+        "202607131241-claude-113",
+        "202607131241-grok-80",
+        "202607132340-claude-102"
+      ]
+    },
+    {
+      "slug": "mirishita-9th-anniversary-results",
+      "brand": "million",
+      "rank": "large",
+      "angle": "ミリシタ9周年イベント「最上級:Invit@tion!」が結果発表。総合1位所恵美、アイドル別1位は百瀬莉緒が8連覇、SSR確定ガシャチケット2枚の配布も始まり9周年企画が有終の美を飾った",
+      "dedup_key": "million-9th-anniversary-mission",
+      "candidate_ids": [
+        "202607131241-grok-19",
+        "202607131241-grok-25",
+        "202607131241-grok-81",
+        "202607131241-grok-21"
+      ]
+    },
+    {
+      "slug": "sidem-costume-museum-day4-update",
+      "brand": "sidem",
+      "rank": "large",
+      "angle": "SideM「STAGE COSTUME MUSEUM」がDAY4を迎え、衣装撮影可能エリアの拡大やアトリエコーナー新設、A3クリアポスター登場、完売グッズの再販売など会場情報が続々更新",
+      "dedup_key": "sidem-stage-costume-museum",
+      "candidate_ids": [
+        "202607130742-grok-34",
+        "202607131841-grok-32",
+        "202607131841-grok-34",
+        "202607131841-grok-35",
+        "202607132340-grok-30",
+        "202607130742-claude-98"
+      ]
+    },
+    {
+      "slug": "shiny-manekineko-collab-open",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "シャニマス×カラオケまねきねこコラボが本日13時に開幕。8月30日までの約1カ月半、全国のまねきねこ店舗でコラボ企画を展開",
+      "dedup_key": "shiny-manekineko-collab-2026",
+      "candidate_ids": [
+        "sched-2026-07-14-shiny-manekineko-collab-2026-開幕",
+        "202607132340-claude-109",
+        "202607131841-claude-93",
+        "202607132340-grok-69"
+      ]
+    },
+    {
+      "slug": "sidem-11th-party-name-deadline",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "SideM 11th「テラススイートPPPP」のPARTY名回答期限が7月17日に迫る。ASOBI STOREからの回答メール送付済み、購入代表者は3日以内の対応が必要",
+      "dedup_key": "sidem-11th-party-name",
+      "candidate_ids": [
+        "sched-2026-07-14-sidem-11th-party-name-締切前"
+      ]
+    },
+    {
+      "slug": "million-machida-art-rally-open",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "ミリオンライブ！×東京都町田市のコラボ企画「ミリオン町田アートラリー」が本日開幕",
+      "dedup_key": "million-machida-art-rally-2026",
+      "candidate_ids": [
+        "202607131241-watch-1",
+        "202607131241-claude-95"
+      ]
+    },
+    {
+      "slug": "cg-star-village-achi-collab",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "シンデレラガールズ×長野県阿智村「スタービレッジ阿智」の2026年夏・秋コラボが決定",
+      "dedup_key": "cg-star-village-achi-summer-2026",
+      "candidate_ids": [
+        "202607131241-watch-0",
+        "202607131841-claude-82",
+        "202607132340-claude-107",
+        "202607131241-claude-90"
+      ]
+    },
+    {
+      "slug": "shiny-msp-costume-reveals",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "ソロライブ『Master ShowPiece』出演者の新衣装が続々公開。風野灯織「スローモーヴィメント」、小宮果穂の新衣装とチケット先行情報も判明",
+      "dedup_key": "shiny-msp-costume-hiori-2026",
+      "candidate_ids": [
+        "202607130742-grok-27",
+        "202607131841-grok-25"
+      ]
+    },
+    {
+      "slug": "gakumas-shirube-final-goods-open",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "学マス「LIVE TOUR -標-」ファイナル公演の公式グッズ事前販売が開始。パンフレットやコンサートライトなど共通グッズに加え13人個別グッズも展開、受注は7/20締切",
+      "dedup_key": "gakumas-livetour-shirube-final-goods-2026",
+      "candidate_ids": [
+        "202607130742-claude-104",
+        "202607132340-claude-96"
+      ]
+    },
+    {
+      "slug": "gaku-bigface-plush-vol2",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "学マス「BIGフェイスぬいぐるみ vol.2」の予約が開始。雨夜燕・有村麻央・葛城リーリヤの3人が登場",
+      "dedup_key": "gaku-bigface-plush-vol2-2026",
+      "candidate_ids": [
+        "202607131241-claude-103",
+        "202607131841-claude-104"
+      ]
+    },
+    {
+      "slug": "gaku-chupachups-popup",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "学園アイドルマスター×チュッパチャプスのPOP UP STOREがJR池袋駅で開催",
+      "dedup_key": "gaku-chupachups-ikebukuro-popup-2026",
+      "candidate_ids": [
+        "202607131241-claude-106"
+      ]
+    },
+    {
+      "slug": "gaku-yurakucho-popup-finalday",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "有楽町マルイの学マスPOP UP第2弾が本日最終日。先着入場制限や一部グッズの完売・受注切り替えが続いていた",
+      "dedup_key": "gaku-yurakucho-marui-popup2",
+      "candidate_ids": [
+        "202607130742-claude-101",
+        "202607131841-grok-43"
+      ]
+    },
+    {
+      "slug": "seabreeze-gakumas-collab",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "SEA BREEZE×学マスのコラボキャンペーンが実施中、締切は8月31日",
+      "dedup_key": "seabreeze-gakumas-collab-2026",
+      "candidate_ids": [
+        "202607130742-claude-102"
+      ]
+    },
+    {
+      "slug": "gaku-goods-roundup-jul14",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "SuperGroupies・ムービック・コレイズ・ローソンなど、学マスの各種予約グッズ情報をまとめて紹介",
+      "dedup_key": "gaku-supergroupies-accessories-2026",
+      "candidate_ids": [
+        "202607131841-claude-107",
+        "202607131241-grok-47",
+        "202607132340-grok-42",
+        "202607131841-claude-106"
+      ]
+    },
+    {
+      "slug": "gaku-utahime-primastella7-deadline",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「歌姫のプリマステラ7」一次参加締切が間近に",
+      "dedup_key": "gaku-utahime-primastella-7-2026",
+      "candidate_ids": [
+        "202607130742-grok-46"
+      ]
+    },
+    {
+      "slug": "gakuen-realescapegame-nagoya",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "リアル脱出ゲーム×学マス『人狼潜む文化祭からの脱出』名古屋公演が7月16日開幕",
+      "dedup_key": "gakuen-realescapegame-nagoya-2026",
+      "candidate_ids": [
+        "202607140344-claude-101"
+      ]
+    },
+    {
+      "slug": "gakuen-apraunji-iwsf-preview",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "学マスAPラウンジ「IWSF直前!アイドルライブ特集」が本日生配信",
+      "dedup_key": "gakuen-iwsf-apraunji-preview-2026",
+      "candidate_ids": [
+        "202607140344-claude-97"
+      ]
+    },
+    {
+      "slug": "sidem-315-hayarinoare",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "315プロダクションエピソード新作「流行りのアレ」が公開",
+      "dedup_key": "sidem-315-episode-hayarinoare-2026",
+      "candidate_ids": [
+        "202607140344-claude-94"
+      ]
+    },
+    {
+      "slug": "sidem-fantastic-battle-fes-bluray",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM LIVE Blu-ray「F@NTASTIC BATTLE FES ～Who goes first～」が7月15日発売",
+      "dedup_key": "sidem-fantastic-battle-fes-bluray-2026",
+      "candidate_ids": [
+        "202607131841-claude-100"
+      ]
+    },
+    {
+      "slug": "deramasu-sidem-collabs-roundup",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "「でらます」×SideMの新コラボ情報が続々解禁。名古屋・金山の観光案内所やお香ブランドとのタイアップ、バレエコアテーマのポップアップなど",
+      "dedup_key": "deramasu-sidem-special-site-update-20260713",
+      "candidate_ids": [
+        "202607131241-grok-36",
+        "202607131241-grok-37",
+        "202607131241-grok-38",
+        "202607131241-grok-39",
+        "202607140344-grok-37",
+        "202607140344-grok-39",
+        "202607131841-grok-63"
+      ]
+    },
+    {
+      "slug": "sidem-fifs-extra-aftersale",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM×FiFSイラスト展のEXTRAグッズ、アソビストアでの事後通販が決定",
+      "dedup_key": "sidem-fifs-extra-aftersale-2026",
+      "candidate_ids": [
+        "202607131241-grok-77"
+      ]
+    },
+    {
+      "slug": "shiny-smilebase-cafe-nagoya",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニマス×SMILE BASE CAFE「Sporty China Style」が名古屋栄店で開催中",
+      "dedup_key": "shiny-smile-base-cafe-sporty-china-style-2026",
+      "candidate_ids": [
+        "202607130742-claude-93",
+        "202607131241-grok-73",
+        "202607132340-claude-89"
+      ]
+    },
+    {
+      "slug": "shiny-mytime-cd-goods",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "「Tokyo自由系＊ガール/My time」CD発売記念グッズの通販が実施中",
+      "dedup_key": "shiny-cd-goods-tokyojiyukei-mytime-2026",
+      "candidate_ids": [
+        "202607131841-claude-95"
+      ]
+    },
+    {
+      "slug": "tokoname-maekawa-miku-manhole-2nd",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "愛知県常滑市の「前川みく」マンホール設置1周年を記念し、第2弾グッズの発売が決定",
+      "dedup_key": "tokoname-maekawa-miku-manhole-anniversary-2026",
+      "candidate_ids": [
+        "202607130742-claude-115"
+      ]
+    },
+    {
+      "slug": "cg-unionarena-booster-cards",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "ユニオンアリーナのシンデレラガールズブースターで新規カードが公開",
+      "dedup_key": "union-arena-cg-booster-card-reveal-2026",
+      "candidate_ids": [
+        "202607130742-grok-14",
+        "202607131241-grok-13"
+      ]
+    },
+    {
+      "slug": "cg-vote2026-idolcommu-new",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "総選挙2026連動のシンデレラアイドルコミュが新規公開。浜川愛結奈＆松山久美子、服部瞳子＆西川保奈美のペアが登場",
+      "dedup_key": "cg-vote2026-idol-commu-hamakawa-matsuyama",
+      "candidate_ids": [
+        "202607132340-grok-5",
+        "202607132340-grok-6",
+        "202607140344-grok-10"
+      ]
+    },
+    {
+      "slug": "765pro-never-end-idol-bluray",
+      "brand": "765",
+      "rank": "small",
+      "angle": "765PRO ALLSTARS単独LIVE「NEVER END IDOL」のBlu-rayが11月25日発売、予約受付中",
+      "dedup_key": "765pro-never-end-idol-bluray-2026",
+      "candidate_ids": [
+        "202607130742-claude-84"
+      ]
+    },
+    {
+      "slug": "imas-atre-akihabara-collab",
+      "brand": "765",
+      "rank": "small",
+      "angle": "アイドルマスター×アトレ秋葉原のコラボ開催が決定。アルバス・アストロラーベ衣装がテーマ",
+      "dedup_key": "imas-atre-akihabara-2026",
+      "candidate_ids": [
+        "202607131841-grok-5"
+      ]
+    },
+    {
+      "slug": "manaka-recovery-updates",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "延期中の灯里愛夏バースデーライブをめぐり、本人がレッスン復帰を報告。ユニオンアリーナ案件やCODE VEIN II配信も予告し活動再開の動きが進む",
+      "dedup_key": "manaka-birthday-live-2026-postponed",
+      "candidate_ids": [
+        "202607131841-grok-53",
+        "202607131841-grok-54",
+        "202607140344-claude-103"
+      ]
+    },
+    {
+      "slug": "dsva-stream-roundup-jul14",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "vα-liv/876プロ勢の配信ラッシュ。上水流宇宙のミューコミVR出演や踊ってみた2本、灯里愛夏の「DARK SOULS III」完結など、今週の配信・投稿をまとめて紹介",
+      "dedup_key": "cosmo-mucomi-vr-2026-07-12",
+      "candidate_ids": [
+        "202607131241-grok-53",
+        "202607130742-grok-53",
+        "202607131841-grok-52",
+        "202607130742-grok-54",
+        "202607130742-grok-55",
+        "202607131241-grok-57",
+        "202607130742-claude-108"
+      ]
+    },
+    {
+      "slug": "valiv-2nd-anniversary-interview",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "ヴイアライヴのアイドルデビュー2周年を記念したインタビューが掲載",
+      "dedup_key": "valiv-2nd-anniversary-interview-2026",
+      "candidate_ids": [
+        "202607131241-claude-109"
+      ]
+    },
+    {
+      "slug": "valiv-tcg-sleeve-collection",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "vα-liv TCG「Reバース for you」関連で、灯里愛夏・上水流宇宙・レトラのスリーブコレクションが発売",
+      "dedup_key": "valiv-rebirth-fy-tcg-2026",
+      "candidate_ids": [
+        "202607131241-claude-111"
+      ]
+    },
+    {
+      "slug": "tours-s1-card-intro-continue",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "ツアマス新シリーズ第1弾、追加のSSRカードが紹介される",
+      "dedup_key": "tours-ssr-sailor-costume",
+      "candidate_ids": [
+        "202607131841-grok-56"
+      ]
+    },
+    {
+      "slug": "mirishita-sfy-gasha-vol76",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ「SONG FOR YOU！ガシャ VOL.76」開催、伊吹翼・白石紬に新SSR衣装が登場",
+      "dedup_key": "song-for-you-gasha-vol76-2026",
+      "candidate_ids": [
+        "202607131241-grok-20",
+        "202607132340-grok-14",
+        "202607140344-grok-19",
+        "202607132340-grok-11"
+      ]
+    },
+    {
+      "slug": "mirishita-millicole-masterrank5",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタで「ミリコレ！」が本日開催、マスターランク5も追加",
+      "dedup_key": "million-millicole-2026-07",
+      "candidate_ids": [
+        "202607131841-grok-19",
+        "202607131841-grok-18"
+      ]
+    },
+    {
+      "slug": "million-karatetsu-collab",
+      "brand": "million",
+      "rank": "small",
+      "angle": "「ミリオンライブ！×KARATEZ SPECIAL COLLABORATION」が開催中",
+      "dedup_key": "million-karatetsu-collab-2026",
+      "candidate_ids": [
+        "202607130742-claude-91"
+      ]
+    }
+  ],
+  "editorial_topic": "IWSF2026まで残り10日、20周年イヤーが最高潮を迎える中で「AI編集部が毎日書き続けること」の意味を考える"
+}

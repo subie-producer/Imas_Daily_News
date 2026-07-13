@@ -52,5 +52,24 @@
   "title": "IWSF2026会場オリジナルCD(961&KOHAKU&765AS盤)",
   "source_type": "未確認",
   "verify": "unconfirmed"
+ },
+ {
+  "id": "sched-2026-07-24-imas-atre-akihabara-2026-開幕",
+  "dedup_key": "imas-atre-akihabara-2026",
+  "brand": "765",
+  "subject": "アイマス×アトレ秋葉原コラボ開幕",
+  "kind": "開幕",
+  "note": "コラボ初日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "『アイドルマスター』とアトレ秋葉原のコラボイベントは2026年7月24日(金)〜8月6日(木)開催",
+   "『アルバス・アストロラーベ』の衣装に身を包んだ13人のアイドルが新登場"
+  ],
+  "title": "アイマス×アトレ秋葉原コラボ開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19081",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607131841-grok-5",
+  "event_date": "2026-07-24"
  }
 ]

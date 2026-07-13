@@ -35,5 +35,23 @@
   "verify": "confirmed",
   "src_candidate_id": "20260712-portal-cg-genka",
   "event_date": "2026-08-01"
+ },
+ {
+  "id": "sched-2026-08-21-shiny-smile-base-cafe-sporty-china-style-2026-千秋楽心斎橋",
+  "dedup_key": "shiny-smile-base-cafe-sporty-china-style-2026",
+  "brand": "shiny",
+  "subject": "シャニマス×SMILE BASE CAFE心斎橋店千秋楽",
+  "kind": "千秋楽",
+  "note": "心斎橋店最終日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "心斎橋店は2026年8月6日〜8月21日開催予定"
+  ],
+  "title": "シャニマス×SMILE BASEカフェ名古屋栄店開催中",
+  "url": "https://smilebase.co.jp/12366/",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130742-claude-93",
+  "event_date": "2026-08-21"
  }
 ]

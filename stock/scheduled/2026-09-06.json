@@ -35,5 +35,23 @@
   "verify": "confirmed",
   "src_candidate_id": "20260712-portal-cg-genka",
   "event_date": "2026-08-01"
+ },
+ {
+  "id": "sched-2026-09-06-gakuen-realescapegame-nagoya-2026-千秋楽",
+  "dedup_key": "gakuen-realescapegame-nagoya-2026",
+  "brand": "gaku",
+  "subject": "リアル脱出ゲーム×学園アイドルマスター 名古屋公演千秋楽",
+  "kind": "千秋楽",
+  "note": "名古屋会場最終日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "名古屋会場は2026年7月16日〜9月6日開催"
+  ],
+  "title": "学マス脱出ゲーム、名古屋公演7/16開幕",
+  "url": "https://realdgame.jp/s/gkmas/index01.html",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607140344-claude-101",
+  "event_date": "2026-09-06"
  }
 ]

@@ -24,5 +24,24 @@
   "verify": "confirmed",
   "src_candidate_id": "20260712-portal-ml14th-senko",
   "event_date": "2026-09-19"
+ },
+ {
+  "id": "sched-2026-09-20-gaku-utahime-primastella-7-2026-開幕",
+  "dedup_key": "gaku-utahime-primastella-7-2026",
+  "brand": "gaku",
+  "subject": "学マスオンリーイベント「歌姫のプリマステラ7」開催",
+  "kind": "開幕",
+  "note": "開催当日(大田区産業プラザPiO)",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "開催は2026年9月20日(日)12:00-15:30(予定)、会場は大田区産業プラザPiO",
+   "歌姫庭園４４(アイマスオールジャンル、同日開催)と合同開催"
+  ],
+  "title": "「歌姫のプリマステラ７」一次締切迫る",
+  "url": "http://www.puniket.com/gakumas/",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130742-grok-46",
+  "event_date": "2026-09-20"
  }
 ]

@@ -24,5 +24,24 @@
   "verify": "confirmed",
   "src_candidate_id": "20260712-portal-ml14th-senko",
   "event_date": "2026-09-19"
+ },
+ {
+  "id": "sched-2026-07-30-tokoname-maekawa-miku-manhole-anniversary-2026-発売",
+  "dedup_key": "tokoname-maekawa-miku-manhole-anniversary-2026",
+  "brand": "cg",
+  "subject": "常滑「前川みく」マンホール1周年 第2弾グッズ発売",
+  "kind": "発売",
+  "note": "1周年当日・グッズ発売開始",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "「前川みく」マンホールは2025年7月30日設置、2026年7月30日で設置1周年",
+   "第2弾グッズ(ピンズ・アクリルコースター・マグネット)を2026年7月30日午前9時よりとこなめ観光案内所で発売開始"
+  ],
+  "title": "常滑「前川みく」マンホール1周年、第2弾グッズ",
+  "url": "https://prtimes.jp/main/html/rd/p/000000088.000152789.html",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130742-claude-115",
+  "event_date": "2026-07-30"
  }
 ]

@@ -1,0 +1,21 @@
+[
+ {
+  "id": "sched-2026-08-02-gaku-bigface-plush-vol2-2026-締切",
+  "dedup_key": "gaku-bigface-plush-vol2-2026",
+  "brand": "gaku",
+  "subject": "学マスBIGフェイスぬいぐるみvol.2予約締切",
+  "kind": "締切",
+  "note": "予約受付最終日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "予約受付期間は2026年7月8日10:00〜8月2日23:00",
+   "発売予定は2026年11月、プレミアムバンダイ限定"
+  ],
+  "title": "学マスBIGフェイスぬいぐるみvol.2予約開始",
+  "url": "https://idolmaster-official.jp/news/01_19306",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607131241-claude-103",
+  "event_date": "2026-08-02"
+ }
+]

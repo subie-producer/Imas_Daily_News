@@ -61,5 +61,23 @@
   "src_candidate_id": "202607130340-grok-11",
   "event_date": "2026-08-13",
   "deadline": "2026-07-20"
+ },
+ {
+  "id": "sched-2026-08-16-million-karatetsu-collab-2026-千秋楽",
+  "dedup_key": "million-karatetsu-collab-2026",
+  "brand": "million",
+  "subject": "ミリオン×KARATEZコラボ千秋楽",
+  "kind": "千秋楽",
+  "note": "コラボ最終日(新潟のみ8/4まで)",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "開催期間は2026年6月26日〜8月16日、新潟万代シティ店のみ8月4日まで"
+  ],
+  "title": "ミリオン×KARATEZコラボ 9店舗で開催中",
+  "url": "https://www.karatetsu.com/animegame/idolmaster-millionlive-theaterdays-9th.shtml",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130742-claude-91",
+  "event_date": "2026-08-16"
  }
 ]

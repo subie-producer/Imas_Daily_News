@@ -201,5 +201,24 @@
   "src_candidate_id": "202607130340-grok-11",
   "event_date": "2026-08-13",
   "deadline": "2026-07-20"
+ },
+ {
+  "id": "sched-2026-07-20-gakumas-livetour-shirube-final-goods-2026-締切",
+  "dedup_key": "gakumas-livetour-shirube-final-goods-2026",
+  "brand": "gaku",
+  "subject": "学マス「標」ファイナル公演グッズ事前販売締切",
+  "kind": "締切",
+  "note": "受注最終日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "アソビストアでの受注期間は2026年7月9日(木)〜7月20日(月)",
+   "商品は2026年10月下旬以降順次発送予定"
+  ],
+  "title": "学マス「標」ファイナル公演グッズ事前販売開始",
+  "url": "https://shop.asobistore.jp/feature/gkmas_livetourshirube_final",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130742-claude-104",
+  "event_date": "2026-07-20"
  }
 ]

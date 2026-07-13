@@ -82,5 +82,24 @@
   "src_candidate_id": "202607130340-claude-111",
   "event_date": "2026-07-08",
   "deadline": "2026-07-21"
+ },
+ {
+  "id": "sched-2026-07-18-cg-star-village-achi-summer-2026-開幕",
+  "dedup_key": "cg-star-village-achi-summer-2026",
+  "brand": "cg",
+  "subject": "シンデレラガールズ×スタービレッジ阿智 コラボ開幕",
+  "kind": "開幕",
+  "note": "コラボ初日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "開催期間は2026年7月18日(土)〜9月23日(水・秋分の日)、会場は観光拠点施設ACHI BASE(長野県下伊那郡阿智村)",
+   "アナスタシアによる夏の星座解説を毎晩20:40〜21:00に屋外イベント会場で実施(観覧無料)"
+  ],
+  "title": "阿智村×シンデレラガールズ 星空コラボ決定",
+  "url": "https://idolmaster-official.jp/news/01_19356",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607131241-watch-0",
+  "event_date": "2026-07-18"
  }
 ]

@@ -178,5 +178,61 @@
   "src_candidate_id": "202607120338-claude-8",
   "event_date": "2026-08-03",
   "deadline": "2026-09-18"
+ },
+ {
+  "id": "sched-2026-08-03-gaku-chupachups-ikebukuro-popup-2026-千秋楽",
+  "dedup_key": "gaku-chupachups-ikebukuro-popup-2026",
+  "brand": "gaku",
+  "subject": "学園アイドルマスター×チュッパチャプス池袋POP UP千秋楽",
+  "kind": "千秋楽",
+  "note": "本開催最終日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "本格開催期間は2026年7月21日〜8月3日"
+  ],
+  "title": "学園アイマス×チュッパチャプス池袋POP UP",
+  "url": "https://eeo.today/pr/gkms-chupachups-ikebukuro/",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607131241-claude-106",
+  "event_date": "2026-08-03"
+ },
+ {
+  "id": "sched-2026-08-03-gaku-supergroupies-accessories-2026-締切",
+  "dedup_key": "gaku-supergroupies-accessories-2026",
+  "brand": "gaku",
+  "subject": "学マスSuperGroupies予約締切",
+  "kind": "締切",
+  "note": "腕時計・バッグ・長財布の予約最終日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "SuperGroupies予約受付は2026年7月6日12:00〜8月3日12:00",
+   "対象は有村麻央・葛城リーリヤ・倉本千奈をイメージした腕時計・バッグ・長財布(全9種)"
+  ],
+  "title": "学マス予約グッズまとめ、締切迫るものも",
+  "url": "https://idolmaster-official.jp/news/01_19168",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607131841-claude-107",
+  "event_date": "2026-08-03"
+ },
+ {
+  "id": "sched-2026-08-03-deramasu-sidem-special-site-update-20260713-開幕",
+  "dedup_key": "deramasu-sidem-special-site-update-20260713",
+  "brand": "sidem",
+  "subject": "でらます×SideM 名古屋観光案内所・マンガ展コラボ開幕",
+  "kind": "開幕",
+  "note": "名古屋観光コンベンションビューロー・マンガ展ポップアップ開始",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "名古屋観光コンベンションビューロー(金山観光案内所)・マンガ展のコラボは2026年8月3日(月)〜10月31日(土)",
+   "妙香園も8月3日から名古屋市内4店舗でコラボ商品を販売開始"
+  ],
+  "title": "でらます×SideMコラボ続々解禁",
+  "url": "https://x.com/nagoyainfojp/status/2076501882248511823",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607140344-grok-37",
+  "event_date": "2026-08-03"
  }
 ]

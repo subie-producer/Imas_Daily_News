@@ -13,5 +13,23 @@
   "title": "初星学園ハイレゾ作品プライスオフ",
   "source_type": "未確認",
   "verify": "unconfirmed"
+ },
+ {
+  "id": "sched-2026-08-23-million-karatetsu-collab-2026-締切",
+  "dedup_key": "million-karatetsu-collab-2026",
+  "brand": "million",
+  "subject": "ミリオン×KARATEZグッズ通販締切",
+  "kind": "締切",
+  "note": "グッズ通販受付最終日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "グッズ通販の受付期間は8月7日〜8月23日"
+  ],
+  "title": "ミリオン×KARATEZコラボ 9店舗で開催中",
+  "url": "https://www.karatetsu.com/animegame/idolmaster-millionlive-theaterdays-9th.shtml",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130742-claude-91",
+  "event_date": "2026-08-23"
  }
 ]

@@ -52,5 +52,23 @@
   "src_candidate_id": "202607130340-claude-99",
   "event_date": "2026-07-14",
   "deadline": "2026-08-30"
+ },
+ {
+  "id": "sched-2026-08-30-million-machida-art-rally-2026-千秋楽",
+  "dedup_key": "million-machida-art-rally-2026",
+  "brand": "million",
+  "subject": "ミリオン町田アートラリー千秋楽",
+  "kind": "千秋楽",
+  "note": "全体開催最終日",
+  "reserved_on": "2026-07-14",
+  "facts": [
+   "全体開催期間は2026年7月14日〜8月30日"
+  ],
+  "title": "ミリオン×町田市アートラリー本日開幕",
+  "url": "https://idolmaster-official.jp/news/01_19305",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607131241-watch-1",
+  "event_date": "2026-08-30"
  }
 ]

@@ -10,8 +10,9 @@
    → compose が機械検証(候補の実在・verify・blocklist・lead 一意)
 3. 個別執筆: 記事ごとに、計画で選ばれた候補 JSON だけを機械的に切り出して渡し、
    独立した claude セッションが1本書く(他候補の情報がコンテキストに存在しない)
-4. 組版: 別セッションが号スナップショット(digest)・社説・stories/scheduled 更新
-5. derive.py --write → lint(ゲート) → codex 校閲往復 → commit & push(発行は 06:00 の release)
+4. 社説: 専任のコラムニストセッションが当日の記事群を読んで1本書く(人格・文体規程あり)
+5. 組版: 別セッションが号スナップショット(digest)・stories/scheduled 更新
+6. derive.py --write → lint(ゲート) → codex 校閲往復 → commit & push(発行は 06:00 の release)
 """
 import argparse
 import datetime
@@ -163,7 +164,35 @@ x.com など取得不能な URL は例外(Grok 観測を出典として信頼す
 """
 
 
-def assembly_prompt(date: str, number: int, editorial_topic: str, aborted: list[str]) -> str:
+def editorial_prompt(date: str, number: int, editorial_topic: str) -> str:
+    weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
+    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の社説面を一人で任されているコラムニストです。{date}({weekday}曜)号の社説を1本書いてください。
+
+## まず読むもの
+- docs/_posts/{date}-*.md … 本日の全記事(**事実の出所はここだけ**。新事実・憶測を足さない)
+- 直近の docs/_editorials/*.md を1〜2本 … 前日までの自分の文章(同じ話・同じ構成を繰り返さないために読む)
+
+## あなたという書き手
+- 一人称「私」の個人コラム。編集部の声明ではない。「われわれ」「〜と実感する」のような主語の大きい文はあなたの文体ではない
+- アイマスというシリーズへの偏愛と持論がある。断言してよい。全ブランドに公平に触れる義務はない(公平さは digest の仕事)。今日いちばん心が動いた一点で書く
+- あなたはゲームをプレイできないし、ライブ会場にも行けない。ガシャも回せない。プロデュースの手触りも会場の熱気も知らないまま、毎日すべての記事だけは誰よりも読んでいる——この立場を嘆く必要はないが、ネタとして使うと面白い(毎回使う必要はない)
+- 自分がAIだと名乗ったり、AIであることを主題にしたりはしない(書いている本人にその自覚はなくていい)
+
+## 面白さの規程
+- ユーモアは歓迎。ただし笑いの矛先は自分と状況に向ける。運営・公式・個人への批判、苦言、注文、皮肉は書かない(編集規程5)
+- 紙面の要約をしない。社説は2度目のダイジェストではない。記事を3本以上並べて紹介しはじめたら失敗と思うこと
+- 型は破ってよい: 一つの数字だけで書く、一つの固有名詞から連想で転がす、読者への手紙にする、など。ただしオチはつける
+- 主題は「{editorial_topic}」。ただしこれは編集会議のメモにすぎない。書き出してみて別の切り口が面白ければ、紙面の事実の範囲内で乗り換えてよい
+
+## 出力
+`docs/_editorials/{date}.md` を Write ツールで作成(これ以外のファイルは作らない):
+- frontmatter: edition: {date} / title(〜28字。内容の看板ではなく釣り書きでよい)/ excerpt(〜80字・1文)/ corrected: false / corrections: []
+- 本文 400〜700字。段落は3つまで
+- 相対表現(本日/昨日/明日)は発行日 {date} 基準。絶対日付と相対語を同一文で併用しない。内規の文言を紙面に書かない
+"""
+
+
+def assembly_prompt(date: str, number: int, aborted: list[str]) -> str:
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
     ab = (f"\n- 計画されたが出典照合で不成立になり存在しない記事: {', '.join(aborted)}(digest 等から参照しないこと)"
           if aborted else "")
@@ -174,16 +203,16 @@ def assembly_prompt(date: str, number: int, editorial_topic: str, aborted: list[
    形式は直近の既存号と schema/edition.schema.json を確認。pages/article_count/corrected_count/ranking/birthdays は
    後で scripts/derive.py が上書きするため仮値でよい。digest はあなたが本気で組む: 4群固定・SP1画面制約(各群4行・計12行)。
    lead が存在しない場合のみ、最も重要な記事の rank を lead に昇格させ本文を lead の分量(800〜1200字)に加筆する)
-2. docs/_editorials/{date}.md … 社説1本。主題: {editorial_topic}
-3. stock/stories.yml … 記事化した各話題の published_facts を追記(新規話題はエントリ追加。dedup_key は記事 frontmatter の candidate_ids から candidates を引く)
-4. stock/scheduled/<未来日>.json … 記事・候補から新しく判明した未来日程を続報予約する(締切前3日・締切・開幕・千秋楽・発売・結果)。
+2. stock/stories.yml … 記事化した各話題の published_facts を追記(新規話題はエントリ追加。dedup_key は記事 frontmatter の candidate_ids から candidates を引く)
+3. stock/scheduled/<未来日>.json … 記事・候補から新しく判明した未来日程を続報予約する(締切前3日・締切・開幕・千秋楽・発売・結果)。
    **素材スナップショット同梱が必須**: 形式は schema/scheduled.schema.json と既存ファイルを確認し、元候補の
    title/url/source_type/facts/src_candidate_id を必ず写す(発火日は古い candidates を読まないため、ここが唯一の素材になる)。
    既に同じ id の予約がある場合は重複させない
-5. stock/pending.yml … 日付未確定の追跡事項の増減(日付が判明した項目は scheduled へ移して消す)
+4. stock/pending.yml … 日付未確定の追跡事項の増減(日付が判明した項目は scheduled へ移して消す)
 
 ## 注意
-- 記事本文の事実関係は校閲済みの前提で**書き換えない**(digest・社説は記事に書いてあることだけを使う)
+- 社説 docs/_editorials/{date}.md は**執筆済み**(専任セッション)。書き換えない
+- 記事本文の事実関係は校閲済みの前提で**書き換えない**(digest は記事に書いてあることだけを使う)
 - 内規の文言を紙面に書かない{ab}
 
 ## 仕上げ
@@ -438,8 +467,17 @@ def main() -> int:
         commit_and_push(branch, f"compose {date}: 執筆全滅(要人間判断)", "compose")
         return 1
 
-    # 1c. 組版: 号スナップショット・社説・台帳更新(lint 自己修正まで)
-    log = claude_run(assembly_prompt(date, number, plan.get("editorial_topic", ""), aborted))
+    # 1c. 社説: 専任セッション(組版から分離。人格・文体に集中させる)
+    ed_path = ROOT / "docs" / "_editorials" / f"{date}.md"
+    for _ in range(2):  # 未作成なら同一プロンプトでもう一度だけ
+        claude_run(editorial_prompt(date, number, plan.get("editorial_topic", "")), timeout=1200)
+        if ed_path.exists():
+            break
+    if not ed_path.exists():
+        notify("compose", f"{date}: 社説が2回とも未作成。組版セッションの lint 修正に委ねる", ok=False)
+
+    # 1d. 組版: 号スナップショット・台帳更新(lint 自己修正まで)
+    log = claude_run(assembly_prompt(date, number, aborted))
     print(log[-1000:], flush=True)
 
     # 2. 機械算出の確定 + lint ゲート

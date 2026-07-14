@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import ROOT, git, notify, now_jst
+from pipelib import ROOT, git, notify, notify_crash, now_jst
 
 def main() -> int:
     today = now_jst().strftime("%Y-%m-%d")
@@ -86,5 +86,5 @@ if __name__ == "__main__":
     try:
         sys.exit(main())
     except Exception as e:
-        notify("watch", f"想定外のエラー: {e}", ok=False)
+        notify_crash("watch", e)
         sys.exit(1)

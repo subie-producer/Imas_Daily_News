@@ -23,7 +23,8 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ROOT, CLAUDE_MODEL, JST, append_metric, checkout_edition_branch,
-                     commit_and_push, edition_date, extract_json_array, git, notify, now_jst)
+                     commit_and_push, edition_date, extract_json_array, git, notify,
+                     notify_crash, now_jst)
 
 SCHEMA_PATH = ROOT / "prompts" / "explore-item-schema.json"
 # 注: grok のヘッドレス実行には --always-approve が必須(無いとツール実行が承認待ちで
@@ -329,5 +330,5 @@ if __name__ == "__main__":
     try:
         sys.exit(main())
     except Exception as e:
-        notify("collect", f"想定外のエラー: {e}", ok=False)
+        notify_crash("collect", e)
         sys.exit(1)

@@ -27,7 +27,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ROOT, CLAUDE_MODEL, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, commit_and_push, edition_date, git,
-                     notify, now_jst)
+                     notify, notify_crash, now_jst)
 
 PAPER_STAGE = None  # main() で .env から
 
@@ -55,8 +55,15 @@ def next_number() -> int:
 
 BRANDS = {"general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"}
 RANKS = {"lead", "large", "medium", "small"}
-# 出典バッジの信頼順(強い順)。記事 src は素材候補のうち最も強いもの
+# 出典バッジの信頼順(強い順)。記事 src は引用出典のうち最も「弱い」種別
+# (=全出典がその種別以上であることの保証。ファン報告を含む記事が「公式」を
+# 名乗る過大表示を構造的に防ぐ。REQUIREMENTS 2.5「他はどれほど信頼できても
+# 公式を名乗らない」の記事単位への適用)
 SRC_ORDER = ["公式", "準公式", "当事者", "報道", "ファン", "もちより", "未確認"]
+
+
+def weakest_src(types) -> str:
+    return max(types, key=lambda s: SRC_ORDER.index(s) if s in SRC_ORDER else len(SRC_ORDER))
 
 
 def load_window_candidates(date: str) -> dict:
@@ -235,7 +242,7 @@ def parse_front_matter(path: Path) -> dict | None:
         return None
 
 
-def validate_article_file(date: str, art: dict, cands: dict, src: str) -> list[str]:
+def validate_article_file(date: str, art: dict, cands: dict) -> list[str]:
     """個別執筆の機械検収: 計画どおりの frontmatter か・出典が系譜内か。"""
     path = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
     if not path.exists():
@@ -245,17 +252,33 @@ def validate_article_file(date: str, art: dict, cands: dict, src: str) -> list[s
         return ["frontmatter がパース不能"]
     errors = []
     for key, want in (("slug", art["slug"]), ("edition", date), ("brand", art["brand"]),
-                      ("rank", art["rank"]), ("src", src)):
+                      ("rank", art["rank"])):
         got = fm.get(key)
         got = got.isoformat() if hasattr(got, "isoformat") else got
         if got != want:
             errors.append(f"{key} が計画と不一致(計画 {want} / 実際 {got})")
     if sorted(fm.get("candidate_ids") or []) != sorted(art["candidate_ids"]):
         errors.append("candidate_ids が計画と不一致")
-    own_urls = {cands[cid].get("url", "") for cid in art["candidate_ids"] if cid in cands}
+    # 出典の系譜検査+type 照合+src 再計算(引用した出典の実態から機械決定する)
+    url_types = {}
+    for cid in art["candidate_ids"]:
+        if cid in cands:
+            url_types.setdefault(cands[cid].get("url", ""), set()).add(
+                cands[cid].get("source_type", "未確認"))
+    cited_types = []
     for s in fm.get("sources") or []:
-        if s.get("url") not in own_urls:
+        if s.get("url") not in url_types:
             errors.append(f"出典 URL が素材候補群に無い(系譜外): {s.get('url')}")
+        elif s.get("type") not in url_types[s["url"]]:
+            errors.append(f"出典 type が候補の source_type と不一致({s.get('url')}: "
+                          f"記事 {s.get('type')} / 候補 {'/'.join(sorted(url_types[s['url']]))})")
+        else:
+            cited_types.append(s["type"])
+    if cited_types:
+        want_src = weakest_src(cited_types)
+        if fm.get("src") != want_src:
+            errors.append(f"src は引用出典の最弱種別 {want_src} にする(現: {fm.get('src')}。"
+                          f"バッジの過大表示防止)")
     return errors
 
 
@@ -266,8 +289,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
     jobs = []
     for art in plan["articles"]:
         materials = [cands[cid] for cid in art["candidate_ids"]]
-        src = min((c.get("source_type", "未確認") for c in materials),
-                  key=lambda s: SRC_ORDER.index(s) if s in SRC_ORDER else len(SRC_ORDER))
+        src = weakest_src(c.get("source_type", "未確認") for c in materials)
         dks = {c.get("dedup_key") for c in materials} | {art.get("dedup_key")}
         facts = [f for dk in dks if dk in stories for f in stories[dk]]
         jobs.append((art, src, article_prompt(date, art, materials, facts,
@@ -291,7 +313,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                 print(f"記事 {art['slug']} は出典照合で不成立: {reason}", flush=True)
                 aborted.append(art["slug"])
                 continue
-            errs = validate_article_file(date, art, cands, src)
+            errs = validate_article_file(date, art, cands)
             if errs:
                 # 検収エラーは同一素材で1回だけ書き直させる
                 fixp = (f"docs/_posts/{date}-{art['slug']}.md の機械検収エラーを修正してください(Edit ツール使用):\n- "
@@ -299,7 +321,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                 subprocess.run(["claude", "-p", fixp, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions"],
                                capture_output=True, text=True, timeout=600,
                                stdin=subprocess.DEVNULL, cwd=ROOT)
-                errs = validate_article_file(date, art, cands, src)
+                errs = validate_article_file(date, art, cands)
             if errs:
                 print(f"記事 {art['slug']} 検収不合格: {errs}", flush=True)
                 aborted.append(art["slug"])
@@ -478,5 +500,5 @@ if __name__ == "__main__":
     try:
         sys.exit(main())
     except Exception as e:
-        notify("compose", f"想定外のエラー: {e}", ok=False)
+        notify_crash("compose", e)
         sys.exit(1)

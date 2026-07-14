@@ -2,6 +2,8 @@
 import datetime
 import json
 import subprocess
+import sys
+import traceback
 import urllib.request
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -52,6 +54,14 @@ def notify(job: str, msg: str, ok: bool = True) -> None:
             urllib.request.urlopen(req, timeout=15)
         except Exception as e:
             print(f"(Discord 通知失敗: {e})", flush=True)
+
+
+def notify_crash(job: str, e: Exception) -> None:
+    """想定外エラーの通知。例外メッセージだけでは原因が追えないため traceback 末尾まで載せる。"""
+    tb = traceback.format_exc()
+    print(tb, file=sys.stderr, flush=True)
+    tail = "\n".join(tb.strip().splitlines()[-6:])
+    notify(job, f"想定外のエラーで停止: {e}\n```\n{tail}\n```\n(全文: journalctl --user -u imas-{job})", ok=False)
 
 
 def git(*args, check: bool = True) -> subprocess.CompletedProcess:

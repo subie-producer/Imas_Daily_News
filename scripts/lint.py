@@ -57,6 +57,11 @@ WEEKDAYS = "月火水木金土日"
 RELATIVE_WORDS = {"本日": 0, "今日": 0, "昨日": -1, "明日": +1}
 ABS_DATE_RE = re.compile(r"(\d{1,2})月(\d{1,2})日")
 
+# 出典バッジの信頼順(強い順)。記事 src は引用出典の最弱種別(compose と同一規則)。
+# 2026-07-14 以前の号は旧規則(最強種別)で発行済みのため検査対象外
+SRC_ORDER = ["公式", "準公式", "当事者", "報道", "ファン", "もちより", "未確認"]
+SRC_WEAKEST_FROM = "2026-07-15"
+
 URL_TIMEOUT = 15
 URL_UA = "Mozilla/5.0 (compatible; ImasNewsLint/1.0; +https://github.com/subie-producer/Imas_Daily_News)"
 # ログイン必須で機械的な生存確認ができないホスト(候補照合・出典明示は通常どおり)
@@ -445,16 +450,33 @@ def main() -> int:
             for day in window:
                 window_items.update(candidate_items_by_day.get(day, {}))
             own_urls = set()
+            url_types = {}
             for cid in fm["candidate_ids"]:
                 item = window_items.get(cid)
                 if item is None:
                     rep.error(path, f"candidate_ids の {cid} が発行日前後の candidates に存在しない")
                 else:
                     own_urls.add(item.get("url", ""))
+                    url_types.setdefault(item.get("url", ""), set()).add(
+                        item.get("source_type", "未確認"))
             if own_urls:
+                cited_types = []
                 for s in fm["sources"]:
                     if s["url"] not in own_urls:
                         rep.error(path, f"出典 URL が candidate_ids の候補群に含まれない(系譜外): {s['url']}")
+                    elif fm["edition"] >= SRC_WEAKEST_FROM:
+                        if s.get("type") not in url_types[s["url"]]:
+                            rep.error(path, f"出典 type が候補の source_type と不一致({s['url']}: "
+                                            f"記事 {s.get('type')} / 候補 {'/'.join(sorted(url_types[s['url']]))})")
+                        else:
+                            cited_types.append(s["type"])
+                # 記事バッジは引用出典の最弱種別(過大表示防止。compose の検収と同一規則)
+                if cited_types and fm["edition"] >= SRC_WEAKEST_FROM:
+                    want = max(cited_types,
+                               key=lambda t: SRC_ORDER.index(t) if t in SRC_ORDER else len(SRC_ORDER))
+                    if fm.get("src") != want:
+                        rep.error(path, f"src は引用出典の最弱種別 {want} にする(現: {fm.get('src')}。"
+                                        f"バッジの過大表示防止)")
         if not args.no_net:
             for s in fm["sources"]:
                 host = urllib.parse.urlparse(s["url"]).hostname or ""

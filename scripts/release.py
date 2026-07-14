@@ -104,8 +104,11 @@ def main() -> int:
     dry = args.dry_run
 
     # 0. 作業ツリーが汚れていたら触らない(自動実行の安全弁)
-    if git("status", "--porcelain").stdout.strip():
-        notify(f"{date}: 作業ツリーに未コミットの変更があるため発行を中止", ok=False)
+    dirty = git("status", "--porcelain").stdout.strip()
+    if dirty:
+        files = dirty.splitlines()
+        listing = "\n".join(files[:10]) + (f"\n…ほか {len(files) - 10} 件" if len(files) > 10 else "")
+        notify(f"{date}: 作業ツリーに未コミットの変更があるため発行を中止:\n```\n{listing}\n```", ok=False)
         return 1
 
     git("fetch", "origin", "--prune")
@@ -176,5 +179,9 @@ if __name__ == "__main__":
     try:
         sys.exit(main())
     except Exception as e:
-        notify(f"想定外のエラー: {e}", ok=False)
+        import traceback
+        tb = traceback.format_exc()
+        print(tb, file=sys.stderr, flush=True)
+        tail = "\n".join(tb.strip().splitlines()[-6:])
+        notify(f"想定外のエラーで停止: {e}\n```\n{tail}\n```\n(全文: journalctl --user -u imas-release)", ok=False)
         sys.exit(1)

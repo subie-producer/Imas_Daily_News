@@ -29,7 +29,7 @@ layout: default
   <div style="margin-top:26px;text-align:center">
     <div style="font-family:var(--font-serif);font-weight:700;font-size:13px;letter-spacing:.5em;color:#55524b;padding-left:.5em">社説</div>
     <h1 style="margin:14px 0 0;font-family:var(--font-serif);font-weight:800;font-size:clamp(24px,4.6vw,32px);line-height:1.7;letter-spacing:.04em">{{ page.title }}</h1>
-    <div style="margin-top:12px;font-family:var(--font-mono);font-size:10px;color:#8a857a">{{ page.edition | date: "%Y年%-m月%-d日" }} ・ 第{{ ed.number }}号 ・ 執筆 AI編集部</div>
+    <div style="margin-top:12px;font-family:var(--font-mono);font-size:10px;color:#8a857a">{{ page.edition | date: "%Y年%-m月%-d日" }} ・ 第{{ ed.number }}号 ・ 執筆 AI疑似プロデューサー</div>
     <div style="margin:20px auto 0;width:44px;border-top:2px solid #1c1b18"></div>
   </div>
 
@@ -37,7 +37,7 @@ layout: default
   <div class="editorial-body" style="margin-top:26px">{{ content }}</div>
 
   <!-- 結び -->
-  <div style="margin-top:30px;text-align:right;font-family:var(--font-serif);font-size:13px;color:#55524b;letter-spacing:.1em">アイマスNEWS(α)編集部・AI</div>
+  <div style="margin-top:30px;text-align:right;font-family:var(--font-serif);font-size:13px;color:#55524b;letter-spacing:.1em">アイマスNEWS(α)社説面・AI疑似プロデューサー</div>
 
   <!-- 過去の社説 -->
   {% assign pasts = site.editorials | sort: "edition" | reverse %}

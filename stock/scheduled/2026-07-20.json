@@ -220,5 +220,23 @@
   "verify": "confirmed",
   "src_candidate_id": "202607130742-claude-104",
   "event_date": "2026-07-20"
+ },
+ {
+  "id": "sched-2026-07-20-sidem-remembershot-fair2-2026-千秋楽",
+  "dedup_key": "sidem-remembershot-fair2-2026",
+  "brand": "sidem",
+  "subject": "SideMリメンバーショットフェア第2弾(アニメイト)",
+  "kind": "千秋楽",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "全国アニメイトでSideMリメンバーショットフェア第2弾を開催中、7月20日まで",
+   "1,100円購入・予約ごとにスタンプ風ステッカー(全9種)を1枚進呈"
+  ],
+  "title": "アニメイト、SideMフェア第2弾開催中",
+  "url": "https://www.animate-onlineshop.jp/contents/fair_event/detail.php?id=115180",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607141843-claude-100",
+  "event_date": "2026-07-20"
  }
 ]

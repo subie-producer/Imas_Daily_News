@@ -1,0 +1,38 @@
+[
+ {
+  "id": "sched-2026-08-08-shiny-animethon-2026-開始",
+  "dedup_key": "shiny-animethon-2026",
+  "brand": "shiny",
+  "subject": "シャニマス Animethon 2026(カナダ・エドモントン)出演",
+  "kind": "開始",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "カナダ・エドモントン「Animethon 2026」(8/7〜9)の音楽ステージ「Animethon MusicFes」に8月8日出演",
+   "北原沙弥香(和泉愛依)・田嶌紗蘭(福丸小糸)・紫月杏朱彩(七草にちか)が出演、シリーズ初の北米公演"
+  ],
+  "title": "シャニマス、Animethon 2026で北米初出演",
+  "url": "https://idolmaster-official.jp/news/01_19372",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607140744-watch-0",
+  "event_date": "2026-08-08"
+ },
+ {
+  "id": "sched-2026-08-08-sidem-cfirst-riyuatte-liveevent-2026-開幕",
+  "dedup_key": "sidem-cfirst-riyuatte-liveevent-2026",
+  "brand": "sidem",
+  "subject": "SideM C.FIRST「理由あってリリースイベント」",
+  "kind": "開幕",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "C.FIRST「理由あってリリースイベント」は8月8日開催(1回目12:30開場/13:30開演、2回目15:30開場/16:30開演)",
+   "参加申込は応募シリアル所持者対象、7月15日23:59締切"
+  ],
+  "title": "SideM C.FIRSTリリースイベント開催",
+  "url": "https://www.animate-onlineshop.jp/contents/fair_event/detail.php?id=115744",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607141242-grok-37",
+  "event_date": "2026-08-08"
+ }
+]

@@ -22,5 +22,60 @@
   "src_candidate_id": "202607130340-claude-133",
   "event_date": "2026-07-18",
   "deadline": "2026-07-19"
+ },
+ {
+  "id": "sched-2026-07-19-cg-onesteps-yogurt-collab-2026-開幕",
+  "dedup_key": "cg-onesteps-yogurt-collab-2026",
+  "brand": "cg",
+  "subject": "ワンステップス×& Yogurtコラボ",
+  "kind": "開幕",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "横浜店・大宮店(表参道本店は対象外)で7月19日開始、7月中の利用は要予約",
+   "横浜店は白菊ほたる・関裕美・森久保乃々イメージのフード各2,500円+アクリルスタンド特典、大宮店は缶バッジ特典",
+   "引換券は9月23日まで利用可能"
+  ],
+  "title": "ワンステップス×& Yogurtコラボ7/19開始",
+  "url": "https://www.and-yogurt.com/onesteps-collaboration/",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607141843-grok-15",
+  "event_date": "2026-07-19"
+ },
+ {
+  "id": "sched-2026-07-19-million-seasonal-snapshot-oct-2026-締切",
+  "dedup_key": "million-seasonal-snapshot-oct-2026",
+  "brand": "million",
+  "subject": "ミリオン Seasonal Snapshot 10月分",
+  "kind": "締切",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "天空橋朋花・双海亜美を対象にASOBI STOREで受注開始",
+   "受注締切は7月19日(日)まで"
+  ],
+  "title": "ミリオン シーズナル10月分、朋花・亜美で受注開始",
+  "url": "https://x.com/imasml_765PRO/status/2076214981616615833",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607140744-grok-27",
+  "deadline": "2026-07-19"
+ },
+ {
+  "id": "sched-2026-07-19-motoraji-768-azusa-miura-2026-開始",
+  "dedup_key": "motoraji-768-azusa-miura-2026",
+  "brand": "765",
+  "subject": "もとラジ!第768話「三浦あずさ特集」",
+  "kind": "開始",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "FMおだわら「もとラジ！」第768話は三浦あずさ特集として7月19日(日)21:30に放送",
+   "同内容は7月22日(水)21:30にも再放送予定"
+  ],
+  "title": "「もとラジ！」あずさ特集、7/19初放送",
+  "url": "https://motoraji.jugem.jp/",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607140744-claude-84",
+  "event_date": "2026-07-19"
  }
 ]

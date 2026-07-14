@@ -43,5 +43,56 @@
   "verify": "confirmed",
   "src_candidate_id": "202607130742-claude-115",
   "event_date": "2026-07-30"
+ },
+ {
+  "id": "sched-2026-07-30-gakumas-sweets-paradise-deep-marine-2026-千秋楽",
+  "dedup_key": "gakumas-sweets-paradise-deep-marine-2026",
+  "brand": "gaku",
+  "subject": "学マス×スイパラ コラボカフェ「Deep Marine Stage」",
+  "kind": "千秋楽",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "江ノ島海の家会場は7月1日〜7月30日開催、最終日30日は15時閉店予定"
+  ],
+  "title": "スイパラ「Deep Marine Stage」江ノ島会場閉幕",
+  "url": "https://www.sweets-paradise.jp/collaboration/gakumasu4th",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607140744-grok-49",
+  "event_date": "2026-07-30"
+ },
+ {
+  "id": "sched-2026-07-30-shiny-summer-beach-box-2026-千秋楽",
+  "dedup_key": "shiny-summer-beach-box-2026",
+  "brand": "shiny",
+  "subject": "シャニマスPE「サマー・ビーチ・ボックス」",
+  "kind": "千秋楽",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "プロデュースイベント「サマー・ビーチ・ボックス」は7月17日〜7月30日開催"
+  ],
+  "title": "シャニマスPE「サマー・ビーチ・ボックス」終了",
+  "url": "https://x.com/imassc_official/status/2076909808977088828",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607141843-grok-69",
+  "event_date": "2026-07-30"
+ },
+ {
+  "id": "sched-2026-07-30-shiny-yume-no-ato-saki-rerun-2026-千秋楽",
+  "dedup_key": "shiny-yume-no-ato-saki-rerun-2026",
+  "brand": "shiny",
+  "subject": "シャニマス「夢のあと、さき」復刻",
+  "kind": "千秋楽",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "開催期間は7月17日〜7月30日11:59(予定)"
+  ],
+  "title": "シャニマス「夢のあと、さき」復刻終了",
+  "url": "https://x.com/imassc_official/status/2076910060689654119",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607141843-grok-71",
+  "event_date": "2026-07-30"
  }
 ]

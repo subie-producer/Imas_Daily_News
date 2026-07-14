@@ -1,0 +1,38 @@
+[
+ {
+  "id": "sched-2026-07-22-cg-tokyo-tower-popup-2026-千秋楽",
+  "dedup_key": "cg-tokyo-tower-popup-2026",
+  "brand": "cg",
+  "subject": "シンデレラガールズ×東京タワー「Silky Sparkling Summer Stage」",
+  "kind": "千秋楽",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "東京タワー「Co・Lab-TOKYO-」で7月3日〜7月22日開催",
+   "人気グッズは売り切れ、レジでの受注販売に切替中"
+  ],
+  "title": "シンデレラガールズ×東京タワー、7/22閉幕",
+  "url": "https://colabtokyo.hp.peraichi.com/cinderellagirls2026_tokyo/",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607141242-claude-110",
+  "event_date": "2026-07-22"
+ },
+ {
+  "id": "sched-2026-07-22-motoraji-768-azusa-miura-2026-その他",
+  "dedup_key": "motoraji-768-azusa-miura-2026",
+  "brand": "765",
+  "subject": "もとラジ!第768話「三浦あずさ特集」",
+  "kind": "その他",
+  "note": "再放送",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "7月19日初放送の三浦あずさ特集が7月22日(水)21:30に再放送"
+  ],
+  "title": "「もとラジ！」あずさ特集7/22再放送",
+  "url": "https://motoraji.jugem.jp/",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607140744-claude-84",
+  "event_date": "2026-07-22"
+ }
+]

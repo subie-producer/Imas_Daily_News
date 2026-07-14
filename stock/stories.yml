@@ -23,6 +23,8 @@
   - SSR確定ガシャチケット2枚の配布を7月13日に開始
   - ランキング結果、総合1位は所恵美、アイドル別1位は百瀬莉緒で8連覇(ファン報告)
   - 24/7配信「Spar9le Showtime」は7/13よりテーマ『周年振り返りメドレー』に更新
+  - 次回の期間限定ガシャ(マンスリーオルタナティブ)は北沢志保・横山奈緒がピックアップ
+  - 有償ジュエル5,000個の「ミリオンフェスセレクションチケットセット」が登場
 - story_id: takatsuki-yayoi-ekicho-furusato
   brand: '765'
   subject: 高槻やよい1日駅長グッズセットのふるさと納税返礼品
@@ -80,6 +82,10 @@
   - 全国映画館への衛星生中継(ライブビューイング)を実施、料金は各公演5,000円(税込)・1人4枚まで
   - ライブビューイング先行抽選は6/27〜7/5、一般発売は7/18 10:00から
   - 20周年ありがとうSP生配信は7/26(日)21:00からIWSF2026 DAY3終了後に京王アリーナTOKYOより配信予定
+  - SideMはDAY1に牙崎漣、DAY2に都築圭、DAY3に天道輝・紅井朱雀が出演
+  - 3日間通し券は限定グッズ付き54,000円・通常36,000円(税込)
+  - コンプティーク特集は1日目牙崎漣・紫雲清夏、2日目最上静香・樋口円香、3日目天海春香・安部菜々のコメントを収録、付録は如月千早・星井美希・天海春香サイン入りB2ポスター
+  - 協賛展示は23社に拡大、カードフォリオ専用売り場を「あじペン広場」に新設(24日12:00〜終演後30分程度、25・26日11:00〜18:00)、痛自転車の展示も新たに可能に
 - story_id: cg-15th-popup-annivroad
   brand: cg
   subject: CG15周年記念 POP UP SHOP in Annivroad(新宿・7/18-7/28)
@@ -89,6 +95,8 @@
   - 新宿マルイ アネックス Annivroadで7/18〜7/28開催
   - 総選挙2026イラスト使用の11名分ヴァイスシュヴァルツカードセット等
   - 1,000円ごとにステッカー(全11種)、総選挙投票券引換シリアルも配布
+  - 購入点数は1会計3点まで(カードセット4点まで、トレーディング商品3BOXまで)
+  - 500円購入ごとに投票券100枚分のシリアルコードを配布、オンラインストア分の配布期限は8月24日
 - story_id: cg-genka-yoenichi-popup
   brand: cg
   subject: 百鬼夜行テーマPOP UP『幻夏妖宴市』(東京8/1-8/16・大阪8/21-9/6)
@@ -108,6 +116,8 @@
   - アソビストア一般会員先行(抽選)は7/10 12:00〜7/30 23:59
   - 当落発表8/11 13:00〜、入金期間8/11 13:00〜8/15 23:59
   - 1人1公演2枚まで、デジタルチケットのみ、全席スタンディング観覧可、未就学児入場不可
+  - DAY1公演タイトルは「夢咲くワンダーミラージュ」(開場16:30・開演17:30)、DAY2は「Blooming Sign」(開場15:30・開演16:30)
+  - チケット料金はアリーナ前方席20,000円・全席指定14,000円(税込)
 - story_id: shiny-msp-goods-presale
   brand: shiny
   subject: シャニマス ソロライブMSP公式グッズ事前販売
@@ -126,6 +136,7 @@
   - 新SSRサポート【凪に浮く灯】斑鳩ルカを公開
   - 新ピックアップガシャ(★3【波、衝動、夏――――】斑鳩ルカ)は8/10 11:59まで
   - 復刻ピックアップ(園田智代子・桑山千雪)も並行開催
+  - 衣装のスカート丈が選べる仕様であることが判明(複数バリエーション画像を公開)
 - story_id: gaku-mitenui-jyuchu
   brand: gaku
   subject: 学マス公式ぬいぐるみ「みてぬい」受注
@@ -221,6 +232,8 @@
   published_facts:
   - 7/12公演(Animelo Summer Live 2026 -Messenger-)に出演、会場は幕張メッセ
   - 2024年以来2年ぶりの出演
+  - セットリストは「KoiKyun!」「We can go now!」に続き放課後クライマックスガールズ「太陽キッス」をサプライズカバー
+  - TikTokで関根瞳・近藤玲奈・峯田茉優による「KoiKyun!」ダンス動画を公開
 - story_id: shiny-pulse-collection-shibuya109
   brand: shiny
   subject: SHIBUYA109『PULSE COLLECTION』POP UP
@@ -238,6 +251,7 @@
   - 予約は6/26 12時よりマルイウェブチャネルで開始
   - 渋谷モディPOP UPは6/26〜7/12、なんばマルイは8/14〜8/30開催予定
   - 全8種、刺繍シューレースチャーム付き
+  - 正式名称は「CAMBRIDGE THE IDOLM@STER SHINY COLORS Edition」、価格13,500円(税込)
 - story_id: shiny-283birthday-collection-vol6
   brand: shiny
   subject: 283Birthday Collection第6弾
@@ -245,6 +259,8 @@
   first_published: '2026-07-12'
   published_facts:
   - 受注は7/9〜7/20、対象は鈴木羽那・杜野凛世・樋口円香・福丸小糸・西城樹里(未確認情報)
+  - '対象確定: 鈴木羽那・杜野凛世・樋口円香・福丸小糸・西城樹里の5名'
+  - グッズは公式バースデー記念グッズセット(税込6,000円)と一緒にお祝いアクリルパネル(税込6,000円)の2種、受注は7月20日まで
 - story_id: shiny-stillblue-asobipremium-lottery
   brand: shiny
   subject: 『Still blue』アソビストアプレミアム会員先行当落
@@ -281,6 +297,9 @@
   first_published: '2026-07-12'
   published_facts:
   - タワーレコード新宿店10Fで7/17〜7/26開催
+  - 出演はHigh×Jokerの5人+Beit・Wの2ユニット計12名、サマー仕様ミニキャラで登場
+  - 2,000円以上購入で全15種イラストカードを1枚ランダム進呈
+  - 初日7/17来店の電子整理券抽選は申込7/1〜7/8、当落発表7/10から(受付済み)
 - story_id: gaku-yurakucho-marui-popup2
   brand: gaku
   subject: 有楽町マルイ 学マスPOP UP第2弾
@@ -315,6 +334,8 @@
   published_facts:
   - 7/9にSNSで当選報告が拡散(未確認情報)
   - ファイナル公演は11/7・8開催、同日事前グッズ販売開始
+  - アソビストアプレミアム会員向け先行入金は2026年7月13日23:59締切、当落発表は7月9日13:00から
+  - 席種別価格はSPラウンジ席70,000円・バルコニー席17,000円・全席指定席14,000円(いずれも税込)
 - story_id: manaka-birthday-live-2026-postponed
   brand: dsva
   subject: 灯里愛夏バースデー配信 延期
@@ -395,6 +416,8 @@
   - 876 PRODUCTION Dearly Stars盤(SACX-1148)・シンデレラガールズ各盤(SACX-1141〜1143、投票券500枚シリアル封入)も発売
   - 物販時間は7/24 9:00〜18:30、7/25・26 9:00〜18:00、デジタル注文書は7/21 13:00開始
   - カードフォリオ「IWSF2026プレミアムパック」(単品600円・BOX6,000円)も同時販売
+  - Disc1は玲音の新曲「エクストリーム・オーバードライブ」を含む961PRODUCTION&KOHAKU楽曲全6トラックを収録(961&KOHAKU&765PRO
+    ALLSTARS盤)
 - story_id: 765-namco-summer-market-hakuhinkan-2026
   brand: '765'
   subject: ナムコ ゲームセレクション サマーマーケット in 博品館TOY PARK
@@ -414,6 +437,7 @@
     slug: 765-namco-popup-and-motoraji-radio
   published_facts:
   - FMおだわら「もとラジ!」第768話は7/19に「三浦あずさ特集」として放送予定
+  - 7月22日(水)21:30にも同内容が再放送予定
 - story_id: cg-memorial-picture-september-2026
   brand: cg
   subject: メモリアルピクチャー4th Pict. September
@@ -526,6 +550,7 @@
     slug: sidem-monthly-theme-song-09-legenders
   published_facts:
   - 2026年7月29日発売、税込2,200円(品番LACM-24789)
+  - ユニット曲に加え各アイドルのソロバージョンを収録、初回特典は全員分フォトセット(3種)
 - story_id: gakumas-tanabata-login-bonus-2026
   brand: gaku
   subject: 学マス七夕ログインボーナス
@@ -545,6 +570,8 @@
   published_facts:
   - 特装盤予約締切7/15、発売日2026年10月14日
   - 収録は「ゆめぱしー」「REVERSI」「RippleSign」の3タイトル
+  - 特装盤は私服・ステージ衣装姿の完全新規描き下ろしとディスクにイラストが映るギミックを採用
+  - 価格は特装盤税込3,500円・通常盤税込2,500円、3種同時購入セット税込10,500円
 - story_id: imas-taiwan-manga-expo-2026
   brand: general
   subject: アイマス、台湾「第25回漫画博覧会」参加
@@ -573,6 +600,7 @@
     slug: moiw2025-cardfolio-restock
   published_facts:
   - ASOBI STOREで数量限定再販売、公式が7/11〜12告知
+  - 【DAY1】BOXは6,000円(税込)、1BOX10パック入りで1パックに全145種中8枚が封入
 - story_id: tsumugi-nanase-1st-photobook-2026
   brand: gaku
   subject: 七瀬つむぎ(有村麻央役)1st写真集
@@ -592,6 +620,8 @@
   published_facts:
   - Shibuya LOVEZは2026年6月27日開業(収容2,026人)
   - Lantis DAYZは7/18・19開催、DAY1にSideM(W/Café Parade)、DAY2にシャニマスのノクチルが出演
+  - DAY1(7/18)出演はSideM・W/Café Paradeの7人(菊池勇成・山谷祥生・狩野翔・天﨑滉平・古川慎・児玉卓也・小林大紀)
+  - チケットは全席指定9,900円(税込)、一般発売分はソールドアウト
 - story_id: cg-toppa-base-popup-2026
   brand: cg
   subject: シンデレラガールズ TOPPA!!!BASE POPUP SHOP
@@ -676,6 +706,8 @@
   - 開催期間は2026年7月18日〜9月23日、会場は長野県阿智村のACHI BASE
   - アナスタシアによる夏の星座解説を毎晩20:40〜21:00に実施(観覧無料)
   - コラボカフェ・グッズ販売を実施、来場者にポストカードを配布
+  - 対象アイドルはアナスタシア・神崎蘭子・高峯のあ・新田美波・前川みくの5名
+  - コラボグッズは350円〜1,980円、カフェメニューは650円〜1,500円
 - story_id: union-arena-cg-booster-card-reveal-2026
   brand: cg
   subject: UNION ARENA「ブースターパック アイドルマスター シンデレラガールズ」収録カード公開
@@ -684,6 +716,7 @@
   published_facts:
   - 7月31日発売予定、収録カードを公式Xが続けて公開
   - 公開済みは本田未央・高森藍子・日野茜のカード(高森藍子・日野茜はパラレル仕様)
+  - 前川みくのSR★★(描き下ろし・箔押しサイン入り)を新たに公開、あわせてU「Starry-Go-Round」も紹介
 - story_id: cg-vote2026-idol-commu-hamakawa-matsuyama
   brand: cg
   subject: シンデレラガール総選挙2026連動「シンデレラアイドルコミュ毎日投稿」
@@ -701,6 +734,7 @@
   - 名鉄観光サービスの特設サイトが更新、金山観光案内所・香源・矢場とん・マンガ展など各所のコラボ内容が順次解禁
   - 香源は水嶋咲イメージのお香「Papikawa☆berry」等を販売、矢場とんは1,500円以上でノベルティ
   - 名古屋観光コンベンションビューロー(金山観光案内所)とマンガ展ポップアップ(バレエコアテーマ)は8月3日開始、10月31日まで
+  - サカエサウススクエア3D CREMA GALLERYで8月3日〜10月31日、バレエコアテーマのポップアップストアを開催(3,000円以上購入でノベルティ)
 - story_id: cosmo-mucomi-vr-2026-07-12
   brand: dsva
   subject: 上水流宇宙・灯里愛夏ら vα-liv配信ラッシュ
@@ -814,6 +848,7 @@
   published_facts:
   - 開催期間は7月24日〜8月6日、会場はアトレ秋葉原
   - 『アルバス・アストロラーベ』衣装の13人が新登場、建物ラッピングや購入特典も実施
+  - アイドルマスター オフィシャルショップでアクリルスタンド・バースデープレート等の新規オリジナルグッズを販売予定(詳細は後日発表)
 - story_id: million-karatetsu-collab-2026
   brand: million
   subject: ミリオンライブ！×KARATEZコラボ
@@ -830,6 +865,9 @@
   published_facts:
   - 全体開催期間は7月14日〜8月30日、クイズラリー・工芸作品拡散企画・コラボドリンク販売の3企画で構成
   - アイドル「ロコ」がモチーフ
+  - 喫茶けやき(国際版画美術館内)でコラボドリンク「ロコのクリームソーダ」(900円・テイクアウト限定)を7月14日〜8月30日販売、先着でコースター進呈(一人1枚まで)
+  - パブリックアート・国際版画美術館を巡るクイズラリーは7月30日〜8月30日、合言葉完成でオリジナルノート進呈(先着一人1個)
+  - 市民展示室の工芸作品SNS発信キャンペーンは7月14日〜8月2日実施
 - story_id: million-millicole-2026-07
   brand: million
   subject: ミリシタ「ミリコレ！～MILLIONLIVE COLLECTION～」
@@ -838,6 +876,7 @@
   published_facts:
   - 7月14日15:00開催、コインドロップ量2倍のキャンペーンを実施
   - 対象カードにマスターランク5も追加
+  - 月例イベント「ミリコレ!」は7月14日から17日まで開催
 - story_id: song-for-you-gasha-vol76-2026
   brand: million
   subject: ミリシタ「SONG FOR YOU！ガシャ VOL.76」
@@ -862,6 +901,7 @@
   published_facts:
   - 風野灯織の衣装「スローモーヴィメント」、小宮果穂の衣装「ハナマルサンライズ」を公開
   - グッズ事前ファイナル受付・アソビストア一般会員先行を案内
+  - 田中摩美々のソロ衣装「メルティアイデンティティ」、和泉愛依のソロ衣装「ゴーイング・ストレイト」を追加公開
 - story_id: valiv-2nd-anniversary-interview-2026
   brand: dsva
   subject: ヴイアライヴ デビュー2周年インタビュー
@@ -879,3 +919,226 @@
   - 受注期間は7月9日〜7月20日、アソビストアで事前販売中
   - 公式パンフレット・コンサートライト・Tシャツ等の共通グッズと13人のアイドル別グッズを展開
   - ファイナル公演は11月7日・8日にKアリーナ横浜で開催予定
+- story_id: 765-chihaya-zogankin-goods-2026
+  brand: '765'
+  subject: 如月千早×ゾーガンキンコラボグッズ通販
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 音アニ2号店で関連グッズ(フェイスタオル・アクリルスタンド・クリアファイル・缶バッジ)を販売中、スカルプ本体は受注終了済み
+- story_id: cg-astromeda-pc-collab-2026
+  brand: cg
+  subject: Astromeda×シンデレラガールズ ゲーミングPCコラボ
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - マイニングベースが2026年6月29日発表、7月1日受注開始、全190種(PC本体・ケース・パネル・マウスパッド・キーボード・モバイルバッテリー)
+  - 価格はPC本体19万3千円〜22万円台、ケース28,600円、パネル19,800円、キーボード34,980円、マウスパッド3,980円、モバイルバッテリー7,580円(税込)
+- story_id: cg-deremu-memorial-goods-2026
+  brand: cg
+  subject: デレミュ「DERE of the DEAD」開催記念グッズ
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - ASOBI STOREで受注販売中、スタンドフレーム1,000円・セリフアクリルキーホルダー1,200円等、荒木比奈ら9人展開
+  - 受注は7月26日まで、発送は9月下旬以降順次
+- story_id: cg-dereradi-broadcast-2026
+  brand: cg
+  subject: デレラジ放送回
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 7月13日放送は長島光那(上条春菜)・佐倉薫(黒埼ちとせ)・花谷麻妃(遊佐こずえ)が出演
+  - 7月20日21時配信の次回は藍原ことみ(一ノ瀬志希)・高田憂希(依田芳乃)・小森結梨(古賀小春)が出演
+- story_id: cg-onesteps-yogurt-collab-2026
+  brand: cg
+  subject: ワンステップス×& Yogurtコラボ
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 横浜店・大宮店(表参道本店は対象外)で7月19日開始、7月中の利用は要予約
+  - 横浜店は白菊ほたる・関裕美・森久保乃々イメージのフード各2,500円+アクリルスタンド特典、大宮店は缶バッジ特典
+  - 引換券は9月23日まで利用可能
+- story_id: cg-tokyo-tower-popup-2026
+  brand: cg
+  subject: シンデレラガールズ×東京タワー「Silky Sparkling Summer Stage」
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 東京タワーフットタウン2F「Co・Lab-TOKYO-」で7月3日〜7月22日開催
+  - 立体アクスタ(渋谷凛・速水奏・久川颯・森久保乃々)等の人気グッズが完売、レジでの受注販売に切替(配送は全国一律900円)
+  - 500円購入ごとに総選挙2026投票券100枚を配布するキャンペーンも実施
+- story_id: cg-toybox-novel-serial-2026
+  brand: cg
+  subject: 舞台『トイボ公演』スペシャルノベル連載
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 特設サイトmequrimequru.jpで7月15日12時より池袋晶葉を巡る物語を毎日更新開始
+- story_id: dsva-valiv-weekly-roundup-0713
+  brand: dsva
+  subject: vα-liv 7/13週の配信スケジュール
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 灯里愛夏が7/15にユニオンアリーナ案件配信・コードヴェイン2全編配信を予定
+  - 上水流宇宙は「めっちゃカメレオン」コラボやアイマス縛りDJ配信を含む道標を公開
+  - レトラは7/13夜にメンバーシップ限定配信・「DON'T STOP SMILING」プレイ配信を実施
+- story_id: gaku-howling-rerun-2026
+  brand: gaku
+  subject: 学マス『Howling over the World』復刻
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 7月15日11時より楽曲(秦谷美鈴・雨夜燕・葛城リーリヤ)を復刻、同時刻に復刻SSR「よくやったな、倉本。」を含む「復刻Howling over the World
+    千奈&リーリヤガシャ」も開催
+- story_id: gaku-ichibankuji-part3-2026
+  brand: gaku
+  subject: 一番くじ「学園アイドルマスター」Part3
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 「オリエンタルハロウィン」衣装テーマ、A〜H賞に1/7スケールフィギュア(Gracemaster)・ラストワン賞等
+  - DOLKより篠澤広のドール化も決定、近日受注開始予定
+- story_id: gaku-kotobukiya-hataya-figure-2026
+  brand: gaku
+  subject: コトブキヤ 秦谷美鈴フィギュア
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 予約受付を開始、価格・発売時期は続報待ち
+- story_id: gaku-ribaraba2-gashapon-2026
+  brand: gaku
+  subject: ガシャポン「学園アイドルマスター リバラバ！2」
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 7月14日17:00予約開始、締切7月26日23:59、1回400円、全6種(倉本千奈・篠澤広・紫雲清夏・葛城リーリヤ・有村麻央・姫崎莉波)
+  - 自宅発送は2026年10月下旬頃予定、先行してカプセル自販機でも販売の可能性
+- story_id: gaku-tokyoeki-gourmet-kaido-2026
+  brand: gaku
+  subject: 学マス×東京駅一番街「にっぽん、グルメ街道」コラボ
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 2025年8月8日〜21日開催、9店舗で税込1,000円以上購入特典ポストカード(配布終了)
+- story_id: million-seasonal-snapshot-oct-2026
+  brand: million
+  subject: ミリオン Seasonal Snapshot 10月分
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 天空橋朋花・双海亜美を対象にASOBI STOREで受注開始、締切7月19日
+- story_id: moiw2025-radio-series-2026
+  brand: joint
+  subject: MOIW2025振り返りラジオ「"アイ"のキセキR@DIO」
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - vol.8は7月14日22時にYouTube「アイマスch」でプレミア公開、我那覇響ら出演
+  - 配信記念プレゼントキャンペーン(抽選でサイン入りグッズ)を実施
+  - 次回vol.9は7月28日(火)公開予定
+- story_id: ofamas-aoyagi-pierre-2026
+  brand: joint
+  subject: オファマス 青柳総本家大須本店ピエールパネル
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 315プロダクション・ピエールのパネルを大須本店に設置(7月13日告知)
+- story_id: piano-collection-preorder-2026
+  brand: joint
+  subject: 20周年ピアノコレクション予約受付
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 定価14,000円(税込)、CD15枚組全129曲収録の完全受注生産、ASOBI STORE限定
+  - 予約は7月8日開始・締切9月6日、お届けは12月中旬予定
+- story_id: shiny-animethon-2026
+  brand: shiny
+  subject: シャニマス Animethon 2026(カナダ・エドモントン)出演
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 8月7日〜9日開催、8月8日のMusicFesにシリーズ初の北米公演として出演
+  - 出演は北原沙弥香(和泉愛依)・田嶌紗蘭(福丸小糸)・紫月杏朱彩(七草にちか)の3名
+- story_id: shiny-nichika-hbtk-broadcast-2026
+  brand: shiny
+  subject: 「#七草にちかのHBTK」放送
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 7月14日23時にASOBI CHANNELで放送、MC紫月杏朱彩・ゲスト峯田茉優/結名美月/涼本あきほ
+- story_id: shiny-summer-beach-box-2026
+  brand: shiny
+  subject: シャニマスPE「サマー・ビーチ・ボックス」
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 7月17日〜30日開催、限定SRサポート西城樹里等をボックスポイントガシャで獲得
+- story_id: shiny-yume-no-ato-saki-rerun-2026
+  brand: shiny
+  subject: シャニマス「夢のあと、さき」復刻
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 放課後クライマックスガールズのシナリオイベント、7月17日〜7月30日11:59(予定)
+- story_id: sidem-cfirst-rairaibishoku-mv-2026
+  brand: sidem
+  subject: C.FIRST「来来美食」2DMV
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 7月15日21:00にYouTubeでプレミア公開
+- story_id: sidem-cfirst-riyuatte-liveevent-2026
+  brand: sidem
+  subject: SideM C.FIRST「理由あってリリースイベント」
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 8月8日開催(トーク&ミニライブ、1回目12:30開場/13:30開演、2回目15:30開場/16:30開演)
+  - 応募シリアル所持者の参加申込は7月15日23:59締切、当選通知は7月下旬予定
+- story_id: sidem-daikokuyu-collab-2026
+  brand: sidem
+  subject: SideM×押上温泉「大黒湯」コラボ
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 7月10日〜31日開催、完売していた特典付き入浴券(1,100円)を7月13日再販売開始
+- story_id: sidem-medicos-neochina-restock-2026
+  brand: sidem
+  subject: SideMメディコス ネオチャイナグッズ事後通販
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - MEDICOS ONLINE SHOPで受注販売、通販期間は7月21日まで、特典クリアカード付き
+- story_id: sidem-remembershot-fair2-2026
+  brand: sidem
+  subject: SideMリメンバーショットフェア第2弾(アニメイト)
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 全国アニメイトで開催中、1,100円購入・予約ごとにスタンプ風ステッカー(全9種、絵柄選択不可)進呈、7月20日まで
+- story_id: tours-s1-new-cards-2026
+  brand: joint
+  subject: ツアマス新シリーズ第1弾カード続報
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 7月14日、紫雲清夏(サークルサングラス・水色)・本田未央(セーラーキャップ)・桜庭薫(gentle bow)の参戦が判明(天道輝・柏木翼・小宮果穂・最上静香に続く発表)
+- story_id: tours-second-stage-launch-2026
+  brand: joint
+  subject: 『アイマスTOURS』新シリーズ「Second Stage」始動
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 第2弾アップデートは2026年8月6日稼働開始、学マスから藤田ことね・月村手毬・花海咲季が新規参戦
+  - 描き下ろしカード78種・新規収録楽曲「初」・新衣装等も追加予定
+  - 7月27日に池袋・サンシャインシティ噴水広場で発表イベント開催(中村繪里子・峯田茉優・小鹿なお・千春が登壇、YouTube生配信あり)
+- story_id: sidem-transcendent-tales-12-2026
+  brand: sidem
+  subject: SideM CD「TRANSCENDENT T@LES 12」
+  status: active
+  first_published: '2026-07-15'
+  published_facts:
+  - 2026年9月2日発売、品番LACM-24772、税込2,200円
+  - 収録は天道輝・若里春名・水嶋咲・硲道夫・眉見鋭心の5人、全7曲

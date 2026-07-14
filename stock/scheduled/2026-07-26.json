@@ -93,5 +93,42 @@
   "verify": "confirmed",
   "src_candidate_id": "202607131241-grok-77",
   "event_date": "2026-07-26"
+ },
+ {
+  "id": "sched-2026-07-26-gaku-ribaraba2-gashapon-2026-締切",
+  "dedup_key": "gaku-ribaraba2-gashapon-2026",
+  "brand": "gaku",
+  "subject": "ガシャポン「学園アイドルマスター リバラバ！2」",
+  "kind": "締切",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "「学園アイドルマスター リバラバ！2」予約は7月14日17:00〜7月26日23:59",
+   "1回400円、全6種(倉本千奈・篠澤広・紫雲清夏・葛城リーリヤ・有村麻央・姫崎莉波)",
+   "自宅発送は2026年10月下旬頃予定"
+  ],
+  "title": "ガシャポン「リバラバ！2」予約締切",
+  "url": "https://idolmaster-official.jp/news/01_19157",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607141242-grok-43",
+  "deadline": "2026-07-26"
+ },
+ {
+  "id": "sched-2026-07-26-cg-deremu-memorial-goods-2026-締切",
+  "dedup_key": "cg-deremu-memorial-goods-2026",
+  "brand": "cg",
+  "subject": "デレミュ「DERE of the DEAD」開催記念グッズ",
+  "kind": "締切",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "CINDERELLA GIRLS MUSICAL「DERE of the DEAD」開催記念グッズをASOBI STOREで受注販売中",
+   "受注は7月26日(日)まで、発送は9月下旬以降順次"
+  ],
+  "title": "デレミュ記念グッズ受注締切",
+  "url": "https://shop.asobistore.jp/feature/cg_musical_dd_memorial",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607140744-grok-14",
+  "deadline": "2026-07-26"
  }
 ]

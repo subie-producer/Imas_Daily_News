@@ -75,5 +75,24 @@
   "verify": "confirmed",
   "src_candidate_id": "20260712-portal-ml14th-senko",
   "event_date": "2026-09-19"
+ },
+ {
+  "id": "sched-2026-07-27-tours-second-stage-launch-2026-開幕",
+  "dedup_key": "tours-second-stage-launch-2026",
+  "brand": "joint",
+  "subject": "『アイマスTOURS』新シリーズ「Second Stage」始動",
+  "kind": "開幕",
+  "note": "新シリーズ発表イベント",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "池袋・サンシャインシティ噴水広場で発表イベントを開催、新シリーズ「Second Stage」の詳細を発表予定",
+   "ゲストは中村繪里子・峯田茉優・小鹿なお・千春の4名、YouTube生配信あり"
+  ],
+  "title": "『アイマスTOURS』新シリーズ発表イベント",
+  "url": "https://idolmaster-official.jp/news/01_19284",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607141242-claude-105",
+  "event_date": "2026-07-27"
  }
 ]

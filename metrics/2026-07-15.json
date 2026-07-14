@@ -1,0 +1,82 @@
+{
+ "collect": [
+  {
+   "at": "2026-07-15T03:44:44+09:00",
+   "edition": "2026-07-15",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0
+     },
+     "columbia-imas": {
+      "found": 335,
+      "new": 0
+     },
+     "bnam-tours": {
+      "found": 0,
+      "new": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0
+     }
+    },
+    "new": 0,
+    "facted": 0
+   },
+   "per_query": {
+    "grok:765as": 6,
+    "grok:cinderella": 8,
+    "grok:million": 0,
+    "grok:shiny": 8,
+    "grok:sidem": 8,
+    "grok:gakuen": 8,
+    "grok:dsva": 8,
+    "grok:joint-other": 8,
+    "grok:trend": 8,
+    "grok:fan-culture": 8,
+    "claude:765as": 5,
+    "claude:cinderella": 5,
+    "claude:million": 2,
+    "claude:shiny": 4,
+    "claude:sidem": 6,
+    "claude:gakuen": 6,
+    "claude:dsva": 0,
+    "claude:joint-other": 1,
+    "claude:trend": 1,
+    "claude:fan-culture": 8
+   },
+   "normalized": 90,
+   "added": 33,
+   "verify": {
+    "confirmed": 67,
+    "unconfirmed": 19,
+    "failed": 4
+   },
+   "duration_s": 854
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-07-15T05:11:21+09:00",
+   "edition": "2026-07-15",
+   "rounds": 2,
+   "approved": true,
+   "lint_green": true,
+   "planned": 75,
+   "written": 67,
+   "aborted": [
+    "iwsf2026-ticket-status",
+    "765-dual-twin-live-tour-details",
+    "765-sagamihara-collab-details",
+    "cg-election-animate-fair",
+    "cg-fam-kuji-watch",
+    "shiny-manekineko-collab-details",
+    "sidem-cozy-dozen-yearz-cast",
+    "joint-starlight-dining-free-entry"
+   ],
+   "duration_s": 4250
+  }
+ ]
+}

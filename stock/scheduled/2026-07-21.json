@@ -75,5 +75,23 @@
   "verify": "confirmed",
   "src_candidate_id": "202607131241-claude-106",
   "event_date": "2026-07-21"
+ },
+ {
+  "id": "sched-2026-07-21-sidem-medicos-neochina-restock-2026-締切",
+  "dedup_key": "sidem-medicos-neochina-restock-2026",
+  "brand": "sidem",
+  "subject": "SideMメディコス ネオチャイナグッズ事後通販",
+  "kind": "締切",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "MEDICOS ONLINE SHOPでネオチャイナデザインアイテムの事後通販を実施",
+   "通販期間は2026年7月21日(火)まで、特典クリアカード付き"
+  ],
+  "title": "SideMメディコス ネオチャイナ事後通販",
+  "url": "https://x.com/medicos_et_02/status/2076597501184909544",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607141843-grok-40",
+  "deadline": "2026-07-21"
  }
 ]

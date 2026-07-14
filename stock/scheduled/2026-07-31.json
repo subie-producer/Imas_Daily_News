@@ -32,5 +32,23 @@
   "verify": "confirmed",
   "src_candidate_id": "202607130742-grok-14",
   "event_date": "2026-07-31"
+ },
+ {
+  "id": "sched-2026-07-31-sidem-daikokuyu-collab-2026-千秋楽",
+  "dedup_key": "sidem-daikokuyu-collab-2026",
+  "brand": "sidem",
+  "subject": "SideM×押上温泉「大黒湯」コラボ",
+  "kind": "千秋楽",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "押上温泉「大黒湯」×SideMコラボは7月10日〜31日開催",
+   "完売していた特典付き入浴券(1,100円)は7月13日再販売開始"
+  ],
+  "title": "SideM×大黒湯コラボ、7/31閉幕",
+  "url": "https://www.daikokuyu.com/information/index/6",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202607140744-claude-107",
+  "event_date": "2026-07-31"
  }
 ]

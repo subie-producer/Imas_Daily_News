@@ -51,5 +51,22 @@
   "title": "765AS×相模原市コラボ(6/19-7/31)",
   "source_type": "未確認",
   "verify": "unconfirmed"
+ },
+ {
+  "id": "sched-2026-07-28-moiw2025-radio-series-2026-開始",
+  "dedup_key": "moiw2025-radio-series-2026",
+  "brand": "joint",
+  "subject": "MOIW2025振り返りラジオ「\"アイ\"のキセキR@DIO」",
+  "kind": "開始",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "MOIW2025振り返りラジオ「\"アイ\"のキセキR@DIO」vol.9は7月28日(火)公開予定"
+  ],
+  "title": "MOIW2025ラジオvol.9、7/28公開予定",
+  "url": "https://x.com/imas_official/status/2077028340007879057",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607142342-grok-4",
+  "event_date": "2026-07-28"
  }
 ]

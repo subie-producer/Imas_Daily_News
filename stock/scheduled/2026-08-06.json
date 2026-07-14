@@ -196,5 +196,24 @@
   "verify": "confirmed",
   "src_candidate_id": "202607130742-claude-93",
   "event_date": "2026-08-06"
+ },
+ {
+  "id": "sched-2026-08-06-tours-second-stage-launch-2026-開始",
+  "dedup_key": "tours-second-stage-launch-2026",
+  "brand": "joint",
+  "subject": "『アイマスTOURS』新シリーズ「Second Stage」始動",
+  "kind": "開始",
+  "note": "第2弾アップデート稼働開始",
+  "reserved_on": "2026-07-15",
+  "facts": [
+   "第2弾アップデートが2026年8月6日より稼働開始",
+   "学マスから藤田ことね・月村手毬・花海咲季が新規参戦、描き下ろしカード78種・新規収録楽曲「初」等も追加"
+  ],
+  "title": "『アイマスTOURS』Second Stage始動、学マス3人参戦",
+  "url": "https://dengekionline.com/article/202507/47229",
+  "source_type": "報道",
+  "verify": "confirmed",
+  "src_candidate_id": "202607140744-claude-115",
+  "event_date": "2026-08-06"
  }
 ]

@@ -4,3 +4,18 @@
 - dedup_key: mirishita-52week-cd-release-campaign
   reason: 出典ページ(lantis.jp/imas/ssr)に「ゲーム内連動キャンペーン」の記載が存在しない。実在するCD企画に別施策の期限形式が合成された探索段階のハルシネーション
   decided: '2026-07-13'
+- dedup_key: gkmas-step3-shinozawa-broadcast-2026-07-15
+  reason: 2025年7月の告知(公式ポータル 01_16106)を2026年の新報として誤認。出典の掲載年を確認しないまま「本日開催」と執筆・発行した(07-15号で発覚、記事削除)
+  decided: '2026-07-15'
+- dedup_key: gakumas-step3-shinozawa-hiro-song-2025
+  reason: 同上。X 告知ポスト(status/1945000377344270434)は2025年7月投稿。dedup_key に 2025 と付いていたのに選定・執筆・校閲が素通しした
+  decided: '2026-07-15'
+- dedup_key: gakumas-tokyoeki-gourmet-kaido-2025
+  reason: 2025年8月に終了した過去イベント。ニュースではない(執筆対象外。07-15号で発覚、記事削除)
+  decided: '2026-07-15'
+- dedup_key: gaku-utahime-primastella-7-2026
+  reason: 同人イベント(ファン主催オンリーイベント)。公式・当事者の発表ではなく執筆対象外(07-14/07-15号で発覚、記事削除)
+  decided: '2026-07-15'
+- dedup_key: gakumas-ichibankuji-part3-2025
+  reason: 2025年10月発売済みの一番くじ(4Gamer 2025-07-16 記事)を「10月18日発売決定」と2026年の新報として発行。dedup_key の 2025 表記も素通しした(07-15号で発覚、記事削除)
+  decided: '2026-07-15'

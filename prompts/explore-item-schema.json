@@ -42,6 +42,10 @@
         "type": "string",
         "description": "出来事・開始日 YYYY-MM-DD(不明なら空文字)"
       },
+      "published_date": {
+        "type": "string",
+        "description": "情報の初出日=ページ掲載日・ポスト投稿日 YYYY-MM-DD(掲載年が確認できないなら空文字。推定禁止)"
+      },
       "deadline": {
         "type": "string",
         "description": "締切・終了日 YYYY-MM-DD(あれば。続報キューに使う)"
@@ -83,6 +87,7 @@
       "dedup_key",
       "engagement",
       "event_date",
+      "published_date",
       "deadline",
       "mentioned_idols"
     ],

@@ -267,6 +267,21 @@ def main() -> int:
         edate = datetime.date.fromisoformat(fm["edition"])
         for where, text in (("title", fm["title"]), ("lede", fm["lede"]), ("本文", body)):
             check_tense(rep, path, text, edate, where)
+        # 鮮度検査(編集規程12): 号日付より大きく過去の event_date は「終了済み・過年度の
+        # 話題の新報扱い」の徴候(第0号期に2025年の話題を2本発行した事故に由来)。
+        # 継続中キャンペーンの開始日を event_date に持つ正当な記事が既存最大21日過去のため、
+        # 警告 >21日・エラー >30日とする
+        if fm.get("event_date"):
+            try:
+                behind = (edate - datetime.date.fromisoformat(str(fm["event_date"]))).days
+            except ValueError:
+                behind = None
+            if behind is not None and behind > 30:
+                rep.error(path, f"event_date {fm['event_date']} が号日付より{behind}日過去"
+                                "(終了済み・過年度の話題は記事化しない。編集規程12)")
+            elif behind is not None and behind > 21:
+                rep.warn(path, f"event_date {fm['event_date']} が号日付より{behind}日過去"
+                               "(過去の話題の新報扱いでないか確認。編集規程12)")
 
     # -- 社説 --
     editorials = {}

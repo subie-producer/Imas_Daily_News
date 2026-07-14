@@ -38,6 +38,7 @@ ITEM_FORMAT = (
     "JSON配列だけを出力。各要素は "
     '{"title":短い見出し,"brand":"general|765|cg|million|shiny|sidem|gaku|dsva|joint|other",'
     '"kind":"official|semi|party|media|fan|trend","url":"実在するURL","event_date":"YYYY-MM-DD or 空文字",'
+    '"published_date":"情報の初出日=ページ掲載日・ポスト投稿日 YYYY-MM-DD or 空文字",'
     '"deadline":"締切・終了日 YYYY-MM-DD or 空文字","facts":["確認できた事実(日付・期限・場所・価格を含める)"],'
     '"dedup_key":"英小文字ハイフンの話題ID(毎年ある定例企画は年を含める。例: shiny-summer-pair-2026)",'
     '"engagement":"高|中|低","mentioned_idols":["言及アイドル名"]}。'
@@ -46,6 +47,11 @@ ITEM_FORMAT = (
     "検索結果一覧のスニペット・別ページ・別イベントの情報・自分の推測や一般知識を混ぜない。"
     "特に日時・期限・数値は url のページに書かれているものだけ。同じ作品の別施策(ゲーム内イベント・ガシャ等)を"
     "1つの候補に合成しない(別施策は別候補として、その施策自体の告知URLを付けて出す。告知URLを確認できないなら出さない)。"
+    "【鮮度規則(最重要)】ページの掲載日・ポストの投稿日時を必ず確認し published_date に書く。"
+    "掲載年が確認できないページの日付を年込みで推定しない。過年度の告知・すでに終了したイベント・施策は候補にしない"
+    "(検索は古いページも返す。「M月D日」が一致しても年が違えば別の話題である。結果発表・受賞など本日新しく出た情報は可)。"
+    "【対象外】同人イベント・ファン主催企画(オンリーイベント・同人誌即売会・非公式コラボ)は候補にしない。"
+    "party はアイマス公式に関係する主催者・販売元・自治体・コラボ先企業のみで、ファン主催者は含まない。"
 )
 
 
@@ -238,10 +244,10 @@ def normalize(items: list[dict]) -> list[dict]:
                 "via": it.get("_via", "explore"),
                 "verify": "unconfirmed",
             }
-            for k in ("event_date", "deadline"):
+            for k in ("event_date", "deadline", "published_date"):
                 v = (it.get(k) or "").strip()
                 if re.match(r"^\d{4}-\d{2}-\d{2}$", v):
-                    c["event_date" if k == "event_date" else "deadline"] = v
+                    c[k] = v
             if url in seen_url:  # URL 重複は facts をマージ
                 tgt = seen_url[url]
                 tgt["facts"] = list(dict.fromkeys(tgt["facts"] + c["facts"]))
@@ -253,11 +259,41 @@ def normalize(items: list[dict]) -> list[dict]:
     return out
 
 
+STALE_DAYS = 14  # 収集窓は48〜72時間。これを大きく超えて古い情報は鮮度切れ(2025年告知を新報扱いした事故の再発防止)
+
+
+def x_status_date(url: str) -> datetime.date | None:
+    """x.com/twitter.com の status ID(Snowflake)から投稿日を復元する(機械検証可能な鮮度情報)。"""
+    m = re.search(r"/status(?:es)?/(\d{15,20})", url)
+    if not m:
+        return None
+    ms = (int(m.group(1)) >> 22) + 1288834974657  # Twitter epoch
+    return datetime.datetime.fromtimestamp(ms / 1000, tz=JST).date()
+
+
+def check_stale(c: dict) -> str | None:
+    """鮮度切れなら理由を返す。X は Snowflake、それ以外は自己申告の published_date で判定。"""
+    today = now_jst().date()
+    posted = x_status_date(c["url"]) if is_x(c["url"]) else None
+    if posted and (today - posted).days > STALE_DAYS:
+        return f"Xポストが古い(投稿日 {posted.isoformat()})。過去の告知を新報として扱わない"
+    pub = c.get("published_date")
+    if pub and (today - datetime.date.fromisoformat(pub)).days > STALE_DAYS:
+        return f"掲載日 {pub} が古い。過去の告知を新報として扱わない"
+    return None
+
+
 def verify(cands: list[dict]) -> dict:
-    """簡易 verify: X は Grok 観測を信頼。それ以外は URL 生存で confirmed。"""
+    """簡易 verify: X は Grok 観測を信頼。それ以外は URL 生存で confirmed。鮮度切れは種別を問わず failed。"""
     counts = {"confirmed": 0, "unconfirmed": 0, "failed": 0}
     for c in cands:
         try:
+            stale = check_stale(c)
+            if stale:
+                c["verify"] = "failed"
+                c["verify_note"] = stale
+                counts["failed"] += 1
+                continue
             if is_x(c["url"]):
                 c["verify"] = "confirmed" if (c["via"] == "grok" and c["source_type"] == "公式") else "unconfirmed"
             else:

@@ -56,5 +56,18 @@
    },
    "duration_s": 712
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-07-16T05:05:07+09:00",
+   "edition": "2026-07-16",
+   "rounds": 3,
+   "approved": false,
+   "lint_green": true,
+   "planned": 29,
+   "written": 29,
+   "aborted": [],
+   "duration_s": 3876
+  }
  ]
 }

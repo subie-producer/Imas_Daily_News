@@ -23,5 +23,24 @@
   "src_candidate_id": "202607130340-claude-83",
   "event_date": "2026-08-27",
   "deadline": "2026-09-16"
+ },
+ {
+  "id": "sched-2026-09-16-deramasu-sidem-special-site-update-20260713-終了",
+  "dedup_key": "deramasu-sidem-special-site-update-20260713",
+  "brand": "sidem",
+  "subject": "でらます×SideM 名古屋POP UP前期終了",
+  "kind": "終了",
+  "note": "前期(バレエコア)終了、翌日から後期",
+  "reserved_on": "2026-07-16",
+  "facts": [
+   "前期は2026年8月3日(月)〜9月16日(水)、後期は2026年9月17日(木)〜10月31日(土)の2期構成",
+   "テーマは「バレエコア」"
+  ],
+  "title": "SideM×名古屋『でらます』POP UP Store、バレエコアテーマで8/3開催",
+  "url": "https://nijimen.kusuguru.co.jp/topics/625549",
+  "source_type": "報道",
+  "verify": "confirmed",
+  "src_candidate_id": "202607151249-claude-83",
+  "event_date": "2026-09-16"
  }
 ]

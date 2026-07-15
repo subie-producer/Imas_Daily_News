@@ -93,5 +93,43 @@
   "verify": "confirmed",
   "src_candidate_id": "202607141843-grok-40",
   "deadline": "2026-07-21"
+ },
+ {
+  "id": "sched-2026-07-21-gaku-howling-rerun-2026-締切",
+  "dedup_key": "gaku-howling-rerun-2026",
+  "brand": "gaku",
+  "subject": "学マス『Howling over the World』復刻ガシャ・衣装ショップ",
+  "kind": "締切",
+  "note": "ガシャ・衣装ショップとも開催終了",
+  "reserved_on": "2026-07-16",
+  "facts": [
+   "『アナザーアイドル'26 Howling over the Worldガシャ』開催期間は7/21(火)10:59まで(予定)",
+   "葛城リーリヤ・倉本千奈「叫びを届けるスーツ」の衣装ショップ販売も同時刻まで(予定)"
+  ],
+  "title": "アナザーアイドル'26 Howlingガシャ 初回10連無料",
+  "url": "https://x.com/gkmas_official/status/2077237216221311370",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607151845-grok-36",
+  "event_date": "2026-07-21"
+ },
+ {
+  "id": "sched-2026-07-21-shiny-nichika-hbtk-broadcast-2026-開始",
+  "dedup_key": "shiny-nichika-hbtk-broadcast-2026",
+  "brand": "shiny",
+  "subject": "「#七草にちかのHBTK」放送",
+  "kind": "開始",
+  "note": "7月度ゲスト回",
+  "reserved_on": "2026-07-16",
+  "facts": [
+   "7/21(火)放送回のゲストは西城樹里役・永井真里子さんと大崎甘奈役・黒木ほの香さん",
+   "7月度MCは七草にちか役・紫月杏朱彩さん"
+  ],
+  "title": "シャニラジHBTK 7/21ゲストに永井真里子・黒木ほの香",
+  "url": "https://x.com/shinyc_official/status/2077039161379528819",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607150745-grok-77",
+  "event_date": "2026-07-21"
  }
 ]

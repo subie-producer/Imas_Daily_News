@@ -1,0 +1,37 @@
+{
+  "articles": [
+    {"slug": "mirishita-52records-guinness-finale", "brand": "million", "rank": "lead", "angle": "ミリシタ9周年「SPECIAL SOLO RECORDS」全52商品リリースを完走、ギネス世界記録™認定を申請", "dedup_key": "million-special-solo-records-52weeks-finale-2026", "candidate_ids": ["202607150745-claude-88", "202607151845-grok-10", "202607152347-claude-85", "202607151249-grok-19"]},
+
+    {"slug": "atre-akihabara-albas-goods-price", "brand": "765", "rank": "large", "angle": "アイマス×アトレ秋葉原コラボ、アクリルスタンドからバースデープレートまで全グッズ価格と購入特典が判明", "dedup_key": "imas-atre-akihabara-2026", "candidate_ids": ["202607151845-grok-67", "202607152347-watch-2", "202607160341-grok-3", "202607160341-claude-77"]},
+
+    {"slug": "gkmas-shirube-final-general-presale", "brand": "gaku", "rank": "medium", "angle": "学マス「標」ファイナル公演、一般会員先行(抽選)受付が本日スタート", "dedup_key": "gaku-shirube-finale-ticket-buzz", "candidate_ids": ["202607152347-claude-94"]},
+    {"slug": "mirishita-ver9-forced-update", "brand": "million", "rank": "medium", "angle": "ミリシタVer.9.0.000配信、本日13時に強制アップデート・マスターランク5も追加", "dedup_key": "mltd-ver-9-0-000-2026-07-15", "candidate_ids": ["202607151845-grok-15", "202607151845-claude-78", "202607150745-grok-19"]},
+    {"slug": "sidem-summer-splash-price-reveal", "brand": "sidem", "rank": "medium", "angle": "SideM「SUMMER SPLASH！POP UP SHOP」、グッズ価格と購入制限が判明", "dedup_key": "sidem-summer-splash-popup-2026", "candidate_ids": ["202607151249-grok-35", "202607151249-claude-82"]},
+    {"slug": "cg-cinderella-party-608-guests", "brand": "cg", "rank": "medium", "angle": "ラジオ「CINDERELLA PARTY!」第608回放送、7月後半のゲストラインナップも判明", "dedup_key": "cg-cinderellaparty-ep608-2026", "candidate_ids": ["202607150745-claude-84", "202607160341-claude-80", "202607152347-grok-10", "202607152347-grok-11"]},
+    {"slug": "cg-sousenkyo-commu-lyrics-daily", "brand": "cg", "rank": "medium", "angle": "総選挙2026連動「シンデレラアイドルコミュ」毎日投稿、歌詞公開も続々進行中", "dedup_key": "cg-vote2026-idol-commu-hamakawa-matsuyama", "candidate_ids": ["202607150745-grok-13", "202607150745-grok-11", "202607151249-grok-10", "202607160341-grok-11", "202607160341-grok-12", "202607160341-grok-13", "202607150745-grok-10"]},
+    {"slug": "sidem-derama-nagoya-two-phase", "brand": "sidem", "rank": "medium", "angle": "でらます×SideM名古屋コラボ、前期・後期の2期構成とJR東海「推し旅」連動が判明", "dedup_key": "sidem-derama-popup-nagoya-2026", "candidate_ids": ["202607151249-claude-83"]},
+    {"slug": "gkmas-another-idol-howling-gacha", "brand": "gaku", "rank": "medium", "angle": "学マス「アナザーアイドル'26 Howlingガシャ」開催、衣装ショップにも新アイテム追加", "dedup_key": "gaku-another-idol-26-howling-gacha-2026-07", "candidate_ids": ["202607151845-grok-36", "202607151845-grok-40"]},
+    {"slug": "cg-popn-toybox-general-ticket-sale", "brand": "cg", "rank": "medium", "angle": "CONCEPT xR LIVE『Pop'n ToyBox!!』現地チケット一般販売(先着)・リセールが決定", "dedup_key": "cg-popn-toybox-general-lottery-2026", "candidate_ids": ["202607151249-watch-0"]},
+
+    {"slug": "gkmas-nagoya-escape-game-open", "brand": "gaku", "rank": "small", "angle": "リアル脱出ゲーム×学マス、名古屋公演が本日開幕", "dedup_key": "gakuen-realescapegame-nagoya-2026", "candidate_ids": ["sched-2026-07-16-gakuen-realescapegame-nagoya-2026-開幕", "202607160341-claude-96"]},
+    {"slug": "shiny-best-pair-2026-deadline", "brand": "shiny", "rank": "small", "angle": "シャニマスサマーベストペア2026、予選投票が本日23:59締切", "dedup_key": "shiny-summer-best-pair-2026", "candidate_ids": ["sched-2026-07-16-shiny-summer-best-pair-2026-締切"]},
+    {"slug": "sidem-glassy-collection-deadline", "brand": "sidem", "rank": "small", "angle": "SideMグラッシーコレクション、受注が本日23:59締切", "dedup_key": "sidem-glassy-collection-order-2026", "candidate_ids": ["202607160341-grok-38"]},
+    {"slug": "shiny-hbtk-0721-guests", "brand": "shiny", "rank": "small", "angle": "「#七草にちかのHBTK」次回7/21放送、ゲストに永井真里子・黒木ほの香", "dedup_key": "shiny-radio-hbtk-2026-07-21-guests", "candidate_ids": ["202607150745-grok-77"]},
+    {"slug": "shiny-new-idol-teaser-0717", "brand": "shiny", "rank": "small", "angle": "シャニマス、7/17 15:00に新アイドルのチラ見せを予告", "dedup_key": "shiny-new-idol-teaser-2026-07-17", "candidate_ids": ["202607151249-grok-27"]},
+    {"slug": "shiny-casting-collection-reprint", "brand": "shiny", "rank": "small", "angle": "シャニマス「キャスティングコレクション〜ちっちゃかわいい先輩編〜」復刻", "dedup_key": "shiny-casting-collection-chicha-kawa-senpai-reprint-2026-07", "candidate_ids": ["202607160341-grok-30"]},
+    {"slug": "tours-second-stage-rp-campaign", "brand": "joint", "rank": "small", "angle": "ツアマス新シリーズ開幕記念、12日間連続フォロー&リポストキャンペーン実施中", "dedup_key": "tours-new-series-rt-campaign-day6-2026-07", "candidate_ids": ["202607151249-grok-61", "202607151845-grok-56"]},
+    {"slug": "iwsf20th-stamp-rally-password", "brand": "joint", "rank": "small", "angle": "IWSF2026直前、20周年スタンプラリーのあいことば配布が開始", "dedup_key": "imas-20th-stamp-rally-password-iwsf-2026", "candidate_ids": ["202607151249-grok-56"]},
+    {"slug": "valiv-comptiq-0208-interview", "brand": "dsva", "rank": "small", "angle": "vα-livデビュー2周年インタビュー、コンプティーク8月号にも掲載", "dedup_key": "valiv-comptiq-2026-08-interview", "candidate_ids": ["202607150745-claude-95"]},
+    {"slug": "valiv-union-arena-sponsor-stream", "brand": "dsva", "rank": "small", "angle": "灯里愛夏、IWSF2026協賛のUNION ARENA紹介配信を実施", "dedup_key": "iwsf2026-unionarena-valiv-collab", "candidate_ids": ["202607150745-claude-97", "202607151845-grok-42", "202607152347-grok-47", "202607152347-grok-53"]},
+    {"slug": "gaku-imai-ssg-guest-appearance", "brand": "gaku", "rank": "small", "angle": "今井麻美のニコニコ番組に学マス声優2名がゲスト出演", "dedup_key": "gaku-imai-ssg-264-2026", "candidate_ids": ["202607150745-grok-45", "202607152347-claude-108"]},
+    {"slug": "imas-mor-405-satake-guest", "brand": "million", "rank": "small", "angle": "アイマスMOR405、佐竹美奈子役・大関英里がゲスト出演", "dedup_key": "imas-mor-405-nakamura-oseki-2026-07-15", "candidate_ids": ["202607160341-grok-5", "202607152347-grok-21"]},
+    {"slug": "imas-mor-406-haruka-preview", "brand": "765", "rank": "small", "angle": "アイマスMOR406、7/22放送は天海春香マスターソング特集", "dedup_key": "mor-haruka-mastersong-2026-07-22", "candidate_ids": ["202607152347-grok-5"]},
+    {"slug": "gkmas-housoubu-step4-talk", "brand": "gaku", "rank": "small", "angle": "初星学園放送部、The 2nd Period振り返り&STEP4トークを配信", "dedup_key": "gaku-hatsuboshi-housoubu-2ndperiod-step4-20260715", "candidate_ids": ["202607160341-claude-95"]},
+    {"slug": "shiny-msp-costume-hiori-add", "brand": "shiny", "rank": "small", "angle": "シャニマスMSPソロ衣装、樋口円香「ドリームオブバタフライ」を追加公開", "dedup_key": "shiny-msp-costume-hiori-2026", "candidate_ids": ["202607151845-grok-23"]},
+    {"slug": "shiny-coherentlight-ep26", "brand": "shiny", "rank": "small", "angle": "コミカライズ『コヒーレントライト』第26話前編が公開", "dedup_key": "shinycolors-coherentlight-manga-ep26", "candidate_ids": ["202607160341-claude-84"]},
+    {"slug": "sidem-cfirst-rairaibishoku-mv", "brand": "sidem", "rank": "small", "angle": "SideM C.FIRST「来来美食」2DMVが公開", "dedup_key": "sidem-cfirst-rairai-bishoku-2dmv-2026", "candidate_ids": ["202607150745-grok-31", "202607151845-grok-28", "202607152347-grok-30"]},
+    {"slug": "mirishita-9th-pickup-step-gasha", "brand": "million", "rank": "small", "angle": "ミリシタ9周年、SSR確定ピックアップガシャ&ピックアップステップガシャが登場", "dedup_key": "mirishita-9th-anniversary-pickup-gasha-2026", "candidate_ids": ["202607150745-claude-85"]},
+    {"slug": "mirishita-9th-painter-goods", "brand": "million", "rank": "small", "angle": "ミリシタ9周年、ペインタースタイルグッズがASOBI STOREで受注中", "dedup_key": "million-9th-anniversary-painter-goods-2026", "candidate_ids": ["202607151249-watch-2"]}
+  ],
+  "editorial_topic": "ミリシタ「SPECIAL SOLO RECORDS」52週完走とギネス世界記録挑戦に見る、9年目コンテンツが「続けること」を祝祭に変える力"
+}

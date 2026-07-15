@@ -34,5 +34,42 @@
   "verify": "confirmed",
   "src_candidate_id": "202607140744-claude-84",
   "event_date": "2026-07-22"
+ },
+ {
+  "id": "sched-2026-07-22-mor-haruka-mastersong-2026-07-22-開始",
+  "dedup_key": "mor-haruka-mastersong-2026-07-22",
+  "brand": "765",
+  "subject": "アイマスMOR406 天海春香マスターソング特集",
+  "kind": "開始",
+  "note": "放送当日",
+  "reserved_on": "2026-07-16",
+  "facts": [
+   "アイマスMOR406は7月22日放送",
+   "765プロダクション・天海春香役の中村繪里子さんのマスターソング特集を放送予定"
+  ],
+  "title": "アイマスMOR406 天海春香マスターソング特集（7/22放送）",
+  "url": "https://x.com/imas_musicradio/status/2077392750312575207",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607152347-grok-5",
+  "event_date": "2026-07-22"
+ },
+ {
+  "id": "sched-2026-07-22-cg-derepa-guest-schedule-2026-07-開始",
+  "dedup_key": "cg-derepa-guest-schedule-2026-07",
+  "brand": "cg",
+  "subject": "デレパ ゲスト回(橘ありす役・佐藤亜美菜)",
+  "kind": "開始",
+  "note": "放送当日",
+  "reserved_on": "2026-07-16",
+  "facts": [
+   "7月22日は橘ありす役・佐藤亜美菜さんがゲスト(メール受付済み)"
+  ],
+  "title": "デレパ 河瀬茉希ゲスト回と今後ゲスト予定",
+  "url": "https://x.com/dereparty/status/2077385192680149070",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607152347-grok-10",
+  "event_date": "2026-07-22"
  }
 ]

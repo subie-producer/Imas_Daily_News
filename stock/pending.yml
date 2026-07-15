@@ -21,12 +21,12 @@
   watch: 延期後の新日程が判明次第 triggers へ
 - dedup_key: million-special-solo-records-52weeks-finale-2026
   brand: million
-  subject: 「SPECIAL SOLO RECORDS」52週連続リリース ギネス世界記録挑戦
-  watch: 記録達成の可否発表(判明次第 triggers へ)
-- dedup_key: imas-atre-akihabara-2026
-  brand: '765'
-  subject: アイマス×アトレ秋葉原コラボ オリジナルグッズ
-  watch: アクリルスタンド・バースデープレート等の価格・詳細(後日発表、判明次第 triggers へ)
+  subject: ミリシタ「SPECIAL SOLO RECORDS」52週完走・ギネス世界記録™認定申請
+  watch: 認定の可否発表(判明次第 triggers へ)
+- dedup_key: shinycolors-coherentlight-manga-ep26
+  brand: shiny
+  subject: シャニマスコミカライズ『コヒーレントライト』第26話
+  watch: 第26話後編の公開日(判明次第 triggers へ)
 - dedup_key: gaku-kotobukiya-hataya-figure-2026
   brand: gaku
   subject: コトブキヤ 秦谷美鈴フィギュア

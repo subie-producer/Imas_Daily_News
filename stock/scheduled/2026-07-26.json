@@ -130,5 +130,45 @@
   "verify": "confirmed",
   "src_candidate_id": "202607140744-grok-14",
   "deadline": "2026-07-26"
+ },
+ {
+  "id": "sched-2026-07-26-gaku-shirube-finale-ticket-buzz-締切",
+  "dedup_key": "gaku-shirube-finale-ticket-buzz",
+  "brand": "gaku",
+  "subject": "学マス『標』ファイナル公演チケット一般会員先行",
+  "kind": "締切",
+  "note": "一般会員先行(抽選)受付締切",
+  "reserved_on": "2026-07-16",
+  "facts": [
+   "一般会員先行(抽選)受付は2026年7月15日12:00〜7月26日23:59",
+   "当選結果発表は2026年8月11日、入金期間は8月11日〜8月16日"
+  ],
+  "title": "「学マス標ツアー」ファイナル公演チケット一般会員先行受付開始",
+  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/ticket/final.php",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607152347-claude-94",
+  "event_date": "2026-11-07",
+  "deadline": "2026-07-26"
+ },
+ {
+  "id": "sched-2026-07-26-million-9th-anniversary-painter-goods-2026-締切",
+  "dedup_key": "million-9th-anniversary-painter-goods-2026",
+  "brand": "million",
+  "subject": "ミリシタ9周年「ペインタースタイル」グッズ ASOBI STORE受注",
+  "kind": "締切",
+  "note": "受注締切",
+  "reserved_on": "2026-07-16",
+  "facts": [
+   "受注期間は2026年7月15日(水)〜7月26日(日)23:59",
+   "お届け時期は2026年9月以降順次",
+   "ASOBI STOREでは購入特典の取り扱いなし"
+  ],
+  "title": "ミリシタ9周年・ペインタースタイルグッズがASOBI STOREに登場中(7月26日まで受注)",
+  "url": "https://idolmaster-official.jp/news/01_19368",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607151249-watch-2",
+  "event_date": "2026-07-26"
  }
 ]

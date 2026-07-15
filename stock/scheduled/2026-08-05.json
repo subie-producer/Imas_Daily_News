@@ -1,0 +1,39 @@
+[
+ {
+  "id": "sched-2026-08-05-cg-popn-toybox-general-lottery-2026-締切",
+  "dedup_key": "cg-popn-toybox-general-lottery-2026",
+  "brand": "cg",
+  "subject": "Pop'n ToyBox!! 現地チケット一般販売",
+  "kind": "締切",
+  "note": "一般販売(先着)受付終了(予定枚数到達で終了の場合あり)",
+  "reserved_on": "2026-07-16",
+  "facts": [
+   "現地チケット一般販売(先着)は2026年7月18日(土)12:00〜8月5日(水)23:59",
+   "公式リセールは2026年7月18日(土)15:00〜8月6日(木)9:59"
+  ],
+  "title": "Pop'n ToyBox!! 現地チケット一般販売(先着)/リセール実施決定",
+  "url": "https://idolmaster-official.jp/news/01_19320",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607151249-watch-0",
+  "event_date": "2026-08-05"
+ },
+ {
+  "id": "sched-2026-08-05-cg-derepa-guest-schedule-2026-07-開始",
+  "dedup_key": "cg-derepa-guest-schedule-2026-07",
+  "brand": "cg",
+  "subject": "デレパ ゲスト回(相葉夕美役・木村珠莉)",
+  "kind": "開始",
+  "note": "放送当日",
+  "reserved_on": "2026-07-16",
+  "facts": [
+   "8月5日は相葉夕美役・木村珠莉さんがゲスト"
+  ],
+  "title": "デレパ 河瀬茉希ゲスト回と今後ゲスト予定",
+  "url": "https://x.com/dereparty/status/2077385192680149070",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202607152347-grok-10",
+  "event_date": "2026-08-05"
+ }
+]

@@ -22,5 +22,42 @@
   "src_candidate_id": "202607130340-claude-104",
   "event_date": "2026-09-12",
   "deadline": "2026-09-13"
+ },
+ {
+  "id": "sched-2026-09-12-million-14th-live-締切",
+  "dedup_key": "million-14th-live",
+  "brand": "million",
+  "subject": "ミリオン14thLIVE 現地チケット一般販売締切",
+  "kind": "締切",
+  "note": "一般販売(先着)受付締切23:59",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "一般販売(先着)は2026年8月30日(日)12:00〜9月12日(土)23:59",
+   "公式リセール(抽選)は9月13日(日)9:59まで別途受付"
+  ],
+  "title": "ミリオン14th、現地チケット8/30受付開始",
+  "url": "https://idolmaster-official.jp/news/01_19676",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-watch-6"
+ },
+ {
+  "id": "sched-2026-09-12-cosmo-birthday-online-live-2026-lv-lottery-開幕",
+  "dedup_key": "cosmo-birthday-online-live-2026-lv-lottery",
+  "brand": "dsva",
+  "subject": "上水流宇宙 BIRTHDAY ONLINE LIVE 2026",
+  "kind": "開幕",
+  "note": "上水流宇宙20歳の誕生日ライブ本番",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "9/12バースデーライブのライブビューイング先行抽選申込は8/24 23:59まで(LivePocket)",
+   "上水流宇宙20歳の誕生日ライブ。配信と現地ライブビューイングを用意"
+  ],
+  "title": "上水流宇宙BDライブ現地LV抽選は明日23:59まで",
+  "url": "https://x.com/KamizuruCosmo/status/2091380172771782935",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-grok-54",
+  "event_date": "2026-09-12"
  }
 ]

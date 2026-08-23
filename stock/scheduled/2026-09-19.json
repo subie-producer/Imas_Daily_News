@@ -24,5 +24,26 @@
   "verify": "confirmed",
   "src_candidate_id": "20260712-portal-ml14th-senko",
   "event_date": "2026-09-19"
+ },
+ {
+  "id": "sched-2026-09-19-cg-kyomafu-2026-goods-開幕",
+  "dedup_key": "cg-kyomafu-2026-goods",
+  "brand": "joint",
+  "subject": "京まふ2026 デレマス・ミリオン新作グッズ",
+  "kind": "開幕",
+  "note": "京まふ2026 開幕日",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "京都国際マンガ・アニメフェア(京まふ)2026は2026年9月19日(土)〜9月20日(日)開催",
+   "THEキャラブースにシンデレラガールズ・ミリオンライブが出展、新規描き下ろしグッズと記念ドリンクを展開",
+   "ミリオンライブの描き下ろし対象は伊吹翼・大神環・高坂海美・佐竹美奈子・所恵美・舞浜歩・松田亜利沙・横山奈緒"
+  ],
+  "title": "京まふ2026でデレマスグッズと記念ドリンク",
+  "url": "https://idolmaster-official.jp/news/01_19659",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-grok-19",
+  "event_date": "2026-09-19",
+  "deadline": "2026-09-20"
  }
 ]

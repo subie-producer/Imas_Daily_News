@@ -22,5 +22,24 @@
   "src_candidate_id": "202607130340-claude-104",
   "event_date": "2026-09-12",
   "deadline": "2026-09-13"
+ },
+ {
+  "id": "sched-2026-09-13-sidem-hands-knickknacks-2026-終了",
+  "dedup_key": "sidem-hands-knickknacks-2026",
+  "brand": "sidem",
+  "subject": "SideM×ハンズ knick-knacks Vol.1 開催終了",
+  "kind": "終了",
+  "note": "ハンズ15店舗での開催最終日",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "『アイドルマスター SideM knick-knacks Vol.1』はハンズ15店舗で8月21日〜9月13日開催"
+  ],
+  "title": "アイドルマスター SideM knick-knacks Vol.1 ハンズポップアップストア開催",
+  "url": "https://prtimes.jp/main/html/rd/p/000000714.000070824.html",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-claude-90",
+  "event_date": "2026-08-21",
+  "deadline": "2026-09-13"
  }
 ]

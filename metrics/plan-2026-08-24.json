@@ -1,0 +1,218 @@
+{
+  "articles": [
+    {
+      "slug": "dualtwin-tokyo-finale-countdown",
+      "brand": "765",
+      "rank": "lead",
+      "angle": "dual twin liveツアーの東京公演(8/27-28・Zepp Haneda)が今週末に千秋楽。会場限定CD発売決定・大阪/名古屋公演の映像続々公開・アーカイブ同時視聴会実施という新事実を軸に、ツアー終幕への流れを伝える",
+      "dedup_key": "765-dual-twinlive-venue-cd",
+      "candidate_ids": [
+        "202608232010-grok-9",
+        "202608240348-grok-5",
+        "202608232010-watch-5",
+        "202608232010-grok-10",
+        "202608232010-grok-11",
+        "202608232010-grok-12",
+        "202608232010-grok-14",
+        "202608240348-grok-4",
+        "202608232351-claude-101",
+        "202608232351-claude-110"
+      ]
+    },
+    {
+      "slug": "sidem-murase-himeno-graduation",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "声優・村瀬歩さんが10年以上演じてきたSideM『姫野かのん』役を卒業すると8月18日付で発表。もふもふえんメンバーとしての歩みと、月例テーマソング等一部公演には今後も参加する経過措置を淡々と伝える",
+      "dedup_key": "sidem-murase-ayumu-graduation-2026",
+      "candidate_ids": ["202608232351-claude-111"]
+    },
+    {
+      "slug": "cg-million-coming-soon-0826",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "シンデレラガールズとミリオンライブの公式Xが8月23日、ほぼ同時刻に「8/26(水)12:00 Coming soon!」を予告。内容未公開のまま合同告知が話題になっている事実だけを断定を避けて伝える",
+      "dedup_key": "cg-coming-soon-2026-08-26",
+      "candidate_ids": [
+        "202608232010-grok-15",
+        "202608232010-grok-23",
+        "202608240348-grok-15",
+        "202608232351-watch-0"
+      ]
+    },
+    {
+      "slug": "million-14th-live-general-sale",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "ミリオンライブ14thLIVE(9/19-20)の現地チケット、一般先着販売が8/30 12:00・公式リセール抽選が8/30 15:00に受付開始することが判明。料金や受付期間など具体日程を整理する",
+      "dedup_key": "million-14th-live",
+      "candidate_ids": ["202608232010-watch-6"]
+    },
+    {
+      "slug": "kyomafu-2026-cg-million-goods",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "京都国際マンガ・アニメフェア(京まふ)2026(9/19-20)のTHEキャラブースに、シンデレラガールズ・ミリオンライブ双方の新規描き下ろしグッズと記念ドリンクが登場すると発表",
+      "dedup_key": "cg-kyomafu-2026-goods",
+      "candidate_ids": ["202608232010-grok-19", "202608232010-grok-26"]
+    },
+    {
+      "slug": "gakumas-shirube-game-implementation",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "学マス公式が「標」ツアー福井公演DAY2の場で、ライブ曲「標」のゲーム内実装を決定と発表。他アイドルの順次登場も予告された",
+      "dedup_key": "gaku-shirube-implementation-2026",
+      "candidate_ids": ["202608232010-grok-45"]
+    },
+    {
+      "slug": "gakumas-shugakuryoko-single-release",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "初星学園 LIVE TOUR Single「修楽旅行」が11月4日発売決定。ツアー各公演メンバーの歌唱バージョンを収録し、アソビストア予約特典は9月23日締切と発表された",
+      "dedup_key": "gaku-live-tour-single-shugakuryoko-2026",
+      "candidate_ids": ["202608232010-grok-46"]
+    },
+    {
+      "slug": "sidem-divercity-tokyo-collab",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "SideMとダイバーシティ東京プラザのコラボが9月4日開催決定。Café ParadeとLegendersの新規描き下ろしイラストやスタンプラリー特典など、施設連動企画の内容を伝える",
+      "dedup_key": "sidem-divercity-tokyo-plaza-2026",
+      "candidate_ids": ["202608232010-grok-37"]
+    },
+    {
+      "slug": "sidem-12th-free-story-deadline",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM12周年記念の無料公開ストーリー3作品、公開終了は8月27日23:59。締切3日前のタイミングで対象作品を案内する",
+      "dedup_key": "sidem-12th-free-story-2026-08-21",
+      "candidate_ids": ["202608232351-grok-38"]
+    },
+    {
+      "slug": "cosmo-birthday-live-lv-lottery-deadline",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "上水流宇宙のバースデーオンラインライブ、現地ライブビューイングの優先抽選申込は本日8月24日23:59が締切と告知",
+      "dedup_key": "cosmo-birthday-online-live-2026-lv-lottery",
+      "candidate_ids": ["202608232010-grok-54", "202608232036-grok-49"]
+    },
+    {
+      "slug": "cg-15th-annivroad-serial-deadline",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "CG15周年記念POP UP SHOP『in Annivroad』のオンラインストア購入分シリアルコード配布は本日8月24日が締切。総選挙投票券に交換できる仕組みを案内する",
+      "dedup_key": "cg-15th-popup-annivroad",
+      "candidate_ids": ["sched-2026-08-24-cg-15th-popup-annivroad-締切"]
+    },
+    {
+      "slug": "sidem-hands-knickknacks-popup",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "ハンズ50周年記念企画『SideM knick-knacks Vol.1』が全国ハンズ15店舗で開催中(8/21-9/13)。12名がハンズスタッフに扮した描き下ろしイラストを紹介する",
+      "dedup_key": "sidem-hands-knickknacks-2026",
+      "candidate_ids": ["202608232010-claude-90"]
+    },
+    {
+      "slug": "valiv-life-like-a-live-12",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "ヴイアラ3名(上水流宇宙・灯里愛夏・レトラ)が9月25-27日開催『Life Like a Live!12～ドラマチックアワー～』への出演決定を伝える",
+      "dedup_key": "valiv-life-like-a-live-12-2026",
+      "candidate_ids": ["202608232010-grok-53"]
+    },
+    {
+      "slug": "futamas-shikaoi-event",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "位置情報連動企画『ふたマス』、北海道鹿追町でのお披露目会に想定超の来場、倉本千奈設置箇所のポータルチェックインも実施中と伝える",
+      "dedup_key": "futamas-kuramoto-china-checkin-2026",
+      "candidate_ids": ["202608232351-grok-57", "202608232351-grok-58"]
+    },
+    {
+      "slug": "sidem-anicul-sonic-day2",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "幕張メッセで開催中の『ANICUL SONIC』、本日8/24が2日目。SideM -F@NTASTIC COMBINATION LIVE-の出演を案内する",
+      "dedup_key": "sidem-anicul-sonic-2025",
+      "candidate_ids": ["202608232010-claude-104"]
+    },
+    {
+      "slug": "shiny-30ms-new-figures",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "第15回30 MINUTES LABEL新商品発表会(8/21)で判明した、シャニマス×30MSの新作フィギュア群(七草にちか・はづきのヘア＆フェイスパーツ、SHHis緋田美琴の立体化、283プロ事務員プラモ)をまとめて紹介する",
+      "dedup_key": "shiny-30ms-announce-2026-08",
+      "candidate_ids": [
+        "202608232351-claude-84",
+        "202608232351-claude-86",
+        "202608232010-grok-30",
+        "202608232010-grok-31"
+      ]
+    },
+    {
+      "slug": "shiny-karma-naraku-tokyo-event",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニソン『Karma / Naraku』発売記念イベント、東京公演の開催を公式発表を基に伝える",
+      "dedup_key": "shiny-song-for-prism-karma-naraku-event-2026",
+      "candidate_ids": ["202608232010-claude-89"]
+    },
+    {
+      "slug": "cg-mirai-tower-nagoya-collab",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "デレマス×全国タワーツアーが中部電力MIRAI TOWER(名古屋)で開催中(8/22-30)。コラボチケットの料金・販売時間を案内する",
+      "dedup_key": "cg-tower-tour-mirai-tower-nagoya-2026",
+      "candidate_ids": ["202608232010-grok-73"]
+    },
+    {
+      "slug": "kotobukiya-kuji-summer-live-stage",
+      "brand": "765",
+      "rank": "small",
+      "angle": "コトブキヤくじ『アイドルマスター Summer Live st@ge』が販売中(-9/23)。S賞の描き下ろし特大アクリルスタンド等ラインナップを紹介する",
+      "dedup_key": "kotobukiya-kuji-summer-live-stage-2026",
+      "candidate_ids": ["202608232010-grok-8", "202608240348-grok-6", "202608232010-grok-13"]
+    },
+    {
+      "slug": "tours-s1-ex-suou-momoko",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "『アイドルマスター TOURS』9月の追加アップデート【S1弾Ex】で周防桃子が登場すると発表。8月28日開始のグッズ交換キャンペーンで先行カード配布も案内する",
+      "dedup_key": "tours-s1-ex-suou-momoko-2026",
+      "candidate_ids": ["202608232010-grok-62"]
+    },
+    {
+      "slug": "sidem-monthly-theme-song-11-flags",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "『MONTHLY THEME SONG 11 F-LAGS』(9/30発売)のCD情報と店舗別購入特典デザインが公開されたことを伝える",
+      "dedup_key": "sidem-monthly-theme-song-11-flags-2026",
+      "candidate_ids": ["202608232010-grok-44"]
+    },
+    {
+      "slug": "gakumas-gold-rush-vol7",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "『学園アイドルマスター GOLD RUSH』第7巻が10月7日発売決定。特装版には有村麻央の新曲収録CDが付属すると案内する",
+      "dedup_key": "gaku-gold-rush-vol7-2026",
+      "candidate_ids": ["202608232010-grok-49"]
+    },
+    {
+      "slug": "shiny-team-sol-plushie-vol2",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャイニーカラーズ『Team.Sol ちびぐるみ vol.2』が全国クレーンゲームに登場開始。Stella・Lunaに続く3チーム目の展開を案内する",
+      "dedup_key": "shiny-chibi-plushie-2026",
+      "candidate_ids": ["202608240348-claude-79"]
+    },
+    {
+      "slug": "765-chibi-plushie-pouch-set",
+      "brand": "765",
+      "rank": "small",
+      "angle": "dual twin live tourの衣装をモチーフにした765プロアイドル(双海亜美・真美、三浦あずさ、秋月律子)のちびぐるみ＆ポーチセットがプレミアムバンダイで予約開始と伝える",
+      "dedup_key": "765-chibi-plushie-pouch-2026-08",
+      "candidate_ids": ["202608240348-claude-91"]
+    }
+  ],
+  "editorial_topic": "10年以上演じられてきたSideM『姫野かのん』役の卒業という節目から、長く愛されてきたキャラクターと声優の歩みをどう見送るかについて考える"
+}

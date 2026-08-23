@@ -11,6 +11,9 @@
   - 各3,500円(税抜3,182円)全11トラック、8/6発売
   - 961PRODUCTION&KOHAKU&765PRO ALLSTARS盤(SACX-1149〜1150)4,000円、7/24先行販売
   - stage teaser公開、現地チケット先着販売中、リセール受付も開始
+  - 東京公演は8/27(木)双海亜美・真美「ふたごぼしのつばさ」、8/28(金)三浦あずさ・秋月律子「つみまつよるまち」、いずれも18時開場・19時開演
+  - 東京会場でも両CDを販売、会場物販で2枚同時購入すると先着で特典クリアカード(2種)を進呈
+  - 8/22・23に大阪・名古屋公演のアーカイブ同時視聴上映会を実施、視聴コメント付きアーカイブは9/27 23:59まで公開
 - story_id: million-9th-anniversary-mission
   brand: million
   subject: ミリシタ9周年アニバーサリーミッションとイベント「最上級:Invit@tion!」
@@ -118,6 +121,8 @@
   - 1人1公演2枚まで、デジタルチケットのみ、全席スタンディング観覧可、未就学児入場不可
   - DAY1公演タイトルは「夢咲くワンダーミラージュ」(開場16:30・開演17:30)、DAY2は「Blooming Sign」(開場15:30・開演16:30)
   - チケット料金はアリーナ前方席20,000円・全席指定14,000円(税込)
+  - 現地チケット一般販売(先着)は8/30 12:00〜9/12 23:59、公式リセール(抽選)は8/30 15:00〜9/13 9:59
+  - アリーナ前方席は完売のため一般販売・公式リセールとも取り扱いなし
 - story_id: shiny-msp-goods-presale
   brand: shiny
   subject: シャニマス ソロライブMSP公式グッズ事前販売
@@ -1102,6 +1107,8 @@
   first_published: '2026-07-15'
   published_facts:
   - 7月14日、紫雲清夏(サークルサングラス・水色)・本田未央(セーラーキャップ)・桜庭薫(gentle bow)の参戦が判明(天道輝・柏木翼・小宮果穂・最上静香に続く発表)
+  - 9月に【S1弾Ex】として追加アップデート、周防桃子登場・追加楽曲・ツアーズレアカード登場を告知(8/22付)
+  - 8/28開始のグッズ交換キャンペーンで周防桃子のカードが先行登場
 - story_id: tours-second-stage-launch-2026
   brand: joint
   subject: 『アイマスTOURS』新シリーズ「Second Stage」始動
@@ -1119,3 +1126,156 @@
   published_facts:
   - 2026年9月2日発売、品番LACM-24772、税込2,200円
   - 収録は天道輝・若里春名・水嶋咲・硲道夫・眉見鋭心の5人、全7曲
+- story_id: 765-chibi-plushie-pouch-2026
+  brand: '765'
+  subject: 765プロ ちびぐるみ＆ポーチセット(dual twin live衣装)
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - プレミアムバンダイで8月18日12時より予約開始(双海亜美・双海真美・三浦あずさ・秋月律子)
+  - 各4,950円、2027年2月出荷予定
+- story_id: cg-million-coming-soon-2026-08-26
+  brand: joint
+  subject: デレミリ公式、8月26日正午の同時予告
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - シンデレラガールズ・ミリオンライブ公式Xが8月23日、青黄配色で「8/26(wed) 12:00 Coming soon!」を同時投稿
+  - 投稿時点で企画名・内容は非公開
+- story_id: cg-tower-tour-mirai-tower-nagoya-2026
+  brand: cg
+  subject: デレマス×全国タワーツアー MIRAI TOWER(名古屋)
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 中部電力MIRAI TOWERで8/22〜8/30開催、コラボチケットは3F特設会場のみで販売(10:00〜17:30)
+  - 大人2,750円・小人2,200円、予約・WEB販売なし。限定グッズ販売とミニゲームを実施
+- story_id: cosmo-birthday-online-live-2026
+  brand: dsva
+  subject: 上水流宇宙 BIRTHDAY ONLINE LIVE 2026
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 9月12日(20歳の誕生日)開催。現地LVチケットの先行抽選申込はLivePocketで受付、8月24日23:59締切
+  - 配信チケットはアソビストアの案内ページから確認可能
+- story_id: futamas-shikaoi-2026
+  brand: joint
+  subject: 位置情報連動企画「ふたマス」北海道鹿追町
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - お披露目会を8月23日に開催、想定を上回る来場
+  - 缶バッジは8月23日限定、マンホールカードは鹿追町観光インフォメーション(道の駅しかおい裏)で配布(営業9〜17時)
+  - アイドルマスター ポータルで倉本千奈の設置箇所のチェックインを実施中、チェックインで称号を入手可能
+- story_id: gakumas-gold-rush-vol7-2026
+  brand: gaku
+  subject: 学マス漫画『GOLD RUSH』第7巻
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 10月7日発売、通常版880円(10%税込)・特装版2,970円(10%税込)
+  - 特装版に有村麻央の新曲「とめどなく」を収録したオリジナルCDが付属
+- story_id: gakumas-shirube-game-implementation-2026
+  brand: gaku
+  subject: 学マス「標」ゲーム内実装
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 8月21日付「#学マス標ツアー_福井公演_DAY2」でゲーム内実装決定を告知
+  - 他のアイドルも順次登場予定と案内(詳細・時期は未公表)
+- story_id: gakumas-shugakuryoko-single-2026
+  brand: gaku
+  subject: 初星学園 LIVE TOUR Single「修楽旅行」
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 11月4日発売、2,500円(税込)。Disc1はツアー各公演メンバー3編成の歌唱ver.とInstrumental、Disc2は「1人ずつご挨拶タイム」等
+  - アソビストア予約特典はジャケットイラストステッカー、予約は9月23日まで(特典はなくなり次第終了)
+- story_id: kotobukiya-kuji-summer-live-stage-2026
+  brand: '765'
+  subject: コトブキヤくじ「アイドルマスター Summer Live st@ge」
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 8月21日〜9月23日販売、1回850円(税込)。天海春香・如月千早・星井美希・秋月律子・三浦あずさの新規描き下ろし
+  - S賞特大アクリルスタンド、A賞A2タペストリー、B賞ブロマイドケース＆ミニブロマイド、C賞アクリルスタンド、D賞缶バッジ(各8種・7種)
+  - 公式Xフォロー＆リポスト企画で抽選3名にD賞全7種セットを進呈
+- story_id: kyomafu-2026-cg-million-goods
+  brand: joint
+  subject: 京まふ2026 デレマス・ミリオン新作グッズ
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 9月19日〜20日開催、THEキャラブースにシンデレラガールズ・ミリオンライブが出展
+  - ミリオンライブは伊吹翼・大神環・高坂海美・佐竹美奈子・所恵美・舞浜歩・松田亜利沙・横山奈緒の新規描き下ろしグッズとコラボドリンクを展開
+- story_id: shiny-30ms-new-figures-2026-08
+  brand: shiny
+  subject: シャニマス×30MS新商品(緋田美琴・七草にちか/はづき等)
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 8月21日配信の第15回30 MINUTES LABEL新商品発表会で発表
+  - 「30MS 緋田美琴」(2027年1月発売予定、全身パーツ同梱のオールインワン)
+  - 七草にちか・七草はづきのヘアスタイル＆フェイスパーツセット(2027年1月発売予定)
+  - 283プロ事務員キャラクターと見られるシルエットも公開済み(詳細は未確認)
+- story_id: shiny-karma-naraku-event-2026
+  brand: shiny
+  subject: シャニソン「Karma / Naraku」発売記念イベント
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 8月23日、東京都内某所で2公演を開催。Fumage・和久井優・結名美月が出演
+- story_id: shiny-team-sol-plushie-vol2-2026
+  brand: shiny
+  subject: 「Team.Sol ちびぐるみ vol.2」
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 8月20日より順次登場。6月Team.Stella、7月Team.Lunaに続く第3弾
+  - 全28人のアイドルを3チームに分けて展開
+- story_id: sidem-12th-free-story-2026-08
+  brand: sidem
+  subject: SideM12周年記念ストーリー無料公開
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 対象3作品(『目指せ、日本一の「桃太郎」！』『出来る事を全力で！』『同じ翼を持つものたちと』)を8月27日23:59まで無料公開
+- story_id: sidem-divercity-tokyo-2026
+  brand: sidem
+  subject: SideM×ダイバーシティ東京 プラザ
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 9月4日開幕。Café Parade・Legendersが夕暮れ時の海岸をイメージした新規描き下ろし衣装で登場
+  - 2階のDiverCity＋でコラボグッズを販売、館内5か所のスタンプラリー達成でオリジナルクリアファイルを進呈
+- story_id: sidem-hands-knickknacks-2026
+  brand: sidem
+  subject: SideM×ハンズ knick-knacks Vol.1
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 8月21日〜9月13日、ハンズ15店舗で開催。12名がエプロン姿の新規描き下ろしイラストで登場
+- story_id: sidem-monthly-theme-song-11-flags-2026
+  brand: sidem
+  subject: SideM MONTHLY THEME SONG第11弾「F-LAGS」
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 9月30日発売、2,200円(税込)、品番LACM-24791。歌は秋月涼・兜大吾・九十九一希
+  - 初回生産分に特製ブロマイドを封入、店舗別購入特典デザインも公開
+- story_id: sidem-murase-himeno-graduation-2026
+  brand: sidem
+  subject: 村瀬歩さん、姫野かのん役卒業
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 8月18日付で発表。10年以上演じてきた「もふもふえん」姫野かのん役を卒業
+  - 後任声優は後日発表。既存楽曲・一部演出で使用するボイス/音源には引き続き参加
+- story_id: valiv-life-like-a-live-12-2026
+  brand: dsva
+  subject: ヴイアラ、えるすりー12出演
+  status: active
+  first_published: '2026-08-24'
+  published_facts:
+  - 9月25日〜27日開催「Life Like a Live!12〜ドラマチックアワー〜」に上水流宇宙・灯里愛夏・レトラが出演
+  - 9月25日第一公演(オープニングのみ)、9月27日第四公演、第五公演(エンディングのみ)に出演

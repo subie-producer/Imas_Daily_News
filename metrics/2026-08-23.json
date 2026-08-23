@@ -1,0 +1,182 @@
+{
+ "collect": [
+  {
+   "at": "2026-08-23T20:11:00+09:00",
+   "edition": "2026-08-24",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 12
+     },
+     "columbia-imas": {
+      "found": 341,
+      "new": 6
+     },
+     "bnam-tours": {
+      "found": 65,
+      "new": 3
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 10
+     }
+    },
+    "new": 31,
+    "facted": 7
+   },
+   "per_query": {
+    "grok:765as": 8,
+    "grok:cinderella": 8,
+    "grok:million": 6,
+    "grok:shiny": 8,
+    "grok:sidem": 8,
+    "grok:gakuen": 8,
+    "grok:dsva": 8,
+    "grok:joint-other": 5,
+    "grok:trend": 8,
+    "grok:fan-culture": 8,
+    "claude:765as": 0,
+    "claude:cinderella": 6,
+    "claude:million": 0,
+    "claude:shiny": 2,
+    "claude:sidem": 2,
+    "claude:gakuen": 7,
+    "claude:dsva": 0,
+    "claude:joint-other": 0,
+    "claude:trend": 7,
+    "claude:fan-culture": 3
+   },
+   "normalized": 78,
+   "added": 78,
+   "verify": {
+    "confirmed": 62,
+    "unconfirmed": 9,
+    "failed": 7
+   },
+   "duration_s": 1166
+  },
+  {
+   "at": "2026-08-23T20:36:05+09:00",
+   "edition": "2026-08-24",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 341,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 65,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "grok:765as": 8,
+    "grok:cinderella": 8,
+    "grok:million": 8,
+    "grok:shiny": 8,
+    "grok:sidem": 8,
+    "grok:gakuen": 8,
+    "grok:dsva": 8,
+    "grok:joint-other": 4,
+    "grok:trend": 8,
+    "grok:fan-culture": 8,
+    "claude:765as": 0,
+    "claude:cinderella": 4,
+    "claude:million": 0,
+    "claude:shiny": 8,
+    "claude:sidem": 3,
+    "claude:gakuen": 8,
+    "claude:dsva": 0,
+    "claude:joint-other": 0,
+    "claude:trend": 4,
+    "claude:fan-culture": 0
+   },
+   "normalized": 75,
+   "added": 22,
+   "verify": {
+    "confirmed": 61,
+    "unconfirmed": 7,
+    "failed": 7
+   },
+   "duration_s": 1105
+  },
+  {
+   "at": "2026-08-23T23:51:10+09:00",
+   "edition": "2026-08-24",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 341,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 65,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 1,
+      "deferred": 0
+     }
+    },
+    "new": 1,
+    "facted": 1,
+    "deferred": 0
+   },
+   "per_query": {
+    "grok:765as": 7,
+    "grok:cinderella": 8,
+    "grok:million": 7,
+    "grok:shiny": 8,
+    "grok:sidem": 8,
+    "grok:gakuen": 8,
+    "grok:dsva": 8,
+    "grok:joint-other": 6,
+    "grok:trend": 8,
+    "grok:fan-culture": 8,
+    "claude:765as": 0,
+    "claude:cinderella": 6,
+    "claude:million": 0,
+    "claude:shiny": 5,
+    "claude:sidem": 3,
+    "claude:gakuen": 8,
+    "claude:dsva": 0,
+    "claude:joint-other": 0,
+    "claude:trend": 7,
+    "claude:fan-culture": 8
+   },
+   "normalized": 85,
+   "added": 31,
+   "verify": {
+    "confirmed": 66,
+    "unconfirmed": 12,
+    "failed": 7
+   },
+   "duration_s": 1240
+  }
+ ]
+}

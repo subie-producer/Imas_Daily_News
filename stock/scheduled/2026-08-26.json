@@ -13,5 +13,24 @@
   "title": "初星学園ハイレゾ作品プライスオフ",
   "source_type": "未確認",
   "verify": "unconfirmed"
+ },
+ {
+  "id": "sched-2026-08-26-cg-coming-soon-2026-08-26-その他",
+  "dedup_key": "cg-coming-soon-2026-08-26",
+  "brand": "joint",
+  "subject": "デレミリ公式、8月26日正午の同時予告",
+  "kind": "その他",
+  "note": "予告されていた情報公開の当日",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "シンデレラガールズ・ミリオンライブ両公式Xが8月23日、青と黄色の配色で「8/26(wed) 12:00 Coming soon!」と同時投稿",
+   "投稿時点で企画名・具体的な内容は非公開"
+  ],
+  "title": "8/26 12:00 Coming soon公式予告",
+  "url": "https://x.com/imas_CGofficial/status/2091435270713602495",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-grok-15",
+  "event_date": "2026-08-26"
  }
 ]

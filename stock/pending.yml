@@ -39,3 +39,19 @@
   brand: gaku
   subject: 篠澤広 新曲「サンフェーデッド」
   watch: 配信・発売日(判明次第 triggers へ)
+- dedup_key: shiny-30ms-new-figures-2026-08
+  brand: shiny
+  subject: シャニマス×30MS新商品(緋田美琴・七草にちか/はづき等)
+  watch: 2027年1月予定の正式発売日(判明次第 triggers へ)
+- dedup_key: gakumas-shirube-game-implementation-2026
+  brand: gaku
+  subject: 学マス「標」ゲーム内実装
+  watch: 実装時期・他アイドル登場時期の詳細(判明次第 triggers へ)
+- dedup_key: sidem-murase-himeno-graduation-2026
+  brand: sidem
+  subject: 村瀬歩さん、姫野かのん役卒業
+  watch: 後任声優の発表(判明次第 triggers へ)
+- dedup_key: tours-s1-ex-suou-momoko-2026
+  brand: joint
+  subject: ツアマスS1弾Ex(周防桃子登場)
+  watch: 9月内の正式実装日(判明次第 triggers へ)

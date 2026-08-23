@@ -153,5 +153,23 @@
   "verify": "confirmed",
   "src_candidate_id": "202607130742-claude-102",
   "event_date": "2026-08-31"
+ },
+ {
+  "id": "sched-2026-08-28-tours-s1-ex-suou-momoko-2026-開始",
+  "dedup_key": "tours-s1-ex-suou-momoko-2026",
+  "brand": "joint",
+  "subject": "ツアマス グッズ交換CPで周防桃子カードが先行登場",
+  "kind": "開始",
+  "note": "S1弾Ex本体(9月)に先駆けたグッズ交換キャンペーン開始",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "『アイドルマスター TOURS』は9月に【S1弾Ex】として追加アップデート(周防桃子登場・追加楽曲・ツアーズレアカード登場)を告知(8/22付)",
+   "8月28日開始のグッズ交換キャンペーンで周防桃子のカードが先行登場"
+  ],
+  "title": "ツアマスS1弾Exで9月に周防桃子登場",
+  "url": "https://x.com/TOURS_imas/status/2091060300124442648",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-grok-62"
  }
 ]

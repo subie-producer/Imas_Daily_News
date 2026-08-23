@@ -16,5 +16,45 @@
   "verify": "confirmed",
   "src_candidate_id": "202607131241-watch-0",
   "event_date": "2026-09-23"
+ },
+ {
+  "id": "sched-2026-09-23-gaku-live-tour-single-shugakuryoko-2026-締切",
+  "dedup_key": "gaku-live-tour-single-shugakuryoko-2026",
+  "brand": "gaku",
+  "subject": "初星学園 LIVE TOUR Single「修楽旅行」予約締切",
+  "kind": "締切",
+  "note": "アソビストア予約特典の受付締切",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "アソビストア予約特典(ジャケットイラストステッカー)の受付は9月23日(水)まで、なくなり次第終了",
+   "本編は2026年11月4日(水)発売、2,500円(税込)"
+  ],
+  "title": "「修楽旅行」11月4日発売決定",
+  "url": "https://gakuen-label.idolmaster-official.jp/news/schoosicaltrip",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-grok-46",
+  "event_date": "2026-11-04",
+  "deadline": "2026-09-23"
+ },
+ {
+  "id": "sched-2026-09-23-kotobukiya-kuji-summer-live-stage-2026-締切",
+  "dedup_key": "kotobukiya-kuji-summer-live-stage-2026",
+  "brand": "765",
+  "subject": "コトブキヤくじ「Summer Live st@ge」販売終了",
+  "kind": "締切",
+  "note": "販売・リポストキャンペーンともに23:59終了",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "コトブキヤくじ「アイドルマスター Summer Live st@ge」の販売期間は8月21日〜9月23日23:59",
+   "公式Xフォロー＆リポスト企画も同期間で実施、抽選3名にD賞全7種セットを進呈"
+  ],
+  "title": "コトブキヤくじ Summer Live st@ge販売開始",
+  "url": "https://idolmaster-official.jp/news/01_19560",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-grok-8",
+  "event_date": "2026-08-21",
+  "deadline": "2026-09-23"
  }
 ]

@@ -70,5 +70,45 @@
   "verify": "confirmed",
   "src_candidate_id": "202607131241-watch-1",
   "event_date": "2026-08-30"
+ },
+ {
+  "id": "sched-2026-08-30-million-14th-live-開始",
+  "dedup_key": "million-14th-live",
+  "brand": "million",
+  "subject": "ミリオン14thLIVE 現地チケット一般販売・公式リセール開始",
+  "kind": "開始",
+  "note": "一般販売(先着)・公式リセール(抽選)受付開始日",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "一般販売(先着)は2026年8月30日(日)12:00〜9月12日(土)23:59",
+   "公式リセール(抽選)は2026年8月30日(日)15:00〜9月13日(日)9:59",
+   "一般販売の対象は全席指定席14,000円・立見指定13,500円・ステージサイド席13,500円(税込)。アリーナ前方席は完売のため取り扱いなし"
+  ],
+  "title": "ミリオン14th、現地チケット8/30受付開始",
+  "url": "https://idolmaster-official.jp/news/01_19676",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-watch-6"
+ },
+ {
+  "id": "sched-2026-08-30-cg-tower-tour-mirai-tower-nagoya-2026-終了",
+  "dedup_key": "cg-tower-tour-mirai-tower-nagoya-2026",
+  "brand": "cg",
+  "subject": "デレマス×全国タワーツアー MIRAI TOWER(名古屋)終了",
+  "kind": "終了",
+  "note": "名古屋会場の開催最終日",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "中部電力MIRAI TOWERで「アイドルマスター シンデレラガールズ×全国タワーツアー Silky Sparkling Summer Stage」を8/22〜8/30開催",
+   "コラボチケットは3F特設会場のみで販売(10:00〜17:30)、大人2,750円・小人2,200円",
+   "予約・WEB販売はなし。限定グッズ販売とミニゲームを実施"
+  ],
+  "title": "デレマス×MIRAI TOWERコラボが名古屋で開催",
+  "url": "https://www.nagoya-tv-tower.co.jp/event/20260822/",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-grok-73",
+  "event_date": "2026-08-22",
+  "deadline": "2026-08-30"
  }
 ]

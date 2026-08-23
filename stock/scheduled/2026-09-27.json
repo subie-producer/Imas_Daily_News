@@ -1,0 +1,40 @@
+[
+ {
+  "id": "sched-2026-09-27-765-dual-twin-live-2026-終了",
+  "dedup_key": "765-dual-twin-live-2026",
+  "brand": "765",
+  "subject": "765プロ dual twin live tour 配信アーカイブ視聴期限",
+  "kind": "終了",
+  "note": "大阪・名古屋公演の視聴コメント付きアーカイブ公開終了",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "Zepp Haneda(東京)で8月27-28日にdual twin live tourを開催",
+   "8月22日・23日に大阪・名古屋公演のアーカイブ同時視聴上映会をASOBI STAGEで実施",
+   "視聴コメント付きアーカイブの公開期間は2026年9月27日(日)23時59分まで"
+  ],
+  "title": "765プロダクション『dual twin live tour』東京公演開催・配信チケット販売",
+  "url": "https://idolmaster-official.jp/news/01_19447",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232351-claude-101"
+ },
+ {
+  "id": "sched-2026-09-27-valiv-life-like-a-live-12-2026-千秋楽",
+  "dedup_key": "valiv-life-like-a-live-12-2026",
+  "brand": "dsva",
+  "subject": "ヴイアラ、えるすりー12出演",
+  "kind": "千秋楽",
+  "note": "ヴイアラ出演最終日(第四公演・第五公演エンディングのみ)",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "2026年9月25日〜27日開催「Life Like a Live!12〜ドラマチックアワー〜」に上水流宇宙・灯里愛夏・レトラが出演",
+   "9月27日(日)は第四公演に出演、第五公演にはエンディングのみ登場"
+  ],
+  "title": "えるすりー12にヴイアラ3名出演決定",
+  "url": "https://x.com/valiv_official/status/2091146328801943948",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-grok-53",
+  "event_date": "2026-09-25"
+ }
+]

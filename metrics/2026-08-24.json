@@ -1,0 +1,81 @@
+{
+ "collect": [
+  {
+   "at": "2026-08-24T03:48:29+09:00",
+   "edition": "2026-08-24",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 341,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 65,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "grok:765as": 7,
+    "grok:cinderella": 7,
+    "grok:million": 5,
+    "grok:shiny": 8,
+    "grok:sidem": 7,
+    "grok:gakuen": 8,
+    "grok:dsva": 8,
+    "grok:joint-other": 6,
+    "grok:trend": 8,
+    "grok:fan-culture": 8,
+    "claude:765as": 0,
+    "claude:cinderella": 5,
+    "claude:million": 0,
+    "claude:shiny": 7,
+    "claude:sidem": 0,
+    "claude:gakuen": 4,
+    "claude:dsva": 0,
+    "claude:joint-other": 0,
+    "claude:trend": 0,
+    "claude:fan-culture": 6
+   },
+   "normalized": 79,
+   "added": 35,
+   "verify": {
+    "confirmed": 58,
+    "unconfirmed": 10,
+    "failed": 11
+   },
+   "duration_s": 1078
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-08-24T04:38:41+09:00",
+   "edition": "2026-08-24",
+   "rounds": 1,
+   "approved": true,
+   "lint_green": true,
+   "planned": 24,
+   "written": 22,
+   "aborted": [
+    "cg-15th-annivroad-serial-deadline",
+    "sidem-anicul-sonic-day2"
+   ],
+   "duration_s": 2290
+  }
+ ]
+}

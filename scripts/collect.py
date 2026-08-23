@@ -23,11 +23,14 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (ROOT, COLLECT_MODEL, EXPLORE_MAX_BUDGET_USD, JST, append_metric,
+from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MAX_BUDGET_USD, JST, append_metric,
                      checkout_edition_branch, commit_and_push, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst)
 
 SCHEMA_PATH = ROOT / "prompts" / "explore-item-schema.json"
+# 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
+# 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
+WATCH_BATCH = int(ENV.get("WATCH_BATCH", "12"))
 # 注: grok のヘッドレス実行には --always-approve が必須(無いとツール実行が承認待ちで
 # Cancelled になり前置きだけ返る)。--json-schema は max_tokens 切りで全滅するため使わず、
 # --output-format json のエンベロープを parse_grok で寛容にパースする。いずれも実測に基づく。
@@ -76,6 +79,7 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
     sources = yaml.safe_load((ROOT / "sources.yml").read_text(encoding="utf-8"))
     state = json.loads(STATE_PATH.read_text(encoding="utf-8")) if STATE_PATH.exists() else {}
     new_items = []  # {source_id, brand, url, title, source_type}
+    found_by_source = {}  # 状態の保存は facts 化の後に行うため、巡回結果を持ち越す
     stats = {}
     for s in sources:
         if not s.get("enabled"):
@@ -94,16 +98,15 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
                         new_items.append({"source_id": s["id"], "brand": s["brand"], "url": u,
                                           "title": title, "source_type": s.get("source_type", "公式"),
                                           "csr": s["type"] == "portal"})
-            seen = state.get(s["id"], [])
-            state[s["id"]] = (found + [u for u in seen if u not in found])[:500]
+            found_by_source[s["id"]] = found
             stats[s["id"]] = {"found": len(found), "new": len([n for n in new_items if n["source_id"] == s["id"]])}
         except Exception as e:
             stats[s["id"]] = {"error": str(e)[:120]}
-    STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
-    # 新着を facts 化(Claude 1コール・最大12件/回)
+    # 新着を facts 化。1回のプロンプトに詰め込める量に上限があるため件数で切るが、
+    # **切った分は落とさず次回へ繰り越す**(下の状態保存を参照)。
     cands = []
-    batch = new_items[:12]
+    batch = new_items[:WATCH_BATCH]
     if batch and claude_call:
         blobs = []
         for it in batch:
@@ -119,7 +122,30 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
         cands = claude_call(prompt, timeout=420)
         for c in cands:
             c["_via"] = "watch"
-    return cands, {"stats": stats, "new": len(new_items), "facted": len(cands)}
+
+    # 状態の保存は facts 化の**後**。既知にするのは「今回処理を試みた URL」だけで、
+    # 上限を超えて手つかずのまま残った新着は未読のままにする。
+    #   - 巡回直後に全件を既知にすると、上限超過分は次回 new と判定されず、
+    #     candidates に一度も載らないまま消える(カバレッジの穴になる)
+    #   - 処理を試みた URL は、結果が0件でも既知にする(毎回同じページを
+    #     読み直して上限枠を食い潰さないため)
+    # 途中で落ちた場合も未保存なので、次回の実行がそのまま拾い直す。
+    attempted = {it["url"] for it in batch}
+    deferred = [n for n in new_items if n["url"] not in attempted]
+    deferred_urls = {n["url"] for n in deferred}
+    for sid, found in found_by_source.items():
+        keep = [u for u in found if u not in deferred_urls]
+        seen = state.get(sid, [])
+        state[sid] = (keep + [u for u in seen if u not in keep])[:500]
+        if sid in stats:
+            stats[sid]["deferred"] = len([n for n in deferred if n["source_id"] == sid])
+    STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+
+    if deferred:
+        print(f"定点観測: 新着 {len(new_items)}件のうち {len(batch)}件を処理、"
+              f"{len(deferred)}件を次回へ繰り越し", flush=True)
+    return cands, {"stats": stats, "new": len(new_items), "facted": len(cands),
+                   "deferred": len(deferred)}
 
 
 # ---- A-2 / B 探索 --------------------------------------------------------------

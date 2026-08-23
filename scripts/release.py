@@ -79,6 +79,24 @@ def lint_failure_summary(r: subprocess.CompletedProcess) -> str:
     return f"lint エラー {len(errs)} 件:\n" + "\n".join(lines)
 
 
+def deploy_site() -> str:
+    """自前オリジンへ配信する。失敗しても発行そのものは巻き戻さない。
+
+    紙面は main への push で確定しており、配信は「届け方」の工程である。
+    ここで失敗しても current は直前のリリースを指したままなので、読者には
+    前号が見え続ける(壊れた紙面が出るより望ましい)。復旧は deploy.py の再実行。
+    """
+    r = subprocess.run([sys.executable, str(ROOT / "scripts" / "deploy.py")],
+                       cwd=ROOT, capture_output=True, text=True, timeout=2400)
+    print(r.stdout[-1500:], flush=True)
+    if r.returncode == 0:
+        return "自前オリジンへ配信済み。"
+    tail = (r.stderr.strip() or r.stdout.strip())[-400:]
+    notify(f"配信に失敗しました(紙面は main に確定済み。current は前号のまま)。"
+           f"`python3 scripts/deploy.py` で再実行してください:\n```\n{tail}\n```", ok=False)
+    return "⚠️配信は失敗(要再実行)。"
+
+
 def ensure_next_branch(next_name: str, dry: bool) -> None:
     if branch_exists(next_name) or branch_exists(next_name, remote=True):
         print(f"翌日ブランチ {next_name} は既に存在", flush=True)
@@ -165,13 +183,18 @@ def main() -> int:
         git("commit", "-m", f"{label} {date} 発行({count}本)")
         git("push", "origin", "main")
 
-    # 5. 発行済みブランチの削除 → 翌日ブランチ作成
+    # 5. 自前オリジンへ配信(main へ push した紙面をビルドして current を差し替える)
+    #    ここが実際の「読者に届く」工程。GitHub Pages は main への push で
+    #    自動追従するフォールバックとして残している。
+    deployed = deploy_site()
+
+    # 6. 発行済みブランチの削除 → 翌日ブランチ作成
     git("branch", "-D", branch, check=False)
     if branch_exists(branch, remote=True):
         git("push", "origin", "--delete", branch, check=False)
     ensure_next_branch(nxt, dry=False)
 
-    notify(f"{date}: {label}({count}本)を発行しました。翌日ブランチ {nxt} 準備済み")
+    notify(f"{date}: {label}({count}本)を発行しました。{deployed} 翌日ブランチ {nxt} 準備済み")
     return 0
 
 

@@ -38,7 +38,17 @@ def load_env() -> dict:
 
 ENV = load_env()
 CLAUDE_MODEL = ENV.get("CLAUDE_MODEL", "sonnet")
-REVIEW_MODEL = ENV.get("REVIEW_MODEL", "gpt-5.6-terra")
+COLLECT_MODEL = ENV.get("COLLECT_MODEL", "haiku")
+# 記事本文の執筆に使う Codex モデル(codex exec -m に渡す)。校閲とベンダーを分離するため執筆側に配置
+CODEX_WRITE_MODEL = ENV.get("CODEX_WRITE_MODEL", "gpt-5.6-luna")
+# 校閲・機械検収エラーの修正に使う Claude モデル(claude -p --model に渡す)。
+# 執筆(Codex)と別ベンダーにするため Claude 側。既定は haiku(検品はコスト重視)
+REVIEW_MODEL = ENV.get("REVIEW_MODEL", "haiku")
+# 暴走セッション対策の安全弁(--max-budget-usd)。通常運用なら到達しない額を目安に設定。
+# 注: codex exec には同等のコスト上限フラグが無いため、執筆(Codex)側には適用できない
+EXPLORE_MAX_BUDGET_USD = ENV.get("EXPLORE_MAX_BUDGET_USD", "1.5")
+COMPOSE_ARTICLE_MAX_BUDGET_USD = ENV.get("COMPOSE_ARTICLE_MAX_BUDGET_USD", "3")
+COMPOSE_WHOLE_MAX_BUDGET_USD = ENV.get("COMPOSE_WHOLE_MAX_BUDGET_USD", "8")
 
 
 def notify(job: str, msg: str, ok: bool = True) -> None:

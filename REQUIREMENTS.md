@@ -1,6 +1,7 @@
 # アイマスNEWS(α) システム要件書
 
-作成日: 2026-07-11 ／ 対象: 新規構築(GitHub Pages 配信の日刊AI新聞)
+作成日: 2026-07-11 ／ 対象: 新規構築(日刊AI新聞)
+配信: 2026-08-23 に GitHub Pages から**自前オリジン(Caddy)+ Cloudflare Tunnel** へ移行(PIPELINE.md §9.6)。GitHub Pages はフォールバックとして残す。
 
 ## 1. コンセプト
 
@@ -150,7 +151,7 @@ corrections: []               # 記事と同じ訂正契約
 
 ```
 collect(コード・毎日数回) → verify(コード) → compose(LLM・発行日早朝)
- → lint(コード・required check) → review(校閲AI) → squash merge → Pages 配信
+ → lint(コード・required check) → review(校閲AI) → squash merge → deploy(自前オリジンへ配信)
 ```
 
 実行主体はローカルマシンのスケジューラ(`claude`・`grok`・`codex` CLI のセッション認証がローカルにあるため)。GitHub 側は Pages 配信と push 後の lint CI(事後検査)のみで、マージ判定はローカルの lint+校閲で行い main へ直接 push する。号ごとに `edition/YYYY-MM-DD` ブランチを main から作成し、収集・生成コミットはすべて同ブランチに載せ、発行時にローカルで **squash merge**(main は1号=1コミット)→ ブランチ削除 → 翌日ブランチ作成、とする。残存する edition ブランチが発行忘れの検知装置を兼ねる。運用詳細は [PIPELINE.md](PIPELINE.md)。
@@ -219,7 +220,7 @@ publish がマージ前にローカルで実行し、**赤なら発行不可**�
 
 ## 6. 非機能要件
 
-- 静的サイト(GitHub Pages+Jekyll)。JS は推しフィルタと SP ダイジェスト開閉のみ。
+- 静的サイト(Jekyll)。自前オリジン(Caddy)から Cloudflare 経由で配信する。JS は推しフィルタ・SP ダイジェスト開閉・タグ索引の絞り込み(`/tags/`)のみで、いずれも JS 無効でも記事本文とタグページには到達できる。
 - リポジトリ: `https://github.com/subie-producer/Imas_Daily_News`(初期化済み)を使用。配信 URL は `https://subie-producer.github.io/Imas_Daily_News/` を想定し、Jekyll の baseurl・内部リンク・OGP の絶対 URL はこれを前提に設定する。
 - OGP: 記事・号ごとにタイポグラフィベースの OGP 画像をビルド時生成(写真素材不使用)。
 - RSS/Atom フィード(号単位・記事単位)。

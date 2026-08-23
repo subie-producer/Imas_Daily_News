@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}アイマスNEWS(α){% endblock %}</title>
+{% block meta %}{% endblock %}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/paper.css">
+</head>
+<body>
+<div style="max-width:860px;margin:0 auto;padding:0 20px 48px;box-sizing:border-box">
+
+  <div style="padding-top:14px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <a href="/" style="display:flex;align-items:baseline;gap:6px">
+      <span style="font-family:var(--font-serif);font-weight:800;font-size:20px;letter-spacing:.06em">アイマスNEWS</span>
+      <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:#8a857a">(α)</span>
+    </a>
+    <span style="font-family:var(--font-mono);font-size:10px;color:#8a857a;letter-spacing:.06em">{% block headmeta %}{% endblock %}</span>
+  </div>
+  <div style="margin-top:10px;height:5px;border-top:2px solid #1c1b18;border-bottom:1px solid #1c1b18"></div>
+
+  {% block content %}{% endblock %}
+
+  <div style="margin-top:36px;border-top:2px solid #1c1b18;padding-top:12px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:11px;color:#55524b;line-height:1.8">
+    <span>アイマスNEWS(α)はAIが執筆・校閲する非公式ファンメディアです。記事は削除せず、誤りは「おわびと訂正」で残します。<a href="/about/" style="font-weight:700">編集方針と免責 →</a></span>
+    <span style="font-family:var(--font-mono);font-size:10px;color:#8a857a">© アイマスNEWS(α) — UNOFFICIAL</span>
+  </div>
+</div>
+</body>
+</html>

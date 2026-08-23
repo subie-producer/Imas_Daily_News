@@ -3,30 +3,36 @@
 
   python3 scripts/compose.py [--plan] [--max-rounds 2]
 
-役割分担: 執筆=Claude(sonnet 系・ヘッドレス) / 機械算出=derive.py / 校閲=Codex。
+役割分担: 執筆=Codex(gpt-5.6-luna・ヘッドレス) / 機械算出=derive.py / 校閲=Claude(haiku)。
+執筆と校閲を別ベンダー(OpenAI/Anthropic)に分離(要件4.5)。
 二段構成(執筆時コンタミの構造的排除):
 1. edition ブランチ同期 → 続報キュー(本日トリガー)と素材を整理
 2. 選定: claude が候補全体から記事計画(slug→candidate_ids 対応表)を JSON で出力
    → compose が機械検証(候補の実在・verify・blocklist・lead 一意)
 3. 個別執筆: 記事ごとに、計画で選ばれた候補 JSON だけを機械的に切り出して渡し、
-   独立した claude セッションが1本書く(他候補の情報がコンテキストに存在しない)
+   独立した codex セッションが1本書く(他候補の情報がコンテキストに存在しない)
 4. 社説: 専任のコラムニストセッションが当日の記事群を読んで1本書く(人格・文体規程あり)
 5. 組版: 別セッションが号スナップショット(digest)・stories/scheduled 更新
-6. derive.py --write → lint(ゲート) → codex 校閲往復 → commit & push(発行は 06:00 の release)
+6. derive.py --write → lint(ゲート) → claude 校閲往復 → commit & push(発行は 06:00 の release)
 """
 import argparse
 import datetime
 import json
+import os
 import re
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (ROOT, CLAUDE_MODEL, REVIEW_MODEL, append_metric,
+import tags as tags_lib
+from pipelib import (ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL,
+                     COMPOSE_ARTICLE_MAX_BUDGET_USD,
+                     COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, commit_and_push, edition_date, git,
                      notify, notify_crash, now_jst)
 
@@ -141,6 +147,7 @@ def article_prompt(date: str, art: dict, materials: list[dict], story_facts: lis
             "トリガーの当日性(締切・開幕等)を記事の軸にすること" if trigger else "")
     prev = ("\n## 既報(この話題で報道済みの事実。同じ事実の繰り返しを記事の軸にしない)\n"
             + "\n".join(f"- {f}" for f in story_facts)) if story_facts else ""
+    vocab = tags_lib.vocabulary_block()
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の記者です。{date}({weekday}曜)号の記事を**1本だけ**書いてください。
 
 ## 素材(この JSON がこの記事に使ってよい情報の全てです)
@@ -159,8 +166,16 @@ x.com など取得不能な URL は例外(Grok 観測を出典として信頼す
 ## 出力
 `docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
 - frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']} / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
-- title(全角換算〜28字)・lede(1文)・tags(2〜4個)・sources(素材の url から。label は内容がわかる短い日本語、type は各候補の source_type)・event_date(素材にあれば)は自分で書く
+- title(全角換算〜28字)・lede(1文)・tags(2〜4個。下記「タグ語彙」に従う)・sources(素材の url から。label は内容がわかる短い日本語、type は各候補の source_type)・event_date(素材にあれば)は自分で書く
 - 本文は {lo}〜{hi} 字(rank: {art['rank']} の分量規程)。切り口: {art['angle']}{trig}
+
+## タグ語彙(タグは索引・検索に使われる。表記ゆれは索引を壊すため厳守)
+シリーズ名・施策カテゴリは**必ず次の語彙から選ぶ**(同義の別表記を作らない):
+{vocab}
+- アイドル名・会場名・作品固有名など固有名詞は語彙外でよい(正式名称で書く)
+- frontmatter の brand と同じ意味のタグを brand の id(shiny/million/gaku 等)で書かない。上の正式名を使う
+- src の値(公式・報道・ファン・未確認)をタグにしない
+- 毎年ある定例企画は年を含める(例: IWSF2026・総選挙2026・アニサマ2026)
 
 ## 絶対規則
 - 素材の facts(照合済みのもの)に無い事実を書かない。推測・一般知識での補完は禁止
@@ -240,9 +255,10 @@ def assembly_prompt(date: str, number: int, aborted: list[str]) -> str:
 """
 
 
-def claude_run(prompt: str, timeout: int = 2400) -> str:
+def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str:
     r = subprocess.run(
-        ["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions"],
+        ["claude", "-p", prompt, "--model", model or CLAUDE_MODEL, "--dangerously-skip-permissions",
+         "--max-budget-usd", COMPOSE_WHOLE_MAX_BUDGET_USD],
         capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
     return r.stdout
 
@@ -331,7 +347,9 @@ def validate_article_file(date: str, art: dict, cands: dict) -> list[str]:
 
 def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                    stories: dict, wave: int = 4) -> tuple[list[dict], list[str]]:
-    """記事ごとに素材を機械的に切り出して個別 claude セッションで執筆(wave 並列)。"""
+    """記事ごとに素材を機械的に切り出して個別 codex セッションで執筆(wave 並列)。
+    校閲(claude)とベンダーを分離するため執筆は Codex。機械検収エラーの修正は
+    校閲と同じ Claude(REVIEW_MODEL=haiku)で行う。"""
     trig_by_key = {t["dedup_key"]: t for t in triggers}
     jobs = []
     for art in plan["articles"]:
@@ -345,27 +363,33 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
     for i in range(0, len(jobs), wave):
         procs = []
         for art, src, prompt in jobs[i:i + wave]:
-            procs.append((art, src, subprocess.Popen(
-                ["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions"],
-                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True,
+            fd, out_name = tempfile.mkstemp(prefix=f"codexwrite-{art['slug']}-", suffix=".txt")
+            os.close(fd)
+            out_path = Path(out_name)
+            procs.append((art, src, out_path, subprocess.Popen(
+                ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
+                 "--output-last-message", str(out_path), prompt],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
-        for art, src, p in procs:
+        for art, src, out_path, p in procs:
             try:
-                out, _ = p.communicate(timeout=900)
+                p.communicate(timeout=900)
             except subprocess.TimeoutExpired:
                 p.kill()
-                out = ""
-            if "ABORT:" in (out or "")[-2000:] and not (ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md").exists():
+            out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
+            out_path.unlink(missing_ok=True)
+            if "ABORT:" in out[-2000:] and not (ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md").exists():
                 reason = out.rsplit("ABORT:", 1)[-1].strip()[:200]
                 print(f"記事 {art['slug']} は出典照合で不成立: {reason}", flush=True)
                 aborted.append(art["slug"])
                 continue
             errs = validate_article_file(date, art, cands)
             if errs:
-                # 検収エラーは同一素材で1回だけ書き直させる
+                # 検収エラーは同一素材で1回だけ書き直させる(検品=Claude/REVIEW_MODEL)
                 fixp = (f"docs/_posts/{date}-{art['slug']}.md の機械検収エラーを修正してください(Edit ツール使用):\n- "
                         + "\n- ".join(errs))
-                subprocess.run(["claude", "-p", fixp, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions"],
+                subprocess.run(["claude", "-p", fixp, "--model", REVIEW_MODEL, "--dangerously-skip-permissions",
+                               "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
                                capture_output=True, text=True, timeout=600,
                                stdin=subprocess.DEVNULL, cwd=ROOT)
                 errs = validate_article_file(date, art, cands)
@@ -396,20 +420,35 @@ def run_lint(date: str) -> tuple[int, str]:
     return r.returncode, r.stdout[-1500:]
 
 
-def codex_review(date: str, round_no: int) -> dict:
+def claude_review(date: str, round_no: int) -> dict:
+    """校閲。執筆(Codex)と別ベンダーにするため Claude(REVIEW_MODEL=haiku)で実施。"""
     checklist = (ROOT / "prompts" / "review-checklist.md").read_text(encoding="utf-8").replace("{DATE}", date)
     if round_no > 1:
         checklist += f"\n\nこれは再校閲({round_no}回目)です。前回の指摘への修正が反映されています。"
+    schema = (ROOT / "prompts" / "review-schema.json").read_text(encoding="utf-8")
     out = ROOT / "metrics" / f"review-{date}-{round_no}.json"
     r = subprocess.run(
-        ["codex", "exec", "-m", REVIEW_MODEL,
-         "--output-schema", str(ROOT / "prompts" / "review-schema.json"),
-         "--output-last-message", str(out), checklist],
+        ["claude", "-p", checklist, "--model", REVIEW_MODEL,
+         "--json-schema", schema, "--dangerously-skip-permissions",
+         "--max-budget-usd", COMPOSE_WHOLE_MAX_BUDGET_USD],
         capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL, cwd=ROOT)
+    text = r.stdout.strip()
+    result = None
     try:
-        return json.loads(out.read_text(encoding="utf-8"))
+        result = json.loads(text)
     except Exception:
-        return {"verdict": "block", "blockers": [{"file": "-", "issue": f"校閲実行失敗: {r.stderr[-200:]}", "quote": ""}], "comments": []}
+        m = re.search(r"\{.*\}", text, re.DOTALL)
+        if m:
+            try:
+                result = json.loads(m.group(0))
+            except Exception:
+                result = None
+    if result is None:
+        result = {"verdict": "block",
+                  "blockers": [{"file": "-", "issue": f"校閲実行失敗: {r.stderr[-200:]}", "quote": ""}],
+                  "comments": []}
+    out.write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
+    return result
 
 
 def main() -> int:
@@ -504,9 +543,10 @@ def main() -> int:
     code, lint_out = run_lint(date)
     print(lint_out, flush=True)
     if code != 0:
-        # 一度だけ Claude に lint 修正を依頼
+        # 一度だけ Claude(検品=REVIEW_MODEL)に lint 修正を依頼
         claude_run(f"アイマスNEWS {date}号の lint がエラーです。`python3 scripts/lint.py --base origin/main` を実行し、"
-                   f"エラー0になるまで docs/ と stock/ を修正してください。修正後 derive.py --date {date} --write も再実行すること。")
+                   f"エラー0になるまで docs/ と stock/ を修正してください。修正後 derive.py --date {date} --write も再実行すること。",
+                   model=REVIEW_MODEL)
         code, lint_out = run_lint(date)
         if code != 0:
             notify("compose", f"{date}: lint 赤が解消できず。人間判断が必要\n{lint_out[-500:]}", ok=False)
@@ -517,7 +557,7 @@ def main() -> int:
     rounds = 0
     review = None
     for rounds in range(1, args.max_rounds + 2):
-        review = codex_review(date, rounds)
+        review = claude_review(date, rounds)
         if review.get("verdict") == "approve":
             break
         if rounds > args.max_rounds:
@@ -525,7 +565,7 @@ def main() -> int:
         fix = ("校閲AIから以下のブロック指摘がありました。candidates の facts と照合して記事を修正してください。"
                "修正後に derive.py --write と lint を再実行してエラー0にすること。\n"
                + json.dumps(review.get("blockers", []), ensure_ascii=False, indent=2))
-        claude_run(fix, timeout=1200)
+        claude_run(fix, timeout=1200, model=REVIEW_MODEL)
         subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
                        cwd=ROOT, capture_output=True, text=True)
 

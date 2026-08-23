@@ -1,0 +1,30 @@
+# 本番(自前配信)ビルド専用の上書き設定。
+#
+#   jekyll build --config _config.yml,_config.production.yml,<url上書き>
+#
+# _config.yml は GitHub Pages(フォールバック配信)がそのまま使うため触らない。
+# 本番との差分だけをここに置き、両方のビルドを壊さずに共存させる。
+#
+# url は .env の SITE_URL からデプロイ時に生成して渡す(ドメインを git に置かないため)。
+# scripts/deploy.py がその一時設定を作る。
+
+# 自前ドメインの直下に配信するのでサブパスは持たない
+baseurl: ""
+
+# GitHub Pages は _plugins/ を実行しないが、本番は素の Jekyll なので有効。
+# タグ索引(_plugins/tag_index.rb)はこちらでのみ生成される。
+safe: false
+
+# 本番のみ有効化する出力(sitemap は自前ドメインで初めて意味を持つ)
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# ビルド成果物に混ぜないもの
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .bundle
+  - _config.production.yml

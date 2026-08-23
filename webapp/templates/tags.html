@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}タグ索引 — アイマスNEWS(α){% endblock %}
+{% block meta %}<link rel="canonical" href="{{ site_url }}/tags/">{% endblock %}
+{% block headmeta %}TAGS — {{ tags|length }} TAGS{% endblock %}
+
+{% block content %}
+<div style="margin-top:22px;display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
+  <h1 style="margin:0;font-family:var(--font-serif);font-weight:800;font-size:clamp(22px,4vw,30px);letter-spacing:.06em">タグ索引</h1>
+  <span style="font-size:11.5px;color:#55524b">全 {{ total_articles }} 本の紙面から横断して探せます。</span>
+</div>
+
+<form method="get" action="/search" style="margin-top:16px">
+  <div style="display:flex;align-items:center;gap:8px;border:1px solid #1c1b18;background:#fff;padding:10px 14px">
+    <span style="font-family:var(--font-mono);font-size:10px;color:#8a857a;letter-spacing:.1em">SEARCH</span>
+    <input type="search" name="q" autocomplete="off" placeholder="見出し・本文・タグを全文検索"
+           style="flex:1;border:0;outline:0;background:transparent;font-family:var(--font-sans);font-size:14px;color:#1c1b18;min-width:0">
+    <button type="submit" style="flex:none;border:1px solid #1c1b18;background:#1c1b18;color:#fbfaf7;font-size:11.5px;font-weight:700;padding:5px 14px;cursor:pointer">検索</button>
+  </div>
+</form>
+
+{% for group in groups %}
+<div style="margin-top:24px">
+  <div style="display:flex;align-items:baseline;gap:10px;border-bottom:2px solid #1c1b18;padding-bottom:6px">
+    <span style="font-family:var(--font-serif);font-weight:800;font-size:17px;letter-spacing:.1em">{{ group.label }}</span>
+    <span style="font-family:var(--font-mono);font-size:9.5px;color:#8a857a">{{ group.entries|length }} TAGS</span>
+  </div>
+  <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap">
+    {% for t in group.entries %}
+    <a href="/tags/{{ t.tag|urlencode }}/" style="display:inline-flex;align-items:baseline;gap:6px;border:1px solid #d9d4c8;background:#fff;padding:5px 10px;font-size:12.5px;line-height:1.4">
+      <span>{{ t.tag }}</span>
+      <span style="font-family:var(--font-mono);font-size:9.5px;color:#8a857a">{{ t.n }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

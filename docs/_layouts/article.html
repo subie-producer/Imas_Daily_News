@@ -83,8 +83,29 @@ layout: default
     </div>
   </div>
 
-  <!-- タグは frontmatter の機械可読メタデータとしてのみ保持(表示しない)。
-       機能化(タグ索引)する場合は既存タグ語彙の参照を執筆プロンプトに入れること(PIPELINE §9.5) -->
+  <!-- タグ(PIPELINE §9.5 で機能化済み。執筆プロンプトに語彙を注入し、索引側で表記ゆれを正規化する)
+       norm_tags は _plugins/tag_index.rb が付ける正規化済みタグ。プラグインが動かない
+       GitHub Pages 側のフォールバックビルドでは素の tags をそのまま出す -->
+  {% comment %}
+    タグの正規化は docs/_data/tags.yml が単一ソース(PIPELINE §9.5)。
+    記事ページは静的のままなので、ここでは Liquid で alias/drop を適用してから
+    リンクする。リンク先 /tags/<タグ>/ は動的アプリ(imas-app)が描画する。
+  {% endcomment %}
+  {% if page.tags and page.tags.size > 0 %}
+  {% assign chip = "display:inline-block;border:1px solid #d9d4c8;background:#fff;padding:4px 10px;font-size:12px;line-height:1.4;color:#33312c" %}
+  {% assign drops = site.data.tags.drop %}
+  {% assign emitted = "" | split: "" %}
+  <div style="margin-top:20px;display:flex;gap:7px;flex-wrap:wrap;align-items:center">
+    <span style="font-family:var(--font-mono);font-size:9.5px;color:#8a857a;letter-spacing:.1em">TAGS</span>
+    {% for raw in page.tags %}
+      {% assign t = site.data.tags.alias[raw] | default: raw %}
+      {% unless drops contains t or emitted contains t %}
+        {% assign emitted = emitted | push: t %}
+    <a href="{{ '/tags/' | append: t | uri_escape | relative_url }}/" style="{{ chip }}">{{ t }}</a>
+      {% endunless %}
+    {% endfor %}
+  </div>
+  {% endif %}
 
   <!-- 同じ面の記事 -->
   {% assign same = "" | split: "" %}

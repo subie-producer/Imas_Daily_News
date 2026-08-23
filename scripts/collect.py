@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""collect: 定点観測+探索(Claude sonnet の Web 調査 10 クエリ+Grok の X 調査 10 クエリ)を
+"""collect: 定点観測+探索(Claude haiku の Web 調査 10 クエリ+Grok の X 調査 10 クエリ)を
 まとめて candidates/<号日付>.json に記録し、edition ブランチへ push する。(PIPELINE §1〜2)
 
   python3 scripts/collect.py [--no-git] [--skip-watch] [--skip-claude] [--skip-grok]
 
 - 定点観測(A-1): sources.yml の一覧差分 → 新着 URL を facts 化(Claude 1コール)
-- 探索(A-2): claude -p(WebSearch)×10クエリ 並列
+- 探索(A-2): claude -p(WebSearch)×10クエリ 並列(執筆より要求精度が低いため haiku。品質劣化があれば
+  COLLECT_MODEL=sonnet に戻す。各コールに --max-budget-usd で暴走防止の上限あり)
 - X 動向(B) : grok -p(--output-format json --always-approve)×10クエリ ウェーブ実行
 - 正規化・URL 重複マージ → candidates へ追記 → 簡易 verify → commit & push
 """
@@ -22,9 +23,9 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (ROOT, CLAUDE_MODEL, JST, append_metric, checkout_edition_branch,
-                     commit_and_push, edition_date, extract_json_array, git, notify,
-                     notify_crash, now_jst)
+from pipelib import (ROOT, COLLECT_MODEL, EXPLORE_MAX_BUDGET_USD, JST, append_metric,
+                     checkout_edition_branch, commit_and_push, edition_date,
+                     extract_json_array, git, notify, notify_crash, now_jst)
 
 SCHEMA_PATH = ROOT / "prompts" / "explore-item-schema.json"
 # 注: grok のヘッドレス実行には --always-approve が必須(無いとツール実行が承認待ちで
@@ -140,8 +141,9 @@ def parse_grok(out: str) -> list:
 
 def claude_exec(prompt: str, timeout: int = 300) -> list:
     r = subprocess.run(
-        ["claude", "-p", prompt, "--model", CLAUDE_MODEL,
-         "--allowedTools", "WebSearch,WebFetch"],
+        ["claude", "-p", prompt, "--model", COLLECT_MODEL,
+         "--allowedTools", "WebSearch,WebFetch",
+         "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
         capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
     return extract_json_array(r.stdout)
 
@@ -159,7 +161,8 @@ def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
             cp = (f"{window}のアイドルマスター関連情報のうち「{q['topic']}」について、Web検索で公式サイト・報道・"
                   f"特設ページを調査し、確認できた事実を最大8件。" + ITEM_FORMAT)
             claude_procs.append((q["key"], subprocess.Popen(
-                ["claude", "-p", cp, "--model", CLAUDE_MODEL, "--allowedTools", "WebSearch,WebFetch"],
+                ["claude", "-p", cp, "--model", COLLECT_MODEL, "--allowedTools", "WebSearch,WebFetch",
+                 "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
         if not skip_grok:

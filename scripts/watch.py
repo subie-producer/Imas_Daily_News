@@ -14,7 +14,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import ROOT, git, notify, notify_crash, now_jst
+from pipelib import ENV, ROOT, git, notify, notify_crash, now_jst
 
 def main() -> int:
     today = now_jst().strftime("%Y-%m-%d")
@@ -75,10 +75,37 @@ def main() -> int:
             f"記事総数 {n_posts} 本が閾値 {POSTS_THRESHOLD} を超過。"
             "Pages ビルド劣化前に『号スナップショットへの記事リスト持たせ』改修を実施すること(PIPELINE §9.5)")
 
+    # 4c. .env の設定漏れ・取り違え検査。
+    #     人が触るクローンと自動実行のクローンで .env が別々にあり、片方だけ古い値が
+    #     残ると事故になる(実測: 校閲モデルの入れ替え後も片方に旧値が残り、
+    #     そこから実行すると執筆と校閲が同一ベンダーになる状態だった)。
+    #     未設定は「既定値で動く」ため気づけない。明示されているかを検査する。
+    EXPECTED = {
+        "CODEX_WRITE_MODEL": None,   # None = 値は問わないが設定は必須
+        "EDITORIAL_MODEL": None,
+        "COLLECT_MODEL": None,
+        "REVIEW_MODEL": "claude",    # 値の先頭一致で「Claude 側であること」を要求
+        "GROK_HOURS": None,
+        "SITE_URL": None,
+    }
+    CLAUDE_MODELS = ("haiku", "sonnet", "opus", "claude")
+    missing, wrong = [], []
+    for key, want in EXPECTED.items():
+        val = ENV.get(key, "").strip()
+        if not val:
+            missing.append(key)
+        elif want == "claude" and not val.lower().startswith(CLAUDE_MODELS):
+            # 執筆(Codex)と校閲は別ベンダーであること(要件4.5)
+            wrong.append(f"{key}={val}(校閲は Claude 側のモデルであること。要件4.5)")
+    if missing:
+        problems.append(f".env に未設定の項目がある(既定値で動くため気づきにくい): {', '.join(missing)}")
+    if wrong:
+        problems.append(".env の値が想定と違う: " + " / ".join(wrong))
+
     if problems:
         notify("watch", "異常検知:\n- " + "\n- ".join(problems), ok=False)
         return 1
-    print(f"watch OK: {today} 号発行済み・残存ブランチなし・collect {runs}回", flush=True)
+    print(f"watch OK: {today} 号発行済み・残存ブランチなし・collect {runs}回・.env 整合", flush=True)
     return 0
 
 

@@ -185,8 +185,8 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 | 時刻 | ジョブ | 内容 |
 |------|--------|------|
-| 07:30 / 12:30 / 18:30 / 23:30 | collect | 定点観測+Claude探索+verify → edition ブランチへ push(**Grok は `GROK_HOURS` の時刻のみ**) |
-| 03:30 | collect(締切前) | 最終スイープ |
+| 07:30 / 12:30 / 18:30 / 23:30 | collect | 定点観測+Claude探索+verify → edition ブランチへ push(Grok なし) |
+| **02:00** | collect(締切前スイープ+**Grok 深掘り**) | 上記に加えて Grok を1セッションで全10面。長時間かかるため 04:00 の compose とぶつからないよう前倒しし、service の TimeoutStartSec も 100分にしてある |
 | 04:00 | publish | compose → lint → 校閲 → main へ squash push → 翌日ブランチ作成 |
 | 09:00 | watch | 発行忘れ・メトリクス閾値の監視 → Discord |
 

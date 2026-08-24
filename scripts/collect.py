@@ -7,8 +7,8 @@
 - 定点観測(A-1): sources.yml の一覧差分 → 新着 URL を facts 化(Claude 1コール)
 - 探索(A-2): claude -p(WebSearch)×10クエリ 並列(執筆より要求精度が低いため haiku。品質劣化があれば
   COLLECT_MODEL=sonnet に戻す。各コールに --max-budget-usd で暴走防止の上限あり)
-- X 動向(B) : grok(エージェント実行)。複数面を1セッションにまとめ、結果は**ファイルに書かせる**
-  (GROK_BATCH 面ずつ。標準出力への JSON 直吐きは出力上限で切れるため使わない)
+- X 動向(B) : grok(エージェント実行)。**全10面を1セッション**で、prompts/grok-collect.md の
+  手順書に従わせ、結果をファイルに書かせる(標準出力への JSON 直吐きは出力上限で切れる)
 - 正規化・URL 重複マージ → candidates へ追記 → 簡易 verify → commit & push
 """
 import argparse
@@ -29,7 +29,6 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MAX_BUDGET_USD, JST, appe
                      checkout_edition_branch, commit_and_push, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst)
 
-SCHEMA_PATH = ROOT / "prompts" / "explore-item-schema.json"
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
 WATCH_BATCH = int(ENV.get("WATCH_BATCH", "12"))
@@ -37,15 +36,16 @@ WATCH_BATCH = int(ENV.get("WATCH_BATCH", "12"))
 # SuperGrok は週次のセッション上限があり、1回の収集で10セッション消費するため、
 # 収集の頻度とは別に絞る必要がある。ブランド10面は減らさない(絞るのは回数だけ)。
 GROK_HOURS = ENV.get("GROK_HOURS", "").strip()
-# 1セッションでまとめて調べる面の数。ブランドは減らさず起動回数だけを減らすための設定。
-# 10面 ÷ 4 = 3セッション/回。日5回で週105セッションとなり上限(実測 約118)に収まる。
-GROK_BATCH = max(1, int(ENV.get("GROK_BATCH", "4")))
-GROK_WAVE = int(ENV.get("GROK_WAVE", "4"))      # 同時起動数(10並列で9本即死した実測による)
-GROK_MAX_TURNS = int(ENV.get("GROK_MAX_TURNS", "60"))
-# まとめるぶん1セッションが長くなる(実測: 4面・件数控えめで約11分)。深掘りで
-# さらに伸びるため面数に比例させて厚めに取る。途中で切れても面ごとに書かせているので
+# 収集の作業手順書。規程はここに置き、collect は当日固有の値だけを渡す。
+GROK_PROCEDURE = ROOT / "prompts" / "grok-collect.md"
+# 全10面を**1セッション**で処理する。面を分けて何度も起動すると、手順の理解と
+# 検索の段取りという前段の作業をそのたびに繰り返す。消費はセッション数ではなく
+# 作業量に比例するとみられる(実測: 3セッション化しても表示%は想定ほど下がらなかった)
+# ため、重複作業を作らないことがそのまま節約になる。
+GROK_MAX_TURNS = int(ENV.get("GROK_MAX_TURNS", "120"))
+# 10面を1セッションで回すぶん長い。途中で切れても面ごとにファイルへ書かせているので
 # そこまでの成果は残る
-GROK_TIMEOUT = int(ENV.get("GROK_TIMEOUT", str(400 * GROK_BATCH)))
+GROK_TIMEOUT = int(ENV.get("GROK_TIMEOUT", "3000"))
 # 1面あたりに集めさせる件数の目安。
 # 調査の窓が「直近48時間」なので、収集を1日に何度回しても同じ48時間を見直すだけで
 # 大半が重複になる(実測: 12:48 の実行は正規化70件のうち新規22件=69%が重複)。
@@ -200,41 +200,34 @@ def claude_exec(prompt: str, timeout: int = 300) -> list:
     return extract_json_array(r.stdout)
 
 
-def write_grok_prompt(outdir: Path, bi: int, batch: list[dict], out_path: Path) -> Path:
-    """1セッションで複数面を調べさせるプロンプトをファイルに書き出す。
-    面ごとに結果ファイルを更新させるのが要点で、これにより1回の応答の
-    出力上限に縛られずまとめて調査できる。"""
+def write_grok_prompt(outdir: Path, queries: list[dict], out_path: Path) -> Path:
+    """全面を1セッションで調べさせる指示を書き出す。
+
+    規程そのものは prompts/grok-collect.md(作業手順書)に置き、ここでは
+    「その手順書を読め」と当日固有の値(面の一覧・目標件数・出力先)だけを渡す。
+    面を分けて何セッションも起動すると、手順の理解と検索の段取りという前段の作業を
+    そのたびに繰り返すことになる。消費はセッション数ではなく作業量に比例するため、
+    重複作業をさせないのがそのまま節約になる。
+    """
     lines = []
-    for n, q in enumerate(batch, 1):
+    for n, q in enumerate(queries, 1):
         window = "直近72時間" if q["key"] in ("trend", "fan-culture") else "直近48時間"
         lines.append(f'{n}. brand="{q["brand"]}" … {q["topic"]}({window}を対象)')
-    prompt = f"""X(Twitter)上のアイドルマスター関連の動向を調べ、結果を JSON ファイルに書き出してください。
+    prompt = f"""まず `{GROK_PROCEDURE.relative_to(ROOT)}` を読み、その手順書に従って作業してください。
 
-## 調べる面(順番に、面ごとに調べる)
+## 調べる面({len(queries)}面。上から順に、1面ずつ処理する)
 {chr(10).join(lines)}
 
-## 手順
-これは**1日1回の深掘り調査**です。回数で拾うのではなく、この1回で対象期間を
-漏れなくさらってください。面ごとに **{GROK_ITEMS}件程度を目安**に集める
-(上限ではなく目標。その面に本当に話題が無ければ少なくてよいが、
-浅い検索で早々に切り上げないこと)。
-
-公式告知を最優先で拾い、そのうえでエンゲージメントの高い話題・
-当事者(コラボ先企業・自治体・販売元)の告知まで広げる。
-
-**1つの面を調べ終えるたびに、その時点までの全結果で `{out_path.name}` を上書き保存すること。**
-全部調べ終えてから一度に書くのではなく、面ごとに書き足していく(途中で止まっても
-そこまでの成果が残るようにするため)。
+## 面ごとの目標件数
+{GROK_ITEMS}件程度(上限ではなく目標)
 
 ## 出力先
-`{out_path}` に **JSON 配列だけ**を書く(ファイルの中身に説明文を混ぜない)。各要素:
+{out_path}
+
+## 要素の形(手順書の「出力の形式」で参照している定義)
 {ITEM_SCHEMA}
-
-brand には上の一覧で指定した値をそのまま使うこと。
-
-最後に「{out_path.name} に N 件書きました」とだけ報告する。
 """
-    p = outdir / f"prompt{bi}.md"
+    p = outdir / "prompt.md"
     p.write_text(prompt, encoding="utf-8")
     return p
 
@@ -290,39 +283,35 @@ def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
         outdir = ROOT / "candidates" / ".grok"
         shutil.rmtree(outdir, ignore_errors=True)
         outdir.mkdir(parents=True, exist_ok=True)
-        batches = [queries[i:i + GROK_BATCH] for i in range(0, len(queries), GROK_BATCH)]
+        out_path = outdir / "found.json"
+        prompt_path = write_grok_prompt(outdir, queries, out_path)
 
-        for wave_start in range(0, len(batches), GROK_WAVE):
-            wave = []
-            for bi, batch in enumerate(batches[wave_start:wave_start + GROK_WAVE], start=wave_start):
-                out_path = outdir / f"batch{bi}.json"
-                wave.append((bi, batch, out_path, subprocess.Popen(
-                    ["grok", "--prompt-file", str(write_grok_prompt(outdir, bi, batch, out_path)),
-                     "--always-approve", "--cwd", str(ROOT),
-                     "--max-turns", str(GROK_MAX_TURNS)],
-                    stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
-                    stdin=subprocess.DEVNULL, cwd=ROOT)))
-            for bi, batch, out_path, p in wave:
-                err = ""
-                try:
-                    _, err = p.communicate(timeout=GROK_TIMEOUT)
-                except subprocess.TimeoutExpired:
-                    p.kill()
-                    err = "timeout"
-                got = read_grok_file(out_path)
-                keys = [q["key"] for q in batch]
-                if not got:
-                    print(f"grok batch{bi}({'/'.join(keys)}) 0件 stderr: {(err or '').strip()[:200]}",
-                          flush=True)
-                for it in got:
-                    it["_via"] = "grok"
-                items += got
-                # 面ごとの取得数に割り戻す(watch の全滅検知が per_query を見るため)
-                by_brand = {}
-                for it in got:
-                    by_brand[str(it.get("brand", ""))] = by_brand.get(str(it.get("brand", "")), 0) + 1
-                for q in batch:
-                    per[f"grok:{q['key']}"] = by_brand.get(q["brand"], 0)
+        p = subprocess.Popen(
+            ["grok", "--prompt-file", str(prompt_path), "--always-approve",
+             "--cwd", str(ROOT), "--max-turns", str(GROK_MAX_TURNS)],
+            stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
+            stdin=subprocess.DEVNULL, cwd=ROOT)
+        err = ""
+        try:
+            _, err = p.communicate(timeout=GROK_TIMEOUT)
+        except subprocess.TimeoutExpired:
+            p.kill()
+            err = "timeout"
+        got = read_grok_file(out_path)
+        if not got:
+            print(f"grok 0件 stderr: {(err or '').strip()[:200]}", flush=True)
+        for it in got:
+            it["_via"] = "grok"
+        items += got
+
+        # 面ごとの取得数に割り戻す(watch の全滅検知が per_query を見るため)
+        by_brand = {}
+        for it in got:
+            b = str(it.get("brand", ""))
+            by_brand[b] = by_brand.get(b, 0) + 1
+        for q in queries:
+            per[f"grok:{q['key']}"] = by_brand.get(q["brand"], 0)
+        print(f"grok: 1セッションで {len(got)}件(面別 {by_brand})", flush=True)
 
     # Claude の回収
     deadline = time.time() + 600

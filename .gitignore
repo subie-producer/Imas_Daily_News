@@ -13,3 +13,7 @@ __pycache__/
 
 # ローカル環境変数(雛形は .env.example)
 .env
+
+# Grok の作業ファイル(プロンプトと生の応答。candidates/<日付>.json に取り込まれるので
+# リポジトリには残さない。collect が commit 前に git add -A するため明示的に除外する)
+candidates/.grok/

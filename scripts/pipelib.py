@@ -3,6 +3,7 @@ import datetime
 import json
 import subprocess
 import sys
+import time
 import traceback
 import urllib.request
 from pathlib import Path
@@ -84,6 +85,33 @@ def git(*args, check: bool = True) -> subprocess.CompletedProcess:
     return r
 
 
+# WSL のホスト側 DNS プロキシ(10.255.255.254)は断続的に名前解決に失敗する。
+# 数秒後には復旧することが多いので、通信を伴う git 操作は待って再試行する。
+# これが無いと DNS の一瞬の不調だけで収集や発行が落ちる。
+_NET_ERRORS = ("could not resolve host", "couldn't resolve host", "connection timed out",
+               "could not read from remote repository", "operation timed out",
+               "temporary failure in name resolution", "connection reset by peer")
+
+
+def git_net(*args, attempts: int = 5, base_delay: float = 4.0) -> subprocess.CompletedProcess:
+    """fetch/push など通信する git 操作。ネットワーク起因の失敗だけを再試行する
+    (認証エラーや non-fast-forward は待っても直らないので即座に返す)。"""
+    last = None
+    for i in range(attempts):
+        last = git(*args, check=False)
+        if last.returncode == 0:
+            return last
+        err = (last.stderr or "").lower()
+        if not any(m in err for m in _NET_ERRORS):
+            return last  # ネットワーク以外の失敗は再試行しない
+        if i < attempts - 1:
+            wait = base_delay * (i + 1)
+            print(f"git {args[0]} がネットワーク起因で失敗。{wait:.0f}秒後に再試行 "
+                  f"({i + 1}/{attempts - 1})", flush=True)
+            time.sleep(wait)
+    return last
+
+
 def branch_exists(name: str, remote: bool = False) -> bool:
     ref = f"refs/remotes/origin/{name}" if remote else f"refs/heads/{name}"
     return git("show-ref", "--verify", "--quiet", ref, check=False).returncode == 0
@@ -94,7 +122,10 @@ def checkout_edition_branch(date: str, job: str) -> bool:
     if git("status", "--porcelain").stdout.strip():
         notify(job, f"作業ツリーに未コミットの変更があるため中止", ok=False)
         return False
-    git("fetch", "origin", "--prune")
+    f = git_net("fetch", "origin", "--prune")
+    if f.returncode != 0:
+        notify(job, f"origin への fetch に失敗(再試行後も回復せず)。中止:\n{f.stderr.strip()[:200]}", ok=False)
+        return False
     branch = f"edition/{date}"
     if branch_exists(branch, remote=True):
         git("checkout", "-B", branch, f"origin/{branch}")
@@ -102,7 +133,7 @@ def checkout_edition_branch(date: str, job: str) -> bool:
         git("checkout", branch)
     else:
         git("checkout", "-B", branch, "origin/main")
-        git("push", "-u", "origin", branch, check=False)
+        git_net("push", "-u", "origin", branch)
         notify(job, f"{branch} が無かったため main から作成した(release の作成漏れ?)")
     return True
 
@@ -113,11 +144,11 @@ def commit_and_push(branch: str, message: str, job: str) -> None:
         print("変更なし(コミットせず)", flush=True)
         return
     git("commit", "-m", message)
-    r = git("push", "origin", branch, check=False)
+    r = git_net("push", "origin", branch)
     if r.returncode != 0:
         # collect 同士/release との競合: リモートを取り込んで積み直す
-        git("pull", "--rebase", "origin", branch, check=False)
-        r2 = git("push", "origin", branch, check=False)
+        git_net("pull", "--rebase", "origin", branch)
+        r2 = git_net("push", "origin", branch)
         if r2.returncode != 0:
             notify(job, f"push 失敗: {r2.stderr.strip()[:200]}", ok=False)
 

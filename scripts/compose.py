@@ -3,8 +3,11 @@
 
   python3 scripts/compose.py [--plan] [--max-rounds 2]
 
-役割分担: 執筆=Codex(gpt-5.6-luna・ヘッドレス) / 機械算出=derive.py / 校閲=Claude(haiku)。
-執筆と校閲を別ベンダー(OpenAI/Anthropic)に分離(要件4.5)。
+役割分担: 記事執筆=Codex(gpt-5.6-luna)/ 社説執筆=Codex(gpt-5.6-terra)/
+          記事計画・組版=Claude / 機械算出=derive.py / 校閲=Claude(haiku)。
+紙面に載る文章はすべて Codex が書き、Claude が校閲する。執筆と校閲が別ベンダー
+(OpenAI/Anthropic)になる(要件4.5)。社説だけ Claude で書くと自己校閲になるため
+社説も Codex 側に置いてある。
 二段構成(執筆時コンタミの構造的排除):
 1. edition ブランチ同期 → 続報キュー(本日トリガー)と素材を整理
 2. 選定: claude が候補全体から記事計画(slug→candidate_ids 対応表)を JSON で出力
@@ -30,7 +33,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import tags as tags_lib
-from pipelib import (ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL,
+from pipelib import (ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, EDITORIAL_MODEL,
                      COMPOSE_ARTICLE_MAX_BUDGET_USD,
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, commit_and_push, edition_date, git,
@@ -210,11 +213,20 @@ def editorial_prompt(date: str, number: int, editorial_topic: str) -> str:
 - ユーモアは歓迎。ただし笑いの矛先は自分と状況に向ける。運営・公式・個人への批判、苦言、注文、皮肉は書かない(編集規程5)
 - 紙面の要約をしない。社説は2度目のダイジェストではない。記事を3本以上並べて紹介しはじめたら失敗と思うこと
 - 型は破ってよい: 一つの数字だけで書く、一つの固有名詞から連想で転がす、読者への手紙にする、など。ただしオチはつける
+- **偶然の一致を意味ありげに扱わない**。番号が続いている・日付が同じ・名前が似ている、といった無関係な符合を柱にしない。
+  書きながら「これは関係ないのだが」と断らなければ成立しない発想は、その時点で捨てて別の切り口を探すこと。
+  心が動いた理由を自分の言葉で説明できるものだけを書く
 - 主題は「{editorial_topic}」。ただしこれは編集会議のメモにすぎない。書き出してみて別の切り口が面白ければ、紙面の事実の範囲内で乗り換えてよい
 
 ## 出力(2ファイル。これ以外は作らない)
 1. `docs/_editorials/{date}.md` を Write ツールで作成:
-   - frontmatter: edition: {date} / title(〜28字。内容の看板ではなく釣り書きでよい)/ excerpt(〜80字・1文)/ corrected: false / corrections: []
+   - frontmatter: edition: {date} / title(〜28字) / excerpt(〜80字・1文)/ corrected: false / corrections: []
+     **タイトルは「何の話か」が読者に伝わることを最優先する。**固有名詞(人名・ユニット名・作品名・イベント名)か
+     具体的な出来事を必ず1つ入れること。数字や比喩だけの抽象的な見出しにしない——本文を読まないと意味が分からない
+     タイトル、どの日の社説にも使い回せるタイトルは失敗とみなす。
+     悪い例:「本日で終わるもの、明日から始まるもの」「10番は残り、11番が動き出す」
+     良い例:「かのんの声が10年で置いていったもの」「20周年のツアーが、私の知らない街へ行く」
+     その上で気の利いた言い回しにするのは歓迎する
    - 本文 400〜700字。段落は3つまで
    - 相対表現(本日/昨日/明日)は発行日 {date} 基準。絶対日付と相対語を同一文で併用しない。内規の文言を紙面に書かない
 2. 書き終えたら `stock/columnist.md`(手帳)を更新する。これは明日の自分への引き継ぎであり、あなたの人格が育つ唯一の場所だ:
@@ -261,6 +273,25 @@ def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> st
          "--max-budget-usd", COMPOSE_WHOLE_MAX_BUDGET_USD],
         capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
     return r.stdout
+
+
+def codex_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str:
+    """Codex 側でファイルを書かせる実行。最終メッセージは一時ファイルで受ける
+    (codex は stdout に進行ログも混ぜるため、標準出力からの抽出は当てにしない)。"""
+    fd, out_name = tempfile.mkstemp(prefix="codexrun-", suffix=".txt")
+    os.close(fd)
+    out_path = Path(out_name)
+    try:
+        subprocess.run(
+            ["codex", "exec", "-m", model or CODEX_WRITE_MODEL, "-s", "workspace-write",
+             "--output-last-message", str(out_path), prompt],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
+    except subprocess.TimeoutExpired:
+        pass
+    text = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
+    out_path.unlink(missing_ok=True)
+    return text
 
 
 def validate_plan(plan: dict, cands: dict, blocklist: dict) -> list[str]:
@@ -524,10 +555,14 @@ def main() -> int:
         commit_and_push(branch, f"compose {date}: 執筆全滅(要人間判断)", "compose")
         return 1
 
-    # 1c. 社説: 専任セッション(組版から分離。人格・文体に集中させる)
+    # 1c. 社説: 専任セッション(組版から分離。人格・文体に集中させる)。
+    #     執筆は Codex(EDITORIAL_MODEL)。校閲が Claude なので、社説も記事と同じく
+    #     執筆と校閲が別ベンダーになる(要件4.5)。Claude で書くと社説だけ同一ベンダーの
+    #     自己校閲になってしまうため。
     ed_path = ROOT / "docs" / "_editorials" / f"{date}.md"
     for _ in range(2):  # 未作成なら同一プロンプトでもう一度だけ
-        claude_run(editorial_prompt(date, number, plan.get("editorial_topic", "")), timeout=1200)
+        codex_run(editorial_prompt(date, number, plan.get("editorial_topic", "")),
+                  timeout=1200, model=EDITORIAL_MODEL)
         if ed_path.exists():
             break
     if not ed_path.exists():

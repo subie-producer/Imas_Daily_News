@@ -6,7 +6,7 @@
 
 **実行主体はローカルマシン(WSL)のスケジューラ(systemd user timer)。** 理由: 下記3つの CLI がこのマシンでセッション認証済みであり、API キー運用なしで日々の実行が完結するため。マージ判定はローカルで完結し、main へ直接 push する(§5)。**配信も同じマシンが担う**(Caddy + Cloudflare Tunnel、§11)。GitHub 側の役割は **push 後の lint CI(事後検査)と、Pages によるフォールバック配信のみ**。
 
-- 記事執筆 = Codex(`codex exec -m gpt-5.6-luna`、`.env` の CODEX_WRITE_MODEL)/ 記事計画・社説・組版 = Claude(`claude -p`、CLAUDE_MODEL)/ 収集・探索 = Claude(COLLECT_MODEL=haiku)/ X 動向収集 = Grok(`grok -p`)/ **校閲・検品 = Claude(REVIEW_MODEL=haiku)**。記事執筆(OpenAI)と校閲(Anthropic)が別ベンダーとなり、要件 4.5 を満たす。
+- 記事執筆 = Codex(`codex exec -m gpt-5.6-luna`、CODEX_WRITE_MODEL)/ **社説執筆 = Codex(gpt-5.6-terra、EDITORIAL_MODEL)** / 記事計画・組版 = Claude(`claude -p`、CLAUDE_MODEL)/ 収集・探索 = Claude(COLLECT_MODEL=haiku)/ X 動向収集 = Grok(`grok -p`)/ **校閲・検品 = Claude(REVIEW_MODEL=haiku)**。**紙面に載る文章はすべて Codex が書き、Claude が校閲する**構成で、執筆(OpenAI)と校閲(Anthropic)が別ベンダーとなり要件 4.5 を満たす。社説を Claude で書くとそこだけ同一ベンダーの自己校閲になるため Codex 側に置いている。記事と社説でモデルを分けているのは、求めるものが違うため(事実の要約 / 人格と文章)。
 - ヘッドレス実行の作法(実測済み): `codex exec` は stdin を閉じる(`< /dev/null`)・`--output-schema` は全プロパティを required に含める。`grok -p` はヘッドレスでは `--always-approve --output-format json` が必須(承認待ちで Cancelled になる)。`--json-schema` は max_tokens 切りで全滅するため使わず、プロンプト指示+寛容パースで受ける(いずれも実測)。
 - ローカル秘匿値(Discord webhook 等)はリポジトリ直下の `.env` に置く(gitignore 済み。雛形は `.env.example`)。
 - **自動ジョブは専用クローン `~/git/imas-ops` で動く**(systemd unit の WorkingDirectory)。ジョブはブランチ切替を伴うため、人間が閲覧・編集する `~/git/Imas_Daily_News` とは作業ツリーを完全分離する(共有すると serve 中の画面がジョブの checkout で化ける)。ops 側にも `.env` と `.venv` を配置する。

@@ -41,6 +41,9 @@ CLAUDE_MODEL = ENV.get("CLAUDE_MODEL", "sonnet")
 COLLECT_MODEL = ENV.get("COLLECT_MODEL", "haiku")
 # 記事本文の執筆に使う Codex モデル(codex exec -m に渡す)。校閲とベンダーを分離するため執筆側に配置
 CODEX_WRITE_MODEL = ENV.get("CODEX_WRITE_MODEL", "gpt-5.6-luna")
+# 社説の執筆に使う Codex モデル。記事とは求めるものが違う(事実の要約ではなく人格と文章)ため
+# 別枠にしてある。既定は terra
+EDITORIAL_MODEL = ENV.get("EDITORIAL_MODEL", "gpt-5.6-terra")
 # 校閲・機械検収エラーの修正に使う Claude モデル(claude -p --model に渡す)。
 # 執筆(Codex)と別ベンダーにするため Claude 側。既定は haiku(検品はコスト重視)
 REVIEW_MODEL = ENV.get("REVIEW_MODEL", "haiku")

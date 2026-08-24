@@ -6,7 +6,7 @@ layout: default
 {% for e in site.editions %}{% assign e_date = e.date | date: "%Y-%m-%d" %}{% if e_date == date_s %}{% assign ed = e %}{% endif %}{% endfor %}
 {% capture no4 %}0000{{ ed.number }}{% endcapture %}{% assign no4 = no4 | slice: -4, 4 %}
 {% assign bdef = site.data.brands | where: "id", page.brand | first %}
-{% assign ranks = "lead,large,medium,small" | split: "," %}
+{% assign ranks = "lead,large,medium,small,roundup" | split: "," %}
 {% assign eposts = "" | split: "" %}
 {% for r in ranks %}{% for p in site.posts %}{% assign p_ed = p.edition | date: "%Y-%m-%d" %}{% if p_ed == date_s and p.rank == r %}{% assign eposts = eposts | push: p %}{% endif %}{% endfor %}{% endfor %}
 

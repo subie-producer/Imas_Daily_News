@@ -19,6 +19,7 @@
 6. derive.py --write → lint(ゲート) → claude 校閲往復 → commit & push(発行は 06:00 の release)
 """
 import argparse
+import collections
 import datetime
 import json
 import os
@@ -64,7 +65,10 @@ def next_number() -> int:
 
 
 BRANDS = {"general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"}
-RANKS = {"lead", "large", "medium", "small"}
+RANKS = {"lead", "large", "medium", "small", "roundup"}
+# roundup(編集規程13の例外: ブランド別の定常運営まとめ)を作る最小件数。
+# これ未満なら束ねずに通常記事にする(2件を「まとめ」と称すると単なる手抜きになる)
+ROUNDUP_MIN_ITEMS = 3
 # 出典バッジの信頼順(強い順)。記事 src は引用出典のうち最も「弱い」種別
 # (=全出典がその種別以上であることの保証。ファン報告を含む記事が「公式」を
 # 名乗る過大表示を構造的に防ぐ。REQUIREMENTS 2.5「他はどれほど信頼できても
@@ -97,14 +101,63 @@ def load_blocklist() -> dict:
     return {e["dedup_key"]: e.get("reason", "") for e in yaml.safe_load(p.read_text(encoding="utf-8")) or []}
 
 
-def plan_prompt(date: str, number: int, triggers: list[dict], feedback: str = "") -> str:
+PLAN_FACTS_PER_SUBJECT = 3
+PLAN_FACT_CHARS = 90
+
+
+def write_plan_index(date: str, cands: dict, blocklist: dict) -> tuple[Path, int]:
+    """選定用の主題インデックスを機械生成する。
+
+    候補ファイルをそのまま読ませると、収集の増分マージで facts がほぼ同文のまま
+    積み上がるため巨大になる(2026-08-25号は 281KB・5577行)。選定に必要なのは
+    「どの主題があり、どの id を指せばよいか」であって facts の全文ではない
+    (facts の全文は執筆セッションが素材として別途受け取る)。
+    dedup_key で束ねて主題単位にし、facts は先頭数件・各短縮で渡す。
+    """
+    subjects: dict[str, dict] = {}
+    for c in cands.values():
+        dk = c.get("dedup_key")
+        if not dk or c.get("verify") == "failed" or dk in blocklist:
+            continue
+        s = subjects.setdefault(dk, {"dedup_key": dk, "brand": c.get("brand"),
+                                     "title": c.get("title"), "ids": [], "source_types": [],
+                                     "urls": [], "facts": [], "verify": "unconfirmed"})
+        s["ids"].append(c.get("id"))
+        for k in ("published_date", "event_date"):
+            if c.get(k) and not s.get(k):
+                s[k] = c[k]
+        if c.get("source_type") and c["source_type"] not in s["source_types"]:
+            s["source_types"].append(c["source_type"])
+        if c.get("url") and c["url"] not in s["urls"]:
+            s["urls"].append(c["url"])
+        if c.get("verify") == "confirmed":
+            s["verify"] = "confirmed"
+        for f in c.get("facts", []):
+            f = f[:PLAN_FACT_CHARS]
+            if f not in s["facts"]:
+                s["facts"].append(f)
+    for s in subjects.values():
+        s["facts"] = s["facts"][:PLAN_FACTS_PER_SUBJECT]
+    # 1主題1行で書く(整形すると数千行になり、Read の既定上限 2000行で頭から切れて
+    # 後半の主題が編集長の視野に入らなくなる。行数=主題数なら一度で読み切れる)
+    rows = [json.dumps(s, ensure_ascii=False, separators=(",", ":")) for s in subjects.values()]
+    out = ROOT / "metrics" / f"plan-index-{date}.json"
+    out.write_text("[\n" + ",\n".join(rows) + "\n]\n", encoding="utf-8")
+    return out, len(subjects)
+
+
+def plan_prompt(date: str, number: int, triggers: list[dict], n_subjects: int,
+                feedback: str = "") -> str:
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    files = f"candidates/{date}.json"
+    files = f"metrics/plan-index-{date}.json"
     fb = f"\n## 前回計画の機械検証エラー(必ず解消すること)\n{feedback}\n" if feedback else ""
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集長です。{date}({weekday}曜)号の**記事計画**(どの話題を、どの候補を素材に、どの扱いで書くか)だけを作ってください。記事本文はまだ書きません。
 
 ## 素材(読むもの)
-- {files} … 収集済み候補。各要素の id が候補IDです
+- {files} … **本日の全主題({n_subjects}件)**。verify=failed と blocklist は機械的に除外済みで、
+  同一話題は dedup_key で束ねてある。`ids` がその主題の候補IDで、計画の candidate_ids にはこれをそのまま使う。
+  **このファイルを最後まで読むこと**({n_subjects}主題すべてに目を通す。途中で切り上げない)。
+  facts は先頭{PLAN_FACTS_PER_SUBJECT}件の要約のみ。全文が要るときだけ candidates/{date}.json を引く(通常は不要)
 - stock/stories.yml … 既報台帳(published_facts と同内容=新事実なしの話題は記事化しない。編集規程8)
 - stock/blocklist.yml … 使用禁止候補(dedup_key 単位。verify 値に関わらず素材にしない)
 - REQUIREMENTS.md 5章(編集規程)
@@ -116,13 +169,18 @@ def plan_prompt(date: str, number: int, triggers: list[dict], feedback: str = ""
 ## 選定規則
 - verify が failed の候補・blocklist の候補は素材にしない
 - 同一話題を複数エンジンが観測している場合は1記事に統合し、その記事の candidate_ids に全部載せる
-- 記事化基準を満たす話題は**全部**計画に入れる(「多いから落とす」は禁止。紙面は無制限。編集規程11)。10〜14本は最低限の目安・下限8本
+- **候補の dedup_key 単位で全主題を必ず「記事化」「roundup」「不採用」のいずれかに割り当てる。黙って無視してよい主題は1つもない**(不採用は下記 dropped に理由付きで列挙する)。記事化基準を満たす話題は全部記事にする(「多いから落とす」は禁止。紙面は無制限。編集規程11)
+- **本数の目標値は無い。**その日の主題数がそのまま紙面の厚みになる。100主題ある日は100主題ぶんを裁く(記事+roundup+dropped の合計が主題数と一致する)。あふれた日は rank を small へ寄せて収める
 - lead はちょうど1本。その日最も重要な話題に与える
 - 個人への攻撃・プライバシー侵害になり得る話題、読んだ人が嫌な気分になる炎上・係争は入れない。個人の SNS 投稿は単体で記事化しない(規程4・5。規程11より優先)
 - 声優個人のアイマス外活動・関係者の動向は対象外(規程4)
 - **同人イベント・ファン主催企画(オンリーイベント・即売会・非公式コラボ)は記事化しない**(規程4。「当事者」はアイマス公式に関係する主催・販売元・コラボ先のみ)
 - **ニュース性(規程12)**: 記事にできるのは発行日時点で「新しく発表された・起きる・起きた」ことだけ。終了済みイベントの紹介・過年度の話題は記事化しない(結果・千秋楽など当日トリガーの続報は可)。候補の published_date・event_date・dedup_key・URL に含まれる**年**を確認し、発行年より前の年しか出てこない候補(例: dedup_key 末尾が -2025)は過年度の話題を疑って除外する
-- **1記事1主題(規程13)**: 複数の小ネタを「まとめ」「続々判明」として1本に束ねない。単体で記事にならない定常運営情報(ガシャ更新・月例イベント等)はダイジェスト行に回す
+- **1記事1主題(規程13)**: 複数の小ネタを「まとめ」「続々判明」として1本に束ねない
+- **定常運営まとめ(規程13の例外・rank: roundup)**: 単体では記事にならない**進行中の運営情報**(開催中のガシャ・ログインボーナス・楽曲追加・月例イベント・配信出演など)は、**ブランドごとに1本の `rank: roundup`** へまとめる。{ROUNDUP_MIN_ITEMS}件以上まとまる面だけ作り、{ROUNDUP_MIN_ITEMS}件未満なら small の通常記事にする
+  - **roundup に入れてはいけないもの**: 発表・開催決定・販売開始日・受注/申込の開始と締切・中止延期。これらはニュースなので**単独記事**にする。判断に迷ったら単独記事にする
+  - roundup は本数の下限8本に算入しない。「roundup があるから記事は少なくてよい」は誤り
+  - ダイジェストは記事への索引であって受け皿ではない。記事にしない話題をダイジェストに置くことはできない
 {fb}
 ## 出力
 `metrics/plan-{date}.json` に次の形式の JSON を書く(Write ツール使用。これ以外のファイルは作らない):
@@ -130,14 +188,24 @@ def plan_prompt(date: str, number: int, triggers: list[dict], feedback: str = ""
   "articles": [
     {{"slug": "英小文字ハイフンの記事ID(号内一意)",
       "brand": "general|765|cg|million|shiny|sidem|gaku|dsva|joint|other",
-      "rank": "lead|large|medium|small",
-      "angle": "記事の切り口・見出しの方向性(1文)",
+      "rank": "lead|large|medium|small|roundup",
+      "angle": "記事の切り口・見出しの方向性(1文。roundup なら束ねる観点)",
       "dedup_key": "主話題の dedup_key",
-      "candidate_ids": ["素材にする候補の id(統合分は全部)"]}}
+      "candidate_ids": ["素材にする候補の id(統合分は全部。roundup は束ねる全件)"]}}
+  ],
+  "dropped": [
+    {{"dedup_key": "記事にも roundup にもしなかった主題の dedup_key",
+      "reason": "既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|その他",
+      "note": "reason だけで説明がつかない場合の一言(任意)"}}
   ],
   "editorial_topic": "社説の主題(その日の紙面から1題・1文)"
 }}
-最後に記事本数と rank 内訳を1行で報告してください。
+
+**dropped は必須です。**候補に現れた dedup_key は、articles か dropped の
+どちらかに必ず1回現れなければなりません。書ききれないから省く、は不可です
+(不採用そのものは正当な判断です。理由を残さないことだけが問題です)。
+
+最後に「記事N本(rank内訳)/ roundupN本 / 不採用N件」の1行で報告してください。
 """
 
 
@@ -151,6 +219,17 @@ def article_prompt(date: str, art: dict, materials: list[dict], story_facts: lis
     prev = ("\n## 既報(この話題で報道済みの事実。同じ事実の繰り返しを記事の軸にしない)\n"
             + "\n".join(f"- {f}" for f in story_facts)) if story_facts else ""
     vocab = tags_lib.vocabulary_block()
+    roundup = ("""
+
+## この記事は「定常運営まとめ」です(rank: roundup・編集規程13の例外)
+単独では記事にならない進行中の運営情報を、この面ぶんだけ束ねた記事です。
+- **各素材を1項目として箇条書きにする**。項目は「何が・いつまで(いつから)」が1行で分かる形にする
+- 素材どうしを地の文でつなげて1つの話に仕立てない。**束ねただけであることを隠さない**
+- 冒頭に1〜2文の導入(この面で今動いているものの総括)を置き、そのあとに箇条を並べる
+- 事実確認で落ちた素材はその項目ごと落とす。**残りが2項目以下になったら、ファイルを作らず「ABORT: 残件不足」とだけ出力**して終了する(まとめとして成立しないため)
+- 見出しはこの面の運営情報のまとめだと分かるようにする(煽らない。釣らない)
+- sources は残した項目ぶんを全部載せる"""
+               if art["rank"] == "roundup" else "")
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の記者です。{date}({weekday}曜)号の記事を**1本だけ**書いてください。
 
 ## 素材(この JSON がこの記事に使ってよい情報の全てです)
@@ -170,7 +249,7 @@ x.com など取得不能な URL は例外(Grok 観測を出典として信頼す
 `docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
 - frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']} / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
 - title(全角換算〜28字)・lede(1文)・tags(2〜4個。下記「タグ語彙」に従う)・sources(素材の url から。label は内容がわかる短い日本語、type は各候補の source_type)・event_date(素材にあれば)は自分で書く
-- 本文は {lo}〜{hi} 字(rank: {art['rank']} の分量規程)。切り口: {art['angle']}{trig}
+- 本文は {lo}〜{hi} 字(rank: {art['rank']} の分量規程)。切り口: {art['angle']}{trig}{roundup}
 
 ## タグ語彙(タグは索引・検索に使われる。表記ゆれは索引を壊すため厳守)
 シリーズ名・施策カテゴリは**必ず次の語彙から選ぶ**(同義の別表記を作らない):
@@ -332,6 +411,14 @@ def validate_plan(plan: dict, cands: dict, blocklist: dict) -> list[str]:
     leads = [a["slug"] for a in arts if a.get("rank") == "lead"]
     if len(leads) != 1:
         errors.append(f"lead はちょうど1本(現在 {len(leads)} 本: {leads})")
+    rup = collections.Counter(a.get("brand") for a in arts if a.get("rank") == "roundup")
+    for b, n in rup.items():
+        if n > 1:
+            errors.append(f"rank: roundup は1ブランド1本({b} 面に {n} 本)")
+    for a in arts:
+        if a.get("rank") == "roundup" and len(a.get("candidate_ids", [])) < ROUNDUP_MIN_ITEMS:
+            errors.append(f"{a.get('slug','?')}: roundup の候補が{len(a.get('candidate_ids', []))}件"
+                          f"({ROUNDUP_MIN_ITEMS}件未満は束ねず通常記事にすること)")
     for a in arts:
         slug = a.get("slug", "?")
         if not re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", slug or ""):
@@ -352,6 +439,30 @@ def validate_plan(plan: dict, cands: dict, blocklist: dict) -> list[str]:
             if c.get("dedup_key") in blocklist:
                 errors.append(f"{slug}: 候補 {cid} は blocklist 対象({c.get('dedup_key')})")
     return errors
+
+
+def coverage_gaps(plan: dict, cands: dict, blocklist: dict) -> tuple[list[str], dict]:
+    """主題の取りこぼし検査(編集規程11)。素材に現れた dedup_key が articles にも
+    dropped にも現れないなら、それは「判断されずに消えた」主題である。
+
+    発行はブロックしない(再計画のフィードバックに回して自己修復させる)。
+    2026-08-25号で 198主題中 88主題が無言で消えていた事故に由来する検査。
+    """
+    usable = {c.get("dedup_key") for c in cands.values()
+              if c.get("verify") != "failed" and c.get("dedup_key")
+              and c.get("dedup_key") not in blocklist}
+    used_ids = {i for a in plan.get("articles", []) for i in a.get("candidate_ids", [])}
+    covered = {cands[i].get("dedup_key") for i in used_ids if i in cands}
+    covered |= {a.get("dedup_key") for a in plan.get("articles", [])}
+    covered |= {d.get("dedup_key") for d in plan.get("dropped") or []}
+    missing = sorted(usable - covered)
+    stats = {"subjects": len(usable), "covered": len(usable) - len(missing), "missing": len(missing)}
+    if not missing:
+        return [], stats
+    head = ", ".join(missing[:12]) + (" ほか" if len(missing) > 12 else "")
+    return ([f"素材にある{len(usable)}主題のうち{len(missing)}主題が articles にも dropped にも無い"
+             f"(判断せず消している。記事化・roundup・dropped のいずれかへ必ず割り当てること): {head}"],
+            stats)
 
 
 def parse_front_matter(path: Path) -> dict | None:
@@ -553,25 +664,40 @@ def main() -> int:
         notify("compose", f"{date}: 発行日±1日の candidates が空。compose 続行不能", ok=False)
         return 1
     plan_path = ROOT / "metrics" / f"plan-{date}.json"
-    plan, errors = None, ["未実行"]
+    index_path, n_subjects = write_plan_index(date, cands, blocklist)
+    print(f"選定インデックス: {n_subjects}主題 / {index_path.stat().st_size // 1024}KB "
+          f"(候補 {len(cands)}件から生成)", flush=True)
+    plan, errors, feedback, cov = None, ["未実行"], ["未実行"], {}
     for attempt in (1, 2):
         plan_path.unlink(missing_ok=True)  # 残骸の誤読防止(書込失敗時に旧計画を読まない)
-        fb = "" if attempt == 1 else "\n".join(f"- {e}" for e in errors)
-        claude_run(plan_prompt(date, number, triggers, feedback=fb), timeout=1800)
+        fb = "" if attempt == 1 else "\n".join(f"- {e}" for e in feedback)
+        claude_run(plan_prompt(date, number, triggers, n_subjects, feedback=fb), timeout=1800)
         try:
             plan = json.loads(plan_path.read_text(encoding="utf-8"))
         except Exception:
-            errors = [f"{plan_path.name} が存在しないか JSON として読めない"]
+            errors = feedback = [f"{plan_path.name} が存在しないか JSON として読めない"]
             continue
+        # errors = 発行を止める機械検証 / gaps = 止めないが再計画で直させる取りこぼし
         errors = validate_plan(plan, cands, blocklist)
-        if not errors:
+        gaps, cov = coverage_gaps(plan, cands, blocklist)
+        feedback = errors + gaps
+        if not feedback:
             break
     if errors:
         notify("compose", f"{date}: 記事計画が機械検証を通らず。人間判断が必要\n- " + "\n- ".join(errors[:8]), ok=False)
         commit_and_push(branch, f"compose {date}: 計画不成立(要人間判断)", "compose")
         return 1
-    n_plan = len(plan["articles"])
-    print(f"計画: {n_plan}本 (lead: {[a['slug'] for a in plan['articles'] if a['rank']=='lead']})", flush=True)
+    arts_plan = plan["articles"]
+    n_plan = len(arts_plan)
+    n_rup = sum(1 for a in arts_plan if a["rank"] == "roundup")
+    n_drop = len(plan.get("dropped") or [])
+    print(f"計画: {n_plan}本(うち roundup {n_rup}) / 不採用 {n_drop}件 / "
+          f"主題カバー {cov.get('covered', 0)}/{cov.get('subjects', 0)}"
+          f"{' ★取りこぼし' + str(cov['missing']) if cov.get('missing') else ''} "
+          f"(lead: {[a['slug'] for a in arts_plan if a['rank']=='lead']})", flush=True)
+    if cov.get("missing"):
+        notify("compose", f"{date}: 素材{cov['subjects']}主題のうち{cov['missing']}主題が"
+                          "計画で判断されず消えた(発行は続行。選定の取りこぼし)", ok=False)
 
     # 1b. 個別執筆: 記事ごとに素材を機械切り出しして独立セッションで書く
     written, aborted = write_articles(date, plan, cands, triggers, load_story_facts())
@@ -636,6 +762,7 @@ def main() -> int:
     ok = approved and code == 0
     append_metric("compose", {"edition": date, "rounds": rounds, "approved": bool(approved),
                               "lint_green": code == 0, "planned": n_plan, "written": len(written),
+                              "roundups": n_rup, "dropped": n_drop, "coverage": cov,
                               "aborted": aborted, "duration_s": int(time.time() - t0)})
     commit_and_push(branch, f"compose {date}: 紙面生成(校閲{'approve' if approved else '未approve'}・{rounds}往復)", "compose")
     if ok:

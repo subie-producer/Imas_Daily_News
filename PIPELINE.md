@@ -156,7 +156,9 @@ scripts/collect.py                   collect.py        scripts/publish.py
 ## 6. compose と校閲
 
 - **compose**(04:00): `scripts/compose.py` が四段で実行する(執筆時コンタミの構造的排除):
-  1. **選定**: claude セッションが候補全体(発行日±1日の candidates)+stories+blocklist から記事計画 `metrics/plan-<date>.json`(slug→candidate_ids 対応表)を出力。compose が機械検証(候補の実在・verify≠failed・blocklist 除外・lead 一意・slug/brand/rank 形式)。不合格はエラーを添えて1回だけ再計画
+  1. **選定**: compose がまず `metrics/plan-index-<date>.json`(**主題インデックス**)を機械生成する。candidates を dedup_key で束ね、verify=failed と blocklist を除外し、facts を先頭3件×90字に切り詰めて**1主題1行**で書く(281KB/5577行 → 120KB/200行)。1行1主題にするのは、整形 JSON だと Read の既定上限 2000行で後半が編集長の視野から落ちるため。
+     claude セッションはこの索引+stories+blocklist から記事計画 `metrics/plan-<date>.json` を出力する。compose が機械検証(候補の実在・verify≠failed・blocklist 除外・lead 一意・slug/brand/rank 形式・roundup はブランド1本かつ3件以上)。不合格はエラーを添えて1回だけ再計画。
+     **取りこぼし検査**: 索引の全 dedup_key が `articles` か `dropped` のどちらかに現れることを機械照合する。現れない主題は「判断されずに消えた」ものとして再計画のフィードバックに回し、それでも残れば Discord 通知する(発行は止めない)。2026-08-25号で198主題中88主題が無言で消えていた事故に由来する。計画に**本数の目標値は与えない**(「10〜14本」という目安が上限として働き、素材144主題→24本・198主題→17本と入力非依存になっていた)
   2. **個別執筆**: 記事ごとに candidate_ids の JSON を機械的に切り出し、**その素材だけ**を渡した独立 claude セッションが1本書く(4並列)。執筆前に出典 URL を WebFetch 照合し、中核事実が確認できなければ ABORT(記事不成立として記録)。生成後は機械検収(frontmatter が計画どおりか・出典 URL が素材候補群の範囲内か=系譜検査・src が引用出典の最弱種別か)。記事 frontmatter に candidate_ids が残り、lint も同じ系譜検査を行う
   3. **社説**: 専任のコラムニストセッション(紙面名義「AI疑似プロデューサー」)が当日の記事群だけを事実源として1本書く。人格規程: 一人称の個人コラム・偏愛と断言・ユーモアの矛先は自分と状況のみ(批判封印)・紙面要約の禁止。「プレイできない・会場に行けない書き手」という構造的な立場は自覚してよいが、AIであることは名乗らない(名義は編集部の決めごとで本人は無自覚)。**人格の二層構造**: 根幹=`prompts/columnist-core.md`(不変の憲法。全マスの equal dignity・愛の定義・接続者/翻訳者/記録者/伴走者・事実/解釈/願望の区分け。人間のみ改訂可、プロンプトに全文埋め込み)+個性=`stock/columnist.md`(手帳。執筆前に読み、執筆後に日誌14日分・偏愛/持論20行・追跡中の物語10件を上限に自己編集。根幹に反する方向へは育てない)。手帳は事実源にはしない
   4. **組版**: 別セッションが号スナップショット(digest)・stories/upcoming 更新を行い、`scripts/derive.py` で機械算出フィールドを確定、lint 赤なら自己修正

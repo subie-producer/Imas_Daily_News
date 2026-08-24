@@ -5,12 +5,13 @@
 {% assign date_jp = ed.date | date: "%Y年%-m月%-d日" %}
 {% capture no4 %}0000{{ ed.number }}{% endcapture %}{% assign no4 = no4 | slice: -4, 4 %}
 {% assign eposts = "" | split: "" %}
-{% assign ranks = "lead,large,medium,small" | split: "," %}
+{% assign ranks = "lead,large,medium,small,roundup" | split: "," %}
 {% for r in ranks %}{% for p in site.posts %}{% assign p_ed = p.edition | date: "%Y-%m-%d" %}{% if p_ed == date_s and p.rank == r %}{% assign eposts = eposts | push: p %}{% endif %}{% endfor %}{% endfor %}
 {% assign lead = eposts | where: "rank", "lead" | first %}
 {% assign larges = eposts | where: "rank", "large" %}
 {% assign mediums = eposts | where: "rank", "medium" %}
 {% assign smalls = eposts | where: "rank", "small" %}
+{% assign roundups = eposts | where: "rank", "roundup" %}
 {% assign editorial = site.editorials | where_exp: "e", "e.edition == nil" | first %}
 {% for e in site.editorials %}{% assign e_ed = e.edition | date: "%Y-%m-%d" %}{% if e_ed == date_s %}{% assign editorial = e %}{% endif %}{% endfor %}
 
@@ -141,6 +142,22 @@
         </div>
         {% endfor %}
       </div>
+
+      <!-- roundup(面別の定常運営まとめ。規程13の例外) -->
+      {% if roundups.size > 0 %}
+      <div style="margin-top:20px;border-top:1px solid #dedad0;padding-top:12px">
+        <div style="font-family:var(--font-mono);font-size:9px;color:#8a857a;letter-spacing:.12em">運営メモ ・ ONGOING</div>
+        <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:0 26px">
+          {% for a in roundups %}
+          {% assign bdef = site.data.brands | where: "id", a.brand | first %}
+          <div style="flex:1 1 250px;min-width:0;display:flex;gap:9px;align-items:baseline;padding:7px 0;border-bottom:1px dotted #d9d4c8" data-brand="{{ a.brand }}">
+            <span style="flex:none;width:8px;height:8px;background:{{ bdef.color }};align-self:center"></span>
+            <a href="{{ a.url | relative_url }}" style="flex:1;font-size:12px;line-height:1.7;color:#55524b">{{ a.title }}</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
 
       <!-- 社説 -->
       {% if editorial and editorial.edition %}

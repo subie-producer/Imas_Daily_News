@@ -31,6 +31,10 @@ SCHEMA_PATH = ROOT / "prompts" / "explore-item-schema.json"
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
 WATCH_BATCH = int(ENV.get("WATCH_BATCH", "12"))
+# Grok(X 動向)を回す時刻。JST の「時」をカンマ区切りで指定する。空なら毎回回す。
+# SuperGrok は週次のセッション上限があり、1回の収集で10セッション消費するため、
+# 収集の頻度とは別に絞る必要がある。ブランド10面は減らさない(絞るのは回数だけ)。
+GROK_HOURS = ENV.get("GROK_HOURS", "").strip()
 # 注: grok のヘッドレス実行には --always-approve が必須(無いとツール実行が承認待ちで
 # Cancelled になり前置きだけ返る)。--json-schema は max_tokens 切りで全滅するため使わず、
 # --output-format json のエンベロープを parse_grok で寛容にパースする。いずれも実測に基づく。
@@ -172,6 +176,14 @@ def claude_exec(prompt: str, timeout: int = 300) -> list:
          "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
         capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
     return extract_json_array(r.stdout)
+
+
+def grok_scheduled_now(now=None) -> bool:
+    """今回の実行で Grok を回すか。GROK_HOURS が空なら毎回回す(従来動作)。"""
+    if not GROK_HOURS:
+        return True
+    hours = {h.strip().lstrip("0") or "0" for h in GROK_HOURS.split(",") if h.strip()}
+    return str((now or now_jst()).hour) in hours
 
 
 def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
@@ -373,8 +385,15 @@ def main() -> int:
     if not args.no_git and not checkout_edition_branch(date, "collect"):
         return 1
 
+    # Grok は SuperGrok の週次上限を消費するため、収集のたびに回すと枠を使い切る
+    # (実測: 1回の収集で10セッション。日5回だと週350セッションになり上限の数倍)。
+    # 定点観測と Claude 探索は安価なので毎回回し、Grok の実行時刻だけを GROK_HOURS で絞る。
+    skip_grok = args.skip_grok or not grok_scheduled_now()
+    if skip_grok and not args.skip_grok:
+        print(f"Grok は今回スキップ(GROK_HOURS={GROK_HOURS or '毎回'} の対象時刻ではない)", flush=True)
+
     watch_cands, watch_info = ([], {"skipped": True}) if args.skip_watch else run_watch(claude_exec)
-    explore_items, per_query = run_explores(args.skip_claude, args.skip_grok)
+    explore_items, per_query = run_explores(args.skip_claude, skip_grok)
     cands = normalize(watch_cands + explore_items)
     vcounts = verify(cands)
     added = merge_into_day_file(cands)

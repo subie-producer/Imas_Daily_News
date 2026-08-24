@@ -7,12 +7,14 @@
 - 定点観測(A-1): sources.yml の一覧差分 → 新着 URL を facts 化(Claude 1コール)
 - 探索(A-2): claude -p(WebSearch)×10クエリ 並列(執筆より要求精度が低いため haiku。品質劣化があれば
   COLLECT_MODEL=sonnet に戻す。各コールに --max-budget-usd で暴走防止の上限あり)
-- X 動向(B) : grok -p(--output-format json --always-approve)×10クエリ ウェーブ実行
+- X 動向(B) : grok(エージェント実行)。複数面を1セッションにまとめ、結果は**ファイルに書かせる**
+  (GROK_BATCH 面ずつ。標準出力への JSON 直吐きは出力上限で切れるため使わない)
 - 正規化・URL 重複マージ → candidates へ追記 → 簡易 verify → commit & push
 """
 import argparse
 import datetime
 import json
+import shutil
 import re
 import subprocess
 import sys
@@ -35,22 +37,32 @@ WATCH_BATCH = int(ENV.get("WATCH_BATCH", "12"))
 # SuperGrok は週次のセッション上限があり、1回の収集で10セッション消費するため、
 # 収集の頻度とは別に絞る必要がある。ブランド10面は減らさない(絞るのは回数だけ)。
 GROK_HOURS = ENV.get("GROK_HOURS", "").strip()
+# 1セッションでまとめて調べる面の数。ブランドは減らさず起動回数だけを減らすための設定。
+# 10面 ÷ 4 = 3セッション/回。日5回で週105セッションとなり上限(実測 約118)に収まる。
+GROK_BATCH = max(1, int(ENV.get("GROK_BATCH", "4")))
+GROK_WAVE = int(ENV.get("GROK_WAVE", "4"))      # 同時起動数(10並列で9本即死した実測による)
+GROK_MAX_TURNS = int(ENV.get("GROK_MAX_TURNS", "60"))
+# まとめるぶん1セッションが長くなる(実測: 2面で約5分)。面数に比例させて余裕を持たせる
+GROK_TIMEOUT = int(ENV.get("GROK_TIMEOUT", str(240 * GROK_BATCH)))
 # 注: grok のヘッドレス実行には --always-approve が必須(無いとツール実行が承認待ちで
-# Cancelled になり前置きだけ返る)。--json-schema は max_tokens 切りで全滅するため使わず、
-# --output-format json のエンベロープを parse_grok で寛容にパースする。いずれも実測に基づく。
+# Cancelled になり前置きだけ返る)。結果は標準出力ではなく**ファイルに書かせる**。
+# grok はエージェント型 CLI なので、面ごとにファイルを更新させれば1応答の出力上限に
+# 縛られない。--json-schema が max_tokens 切りで全滅したのも、応答本文に全件を載せさせる
+# 使い方そのものが原因だったとみている(いずれも実測に基づく)。
 STATE_PATH = ROOT / "stock" / "watch-state.json"
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
 X_HOSTS = ("x.com", "twitter.com")
 
-ITEM_FORMAT = (
-    "JSON配列だけを出力。各要素は "
+# 候補1件のスキーマと編集規程。標準出力に吐かせる場合(Claude)とファイルに書かせる場合
+# (Grok)で共用するため、「どこへどう出すか」の指示は含めない。
+ITEM_SCHEMA = (
     '{"title":短い見出し,"brand":"general|765|cg|million|shiny|sidem|gaku|dsva|joint|other",'
     '"kind":"official|semi|party|media|fan|trend","url":"実在するURL","event_date":"YYYY-MM-DD or 空文字",'
     '"published_date":"情報の初出日=ページ掲載日・ポスト投稿日 YYYY-MM-DD or 空文字",'
     '"deadline":"締切・終了日 YYYY-MM-DD or 空文字","facts":["確認できた事実(日付・期限・場所・価格を含める)"],'
     '"dedup_key":"英小文字ハイフンの話題ID(毎年ある定例企画は年を含める。例: shiny-summer-pair-2026)",'
     '"engagement":"高|中|低","mentioned_idols":["言及アイドル名"]}。'
-    "kindの定義: official=アイマス公式(公式ポータル・ブランド公式サイト・公式Xアカウント)のみ/semi=公式レーベル・公式ストア等(日本コロムビア・ランティス・アソビストア等)/party=主催者・販売元・自治体・コラボ先などその他の当事者/media=報道/fan=ファン発/trend=現象。実在の情報のみ・憶測や未確認の噂は除外・個人への批判は除外。JSON以外のテキスト禁止。"
+    "kindの定義: official=アイマス公式(公式ポータル・ブランド公式サイト・公式Xアカウント)のみ/semi=公式レーベル・公式ストア等(日本コロムビア・ランティス・アソビストア等)/party=主催者・販売元・自治体・コラボ先などその他の当事者/media=報道/fan=ファン発/trend=現象。実在の情報のみ・憶測や未確認の噂は除外・個人への批判は除外。"
     "【factsの出所規則(最重要)】facts には url に指定したページ(またはポスト)の本文で直接確認できた事実だけを書く。"
     "検索結果一覧のスニペット・別ページ・別イベントの情報・自分の推測や一般知識を混ぜない。"
     "特に日時・期限・数値は url のページに書かれているものだけ。同じ作品の別施策(ゲーム内イベント・ガシャ等)を"
@@ -61,6 +73,9 @@ ITEM_FORMAT = (
     "【対象外】同人イベント・ファン主催企画(オンリーイベント・同人誌即売会・非公式コラボ)は候補にしない。"
     "party はアイマス公式に関係する主催者・販売元・自治体・コラボ先企業のみで、ファン主催者は含まない。"
 )
+
+# 標準出力に JSON 配列だけを吐かせる場合(Claude 探索・定点観測の facts 化)
+ITEM_FORMAT = "JSON配列だけを出力。各要素は " + ITEM_SCHEMA + "JSON以外のテキスト禁止。"
 
 
 def http_get(url: str, timeout: int = 20) -> str:
@@ -178,6 +193,50 @@ def claude_exec(prompt: str, timeout: int = 300) -> list:
     return extract_json_array(r.stdout)
 
 
+def write_grok_prompt(outdir: Path, bi: int, batch: list[dict], out_path: Path) -> Path:
+    """1セッションで複数面を調べさせるプロンプトをファイルに書き出す。
+    面ごとに結果ファイルを更新させるのが要点で、これにより1回の応答の
+    出力上限に縛られずまとめて調査できる。"""
+    lines = []
+    for n, q in enumerate(batch, 1):
+        window = "直近72時間" if q["key"] in ("trend", "fan-culture") else "直近48時間"
+        lines.append(f'{n}. brand="{q["brand"]}" … {q["topic"]}({window}を対象)')
+    prompt = f"""X(Twitter)上のアイドルマスター関連の動向を調べ、結果を JSON ファイルに書き出してください。
+
+## 調べる面(順番に、面ごとに調べる)
+{chr(10).join(lines)}
+
+## 手順
+面ごとに、公式告知とエンゲージメントの高い話題を**最大8件ずつ**集める。
+**1つの面を調べ終えるたびに、その時点までの全結果で `{out_path.name}` を上書き保存すること。**
+全部調べ終えてから一度に書くのではなく、面ごとに書き足していく(途中で止まっても
+そこまでの成果が残るようにするため)。
+
+## 出力先
+`{out_path}` に **JSON 配列だけ**を書く(ファイルの中身に説明文を混ぜない)。各要素:
+{ITEM_SCHEMA}
+
+brand には上の一覧で指定した値をそのまま使うこと。
+
+最後に「{out_path.name} に N 件書きました」とだけ報告する。
+"""
+    p = outdir / f"prompt{bi}.md"
+    p.write_text(prompt, encoding="utf-8")
+    return p
+
+
+def read_grok_file(path: Path) -> list:
+    """grok が書いたファイルを読む。前後に説明文が混ざっても配列だけ取り出す。"""
+    if not path.exists():
+        return []
+    text = path.read_text(encoding="utf-8", errors="replace")
+    try:
+        v = json.loads(text)
+        return v if isinstance(v, list) else []
+    except json.JSONDecodeError:
+        return extract_json_array(text)
+
+
 def grok_scheduled_now(now=None) -> bool:
     """今回の実行で Grok を回すか。GROK_HOURS が空なら毎回回す(従来動作)。"""
     if not GROK_HOURS:
@@ -203,33 +262,53 @@ def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
                  "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
-        if not skip_grok:
-            gp = (f"{window}のX(Twitter)上のアイドルマスター関連のうち「{q['topic']}」を調査し、"
-                  f"公式告知とエンゲージメントの高い話題を最大8件。" + ITEM_FORMAT)
-            grok_jobs.append((q["key"], gp))
+    # -- Grok(X 動向) --
+    # grok はエージェント型 CLI(Grok Build)であり、1回の起動が SuperGrok の
+    # 週次セッションを1つ消費する。面ごとに起動すると1収集で10セッションになり、
+    # 日5回では週350セッションで上限(実測 約118)の約3倍になる。
+    #
+    # そこで **複数面を1セッションにまとめる**。ブランドは減らさず起動回数だけを減らす。
+    # 出力は標準出力ではなく**ファイルに書かせる**: エージェントは面ごとに書き足せるので
+    # 1レスポンスの出力上限に縛られず、まとめても取りこぼしにくい(実測: 2面16件を
+    # 面ごとに追記させて欠落なし)。stdout への JSON 直吐きは本来の使い方ではなく、
+    # --json-schema が max_tokens で全滅した件も同じ理由と見ている。
+    if not skip_grok:
+        outdir = ROOT / "candidates" / ".grok"
+        shutil.rmtree(outdir, ignore_errors=True)
+        outdir.mkdir(parents=True, exist_ok=True)
+        batches = [queries[i:i + GROK_BATCH] for i in range(0, len(queries), GROK_BATCH)]
 
-    # Grok は同時実行に弱い(10並列で9本即死を実測)ためウェーブ実行
-    GROK_WAVE = 4
-    for i in range(0, len(grok_jobs), GROK_WAVE):
-        wave = []
-        for key, gp in grok_jobs[i:i + GROK_WAVE]:
-            wave.append((key, subprocess.Popen(
-                ["grok", "-p", gp, "--output-format", "json", "--always-approve"],
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-                stdin=subprocess.DEVNULL, cwd=ROOT)))
-        for key, p in wave:
-            try:
-                out, err = p.communicate(timeout=360)
-            except subprocess.TimeoutExpired:
-                p.kill()
-                out, err = "", "timeout"
-            got = parse_grok(out)
-            if not got:
-                print(f"grok:{key} 0件 stderr: {(err or '').strip()[:200]}", flush=True)
-            for it in got:
-                it["_via"] = "grok"
-            items += got
-            per[f"grok:{key}"] = len(got)
+        for wave_start in range(0, len(batches), GROK_WAVE):
+            wave = []
+            for bi, batch in enumerate(batches[wave_start:wave_start + GROK_WAVE], start=wave_start):
+                out_path = outdir / f"batch{bi}.json"
+                wave.append((bi, batch, out_path, subprocess.Popen(
+                    ["grok", "--prompt-file", str(write_grok_prompt(outdir, bi, batch, out_path)),
+                     "--always-approve", "--cwd", str(ROOT),
+                     "--max-turns", str(GROK_MAX_TURNS)],
+                    stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
+                    stdin=subprocess.DEVNULL, cwd=ROOT)))
+            for bi, batch, out_path, p in wave:
+                err = ""
+                try:
+                    _, err = p.communicate(timeout=GROK_TIMEOUT)
+                except subprocess.TimeoutExpired:
+                    p.kill()
+                    err = "timeout"
+                got = read_grok_file(out_path)
+                keys = [q["key"] for q in batch]
+                if not got:
+                    print(f"grok batch{bi}({'/'.join(keys)}) 0件 stderr: {(err or '').strip()[:200]}",
+                          flush=True)
+                for it in got:
+                    it["_via"] = "grok"
+                items += got
+                # 面ごとの取得数に割り戻す(watch の全滅検知が per_query を見るため)
+                by_brand = {}
+                for it in got:
+                    by_brand[str(it.get("brand", ""))] = by_brand.get(str(it.get("brand", "")), 0) + 1
+                for q in batch:
+                    per[f"grok:{q['key']}"] = by_brand.get(q["brand"], 0)
 
     # Claude の回収
     deadline = time.time() + 600

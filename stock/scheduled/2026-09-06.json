@@ -53,5 +53,45 @@
   "verify": "confirmed",
   "src_candidate_id": "202607140344-claude-101",
   "event_date": "2026-09-06"
+ },
+ {
+  "id": "sched-2026-09-06-gaku-shirube-fukuoka-ticket-general-resale-2026-千秋楽",
+  "dedup_key": "gaku-shirube-fukuoka-ticket-general-resale-2026",
+  "brand": "gaku",
+  "subject": "学マス標ツアー福岡公演",
+  "kind": "千秋楽",
+  "note": "福岡サンパレス DAY2",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "学園アイドルマスター LIVE TOUR -標- 福岡公演は2026年9月5日(土)・6日(日)、福岡サンパレス ホテル＆ホールで開催",
+   "9月6日(日)は開場15:30/開演16:30",
+   "出演は花海咲季、月村手毬、藤田ことね、篠澤広、雨夜燕"
+  ],
+  "title": "標ツアー福岡公演の一般先着・リセール開始",
+  "url": "https://idolmaster-official.jp/news/01_19655",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608240750-grok-31",
+  "event_date": "2026-09-06"
+ },
+ {
+  "id": "sched-2026-09-06-sidem-11th-stage-ticket-2026-締切",
+  "dedup_key": "sidem-11th-stage-ticket-2026",
+  "brand": "sidem",
+  "subject": "SideM 11th STAGE 公式リセール",
+  "kind": "締切",
+  "note": "公式リセール受付締切9:59",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～の公式リセールは2026年8月22日(土)15:00～9月6日(日)9:59まで",
+   "開催日程：2026年9月12日(土)・13日(日)、TOYOTA ARENA TOKYO"
+  ],
+  "title": "SideM 11th Stage 現地チケット一般販売開始",
+  "url": "https://idolmaster-official.jp/news/01_19610",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608240750-claude-53",
+  "event_date": "2026-09-12",
+  "deadline": "2026-09-06"
  }
 ]

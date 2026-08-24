@@ -32,5 +32,111 @@
   "verify": "confirmed",
   "src_candidate_id": "202608232010-grok-15",
   "event_date": "2026-08-26"
+ },
+ {
+  "id": "sched-2026-08-26-cg-cinderella-master-bouquet-sleep-skip-2026-発売",
+  "dedup_key": "cg-cinderella-master-bouquet-sleep-skip-2026",
+  "brand": "cg",
+  "subject": "CINDERELLA MASTER新作CD「大好きのブーケ＆すりーぷすきっぷ」",
+  "kind": "発売",
+  "note": "発売日",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "CINDERELLA MASTER新作『大好きのブーケ＆すりーぷすきっぷ』が2026年8月26日発売",
+   "価格2,000円（税抜1,818円）",
+   "総選挙投票券400枚に引換可能なシリアルコード付",
+   "販売先はコロムビアミュージックショップ・アソビストア限定",
+   "総選挙応援楽曲第3弾「大好きのブーケ」・第4弾「すりーぷすきっぷ」とボーナストラック8曲を収録"
+  ],
+  "title": "CINDERELLA MASTER新作CD「大好きのブーケ＆すりーぷすきっぷ」発売決定",
+  "url": "https://columbia.jp/idolmaster/imasnews/260821.html",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608241248-claude-77",
+  "event_date": "2026-08-26"
+ },
+ {
+  "id": "sched-2026-08-26-gakumasu-3rd-single-series-wave3-2026-発売",
+  "dedup_key": "gakumasu-3rd-single-series-wave3-2026",
+  "brand": "gaku",
+  "subject": "初星学園3rdシングルCDシリーズ第三弾",
+  "kind": "発売",
+  "note": "発売日",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "学園アイドルマスター 3rdシングル CD シリーズ第三弾が2026年8月26日に一斉リリース予定",
+   "十王星南、花海咲季、花海佑芽、秦谷美鈴の4タイトルが同日発売予定",
+   "各CDにはアプリゲーム最新シナリオ『STEP3』に寄り添って制作された各アイドルの新規ソロ楽曲を収録",
+   "初星学園の校歌『標』と、初のツアーで披露された『ENDLESS DANCE』のソロ歌唱バージョンを限定収録"
+  ],
+  "title": "3rdシングル CD シリーズ第三弾発売予定",
+  "url": "https://www.hmv.co.jp/news/article/260427123/",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608241248-claude-73",
+  "event_date": "2026-08-26"
+ },
+ {
+  "id": "sched-2026-08-26-gaku-swimsuit-gacha-hataya-misuzu-2026-08-開始",
+  "dedup_key": "gaku-swimsuit-gacha-hataya-misuzu-2026-08",
+  "brand": "gaku",
+  "subject": "学マス水着ガシャ(秦谷美鈴)",
+  "kind": "開始",
+  "note": "ガシャ開始日",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "学園アイドルマスター公式が、8/26(水)から水着ガシャ開始と告知",
+   "ハッシュタグは#秦谷美鈴",
+   "同内容を2026年8月24日・25日付で複数回再告知"
+  ],
+  "title": "学マス水着ガシャが8/26開始",
+  "url": "https://x.com/gkmas_official/status/2091797670528528691",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608242201-grok-46",
+  "event_date": "2026-08-26"
+ },
+ {
+  "id": "sched-2026-08-26-gaku-shirube-fukuoka-ticket-general-resale-2026-締切",
+  "dedup_key": "gaku-shirube-fukuoka-ticket-general-resale-2026",
+  "brand": "gaku",
+  "subject": "学マス標ツアー福岡公演 現地チケット一般先着",
+  "kind": "締切",
+  "note": "一般先着販売締切23:59",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "学園アイドルマスター LIVE TOUR -標- 福岡公演は2026年9月5日(土)・6日(日)、福岡サンパレス ホテル＆ホールで開催",
+   "一般先着の販売期間は2026年8月22日(土)13:00～8月26日(水)23:59",
+   "リセールの受付期間は2026年8月22日(土)15:00～8月27日(木)9:59",
+   "チケット料金は全席指定11,000円(税込)、立ち見指定10,500円(税込)",
+   "出演は花海咲季、月村手毬、藤田ことね、篠澤広、雨夜燕"
+  ],
+  "title": "標ツアー福岡公演の一般先着・リセール開始",
+  "url": "https://idolmaster-official.jp/news/01_19655",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608240750-grok-31",
+  "event_date": "2026-09-05",
+  "deadline": "2026-08-26"
+ },
+ {
+  "id": "sched-2026-08-26-shiny-new-idol-teaser-stream-2026-08-25-結果",
+  "dedup_key": "shiny-new-idol-teaser-stream-2026-08-25",
+  "brand": "shiny",
+  "subject": "シャニマス生配信で発表された近日登場アイドル",
+  "kind": "結果",
+  "note": "前日8/25 19時配信の発表内容を回収",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "シャイニーカラーズ公式が8月24日付で近日登場予定のアイドルをチラ見せし、8月25日(火)19時からの生配信で発表予定と告知",
+   "番組タイトルは「シャニマス生配信 ～8月も意外と暑い～ズSP～」、出演は峯田茉優さん(八宮めぐる役)・前川涼子さん(大崎甜花役)・プロデューサー高山祐介さん",
+   "配信時点では正体は非公開、シャニソン側の最新情報・機能アップデートも予告されている"
+  ],
+  "title": "近日登場アイドルをチラ見せ・8月25日生配信で発表予定",
+  "url": "https://x.com/imassc_official/status/2091782560091394410",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608242201-grok-22",
+  "event_date": "2026-08-25"
  }
 ]

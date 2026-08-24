@@ -17,5 +17,48 @@
   "verify": "confirmed",
   "src_candidate_id": "202607130742-claude-102",
   "event_date": "2026-08-31"
+ },
+ {
+  "id": "sched-2026-08-31-cg-pop-n-toybox-cd-2026-締切",
+  "dedup_key": "cg-pop-n-toybox-cd-2026",
+  "brand": "cg",
+  "subject": "Pop'n ToyBox!!会場オリジナルCD事後通販",
+  "kind": "締切",
+  "note": "事後通販受付締切23:59",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "Pop'n ToyBox!!（8月13-16日Shibuya LOVEZ開催）の会場オリジナルCD2タイトル事後通販受付",
+   "受付期間：2026年8月21日（金）18:00～2026年8月31日（月）23:59",
+   "発送予定：2026年9月11日（金）",
+   "各CD3,500円、各700票分の総選挙投票券シリアルコード付属",
+   "販売：コロムビアミュージックショップ"
+  ],
+  "title": "Pop'n ToyBox!!会場オリジナルCD事後通販受付開始",
+  "url": "https://columbia.jp/idolmaster/imasnews/260821postevent.html",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608242334-claude-0",
+  "event_date": "2026-08-13",
+  "deadline": "2026-08-31"
+ },
+ {
+  "id": "sched-2026-08-31-milishita-late-summer-login-bonus-2026-終了",
+  "dedup_key": "milishita-late-summer-login-bonus-2026",
+  "brand": "million",
+  "subject": "ミリシタ「2026年 残暑お見舞いログインボーナス」",
+  "kind": "終了",
+  "note": "開催最終日",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "ミリシタ公式が『2026年 残暑お見舞いログインボーナス』を2026/08/25（火）～2026/08/31（月）まで開催",
+   "全部で500個のミリオンジュエルを受け取れると案内"
+  ],
+  "title": "ミリシタが残暑お見舞いログインボーナスを8/25から開催",
+  "url": "https://x.com/imasml_theater/status/2091903362304475474",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608250213-grok-28",
+  "event_date": "2026-08-25",
+  "deadline": "2026-08-31"
  }
 ]

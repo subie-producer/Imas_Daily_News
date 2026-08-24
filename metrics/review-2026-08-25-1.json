@@ -1,0 +1,11 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-08-25-765-dual-twin-live-tokyo-finale.md",
+   "issue": "【ブロック項目1】出典にない事実：記事に記載されている現地チケット価格「9,800円」がcandidates/2026-08-25.jsonのfactsに記載されていない。sources のURL(idolmaster-official.jp/news/01_19475, idolmaster-official.jp/news/01_19321)に対応する候補の事実にこの価格情報がない。",
+   "quote": "また公式ポータルの開催概要では、東京公演の現地チケットを9,800円と掲載。"
+  }
+ ],
+ "comments": []
+}

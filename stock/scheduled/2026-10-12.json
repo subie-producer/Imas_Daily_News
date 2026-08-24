@@ -20,5 +20,26 @@
   "src_candidate_id": "202607130340-claude-110",
   "event_date": "2026-07-08",
   "deadline": "2026-10-12"
+ },
+ {
+  "id": "sched-2026-10-12-tours-late-summer-campaign-2026-終了",
+  "dedup_key": "tours-late-summer-campaign-2026",
+  "brand": "joint",
+  "subject": "ツアマス「2026レイトサマーキャンペーン 晩夏の調べ」",
+  "kind": "終了",
+  "note": "キャンペーン開催終了25:59",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "『アイドルマスター TOURS』2026レイトサマーキャンペーン「晩夏の調べ」は2026年8月28日(金)07:00～10月12日(月)25:59開催",
+   "景品交換期間は2026年8月28日(金)07:00～10月13日(月)25:59",
+   "景品はオリジナルカード全12種(12ポイント)、カードストレージボックス全6種(36ポイント)、「MIXING PARADE」ライブTシャツ(120ポイント)、なくなり次第終了"
+  ],
+  "title": "アイドルマスター TOURS公式サイト「2026レイトサマーキャンペーン 晩夏の調べ」告知",
+  "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260824.html",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608241248-watch-0",
+  "event_date": "2026-08-28",
+  "deadline": "2026-10-12"
  }
 ]

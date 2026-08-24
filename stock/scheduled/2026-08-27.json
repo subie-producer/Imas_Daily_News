@@ -200,5 +200,26 @@
   "verify": "confirmed",
   "src_candidate_id": "202608232351-grok-38",
   "deadline": "2026-08-27"
+ },
+ {
+  "id": "sched-2026-08-27-gaku-shirube-fukuoka-ticket-general-resale-2026-締切",
+  "dedup_key": "gaku-shirube-fukuoka-ticket-general-resale-2026",
+  "brand": "gaku",
+  "subject": "学マス標ツアー福岡公演 公式リセール",
+  "kind": "締切",
+  "note": "公式リセール受付締切9:59",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "学園アイドルマスター LIVE TOUR -標- 福岡公演は2026年9月5日(土)・6日(日)、福岡サンパレス ホテル＆ホールで開催",
+   "リセールの受付期間は2026年8月22日(土)15:00～8月27日(木)9:59",
+   "チケット料金は全席指定11,000円(税込)、立ち見指定10,500円(税込)"
+  ],
+  "title": "標ツアー福岡公演の一般先着・リセール開始",
+  "url": "https://idolmaster-official.jp/news/01_19655",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608240750-grok-31",
+  "event_date": "2026-09-05",
+  "deadline": "2026-08-27"
  }
 ]

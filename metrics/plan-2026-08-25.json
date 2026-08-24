@@ -1,0 +1,209 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-live-broadcast-new-idol-tease",
+      "brand": "shiny",
+      "rank": "lead",
+      "angle": "本日19時からのシャニマス生配信(峯田茉優・前川涼子・高山Pが出演)で、公式が事前にチラ見せした近日登場アイドルの正体を発表予定。Song for Prismの最新情報も合わせて予告され、期待感が高まっている",
+      "dedup_key": "shinymas-livestream-2026-08-25",
+      "candidate_ids": [
+        "202608240750-grok-18",
+        "202608242201-grok-22",
+        "202608242201-grok-23"
+      ]
+    },
+    {
+      "slug": "765-dual-twin-live-tokyo-finale",
+      "brand": "765",
+      "rank": "large",
+      "angle": "765プロdual twin live tourの千秋楽・東京公演(8/27-28 Zepp Haneda)まで残り3日。公式が現地チケット残りわずかと案内する一方、大阪・名古屋公演のステージ映像が続々公開され機運が高まっている",
+      "dedup_key": "765-dual-twin-live-tokyo-2026",
+      "candidate_ids": [
+        "202608242201-grok-2",
+        "202608241248-grok-3",
+        "202608242334-claude-18",
+        "202608242201-claude-112",
+        "202608241248-grok-1",
+        "202608241248-grok-2",
+        "202608242201-grok-3",
+        "202608242201-grok-5",
+        "202608242201-grok-7"
+      ]
+    },
+    {
+      "slug": "gakumas-shirube-fukui-newsongs",
+      "brand": "gaku",
+      "rank": "large",
+      "angle": "LIVE TOUR「標」開幕の福井公演2日間で、有村麻央・花海佑芽・葛城リーリヤ・姫崎莉波がそれぞれ新曲をサプライズ初披露。コメント付きアーカイブや外部メディアのレポートも公開され、ツアー開幕の熱気を伝える",
+      "dedup_key": "gkmas-live-tour-2026-fukui",
+      "candidate_ids": [
+        "202608240750-claude-55",
+        "202608240750-claude-65",
+        "202608242334-claude-12",
+        "202608240750-grok-26",
+        "202608240750-grok-27",
+        "202608240750-grok-25",
+        "202608242201-grok-48",
+        "202608242201-grok-53",
+        "202608240750-grok-30"
+      ]
+    },
+    {
+      "slug": "mltd-glow-together-finale",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "ミリシタのBATTLE OF THEATERシリーズを飾るイベント『プラチナスタートラストBOT～Glow Together～』が本日20:59に終了。折り返し以降のブースト仕様やキャラクターボイスの紹介もあり、フィナーレを迎える",
+      "dedup_key": "milishita-event-glow-together-2026-08",
+      "candidate_ids": [
+        "202608250213-claude-92",
+        "202608240750-grok-10",
+        "202608242201-grok-19",
+        "202608250213-grok-29"
+      ]
+    },
+    {
+      "slug": "tours-late-summer-campaign",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "『アイドルマスター TOURS』の新キャンペーン「2026 レイトサマーキャンペーン 晩夏の調べ」が8/28開始。周防桃子・雪歩・果穂らのカードイラストが公開され始めている",
+      "dedup_key": "tours-late-summer-campaign-2026",
+      "candidate_ids": [
+        "202608241248-watch-0",
+        "202608240750-grok-42",
+        "202608240750-grok-43",
+        "202608242201-grok-70",
+        "202608250213-grok-63"
+      ]
+    },
+    {
+      "slug": "sidem-11th-stage-ticket-and-comments",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "SideM 11th STAGE ～EVER EVER＠FTER～の現地チケット一般販売が8/22にスタート、リセールも実施予定。公式サイトでは出演キャストの意気込みコメントが連日公開されている",
+      "dedup_key": "sidem-11th-stage-ticket-2026",
+      "candidate_ids": [
+        "202608240750-claude-53",
+        "202608241248-grok-31",
+        "202608241248-grok-27",
+        "202608241248-grok-29",
+        "202608242201-grok-37",
+        "202608242201-grok-41"
+      ]
+    },
+    {
+      "slug": "futamas-shikaoi-1100-turnout",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "北海道鹿追町に設置された倉本千奈のオリジナルマンホール、お披露目会に全国から約1100人が来場したと地元紙が報道。シリーズ20周年を記念した全国自治体コラボの反響の大きさを伝える",
+      "dedup_key": "futamas-shikaoi-1100-kachimai-2026",
+      "candidate_ids": [
+        "202608242201-watch-1",
+        "202608242201-grok-71",
+        "202608242201-grok-84"
+      ]
+    },
+    {
+      "slug": "cg-million-coming-soon-emoji-hint",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "8/26正午予告中のシンデレラガールズ・ミリオンライブ合同ティザーに、新たに雪だるまとマイクの絵文字ヒントが追加投稿された。内容は依然非公開のまま",
+      "dedup_key": "cg-coming-soon-2026-08-26",
+      "candidate_ids": [
+        "202608242201-grok-9",
+        "202608242201-grok-17"
+      ]
+    },
+    {
+      "slug": "mltd-extreme-livestream-sep2",
+      "brand": "million",
+      "rank": "small",
+      "angle": "「ミリシタ Extreme生配信」が9/2 19:00に決定。10年目の新シリーズ発表を予定し、夏川椎菜さんらが出演する",
+      "dedup_key": "mltd-extreme-livestream-20260902",
+      "candidate_ids": [
+        "202608240750-grok-9"
+      ]
+    },
+    {
+      "slug": "mltd-late-summer-login-bonus",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタが「残暑お見舞いログインボーナス」を本日8/25から8/31まで開催、合計500個のミリオンジュエルを配布する",
+      "dedup_key": "milishita-late-summer-login-bonus-2026",
+      "candidate_ids": [
+        "202608250213-grok-28"
+      ]
+    },
+    {
+      "slug": "coherent-light-vol5-release",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニマス「Song for Prism」連載小説『コヒーレントライト』第5巻が本日8/25発売、同日にWeb版も更新され描き下ろしイラストが届けられる",
+      "dedup_key": "coherent-light-vol5-2026",
+      "candidate_ids": [
+        "202608240750-grok-22"
+      ]
+    },
+    {
+      "slug": "gakumas-shirube-fukuoka-tickets",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "LIVE TOUR「標」福岡公演(9/5-6)のチケット一般先着受付が8/26まで、リセール受付も8/27まで実施中",
+      "dedup_key": "gaku-shirube-fukuoka-ticket-general-resale-2026",
+      "candidate_ids": [
+        "202608240750-grok-31"
+      ]
+    },
+    {
+      "slug": "gakumasu-3rd-single-wave3",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "初星学園3rdシングルCDシリーズ第三弾が8/26に一斉発売、十王星南・花海咲季・花海佑芽・秦谷美鈴の新規ソロ楽曲を収録する",
+      "dedup_key": "gakumasu-3rd-single-series-wave3-2026",
+      "candidate_ids": [
+        "202608241248-claude-73"
+      ]
+    },
+    {
+      "slug": "gakumas-swimsuit-gacha-hataya",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "学園アイドルマスターが8/26から秦谷美鈴の水着ガシャを開始すると公式が告知した",
+      "dedup_key": "gakumas-swimsuit-gacha-hataya-2026-08-26",
+      "candidate_ids": [
+        "202608242201-grok-46",
+        "202608250213-grok-49"
+      ]
+    },
+    {
+      "slug": "gakumas-sports-festival-goods-ticket",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「クラス対抗初星大運動会」(9/20-21)の現地会場物販整理券受付が8/22よりスタートしている",
+      "dedup_key": "gakuen-sports-festival-merchandise-2026",
+      "candidate_ids": [
+        "202608242334-claude-9"
+      ]
+    },
+    {
+      "slug": "cg-cinderella-master-bouquet-cd",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "CINDERELLA MASTER新作CD『大好きのブーケ＆すりーぷすきっぷ』が8/26発売、シンデレラガール総選挙2026投票券400枚分のシリアルコードを封入する",
+      "dedup_key": "cg-cinderella-master-bouquet-sleep-skip-2026",
+      "candidate_ids": [
+        "202608241248-claude-77"
+      ]
+    },
+    {
+      "slug": "cg-toybox-venue-cd-mailorder",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "CONCEPT xR LIVE『Pop'n ToyBox!!』の会場限定オリジナルCD2タイトルの事後通販受付が始まり、9/11発送予定と案内されている",
+      "dedup_key": "cg-pop-n-toybox-cd-2026",
+      "candidate_ids": [
+        "202608242334-claude-0"
+      ]
+    }
+  ],
+  "editorial_topic": "北海道鹿追町のマンホールお披露目に全国から1100人が集まったことから、二次元のアイドルたちが20年を経て実在の地域と結びつく意味を考える"
+}

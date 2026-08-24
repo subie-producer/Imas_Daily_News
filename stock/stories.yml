@@ -14,6 +14,9 @@
   - 東京公演は8/27(木)双海亜美・真美「ふたごぼしのつばさ」、8/28(金)三浦あずさ・秋月律子「つみまつよるまち」、いずれも18時開場・19時開演
   - 東京会場でも両CDを販売、会場物販で2枚同時購入すると先着で特典クリアカード(2種)を進呈
   - 8/22・23に大阪・名古屋公演のアーカイブ同時視聴上映会を実施、視聴コメント付きアーカイブは9/27 23:59まで公開
+  - 東京公演まで残り3日、公式が千秋楽と案内(27日亜美・真美、28日あずさ・律子、いずれも19時開演、Zepp Haneda)
+  - 現地チケットは残りわずかと8/24付で告知、一般先着2次開始・当日券販売決定を8/23付で案内
+  - 大阪・名古屋公演のステージ映像を続々公開(あずさ・律子「CRIMSON LOVERS」「arcadia」、亜美・真美「紅白応援V」「北極星をズラしちゃえ！」「ジャングル☆パーティー」)
 - story_id: million-9th-anniversary-mission
   brand: million
   subject: ミリシタ9周年アニバーサリーミッションとイベント「最上級:Invit@tion!」
@@ -462,6 +465,8 @@
   published_facts:
   - 公演は2026年8月13日〜16日、Shibuya LOVEZ開催
   - 応援タオル等の数量限定グッズは7/20まで販売
+  - 会場オリジナルCD2タイトル「Poppin' para Pong!」(赤城みりあ・市原仁奈・椎名法子)「Cookie Dough」(高垣楓・三船美優・大和亜季)の事後通販を受付中、各3,500円
+  - 各CDに総選挙投票券700枚に引換可能なシリアルコード封入、受付は8/31 23:59まで、発送は9/11予定
 - story_id: cg-popn-toybox-general-lottery-2026
   brand: cg
   subject: Pop'n ToyBox!! アソビストア一般会員先行当落
@@ -702,6 +707,9 @@
   published_facts:
   - 2026年9月12日・13日、TOYOTA ARENA TOKYOで開催
   - テーマ「語り継がれる物語」、CD「TRANSCENDENT T@LES」と連動
+  - 現地チケット一般販売を8月22日12時開始、受付は9月5日23時59分まで
+  - 公式リセールを8月22日15時〜9月6日9時59分まで実施
+  - 出演キャストの意気込みコメントを順次公開(8/22小松昌平さん=牙崎漣役、8/23伊瀬結陸さん=天峰秀役、8/24高塚智人さん=渡辺みのり役)
 - story_id: cg-star-village-achi-summer-2026
   brand: cg
   subject: シンデレラガールズ×スタービレッジ阿智 コラボ2026
@@ -1142,6 +1150,7 @@
   published_facts:
   - シンデレラガールズ・ミリオンライブ公式Xが8月23日、青黄配色で「8/26(wed) 12:00 Coming soon!」を同時投稿
   - 投稿時点で企画名・内容は非公開
+  - 8月24日付投稿では、シンデレラガールズ側に雪だるま、ミリオンライブ側にマイクの絵文字を配置
 - story_id: cg-tower-tour-mirai-tower-nagoya-2026
   brand: cg
   subject: デレマス×全国タワーツアー MIRAI TOWER(名古屋)
@@ -1167,6 +1176,8 @@
   - お披露目会を8月23日に開催、想定を上回る来場
   - 缶バッジは8月23日限定、マンホールカードは鹿追町観光インフォメーション(道の駅しかおい裏)で配布(営業9〜17時)
   - アイドルマスター ポータルで倉本千奈の設置箇所のチェックインを実施中、チェックインで称号を入手可能
+  - 十勝毎日新聞によると、公開セレモニーに全国から約1100人が来場、披露後は約2時間にわたり撮影が行われた
+  - 設置場所は温暖期が鹿追町東町3丁目2−7、冬季は道の駅しかおい内で展示のみと公式が案内
 - story_id: gakumas-gold-rush-vol7-2026
   brand: gaku
   subject: 学マス漫画『GOLD RUSH』第7巻
@@ -1279,3 +1290,96 @@
   published_facts:
   - 9月25日〜27日開催「Life Like a Live!12〜ドラマチックアワー〜」に上水流宇宙・灯里愛夏・レトラが出演
   - 9月25日第一公演(オープニングのみ)、9月27日第四公演、第五公演(エンディングのみ)に出演
+- story_id: cg-cinderella-master-bouquet-sleep-skip-2026
+  brand: cg
+  subject: CINDERELLA MASTER新作CD「大好きのブーケ＆すりーぷすきっぷ」
+  status: active
+  first_published: '2026-08-25'
+  published_facts:
+  - 8月26日発売、価格2,000円(税込)、コロムビアミュージックショップ・アソビストア限定販売
+  - 総選挙応援楽曲第3弾「大好きのブーケ」・第4弾「すりーぷすきっぷ」とボーナストラック8曲を収録
+  - シンデレラガール総選挙2026の投票券400枚に引換可能なシリアルコードを封入
+- story_id: shiny-coherent-light-novel-2026
+  brand: shiny
+  subject: シャニマス「Song for Prism」連載小説『コヒーレントライト』
+  status: active
+  first_published: '2026-08-25'
+  published_facts:
+  - 第5巻が8月25日発売、同日にWeb版も更新
+  - 緒原博綺先生描き下ろしのSPイラストを公開予定
+- story_id: gakumas-shirube-livetour-2026
+  brand: gaku
+  subject: 学園アイドルマスター LIVE TOUR -標-(福井公演・福岡公演)
+  status: active
+  first_published: '2026-08-25'
+  published_facts:
+  - 福井公演(8/20・21、フェニックス・プラザ エルピス大ホール)がツアー第一公演として開催
+  - Day1で有村麻央『L'Espoir』・花海佑芽『春と光』、Day2で葛城リーリヤ『いつかのわたし』・姫崎莉波『重なる夜空の痕跡に』をサプライズ初披露
+  - 4人合同曲『修楽旅行』も披露、リーリヤ『白線』では会場のコールが響いた(ファミ通Day2リポート)
+  - 『いつかのわたし』『重なる夜空の痕跡に』は8月22日からサブスク配信・ダウンロード販売開始
+  - 公式が両日の視聴コメント付きアーカイブを公開、公演アンケートも実施中
+  - 福岡公演は9月5日(土)・6日(日)、福岡サンパレス ホテル＆ホールで開催、出演は花海咲季・月村手毬・藤田ことね・篠澤広・雨夜燕
+  - 福岡公演は全席指定11,000円・立ち見指定10,500円、一般先着は8月26日23:59まで、公式リセールは8月27日9:59まで
+- story_id: gakumas-swimsuit-gacha-hataya-2026
+  brand: gaku
+  subject: 学マス水着ガシャ(秦谷美鈴)
+  status: active
+  first_published: '2026-08-25'
+  published_facts:
+  - 8月26日から水着ガシャ開始と公式が告知、対象は秦谷美鈴
+- story_id: gakumasu-3rd-single-wave3-2026
+  brand: gaku
+  subject: 初星学園3rdシングルCDシリーズ第三弾
+  status: active
+  first_published: '2026-08-25'
+  published_facts:
+  - 8月26日一斉発売、十王星南・花海咲季・花海佑芽・秦谷美鈴の4タイトルを展開
+  - 各CDにアプリゲーム最新シナリオ「STEP3」に寄り添った新規ソロ楽曲を収録
+  - 校歌「標」と「ENDLESS DANCE」のソロ歌唱バージョンを限定収録
+- story_id: mltd-extreme-livestream-2026
+  brand: million
+  subject: ミリシタ Extreme 生配信
+  status: active
+  first_published: '2026-08-25'
+  published_facts:
+  - 2026年9月2日(水)19時から(予定)配信、10年目の新シリーズ発表を予定
+  - 出演は夏川椎菜さん、南早紀さん、山口立花子さん、渡部恵子さん
+- story_id: mltd-glow-together-bot-2026
+  brand: million
+  subject: ミリシタBATTLE OF THEATERシリーズ最終公演「プラチナスタートラストBOT～Glow Together～」
+  status: active
+  first_published: '2026-08-25'
+  published_facts:
+  - 8月18日開催開始、8月25日20:59に終了(BOTシリーズのフィナーレ)
+  - 8月22日の折り返し以降、「対決！フラッグ」を最大4倍消費(1日1回限り10倍消費も可能)、獲得サイコロ数は倍率を変えても増えない
+  - 楽曲「Glow Together」は二階堂千鶴・春日未来・北沢志保・木下ひなた・桜守歌織・矢吹可奈が歌唱、8月22日付でショートMVも公開
+  - 8月23日付で千鶴・未来の台詞を公式が紹介
+- story_id: mltd-late-summer-login-bonus-2026
+  brand: million
+  subject: ミリシタ「2026年 残暑お見舞いログインボーナス」
+  status: active
+  first_published: '2026-08-25'
+  published_facts:
+  - 8月25日〜8月31日開催、合計500個のミリオンジュエルを受け取り可能
+- story_id: shiny-live-broadcast-new-idol-2026
+  brand: shiny
+  subject: シャニマス生配信「～8月も意外と暑い～ズSP～」と近日登場アイドル発表
+  status: active
+  first_published: '2026-08-25'
+  published_facts:
+  - 8月25日19時から配信、番組タイトルは「シャニマス生配信 ～8月も意外と暑い～ズSP～」
+  - 出演は峯田茉優さん(八宮めぐる役)、前川涼子さん(大崎甜花役)、プロデューサー高山祐介さん
+  - 8月24日付で「近日登場予定のアイドルをチラ見せ」と告知、配信内での発表を予告(正体は末公開)
+  - シャニソン側も配信内で最新情報・機能アップデートを案内予定と告知
+  - 配信はニコニコ生放送・YouTube Live(アイドルマスターチャンネル)・enza・公式Xで実施
+- story_id: tours-late-summer-campaign-2026
+  brand: joint
+  subject: ツアマス「2026レイトサマーキャンペーン 晩夏の調べ」
+  status: active
+  first_published: '2026-08-25'
+  published_facts:
+  - 8月28日(金)7時開始、キャンペーン期間は10月12日25:59まで、景品交換は10月13日25:59まで
+  - 次回のS1弾Exアップデートで周防桃子が登場、キャンペーンカードのイラストに先行登場
+  - 周防桃子のほか萩原雪歩・小宮果穂・硲道夫・島村卯月・紫雲清夏のカードイラストも紹介
+  - 景品はオリジナルカード全12種(12ポイント)、カードストレージボックス全6種(36ポイント)、「MIXING PARADE」ライブTシャツ(120ポイント)
+  - 対象店舗でアミューズメントICを使用、1クレジット(100円)につき1ポイント、景品はなくなり次第終了

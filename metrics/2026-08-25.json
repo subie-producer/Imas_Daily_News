@@ -1,0 +1,80 @@
+{
+ "collect": [
+  {
+   "at": "2026-08-25T02:13:12+09:00",
+   "edition": "2026-08-25",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 341,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "grok:765as": 11,
+    "grok:cinderella": 14,
+    "grok:million": 7,
+    "grok:shiny": 12,
+    "grok:sidem": 4,
+    "grok:gakuen": 6,
+    "grok:dsva": 8,
+    "grok:joint-other": 7,
+    "grok:trend": 16,
+    "grok:fan-culture": 16,
+    "claude:765as": 0,
+    "claude:cinderella": 6,
+    "claude:million": 2,
+    "claude:shiny": 3,
+    "claude:sidem": 0,
+    "claude:gakuen": 0,
+    "claude:dsva": 0,
+    "claude:joint-other": 0,
+    "claude:trend": 8,
+    "claude:fan-culture": 5
+   },
+   "normalized": 102,
+   "added": 51,
+   "verify": {
+    "confirmed": 77,
+    "unconfirmed": 16,
+    "failed": 9
+   },
+   "duration_s": 762
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-08-25T04:41:37+09:00",
+   "edition": "2026-08-25",
+   "rounds": 2,
+   "approved": true,
+   "lint_green": true,
+   "planned": 17,
+   "written": 16,
+   "aborted": [
+    "gakumas-sports-festival-goods-ticket"
+   ],
+   "duration_s": 2467
+  }
+ ]
+}

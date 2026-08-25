@@ -1,0 +1,16 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-08-26-cg-million-coming-soon-noon.md",
+   "issue": "URL捏造: sources に記載された X ステータス 2091435270713602495 が candidates/2026-08-26.json に存在しない",
+   "quote": "sources:\n  - label: シンデレラガールズ公式予告\n    url: https://x.com/imas_CGofficial/status/2091435270713602495\n    type: 公式"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_editions/2026-08-26.md",
+   "issue": "記事化対象の漏れ: story_id 'gakumas-gravure-solo-collection-2026'（first_published 2026-08-26）が candidates に存在するが紙面から漏れ。本数 13 件での打ち切り理由が規程に準拠しているか要確認。"
+  }
+ ]
+}

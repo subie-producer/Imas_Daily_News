@@ -23,5 +23,25 @@
   "src_candidate_id": "202607130340-claude-83",
   "event_date": "2026-08-27",
   "deadline": "2026-09-16"
+ },
+ {
+  "id": "sched-2026-09-16-shiny-hopeful-feathers-2026-発売",
+  "dedup_key": "shiny-hopeful-feathers-2026",
+  "brand": "shiny",
+  "subject": "HOPEFUL FE@THERS -Stella-／-Luna-／-Sol- 発売",
+  "kind": "発売",
+  "note": "3作同時発売",
+  "reserved_on": "2026-08-26",
+  "facts": [
+   "3作とも9月16日(水)発売",
+   "アイドル28人の新ソロ曲などを収録、ポスター抽選会を実施",
+   "「-Stella-」1曲目は櫻木真乃(CV.関根瞳)の新曲「MAGICAL FOREST」"
+  ],
+  "title": "HOPEFUL FE@THERS 3作のINDEX・ジャケット・店舗特典を解禁、9/16発売",
+  "url": "https://x.com/lantis_imasSC/status/2092220748840706335",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608260216-grok-73",
+  "event_date": "2026-09-16"
  }
 ]

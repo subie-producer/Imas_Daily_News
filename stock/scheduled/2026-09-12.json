@@ -59,5 +59,25 @@
   "verify": "confirmed",
   "src_candidate_id": "202608232010-grok-54",
   "event_date": "2026-09-12"
+ },
+ {
+  "id": "sched-2026-09-12-shiny-msp-ticket-sales-2026-締切前",
+  "dedup_key": "shiny-msp-ticket-sales-2026",
+  "brand": "shiny",
+  "subject": "283ソロライブMSP 現地一般発売、締切まで3日",
+  "kind": "締切前",
+  "note": "一般発売(先着)締切3日前",
+  "reserved_on": "2026-08-26",
+  "facts": [
+   "現地チケット一般発売(先着)は8月29日12:00〜9月15日23:59",
+   "対象は9月26日・27日、京王アリーナTOKYO公演"
+  ],
+  "title": "ソロライブMSP現地チケット一般発売が8/29 12時開始予定",
+  "url": "https://x.com/shinyc_official/status/2092220444992741664",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608260216-grok-41",
+  "event_date": "2026-09-26〜2026-09-27",
+  "deadline": "2026-09-15"
  }
 ]

@@ -41,5 +41,25 @@
   "src_candidate_id": "202608240750-claude-53",
   "event_date": "2026-09-12",
   "deadline": "2026-09-05"
+ },
+ {
+  "id": "sched-2026-09-05-gakumas-shirube-livetour-2026-開幕",
+  "dedup_key": "gakumas-shirube-livetour-2026",
+  "brand": "gaku",
+  "subject": "学マス LIVE TOUR -標- 福岡公演DAY1",
+  "kind": "開幕",
+  "note": "福岡公演初日",
+  "reserved_on": "2026-08-26",
+  "facts": [
+   "9月5日(土)開場17:30・開演18:30、福岡サンパレス ホテル＆ホール",
+   "出演は花海咲季・月村手毬・藤田ことね・篠澤広・雨夜燕",
+   "チケットは全席指定11,000円(税込)、立ち見指定10,500円(税込)"
+  ],
+  "title": "標ツアー福岡公演の一般先着・リセール開始",
+  "url": "https://idolmaster-official.jp/news/01_19655",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608240750-grok-31",
+  "event_date": "2026-09-05"
  }
 ]

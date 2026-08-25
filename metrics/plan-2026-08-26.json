@@ -1,0 +1,204 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-axe8-relight-reveal",
+      "brand": "shiny",
+      "rank": "lead",
+      "angle": "新プロジェクト『Project \"ReLight\" AXE8』始動、第1弾アルストロメリア・第2弾イルミネーションスターズが新曲『BEAM』『I=WE』と新SSRとともに発表",
+      "dedup_key": "shiny-new-idol-teaser-stream-2026-08-25",
+      "candidate_ids": [
+        "sched-2026-08-26-shiny-new-idol-teaser-stream-2026-08-25-結果",
+        "202608252337-claude-19",
+        "202608260216-grok-29",
+        "202608260216-grok-30",
+        "202608260216-grok-31",
+        "202608260216-grok-32",
+        "202608260216-grok-33",
+        "202608260216-grok-34"
+      ]
+    },
+    {
+      "slug": "dual-twin-live-tokyo-countdown",
+      "brand": "765",
+      "rank": "large",
+      "angle": "dual twin live tour東京公演まであと2日、女性専用エリア新設・両新曲のステージ映像公開・会場CD情報で機運高まる",
+      "dedup_key": "765-dual-twin-live-tour-2026",
+      "candidate_ids": [
+        "202608250733-claude-3",
+        "202608251836-claude-16",
+        "202608252337-claude-16",
+        "202608252337-claude-17",
+        "202608252337-claude-18",
+        "202608260216-grok-0",
+        "202608260216-grok-1",
+        "202608260216-grok-2",
+        "202608260216-grok-3",
+        "202608260216-grok-4",
+        "202608260216-grok-5"
+      ]
+    },
+    {
+      "slug": "cg-master-bouquet-sleepskip-release",
+      "brand": "cg",
+      "rank": "large",
+      "angle": "総選挙応援曲CD『大好きのブーケ＆すりーぷすきっぷ』本日発売、『すりーぷすきっぷ』MVは夜9時にプレミア公開",
+      "dedup_key": "cg-cinderella-master-bouquet-sleep-skip-2026",
+      "candidate_ids": [
+        "sched-2026-08-26-cg-cinderella-master-bouquet-sleep-skip-2026-発売",
+        "202608251235-claude-6",
+        "202608260216-grok-6",
+        "202608260216-grok-7",
+        "202608260216-grok-8",
+        "202608260216-grok-9",
+        "202608260216-grok-10"
+      ]
+    },
+    {
+      "slug": "gakumas-3rd-single-wave3-release",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "初星学園3rdシングルCDシリーズ第三弾、十王星南・花海咲季・花海佑芽・秦谷美鈴の4タイトルが本日一斉発売",
+      "dedup_key": "gakumasu-3rd-single-series-wave3-2026",
+      "candidate_ids": [
+        "sched-2026-08-26-gakumasu-3rd-single-series-wave3-2026-発売"
+      ]
+    },
+    {
+      "slug": "gakumas-hif-memorial-single-release",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "学園アイドルマスター2周年記念メモリアルシングル『ガラクタロード』本日発売、13人合唱版とソロ歌唱を収録",
+      "dedup_key": "gaku-hif-memorial-single-2026",
+      "candidate_ids": [
+        "202608260216-claude-115"
+      ]
+    },
+    {
+      "slug": "gakumas-hataya-swimsuit-gacha",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "秦谷美鈴、水着ガシャ・思い出衣装『ねえ、言っちゃうよ。』・新ストーリーが本日11時に一挙解禁",
+      "dedup_key": "gaku-swimsuit-gacha-hataya-misuzu-2026-08",
+      "candidate_ids": [
+        "sched-2026-08-26-gaku-swimsuit-gacha-hataya-misuzu-2026-08-開始",
+        "202608260216-grok-51",
+        "202608260216-grok-52",
+        "202608260216-grok-53",
+        "202608260216-claude-107"
+      ]
+    },
+    {
+      "slug": "gakumas-shirube-fukuoka-ticket-deadline",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "学マス標ツアー福岡公演、現地チケット一般先着は本日23:59締切",
+      "dedup_key": "gaku-shirube-fukuoka-ticket-general-resale-2026",
+      "candidate_ids": [
+        "sched-2026-08-26-gaku-shirube-fukuoka-ticket-general-resale-2026-締切"
+      ]
+    },
+    {
+      "slug": "gakumas-hires-priceoff-end",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "初星学園ハイレゾ作品30%オフ、mora配信キャンペーンは本日23:59で終了",
+      "dedup_key": "gaku-hires-priceoff-campaign",
+      "candidate_ids": [
+        "sched-2026-08-26-gaku-hires-priceoff-campaign-締切",
+        "202608260216-claude-109"
+      ]
+    },
+    {
+      "slug": "cg-million-coming-soon-noon",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "シンデレラガールズ・ミリオンライブ公式、本日正午に同時新情報発表を予告—内容は正午まで非公開",
+      "dedup_key": "cg-coming-soon-2026-08-26",
+      "candidate_ids": [
+        "sched-2026-08-26-cg-coming-soon-2026-08-26-その他",
+        "202608250733-claude-10",
+        "202608251235-claude-9",
+        "202608251235-claude-18",
+        "202608260216-grok-13",
+        "202608260216-grok-22"
+      ]
+    },
+    {
+      "slug": "shiny-hopeful-feathers-details",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "『HOPEFUL FE@THERS -Stella-/-Luna-/-Sol-』9/16発売、INDEX・ジャケット・店舗特典と真乃ソロ新曲『MAGICAL FOREST』が判明",
+      "dedup_key": "shiny-hopeful-feathers-index-2026-08-25",
+      "candidate_ids": [
+        "202608260216-grok-73",
+        "202608260216-grok-76",
+        "202608260216-grok-84"
+      ]
+    },
+    {
+      "slug": "shiny-msp-ticket-sales-open",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "283ソロライブ『Master ShowPiece』配信チケット販売を本日開始、現地一般発売(先着)は8/29",
+      "dedup_key": "shiny-solo-live-msp-2026-09",
+      "candidate_ids": [
+        "202608252337-watch-2",
+        "202608260216-grok-41",
+        "202608260216-grok-42",
+        "202608260216-grok-43"
+      ]
+    },
+    {
+      "slug": "million-battle-theater-ex04-release",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリオンBATTLE OF THE@TER EX04『Stick to my weapon』本日発売",
+      "dedup_key": "millionlive-battle-ex04-2026",
+      "candidate_ids": [
+        "202608250733-claude-11"
+      ]
+    },
+    {
+      "slug": "sidem-monthly-theme-song10-release",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM MONTHLY THEME SONG第10弾『もふもふえん』本日発売",
+      "dedup_key": "sidem-monthly-theme-song-10-mofumofu-2026",
+      "candidate_ids": [
+        "202608251836-claude-10",
+        "202608260216-claude-106"
+      ]
+    },
+    {
+      "slug": "dsva-cosmo-birthday-ticket-sales",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "上水流宇宙バースデーオンラインライブ、限定グッズ付き現地LVチケット販売を本日開始(〜8/30)",
+      "dedup_key": "kamizuruyu-birthday-online-live-2026",
+      "candidate_ids": [
+        "202608260216-claude-113"
+      ]
+    },
+    {
+      "slug": "gakumas-nuipin-vol2-announced",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "学マス『ぬいピンvol.2』12月発売決定、クローズドボックス仕様で1,100円",
+      "dedup_key": "gaku-nuipin-vol2",
+      "candidate_ids": [
+        "202608251235-watch-0"
+      ]
+    },
+    {
+      "slug": "gakumas-gravure-solo-collection-announced",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "グラビア調フォトブック『ねえ、言っちゃうよ。』Gravure Solo Collection Vol.1が11月18日発売(8月14日付で発表)、予約は9/27まで",
+      "dedup_key": "gravure-solo-collection-vol1-2026",
+      "candidate_ids": [
+        "202608251235-claude-14"
+      ]
+    }
+  ],
+  "editorial_topic": "『Project \"ReLight\" AXE8』始動に見る、既存ユニットに新曲で新たな挑戦を課すシャニマスの一手"
+}

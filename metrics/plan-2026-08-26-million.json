@@ -1,0 +1,69 @@
+{
+  "articles": [
+    {
+      "slug": "million-battle-ex04-release",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "音声ドラマCD「MILLION BATTLE OF THE@TER EX04 Stick to my weapon」8/26発売、価格・出演キャストを詳報",
+      "lead_score": 15,
+      "dedup_key": "millionlive-battle-ex04-2026",
+      "candidate_ids": ["202608250733-claude-11", "202608252337-claude-11"]
+    },
+    {
+      "slug": "million-idol-heroes-gacha-vol3",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ「アイドルヒーローズガシャ vol.3」開催中(我那覇響・島原エレナの新SSR登場、8/27まで)",
+      "lead_score": 5,
+      "dedup_key": "milishita-idol-heroes-gacha-vol3-2026",
+      "candidate_ids": ["202608252337-claude-13"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "millishita-glow-together-2026",
+      "reason": "既報",
+      "note": "8/25 20:59終了は台帳(mltd-glow-together-bot-2026)に既に記載済みで新事実なし"
+    },
+    {
+      "dedup_key": "karatez-millionlive-collab-2026",
+      "reason": "既報",
+      "note": "通販受付期間(8/7〜8/23)は台帳(million-karatetsu-collab-2026)に既に記載済み"
+    },
+    {
+      "dedup_key": "million-glow-together-2026",
+      "reason": "重複",
+      "note": "millishita-glow-together-2026と同一話題。台帳に既報済み"
+    },
+    {
+      "dedup_key": "million-cinderella-collab-teaser-2026-08-26",
+      "reason": "既報",
+      "note": "8/23告知は台帳(cg-million-coming-soon-2026-08-26、joint面案件)に既報済み。12時本番の内容は締切(04:00)時点で未公開のため新事実なし"
+    },
+    {
+      "dedup_key": "mltd-next-stage-now-loading-2026-08-25",
+      "reason": "出典不足",
+      "note": "具体的な新事実のない煽り投稿。9/2配信(台帳mltd-extreme-livestream-2026)関連の予告とみられるが追加情報なし"
+    },
+    {
+      "dedup_key": "mltd-late-summer-login-bonus-2026",
+      "reason": "既報",
+      "note": "台帳(mltd-late-summer-login-bonus-2026)に同一内容(8/25〜8/31・500ジュエル)で既に記載済み"
+    },
+    {
+      "dedup_key": "million-coming-soon-2026-08-26-mic",
+      "reason": "重複",
+      "note": "million-cinderella-collab-teaser-2026-08-26と同一告知(8/26 12:00 Coming soon)の重複観測"
+    },
+    {
+      "dedup_key": "mltd-character-kawaaobi-2026-08-24",
+      "reason": "その他",
+      "note": "定型の雑談・キャラクター投稿でニュース性なし"
+    },
+    {
+      "dedup_key": "million-komagata-yuri-photo-book-2026-08-25",
+      "reason": "個人の話題",
+      "note": "声優個人の誕生日・写真集はアイマス外の声優個人活動につき対象外"
+    }
+  ]
+}

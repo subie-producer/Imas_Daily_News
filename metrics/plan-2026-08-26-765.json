@@ -1,0 +1,65 @@
+{
+  "articles": [
+    {
+      "slug": "765-dual-twin-finale-promo-roundup",
+      "brand": "765",
+      "rank": "roundup",
+      "angle": "dual twin live tour 東京公演(8/27・28 Zepp Haneda)直前の進行中プロモーション(女性専用エリア案内・新曲ステージ映像チラ見せ・終演後生配信)をまとめる",
+      "lead_score": 0,
+      "dedup_key": "765-dual-twin-tokyo-2days-women-area-2026-08-25",
+      "candidate_ids": [
+        "202608252337-claude-16",
+        "202608260216-grok-0",
+        "202608260216-grok-1",
+        "202608260216-grok-5"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "kimchikura-fes-2026",
+      "reason": "出典不足",
+      "note": "掲載日不明。開催日は2026-08-08で既に終了しており、本日号時点の新報として鮮度(規程12)を確認できない"
+    },
+    {
+      "dedup_key": "765-dual-twin-tour-streaming-2026",
+      "reason": "出典不足",
+      "note": "掲載日不明。event_date 2026-08-06から約3週間経過しており、配信チケット発売開始という新規性表現の初出日を確認できない(規程12)"
+    },
+    {
+      "dedup_key": "765-as-new-goods-2026",
+      "reason": "過年度",
+      "note": "受注期限2026-08-16で既に終了(facts内に明記)。新事実・トリガーなし"
+    },
+    {
+      "dedup_key": "765-dual-twin-live-zepp-haneda-2026-08",
+      "reason": "既報",
+      "note": "一般先着2次開始・当日券販売決定は台帳765-dual-twinlive-venue-cdに8/23付で既報、新事実なし"
+    },
+    {
+      "dedup_key": "dual-twin-live-futago-boshi-venue-cd-2026",
+      "reason": "既報",
+      "note": "CD価格・収録曲・8/6発売・東京会場販売は台帳765-dual-twinlive-venue-cdに既報"
+    },
+    {
+      "dedup_key": "dual-twin-live-tsumi-matsu-venue-cd-2026",
+      "reason": "既報",
+      "note": "CD価格・8/6発売・各会場販売は台帳765-dual-twinlive-venue-cdに既報"
+    },
+    {
+      "dedup_key": "765-binary-star-cd-haneda-2026-08-25",
+      "reason": "既報",
+      "note": "東京会場での両CD販売は台帳765-dual-twinlive-venue-cdに既報。出典もunconfirmed(準公式)"
+    },
+    {
+      "dedup_key": "765-hokkyokusei-cd-haneda-2026-08-25",
+      "reason": "既報",
+      "note": "東京会場での両CD販売は台帳765-dual-twinlive-venue-cdに既報。出典もunconfirmed(準公式)"
+    },
+    {
+      "dedup_key": "765-dual-twin-tokyo-3days-2026-08-24",
+      "reason": "既報",
+      "note": "現地チケット残りわずか・千秋楽案内は台帳765-dual-twinlive-venue-cdに8/24付で既報、新事実なし"
+    }
+  ]
+}

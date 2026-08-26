@@ -1,114 +1,133 @@
 [
- {
-  "id": "sched-2026-08-30-shiny-admiral-collab-sneaker-千秋楽",
-  "dedup_key": "shiny-admiral-collab-sneaker",
-  "brand": "shiny",
-  "subject": "シャニマス×Admiralコラボスニーカー(なんばマルイPOP UP)",
-  "kind": "千秋楽",
-  "note": "なんばマルイ会場 最終日",
-  "reserved_on": "2026-07-13",
-  "facts": [
-   "「THE IDOLM@STER SHINY COLORS × Admiral」コラボスニーカーの予約が2026年6月26日12時よりマルイウェブチャネルで開始",
-   "渋谷モディでのPOP UP SHOPは6月26日〜7月12日開催",
-   "8ユニットをイメージした全8種のモデルで、所属アイドルをイメージした刺繍シューレースチャーム付き",
-   "なんばマルイでのPOP UP SHOPは8月14日〜8月30日開催予定",
-   "エンゲージメント: 中",
-   "コラボスニーカー「CAMBRIDGE THE IDOLM@STER SHINY COLORS Edition」は各13,500円(税込)",
-   "受注販売期間は2026年6月26日12:00～8月30日23:59",
-   "渋谷モディ7Fイベントスペースでのポップアップは2026年6月26日～7月12日開催、なんばマルイ会場は8月14日～8月30日",
-   "283プロダクション全8ユニットをイメージしたAdmiralコラボスニーカー『CAMBRIDGE THE IDOLM@STER SHINY COLORS Edition』が登場",
-   "マルイウェブチャネルで2026年6月26日12:00〜8月30日まで受注販売、価格は各13,500円(税込)",
-   "渋谷モディでのPOP UP SHOP＆試着会は6/26〜7/12開催で7/12が最終日",
-   "「THE IDOLM@STER SHINY COLORS × Admiral 2026」のコラボスニーカー『CAMBRIDGE THE IDOLM@STER SHINY COLORS Edition』全8ユニット分が展開",
-   "渋谷モディ7Fイベントスペースでのポップアップショップは2026年6月26日(金)～7月12日(日)開催で本日が最終日",
-   "なんばマルイ5Fでは2026年8月14日(金)～8月30日(日)に別途開催予定"
-  ],
-  "title": "シャニマス×Admiralコラボスニーカー、渋谷モディPOP UP SHOPが本日最終日",
-  "url": "https://idolmaster-official.jp/news/01_19054",
-  "source_type": "公式",
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202607120338-claude-16",
-  "deadline": "2026-07-12"
- },
- {
-  "id": "sched-2026-08-30-shiny-manekineko-collab-2026-千秋楽",
-  "dedup_key": "shiny-manekineko-collab-2026",
-  "brand": "shiny",
-  "subject": "シャニマス×カラオケまねきねこコラボ",
-  "kind": "千秋楽",
-  "note": "コラボ開催終了",
-  "reserved_on": "2026-07-13",
-  "facts": [
-   "「アイドルマスター シャイニーカラーズ×カラオケまねきねこ」コラボキャンペーンが2026年7月14日(火)13:00より開始",
-   "開催期間は2026年8月30日(日)まで",
-   "エンゲージメント: 中"
-  ],
-  "title": "シャニマス×カラオケまねきねこ、7月14日よりコラボ開始",
-  "url": "https://idolmaster-official.jp/news/01_19269",
-  "source_type": "公式",
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202607130340-claude-99",
-  "event_date": "2026-07-14",
-  "deadline": "2026-08-30"
- },
- {
-  "id": "sched-2026-08-30-million-machida-art-rally-2026-千秋楽",
-  "dedup_key": "million-machida-art-rally-2026",
-  "brand": "million",
-  "subject": "ミリオン町田アートラリー千秋楽",
-  "kind": "千秋楽",
-  "note": "全体開催最終日",
-  "reserved_on": "2026-07-14",
-  "facts": [
-   "全体開催期間は2026年7月14日〜8月30日"
-  ],
-  "title": "ミリオン×町田市アートラリー本日開幕",
-  "url": "https://idolmaster-official.jp/news/01_19305",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202607131241-watch-1",
-  "event_date": "2026-08-30"
- },
- {
-  "id": "sched-2026-08-30-million-14th-live-開始",
-  "dedup_key": "million-14th-live",
-  "brand": "million",
-  "subject": "ミリオン14thLIVE 現地チケット一般販売・公式リセール開始",
-  "kind": "開始",
-  "note": "一般販売(先着)・公式リセール(抽選)受付開始日",
-  "reserved_on": "2026-08-24",
-  "facts": [
-   "一般販売(先着)は2026年8月30日(日)12:00〜9月12日(土)23:59",
-   "公式リセール(抽選)は2026年8月30日(日)15:00〜9月13日(日)9:59",
-   "一般販売の対象は全席指定席14,000円・立見指定13,500円・ステージサイド席13,500円(税込)。アリーナ前方席は完売のため取り扱いなし"
-  ],
-  "title": "ミリオン14th、現地チケット8/30受付開始",
-  "url": "https://idolmaster-official.jp/news/01_19676",
-  "source_type": "当事者",
-  "verify": "confirmed",
-  "src_candidate_id": "202608232010-watch-6"
- },
- {
-  "id": "sched-2026-08-30-cg-tower-tour-mirai-tower-nagoya-2026-終了",
-  "dedup_key": "cg-tower-tour-mirai-tower-nagoya-2026",
-  "brand": "cg",
-  "subject": "デレマス×全国タワーツアー MIRAI TOWER(名古屋)終了",
-  "kind": "終了",
-  "note": "名古屋会場の開催最終日",
-  "reserved_on": "2026-08-24",
-  "facts": [
-   "中部電力MIRAI TOWERで「アイドルマスター シンデレラガールズ×全国タワーツアー Silky Sparkling Summer Stage」を8/22〜8/30開催",
-   "コラボチケットは3F特設会場のみで販売(10:00〜17:30)、大人2,750円・小人2,200円",
-   "予約・WEB販売はなし。限定グッズ販売とミニゲームを実施"
-  ],
-  "title": "デレマス×MIRAI TOWERコラボが名古屋で開催",
-  "url": "https://www.nagoya-tv-tower.co.jp/event/20260822/",
-  "source_type": "当事者",
-  "verify": "confirmed",
-  "src_candidate_id": "202608232010-grok-73",
-  "event_date": "2026-08-22",
-  "deadline": "2026-08-30"
- }
+    {
+        "id": "sched-2026-08-30-shiny-admiral-collab-sneaker-千秋楽",
+        "dedup_key": "shiny-admiral-collab-sneaker",
+        "brand": "shiny",
+        "subject": "シャニマス×Admiralコラボスニーカー(なんばマルイPOP UP)",
+        "kind": "千秋楽",
+        "note": "なんばマルイ会場 最終日",
+        "reserved_on": "2026-07-13",
+        "facts": [
+            "「THE IDOLM@STER SHINY COLORS × Admiral」コラボスニーカーの予約が2026年6月26日12時よりマルイウェブチャネルで開始",
+            "渋谷モディでのPOP UP SHOPは6月26日〜7月12日開催",
+            "8ユニットをイメージした全8種のモデルで、所属アイドルをイメージした刺繍シューレースチャーム付き",
+            "なんばマルイでのPOP UP SHOPは8月14日〜8月30日開催予定",
+            "エンゲージメント: 中",
+            "コラボスニーカー「CAMBRIDGE THE IDOLM@STER SHINY COLORS Edition」は各13,500円(税込)",
+            "受注販売期間は2026年6月26日12:00～8月30日23:59",
+            "渋谷モディ7Fイベントスペースでのポップアップは2026年6月26日～7月12日開催、なんばマルイ会場は8月14日～8月30日",
+            "283プロダクション全8ユニットをイメージしたAdmiralコラボスニーカー『CAMBRIDGE THE IDOLM@STER SHINY COLORS Edition』が登場",
+            "マルイウェブチャネルで2026年6月26日12:00〜8月30日まで受注販売、価格は各13,500円(税込)",
+            "渋谷モディでのPOP UP SHOP＆試着会は6/26〜7/12開催で7/12が最終日",
+            "「THE IDOLM@STER SHINY COLORS × Admiral 2026」のコラボスニーカー『CAMBRIDGE THE IDOLM@STER SHINY COLORS Edition』全8ユニット分が展開",
+            "渋谷モディ7Fイベントスペースでのポップアップショップは2026年6月26日(金)～7月12日(日)開催で本日が最終日",
+            "なんばマルイ5Fでは2026年8月14日(金)～8月30日(日)に別途開催予定"
+        ],
+        "title": "シャニマス×Admiralコラボスニーカー、渋谷モディPOP UP SHOPが本日最終日",
+        "url": "https://idolmaster-official.jp/news/01_19054",
+        "source_type": "公式",
+        "via": "claude",
+        "verify": "confirmed",
+        "src_candidate_id": "202607120338-claude-16",
+        "deadline": "2026-07-12"
+    },
+    {
+        "id": "sched-2026-08-30-shiny-manekineko-collab-2026-千秋楽",
+        "dedup_key": "shiny-manekineko-collab-2026",
+        "brand": "shiny",
+        "subject": "シャニマス×カラオケまねきねこコラボ",
+        "kind": "千秋楽",
+        "note": "コラボ開催終了",
+        "reserved_on": "2026-07-13",
+        "facts": [
+            "「アイドルマスター シャイニーカラーズ×カラオケまねきねこ」コラボキャンペーンが2026年7月14日(火)13:00より開始",
+            "開催期間は2026年8月30日(日)まで",
+            "エンゲージメント: 中"
+        ],
+        "title": "シャニマス×カラオケまねきねこ、7月14日よりコラボ開始",
+        "url": "https://idolmaster-official.jp/news/01_19269",
+        "source_type": "公式",
+        "via": "claude",
+        "verify": "confirmed",
+        "src_candidate_id": "202607130340-claude-99",
+        "event_date": "2026-07-14",
+        "deadline": "2026-08-30"
+    },
+    {
+        "id": "sched-2026-08-30-million-machida-art-rally-2026-千秋楽",
+        "dedup_key": "million-machida-art-rally-2026",
+        "brand": "million",
+        "subject": "ミリオン町田アートラリー千秋楽",
+        "kind": "千秋楽",
+        "note": "全体開催最終日",
+        "reserved_on": "2026-07-14",
+        "facts": [
+            "全体開催期間は2026年7月14日〜8月30日"
+        ],
+        "title": "ミリオン×町田市アートラリー本日開幕",
+        "url": "https://idolmaster-official.jp/news/01_19305",
+        "source_type": "公式",
+        "verify": "confirmed",
+        "src_candidate_id": "202607131241-watch-1",
+        "event_date": "2026-08-30"
+    },
+    {
+        "id": "sched-2026-08-30-million-14th-live-開始",
+        "dedup_key": "million-14th-live",
+        "brand": "million",
+        "subject": "ミリオン14thLIVE 現地チケット一般販売・公式リセール開始",
+        "kind": "開始",
+        "note": "一般販売(先着)・公式リセール(抽選)受付開始日",
+        "reserved_on": "2026-08-24",
+        "facts": [
+            "一般販売(先着)は2026年8月30日(日)12:00〜9月12日(土)23:59",
+            "公式リセール(抽選)は2026年8月30日(日)15:00〜9月13日(日)9:59",
+            "一般販売の対象は全席指定席14,000円・立見指定13,500円・ステージサイド席13,500円(税込)。アリーナ前方席は完売のため取り扱いなし"
+        ],
+        "title": "ミリオン14th、現地チケット8/30受付開始",
+        "url": "https://idolmaster-official.jp/news/01_19676",
+        "source_type": "当事者",
+        "verify": "confirmed",
+        "src_candidate_id": "202608232010-watch-6"
+    },
+    {
+        "id": "sched-2026-08-30-cg-tower-tour-mirai-tower-nagoya-2026-終了",
+        "dedup_key": "cg-tower-tour-mirai-tower-nagoya-2026",
+        "brand": "cg",
+        "subject": "デレマス×全国タワーツアー MIRAI TOWER(名古屋)終了",
+        "kind": "終了",
+        "note": "名古屋会場の開催最終日",
+        "reserved_on": "2026-08-24",
+        "facts": [
+            "中部電力MIRAI TOWERで「アイドルマスター シンデレラガールズ×全国タワーツアー Silky Sparkling Summer Stage」を8/22〜8/30開催",
+            "コラボチケットは3F特設会場のみで販売(10:00〜17:30)、大人2,750円・小人2,200円",
+            "予約・WEB販売はなし。限定グッズ販売とミニゲームを実施"
+        ],
+        "title": "デレマス×MIRAI TOWERコラボが名古屋で開催",
+        "url": "https://www.nagoya-tv-tower.co.jp/event/20260822/",
+        "source_type": "当事者",
+        "verify": "confirmed",
+        "src_candidate_id": "202608232010-grok-73",
+        "event_date": "2026-08-22",
+        "deadline": "2026-08-30"
+    },
+    {
+        "id": "sched-2026-08-30-moiw2025-bluray-perfectbox-order-2026-締切",
+        "dedup_key": "moiw2025-bluray-perfectbox-order-2026",
+        "brand": "joint",
+        "subject": "MOIW2025 Blu-ray PERFECT BOX受注",
+        "kind": "締切",
+        "note": "受注締切",
+        "title": "MOIW2025 Blu-ray、8月30日まで受注",
+        "url": "https://x.com/imas_official/status/2091797662634828154",
+        "source_type": "公式",
+        "verify": "confirmed",
+        "src_candidate_id": "202608260216-grok-72",
+        "event_date": "2026-08-30",
+        "facts": [
+            "総勢118名出演・100曲以上を披露したMOIW2025のBlu-ray PERFECT BOX、受注は8月30日(日)まで(アソビストア)",
+            "vol.12配信記念プレゼントキャンペーンも実施中(Blu-ray購入・応募でサイン入りグッズ抽選5名)"
+        ],
+        "reserved_on": "2026-08-26"
+    }
 ]

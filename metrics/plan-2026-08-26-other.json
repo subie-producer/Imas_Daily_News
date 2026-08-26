@@ -1,0 +1,20 @@
+{
+  "articles": [
+    {
+      "slug": "other-cosmo-birthday-live-viewing-ticket-2026",
+      "brand": "other",
+      "rank": "small",
+      "angle": "上水流宇宙BIRTHDAY ONLINE LIVE 2026、限定グッズ付き現地ライブビューイングチケットが8/31一般発売開始",
+      "lead_score": 5,
+      "dedup_key": "va-liv-cosmo-birthday-2026",
+      "candidate_ids": ["202608251836-watch-0"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "tours-late-summer-campaign-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml の tours-late-summer-campaign-2026(first_published 2026-08-25)に告知日・キャンペーン名・8/28開始が既に published_facts として記録済み。今回の候補facts はそれを超える新事実なし。"
+    }
+  ]
+}

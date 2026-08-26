@@ -1,0 +1,20 @@
+[
+    {
+        "id": "sched-2026-09-07-shiny-noctchill-event-2026-終了",
+        "dedup_key": "shiny-noctchill-event-2026",
+        "brand": "shiny",
+        "subject": "ノクチル シナリオイベント「いつか風が止むその日まで」",
+        "kind": "終了",
+        "note": "イベント終了予定",
+        "title": "ノクチルの物語イベント、終了予定",
+        "url": "https://x.com/imassc_official/status/2092199583040631156",
+        "source_type": "公式",
+        "verify": "confirmed",
+        "src_candidate_id": "202608260216-grok-35",
+        "event_date": "2026-09-07",
+        "facts": [
+            "シナリオイベント「いつか風が止むその日まで」は9月7日11:59まで開催予定"
+        ],
+        "reserved_on": "2026-08-26"
+    }
+]

@@ -1,21 +1,58 @@
 [
- {
-  "id": "sched-2026-09-01-shiny-hbtk-september-mc-2026-開始",
-  "dedup_key": "shiny-hbtk-september-mc-2026",
-  "brand": "shiny",
-  "subject": "まったりHBTK 9月度MC",
-  "kind": "開始",
-  "note": "9月度放送開始",
-  "reserved_on": "2026-08-26",
-  "facts": [
-   "9月度MCは八巻アンナさん(白瀬咲耶役)・菅沼千紗さん(田中摩美々役)",
-   "9月1日放送回は八巻さんのソロMC、ゲストは涼本あきほさん・芝崎典子さん"
-  ],
-  "title": "まったりHBTK、9月MC放送開始",
-  "url": "https://x.com/shinyc_official/status/2092265240788369619",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608260216-grok-47",
-  "event_date": "2026-09-01"
- }
+    {
+        "id": "sched-2026-09-01-shiny-hbtk-september-mc-2026-開始",
+        "dedup_key": "shiny-hbtk-september-mc-2026",
+        "brand": "shiny",
+        "subject": "まったりHBTK 9月度MC",
+        "kind": "開始",
+        "note": "9月度放送開始",
+        "reserved_on": "2026-08-26",
+        "facts": [
+            "9月度MCは八巻アンナさん(白瀬咲耶役)・菅沼千紗さん(田中摩美々役)",
+            "9月1日放送回は八巻さんのソロMC、ゲストは涼本あきほさん・芝崎典子さん"
+        ],
+        "title": "まったりHBTK、9月MC放送開始",
+        "url": "https://x.com/shinyc_official/status/2092265240788369619",
+        "source_type": "公式",
+        "verify": "confirmed",
+        "src_candidate_id": "202608260216-grok-47",
+        "event_date": "2026-09-01"
+    },
+    {
+        "id": "sched-2026-09-01-gakumas-hatsuhoshi-ongakusai-bd-2026-締切",
+        "dedup_key": "gakumas-hatsuhoshi-ongakusai-bd-2026",
+        "brand": "gaku",
+        "subject": "初星音楽祭 Blu-ray受注",
+        "kind": "締切",
+        "note": "受注締切まで8月26日時点であと6日",
+        "title": "初星音楽祭Blu-ray受注締切",
+        "url": "https://x.com/gkmas_official/status/2092197798406181086",
+        "source_type": "公式",
+        "verify": "confirmed",
+        "src_candidate_id": "202608251836-claude-12",
+        "event_date": "2026-09-01",
+        "facts": [
+            "初星音楽祭Blu-rayの受注締切、購入先はアソビストア",
+            "ダイジェスト映像「雨上がりのアイリス」を公開"
+        ],
+        "reserved_on": "2026-08-26"
+    },
+    {
+        "id": "sched-2026-09-01-sidem-royal-chess-lounge-2026-終了",
+        "dedup_key": "sidem-royal-chess-lounge-2026",
+        "brand": "sidem",
+        "subject": "SideM×「Royal Chess Lounge」コラボカフェ 名古屋栄店",
+        "kind": "終了",
+        "note": "名古屋栄店開催終了",
+        "title": "Royal Chess Lounge、名古屋栄店終了",
+        "url": "https://idolmaster-official.jp/news/01_19442",
+        "source_type": "準公式",
+        "verify": "confirmed",
+        "src_candidate_id": "202608251235-claude-13",
+        "event_date": "2026-09-01",
+        "facts": [
+            "「Royal Chess Lounge」コラボカフェの名古屋栄店(SMILE BASE CAFE)は8月19日〜9月1日開催"
+        ],
+        "reserved_on": "2026-08-26"
+    }
 ]

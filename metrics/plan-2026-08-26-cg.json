@@ -1,0 +1,145 @@
+{
+  "articles": [
+    {
+      "slug": "cg-cinderella-master-cd-release-2026-08-26",
+      "brand": "cg",
+      "rank": "large",
+      "angle": "総選挙応援楽曲第3弾「大好きのブーケ」＆第4弾「すりーぷすきっぷ」を収録したCINDERELLA MASTER新作CDが本日発売、サブスク配信も同時スタート。投票券400枚分のシリアルコード封入",
+      "lead_score": 85,
+      "dedup_key": "cg-cinderella-master-bouquet-sleep-skip-2026",
+      "candidate_ids": [
+        "202608251235-claude-6",
+        "202608260216-grok-7",
+        "202608260216-grok-8",
+        "202608260216-grok-18",
+        "sched-2026-08-26-cg-cinderella-master-bouquet-sleep-skip-2026-発売"
+      ]
+    },
+    {
+      "slug": "cg-sleep-skip-mv-premiere-2026-08-26",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "応援曲第4弾「すりーぷすきっぷ」MVが本日21時にTHE IDOLM@STER CHANNELでプレミア公開。キャラデザ・ロゴ・イラストはきあと氏が担当",
+      "lead_score": 25,
+      "dedup_key": "cg-sleep-skip-mv-premiere-2026-08-26",
+      "candidate_ids": [
+        "202608260216-grok-6",
+        "202608260216-grok-9",
+        "202608260216-grok-10"
+      ]
+    },
+    {
+      "slug": "cg-venue-cd-post-event-sales-2026-08-26",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "会場限定CDの事後通販にIDOL WORLD SUPER FESTIVAL 2026分の3タイトルが新たに追加(Pop'n ToyBox!!分2タイトルは受付継続中)",
+      "lead_score": 5,
+      "dedup_key": "cg-venue-cd-post-event-sales-2026-08",
+      "candidate_ids": ["202608251836-claude-18"]
+    },
+    {
+      "slug": "cg-toybox-watchalong-2026-08-26",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "Pop'n ToyBox!!の同時視聴上映会とスタッフ振り返りトーク配信の開催が決定",
+      "lead_score": 10,
+      "dedup_key": "cg-toybox-watchalong-2026-08-25",
+      "candidate_ids": ["202608260216-grok-11"]
+    },
+    {
+      "slug": "cg-vote2026-100k-password-2026-08-26",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "シンデレラNo.1総選挙、10万回再生記念あいことば「ナンバーワン目指せ」を公開。入力で投票券を獲得",
+      "lead_score": 5,
+      "dedup_key": "cg-vote2026-100k-password-2026-08-25",
+      "candidate_ids": ["202608260216-grok-12"]
+    },
+    {
+      "slug": "cg-vote2026-poster-goods-2026-08-26",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "総選挙2026グッズ「公約四字熟語」出馬風ポスターが9/13まで受注中(8月24日発表分)",
+      "lead_score": 5,
+      "dedup_key": "cg-vote2026-poster-goods-2026-08-24",
+      "candidate_ids": ["202608260216-grok-16"]
+    },
+    {
+      "slug": "cg-vote2026-icon-frame-2026-08-26",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "総選挙2026記念アイコンフレームを配布中、投票期間は9月18日まで(8月24日発表分)",
+      "lead_score": 5,
+      "dedup_key": "cg-vote2026-icon-frame-2026-08-24",
+      "candidate_ids": ["202608260216-grok-17"]
+    },
+    {
+      "slug": "cg-toybox-vote-mission-2026-08-26",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "Pop'n ToyBox!!現地チケットの投票券ミッション反映方法を案内、配信チケット分の投票券受取は9/15から9/18まで(8月24日発表分)",
+      "lead_score": 5,
+      "dedup_key": "cg-toybox-vote-mission-2026-08-24",
+      "candidate_ids": ["202608260216-grok-21"]
+    },
+    {
+      "slug": "cg-15th-party-fukagawa-seria-2026-08-26",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "15th Anniversary Party DAY2(11/29)への深川芹亜の出演が所属事務所から伝えられる(未確認情報)",
+      "lead_score": 5,
+      "dedup_key": "cg-15th-party-fukagawa-seria-axlone-2026-08-25",
+      "candidate_ids": ["202608260216-grok-23"]
+    },
+    {
+      "slug": "cg-roundup-2026-08-26",
+      "brand": "cg",
+      "rank": "roundup",
+      "angle": "進行中の定常運営情報まとめ: トイボエクストラ4更新、ユニアリ総選挙サプライ新規カード公開、デレラジ次回(8/31)出演者",
+      "lead_score": 0,
+      "dedup_key": "cg-toybox-extra4-2026-08-25",
+      "candidate_ids": [
+        "202608260216-grok-14",
+        "202608260216-grok-15",
+        "202608260216-grok-19"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-15th-anniversary-party-2026",
+      "reason": "その他",
+      "note": "アソビストアプレミアム最速先行の申込期限は8/23 23:59で既に経過。本日トリガーとなる当日締切や結果発表もなく鮮度なし"
+    },
+    {
+      "dedup_key": "cg-popntoybox-live-2026",
+      "reason": "その他",
+      "note": "開催は8/13〜16で終了済み。終了済みイベントの紹介にあたり規程12により対象外"
+    },
+    {
+      "dedup_key": "shiny-livestream-2026-08-25",
+      "reason": "その他",
+      "note": "シンデレラガールズではなくシャイニーカラーズ(シャニマス)の話題でcg面の対象外。配信自体も8/25開催済で鮮度もない"
+    },
+    {
+      "dedup_key": "cg-popup-toppan-2026",
+      "reason": "既報",
+      "note": "秋葉原・5拠点サテライトの開催日程はstock/stories.ymlのcg-toppa-base-popup-2026として既報。新事実なし"
+    },
+    {
+      "dedup_key": "cg-coming-soon-2026-08-26-repost-0825",
+      "reason": "既報",
+      "note": "「8/26 12:00 Coming soon」ティザーはcg-million-coming-soon-2026-08-26として既報。本日12:00の発表内容そのものは未収集のため続報材料なし"
+    },
+    {
+      "dedup_key": "cg-coming-soon-2026-08-26-snowman",
+      "reason": "既報",
+      "note": "雪だるま絵柄のティザーもcg-million-coming-soon-2026-08-26で8月24日付として既報。新事実なし"
+    },
+    {
+      "dedup_key": "cg-dereradi-2026-08-24",
+      "reason": "その他",
+      "note": "8/24放送分は既に終了済みで当日トリガーなし。次回8/31出演告知はroundupで記事化"
+    }
+  ]
+}

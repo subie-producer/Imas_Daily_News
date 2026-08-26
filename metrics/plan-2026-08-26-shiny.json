@@ -1,0 +1,186 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-axe8-launch",
+      "brand": "shiny",
+      "rank": "large",
+      "angle": "新プロジェクト『Project\"ReLight\"AXE8』始動、第1弾アルストロメリア・第2弾イルミネーションスターズの新曲(BEAM/I=WE)と新SSR(桑山千雪/風野灯織)を一挙紹介",
+      "lead_score": 85,
+      "dedup_key": "shiny-axe8-alstroemeria-2026-08-25",
+      "candidate_ids": ["202608260216-grok-29", "202608260216-grok-30", "202608260216-grok-31", "202608260216-grok-32", "202608260216-grok-33", "202608260216-grok-34"]
+    },
+    {
+      "slug": "shiny-new-idol-teaser-stream-result",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "8/25生配信で予告されていた近日登場アイドルの正体が判明、P-SSR田中摩美々・P-SSR郁田はるきの私服イラストを公開",
+      "lead_score": 25,
+      "dedup_key": "shiny-new-idol-teaser-stream-2026-08-25",
+      "candidate_ids": ["sched-2026-08-26-shiny-new-idol-teaser-stream-2026-08-25-結果", "202608260216-grok-37", "202608260216-grok-38"]
+    },
+    {
+      "slug": "shiny-noctchill-scenario-event-0828",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "ノクチルの物語を描くシナリオイベント「いつか風が止むその日まで」が8/28開幕、期間は9/7まで",
+      "lead_score": 15,
+      "dedup_key": "shiny-noctchill-event-2026-08-28",
+      "candidate_ids": ["202608260216-grok-35"]
+    },
+    {
+      "slug": "shiny-whisper-voice-nichika",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "ささやきボイス第7弾は七草にちかに決定",
+      "lead_score": 10,
+      "dedup_key": "shiny-whisper-voice-nichika-2026-08-25",
+      "candidate_ids": ["202608260216-grok-36"]
+    },
+    {
+      "slug": "shiny-283-stage-full-release",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "新育成コンテンツ「283ステージ」がプレリリースから本リリースへ、変更点を紹介",
+      "lead_score": 20,
+      "dedup_key": "shiny-283-stage-full-release-2026-08-25",
+      "candidate_ids": ["202608260216-grok-40"]
+    },
+    {
+      "slug": "shiny-msp-ticket-general-sale-0829",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "ソロライブMSP現地チケットの一般発売(先着)が8/29正午開始予定",
+      "lead_score": 10,
+      "dedup_key": "shiny-msp-general-sale-2026-08-29",
+      "candidate_ids": ["202608260216-grok-41"]
+    },
+    {
+      "slug": "shiny-msp-streaming-ticket-onsale",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "ソロライブMSP配信チケットの販売が本日スタート、アーカイブ視聴も可能",
+      "lead_score": 10,
+      "dedup_key": "shiny-msp-streaming-ticket-2026-08-25",
+      "candidate_ids": ["202608260216-grok-42"]
+    },
+    {
+      "slug": "shiny-msp-official-resale-0905",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "ソロライブMSP公式リセール受付が9/5 15時開始予定",
+      "lead_score": 8,
+      "dedup_key": "shiny-msp-resale-2026-09-05",
+      "candidate_ids": ["202608260216-grok-43"]
+    },
+    {
+      "slug": "shiny-refrac7ions-general-preorder-0827",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "『shiny, the first REFRAC7IONS \"Still blue\"』アソビストア一般会員先行が8/27正午開始予定",
+      "lead_score": 12,
+      "dedup_key": "shiny-refrac7ions-general-preorder-2026-08-27",
+      "candidate_ids": ["202608260216-grok-44"]
+    },
+    {
+      "slug": "shiny-song-illumination-live-event-0831",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニソン新曲イベント「星々の綴るカンターレ」が8/31開催予定、報酬はSSR【ひかりのどけき】風野灯織",
+      "lead_score": 15,
+      "dedup_key": "shiny-song-illumination-event-2026-08-31",
+      "candidate_ids": ["202608260216-grok-45"]
+    },
+    {
+      "slug": "shiny-song-illumination-next-pickup-preview",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニソン次回ピックアップガシャはイルミネーションスターズの新しい姿、真乃・灯織の新限定カードを予告",
+      "lead_score": 12,
+      "dedup_key": "shiny-song-illumination-pickup-2026-08-25",
+      "candidate_ids": ["202608260216-grok-46"]
+    },
+    {
+      "slug": "shiny-hopeful-feathers-cd-release-info",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "CD『HOPEFUL FE@THERS』全3作のINDEX・ジャケット・店舗特典を解禁、9/16発売でポスター抽選会も(未確認情報を含む)",
+      "lead_score": 18,
+      "dedup_key": "shiny-hopeful-feathers-index-2026-08-25",
+      "candidate_ids": ["202608260216-grok-73"]
+    },
+    {
+      "slug": "shiny-parallel-collection-popup-shop",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "『ifの未来』を描くパラレルコレクションのPOP UP SHOP開催が決定(続報予告、未確認情報を含む)",
+      "lead_score": 8,
+      "dedup_key": "shiny-parallel-collection-popup-2026-08-25",
+      "candidate_ids": ["202608260216-grok-75"]
+    },
+    {
+      "slug": "shiny-coherent-light-ep26-free-reading",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "コミックス第5巻の続き・第26話がカドコミで無料公開中、連載再開は9/8",
+      "lead_score": 8,
+      "dedup_key": "shiny-coherent-light-ep26-free-2026-08-25",
+      "candidate_ids": ["202608260216-grok-96"]
+    },
+    {
+      "slug": "shiny-roundup-ongoing-ops-0826",
+      "brand": "shiny",
+      "rank": "roundup",
+      "angle": "進行中の運営情報まとめ:有償限定コスチュームガシャ開催中、グレフェスコインショップにS-SSR黛冬優子登場予定、まったりHBTK9月度MCは八巻アンナ・菅沼千紗、283ステージ報酬に新衣装(有栖川夏葉)追加予定",
+      "lead_score": 0,
+      "dedup_key": "shiny-costume-gacha-2026-08",
+      "candidate_ids": ["202608251235-claude-10", "202608260216-grok-39", "202608260216-grok-47", "202608260216-grok-48"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-august-2026-updates",
+      "reason": "重複",
+      "note": "AXE8始動・キャスコレ・シナリオイベント等は個別候補(dedup_key shiny-axe8-alstroemeria-2026-08-25ほか)で記事化済み、複数話題の寄せ集めのため規程13により不採用"
+    },
+    {
+      "dedup_key": "shiny-solo-live-msp-2026-09",
+      "reason": "既報",
+      "note": "会場・開催日は2026-07-12付stock/stories.yml(shiny-msp-goods-presale)で既報、facts内に新規のチケット販売詳細なし"
+    },
+    {
+      "dedup_key": "shiny-livestream-campaign-2026-08-25",
+      "reason": "その他",
+      "note": "配信終了(8/25)と同時にキャンペーンも終了、発行日(8/26)時点で新規性なし"
+    },
+    {
+      "dedup_key": "shiny-coherent-light-vol5-2026-08-25",
+      "reason": "既報",
+      "note": "第5巻発売・描き下ろしSPイラストはstock/stories.yml(shiny-coherent-light-novel-2026)で既報、新事実なし"
+    },
+    {
+      "dedup_key": "shiny-magical-forest-sekine-2026-08-25",
+      "reason": "個人の話題",
+      "note": "声優個人のSNS投稿を単体では記事化しない(編集規程4・5)"
+    },
+    {
+      "dedup_key": "shiny-chibi-plush-team-sol-2026",
+      "reason": "既報",
+      "note": "8/20展開開始はstock/stories.yml(shiny-team-sol-plushie-vol2-2026)で既報、新事実なし"
+    },
+    {
+      "dedup_key": "shiny-song-for-prism-event-2026",
+      "reason": "既報",
+      "note": "8/23開催はstock/stories.yml(shiny-karma-naraku-event-2026)で既報、セッション時間の追加のみで新事実の水準に届かず"
+    },
+    {
+      "dedup_key": "shiny-animethon-2026",
+      "reason": "既報",
+      "note": "8/7-9開催・8/8出演はstock/stories.yml(shiny-animethon-2026)で既報、新事実なし"
+    },
+    {
+      "dedup_key": "shiny-radio-special-2026-08-23",
+      "reason": "その他",
+      "note": "8/23放送済みで発行日(8/26)から3日経過、当日トリガーなく鮮度規程(12)により見送り"
+    }
+  ]
+}

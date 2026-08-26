@@ -1,0 +1,90 @@
+{
+ "collect": [
+  {
+   "at": "2026-08-26T02:16:42+09:00",
+   "edition": "2026-08-26",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 341,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "grok:765as": 6,
+    "grok:cinderella": 18,
+    "grok:million": 5,
+    "grok:shiny": 25,
+    "grok:sidem": 5,
+    "grok:gakuen": 8,
+    "grok:dsva": 7,
+    "grok:joint-other": 7,
+    "grok:trend": 19,
+    "grok:fan-culture": 19,
+    "claude:765as": 0,
+    "claude:cinderella": 0,
+    "claude:million": 0,
+    "claude:shiny": 6,
+    "claude:sidem": 1,
+    "claude:gakuen": 4,
+    "claude:dsva": 3,
+    "claude:joint-other": 0,
+    "claude:trend": 5,
+    "claude:fan-culture": 4
+   },
+   "normalized": 119,
+   "added": 112,
+   "verify": {
+    "confirmed": 80,
+    "unconfirmed": 36,
+    "failed": 3
+   },
+   "duration_s": 972
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-08-26T19:12:12+09:00",
+   "edition": "2026-08-26",
+   "rounds": 1,
+   "approved": true,
+   "lint_green": true,
+   "planned": 56,
+   "written": 52,
+   "roundups": 5,
+   "dropped": 73,
+   "coverage": {
+    "subjects": 161,
+    "covered": 161,
+    "missing": 0
+   },
+   "aborted": [
+    "gaku-hires-priceoff-deadline",
+    "gaku-chibi-mascot-vol2-preorder-deadline",
+    "million-idol-heroes-gacha-vol3",
+    "dsva-cosmo-bd-lv-limited-tickets-onsale"
+   ],
+   "duration_s": 3101
+  }
+ ]
+}

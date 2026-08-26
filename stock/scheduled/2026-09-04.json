@@ -1,22 +1,41 @@
 [
- {
-  "id": "sched-2026-09-04-sidem-divercity-tokyo-plaza-2026-開幕",
-  "dedup_key": "sidem-divercity-tokyo-plaza-2026",
-  "brand": "sidem",
-  "subject": "SideM×ダイバーシティ東京 プラザ",
-  "kind": "開幕",
-  "note": "コラボ開幕日",
-  "reserved_on": "2026-08-24",
-  "facts": [
-   "2026年9月4日(金)より、SideMとダイバーシティ東京プラザのコラボが開催",
-   "Café Parade・Legendersが夕暮れ時の海岸をイメージした新規描き下ろし衣装で登場",
-   "2FのDiverCity＋でコラボグッズを販売、スタンプラリー(5か所)達成でクリアファイルを進呈"
-  ],
-  "title": "SideM×ダイバーシティ東京プラザ 9/4開催",
-  "url": "https://idolmaster-official.jp/news/01_19664",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608232010-grok-37",
-  "event_date": "2026-09-04"
- }
+    {
+        "id": "sched-2026-09-04-sidem-divercity-tokyo-plaza-2026-開幕",
+        "dedup_key": "sidem-divercity-tokyo-plaza-2026",
+        "brand": "sidem",
+        "subject": "SideM×ダイバーシティ東京 プラザ",
+        "kind": "開幕",
+        "note": "コラボ開幕日",
+        "reserved_on": "2026-08-24",
+        "facts": [
+            "2026年9月4日(金)より、SideMとダイバーシティ東京プラザのコラボが開催",
+            "Café Parade・Legendersが夕暮れ時の海岸をイメージした新規描き下ろし衣装で登場",
+            "2FのDiverCity＋でコラボグッズを販売、スタンプラリー(5か所)達成でクリアファイルを進呈"
+        ],
+        "title": "SideM×ダイバーシティ東京プラザ 9/4開催",
+        "url": "https://idolmaster-official.jp/news/01_19664",
+        "source_type": "公式",
+        "verify": "confirmed",
+        "src_candidate_id": "202608232010-grok-37",
+        "event_date": "2026-09-04"
+    },
+    {
+        "id": "sched-2026-09-04-gakumas-another-idol-26-swimsuit-gacha-2026-締切",
+        "dedup_key": "gakumas-another-idol-26-swimsuit-gacha-2026",
+        "brand": "gaku",
+        "subject": "学マス「アナザーアイドル'26水着ガシャ」",
+        "kind": "締切",
+        "note": "開催終了予定",
+        "title": "アナザーアイドル'26水着ガシャ終了",
+        "url": "https://x.com/gkmas_official/status/2092177411093803052",
+        "source_type": "公式",
+        "verify": "confirmed",
+        "src_candidate_id": "202608260216-grok-56",
+        "event_date": "2026-09-04",
+        "facts": [
+            "「アナザーアイドル'26水着ガシャ」は9月4日(金)10:59まで(予定)",
+            "初回10連無料、有償限定・1回限りのSSR確定セレクトガシャも案内"
+        ],
+        "reserved_on": "2026-08-26"
+    }
 ]

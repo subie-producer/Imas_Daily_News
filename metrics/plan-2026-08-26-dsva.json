@@ -1,0 +1,52 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-cosmo-bd-lv-limited-tickets-onsale",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "上水流宇宙BIRTHDAY ONLINE LIVE 2026、限定グッズ付き現地LVチケットの販売期間が本日8/26〜8/30で開始(先行抽選とは別枠。一般先着8/31とは対象・期間が異なる点を明記し、規程14の期間ラベルを厳密に区別する)",
+      "lead_score": 35,
+      "dedup_key": "kamizuruyu-birthday-online-live-2026",
+      "candidate_ids": ["202608260216-claude-113"]
+    },
+    {
+      "slug": "dsva-cosmo-bd-lv-general-onsale-0831",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "上水流宇宙BIRTHDAY ONLINE LIVE 2026、現地LVの一般先着販売が8/31 12:00開始と告知(限定グッズ付き枠とは別の一般向け先着販売である点を明記)",
+      "lead_score": 15,
+      "dedup_key": "valiv-cosmo-bd-lv-general-2026-08-31",
+      "candidate_ids": ["202608260216-grok-59"]
+    },
+    {
+      "slug": "dsva-roundup-0826",
+      "brand": "dsva",
+      "rank": "roundup",
+      "angle": "vα-liv定常コンテンツ・運営情報まとめ(灯里愛夏のTikTok紹介ショート公開/上水流宇宙の踊ってみたショート公開/第12回オンライン1on1の当選者向け詳細メール送付完了)",
+      "lead_score": 0,
+      "dedup_key": "valiv-manaka-short-tiktok-2026-08-25",
+      "candidate_ids": [
+        "202608260216-grok-61",
+        "202608260216-grok-62",
+        "202608260216-grok-65"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "valiv-cosmo-bd-lv-preorder-deadline-2026-08-24",
+      "reason": "既報",
+      "note": "先行抽選申込8/24 23:59締切は8/24付で既報(stock: cosmo-birthday-online-live-2026)。新事実なし"
+    },
+    {
+      "dedup_key": "valiv-2026-08-25-night-lineup",
+      "reason": "その他",
+      "note": "8/25夜の配信ラインナップ告知で、発行日(8/26)時点では配信が終了済み。結果報告など当日トリガーの続報でもないため見送り"
+    },
+    {
+      "dedup_key": "valiv-manaka-codevein2-finale-2026-08-24",
+      "reason": "その他",
+      "note": "8/24夜の配信告知で、発行日(8/26)時点では配信が終了済み。結果報告など当日トリガーの続報でもないため見送り"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-mts10-mofumofu-release",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "MONTHLY THEME SONG第10弾「もふもふえん」本日発売。岡村直央・橘志狼・姫野かのんによる月替わり楽曲",
+      "lead_score": 15,
+      "dedup_key": "sidem-monthly-theme-song-2026-08-26",
+      "candidate_ids": ["202608251836-claude-10", "202608260216-claude-106"]
+    },
+    {
+      "slug": "sidem-joypolis3-ambassador",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "「SideM in JOYPOLIS 3」詳細公開。High×Jokerと神速一魂が東京ジョイポリス30周年アンバサダーに就任",
+      "lead_score": 20,
+      "dedup_key": "sidem-joypolis-3-ambassador-2026-08-25",
+      "candidate_ids": ["202608260216-grok-97"]
+    },
+    {
+      "slug": "sidem-11th-comment-yamaya",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM11th意気込みコメントリレー、本日は山谷祥生さん(蒼井享介役)",
+      "lead_score": 5,
+      "dedup_key": "sidem-11th-yamaya-comment-2026-08-25",
+      "candidate_ids": ["202608260216-grok-49"]
+    },
+    {
+      "slug": "sidem-royal-chess-lounge-cafe",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "Royal Chess Loungeコラボカフェ「SMILE BASE CAFE」、名古屋栄店で9月1日まで開催中",
+      "lead_score": 5,
+      "dedup_key": "sidem-royal-chess-lounge-2026",
+      "candidate_ids": ["202608251235-claude-13"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-knick-knacks-2026",
+      "reason": "既報",
+      "note": "8/21開催開始・ハンズ15店舗展開は8/24付で既報(sidem-hands-knickknacks-2026)。Hands50周年企画という付随情報のみで新事実薄く、本日トリガーもなし"
+    },
+    {
+      "dedup_key": "sidem-11th-stage-2026",
+      "reason": "既報",
+      "note": "現地チケット一般販売8/22開始は既報(sidem-11th-stage-2026)published_factsに同一事実あり"
+    },
+    {
+      "dedup_key": "sidem-livertine-age-2026",
+      "reason": "その他",
+      "note": "受注締切は8/25(前日)で本日時点ですでに終了。締切当日等の本日トリガーがなく鮮度規程(12)により見送り"
+    },
+    {
+      "dedup_key": "sidem-murase-ayumi-graduation-2026",
+      "reason": "既報",
+      "note": "8/18発表の姫野かのん役卒業は8/24付で既報(sidem-murase-himeno-graduation-2026)。同一事実の重複"
+    },
+    {
+      "dedup_key": "sidem-11th-takatsuka-comment-2026-08-24",
+      "reason": "既報",
+      "note": "8/24高塚智人さんの意気込みコメントはsidem-11th-stage-2026のpublished_factsに記載済み"
+    },
+    {
+      "dedup_key": "sidem-deramasu-popup-manga10-2026-08-25",
+      "reason": "既報",
+      "note": "でらます×SideM名古屋コラボ(既報deramasu-sidem-special-site-update-20260713)の一環。マンガ展23日目オープンの告知のみで新事実なし、開催日も前日(8/25)、verify unconfirmed"
+    },
+    {
+      "dedup_key": "sidem-cfirst-release-event-report-2026-08-24",
+      "reason": "出典不足",
+      "note": "8/8開催イベント(既報sidem-cfirst-riyuatte-liveevent-2026)の振り返りレポート公開。本日トリガーなし、verify unconfirmed"
+    },
+    {
+      "dedup_key": "sidem-monthly-theme-song-10-mofumofu-2026",
+      "reason": "重複",
+      "note": "sidem-monthly-theme-song-2026-08-26と同一トピック(MTS10もふもふえん本日発売)。記事sidem-mts10-mofumofu-releaseに統合"
+    }
+  ]
+}

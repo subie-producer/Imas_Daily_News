@@ -17,6 +17,8 @@
   - 東京公演まで残り3日、公式が千秋楽と案内(27日亜美・真美、28日あずさ・律子、いずれも19時開演、Zepp Haneda)
   - 現地チケットは残りわずかと8/24付で告知、一般先着2次開始・当日券販売決定を8/23付で案内
   - 大阪・名古屋公演のステージ映像を続々公開(あずさ・律子「CRIMSON LOVERS」「arcadia」、亜美・真美「紅白応援V」「北極星をズラしちゃえ！」「ジャングル☆パーティー」)
+  - 8月27日「ふたごぼしのつばさ」は1Fに女性専用エリアを設置、8月28日「つみまつよるまち」は新曲『Binary Star』のステージ映像を先行公開
+  - 終演後、ばくすて！とーく生ラジオをYouTubeアイドルマスターチャンネルで配信(27日:下田麻美・浅倉杏美、28日:若林直美・たかはし智秋)
 - story_id: million-9th-anniversary-mission
   brand: million
   subject: ミリシタ9周年アニバーサリーミッションとイベント「最上級:Invit@tion!」
@@ -232,6 +234,9 @@
   - ミッションチャレンジ期間7/1 12:00〜9/14 23:59
   - 投票期間8/3 12:00〜9/18 23:59、上位5名がxRライブ出演権獲得
   - プレミアムミッション上限は1人60,000枚
+  - シンデレラNo.1、10万回再生記念のあいことば「ナンバーワン目指せ」を8月25日付で公開(投票券獲得)
+  - 総選挙2026記念アイコンフレームを配布中(8月24日付告知)
+  - 「公約四字熟語」出馬風ポスターを受注中、9月13日23:59締切、アソビストア特集ページで販売
 - story_id: shiny-illumine-anisama2026
   brand: shiny
   subject: アニサマ2026にイルミネーションスターズ出演
@@ -277,6 +282,7 @@
   published_facts:
   - 当落発表は2026年7月11日
   - ファン報告では片日のみ当選するケースが多い(未確認情報)
+  - アソビストア一般会員先行を8月27日正午から開始予定
 - story_id: shiny-twacolle-hazuki-summer
   brand: shiny
   subject: トワイライトコレクション 七草はづきS-SSR
@@ -424,8 +430,7 @@
   - 876 PRODUCTION Dearly Stars盤(SACX-1148)・シンデレラガールズ各盤(SACX-1141〜1143、投票券500枚シリアル封入)も発売
   - 物販時間は7/24 9:00〜18:30、7/25・26 9:00〜18:00、デジタル注文書は7/21 13:00開始
   - カードフォリオ「IWSF2026プレミアムパック」(単品600円・BOX6,000円)も同時販売
-  - Disc1は玲音の新曲「エクストリーム・オーバードライブ」を含む961PRODUCTION&KOHAKU楽曲全6トラックを収録(961&KOHAKU&765PRO
-    ALLSTARS盤)
+  - Disc1は玲音の新曲「エクストリーム・オーバードライブ」を含む961PRODUCTION&KOHAKU楽曲全6トラックを収録(961&KOHAKU&765PRO ALLSTARS盤)
 - story_id: 765-namco-summer-market-hakuhinkan-2026
   brand: '765'
   subject: ナムコ ゲームセレクション サマーマーケット in 博品館TOY PARK
@@ -467,6 +472,9 @@
   - 応援タオル等の数量限定グッズは7/20まで販売
   - 会場オリジナルCD2タイトル「Poppin' para Pong!」(赤城みりあ・市原仁奈・椎名法子)「Cookie Dough」(高垣楓・三船美優・大和亜季)の事後通販を受付中、各3,500円
   - 各CDに総選挙投票券700枚に引換可能なシリアルコード封入、受付は8/31 23:59まで、発送は9/11予定
+  - トイボックス・エクストラ4「はぁとに火をつけて♪」を更新、感想は#トイボノベルで募集中
+  - 現地チケット購入者向け投票券ミッションを反映(8月24日付)、配信チケット分の投票券受取は9月15日12:00〜9月18日23:59
+  - 同時視聴上映会とスタッフ振り返りトークの配信を決定(8月25日付)
 - story_id: cg-popn-toybox-general-lottery-2026
   brand: cg
   subject: Pop'n ToyBox!! アソビストア一般会員先行当落
@@ -710,6 +718,7 @@
   - 現地チケット一般販売を8月22日12時開始、受付は9月5日23時59分まで
   - 公式リセールを8月22日15時〜9月6日9時59分まで実施
   - 出演キャストの意気込みコメントを順次公開(8/22小松昌平さん=牙崎漣役、8/23伊瀬結陸さん=天峰秀役、8/24高塚智人さん=渡辺みのり役)
+  - 意気込みコメントリレー、8月25日付は山谷祥生さん(蒼井享介役)を紹介
 - story_id: cg-star-village-achi-summer-2026
   brand: cg
   subject: シンデレラガールズ×スタービレッジ阿智 コラボ2026
@@ -995,8 +1004,7 @@
   status: active
   first_published: '2026-07-15'
   published_facts:
-  - 7月15日11時より楽曲(秦谷美鈴・雨夜燕・葛城リーリヤ)を復刻、同時刻に復刻SSR「よくやったな、倉本。」を含む「復刻Howling over the World
-    千奈&リーリヤガシャ」も開催
+  - 7月15日11時より楽曲(秦谷美鈴・雨夜燕・葛城リーリヤ)を復刻、同時刻に復刻SSR「よくやったな、倉本。」を含む「復刻Howling over the World 千奈&リーリヤガシャ」も開催
 - story_id: gaku-kotobukiya-hataya-figure-2026
   brand: gaku
   subject: コトブキヤ 秦谷美鈴フィギュア
@@ -1028,6 +1036,7 @@
   - vol.8は7月14日22時にYouTube「アイマスch」でプレミア公開、我那覇響ら出演
   - 配信記念プレゼントキャンペーン(抽選でサイン入りグッズ)を実施
   - 次回vol.9は7月28日(火)公開予定
+  - vol.12(最終回)の配信を8月25日に開始、配信記念にサイン入りグッズを抽選5名にプレゼント(応募はBlu-ray購入者対象)
 - story_id: ofamas-aoyagi-pierre-2026
   brand: joint
   subject: オファマス 青柳総本家大須本店ピエールパネル
@@ -1151,6 +1160,7 @@
   - シンデレラガールズ・ミリオンライブ公式Xが8月23日、青黄配色で「8/26(wed) 12:00 Coming soon!」を同時投稿
   - 投稿時点で企画名・内容は非公開
   - 8月24日付投稿では、シンデレラガールズ側に雪だるま、ミリオンライブ側にマイクの絵文字を配置
+  - 8月26日正午の情報公開当日を迎える、本紙掲載時点(正午前)では内容未公開
 - story_id: cg-tower-tour-mirai-tower-nagoya-2026
   brand: cg
   subject: デレマス×全国タワーツアー MIRAI TOWER(名古屋)
@@ -1167,6 +1177,8 @@
   published_facts:
   - 9月12日(20歳の誕生日)開催。現地LVチケットの先行抽選申込はLivePocketで受付、8月24日23:59締切
   - 配信チケットはアソビストアの案内ページから確認可能
+  - 現地LVチケット一般先着販売(限定グッズ付き枠とは別枠)を8月31日12:00から開始
+  - 限定グッズ付き現地LVチケットは一般先着8月31日12:00開始、受付は9月12日14:00まで、価格9,000円(税込)、会場はユナイテッド・シネマ アクアシティお台場3番スクリーン
 - story_id: futamas-shikaoi-2026
   brand: joint
   subject: 位置情報連動企画「ふたマス」北海道鹿追町
@@ -1299,6 +1311,8 @@
   - 8月26日発売、価格2,000円(税込)、コロムビアミュージックショップ・アソビストア限定販売
   - 総選挙応援楽曲第3弾「大好きのブーケ」・第4弾「すりーぷすきっぷ」とボーナストラック8曲を収録
   - シンデレラガール総選挙2026の投票券400枚に引換可能なシリアルコードを封入
+  - 8月26日発売日を迎え、収録曲のサブスク・ダウンロード配信も同日スタート
+  - 「すりーぷすきっぷ」MVを8月26日21時からTHE IDOLM@STER CHANNELでプレミア公開、キャラ・ロゴデザインはきあと氏
 - story_id: shiny-coherent-light-novel-2026
   brand: shiny
   subject: シャニマス「Song for Prism」連載小説『コヒーレントライト』
@@ -1307,6 +1321,7 @@
   published_facts:
   - 第5巻が8月25日発売、同日にWeb版も更新
   - 緒原博綺先生描き下ろしのSPイラストを公開予定
+  - コミックス第5巻の続きとなる第26話をカドコミで無料公開中、連載は9月8日に再開予定
 - story_id: gakumas-shirube-livetour-2026
   brand: gaku
   subject: 学園アイドルマスター LIVE TOUR -標-(福井公演・福岡公演)
@@ -1320,6 +1335,7 @@
   - 公式が両日の視聴コメント付きアーカイブを公開、公演アンケートも実施中
   - 福岡公演は9月5日(土)・6日(日)、福岡サンパレス ホテル＆ホールで開催、出演は花海咲季・月村手毬・藤田ことね・篠澤広・雨夜燕
   - 福岡公演は全席指定11,000円・立ち見指定10,500円、一般先着は8月26日23:59まで、公式リセールは8月27日9:59まで
+  - 福岡公演の現地チケット一般先着は本日8月26日23:59に締切
 - story_id: gakumas-swimsuit-gacha-hataya-2026
   brand: gaku
   subject: 学マス水着ガシャ(秦谷美鈴)
@@ -1327,6 +1343,8 @@
   first_published: '2026-08-25'
   published_facts:
   - 8月26日から水着ガシャ開始と公式が告知、対象は秦谷美鈴
+  - 8月26日、水着ガシャが正式に開始(#秦谷美鈴)
+  - (ファン報告・未確認)性能・サポートカードイラストの詳細が出たとの投稿あり
 - story_id: gakumasu-3rd-single-wave3-2026
   brand: gaku
   subject: 初星学園3rdシングルCDシリーズ第三弾
@@ -1336,6 +1354,7 @@
   - 8月26日一斉発売、十王星南・花海咲季・花海佑芽・秦谷美鈴の4タイトルを展開
   - 各CDにアプリゲーム最新シナリオ「STEP3」に寄り添った新規ソロ楽曲を収録
   - 校歌「標」と「ENDLESS DANCE」のソロ歌唱バージョンを限定収録
+  - 8月26日発売日を迎え4タイトルが一斉リリース
 - story_id: mltd-extreme-livestream-2026
   brand: million
   subject: ミリシタ Extreme 生配信
@@ -1372,6 +1391,7 @@
   - 8月24日付で「近日登場予定のアイドルをチラ見せ」と告知、配信内での発表を予告(正体は末公開)
   - シャニソン側も配信内で最新情報・機能アップデートを案内予定と告知
   - 配信はニコニコ生放送・YouTube Live(アイドルマスターチャンネル)・enza・公式Xで実施
+  - 8月25日配信で近日登場アイドルの正体が判明、P-SSR田中摩美々・郁田はるきの私服イラストを公開
 - story_id: tours-late-summer-campaign-2026
   brand: joint
   subject: ツアマス「2026レイトサマーキャンペーン 晩夏の調べ」
@@ -1383,3 +1403,217 @@
   - 周防桃子のほか萩原雪歩・小宮果穂・硲道夫・島村卯月・紫雲清夏のカードイラストも紹介
   - 景品はオリジナルカード全12種(12ポイント)、カードストレージボックス全6種(36ポイント)、「MIXING PARADE」ライブTシャツ(120ポイント)
   - 対象店舗でアミューズメントICを使用、1クレジット(100円)につき1ポイント、景品はなくなり次第終了
+  - カードに収録の「恋花小町」「暁光ノ装」の着こなしを8月25日付で紹介
+- story_id: cg-15th-anniversary-party-2026
+  brand: cg
+  subject: THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSARY PARTY!!!! ~for your ONE~
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 深川芹亜がDAY2(11月29日、Kアリーナ横浜)への出演をアクセルワンスタッフが8月25日付で告知(所属事務所発、未確認情報)
+  - DAY2は開場15時30分・開演17時
+- story_id: cg-venue-cd-post-event-sales-2026
+  brand: cg
+  subject: シンデレラガールズ会場オリジナルCD5タイトル事後通販
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - Pop'n ToyBox!!(8/13〜16)分2タイトル、IDOL WORLD SUPER FESTIVAL 2026分3タイトルの計5タイトルを事後通販
+  - 各CDに総選挙投票券相当のシリアルコードが付属、8月21日付で案内
+- story_id: cg-union-arena-vote2026-supply-set-2026
+  brand: cg
+  subject: UNION ARENA『アイドルマスター シンデレラガールズ スペシャルカードサプライセット』
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 収録R「大槻唯」を動画で紹介、箔押し加工デザイン
+  - 予約受付は8月31日23:59まで
+- story_id: valiv-ops-roundup-2026-08
+  brand: dsva
+  subject: vα-liv定常運営情報(ショート動画・1on1案内)
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 灯里愛夏のショート動画「TikTokがいいわよ!」公開(8月25日付)
+  - 上水流宇宙の【踊ってみた】「Dance The Night Away / TWICE」公開(8月24日付)
+  - 第12回オンライン1on1、当選者への詳細案内メール送付完了(8月25日付)
+- story_id: gakumas-gravure-solo-collection-vol1-2026
+  brand: gaku
+  subject: 学マス新CDシリーズ「Gravure Solo Collection」第1弾
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - Vol.1「ねえ、言っちゃうよ。」は11月18日発売予定、3,500円(税込)
+  - 月村手毬・秦谷美鈴・十王星南の3人歌唱版に加え、13名のソロ歌唱Full ver.・インスト版を含む全15曲収録
+  - 予約は9月27日まで、店舗ごとに特典が異なる
+- story_id: gaku-hataya-memory-costume-2026
+  brand: gaku
+  subject: 秦谷美鈴の思い出衣装(常設)
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 8月26日11時から常設解放、対象はストーリーイベント「生徒会1年組の日常」の「お気に入りの私服」
+  - (ファン報告・未確認)常設イベント詳細が追加されたとの投稿あり
+- story_id: gaku-hif-memorial-single-2026
+  brand: gaku
+  subject: 学マス2周年記念メモリアルシングル「ガラクタロード」
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 8月26日発売、H.I.F編テーマ曲を13名全員歌唱版・ソロ歌唱版で収録
+  - 通常版3,500円(税込)、アソビストア限定特装盤5,000円(税込・「初」「Campus mode!!」「標」13人ユニット版を追加収録)
+- story_id: gakumas-nee-icchauyo-series-2026
+  brand: gaku
+  subject: 学マス「ねえ、言っちゃうよ。」アイドル別追加ボイス
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 秦谷美鈴版を8月26日11時から追加(作詞・作曲・編曲アオワイファイ)
+  - 十王星南版・月村手毬版も8月26日10:59まで期間限定で追加(いずれもアオワイファイ作)
+- story_id: sidem-monthly-theme-song-10-mofumofu-2026
+  brand: sidem
+  subject: SideM MONTHLY THEME SONG第10弾「もふもふえん」
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 8月26日発売、歌唱は岡村直央・橘志狼・姫野かのん、品番LACM-24790、価格2,200円(税込)
+- story_id: sidem-royal-chess-lounge-2026
+  brand: sidem
+  subject: SideM×「Royal Chess Lounge」コラボカフェ(SMILE BASE CAFE)
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 名古屋栄店は8月19日〜9月1日開催中
+  - 心斎橋店は9月12日〜24日、池袋店は10月8日〜20日に順次開催予定
+- story_id: sidem-joypolis3-2026
+  brand: sidem
+  subject: アイドルマスター SideM in JOYPOLIS 3
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 2026年9月12日〜12月6日、東京ジョイポリスで開催、8月25日付で詳細公開
+  - High×Jokerと神速一魂が東京ジョイポリス30周年アンバサダーに就任、館内アナウンス等にも登場
+  - 対象アイドル12名のバースデー企画も期間中に実施予定
+- story_id: moiw2025-bluray-perfectbox-order-2026
+  brand: joint
+  subject: MOIW2025 Blu-ray PERFECT BOX受注
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 総勢118名出演・100曲以上収録、受注は8月30日まで(アソビストア)
+- story_id: tours-spring-exchange-2026
+  brand: joint
+  subject: ツアマス スプリングキャンペーン景品交換対応
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 交換対応は8月31日で終了、未交換の場合は期限までの対応が必要
+- story_id: million-battle-of-theater-ex04-2026
+  brand: million
+  subject: 音声ドラマCD「MILLION BATTLE OF THE@TER EX04 Stick to my weapon」
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 8月26日発売、価格2,970円(税込)、EXシリーズ第4弾
+  - 出演はジュリア・高槻やよい・天海春香・馬場このみ・福田のり子・舞浜歩
+- story_id: shiny-283-stage-2026
+  brand: shiny
+  subject: シャニマス新育成コンテンツ「283ステージ」
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 8月25日付でプレリリースから本リリースへ移行、変更点の案内あり
+- story_id: shiny-axe8-2026
+  brand: shiny
+  subject: Project "ReLight" AXE8
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 第1弾アルストロメリア(新曲「BEAM」・S-SSR桑山千雪【Grow to Glow】)、第2弾イルミネーションスターズ(新曲「I=WE」・S-SSR風野灯織【分景】)を8月25日付で発表
+  - 新曲は後日ゲーム内追加予定、新SSRは後日サポートSSRとして登場予定(具体的日程は未告知)
+- story_id: shiny-msp-live-tickets-2026
+  brand: shiny
+  subject: シャニマスソロライブMSPチケット
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 配信チケット販売が8月26日開始、アーカイブ視聴も可能
+  - 現地一般先着は8月29日正午開始予定
+  - 公式リセールは9月5日15時開始予定
+  - 本編は9月26日・27日、京王アリーナTOKYOで開催
+- story_id: shiny-parallel-collection-popup-2026
+  brand: shiny
+  subject: シャニマス「パラレルコレクション」POP UP SHOP
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 283PRODUCTION SHOPが8月25日付で開催決定を告知、ifの未来を描く新商品を販売予定
+  - パラコレイラストの制作コメント・一部ラフイラストも展示予定
+- story_id: shiny-costume-gacha-2026-08
+  brand: shiny
+  subject: シャニマス有償限定コスチュームガシャ(2026年8月)
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 8月15日開催中、28人分の新規水着衣装と2018〜2024年水着衣装の復刻、10連の最後の1枚は新水着確定
+  - 開催期間は9月7日11:59まで予定
+- story_id: shiny-grefes-coinshop-mayuzumi-2026
+  brand: shiny
+  subject: グレフェスコインショップ 黛冬優子
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - S-SSR【「忘れないでね」】黛冬優子が登場予定と8月25日付で案内
+- story_id: shanison-illumination-stars-event-2026
+  brand: shiny
+  subject: シャニソン イルミネーションスターズ新曲イベント・次回PU
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 新曲イベント「星々の綴るカンターレ」を8月31日開催予定、報酬はSSR【ひかりのどけき】風野灯織
+  - 次回ピックアップガシャに限定★3【幸せのそらもよう】櫻木真乃・【幸せのさざなみ】風野灯織・【幸せのまなざし】八宮めぐるが登場予定(8月25日付告知)
+- story_id: shiny-whisper-voice-nichika-2026
+  brand: shiny
+  subject: シャニマス「ささやきボイス」第7弾
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 担当アイドルは七草にちかに決定(8月25日付告知)
+- story_id: shiny-hopeful-feathers-cd-2026
+  brand: shiny
+  subject: シャニマスCDシリーズ『HOPEFUL FE@THERS』(-Stella-/-Luna-/-Sol-)
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 3作とも9月16日発売、各INDEX・ジャケット・店舗特典を解禁(8月25日付)
+  - アイドル28人の新ソロ曲ほかを収録、ポスター抽選会の実施も決定
+  - -Stella-の1曲目は「MAGICAL FOREST」、櫻木真乃のソロ曲
+- story_id: shiny-hbtk-september-mc-2026
+  brand: shiny
+  subject: まったりHBTK 9月度MC
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 9月度MCは八宮アンナさん(白瀬咲耶役)・菅沼千紗さん(田中摩美々役)
+  - 9月1日放送回は八宮さんのソロMC、ゲストは涼本あきほさん・芝崎典子さん、おたよりは8月26日頃まで受付
+- story_id: gakumas-hatsuhoshi-ongakusai-bd-2026
+  brand: gaku
+  subject: 初星音楽祭 Blu-ray
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 受注締切まで残り6日(8月26日時点)、ダイジェスト映像「雨上がりのアイリス」を公開、購入先はアソビストア
+- story_id: gakumas-another-idol-26-swimsuit-gacha-2026
+  brand: gaku
+  subject: 学マス「アナザーアイドル'26水着ガシャ」
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 9月4日10:59まで(予定)、初回10連無料、有償限定・1回限りのSSR確定セレクトガシャも案内
+- story_id: gakumas-natsukaze-onepiece-event-2026
+  brand: gaku
+  subject: 学マス新ストーリーイベント「夏風ワンピース」
+  status: active
+  first_published: '2026-08-26'
+  published_facts:
+  - 8月26日10:59まで(予定)開催

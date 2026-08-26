@@ -1,0 +1,122 @@
+{
+  "articles": [
+    {
+      "slug": "general-moiw-radio-vol12-campaign",
+      "brand": "general",
+      "rank": "small",
+      "angle": "MOIW2025振り返りラジオvol.12配信を記念したBlu-ray購入者向けプレゼントキャンペーン、応募期間8/24〜8/30を告知",
+      "lead_score": 10,
+      "dedup_key": "moiw-2025-radio-campaign",
+      "candidate_ids": ["202608252337-watch-0"]
+    },
+    {
+      "slug": "general-gakumas-hataya-swimsuit-gacha-detail",
+      "brand": "general",
+      "rank": "small",
+      "angle": "本日開始の秦谷美鈴水着ガシャ、性能・サポートカードイラストの詳細が判明(未確認・ファン筋)",
+      "lead_score": 10,
+      "dedup_key": "trend-gakumas-hataya-gacha-summary-2026-08-25",
+      "candidate_ids": ["202608260216-grok-81"]
+    },
+    {
+      "slug": "general-gakumas-hataya-memory-outfit",
+      "brand": "general",
+      "rank": "small",
+      "angle": "秦谷美鈴の思い出衣装が本日より常設イベントとして追加(未確認・ファン筋)",
+      "lead_score": 5,
+      "dedup_key": "trend-gakumas-hataya-memory-summary-2026-08-25",
+      "candidate_ids": ["202608260216-grok-82"]
+    },
+    {
+      "slug": "general-shiny-hopeful-feathers-stella-cd",
+      "brand": "general",
+      "rank": "small",
+      "angle": "シャニマス新曲CD「HOPEFUL FE@THERS -Stella-」9/16発売、櫻木真乃ソロ曲収録を公式告知",
+      "lead_score": 20,
+      "dedup_key": "trend-hopeful-feathers-stella-2026-08-25",
+      "candidate_ids": ["202608260216-grok-84"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "trend-cg-million-coming-soon-2026-08-26",
+      "reason": "既報",
+      "note": "色・絵文字などの事実は既存ストーリー(cg-million-coming-soon-2026-08-26)で既報。個人アカウントが同じ内容に便乗しただけで新事実なし"
+    },
+    {
+      "dedup_key": "trend-shiny-new-idol-tease-2026-08-24",
+      "reason": "その他",
+      "note": "予告対象の生配信は8/25開催済みで発行日(8/26)より前。結果・発表内容の材料がなく鮮度規程(12)に抵触するため見送り"
+    },
+    {
+      "dedup_key": "trend-million-usuhoso-2026-08-24",
+      "reason": "個人の話題",
+      "note": "個人のSNS投稿によるネタ・私見、単体記事化の対象外(規程4)"
+    },
+    {
+      "dedup_key": "trend-usuhoso-bmi-ranking-2026-08-25",
+      "reason": "個人の話題",
+      "note": "個人のSNS投稿によるキャラクターの体型ネタ、単体記事化の対象外(規程4)"
+    },
+    {
+      "dedup_key": "trend-futamas-shikaoi-1100-2026-08-24",
+      "reason": "既報",
+      "note": "来場者約1100人の事実は既存ストーリー(futamas-shikaoi-2026)で既に掲載済み"
+    },
+    {
+      "dedup_key": "trend-komagata-nocte-live-2026-08-25",
+      "reason": "個人の話題",
+      "note": "声優個人の誕生日記念ワンマンライブで、アイマス外活動のため対象外(規程4)"
+    },
+    {
+      "dedup_key": "fan-chihaya-oath-cosplay-2026-08-25",
+      "reason": "個人の話題",
+      "note": "個人のコスプレ投稿(規程4)"
+    },
+    {
+      "dedup_key": "fan-chihaya-atre-fanart-2026-08-24",
+      "reason": "個人の話題",
+      "note": "個人のファンアート投稿(規程4)"
+    },
+    {
+      "dedup_key": "fan-tuesday-zeppeki-2026-08-24",
+      "reason": "個人の話題",
+      "note": "個人のイラスト投稿(規程4)"
+    },
+    {
+      "dedup_key": "fan-haruka-messi-2026-08-23",
+      "reason": "個人の話題",
+      "note": "個人の私見投稿(規程4)"
+    },
+    {
+      "dedup_key": "fan-mami-fanart-12-52-2026-08-24",
+      "reason": "個人の話題",
+      "note": "個人のファンアート投稿(規程4)"
+    },
+    {
+      "dedup_key": "fan-shimoda-hanishi-day-2026-08-24",
+      "reason": "個人の話題",
+      "note": "声優本人の私的な語呂合わせ投稿(規程4)"
+    },
+    {
+      "dedup_key": "fan-coherent-light-ohara-vol5-2026-08-25",
+      "reason": "既報",
+      "note": "第5巻8/25発売の事実は既存ストーリー(shiny-coherent-light-novel-2026)で既報。ドラマCD脚本担当は付随情報で新事実として独立記事化するには不足"
+    },
+    {
+      "dedup_key": "fan-liliya-manga-2026-08-25",
+      "reason": "個人の話題",
+      "note": "個人の二次創作漫画投稿(規程4)"
+    },
+    {
+      "dedup_key": "fan-iku-dancer-fanart-2026-08-25",
+      "reason": "個人の話題",
+      "note": "個人のファンアート投稿(規程4)"
+    },
+    {
+      "dedup_key": "fan-million-usuhoso-habanero-2026-08-25",
+      "reason": "個人の話題",
+      "note": "個人のSNS投稿によるキャラクター体型ネタ、単体記事化の対象外(規程4)"
+    }
+  ]
+}

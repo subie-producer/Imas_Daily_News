@@ -1,0 +1,1024 @@
+{
+ "articles": [
+  {
+   "slug": "shiny-axe8-launch",
+   "brand": "shiny",
+   "rank": "lead",
+   "angle": "新プロジェクト『Project\"ReLight\"AXE8』始動、第1弾アルストロメリア・第2弾イルミネーションスターズの新曲(BEAM/I=WE)と新SSR(桑山千雪/風野灯織)を一挙紹介",
+   "lead_score": 85,
+   "dedup_key": "shiny-axe8-alstroemeria-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-29",
+    "202608260216-grok-30",
+    "202608260216-grok-31",
+    "202608260216-grok-32",
+    "202608260216-grok-33",
+    "202608260216-grok-34"
+   ]
+  },
+  {
+   "slug": "shiny-new-idol-teaser-stream-result",
+   "brand": "shiny",
+   "rank": "medium",
+   "angle": "8/25生配信で予告されていた近日登場アイドルの正体が判明、P-SSR田中摩美々・P-SSR郁田はるきの私服イラストを公開",
+   "lead_score": 25,
+   "dedup_key": "shiny-new-idol-teaser-stream-2026-08-25",
+   "candidate_ids": [
+    "sched-2026-08-26-shiny-new-idol-teaser-stream-2026-08-25-結果",
+    "202608260216-grok-37",
+    "202608260216-grok-38"
+   ]
+  },
+  {
+   "slug": "shiny-noctchill-scenario-event-0828",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "ノクチルの物語を描くシナリオイベント「いつか風が止むその日まで」が8/28開幕、期間は9/7まで",
+   "lead_score": 15,
+   "dedup_key": "shiny-noctchill-event-2026-08-28",
+   "candidate_ids": [
+    "202608260216-grok-35"
+   ]
+  },
+  {
+   "slug": "shiny-whisper-voice-nichika",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "ささやきボイス第7弾は七草にちかに決定",
+   "lead_score": 10,
+   "dedup_key": "shiny-whisper-voice-nichika-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-36"
+   ]
+  },
+  {
+   "slug": "shiny-283-stage-full-release",
+   "brand": "shiny",
+   "rank": "medium",
+   "angle": "新育成コンテンツ「283ステージ」がプレリリースから本リリースへ、変更点を紹介",
+   "lead_score": 20,
+   "dedup_key": "shiny-283-stage-full-release-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-40"
+   ]
+  },
+  {
+   "slug": "shiny-msp-ticket-general-sale-0829",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "ソロライブMSP現地チケットの一般発売(先着)が8/29正午開始予定",
+   "lead_score": 10,
+   "dedup_key": "shiny-msp-general-sale-2026-08-29",
+   "candidate_ids": [
+    "202608260216-grok-41"
+   ]
+  },
+  {
+   "slug": "shiny-msp-streaming-ticket-onsale",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "ソロライブMSP配信チケットの販売が本日スタート、アーカイブ視聴も可能",
+   "lead_score": 10,
+   "dedup_key": "shiny-msp-streaming-ticket-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-42"
+   ]
+  },
+  {
+   "slug": "shiny-msp-official-resale-0905",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "ソロライブMSP公式リセール受付が9/5 15時開始予定",
+   "lead_score": 8,
+   "dedup_key": "shiny-msp-resale-2026-09-05",
+   "candidate_ids": [
+    "202608260216-grok-43"
+   ]
+  },
+  {
+   "slug": "shiny-refrac7ions-general-preorder-0827",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "『shiny, the first REFRAC7IONS \"Still blue\"』アソビストア一般会員先行が8/27正午開始予定",
+   "lead_score": 12,
+   "dedup_key": "shiny-refrac7ions-general-preorder-2026-08-27",
+   "candidate_ids": [
+    "202608260216-grok-44"
+   ]
+  },
+  {
+   "slug": "shiny-song-illumination-live-event-0831",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニソン新曲イベント「星々の綴るカンターレ」が8/31開催予定、報酬はSSR【ひかりのどけき】風野灯織",
+   "lead_score": 15,
+   "dedup_key": "shiny-song-illumination-event-2026-08-31",
+   "candidate_ids": [
+    "202608260216-grok-45"
+   ]
+  },
+  {
+   "slug": "shiny-song-illumination-next-pickup-preview",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニソン次回ピックアップガシャはイルミネーションスターズの新しい姿、真乃・灯織の新限定カードを予告",
+   "lead_score": 12,
+   "dedup_key": "shiny-song-illumination-pickup-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-46"
+   ]
+  },
+  {
+   "slug": "shiny-hopeful-feathers-cd-release-info",
+   "brand": "shiny",
+   "rank": "medium",
+   "angle": "CD『HOPEFUL FE@THERS』全3作のINDEX・ジャケット・店舗特典を解禁、9/16発売でポスター抽選会も(未確認情報を含む)",
+   "lead_score": 18,
+   "dedup_key": "shiny-hopeful-feathers-index-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-73"
+   ]
+  },
+  {
+   "slug": "shiny-parallel-collection-popup-shop",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "『ifの未来』を描くパラレルコレクションのPOP UP SHOP開催が決定(続報予告、未確認情報を含む)",
+   "lead_score": 8,
+   "dedup_key": "shiny-parallel-collection-popup-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-75"
+   ]
+  },
+  {
+   "slug": "shiny-coherent-light-ep26-free-reading",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "コミックス第5巻の続き・第26話がカドコミで無料公開中、連載再開は9/8",
+   "lead_score": 8,
+   "dedup_key": "shiny-coherent-light-ep26-free-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-96"
+   ]
+  },
+  {
+   "slug": "shiny-roundup-ongoing-ops-0826",
+   "brand": "shiny",
+   "rank": "roundup",
+   "angle": "進行中の運営情報まとめ:有償限定コスチュームガシャ開催中、グレフェスコインショップにS-SSR黛冬優子登場予定、まったりHBTK9月度MCは八巻アンナ・菅沼千紗、283ステージ報酬に新衣装(有栖川夏葉)追加予定",
+   "lead_score": 0,
+   "dedup_key": "shiny-costume-gacha-2026-08",
+   "candidate_ids": [
+    "202608251235-claude-10",
+    "202608260216-grok-39",
+    "202608260216-grok-47",
+    "202608260216-grok-48"
+   ]
+  },
+  {
+   "slug": "cg-cinderella-master-cd-release-2026-08-26",
+   "brand": "cg",
+   "rank": "large",
+   "angle": "総選挙応援楽曲第3弾「大好きのブーケ」＆第4弾「すりーぷすきっぷ」を収録したCINDERELLA MASTER新作CDが本日発売、サブスク配信も同時スタート。投票券400枚分のシリアルコード封入",
+   "lead_score": 85,
+   "dedup_key": "cg-cinderella-master-bouquet-sleep-skip-2026",
+   "candidate_ids": [
+    "202608251235-claude-6",
+    "202608260216-grok-7",
+    "202608260216-grok-8",
+    "202608260216-grok-18",
+    "sched-2026-08-26-cg-cinderella-master-bouquet-sleep-skip-2026-発売"
+   ]
+  },
+  {
+   "slug": "cg-sleep-skip-mv-premiere-2026-08-26",
+   "brand": "cg",
+   "rank": "medium",
+   "angle": "応援曲第4弾「すりーぷすきっぷ」MVが本日21時にTHE IDOLM@STER CHANNELでプレミア公開。キャラデザ・ロゴ・イラストはきあと氏が担当",
+   "lead_score": 25,
+   "dedup_key": "cg-sleep-skip-mv-premiere-2026-08-26",
+   "candidate_ids": [
+    "202608260216-grok-6",
+    "202608260216-grok-9",
+    "202608260216-grok-10"
+   ]
+  },
+  {
+   "slug": "cg-venue-cd-post-event-sales-2026-08-26",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "会場限定CDの事後通販にIDOL WORLD SUPER FESTIVAL 2026分の3タイトルが新たに追加(Pop'n ToyBox!!分2タイトルは受付継続中)",
+   "lead_score": 5,
+   "dedup_key": "cg-venue-cd-post-event-sales-2026-08",
+   "candidate_ids": [
+    "202608251836-claude-18"
+   ]
+  },
+  {
+   "slug": "cg-toybox-watchalong-2026-08-26",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "Pop'n ToyBox!!の同時視聴上映会とスタッフ振り返りトーク配信の開催が決定",
+   "lead_score": 10,
+   "dedup_key": "cg-toybox-watchalong-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-11"
+   ]
+  },
+  {
+   "slug": "cg-vote2026-100k-password-2026-08-26",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "シンデレラNo.1総選挙、10万回再生記念あいことば「ナンバーワン目指せ」を公開。入力で投票券を獲得",
+   "lead_score": 5,
+   "dedup_key": "cg-vote2026-100k-password-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-12"
+   ]
+  },
+  {
+   "slug": "cg-vote2026-poster-goods-2026-08-26",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "総選挙2026グッズ「公約四字熟語」出馬風ポスターが9/13まで受注中(8月24日発表分)",
+   "lead_score": 5,
+   "dedup_key": "cg-vote2026-poster-goods-2026-08-24",
+   "candidate_ids": [
+    "202608260216-grok-16"
+   ]
+  },
+  {
+   "slug": "cg-vote2026-icon-frame-2026-08-26",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "総選挙2026記念アイコンフレームを配布中、投票期間は9月18日まで(8月24日発表分)",
+   "lead_score": 5,
+   "dedup_key": "cg-vote2026-icon-frame-2026-08-24",
+   "candidate_ids": [
+    "202608260216-grok-17"
+   ]
+  },
+  {
+   "slug": "cg-toybox-vote-mission-2026-08-26",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "Pop'n ToyBox!!現地チケットの投票券ミッション反映方法を案内、配信チケット分の投票券受取は9/15から9/18まで(8月24日発表分)",
+   "lead_score": 5,
+   "dedup_key": "cg-toybox-vote-mission-2026-08-24",
+   "candidate_ids": [
+    "202608260216-grok-21"
+   ]
+  },
+  {
+   "slug": "cg-15th-party-fukagawa-seria-2026-08-26",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "15th Anniversary Party DAY2(11/29)への深川芹亜の出演が所属事務所から伝えられる(未確認情報)",
+   "lead_score": 5,
+   "dedup_key": "cg-15th-party-fukagawa-seria-axlone-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-23"
+   ]
+  },
+  {
+   "slug": "cg-roundup-2026-08-26",
+   "brand": "cg",
+   "rank": "roundup",
+   "angle": "進行中の定常運営情報まとめ: トイボエクストラ4更新、ユニアリ総選挙サプライ新規カード公開、デレラジ次回(8/31)出演者",
+   "lead_score": 0,
+   "dedup_key": "cg-toybox-extra4-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-14",
+    "202608260216-grok-15",
+    "202608260216-grok-19"
+   ]
+  },
+  {
+   "slug": "gaku-hif-memorial-single-release",
+   "brand": "gaku",
+   "rank": "large",
+   "angle": "学マス2周年記念、H.I.F編主題歌『ガラクタロード』の13人全員歌唱版を収録したメモリアルシングルが本日発売",
+   "lead_score": 75,
+   "dedup_key": "gaku-hif-memorial-single-2026",
+   "candidate_ids": [
+    "202608260216-claude-115"
+   ]
+  },
+  {
+   "slug": "gaku-3rd-single-wave3-release",
+   "brand": "gaku",
+   "rank": "medium",
+   "angle": "初星学園3rdシングルCDシリーズ第三弾、十王星南・花海咲季・花海佑芽・秦谷美鈴の4タイトルが本日一斉発売",
+   "lead_score": 25,
+   "dedup_key": "gakumasu-3rd-single-series-wave3-2026",
+   "candidate_ids": [
+    "sched-2026-08-26-gakumasu-3rd-single-series-wave3-2026-発売"
+   ]
+  },
+  {
+   "slug": "gaku-swimsuit-gacha-hataya-start",
+   "brand": "gaku",
+   "rank": "medium",
+   "angle": "秦谷美鈴の新水着ガシャが本日開始、獲得できる衣装内容を紹介",
+   "lead_score": 20,
+   "dedup_key": "gaku-swimsuit-gacha-hataya-misuzu-2026-08",
+   "candidate_ids": [
+    "202608260216-grok-51",
+    "202608260216-claude-107",
+    "sched-2026-08-26-gaku-swimsuit-gacha-hataya-misuzu-2026-08-開始"
+   ]
+  },
+  {
+   "slug": "gaku-gravure-solo-collection-vol1",
+   "brand": "gaku",
+   "rank": "medium",
+   "angle": "13名参加のグラビアソロコレクションCD第1弾「ねえ、言っちゃうよ。」、11月18日発売決定を報じる",
+   "lead_score": 15,
+   "dedup_key": "gravure-solo-collection-vol1-2026",
+   "candidate_ids": [
+    "202608251235-claude-14"
+   ]
+  },
+  {
+   "slug": "gaku-shirube-fukuoka-ticket-deadline",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "標ツアー福岡公演、現地チケット一般先着販売が本日23時59分で締切",
+   "lead_score": 10,
+   "dedup_key": "gaku-shirube-fukuoka-ticket-general-resale-2026",
+   "candidate_ids": [
+    "sched-2026-08-26-gaku-shirube-fukuoka-ticket-general-resale-2026-締切"
+   ]
+  },
+  {
+   "slug": "gaku-nee-icchauyo-hataya-start",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "秦谷美鈴版「ねえ、言っちゃうよ。」が本日11時から追加",
+   "lead_score": 5,
+   "dedup_key": "gakumas-nee-icchauyo-hataya-2026-08-26",
+   "candidate_ids": [
+    "202608260216-grok-52"
+   ]
+  },
+  {
+   "slug": "gaku-hataya-memory-costume-start",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "秦谷美鈴の思い出衣装が本日11時から常設解放",
+   "lead_score": 5,
+   "dedup_key": "gakumas-hataya-memory-costume-2026-08-26",
+   "candidate_ids": [
+    "202608260216-grok-53"
+   ]
+  },
+  {
+   "slug": "gaku-hires-priceoff-deadline",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "初星学園ハイレゾ楽曲のmora30%オフキャンペーンが本日で終了",
+   "lead_score": 5,
+   "dedup_key": "gaku-hires-priceoff-campaign",
+   "candidate_ids": [
+    "202608260216-claude-109",
+    "sched-2026-08-26-gaku-hires-priceoff-campaign-締切"
+   ]
+  },
+  {
+   "slug": "gaku-chibi-mascot-vol2-preorder-deadline",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "Chibiぬいおすわりマスコットvol.2の予約受付が本日23時59分で締切",
+   "lead_score": 5,
+   "dedup_key": "gakumas-chibi-mascot-vol2-preorder-2026",
+   "candidate_ids": [
+    "202608260216-claude-110"
+   ]
+  },
+  {
+   "slug": "gaku-nuipin-vol2",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "学マスぬいピンvol.2、12月発売決定を報じる",
+   "lead_score": 5,
+   "dedup_key": "gaku-nuipin-vol2",
+   "candidate_ids": [
+    "202608251235-watch-0"
+   ]
+  },
+  {
+   "slug": "gaku-ops-roundup-0826",
+   "brand": "gaku",
+   "rank": "roundup",
+   "angle": "水着ガシャ・楽曲ローテーション・ストーリーイベント・グッズ受注カウントダウンなど、進行中の運営情報をまとめて紹介",
+   "lead_score": 0,
+   "dedup_key": "gaku-tematari-gacha-2026",
+   "candidate_ids": [
+    "202608251836-claude-12",
+    "202608260216-grok-54",
+    "202608260216-grok-55",
+    "202608260216-grok-56",
+    "202608260216-grok-57",
+    "202608260216-grok-58"
+   ]
+  },
+  {
+   "slug": "general-moiw-radio-vol12-campaign",
+   "brand": "general",
+   "rank": "small",
+   "angle": "MOIW2025振り返りラジオvol.12配信を記念したBlu-ray購入者向けプレゼントキャンペーン、応募期間8/24〜8/30を告知",
+   "lead_score": 10,
+   "dedup_key": "moiw-2025-radio-campaign",
+   "candidate_ids": [
+    "202608252337-watch-0"
+   ]
+  },
+  {
+   "slug": "general-gakumas-hataya-swimsuit-gacha-detail",
+   "brand": "general",
+   "rank": "small",
+   "angle": "本日開始の秦谷美鈴水着ガシャ、性能・サポートカードイラストの詳細が判明(未確認・ファン筋)",
+   "lead_score": 10,
+   "dedup_key": "trend-gakumas-hataya-gacha-summary-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-81"
+   ]
+  },
+  {
+   "slug": "general-gakumas-hataya-memory-outfit",
+   "brand": "general",
+   "rank": "small",
+   "angle": "秦谷美鈴の思い出衣装が本日より常設イベントとして追加(未確認・ファン筋)",
+   "lead_score": 5,
+   "dedup_key": "trend-gakumas-hataya-memory-summary-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-82"
+   ]
+  },
+  {
+   "slug": "general-shiny-hopeful-feathers-stella-cd",
+   "brand": "general",
+   "rank": "small",
+   "angle": "シャニマス新曲CD「HOPEFUL FE@THERS -Stella-」9/16発売、櫻木真乃ソロ曲収録を公式告知",
+   "lead_score": 20,
+   "dedup_key": "trend-hopeful-feathers-stella-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-84"
+   ]
+  },
+  {
+   "slug": "765-dual-twin-finale-promo-roundup",
+   "brand": "765",
+   "rank": "roundup",
+   "angle": "dual twin live tour 東京公演(8/27・28 Zepp Haneda)直前の進行中プロモーション(女性専用エリア案内・新曲ステージ映像チラ見せ・終演後生配信)をまとめる",
+   "lead_score": 0,
+   "dedup_key": "765-dual-twin-tokyo-2days-women-area-2026-08-25",
+   "candidate_ids": [
+    "202608252337-claude-16",
+    "202608260216-grok-0",
+    "202608260216-grok-1",
+    "202608260216-grok-5"
+   ]
+  },
+  {
+   "slug": "million-battle-ex04-release",
+   "brand": "million",
+   "rank": "medium",
+   "angle": "音声ドラマCD「MILLION BATTLE OF THE@TER EX04 Stick to my weapon」8/26発売、価格・出演キャストを詳報",
+   "lead_score": 15,
+   "dedup_key": "millionlive-battle-ex04-2026",
+   "candidate_ids": [
+    "202608250733-claude-11",
+    "202608252337-claude-11"
+   ]
+  },
+  {
+   "slug": "million-idol-heroes-gacha-vol3",
+   "brand": "million",
+   "rank": "small",
+   "angle": "ミリシタ「アイドルヒーローズガシャ vol.3」開催中(我那覇響・島原エレナの新SSR登場、8/27まで)",
+   "lead_score": 5,
+   "dedup_key": "milishita-idol-heroes-gacha-vol3-2026",
+   "candidate_ids": [
+    "202608252337-claude-13"
+   ]
+  },
+  {
+   "slug": "sidem-mts10-mofumofu-release",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "MONTHLY THEME SONG第10弾「もふもふえん」本日発売。岡村直央・橘志狼・姫野かのんによる月替わり楽曲",
+   "lead_score": 15,
+   "dedup_key": "sidem-monthly-theme-song-2026-08-26",
+   "candidate_ids": [
+    "202608251836-claude-10",
+    "202608260216-claude-106"
+   ]
+  },
+  {
+   "slug": "sidem-joypolis3-ambassador",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "「SideM in JOYPOLIS 3」詳細公開。High×Jokerと神速一魂が東京ジョイポリス30周年アンバサダーに就任",
+   "lead_score": 20,
+   "dedup_key": "sidem-joypolis-3-ambassador-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-97"
+   ]
+  },
+  {
+   "slug": "sidem-11th-comment-yamaya",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "SideM11th意気込みコメントリレー、本日は山谷祥生さん(蒼井享介役)",
+   "lead_score": 5,
+   "dedup_key": "sidem-11th-yamaya-comment-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-49"
+   ]
+  },
+  {
+   "slug": "sidem-royal-chess-lounge-cafe",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "Royal Chess Loungeコラボカフェ「SMILE BASE CAFE」、名古屋栄店で9月1日まで開催中",
+   "lead_score": 5,
+   "dedup_key": "sidem-royal-chess-lounge-2026",
+   "candidate_ids": [
+    "202608251235-claude-13"
+   ]
+  },
+  {
+   "slug": "joint-cg-million-coming-soon-reveal-0826",
+   "brand": "joint",
+   "rank": "large",
+   "angle": "デレマス・ミリオン両公式が予告していた「8/26(水)12:00 Coming soon!」の発表当日を迎えたことを軸に、同時展開の意味と注目度を伝える",
+   "lead_score": 75,
+   "dedup_key": "cg-coming-soon-2026-08-26",
+   "candidate_ids": [
+    "202608250733-claude-10",
+    "202608251235-claude-18",
+    "sched-2026-08-26-cg-coming-soon-2026-08-26-その他"
+   ]
+  },
+  {
+   "slug": "joint-tours-spring-exchange-deadline-0831",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "ツアマス「スプリングキャンペーン」の景品交換対応が8/31までと迫っていることを伝える",
+   "lead_score": 5,
+   "dedup_key": "tours-spring-exchange-deadline-2026-08-31",
+   "candidate_ids": [
+    "202608260216-grok-68"
+   ]
+  },
+  {
+   "slug": "joint-tours-late-summer-card-outfits",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "レイトサマーキャンペーンのカードに収録された「恋花小町」「暁光ノ装」の着こなしをTOURS公式が紹介",
+   "lead_score": 5,
+   "dedup_key": "tours-late-summer-koihana-gyoko-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-67"
+   ]
+  },
+  {
+   "slug": "joint-moiw2025-radio-vol12-final",
+   "brand": "joint",
+   "rank": "medium",
+   "angle": "MOIW2025振り返りラジオが最終回vol.12の配信を開始、配信記念のサイン入りグッズプレゼントキャンペーンも同時実施",
+   "lead_score": 20,
+   "dedup_key": "moiw2025-radio-vol12-final-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-70",
+    "202608260216-grok-71"
+   ]
+  },
+  {
+   "slug": "joint-moiw2025-bd-order-deadline",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "総勢118名・100曲超を収録したMOIW2025 Blu-ray PERFECT BOXの受注が8/30締切であることを伝える",
+   "lead_score": 10,
+   "dedup_key": "moiw2025-bd-order-2026-08-24",
+   "candidate_ids": [
+    "202608260216-grok-72"
+   ]
+  },
+  {
+   "slug": "dsva-cosmo-bd-lv-limited-tickets-onsale",
+   "brand": "dsva",
+   "rank": "small",
+   "angle": "上水流宇宙BIRTHDAY ONLINE LIVE 2026、限定グッズ付き現地LVチケットの販売期間が本日8/26〜8/30で開始(先行抽選とは別枠。一般先着8/31とは対象・期間が異なる点を明記し、規程14の期間ラベルを厳密に区別する)",
+   "lead_score": 35,
+   "dedup_key": "kamizuruyu-birthday-online-live-2026",
+   "candidate_ids": [
+    "202608260216-claude-113"
+   ]
+  },
+  {
+   "slug": "dsva-cosmo-bd-lv-general-onsale-0831",
+   "brand": "dsva",
+   "rank": "small",
+   "angle": "上水流宇宙BIRTHDAY ONLINE LIVE 2026、現地LVの一般先着販売が8/31 12:00開始と告知(限定グッズ付き枠とは別の一般向け先着販売である点を明記)",
+   "lead_score": 15,
+   "dedup_key": "valiv-cosmo-bd-lv-general-2026-08-31",
+   "candidate_ids": [
+    "202608260216-grok-59"
+   ]
+  },
+  {
+   "slug": "dsva-roundup-0826",
+   "brand": "dsva",
+   "rank": "roundup",
+   "angle": "vα-liv定常コンテンツ・運営情報まとめ(灯里愛夏のTikTok紹介ショート公開/上水流宇宙の踊ってみたショート公開/第12回オンライン1on1の当選者向け詳細メール送付完了)",
+   "lead_score": 0,
+   "dedup_key": "valiv-manaka-short-tiktok-2026-08-25",
+   "candidate_ids": [
+    "202608260216-grok-61",
+    "202608260216-grok-62",
+    "202608260216-grok-65"
+   ]
+  },
+  {
+   "slug": "other-cosmo-birthday-live-viewing-ticket-2026",
+   "brand": "other",
+   "rank": "small",
+   "angle": "上水流宇宙BIRTHDAY ONLINE LIVE 2026、限定グッズ付き現地ライブビューイングチケットが8/31一般発売開始",
+   "lead_score": 5,
+   "dedup_key": "va-liv-cosmo-birthday-2026",
+   "candidate_ids": [
+    "202608251836-watch-0"
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "dedup_key": "shiny-august-2026-updates",
+   "reason": "重複",
+   "note": "AXE8始動・キャスコレ・シナリオイベント等は個別候補(dedup_key shiny-axe8-alstroemeria-2026-08-25ほか)で記事化済み、複数話題の寄せ集めのため規程13により不採用"
+  },
+  {
+   "dedup_key": "shiny-solo-live-msp-2026-09",
+   "reason": "既報",
+   "note": "会場・開催日は2026-07-12付stock/stories.yml(shiny-msp-goods-presale)で既報、facts内に新規のチケット販売詳細なし"
+  },
+  {
+   "dedup_key": "shiny-livestream-campaign-2026-08-25",
+   "reason": "その他",
+   "note": "配信終了(8/25)と同時にキャンペーンも終了、発行日(8/26)時点で新規性なし"
+  },
+  {
+   "dedup_key": "shiny-coherent-light-vol5-2026-08-25",
+   "reason": "既報",
+   "note": "第5巻発売・描き下ろしSPイラストはstock/stories.yml(shiny-coherent-light-novel-2026)で既報、新事実なし"
+  },
+  {
+   "dedup_key": "shiny-magical-forest-sekine-2026-08-25",
+   "reason": "個人の話題",
+   "note": "声優個人のSNS投稿を単体では記事化しない(編集規程4・5)"
+  },
+  {
+   "dedup_key": "shiny-chibi-plush-team-sol-2026",
+   "reason": "既報",
+   "note": "8/20展開開始はstock/stories.yml(shiny-team-sol-plushie-vol2-2026)で既報、新事実なし"
+  },
+  {
+   "dedup_key": "shiny-song-for-prism-event-2026",
+   "reason": "既報",
+   "note": "8/23開催はstock/stories.yml(shiny-karma-naraku-event-2026)で既報、セッション時間の追加のみで新事実の水準に届かず"
+  },
+  {
+   "dedup_key": "shiny-animethon-2026",
+   "reason": "既報",
+   "note": "8/7-9開催・8/8出演はstock/stories.yml(shiny-animethon-2026)で既報、新事実なし"
+  },
+  {
+   "dedup_key": "shiny-radio-special-2026-08-23",
+   "reason": "その他",
+   "note": "8/23放送済みで発行日(8/26)から3日経過、当日トリガーなく鮮度規程(12)により見送り"
+  },
+  {
+   "dedup_key": "cg-15th-anniversary-party-2026",
+   "reason": "その他",
+   "note": "アソビストアプレミアム最速先行の申込期限は8/23 23:59で既に経過。本日トリガーとなる当日締切や結果発表もなく鮮度なし"
+  },
+  {
+   "dedup_key": "cg-popntoybox-live-2026",
+   "reason": "その他",
+   "note": "開催は8/13〜16で終了済み。終了済みイベントの紹介にあたり規程12により対象外"
+  },
+  {
+   "dedup_key": "shiny-livestream-2026-08-25",
+   "reason": "その他",
+   "note": "シンデレラガールズではなくシャイニーカラーズ(シャニマス)の話題でcg面の対象外。配信自体も8/25開催済で鮮度もない"
+  },
+  {
+   "dedup_key": "cg-popup-toppan-2026",
+   "reason": "既報",
+   "note": "秋葉原・5拠点サテライトの開催日程はstock/stories.ymlのcg-toppa-base-popup-2026として既報。新事実なし"
+  },
+  {
+   "dedup_key": "cg-coming-soon-2026-08-26-repost-0825",
+   "reason": "既報",
+   "note": "「8/26 12:00 Coming soon」ティザーはcg-million-coming-soon-2026-08-26として既報。本日12:00の発表内容そのものは未収集のため続報材料なし"
+  },
+  {
+   "dedup_key": "cg-coming-soon-2026-08-26-snowman",
+   "reason": "既報",
+   "note": "雪だるま絵柄のティザーもcg-million-coming-soon-2026-08-26で8月24日付として既報。新事実なし"
+  },
+  {
+   "dedup_key": "cg-dereradi-2026-08-24",
+   "reason": "その他",
+   "note": "8/24放送分は既に終了済みで当日トリガーなし。次回8/31出演告知はroundupで記事化"
+  },
+  {
+   "dedup_key": "live-tour-single-shuugaku-ryokou-2026",
+   "reason": "既報",
+   "note": "発売日・価格・収録内容は8/24付でstories.yml(gakumasu-shugakuryoko-single-2026)に記載済み、今回の facts に新事実なし"
+  },
+  {
+   "dedup_key": "gakumas-fukui-tour-archive-2026",
+   "reason": "既報",
+   "note": "アーカイブ配信開始の事実はstories.yml(gakumasu-shirube-livetour-2026)に集約済みで新事実なし"
+  },
+  {
+   "dedup_key": "gakumas-fukui-tour-day1-2026",
+   "reason": "既報",
+   "note": "Day1新曲披露の事実はstories.yml(gakumasu-shirube-livetour-2026)に集約済みで新事実なし"
+  },
+  {
+   "dedup_key": "gakumas-fukui-tour-day2-2026",
+   "reason": "既報",
+   "note": "Day2新曲披露の事実はstories.yml(gakumasu-shirube-livetour-2026)に集約済みで新事実なし"
+  },
+  {
+   "dedup_key": "gakumas-pixiv-ranking-2026-08",
+   "reason": "出典不足",
+   "note": "verify=unconfirmed、ファン集計サイトの週次更新で公式性が乏しく、全国トレンド級の現象とも言えない"
+  },
+  {
+   "dedup_key": "trend-cg-million-coming-soon-2026-08-26",
+   "reason": "既報",
+   "note": "色・絵文字などの事実は既存ストーリー(cg-million-coming-soon-2026-08-26)で既報。個人アカウントが同じ内容に便乗しただけで新事実なし"
+  },
+  {
+   "dedup_key": "trend-shiny-new-idol-tease-2026-08-24",
+   "reason": "その他",
+   "note": "予告対象の生配信は8/25開催済みで発行日(8/26)より前。結果・発表内容の材料がなく鮮度規程(12)に抵触するため見送り"
+  },
+  {
+   "dedup_key": "trend-million-usuhoso-2026-08-24",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿によるネタ・私見、単体記事化の対象外(規程4)"
+  },
+  {
+   "dedup_key": "trend-usuhoso-bmi-ranking-2026-08-25",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿によるキャラクターの体型ネタ、単体記事化の対象外(規程4)"
+  },
+  {
+   "dedup_key": "trend-futamas-shikaoi-1100-2026-08-24",
+   "reason": "既報",
+   "note": "来場者約1100人の事実は既存ストーリー(futamas-shikaoi-2026)で既に掲載済み"
+  },
+  {
+   "dedup_key": "trend-komagata-nocte-live-2026-08-25",
+   "reason": "個人の話題",
+   "note": "声優個人の誕生日記念ワンマンライブで、アイマス外活動のため対象外(規程4)"
+  },
+  {
+   "dedup_key": "fan-chihaya-oath-cosplay-2026-08-25",
+   "reason": "個人の話題",
+   "note": "個人のコスプレ投稿(規程4)"
+  },
+  {
+   "dedup_key": "fan-chihaya-atre-fanart-2026-08-24",
+   "reason": "個人の話題",
+   "note": "個人のファンアート投稿(規程4)"
+  },
+  {
+   "dedup_key": "fan-tuesday-zeppeki-2026-08-24",
+   "reason": "個人の話題",
+   "note": "個人のイラスト投稿(規程4)"
+  },
+  {
+   "dedup_key": "fan-haruka-messi-2026-08-23",
+   "reason": "個人の話題",
+   "note": "個人の私見投稿(規程4)"
+  },
+  {
+   "dedup_key": "fan-mami-fanart-12-52-2026-08-24",
+   "reason": "個人の話題",
+   "note": "個人のファンアート投稿(規程4)"
+  },
+  {
+   "dedup_key": "fan-shimoda-hanishi-day-2026-08-24",
+   "reason": "個人の話題",
+   "note": "声優本人の私的な語呂合わせ投稿(規程4)"
+  },
+  {
+   "dedup_key": "fan-coherent-light-ohara-vol5-2026-08-25",
+   "reason": "既報",
+   "note": "第5巻8/25発売の事実は既存ストーリー(shiny-coherent-light-novel-2026)で既報。ドラマCD脚本担当は付随情報で新事実として独立記事化するには不足"
+  },
+  {
+   "dedup_key": "fan-liliya-manga-2026-08-25",
+   "reason": "個人の話題",
+   "note": "個人の二次創作漫画投稿(規程4)"
+  },
+  {
+   "dedup_key": "fan-iku-dancer-fanart-2026-08-25",
+   "reason": "個人の話題",
+   "note": "個人のファンアート投稿(規程4)"
+  },
+  {
+   "dedup_key": "fan-million-usuhoso-habanero-2026-08-25",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿によるキャラクター体型ネタ、単体記事化の対象外(規程4)"
+  },
+  {
+   "dedup_key": "kimchikura-fes-2026",
+   "reason": "出典不足",
+   "note": "掲載日不明。開催日は2026-08-08で既に終了しており、本日号時点の新報として鮮度(規程12)を確認できない"
+  },
+  {
+   "dedup_key": "765-dual-twin-tour-streaming-2026",
+   "reason": "出典不足",
+   "note": "掲載日不明。event_date 2026-08-06から約3週間経過しており、配信チケット発売開始という新規性表現の初出日を確認できない(規程12)"
+  },
+  {
+   "dedup_key": "765-as-new-goods-2026",
+   "reason": "過年度",
+   "note": "受注期限2026-08-16で既に終了(facts内に明記)。新事実・トリガーなし"
+  },
+  {
+   "dedup_key": "765-dual-twin-live-zepp-haneda-2026-08",
+   "reason": "既報",
+   "note": "一般先着2次開始・当日券販売決定は台帳765-dual-twinlive-venue-cdに8/23付で既報、新事実なし"
+  },
+  {
+   "dedup_key": "dual-twin-live-futago-boshi-venue-cd-2026",
+   "reason": "既報",
+   "note": "CD価格・収録曲・8/6発売・東京会場販売は台帳765-dual-twinlive-venue-cdに既報"
+  },
+  {
+   "dedup_key": "dual-twin-live-tsumi-matsu-venue-cd-2026",
+   "reason": "既報",
+   "note": "CD価格・8/6発売・各会場販売は台帳765-dual-twinlive-venue-cdに既報"
+  },
+  {
+   "dedup_key": "765-binary-star-cd-haneda-2026-08-25",
+   "reason": "既報",
+   "note": "東京会場での両CD販売は台帳765-dual-twinlive-venue-cdに既報。出典もunconfirmed(準公式)"
+  },
+  {
+   "dedup_key": "765-hokkyokusei-cd-haneda-2026-08-25",
+   "reason": "既報",
+   "note": "東京会場での両CD販売は台帳765-dual-twinlive-venue-cdに既報。出典もunconfirmed(準公式)"
+  },
+  {
+   "dedup_key": "765-dual-twin-tokyo-3days-2026-08-24",
+   "reason": "既報",
+   "note": "現地チケット残りわずか・千秋楽案内は台帳765-dual-twinlive-venue-cdに8/24付で既報、新事実なし"
+  },
+  {
+   "dedup_key": "millishita-glow-together-2026",
+   "reason": "既報",
+   "note": "8/25 20:59終了は台帳(mltd-glow-together-bot-2026)に既に記載済みで新事実なし"
+  },
+  {
+   "dedup_key": "karatez-millionlive-collab-2026",
+   "reason": "既報",
+   "note": "通販受付期間(8/7〜8/23)は台帳(million-karatetsu-collab-2026)に既に記載済み"
+  },
+  {
+   "dedup_key": "million-glow-together-2026",
+   "reason": "重複",
+   "note": "millishita-glow-together-2026と同一話題。台帳に既報済み"
+  },
+  {
+   "dedup_key": "million-cinderella-collab-teaser-2026-08-26",
+   "reason": "既報",
+   "note": "8/23告知は台帳(cg-million-coming-soon-2026-08-26、joint面案件)に既報済み。12時本番の内容は締切(04:00)時点で未公開のため新事実なし"
+  },
+  {
+   "dedup_key": "mltd-next-stage-now-loading-2026-08-25",
+   "reason": "出典不足",
+   "note": "具体的な新事実のない煽り投稿。9/2配信(台帳mltd-extreme-livestream-2026)関連の予告とみられるが追加情報なし"
+  },
+  {
+   "dedup_key": "mltd-late-summer-login-bonus-2026",
+   "reason": "既報",
+   "note": "台帳(mltd-late-summer-login-bonus-2026)に同一内容(8/25〜8/31・500ジュエル)で既に記載済み"
+  },
+  {
+   "dedup_key": "million-coming-soon-2026-08-26-mic",
+   "reason": "重複",
+   "note": "million-cinderella-collab-teaser-2026-08-26と同一告知(8/26 12:00 Coming soon)の重複観測"
+  },
+  {
+   "dedup_key": "mltd-character-kawaaobi-2026-08-24",
+   "reason": "その他",
+   "note": "定型の雑談・キャラクター投稿でニュース性なし"
+  },
+  {
+   "dedup_key": "million-komagata-yuri-photo-book-2026-08-25",
+   "reason": "個人の話題",
+   "note": "声優個人の誕生日・写真集はアイマス外の声優個人活動につき対象外"
+  },
+  {
+   "dedup_key": "sidem-knick-knacks-2026",
+   "reason": "既報",
+   "note": "8/21開催開始・ハンズ15店舗展開は8/24付で既報(sidem-hands-knickknacks-2026)。Hands50周年企画という付随情報のみで新事実薄く、本日トリガーもなし"
+  },
+  {
+   "dedup_key": "sidem-11th-stage-2026",
+   "reason": "既報",
+   "note": "現地チケット一般販売8/22開始は既報(sidem-11th-stage-2026)published_factsに同一事実あり"
+  },
+  {
+   "dedup_key": "sidem-livertine-age-2026",
+   "reason": "その他",
+   "note": "受注締切は8/25(前日)で本日時点ですでに終了。締切当日等の本日トリガーがなく鮮度規程(12)により見送り"
+  },
+  {
+   "dedup_key": "sidem-murase-ayumi-graduation-2026",
+   "reason": "既報",
+   "note": "8/18発表の姫野かのん役卒業は8/24付で既報(sidem-murase-himeno-graduation-2026)。同一事実の重複"
+  },
+  {
+   "dedup_key": "sidem-11th-takatsuka-comment-2026-08-24",
+   "reason": "既報",
+   "note": "8/24高塚智人さんの意気込みコメントはsidem-11th-stage-2026のpublished_factsに記載済み"
+  },
+  {
+   "dedup_key": "sidem-deramasu-popup-manga10-2026-08-25",
+   "reason": "既報",
+   "note": "でらます×SideM名古屋コラボ(既報deramasu-sidem-special-site-update-20260713)の一環。マンガ展23日目オープンの告知のみで新事実なし、開催日も前日(8/25)、verify unconfirmed"
+  },
+  {
+   "dedup_key": "sidem-cfirst-release-event-report-2026-08-24",
+   "reason": "出典不足",
+   "note": "8/8開催イベント(既報sidem-cfirst-riyuatte-liveevent-2026)の振り返りレポート公開。本日トリガーなし、verify unconfirmed"
+  },
+  {
+   "dedup_key": "sidem-monthly-theme-song-10-mofumofu-2026",
+   "reason": "重複",
+   "note": "sidem-monthly-theme-song-2026-08-26と同一トピック(MTS10もふもふえん本日発売)。記事sidem-mts10-mofumofu-releaseに統合"
+  },
+  {
+   "dedup_key": "imas-cross-announcement-26aug",
+   "reason": "重複",
+   "note": "cg-coming-soon-2026-08-26記事に統合(同一の8/26正午Coming soon予告)"
+  },
+  {
+   "dedup_key": "cg-million-announcement-2026-08",
+   "reason": "重複",
+   "note": "cg-coming-soon-2026-08-26記事に統合(同一の8/26正午Coming soon予告)"
+  },
+  {
+   "dedup_key": "futamas-shikaoi-2026",
+   "reason": "既報",
+   "note": "stock/stories.ymlのfutamas-shikaoi-2026(8/24付)に同一facts(8/23開催・鹿追町)が既出、新事実なし"
+  },
+  {
+   "dedup_key": "futamas-kuramoto-china-shikaoi-2026-08-24",
+   "reason": "既報",
+   "note": "stock/stories.ymlのfutamas-shikaoi-2026(8/24付)に設置場所(温暖期/冬季)の記載が既出、新事実なし"
+  },
+  {
+   "dedup_key": "tours-late-summer-campaign-2026-08-28",
+   "reason": "既報",
+   "note": "stock/stories.ymlのtours-late-summer-campaign-2026(8/25付)に8/28開始の同一facts既出、新事実なし"
+  },
+  {
+   "dedup_key": "moiw2025-radio-vol12-campaign-2026-08-25",
+   "reason": "重複",
+   "note": "joint-moiw2025-radio-vol12-final記事に統合(vol.12配信と同時発表のプレゼント企画)"
+  },
+  {
+   "dedup_key": "valiv-cosmo-bd-lv-preorder-deadline-2026-08-24",
+   "reason": "既報",
+   "note": "先行抽選申込8/24 23:59締切は8/24付で既報(stock: cosmo-birthday-online-live-2026)。新事実なし"
+  },
+  {
+   "dedup_key": "valiv-2026-08-25-night-lineup",
+   "reason": "その他",
+   "note": "8/25夜の配信ラインナップ告知で、発行日(8/26)時点では配信が終了済み。結果報告など当日トリガーの続報でもないため見送り"
+  },
+  {
+   "dedup_key": "valiv-manaka-codevein2-finale-2026-08-24",
+   "reason": "その他",
+   "note": "8/24夜の配信告知で、発行日(8/26)時点では配信が終了済み。結果報告など当日トリガーの続報でもないため見送り"
+  },
+  {
+   "dedup_key": "tours-late-summer-campaign-2026",
+   "reason": "既報",
+   "note": "stock/stories.yml の tours-late-summer-campaign-2026(first_published 2026-08-25)に告知日・キャンペーン名・8/28開始が既に published_facts として記録済み。今回の候補facts はそれを超える新事実なし。"
+  }
+ ],
+ "editorial_topic": "本日重なった学マス2周年メモリアルシングル・デレマス総選挙応援CD・ミリオンBATTLEドラマCDなど、各ブランド一斉のCDリリースラッシュから見える『歌で背中を押す』アイマスの伝統について"
+}

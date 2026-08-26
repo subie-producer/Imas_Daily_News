@@ -1,35 +1,27 @@
 #!/usr/bin/env python3
-"""cost: 稼働コストを 日 × モデル × 回数 で分解する。
+"""cost: 1号を作るのにかかった費用を、号のサイクル単位で出す。
 
-  python3 scripts/cost.py [--days 7] [--sessions]
+  python3 scripts/cost.py [--editions 7]
 
-費用は ccusage(https://github.com/ryoppippi/ccusage)が claude / codex / grok の
-ローカルログから API 公開価格で算出した値を使う。回数はログから自前で数える。
+**集計単位は暦日ではなく号のサイクル**。1号は
+  前号のリリース(06:00 JST) → 収集 → 翌 04:00 compose → 06:00 リリース
+で1周するので、境界は 06:00 JST に置く(暦日で切ると、04:00 の compose が
+前日側に落ちて号と費用が対応しなくなる)。
 
-**費用は API 公開価格での換算値であって、サブスクリプションの請求額ではない。**
-比較と切り分けに使う数字で、支払額として読まない。
+**対話セッションは除外する**。紙面を作った費用だけを見るため、
+paper のパイプラインが起こしたセッションに限る。判定はログの実データで行う:
+  claude … ~/.claude/projects のディレクトリ名、および冒頭がパイプラインの
+            プロンプトかどうか(手で再実行した分が対話側に混ざるため)
+  codex  … rollout ログ先頭の cwd
+  grok   … ccusage grok session の projectPath
 
-## ccusage をそのまま使わない理由
-
-1. **日付が UTC。** 発行サイクルの起点 04:00 JST が前日側へ落ちる。
-   `--timezone Asia/Tokyo` を必ず渡す。
-2. **呼び出し回数を持たない。** 費用の内訳は出るが「何回叩いたか」が出ない。
-   1回あたりの重さが分からないと、頻度を下げるべきか1回を軽くすべきかを判断できない。
-   回数は3系統それぞれ別の場所から数える(下記)。
-
-## 回数の数え方(1回 = モデルへの1リクエスト)
-
-- claude: ~/.claude/projects/**/*.jsonl の assistant メッセージ(usage 付き)
-- codex : ~/.codex/sessions/**/rollout-*.jsonl の token_count イベント
-- grok  : ~/.grok/logs/unified.jsonl の shell.turn.inference_done
-
-セッション数(= CLI の起動回数)は --sessions で併記する。
+費用は ccusage が API 公開価格で算出した換算値であって、
+サブスクリプションの請求額ではない。
 """
 import argparse
 import collections
 import datetime
 import json
-import os
 import pathlib
 import re
 import subprocess
@@ -37,12 +29,15 @@ import sys
 
 JST = datetime.timezone(datetime.timedelta(hours=9))
 HOME = pathlib.Path.home()
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+OPS_DIR = "-home-akabanep-git-imas-ops"
+PIPE_MARK = re.compile(r"あなたは日刊AI新聞|機械検収エラーを修正|の記事計画|面だけ|校閲してください")
+RELEASE_HOUR = 6
 
 
 def ccusage(*args) -> dict:
     # ccusage の shebang は node を指すが、この環境には node が無く bun しか無い
-    bun = HOME / ".bun/bin/bun"
-    cli = HOME / ".bun/install/global/node_modules/ccusage/src/cli.js"
+    bun, cli = HOME / ".bun/bin/bun", HOME / ".bun/install/global/node_modules/ccusage/src/cli.js"
     if not (bun.exists() and cli.exists()):
         sys.exit("ccusage が未導入です: bun add -g ccusage")
     r = subprocess.run([str(bun), str(cli), *args, "--json"], capture_output=True, text=True)
@@ -51,106 +46,99 @@ def ccusage(*args) -> dict:
     return json.loads(r.stdout)
 
 
-def jst_date(ts) -> str | None:
-    try:
-        return datetime.datetime.fromisoformat(
-            str(ts).replace("Z", "+00:00")).astimezone(JST).date().isoformat()
-    except Exception:
-        return None
-
-
-def count_calls() -> tuple[collections.Counter, collections.Counter]:
-    """(日,モデル) → リクエスト数 / セッション数。"""
-    calls, sess = collections.Counter(), collections.Counter()
-
-    for p in (HOME / ".claude/projects").glob("*/*.jsonl"):
-        seen = set()
-        for line in p.open(encoding="utf-8", errors="replace"):
-            if '"usage"' not in line:
-                continue
-            try:
-                o = json.loads(line)
-            except Exception:
-                continue
-            m = o.get("message") or {}
-            if o.get("type") == "assistant" and m.get("usage") and m.get("model"):
-                d = jst_date(o.get("timestamp"))
-                if d:
-                    calls[(d, m["model"])] += 1
-                    seen.add((d, m["model"]))
-        for k in seen:
-            sess[k] += 1
-
+def work_dirs() -> dict:
+    """codex/grok のセッションID → 実行時の作業ディレクトリ。"""
+    out = {}
     root = HOME / ".codex/sessions"
-    for p in (root.rglob("rollout-*.jsonl") if root.exists() else []):
-        model, seen = None, set()
-        for line in p.open(encoding="utf-8", errors="replace"):
-            if model is None:
-                m = re.search(r'"model"\s*:\s*"([^"]+)"', line)
-                if m:
-                    model = m.group(1)
-            if '"total_token_usage"' not in line:
-                continue
-            try:
-                o = json.loads(line)
-            except Exception:
-                continue
-            d = jst_date(o.get("timestamp"))
-            if d:
-                calls[(d, model or "codex")] += 1
-                seen.add((d, model or "codex"))
-        for k in seen:
-            sess[k] += 1
+    files = {p.stem: p for p in root.rglob("rollout-*.jsonl")} if root.exists() else {}
+    for s in ccusage("codex", "session").get("sessions", []):
+        p = files.get(s.get("sessionFile", ""))
+        if not p:
+            continue
+        for i, line in enumerate(p.open(encoding="utf-8", errors="replace")):
+            m = re.search(r'"cwd"\s*:\s*"([^"]+)"', line)
+            if m:
+                out[s["sessionId"]] = m.group(1)
+                break
+            if i > 5:
+                break
+    for s in ccusage("grok", "session").get("sessions", []):
+        out[s["sessionId"]] = s.get("projectPath", "")
+    return out
 
-    # grok はセッションディレクトリにトークン数を残さない。統合ログの推論完了イベントを数える
-    ulog = HOME / ".grok/logs/unified.jsonl"
-    grok_sess = collections.defaultdict(set)
-    if ulog.exists():
-        for line in ulog.open(encoding="utf-8", errors="replace"):
-            if '"prompt_tokens"' not in line:
-                continue
-            m = re.search(r'"ts":"([^"]+)"', line)
-            d = jst_date(m.group(1)) if m else None
-            if not d:
-                continue
-            calls[(d, "grok-4.6-build")] += 1
-            sid = re.search(r'"sid":"([^"]+)"', line)
-            if sid:
-                grok_sess[d].add(sid.group(1))
-    for d, s in grok_sess.items():
-        sess[(d, "grok-4.6-build")] += len(s)
-    return calls, sess
+
+def first_user_message(path: pathlib.Path) -> str:
+    for line in path.open(encoding="utf-8", errors="replace"):
+        try:
+            o = json.loads(line)
+        except Exception:
+            continue
+        if o.get("type") != "user":
+            continue
+        c = (o.get("message") or {}).get("content")
+        if isinstance(c, list):
+            c = "".join(x.get("text", "") for x in c if isinstance(x, dict))
+        if isinstance(c, str) and c.strip():
+            return c[:300]
+    return ""
+
+
+def is_pipeline(sess: dict, index: dict, cwds: dict) -> bool:
+    if sess.get("agent") in ("codex", "grok"):
+        return any(k in cwds.get(sess["period"], "") for k in ("imas-ops", "Imas_Daily_News"))
+    p = index.get(sess["period"])
+    if p is None:
+        return False
+    return p.parent.name == OPS_DIR or bool(PIPE_MARK.search(first_user_message(p)))
+
+
+def edition_of(ts: str) -> str:
+    """その時刻の作業が寄与する号。06:00 JST を境界にする。"""
+    t = datetime.datetime.fromisoformat(ts.replace("Z", "+00:00")).astimezone(JST)
+    d = t.date() + datetime.timedelta(days=1) if t.hour >= RELEASE_HOUR else t.date()
+    return d.isoformat()
+
+
+def article_counts() -> dict:
+    n = collections.Counter()
+    for p in (ROOT / "docs" / "_posts").glob("*.md"):
+        m = re.match(r"(\d{4}-\d{2}-\d{2})-", p.name)
+        if m:
+            n[m.group(1)] += 1
+    return n
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--days", type=int, default=7)
-    ap.add_argument("--sessions", action="store_true", help="セッション数(CLI起動回数)も出す")
+    ap.add_argument("--editions", type=int, default=7, help="直近何号ぶんを表示するか")
     args = ap.parse_args()
 
-    calls, sess = count_calls()
-    rows = next(v for v in ccusage("daily", "--timezone", "Asia/Tokyo").values()
-                if isinstance(v, list))
-    grand = 0.0
-    for r in rows[-args.days:]:
-        d = r["period"]
-        grand += r["totalCost"]
-        print(f"■ {d}(JST)   合計 {r['totalCost']:.2f}$")
-        head = f"   {'モデル':<26}{'呼出':>7}"
-        if args.sessions:
-            head += f"{'ｾｯｼｮﾝ':>7}"
-        print(head + f"{'出力tok':>10}{'ｷｬｯｼｭ読':>10}{'費用':>9}{'割合':>6}{'単価/回':>9}")
-        for m in sorted(r["modelBreakdowns"], key=lambda x: -x["cost"]):
-            name = m["modelName"]
-            n = calls.get((d, name), 0)
-            line = f"   {name:<26}{n:>7}"
-            if args.sessions:
-                line += f"{sess.get((d, name), 0):>7}"
-            per = f"{m['cost']/n:.3f}$" if n else "-"
-            print(line + f"{m['outputTokens']:>10,}{m['cacheReadTokens']/1e6:>9.0f}M"
-                         f"{m['cost']:>8.2f}${m['cost']/r['totalCost']*100:>5.0f}%{per:>9}")
+    index = {p.stem: p for p in (HOME / ".claude/projects").glob("*/*.jsonl")}
+    cwds = work_dirs()
+    arts = article_counts()
+
+    per = collections.defaultdict(lambda: collections.defaultdict(lambda: [0, 0.0]))
+    total = collections.Counter()
+    for s in ccusage("session")["session"]:
+        if not is_pipeline(s, index, cwds):
+            continue
+        ed = edition_of(s["metadata"]["lastActivity"])
+        for m in s["modelBreakdowns"]:
+            row = per[ed][m["modelName"]]
+            row[0] += 1
+            row[1] += m["cost"]
+        total[ed] += s["totalCost"]
+
+    for ed in sorted(per)[-args.editions:]:
+        n = arts.get(ed, 0)
+        head = f"■ {ed}号   {total[ed]:>6.2f}$"
+        if n:
+            head += f"   記事{n}本 → 1本あたり {total[ed]/n:.2f}$"
+        print(head)
+        for m, (c, cost) in sorted(per[ed].items(), key=lambda x: -x[1][1]):
+            print(f"    {m:<28}{c:>4}ｾｯｼｮﾝ{cost:>8.2f}${cost/total[ed]*100:>5.0f}%")
         print()
-    print(f"  表示期間の合計 {grand:.2f}$")
+    print("  ※ パイプラインのみ(対話セッションは除外)")
     print("  ※ API 公開価格での換算値。サブスクリプションの請求額ではない")
     return 0
 

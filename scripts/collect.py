@@ -26,7 +26,7 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MAX_BUDGET_USD, JST, append_metric,
+from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MAX_BUDGET_USD, JST, append_metric,
                      extract_periods, html_to_text,
                      checkout_edition_branch, commit_and_push, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst)
@@ -52,7 +52,9 @@ GROK_TIMEOUT = int(ENV.get("GROK_TIMEOUT", "3000"))
 # 調査の窓が「直近48時間」なので、収集を1日に何度回しても同じ48時間を見直すだけで
 # 大半が重複になる(実測: 12:48 の実行は正規化70件のうち新規22件=69%が重複)。
 # したがって回数を増やすのではなく、**1日1回の深掘りで量を確保する**方針を取る。
-GROK_ITEMS = int(ENV.get("GROK_ITEMS", "20"))
+# ただし件数を上げすぎると週次上限に当たる(20件設定の 2026-08-27 は1回で上限の14%を消費)。
+# 記事に使われるのは候補の6割程度なので、目標を12件に下げても紙面の厚みは保てる見込み。
+GROK_ITEMS = int(ENV.get("GROK_ITEMS", "12"))
 # 注: grok のヘッドレス実行には --always-approve が必須(無いとツール実行が承認待ちで
 # Cancelled になり前置きだけ返る)。結果は標準出力ではなく**ファイルに書かせる**。
 # grok はエージェント型 CLI なので、面ごとにファイルを更新させれば1応答の出力上限に
@@ -208,7 +210,7 @@ def claude_exec(prompt: str, timeout: int = 300) -> list:
     return extract_json_array(r.stdout)
 
 
-def write_grok_prompt(outdir: Path, queries: list[dict], out_path: Path) -> Path:
+def write_grok_prompt(outdir: Path, queries: list[dict]) -> Path:
     """全面を1セッションで調べさせる指示を書き出す。
 
     規程そのものは prompts/grok-collect.md(作業手順書)に置き、ここでは
@@ -216,11 +218,17 @@ def write_grok_prompt(outdir: Path, queries: list[dict], out_path: Path) -> Path
     面を分けて何セッションも起動すると、手順の理解と検索の段取りという前段の作業を
     そのたびに繰り返すことになる。消費はセッション数ではなく作業量に比例するため、
     重複作業をさせないのがそのまま節約になる。
+
+    **面ごとに別ファイルへ書き捨てさせる。** 1つのファイルへ全件を書き戻させると、
+    面が進むほど「読み直して全件を書き直す」作業が重くなり、消費が跳ねる
+    (2026-08-26〜27の実測: 呼出回数はほぼ同じなのに入力トークンが2.6倍)。
+    整形と重複排除は後段の Luna(codex)に任せ、Grok には調べることだけをさせる。
     """
     lines = []
     for n, q in enumerate(queries, 1):
         window = "直近72時間" if q["key"] in ("trend", "fan-culture") else "直近48時間"
-        lines.append(f'{n}. brand="{q["brand"]}" … {q["topic"]}({window}を対象)')
+        lines.append(f'{n}. brand="{q["brand"]}" → {outdir}/{q["key"]}.jsonl'
+                     f' … {q["topic"]}({window}を対象)')
     prompt = f"""まず `{GROK_PROCEDURE.relative_to(ROOT)}` を読み、その手順書に従って作業してください。
 
 ## 調べる面({len(queries)}面。上から順に、1面ずつ処理する)
@@ -229,10 +237,13 @@ def write_grok_prompt(outdir: Path, queries: list[dict], out_path: Path) -> Path
 ## 面ごとの目標件数
 {GROK_ITEMS}件程度(上限ではなく目標)
 
-## 出力先
-{out_path}
+## 出力
+**面ごとに、上の一覧で指定したファイルへ追記します。**1行1件の JSON(JSON Lines)。
+- 他の面のファイルは**読まない・触らない**。書いたものを読み直さない
+- 重複の除去・表記の統一は後段の別工程がやります。**あなたはやらないでください**
+- 整形が多少崩れても構いません。**調べることに時間を使ってください**
 
-## 要素の形(手順書の「出力の形式」で参照している定義)
+## 要素の形
 {ITEM_SCHEMA}
 """
     p = outdir / "prompt.md"
@@ -240,16 +251,62 @@ def write_grok_prompt(outdir: Path, queries: list[dict], out_path: Path) -> Path
     return p
 
 
-def read_grok_file(path: Path) -> list:
-    """grok が書いたファイルを読む。前後に説明文が混ざっても配列だけ取り出す。"""
-    if not path.exists():
-        return []
-    text = path.read_text(encoding="utf-8", errors="replace")
+def read_grok_files(outdir: Path) -> list:
+    """grok が面ごとに書き捨てた JSONL を全部読む。壊れた行は捨てる。
+
+    整形の厳密さを Grok に求めない代わりに、ここは寛容に読む。
+    """
+    items, broken = [], []
+    for p in sorted(outdir.glob("*.jsonl")):
+        for line in p.read_text(encoding="utf-8", errors="replace").splitlines():
+            line = line.strip().rstrip(",")
+            if not line.startswith("{"):
+                continue
+            try:
+                v = json.loads(line)
+            except json.JSONDecodeError:
+                broken.append(line[:600])
+                continue
+            if isinstance(v, dict) and v.get("url"):
+                items.append(v)
+            else:
+                broken.append(line[:600])
+    # 面ごとの .json(配列で書かれた場合)も拾う
+    for p in sorted(outdir.glob("*.json")):
+        try:
+            v = json.loads(p.read_text(encoding="utf-8", errors="replace"))
+        except json.JSONDecodeError:
+            continue
+        if isinstance(v, list):
+            items += [x for x in v if isinstance(x, dict) and x.get("url")]
+    if broken:
+        # 整形の厳密さを Grok に求めない代わり、崩れた行はここで拾い直す。
+        # 直すのは形だけで、事実は足さない(Grok の観測を超える情報を作らないため)
+        salvaged = salvage_broken(broken)
+        print(f"grok: 崩れた行 {len(broken)}件 → {len(salvaged)}件を復旧", flush=True)
+        items += salvaged
+    return items
+
+
+def salvage_broken(lines: list[str]) -> list:
+    """JSON として読めなかった行を codex(luna)に整形し直させる。
+
+    Grok に整形を作り込ませると、そのぶん検索に使える枠が減る(週次上限が実際の制約)。
+    整形は安いモデルの仕事にする。事実の追加は禁じ、形を直すだけにさせる。
+    """
+    prompt = ("次の各行は JSON として壊れています。**各行を1つの JSON オブジェクトに直して**、"
+              "JSON 配列だけを標準出力に書いてください。\n"
+              "**書かれていない情報を足さないこと**(推測で値を埋めない)。"
+              "url が読み取れない行は捨ててください。JSON 以外のテキストは出力しない。\n\n"
+              + "\n".join(lines[:80]))
     try:
-        v = json.loads(text)
-        return v if isinstance(v, list) else []
-    except json.JSONDecodeError:
-        return extract_json_array(text)
+        r = subprocess.run(["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "read-only",
+                            "--skip-git-repo-check", prompt],
+                           capture_output=True, text=True, timeout=300,
+                           stdin=subprocess.DEVNULL, cwd=ROOT)
+    except Exception:
+        return []
+    return [x for x in extract_json_array(r.stdout) if isinstance(x, dict) and x.get("url")]
 
 
 def grok_scheduled_now(now=None) -> bool:
@@ -291,8 +348,7 @@ def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
         outdir = ROOT / "candidates" / ".grok"
         shutil.rmtree(outdir, ignore_errors=True)
         outdir.mkdir(parents=True, exist_ok=True)
-        out_path = outdir / "found.json"
-        prompt_path = write_grok_prompt(outdir, queries, out_path)
+        prompt_path = write_grok_prompt(outdir, queries)
 
         p = subprocess.Popen(
             ["grok", "--prompt-file", str(prompt_path), "--always-approve",
@@ -305,7 +361,7 @@ def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
         except subprocess.TimeoutExpired:
             p.kill()
             err = "timeout"
-        got = read_grok_file(out_path)
+        got = read_grok_files(outdir)
         if not got:
             print(f"grok 0件 stderr: {(err or '').strip()[:200]}", flush=True)
         for it in got:

@@ -65,7 +65,7 @@ def next_number() -> int:
 
 
 BRANDS = {"general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"}
-RANKS = {"lead", "large", "medium", "small", "roundup"}
+RANKS = {"lead", "large", "medium", "small", "roundup", "culture"}
 # roundup(編集規程13の例外: ブランド別の定常運営まとめ)を作る最小件数。
 # これ未満なら束ねずに通常記事にする(2件を「まとめ」と称すると単なる手抜きになる)
 ROUNDUP_MIN_ITEMS = 3
@@ -166,6 +166,13 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
     fb = f"\n## 前回の機械検証エラー(必ず解消すること)\n{feedback}\n" if feedback else ""
     trig = json.dumps([{k: t.get(k) for k in ("id", "dedup_key", "brand", "subject", "kind", "note")}
                        for t in triggers], ensure_ascii=False, indent=1)
+    cul_rank = "|culture" if brand == "general" else ""
+    cul_rule = ("""
+- **ファン面(規程4の例外・rank: culture)**: ファン創作・コスプレ・聖地巡礼・記念日の盛り上がり・
+  界隈の現象は、単体では記事にせず**この面で1本の `rank: culture` にまとめる**(3件以上あるときだけ作る)。
+  - 号内1本まで。記事本数の下限には算入しない
+  - **誰か1人を主役にしない**(傾向として書く面であり、個人の紹介ではない)
+  - 声優個人のアイマス外活動はこの例外の対象外。批判・嘲笑・炎上も対象外(規程5)""" if brand == "general" else "")
     done = ""
     if claimed:
         done = ("\n## すでに他の面が記事にした話題(この号に載ることが確定しています)\n"
@@ -198,7 +205,7 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
 ## 選定規則
 - **{n_subjects}主題すべてを「記事化」「roundup」「不採用」のいずれかに割り当てる。黙って無視してよい主題は1つもない**(不採用は dropped に理由付きで列挙)
 - **本数の目標値は無い。**記事化基準を満たす話題は全部記事にする(「多いから落とす」は禁止。紙面は無制限。編集規程11)。あふれたら rank を small へ寄せる
-- rank は large|medium|small|roundup から選ぶ。**lead は付けない**(号全体の一面は後段で決める)
+- rank は large|medium|small|roundup{cul_rank} から選ぶ。**lead は付けない**(号全体の一面は後段で決める){cul_rule}
 - 同一話題を複数エンジンが観測している場合は1記事に統合し、candidate_ids に全部載せる
 - 個人への攻撃・プライバシー侵害になり得る話題、読んだ人が嫌な気分になる炎上・係争は入れない。個人の SNS 投稿は単体で記事化しない(規程4・5。規程11より優先)
 - 声優個人のアイマス外活動・関係者の動向は対象外(規程4)
@@ -281,6 +288,17 @@ def article_prompt(date: str, art: dict, materials: list[dict], story_facts: lis
     prev = ("\n## 既報(この話題で報道済みの事実。同じ事実の繰り返しを記事の軸にしない)\n"
             + "\n".join(f"- {f}" for f in story_facts)) if story_facts else ""
     vocab = tags_lib.vocabulary_block()
+    culture = ("""
+
+## この記事は「ファン面」です(rank: culture・編集規程4の例外)
+ファンの営みを、個人の紹介ではなく**その日の傾向**として1本にまとめた記事です。
+- **誰か1人を主役にしない。**「こういう動きが目立った」という書き方にする
+- **個人アカウント名・ハンドルを本文に書かない。**当人が望まない露出を作らないため
+  (sources の url は残してよい。label も投稿者名ではなく内容が分かる語にする)
+- **批判・嘲笑・優劣の比較を書かない**(規程5はこの面にも適用される)
+- 素材が2件以下しか残らなければ、ファイルを作らず「ABORT: 残件不足」とだけ出力して終了する
+- 見出しは煽らない。数字や断定で盛らない"""
+               if art["rank"] == "culture" else "")
     roundup = ("""
 
 ## この記事は「定常運営まとめ」です(rank: roundup・編集規程13の例外)
@@ -321,7 +339,7 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 `docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
 - frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']} / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
 - title(全角換算〜28字)・lede(1文)・tags(2〜4個。下記「タグ語彙」に従う)・sources(素材の url から。label は内容がわかる短い日本語、type は各候補の source_type)・event_date(素材にあれば)は自分で書く
-- 本文は {lo}〜{hi} 字(rank: {art['rank']} の分量規程)。切り口: {art['angle']}{trig}{roundup}
+- 本文は {lo}〜{hi} 字(rank: {art['rank']} の分量規程)。切り口: {art['angle']}{trig}{roundup}{culture}
 
 ## タグ語彙(タグは索引・検索に使われる。表記ゆれは索引を壊すため厳守)
 シリーズ名・施策カテゴリは**必ず次の語彙から選ぶ**(同義の別表記を作らない):

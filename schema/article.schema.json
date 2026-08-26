@@ -60,9 +60,10 @@
         "large",
         "medium",
         "small",
-        "roundup"
+        "roundup",
+        "culture"
       ],
-      "description": "lead は号内で1本のみ(lint 検査)。roundup は定常運営まとめでブランドごとに号内1本(REQUIREMENTS.md 3.5)"
+      "description": "lead は号内で1本のみ(lint 検査)。roundup は定常運営まとめでブランドごとに号内1本(REQUIREMENTS.md 3.5) culture はファン面で号内1本(REQUIREMENTS 5章 規程4の例外)"
     },
     "title": {
       "type": "string",

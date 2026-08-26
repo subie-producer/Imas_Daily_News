@@ -5,13 +5,14 @@
 {% assign date_jp = ed.date | date: "%Y年%-m月%-d日" %}
 {% capture no4 %}0000{{ ed.number }}{% endcapture %}{% assign no4 = no4 | slice: -4, 4 %}
 {% assign eposts = "" | split: "" %}
-{% assign ranks = "lead,large,medium,small,roundup" | split: "," %}
+{% assign ranks = "lead,large,medium,small,roundup,culture" | split: "," %}
 {% for r in ranks %}{% for p in site.posts %}{% assign p_ed = p.edition | date: "%Y-%m-%d" %}{% if p_ed == date_s and p.rank == r %}{% assign eposts = eposts | push: p %}{% endif %}{% endfor %}{% endfor %}
 {% assign lead = eposts | where: "rank", "lead" | first %}
 {% assign larges = eposts | where: "rank", "large" %}
 {% assign mediums = eposts | where: "rank", "medium" %}
 {% assign smalls = eposts | where: "rank", "small" %}
 {% assign roundups = eposts | where: "rank", "roundup" %}
+{% assign culture = eposts | where: "rank", "culture" | first %}
 {% assign editorial = site.editorials | where_exp: "e", "e.edition == nil" | first %}
 {% for e in site.editorials %}{% assign e_ed = e.edition | date: "%Y-%m-%d" %}{% if e_ed == date_s %}{% assign editorial = e %}{% endif %}{% endfor %}
 
@@ -156,6 +157,19 @@
           </div>
           {% endfor %}
         </div>
+      </div>
+      {% endif %}
+
+      <!-- ファン面(規程4の例外。個人ではなくその日の傾向を扱う) -->
+      {% if culture %}
+      {% assign cdef = site.data.brands | where: "id", culture.brand | first %}
+      <div style="margin-top:20px;border-top:1px solid #dedad0;padding-top:12px" data-brand="{{ culture.brand }}">
+        <div style="font-family:var(--font-mono);font-size:9px;color:#8a857a;letter-spacing:.12em">ファン面 ・ FAN CULTURE</div>
+        <div style="margin-top:6px;display:flex;gap:9px;align-items:baseline">
+          <span style="flex:none;width:8px;height:8px;background:{{ cdef.color }};align-self:center"></span>
+          <a href="{{ culture.url | relative_url }}" style="flex:1;font-family:var(--font-serif);font-weight:700;font-size:15px;line-height:1.6">{{ culture.title }}</a>
+        </div>
+        <div style="margin-top:4px;font-size:12px;line-height:1.9;color:#55524b">{{ culture.lede }}</div>
       </div>
       {% endif %}
 

@@ -46,9 +46,11 @@ BODY_RANGE = {
     "small": (150, 250),
     # roundup = ブランド別の定常運営まとめ(編集規程13の例外)。箇条3〜8件ぶんの幅を持たせる
     "roundup": (200, 700),
+    # culture = ファン面(規程4の例外)。号内1本・general 面。傾向を書くので少し長め
+    "culture": (300, 800),
 }
 RANK_BELOW = {"lead": "large", "large": "medium", "medium": "small", "small": "small",
-              "roundup": "roundup"}  # roundup は公式告知の要約なので規程2の減格対象外
+              "roundup": "roundup", "culture": "culture"}  # roundup/culture は規程2の減格対象外
 # 記事本数の下限(編集規程11)。lead 欠落はエラー、下限割れは警告(publish が Discord 通知)
 # roundup は本数に数えない(まとめで下限を満たしたことにすると、単独記事の不足が隠れる)
 ARTICLE_MIN = 8
@@ -341,9 +343,9 @@ def main() -> int:
         arts = by_edition.get(date_s, [])
         if fm["article_count"] != len(arts):
             rep.error(path, f"article_count {fm['article_count']} ≠ 実記事数 {len(arts)}")
-        n_news = sum(1 for a in arts if a["rank"] != "roundup")
+        n_news = sum(1 for a in arts if a["rank"] not in ("roundup", "culture"))
         if fm["number"] >= 1 and n_news < ARTICLE_MIN:
-            rep.warn(path, f"記事本数が{n_news}本(下限{ARTICLE_MIN}本。roundup は不算入。発行は可・Discord 通知対象)")
+            rep.warn(path, f"記事本数が{n_news}本(下限{ARTICLE_MIN}本。roundup/culture は不算入。発行は可・Discord 通知対象)")
         pages = len({a["brand"] for a in arts})
         if fm["pages"] != pages:
             rep.error(path, f"pages {fm['pages']} ≠ ブランド異なり数 {pages}")
@@ -363,6 +365,9 @@ def main() -> int:
         for b, n in rup.items():
             if n > 1:
                 rep.error(path, f"rank: roundup の記事が {b} 面に{n}本(ブランドあたり号内1本であること)")
+        n_cul = sum(1 for a in arts if a["rank"] == "culture")
+        if n_cul > 1:
+            rep.error(path, f"rank: culture の記事が{n_cul}本(ファン面は号内1本であること)")
 
         # ダイジェスト
         slugs_in_edition = {a["slug"] for a in arts}

@@ -175,7 +175,12 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
                   "(切り口 angle を読んで判断すること)。該当する主題は dropped に "
                   'reason="重複" で記録します。\n'
                   "ただし**明らかに別の施策**(同じ公演でも「チケット」と「グッズ受注」は別)は、"
-                  "この面で記事にして構いません。\n")
+                  "この面で記事にして構いません。\n\n"
+                  "**この面にも同じくらい属する話題だった場合**(例: デレとミリの合同告知を "
+                  "cg 面が先に取っていた)は、dropped ではなく `cross_brand` に記録してください。"
+                  "その記事は合同(joint)面へ移し、この面の素材も統合します。"
+                  "「先に取った面の話題」として片方に寄せてしまうと、"
+                  "もう一方のファンにとって紙面から消えたのと同じになります。\n")
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集者です。{date}({weekday}曜)号の
 **「{brand}」面だけ**の記事計画を作ってください。記事本文はまだ書きません。他の面は別の担当が見ます。
 
@@ -220,8 +225,16 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
     {{"dedup_key": "記事にも roundup にもしなかった主題の dedup_key",
       "reason": "既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|その他",
       "note": "reason だけで説明がつかない場合の一言(任意)"}}
+  ],
+  "cross_brand": [
+    {{"slug": "他の面が既に立てた記事の slug",
+      "dedup_key": "この面の主題(その記事へ統合する)",
+      "note": "なぜ両方の面にまたがるのか(1文)"}}
   ]
 }}
+
+`cross_brand` は、他の面が取った話題が**この面にも同じくらい属する**ときだけ使います
+(該当が無ければ空配列)。記事は合同(joint)面へ移り、両面の素材が統合されます。
 
 `lead_score` は「この記事が号の一面に値する度合い」を 0〜100 で自己申告する値です
 (面内で最も大きなニュース1本にだけ高い値を付け、残りは 0〜30 程度)。
@@ -297,7 +310,7 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 - `facts` の各項目が、取得した本文で確認できるか照合する。**確認できない fact は使わない**
   (素材の facts は収集段階の誤りを含み得る。実際に誤りが出ている)
 - **先頭の「期間」ブロックは原文のラベルそのままなので、`facts` と食い違ったらそちらが正**。
-  「入金期間」を「販売期間」と書き換えるような取り違えは、ここで必ず正す(規程14)
+  「入金期間」を「販売期間」と書き換えるような取り違えは、ここで必ず正す(規程15)
 - **掲載日(公開日)と話題の年を本文で確認する**。掲載年がイベント年・発行年と食い違う、
   または話題自体がすでに終了した過去のもの(当日トリガーの続報を除く)なら、その素材は使わない
 - `FETCH_FAILED` が返った url は照合不能として扱う(その url だけを根拠に断定しない)
@@ -320,7 +333,7 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 
 ## 絶対規則
 - 素材の facts(照合済みのもの)に無い事実を書かない。推測・一般知識での補完は禁止
-- **期間ラベル規程(規程14)**: 期間を書くときは**何の期間かを出典の語で明示**する。チケット・受注では
+- **期間ラベル規程(規程15)**: 期間を書くときは**何の期間かを出典の語で明示**する。チケット・受注では
   「先行抽選の申込受付」「抽選結果発表」「当選者の入金」「一般先着販売」「一般販売」が別々の期間として併存し、
   取り違えると誰がいつ買えるのかが逆になる。とくに**入金期間は当選者だけが対象**であり、
   これを「販売期間」「発売中」「受付中」と書くのは誤報である(実際に起きた事故)。
@@ -563,9 +576,11 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 4) -> 
                 claimed.append({k: a.get(k) for k in ("brand", "slug", "dedup_key", "angle")})
             print(f"選定: {b} 面 {len(by_brand[b])}主題 → 記事{n_a}本 / 不採用{n_d}件", flush=True)
     arts, dropped, seen = [], [], set()
+    by_slug: dict[str, dict] = {}
     for b, r in results.items():
         for a in r.get("articles") or []:
             a["brand"] = b  # 面の取り違えを機械的に潰す
+            by_slug[a.get("slug")] = a
             # slug は号内一意。面別に独立して付けるので衝突しうる(機械的に解消する。
             # ここで落とすと、面の担当が正しく選んだ記事が理由なく消える)
             if a.get("slug") in seen:
@@ -575,6 +590,24 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 4) -> 
             seen.add(a.get("slug"))
             arts.append(a)
         dropped += r.get("dropped") or []
+
+    # 面をまたぐ話題の格上げ。後続の面が「先に取られたが、この面にも同じくらい属する」と
+    # 申告したものを合同(joint)へ移し、両面の素材を統合する。
+    # 片方の面に寄せたままにすると、もう一方のファンにとっては紙面から消えたのと同じになる。
+    subj_ids = {s["dedup_key"]: s.get("ids", []) for rows in by_brand.values() for s in rows}
+    for b, r in results.items():
+        for x in r.get("cross_brand") or []:
+            art = by_slug.get(x.get("slug"))
+            # roundup は面ごとに1本という前提の枠なので、格上げの対象にしない
+            # (joint に2本並ぶと validate_plan で計画ごと落ちる)
+            if art is None or art.get("rank") == "roundup":
+                continue
+            add = [i for i in subj_ids.get(x.get("dedup_key"), []) if i not in art["candidate_ids"]]
+            art["candidate_ids"] = art["candidate_ids"] + add
+            if art["brand"] != "joint":
+                print(f"合同へ格上げ: {art['slug']}({art['brand']} + {b} → joint) "
+                      f"{x.get('note', '')[:60]}", flush=True)
+                art["brand"] = "joint"
     return {"articles": arts, "dropped": dropped}
 
 

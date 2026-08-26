@@ -34,7 +34,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import tags as tags_lib
-from pipelib import (ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, EDITORIAL_MODEL,
+from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, EDITORIAL_MODEL,
                      COMPOSE_ARTICLE_MAX_BUDGET_USD,
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, commit_and_push, edition_date, git,
@@ -69,6 +69,8 @@ RANKS = {"lead", "large", "medium", "small", "roundup", "culture"}
 # roundup(編集規程13の例外: ブランド別の定常運営まとめ)を作る最小件数。
 # これ未満なら束ねずに通常記事にする(2件を「まとめ」と称すると単なる手抜きになる)
 ROUNDUP_MIN_ITEMS = 3
+# 1記事が抱える素材数の目安。これを超えたら束ねすぎを疑って表示する(規程13)
+MERGE_WARN = int(ENV.get("MERGE_WARN", "6"))
 # 出典バッジの信頼順(強い順)。記事 src は引用出典のうち最も「弱い」種別
 # (=全出典がその種別以上であることの保証。ファン報告を含む記事が「公式」を
 # 名乗る過大表示を構造的に防ぐ。REQUIREMENTS 2.5「他はどれほど信頼できても
@@ -206,7 +208,10 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
 - **{n_subjects}主題すべてを「記事化」「roundup」「不採用」のいずれかに割り当てる。黙って無視してよい主題は1つもない**(不採用は dropped に理由付きで列挙)
 - **本数の目標値は無い。**記事化基準を満たす話題は全部記事にする(「多いから落とす」は禁止。紙面は無制限。編集規程11)。あふれたら rank を small へ寄せる
 - rank は large|medium|small|roundup{cul_rank} から選ぶ。**lead は付けない**(号全体の一面は後段で決める){cul_rule}
-- 同一話題を複数エンジンが観測している場合は1記事に統合し、candidate_ids に全部載せる
+- **統合してよいのは「同じ出来事の同じ告知」を複数の収集エンジンが観測した場合だけ**。その1記事の candidate_ids に全部載せる
+- **同じ公演・同じ作品でも、出来事が違えば別の記事にする。**「開幕」「千秋楽」「チケット締切」「配信決定」「会場限定CDの販売」「グッズ受注」は、同じツアーの話でもそれぞれ別のニュースであり、読者が取る行動も違う。1本にまとめると規程13(1記事1主題)違反になる
+  - 悪い例: 「東京公演が開幕。あわせて冒頭無料配信の決定と会場限定CD2種の販売も報じる」← 3つの出来事を束ねている。3本に分ける
+  - **1つの記事に載せる素材が5〜6件を超えたら、束ねすぎを疑うこと**(同じ告知の重複観測なら妥当だが、別の出来事が混ざっていないか確かめる)
 - 個人への攻撃・プライバシー侵害になり得る話題、読んだ人が嫌な気分になる炎上・係争は入れない。個人の SNS 投稿は単体で記事化しない(規程4・5。規程11より優先)
 - 声優個人のアイマス外活動・関係者の動向は対象外(規程4)
 - **同人イベント・ファン主催企画(オンリーイベント・即売会・非公式コラボ)は記事化しない**(規程4)
@@ -895,6 +900,14 @@ def main() -> int:
     gaps, cov = coverage_gaps(plan, cands, blocklist)
     if gaps:
         print(f"取りこぼし: {gaps[0][:120]}", flush=True)
+    # 束ねすぎの可視化(規程13)。発行は止めない。1記事が抱える素材が多いときは、
+    # 同じ告知の重複観測ではなく別の出来事が混ざっている疑いがある
+    # (2026-08-27号の 765 面は14件を1本にまとめ、開幕・配信・CD販売を合成していた)
+    fat = [(a["slug"], len(a["candidate_ids"])) for a in plan["articles"]
+           if a["rank"] != "roundup" and len(a["candidate_ids"]) > MERGE_WARN]
+    if fat:
+        print("束ねすぎの疑い(素材数): " + ", ".join(f"{s}={n}" for s, n in sorted(fat, key=lambda x: -x[1])),
+              flush=True)
     if errors:
         notify("compose", f"{date}: 記事計画が機械検証を通らず。人間判断が必要\n- " + "\n- ".join(errors[:8]), ok=False)
         commit_and_push(branch, f"compose {date}: 計画不成立(要人間判断)", "compose")

@@ -55,6 +55,8 @@ GROK_TIMEOUT = int(ENV.get("GROK_TIMEOUT", "3000"))
 # ただし件数を上げすぎると週次上限に当たる(20件設定の 2026-08-27 は1回で上限の14%を消費)。
 # 記事に使われるのは候補の6割程度なので、目標を12件に下げても紙面の厚みは保てる見込み。
 GROK_ITEMS = int(ENV.get("GROK_ITEMS", "12"))
+# 面別セッションの同時実行数。多すぎると X 側で絞られるおそれがあるので控えめに置く
+GROK_WAVE = int(ENV.get("GROK_WAVE", "3"))
 # 注: grok のヘッドレス実行には --always-approve が必須(無いとツール実行が承認待ちで
 # Cancelled になり前置きだけ返る)。結果は標準出力ではなく**ファイルに書かせる**。
 # grok はエージェント型 CLI なので、面ごとにファイルを更新させれば1応答の出力上限に
@@ -210,45 +212,78 @@ def claude_exec(prompt: str, timeout: int = 300) -> list:
     return extract_json_array(r.stdout)
 
 
-def write_grok_prompt(outdir: Path, queries: list[dict]) -> Path:
-    """全面を1セッションで調べさせる指示を書き出す。
+def write_grok_prompt(outdir: Path, q: dict) -> Path:
+    """1面ぶんの指示を書き出す(面ごとに1セッション)。
 
-    規程そのものは prompts/grok-collect.md(作業手順書)に置き、ここでは
-    「その手順書を読め」と当日固有の値(面の一覧・目標件数・出力先)だけを渡す。
-    面を分けて何セッションも起動すると、手順の理解と検索の段取りという前段の作業を
-    そのたびに繰り返すことになる。消費はセッション数ではなく作業量に比例するため、
-    重複作業をさせないのがそのまま節約になる。
-
-    **面ごとに別ファイルへ書き捨てさせる。** 1つのファイルへ全件を書き戻させると、
-    面が進むほど「読み直して全件を書き直す」作業が重くなり、消費が跳ねる
-    (2026-08-26〜27の実測: 呼出回数はほぼ同じなのに入力トークンが2.6倍)。
-    整形と重複排除は後段の Luna(codex)に任せ、Grok には調べることだけをさせる。
+    規程は prompts/grok-collect.md(作業手順書)に置き、ここでは当日固有の値
+    (その面の主題・目標件数・出力先)だけを渡す。
     """
-    lines = []
-    for n, q in enumerate(queries, 1):
-        window = "直近72時間" if q["key"] in ("trend", "fan-culture") else "直近48時間"
-        lines.append(f'{n}. brand="{q["brand"]}" → {outdir}/{q["key"]}.jsonl'
-                     f' … {q["topic"]}({window}を対象)')
+    window = "直近72時間" if q["key"] in ("trend", "fan-culture") else "直近48時間"
+    out = outdir / f"{q['key']}.jsonl"
     prompt = f"""まず `{GROK_PROCEDURE.relative_to(ROOT)}` を読み、その手順書に従って作業してください。
 
-## 調べる面({len(queries)}面。上から順に、1面ずつ処理する)
-{chr(10).join(lines)}
+## あなたが調べる面(これ1面だけ)
+brand="{q["brand"]}" … {q["topic"]}
 
-## 面ごとの目標件数
-{GROK_ITEMS}件程度(上限ではなく目標)
+対象期間: {window}
+目標件数: {GROK_ITEMS}件程度(上限ではなく目標)
 
 ## 出力
-**面ごとに、上の一覧で指定したファイルへ追記します。**1行1件の JSON(JSON Lines)。
-- 他の面のファイルは**読まない・触らない**。書いたものを読み直さない
-- 重複の除去・表記の統一は後段の別工程がやります。**あなたはやらないでください**
-- 整形が多少崩れても構いません。**調べることに時間を使ってください**
+`{out}` に**1行1件の JSON**(JSON Lines)で追記します。
+他の面は別の担当が調べます。**このファイル以外は読まない・触らない**。
 
 ## 要素の形
 {ITEM_SCHEMA}
 """
-    p = outdir / "prompt.md"
-    p.write_text(prompt, encoding="utf-8")
-    return p
+    pp = outdir / f"prompt-{q['key']}.md"
+    pp.write_text(prompt, encoding="utf-8")
+    return pp
+
+
+def consolidate_grok(outdir: Path) -> list:
+    """面ごとに書き捨てられた JSONL を Luna(codex)に束ねさせる。
+
+    面別セッションは互いを見ないので、同じ話題が複数の面に出る・整形が面ごとに
+    ぶれる、といったことが必ず起きる。それを Grok 側に整えさせると、
+    そのぶん週次上限を検索以外に使うことになる(上限の実体は入力トークン量)。
+    調停は安いモデルの仕事にして、Grok には調べることだけをさせる。
+
+    Luna が失敗しても収集を落とさない。機械読み(read_grok_files)に必ず落とす。
+    """
+    files = sorted(outdir.glob("*.jsonl"))
+    if not files:
+        return []
+    out = outdir / "normalized.json"
+    out.unlink(missing_ok=True)
+    prompt = (
+        f"{outdir} にある *.jsonl は、面ごとに独立して収集された候補です"
+        "(1行1件の JSON。面をまたいだ重複や、整形の崩れがあります)。\n"
+        f"すべて読み、次の規則で1つの JSON 配列に束ねて `{out}` へ書いてください"
+        "(Write ツール使用。他のファイルは作らない)。\n\n"
+        "1. **同じ url の行は1件に統合**し、facts を重複なく合併する\n"
+        "2. 同じ話題を指す行が別の url で複数あるなら、**それぞれ別の候補として残す**"
+        "(統合しない。どちらが正しいかの判断はしない)\n"
+        "3. 壊れた行は形だけ直す。**url が読み取れない行は捨てる**\n"
+        "4. **書かれていない情報を足さない。**推測で値を埋めない。facts の文言は変えない\n"
+        "5. 要素の形は次のとおり:\n" + ITEM_SCHEMA)
+    try:
+        subprocess.run(["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write", prompt],
+                       capture_output=True, text=True, timeout=900,
+                       stdin=subprocess.DEVNULL, cwd=ROOT)
+    except Exception as e:
+        print(f"grok: 調停(codex)に失敗 {e}。機械読みに切り替える", flush=True)
+    if out.exists():
+        try:
+            v = json.loads(out.read_text(encoding="utf-8", errors="replace"))
+            got = [x for x in v if isinstance(x, dict) and x.get("url")] if isinstance(v, list) else []
+            if got:
+                raw = read_grok_files(outdir)
+                print(f"grok: 調停 {len(raw)}行 → {len(got)}件", flush=True)
+                return got
+        except json.JSONDecodeError:
+            pass
+    print("grok: 調停の結果を読めず、機械読みに切り替える", flush=True)
+    return read_grok_files(outdir)
 
 
 def read_grok_files(outdir: Path) -> list:
@@ -271,8 +306,10 @@ def read_grok_files(outdir: Path) -> list:
                 items.append(v)
             else:
                 broken.append(line[:600])
-    # 面ごとの .json(配列で書かれた場合)も拾う
+    # 面ごとの .json(配列で書かれた場合)も拾う。調停結果は対象外
     for p in sorted(outdir.glob("*.json")):
+        if p.name == "normalized.json":
+            continue
         try:
             v = json.loads(p.read_text(encoding="utf-8", errors="replace"))
         except json.JSONDecodeError:
@@ -335,35 +372,37 @@ def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
                 stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
     # -- Grok(X 動向) --
-    # grok はエージェント型 CLI(Grok Build)であり、1回の起動が SuperGrok の
-    # 週次セッションを1つ消費する。面ごとに起動すると1収集で10セッションになり、
-    # 日5回では週350セッションで上限(実測 約118)の約3倍になる。
-    #
-    # そこで **複数面を1セッションにまとめる**。ブランドは減らさず起動回数だけを減らす。
-    # 出力は標準出力ではなく**ファイルに書かせる**: エージェントは面ごとに書き足せるので
-    # 1レスポンスの出力上限に縛られず、まとめても取りこぼしにくい(実測: 2面16件を
-    # 面ごとに追記させて欠落なし)。stdout への JSON 直吐きは本来の使い方ではなく、
-    # --json-schema が max_tokens で全滅した件も同じ理由と見ている。
+    # **面ごとに独立したセッション**で回す。
+    # 以前は「セッション数ではなく作業量に比例する」と考えて1セッションに10面を
+    # まとめていたが、実測はその逆だった: 1セッション内では面が進むたびに
+    # それまでの全検索結果を読み直すため、1呼出あたりの入力が 15k → 2,439k まで膨らむ。
+    # 総入力は呼出数の2乗で効き、週次消費%は入力トークン量にきれいに比例する
+    #   (実測: 6.9M→5pp / 17.9M→14pp / 20.4M→16pp)。
+    # 面ごとに切れば文脈がリセットされ、総入力は分割数ぶんの1になる。
+    # セッション起動の固定費(手順書+プロンプト)は約2kトークンで、削減額に対して誤差。
+    # ブランド10面は減らさない。減らすのは1セッションが抱える文脈の量だけ。
     if not skip_grok:
         outdir = ROOT / "candidates" / ".grok"
         shutil.rmtree(outdir, ignore_errors=True)
         outdir.mkdir(parents=True, exist_ok=True)
-        prompt_path = write_grok_prompt(outdir, queries)
-
-        p = subprocess.Popen(
-            ["grok", "--prompt-file", str(prompt_path), "--always-approve",
-             "--cwd", str(ROOT), "--max-turns", str(GROK_MAX_TURNS)],
-            stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
-            stdin=subprocess.DEVNULL, cwd=ROOT)
-        err = ""
-        try:
-            _, err = p.communicate(timeout=GROK_TIMEOUT)
-        except subprocess.TimeoutExpired:
-            p.kill()
-            err = "timeout"
-        got = read_grok_files(outdir)
+        for i in range(0, len(queries), GROK_WAVE):
+            procs = []
+            for q in queries[i:i + GROK_WAVE]:
+                pp = write_grok_prompt(outdir, q)
+                procs.append((q, subprocess.Popen(
+                    ["grok", "--prompt-file", str(pp), "--always-approve",
+                     "--cwd", str(ROOT), "--max-turns", str(GROK_MAX_TURNS)],
+                    stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
+                    stdin=subprocess.DEVNULL, cwd=ROOT)))
+            for q, pr in procs:
+                try:
+                    pr.communicate(timeout=GROK_TIMEOUT)
+                except subprocess.TimeoutExpired:
+                    pr.kill()
+                    print(f"grok: {q['key']} 面がタイムアウト(そこまでの記録は残る)", flush=True)
+        got = consolidate_grok(outdir)
         if not got:
-            print(f"grok 0件 stderr: {(err or '').strip()[:200]}", flush=True)
+            print("grok 0件", flush=True)
         for it in got:
             it["_via"] = "grok"
         items += got
@@ -375,7 +414,7 @@ def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
             by_brand[b] = by_brand.get(b, 0) + 1
         for q in queries:
             per[f"grok:{q['key']}"] = by_brand.get(q["brand"], 0)
-        print(f"grok: 1セッションで {len(got)}件(面別 {by_brand})", flush=True)
+        print(f"grok: {len(queries)}面を面別セッションで {len(got)}件(面別 {by_brand})", flush=True)
 
     # Claude の回収
     deadline = time.time() + 600

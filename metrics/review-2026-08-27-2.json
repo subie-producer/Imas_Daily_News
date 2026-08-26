@@ -1,0 +1,28 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-08-27-general-fan-culture-trends-0827.md",
+   "issue": "時制矛盾・event_date 誤設定：frontmatter の event_date が 2027-02-27（デレミリ合同ライブ開催日）に設定されているが、記事本体は2026年8月27日のファン反応をまとめたもの。event_date は2026-08-27 または削除が必要。",
+   "quote": "frontmatter: event_date: 2027-02-27 | 本文：「新規ファンへの戸惑いから会場への期待、非公式ランキングまで、ファンの投稿から多様な反応が見られた。」（2026-08-27の話題）"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-08-27-general-radio-episode-411.md",
+   "issue": "ニュース性の欠如：「THE IDOLM@STER MUSIC ON THE RADIO」第411回がニコニコで放送されたという事実の記録のみで、新規発表内容・当日告知・特別ゲストなどのニュース価値がない。定例ラジオ番組の放送記録に過ぎない。"
+  },
+  {
+   "file": "docs/_posts/2026-08-27-sidem-315-night-0821-preview-clip.md",
+   "issue": "時間的鮮度不足：対象は8月21日放送（発行日から6日前）のチラ見せ動画。公開日が記事に明記されていないため、新しいコンテンツなのか既存の告知なのか不明。チラ見せ動画の公開日を frontmatter で明記推奨。"
+  },
+  {
+   "file": "docs/_posts/2026-08-27-gaku-nuipin-vol2-announce.md",
+   "issue": "event_date 未記入：記事本文に「公式ページは8月25日付で発売決定を案内した」とあるため、event_date: 2026-08-25 の追加を推奨。新事実の発表日を記録すること。"
+  },
+  {
+   "file": "docs/_posts/2026-08-27-dsva-situation-voice14-deadline.md",
+   "issue": "鮮度検討：シチュボ第14弾の販売開始は8月15日（12日前）で、締切は9月6日（10日後）。本日（8月27日）の新発表・トリガーイベントがなく、deadline reminder としての機能のみ。規程10の「新しく発表された・起きた」ことが中核かどうか再検討推奨。"
+  }
+ ]
+}

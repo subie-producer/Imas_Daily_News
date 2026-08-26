@@ -1,0 +1,26 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-08-27-765-dual-twin-live-zepp-haneda-open.md",
+   "issue": "出典URL捏造：sources に記載のURL が candidates/2026-08-27.json に存在しない",
+   "quote": "sources: - label: 日本コロムビアCD告知 url: https://columbia.jp/idolmaster/imasnews/260710.html type: 準公式"
+  },
+  {
+   "file": "docs/_posts/2026-08-27-cg-toppa-base-popup-open.md",
+   "issue": "出典URL捏造：sources に記載のURL が candidates/2026-08-27.json に存在しない",
+   "quote": "sources: - label: 公式開催案内 url: https://idolmaster-official.jp/news/01_19246 type: 公式"
+  },
+  {
+   "file": "docs/_posts/2026-08-27-shiny-manekineko-collab-deadline-reminder.md",
+   "issue": "出典URL捏造：sources に記載のURL が candidates/2026-08-27.json に存在しない",
+   "quote": "sources: - label: 公式コラボ開催案内 url: https://idolmaster-official.jp/news/01_19269 type: 公式"
+  },
+  {
+   "file": "docs/_posts/2026-08-27-gaku-shirube-fukuoka-resale-deadline.md",
+   "issue": "出典URL捏造：sources に記載のURL が candidates/2026-08-27.json に存在しない",
+   "quote": "sources: - label: 福岡公演公式リセール案内 url: https://idolmaster-official.jp/news/01_19655 type: 公式"
+  }
+ ],
+ "comments": []
+}

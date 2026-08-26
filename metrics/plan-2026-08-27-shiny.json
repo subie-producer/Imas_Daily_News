@@ -1,0 +1,74 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-stillblue-general-presale-yoyogi",
+      "brand": "shiny",
+      "rank": "large",
+      "angle": "『shiny, the first REFRAC7IONS \"Still blue\"』アソビストア一般会員先行が8/27正午開始、12/19-20国立代々木競技場第一体育館での開催・販売期間(〜9/23)まで通しで紹介",
+      "lead_score": 65,
+      "dedup_key": "shiny-stillblue-asobipremium-lottery",
+      "candidate_ids": [
+        "202608270220-grok-44",
+        "202608270220-claude-147",
+        "sched-2026-08-27-shiny-stillblue-asobipremium-lottery-開始"
+      ]
+    },
+    {
+      "slug": "shiny-noctchill-story-event-0828",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "ノクチルのシナリオイベント「いつか風が止むその日まで」が8/28開幕、開催期間(〜9/7)を紹介",
+      "lead_score": 15,
+      "dedup_key": "shiny-noctchill-scenario-event-2026-08-28",
+      "candidate_ids": ["202608270220-grok-49"]
+    },
+    {
+      "slug": "shiny-manekineko-collab-deadline-reminder",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニマス×カラオケまねきねこコラボが8/30終了、残り3日のリマインド",
+      "lead_score": 0,
+      "dedup_key": "shiny-manekineko-collab-2026",
+      "candidate_ids": ["sched-2026-08-27-shiny-manekineko-collab-2026-締切前"]
+    },
+    {
+      "slug": "shiny-maintenance-0828",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニマス、8/28 12:00〜16:00にメンテナンス実施予定を告知",
+      "lead_score": 0,
+      "dedup_key": "shiny-maintenance-2026-08-28",
+      "candidate_ids": ["202608270220-grok-50"]
+    }
+  ],
+  "dropped": [
+    {"dedup_key": "shiny-live-august-2026", "reason": "既報", "note": "8/25生配信は既報(shiny-live-broadcast-new-idol-2026)、近日登場アイドル正体判明まで既に記事化済み"},
+    {"dedup_key": "shiny-parallel-collection-popup-2026", "reason": "既報", "note": "9月開催のPOP UP SHOPは既報(shiny-parallel-collection-popup-2026)と同一facts"},
+    {"dedup_key": "shiny-30ms-hair-set-2027-01", "reason": "既報", "note": "30MSにちか/はづきパーツは既報(shiny-30ms-new-figures-2026-08)"},
+    {"dedup_key": "shiny-30ms-hida-2027-01", "reason": "既報", "note": "30MS緋田美琴は既報(shiny-30ms-new-figures-2026-08)"},
+    {"dedup_key": "shiny-live-august-hot-2026", "reason": "既報", "note": "shiny-live-august-2026と同一の8/25生配信、既報"},
+    {"dedup_key": "shiny-sololive-msp-2026-09", "reason": "既報", "note": "MSP配信チケット販売開始は既報(shiny-msp-live-tickets-2026)"},
+    {"dedup_key": "shiny-c108-goods-2026", "reason": "その他", "note": "コミケ108(8/15-16)は開催終了済み。鮮度規程12により本日の新報にならない"},
+    {"dedup_key": "shiny-chibi-teamsol-2026", "reason": "既報", "note": "Team.Solちびぐるみ展開開始(8/20)は既報(shiny-team-sol-plushie-vol2-2026)"},
+    {"dedup_key": "shiny-costume-gacha-summer-2026", "reason": "既報", "note": "有償限定コスチュームガシャ(8/15開催)は既報(shiny-costume-gacha-2026-08)"},
+    {"dedup_key": "shiny-msp-streaming-ticket-start-2026-08-25", "reason": "既報", "note": "shiny-sololive-msp-2026-09と同一、既報(shiny-msp-live-tickets-2026)"},
+    {"dedup_key": "shiny-msp-official-resale-2026-09-05", "reason": "既報", "note": "公式リセール9/5開始は既報(shiny-msp-live-tickets-2026)に日程含め掲載済み"},
+    {"dedup_key": "shiny-msp-general-sale-2026-08-29", "reason": "既報", "note": "一般発売(先着)8/29開始は既報(shiny-msp-live-tickets-2026)に日程含め掲載済み"},
+    {"dedup_key": "shiny-hbtk-september-mc-2026", "reason": "既報", "note": "まったりHBTK9月度MCは既報(shiny-hbtk-september-mc-2026)と同一facts"},
+    {"dedup_key": "shiny-axe8-alstroemeria-2026-08-25", "reason": "既報", "note": "AXE8第1弾アルストロメリアは既報(shiny-axe8-2026)"},
+    {"dedup_key": "shiny-alstroemeria-beam-2026-08-25", "reason": "既報", "note": "新曲「BEAM」は既報(shiny-axe8-2026)に含まれる"},
+    {"dedup_key": "shiny-ssr-kuwayama-chiyuki-grow-to-glow-2026-08-25", "reason": "既報", "note": "S-SSR桑山千雪は既報(shiny-axe8-2026)に含まれる"},
+    {"dedup_key": "shiny-axe8-illumination-stars-2026-08-25", "reason": "既報", "note": "AXE8第2弾イルミネーションスターズは既報(shiny-axe8-2026)"},
+    {"dedup_key": "shiny-illumination-stars-i-we-2026-08-25", "reason": "既報", "note": "新曲「I=WE」は既報(shiny-axe8-2026)に含まれる"},
+    {"dedup_key": "shiny-ssr-kazano-hiori-bunkei-2026-08-25", "reason": "既報", "note": "S-SSR風野灯織は既報(shiny-axe8-2026)に含まれる"},
+    {"dedup_key": "shiny-283-stage-full-release-2026-08-25", "reason": "既報", "note": "283ステージ本リリースは既報(shiny-283-stage-2026)"},
+    {"dedup_key": "shiny-whisper-voice-7-nichika-2026-08-25", "reason": "既報", "note": "ささやきボイス第7弾は既報(shiny-whisper-voice-nichika-2026)"},
+    {"dedup_key": "shiny-grefes-ssr-fuyuko-2026-08-25", "reason": "既報", "note": "グレフェスコインショップS-SSR黛冬優子は既報(shiny-grefes-coinshop-mayuzumi-2026)"},
+    {"dedup_key": "shiny-pssr-ikuta-haruki-2026-08-25", "reason": "既報", "note": "P-SSR郁田はるきの私服イラスト公開は既報(shiny-live-broadcast-new-idol-2026)に含まれる"},
+    {"dedup_key": "shiny-popup-parallel-corridor-2026-09-20", "reason": "既報", "note": "shiny-parallel-collection-popup-2026と同一話題、既報"},
+    {"dedup_key": "shiny-30ms-hiori-mikoto-2027-01", "reason": "既報", "note": "shiny-30ms-hida-2027-01と同一話題、既報"},
+    {"dedup_key": "shiny-30ms-nichika-hazuki-parts-2027-01", "reason": "既報", "note": "shiny-30ms-hair-set-2027-01と同一話題、既報"},
+    {"dedup_key": "fan-illumination-stars-new-logo-2026", "reason": "既報", "note": "8/25配信でのイルミネーションスターズ新ロゴ披露はAXE8第2弾reveal(shiny-axe8-2026)の一部で既報。facts上も公式発表内容で個人の話題ではない"}
+  ],
+  "cross_brand": []
+}

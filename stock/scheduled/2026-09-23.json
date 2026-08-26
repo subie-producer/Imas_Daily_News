@@ -56,5 +56,26 @@
   "src_candidate_id": "202608232010-grok-8",
   "event_date": "2026-08-21",
   "deadline": "2026-09-23"
+ },
+ {
+  "id": "sched-2026-09-23-gaku-nemurase-tai-gashapon-2026-締切",
+  "dedup_key": "gaku-nemurase-tai-gashapon-2026",
+  "brand": "gaku",
+  "subject": "学園アイドルマスター「ねむらせ隊」ガシャポン",
+  "kind": "締切",
+  "note": "受注終了",
+  "reserved_on": "2026-08-27",
+  "title": "【学マス】「ねむらせ隊」がガシャポンに登場 予約受付中",
+  "url": "https://idolmaster-official.jp/news/01_19667",
+  "source_type": "準公式",
+  "facts": [
+   "ガシャポンオンライン受注期間: 2026年8月26日(水)17:00〜2026年9月23日(水・祝)23:59",
+   "お届け・一般発売: 2026年12月以降順次",
+   "ラインナップ: 倉本千奈、篠澤広、秦谷美鈴、花海佑芽"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202608262337-watch-2",
+  "deadline": "2026-09-23"
  }
 ]

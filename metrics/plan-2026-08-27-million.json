@@ -1,0 +1,112 @@
+{
+  "articles": [
+    {
+      "slug": "million-karen-birthday-2026-08-27",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "篠宮可憐の誕生日(8/27)に合わせ、ミリシタでBirthdayガシャ・Birthdayセット2026・劇場の特別デコレーションが一斉展開",
+      "lead_score": 55,
+      "dedup_key": "million-shinomiya-karen-birthday-2026",
+      "candidate_ids": [
+        "202608270220-grok-33",
+        "202608270220-grok-34",
+        "202608270220-grok-35",
+        "202608270220-grok-36"
+      ]
+    },
+    {
+      "slug": "million-6th-live-bluray-release",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "『MILLION LIVE! 6thLIVE TOUR UNI-ON@IR!!!! SPECIAL』SSA追加公演Blu-rayが8/26発売、同日21時から発売記念生配信も実施",
+      "lead_score": 20,
+      "dedup_key": "million-6th-blu-ray-ssa",
+      "candidate_ids": [
+        "202608270220-claude-143"
+      ]
+    },
+    {
+      "slug": "million-next-stage-loading-typo-fix",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ公式が予告投稿の誤字(LODING→LOADING)を訂正・謝罪、\"NEXT STAGE\"予告の内容に注目",
+      "lead_score": 10,
+      "dedup_key": "million-next-stage-loading-correction-2026-08-26",
+      "candidate_ids": [
+        "202608270220-grok-30",
+        "202608270220-grok-31",
+        "202608270220-grok-32"
+      ]
+    },
+    {
+      "slug": "million-item-exchange-update",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタのイベントアイテム交換所に過去のPSTロゴ付SRカード・ユニット衣装を追加",
+      "lead_score": 5,
+      "dedup_key": "million-event-item-exchange-add-2026-08-26",
+      "candidate_ids": [
+        "202608270220-grok-38"
+      ]
+    },
+    {
+      "slug": "million-theater-talk-party-vol66",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ『THEATER TALK PARTY☆〜ユニットオフショットVol.66〜』が本日開催、詳細は後日案内",
+      "lead_score": 5,
+      "dedup_key": "million-theater-talk-party-vol66-2026-08-27",
+      "candidate_ids": [
+        "202608270220-grok-37"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-battle-ex04-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml million-battle-of-theater-ex04-2026(8/26初出)と同一の発売告知、新事実なし"
+    },
+    {
+      "dedup_key": "million-battle-ex04-stick-to-my-weapon-2026",
+      "reason": "既報",
+      "note": "同上。同一CDの発売告知の重複観測"
+    },
+    {
+      "dedup_key": "million-late-summer-login-bonus-2026-08",
+      "reason": "既報",
+      "note": "stock/stories.yml mltd-late-summer-login-bonus-2026(8/25初出)と同一内容、新事実なし"
+    },
+    {
+      "dedup_key": "million-kondo-yui-karen-birthday-2026",
+      "reason": "個人の話題",
+      "note": "声優個人のSNS投稿を単体で記事化しない(規程4)"
+    },
+    {
+      "dedup_key": "million-watanabe-yui-clash-match-day2-2026-08-26",
+      "reason": "重複",
+      "note": "joint面 joint-cg-million-clash-match-announce がCLASH M@TCH!!の出演情報を含め通しで扱う"
+    },
+    {
+      "dedup_key": "million-yamazaki-haruka-clash-match-day2-2026-08-26",
+      "reason": "重複",
+      "note": "同上。joint面の記事に統合済みの話題"
+    },
+    {
+      "dedup_key": "million-machico-clash-match-day2-2026-08-26",
+      "reason": "重複",
+      "note": "同上。joint面の記事に統合済みの話題"
+    },
+    {
+      "dedup_key": "millionlive-theater-platinum-star-trust-bot-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml mltd-glow-together-bot-2026(8/25初出、8/25 20:59終了済み)と同一イベント、新事実なし"
+    },
+    {
+      "dedup_key": "million-stick-to-my-weapon-streaming-2026",
+      "reason": "既報",
+      "note": "既報のCD発売と同一楽曲の配信開始。単独ソース(未確認)で内容も薄く、既報テーマの延長に留まる"
+    }
+  ],
+  "cross_brand": []
+}

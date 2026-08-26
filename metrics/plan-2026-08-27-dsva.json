@@ -1,0 +1,62 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-situation-voice14-deadline",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "ヴイアラ「シチュエーションボイス」第14弾(8月テーマ「絶対にゆずれない...！」)、販売期限は9/6 23:59まで",
+      "lead_score": 5,
+      "dedup_key": "dsva-situation-voice-14-2026-08",
+      "candidate_ids": ["202608270220-grok-92"]
+    },
+    {
+      "slug": "dsva-valiv-ops-roundup-0827",
+      "brand": "dsva",
+      "rank": "roundup",
+      "angle": "vα-liv/レトラの定常運営情報まとめ(上水流宇宙の新作踊ってみた「愛くださいませ」公開、8/26夜のホラゲ配信・メンバーシップ配信、サンリオVfes再上演への出演・意気込みコメント公開、JSP3配信お礼、レトラのSILENT HILL f DAY04配信お礼と次回9月以降予告、8/25夜の配信スケジュール)",
+      "lead_score": 0,
+      "dedup_key": "dsva-cosmo-dance-aishitekudasaimase-2026-08-26",
+      "candidate_ids": [
+        "202608270220-grok-93",
+        "202608270220-grok-94",
+        "202608270220-grok-97",
+        "202608270220-grok-98",
+        "202608270220-grok-99",
+        "202608270220-grok-100"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "dsva-cosmo-bd-live-general-sale-2026-08-31",
+      "reason": "既報",
+      "note": "stock/stories.ymlのcosmo-birthday-online-live-2026(8/24初報)で「現地LVチケット一般先着販売(限定グッズ付き枠とは別枠)を8月31日12:00から開始」として既報。新事実なし"
+    },
+    {
+      "dedup_key": "dsva-cosmo-bd-live-lv-goods-2026-08-31",
+      "reason": "既報",
+      "note": "同上ストーリーで限定グッズ付き現地LVチケットの8/31 12:00一般先着・価格9,000円・会場も既報。新事実なし"
+    },
+    {
+      "dedup_key": "dsva-cosmo-bd-live-2026-lv-general",
+      "reason": "既報",
+      "note": "上記と同一施策(限定グッズ付き現地LV一般先着)。開場14:00/開演15:00の追加情報のみで記事化に足る新事実ではない"
+    },
+    {
+      "dedup_key": "dsva-manaka-tiktok-shorts-2026-08-25",
+      "reason": "既報",
+      "note": "stock/stories.ymlのvaliv-ops-roundup-2026-08(8/26初報)で「灯里愛夏のショート動画『TikTokがいいわよ!』公開(8月25日付)」として既報"
+    },
+    {
+      "dedup_key": "dsva-1on1-round12-mail-2026-08-25",
+      "reason": "既報",
+      "note": "同上ストーリーで「第12回オンライン1on1、当選者への詳細案内メール送付完了(8月25日付)」として既報"
+    },
+    {
+      "dedup_key": "dsva-manaka-shorts-call-2026-08-26",
+      "reason": "既報",
+      "note": "既報のショート動画「TikTokがいいわよ!」への視聴呼びかけツイートのみで新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

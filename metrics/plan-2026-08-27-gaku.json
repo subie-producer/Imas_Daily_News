@@ -1,0 +1,157 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-memory-ability-maintenance-fix",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "あさり先生のプロデュースゼミでアビリティ再抽選時に重複付与される不具合が判明、学マスは8/27 2:00〜4:00に緊急メンテナンスを実施(16:40の応急対応から本対応までの経緯を通しで報じる)",
+      "lead_score": 25,
+      "dedup_key": "gaku-memory-ability-maintenance-2026-08-27",
+      "candidate_ids": [
+        "202608270220-grok-72",
+        "202608270220-grok-73",
+        "202608270220-grok-74",
+        "202608270254-grok-47"
+      ]
+    },
+    {
+      "slug": "gaku-nemurase-tai-gashapon-preorder",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「学園アイドルマスター ねむらせ隊」がガシャポンに登場、8/26 17:00から予約受付開始・全4種・12月以降順次お届け",
+      "lead_score": 10,
+      "dedup_key": "gaku-nemurasekai-gacha-2026",
+      "candidate_ids": [
+        "202608262337-watch-2",
+        "202608270220-grok-86"
+      ]
+    },
+    {
+      "slug": "gaku-nuipin-vol2-announce",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "バンダイナムコヌイ「ぬいピンvol.2」学マス版の発売が決定、2026年12月発売予定",
+      "lead_score": 10,
+      "dedup_key": "gaku-nuipin-vol2-2026-08-25",
+      "candidate_ids": [
+        "202608270220-grok-87",
+        "202608270254-grok-42"
+      ]
+    },
+    {
+      "slug": "gaku-ssr-support-taisetsuna-omoide-gacha",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "SSRサポートカード『大切な思い出、またひとつ』の新ガシャが開催開始、期間は9/4 10:59まで",
+      "lead_score": 5,
+      "dedup_key": "gaku-ssr-taisetsuna-omoide-2026",
+      "candidate_ids": [
+        "202608270254-grok-46"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-fukuoka-resale-deadline",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "学マス標ツアー福岡公演、公式リセールの受付が本日8/27 9:59に締切",
+      "lead_score": 15,
+      "dedup_key": "gaku-shirube-fukuoka-ticket-general-resale-2026",
+      "candidate_ids": [
+        "sched-2026-08-27-gaku-shirube-fukuoka-ticket-general-resale-2026-締切"
+      ]
+    },
+    {
+      "slug": "gaku-roundup-2026-08-27",
+      "brand": "gaku",
+      "rank": "roundup",
+      "angle": "美鈴水着ガシャ・アナザーアイドル'26水着ガシャなど開催中のガシャ、初星学園放送部の出演実績・次回予告、初星音楽祭Blu-ray受注カウントダウン、ソロver.shorts公開、4コマ第164話といった進行中の定常運営情報をまとめる",
+      "lead_score": 0,
+      "dedup_key": "gaku-nee-icchauyo-misuzu-gasha-2026",
+      "candidate_ids": [
+        "202608260734-claude-14",
+        "202608261235-claude-12",
+        "202608262337-claude-13",
+        "202608270220-grok-81",
+        "202608270254-grok-45",
+        "202608262337-watch-3",
+        "202608270220-grok-78",
+        "202608270220-grok-82",
+        "202608270220-grok-75",
+        "202608270220-grok-76",
+        "202608270220-grok-89",
+        "202608270220-grok-77",
+        "202608270220-grok-88",
+        "202608270220-grok-79",
+        "202608270220-grok-80"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gaku-3rd-single-phase3-2026-08",
+      "reason": "既報",
+      "note": "gakumasu-3rd-single-wave3-2026で発売日リリース済みの既報事実と同一"
+    },
+    {
+      "dedup_key": "gaku-gravure-gacha-phase1-2026-08",
+      "reason": "既報",
+      "note": "手毬版終了8/26 10:59は既報のねえ言っちゃうよ系列告知内で既に確定済みの日時"
+    },
+    {
+      "dedup_key": "gaku-livetour-archive-fukui-2026-08",
+      "reason": "既報",
+      "note": "gakumas-shirube-livetour-2026で福井公演アーカイブ公開は既報、本日時点で新事実・トリガー日なし"
+    },
+    {
+      "dedup_key": "gaku-3rd-single-wave3",
+      "reason": "既報",
+      "note": "gaku-3rd-single-phase3-2026-08と同一話題、gakumasu-3rd-single-wave3-2026で既報"
+    },
+    {
+      "dedup_key": "gaku-nee-icchauyo-seiran-end-2026-08-26",
+      "reason": "既報",
+      "note": "十王星南版終了8/26 10:59はgakumas-nee-icchauyo-series-2026で既報の日時と同一、かつ終了済み"
+    },
+    {
+      "dedup_key": "gaku-nee-icchauyo-temari-end-2026-08-26",
+      "reason": "既報",
+      "note": "月村手毬版終了8/26 10:59はgakumas-nee-icchauyo-series-2026で既報の日時と同一、かつ終了済み"
+    },
+    {
+      "dedup_key": "gaku-natsukaze-onepiece-event-end-2026-08-26",
+      "reason": "既報",
+      "note": "gakumas-natsukaze-onepiece-event-2026の既報facts(8/26 10:59まで)と一致、既に終了済み"
+    },
+    {
+      "dedup_key": "general-fanart-lilja-saki-2026-08-25",
+      "reason": "個人の話題",
+      "note": "個人アカウントのファンイラスト単体投稿。ファン創作まとめはbrand:general/rank:cultureの例外面が担当"
+    },
+    {
+      "dedup_key": "general-fanart-ume-video-2026-08-26",
+      "reason": "個人の話題",
+      "note": "個人アカウントのファンイラスト単体投稿。ファン創作まとめはbrand:general/rank:cultureの例外面が担当"
+    },
+    {
+      "dedup_key": "general-fanart-gaku-matsuri-2026-08-26",
+      "reason": "個人の話題",
+      "note": "個人アカウントのファンイラスト単体投稿。ファン創作まとめはbrand:general/rank:cultureの例外面が担当"
+    },
+    {
+      "dedup_key": "general-fanart-kuramoto-china-2026-08-26",
+      "reason": "個人の話題",
+      "note": "個人アカウントのファンイラスト単体投稿。ファン創作まとめはbrand:general/rank:cultureの例外面が担当"
+    },
+    {
+      "dedup_key": "general-fanart-temari-2026-08-26",
+      "reason": "個人の話題",
+      "note": "個人アカウントのファンイラスト単体投稿。ファン創作まとめはbrand:general/rank:cultureの例外面が担当"
+    },
+    {
+      "dedup_key": "gakumas-tour-shirube-fukui-2026",
+      "reason": "既報",
+      "note": "福井公演(8/20・21)開催自体はgakumas-shirube-livetour-2026で既報、8/19付の終了済みイベント紹介"
+    }
+  ],
+  "cross_brand": []
+}

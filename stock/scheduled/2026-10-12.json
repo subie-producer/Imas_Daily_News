@@ -41,5 +41,26 @@
   "src_candidate_id": "202608241248-watch-0",
   "event_date": "2026-08-28",
   "deadline": "2026-10-12"
+ },
+ {
+  "id": "sched-2026-10-12-shiny-stillblue-asobipremium-lottery-締切",
+  "dedup_key": "shiny-stillblue-asobipremium-lottery",
+  "brand": "shiny",
+  "subject": "『Still blue』アソビストア一般会員先行",
+  "kind": "締切",
+  "note": "当選者入金期限",
+  "reserved_on": "2026-08-27",
+  "title": "Still blue チケット一般会員先行販売開始",
+  "url": "https://idolmaster-official.jp/live_event/REFRAC7IONS_Still_blue/ticket/",
+  "source_type": "公式",
+  "facts": [
+   "アソビストア一般会員先行販売: 2026年8月27日(木)12:00開始、販売期間: 8月27日(木)12:00〜9月23日(水)23:59",
+   "ライブ開催予定: 2026年12月19日(土)・20日(日) 国立代々木競技場 第一体育館",
+   "当落発表は10月8日13時から、入金期間は同時刻から10月12日23:59まで"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202608270220-claude-147",
+  "deadline": "2026-10-12"
  }
 ]

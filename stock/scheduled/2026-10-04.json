@@ -1,31 +1,11 @@
 [
  {
-  "id": "sched-2026-09-30-sidem-monthly-theme-song-11-flags-2026-発売",
-  "dedup_key": "sidem-monthly-theme-song-11-flags-2026",
-  "brand": "sidem",
-  "subject": "SideM MONTHLY THEME SONG第11弾「F-LAGS」発売",
-  "kind": "発売",
-  "note": "CD発売日",
-  "reserved_on": "2026-08-24",
-  "facts": [
-   "『MONTHLY THEME SONG 11 F-LAGS』は2026年9月30日(水)発売、2,200円(税込)、品番LACM-24791",
-   "歌はF-LAGS(秋月涼・兜大吾・九十九一希)",
-   "初回生産分に特製ブロマイドを封入、店舗別購入特典デザインも公開"
-  ],
-  "title": "F-LAGS新CD、9月30日発売　店舗特典公開",
-  "url": "https://idolmaster-official.jp/news/01_19645",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608232010-grok-44",
-  "event_date": "2026-09-30"
- },
- {
-  "id": "sched-2026-09-30-cg-million-coming-soon-2026-08-26-結果",
+  "id": "sched-2026-10-04-cg-million-coming-soon-2026-08-26-締切",
   "dedup_key": "cg-million-coming-soon-2026-08-26",
   "brand": "joint",
   "subject": "THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!",
-  "kind": "結果",
-  "note": "先行抽選 当落発表",
+  "kind": "締切",
+  "note": "当選者入金期限",
   "reserved_on": "2026-08-27",
   "title": "THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!",
   "url": "https://idolmaster-official.jp/news/01_19720",
@@ -39,6 +19,6 @@
   "via": "claude",
   "verify": "confirmed",
   "src_candidate_id": "202608261235-watch-0",
-  "deadline": "2026-09-30"
+  "deadline": "2026-10-04"
  }
 ]

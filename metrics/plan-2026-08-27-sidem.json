@@ -1,0 +1,98 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-costume-museum-charafine-web-order-deadline",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM衣装展の公式グッズWEB受注が8/30締切、49名描き下ろしのキャラファイングラフを紹介",
+      "lead_score": 10,
+      "dedup_key": "sidem-costume-museum-charafine-2026-08-26",
+      "candidate_ids": ["202608270220-grok-64"]
+    },
+    {
+      "slug": "sidem-12th-free-story-ends-today",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM12周年記念ストーリー無料公開が本日23:59で終了",
+      "lead_score": 15,
+      "dedup_key": "sidem-12th-free-story-2026-08-21",
+      "candidate_ids": ["sched-2026-08-27-sidem-12th-free-story-2026-08-21-締切"]
+    },
+    {
+      "slug": "sidem-11th-nagatsuka-comment-relay",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM11th出演コメントリレー、本日は永塚拓馬さん(冬美旬役)を紹介",
+      "lead_score": 0,
+      "dedup_key": "sidem-11th-nagatsuka-takuma-comment-2026-08-26",
+      "candidate_ids": ["202608270220-grok-65"]
+    },
+    {
+      "slug": "sidem-315-night-0821-preview-clip",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "315プロNight 8/21放送回の“チラ見せ聞かせ”動画が公開",
+      "lead_score": 0,
+      "dedup_key": "sidem-315-night-0821-preview-2026-08-26",
+      "candidate_ids": ["202608270220-grok-69"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-11th-stage-2026",
+      "reason": "既報",
+      "note": "チケット一般販売(8/22開始)・リセールは既報facts済み、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-murase-graduation-2026-08",
+      "reason": "既報",
+      "note": "8/18付卒業発表はstockに既報facts済み"
+    },
+    {
+      "dedup_key": "sidem-royal-chess-lounge-2026",
+      "reason": "既報",
+      "note": "各店舗開催期間はstockに既報facts済み、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-knick-knacks-vol1-2026",
+      "reason": "既報",
+      "note": "8/21開催・全15店舗はstockに既報facts済み、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-monthly-theme-song-10-2026",
+      "reason": "既報",
+      "note": "8/26発売・品番等はstockに既報facts済み、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-11th-yamaya-yoshiki-comment-2026-08-25",
+      "reason": "既報",
+      "note": "stockの続報facts「8/25付は山谷祥生さんを紹介」で既に記載済み"
+    },
+    {
+      "dedup_key": "sidem-transcendent-tales-12-2026-09-02",
+      "reason": "既報",
+      "note": "発売日・品番等はstockに既報facts済み、新事実なし。締切系トリガー日にも該当せず"
+    },
+    {
+      "dedup_key": "sidem-passion-challenge-mofumofuen-2026-08-26",
+      "reason": "重複",
+      "note": "MONTHLY THEME SONG10発売と同一話題、既報facts済み"
+    },
+    {
+      "dedup_key": "sidem-notty-mofumofuen-jacket-2026-08-26",
+      "reason": "個人の話題",
+      "note": "個人SNS投稿(ジャケット撮影報告)。既報の楽曲発売と同一話題でもある"
+    },
+    {
+      "dedup_key": "sidem-fifs-nono-11th-kasshi-2026-08-26",
+      "reason": "個人の話題",
+      "note": "個人SNS投稿(呼びかけ・お礼コメント)"
+    },
+    {
+      "dedup_key": "sidem-mofupa-streaming-2026",
+      "reason": "重複",
+      "note": "もふもふえん新曲発売(既報)の配信チャネル追加にとどまり、独立主題に足る新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

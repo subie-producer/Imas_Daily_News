@@ -1,0 +1,85 @@
+{
+  "articles": [
+    {
+      "slug": "joint-cg-million-clash-match-announce",
+      "brand": "joint",
+      "rank": "large",
+      "angle": "デレミリ初の合同ライブ『CLASH M@TCH!!』が2027年2月28日・28日にIGアリーナで開催決定、8/26正午の予告が示した内容を回収しつつ出演バンド・チケット先行情報まで通しでまとめる",
+      "lead_score": 85,
+      "dedup_key": "cinderella-million-clash-2027",
+      "candidate_ids": [
+        "202608261235-watch-0",
+        "202608270220-grok-102",
+        "202608270220-grok-103",
+        "202608270220-grok-104",
+        "202608270220-grok-105",
+        "sched-2026-08-27-cg-million-coming-soon-2026-08-26-結果"
+      ]
+    },
+    {
+      "slug": "joint-imas-piano-package-reveal",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "20周年記念『アイマスピアノ』、田宮清高描き下ろしジャケットとパッケージデザイン・特典詳細を公開、全129曲収録の全容が見えてきた",
+      "lead_score": 15,
+      "dedup_key": "joint-imas-piano-129-songs-2026-08-26",
+      "candidate_ids": [
+        "202608270220-grok-106",
+        "202608270220-grok-107"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "joint-cg-million-collab-2026",
+      "reason": "既報",
+      "note": "8/23-24付Coming soon予告はstock/stories.yml(cg-million-coming-soon-2026-08-26)に既出。正午の内容回収は本紙のCLASH M@TCH!!記事へ統合"
+    },
+    {
+      "dedup_key": "valiv-situation-voice-14-2026",
+      "reason": "その他",
+      "note": "販売開始は8/15付で発行日から12日経過。締切(9/6)も本日でなく当日トリガーなし、新事実もないため鮮度規程(規程12)を満たさない"
+    },
+    {
+      "dedup_key": "joint-announcement-2026-08-26",
+      "reason": "既報",
+      "note": "同一のComing soon予告。既報台帳(cg-million-coming-soon-2026-08-26)と同内容で新事実なし"
+    },
+    {
+      "dedup_key": "joint-moiw2025-radio-vol12-final-2026-08-25",
+      "reason": "既報",
+      "note": "stories.yml moiw2025-radio-series-2026に vol.12配信開始(8/25)が既出"
+    },
+    {
+      "dedup_key": "joint-moiw2025-radio-vol12-present-2026-08-25",
+      "reason": "既報",
+      "note": "stories.yml moiw2025-radio-series-2026にvol.12配信記念プレゼント企画が既出"
+    },
+    {
+      "dedup_key": "joint-moiw2025-bd-order-deadline-2026-08-30",
+      "reason": "既報",
+      "note": "stories.yml moiw2025-bluray-perfectbox-order-2026に受注8/30締切が既出"
+    },
+    {
+      "dedup_key": "joint-tours-spring-campaign-exchange-2026-08-31",
+      "reason": "既報",
+      "note": "stories.yml tours-spring-exchange-2026に交換対応8/31終了が既出"
+    },
+    {
+      "dedup_key": "joint-tours-late-summer-styling-2026-08-25",
+      "reason": "既報",
+      "note": "stories.yml tours-late-summer-campaign-2026に「恋花小町」「暁光ノ装」着こなし紹介(8/25付)が既出"
+    },
+    {
+      "dedup_key": "joint-cg-million-coming-soon-0826",
+      "reason": "既報",
+      "note": "Coming soon予告の重複観測。既報台帳(cg-million-coming-soon-2026-08-26)と同内容"
+    },
+    {
+      "dedup_key": "moiw2025-radio-vol12-present-2026",
+      "reason": "既報",
+      "note": "joint-moiw2025-radio-vol12-present-2026-08-25と同一話題の重複観測。既報台帳に既出"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,0 +1,52 @@
+{
+  "articles": [
+    {
+      "slug": "765-dual-twin-live-zepp-haneda-open",
+      "brand": "765",
+      "rank": "large",
+      "angle": "dual twin live tourの東京・Zepp Haneda公演が開幕(亜美・真美は本日が千秋楽)、両公演の冒頭無料配信決定と会場限定CD2種の販売を合わせて報じる",
+      "lead_score": 78,
+      "dedup_key": "765-dual-twinlive-venue-cd",
+      "candidate_ids": [
+        "sched-2026-08-27-765-dual-twinlive-venue-cd-開幕",
+        "202608260734-claude-23",
+        "202608260734-claude-25",
+        "202608260734-claude-29",
+        "202608262337-claude-23",
+        "202608262337-claude-24",
+        "202608270220-grok-0",
+        "202608270220-grok-1",
+        "202608270220-grok-2",
+        "202608270220-grok-3",
+        "202608270220-grok-4",
+        "202608270220-grok-5",
+        "202608270220-grok-6",
+        "202608270220-grok-7"
+      ]
+    }
+  ],
+  "dropped": [
+    {"dedup_key": "765-dual-twin-live-tour-2026", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事(本日開幕)に統合、candidate_idsに収録"},
+    {"dedup_key": "765-dual-twin-live-2026-tokyo", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事に統合、candidate_idsに収録"},
+    {"dedup_key": "765-dual-twin-live-venue-cd-futago", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事に統合、candidate_idsに収録"},
+    {"dedup_key": "765-twin-live-futago-2026-08", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事に統合、candidate_idsに収録"},
+    {"dedup_key": "765-twin-live-tsummatsu-2026-08", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事に統合、candidate_idsに収録"},
+    {"dedup_key": "765-dual-twin-tokyo-ami-mami-ticket-deadline-2026-08-26", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事に統合、candidate_idsに収録"},
+    {"dedup_key": "765-dual-twin-ami-mami-opening-free-stream-2026-08-27", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事に統合、candidate_idsに収録"},
+    {"dedup_key": "765-dual-twin-azusa-ritsuko-opening-free-stream-2026-08-28", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事に統合、candidate_idsに収録"},
+    {"dedup_key": "765-dual-twin-kiramekirari-osaka-preview-2026-08-26", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事に統合、candidate_idsに収録"},
+    {"dedup_key": "765-dual-twin-binary-star-stage-preview-2026-08-25", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事に統合、candidate_idsに収録(既報facts中の同内容とも重複)"},
+    {"dedup_key": "765-dual-twin-tokyo-women-area-2026-08-25", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事に統合、candidate_idsに収録"},
+    {"dedup_key": "765-binary-star-cd-haneda-2026-08-25", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事に統合、candidate_idsに収録"},
+    {"dedup_key": "765-hokkyokusei-cd-haneda-2026-08-25", "reason": "重複", "note": "765-dual-twinlive-venue-cd記事に統合、candidate_idsに収録"},
+    {"dedup_key": "kimchikura-fes-26", "reason": "その他", "note": "開催は8/8で既に終了済み、当日トリガーも新事実もなく鮮度なし(規程12)"},
+    {"dedup_key": "tourmas-series-1-765as", "reason": "既報", "note": "ツアマス新シリーズの拡張はjoint面の継続話題(tours-second-stage-launch-2026/tours-s1-new-cards-2026)で既出。出典も7月付Famitsu記事で8/6の話題を今更報じるもので鮮度なし(規程12)"},
+    {"dedup_key": "765as-goods-august-2026", "reason": "出典不足", "note": "受注締切(8/16)が既に経過。掲載日不明・出典URLも汎用ページで裏付けが弱い"},
+    {"dedup_key": "765-shimoda-asami-tokyo-finale-2026-08-26", "reason": "個人の話題", "note": "当事者個人のSNS投稿単体(規程4)。内容は765-dual-twinlive-venue-cd記事の千秋楽情報と重複"},
+    {"dedup_key": "765-shimoda-asami-standing-tips-2026-08-26", "reason": "個人の話題", "note": "当事者個人のSNS投稿単体(規程4「個人のSNS投稿は単体で記事化しない」)"},
+    {"dedup_key": "general-fanart-takane-ramen-2026-08-25", "reason": "個人の話題", "note": "ファン個人投稿単体。general面のfan-culture roundup(規程4例外)の対象でありこの面では不採用"},
+    {"dedup_key": "general-cosplay-chihaya-oath-2026-08-25", "reason": "個人の話題", "note": "ファン個人投稿単体。general面のfan-culture roundup対象"},
+    {"dedup_key": "general-fanart-ritsuko-2026-08-25", "reason": "個人の話題", "note": "ファン個人投稿単体。general面のfan-culture roundup対象"}
+  ],
+  "cross_brand": []
+}

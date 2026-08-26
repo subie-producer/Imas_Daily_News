@@ -78,6 +78,13 @@
         },
         "description": "一次ソースから抽出した事実の列挙。記事はここに無い事実を書かない"
       },
+      "periods": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "期間ラベル規程(REQUIREMENTS.md 4.6 相当)向けの期間抽出。「何の期間か」を出典の語で明示した文字列(例: 受付期間/当落発表/入金期間)。facts の補助情報で、収集層が期間の種別混同を防ぐために付与する"
+      },
       "origin": {
         "enum": [
           "watch",

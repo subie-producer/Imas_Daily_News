@@ -93,5 +93,26 @@
   "src_candidate_id": "202608240750-claude-53",
   "event_date": "2026-09-12",
   "deadline": "2026-09-06"
+ },
+ {
+  "id": "sched-2026-09-06-dsva-situation-voice14-2026-締切",
+  "dedup_key": "dsva-situation-voice14-2026",
+  "brand": "dsva",
+  "subject": "ヴイアラ シチュエーションボイス第14弾",
+  "kind": "締切",
+  "note": "販売終了",
+  "reserved_on": "2026-08-27",
+  "title": "ヴイアラシチュエーションボイス第14弾、販売は9/6 23:59まで",
+  "url": "https://x.com/valiv_official/status/2092552640911786063",
+  "source_type": "公式",
+  "facts": [
+   "シチュエーションボイス第十四弾発売中",
+   "シチュエーションボイス2026 8月のテーマは「”絶対にゆずれない...！”」",
+   "販売期間：〜9/6(日)23:59"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202608270220-grok-92",
+  "deadline": "2026-09-06"
  }
 ]

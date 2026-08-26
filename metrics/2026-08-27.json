@@ -1,0 +1,118 @@
+{
+ "collect": [
+  {
+   "at": "2026-08-27T02:20:22+09:00",
+   "edition": "2026-08-27",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 341,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "grok:765as": 10,
+    "grok:cinderella": 20,
+    "grok:million": 14,
+    "grok:shiny": 20,
+    "grok:sidem": 8,
+    "grok:gakuen": 18,
+    "grok:dsva": 12,
+    "grok:joint-other": 12,
+    "grok:trend": 22,
+    "grok:fan-culture": 22,
+    "claude:765as": 3,
+    "claude:cinderella": 3,
+    "claude:million": 4,
+    "claude:shiny": 2,
+    "claude:sidem": 0,
+    "claude:gakuen": 0,
+    "claude:dsva": 0,
+    "claude:joint-other": 0,
+    "claude:trend": 5,
+    "claude:fan-culture": 8
+   },
+   "normalized": 153,
+   "added": 146,
+   "verify": {
+    "confirmed": 108,
+    "unconfirmed": 41,
+    "failed": 4
+   },
+   "duration_s": 1191
+  },
+  {
+   "at": "2026-08-27T02:54:14+09:00",
+   "edition": "2026-08-27",
+   "watch": {
+    "skipped": true
+   },
+   "per_query": {
+    "grok:765as": 9,
+    "grok:cinderella": 12,
+    "grok:million": 12,
+    "grok:shiny": 12,
+    "grok:sidem": 7,
+    "grok:gakuen": 12,
+    "grok:dsva": 8,
+    "grok:joint-other": 7,
+    "grok:trend": 24,
+    "grok:fan-culture": 24
+   },
+   "normalized": 87,
+   "added": 18,
+   "verify": {
+    "confirmed": 68,
+    "unconfirmed": 19,
+    "failed": 0
+   },
+   "duration_s": 852
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-08-27T05:07:31+09:00",
+   "edition": "2026-08-27",
+   "rounds": 3,
+   "approved": false,
+   "lint_green": true,
+   "planned": 32,
+   "written": 27,
+   "roundups": 3,
+   "dropped": 126,
+   "coverage": {
+    "subjects": 212,
+    "covered": 212,
+    "missing": 0
+   },
+   "aborted": [
+    "gaku-ssr-support-taisetsuna-omoide-gacha",
+    "cg-toybox-memorial-clip-order",
+    "million-6th-live-bluray-release",
+    "sidem-costume-museum-charafine-web-order-deadline",
+    "sidem-12th-free-story-ends-today"
+   ],
+   "duration_s": 4021
+  }
+ ]
+}

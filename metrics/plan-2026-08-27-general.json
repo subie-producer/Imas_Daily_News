@@ -1,0 +1,103 @@
+{
+  "articles": [
+    {
+      "slug": "general-kassy-ap-lounge-graduation",
+      "brand": "general",
+      "rank": "medium",
+      "angle": "アイマスchの人気企画『APラウンジ』が最終回を迎え、APかっしーが6年間の活動を経て卒業。事前告知から配信実施、本人の感謝コメントまでを通しで報じる",
+      "lead_score": 15,
+      "dedup_key": "general-ap-lounge-kassy-graduation-2026-08-26",
+      "candidate_ids": ["202608270220-grok-114", "202608270220-grok-115", "202608270254-grok-92"]
+    },
+    {
+      "slug": "general-fan-culture-trends-0827",
+      "brand": "general",
+      "rank": "culture",
+      "angle": "界隈の反応・現象を傾向としてまとめる(「ミリオンストリングス」を知らない新規Pへの古参の複雑な心境、IGアリーナでのデレミリ開催決定に対する地元ファンの反応、765プロアイドルの体型スペックを比較する非公式ランキングの拡散)",
+      "lead_score": 5,
+      "dedup_key": "general-million-strings-what-trend-2026-08-26",
+      "candidate_ids": ["202608270220-grok-120", "202608270220-grok-123", "202608270220-grok-127"]
+    },
+    {
+      "slug": "general-radio-episode-411",
+      "brand": "general",
+      "rank": "small",
+      "angle": "『THE IDOLM@STER MUSIC ON THE RADIO』第411回がニコニコ生放送で放送されたことを伝える",
+      "lead_score": 0,
+      "dedup_key": "radio-episode-411-2026",
+      "candidate_ids": ["202608270220-claude-158"]
+    },
+    {
+      "slug": "general-alstroemeria-new-logo",
+      "brand": "general",
+      "rank": "small",
+      "angle": "公式がユニット『アルストロメリア』の新ユニットロゴとキャッチコピーを発表",
+      "lead_score": 10,
+      "dedup_key": "fan-alstroemeria-new-logo-2026",
+      "candidate_ids": ["202608270254-grok-38"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "imas-piano-20th-2026",
+      "reason": "重複",
+      "note": "joint面の joint-imas-piano-package-reveal(20周年ピアノコレクションのパッケージ・特典詳細公開)と同一の発表内容"
+    },
+    {
+      "dedup_key": "general-hara-yumi-kassy-thanks-2026-08-26",
+      "reason": "個人の話題",
+      "note": "声優個人のSNS投稿(関係者の動向)。単体記事化せず、公式発表ベースの卒業記事とは切り離した"
+    },
+    {
+      "dedup_key": "general-akabane-kassy-thanks-2026-08-26",
+      "reason": "個人の話題",
+      "note": "声優個人のSNS投稿(関係者の動向)"
+    },
+    {
+      "dedup_key": "general-nakagawa-koji-kassy-thanks-2026-08-26",
+      "reason": "個人の話題",
+      "note": "声優個人のSNS投稿(関係者の動向)"
+    },
+    {
+      "dedup_key": "general-imas-manhole-shikaoi-1100-2026-08-24",
+      "reason": "既報",
+      "note": "stock/stories.yml の futamas-shikaoi-2026 に同じ「十勝毎日新聞によると約1100人来場」の事実が published_facts として既出"
+    },
+    {
+      "dedup_key": "tours-latesummer-campaign-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml の tours-late-summer-campaign-2026(first_published 2026-08-25)で詳細(期間・景品・登場アイドル)まで既報済み。本候補は新事実なし"
+    },
+    {
+      "dedup_key": "shop-atrekawasaki-2026",
+      "reason": "その他",
+      "note": "開催期間8/18〜9/3のうち本日は開幕・終了いずれのトリガー日でもなく新事実もないため規程12により見送り"
+    },
+    {
+      "dedup_key": "fan-imai-asami-tts-goal-2026",
+      "reason": "個人の話題",
+      "note": "声優個人のアイマス外活動(私的な冗談投稿)、規程4の対象外"
+    },
+    {
+      "dedup_key": "fan-kasshi-trend1-comment-2026",
+      "reason": "個人の話題",
+      "note": "ファン個人の未確認投稿(トレンド順位の私的観測)。単体記事化しない"
+    },
+    {
+      "dedup_key": "fan-imai-asami-pizza-2026",
+      "reason": "個人の話題",
+      "note": "声優個人のアイマス外活動(私的な日常投稿)、規程4の対象外"
+    },
+    {
+      "dedup_key": "general-kassy-thanks-account-stop-2026-08-26",
+      "reason": "重複",
+      "note": "general-ap-lounge-kassy-graduation-2026-08-26の卒業記事に統合(本人コメントとして candidate_ids に含めた)"
+    },
+    {
+      "dedup_key": "trend-ap-kasshi-graduation-pre-2026",
+      "reason": "重複",
+      "note": "general-ap-lounge-kassy-graduation-2026-08-26の卒業記事に統合(事前告知として candidate_ids に含めた)"
+    }
+  ],
+  "cross_brand": []
+}

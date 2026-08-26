@@ -1,0 +1,16 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-08-27-765-dual-twin-live-zepp-haneda-open.md",
+   "issue": "出典にない事実：会場オリジナルCD の制作者情報が sources で確認取れていない",
+   "quote": "前者は星部ショウ作詞・作曲、明石裕太編曲、後者はパソコン音楽クラブが作詞・作曲・編曲を手がけた。"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-08-27-dsva-valiv-ops-roundup-0827.md",
+   "issue": "candidate_ids に含まれる候補 202608270220-grok-97（サンリオVfes への vα-liv 出演）が記事本文で引用されていない。記事は配信・動画情報のみで、イベント出演の言及がない"
+  }
+ ]
+}

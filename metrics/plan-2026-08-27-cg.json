@@ -1,0 +1,142 @@
+{
+  "articles": [
+    {
+      "slug": "cg-15th-party-goods-presale",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "シンデレラガールズ15周年記念パーティー『for your ONE』公式グッズの事前二次販売が受付開始、49アイドル新規描き下ろしビジュアルと本販売も総選挙投票券付与対象という新情報を軸に伝える",
+      "lead_score": 15,
+      "dedup_key": "cg-15th-anniversary-party-2026",
+      "candidate_ids": ["202608262337-watch-6", "202608262337-claude-17", "202608270220-grok-19", "202608270220-grok-20"]
+    },
+    {
+      "slug": "cg-toybox-memorial-clip-order",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "『Pop'n ToyBox!!』公演開催記念のアクリルクリップが新たに受注開始",
+      "lead_score": 5,
+      "dedup_key": "cg-toybox-memorial-acrylic-clip-2026-08-26",
+      "candidate_ids": ["202608270220-grok-15"]
+    },
+    {
+      "slug": "cg-toppa-base-popup-open",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "シンデレラガールズ TOPPA!!!BASE POPUP SHOPが本日、秋葉原・札幌・仙台・名古屋・大阪・福岡で同時開幕。バトルゲームワールドテーマの描き下ろしグッズを展開",
+      "lead_score": 20,
+      "dedup_key": "cg-toppa-base-popup-2026",
+      "candidate_ids": ["sched-2026-08-27-cg-toppa-base-popup-2026-開幕"]
+    },
+    {
+      "slug": "cg-vote2026-toybox-roundup",
+      "brand": "cg",
+      "rank": "roundup",
+      "angle": "シンデレラガール総選挙2026とPop'n ToyBox!!、進行中の関連コンテンツまとめ(すりーぷすきっぷMVプレミア公開・視聴ミッション追加・24/7配信更新・シンデレラNo.1あいことば公開・CINDERELLA PARTY!第614回ゲスト出演と今後の予定・トイボ同時視聴上映会の開催時間確定)",
+      "lead_score": 0,
+      "dedup_key": "cg-election-247-updated-2026-08-26",
+      "candidate_ids": [
+        "202608262337-claude-19",
+        "202608270220-grok-16",
+        "202608270254-grok-10",
+        "202608270220-grok-10",
+        "202608270220-grok-11",
+        "202608270220-grok-12",
+        "202608270220-grok-13",
+        "202608270220-grok-14",
+        "202608270220-grok-17",
+        "202608270220-grok-23",
+        "202608270220-grok-24",
+        "202608270220-claude-157",
+        "202608270254-grok-15"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-popn-toybox-dvd-aftermarket-2026",
+      "reason": "既報",
+      "note": "cg-venue-cd-post-event-sales-2026(8/26号)と同一事後通販の告知、新事実なし"
+    },
+    {
+      "dedup_key": "cg-bouquet-sleepskip-2026-08-26",
+      "reason": "既報",
+      "note": "cg-cinderella-master-bouquet-sleep-skip-2026(8/25号)で発売日・配信開始とも既報"
+    },
+    {
+      "dedup_key": "cg-toybox-extra4-2026-08-25",
+      "reason": "既報",
+      "note": "cg-popn-toybox-goods-2026の既報facts「エクストラ4を更新」と同一"
+    },
+    {
+      "dedup_key": "cg-cinderella-master-cd-release-2026-08-26",
+      "reason": "既報",
+      "note": "CD本日発売はcg-cinderella-master-bouquet-sleep-skip-2026で既報、出典も未確認"
+    },
+    {
+      "dedup_key": "cg-sleep-skip-streaming-release-2026-08-25",
+      "reason": "既報",
+      "note": "配信スタートはcg-cinderella-master-bouquet-sleep-skip-2026で既報"
+    },
+    {
+      "dedup_key": "cg-sleep-skip-mv-director-funya-2026-08-26",
+      "reason": "個人の話題",
+      "note": "MV制作者本人のSNS投稿(単体記事化しない)"
+    },
+    {
+      "dedup_key": "cg-fukuhara-ayaka-clash-match-day1-2026-08-26",
+      "reason": "重複",
+      "note": "joint-cg-million-clash-match-announceが出演情報まで通しでまとめ済み"
+    },
+    {
+      "dedup_key": "cg-igarashi-hiromi-sleep-skip-mv-2026-08-26",
+      "reason": "個人の話題",
+      "note": "声優本人のSNS投稿"
+    },
+    {
+      "dedup_key": "cg-igarashi-hiromi-vote-anzu-2026-08-26",
+      "reason": "個人の話題",
+      "note": "声優本人の投票報告SNS投稿"
+    },
+    {
+      "dedup_key": "cg-kurogoma-number-one-jacket-2026-08-25",
+      "reason": "個人の話題",
+      "note": "イラストレーター本人のSNS投稿"
+    },
+    {
+      "dedup_key": "general-mio-honda-kv-missing-2026-08-26",
+      "reason": "個人の話題",
+      "note": "個人ファンの指摘投稿1件のみ、炎上性のある話題"
+    },
+    {
+      "dedup_key": "general-fan-claris-birthday-2026-08-26",
+      "reason": "個人の話題",
+      "note": "個人ファン投稿。ファン文化まとめ(general面roundup)の対象領域"
+    },
+    {
+      "dedup_key": "general-fanart-noriko-birthday-2026-08-27",
+      "reason": "個人の話題",
+      "note": "個人ファン投稿の再掲イラスト。ファン文化まとめ(general面roundup)の対象領域"
+    },
+    {
+      "dedup_key": "general-fanart-uzuki-2026-08-26",
+      "reason": "個人の話題",
+      "note": "個人ファンのイラスト投稿。ファン文化まとめ(general面roundup)の対象領域"
+    },
+    {
+      "dedup_key": "cg-sousenkyo-2026-asobi",
+      "reason": "その他",
+      "note": "掲載日が8/21で本号時点の新トリガーなし、鮮度規程12に照らし見送り"
+    },
+    {
+      "dedup_key": "fan-nono-birthday-movie-2026",
+      "reason": "その他",
+      "note": "誕生日は「きょうの誕生日」欄(ダイジェスト)で扱い、単独記事にはしない"
+    },
+    {
+      "dedup_key": "trend-deremilli-clash-match-cg-post-2027",
+      "reason": "重複",
+      "note": "joint-cg-million-clash-match-announceへ既に統合済みの告知の反響"
+    }
+  ],
+  "cross_brand": []
+}

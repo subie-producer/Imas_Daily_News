@@ -346,9 +346,48 @@ def is_x(url: str) -> bool:
     return any(h in url for h in X_HOSTS)
 
 
+# 面が判別できる語 → ブランド。名鑑(アイドル名)で拾えない作品名・ブランド呼称を補う。
+BRAND_WORDS = {
+    "dsva": ("vα-liv", "ヴイアラ", "va-liv", "valiv", "876プロ", "ディアリースターズ"),
+    "gaku": ("学園アイドルマスター", "学マス", "初星学園", "gakuen"),
+    "shiny": ("シャイニーカラーズ", "シャニマス", "シャニソン", "283プロ", "shinycolors"),
+    "million": ("ミリオンライブ", "ミリシタ", "ミリアニ", "765プロオールスターズ"),
+    "cg": ("シンデレラガールズ", "デレステ", "デレマス", "シンデレラ"),
+    "sidem": ("sidem", "315プロ", "サイドエム"),
+    "765": ("765pro allstars", "765ミリオンスターズ", "765as"),
+    "joint": ("ツアーズ", "ツアマス", "iwsf", "合同ライブ", "ポプマス"),
+}
+
+
+def guess_brand(text: str, idols: dict) -> str | None:
+    """本文から面を1つに特定できるときだけ返す(複数該当・不明なら None)。
+
+    定点観測は sources.yml のブランドを起点にするため、公式ポータルのような
+    横断ソースの新着は brand が general/other のまま残りやすい。実際
+    「上水流宇宙 BIRTHDAY ONLINE LIVE 2026」が other になり、grok/claude が
+    dsva と付けた同じ話題と別の面に分かれて二重に記事化された。
+    アイドル名は名鑑(docs/_data/idols.json)で面が確定するので、機械で直す。
+    """
+    low = text.lower()
+    hit = {b for b, words in BRAND_WORDS.items() if any(w.lower() in low for w in words)}
+    hit |= {b for name, b in idols.items() if name and name in text}
+    return hit.pop() if len(hit) == 1 else None
+
+
+def load_idol_brands() -> dict:
+    p = ROOT / "docs" / "_data" / "idols.json"
+    if not p.exists():
+        return {}
+    try:
+        return {x.get("name"): x.get("brand") for x in json.loads(p.read_text(encoding="utf-8"))}
+    except Exception:
+        return {}
+
+
 def normalize(items: list[dict]) -> list[dict]:
     out, seen_url = [], {}
     ts = now_jst().isoformat(timespec="seconds")
+    idols = load_idol_brands()
     for i, it in enumerate(items):
         try:
             url = (it.get("url") or "").strip()
@@ -356,6 +395,13 @@ def normalize(items: list[dict]) -> list[dict]:
                 continue
             valid = {"general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"}
             brand = it.get("brand") if it.get("brand") in valid else "other"
+            if brand in ("general", "other"):
+                # 面が付いていない候補だけ補正する。collector が具体的な面を選んで
+                # いるならその判断を尊重する(合同を各面へ割り直したりしない)
+                g = guess_brand(" ".join([it.get("title") or "", it.get("dedup_key") or "",
+                                          *(it.get("facts") or [])]), idols)
+                if g:
+                    brand = g
             dk = re.sub(r"[^a-z0-9-]", "-", (it.get("dedup_key") or "").lower()).strip("-") or f"auto-{i}"
             facts = [f for f in (it.get("facts") or []) if isinstance(f, str) and f.strip()]
             if it.get("engagement"):

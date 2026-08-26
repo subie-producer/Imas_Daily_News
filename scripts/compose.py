@@ -154,7 +154,7 @@ def write_plan_index(date: str, cands: dict, blocklist: dict) -> tuple[Path, int
 
 
 def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dict],
-                      feedback: str = "") -> str:
+                      feedback: str = "", claimed: list[dict] | None = None) -> str:
     """面(ブランド)ごとの選定プロンプト。
 
     号全体を1セッションに裁かせると、161主題で 1800秒のタイムアウトに達して
@@ -166,6 +166,16 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
     fb = f"\n## 前回の機械検証エラー(必ず解消すること)\n{feedback}\n" if feedback else ""
     trig = json.dumps([{k: t.get(k) for k in ("id", "dedup_key", "brand", "subject", "kind", "note")}
                        for t in triggers], ensure_ascii=False, indent=1)
+    done = ""
+    if claimed:
+        done = ("\n## すでに他の面が記事にした話題(この号に載ることが確定しています)\n"
+                + json.dumps(claimed, ensure_ascii=False, indent=1)
+                + "\n**同じ話題をこの面でも記事にしないでください。**dedup_key が違っても、"
+                  "同じ公演・同じ商品・同じ施策を指しているなら同じ話題です"
+                  "(切り口 angle を読んで判断すること)。該当する主題は dropped に "
+                  'reason="重複" で記録します。\n'
+                  "ただし**明らかに別の施策**(同じ公演でも「チケット」と「グッズ受注」は別)は、"
+                  "この面で記事にして構いません。\n")
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集者です。{date}({weekday}曜)号の
 **「{brand}」面だけ**の記事計画を作ってください。記事本文はまだ書きません。他の面は別の担当が見ます。
 
@@ -179,7 +189,7 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
 - REQUIREMENTS.md 5章(編集規程)
 - この面の続報予約(**必ず記事化する**。id は素材スナップショットとして candidate_ids に使える):
 {trig}
-
+{done}
 ## 選定規則
 - **{n_subjects}主題すべてを「記事化」「roundup」「不採用」のいずれかに割り当てる。黙って無視してよい主題は1つもない**(不採用は dropped に理由付きで列挙)
 - **本数の目標値は無い。**記事化基準を満たす話題は全部記事にする(「多いから落とす」は禁止。紙面は無制限。編集規程11)。あふれたら rank を small へ寄せる
@@ -502,17 +512,34 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 4) -> 
     面ごとに独立したセッションなので、1面が失敗しても他面は生きる(全滅しない)。
     面内の主題数は十数件なので、全主題に判断を下しても時間内に収まる。
     """
-    brands = sorted(by_brand, key=lambda b: -len(by_brand[b]))
+    # 面は「合同 → 各ブランド → 総合 → その他」の順に決める。
+    # 同じ話題が複数の面の素材に現れることがあり(収集エンジンごとに面の判断が違う)、
+    # 面を並列に走らせると両方が記事にして号内で二重になる。実際 2026-08-26号で
+    # 上水流宇宙のライブが dsva 面と other 面に1本ずつ立った。
+    # 先に決まった面の記事を後続へ渡し、後続は「もう記事化済み」として不採用にする。
+    # 受け皿になりやすい general/other を最後に置くのは、話題の帰属を
+    # 具体的な面に寄せるため(その他に流れ込むのは、どの面にも属さないものだけ)。
+    order = [["joint"],
+             [b for b in sorted(by_brand, key=lambda b: -len(by_brand[b]))
+              if b not in ("joint", "general", "other")],
+             ["general"], ["other"]]
     trig_by_brand: dict[str, list[dict]] = {}
     for t in triggers:
         trig_by_brand.setdefault(t.get("brand") or "other", []).append(t)
     results: dict[str, dict] = {}
-    for i in range(0, len(brands), wave):
+    claimed: list[dict] = []
+    groups = []
+    for stage in order:
+        present = [b for b in stage if b in by_brand]
+        for i in range(0, len(present), wave):
+            groups.append(present[i:i + wave])
+    for group in groups:
         procs = []
-        for b in brands[i:i + wave]:
+        for b in group:
             out = ROOT / "metrics" / f"plan-{date}-{b}.json"
             out.unlink(missing_ok=True)  # 残骸の誤読防止
-            prompt = brand_plan_prompt(date, b, len(by_brand[b]), trig_by_brand.get(b, []))
+            prompt = brand_plan_prompt(date, b, len(by_brand[b]), trig_by_brand.get(b, []),
+                                       claimed=claimed)
             procs.append((b, out, subprocess.Popen(
                 ["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
                  "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
@@ -530,6 +557,10 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 4) -> 
                 continue
             n_a = len(results[b].get("articles") or [])
             n_d = len(results[b].get("dropped") or [])
+            # 後続の面へ「もう記事化した話題」として渡す。dedup_key が一致しなくても
+            # 同じ話題だと分かるよう、面・切り口・主題キーをまとめて見せる
+            for a in results[b].get("articles") or []:
+                claimed.append({k: a.get(k) for k in ("brand", "slug", "dedup_key", "angle")})
             print(f"選定: {b} 面 {len(by_brand[b])}主題 → 記事{n_a}本 / 不採用{n_d}件", flush=True)
     arts, dropped, seen = [], [], set()
     for b, r in results.items():

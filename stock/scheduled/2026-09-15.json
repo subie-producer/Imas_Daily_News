@@ -59,23 +59,5 @@
   "verify": "confirmed",
   "src_candidate_id": "202607130742-claude-93",
   "event_date": "2026-09-15"
- },
- {
-  "id": "sched-2026-09-15-cg-toybox-vote-mission-reflected-2026-開始",
-  "dedup_key": "cg-toybox-vote-mission-reflected-2026",
-  "brand": "cg",
-  "subject": "Pop'n ToyBox!! 配信チケット投票券",
-  "kind": "開始",
-  "note": "配信チケット分の投票券受取開始(12時)",
-  "reserved_on": "2026-08-26",
-  "facts": [
-   "Pop'n ToyBox!!配信チケット分の投票券受取期間は9月15日12時〜9月18日23時59分の予定"
-  ],
-  "title": "ToyBox配信チケット投票券、9/15受取開始",
-  "url": "https://x.com/imas_CGofficial/status/2091746694623023428",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608260216-grok-21",
-  "event_date": "2026-09-15"
  }
 ]

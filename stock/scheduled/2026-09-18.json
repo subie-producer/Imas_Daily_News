@@ -41,41 +41,5 @@
   "src_candidate_id": "202607120338-claude-8",
   "event_date": "2026-08-03",
   "deadline": "2026-09-18"
- },
- {
-  "id": "sched-2026-09-18-cg-vote2026-icon-frame-2026-終了",
-  "dedup_key": "cg-vote2026-icon-frame-2026",
-  "brand": "cg",
-  "subject": "シンデレラガール総選挙2026記念アイコンフレーム",
-  "kind": "終了",
-  "note": "配布(投票)期間終了(23:59)",
-  "reserved_on": "2026-08-26",
-  "facts": [
-   "総選挙2026記念アイコンフレームの配布・投票期間は9月18日23時59分まで"
-  ],
-  "title": "総選挙2026アイコンフレーム、9/18まで",
-  "url": "https://x.com/imas_CGofficial/status/2091820308005286136",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608260216-grok-17",
-  "event_date": "2026-09-18"
- },
- {
-  "id": "sched-2026-09-18-cg-toybox-vote-mission-reflected-2026-終了",
-  "dedup_key": "cg-toybox-vote-mission-reflected-2026",
-  "brand": "cg",
-  "subject": "Pop'n ToyBox!! 配信チケット投票券",
-  "kind": "終了",
-  "note": "配信チケット分の投票券受取終了(23:59)",
-  "reserved_on": "2026-08-26",
-  "facts": [
-   "Pop'n ToyBox!!配信チケット分の投票券受取期間は9月15日12時〜9月18日23時59分の予定"
-  ],
-  "title": "ToyBox配信チケット投票券、9/18受取終了",
-  "url": "https://x.com/imas_CGofficial/status/2091746694623023428",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608260216-grok-21",
-  "event_date": "2026-09-18"
  }
 ]

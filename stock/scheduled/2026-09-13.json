@@ -41,23 +41,5 @@
   "src_candidate_id": "202608232010-claude-90",
   "event_date": "2026-08-21",
   "deadline": "2026-09-13"
- },
- {
-  "id": "sched-2026-09-13-cg-vote2026-poster-2026-締切",
-  "dedup_key": "cg-vote2026-poster-2026",
-  "brand": "cg",
-  "subject": "シンデレラガール総選挙2026 公約四字熟語ポスター",
-  "kind": "締切",
-  "note": "受注締切(23:59)",
-  "reserved_on": "2026-08-26",
-  "facts": [
-   "総選挙2026の公約四字熟語をあしらった出馬風ポスターの受注締切は9月13日23時59分"
-  ],
-  "title": "総選挙2026公約ポスター、9/13受注締切",
-  "url": "https://x.com/imas_CGofficial/status/2091827858075426834",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608260216-grok-15",
-  "event_date": "2026-09-13"
  }
 ]

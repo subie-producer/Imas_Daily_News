@@ -171,23 +171,5 @@
   "source_type": "公式",
   "verify": "confirmed",
   "src_candidate_id": "202608232010-grok-62"
- },
- {
-  "id": "sched-2026-08-28-shiny-noctchill-scenario-event-2026-開幕",
-  "dedup_key": "shiny-noctchill-scenario-event-2026",
-  "brand": "shiny",
-  "subject": "ノクチルシナリオイベント「いつか風が止むその日まで」",
-  "kind": "開幕",
-  "note": "イベント開幕、9/7 11:59まで",
-  "reserved_on": "2026-08-26",
-  "facts": [
-   "ノクチルの物語を描くシナリオイベント「いつか風が止むその日まで」を8月28日開幕、9月7日11:59まで開催予定"
-  ],
-  "title": "ノクチルシナリオイベント、8/28開幕",
-  "url": "https://x.com/imassc_official/status/2092199583040631156",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608260216-grok-35",
-  "event_date": "2026-08-28"
  }
 ]

@@ -221,42 +221,5 @@
   "src_candidate_id": "202608240750-grok-31",
   "event_date": "2026-09-05",
   "deadline": "2026-08-27"
- },
- {
-  "id": "sched-2026-08-27-shiny-stillblue-asobipremium-lottery-開始",
-  "dedup_key": "shiny-stillblue-asobipremium-lottery",
-  "brand": "shiny",
-  "subject": "shiny, the first REFRAC7IONS「Still blue」チケット",
-  "kind": "開始",
-  "note": "アソビストア一般会員先行受付開始(正午)",
-  "reserved_on": "2026-08-26",
-  "facts": [
-   "アソビストア一般会員先行受付が8月27日正午から開始予定"
-  ],
-  "title": "REFRAC7IONS一般会員先行、8/27正午開始",
-  "url": "https://x.com/shinyc_official/status/2092221200181211561",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608260216-grok-44",
-  "event_date": "2026-08-27"
- },
- {
-  "id": "sched-2026-08-27-mltd-idol-heroes-gacha-vol3-2026-終了",
-  "dedup_key": "mltd-idol-heroes-gacha-vol3-2026",
-  "brand": "million",
-  "subject": "ミリシタ「アイドルヒーローズ」ガシャvol.3",
-  "kind": "終了",
-  "note": "ガシャ終了(14:59)",
-  "reserved_on": "2026-08-26",
-  "facts": [
-   "マンスリー・オルタナティブ[REVIVE]「アイドルヒーローズ」ガシャvol.3は8月27日14時59分に終了予定",
-   "SSR「マイ・サクリファイス 我那覇響」、SSR「死ぬまでカーニバル 島原エレナ」が対象"
-  ],
-  "title": "ミリシタ「アイドルヒーローズ」vol.3、8/27終了",
-  "url": "https://imas.gamedbs.jp/mlth/",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608252337-claude-13",
-  "event_date": "2026-08-27"
  }
 ]

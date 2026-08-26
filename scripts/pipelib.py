@@ -135,6 +135,20 @@ def checkout_edition_branch(date: str, job: str) -> bool:
         git("checkout", "-B", branch, "origin/main")
         git_net("push", "-u", "origin", branch)
         notify(job, f"{branch} が無かったため main から作成した(release の作成漏れ?)")
+    # edition ブランチは release が前日に作るため、その後 main に入ったスクリプト修正を
+    # 持たない。取り込まないと、直した当日の号が直っていない版で生成される
+    # (2026-08-26号がこれで旧ロジックのまま13本で発行された)。
+    # 紙面ファイルは main 側に無いので、ここでの取り込みが号の中身を壊すことはない。
+    if git("merge-base", "--is-ancestor", "origin/main", "HEAD").returncode != 0:
+        m = git("merge", "origin/main", "--no-edit")
+        if m.returncode != 0:
+            git("merge", "--abort")
+            notify(job, f"{branch} への main 取り込みが衝突。**古いスクリプトのまま続行**します:\n"
+                        f"{m.stdout.strip()[:300]}", ok=False)
+        else:
+            print(f"{branch}: main を取り込んだ({git('rev-parse', '--short', 'origin/main').stdout.strip()})",
+                  flush=True)
+            git_net("push", "origin", branch)
     return True
 
 

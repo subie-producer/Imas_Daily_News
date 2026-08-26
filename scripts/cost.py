@@ -10,10 +10,14 @@ ccusage 単体では足りない点が2つあるため、このラッパを置�
 
 1. **JST で集計する。** ccusage の日付は UTC で、発行サイクルの起点である
    04:00 JST が前日側に落ちる。号ごとの費用を見るときに1日ずれる。
-2. **パイプラインと対話を分ける。** どちらも同じ `claude` のログに入る。
-   自動運転は ~/git/imas-ops で走るので作業ディレクトリで大半は分かれるが、
-   手で再実行したときは対話側のディレクトリに混ざるため、
-   セッション冒頭のプロンプトがパイプラインのものかどうかで判定する。
+2. **パイプラインと対話を分ける。** 3系統とも所属の判定方法が違う。
+   - claude: ~/.claude/projects のディレクトリ名。手で再実行すると対話側に
+     混ざるため、セッション冒頭がパイプラインのプロンプトかどうかも見る
+   - grok:   `ccusage grok session` の projectPath
+   - codex:  `ccusage codex session` の sessionFile から rollout ログを引き、
+             先頭の cwd を読む
+   汎用の `ccusage session` は codex/grok の所属を持たないので、
+   専用サブコマンドを併用している(推測でパイプライン扱いにしない)。
 
 費用は API 公開価格での換算値であって、サブスクリプションの請求額ではない。
 比較と切り分けに使う数字で、支払額として読まない。
@@ -66,13 +70,46 @@ def first_user_message(path: pathlib.Path) -> str:
     return ""
 
 
-def classify(sess: dict, index: dict) -> tuple[str, str]:
+def codex_cwds() -> dict:
+    """codex セッションID → 実行時の作業ディレクトリ。
+
+    ccusage の汎用 session では codex/grok の所属が分からない。専用サブコマンドは
+    grok なら projectPath を、codex なら sessionFile を持つので、codex は
+    rollout ログの先頭から cwd を読む。作業ディレクトリが分かれば
+    「パイプラインが起こしたのか、人が直接叩いたのか」を推測ではなく実データで判定できる。
+    """
+    out = {}
+    root = pathlib.Path.home() / ".codex" / "sessions"
+    files = {p.stem: p for p in root.rglob("rollout-*.jsonl")} if root.exists() else {}
+    for sess in ccusage("codex", "session").get("sessions", []):
+        p = files.get(sess.get("sessionFile", ""))
+        if p is None:
+            continue
+        for i, line in enumerate(p.open(encoding="utf-8")):
+            m = re.search(r'"cwd"\s*:\s*"([^"]+)"', line)
+            if m:
+                out[sess["sessionId"]] = m.group(1)
+                break
+            if i > 5:
+                break
+    return out
+
+
+def grok_paths() -> dict:
+    return {s["sessionId"]: s.get("projectPath", "")
+            for s in ccusage("grok", "session").get("sessions", [])}
+
+
+def classify(sess: dict, index: dict, cwds: dict) -> tuple[str, str]:
     """(区分, 工程) を返す。"""
     agent = sess.get("agent")
-    if agent == "codex":
-        return "パイプライン", "記事執筆(codex)"
-    if agent == "grok":
-        return "パイプライン", "収集・X調査(grok)"
+    if agent in ("codex", "grok"):
+        # cwd がリポジトリ配下なら compose/collect が起こしたセッション。
+        # それ以外(手元での試し打ち等)はパイプラインの費用に混ぜない
+        cwd = cwds.get(sess["period"], "")
+        if not any(k in cwd for k in ("imas-ops", "Imas_Daily_News")):
+            return "対話", f"手動({agent})"
+        return "パイプライン", ("記事執筆(codex)" if agent == "codex" else "収集・X調査(grok)")
     path = index.get(sess["period"])
     if path is None:
         return "対話", "対話"
@@ -92,6 +129,7 @@ def main() -> int:
     args = ap.parse_args()
 
     index = {p.stem: p for p in LOGS.glob("*/*.jsonl")}
+    cwds = {**codex_cwds(), **grok_paths()}
     sessions = ccusage("session")["session"]
 
     by_day = collections.defaultdict(lambda: collections.defaultdict(float))
@@ -100,7 +138,7 @@ def main() -> int:
     for s in sessions:
         at = datetime.datetime.fromisoformat(
             s["metadata"]["lastActivity"].replace("Z", "+00:00")).astimezone(JST)
-        kind, stage = classify(s, index)
+        kind, stage = classify(s, index, cwds)
         by_day[at.date().isoformat()][kind] += s["totalCost"]
         by_stage[stage][0] += 1
         by_stage[stage][1] += s["totalCost"]

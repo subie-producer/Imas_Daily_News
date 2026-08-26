@@ -140,56 +140,69 @@ def write_plan_index(date: str, cands: dict, blocklist: dict) -> tuple[Path, int
         s["facts"] = s["facts"][:PLAN_FACTS_PER_SUBJECT]
     # 1主題1行で書く(整形すると数千行になり、Read の既定上限 2000行で頭から切れて
     # 後半の主題が編集長の視野に入らなくなる。行数=主題数なら一度で読み切れる)
-    rows = [json.dumps(s, ensure_ascii=False, separators=(",", ":")) for s in subjects.values()]
-    out = ROOT / "metrics" / f"plan-index-{date}.json"
-    out.write_text("[\n" + ",\n".join(rows) + "\n]\n", encoding="utf-8")
-    return out, len(subjects)
+    def dump(rows: list[dict], path: Path) -> None:
+        body = ",\n".join(json.dumps(s, ensure_ascii=False, separators=(",", ":")) for s in rows)
+        path.write_text("[\n" + body + "\n]\n", encoding="utf-8")
+
+    dump(list(subjects.values()), ROOT / "metrics" / f"plan-index-{date}.json")
+    by_brand: dict[str, list[dict]] = {}
+    for s in subjects.values():
+        by_brand.setdefault(s.get("brand") or "other", []).append(s)
+    for b, rows in by_brand.items():
+        dump(rows, ROOT / "metrics" / f"plan-index-{date}-{b}.json")
+    return by_brand, len(subjects)
 
 
-def plan_prompt(date: str, number: int, triggers: list[dict], n_subjects: int,
-                feedback: str = "") -> str:
+def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dict],
+                      feedback: str = "") -> str:
+    """面(ブランド)ごとの選定プロンプト。
+
+    号全体を1セッションに裁かせると、161主題で 1800秒のタイムアウトに達して
+    計画が1本も出ない(2026-08-26の再発行で実測)。面ごとに割ると1セッションが
+    見る主題は十数件になり、全主題に判断を下しても時間内に収まる。
+    lead はここでは付けない(面をまたぐ比較が要るため後段で決める)。
+    """
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    files = f"metrics/plan-index-{date}.json"
-    fb = f"\n## 前回計画の機械検証エラー(必ず解消すること)\n{feedback}\n" if feedback else ""
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集長です。{date}({weekday}曜)号の**記事計画**(どの話題を、どの候補を素材に、どの扱いで書くか)だけを作ってください。記事本文はまだ書きません。
+    fb = f"\n## 前回の機械検証エラー(必ず解消すること)\n{feedback}\n" if feedback else ""
+    trig = json.dumps([{k: t.get(k) for k in ("id", "dedup_key", "brand", "subject", "kind", "note")}
+                       for t in triggers], ensure_ascii=False, indent=1)
+    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集者です。{date}({weekday}曜)号の
+**「{brand}」面だけ**の記事計画を作ってください。記事本文はまだ書きません。他の面は別の担当が見ます。
 
 ## 素材(読むもの)
-- {files} … **本日の全主題({n_subjects}件)**。verify=failed と blocklist は機械的に除外済みで、
-  同一話題は dedup_key で束ねてある。`ids` がその主題の候補IDで、計画の candidate_ids にはこれをそのまま使う。
-  **このファイルを最後まで読むこと**({n_subjects}主題すべてに目を通す。途中で切り上げない)。
+- metrics/plan-index-{date}-{brand}.json … **この面の全主題({n_subjects}件)**。
+  verify=failed と blocklist は除外済み、同一話題は dedup_key で束ねてある。
+  `ids` がその主題の候補IDで、計画の candidate_ids にはこれをそのまま使う。
+  **{n_subjects}主題すべてに判断を下すこと**(途中で切り上げない)。
   facts は先頭{PLAN_FACTS_PER_SUBJECT}件の要約のみ。全文が要るときだけ candidates/{date}.json を引く(通常は不要)
 - stock/stories.yml … 既報台帳(published_facts と同内容=新事実なしの話題は記事化しない。編集規程8)
-- stock/blocklist.yml … 使用禁止候補(dedup_key 単位。verify 値に関わらず素材にしない)
 - REQUIREMENTS.md 5章(編集規程)
-- stock/pending.yml … 日付未確定の追跡事項(新観測で日付が判明していたら計画に入れる)
-- 本日の続報予約(stock/scheduled/{date}.json。**必ず記事化する**。あふれは small へ。
-  各予約の id は素材スナップショットとして candidate_ids に使える。新観測があれば統合すること):
-{json.dumps([{k: t.get(k) for k in ("id", "dedup_key", "brand", "subject", "kind", "note")} for t in triggers], ensure_ascii=False, indent=2)}
+- この面の続報予約(**必ず記事化する**。id は素材スナップショットとして candidate_ids に使える):
+{trig}
 
 ## 選定規則
-- verify が failed の候補・blocklist の候補は素材にしない
-- 同一話題を複数エンジンが観測している場合は1記事に統合し、その記事の candidate_ids に全部載せる
-- **候補の dedup_key 単位で全主題を必ず「記事化」「roundup」「不採用」のいずれかに割り当てる。黙って無視してよい主題は1つもない**(不採用は下記 dropped に理由付きで列挙する)。記事化基準を満たす話題は全部記事にする(「多いから落とす」は禁止。紙面は無制限。編集規程11)
-- **本数の目標値は無い。**その日の主題数がそのまま紙面の厚みになる。100主題ある日は100主題ぶんを裁く(記事+roundup+dropped の合計が主題数と一致する)。あふれた日は rank を small へ寄せて収める
-- lead はちょうど1本。その日最も重要な話題に与える
+- **{n_subjects}主題すべてを「記事化」「roundup」「不採用」のいずれかに割り当てる。黙って無視してよい主題は1つもない**(不採用は dropped に理由付きで列挙)
+- **本数の目標値は無い。**記事化基準を満たす話題は全部記事にする(「多いから落とす」は禁止。紙面は無制限。編集規程11)。あふれたら rank を small へ寄せる
+- rank は large|medium|small|roundup から選ぶ。**lead は付けない**(号全体の一面は後段で決める)
+- 同一話題を複数エンジンが観測している場合は1記事に統合し、candidate_ids に全部載せる
 - 個人への攻撃・プライバシー侵害になり得る話題、読んだ人が嫌な気分になる炎上・係争は入れない。個人の SNS 投稿は単体で記事化しない(規程4・5。規程11より優先)
 - 声優個人のアイマス外活動・関係者の動向は対象外(規程4)
-- **同人イベント・ファン主催企画(オンリーイベント・即売会・非公式コラボ)は記事化しない**(規程4。「当事者」はアイマス公式に関係する主催・販売元・コラボ先のみ)
-- **ニュース性(規程12)**: 記事にできるのは発行日時点で「新しく発表された・起きる・起きた」ことだけ。終了済みイベントの紹介・過年度の話題は記事化しない(結果・千秋楽など当日トリガーの続報は可)。候補の published_date・event_date・dedup_key・URL に含まれる**年**を確認し、発行年より前の年しか出てこない候補(例: dedup_key 末尾が -2025)は過年度の話題を疑って除外する
+- **同人イベント・ファン主催企画(オンリーイベント・即売会・非公式コラボ)は記事化しない**(規程4)
+- **ニュース性(規程12)**: 記事にできるのは発行日時点で「新しく発表された・起きる・起きた」ことだけ。終了済みイベントの紹介・過年度の話題は記事化しない(結果・千秋楽など当日トリガーの続報は可)。published_date・event_date・dedup_key・URL の**年**を確認し、発行年より前の年しか出てこない候補(例: dedup_key 末尾が -2025)は除外する
 - **1記事1主題(規程13)**: 複数の小ネタを「まとめ」「続々判明」として1本に束ねない
-- **定常運営まとめ(規程13の例外・rank: roundup)**: 単体では記事にならない**進行中の運営情報**(開催中のガシャ・ログインボーナス・楽曲追加・月例イベント・配信出演など)は、**ブランドごとに1本の `rank: roundup`** へまとめる。{ROUNDUP_MIN_ITEMS}件以上まとまる面だけ作り、{ROUNDUP_MIN_ITEMS}件未満なら small の通常記事にする
+- **定常運営まとめ(規程13の例外・rank: roundup)**: 単体では記事にならない**進行中の運営情報**(開催中のガシャ・ログインボーナス・楽曲追加・月例イベント・配信出演など)は、**この面で1本だけ** `rank: roundup` にまとめる。{ROUNDUP_MIN_ITEMS}件以上まとまるときだけ作り、{ROUNDUP_MIN_ITEMS}件未満なら small の通常記事にする
   - **roundup に入れてはいけないもの**: 発表・開催決定・販売開始日・受注/申込の開始と締切・中止延期。これらはニュースなので**単独記事**にする。判断に迷ったら単独記事にする
-  - roundup は本数の下限8本に算入しない。「roundup があるから記事は少なくてよい」は誤り
-  - ダイジェストは記事への索引であって受け皿ではない。記事にしない話題をダイジェストに置くことはできない
+  - roundup は記事本数の下限に算入しない。「roundup があるから記事は少なくてよい」は誤り
 {fb}
 ## 出力
-`metrics/plan-{date}.json` に次の形式の JSON を書く(Write ツール使用。これ以外のファイルは作らない):
+`metrics/plan-{date}-{brand}.json` に次の JSON を書く(Write ツール使用。これ以外のファイルは作らない):
 {{
   "articles": [
-    {{"slug": "英小文字ハイフンの記事ID(号内一意)",
-      "brand": "general|765|cg|million|shiny|sidem|gaku|dsva|joint|other",
-      "rank": "lead|large|medium|small|roundup",
+    {{"slug": "英小文字ハイフンの記事ID(号内で一意になるよう面名や主題を含める)",
+      "brand": "{brand}",
+      "rank": "large|medium|small|roundup",
       "angle": "記事の切り口・見出しの方向性(1文。roundup なら束ねる観点)",
+      "lead_score": 0,
       "dedup_key": "主話題の dedup_key",
       "candidate_ids": ["素材にする候補の id(統合分は全部。roundup は束ねる全件)"]}}
   ],
@@ -197,15 +210,41 @@ def plan_prompt(date: str, number: int, triggers: list[dict], n_subjects: int,
     {{"dedup_key": "記事にも roundup にもしなかった主題の dedup_key",
       "reason": "既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|その他",
       "note": "reason だけで説明がつかない場合の一言(任意)"}}
-  ],
-  "editorial_topic": "社説の主題(その日の紙面から1題・1文)"
+  ]
 }}
 
-**dropped は必須です。**候補に現れた dedup_key は、articles か dropped の
+`lead_score` は「この記事が号の一面に値する度合い」を 0〜100 で自己申告する値です
+(面内で最も大きなニュース1本にだけ高い値を付け、残りは 0〜30 程度)。
+
+**dropped は必須です。**この面の {n_subjects} 主題は、articles か dropped の
 どちらかに必ず1回現れなければなりません。書ききれないから省く、は不可です
 (不採用そのものは正当な判断です。理由を残さないことだけが問題です)。
 
-最後に「記事N本(rank内訳)/ roundupN本 / 不採用N件」の1行で報告してください。
+最後に「{brand}: 記事N本 / roundupN本 / 不採用N件」の1行で報告してください。
+"""
+
+
+def lead_prompt(date: str, arts: list[dict]) -> str:
+    """面別計画を束ねたあと、号の一面と社説主題だけを決める短いセッション。"""
+    weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
+    rows = json.dumps([{k: a.get(k) for k in ("slug", "brand", "rank", "angle", "lead_score")}
+                       for a in arts if a.get("rank") != "roundup"], ensure_ascii=False, indent=1)
+    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集長です。{date}({weekday}曜)号の
+記事計画は各面の担当が作り終えています。あなたの仕事は**一面(lead)を1本選ぶこと**と
+**社説の主題を決めること**の2つだけです。記事本文も他の記事の rank も触りません。
+
+## 本日の記事候補(面別担当の申告。lead_score はその面での自己申告)
+{rows}
+
+## 選ぶ基準
+- その日いちばん「アイマス全体にとって大きい」話題を1本。面の大小や lead_score の高さだけで決めない
+- 新規発表・大型施策・シリーズ横断の動きは強い。定常運営の更新は弱い
+- 社説主題は本日の紙面から1題。一面と同じでなくてよい
+
+## 出力
+`metrics/plan-lead-{date}.json` に次の JSON を書く(Write ツール使用。これ以外のファイルは作らない):
+{{"lead_slug": "一面にする記事の slug(上のリストから1つ)",
+  "editorial_topic": "社説の主題(1文)"}}
 """
 
 
@@ -441,6 +480,82 @@ def validate_plan(plan: dict, cands: dict, blocklist: dict) -> list[str]:
     return errors
 
 
+def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 4) -> dict:
+    """面別に選定させ、機械的に1つの計画へ束ねる。
+
+    面ごとに独立したセッションなので、1面が失敗しても他面は生きる(全滅しない)。
+    面内の主題数は十数件なので、全主題に判断を下しても時間内に収まる。
+    """
+    brands = sorted(by_brand, key=lambda b: -len(by_brand[b]))
+    trig_by_brand: dict[str, list[dict]] = {}
+    for t in triggers:
+        trig_by_brand.setdefault(t.get("brand") or "other", []).append(t)
+    results: dict[str, dict] = {}
+    for i in range(0, len(brands), wave):
+        procs = []
+        for b in brands[i:i + wave]:
+            out = ROOT / "metrics" / f"plan-{date}-{b}.json"
+            out.unlink(missing_ok=True)  # 残骸の誤読防止
+            prompt = brand_plan_prompt(date, b, len(by_brand[b]), trig_by_brand.get(b, []))
+            procs.append((b, out, subprocess.Popen(
+                ["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
+                 "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
+                stdin=subprocess.DEVNULL, cwd=ROOT)))
+        for b, out, p in procs:
+            try:
+                p.communicate(timeout=900)
+            except subprocess.TimeoutExpired:
+                p.kill()
+            try:
+                results[b] = json.loads(out.read_text(encoding="utf-8"))
+            except Exception:
+                print(f"選定: {b} 面が計画を出せず(この面は不採用扱いで続行)", flush=True)
+                continue
+            n_a = len(results[b].get("articles") or [])
+            n_d = len(results[b].get("dropped") or [])
+            print(f"選定: {b} 面 {len(by_brand[b])}主題 → 記事{n_a}本 / 不採用{n_d}件", flush=True)
+    arts, dropped, seen = [], [], set()
+    for b, r in results.items():
+        for a in r.get("articles") or []:
+            a["brand"] = b  # 面の取り違えを機械的に潰す
+            # slug は号内一意。面別に独立して付けるので衝突しうる(機械的に解消する。
+            # ここで落とすと、面の担当が正しく選んだ記事が理由なく消える)
+            if a.get("slug") in seen:
+                a["slug"] = f"{b}-{a['slug']}"[:80]
+            while a.get("slug") in seen:
+                a["slug"] = f"{a['slug']}-2"[:80]
+            seen.add(a.get("slug"))
+            arts.append(a)
+        dropped += r.get("dropped") or []
+    return {"articles": arts, "dropped": dropped}
+
+
+def pick_lead(date: str, plan: dict) -> None:
+    """号の一面と社説主題を決めて plan に反映する(面別選定は lead を付けない)。"""
+    arts = plan["articles"]
+    if not arts:
+        return
+    out = ROOT / "metrics" / f"plan-lead-{date}.json"
+    out.unlink(missing_ok=True)
+    claude_run(lead_prompt(date, arts), timeout=600)
+    pick = {}
+    try:
+        pick = json.loads(out.read_text(encoding="utf-8"))
+    except Exception:
+        pass
+    by_slug = {a["slug"]: a for a in arts}
+    lead = by_slug.get(pick.get("lead_slug"))
+    if lead is None or lead.get("rank") == "roundup":
+        # 選定セッションが落ちた場合の機械フォールバック(一面のない紙面は出さない)
+        cand = [a for a in arts if a.get("rank") != "roundup"]
+        lead = max(cand, key=lambda a: a.get("lead_score") or 0) if cand else None
+        print(f"lead 選定が不成立。lead_score 最大の {lead['slug'] if lead else '-'} を一面にする", flush=True)
+    if lead is not None:
+        lead["rank"] = "lead"
+    plan["editorial_topic"] = pick.get("editorial_topic") or (lead or {}).get("angle", "")
+
+
 def coverage_gaps(plan: dict, cands: dict, blocklist: dict) -> tuple[list[str], dict]:
     """主題の取りこぼし検査(編集規程11)。素材に現れた dedup_key が articles にも
     dropped にも現れないなら、それは「判断されずに消えた」主題である。
@@ -487,7 +602,9 @@ def validate_article_file(date: str, art: dict, cands: dict) -> list[str]:
                       ("rank", art["rank"])):
         got = fm.get(key)
         got = got.isoformat() if hasattr(got, "isoformat") else got
-        if got != want:
+        # brand: 765 はクォート無しだと YAML が int に読む。型差で不一致にすると
+        # 765AS 面の記事が「計画 765 / 実際 765」という読めない理由で落ちる
+        if str(got) != str(want):
             errors.append(f"{key} が計画と不一致(計画 {want} / 実際 {got})")
     if sorted(fm.get("candidate_ids") or []) != sorted(art["candidate_ids"]):
         errors.append("candidate_ids が計画と不一致")
@@ -622,7 +739,8 @@ def claude_review(date: str, round_no: int) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--plan", action="store_true", help="プロンプトを表示して終了(実行しない)")
+    ap.add_argument("--plan", metavar="BRAND", nargs="?", const="cg",
+                    help="指定した面の選定プロンプトを表示して終了(実行しない)")
     ap.add_argument("--date", default=None, help="対象発行日(再試行用。既定: 次の06:00の日付)")
     ap.add_argument("--max-rounds", type=int, default=2)
     args = ap.parse_args()
@@ -636,7 +754,8 @@ def main() -> int:
     triggers = load_scheduled(date)
     number = next_number()
     if args.plan:
-        print(plan_prompt(date, number, triggers))
+        print(brand_plan_prompt(date, args.plan, 0,
+                                [t for t in triggers if t.get("brand") == args.plan]))
         return 0
 
     if (ROOT / "docs" / "_editions" / f"{date}.md").exists():
@@ -664,25 +783,17 @@ def main() -> int:
         notify("compose", f"{date}: 発行日±1日の candidates が空。compose 続行不能", ok=False)
         return 1
     plan_path = ROOT / "metrics" / f"plan-{date}.json"
-    index_path, n_subjects = write_plan_index(date, cands, blocklist)
-    print(f"選定インデックス: {n_subjects}主題 / {index_path.stat().st_size // 1024}KB "
-          f"(候補 {len(cands)}件から生成)", flush=True)
-    plan, errors, feedback, cov = None, ["未実行"], ["未実行"], {}
-    for attempt in (1, 2):
-        plan_path.unlink(missing_ok=True)  # 残骸の誤読防止(書込失敗時に旧計画を読まない)
-        fb = "" if attempt == 1 else "\n".join(f"- {e}" for e in feedback)
-        claude_run(plan_prompt(date, number, triggers, n_subjects, feedback=fb), timeout=1800)
-        try:
-            plan = json.loads(plan_path.read_text(encoding="utf-8"))
-        except Exception:
-            errors = feedback = [f"{plan_path.name} が存在しないか JSON として読めない"]
-            continue
-        # errors = 発行を止める機械検証 / gaps = 止めないが再計画で直させる取りこぼし
-        errors = validate_plan(plan, cands, blocklist)
-        gaps, cov = coverage_gaps(plan, cands, blocklist)
-        feedback = errors + gaps
-        if not feedback:
-            break
+    by_brand, n_subjects = write_plan_index(date, cands, blocklist)
+    print(f"選定インデックス: {n_subjects}主題 / {len(by_brand)}面 "
+          f"({', '.join(f'{b}:{len(v)}' for b, v in sorted(by_brand.items()))})", flush=True)
+    plan = run_plan(date, by_brand, triggers)
+    pick_lead(date, plan)
+    plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    # errors = 発行を止める機械検証 / gaps = 止めない取りこぼし(通知して続行)
+    errors = validate_plan(plan, cands, blocklist)
+    gaps, cov = coverage_gaps(plan, cands, blocklist)
+    if gaps:
+        print(f"取りこぼし: {gaps[0][:120]}", flush=True)
     if errors:
         notify("compose", f"{date}: 記事計画が機械検証を通らず。人間判断が必要\n- " + "\n- ".join(errors[:8]), ok=False)
         commit_and_push(branch, f"compose {date}: 計画不成立(要人間判断)", "compose")

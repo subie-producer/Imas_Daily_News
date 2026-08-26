@@ -1,0 +1,21 @@
+[
+ {
+  "id": "sched-2026-10-05-shiny-msp-live-tickets-2026-終了",
+  "dedup_key": "shiny-msp-live-tickets-2026",
+  "brand": "shiny",
+  "subject": "シャニマスソロライブMSP 配信チケット",
+  "kind": "終了",
+  "note": "配信チケット販売終了(18時)・アーカイブ視聴終了(23:59)",
+  "reserved_on": "2026-08-26",
+  "facts": [
+   "配信チケットの販売期間は10月5日18時まで",
+   "アーカイブ視聴期間は9月28日18時から10月5日23時59分まで"
+  ],
+  "title": "ソロライブMSP配信チケット、10/5販売終了",
+  "url": "https://x.com/shinyc_official/status/2092220948803956826",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608260216-grok-42",
+  "event_date": "2026-10-05"
+ }
+]

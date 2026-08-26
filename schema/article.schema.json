@@ -59,9 +59,10 @@
         "lead",
         "large",
         "medium",
-        "small"
+        "small",
+        "roundup"
       ],
-      "description": "lead は号内で1本のみ(lint 検査)"
+      "description": "lead は号内で1本のみ(lint 検査)。roundup は定常運営まとめでブランドごとに号内1本(REQUIREMENTS.md 3.5)"
     },
     "title": {
       "type": "string",

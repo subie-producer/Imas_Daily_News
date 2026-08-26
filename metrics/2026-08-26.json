@@ -64,18 +64,30 @@
  ],
  "compose": [
   {
-   "at": "2026-08-26T04:38:45+09:00",
+   "at": "2026-08-26T09:25:33+09:00",
    "edition": "2026-08-26",
-   "rounds": 3,
+   "rounds": 1,
    "approved": true,
    "lint_green": true,
-   "planned": 16,
-   "written": 14,
+   "planned": 56,
+   "written": 49,
+   "roundups": 6,
+   "dropped": 69,
+   "coverage": {
+    "subjects": 161,
+    "covered": 161,
+    "missing": 0
+   },
    "aborted": [
-    "million-battle-theater-ex04-release",
-    "gakumas-nuipin-vol2-announced"
+    "cg-toybox-watchalong-announced",
+    "gaku-nuipin-vol2-decision",
+    "gaku-summer-gacha-tematari-end",
+    "general-moiw2025-radio-vol12-campaign",
+    "765-dual-twin-tokyo-finale-roundup",
+    "million-battle-ex04-release",
+    "other-cosmo-birthday-liveviewing-tickets"
    ],
-   "duration_s": 2295
+   "duration_s": 3247
   }
  ]
 }

@@ -112,23 +112,40 @@
   "deadline": "2026-08-30"
  },
  {
-  "id": "sched-2026-08-30-cosmo-birthday-online-live-2026-締切",
+  "id": "sched-2026-08-30-cosmo-birthday-online-live-2026-lv-締切",
   "dedup_key": "cosmo-birthday-online-live-2026",
   "brand": "dsva",
-  "subject": "上水流宇宙BIRTHDAY ONLINE LIVE 2026 現地LVチケット販売締切",
+  "subject": "上水流宇宙BDライブ 限定グッズ付き現地LVチケット",
   "kind": "締切",
-  "note": "限定グッズ付き現地LVチケット販売締切",
+  "note": "限定グッズ付き現地LVチケット販売終了",
   "reserved_on": "2026-08-26",
   "facts": [
-   "限定グッズ付き現地ライブビューイングチケットの販売期間は8月26日〜8月30日",
-   "イベント本番は9月12日(土)、上水流宇宙の20歳の誕生日"
+   "限定グッズ付き現地ライブビューイングチケットの販売期間は8月26日〜8月30日"
   ],
-  "title": "上水流宇宙 BIRTHDAY ONLINE LIVE 2026 チケット販売開始",
+  "title": "上水流宇宙BDライブ、限定グッズ付きLVチケット販売終了",
   "url": "https://idolmaster-official.jp/news/01_19569",
   "source_type": "公式",
   "verify": "confirmed",
   "src_candidate_id": "202608260216-claude-113",
-  "event_date": "2026-09-12",
-  "deadline": "2026-08-30"
+  "event_date": "2026-08-30"
+ },
+ {
+  "id": "sched-2026-08-30-moiw2025-bluray-order-2026-締切",
+  "dedup_key": "moiw2025-bluray-order-2026",
+  "brand": "joint",
+  "subject": "MOIW2025 Blu-ray受注",
+  "kind": "締切",
+  "note": "受注締切",
+  "reserved_on": "2026-08-26",
+  "facts": [
+   "総勢118名出演、100曲以上のライブ本編と特典映像を収録したBlu-rayの受注は8月30日締切",
+   "受注はアソビストアで実施"
+  ],
+  "title": "MOIW2025 Blu-ray受注、8/30締切",
+  "url": "https://x.com/imas_official/status/2091797662634828154",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608260216-grok-72",
+  "event_date": "2026-08-30"
  }
 ]

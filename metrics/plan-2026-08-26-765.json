@@ -1,0 +1,69 @@
+{
+  "articles": [
+    {
+      "slug": "765-dual-twin-bakusute-talk-live-stream",
+      "brand": "765",
+      "rank": "small",
+      "angle": "dual twin live tour東京公演、両日の終演後にキャスト出演の生ラジオ『ばくすて！とーく』を配信すると決定。",
+      "lead_score": 10,
+      "dedup_key": "dual-twin-live-tour-bakusute-talk-2026",
+      "candidate_ids": ["202608252337-claude-16"]
+    },
+    {
+      "slug": "765-dual-twin-tokyo-finale-roundup",
+      "brand": "765",
+      "rank": "roundup",
+      "angle": "dual twin live tour東京公演(8/27・28)直前情報まとめ(会場1Fの女性専用エリア案内、あずさ・律子「Binary Star」ステージちら見せ、亜美・真美「北極星をズラしちゃえ！」ステージちら見せ)。",
+      "lead_score": 0,
+      "dedup_key": "765-dual-twin-tokyo-2days-women-area-2026-08-25",
+      "candidate_ids": ["202608260216-grok-0", "202608260216-grok-1", "202608260216-grok-5"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "kimchikura-fes-2026",
+      "reason": "その他",
+      "note": "開催(8/8)から18日経過、本日の新事実・トリガーなし(規程12)"
+    },
+    {
+      "dedup_key": "765-dual-twin-tour-streaming-2026",
+      "reason": "その他",
+      "note": "配信チケット発売開始(8/6)から20日経過、本日の新事実・トリガーなし(規程12)"
+    },
+    {
+      "dedup_key": "765-as-new-goods-2026",
+      "reason": "その他",
+      "note": "受注期限(8/16)が既に終了しており新報にならない"
+    },
+    {
+      "dedup_key": "765-dual-twin-live-zepp-haneda-2026-08",
+      "reason": "既報",
+      "note": "既報(765-dual-twinlive-venue-cd)にツアー日程・出演者情報として既に記載済み"
+    },
+    {
+      "dedup_key": "dual-twin-live-futago-boshi-venue-cd-2026",
+      "reason": "既報",
+      "note": "既報(765-dual-twinlive-venue-cd)にCD(SACX-1140)情報として既に記載済み"
+    },
+    {
+      "dedup_key": "dual-twin-live-tsumi-matsu-venue-cd-2026",
+      "reason": "既報",
+      "note": "既報(765-dual-twinlive-venue-cd)にCD(SACX-1139)情報として既に記載済み"
+    },
+    {
+      "dedup_key": "765-binary-star-cd-haneda-2026-08-25",
+      "reason": "既報",
+      "note": "既報(765-dual-twinlive-venue-cd)のCD販売情報と重複、新事実なし"
+    },
+    {
+      "dedup_key": "765-hokkyokusei-cd-haneda-2026-08-25",
+      "reason": "既報",
+      "note": "既報(765-dual-twinlive-venue-cd)のCD販売情報と重複、新事実なし"
+    },
+    {
+      "dedup_key": "765-dual-twin-tokyo-3days-2026-08-24",
+      "reason": "既報",
+      "note": "既報(765-dual-twinlive-venue-cd)に「残り3日」「現地チケット残りわずか」として既に記載済み"
+    }
+  ]
+}

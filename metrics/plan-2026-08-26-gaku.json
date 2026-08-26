@@ -1,0 +1,168 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-hif-memorial-single-release",
+      "brand": "gaku",
+      "rank": "large",
+      "angle": "学マス2周年記念メモリアルシングル『ガラクタロード』本日発売、H.I.F編テーマ曲の13人全員歌唱版を収録",
+      "lead_score": 75,
+      "dedup_key": "gaku-hif-memorial-single-2026",
+      "candidate_ids": ["202608260216-claude-115"]
+    },
+    {
+      "slug": "gaku-3rd-single-wave3-release",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "3rdシングルCDシリーズ第三弾、十王星南・花海咲季・花海佑芽・秦谷美鈴の4タイトルが本日一斉発売。STEP3新規ソロ楽曲収録",
+      "lead_score": 45,
+      "dedup_key": "gakumasu-3rd-single-series-wave3-2026",
+      "candidate_ids": ["sched-2026-08-26-gakumasu-3rd-single-series-wave3-2026-発売"]
+    },
+    {
+      "slug": "gaku-hataya-swimsuit-gacha-start",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "秦谷美鈴の水着ガシャ、本日8/26開始(公式告知を複数観測)",
+      "lead_score": 35,
+      "dedup_key": "gaku-swimsuit-gacha-hataya-misuzu-2026-08",
+      "candidate_ids": [
+        "sched-2026-08-26-gaku-swimsuit-gacha-hataya-misuzu-2026-08-開始",
+        "202608260216-grok-51",
+        "202608260216-claude-107"
+      ]
+    },
+    {
+      "slug": "gaku-gravure-solo-vol1-announce",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "Gravure Solo Collection Vol.1「ねえ、言っちゃうよ。」11/18発売決定、全15曲・13キャラクター収録(8/14付発表)",
+      "lead_score": 10,
+      "dedup_key": "gravure-solo-collection-vol1-2026",
+      "candidate_ids": ["202608251235-claude-14"]
+    },
+    {
+      "slug": "gaku-nuipin-vol2-decision",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "ぬいピンvol.2、12月発売決定(約7cm)",
+      "lead_score": 5,
+      "dedup_key": "gaku-nuipin-vol2",
+      "candidate_ids": ["202608251235-watch-0"]
+    },
+    {
+      "slug": "gaku-hataya-new-song-start",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "秦谷美鈴版「ねえ、言っちゃうよ。」、本日8/26 11時から配信開始",
+      "lead_score": 10,
+      "dedup_key": "gakumas-nee-icchauyo-hataya-2026-08-26",
+      "candidate_ids": ["202608260216-grok-52"]
+    },
+    {
+      "slug": "gaku-summer-gacha-tematari-end",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「ねえ、言っちゃうよ。」手毬ガシャ、本日8/26で終了(石・ポイント交換期限も8/26まで)",
+      "lead_score": 5,
+      "dedup_key": "gaku-tematari-gacha-2026",
+      "candidate_ids": ["202608251836-claude-12"]
+    },
+    {
+      "slug": "gaku-summer-song-juo-end",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "十王星南「ねえ、言っちゃうよ。」、本日8/26 10:59で終了",
+      "lead_score": 0,
+      "dedup_key": "gakumas-nee-icchauyo-juo-2026-08-25",
+      "candidate_ids": ["202608260216-grok-56"]
+    },
+    {
+      "slug": "gaku-summer-song-temari-end",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "月村手毬「ねえ、言っちゃうよ。」、本日8/26 10:59で終了",
+      "lead_score": 0,
+      "dedup_key": "gakumas-nee-icchauyo-temari-2026-08-25",
+      "candidate_ids": ["202608260216-grok-57"]
+    },
+    {
+      "slug": "gaku-story-natsukaze-onepiece-end",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "新ストーリーイベント『夏風ワンピース』、本日8/26 10:59で終了",
+      "lead_score": 0,
+      "dedup_key": "gakumas-natsukaze-onepiece-2026-08-25",
+      "candidate_ids": ["202608260216-grok-58"]
+    },
+    {
+      "slug": "gaku-chibi-mascot-vol2-preorder-deadline",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "Chibiぬいおすわりマスコットvol.2、予約受付は本日8/26 23:59締切",
+      "lead_score": 10,
+      "dedup_key": "gakumas-chibi-mascot-vol2-preorder-2026",
+      "candidate_ids": ["202608260216-claude-110"]
+    },
+    {
+      "slug": "gaku-hires-priceoff-end",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "初星学園ハイレゾ作品30%オフ、本日8/26で終了(mora、60曲以上対象)",
+      "lead_score": 5,
+      "dedup_key": "gaku-hires-priceoff-campaign",
+      "candidate_ids": [
+        "202608260216-claude-109",
+        "sched-2026-08-26-gaku-hires-priceoff-campaign-締切"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-fukuoka-ticket-deadline",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "標ツアー福岡公演、一般先着販売は本日8/26 23:59締切(公式リセールは8/27 9:59まで)",
+      "lead_score": 10,
+      "dedup_key": "gaku-shirube-fukuoka-ticket-general-resale-2026",
+      "candidate_ids": ["sched-2026-08-26-gaku-shirube-fukuoka-ticket-general-resale-2026-締切"]
+    },
+    {
+      "slug": "gaku-roundup-ops-misc",
+      "brand": "gaku",
+      "rank": "roundup",
+      "angle": "進行中の学マス運営情報まとめ(秦谷美鈴の思い出衣装が常設開催・アナザーアイドル'26水着ガシャは9/4まで継続・初星音楽祭Blu-ray受注締切まであと6日)",
+      "lead_score": 0,
+      "dedup_key": "gakumas-hataya-memory-costume-2026-08-26",
+      "candidate_ids": [
+        "202608260216-grok-53",
+        "202608260216-grok-54",
+        "202608260216-grok-55"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "live-tour-single-shuugaku-ryokou-2026",
+      "reason": "出典不足",
+      "note": "発売決定の告知のみで発売日・価格等の具体情報がなく、出典もブランドトップページで特定記事に紐付かない"
+    },
+    {
+      "dedup_key": "gakumas-fukui-tour-archive-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml の gakumas-shirube-livetour-2026 で published_facts 済み、新事実なし"
+    },
+    {
+      "dedup_key": "gakumas-fukui-tour-day1-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml の gakumas-shirube-livetour-2026 で published_facts 済み、新事実なし"
+    },
+    {
+      "dedup_key": "gakumas-fukui-tour-day2-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml の gakumas-shirube-livetour-2026 で published_facts 済み、新事実なし"
+    },
+    {
+      "dedup_key": "gakumas-pixiv-ranking-2026-08",
+      "reason": "その他",
+      "note": "ファン集計サイト単体の週次ランキングで、規程4の「全国トレンド入り級の現象」の水準に届かず、verify も unconfirmed"
+    }
+  ]
+}

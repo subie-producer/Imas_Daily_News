@@ -1,21 +1,22 @@
 [
  {
-  "id": "sched-2026-11-18-gakumas-gravure-solo-collection-2026-発売",
-  "dedup_key": "gakumas-gravure-solo-collection-2026",
+  "id": "sched-2026-11-18-gakumas-gravure-solo-collection-vol1-2026-発売",
+  "dedup_key": "gakumas-gravure-solo-collection-vol1-2026",
   "brand": "gaku",
-  "subject": "Gravure Solo Collection Vol.1「ねえ、言っちゃうよ。」発売",
+  "subject": "学マス新CDシリーズ「Gravure Solo Collection」第1弾",
   "kind": "発売",
-  "note": "CD版発売日",
+  "note": "発売日",
   "reserved_on": "2026-08-26",
   "facts": [
-   "11月18日(水)発売、価格3,500円(税込)",
-   "月村手毬・秦谷美鈴・十王星南の3人歌唱版と13名のソロ歌唱・Instrumentalを含む全15曲収録"
+   "Vol.1『ねえ、言っちゃうよ。』は11月18日発売予定、3,500円(税込)",
+   "月村手毬・秦谷美鈴・十王星南の3人歌唱版に加え、13名のソロフル版とインストの全15曲を収録",
+   "予約は9月27日まで"
   ],
-  "title": "Gravure Solo Collection Vol.1「ねえ、言っちゃうよ。」発売決定",
+  "title": "Gravure Solo Collection Vol.1、11/18発売",
   "url": "https://gakuen-label.idolmaster-official.jp/news/gravure1",
   "source_type": "公式",
   "verify": "confirmed",
-  "src_candidate_id": "202608241248-claude-70",
+  "src_candidate_id": "202608251235-claude-14",
   "event_date": "2026-11-18"
  }
 ]

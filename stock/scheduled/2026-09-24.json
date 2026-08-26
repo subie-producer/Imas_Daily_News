@@ -1,22 +1,20 @@
 [
  {
-  "id": "sched-2026-09-24-gakumas-gravure-solo-collection-2026-締切前",
-  "dedup_key": "gakumas-gravure-solo-collection-2026",
-  "brand": "gaku",
-  "subject": "Gravure Solo Collection Vol.1 予約締切まで3日",
-  "kind": "締切前",
-  "note": "予約締切3日前",
+  "id": "sched-2026-09-24-sidem-royal-chess-lounge-2026-終了",
+  "dedup_key": "sidem-royal-chess-lounge-2026",
+  "brand": "sidem",
+  "subject": "SideM×「Royal Chess Lounge」コラボカフェ心斎橋店",
+  "kind": "終了",
+  "note": "心斎橋店開催終了",
   "reserved_on": "2026-08-26",
   "facts": [
-   "予約受付期限は2026年9月27日(日)まで",
-   "CD版発売日は2026年11月18日(水)、価格3,500円(税込)、全15曲収録"
+   "「Royal Chess Lounge」コラボカフェの心斎橋店(SMILE BASE CAFE)は9月12日〜9月24日開催"
   ],
-  "title": "Gravure Solo Collection Vol.1「ねえ、言っちゃうよ。」発売決定",
-  "url": "https://gakuen-label.idolmaster-official.jp/news/gravure1",
-  "source_type": "公式",
+  "title": "Royal Chess Lounge、心斎橋店終了",
+  "url": "https://idolmaster-official.jp/news/01_19442",
+  "source_type": "準公式",
   "verify": "confirmed",
-  "src_candidate_id": "202608241248-claude-70",
-  "event_date": "2026-11-18",
-  "deadline": "2026-09-27"
+  "src_candidate_id": "202608251235-claude-13",
+  "event_date": "2026-09-24"
  }
 ]

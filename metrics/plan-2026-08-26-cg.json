@@ -1,0 +1,117 @@
+{
+  "articles": [
+    {
+      "slug": "cg-cinderella-master-cd-release",
+      "brand": "cg",
+      "rank": "large",
+      "angle": "総選挙応援楽曲第3・4弾を収めたCINDERELLA MASTER新作CD「大好きのブーケ＆すりーぷすきっぷ」が本日発売・サブスク配信も開始、投票券400枚のシリアル封入",
+      "lead_score": 70,
+      "dedup_key": "cg-cinderella-master-bouquet-sleep-skip-2026",
+      "candidate_ids": [
+        "sched-2026-08-26-cg-cinderella-master-bouquet-sleep-skip-2026-発売",
+        "202608251235-claude-6",
+        "202608260216-grok-7",
+        "202608260216-grok-8",
+        "202608260216-grok-18"
+      ]
+    },
+    {
+      "slug": "cg-sleep-skip-mv-premiere",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "「すりーぷすきっぷ」MVを本日21時にプレミア公開、きあとがキャラデザ・ロゴ・イラストを担当",
+      "lead_score": 15,
+      "dedup_key": "cg-sleep-skip-mv-premiere-2026-08-26",
+      "candidate_ids": [
+        "202608260216-grok-6",
+        "202608260216-grok-9",
+        "202608260216-grok-10"
+      ]
+    },
+    {
+      "slug": "cg-venue-cd-idol-world-super-festival-mail-order",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "IDOL WORLD SUPER FESTIVAL 2026会場オリジナルCD3タイトルの事後通販が始まる",
+      "lead_score": 5,
+      "dedup_key": "cg-venue-cd-post-event-sales-2026-08",
+      "candidate_ids": ["202608251836-claude-18"]
+    },
+    {
+      "slug": "cg-toybox-watchalong-announced",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "Pop'n ToyBox!!の同時視聴上映会とスタッフ振り返りトーク配信の開催が決まる",
+      "lead_score": 5,
+      "dedup_key": "cg-toybox-watchalong-2026-08-25",
+      "candidate_ids": ["202608260216-grok-11"]
+    },
+    {
+      "slug": "cg-toybox-vote-mission-reflected",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "Pop'n ToyBox!!現地チケット購入者への総選挙投票券反映が完了、配信チケット分の受取期間は9/15開始と判明",
+      "lead_score": 5,
+      "dedup_key": "cg-toybox-vote-mission-2026-08-24",
+      "candidate_ids": ["202608260216-grok-21"]
+    },
+    {
+      "slug": "cg-roundup-2026-08-26",
+      "brand": "cg",
+      "rank": "roundup",
+      "angle": "進行中のシンデレラガール総選挙2026関連キャンペーン・グッズ展開とデレラジ・トイボ連載の定常運営情報まとめ",
+      "lead_score": 0,
+      "dedup_key": "cg-vote2026-100k-password-2026-08-25",
+      "candidate_ids": [
+        "202608260216-grok-12",
+        "202608260216-grok-14",
+        "202608260216-grok-15",
+        "202608260216-grok-16",
+        "202608260216-grok-17",
+        "202608260216-grok-19"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-15th-anniversary-party-2026",
+      "reason": "その他",
+      "note": "アソビストア最速先行の受付期限は8/23で発行時点で既に終了、当選発表(9/5)まで本日のトリガーなし"
+    },
+    {
+      "dedup_key": "cg-popntoybox-live-2026",
+      "reason": "既報",
+      "note": "公演は8/13-16に終了済み、開催日時・会場ともstockの既報内容と同一で新事実なし"
+    },
+    {
+      "dedup_key": "cg-popup-toppan-2026",
+      "reason": "既報",
+      "note": "会場・日程ともstock(cg-toppa-base-popup-2026, 7/13既報)と同一。開幕は明日8/27で本日はトリガー日ではない"
+    },
+    {
+      "dedup_key": "shiny-livestream-2026-08-25",
+      "reason": "その他",
+      "note": "内容はシャニマス(shiny)ブランドの新アイドル発表生配信でcg面の主題外(データ分類の誤りとみられる)"
+    },
+    {
+      "dedup_key": "cg-coming-soon-2026-08-26-repost-0825",
+      "reason": "既報",
+      "note": "stock(cg-million-coming-soon-2026-08-26)既報の8/23投稿と同一内容の再掲、新情報なし"
+    },
+    {
+      "dedup_key": "cg-dereradi-2026-08-24",
+      "reason": "その他",
+      "note": "放送は8/24に終了済みで本日時点のトリガーなし"
+    },
+    {
+      "dedup_key": "cg-coming-soon-2026-08-26-snowman",
+      "reason": "既報",
+      "note": "stock(cg-million-coming-soon-2026-08-26)に既報の8/24投稿(雪だるま絵文字)そのもの、新情報なし"
+    },
+    {
+      "dedup_key": "cg-15th-party-fukagawa-seria-axlone-2026-08-25",
+      "reason": "出典不足",
+      "note": "単一の所属事務所アカウントのみの情報でverify unconfirmed、公式ブランドによる出演陣発表ではなく本日のトリガーもない(イベントは11/29)"
+    }
+  ]
+}

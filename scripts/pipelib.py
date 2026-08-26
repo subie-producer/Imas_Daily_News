@@ -1,6 +1,8 @@
 """パイプライン共通ユーティリティ(collect/compose/release/watch)。標準ライブラリのみ。"""
 import datetime
+import html as html_lib
 import json
+import re
 import subprocess
 import sys
 import time
@@ -177,7 +179,6 @@ def append_metric(kind: str, data: dict) -> None:
 
 def extract_json_array(text: str):
     """LLM 出力から最初の JSON 配列を寛容に取り出す。"""
-    import re
     m = re.search(r"\[.*\]", text, re.DOTALL)
     if not m:
         return []
@@ -186,3 +187,55 @@ def extract_json_array(text: str):
         return v if isinstance(v, list) else []
     except json.JSONDecodeError:
         return []
+
+
+# 期間ラベル(編集規程14)。誰がいつ買えるのかが変わる語だけを列挙する。
+# 「発売」「受付」のような単語だけの語は誤検出が多いので複合語に限る。
+PERIOD_LABELS = (
+    "受付期間", "申込期間", "申込受付期間", "応募期間", "エントリー期間",
+    "先行受付期間", "先行抽選受付期間", "先行販売期間", "抽選申込期間",
+    "当落発表", "抽選結果発表", "結果発表",
+    "入金期間", "入金締切", "支払期間", "決済期間",
+    "一般販売", "一般発売", "一般先着", "先着販売",
+    "販売期間", "発売日", "受注期間", "受注締切", "予約期間", "予約受付期間",
+    "開催期間", "開催日", "公演日", "配信期間", "視聴期間", "アーカイブ配信期間",
+    "応募締切", "申込締切", "販売終了", "受付終了",
+)
+_DATE_RE = re.compile(r"(?:\d{4}\s*年)?\s*\d{1,2}\s*月\s*\d{1,2}\s*日|\d{4}[/.-]\d{1,2}[/.-]\d{1,2}|\d{1,2}/\d{1,2}")
+_TAG_RE = re.compile(r"(?is)<(script|style)[^>]*>.*?</\1>|<[^>]+>")
+
+
+def html_to_text(raw: bytes, charset: str | None = None) -> str:
+    t = raw.decode(charset or "utf-8", errors="replace")
+    t = _TAG_RE.sub("\n", t)
+    t = html_lib.unescape(t)
+    return re.sub(r"[ \t　]+", " ", t)
+
+
+def extract_periods(text: str, limit: int = 12) -> list[str]:
+    """本文から「ラベル: 値」の形で期間を原文のまま抜き出す(編集規程14)。
+
+    LLM に読ませて要約させるとラベルが落ちる。実際 2026-08-26号では、出典ページに
+    「受付期間 8/8〜8/24」「当落発表 8/26」「入金期間 8/26〜8/30」と明記されていたのに、
+    収集は「チケット販売期間: 8/26〜8/30」という別物を facts に書いていた
+    (当選者向けの入金期間を、誰でも買える販売期間に変えてしまった)。
+    ここは機械で抜く。機械なら言い換えない。
+    """
+    out, seen = [], set()
+    for label in PERIOD_LABELS:
+        for m in re.finditer(re.escape(label), text):
+            tail = text[m.end():m.end() + 120]
+            # ラベル直後の空白・区切りを飛ばし、日付を含む最初の行を値とする
+            for line in (ln.strip(" :：\t") for ln in tail.split("\n")):
+                if not line:
+                    continue
+                if _DATE_RE.search(line):
+                    v = re.sub(r"\s+", " ", line)[:80]
+                    key = (label, v)
+                    if key not in seen:
+                        seen.add(key)
+                        out.append(f"{label}: {v}")
+                break
+            if len(out) >= limit:
+                return out
+    return out

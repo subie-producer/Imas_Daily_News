@@ -12,6 +12,7 @@
 - 正規化・URL 重複マージ → candidates へ追記 → 簡易 verify → commit & push
 """
 import argparse
+import html as html_lib
 import datetime
 import json
 import shutil
@@ -26,6 +27,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MAX_BUDGET_USD, JST, append_metric,
+                     extract_periods, html_to_text,
                      checkout_edition_branch, commit_and_push, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst)
 
@@ -429,6 +431,18 @@ def verify(cands: list[dict]) -> dict:
                 req = urllib.request.Request(c["url"], headers={"User-Agent": UA})
                 with urllib.request.urlopen(req, timeout=15) as res:
                     ok = res.status < 400
+                    body = res.read(400_000) if ok else b""
+                    cs = res.headers.get_content_charset()
+                if ok:
+                    text = html_to_text(body, cs)
+                    # CSR で本文が空同然なら描画してから読み直す(定点観測と同じ経路)
+                    if len(text.strip()) < 400:
+                        rendered = fetch_rendered(c["url"])
+                        if rendered:
+                            text = html_to_text(rendered.encode("utf-8", "replace"))
+                    periods = extract_periods(text)
+                    if periods:
+                        c["periods"] = periods
                 c["verify"] = "confirmed" if ok and c["source_type"] in ("公式", "準公式", "当事者", "報道") else ("unconfirmed" if ok else "failed")
         except Exception:
             c["verify"] = "failed"

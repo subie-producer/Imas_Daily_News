@@ -276,11 +276,21 @@ def article_prompt(date: str, art: dict, materials: list[dict], story_facts: lis
 {prev}
 
 ## 執筆前の出典照合(必須)
-素材の各 url を WebFetch で開き、facts が実際にページで確認できるか照合する。
-ページで確認できない fact は使わない(素材の facts 自体が収集段階の誤りを含み得る)。
-あわせて**ページの掲載日(公開日)と話題の年を必ず確認する**: 掲載年がイベント年・発行年と食い違う、
-または話題自体がすでに終了した過去のもの(当日トリガーの続報を除く)であれば、その素材は使わない。
-x.com など取得不能な URL は例外(Grok 観測を出典として信頼する既定どおり)。
+**素材の各 url を、次のコマンドで実際に読み直してから書きます。**
+
+    python3 scripts/fetch_page.py <url>
+
+出典ページの本文が**要約なしの原文のまま**出ます。先頭に、機械抽出したラベル付き期間が付きます。
+x.com の url は取得できないので実行不要です(Grok 観測を信頼する既定どおり)。
+ただし x.com だけを根拠に日付・期間・価格を断定しないこと。
+
+- `facts` の各項目が、取得した本文で確認できるか照合する。**確認できない fact は使わない**
+  (素材の facts は収集段階の誤りを含み得る。実際に誤りが出ている)
+- **先頭の「期間」ブロックは原文のラベルそのままなので、`facts` と食い違ったらそちらが正**。
+  「入金期間」を「販売期間」と書き換えるような取り違えは、ここで必ず正す(規程14)
+- **掲載日(公開日)と話題の年を本文で確認する**。掲載年がイベント年・発行年と食い違う、
+  または話題自体がすでに終了した過去のもの(当日トリガーの続報を除く)なら、その素材は使わない
+- `FETCH_FAILED` が返った url は照合不能として扱う(その url だけを根拠に断定しない)
 **記事の存在理由になる中核の事実が確認できない場合、または話題が過年度・終了済みと判明した場合は、
 ファイルを作らず「ABORT: 理由」とだけ出力して終了すること。**
 
@@ -660,6 +670,9 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
             out_path = Path(out_name)
             procs.append((art, src, out_path, subprocess.Popen(
                 ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
+                 # 既定では sandbox が通信を遮断する。これが無いと出典照合が
+                 # 実行できず、収集段階の誤りがそのまま紙面に出る
+                 "-c", "sandbox_workspace_write.network_access=true",
                  "--output-last-message", str(out_path), prompt],
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))

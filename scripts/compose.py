@@ -106,8 +106,11 @@ def load_blocklist() -> dict:
     return {e["dedup_key"]: e.get("reason", "") for e in yaml.safe_load(p.read_text(encoding="utf-8")) or []}
 
 
-PLAN_FACTS_PER_SUBJECT = 3
-PLAN_FACT_CHARS = 90
+# 選定へ渡す1主題あたりの facts。面別選定になり1セッションが見るのは十数件なので、
+# 号全体を1セッションで裁いていた頃の切り詰め(3件×90字=最大270字)は不要になった。
+# 118〜163字しか渡していないと、記事化の価値も rank の見当も付けられない
+PLAN_FACTS_PER_SUBJECT = int(ENV.get("PLAN_FACTS_PER_SUBJECT", "8"))
+PLAN_FACT_CHARS = int(ENV.get("PLAN_FACT_CHARS", "220"))
 
 
 def write_plan_index(date: str, cands: dict, blocklist: dict) -> tuple[Path, int]:

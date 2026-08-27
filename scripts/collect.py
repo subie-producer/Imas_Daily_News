@@ -34,6 +34,8 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MAX_BU
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
 WATCH_BATCH = int(ENV.get("WATCH_BATCH", "12"))
+# 定点観測で facts 化のために渡すページ本文の量。切り詰めるとそのぶん facts が痩せる
+WATCH_BODY_CHARS = int(ENV.get("WATCH_BODY_CHARS", "20000"))
 # Grok(X 動向)を回す時刻。JST の「時」をカンマ区切りで指定する。空なら毎回回す。
 # SuperGrok は週次のセッション上限があり、1回の収集で10セッション消費するため、
 # 収集の頻度とは別に絞る必要がある。ブランド10面は減らさない(絞るのは回数だけ)。
@@ -72,7 +74,13 @@ ITEM_SCHEMA = (
     '{"title":短い見出し,"brand":"general|765|cg|million|shiny|sidem|gaku|dsva|joint|other",'
     '"kind":"official|semi|party|media|fan|trend","url":"実在するURL","event_date":"YYYY-MM-DD or 空文字",'
     '"published_date":"情報の初出日=ページ掲載日・ポスト投稿日 YYYY-MM-DD or 空文字",'
-    '"deadline":"締切・終了日 YYYY-MM-DD or 空文字","facts":["確認できた事実(日付・期限・場所・価格を含める)"],'
+    '"deadline":"締切・終了日 YYYY-MM-DD or 空文字",'
+    '"facts":["確認できた事実。**省略せず全部書く**"],'
+    "【facts の量】facts は記事の素材になる。**ページに書いてあることを削らない**。"
+    "会場・所在地・開場/開演時刻・席種と価格・受付や入金の全日程・枚数制限・対象者の条件・"
+    "出演者(名前と役名)・商品の品目や型番・収録内容・特典・発送時期は、あるだけ列挙する。"
+    "1行にまとめず、1事実1要素にする。実測で、本文8,219字のページから facts を359字しか"
+    "起こしていなかった例がある(1/23)。それでは記事が書けない。"
     "【期間ラベル規則(最重要)】期間や日付を facts に書くときは、**原文の見出し・語句をそのまま先頭に付ける**。"
     "「受付期間: 8/26〜8/30」「入金期間: 8/26〜8/30」「一般先着販売: 8/31 12:00〜」のように書き、"
     "ラベルを外して「販売期間」「発売」などに言い換えない。チケットや受注は"
@@ -151,7 +159,9 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
             body = ""
             if it["csr"]:
                 t = fetch_rendered(it["url"])
-                body = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", re.sub(r"<(script|style)[^>]*>.*?</\1>", " ", t, flags=re.DOTALL)))[:2500]
+                # 本文の切り詰めは facts の情報量に直結する。2500字にしていたとき、
+                # 本文8,219字のページから facts を359字しか起こせていなかった
+                body = html_to_text(t.encode("utf-8", "replace"))[:WATCH_BODY_CHARS]
             blobs.append({"url": it["url"], "title": it["title"], "brand_hint": it["brand"], "rendered_text": body})
         prompt = (
             "以下はアイドルマスター関連の定点観測で見つかった新着ページです。rendered_text が空のものは URL を WebFetch で読み、"

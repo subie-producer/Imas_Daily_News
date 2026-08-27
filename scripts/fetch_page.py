@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """fetch_page: 出典ページの本文を**要約せずに**取り出す(執筆時の出典照合用)。
 
-  python3 scripts/fetch_page.py <URL> [--chars 6000]
+  python3 scripts/fetch_page.py <URL> [--chars 40000]
 
 執筆セッション(codex)がこれを実行して出典を読み直す。LLM の要約器を通さないことが
 このスクリプトの存在理由:
@@ -13,6 +13,10 @@
 
 先頭に、機械抽出したラベル付き期間(編集規程15)を出す。ここが本文と食い違うことは
 ないので、期間はこのブロックを正とする。
+
+**既定の出力上限は大きく取る。**6000字にしていたとき、本文8,219字のページが
+末尾(出演者一覧・注意事項)ごと切れていた。切るくらいなら全部渡す。
+1ページの本文はたいてい数千字で、読ませても執筆1回ぶんの負担は小さい。
 """
 import argparse
 import subprocess
@@ -37,7 +41,7 @@ def fetch(url: str) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("url")
-    ap.add_argument("--chars", type=int, default=6000, help="本文の出力上限")
+    ap.add_argument("--chars", type=int, default=40000, help="本文の出力上限")
     args = ap.parse_args()
 
     try:

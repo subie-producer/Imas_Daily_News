@@ -171,8 +171,9 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
     cul_rank = "|culture" if brand == "general" else ""
     cul_rule = ("""
 - **ファン面(規程4の例外・rank: culture)**: ファン創作・コスプレ・聖地巡礼・記念日の盛り上がり・
-  界隈の現象は、単体では記事にせず**この面で1本の `rank: culture` にまとめる**(3件以上あるときだけ作る)。
-  - 号内1本まで。記事本数の下限には算入しない
+  界隈の現象は `rank: culture` で記事にする。**本数の制限はない。面白いものはどんどん記事にしてよい**
+  - **「分量が足りない」を理由に落とさない・束ねない。**本文に下限は無く、2〜3文で終わってよい
+  - 束ねるのは「同じ現象の複数観測」のときだけ。別の作品・別の盛り上がりは別記事にする
   - **誰か1人を主役にしない**(傾向として書く面であり、個人の紹介ではない)
   - 声優個人のアイマス外活動はこの例外の対象外。批判・嘲笑・炎上も対象外(規程5)""" if brand == "general" else "")
     done = ""
@@ -207,6 +208,7 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
 ## 選定規則
 - **{n_subjects}主題すべてを「記事化」「roundup」「不採用」のいずれかに割り当てる。黙って無視してよい主題は1つもない**(不採用は dropped に理由付きで列挙)
 - **本数の目標値は無い。**記事化基準を満たす話題は全部記事にする(「多いから落とす」は禁止。紙面は無制限。編集規程11)。あふれたら rank を small へ寄せる
+- **「書ける量が少ない」を不採用や統合の理由にしない。**本文に下限は無く、事実が2〜3文しかない話題はそのまま短い記事にする(規程9)。短い記事が並ぶことより、話題が消えることのほうが読者にとって損失である
 - rank は large|medium|small|roundup{cul_rank} から選ぶ。**lead は付けない**(号全体の一面は後段で決める){cul_rule}
 - **統合してよいのは「同じ出来事の同じ告知」を複数の収集エンジンが観測した場合だけ**。その1記事の candidate_ids に全部載せる
 - **同じ公演・同じ作品でも、出来事が違えば別の記事にする。**「開幕」「千秋楽」「チケット締切」「配信決定」「会場限定CDの販売」「グッズ受注」は、同じツアーの話でもそれぞれ別のニュースであり、読者が取る行動も違う。1本にまとめると規程13(1記事1主題)違反になる
@@ -286,8 +288,8 @@ def lead_prompt(date: str, arts: list[dict]) -> str:
 def article_prompt(date: str, art: dict, materials: list[dict], story_facts: list[str],
                    trigger: dict | None, src: str) -> str:
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    from lint import BODY_RANGE  # 分量規程は lint と同一定義を使う
-    lo, hi = BODY_RANGE[art["rank"]]
+    from lint import BODY_MAX  # 分量規程は lint と同一定義を使う(上限のみ・下限なし)
+    hi = BODY_MAX[art["rank"]]
     trig = (f"\n- この記事は続報トリガー({trigger['kind']}: {trigger.get('note') or trigger['subject']})の消化です。"
             "トリガーの当日性(締切・開幕等)を記事の軸にすること" if trigger else "")
     prev = ("\n## 既報(この話題で報道済みの事実。同じ事実の繰り返しを記事の軸にしない)\n"
@@ -344,7 +346,7 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 `docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
 - frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']} / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
 - title(全角換算〜28字)・lede(1文)・tags(2〜4個。下記「タグ語彙」に従う)・sources(素材の url から。label は内容がわかる短い日本語、type は各候補の source_type)・event_date(素材にあれば)は自分で書く
-- 本文は {lo}〜{hi} 字(rank: {art['rank']} の分量規程)。切り口: {art['angle']}{trig}{roundup}{culture}
+- 本文は **{hi}字まで**(rank: {art['rank']})。**下限はありません。**確認できた事実だけで書き、足りないぶんを一般論や推測で埋めない。2〜3文で終わるならそれでよい。切り口: {art['angle']}{trig}{roundup}{culture}
 
 ## タグ語彙(タグは索引・検索に使われる。表記ゆれは索引を壊すため厳守)
 シリーズ名・施策カテゴリは**必ず次の語彙から選ぶ**(同義の別表記を作らない):

@@ -36,22 +36,22 @@ IDOLS = DOCS / "_data" / "idols.json"
 
 # ---- 紙面の定数(REQUIREMENTS.md に由来。変更時は要件書と要同期) -------------
 TITLE_MAX = 45          # 見出し上限(警告)
-LEDE_RANGE = (0, 100)  # リード文は上限のみ(警告)。下限は設けない(規程9)
+LEDE_RANGE = (60, 120)  # リード文(警告)
 EXCERPT_MAX = 80        # 社説抜粋の目安(警告)
-# 記事本文の分量(編集規程9)。**上限のみ**。下限は設けない。
+# 記事本文の分量(編集規程9)。**下限は守らせる。**
 #
-# 下限があると「事実が2行しかない話題」は単体で記事にできず、束ねるか落とすかになる。
-# 実際 2026-08-27号では、765面が14件を1本に合成し(開幕・配信決定・CD販売を合体)、
-# ファン創作は単体で字数を満たせず27件が落ちた。どちらも規程違反の side effect であって、
-# 短い記事が出ることより悪い。**書ける事実の量で書き、足りないから膨らませない・
-# 束ねない・落とさない。**上限は冗長化(引き延ばし)を防ぐためにだけ置く。
-BODY_MAX = {
-    "lead": 1200,
-    "large": 800,
-    "medium": 500,
-    "small": 250,
-    "roundup": 700,   # ブランド別の定常運営まとめ(規程13の例外)
-    "culture": 800,   # ファン面(規程4の例外)
+# 執筆が出典ページを読めるようになった(scripts/fetch_page.py)ため、
+# 会場・価格・日時・商品構成といった確認済みの具体を書ける。短いのは素材不足ではなく
+# 書いていないだけである。実測(2026-08-24〜27)では全 rank が下限に貼り付いており、
+# large の中央値は 527字 = medium 2本ぶんしかなかった。基準を引き上げて機械で検収する。
+# 上限は引き延ばしを防ぐ目安で、素材が多い記事が超えるのは正常(事実を削ってまで収めない)。
+BODY_RANGE = {
+    "lead": (1000, 1600),
+    "large": (700, 1100),
+    "medium": (450, 700),
+    "small": (250, 450),
+    "roundup": (400, 900),   # ブランド別の定常運営まとめ(規程13の例外)
+    "culture": (500, 1000),  # ファン面(規程4の例外)
 }
 RANK_BELOW = {"lead": "large", "large": "medium", "medium": "small", "small": "small",
               "roundup": "roundup", "culture": "culture"}  # roundup/culture は規程2の減格対象外
@@ -257,8 +257,8 @@ def main() -> int:
 
         if len(fm["title"]) > TITLE_MAX:
             rep.warn(path, f"見出しが{len(fm['title'])}字(上限目安{TITLE_MAX}字)")
-        if len(fm["lede"]) > LEDE_RANGE[1]:
-            rep.warn(path, f"リード文が{len(fm['lede'])}字(上限{LEDE_RANGE[1]}字。短いぶんには問題ない)")
+        if not (LEDE_RANGE[0] <= len(fm["lede"]) <= LEDE_RANGE[1]):
+            rep.warn(path, f"リード文が{len(fm['lede'])}字(目安{LEDE_RANGE[0]}〜{LEDE_RANGE[1]}字)")
         if fm["corrected"] != bool(fm["corrections"]):
             rep.error(path, "corrected と corrections の有無が矛盾")
         if not body.strip():
@@ -267,11 +267,13 @@ def main() -> int:
             # 分量基準: 中見出し行を除いた本文の非空白文字数
             prose = re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)
             body_len = len(re.sub(r"\s", "", prose))
-            hi = BODY_MAX[fm["rank"]]
+            lo, hi = BODY_RANGE[fm["rank"]]
             if all(s["type"] == "報道" for s in fm["sources"]):
-                hi = BODY_MAX[RANK_BELOW[fm["rank"]]]  # 報道由来のみは上限1ランク下(編集規程2)
-            if body_len > hi:
-                rep.warn(path, f"本文が{body_len}字({fm['rank']} の上限 {hi}字。短いぶんには問題ない)")
+                hi = BODY_RANGE[RANK_BELOW[fm["rank"]]][1]  # 報道由来のみは上限1ランク下(規程2)
+            if body_len < lo:
+                rep.warn(path, f"本文が{body_len}字({fm['rank']} の下限 {lo}字に不足)")
+            elif body_len > hi:
+                rep.warn(path, f"本文が{body_len}字({fm['rank']} の目安 {hi}字。素材が多くて超えるぶんは問題ない)")
         for h in re.finditer(r"^(#{1,6}) ", body, re.MULTILINE):
             if len(h.group(1)) != 2:
                 rep.warn(path, f"本文の中見出しは h2(##)のみ(h{len(h.group(1))} を検出)")

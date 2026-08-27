@@ -69,8 +69,12 @@ RANKS = {"lead", "large", "medium", "small", "roundup", "culture"}
 # roundup(編集規程13の例外: ブランド別の定常運営まとめ)を作る最小件数。
 # これ未満なら束ねずに通常記事にする(2件を「まとめ」と称すると単なる手抜きになる)
 ROUNDUP_MIN_ITEMS = 3
-# 1記事が抱える素材数の目安。これを超えたら束ねすぎを疑って表示する(規程13)
-MERGE_WARN = int(ENV.get("MERGE_WARN", "6"))
+# 検収で弾く下限の割合。規程9の下限をわずかに下回る程度は書き直させない
+# (出典に本当に情報が無い記事を無限に往復させないための遊び)
+BODY_MIN_RATIO = float(ENV.get("BODY_MIN_RATIO", "0.85"))
+# 素材件数に対して最低限ほしい rank(規程9)。束ねること自体は正しいが、
+# 束ねたまま rank が小さいと上限に収まらず中身が落ちる
+RANK_FLOOR_BY_MATERIALS = ((10, ("large", "lead")), (5, ("medium", "large", "lead")))
 # 出典バッジの信頼順(強い順)。記事 src は引用出典のうち最も「弱い」種別
 # (=全出典がその種別以上であることの保証。ファン報告を含む記事が「公式」を
 # 名乗る過大表示を構造的に防ぐ。REQUIREMENTS 2.5「他はどれほど信頼できても
@@ -171,9 +175,10 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
     cul_rank = "|culture" if brand == "general" else ""
     cul_rule = ("""
 - **ファン面(規程4の例外・rank: culture)**: ファン創作・コスプレ・聖地巡礼・記念日の盛り上がり・
-  界隈の現象は `rank: culture` で記事にする。**本数の制限はない。面白いものはどんどん記事にしてよい**
-  - **「分量が足りない」を理由に落とさない・束ねない。**本文に下限は無く、2〜3文で終わってよい
-  - 束ねるのは「同じ現象の複数観測」のときだけ。別の作品・別の盛り上がりは別記事にする
+  界隈の現象は `rank: culture` で記事にする。**細切れの話題はまとめ記事にする**
+  - 1件ずつが短いものを個別記事に散らさない。**まとめて1本にする**のがこの面の使い方
+  - まとまった量がある系統(特定の作品の記念日など)が別にあるなら、そちらは別の1本にしてよい。
+    号内の本数に制限は設けない(1本でも複数でもよい)。**落とすことだけが禁止**
   - **誰か1人を主役にしない**(傾向として書く面であり、個人の紹介ではない)
   - 声優個人のアイマス外活動はこの例外の対象外。批判・嘲笑・炎上も対象外(規程5)""" if brand == "general" else "")
     done = ""
@@ -210,10 +215,9 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
 - **本数の目標値は無い。**記事化基準を満たす話題は全部記事にする(「多いから落とす」は禁止。紙面は無制限。編集規程11)。あふれたら rank を small へ寄せる
 - **「書ける量が少ない」を不採用や統合の理由にしない。**本文に下限は無く、事実が2〜3文しかない話題はそのまま短い記事にする(規程9)。短い記事が並ぶことより、話題が消えることのほうが読者にとって損失である
 - rank は large|medium|small|roundup{cul_rank} から選ぶ。**lead は付けない**(号全体の一面は後段で決める){cul_rule}
-- **統合してよいのは「同じ出来事の同じ告知」を複数の収集エンジンが観測した場合だけ**。その1記事の candidate_ids に全部載せる
-- **同じ公演・同じ作品でも、出来事が違えば別の記事にする。**「開幕」「千秋楽」「チケット締切」「配信決定」「会場限定CDの販売」「グッズ受注」は、同じツアーの話でもそれぞれ別のニュースであり、読者が取る行動も違う。1本にまとめると規程13(1記事1主題)違反になる
-  - 悪い例: 「東京公演が開幕。あわせて冒頭無料配信の決定と会場限定CD2種の販売も報じる」← 3つの出来事を束ねている。3本に分ける
-  - **1つの記事に載せる素材が5〜6件を超えたら、束ねすぎを疑うこと**(同じ告知の重複観測なら妥当だが、別の出来事が混ざっていないか確かめる)
+- **同じ系統の話は1記事にまとめる。**同じ公演・同じ施策をめぐる「開幕」「冒頭無料配信の決定」「会場限定CDの販売」は、読者にとって1つの出来事であり、分けると3本とも薄くなる。candidate_ids に素材を全部載せる
+  - 分けるのは**読者が取る行動が別**のとき(例: 「チケットの申込締切」と「グッズの受注締切」は別の締切なので別記事)
+- **束ねたぶんは rank を上げる。**素材が多い記事を small のままにすると、書ける上限に収まらず中身が落ちる。目安として素材5件以上なら medium 以上、10件以上なら large 以上を割り当てる(規程9の上限は rank で決まる)
 - 個人への攻撃・プライバシー侵害になり得る話題、読んだ人が嫌な気分になる炎上・係争は入れない。個人の SNS 投稿は単体で記事化しない(規程4・5。規程11より優先)
 - 声優個人のアイマス外活動・関係者の動向は対象外(規程4)
 - **同人イベント・ファン主催企画(オンリーイベント・即売会・非公式コラボ)は記事化しない**(規程4)
@@ -288,8 +292,8 @@ def lead_prompt(date: str, arts: list[dict]) -> str:
 def article_prompt(date: str, art: dict, materials: list[dict], story_facts: list[str],
                    trigger: dict | None, src: str) -> str:
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    from lint import BODY_MAX  # 分量規程は lint と同一定義を使う(上限のみ・下限なし)
-    hi = BODY_MAX[art["rank"]]
+    from lint import BODY_RANGE  # 分量規程は lint と同一定義を使う
+    lo, hi = BODY_RANGE[art["rank"]]
     trig = (f"\n- この記事は続報トリガー({trigger['kind']}: {trigger.get('note') or trigger['subject']})の消化です。"
             "トリガーの当日性(締切・開幕等)を記事の軸にすること" if trigger else "")
     prev = ("\n## 既報(この話題で報道済みの事実。同じ事実の繰り返しを記事の軸にしない)\n"
@@ -299,6 +303,7 @@ def article_prompt(date: str, art: dict, materials: list[dict], story_facts: lis
 
 ## この記事は「ファン面」です(rank: culture・編集規程4の例外)
 ファンの営みを、個人の紹介ではなく**その日の傾向**として1本にまとめた記事です。
+素材は細切れです。**箇条や短い段落で並べてよい**ので、1件ずつを無理に膨らませないこと。
 - **誰か1人を主役にしない。**「こういう動きが目立った」という書き方にする
 - **個人アカウント名・ハンドルを本文に書かない。**当人が望まない露出を作らないため
   (sources の url は残してよい。label も投稿者名ではなく内容が分かる語にする)
@@ -346,7 +351,7 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 `docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
 - frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']} / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
 - title(全角換算〜28字)・lede(1文)・tags(2〜4個。下記「タグ語彙」に従う)・sources(素材の url から。label は内容がわかる短い日本語、type は各候補の source_type)・event_date(素材にあれば)は自分で書く
-- 本文は **{hi}字まで**(rank: {art['rank']})。**下限はありません。**確認できた事実だけで書き、足りないぶんを一般論や推測で埋めない。2〜3文で終わるならそれでよい。切り口: {art['angle']}{trig}{roundup}{culture}
+- 本文は **{lo}〜{hi}字**(rank: {art['rank']})。**{lo}字は必達**です。素材が多くて {hi} 字に収まらないときは超えて構いません(事実を落とすより超過を選ぶ)。切り口: {art['angle']}{trig}{roundup}{culture}
 
 ## タグ語彙(タグは索引・検索に使われる。表記ゆれは索引を壊すため厳守)
 シリーズ名・施策カテゴリは**必ず次の語彙から選ぶ**(同義の別表記を作らない):
@@ -355,6 +360,21 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 - frontmatter の brand と同じ意味のタグを brand の id(shiny/million/gaku 等)で書かない。上の正式名を使う
 - src の値(公式・報道・ファン・未確認)をタグにしない
 - 毎年ある定例企画は年を含める(例: IWSF2026・総選挙2026・アニサマ2026)
+
+## 分量の作り方(**水増しではなく、具体を書く**)
+{lo}字に届かないのは素材不足ではなく、**出典に書いてあることを書いていない**からです。
+`scripts/fetch_page.py` で読んだ本文には、たいてい次が載っています。拾って書いてください。
+
+- 会場名・所在地・開場/開演時刻・座席や配信の別
+- 価格(税込/税抜)・セット内容・特典の中身・数量や期間の限定条件
+- 商品の型番・収録曲・仕様・発送時期
+- 対象者の条件(会員先行か一般か、当選者のみか)、申込方法、支払手段
+- 出演者・楽曲・企画の趣旨として**出典に明記されている**もの
+
+**やってはいけない埋め方**: 一般論(「ファンの期待が高まる」)、推測(「〜とみられる」)、
+既知情報の繰り返し、同じ事実の言い換え、感想。これらで字数を稼ぐくらいなら短いほうがましです。
+**出典を読み直しても {lo} 字ぶんの事実が無いなら、rank を下げるのではなく、そのまま短く書いて構いません**
+(その場合は理由を最後に1行で報告してください)。
 
 ## 絶対規則
 - 素材の facts(照合済みのもの)に無い事実を書かない。推測・一般知識での補完は禁止
@@ -713,6 +733,17 @@ def validate_article_file(date: str, art: dict, cands: dict) -> list[str]:
             errors.append(f"{key} が計画と不一致(計画 {want} / 実際 {got})")
     if sorted(fm.get("candidate_ids") or []) != sorted(art["candidate_ids"]):
         errors.append("candidate_ids が計画と不一致")
+    # 分量の下限は検収で弾く(規程9)。警告のままだと素通りし、実際 large の中央値が
+    # 527字=下限すれすれまで痩せていた。埋め方は執筆プロンプトの「分量の作り方」に従わせる
+    from lint import BODY_RANGE
+    body = re.split(r"\n---\n", path.read_text(encoding="utf-8"), maxsplit=1)[-1]
+    prose = re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)
+    n = len(re.sub(r"\s", "", prose))
+    lo = BODY_RANGE[art["rank"]][0]
+    if n < lo * BODY_MIN_RATIO:
+        errors.append(f"本文が{n}字({art['rank']} の下限{lo}字に不足)。"
+                      f"出典本文から会場・価格・日時・仕様・対象条件などの具体を拾って書き足すこと"
+                      f"(一般論・推測・言い換えでの水増しは不可)")
     # 出典の系譜検査+type 照合+src 再計算(引用した出典の実態から機械決定する)
     url_types = {}
     for cid in art["candidate_ids"]:
@@ -902,14 +933,21 @@ def main() -> int:
     gaps, cov = coverage_gaps(plan, cands, blocklist)
     if gaps:
         print(f"取りこぼし: {gaps[0][:120]}", flush=True)
-    # 束ねすぎの可視化(規程13)。発行は止めない。1記事が抱える素材が多いときは、
-    # 同じ告知の重複観測ではなく別の出来事が混ざっている疑いがある
-    # (2026-08-27号の 765 面は14件を1本にまとめ、開幕・配信・CD販売を合成していた)
-    fat = [(a["slug"], len(a["candidate_ids"])) for a in plan["articles"]
-           if a["rank"] != "roundup" and len(a["candidate_ids"]) > MERGE_WARN]
-    if fat:
-        print("束ねすぎの疑い(素材数): " + ", ".join(f"{s}={n}" for s, n in sorted(fat, key=lambda x: -x[1])),
-              flush=True)
+    # 素材に対して rank が小さい記事の可視化(規程9)。発行は止めない。
+    # 束ねること自体は正しい(同じ系統の話を分けると全部が薄くなる)。問題は
+    # 束ねたまま rank を上げないことで、書ける上限に収まらず中身が落ちる
+    # (2026-08-27号の 765 面は14件を large 1本に収めていた)
+    thin = []
+    for a in plan["articles"]:
+        if a["rank"] in ("roundup", "culture"):
+            continue
+        n = len(a["candidate_ids"])
+        for need, ok in RANK_FLOOR_BY_MATERIALS:
+            if n >= need and a["rank"] not in ok:
+                thin.append(f"{a['slug']}({n}件/{a['rank']})")
+                break
+    if thin:
+        print("素材に対して rank が小さい: " + ", ".join(thin), flush=True)
     if errors:
         notify("compose", f"{date}: 記事計画が機械検証を通らず。人間判断が必要\n- " + "\n- ".join(errors[:8]), ok=False)
         commit_and_push(branch, f"compose {date}: 計画不成立(要人間判断)", "compose")

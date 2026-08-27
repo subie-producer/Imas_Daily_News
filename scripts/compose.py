@@ -369,9 +369,18 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 - 対象者の条件(会員先行か一般か、当選者のみか)、申込方法、支払手段
 - 出演者・楽曲・企画の趣旨として**出典に明記されている**もの
 
+**出典が複数あるときは、全部に `fetch_page.py` を実行してください。**1つ読んで足りたと判断しない。
+実測では、公式4ページ(計25KB超)がある話題を518字で済ませていた例がある。読んでいないだけだった。
+
+**省略しない。**次は「まとめる」のではなく列挙する対象です。
+- 出演者・登壇者(「ら13名」で省かず、名前と役名を挙げる。両日制なら日ごとに)
+- 席種と価格(すべての区分)、公演日ごとの開場・開演時刻、会場名
+- 受付の全日程(先行/一般/当落発表/入金)、枚数制限、対象者の条件
+- 商品なら品目・型番・収録内容・特典・発送時期
+
 **やってはいけない埋め方**: 一般論(「ファンの期待が高まる」)、推測(「〜とみられる」)、
 既知情報の繰り返し、同じ事実の言い換え、感想。**字数のために書くことは一切ありません。**
-出典を読み切ったうえで3文で終わるなら、3文で出してください。短いこと自体は減点になりません。
+出典を**全部**読み切ったうえで3文で終わるなら、3文で出してください。短いこと自体は減点になりません。
 
 ## 絶対規則
 - 素材の facts(照合済みのもの)に無い事実を書かない。推測・一般知識での補完は禁止
@@ -767,12 +776,14 @@ def assign_ranks(date: str, plan: dict, written: list[dict]) -> dict:
                 rank = r
                 break
         sized.append((art, n, rank))
-    # 一面: 上位帯に入ったもののうち lead_score が最大。上位帯が空なら最長の記事
-    top = [x for x in sized if x[2] in ("lead", "large")] or sized
-    if top:
-        lead = max(top, key=lambda x: (by_slug.get(x[0]["slug"], {}).get("lead_score") or 0, x[1]))
-        for i, (art, n, rank) in enumerate(sized):
-            sized[i] = (art, n, "lead" if art is lead[0] else ("large" if rank == "lead" else rank))
+    # 一面は**インパクトで決める**(長さでは決めない)。
+    # その日いちばん大きい話題が、たまたま出典の情報量が少なくて短くなることはある
+    # (実測: デレミリ合同ライブは公式ページを拾い切っても 973字)。
+    # そこで枠を落とすのは本末転倒なので、lead_score が最大の記事を一面にする。
+    if sized:
+        lead = max(sized, key=lambda x: (by_slug.get(x[0]["slug"], {}).get("lead_score") or 0, x[1]))
+        sized = [(a, n, "lead" if a is lead[0] else ("large" if r == "lead" else r))
+                 for a, n, r in sized]
     stats = collections.Counter()
     for art, n, rank in sized:
         stats[rank] += 1

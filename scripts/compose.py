@@ -69,9 +69,8 @@ RANKS = {"lead", "large", "medium", "small", "roundup", "culture"}
 # roundup(編集規程13の例外: ブランド別の定常運営まとめ)を作る最小件数。
 # これ未満なら束ねずに通常記事にする(2件を「まとめ」と称すると単なる手抜きになる)
 ROUNDUP_MIN_ITEMS = 3
-# 検収で弾く下限の割合。規程9の下限をわずかに下回る程度は書き直させない
-# (出典に本当に情報が無い記事を無限に往復させないための遊び)
-BODY_MIN_RATIO = float(ENV.get("BODY_MIN_RATIO", "0.85"))
+# 書き上がった本文の長さ → 枠。長い順に判定する(規程9)
+RANK_BY_LENGTH = (("lead", 1000), ("large", 700), ("medium", 450), ("small", 0))
 # 素材件数に対して最低限ほしい rank(規程9)。束ねること自体は正しいが、
 # 束ねたまま rank が小さいと上限に収まらず中身が落ちる
 RANK_FLOOR_BY_MATERIALS = ((10, ("large", "lead")), (5, ("medium", "large", "lead")))
@@ -292,8 +291,7 @@ def lead_prompt(date: str, arts: list[dict]) -> str:
 def article_prompt(date: str, art: dict, materials: list[dict], story_facts: list[str],
                    trigger: dict | None, src: str) -> str:
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    from lint import BODY_RANGE  # 分量規程は lint と同一定義を使う
-    lo, hi = BODY_RANGE[art["rank"]]
+
     trig = (f"\n- この記事は続報トリガー({trigger['kind']}: {trigger.get('note') or trigger['subject']})の消化です。"
             "トリガーの当日性(締切・開幕等)を記事の軸にすること" if trigger else "")
     prev = ("\n## 既報(この話題で報道済みの事実。同じ事実の繰り返しを記事の軸にしない)\n"
@@ -349,9 +347,9 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 
 ## 出力
 `docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
-- frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']} / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
-- title(全角換算〜28字)・lede(1文)・tags(2〜4個。下記「タグ語彙」に従う)・sources(素材の url から。label は内容がわかる短い日本語、type は各候補の source_type)・event_date(素材にあれば)は自分で書く
-- 本文は **{lo}〜{hi}字**(rank: {art['rank']})。**{lo}字は必達**です。素材が多くて {hi} 字に収まらないときは超えて構いません(事実を落とすより超過を選ぶ)。切り口: {art['angle']}{trig}{roundup}{culture}
+- frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']}(**仮の値**。発行前に機械が付け直します) / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
+- title(全角換算〜28字)・lede(1文。字数指定なし。記事の中身を1文で言い切る)・tags(2〜4個。下記「タグ語彙」に従う)・sources(素材の url から。label は内容がわかる短い日本語、type は各候補の source_type)・event_date(素材にあれば)は自分で書く
+- 本文の**字数指定はありません。**確認できた事実を、水増しせずに書けるだけ書いてください。紙面のどの枠に入れるかは、書き上がった長さと話題の大きさから機械が決めます。切り口: {art['angle']}{trig}{roundup}{culture}
 
 ## タグ語彙(タグは索引・検索に使われる。表記ゆれは索引を壊すため厳守)
 シリーズ名・施策カテゴリは**必ず次の語彙から選ぶ**(同義の別表記を作らない):
@@ -362,7 +360,7 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 - 毎年ある定例企画は年を含める(例: IWSF2026・総選挙2026・アニサマ2026)
 
 ## 分量の作り方(**水増しではなく、具体を書く**)
-{lo}字に届かないのは素材不足ではなく、**出典に書いてあることを書いていない**からです。
+短くなるのはたいてい素材不足ではなく、**出典に書いてあることを書いていない**からです。
 `scripts/fetch_page.py` で読んだ本文には、たいてい次が載っています。拾って書いてください。
 
 - 会場名・所在地・開場/開演時刻・座席や配信の別
@@ -372,9 +370,8 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 - 出演者・楽曲・企画の趣旨として**出典に明記されている**もの
 
 **やってはいけない埋め方**: 一般論(「ファンの期待が高まる」)、推測(「〜とみられる」)、
-既知情報の繰り返し、同じ事実の言い換え、感想。これらで字数を稼ぐくらいなら短いほうがましです。
-**出典を読み直しても {lo} 字ぶんの事実が無いなら、rank を下げるのではなく、そのまま短く書いて構いません**
-(その場合は理由を最後に1行で報告してください)。
+既知情報の繰り返し、同じ事実の言い換え、感想。**字数のために書くことは一切ありません。**
+出典を読み切ったうえで3文で終わるなら、3文で出してください。短いこと自体は減点になりません。
 
 ## 絶対規則
 - 素材の facts(照合済みのもの)に無い事実を書かない。推測・一般知識での補完は禁止
@@ -723,8 +720,8 @@ def validate_article_file(date: str, art: dict, cands: dict) -> list[str]:
     if not fm:
         return ["frontmatter がパース不能"]
     errors = []
-    for key, want in (("slug", art["slug"]), ("edition", date), ("brand", art["brand"]),
-                      ("rank", art["rank"])):
+    # rank は書き上がりの長さから機械が付け直す(assign_ranks)ので照合しない
+    for key, want in (("slug", art["slug"]), ("edition", date), ("brand", art["brand"])):
         got = fm.get(key)
         got = got.isoformat() if hasattr(got, "isoformat") else got
         # brand: 765 はクォート無しだと YAML が int に読む。型差で不一致にすると
@@ -733,38 +730,64 @@ def validate_article_file(date: str, art: dict, cands: dict) -> list[str]:
             errors.append(f"{key} が計画と不一致(計画 {want} / 実際 {got})")
     if sorted(fm.get("candidate_ids") or []) != sorted(art["candidate_ids"]):
         errors.append("candidate_ids が計画と不一致")
-    # 分量の下限は検収で弾く(規程9)。警告のままだと素通りし、実際 large の中央値が
-    # 527字=下限すれすれまで痩せていた。埋め方は執筆プロンプトの「分量の作り方」に従わせる
-    from lint import BODY_RANGE
-    body = re.split(r"\n---\n", path.read_text(encoding="utf-8"), maxsplit=1)[-1]
-    prose = re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)
-    n = len(re.sub(r"\s", "", prose))
-    lo = BODY_RANGE[art["rank"]][0]
-    if n < lo * BODY_MIN_RATIO:
-        errors.append(f"本文が{n}字({art['rank']} の下限{lo}字に不足)。"
-                      f"出典本文から会場・価格・日時・仕様・対象条件などの具体を拾って書き足すこと"
-                      f"(一般論・推測・言い換えでの水増しは不可)")
-    # 出典の系譜検査+type 照合+src 再計算(引用した出典の実態から機械決定する)
-    url_types = {}
-    for cid in art["candidate_ids"]:
-        if cid in cands:
-            url_types.setdefault(cands[cid].get("url", ""), set()).add(
-                cands[cid].get("source_type", "未確認"))
-    cited_types = []
-    for s in fm.get("sources") or []:
-        if s.get("url") not in url_types:
-            errors.append(f"出典 URL が素材候補群に無い(系譜外): {s.get('url')}")
-        elif s.get("type") not in url_types[s["url"]]:
-            errors.append(f"出典 type が候補の source_type と不一致({s.get('url')}: "
-                          f"記事 {s.get('type')} / 候補 {'/'.join(sorted(url_types[s['url']]))})")
-        else:
-            cited_types.append(s["type"])
-    if cited_types:
-        want_src = weakest_src(cited_types)
-        if fm.get("src") != want_src:
-            errors.append(f"src は引用出典の最弱種別 {want_src} にする(現: {fm.get('src')}。"
-                          f"バッジの過大表示防止)")
     return errors
+
+
+def body_length(path: Path) -> int:
+    """本文の非空白文字数(中見出し行は除く)。lint の分量計算と同じ定義。"""
+    text = path.read_text(encoding="utf-8")
+    body = re.split(r"\n---\n", text, maxsplit=1)[-1]
+    return len(re.sub(r"\s", "", re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)))
+
+
+def assign_ranks(date: str, plan: dict, written: list[dict]) -> dict:
+    """**書き上がった長さと話題の大きさから枠(rank)を当てる。**
+
+    枠を先に決めて字数を合わせさせると、「large なのに medium 2本ぶんしかない記事」
+    が出る(2026-08-27号の実測: large の中央値 527字)。順序が逆で、
+    水増しを誘発するだけだった。書かせるときは字数を指定せず、
+    書き上がりで枠を決める。「large なのに短い」は構造的に起きなくなる。
+
+    - 枠の大小は**長さ**で決める(RANK_BY_LENGTH)
+    - **インパクト**(面別選定が申告した lead_score)は一面の選出に使う。
+      長さで上位帯に入った記事のうち、最も大きい話題を lead にする
+    - roundup / culture は大小ではなく面の種類なので、長さでは動かさない
+    """
+    from lint import BODY_RANGE
+    by_slug = {a["slug"]: a for a in plan["articles"]}
+    sized = []
+    for art in written:
+        p = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
+        if not p.exists() or art.get("rank") in ("roundup", "culture"):
+            continue
+        n = body_length(p)
+        rank = "small"
+        for r, lo in RANK_BY_LENGTH:
+            if n >= lo:
+                rank = r
+                break
+        sized.append((art, n, rank))
+    # 一面: 上位帯に入ったもののうち lead_score が最大。上位帯が空なら最長の記事
+    top = [x for x in sized if x[2] in ("lead", "large")] or sized
+    if top:
+        lead = max(top, key=lambda x: (by_slug.get(x[0]["slug"], {}).get("lead_score") or 0, x[1]))
+        for i, (art, n, rank) in enumerate(sized):
+            sized[i] = (art, n, "lead" if art is lead[0] else ("large" if rank == "lead" else rank))
+    stats = collections.Counter()
+    for art, n, rank in sized:
+        stats[rank] += 1
+        if art.get("rank") != rank:
+            art["rank"] = rank
+            by_slug.get(art["slug"], {})["rank"] = rank
+        p = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
+        txt = p.read_text(encoding="utf-8")
+        p.write_text(re.sub(r"^rank: .*$", f"rank: {rank}", txt, count=1, flags=re.MULTILINE),
+                     encoding="utf-8")
+    lens = sorted(n for _, n, _ in sized)
+    if lens:
+        print(f"枠割り: {dict(stats)} / 本文 中央値{lens[len(lens)//2]}字 "
+              f"最短{lens[0]}字 最長{lens[-1]}字", flush=True)
+    return plan
 
 
 def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],

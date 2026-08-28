@@ -155,7 +155,32 @@ def checkout_edition_branch(date: str, job: str) -> bool:
     return True
 
 
+# マージ衝突マーカー。解決漏れのままコミットすると、次の実行が JSON/YAML の
+# パースで落ちる(2026-08-28: metrics/*.json を直さず commit し collect が停止した)
+_CONFLICT_RE = re.compile(r"^(<{7} |={7}$|>{7} )", re.MULTILINE)
+
+
+def conflict_markers() -> list[str]:
+    """作業ツリーに衝突マーカーが残っているファイルを返す。"""
+    bad = []
+    for line in git("ls-files").stdout.splitlines():
+        p = ROOT / line
+        if not p.is_file() or p.suffix not in (".json", ".yml", ".yaml", ".md", ".py", ".html"):
+            continue
+        try:
+            if _CONFLICT_RE.search(p.read_text(encoding="utf-8", errors="replace")):
+                bad.append(line)
+        except OSError:
+            continue
+    return bad
+
+
 def commit_and_push(branch: str, message: str, job: str) -> None:
+    bad = conflict_markers()
+    if bad:
+        notify(job, "マージ衝突マーカーが残ったファイルがあるためコミットを中止:\n- "
+                    + "\n- ".join(bad[:8]), ok=False)
+        return
     git("add", "-A")
     if not git("status", "--porcelain").stdout.strip():
         print("変更なし(コミットせず)", flush=True)

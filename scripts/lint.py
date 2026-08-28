@@ -480,10 +480,18 @@ def main() -> int:
         allowed = set()
         for day in window:
             allowed |= candidate_urls_by_day.get(day, set())
+        # 系譜(candidates 由来か)は**警告**にとどめる。
+        # この検査は URL 捏造の代理指標にすぎず、執筆が出典を読みに行けるようになった今
+        # (scripts/fetch_page.py)、自力で見つけた正しい公式ページも弾いてしまう
+        # (2026-08-28号でツアマス公式の実在ページを系譜外として落とし、発行が止まった)。
+        # 捏造の判定は「URL が生きているか」(この下の生存確認・エラー)と
+        # 「開いて内容が記事と一致するか」(校閲のブロック項目2)が担う。
+        # 実物を開いて確かめられるのは校閲だけであり、そこが判断すべき検査である。
         if allowed:
             for s in fm["sources"]:
                 if s["url"] not in allowed:
-                    rep.error(path, f"出典 URL が発行日前後の candidates に存在しない: {s['url']}")
+                    rep.warn(path, f"出典 URL が candidates に無い(執筆が追加した出典。"
+                                   f"校閲が内容を照合すること): {s['url']}")
         # 系譜検査: candidate_ids がある記事は、出典 URL がその候補群の URL に限定される
         if fm.get("candidate_ids"):
             window_items = {}
@@ -503,7 +511,8 @@ def main() -> int:
                 cited_types = []
                 for s in fm["sources"]:
                     if s["url"] not in own_urls:
-                        rep.error(path, f"出典 URL が candidate_ids の候補群に含まれない(系譜外): {s['url']}")
+                        rep.warn(path, f"出典 URL が candidate_ids の候補群に無い(系譜外。"
+                                       f"校閲が内容を照合すること): {s['url']}")
                     elif fm["edition"] >= SRC_WEAKEST_FROM:
                         if s.get("type") not in url_types[s["url"]]:
                             rep.error(path, f"出典 type が候補の source_type と不一致({s['url']}: "

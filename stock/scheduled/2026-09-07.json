@@ -1,20 +1,37 @@
 [
-    {
-        "id": "sched-2026-09-07-shiny-noctchill-event-2026-終了",
-        "dedup_key": "shiny-noctchill-event-2026",
-        "brand": "shiny",
-        "subject": "ノクチル シナリオイベント「いつか風が止むその日まで」",
-        "kind": "終了",
-        "note": "イベント終了予定",
-        "title": "ノクチルの物語イベント、終了予定",
-        "url": "https://x.com/imassc_official/status/2092199583040631156",
-        "source_type": "公式",
-        "verify": "confirmed",
-        "src_candidate_id": "202608260216-grok-35",
-        "event_date": "2026-09-07",
-        "facts": [
-            "シナリオイベント「いつか風が止むその日まで」は9月7日11:59まで開催予定"
-        ],
-        "reserved_on": "2026-08-26"
-    }
+  {
+    "id": "sched-2026-09-07-shiny-noctchill-event-2026-終了",
+    "dedup_key": "shiny-noctchill-event-2026",
+    "brand": "shiny",
+    "subject": "ノクチル シナリオイベント「いつか風が止むその日まで」",
+    "kind": "終了",
+    "note": "イベント終了予定",
+    "title": "ノクチルの物語イベント、終了予定",
+    "url": "https://x.com/imassc_official/status/2092199583040631156",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608260216-grok-35",
+    "event_date": "2026-09-07",
+    "facts": [
+      "シナリオイベント「いつか風が止むその日まで」は9月7日11:59まで開催予定"
+    ],
+    "reserved_on": "2026-08-26"
+  },
+  {
+    "id": "sched-2026-09-07-cg-derepa-broadcast-2026-締切",
+    "dedup_key": "cg-derepa-broadcast-2026",
+    "brand": "cg",
+    "subject": "CINDERELLA PARTY!ゲスト宛メール締切(福原綾香さん回)",
+    "kind": "締切",
+    "reserved_on": "2026-08-28",
+    "title": "デレパ今後ゲストは天野聡美・立花日菜・福原綾香、メール受付中",
+    "url": "https://x.com/dereparty/status/2092605484842766542",
+    "source_type": "公式",
+    "facts": [
+      "9月16日…渋谷凛役・福原綾香さん ✉️9/7まで",
+      "メールは https://columbia.jp/idolmaster/derepaform/ まで"
+    ],
+    "event_date": "2026-09-07",
+    "src_candidate_id": "202608280232-grok-10"
+  }
 ]

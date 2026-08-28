@@ -1,0 +1,1000 @@
+{
+ "articles": [
+  {
+   "slug": "joint-clashmatch-site-sponsors-2026",
+   "brand": "joint",
+   "rank": "medium",
+   "angle": "デレミリ合同ライブ『CLASH M@TCH!!』の公式サイトが公開、協賛4社が判明(公演日程・チケット詳細は8/26付で既報のため新事実部分を主軸に構成)",
+   "lead_score": 45,
+   "dedup_key": "deremilli-clash-match-2027",
+   "candidate_ids": [
+    "202608270734-claude-0",
+    "202608280232-grok-41",
+    "202608280232-grok-42",
+    "202608280232-grok-43",
+    "202608280232-grok-44"
+   ]
+  },
+  {
+   "slug": "joint-tours-late-summer-campaign-momoko",
+   "brand": "joint",
+   "rank": "large",
+   "angle": "ツアマス『2026レイトサマーキャンペーン 晩夏の調べ』が本日開始、S1弾Exに先駆けて周防桃子カードが先行登場(開幕当日の続報予約案件)",
+   "lead_score": 20,
+   "dedup_key": "tours-late-summer-campaign-2026",
+   "candidate_ids": [
+    "202608280232-grok-46",
+    "sched-2026-08-28-tours-s1-ex-suou-momoko-2026-開始"
+   ]
+  },
+  {
+   "slug": "joint-mor413-matsunaga-akane-eve",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "アイマスMOR413(9月9日放送)にイヴ・サンタクロース役・松永あかねが出演決定",
+   "lead_score": 8,
+   "dedup_key": "imas-mor-413-eve-2026",
+   "candidate_ids": [
+    "202608280232-grok-47"
+   ]
+  },
+  {
+   "slug": "joint-mor414-tanaka-yuki-asahi",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "アイマスMOR414(9月16日放送)は芹沢あさひ役・田中有紀のマスターソング特集",
+   "lead_score": 8,
+   "dedup_key": "imas-mor-414-asahi-2026",
+   "candidate_ids": [
+    "202608280232-grok-48"
+   ]
+  },
+  {
+   "slug": "gaku-3rd-single-wave3-titles",
+   "brand": "gaku",
+   "rank": "medium",
+   "angle": "3rdシングル第3弾(十王星南・花海咲季・花海佑芽・秦谷美鈴)の曲名・価格・収録内容が判明。8/26発売の既報に具体的な曲名(『赤裸々』『Wildest Flower』『真っ白いページと水彩の主人公』『VEIL』)・税込2,500円・収録曲構成を追加",
+   "lead_score": 8,
+   "dedup_key": "gaku-3rd-single-set3-2026",
+   "candidate_ids": [
+    "202608270734-claude-14",
+    "202608270734-claude-27",
+    "202608271235-claude-23"
+   ]
+  },
+  {
+   "slug": "gaku-bigface-plush-vol3-preorder",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "BIGフェイスぬいぐるみvol.3の予約受付が8/27 10時開始、2026年12月発売・価格4,620円(税込)",
+   "lead_score": 5,
+   "dedup_key": "big-face-nui-vol3-2026-12",
+   "candidate_ids": [
+    "202608271235-watch-2",
+    "202608280232-grok-35"
+   ]
+  },
+  {
+   "slug": "gaku-espresto-senan-tsubame-figures",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "プライズフィギュア「学園アイドルマスター ESPRESTO」に十王星南(9/3展開)・雨夜燕(9/10展開)が登場、それぞれ『初』衣装を立体化",
+   "lead_score": 5,
+   "dedup_key": "gkmas-espresto-senan-tsubame-202608",
+   "candidate_ids": [
+    "202608271235-claude-25"
+   ]
+  },
+  {
+   "slug": "gaku-asari-produce-seminar-launch",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "新イベント「あさり先生のプロデュースゼミ」が8/26開催開始(〜9/4)。メモリーのロック・再抽選機能で厳選を支援し、通常と異なるプランのカードが出現する特別仕様",
+   "lead_score": 12,
+   "dedup_key": "gaku-asari-seminar-2026",
+   "candidate_ids": [
+    "202608272336-claude-21",
+    "202608280232-grok-30",
+    "202608280232-claude-114"
+   ]
+  },
+  {
+   "slug": "gaku-asari-seminar-memory-bug-cleanup-maintenance",
+   "brand": "gaku",
+   "rank": "medium",
+   "angle": "「あさり先生のプロデュースゼミ」のメモリーアビリティ重複不具合、該当メモリー削除・プロデュースデータ破棄のための追加メンテナンスを8/27 15:00〜16:30に実施",
+   "lead_score": 8,
+   "dedup_key": "gaku-memory-ability-bug-mt-20260827",
+   "candidate_ids": [
+    "202608280232-grok-34"
+   ]
+  },
+  {
+   "slug": "gaku-shirube-iwate-streaming-ticket-sale",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "「学園アイドルマスター LIVE TOUR -標- 岩手公演」(9/22-23)の配信視聴チケット販売が8/27開始",
+   "lead_score": 8,
+   "dedup_key": "gaku-shirube-iwate-streaming-2026",
+   "candidate_ids": [
+    "202608280232-grok-36"
+   ]
+  },
+  {
+   "slug": "gaku-hatsuboshi-ongakusai-bd-deadline-4days",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "初星音楽祭Blu-ray、受注締切まであと4日(8/27時点)。新規ダイジェスト映像「SEARCH RIGHT」を公開",
+   "lead_score": 5,
+   "dedup_key": "gaku-hatsuboshi-ongakusai-bd-deadline-2026-08",
+   "candidate_ids": [
+    "202608280232-grok-37"
+   ]
+  },
+  {
+   "slug": "gaku-hatsuboshi-housoubu-0902-guest",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "ラジオ「初星学園放送部」9/2放送回のゲストに七瀬つむぎ(有村麻央役)・花岩香奈(葛城リーリヤ役)が決定、標ツアー福井公演を振り返り",
+   "lead_score": 5,
+   "dedup_key": "gaku-radio-guest-2026-09-02",
+   "candidate_ids": [
+    "202608280232-grok-38"
+   ]
+  },
+  {
+   "slug": "gaku-4koma-164-saikou-no-shunkan",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "学マス4コマ漫画第164話「最高の瞬間を」を公開",
+   "lead_score": 3,
+   "dedup_key": "gaku-4koma-164-2026-08-26",
+   "candidate_ids": [
+    "202608280232-grok-40"
+   ]
+  },
+  {
+   "slug": "gaku-hatsuboshistore-tropical-ice-parlor-open",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "ハツボシストア(渋谷Sakura Stage)が本日8/28「サマートロピカルアイスパーラー」にテーマ替え、13人全アイドルの新ビジュアルとライフサイズパネルEC事前注文を展開",
+   "lead_score": 30,
+   "dedup_key": "hatsuboshi-store-tropical-ice-parlor-2026-08",
+   "candidate_ids": [
+    "202608280232-claude-115"
+   ]
+  },
+  {
+   "slug": "gaku-seabreeze-collab-deadline-3days",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "SEA BREEZE×学マスコラボ、特別賞応募締切(8/31 23:59)まで残り3日。当選者発表は9月中旬以降DMで通知",
+   "lead_score": 10,
+   "dedup_key": "seabreeze-gakumas-collab-2026",
+   "candidate_ids": [
+    "sched-2026-08-28-seabreeze-gakumas-collab-2026-締切前"
+   ]
+  },
+  {
+   "slug": "shiny-refrac7ions-still-blue-cast-and-times",
+   "brand": "shiny",
+   "rank": "large",
+   "angle": "REFRAC7IONS「Still blue」で追加出演キャストと公演時間(12/19 17:00開場・18:00開演、12/20 16:00開場・17:00開演)が判明、アソビストア一般会員先行受付は9/23まで",
+   "lead_score": 65,
+   "dedup_key": "refractions-still-blue-cast-2026-08-27",
+   "candidate_ids": [
+    "202608270734-claude-3",
+    "202608271235-claude-17",
+    "202608272336-claude-17",
+    "202608272336-claude-31",
+    "202608280232-grok-56",
+    "202608280342-grok-34",
+    "202608280342-grok-35"
+   ]
+  },
+  {
+   "slug": "shiny-msp-ticket-price-period",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "283 PRODUCTION Solo Live -Master ShowPiece-、現地チケット一般発売(先着)の受付期間(8/29 12:00〜9/15 23:59)とチケット価格(現地14,000円・配信14,000円/7,000円)が判明",
+   "lead_score": 20,
+   "dedup_key": "shinycolors-solo-live-msp-2026",
+   "candidate_ids": [
+    "202608271235-claude-18",
+    "202608272336-claude-16"
+   ]
+  },
+  {
+   "slug": "shiny-30ms-hitada-mikoto-preorder",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "30MS『緋田美琴』プラモデルの予約受付が開始(2027年1月発売、税込4,180円)",
+   "lead_score": 10,
+   "dedup_key": "30ms-aketa-2027",
+   "candidate_ids": [
+    "202608280232-claude-105"
+   ]
+  },
+  {
+   "slug": "shiny-shanison-ver2-17-0-update",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニソンVer.2.17.0アップデートでフォトスタジオにフィルター・縦画面モードが追加、楽曲情報画面から歌詞を見ながらの試聴も可能に",
+   "lead_score": 15,
+   "dedup_key": "shanison-ver-2-17-0-photo-studio",
+   "candidate_ids": [
+    "202608280232-grok-68",
+    "202608280232-grok-69"
+   ]
+  },
+  {
+   "slug": "shiny-parallel-corridor-popup-venue",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "パラレルコレクションPOP UP SHOP「パラレル回廊」の会場(秋葉原UDXギャラリー)と会期(9/20〜9/27)が判明",
+   "lead_score": 10,
+   "dedup_key": "popup-parallel-kairou-2026-09",
+   "candidate_ids": [
+    "202608280232-grok-59"
+   ]
+  },
+  {
+   "slug": "shiny-kyomafu-2026-goods",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "京都国際マンガ・アニメフェア2026(9/19-20)に『放課後クライマックスガールズ』が出展、新規描き下ろしグッズとコラボドリンクを販売",
+   "lead_score": 15,
+   "dedup_key": "shiny-kyoto-manga-anime-fair-2026",
+   "candidate_ids": [
+    "202608271835-watch-0"
+   ]
+  },
+  {
+   "slug": "shiny-8th-anniversary-stepup-gacha",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニマス、8周年記念「8月8のつく日」限定でSSR2倍の特別ステップアップガシャを本日24時間限定開催",
+   "lead_score": 25,
+   "dedup_key": "sc-8th-aug8-ssr2-stepup-2026-08-28",
+   "candidate_ids": [
+    "202608280232-grok-64"
+   ]
+  },
+  {
+   "slug": "shiny-noctchill-event-open",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "ノクチルシナリオイベント「いつか風が止むその日まで」が本日開幕、開催期間は9月7日11:59まで",
+   "lead_score": 30,
+   "dedup_key": "shiny-noctchill-event-2026",
+   "candidate_ids": [
+    "202608280232-grok-62",
+    "sched-2026-08-28-shiny-noctchill-event-2026-開幕"
+   ]
+  },
+  {
+   "slug": "shiny-roundup-0828",
+   "brand": "shiny",
+   "rank": "roundup",
+   "angle": "シャニマス運営情報まとめ: 8/28メンテナンス(12:00〜16:00)、トワコレ雛菜・咲耶とプレリュード恋鐘ガシャ終了、283ステージ記念セレチケ&キャスティングコレクション終了、Uka衣装復刻の特別演出、園田智代子ピックアップガシャ開催中",
+   "lead_score": 5,
+   "dedup_key": "sc-maintenance-2026-08-28",
+   "candidate_ids": [
+    "202608280232-grok-63",
+    "202608280232-grok-65",
+    "202608280232-grok-66",
+    "202608280232-grok-70",
+    "202608280342-grok-40"
+   ]
+  },
+  {
+   "slug": "sidem-howanui-craneprize-lineup-2026-08-28",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "SideM「ほわぬい」シリーズが8/29からクレーンゲームに順次登場、vol.1(神速一魂・S.E.M/全5種)とvol.2(もふもふえん・THE虎牙道/全6種)のラインナップが判明",
+   "lead_score": 30,
+   "dedup_key": "sidem-howanuui-crane-game-2026",
+   "candidate_ids": [
+    "202608271835-watch-1",
+    "202608280232-grok-72",
+    "202608280232-grok-73",
+    "202608280342-grok-45",
+    "202608280342-grok-46"
+   ]
+  },
+  {
+   "slug": "sidem-mts10-mofumofuen-tokuten-2026-08-28",
+   "brand": "sidem",
+   "rank": "medium",
+   "angle": "発売済みのMTS第10弾「もふもふえん」、各店舗特典と初回生産特典(シリアル付きチラシ・ブロマイド)の詳細が判明",
+   "lead_score": 5,
+   "dedup_key": "sidem-monthly-song-10-mofumofu-2026",
+   "candidate_ids": [
+    "202608270734-claude-9",
+    "202608271835-claude-16"
+   ]
+  },
+  {
+   "slug": "sidem-murase-himeno-graduation-followup-2026-08-28",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "村瀬歩さん(姫野かのん役)卒業、MTS10・11th STAGEまでは村瀬さんが担当し以降交代スケジュールを後日発表、もふもふえんキャストが新たに1名追加予定と判明",
+   "lead_score": 10,
+   "dedup_key": "sidem-himano-kanon-voice-change-2026",
+   "candidate_ids": [
+    "202608271835-claude-27"
+   ]
+  },
+  {
+   "slug": "sidem-11th-comment-masumoto-2026-08-28",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "SideM11th出演キャスト意気込みコメントリレー、本日分は増元拓也さん(信玄誠司役)",
+   "lead_score": 0,
+   "dedup_key": "sidem-11th-comment-masumoto-2026",
+   "candidate_ids": [
+    "202608280232-grok-75"
+   ]
+  },
+  {
+   "slug": "sidem-11th-stage-goods-lottery-2026-08-28",
+   "brand": "sidem",
+   "rank": "large",
+   "angle": "SideM11th STAGE、会場物販の整理券抽選受付が本日開始(9/2まで)、CD・映像販売情報も公開",
+   "lead_score": 15,
+   "dedup_key": "sidem-11th-stage-goods-2026",
+   "candidate_ids": [
+    "202608280232-claude-107"
+   ]
+  },
+  {
+   "slug": "sidem-costume-museum-web-order-goods-2026-08-28",
+   "brand": "sidem",
+   "rank": "medium",
+   "angle": "SideM衣装展公式グッズのWEB受注は8/30締切、キャラファイングラフ・アクリルコネクトプレートなど商品ラインナップが判明",
+   "lead_score": 10,
+   "dedup_key": "sidem-costume-museum-web-order-2026",
+   "candidate_ids": [
+    "202608280342-grok-53",
+    "202608280232-grok-77",
+    "202608280232-grok-78"
+   ]
+  },
+  {
+   "slug": "sidem-teddys-collection2-goods-roundup-2026-08-28",
+   "brand": "sidem",
+   "rank": "roundup",
+   "angle": "SideM Teddy's Collection II POP UP STORE、fanittoが続々紹介するグッズまとめ(ミニアクリルスタンド・クリアカード・耐水ステッカー・クリアファイル)",
+   "lead_score": 0,
+   "dedup_key": "sidem-teddys-collection-2-mini-acrylic-stand-2026",
+   "candidate_ids": [
+    "202608280232-grok-80",
+    "202608280232-grok-81",
+    "202608280232-grok-82",
+    "202608280232-grok-83"
+   ]
+  },
+  {
+   "slug": "765-dual-twinlive-tokyo-finale-venue-cd",
+   "brand": "765",
+   "rank": "large",
+   "angle": "dual twin live tourが本日千秋楽——三浦あずさ・秋月律子「つみまつよるまち」東京公演が8/28 19:00開演・冒頭無料配信、前日の双海亜美・真美「ふたごぼしのつばさ」東京公演の模様とあわせ、会場限定CD2種(SACX-1139/1140)の販売状況を総括",
+   "lead_score": 55,
+   "dedup_key": "765-dual-twinlive-venue-cd",
+   "candidate_ids": [
+    "sched-2026-08-28-765-dual-twinlive-venue-cd-千秋楽",
+    "202608280232-grok-0",
+    "202608272336-watch-0",
+    "202608280342-grok-1",
+    "202608280342-grok-2",
+    "202608280342-grok-4",
+    "202608280342-grok-5",
+    "202608280342-grok-6",
+    "202608280342-grok-7",
+    "202608280342-grok-8",
+    "202608280342-grok-9",
+    "202608280342-grok-10",
+    "202608280342-grok-11",
+    "202608271235-claude-3",
+    "202608271235-claude-5",
+    "202608271235-claude-6",
+    "202608271235-claude-7",
+    "202608271235-claude-8",
+    "202608272336-claude-8",
+    "202608272336-claude-9",
+    "202608280232-claude-89"
+   ]
+  },
+  {
+   "slug": "765-ap-lounge-kasshi-graduation",
+   "brand": "765",
+   "rank": "small",
+   "angle": "AP配信開始当初からAPラウンジを担当してきた「APかっしー」が8/31付で卒業、8/26に卒業配信を実施",
+   "lead_score": 5,
+   "dedup_key": "765-ap-kasshi-graduation-2026",
+   "candidate_ids": [
+    "202608272336-claude-30"
+   ]
+  },
+  {
+   "slug": "cg-memory-pict-6th-order-open",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "グッズシリーズ「Memory Pict.」第6弾(小日向美穂・依田芳乃)の受注が本日開始、11月お届け予定・受注は9/13まで・総選挙2026投票券対象",
+   "lead_score": 15,
+   "dedup_key": "memory-pict-6th-kohimura-yoda-2026",
+   "candidate_ids": [
+    "202608271235-watch-1",
+    "202608280232-grok-11"
+   ]
+  },
+  {
+   "slug": "cg-vote2026-goods-yojijukugo-nobori",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "総選挙2026記念グッズ「公約四字熟語」グループA・Bのアクリルキーホルダー/ステッカーと総勢190名のミニのぼりが公開、9/13まで受注中",
+   "lead_score": 20,
+   "dedup_key": "cg-vote2026-yojijukugo-goods-group-a",
+   "candidate_ids": [
+    "202608280232-grok-9",
+    "202608280232-grok-12",
+    "202608280232-grok-13"
+   ]
+  },
+  {
+   "slug": "cg-suzumiya-seika-birthday",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "アイマスchが涼宮星花の誕生日をお祝い、お祝いムービーを公開",
+   "lead_score": 5,
+   "dedup_key": "suzumiya-seika-birthday-2026",
+   "candidate_ids": [
+    "202608280232-grok-86"
+   ]
+  },
+  {
+   "slug": "cg-online-gacha-school-festival",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "『アイドルマスター シンデレラガールズ』新作オンラインくじが文化祭テーマで登場、9/3販売開始",
+   "lead_score": 10,
+   "dedup_key": "cg-gacha-festival-2026-08",
+   "candidate_ids": [
+    "202608280232-claude-97"
+   ]
+  },
+  {
+   "slug": "cg-roundup-0828",
+   "brand": "cg",
+   "rank": "roundup",
+   "angle": "定常運営まとめ: 舞台『Pop'n ToyBox!!』スペシャルノベル最新話更新、4コマ「シンデレラガールズの日常」最新話公開、CINDERELLA PARTY!今後のゲスト予定(天野聡美・立花日菜・福原綾香)",
+   "lead_score": 0,
+   "dedup_key": "popn-toybox-extra-story-5-2026",
+   "candidate_ids": [
+    "202608280232-grok-7",
+    "202608280232-grok-8",
+    "202608280232-grok-10"
+   ]
+  },
+  {
+   "slug": "million-xstream-theater-new-series-preview",
+   "brand": "million",
+   "rank": "lead",
+   "angle": "ミリシタ、10年目新シリーズ『X-STREAM THEATER』を9/2 19:00生配信で発表。同じ生配信枠で次回『ミリオンリンケージ』の詳細(新人教師「俺」を巡る争奪戦の世界観)も公開予定",
+   "lead_score": 60,
+   "dedup_key": "millionlive-theater-days-x-stream-theater-2026",
+   "candidate_ids": [
+    "202608272336-watch-1",
+    "202608280232-grok-52"
+   ]
+  },
+  {
+   "slug": "million-pst-himitsu-no-memories-teaser",
+   "brand": "million",
+   "rank": "small",
+   "angle": "プラチナスターシアター新編『秘密のメモリーズ』近日開催、楽曲『秘密のメモリーズ』も実装予定と公式が予告",
+   "lead_score": 15,
+   "dedup_key": "pst-himitsu-no-memories",
+   "candidate_ids": [
+    "202608280232-grok-50"
+   ]
+  },
+  {
+   "slug": "million-second-hairstyle-gasha-glasses-ayumu-akane",
+   "brand": "million",
+   "rank": "small",
+   "angle": "セカンドヘアスタイルガシャ新編『myブランド編 with glasses』を予告、舞浜歩・茜が登場(舞浜歩のカードは「デアデビル・ダンス」)",
+   "lead_score": 10,
+   "dedup_key": "second-hairstyle-gacha-mybrand-glasses-ayumu-akane",
+   "candidate_ids": [
+    "202608280232-grok-51"
+   ]
+  },
+  {
+   "slug": "million-idol-gp-flash-medal-deadline",
+   "brand": "million",
+   "rank": "small",
+   "angle": "「アイドルグランプリ」オープン記念・夏の特別プレゼントのフラッシュGPメダル、使用・受取期限は8/31 23:59(締切3日前)",
+   "lead_score": 10,
+   "dedup_key": "idol-gp-flash-medal-deadline-2026-08-31",
+   "candidate_ids": [
+    "202608280232-grok-55"
+   ]
+  },
+  {
+   "slug": "million-reprint-pickup-gasha-daily",
+   "brand": "million",
+   "rank": "small",
+   "angle": "『日替わりピックアップ！限定復刻ガシャ』開催中、箱崎星梨花・二階堂千鶴・佐竹美奈子・豊川風花が日替わりで出現率UP",
+   "lead_score": 10,
+   "dedup_key": "reprint-pickup-gacha-2026-08-27",
+   "candidate_ids": [
+    "202608280232-grok-53"
+   ]
+  },
+  {
+   "slug": "million-otvs3-portal-playable",
+   "brand": "million",
+   "rank": "small",
+   "angle": "Off Time Voice Series vol.3がアイマスポータルで再生可能に(利用には条件あり)",
+   "lead_score": 5,
+   "dedup_key": "otvs3-portal-playable-2026-08-27",
+   "candidate_ids": [
+    "202608280232-grok-54"
+   ]
+  },
+  {
+   "slug": "million-theater-talk-party-vol66-rewards",
+   "brand": "million",
+   "rank": "small",
+   "angle": "8/27開幕『THEATER TALK PARTY☆～ユニットオフショット Vol.66～』、開催後に案内予定としていたライブ・お仕事の日替わり追加報酬の内容が判明",
+   "lead_score": 5,
+   "dedup_key": "theater-talk-party-unit-offshot-vol66",
+   "candidate_ids": [
+    "202608280342-grok-28"
+   ]
+  },
+  {
+   "slug": "million-ver-9-0-100-update",
+   "brand": "million",
+   "rank": "small",
+   "angle": "ミリシタVer.9.0.100の配信を開始、本日8/28 13:00頃に強制アップデートを実施予定",
+   "lead_score": 15,
+   "dedup_key": "milisita-ver-9-0-100-2026-08-27",
+   "candidate_ids": [
+    "202608280342-grok-29"
+   ]
+  },
+  {
+   "slug": "dsva-manaka-hakuno-jsp3-collab-0901",
+   "brand": "dsva",
+   "rank": "small",
+   "angle": "灯里愛夏(vα-liv)と今酒ハクノが9/1『日本事故物件監視協会3』高難易度マップで初のマルチ・初サシコラボを予告",
+   "lead_score": 20,
+   "dedup_key": "valiv-manaka-hakuno-jsp3-collab-20260901",
+   "candidate_ids": [
+    "202608280232-grok-15",
+    "202608280232-grok-16"
+   ]
+  },
+  {
+   "slug": "dsva-valiv-streaming-shorts-roundup-0828",
+   "brand": "dsva",
+   "rank": "roundup",
+   "angle": "vα-liv、直近の配信出演・ショート動画まとめ(8/26宇宙の踊ってみた新作、8/27夜の愛夏×レトラ配信、8/27愛夏の新作ショート動画)",
+   "lead_score": 5,
+   "dedup_key": "valiv-onair-2026-08-27",
+   "candidate_ids": [
+    "202608280342-grok-16",
+    "202608280342-grok-12",
+    "202608280342-grok-15",
+    "202608280342-grok-17",
+    "202608280342-grok-19"
+   ]
+  },
+  {
+   "slug": "general-cg-million-osechi-2027-collab",
+   "brand": "general",
+   "rank": "small",
+   "angle": "シンデレラガールズ×伊勢丹、ミリオンライブ！×三越のおせち2027コラボが決定、詳細は9月中旬解禁予告",
+   "lead_score": 5,
+   "dedup_key": "mistore-osechi-2027-cg-ml",
+   "candidate_ids": [
+    "202608280232-grok-84"
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "dedup_key": "deremilli-clash-match-2027-band",
+   "reason": "重複",
+   "note": "公演名・開場開演時刻・チケット種別は本体発表と同一内容。joint-clashmatch-site-sponsors-2026に統合"
+  },
+  {
+   "dedup_key": "deremilli-clash-match-2027-site",
+   "reason": "重複",
+   "note": "公式サイト公開・協賛企業発表という新事実の出所。joint-clashmatch-site-sponsors-2026の主素材として統合"
+  },
+  {
+   "dedup_key": "deremilli-clash-match-2027-pv",
+   "reason": "重複",
+   "note": "開催決定告知に付随するPVで新事実なし。joint-clashmatch-site-sponsors-2026に統合"
+  },
+  {
+   "dedup_key": "deremilli-clash-match-2027-cg-x",
+   "reason": "重複",
+   "note": "シンデレラ公式Xの告知投稿。本体発表と同一内容。joint-clashmatch-site-sponsors-2026に統合"
+  },
+  {
+   "dedup_key": "tours-s1-ex-suou-momoko-2026",
+   "reason": "重複",
+   "note": "8/28開始の『晩夏の調べ』キャンペーンにおける周防桃子カード先行登場の続報予約。joint-tours-late-summer-campaign-momokoに統合"
+  },
+  {
+   "dedup_key": "gaku-swimwear-misuzu-gacha-2026",
+   "reason": "既報",
+   "note": "gakumas-swimsuit-gacha-hataya-2026(2026-08-25初報)の published_facts と同一(開始日・期間・カード名)。新事実なし"
+  },
+  {
+   "dedup_key": "gakumas-pixiv-ranking-2026-08",
+   "reason": "その他",
+   "note": "ファンによるpixiv投稿数トレンド集計。個別の運営ニュースではなくファン創作動向の紹介にあたり、この面の記事化基準に合わない(culture面向け素材)"
+  },
+  {
+   "dedup_key": "gakumas-live-tour-fukui-2026-08",
+   "reason": "既報",
+   "note": "gakumas-shirube-livetour-2026(2026-08-25初報)で福井公演の新曲初披露・出演者含め既報。開催も8/20-21で発行日時点の続報トリガーなし"
+  },
+  {
+   "dedup_key": "gkmas-hif-memorial-single-garakuta-202608",
+   "reason": "既報",
+   "note": "gaku-hif-memorial-single-2026(2026-08-26初報)と価格・収録内容が一致、新事実なし"
+  },
+  {
+   "dedup_key": "gaku-tour-shirube-streaming-2026-08",
+   "reason": "出典不足",
+   "note": "「STREAMINGセクションが更新された」とのみで更新内容の具体的事実が無い"
+  },
+  {
+   "dedup_key": "gakumas-livetour-shirube-fukui-2026",
+   "reason": "既報",
+   "note": "gakumas-shirube-livetour-2026と同一話題(福井公演)。既報かつ開催から1週間以上経過しトリガーなし"
+  },
+  {
+   "dedup_key": "gaku-mainstory-review-fan",
+   "reason": "個人の話題",
+   "note": "個人ブログのプレイ感想記事(単体のファン発信)"
+  },
+  {
+   "dedup_key": "gaku-gift-nuigurumi-comiket108",
+   "reason": "同人・ファン主催",
+   "note": "コミックマーケット108会場での先行販売が主軸の告知で、同人即売会の開催・販売が中心事実"
+  },
+  {
+   "dedup_key": "shinohara-hiro-drawing-ref-trend-2026",
+   "reason": "個人の話題",
+   "note": "単一Xアカウントの投稿を起点にした現象紹介で、個人のSNS投稿単体の記事化にあたる"
+  },
+  {
+   "dedup_key": "gaku-misuzu-gravure-gacha-2026-08",
+   "reason": "既報",
+   "note": "gakumas-swimsuit-gacha-hataya-2026と同一(美鈴ガシャ開催告知)、新事実なし"
+  },
+  {
+   "dedup_key": "gaku-nee-itchauyo-misuzu-song-2026-08",
+   "reason": "既報",
+   "note": "gakumas-nee-icchauyo-series-2026(2026-08-26初報)の秦谷美鈴版追加ボイス facts と一致"
+  },
+  {
+   "dedup_key": "gaku-ssr-support-taisetsu-omoide-2026-08",
+   "reason": "既報",
+   "note": "gakumas-swimsuit-gacha-hataya-2026の published_facts にSSRカード名が既出"
+  },
+  {
+   "dedup_key": "gaku-sr-support-oyasumi-futari-2026-08",
+   "reason": "既報",
+   "note": "gakumas-swimsuit-gacha-hataya-2026の published_facts にSRカード名が既出"
+  },
+  {
+   "dedup_key": "gaku-misuzu-omoide-ishou-2026-08",
+   "reason": "既報",
+   "note": "gaku-hataya-memory-costume-2026(2026-08-26初報)と開催時刻・対象衣装の内容が一致"
+  },
+  {
+   "dedup_key": "gaku-nemurase-tai-gashapon-2026",
+   "reason": "既報",
+   "note": "同一dedup_keyのgaku-nemurase-tai-gashapon-2026(2026-08-27初報)にラインナップ・受注期間・価格が既出"
+  },
+  {
+   "dedup_key": "gaku-misuzu-summer-poster-cp-2026",
+   "reason": "既報",
+   "note": "gakumas-swimsuit-gacha-hataya-2026の published_facts に記念キャンペーン(フォロー&引用ポストでB2ポスター抽選)が既出。柄数・当選人数の内訳は既報の範囲内の補足に留まる"
+  },
+  {
+   "dedup_key": "gaku-nee-itchauyo-misuzu-shorts-2026-08-26",
+   "reason": "既報",
+   "note": "gakumas-hatsuhoshi-ongakusai-bd-2026(2026-08-26)の published_facts に「秦谷美鈴ソロver.のshorts公開」が既出"
+  },
+  {
+   "dedup_key": "gakumasu-garakuta-road-memorial-2026-08",
+   "reason": "既報",
+   "note": "gaku-hif-memorial-single-2026と同一話題(ガラクタロード発売)、新事実なし"
+  },
+  {
+   "dedup_key": "gaku-misuz-swimsuit-gacha-2026",
+   "reason": "既報",
+   "note": "gakumas-swimsuit-gacha-hataya-2026と同一話題(美鈴ガシャ)、新事実なし"
+  },
+  {
+   "dedup_key": "shiny-hopeful-feathers-2026",
+   "reason": "既報",
+   "note": "stock: shiny-hopeful-feathers-cd-2026(8/26付)でINDEX・ジャケット解禁済み、新事実なし"
+  },
+  {
+   "dedup_key": "shiny-song-for-prism-karma-naraku-2026",
+   "reason": "既報",
+   "note": "stock: shiny-karma-naraku-event-2026(8/24付)で8/23開催イベントとして既報、新事実なし"
+  },
+  {
+   "dedup_key": "shiny-costume-gacha-summer-2026",
+   "reason": "既報",
+   "note": "stock: shiny-costume-gacha-2026-08(8/26付)で開催期間・復刻内容まで既報、新事実なし"
+  },
+  {
+   "dedup_key": "shiny-live-streaming-hatsumoui-2026",
+   "reason": "その他",
+   "note": "8/25に終了した生配信の紹介で本日時点の新規性・トリガーなし(規程12)"
+  },
+  {
+   "dedup_key": "tanaka-mamimi-sigma-desire-cosplay-20260827",
+   "reason": "個人の話題",
+   "note": "個人のコスプレ投稿(verify unconfirmed)。単体記事化不可、この面の対象外(ファン面の管轄)"
+  },
+  {
+   "dedup_key": "30ms-hitada-mikoto-2027-01",
+   "reason": "既報",
+   "note": "stock: shiny-30ms-new-figures-2026-08(8/24付)で同一発表内容が既報"
+  },
+  {
+   "dedup_key": "30ms-nanakusa-nichika-hazuki-hair-face-2027-01",
+   "reason": "既報",
+   "note": "stock: shiny-30ms-new-figures-2026-08(8/24付)で同一発表内容が既報"
+  },
+  {
+   "dedup_key": "shanison-coming-soon-teaser-2026-08-27",
+   "reason": "出典不足",
+   "note": "「Coming Soon」ティザー画像のみで具体的な発表内容がなく記事化できる事実がない"
+  },
+  {
+   "dedup_key": "sidem-murase-kanon-graduation-2026",
+   "reason": "重複",
+   "note": "同一の村瀬歩さん卒業発表で、新事実はsidem-himano-kanon-voice-change-2026側の記事に統合済み"
+  },
+  {
+   "dedup_key": "sidem-royal-chess-lounge-cafe-2026",
+   "reason": "既報",
+   "note": "会場3店舗の日程は8/26付で既報、facts追加分もテーマ説明のみで新事実なし"
+  },
+  {
+   "dedup_key": "sidem-summer-special-broadcast-2026",
+   "reason": "その他",
+   "note": "配信は8/27に開催済みで発行日時点では終了済み、結果情報等の新事実・当日トリガーがない"
+  },
+  {
+   "dedup_key": "sidem-11th-stage-ticket-2026",
+   "reason": "既報",
+   "note": "現地チケット一般販売・リセール(8/22開始)はsidem-11th-stage-2026で既報、新事実なし"
+  },
+  {
+   "dedup_key": "sidem-11th-comment-nagatsuka-2026",
+   "reason": "既報",
+   "note": "永塚拓馬さんのコメントは8/27付で既報(sidem-11th-cast-comment-relay-2026)"
+  },
+  {
+   "dedup_key": "sidem-11th-nagatsuka-costume-comment-2026",
+   "reason": "個人の話題",
+   "note": "声優個人のSNS投稿(衣装への感想)で単体記事化の対象外"
+  },
+  {
+   "dedup_key": "sidem-transcendent-tales-12-2026",
+   "reason": "既報",
+   "note": "9/2発売・収録メンバー・品番は既報(sidem-transcendent-tales-12-2026)と一致、新事実なし"
+  },
+  {
+   "dedup_key": "sidem-11th-stage-announcement-2026",
+   "reason": "既報",
+   "note": "開催概要・出演者・チケット情報は2026-07-13付で既報(sidem-11th-stage-2026)、新事実なし"
+  },
+  {
+   "dedup_key": "anime-central-2026-chicago",
+   "reason": "過年度",
+   "note": "event_dateが2026-05-15で発行日(8/28)より前に終了済みのイベント、新報として扱えない(規程12)"
+  },
+  {
+   "dedup_key": "kotobukiya-kuji-summer-live-stage-2026-c-acrylic",
+   "reason": "既報",
+   "note": "stock/stories.yml kotobukiya-kuji-summer-live-stage-2026 published_factsにC賞アクリルスタンド全8種として記載済み、新事実なし"
+  },
+  {
+   "dedup_key": "kotobukiya-kuji-summer-live-stage-2026-d-canbadge",
+   "reason": "既報",
+   "note": "stock/stories.yml kotobukiya-kuji-summer-live-stage-2026 published_factsにD賞缶バッジ全7種として記載済み、新事実なし"
+  },
+  {
+   "dedup_key": "cinderella-master-new-song-2026-08",
+   "reason": "既報",
+   "note": "cg-cinderella-master-bouquet-sleep-skip-2026として8/25付で既報(発売日・曲名とも一致、新事実なし)"
+  },
+  {
+   "dedup_key": "cg-sleep-skip-premiere-2026",
+   "reason": "既報",
+   "note": "同上の既報にMVプレミア公開(8/26 21:00)の事実を含む、新事実なし"
+  },
+  {
+   "dedup_key": "cg-popup-legend-2026-08",
+   "reason": "その他",
+   "note": "開催期間8/21〜9/6の途中(本日は開幕・締切等のトリガー日でない)。規程12によりニュース性なし"
+  },
+  {
+   "dedup_key": "cg-toppa-popup-2026-08",
+   "reason": "既報",
+   "note": "cg-toppa-base-popup-2026として7/13付で既報(8/27開幕・キャラ・テーマとも一致)"
+  },
+  {
+   "dedup_key": "cg-vote2026-reward",
+   "reason": "既報",
+   "note": "上位5名のxRライブ出演特典はcinderella-girl-vote2026-scheduleとして既報"
+  },
+  {
+   "dedup_key": "cg-cm-cd-sleep-skip",
+   "reason": "既報",
+   "note": "cg-cinderella-master-bouquet-sleep-skip-2026と同一CD、新事実なし"
+  },
+  {
+   "dedup_key": "cinderella-master-cd-sleep-skip-2026",
+   "reason": "既報",
+   "note": "同上CDの価格・特典とも既報範囲内"
+  },
+  {
+   "dedup_key": "cg-popn-toybox-2026-08",
+   "reason": "既報",
+   "note": "8/13〜16開催の基本情報。会場CD事後通販等は既に複数回報道済みで本日のトリガーもなし"
+  },
+  {
+   "dedup_key": "cg-15th-party-goods-2nd-2026",
+   "reason": "既報",
+   "note": "cg-15th-party-goods-2026として8/27付で既報(二次販売開始・受注期間とも一致)"
+  },
+  {
+   "dedup_key": "toppa-base-popup-dekoboko-gaming-world-2026",
+   "reason": "重複",
+   "note": "cg-toppa-popup-2026-08と同一施策(同日開幕・同6キャラ・同テーマ)。既報でもある"
+  },
+  {
+   "dedup_key": "newgen-matatabi-reira-fanart-20260826",
+   "reason": "個人の話題",
+   "note": "個人アカウントのファンアート投稿。単体記事化は規程4により不可"
+  },
+  {
+   "dedup_key": "cg-popup-genka-youenichi-2026",
+   "reason": "既報",
+   "note": "cg-genka-yoenichi-popupとして7/12付で既報(会場・期間・キャラとも一致)"
+  },
+  {
+   "dedup_key": "cg-daiskoinbouquet-cd-2026",
+   "reason": "既報",
+   "note": "cg-cinderella-master-bouquet-sleep-skip-2026と同一CD、新事実なし"
+  },
+  {
+   "dedup_key": "million-battle-theater-ex04-2026",
+   "reason": "既報",
+   "note": "CD『MILLION BATTLE OF THE@TER EX04』は8/26発売で既報(stock/stories.yml)。商品コード等の追加は新事実と言えるほどではない"
+  },
+  {
+   "dedup_key": "million-battle-ex04-stick-weapon-2026",
+   "reason": "重複",
+   "note": "million-battle-theater-ex04-2026と同一CD。既報のため不採用"
+  },
+  {
+   "dedup_key": "million-battle-ex04-2026",
+   "reason": "重複",
+   "note": "million-battle-theater-ex04-2026と同一CD。既報のため不採用"
+  },
+  {
+   "dedup_key": "hara-yumi-himitsu-no-memories-script-2026",
+   "reason": "個人の話題",
+   "note": "声優個人のX投稿(未確認)。個人のSNS投稿は単体で記事化しない(規程4)"
+  },
+  {
+   "dedup_key": "shinomiya-karen-birthday-2026-08-27",
+   "reason": "既報",
+   "note": "篠宮可憐誕生日企画は8/27付で既報(million-karen-birthday-2026)。ガシャのステップ別ジュエル価格は追加情報だが新規記事化に足る新事実ではない"
+  },
+  {
+   "dedup_key": "shinomiya-karen-birthday-theater-2026",
+   "reason": "既報",
+   "note": "劇場デコレーション・ホワイトボードメッセージは既報facts(million-karen-birthday-2026)と同内容"
+  },
+  {
+   "dedup_key": "shinomiya-karen-birthday-gasha-2026",
+   "reason": "既報",
+   "note": "Birthdayガシャの内容は既報facts(million-karen-birthday-2026)と同内容"
+  },
+  {
+   "dedup_key": "shinomiya-karen-birthday-set-2026",
+   "reason": "既報",
+   "note": "Birthdayセット2026の内容は既報facts(million-karen-birthday-2026)と同内容"
+  },
+  {
+   "dedup_key": "va-liv-situation-voice-14-2026",
+   "reason": "既報",
+   "note": "8/27付既報(story: dsva-situation-voice14-2026)と同一内容(発売中・9/6締切)で新事実なし"
+  },
+  {
+   "dedup_key": "valiv-situation-voice-2026-08-yuzurenai",
+   "reason": "既報",
+   "note": "同上の販売継続告知のみで新事実なし"
+  },
+  {
+   "dedup_key": "hakuno-manaka-jsp3-collab-20260901",
+   "reason": "重複",
+   "note": "grok-15(灯里愛夏側告知)と同一の9/1コラボ予告。dsva-manaka-hakuno-jsp3-collab-0901に統合"
+  },
+  {
+   "dedup_key": "valiv-onair-2026-08-26",
+   "reason": "既報",
+   "note": "8/26付既報(story: valiv-ops-roundup-2026-08)の宇宙の配信内容と同一"
+  },
+  {
+   "dedup_key": "official-shop-atrekawasaki-2026-08",
+   "reason": "その他",
+   "note": "掲載日・開催開始とも8/18で本日時点の新規トリガー(開幕/締切/当日)がなく規程12の鮮度要件を満たさない"
+  },
+  {
+   "dedup_key": "refrac7ions-still-blue-2026-12",
+   "reason": "重複",
+   "note": "shiny面 shiny-refrac7ions-still-blue-cast-and-times(追加出演キャスト・公演時間・先行受付期間)と同一施策"
+  },
+  {
+   "dedup_key": "imas-tours-late-summer-2026",
+   "reason": "重複",
+   "note": "joint面 joint-tours-late-summer-campaign-momoko(本日開始・周防桃子先行登場)と同一施策"
+  },
+  {
+   "dedup_key": "imai-asami-synth-voice-goal-2026",
+   "reason": "個人の話題",
+   "note": "今井麻美(詩趣ミンゴス名義)個人のアイマス外活動宣言、規程4により対象外"
+  },
+  {
+   "dedup_key": "vocaloid-official-imai-asami-2026",
+   "reason": "個人の話題",
+   "note": "上記・今井麻美個人ネタへの反応投稿。同じくアイマス外活動に付随する話題"
+  },
+  {
+   "dedup_key": "voicevox-official-imai-asami-2026",
+   "reason": "個人の話題",
+   "note": "上記・今井麻美個人ネタへの反応投稿。同じくアイマス外活動に付随する話題"
+  },
+  {
+   "dedup_key": "kaji-yuki-imai-synth-2026",
+   "reason": "個人の話題",
+   "note": "上記・今井麻美個人ネタへの反応投稿(梶裕貴)。同じくアイマス外活動に付随する話題"
+  },
+  {
+   "dedup_key": "shimoda-boost-kaji-imai-synth-2026",
+   "reason": "個人の話題",
+   "note": "上記スレッドの拡散投稿(下田麻美)。同じくアイマス外活動に付随する話題"
+  },
+  {
+   "dedup_key": "imas-20th-piano-collection-2026",
+   "reason": "既報",
+   "note": "stock/stories.yml の piano-collection-preorder-2026 に8/26付でパッケージデザイン・特典詳細が既収録済み、新事実なし"
+  },
+  {
+   "dedup_key": "mutsuki-shuhei-clash-match-guitar-2027",
+   "reason": "個人の話題",
+   "note": "作曲家個人のSNS投稿が唯一の出典で規程4の対象外。CLASH M@TCH!!自体はjoint面(joint-clashmatch-site-sponsors-2026)で既報"
+  }
+ ],
+ "editorial_topic": "複数ブランドで相次ぐキャスト卒業・交代の発表(村瀬歩さん、APかっしー)に見る、長期運営コンテンツが直面する世代交代という共通課題"
+}

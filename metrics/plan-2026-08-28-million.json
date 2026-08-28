@@ -1,0 +1,119 @@
+{
+  "articles": [
+    {
+      "slug": "million-xstream-theater-new-series-preview",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "ミリシタ、10年目新シリーズ『X-STREAM THEATER』を9/2 19:00生配信で発表。同じ生配信枠で次回『ミリオンリンケージ』の詳細(新人教師「俺」を巡る争奪戦の世界観)も公開予定",
+      "lead_score": 60,
+      "dedup_key": "millionlive-theater-days-x-stream-theater-2026",
+      "candidate_ids": ["202608272336-watch-1", "202608280232-grok-52"]
+    },
+    {
+      "slug": "million-pst-himitsu-no-memories-teaser",
+      "brand": "million",
+      "rank": "small",
+      "angle": "プラチナスターシアター新編『秘密のメモリーズ』近日開催、楽曲『秘密のメモリーズ』も実装予定と公式が予告",
+      "lead_score": 15,
+      "dedup_key": "pst-himitsu-no-memories",
+      "candidate_ids": ["202608280232-grok-50"]
+    },
+    {
+      "slug": "million-second-hairstyle-gasha-glasses-ayumu-akane",
+      "brand": "million",
+      "rank": "small",
+      "angle": "セカンドヘアスタイルガシャ新編『myブランド編 with glasses』を予告、舞浜歩・茜が登場(舞浜歩のカードは「デアデビル・ダンス」)",
+      "lead_score": 10,
+      "dedup_key": "second-hairstyle-gacha-mybrand-glasses-ayumu-akane",
+      "candidate_ids": ["202608280232-grok-51"]
+    },
+    {
+      "slug": "million-idol-gp-flash-medal-deadline",
+      "brand": "million",
+      "rank": "small",
+      "angle": "「アイドルグランプリ」オープン記念・夏の特別プレゼントのフラッシュGPメダル、使用・受取期限は8/31 23:59(締切3日前)",
+      "lead_score": 10,
+      "dedup_key": "idol-gp-flash-medal-deadline-2026-08-31",
+      "candidate_ids": ["202608280232-grok-55"]
+    },
+    {
+      "slug": "million-reprint-pickup-gasha-daily",
+      "brand": "million",
+      "rank": "small",
+      "angle": "『日替わりピックアップ！限定復刻ガシャ』開催中、箱崎星梨花・二階堂千鶴・佐竹美奈子・豊川風花が日替わりで出現率UP",
+      "lead_score": 10,
+      "dedup_key": "reprint-pickup-gacha-2026-08-27",
+      "candidate_ids": ["202608280232-grok-53"]
+    },
+    {
+      "slug": "million-otvs3-portal-playable",
+      "brand": "million",
+      "rank": "small",
+      "angle": "Off Time Voice Series vol.3がアイマスポータルで再生可能に(利用には条件あり)",
+      "lead_score": 5,
+      "dedup_key": "otvs3-portal-playable-2026-08-27",
+      "candidate_ids": ["202608280232-grok-54"]
+    },
+    {
+      "slug": "million-theater-talk-party-vol66-rewards",
+      "brand": "million",
+      "rank": "small",
+      "angle": "8/27開幕『THEATER TALK PARTY☆～ユニットオフショット Vol.66～』、開催後に案内予定としていたライブ・お仕事の日替わり追加報酬の内容が判明",
+      "lead_score": 5,
+      "dedup_key": "theater-talk-party-unit-offshot-vol66",
+      "candidate_ids": ["202608280342-grok-28"]
+    },
+    {
+      "slug": "million-ver-9-0-100-update",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタVer.9.0.100の配信を開始、本日8/28 13:00頃に強制アップデートを実施予定",
+      "lead_score": 15,
+      "dedup_key": "milisita-ver-9-0-100-2026-08-27",
+      "candidate_ids": ["202608280342-grok-29"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-battle-theater-ex04-2026",
+      "reason": "既報",
+      "note": "CD『MILLION BATTLE OF THE@TER EX04』は8/26発売で既報(stock/stories.yml)。商品コード等の追加は新事実と言えるほどではない"
+    },
+    {
+      "dedup_key": "million-battle-ex04-stick-weapon-2026",
+      "reason": "重複",
+      "note": "million-battle-theater-ex04-2026と同一CD。既報のため不採用"
+    },
+    {
+      "dedup_key": "million-battle-ex04-2026",
+      "reason": "重複",
+      "note": "million-battle-theater-ex04-2026と同一CD。既報のため不採用"
+    },
+    {
+      "dedup_key": "hara-yumi-himitsu-no-memories-script-2026",
+      "reason": "個人の話題",
+      "note": "声優個人のX投稿(未確認)。個人のSNS投稿は単体で記事化しない(規程4)"
+    },
+    {
+      "dedup_key": "shinomiya-karen-birthday-2026-08-27",
+      "reason": "既報",
+      "note": "篠宮可憐誕生日企画は8/27付で既報(million-karen-birthday-2026)。ガシャのステップ別ジュエル価格は追加情報だが新規記事化に足る新事実ではない"
+    },
+    {
+      "dedup_key": "shinomiya-karen-birthday-theater-2026",
+      "reason": "既報",
+      "note": "劇場デコレーション・ホワイトボードメッセージは既報facts(million-karen-birthday-2026)と同内容"
+    },
+    {
+      "dedup_key": "shinomiya-karen-birthday-gasha-2026",
+      "reason": "既報",
+      "note": "Birthdayガシャの内容は既報facts(million-karen-birthday-2026)と同内容"
+    },
+    {
+      "dedup_key": "shinomiya-karen-birthday-set-2026",
+      "reason": "既報",
+      "note": "Birthdayセット2026の内容は既報facts(million-karen-birthday-2026)と同内容"
+    }
+  ],
+  "cross_brand": []
+}

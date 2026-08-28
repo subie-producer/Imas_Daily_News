@@ -39,10 +39,6 @@
   brand: gaku
   subject: 篠澤広 新曲「サンフェーデッド」
   watch: 配信・発売日(判明次第 triggers へ)
-- dedup_key: shiny-30ms-new-figures-2026-08
-  brand: shiny
-  subject: シャニマス×30MS新商品(緋田美琴・七草にちか/はづき等)
-  watch: 2027年1月予定の正式発売日(判明次第 triggers へ)
 - dedup_key: gakumas-shirube-game-implementation-2026
   brand: gaku
   subject: 学マス「標」ゲーム内実装
@@ -63,3 +59,31 @@
   brand: million
   subject: ミリシタ「NEXT STAGE」予告
   watch: 予告内容の正式発表日(判明次第 triggers へ)
+- dedup_key: mistore-osechi-2027-cg-ml
+  brand: general
+  subject: シンデレラガールズ×伊勢丹・ミリオンライブ×三越 2027年おせちコラボ
+  watch: 商品情報・特設ページ公開(9月中旬頃予定、判明次第 triggers へ)
+- dedup_key: gaku-bigface-plush-vol3-2026
+  brand: gaku
+  subject: 学マスBIGフェイスぬいぐるみvol.3
+  watch: 2026年12月内の正式発売日(判明次第 triggers へ)
+- dedup_key: gaku-hatsuboshistore-tropical-ice-parlor-2026
+  brand: gaku
+  subject: ハツボシストア「サマートロピカルアイスパーラー」展開
+  watch: テーマ展開の終了日(判明次第 triggers へ)
+- dedup_key: pst-himitsu-no-memories
+  brand: million
+  subject: プラチナスターシアター『秘密のメモリーズ』開催
+  watch: 開催日程(判明次第 triggers へ)
+- dedup_key: second-hairstyle-gacha-mybrand-glasses-ayumu-akane
+  brand: million
+  subject: セカンドヘアスタイルガシャ～myブランド編 with glasses～(舞浜歩・野々原茜)
+  watch: 開催日程(判明次第 triggers へ)
+- dedup_key: sidem-teddys-collection2-popup-goods
+  brand: sidem
+  subject: SideM Teddy's Collection II POP UP STORE
+  watch: 開催期間・会場の詳細(判明次第 triggers へ)
+- dedup_key: shiny-30ms-nichika-hazuki-2027
+  brand: shiny
+  subject: 30MS 七草にちか・はづき ヘアスタイル＆フェイスパーツセット
+  watch: 2027年1月予定の正式発売日(判明次第 triggers へ)

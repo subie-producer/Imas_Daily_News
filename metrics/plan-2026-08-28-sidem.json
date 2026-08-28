@@ -1,0 +1,134 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-howanui-craneprize-lineup-2026-08-28",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "SideM「ほわぬい」シリーズが8/29からクレーンゲームに順次登場、vol.1(神速一魂・S.E.M/全5種)とvol.2(もふもふえん・THE虎牙道/全6種)のラインナップが判明",
+      "lead_score": 30,
+      "dedup_key": "sidem-howanuui-crane-game-2026",
+      "candidate_ids": [
+        "202608271835-watch-1",
+        "202608280232-grok-72",
+        "202608280232-grok-73",
+        "202608280342-grok-45",
+        "202608280342-grok-46"
+      ]
+    },
+    {
+      "slug": "sidem-mts10-mofumofuen-tokuten-2026-08-28",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "発売済みのMTS第10弾「もふもふえん」、各店舗特典と初回生産特典(シリアル付きチラシ・ブロマイド)の詳細が判明",
+      "lead_score": 5,
+      "dedup_key": "sidem-monthly-song-10-mofumofu-2026",
+      "candidate_ids": [
+        "202608270734-claude-9",
+        "202608271835-claude-16"
+      ]
+    },
+    {
+      "slug": "sidem-murase-himeno-graduation-followup-2026-08-28",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "村瀬歩さん(姫野かのん役)卒業、MTS10・11th STAGEまでは村瀬さんが担当し以降交代スケジュールを後日発表、もふもふえんキャストが新たに1名追加予定と判明",
+      "lead_score": 10,
+      "dedup_key": "sidem-himano-kanon-voice-change-2026",
+      "candidate_ids": [
+        "202608271835-claude-27"
+      ]
+    },
+    {
+      "slug": "sidem-11th-comment-masumoto-2026-08-28",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM11th出演キャスト意気込みコメントリレー、本日分は増元拓也さん(信玄誠司役)",
+      "lead_score": 0,
+      "dedup_key": "sidem-11th-comment-masumoto-2026",
+      "candidate_ids": [
+        "202608280232-grok-75"
+      ]
+    },
+    {
+      "slug": "sidem-11th-stage-goods-lottery-2026-08-28",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM11th STAGE、会場物販の整理券抽選受付が本日開始(9/2まで)、CD・映像販売情報も公開",
+      "lead_score": 15,
+      "dedup_key": "sidem-11th-stage-goods-2026",
+      "candidate_ids": [
+        "202608280232-claude-107"
+      ]
+    },
+    {
+      "slug": "sidem-costume-museum-web-order-goods-2026-08-28",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "SideM衣装展公式グッズのWEB受注は8/30締切、キャラファイングラフ・アクリルコネクトプレートなど商品ラインナップが判明",
+      "lead_score": 10,
+      "dedup_key": "sidem-costume-museum-web-order-2026",
+      "candidate_ids": [
+        "202608280342-grok-53",
+        "202608280232-grok-77",
+        "202608280232-grok-78"
+      ]
+    },
+    {
+      "slug": "sidem-teddys-collection2-goods-roundup-2026-08-28",
+      "brand": "sidem",
+      "rank": "roundup",
+      "angle": "SideM Teddy's Collection II POP UP STORE、fanittoが続々紹介するグッズまとめ(ミニアクリルスタンド・クリアカード・耐水ステッカー・クリアファイル)",
+      "lead_score": 0,
+      "dedup_key": "sidem-teddys-collection-2-mini-acrylic-stand-2026",
+      "candidate_ids": [
+        "202608280232-grok-80",
+        "202608280232-grok-81",
+        "202608280232-grok-82",
+        "202608280232-grok-83"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-murase-kanon-graduation-2026",
+      "reason": "重複",
+      "note": "同一の村瀬歩さん卒業発表で、新事実はsidem-himano-kanon-voice-change-2026側の記事に統合済み"
+    },
+    {
+      "dedup_key": "sidem-royal-chess-lounge-cafe-2026",
+      "reason": "既報",
+      "note": "会場3店舗の日程は8/26付で既報、facts追加分もテーマ説明のみで新事実なし"
+    },
+    {
+      "dedup_key": "sidem-summer-special-broadcast-2026",
+      "reason": "その他",
+      "note": "配信は8/27に開催済みで発行日時点では終了済み、結果情報等の新事実・当日トリガーがない"
+    },
+    {
+      "dedup_key": "sidem-11th-stage-ticket-2026",
+      "reason": "既報",
+      "note": "現地チケット一般販売・リセール(8/22開始)はsidem-11th-stage-2026で既報、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-11th-comment-nagatsuka-2026",
+      "reason": "既報",
+      "note": "永塚拓馬さんのコメントは8/27付で既報(sidem-11th-cast-comment-relay-2026)"
+    },
+    {
+      "dedup_key": "sidem-11th-nagatsuka-costume-comment-2026",
+      "reason": "個人の話題",
+      "note": "声優個人のSNS投稿(衣装への感想)で単体記事化の対象外"
+    },
+    {
+      "dedup_key": "sidem-transcendent-tales-12-2026",
+      "reason": "既報",
+      "note": "9/2発売・収録メンバー・品番は既報(sidem-transcendent-tales-12-2026)と一致、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-11th-stage-announcement-2026",
+      "reason": "既報",
+      "note": "開催概要・出演者・チケット情報は2026-07-13付で既報(sidem-11th-stage-2026)、新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,0 +1,64 @@
+{
+  "articles": [
+    {
+      "slug": "765-dual-twinlive-tokyo-finale-venue-cd",
+      "brand": "765",
+      "rank": "large",
+      "angle": "dual twin live tourが本日千秋楽——三浦あずさ・秋月律子「つみまつよるまち」東京公演が8/28 19:00開演・冒頭無料配信、前日の双海亜美・真美「ふたごぼしのつばさ」東京公演の模様とあわせ、会場限定CD2種(SACX-1139/1140)の販売状況を総括",
+      "lead_score": 55,
+      "dedup_key": "765-dual-twinlive-venue-cd",
+      "candidate_ids": [
+        "sched-2026-08-28-765-dual-twinlive-venue-cd-千秋楽",
+        "202608280232-grok-0",
+        "202608272336-watch-0",
+        "202608280342-grok-1",
+        "202608280342-grok-2",
+        "202608280342-grok-4",
+        "202608280342-grok-5",
+        "202608280342-grok-6",
+        "202608280342-grok-7",
+        "202608280342-grok-8",
+        "202608280342-grok-9",
+        "202608280342-grok-10",
+        "202608280342-grok-11",
+        "202608271235-claude-3",
+        "202608271235-claude-5",
+        "202608271235-claude-6",
+        "202608271235-claude-7",
+        "202608271235-claude-8",
+        "202608272336-claude-8",
+        "202608272336-claude-9",
+        "202608280232-claude-89"
+      ]
+    },
+    {
+      "slug": "765-ap-lounge-kasshi-graduation",
+      "brand": "765",
+      "rank": "small",
+      "angle": "AP配信開始当初からAPラウンジを担当してきた「APかっしー」が8/31付で卒業、8/26に卒業配信を実施",
+      "lead_score": 5,
+      "dedup_key": "765-ap-kasshi-graduation-2026",
+      "candidate_ids": [
+        "202608272336-claude-30"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "anime-central-2026-chicago",
+      "reason": "過年度",
+      "note": "event_dateが2026-05-15で発行日(8/28)より前に終了済みのイベント、新報として扱えない(規程12)"
+    },
+    {
+      "dedup_key": "kotobukiya-kuji-summer-live-stage-2026-c-acrylic",
+      "reason": "既報",
+      "note": "stock/stories.yml kotobukiya-kuji-summer-live-stage-2026 published_factsにC賞アクリルスタンド全8種として記載済み、新事実なし"
+    },
+    {
+      "dedup_key": "kotobukiya-kuji-summer-live-stage-2026-d-canbadge",
+      "reason": "既報",
+      "note": "stock/stories.yml kotobukiya-kuji-summer-live-stage-2026 published_factsにD賞缶バッジ全7種として記載済み、新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

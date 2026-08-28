@@ -1,121 +1,179 @@
 [
-    {
-        "id": "sched-2026-08-31-seabreeze-gakumas-collab-2026-締切",
-        "dedup_key": "seabreeze-gakumas-collab-2026",
-        "brand": "gaku",
-        "subject": "SEA BREEZE×学マス特別賞応募締切",
-        "kind": "締切",
-        "note": "特別賞応募最終日",
-        "reserved_on": "2026-07-14",
-        "facts": [
-            "特別賞の応募締切は2026年8月31日(月)23:59",
-            "公式Xフォロー&対象商品を使った夏の写真を「#シーブリーズ学マスコラボ」付きで投稿すると抽選30名にオリジナルクリアポスターが当たる"
-        ],
-        "title": "SEA BREEZE×学マス コラボ実施中、8月31日締切",
-        "url": "https://seabreeze-gkmas-cp.jp/",
-        "source_type": "当事者",
-        "verify": "confirmed",
-        "src_candidate_id": "202607130742-claude-102",
-        "event_date": "2026-08-31"
-    },
-    {
-        "id": "sched-2026-08-31-cg-pop-n-toybox-cd-2026-締切",
-        "dedup_key": "cg-pop-n-toybox-cd-2026",
-        "brand": "cg",
-        "subject": "Pop'n ToyBox!!会場オリジナルCD事後通販",
-        "kind": "締切",
-        "note": "事後通販受付締切23:59",
-        "reserved_on": "2026-08-25",
-        "facts": [
-            "Pop'n ToyBox!!（8月13-16日Shibuya LOVEZ開催）の会場オリジナルCD2タイトル事後通販受付",
-            "受付期間：2026年8月21日（金）18:00～2026年8月31日（月）23:59",
-            "発送予定：2026年9月11日（金）",
-            "各CD3,500円、各700票分の総選挙投票券シリアルコード付属",
-            "販売：コロムビアミュージックショップ"
-        ],
-        "title": "Pop'n ToyBox!!会場オリジナルCD事後通販受付開始",
-        "url": "https://columbia.jp/idolmaster/imasnews/260821postevent.html",
-        "source_type": "公式",
-        "verify": "confirmed",
-        "src_candidate_id": "202608242334-claude-0",
-        "event_date": "2026-08-13",
-        "deadline": "2026-08-31"
-    },
-    {
-        "id": "sched-2026-08-31-milishita-late-summer-login-bonus-2026-終了",
-        "dedup_key": "milishita-late-summer-login-bonus-2026",
-        "brand": "million",
-        "subject": "ミリシタ「2026年 残暑お見舞いログインボーナス」",
-        "kind": "終了",
-        "note": "開催最終日",
-        "reserved_on": "2026-08-25",
-        "facts": [
-            "ミリシタ公式が『2026年 残暑お見舞いログインボーナス』を2026/08/25（火）～2026/08/31（月）まで開催",
-            "全部で500個のミリオンジュエルを受け取れると案内"
-        ],
-        "title": "ミリシタが残暑お見舞いログインボーナスを8/25から開催",
-        "url": "https://x.com/imasml_theater/status/2091903362304475474",
-        "source_type": "公式",
-        "verify": "confirmed",
-        "src_candidate_id": "202608250213-grok-28",
-        "event_date": "2026-08-25",
-        "deadline": "2026-08-31"
-    },
-    {
-        "id": "sched-2026-08-31-cg-union-arena-vote2026-supply-set-2026-締切",
-        "dedup_key": "cg-union-arena-vote2026-supply-set-2026",
-        "brand": "cg",
-        "subject": "UNION ARENA『アイドルマスター シンデレラガールズ スペシャルカードサプライセット』予約",
-        "kind": "締切",
-        "note": "予約受付締切23:59",
-        "title": "ユニアリ総選挙2026サプライセット予約締切",
-        "url": "https://x.com/UNION_ARENA_TCG/status/2092129847816425616",
-        "source_type": "当事者",
-        "verify": "confirmed",
-        "src_candidate_id": "202608260216-grok-15",
-        "event_date": "2026-08-31",
-        "facts": [
-            "収録R「大槻唯」を動画で紹介、箔押し加工デザイン",
-            "予約受付は8月31日(月)23時59分まで"
-        ],
-        "reserved_on": "2026-08-26"
-    },
-    {
-        "id": "sched-2026-08-31-tours-spring-exchange-2026-締切",
-        "dedup_key": "tours-spring-exchange-2026",
-        "brand": "joint",
-        "subject": "ツアマス スプリングキャンペーン景品交換対応",
-        "kind": "締切",
-        "note": "交換対応終了",
-        "title": "ツアマス春キャンペーン景品交換、8月31日まで",
-        "url": "https://x.com/TOURS_imas/status/2092176786411131352",
-        "source_type": "公式",
-        "verify": "confirmed",
-        "src_candidate_id": "202608260216-grok-68",
-        "event_date": "2026-08-31",
-        "facts": [
-            "スプリングキャンペーンの景品交換対応は8月31日(月)で終了",
-            "店舗に交換品がない場合は公式ニュースページの問い合わせ先へ連絡可能"
-        ],
-        "reserved_on": "2026-08-26"
-    },
-    {
-        "id": "sched-2026-08-31-shanison-illumination-stars-event-2026-開幕",
-        "dedup_key": "shanison-illumination-stars-event-2026",
-        "brand": "shiny",
-        "subject": "シャニソン イルミネーションスターズ新曲イベント「星々の綴るカンターレ」",
-        "kind": "開幕",
-        "note": "イベント開催日",
-        "title": "シャニソン、イルミネ新曲イベントを8月31日開催",
-        "url": "https://x.com/imassc_prism/status/2092215855430148327",
-        "source_type": "公式",
-        "verify": "confirmed",
-        "src_candidate_id": "202608260216-grok-45",
-        "event_date": "2026-08-31",
-        "facts": [
-            "新曲イベント「星々の綴るカンターレ」を8月31日開催",
-            "イベント報酬はSSR【ひかりのどけき】風野灯織"
-        ],
-        "reserved_on": "2026-08-26"
-    }
+  {
+    "id": "sched-2026-08-31-seabreeze-gakumas-collab-2026-締切",
+    "dedup_key": "seabreeze-gakumas-collab-2026",
+    "brand": "gaku",
+    "subject": "SEA BREEZE×学マス特別賞応募締切",
+    "kind": "締切",
+    "note": "特別賞応募最終日",
+    "reserved_on": "2026-07-14",
+    "facts": [
+      "特別賞の応募締切は2026年8月31日(月)23:59",
+      "公式Xフォロー&対象商品を使った夏の写真を「#シーブリーズ学マスコラボ」付きで投稿すると抽選30名にオリジナルクリアポスターが当たる"
+    ],
+    "title": "SEA BREEZE×学マス コラボ実施中、8月31日締切",
+    "url": "https://seabreeze-gkmas-cp.jp/",
+    "source_type": "当事者",
+    "verify": "confirmed",
+    "src_candidate_id": "202607130742-claude-102",
+    "event_date": "2026-08-31"
+  },
+  {
+    "id": "sched-2026-08-31-cg-pop-n-toybox-cd-2026-締切",
+    "dedup_key": "cg-pop-n-toybox-cd-2026",
+    "brand": "cg",
+    "subject": "Pop'n ToyBox!!会場オリジナルCD事後通販",
+    "kind": "締切",
+    "note": "事後通販受付締切23:59",
+    "reserved_on": "2026-08-25",
+    "facts": [
+      "Pop'n ToyBox!!（8月13-16日Shibuya LOVEZ開催）の会場オリジナルCD2タイトル事後通販受付",
+      "受付期間：2026年8月21日（金）18:00～2026年8月31日（月）23:59",
+      "発送予定：2026年9月11日（金）",
+      "各CD3,500円、各700票分の総選挙投票券シリアルコード付属",
+      "販売：コロムビアミュージックショップ"
+    ],
+    "title": "Pop'n ToyBox!!会場オリジナルCD事後通販受付開始",
+    "url": "https://columbia.jp/idolmaster/imasnews/260821postevent.html",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608242334-claude-0",
+    "event_date": "2026-08-13",
+    "deadline": "2026-08-31"
+  },
+  {
+    "id": "sched-2026-08-31-milishita-late-summer-login-bonus-2026-終了",
+    "dedup_key": "milishita-late-summer-login-bonus-2026",
+    "brand": "million",
+    "subject": "ミリシタ「2026年 残暑お見舞いログインボーナス」",
+    "kind": "終了",
+    "note": "開催最終日",
+    "reserved_on": "2026-08-25",
+    "facts": [
+      "ミリシタ公式が『2026年 残暑お見舞いログインボーナス』を2026/08/25（火）～2026/08/31（月）まで開催",
+      "全部で500個のミリオンジュエルを受け取れると案内"
+    ],
+    "title": "ミリシタが残暑お見舞いログインボーナスを8/25から開催",
+    "url": "https://x.com/imasml_theater/status/2091903362304475474",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608250213-grok-28",
+    "event_date": "2026-08-25",
+    "deadline": "2026-08-31"
+  },
+  {
+    "id": "sched-2026-08-31-cg-union-arena-vote2026-supply-set-2026-締切",
+    "dedup_key": "cg-union-arena-vote2026-supply-set-2026",
+    "brand": "cg",
+    "subject": "UNION ARENA『アイドルマスター シンデレラガールズ スペシャルカードサプライセット』予約",
+    "kind": "締切",
+    "note": "予約受付締切23:59",
+    "title": "ユニアリ総選挙2026サプライセット予約締切",
+    "url": "https://x.com/UNION_ARENA_TCG/status/2092129847816425616",
+    "source_type": "当事者",
+    "verify": "confirmed",
+    "src_candidate_id": "202608260216-grok-15",
+    "event_date": "2026-08-31",
+    "facts": [
+      "収録R「大槻唯」を動画で紹介、箔押し加工デザイン",
+      "予約受付は8月31日(月)23時59分まで"
+    ],
+    "reserved_on": "2026-08-26"
+  },
+  {
+    "id": "sched-2026-08-31-tours-spring-exchange-2026-締切",
+    "dedup_key": "tours-spring-exchange-2026",
+    "brand": "joint",
+    "subject": "ツアマス スプリングキャンペーン景品交換対応",
+    "kind": "締切",
+    "note": "交換対応終了",
+    "title": "ツアマス春キャンペーン景品交換、8月31日まで",
+    "url": "https://x.com/TOURS_imas/status/2092176786411131352",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608260216-grok-68",
+    "event_date": "2026-08-31",
+    "facts": [
+      "スプリングキャンペーンの景品交換対応は8月31日(月)で終了",
+      "店舗に交換品がない場合は公式ニュースページの問い合わせ先へ連絡可能"
+    ],
+    "reserved_on": "2026-08-26"
+  },
+  {
+    "id": "sched-2026-08-31-shanison-illumination-stars-event-2026-開幕",
+    "dedup_key": "shanison-illumination-stars-event-2026",
+    "brand": "shiny",
+    "subject": "シャニソン イルミネーションスターズ新曲イベント「星々の綴るカンターレ」",
+    "kind": "開幕",
+    "note": "イベント開催日",
+    "title": "シャニソン、イルミネ新曲イベントを8月31日開催",
+    "url": "https://x.com/imassc_prism/status/2092215855430148327",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608260216-grok-45",
+    "event_date": "2026-08-31",
+    "facts": [
+      "新曲イベント「星々の綴るカンターレ」を8月31日開催",
+      "イベント報酬はSSR【ひかりのどけき】風野灯織"
+    ],
+    "reserved_on": "2026-08-26"
+  },
+  {
+    "id": "sched-2026-08-31-general-ap-lounge-kassy-graduation-2026-終了",
+    "dedup_key": "general-ap-lounge-kassy-graduation-2026",
+    "brand": "general",
+    "subject": "アイマスch「APラウンジ」APかっしー卒業",
+    "kind": "終了",
+    "reserved_on": "2026-08-28",
+    "title": "APかっしー卒業配信",
+    "url": "https://imasnews765.com/?p=32308",
+    "source_type": "公式",
+    "facts": [
+      "最終配信日時: 2026年8月26日(水) 19:00",
+      "卒業日: 2026年8月31日(日)",
+      "配信内容: 「APかっしー卒業配信〜6年間ありがとうございました！〜」",
+      "担当番組: APラウンジ(AP配信開始時からの担当)",
+      "卒業理由: 特定の理由は未発表",
+      "コメント: 「AP配信開始当初より応援いただき、誠にありがとうございました。引き続き、当チャンネルを宜しくお願い致します」",
+      "エンゲージメント: 中"
+    ],
+    "event_date": "2026-08-31",
+    "src_candidate_id": "202608272336-claude-30"
+  },
+  {
+    "id": "sched-2026-08-31-cg-derepa-broadcast-2026-締切",
+    "dedup_key": "cg-derepa-broadcast-2026",
+    "brand": "cg",
+    "subject": "CINDERELLA PARTY!ゲスト宛メール締切(立花日菜さん回)",
+    "kind": "締切",
+    "reserved_on": "2026-08-28",
+    "title": "デレパ今後ゲストは天野聡美・立花日菜・福原綾香、メール受付中",
+    "url": "https://x.com/dereparty/status/2092605484842766542",
+    "source_type": "公式",
+    "facts": [
+      "9月9日…久川凪役・立花日菜さん ✉️8/31まで",
+      "メールは https://columbia.jp/idolmaster/derepaform/ まで"
+    ],
+    "event_date": "2026-08-31",
+    "src_candidate_id": "202608280232-grok-10"
+  },
+  {
+    "id": "sched-2026-08-31-reprint-pickup-gacha-2026-08-27-終了",
+    "dedup_key": "reprint-pickup-gacha-2026-08-27",
+    "brand": "million",
+    "subject": "ミリシタ『日替わりピックアップ！限定復刻ガシャ』終了",
+    "kind": "終了",
+    "reserved_on": "2026-08-28",
+    "title": "日替わりピックアップ！限定復刻ガシャ開催、星梨花・千鶴・美奈子・風花",
+    "url": "https://x.com/imasml_theater/status/2092854875516195066",
+    "source_type": "公式",
+    "facts": [
+      "『日替わりピックアップ！限定復刻ガシャ』開催中",
+      "DAY1:SSR箱崎星梨花(CV:麻倉もも)、DAY2:SSR二階堂千鶴(CV:野村香菜子)、DAY3:SSR佐竹美奈子(CV:大関英里)、DAY4:SSR豊川風花(CV:末柄里恵)",
+      "開催期間: 8/27 15:00〜8/31 14:59",
+      "告知画像に「※覚醒後のイラストです。獲得時は覚醒前の状態となります。」と記載"
+    ],
+    "event_date": "2026-08-31",
+    "src_candidate_id": "202608280232-grok-53"
+  }
 ]

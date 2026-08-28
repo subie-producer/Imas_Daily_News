@@ -1,0 +1,66 @@
+{
+  "articles": [
+    {
+      "slug": "general-cg-million-osechi-2027-collab",
+      "brand": "general",
+      "rank": "small",
+      "angle": "シンデレラガールズ×伊勢丹、ミリオンライブ！×三越のおせち2027コラボが決定、詳細は9月中旬解禁予告",
+      "lead_score": 5,
+      "dedup_key": "mistore-osechi-2027-cg-ml",
+      "candidate_ids": ["202608280232-grok-84"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "official-shop-atrekawasaki-2026-08",
+      "reason": "その他",
+      "note": "掲載日・開催開始とも8/18で本日時点の新規トリガー(開幕/締切/当日)がなく規程12の鮮度要件を満たさない"
+    },
+    {
+      "dedup_key": "refrac7ions-still-blue-2026-12",
+      "reason": "重複",
+      "note": "shiny面 shiny-refrac7ions-still-blue-cast-and-times(追加出演キャスト・公演時間・先行受付期間)と同一施策"
+    },
+    {
+      "dedup_key": "imas-tours-late-summer-2026",
+      "reason": "重複",
+      "note": "joint面 joint-tours-late-summer-campaign-momoko(本日開始・周防桃子先行登場)と同一施策"
+    },
+    {
+      "dedup_key": "imai-asami-synth-voice-goal-2026",
+      "reason": "個人の話題",
+      "note": "今井麻美(詩趣ミンゴス名義)個人のアイマス外活動宣言、規程4により対象外"
+    },
+    {
+      "dedup_key": "vocaloid-official-imai-asami-2026",
+      "reason": "個人の話題",
+      "note": "上記・今井麻美個人ネタへの反応投稿。同じくアイマス外活動に付随する話題"
+    },
+    {
+      "dedup_key": "voicevox-official-imai-asami-2026",
+      "reason": "個人の話題",
+      "note": "上記・今井麻美個人ネタへの反応投稿。同じくアイマス外活動に付随する話題"
+    },
+    {
+      "dedup_key": "kaji-yuki-imai-synth-2026",
+      "reason": "個人の話題",
+      "note": "上記・今井麻美個人ネタへの反応投稿(梶裕貴)。同じくアイマス外活動に付随する話題"
+    },
+    {
+      "dedup_key": "shimoda-boost-kaji-imai-synth-2026",
+      "reason": "個人の話題",
+      "note": "上記スレッドの拡散投稿(下田麻美)。同じくアイマス外活動に付随する話題"
+    },
+    {
+      "dedup_key": "imas-20th-piano-collection-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml の piano-collection-preorder-2026 に8/26付でパッケージデザイン・特典詳細が既収録済み、新事実なし"
+    },
+    {
+      "dedup_key": "mutsuki-shuhei-clash-match-guitar-2027",
+      "reason": "個人の話題",
+      "note": "作曲家個人のSNS投稿が唯一の出典で規程4の対象外。CLASH M@TCH!!自体はjoint面(joint-clashmatch-site-sponsors-2026)で既報"
+    }
+  ],
+  "cross_brand": []
+}

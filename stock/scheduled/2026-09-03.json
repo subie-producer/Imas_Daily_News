@@ -1,23 +1,97 @@
 [
- {
-  "id": "sched-2026-09-03-dsva-situation-voice14-2026-締切前",
-  "dedup_key": "dsva-situation-voice14-2026",
-  "brand": "dsva",
-  "subject": "ヴイアラ シチュエーションボイス第14弾",
-  "kind": "締切前",
-  "note": "販売終了3日前",
-  "reserved_on": "2026-08-27",
-  "title": "ヴイアラシチュエーションボイス第14弾、販売は9/6 23:59まで",
-  "url": "https://x.com/valiv_official/status/2092552640911786063",
-  "source_type": "公式",
-  "facts": [
-   "シチュエーションボイス第十四弾発売中",
-   "シチュエーションボイス2026 8月のテーマは「”絶対にゆずれない...！”」",
-   "販売期間：〜9/6(日)23:59"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202608270220-grok-92",
-  "deadline": "2026-09-06"
- }
+  {
+    "id": "sched-2026-09-03-dsva-situation-voice14-2026-締切前",
+    "dedup_key": "dsva-situation-voice14-2026",
+    "brand": "dsva",
+    "subject": "ヴイアラ シチュエーションボイス第14弾",
+    "kind": "締切前",
+    "note": "販売終了3日前",
+    "reserved_on": "2026-08-27",
+    "title": "ヴイアラシチュエーションボイス第14弾、販売は9/6 23:59まで",
+    "url": "https://x.com/valiv_official/status/2092552640911786063",
+    "source_type": "公式",
+    "facts": [
+      "シチュエーションボイス第十四弾発売中",
+      "シチュエーションボイス2026 8月のテーマは「”絶対にゆずれない...！”」",
+      "販売期間：〜9/6(日)23:59"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202608270220-grok-92",
+    "deadline": "2026-09-06"
+  },
+  {
+    "id": "sched-2026-09-03-cg-gacha-festival-2026-08-発売",
+    "dedup_key": "cg-gacha-festival-2026-08",
+    "brand": "cg",
+    "subject": "シンデレラガールズ文化祭テーマ オンラインくじ(くじ引き堂)",
+    "kind": "発売",
+    "reserved_on": "2026-08-28",
+    "title": "『アイドルマスター シンデレラガールズ』新作オンラインくじ 文化祭テーマ",
+    "url": "https://www.inside-games.jp/article/2026/08/27/186848.html",
+    "source_type": "公式",
+    "facts": [
+      "Platform: くじ引き堂 (Online gacha platform)",
+      "Theme: 文化祭 (School festival)",
+      "描き下ろしイラスト (Original illustration merchandise)",
+      "販売開始予定: 2026-09-03 12:00"
+    ],
+    "event_date": "2026-09-03",
+    "src_candidate_id": "202608280232-claude-97"
+  },
+  {
+    "id": "sched-2026-09-03-imas-mor-414-asahi-2026-締切",
+    "dedup_key": "imas-mor-414-asahi-2026",
+    "brand": "joint",
+    "subject": "アイマスMOR414 田中有紀宛メール締切",
+    "kind": "締切",
+    "reserved_on": "2026-08-28",
+    "title": "アイマスMOR414は芹沢あさひ役・田中有紀のマスターソング特集",
+    "url": "https://x.com/imas_musicradio/status/2092613786880647264",
+    "source_type": "準公式",
+    "facts": [
+      "アイマスMOR414（9月16日放送）は、シャイニーカラーズ・芹沢あさひ役、田中有紀さんのマスターソング特集をお届け",
+      "田中さん宛のメールは https://krs.bz/columbia/m/morform へ",
+      "メール締切: 9月3日まで"
+    ],
+    "event_date": "2026-09-03",
+    "src_candidate_id": "202608280232-grok-48"
+  },
+  {
+    "id": "sched-2026-09-03-gaku-asari-zemi-memory-ability-fix-2026-締切",
+    "dedup_key": "gaku-asari-zemi-memory-ability-fix-2026",
+    "brand": "gaku",
+    "subject": "学マス「あさり先生のプロデュースゼミ」メモリーアビリティ不具合お詫び受取期限",
+    "kind": "締切",
+    "reserved_on": "2026-08-28",
+    "title": "選抜試験メモリー不具合のメンテナンスとお詫び配布",
+    "url": "https://x.com/gkmas_official/status/2092833479914623138",
+    "source_type": "公式",
+    "facts": [
+      "2026/8/27(木)15:00〜16:30(予定)に不具合メモリー削除・関連プロデュースデータ破棄のメンテナンスを実施",
+      "メンテナンス完了後にジュエル500個・APドリンク5個・あさり先生シール1000個を配布",
+      "削除された選抜試験メモリー数に応じてAPドリンクを追加配布、プロデュースデータ破棄の場合はAPドリンク1個を追加配布",
+      "受け取り期限は2026/9/3(木)4:59まで(予定)、受け取りは【ホーム>プレゼント】より"
+    ],
+    "event_date": "2026-09-03",
+    "src_candidate_id": "202608280232-grok-34"
+  },
+  {
+    "id": "sched-2026-09-03-gaku-espresto-senan-tsubame-2026-開始",
+    "dedup_key": "gaku-espresto-senan-tsubame-2026",
+    "brand": "gaku",
+    "subject": "プライズフィギュア「学園アイドルマスター ESPRESTO」十王星南・雨夜燕",
+    "kind": "開始",
+    "reserved_on": "2026-08-28",
+    "title": "プライズフィギュア「十王星南」「雨夜燕」発表",
+    "url": "https://hobby.watch.impress.co.jp/docs/news/2135645.html",
+    "source_type": "報道",
+    "facts": [
+      "十王星南「-High contrast-十王星南」フィギュアが9月3日展開開始予定",
+      "『学園アイドルマスター』に登場するアイドルを「初」衣装で立体化",
+      "タイトなボトムスと柔らかく広がるトップスによる白と黒のコントラストが特徴"
+    ],
+    "event_date": "2026-09-03",
+    "src_candidate_id": "202608271235-claude-25"
+  }
 ]

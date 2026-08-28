@@ -1,0 +1,159 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-refrac7ions-still-blue-cast-and-times",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "REFRAC7IONS「Still blue」で追加出演キャストと公演時間(12/19 17:00開場・18:00開演、12/20 16:00開場・17:00開演)が判明、アソビストア一般会員先行受付は9/23まで",
+      "lead_score": 65,
+      "dedup_key": "refractions-still-blue-cast-2026-08-27",
+      "candidate_ids": [
+        "202608270734-claude-3",
+        "202608271235-claude-17",
+        "202608272336-claude-17",
+        "202608272336-claude-31",
+        "202608280232-grok-56",
+        "202608280342-grok-34",
+        "202608280342-grok-35"
+      ]
+    },
+    {
+      "slug": "shiny-msp-ticket-price-period",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "283 PRODUCTION Solo Live -Master ShowPiece-、現地チケット一般発売(先着)の受付期間(8/29 12:00〜9/15 23:59)とチケット価格(現地14,000円・配信14,000円/7,000円)が判明",
+      "lead_score": 20,
+      "dedup_key": "shinycolors-solo-live-msp-2026",
+      "candidate_ids": [
+        "202608271235-claude-18",
+        "202608272336-claude-16"
+      ]
+    },
+    {
+      "slug": "shiny-30ms-hitada-mikoto-preorder",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "30MS『緋田美琴』プラモデルの予約受付が開始(2027年1月発売、税込4,180円)",
+      "lead_score": 10,
+      "dedup_key": "30ms-aketa-2027",
+      "candidate_ids": [
+        "202608280232-claude-105"
+      ]
+    },
+    {
+      "slug": "shiny-shanison-ver2-17-0-update",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニソンVer.2.17.0アップデートでフォトスタジオにフィルター・縦画面モードが追加、楽曲情報画面から歌詞を見ながらの試聴も可能に",
+      "lead_score": 15,
+      "dedup_key": "shanison-ver-2-17-0-photo-studio",
+      "candidate_ids": [
+        "202608280232-grok-68",
+        "202608280232-grok-69"
+      ]
+    },
+    {
+      "slug": "shiny-parallel-corridor-popup-venue",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "パラレルコレクションPOP UP SHOP「パラレル回廊」の会場(秋葉原UDXギャラリー)と会期(9/20〜9/27)が判明",
+      "lead_score": 10,
+      "dedup_key": "popup-parallel-kairou-2026-09",
+      "candidate_ids": [
+        "202608280232-grok-59"
+      ]
+    },
+    {
+      "slug": "shiny-kyomafu-2026-goods",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "京都国際マンガ・アニメフェア2026(9/19-20)に『放課後クライマックスガールズ』が出展、新規描き下ろしグッズとコラボドリンクを販売",
+      "lead_score": 15,
+      "dedup_key": "shiny-kyoto-manga-anime-fair-2026",
+      "candidate_ids": [
+        "202608271835-watch-0"
+      ]
+    },
+    {
+      "slug": "shiny-8th-anniversary-stepup-gacha",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニマス、8周年記念「8月8のつく日」限定でSSR2倍の特別ステップアップガシャを本日24時間限定開催",
+      "lead_score": 25,
+      "dedup_key": "sc-8th-aug8-ssr2-stepup-2026-08-28",
+      "candidate_ids": [
+        "202608280232-grok-64"
+      ]
+    },
+    {
+      "slug": "shiny-noctchill-event-open",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "ノクチルシナリオイベント「いつか風が止むその日まで」が本日開幕、開催期間は9月7日11:59まで",
+      "lead_score": 30,
+      "dedup_key": "shiny-noctchill-event-2026",
+      "candidate_ids": [
+        "202608280232-grok-62",
+        "sched-2026-08-28-shiny-noctchill-event-2026-開幕"
+      ]
+    },
+    {
+      "slug": "shiny-roundup-0828",
+      "brand": "shiny",
+      "rank": "roundup",
+      "angle": "シャニマス運営情報まとめ: 8/28メンテナンス(12:00〜16:00)、トワコレ雛菜・咲耶とプレリュード恋鐘ガシャ終了、283ステージ記念セレチケ&キャスティングコレクション終了、Uka衣装復刻の特別演出、園田智代子ピックアップガシャ開催中",
+      "lead_score": 5,
+      "dedup_key": "sc-maintenance-2026-08-28",
+      "candidate_ids": [
+        "202608280232-grok-63",
+        "202608280232-grok-65",
+        "202608280232-grok-66",
+        "202608280232-grok-70",
+        "202608280342-grok-40"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-hopeful-feathers-2026",
+      "reason": "既報",
+      "note": "stock: shiny-hopeful-feathers-cd-2026(8/26付)でINDEX・ジャケット解禁済み、新事実なし"
+    },
+    {
+      "dedup_key": "shiny-song-for-prism-karma-naraku-2026",
+      "reason": "既報",
+      "note": "stock: shiny-karma-naraku-event-2026(8/24付)で8/23開催イベントとして既報、新事実なし"
+    },
+    {
+      "dedup_key": "shiny-costume-gacha-summer-2026",
+      "reason": "既報",
+      "note": "stock: shiny-costume-gacha-2026-08(8/26付)で開催期間・復刻内容まで既報、新事実なし"
+    },
+    {
+      "dedup_key": "shiny-live-streaming-hatsumoui-2026",
+      "reason": "その他",
+      "note": "8/25に終了した生配信の紹介で本日時点の新規性・トリガーなし(規程12)"
+    },
+    {
+      "dedup_key": "tanaka-mamimi-sigma-desire-cosplay-20260827",
+      "reason": "個人の話題",
+      "note": "個人のコスプレ投稿(verify unconfirmed)。単体記事化不可、この面の対象外(ファン面の管轄)"
+    },
+    {
+      "dedup_key": "30ms-hitada-mikoto-2027-01",
+      "reason": "既報",
+      "note": "stock: shiny-30ms-new-figures-2026-08(8/24付)で同一発表内容が既報"
+    },
+    {
+      "dedup_key": "30ms-nanakusa-nichika-hazuki-hair-face-2027-01",
+      "reason": "既報",
+      "note": "stock: shiny-30ms-new-figures-2026-08(8/24付)で同一発表内容が既報"
+    },
+    {
+      "dedup_key": "shanison-coming-soon-teaser-2026-08-27",
+      "reason": "出典不足",
+      "note": "「Coming Soon」ティザー画像のみで具体的な発表内容がなく記事化できる事実がない"
+    }
+  ],
+  "cross_brand": []
+}

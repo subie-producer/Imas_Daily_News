@@ -1,0 +1,201 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-3rd-single-wave3-titles",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "3rdシングル第3弾(十王星南・花海咲季・花海佑芽・秦谷美鈴)の曲名・価格・収録内容が判明。8/26発売の既報に具体的な曲名(『赤裸々』『Wildest Flower』『真っ白いページと水彩の主人公』『VEIL』)・税込2,500円・収録曲構成を追加",
+      "lead_score": 8,
+      "dedup_key": "gaku-3rd-single-set3-2026",
+      "candidate_ids": ["202608270734-claude-14", "202608270734-claude-27", "202608271235-claude-23"]
+    },
+    {
+      "slug": "gaku-bigface-plush-vol3-preorder",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "BIGフェイスぬいぐるみvol.3の予約受付が8/27 10時開始、2026年12月発売・価格4,620円(税込)",
+      "lead_score": 5,
+      "dedup_key": "big-face-nui-vol3-2026-12",
+      "candidate_ids": ["202608271235-watch-2", "202608280232-grok-35"]
+    },
+    {
+      "slug": "gaku-espresto-senan-tsubame-figures",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "プライズフィギュア「学園アイドルマスター ESPRESTO」に十王星南(9/3展開)・雨夜燕(9/10展開)が登場、それぞれ『初』衣装を立体化",
+      "lead_score": 5,
+      "dedup_key": "gkmas-espresto-senan-tsubame-202608",
+      "candidate_ids": ["202608271235-claude-25"]
+    },
+    {
+      "slug": "gaku-asari-produce-seminar-launch",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "新イベント「あさり先生のプロデュースゼミ」が8/26開催開始(〜9/4)。メモリーのロック・再抽選機能で厳選を支援し、通常と異なるプランのカードが出現する特別仕様",
+      "lead_score": 12,
+      "dedup_key": "gaku-asari-seminar-2026",
+      "candidate_ids": ["202608272336-claude-21", "202608280232-grok-30", "202608280232-claude-114"]
+    },
+    {
+      "slug": "gaku-asari-seminar-memory-bug-cleanup-maintenance",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「あさり先生のプロデュースゼミ」のメモリーアビリティ重複不具合、該当メモリー削除・プロデュースデータ破棄のための追加メンテナンスを8/27 15:00〜16:30に実施",
+      "lead_score": 8,
+      "dedup_key": "gaku-memory-ability-bug-mt-20260827",
+      "candidate_ids": ["202608280232-grok-34"]
+    },
+    {
+      "slug": "gaku-shirube-iwate-streaming-ticket-sale",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「学園アイドルマスター LIVE TOUR -標- 岩手公演」(9/22-23)の配信視聴チケット販売が8/27開始",
+      "lead_score": 8,
+      "dedup_key": "gaku-shirube-iwate-streaming-2026",
+      "candidate_ids": ["202608280232-grok-36"]
+    },
+    {
+      "slug": "gaku-hatsuboshi-ongakusai-bd-deadline-4days",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "初星音楽祭Blu-ray、受注締切まであと4日(8/27時点)。新規ダイジェスト映像「SEARCH RIGHT」を公開",
+      "lead_score": 5,
+      "dedup_key": "gaku-hatsuboshi-ongakusai-bd-deadline-2026-08",
+      "candidate_ids": ["202608280232-grok-37"]
+    },
+    {
+      "slug": "gaku-hatsuboshi-housoubu-0902-guest",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "ラジオ「初星学園放送部」9/2放送回のゲストに七瀬つむぎ(有村麻央役)・花岩香奈(葛城リーリヤ役)が決定、標ツアー福井公演を振り返り",
+      "lead_score": 5,
+      "dedup_key": "gaku-radio-guest-2026-09-02",
+      "candidate_ids": ["202608280232-grok-38"]
+    },
+    {
+      "slug": "gaku-4koma-164-saikou-no-shunkan",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "学マス4コマ漫画第164話「最高の瞬間を」を公開",
+      "lead_score": 3,
+      "dedup_key": "gaku-4koma-164-2026-08-26",
+      "candidate_ids": ["202608280232-grok-40"]
+    },
+    {
+      "slug": "gaku-hatsuboshistore-tropical-ice-parlor-open",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "ハツボシストア(渋谷Sakura Stage)が本日8/28「サマートロピカルアイスパーラー」にテーマ替え、13人全アイドルの新ビジュアルとライフサイズパネルEC事前注文を展開",
+      "lead_score": 30,
+      "dedup_key": "hatsuboshi-store-tropical-ice-parlor-2026-08",
+      "candidate_ids": ["202608280232-claude-115"]
+    },
+    {
+      "slug": "gaku-seabreeze-collab-deadline-3days",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "SEA BREEZE×学マスコラボ、特別賞応募締切(8/31 23:59)まで残り3日。当選者発表は9月中旬以降DMで通知",
+      "lead_score": 10,
+      "dedup_key": "seabreeze-gakumas-collab-2026",
+      "candidate_ids": ["sched-2026-08-28-seabreeze-gakumas-collab-2026-締切前"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gaku-swimwear-misuzu-gacha-2026",
+      "reason": "既報",
+      "note": "gakumas-swimsuit-gacha-hataya-2026(2026-08-25初報)の published_facts と同一(開始日・期間・カード名)。新事実なし"
+    },
+    {
+      "dedup_key": "gakumas-pixiv-ranking-2026-08",
+      "reason": "その他",
+      "note": "ファンによるpixiv投稿数トレンド集計。個別の運営ニュースではなくファン創作動向の紹介にあたり、この面の記事化基準に合わない(culture面向け素材)"
+    },
+    {
+      "dedup_key": "gakumas-live-tour-fukui-2026-08",
+      "reason": "既報",
+      "note": "gakumas-shirube-livetour-2026(2026-08-25初報)で福井公演の新曲初披露・出演者含め既報。開催も8/20-21で発行日時点の続報トリガーなし"
+    },
+    {
+      "dedup_key": "gkmas-hif-memorial-single-garakuta-202608",
+      "reason": "既報",
+      "note": "gaku-hif-memorial-single-2026(2026-08-26初報)と価格・収録内容が一致、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-tour-shirube-streaming-2026-08",
+      "reason": "出典不足",
+      "note": "「STREAMINGセクションが更新された」とのみで更新内容の具体的事実が無い"
+    },
+    {
+      "dedup_key": "gakumas-livetour-shirube-fukui-2026",
+      "reason": "既報",
+      "note": "gakumas-shirube-livetour-2026と同一話題(福井公演)。既報かつ開催から1週間以上経過しトリガーなし"
+    },
+    {
+      "dedup_key": "gaku-mainstory-review-fan",
+      "reason": "個人の話題",
+      "note": "個人ブログのプレイ感想記事(単体のファン発信)"
+    },
+    {
+      "dedup_key": "gaku-gift-nuigurumi-comiket108",
+      "reason": "同人・ファン主催",
+      "note": "コミックマーケット108会場での先行販売が主軸の告知で、同人即売会の開催・販売が中心事実"
+    },
+    {
+      "dedup_key": "shinohara-hiro-drawing-ref-trend-2026",
+      "reason": "個人の話題",
+      "note": "単一Xアカウントの投稿を起点にした現象紹介で、個人のSNS投稿単体の記事化にあたる"
+    },
+    {
+      "dedup_key": "gaku-misuzu-gravure-gacha-2026-08",
+      "reason": "既報",
+      "note": "gakumas-swimsuit-gacha-hataya-2026と同一(美鈴ガシャ開催告知)、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-nee-itchauyo-misuzu-song-2026-08",
+      "reason": "既報",
+      "note": "gakumas-nee-icchauyo-series-2026(2026-08-26初報)の秦谷美鈴版追加ボイス facts と一致"
+    },
+    {
+      "dedup_key": "gaku-ssr-support-taisetsu-omoide-2026-08",
+      "reason": "既報",
+      "note": "gakumas-swimsuit-gacha-hataya-2026の published_facts にSSRカード名が既出"
+    },
+    {
+      "dedup_key": "gaku-sr-support-oyasumi-futari-2026-08",
+      "reason": "既報",
+      "note": "gakumas-swimsuit-gacha-hataya-2026の published_facts にSRカード名が既出"
+    },
+    {
+      "dedup_key": "gaku-misuzu-omoide-ishou-2026-08",
+      "reason": "既報",
+      "note": "gaku-hataya-memory-costume-2026(2026-08-26初報)と開催時刻・対象衣装の内容が一致"
+    },
+    {
+      "dedup_key": "gaku-nemurase-tai-gashapon-2026",
+      "reason": "既報",
+      "note": "同一dedup_keyのgaku-nemurase-tai-gashapon-2026(2026-08-27初報)にラインナップ・受注期間・価格が既出"
+    },
+    {
+      "dedup_key": "gaku-misuzu-summer-poster-cp-2026",
+      "reason": "既報",
+      "note": "gakumas-swimsuit-gacha-hataya-2026の published_facts に記念キャンペーン(フォロー&引用ポストでB2ポスター抽選)が既出。柄数・当選人数の内訳は既報の範囲内の補足に留まる"
+    },
+    {
+      "dedup_key": "gaku-nee-itchauyo-misuzu-shorts-2026-08-26",
+      "reason": "既報",
+      "note": "gakumas-hatsuhoshi-ongakusai-bd-2026(2026-08-26)の published_facts に「秦谷美鈴ソロver.のshorts公開」が既出"
+    },
+    {
+      "dedup_key": "gakumasu-garakuta-road-memorial-2026-08",
+      "reason": "既報",
+      "note": "gaku-hif-memorial-single-2026と同一話題(ガラクタロード発売)、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-misuz-swimsuit-gacha-2026",
+      "reason": "既報",
+      "note": "gakumas-swimsuit-gacha-hataya-2026と同一話題(美鈴ガシャ)、新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

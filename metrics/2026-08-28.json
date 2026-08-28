@@ -1,0 +1,207 @@
+{
+ "collect": [
+  {
+   "at": "2026-08-28T02:32:43+09:00",
+   "edition": "2026-08-28",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 341,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "grok:765as": 3,
+    "grok:cinderella": 10,
+    "grok:million": 7,
+    "grok:shiny": 15,
+    "grok:sidem": 13,
+    "grok:gakuen": 15,
+    "grok:dsva": 3,
+    "grok:joint-other": 8,
+    "grok:trend": 13,
+    "grok:fan-culture": 13,
+    "claude:765as": 8,
+    "claude:cinderella": 6,
+    "claude:million": 3,
+    "claude:shiny": 3,
+    "claude:sidem": 4,
+    "claude:gakuen": 7,
+    "claude:dsva": 0,
+    "claude:joint-other": 0,
+    "claude:trend": 5,
+    "claude:fan-culture": 5
+   },
+   "normalized": 119,
+   "added": 98,
+   "verify": {
+    "confirmed": 85,
+    "unconfirmed": 27,
+    "failed": 7
+   },
+   "duration_s": 1932
+  },
+  {
+   "at": "2026-08-28T03:01:35+09:00",
+   "edition": "2026-08-28",
+   "watch": {
+    "skipped": true
+   },
+   "per_query": {
+    "grok:765as": 0,
+    "grok:cinderella": 0,
+    "grok:million": 0,
+    "grok:shiny": 0,
+    "grok:sidem": 0,
+    "grok:gakuen": 0,
+    "grok:dsva": 0,
+    "grok:joint-other": 0,
+    "grok:trend": 0
+   },
+   "normalized": 0,
+   "added": 0,
+   "verify": {
+    "confirmed": 0,
+    "unconfirmed": 0,
+    "failed": 0
+   },
+   "duration_s": 400
+  },
+  {
+   "at": "2026-08-28T03:02:43+09:00",
+   "edition": "2026-08-28",
+   "watch": {
+    "skipped": true
+   },
+   "per_query": {},
+   "normalized": 0,
+   "added": 0,
+   "verify": {
+    "confirmed": 0,
+    "unconfirmed": 0,
+    "failed": 0
+   },
+   "duration_s": 4
+  },
+  {
+   "at": "2026-08-28T03:42:28+09:00",
+   "edition": "2026-08-28",
+   "watch": {
+    "skipped": true
+   },
+   "per_query": {
+    "grok:765as": 12,
+    "grok:cinderella": 0,
+    "grok:million": 12,
+    "grok:shiny": 11,
+    "grok:sidem": 10,
+    "grok:gakuen": 0,
+    "grok:dsva": 8,
+    "grok:joint-other": 1,
+    "grok:trend": 0
+   },
+   "normalized": 54,
+   "added": 27,
+   "verify": {
+    "confirmed": 52,
+    "unconfirmed": 2,
+    "failed": 0
+   },
+   "duration_s": 1115
+  },
+  {
+   "at": "2026-08-28T12:35:25+09:00",
+   "edition": "2026-08-29",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 3,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 341,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 1,
+      "deferred": 0
+     }
+    },
+    "new": 4,
+    "facted": 4,
+    "deferred": 0
+   },
+   "per_query": {
+    "claude:765as": 3,
+    "claude:cinderella": 7,
+    "claude:million": 4,
+    "claude:shiny": 5,
+    "claude:sidem": 3,
+    "claude:gakuen": 6,
+    "claude:dsva": 0,
+    "claude:joint-other": 8,
+    "claude:trend": 7
+   },
+   "normalized": 37,
+   "added": 37,
+   "verify": {
+    "confirmed": 25,
+    "unconfirmed": 4,
+    "failed": 8
+   },
+   "duration_s": 294
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-08-28T05:12:11+09:00",
+   "edition": "2026-08-28",
+   "rounds": 3,
+   "approved": false,
+   "lint_green": true,
+   "planned": 49,
+   "written": 46,
+   "roundups": 4,
+   "dropped": 78,
+   "coverage": {
+    "subjects": 185,
+    "covered": 185,
+    "missing": 0
+   },
+   "aborted": [
+    "shiny-8th-anniversary-stepup-gacha",
+    "sidem-costume-museum-web-order-goods-2026-08-28",
+    "million-idol-gp-flash-medal-deadline"
+   ],
+   "duration_s": 4301
+  }
+ ]
+}

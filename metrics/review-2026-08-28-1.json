@@ -1,0 +1,35 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-08-28-cg-online-gacha-school-festival.md",
+   "issue": "【ブロック項目#6】「公式」バッジの誤用：inside-games.jp はメディア記事サイトであり、公式サイトではない",
+   "quote": "line 5: src: 公式 | line 17-19: sources: url: https://www.inside-games.jp/article/2026/08/27/186848.html, type: 公式 | 規程6：「公式」=アイマス公式ポータル・ブランド/作品の公式サイト・公式Xアカウント。inside-games.jp はゲーム情報メディア。正しくは「報道」に分類すべき。"
+  },
+  {
+   "file": "docs/_posts/2026-08-28-sidem-murase-himeno-graduation-followup-2026-08-28.md",
+   "issue": "【ブロック項目#4】新事実なしの続報：8月18日に公式発表済みの内容を単なる焼き直しで掲載。当日トリガー（ニュース性）がない",
+   "quote": "line 11: lede『10年間務めた役を卒業すると8月18日付で発表されている』| 本記事は8日後の8月28日に既報を記事化。stories.yml でも 2026-08-24 に first_published として既に記録済み。記事本文の『もふもふえん』『11th STAGE』の担当予定は8月18日の発表時点で公開済みの情報であり、新事実ではない。発行日の新しい出来事や締切ではない。"
+  },
+  {
+   "file": "docs/_posts/2026-08-28-shiny-30ms-hitada-mikoto-preorder.md",
+   "issue": "【ブロック項目#6】source type の分類誤り：toyget.com は個人ブログであり「当事者」ではなく「報道」が正確",
+   "quote": "line 5: src: 当事者 | line 15-16: url: https://blog.toyget.com/entry/2026/08/26/210929, type: 当事者 | toyget は商品予約情報ブログ。規程6「当事者」の定義=主催者・販売元・自治体。個人ブログは報道メディアに分類すべき。"
+  },
+  {
+   "file": "docs/_posts/2026-08-28-765-ap-lounge-kasshi-graduation.md",
+   "issue": "【ブロック項目#10】ニュース性の欠如：8月4日の告知、8月26日の最終配信が既に終了。当日2026-08-28の新しい出来事がない",
+   "quote": "line 20『告知は2026年8月4日付で掲載されている』『最後の配信は8月26日（水）と案内され』| 記事は既に終わった過去の告知を記事化。「卒業が本日実現する」のではなく「卒業が既に決定していた」という既報の再掲。本日の新しい出来事・トリガーがない。"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-08-28-765-ap-lounge-kasshi-graduation.md",
+   "issue": "【コメント項目】記事の時制が曖昧。本日（8月28日）が卒業日と読めるが、実際は既に8月26日に最終配信が終了した過去の出来事を今日報告している状態。最終配信は stories.yml で 2026-08-27 に first_published として既報済み"
+  },
+  {
+   "file": "docs/_posts/2026-08-28-sidem-murase-himeno-graduation-followup-2026-08-28.md",
+   "issue": "【コメント項目】event_date: 2026-08-18（発表日）となっており、本日2026-08-28の出来事ではない。「発表から10日後の追加情報」ではなく「既に公開済みの情報の焼き直し」。版面に掲載する価値が疑問"
+  }
+ ]
+}

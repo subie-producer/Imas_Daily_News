@@ -1,0 +1,32 @@
+{
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-08-28-general-cg-million-osechi-2027-collab.md",
+   "issue": "ニュース性の欠如：発表内容が「2027年のおせちコラボが決まった」のみで、商品情報・価格・詳細は「準備中」「続報待ち」のため、独立した記事として成立していない。発行日時点で新しく発表された・起きた核となるニュースが不明確。",
+   "quote": "特設ページと商品情報は準備中。最新情報は三越伊勢丹メディア芸術のX（@im_MediaArts）で発信される。"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-08-28-general-cg-million-osechi-2027-collab.md",
+   "issue": "event_date が frontmatter に設定されていない。2027年の発売予定イベントの場合、発売予定日またはアナウンス日を明記する必要があります。"
+  },
+  {
+   "file": "docs/_posts/2026-08-28-gaku-4koma-164-saikou-no-shunkan.md",
+   "issue": "rank: small に対して本文が過度に薄い。4コマ漫画の公開案内のみで、内容説明や文脈がない状態。small は 250字以上が基準。"
+  },
+  {
+   "file": "docs/_posts/2026-08-28-shiny-kyomafu-2026-goods.md",
+   "issue": "rank: small に対して本文が薄い。京都国際マンガ・アニメフェアでの放課後クライマックスガールズグッズ販売情報のみで、イベント詳細（会場、期間、価格帯、グッズ種類など）が不足している。"
+  },
+  {
+   "file": "docs/_posts/2026-08-28-gaku-espresto-senan-tsubame-figures.md",
+   "issue": "rank: small に対して本文が薄い。プライズフィギュア情報のみで、商品の詳細仕様（サイズ、各部特徴）が簡潔すぎる。"
+  },
+  {
+   "file": "docs/_posts/2026-08-28-gaku-hatsuboshi-ongakusai-bd-deadline-4days.md",
+   "issue": "rank: small に対して本文が薄い。受注締切告知とダイジェスト映像公開のみで、商品情報（仕様、収録内容、価格など）が記載されていない。"
+  }
+ ],
+ "verdict": "block"
+}

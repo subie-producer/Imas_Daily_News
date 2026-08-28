@@ -1,0 +1,117 @@
+{
+  "articles": [
+    {
+      "slug": "cg-memory-pict-6th-order-open",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "グッズシリーズ「Memory Pict.」第6弾(小日向美穂・依田芳乃)の受注が本日開始、11月お届け予定・受注は9/13まで・総選挙2026投票券対象",
+      "lead_score": 15,
+      "dedup_key": "memory-pict-6th-kohimura-yoda-2026",
+      "candidate_ids": ["202608271235-watch-1", "202608280232-grok-11"]
+    },
+    {
+      "slug": "cg-vote2026-goods-yojijukugo-nobori",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "総選挙2026記念グッズ「公約四字熟語」グループA・Bのアクリルキーホルダー/ステッカーと総勢190名のミニのぼりが公開、9/13まで受注中",
+      "lead_score": 20,
+      "dedup_key": "cg-vote2026-yojijukugo-goods-group-a",
+      "candidate_ids": ["202608280232-grok-9", "202608280232-grok-12", "202608280232-grok-13"]
+    },
+    {
+      "slug": "cg-suzumiya-seika-birthday",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "アイマスchが涼宮星花の誕生日をお祝い、お祝いムービーを公開",
+      "lead_score": 5,
+      "dedup_key": "suzumiya-seika-birthday-2026",
+      "candidate_ids": ["202608280232-grok-86"]
+    },
+    {
+      "slug": "cg-online-gacha-school-festival",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "『アイドルマスター シンデレラガールズ』新作オンラインくじが文化祭テーマで登場、9/3販売開始",
+      "lead_score": 10,
+      "dedup_key": "cg-gacha-festival-2026-08",
+      "candidate_ids": ["202608280232-claude-97"]
+    },
+    {
+      "slug": "cg-roundup-0828",
+      "brand": "cg",
+      "rank": "roundup",
+      "angle": "定常運営まとめ: 舞台『Pop'n ToyBox!!』スペシャルノベル最新話更新、4コマ「シンデレラガールズの日常」最新話公開、CINDERELLA PARTY!今後のゲスト予定(天野聡美・立花日菜・福原綾香)",
+      "lead_score": 0,
+      "dedup_key": "popn-toybox-extra-story-5-2026",
+      "candidate_ids": ["202608280232-grok-7", "202608280232-grok-8", "202608280232-grok-10"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cinderella-master-new-song-2026-08",
+      "reason": "既報",
+      "note": "cg-cinderella-master-bouquet-sleep-skip-2026として8/25付で既報(発売日・曲名とも一致、新事実なし)"
+    },
+    {
+      "dedup_key": "cg-sleep-skip-premiere-2026",
+      "reason": "既報",
+      "note": "同上の既報にMVプレミア公開(8/26 21:00)の事実を含む、新事実なし"
+    },
+    {
+      "dedup_key": "cg-popup-legend-2026-08",
+      "reason": "その他",
+      "note": "開催期間8/21〜9/6の途中(本日は開幕・締切等のトリガー日でない)。規程12によりニュース性なし"
+    },
+    {
+      "dedup_key": "cg-toppa-popup-2026-08",
+      "reason": "既報",
+      "note": "cg-toppa-base-popup-2026として7/13付で既報(8/27開幕・キャラ・テーマとも一致)"
+    },
+    {
+      "dedup_key": "cg-vote2026-reward",
+      "reason": "既報",
+      "note": "上位5名のxRライブ出演特典はcinderella-girl-vote2026-scheduleとして既報"
+    },
+    {
+      "dedup_key": "cg-cm-cd-sleep-skip",
+      "reason": "既報",
+      "note": "cg-cinderella-master-bouquet-sleep-skip-2026と同一CD、新事実なし"
+    },
+    {
+      "dedup_key": "cinderella-master-cd-sleep-skip-2026",
+      "reason": "既報",
+      "note": "同上CDの価格・特典とも既報範囲内"
+    },
+    {
+      "dedup_key": "cg-popn-toybox-2026-08",
+      "reason": "既報",
+      "note": "8/13〜16開催の基本情報。会場CD事後通販等は既に複数回報道済みで本日のトリガーもなし"
+    },
+    {
+      "dedup_key": "cg-15th-party-goods-2nd-2026",
+      "reason": "既報",
+      "note": "cg-15th-party-goods-2026として8/27付で既報(二次販売開始・受注期間とも一致)"
+    },
+    {
+      "dedup_key": "toppa-base-popup-dekoboko-gaming-world-2026",
+      "reason": "重複",
+      "note": "cg-toppa-popup-2026-08と同一施策(同日開幕・同6キャラ・同テーマ)。既報でもある"
+    },
+    {
+      "dedup_key": "newgen-matatabi-reira-fanart-20260826",
+      "reason": "個人の話題",
+      "note": "個人アカウントのファンアート投稿。単体記事化は規程4により不可"
+    },
+    {
+      "dedup_key": "cg-popup-genka-youenichi-2026",
+      "reason": "既報",
+      "note": "cg-genka-yoenichi-popupとして7/12付で既報(会場・期間・キャラとも一致)"
+    },
+    {
+      "dedup_key": "cg-daiskoinbouquet-cd-2026",
+      "reason": "既報",
+      "note": "cg-cinderella-master-bouquet-sleep-skip-2026と同一CD、新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

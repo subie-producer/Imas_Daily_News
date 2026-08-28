@@ -1,20 +1,38 @@
 [
- {
-  "id": "sched-2026-09-09-million-14th-live-締切前",
-  "dedup_key": "million-14th-live",
-  "brand": "million",
-  "subject": "ミリオン14thLIVE 現地チケット一般販売締切3日前",
-  "kind": "締切前",
-  "note": "一般販売(先着)締切(9/12 23:59)の3日前リマインド",
-  "reserved_on": "2026-08-24",
-  "facts": [
-   "一般販売(先着)の受付は2026年9月12日(土)23:59まで",
-   "対象は全席指定席14,000円・立見指定13,500円・ステージサイド席13,500円(税込)"
-  ],
-  "title": "ミリオン14th、現地チケット8/30受付開始",
-  "url": "https://idolmaster-official.jp/news/01_19676",
-  "source_type": "当事者",
-  "verify": "confirmed",
-  "src_candidate_id": "202608232010-watch-6"
- }
+  {
+    "id": "sched-2026-09-09-million-14th-live-締切前",
+    "dedup_key": "million-14th-live",
+    "brand": "million",
+    "subject": "ミリオン14thLIVE 現地チケット一般販売締切3日前",
+    "kind": "締切前",
+    "note": "一般販売(先着)締切(9/12 23:59)の3日前リマインド",
+    "reserved_on": "2026-08-24",
+    "facts": [
+      "一般販売(先着)の受付は2026年9月12日(土)23:59まで",
+      "対象は全席指定席14,000円・立見指定13,500円・ステージサイド席13,500円(税込)"
+    ],
+    "title": "ミリオン14th、現地チケット8/30受付開始",
+    "url": "https://idolmaster-official.jp/news/01_19676",
+    "source_type": "当事者",
+    "verify": "confirmed",
+    "src_candidate_id": "202608232010-watch-6"
+  },
+  {
+    "id": "sched-2026-09-09-imas-mor-413-eve-2026-開始",
+    "dedup_key": "imas-mor-413-eve-2026",
+    "brand": "joint",
+    "subject": "アイマスMOR413 松永あかねゲスト回放送",
+    "kind": "開始",
+    "reserved_on": "2026-08-28",
+    "title": "アイマスMOR413にイヴ・サンタクロース役松永あかねが出演、メールは8/27まで",
+    "url": "https://x.com/imas_musicradio/status/2092613535117562042",
+    "source_type": "準公式",
+    "facts": [
+      "アイマスMOR413（9月9日放送）は、シンデレラガールズ、イヴ・サンタクロース役の松永あかねさんをゲストにお迎えする",
+      "松永さん宛のメールは https://krs.bz/columbia/m/morform へ",
+      "ハッシュタグ: #アイマスMOR #imas_MOR"
+    ],
+    "event_date": "2026-09-09",
+    "src_candidate_id": "202608280232-grok-47"
+  }
 ]

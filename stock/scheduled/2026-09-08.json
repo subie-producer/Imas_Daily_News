@@ -1,21 +1,40 @@
 [
- {
-  "id": "sched-2026-09-08-shiny-coherent-light-novel-2026-開始",
-  "dedup_key": "shiny-coherent-light-novel-2026",
-  "brand": "shiny",
-  "subject": "連載小説『コヒーレントライト』",
-  "kind": "開始",
-  "note": "連載再開",
-  "reserved_on": "2026-08-26",
-  "facts": [
-   "「コヒーレントライト」の連載は9月8日に再開予定",
-   "第26話まではカドコミで無料公開中"
-  ],
-  "title": "コヒーレントライト、9/8連載再開",
-  "url": "https://x.com/coherent_sc/status/2092070204817940595",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608260216-grok-96",
-  "event_date": "2026-09-08"
- }
+  {
+    "id": "sched-2026-09-08-shiny-coherent-light-novel-2026-開始",
+    "dedup_key": "shiny-coherent-light-novel-2026",
+    "brand": "shiny",
+    "subject": "連載小説『コヒーレントライト』",
+    "kind": "開始",
+    "note": "連載再開",
+    "reserved_on": "2026-08-26",
+    "facts": [
+      "「コヒーレントライト」の連載は9月8日に再開予定",
+      "第26話まではカドコミで無料公開中"
+    ],
+    "title": "コヒーレントライト、9/8連載再開",
+    "url": "https://x.com/coherent_sc/status/2092070204817940595",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608260216-grok-96",
+    "event_date": "2026-09-08"
+  },
+  {
+    "id": "sched-2026-09-08-sidem-11th-stage-2026-結果",
+    "dedup_key": "sidem-11th-stage-2026",
+    "brand": "sidem",
+    "subject": "SideM11th STAGE 会場物販・CD/映像整理券 当落発表",
+    "kind": "結果",
+    "reserved_on": "2026-08-28",
+    "title": "【SideM11th】会場物販、CD・映像販売情報公開！& 配信チケットも販売中！",
+    "url": "https://idolmaster-official.jp/news/01_19627",
+    "source_type": "公式",
+    "facts": [
+      "会場物販整理券当落発表は9月8日(火)13時から",
+      "CD・映像整理券番号は9月8日13時から順次発表",
+      "会場物販開催日時: 9月12日(土)・13日(日) TOYOTA ARENA TOKYO",
+      "CD・映像販売情報が公開(SOLO COLLECTION 04/JUMBLED SOLO COLLECTION 01、発売日9月12日)"
+    ],
+    "event_date": "2026-09-08",
+    "src_candidate_id": "202608280232-claude-107"
+  }
 ]

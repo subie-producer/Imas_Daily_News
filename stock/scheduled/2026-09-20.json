@@ -1,109 +1,130 @@
 [
- {
-  "id": "sched-2026-09-20-million-14th-live-千秋楽",
-  "dedup_key": "million-14th-live",
-  "brand": "million",
-  "subject": "ミリオン14thLIVE(9/19-20)とアソビストア先行",
-  "kind": "千秋楽",
-  "note": "14thLIVE DAY2",
-  "reserved_on": "2026-07-13",
-  "facts": [
-   "THE IDOLM@STER MILLION LIVE! 14thLIVEは2026年9月19日(土)・20日(日)開催",
-   "アソビストア一般会員先行(抽選)の受付は2026年7月10日12:00〜7月30日23:59",
-   "当落発表は2026年8月11日13:00から、入金期間は8月11日13:00〜8月15日23:59",
-   "枚数制限は1人1公演につき2枚まで(複数公演申込可)、デジタルチケットのみ",
-   "DAY1の公演名は「夢咲くワンダーミラージュ」",
-   "未就学児入場不可、会場で本人確認を行う場合あり",
-   "案内では全席でスタンディングでの観覧が可能とされている",
-   "ポータル掲出は2026年7月10日付"
-  ],
-  "title": "ミリオン14thLIVE アソビストア一般会員先行 受付開始",
-  "url": "https://idolmaster-official.jp/news/01_19351",
-  "source_type": "公式",
-  "via": "",
-  "verify": "confirmed",
-  "src_candidate_id": "20260712-portal-ml14th-senko",
-  "event_date": "2026-09-19"
- },
- {
-  "id": "sched-2026-09-20-gaku-live-tour-single-shugakuryoko-2026-締切前",
-  "dedup_key": "gaku-live-tour-single-shugakuryoko-2026",
-  "brand": "gaku",
-  "subject": "初星学園 LIVE TOUR Single「修楽旅行」予約締切3日前",
-  "kind": "締切前",
-  "note": "アソビストア予約締切(9/23)の3日前リマインド",
-  "reserved_on": "2026-08-24",
-  "facts": [
-   "初星学園 LIVE TOUR Single「修楽旅行」は2026年11月4日(水)発売、2,500円(税込)",
-   "アソビストア予約特典はジャケットイラストステッカー、予約は9月23日まで(特典はなくなり次第終了)"
-  ],
-  "title": "「修楽旅行」11月4日発売決定",
-  "url": "https://gakuen-label.idolmaster-official.jp/news/schoosicaltrip",
-  "source_type": "準公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608232010-grok-46",
-  "event_date": "2026-11-04",
-  "deadline": "2026-09-23"
- },
- {
-  "id": "sched-2026-09-20-kotobukiya-kuji-summer-live-stage-2026-締切前",
-  "dedup_key": "kotobukiya-kuji-summer-live-stage-2026",
-  "brand": "765",
-  "subject": "コトブキヤくじ「Summer Live st@ge」販売締切3日前",
-  "kind": "締切前",
-  "note": "販売終了(9/23 23:59)の3日前リマインド",
-  "reserved_on": "2026-08-24",
-  "facts": [
-   "コトブキヤくじ「アイドルマスター Summer Live st@ge」は2026年8月21日(金)〜9月23日(水)23:59販売",
-   "1回850円(税込)。天海春香・如月千早・星井美希・秋月律子・三浦あずさの新規描き下ろし"
-  ],
-  "title": "コトブキヤくじ Summer Live st@ge販売開始",
-  "url": "https://idolmaster-official.jp/news/01_19560",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608232010-grok-8",
-  "event_date": "2026-08-21",
-  "deadline": "2026-09-23"
- },
- {
-  "id": "sched-2026-09-20-cg-kyomafu-2026-goods-終了",
-  "dedup_key": "cg-kyomafu-2026-goods",
-  "brand": "joint",
-  "subject": "京まふ2026 デレマス・ミリオン新作グッズ",
-  "kind": "終了",
-  "note": "京まふ2026 最終日",
-  "reserved_on": "2026-08-24",
-  "facts": [
-   "京都国際マンガ・アニメフェア(京まふ)2026は2026年9月19日(土)〜9月20日(日)開催",
-   "メイン会場はみやこめっせ・ロームシアター京都、第2会場は京都国際マンガミュージアム"
-  ],
-  "title": "京まふ2026でデレマスグッズと記念ドリンク",
-  "url": "https://idolmaster-official.jp/news/01_19659",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608232010-grok-19",
-  "event_date": "2026-09-19",
-  "deadline": "2026-09-20"
- },
- {
-  "id": "sched-2026-09-20-gaku-nemurase-tai-gashapon-2026-締切前",
-  "dedup_key": "gaku-nemurase-tai-gashapon-2026",
-  "brand": "gaku",
-  "subject": "学園アイドルマスター「ねむらせ隊」ガシャポン",
-  "kind": "締切前",
-  "note": "受注終了3日前",
-  "reserved_on": "2026-08-27",
-  "title": "【学マス】「ねむらせ隊」がガシャポンに登場 予約受付中",
-  "url": "https://idolmaster-official.jp/news/01_19667",
-  "source_type": "準公式",
-  "facts": [
-   "ガシャポンオンライン受注期間: 2026年8月26日(水)17:00〜2026年9月23日(水・祝)23:59",
-   "お届け・一般発売: 2026年12月以降順次",
-   "ラインナップ: 倉本千奈、篠澤広、秦谷美鈴、花海佑芽"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202608262337-watch-2",
-  "deadline": "2026-09-23"
- }
+  {
+    "id": "sched-2026-09-20-million-14th-live-千秋楽",
+    "dedup_key": "million-14th-live",
+    "brand": "million",
+    "subject": "ミリオン14thLIVE(9/19-20)とアソビストア先行",
+    "kind": "千秋楽",
+    "note": "14thLIVE DAY2",
+    "reserved_on": "2026-07-13",
+    "facts": [
+      "THE IDOLM@STER MILLION LIVE! 14thLIVEは2026年9月19日(土)・20日(日)開催",
+      "アソビストア一般会員先行(抽選)の受付は2026年7月10日12:00〜7月30日23:59",
+      "当落発表は2026年8月11日13:00から、入金期間は8月11日13:00〜8月15日23:59",
+      "枚数制限は1人1公演につき2枚まで(複数公演申込可)、デジタルチケットのみ",
+      "DAY1の公演名は「夢咲くワンダーミラージュ」",
+      "未就学児入場不可、会場で本人確認を行う場合あり",
+      "案内では全席でスタンディングでの観覧が可能とされている",
+      "ポータル掲出は2026年7月10日付"
+    ],
+    "title": "ミリオン14thLIVE アソビストア一般会員先行 受付開始",
+    "url": "https://idolmaster-official.jp/news/01_19351",
+    "source_type": "公式",
+    "via": "",
+    "verify": "confirmed",
+    "src_candidate_id": "20260712-portal-ml14th-senko",
+    "event_date": "2026-09-19"
+  },
+  {
+    "id": "sched-2026-09-20-gaku-live-tour-single-shugakuryoko-2026-締切前",
+    "dedup_key": "gaku-live-tour-single-shugakuryoko-2026",
+    "brand": "gaku",
+    "subject": "初星学園 LIVE TOUR Single「修楽旅行」予約締切3日前",
+    "kind": "締切前",
+    "note": "アソビストア予約締切(9/23)の3日前リマインド",
+    "reserved_on": "2026-08-24",
+    "facts": [
+      "初星学園 LIVE TOUR Single「修楽旅行」は2026年11月4日(水)発売、2,500円(税込)",
+      "アソビストア予約特典はジャケットイラストステッカー、予約は9月23日まで(特典はなくなり次第終了)"
+    ],
+    "title": "「修楽旅行」11月4日発売決定",
+    "url": "https://gakuen-label.idolmaster-official.jp/news/schoosicaltrip",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608232010-grok-46",
+    "event_date": "2026-11-04",
+    "deadline": "2026-09-23"
+  },
+  {
+    "id": "sched-2026-09-20-kotobukiya-kuji-summer-live-stage-2026-締切前",
+    "dedup_key": "kotobukiya-kuji-summer-live-stage-2026",
+    "brand": "765",
+    "subject": "コトブキヤくじ「Summer Live st@ge」販売締切3日前",
+    "kind": "締切前",
+    "note": "販売終了(9/23 23:59)の3日前リマインド",
+    "reserved_on": "2026-08-24",
+    "facts": [
+      "コトブキヤくじ「アイドルマスター Summer Live st@ge」は2026年8月21日(金)〜9月23日(水)23:59販売",
+      "1回850円(税込)。天海春香・如月千早・星井美希・秋月律子・三浦あずさの新規描き下ろし"
+    ],
+    "title": "コトブキヤくじ Summer Live st@ge販売開始",
+    "url": "https://idolmaster-official.jp/news/01_19560",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608232010-grok-8",
+    "event_date": "2026-08-21",
+    "deadline": "2026-09-23"
+  },
+  {
+    "id": "sched-2026-09-20-cg-kyomafu-2026-goods-終了",
+    "dedup_key": "cg-kyomafu-2026-goods",
+    "brand": "joint",
+    "subject": "京まふ2026 デレマス・ミリオン新作グッズ",
+    "kind": "終了",
+    "note": "京まふ2026 最終日",
+    "reserved_on": "2026-08-24",
+    "facts": [
+      "京都国際マンガ・アニメフェア(京まふ)2026は2026年9月19日(土)〜9月20日(日)開催",
+      "メイン会場はみやこめっせ・ロームシアター京都、第2会場は京都国際マンガミュージアム"
+    ],
+    "title": "京まふ2026でデレマスグッズと記念ドリンク",
+    "url": "https://idolmaster-official.jp/news/01_19659",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608232010-grok-19",
+    "event_date": "2026-09-19",
+    "deadline": "2026-09-20"
+  },
+  {
+    "id": "sched-2026-09-20-gaku-nemurase-tai-gashapon-2026-締切前",
+    "dedup_key": "gaku-nemurase-tai-gashapon-2026",
+    "brand": "gaku",
+    "subject": "学園アイドルマスター「ねむらせ隊」ガシャポン",
+    "kind": "締切前",
+    "note": "受注終了3日前",
+    "reserved_on": "2026-08-27",
+    "title": "【学マス】「ねむらせ隊」がガシャポンに登場 予約受付中",
+    "url": "https://idolmaster-official.jp/news/01_19667",
+    "source_type": "準公式",
+    "facts": [
+      "ガシャポンオンライン受注期間: 2026年8月26日(水)17:00〜2026年9月23日(水・祝)23:59",
+      "お届け・一般発売: 2026年12月以降順次",
+      "ラインナップ: 倉本千奈、篠澤広、秦谷美鈴、花海佑芽"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202608262337-watch-2",
+    "deadline": "2026-09-23"
+  },
+  {
+    "id": "sched-2026-09-20-shiny-parallel-collection-popup-2026-開幕",
+    "dedup_key": "shiny-parallel-collection-popup-2026",
+    "brand": "shiny",
+    "subject": "シャニマス「パラレルコレクション」POP UP SHOP「パラレル回廊」",
+    "kind": "開幕",
+    "reserved_on": "2026-08-28",
+    "title": "パラレルコレクションPOP UP SHOP「パラレル回廊」開催決定",
+    "url": "https://idolmaster-official.jp/news/01_19700",
+    "source_type": "公式",
+    "facts": [
+      "アイドルたちの“ifの未来”を描いた「パラレルコレクション」のPOP UP SHOP「パラレル回廊」の開催が決定",
+      "描き下ろしイラストを使用した新商品の販売に加え、「パラコレ」イラストグッズの販売や、制作コメント、一部ラフイラストの展示も予定",
+      "開催場所: UDXギャラリー",
+      "所在地: 〒101-0021 東京都千代田区外神田４丁目１４−１ 秋葉原UDX 4F",
+      "開催期間: 2026年9月20日（日）～ 2026年9月27日（日）",
+      "イベントX: https://x.com/283prosh_akb"
+    ],
+    "event_date": "2026-09-20",
+    "src_candidate_id": "202608280232-grok-59"
+  }
 ]

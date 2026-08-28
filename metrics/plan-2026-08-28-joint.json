@@ -1,0 +1,81 @@
+{
+  "articles": [
+    {
+      "slug": "joint-clashmatch-site-sponsors-2026",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "デレミリ合同ライブ『CLASH M@TCH!!』の公式サイトが公開、協賛4社が判明(公演日程・チケット詳細は8/26付で既報のため新事実部分を主軸に構成)",
+      "lead_score": 45,
+      "dedup_key": "deremilli-clash-match-2027",
+      "candidate_ids": [
+        "202608270734-claude-0",
+        "202608280232-grok-41",
+        "202608280232-grok-42",
+        "202608280232-grok-43",
+        "202608280232-grok-44"
+      ]
+    },
+    {
+      "slug": "joint-tours-late-summer-campaign-momoko",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "ツアマス『2026レイトサマーキャンペーン 晩夏の調べ』が本日開始、S1弾Exに先駆けて周防桃子カードが先行登場(開幕当日の続報予約案件)",
+      "lead_score": 20,
+      "dedup_key": "tours-late-summer-campaign-2026",
+      "candidate_ids": [
+        "202608280232-grok-46",
+        "sched-2026-08-28-tours-s1-ex-suou-momoko-2026-開始"
+      ]
+    },
+    {
+      "slug": "joint-mor413-matsunaga-akane-eve",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "アイマスMOR413(9月9日放送)にイヴ・サンタクロース役・松永あかねが出演決定",
+      "lead_score": 8,
+      "dedup_key": "imas-mor-413-eve-2026",
+      "candidate_ids": [
+        "202608280232-grok-47"
+      ]
+    },
+    {
+      "slug": "joint-mor414-tanaka-yuki-asahi",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "アイマスMOR414(9月16日放送)は芹沢あさひ役・田中有紀のマスターソング特集",
+      "lead_score": 8,
+      "dedup_key": "imas-mor-414-asahi-2026",
+      "candidate_ids": [
+        "202608280232-grok-48"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "deremilli-clash-match-2027-band",
+      "reason": "重複",
+      "note": "公演名・開場開演時刻・チケット種別は本体発表と同一内容。joint-clashmatch-site-sponsors-2026に統合"
+    },
+    {
+      "dedup_key": "deremilli-clash-match-2027-site",
+      "reason": "重複",
+      "note": "公式サイト公開・協賛企業発表という新事実の出所。joint-clashmatch-site-sponsors-2026の主素材として統合"
+    },
+    {
+      "dedup_key": "deremilli-clash-match-2027-pv",
+      "reason": "重複",
+      "note": "開催決定告知に付随するPVで新事実なし。joint-clashmatch-site-sponsors-2026に統合"
+    },
+    {
+      "dedup_key": "deremilli-clash-match-2027-cg-x",
+      "reason": "重複",
+      "note": "シンデレラ公式Xの告知投稿。本体発表と同一内容。joint-clashmatch-site-sponsors-2026に統合"
+    },
+    {
+      "dedup_key": "tours-s1-ex-suou-momoko-2026",
+      "reason": "重複",
+      "note": "8/28開始の『晩夏の調べ』キャンペーンにおける周防桃子カード先行登場の続報予約。joint-tours-late-summer-campaign-momokoに統合"
+    }
+  ],
+  "cross_brand": []
+}

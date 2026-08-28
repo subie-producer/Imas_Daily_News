@@ -1,0 +1,51 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-manaka-hakuno-jsp3-collab-0901",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "灯里愛夏(vα-liv)と今酒ハクノが9/1『日本事故物件監視協会3』高難易度マップで初のマルチ・初サシコラボを予告",
+      "lead_score": 20,
+      "dedup_key": "valiv-manaka-hakuno-jsp3-collab-20260901",
+      "candidate_ids": ["202608280232-grok-15", "202608280232-grok-16"]
+    },
+    {
+      "slug": "dsva-valiv-streaming-shorts-roundup-0828",
+      "brand": "dsva",
+      "rank": "roundup",
+      "angle": "vα-liv、直近の配信出演・ショート動画まとめ(8/26宇宙の踊ってみた新作、8/27夜の愛夏×レトラ配信、8/27愛夏の新作ショート動画)",
+      "lead_score": 5,
+      "dedup_key": "valiv-onair-2026-08-27",
+      "candidate_ids": [
+        "202608280342-grok-16",
+        "202608280342-grok-12",
+        "202608280342-grok-15",
+        "202608280342-grok-17",
+        "202608280342-grok-19"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "va-liv-situation-voice-14-2026",
+      "reason": "既報",
+      "note": "8/27付既報(story: dsva-situation-voice14-2026)と同一内容(発売中・9/6締切)で新事実なし"
+    },
+    {
+      "dedup_key": "valiv-situation-voice-2026-08-yuzurenai",
+      "reason": "既報",
+      "note": "同上の販売継続告知のみで新事実なし"
+    },
+    {
+      "dedup_key": "hakuno-manaka-jsp3-collab-20260901",
+      "reason": "重複",
+      "note": "grok-15(灯里愛夏側告知)と同一の9/1コラボ予告。dsva-manaka-hakuno-jsp3-collab-0901に統合"
+    },
+    {
+      "dedup_key": "valiv-onair-2026-08-26",
+      "reason": "既報",
+      "note": "8/26付既報(story: valiv-ops-roundup-2026-08)の宇宙の配信内容と同一"
+    }
+  ],
+  "cross_brand": []
+}

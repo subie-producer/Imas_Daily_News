@@ -1,128 +1,149 @@
 [
- {
-  "id": "sched-2026-09-13-sidem-11th-stage-2026-千秋楽",
-  "dedup_key": "sidem-11th-stage-2026",
-  "brand": "sidem",
-  "subject": "SideM 11th STAGE ～EVER EVER＠FTER～",
-  "kind": "千秋楽",
-  "note": "DAY2",
-  "reserved_on": "2026-07-13",
-  "facts": [
-   "2026年9月12日(土)・13日(日)、TOYOTA ARENA TOKYOにて開催",
-   "テーマは「語り継がれる物語」、CDシリーズ「TRANSCENDENT T@LES」と連動",
-   "チケットはテラススイートプレミアム(1室5万円)、テラススイート(5万円)、スイート指定席(2.5万円)、一般指定席(1.35万円)",
-   "アソビストアプレミアム会員先行が複数次にわたり実施され、公式グッズ事前販売も第2弾までスタート済み",
-   "エンゲージメント: 高"
-  ],
-  "title": "SideM 11th STAGE ～EVER EVER＠FTER～ 9月開催決定",
-  "url": "https://idolmaster-official.jp/live_event/sidem11th/",
-  "source_type": "公式",
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202607130340-claude-104",
-  "event_date": "2026-09-12",
-  "deadline": "2026-09-13"
- },
- {
-  "id": "sched-2026-09-13-sidem-hands-knickknacks-2026-終了",
-  "dedup_key": "sidem-hands-knickknacks-2026",
-  "brand": "sidem",
-  "subject": "SideM×ハンズ knick-knacks Vol.1 開催終了",
-  "kind": "終了",
-  "note": "ハンズ15店舗での開催最終日",
-  "reserved_on": "2026-08-24",
-  "facts": [
-   "『アイドルマスター SideM knick-knacks Vol.1』はハンズ15店舗で8月21日〜9月13日開催"
-  ],
-  "title": "アイドルマスター SideM knick-knacks Vol.1 ハンズポップアップストア開催",
-  "url": "https://prtimes.jp/main/html/rd/p/000000714.000070824.html",
-  "source_type": "準公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608232010-claude-90",
-  "event_date": "2026-08-21",
-  "deadline": "2026-09-13"
- },
- {
-  "id": "sched-2026-09-13-cinderella-girl-vote2026-schedule-締切",
-  "dedup_key": "cinderella-girl-vote2026-schedule",
-  "brand": "cg",
-  "subject": "シンデレラガール総選挙2026「公約四字熟語」ポスター受注",
-  "kind": "締切",
-  "note": "受注締切23:59",
-  "title": "総選挙2026「公約四字熟語」ポスター受注締切",
-  "url": "https://x.com/imas_CGofficial/status/2091827858075426834",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608260216-grok-16",
-  "event_date": "2026-09-13",
-  "facts": [
-   "「公約四字熟語」をあしらった出馬風ポスターの受注は9月13日(日)23時59分まで",
-   "アソビストア特集ページで販売"
-  ],
-  "reserved_on": "2026-08-26"
- },
- {
-  "id": "sched-2026-09-13-cg-15th-party-goods-2026-締切",
-  "dedup_key": "cg-15th-party-goods-2026",
-  "brand": "cg",
-  "subject": "シンデレラガールズ15周年記念ライブ 公式グッズ事前二次販売",
-  "kind": "締切",
-  "note": "受注終了",
-  "reserved_on": "2026-08-27",
-  "title": "【シンデレラ】15th ANNIVERSARY PARTY!!!! 公式グッズ事前二次販売開始",
-  "url": "https://idolmaster-official.jp/news/01_19723",
-  "source_type": "公式",
-  "facts": [
-   "開催日: 2026年11月28日(土)・29日(日)、Kアリーナ横浜",
-   "公式グッズ事前二次販売開始、受注期間は2026年9月13日(日)23:59まで",
-   "本公演の描きおろしビジュアルを使用したグッズ",
-   "シンデレラガール総選挙2026の投票券獲得の対象"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202608262337-watch-6",
-  "deadline": "2026-09-13"
- },
- {
-  "id": "sched-2026-09-13-cg-popn-toybox-goods-2026-締切",
-  "dedup_key": "cg-popn-toybox-goods-2026",
-  "brand": "cg",
-  "subject": "Pop'n ToyBox!! スタッフ振り返りトーク アンケート",
-  "kind": "締切",
-  "note": "アンケート公開終了",
-  "reserved_on": "2026-08-27",
-  "title": "ToyBox!!同時視聴会・スタッフ振り返りトーク詳細",
-  "url": "https://idolmaster-official.jp/news/01_19708",
-  "source_type": "公式",
-  "facts": [
-   "スタッフ振り返りトークは8月31日20:00から八城雄太さん・石田裕亮さんが出演",
-   "アンケートの公開期間は9月13日(日)23:59まで"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202608270220-grok-17",
-  "deadline": "2026-09-13"
- },
- {
-  "id": "sched-2026-09-13-cg-million-coming-soon-2026-08-26-締切",
-  "dedup_key": "cg-million-coming-soon-2026-08-26",
-  "brand": "joint",
-  "subject": "THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!",
-  "kind": "締切",
-  "note": "先行抽選受付終了",
-  "reserved_on": "2026-08-27",
-  "title": "THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!",
-  "url": "https://idolmaster-official.jp/news/01_19720",
-  "source_type": "公式",
-  "facts": [
-   "2027年2月27日(土)・28日(日)に愛知県IGアリーナで開催、開場15:30・開演17:00(各日)",
-   "アソビストアプレミアム会員最速先行(抽選)の申し込み期間：2026年8月26日(水)12:00〜2026年9月13日(日)23:59",
-   "当落発表：2026年9月30日(水)13:00〜、入金期間：2026年9月30日(水)13:00〜2026年10月4日(日)23:59",
-   "チケット料金（各日）：アリーナ前方席30,000円、プレミアムラウンジ付指定席20,000円、一般指定席15,000円（税込）"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202608261235-watch-0",
-  "deadline": "2026-09-13"
- }
+  {
+    "id": "sched-2026-09-13-sidem-11th-stage-2026-千秋楽",
+    "dedup_key": "sidem-11th-stage-2026",
+    "brand": "sidem",
+    "subject": "SideM 11th STAGE ～EVER EVER＠FTER～",
+    "kind": "千秋楽",
+    "note": "DAY2",
+    "reserved_on": "2026-07-13",
+    "facts": [
+      "2026年9月12日(土)・13日(日)、TOYOTA ARENA TOKYOにて開催",
+      "テーマは「語り継がれる物語」、CDシリーズ「TRANSCENDENT T@LES」と連動",
+      "チケットはテラススイートプレミアム(1室5万円)、テラススイート(5万円)、スイート指定席(2.5万円)、一般指定席(1.35万円)",
+      "アソビストアプレミアム会員先行が複数次にわたり実施され、公式グッズ事前販売も第2弾までスタート済み",
+      "エンゲージメント: 高"
+    ],
+    "title": "SideM 11th STAGE ～EVER EVER＠FTER～ 9月開催決定",
+    "url": "https://idolmaster-official.jp/live_event/sidem11th/",
+    "source_type": "公式",
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202607130340-claude-104",
+    "event_date": "2026-09-12",
+    "deadline": "2026-09-13"
+  },
+  {
+    "id": "sched-2026-09-13-sidem-hands-knickknacks-2026-終了",
+    "dedup_key": "sidem-hands-knickknacks-2026",
+    "brand": "sidem",
+    "subject": "SideM×ハンズ knick-knacks Vol.1 開催終了",
+    "kind": "終了",
+    "note": "ハンズ15店舗での開催最終日",
+    "reserved_on": "2026-08-24",
+    "facts": [
+      "『アイドルマスター SideM knick-knacks Vol.1』はハンズ15店舗で8月21日〜9月13日開催"
+    ],
+    "title": "アイドルマスター SideM knick-knacks Vol.1 ハンズポップアップストア開催",
+    "url": "https://prtimes.jp/main/html/rd/p/000000714.000070824.html",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608232010-claude-90",
+    "event_date": "2026-08-21",
+    "deadline": "2026-09-13"
+  },
+  {
+    "id": "sched-2026-09-13-cinderella-girl-vote2026-schedule-締切",
+    "dedup_key": "cinderella-girl-vote2026-schedule",
+    "brand": "cg",
+    "subject": "シンデレラガール総選挙2026「公約四字熟語」ポスター受注",
+    "kind": "締切",
+    "note": "受注締切23:59",
+    "title": "総選挙2026「公約四字熟語」ポスター受注締切",
+    "url": "https://x.com/imas_CGofficial/status/2091827858075426834",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608260216-grok-16",
+    "event_date": "2026-09-13",
+    "facts": [
+      "「公約四字熟語」をあしらった出馬風ポスターの受注は9月13日(日)23時59分まで",
+      "アソビストア特集ページで販売"
+    ],
+    "reserved_on": "2026-08-26"
+  },
+  {
+    "id": "sched-2026-09-13-cg-15th-party-goods-2026-締切",
+    "dedup_key": "cg-15th-party-goods-2026",
+    "brand": "cg",
+    "subject": "シンデレラガールズ15周年記念ライブ 公式グッズ事前二次販売",
+    "kind": "締切",
+    "note": "受注終了",
+    "reserved_on": "2026-08-27",
+    "title": "【シンデレラ】15th ANNIVERSARY PARTY!!!! 公式グッズ事前二次販売開始",
+    "url": "https://idolmaster-official.jp/news/01_19723",
+    "source_type": "公式",
+    "facts": [
+      "開催日: 2026年11月28日(土)・29日(日)、Kアリーナ横浜",
+      "公式グッズ事前二次販売開始、受注期間は2026年9月13日(日)23:59まで",
+      "本公演の描きおろしビジュアルを使用したグッズ",
+      "シンデレラガール総選挙2026の投票券獲得の対象"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202608262337-watch-6",
+    "deadline": "2026-09-13"
+  },
+  {
+    "id": "sched-2026-09-13-cg-popn-toybox-goods-2026-締切",
+    "dedup_key": "cg-popn-toybox-goods-2026",
+    "brand": "cg",
+    "subject": "Pop'n ToyBox!! スタッフ振り返りトーク アンケート",
+    "kind": "締切",
+    "note": "アンケート公開終了",
+    "reserved_on": "2026-08-27",
+    "title": "ToyBox!!同時視聴会・スタッフ振り返りトーク詳細",
+    "url": "https://idolmaster-official.jp/news/01_19708",
+    "source_type": "公式",
+    "facts": [
+      "スタッフ振り返りトークは8月31日20:00から八城雄太さん・石田裕亮さんが出演",
+      "アンケートの公開期間は9月13日(日)23:59まで"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202608270220-grok-17",
+    "deadline": "2026-09-13"
+  },
+  {
+    "id": "sched-2026-09-13-cg-million-coming-soon-2026-08-26-締切",
+    "dedup_key": "cg-million-coming-soon-2026-08-26",
+    "brand": "joint",
+    "subject": "THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!",
+    "kind": "締切",
+    "note": "先行抽選受付終了",
+    "reserved_on": "2026-08-27",
+    "title": "THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!",
+    "url": "https://idolmaster-official.jp/news/01_19720",
+    "source_type": "公式",
+    "facts": [
+      "2027年2月27日(土)・28日(日)に愛知県IGアリーナで開催、開場15:30・開演17:00(各日)",
+      "アソビストアプレミアム会員最速先行(抽選)の申し込み期間：2026年8月26日(水)12:00〜2026年9月13日(日)23:59",
+      "当落発表：2026年9月30日(水)13:00〜、入金期間：2026年9月30日(水)13:00〜2026年10月4日(日)23:59",
+      "チケット料金（各日）：アリーナ前方席30,000円、プレミアムラウンジ付指定席20,000円、一般指定席15,000円（税込）"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202608261235-watch-0",
+    "deadline": "2026-09-13"
+  },
+  {
+    "id": "sched-2026-09-13-memory-pict-6th-kohimura-yoda-2026-締切",
+    "dedup_key": "memory-pict-6th-kohimura-yoda-2026",
+    "brand": "cg",
+    "subject": "Memory Pict.第6弾(小日向美穂・依田芳乃)受注締切",
+    "kind": "締切",
+    "reserved_on": "2026-08-28",
+    "title": "Memory Pict.6th Pict. November 小日向美穂・依田芳乃の受注期間は9/13まで",
+    "url": "https://x.com/imas_CGofficial/status/2092810113442894092",
+    "source_type": "公式",
+    "facts": [
+      "投稿日時: 2026-08-27 03:03:08 GMT（@imas_CGofficial）",
+      "Memory Pict. 6th Pict. November",
+      "小日向美穂 / 依田芳乃",
+      "受注期間: 2026.8.27 THU ~ 2026.9.13 SUN",
+      "販売URL: https://shop.asobistore.jp/feature/cg_mp",
+      "ハッシュタグ: #メモピク"
+    ],
+    "event_date": "2026-09-13",
+    "src_candidate_id": "202608280232-grok-11"
+  }
 ]

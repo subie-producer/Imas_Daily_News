@@ -698,8 +698,15 @@ def main() -> int:
     print(summary, flush=True)
     if not args.no_git:
         commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect")
-    if added == 0:
+    # 新規0件の警報は「定時実行が空振りした」ことを知らせるためのもの。
+    # 収集系統を手で止めた実行(--skip-*)では0件が当たり前なので鳴らさない
+    # (鳴らすと本物の空振りと区別がつかず、警報として役に立たなくなる)
+    skipped = [n for n, on in (("watch", args.skip_watch), ("claude", args.skip_claude),
+                               ("grok", args.skip_grok)) if on]
+    if added == 0 and not skipped:
         notify("collect", f"{summary} — 新規0件", ok=False)
+    elif added == 0:
+        print(f"新規0件({'/'.join(skipped)} を手動でスキップ中のため通知しない)", flush=True)
     return 0
 
 

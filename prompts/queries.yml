@@ -65,8 +65,13 @@
   - imas_official
   - TOURS_imas
   - imas_columbia
+  - imas_ch
+  - imasnews765
 - key: trend
   brand: general
   topic: アイドルマスター関連で世間的にトレンド入り・バズした話題(一般ワード・報道・現象)
   accounts:
   - imas_official
+  - imas_ch
+  - imasnews765
+  - imas_columbia

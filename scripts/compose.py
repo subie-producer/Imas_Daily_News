@@ -752,7 +752,7 @@ def body_length(path: Path) -> int:
     return len(re.sub(r"\s", "", re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)))
 
 
-def assign_ranks(date: str, plan: dict, written: list[dict]) -> dict:
+def assign_ranks(date: str, plan: dict, written: list[dict], keep_lead: bool = False) -> dict:
     """**書き上がった長さと話題の大きさから枠(rank)を当てる。**
 
     枠を先に決めて字数を合わせさせると、「large なのに medium 2本ぶんしかない記事」
@@ -783,7 +783,11 @@ def assign_ranks(date: str, plan: dict, written: list[dict]) -> dict:
     # その日いちばん大きい話題が、たまたま出典の情報量が少なくて短くなることはある
     # (実測: デレミリ合同ライブは公式ページを拾い切っても 973字)。
     # そこで枠を落とすのは本末転倒なので、lead_score が最大の記事を一面にする。
-    if sized:
+    if keep_lead:
+        # 既に一面が決まっている(組版済み)。長さで lead 相当になったものは large へ落とす
+        sized = [(a, n, a["rank"] if a.get("rank") == "lead" else ("large" if r == "lead" else r))
+                 for a, n, r in sized]
+    elif sized:
         lead = max(sized, key=lambda x: (by_slug.get(x[0]["slug"], {}).get("lead_score") or 0, x[1]))
         sized = [(a, n, "lead" if a is lead[0] else ("large" if r == "lead" else r))
                  for a, n, r in sized]
@@ -919,6 +923,9 @@ def main() -> int:
                     help="指定した面の選定プロンプトを表示して終了(実行しない)")
     ap.add_argument("--date", default=None, help="対象発行日(再試行用。既定: 次の06:00の日付)")
     ap.add_argument("--max-rounds", type=int, default=2)
+    ap.add_argument("--reuse-plan", action="store_true",
+                    help="既存の metrics/plan-<date>.json を使い、選定をやり直さない"
+                         "(執筆層の修正だけを試すときに使う。既に書けている記事も再執筆しない)")
     args = ap.parse_args()
     t0 = time.time()
     date = args.date or edition_date()
@@ -1002,8 +1009,13 @@ def main() -> int:
                           "計画で判断されず消えた(発行は続行。選定の取りこぼし)", ok=False)
 
     # 1b. 個別執筆: 記事ごとに素材を機械切り出しして独立セッションで書く
-    written, aborted = write_articles(date, plan, cands, triggers, load_story_facts())
+    written, aborted = write_articles(date, plan, cands, triggers, load_story_facts(),
+                                      reuse=args.reuse_plan)
     print(f"執筆: {len(written)}/{n_plan}本(不成立 {len(aborted)}: {aborted})", flush=True)
+    # **書き上がりから枠を当てる**(字数を枠に合わせさせない。規程9)。
+    # 組版より前に確定させる: 号スナップショットの lead_slug が一面に依存するため
+    assign_ranks(date, plan, written)
+    plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     if len(written) < 1 or (aborted and len(written) < 8):
         notify("compose", f"{date}: 執筆成立 {len(written)}本/計画 {n_plan}本(不成立: {aborted})。下限割れの疑い", ok=False)
     if not written:
@@ -1058,6 +1070,13 @@ def main() -> int:
         claude_run(fix, timeout=1200, model=REVIEW_MODEL)
         subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
                        cwd=ROOT, capture_output=True, text=True)
+
+    # 校閲の修正で本文の長さが変わるため、枠を当て直す。
+    # **一面は動かさない**(インパクトで決めた枠であり、号スナップショットの
+    # lead_slug が指しているため。ここで変えると組版と食い違う)
+    assign_ranks(date, plan, written, keep_lead=True)
+    subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
+                   cwd=ROOT, capture_output=True, text=True)
 
     approved = review and review.get("verdict") == "approve"
     code, lint_out = run_lint(date)

@@ -783,6 +783,11 @@ def assign_ranks(date: str, plan: dict, written: list[dict], keep_lead: bool = F
     # その日いちばん大きい話題が、たまたま出典の情報量が少なくて短くなることはある
     # (実測: デレミリ合同ライブは公式ページを拾い切っても 973字)。
     # そこで枠を落とすのは本末転倒なので、lead_score が最大の記事を一面にする。
+    # 一面が既に決まっているなら、それを尊重する。
+    # 一面は pick_lead(号全体を見る専任セッション)が決める。ここで lead_score 最大を
+    # 選び直すと二重の選定になり、組版済みの lead_slug と食い違う(実測で発生)
+    if not keep_lead and any(a.get("rank") == "lead" for a, _, _ in sized):
+        keep_lead = True
     if keep_lead:
         # 既に一面が決まっている(組版済み)。長さで lead 相当になったものは large へ落とす
         sized = [(a, n, a["rank"] if a.get("rank") == "lead" else ("large" if r == "lead" else r))

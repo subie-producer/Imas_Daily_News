@@ -55,6 +55,10 @@ GROK_MAX_TURNS = int(ENV.get("GROK_MAX_TURNS", "12"))
 # プロンプトに書く検索回数の目安。**強制力は無い**(「最大10回」と書いても34回引いた。
 # Grok は自分の検索回数を数えていない)。掘り方の指示と併せて効かせる。
 GROK_MAX_SEARCHES = int(ENV.get("GROK_MAX_SEARCHES", "10"))
+# 一括取得の取得件数。x_keyword_search の limit にそのまま渡す。
+# 既定の 10 では1回で足りず引き直しを誘発する(検索回数=週次予算なので、
+# 1回を広く取るほうが安い)
+GROK_SWEEP_LIMIT = int(ENV.get("GROK_SWEEP_LIMIT", "40"))
 # 10面を1セッションで回すぶん長い。途中で切れても面ごとにファイルへ書かせているので
 # そこまでの成果は残る
 GROK_TIMEOUT = int(ENV.get("GROK_TIMEOUT", "3000"))
@@ -67,6 +71,10 @@ GROK_TIMEOUT = int(ENV.get("GROK_TIMEOUT", "3000"))
 GROK_ITEMS = int(ENV.get("GROK_ITEMS", "12"))
 # 面別セッションの同時実行数。多すぎると X 側で絞られるおそれがあるので控えめに置く
 GROK_WAVE = int(ENV.get("GROK_WAVE", "3"))
+# 推論の深さ。既定は high で走っており、消費の最大費目が reasoning だった
+# (1回の収集で 1.59MB。tool_result 495KB・assistant 120KB を大きく上回る)。
+# 収集は「調べて写す」作業で深い推論を要さないため medium に落とす。
+GROK_EFFORT = ENV.get("GROK_EFFORT", "medium")
 # 注: grok のヘッドレス実行には --always-approve が必須(無いとツール実行が承認待ちで
 # Cancelled になり前置きだけ返る)。結果は標準出力ではなく**ファイルに書かせる**。
 # grok はエージェント型 CLI なので、面ごとにファイルを更新させれば1応答の出力上限に
@@ -237,95 +245,61 @@ def claude_exec(prompt: str, timeout: int = 300) -> list:
 def write_grok_prompt(outdir: Path, q: dict) -> Path:
     """1面ぶんの指示を書き出す(面ごとに1セッション)。
 
-    規程は prompts/grok-collect.md(作業手順書)に置き、ここでは当日固有の値
-    (その面の主題・目標件数・出力先)だけを渡す。
+    **Grok には日本語の「まとめ」を書かせる。**候補を1件ずつ JSON にさせると、
+    調べる能力が整形作業に食われる(実測: 本文8,219字のページから facts 359字、
+    25回検索して0件)。同じ Grok にブラウザで「これらのアカウントが投稿した内容を
+    詳細にまとめて」と頼むと、ガシャ名・ジュエル数・時刻・出現率まで並んだ
+    密度の高い要約が返る。その能力をそのまま使い、JSON 化は Luna に任せる。
     """
-    window = "直近72時間" if q["key"] in ("trend", "fan-culture") else "直近48時間"
-    out = outdir / f"{q['key']}.jsonl"
+    out = outdir / f"{q['key']}.md"
+    days = 3 if q["key"] in ("trend", "fan-culture") else 2
+    since = (now_jst() - datetime.timedelta(days=days)).strftime("%Y-%m-%d")
+    accounts = q.get("accounts") or []
+    at = "、".join(f"@{a}" for a in accounts)
+    froms = " OR ".join(f"from:{a}" for a in accounts)
+    step1 = (f"""### 1. 公式アカウントを1回で引く
+
+`x_keyword_search` に **`({froms}) since:{since}`** を渡します(1回だけ)。
+{at} の投稿がまとめて取れます。**1アカウントずつ引き直さないでください。**
+""" if froms else "")
     prompt = f"""まず `{GROK_PROCEDURE.relative_to(ROOT)}` を読み、その手順書に従って作業してください。
 
-## あなたが調べる面(これ1面だけ)
+## あなたが担当する面(これ1面だけ)
 brand="{q["brand"]}" … {q["topic"]}
 
-対象期間: {window}
-目標件数: {GROK_ITEMS}件程度(上限ではなく目標)
+本日は {now_jst().strftime('%Y-%m-%d')} です。
 
-## 出力
-`{out}` に**1行1件の JSON**(JSON Lines)で追記します。
-**1件確認できたらその場で追記**してください。まとめて最後に書くと、
-実行回数の上限で打ち切られたときに成果が丸ごと消えます。
-他の面は別の担当が調べます。**このファイル以外は読まない・触らない**。
+## やること(この3つだけ。**検索は合計2回まで**)
+{step1}
+### 2. ブランド名で話題を調べる(1回だけ)
 
-## 掘り方(**検索1回が高い**ので、当たりを見てから深追いする)
-週次の利用上限は**検索の回数**で決まります。1面あたり {GROK_MAX_SEARCHES} 回前後が目安です。
+この面のブランド名・作品名で1回検索し、公式告知以外の動きを拾います
+(ファンの盛り上がり・トレンド入り・コラボ先や販売元の告知)。
 
-1. **まず公式アカウントを1回引く。**確実に当たるので、ここから始める
-2. その結果を見て**この面に今日ネタがあるかを判断する**
-   - **目ぼしいものが無ければ、そこで打ち切ってよい。**0〜2件で終わって構いません。
-     **目標件数に届かせるために検索を重ねないでください**(それが最も高くつきます)
-   - 手応えがあるときだけ、関連語を1〜2回足して掘る
-3. 見つけた候補の**中身の確認はポストやページを開いて**行う
-   (開く操作は検索ではないので、ここは惜しまなくてよい)
+### 3. まとめを書く
 
-**やらないこと**: 同じ意味の語に言い換えて引き直す/念のためもう一度引く/
-件数が足りないから別角度で探す。**空振りの面は空振りのまま返すのが正しい**動作です。
+`{out}` に**日本語のまとめ**として書きます。JSON にしなくて構いません。
 
-## 禁止(消費が跳ねます)
-- **画像をダウンロードして読み込まない**(この紙面は画像を使いません)
-- 書いたファイルを読み直さない
+- アカウント別・時系列に見出しを立てる
+- 1項目ずつ、**告知の中身を省略せずに**書く(ガシャ名・カード名・出現率・ジュエル数・
+  価格・開始と終了の日時・会場・出演者・型番・特典・対象条件など、投稿にあるものは全部)
+- **各項目に、その投稿またはページの URL を必ず添える**(どの事実がどの URL 由来かが
+  分かるように。ここが崩れると紙面が誤報になります)
 
-## 要素の形
+## 深掘りは禁止
+
+- **検索は上の2回で終わりです。**語を変えて引き直さない。件数のために足さない
+- リンク先を開くのは、**投稿だけでは日付や価格が分からないとき**に限ります。
+  関連ページを辿って回らないでください
+- **0件で終わってよい**。その面に今日ネタが無ければ「なし」と書いて終了します
+- 最大 {GROK_ITEMS} 項目程度
+
+## 要素の形(後段が JSON へ変換します。まとめに含めてほしい情報)
 {ITEM_SCHEMA}
 """
     pp = outdir / f"prompt-{q['key']}.md"
     pp.write_text(prompt, encoding="utf-8")
     return pp
-
-
-def consolidate_grok(outdir: Path) -> list:
-    """面ごとに書き捨てられた JSONL を Luna(codex)に束ねさせる。
-
-    面別セッションは互いを見ないので、同じ話題が複数の面に出る・整形が面ごとに
-    ぶれる、といったことが必ず起きる。それを Grok 側に整えさせると、
-    そのぶん週次上限を検索以外に使うことになる(上限の実体は入力トークン量)。
-    調停は安いモデルの仕事にして、Grok には調べることだけをさせる。
-
-    Luna が失敗しても収集を落とさない。機械読み(read_grok_files)に必ず落とす。
-    """
-    files = sorted(outdir.glob("*.jsonl"))
-    if not files:
-        return []
-    out = outdir / "normalized.json"
-    out.unlink(missing_ok=True)
-    prompt = (
-        f"{outdir} にある *.jsonl は、面ごとに独立して収集された候補です"
-        "(1行1件の JSON。面をまたいだ重複や、整形の崩れがあります)。\n"
-        f"すべて読み、次の規則で1つの JSON 配列に束ねて `{out}` へ書いてください"
-        "(Write ツール使用。他のファイルは作らない)。\n\n"
-        "1. **同じ url の行は1件に統合**し、facts を重複なく合併する\n"
-        "2. 同じ話題を指す行が別の url で複数あるなら、**それぞれ別の候補として残す**"
-        "(統合しない。どちらが正しいかの判断はしない)\n"
-        "3. 壊れた行は形だけ直す。**url が読み取れない行は捨てる**\n"
-        "4. **書かれていない情報を足さない。**推測で値を埋めない。facts の文言は変えない\n"
-        "5. 要素の形は次のとおり:\n" + ITEM_SCHEMA)
-    try:
-        subprocess.run(["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write", prompt],
-                       capture_output=True, text=True, timeout=900,
-                       stdin=subprocess.DEVNULL, cwd=ROOT)
-    except Exception as e:
-        print(f"grok: 調停(codex)に失敗 {e}。機械読みに切り替える", flush=True)
-    if out.exists():
-        try:
-            v = json.loads(out.read_text(encoding="utf-8", errors="replace"))
-            got = [x for x in v if isinstance(x, dict) and x.get("url")] if isinstance(v, list) else []
-            if got:
-                raw = read_grok_files(outdir)
-                print(f"grok: 調停 {len(raw)}行 → {len(got)}件", flush=True)
-                return got
-        except json.JSONDecodeError:
-            pass
-    print("grok: 調停の結果を読めず、機械読みに切り替える", flush=True)
-    return read_grok_files(outdir)
 
 
 def read_grok_files(outdir: Path) -> list:
@@ -359,33 +333,57 @@ def read_grok_files(outdir: Path) -> list:
         if isinstance(v, list):
             items += [x for x in v if isinstance(x, dict) and x.get("url")]
     if broken:
-        # 整形の厳密さを Grok に求めない代わり、崩れた行はここで拾い直す。
-        # 直すのは形だけで、事実は足さない(Grok の観測を超える情報を作らないため)
-        salvaged = salvage_broken(broken)
-        print(f"grok: 崩れた行 {len(broken)}件 → {len(salvaged)}件を復旧", flush=True)
-        items += salvaged
+        print(f"grok: JSON として読めない行 {len(broken)}件を無視", flush=True)
     return items
 
 
-def salvage_broken(lines: list[str]) -> list:
-    """JSON として読めなかった行を codex(luna)に整形し直させる。
+def consolidate_grok(outdir: Path) -> list:
+    """Grok が書いた日本語のまとめを、Luna(codex)が候補 JSON へ写し替える。
 
-    Grok に整形を作り込ませると、そのぶん検索に使える枠が減る(週次上限が実際の制約)。
-    整形は安いモデルの仕事にする。事実の追加は禁じ、形を直すだけにさせる。
+    Grok に JSON を書かせると調べる能力が整形に食われる(実測: 本文8,219字の
+    ページから facts 359字、25回検索して0件)。ブラウザで「詳細にまとめて」と
+    頼んだときの密度がそのまま欲しいので、Grok は日本語で書き、機械可読化はこちらでやる。
+
+    変換は**写し替えであって書き換えではない**(事実の追加・要約・言い換えを禁じる)。
+    Luna が失敗しても収集は落とさず、機械読み(read_grok_files)に落とす。
     """
-    prompt = ("次の各行は JSON として壊れています。**各行を1つの JSON オブジェクトに直して**、"
-              "JSON 配列だけを標準出力に書いてください。\n"
-              "**書かれていない情報を足さないこと**(推測で値を埋めない)。"
-              "url が読み取れない行は捨ててください。JSON 以外のテキストは出力しない。\n\n"
-              + "\n".join(lines[:80]))
-    try:
-        r = subprocess.run(["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "read-only",
-                            "--skip-git-repo-check", prompt],
-                           capture_output=True, text=True, timeout=300,
-                           stdin=subprocess.DEVNULL, cwd=ROOT)
-    except Exception:
+    docs = [d for d in sorted(list(outdir.glob("*.md")) + list(outdir.glob("*.jsonl")))
+            if not d.name.startswith("prompt-")]
+    if not docs:
         return []
-    return [x for x in extract_json_array(r.stdout) if isinstance(x, dict) and x.get("url")]
+    out = outdir / "normalized.json"
+    out.unlink(missing_ok=True)
+    prompt = (
+        f"{outdir} にある *.md は、面ごとに X を調べた結果の日本語のまとめです"
+        "(*.jsonl があればそれも読みます)。\n"
+        f"すべて読み、1話題1件の JSON 配列にして `{out}` へ書いてください"
+        "(Write ツール使用。他のファイルは作らない)。\n\n"
+        "**これは写し替えであって、書き換えではありません。**\n"
+        "1. まとめに書かれている事実を落とさない。日時・価格・ジュエル数・出現率・会場・"
+        "出演者・型番・特典・対象条件は、書かれているだけ facts に写す。要約しない\n"
+        "2. 書かれていない情報を足さない。推測で値を埋めない。文言を言い換えない\n"
+        "3. 各項目に添えられた URL をその候補の url にする。**URL が無い項目は捨てる**\n"
+        "4. 別々の施策(ガシャ・ライブ・グッズ)は別の候補に分ける。1つに合成しない\n"
+        "5. 同じ url の項目は1件に統合し、facts を重複なく合併する\n\n"
+        "要素の形:\n" + ITEM_SCHEMA)
+    try:
+        subprocess.run(["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write", prompt],
+                       capture_output=True, text=True, timeout=1200,
+                       stdin=subprocess.DEVNULL, cwd=ROOT)
+    except Exception as e:
+        print(f"grok: 変換(codex)に失敗 {e}", flush=True)
+    if out.exists():
+        try:
+            v = json.loads(out.read_text(encoding="utf-8", errors="replace"))
+            got = [x for x in v if isinstance(x, dict) and x.get("url")] if isinstance(v, list) else []
+            if got:
+                n = sum(len(d.read_text(encoding="utf-8", errors="replace")) for d in docs)
+                print(f"grok: まとめ {len(docs)}面 {n:,}字 → 候補 {len(got)}件", flush=True)
+                return got
+        except json.JSONDecodeError:
+            pass
+    print("grok: 変換結果を読めず、機械読みに切り替える", flush=True)
+    return read_grok_files(outdir)
 
 
 def grok_scheduled_now(now=None) -> bool:
@@ -433,7 +431,8 @@ def run_explores(skip_claude: bool, skip_grok: bool) -> tuple[list[dict], dict]:
                 pp = write_grok_prompt(outdir, q)
                 procs.append((q, subprocess.Popen(
                     ["grok", "--prompt-file", str(pp), "--always-approve",
-                     "--cwd", str(ROOT), "--max-turns", str(GROK_MAX_TURNS)],
+                     "--cwd", str(ROOT), "--max-turns", str(GROK_MAX_TURNS),
+                     "--reasoning-effort", GROK_EFFORT],
                     stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
                     stdin=subprocess.DEVNULL, cwd=ROOT)))
             for q, pr in procs:

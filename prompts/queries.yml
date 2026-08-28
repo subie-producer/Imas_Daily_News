@@ -1,5 +1,11 @@
 # 探索クエリセット(PIPELINE.md §1)。ブランドは間引かない。
 #
+# accounts はその面の公式アカウント。Grok の x_keyword_search へ
+#   (from:A OR from:B) since:YYYY-MM-DD
+# の形で1回にまとめて渡すために使う。**語を変えて何度も引くより1回を広く取るほうが安い**
+# (週次上限は検索回数で決まる)。実際に出典として使われた実績から採った handle であり、
+# 推測で増やさないこと(存在しない handle は結果0件になり、検索1回を無駄にする)。
+#
 # **ファン面(ファン創作・コスプレ・聖地巡礼・界隈の現象)は専用クエリを持たない。**
 # 各面を調べる過程で漏れ出てくるものを拾う(ITEM_SCHEMA の「ファン面の副産物」)。
 # 週次上限の実体は X 検索の回数なので、専用に検索枠を1面ぶん割くのは高くつく。
@@ -10,29 +16,57 @@
 # 1年たたずに古くなり、その時点の検索を過去のイベントへ引っ張る。
 # 恒常的な呼称(ライブ、ツアー、周年企画)で書き、個別の回次は収集側に見つけさせる。
 - key: 765as
-  brand: "765"
-  topic: "765PRO ALLSTARS(765ASブランド)。ライブ・CD・グッズ・コラボ・出演情報"
+  brand: '765'
+  topic: 765PRO ALLSTARS(765ASブランド)。ライブ・CD・グッズ・コラボ・出演情報
+  accounts:
+  - imas_official
+  - imasml_765PRO
+  - imas_ch
 - key: cinderella
   brand: cg
-  topic: "シンデレラガールズ(デレステ・デレマス・ミュージカル・総選挙・POP UP)"
+  topic: シンデレラガールズ(デレステ・デレマス・ミュージカル・総選挙・POP UP)
+  accounts:
+  - imas_CGofficial
+  - imascg_staff
 - key: million
   brand: million
-  topic: "ミリオンライブ(ミリシタ・ミリアニ・ナンバリングライブ・シアター系企画)"
+  topic: ミリオンライブ(ミリシタ・ミリアニ・ナンバリングライブ・シアター系企画)
+  accounts:
+  - imasml_theater
+  - imasml_765PRO
 - key: shiny
   brand: shiny
-  topic: "シャイニーカラーズ(シャニマス・シャニソン・ソロライブ・企画)"
+  topic: シャイニーカラーズ(シャニマス・シャニソン・ソロライブ・企画)
+  accounts:
+  - imassc_official
+  - imassc_prism
+  - shinyc_official
 - key: sidem
   brand: sidem
-  topic: "SideM(ゲーム・ナンバリングライブ・315プロコンテンツ・衣装展等)"
+  topic: SideM(ゲーム・ナンバリングライブ・315プロコンテンツ・衣装展等)
+  accounts:
+  - SideM_official
+  - SideM_lantis
 - key: gakuen
   brand: gaku
-  topic: "学園アイドルマスター(学マス。ゲーム・グッズ・リアルイベント・ツアー)"
+  topic: 学園アイドルマスター(学マス。ゲーム・グッズ・リアルイベント・ツアー)
+  accounts:
+  - gkmas_official
 - key: dsva
   brand: dsva
-  topic: "876プロ(ディアリースターズ)とヴイアライヴ(vα-liv)。露出が少ないので細かい動きも"
+  topic: 876プロ(ディアリースターズ)とヴイアライヴ(vα-liv)。露出が少ないので細かい動きも
+  accounts:
+  - valiv_official
+  - imas_dsva
 - key: joint-other
   brand: joint
-  topic: "ブランド横断・合同(アイドルマスター ツアーズ、周年企画、IWSF、合同ライブ、ポプマス・KR・961等)"
+  topic: ブランド横断・合同(アイドルマスター ツアーズ、周年企画、IWSF、合同ライブ、ポプマス・KR・961等)
+  accounts:
+  - imas_official
+  - TOURS_imas
+  - imas_columbia
 - key: trend
   brand: general
-  topic: "アイドルマスター関連で世間的にトレンド入り・バズした話題(一般ワード・報道・現象)"
+  topic: アイドルマスター関連で世間的にトレンド入り・バズした話題(一般ワード・報道・現象)
+  accounts:
+  - imas_official

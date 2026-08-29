@@ -1,0 +1,235 @@
+# 出典種別の判定表(REQUIREMENTS 2.5)
+#
+# 出典の種別を、URL から機械的に決めるための表。
+#
+# これが無かったころ、種別は収集役の自己申告だった。lint の検査は
+# 「記事の src == 引用出典の最弱種別」というラベル同士の照合だったため、
+# 収集役が攻略サイトを「公式」と申告すれば最弱も「公式」になって一致し、
+# 過大表示を1件も防げなかった(実測 26件・18記事)。判定の根拠を URL 側へ移す。
+#
+# 判定は上から順に、最初に当たったものを採る:
+#   1. official_paths     ドメインの一部だけが公式(作品公式サイトはドメインを問わない)
+#   2. video_ids          YouTube・ニコ生は**投稿者**で決まる。ドメインでは決まらない
+#   3. x_accounts         X も**アカウント**で決まる
+#   4. domains            それ以外はドメイン
+#   5. どれにも当たらなければ **未確認**
+#
+# 既定を「未確認」にしているのは意図的である。以前は「当事者が最も多いから」を
+# 理由に既定を当事者にしていたが、それでは未知の個人ブログもファン動画も
+# 当事者(一次発信)を名乗れてしまう。**多いことは判定の根拠にならない**(監査指摘)。
+# 表に載っていない情報源は、性格が分かっていないのだから未確認である。
+#
+# 種別は**情報源の性格**を表す。「一次ソースへ到達できたか」という確認状態は
+# 未確認 が受け持つ別軸なので、元から 未確認 だったものを種別で上書きしない。
+
+# --- 公式: アイマス公式(公式ポータル・ブランド/作品の公式サイト・公式X) ---
+# 「他はどれほど信頼できても公式を名乗らない」(規程2.5)。狭く採る。
+official_paths:
+  # バンナムAM配下のツアマス公式サイト(規程2.5に例として明記されている)
+  - bandainamco-am.co.jp/am/vg/idolmaster-tours/
+
+official_domains:
+  - idolmaster-official.jp                          # 公式ポータル
+  - cinderellagirls.idolmaster-official.jp          # シンデレラガールズ公式
+  - millionlive-theaterdays.idolmaster-official.jp  # ミリオンライブ! 公式
+# 公式ポータル配下の特設サイト(gakumas-summer2026. など号ごとに増える)は
+# 末尾一致で公式にする。ただし**個別指定のほうが先に効く**ので、
+# gakuen-label.(学マスレーベル公式サイト = 公式レーベル)は下の準公式に載せて
+# 除外する。ドメインが公式ポータル配下でも、名乗っている主体で決まる(監査指摘)。
+official_suffixes:
+  - .idolmaster-official.jp
+
+# --- 準公式: 公式レーベル・公式ストア等のグループ/パートナー企業 ---
+semi_official_domains:
+  - gakuen-label.idolmaster-official.jp   # 学マスレーベル(公式レーベル)
+  - columbia.jp                           # 日本コロムビア
+  - shop.columbia.jp
+  - lantis.jp                             # ランティス
+  - shinycolors.lantis.jp
+  - shop.asobistore.jp                    # アソビストア
+  - asobistory.asobistore.jp
+  - gamemusic.bn-ent.net                  # バンダイナムコのゲームミュージックレーベル
+  - bandainamco-am.co.jp                  # バンナムAM(上の official_paths 以外)
+  - parks2.bandainamco-am.co.jp
+  - p-bandai.jp                           # プレミアムバンダイ
+
+# --- 報道: 独立した報道メディア ---
+press_domains:
+  - 4gamer.net
+  - famitsu.com
+  - gamebiz.jp
+  - animatetimes.com
+  - game.watch.impress.co.jp
+  - hobby.watch.impress.co.jp
+  - inside-games.jp
+  - dengekionline.com
+  - hobby.dengeki.com
+  - natalie.mu
+  - oricon.co.jp
+  - realsound.jp
+  - lisani.jp
+  - cho-animedia.jp
+  - nijimen.kusuguru.co.jp
+  - news.yahoo.co.jp        # 配信は契約報道メディアのみ(実測: GAME Watch 配信を確認)
+  - townnews.co.jp
+  - kachimai.jp
+
+# --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
+# 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
+secondary_domains:
+  - game8.jp              # 株式会社ゲームエイト(Gunosy子会社)の攻略メディア
+  - gameo.jp              # ゲームオメガ / 株式会社New-Elements の攻略・まとめ
+  - appgamelog.com        # 攻略
+  - zutapoke.com          # 学マスまとめ(ファン運営)
+  - imasnews765.com       # アイマスニュース765(公式ツイート引用主体のまとめ)
+  - aimasupay.hatenablog.com
+  - search.yahoo.co.jp    # リアルタイム検索の自動まとめページ
+  - games.o-yake.com
+  - skypenguin.net
+  - blog.toyget.com
+  - collabo-cafe.com      # コラボ情報のまとめ
+  - tcg-supply-navi.com   # サプライ情報のアフィリエイト記事(販売元はアソビストア)
+  - eventernote.com       # イベント情報サービス。公演の主催者ではない
+
+# --- ファン: ファン・サークル活動等の**当事者発信** ---
+# 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
+fan_domains:
+  - motoraji.jugem.jp     # もとラジ!(ファン番組の自己発信)
+
+# --- 当事者: 主催者・販売元・自治体・コラボ先などの一次発信 ---
+# ドメイン全体ではなく、その中の特定の主体だけが当事者になるもの(前方一致)。
+# github.com のような**多数の利用者が同居するプラットフォーム**を丸ごと
+# 当事者にすると、任意のユーザーのリポジトリまで一次発信を名乗る(監査指摘)。
+party_paths:
+  - github.com/subie-producer/Imas_Daily_News   # 本紙自身のリポジトリ
+  # 楽天市場は5万店以上が同居する出店型モール。ドメインごと当事者にはできない(監査指摘)
+  - item.rakuten.co.jp/amiami                   # あみあみ(販売店)
+  - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
+
+party_domains:
+  - akiba-tolim.com
+  - and-yogurt.com
+  - animate-onlineshop.jp
+  - anisama.tv
+  - bsp-prize.jp
+  - city.machida.tokyo.jp
+  - colabtokyo.hp.peraichi.com
+  - collabo.karaokemanekineko.jp
+  - comic-walker.com
+  - daikokuyu.com
+  - eeo.today
+  - hmv.co.jp
+  - karatetsu.com
+  - kuji.kotobukiya.co.jp
+  - mining-base.co.jp
+  - mora.jp
+  - nagoya-tv-tower.co.jp
+  - prtimes.jp            # 発表主体そのものが出す一次リリース
+  - realdgame.jp
+  - rebirth-fy.com
+  - round1.co.jp
+  - seabreeze-gkmas-cp.jp
+  - smilebase.co.jp
+  - sva.jp
+  - sweets-paradise.jp
+  - the-chara.com
+  - tower.jp
+  - voi.0101.co.jp
+
+# --- YouTube・ニコニコ生放送は投稿者で決まる ---
+# ドメインでは決まらない(監査指摘)。同じ youtube.com に公式チャンネルの PV と
+# レーベルの試聴動画が混在する。表に無い ID は未確認になる。
+# 新規収集時は oEmbed(YouTube)・番組ページ(ニコ生)で投稿者を確かめて足す。
+video_ids:
+  公式:
+    - wgCWiC2SQPw   # アイドルマスターチャンネル(@imas-official)「CLASH M@TCH!!」開催決定PV
+  準公式:
+    - fX4iinOuXQc   # Lantis Channel(@Lantis) SideM MONTHLY THEME SONG 試聴動画
+    - lv351005906   # CINDERELLA PARTY! #614(日本コロムビア)
+    - lv351005960   # THE IDOLM@STER MUSIC ON THE RADIO #411(日本コロムビア)
+    - lv350975991   # THE IDOLM@STER MillionRADIO(バンダイナムコミュージックライブ)
+    - lv351101519   # MillionRADIO おまけ生放送(バンダイナムコミュージックライブ)
+
+# --- X(Twitter)はアカウントで決まる ---
+# 「公式アカウントの告知は公式」(規程・PIPELINE)。裏を返せば、
+# 公式アカウント以外の X 投稿は公式ではない。表に無いアカウントは未確認になる。
+x_accounts:
+  公式:
+    - imas_official                   # アイドルマスター公式
+    - imas_CGofficial                 # シンデレラガールズ
+    - imasml_theater                  # ミリオンライブ! シアターデイズ
+    - imasml_765PRO                   # ミリオンライブ! 765PRO
+    - imassc_official                 # シャイニーカラーズ
+    - imassc_prism                    # シャニソン
+    - shinyc_official                 # シャニマス
+    - coherent_sc                     # シャニマス公式
+    - SideM_official                  # SideM
+    - gkmas_official                  # 学園アイドルマスター
+    - valiv_official                  # vα-liv
+    - TOURS_imas                      # アイマス ツアーズ
+    - imas_ch                         # アイマスチャンネル
+    - dereparty                       # CINDERELLA PARTY!(公式番組)
+    - imascg_dereradi                 # デレラジ(公式番組)
+    # vα-liv の「アイドル本人」名義アカウント(ブランド運営。公式ポータルが所属先として掲載)
+    - KamizuruCosmo
+    - TomoriManaka
+    - UtagawaLetora
+  準公式:
+    - imas_columbia                   # 日本コロムビア アイマス
+    - NipponColumbia
+    - lantis_imasSC
+    - SideM_lantis
+    - lantis_staff
+    - asobistore
+    - imas_musicradio
+  報道:
+    - famitsu
+    - GamerNeJp
+  二次情報:
+    - imasnews765
+    - zutapoke
+  ファン:
+    - Hj2Zp
+    - masahiro920511
+    - natsupi_777
+    - procinen1
+    - yutaleP
+  当事者:
+    - dengeki_imas                    # 電撃(自社出版物の告知。報道ではない。監査指摘)
+    - colleize                        # 公式ライセンス商品の通販。公式パートナーの根拠は無い
+    - UNION_ARENA_TCG
+    - fanitto_csf
+    - kohgen_official
+    - thechara_yrkc
+    - 30msisters
+    - BANPRE_PZ
+    - YabatonO
+    - animateinfo
+    - manga10_torico
+    - nagoyainfojp
+    - 283prosh_akb
+    - Animo_official_
+    - III_I_V
+    - Kotobukiya_akb
+    - MWT_Travel
+    - ONKYO_ANIME_2
+    - PandaBoY_dot
+    - ShikaoiFurusato
+    - _kiato
+    - aoyagi_souhonke
+    - axlone_staff
+    - colab_tokyo
+    - daikoku_yu
+    - hakuno_imasaka
+    - hatsuboshistore
+    - im_MediaArts
+    - kassy_imasch
+    - kotobukiya_kuji
+    - kotobukiyas
+    - machida_museum
+    - maneki_collabo
+    - medicos_et_02
+    - mototiru
+    - myokoen_758
+    - nicogame_PR
+    - tomohito0825

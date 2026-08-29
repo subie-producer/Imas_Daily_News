@@ -2,7 +2,7 @@
 slug: sidem-315pro-episode-and-goods-preorder
 edition: 2026-07-13
 brand: sidem
-src: 公式
+src: 当事者
 rank: small
 title: "SideM、315プロエピソード更新とアニメイト予約情報"
 lede: "SideMの「315プロダクション エピソード」が更新されたほか、アニメイトでもグッズ2種の予約を受け付けている。予約は9月発売予定だ。"

@@ -2,7 +2,7 @@
 slug: shiny-30ms-new-figures
 edition: 2026-08-24
 brand: shiny
-src: 当事者
+src: 報道
 rank: medium
 corrected: false
 corrections: []
@@ -13,10 +13,10 @@ tags: [シャニマス, コラボ, フィギュア, グッズ]
 sources:
   - label: 発表会の開催案内
     url: https://hobby.dengeki.com/news/3126628
-    type: 準公式
+    type: 報道
   - label: 新商品シルエット記事
     url: https://hobby.watch.impress.co.jp/docs/news/2133619.html
-    type: 準公式
+    type: 報道
   - label: 30MS公式X・にちか／はづき
     url: https://x.com/30msisters/status/2090732607915065467
     type: 当事者

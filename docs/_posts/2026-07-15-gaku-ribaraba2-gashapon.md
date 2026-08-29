@@ -14,7 +14,7 @@ event_date: 2026-07-14
 sources:
   - label: バンダイナムコアミューズメント商品ページ
     url: https://parks2.bandainamco-am.co.jp/item/PRE_4582770094749.html
-    type: 当事者
+    type: 準公式
   - label: アイドルマスター公式ニュース
     url: https://idolmaster-official.jp/news/01_19157
     type: 公式

@@ -2,7 +2,7 @@
 slug: iwsf2026-day3-lineup-and-venue-goods
 edition: 2026-07-13
 brand: joint
-src: 公式
+src: 準公式
 rank: lead
 title: "IWSF2026、DAY3に765PRO・CG・学マスも集結"
 lede: "20周年フィナーレ「IDOL WORLD SUPER FESTIVAL 2026」のDAY3出演者に、765PRO・シンデレラガールズ・学マスなど複数ブランドの名が挙がった。"

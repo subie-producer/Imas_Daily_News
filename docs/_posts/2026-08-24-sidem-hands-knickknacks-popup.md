@@ -2,7 +2,7 @@
 slug: sidem-hands-knickknacks-popup
 edition: 2026-08-24
 brand: sidem
-src: 準公式
+src: 当事者
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [SideM, POP UP, グッズ, イベント]
 sources:
   - label: ハンズの開催案内
     url: https://prtimes.jp/main/html/rd/p/000000714.000070824.html
-    type: 準公式
+    type: 当事者
 event_date: 2026-08-21
 ---
 

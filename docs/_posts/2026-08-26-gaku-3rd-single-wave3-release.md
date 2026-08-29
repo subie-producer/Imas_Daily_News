@@ -2,7 +2,7 @@
 slug: gaku-3rd-single-wave3-release
 edition: 2026-08-26
 brand: gaku
-src: 準公式
+src: 当事者
 rank: medium
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [学マス, CD]
 sources:
   - label: HMV発売案内
     url: https://www.hmv.co.jp/news/article/260427123/
-    type: 準公式
+    type: 当事者
 event_date: 2026-08-26
 ---
 

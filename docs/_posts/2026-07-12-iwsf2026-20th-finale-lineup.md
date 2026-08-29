@@ -2,7 +2,7 @@
 slug: iwsf2026-20th-finale-lineup
 edition: 2026-07-12
 brand: joint
-src: 準公式
+src: 報道
 rank: lead
 title: "20周年クロスシリーズライブ「IWSF2026」7月24日開幕"
 lede: "シリーズ20周年のクロスライブ「IDOL WORLD SUPER FESTIVAL 2026」が7月24日開幕。765プロからvα-livまで結集する、初の越境xRライブとなる。"

@@ -2,7 +2,7 @@
 slug: cg-cinderella-master-bouquet-cd
 edition: 2026-08-25
 brand: cg
-src: 公式
+src: 準公式
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [シンデレラガールズ, CD, 予約]
 sources:
   - label: 日本コロムビア公式ニュース
     url: https://columbia.jp/idolmaster/imasnews/260821.html
-    type: 公式
+    type: 準公式
 event_date: 2026-08-26
 ---
 

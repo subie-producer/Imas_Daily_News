@@ -2,7 +2,7 @@
 slug: general-gakumas-hataya-swimsuit-gacha-detail
 edition: 2026-08-26
 brand: general
-src: ファン
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [学マス, ガシャ, 秦谷美鈴]
 sources:
   - label: 学マスまとめ情報のX投稿
     url: https://x.com/zutapoke/status/2092131059848925335
-    type: ファン
+    type: 二次情報
 event_date: 2026-08-26
 ---
 

@@ -13,7 +13,7 @@ tags: [シャニマス, ライブ, チケット]
 sources:
   - label: 公式お知らせまとめ
     url: https://idolmaster-official.jp/news/01_19509
-    type: 準公式
+    type: 公式
   - label: REFRAC7IONS開催告知
     url: https://idolmaster-official.jp/news/01_18792
     type: 公式
@@ -22,7 +22,7 @@ sources:
     type: 公式
   - label: アソビストア
     url: https://shop.asobistore.jp/
-    type: 公式
+    type: 準公式
   - label: 公式公演情報
     url: https://idolmaster-official.jp/live_event/REFRAC7IONS_Still_blue/information/
     type: 公式

@@ -2,7 +2,7 @@
 slug: shiny-karma-naraku-tokyo-event
 edition: 2026-08-24
 brand: shiny
-src: 当事者
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [シャニマス, シャニソン, CD, イベント]
 sources:
   - label: イベント開催案内
     url: https://www.eventernote.com/actors/%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC%E3%82%B7%E3%83%A3%E3%82%A4%E3%83%8B%E3%83%BC%E3%82%AB%E3%83%A9%E3%83%BC%E3%82%BA/35452/events
-    type: 当事者
+    type: 二次情報
 event_date: 2026-08-23
 ---
 

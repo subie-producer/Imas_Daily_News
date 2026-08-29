@@ -2,7 +2,7 @@
 slug: gaku-goods-roundup-jul14
 edition: 2026-07-14
 brand: gaku
-src: 公式
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -13,13 +13,13 @@ tags: [学マス, グッズ, 予約]
 sources:
   - label: SuperGroupies腕時計等予約開始
     url: https://idolmaster-official.jp/news/01_19168
-    type: 準公式
+    type: 公式
   - label: ムービック動物モチーフグッズ予約
     url: https://collabo-cafe.com/events/collabo/gakuen-idolmaster-animal-motif-movic-anime-store-goods2026/
-    type: 報道
+    type: 二次情報
   - label: コレイズ新グッズ予約告知
     url: https://x.com/colleize/status/2076222530143322175
-    type: 準公式
+    type: 当事者
   - label: ローソングッズ予約販売中
     url: https://idolmaster-official.jp/news/01_19184
     type: 公式

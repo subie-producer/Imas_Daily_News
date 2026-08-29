@@ -2,7 +2,7 @@
 slug: gaku-3rd-single-wave3-titles
 edition: 2026-08-28
 brand: gaku
-src: 準公式
+src: 当事者
 rank: medium
 corrected: false
 corrections: []
@@ -12,13 +12,13 @@ lede: 学園アイドルマスターの3rdシングルシリーズ第3弾とし�
 tags: [学マス, CD]
 sources:
   - label: 学マスレーベル公式の発売告知
-    type: 公式
+    type: 準公式
     url: https://gakuen-label.idolmaster-official.jp/news/3rdsingle_3
   - label: moraの初星学園楽曲一覧
-    type: 準公式
+    type: 当事者
     url: https://mora.jp/topics/news/gakuen_idolmaster/
   - label: HMVの発売記事
-    type: 準公式
+    type: 当事者
     url: https://www.hmv.co.jp/news/article/260427123/
 event_date: 2026-08-26
 ---

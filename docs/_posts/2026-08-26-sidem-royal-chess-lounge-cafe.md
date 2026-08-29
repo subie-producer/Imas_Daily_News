@@ -2,7 +2,7 @@
 slug: sidem-royal-chess-lounge-cafe
 edition: 2026-08-26
 brand: sidem
-src: 準公式
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [SideM, コラボ, コラボカフェ]
 sources:
   - url: https://idolmaster-official.jp/news/01_19442
     label: アイドルマスター公式サイトの開催告知
-    type: 準公式
+    type: 公式
 event_date: 2026-08-19
 ---
 

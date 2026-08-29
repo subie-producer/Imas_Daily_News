@@ -2,7 +2,7 @@
 slug: gakumas-shirube-final-goods-open
 edition: 2026-07-14
 brand: gaku
-src: 準公式
+src: 二次情報
 rank: medium
 corrected: false
 corrections: []
@@ -17,7 +17,7 @@ sources:
     type: 準公式
   - label: 公式ラバーマット事前販売情報
     url: https://tcg-supply-navi.com/gakumas-livetour-shirube-final-rubbermat-202610/
-    type: 準公式
+    type: 二次情報
 ---
 
 学園アイドルマスターの「LIVE TOUR -標-」ファイナル公演に向けた公式グッズの事前販売が、2026年7月9日からアソビストアで始まった。受注は7月20日(月)まで受け付け、商品は10月下旬以降に順次発送される。

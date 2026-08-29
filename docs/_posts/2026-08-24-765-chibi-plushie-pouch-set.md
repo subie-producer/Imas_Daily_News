@@ -2,7 +2,7 @@
 slug: 765-chibi-plushie-pouch-set
 edition: 2026-08-24
 brand: "765"
-src: 準公式
+src: 報道
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [765AS, グッズ, 予約, 通販]
 sources:
   - label: 商品予約を報じた記事
     url: https://game.watch.impress.co.jp/docs/news/2133562.html
-    type: 準公式
+    type: 報道
 event_date: 2026-08-18
 ---
 

@@ -2,7 +2,7 @@
 slug: 765-imas-radio-launch
 edition: 2026-08-29
 brand: '765'
-src: 報道
+src: 二次情報
 rank: large
 corrected: false
 corrections: []
@@ -13,10 +13,10 @@ tags: [765AS, アイマスch, 配信, ラジオ]
 sources:
   - label: "アイドルマスター公式発表"
     url: "https://idolmaster-official.jp/news/01_19721"
-    type: "公式"
+    type: 公式
   - label: "アイドルマスター情報まとめ"
     url: "https://imasnews765.com/?p=32392"
-    type: "報道"
+    type: 二次情報
 event_date: 2026-09-15
 ---
 

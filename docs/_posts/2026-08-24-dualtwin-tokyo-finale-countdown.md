@@ -2,7 +2,7 @@
 slug: dualtwin-tokyo-finale-countdown
 edition: 2026-08-24
 brand: "765"
-src: 当事者
+src: 準公式
 rank: lead
 corrected: false
 corrections: []
@@ -19,7 +19,7 @@ sources:
     type: 公式
   - url: https://idolmaster-official.jp/news/01_19687
     label: 大阪・名古屋公演の同時視聴上映会案内
-    type: 当事者
+    type: 公式
   - url: https://x.com/imas_official/status/2091426738031264178
     label: 東京公演千秋楽とチケット案内
     type: 公式

@@ -2,7 +2,7 @@
 slug: general-gakumas-hataya-memory-outfit
 edition: 2026-08-26
 brand: general
-src: ファン
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -16,7 +16,7 @@ tags:
 sources:
   - label: 学マスまとめ情報の投稿
     url: https://x.com/zutapoke/status/2092133730936815671
-    type: ファン
+    type: 二次情報
 event_date: 2026-08-26
 ---
 

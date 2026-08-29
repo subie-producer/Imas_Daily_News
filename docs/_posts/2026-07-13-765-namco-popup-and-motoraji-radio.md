@@ -2,7 +2,7 @@
 slug: 765-namco-popup-and-motoraji-radio
 edition: 2026-07-13
 brand: '765'
-src: 公式
+src: 二次情報
 rank: small
 title: "765PRO、博品館POP UP開催ともとラジ三浦あずさ特集"
 lede: "博品館TOY PARK銀座本店で765PROのPOP UPが開催中。FMおだわら「もとラジ!」では三浦あずさ特集が7月19日に放送される。"
@@ -11,7 +11,7 @@ sources:
   - type: 公式
     label: "765PRO公式サイト「ナムコ ゲームセレクション サマーマーケット」告知"
     url: https://idolmaster-official.jp/news/01_19360
-  - type: 当事者
+  - type: 二次情報
     label: "もとラジ!ブログ「第768話 三浦あずさ特集」放送告知"
     url: https://imasnews765.com/?p=32204
 corrected: false

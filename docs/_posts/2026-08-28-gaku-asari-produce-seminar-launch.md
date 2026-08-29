@@ -2,7 +2,7 @@
 slug: gaku-asari-produce-seminar-launch
 edition: 2026-08-28
 brand: gaku
-src: 公式
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -13,13 +13,13 @@ tags: [学マス, イベント]
 sources:
   - label: あさり先生のプロデュースゼミ案内
     url: https://zutapoke.com/events/event/260826asari/
-    type: 公式
+    type: 二次情報
   - label: 学マス公式X告知
     url: https://x.com/gkmas_official/status/2092457022977720674
     type: 公式
   - label: Game8イベントスケジュール
     url: https://game8.jp/gakuen-idolmaster/610573
-    type: 公式
+    type: 二次情報
 event_date: 2026-08-26
 ---
 

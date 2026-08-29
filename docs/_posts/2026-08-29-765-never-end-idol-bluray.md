@@ -2,7 +2,7 @@
 slug: 765-never-end-idol-bluray
 edition: 2026-08-29
 brand: '765'
-src: 公式
+src: 準公式
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: ["765AS", "ライブ", "Blu-ray"]
 sources:
   - label: "アソビストア商品ページ"
     url: "https://shop.asobistore.jp/products/detail/225029-00-00-00"
-    type: "公式"
+    type: 準公式
 event_date: "2026-11-25"
 ---
 

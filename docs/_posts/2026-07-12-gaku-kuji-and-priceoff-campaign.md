@@ -2,7 +2,7 @@
 slug: gaku-kuji-and-priceoff-campaign
 edition: 2026-07-12
 brand: gaku
-src: 準公式
+src: 当事者
 rank: small
 title: "アイマス公式ショップの抽選くじ、本日から学マス登場"
 lede: "アイドルマスターオフィシャルショップの抽選くじに本日から学園アイドルマスターが登場。初星学園のハイレゾ作品プライスオフも実施中。"
@@ -11,7 +11,7 @@ sources:
   - type: 公式
     label: "アイドルマスター公式サイト「オフィシャルショップ抽選くじ 学マス登場」(2026年7月)"
     url: https://idolmaster-official.jp/news/01_16107
-  - type: 準公式
+  - type: 当事者
     label: "mora「学園アイドルマスター 初星学園 ハイレゾ作品プライスオフキャンペーン」(2026年7月)"
     url: https://mora.jp/topics/otoku/gakuen_idolmaster_po_2026summer/
 corrected: false

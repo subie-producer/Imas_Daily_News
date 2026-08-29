@@ -2,13 +2,13 @@
 slug: lantisdayz-shibuya-lovez-opening
 edition: 2026-07-13
 brand: joint
-src: 公式
+src: 報道
 rank: medium
 title: "新会場Shibuya LOVEZ開業記念、SideM・ノクチル出演決定"
 lede: "バンダイナムコグループの新ライブホール「Shibuya LOVEZ」の開業記念シリーズ「Lantis DAYZ」に、SideMとシャニマスのノクチルが出演する。"
 tags: [SideM, シャニマス, 新会場]
 sources:
-  - type: 準公式
+  - type: 報道
     label: "オリコン「Shibuya LOVEZ開業、Lantis DAYZ」記事"
     url: https://www.oricon.co.jp/news/2446946/full/
   - type: 公式

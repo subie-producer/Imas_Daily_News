@@ -2,7 +2,7 @@
 slug: million-machida-art-rally-open
 edition: 2026-07-14
 brand: million
-src: 公式
+src: 報道
 rank: medium
 corrected: false
 corrections: []

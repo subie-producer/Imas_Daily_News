@@ -2,7 +2,7 @@
 slug: gaku-hif-memorial-single-release
 edition: 2026-08-26
 brand: gaku
-src: 当事者
+src: 準公式
 rank: large
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [学マス, CD, 周年]
 sources:
   - label: 学マスレーベル公式のお知らせ
     url: https://gakuen-label.idolmaster-official.jp/news/garakuta
-    type: 当事者
+    type: 準公式
 event_date: 2026-08-26
 ---
 

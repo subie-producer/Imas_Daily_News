@@ -2,7 +2,7 @@
 slug: cg-toybox-venue-cd-mailorder
 edition: 2026-08-25
 brand: cg
-src: 公式
+src: 準公式
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: ["シンデレラガールズ", "CD", "通販", "ライブ"]
 sources:
   - label: "日本コロムビア公式告知"
     url: "https://columbia.jp/idolmaster/imasnews/260821postevent.html"
-    type: "公式"
+    type: 準公式
 event_date: 2026-08-13
 ---
 

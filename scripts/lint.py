@@ -26,6 +26,9 @@ from pathlib import Path
 import yaml
 from jsonschema import Draft202012Validator
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from pipelib import classify_source  # noqa: E402  出典種別は URL から判定する
+
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
 POSTS = DOCS / "_posts"
@@ -55,6 +58,9 @@ BODY_RANGE = {
     "roundup": (0, 99999),   # 面の種類であって大小ではない
     "culture": (0, 99999),
 }
+# 「字数を先に決めるのをやめ、書き上がりから枠を当てる」に切り替えた最初の号。
+# これより前は字数を先に決めて書かせていたので、上の範囲では測れない
+BODY_RANGE_FROM = "2026-08-28"
 RANK_BELOW = {"lead": "large", "large": "medium", "medium": "small", "small": "small",
               "roundup": "roundup", "culture": "culture"}  # roundup/culture は規程2の減格対象外
 # 記事本数の下限(編集規程11)。lead 欠落はエラー、下限割れは警告(publish が Discord 通知)
@@ -71,9 +77,10 @@ RELATIVE_WORDS = {"本日": 0, "今日": 0, "昨日": -1, "明日": +1}
 ABS_DATE_RE = re.compile(r"(\d{1,2})月(\d{1,2})日")
 
 # 出典バッジの信頼順(強い順)。記事 src は引用出典の最弱種別(compose と同一規則)。
-# 2026-07-14 以前の号は旧規則(最強種別)で発行済みのため検査対象外
-SRC_ORDER = ["公式", "準公式", "当事者", "報道", "ファン", "もちより", "未確認"]
-SRC_WEAKEST_FROM = "2026-07-15"
+# 以前は「2026-07-14 以前は旧規則(最強種別)で発行済み」として検査から外していたが、
+# 最強種別を名乗ることは過大表示そのものであり、除外は誤りを守っていた。
+# scripts/retag_sources.py で全号を最弱規則へ揃えたので、除外はもう無い
+SRC_ORDER = ["公式", "準公式", "当事者", "報道", "ファン", "二次情報", "もちより", "未確認"]
 
 URL_TIMEOUT = 15
 URL_UA = "Mozilla/5.0 (compatible; ImasNewsLint/1.0; +https://github.com/subie-producer/Imas_Daily_News)"
@@ -142,6 +149,41 @@ def git(*args):
     return subprocess.run(
         ["git", *args], cwd=ROOT, capture_output=True, text=True
     )
+
+
+# ---- 出典種別 lint -----------------------------------------------------------
+
+def src_rank(t):
+    return SRC_ORDER.index(t) if t in SRC_ORDER else len(SRC_ORDER)
+
+
+def check_source_types(rep, path, fm):
+    """出典の種別が **URL からの判定**と合っているか。記事 src は最弱種別か。
+
+    照合の相手は `source_types.yml` であって、収集役の申告ではない。
+    申告同士を突き合わせていたころは、攻略サイトを「公式」と申告すれば
+    候補も記事も最弱も「公式」で揃い、過大表示を1件も止められなかった。
+    """
+    if not fm.get("sources"):
+        return
+    resolved = []
+    for s in fm["sources"]:
+        # 未確認 は「一次ソース未到達」という確認状態。種別の判定で上書きしない(規程2.5)
+        if s.get("type") == "未確認":
+            resolved.append("未確認")
+            continue
+        want = classify_source(s["url"])
+        if s.get("type") != want:
+            d = "過大表示" if src_rank(s.get("type")) < src_rank(want) else "過小表示"
+            rep.error(path, f"出典 type が URL の判定と不一致({d}。{s['url']}: "
+                            f"記事 {s.get('type')} / 判定 {want})")
+        resolved.append(want)
+    # 記事バッジは引用出典の**最弱**種別(compose の検収と同一規則)
+    want = max(resolved, key=src_rank)
+    got = fm.get("src")
+    if got != want:
+        d = "過大表示" if src_rank(got) < src_rank(want) else "過小表示"
+        rep.error(path, f"src は引用出典の最弱種別 {want} にする(現: {got}。{d})")
 
 
 # ---- 時制 lint ---------------------------------------------------------------
@@ -269,10 +311,14 @@ def main() -> int:
             # 分量基準: 中見出し行を除いた本文の非空白文字数
             prose = re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)
             body_len = len(re.sub(r"\s", "", prose))
-            # 枠と長さの整合は**これから出す号だけ**に適用する。過去号は append-only で
-            # 直せないうえ、基準を変える前の枠が付いている(直せない過去を毎日叱っても、
-            # 本当に見るべき当日の警告が埋もれるだけ)
-            if str(path.relative_to(ROOT)) in changed:
+            # 枠と長さの整合は、**その規則で組まれた号だけ**に適用する。
+            # それ以前は字数を先に決めて書かせていたので、いまの範囲には収まらない。
+            #
+            # 以前はこれを「変更されたファイルか」で代用していたが、それだと
+            # 出典種別の付け直しのように**過去記事を正当に触ったとき**に、
+            # 当時存在しなかった基準で古い号を叱り出す(実測: 19件が一斉に出て
+            # 発行を止めかけた)。基準の適用範囲は号の日付で決める。
+            if fm["edition"] >= BODY_RANGE_FROM:
                 lo, hi = BODY_RANGE[fm["rank"]]
                 if not (lo <= body_len <= hi):
                     rep.error(path, f"本文{body_len}字と枠 {fm['rank']} が不一致"
@@ -464,6 +510,20 @@ def main() -> int:
         candidate_urls_by_day.setdefault(day, set()).update(s.get("url", "") for s in data)
         candidate_items_by_day.setdefault(day, {}).update({s["id"]: s for s in data if s.get("id")})
 
+    # 出典種別の照合は**常に全記事**を見る。ネットを使わないので安い。
+    #
+    # 以前は「記事の type == 候補の source_type」「記事の src == 出典の最弱種別」と、
+    # ラベル同士を突き合わせていた。収集役が攻略サイトを「公式」と申告すれば
+    # 候補も記事も最弱も「公式」で揃うため、**過大表示を1件も防げない検査が
+    # 「過大表示防止」と名乗っていた**(実測 26件・18記事が素通り)。
+    # 照合の相手を source_types.yml へ移した。
+    #
+    # 変更ファイルだけを見ると、`source_types.yml` の判定を直したときに
+    # 既存記事が再検査されず、過大表示が残ったまま通る(監査指摘)。
+    # 判定表は全記事に一斉に効くものなので、対象を変更差分で絞ってはいけない。
+    for _k, (path, fm, _) in sorted(posts.items()):
+        check_source_types(rep, path, fm)
+
     net_targets = [
         (path, fm) for _k, (path, fm, _) in posts.items()
         if args.full or str(path.relative_to(ROOT)) in changed
@@ -492,49 +552,24 @@ def main() -> int:
                 if s["url"] not in allowed:
                     rep.warn(path, f"出典 URL が candidates に無い(執筆が追加した出典。"
                                    f"校閲が内容を照合すること): {s['url']}")
+
         # 系譜検査: candidate_ids がある記事は、出典 URL がその候補群の URL に限定される
         if fm.get("candidate_ids"):
             window_items = {}
             for day in window:
                 window_items.update(candidate_items_by_day.get(day, {}))
             own_urls = set()
-            url_types = {}
             for cid in fm["candidate_ids"]:
                 item = window_items.get(cid)
                 if item is None:
                     rep.error(path, f"candidate_ids の {cid} が発行日前後の candidates に存在しない")
                 else:
                     own_urls.add(item.get("url", ""))
-                    url_types.setdefault(item.get("url", ""), set()).add(
-                        item.get("source_type", "未確認"))
             if own_urls:
-                cited_types = []
                 for s in fm["sources"]:
                     if s["url"] not in own_urls:
                         rep.warn(path, f"出典 URL が candidate_ids の候補群に無い(系譜外。"
                                        f"校閲が内容を照合すること): {s['url']}")
-                    elif fm["edition"] >= SRC_WEAKEST_FROM:
-                        if s.get("type") not in url_types[s["url"]]:
-                            rep.error(path, f"出典 type が候補の source_type と不一致({s['url']}: "
-                                            f"記事 {s.get('type')} / 候補 {'/'.join(sorted(url_types[s['url']]))})")
-                        else:
-                            cited_types.append(s["type"])
-                # 記事バッジは引用出典の最弱種別(compose の検収と同一規則)。
-                # 過大表示(弱い出典しか無いのに「公式」を名乗る)を防ぐのが本来の目的だが、
-                # 逆に過小表示(公式だけなのに「当事者」)も一致しないので同じ検査に掛かる。
-                # 「過大表示防止」とだけ書くと、過小のときにメッセージの意味が通らない
-                # (2026-08-29 に実際に読み違えた)ので、方向を書き分ける。
-                def rank(t):
-                    return SRC_ORDER.index(t) if t in SRC_ORDER else len(SRC_ORDER)
-
-                if cited_types and fm["edition"] >= SRC_WEAKEST_FROM:
-                    want = max(cited_types, key=rank)
-                    got = fm.get("src")
-                    if got != want:
-                        why = ("バッジの過大表示防止" if rank(got) < rank(want)
-                               else f"出典は{'・'.join(sorted(set(cited_types)))}のみで、"
-                                    f"{got} は実態より弱い")
-                        rep.error(path, f"src は引用出典の最弱種別 {want} にする(現: {got}。{why})")
         if not args.no_net:
             for s in fm["sources"]:
                 host = urllib.parse.urlparse(s["url"]).hostname or ""

@@ -14,13 +14,13 @@ event_date: 2026-07-14
 sources:
   - url: "https://x.com/coherent_sc/status/2076849599285957090"
     label: "公式アカウントの第26話前編公開告知"
-    type: "公式"
+    type: 公式
   - url: "https://comic-walker.com/detail/KC_005662_S"
     label: "コミックNewtype作品ページ"
-    type: "準公式"
+    type: 当事者
   - url: "https://comic-walker.com/detail/KC_005662_S/episodes/KC_0056620003600011_E"
     label: "第26話「火種」前編掲載ページ"
-    type: "当事者"
+    type: 当事者
 ---
 
 コミカライズ『アイドルマスター シャイニーカラーズ コヒーレントライト』(原作:バンダイナムコエンターテインメント、漫画:緒原博綺)の第26話「火種」前編が、2026年7月14日にコミックNewtypeにて公開された。同話は斑鳩ルカの283プロ移籍を描く内容であることが告知されている。次回更新は7月28日を予定している。

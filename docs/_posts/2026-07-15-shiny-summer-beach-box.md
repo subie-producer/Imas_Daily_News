@@ -2,7 +2,7 @@
 slug: shiny-summer-beach-box
 edition: 2026-07-15
 brand: shiny
-src: 報道
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -17,7 +17,7 @@ sources:
     type: 公式
   - label: PE開催決定、報酬詳細まとめ
     url: https://gameo.jp/imassc/164944
-    type: 報道
+    type: 二次情報
 ---
 
 シャニマスで7月17日、プロデュースイベント「サマー・ビーチ・ボックス」が始まる。開催期間は7月30日までを予定。プロデュースをクリアして得たボックスポイントで専用ガシャを引く形式で、イベント限定SRサポートアイドル西城樹里のほか、Exスキルやはづきさんシール、プチセレクションチケットなどが報酬として用意される。

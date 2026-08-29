@@ -2,7 +2,7 @@
 slug: sidem-himeno-kanon-new-cast-ino
 edition: 2026-08-29
 brand: sidem
-src: 報道
+src: 二次情報
 rank: medium
 corrected: false
 corrections: []
@@ -19,10 +19,10 @@ sources:
     type: 公式
   - url: https://imasnews765.com/?p=32390
     label: 姫野かのん新キャスト決定の記事
-    type: 公式
+    type: 二次情報
   - url: https://www.4gamer.net/games/248/G024865/20260828016/
     label: 4Gamerの新キャスト報道
-    type: 公式
+    type: 報道
   - url: https://www.oricon.co.jp/news/2476738/
     label: オリコンの新キャスト報道
     type: 報道

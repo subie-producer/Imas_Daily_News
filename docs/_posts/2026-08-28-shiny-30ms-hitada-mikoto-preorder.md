@@ -2,7 +2,7 @@
 slug: shiny-30ms-hitada-mikoto-preorder
 edition: 2026-08-28
 brand: shiny
-src: 報道
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: ["シャニマス", "予約", "緋田美琴"]
 sources:
   - label: "緋田美琴プラモデル予約情報"
     url: "https://blog.toyget.com/entry/2026/08/26/210929"
-    type: "報道"
+    type: 二次情報
 event_date: 2027-01-31
 ---
 

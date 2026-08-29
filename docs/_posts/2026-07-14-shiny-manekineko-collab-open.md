@@ -2,7 +2,7 @@
 slug: shiny-manekineko-collab-open
 edition: 2026-07-14
 brand: shiny
-src: 公式
+src: 当事者
 rank: medium
 corrected: false
 corrections: []

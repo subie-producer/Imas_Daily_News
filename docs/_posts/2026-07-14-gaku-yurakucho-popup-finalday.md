@@ -2,7 +2,7 @@
 slug: gaku-yurakucho-popup-finalday
 edition: 2026-07-14
 brand: gaku
-src: 当事者
+src: 報道
 rank: small
 corrected: false
 corrections: []

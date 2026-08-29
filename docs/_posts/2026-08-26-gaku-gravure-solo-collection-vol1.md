@@ -2,7 +2,7 @@
 slug: gaku-gravure-solo-collection-vol1
 edition: 2026-08-26
 brand: gaku
-src: 公式
+src: 準公式
 rank: medium
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [学マス, CD, 予約]
 sources:
   - label: 学マスレーベル公式の発売告知
     url: https://gakuen-label.idolmaster-official.jp/news/gravure1
-    type: 公式
+    type: 準公式
 event_date: 2026-11-18
 ---
 

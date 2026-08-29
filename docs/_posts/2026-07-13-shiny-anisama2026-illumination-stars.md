@@ -2,7 +2,7 @@
 slug: shiny-anisama2026-illumination-stars
 edition: 2026-07-13
 brand: shiny
-src: 公式
+src: 報道
 rank: large
 title: "アニサマ2026にイルミネーションスターズ出演、「太陽キッス」サプライズカバー"
 lede: "「Animelo Summer Live 2026 -Messenger-」DAY3(7月12日・幕張メッセ)に、シャニマスのイルミネーションスターズが2年ぶりに出演した。"

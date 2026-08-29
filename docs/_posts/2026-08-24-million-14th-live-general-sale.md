@@ -2,7 +2,7 @@
 slug: million-14th-live-general-sale
 edition: 2026-08-24
 brand: million
-src: 当事者
+src: 公式
 rank: medium
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [ミリオンライブ, ライブ, チケット, 抽選]
 sources:
   - label: ミリオン14th公式チケット案内
     url: https://idolmaster-official.jp/news/01_19676
-    type: 当事者
+    type: 公式
 event_date: 2026-09-19
 ---
 

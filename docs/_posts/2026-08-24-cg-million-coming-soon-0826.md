@@ -2,7 +2,7 @@
 slug: cg-million-coming-soon-0826
 edition: 2026-08-24
 brand: joint
-src: ファン
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -19,10 +19,10 @@ sources:
     type: 公式
   - label: デレミリ同時予告の報道
     url: https://games.o-yake.com/deremiri/
-    type: 報道
+    type: 二次情報
   - label: 情報公開予定を伝えるファン記事
     url: https://imasnews765.com/?p=32378
-    type: ファン
+    type: 二次情報
 event_date: 2026-08-26
 ---
 

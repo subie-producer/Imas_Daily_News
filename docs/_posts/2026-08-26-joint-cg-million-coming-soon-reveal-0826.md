@@ -2,7 +2,7 @@
 slug: joint-cg-million-coming-soon-reveal-0826
 edition: 2026-08-26
 brand: joint
-src: 公式
+src: 二次情報
 rank: large
 corrected: false
 corrections: []
@@ -19,7 +19,7 @@ sources:
     type: 公式
   - label: 情報公開予告の記事
     url: https://imasnews765.com/?p=32378
-    type: 公式
+    type: 二次情報
 event_date: 2026-08-26
 ---
 

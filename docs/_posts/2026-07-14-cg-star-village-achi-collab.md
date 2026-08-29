@@ -2,7 +2,7 @@
 slug: cg-star-village-achi-collab
 edition: 2026-07-14
 brand: cg
-src: 公式
+src: 報道
 rank: medium
 corrected: false
 corrections: []
@@ -20,7 +20,7 @@ sources:
     type: 報道
   - label: Yahoo!ニュース
     url: https://news.yahoo.co.jp/articles/5f9e74479748bb8ab4bbf1b9979fddadd14058e4
-    type: 当事者
+    type: 報道
   - label: Star Village ACHI特設サイト
     url: https://sva.jp/idolmaster-2026/
     type: 当事者

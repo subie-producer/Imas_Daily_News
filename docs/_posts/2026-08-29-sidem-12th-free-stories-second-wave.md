@@ -2,7 +2,7 @@
 slug: sidem-12th-free-stories-second-wave
 edition: 2026-08-29
 brand: sidem
-src: 公式
+src: 準公式
 rank: medium
 corrected: false
 corrections: []
@@ -22,13 +22,13 @@ sources:
     type: 公式
   - label: 12周年キャンペーン案内
     url: https://asobistory.asobistore.jp/info/detail/wny3zpd8wqldgx6/
-    type: 公式
+    type: 準公式
   - label: いつか帰る場所作品ページ
     url: https://asobistory.asobistore.jp/connectwithmusic/detail/4me3pg1vempkdr8/
-    type: 公式
+    type: 準公式
   - label: カオティック・グルーヴ！作品ページ
     url: https://asobistory.asobistore.jp/connectwithmusic/detail/8vwqpok8ony1jgr/
-    type: 公式
+    type: 準公式
 event_date: 2026-08-28
 ---
 

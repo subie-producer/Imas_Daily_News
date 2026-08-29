@@ -2,7 +2,7 @@
 slug: shiny-team-sol-plushie-vol2
 edition: 2026-08-24
 brand: shiny
-src: 準公式
+src: 当事者
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [シャニマス, グッズ]
 sources:
   - label: バンプレストナビ商品情報
     url: https://bsp-prize.jp/item/2830215/
-    type: 準公式
+    type: 当事者
 event_date: 2026-08-20
 ---
 

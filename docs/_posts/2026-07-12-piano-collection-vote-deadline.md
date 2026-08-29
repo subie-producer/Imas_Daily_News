@@ -2,13 +2,13 @@
 slug: piano-collection-vote-deadline
 edition: 2026-07-12
 brand: joint
-src: 公式
+src: 準公式
 rank: small
 title: "20周年ピアノコレクション新曲アンケート、本日23:59締切"
 lede: "「THE IDOLM@STER 20th Anniversary Piano Collection」の新規ピアノアレンジ曲を選ぶプロデューサー投票が、本日23:59に締め切られる。"
 tags: [20周年, ピアノコレクション, 投票]
 sources:
-  - type: 公式
+  - type: 準公式
     label: "ゲームミュージックONLINE「20th Anniversary Piano Collection」新曲アンケート告知(2026年7月)"
     url: https://gamemusic.bn-ent.net/news/1335/
 corrected: false

@@ -46,6 +46,7 @@
           "当事者",
           "報道",
           "ファン",
+          "二次情報",
           "もちより",
           "未確認"
         ]
@@ -95,10 +96,11 @@
       "via": {
         "enum": [
           "watch",
+          "explore",
           "claude",
           "grok"
         ],
-        "description": "収集経路(定点観測 / Claude探索 / Grok X調査)"
+        "description": "収集経路(定点観測 / 探索 / Grok X調査)。claude は探索役が Claude だった頃の旧値で、過去の候補ファイルのために残している"
       },
       "deadline": {
         "type": "string",

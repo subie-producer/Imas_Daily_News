@@ -13,7 +13,7 @@ tags: [シンデレラガールズ, イベント, コラボ, グッズ]
 sources:
   - label: アイドルマスター公式発表
     url: https://idolmaster-official.jp/news/01_19733
-    type: 当事者
+    type: 公式
   - label: ひろめ堂プレスリリース
     url: https://prtimes.jp/main/html/rd/p/000000018.000129384.html
     type: 当事者

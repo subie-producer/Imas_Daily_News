@@ -2,7 +2,7 @@
 slug: sidem-costume-museum-day4-update
 edition: 2026-07-14
 brand: sidem
-src: 公式
+src: 準公式
 rank: large
 corrected: false
 corrections: []

@@ -2,13 +2,13 @@
 slug: shiny-stillblue-presale-lottery
 edition: 2026-07-12
 brand: shiny
-src: ファン
+src: 二次情報
 rank: small
 title: "「Still blue」先行チケット当落発表にファンの反響"
 lede: "12月開催のシャニマスライブ「Still blue」アソビストアプレミアム会員先行チケットの当落発表があり、ファンから反響が寄せられている。"
 tags: [シャニマス, ライブ, チケット]
 sources:
-  - type: ファン
+  - type: 二次情報
     label: "ゲームオ!「Still blueアソビストアプレミアム会員先行」当落報告まとめ(2026年7月)"
     url: https://gameo.jp/imassc/164762
 corrected: false

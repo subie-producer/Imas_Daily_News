@@ -2,7 +2,7 @@
 slug: sidem-mts10-mofumofuen-tokuten-2026-08-28
 edition: 2026-08-28
 brand: sidem
-src: 公式
+src: 準公式
 rank: medium
 corrected: false
 corrections: []
@@ -13,10 +13,10 @@ tags: [SideM, CD]
 sources:
   - label: 公式リリース情報
     url: https://www.lantis.jp/sidem/releaseinfo/release_LACM-24790.html
-    type: 公式
+    type: 準公式
   - label: 公式紹介動画
     url: https://www.youtube.com/watch?v=fX4iinOuXQc
-    type: 公式
+    type: 準公式
 event_date: 2026-08-26
 ---
 

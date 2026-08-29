@@ -2,7 +2,7 @@
 slug: shiny-animethon-2026
 edition: 2026-07-15
 brand: shiny
-src: ファン
+src: 二次情報
 rank: lead
 corrected: false
 corrections: []
@@ -14,16 +14,16 @@ event_date: 2026-08-08
 sources:
   - url: "https://idolmaster-official.jp/news/01_19372"
     label: "公式サイト:出演告知"
-    type: "公式"
+    type: 公式
   - url: "https://gameo.jp/imassc/164926"
     label: "gameo:北米初出演を報道"
-    type: "報道"
+    type: 二次情報
   - url: "https://x.com/shinyc_official/status/2076803865262076367"
     label: "公式X:出演発表ポスト"
-    type: "公式"
+    type: 公式
   - url: "https://imasnews765.com/?p=32206"
     label: "ファンブログ:出演詳細まとめ"
-    type: "ファン"
+    type: 二次情報
 ---
 
 THE IDOLM@STER SHINY COLORSが、カナダ・エドモントンで開催されるアニメコンベンション「Animethon 2026」への出演を決めた。アイドルマスター公式および英語版公式のXアカウント、Animethon公式アカウントから発表された。

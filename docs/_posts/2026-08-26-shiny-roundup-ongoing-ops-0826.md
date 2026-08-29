@@ -2,7 +2,7 @@
 slug: shiny-roundup-ongoing-ops-0826
 edition: 2026-08-26
 brand: shiny
-src: 公式
+src: 二次情報
 rank: roundup
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [シャニマス, ガシャ, ラジオ, お知らせ]
 sources:
   - label: 有償限定コスチュームガシャ開催案内
     url: https://gameo.jp/imassc/166259
-    type: 公式
+    type: 二次情報
   - label: グレフェスコインショップの黛冬優子告知
     url: https://x.com/imassc_official/status/2092200191990624705
     type: 公式

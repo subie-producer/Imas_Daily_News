@@ -2,7 +2,7 @@
 slug: 765-dual-twin-tokyo-finale-roundup
 edition: 2026-08-29
 brand: '765'
-src: ファン
+src: 二次情報
 rank: lead
 corrected: false
 corrections: []
@@ -16,10 +16,10 @@ sources:
     type: 公式
   - label: つみまつよるまち東京公演セットリスト
     url: https://imasnews765.com/?p=32394
-    type: ファン
+    type: 二次情報
   - label: ふたごぼしのつばさ東京公演セットリスト
     url: https://imasnews765.com/?p=32388
-    type: ファン
+    type: 二次情報
 event_date: 2026-08-28
 ---
 

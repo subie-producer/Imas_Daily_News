@@ -2,7 +2,7 @@
 slug: gaku-round1-gacha-cardsupply-roundup
 edition: 2026-07-13
 brand: gaku
-src: 当事者
+src: 二次情報
 rank: medium
 title: "学マス、ROUND1コラボと新ガシャ・カードサプライが同時展開"
 lede: "学園アイドルマスターは、ラウンドワンとのコラボキャンペーン、新規ガシャ、カードゲームサプライ第7弾を相次いで展開している。"
@@ -11,7 +11,7 @@ sources:
   - type: 当事者
     label: "ラウンドワン公式「学園アイドルマスター×ROUND1」コラボ情報"
     url: https://www.round1.co.jp/collaboration/gakuen_idol/index.html
-  - type: 報道
+  - type: 二次情報
     label: "スカイペンギン「GO MY WAY!!花海佑芽ガシャ」記事(2026年7月9日)"
     url: https://skypenguin.net/2026/07/09/post-157579/
   - type: 公式

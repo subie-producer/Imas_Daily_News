@@ -2,7 +2,7 @@
 slug: futamas-shikaoi-1100-turnout
 edition: 2026-08-25
 brand: joint
-src: 報道
+src: 二次情報
 rank: medium
 corrected: false
 corrections: []
@@ -16,7 +16,7 @@ sources:
     type: 報道
   - label: マンホールお披露目の報道
     url: https://imasnews765.com/?p=32382
-    type: 報道
+    type: 二次情報
   - label: アイドルマスター公式告知
     url: https://x.com/imas_official/status/2091810023819317505
     type: 公式

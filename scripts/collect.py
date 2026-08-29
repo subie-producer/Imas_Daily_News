@@ -17,6 +17,7 @@ edition ブランチへ push する。(PIPELINE §1〜2)
 - 正規化・URL 重複マージ → candidates へ追記 → 簡易 verify → commit & push
 """
 import argparse
+import collections
 import html as html_lib
 import datetime
 import json
@@ -28,6 +29,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -35,7 +37,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
-                     EXPLORE_MAX_BUDGET_USD, JST, append_metric,
+                     EXPLORE_MAX_BUDGET_USD, JST, append_metric, classify_source,
                      extract_periods, html_to_text,
                      checkout_edition_branch, commit_and_push, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst)
@@ -596,7 +598,9 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
 
 # ---- 正規化・記録 --------------------------------------------------------------
 
-KIND2SRC = {"official": "公式", "semi": "準公式", "party": "当事者", "media": "報道", "fan": "ファン", "trend": "ファン"}
+# 収集役が申告する kind は**種別の判定には使わない**(source_types.yml が決める)。
+# 申告を採っていたころ、攻略サイトを「公式」と申告した候補がそのまま紙面の
+# バッジになっていた。kind は収集役の見立てとして残すが、紙面には出ない
 
 
 def is_x(url: str) -> bool:
@@ -669,7 +673,10 @@ def normalize(items: list[dict]) -> list[dict]:
                 "id": f"{now_jst().strftime('%Y%m%d%H%M')}-{it.get('_via','x')}-{i}",
                 "title": (it.get("title") or "")[:120] or "(無題)",
                 "brand": brand,
-                "source_type": KIND2SRC.get(it.get("kind"), "未確認"),
+                # 種別は**URL から判定する**。収集役の自己申告(kind)は採らない。
+                # 申告のままにしていたため、攻略サイトを「公式」と申告した候補が
+                # そのまま紙面のバッジになっていた(実測 26件・18記事)
+                "source_type": classify_source(url),
                 "url": url,
                 "found_at": ts,
                 "dedup_key": dk,
@@ -811,6 +818,15 @@ def main() -> int:
                               "duration_s": dur})
     summary = f"{date}号向け: 新規{added}件(正規化{len(cands)}・{vcounts}) {dur}秒"
     print(summary, flush=True)
+    # 判定表に無い出典は「未確認」になる。放っておくと未確認の記事が増えるだけなので、
+    # **何を足せばよいか**をここに出す。表は人が育てるものであり、
+    # 既定を強い種別にして誤魔化さない(監査指摘)
+    unknown = collections.Counter(
+        urllib.parse.urlparse(c["url"]).netloc.lower().removeprefix("www.")
+        for c in cands if c.get("source_type") == "未確認" and c.get("url"))
+    if unknown:
+        print(f"source_types.yml に無い出典 {sum(unknown.values())}件 / {len(unknown)}ドメイン: "
+              + ", ".join(f"{h}({n})" for h, n in unknown.most_common(12)), flush=True)
     if not args.no_git:
         commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect")
     # 新規0件の警報は「定時実行が空振りした」ことを知らせるためのもの。

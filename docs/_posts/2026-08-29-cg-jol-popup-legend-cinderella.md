@@ -2,7 +2,7 @@
 slug: cg-jol-popup-legend-cinderella
 edition: 2026-08-29
 brand: cg
-src: 当事者
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [シンデレラガールズ, グッズ, POP UP, キャンペーン]
 sources:
   - label: 公式開催案内
     url: https://idolmaster-official.jp/news/01_19465
-    type: 当事者
+    type: 公式
 event_date: 2026-08-21
 ---
 

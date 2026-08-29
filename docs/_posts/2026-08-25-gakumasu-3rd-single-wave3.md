@@ -2,7 +2,7 @@
 slug: gakumasu-3rd-single-wave3
 edition: 2026-08-25
 brand: gaku
-src: 準公式
+src: 当事者
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [学マス, CD]
 sources:
   - label: 第三弾の発売案内
     url: https://www.hmv.co.jp/news/article/260427123/
-    type: 準公式
+    type: 当事者
 event_date: 2026-08-26
 ---
 

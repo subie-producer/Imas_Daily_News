@@ -2,7 +2,7 @@
 slug: gaku-ichiban-kuji-part6-lineup
 edition: 2026-08-29
 brand: gaku
-src: 準公式
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [学マス, くじ, フィギュア, グッズ]
 sources:
   - url: https://idolmaster-official.jp/news/01_19668
     label: アイドルマスター公式ニュース
-    type: 準公式
+    type: 公式
 event_date: 2026-09-19
 ---
 

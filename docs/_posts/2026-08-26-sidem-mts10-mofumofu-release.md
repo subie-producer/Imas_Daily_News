@@ -2,7 +2,7 @@
 slug: sidem-mts10-mofumofu-release
 edition: 2026-08-26
 brand: sidem
-src: 準公式
+src: 報道
 rank: small
 corrected: false
 corrections: []
@@ -13,10 +13,10 @@ tags: ["SideM", "CD"]
 sources:
   - label: "SideMリリース情報"
     url: "https://www.lantis.jp/sidem/releaseinfo/"
-    type: "公式"
+    type: 準公式
   - label: "ファミ通掲載記事"
     url: "https://www.famitsu.com/article/202607/82620"
-    type: "準公式"
+    type: 報道
 event_date: 2026-08-26
 ---
 

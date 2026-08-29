@@ -2,7 +2,7 @@
 slug: 765-motoradio-azusa-rebroadcast
 edition: 2026-07-15
 brand: "765"
-src: ファン
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -14,13 +14,13 @@ event_date: 2026-07-19
 sources:
   - url: https://imasnews765.com/?p=32204
     label: 第768話放送告知記事
-    type: ファン
+    type: 二次情報
   - url: https://motoraji.jugem.jp/
     label: 番組公式サイト放送予定
-    type: 当事者
+    type: ファン
   - url: https://x.com/imasnews765/status/2076292567071936706
     label: 告知ポスト転載
-    type: ファン
+    type: 二次情報
   - url: https://x.com/mototiru/status/2076292141962363328
     label: リクエスト募集告知
     type: 当事者

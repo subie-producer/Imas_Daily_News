@@ -2,16 +2,16 @@
 slug: joint-20th-shorts-sp-live-tours-costume
 edition: 2026-07-12
 brand: joint
-src: ファン
+src: 二次情報
 rank: small
 title: "20周年ありがとうSP生配信が決定、ツアマスに新SSR衣装も"
 lede: "アイマス20周年ありがとうSP生配信がIWSF2026 DAY3終了後に決定。「ツアマス」新シリーズ第1弾ではSSR衣装が実装された。"
 tags: [20周年, ツアマス, 生配信]
 sources:
-  - type: ファン
+  - type: 二次情報
     label: "アイマスニュース765「20周年ありがとうSP生配信」報告(2026年7月)"
     url: https://imasnews765.com/?p=32191
-  - type: ファン
+  - type: 二次情報
     label: "アイマスニュース765「ツアマス新シリーズ第1弾SSR衣装」報告(2026年7月)"
     url: https://imasnews765.com/?p=32194
 corrected: false

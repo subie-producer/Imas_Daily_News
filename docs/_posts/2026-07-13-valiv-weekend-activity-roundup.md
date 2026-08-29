@@ -2,7 +2,7 @@
 slug: valiv-weekend-activity-roundup
 edition: 2026-07-13
 brand: dsva
-src: 公式
+src: 当事者
 rank: medium
 title: "vα-liv、上水流宇宙が週末に配信・ラジオ出演で活躍"
 lede: "876プロ・vα-livの上水流宇宙が週末に多数の配信やラジオ出演をこなした。灯里愛夏のDARK SOULS III配信も最終回を迎えた。"
@@ -17,7 +17,7 @@ sources:
   - type: 公式
     label: "vα-liv公式X 週末配信ラインナップ告知(2026年7月11日)"
     url: https://x.com/valiv_official/status/2075882796543840299
-  - type: 当事者
+  - type: 公式
     label: "vα-liv公式X「ミューコミVR」出演告知(2026年7月12日)"
     url: https://x.com/valiv_official/status/2076245180064432130
   - type: 当事者

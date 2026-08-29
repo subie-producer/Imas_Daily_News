@@ -2,7 +2,7 @@
 slug: starlight-dining-popup-lottery
 edition: 2026-07-12
 brand: joint
-src: 公式
+src: 準公式
 rank: small
 title: "「Starlight Dining」アトレ川崎で開催中 入場は13日分まで事前抽選制"
 lede: "アイマスのポップアップストア2026「Starlight Dining」がアトレ川崎で開催中だ。デレマス・学マス計9名の中華風メイド衣装グッズが登場。入場は7月13日分までが事前抽選制となっている。"

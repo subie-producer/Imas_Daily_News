@@ -271,3 +271,166 @@ def extract_periods(text: str, limit: int = 12) -> list[str]:
             if len(out) >= limit:
                 return out
     return out
+
+
+# --- 出典種別の判定(規程2) -------------------------------------------------
+SOURCE_TYPES = ("公式", "準公式", "当事者", "報道", "ファン", "二次情報", "もちより", "未確認")
+_ST_TABLE: dict | None = None
+
+
+def source_type_table() -> dict:
+    """`source_types.yml` を読む(初回だけ)。**無ければ落とす。**
+
+    以前は無いとき `{}` を返していたが、それだと表が消えた瞬間に全出典が
+    既定へ落ちて素通りする(監査指摘の fail-open)。判定の根拠が無い状態で
+    紙面を作らせないため、ここで止める。
+    """
+    global _ST_TABLE
+    if _ST_TABLE is None:
+        import yaml
+        p = ROOT / "source_types.yml"
+        if not p.exists():
+            raise SystemExit(f"出典種別の判定表がない: {p}")
+        _ST_TABLE = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+        _check_table(_ST_TABLE, p)
+    return _ST_TABLE
+
+
+def _check_table(t: dict, p) -> None:
+    """同じ相手が2つの種別に載っていないか。
+
+    表が育つほど起きやすい。判定は上から順に最初に当たったものを採るので、
+    重複しても**動いてしまう**ぶん気づけない(実測: tcg-supply-navi.com が
+    二次情報と当事者の両方に載ったまま通っていた。監査で見つかった)。
+    """
+    import collections
+    seen = collections.defaultdict(list)
+    for key in ("official_domains", "semi_official_domains", "press_domains",
+                "secondary_domains", "fan_domains", "party_domains",
+                "official_paths", "party_paths"):
+        for v in t.get(key) or []:
+            seen[v].append(key)
+    for group in ("x_accounts", "video_ids"):
+        for label, names in (t.get(group) or {}).items():
+            for v in names or []:
+                # 判定器は X アカウントを小文字化して比べるので、検査側も揃える。
+                # 揃えないと `imas_official` と `IMAS_OFFICIAL` を別種別に登録できてしまい、
+                # 検査を通ったうえで先に載っているほうが勝つ(監査指摘)
+                key = v.lower() if group == "x_accounts" else v
+                seen[f"{group}:{key}"].append(f"{group}/{label}")
+    dup = {v: ks for v, ks in seen.items() if len(ks) > 1}
+    if dup:
+        raise SystemExit(f"{p} で種別が重複している: "
+                         + " / ".join(f"{v}({'・'.join(ks)})" for v, ks in sorted(dup.items())))
+
+
+def classify_source(url: str) -> str:
+    """出典 URL から種別を決める。**収集役の自己申告は使わない。**
+
+    以前は種別が申告任せで、lint も「記事の src == 出典の最弱種別」という
+    ラベル同士の照合しかしていなかった。攻略サイトを「公式」と申告すれば
+    最弱も「公式」になって一致するため、過大表示を1件も防げなかった
+    (実測 26件・18記事)。判定の根拠を URL 側に移す。
+
+    表に載っていなければ **未確認**。「当事者が最も多いから」を理由に既定を
+    当事者にしていたが、それでは未知の個人ブログもファン動画も一次発信を
+    名乗れてしまう。多いことは判定の根拠にならない(監査指摘)。
+    """
+    import posixpath
+    import urllib.parse
+    t = source_type_table()
+    u = urllib.parse.urlparse(url if "//" in url else "//" + url)
+    # netloc をそのまま切ると userinfo をホストと取り違える。
+    # `https://idolmaster-official.jp:443@evil.example/...` が公式になった(監査指摘)。
+    # hostname は userinfo とポートを落とし、小文字にして返す
+    # `\` はブラウザ(WHATWG)では `/` と同じ扱いだが urlparse は区切りにしない。
+    # `https://evil.example\@x.com/...` を urlparse は x.com と読み、
+    # ブラウザは evil.example へ繋ぐ。**解釈が割れる URL は判定しない**(監査指摘)。
+    # スキームとポートも確かめる。`javascript://idolmaster-official.jp/...` は
+    # 公式サイトへの参照ではないし、`x.com:443.evil` はポートが壊れている
+    if "\\" in u.netloc or u.scheme not in ("", "http", "https"):
+        return "未確認"
+    try:
+        u.port
+    except ValueError:
+        return "未確認"
+    host = (u.hostname or "").removeprefix("www.")
+    # `.../idolmaster-tours/../other` が公式になっていたので、前方一致の前に畳む。
+    # `%2e%2e` のように符号化された `..` も畳めるよう、**ドットだけ**を先に復号する。
+    # パス全体を復号すると `%2F` まで区切りになってしまい、
+    # `x.com/zutapoke%2F..%2Fimas_official/status/123` が公式になる。
+    # `%2F` は URL の解決では区切りではないので、復号してはいけない(監査指摘)
+    raw = re.sub(r"%2e", ".", u.path, flags=re.I)
+    path = f"{host}{posixpath.normpath(raw) if raw else ''}"
+
+    # 1. ドメインの一部だけで決まるもの。作品公式サイトはドメインを問わず公式、
+    #    多数の利用者が同居するプラットフォーム(github.com・楽天市場)は特定の主体だけ当事者。
+    #    **前方一致は区切りまで見る。**素の startswith だと
+    #    `.../Imas_Daily_Newsletter` のような別物まで通る(監査指摘)
+    def under(pre: str) -> bool:
+        base = pre.rstrip("/")          # 表の末尾スラッシュの有無で結果を変えない
+        return path.rstrip("/") == base or path.startswith(base + "/")
+
+    for pre in t.get("official_paths") or []:
+        if under(pre):
+            return "公式"
+    for pre in t.get("party_paths") or []:
+        if under(pre):
+            return "当事者"
+
+    # 2. 動画・生放送は**投稿者**で決まる。ドメインでは決まらない。
+    #    同じ youtube.com に公式チャンネルの PV とレーベルの試聴動画が混ざる。
+    #    ホストの一致もドット境界まで見る。素の endswith では
+    #    `notyoutube.com` が youtube.com として通る(監査指摘)
+    def is_host(*names: str) -> bool:
+        return any(host == n or host.endswith("." + n) for n in names)
+
+    # パスの**形**まで見る。`v=` だけを見ていたため
+    # `youtube.com/@attacker?v=<公式の動画ID>` が公式になり、次に前だけを見たため
+    # `youtube.com/watch/not-a-video?v=...` が公式になった(いずれも監査指摘)。
+    # 動画1本を指す形にだけ当てる
+    seg = [s for s in path[len(host):].split("/") if s]
+    vid = ""
+    if is_host("youtube.com"):
+        if len(seg) == 1 and seg[0] == "watch":
+            vid = urllib.parse.parse_qs(u.query).get("v", [""])[0]
+        elif len(seg) == 2 and seg[0] in ("live", "shorts", "embed"):
+            vid = seg[1]
+    elif is_host("youtu.be") and len(seg) == 1:
+        vid = seg[0]
+    elif is_host("nicovideo.jp") and len(seg) == 2 and seg[0] == "watch":
+        vid = seg[1]
+    if vid:
+        for label, ids in (t.get("video_ids") or {}).items():
+            if vid in set(ids):
+                return label
+        return "未確認"
+
+    # 3. X も**アカウント**で決まる。ただしパスの形も見る。
+    #    先頭セグメントを無条件にアカウント名として読むと、
+    #    `x.com/<公式アカウント>/not-a-status` のような別物まで公式になる(監査指摘)。
+    #    実データにある形は投稿(420件)とアカウントページ(2件)の2つだけなので、そこに限る
+    if host in ("x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com"):
+        # 形を見るのは**正規化したパス**に対して行う。`//` や `..` を含む URL は
+        # X 上では同じ投稿を指すので、潰したうえで判定するのが実態に合う
+        seg = [s for s in path[len(host):].split("/") if s]
+        ok = len(seg) == 1 or (len(seg) == 3 and seg[1] == "status" and seg[2].isdigit())
+        acct = seg[0].lower() if ok else ""
+        for label, accounts in (t.get("x_accounts") or {}).items():
+            if acct and acct in {a.lower() for a in accounts}:
+                return label
+        return "未確認"
+
+    # 4. それ以外はドメイン。**完全一致を先に見る。**
+    #    公式ポータル配下でも gakuen-label.(公式レーベル)は準公式なので、
+    #    末尾一致より個別指定が勝たないと誤って公式になる(監査指摘)
+    for key, label in (("official_domains", "公式"), ("semi_official_domains", "準公式"),
+                       ("press_domains", "報道"), ("secondary_domains", "二次情報"),
+                       ("fan_domains", "ファン"), ("party_domains", "当事者")):
+        if host in set(t.get(key) or []):
+            return label
+    # 5. 公式ポータル配下の特設サイト(号ごとに増える)。個別指定に当たらなかったものだけ
+    for suf in t.get("official_suffixes") or []:
+        if host.endswith(suf):
+            return "公式"
+    return "未確認"

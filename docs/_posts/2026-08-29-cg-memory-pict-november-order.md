@@ -2,7 +2,7 @@
 slug: cg-memory-pict-november-order
 edition: 2026-08-29
 brand: cg
-src: 当事者
+src: 準公式
 rank: small
 corrected: false
 corrections: []
@@ -13,16 +13,16 @@ tags: ["シンデレラガールズ", "グッズ", "受注", "総選挙2026"]
 sources:
   - label: "アイドルマスター公式ニュース"
     url: "https://idolmaster-official.jp/news/01_19657"
-    type: "公式"
+    type: 公式
   - label: "ASOBI STORE特設サイト"
     url: "https://shop.asobistore.jp/feature/cg_mp"
-    type: "準公式"
+    type: 準公式
   - label: "シンデレラガールズ公式ニュース一覧"
     url: "https://cinderellagirls.idolmaster-official.jp/news/"
-    type: "当事者"
+    type: 公式
   - label: "公式X告知"
     url: "https://x.com/imas_CGofficial/status/2093171724997251252"
-    type: "公式"
+    type: 公式
 event_date: 2026-11-01
 ---
 

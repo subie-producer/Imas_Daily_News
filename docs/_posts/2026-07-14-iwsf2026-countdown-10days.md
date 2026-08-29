@@ -2,7 +2,7 @@
 slug: iwsf2026-countdown-10days
 edition: 2026-07-14
 brand: joint
-src: 公式
+src: 二次情報
 rank: lead
 title: "IWSF2026まで10日 中継とSP配信詳細判明"
 lede: "20周年イヤーのフィナーレ「IWSF2026」の開幕まで残り10日となる中、全国映画館へのライブビューイングと20周年記念のSP生配信という2つの受け皿の詳細が明らかになった。"
@@ -11,13 +11,13 @@ sources:
   - type: 公式
     label: "アイマス公式X「IWSF2026まであと10日」投稿"
     url: https://x.com/imas_official/status/2076683065347489895
-  - type: ファン
+  - type: 二次情報
     label: "ライブビューイング実施決定を伝えるファンブログ"
     url: https://aimasupay.hatenablog.com/entry/2026/06/28/220304
   - type: 当事者
     label: "ニコニコゲーム公式X「20周年ありがとうSP生配信」告知"
     url: https://x.com/nicogame_PR/status/2075492721796763895
-  - type: ファン
+  - type: 二次情報
     label: "20周年SP生配信の出演者・内容をまとめたファンサイト記事"
     url: https://imasnews765.com/?p=32191
 candidate_ids: ["202607140344-grok-1", "202607131241-claude-113", "202607131241-grok-80", "202607132340-claude-102"]

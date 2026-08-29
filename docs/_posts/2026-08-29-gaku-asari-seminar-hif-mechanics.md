@@ -2,7 +2,7 @@
 slug: gaku-asari-seminar-hif-mechanics
 edition: 2026-08-29
 brand: gaku
-src: 公式
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -13,10 +13,10 @@ tags: [学マス, イベント]
 sources:
   - label: AppGameLogのイベント攻略記事
     url: https://appgamelog.com/gkmas-asari-produce-seminar/
-    type: 公式
+    type: 二次情報
   - label: 学マスまとめのイベント詳細
     url: https://zutapoke.com/events/event/260826asari/
-    type: 公式
+    type: 二次情報
 event_date: 2026-08-26
 ---
 

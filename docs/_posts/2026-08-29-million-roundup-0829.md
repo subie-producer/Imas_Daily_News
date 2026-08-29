@@ -2,7 +2,7 @@
 slug: million-roundup-0829
 edition: 2026-08-29
 brand: million
-src: 公式
+src: 準公式
 rank: roundup
 corrected: false
 corrections: []
@@ -13,13 +13,13 @@ tags: [ミリオンライブ, ミリシタ, ガシャ, 配信]
 sources:
   - label: MillionRADIO通常配信
     url: https://live.nicovideo.jp/watch/lv350975991
-    type: 公式
+    type: 準公式
   - label: MillionRADIO生放送
     url: https://live.nicovideo.jp/watch/lv350975991
-    type: 公式
+    type: 準公式
   - label: MillionRADIOおまけ生放送
     url: https://live.nicovideo.jp/watch/lv351101519
-    type: 公式
+    type: 準公式
   - label: 東京公演打ち上げ39ガシャ告知
     url: https://x.com/imasml_theater/status/2093307612813054170
     type: 公式

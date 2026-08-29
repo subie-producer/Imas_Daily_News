@@ -2,7 +2,7 @@
 slug: gaku-nemurase-tai-gashapon-preorder
 edition: 2026-08-27
 brand: gaku
-src: 準公式
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [学マス, グッズ, ガシャ, 予約]
 sources:
   - label: アイドルマスター公式ニュース
     url: https://idolmaster-official.jp/news/01_19667
-    type: 準公式
+    type: 公式
   - label: アイドルマスター公式X告知
     url: https://x.com/imas_official/status/2092537545209106570
     type: 公式

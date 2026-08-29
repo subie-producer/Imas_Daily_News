@@ -2,7 +2,7 @@
 slug: general-radio-episode-411
 edition: 2026-08-27
 brand: general
-src: 当事者
+src: 準公式
 rank: small
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [ラジオ, 配信]
 sources:
   - url: https://live.nicovideo.jp/watch/lv351005960
     label: ニコニコ生放送の番組ページ
-    type: 当事者
+    type: 準公式
 event_date: 2026-08-26
 ---
 

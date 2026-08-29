@@ -16,7 +16,7 @@ sources:
     type: 準公式
   - url: https://shop.asobistore.jp/products/detail/242359-00-00-00
     label: アソビストア商品ページ
-    type: 公式
+    type: 準公式
 event_date: 2026-08-26
 ---
 

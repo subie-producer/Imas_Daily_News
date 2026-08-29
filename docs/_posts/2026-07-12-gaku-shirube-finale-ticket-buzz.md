@@ -2,13 +2,13 @@
 slug: gaku-shirube-finale-ticket-buzz
 edition: 2026-07-12
 brand: gaku
-src: ファン
+src: 二次情報
 rank: small
 title: "学マス「標」ファイナル公演の当選報告がSNSで話題に"
 lede: "学園アイドルマスター LIVE TOUR「標」ファイナル公演のチケット抽選当選報告がSNSで広がり、ファンの間で話題になっている。"
 tags: [学マス, ライブ, ファン]
 sources:
-  - type: ファン
+  - type: 二次情報
     label: "Yahoo!リアルタイム検索 まとめ「学マス『標』ファイナル当選」(2026年7月9日)"
     url: https://search.yahoo.co.jp/realtime/search/matome/3805516817374fe1bbd8abf423a44dba-1783582200
 corrected: false

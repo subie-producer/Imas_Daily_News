@@ -93,5 +93,24 @@
     ],
     "event_date": "2026-09-03",
     "src_candidate_id": "202608271235-claude-25"
+  },
+  {
+    "id": "sched-2026-09-03-valiv-survey-2026-08-締切",
+    "dedup_key": "valiv-survey-2026-08",
+    "brand": "dsva",
+    "subject": "vα-liv「8月度の活動に関するアンケート」",
+    "kind": "締切",
+    "note": "回答締切",
+    "title": "vα-liv、8月度活動アンケートを実施",
+    "url": "https://x.com/valiv_official/status/2093191845681479694",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608290225-grok-14",
+    "event_date": "2026-09-03",
+    "deadline": "2026-09-03",
+    "facts": [
+      "回答期限は9月3日(木)23時59分まで"
+    ],
+    "reserved_on": "2026-08-29"
   }
 ]

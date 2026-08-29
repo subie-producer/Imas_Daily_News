@@ -1,0 +1,126 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-08-29-shiny-4koma-647-tanaka-mamimi.md",
+   "issue": "分量不足: rank=small だが約57文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-shiny-noctchill-fukumaru-koito-debut.md",
+   "issue": "分量不足: rank=small だが約104文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-sidem-flags-yumenotopia-2dmv-announced.md",
+   "issue": "分量不足: rank=small だが約117文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-shiny-smile-base-cafe-ikebukuro-open.md",
+   "issue": "分量不足: rank=small だが約164文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-cg-ss10th-fukuoka-pv2.md",
+   "issue": "分量不足: rank=small だが約171文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-dsva-valiv-survey-deadline-0903.md",
+   "issue": "分量不足: rank=small だが約172文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-shiny-hyakki-popup-yurakucho.md",
+   "issue": "分量不足: rank=small だが約225文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-cg-jol-popup-legend-cinderella.md",
+   "issue": "分量不足: rank=small だが約241文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-cg-ptb-chiramise-teaser.md",
+   "issue": "分量不足: rank=large だが約724文字（要1400文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-cg-15th-popup-parfait-coquette.md",
+   "issue": "分量不足: rank=small だが約262文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-765-imas-radio-launch.md",
+   "issue": "分量不足: rank=large だが約747文字（要1400文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-sidem-howanui-craneprize-launch.md",
+   "issue": "分量不足: rank=small だが約268文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-sidem-12th-free-stories-second-wave.md",
+   "issue": "分量不足: rank=medium だが約496文字（要900文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-shiny-283-stage-axe8-release.md",
+   "issue": "分量不足: rank=small だが約283文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-cg-kyomafu-popup-yurakucho.md",
+   "issue": "分量不足: rank=small だが約288文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-joint-imas-official-coming-soon-0906.md",
+   "issue": "分量不足: rank=small だが約294文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-sidem-11th-stage-kitchen-car.md",
+   "issue": "分量不足: rank=medium だが約537文字（要900文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-gaku-asari-seminar-hif-mechanics.md",
+   "issue": "分量不足: rank=small だが約306文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-million-opera-seria-popup-0911.md",
+   "issue": "分量不足: rank=small だが約330文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-cg-yamanashi-walk-and-wander.md",
+   "issue": "分量不足: rank=medium だが約597文字（要900文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-shiny-casting-collection-futari-mamimi-haruki.md",
+   "issue": "分量不足: rank=small だが約346文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-cg-vote2026-goods-groupd-panel.md",
+   "issue": "分量不足: rank=small だが約349文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-shiny-msp-solo-live-general-sale-start.md",
+   "issue": "分量不足: rank=small だが約363文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-765-dual-twin-tokyo-finale-roundup.md",
+   "issue": "分量不足: lead記事（要2000文字以上）だが約1477文字。lead記事としては詳細性が不足"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-shiny-alstroemeria-beam-axe8-release.md",
+   "issue": "分量不足: rank=small だが約387文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-cg-memory-pict-november-order.md",
+   "issue": "分量不足: rank=small だが約393文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-million-kikuchi-birthday-0829.md",
+   "issue": "分量不足: rank=small だが約399文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-sidem-himeno-kanon-new-cast-ino.md",
+   "issue": "分量不足: rank=medium だが約735文字（要900文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-shiny-765collab5-p-gacha-shinyrunway.md",
+   "issue": "分量不足: rank=small だが約419文字（要500文字以上）"
+  },
+  {
+   "file": "docs/_posts/2026-08-29-gaku-ichiban-kuji-part6-lineup.md",
+   "issue": "分量不足: rank=small だが約451文字（要500文字以上）"
+  }
+ ]
+}

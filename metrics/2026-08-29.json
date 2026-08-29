@@ -1,0 +1,120 @@
+{
+ "collect": [
+  {
+   "at": "2026-08-29T02:25:50+09:00",
+   "edition": "2026-08-29",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 342,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 1,
+      "deferred": 0
+     }
+    },
+    "new": 1,
+    "facted": 1,
+    "deferred": 0
+   },
+   "per_query": {
+    "grok:765as": 0,
+    "grok:cinderella": 13,
+    "grok:million": 0,
+    "grok:shiny": 13,
+    "grok:sidem": 0,
+    "grok:gakuen": 0,
+    "grok:dsva": 12,
+    "grok:joint-other": 4,
+    "grok:trend": 0,
+    "claude:765as": 4,
+    "claude:cinderella": 8,
+    "claude:million": 0,
+    "claude:shiny": 8,
+    "claude:sidem": 5,
+    "claude:gakuen": 4,
+    "claude:dsva": 0,
+    "claude:joint-other": 3,
+    "claude:trend": 5
+   },
+   "normalized": 73,
+   "added": 57,
+   "verify": {
+    "confirmed": 68,
+    "unconfirmed": 3,
+    "failed": 2
+   },
+   "duration_s": 1520
+  },
+  {
+   "at": "2026-08-29T03:42:30+09:00",
+   "edition": "2026-08-29",
+   "watch": {
+    "skipped": true
+   },
+   "per_query": {
+    "grok:765as": 12,
+    "grok:cinderella": 8,
+    "grok:million": 10,
+    "grok:shiny": 5,
+    "grok:sidem": 9,
+    "grok:gakuen": 0,
+    "grok:dsva": 6,
+    "grok:joint-other": 1,
+    "grok:trend": 1
+   },
+   "normalized": 52,
+   "added": 38,
+   "verify": {
+    "confirmed": 47,
+    "unconfirmed": 5,
+    "failed": 0
+   },
+   "duration_s": 1160
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-08-29T13:41:58+09:00",
+   "edition": "2026-08-29",
+   "rounds": 1,
+   "approved": true,
+   "lint_green": true,
+   "planned": 46,
+   "written": 36,
+   "roundups": 3,
+   "dropped": 87,
+   "coverage": {
+    "subjects": 175,
+    "covered": 175,
+    "missing": 0
+   },
+   "aborted": [
+    "cg-dere-fes-blanc",
+    "cg-anniversary-party-ticket-price",
+    "cg-ptb-memorial-goods",
+    "cg-kawaii-parade-popup",
+    "765-kikuchi-birthday-2026",
+    "sidem-costume-museum-goods-web-order",
+    "million-14thlive-cast-reveal-0829",
+    "gaku-hoshizaki-broadcast-club-launch",
+    "gaku-hoshizaki-hr4-livestream",
+    "general-kikuchi-makoto-birthday-fan-celebration"
+   ],
+   "duration_s": 3413
+  }
+ ]
+}

@@ -76,5 +76,23 @@
     ],
     "event_date": "2026-09-02",
     "src_candidate_id": "202608280232-claude-107"
+  },
+  {
+    "id": "sched-2026-09-02-sidem-flags-meet-yumenotopia-2dmv-2026-開始",
+    "dedup_key": "sidem-flags-meet-yumenotopia-2dmv-2026",
+    "brand": "sidem",
+    "subject": "F-LAGS「ミート・ユメノトピア」2DMV公開",
+    "kind": "開始",
+    "note": "2DMV公開",
+    "title": "F-LAGS「ミート・ユメノトピア」2DMV公開へ",
+    "url": "https://x.com/SideM_lantis/status/2093315159209214066",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608290342-grok-25",
+    "event_date": "2026-09-02",
+    "facts": [
+      "2DMVを9月2日21時に公開予定"
+    ],
+    "reserved_on": "2026-08-29"
   }
 ]

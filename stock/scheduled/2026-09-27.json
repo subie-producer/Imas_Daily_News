@@ -57,5 +57,42 @@
     ],
     "event_date": "2026-09-27",
     "src_candidate_id": "202608280232-grok-59"
+  },
+  {
+    "id": "sched-2026-09-27-765-never-end-idol-bluray-2026-締切",
+    "dedup_key": "765-never-end-idol-bluray-2026",
+    "brand": "765",
+    "subject": "765PRO ALLSTARSライブBlu-ray「NEVER END IDOL!!!!!!!!!!!!!」予約締切",
+    "kind": "締切",
+    "note": "予約受付締切",
+    "title": "765ASライブ映像、11月25日発売",
+    "url": "https://shop.asobistore.jp/products/detail/225029-00-00-00",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608290225-claude-46",
+    "event_date": "2026-11-25",
+    "deadline": "2026-09-27",
+    "facts": [
+      "アソビストア特装版の予約受付は9月27日まで"
+    ],
+    "reserved_on": "2026-08-29"
+  },
+  {
+    "id": "sched-2026-09-27-million-opera-seria-2026-終了",
+    "dedup_key": "million-opera-seria-2026",
+    "brand": "million",
+    "subject": "POP UP SHOP「オペラセリア」",
+    "kind": "終了",
+    "note": "開催終了",
+    "title": "オペラセリア、9月11日から秋葉原で開催",
+    "url": "https://idolmaster-official.jp/news/01_19665",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608281235-watch-0",
+    "event_date": "2026-09-27",
+    "facts": [
+      "コトブキヤ秋葉原館5Fでの開催は9月27日まで"
+    ],
+    "reserved_on": "2026-08-29"
   }
 ]

@@ -75,5 +75,25 @@
     ],
     "event_date": "2026-09-01",
     "src_candidate_id": "202608280232-grok-15"
+  },
+  {
+    "id": "sched-2026-09-01-sidem-himeno-kanon-casting-開始",
+    "dedup_key": "sidem-himeno-kanon-casting",
+    "brand": "sidem",
+    "subject": "SideM姫野かのん新キャストお披露目特別生配信",
+    "kind": "開始",
+    "note": "お披露目特別生配信",
+    "title": "SideM姫野かのん、新キャストに伊能幸輝さん",
+    "url": "https://idolmaster-official.jp/news/01_19452",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608281235-watch-1",
+    "event_date": "2026-09-01",
+    "facts": [
+      "お披露目特別生配信は9月1日19時から、YouTube Liveとニコニコ生放送で実施",
+      "出演は仲村宗悟さん・狩野翔さん・矢野奨吾さん・古畑恵介さん・伊能幸輝さん・石澤雪枝プロデューサー",
+      "姫野かのんの今後のボイススケジュールを冒頭で案内、F@NTASTIC BATTLE FESなど最新情報も届ける"
+    ],
+    "reserved_on": "2026-08-29"
   }
 ]

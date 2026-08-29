@@ -1,0 +1,45 @@
+{
+  "articles": [
+    {
+      "slug": "joint-imas-official-coming-soon-0906",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "公式Xが「2026.9.6 12:00 COMING SOON」と動画付きで予告、一部報道(未確認)は765プロ×961プロダクションライブ『IDOL ULTIMATE ONCE AND FOR ALL』続報の公開時期と結びつけて観測",
+      "lead_score": 40,
+      "dedup_key": "imas-official-coming-soon-2026-0906",
+      "candidate_ids": ["202608290225-grok-27", "202608290225-grok-29"]
+    },
+    {
+      "slug": "joint-columbia-venue-cd-aftersale-0828",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "765プロdual twin live tourと『IDOL WORLD SUPER FESTIVAL 2026』など全12種の会場オリジナルCDが事後通販を開始、受注期間・数量制限・発送時期を列挙",
+      "lead_score": 10,
+      "dedup_key": "columbia-venue-cd-aftersale-2026-08",
+      "candidate_ids": ["202608290225-grok-28"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "deremilli-clash-match-2027-02",
+      "reason": "既報",
+      "note": "stock/stories.ymlのcg-million-coming-soon-2026-08-26(8/26付)に会場・日程・料金・先行申込期間まで同一facts既出、新事実なし。deremilli-clashmatch-2027-02と重複主題"
+    },
+    {
+      "dedup_key": "deremilli-clashmatch-2027-02",
+      "reason": "既報",
+      "note": "stock/stories.ymlのcg-million-coming-soon-2026-08-26(8/26付)に同一facts既出、新事実なし。deremilli-clash-match-2027-02と重複主題"
+    },
+    {
+      "dedup_key": "iwsf-2026",
+      "reason": "既報",
+      "note": "published_dateが2026-08-18で配信アーカイブ購入期限(8/17)も既に経過済み。imas-20th-iwsf2026/iwsf2026-venue-cd(stock)で開催内容は既出、本号(8/29)時点で新事実・新トリガーなし"
+    },
+    {
+      "dedup_key": "idol-ultimate-once-and-for-all-2026-0906-followup",
+      "reason": "重複",
+      "note": "joint-imas-official-coming-soon-0906記事に統合(同一の9/6 12:00予告を指すとみられる報道)"
+    }
+  ],
+  "cross_brand": []
+}

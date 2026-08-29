@@ -1,0 +1,230 @@
+{
+  "articles": [
+    {
+      "slug": "cg-memory-pict-november-order",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "Memory Pict.最新弾「小日向美穂・依田芳乃」受注開始、締切9月13日・発送は11月、BOX5,900円ほか品目と価格を列挙",
+      "lead_score": 15,
+      "dedup_key": "cinderella-memory-pict-6th-2026",
+      "candidate_ids": ["202608280737-watch-5", "202608290225-grok-2", "202608290225-claude-50", "202608290342-grok-4"]
+    },
+    {
+      "slug": "cg-jol-popup-legend-cinderella",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "渋谷JOL Collab Storeで「Legend of Cinderella ぴにゃこら太の伝説」POP UP開催中(8月21日〜9月6日)、税込3,000円以上でポストカード特典",
+      "lead_score": 5,
+      "dedup_key": "jol-collab-store-popup-legend-cinderella-2026-08",
+      "candidate_ids": ["202608280737-claude-10", "202608281235-claude-8"]
+    },
+    {
+      "slug": "cg-kyomafu-popup-yurakucho",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "京都国際マンガ・アニメフェア2026の事後物販POP UP SHOPを有楽町マルイ7Fで9月26日〜10月14日開催決定",
+      "lead_score": 10,
+      "dedup_key": "cg-kyoto-popup-2026",
+      "candidate_ids": ["202608281836-watch-0"]
+    },
+    {
+      "slug": "cg-15th-popup-parfait-coquette",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "CG15周年記念POPUP「Parfait Coquette Celebration」がコトブキヤ秋葉原館5Fで10月2日〜18日開催決定、3ユニット9名が登場",
+      "lead_score": 10,
+      "dedup_key": "cg-15th-anniversary-2026",
+      "candidate_ids": ["202608281836-watch-4"]
+    },
+    {
+      "slug": "cg-yamanashi-walk-and-wander",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "山梨県周遊デジタルスタンプラリー「やまなしWALK & WANDER」が11月21日〜12月27日開催決定、PR・応援あわせて10名のアイドルとコラボ歩数計を先行販売",
+      "lead_score": 20,
+      "dedup_key": "cg-yamanashi-walk-2026",
+      "candidate_ids": ["202608281836-watch-6", "202608290342-grok-7"]
+    },
+    {
+      "slug": "cg-dere-fes-blanc",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "デレステ『シンデレラフェス ブラン』が8月27日〜9月2日開催、初登場ブラン限定SSR前川みか(みく)登場・プラチナガシャSSR確率2倍",
+      "lead_score": 10,
+      "dedup_key": "dere-fes-blanc-2026",
+      "candidate_ids": ["202608281836-claude-19"]
+    },
+    {
+      "slug": "cg-anniversary-party-ticket-price",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "11月28・29日K Arena Yokohama「15th ANNIVERSARY PARTY!!!! ~for your ONE~」でグッズ事前二次販売が開始、1日券の席種別価格(SPラウンジ〜指定席)とDJ・パーティ構成の詳細も判明",
+      "lead_score": 55,
+      "dedup_key": "anniversary-party-2026-11",
+      "candidate_ids": ["202608281843-claude-7"]
+    },
+    {
+      "slug": "cg-vote2026-goods-groupd-panel",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "シンデレラガール総選挙2026グッズ、「公約四字熟語」グループDのデザイン公開・190名の等身大パネルなど新ラインナップが判明、受注は9月13日締切",
+      "lead_score": 25,
+      "dedup_key": "cg-vote2026-yojijukugo-group-d",
+      "candidate_ids": ["202608290225-grok-3", "202608290225-grok-4", "202608290225-grok-5"]
+    },
+    {
+      "slug": "cg-ptb-memorial-goods",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "Pop'n ToyBox!!開催記念グッズが受注中、ぬいぐるみパスケースやアクリルスタンド等の品目・価格を列挙、締切は9月13日",
+      "lead_score": 10,
+      "dedup_key": "cg-ptb-memorial-goods-2026",
+      "candidate_ids": ["202608290225-grok-6", "202608290342-grok-3"]
+    },
+    {
+      "slug": "cg-ptb-chiramise-teaser",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "「トイボ公演」チラ見せ公開、新曲「ダンス・ダンス・ダンス -ミフメイ Remix-」の存在が判明",
+      "lead_score": 5,
+      "dedup_key": "cg-ptb-chiramise-watchalong-202608",
+      "candidate_ids": ["202608290225-grok-7"]
+    },
+    {
+      "slug": "cg-ss10th-fukuoka-pv2",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "デレステ10thツアー福岡公演PV第2弾が本日8月29日18時にプレミア公開、Blu-ray BOX発売直前",
+      "lead_score": 15,
+      "dedup_key": "cg-ss10th-fukuoka-pv2-premiere-20260829",
+      "candidate_ids": ["202608290225-grok-13"]
+    },
+    {
+      "slug": "cg-kawaii-parade-popup",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "デレステ10周年記念POPUP「KAWAII♡ぱれーど」がマルイシティ横浜(8/29-9/8)・あみあみ各店(8/29-9/15)で本日開幕",
+      "lead_score": 20,
+      "dedup_key": "cg-popup-kawaii-parade-2026",
+      "candidate_ids": ["202608290225-claude-53"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-cm-daisuki-bouquet-2026-08",
+      "reason": "既報",
+      "note": "CD『大好きのブーケ＆すりーぷすきっぷ』は stock story cg-cinderella-master-bouquet-sleep-skip-2026(8/25初報)で発売日・価格・収録曲・シリアルを既報済み"
+    },
+    {
+      "dedup_key": "pop-n-toybox-cd-aftermarket-2026-08",
+      "reason": "重複",
+      "note": "会場オリジナルCD事後通販(全12種)は joint-columbia-venue-cd-aftersale-0828 で合同面が記事化(cg分もstory cg-venue-cd-post-event-sales-2026で8/26既報済み)"
+    },
+    {
+      "dedup_key": "toppa-base-popup-cinderella-election-2026-08",
+      "reason": "既報",
+      "note": "TOPPA!!!BASE POPUP(秋葉原・全国5都市8/27開幕)は stock story cg-toppa-base-popup-2026 で既報"
+    },
+    {
+      "dedup_key": "cg-election-2026-support-song-1",
+      "reason": "既報",
+      "note": "応援楽曲配信・シリアル特典は cg-cinderella-master-bouquet-sleep-skip-2026 で既報"
+    },
+    {
+      "dedup_key": "cg-popup-legend-2026-08",
+      "reason": "重複",
+      "note": "jol-collab-store-popup-legend-cinderella-2026-08 と同一施策のため統合"
+    },
+    {
+      "dedup_key": "cg-cd-bouquet-2026-08",
+      "reason": "既報",
+      "note": "cg-cinderella-master-bouquet-sleep-skip-2026 で既報。キャスト名の表記揺れあり(データ品質要因)"
+    },
+    {
+      "dedup_key": "cg-futago-twin-live-2026-08",
+      "reason": "重複",
+      "note": "双海亜美・真美Twin LiveのZepp羽田公演は765ブランドのstory 765-dual-twinlive-venue-cdで開幕・終演まで既報済み(cgタグは誤付与とみられる)"
+    },
+    {
+      "dedup_key": "cg-online-kuji-festival-2026-08",
+      "reason": "既報",
+      "note": "文化祭テーマオンラインくじは stock story cg-gacha-festival-2026-08(8/28)で既報"
+    },
+    {
+      "dedup_key": "cg-cd-bluray-2026-08",
+      "reason": "既報",
+      "note": "CD情報はcg-cinderella-master-bouquet-sleep-skip-2026で既報。Blu-ray BOXの固有情報はfactsに記載なく確認不可"
+    },
+    {
+      "dedup_key": "cg-support-song-4-2026",
+      "reason": "既報",
+      "note": "「すりーぷすきっぷ」MVプレミア公開はcg-cinderella-master-bouquet-sleep-skip-2026(8/25)で既報"
+    },
+    {
+      "dedup_key": "cg-memory-pict-november-2026-store",
+      "reason": "重複",
+      "note": "cinderella-memory-pict-6th-2026に統合(同一商品)"
+    },
+    {
+      "dedup_key": "cg-vote2026-official-goods",
+      "reason": "重複",
+      "note": "cg-vote2026-yojijukugo-group-dに統合(同一施策の総選挙2026グッズ展開、価格情報を追加)"
+    },
+    {
+      "dedup_key": "cg-vote2026-life-size-panel",
+      "reason": "重複",
+      "note": "cg-vote2026-yojijukugo-group-dに統合(同一施策の総選挙2026グッズ展開)"
+    },
+    {
+      "dedup_key": "cg-nichijo-kahou-20260827",
+      "reason": "既報",
+      "note": "4コマ「シンデレラガールズの日常」新作は stock story cg-nichijo-kahou-20260827(8/28)で既報"
+    },
+    {
+      "dedup_key": "cg-toybox-extra-5-20260827",
+      "reason": "既報",
+      "note": "トイボックス・エクストラ5公開はcg-popn-toybox-goods-2026のfactsで既報済み"
+    },
+    {
+      "dedup_key": "cg-sleep-skip-premiere-mv-202608",
+      "reason": "既報",
+      "note": "「すりーぷすきっぷ」MV公開はcg-cinderella-master-bouquet-sleep-skip-2026で既報"
+    },
+    {
+      "dedup_key": "cg-venue-cd-aftersale-202608",
+      "reason": "重複",
+      "note": "会場オリジナルCD事後通販(全5タイトル)は joint-columbia-venue-cd-aftersale-0828 で合同面が記事化(stock story cg-venue-cd-post-event-sales-2026でも8/26既報)"
+    },
+    {
+      "dedup_key": "cg-memory-pict-6th-2026",
+      "reason": "重複",
+      "note": "cinderella-memory-pict-6th-2026に統合(同一商品)"
+    },
+    {
+      "dedup_key": "cg-pop-toybox-2026",
+      "reason": "既報",
+      "note": "Pop'n ToyBox!!(8/13-16)開催そのものは終了済み・既に多数既報済みで、興行実績の報道にも新規性のある結果数値なし"
+    },
+    {
+      "dedup_key": "cg-popn-toybox-memorial-goods-2026",
+      "reason": "重複",
+      "note": "cg-ptb-memorial-goods-2026に統合(同一商品ラインの受注告知)"
+    },
+    {
+      "dedup_key": "cg-memory-pict-november-2026",
+      "reason": "重複",
+      "note": "cinderella-memory-pict-6th-2026に統合(同一商品)"
+    },
+    {
+      "dedup_key": "cg-vote2026-sleepskip-mv",
+      "reason": "既報",
+      "note": "「すりーぷすきっぷ」MV公開はcg-cinderella-master-bouquet-sleep-skip-2026で既報"
+    },
+    {
+      "dedup_key": "cg-yamanashi-walk-wander-2026",
+      "reason": "重複",
+      "note": "cg-yamanashi-walk-2026に統合(同一施策)"
+    }
+  ],
+  "cross_brand": []
+}

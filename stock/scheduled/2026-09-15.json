@@ -81,5 +81,24 @@
     ],
     "event_date": "2026-09-15",
     "src_candidate_id": "202608271235-claude-18"
+  },
+  {
+    "id": "sched-2026-09-15-imas-radio-2026-開始",
+    "dedup_key": "imas-radio-2026",
+    "brand": "765",
+    "subject": "ラジオ新番組「IM＠S RADIO」初回放送",
+    "kind": "開始",
+    "note": "初回放送開始",
+    "title": "IM＠S RADIO、9月15日スタート",
+    "url": "https://idolmaster-official.jp/news/01_19721",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608282336-watch-0",
+    "event_date": "2026-09-15",
+    "facts": [
+      "初回放送は9月15日20時から、パーソナリティは平田宏美さん(菊地真役)・若林直美さん(秋月律子役)",
+      "以降隔週火曜20時放送、本編終了後にメンバーシップ限定アフタートークへ切り替え"
+    ],
+    "reserved_on": "2026-08-29"
   }
 ]

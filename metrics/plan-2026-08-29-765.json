@@ -1,0 +1,104 @@
+{
+  "articles": [
+    {
+      "slug": "765-dual-twin-tokyo-finale-roundup",
+      "brand": "765",
+      "rank": "large",
+      "angle": "dual twin live tour東京公演(Zepp Haneda)がDAY1・DAY2とも千秋楽を迎え、両公演のセットリスト・最速アーカイブ・新曲「北極星をズラしちゃえ!」「Binary Star」配信開始・ばくすて!とーく配信/アーカイブ・YouTube Musicプレイリスト・9/23オーコメ生配信決定をまとめて報告",
+      "lead_score": 55,
+      "dedup_key": "dual-twin-live-2026-08",
+      "candidate_ids": [
+        "202608282336-watch-1",
+        "202608290342-grok-41",
+        "202608290225-watch-0",
+        "202608290342-grok-39",
+        "202608290342-grok-38",
+        "202608290342-grok-33",
+        "202608290342-grok-34",
+        "202608290342-grok-48",
+        "202608290342-grok-51",
+        "202608290342-grok-49",
+        "202608281235-watch-3"
+      ]
+    },
+    {
+      "slug": "765-imas-radio-launch",
+      "brand": "765",
+      "rank": "medium",
+      "angle": "ブランド横断のYouTubeラジオ新番組「IM＠S RADIO」が9月15日スタート決定、パーソナリティ平田宏美・若林直美、隔週火曜配信の体制を報告",
+      "lead_score": 20,
+      "dedup_key": "imas-radio-2026",
+      "candidate_ids": ["202608282336-watch-0", "202608282336-watch-3"]
+    },
+    {
+      "slug": "765-dual-twin-goods-order",
+      "brand": "765",
+      "rank": "small",
+      "angle": "dual twin live tour開催記念グッズがASOBI STOREで受注中(9/27締切・2027年1月中旬発送予定)",
+      "lead_score": 5,
+      "dedup_key": "dual-twin-live-goods-2026",
+      "candidate_ids": ["202608282336-watch-2"]
+    },
+    {
+      "slug": "765-kikuchi-birthday-2026",
+      "brand": "765",
+      "rank": "medium",
+      "angle": "菊地真、8月29日の誕生日に合わせ765PRO ALLSTARS Birthday記念グッズ第1弾(カジュアルバッグ)の受注を開始、公式はお祝い動画も公開",
+      "lead_score": 10,
+      "dedup_key": "kikuchi-makoto-birthday-goods-2026",
+      "candidate_ids": ["202608290225-claude-45", "202608290342-grok-50"]
+    },
+    {
+      "slug": "765-never-end-idol-bluray",
+      "brand": "765",
+      "rank": "large",
+      "angle": "765PRO ALLSTARS LIVE「NEVER END IDOL!!!!!!!!!!!!!!!!」のLive Blu-rayが11月25日発売決定、9月27日まで予約受付・版種と店舗特典を列挙",
+      "lead_score": 25,
+      "dedup_key": "765-never-end-idol-bluray-2026",
+      "candidate_ids": ["202608290225-claude-46"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "dual-twin-live-tour-2026",
+      "reason": "既報",
+      "note": "DAY1終了・セットリスト・アーカイブ期間は stock/stories.yml(765-dual-twinlive-venue-cd)に既報済みで新事実なし"
+    },
+    {
+      "dedup_key": "765-dual-twin-live-2026-08",
+      "reason": "既報",
+      "note": "published_date 8/14の開催告知の再掲。会場・日程・料金は既報済みで、公演終了後の本号では新規性なし"
+    },
+    {
+      "dedup_key": "765-dual-twin-live-tokyo-bakusute-2026",
+      "reason": "既報",
+      "note": "ばくすて!とーくの出演者(27日下田麻美・浅倉杏美/28日若林直美・たかはし智秋)・配信形式は既報の内容と一致"
+    },
+    {
+      "dedup_key": "765as-dual-twin-tour-2026-tokyo",
+      "reason": "既報",
+      "note": "一般先着2次開始・当日券販売決定はいずれも既報済み"
+    },
+    {
+      "dedup_key": "765as-dual-twin-venue-cd-2026",
+      "reason": "既報",
+      "note": "会場CD発売決定・新曲収録・2枚同時購入特典クリアカードはいずれも既報済み"
+    },
+    {
+      "dedup_key": "765as-dual-twin-resale-2026",
+      "reason": "既報",
+      "note": "リセール受付・現地チケット先着販売開始は既報済み"
+    },
+    {
+      "dedup_key": "765as-dual-twin-iwsf-booth-2026",
+      "reason": "その他",
+      "note": "8/26付の販促ブース情報で、東京公演終了後の本号時点では新規性・重要度とも乏しい"
+    },
+    {
+      "dedup_key": "imas-live-tour-report-2026-08-27",
+      "reason": "既報",
+      "note": "8/27公演の現地レポート(報道)。公式発表済み事実の後追いで新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

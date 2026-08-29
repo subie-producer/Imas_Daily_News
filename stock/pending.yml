@@ -43,14 +43,10 @@
   brand: gaku
   subject: 学マス「標」ゲーム内実装
   watch: 実装時期・他アイドル登場時期の詳細(判明次第 triggers へ)
-- dedup_key: sidem-murase-himeno-graduation-2026
-  brand: sidem
-  subject: 村瀬歩さん、姫野かのん役卒業
-  watch: 後任声優の発表(判明次第 triggers へ)
 - dedup_key: shiny-axe8-2026
   brand: shiny
-  subject: Project "ReLight" AXE8(アルストロメリア「BEAM」・イルミネ「I=WE」/新SSR2種)
-  watch: 新曲のゲーム内追加日・新SSR(桑山千雪、風野灯織)の登場日(判明次第 triggers へ)
+  subject: Project "ReLight" AXE8 第2弾(イルミネーションスターズ「I=WE」・新SSR風野灯織)
+  watch: 新曲のゲーム内追加日・新SSR(風野灯織)の登場日(判明次第 triggers へ。第1弾アルストロメリア/桑山千雪は8/29付で実装確認済み)
 - dedup_key: gaku-nuipin-vol2
   brand: gaku
   subject: 学マス「ぬいピン vol.2」

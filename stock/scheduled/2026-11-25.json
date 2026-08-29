@@ -1,0 +1,21 @@
+[
+  {
+    "id": "sched-2026-11-25-765-never-end-idol-bluray-2026-発売",
+    "dedup_key": "765-never-end-idol-bluray-2026",
+    "brand": "765",
+    "subject": "765PRO ALLSTARSライブBlu-ray「NEVER END IDOL!!!!!!!!!!!!!」発売",
+    "kind": "発売",
+    "note": "発売日",
+    "title": "765ASライブ映像、11月25日発売",
+    "url": "https://shop.asobistore.jp/products/detail/225029-00-00-00",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608290225-claude-46",
+    "event_date": "2026-11-25",
+    "facts": [
+      "アソビストア特装版が11月25日発売、39,050円(税込)、Blu-ray4枚組+フォトブック+収納BOX構成",
+      "2025年8月2日・3日Kアリーナ横浜公演を完全収録"
+    ],
+    "reserved_on": "2026-08-29"
+  }
+]

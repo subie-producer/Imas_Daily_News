@@ -1,0 +1,93 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-hoshizaki-broadcast-club-launch",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "公式Webラジオ「初星学園放送部」始動。放送部部長役MC真城優(CV村田綾香)によるボイスドラマ第0話公開と8月28日の放送開始、8月27日ゲスト回(飯田ヒカル)の情報をまとめて紹介",
+      "lead_score": 35,
+      "dedup_key": "gaku-hoshizaki-broadcast-club-2026",
+      "candidate_ids": ["202608281235-claude-30", "202608290225-claude-68"]
+    },
+    {
+      "slug": "gaku-ichiban-kuji-part6-lineup",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "「一番くじ 学園アイドルマスター Part6」全ラインナップが判明、9月19日より順次発売・オンラインは9月24日開始、A〜C賞は有村麻央・倉本千奈・篠澤広のGracemasterフィギュア",
+      "lead_score": 15,
+      "dedup_key": "gaku-ichiban-kuji-part6-2026",
+      "candidate_ids": ["202608281836-watch-5"]
+    },
+    {
+      "slug": "gaku-asari-seminar-hif-mechanics",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "開催中のゲーム内イベント「あさり先生のプロデュースゼミ」、HIF追加後初開催に伴うHIF専用アビリティの再抽選対応やイベント専用Pアイテム・対象プランなど仕様の詳細を紹介",
+      "lead_score": 5,
+      "dedup_key": "gaku-asari-produce-seminar-2026-08",
+      "candidate_ids": ["202608281235-claude-27", "202608281843-claude-18"]
+    },
+    {
+      "slug": "gaku-hoshizaki-hr4-livestream",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「学園アイドルマスター 初星学園HR #4」が本日19時に生配信、最新情報の発表に注目",
+      "lead_score": 10,
+      "dedup_key": "gaku-hoshizaki-hr-live-2026-08-29",
+      "candidate_ids": ["202608290225-claude-70"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gakumas-big-face-nuigurumi-vol3-2026",
+      "reason": "既報",
+      "note": "stock gaku-bigface-plush-vol3-2026(8/28初報)と同一事実(予約開始日・価格・サイズ・発売月)で新事実なし"
+    },
+    {
+      "dedup_key": "gaku-gravure-solo-vol1-2026",
+      "reason": "既報",
+      "note": "stock gakumas-gravure-solo-collection-vol1-2026(8/26初報)と同一。アソビストア特典の内訳のみで記事化に足る新事実なし"
+    },
+    {
+      "dedup_key": "gaku-nee-iichauyou-mizurin-gacha-2026-08",
+      "reason": "既報",
+      "note": "stock gakumas-swimsuit-gacha-hataya-2026(8/25初報)と同一ガシャ(SSR/SR名・開催時刻が一致)、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-hif-memorial-single-garakutaroad-2026-08",
+      "reason": "既報",
+      "note": "ガラクタロード発売(stock gaku-hif-memorial-single-2026、8/26初報)とぬいピンvol.2(stock gaku-nuipin-vol2-2026、8/27初報)の混在candidateで、いずれも既報かつ新事実なし"
+    },
+    {
+      "dedup_key": "gaku-live-tour-standard-2026",
+      "reason": "既報",
+      "note": "stock gakumas-shirube-livetour-2026(8/25初報)で福井公演は詳報済み。開催日も既に終了しており新事実なし"
+    },
+    {
+      "dedup_key": "gkmas-asari-seminar-2026",
+      "reason": "重複",
+      "note": "同一面のgaku-asari-produce-seminar-2026-08(あさり先生のプロデュースゼミ)に統合"
+    },
+    {
+      "dedup_key": "gakumas-livetour-shirube-streaming",
+      "reason": "既報",
+      "note": "stock gaku-shirube-iwate-streaming-2026(8/28初報)の「配信視聴チケットは8月27日付告知と同日から販売開始」と同一事実"
+    },
+    {
+      "dedup_key": "gakumas-hif-memorial-single-2026-08-26",
+      "reason": "既報",
+      "note": "stock gaku-hif-memorial-single-2026(8/26初報)と同一、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-nemurasetai-gashapon-2026-08",
+      "reason": "既報",
+      "note": "stock gaku-nemurase-tai-gashapon-2026(8/27初報)と同一事実(対象キャラ・受注期間・価格が一致)"
+    },
+    {
+      "dedup_key": "gaku-live-tour-shirube-fukui-2026-08",
+      "reason": "既報",
+      "note": "stock gakumas-shirube-livetour-2026(8/25初報)でアーカイブ配信・新曲サプライズ披露は既に詳報済み、新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,0 +1,114 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-msp-solo-live-general-sale-start",
+      "brand": "shiny",
+      "rank": "large",
+      "angle": "ソロライブMSP、現地一般発売(先着)が本日正午スタート。配信チケットの期日・価格帯や各チケット種別の条件もあわせて整理",
+      "lead_score": 70,
+      "dedup_key": "shiny-msp-live-tickets-2026",
+      "candidate_ids": ["sched-2026-08-29-shiny-msp-live-tickets-2026-開始", "202608281836-claude-23", "202608290225-grok-33"]
+    },
+    {
+      "slug": "shiny-765collab5-p-gacha-shinyrunway",
+      "brand": "shiny",
+      "rank": "large",
+      "angle": "シャニソン×765プロコラボ第5弾、律子・あずさ・亜美・真美のPアイドルガシャが開催。歌い分け追加・Shiny Runway実装・記念ミッション・有償限定ガシャも同時始動",
+      "lead_score": 30,
+      "dedup_key": "shiny-prism-765-collab5-p-gacha-2026",
+      "candidate_ids": ["202608290225-grok-40", "202608290225-grok-41", "202608290225-grok-42", "202608290342-grok-43", "202608290342-grok-44", "202608290342-grok-47"]
+    },
+    {
+      "slug": "shiny-alstroemeria-beam-axe8-release",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "AXE8第1弾アルストロメリア始動、新曲「BEAM」実装とS-SSR桑山千雪【Grow to Glow】特別スタンプガシャが同日公開",
+      "lead_score": 25,
+      "dedup_key": "shiny-alstroemeria-beam-impl-2026-08-28",
+      "candidate_ids": ["202608290225-grok-37", "202608290225-grok-39"]
+    },
+    {
+      "slug": "shiny-283-stage-axe8-release",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "育成コンテンツ「283ステージ」が本リリースへ移行、『A.X.E.8.編』で追加された新機能を列挙",
+      "lead_score": 20,
+      "dedup_key": "shiny-283-stage-axe8-release-2026-08-28",
+      "candidate_ids": ["202608290225-grok-34"]
+    },
+    {
+      "slug": "shiny-hyakki-popup-yurakucho",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "放課後クライマックスガールズの「百鬼夜行 POP UP SHOP」が有楽町マルイ8Fで開催決定、購入特典と抽選会の条件を紹介",
+      "lead_score": 15,
+      "dedup_key": "shiny-hyakki-popup-2026",
+      "candidate_ids": ["202608281836-watch-1"]
+    },
+    {
+      "slug": "shiny-casting-collection-futari-mamimi-haruki",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "限定シリーズ「キャスティングコレクション～ふたりきりの手ほどき編～」開催中、田中摩美々・郁田はるきの報酬条件を紹介",
+      "lead_score": 10,
+      "dedup_key": "shiny-casting-collection-futari-2026-08",
+      "candidate_ids": ["202608290225-grok-36"]
+    },
+    {
+      "slug": "shiny-smile-base-cafe-ikebukuro-open",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニマス×SMILE BASE CAFE「Sporty China Style」池袋店が本日開幕",
+      "lead_score": 15,
+      "dedup_key": "shiny-smile-base-cafe-sporty-china-style-2026",
+      "candidate_ids": ["sched-2026-08-29-shiny-smile-base-cafe-sporty-china-style-2026-開幕池袋"]
+    },
+    {
+      "slug": "shiny-noctchill-fukumaru-koito-debut",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "ノクチルのシナリオイベント「いつか風が止むその日まで」に新SSRサポート福丸小糸が登場",
+      "lead_score": 10,
+      "dedup_key": "shiny-noctchill-event-itsuka-kaze-2026-08",
+      "candidate_ids": ["202608290225-grok-35"]
+    },
+    {
+      "slug": "shiny-4koma-647-tanaka-mamimi",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "web4コマ漫画第647話『怖さを知るために』公開、今回は田中摩美々回",
+      "lead_score": 5,
+      "dedup_key": "shiny-4koma-647-mamimi",
+      "candidate_ids": ["202608290225-grok-38"]
+    }
+  ],
+  "dropped": [
+    {"dedup_key": "kyoto-anime-fair-2026-shiny", "reason": "既報", "note": "joint面の既報story(kyomafu-2026-cg-million-goods、8/24付)に放課後クライマックスガールズのグッズ販売が既出、新事実なし"},
+    {"dedup_key": "refrac7ions-still-blue-2026", "reason": "既報", "note": "stock shiny-stillblue-asobipremium-lottery に同一の追加キャスト・一般会員先行情報が既出(8/27付)"},
+    {"dedup_key": "shiny-hopeful-feathers-2026", "reason": "既報", "note": "stock shiny-hopeful-feathers-cd-2026 に同一のINDEX/ジャケット解禁情報が既出(8/25付)"},
+    {"dedup_key": "shiny-still-blue-concert-2026", "reason": "既報", "note": "refrac7ions-still-blue-2026と同一施策、stockに既出"},
+    {"dedup_key": "shiny-noctchill-scenario-event-2026-aug", "reason": "既報", "note": "stock shiny-noctchill-event-2026 に開催期間・予告が既出(8/27付)。新事実は福丸小糸新登場の記事に反映済み"},
+    {"dedup_key": "shiny-broadcast-2026-aug25", "reason": "既報", "note": "stock shiny-live-broadcast-new-idol-2026 に同一配信内容が既出(8/25付)"},
+    {"dedup_key": "shiny-refrac7ions-2026-12", "reason": "既報", "note": "refrac7ions-still-blue-2026と同一施策、stockに既出"},
+    {"dedup_key": "shiny-scenario-nocturne-2026-08", "reason": "既報", "note": "shiny-noctchill-scenario-event-2026-augと同一、stockに既出(verify unconfirmed)"},
+    {"dedup_key": "shiny-fashion-show-contest-2026", "reason": "その他", "note": "新事実・当日トリガーなし(応募開始は8/20付、締切は8/31で本日でない)。verify未確認"},
+    {"dedup_key": "shiny-livestream-2026-08-25", "reason": "既報", "note": "shiny-broadcast-2026-aug25と同一配信、stockに既出"},
+    {"dedup_key": "shiny-scenario-event-kaze-2026-08", "reason": "既報", "note": "シナリオイベント・生配信いずれもstockに既出、新事実なし"},
+    {"dedup_key": "shiny-master-showpiece-2026", "reason": "重複", "note": "MSPチケット記事(dedup: shiny-msp-live-tickets-2026)に統合"},
+    {"dedup_key": "shiny-scenario-event-2026-08-28", "reason": "既報", "note": "shiny-noctchill-scenario-event-2026-augと同一、stockに既出"},
+    {"dedup_key": "shiny-refrac7ions-still-blue-cast-2026-08-27", "reason": "既報", "note": "refrac7ions-still-blue-2026と同一施策、stockに既出"},
+    {"dedup_key": "shiny-refrac7ions-still-blue-asobi-general-pre-2026", "reason": "既報", "note": "refrac7ions-still-blue-2026と同一施策、stockに既出"},
+    {"dedup_key": "shiny-refrac7ions-still-blue-cast-announce-x-2026-08-27", "reason": "既報", "note": "refrac7ions-still-blue-2026と同一施策、stockに既出"},
+    {"dedup_key": "shiny-msp-solo-live-general-sale-2026-08-29", "reason": "重複", "note": "続報予約 shiny-msp-live-tickets-2026 の記事に統合"},
+    {"dedup_key": "shiny-grow-to-glow-kuwayama-gacha-2026-08", "reason": "重複", "note": "アルストロメリアBEAM実装記事(dedup: shiny-alstroemeria-beam-impl-2026-08-28)に統合"},
+    {"dedup_key": "shiny-prism-utaewake-i-need-you-765-2026-08", "reason": "重複", "note": "765プロコラボ第5弾記事(dedup: shiny-prism-765-collab5-p-gacha-2026)に統合"},
+    {"dedup_key": "shiny-prism-shiny-runway-765-2026-summer", "reason": "重複", "note": "765プロコラボ第5弾記事(dedup: shiny-prism-765-collab5-p-gacha-2026)に統合"},
+    {"dedup_key": "shiny-relight-axe8-2026", "reason": "既報", "note": "stock shiny-axe8-2026 に第1弾/第2弾の発表内容が既出(8/25付)。実装分の新事実はアルストロメリアBEAM記事に反映済み"},
+    {"dedup_key": "shiny-comiket108-2026", "reason": "同人・ファン主催", "note": "コミックマーケット108は同人誌即売会。予約受付(〜8/17)・開催(8/15-16)ともに終了済みで本日時点のトリガーもない"},
+    {"dedup_key": "shiny-swimsuit-gacha-2026", "reason": "既報", "note": "stock shiny-costume-gacha-2026-08 に同一のガシャ内容が既出(8/26付)"},
+    {"dedup_key": "shiny-sfp-765-collab5-gacha-2026", "reason": "重複", "note": "765プロコラボ第5弾記事(dedup: shiny-prism-765-collab5-p-gacha-2026)に統合"},
+    {"dedup_key": "shiny-sfp-765-collab5-mission-2026", "reason": "重複", "note": "765プロコラボ第5弾記事(dedup: shiny-prism-765-collab5-p-gacha-2026)に統合"},
+    {"dedup_key": "shiny-sfp-765-collab5-paid-gacha-2026", "reason": "重複", "note": "765プロコラボ第5弾記事(dedup: shiny-prism-765-collab5-p-gacha-2026)に統合"}
+  ],
+  "cross_brand": []
+}

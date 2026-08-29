@@ -1,0 +1,97 @@
+{
+  "articles": [
+    {
+      "slug": "million-opera-seria-popup-0911",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "POP UP SHOP「オペラセリア」がコトブキヤ秋葉原館5Fで9月11日開幕、劇中劇『Parade d'amour』モチーフの新規描き下ろしグッズとQR整理券方式・購入特典を紹介",
+      "lead_score": 10,
+      "dedup_key": "million-opera-seria-2026",
+      "candidate_ids": ["202608281235-watch-0"]
+    },
+    {
+      "slug": "million-14thlive-cast-reveal-0829",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリオン14thLIVE、DAY1「夢咲くワンダーミラージュ」主演は徳川まつり・エミリー スチュアート、DAY2「Blooming Sign」主演は馬場このみ・百瀬莉緒と判明",
+      "lead_score": 5,
+      "dedup_key": "million-14thlive-2026",
+      "candidate_ids": ["202608281836-claude-22"]
+    },
+    {
+      "slug": "million-kikuchi-birthday-0829",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "菊地真、8月29日の誕生日に合わせBirthdayガシャ・Birthdayセット・劇場デコレーションが一斉展開、収録アイテムと仲間からのメッセージを紹介",
+      "lead_score": 15,
+      "dedup_key": "kikuchi-makoto-birthday-2026",
+      "candidate_ids": [
+        "202608290342-grok-8",
+        "202608290342-grok-9",
+        "202608290342-grok-10",
+        "202608290342-grok-11"
+      ]
+    },
+    {
+      "slug": "million-roundup-0829",
+      "brand": "million",
+      "rank": "roundup",
+      "angle": "進行中の定常運営情報まとめ：MillionRADIO8/27放送(本編・おまけ)、dual twin live tour東京公演打ち上げ39ガシャ、楽曲「Walking on the Square」アナザー演出・購入解禁、プレミアムメダルショップ新商品追加",
+      "lead_score": 0,
+      "dedup_key": "millionradio-weekly-2026-08-27",
+      "candidate_ids": [
+        "202608280737-claude-14",
+        "202608281235-claude-16",
+        "202608281235-claude-17",
+        "202608290342-grok-12",
+        "202608290342-grok-14",
+        "202608290342-grok-15",
+        "202608290342-grok-16"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "milista-extreme-livestream-2026",
+      "reason": "既報",
+      "note": "2026-08-28号の記事「million-xstream-theater-new-series-preview」で既に報じ済み、新事実なし"
+    },
+    {
+      "dedup_key": "milishita-extreme-stream-2026-09",
+      "reason": "既報",
+      "note": "同上。milista-extreme-livestream-2026と同一事象で、こちらも既報記事と重複"
+    },
+    {
+      "dedup_key": "million-battle-ex04-2026-08",
+      "reason": "既報",
+      "note": "2026-08-26号の記事「million-battle-ex04-release」で発売情報を既報、新事実なし"
+    },
+    {
+      "dedup_key": "million-battle-ster-ex04-2026-08",
+      "reason": "既報",
+      "note": "同上CD発売の重複情報、新事実なし"
+    },
+    {
+      "dedup_key": "million-battle-ex04-2026-08-26",
+      "reason": "既報",
+      "note": "同上CD発売の重複情報、新事実なし"
+    },
+    {
+      "dedup_key": "limited-reprint-gacha-day2-chizuru-2026-08",
+      "reason": "既報",
+      "note": "stock記録「reprint-pickup-gacha-2026-08-27」にDAY1〜4(二階堂千鶴含む)の全ラインナップが既報済み、新事実なし"
+    },
+    {
+      "dedup_key": "million-14th-live-ippan-hanbai-2026-08-30",
+      "reason": "既報",
+      "note": "2026-08-24号の記事「million-14th-live-general-sale」で一般販売(先着)8/30開始の日程を既報。開始当日(8/30)はこの号の対象日ではなく、単なる前日リマインドで新事実なし"
+    }
+  ],
+  "cross_brand": [
+    {
+      "slug": "cg-kyomafu-popup-yurakucho",
+      "dedup_key": "million-kyoto-popup-2026",
+      "note": "同じ有楽町マルイ7Fで展開される京まふ2026事後物販POP UP SHOPシリーズの一部（cg分9/26-10/14に続くミリオン8名分10/10-10/22）で、cg面・million面の双方に等しく属する施策のため合同面へ統合"
+    }
+  ]
+}

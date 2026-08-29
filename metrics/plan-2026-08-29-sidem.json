@@ -1,0 +1,120 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-himeno-kanon-new-cast-ino",
+      "brand": "sidem",
+      "rank": "large",
+      "angle": "「もふもふえん」姫野かのん役の新キャストに伊能幸輝さんが決定、9月1日にお披露目特別生配信を実施",
+      "lead_score": 60,
+      "dedup_key": "sidem-himeno-kanon-recast-2026-08",
+      "candidate_ids": [
+        "202608281235-watch-1",
+        "202608281235-watch-2",
+        "202608281836-watch-8",
+        "202608290225-claude-63",
+        "202608290225-claude-64"
+      ]
+    },
+    {
+      "slug": "sidem-howanui-craneprize-launch",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "「アイドルマスター SideM ほわぬい」プライズが本日8月29日から全国クレーンゲームへ順次登場、vol.1・vol.2のラインナップを紹介",
+      "lead_score": 20,
+      "dedup_key": "sidem-howanui-craneprize-2026",
+      "candidate_ids": [
+        "202608280737-watch-3",
+        "202608281235-claude-25",
+        "202608290225-claude-65",
+        "sched-2026-08-29-sidem-howanui-craneprize-2026-開始"
+      ]
+    },
+    {
+      "slug": "sidem-12th-free-stories-second-wave",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "SideM12周年記念キャンペーン第2弾、「いつか帰る場所」「カオティック・グルーヴ！」を9月3日まで無料公開",
+      "lead_score": 15,
+      "dedup_key": "sidem-12th-free-stories-2026",
+      "candidate_ids": [
+        "202608290342-grok-22",
+        "202608290342-grok-23",
+        "202608290342-grok-24"
+      ]
+    },
+    {
+      "slug": "sidem-11th-stage-kitchen-car",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM 11th STAGE会場にキッチンカー「EVER EVER KITCHEN」が出店決定、冬馬のバターチキンカレーパンなどメニューを紹介",
+      "lead_score": 10,
+      "dedup_key": "sidem-11th-kitchen-2026",
+      "candidate_ids": [
+        "202608281836-watch-3"
+      ]
+    },
+    {
+      "slug": "sidem-costume-museum-goods-web-order",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "「SideM衣装展」公式グッズのWEB受注が8月30日締切、箔押しB5アクリルパネルなどを紹介",
+      "lead_score": 10,
+      "dedup_key": "sidem-costume-museum-goods-2026",
+      "candidate_ids": [
+        "202608290342-grok-19"
+      ]
+    },
+    {
+      "slug": "sidem-flags-yumenotopia-2dmv-announced",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "F-LAGS「ミート・ユメノトピア」2DMVが9月2日21時に公開予定と判明",
+      "lead_score": 8,
+      "dedup_key": "sidem-flags-meet-yumenotopia-2dmv-2026",
+      "candidate_ids": [
+        "202608290342-grok-25"
+      ]
+    },
+    {
+      "slug": "sidem-roundup-story-promotions",
+      "brand": "sidem",
+      "rank": "roundup",
+      "angle": "315プロダクションのストーリー更新・SideM11th出演キャストの意気込みコメントリレー・ストーリーSNS投稿ルール案内など、進行中の運営情報まとめ",
+      "lead_score": 0,
+      "dedup_key": "sidem-315-episode-idols-one-scene-2026-08",
+      "candidate_ids": [
+        "202608290342-grok-18",
+        "202608290342-grok-20",
+        "202608290342-grok-21"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-11th-stage-goods-2026",
+      "reason": "既報",
+      "note": "会場物販・CD/映像整理券抽選(8/28 13:00〜9/2 23:59)は stock/stories.yml の sidem-11th-stage-2026 で既報、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-mts-10-mofumofuen-2026",
+      "reason": "既報",
+      "note": "MONTHLY THEME SONG 10「もふもふえん」の発売情報(8/26発売・LACM-24790)は8/26号で既報"
+    },
+    {
+      "dedup_key": "sidem-11th-stage-2026",
+      "reason": "既報",
+      "note": "現地チケット一般販売・リセール情報は既報。「グッズ事前販売第2弾実施中」も詳細を伴わず新事実に至らない"
+    },
+    {
+      "dedup_key": "sidem-royal-chess-lounge-2026-08",
+      "reason": "既報",
+      "note": "Royal Chess Loungeコラボカフェの開催日程(名古屋栄・心斎橋・池袋)は8/26号で既報、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-monthly-theme-song-10-mofumofuen-2026",
+      "reason": "既報",
+      "note": "「好評発売中」の告知のみで、CD発売情報自体は8/26号で既報"
+    }
+  ],
+  "cross_brand": []
+}

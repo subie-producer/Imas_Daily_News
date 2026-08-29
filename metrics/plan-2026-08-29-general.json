@@ -1,0 +1,21 @@
+{
+  "articles": [
+    {
+      "slug": "general-kikuchi-makoto-birthday-fan-celebration",
+      "brand": "general",
+      "rank": "culture",
+      "angle": "菊地真の誕生日にファンが「#菊地真誕生祭2026」等でIWSFやツアマスでの活躍を振り返りながら祝う投稿が広がる、界隈の盛り上がりを傾向として紹介",
+      "lead_score": 5,
+      "dedup_key": "makoto-birthday-fan-posts-2026",
+      "candidate_ids": ["202608290342-grok-42"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-million-collab-announce-2026-08",
+      "reason": "既報",
+      "note": "8/26正午の同時予告と、そこから判明した企画名『CLASH M@TCH!!』の詳細は stock/stories.yml の cg-million-coming-soon-2026-08-26(joint面)に published_facts として既出。新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,0 +1,52 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-valiv-survey-deadline-0903",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "vα-liv公式が8月度活動アンケートを実施中、回答締切は9月3日23:59",
+      "lead_score": 0,
+      "dedup_key": "valiv-survey-2026-08",
+      "candidate_ids": ["202608290225-grok-14"]
+    },
+    {
+      "slug": "dsva-valiv-ops-roundup-0829",
+      "brand": "dsva",
+      "rank": "roundup",
+      "angle": "vα-liv3人の直近の活動(踊ってみた公開・配信出演・スタジオ収録報告)をまとめて紹介",
+      "lead_score": 0,
+      "dedup_key": "valiv-cosmo-ace7-2026-08-28",
+      "candidate_ids": [
+        "202608290225-grok-15",
+        "202608290225-grok-16",
+        "202608290225-grok-18",
+        "202608290225-grok-19",
+        "202608290225-grok-20",
+        "202608290225-grok-21",
+        "202608290225-grok-22",
+        "202608290225-grok-24",
+        "202608290225-grok-25",
+        "202608290342-grok-27",
+        "202608290342-grok-29"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "valiv-situation-voice-14-2026",
+      "reason": "既報",
+      "note": "8月27日付既報(dsva-situation-voice14-2026)とテーマ・販売終了日が同一で新事実なし"
+    },
+    {
+      "dedup_key": "valiv-manaka-short-mama-2026-08-27",
+      "reason": "既報",
+      "note": "8月26日号のvα-liv運営roundup(valiv-ops-roundup-2026-08)で同一動画を既報"
+    },
+    {
+      "dedup_key": "valiv-manaka-jsp3-hakuno-2026-09-01",
+      "reason": "既報",
+      "note": "8月28日付既報(valiv-manaka-hakuno-jsp3-collab-20260901)と同一内容"
+    }
+  ],
+  "cross_brand": []
+}

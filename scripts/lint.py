@@ -519,13 +519,22 @@ def main() -> int:
                                             f"記事 {s.get('type')} / 候補 {'/'.join(sorted(url_types[s['url']]))})")
                         else:
                             cited_types.append(s["type"])
-                # 記事バッジは引用出典の最弱種別(過大表示防止。compose の検収と同一規則)
+                # 記事バッジは引用出典の最弱種別(compose の検収と同一規則)。
+                # 過大表示(弱い出典しか無いのに「公式」を名乗る)を防ぐのが本来の目的だが、
+                # 逆に過小表示(公式だけなのに「当事者」)も一致しないので同じ検査に掛かる。
+                # 「過大表示防止」とだけ書くと、過小のときにメッセージの意味が通らない
+                # (2026-08-29 に実際に読み違えた)ので、方向を書き分ける。
+                def rank(t):
+                    return SRC_ORDER.index(t) if t in SRC_ORDER else len(SRC_ORDER)
+
                 if cited_types and fm["edition"] >= SRC_WEAKEST_FROM:
-                    want = max(cited_types,
-                               key=lambda t: SRC_ORDER.index(t) if t in SRC_ORDER else len(SRC_ORDER))
-                    if fm.get("src") != want:
-                        rep.error(path, f"src は引用出典の最弱種別 {want} にする(現: {fm.get('src')}。"
-                                        f"バッジの過大表示防止)")
+                    want = max(cited_types, key=rank)
+                    got = fm.get("src")
+                    if got != want:
+                        why = ("バッジの過大表示防止" if rank(got) < rank(want)
+                               else f"出典は{'・'.join(sorted(set(cited_types)))}のみで、"
+                                    f"{got} は実態より弱い")
+                        rep.error(path, f"src は引用出典の最弱種別 {want} にする(現: {got}。{why})")
         if not args.no_net:
             for s in fm["sources"]:
                 host = urllib.parse.urlparse(s["url"]).hostname or ""

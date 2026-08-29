@@ -71,7 +71,10 @@ def main() -> int:
             except Exception:
                 pass
     if latest:
-        for engine in ("claude", "grok"):
+        # per_query のキーは収集系統ごとの接頭辞。探索役を Luna へ移した際に
+        # collect 側が "claude:" → "explore:" へ変わったため、旧キーも見ておく
+        # (片方だけ直すと、全滅しても警報が鳴らなくなる)
+        for engine in ("explore", "claude", "grok"):
             keys = [k for k in latest.get("per_query", {}) if k.startswith(engine + ":")]
             if keys and sum(latest["per_query"][k] for k in keys) == 0:
                 problems.append(

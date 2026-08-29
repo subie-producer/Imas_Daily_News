@@ -41,6 +41,12 @@ def load_env() -> dict:
 
 ENV = load_env()
 CLAUDE_MODEL = ENV.get("CLAUDE_MODEL", "sonnet")
+# **探索役**(Web 検索でネタを見つける工程)。codex exec -m に渡す。
+# codex には WebSearch 専用ツールが無いが、sandbox の通信を開けばシェルから
+# 検索も本文取得もできる(実測で確認済み)。
+EXPLORE_MODEL = ENV.get("EXPLORE_MODEL", "gpt-5.6-luna")
+# 定点観測(sources.yml の巡回結果を facts 化する)に使う Claude モデル。
+# 探索とは別役で、こちらは渡されたページ本文を読むだけなので安いモデルでよい
 COLLECT_MODEL = ENV.get("COLLECT_MODEL", "haiku")
 # 記事本文の執筆に使う Codex モデル(codex exec -m に渡す)。校閲とベンダーを分離するため執筆側に配置
 CODEX_WRITE_MODEL = ENV.get("CODEX_WRITE_MODEL", "gpt-5.6-luna")

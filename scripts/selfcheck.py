@@ -29,6 +29,13 @@ ROOT = Path(__file__).resolve().parent.parent
 TARGETS = ["collect.py", "compose.py", "pipelib.py", "release.py", "lint.py",
            "derive.py", "watch.py", "deploy.py", "indexer.py", "tags.py",
            "fetch_page.py", "cost.py"]
+# import 漏れを検出する対象。ローカル変数と区別が付くものだけを挙げる
+# (AST だけではスコープを追えないため、モジュール名の allowlist で線を引く)
+KNOWN_MODULES = {"os", "sys", "re", "json", "time", "shutil", "signal", "subprocess",
+                 "tempfile", "datetime", "argparse", "sqlite3", "collections",
+                 "statistics", "urllib", "pathlib", "yaml", "builtins", "ast",
+                 "hashlib", "textwrap", "traceback", "inspect", "itertools", "math",
+                 "random", "socket", "string", "unicodedata", "zoneinfo", "csv", "html"}
 
 
 def check(path: Path) -> list[str]:
@@ -54,6 +61,22 @@ def check(path: Path) -> list[str]:
     names |= {t.id for n in ast.walk(tree) if isinstance(n, (ast.For, ast.comprehension))
               for t in ast.walk(n.target) if isinstance(t, ast.Name)}
     names |= {n.name for n in ast.walk(tree) if isinstance(n, ast.ExceptHandler) and n.name}
+
+    # **import を消したのに使い続けている**状態の検出。
+    # 名前呼び出ししか見ていなかったため素通りしていた(実測: tempfile を外したまま
+    # NamedTemporaryFile を使い、実行時に NameError で collect が停止した)。
+    #
+    # 対象は「このファイルのどこかで import されている標準モジュール名」に限る。
+    # ローカル変数のメソッド呼び出し(`fm.get()` 等)まで見ると、AST だけでは
+    # スコープを追えず誤検出が大量に出る(実測60件)。**検出できないものを
+    # 無理に見にいって、役に立たない警告で埋めるほうが害が大きい。**
+    # 呼び出し(`tempfile.NamedTemporaryFile()`)だけでなく、属性参照
+    # (`signal.SIGKILL` のような定数)も見る。前者だけだと後者を見逃す
+    stdlib_used = {n.value.id for n in ast.walk(tree)
+                   if isinstance(n, ast.Attribute) and isinstance(n.value, ast.Name)}
+    for mod in sorted(stdlib_used & KNOWN_MODULES):
+        if mod not in names:
+            errs.append(f"{mod}.* を使っているが import されていない")
 
     for call in [n for n in ast.walk(tree)
                  if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)]:

@@ -812,8 +812,13 @@ def merge_into_day_file(cands: list[dict]) -> int:
                                         + (c.get("unbacked_facts") or [])))
                 if ub:
                     tgt["unbacked_facts"] = ub[:12]
-                    if tgt.get("verify") == "confirmed":
-                        tgt["verify"] = "unconfirmed"
+                # **弱いほうを採る。**未一致の粒だけを見ていると、
+                # 新しく拾ったときに URL が死んでいて failed でも、
+                # 粒が欠けていなければ既存の confirmed が残る(監査指摘)
+                order = ["failed", "unconfirmed", "confirmed"]
+                cur = "unconfirmed" if ub else tgt.get("verify", "unconfirmed")
+                new = c.get("verify", "unconfirmed")
+                tgt["verify"] = min([cur, new], key=lambda v: order.index(v) if v in order else 1)
         else:
             existing.append(c)
             by_url[c["url"]] = c

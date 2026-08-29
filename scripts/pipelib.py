@@ -456,10 +456,10 @@ def fact_atoms(facts: list[str]) -> list[tuple[str, list[str]]]:
     for fact in facts or []:
         f = re.sub(r"[,\s]", "", unicodedata.normalize("NFKC", fact))
         for y, m, d in re.findall(r"(\d{4})年(\d{1,2})月(\d{1,2})日", f):
+            # 年つきの粒。照合は unbacked_facts 側で年まで見る
             add(f"{y}-{int(m):02d}-{int(d):02d}",
-                [f"{int(m)}月{int(d)}日", f"{int(m):02d}月{int(d):02d}日",
-                 f"{y}/{int(m)}/{int(d)}", f"{y}-{int(m):02d}-{int(d):02d}",
-                 f"{int(m)}/{int(d)}", f"{int(m):02d}/{int(d):02d}"])
+                [f"{y}年{int(m)}月{int(d)}日", f"{y}/{int(m)}/{int(d)}",
+                 f"{y}-{int(m):02d}-{int(d):02d}", f"{y}/{int(m):02d}/{int(d):02d}"])
         for m, d in re.findall(r"(?<!\d)(\d{1,2})月(\d{1,2})日", f):
             add(f"{int(m)}月{int(d)}日",
                 [f"{int(m)}月{int(d)}日", f"{int(m)}/{int(d)}", f"{int(m):02d}/{int(d):02d}"])
@@ -482,4 +482,26 @@ def unbacked_facts(facts: list[str], page_text: str) -> list[str]:
     """
     import unicodedata
     t = re.sub(r"[,\s]", "", unicodedata.normalize("NFKC", page_text or ""))
-    return [name for name, forms in fact_atoms(facts) if not any(x in t for x in forms)]
+    out = []
+    for name, forms in fact_atoms(facts):
+        if any(x in t for x in forms):
+            continue
+        m = re.match(r"^(\d{4})-(\d{2})-(\d{2})$", name)
+        if not m:
+            out.append(name)
+            continue
+        # 年つきの日付が、年ぬきでしか本文に出ていない場合。
+        # 日本語のページは「8月28日より開催」と年を省くことが多いので、
+        # 年ぬきの一致は認める。**ただし本文が同じ月日に別の年を書いているなら認めない。**
+        # 素通しにしていたため、facts の 2025年7月30日 と 2026年7月30日 が
+        # どちらも「7月30日」1つで裏取りできたことになっていた(監査指摘)。
+        # 年を必ず要求すると、年を書かないページで一斉に誤検知するので、この形にする
+        y, mo, d = m.group(1), int(m.group(2)), int(m.group(3))
+        bare = [f"{mo}月{d}日", f"{mo}/{d}", f"{mo:02d}/{d:02d}", f"{mo:02d}月{d:02d}日"]
+        if not any(x in t for x in bare):
+            out.append(name)
+            continue
+        others = set(re.findall(rf"(\d{{4}})年{mo}月{d}日", t)) | set(re.findall(rf"(\d{{4}})/{mo}/{d}", t))
+        if others and y not in others:
+            out.append(name)
+    return out

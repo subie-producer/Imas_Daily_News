@@ -756,29 +756,35 @@ def body_length(path: Path) -> int:
     return len(re.sub(r"\s", "", re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)))
 
 
-def snapshot_stock() -> dict[str, bytes]:
-    """`stock/` の中身を丸ごと控える。組版をやり直す前に巻き戻すため。"""
-    out = {}
-    for p in sorted((ROOT / "stock").rglob("*")):
-        if p.is_file():
-            out[str(p.relative_to(ROOT))] = p.read_bytes()
-    return out
+def snapshot_files(patterns: list[str]) -> tuple[dict[str, bytes], list[str]]:
+    """指定した glob に当たるファイルの中身を控える。(中身, 対象の glob) を返す。"""
+    snap = {}
+    for pat in patterns:
+        for p in sorted(ROOT.glob(pat)):
+            if p.is_file():
+                snap[str(p.relative_to(ROOT))] = p.read_bytes()
+    return snap, patterns
 
 
-def restore_stock(snap: dict[str, bytes]) -> None:
-    """控えた `stock/` を書き戻す。控えた後に増えたファイルは消す。
+def restore_files(snapshot: tuple[dict[str, bytes], list[str]]) -> None:
+    """控えた状態へ戻す。控えた後に増えたファイルは消す。
 
     台帳(stories/scheduled/pending)は**追記**で更新されるので、
-    組版をやり直すだけでは、落とした記事の分が残ってしまう。
-    「発行した」と記録された話題は、正しい続報が来ても既報として弾かれる。
+    組版をやり直すだけでは落とした記事の分が残る。「発行した」と記録された話題は、
+    正しい続報が来ても既報として弾かれる。
+
+    記事も同じ対象に含める。落としたあとの組版が途中で失敗したとき、
+    **記事だけ消えて digest は古いまま**という状態を残さないため(監査指摘)。
     """
+    snap, patterns = snapshot
     for rel, data in snap.items():
         p = ROOT / rel
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_bytes(data)
-    for p in sorted((ROOT / "stock").rglob("*")):
-        if p.is_file() and str(p.relative_to(ROOT)) not in snap:
-            p.unlink()
+    for pat in patterns:
+        for p in sorted(ROOT.glob(pat)):
+            if p.is_file() and str(p.relative_to(ROOT)) not in snap:
+                p.unlink()
 
 
 def drop_blocked_articles(date: str, review: dict, written: list[dict]) -> tuple[list[str], list[str]]:
@@ -1149,8 +1155,11 @@ def main() -> int:
     # 組版の前の台帳を控えておく。校閲ブロックで記事を落としたとき、
     # 組版をやり直さないと digest が消えた記事を指したまま残り、
     # 既報台帳には「発行した」と書かれたままになる(監査指摘)。
-    # 台帳は**追記**なので、やり直す前にここまで巻き戻す必要がある
-    stock_backup = snapshot_stock()
+    # 台帳は**追記**なので、やり直す前にここまで巻き戻す必要がある。
+    # 記事と号スナップショットも控える。やり直しが途中で失敗したときに、
+    # 記事だけ消えて digest が古いまま、という状態を残さないため
+    pre_assembly = snapshot_files([f"docs/_posts/{date}-*.md", f"docs/_editions/{date}.md",
+                                   f"docs/_editorials/{date}.md", "stock/**/*", "stock/*"])
     log = claude_run(assembly_prompt(date, number, aborted))
     print(log[-1000:], flush=True)
 
@@ -1198,11 +1207,19 @@ def main() -> int:
                 # 「digest の slug が同号の記事に存在しない」で落ちるし、既報台帳には
                 # 「発行した」と残る(監査指摘)。台帳は追記なので組版前まで巻き戻してから、
                 # 生き残った記事だけで作り直させる
-                restore_stock(stock_backup)
+                # 台帳を組版前へ戻し(追記されているため)、記事を消した状態で組み直す
+                for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
+                    (ROOT / rel).write_bytes(pre_assembly[0][rel])
                 assign_ranks(date, plan, written, keep_lead=True)
                 print(claude_run(assembly_prompt(date, number, aborted))[-600:], flush=True)
                 subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
                                 "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
+                # 組版が落とした記事を書き戻していないか機械で確かめる
+                ed = ROOT / "docs" / "_editions" / f"{date}.md"
+                back = [s for s in dropped_by_review
+                        if ed.exists() and s in ed.read_text(encoding="utf-8")]
+                if back:
+                    raise RuntimeError(f"組版のやり直しが、落とした記事を号に戻した: {back}")
                 # 落としたあとの紙面で取り直す。ここを省くと release のゲートが
                 # 落とす前の verdict を見て発行を止めてしまう
                 rounds += 1
@@ -1211,10 +1228,15 @@ def main() -> int:
                     unresolved += [f"{b.get('file')}: {(b.get('issue') or '')[:120]}"
                                    for b in review.get("blockers") or []]
         except Exception as e:
-            # ここで落ちても紙面を壊さない。未 approve のまま進み、release が止める
+            # **途中で落ちたら全部戻す。**記事を消した後に組版のやり直しが失敗すると、
+            # 「記事だけ欠けて digest は古いまま」という壊れた紙面が残る(監査指摘)。
+            # 組版前の状態へ戻し、未 approve のまま release のゲートに委ねる
             traceback.print_exc()
+            restore_files(pre_assembly)
+            subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
+                            "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
             dropped_by_review = []
-            unresolved = [f"ブロック記事の除外処理が失敗({e}). 紙面はそのまま"]
+            unresolved = [f"ブロック記事の除外処理が失敗({e})。紙面は組版直後の状態へ戻した"]
 
     # 校閲の修正で本文の長さが変わるため、枠を当て直す。
     # **一面は動かさない**(インパクトで決めた枠であり、号スナップショットの

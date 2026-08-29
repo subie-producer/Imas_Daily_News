@@ -113,7 +113,7 @@
           "unconfirmed",
           "failed"
         ],
-        "description": "verify 層の照合結果。探索由来は登録時 unconfirmed"
+        "description": "verify 層の照合結果(REQUIREMENTS 4.2)。confirmed = URL が生きている + 種別が公式/準公式/当事者/報道 + facts の日付・金額が出典本文にある。照合できるのは日付と金額だけで、文意の一致は見ていない。探索由来は登録時 unconfirmed"
       },
       "verify_note": {
         "type": "string",

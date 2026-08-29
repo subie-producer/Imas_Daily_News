@@ -10,6 +10,7 @@
 """
 import datetime
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -20,6 +21,17 @@ def main() -> int:
     today = now_jst().strftime("%Y-%m-%d")
     problems = []
     git("fetch", "origin", "--prune")
+
+    # 0. スクリプト自身が壊れていないか。
+    # 定義と呼び出しの食い違いは実行時にしか露見せず、定時実行を1回まるごと潰す
+    # (2026-08-29: write_articles の引数不一致で compose が停止し、未コミットの
+    #  ツリーが release と collect を連鎖的に止め、その日の号が出なかった)。
+    # 次の実行を待たずにここで気づけるようにする。
+    r = subprocess.run([sys.executable, str(ROOT / "scripts" / "selfcheck.py"), "--quiet"],
+                       cwd=ROOT, capture_output=True, text=True)
+    if r.returncode != 0:
+        problems += [l.replace("::error file=", "").replace("::", ": ")
+                     for l in r.stdout.splitlines() if l.startswith("::error")]
 
     # 1. 今日の号が発行されているか
     if git("cat-file", "-e", f"origin/main:docs/_editions/{today}.md", check=False).returncode != 0:

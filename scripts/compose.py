@@ -814,20 +814,30 @@ def assign_ranks(date: str, plan: dict, written: list[dict], keep_lead: bool = F
 
 
 def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
-                   stories: dict, wave: int = 4) -> tuple[list[dict], list[str]]:
+                   stories: dict, wave: int = 4,
+                   reuse: bool = False) -> tuple[list[dict], list[str]]:
     """記事ごとに素材を機械的に切り出して個別 codex セッションで執筆(wave 並列)。
     校閲(claude)とベンダーを分離するため執筆は Codex。機械検収エラーの修正は
-    校閲と同じ Claude(REVIEW_MODEL=haiku)で行う。"""
+    校閲と同じ Claude(REVIEW_MODEL=haiku)で行う。
+
+    reuse=True(--reuse-plan)のときは、既に書けている記事を再執筆しない。
+    執筆層だけを直して落ちた記事を拾い直す、という再試行を安く保つため。
+    """
     trig_by_key = {t["dedup_key"]: t for t in triggers}
-    jobs = []
+    jobs, written_before = [], []
     for art in plan["articles"]:
+        if reuse and (ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md").exists():
+            written_before.append(art)
+            continue
         materials = [cands[cid] for cid in art["candidate_ids"]]
         src = weakest_src(c.get("source_type", "未確認") for c in materials)
         dks = {c.get("dedup_key") for c in materials} | {art.get("dedup_key")}
         facts = [f for dk in dks if dk in stories for f in stories[dk]]
         jobs.append((art, src, article_prompt(date, art, materials, facts,
                                               trig_by_key.get(art.get("dedup_key")), src)))
-    written, aborted = [], []
+    written, aborted = list(written_before), []
+    if written_before:
+        print(f"既存の記事 {len(written_before)}本は再執筆しない(--reuse-plan)", flush=True)
     for i in range(0, len(jobs), wave):
         procs = []
         for art, src, prompt in jobs[i:i + wave]:
@@ -922,7 +932,33 @@ def claude_review(date: str, round_no: int) -> dict:
     return result
 
 
+def self_check() -> list[str]:
+    """main() が踏むべき工程を実際に踏んでいるかを、起動時に自分で確かめる。
+
+    定義したのに呼ぶ行を落とす、という事故を3回起こしている(assign_ranks が
+    呼ばれず rank が付かないまま release が停止、write_articles の引数不一致で
+    compose が停止)。静的検査(scripts/selfcheck.py)では「呼び出しの欠落」を
+    拾えないので、ここで main() のソースを見て必須工程の呼び出しを確認する。
+    """
+    import inspect
+    src = inspect.getsource(main)
+    need = {
+        "run_plan(": "選定(面別)",
+        "pick_lead(": "一面の選出",
+        "assign_ranks(": "枠の割り当て(規程9)",
+        "write_articles(": "記事の執筆",
+        "claude_review(": "校閲",
+        "commit_and_push(": "コミットと push",
+    }
+    return [f"main() が {name} を呼んでいない({why})"
+            for name, why in need.items() if name not in src]
+
+
 def main() -> int:
+    missing = self_check()
+    if missing:
+        notify("compose", "工程の欠落を検出したため起動を中止:\n- " + "\n- ".join(missing), ok=False)
+        return 1
     ap = argparse.ArgumentParser()
     ap.add_argument("--plan", metavar="BRAND", nargs="?", const="cg",
                     help="指定した面の選定プロンプトを表示して終了(実行しない)")

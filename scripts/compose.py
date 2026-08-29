@@ -28,6 +28,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import traceback
 from pathlib import Path
 
 import yaml
@@ -340,6 +341,9 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 
 - `facts` の各項目が、取得した本文で確認できるか照合する。**確認できない fact は使わない**
   (素材の facts は収集段階の誤りを含み得る。実際に誤りが出ている)
+- 素材に `unbacked_facts` があれば、そこに挙がった日付・金額は**収集時点で出典本文から
+  見つけられなかった値**である。取得した本文で自分の目で確かめ、見つからなければ書かない。
+  (画像の中や別ページにあるだけのこともあるので、見つかれば使ってよい)
 - **先頭の「期間」ブロックは原文のラベルそのままなので、`facts` と食い違ったらそちらが正**。
   「入金期間」を「販売期間」と書き換えるような取り違えは、ここで必ず正す(規程15)
 - **掲載日(公開日)と話題の年を本文で確認する**。掲載年がイベント年・発行年と食い違う、
@@ -752,6 +756,70 @@ def body_length(path: Path) -> int:
     return len(re.sub(r"\s", "", re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)))
 
 
+def snapshot_stock() -> dict[str, bytes]:
+    """`stock/` の中身を丸ごと控える。組版をやり直す前に巻き戻すため。"""
+    out = {}
+    for p in sorted((ROOT / "stock").rglob("*")):
+        if p.is_file():
+            out[str(p.relative_to(ROOT))] = p.read_bytes()
+    return out
+
+
+def restore_stock(snap: dict[str, bytes]) -> None:
+    """控えた `stock/` を書き戻す。控えた後に増えたファイルは消す。
+
+    台帳(stories/scheduled/pending)は**追記**で更新されるので、
+    組版をやり直すだけでは、落とした記事の分が残ってしまう。
+    「発行した」と記録された話題は、正しい続報が来ても既報として弾かれる。
+    """
+    for rel, data in snap.items():
+        p = ROOT / rel
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_bytes(data)
+    for p in sorted((ROOT / "stock").rglob("*")):
+        if p.is_file() and str(p.relative_to(ROOT)) not in snap:
+            p.unlink()
+
+
+def drop_blocked_articles(date: str, review: dict, written: list[dict]) -> tuple[list[str], list[str]]:
+    """校閲が最後まで下ろさなかったブロック指摘の記事を、紙面から落とす。
+
+    返り値は (落とした slug, 落とせなかったブロックの説明)。
+
+    往復の上限まで直しきれなかったとき、以前は**そのまま発行していた**。
+    実測で10号中3号が未 approve のまま出ており、2026-08-27号は
+    「出典にない事実」という指摘を残したまま配信された。守るべきものの筆頭を
+    素通りさせていたことになる。
+
+    かといって号ごと止めるのは規程に反する(「発行を止めるくらいなら薄い紙面を出す」)。
+    問題のある記事だけを落として、残りで出す。
+
+    **一面が指摘されている場合は落とさない。**号スナップショットの lead_slug と
+    digest が一面を指しているため、機械で抜くと組版と食い違う。
+    そこは人が見るべきなので、落とせなかったものとして返す。
+    """
+    dropped, unresolved = [], []
+    by_slug = {a["slug"]: a for a in written}
+    for b in review.get("blockers") or []:
+        f = (b.get("file") or "").strip()
+        issue = (b.get("issue") or "")[:120]
+        name = Path(f).name
+        if not f.startswith("docs/_posts/") or not name.startswith(date + "-"):
+            unresolved.append(f"{f or '(対象不明)'}: {issue}")
+            continue
+        slug = name[len(date) + 1:].removesuffix(".md")
+        if by_slug.get(slug, {}).get("rank") == "lead":
+            unresolved.append(f"{f}(一面): {issue}")
+            continue
+        p = ROOT / "docs" / "_posts" / name
+        if p.exists():
+            p.unlink()
+        if slug not in dropped:
+            dropped.append(slug)
+    written[:] = [a for a in written if a["slug"] not in dropped]
+    return dropped, unresolved
+
+
 def assign_ranks(date: str, plan: dict, written: list[dict], keep_lead: bool = False) -> dict:
     """**書き上がった長さと話題の大きさから枠(rank)を当てる。**
 
@@ -1077,6 +1145,12 @@ def main() -> int:
         notify("compose", f"{date}: 社説が2回とも未作成。組版セッションの lint 修正に委ねる", ok=False)
 
     # 1d. 組版: 号スナップショット・台帳更新(lint 自己修正まで)
+    #
+    # 組版の前の台帳を控えておく。校閲ブロックで記事を落としたとき、
+    # 組版をやり直さないと digest が消えた記事を指したまま残り、
+    # 既報台帳には「発行した」と書かれたままになる(監査指摘)。
+    # 台帳は**追記**なので、やり直す前にここまで巻き戻す必要がある
+    stock_backup = snapshot_stock()
     log = claude_run(assembly_prompt(date, number, aborted))
     print(log[-1000:], flush=True)
 
@@ -1112,6 +1186,36 @@ def main() -> int:
         subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
                        cwd=ROOT, capture_output=True, text=True)
 
+    # 往復しても下りなかったブロック指摘は、その記事を落とす。
+    # 以前はそのまま発行しており、「出典にない事実」の指摘を残した号が実際に出ている
+    dropped_by_review, unresolved = [], []
+    if review and review.get("verdict") != "approve":
+        try:
+            dropped_by_review, unresolved = drop_blocked_articles(date, review, written)
+            if dropped_by_review:
+                print(f"校閲ブロックで {len(dropped_by_review)}本を落とす: {dropped_by_review}", flush=True)
+                # **組版をやり直す。**digest は落とした記事を指したままだと lint が
+                # 「digest の slug が同号の記事に存在しない」で落ちるし、既報台帳には
+                # 「発行した」と残る(監査指摘)。台帳は追記なので組版前まで巻き戻してから、
+                # 生き残った記事だけで作り直させる
+                restore_stock(stock_backup)
+                assign_ranks(date, plan, written, keep_lead=True)
+                print(claude_run(assembly_prompt(date, number, aborted))[-600:], flush=True)
+                subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
+                                "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
+                # 落としたあとの紙面で取り直す。ここを省くと release のゲートが
+                # 落とす前の verdict を見て発行を止めてしまう
+                rounds += 1
+                review = claude_review(date, rounds)
+                if review.get("verdict") != "approve":
+                    unresolved += [f"{b.get('file')}: {(b.get('issue') or '')[:120]}"
+                                   for b in review.get("blockers") or []]
+        except Exception as e:
+            # ここで落ちても紙面を壊さない。未 approve のまま進み、release が止める
+            traceback.print_exc()
+            dropped_by_review = []
+            unresolved = [f"ブロック記事の除外処理が失敗({e}). 紙面はそのまま"]
+
     # 校閲の修正で本文の長さが変わるため、枠を当て直す。
     # **一面は動かさない**(インパクトで決めた枠であり、号スナップショットの
     # lead_slug が指しているため。ここで変えると組版と食い違う)
@@ -1125,16 +1229,19 @@ def main() -> int:
     append_metric("compose", {"edition": date, "rounds": rounds, "approved": bool(approved),
                               "lint_green": code == 0, "planned": n_plan, "written": len(written),
                               "roundups": n_rup, "dropped": n_drop, "coverage": cov,
+                              "dropped_by_review": dropped_by_review,
                               "aborted": aborted, "duration_s": int(time.time() - t0)})
-    commit_and_push(branch, f"compose {date}: 紙面生成(校閲{'approve' if approved else '未approve'}・{rounds}往復)", "compose")
+    commit_and_push(branch, f"compose {date}: 紙面生成(校閲{'approve' if approved else '未approve'}・{rounds}往復"
+                            + (f"・ブロック{len(dropped_by_review)}本を除外" if dropped_by_review else "") + ")", "compose")
     if ok:
-        notify("compose", f"{date}号 準備完了(校閲{rounds}往復で approve)。06:00 に発行されます")
+        extra = (f"。校閲が下ろさなかった {len(dropped_by_review)}本は紙面から外しました"
+                 f"({'・'.join(dropped_by_review)})" if dropped_by_review else "")
+        notify("compose", f"{date}号 準備完了(校閲{rounds}往復で approve){extra}。06:00 に発行されます")
         return 0
     reasons = []
     if not approved:
-        blockers = (review or {}).get("blockers", [])
-        reasons.append(f"校閲{rounds}往復でも未 approve。残ブロック:\n"
-                       + json.dumps(blockers[:5], ensure_ascii=False, indent=2))
+        reasons.append(f"校閲{rounds}往復でも未 approve。**機械で落とせなかった指摘**:\n- "
+                       + "\n- ".join(unresolved[:5] or ["(内訳不明)"]))
     if code != 0:
         errs = [l for l in lint_out.splitlines() if l.startswith("::error")]
         reasons.append(f"lint エラー {len(errs)} 件:\n- " + "\n- ".join(

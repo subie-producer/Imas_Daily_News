@@ -38,7 +38,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, append_metric, classify_source,
-                     extract_periods, html_to_text,
+                     extract_periods, html_to_text, unbacked_facts,
                      checkout_edition_branch, commit_and_push, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst)
 
@@ -725,7 +725,19 @@ def check_stale(c: dict) -> str | None:
 
 
 def verify(cands: list[dict]) -> dict:
-    """簡易 verify: X は Grok 観測を信頼。それ以外は URL 生存で confirmed。鮮度切れは種別を問わず failed。"""
+    """候補の裏取り。鮮度切れは種別を問わず failed。
+
+    以前 `confirmed` は「URL が生きている」だけを意味していた。名前が実態より
+    強く、lint の側も「捏造の検査は collect の verify が担う」と書いて手を抜いていた。
+    URL の実在は確かに見ているが、**書かれている事実が出典にあるか**は見ていなかった。
+
+    そこで、取得した本文に facts の日付・金額が出てくるかまで見る。
+    出てこない粒は `unbacked_facts` に残し、`confirmed` は名乗らせない。
+    ただし**発行は止めない**。実測では未一致の多くが「ページ自身の掲載日」や
+    画像の中の価格で、捏造の証拠にはならないため(`unbacked_facts` の説明を参照)。
+
+    X は Grok の観測をもって verify とする(ログイン必須で機械的に読めないため)。
+    """
     counts = {"confirmed": 0, "unconfirmed": 0, "failed": 0}
     for c in cands:
         try:
@@ -753,7 +765,25 @@ def verify(cands: list[dict]) -> dict:
                     periods = extract_periods(text)
                     if periods:
                         c["periods"] = periods
-                c["verify"] = "confirmed" if ok and c["source_type"] in ("公式", "準公式", "当事者", "報道") else ("unconfirmed" if ok else "failed")
+                    # facts の日付・金額が本文にあるか。取ってあるのに捨てていた本文を使う。
+                    #
+                    # **食い違ったときだけ描画して確かめ直す。**素の HTML では
+                    # 本文が JS で描かれるサイトがあり、ナビゲーションだけが取れて
+                    # 「価格が本文に無い」と誤って判定していた(実測: 公式ポータルの
+                    # 配信チケット記事で 14,000円 を取りこぼした)。
+                    # 上の 400字判定だけでは足りない(ナビだけで4千字を超える)。
+                    # 描画は重いので、粒が欠けたときに限って行う
+                    unbacked = unbacked_facts(c.get("facts") or [], text)
+                    if unbacked:
+                        rendered = fetch_rendered(c["url"])
+                        if rendered:
+                            unbacked = unbacked_facts(c.get("facts") or [],
+                                                      html_to_text(rendered.encode("utf-8", "replace")))
+                    if unbacked:
+                        c["unbacked_facts"] = unbacked[:12]
+                good_type = c["source_type"] in ("公式", "準公式", "当事者", "報道")
+                c["verify"] = ("confirmed" if ok and good_type and not c.get("unbacked_facts")
+                               else ("unconfirmed" if ok else "failed"))
         except Exception:
             c["verify"] = "failed"
         counts[c["verify"]] += 1
@@ -775,6 +805,15 @@ def merge_into_day_file(cands: list[dict]) -> int:
             merged = list(dict.fromkeys(tgt.get("facts", []) + c["facts"]))
             if len(merged) > len(tgt.get("facts", [])):
                 tgt["facts"] = merged
+                # **裏取りの結果も引き継ぐ。**facts だけ足して verify を据え置くと、
+                # 後から来た「出典に無い事実」が confirmed の候補に紛れ込む(監査指摘)。
+                # 同じ URL を何度も拾うのは通常経路なので、実際に起きる
+                ub = list(dict.fromkeys((tgt.get("unbacked_facts") or [])
+                                        + (c.get("unbacked_facts") or [])))
+                if ub:
+                    tgt["unbacked_facts"] = ub[:12]
+                    if tgt.get("verify") == "confirmed":
+                        tgt["verify"] = "unconfirmed"
         else:
             existing.append(c)
             by_url[c["url"]] = c

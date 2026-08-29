@@ -434,3 +434,52 @@ def classify_source(url: str) -> str:
         if host.endswith(suf):
             return "公式"
     return "未確認"
+
+
+# --- facts の裏取り(日付・金額が出典本文にあるか) ----------------------------
+
+def fact_atoms(facts: list[str]) -> list[tuple[str, list[str]]]:
+    """facts から**照合できる粒**(日付・金額)を抜く。
+
+    返すのは (表示名, 許容表記の一覧)。表記ゆれはどれか1つ当たれば一致とみなす。
+    日本語の言い回しは照合できないが、日付と金額は書き換えの効かない値であり、
+    ここが出典に無ければ「出典にない事実」である可能性が高い。
+    """
+    import unicodedata
+    out, seen = [], set()
+
+    def add(name, forms):
+        if name not in seen:
+            seen.add(name)
+            out.append((name, forms))
+
+    for fact in facts or []:
+        f = re.sub(r"[,\s]", "", unicodedata.normalize("NFKC", fact))
+        for y, m, d in re.findall(r"(\d{4})年(\d{1,2})月(\d{1,2})日", f):
+            add(f"{y}-{int(m):02d}-{int(d):02d}",
+                [f"{int(m)}月{int(d)}日", f"{int(m):02d}月{int(d):02d}日",
+                 f"{y}/{int(m)}/{int(d)}", f"{y}-{int(m):02d}-{int(d):02d}",
+                 f"{int(m)}/{int(d)}", f"{int(m):02d}/{int(d):02d}"])
+        for m, d in re.findall(r"(?<!\d)(\d{1,2})月(\d{1,2})日", f):
+            add(f"{int(m)}月{int(d)}日",
+                [f"{int(m)}月{int(d)}日", f"{int(m)}/{int(d)}", f"{int(m):02d}/{int(d):02d}"])
+        for v in re.findall(r"(\d{3,})円", f):
+            # **裸の数字は照合に使わない。**商品番号や日付の一部に偶然一致して、
+            # 出典に無い価格を「裏取りできた」ことにしてしまう(監査指摘)。
+            # 円記号は NFKC で ¥ に揃う
+            add(f"{v}円", [f"{v}円", f"¥{v}", f"{v}yen"])
+    return out
+
+
+def unbacked_facts(facts: list[str], page_text: str) -> list[str]:
+    """facts の粒のうち、出典本文に見つからなかったものを返す。
+
+    実測(2026-08 の候補30件・粒834個)では 97% が一致した。
+    外れるのは主に「発表日」(ページ自身が自分の掲載日を本文に書かない)と、
+    画像や別ページに置かれた価格である。**つまりこれは捏造の証拠ではない。**
+    発行を止める根拠には弱いので、ゲートにはせず、
+    「この値は出典本文で確認できていない」という申し送りとして残す。
+    """
+    import unicodedata
+    t = re.sub(r"[,\s]", "", unicodedata.normalize("NFKC", page_text or ""))
+    return [name for name, forms in fact_atoms(facts) if not any(x in t for x in forms)]

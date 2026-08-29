@@ -118,6 +118,13 @@
       "verify_note": {
         "type": "string",
         "description": "verify 結果の補足(failed の理由など。人間とパイプラインの診断用)"
+      },
+      "unbacked_facts": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "facts の日付・金額のうち、出典ページの本文で確認できなかったもの。捏造の証拠ではない(掲載日や画像内の価格が拾えないことがある)が、執筆と校閲はこの値を断定して書かないこと"
       }
     }
   }

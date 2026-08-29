@@ -79,6 +79,27 @@ def lint_failure_summary(r: subprocess.CompletedProcess) -> str:
     return f"lint エラー {len(errs)} 件:\n" + "\n".join(lines)
 
 
+def review_verdict(date: str) -> tuple[str, str]:
+    """その号の校閲結果(最後の往復)を読む。(verdict, 説明) を返す。
+
+    compose が `metrics/review-<日付>-<往復数>.json` に残す。
+    往復数は数として比べる(文字列順だと 10 が 9 より前に来る)。
+    """
+    files = sorted((ROOT / "metrics").glob(f"review-{date}-*.json"),
+                   key=lambda p: int(p.stem.rsplit("-", 1)[-1]) if p.stem.rsplit("-", 1)[-1].isdigit() else -1)
+    if not files:
+        return "missing", "校閲の記録が無い(compose が最後まで走っていない)"
+    try:
+        d = json.loads(files[-1].read_text(encoding="utf-8"))
+    except Exception as e:
+        return "unreadable", f"{files[-1].name} が読めない: {e}"
+    if d.get("verdict") == "approve":
+        return "approve", files[-1].name
+    blockers = d.get("blockers") or []
+    head = "; ".join(f"{b.get('file')}: {(b.get('issue') or '')[:80]}" for b in blockers[:3])
+    return "block", f"{files[-1].name} に残ブロック {len(blockers)}件 — {head}"
+
+
 def deploy_site() -> str:
     """自前オリジンへ配信する。失敗しても発行そのものは巻き戻さない。
 
@@ -157,7 +178,19 @@ def main() -> int:
     m2 = re.search(r"^article_count:\s*(\d+)", ed_file.read_text(encoding="utf-8"), re.MULTILINE)
     count = int(m2.group(1)) if m2 else 0
 
-    # 3. マージ前ゲート: lint(REQUIREMENTS 4.4)
+    # 3. マージ前ゲート: 校閲(REQUIREMENTS 4.5)
+    #
+    # lint しか見ていなかったため、**校閲が approve していない号がそのまま出ていた**
+    # (実測: 10号中3号。2026-08-27号は「出典にない事実」の指摘を残したまま配信)。
+    # compose はブロックされた記事を落としてから取り直すので、ここまで来て
+    # 未 approve なら、機械で落とせない指摘(一面・社説・号スナップショット)が
+    # 残っているということ。人が見るべき状態なので発行しない。
+    verdict, detail = review_verdict(date)
+    if verdict != "approve":
+        notify(f"{date}: 発行中止(第{number}号)。校閲が approve していない({detail})", ok=False)
+        return 1
+
+    # 4. マージ前ゲート: lint(REQUIREMENTS 4.4)
     r = subprocess.run(
         [sys.executable, str(ROOT / "scripts" / "lint.py"), "--base", "origin/main"],
         cwd=ROOT, capture_output=True, text=True,

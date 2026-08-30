@@ -536,6 +536,46 @@ def codex_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str
     return text
 
 
+def drop_invalid_articles(plan: dict, cands: dict, blocklist: dict) -> list[str]:
+    """計画のうち**その記事だけを外せば直る**誤りを、記事ごと外す。外した説明を返す。
+
+    2026-08-30号は、選定が候補IDを1つ書き間違えただけで号ごと落ちた
+    (`202608300227-explore-19`。正しくは `202608292334-explore-19` で、
+    別の候補の時刻プレフィクスを番号に付けていた)。
+    誤記1つで19本の記事と社説が丸ごと消えるのは、規程の
+    「発行を止めるくらいなら薄い紙面を出す」に反する。
+
+    ここで外すのは**素材の参照が壊れている記事だけ**。slug や rank の不正は
+    計画そのものの生成が壊れている合図なので、従来どおり止める。
+    """
+    dropped = []
+    keep = []
+    for a in plan.get("articles") or []:
+        bad = []
+        for cid in a.get("candidate_ids") or []:
+            c = cands.get(cid)
+            if c is None:
+                bad.append(f"候補 {cid} が存在しない")
+            elif c.get("verify") == "failed":
+                bad.append(f"候補 {cid} は verify=failed")
+            elif c.get("dedup_key") in blocklist:
+                bad.append(f"候補 {cid} は blocklist 対象")
+        # 素材が全部使えない記事だけ外す。一部でも生きていればその素材で書かせる
+        usable = [cid for cid in a.get("candidate_ids") or [] if cid in cands
+                  and cands[cid].get("verify") != "failed"
+                  and cands[cid].get("dedup_key") not in blocklist]
+        if not usable:
+            dropped.append(f"{a.get('slug', '?')}: " + " / ".join(bad[:3]))
+            continue
+        if bad:
+            dropped.append(f"{a.get('slug', '?')}(素材を{len(a['candidate_ids'])}→{len(usable)}件に縮小): "
+                           + " / ".join(bad[:3]))
+            a["candidate_ids"] = usable
+        keep.append(a)
+    plan["articles"] = keep
+    return dropped
+
+
 def validate_plan(plan: dict, cands: dict, blocklist: dict) -> list[str]:
     errors = []
     arts = plan.get("articles") if isinstance(plan, dict) else None
@@ -1087,6 +1127,13 @@ def main() -> int:
     plan = run_plan(date, by_brand, triggers)
     pick_lead(date, plan)
     plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    # 素材の参照が壊れている記事は、号ごと落とさずその記事だけ外す。
+    # 誤記1つで号が消えるのは「発行を止めるくらいなら薄い紙面を出す」に反する
+    plan_dropped = drop_invalid_articles(plan, cands, blocklist)
+    if plan_dropped:
+        plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        notify("compose", f"{date}: 素材の参照が壊れた記事を計画から外した"
+                          f"({len(plan_dropped)}件)。発行は続行:\n- " + "\n- ".join(plan_dropped[:5]), ok=False)
     # errors = 発行を止める機械検証 / gaps = 止めない取りこぼし(通知して続行)
     errors = validate_plan(plan, cands, blocklist)
     gaps, cov = coverage_gaps(plan, cands, blocklist)

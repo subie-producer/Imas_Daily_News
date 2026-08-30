@@ -194,5 +194,44 @@
       "回答期限は9月3日(木)23時59分まで、Googleフォームで受付、ハッシュタグは「#ヴイアラ」"
     ],
     "reserved_on": "2026-08-29"
+  },
+  {
+    "id": "sched-2026-08-31-cg-popn-toybox-goods-2026-開始",
+    "dedup_key": "cg-popn-toybox-goods-2026",
+    "brand": "cg",
+    "subject": "Pop'n ToyBox!! スタッフ振り返りトーク配信",
+    "kind": "開始",
+    "note": "アイマスchで20時配信",
+    "reserved_on": "2026-08-30",
+    "title": "『Pop'n ToyBox!!』本日同時視聴、8/31にスタッフ振り返り",
+    "url": "https://x.com/imas_CGofficial/status/2093654902400754160",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608300227-grok-91",
+    "event_date": "2026-08-31",
+    "facts": [
+      "8月31日20時からアイマスchでスタッフ振り返りトークを配信",
+      "八城雄太さん・石田裕亮さん(MRプロジェクトプロデューサー)が出演、制作の裏側やこだわりポイントを解説、公演のネタバレを含む予定"
+    ]
+  },
+  {
+    "id": "sched-2026-08-31-iwsf2026-venue-cd-締切",
+    "dedup_key": "iwsf2026-venue-cd",
+    "brand": "joint",
+    "subject": "IWSF2026シンデレラガールズ会場オリジナルCD事後通販",
+    "kind": "締切",
+    "note": "受付締切23:59(予定数到達次第終了)",
+    "reserved_on": "2026-08-30",
+    "title": "合同会場CD12種、9月13日まで事後通販",
+    "url": "https://x.com/imas_columbia/status/2093670248293478536",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608300227-grok-42",
+    "event_date": "2026-08-31",
+    "facts": [
+      "対象はシンデレラガールズ関連3タイトル「もしも『カワイイ』が世界からなくなっても」(SACX-1141・2,500円)、「恒久のユニバース」(SACX-1142・2,500円)、「Neon Sphere」(SACX-1143・2,500円)",
+      "受付は8月21日18:00〜8月31日23:59(予定数到達次第終了)、発送は9月11日一斉予定",
+      "各CDに総選挙投票券500枚引換シリアルコードを封入"
+    ]
   }
 ]

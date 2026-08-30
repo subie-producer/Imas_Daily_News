@@ -1,0 +1,71 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-star-mine-streaming-release",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "学マス新曲「Star-mine」がストリーミング配信・ダウンロード販売を開始",
+      "lead_score": 5,
+      "dedup_key": "gaku-star-mine-2026",
+      "candidate_ids": ["202608292334-explore-20"]
+    },
+    {
+      "slug": "gaku-appstore-googleplay-ranking-0827",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "8月27日時点のApp Store・Google Playランキングで学マスが急上昇、美鈴ガシャ効果とみられる",
+      "lead_score": 5,
+      "dedup_key": "gaku-appstore-ranking-2026-08-27",
+      "candidate_ids": ["202608292334-explore-21", "202608292334-explore-22"]
+    },
+    {
+      "slug": "gaku-endless-dance-miracle-nanau-release",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "学マス、「ミラクルナナウ(ﾟ∀ﾟ)！」と「ENDLESS DANCE」3ver.の計4曲が本日一斉配信開始",
+      "lead_score": 20,
+      "dedup_key": "miracle-nanau-2026",
+      "candidate_ids": [
+        "202608300227-explore-10",
+        "202608300227-explore-11",
+        "202608300227-explore-12",
+        "202608300227-explore-14"
+      ]
+    },
+    {
+      "slug": "gaku-natsuyasumi-news-finale-gracecafe",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "学マス公式「#学マス夏休みニュース」が最終回、渋谷モディでのグレースカフェコラボ「リバイバル」開催もあわせて告知",
+      "lead_score": 5,
+      "dedup_key": "2026-08-28-18-10-jst-x",
+      "candidate_ids": ["202608300227-grok-37"]
+    },
+    {
+      "slug": "gaku-hatsuboshi-ongakusai-bd-deadline-3days",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "初星音楽祭Blu-ray、公式が8月28日に受注締切まで「あと3日」と告知しダイジェスト映像「CRYST＠LOUD」を公開",
+      "lead_score": 5,
+      "dedup_key": "2026-08-28-19-30-jst-blu-ray-3-cryst-loud",
+      "candidate_ids": ["202608300227-grok-38"]
+    },
+    {
+      "slug": "gaku-producer-ranking-season3-end",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "『プロデューサーランキング シーズン3』が本日未明に終了",
+      "lead_score": 10,
+      "dedup_key": "2026-08-29-12-00-jst-3",
+      "candidate_ids": ["202608300227-grok-39"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gaku-prize-september-2026",
+      "reason": "既報",
+      "note": "十王星南(9/3)・雨夜燕(9/10)のESPRESTOプライズ2種は2026-08-28付記事(gaku-espresto-senan-tsubame-2026)で既に同一facts(展開日・特徴)を報じ済み。新事実なし。"
+    }
+  ],
+  "cross_brand": []
+}

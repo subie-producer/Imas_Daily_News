@@ -80,5 +80,25 @@
       "購入特典で全12種「EVER EVER KITCHENブロマイド」を選んだグループからランダム配布"
     ],
     "reserved_on": "2026-08-29"
+  },
+  {
+    "id": "sched-2026-09-05-sidem-transcendent-tales-only-shop-2026-開幕",
+    "dedup_key": "sidem-transcendent-tales-only-shop-2026",
+    "brand": "sidem",
+    "subject": "SideM TRANSCENDENT T@LES 完結記念オンリーショップ",
+    "kind": "開幕",
+    "note": "アニメイト池袋本店7F NORTH開幕",
+    "reserved_on": "2026-08-30",
+    "title": "SideM完結記念オンリーショップ開催",
+    "url": "https://lantis.jp/sidem/extra/index.html",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608300227-grok-79",
+    "event_date": "2026-09-05",
+    "facts": [
+      "アニメイト池袋本店7F NORTHで9月5日〜27日開催、営業時間は全日10時〜21時",
+      "9月5日・6日の入場はLINEアプリの先着整理券制、整理番号は即時発行・全枠終了次第受付終了",
+      "1,100円ごとの購入・予約内金でオリジナルブロマイド(全12種)を1枚進呈"
+    ]
   }
 ]

@@ -1,0 +1,126 @@
+{
+  "articles": [
+    {
+      "slug": "cg-ss10th-tour-bluray-box-fukuoka-pv2",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "デレステ10thツアー「Let's AMUSEMENT!!!」Blu-ray BOXが9/2発売、発売直前に福岡公演PV第2弾を公開",
+      "lead_score": 35,
+      "dedup_key": "cg-ss10th-bd-fukuoka-pv2-2026",
+      "candidate_ids": ["202608291835-watch-1", "202608300227-grok-93"]
+    },
+    {
+      "slug": "cg-toybox-simulwatch-20260830",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "『Pop'n ToyBox!!』同時視聴上映会を本日8/30開催、チラ見せ映像「MOTTO!」も公開・8/31はスタッフ振り返りトーク",
+      "lead_score": 20,
+      "dedup_key": "cg-ptb-simulwatch-20260830",
+      "candidate_ids": ["202608300227-grok-91", "202608300227-grok-92"]
+    },
+    {
+      "slug": "cg-tower-tour-mirai-tower-nagoya-final-day",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "デレマス×全国タワーツアー、MIRAI TOWER(名古屋)が本日8/30で最終日",
+      "lead_score": 10,
+      "dedup_key": "cg-tower-tour-mirai-tower-nagoya-2026",
+      "candidate_ids": ["sched-2026-08-30-cg-tower-tour-mirai-tower-nagoya-2026-終了"]
+    },
+    {
+      "slug": "cg-wakabayashi-tomoka-birthday",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "8月30日は若林智香の誕生日、アイマスchが記念ムービーを公開",
+      "lead_score": 5,
+      "dedup_key": "wakabayashi-tomoka-birthday-2026",
+      "candidate_ids": ["202608300227-grok-85"]
+    },
+    {
+      "slug": "cg-roundup-20260830",
+      "brand": "cg",
+      "rank": "roundup",
+      "angle": "総選挙「公約四字熟語」グループE〜G新デザイン公開・トイボックス小説エクストラ6更新・『幻夏妖宴市』日本橋店の展示入替と再入荷など、進行中の運営トピックまとめ",
+      "lead_score": 0,
+      "dedup_key": "cg-vote-2026-yojijukugo-design",
+      "candidate_ids": [
+        "202608300227-grok-88",
+        "202608300227-grok-90",
+        "202608300227-grok-94"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "toppa-base-cg-2026",
+      "reason": "既報",
+      "note": "cg-toppa-base-popup-2026(2026-07-13初報)と同内容、新事実なし"
+    },
+    {
+      "dedup_key": "cg-online-kuji-bunkasai-2026",
+      "reason": "既報",
+      "note": "cg-gacha-festival-2026-08(2026-08-28初報)と同内容、新事実なし"
+    },
+    {
+      "dedup_key": "jol-collab-pinako-2026",
+      "reason": "既報",
+      "note": "cg-popup-legend-cinderella-jol-2026(2026-08-29初報)と同内容、新事実なし"
+    },
+    {
+      "dedup_key": "cg-2026-election-song-3",
+      "reason": "既報",
+      "note": "cg-cinderella-master-bouquet-sleep-skip-2026(2026-08-25初報)と同内容、新事実なし"
+    },
+    {
+      "dedup_key": "yamanashi-walk-wander-2026",
+      "reason": "既報",
+      "note": "cg-yamanashi-walk-wander-2026(2026-08-29初報)と同内容、新事実なし"
+    },
+    {
+      "dedup_key": "cg-memory-pict-6th-2026",
+      "reason": "既報",
+      "note": "memory-pict-6th-kohimura-yoda-2026(2026-08-28初報)と同内容、新事実なし"
+    },
+    {
+      "dedup_key": "cg-number-one-daisuki-sleep-skip-2026",
+      "reason": "既報",
+      "note": "cg-cinderella-master-bouquet-sleep-skip-2026(2026-08-25初報)と同内容、新事実なし"
+    },
+    {
+      "dedup_key": "cg-15th-party-goods-2026",
+      "reason": "既報",
+      "note": "同名story_id(2026-08-27初報)と同内容、新事実なし"
+    },
+    {
+      "dedup_key": "cg-yamanashi-walk-wander-2026",
+      "reason": "既報",
+      "note": "cg-yamanashi-walk-wander-2026(2026-08-29初報)と同内容、新事実なし"
+    },
+    {
+      "dedup_key": "cg-yamanashi-walk-wander-goods-2026",
+      "reason": "既報",
+      "note": "同(2026-08-29初報)の歩数計先行受注は既に報じ済み、新事実なし"
+    },
+    {
+      "dedup_key": "cg-vote-2026-asobi-goods",
+      "reason": "既報",
+      "note": "cinderella-girl-vote2026-schedule台帳の等身大パネル既報と同内容"
+    },
+    {
+      "dedup_key": "cg-memory-pict-november-2026",
+      "reason": "既報",
+      "note": "memory-pict-6th-kohimura-yoda-2026と同内容の公式X再掲、新事実なし"
+    },
+    {
+      "dedup_key": "cg-vote-2026-kotobukiya-poster-visit",
+      "reason": "出典不足",
+      "note": "verify=unconfirmed、単一ファン投稿による来訪報告・個人の感想が中心で記事化基準を満たさない"
+    },
+    {
+      "dedup_key": "cg-fanart-cosplay-20260829",
+      "reason": "出典不足",
+      "note": "verify=unconfirmed、個人のファンアート・コスプレ投稿の寄せ集めで単体記事化不可(規程4)"
+    }
+  ],
+  "cross_brand": []
+}

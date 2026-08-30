@@ -1,0 +1,41 @@
+{
+  "articles": [],
+  "dropped": [
+    {
+      "dedup_key": "dual-twin-live-tokyo-day1-2026",
+      "reason": "既報",
+      "note": "Zepp Haneda Day1(亜美・真美)の会場・時刻・出演・価格・配信情報はストーリー765-dual-twinlive-venue-cdに既掲載、新事実なし"
+    },
+    {
+      "dedup_key": "dual-twin-live-tokyo-day2-2026",
+      "reason": "既報",
+      "note": "Zepp Haneda Day2(あずさ・律子)の会場・時刻・出演・価格・配信情報はストーリー765-dual-twinlive-venue-cdに既掲載、新事実なし"
+    },
+    {
+      "dedup_key": "dual-twin-live-venue-cd-2026",
+      "reason": "既報",
+      "note": "会場オリジナルCDの発売(各3,500円・8/6発売・東京会場でも販売)はストーリー765-dual-twinlive-venue-cdに既掲載"
+    },
+    {
+      "dedup_key": "dual-twin-live-memorial-goods-2026",
+      "reason": "既報",
+      "note": "開催記念グッズ受注(9/27締切・2027年1月発送)はストーリー765as-dual-twin-goods-preorder-2026(2026-08-29初出)と同一内容"
+    },
+    {
+      "dedup_key": "dual-twin-live-postevent-cd-order-2026",
+      "reason": "重複",
+      "note": "同一施策(会場オリジナルCD全12種事後通販・8/28 21:00〜9/13 23:59)をjoint面がjoint-venue-cd-mailorder-moiw-iwsf-961-876として今号で既に確定"
+    },
+    {
+      "dedup_key": "dual-twin-live-tokyo-new-info-2026",
+      "reason": "既報",
+      "note": "キャスト生オーディオコメンタリー(9/6配信・出演者)はストーリー765-dual-twinlive-venue-cdに既掲載、新事実なし"
+    },
+    {
+      "dedup_key": "imas-radio-2026",
+      "reason": "既報",
+      "note": "ラジオ新番組「IM@S RADIO」(初回9/15・出演者・募集企画)はストーリーimas-radio-2026(2026-08-29初出)と同一内容"
+    }
+  ],
+  "cross_brand": []
+}

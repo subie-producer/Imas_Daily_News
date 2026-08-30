@@ -1,0 +1,11 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-08-30-gaku-hatsuboshi-ongakusai-bd-deadline-3days.md",
+   "issue": "時制矛盾: 8月28日の古い時制情報をそのまま掲載。8月28日時点では『あと3日』が正しいが、8月30日号では『あと1日』に修正すべき（規程3）",
+   "quote": "title: 初星音楽祭Blu-ray、受注締切まであと3日 | lede: 学マス公式は8月28日、初星音楽祭Blu-rayの受注締切まであと3日と告知し | body: 受注締切まであと3日と告知した。"
+  }
+ ],
+ "comments": []
+}

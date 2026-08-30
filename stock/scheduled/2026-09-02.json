@@ -94,5 +94,23 @@
       "2DMVを9月2日21時に公開予定"
     ],
     "reserved_on": "2026-08-29"
+  },
+  {
+    "id": "sched-2026-09-02-cg-ss10th-fukuoka-pv2-2026-発売",
+    "dedup_key": "cg-ss10th-fukuoka-pv2-2026",
+    "brand": "cg",
+    "subject": "デレステ10thツアー沖縄・福岡Blu-ray BOX",
+    "kind": "発売",
+    "reserved_on": "2026-08-30",
+    "title": "デレステ10thツアー沖縄・福岡BD 9/2発売",
+    "url": "https://x.com/imas_CGofficial/status/2093655246816133474",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608300227-grok-93",
+    "event_date": "2026-09-02",
+    "facts": [
+      "コロムビアミュージックショップ限定盤Blu-ray BOX、沖縄・福岡Day1/Day2本編とキャスト全編オーディオコメンタリーを収録",
+      "特典映像はメイキング・マルチアングル・ドキュメンタリー『The Clock of the Cinderella〜』(大木咲絵子・鈴木絵理に密着)、『CINDERELLA GIRLS COLLECTION』ポージング衣装紹介映像も収録"
+    ]
   }
 ]

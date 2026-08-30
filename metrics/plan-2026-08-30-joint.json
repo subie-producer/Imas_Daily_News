@@ -1,0 +1,57 @@
+{
+  "articles": [
+    {
+      "slug": "joint-tours-ranking-2026-08-28",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "ツアマス、8月28日時点のスコアランキングが更新され上位編成が入れ替わった",
+      "lead_score": 10,
+      "dedup_key": "tours-ranking-2026-08",
+      "candidate_ids": ["202608292334-explore-29"]
+    },
+    {
+      "slug": "joint-moiw2025-bluray-order-deadline",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "MOIW2025 Blu-ray PERFECT BOXの受注が8月30日で締切、公式はDAY2全曲ダイジェストも公開して後押し",
+      "lead_score": 15,
+      "dedup_key": "moiw2025-bluray-perfectbox-order-2026",
+      "candidate_ids": [
+        "sched-2026-08-30-moiw2025-bluray-perfectbox-order-2026-締切",
+        "202608300227-grok-41"
+      ]
+    },
+    {
+      "slug": "joint-venue-cd-mailorder-moiw-iwsf-961-876",
+      "brand": "joint",
+      "rank": "large",
+      "angle": "MOIW2025・IWSF2026など合同ブランド会場オリジナルCDの事後通販が9月13日締切で受付開始",
+      "lead_score": 35,
+      "dedup_key": "2026-08-29-21-01-jst-12-01-gmt-cd-twin-live-iwsf2026",
+      "candidate_ids": ["202608300227-grok-42"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-million-clash-match-2027",
+      "reason": "既報",
+      "note": "stock/stories.yml(cg-million-coming-soon-2026-08-26)に8/26付で公演日程・会場・出演・料金まで既掲載済みで新事実なし"
+    },
+    {
+      "dedup_key": "moiw-2025",
+      "reason": "過年度",
+      "note": "facts中の受付期間・当落発表・入金期間がいずれも2025年表記でMOIW2025本体も2025年12月に開催済み。published_dateのみ2026-08-29と誤表示された過年度記事"
+    },
+    {
+      "dedup_key": "tours-late-summer-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml(tours-late-summer-campaign-2026, 8/25初報)にキャンペーン期間・景品内容・周防桃子先行登場まで既掲載済みで新事実なし"
+    },
+    {
+      "dedup_key": "moiw2025-blu-ray-day2",
+      "reason": "個人の話題",
+      "note": "出典がYouTube上のファン個人投稿の寄せ集め(未確認・低エンゲージ)で規程4により素材採用不可。公式のリマインドはmoiw2025-bluray-perfectbox-order-2026の記事に統合済み"
+    }
+  ],
+  "cross_brand": []
+}

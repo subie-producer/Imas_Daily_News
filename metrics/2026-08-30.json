@@ -1,0 +1,89 @@
+{
+ "collect": [
+  {
+   "at": "2026-08-30T02:27:15+09:00",
+   "edition": "2026-08-30",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 342,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 3,
+    "explore:cinderella": 4,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 2,
+    "explore:gakuen": 5,
+    "explore:dsva": 1,
+    "explore:joint-other": 6,
+    "explore:trend": 4,
+    "grok:765as": 0,
+    "grok:cinderella": 10,
+    "grok:million": 10,
+    "grok:shiny": 12,
+    "grok:sidem": 16,
+    "grok:gakuen": 4,
+    "grok:dsva": 11,
+    "grok:joint-other": 4,
+    "grok:trend": 4
+   },
+   "normalized": 87,
+   "added": 78,
+   "verify": {
+    "confirmed": 76,
+    "unconfirmed": 8,
+    "failed": 3
+   },
+   "duration_s": 1605
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-08-30T15:13:14+09:00",
+   "edition": "2026-08-30",
+   "rounds": 2,
+   "approved": true,
+   "lint_green": true,
+   "planned": 30,
+   "written": 26,
+   "roundups": 3,
+   "dropped": 63,
+   "coverage": {
+    "subjects": 117,
+    "covered": 117,
+    "missing": 0
+   },
+   "dropped_by_review": [],
+   "aborted": [
+    "joint-tours-ranking-2026-08-28",
+    "shiny-asobistore-swimwear-cp2026-deadline",
+    "million-mirishita-extreme-announce",
+    "million-walking-on-square-purchase"
+   ],
+   "duration_s": 3151
+  }
+ ]
+}

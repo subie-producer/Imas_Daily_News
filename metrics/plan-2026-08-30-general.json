@@ -1,0 +1,16 @@
+{
+  "articles": [],
+  "dropped": [
+    {
+      "dedup_key": "moiw-2025-blu-ray",
+      "reason": "重複",
+      "note": "joint面 joint-moiw2025-bluray-order-deadline(dedup_key: moiw2025-bluray-perfectbox-order-2026)と同一の受注8/30締切告知"
+    },
+    {
+      "dedup_key": "iwsf2026-venue-cd-961-kohaku-765as",
+      "reason": "重複",
+      "note": "joint面 joint-venue-cd-mailorder-moiw-iwsf-961-876(dedup_key: 2026-08-29-21-01-jst-12-01-gmt-cd-twin-live-iwsf2026)が扱うMOIW2025・IWSF2026会場オリジナルCD事後通販の一SKU"
+    }
+  ],
+  "cross_brand": []
+}

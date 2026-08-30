@@ -1,0 +1,18 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-08-30-cg-toybox-simulwatch-20260830.md",
+   "issue": "分量不足（rank: large要件700字以上未達、実測~560字）。同時視聴会のスケジュール詳細・チケット料金説明・出演メンバーの詳細は出典に記載可能。"
+  },
+  {
+   "file": "docs/_posts/2026-08-30-sidem-costume-museum-web-order-deadline.md",
+   "issue": "分量不足（rank: large要件700字以上未達、実測~650字）。商品ラインナップ説明は充実しており、特典内容・配送スケジュール・会員特典の詳細補足で対応可能。"
+  },
+  {
+   "file": "docs/_posts/2026-08-30-joint-venue-cd-mailorder-moiw-iwsf-961-876.md",
+   "issue": "分量が下限付近（rank: large要件700字、リスト形式含め~700字）。各CD商品の作詞作曲編曲者クレジット・Disc構成の詳細説明を拡充推奨。"
+  }
+ ]
+}

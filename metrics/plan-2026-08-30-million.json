@@ -1,0 +1,103 @@
+{
+  "articles": [
+    {
+      "slug": "million-14th-live-ticket-sale-start",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "ミリオン14thLIVE、現地チケット一般販売(先着)と公式リセール(抽選)が8月30日に開始",
+      "lead_score": 70,
+      "dedup_key": "million-14th-live",
+      "candidate_ids": [
+        "sched-2026-08-30-million-14th-live-開始",
+        "202608300227-grok-45"
+      ]
+    },
+    {
+      "slug": "million-mirishita-extreme-announce",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "ミリシタ、9月2日に10年目の新シリーズ『ミリシタ Extreme』発表生配信を実施",
+      "lead_score": 25,
+      "dedup_key": "mirishita-extreme-announce-2026",
+      "candidate_ids": [
+        "202608291835-claude-14"
+      ]
+    },
+    {
+      "slug": "million-machida-art-rally-finale",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリオン×町田市アートラリー、本日8月30日で全体開催が最終日",
+      "lead_score": 10,
+      "dedup_key": "million-machida-art-rally-2026",
+      "candidate_ids": [
+        "sched-2026-08-30-million-machida-art-rally-2026-千秋楽"
+      ]
+    },
+    {
+      "slug": "million-dual-twin-tour-gacha-details",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ『dual twin live tour東京公演打ち上げ39ガシャ』、3回限定・出現率などの詳細が判明",
+      "lead_score": 5,
+      "dedup_key": "2026-08-28-21-00-jst-dual-twin-live-tour-39",
+      "candidate_ids": [
+        "202608300227-grok-51"
+      ]
+    },
+    {
+      "slug": "million-walking-on-square-purchase",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ「楽曲購入」に『Walking on the Square』追加、価格は有償ミリオンジュエル60個",
+      "lead_score": 5,
+      "dedup_key": "2026-08-28-13-03-jst-walking-on-the-square",
+      "candidate_ids": [
+        "202608300227-grok-54"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-kikuchi-makoto-birthday-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml『kikuchi-makoto-birthday-2026』の published_facts(誕生日ガシャ・セット・劇場デコレーション)と同一内容で新事実なし"
+    },
+    {
+      "dedup_key": "2026-08-29-00-03-jst-2026",
+      "reason": "既報",
+      "note": "同上。#菊地真誕生祭2026 の告知は既報facts でカバー済み"
+    },
+    {
+      "dedup_key": "2026-08-29-00-02-jst-birthday",
+      "reason": "既報",
+      "note": "『菊地真Birthdayガシャ』の内容は既報facts と一致、新事実なし"
+    },
+    {
+      "dedup_key": "2026-08-29-00-01-jst-birthday-2026",
+      "reason": "既報",
+      "note": "『菊地真Birthdayセット2026』の内容は既報facts と一致、新事実なし"
+    },
+    {
+      "dedup_key": "2026-08-29-00-00-jst",
+      "reason": "既報",
+      "note": "劇場デコレーションの内容は既報facts と一致、新事実なし"
+    },
+    {
+      "dedup_key": "2026-08-29-16-00-jst-day3",
+      "reason": "既報",
+      "note": "stock『reprint-pickup-gacha-2026-08-27』でDAY1〜4の担当キャラは既に公開済み、DAY3の佐竹美奈子も既報"
+    },
+    {
+      "dedup_key": "2026-08-28-16-25-jst-day2",
+      "reason": "既報",
+      "note": "同上に加えDAY2枠は本日時点で既に終了しており新報性なし"
+    },
+    {
+      "dedup_key": "2026-08-28-13-04-jst-walking-on-the-square",
+      "reason": "既報",
+      "note": "stock『million-ops-roundup-2026-08』でアナザーシェーダー・アナザーキネマティクスverの案内自体は既報。楽曲購入への追加(価格judgment)のみ新事実のため、そちらのみ別記事化"
+    }
+  ],
+  "cross_brand": []
+}

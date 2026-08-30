@@ -1,0 +1,71 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-valiv-1on1-12th-manaka-retra-cosmo",
+      "brand": "dsva",
+      "rank": "medium",
+      "angle": "vα-liv第12回オンライン1on1、8/29は灯里愛夏回を開催・8/30はレトラと上水流宇宙が登場",
+      "lead_score": 20,
+      "dedup_key": "valiv-1on1-12th-2026",
+      "candidate_ids": [
+        "202608292334-explore-24",
+        "202608300227-grok-29",
+        "202608300227-grok-33"
+      ]
+    },
+    {
+      "slug": "dsva-nagano-aniera-festa-timetable",
+      "brand": "dsva",
+      "rank": "medium",
+      "angle": "ナガノアニエラフェスタ2026のタイムテーブルが公開、佐久平駅発着の公式シャトルバスチケット販売も開始",
+      "lead_score": 10,
+      "dedup_key": "dsva-nagano-aniera-timetable-2026",
+      "candidate_ids": [
+        "202608300227-explore-15"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cosmo-ace-combat-7-2026-08-28",
+      "reason": "既報",
+      "note": "8/28のACE COMBAT7配信(所要時間・購入報告・次回9/1案内)はstory valiv-ops-roundup-2026-08で既に報告済み、新事実なし"
+    },
+    {
+      "dedup_key": "8-28-ace-combat-7",
+      "reason": "既報",
+      "note": "同上配信の公式ラインナップ告知で、既報の内容と同一"
+    },
+    {
+      "dedup_key": "valiv-activity-survey-2026-08",
+      "reason": "既報",
+      "note": "story valiv-survey-2026-08で回答期限9/3まで含め既報、新事実なし"
+    },
+    {
+      "dedup_key": "cosmo-sensation-dance-2026-08",
+      "reason": "既報",
+      "note": "story valiv-ops-roundup-2026-08で8/28公開のショート動画として既報、新事実なし"
+    },
+    {
+      "dedup_key": "cosmo-ace7-stream-2026-08-28",
+      "reason": "既報",
+      "note": "本人告知・配信後お礼を含め、story valiv-ops-roundup-2026-08既報の事実と同一(次回9/1案内も既報)"
+    },
+    {
+      "dedup_key": "hakuno-birthday-2026-manaka-guest",
+      "reason": "同人・ファン主催",
+      "note": "アイマス外VTuber「今酒ハクノ」主催の生誕交流会イベントへのゲスト出演。主催がアイマス公式でない非公式コラボに該当"
+    },
+    {
+      "dedup_key": "cosmo-usumo-collab-sing",
+      "reason": "同人・ファン主催",
+      "note": "アイマス外VTuber「稀羽すう」との非公式コラボ歌枠。開催日時も未確認"
+    },
+    {
+      "dedup_key": "valiv-1on1-12th-2026-fan-reports",
+      "reason": "個人の話題",
+      "note": "ファンまとめアカウントによる参加者反応の収集で、公式発表の新事実を含まない"
+    }
+  ],
+  "cross_brand": []
+}

@@ -126,5 +126,24 @@
     ],
     "event_date": "2026-09-20",
     "src_candidate_id": "202608280232-grok-59"
+  },
+  {
+    "id": "sched-2026-09-20-dsva-nagano-aniera-festa-2026-千秋楽",
+    "dedup_key": "dsva-nagano-aniera-festa-2026",
+    "brand": "dsva",
+    "subject": "ナガノアニエラフェスタ2026",
+    "kind": "千秋楽",
+    "note": "DAY2千秋楽",
+    "reserved_on": "2026-08-30",
+    "title": "ナガノアニエラフェスタ2026のタイムテーブル公開",
+    "url": "https://aniera-festa.com/news/timetable2026/",
+    "source_type": "当事者",
+    "verify": "confirmed",
+    "src_candidate_id": "202608300227-explore-15",
+    "event_date": "2026-09-20",
+    "facts": [
+      "2日通し券はSOLD OUT、各1日券をチケットぴあ・イープラス・ローソンチケットで発売中",
+      "会場近くの無料駐車場は満車が予想され、佐久平ハイウェイオアシス「パラダ」の有料駐車場・キャンプサイトも数量限定で用意"
+    ]
   }
 ]

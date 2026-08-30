@@ -75,11 +75,11 @@
   brand: million
   subject: セカンドヘアスタイルガシャ～myブランド編 with glasses～(舞浜歩・野々原茜)
   watch: 開催日程(判明次第 triggers へ)
-- dedup_key: sidem-teddys-collection2-popup-goods
-  brand: sidem
-  subject: SideM Teddy's Collection II POP UP STORE
-  watch: 開催期間・会場の詳細(判明次第 triggers へ)
 - dedup_key: shiny-30ms-nichika-hazuki-2027
   brand: shiny
   subject: 30MS 七草にちか・はづき ヘアスタイル＆フェイスパーツセット
   watch: 2027年1月予定の正式発売日(判明次第 triggers へ)
+- dedup_key: gaku-gracecafe-collab-revival-2026
+  brand: gaku
+  subject: 学マス×グレースカフェ コラボ「リバイバル」(渋谷モディ)
+  watch: 開催日程(判明次第 triggers へ)

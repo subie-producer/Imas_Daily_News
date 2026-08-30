@@ -1,0 +1,116 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-costume-museum-web-order-deadline",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "SideM STAGE COSTUME MUSEUM公式グッズのWEB受注が本日8月30日で締切、キャラファイングラフやアクリルパネルなど品目を列挙して紹介",
+      "lead_score": 15,
+      "dedup_key": "sidem-stage-costume-museum-2026",
+      "candidate_ids": [
+        "202608292334-watch-0",
+        "202608300227-grok-69",
+        "202608300227-grok-70",
+        "202608300227-grok-71",
+        "202608300227-grok-76"
+      ]
+    },
+    {
+      "slug": "sidem-transcendent-tales-only-shop",
+      "brand": "sidem",
+      "rank": "large",
+      "angle": "TRANSCENDENT T@LES完結記念オンリーショップが9月5〜27日にアニメイト池袋本店で開催決定、初週末はLINE整理券制・購入特典ブロマイドも用意",
+      "lead_score": 25,
+      "dedup_key": "sidem-transcendent-tales-only-shop-2026",
+      "candidate_ids": [
+        "202608300227-explore-8",
+        "202608300227-grok-79"
+      ]
+    },
+    {
+      "slug": "sidem-11th-stage-goods-lottery-and-stream-ticket",
+      "brand": "sidem",
+      "rank": "large",
+      "angle": "SideM11th STAGE、会場物販・CD/映像整理券の抽選受付が進行中(9月2日締切)で当落発表は9月8日、配信チケットも販売中",
+      "lead_score": 55,
+      "dedup_key": "sidem-11th-stage-2026",
+      "candidate_ids": [
+        "sched-2026-08-30-sidem-11th-stage-2026-締切前",
+        "202608300227-grok-77"
+      ]
+    },
+    {
+      "slug": "sidem-teddys-collection2-popup",
+      "brand": "sidem",
+      "rank": "large",
+      "angle": "SideM Teddy's Collection II POP UP STOREが新宿マルイアネックス(9/4-13)・なんばマルイ(9/18-27)で開催決定、通販予約は9月4日〜27日",
+      "lead_score": 20,
+      "dedup_key": "sidem-teddy-s-collection-ii-pop-up-store-fanitto-cs-front",
+      "candidate_ids": [
+        "202608300227-grok-81"
+      ]
+    },
+    {
+      "slug": "sidem-roundup-2026-08-30",
+      "brand": "sidem",
+      "rank": "roundup",
+      "angle": "SideMの進行中の運営情報(315プロダクションエピソード「アイドルたちの1コマ」更新、11th出演キャスト意気込みコメントリレー、でらます×SideM名古屋コラボ)をまとめて紹介",
+      "lead_score": 0,
+      "dedup_key": "sidem-9",
+      "candidate_ids": [
+        "202608300227-grok-67",
+        "202608300227-grok-68",
+        "202608300227-grok-72",
+        "202608300227-grok-82"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-cast-kanon-2026-08",
+      "reason": "既報",
+      "note": "姫野かのん新キャスト伊能幸輝・9/1お披露目配信の詳細は既報story「村瀬歩さん、姫野かのん役卒業」(stock)で伝達済み、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-himeno-kanon-cast-change-2026",
+      "reason": "既報",
+      "note": "上記と同一内容の重複ソース"
+    },
+    {
+      "dedup_key": "sidem-special-stream-2026-09-01",
+      "reason": "既報",
+      "note": "9/1特別生配信の日時・出演者・内容は既報story内で伝達済み、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-howanuinu-vol1-vol2-2026",
+      "reason": "既報",
+      "note": "ほわぬいvol.1/2のクレーンゲーム登場は8/28付で既報済み(story: sidem-howanui-craneprize-2026)、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-11th-ever-ever-kitchen-2026",
+      "reason": "既報",
+      "note": "EVER EVER KITCHENの出店詳細(メニュー・場所・営業時間)は7月に既報済み、新事実なし"
+    },
+    {
+      "dedup_key": "f-lags-2dmv",
+      "reason": "既報",
+      "note": "2DMV「ミート・ユメノトピア」9/2公開予定は8/29号で既報済み(story: sidem-flags-meet-yumenotopia-2dmv-2026)"
+    },
+    {
+      "dedup_key": "p-ssion-challenge-we-are-315-monthly-theme-song-10",
+      "reason": "既報",
+      "note": "MONTHLY THEME SONG 10は8/26発売で既報済み、「好評発売中」告知のみで新事実なし"
+    },
+    {
+      "dedup_key": "315-night-8-21-00",
+      "reason": "その他",
+      "note": "告知の「本日21:00」は投稿日8/28を指し、放送は既に終了済み。8/30発行時点で新規性・鮮度なし"
+    },
+    {
+      "dedup_key": "vol-1-vol-2-the-8-29",
+      "reason": "既報",
+      "note": "sidem-howanuinu-vol1-vol2-2026と同一施策(ほわぬい)、既報済み"
+    }
+  ],
+  "cross_brand": []
+}

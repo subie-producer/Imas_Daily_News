@@ -1,0 +1,99 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-admiral-sneaker-namba-finale",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "シャニマス×Admiralコラボスニーカー、なんばマルイPOP UPと受注販売が本日で最終日",
+      "lead_score": 10,
+      "dedup_key": "shiny-admiral-collab-sneaker",
+      "candidate_ids": ["sched-2026-08-30-shiny-admiral-collab-sneaker-千秋楽"]
+    },
+    {
+      "slug": "shiny-manekineko-collab-finale",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニマス×カラオケまねきねこコラボが本日で開催終了",
+      "lead_score": 5,
+      "dedup_key": "shiny-manekineko-collab-2026",
+      "candidate_ids": ["sched-2026-08-30-shiny-manekineko-collab-2026-千秋楽"]
+    },
+    {
+      "slug": "shiny-asobistore-swimwear-cp2026-deadline",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "ASOBI STORE限定シャニソン水着CP2026プリズムジュエル、8月31日23:59で販売終了",
+      "lead_score": 5,
+      "dedup_key": "2026-08-29-12-00-jst-asobi-store-cp2026",
+      "candidate_ids": ["202608300227-grok-58"]
+    },
+    {
+      "slug": "shiny-roundup-2026-08-30",
+      "brand": "shiny",
+      "rank": "roundup",
+      "angle": "765プロコラボ第5弾ほか、開催中のシャニソン運営情報まとめ(ドレスオーダー・ログインボーナス・特別4コマ・KoiKyun!ダンス動画と復刻・web4コマ第648話)",
+      "lead_score": 0,
+      "dedup_key": "2026-08-28-22-00-jst-765-5",
+      "candidate_ids": [
+        "202608300227-grok-56",
+        "202608300227-grok-57",
+        "202608300227-grok-59",
+        "202608300227-grok-60",
+        "202608300227-grok-62"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-solo-live-msp-2026-09",
+      "reason": "既報",
+      "note": "一般発売(先着)8/29 12:00〜9/15開始・席種価格ともstock shiny-msp-live-tickets-2026(8/26既報)に既出、新事実なし"
+    },
+    {
+      "dedup_key": "2026-08-29-10-30-jst-msp-12-00",
+      "reason": "既報",
+      "note": "同上のMSP一般発売開始を伝えるX投稿。stock shiny-msp-live-tickets-2026に既出の内容と同一"
+    },
+    {
+      "dedup_key": "shiny-refrac7ions-still-blue-2026-12",
+      "reason": "既報",
+      "note": "アソビストア一般会員先行(8/27〜9/23)・当落発表・入金期間・会場・価格すべてstock shiny-stillblue-asobipremium-lotteryに既出"
+    },
+    {
+      "dedup_key": "shiny-hyakki-yagyo-popup-yurakucho-2026",
+      "reason": "既報",
+      "note": "百鬼夜行POP UP SHOP(有楽町マルイ8F・9/26〜10/14)はstock shiny-hyakki-popup-2026(8/29既報)と同一内容"
+    },
+    {
+      "dedup_key": "shiny-hyakki-yagyo-popup-2026",
+      "reason": "既報",
+      "note": "同上。放課後クライマックスガールズ5名・ノベルティ・抽選会もstock既出"
+    },
+    {
+      "dedup_key": "2026-08-28-18-00-jst-pop-up-shop-8f",
+      "reason": "既報",
+      "note": "同上POP UP SHOPの告知X投稿。stock既出内容と同一"
+    },
+    {
+      "dedup_key": "2026-08-29-15-00-jst-ssr",
+      "reason": "既報",
+      "note": "SSRサポート【なんでもない夏】福丸小糸はstock shiny-noctchill-event-2026(8/27既報)に既出"
+    },
+    {
+      "dedup_key": "2026-08-29-15-01-jst-ssr-my",
+      "reason": "既報",
+      "note": "P-SSR【ダイブ・My・ハート】田中摩美々はstock shiny-casting-collection-futari-2026-08(8/29既報)に既出"
+    },
+    {
+      "dedup_key": "2026-08-29-15-02-jst-ssr-25",
+      "reason": "既報",
+      "note": "P-SSR【恋まで、あと25メートル】郁田はるきも同上stockに既出"
+    },
+    {
+      "dedup_key": "2026-08-29-20-09-jst-still-blue-day1",
+      "reason": "既報",
+      "note": "幸村恵理のDAY1出演は8/27付キャスト発表としてstock shiny-stillblue-asobipremium-lotteryに既出。加えてキャスト個人アカウントの単体投稿でもある"
+    }
+  ],
+  "cross_brand": []
+}

@@ -38,8 +38,8 @@ import tags as tags_lib
 from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, EDITORIAL_MODEL,
                      COMPOSE_ARTICLE_MAX_BUDGET_USD,
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
-                     checkout_edition_branch, commit_and_push, edition_date, git,
-                     notify, notify_crash, now_jst)
+                     checkout_edition_branch, commit_and_push, edition_date,
+                     extract_json_array, git, notify, notify_crash, now_jst)
 
 PAPER_STAGE = None  # main() で .env から
 
@@ -534,6 +534,56 @@ def codex_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str
     text = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
     out_path.unlink(missing_ok=True)
     return text
+
+
+def repair_invalid_ids(date: str, plan: dict, cands: dict) -> list[str]:
+    """存在しない候補IDを、**1回だけ直させる。**直せたものの説明を返す。
+
+    2026-08-30号を落とした `202608300227-explore-19` は、別の候補の時刻
+    プレフィクスを番号に付けただけの転記ミスで、正しくは
+    `202608292334-explore-19` が実在していた。この種の誤記は素材そのものが
+    無いわけではないので、記事を外す前に照合し直させるほうが紙面が痩せない。
+
+    直せなかったものは呼び出し側(`drop_invalid_articles`)が外す。
+    """
+    bad = {a["slug"]: [cid for cid in a.get("candidate_ids") or [] if cid not in cands]
+           for a in plan.get("articles") or []}
+    bad = {s: v for s, v in bad.items() if v}
+    if not bad:
+        return []
+    listing = "\n".join(f"{c['id']}\t{c.get('brand')}\t{(c.get('title') or '')[:70]}"
+                        for c in cands.values())
+    prompt = (
+        f"アイマスNEWS {date}号の記事計画に、**実在しない候補IDが混ざっています。**\n"
+        "多くは転記ミス(別の候補の時刻プレフィクスを取り違える等)なので、"
+        "実在する候補と突き合わせて直してください。\n\n"
+        "## 実在しない ID\n"
+        + "\n".join(f"- {s}: {', '.join(v)}" for s, v in bad.items())
+        + "\n\n## 実在する候補(ID / 面 / 見出し)\n" + listing
+        + "\n\n## 出力\n"
+        "**JSON 配列だけ**を出力してください。ほかの文字は出力しないこと。\n"
+        '[{"slug": "記事のslug", "old": "誤ったID", "new": "実在するID"}]\n'
+        "- **見出しと面が明らかに同じ素材を指しているものだけ**直すこと。\n"
+        "- 対応する素材が見当たらないものは、その要素を出力しない(推測で埋めない)。\n"
+        "- 直すものが1つも無ければ `[]` とだけ出力する。")
+    try:
+        got = extract_json_array(claude_run(prompt, timeout=600, model=REVIEW_MODEL)) or []
+    except Exception as e:
+        print(f"候補IDの修復に失敗(そのまま外す): {e}", flush=True)
+        return []
+    by_slug = {a["slug"]: a for a in plan.get("articles") or []}
+    fixed = []
+    for r in got:
+        if not isinstance(r, dict):
+            continue
+        a, old, new = by_slug.get(r.get("slug")), r.get("old"), r.get("new")
+        # **直した先が実在することを機械で確かめる。**言われたまま入れると
+        # 存在しないIDを別の存在しないIDに置き換えるだけになる
+        if not a or new not in cands or old not in (a.get("candidate_ids") or []):
+            continue
+        a["candidate_ids"] = [new if c == old else c for c in a["candidate_ids"]]
+        fixed.append(f"{a['slug']}: {old} → {new}")
+    return fixed
 
 
 def drop_invalid_articles(plan: dict, cands: dict, blocklist: dict) -> list[str]:
@@ -1127,8 +1177,11 @@ def main() -> int:
     plan = run_plan(date, by_brand, triggers)
     pick_lead(date, plan)
     plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    # 素材の参照が壊れている記事は、号ごと落とさずその記事だけ外す。
-    # 誤記1つで号が消えるのは「発行を止めるくらいなら薄い紙面を出す」に反する
+    # 素材の参照が壊れている記事。**まず1回直させ**、それでも駄目なものだけ外す。
+    # 号ごと落とさないのは「発行を止めるくらいなら薄い紙面を出す」に従うため
+    repaired = repair_invalid_ids(date, plan, cands)
+    if repaired:
+        print("候補IDを修復: " + " / ".join(repaired), flush=True)
     plan_dropped = drop_invalid_articles(plan, cands, blocklist)
     if plan_dropped:
         plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")

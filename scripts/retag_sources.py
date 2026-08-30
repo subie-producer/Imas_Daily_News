@@ -22,6 +22,7 @@
 import argparse
 import re
 import sys
+import urllib.request
 from pathlib import Path
 
 import yaml
@@ -39,12 +40,47 @@ def rank(t: str) -> int:
     return SRC_ORDER.index(t) if t in SRC_ORDER else len(SRC_ORDER)
 
 
-def resolve(fm: dict) -> tuple[list[str], str | None]:
-    """この記事の出典種別と src を、URL から決め直す。"""
+# 「一次ソースに到達できていない」と本文が断っている記事。
+# 助詞が入るので連続一致では拾えない(実測: 「一次ソースには未到達のため」)。
+CAVEAT_RE = re.compile(r"未到達|一次ソース.{0,8}(到達|確認)できて")
+
+
+def url_alive(url: str) -> bool:
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; ImasNews/1.0)"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            return r.status < 400
+    except Exception:
+        return False
+
+
+def resolve(fm: dict, body: str = "", recheck: bool = False) -> tuple[list[str], str | None]:
+    """この記事の出典種別と src を、URL から決め直す。
+
+    `未確認` は「一次ソース未到達」という確認状態なので、通常は上書きしない。
+
+    ただし実際には、**判定表がそのドメインを知らなかっただけ**で 未確認 が
+    付いたものが混ざる(livepocket.jp のチケット販売ページなど)。
+    表に足しても上がらないままだと、記事のバッジが実態より弱いまま残る。
+
+    `recheck=True` のときだけ、次を全部満たす 未確認 を判定し直す:
+      1. 判定表が今はそのドメインを知っている
+      2. URL に実際に到達できる(「確認」とはそういう意味である)
+      3. 記事本文が「一次ソース未到達」と断っていない
+         (断っている記事は、ページに到達できるかとは別の理由で未確認である)
+    """
     types = []
     for s in fm.get("sources") or []:
         cur = s.get("type")
-        types.append(cur if cur == "未確認" else classify_source(s.get("url", "") or ""))
+        if cur != "未確認":
+            types.append(classify_source(s.get("url", "") or ""))
+            continue
+        want = classify_source(s.get("url", "") or "")
+        if (recheck and want != "未確認" and not CAVEAT_RE.search(body)
+                and url_alive(s.get("url", "") or "")):
+            types.append(want)
+        else:
+            types.append("未確認")
     src = max(types, key=rank) if types else None
     return types, src
 
@@ -81,6 +117,8 @@ def rewrite(text: str, types: list[str], src: str | None) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true", help="実際に書き換える")
+    ap.add_argument("--recheck-unverified", action="store_true",
+                    help="未確認の出典を、到達確認のうえ判定し直す")
     args = ap.parse_args()
 
     n_src, n_type, n_files = 0, 0, 0
@@ -90,7 +128,7 @@ def main() -> int:
         if not m:
             continue
         fm = yaml.safe_load(m.group(1))
-        types, src = resolve(fm)
+        types, src = resolve(fm, text[m.end():], args.recheck_unverified)
         olds = [s.get("type") for s in fm.get("sources") or []]
         d_type = sum(1 for a, b in zip(olds, types) if a != b)
         d_src = 1 if src and fm.get("src") != src else 0

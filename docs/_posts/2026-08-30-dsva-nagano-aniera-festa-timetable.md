@@ -2,7 +2,7 @@
 slug: dsva-nagano-aniera-festa-timetable
 edition: 2026-08-30
 brand: dsva
-src: 未確認
+src: 当事者
 rank: medium
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [イベント, チケット]
 sources:
   - label: ナガノアニエラフェスタ公式お知らせ
     url: https://aniera-festa.com/news/timetable2026/
-    type: 未確認
+    type: 当事者
 event_date: 2026-09-19
 ---
 

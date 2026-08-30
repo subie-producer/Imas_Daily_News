@@ -2,7 +2,7 @@
 slug: dsva-valiv-1on1-12th-manaka-retra-cosmo
 edition: 2026-08-30
 brand: dsva
-src: 未確認
+src: 当事者
 rank: medium
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [vα-liv, イベント, 抽選]
 sources:
   - label: 灯里愛夏回チケット情報
     url: https://livepocket.jp/e/c_iet
-    type: 未確認
+    type: 当事者
   - label: vα-liv公式開催案内
     url: https://x.com/valiv_official/status/2093473706068893762
     type: 公式

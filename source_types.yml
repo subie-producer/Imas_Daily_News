@@ -108,6 +108,9 @@ party_paths:
 
 party_domains:
   - akiba-tolim.com
+  - aniera-festa.com      # ナガノアニエラフェスタ(イベント主催)
+  - cs-front.co.jp        # 企画・特設サイトの運営
+  - livepocket.jp         # チケット販売。公演の受付そのものを行う一次発信
   - and-yogurt.com
   - animate-onlineshop.jp
   - anisama.tv
@@ -225,6 +228,7 @@ x_accounts:
     - im_MediaArts
     - kassy_imasch
     - kotobukiya_kuji
+    - kotobukiya_npb
     - kotobukiyas
     - machida_museum
     - maneki_collabo

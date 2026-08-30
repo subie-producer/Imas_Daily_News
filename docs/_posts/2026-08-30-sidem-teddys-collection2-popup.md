@@ -2,7 +2,7 @@
 slug: sidem-teddys-collection2-popup
 edition: 2026-08-30
 brand: sidem
-src: 未確認
+src: 当事者
 rank: large
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [SideM, POP UP, グッズ, 通販]
 sources:
   - label: Teddy’s Collection II特設サイト
     url: https://cs-front.co.jp/sidem_teddys_collection2/
-    type: 未確認
+    type: 当事者
 ---
 
 アイドルマスター SideMの「Teddy’s Collection II POP UP STORE」は、新宿マルイアネックスで9月4日（金）から13日（日）まで、なんばマルイで9月18日（金）から27日（日）まで開催される。新宿会場は東京都新宿区新宿3-1-26の6Fカレンダリウム、なんば会場は大阪府大阪市中央区難波3-8-9の5Fイベントスペース。会場ではアイドルの等身大パネルが来場者を迎え、描き下ろしコンセプトをイメージしたフォトスポットも設置される予定だ。

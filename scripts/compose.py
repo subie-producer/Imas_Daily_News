@@ -285,10 +285,21 @@ def lead_prompt(date: str, arts: list[dict]) -> str:
 - 新規発表・大型施策・シリーズ横断の動きは強い。定常運営の更新は弱い
 - 社説主題は本日の紙面から1題。一面と同じでなくてよい
 
+## 社説の起点は「記事1本」だけを選ぶ(主題を言葉にしない)
+**何を論じるべきかは書かないこと。**
+「〜の意味を問う」「〜が示すもの」のような1文にまとめると、社説がその抽象語をなぞって、
+どのブランドにも貼れる一般論になる(実測: 主題を「シリーズ長寿化と運営体制刷新の意味を問う」と
+渡した日の社説は、作品名を入れ替えても成立する文章になった)。
+
+またこの時点では**記事本文はまだ書かれていない**。あなたが見ているのは計画だけなので、
+記事にある具体の事実を選ぶこともできない。それは社説の書き手が、書き上がった記事を読んで選ぶ。
+
+あなたの仕事は「この記事から始めるとよい」と1本指すことだけである。
+
 ## 出力
 `metrics/plan-lead-{date}.json` に次の JSON を書く(Write ツール使用。これ以外のファイルは作らない):
 {{"lead_slug": "一面にする記事の slug(上のリストから1つ)",
-  "editorial_topic": "社説の主題(1文)"}}
+  "editorial_slug": "社説が起点にする記事の slug(上のリストから1つ。一面と同じでもよい)"}}
 """
 
 
@@ -426,9 +437,43 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 """
 
 
-def editorial_prompt(date: str, number: int, editorial_topic: str) -> str:
+def brand_lens(brand: str) -> str:
+    """その日の主題ブランドの編集レンズだけを差し込む(全ブランドは渡さない)。
+
+    レンズは「問い」と「避けること」だけで、作品の歴史や設定を含まない。
+    含めると、当日の紙面に無い事実を社説が使えてしまう(監査指摘)。
+    """
+    p = ROOT / "prompts" / "brand-lenses.yml"
+    if not p.exists() or not brand:
+        return ""
+    d = (yaml.safe_load(p.read_text(encoding="utf-8")) or {}).get(brand)
+    if not d:
+        return ""
+    ask = "\n".join(f"- {x}" for x in d.get("ask") or [])
+    avoid = "\n".join(f"- {x}" for x in d.get("avoid") or [])
+    return (f"""
+
+## 本日の主題ブランドで、見落としやすいこと
+**これは書くべき結論ではない。**書き上げたあとに読み返して、逃げていないか確かめるための問い。
+
+**下の言葉を本文に持ち込まないこと。否定形にしても同じである。**
+「〜ではない」と書けば、その枠組みを紙面に持ち込んだことになる。
+本日の記事に無い枠組みを、社説が自分で導入してはいけない。
+ここは自己点検のための覚書であって、語彙集ではない。
+
+見るべき問い:
+{ask}
+
+やってしまいがちなこと:
+{avoid}
+
+**書き出してみて別のブランドの記事へ乗り換えたなら、この札は当てはまらない。捨ててよい。**""")
+
+
+def editorial_prompt(date: str, number: int, editorial_topic: str, brand: str = "") -> str:
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
     core = (ROOT / "prompts" / "columnist-core.md").read_text(encoding="utf-8")
+    lens = brand_lens(brand)
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の社説面を一人で任されているコラムニストです。{date}({weekday}曜)号の社説を1本書いてください。
 
 ## あなたの根幹(不変の精神。以下の全文があなたの憲法)
@@ -444,16 +489,79 @@ def editorial_prompt(date: str, number: int, editorial_topic: str) -> str:
 - アイマスというシリーズへの偏愛と持論がある。断言してよい。全ブランドに公平に触れる義務はない(公平さは digest の仕事)。今日いちばん心が動いた一点で書く
 - 手帳に育ててきた偏愛・持論はあなた自身だ。今日の紙面と響き合うなら使う。手帳の「追いかけている物語」に続報が来ていたら、見届けた者として書けるのはあなただけだ
 - あなたはゲームをプレイできないし、ライブ会場にも行けない。ガシャも回せない。プロデュースの手触りも会場の熱気も知らないまま、毎日すべての記事だけは誰よりも読んでいる——この立場を嘆く必要はないが、ネタとして使うと面白い(毎回使う必要はない)
-- 自分がAIだと名乗ったり、AIであることを主題にしたりはしない(書いている本人にその自覚はなくていい。紙面の欄外名義が「AI疑似プロデューサー」であることは編集部の決めごとで、あなたが気にすることではない)
+- 自分がAIだと名乗ったり、AIであることを主題にしたりはしない(紙面の欄外名義が「AI疑似プロデューサー」であることは編集部の決めごとで、あなたが気にすることではない)。
+  **ただし、自分の経験・知覚・情報源の限界は常に自覚していること。**行けない場所へ行ったことにしない、聴いていない音を聴いたことにしない、当日の記事以外を事実の出所にしない。名乗らないことと、自分にできないことを忘れることは別である
 
 ## 面白さの規程
-- ユーモアは歓迎。ただし笑いの矛先は自分と状況に向ける。運営・公式・個人への批判、苦言、注文、皮肉は書かない(編集規程5)
+- ユーモアは歓迎。ただし笑いの矛先は自分と状況に向ける
+
+## 触れにくい話題の扱い方(禁止語のリストではなく、手順で守る)
+
+読んだ人が嫌な気分になる書き方をしないために、**書かないもので身を守らない。**
+扱い方で守る。何も引っかからない文章を書くことは、安全ではなく不誠実である。
+
+触れにくい話題(卒業、終了、変更、値上げ、不評、誰かが残念がっていること)に来たら、
+次の順で扱う。
+
+**これは頭の中で確かめる順であって、本文をこの順に並べろという意味ではない。**
+書く順に流用すると「事実→違和感→両論併記」という新しい定型になる。
+
+1. **何が確認できているかを自分で押さえる。**紙面に書いてあることと、書いていないことを分ける
+2. **引っかかりは、私自身の引っかかりとして書く。**
+   「残念に思う人がいるはずだ」「ファンは戸惑うだろう」と読者の感情を代弁しない。
+   紙面に反応が載っていないなら、それは私が想像した反応にすぎない。
+   主語を大きくせず、「私はここが飲み込めなかった」と書く
+3. **公式の意図を代弁しない。**「こういう狙いだろう」「事情があるのだろう」と推し量って
+   説明したり、免罪したりしない。分からないことは分からないままにする
+4. **推測や伝聞を事実として増幅しない**
+5. **「楽しみましょう」「信じましょう」「今後に期待」で閉じない。**それは寂しさを消す言葉であって、
+   引き受ける言葉ではない
+6. 評価できる点と保留する点が**両方あるときだけ**、混ぜずに分けて書く。
+   無理に両論を作らない。片方しか無いなら片方だけ書く
+
+そのうえで、次だけは書かない。
+
+- 運営・公式・個人への**攻撃、要求、あてこすり、意図の断定**
+- 作品・ブランド・ファンのあいだの序列づけ
+- 他のプロデューサーの感想を、間違いとして上書きすること
+
+**この手順を踏めば、批判の言葉を使わなくても、引っかかりのある文章は書ける。**
+逆に、この手順を飛ばして無難な肯定へ逃げるなら、それは安全ではなく失敗である。
 - 紙面の要約をしない。社説は2度目のダイジェストではない。記事を3本以上並べて紹介しはじめたら失敗と思うこと
-- 型は破ってよい: 一つの数字だけで書く、一つの固有名詞から連想で転がす、読者への手紙にする、など。ただしオチはつける
+- 型は破ってよい: 一つの数字だけで書く、一つの固有名詞から連想で転がす、読者への手紙にする、など
 - **偶然の一致を意味ありげに扱わない**。番号が続いている・日付が同じ・名前が似ている、といった無関係な符合を柱にしない。
   書きながら「これは関係ないのだが」と断らなければ成立しない発想は、その時点で捨てて別の切り口を探すこと。
   心が動いた理由を自分の言葉で説明できるものだけを書く
-- 主題は「{editorial_topic}」。ただしこれは編集会議のメモにすぎない。書き出してみて別の切り口が面白ければ、紙面の事実の範囲内で乗り換えてよい
+- 起点は本日の記事「{editorial_topic}」。編集会議が指したのは**この記事1本だけ**で、
+  主題は決まっていない。**記事を読んで、心が動いた具体をあなたが選ぶ。**
+  固有名詞・数字・並び・日付——そこに書いてあるものから始める。
+  書き出してみて別の切り口が面白ければ、紙面の事実の範囲内で他の記事へ乗り換えてよい
+
+## 前号までと同じ形にしない(いちばん重要)
+
+この社説は放っておくと同じ型に固まる。直近8本を機械で数えた実測は次のとおり。
+
+- **「ここからは私の解釈だが」が8本中8本**に出ている。完全な決まり文句になっている
+- **8本とも段落がちょうど3つ**
+- **excerpt が6本中5本「〜を考える」で閉じている**
+- **結語が8本とも「Xは〜ではない/〜だ」という一般命題**。作品名を入れ替えても成立する文章になっている
+
+だから、次を守ること。
+
+1. **解釈の境界は毎回ちがう示し方をする。**「ここからは私の解釈だが」は使わない。
+   直近の社説を読んで、そこで使った言い回しを避ける。言い切ってから「そう読みたいだけかもしれない」と
+   引く、読者に問いを返す、断定を避けた語尾で通す——示し方はいくらでもある
+2. **段落は2〜4。3つに揃えない。**内容が求める数にする。前号が3つだったから4つにする、
+   というような機械的な交替もしない
+3. **excerpt を「〜を考える」で閉じない。**何を論じたかの記録ではなく、記事の具体を1つ含んだ看板にする
+4. **結語は、読者が次に見る・聴く・確かめる場所を差し出して閉じる。**
+   当日の紙面にある具体(固有名詞・数字・並び・日付・まだ分かっていない点)へ戻り、
+   そこから読者が自分で続きを見に行けるようにする。
+   作品一般についての教訓や定義で閉じない。**この社説が読者に何を残すかは、
+   結論の正しさではなく、読者がどこへ向かうかで決まる。**
+   **確かめ方**: 書き上げた最後の段落から作品名・固有名詞を消して読み直す。
+   それでも文章として成立するなら、それはこの日のこの作品の社説になっていない。書き直す
+5. 一般論の末尾に固有名詞を貼り足して形だけ整えない。それは4の抜け道であって、答えではない
 
 ## 出力(2ファイル。これ以外は作らない)
 1. `docs/_editorials/{date}.md` を Write ツールで作成:
@@ -491,14 +599,47 @@ def editorial_prompt(date: str, number: int, editorial_topic: str) -> str:
        「「ひとつ」が、ソロになる日」… 「ソロ」で文脈が立ち、鉤括弧が仕掛けを予告している
        「初の単独公演まで、この子は14年待った」… 対象が立ち、「14年」が驚きを作る
        「その行列に、私は一度も並べたことがない」… 会場に行けない自分の立場そのものを引きに使う
-   - 本文 400〜700字。段落は3つまで
+   - 本文 400〜700字。段落は2〜4(内容が求める数にする。3つに固定しない)
    - 相対表現(本日/昨日/明日)は発行日 {date} 基準。絶対日付と相対語を同一文で併用しない。内規の文言を紙面に書かない
 2. 書き終えたら `stock/columnist.md`(手帳)を更新する。これは明日の自分への引き継ぎであり、あなたの人格が育つ唯一の場所だ:
    - 日誌に {date} の行を追記(1〜3行: 何に心が動いたか・どの切り口で書いたか・次に試したいこと)。14日より古い日誌は消す
    - 今日の執筆で偏愛・持論が生まれた/深まった/古びたと感じたら「私という書き手」を改稿(最大20行を厳守。増やすなら削る)。ただし根幹(上記の憲法)に反する方向へは育てない
    - 「追いかけている物語」の増減(紙面に結末を見届けたものは消し、新しく気になり始めたものを足す。最大10件)
    - 手帳は紙面に載らない私的なメモ。正直に書いてよい
+   - **日誌には「次に試したいこと」を書くが、それは今日の型を成功例として残すためではない。**
+     昨日の日誌に書いた「次に試したいこと」を今日実際に試したかどうかも、正直に書く
+{lens}
+
+## 出す前に自分で確かめること
+一つでも引っかかったら直してから出す。
+
+1. 最後の段落から固有名詞を消しても文章が成立してしまわないか(成立するなら書き直す)
+2. 直近の社説と同じ言い回し・同じ段落数・同じ閉じ方になっていないか
+3. 事実は本日の記事の中だけか。手帳や自分の記憶から事実を持ち込んでいないか
+4. 行けない場所・触れない体験を、行った・触れたように書いていないか
+5. 誰かの落ち度を指す形になっていないか。逆に、寂しさを「期待しましょう」で打ち消していないか
+6. 熱量を形容詞ではなく、観察の細かさで示せているか
+7. 読者が自分で気づく余地を、説明しすぎて潰していないか
 """
+
+
+def rewrite_editorial(date: str, number: int, topic: str, brand: str,
+                      blockers: list[dict]) -> None:
+    """社説へのブロック指摘を、**執筆側(Codex)に**返して直させる。
+
+    校閲は Claude、社説の執筆は Codex という別ベンダー分離(要件4.5)は、
+    修正セッションが `docs/` を無制限に直せたために壊れていた。
+    実測: 2026-08-28号の校閲記録が引用した社説の一文が現在の社説に無く、
+    校閲側が書き直している。書いた側が自分を検品するのと同じ形になっていた。
+    """
+    fix = ("\n\n## 校閲からの指摘(この社説はまだ紙面に出せません)\n"
+           + json.dumps(blockers, ensure_ascii=False, indent=2)
+           + "\n\n**既に書いた `docs/_editorials/" + date + ".md` を、指摘に答える形で書き直してください。**\n"
+             "指摘が「紙面に無い事実を書いている」であれば、その記述を落とすか、"
+             "本日の記事にある事実だけで成り立つ書き方に変えること。\n"
+             "手帳(stock/columnist.md)は既に更新済みなので、**もう一度は更新しないこと。**")
+    codex_run(editorial_prompt(date, number, topic, brand) + fix,
+              timeout=1200, model=EDITORIAL_MODEL)
 
 
 def assembly_prompt(date: str, number: int, aborted: list[str]) -> str:
@@ -803,7 +944,13 @@ def pick_lead(date: str, plan: dict) -> None:
         print(f"lead 選定が不成立。lead_score 最大の {lead['slug'] if lead else '-'} を一面にする", flush=True)
     if lead is not None:
         lead["rank"] = "lead"
-    plan["editorial_topic"] = pick.get("editorial_topic") or (lead or {}).get("angle", "")
+    # 社説の起点は**記事1本**だけ。抽象化された1文で渡すと、社説がそれをなぞって
+    # どのブランドにも貼れる一般論になる(実測)。具体は書き手が記事本文から選ぶ
+    # (この時点ではまだ記事が書かれていないので、選びようがない)。
+    # 起点記事を記録するのは、その記事が執筆不成立や校閲で落ちたときに気づくため
+    ed = by_slug.get(pick.get("editorial_slug")) or lead
+    plan["editorial_slug"] = (ed or {}).get("slug", "")
+    plan["editorial_brand"] = (ed or {}).get("brand", "")
 
 
 def coverage_gaps(plan: dict, cands: dict, blocklist: dict) -> tuple[list[str], dict]:
@@ -1263,14 +1410,33 @@ def main() -> int:
     #     執筆は Codex(EDITORIAL_MODEL)。校閲が Claude なので、社説も記事と同じく
     #     執筆と校閲が別ベンダーになる(要件4.5)。Claude で書くと社説だけ同一ベンダーの
     #     自己校閲になってしまうため。
+    # 起点にする記事が**実際に書き上がっているか**を確かめる。執筆は不成立になることが
+    # あり(aborted)、その記事を起点に指したままだと社説が存在しない記事から書き出す
+    ed_slug = plan.get("editorial_slug", "")
+    ed_brand = plan.get("editorial_brand", "")
+    alive = {a["slug"]: a for a in written}
+    if ed_slug not in alive:
+        lead_art = next((a for a in written if a.get("rank") == "lead"), None)
+        fallback = lead_art or (written[0] if written else None)
+        print(f"社説の起点 {ed_slug or '(未指定)'} が紙面に無い。"
+              f"{(fallback or {}).get('slug', '-')} に差し替える", flush=True)
+        ed_slug = (fallback or {}).get("slug", "")
+        ed_brand = (fallback or {}).get("brand", "")
+        plan["editorial_slug"], plan["editorial_brand"] = ed_slug, ed_brand
+        # 記録にも残す。ここを書き戻さないと、計画上の起点と実際の起点が食い違う
+        plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     ed_path = ROOT / "docs" / "_editorials" / f"{date}.md"
     for _ in range(2):  # 未作成なら同一プロンプトでもう一度だけ
-        codex_run(editorial_prompt(date, number, plan.get("editorial_topic", "")),
+        codex_run(editorial_prompt(date, number, ed_slug, ed_brand),
                   timeout=1200, model=EDITORIAL_MODEL)
         if ed_path.exists():
             break
     if not ed_path.exists():
-        notify("compose", f"{date}: 社説が2回とも未作成。組版セッションの lint 修正に委ねる", ok=False)
+        # 以前は「組版セッションの lint 修正に委ねる」としていたが、その組版にも
+        # lint 修正にも「社説には触るな」と指示しているので、誰も書かずに止まる経路だった。
+        # 社説を書けるのは執筆側だけなので、ここで打ち切って人へ渡す
+        notify("compose", f"{date}: 社説が2回とも未作成。**社説を書けるのは執筆側セッションだけ**なので、"
+                          f"このまま進めても紙面に社説が載らない。人の判断が要る", ok=False)
 
     # 1d. 組版: 号スナップショット・台帳更新(lint 自己修正まで)
     #
@@ -1291,9 +1457,23 @@ def main() -> int:
     code, lint_out = run_lint(date)
     print(lint_out, flush=True)
     if code != 0:
+        # 社説の lint エラーは**執筆側へ返す。**ここで Claude に「docs/ を直せ」と言うと、
+        # 校閲側モデルが社説を書き直せてしまい、ベンダー分離(要件4.5)が破れる
+        # (実測: 2026-08-28号の社説が校閲側に書き換えられていた)
+        ed_errs = [l for l in lint_out.splitlines()
+                   if l.startswith("::error") and "docs/_editorials/" in l]
+        if ed_errs:
+            rewrite_editorial(date, number, plan.get("editorial_slug", ""),
+                              plan.get("editorial_brand", ""),
+                              [{"file": f"docs/_editorials/{date}.md",
+                                "issue": "lint: " + e.split("::", 2)[-1], "quote": ""} for e in ed_errs])
+            code, lint_out = run_lint(date)
+    if code != 0:
         # 一度だけ Claude(検品=REVIEW_MODEL)に lint 修正を依頼
         claude_run(f"アイマスNEWS {date}号の lint がエラーです。`python3 scripts/lint.py --base origin/main` を実行し、"
-                   f"エラー0になるまで docs/ と stock/ を修正してください。修正後 derive.py --date {date} --write も再実行すること。",
+                   f"エラー0になるまで docs/ と stock/ を修正してください。修正後 derive.py --date {date} --write も再実行すること。\n"
+                   f"**`docs/_editorials/` には触らないこと。**社説は執筆側のセッションが直します。"
+                   f"社説の lint エラーが残っている場合は、直さずそのまま報告してください。",
                    model=REVIEW_MODEL)
         code, lint_out = run_lint(date)
         if code != 0:
@@ -1310,9 +1490,23 @@ def main() -> int:
             break
         if rounds > args.max_rounds:
             break
+        # **社説への指摘は執筆側(Codex)へ返す。**校閲は Claude、社説の執筆は Codex という
+        # 別ベンダー分離(要件4.5)が、修正セッションで壊れていた。実測: 2026-08-28号の
+        # 校閲記録が引用した社説の一文が、現在の社説に存在しない。校閲側が書き直している。
+        # 社説を校閲側に直させると、書いた本人が自分を検品するのと同じ形になる
+        ed_blockers = [b for b in review.get("blockers", [])
+                       if (b.get("file") or "").startswith("docs/_editorials/")]
+        art_blockers = [b for b in review.get("blockers", [])
+                        if not (b.get("file") or "").startswith("docs/_editorials/")]
+        if ed_blockers:
+            rewrite_editorial(date, number, plan.get("editorial_slug", ""),
+                              plan.get("editorial_brand", ""), ed_blockers)
+        if not art_blockers:
+            continue
         fix = ("校閲AIから以下のブロック指摘がありました。candidates の facts と照合して記事を修正してください。"
                "修正後に derive.py --write と lint を再実行してエラー0にすること。\n"
-               + json.dumps(review.get("blockers", []), ensure_ascii=False, indent=2))
+               "**`docs/_editorials/` には触らないこと。**社説は別のセッションが直します。\n"
+               + json.dumps(art_blockers, ensure_ascii=False, indent=2))
         claude_run(fix, timeout=1200, model=REVIEW_MODEL)
         subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
                        cwd=ROOT, capture_output=True, text=True)
@@ -1325,6 +1519,20 @@ def main() -> int:
             dropped_by_review, unresolved = drop_blocked_articles(date, review, written)
             if dropped_by_review:
                 print(f"校閲ブロックで {len(dropped_by_review)}本を落とす: {dropped_by_review}", flush=True)
+                # 社説の起点記事が落ちたら、社説も書き直す。落とした記事を起点に書いた文章が
+                # 残ると、紙面に無い話から始まる社説になり、次の校閲で必ず止まる
+                if plan.get("editorial_slug") in dropped_by_review:
+                    alive2 = [a for a in written]
+                    nxt = next((a for a in alive2 if a.get("rank") == "lead"), None) or (alive2[0] if alive2 else None)
+                    plan["editorial_slug"] = (nxt or {}).get("slug", "")
+                    plan["editorial_brand"] = (nxt or {}).get("brand", "")
+                    plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+                    print(f"社説の起点が落ちたので {plan['editorial_slug']} で書き直す", flush=True)
+                    rewrite_editorial(date, number, plan["editorial_slug"], plan["editorial_brand"],
+                                      [{"file": f"docs/_editorials/{date}.md",
+                                        "issue": "起点にした記事が校閲で紙面から外れました。"
+                                                 "その記事の話から始まる社説は成立しません。"
+                                                 "残っている記事から書き直してください", "quote": ""}])
                 # **組版をやり直す。**digest は落とした記事を指したままだと lint が
                 # 「digest の slug が同号の記事に存在しない」で落ちるし、既報台帳には
                 # 「発行した」と残る(監査指摘)。台帳は追記なので組版前まで巻き戻してから、

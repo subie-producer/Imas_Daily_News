@@ -21,6 +21,7 @@
 import argparse
 import collections
 import datetime
+import hashlib
 import json
 import os
 import re
@@ -623,8 +624,26 @@ def editorial_prompt(date: str, number: int, editorial_topic: str, brand: str = 
 """
 
 
+def editorial_hash(date: str) -> str:
+    p = ROOT / "docs" / "_editorials" / f"{date}.md"
+    return hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else ""
+
+
+def posts_fingerprint(date: str) -> dict:
+    """その号の記事の中身を控える。社説は記事を読んで書かれるので、
+    **社説を書いた時点**を基準にしないと、書いたあとの変化を捕らえられない。"""
+    return {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md"))}
+
+
+def posts_changed(before: dict, after: dict) -> list[str]:
+    """変わった記事の一覧。**消えた記事も含める**(片側だけを走査すると見逃す)。"""
+    return sorted({n for n in set(before) | set(after) if before.get(n) != after.get(n)})
+
+
 def rewrite_editorial(date: str, number: int, topic: str, brand: str,
-                      blockers: list[dict]) -> None:
+                      blockers: list[dict], must_change: bool = True,
+                      comments: list[dict] | None = None) -> bool:
     """社説へのブロック指摘を、**執筆側(Codex)に**返して直させる。
 
     校閲は Claude、社説の執筆は Codex という別ベンダー分離(要件4.5)は、
@@ -632,14 +651,28 @@ def rewrite_editorial(date: str, number: int, topic: str, brand: str,
     実測: 2026-08-28号の校閲記録が引用した社説の一文が現在の社説に無く、
     校閲側が書き直している。書いた側が自分を検品するのと同じ形になっていた。
     """
+    cm = ("\n\n## 校閲からの助言(ブロックではない。次に活かす)\n"
+          + json.dumps(comments, ensure_ascii=False, indent=2) if comments else "")
     fix = ("\n\n## 校閲からの指摘(この社説はまだ紙面に出せません)\n"
-           + json.dumps(blockers, ensure_ascii=False, indent=2)
+           + json.dumps(blockers, ensure_ascii=False, indent=2) + cm
            + "\n\n**既に書いた `docs/_editorials/" + date + ".md` を、指摘に答える形で書き直してください。**\n"
              "指摘が「紙面に無い事実を書いている」であれば、その記述を落とすか、"
              "本日の記事にある事実だけで成り立つ書き方に変えること。\n"
-             "手帳(stock/columnist.md)は既に更新済みなので、**もう一度は更新しないこと。**")
+             "手帳(stock/columnist.md)は**当日の日誌1行だけを、最終稿に合わせて書き直してよい**。"
+             "行を増やさないこと。ほかの節は触らない")
+    before = editorial_hash(date)
     codex_run(editorial_prompt(date, number, topic, brand) + fix,
               timeout=1200, model=EDITORIAL_MODEL)
+    after = editorial_hash(date)
+    # **書き直されたことを機械で確かめる。**codex_run は終了コードを見ず、
+    # タイムアウトも握りつぶすので、呼び出しが例外を投げてくれない(監査指摘)。
+    # 「指摘に答えて直す」ことを求めた回で中身が変わっていなければ、それは失敗である
+    ok = bool(after) and (after != before or not must_change)
+    if not ok:
+        notify("compose", f"{date}: 社説の書き直しが反映されていない"
+                          f"({'ファイルが消えた' if not after else '内容が変わらなかった'})。"
+                          f"指摘: {(blockers[0].get('issue') if blockers else '')[:80]}", ok=False)
+    return ok
 
 
 def assembly_prompt(date: str, number: int, aborted: list[str]) -> str:
@@ -1437,6 +1470,10 @@ def main() -> int:
         # 社説を書けるのは執筆側だけなので、ここで打ち切って人へ渡す
         notify("compose", f"{date}: 社説が2回とも未作成。**社説を書けるのは執筆側セッションだけ**なので、"
                           f"このまま進めても紙面に社説が載らない。人の判断が要る", ok=False)
+    # **社説が記事を読んだ時点**を基準にする。この後の組版・lint 修正・校閲往復で
+    # 記事が直ると、社説は直る前の事実を引用したままになる(実測: 11号中8号で
+    # 1往復目に記事のブロックが出ており、受注期限・対象人数・人物関係が直っていた)
+    posts_at_editorial = posts_fingerprint(date)
 
     # 1d. 組版: 号スナップショット・台帳更新(lint 自己修正まで)
     #
@@ -1513,26 +1550,67 @@ def main() -> int:
 
     # 往復しても下りなかったブロック指摘は、その記事を落とす。
     # 以前はそのまま発行しており、「出典にない事実」の指摘を残した号が実際に出ている
+    # 記事が往復で直っていたら、社説は**直る前の記事**を読んで書かれている。
+    # 直った記事で書き直し、もう一度校閲に掛ける。ここを飛ばすと、
+    # 直された事実を引用したままの社説が紙面に出る
+    changed_posts = posts_changed(posts_at_editorial, posts_fingerprint(date))
+    if changed_posts and review:
+        try:
+            print(f"社説を書いたあと記事が {len(changed_posts)}本変わった。"
+                  f"組版と社説を取り直す: {changed_posts[:4]}", flush=True)
+            # digest と台帳も、直る前の記事から作られている。台帳は追記なので、
+            # 組版前まで巻き戻してから作り直させる(除外のときと同じ手順)
+            for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
+                (ROOT / rel).write_bytes(pre_assembly[0][rel])
+            print(claude_run(assembly_prompt(date, number, aborted))[-400:], flush=True)
+            ed_comments = [c for c in (review.get("comments") or [])
+                           if (c.get("file") or "").startswith("docs/_editorials/")]
+            rewrite_editorial(date, number, plan.get("editorial_slug", ""),
+                              plan.get("editorial_brand", ""),
+                              [{"file": f"docs/_editorials/{date}.md",
+                                "issue": "この社説を書いたあと、校閲で記事が直りました("
+                                         + "、".join(changed_posts[:6])
+                                         + ")。**直った記事を読み直し**、社説が引用している事実が"
+                                           "いまも紙面にあるか確かめて書き直してください。"
+                                           "問題がなければ、直す必要はありません", "quote": ""}],
+                              must_change=False, comments=ed_comments)
+            subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
+                            "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
+            rounds += 1
+            review = claude_review(date, rounds)
+        except Exception as e:
+            traceback.print_exc()
+            notify("compose", f"{date}: 記事修正後の取り直しに失敗({e})。"
+                              f"社説と digest は修正前の記事を前提にしたままです", ok=False)
+
     dropped_by_review, unresolved = [], []
     if review and review.get("verdict") != "approve":
         try:
             dropped_by_review, unresolved = drop_blocked_articles(date, review, written)
             if dropped_by_review:
                 print(f"校閲ブロックで {len(dropped_by_review)}本を落とす: {dropped_by_review}", flush=True)
-                # 社説の起点記事が落ちたら、社説も書き直す。落とした記事を起点に書いた文章が
-                # 残ると、紙面に無い話から始まる社説になり、次の校閲で必ず止まる
+                # **記事が落ちたら社説を取り直す。**起点かどうかは関係ない。
+                # 社説は全記事を読んで書くので、起点以外を引用していても古くなる
                 if plan.get("editorial_slug") in dropped_by_review:
-                    alive2 = [a for a in written]
+                    alive2 = list(written)
                     nxt = next((a for a in alive2 if a.get("rank") == "lead"), None) or (alive2[0] if alive2 else None)
                     plan["editorial_slug"] = (nxt or {}).get("slug", "")
                     plan["editorial_brand"] = (nxt or {}).get("brand", "")
                     plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-                    print(f"社説の起点が落ちたので {plan['editorial_slug']} で書き直す", flush=True)
-                    rewrite_editorial(date, number, plan["editorial_slug"], plan["editorial_brand"],
-                                      [{"file": f"docs/_editorials/{date}.md",
-                                        "issue": "起点にした記事が校閲で紙面から外れました。"
-                                                 "その記事の話から始まる社説は成立しません。"
-                                                 "残っている記事から書き直してください", "quote": ""}])
+                    print(f"社説の起点が落ちたので {plan['editorial_slug']} へ差し替える", flush=True)
+                    why = ("起点にした記事が校閲で紙面から外れました。その記事の話から始まる社説は"
+                           "成立しません。残っている記事から書き直してください")
+                    must = True
+                else:
+                    why = ("この社説を書いたあと、次の記事が校閲で紙面から外れました("
+                           + "、".join(dropped_by_review[:6])
+                           + ")。社説がその記事に触れているなら、書き直してください。"
+                             "触れていなければ直す必要はありません")
+                    must = False
+                rewrite_editorial(date, number, plan.get("editorial_slug", ""),
+                                  plan.get("editorial_brand", ""),
+                                  [{"file": f"docs/_editorials/{date}.md", "issue": why, "quote": ""}],
+                                  must_change=must)
                 # **組版をやり直す。**digest は落とした記事を指したままだと lint が
                 # 「digest の slug が同号の記事に存在しない」で落ちるし、既報台帳には
                 # 「発行した」と残る(監査指摘)。台帳は追記なので組版前まで巻き戻してから、

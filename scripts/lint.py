@@ -19,6 +19,7 @@ import re
 import subprocess
 import sys
 import time
+import unicodedata
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -188,6 +189,38 @@ def check_source_types(rep, path, fm):
 
 # ---- 時制 lint ---------------------------------------------------------------
 
+# 紙面が読者に届く時刻。号日付でもこれより前に終わることは、読む時点では終わっている
+ISSUE_HOUR = 6
+# 「これから終わる/まだ間に合う」と読める語。過去形(終了した・締め切られた)は含めない
+UPCOMING_WORDS = ("終了する", "終了予定", "まで開催", "まで実施", "開催されている", "開催中",
+                  "受付中", "受け付けている", "販売中", "お見逃しなく", "間に合", "急ぎ",
+                  "できる", "本日まで", "まもなく")
+
+
+def check_before_issue(rep, path, text, edition_date, where):
+    """号日付の 06:00 より前に終わることを、これからのこととして書いていないか。
+
+    紙面は 06:00 に出る。4時59分に終わるものを当日号で「本日未明に終了する」と
+    書くと、読者が読む時点では既に終わっており、できることは何も無い
+    (2026-08-30号の実例)。ゲームの締切は 4:59 が定番なので、繰り返し起きる。
+    """
+    md = rf"{edition_date.month}月{edition_date.day}日"
+    # 全角の数字・コロンで書かれることがあるので揃えてから見る
+    flat = unicodedata.normalize("NFKC", text or "")
+    for sentence in re.split(r"[。\n]", flat):
+        # 発行前を指す言い方は2通り。号日付+06:00より前の時刻か、「本日未明」の類
+        marks = [m.group(0) for m in re.finditer(rf"{md}[^\d]{{0,8}}(\d{{1,2}})[:時](\d{{2}})", sentence)
+                 if int(m.group(1)) < ISSUE_HOUR]
+        marks += [w for w in ("本日未明", "今日未明", "本日早朝", "今朝未明") if w in sentence]
+        if not marks:
+            continue
+        hit = [w for w in UPCOMING_WORDS if w in sentence]
+        if hit:
+            rep.error(path, f"発行前の時刻({where}): 「{marks[0]}」は発行 {ISSUE_HOUR}:00 より前なのに"
+                            f"「{'/'.join(hit)}」と、これからのこととして書いている。"
+                            f"過去として書くか、前日の号で扱う(規程12)")
+
+
 def check_tense(rep, path, text, edition_date, where):
     """相対表現(本日/昨日/明日)と絶対日付(M月D日)が同一文内で矛盾しないか。"""
     for sentence in re.split(r"[。\n]", text or ""):
@@ -330,6 +363,7 @@ def main() -> int:
         edate = datetime.date.fromisoformat(fm["edition"])
         for where, text in (("title", fm["title"]), ("lede", fm["lede"]), ("本文", body)):
             check_tense(rep, path, text, edate, where)
+            check_before_issue(rep, path, text, edate, where)
         # 鮮度検査(編集規程12): 号日付より大きく過去の event_date は「終了済み・過年度の
         # 話題の新報扱い」の徴候(第0号期に2025年の話題を2本発行した事故に由来)。
         # 継続中キャンペーンの開始日を event_date に持つ正当な記事が既存最大21日過去のため、

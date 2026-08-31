@@ -18,7 +18,7 @@ sources:
     type: 未確認
     url: https://raduga.pgw.jp/mililab/
   - label: ASOBI STAGE東京公演ページ
-    type: 未確認
+    type: 準公式
     url: https://asobistage.asobistore.jp/event/765as_dualtwin_haneda/ticket
   - label: ファミ通亜美真美公演リポート
     type: 報道

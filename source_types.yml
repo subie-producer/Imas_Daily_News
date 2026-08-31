@@ -48,6 +48,7 @@ semi_official_domains:
   - shinycolors.lantis.jp
   - shop.asobistore.jp                    # アソビストア
   - asobistory.asobistore.jp
+  - asobistage.asobistore.jp            # アソビステージ(公式配信プラットフォーム)
   - gamemusic.bn-ent.net                  # バンダイナムコのゲームミュージックレーベル
   - bandainamco-am.co.jp                  # バンナムAM(上の official_paths 以外)
   - parks2.bandainamco-am.co.jp
@@ -59,6 +60,7 @@ press_domains:
   - famitsu.com
   - gamebiz.jp
   - animatetimes.com
+  - animeanime.jp         # アニメ！アニメ！
   - game.watch.impress.co.jp
   - hobby.watch.impress.co.jp
   - inside-games.jp
@@ -90,6 +92,7 @@ secondary_domains:
   - collabo-cafe.com      # コラボ情報のまとめ
   - tcg-supply-navi.com   # サプライ情報のアフィリエイト記事(販売元はアソビストア)
   - eventernote.com       # イベント情報サービス。公演の主催者ではない
+  - wikiwiki.jp           # ファン運営の攻略wiki
 
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
@@ -121,7 +124,10 @@ party_domains:
   - comic-walker.com
   - daikokuyu.com
   - eeo.today
+  - eplus.jp              # イープラス(チケット販売・受付)
   - hmv.co.jp
+  - joysound.com          # JOYSOUND(カラオケ事業者)
+  - tokyo-joypolis.com    # 東京ジョイポリス(会場)
   - karatetsu.com
   - kuji.kotobukiya.co.jp
   - mining-base.co.jp

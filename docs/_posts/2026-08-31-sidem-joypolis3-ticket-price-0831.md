@@ -2,7 +2,7 @@
 slug: sidem-joypolis3-ticket-price-0831
 edition: 2026-08-31
 brand: sidem
-src: 未確認
+src: 報道
 rank: large
 corrected: false
 corrections: []
@@ -13,10 +13,10 @@ tags: [SideM, コラボ, チケット, イベント]
 sources:
   - label: 東京ジョイポリス公式特設ページ
     url: https://tokyo-joypolis.com/event/sidem_jp2026/index.html
-    type: 未確認
+    type: 当事者
   - label: アニメ！アニメ！掲載記事
     url: https://animeanime.jp/article/2026/08/30/102538.html
-    type: 未確認
+    type: 報道
 event_date: 2026-08-30
 ---
 

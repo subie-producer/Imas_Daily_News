@@ -2,7 +2,7 @@
 slug: gaku-nee-itte-momentum
 edition: 2026-08-31
 brand: gaku
-src: 未確認
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -16,7 +16,7 @@ sources:
     type: 二次情報
   - url: https://www.joysound.com/web/karaoke/ranking/trends/all
     label: JOYSOUND新曲トレンドランキング
-    type: 未確認
+    type: 当事者
 event_date: 2026-08-26
 ---
 

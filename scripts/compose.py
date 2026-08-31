@@ -39,8 +39,8 @@ import tags as tags_lib
 from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, EDITORIAL_MODEL,
                      COMPOSE_ARTICLE_MAX_BUDGET_USD,
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
-                     checkout_edition_branch, commit_and_push, edition_date,
-                     extract_json_array, git, notify, notify_crash, now_jst)
+                     checkout_edition_branch, classify_source, commit_and_push,
+                     edition_date, extract_json_array, git, notify, notify_crash, now_jst)
 
 PAPER_STAGE = None  # main() で .env から
 
@@ -389,7 +389,16 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 ## 出力
 `docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
 - frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']}(**仮の値**。発行前に機械が付け直します) / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
-- title(全角換算〜28字)・lede(1文。字数指定なし。記事の中身を1文で言い切る)・tags(2〜4個。下記「タグ語彙」に従う)・sources(素材の url から。label は内容がわかる短い日本語、type は各候補の source_type)・event_date(素材にあれば)は自分で書く
+- title(全角換算〜28字)・lede(1文。字数指定なし。記事の中身を1文で言い切る)・tags(2〜4個。下記「タグ語彙」に従う)・sources・event_date(素材にあれば)は自分で書く
+- **sources の `type` は自分で判断しない。**次のコマンドで引いた値をそのまま書く:
+
+      python3 scripts/source_type.py <url> [<url> ...]
+
+  種別は `source_types.yml` が決める。素材の `source_type` は収集時点の申告で、
+  古い値が残っていることがある(実測: アソビストアの受注ページを「公式」と
+  申告した候補があり、毎回 lint が赤くなっていた)。
+  **自分で見つけて追加した出典も、必ずこのコマンドで引く。**
+  lint は同じ表と照合するので、ここで引いた値なら食い違わない
 - 本文の**字数指定はありません。**確認できた事実を、水増しせずに書けるだけ書いてください。紙面のどの枠に入れるかは、書き上がった長さと話題の大きさから機械が決めます。切り口: {art['angle']}{trig}{roundup}{culture}
 
 ## タグ語彙(タグは索引・検索に使われる。表記ゆれは索引を壊すため厳守)
@@ -710,6 +719,14 @@ def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> st
         ["claude", "-p", prompt, "--model", model or CLAUDE_MODEL, "--dangerously-skip-permissions",
          "--max-budget-usd", COMPOSE_WHOLE_MAX_BUDGET_USD],
         capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
+    # **予算切れは黙って通り過ぎていた。**組版セッションが途中で打ち切られ、
+    # digest と台帳が半端なまま lint が16件赤くなった日がある(2026-08-31)。
+    # 戻り値を見ないので呼び出し側は気づけない。ここで鳴らす
+    out = (r.stdout or "") + (r.stderr or "")
+    if "Exceeded USD budget" in out or r.returncode != 0:
+        why = "予算上限に到達" if "Exceeded USD budget" in out else f"exit {r.returncode}"
+        notify("compose", f"Claude セッションが途中で終了({why})。"
+                          f"この工程の成果物は不完全な可能性がある:\n{out.strip()[-300:]}", ok=False)
     return r.stdout
 
 
@@ -1196,7 +1213,9 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
             written_before.append(art)
             continue
         materials = [cands[cid] for cid in art["candidate_ids"]]
-        src = weakest_src(c.get("source_type", "未確認") for c in materials)
+        # src も**申告ではなく判定表**から出す。素材の source_type には収集時点の
+        # 古い申告が残っており、そのまま渡すと執筆が写して lint が毎回赤くなる
+        src = weakest_src(classify_source(c.get("url", "") or "") for c in materials)
         dks = {c.get("dedup_key") for c in materials} | {art.get("dedup_key")}
         facts = [f for dk in dks if dk in stories for f in stories[dk]]
         jobs.append((art, src, article_prompt(date, art, materials, facts,
@@ -1518,6 +1537,14 @@ def main() -> int:
             commit_and_push(branch, f"compose {date}: lint未解消(要人間判断)", "compose")
             return 1
 
+    # **ここで一度コミットする。**以前はコミットが最後の1回しか無く、
+    # そのあとの工程で落ちると号が丸ごと消えた(2026-08-31: systemd の起動
+    # タイムアウトで殺され、記事40本・社説・号スナップショットが未コミットのまま残り、
+    # release も collect も「作業ツリーが汚れている」で止まった)。
+    # 校閲前の紙面でも、release は approve を見て発行を止めるので出てしまうことはない。
+    # 途中で死んでも、人が lint と校閲記録を見て確定できる状態を残す
+    commit_and_push(branch, f"compose {date}: 紙面生成(校閲前・lint green)", "compose")
+
     # 3. 校閲往復
     rounds = 0
     review = None
@@ -1554,26 +1581,40 @@ def main() -> int:
     # 直った記事で書き直し、もう一度校閲に掛ける。ここを飛ばすと、
     # 直された事実を引用したままの社説が紙面に出る
     changed_posts = posts_changed(posts_at_editorial, posts_fingerprint(date))
-    if changed_posts and review:
+    # **参照している記事が変わったときだけ**やり直す。全部の変更でやり直すと、
+    # 組版セッション+社説+校閲でおよそ40分伸び、systemd の起動タイムアウトを
+    # 超えて号ごと落ちた(2026-08-31)。digest は号スナップショットの中身で、
+    # 社説は本文で、それぞれ参照の有無を機械で確かめられる
+    ed_txt = (ROOT / "docs" / "_editorials" / f"{date}.md")
+    ed_body = ed_txt.read_text(encoding="utf-8") if ed_txt.exists() else ""
+    ed_file = ROOT / "docs" / "_editions" / f"{date}.md"
+    ed_snap = ed_file.read_text(encoding="utf-8") if ed_file.exists() else ""
+    slugs = [n[len(date) + 1:].removesuffix(".md") for n in changed_posts]
+    touches_digest = [s for s in slugs if s in ed_snap]
+    touches_editorial = [s for s in slugs if s in ed_body]
+    if changed_posts and review and (touches_digest or touches_editorial):
         try:
-            print(f"社説を書いたあと記事が {len(changed_posts)}本変わった。"
-                  f"組版と社説を取り直す: {changed_posts[:4]}", flush=True)
-            # digest と台帳も、直る前の記事から作られている。台帳は追記なので、
-            # 組版前まで巻き戻してから作り直させる(除外のときと同じ手順)
-            for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
-                (ROOT / rel).write_bytes(pre_assembly[0][rel])
-            print(claude_run(assembly_prompt(date, number, aborted))[-400:], flush=True)
+            print(f"記事が {len(changed_posts)}本変わり、うち digest {len(touches_digest)}件 / "
+                  f"社説 {len(touches_editorial)}件が参照している。取り直す", flush=True)
+            commit_and_push(branch, f"compose {date}: 校閲往復のあと(取り直し前)", "compose")
             ed_comments = [c for c in (review.get("comments") or [])
                            if (c.get("file") or "").startswith("docs/_editorials/")]
-            rewrite_editorial(date, number, plan.get("editorial_slug", ""),
-                              plan.get("editorial_brand", ""),
-                              [{"file": f"docs/_editorials/{date}.md",
-                                "issue": "この社説を書いたあと、校閲で記事が直りました("
-                                         + "、".join(changed_posts[:6])
-                                         + ")。**直った記事を読み直し**、社説が引用している事実が"
-                                           "いまも紙面にあるか確かめて書き直してください。"
-                                           "問題がなければ、直す必要はありません", "quote": ""}],
-                              must_change=False, comments=ed_comments)
+            if touches_digest:
+                # digest と台帳も直る前の記事から作られている。台帳は追記なので、
+                # 組版前まで巻き戻してから作り直させる(除外のときと同じ手順)
+                for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
+                    (ROOT / rel).write_bytes(pre_assembly[0][rel])
+                print(claude_run(assembly_prompt(date, number, aborted))[-400:], flush=True)
+            if touches_editorial:
+                rewrite_editorial(date, number, plan.get("editorial_slug", ""),
+                                  plan.get("editorial_brand", ""),
+                                  [{"file": f"docs/_editorials/{date}.md",
+                                    "issue": "この社説が触れている記事が、校閲で直りました("
+                                             + "、".join(touches_editorial[:6])
+                                             + ")。**直った記事を読み直し**、社説が引用している事実が"
+                                               "いまも紙面にあるか確かめて書き直してください。"
+                                               "問題がなければ、直す必要はありません", "quote": ""}],
+                                  must_change=False, comments=ed_comments)
             subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
                             "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
             rounds += 1

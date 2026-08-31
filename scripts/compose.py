@@ -465,6 +465,27 @@ x.com の url は取得できないので実行不要です(Grok 観測を信頼
 **記事の存在理由になる中核の事実が確認できない場合、または話題が過年度・終了済みと判明した場合は、
 ファイルを作らず「ABORT: 理由」とだけ出力して終了すること。**
 
+## 書けないと分かったら、書かずに落としてよい
+
+計画に載っているからといって、無理に記事の形にしない。
+**素材を読んだ結果「これはニュースになっていない」と分かったら、あなたが落とす。**
+選定は素材の要約しか見ておらず、あなたは実物を読んでいる。判断できるのはあなただけである。
+
+次に当たると分かったら、ファイルを作らず `ABORT: 理由` とだけ出力して終わる。
+
+- **今日新しく起きたことも、これから起きることも無い。**
+  終わったイベントの物販ページが「掲載されている」だけ、既報と同じ内容が別の場所にもある、
+  といった話題は記事にならない
+  (実測: 8月13〜16日に終わったイベントのグッズ販売ページが「掲載されている」とだけ書いた
+  記事が出て、校閲に5往復ブロックされ、その日の発行が止まった)
+- **書ける中身が「ページが存在する」だけ。**商品名も価格も期限も無いなら、
+  読者は何も受け取らない
+- 素材が公式の告知に到達しておらず、探しても届かない(前述)
+
+**落とすことは失敗ではない。**紙面の本数は目標ではない(規程11は「基準を満たす話題を
+落とすな」であって「基準を満たさない話題を書け」ではない)。
+中身の無い記事を1本増やすより、落としたほうが紙面はよくなる。
+
 ## 出力
 `docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
 - frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']}(**仮の値**。発行前に機械が付け直します) / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
@@ -1753,68 +1774,80 @@ def main() -> int:
             notify("compose", f"{date}: 記事修正後の取り直しに失敗({e})。"
                               f"社説と digest は修正前の記事を前提にしたままです", ok=False)
 
+    # 校閲が最後まで下ろさなかったブロックは、その記事を落として取り直す。
+    #
+    # **これを繰り返す。**以前は1回で打ち切っていたため、落として取り直した校閲が
+    # 別の記事に新しい指摘を出すと、そこで「機械で落とせなかった」と諦めていた
+    # (2026-09-01: 2本を落として再校閲したら3本目の指摘が出て、発行が止まった)。
+    # 校閲は毎回すべてを見直すので、1回で収束する保証がない。
+    # 落とせるものが無くなるか approve になるまで回す。
+    DROP_PASSES = 3
     dropped_by_review, unresolved = [], []
-    if review and review.get("verdict") != "approve":
+    for _pass in range(DROP_PASSES):
+        if not review or review.get("verdict") == "approve":
+            break
         try:
-            dropped_by_review, unresolved = drop_blocked_articles(date, review, written)
-            if dropped_by_review:
-                print(f"校閲ブロックで {len(dropped_by_review)}本を落とす: {dropped_by_review}", flush=True)
-                # **記事が落ちたら社説を取り直す。**起点かどうかは関係ない。
-                # 社説は全記事を読んで書くので、起点以外を引用していても古くなる
-                if plan.get("editorial_slug") in dropped_by_review:
-                    alive2 = list(written)
-                    nxt = next((a for a in alive2 if a.get("rank") == "lead"), None) or (alive2[0] if alive2 else None)
-                    plan["editorial_slug"] = (nxt or {}).get("slug", "")
-                    plan["editorial_brand"] = (nxt or {}).get("brand", "")
-                    plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-                    print(f"社説の起点が落ちたので {plan['editorial_slug']} へ差し替える", flush=True)
-                    why = ("起点にした記事が校閲で紙面から外れました。その記事の話から始まる社説は"
-                           "成立しません。残っている記事から書き直してください")
-                    must = True
-                else:
-                    why = ("この社説を書いたあと、次の記事が校閲で紙面から外れました("
-                           + "、".join(dropped_by_review[:6])
-                           + ")。社説がその記事に触れているなら、書き直してください。"
-                             "触れていなければ直す必要はありません")
-                    must = False
-                rewrite_editorial(date, number, plan.get("editorial_slug", ""),
-                                  plan.get("editorial_brand", ""),
-                                  [{"file": f"docs/_editorials/{date}.md", "issue": why, "quote": ""}],
-                                  must_change=must)
-                # **組版をやり直す。**digest は落とした記事を指したままだと lint が
-                # 「digest の slug が同号の記事に存在しない」で落ちるし、既報台帳には
-                # 「発行した」と残る(監査指摘)。台帳は追記なので組版前まで巻き戻してから、
-                # 生き残った記事だけで作り直させる
-                # 台帳を組版前へ戻し(追記されているため)、記事を消した状態で組み直す
-                for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
-                    (ROOT / rel).write_bytes(pre_assembly[0][rel])
-                assign_ranks(date, plan, written, keep_lead=True)
-                print(claude_run(assembly_prompt(date, number, aborted))[-600:], flush=True)
-                subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
-                                "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
-                # 組版が落とした記事を書き戻していないか機械で確かめる
-                ed = ROOT / "docs" / "_editions" / f"{date}.md"
-                back = [s for s in dropped_by_review
-                        if ed.exists() and s in ed.read_text(encoding="utf-8")]
-                if back:
-                    raise RuntimeError(f"組版のやり直しが、落とした記事を号に戻した: {back}")
-                # 落としたあとの紙面で取り直す。ここを省くと release のゲートが
-                # 落とす前の verdict を見て発行を止めてしまう
-                rounds += 1
-                review = claude_review(date, rounds)
-                if review.get("verdict") != "approve":
-                    unresolved += [f"{b.get('file')}: {(b.get('issue') or '')[:120]}"
-                                   for b in review.get("blockers") or []]
+            dropped, unresolved = drop_blocked_articles(date, review, written)
+            if not dropped:
+                break  # 機械で落とせる指摘が残っていない(一面・社説・対象不明)
+            dropped_by_review += dropped
+            print(f"校閲ブロックで {len(dropped)}本を落とす({_pass + 1}巡目): {dropped}", flush=True)
+            commit_and_push(branch, f"compose {date}: ブロック記事を除外({_pass + 1}巡目)", "compose")
+
+            # **記事が落ちたら社説を取り直す。**起点かどうかは関係ない。
+            # 社説は全記事を読んで書くので、起点以外を引用していても古くなる
+            if plan.get("editorial_slug") in dropped:
+                nxt = (next((a for a in written if a.get("rank") == "lead"), None)
+                       or (written[0] if written else None))
+                plan["editorial_slug"] = (nxt or {}).get("slug", "")
+                plan["editorial_brand"] = (nxt or {}).get("brand", "")
+                plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+                print(f"社説の起点が落ちたので {plan['editorial_slug']} へ差し替える", flush=True)
+                why = ("起点にした記事が校閲で紙面から外れました。その記事の話から始まる社説は"
+                       "成立しません。残っている記事から書き直してください")
+                must = True
+            else:
+                why = ("この社説を書いたあと、次の記事が校閲で紙面から外れました("
+                       + "、".join(dropped[:6])
+                       + ")。社説がその記事に触れているなら、書き直してください。"
+                         "触れていなければ直す必要はありません")
+                must = False
+            rewrite_editorial(date, number, plan.get("editorial_slug", ""),
+                              plan.get("editorial_brand", ""),
+                              [{"file": f"docs/_editorials/{date}.md", "issue": why, "quote": ""}],
+                              must_change=must)
+
+            # **組版をやり直す。**digest が落とした記事を指したままだと lint が落ちるし、
+            # 既報台帳には「発行した」と残る。台帳は追記なので組版前まで巻き戻してから、
+            # 生き残った記事だけで作り直させる
+            for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
+                (ROOT / rel).write_bytes(pre_assembly[0][rel])
+            assign_ranks(date, plan, written, keep_lead=True)
+            print(claude_run(assembly_prompt(date, number, aborted))[-400:], flush=True)
+            subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
+                            "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
+            # 組版が落とした記事を書き戻していないか機械で確かめる
+            ed_file = ROOT / "docs" / "_editions" / f"{date}.md"
+            back = [s for s in dropped_by_review
+                    if ed_file.exists() and s in ed_file.read_text(encoding="utf-8")]
+            if back:
+                raise RuntimeError(f"組版のやり直しが、落とした記事を号に戻した: {back}")
+
+            rounds += 1
+            review = claude_review(date, rounds)
         except Exception as e:
             # **途中で落ちたら全部戻す。**記事を消した後に組版のやり直しが失敗すると、
-            # 「記事だけ欠けて digest は古いまま」という壊れた紙面が残る(監査指摘)。
-            # 組版前の状態へ戻し、未 approve のまま release のゲートに委ねる
+            # 「記事だけ欠けて digest は古いまま」という壊れた紙面が残る
             traceback.print_exc()
             restore_files(pre_assembly)
             subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
                             "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
             dropped_by_review = []
             unresolved = [f"ブロック記事の除外処理が失敗({e})。紙面は組版直後の状態へ戻した"]
+            break
+    if review and review.get("verdict") != "approve" and not unresolved:
+        unresolved = [f"{b.get('file')}: {(b.get('issue') or '')[:120]}"
+                      for b in review.get("blockers") or []]
 
     # 校閲の修正で本文の長さが変わるため、枠を当て直す。
     # **一面は動かさない**(インパクトで決めた枠であり、号スナップショットの

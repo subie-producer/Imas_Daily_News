@@ -1,0 +1,86 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-himeno-kanon-debut-livestream",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "姫野かのん新キャスト・伊能幸輝さんのお披露目特別生配信が本日19時から実施、村瀬歩さんからの交代の経緯とあわせて報じる",
+      "lead_score": 60,
+      "dedup_key": "sidem-himeno-kanon-casting",
+      "candidate_ids": [
+        "202608311835-explore-14",
+        "202608311835-explore-15",
+        "sched-2026-09-01-sidem-himeno-kanon-casting-開始"
+      ]
+    },
+    {
+      "slug": "sidem-cardfolio-vol2-release",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "カードフォリオSideM ver. vol.2が9月12日発売、11th STAGE会場での先行販売内容(価格・封入内容・新規描き下ろし8種・オンライン販売予定なし)が判明",
+      "lead_score": 25,
+      "dedup_key": "sidem-cardfolio-vol2-2026",
+      "candidate_ids": [
+        "202609010227-grok-40",
+        "202609010227-grok-50"
+      ]
+    },
+    {
+      "slug": "sidem-joypolis3-show-details",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM in JOYPOLIS 3のスペシャルショー新情報(全16ユニット3Dライブ映像・セットリスト刷新・アンバサダーによる前後ナレーション)が判明",
+      "lead_score": 15,
+      "dedup_key": "sidem-joypolis-3-2026",
+      "candidate_ids": [
+        "202608311234-explore-8"
+      ]
+    },
+    {
+      "slug": "sidem-royal-chess-lounge-nagoya-closing",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM×「Royal Chess Lounge」コラボカフェ名古屋栄店が本日最終日",
+      "lead_score": 10,
+      "dedup_key": "sidem-royal-chess-lounge-2026",
+      "candidate_ids": [
+        "sched-2026-09-01-sidem-royal-chess-lounge-2026-終了"
+      ]
+    },
+    {
+      "slug": "sidem-11th-stage-comment-relay",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM 11th STAGE意気込みコメントリレーに白井悠介さん(若里春名役)・深町寿成さん(黒野玄武役)が新たに追加",
+      "lead_score": 10,
+      "dedup_key": "sidem-11th-stage-2026",
+      "candidate_ids": [
+        "202609010227-grok-39"
+      ]
+    },
+    {
+      "slug": "sidem-315shop-lottery-stock-update",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "315!!!SHOPの抽選くじ在庫状況が更新、SideM全16種アクリルボードのA賞ラインナップなど現在の在庫を案内",
+      "lead_score": 5,
+      "dedup_key": "315shop-lottery-inventory-20260831",
+      "candidate_ids": [
+        "202609010227-explore-19"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-howanui-craneprize-2026",
+      "reason": "既報",
+      "note": "2026-08-28付で商品名・vol.1/vol.2ラインナップ・登場日を既報済み。新候補はユニット名での言い換えのみで新事実なし、登場日(8/29)も発行日時点で既に経過"
+    },
+    {
+      "dedup_key": "sidem-stage-costume-museum-goods-2026",
+      "reason": "既報",
+      "note": "WEB受注期間・価格・お届け時期は既報(stock/stories.yml sidem-stage-costume-museum)と一致。受注締切8/30も発行日9/1時点で既に終了しており本日読者ができることがない"
+    }
+  ],
+  "cross_brand": []
+}

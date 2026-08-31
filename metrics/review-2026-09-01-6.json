@@ -1,0 +1,22 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-01-cg-deresute-ssr-scout-challenge-september.md",
+   "issue": "分量不足: 本文132字(small rank下限: 250字)。ガシャの対象アイドル・開催期間など出典にある詳細情報を補充できるか確認してください"
+  },
+  {
+   "file": "docs/_posts/2026-09-01-cg-kirari-birthday.md",
+   "issue": "分量不足: 本文84字(small rank下限: 250字)。ただし誕生日記事は簡潔でも成立するため、このままでも問題ありません"
+  },
+  {
+   "file": "docs/_posts/2026-09-01-dsva-manaka-hakuno-jsp3-collab-0901.md",
+   "issue": "分量不足: 本文146字(small rank下限: 250字)。配信内容・ゲーム詳細などを出典から補充できるか確認"
+  },
+  {
+   "file": "docs/_posts/2026-09-01-shiny-hbtk-september-mc-start.md",
+   "issue": "分量不足: 本文75字(small rank下限: 250字)。放送スケジュール・配信プラットフォームなど詳細情報があれば補充できます"
+  }
+ ]
+}

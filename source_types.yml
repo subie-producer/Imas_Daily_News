@@ -47,6 +47,7 @@ semi_official_domains:
   - lantis.jp                             # ランティス
   - shinycolors.lantis.jp
   - shop.asobistore.jp                    # アソビストア
+  - webstore.asobistore.jp                # アソビストア(別ドメイン)
   - asobistory.asobistore.jp
   - asobistage.asobistore.jp            # アソビステージ(公式配信プラットフォーム)
   - gamemusic.bn-ent.net                  # バンダイナムコのゲームミュージックレーベル
@@ -166,6 +167,7 @@ x_accounts:
   公式:
     - imas_official                   # アイドルマスター公式
     - imas_CGofficial                 # シンデレラガールズ
+    - imascg_stage                    # シンデレラガールズ ステージ
     - imasml_theater                  # ミリオンライブ! シアターデイズ
     - imasml_765PRO                   # ミリオンライブ! 765PRO
     - imassc_official                 # シャイニーカラーズ

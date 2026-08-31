@@ -1,0 +1,70 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-rinami-kimisemi-figure-preorder",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "姫崎莉波「キミとセミブルーVer.」1/7スケールフィギュアの予約情報(通常版・オイル入りアクリルブロック付きの価格差、衣装・造形の見どころ)",
+      "lead_score": 15,
+      "dedup_key": "gaku-rinami-kimisemi-figure-2026",
+      "candidate_ids": ["202608312333-explore-16"]
+    },
+    {
+      "slug": "gaku-shirube-fukuoka-live-guide",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "LIVE TOUR -標- 福岡公演(9/5・6)の開場・開演時刻と会場物販・整理券の来場ガイド。チケット販売自体は既報のため、新たに判明した当日の時刻・物販運用に絞って報じる",
+      "lead_score": 60,
+      "dedup_key": "gaku-live-tour-shirube-fukuoka-2026",
+      "candidate_ids": ["202609010227-grok-31", "202609010227-grok-32"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gaku-prize-2026-espresto",
+      "reason": "既報",
+      "note": "十王星南・雨夜燕のESPRESTOは8月28日付で既報(gaku-espresto-senan-tsubame-2026)。展開日(9/3・9/10)は既に報じ済みで、今回の追加はサイズ・イラスト出典など細部のみ。本日のトリガーもなし"
+    },
+    {
+      "dedup_key": "gaku-hatsuboshi-musicfestival-bluray-2026",
+      "reason": "その他",
+      "note": "アソビストア商品ページ記載の受注期間は「2026年3月1日〜2026年8月31日」。stock記載の日次カウントダウン(8/28時点で「あと3日」)とも整合し、締切は8/31。9/1には何も起きない"
+    },
+    {
+      "dedup_key": "gaku-hatsuboshi-store-free-entry-2026",
+      "reason": "出典不足",
+      "note": "情報源はYahooリアルタイム検索経由の二次情報でverify=unconfirmed、公式アカウントの一次発信に未到達。対象日も8/31で本日号の発行時点(9/1 06:00)では既に過去"
+    },
+    {
+      "dedup_key": "gaku-shirube-fukui-day1-fan-report-2026",
+      "reason": "個人の話題",
+      "note": "note個人ブログの参加レポート(未確認)。個人のSNS/ブログ投稿は単体記事化しない(規程4・5)"
+    },
+    {
+      "dedup_key": "gaku-star-mine-2026",
+      "reason": "既報",
+      "note": "「Star-mine」配信は8月30日付で既報(gaku-star-mine-2026)。作詞作曲編曲(じん)含め新事実なし"
+    },
+    {
+      "dedup_key": "gaku-ichiban-kuji-part6-2026",
+      "reason": "既報",
+      "note": "一番くじPart6の全ラインナップ・価格・取扱店は8月29日付で既報(gaku-ichiban-kuji-part6-2026)。今回の候補は同内容の再掲"
+    },
+    {
+      "dedup_key": "gaku-kuji-part6-2026",
+      "reason": "既報",
+      "note": "上と同一の一番くじPart6ラインナップを別メディア(inside-games)が再掲したもの。8月29日付で既報済み、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-live-tour-shirube-fukuoka-goods-2026",
+      "reason": "重複",
+      "note": "gaku-live-tour-shirube-fukuoka-2026の記事に統合(同一公演の来場ガイドとして開場・開演時刻とあわせて報じる)"
+    },
+    {
+      "dedup_key": "gakumas-hatsuhoshi-ongakusai-bd-2026",
+      "reason": "その他",
+      "note": "続報予約の日付誤り。stock記載の日次カウントダウンは8/26時点「あと6日」〜8/28時点「あと3日」で推移しており、8/28+3日=8/31が実際の締切(アソビストア商品ページの受注期間「〜8月31日」とも一致)。9/1(本日)には受注に関して何も起きない。8/31号で扱うべき話題だった(規程12と同型の事故)"
+    }
+  ],
+  "cross_brand": []
+}

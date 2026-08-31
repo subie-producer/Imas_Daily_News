@@ -1,0 +1,81 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-manaka-hakuno-jsp3-collab-0901",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "灯里愛夏が9/1 22時から今酒ハクノと『日本事故物件監視協会3』特別手当最終マップに初のマルチプレイで挑む配信を予告",
+      "lead_score": 20,
+      "dedup_key": "valiv-manaka-hakuno-jsp3-collab-20260901",
+      "candidate_ids": ["sched-2026-09-01-valiv-manaka-hakuno-jsp3-collab-20260901-開始"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "valiv-cosmo-birthday-2026",
+      "reason": "既報",
+      "note": "限定グッズ付き現地LVチケット一般先着8/31 12:00開始・価格9,000円・会場は stock/stories.yml cosmo-birthday-online-live-2026 で8/24付で既報。新事実なし"
+    },
+    {
+      "dedup_key": "cosmo-birthday-live-lv-2026",
+      "reason": "重複",
+      "note": "valiv-cosmo-birthday-2026と同一施策(現地LVチケット一般先着販売開始)"
+    },
+    {
+      "dedup_key": "valiv-weekly-schedule-2026-08-31",
+      "reason": "既報",
+      "note": "内容はチケット一般先着販売とシチュエーションボイス販売の告知のみで、いずれも既報。新事実なし"
+    },
+    {
+      "dedup_key": "valiv-online-1on1-12-2026",
+      "reason": "既報",
+      "note": "「1on1最終日終了」は stock/stories.yml dsva-valiv-1on1-12th-2026(8/30付既報)と同一事実"
+    },
+    {
+      "dedup_key": "va-liv-cosmo-birthday-live-2026-lv-general",
+      "reason": "重複",
+      "note": "valiv-cosmo-birthday-2026と同一施策(現地LVチケット一般先着販売開始)"
+    },
+    {
+      "dedup_key": "cosmo-channel-update-2026-08-30",
+      "reason": "出典不足",
+      "note": "出典はvstats.jp(非公式の集計サイト、未確認)のみで公式発表に到達していない。編集規程2により不採用"
+    },
+    {
+      "dedup_key": "valiv-online-1on1-12-manaka-2026",
+      "reason": "個人の話題",
+      "note": "個人のnote記事によるファンの1on1体験談。個人のSNS/ブログ投稿は単体で記事化しない(規程4・5)。事実自体も8/30付で既報"
+    },
+    {
+      "dedup_key": "valiv-online-1on1-12-cosmo-2026",
+      "reason": "個人の話題",
+      "note": "個人のはてなブログによるファンの1on1体験談。規程4・5により単体記事化しない"
+    },
+    {
+      "dedup_key": "valiv-online-1on1-12-manaka-iwsf-talk-2026",
+      "reason": "個人の話題",
+      "note": "個人のnote記事によるファンの1on1体験談。規程4・5により単体記事化しない"
+    },
+    {
+      "dedup_key": "cosmo-birthday-live-lv-access-2026",
+      "reason": "重複",
+      "note": "valiv-cosmo-birthday-2026と同一施策の事前案内(受付開始時刻の告知)"
+    },
+    {
+      "dedup_key": "manaka-cooking-membership-2026-0831",
+      "reason": "その他",
+      "note": "配信は8/31 21時・23時開始で、発行時点(9/1 06:00)にはすでに終了済み。読者が本日行える行動がない"
+    },
+    {
+      "dedup_key": "valiv-situation-voice-yuzurenai-2026",
+      "reason": "既報",
+      "note": "販売期間(8/15〜9/6)・価格等は stock/stories.yml dsva-situation-voice14-2026(8/27付既報)と同一事実。新事実なし"
+    },
+    {
+      "dedup_key": "valiv-triangle-drive-vtuber-ranking-2026",
+      "reason": "既報",
+      "note": "「TRI-ANGLE DRIVE」8位・地上波放送の事実は stock/stories.yml valiv-triangle-drive-ranking-2026(8/31付既報)と同一。新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

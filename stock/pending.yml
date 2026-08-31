@@ -71,10 +71,6 @@
   brand: gaku
   subject: ハツボシストア「サマートロピカルアイスパーラー」展開
   watch: テーマ展開の終了日(判明次第 triggers へ)
-- dedup_key: second-hairstyle-gacha-mybrand-glasses-ayumu-akane
-  brand: million
-  subject: セカンドヘアスタイルガシャ～myブランド編 with glasses～(舞浜歩・野々原茜)
-  watch: 開催日程(判明次第 triggers へ)
 - dedup_key: shiny-30ms-nichika-hazuki-2027
   brand: shiny
   subject: 30MS 七草にちか・はづき ヘアスタイル＆フェイスパーツセット
@@ -83,3 +79,7 @@
   brand: gaku
   subject: 学マス×グレースカフェ コラボ「リバイバル」(渋谷モディ)
   watch: 開催日程(判明次第 triggers へ)
+- dedup_key: gaku-rinami-kimisemi-figure-2026
+  brand: gaku
+  subject: 姫崎莉波「キミとセミブルーVer.」1/7スケールフィギュア
+  watch: 2027年2月予定の正式発売日(判明次第 triggers へ)

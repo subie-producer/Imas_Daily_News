@@ -1,0 +1,36 @@
+{
+  "articles": [],
+  "dropped": [
+    {
+      "dedup_key": "futagoboshi-cd-streaming-2026",
+      "reason": "既報",
+      "note": "会場CD事後通販(受付8/28 21:00-9/13 23:59・10/2発送)と新曲配信は765-dual-twinlive-venue-cd/joint columbia-venue-cd-aftersale-2026-08で完全に既報。新事実なし"
+    },
+    {
+      "dedup_key": "futagoboshi-tokyo-report-2026",
+      "reason": "既報",
+      "note": "東京公演の演出・機材トラブルは765-dual-twinlive-venue-cdのpublished_factsと重複、出典も未確認。新事実なし"
+    },
+    {
+      "dedup_key": "dual-twin-live-tokyo-2026",
+      "reason": "既報",
+      "note": "SNS上のセットリスト公開・配信開始への反応まとめで、元の告知自体は765-dual-twinlive-venue-cdで既報済み。新事実なし"
+    },
+    {
+      "dedup_key": "imas-radio-makoto-ritsuko-2026",
+      "reason": "既報",
+      "note": "ラジオ新番組「IM@S RADIO」はimas-radio-2026(8/29号)でパーソナリティ・初回放送日時・番組概要とも既報。新事実なし"
+    },
+    {
+      "dedup_key": "765-futagoboshi-tokyo-report-2026",
+      "reason": "既報",
+      "note": "ふたごぼしのつばさ東京公演のセットリスト・演出(絵本朗読)は765-dual-twinlive-venue-cdで既報。新事実なし"
+    },
+    {
+      "dedup_key": "765-tsumimatsu-tokyo-report-2026",
+      "reason": "既報",
+      "note": "つみまつよるまち東京公演のオープニング朗読・セットリストは765-dual-twinlive-venue-cdで既報。衣装色以外に新事実なく、単独記事化基準に届かず"
+    }
+  ],
+  "cross_brand": []
+}

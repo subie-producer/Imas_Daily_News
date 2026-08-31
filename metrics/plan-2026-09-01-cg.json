@@ -1,0 +1,91 @@
+{
+  "articles": [
+    {
+      "slug": "cg-yamanashi-walk-wander-details",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "「やまなしWALK & WANDER」の地域パートナー(拠点提供・POPUP STORE等)が判明、記念歩数計の先行受注も開始",
+      "lead_score": 15,
+      "dedup_key": "cg-yamanashi-walk-wander-2026",
+      "candidate_ids": [
+        "202608311234-explore-18",
+        "202608312333-explore-1",
+        "202608312333-explore-25",
+        "202608312333-explore-2",
+        "202608312333-explore-3"
+      ]
+    },
+    {
+      "slug": "cg-popn-toybox-staff-talk-archive",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "Pop'n ToyBox!!制作スタッフ振り返りトークがアーカイブ配信、制作の裏側を解説",
+      "lead_score": 5,
+      "dedup_key": "cg-popn-toybox-staff-talk-2026",
+      "candidate_ids": ["202609010227-grok-27"]
+    },
+    {
+      "slug": "cg-election-2026-new-goods",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "シンデレラガール総選挙2026公式グッズに新ラインナップ(アクリルスタンド・BIGアクリルスタンド・缶バッジ)が追加",
+      "lead_score": 10,
+      "dedup_key": "cg-election-2026-official-goods",
+      "candidate_ids": ["202609010227-grok-28"]
+    },
+    {
+      "slug": "cg-popn-toybox-memorial-goods",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "Pop'n ToyBox!!開催記念グッズの受注開始、三船美優・市原仁奈の描き下ろしアイテムなど",
+      "lead_score": 10,
+      "dedup_key": "cg-popn-toybox-memorial-goods-2026",
+      "candidate_ids": ["202609010227-grok-29"]
+    },
+    {
+      "slug": "cg-deresute-11th-anniversary",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "デレステが9月3日に11周年、記念キャンペーンの開催が決定",
+      "lead_score": 45,
+      "dedup_key": "deresute-11th-anniversary-2026",
+      "candidate_ids": ["202609010227-grok-30"]
+    },
+    {
+      "slug": "cg-kirari-birthday",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "9月1日は諸星きらりの誕生日",
+      "lead_score": 5,
+      "dedup_key": "kirari-birthday-2026-media",
+      "candidate_ids": ["202609010227-grok-44"]
+    },
+    {
+      "slug": "cg-deresute-ssr-scout-challenge-september",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "デレステで9月の「SSレアアイドル勧誘チャレンジ」が開始",
+      "lead_score": 12,
+      "dedup_key": "deresute-ssr-scout-challenge-2026-09",
+      "candidate_ids": ["202609010227-grok-46"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-lottery-stock-akihabara-2026-08-30",
+      "reason": "既報",
+      "note": "8月30日更新分は既に joint 面(2026-08-31号)で報じ済み。9/1時点で新たな更新なし(次回更新は日曜/月曜予定)"
+    },
+    {
+      "dedup_key": "cg-number-one-daisuki-sleep-2026",
+      "reason": "既報",
+      "note": "8月26日発売済みCDの品番・クレジット等の台帳的情報の再掲で、8/26発売・配信開始は既報(stock/stories.yml)。新事実なし"
+    },
+    {
+      "dedup_key": "hatimasu-season2-2026",
+      "reason": "出典不足",
+      "note": "出典が二次情報サイトのみで公式一次情報に未到達。掲載先ページも『Coming Soon』表示で詳細情報が無い"
+    }
+  ],
+  "cross_brand": []
+}

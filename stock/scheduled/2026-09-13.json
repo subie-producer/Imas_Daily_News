@@ -163,5 +163,43 @@
     "facts": [
       "新宿マルイアネックス会場は9月13日で開催終了"
     ]
+  },
+  {
+    "id": "sched-2026-09-13-cg-popn-toybox-memorial-goods-2026-締切",
+    "dedup_key": "cg-popn-toybox-memorial-goods-2026",
+    "brand": "cg",
+    "subject": "CINDERELLA GIRLS Pop'n ToyBox!! 開催記念グッズ",
+    "kind": "締切",
+    "note": "受注販売締切",
+    "reserved_on": "2026-09-01",
+    "title": "CINDERELLA GIRLS開催記念グッズ販売ページ",
+    "url": "https://shop.asobistore.jp/feature/cg_ptb_memorial",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609010227-grok-29",
+    "event_date": "2026-09-13",
+    "facts": [
+      "「Pop'n ToyBox!! 開催記念グッズ」は受注販売で2026年9月13日(日)まで販売",
+      "商品は三船美優・市原仁奈のアクリルスタンド・アクリルクリップほか、2027年2月上旬以降順次発送予定"
+    ]
+  },
+  {
+    "id": "sched-2026-09-13-cg-election-2026-official-goods-締切",
+    "dedup_key": "cg-election-2026-official-goods",
+    "brand": "cg",
+    "subject": "シンデレラガール総選挙2026 公式グッズ(数量限定・受注分)",
+    "kind": "締切",
+    "note": "カスタマイズアクスタボード等の受注締切",
+    "reserved_on": "2026-09-01",
+    "title": "シンデレラガール総選挙2026公式グッズに新商品",
+    "url": "https://shop.asobistore.jp/feature/cg_vote2026_goods",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609010227-grok-28",
+    "event_date": "2026-09-13",
+    "facts": [
+      "公式カスタマイズアクリルスタンドボード(総選挙2026 ver.)とアイドル総選挙応援3wayトートバッグは受注販売で2026年9月13日(日)まで",
+      "商品は2026年11月下旬以降順次発送予定"
+    ]
   }
 ]

@@ -1,0 +1,31 @@
+{
+  "articles": [
+    {
+      "slug": "general-birthday-fanart-tags-0901",
+      "brand": "general",
+      "rank": "culture",
+      "angle": "9/1の生誕祭タグ(諸星きらり・山下次郎・松本沙理奈)にファンの祝福イラストが同時多発",
+      "lead_score": 5,
+      "dedup_key": "imas-birthday-tags-2026-09-01",
+      "candidate_ids": ["202609010227-grok-45"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "imas-official-coming-soon-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml の imas-official-coming-soon-2026-0906(8/29既報)と同内容。今回の候補はエンゲージメント数値のみで新事実なし"
+    },
+    {
+      "dedup_key": "official-shop-lottery-stock-2026-08-31",
+      "reason": "重複",
+      "note": "同一の抽選くじ在庫更新のうち315!!!SHOPはsidem面、大阪日本橋店はmillion面が個別記事化済み。残る名古屋駅前店・博多バスターミナル店は在庫更新の事実以外に詳細なし、アトレ秋葉原店分は8/31号のjoint記事で既報のため新規性なし"
+    },
+    {
+      "dedup_key": "hachimas-welcome-to-hachinohe-season2-2026",
+      "reason": "出典不足",
+      "note": "旅行会社アカウント1件の告知のみで、会場・出演アイドル・料金・申込方法いずれも未記載。公式の施策として確認できる事実がなく、10/23まで読者ができることも書けない"
+    }
+  ],
+  "cross_brand": []
+}

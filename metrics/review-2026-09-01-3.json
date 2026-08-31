@@ -1,0 +1,26 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-01-dsva-manaka-hakuno-jsp3-collab-0901.md",
+   "issue": "sources に含まれる公式X投稿URL（https://x.com/TomoriManaka/status/2092990667454906714）が candidates ファイルに記載されていません。候補から漏れているか、執筆が独立して出典を確認した可能性があります。内容は公式発表で確認可能なため問題ないと考えられますが、候補との対応を整理する際に確認してください。"
+  },
+  {
+   "file": "docs/_posts/2026-09-01-cg-yamanashi-walk-wander-details.md",
+   "issue": "メタデータ `src: 未確認` となっていますが、候補 202608311234-explore-18 では確認済みの公式源（idolmaster-official.jp/news/01_19733）が記載されています。メタデータを `src: 公式` に更新すると一貫性が向上します。"
+  },
+  {
+   "file": "docs/_editorials/2026-09-01.md",
+   "issue": "社説の内容は当日の記事に基づいており、根拠のない前提や未報道の事実は含まれていません。ただし、社説が「ボイススケジュール」の複雑さについて詳述する前に、当日配信で詳細が案内されるという予定に依存している点に注意。配信が予定通り行われることを前提としています。"
+  },
+  {
+   "file": "docs/_posts/2026-09-01-general-birthday-fanart-tags-0901.md",
+   "issue": "culture ランクのファン面記事です。個人ハンドルの記述、特定人物の主役化、批判などは適切に避けられています。ただし、「お祝いイラストや過去絵の投稿が同時に見られた」という観測は未確認源 (https://x.com/chagi_chage/status/2094444816537112741) に基づいており、実在するハッシュタグの傾向を記述する形式として妥当です。"
+  },
+  {
+   "file": "docs/_posts/2026-09-01-cg-popn-toybox-memorial-goods.md",
+   "issue": "候補の event_date が 2026-08-13（Pop'n ToyBox!! 開催日）となっていますが、記事は開催後のグッズページ報道です。これは過去イベント関連の記事として妥当で、ニュース性の問題はありません。"
+  }
+ ]
+}

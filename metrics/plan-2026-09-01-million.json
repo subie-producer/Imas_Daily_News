@@ -1,0 +1,30 @@
+{
+  "articles": [
+    {
+      "slug": "million-lottery-stock-nipponbashi-osaka-0901",
+      "brand": "million",
+      "rank": "small",
+      "angle": "大阪日本橋店のミリオンライブ抽選くじ在庫状況が更新、A賞アクリルボード各キャラの当落状況が判明",
+      "lead_score": 5,
+      "dedup_key": "million-shop-lottery-stock-osaka-2026-08-31",
+      "candidate_ids": ["202608311234-explore-6"]
+    },
+    {
+      "slug": "million-platinum-star-theater-rewards-0901",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "開催中のミリシタイベント『プラチナスターシアター～秘密のメモリーズ～』、ランキング・累積報酬のSRアイドルや交換所などプレイ詳細が判明",
+      "lead_score": 20,
+      "dedup_key": "million-platinum-star-theater-2026-09-01",
+      "candidate_ids": ["202608311835-watch-0"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-battle-ex04-stick-to-my-weapon",
+      "reason": "既報",
+      "note": "8/26発売のCD「MILLION BATTLE OF THE@TER EX04」は既報(story_id: million-battle-of-theater-ex04-2026、発売日・価格・出演者を掲載済み)。今回の素材は品番やブックレット内容など補足情報のみで、発行日時点の新事実・当日トリガーに当たらない"
+    }
+  ],
+  "cross_brand": []
+}

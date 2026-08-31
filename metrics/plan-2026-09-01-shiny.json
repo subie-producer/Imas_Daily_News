@@ -1,0 +1,78 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-tokyo-jiyukei-mytime-event-live",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "「Tokyo自由系*ガール/My time」発売記念トーク&ミニライブの日程・応募方式が判明",
+      "lead_score": 10,
+      "dedup_key": "shiny-tokyo-jiyukei-mytime-event-2026",
+      "candidate_ids": ["202608311234-explore-7"]
+    },
+    {
+      "slug": "shiny-chikusei-collab-details",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "筑西市×シャニマスコラボの内容が確定、ちくせい花火大会スペシャルコラボプログラムも実施",
+      "lead_score": 20,
+      "dedup_key": "chikusei-shinycolors-collab-2026",
+      "candidate_ids": ["202608311835-explore-13", "202609010227-explore-9"]
+    },
+    {
+      "slug": "shiny-song-for-prism-season35-pass",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニソン シーズン35「月の和」シーズンパスの内容と締切",
+      "lead_score": 5,
+      "dedup_key": "shiny-song-for-prism-season-35-pass-2026",
+      "candidate_ids": ["202609010227-grok-37"]
+    },
+    {
+      "slug": "shiny-hbtk-september-mc-start",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "まったりHBTK 9月度MCが本日放送開始、初回は八巻さんソロMC",
+      "lead_score": 5,
+      "dedup_key": "shiny-hbtk-september-mc-2026",
+      "candidate_ids": ["sched-2026-09-01-shiny-hbtk-september-mc-2026-開始"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-jimushiny-22b-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml shiny-jimushiny-episode22-2026(8/31付)に第22話後編公開・樋口円香中心の内容として既出、新事実なし"
+    },
+    {
+      "dedup_key": "shiny-union-arena-stock-2026",
+      "reason": "出典不足",
+      "note": "アフィリエイト系ストック追跡ブログのみが出典で、公式発表・新規事実がない(規程2)"
+    },
+    {
+      "dedup_key": "shiny-chikusei-collab-2026",
+      "reason": "重複",
+      "note": "同一コラボの詳細発表。chikusei-shinycolors-collab-2026記事に統合"
+    },
+    {
+      "dedup_key": "shiny-stars-cantare-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml shanison-illumination-stars-event-2026に8/31開幕・報酬SSR・イベントストーリーなしとして既出"
+    },
+    {
+      "dedup_key": "shiny-283-production-msp-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml shiny-msp-live-tickets-2026(8/26付)に会場・日程・現地/配信チケット価格が既出"
+    },
+    {
+      "dedup_key": "shiny-matataki-no-melodia-gacha-2026",
+      "reason": "既報",
+      "note": "限定★3カード名は8/25付で既出(shanison-illumination-stars-event-2026)、当該イベントの開幕自体も8/31分で既報"
+    },
+    {
+      "dedup_key": "shiny-felice-live-song-2026",
+      "reason": "既報",
+      "note": "同イベント文脈でのFELICE登場情報がshanison-illumination-stars-event-2026に既出、新規性なし"
+    }
+  ],
+  "cross_brand": []
+}

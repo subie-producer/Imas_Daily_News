@@ -36,5 +36,25 @@
     ],
     "event_date": "2026-09-08",
     "src_candidate_id": "202608280232-claude-107"
+  },
+  {
+    "id": "sched-2026-09-08-million-platinum-star-theater-2026-09-01-終了",
+    "dedup_key": "million-platinum-star-theater-2026-09-01",
+    "brand": "million",
+    "subject": "ミリシタ「プラチナスターシアター～秘密のメモリーズ～」",
+    "kind": "終了",
+    "note": "イベント終了20:59",
+    "reserved_on": "2026-09-01",
+    "title": "ミリシタ：プラチナスターシアター～秘密のメモリーズ～を開催中",
+    "url": "https://idolmaster-official.jp/news/01_19738",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608311835-watch-0",
+    "event_date": "2026-09-08",
+    "facts": [
+      "イベント「プラチナスターシアター～秘密のメモリーズ～」は2026年9月8日(火)20:59に終了",
+      "ランキング報酬はSR「2人だけの秘密 四条貴音」、累積pt報酬はSR「2人だけの秘密 豊川風花」",
+      "イベント期間限定ショップも同日20:59まで"
+    ]
   }
 ]

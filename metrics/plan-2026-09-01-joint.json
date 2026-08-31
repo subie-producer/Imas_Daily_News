@@ -1,0 +1,21 @@
+{
+  "articles": [],
+  "dropped": [
+    {
+      "dedup_key": "tours-late-summer-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml の tours-late-summer-campaign-2026(初報8/25)と同内容(期間・周防桃子先行登場・景品構成・ブラインド形式)。新事実なし"
+    },
+    {
+      "dedup_key": "cinderella-million-clash-match-2027",
+      "reason": "既報",
+      "note": "stock/stories.yml の cg-million-coming-soon-2026-08-26(初報8/26)で日程・会場・出演・チケット料金まで公開済み。新事実なし"
+    },
+    {
+      "dedup_key": "765-961-coming-soon-2026",
+      "reason": "既報",
+      "note": "予告本体(2026.9.6 12:00 COMING SOON)は stock/stories.yml の imas-official-coming-soon-2026-0906(初報8/29)で既報。追加分はリポスト数・いいね数等のエンゲージメント指標のみで実質新事実なし。「765×961合同展開」の見立ては二次情報(まとめ記事)由来でverify=unconfirmed"
+    }
+  ],
+  "cross_brand": []
+}

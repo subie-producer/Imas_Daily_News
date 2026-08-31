@@ -1,0 +1,43 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-01-cg-deresute-ssr-scout-challenge-september.md",
+   "issue": "規程9「公式が無い」。ゲーム内施策（SSレアアイドル勧誘チャレンジ）なのに、sources の type が「未確認」となっており、公式告知として認識されていない。公式Xの URL が sources に含まれているが、type の誤分類のため「公式なし」と判定される。",
+   "quote": "sources:\n  - url: https://x.com/imascg_stage/status/2094441601804493261\n    type: 未確認\n    label: 公式X告知"
+  },
+  {
+   "file": "docs/_posts/2026-09-01-shiny-song-for-prism-season35-pass.md",
+   "issue": "規程9「公式が無い」。シーズンパス販売（ゲーム内の定期販売施策）なのに、sources の type が「未確認」となっている。ASOBI STOREは準公式ストアであり、「未確認」ではなく「準公式」と分類すべき。",
+   "quote": "src: 未確認\nrank: small\nsources:\n  - url: https://webstore.asobistore.jp/shinycolors-song-for-prism\n    type: 未確認\n    label: ASOBI STORE商品ページ"
+  },
+  {
+   "file": "docs/_posts/2026-09-01-sidem-joypolis3-show-details.md",
+   "issue": "規程14「ニュース性の欠如」。記事のタイトルは「第3弾コラボの詳細」で新規発表のように見えるが、candidate_ids の published_date を見ると2026-08-30（2日前）に報道された情報である。本日の新規発表ではなく、既報の焼き直しにあたる。号日付の記事として「詳細が本日発表」のように読めるが、実際は過去の報道情報。",
+   "quote": "title: SideMジョイポリス3、全16ユニットの新ショー\nkandidate_ids:\n  - 202608311234-explore-8  ← published_date: 2026-08-30"
+  },
+  {
+   "file": "docs/_editions/2026-09-01.md",
+   "issue": "規程12「年ズレ」。digestの「明日」欄に9月12日の記事（sidem-joypolis3-show-details、sidem-cardfolio-vol2-release）が載っているが、本日が2026-09-01なら明日は2026-09-02であり、9月12日は11日後である。「明日」分類は不正確。",
+   "quote": "- label: 明日\n  rows:\n  - k: 発\n    t: SideMジョイポリス3詳細\n    d: 9/12開幕、新ショー・全16ユニット\n    brand: sidem\n    slug: sidem-joypolis3-show-details\n  - k: 発\n    t: SideMカードフォリオ第2弾\n    d: 9/12発売、11th STAGE先行販売\n    brand: sidem\n    slug: sidem-cardfolio-vol2-release"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-01-gaku-rinami-kimisemi-figure-preorder.md",
+   "issue": "規程3「URL捏造・出典の不一致」。sources に複数の未確認 URL が含まれている。特にネオンマックス商品ページ（https://www.neonmax.net/rinamisemiblue-0623）がcandidate にないため、実際に存在するか、記事内容と一致するか確認が必要。"
+  },
+  {
+   "file": "docs/_posts/2026-09-01-cg-yamanashi-walk-wander-details.md",
+   "issue": "規程3「URL捏造・出典の不一致」。sources に複数の未確認 URL が含まれている（イベント特設サイト、コラボ歩数計販売ページ）。これらが実在し、記事の内容と一致するか確認が必要。"
+  },
+  {
+   "file": "docs/_posts/2026-09-01-shiny-tokyo-jiyukei-mytime-event-live.md",
+   "issue": "分量不足の可能性。rank: medium（450字以上が目安）だが、本文が短く、イベント詳細がまとめられている。sources の特設ページに詳細があるはずなので、会場・特典・応募方法等の具体的な情報を更に拾うことで充実できる。"
+  },
+  {
+   "file": "docs/_posts/2026-09-01-sidem-315shop-lottery-stock-update.md",
+   "issue": "規程3「URL捏造・出典の不一致」。sources の URL が https://bandainamco-am.co.jp/chara_shop/idolmaster/NEWS/315shop/20241002.html となっており、日付が 2024-10-02 になっている。記事で言及している 2026-08-31 の在庫更新に対応する正しい URL なのか確認が必要。"
+  }
+ ]
+}

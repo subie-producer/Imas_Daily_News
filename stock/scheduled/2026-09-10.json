@@ -122,5 +122,24 @@
     ],
     "event_date": "2026-09-10",
     "src_candidate_id": "202608271235-claude-25"
+  },
+  {
+    "id": "sched-2026-09-10-second-hairstyle-gacha-mybrand-glasses-ayumu-akane-締切",
+    "dedup_key": "second-hairstyle-gacha-mybrand-glasses-ayumu-akane",
+    "brand": "million",
+    "subject": "セカンドヘアスタイルガシャ～myブランド編 with glasses～(舞浜歩・野々原茜)",
+    "kind": "締切",
+    "note": "ガシャ終了14:59",
+    "reserved_on": "2026-09-01",
+    "title": "ミリシタ：プラチナスターシアター～秘密のメモリーズ～を開催中",
+    "url": "https://idolmaster-official.jp/news/01_19738",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608311835-watch-0",
+    "event_date": "2026-09-10",
+    "facts": [
+      "「セカンドヘアスタイルガシャ～myブランド編 with glasses～」は2026年8月31日15:00〜9月10日14:59開催",
+      "新規追加SSR「デアデビル・ダンス 舞浜歩」(CV:戸田めぐみ)・SSR「飽かずにナデナデしてネ 野々原茜」(CV:小笠原早紀)、期間限定SR「きらめく思い出二つ 田中琴葉」(CV:種田梨沙)ほかが出現"
+    ]
   }
 ]

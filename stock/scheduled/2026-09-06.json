@@ -133,5 +133,43 @@
       "ファミ通.comのまとめでは、あわせて「つみまつよるまち」東京公演キャスト生オーディオコメンタリー(9/6 20:00、たかはし智秋・若林直美・石田裕亮出演)も案内"
     ],
     "reserved_on": "2026-08-29"
+  },
+  {
+    "id": "sched-2026-09-06-gaku-shirube-livetour-fukuoka-show-2026-千秋楽",
+    "dedup_key": "gaku-shirube-livetour-fukuoka-show-2026",
+    "brand": "gaku",
+    "subject": "学園アイドルマスター LIVE TOUR -標- 福岡公演",
+    "kind": "千秋楽",
+    "note": "福岡公演2日目(福岡公演千秋楽)",
+    "reserved_on": "2026-09-01",
+    "title": "学マス福岡公演、物販と入場時刻を確認",
+    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/information/fukuoka.php",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609010227-grok-31",
+    "event_date": "2026-09-06",
+    "facts": [
+      "2026年9月6日(日)15:30開場・16:30開演、福岡サンパレス ホテル＆ホール",
+      "出演は長月あおい(花海咲季役)・小鹿なお(月村手毬役)・飯田ヒカル(藤田ことね役)・川村玲奈(篠澤広役)・天音ゆかり(雨夜燕役)"
+    ]
+  },
+  {
+    "id": "sched-2026-09-06-cg-yamanashi-walk-wander-pedometer-2026-締切前",
+    "dedup_key": "cg-yamanashi-walk-wander-pedometer-2026",
+    "brand": "cg",
+    "subject": "やまなし WALK & WANDER コラボ歩数計 先行受注",
+    "kind": "締切前",
+    "note": "先行受注締切まで3日",
+    "reserved_on": "2026-09-01",
+    "title": "山梨コラボ歩数計の先行受注",
+    "url": "https://hiromedo-store.com/products/detail/348",
+    "source_type": "未確認",
+    "verify": "unconfirmed",
+    "src_candidate_id": "202608312333-explore-3",
+    "event_date": "2026-09-09",
+    "facts": [
+      "コラボ歩数計(タニタ製、全10種)の先行受注は2026年9月9日23:59:59まで、価格は各4,000円(税込)",
+      "ひろめ堂から発送、11月上旬発送予定"
+    ]
   }
 ]

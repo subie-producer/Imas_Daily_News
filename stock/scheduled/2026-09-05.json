@@ -100,5 +100,25 @@
       "9月5日・6日の入場はLINEアプリの先着整理券制、整理番号は即時発行・全枠終了次第受付終了",
       "1,100円ごとの購入・予約内金でオリジナルブロマイド(全12種)を1枚進呈"
     ]
+  },
+  {
+    "id": "sched-2026-09-05-gaku-shirube-livetour-fukuoka-show-2026-開幕",
+    "dedup_key": "gaku-shirube-livetour-fukuoka-show-2026",
+    "brand": "gaku",
+    "subject": "学園アイドルマスター LIVE TOUR -標- 福岡公演",
+    "kind": "開幕",
+    "note": "福岡公演1日目、福岡サンパレス ホテル＆ホール",
+    "reserved_on": "2026-09-01",
+    "title": "学マス福岡公演、物販と入場時刻を確認",
+    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/information/fukuoka.php",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609010227-grok-31",
+    "event_date": "2026-09-05",
+    "facts": [
+      "2026年9月5日(土)17:30開場・18:30開演、福岡サンパレス ホテル＆ホール",
+      "出演は長月あおい(花海咲季役)・小鹿なお(月村手毬役)・飯田ヒカル(藤田ことね役)・川村玲奈(篠澤広役)・天音ゆかり(雨夜燕役)",
+      "全席指定席11,000円(税込)、立見指定10,500円(税込・福岡公演のみ)、未就学児入場不可"
+    ]
   }
 ]

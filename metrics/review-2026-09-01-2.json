@@ -1,0 +1,16 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-01-sidem-315shop-lottery-stock-update.md",
+   "issue": "規程3「URL捏造・出典の不一致」: sources の URL が 2024年10月2日を示す日付を含む（20241002）が、記事は2026年8月31日付の在庫更新と述べている。candidate の dedup_key は「315shop-lottery-inventory-20260831」であるのに、URL は「https://bandainamco-am.co.jp/chara_shop/idolmaster/NEWS/315shop/20241002.html」となっており、年号が一致していない。",
+   "quote": "sources:\n  - url: https://bandainamco-am.co.jp/chara_shop/idolmaster/NEWS/315shop/20241002.html\n    type: 準公式\n    label: 抽選くじの在庫状況（8月31日 更新）"
+  },
+  {
+   "file": "docs/_posts/2026-09-01-sidem-joypolis3-show-details.md",
+   "issue": "規程5「新事実なしの続報」: 記事は stock/stories.yml の published_facts と実質同内容であり、新事実がない。joypolis3-2026 の first_published は2026-08-26 で、既に詳細（ショーの3期制、アンバサダー、チケット料金、アトラクション改編など）が published_facts に記載されている。記事は同じ内容を繰り返しており、当日のトリガー（締切・開幕）も無い。イベントは2026-09-12 開幕で、本日 2026-09-01 のニュース価値が無い。",
+   "quote": "title: SideMジョイポリス3、全16ユニットの新ショー\ncandidate_ids: []  # candidate との関連を明示していない\npublished_facts に既に掲載: 「館内メインステージのスペシャルショーは全16ユニットの3Dライブ映像をセットリスト刷新、第1弾9/12〜10/10・第2弾10/11〜11/7・第3弾11/8〜12/6の3期制、各回フィナーレに全体曲「SUPREME STARS !!!」を追加」"
+  }
+ ],
+ "comments": []
+}

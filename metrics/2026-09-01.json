@@ -1,0 +1,90 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-01T02:28:21+09:00",
+   "edition": "2026-09-01",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 342,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 1,
+      "deferred": 0
+     }
+    },
+    "new": 1,
+    "facted": 1,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 3,
+    "explore:million": 5,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 1,
+    "explore:dsva": 7,
+    "explore:joint-other": 3,
+    "explore:trend": 6,
+    "grok:765as": 0,
+    "grok:cinderella": 6,
+    "grok:million": 3,
+    "grok:shiny": 5,
+    "grok:sidem": 4,
+    "grok:gakuen": 2,
+    "grok:dsva": 3,
+    "grok:joint-other": 0,
+    "grok:trend": 3
+   },
+   "normalized": 39,
+   "added": 28,
+   "verify": {
+    "confirmed": 19,
+    "unconfirmed": 18,
+    "failed": 2
+   },
+   "duration_s": 1663
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-01T05:19:56+09:00",
+   "edition": "2026-09-01",
+   "rounds": 5,
+   "approved": false,
+   "lint_green": true,
+   "planned": 23,
+   "written": 19,
+   "roundups": 0,
+   "dropped": 47,
+   "coverage": {
+    "subjects": 75,
+    "covered": 74,
+    "missing": 1
+   },
+   "dropped_by_review": [
+    "sidem-315shop-lottery-stock-update",
+    "sidem-royal-chess-lounge-nagoya-closing"
+   ],
+   "aborted": [
+    "cg-deresute-11th-anniversary",
+    "sidem-11th-stage-comment-relay"
+   ],
+   "duration_s": 4758
+  }
+ ]
+}

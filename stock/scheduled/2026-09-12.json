@@ -115,5 +115,25 @@
     ],
     "event_date": "2026-09-12",
     "src_candidate_id": "202608280232-claude-107"
+  },
+  {
+    "id": "sched-2026-09-12-sidem-cardfolio-vol2-2026-発売",
+    "dedup_key": "sidem-cardfolio-vol2-2026",
+    "brand": "sidem",
+    "subject": "アイドルマスター カードフォリオ SideM ver. vol.2",
+    "kind": "発売",
+    "note": "SideM 11th STAGE現地物販会場で先行販売",
+    "reserved_on": "2026-09-01",
+    "title": "カードフォリオ SideM ver. vol.2",
+    "url": "https://cardfolio.idolmaster-official.jp/news/?p=1057",
+    "source_type": "公式",
+    "verify": "unconfirmed",
+    "src_candidate_id": "202609010227-grok-40",
+    "event_date": "2026-09-12",
+    "facts": [
+      "9月12日(土)発売、1BOX 5,000円・1パック500円(1BOX10パック入り、1パック8枚入り)、全82種",
+      "SideM 11th STAGE現地物販会場で先行販売、オンライン販売は後日告知予定",
+      "購入者は「パシャっとチャレンジ」に参加可能(シリアル入りチケット同梱)"
+    ]
   }
 ]

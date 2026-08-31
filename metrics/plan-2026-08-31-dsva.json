@@ -1,0 +1,70 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-valiv-1on1-12th-owari-0831",
+      "brand": "dsva",
+      "rank": "large",
+      "angle": "vα-liv第12回オンライン1on1(灯里愛夏8/29・上水流宇宙とレトラ8/30)が2日間の日程を終えて終了、抽選チケットの受付内容(価格・時間・受付方法・当選者向け案内)と最終日終了の告知をあわせて報じる",
+      "lead_score": 30,
+      "dedup_key": "valiv-1on1-finish-2026",
+      "candidate_ids": [
+        "202608300735-explore-16",
+        "202608300735-explore-18",
+        "202608301234-explore-23",
+        "202608301234-explore-26",
+        "202608302334-explore-19",
+        "202608310229-explore-17",
+        "202608310229-grok-57",
+        "202608310229-grok-58",
+        "202608310229-grok-59",
+        "202608310229-grok-60",
+        "202608310229-grok-61"
+      ]
+    },
+    {
+      "slug": "dsva-valiv-triangle-drive-ranking8-0831",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "「TRI-ANGLE DRIVE」がミューコミVR「VTuber楽曲ランキング」で8位を獲得、地上波でも流れたことを報じる",
+      "lead_score": 10,
+      "dedup_key": "valiv-triangle-drive-ranking-2026",
+      "candidate_ids": [
+        "202608310229-explore-19"
+      ]
+    },
+    {
+      "slug": "dsva-valiv-survey-deadline-0831",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "vα-liv「8月度の活動に関するアンケート」の回答締切が9月3日23:59に迫っていることを案内",
+      "lead_score": 8,
+      "dedup_key": "valiv-survey-2026-08",
+      "candidate_ids": [
+        "sched-2026-08-31-valiv-survey-2026-08-締切前"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "valiv-cosmo-extreme-overdrive-short-2026",
+      "reason": "重複",
+      "note": "同じ踊ってみた動画公開はjoint面(joint-vala-extreme-overdrive-odottemita)が既に記事化済み"
+    },
+    {
+      "dedup_key": "valiv-1on1-report-2026",
+      "reason": "個人の話題",
+      "note": "ファンによる1on1参加体験の個人ブログ記事。単体記事化・引用転載の対象外"
+    },
+    {
+      "dedup_key": "dsva-topic-037",
+      "reason": "個人の話題",
+      "note": "当選者による1on1体験の個人SNS投稿群。エンゲージメントも公式告知未満で単体記事化の対象外"
+    },
+    {
+      "dedup_key": "dsva-topic-038",
+      "reason": "個人の話題",
+      "note": "ランキング8位への個人の感想・引用ポスト。全国トレンド級の現象とは言えない規模"
+    }
+  ],
+  "cross_brand": []
+}

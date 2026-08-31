@@ -1,0 +1,114 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-hatsuboshi-ongakusai-bd-final-day",
+      "brand": "gaku",
+      "rank": "large",
+      "angle": "初星音楽祭Blu-ray(超特装版・特装版)の受注が本日23:59で締切、価格・収録内容・発送時期と直前の複数ダイジェスト映像投稿をまとめて報じる",
+      "lead_score": 65,
+      "dedup_key": "gaku-hatsuboshi-musicfes-bluray-2026",
+      "candidate_ids": [
+        "202608302334-explore-16",
+        "202608310229-grok-64",
+        "202608310229-grok-65",
+        "202608310229-grok-66",
+        "202608310229-grok-67",
+        "202608310229-grok-68",
+        "202608310229-grok-69"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-tracks-streaming-0831",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "初星学園レーベルが本日「Howling over the World」「ミラクルナナウ(ﾟ∀ﾟ)！」とENDLESS DANCE3編成(ver.)の計5曲をストリーミング&ダウンロード配信開始、作家・歌唱陣を列挙",
+      "lead_score": 25,
+      "dedup_key": "howling-over-the-world-2026",
+      "candidate_ids": [
+        "202608310229-explore-9",
+        "202608310229-explore-10",
+        "202608310229-explore-11",
+        "202608310229-explore-12",
+        "202608310229-explore-13"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-iwate-streaming-ticket",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "LIVE TOUR -標- 岩手公演(9/22・23)の配信視聴チケット詳細(価格・アーカイブ視聴期間・プレゼント用チケット・デジタルチケット画像生成期間)を案内",
+      "lead_score": 15,
+      "dedup_key": "gaku-topic-046",
+      "candidate_ids": [
+        "202608310229-grok-71",
+        "202608310229-grok-72"
+      ]
+    },
+    {
+      "slug": "gaku-seabreeze-collab-deadline",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "SEA BREEZE×学マスコラボ特別賞応募が本日23:59で締切、応募方法(公式Xフォロー&対象商品写真投稿)と資格条件を案内",
+      "lead_score": 20,
+      "dedup_key": "seabreeze-gakumas-collab-2026",
+      "candidate_ids": [
+        "sched-2026-08-31-seabreeze-gakumas-collab-2026-締切"
+      ]
+    },
+    {
+      "slug": "gaku-nee-itte-momentum",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「ねえ、言っちゃうよ。」が美鈴ガチャ開催中(8/26〜9/4)かつJOYSOUND新曲トレンド1位に、同曲の反響をまとめて報じる",
+      "lead_score": 5,
+      "dedup_key": "gaku-misuzu-nee-itte-2026",
+      "candidate_ids": [
+        "202608301234-explore-19",
+        "202608301234-explore-22"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gaku-prize-new-lineup-september-2026",
+      "reason": "既報",
+      "note": "十王星南「-High contrast-」9/3展開・雨夜燕「-Swallow pattern-」9/10展開は8/28付でgaku-espresto-senan-tsubame-2026として既報、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-producer-ranking-season3-2026",
+      "reason": "既報",
+      "note": "開催期間・参加条件ともgaku-producer-ranking-season3-2026として8/30付で既報。期限(8/30 4:59)も発行日時点で経過済みで結果発表など新事実なし"
+    },
+    {
+      "dedup_key": "star-mine-2026",
+      "reason": "既報",
+      "note": "「Star-mine」配信は作詞・作曲・編曲情報含めgaku-star-mine-2026として8/30付で既報、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-topic-045",
+      "reason": "既報",
+      "note": "福岡公演の日程・会場・アイドル出演陣はgakumas-shirube-livetour-2026として既報。追加の声優キャスト情報も掲載日不明で新規性を確認できず"
+    },
+    {
+      "dedup_key": "gaku-topic-048",
+      "reason": "既報",
+      "note": "ファイナル公演の日程・会場・価格はgaku-shirube-finale-ticket-buzz/gakumas-livetour-shirube-final-goods-2026として既報。追加の声優キャスト情報も掲載日不明で新規性を確認できず"
+    },
+    {
+      "dedup_key": "gakumas-hoshizawa-hiro-fanmanga-20260830",
+      "reason": "個人の話題",
+      "note": "個人のファン創作投稿。単体記事化は規程4により不可。ファン文化のまとめはbrand:general/rank:culture面の担当"
+    },
+    {
+      "dedup_key": "gakumas-hoshizawa-hiro-cosplay-20260830",
+      "reason": "個人の話題",
+      "note": "個人のコスプレ投稿。単体記事化は規程4により不可。ファン文化のまとめはbrand:general/rank:culture面の担当"
+    },
+    {
+      "dedup_key": "gakumas-hataya-misuzu-cosplay-20260830",
+      "reason": "個人の話題",
+      "note": "個人のコスプレ投稿。単体記事化は規程4により不可。ファン文化のまとめはbrand:general/rank:culture面の担当"
+    }
+  ],
+  "cross_brand": []
+}

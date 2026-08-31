@@ -1,0 +1,98 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-transcendent-tales-onlyshop-0831",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "CDシリーズ「TRANSCENDENT T@LES」完結記念オンリーショップがアニメイト池袋本店7F NORTHで9/5〜9/27開催決定、初日・2日目はLINE整理券制の入場方法と申込時間帯を案内",
+      "lead_score": 10,
+      "dedup_key": "sidem-transcendent-tales-only-shop-2026",
+      "candidate_ids": ["202608300735-explore-15"]
+    },
+    {
+      "slug": "sidem-teddys-collection2-popup-0831",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "Teddy's Collection Ver.(第二弾)ポップアップストアが新宿マルイアネックス(9/4〜9/13)・なんばマルイ(9/18〜9/27)で開催決定、Jupiter・Beit・もふもふえんの新作グッズと購入特典ノベルティ、会場フォトスポットを紹介",
+      "lead_score": 10,
+      "dedup_key": "sidem-teddys-collection-ver-popup-2026",
+      "candidate_ids": ["202608301234-explore-17", "202608310229-grok-121"]
+    },
+    {
+      "slug": "sidem-joypolis3-ticket-price-0831",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "東京ジョイポリスSideMコラボ第3弾(9/12〜12/6)のグッズ付きチケット価格が判明、「アトラクション1回券」「パスポート」の券種・特典カード内容を列挙",
+      "lead_score": 20,
+      "dedup_key": "sidem-topic-094",
+      "candidate_ids": ["202608310229-grok-119", "202608310229-grok-120"]
+    },
+    {
+      "slug": "sidem-roundup-0831",
+      "brand": "sidem",
+      "rank": "roundup",
+      "angle": "SideM運営情報まとめ: 11th出演キャスト意気込みコメント(深町寿成さん)配信、315プロダクションエピソード「アイドルたちの1コマ」新着2話(8/29「ホットなメンズ」・8/30「ご自由におくつろぎください」)を紹介",
+      "lead_score": 0,
+      "dedup_key": "sidem-topic-091",
+      "candidate_ids": ["202608310229-grok-112", "202608310229-grok-116", "202608310229-grok-117", "202608310229-grok-118"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-costume-museum-2026",
+      "reason": "既報",
+      "note": "WEB受注期間(7/17〜8/30)は既報済み。発行日(8/31)時点で締切当日情報としても後追いになる"
+    },
+    {
+      "dedup_key": "sidem-topic-086",
+      "reason": "重複",
+      "note": "sidem-costume-museum-2026と同一施策(SideM衣装展WEB受注)の締切告知X投稿"
+    },
+    {
+      "dedup_key": "sidem-kanon-new-cast-2026",
+      "reason": "既報",
+      "note": "姫野かのん新キャスト伊能幸輝さん決定(8/28発表)は既報(sidem-murase-himeno-graduation-2026に統合済み)"
+    },
+    {
+      "dedup_key": "sidem-special-stream-2026-09-01",
+      "reason": "既報",
+      "note": "9/1お披露目特別生配信の出演者・内容は既報済み。配信当日(9/1)はこの号の対象外"
+    },
+    {
+      "dedup_key": "sidem-kanon-cast-change-2026",
+      "reason": "既報",
+      "note": "報道内容も新キャスト決定(8/28)の再掲、既報済みの事実のみ"
+    },
+    {
+      "dedup_key": "sidem-kanon-cast-change-buzz-2026",
+      "reason": "既報",
+      "note": "同上の話題を報じた未確認ソース。新事実なし"
+    },
+    {
+      "dedup_key": "sidem-howanui-vol1-vol2-2026",
+      "reason": "既報",
+      "note": "8/29クレーンゲーム登場・vol.1/vol.2ラインナップは既報済み(sidem-howanui-craneprize-2026)"
+    },
+    {
+      "dedup_key": "sidem11th-ever-ever-kitchen-2026",
+      "reason": "既報",
+      "note": "EVER EVER KITCHEN出店の詳細(メニュー・営業時間等)は既報済み(sidem-11th-stage-2026)"
+    },
+    {
+      "dedup_key": "sidem-11th-kitchen-car-2026",
+      "reason": "重複",
+      "note": "sidem11th-ever-ever-kitchen-2026と同一施策の告知。いずれも既報内容"
+    },
+    {
+      "dedup_key": "sidem-topic-088",
+      "reason": "既報",
+      "note": "浦尾岳大さん(兜大吾役)8/29コメントは既報済み(sidem-11th-cast-comment-relay-2026)"
+    },
+    {
+      "dedup_key": "sidem-topic-097",
+      "reason": "個人の話題",
+      "note": "個人SNS投稿(カラオケ推し活・コラボ来場報告)。単体記事化不可、ファン面(brand:general/culture)の扱い対象"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,0 +1,31 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-08-31-cg-popn-toybox-cd-aftersale-shime-0831.md",
+   "issue": "【規程4】時制矛盾: 記事本文は「本日23:59で締め切られる」と書いているが、frontmatter の event_date は 2026-08-13（イベント開催日）に設定。記事発行日が 2026-08-31 で締切も 8月31日23:59 のため、event_date は 2026-08-31 に修正すべき。現在の設定では過去のイベントの後発報道という文脈が不明確になる",
+   "quote": "本日23:59で締め切られる。受付期間は2026年8月21日（金）18:00～8月31日（月）23:59"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-million-login-bonus-end-0831.md",
+   "issue": "【規程4】時制矛盾: 記事本文は「本日が開催最終日となる」と書いているが、frontmatter の event_date は 2026-08-25（キャンペーン開始日）に設定。記事発行日が 2026-08-31 で最終日も 8月31日 のため、event_date は 2026-08-31 に修正すべき。開始日ではなく終了日を記録する基準が必要",
+   "quote": "本日が開催最終日となる。同ログインボーナスは2026年8月25日（火）から開催され"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-shiny-illumination-stars-cantare-kaimaku-0831.md",
+   "issue": "【規程4】時制矛盾: frontmatter の lede は過去形「本日開幕し、新曲『FELICE』と報酬SSR風野灯織が登場する」だが、本文は未来形「8月31日に開幕する。新曲『FELICE』が登場し」と記述。発行日が開幕日（2026-08-31）のため、時制を統一すべき（過去形か未来形かどちらかに）",
+   "quote": "Lede: 「本日開幕し」(過去形) vs Body: 「8月31日に開幕する」(未来形)"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-million-platinum-star-theater-himitsu-kaikou-0831.md",
+   "issue": "【規程4】メタデータと本文の矛盾: frontmatter の event_date は 2026-08-30 だが、本文では「8月31日に開催される」「開場16時30分・開演17時30分」「開場15時30分・開演16時30分」と 8月31日の開幕を記述。イベント開幕が 2026-08-31 のため event_date は 2026-08-31 に修正すべき",
+   "quote": "frontmatter: event_date: 2026-08-30 | body: 「DAY1...は9月19日」ではなく「8月31日に開催される」と記述"
+  }
+ ],
+ "comments": [
+  {
+   "file": "multiple articles (cg-popn-toybox-cd-aftersale-shime-0831, million-login-bonus-end-0831, million-platinum-star-theater-himitsu-kaikou-0831, shiny-illumination-stars-cantare-kaimaku-0831)",
+   "issue": "【システマティック問題】event_date メタデータの設定基準が一貫していない。イベント開催日・開始日・締切日・終了日のいずれを記録するか基準が曖昧。編集フローで基準を統一する必要：(1)記事が新規報道するトリガー日（開幕・締切・終了）を event_date に統一するか、(2)イベント主催日を event_date とし発行日を別フィールドで管理するか、いずれかを決定すべき"
+  }
+ ]
+}

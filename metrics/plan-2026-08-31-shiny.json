@@ -1,0 +1,149 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-runway-summer-collection-shuryo-0831",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "「Shiny Runway 2026 Summer Collection」が本日23:59で終了、日替わりミッション内容を含めて案内",
+      "lead_score": 5,
+      "dedup_key": "shanison-shiny-runway-summer-2026-mission-0828",
+      "candidate_ids": ["202608301234-explore-14"]
+    },
+    {
+      "slug": "shiny-axe8-chiyuki-piece-package-0831",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "AXE8「Grow to Glow」桑山千雪ガシャで、ピース付きパッケージ4個の販売が判明",
+      "lead_score": 5,
+      "dedup_key": "shiny-axe8-grow-to-glow-chiyuki-2026",
+      "candidate_ids": ["202608302334-explore-6"]
+    },
+    {
+      "slug": "shiny-283stage-alstroemeria-mission-0831",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "283ステージ正式リリースを記念したアルストロメリア特別ミッション(全10種・報酬詳細)を紹介",
+      "lead_score": 15,
+      "dedup_key": "shiny-283-stage-official-release-2026",
+      "candidate_ids": ["202608302334-explore-9"]
+    },
+    {
+      "slug": "shiny-jimushiny-ep22-kouhen-0831",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "「事務的光空記録」第22話後編(樋口円香)が公開",
+      "lead_score": 5,
+      "dedup_key": "shiny-jimushiny-episode22-part2-2026",
+      "candidate_ids": ["202608302334-explore-10"]
+    },
+    {
+      "slug": "shiny-765collab5-4koma-azusa-luka-0831",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "765プロコラボ第5弾の記念特別4コマ漫画(三浦あずさ・斑鳩ルカ)が公開",
+      "lead_score": 5,
+      "dedup_key": "shiny-topic-073",
+      "candidate_ids": ["202608310229-grok-98"]
+    },
+    {
+      "slug": "shiny-765collab-fukkoku-gacha-shuryo-0831",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "765プロコラボ復刻ガシャ3本(VOY@GER記念・第2弾・第3弾)が本日23:59で終了",
+      "lead_score": 10,
+      "dedup_key": "shiny-topic-074",
+      "candidate_ids": ["202608310229-grok-99"]
+    },
+    {
+      "slug": "shiny-mizugi-cp2026-selechike-shuryo-0831",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "水着CP2026記念★3&SSRセレクションチケットパックが本日23:59で販売終了",
+      "lead_score": 5,
+      "dedup_key": "shiny-topic-075",
+      "candidate_ids": ["202608310229-grok-100"]
+    },
+    {
+      "slug": "shiny-shinsoshignal-aquarium-loginpass-shuryo-0831",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "「深層シグナル・アクアリウム」ログインボーナスパスが本日23:59で販売終了",
+      "lead_score": 5,
+      "dedup_key": "shiny-topic-076",
+      "candidate_ids": ["202608310229-grok-101"]
+    },
+    {
+      "slug": "shiny-amana-toyuko-natsuotome-gacha-shuryo-0831",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "大崎甘奈・黛冬優子ピックアップガシャ「夏と乙女と花の色」(復刻)が本日11:59で終了",
+      "lead_score": 10,
+      "dedup_key": "shiny-topic-077",
+      "candidate_ids": ["202608310229-grok-102"]
+    },
+    {
+      "slug": "shiny-chiyoko-shiosai-koimoyou-gacha-shuryo-0831",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "園田智代子ピックアップガシャ「潮騒にのせて、恋模様」が本日11:59で終了",
+      "lead_score": 10,
+      "dedup_key": "shiny-topic-078",
+      "candidate_ids": ["202608310229-grok-103"]
+    },
+    {
+      "slug": "shiny-web4koma-649-chiyuki-0831",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "web4コマ漫画第649話『それぞれの葛藤』(桑山千雪)が公開",
+      "lead_score": 5,
+      "dedup_key": "shiny-topic-082",
+      "candidate_ids": ["202608310229-grok-107"]
+    },
+    {
+      "slug": "shiny-illumination-stars-cantare-kaimaku-0831",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "イルミネーションスターズ新曲イベント「星々の綴るカンターレ」が本日開幕、新曲『FELICE』と報酬SSR風野灯織、次回ガシャ「瞬きのメロディア」予告もあわせて紹介",
+      "lead_score": 55,
+      "dedup_key": "shanison-illumination-stars-event-2026",
+      "candidate_ids": [
+        "sched-2026-08-31-shanison-illumination-stars-event-2026-開幕",
+        "202608310229-grok-104",
+        "202608310229-grok-105"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-web4koma-648-mizu-no-naka-2026",
+      "reason": "既報",
+      "note": "第648話『水の中』は既にshiny-4koma-648-ikuta-haruki-2026として既報、新事実なし"
+    },
+    {
+      "dedup_key": "shiny-scenario-itsuka-kaze-2026",
+      "reason": "既報",
+      "note": "ノクチル新シナリオは既にshiny-noctchill-event-2026として既報(期間・報酬とも同一)、新事実なし"
+    },
+    {
+      "dedup_key": "shanison-765-collab-gacha-5-2026",
+      "reason": "既報",
+      "note": "ガシャ名・カード陣容は既にshiny-sfp-765-collab5-gacha-2026として既報、新事実なし"
+    },
+    {
+      "dedup_key": "shiny-topic-081",
+      "reason": "既報",
+      "note": "『KoiKyun！』ダンス動画・第1〜3弾復刻開催中は既にshiny-sfp-765-collab5-gacha-2026の既報facts内、新事実なし"
+    },
+    {
+      "dedup_key": "shiny-topic-084",
+      "reason": "既報",
+      "note": "Admiralコラボスニーカー受注最終日・なんばマルイPOP UP最終日はいずれも8/30の出来事で、既にshiny-admiral-collab-sneakerの既報factsに反映済み"
+    },
+    {
+      "dedup_key": "shiny-topic-085",
+      "reason": "既報",
+      "note": "SMILE BASE CAFE池袋店の8/29開幕は既にshiny-smile-base-cafe-sporty-china-style-2026として既報、新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

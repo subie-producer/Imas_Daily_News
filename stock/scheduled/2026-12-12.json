@@ -1,0 +1,21 @@
+[
+  {
+    "id": "sched-2026-12-12-sidem-joypolis3-2026-開始",
+    "dedup_key": "sidem-joypolis3-2026",
+    "brand": "sidem",
+    "subject": "アイドルマスター SideM in JOYPOLIS 3",
+    "kind": "開始",
+    "note": "アニメイト通販オンライン受付開始(12時)",
+    "reserved_on": "2026-08-31",
+    "title": "アイドルマスター SideM in JOYPOLIS 3（東京ジョイポリス公式特設。party）",
+    "url": "https://tokyo-joypolis.com/event/sidem_jp2026/index.html",
+    "source_type": "未確認",
+    "verify": "unconfirmed",
+    "src_candidate_id": "202608310229-grok-119",
+    "event_date": "2026-12-12",
+    "facts": [
+      "アニメイト通販でのオンライン受付は2026年12月12日(土)12時開始予定、販売期間は後日案内",
+      "グッズ付きコラボチケットはアトラクション1回券(大人3,000円)とパスポート(大人6,800円)の2種"
+    ]
+  }
+]

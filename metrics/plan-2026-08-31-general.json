@@ -1,0 +1,35 @@
+{
+  "articles": [
+    {
+      "slug": "general-imas-radio-message-form-boshu",
+      "brand": "general",
+      "rank": "small",
+      "angle": "YouTube「アイドルマスターチャンネル」で9月開始の新ラジオ番組「IM@S RADIO」(パーソナリティ: 平田宏美さん・若林直美さん)、メッセージフォームの受付開始を伝える(フォーム本文のみ確認・未確認バッジ)",
+      "lead_score": 5,
+      "dedup_key": "general-topic-099",
+      "candidate_ids": ["202608310229-grok-124"]
+    },
+    {
+      "slug": "general-ap-lounge-kassy-graduation-day",
+      "brand": "general",
+      "rank": "small",
+      "angle": "アイマスch「APラウンジ」APかっしーが本日8月31日付で卒業(最終配信は8月26日実施済み、続報の当日トリガー)",
+      "lead_score": 0,
+      "dedup_key": "general-ap-lounge-kassy-graduation-2026",
+      "candidate_ids": ["sched-2026-08-31-general-ap-lounge-kassy-graduation-2026-終了"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "moiw-2025-blu-ray",
+      "reason": "既報",
+      "note": "joint面が2026-08-26付で既報(moiw2025-bluray-perfectbox-order-2026)。受注期限8/30も既出で新事実なし、期限は昨日で経過済み"
+    },
+    {
+      "dedup_key": "imas-official-coming-soon-20260906",
+      "reason": "既報",
+      "note": "joint面が2026-08-29付で既報(imas-official-coming-soon-2026-0906)。今回の候補は二次情報のエンゲージメント数値のみで新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

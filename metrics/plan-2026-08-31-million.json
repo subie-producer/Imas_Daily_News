@@ -1,0 +1,154 @@
+{
+  "articles": [
+    {
+      "slug": "million-14th-live-general-sale-0830",
+      "brand": "million",
+      "rank": "large",
+      "angle": "ミリオン14thLIVE(9/19-20)の現地チケット一般販売(先着)・公式リセール(抽選)が8/30に開始、会場・受付方法・注意事項・Q&Aと桐谷蝶々(宮尾美也役)のDAY1出演告知をまとめて報じる",
+      "lead_score": 55,
+      "dedup_key": "million-14th-ticket-general-resale-2026",
+      "candidate_ids": [
+        "202608310229-explore-4",
+        "202608310229-grok-83",
+        "202608310229-grok-85",
+        "202608310229-grok-86",
+        "202608310229-grok-87",
+        "202608310229-grok-88",
+        "202608310229-grok-89"
+      ]
+    },
+    {
+      "slug": "million-bot-060708-release-event-0830",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "「THE IDOLM@STER MILLION BATTLE OF THE@TER 06,07,08」購入者限定合同リリースイベントが8/30開催、複数キャストの出演が相次いで判明",
+      "lead_score": 15,
+      "dedup_key": "million-topic-065",
+      "candidate_ids": [
+        "202608310229-grok-90",
+        "202608310229-grok-91",
+        "202608310229-grok-92",
+        "202608310229-grok-93",
+        "202608310229-grok-94",
+        "202608310229-grok-95"
+      ]
+    },
+    {
+      "slug": "million-reprint-pickup-gacha-end-0831",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ『日替わりピックアップ！限定復刻ガシャ』が本日14:59に終了、最終DAY4は豊川風花",
+      "lead_score": 10,
+      "dedup_key": "reprint-pickup-gacha-2026-08-27",
+      "candidate_ids": [
+        "sched-2026-08-31-reprint-pickup-gacha-2026-08-27-終了",
+        "202608310229-grok-81"
+      ]
+    },
+    {
+      "slug": "million-login-bonus-end-0831",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ『2026年 残暑お見舞いログインボーナス』が本日で終了、計500個のミリオンジュエルを配布",
+      "lead_score": 5,
+      "dedup_key": "milishita-late-summer-login-bonus-2026",
+      "candidate_ids": [
+        "sched-2026-08-31-milishita-late-summer-login-bonus-2026-終了"
+      ]
+    },
+    {
+      "slug": "million-platinum-star-theater-himitsu-kaikou-0831",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ、新イベント『プラチナスターシアター～秘密のメモリーズ～』が本日15時に開幕(詳細は開催後案内)",
+      "lead_score": 10,
+      "dedup_key": "million-topic-057",
+      "candidate_ids": [
+        "202608310229-grok-82"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-walking-on-the-square-another-mv-2026",
+      "reason": "既報",
+      "note": "アナザー設定ver.の案内はstock/stories.yml(million-ops-roundup-2026-08、first_published 2026-08-29)で既報。候補のpublished_dateは8/28で新事実とは言えない"
+    },
+    {
+      "dedup_key": "million-kikuchi-makoto-birthday-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml(kikuchi-makoto-birthday-2026、first_published 2026-08-29)と同一facts。新事実なし"
+    },
+    {
+      "dedup_key": "million-topic-056",
+      "reason": "重複",
+      "note": "同一施策(日替わりピックアップ限定復刻ガシャ)としてmillion-reprint-pickup-gacha-end-0831に統合"
+    },
+    {
+      "dedup_key": "million-topic-058",
+      "reason": "重複",
+      "note": "同一施策(14th現地チケット一般販売)としてmillion-14th-live-general-sale-0830に統合"
+    },
+    {
+      "dedup_key": "million-topic-060",
+      "reason": "重複",
+      "note": "同一施策(14thチケットTICKETページ更新)としてmillion-14th-live-general-sale-0830に統合"
+    },
+    {
+      "dedup_key": "million-topic-061",
+      "reason": "重複",
+      "note": "同一施策(14thLIVE INFORMATIONページ)としてmillion-14th-live-general-sale-0830に統合"
+    },
+    {
+      "dedup_key": "million-topic-062",
+      "reason": "重複",
+      "note": "同一施策(14thLIVE ATTENTIONページ)としてmillion-14th-live-general-sale-0830に統合"
+    },
+    {
+      "dedup_key": "million-topic-063",
+      "reason": "重複",
+      "note": "同一施策(14thLIVE Q&Aページ)としてmillion-14th-live-general-sale-0830に統合"
+    },
+    {
+      "dedup_key": "million-topic-064",
+      "reason": "重複",
+      "note": "14thLIVE出演告知としてmillion-14th-live-general-sale-0830に統合"
+    },
+    {
+      "dedup_key": "million-topic-066",
+      "reason": "重複",
+      "note": "BOT 06,07,08合同リリースイベント出演報告としてmillion-bot-060708-release-event-0830に統合"
+    },
+    {
+      "dedup_key": "million-topic-067",
+      "reason": "重複",
+      "note": "同上、million-bot-060708-release-event-0830に統合"
+    },
+    {
+      "dedup_key": "million-topic-068",
+      "reason": "重複",
+      "note": "同上、million-bot-060708-release-event-0830に統合"
+    },
+    {
+      "dedup_key": "million-topic-069",
+      "reason": "重複",
+      "note": "同上、million-bot-060708-release-event-0830に統合"
+    },
+    {
+      "dedup_key": "million-topic-070",
+      "reason": "重複",
+      "note": "応募自体は終了済みの背景情報としてmillion-bot-060708-release-event-0830に統合"
+    },
+    {
+      "dedup_key": "million-topic-071",
+      "reason": "個人の話題",
+      "note": "ミリプロ自己紹介カードのファン活動。個人SNS投稿の傾向紹介はrank:culture(brand:general)面の扱いであり、この面では単体記事化しない"
+    },
+    {
+      "dedup_key": "million-topic-072",
+      "reason": "個人の話題",
+      "note": "一般販売直後にチケットを確保したという個人アカウントの体験談のみで一次事実がなく、単体では記事化しない"
+    }
+  ],
+  "cross_brand": []
+}

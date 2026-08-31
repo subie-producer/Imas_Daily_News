@@ -1,0 +1,77 @@
+{
+  "articles": [
+    {
+      "slug": "cg-popn-toybox-cd-aftersale-shime-0831",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "Pop'n ToyBox!!会場オリジナルCD2タイトルの事後通販受付が本日23:59で終了、価格・投票券シリアル・発送時期を案内",
+      "lead_score": 0,
+      "dedup_key": "cg-pop-n-toybox-cd-2026",
+      "candidate_ids": ["sched-2026-08-31-cg-pop-n-toybox-cd-2026-締切"]
+    },
+    {
+      "slug": "cg-union-arena-supply-set-yoyaku-shime-0831",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "UNION ARENA『シンデレラガールズ スペシャルカードサプライセット』の予約受付が本日23:59で終了",
+      "lead_score": 0,
+      "dedup_key": "cg-union-arena-vote2026-supply-set-2026",
+      "candidate_ids": ["sched-2026-08-31-cg-union-arena-vote2026-supply-set-2026-締切"]
+    },
+    {
+      "slug": "cg-derepa-tachibana-mail-shime-0831",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "CINDERELLA PARTY!9月9日放送回(久川凪役・立花日菜さんゲスト)へのメール宛先受付が本日締切",
+      "lead_score": 0,
+      "dedup_key": "cg-derepa-broadcast-2026",
+      "candidate_ids": ["sched-2026-08-31-cg-derepa-broadcast-2026-締切"]
+    },
+    {
+      "slug": "cg-popn-toybox-staff-talk-0831",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "『Pop'n ToyBox!!』スタッフ振り返りトークが本日20時にアイマスchで配信、八城雄太さん・石田裕亮さんが出演し制作裏側を解説",
+      "lead_score": 10,
+      "dedup_key": "cg-popn-toybox-goods-2026",
+      "candidate_ids": ["sched-2026-08-31-cg-popn-toybox-goods-2026-開始", "202608310229-grok-37"]
+    },
+    {
+      "slug": "cg-vote2026-ouen-tote-bag-hatsubai",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "シンデレラガール総選挙2026公式応援3wayトートバッグが受注開始、価格と受注期間(9/13締切)を案内",
+      "lead_score": 5,
+      "dedup_key": "cg-topic-015",
+      "candidate_ids": ["202608310229-grok-40"]
+    },
+    {
+      "slug": "cg-vote2026-yojijukugo-group-hij-roundup",
+      "brand": "cg",
+      "rank": "roundup",
+      "angle": "総選挙2026記念グッズ「公約四字熟語」進行中のデザイン公開(グループH・I・J)をまとめて紹介",
+      "lead_score": 0,
+      "dedup_key": "cg-topic-019",
+      "candidate_ids": ["202608310229-grok-44", "202608310229-grok-42", "202608310229-grok-38"]
+    }
+  ],
+  "dropped": [
+    {"dedup_key": "dereste-10th-tour-blu-ray", "reason": "既報", "note": "商品仕様・発売日・収録内容は8/29号(cg-ss10th-fukuoka-pv2-2026)で既報、新事実なし"},
+    {"dedup_key": "cg-yamanashi-walk-wander-2026", "reason": "既報", "note": "8/29号で既報、イラスト制作中等の追加情報のみで新事実なし"},
+    {"dedup_key": "cg-memory-pict-november-2026", "reason": "既報", "note": "8/28号(memory-pict-6th-kohimura-yoda-2026)で既報と同内容"},
+    {"dedup_key": "cg-number-one-daisuki-sleep-2026", "reason": "既報", "note": "8/26発売は既報済み、商品番号・歌唱陣の追加のみで新規トリガーなし"},
+    {"dedup_key": "cg-parfait-coquette-celebration-2026", "reason": "既報", "note": "8/29号(cg-15th-popup-parfait-coquette-2026)で既報と同内容"},
+    {"dedup_key": "cg-memory-pict-2026", "reason": "既報", "note": "Memory Pict.第6弾受注は8/28号で既報、価格詳細の補足のみ"},
+    {"dedup_key": "cg-topic-018", "reason": "既報", "note": "Memory Pict.第6弾告知ツイートで既報事実と同内容"},
+    {"dedup_key": "cg-topic-014", "reason": "その他", "note": "8/30夕方公演の配信一時停止・再開のみの運営メモ、当日限りで本日時点の読者行動なし"},
+    {"dedup_key": "cg-topic-016", "reason": "既報", "note": "8/30同時視聴上映会の時間割は既報(cg-popn-toybox-goods-2026)と同内容、開催済みで新事実なし"},
+    {"dedup_key": "cg-topic-020", "reason": "既報", "note": "公約四字熟語グループGは8/29公開分として既報(cinderella-girl-vote2026-schedule)済み"},
+    {"dedup_key": "cg-topic-021", "reason": "個人の話題", "note": "ファンの同時視聴感想・投票呼びかけ投稿"},
+    {"dedup_key": "cg-topic-022", "reason": "個人の話題", "note": "ファン発の投票呼びかけ・非公式応援動画告知"},
+    {"dedup_key": "cg-topic-023", "reason": "個人の話題", "note": "誕生日ファンイラストへの反応、個人アカウント発"},
+    {"dedup_key": "cg-topic-024", "reason": "個人の話題", "note": "個人アカウントのグッズ到着報告"},
+    {"dedup_key": "cg-topic-025", "reason": "個人の話題", "note": "グッズデザインへの個人の感想投稿"},
+    {"dedup_key": "general-topic-100", "reason": "既報", "note": "若林智香誕生日ムービーは8/30号で既報と同内容"}
+  ],
+  "cross_brand": []
+}

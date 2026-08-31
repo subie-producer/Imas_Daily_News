@@ -1,0 +1,61 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-08-31-cg-derepa-tachibana-mail-shime-0831.md",
+   "issue": "出典が存在しない: candidate_id 'sched-2026-08-31-cg-derepa-broadcast-2026-締切' が候補ファイルに存在しません",
+   "quote": "candidate_ids: [\"sched-2026-08-31-cg-derepa-broadcast-2026-締切\"]"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-cg-popn-toybox-cd-aftersale-shime-0831.md",
+   "issue": "出典が存在しない: candidate_id 'sched-2026-08-31-cg-pop-n-toybox-cd-2026-締切' が候補ファイルに存在しません",
+   "quote": "candidate_ids: [\"sched-2026-08-31-cg-pop-n-toybox-cd-2026-締切\"]"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-cg-popn-toybox-staff-talk-0831.md",
+   "issue": "出典が存在しない: candidate_id 'sched-2026-08-31-cg-popn-toybox-goods-2026-開始' が候補ファイルに存在しません",
+   "quote": "candidate_ids: [\"sched-2026-08-31-cg-popn-toybox-goods-2026-開始\"]"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-million-login-bonus-end-0831.md",
+   "issue": "出典が存在しない: candidate_id 'sched-2026-08-31-milishita-late-summer-login-bonus-2026-終了' が候補ファイルに存在しません",
+   "quote": "candidate_ids: [\"sched-2026-08-31-milishita-late-summer-login-bonus-2026-終了\"]"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-joint-tours-spring-exchange-shime-0831.md",
+   "issue": "出典が存在しない: candidate_id 'sched-2026-08-31-tours-spring-exchange-2026-締切' が候補ファイルに存在しません",
+   "quote": "candidate_ids: [\"sched-2026-08-31-tours-spring-exchange-2026-締切\"]"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-million-reprint-pickup-gacha-end-0831.md",
+   "issue": "出典が存在しない: candidate_id 'sched-2026-08-31-reprint-pickup-gacha-2026-08-27-終了' が候補ファイルに存在しません",
+   "quote": "candidate_ids: [\"sched-2026-08-31-reprint-pickup-gacha-2026-08-27-終了\"]"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-shiny-illumination-stars-cantare-kaimaku-0831.md",
+   "issue": "出典が存在しない: candidate_id 'sched-2026-08-31-shanison-illumination-stars-event-2026-開幕' が候補ファイルに存在しません",
+   "quote": "candidate_ids: [\"sched-2026-08-31-shanison-illumination-stars-event-2026-開幕\", \"202608310229-grok-104\", \"202608310229-grok-105\"]"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-joint-iwsf2026-venue-cd-uketsuke-shime-0831.md",
+   "issue": "出典が存在しない: candidate_id 'sched-2026-08-31-iwsf2026-venue-cd-締切' が候補ファイルに存在しません",
+   "quote": "candidate_ids: [\"sched-2026-08-31-iwsf2026-venue-cd-締切\"]"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-dsva-valiv-survey-deadline-0831.md",
+   "issue": "出典が存在しない: candidate_id 'sched-2026-08-31-valiv-survey-2026-08-締切前' が候補ファイルに存在しません",
+   "quote": "candidate_ids: [\"sched-2026-08-31-valiv-survey-2026-08-締切前\"]"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-gaku-seabreeze-collab-deadline.md",
+   "issue": "出典が存在しない: candidate_id 'sched-2026-08-31-seabreeze-gakumas-collab-2026-締切' が候補ファイルに存在しません",
+   "quote": "candidate_ids: [\"sched-2026-08-31-seabreeze-gakumas-collab-2026-締切\"]"
+  },
+  {
+   "file": "docs/_posts/2026-08-31-general-ap-lounge-kassy-graduation-day.md",
+   "issue": "出典が存在しない: candidate_id 'sched-2026-08-31-general-ap-lounge-kassy-graduation-2026-終了' が候補ファイルに存在しません",
+   "quote": "candidate_ids: [\"sched-2026-08-31-general-ap-lounge-kassy-graduation-2026-終了\"]"
+  }
+ ],
+ "comments": []
+}

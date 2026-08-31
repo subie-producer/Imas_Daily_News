@@ -37,5 +37,25 @@
   "verify": "confirmed",
   "src_candidate_id": "202608270220-claude-147",
   "deadline": "2026-10-08"
+ },
+ {
+  "id": "sched-2026-10-08-gaku-shirube-iwate-streaming-2026-終了",
+  "dedup_key": "gaku-shirube-iwate-streaming-2026",
+  "brand": "gaku",
+  "subject": "学園アイドルマスター LIVE TOUR -標- 岩手公演 配信視聴チケット",
+  "kind": "終了",
+  "note": "配信視聴チケット販売終了(18:00)・視聴コメント付きアーカイブ視聴終了(23:59)",
+  "reserved_on": "2026-08-31",
+  "facts": [
+   "配信視聴チケットの販売は10月8日18時まで(予定)",
+   "視聴コメント付きアーカイブは9月24日18時から10月8日23時59分まで視聴可能(予定)",
+   "公演オリジナルデジタルチケットの画像生成は10月8日23時59分まで"
+  ],
+  "title": "学マス標ツアー岩手公演、配信券詳細",
+  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/streaming/iwate.php",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608310229-grok-72",
+  "event_date": "2026-10-08"
  }
 ]

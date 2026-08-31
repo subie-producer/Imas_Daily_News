@@ -45,8 +45,12 @@
   watch: 実装時期・他アイドル登場時期の詳細(判明次第 triggers へ)
 - dedup_key: shiny-axe8-2026
   brand: shiny
-  subject: Project "ReLight" AXE8 第2弾(イルミネーションスターズ「I=WE」・新SSR風野灯織)
-  watch: 新曲のゲーム内追加日・新SSR(風野灯織)の登場日(判明次第 triggers へ。第1弾アルストロメリア/桑山千雪は8/29付で実装確認済み)
+  subject: Project "ReLight" AXE8 第2弾(イルミネーションスターズ「I=WE」)
+  watch: 新曲「I=WE」のゲーム内追加日(判明次第 triggers へ。新SSR風野灯織は8/31開幕の新曲イベント報酬として登場確認済み)
+- dedup_key: shanison-illumination-stars-event-2026
+  brand: shiny
+  subject: シャニソン 次回ピックアップガシャ「瞬きのメロディア」
+  watch: 個別カード名・出現率・開催日時(判明次第 triggers へ)
 - dedup_key: gaku-nuipin-vol2
   brand: gaku
   subject: 学マス「ぬいピン vol.2」
@@ -67,10 +71,6 @@
   brand: gaku
   subject: ハツボシストア「サマートロピカルアイスパーラー」展開
   watch: テーマ展開の終了日(判明次第 triggers へ)
-- dedup_key: pst-himitsu-no-memories
-  brand: million
-  subject: プラチナスターシアター『秘密のメモリーズ』開催
-  watch: 開催日程(判明次第 triggers へ)
 - dedup_key: second-hairstyle-gacha-mybrand-glasses-ayumu-akane
   brand: million
   subject: セカンドヘアスタイルガシャ～myブランド編 with glasses～(舞浜歩・野々原茜)

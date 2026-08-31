@@ -1,0 +1,73 @@
+{
+  "articles": [
+    {
+      "slug": "765-dual-twin-tokyo-finale-reports-0831",
+      "brand": "765",
+      "rank": "medium",
+      "angle": "dual twin live tour東京公演千秋楽(双海亜美・双海真美/三浦あずさ・秋月律子)、各媒体・公式が伝える舞台裏—最終ステージの名称や演出の工夫、配信トラブルも判明",
+      "lead_score": 45,
+      "dedup_key": "765-topic-004",
+      "candidate_ids": [
+        "202608301234-explore-1",
+        "202608310229-explore-5",
+        "202608310229-grok-26",
+        "202608310229-grok-29",
+        "202608310229-grok-30"
+      ]
+    },
+    {
+      "slug": "765-dual-twin-survey-0831",
+      "brand": "765",
+      "rank": "small",
+      "angle": "dual twin live tour(亜美・真美/あずさ・律子)の公演アンケートを実施中、回答期間は9月27日23:59まで",
+      "lead_score": 5,
+      "dedup_key": "765-topic-002",
+      "candidate_ids": [
+        "202608310229-grok-27"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "765-dual-twin-live-cd-postorder-2026",
+      "reason": "重複",
+      "note": "joint-765-venue-cd-kaishi-0913shime(全12種CD事後通販・9/13締切)と同一施策"
+    },
+    {
+      "dedup_key": "765-topic-003",
+      "reason": "既報",
+      "note": "配信チケット発売・アーカイブ9/27までの情報はstock/stories.yml(765-dual-twinlive-venue-cd)に既に反映済みで新事実なし"
+    },
+    {
+      "dedup_key": "765-topic-006",
+      "reason": "個人の話題",
+      "note": "ファン個人の感想投稿、エンゲージメントも低く現象と言えない"
+    },
+    {
+      "dedup_key": "765-topic-007",
+      "reason": "既報",
+      "note": "MOIW2025 Blu-ray受注締切は8/30(昨日)で発行日時点で終了済み、結果等の新事実なし"
+    },
+    {
+      "dedup_key": "765-topic-008",
+      "reason": "既報",
+      "note": "765-topic-007と同一クラスタ(締切前ダイジェスト公開の販促投稿)、締切既に終了"
+    },
+    {
+      "dedup_key": "765-topic-009",
+      "reason": "既報",
+      "note": "MOIW2025 Blu-rayの価格等は既報、商品ページの梱包資材仕様のみで新事実なし、締切も終了済み"
+    },
+    {
+      "dedup_key": "765-topic-010",
+      "reason": "既報",
+      "note": "キセキR@DIO vol.12プレゼント企画は既報(stock/stories.yml moiw2025-radio-series-2026)、締切(8/30)も終了済み"
+    },
+    {
+      "dedup_key": "765-topic-011",
+      "reason": "重複",
+      "note": "シャニソン765コラボ第5弾4コマは既にstock/stories.yml(shiny-sfp-765-collab5-gacha-2026)で報じ済み"
+    }
+  ],
+  "cross_brand": []
+}

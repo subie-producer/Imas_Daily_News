@@ -1,0 +1,98 @@
+{
+  "articles": [
+    {
+      "slug": "joint-iwsf2026-venue-cd-uketsuke-shime-0831",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "IWSF2026会場オリジナルCD(シンデレラガールズ関連3タイトル含む計5タイトル)の事後通販受付が本日23:59で終了、対象商品・価格・投票券シリアル・発送時期を列挙",
+      "lead_score": 20,
+      "dedup_key": "iwsf2026-venue-cd",
+      "candidate_ids": [
+        "sched-2026-08-31-iwsf2026-venue-cd-締切",
+        "202608310229-grok-76"
+      ]
+    },
+    {
+      "slug": "joint-tours-spring-exchange-shime-0831",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "ツアマス スプリングキャンペーン景品交換対応が本日で終了、未交換者は問い合わせ先を案内",
+      "lead_score": 5,
+      "dedup_key": "tours-spring-exchange-2026",
+      "candidate_ids": [
+        "sched-2026-08-31-tours-spring-exchange-2026-締切"
+      ]
+    },
+    {
+      "slug": "joint-765-venue-cd-kaishi-0913shime",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "765会場オリジナルCD(961&KOHAKU&765PRO ALLSTARS盤ほか全12種)の事後通販受付を実施中、締切は9月13日",
+      "lead_score": 10,
+      "dedup_key": "joint-topic-052",
+      "candidate_ids": [
+        "202608310229-grok-77"
+      ]
+    },
+    {
+      "slug": "joint-atre-akihabara-kuji-zaiko-0830",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "アトレ秋葉原店の抽選くじ在庫状況を更新、各ブランドの在庫有無を案内",
+      "lead_score": 0,
+      "dedup_key": "official-shop-kuji-stock-2026-08-30",
+      "candidate_ids": [
+        "202608302334-explore-22"
+      ]
+    },
+    {
+      "slug": "joint-vala-extreme-overdrive-odottemita",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "ヴイアラがIWSF2026収録曲「エクストリーム・オーバードライブ」の踊ってみた動画を公開",
+      "lead_score": 0,
+      "dedup_key": "joint-topic-053",
+      "candidate_ids": [
+        "202608310229-grok-78"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "imas-radio-2026",
+      "reason": "既報",
+      "note": "新番組「IM＠S RADIO」の開始・パーソナリティ・放送スケジュール・アフタートーク方式はすべて8/28-29付で既報(stock story imas-radio-2026)。新事実なし"
+    },
+    {
+      "dedup_key": "dual-twin-live-new-information-2026",
+      "reason": "既報",
+      "note": "キャスト生オーディオコメンタリー配信(9/6・9/23、出演者・配信先・アーカイブ期間)は既報(stock story 765-dual-twinlive-venue-cd)と同一内容"
+    },
+    {
+      "dedup_key": "cinderella-million-clash-match-2027",
+      "reason": "既報",
+      "note": "公演日程・会場・出演ゲスト・チケット料金は8/26付で既報(stock story cg-million-coming-soon-2026-08-26)と同一内容"
+    },
+    {
+      "dedup_key": "joint-topic-049",
+      "reason": "既報",
+      "note": "MOIW2025 Blu-ray PERFECT BOX受注が8/30までである点、DAY2全曲ダイジェストを8/29付で期間限定公開した点は既報(stock story moiw2025-bluray-perfectbox-order-2026)"
+    },
+    {
+      "dedup_key": "joint-topic-050",
+      "reason": "既報",
+      "note": "配信・プレゼントキャンペーン自体は8/25付で既報(stock story moiw2025-radio-series-2026)。応募締切の8/30は本号発行(8/31)より前に経過済みで、当日トリガー・新事実のいずれも無い"
+    },
+    {
+      "dedup_key": "joint-topic-054",
+      "reason": "個人の話題",
+      "note": "出演声優個人のSNS投稿がBlu-ray受注最終日を引用しているだけで、個人のSNS投稿は単体で記事化しない(規程4)"
+    },
+    {
+      "dedup_key": "joint-topic-055",
+      "reason": "個人の話題",
+      "note": "ファン個人のSNS投稿(応援幕到着の報告)、低エンゲージで現象と言えるほどの広がりもなく、個人の投稿は単体で記事化しない(規程4)。まとめる形のファン面(brand: general, rank: culture)はこの面の担当外"
+    }
+  ],
+  "cross_brand": []
+}

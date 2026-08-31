@@ -25,6 +25,7 @@ import hashlib
 import json
 import os
 import re
+import signal
 import subprocess
 import sys
 import tempfile
@@ -1469,6 +1470,25 @@ def main() -> int:
 
     if not args.plan and not checkout_edition_branch(date, "compose"):
         return 1
+
+    # **殺されたら、その時点までを確定してから死ぬ。**
+    # systemd は起動タイムアウトで SIGTERM を送る。以前はここで何も残らず、
+    # 記事40本・社説・号スナップショットが未コミットのまま作業ツリーに散らばり、
+    # release も collect も「未コミットの変更がある」で止まった(2026-08-31)。
+    # 途中の紙面でも、コミットさえされていれば release が approve を見て判断でき、
+    # 人も何が出来ていたか分かる。
+    if not args.plan:
+        def _on_term(signum, frame):
+            print(f"SIGTERM を受けた。ここまでを確定して終了する", flush=True)
+            try:
+                commit_and_push(branch, f"compose {date}: 途中で打ち切られた(SIGTERM)", "compose")
+            except Exception as e:
+                print(f"打ち切り時のコミットに失敗: {e}", flush=True)
+            notify("compose", f"{date}: 時間切れで打ち切られた。**ここまでの紙面はコミット済み**。"
+                              f"lint と校閲記録を見て、発行できるか判断すること", ok=False)
+            os._exit(1)
+
+        signal.signal(signal.SIGTERM, _on_term)
     triggers = load_scheduled(date)
     number = next_number()
     if args.plan:

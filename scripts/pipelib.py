@@ -63,9 +63,24 @@ COMPOSE_ARTICLE_MAX_BUDGET_USD = ENV.get("COMPOSE_ARTICLE_MAX_BUDGET_USD", "3")
 COMPOSE_WHOLE_MAX_BUDGET_USD = ENV.get("COMPOSE_WHOLE_MAX_BUDGET_USD", "8")
 
 
+# 手元の確認・試験実行で Discord へ本物の警報を飛ばさないための抑止。
+# 各スクリプトが `--dry-run` `--no-git` 等を受け取ったときに `set_quiet(True)` を呼ぶ。
+# 実測: 発行前の点検で release を --dry-run したところ、号スナップショットがまだ無いのは
+# 当然なのに「発行中止」の警報が飛び、本物の発行不良と見分けが付かなくなった(2026-08-31)。
+_QUIET = False
+
+
+def set_quiet(on: bool) -> None:
+    global _QUIET
+    _QUIET = on
+
+
 def notify(job: str, msg: str, ok: bool = True) -> None:
     prefix = "✅" if ok else "🚨"
     text = f"{prefix} アイマスNEWS {job}: {msg}"
+    if _QUIET:
+        print(f"[試験実行・通知しない] {text}", flush=True)
+        return
     print(text, flush=True)
     url = ENV.get("DISCORD_WEBHOOK_URL")
     if url:

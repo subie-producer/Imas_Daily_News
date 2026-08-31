@@ -35,7 +35,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import ENV, ROOT, JST, notify, notify_crash, now_jst
+from pipelib import ENV, ROOT, JST, notify, notify_crash, now_jst, set_quiet
 
 DOCS = ROOT / "docs"
 SRV = Path(ENV.get("SRV_ROOT", str(Path.home() / "srv" / "imas-news")))
@@ -201,6 +201,8 @@ def main() -> int:
     ap.add_argument("--skip-purge", action="store_true", help="Cloudflare のキャッシュパージを行わない")
     ap.add_argument("--dry-run", action="store_true", help="ビルドと検証だけ行い、配信は差し替えない")
     args = ap.parse_args()
+    # 試験実行(--dry-run)では Discord へ通知しない。本物の警報と見分けが付かなくなる
+    set_quiet(args.dry_run)
 
     RELEASES.mkdir(parents=True, exist_ok=True)
     stamp = now_jst().strftime("%Y%m%dT%H%M%S")

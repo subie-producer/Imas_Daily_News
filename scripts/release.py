@@ -38,9 +38,18 @@ def load_env() -> dict:
 ENV = load_env()
 
 
+# --dry-run のときに立てる。**手元の確認で本物の警報を鳴らさないため。**
+# 実測: 発行前の点検で --dry-run を回したら、号スナップショットがまだ無いのは当然なのに
+# 「発行中止」の警報が Discord に飛び、発行不良と見分けが付かなくなった(2026-08-31 20:49)。
+DRY_RUN = False
+
+
 def notify(msg: str, ok: bool = True) -> None:
     prefix = "✅" if ok else "🚨"
     text = f"{prefix} アイマスNEWS release: {msg}"
+    if DRY_RUN:
+        print(f"[dry-run・通知しない] {text}", flush=True)
+        return
     print(text, flush=True)
     url = ENV.get("DISCORD_WEBHOOK_URL")
     if url:
@@ -141,6 +150,10 @@ def main() -> int:
     nxt = "edition/" + (datetime.date.fromisoformat(date) + datetime.timedelta(days=1)).isoformat()
     branch = f"edition/{date}"
     dry = args.dry_run
+    # 通知の抑止は**最初の判定より前**に立てる。作業ツリーや号スナップショットの
+    # 検査は dry でも走るので、ここが遅れると点検で警報が飛ぶ
+    global DRY_RUN
+    DRY_RUN = dry
 
     # 0. 作業ツリーが汚れていたら触らない(自動実行の安全弁)
     dirty = git("status", "--porcelain").stdout.strip()

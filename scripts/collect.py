@@ -38,7 +38,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, append_metric, classify_source,
-                     extract_periods, html_to_text, unbacked_facts,
+                     extract_periods, html_to_text, set_quiet, unbacked_facts,
                      checkout_edition_branch, commit_and_push, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst)
 
@@ -837,6 +837,8 @@ def main() -> int:
     ap.add_argument("--force-grok", action="store_true",
                     help="GROK_HOURS の時刻判定を無視して Grok を回す(手動の再収集用)")
     args = ap.parse_args()
+    # 試験実行(--no-git)では Discord へ通知しない。本物の警報と見分けが付かなくなる
+    set_quiet(args.no_git)
     t0 = time.time()
     date = edition_date()
     branch = f"edition/{date}"

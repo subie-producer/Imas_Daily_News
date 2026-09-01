@@ -28,7 +28,7 @@ import yaml
 from jsonschema import Draft202012Validator
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import classify_source  # noqa: E402  出典種別は URL から判定する
+from pipelib import classify_source, is_discovery_only  # noqa: E402  出典種別は URL から判定する
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
@@ -169,6 +169,12 @@ def check_source_types(rep, path, fm):
         return
     resolved = []
     for s in fm["sources"]:
+        # リンク集・RSSミラーは**出典にできない**。中身を持たないので、
+        # そこを開いても記事の事実は確認できない。リンク先を出典にする
+        if is_discovery_only(s["url"]):
+            rep.error(path, f"出典にできないサイト: {s['url']} は他所の記事の見出しと"
+                            f"リンクを並べているだけで、中身を持たない。"
+                            f"リンク先を開いて、そちらを出典にすること")
         # 未確認 は「一次ソース未到達」という確認状態。種別の判定で上書きしない(規程2.5)
         if s.get("type") == "未確認":
             resolved.append("未確認")

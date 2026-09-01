@@ -441,6 +441,7 @@ def classify_source(url: str) -> str:
     #    末尾一致より個別指定が勝たないと誤って公式になる(監査指摘)
     for key, label in (("official_domains", "公式"), ("semi_official_domains", "準公式"),
                        ("press_domains", "報道"), ("secondary_domains", "二次情報"),
+                       ("discovery_only_domains", "二次情報"),
                        ("fan_domains", "ファン"), ("party_domains", "当事者")):
         if host in set(t.get(key) or []):
             return label
@@ -458,12 +459,27 @@ def classify_source(url: str) -> str:
     #    (実測: bandainamcomusiclive.co.jp を載せても pylonport. が拾えなかった)。
     #    個別指定・特設サイト・種類の後に見るので、上の判断を覆さない
     for key, label in (("semi_official_domains", "準公式"), ("press_domains", "報道"),
-                       ("secondary_domains", "二次情報"), ("fan_domains", "ファン"),
-                       ("party_domains", "当事者")):
+                       ("secondary_domains", "二次情報"),
+                       ("discovery_only_domains", "二次情報"),
+                       ("fan_domains", "ファン"), ("party_domains", "当事者")):
         for d in t.get(key) or []:
             if host.endswith("." + d):
                 return label
     return "未確認"
+
+
+def is_discovery_only(url: str) -> bool:
+    """リンク集・RSSミラーか。**出典に載せてはいけない**サイト。
+
+    中身を持たず、他所の記事の見出しとリンクを並べているだけなので、
+    そこを開いても事実は何も確認できない。ネタを見つけるのには使えるが、
+    出典にすると「確認できない場所」を根拠として示すことになる。
+    """
+    import urllib.parse
+    u = urllib.parse.urlparse(url if "//" in url else "//" + url)
+    host = (u.hostname or "").removeprefix("www.")
+    return any(host == d or host.endswith("." + d)
+               for d in source_type_table().get("discovery_only_domains") or [])
 
 
 # --- facts の裏取り(日付・金額が出典本文にあるか) ----------------------------

@@ -448,6 +448,11 @@ def classify_source(url: str) -> str:
     for suf in t.get("official_suffixes") or []:
         if host.endswith(suf):
             return "公式"
+    # 6. 種類でまとめて決まるもの。自治体(.lg.jp)や政府機関(.go.jp)は、
+    #    どこであれコラボ・寄贈・観光施策の**当事者**であり、1つずつ表に足す意味がない
+    for suf, label in (t.get("suffix_types") or {}).items():
+        if host == suf.lstrip(".") or host.endswith(suf):
+            return label
     return "未確認"
 
 

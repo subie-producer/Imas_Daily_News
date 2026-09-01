@@ -28,7 +28,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 TARGETS = ["collect.py", "compose.py", "pipelib.py", "release.py", "lint.py",
            "derive.py", "watch.py", "deploy.py", "indexer.py", "tags.py",
-           "fetch_page.py", "cost.py"]
+           "fetch_page.py", "cost.py", "source_type.py", "classify_sources.py",
+           "retag_sources.py"]
 # import 漏れを検出する対象。ローカル変数と区別が付くものだけを挙げる
 # (AST だけではスコープを追えないため、モジュール名の allowlist で線を引く)
 KNOWN_MODULES = {"os", "sys", "re", "json", "time", "shutil", "signal", "subprocess",

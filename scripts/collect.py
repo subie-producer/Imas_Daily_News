@@ -873,6 +873,15 @@ def main() -> int:
     if unknown:
         print(f"source_types.yml に無い出典 {sum(unknown.values())}件 / {len(unknown)}ドメイン: "
               + ", ".join(f"{h}({n})" for h, n in unknown.most_common(12)), flush=True)
+        # **未知のドメインは合議で振り分ける。**表を人が育てるまで待つと、
+        # 会場・チケット販売・自治体が未確認のまま紙面に載る。
+        # 別ベンダーの2モデルが一致したものだけを足し、公式・準公式は自動で足さない
+        # (過大表示はこの製品がいちばん避けたい事故なので、機械には名乗らせない)
+        if not args.no_git:
+            r = subprocess.run([sys.executable, str(ROOT / "scripts" / "classify_sources.py"),
+                                "--date", date, "--apply"],
+                               cwd=ROOT, capture_output=True, text=True, timeout=1800)
+            print(r.stdout[-1200:], flush=True)
     if not args.no_git:
         commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect")
     # 新規0件の警報は「定時実行が空振りした」ことを知らせるためのもの。

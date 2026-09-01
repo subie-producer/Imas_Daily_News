@@ -55,8 +55,16 @@ semi_official_domains:
   - parks2.bandainamco-am.co.jp
   - p-bandai.jp                           # プレミアムバンダイ
 
+# --- 種類でまとめて決まるもの(末尾一致。個別指定と特設サイトの後に見る) ---
+# 自治体や政府機関は、どこであってもコラボ・寄贈・観光施策の**当事者**である。
+# 1つずつ表に足しても増え続けるだけなので、種類でまとめる。
+suffix_types:
+  ".lg.jp": 当事者      # 地方公共団体(市区町村・都道府県)
+  ".go.jp": 当事者      # 政府機関
+
 # --- 報道: 独立した報道メディア ---
 press_domains:
+  - gamer.ne.jp           # 合議で追加: ゲームメディアによるライブイベント現地取材レポート
   - 4gamer.net
   - famitsu.com
   - gamebiz.jp
@@ -80,6 +88,7 @@ press_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - kore-tore.com         # 合議で追加: プライズ景品情報をまとめたキュレーションサイト
   - game8.jp              # 株式会社ゲームエイト(Gunosy子会社)の攻略メディア
   - gameo.jp              # ゲームオメガ / 株式会社New-Elements の攻略・まとめ
   - appgamelog.com        # 攻略

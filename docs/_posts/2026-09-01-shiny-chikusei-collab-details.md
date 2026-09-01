@@ -18,7 +18,7 @@ tags:
 - グッズ
 sources:
 - url: https://www.city.chikusei.lg.jp/kankou/kankou-news/page013798.html
-  type: 未確認
+  type: 当事者
   label: 筑西市公式サイト
 - url: https://ibatoco.jp/news/chikusei-shinycolors-collab-2026/
   type: 未確認

@@ -37,11 +37,12 @@ ALLOWED = ("当事者", "報道", "二次情報", "ファン")
 LIST_OF = {"当事者": "party_domains", "報道": "press_domains",
            "二次情報": "secondary_domains", "ファン": "fan_domains"}
 # ドメインでは決まらない場(アカウント・動画IDで決まる)。対象外
+# **公式の主体がページを持ちうる場**だけを外す。そこはドメインでは決まらない。
+# wiki ホスティング(atwiki 等)は外さない。公式がそこに告知を出すことはなく、
+# どのページも利用者が書いた二次情報なので、ドメインで決められる(表に載せてある)
 PLATFORMS = ("x.com", "twitter.com", "youtube.com", "youtu.be", "nicovideo.jp",
              "note.com", "docs.google.com", "forms.gle", "hatenablog.com",
-             "ameblo.jp", "fanbox.cc", "booth.pm", "github.com", "rakuten.co.jp",
-             # 誰でもページを作れる wiki ホスティング。書き手ごとに性格が違う
-             "atwiki.jp", "seesaawiki.jp", "wikiwiki.jp", "fandom.com", "wikia.com")
+             "ameblo.jp", "fanbox.cc", "booth.pm", "github.com", "rakuten.co.jp")
 UA = "Mozilla/5.0 (compatible; ImasNews/1.0)"
 
 RULES = """種別の定義(この新聞の編集規程2.5)。**この定義だけで判断すること。**

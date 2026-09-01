@@ -453,6 +453,16 @@ def classify_source(url: str) -> str:
     for suf, label in (t.get("suffix_types") or {}).items():
         if host == suf.lstrip(".") or host.endswith(suf):
             return label
+    # 7. 表に載っているドメインの**下にあるサブドメイン**。
+    #    会社やサービスのドメインを1つ載せれば、その配下の特設サイトまで届く
+    #    (実測: bandainamcomusiclive.co.jp を載せても pylonport. が拾えなかった)。
+    #    個別指定・特設サイト・種類の後に見るので、上の判断を覆さない
+    for key, label in (("semi_official_domains", "準公式"), ("press_domains", "報道"),
+                       ("secondary_domains", "二次情報"), ("fan_domains", "ファン"),
+                       ("party_domains", "当事者")):
+        for d in t.get(key) or []:
+            if host.endswith("." + d):
+                return label
     return "未確認"
 
 

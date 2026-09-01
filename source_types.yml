@@ -51,6 +51,7 @@ semi_official_domains:
   - asobistory.asobistore.jp
   - asobistage.asobistore.jp            # アソビステージ(公式配信プラットフォーム)
   - gamemusic.bn-ent.net                  # バンダイナムコのゲームミュージックレーベル
+  - bandainamcomusiclive.co.jp            # バンダイナムコミュージックライブ(グループの音楽会社)
   - bandainamco-am.co.jp                  # バンナムAM(上の official_paths 以外)
   - parks2.bandainamco-am.co.jp
   - p-bandai.jp                           # プレミアムバンダイ
@@ -64,6 +65,7 @@ suffix_types:
 
 # --- 報道: 独立した報道メディア ---
 press_domains:
+  - gigazine.net           # GIGAZINE(自ら取材・執筆する独立メディア)
   - gamer.ne.jp           # 合議で追加: ゲームメディアによるライブイベント現地取材レポート
   - 4gamer.net
   - famitsu.com
@@ -102,7 +104,14 @@ secondary_domains:
   - collabo-cafe.com      # コラボ情報のまとめ
   - tcg-supply-navi.com   # サプライ情報のアフィリエイト記事(販売元はアソビストア)
   - eventernote.com       # イベント情報サービス。公演の主催者ではない
+  # wiki ホスティングは**ドメインで決まる**。github や楽天と違い、
+  # ここに公式主体がページを持つことはなく、どのページも利用者が書いた二次情報である
   - wikiwiki.jp           # ファン運営の攻略wiki
+  - atwiki.jp             # @wiki(ファンwikiのホスティング)
+  - w.atwiki.jp
+  - seesaawiki.jp
+  - fandom.com
+  - wikia.com
 
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。

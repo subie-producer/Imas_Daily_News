@@ -91,6 +91,7 @@ press_domains:
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
   - kore-tore.com         # 合議で追加: プライズ景品情報をまとめたキュレーションサイト
+  - game-news.tokyo       # 個人運営。各メディアの RSS を横断収集して並べるキュレーション
   - game8.jp              # 株式会社ゲームエイト(Gunosy子会社)の攻略メディア
   - gameo.jp              # ゲームオメガ / 株式会社New-Elements の攻略・まとめ
   - appgamelog.com        # 攻略

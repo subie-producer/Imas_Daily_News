@@ -424,13 +424,20 @@ def classify_source(url: str) -> str:
     # 3. X も**アカウント**で決まる。ただしパスの形も見る。
     #    先頭セグメントを無条件にアカウント名として読むと、
     #    `x.com/<公式アカウント>/not-a-status` のような別物まで公式になる(監査指摘)。
-    #    実データにある形は投稿(420件)とアカウントページ(2件)の2つだけなので、そこに限る
+    #
+    #    許す形は実データ(候補+紙面 1742件)に出てくる4つだけ:
+    #      <acct>                     アカウントページ
+    #      <acct>/status/<数字>       投稿。写真や動画の枝(/photo/1 等)が付くことがある
+    #      <acct>/article/<数字>      X の記事機能。公式アカウントが使っている
+    #      i/trending/<数字>          アカウントではない(トレンド)。これは弾く
     if host in ("x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com"):
         # 形を見るのは**正規化したパス**に対して行う。`//` や `..` を含む URL は
         # X 上では同じ投稿を指すので、潰したうえで判定するのが実態に合う
         seg = [s for s in path[len(host):].split("/") if s]
-        ok = len(seg) == 1 or (len(seg) == 3 and seg[1] == "status" and seg[2].isdigit())
-        acct = seg[0].lower() if ok else ""
+        ok = (len(seg) == 1
+              or (len(seg) >= 3 and seg[1] in ("status", "article") and seg[2].isdigit()))
+        # `x.com/i/...` はアカウント名ではなく X 自身の機能への入口
+        acct = seg[0].lower() if ok and seg[0].lower() != "i" else ""
         for label, accounts in (t.get("x_accounts") or {}).items():
             if acct and acct in {a.lower() for a in accounts}:
                 return label

@@ -59,21 +59,37 @@ RULES = """種別の定義(この新聞の編集規程2.5)。**この定義だ�
 弱い種別を無理に当てると、実態より弱いバッジが紙面に残る。人の判断へ回す。"""
 
 
-def unknown_hosts(date: str) -> dict[str, str]:
-    """その号の候補から、判定表に無いドメインを拾う。{host: 代表URL}"""
+def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, list[str]]]]:
+    """その号の候補から、判定表に無い**ドメイン**と**Xアカウント**を拾う。
+
+    X はドメインでは決まらないが、アカウント単位なら決まる。
+    大半はファンの投稿(イラスト・コスプレ・感想)で、1つずつ人が見るには多すぎる
+    (実測: 178件が未分類のまま溜まっていた)。ここも合議に掛ける。
+    """
     p = ROOT / "candidates" / f"{date}.json"
     if not p.exists():
-        return {}
-    out: dict[str, str] = {}
+        return {}, {}
+    doms: dict[str, str] = {}
+    accts: dict[str, tuple[str, list[str]]] = {}
     for c in json.loads(p.read_text(encoding="utf-8")):
         url = c.get("url") or ""
         if not url or classify_source(url) != "未確認":
             continue
-        host = (urllib.parse.urlparse(url).hostname or "").removeprefix("www.")
+        u = urllib.parse.urlparse(url)
+        host = (u.hostname or "").removeprefix("www.")
+        if host in ("x.com", "twitter.com"):
+            seg = [s for s in u.path.split("/") if s]
+            if not seg or seg[0].lower() == "i":
+                continue
+            a = seg[0]
+            cur = accts.setdefault(a, (url, []))
+            if c.get("title") and len(cur[1]) < 4:
+                cur[1].append(c["title"][:70])
+            continue
         if not host or any(host == q or host.endswith("." + q) for q in PLATFORMS):
             continue
-        out.setdefault(host, url)
-    return out
+        doms.setdefault(host, url)
+    return doms, accts
 
 
 def page_excerpt(url: str, chars: int = 1200) -> str:
@@ -116,61 +132,133 @@ def build_prompt(items: list[tuple[str, str, str]]) -> str:
 """)
 
 
+def build_x_prompt(accts: dict[str, tuple[str, list[str]]]) -> str:
+    body = "\n".join(f"- @{a}: " + " / ".join(t or ["(投稿の要約なし)"])
+                     for a, (_, t) in sorted(accts.items()))
+    return f"""次の X アカウントを、この新聞の出典種別に分類してください。
+
+{RULES}
+
+X のアカウントは次のどれかに当たることが多いので、目安にしてください。
+
+- **当事者**: 出演者(声優)本人、作曲家・イラストレーターなど制作に関わった人、
+  店舗・会場・コラボ先・イベント主催の公式アカウント
+- **ファン**: ファンアート、コスプレ、感想、二次創作、応援の投稿をしている個人
+- **報道**: ニュースメディアのアカウント
+- **二次情報**: まとめ・引用中心のアカウント
+
+## 対象(アカウントと、そこから拾った投稿の要約)
+{body}
+
+## 出力
+**JSON 配列だけ**を出力してください。ほかの文字は書かないこと。
+[{{"host": "@なしのアカウント名", "type": "当事者|報道|二次情報|ファン|不明", "why": "40字以内の根拠"}}]
+
+- **投稿の要約から読み取れることだけ**で判断する。知識で補わない
+- 少しでも迷うなら `不明`。**推測で埋めない**
+"""
+
+
+def consensus(prompt: str, keys: list[str]) -> tuple[dict, list[str]]:
+    """別ベンダーの2モデルに独立して答えさせ、一致したものだけ返す。
+
+    同じベンダーだと同じ誤りを共有するので、Claude と Codex に分ける。
+    """
+    a = {str(d.get("host", "")).lstrip("@"): d for d in ask(
+        ["claude", "-p", "--model", COLLECT_MODEL, "--dangerously-skip-permissions"], prompt)
+        if isinstance(d, dict)}
+    b = {str(d.get("host", "")).lstrip("@"): d for d in ask(
+        ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "read-only", "--skip-git-repo-check"], prompt)
+        if isinstance(d, dict)}
+    agreed, split = {}, []
+    for k in keys:
+        ta, tb = (a.get(k) or {}).get("type"), (b.get(k) or {}).get("type")
+        if ta and ta == tb and ta in ALLOWED:
+            agreed[k] = (ta, str((a.get(k) or {}).get("why", ""))[:40])
+        else:
+            split.append(f"{k}: {ta or '—'} / {tb or '—'}")
+    return agreed, split
+
+
+def add_domains(agreed: dict) -> None:
+    p = ROOT / "source_types.yml"
+    text = p.read_text(encoding="utf-8")
+    for h, (t, why) in agreed.items():
+        m = re.search(rf"^{LIST_OF[t]}:\n", text, re.M)
+        if not m:
+            print(f"  ★{LIST_OF[t]} が表に無いので {h} を足せない")
+            continue
+        text = text[:m.end()] + f"  - {h}{' ' * max(1, 22 - len(h))}# 合議で追加: {why}\n" + text[m.end():]
+    p.write_text(text, encoding="utf-8")
+
+
+def add_x_accounts(agreed: dict) -> None:
+    """x_accounts の該当種別の下へ足す。無ければその種別の節を作る。"""
+    p = ROOT / "source_types.yml"
+    text = p.read_text(encoding="utf-8")
+    for a, (t, why) in agreed.items():
+        m = re.search(rf"^  {t}:\n", text, re.M)
+        if m:
+            text = text[:m.end()] + f"    - {a}{' ' * max(1, 20 - len(a))}# 合議で追加: {why}\n" + text[m.end():]
+        else:  # その種別の節がまだ無い
+            mx = re.search(r"^x_accounts:\n", text, re.M)
+            if not mx:
+                print(f"  ★x_accounts が表に無いので @{a} を足せない")
+                continue
+            text = (text[:mx.end()] + f"  {t}:\n"
+                    f"    - {a}{' ' * max(1, 20 - len(a))}# 合議で追加: {why}\n" + text[mx.end():])
+    p.write_text(text, encoding="utf-8")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=None)
     ap.add_argument("--apply", action="store_true", help="一致したものを source_types.yml に足す")
+    ap.add_argument("--limit", type=int, default=60,
+                    help="1回に掛ける X アカウントの数(多いと1回のプロンプトに載らない)")
     args = ap.parse_args()
     # 下見(--apply なし)では通知しない。試験実行が本物の警報と混ざる
     set_quiet(not args.apply)
     date = args.date or edition_date()
 
-    hosts = unknown_hosts(date)
-    if not hosts:
+    doms, accts = unknown_targets(date)
+    if not doms and not accts:
         print(f"{date}: 判定表に無い出典はありません")
         return 0
-    print(f"{date}: 判定表に無い出典 {len(hosts)}件 → {', '.join(sorted(hosts))}", flush=True)
 
-    items = [(h, u, page_excerpt(u)) for h, u in sorted(hosts.items())]
-    prompt = build_prompt(items)
-
-    # **別ベンダーの2モデルに独立して答えさせる。**同じベンダーだと同じ誤りを共有する
-    a = {d.get("host"): d for d in ask(
-        ["claude", "-p", "--model", COLLECT_MODEL, "--dangerously-skip-permissions"], prompt)
-        if isinstance(d, dict)}
-    b = {d.get("host"): d for d in ask(
-        ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "read-only", "--skip-git-repo-check"], prompt)
-        if isinstance(d, dict)}
-
-    agreed, split = {}, []
-    for h in sorted(hosts):
-        ta, tb = (a.get(h) or {}).get("type"), (b.get(h) or {}).get("type")
-        if ta and ta == tb and ta in ALLOWED:
-            agreed[h] = (ta, (a.get(h) or {}).get("why", "")[:40])
-        else:
-            split.append(f"{h}: {ta or '—'} / {tb or '—'}")
-
-    for h, (t, why) in agreed.items():
-        print(f"  一致 {t}\t{h}\t{why}")
-    for s in split:
-        print(f"  不一致・保留\t{s}")
-
-    if agreed and args.apply:
-        p = ROOT / "source_types.yml"
-        text = p.read_text(encoding="utf-8")
+    split_all = []
+    if doms:
+        print(f"{date}: 判定表に無いドメイン {len(doms)}件 → {', '.join(sorted(doms))}", flush=True)
+        items = [(h, u, page_excerpt(u)) for h, u in sorted(doms.items())]
+        agreed, split = consensus(build_prompt(items), sorted(doms))
         for h, (t, why) in agreed.items():
-            key = LIST_OF[t]
-            m = re.search(rf"^{key}:\n", text, re.M)
-            if not m:
-                print(f"  ★{key} が表に無いので {h} を足せない")
-                continue
-            text = text[:m.end()] + f"  - {h}{' ' * max(1, 22 - len(h))}# 合議で追加: {why}\n" + text[m.end():]
-        p.write_text(text, encoding="utf-8")
-        print(f"\nsource_types.yml に {len(agreed)}件を追加しました")
+            print(f"  一致 {t}\t{h}\t{why}")
+        for s in split:
+            print(f"  不一致・保留\t{s}")
+        split_all += split
+        if agreed and args.apply:
+            add_domains(agreed)
+            print(f"  → ドメイン {len(agreed)}件を表に追加")
 
-    if split:
+    if accts:
+        # 多いと1回のプロンプトに載らないので、出現数の多い順に区切って掛ける
+        order = sorted(accts, key=lambda a: (-len(accts[a][1]), a))[:args.limit]
+        sub = {a: accts[a] for a in order}
+        print(f"\n{date}: 判定表に無い X アカウント {len(accts)}件"
+              f"(今回 {len(sub)}件を処理)", flush=True)
+        agreed, split = consensus(build_x_prompt(sub), sorted(sub))
+        for a, (t, why) in agreed.items():
+            print(f"  一致 {t}\t@{a}\t{why}")
+        for s in split:
+            print(f"  不一致・保留\t@{s}")
+        split_all += split
+        if agreed and args.apply:
+            add_x_accounts(agreed)
+            print(f"  → X アカウント {len(agreed)}件を表に追加")
+
+    if split_all:
         notify("collect", f"{date}: 出典の種別が合議で決まらなかったものがあります"
-                          f"(人の判断が要る):\n- " + "\n- ".join(split[:8]), ok=False)
+                          f"(人の判断が要る):\n- " + "\n- ".join(split_all[:8]), ok=False)
     return 0
 
 

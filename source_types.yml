@@ -65,6 +65,8 @@ suffix_types:
 
 # --- 報道: 独立した報道メディア ---
 press_domains:
+  - panora.tokyo          # 合議で追加: XR/VTuber専門のニュースサイト。現地会場でのライブレポートを取材して掲載
+  - news.denfaminicogamer.jp # 合議で追加: Denfami Nicogamerは独立した報道メディア。公式発表を取材して記事
   - gigazine.net           # GIGAZINE(自ら取材・執筆する独立メディア)
   - gamer.ne.jp           # 合議で追加: ゲームメディアによるライブイベント現地取材レポート
   - 4gamer.net
@@ -226,12 +228,28 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - yurari_neko         # 合議で追加: 応援活動報告
+    - vampa_7             # 合議で追加: イベント参加レポート
+    - umyumyu_cos         # 合議で追加: ファンによるコスプレ投稿
+    - misakura914         # 合議で追加: ライブ終演後の感想投稿
+    - marimorumarim       # 合議で追加: ファンによるコスプレ投稿
+    - mangakada           # 合議で追加: ファンによるファン漫画
+    - gitainingyo7807     # 合議で追加: 投票呼びかけ
+    - azaz777             # 合議で追加: ランキング話題への反応
+    - _kaimen             # 合議で追加: グッズへの感想投稿
+    - You_Got_Me__        # 合議で追加: 推し活動投稿
+    - Siromaru_aimasu     # 合議で追加: チケット確保報告
+    - RoyNeru_ce          # 合議で追加: グッズ到着報告
+    - Onsokuno_Ren        # 合議で追加: ファンによる同時視聴企画
     - Hj2Zp
     - masahiro920511
     - natsupi_777
     - procinen1
     - yutaleP
   当事者:
+    - maruiwebchannel     # 合議で追加: 店舗の公式案内
+    - mao_ito05           # 合議で追加: キャスト本人による情報引用
+    - choucho0115         # 合議で追加: 声優本人による出演告知
     - dengeki_imas                    # 電撃(自社出版物の告知。報道ではない。監査指摘)
     - colleize                        # 公式ライセンス商品の通販。公式パートナーの根拠は無い
     - UNION_ARENA_TCG

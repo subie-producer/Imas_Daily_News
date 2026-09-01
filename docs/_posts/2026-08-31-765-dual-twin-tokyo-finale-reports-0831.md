@@ -12,7 +12,7 @@ lede: dual twin live tourの東京公演で、双海亜美・真美と三浦あ�
 tags: [765AS, ライブ, 配信]
 sources:
   - label: PANORA東京公演レポート
-    type: 未確認
+    type: 報道
     url: https://panora.tokyo/archives/154488
   - label: 現地参加レポート
     type: 未確認

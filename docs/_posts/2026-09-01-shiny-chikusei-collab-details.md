@@ -2,7 +2,7 @@
 slug: shiny-chikusei-collab-details
 edition: 2026-09-01
 brand: shiny
-src: 未確認
+src: 報道
 rank: medium
 corrected: false
 corrections: []
@@ -21,7 +21,7 @@ sources:
   type: 当事者
   label: 筑西市公式サイト
 - url: https://ibatoco.jp/news/chikusei-shinycolors-collab-2026/
-  type: 未確認
+  type: 報道
   label: いばとこニュース
 event_date: 2026-10-10
 ---

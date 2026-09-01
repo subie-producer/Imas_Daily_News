@@ -65,6 +65,7 @@ suffix_types:
 
 # --- 報道: 独立した報道メディア ---
 press_domains:
+  - ibatoco.jp            # いばとーこ(茨城の地域ニュースメディア)
   - panora.tokyo          # 合議で追加: XR/VTuber専門のニュースサイト。現地会場でのライブレポートを取材して掲載
   - news.denfaminicogamer.jp # 合議で追加: Denfami Nicogamerは独立した報道メディア。公式発表を取材して記事
   - gigazine.net           # GIGAZINE(自ら取材・執筆する独立メディア)
@@ -122,6 +123,11 @@ secondary_domains:
   - seesaawiki.jp
   - fandom.com
   - wikia.com
+
+# --- 演者 ---
+# **その作品を演じている人**とその所属事務所。X アカウントで表す(下の x_accounts)。
+# 出演したことや現場の様子については強い一次情報だが、価格・日程・仕様のような
+# 運営側の事実は当事者・公式のほうが正確なので、信頼順では当事者の次に置く。
 
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
@@ -214,6 +220,7 @@ x_accounts:
     - TomoriManaka
     - UtagawaLetora
   準公式:
+    - imas_lantis         # ランティスのアイマス公式BOT
     - imas_columbia                   # 日本コロムビア アイマス
     - NipponColumbia
     - lantis_imasSC
@@ -221,13 +228,25 @@ x_accounts:
     - lantis_staff
     - asobistore
     - imas_musicradio
+  演者:
+    # **その作品を演じている人**とその所属事務所(規程2.5)。
+    # コラボ先や販売元(当事者)とは立場が違うので分ける。
+    - mao_ito05           # 出演キャスト本人
+    - choucho0115         # 桐谷蝶々(宮尾美也 役)
+    - tomohito0825        # 出演キャスト本人
+    - miiiiiina_cat       # 髙橋ミナミ(馬場このみ 役)
+    - chiaking58          # たかはし智秋
+    - haikyo_official     # 俳協(声優事務所の公式)
+    - stayluck_tw         # Stay-Luck(声優事務所の公式)
   報道:
+    - livedoornews        # ライブドアニュース
     - famitsu
     - GamerNeJp
   二次情報:
     - imasnews765
     - zutapoke
   ファン:
+    - chagi_chage         # 生誕祭タグのファン投稿
     - yurari_neko         # 合議で追加: 応援活動報告
     - vampa_7             # 合議で追加: イベント参加レポート
     - umyumyu_cos         # 合議で追加: ファンによるコスプレ投稿
@@ -248,8 +267,6 @@ x_accounts:
     - yutaleP
   当事者:
     - maruiwebchannel     # 合議で追加: 店舗の公式案内
-    - mao_ito05           # 合議で追加: キャスト本人による情報引用
-    - choucho0115         # 合議で追加: 声優本人による出演告知
     - dengeki_imas                    # 電撃(自社出版物の告知。報道ではない。監査指摘)
     - colleize                        # 公式ライセンス商品の通販。公式パートナーの根拠は無い
     - UNION_ARENA_TCG
@@ -288,4 +305,3 @@ x_accounts:
     - mototiru
     - myokoen_758
     - nicogame_PR
-    - tomohito0825

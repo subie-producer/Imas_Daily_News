@@ -2,7 +2,7 @@
 slug: cg-kirari-birthday
 edition: 2026-09-01
 brand: cg
-src: 未確認
+src: 報道
 rank: small
 corrected: false
 corrections: []
@@ -15,7 +15,7 @@ tags:
 - 誕生日
 sources:
 - url: https://x.com/livedoornews/status/2094440323120517206
-  type: 未確認
+  type: 報道
   label: 報道X投稿
 event_date: 2026-09-01
 ---

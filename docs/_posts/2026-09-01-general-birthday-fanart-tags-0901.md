@@ -2,7 +2,7 @@
 slug: general-birthday-fanart-tags-0901
 edition: 2026-09-01
 brand: general
-src: 未確認
+src: ファン
 rank: culture
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: ["誕生日", "シンデレラガールズ", "SideM"]
 sources:
   - url: "https://x.com/chagi_chage/status/2094444816537112741"
     label: "生誕祭タグの投稿動向"
-    type: "未確認"
+    type: ファン
 event_date: 2026-09-01
 ---
 

@@ -81,7 +81,7 @@ ABS_DATE_RE = re.compile(r"(\d{1,2})月(\d{1,2})日")
 # 以前は「2026-07-14 以前は旧規則(最強種別)で発行済み」として検査から外していたが、
 # 最強種別を名乗ることは過大表示そのものであり、除外は誤りを守っていた。
 # scripts/retag_sources.py で全号を最弱規則へ揃えたので、除外はもう無い
-SRC_ORDER = ["公式", "準公式", "当事者", "報道", "ファン", "二次情報", "もちより", "未確認"]
+SRC_ORDER = ["公式", "準公式", "当事者", "演者", "報道", "ファン", "二次情報", "もちより", "未確認"]
 
 URL_TIMEOUT = 15
 URL_UA = "Mozilla/5.0 (compatible; ImasNewsLint/1.0; +https://github.com/subie-producer/Imas_Daily_News)"

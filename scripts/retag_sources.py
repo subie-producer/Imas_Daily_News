@@ -32,7 +32,7 @@ from pipelib import classify_source
 
 ROOT = Path(__file__).resolve().parent.parent
 POSTS = ROOT / "docs" / "_posts"
-SRC_ORDER = ["公式", "準公式", "当事者", "報道", "ファン", "二次情報", "もちより", "未確認"]
+SRC_ORDER = ["公式", "準公式", "当事者", "演者", "報道", "ファン", "二次情報", "もちより", "未確認"]
 FM_RE = re.compile(r"^---\n(.*?)\n---\n", re.S)
 
 

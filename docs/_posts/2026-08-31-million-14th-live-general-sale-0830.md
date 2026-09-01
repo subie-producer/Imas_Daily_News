@@ -2,7 +2,7 @@
 slug: million-14th-live-general-sale-0830
 edition: 2026-08-31
 brand: million
-src: 当事者
+src: 演者
 rank: lead
 corrected: false
 corrections: []
@@ -30,7 +30,7 @@ sources:
     type: 公式
     url: https://x.com/imasml_765PRO/status/2093888938603950138
   - label: 桐谷蝶々さんのX投稿
-    type: 当事者
+    type: 演者
     url: https://x.com/choucho0115/status/2093965486761603531
 event_date: 2026-09-19
 ---

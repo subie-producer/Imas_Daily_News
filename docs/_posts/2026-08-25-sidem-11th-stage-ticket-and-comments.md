@@ -2,7 +2,7 @@
 slug: sidem-11th-stage-ticket-and-comments
 edition: 2026-08-25
 brand: sidem
-src: 当事者
+src: 演者
 rank: medium
 corrected: false
 corrections: []
@@ -28,7 +28,7 @@ sources:
     type: 公式
   - label: 高塚智人さんの引用投稿
     url: https://x.com/tomohito0825/status/2091866152846946320
-    type: 当事者
+    type: 演者
 event_date: 2026-09-12
 ---
 

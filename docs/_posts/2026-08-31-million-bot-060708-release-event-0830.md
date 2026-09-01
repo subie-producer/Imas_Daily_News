@@ -2,7 +2,7 @@
 slug: million-bot-060708-release-event-0830
 edition: 2026-08-31
 brand: million
-src: 未確認
+src: 演者
 rank: small
 corrected: false
 corrections: []
@@ -13,19 +13,19 @@ tags: [ミリオンライブ, ミリシタ, CD, イベント]
 sources:
   - url: https://x.com/imas_lantis/status/2094009737700409409
     label: ランティス公式イベント御礼投稿
-    type: 未確認
+    type: 準公式
   - url: https://x.com/miiiiiina_cat/status/2094043255373771259
     label: 髙橋ミナミ出演報告
-    type: 未確認
+    type: 演者
   - url: https://x.com/haikyo_official/status/2094028676996497857
     label: 俳協公式出演報告
-    type: 未確認
+    type: 演者
   - url: https://x.com/stayluck_tw/status/2094036475897893345
     label: Stay-Luck公式出演報告
-    type: 未確認
+    type: 演者
   - url: https://x.com/chiaking58/status/2094082970089148480
     label: たかはし智秋出演報告
-    type: 未確認
+    type: 演者
   - url: https://eplus.jp/battle_of_theather060708
     label: イープラス購入者限定イベント受付ページ
     type: 当事者

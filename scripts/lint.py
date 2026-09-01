@@ -158,6 +158,27 @@ def src_rank(t):
     return SRC_ORDER.index(t) if t in SRC_ORDER else len(SRC_ORDER)
 
 
+# 見出し・リード・ダイジェストの行は、テンプレートが**そのまま文字として**出す欄。
+# ここに Markdown 記法が混ざると、読者には `**強調**` がそのまま見える。
+# 本文(Markdown)では正しく太字になるので、混同しやすい。
+MD_IN_PLAIN = re.compile(r"\*\*|__|\[[^\]]{1,60}\]\([^)]{1,200}\)|^#{1,6}\s|`")
+
+
+def check_plain_text(rep, path, label, value):
+    """プレーンテキストとして出る欄に、記法が残っていないか。
+
+    書き手は Markdown で考えるので、見出しやリードにも `**` を書いてしまう。
+    テンプレートはそれを解釈しないため、記号がそのまま紙面に出る
+    (他所のサイトで、本文に `**…**` が32か所そのまま出ているのを見た。
+    誰も一度も通し読みしていない、という形で読者に伝わってしまう)。
+    """
+    v = str(value or "")
+    m = MD_IN_PLAIN.search(v)
+    if m:
+        rep.error(path, f"{label} に Markdown 記法が残っている(この欄は記号がそのまま紙面に出る): "
+                        f"…{v[max(0, m.start() - 12):m.end() + 12]}…")
+
+
 def check_source_types(rep, path, fm):
     """出典の種別が **URL からの判定**と合っているか。記事 src は最弱種別か。
 
@@ -370,6 +391,11 @@ def main() -> int:
         for where, text in (("title", fm["title"]), ("lede", fm["lede"]), ("本文", body)):
             check_tense(rep, path, text, edate, where)
             check_before_issue(rep, path, text, edate, where)
+        # 本文は Markdown として解釈されるが、見出しとリードは文字のまま出る
+        check_plain_text(rep, path, "title", fm["title"])
+        check_plain_text(rep, path, "lede", fm["lede"])
+        for s in fm.get("sources") or []:
+            check_plain_text(rep, path, "出典の label", s.get("label"))
         # 鮮度検査(編集規程12): 号日付より大きく過去の event_date は「終了済み・過年度の
         # 話題の新報扱い」の徴候(第0号期に2025年の話題を2本発行した事故に由来)。
         # 継続中キャンペーンの開始日を event_date に持つ正当な記事が既存最大21日過去のため、
@@ -476,6 +502,8 @@ def main() -> int:
             for r_ in g["rows"]:
                 if r_.get("slug") and r_["slug"] not in slugs_in_edition:
                     rep.error(path, f"digest 行「{r_['t']}」の slug '{r_['slug']}' が同号の記事に存在しない")
+                check_plain_text(rep, path, f"digest「{g['label']}」の見出し", r_.get("t"))
+                check_plain_text(rep, path, f"digest「{g['label']}」の説明", r_.get("d"))
                 check_tense(rep, path, f"{r_['t']}。{r_.get('d', '')}", edate, f"digest「{g['label']}」")
         if total_rows > DIGEST_MAX_TOTAL_ROWS:
             rep.error(path, f"digest 全体が{total_rows}行(SP 1画面制約: 全体{DIGEST_MAX_TOTAL_ROWS}行まで)")

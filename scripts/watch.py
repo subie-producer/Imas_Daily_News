@@ -8,11 +8,16 @@
 - 昨日〜今日の collect 実行回数(metrics)
 異常があれば Discord に通知する。正常時は標準出力のみ。
 """
+import collections
 import datetime
 import json
+import re
 import subprocess
 import sys
+import urllib.parse
 from pathlib import Path
+
+import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import ENV, ROOT, git, notify, notify_crash, now_jst
@@ -116,6 +121,34 @@ def main() -> int:
         problems.append(f".env に未設定の項目がある(既定値で動くため気づきにくい): {', '.join(missing)}")
     if wrong:
         problems.append(".env の値が想定と違う: " + " / ".join(wrong))
+
+    # 5. **紙面に載った未確認の出典**を1日1回まとめて出す。
+    #
+    # 判定表に無い出典は合議が振り分けるが、決まらないものが残る。
+    # それを収集のたびに1件ずつ通知していたら、記事にならずに消える候補まで
+    # 人の判断待ちになり、通知が意味を失った。
+    # **実際に紙面へ出たものだけ**がバッジに影響するので、ここでまとめる。
+    unknown = collections.Counter()
+    for p in sorted((ROOT / "docs" / "_posts").glob("*.md")):
+        m = re.match(r"^---\n(.*?)\n---\n", p.read_text(encoding="utf-8"), re.S)
+        if not m:
+            continue
+        try:
+            fm = yaml.safe_load(m.group(1)) or {}
+        except Exception:
+            continue
+        for s in (fm.get("sources") or []):
+            if s.get("type") != "未確認":
+                continue
+            u = urllib.parse.urlparse(s.get("url") or "")
+            host = (u.hostname or "").removeprefix("www.")
+            seg = [x for x in u.path.split("/") if x]
+            unknown[f"x.com/@{seg[0]}" if host in ("x.com", "twitter.com") and seg else host] += 1
+    if unknown:
+        problems.append(
+            f"紙面に未確認の出典が {sum(unknown.values())}件 / {len(unknown)}種 残っている"
+            "(種別を決めれば直る。合議で決まらなかったもの): "
+            + ", ".join(f"{h}({n})" for h, n in unknown.most_common(10)))
 
     if problems:
         notify("watch", "異常検知:\n- " + "\n- ".join(problems), ok=False)

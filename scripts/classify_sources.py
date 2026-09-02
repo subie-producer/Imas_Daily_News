@@ -306,9 +306,16 @@ def main() -> int:
             add_x_accounts(agreed)
             print(f"  → X アカウント {len(agreed)}件を表に追加")
 
+    # **決まらなかったものを、その場で人へ上げない。**
+    #
+    # 候補の大半は記事にならずに消える。決まらなかった1件ずつを毎回通知すると、
+    # 紙面に出ないものまで人の判断待ちになり、通知が意味を失う。
+    # 未確認のまま紙面に載ったものだけが本当に判断の要るもので、
+    # それは watch(毎朝)がまとめて出す。ここではログに残すだけにする。
     if split_all:
-        notify("collect", f"{date}: 出典の種別が合議で決まらなかったものがあります"
-                          f"(人の判断が要る):\n- " + "\n- ".join(split_all[:8]), ok=False)
+        print(f"\n決まらなかったもの({len(split_all)}件・未確認のまま): "
+              + " / ".join(split_all), flush=True)
+        print("(紙面に載ったものだけ watch が毎朝まとめて報告する)", flush=True)
     return 0
 
 

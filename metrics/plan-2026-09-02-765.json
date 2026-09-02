@@ -1,0 +1,31 @@
+{
+  "articles": [],
+  "dropped": [
+    {
+      "dedup_key": "dual-twin-live-tokyo-2026",
+      "reason": "既報",
+      "note": "8/27東京公演(ふたごぼしのつばさ)の開幕・ツアーファイナル・セットリストは stock/stories.yml『765-dual-twinlive-venue-cd』に既出。未確認ソースによる後追いレポートで新事実なし。"
+    },
+    {
+      "dedup_key": "dual-twin-live-tokyo-report-2026",
+      "reason": "既報",
+      "note": "同じ8/27公演のセットリスト全曲・ばくすて!とーくは同story既出。dual-twin-live-tokyo-2026と同一話題(重複でもある)。"
+    },
+    {
+      "dedup_key": "dual-twin-live-tokyo-archive-clip-2026",
+      "reason": "既報",
+      "note": "あずさ・律子公演アーカイブ公開・視聴チケット期間(8/29〜9/27)は同story既出。"
+    },
+    {
+      "dedup_key": "765-dual-twin-live-final-2026",
+      "reason": "既報",
+      "note": "会場オリジナルCD全12種の事後通販(8/28 21:00〜9/13、コロムビアミュージックショップ)は joint面story『columbia-venue-cd-aftersale-2026-08』(8/29既報)と同一内容。"
+    },
+    {
+      "dedup_key": "imas-radio-2026",
+      "reason": "既報",
+      "note": "ラジオ新番組「IM＠S RADIO」(初回9/15・パーソナリティ・隔週火曜20時)は stock/stories.yml『imas-radio-2026』(8/29既報)と同一内容、新事実なし。"
+    }
+  ],
+  "cross_brand": []
+}

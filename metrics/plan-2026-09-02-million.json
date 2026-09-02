@@ -1,0 +1,72 @@
+{
+  "articles": [
+    {
+      "slug": "million-kumitapi-vol2-vol3-sale",
+      "brand": "million",
+      "rank": "small",
+      "angle": "『くるみたぴぬい Vol.2/Vol.3』が9/1発売開始、取扱店舗と商品仕様を伝える",
+      "lead_score": 5,
+      "dedup_key": "million-kumitapi-vol2-vol3",
+      "candidate_ids": ["202609011234-watch-1"]
+    },
+    {
+      "slug": "million-birthday-series-10th-november-preorder",
+      "brand": "million",
+      "rank": "small",
+      "angle": "バースデーシリーズ第10弾、11月分キーホルダーの予約受付開始を伝える",
+      "lead_score": 5,
+      "dedup_key": "million-birthday-series-10th",
+      "candidate_ids": ["202609011234-watch-2"]
+    },
+    {
+      "slug": "million-extreme-xstream-theater-livestream",
+      "brand": "million",
+      "rank": "large",
+      "angle": "「ミリシタ Extreme 生配信」本日19時、10年目新シリーズ『X-STREAM THEATER』を発表",
+      "lead_score": 85,
+      "dedup_key": "million-extreme-x-stream-2026-09-02",
+      "candidate_ids": ["202609020238-grok-34", "sched-2026-09-02-mltd-extreme-livestream-20260902-開始"]
+    },
+    {
+      "slug": "million-fuka-birthday-2026",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "豊川風花バースデー2026、記念セットと専用ガシャが本日登場",
+      "lead_score": 20,
+      "dedup_key": "million-fuka-birthday-set-2026",
+      "candidate_ids": ["202609020238-grok-35", "202609020238-grok-46"]
+    },
+    {
+      "slug": "million-shs-mybrand-glasses-ayumu-sept",
+      "brand": "million",
+      "rank": "small",
+      "angle": "セカンドヘアスタイルガシャ『myブランド編 with glasses』(舞浜歩・野々原茜)、9/10締切を伝える",
+      "lead_score": 10,
+      "dedup_key": "million-shs-my-brand-glasses-2026-09",
+      "candidate_ids": ["202609020238-grok-45"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "millionlive-pst-2026-09",
+      "reason": "既報",
+      "note": "開幕(8/31 15時)はstock/stories.yml(pst-himitsu-no-memories)に既に記録済み。本日の素材は遊び方の一般説明のみで新事実・トリガーなし。ダイジェスト「継続中」で扱う"
+    },
+    {
+      "dedup_key": "million-bot-ex04-stick-to-my-weapon-2026",
+      "reason": "既報",
+      "note": "発売(8/26・2,970円・EX04)はstock/stories.yml(million-battle-of-theater-ex04-2026)に既報。本日の素材は先週リリース紹介の再掲でverify=unconfirmed、9/2に起きることが無い"
+    },
+    {
+      "dedup_key": "million-fuka-birthday-gacha-2026",
+      "reason": "重複",
+      "note": "million-fuka-birthday-2026記事へ統合(同日発表の豊川風花バースデー施策の一部)"
+    },
+    {
+      "dedup_key": "mltd-extreme-livestream-20260902",
+      "reason": "重複",
+      "note": "million-extreme-xstream-theater-livestream記事へ統合(同一の9/2 19時生配信の続報予約)"
+    }
+  ],
+  "cross_brand": []
+}

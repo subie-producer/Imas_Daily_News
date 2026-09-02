@@ -101,6 +101,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - charagoo.jp           # 合議で追加: ページ冒頭に「最新一覧」とあり、複数の情報源を集約したサイト
   - kore-tore.com         # 合議で追加: プライズ景品情報をまとめたキュレーションサイト
   - game8.jp              # 株式会社ゲームエイト(Gunosy子会社)の攻略メディア
   - gameo.jp              # ゲームオメガ / 株式会社New-Elements の攻略・まとめ
@@ -145,6 +146,11 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - smilebase.shop        # 合議で追加: グッズ販売元として受注情報を発信している
+  - scratch.dmm.com       # 合議で追加: DMMスクラッチの販売元として商品情報を発信している
+  - on-line.1kuji.com     # 合議で追加: 一番くじの販売元として商品情報を発信している
+  - atfes.com             # 合議で追加: イベント運営者として催しの情報を発信している
+  - animate.co.jp         # 合議で追加: オンリーショップの開催店舗として催しの情報を発信している
   - akiba-tolim.com
   - aniera-festa.com      # ナガノアニエラフェスタ(イベント主催)
   - cs-front.co.jp        # 企画・特設サイトの運営

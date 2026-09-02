@@ -1,0 +1,38 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-02-million-extreme-xstream-theater-livestream.md",
+   "issue": "分量不足: rank: lead なのに 349字（下限 1000字）。出演者やプログラム内容の詳細を拾えば埋まるはず"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-cg-ss10th-fukuoka-bd-release.md",
+   "issue": "分量不足: rank: small なのに 94字（下限 250字）。品番・価格・収録内容などを出典から拾って補充を推奨"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-cg-ss11th-anniversary-campaign.md",
+   "issue": "分量不足: rank: small なのに 115字（下限 250字）。キャンペーン内容の詳細が必要"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-gaku-radio-guest-0902.md",
+   "issue": "分量不足: rank: small なのに 65字（下限 250字）。ゲスト出演者やテーマの詳細をラジオ公式から補充を推奨"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-shiny-765collab5-4koma-ritsuko-mamimi.md",
+   "issue": "分量不足: rank: small なのに 53字（下限 250字）。コラボ内容の詳細を補充が必要"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-shiny-calendar-september-madoka-mei.md",
+   "issue": "分量不足: rank: small なのに 69字（下限 250字）。カレンダーの詳細情報を補充を推奨"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-sidem-joypolis3-details.md",
+   "issue": "src フィールドが「報道」となっているが、sources に「当事者」（東京ジョイポリス公式）が含まれている。src を「報道」から「当事者」に修正するか検討を推奨"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-sidem-seibu-en-retrose-party.md",
+   "issue": "src フィールドが「二次情報」となっているが、sources に「当事者」が複数含まれている。src の記載を見直すことを推奨"
+  }
+ ]
+}

@@ -1,0 +1,134 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-joypolis3-details",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "東京ジョイポリスとのコラボ第3弾、公式サイトでアトラクション名・入場料など運営詳細が判明",
+      "lead_score": 20,
+      "dedup_key": "sidem-joypolis-3-2026",
+      "candidate_ids": ["202609010737-explore-15", "202609011234-explore-19", "202609020238-grok-40"]
+    },
+    {
+      "slug": "sidem-fantastic-battle-fes-wanna-step-in",
+      "brand": "sidem",
+      "rank": "large",
+      "angle": "「315 Production presents F＠NTASTIC BATTLE FES ～Wanna step in～」の公演日程・会場が決定、新ビジュアルも公開",
+      "lead_score": 70,
+      "dedup_key": "sidem-fantastic-battle-fes-2026",
+      "candidate_ids": ["202609012336-watch-1", "202609020238-grok-56"]
+    },
+    {
+      "slug": "sidem-11th-stage-bakusute-talk",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "11th STAGE公演終了後に「ばくすて！とーく」配信決定、出演キャストが判明",
+      "lead_score": 10,
+      "dedup_key": "sidem-11th-stage-bakustetalks",
+      "candidate_ids": ["202609012336-watch-2", "202609012336-watch-4"]
+    },
+    {
+      "slug": "sidem-seibu-en-retrose-party",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "西武園ゆうえんちとのコラボ第2弾「超!!レトローズパーティ」開催決定、声優トークショーも実施",
+      "lead_score": 15,
+      "dedup_key": "sidem-super-retrose-party-2026",
+      "candidate_ids": ["202609012336-watch-3", "202609012336-explore-13", "202609020238-grok-39"]
+    },
+    {
+      "slug": "sidem-flags-yumenotopia-2dmv",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "F-LAGS「ミート・ユメノトピア」2DMVが本日21時にプレミア公開",
+      "lead_score": 10,
+      "dedup_key": "sidem-flags-meet-yumenotopia-2dmv-2026",
+      "candidate_ids": ["202609020238-grok-42", "sched-2026-09-02-sidem-flags-meet-yumenotopia-2dmv-2026-開始"]
+    },
+    {
+      "slug": "sidem-transcendent-tales-12-release",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "CD「TRANSCENDENT T@LES 12」が本日発売、収録内容・特典が判明",
+      "lead_score": 10,
+      "dedup_key": "sidem-transcendent-tales-12-2026",
+      "candidate_ids": ["202609020238-grok-43", "sched-2026-09-02-sidem-transcendent-tales-12-2026-発売"]
+    },
+    {
+      "slug": "sidem-11th-stage-goods-lottery-deadline",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "11th STAGE 会場物販・CD/映像整理券の抽選受付が本日23:59締切",
+      "lead_score": 5,
+      "dedup_key": "sidem-11th-stage-2026",
+      "candidate_ids": ["sched-2026-09-02-sidem-11th-stage-2026-締切"]
+    },
+    {
+      "slug": "sidem-teddys-collection2-popup-mailorder",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "Teddy's Collection II POP UP STOREの購入特典と通販受付詳細が判明",
+      "lead_score": 5,
+      "dedup_key": "sidem-teddys-collection-ii-2026",
+      "candidate_ids": ["202609011234-explore-12", "202609020238-grok-58"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-yamashita-jiro-birthday-2026",
+      "reason": "その他",
+      "note": "山下次郎の誕生日(9/1)は号日9/2より前に終了、ダイジェストの誕生日欄で扱うべき話題で記事化基準(規程4・5・8)を満たさない"
+    },
+    {
+      "dedup_key": "sidem-kanon-new-cast-2026",
+      "reason": "既報",
+      "note": "新キャスト決定(8/28発表)・お披露目配信(9/1)の内容はstock(sidem-murase-himeno-graduation-2026、first_published 8/24)に既に記載済み、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-special-livestream-2026",
+      "reason": "既報",
+      "note": "配信の日時・出演者はstockに記載済み、配信は9/1に終了済みで9/2時点の新事実なし"
+    },
+    {
+      "dedup_key": "sidem-stage-costume-museum-goods-deadline-2026",
+      "reason": "既報",
+      "note": "WEB受注は8/30に締切済み。受注期間自体はstock(sidem-stage-costume-museum: WEB受注7/17〜8/30)に既報、9/2時点で新事実・トリガーなし"
+    },
+    {
+      "dedup_key": "sidem-himeno-kanon-new-cast-2026",
+      "reason": "重複",
+      "note": "sidem-kanon-new-cast-2026と同一内容、既報でも新事実なし"
+    },
+    {
+      "dedup_key": "sidem-special-live-2026-0901",
+      "reason": "既報",
+      "note": "配信内で紹介された各項目(整理券日程・配信チケット等)は個別にstockへ既報済みで、まとめ自体に新事実なし"
+    },
+    {
+      "dedup_key": "sidem-special-livestream-2026-09-01",
+      "reason": "重複",
+      "note": "sidem-special-livestream-2026と同一内容"
+    },
+    {
+      "dedup_key": "sidem11th-ever-ever-kitchen-2026",
+      "reason": "既報",
+      "note": "キッチンカー出店の詳細(名称・メニュー・営業時間)はstock(sidem-11th-stage-2026)に既に記載済み"
+    },
+    {
+      "dedup_key": "sidem-transcendent-tales-only-shop-2026",
+      "reason": "既報",
+      "note": "オンリーショップの開催期間・整理券方式はstockに既に記載済み(first_published 8/30)、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-11th-stage-ever-ever-after-2026",
+      "reason": "既報",
+      "note": "公演日時・会場はstock(sidem-11th-stage-2026)に既に記載済み"
+    },
+    {
+      "dedup_key": "sidem-passion-challenge-monthly-11-flags-2026",
+      "reason": "既報",
+      "note": "発売(9/30)は本日トリガー日に該当せず、既報(8/24)からの追加は収録曲情報程度で読者の本日の行動に関わらない"
+    }
+  ],
+  "cross_brand": []
+}

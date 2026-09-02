@@ -1,0 +1,22 @@
+[
+  {
+    "id": "sched-2026-09-21-gakumas-shirube-livetour-2026-福岡配信-締切",
+    "dedup_key": "gakumas-shirube-livetour-2026",
+    "brand": "gaku",
+    "subject": "学園アイドルマスター LIVE TOUR -標- 福岡公演 配信チケット",
+    "kind": "締切",
+    "note": "配信チケット販売終了",
+    "reserved_on": "2026-09-02",
+    "title": "学マス標ツアー福岡公演、週末開催へ",
+    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/streaming/fukuoka.php",
+    "source_type": "公式",
+    "facts": [
+      "配信チケットは9月21日(月・祝)18時まで販売予定、両日視聴が11,000円、DAY1・DAY2が各5,500円",
+      "コメント付きアーカイブは9月7日18時から9月21日23時59分まで視聴できる予定"
+    ],
+    "via": "grok",
+    "verify": "confirmed",
+    "deadline": "2026-09-21",
+    "src_candidate_id": "202609020238-grok-31"
+  }
+]

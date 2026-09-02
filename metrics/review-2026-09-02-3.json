@@ -1,0 +1,18 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-02-sidem-seibu-en-retrose-party.md",
+   "issue": "【要確認】候補 202609020238-grok-39 に記載の unbacked_facts（10月30日、11月22日、10000円等）について、sources の URL (https://atfes.com/contents/cho-retroseparty) にて実際に内容が確認できるかの最終確認が推奨される。スクレイピングツールが見つけられなかった日付であるが、sources に記載があるため出典は隠されていない。"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-sidem-fantastic-battle-fes-wanna-step-in.md",
+   "issue": "【要確認】候補 202609020238-grok-56 に記載の unbacked_facts（12月26日、1月23日等）について、sources の URL (https://idolmaster-official.jp/live_event/sidem_fbfes_wsi/) にて実際に内容が確認できるかの最終確認が推奨される。スクレイピングツールが見つけられなかった日付であるが、sources に記載があるため出典は隠されていない。"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-general-secret-memories-fan-buzz.md",
+   "issue": "【分量確認】rank: culture の記事として分量は適切だが、初出日時点での当該話題の定常イベント（プラチナスターシアター～秘密のメモリーズ～は9月1日開始）の情報価値について、編集方針での再確認を推奨。"
+  }
+ ]
+}

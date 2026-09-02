@@ -1,0 +1,45 @@
+{
+  "articles": [
+    {
+      "slug": "general-secret-memories-fan-buzz",
+      "brand": "general",
+      "rank": "culture",
+      "angle": "「秘密のメモリーズ」MILLION MIX公開後、プレイ感想・ライブレポート・ハイスコア報告がファンの間で広がる傾向を紹介",
+      "lead_score": 5,
+      "dedup_key": "million-secret-memories-social-buzz-2026",
+      "candidate_ids": ["202609011833-explore-26"]
+    },
+    {
+      "slug": "general-birthday-videos-anzu-fuka",
+      "brand": "general",
+      "rank": "small",
+      "angle": "公式「アイマスch」が双葉杏・豊川風花の誕生日を記念したお祝いショートムービーをそれぞれ公開",
+      "lead_score": 15,
+      "dedup_key": "imas-ch-birthday-movie-anzu-fuka-2026-09-02",
+      "candidate_ids": ["202609020238-grok-25"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "valiv-1on1-sssplus-cosmo-2026-08",
+      "reason": "個人の話題",
+      "note": "個人noteブログ1件による1on1参加記のみで公式新事実なし。当該公演自体はstock/stories.ylでdsva面が既報(dsva-valiv-1on1-12th-2026)。"
+    },
+    {
+      "dedup_key": "official-shop-kuji-inventory-2026-09-01",
+      "reason": "出典不足",
+      "note": "店舗別・更新日別の在庫状況ページ更新一覧のみで、実際の在庫内容や行動喚起になる具体事実が facts にない。"
+    },
+    {
+      "dedup_key": "tours-ranking-2026-08-31",
+      "reason": "その他",
+      "note": "8/31時点のランキングスナップショットで、9/2号発行時点では新事実・当日トリガーがなく鮮度規程(12)に抵触。"
+    },
+    {
+      "dedup_key": "imas-20th-piano-collection-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml の piano-collection-preorder-2026 と価格・締切・発売時期・仕様がすべて一致し新事実なし。"
+    }
+  ],
+  "cross_brand": []
+}

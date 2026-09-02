@@ -1,0 +1,21 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-02-sidem-11th-stage-bakusute-talk.md",
+   "issue": "3. URL捏造・出典の不一致：sources に公式URL（https://idolmaster-official.jp/news/01_19712）が記載されているが、ページ構造のみで具体的な日付情報が明確に抽出できない。記事本文の「DAY2は9月13日（日）公演終了後から」という日付が、sources の公式ページで確認できない",
+   "quote": "DAY2は9月13日（日）公演終了後から、若林直美と赤羽根健治（アニメ「アイドルマスター」プロデューサー役）が出演する。"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-sidem-fantastic-battle-fes-wanna-step-in.md",
+   "issue": "3. URL捏造・出典の不一致：sources に記載された公式特設サイト（https://idolmaster-official.jp/live_event/sidem_fbfes_wsi/）ページには、チケット関連の重要な日程情報（当落発表9月26日、入金期間9月30日）が記載されていない。本ページには記載なしで、別ページへのリンクが存在するのみ。sources 表示ページからは検証できない情報を記事に含めている",
+   "quote": "当落発表は9月26日13時以降、当選者の入金期間は9月30日23時59分まで。"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-02-sidem-seibu-en-retrose-party.md",
+   "issue": "sources 表示に曖昧性。記事に記載された日付・価格（10月30日～12月1日、10月31日、11月1日、11月22日、1万円）は PR TIMES のリリース（https://prtimes.jp/main/html/rd/p/000000975.000011571.html）では確認済みだが、sources に記載されている「イベント特設サイト」（https://atfes.com/contents/cho-retroseparty）には詳細情報がない。sources 表記の3番目 URL が実際の情報源ではない可能性"
+  }
+ ]
+}

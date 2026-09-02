@@ -1,0 +1,44 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-cosmo-birthday-eve-utawaku-relay",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "上水流宇宙、20歳バースデー前夜祭に初主催の歌枠リレー開催を発表(9/11、常磐カナメ・日向奈央・蛇宵ティア・マリアマリオネットが参加)",
+      "lead_score": 15,
+      "dedup_key": "valiv-cosmo-utawaku-relay-2026-09-11",
+      "candidate_ids": ["202609020238-grok-52"]
+    },
+    {
+      "slug": "dsva-manaka-hakuno-jsp3-collab-vod",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "灯里愛夏×今酒ハクノ、予告どおり「日本事故物件監視協会3」初コラボ配信を実施、アーカイブ公開",
+      "lead_score": 10,
+      "dedup_key": "valiv-manaka-jsp3-hakuno-2026-09-01",
+      "candidate_ids": ["202609020238-grok-53"]
+    },
+    {
+      "slug": "dsva-cosmo-ace-combat7-stream-recap",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "上水流宇宙、「ACE COMBAT 7」プレイ配信を実施、次回は9/4 20時に決定",
+      "lead_score": 10,
+      "dedup_key": "valiv-cosmo-ace7-part5-2026-09-01",
+      "candidate_ids": ["202609020238-grok-54", "202609010737-explore-20"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "valiv-cosmo-bd-2026",
+      "reason": "既報",
+      "note": "限定グッズ付き現地LVチケットの一般先着販売開始(8/31 12:00〜、9,000円、9/12 14:00締切、会場)はstock/stories.ylの8/24付既報で既出。今回追加のグッズ素材・サイズは新事実と呼べる分量ではなく、販売開始自体も本日(9/2)から見て2日前に終わった過去の出来事で新報性が無い"
+    },
+    {
+      "dedup_key": "cosmo-ace-combat-2026-09-01",
+      "reason": "重複",
+      "note": "同じ9/1『ACE COMBAT 7』配信の予定告知(未確認・非公式まとめWiki出典)。確定ソース(valiv-cosmo-ace7-part5-2026-09-01)の記事に素材として統合"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,0 +1,63 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-02T02:39:31+09:00",
+   "edition": "2026-09-02",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 342,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 0,
+    "explore:million": 4,
+    "explore:shiny": 1,
+    "explore:sidem": 5,
+    "explore:gakuen": 4,
+    "explore:dsva": 5,
+    "explore:joint-other": 1,
+    "explore:trend": 3,
+    "grok:765as": 0,
+    "grok:cinderella": 5,
+    "grok:million": 4,
+    "grok:shiny": 7,
+    "grok:sidem": 9,
+    "grok:gakuen": 6,
+    "grok:dsva": 5,
+    "grok:joint-other": 0,
+    "grok:trend": 3
+   },
+   "normalized": 51,
+   "added": 42,
+   "verify": {
+    "confirmed": 37,
+    "unconfirmed": 10,
+    "failed": 4
+   },
+   "duration_s": 2333
+  }
+ ]
+}

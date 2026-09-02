@@ -1,0 +1,80 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-illumine-felice-mv",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "イルミネーションスターズ新曲「FELICE」MVを公開、ユニット衣装ガシャ「ファンテジィソナーレ」着用メンバーをMVセンターに編成すると特別演出が発生することも判明",
+      "lead_score": 40,
+      "dedup_key": "shiny-felice-mv-2026",
+      "candidate_ids": ["202609010737-explore-11", "202609020238-grok-50"]
+    },
+    {
+      "slug": "shiny-msp-resale-window",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "ソロライブMSP公式リセールの受付期間が9月5日15:00〜9月16日9:59に確定、現地一般発売(先着)・配信チケットは引き続き受付中",
+      "lead_score": 10,
+      "dedup_key": "shiny-solo-msp-2026",
+      "candidate_ids": ["202609011234-explore-10"]
+    },
+    {
+      "slug": "shiny-chikusei-collab-details",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "筑西市コラボ、オリジナルグッズの品目(アクスタ・バッジ等5種)と花火大会の会場・規模(約2万発)・荒天順延日が判明",
+      "lead_score": 20,
+      "dedup_key": "chikusei-shinycolors-collab-2026",
+      "candidate_ids": ["202609012336-explore-11"]
+    },
+    {
+      "slug": "shiny-hbtk-0908-guest",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "まったりはばたきラジオステーション9月8日放送回は菅沼千紗さんソロMC、ゲストに山根綺さん・永井真里子さん、おたよりは9月3日頃締切",
+      "lead_score": 15,
+      "dedup_key": "shiny-mattari-hbtk-2026-09-mc-otayori",
+      "candidate_ids": ["202609020238-grok-36"]
+    },
+    {
+      "slug": "shiny-765collab5-4koma-ritsuko-mamimi",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニソン765プロコラボ第5弾、記念特別4コマの最新話に秋月律子と田中摩美々が登場",
+      "lead_score": 10,
+      "dedup_key": "shiny-sfpr-765-collab-5th-4koma-ritsuko-mamimi-2026-08-31",
+      "candidate_ids": ["202609020238-grok-49"]
+    },
+    {
+      "slug": "shiny-calendar-september-madoka-mei",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "2026年9月のシャニマスカレンダーを公開、樋口円香・和泉愛依のイラストを壁紙に案内",
+      "lead_score": 5,
+      "dedup_key": "shiny-calendar-2026-09-madoka-mei",
+      "candidate_ids": ["202609020238-grok-51"]
+    },
+    {
+      "slug": "shiny-sasayaki-voice-quiz-answer",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "「シャニマスささやきボイス」クイズの正解を発表、樋口円香のボイスをイヤホンで視聴するよう案内",
+      "lead_score": 5,
+      "dedup_key": "shiny-sasayaki-voice-madoka-quiz-answer-2026-09-01",
+      "candidate_ids": ["202609020238-grok-55"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-web4koma-649-2026",
+      "reason": "既報",
+      "note": "web4コマ第649話(桑山千雪回)はstock/stories.yml shiny-4koma-649-chiyuki-2026として8/31付で既報。新事実なし。同エントリ内のささやきボイスクイズ出題は正解発表(shiny-sasayaki-voice-madoka-quiz-answer-2026-09-01)側で扱うため二重掲載しない"
+    },
+    {
+      "dedup_key": "shiny-sfpr-illumine-fantasia-sonare-felice-gacha-2026-08-31",
+      "reason": "重複",
+      "note": "shiny-felice-mv-2026と同一事象(FELICE MV公開+ファンテジィソナーレ衣装ガシャのMV連動演出)。shiny-felice-mv-2026記事に統合"
+    }
+  ],
+  "cross_brand": []
+}

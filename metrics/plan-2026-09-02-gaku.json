@@ -1,0 +1,112 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-shirube-fukuoka-tour-0902",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "標ツアー福岡公演(9/5・6)直前情報——出演・会場物販整理券の販売時間・配信チケット販売期間・記念ショート動画をまとめて伝える",
+      "lead_score": 55,
+      "dedup_key": "gaku-shirube-tour-fukuoka-2026",
+      "candidate_ids": [
+        "202609020238-grok-30",
+        "202609020238-explore-14",
+        "202609020238-grok-31",
+        "202609020238-grok-47"
+      ]
+    },
+    {
+      "slug": "gaku-mission-pass-september-0902",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "9月ミッションパス開催(9/1〜10/1締切4:59予定、プレミアム報酬は『おしのび用メガネ』・無償ジュエル最大5,000個)",
+      "lead_score": 15,
+      "dedup_key": "gaku-mission-pass-2026-09",
+      "candidate_ids": ["202609020238-grok-29"]
+    },
+    {
+      "slug": "gaku-costume-dog-ears-0902",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "衣装ショップに髪型『犬耳』追加(対象は倉本千奈・篠澤広・花海佑芽・秦谷美鈴)",
+      "lead_score": 10,
+      "dedup_key": "gaku-costume-shop-dog-ears-2026-09-01",
+      "candidate_ids": ["202609020238-grok-48"]
+    },
+    {
+      "slug": "gaku-tsukimura-temari-figure-0902",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "月村手毬1/6スケール完成品フィギュアの予約受付開始(締切10/30・2027年6月発売・19,800円)",
+      "lead_score": 8,
+      "dedup_key": "gaku-tsukimura-temarite-figure",
+      "candidate_ids": ["202609011234-watch-0"]
+    },
+    {
+      "slug": "gaku-radio-guest-0902",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "ラジオ「初星学園放送部」本日9/2放送回、ゲストは七瀬つむぎさん・花岩香奈さん(標ツアー福井公演振り返り回)",
+      "lead_score": 5,
+      "dedup_key": "gaku-radio-guest-2026-09-02",
+      "candidate_ids": ["sched-2026-09-02-gaku-radio-guest-2026-09-02-開始"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gaku-espresto-figure-2026-09",
+      "reason": "既報",
+      "note": "8/28付でプライズフィギュア(十王星南9/3・雨夜燕9/10登場)を既報済み。新事実はサイズ等の台帳的付随情報のみ"
+    },
+    {
+      "dedup_key": "gaku-lottery-stock-osaka-nipponbashi-2026",
+      "reason": "その他",
+      "note": "大阪日本橋店の抽選くじ在庫状況の定期更新であり、発表・開催決定・販売開始等のニュースに該当しない"
+    },
+    {
+      "dedup_key": "gaku-lottery-stock-hakata-2026",
+      "reason": "その他",
+      "note": "博多バスターミナル店の抽選くじ在庫状況の定期更新であり、同上の理由でニュースに該当しない"
+    },
+    {
+      "dedup_key": "gaku-howling-over-the-world-2026",
+      "reason": "既報",
+      "note": "8/31付で『Howling over the World』ほか計5曲の配信開始を既報済み、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-star-mine-2026",
+      "reason": "既報",
+      "note": "8/30付で「Star-mine」配信開始を既報済み、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-prize-september-2026",
+      "reason": "出典不足",
+      "note": "出典が未確認サイト(kore-tore.com)のみ。内容はESPRESTOフィギュア(既報)とちびぐるみ(出典不足で別途不採用)の再掲で、公式発表に到達していない"
+    },
+    {
+      "dedup_key": "gaku-september-mission-pass-2026",
+      "reason": "重複",
+      "note": "9月ミッションパスは公式ソース(gaku-mission-pass-2026-09)で記事化。混入していたプロデューサーランキング情報は8/30に終了済み、初星音楽祭Blu-ray締切は日付未確定の二次情報で単独記事化できない"
+    },
+    {
+      "dedup_key": "gaku-live-tour-shirube-fukui-day1-fan-report",
+      "reason": "個人の話題",
+      "note": "個人noteブログの参加レポート。対象の福井公演DAY1も8/20開催済みで既に終了している"
+    },
+    {
+      "dedup_key": "gaku-chibigurumi-unit-collection-vol1-2026",
+      "reason": "出典不足",
+      "note": "出典が非公式まとめサイト(charagoo.jp)のみで、公式発表に到達していない"
+    },
+    {
+      "dedup_key": "gaku-costume-dog-ears-2026",
+      "reason": "重複",
+      "note": "同一施策をgaku-costume-shop-dog-ears-2026-09-01の公式単独ソースで記事化。混入していたミッションパス情報はgaku-mission-pass-2026-09に統合"
+    },
+    {
+      "dedup_key": "gaku-ichiban-kuji-part6-2026",
+      "reason": "既報",
+      "note": "8/29付でラインナップ・発売日(9/19)・賞品構成を既報済み。ダブルチャンス賞当選数等は台帳的な付随情報に留まる"
+    }
+  ],
+  "cross_brand": []
+}

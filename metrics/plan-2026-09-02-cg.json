@@ -1,0 +1,81 @@
+{
+  "articles": [
+    {
+      "slug": "cg-ss11th-anniversary-campaign",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "デレステが9月3日に11周年を迎えるにあたり、記念キャンペーンの開催決定を公式が告知(詳細は後日発表)",
+      "lead_score": 55,
+      "dedup_key": "cgss-11th-anniversary-campaign-2026",
+      "candidate_ids": ["202609011234-explore-4", "202609010737-explore-4"]
+    },
+    {
+      "slug": "cg-vote2026-goods-yojijukugo",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "シンデレラガール総選挙2026、グループP・O・N・M「公約四字熟語」グッズの販売開始",
+      "lead_score": 15,
+      "dedup_key": "cg-vote2026-goods-yojijukugo",
+      "candidate_ids": ["202609020238-grok-26"]
+    },
+    {
+      "slug": "cg-popn-toybox-xr-ticket",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "#トイボ公演 Poppin' para Pong!のxRライブストリーミングチケット、9月13日締切で販売中(通し券・単券の価格とアーカイブ視聴期間)",
+      "lead_score": 10,
+      "dedup_key": "cg-popn-toybox-2026-xr",
+      "candidate_ids": ["202609020238-grok-27"]
+    },
+    {
+      "slug": "cg-memory-pict-november-goods",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "Memory Pict. November(小日向美穂・依田芳乃)の受注商品ラインナップと価格が判明、受注は9月13日まで",
+      "lead_score": 5,
+      "dedup_key": "cg-memory-pict-november-2026",
+      "candidate_ids": ["202609020238-grok-60"]
+    },
+    {
+      "slug": "cg-popn-toybox-memorial-goods",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "#トイボ公演 開催記念グッズの品目・価格・受注締切(9月13日)・発送時期(2027年2月)が判明",
+      "lead_score": 10,
+      "dedup_key": "cg-popn-toybox-2026-memorial-goods",
+      "candidate_ids": ["202609020238-grok-61"]
+    },
+    {
+      "slug": "cg-ss10th-fukuoka-bd-release",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "デレステ10thツアー沖縄・福岡Blu-ray BOX(コロムビアミュージックショップ限定盤)が本日発売",
+      "lead_score": 20,
+      "dedup_key": "cg-ss10th-fukuoka-pv2-2026",
+      "candidate_ids": ["sched-2026-09-02-cg-ss10th-fukuoka-pv2-2026-発売"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-hachimasu-2026-fall",
+      "reason": "出典不足",
+      "note": "出典が二次情報(ファンニュースブログ)のみで公式・当事者の告知が確認できない。コラボ企画は規程2により公式一次情報が無ければ書けない"
+    },
+    {
+      "dedup_key": "deresute-11th-anniversary-2026",
+      "reason": "重複",
+      "note": "cg-ss11th-anniversary-campaign記事(dedup_key: cgss-11th-anniversary-campaign-2026)に統合。同一の公式告知(9/3・11周年キャンペーン決定)を別の収集経路が拾ったもの"
+    },
+    {
+      "dedup_key": "cg-official-shop-lottery-stock-2026-08-30",
+      "reason": "その他",
+      "note": "アトレ秋葉原店の抽選くじ在庫状況のスナップショット更新のみ。開始・終了・新商品などの新事実が無く、規程9が禁じる台帳的事実に該当"
+    },
+    {
+      "dedup_key": "cg-yamanashi-walk-wander-2026",
+      "reason": "既報",
+      "note": "stock/stories.ymlに8/29付で開催期間・拠点・歩数計価格・受注開始日まで既報済み。素材の facts はいずれも published_facts の範囲内で新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,21 +1,39 @@
 [
-  {
-    "id": "sched-2026-11-01-shiny-tokyo-jiyukei-mytime-event-2026-締切",
-    "dedup_key": "shiny-tokyo-jiyukei-mytime-event-2026",
-    "brand": "shiny",
-    "subject": "「Tokyo自由系*ガール/My time」発売記念イベント",
-    "kind": "締切",
-    "note": "応募受付締切23:59",
-    "reserved_on": "2026-09-01",
-    "title": "シャニソン新曲記念イベント出演者更新",
-    "url": "https://shinycolors.lantis.jp/event/260623_1/",
-    "source_type": "準公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608311234-explore-7",
-    "event_date": "2026-11-01",
-    "facts": [
-      "応募受付は2026年11月1日23:59まで、対象商品封入のシリアル1点で1口応募",
-      "e+の無料会員登録と電話番号認証が必要、申込はスマートフォンのみ"
-    ]
-  }
+ {
+  "id": "sched-2026-11-01-shiny-tokyo-jiyukei-mytime-event-2026-締切",
+  "dedup_key": "shiny-tokyo-jiyukei-mytime-event-2026",
+  "brand": "shiny",
+  "subject": "「Tokyo自由系*ガール/My time」発売記念イベント",
+  "kind": "締切",
+  "note": "応募受付締切23:59",
+  "reserved_on": "2026-09-01",
+  "title": "シャニソン新曲記念イベント出演者更新",
+  "url": "https://shinycolors.lantis.jp/event/260623_1/",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608311234-explore-7",
+  "event_date": "2026-11-01",
+  "facts": [
+   "応募受付は2026年11月1日23:59まで、対象商品封入のシリアル1点で1口応募",
+   "e+の無料会員登録と電話番号認証が必要、申込はスマートフォンのみ"
+  ]
+ },
+ {
+  "id": "sched-2026-11-01-sidem-super-retrose-party-2026-その他",
+  "dedup_key": "sidem-super-retrose-party-2026",
+  "brand": "sidem",
+  "subject": "SideM出演声優トークショー「超!!レトローズ\"スペシャル\"パーティ」",
+  "kind": "その他",
+  "note": "西武園ゆうえんち、18時〜19時、レッツゴー！レオランド特設ステージ",
+  "reserved_on": "2026-09-02",
+  "title": "SideM×西武園ゆうえんち 超!!レトローズパーティ第2弾",
+  "url": "https://prtimes.jp/main/html/rd/p/000000975.000011571.html",
+  "source_type": "当事者",
+  "facts": [
+   "11月1日にSideM出演声優トークショー「超!!レトローズ\"スペシャル\"パーティ」開催(18時〜19時、レッツゴー！レオランド特設ステージ)、参加には「イベント参加券付き1日レヂャー切符」(1万円・税込)が必要"
+  ],
+  "verify": "confirmed",
+  "src_candidate_id": "202609012336-explore-13",
+  "event_date": "2026-11-01"
+ }
 ]

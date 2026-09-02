@@ -1,0 +1,58 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-02-cg-ss10th-fukuoka-bd-release.md",
+   "issue": "【1】出典にない事実：候補ID「sched-2026-09-02-cg-ss10th-fukuoka-pv2-2026-発売」がcandidates/2026-09-02.jsonに存在しない。記事が参照している出典情報が候補ファイルに未登録。",
+   "quote": "candidate_ids: [\"sched-2026-09-02-cg-ss10th-fukuoka-pv2-2026-発売\"]"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-gaku-radio-guest-0902.md",
+   "issue": "【1】出典にない事実：候補ID「sched-2026-09-02-gaku-radio-guest-2026-09-02-開始」がcandidates/2026-09-02.jsonに存在しない。記事が参照している出典情報が候補ファイルに未登録。",
+   "quote": "candidate_ids: [\"sched-2026-09-02-gaku-radio-guest-2026-09-02-開始\"]"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-million-extreme-xstream-theater-livestream.md",
+   "issue": "【1】出典にない事実：候補ID「sched-2026-09-02-mltd-extreme-livestream-20260902-開始」がcandidates/2026-09-02.jsonに存在しない。記事が参照している出典情報が候補ファイルに未登録。",
+   "quote": "candidate_ids: [\"sched-2026-09-02-mltd-extreme-livestream-20260902-開始\"]"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-sidem-11th-stage-goods-lottery-deadline.md",
+   "issue": "【1】出典にない事実：候補ID「sched-2026-09-02-sidem-11th-stage-2026-締切」がcandidates/2026-09-02.jsonに存在しない。記事が参照している出典情報が候補ファイルに未登録。",
+   "quote": "candidate_ids: [\"sched-2026-09-02-sidem-11th-stage-2026-締切\"]"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-sidem-flags-yumenotopia-2dmv.md",
+   "issue": "【1】出典にない事実：候補ID「sched-2026-09-02-sidem-flags-meet-yumenotopia-2dmv-2026-開始」がcandidates/2026-09-02.jsonに存在しない。記事が参照している出典情報が候補ファイルに未登録。",
+   "quote": "candidate_ids: [\"sched-2026-09-02-sidem-flags-meet-yumenotopia-2dmv-2026-開始\"]"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-sidem-transcendent-tales-12-release.md",
+   "issue": "【1】出典にない事実：候補ID「sched-2026-09-02-sidem-transcendent-tales-12-2026-発売」がcandidates/2026-09-02.jsonに存在しない。記事が参照している出典情報が候補ファイルに未登録。",
+   "quote": "candidate_ids: [\"sched-2026-09-02-sidem-transcendent-tales-12-2026-発売\"]"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-cg-popn-toybox-xr-ticket.md",
+   "issue": "【10】読者に要らない事実：記事が「8月13日～14日分、8月15日～16日分」など、既に終了したイベントの日程を記述。本号発行日2026-09-02の時点で過去のイベント日程は読者にできることがない。チケット販売期間（9月13日21時まで）のみ記述すべき。",
+   "quote": "各公演の単券は8月13日夕方、8月14日昼・夜、8月15日夕方、8月16日昼・夜の6公演分が各4500円"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-02-sidem-seibu-en-retrose-party.md",
+   "issue": "【1】要確認：候補ID「202609020238-grok-39」のunbacked_factsに「10月30日」が挙がっており、出典本文からこの日付が見つけられなかった。記事では「10月30日から西武園ゆうえんちで開催」と書かれているが、出典URLで実際に日付が確認できるか確認が必要。"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-sidem-fantastic-battle-fes-wanna-step-in.md",
+   "issue": "【1】要確認：候補ID「202609020238-grok-56」のunbacked_factsに「12月26日」が挙がっており、出典本文からこの日付が見つけられなかった。記事では「2026年12月26日・27日」と書かれているが、出典URLで実際に日付が確認できるか確認が必要。"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-general-secret-memories-fan-buzz.md",
+   "issue": "【分量】medium rank の記事として本文が短い。イベント楽曲「秘密のメモリーズ」について、公式告知にある「イベント楽曲をプレイすると専用ドロップアイテムを獲得」などの具体情報を追加することで分量を増やせる。"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-cg-ss11th-anniversary-campaign.md",
+   "issue": "【14】ニュース性：「11周年記念キャンペーン開催決定」と「キャンペーンの詳細は、ゲーム内お知らせで確認できる」のみで、具体情報がない。詳細が未発表の段階での記事化で成立するが、分量（現在 250字未満）が small rank 下限に近い。"
+  }
+ ]
+}

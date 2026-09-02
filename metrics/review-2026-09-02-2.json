@@ -1,0 +1,31 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-02-cg-ss10th-fukuoka-bd-release.md",
+   "issue": "規程1: 出典にない事実。candidate_ids が空（[]）でありながら、Blu-ray BOX リリースの具体的情報（タイトル、発売日、内容）を報告。記事の本文に「コロムビアミュージックショップ限定盤のBlu-ray BOX『THE IDOLM@STER CINDERELLA GIRLS STARLIGHT STAGE 10th ANNIVERSARY TOUR Let's AMUSEMENT!!! @ OKINAWA & FUKUOKA』が、9月2日に発売される」「キャスト全編オーディオコメンタリーを収録」「メイキング、マルチアングル、大木咲絵子と鈴木絵理に密着したドキュメンタリー『The Clock of the Cinderella〜』」と具体的な情報が書かれているが、候補がない。",
+   "quote": "candidate_ids: []\ntitle: デレステ10th沖縄・福岡BD本日発売\n本文: 「コロムビアミュージックショップ限定盤のBlu-ray BOX『THE IDOLM@STER CINDERELLA GIRLS STARLIGHT STAGE 10th ANNIVERSARY TOUR Let's AMUSEMENT!!! @ OKINAWA & FUKUOKA』が、9月2日に発売される。沖縄・福岡のDay1／Day2本編に加え、キャスト全編オーディオコメンタリーを収録。特典映像にはメイキング、マルチアングル、大木咲絵子と鈴木絵理に密着したドキュメンタリー『The Clock of the Cinderella〜』、ポージング衣装紹介映像『CINDERELLA GIRLS COLLECTION』を収める。」"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-gaku-radio-guest-0902.md",
+   "issue": "規程1: 出典にない事実。candidate_ids が空（[]）でありながら、ラジオ出演者の具体的な名前と役柄情報を報告。「七瀬つむぎさん（有村麻央役）」「花岩香奈さん（葛城リーリヤ役）」は具体的事実であり、候補がない。",
+   "quote": "candidate_ids: []\nlede: 「ラジオ「初星学園放送部」は本日の放送回で、標ツアー福井公演を振り返る。」\n本文: 「ラジオ「初星学園放送部」の9月2日放送回には、七瀬つむぎさん（有村麻央役）と花岩香奈さん（葛城リーリヤ役）がゲスト出演する。」"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-sidem-11th-stage-goods-lottery-deadline.md",
+   "issue": "規程1: 出典にない事実。candidate_ids が空（[]）でありながら、物販抽選の日時・会場情報を報告。「9月2日23時59分」「当落発表は9月8日13時」「TOYOTA ARENA TOKYO」「9月12日・13日」は具体的事実であり、候補がない。",
+   "quote": "candidate_ids: []\nlede: 「SideM11th STAGEの会場物販整理券とCD・映像販売整理券の抽選受付は、9月2日23時59分に締め切られる。」\n本文: 「当落発表は9月8日13時から。」「会場物販とCD・映像販売は、9月12日・13日にTOYOTA ARENA TOKYOのサブアリーナで実施予定。」"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-shiny-chikusei-collab-details.md",
+   "issue": "規程2: 出典隠し。候補 202609012336-explore-11 のソース URL (https://ibatoco.jp/news/chikusei-shinycolors-collab-2026/) が sources に記載されていない。出典を隠して sources に載っていない状態で、その候補由来の事実を記事に書いている。",
+   "quote": "candidate_ids: [\"202609012336-explore-11\"]で該当する候補の facts が記事に書かれているが、sources に該当 URL が無い"
+  },
+  {
+   "file": "docs/_posts/2026-09-02-sidem-teddys-collection2-popup-mailorder.md",
+   "issue": "規程2: 出典隠し。候補 202609011234-explore-12 のソース URL (https://x.com/fanitto_csf/status/2094258889667547638) が sources に記載されていない。候補由来の事実が sources に正しく列記されていない。",
+   "quote": "candidate_ids: [\"202609011234-explore-12\"]で該当する候補の facts が記事に書かれているが、sources に該当 URL が無い"
+  }
+ ],
+ "comments": []
+}

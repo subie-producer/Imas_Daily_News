@@ -1,22 +1,40 @@
 [
-  {
-    "id": "sched-2026-11-22-shiny-tokyo-jiyukei-mytime-event-2026-開幕",
-    "dedup_key": "shiny-tokyo-jiyukei-mytime-event-2026",
-    "brand": "shiny",
-    "subject": "「Tokyo自由系*ガール/My time」発売記念イベント",
-    "kind": "開幕",
-    "note": "トーク＆ミニライブ開催(都内某所)",
-    "reserved_on": "2026-09-01",
-    "title": "シャニソン新曲記念イベント出演者更新",
-    "url": "https://shinycolors.lantis.jp/event/260623_1/",
-    "source_type": "準公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608311234-explore-7",
-    "event_date": "2026-11-22",
-    "facts": [
-      "2026年11月22日(日)、都内某所でトーク&ミニライブを開催(当選者のみ会場を案内)",
-      "出演は丸岡和佳奈(杜野凛世役)・黒木ほの香(大崎甘奈役)・田嶌紗蘭(福丸小糸役)・希水しお(三峰結華役)",
-      "第一回14:15開場/15:00開演、第二回16:45開場/17:30開演、配信は行わない"
-    ]
-  }
+ {
+  "id": "sched-2026-11-22-shiny-tokyo-jiyukei-mytime-event-2026-開幕",
+  "dedup_key": "shiny-tokyo-jiyukei-mytime-event-2026",
+  "brand": "shiny",
+  "subject": "「Tokyo自由系*ガール/My time」発売記念イベント",
+  "kind": "開幕",
+  "note": "トーク＆ミニライブ開催(都内某所)",
+  "reserved_on": "2026-09-01",
+  "title": "シャニソン新曲記念イベント出演者更新",
+  "url": "https://shinycolors.lantis.jp/event/260623_1/",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608311234-explore-7",
+  "event_date": "2026-11-22",
+  "facts": [
+   "2026年11月22日(日)、都内某所でトーク&ミニライブを開催(当選者のみ会場を案内)",
+   "出演は丸岡和佳奈(杜野凛世役)・黒木ほの香(大崎甘奈役)・田嶌紗蘭(福丸小糸役)・希水しお(三峰結華役)",
+   "第一回14:15開場/15:00開演、第二回16:45開場/17:30開演、配信は行わない"
+  ]
+ },
+ {
+  "id": "sched-2026-11-22-sidem-super-retrose-party-2026-その他",
+  "dedup_key": "sidem-super-retrose-party-2026",
+  "brand": "sidem",
+  "subject": "SideM出演声優トークショー「超!!レトローズ\"スペシャル\"パーティ」",
+  "kind": "その他",
+  "note": "西武園ゆうえんち、18時〜19時、レッツゴー！レオランド特設ステージ",
+  "reserved_on": "2026-09-02",
+  "title": "SideM×西武園ゆうえんち 超!!レトローズパーティ第2弾",
+  "url": "https://prtimes.jp/main/html/rd/p/000000975.000011571.html",
+  "source_type": "当事者",
+  "facts": [
+   "11月22日にSideM出演声優トークショー「超!!レトローズ\"スペシャル\"パーティ」開催(18時〜19時、レッツゴー！レオランド特設ステージ)、参加には「イベント参加券付き1日レヂャー切符」(1万円・税込)が必要"
+  ],
+  "verify": "confirmed",
+  "src_candidate_id": "202609012336-explore-13",
+  "event_date": "2026-11-22"
+ }
 ]

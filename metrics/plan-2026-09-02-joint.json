@@ -1,0 +1,11 @@
+{
+  "articles": [],
+  "dropped": [
+    {
+      "dedup_key": "imas-columbia-postevent-cd-2026",
+      "reason": "既報",
+      "note": "stock/stories.ymlのstory_id columbia-venue-cd-aftersale-2026-08(初出2026-08-29)にタイトル・受付期間(8/28 21:00〜9/13 23:59)・発送日(10/2)・決済方法まで既出。今回の素材に新事実なし。"
+    }
+  ],
+  "cross_brand": []
+}

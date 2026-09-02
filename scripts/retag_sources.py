@@ -13,8 +13,8 @@
 これはその判定を過去の記事へ反映するための、一度きりの移行スクリプトである。
 
 書き換えるのは frontmatter の `sources[].type` と `src` だけ。本文には触らない。
-`未確認` は「一次ソース未到達」という確認状態であって情報源の性格ではないので、
-種別の判定で上書きしない(規程 2.5)。
+`未確認` を例外にしない。判定表が知っている出典は判定どおりに付け直し、
+知らない出典だけが未確認として残る(規程 2.5)。
 
 第0号(試験発行)の期間は過去号を直してよい、という運用に基づく。
 第1号以降は規程 2.6 のとおり訂正ボックスを立てる。
@@ -39,34 +39,20 @@ def rank(t: str) -> int:
     return SRC_ORDER.index(t) if t in SRC_ORDER else len(SRC_ORDER)
 
 
-def resolve(fm: dict, body: str = "", recheck: bool = False) -> tuple[list[str], str | None]:
+def resolve(fm: dict) -> tuple[list[str], str | None]:
     """この記事の出典種別と src を、URL から決め直す。
 
-    `未確認` は「一次ソース未到達」という確認状態なので、通常は上書きしない。
-
-    ただし実際には、**判定表がそのドメインを知らなかっただけ**で 未確認 が
-    付いたものが混ざる(livepocket.jp のチケット販売ページなど)。
-    表に足しても上がらないままだと、記事のバッジが実態より弱いまま残る。
-
-    `recheck=True` のときは、**判定表が知っているドメインなら判定し直す**。
+    **未確認を例外にしない。**判定表(`source_types.yml`)が知っている出典は、
+    いま何が書いてあっても判定どおりに付け直す。表が知らない出典は
+    `classify_source` 自身が未確認を返すので、結果として未確認のまま残る。
 
     以前は「本文が『一次ソース未到達』と断っている記事は触らない」という例外を
-    置いていたが、これは誤りだった。バッジは**出典が何者か**を表すもので、
-    その記事が一次情報に届いたかどうかは本文の書きぶりの話である。
-    攻略サイトを出典にしたなら、本文が何と書いていようとその出典は二次情報である。
-    例外のせいで、種別の分かっている出典が未確認のまま紙面に残り続けていた。
+    置いていた。バッジは**出典が何者か**を表すもので、その記事が一次情報に
+    届いたかどうかは本文の書きぶりの話である。攻略サイトを出典にしたなら、
+    本文が何と書いていようとその出典は二次情報である。
+    例外のせいで、種別の分かっている出典が未確認のまま紙面に残っていた(実測7件)。
     """
-    types = []
-    for s in fm.get("sources") or []:
-        cur = s.get("type")
-        if cur != "未確認":
-            types.append(classify_source(s.get("url", "") or ""))
-            continue
-        want = classify_source(s.get("url", "") or "")
-        if recheck and want != "未確認":
-            types.append(want)
-        else:
-            types.append("未確認")
+    types = [classify_source(s.get("url", "") or "") for s in fm.get("sources") or []]
     src = max(types, key=rank) if types else None
     return types, src
 
@@ -103,8 +89,6 @@ def rewrite(text: str, types: list[str], src: str | None) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true", help="実際に書き換える")
-    ap.add_argument("--recheck-unverified", action="store_true",
-                    help="未確認の出典を、到達確認のうえ判定し直す")
     args = ap.parse_args()
 
     n_src, n_type, n_files = 0, 0, 0
@@ -114,7 +98,7 @@ def main() -> int:
         if not m:
             continue
         fm = yaml.safe_load(m.group(1))
-        types, src = resolve(fm, text[m.end():], args.recheck_unverified)
+        types, src = resolve(fm)
         olds = [s.get("type") for s in fm.get("sources") or []]
         d_type = sum(1 for a, b in zip(olds, types) if a != b)
         d_src = 1 if src and fm.get("src") != src else 0

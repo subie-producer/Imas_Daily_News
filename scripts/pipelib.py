@@ -61,6 +61,10 @@ REVIEW_MODEL = ENV.get("REVIEW_MODEL", "haiku")
 EXPLORE_MAX_BUDGET_USD = ENV.get("EXPLORE_MAX_BUDGET_USD", "1.5")
 COMPOSE_ARTICLE_MAX_BUDGET_USD = ENV.get("COMPOSE_ARTICLE_MAX_BUDGET_USD", "3")
 COMPOSE_WHOLE_MAX_BUDGET_USD = ENV.get("COMPOSE_WHOLE_MAX_BUDGET_USD", "8")
+# 記事執筆・面別選定の同時実行数。1本ずつは短いので、並べたぶんだけ短くなる
+# (実測 2026-09-02: 35本を4並列で11分)。上げすぎると API 側で詰まるので、
+# 効かなくなったら戻す。.env で調整できる
+COMPOSE_WAVE = int(ENV.get("COMPOSE_WAVE", "8"))
 
 
 # 手元の確認・試験実行で Discord へ本物の警報を飛ばさないための抑止。

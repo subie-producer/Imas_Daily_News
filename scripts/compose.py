@@ -37,7 +37,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import tags as tags_lib
-from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, EDITORIAL_MODEL,
+from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, EDITORIAL_MODEL,
                      COMPOSE_ARTICLE_MAX_BUDGET_USD,
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, classify_source, commit_and_push,
@@ -749,10 +749,31 @@ def editorial_hash(date: str) -> str:
 
 
 def posts_fingerprint(date: str) -> dict:
-    """その号の記事の中身を控える。社説は記事を読んで書かれるので、
-    **社説を書いた時点**を基準にしないと、書いたあとの変化を捕らえられない。"""
-    return {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
-            for p in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md"))}
+    """その号の記事の**読まれる中身**を控える。
+
+    社説と digest は記事を読んで書かれるので、書いたあとに中身が変われば作り直す。
+    ただし見るのは**本文と見出しとリードだけ**にする。
+
+    ファイル全体のハッシュで見ていたら、組版と lint 修正が frontmatter を整える
+    (出典の label を補う、src を直す、candidate_ids を整理する)だけで
+    「変わった」と判定していた。実測 2026-09-02: 35本中32本が変化扱いになったが、
+    実際に本文が変わったのは9本で、残りは frontmatter の整形だった。
+    そのせいで組版と社説と校閲をやり直し、43分を使って時間切れになった。
+    """
+    out = {}
+    for p in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md")):
+        t = p.read_text(encoding="utf-8")
+        m = re.match(r"^---\n(.*?)\n---\n", t, re.S)
+        body = t[m.end():] if m else t
+        head = ""
+        if m:
+            try:
+                fm = yaml.safe_load(m.group(1)) or {}
+                head = f"{fm.get('title', '')}\n{fm.get('lede', '')}"
+            except Exception:
+                head = m.group(1)
+        out[p.name] = hashlib.sha256((head + "\n" + body).encode("utf-8")).hexdigest()
+    return out
 
 
 def posts_changed(before: dict, after: dict) -> list[str]:
@@ -1017,12 +1038,13 @@ def validate_plan(plan: dict, cands: dict, blocklist: dict) -> list[str]:
     return errors
 
 
-def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 4) -> dict:
+def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> dict:
     """面別に選定させ、機械的に1つの計画へ束ねる。
 
     面ごとに独立したセッションなので、1面が失敗しても他面は生きる(全滅しない)。
     面内の主題数は十数件なので、全主題に判断を下しても時間内に収まる。
     """
+    wave = wave or COMPOSE_WAVE
     # 面は「合同 → 各ブランド → 総合 → その他」の順に決める。
     # 同じ話題が複数の面の素材に現れることがあり(収集エンジンごとに面の判断が違う)、
     # 面を並列に走らせると両方が記事にして号内で二重になる。実際 2026-08-26号で
@@ -1334,15 +1356,18 @@ def assign_ranks(date: str, plan: dict, written: list[dict], keep_lead: bool = F
 
 
 def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
-                   stories: dict, wave: int = 4,
+                   stories: dict, wave: int = 0,
                    reuse: bool = False) -> tuple[list[dict], list[str]]:
     """記事ごとに素材を機械的に切り出して個別 codex セッションで執筆(wave 並列)。
+
+    wave=0 なら COMPOSE_WAVE(.env)を使う。
     校閲(claude)とベンダーを分離するため執筆は Codex。機械検収エラーの修正は
     校閲と同じ Claude(REVIEW_MODEL=haiku)で行う。
 
     reuse=True(--reuse-plan)のときは、既に書けている記事を再執筆しない。
     執筆層だけを直して落ちた記事を拾い直す、という再試行を安く保つため。
     """
+    wave = wave or COMPOSE_WAVE
     trig_by_key = {t["dedup_key"]: t for t in triggers}
     jobs, written_before = [], []
     for art in plan["articles"]:

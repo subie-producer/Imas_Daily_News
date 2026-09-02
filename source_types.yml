@@ -101,6 +101,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - raduga.pgw.jp         # みりしたらぼ(攻略・ボーダーまとめ)
   - charagoo.jp           # 合議で追加: ページ冒頭に「最新一覧」とあり、複数の情報源を集約したサイト
   - kore-tore.com         # 合議で追加: プライズ景品情報をまとめたキュレーションサイト
   - game8.jp              # 株式会社ゲームエイト(Gunosy子会社)の攻略メディア
@@ -146,6 +147,9 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - imas-cinderella-yamanashi.com  # やまなし WALK & WANDER(イベント主催の特設)
+  - hiromedo-store.com    # ひろめ堂ストア(グッズ販売元)
+  - neonmax.net           # ネオンマックス(フィギュアの発売元)
   - smilebase.shop        # 合議で追加: グッズ販売元として受注情報を発信している
   - scratch.dmm.com       # 合議で追加: DMMスクラッチの販売元として商品情報を発信している
   - on-line.1kuji.com     # 合議で追加: 一番くじの販売元として商品情報を発信している

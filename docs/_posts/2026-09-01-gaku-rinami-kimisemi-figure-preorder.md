@@ -2,7 +2,7 @@
 slug: gaku-rinami-kimisemi-figure-preorder
 edition: 2026-09-01
 brand: gaku
-src: 未確認
+src: 報道
 rank: small
 corrected: false
 corrections: []
@@ -19,7 +19,7 @@ sources:
   type: 報道
   label: インサイド記事
 - url: https://www.neonmax.net/rinamisemiblue-0623
-  type: 未確認
+  type: 当事者
   label: ネオンマックス商品ページ
 - url: https://shop.asobistore.jp/products/detail/242800-00-00-00
   type: 準公式

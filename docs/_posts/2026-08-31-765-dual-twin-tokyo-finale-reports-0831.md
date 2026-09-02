@@ -2,7 +2,7 @@
 slug: 765-dual-twin-tokyo-finale-reports-0831
 edition: 2026-08-31
 brand: '765'
-src: 未確認
+src: 二次情報
 rank: large
 corrected: false
 corrections: []
@@ -15,7 +15,7 @@ sources:
     type: 報道
     url: https://panora.tokyo/archives/154488
   - label: 現地参加レポート
-    type: 未確認
+    type: 二次情報
     url: https://raduga.pgw.jp/mililab/
   - label: ASOBI STAGE東京公演ページ
     type: 準公式

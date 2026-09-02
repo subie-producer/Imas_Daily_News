@@ -2,16 +2,16 @@
 slug: shiny-gacha-and-goods-shorts
 edition: 2026-07-12
 brand: shiny
-src: 未確認
+src: 二次情報
 rank: small
 title: "シャニマス関連小ニュース: 七草はづき新SSR登場・ちびぐるみ先行"
 lede: "トワイライトコレクションに七草はづきの新S-SSRが登場、「PJ: REFRAC7IONS」ちびぐるみのナムクレ先行も始まったとの情報がある。"
 tags: [シャニマス, ガシャ, グッズ, 未確認]
 sources:
-  - type: 未確認
+  - type: 二次情報
     label: "ゲームオ!「トワイライトコレクション 七草はづき」情報(2026年7月)"
     url: https://gameo.jp/imassc/164685
-  - type: 未確認
+  - type: 二次情報
     label: "ゲームオ!「PJ: REFRAC7IONS ちびぐるみ ナムクレ先行」情報(2026年7月)"
     url: https://gameo.jp/imassc/164747
 corrected: false

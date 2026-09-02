@@ -2,7 +2,7 @@
 slug: cg-yamanashi-walk-wander-details
 edition: 2026-09-01
 brand: cg
-src: 未確認
+src: 当事者
 rank: medium
 corrected: false
 corrections: []
@@ -31,10 +31,10 @@ sources:
   type: 当事者
   label: PR TIMESリリース
 - url: https://imas-cinderella-yamanashi.com/2026/information
-  type: 未確認
+  type: 当事者
   label: イベント特設サイト
 - url: https://hiromedo-store.com/products/detail/348
-  type: 未確認
+  type: 当事者
   label: コラボ歩数計販売ページ
 ---
 「アイドルマスター シンデレラガールズ」と山梨県の周遊イベント『やまなし WALK & WANDER』について、特設サイトに地域パートナーの担当が掲載されている。会期は11月21日から12月27日まで。

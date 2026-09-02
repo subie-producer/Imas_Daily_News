@@ -22,7 +22,6 @@
 import argparse
 import re
 import sys
-import urllib.request
 from pathlib import Path
 
 import yaml
@@ -40,20 +39,6 @@ def rank(t: str) -> int:
     return SRC_ORDER.index(t) if t in SRC_ORDER else len(SRC_ORDER)
 
 
-# 「一次ソースに到達できていない」と本文が断っている記事。
-# 助詞が入るので連続一致では拾えない(実測: 「一次ソースには未到達のため」)。
-CAVEAT_RE = re.compile(r"未到達|一次ソース.{0,8}(到達|確認)できて")
-
-
-def url_alive(url: str) -> bool:
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; ImasNews/1.0)"})
-        with urllib.request.urlopen(req, timeout=15) as r:
-            return r.status < 400
-    except Exception:
-        return False
-
-
 def resolve(fm: dict, body: str = "", recheck: bool = False) -> tuple[list[str], str | None]:
     """この記事の出典種別と src を、URL から決め直す。
 
@@ -63,11 +48,13 @@ def resolve(fm: dict, body: str = "", recheck: bool = False) -> tuple[list[str],
     付いたものが混ざる(livepocket.jp のチケット販売ページなど)。
     表に足しても上がらないままだと、記事のバッジが実態より弱いまま残る。
 
-    `recheck=True` のときだけ、次を全部満たす 未確認 を判定し直す:
-      1. 判定表が今はそのドメインを知っている
-      2. URL に実際に到達できる(「確認」とはそういう意味である)
-      3. 記事本文が「一次ソース未到達」と断っていない
-         (断っている記事は、ページに到達できるかとは別の理由で未確認である)
+    `recheck=True` のときは、**判定表が知っているドメインなら判定し直す**。
+
+    以前は「本文が『一次ソース未到達』と断っている記事は触らない」という例外を
+    置いていたが、これは誤りだった。バッジは**出典が何者か**を表すもので、
+    その記事が一次情報に届いたかどうかは本文の書きぶりの話である。
+    攻略サイトを出典にしたなら、本文が何と書いていようとその出典は二次情報である。
+    例外のせいで、種別の分かっている出典が未確認のまま紙面に残り続けていた。
     """
     types = []
     for s in fm.get("sources") or []:
@@ -76,8 +63,7 @@ def resolve(fm: dict, body: str = "", recheck: bool = False) -> tuple[list[str],
             types.append(classify_source(s.get("url", "") or ""))
             continue
         want = classify_source(s.get("url", "") or "")
-        if (recheck and want != "未確認" and not CAVEAT_RE.search(body)
-                and url_alive(s.get("url", "") or "")):
+        if recheck and want != "未確認":
             types.append(want)
         else:
             types.append("未確認")

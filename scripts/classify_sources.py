@@ -30,6 +30,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, classify_source,
+                     source_type_table,
                      edition_date, extract_json_array, html_to_text, notify, set_quiet)
 
 # 合議で足してよい種別。公式・準公式は入れない(上の docstring を参照)
@@ -65,9 +66,40 @@ RULES = """種別の定義(この新聞の編集規程2.5)。**この定義だ�
 
 判断に迷ったら `不明` と答える。**推測で埋めない。**
 
-**アイマス公式そのもの、または公式レーベル・公式ストア・グループ企業に当たると思うものは、
-`当事者` に寄せず `不明` と答えること。**この工程は「公式」「準公式」を扱わない。
-弱い種別を無理に当てると、実態より弱いバッジが紙面に残る。人の判断へ回す。"""
+## 「公式」「準公式」はこの工程で扱わない
+
+公式(アイマス公式そのもの)と準公式(バンダイナムコのグループ会社・公式レーベル・
+公式ストア)は、**数えられる少数の決まった相手**である。下に一覧を渡すので、
+**そこに載っているものだけ** `不明` と答えて人へ回すこと。
+
+**一覧に無いなら、公式でもグループ企業でもない。**「関係があるかもしれない」
+「公式かどうか分からない」は `不明` の理由にならない。性格どおりに分類する。
+
+とくに間違えやすい点:
+
+- **ライセンスを受けてグッズを作る・売る会社は「当事者」である。**準公式ではない。
+  フィギュアメーカー、くじの運営、コラボカフェ、雑貨店、カラオケ事業者などは、
+  公式の許諾を得ていても、自社サイトで自社の商品・催しを告知している当事者である
+- 会場・チケット販売・自治体・イベント主催も同じく当事者
+- 「公式ライセンス商品」「公式グッズ」という言葉がページにあっても、
+  **その会社が公式になるわけではない**"""
+
+
+def known_official() -> str:
+    """公式・準公式として既に判定表に載っている相手の一覧。
+
+    モデルに「公式かどうか」を推測させると、関係がありそうな会社を全部
+    `不明` に倒す(実測: コトブキヤの自社イベント告知に対して
+    「公式やグループ企業かどうか明確でない」と答えて保留になった)。
+    公式・準公式は数えられる少数なので、**照合できる形で渡す**。
+    """
+    t = source_type_table()
+    doms = sorted(set((t.get("official_domains") or []) + (t.get("semi_official_domains") or [])))
+    x = t.get("x_accounts") or {}
+    accts = sorted(set((x.get("公式") or []) + (x.get("準公式") or [])))
+    return ("### 公式・準公式として登録済み(これに当たるものだけ `不明` と答える)\n"
+            + "ドメイン: " + ", ".join(doms) + "\n"
+            + "X アカウント: " + ", ".join("@" + a for a in accts))
 
 
 def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, list[str]]]]:
@@ -126,10 +158,13 @@ def ask(cmd: list[str], prompt: str, timeout: int = 900) -> list[dict]:
 
 
 def build_prompt(items: list[tuple[str, str, str]]) -> str:
+    known = known_official()
     body = "\n\n".join(f"### {h}\n代表URL: {u}\nページ冒頭: {x}" for h, u, x in items)
     return (f"""次のサイトを、この新聞の出典種別に分類してください。
 
 {RULES}
+
+{known}
 
 ## 対象
 {body}
@@ -144,6 +179,7 @@ def build_prompt(items: list[tuple[str, str, str]]) -> str:
 
 
 def build_x_prompt(accts: dict[str, tuple[str, list[str]]]) -> str:
+    known = known_official()
     body = "\n".join(f"- @{a}: " + " / ".join(t or ["(投稿の要約なし)"])
                      for a, (_, t) in sorted(accts.items()))
     return f"""次の X アカウントを、この新聞の出典種別に分類してください。
@@ -158,6 +194,8 @@ X のアカウントは次のどれかに当たることが多いので、目安
 - **ファン**: ファンアート、コスプレ、感想、二次創作、応援の投稿をしている個人
 - **報道**: ニュースメディアのアカウント
 - **二次情報**: まとめ・引用中心のアカウント
+
+{known}
 
 ## 対象(アカウントと、そこから拾った投稿の要約)
 {body}

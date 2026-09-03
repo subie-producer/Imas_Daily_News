@@ -72,8 +72,20 @@ RULES = """種別の定義(この新聞の編集規程2.5)。**この定義だ�
 公式ストア)は、**数えられる少数の決まった相手**である。下に一覧を渡すので、
 **そこに載っているものだけ** `不明` と答えて人へ回すこと。
 
-**一覧に無いなら、公式でもグループ企業でもない。**「関係があるかもしれない」
-「公式かどうか分からない」は `不明` の理由にならない。性格どおりに分類する。
+一覧に載っているものは必ず `不明` と答える。
+
+一覧に無いものは、原則として公式でもグループ企業でもないので、性格どおりに分類する。
+「関係があるかもしれない」「公式かどうか分からない」は `不明` の理由にならない。
+
+**ただし例外がある。**新しくできた作品公式サイトや新しいグループ会社は、
+必ず一覧の外から現れる。次に当たるなら、一覧に無くても `不明` と答えること。
+
+- ページが**アイドルマスターの作品・ブランドの公式サイト**を名乗っている
+  (「THE IDOLM@STER ◯◯ 公式サイト」など、作品そのものの本拠)
+- 運営が**バンダイナムコの会社**である(社名に Bandai Namco / バンダイナムコ を含む)
+- **公式レーベル・公式ストア**を名乗っている(そのブランドの音源・商品を出す本体)
+
+ライセンスを受けて商品を作る・売る会社は、これに当たらない(下記)。
 
 とくに間違えやすい点:
 
@@ -95,11 +107,18 @@ def known_official() -> str:
     """
     t = source_type_table()
     doms = sorted(set((t.get("official_domains") or []) + (t.get("semi_official_domains") or [])))
+    sufs = sorted(t.get("official_suffixes") or [])
+    paths = sorted(t.get("official_paths") or [])
     x = t.get("x_accounts") or {}
     accts = sorted(set((x.get("公式") or []) + (x.get("準公式") or [])))
-    return ("### 公式・準公式として登録済み(これに当たるものだけ `不明` と答える)\n"
+    vids = sorted(set((t.get("video_ids") or {}).get("公式", [])
+                      + (t.get("video_ids") or {}).get("準公式", [])))
+    return ("### 公式・準公式として登録済み(これに当たるものは必ず `不明` と答える)\n"
             + "ドメイン: " + ", ".join(doms) + "\n"
-            + "X アカウント: " + ", ".join("@" + a for a in accts))
+            + "配下も含むドメイン: " + ", ".join(sufs) + "\n"
+            + "パス指定: " + ", ".join(paths) + "\n"
+            + "X アカウント: " + ", ".join("@" + a for a in accts) + "\n"
+            + "動画ID: " + ", ".join(vids))
 
 
 def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, list[str]]]]:

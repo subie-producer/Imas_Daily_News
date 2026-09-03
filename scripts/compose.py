@@ -749,36 +749,48 @@ def editorial_hash(date: str) -> str:
 
 
 def posts_fingerprint(date: str) -> dict:
-    """その号の記事の**読まれる中身**を控える。
+    """その号の記事を、**用途ごとに2つの指紋**で控える。
 
-    社説と digest は記事を読んで書かれるので、書いたあとに中身が変われば作り直す。
-    ただし見るのは**本文と見出しとリードだけ**にする。
+    {ファイル名: (読まれる中身, 組版が使う値)}
 
-    ファイル全体のハッシュで見ていたら、組版と lint 修正が frontmatter を整える
-    (出典の label を補う、src を直す、candidate_ids を整理する)だけで
-    「変わった」と判定していた。実測 2026-09-02: 35本中32本が変化扱いになったが、
-    実際に本文が変わったのは9本で、残りは frontmatter の整形だった。
-    そのせいで組版と社説と校閲をやり直し、43分を使って時間切れになった。
+    - 読まれる中身 = 本文 + 見出し + リード。社説と digest が読む部分
+    - 組版が使う値 = candidate_ids・出典URL・brand・rank。
+      組版はこれを使って digest を作り、`stock/stories.yml` と続報予約を更新する
+
+    ファイル全体のハッシュ1つで見ていたら、組版と lint 修正が frontmatter を
+    整えるだけで「変わった」と判定していた(実測 2026-09-02: 32本が変化扱いだが
+    本文が変わったのは9本)。逆に本文だけを見ると、校閲が candidate_ids を直した
+    ときに台帳と予約が旧素材のまま残る(監査指摘)。用途で分ける。
     """
     out = {}
     for p in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md")):
         t = p.read_text(encoding="utf-8")
         m = re.match(r"^---\n(.*?)\n---\n", t, re.S)
         body = t[m.end():] if m else t
-        head = ""
+        head, meta = "", ""
         if m:
             try:
                 fm = yaml.safe_load(m.group(1)) or {}
                 head = f"{fm.get('title', '')}\n{fm.get('lede', '')}"
+                meta = json.dumps([fm.get("candidate_ids"), fm.get("brand"), fm.get("rank"),
+                                   [s.get("url") for s in (fm.get("sources") or [])]],
+                                  ensure_ascii=False, sort_keys=True)
             except Exception:
-                head = m.group(1)
-        out[p.name] = hashlib.sha256((head + "\n" + body).encode("utf-8")).hexdigest()
+                head = meta = m.group(1)
+        out[p.name] = (hashlib.sha256((head + "\n" + body).encode("utf-8")).hexdigest(),
+                       hashlib.sha256(meta.encode("utf-8")).hexdigest())
     return out
 
 
-def posts_changed(before: dict, after: dict) -> list[str]:
-    """変わった記事の一覧。**消えた記事も含める**(片側だけを走査すると見逃す)。"""
-    return sorted({n for n in set(before) | set(after) if before.get(n) != after.get(n)})
+def posts_changed(before: dict, after: dict, idx: int) -> list[str]:
+    """変わった記事の一覧。**消えた記事も含める**(片側だけを走査すると見逃す)。
+
+    idx=0 は「読まれる中身」、idx=1 は「組版が使う値」。
+    """
+    def val(d, n):
+        v = d.get(n)
+        return v[idx] if v else None
+    return sorted({n for n in set(before) | set(after) if val(before, n) != val(after, n)})
 
 
 def rewrite_editorial(date: str, number: int, topic: str, brand: str,
@@ -1030,13 +1042,22 @@ def repair_plan_shape(plan: dict) -> list[str]:
             a["rank"] = "small"
             fixed.append(f"{a.get('slug','?')}: {b} 面の roundup が重複するので roundup → small")
 
-    # lead が複数なら1本に絞る。0本なら pick_lead が後段で付けるので触らない
+    # 一面はちょうど1本。**この時点で pick_lead は既に済んでいる**ので、
+    # 0本なら誰も付けてくれない(一面に選ばれた記事が素材ごと落ちた場合に起きる)。
+    # 一面の無い紙面は出せないので、ここで必ず1本立てる
     leads = [a for a in arts if a.get("rank") == "lead"]
     if len(leads) > 1:
         leads.sort(key=lambda a: -(a.get("lead_score") or 0))
         for a in leads[1:]:
             a["rank"] = "large"
             fixed.append(f"{a.get('slug','?')}: 一面が複数あるので lead → large")
+    elif not leads:
+        cand = [a for a in arts if a.get("rank") not in ("roundup", "culture")]
+        if cand:
+            top = max(cand, key=lambda a: a.get("lead_score") or 0)
+            top["rank"] = "lead"
+            fixed.append(f"{top.get('slug','?')}: 一面が無くなったので lead に立てる"
+                         f"(lead_score 最大)")
     return fixed
 
 
@@ -1622,12 +1643,13 @@ def main() -> int:
     plan = run_plan(date, by_brand, triggers)
     pick_lead(date, plan)
     plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    # 素材の参照が壊れている記事。**まず1回直させ**、それでも駄目なものだけ外す。
-    # 号ごと落とさないのは「発行を止めるくらいなら薄い紙面を出す」に従うため
-    # 枠を直せば済む不備(roundup の素材不足・重複、一面が複数)は、記事を落とさず直す
-    shape = repair_plan_shape(plan)
-    if shape:
-        print("計画の形を修復: " + " / ".join(shape), flush=True)
+    # **素材を先に確定させてから、紙面の形を直す。**
+    # 逆にすると、形を直したあとで素材が減って形が崩れる(監査指摘):
+    #   roundup 3件のうち1件が verify=failed → 除去後2件 → もう直されず検証で停止
+    #   一面の素材が全滅 → 記事ごと除去 → 一面0本 → 停止
+    #   roundup が複数のとき、使えない素材まで数えて残す1本を選んでしまう
+    #
+    # 1. 壊れた候補IDを直させる → 2. それでも駄目な記事を外す → 3. 形を整える
     repaired = repair_invalid_ids(date, plan, cands)
     if repaired:
         print("候補IDを修復: " + " / ".join(repaired), flush=True)
@@ -1636,6 +1658,11 @@ def main() -> int:
         plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         notify("compose", f"{date}: 素材の参照が壊れた記事を計画から外した"
                           f"({len(plan_dropped)}件)。発行は続行:\n- " + "\n- ".join(plan_dropped[:5]), ok=False)
+    # 素材が確定したので、ここで紙面の形を整える(roundup の素材不足・重複、一面)
+    shape = repair_plan_shape(plan)
+    if shape:
+        plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        print("計画の形を修復: " + " / ".join(shape), flush=True)
     # errors = 発行を止める機械検証 / gaps = 止めない取りこぼし(通知して続行)
     errors = validate_plan(plan, cands, blocklist)
     gaps, cov = coverage_gaps(plan, cands, blocklist)
@@ -1808,18 +1835,47 @@ def main() -> int:
     # 記事が往復で直っていたら、社説は**直る前の記事**を読んで書かれている。
     # 直った記事で書き直し、もう一度校閲に掛ける。ここを飛ばすと、
     # 直された事実を引用したままの社説が紙面に出る
-    changed_posts = posts_changed(posts_at_editorial, posts_fingerprint(date))
+    now_fp = posts_fingerprint(date)
     # **参照している記事が変わったときだけ**やり直す。全部の変更でやり直すと、
-    # 組版セッション+社説+校閲でおよそ40分伸び、systemd の起動タイムアウトを
-    # 超えて号ごと落ちた(2026-08-31)。digest は号スナップショットの中身で、
-    # 社説は本文で、それぞれ参照の有無を機械で確かめられる
-    ed_txt = (ROOT / "docs" / "_editorials" / f"{date}.md")
-    ed_body = ed_txt.read_text(encoding="utf-8") if ed_txt.exists() else ""
+    # 組版セッション+社説+校閲でおよそ40分伸び、時間切れで号ごと落ちる(2026-08-31)。
+    changed_read = posts_changed(posts_at_editorial, now_fp, 0)   # 読まれる中身
+    changed_meta = posts_changed(posts_at_editorial, now_fp, 1)   # 組版が使う値
+    changed_posts = sorted(set(changed_read) | set(changed_meta))
+
     ed_file = ROOT / "docs" / "_editions" / f"{date}.md"
     ed_snap = ed_file.read_text(encoding="utf-8") if ed_file.exists() else ""
-    slugs = [n[len(date) + 1:].removesuffix(".md") for n in changed_posts]
-    touches_digest = [s for s in slugs if s in ed_snap]
-    touches_editorial = [s for s in slugs if s in ed_body]
+    ed_txt = ROOT / "docs" / "_editorials" / f"{date}.md"
+    ed_body = ed_txt.read_text(encoding="utf-8") if ed_txt.exists() else ""
+
+    # digest は slug を持つので、slug で照合できる。
+    # **組版が使う値(candidate_ids・出典URL・brand・rank)が変わった記事も対象**。
+    # 組版はそこから台帳と続報予約を作るので、変われば作り直しが要る(監査指摘)
+    slug_of = lambda n: n[len(date) + 1:].removesuffix(".md")
+    touches_digest = sorted({slug_of(n) for n in changed_read if slug_of(n) in ed_snap}
+                            | {slug_of(n) for n in changed_meta})
+
+    # **社説は slug を書かない。**slug で照合していたので、社説の取り直しは
+    # ほとんど発火していなかった(監査指摘)。起点にした記事と、
+    # 社説本文に見出しが出てくる記事で見る
+    def in_editorial(name: str) -> bool:
+        s = slug_of(name)
+        if s == plan.get("editorial_slug"):
+            return True
+        p2 = ROOT / "docs" / "_posts" / name
+        if not p2.exists() or not ed_body:
+            return False
+        m2 = re.match(r"^---\n(.*?)\n---\n", p2.read_text(encoding="utf-8"), re.S)
+        if not m2:
+            return False
+        try:
+            title = str((yaml.safe_load(m2.group(1)) or {}).get("title") or "")
+        except Exception:
+            return False
+        # 見出しは社説にそのまま出るとは限らないので、鉤括弧の中の固有名詞で照合する
+        keys = re.findall(r"[「『]([^」』]{3,30})[」』]", title) or ([title] if len(title) >= 6 else [])
+        return any(k in ed_body for k in keys)
+
+    touches_editorial = sorted({slug_of(n) for n in changed_read if in_editorial(n)})
     if changed_posts and review and (touches_digest or touches_editorial):
         try:
             print(f"記事が {len(changed_posts)}本変わり、うち digest {len(touches_digest)}件 / "

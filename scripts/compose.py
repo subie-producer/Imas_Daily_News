@@ -997,6 +997,49 @@ def drop_invalid_articles(plan: dict, cands: dict, blocklist: dict) -> list[str]
     return dropped
 
 
+def repair_plan_shape(plan: dict) -> list[str]:
+    """**枠を直せば済む不備は、記事を落とさず直す。**直した内容を返す。
+
+    2026-09-03号は「roundup の候補が2件(3件未満)」というだけで計画ごと弾かれ、
+    39本の記事と社説が丸ごと消えて発行できなかった。
+    束ねる素材が足りないなら、その記事を通常記事に戻せば済む話である。
+
+    ここで直すのは**紙面の形の不備**だけ。素材の参照が壊れているもの(存在しない
+    候補ID・verify=failed)は `repair_invalid_ids` と `drop_invalid_articles` が扱う。
+    """
+    fixed = []
+    arts = plan.get("articles") or []
+
+    # 束ねる素材が足りない roundup は、通常記事に戻す
+    for a in arts:
+        n = len(a.get("candidate_ids") or [])
+        if a.get("rank") == "roundup" and n < ROUNDUP_MIN_ITEMS:
+            a["rank"] = "small"
+            fixed.append(f"{a.get('slug','?')}: 素材{n}件では束ねられないので roundup → small")
+
+    # 1ブランドに roundup が複数あるなら、素材の多い1本だけ残して他は通常記事へ
+    by_brand = collections.defaultdict(list)
+    for a in arts:
+        if a.get("rank") == "roundup":
+            by_brand[a.get("brand")].append(a)
+    for b, group in by_brand.items():
+        if len(group) <= 1:
+            continue
+        group.sort(key=lambda a: -len(a.get("candidate_ids") or []))
+        for a in group[1:]:
+            a["rank"] = "small"
+            fixed.append(f"{a.get('slug','?')}: {b} 面の roundup が重複するので roundup → small")
+
+    # lead が複数なら1本に絞る。0本なら pick_lead が後段で付けるので触らない
+    leads = [a for a in arts if a.get("rank") == "lead"]
+    if len(leads) > 1:
+        leads.sort(key=lambda a: -(a.get("lead_score") or 0))
+        for a in leads[1:]:
+            a["rank"] = "large"
+            fixed.append(f"{a.get('slug','?')}: 一面が複数あるので lead → large")
+    return fixed
+
+
 def validate_plan(plan: dict, cands: dict, blocklist: dict) -> list[str]:
     errors = []
     arts = plan.get("articles") if isinstance(plan, dict) else None
@@ -1581,6 +1624,10 @@ def main() -> int:
     plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     # 素材の参照が壊れている記事。**まず1回直させ**、それでも駄目なものだけ外す。
     # 号ごと落とさないのは「発行を止めるくらいなら薄い紙面を出す」に従うため
+    # 枠を直せば済む不備(roundup の素材不足・重複、一面が複数)は、記事を落とさず直す
+    shape = repair_plan_shape(plan)
+    if shape:
+        print("計画の形を修復: " + " / ".join(shape), flush=True)
     repaired = repair_invalid_ids(date, plan, cands)
     if repaired:
         print("候補IDを修復: " + " / ".join(repaired), flush=True)

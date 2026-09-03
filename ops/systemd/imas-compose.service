@@ -8,4 +8,7 @@ Type=oneshot
 WorkingDirectory=%h/git/imas-ops
 Environment=PATH=%h/.local/bin:%h/.grok/bin:/usr/local/bin:/usr/bin:/bin
 ExecStart=/usr/bin/python3 %h/git/imas-ops/scripts/compose.py
-TimeoutStartSec=100min
+# compose 自身が締切(COMPOSE_LIMIT_MIN=120分)を見て工程を打ち切り、
+# 紙面を確定させてから終わる。**その内側の判断を殺さない**ように、
+# systemd の上限は締切より後に置く。ここが先に来ると、確定前に SIGTERM が飛ぶ
+TimeoutStartSec=125min

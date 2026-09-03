@@ -79,7 +79,17 @@ def next_number() -> int:
 # そこで**時計を見て決める**。次の1巡を始める前に、それを終えて紙面を確定する
 # だけの時間が残っているかを確かめ、無ければそこで打ち切って、いま green な
 # 紙面で発行する。「発行を止めるくらいなら薄い紙面を出す」に従う。
-COMPOSE_DEADLINE_MIN = int(ENV.get("COMPOSE_DEADLINE_MIN", "60"))
+# **締切と目標は別のもの。**
+#
+# 締切(COMPOSE_LIMIT_MIN)は 04:00 起動・06:00 発行の間、120分。ここを超えると
+# 号が出ない。工程を打ち切る判断はこの数字だけで行う。
+#
+# 目標(COMPOSE_TARGET_MIN)は60分。速さの手当てが効いているかを測るための数字で、
+# **打ち切りには使わない**。目標で打ち切ると、時間が余っていても往復を止めて
+# しまい、直せたはずの記事を落としたまま毎日発行することになる。
+# 超えたら記録と通知に出して、設計を直す材料にする。
+COMPOSE_LIMIT_MIN = int(ENV.get("COMPOSE_LIMIT_MIN", "120"))
+COMPOSE_TARGET_MIN = int(ENV.get("COMPOSE_TARGET_MIN", "60"))
 # 打ち切ったあと**必ず踏む**後始末(社説と組版のやり直し=並列+derive+lint+コミット)の見込み。
 #
 # **ここは削らない。**記事を直したあとに社説・digest・台帳を作り直さないと、
@@ -95,14 +105,38 @@ def stage_cost(name: str, default: float) -> float:
     return STAGE_MIN.get(name, default)
 
 
+class stage:
+    """`with stage("選定"):` で、その段にかかった分数を記録する。
+
+    どこが遅いかを毎回残す。残していなかったので、時間切れのたびに
+    人が journal を読み返して段の境目を数えていた。
+    """
+
+    def __init__(self, name: str):
+        self.name = name
+
+    def __enter__(self):
+        self.t = time.time()
+        return self
+
+    def __exit__(self, *exc):
+        STAGE_MIN[self.name] = STAGE_MIN.get(self.name, 0) + (time.time() - self.t) / 60
+        print(f"[{self.name}] {STAGE_MIN[self.name]:.0f}分", flush=True)
+        return False
+
+
 def time_left(t0: float) -> float:
-    return COMPOSE_DEADLINE_MIN - (time.time() - t0) / 60
+    """締切まであと何分。**目標ではなく締切で測る。**"""
+    return COMPOSE_LIMIT_MIN - (time.time() - t0) / 60
 
 
 def afford(t0: float, name: str, default: float, what: str, extra: float = 0) -> bool:
     """`name` の段をもう1回やる時間があるか。後始末の分は必ず残す。
 
     `extra` はその段に付随して必ず走るもの(社説の書き直し・組版のやり直し)の分。
+
+    **見るのは締切(120分)であって目標(60分)ではない。**目標で打ち切ると、
+    時間が余っていても往復を止めて、直せたはずの記事を落としたまま毎日出す。
     """
     need = stage_cost(name, default) + extra + COMPOSE_RESERVE_MIN
     left = time_left(t0)
@@ -1845,7 +1879,8 @@ def main() -> int:
     by_brand, n_subjects = write_plan_index(date, cands, blocklist)
     print(f"選定インデックス: {n_subjects}主題 / {len(by_brand)}面 "
           f"({', '.join(f'{b}:{len(v)}' for b, v in sorted(by_brand.items()))})", flush=True)
-    plan = run_plan(date, by_brand, triggers)
+    with stage("選定"):
+        plan = run_plan(date, by_brand, triggers)
     pick_lead(date, plan)
     plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     # **素材を先に確定させてから、紙面の形を直す。**
@@ -1905,8 +1940,9 @@ def main() -> int:
                           "計画で判断されず消えた(発行は続行。選定の取りこぼし)", ok=False)
 
     # 1b. 個別執筆: 記事ごとに素材を機械切り出しして独立セッションで書く
-    written, aborted = write_articles(date, plan, cands, triggers, load_story_facts(),
-                                      reuse=args.reuse_plan)
+    with stage("執筆"):
+        written, aborted = write_articles(date, plan, cands, triggers, load_story_facts(),
+                                          reuse=args.reuse_plan)
     print(f"執筆: {len(written)}/{n_plan}本(不成立 {len(aborted)}: {aborted})", flush=True)
     # **書き上がりから枠を当てる**(字数を枠に合わせさせない。規程9)。
     # 組版より前に確定させる: 号スナップショットの lead_slug が一面に依存するため
@@ -1970,7 +2006,8 @@ def main() -> int:
     def assemble_job():
         print(claude_run(assembly_prompt(date, number, aborted))[-1000:], flush=True)
 
-    errs = run_parallel([("社説", write_editorial_job), ("組版", assemble_job)])
+    with stage("社説と組版"):
+        errs = run_parallel([("社説", write_editorial_job), ("組版", assemble_job)])
     for e in errs:
         print(f"同時実行のうち失敗: {e}", flush=True)
 
@@ -2247,11 +2284,18 @@ def main() -> int:
     approved = review and review.get("verdict") == "approve"
     code, lint_out = run_lint(date)
     ok = approved and code == 0
+    took_min = (time.time() - t0) / 60
     append_metric("compose", {"edition": date, "rounds": rounds, "approved": bool(approved),
                               "lint_green": code == 0, "planned": n_plan, "written": len(written),
                               "roundups": n_rup, "dropped": n_drop, "coverage": cov,
-                              "dropped_by_review": dropped_by_review,
+                              "dropped_by_review": dropped_by_review, "stages_min": STAGE_MIN,
+                              "target_min": COMPOSE_TARGET_MIN, "over_target": took_min > COMPOSE_TARGET_MIN,
                               "aborted": aborted, "duration_s": int(time.time() - t0)})
+    # **目標超過は打ち切りの理由にしない。**遅いことを見えるようにするだけ。
+    # 見えないと「今日はたまたま」で済み、直列が残っていても気づけない
+    if took_min > COMPOSE_TARGET_MIN:
+        detail = " / ".join(f"{k} {v:.0f}分" for k, v in STAGE_MIN.items()) or "(段の実測なし)"
+        print(f"目標({COMPOSE_TARGET_MIN}分)を超えた: {took_min:.0f}分 — {detail}", flush=True)
     commit_and_push(branch, f"compose {date}: 紙面生成(校閲{'approve' if approved else '未approve'}・{rounds}往復"
                             + (f"・ブロック{len(dropped_by_review)}本を除外" if dropped_by_review else "") + ")", "compose")
     if ok:

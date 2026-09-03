@@ -1,0 +1,12 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "scope": "paper",
+   "file": "docs/_posts/2026-09-03-a.md",
+   "issue": "重複",
+   "quote": ""
+  }
+ ],
+ "comments": []
+}

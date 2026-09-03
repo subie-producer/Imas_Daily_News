@@ -79,10 +79,13 @@ def next_number() -> int:
 # そこで**時計を見て決める**。次の1巡を始める前に、それを終えて紙面を確定する
 # だけの時間が残っているかを確かめ、無ければそこで打ち切って、いま green な
 # 紙面で発行する。「発行を止めるくらいなら薄い紙面を出す」に従う。
-COMPOSE_DEADLINE_MIN = int(ENV.get("COMPOSE_DEADLINE_MIN", "100"))
-# 打ち切ったあと必ず踏む後始末(組版のやり直し+derive+lint+コミット)の見込み。
-# これを最後まで残しておかないと、途中の壊れた紙面で時間切れになる
-COMPOSE_RESERVE_MIN = int(ENV.get("COMPOSE_RESERVE_MIN", "14"))
+COMPOSE_DEADLINE_MIN = int(ENV.get("COMPOSE_DEADLINE_MIN", "60"))
+# 打ち切ったあと**必ず踏む**後始末(社説と組版のやり直し=並列+derive+lint+コミット)の見込み。
+#
+# **ここは削らない。**記事を直したあとに社説・digest・台帳を作り直さないと、
+# 直る前の事実を引用した社説と、古い台帳のまま approve が出てしまう(監査指摘)。
+# 打ち切るのは「もう1巡の校閲」であって、整合を取る工程ではない
+COMPOSE_RESERVE_MIN = int(ENV.get("COMPOSE_RESERVE_MIN", "16"))
 # 各段の実測(分)。走りながら上書きし、次の判断に使う
 STAGE_MIN: dict[str, float] = {}
 
@@ -1336,13 +1339,21 @@ def body_length(path: Path) -> int:
     return len(re.sub(r"\s", "", re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)))
 
 
+# 組版の巻き戻しから外すもの。**社説の持ち物**なので、組版をやり直すときに
+# 戻してはいけない。`stock/columnist.md` はコラムニストの手帳で、社説を書いた
+# セッションが日誌・偏愛・追跡中の物語を書き足す。組版前まで戻すと、
+# 記事を1本直して組版をやり直しただけで、その日の手帳が消える(監査指摘)
+NOT_ASSEMBLY = ("stock/columnist.md",)
+
+
 def snapshot_files(patterns: list[str]) -> tuple[dict[str, bytes], list[str]]:
     """指定した glob に当たるファイルの中身を控える。(中身, 対象の glob) を返す。"""
     snap = {}
     for pat in patterns:
         for p in sorted(ROOT.glob(pat)):
-            if p.is_file():
-                snap[str(p.relative_to(ROOT))] = p.read_bytes()
+            rel = str(p.relative_to(ROOT))
+            if p.is_file() and rel not in NOT_ASSEMBLY:
+                snap[rel] = p.read_bytes()
     return snap, patterns
 
 
@@ -1363,7 +1374,8 @@ def restore_files(snapshot: tuple[dict[str, bytes], list[str]]) -> None:
         p.write_bytes(data)
     for pat in patterns:
         for p in sorted(ROOT.glob(pat)):
-            if p.is_file() and str(p.relative_to(ROOT)) not in snap:
+            rel = str(p.relative_to(ROOT))
+            if p.is_file() and rel not in snap and rel not in NOT_ASSEMBLY:
                 p.unlink()
 
 
@@ -1560,6 +1572,34 @@ def run_lint(date: str) -> tuple[int, str]:
     return r.returncode, r.stdout[-1500:]
 
 
+def run_parallel(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[str]:
+    """独立した工程を同時に走らせる。戻り値は失敗した工程の説明。
+
+    社説・組版・記事修正は互いの成果物に触らないので、直列にする理由が無い。
+    スレッドの中で起きた例外は**握り潰さず**、呼び出し側へ名前付きで返す
+    (以前は起動しっぱなしで、失敗しても成功したように見えていた=監査指摘)。
+    """
+    errs: dict[str, str] = {}
+
+    def wrap(name, fn):
+        def run():
+            try:
+                fn()
+            except Exception as e:
+                traceback.print_exc()
+                errs[name] = f"{type(e).__name__}: {e}"
+        return run
+
+    ths = [threading.Thread(target=wrap(n, f), daemon=True) for n, f in jobs]
+    for t in ths:
+        t.start()
+    for (n, _), t in zip(jobs, ths):
+        t.join(timeout=timeout)
+        if t.is_alive():
+            errs[n] = "時間切れ(スレッドが終わっていない)"
+    return [f"{n}: {why}" for n, why in errs.items()]
+
+
 def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
     """校閲のブロック指摘を、**記事1本につき1セッション**で直させる(並列)。
 
@@ -1636,39 +1676,42 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     again = (f"\n\nこれは再校閲({round_no}回目)です。前回の指摘への修正が反映されています。"
              if round_no > 1 else "")
 
-    jobs = []   # (説明, プロンプト, file)
+    # jobs = (説明, プロンプト, 既定の file, scope)
+    #
+    # `scope` は**機械が付ける担当の名前**で、モデルが書く `file` とは別に持つ。
+    # file だけで引き継ぎを判断すると、紙面担当が「記事Aと記事Bが重複」を
+    # file=記事A で返したとき、記事Aを直して見直しただけで紙面担当の指摘が
+    # 消える(監査指摘)。担当が走り直すまで、その担当の指摘は残す
+    jobs = []
     art_ck = (ROOT / "prompts" / "review-article.md").read_text(encoding="utf-8")
     for n in names:
         jobs.append((n, art_ck.replace("{DATE}", date).replace("{FILE}", n) + again,
-                     f"docs/_posts/{n}"))
+                     f"docs/_posts/{n}", f"article:{n}"))
     if editorial and (ROOT / "docs" / "_editorials" / f"{date}.md").exists():
         jobs.append(("社説",
                      (ROOT / "prompts" / "review-editorial.md").read_text(encoding="utf-8")
-                     .replace("{DATE}", date) + again, f"docs/_editorials/{date}.md"))
+                     .replace("{DATE}", date) + again, f"docs/_editorials/{date}.md", "editorial"))
     if paper:
         jobs.append(("紙面全体",
                      (ROOT / "prompts" / "review-paper.md").read_text(encoding="utf-8")
-                     .replace("{DATE}", date) + again, "-"))
+                     .replace("{DATE}", date) + again, "-", "paper"))
 
     t_review = time.time()
     merged = {"verdict": "approve", "blockers": [], "comments": []}
-    # 今回見たファイル。ここに無いファイルの指摘は前回のものを引き継ぐ
-    seen = {f"docs/_posts/{n}" for n in names}
-    if editorial:
-        seen.add(f"docs/_editorials/{date}.md")
-    if paper:
-        seen.add("-")
+    # 今回走らせた担当。この担当の指摘だけが差し替わり、他は前回のを引き継ぐ
+    seen = {sc for _, _, _, sc in jobs}
     if carry:
         for key in ("blockers", "comments"):
             merged[key] += [x for x in (carry.get(key) or [])
-                            if (x.get("file") or "-") not in seen
+                            if x.get("scope") not in seen
                             # 消えた記事の指摘は持ち越さない
-                            and (not (x.get("file") or "").startswith("docs/_posts/")
-                                 or (ROOT / (x.get("file") or "")).exists())]
+                            and (not str(x.get("scope") or "").startswith("article:")
+                                 or (ROOT / "docs" / "_posts"
+                                     / str(x["scope"]).split(":", 1)[1]).exists())]
     for i in range(0, len(jobs), COMPOSE_WAVE):
         procs = []
-        for what, prompt, where in jobs[i:i + COMPOSE_WAVE]:
-            procs.append((what, where, subprocess.Popen(
+        for what, prompt, where, scope in jobs[i:i + COMPOSE_WAVE]:
+            procs.append((scope, where, subprocess.Popen(
                 ["claude", "-p", prompt, "--model", REVIEW_MODEL,
                  "--json-schema", schema, "--dangerously-skip-permissions",
                  # 1本ずつなので上限も1本分でよい(紙面まるごとの額を配ると
@@ -1676,19 +1719,23 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                  "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
-        for what, where, p in procs:
+        for scope, where, p in procs:
             try:
                 so, se = p.communicate(timeout=900)
             except subprocess.TimeoutExpired:
                 p.kill()
                 so, se = "", "時間切れ"
             r = _parse_review(so or "", se or "", where)
-            for b in r.get("blockers") or []:
-                b.setdefault("file", where)
-                merged["blockers"].append(b)
-            for c in r.get("comments") or []:
-                c.setdefault("file", where)
-                merged["comments"].append(c)
+            for key in ("blockers", "comments"):
+                for x in r.get(key) or []:
+                    x["scope"] = scope
+                    # 記事担当・社説担当は見た相手が決まっている。モデルが別の
+                    # ファイル名を書いてきても、担当のファイルへ寄せる
+                    if scope != "paper":
+                        x["file"] = where
+                    else:
+                        x.setdefault("file", where)
+                    merged[key].append(x)
     if merged["blockers"]:
         merged["verdict"] = "block"
     # 次の巡を始めてよいかの判断に使う。見込みではなく**この号の実測**で決める
@@ -1910,18 +1957,22 @@ def main() -> int:
     pre_assembly = snapshot_files([f"docs/_posts/{date}-*.md", f"docs/_editions/{date}.md",
                                    f"docs/_editorials/{date}.md", "stock/**/*", "stock/*"])
 
-    def write_editorial_bg():
-        for _ in range(2):  # 未作成なら同一プロンプトでもう一度だけ
+    ed_before = ed_path.read_bytes() if ed_path.exists() else None
+
+    def write_editorial_job():
+        for _ in range(2):  # 書けなければ同一プロンプトでもう一度だけ
             codex_run(editorial_prompt(date, number, ed_slug, ed_brand),
                       timeout=1200, model=EDITORIAL_MODEL)
-            if ed_path.exists():
+            if ed_path.exists() and ed_path.read_bytes() != ed_before:
                 return
+        raise RuntimeError("社説が2回とも書かれなかった")
 
-    th = threading.Thread(target=write_editorial_bg, daemon=True)
-    th.start()
-    log = claude_run(assembly_prompt(date, number, aborted))
-    print(log[-1000:], flush=True)
-    th.join(timeout=2500)
+    def assemble_job():
+        print(claude_run(assembly_prompt(date, number, aborted))[-1000:], flush=True)
+
+    errs = run_parallel([("社説", write_editorial_job), ("組版", assemble_job)])
+    for e in errs:
+        print(f"同時実行のうち失敗: {e}", flush=True)
 
     # 社説はこの控えより後に出来るので、控えに入れておく。入れないと、
     # 取り直しが失敗して巻き戻したときに「控えに無いファイル」として消される
@@ -1985,36 +2036,50 @@ def main() -> int:
     retarget: list[str] | None = None
     retarget_ed = True
     for rounds in range(1, args.max_rounds + 2):
-        review = claude_review(date, rounds, targets=retarget,
-                               editorial=retarget_ed, paper=(rounds == 1), carry=review)
+        # 紙面担当(主題の重複・記事の漏れ)は、**記事を直したら走らせる**。
+        # 見出しや主題が変われば、別の記事との重複が新しく生まれうる(監査指摘)。
+        # 見出しだけ読む担当なので1セッションで済む
+        review = claude_review(date, rounds, targets=retarget, editorial=retarget_ed,
+                               paper=(retarget is None or bool(retarget)), carry=review)
         if review.get("verdict") == "approve":
             break
         if rounds > args.max_rounds:
             break
-        # 直す時間が無いなら、直しかけで時間切れになるより、いまの紙面を確定させる
-        if not afford(t0, "校閲", 21, "校閲の往復"):
+        # 直す時間が無いなら、直しかけで時間切れになるより、いまの紙面を確定させる。
+        # 見直しの前に「社説の書き直し+記事の修正(並列)」が入るので、その分も積む
+        if not afford(t0, "校閲", 6, "校閲の往復", extra=9):
             break
         # **社説への指摘は執筆側(Codex)へ返す。**校閲は Claude、社説の執筆は Codex という
         # 別ベンダー分離(要件4.5)が、修正セッションで壊れていた。実測: 2026-08-28号の
         # 校閲記録が引用した社説の一文が、現在の社説に存在しない。校閲側が書き直している。
         # 社説を校閲側に直させると、書いた本人が自分を検品するのと同じ形になる
-        ed_blockers = [b for b in review.get("blockers", [])
-                       if (b.get("file") or "").startswith("docs/_editorials/")]
-        art_blockers = [b for b in review.get("blockers", [])
-                        if not (b.get("file") or "").startswith("docs/_editorials/")]
+        # **どの担当が出した指摘かで振り分ける。**file で振り分けると、
+        # 紙面担当の「記事Aと記事Bが重複」が記事Aの指摘に化ける(監査指摘)
+        blockers = review.get("blockers", [])
+        ed_blockers = [b for b in blockers if b.get("scope") == "editorial"]
+        art_blockers = [b for b in blockers if str(b.get("scope") or "").startswith("article:")]
+        paper_blockers = [b for b in blockers if b.get("scope") == "paper"]
         retarget_ed = bool(ed_blockers)
-        if ed_blockers:
-            rewrite_editorial(date, number, plan.get("editorial_slug", ""),
-                              plan.get("editorial_brand", ""), ed_blockers)
-        # 記事の修正も1本ずつ並列にする。指摘は記事ごとに独立しているので、
-        # まとめて1セッションに渡す理由が無い(渡すと直列に直していく)
+
         by_file: dict[str, list[dict]] = {}
-        for b in art_blockers:
-            by_file.setdefault(b.get("file") or "-", []).append(b)
-        retarget = sorted({f.rsplit("/", 1)[-1] for f in by_file if f.startswith("docs/_posts/")})
-        if not art_blockers:
+        for b in art_blockers + paper_blockers:
+            f = b.get("file") or "-"
+            if f.startswith("docs/_posts/"):
+                by_file.setdefault(f, []).append(b)
+        retarget = sorted(f.rsplit("/", 1)[-1] for f in by_file)
+        if not (ed_blockers or by_file):
             continue
-        fix_articles(date, by_file)
+        # 社説の書き直しと記事の修正は互いに触らないので同時に走らせる。
+        # 記事の修正も1本1セッションで並列(指摘は記事ごとに独立している)
+        jobs = []
+        if ed_blockers:
+            jobs.append(("社説", lambda: rewrite_editorial(
+                date, number, plan.get("editorial_slug", ""),
+                plan.get("editorial_brand", ""), ed_blockers)))
+        if by_file:
+            jobs.append(("記事の修正", lambda: fix_articles(date, by_file)))
+        for e in run_parallel(jobs):
+            print(f"同時実行のうち失敗: {e}", flush=True)
         subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
                        cwd=ROOT, capture_output=True, text=True)
 
@@ -2038,10 +2103,10 @@ def main() -> int:
     changed_posts = sorted(set(changed_read) | set(changed_meta))
     touches_editorial = changed_read            # 社説は本文・見出し・リードを読む
     touches_digest = changed_posts              # 組版はそれに加えて台帳用の値も使う
-    # 取り直しは組版+社説+校閲で実測43分かかる。始めて途中で殺されると、
-    # 台帳を巻き戻したところで紙面が止まる。入るなら最後まで通せるときだけ
-    if changed_posts and review and not afford(t0, "校閲", 21, "校閲後の取り直し", extra=20):
-        changed_posts = []
+    # **ここは時間で飛ばさない。**以前は「時間が無ければ取り直しを省く」に
+    # していたが、それだと直る前の事実を引用した社説と、古い台帳のまま
+    # approve が出て発行できてしまう(監査指摘)。整合を取る工程は削らず、
+    # 削るのは「もう1巡の校閲」のほうにする(COMPOSE_RESERVE_MIN で確保してある)
     if changed_posts and review:
         try:
             print(f"記事が {len(changed_posts)}本変わった"
@@ -2050,29 +2115,34 @@ def main() -> int:
             commit_and_push(branch, f"compose {date}: 校閲往復のあと(取り直し前)", "compose")
             ed_comments = [c for c in (review.get("comments") or [])
                            if (c.get("file") or "").startswith("docs/_editorials/")]
+            jobs = []
             if touches_digest:
                 # digest と台帳も直る前の記事から作られている。台帳は追記なので、
                 # 組版前まで巻き戻してから作り直させる(除外のときと同じ手順)
                 for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
                     (ROOT / rel).write_bytes(pre_assembly[0][rel])
-                print(claude_run(assembly_prompt(date, number, aborted))[-400:], flush=True)
+                jobs.append(("組版", lambda: print(
+                    claude_run(assembly_prompt(date, number, aborted))[-400:], flush=True)))
             if touches_editorial:
-                rewrite_editorial(date, number, plan.get("editorial_slug", ""),
-                                  plan.get("editorial_brand", ""),
-                                  [{"file": f"docs/_editorials/{date}.md",
-                                    "issue": "本日の記事が校閲で直りました("
-                                             + "、".join(n[len(date) + 1:].removesuffix(".md")
-                                                         for n in touches_editorial[:6])
-                                             + " ほか)。**直った記事を読み直し**、社説が引用している事実が"
-                                               "いまも紙面にあるか確かめて書き直してください。"
-                                               "問題がなければ、直す必要はありません", "quote": ""}],
-                                  must_change=False, comments=ed_comments)
+                jobs.append(("社説", lambda: rewrite_editorial(
+                    date, number, plan.get("editorial_slug", ""), plan.get("editorial_brand", ""),
+                    [{"file": f"docs/_editorials/{date}.md",
+                      "issue": "本日の記事が校閲で直りました("
+                               + "、".join(n[len(date) + 1:].removesuffix(".md")
+                                           for n in touches_editorial[:6])
+                               + " ほか)。**直った記事を読み直し**、社説が引用している事実が"
+                                 "いまも紙面にあるか確かめて書き直してください。"
+                                 "問題がなければ、直す必要はありません", "quote": ""}],
+                    must_change=False, comments=ed_comments)))
+            errs = run_parallel(jobs)
+            if errs:
+                raise RuntimeError("；".join(errs))
             subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
                             "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
             rounds += 1
-            # 記事は往復で見終わっている。ここで作り直したのは社説と digest なので、
-            # 見直すのも社説だけでよい
-            review = claude_review(date, rounds, targets=[], editorial=True, paper=False,
+            # 記事は往復で見終わっている。作り直したのは社説と digest なので、
+            # 見直すのは社説と紙面担当(digest・主題の重複)。記事は見直さない
+            review = claude_review(date, rounds, targets=[], editorial=True, paper=True,
                                    carry=review)
         except Exception as e:
             traceback.print_exc()
@@ -2093,7 +2163,8 @@ def main() -> int:
             break
         # 1巡は「落とす+社説+組版+校閲」。始めたら最後まで通さないと、
         # 記事だけ消えて digest が古いままの紙面が残る
-        if not afford(t0, "校閲", 21, f"ブロック記事の除外({_pass + 1}巡目)", extra=20):
+        # 1巡は「落とす+(社説∥組版)+校閲」。社説と組版は同時に走るので長いほうだけ積む
+        if not afford(t0, "校閲", 6, f"ブロック記事の除外({_pass + 1}巡目)", extra=12):
             unresolved = [b for b in (review.get("blockers") or [])]
             break
         try:
@@ -2122,18 +2193,22 @@ def main() -> int:
                        + ")。社説がその記事に触れているなら、書き直してください。"
                          "触れていなければ直す必要はありません")
                 must = False
-            rewrite_editorial(date, number, plan.get("editorial_slug", ""),
-                              plan.get("editorial_brand", ""),
-                              [{"file": f"docs/_editorials/{date}.md", "issue": why, "quote": ""}],
-                              must_change=must)
-
             # **組版をやり直す。**digest が落とした記事を指したままだと lint が落ちるし、
             # 既報台帳には「発行した」と残る。台帳は追記なので組版前まで巻き戻してから、
-            # 生き残った記事だけで作り直させる
+            # 生き残った記事だけで作り直させる。社説の書き直しとは互いに触らないので同時に走らせる
             for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
                 (ROOT / rel).write_bytes(pre_assembly[0][rel])
             assign_ranks(date, plan, written, keep_lead=True)
-            print(claude_run(assembly_prompt(date, number, aborted))[-400:], flush=True)
+            errs = run_parallel([
+                ("社説", lambda: rewrite_editorial(
+                    date, number, plan.get("editorial_slug", ""), plan.get("editorial_brand", ""),
+                    [{"file": f"docs/_editorials/{date}.md", "issue": why, "quote": ""}],
+                    must_change=must)),
+                ("組版", lambda: print(
+                    claude_run(assembly_prompt(date, number, aborted))[-400:], flush=True)),
+            ])
+            if errs:
+                raise RuntimeError("；".join(errs))
             subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
                             "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
             # 組版が落とした記事を書き戻していないか機械で確かめる

@@ -177,7 +177,18 @@ def main() -> int:
         return 1
 
     # 2. ブランチを origin と同期して checkout
+    #
+    # **origin へ強制的に合わせる前に、手元だけにある commit を確かめる。**
+    # `checkout -B` は手元のブランチを origin の位置へ引き戻すので、push して
+    # いない commit は黙って消える。実測 2026-09-04: 校閲が下ろさなかった記事を
+    # 落として組版し直した commit が、発行の中止処理でそのまま消えた。
+    # 消してよいものではないので、push してから進む
     if branch_exists(branch, remote=True):
+        ahead = git("rev-list", f"origin/{branch}..{branch}", check=False).stdout.strip()
+        if ahead:
+            n = len(ahead.splitlines())
+            print(f"{branch} に origin へ出していない commit が {n}件ある。先に push する", flush=True)
+            git("push", "origin", branch)
         git("checkout", "-B", branch, f"origin/{branch}")
     else:
         git("checkout", branch)

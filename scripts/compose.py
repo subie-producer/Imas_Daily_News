@@ -29,6 +29,7 @@ import signal
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import traceback
 from pathlib import Path
@@ -65,6 +66,47 @@ def next_number() -> int:
         if m:
             nums.append(int(m.group(1)))
     return max(nums) + 1 if nums else 1
+
+
+# --- 時間予算 -----------------------------------------------------------
+# compose は 04:00 に起動し、release は 06:00 に発行する。systemd は 110分で
+# SIGTERM を送る。つまり**使える時間は決まっている**のに、校閲の往復は
+# 「approve になるまで」「落とせるものが無くなるまで」で回っていた。
+# 校閲1巡は実測20分前後なので、往復が3回増えれば予算を超える。
+# 実測 2026-09-03: 選定12 + 執筆11 + 社説と組版23 + 校閲21 + 取り直し43 = 110分。
+# 余白ゼロで、追加の1巡が入った時点ではみ出す設計だった。
+#
+# そこで**時計を見て決める**。次の1巡を始める前に、それを終えて紙面を確定する
+# だけの時間が残っているかを確かめ、無ければそこで打ち切って、いま green な
+# 紙面で発行する。「発行を止めるくらいなら薄い紙面を出す」に従う。
+COMPOSE_DEADLINE_MIN = int(ENV.get("COMPOSE_DEADLINE_MIN", "100"))
+# 打ち切ったあと必ず踏む後始末(組版のやり直し+derive+lint+コミット)の見込み。
+# これを最後まで残しておかないと、途中の壊れた紙面で時間切れになる
+COMPOSE_RESERVE_MIN = int(ENV.get("COMPOSE_RESERVE_MIN", "14"))
+# 各段の実測(分)。走りながら上書きし、次の判断に使う
+STAGE_MIN: dict[str, float] = {}
+
+
+def stage_cost(name: str, default: float) -> float:
+    """その段にかかる見込み(分)。実測があればそれを使う。"""
+    return STAGE_MIN.get(name, default)
+
+
+def time_left(t0: float) -> float:
+    return COMPOSE_DEADLINE_MIN - (time.time() - t0) / 60
+
+
+def afford(t0: float, name: str, default: float, what: str, extra: float = 0) -> bool:
+    """`name` の段をもう1回やる時間があるか。後始末の分は必ず残す。
+
+    `extra` はその段に付随して必ず走るもの(社説の書き直し・組版のやり直し)の分。
+    """
+    need = stage_cost(name, default) + extra + COMPOSE_RESERVE_MIN
+    left = time_left(t0)
+    if left >= need:
+        return True
+    print(f"時間切れのため{what}を打ち切る(残り{left:.0f}分 / 必要{need:.0f}分)", flush=True)
+    return False
 
 
 BRANDS = {"general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"}
@@ -876,7 +918,8 @@ def assembly_prompt(date: str, number: int, aborted: list[str]) -> str:
 4. stock/pending.yml … 日付未確定の追跡事項の増減(日付が判明した項目は scheduled へ移して消す)
 
 ## 注意
-- 社説 docs/_editorials/{date}.md は**執筆済み**(専任セッション)。書き換えない
+- 社説 docs/_editorials/{date}.md は**別セッションが同時に書いています**。読まないし、書き換えない
+  (まだ存在しないこともあります。存在を前提にした処理をしないこと)
 - 記事本文の事実関係は校閲済みの前提で**書き換えない**(digest は記事に書いてあることだけを使う)
 - 内規の文言を紙面に書かない{ab}
 
@@ -1517,35 +1560,145 @@ def run_lint(date: str) -> tuple[int, str]:
     return r.returncode, r.stdout[-1500:]
 
 
-def claude_review(date: str, round_no: int) -> dict:
-    """校閲。執筆(Codex)と別ベンダーにするため Claude(REVIEW_MODEL=haiku)で実施。"""
-    checklist = (ROOT / "prompts" / "review-checklist.md").read_text(encoding="utf-8").replace("{DATE}", date)
-    if round_no > 1:
-        checklist += f"\n\nこれは再校閲({round_no}回目)です。前回の指摘への修正が反映されています。"
-    schema = (ROOT / "prompts" / "review-schema.json").read_text(encoding="utf-8")
-    out = ROOT / "metrics" / f"review-{date}-{round_no}.json"
-    r = subprocess.run(
-        ["claude", "-p", checklist, "--model", REVIEW_MODEL,
-         "--json-schema", schema, "--dangerously-skip-permissions",
-         "--max-budget-usd", COMPOSE_WHOLE_MAX_BUDGET_USD],
-        capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL, cwd=ROOT)
-    text = r.stdout.strip()
-    result = None
-    try:
-        result = json.loads(text)
-    except Exception:
-        m = re.search(r"\{.*\}", text, re.DOTALL)
-        if m:
+def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
+    """校閲のブロック指摘を、**記事1本につき1セッション**で直させる(並列)。
+
+    以前は全部の指摘を1つのセッションに渡していた。指摘は記事ごとに独立して
+    いるので、まとめる理由が無く、直列に直すぶんだけ時間になっていた。
+    """
+    jobs = [(f, ("校閲AIから以下のブロック指摘がありました。**"+f+" だけ**を、"
+                 "candidates の facts と照合して修正してください。他のファイルには触らないこと。\n"
+                 "**`docs/_editorials/` には触らないこと。**社説は別のセッションが直します。\n"
+                 "修正できない(出典に無い事実で、消すしかない)なら、その記述を削ってください。\n"
+                 + json.dumps(bs, ensure_ascii=False, indent=2)))
+            for f, bs in by_file.items() if f.startswith("docs/_posts/")]
+    if not jobs:
+        return
+    for i in range(0, len(jobs), COMPOSE_WAVE):
+        procs = []
+        for f, prompt in jobs[i:i + COMPOSE_WAVE]:
+            procs.append(subprocess.Popen(
+                ["claude", "-p", prompt, "--model", REVIEW_MODEL,
+                 "--dangerously-skip-permissions",
+                 "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
+                stdin=subprocess.DEVNULL, cwd=ROOT))
+        for p in procs:
             try:
-                result = json.loads(m.group(0))
-            except Exception:
-                result = None
-    if result is None:
-        result = {"verdict": "block",
-                  "blockers": [{"file": "-", "issue": f"校閲実行失敗: {r.stderr[-200:]}", "quote": ""}],
-                  "comments": []}
-    out.write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
-    return result
+                p.communicate(timeout=900)
+            except subprocess.TimeoutExpired:
+                p.kill()
+    print(f"校閲の指摘で {len(jobs)}本を並列で修正した", flush=True)
+
+
+def _parse_review(text: str, err: str, where: str) -> dict:
+    """校閲セッションの出力を JSON にする。読めなければブロック扱いにする。"""
+    for cand in (text.strip(), ):
+        try:
+            return json.loads(cand)
+        except Exception:
+            pass
+    m = re.search(r"\{.*\}", text, re.DOTALL)
+    if m:
+        try:
+            return json.loads(m.group(0))
+        except Exception:
+            pass
+    return {"verdict": "block",
+            "blockers": [{"file": where, "issue": f"校閲実行失敗: {err[-200:]}", "quote": ""}],
+            "comments": []}
+
+
+def claude_review(date: str, round_no: int, targets: list[str] | None = None,
+                  editorial: bool = True, paper: bool = True,
+                  carry: dict | None = None) -> dict:
+    """校閲。執筆(Codex)と別ベンダーにするため Claude(REVIEW_MODEL=haiku)で実施。
+
+    **記事は1本ずつ、並列で見る。**紙面まるごとを1セッションで校閲していたが、
+    そうすると1巡の値段が紙面の大きさで決まってしまい、実測21分かかった。
+    記事を4本落としただけでも34本を読み直させるので、往復のたびに21分が乗る。
+    執筆はとうに並列化してあるのに、校閲だけが紙面単位のまま残っていた。
+
+    チェックリストの1〜16は**どれも記事1本の中で完結する**判定である。
+    1本ずつに割れば、セッションは小さくなり、`COMPOSE_WAVE` 本ずつ同時に走る。
+
+    `targets` に記事のファイル名を渡すと、**その記事だけ**を見直す。
+    校閲の指摘で3本直したなら、見直すのはその3本でよい。
+    `editorial` / `paper` は、社説・紙面全体(主題の重複、記事の漏れ)の担当。
+
+    絞って見直すときは `carry` に前回の結果を渡すこと。**見直さなかったファイルに
+    付いていた指摘を引き継ぐ。**引き継がないと、直していない記事のブロックが
+    消えて approve になる。
+    """
+    schema = (ROOT / "prompts" / "review-schema.json").read_text(encoding="utf-8")
+    names = targets if targets is not None else sorted(
+        p.name for p in (ROOT / "docs" / "_posts").glob(f"{date}-*.md"))
+    again = (f"\n\nこれは再校閲({round_no}回目)です。前回の指摘への修正が反映されています。"
+             if round_no > 1 else "")
+
+    jobs = []   # (説明, プロンプト, file)
+    art_ck = (ROOT / "prompts" / "review-article.md").read_text(encoding="utf-8")
+    for n in names:
+        jobs.append((n, art_ck.replace("{DATE}", date).replace("{FILE}", n) + again,
+                     f"docs/_posts/{n}"))
+    if editorial and (ROOT / "docs" / "_editorials" / f"{date}.md").exists():
+        jobs.append(("社説",
+                     (ROOT / "prompts" / "review-editorial.md").read_text(encoding="utf-8")
+                     .replace("{DATE}", date) + again, f"docs/_editorials/{date}.md"))
+    if paper:
+        jobs.append(("紙面全体",
+                     (ROOT / "prompts" / "review-paper.md").read_text(encoding="utf-8")
+                     .replace("{DATE}", date) + again, "-"))
+
+    t_review = time.time()
+    merged = {"verdict": "approve", "blockers": [], "comments": []}
+    # 今回見たファイル。ここに無いファイルの指摘は前回のものを引き継ぐ
+    seen = {f"docs/_posts/{n}" for n in names}
+    if editorial:
+        seen.add(f"docs/_editorials/{date}.md")
+    if paper:
+        seen.add("-")
+    if carry:
+        for key in ("blockers", "comments"):
+            merged[key] += [x for x in (carry.get(key) or [])
+                            if (x.get("file") or "-") not in seen
+                            # 消えた記事の指摘は持ち越さない
+                            and (not (x.get("file") or "").startswith("docs/_posts/")
+                                 or (ROOT / (x.get("file") or "")).exists())]
+    for i in range(0, len(jobs), COMPOSE_WAVE):
+        procs = []
+        for what, prompt, where in jobs[i:i + COMPOSE_WAVE]:
+            procs.append((what, where, subprocess.Popen(
+                ["claude", "-p", prompt, "--model", REVIEW_MODEL,
+                 "--json-schema", schema, "--dangerously-skip-permissions",
+                 # 1本ずつなので上限も1本分でよい(紙面まるごとの額を配ると
+                 # 並列数ぶんの掛け算になる)
+                 "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                stdin=subprocess.DEVNULL, cwd=ROOT)))
+        for what, where, p in procs:
+            try:
+                so, se = p.communicate(timeout=900)
+            except subprocess.TimeoutExpired:
+                p.kill()
+                so, se = "", "時間切れ"
+            r = _parse_review(so or "", se or "", where)
+            for b in r.get("blockers") or []:
+                b.setdefault("file", where)
+                merged["blockers"].append(b)
+            for c in r.get("comments") or []:
+                c.setdefault("file", where)
+                merged["comments"].append(c)
+    if merged["blockers"]:
+        merged["verdict"] = "block"
+    # 次の巡を始めてよいかの判断に使う。見込みではなく**この号の実測**で決める
+    STAGE_MIN["校閲"] = (time.time() - t_review) / 60
+    print(f"校閲{round_no}巡目: {len(jobs)}件を並列で見て "
+          f"ブロック{len(merged['blockers'])}件 / コメント{len(merged['comments'])}件 "
+          f"({STAGE_MIN['校閲']:.0f}分)", flush=True)
+    (ROOT / "metrics" / f"review-{date}-{round_no}.json").write_text(
+        json.dumps(merged, ensure_ascii=False, indent=1), encoding="utf-8")
+    return merged
 
 
 def self_check() -> list[str]:
@@ -1738,34 +1891,48 @@ def main() -> int:
         # 記録にも残す。ここを書き戻さないと、計画上の起点と実際の起点が食い違う
         plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     ed_path = ROOT / "docs" / "_editorials" / f"{date}.md"
-    for _ in range(2):  # 未作成なら同一プロンプトでもう一度だけ
-        codex_run(editorial_prompt(date, number, ed_slug, ed_brand),
-                  timeout=1200, model=EDITORIAL_MODEL)
-        if ed_path.exists():
-            break
+
+    # **社説と組版を同時に走らせる。**片方は社説を書き、片方は号スナップショットと
+    # 台帳を作る。互いの成果物には触らない(組版プロンプトは社説を書き換えない)ので、
+    # 直列にする理由が無かった。実測で合わせて23分かかっていた工程が、
+    # 長いほうの時間で済む。
+    #
+    # **社説が記事を読んだ時点**を基準にする。この後の lint 修正や校閲往復で記事が
+    # 直ると、社説は直る前の事実を引用したままになる(実測: 11号中8号で1往復目に
+    # 記事のブロックが出ており、受注期限・対象人数・人物関係が直っていた)。
+    # 同時に走らせるので、**両方を始める前に**控える
+    posts_at_editorial = posts_fingerprint(date)
+    # 組版の前の台帳を控えておく。校閲ブロックで記事を落としたとき、組版をやり直さないと
+    # digest が消えた記事を指したまま残り、既報台帳には「発行した」と書かれたままになる
+    # (監査指摘)。台帳は**追記**なので、やり直す前にここまで巻き戻す必要がある。
+    # 記事と号スナップショットも控える。やり直しが途中で失敗したときに、
+    # 記事だけ消えて digest が古いまま、という状態を残さないため
+    pre_assembly = snapshot_files([f"docs/_posts/{date}-*.md", f"docs/_editions/{date}.md",
+                                   f"docs/_editorials/{date}.md", "stock/**/*", "stock/*"])
+
+    def write_editorial_bg():
+        for _ in range(2):  # 未作成なら同一プロンプトでもう一度だけ
+            codex_run(editorial_prompt(date, number, ed_slug, ed_brand),
+                      timeout=1200, model=EDITORIAL_MODEL)
+            if ed_path.exists():
+                return
+
+    th = threading.Thread(target=write_editorial_bg, daemon=True)
+    th.start()
+    log = claude_run(assembly_prompt(date, number, aborted))
+    print(log[-1000:], flush=True)
+    th.join(timeout=2500)
+
+    # 社説はこの控えより後に出来るので、控えに入れておく。入れないと、
+    # 取り直しが失敗して巻き戻したときに「控えに無いファイル」として消される
+    if ed_path.exists():
+        pre_assembly[0][f"docs/_editorials/{date}.md"] = ed_path.read_bytes()
     if not ed_path.exists():
         # 以前は「組版セッションの lint 修正に委ねる」としていたが、その組版にも
         # lint 修正にも「社説には触るな」と指示しているので、誰も書かずに止まる経路だった。
         # 社説を書けるのは執筆側だけなので、ここで打ち切って人へ渡す
         notify("compose", f"{date}: 社説が2回とも未作成。**社説を書けるのは執筆側セッションだけ**なので、"
                           f"このまま進めても紙面に社説が載らない。人の判断が要る", ok=False)
-    # **社説が記事を読んだ時点**を基準にする。この後の組版・lint 修正・校閲往復で
-    # 記事が直ると、社説は直る前の事実を引用したままになる(実測: 11号中8号で
-    # 1往復目に記事のブロックが出ており、受注期限・対象人数・人物関係が直っていた)
-    posts_at_editorial = posts_fingerprint(date)
-
-    # 1d. 組版: 号スナップショット・台帳更新(lint 自己修正まで)
-    #
-    # 組版の前の台帳を控えておく。校閲ブロックで記事を落としたとき、
-    # 組版をやり直さないと digest が消えた記事を指したまま残り、
-    # 既報台帳には「発行した」と書かれたままになる(監査指摘)。
-    # 台帳は**追記**なので、やり直す前にここまで巻き戻す必要がある。
-    # 記事と号スナップショットも控える。やり直しが途中で失敗したときに、
-    # 記事だけ消えて digest が古いまま、という状態を残さないため
-    pre_assembly = snapshot_files([f"docs/_posts/{date}-*.md", f"docs/_editions/{date}.md",
-                                   f"docs/_editorials/{date}.md", "stock/**/*", "stock/*"])
-    log = claude_run(assembly_prompt(date, number, aborted))
-    print(log[-1000:], flush=True)
 
     # 2. 機械算出の確定 + lint ゲート
     subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
@@ -1808,11 +1975,24 @@ def main() -> int:
     # 3. 校閲往復
     rounds = 0
     review = None
+    # 2巡目以降に見直すのは**直した記事だけ**。校閲は1本ずつ独立に見るので、
+    # 直していない記事の判定は変わらない。紙面全体(主題の重複・記事の漏れ)は
+    # 記事が増減したときだけ見ればよいので、往復では見ない
+    #
+    # **見直す先は「前の巡でブロックが付いたファイル」に一致する。**ブロックが
+    # 付いたものは必ず直しに行くので、直さなかったファイルの判定は前巡のまま
+    # 有効である。だから合議の verdict は、絞って見直しても紙面全体の答えになる
+    retarget: list[str] | None = None
+    retarget_ed = True
     for rounds in range(1, args.max_rounds + 2):
-        review = claude_review(date, rounds)
+        review = claude_review(date, rounds, targets=retarget,
+                               editorial=retarget_ed, paper=(rounds == 1), carry=review)
         if review.get("verdict") == "approve":
             break
         if rounds > args.max_rounds:
+            break
+        # 直す時間が無いなら、直しかけで時間切れになるより、いまの紙面を確定させる
+        if not afford(t0, "校閲", 21, "校閲の往復"):
             break
         # **社説への指摘は執筆側(Codex)へ返す。**校閲は Claude、社説の執筆は Codex という
         # 別ベンダー分離(要件4.5)が、修正セッションで壊れていた。実測: 2026-08-28号の
@@ -1822,16 +2002,19 @@ def main() -> int:
                        if (b.get("file") or "").startswith("docs/_editorials/")]
         art_blockers = [b for b in review.get("blockers", [])
                         if not (b.get("file") or "").startswith("docs/_editorials/")]
+        retarget_ed = bool(ed_blockers)
         if ed_blockers:
             rewrite_editorial(date, number, plan.get("editorial_slug", ""),
                               plan.get("editorial_brand", ""), ed_blockers)
+        # 記事の修正も1本ずつ並列にする。指摘は記事ごとに独立しているので、
+        # まとめて1セッションに渡す理由が無い(渡すと直列に直していく)
+        by_file: dict[str, list[dict]] = {}
+        for b in art_blockers:
+            by_file.setdefault(b.get("file") or "-", []).append(b)
+        retarget = sorted({f.rsplit("/", 1)[-1] for f in by_file if f.startswith("docs/_posts/")})
         if not art_blockers:
             continue
-        fix = ("校閲AIから以下のブロック指摘がありました。candidates の facts と照合して記事を修正してください。"
-               "修正後に derive.py --write と lint を再実行してエラー0にすること。\n"
-               "**`docs/_editorials/` には触らないこと。**社説は別のセッションが直します。\n"
-               + json.dumps(art_blockers, ensure_ascii=False, indent=2))
-        claude_run(fix, timeout=1200, model=REVIEW_MODEL)
+        fix_articles(date, by_file)
         subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
                        cwd=ROOT, capture_output=True, text=True)
 
@@ -1855,6 +2038,10 @@ def main() -> int:
     changed_posts = sorted(set(changed_read) | set(changed_meta))
     touches_editorial = changed_read            # 社説は本文・見出し・リードを読む
     touches_digest = changed_posts              # 組版はそれに加えて台帳用の値も使う
+    # 取り直しは組版+社説+校閲で実測43分かかる。始めて途中で殺されると、
+    # 台帳を巻き戻したところで紙面が止まる。入るなら最後まで通せるときだけ
+    if changed_posts and review and not afford(t0, "校閲", 21, "校閲後の取り直し", extra=20):
+        changed_posts = []
     if changed_posts and review:
         try:
             print(f"記事が {len(changed_posts)}本変わった"
@@ -1883,7 +2070,10 @@ def main() -> int:
             subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
                             "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
             rounds += 1
-            review = claude_review(date, rounds)
+            # 記事は往復で見終わっている。ここで作り直したのは社説と digest なので、
+            # 見直すのも社説だけでよい
+            review = claude_review(date, rounds, targets=[], editorial=True, paper=False,
+                                   carry=review)
         except Exception as e:
             traceback.print_exc()
             notify("compose", f"{date}: 記事修正後の取り直しに失敗({e})。"
@@ -1900,6 +2090,11 @@ def main() -> int:
     dropped_by_review, unresolved = [], []
     for _pass in range(DROP_PASSES):
         if not review or review.get("verdict") == "approve":
+            break
+        # 1巡は「落とす+社説+組版+校閲」。始めたら最後まで通さないと、
+        # 記事だけ消えて digest が古いままの紙面が残る
+        if not afford(t0, "校閲", 21, f"ブロック記事の除外({_pass + 1}巡目)", extra=20):
+            unresolved = [b for b in (review.get("blockers") or [])]
             break
         try:
             dropped, unresolved = drop_blocked_articles(date, review, written)
@@ -1949,7 +2144,10 @@ def main() -> int:
                 raise RuntimeError(f"組版のやり直しが、落とした記事を号に戻した: {back}")
 
             rounds += 1
-            review = claude_review(date, rounds)
+            # 残った記事は直していないので見直さない。落としたことで変わるのは
+            # 社説と、紙面全体(主題の重複・記事の漏れ)だけ
+            review = claude_review(date, rounds, targets=[], editorial=True, paper=True,
+                                   carry=review)
         except Exception as e:
             # **途中で落ちたら全部戻す。**記事を消した後に組版のやり直しが失敗すると、
             # 「記事だけ欠けて digest は古いまま」という壊れた紙面が残る

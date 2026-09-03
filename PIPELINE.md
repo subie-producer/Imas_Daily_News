@@ -161,8 +161,10 @@ scripts/collect.py                   collect.py        scripts/publish.py
      **取りこぼし検査**: 索引の全 dedup_key が `articles` か `dropped` のどちらかに現れることを機械照合する。現れない主題は「判断されずに消えた」ものとして再計画のフィードバックに回し、それでも残れば Discord 通知する(発行は止めない)。2026-08-25号で198主題中88主題が無言で消えていた事故に由来する。計画に**本数の目標値は与えない**(「10〜14本」という目安が上限として働き、素材144主題→24本・198主題→17本と入力非依存になっていた)
   2. **個別執筆**: 記事ごとに candidate_ids の JSON を機械的に切り出し、**その素材だけ**を渡した独立 claude セッションが1本書く(4並列)。執筆前に出典 URL を WebFetch 照合し、中核事実が確認できなければ ABORT(記事不成立として記録)。生成後は機械検収(frontmatter が計画どおりか・出典 URL が素材候補群の範囲内か=系譜検査・src が引用出典の最弱種別か)。記事 frontmatter に candidate_ids が残り、lint も同じ系譜検査を行う
   3. **社説**: 専任のコラムニストセッション(紙面名義「AI疑似プロデューサー」)が当日の記事群だけを事実源として1本書く。人格規程: 一人称の個人コラム・偏愛と断言・ユーモアの矛先は自分と状況のみ(批判封印)・紙面要約の禁止。「プレイできない・会場に行けない書き手」という構造的な立場は自覚してよいが、AIであることは名乗らない(名義は編集部の決めごとで本人は無自覚)。**人格の二層構造**: 根幹=`prompts/columnist-core.md`(不変の憲法。全マスの equal dignity・愛の定義・接続者/翻訳者/記録者/伴走者・事実/解釈/願望の区分け。人間のみ改訂可、プロンプトに全文埋め込み)+個性=`stock/columnist.md`(手帳。執筆前に読み、執筆後に日誌14日分・偏愛/持論20行・追跡中の物語10件を上限に自己編集。根幹に反する方向へは育てない)。手帳は事実源にはしない
-  4. **組版**: 別セッションが号スナップショット(digest)・stories/upcoming 更新を行い、`scripts/derive.py` で機械算出フィールドを確定、lint 赤なら自己修正
-- **校閲**(04:30目安): `codex exec -m terra` に固定チェックリスト(`prompts/review-checklist.md`)+main との diff を渡し、判定を JSON(`--output-schema`)で受け取る。往復と判定結果は metrics に記録する。
+  4. **組版**: 別セッションが号スナップショット(digest)・stories/upcoming 更新を行い、`scripts/derive.py` で機械算出フィールドを確定、lint 赤なら自己修正。**社説と同時に走る**(互いの成果物に触らないので直列にする理由が無い)
+- **校閲**(04:30目安): **記事1本につき1セッション**を `COMPOSE_WAVE` 本ずつ並列で走らせ、判定を JSON(`--json-schema`)で受け取って1つにまとめる。チェックリストは記事=`prompts/review-article.md` / 社説=`prompts/review-editorial.md` / 紙面全体(主題の重複・記事の漏れ)=`prompts/review-paper.md`。往復と判定結果は metrics に記録する。
+  - 紙面まるごとを1セッションで見ていた頃は1巡21分かかり、記事を4本落としただけでも34本を読み直していた。チェックリストの判定はどれも記事1本の中で完結するので、1本ずつに割って並列にした。
+  - **2巡目以降は、指摘が付いたファイルだけ**を見直す。見直さなかったファイルの指摘は前巡から引き継ぐ(引き継がないと、直していない記事のブロックが消えて approve になる)。
   - **ブロック**: 出典にない事実/URL捏造/新事実なしの続報/個人攻撃・プライバシー/時制矛盾/鮮度・年ズレ(過年度・発表済みの新報扱い)/同人・非当事者の記事化/ニュース性の欠如(規程12・13)
   - **コメントのみ**: 表記ゆれ・字数・面白さ
 - 指摘→Claude が修正コミット→再校閲、最大2往復。lint green+校閲 approve でローカル squash merge → main へ push。06:00 の Pages 配信に間に合わせる(実質締切 05:30)。
@@ -266,7 +268,7 @@ systemd user unit は `imas-web`(Caddy)・`imas-app`(動的ページ)・`imas-tu
 | 2 | 探索プロンプト+Grok 収集プロンプト | `.claude/commands/collect-explore.md` `prompts/grok-collect.md` |
 | 3 | ストーリー台帳と続報判定の組み込み | `stock/stories.yml` 更新ロジック |
 | 4 | compose プロンプト+機械算出スクリプト | `.claude/commands/compose.md` `scripts/derive.py` |
-| 5 | 校閲チェックリスト+publish オーケストレータ | `prompts/review-checklist.md` `scripts/publish.py` |
+| 5 | 校閲チェックリスト+publish オーケストレータ | `prompts/review-article.md` `prompts/review-editorial.md` `prompts/review-paper.md` `scripts/publish.py` |
 | 6 | 監視・Discord 通知・cron 登録 | `scripts/watch.py`+README 手順 |
 
 ### 必要な手作業(ユーザー側)

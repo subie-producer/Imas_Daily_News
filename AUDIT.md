@@ -89,7 +89,9 @@ Grok に JSON を書かせると調べる能力が整形に食われるため、
 3. **枠割り**: 書き上がった本文の長さから rank を機械で決める(`assign_ranks`)
 4. **社説**: codex(terra)が1本書く
 5. **組版**: Claude が号スナップショット(digest 等)を作る
-6. **校閲**: Claude(haiku)が `prompts/review-checklist.md` で検査し、ブロックがあれば往復
+6. **校閲**: Claude(haiku)が**記事1本につき1セッション**(`prompts/review-article.md`)で並列に検査し、
+   社説は `prompts/review-editorial.md`、紙面全体(主題の重複・記事の漏れ)は `prompts/review-paper.md`。
+   ブロックがあれば**その記事だけ**を直して見直す
 
 ### lint(scripts/lint.py)
 

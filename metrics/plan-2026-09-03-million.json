@@ -1,0 +1,127 @@
+{
+  "articles": [
+    {
+      "slug": "million-kurumitapinui-vol2-vol3",
+      "brand": "million",
+      "rank": "small",
+      "angle": "「くるみたぴぬい Vol.2/Vol.3」が9月1日発売開始、全12名のおくるみ姿ぬいぐるみを紹介",
+      "lead_score": 5,
+      "dedup_key": "million-kurumitapinui-vol2-vol3",
+      "candidate_ids": ["202609020736-watch-4"]
+    },
+    {
+      "slug": "million-birthday-series-10-preorder",
+      "brand": "million",
+      "rank": "small",
+      "angle": "コトブキヤ「バースデーシリーズ」第10弾、11月分バースデーチケットキーホルダーの予約情報を伝える",
+      "lead_score": 5,
+      "dedup_key": "million-birthday-series-10",
+      "candidate_ids": ["202609020736-watch-5"]
+    },
+    {
+      "slug": "million-14thlive-streaming-ticket-logo",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "ミリオン14thLIVE、主演別公演ロゴを初公開し配信チケット販売を開始。公演後の「ばくすて!とーく」配信も決定",
+      "lead_score": 25,
+      "dedup_key": "millionlive-14th-2026-09",
+      "candidate_ids": [
+        "202609021235-explore-5",
+        "202609022336-watch-1",
+        "202609022336-watch-6",
+        "202609030229-explore-5",
+        "202609030229-grok-45"
+      ]
+    },
+    {
+      "slug": "million-mltd-extreme-xstream-theater",
+      "brand": "million",
+      "rank": "large",
+      "angle": "ミリシタ10年目記念生配信で新シリーズ「X-STREAM THEATER」を発表。新イベント・新SRカード・「ミリオンリンケージ」新章予告も公開",
+      "lead_score": 65,
+      "dedup_key": "millionlive-xtream-extreme-2026-09",
+      "candidate_ids": [
+        "202609021835-explore-7",
+        "202609022336-watch-0",
+        "202609030229-grok-38",
+        "202609030229-grok-41"
+      ]
+    },
+    {
+      "slug": "million-mltd-extreme-campaign",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタExtreme生配信記念プレゼントキャンペーン開催中、応募締切は9月9日",
+      "lead_score": 10,
+      "dedup_key": "millionlive-extreme-broadcast-campaign-2026",
+      "candidate_ids": ["202609022336-watch-5"]
+    },
+    {
+      "slug": "million-hinata-sobetsu-apple-ambassador",
+      "brand": "million",
+      "rank": "small",
+      "angle": "木下ひなたが壮瞥町りんご大使に4年目就任、第50回そうべつりんごまつりは10月2日開幕",
+      "lead_score": 15,
+      "dedup_key": "millionlive-hinata-apple-ambassador-2026",
+      "candidate_ids": ["202609022336-watch-2", "202609030229-grok-51"]
+    },
+    {
+      "slug": "million-arcflags-popup-kotobukiya",
+      "brand": "million",
+      "rank": "small",
+      "angle": "所恵美・舞浜歩・真壁瑞希「サジタリアス」の「ARC-FLAGS POP UP CORNER」がコトブキヤ秋葉原・日本橋で開催決定",
+      "lead_score": 8,
+      "dedup_key": "kotobukiya-arcflags-popup-2026",
+      "candidate_ids": ["202609022336-watch-3"]
+    },
+    {
+      "slug": "million-cyberplanet-popup-medicos",
+      "brand": "million",
+      "rank": "small",
+      "angle": "「Cyber Planet」衣装5人の描き下ろしを使ったPOP UP SHOPがMEDICOS SHOP渋谷で10月8日開催決定",
+      "lead_score": 8,
+      "dedup_key": "medicos-cyberplanet-popup-2026",
+      "candidate_ids": ["202609022336-watch-4"]
+    },
+    {
+      "slug": "million-song-for-you-gasha-vol78",
+      "brand": "million",
+      "rank": "small",
+      "angle": "「SONG FOR YOU!ガシャ VOL.78」開催、双海亜美・桜守歌織で全アイドル3周達成、新ガシャシリーズ移行を予告",
+      "lead_score": 15,
+      "dedup_key": "million-song-for-you-vol78-2026",
+      "candidate_ids": ["202609030229-grok-39"]
+    },
+    {
+      "slug": "million-snapshot-memories-gasha",
+      "brand": "million",
+      "rank": "small",
+      "angle": "限定グッズ「Seasonal Snapshot」がモチーフの「Snapshot Memoriesガシャ」開催",
+      "lead_score": 8,
+      "dedup_key": "million-snapshot-memories-2026",
+      "candidate_ids": ["202609030229-grok-40"]
+    },
+    {
+      "slug": "million-autumn-login-bonus",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ「食欲の秋スペシャルログインボーナス」が本日9月3日開始、9日まで最大500ジュエル",
+      "lead_score": 12,
+      "dedup_key": "million-autumn-login-bonus-2026",
+      "candidate_ids": ["202609030229-grok-42"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-secret-memories-pst-2026",
+      "reason": "既報",
+      "note": "8/28・8/31号で開幕(8/31 15:00)・9/8終了予定・ランキング報酬(四条貴音/豊川風花SR)まで既に報道済み。本日は新事実も当日トリガーもなし"
+    },
+    {
+      "dedup_key": "million-ova-bluray-promo-code-2026",
+      "reason": "過年度",
+      "note": "2026年3月27日発売済みBlu-rayの商品ページで、新規キャンペーン・コード等の記載なし"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,56 +1,74 @@
 [
-  {
-    "id": "sched-2026-09-26-shiny-msp-live-tickets-2026-開幕",
-    "dedup_key": "shiny-msp-live-tickets-2026",
-    "brand": "shiny",
-    "subject": "シャニマスソロライブMSP",
-    "kind": "開幕",
-    "note": "公演本番(京王アリーナTOKYO、9/26・27)",
-    "reserved_on": "2026-08-26",
-    "facts": [
-      "『283 PRODUCTION Solo Live Collection -Master ShowPiece-』は9月26日・27日に京王アリーナTOKYOで開催"
-    ],
-    "title": "ソロライブMSP、9/26開幕",
-    "url": "https://idolmaster-official.jp/news/01_19705",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608260216-grok-42",
-    "event_date": "2026-09-26"
-  },
-  {
-    "id": "sched-2026-09-26-cg-kyoto-popup-2026-開幕",
-    "dedup_key": "cg-kyoto-popup-2026",
-    "brand": "cg",
-    "subject": "京まふ2026事後物販POP UP(シンデレラガールズ分)",
-    "kind": "開幕",
-    "note": "有楽町マルイ7F、シンデレラガールズ分開幕",
-    "title": "京まふ事後物販、東京でPOP UP",
-    "url": "https://idolmaster-official.jp/news/01_19729",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608281836-watch-0",
-    "event_date": "2026-09-26",
-    "facts": [
-      "シンデレラガールズ分は有楽町マルイ7Fで9月26日〜10月14日開催"
-    ],
-    "reserved_on": "2026-08-29"
-  },
-  {
-    "id": "sched-2026-09-26-shiny-hyakki-popup-2026-開幕",
-    "dedup_key": "shiny-hyakki-popup-2026",
-    "brand": "shiny",
-    "subject": "「百鬼夜行 POP UP SHOP」(放課後クライマックスガールズ)",
-    "kind": "開幕",
-    "note": "有楽町マルイ8F開幕",
-    "title": "百鬼夜行POP UP SHOP、有楽町マルイで開催",
-    "url": "https://idolmaster-official.jp/news/01_19707",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608281836-watch-1",
-    "event_date": "2026-09-26",
-    "facts": [
-      "有楽町マルイ8Fで9月26日〜10月14日開催、対象は放課後クライマックスガールズ5名"
-    ],
-    "reserved_on": "2026-08-29"
-  }
+ {
+  "id": "sched-2026-09-26-shiny-msp-live-tickets-2026-開幕",
+  "dedup_key": "shiny-msp-live-tickets-2026",
+  "brand": "shiny",
+  "subject": "シャニマスソロライブMSP",
+  "kind": "開幕",
+  "note": "公演本番(京王アリーナTOKYO、9/26・27)",
+  "reserved_on": "2026-08-26",
+  "facts": [
+   "『283 PRODUCTION Solo Live Collection -Master ShowPiece-』は9月26日・27日に京王アリーナTOKYOで開催"
+  ],
+  "title": "ソロライブMSP、9/26開幕",
+  "url": "https://idolmaster-official.jp/news/01_19705",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608260216-grok-42",
+  "event_date": "2026-09-26"
+ },
+ {
+  "id": "sched-2026-09-26-cg-kyoto-popup-2026-開幕",
+  "dedup_key": "cg-kyoto-popup-2026",
+  "brand": "cg",
+  "subject": "京まふ2026事後物販POP UP(シンデレラガールズ分)",
+  "kind": "開幕",
+  "note": "有楽町マルイ7F、シンデレラガールズ分開幕",
+  "title": "京まふ事後物販、東京でPOP UP",
+  "url": "https://idolmaster-official.jp/news/01_19729",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608281836-watch-0",
+  "event_date": "2026-09-26",
+  "facts": [
+   "シンデレラガールズ分は有楽町マルイ7Fで9月26日〜10月14日開催"
+  ],
+  "reserved_on": "2026-08-29"
+ },
+ {
+  "id": "sched-2026-09-26-shiny-hyakki-popup-2026-開幕",
+  "dedup_key": "shiny-hyakki-popup-2026",
+  "brand": "shiny",
+  "subject": "「百鬼夜行 POP UP SHOP」(放課後クライマックスガールズ)",
+  "kind": "開幕",
+  "note": "有楽町マルイ8F開幕",
+  "title": "百鬼夜行POP UP SHOP、有楽町マルイで開催",
+  "url": "https://idolmaster-official.jp/news/01_19707",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608281836-watch-1",
+  "event_date": "2026-09-26",
+  "facts": [
+   "有楽町マルイ8Fで9月26日〜10月14日開催、対象は放課後クライマックスガールズ5名"
+  ],
+  "reserved_on": "2026-08-29"
+ },
+ {
+  "id": "sched-2026-09-26-sidem-fantastic-battle-fes-2026-結果",
+  "dedup_key": "sidem-fantastic-battle-fes-2026",
+  "brand": "sidem",
+  "subject": "F@NTASTIC BATTLE FES第2弾 現地チケット当落発表",
+  "kind": "結果",
+  "reserved_on": "2026-09-03",
+  "facts": [
+   "F@NTASTIC BATTLE FES第2弾の当落発表は9月26日(土)13:00から",
+   "当選者の入金期間は9月26日13:00〜9月30日23:59"
+  ],
+  "title": "SideMバトルフェス長野・幕張の先行受付中",
+  "url": "https://idolmaster-official.jp/news/01_19739",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609020736-watch-1",
+  "event_date": "2026-09-26"
+ }
 ]

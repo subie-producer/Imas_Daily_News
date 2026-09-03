@@ -101,6 +101,8 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - melonpapapapa-n.com   # 合議で追加: ゲーム内スケジュール情報を集約・整理。他所の発表を伝えている
+  - imas-history.com      # 合議で追加: 年表形式で公式発表やイベント情報を集約。自ら取材した形跡なし
   - raduga.pgw.jp         # みりしたらぼ(攻略・ボーダーまとめ)
   - charagoo.jp           # 合議で追加: ページ冒頭に「最新一覧」とあり、複数の情報源を集約したサイト
   - kore-tore.com         # 合議で追加: プライズ景品情報をまとめたキュレーションサイト
@@ -147,6 +149,10 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - magnetbyshibuya109.jp # 合議で追加: 会場が自施設でのポップアップストア開催を直接告知している
+  - prod.union-creative.jp # 合議で追加: フィギュアメーカーが自社製造商品を販売・予約受付している
+  - kotobukiya.co.jp      # 合議で追加: フィギュアメーカーが自社商品・イベント情報を告知している
+  - curtain-damashii.com  # 合議で追加: ライセンス商品のグッズを製造・販売している企業が自社商品を販売
   - imas-cinderella-yamanashi.com  # やまなし WALK & WANDER(イベント主催の特設)
   - hiromedo-store.com    # ひろめ堂ストア(グッズ販売元)
   - neonmax.net           # ネオンマックス(フィギュアの発売元)
@@ -256,6 +262,8 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - syow_sumika         # 合議で追加: 個人によるアイマスキャラクターのファンイラスト投稿
+    - izmcos              # 合議で追加: 個人によるアイマスキャラクターのコスプレ写真投稿
     - chagi_chage         # 生誕祭タグのファン投稿
     - yurari_neko         # 合議で追加: 応援活動報告
     - vampa_7             # 合議で追加: イベント参加レポート
@@ -276,6 +284,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - sobetsuringofes     # 合議で追加: 祭りイベント主催者側による公式アカウント、ビジュアル配信
     - maruiwebchannel     # 合議で追加: 店舗の公式案内
     - dengeki_imas                    # 電撃(自社出版物の告知。報道ではない。監査指摘)
     - colleize                        # 公式ライセンス商品の通販。公式パートナーの根拠は無い

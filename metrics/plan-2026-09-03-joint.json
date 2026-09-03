@@ -1,0 +1,33 @@
+{
+  "articles": [
+    {
+      "slug": "joint-tours-ranking-2026-09-01",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "『アイドルマスター TOURS』9月1日時点の公式ランキングを、Master/Expert両部門の1位編成・スコア・記録つきで報じる",
+      "lead_score": 25,
+      "dedup_key": "tours-ranking-2026-09-01",
+      "candidate_ids": ["202609030229-explore-25"]
+    },
+    {
+      "slug": "joint-imasch-member-live-boshu",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "アイマスch 9月メンバー限定配信(9/25・MC原由実/ゲスト香里有佐)へ向けたお便り・ファンアート募集の開始を伝える",
+      "lead_score": 10,
+      "dedup_key": "imas-ch-member-stream-2026-09",
+      "candidate_ids": ["202609030229-grok-32"]
+    },
+    {
+      "slug": "joint-mor414-asahi-tanaka-deadline",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "アイマスMOR414(9/16放送・田中有紀マスターソング特集)への宛先メール、本日9月3日が受付締切",
+      "lead_score": 20,
+      "dedup_key": "imas-mor-414-asahi-2026",
+      "candidate_ids": ["sched-2026-09-03-imas-mor-414-asahi-2026-締切"]
+    }
+  ],
+  "dropped": [],
+  "cross_brand": []
+}

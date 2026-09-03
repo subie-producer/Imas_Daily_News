@@ -1,21 +1,38 @@
 [
-  {
-    "id": "sched-2026-11-15-sidem-cardfolio-vol2-2026-締切",
-    "dedup_key": "sidem-cardfolio-vol2-2026",
-    "brand": "sidem",
-    "subject": "SideMカードフォリオvol.2「パシャっとチャレンジ」",
-    "kind": "締切",
-    "note": "キャンペーン参加締切23:59",
-    "reserved_on": "2026-09-01",
-    "title": "カードフォリオ SideM ver. vol.2",
-    "url": "https://cardfolio.idolmaster-official.jp/news/?p=1057",
-    "source_type": "公式",
-    "verify": "unconfirmed",
-    "src_candidate_id": "202609010227-grok-40",
-    "event_date": "2026-11-15",
-    "facts": [
-      "「パシャっとチャレンジ」キャンペーン期間は2026年9月12日10:00〜11月15日23:59",
-      "1パックにつき1枚封入のシリアルで応募、描き下ろしイラストのオリジナルグッズが当たる"
-    ]
-  }
+ {
+  "id": "sched-2026-11-15-sidem-cardfolio-vol2-2026-締切",
+  "dedup_key": "sidem-cardfolio-vol2-2026",
+  "brand": "sidem",
+  "subject": "SideMカードフォリオvol.2「パシャっとチャレンジ」",
+  "kind": "締切",
+  "note": "キャンペーン参加締切23:59",
+  "reserved_on": "2026-09-01",
+  "title": "カードフォリオ SideM ver. vol.2",
+  "url": "https://cardfolio.idolmaster-official.jp/news/?p=1057",
+  "source_type": "公式",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609010227-grok-40",
+  "event_date": "2026-11-15",
+  "facts": [
+   "「パシャっとチャレンジ」キャンペーン期間は2026年9月12日10:00〜11月15日23:59",
+   "1パックにつき1枚封入のシリアルで応募、描き下ろしイラストのオリジナルグッズが当たる"
+  ]
+ },
+ {
+  "id": "sched-2026-11-15-medicos-cyberplanet-popup-2026-終了",
+  "dedup_key": "medicos-cyberplanet-popup-2026",
+  "brand": "million",
+  "subject": "ミリオン「Cyber Planet」POP UP SHOP(大阪)",
+  "kind": "終了",
+  "reserved_on": "2026-09-03",
+  "facts": [
+   "大阪会場(アベノラクバス)の開催期間は11月7日〜15日"
+  ],
+  "title": "ミリオン「Cyber Planet」POP UP、10月8日から",
+  "url": "https://idolmaster-official.jp/news/01_19749",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609022336-watch-4",
+  "event_date": "2026-11-15"
+ }
 ]

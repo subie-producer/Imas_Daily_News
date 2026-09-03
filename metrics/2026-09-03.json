@@ -1,0 +1,96 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-03T02:29:45+09:00",
+   "edition": "2026-09-03",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 342,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 2,
+    "explore:cinderella": 0,
+    "explore:million": 4,
+    "explore:shiny": 4,
+    "explore:sidem": 7,
+    "explore:gakuen": 4,
+    "explore:dsva": 4,
+    "explore:joint-other": 1,
+    "explore:trend": 4,
+    "grok:765as": 2,
+    "grok:cinderella": 5,
+    "grok:million": 9,
+    "grok:shiny": 3,
+    "grok:sidem": 4,
+    "grok:gakuen": 0,
+    "grok:dsva": 0,
+    "grok:joint-other": 1,
+    "grok:trend": 6
+   },
+   "normalized": 50,
+   "added": 41,
+   "verify": {
+    "confirmed": 29,
+    "unconfirmed": 19,
+    "failed": 2
+   },
+   "duration_s": 1748
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-03T11:57:19+09:00",
+   "edition": "2026-09-03",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 44,
+   "written": 34,
+   "roundups": 1,
+   "dropped": 44,
+   "coverage": {
+    "subjects": 105,
+    "covered": 105,
+    "missing": 0
+   },
+   "dropped_by_review": [
+    "cg-gacha-festival-bunkasai-launch",
+    "dsva-valiv-august-survey-deadline",
+    "gaku-espresto-senan-start",
+    "joint-tours-ranking-2026-09-01",
+    "sidem-11th-stage-bakusute-talk-stream",
+    "gaku-saki-ameagari-iris-figure",
+    "gaku-rivalava-release"
+   ],
+   "aborted": [
+    "joint-mor414-asahi-tanaka-deadline",
+    "dsva-valiv-streaming-roundup-0903",
+    "dsva-situation-voice14-deadline-reminder"
+   ],
+   "duration_s": 6965
+  }
+ ]
+}

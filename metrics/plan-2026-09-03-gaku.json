@@ -1,0 +1,130 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-shirube-fukuoka-goods-hours",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "LIVE TOUR -標- 福岡公演の会場物販、9/5・9/6の販売時間帯とチケット所持者優先枠を伝える",
+      "lead_score": 15,
+      "dedup_key": "gkmas-live-tour-shirube-fukuoka-goods-2026",
+      "candidate_ids": ["202609021235-explore-13"]
+    },
+    {
+      "slug": "gaku-meganepanko-asobistore-sale",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "福井公演限定だった「眼鏡堅麵麭×学マス」コラボ商品がASOBI STOREで数量限定販売開始",
+      "lead_score": 10,
+      "dedup_key": "gaku-megane-panko-2026",
+      "candidate_ids": ["202609021835-watch-0"]
+    },
+    {
+      "slug": "gaku-hatsuhoshi-talk-0909",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「はつぼし放課後とーく」9/9配信決定、飯田ヒカルの追加出演を伝える",
+      "lead_score": 15,
+      "dedup_key": "gaku-hatsuhoshi-talk-2026-09-09",
+      "candidate_ids": ["202609021835-watch-2"]
+    },
+    {
+      "slug": "gaku-saki-ameagari-iris-figure",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "花海咲季「雨上がりのアイリス 特訓前Ver.」1/7フィギュアの予約開始を伝える",
+      "lead_score": 15,
+      "dedup_key": "saki-ameagari-iris-figure-2026",
+      "candidate_ids": ["202609030229-explore-18"]
+    },
+    {
+      "slug": "gaku-rivalava-release",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "リバーシブルラバーマスコット「学園アイドルマスター リバラバ！」9月第2週発売を伝える",
+      "lead_score": 15,
+      "dedup_key": "gakumasu-rivalava-2026",
+      "candidate_ids": ["202609030229-explore-19"]
+    },
+    {
+      "slug": "gaku-chugai-cafe-shibuya-revival",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "渋谷モディの学マスコラボカフェがリバイバル開催(9/3〜27)、新コラボメニューの内容を伝える",
+      "lead_score": 50,
+      "dedup_key": "gakumasu-chugai-cafe-revival-shibuya-2026",
+      "candidate_ids": ["202609030229-explore-20"]
+    },
+    {
+      "slug": "gaku-espresto-senan-start",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "プライズフィギュア「学園アイドルマスター ESPRESTO」十王星南、本日9/3展開開始を伝える",
+      "lead_score": 20,
+      "dedup_key": "gaku-espresto-senan-tsubame-2026",
+      "candidate_ids": ["sched-2026-09-03-gaku-espresto-senan-tsubame-2026-開始"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gaku-tsukimura-temari-figure",
+      "reason": "既報",
+      "note": "stock/stories.yml gaku-tsukimura-temarite-figure(9/2既報)と同一事実(価格・締切10/30・発売2027年6月)で新事実なし"
+    },
+    {
+      "dedup_key": "gkmas-tsukimura-temari-figure-2026",
+      "reason": "既報",
+      "note": "同フィギュアの予約開始告知。先行/一般受注の内訳は既報の『9/1予約受付開始・締切10/30』の範囲内で読者の行動を変える新事実ではない"
+    },
+    {
+      "dedup_key": "gaku-temari-figure-2026",
+      "reason": "既報",
+      "note": "報道記事だが内容は既報の同フィギュア予約開始告知と重複(意匠紹介のみで新事実なし)"
+    },
+    {
+      "dedup_key": "star-mine-streaming-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml gaku-star-mine-2026で8/30付既報済み、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-mission-pass-2026-09",
+      "reason": "既報",
+      "note": "stock/stories.yml gaku-mission-pass-2026-09(9/2既報)と期間・報酬とも同一。付随する『犬耳』追加情報もgaku-costume-shop-dog-ears-2026-09-01で既報済み"
+    },
+    {
+      "dedup_key": "gkmas-rubber-mat-natsu-2026",
+      "reason": "出典不足",
+      "note": "出典は未確認の物販サイトのみで公式告知に未到達。受注開始日・締切等の日付情報もなく本日の新報として書けない"
+    },
+    {
+      "dedup_key": "howling-over-the-world-2026",
+      "reason": "重複",
+      "note": "stock/stories.yml gakumas-tracks-streaming-0831-2026(8/31既報の5曲配信)に含まれる楽曲で新事実なし"
+    },
+    {
+      "dedup_key": "gaku-miracle-nanau-2026",
+      "reason": "重複",
+      "note": "同上、8/31既報の5曲配信に含まれる楽曲"
+    },
+    {
+      "dedup_key": "gaku-endless-dance-lilya-chinatsu-rinami-2026",
+      "reason": "重複",
+      "note": "同上、8/31既報の5曲配信に含まれる楽曲(ENDLESS DANCE リーリヤ・千奈・莉波ver.)"
+    },
+    {
+      "dedup_key": "gaku-endless-dance-saki-temari-kotone-2026",
+      "reason": "重複",
+      "note": "同上、8/31既報の5曲配信に含まれる楽曲(ENDLESS DANCE 咲季・手毬・ことねver.)"
+    },
+    {
+      "dedup_key": "gaku-shurakuryoko-saki-short-2026",
+      "reason": "出典不足",
+      "note": "一次情報がリアルタイム検索(二次情報)のみでverify unconfirmed。内容も既報の標ツアー福岡公演の販促動画で新事実なし"
+    },
+    {
+      "dedup_key": "gaku-asari-zemi-memory-ability-fix-2026",
+      "reason": "その他",
+      "note": "お詫び受取期限は2026/9/3 4:59で、発行時刻06:00より前に終了済み。規程12により本日号では間に合わず、前日号で扱うべき予約(2026-08-30号と同型の事故パターン)"
+    }
+  ],
+  "cross_brand": []
+}

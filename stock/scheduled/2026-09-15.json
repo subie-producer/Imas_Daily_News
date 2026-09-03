@@ -61,6 +61,24 @@
     "event_date": "2026-09-15"
   },
   {
+    "id": "sched-2026-09-15-shiny-smile-base-cafe-sporty-china-style-2026-締切",
+    "dedup_key": "shiny-smile-base-cafe-sporty-china-style-2026",
+    "brand": "shiny",
+    "subject": "SMILE BASE CAFE池袋店「Sporty China Style」受注限定グッズ",
+    "kind": "締切",
+    "note": "受注限定グッズ「複製サイン入りB2タペストリー」受注締切(23:59)",
+    "reserved_on": "2026-09-03",
+    "facts": [
+      "受注限定グッズ「アイドル達の複製サイン入りB2タペストリー」の受注受付期間は9月15日23時59分まで、11月以降順次発送予定"
+    ],
+    "title": "シャニマス池袋カフェ、9月15日まで開催中",
+    "url": "https://smilebase.co.jp/event/12438/",
+    "source_type": "当事者",
+    "verify": "confirmed",
+    "src_candidate_id": "202609030229-grok-56",
+    "event_date": "2026-09-15"
+  },
+  {
     "id": "sched-2026-09-15-shiny-msp-live-tickets-2026-締切",
     "dedup_key": "shiny-msp-live-tickets-2026",
     "brand": "shiny",

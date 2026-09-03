@@ -1,0 +1,26 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-03-cg-gacha-festival-bunkasai-launch.md",
+   "issue": "Rule 1: candidate_id が candidates/2026-09-03.json に存在しない — 出典データが記録されていない",
+   "quote": "記事の frontmatter で参照されている 'sched-2026-09-03-cg-gacha-festival-2026-08-発売' が候補ファイルに見当たらない"
+  },
+  {
+   "file": "docs/_posts/2026-09-03-dsva-valiv-august-survey-deadline.md",
+   "issue": "Rule 1: candidate_id が candidates/2026-09-03.json に存在しない — 出典データが記録されていない",
+   "quote": "記事の frontmatter で参照されている 'sched-2026-09-03-valiv-survey-2026-08-締切' が候補ファイルに見当たらない"
+  },
+  {
+   "file": "docs/_posts/2026-09-03-gaku-espresto-senan-start.md",
+   "issue": "Rule 1: candidate_id が candidates/2026-09-03.json に存在しない — 出典データが記録されていない",
+   "quote": "記事の frontmatter で参照されている 'sched-2026-09-03-gaku-espresto-senan-tsubame-2026-開始' が候補ファイルに見当たらない"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-03-gaku-saki-ameagari-iris-figure.md",
+   "issue": "Rule 7: 公式製品の記事だが、sources に公式サイト（製造元・販売元）がない — Gamer の報道のみ掲載"
+  }
+ ]
+}

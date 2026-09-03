@@ -75,10 +75,6 @@
   brand: shiny
   subject: 30MS 七草にちか・はづき ヘアスタイル＆フェイスパーツセット
   watch: 2027年1月予定の正式発売日(判明次第 triggers へ)
-- dedup_key: gaku-gracecafe-collab-revival-2026
-  brand: gaku
-  subject: 学マス×グレースカフェ コラボ「リバイバル」(渋谷モディ)
-  watch: 開催日程(判明次第 triggers へ)
 - dedup_key: gaku-rinami-kimisemi-figure-2026
   brand: gaku
   subject: 姫崎莉波「キミとセミブルーVer.」1/7スケールフィギュア
@@ -86,8 +82,24 @@
 - dedup_key: cgss-11th-anniversary-campaign-2026
   brand: cg
   subject: デレステ11周年記念キャンペーン
-  watch: ゲーム内お知らせで案内予定のキャンペーン詳細(判明次第 triggers へ)
+  watch: 9/3にキャンペーン開始を確認済み。ゲーム内お知らせで案内される具体的な施策内容・終了日(判明次第 triggers へ)
 - dedup_key: gaku-tsukimura-temarite-figure
   brand: gaku
   subject: ユニオンクリエイティブ 月村手毬1/6スケールフィギュア
   watch: 2027年6月内の正式発売日(判明次第 triggers へ)
+- dedup_key: gakumasu-rivalava-2026
+  brand: gaku
+  subject: 学園アイドルマスター リバラバ！
+  watch: 2026年9月第2週予定の正式発売日(判明次第 triggers へ)
+- dedup_key: saki-ameagari-iris-figure-2026
+  brand: gaku
+  subject: 花海咲季「雨上がりのアイリス 特訓前Ver.」1/7スケールフィギュア
+  watch: 2027年4月予定の正式発売日(判明次第 triggers へ)
+- dedup_key: million-song-for-you-next-series-2026
+  brand: million
+  subject: ミリシタ「SONG FOR YOU!」後継ガシャシリーズ
+  watch: VOL.78で全アイドル3周を迎え、新シリーズへの移行が予告済み。開始日(判明次第 triggers へ)
+- dedup_key: million-platinum-star-tune-tintme-2026
+  brand: million
+  subject: ミリシタ「プラチナスターチューン」TIntMe!(周防桃子／大神環／中谷育)
+  watch: 10月上旬開催予定と告知済み。正式開催日(判明次第 triggers へ)

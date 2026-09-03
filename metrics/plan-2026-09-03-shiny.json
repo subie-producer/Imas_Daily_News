@@ -1,0 +1,83 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-tokyo-jiyukei-event-showtimes",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "シャニソン「Tokyo自由系*ガール/My time」発売記念イベント(11/22)の開場・開演時刻が2回公演分判明",
+      "lead_score": 10,
+      "dedup_key": "shiny-song-for-prism-tokyo-jiyukei-event-2026",
+      "candidate_ids": ["202609020736-explore-29"]
+    },
+    {
+      "slug": "shiny-sendai-shop-kuji-stock",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "バンダイナムコAM仙台店、シャニマス抽選くじの在庫状況を更新(9/1付)",
+      "lead_score": 5,
+      "dedup_key": "shiny-official-shop-lottery-stock-2026-09-01",
+      "candidate_ids": ["202609021235-explore-6"]
+    },
+    {
+      "slug": "shiny-msp-soloshow-cast-reveal",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "283 PRODUCTION Solo Live Collection -Master ShowPiece-(9/26・27京王アリーナTOKYO)の出演キャスト全容と配信チケット価格が判明",
+      "lead_score": 25,
+      "dedup_key": "shiny-solo-live-msp-2026",
+      "candidate_ids": ["202609030229-grok-55"]
+    },
+    {
+      "slug": "shiny-smilebase-sporty-china-hours",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "SMILE BASE CAFE池袋「Sporty China Style」(開催中〜9/15)の営業時間帯とドリンクチケット価格が判明",
+      "lead_score": 5,
+      "dedup_key": "shiny-smilebase-sporty-china-2026",
+      "candidate_ids": ["202609030229-grok-56"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-axe8-alstroemeria-mission-2026",
+      "reason": "出典不足",
+      "note": "出典が攻略Wiki(二次情報)のみでverify=unconfirmed。ゲーム内施策は公式到達が必須(規程2)。ミッション自体は既報(shiny-283-stage-2026)で中核事実に新規性なし"
+    },
+    {
+      "dedup_key": "shiny-song-for-prism-season-tsuki-no-wa-2026",
+      "reason": "既報",
+      "note": "シーズン35「月の和」シーズンパスは9/1付で既報(shiny-song-for-prism-season-35-pass-2026)。価格・購入期限とも一致し新事実なし"
+    },
+    {
+      "dedup_key": "mattari-hbtk-september-2026",
+      "reason": "既報",
+      "note": "9月度MC・9/8放送のゲストは8/26付で既報(shiny-hbtk-september-mc-2026)。同一内容で新事実なし"
+    },
+    {
+      "dedup_key": "shiny-whisper-voice-madoka-answer-2026",
+      "reason": "既報",
+      "note": "ささやきボイスクイズ正解・9月カレンダーとも9/1付で既報。新事実なし"
+    },
+    {
+      "dedup_key": "fan-asakura-tooru-illustration-2026-09-02",
+      "reason": "個人の話題",
+      "note": "個人のファンイラスト投稿。単体記事化は規程4により不可(ファン面まとめの対象)"
+    },
+    {
+      "dedup_key": "fan-kazano-hiori-cosplay-2026-09-02",
+      "reason": "個人の話題",
+      "note": "個人のコスプレ投稿。単体記事化は規程4により不可(ファン面まとめの対象)"
+    },
+    {
+      "dedup_key": "shiny-habataki-radio-2026-09-01",
+      "reason": "既報",
+      "note": "9/1放送分のMC・ゲスト情報は既報(shiny-hbtk-september-mc-2026)。発行日時点で放送も終了済み"
+    },
+    {
+      "dedup_key": "imas-mor-414-tanaka-asahi-2026",
+      "reason": "重複",
+      "note": "joint面 joint-mor414-asahi-tanaka-deadline(dedup_key: imas-mor-414-asahi-2026)と同一話題・同一締切"
+    }
+  ],
+  "cross_brand": []
+}

@@ -41,5 +41,23 @@
     ],
     "event_date": "2026-09-14",
     "src_candidate_id": "202608280232-grok-7"
+  },
+  {
+    "id": "sched-2026-09-14-cinderella-girl-vote2026-schedule-締切",
+    "dedup_key": "cinderella-girl-vote2026-schedule",
+    "brand": "cg",
+    "subject": "総選挙2026「公約四字熟語」Sキーホルダー ミッションチャレンジ期間",
+    "kind": "締切",
+    "note": "ミッションチャレンジ期間の終了(23:59)",
+    "reserved_on": "2026-09-03",
+    "facts": [
+      "ミッションチャレンジ期間: 2026年7月1日12:00〜2026年9月14日23:59"
+    ],
+    "title": "総選挙2026「公約四字熟語」Sグッズ登場",
+    "url": "https://shop.asobistore.jp/products/detail/246751-00-00-type_S",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609030229-grok-35",
+    "event_date": "2026-09-14"
   }
 ]

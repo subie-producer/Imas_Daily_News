@@ -14,5 +14,22 @@
   "title": "学マス『標』ファイナル公演チケット当選バズ",
   "source_type": "未確認",
   "verify": "unconfirmed"
+ },
+ {
+  "id": "sched-2026-11-08-millionlive-hinata-apple-ambassador-2026-終了",
+  "dedup_key": "millionlive-hinata-apple-ambassador-2026",
+  "brand": "million",
+  "subject": "第50回そうべつりんごまつり",
+  "kind": "終了",
+  "reserved_on": "2026-09-03",
+  "facts": [
+   "第50回そうべつりんごまつりは11月8日(日)まで開催"
+  ],
+  "title": "木下ひなた、壮瞥町りんご大使に4年目就任",
+  "url": "https://idolmaster-official.jp/news/01_19747",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609022336-watch-2",
+  "event_date": "2026-11-08"
  }
 ]

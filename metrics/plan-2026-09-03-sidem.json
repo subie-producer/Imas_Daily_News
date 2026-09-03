@@ -1,0 +1,136 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-fantastic-battle-fes-2nd-leg-tickets",
+      "brand": "sidem",
+      "rank": "large",
+      "angle": "「315 Production presents F@NTASTIC BATTLE FES ～Wanna step in～」第2弾となる長野・幕張公演の日程と会場が判明し、現地チケット各券種(ストーリーセット含む)の先行受付が始まったことを価格とあわせて詳報する",
+      "lead_score": 70,
+      "dedup_key": "sidem-fantastic-battle-fes-2026",
+      "candidate_ids": ["202609020736-watch-1", "202609021835-explore-16"]
+    },
+    {
+      "slug": "sidem-11th-stage-bakusute-talk-stream",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "「SideM 11th STAGE ～EVER EVER＠FTER～」公演後に配信される生ラジオ「ばくすて！とーく」の日程・出演者・配信URLを両日分伝える",
+      "lead_score": 10,
+      "dedup_key": "sidem-11th-bakuste-toke-2026-09",
+      "candidate_ids": ["202609020736-watch-2"]
+    },
+    {
+      "slug": "sidem-seibuen-retrose-mini-chara-reveal",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "西武園ゆうえんち「超!!レトローズパーティ」限定の描き起こしミニキャライラストが公開され、登場する5ユニット16名とグッズ展開予定を伝える",
+      "lead_score": 15,
+      "dedup_key": "sidem-seibuen-mini-chara-2026",
+      "candidate_ids": ["202609021235-explore-9"]
+    },
+    {
+      "slug": "sidem-315shop-5th-anniversary-nyanko-butler",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "315!!!SHOP5周年企画『スーパーウルトラプロデュース大作戦！』で猫耳執事衣装テーマと選抜5人が決定、9月11日からの展開内容(グッズ・抽選くじ・購入特典・パネル展示等)を詳報する",
+      "lead_score": 30,
+      "dedup_key": "sidem-315-shop-5th-2026",
+      "candidate_ids": ["202609021835-watch-1", "202609021835-explore-9", "202609022336-explore-32"]
+    },
+    {
+      "slug": "sidem-11th-cast-comment-kumagai",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "「SideM 11th STAGE」出演キャスト意気込みコメントリレー、本日分となる握野英雄役・熊谷健太郎さんの投稿を伝える",
+      "lead_score": 0,
+      "dedup_key": "sidem-11th-cast-comment-kumagai-2026",
+      "candidate_ids": ["202609030229-grok-46"]
+    },
+    {
+      "slug": "sidem-dramatic-stars-delight-excursion-2dmv",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "DRAMATIC STARS新曲「Delight Excursion」の2DMVが9月11日22時に公開されることを予告投稿から伝える",
+      "lead_score": 15,
+      "dedup_key": "sidem-delight-excursion-2026",
+      "candidate_ids": ["202609030229-grok-47"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-11th-stage-2026-09",
+      "reason": "既報",
+      "note": "配信チケット販売・キッチンカー整理券受付(9/5)・会場先行CD販売は7月既報(sidem-11th-stage-2026)の内容と一致、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-seibu-retro-rose-party-2026",
+      "reason": "既報",
+      "note": "コラボ第2弾の開催期間・スペシャルステージ・ジョイポリス連動企画は9/2号(sidem-super-retrose-party-2026)で既報"
+    },
+    {
+      "dedup_key": "sidem-joypolis-3-2026",
+      "reason": "既報",
+      "note": "詳細は8/26号(sidem-joypolis3-2026)で既報。セットリスト刷新等の追加描写のみで、本日読者ができることは無い"
+    },
+    {
+      "dedup_key": "sidem-seibuen-cho-retrose-party-2026",
+      "reason": "既報",
+      "note": "開催期間・トークショー日程・料金は9/2号で既報。休園日・住所の追記のみで新事実に乏しい"
+    },
+    {
+      "dedup_key": "sidem-seibuen-special-party-2026",
+      "reason": "既報",
+      "note": "トークショー日程・チケット料金(1万円)は9/2号(sidem-super-retrose-party-2026)で既報"
+    },
+    {
+      "dedup_key": "sidem-seibuen-joypolis-stamp-rally-2026",
+      "reason": "既報",
+      "note": "スタンプラリーの実施と特典(A5イラストカード)は9/2号で既報。受け取り場所は「順次公開」で本日時点の行動材料なし"
+    },
+    {
+      "dedup_key": "sidem-transcendent-tales-12-2026",
+      "reason": "既報",
+      "note": "収録内容・価格・特典は7月既報(sidem-transcendent-tales-12-2026)。発売日(9/2)は本日より前でトリガー日を過ぎている"
+    },
+    {
+      "dedup_key": "sidem-315-shop-2026",
+      "reason": "重複",
+      "note": "sidem-315shop-5th-anniversary-nyanko-butler(sidem-315-shop-5th-2026)へ統合"
+    },
+    {
+      "dedup_key": "sidem-retrose-party-2026",
+      "reason": "既報",
+      "note": "開催概要・トークショー日程・料金は9/2号で既報。運営会社名・所在地の追記のみ"
+    },
+    {
+      "dedup_key": "sidem-kanon-new-cast-2026",
+      "reason": "既報",
+      "note": "新キャスト伊能幸輝さん決定は8/24号(sidem-murase-himeno-graduation-2026)で既報。特別生配信(9/1)も本日より前で当日トリガーなし"
+    },
+    {
+      "dedup_key": "sidem-fantastic-battle-fes-wanna-step-in-2026",
+      "reason": "重複",
+      "note": "sidem-fantastic-battle-fes-2nd-leg-tickets(sidem-fantastic-battle-fes-2026)へ統合"
+    },
+    {
+      "dedup_key": "sidem-315-episode-hitonatsu-no-bouken-2026",
+      "reason": "既報",
+      "note": "公開は9月1日20:30で、締切3日前当日基準の当日号(9/2)で扱うべき内容。本日新たに起きることがない"
+    },
+    {
+      "dedup_key": "sidem-315-nyan-shop-2026",
+      "reason": "重複",
+      "note": "sidem-315shop-5th-anniversary-nyanko-butler(sidem-315-shop-5th-2026)へ統合"
+    },
+    {
+      "dedup_key": "sidem-f-lags-meet-yumeno-topia-2026",
+      "reason": "既報",
+      "note": "公開は9月2日21時(本日06:00より前)で、予告自体は8/29号で既報。本日新たな行動材料なし"
+    },
+    {
+      "dedup_key": "sidem-11th-stage-2026",
+      "reason": "既報",
+      "note": "公演日程・会場・席種価格は7月既報(sidem-11th-stage-2026)の一般販売告知時点の内容と重複"
+    }
+  ],
+  "cross_brand": []
+}

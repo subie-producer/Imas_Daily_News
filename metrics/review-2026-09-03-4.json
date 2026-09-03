@@ -1,0 +1,10 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "2026-09-03-cg-10th-tour-okinawa-fukuoka-bluray-price.md",
+   "issue": "frontmatter の src が「二次情報」と記載されているが、sources に含まれる ASOBI STORE は「準公式」。sources の最高信頼度に合わせて src を「準公式」に修正すること"
+  }
+ ]
+}

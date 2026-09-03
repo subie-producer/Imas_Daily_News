@@ -1,0 +1,31 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-03-joint-tours-ranking-2026-09-01.md",
+   "issue": "出典不一致: candidates では『2026/9/1時点』と記載されているが、記事では『2026年9月2日時点の内容に更新された』と記載。日付が1日ずれており、出典との対応を要確認。候補ID: 202609030229-explore-25",
+   "quote": "『アイドルマスター TOURS』の公式ランキングが、2026年9月2日時点の内容に更新された。"
+  },
+  {
+   "file": "docs/_posts/2026-09-03-sidem-11th-stage-bakusute-talk-stream.md",
+   "issue": "出典隠し（ブロック項目2）: 本文に記載されているYouTube配信URL（https://www.youtube.com/live/Zk401Glw0vI および https://www.youtube.com/live/Irdfd54ljhM）が sources に含まれていない。候補の facts に記載されているため sources に追加すべき。",
+   "quote": "配信URLは[こちら](https://www.youtube.com/live/Zk401Glw0vI)。... DAY2は9月13日（日）の公演終了後から配信され、若林直美さんと赤羽根健治さん（アニメ「アイドルマスター」プロデューサー役）が出演する。配信URLは[こちら](https://www.youtube.com/live/Irdfd54ljhM)。"
+  },
+  {
+   "file": "docs/_posts/2026-09-03-gaku-saki-ameagari-iris-figure.md",
+   "issue": "公式が無い（ブロック項目9）: フィギュア予約は公式が出すべき話題だが、sources に公式サイト・準公式（アソビストア等）が無く、報道サイト（Gamer）のみ。バンダイナムコ公式、学マス公式、または販売元（MiraiMira等）の公式ソースが必要。",
+   "quote": "sources:\n- url: https://www.gamer.ne.jp/news/202609020024/\n  type: 報道\n  label: Gamer報道"
+  },
+  {
+   "file": "docs/_posts/2026-09-03-gaku-rivalava-release.md",
+   "issue": "公式が無い（ブロック項目9）: グッズ情報だが、sources に公式・準公式が無い。ガシャポン公式は『未確認』、インサイド報道のみ。バンダイナムコ公式・学マス公式等の公式・準公式ソースが必要。",
+   "quote": "sources:\n- url: https://gashapon.jp/products/detail.php?jan_code=4582770068740000\n  type: 未確認\n  label: ガシャポン公式サイト\n- url: https://www.inside-games.jp/article/2026/09/02/187166.html\n  type: 報道"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-03-shiny-sendai-shop-kuji-stock.md",
+   "issue": "読者に要らない事実の傾向（ブロック項目10の境界）: 9月1日更新の在庫情報から記事日付9月3日時点で2日経過している。変動情報であり、定期更新として存在意義はあるが、読者が『本日』参考にできる情報の鮮度は限定的。sources に『毎週月曜または火曜に更新予定』の記載があることで存在意義を認めるが、指摘として記録。"
+  }
+ ]
+}

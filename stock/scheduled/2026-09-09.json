@@ -1,57 +1,133 @@
 [
-  {
-    "id": "sched-2026-09-09-million-14th-live-締切前",
-    "dedup_key": "million-14th-live",
-    "brand": "million",
-    "subject": "ミリオン14thLIVE 現地チケット一般販売締切3日前",
-    "kind": "締切前",
-    "note": "一般販売(先着)締切(9/12 23:59)の3日前リマインド",
-    "reserved_on": "2026-08-24",
-    "facts": [
-      "一般販売(先着)の受付は2026年9月12日(土)23:59まで",
-      "対象は全席指定席14,000円・立見指定13,500円・ステージサイド席13,500円(税込)"
-    ],
-    "title": "ミリオン14th、現地チケット8/30受付開始",
-    "url": "https://idolmaster-official.jp/news/01_19676",
-    "source_type": "当事者",
-    "verify": "confirmed",
-    "src_candidate_id": "202608232010-watch-6"
-  },
-  {
-    "id": "sched-2026-09-09-imas-mor-413-eve-2026-開始",
-    "dedup_key": "imas-mor-413-eve-2026",
-    "brand": "joint",
-    "subject": "アイマスMOR413 松永あかねゲスト回放送",
-    "kind": "開始",
-    "reserved_on": "2026-08-28",
-    "title": "アイマスMOR413にイヴ・サンタクロース役松永あかねが出演、メールは8/27まで",
-    "url": "https://x.com/imas_musicradio/status/2092613535117562042",
-    "source_type": "準公式",
-    "facts": [
-      "アイマスMOR413（9月9日放送）は、シンデレラガールズ、イヴ・サンタクロース役の松永あかねさんをゲストにお迎えする",
-      "松永さん宛のメールは https://krs.bz/columbia/m/morform へ",
-      "ハッシュタグ: #アイマスMOR #imas_MOR"
-    ],
-    "event_date": "2026-09-09",
-    "src_candidate_id": "202608280232-grok-47"
-  },
-  {
-    "id": "sched-2026-09-09-cg-yamanashi-walk-wander-pedometer-2026-締切",
-    "dedup_key": "cg-yamanashi-walk-wander-pedometer-2026",
-    "brand": "cg",
-    "subject": "やまなし WALK & WANDER コラボ歩数計 先行受注",
-    "kind": "締切",
-    "note": "先行受注締切23:59",
-    "reserved_on": "2026-09-01",
-    "title": "山梨コラボ歩数計の先行受注",
-    "url": "https://hiromedo-store.com/products/detail/348",
-    "source_type": "未確認",
-    "verify": "unconfirmed",
-    "src_candidate_id": "202608312333-explore-3",
-    "event_date": "2026-09-09",
-    "facts": [
-      "コラボ歩数計(タニタ製、全10種)の先行受注は2026年9月9日23:59:59で終了、価格は各4,000円(税込)",
-      "販売サイトはhiromedo-store.com、現地でも数量限定で販売"
-    ]
-  }
+ {
+  "id": "sched-2026-09-09-million-14th-live-締切前",
+  "dedup_key": "million-14th-live",
+  "brand": "million",
+  "subject": "ミリオン14thLIVE 現地チケット一般販売締切3日前",
+  "kind": "締切前",
+  "note": "一般販売(先着)締切(9/12 23:59)の3日前リマインド",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "一般販売(先着)の受付は2026年9月12日(土)23:59まで",
+   "対象は全席指定席14,000円・立見指定13,500円・ステージサイド席13,500円(税込)"
+  ],
+  "title": "ミリオン14th、現地チケット8/30受付開始",
+  "url": "https://idolmaster-official.jp/news/01_19676",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-watch-6"
+ },
+ {
+  "id": "sched-2026-09-09-imas-mor-413-eve-2026-開始",
+  "dedup_key": "imas-mor-413-eve-2026",
+  "brand": "joint",
+  "subject": "アイマスMOR413 松永あかねゲスト回放送",
+  "kind": "開始",
+  "reserved_on": "2026-08-28",
+  "title": "アイマスMOR413にイヴ・サンタクロース役松永あかねが出演、メールは8/27まで",
+  "url": "https://x.com/imas_musicradio/status/2092613535117562042",
+  "source_type": "準公式",
+  "facts": [
+   "アイマスMOR413（9月9日放送）は、シンデレラガールズ、イヴ・サンタクロース役の松永あかねさんをゲストにお迎えする",
+   "松永さん宛のメールは https://krs.bz/columbia/m/morform へ",
+   "ハッシュタグ: #アイマスMOR #imas_MOR"
+  ],
+  "event_date": "2026-09-09",
+  "src_candidate_id": "202608280232-grok-47"
+ },
+ {
+  "id": "sched-2026-09-09-cg-yamanashi-walk-wander-pedometer-2026-締切",
+  "dedup_key": "cg-yamanashi-walk-wander-pedometer-2026",
+  "brand": "cg",
+  "subject": "やまなし WALK & WANDER コラボ歩数計 先行受注",
+  "kind": "締切",
+  "note": "先行受注締切23:59",
+  "reserved_on": "2026-09-01",
+  "title": "山梨コラボ歩数計の先行受注",
+  "url": "https://hiromedo-store.com/products/detail/348",
+  "source_type": "未確認",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202608312333-explore-3",
+  "event_date": "2026-09-09",
+  "facts": [
+   "コラボ歩数計(タニタ製、全10種)の先行受注は2026年9月9日23:59:59で終了、価格は各4,000円(税込)",
+   "販売サイトはhiromedo-store.com、現地でも数量限定で販売"
+  ]
+ },
+ {
+  "id": "sched-2026-09-09-million-autumn-login-bonus-2026-終了",
+  "dedup_key": "million-autumn-login-bonus-2026",
+  "brand": "million",
+  "subject": "ミリシタ「食欲の秋スペシャルログインボーナス」",
+  "kind": "終了",
+  "reserved_on": "2026-09-03",
+  "facts": [
+   "食欲の秋スペシャルログインボーナスは9月3日から9月9日まで開催",
+   "期間中ログインで合計500個のミリオンジュエルを受け取れる"
+  ],
+  "title": "ミリシタ、食欲の秋ログボ開始　最大500ジュエル",
+  "url": "https://x.com/imasml_theater/status/2095164846568362411",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609030229-grok-42",
+  "event_date": "2026-09-09",
+  "deadline": "2026-09-09"
+ },
+ {
+  "id": "sched-2026-09-09-mltd-extreme-livestream-2026-締切",
+  "dedup_key": "mltd-extreme-livestream-2026",
+  "brand": "million",
+  "subject": "ミリシタExtreme生配信記念色紙プレゼントキャンペーン",
+  "kind": "締切",
+  "reserved_on": "2026-09-03",
+  "facts": [
+   "ミリシタExtreme生配信記念の色紙プレゼントキャンペーンを実施中",
+   "Xで公式アカウントをフォローし「#ミリシタExtreme生配信」を付けてポスト",
+   "キャンペーン期間は9月9日23時59分まで"
+  ],
+  "title": "ミリシタExtreme生配信記念色紙キャンペーン開催中",
+  "url": "https://idolmaster-official.jp/news/01_19697",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609022336-watch-5",
+  "event_date": "2026-09-09",
+  "deadline": "2026-09-09"
+ },
+ {
+  "id": "sched-2026-09-09-gaku-hatsuhoshi-talk-2026-09-09-開始",
+  "dedup_key": "gaku-hatsuhoshi-talk-2026-09-09",
+  "brand": "gaku",
+  "subject": "学マス配信番組「はつぼし放課後とーく」",
+  "kind": "開始",
+  "reserved_on": "2026-09-03",
+  "facts": [
+   "「はつぼし放課後とーく」が2026年9月9日20時から配信予定",
+   "十王星南・藤田ことねのH.I.F編に向けたトークを予定",
+   "ニコニコ生放送とYouTube Live(アイドルマスターチャンネル)で視聴可能"
+  ],
+  "title": "学マス「はつぼし放課後とーく」9月9日配信",
+  "url": "https://idolmaster-official.jp/news/01_19728",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609021835-watch-2",
+  "event_date": "2026-09-09"
+ },
+ {
+  "id": "sched-2026-09-09-cinderella-girl-vote2026-schedule-開始",
+  "dedup_key": "cinderella-girl-vote2026-schedule",
+  "brand": "cg",
+  "subject": "デレステ24/7 MV配信 次回更新",
+  "kind": "開始",
+  "reserved_on": "2026-09-03",
+  "facts": [
+   "24/7配信の次回更新は9月9日(水)23:00からを予定",
+   "190人のアイドルを4週に分けて#デレステ MVで紹介中"
+  ],
+  "title": "デレステ24/7 MV配信を更新、190人を4週で紹介",
+  "url": "https://x.com/imas_CGofficial/status/2095149746398904791",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609030229-grok-34",
+  "event_date": "2026-09-09"
+ }
 ]

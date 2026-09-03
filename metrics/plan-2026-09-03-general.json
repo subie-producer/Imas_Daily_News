@@ -1,0 +1,30 @@
+{
+  "articles": [
+    {
+      "slug": "general-official-shop-kuji-inventory-0901",
+      "brand": "general",
+      "rank": "medium",
+      "angle": "アイドルマスター公式ショップの抽選くじ在庫状況が8月31日・9月1日付で更新(仙台・博多バスターミナル・名古屋駅前・大阪日本橋・315!!!SHOPの5店舗)、博多店については4ブランド分の賞品別在庫状況を詳報する",
+      "lead_score": 10,
+      "dedup_key": "idolmaster-official-shop-kuji-inventory-2026-09",
+      "candidate_ids": ["202609022336-explore-26", "202609020736-explore-27"]
+    },
+    {
+      "slug": "general-mor415-new-personalities",
+      "brand": "general",
+      "rank": "small",
+      "angle": "アイマスMOR415(9月23日放送)から北村想楽役・汐谷文康さん、島原エレナ役・角元明日香さんが新パーソナリティに決定したことを伝え、宛先メールの受付締切(9月10日)を明示する",
+      "lead_score": 15,
+      "dedup_key": "imas-mor-415-personalities-2026",
+      "candidate_ids": ["202609030229-grok-58"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "tgs2026-virtualization-lecture",
+      "reason": "出典不足",
+      "note": "出典が二次情報(個人SNS投稿の転載とみられるブログ記事)のみでverify=unconfirmed。TGS/バンダイナムコ等の公式一次情報に未到達のため見送り"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,0 +1,86 @@
+{
+  "articles": [
+    {
+      "slug": "cg-deresute-11th-anniversary-campaign-start",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "デレステが9月3日で11周年を迎え、記念キャンペーンが本日(9/3〜9/22)スタートしたことを、公式告知の反響とあわせて報じる",
+      "lead_score": 85,
+      "dedup_key": "dereste-11th-anniversary-2026",
+      "candidate_ids": [
+        "202609021235-explore-1",
+        "202609030229-explore-26",
+        "202609030229-grok-36"
+      ]
+    },
+    {
+      "slug": "cg-10th-tour-okinawa-fukuoka-bluray-price",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "9月2日発売の10周年ツアー沖縄・福岡Blu-ray BOXについて、判明した価格帯(限定盤44,900円/特装版48,500円)と収録内容を補足で伝える",
+      "lead_score": 10,
+      "dedup_key": "cg-starlight-stage-10th-tour-okinawa-fukuoka-bluray-2026",
+      "candidate_ids": [
+        "202609021835-explore-17",
+        "202609022336-explore-9"
+      ]
+    },
+    {
+      "slug": "cg-247-mv-stream-update-0903",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "総選挙2026連動の24/7 MV配信が内容更新、次回更新は9/9であることを伝える",
+      "lead_score": 5,
+      "dedup_key": "cg-247-mv-stream-2026-09",
+      "candidate_ids": [
+        "202609030229-grok-34"
+      ]
+    },
+    {
+      "slug": "cg-vote2026-group-s-acrylic-keyholder",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "総選挙2026記念グッズ「公約四字熟語」新グループSのトレーディングアクリルキーホルダーが登場したことを伝える",
+      "lead_score": 5,
+      "dedup_key": "cg-vote-s-acrylic-keyholder-2026",
+      "candidate_ids": [
+        "202609030229-grok-35"
+      ]
+    },
+    {
+      "slug": "cg-mor416-honda-mio-guest",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "アイマスMOR416(9/30放送)に本田未央役・原紗友里さんがゲスト出演、宛先メールの受付締切が9/10であることを伝える",
+      "lead_score": 10,
+      "dedup_key": "imas-mor-416-honda-mio-2026",
+      "candidate_ids": [
+        "202609030229-grok-59"
+      ]
+    },
+    {
+      "slug": "cg-gacha-festival-bunkasai-launch",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "文化祭テーマのオンラインくじ(くじ引き堂)が9月3日12時に販売開始、賞品ラインナップと価格を伝える",
+      "lead_score": 30,
+      "dedup_key": "cg-gacha-festival-2026-08",
+      "candidate_ids": [
+        "sched-2026-09-03-cg-gacha-festival-2026-08-発売"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-pop-up-a-magical-cheers-2026",
+      "reason": "その他",
+      "note": "開催期間8/21〜9/6の中日で、本日9/3は開幕日でも最終日でもなく、facts にも本日起きる事実がない。予約でも新事実でもないため見送り(規程8)"
+    },
+    {
+      "dedup_key": "cg-deresute-schedule-september-2026",
+      "reason": "出典不足",
+      "note": "9月のガシャ・ショップ・イベント一覧が二次情報(ファン運営カレンダーサイト)のみを出典としており、ゲーム内施策は公式告知必須(規程2)のため公式未到達で記事化・roundup化とも見送り"
+    }
+  ],
+  "cross_brand": []
+}

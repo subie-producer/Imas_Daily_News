@@ -1,0 +1,35 @@
+{
+  "articles": [
+    {
+      "slug": "765-columbia-playlist-add-kitakyokusei-binarystar",
+      "brand": "765",
+      "rank": "small",
+      "angle": "765PRO ALLSTARS公式プレイリストに『北極星をズラしちゃえ！』『Binary Star』の2曲が追加されたこと(9月1日付)を伝える",
+      "lead_score": 5,
+      "dedup_key": "765as-official-playlist-2026",
+      "candidate_ids": ["202609030229-explore-0"]
+    },
+    {
+      "slug": "765-tsumimatsu-nagoya-velvetquiet-archive",
+      "brand": "765",
+      "rank": "small",
+      "angle": "『つみまつよるまち』名古屋公演から新曲『VELVET QUIET』のステージ映像が公開され、9月27日までアーカイブ視聴できることを伝える",
+      "lead_score": 20,
+      "dedup_key": "765-velvet-quiet-2026",
+      "candidate_ids": ["202609030229-explore-1", "202609030229-grok-30"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "dual-twin-live-tour-2026",
+      "reason": "既報",
+      "note": "東京公演(8/27)のセットリスト・アンコール演目・冒頭無料配信・アーカイブ等はstock/stories.ymlの765-dual-twinlive-venue-cdに既記載で新事実なし。唯一未記載の照明トラブルは終了済みトラブルのため規程2により不採用。"
+    },
+    {
+      "dedup_key": "765-dual-twin-live-2026",
+      "reason": "既報",
+      "note": "会場・開催日程(大阪8/6-7・名古屋8/13-14・東京8/27-28)は既刊行済みで新事実なし。event_dateも8/6と過去。"
+    }
+  ],
+  "cross_brand": []
+}

@@ -19,5 +19,22 @@
   "verify": "confirmed",
   "src_candidate_id": "202608270220-claude-147",
   "event_date": "2026-12-20"
+ },
+ {
+  "id": "sched-2026-12-20-kotobukiya-arcflags-popup-2026-終了",
+  "dedup_key": "kotobukiya-arcflags-popup-2026",
+  "brand": "million",
+  "subject": "『ARC-FLAGS POP UP CORNER』コトブキヤ日本橋店",
+  "kind": "終了",
+  "reserved_on": "2026-09-03",
+  "facts": [
+   "コトブキヤ日本橋店での開催期間は12月4日〜20日"
+  ],
+  "title": "『ARC-FLAGS POP UP CORNER』コトブキヤで開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19737",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609022336-watch-3",
+  "event_date": "2026-12-20"
  }
 ]

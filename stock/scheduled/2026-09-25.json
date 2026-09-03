@@ -17,5 +17,23 @@
   "verify": "confirmed",
   "src_candidate_id": "202608232010-grok-53",
   "event_date": "2026-09-25"
+ },
+ {
+  "id": "sched-2026-09-25-imas-ch-member-stream-2026-09-開始",
+  "dedup_key": "imas-ch-member-stream-2026-09",
+  "brand": "joint",
+  "subject": "アイマスch 9月度メンバー限定配信",
+  "kind": "開始",
+  "reserved_on": "2026-09-03",
+  "facts": [
+   "アイマスchは9月25日(金)配信のメンバー限定配信に向けお便り・ファンアートを募集中",
+   "MCは原由実さん(四条貴音役)、ゲストは香里有佐さん(桜守歌織役)"
+  ],
+  "title": "アイマスch、9月限定配信のお便り募集",
+  "url": "https://x.com/imas_ch/status/2095124306816856363",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609030229-grok-32",
+  "event_date": "2026-09-25"
  }
 ]

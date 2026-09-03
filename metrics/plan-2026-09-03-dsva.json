@@ -1,0 +1,54 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-valiv-streaming-roundup-0903",
+      "brand": "dsva",
+      "rank": "roundup",
+      "angle": "vα-liv所属タレント(上水流宇宙・灯里愛夏)の直近配信活動(朝活雑談・コラボ実況・ゲーム実況)をまとめて紹介",
+      "lead_score": 5,
+      "dedup_key": "manaka-spaghet-stream-2026-09-02",
+      "candidate_ids": [
+        "202609020736-explore-25",
+        "202609020736-explore-26",
+        "202609021235-explore-17",
+        "202609030229-explore-21",
+        "202609030229-explore-24"
+      ]
+    },
+    {
+      "slug": "dsva-situation-voice14-deadline-reminder",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "ヴイアラ シチュエーションボイス第14弾の販売終了(9/6 23:59)が迫っていることを伝える",
+      "lead_score": 15,
+      "dedup_key": "dsva-situation-voice14-2026",
+      "candidate_ids": [
+        "sched-2026-09-03-dsva-situation-voice14-2026-締切前"
+      ]
+    },
+    {
+      "slug": "dsva-valiv-august-survey-deadline",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "vα-liv「8月度の活動に関するアンケート」が本日9/3 23:59で回答締切であることを伝える",
+      "lead_score": 10,
+      "dedup_key": "valiv-survey-2026-08",
+      "candidate_ids": [
+        "sched-2026-09-03-valiv-survey-2026-08-締切"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cosmo-birthday-online-live-2026",
+      "reason": "既報",
+      "note": "限定グッズ付き現地LVチケット一般先着販売開始(8/31 12:00)は stock/stories.yml に既に published_facts として記録済みで、新事実なし"
+    },
+    {
+      "dedup_key": "valiv-cosmo-birthday-live-2026-general-sale",
+      "reason": "既報",
+      "note": "上と同一事象(8/31開始の一般先着販売)の重複候補。published_date 8/25で既報、新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

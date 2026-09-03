@@ -2202,7 +2202,10 @@ def main() -> int:
         # 記事だけ消えて digest が古いままの紙面が残る
         # 1巡は「落とす+(社説∥組版)+校閲」。社説と組版は同時に走るので長いほうだけ積む
         if not afford(t0, "校閲", 6, f"ブロック記事の除外({_pass + 1}巡目)", extra=12):
-            unresolved = [b for b in (review.get("blockers") or [])]
+            # ここは**人へ見せる文字列**の一覧。dict を入れると最後の通知組み立てで
+            # 落ちる(実測 2026-09-04: 紙面は出来ていたのに compose が例外で終わった)
+            unresolved = [f"{b.get('file')}: {(b.get('issue') or '')[:120]}"
+                          for b in (review.get("blockers") or [])]
             break
         try:
             dropped, unresolved = drop_blocked_articles(date, review, written)
@@ -2305,8 +2308,12 @@ def main() -> int:
         return 0
     reasons = []
     if not approved:
+        # 通知を組み立てるところで落ちない。**紙面は出来ているのに compose が
+        # 例外で終わる**のが最悪で、人は「また失敗した」としか分からない
+        told = [u if isinstance(u, str) else f"{u.get('file')}: {(u.get('issue') or '')[:120]}"
+                for u in unresolved[:5]]
         reasons.append(f"校閲{rounds}往復でも未 approve。**機械で落とせなかった指摘**:\n- "
-                       + "\n- ".join(unresolved[:5] or ["(内訳不明)"]))
+                       + "\n- ".join(told or ["(内訳不明)"]))
     if code != 0:
         errs = [l for l in lint_out.splitlines() if l.startswith("::error")]
         reasons.append(f"lint エラー {len(errs)} 件:\n- " + "\n- ".join(

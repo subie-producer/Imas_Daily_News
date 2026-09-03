@@ -1,63 +1,103 @@
 [
-  {
-    "id": "sched-2026-09-14-cg-toppa-base-popup-2026-締切",
-    "dedup_key": "cg-toppa-base-popup-2026",
-    "brand": "cg",
-    "subject": "シンデレラガールズ TOPPA!!!BASE POPUP SHOP",
-    "kind": "締切",
-    "note": "総選挙投票券シリアル配布終了(地方5店舗の会期最終日)",
-    "reserved_on": "2026-07-13",
-    "facts": [
-      "秋葉原「TOPPA!!! BASE AKIBA」（エキュート秋葉原1F）は2026年8月27日(木)～9月16日(水)開催",
-      "札幌・仙台・名古屋・大阪・福岡の各TOPPA!!! BASE店舗は8月27日～9月14日開催",
-      "諸星きらり・城ヶ崎莉嘉・赤城みりあ・安部菜々・佐藤心・関裕美の6人による「バトルゲームワールド」テーマの描き下ろしグッズを展開",
-      "総選挙投票券に交換できるシリアルコード配布は9月14日まで",
-      "エンゲージメント: 中",
-      "言及アイドル: 諸星きらり、城ヶ崎莉嘉、赤城みりあ、安部菜々、佐藤心、関裕美"
-    ],
-    "title": "TOPPA!!!BASE シンデレラガールズPOPUP SHOP開催決定",
-    "url": "https://idolmaster-official.jp/news/01_19246",
-    "source_type": "公式",
-    "via": "claude",
-    "verify": "confirmed",
-    "src_candidate_id": "202607130340-claude-83",
-    "event_date": "2026-08-27",
-    "deadline": "2026-09-16"
-  },
-  {
-    "id": "sched-2026-09-14-cg-popn-toybox-goods-2026-終了",
-    "dedup_key": "cg-popn-toybox-goods-2026",
-    "brand": "cg",
-    "subject": "Pop'n ToyBox!!エクストラストーリー連載終了",
-    "kind": "終了",
-    "reserved_on": "2026-08-28",
-    "title": "Pop'n ToyBox!!エクストラストーリー第5話「思い出ランチを、君と」更新",
-    "url": "https://x.com/imas_CGofficial/status/2092809335365906572",
-    "source_type": "公式",
-    "facts": [
-      "トイボックス・エクストラ5「思い出ランチを、君と」更新",
-      "2026年9月14日まで隔日12時頃に更新予定",
-      "掲載URL: https://mequrimequru.jp/kp/regulars/details/idolmaster-cinderellagirls_toybox/"
-    ],
-    "event_date": "2026-09-14",
-    "src_candidate_id": "202608280232-grok-7"
-  },
-  {
-    "id": "sched-2026-09-14-cinderella-girl-vote2026-schedule-締切",
-    "dedup_key": "cinderella-girl-vote2026-schedule",
-    "brand": "cg",
-    "subject": "総選挙2026「公約四字熟語」Sキーホルダー ミッションチャレンジ期間",
-    "kind": "締切",
-    "note": "ミッションチャレンジ期間の終了(23:59)",
-    "reserved_on": "2026-09-03",
-    "facts": [
-      "ミッションチャレンジ期間: 2026年7月1日12:00〜2026年9月14日23:59"
-    ],
-    "title": "総選挙2026「公約四字熟語」Sグッズ登場",
-    "url": "https://shop.asobistore.jp/products/detail/246751-00-00-type_S",
-    "source_type": "準公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202609030229-grok-35",
-    "event_date": "2026-09-14"
-  }
+ {
+  "id": "sched-2026-09-14-cg-toppa-base-popup-2026-締切",
+  "dedup_key": "cg-toppa-base-popup-2026",
+  "brand": "cg",
+  "subject": "シンデレラガールズ TOPPA!!!BASE POPUP SHOP",
+  "kind": "締切",
+  "note": "総選挙投票券シリアル配布終了(地方5店舗の会期最終日)",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "秋葉原「TOPPA!!! BASE AKIBA」（エキュート秋葉原1F）は2026年8月27日(木)～9月16日(水)開催",
+   "札幌・仙台・名古屋・大阪・福岡の各TOPPA!!! BASE店舗は8月27日～9月14日開催",
+   "諸星きらり・城ヶ崎莉嘉・赤城みりあ・安部菜々・佐藤心・関裕美の6人による「バトルゲームワールド」テーマの描き下ろしグッズを展開",
+   "総選挙投票券に交換できるシリアルコード配布は9月14日まで",
+   "エンゲージメント: 中",
+   "言及アイドル: 諸星きらり、城ヶ崎莉嘉、赤城みりあ、安部菜々、佐藤心、関裕美"
+  ],
+  "title": "TOPPA!!!BASE シンデレラガールズPOPUP SHOP開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19246",
+  "source_type": "公式",
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130340-claude-83",
+  "event_date": "2026-08-27",
+  "deadline": "2026-09-16"
+ },
+ {
+  "id": "sched-2026-09-14-cg-popn-toybox-goods-2026-終了",
+  "dedup_key": "cg-popn-toybox-goods-2026",
+  "brand": "cg",
+  "subject": "Pop'n ToyBox!!エクストラストーリー連載終了",
+  "kind": "終了",
+  "reserved_on": "2026-08-28",
+  "title": "Pop'n ToyBox!!エクストラストーリー第5話「思い出ランチを、君と」更新",
+  "url": "https://x.com/imas_CGofficial/status/2092809335365906572",
+  "source_type": "公式",
+  "facts": [
+   "トイボックス・エクストラ5「思い出ランチを、君と」更新",
+   "2026年9月14日まで隔日12時頃に更新予定",
+   "掲載URL: https://mequrimequru.jp/kp/regulars/details/idolmaster-cinderellagirls_toybox/"
+  ],
+  "event_date": "2026-09-14",
+  "src_candidate_id": "202608280232-grok-7"
+ },
+ {
+  "id": "sched-2026-09-14-cinderella-girl-vote2026-schedule-締切",
+  "dedup_key": "cinderella-girl-vote2026-schedule",
+  "brand": "cg",
+  "subject": "総選挙2026「公約四字熟語」Sキーホルダー ミッションチャレンジ期間",
+  "kind": "締切",
+  "note": "ミッションチャレンジ期間の終了(23:59)",
+  "reserved_on": "2026-09-03",
+  "facts": [
+   "ミッションチャレンジ期間: 2026年7月1日12:00〜2026年9月14日23:59"
+  ],
+  "title": "総選挙2026「公約四字熟語」Sグッズ登場",
+  "url": "https://shop.asobistore.jp/products/detail/246751-00-00-type_S",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609030229-grok-35",
+  "event_date": "2026-09-14"
+ },
+ {
+  "id": "sched-2026-09-14-million-shizuka-the-animation-figure-2026-開始",
+  "dedup_key": "million-shizuka-the-animation-figure-2026",
+  "brand": "million",
+  "subject": "コトブキヤ「最上静香-The Animation-」フィギュア",
+  "kind": "開始",
+  "note": "予約受付開始",
+  "reserved_on": "2026-09-04",
+  "title": "最上静香フィギュアの予約開始日と彩色原型を発表",
+  "url": "https://hobby.watch.impress.co.jp/docs/news/2137788.html",
+  "source_type": "報道",
+  "facts": [
+   "コトブキヤが「最上静香-The Animation-」の予約受付を2026年9月14日に開始",
+   "アニメ「ミリオンライブ！」メモリアルフィギュア第一弾"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031236-explore-8",
+  "event_date": "2026-09-14"
+ },
+ {
+  "id": "sched-2026-09-14-sidem-suntory-oolong-2026-発売",
+  "dedup_key": "sidem-suntory-oolong-2026",
+  "brand": "sidem",
+  "subject": "SideM×サントリー ウーロンティー自販機",
+  "kind": "発売",
+  "note": "全国発売開始",
+  "reserved_on": "2026-09-04",
+  "title": "SideM サントリー自販機ウーロンティー販売",
+  "url": "https://idolmaster-official.jp/news/01_19767",
+  "source_type": "公式",
+  "facts": [
+   "9月14日(月)より全国のサントリー自販機約400台でオリジナルラベル缶を発売",
+   "「TRANSCENDENT T@LES」シリーズのイラストで全12種を展開"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031835-watch-0",
+  "event_date": "2026-09-14"
+ }
 ]

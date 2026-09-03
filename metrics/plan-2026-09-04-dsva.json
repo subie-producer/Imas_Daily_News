@@ -1,0 +1,47 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-cosmo-jsp3-rain-patterson-collab-0909",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "上水流宇宙が9月9日ににじさんじ・レイン・パターソンと『日本事故物件監視協会3』でコラボ配信することを、公式アカウントの告知から伝える",
+      "lead_score": 20,
+      "dedup_key": "valiv-cosmo-jsp3-rain-patterson-2026-09-09",
+      "candidate_ids": ["202609040226-grok-29"]
+    },
+    {
+      "slug": "dsva-valiv-ops-roundup-0904",
+      "brand": "dsva",
+      "rank": "roundup",
+      "angle": "灯里愛夏・上水流宇宙の9/2〜9/3の配信実施とショート動画公開をまとめる定常運営まとめ",
+      "lead_score": 0,
+      "dedup_key": "valiv-cosmo-sleep-chat-2026-09-03",
+      "candidate_ids": [
+        "202609031236-explore-22",
+        "202609031835-explore-20",
+        "202609040226-explore-17",
+        "202609040226-grok-31",
+        "202609040226-grok-32",
+        "202609040226-grok-33"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "manaka-jsp3-collab-2026-09-01",
+      "reason": "既報",
+      "note": "stock/stories.yml の valiv-manaka-hakuno-jsp3-collab-20260901 で9/1実施済みまで報じ済み。今回の facts は配信タイトルや概要欄文言など既報facts以上の新事実なし"
+    },
+    {
+      "dedup_key": "valiv-cosmo-birthday-live-2026-lv-general",
+      "reason": "既報",
+      "note": "現地LV一般先着販売(8/31開始)・前夜祭歌枠リレー(9/11)はいずれも stock の cosmo-birthday-online-live-2026 で既報。新事実なし"
+    },
+    {
+      "dedup_key": "valiv-cosmo-birthday-online-live-2026",
+      "reason": "既報",
+      "note": "公演日・販売期間・配信期間・アーカイブ期間はいずれも stock の cosmo-birthday-online-live-2026 の既報範囲内で新事実なし。現地LV先行抽選(8/8〜8/24)もすでに終了済みの期間"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,0 +1,92 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-04T02:27:02+09:00",
+   "edition": "2026-09-04",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 342,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 2,
+    "explore:million": 6,
+    "explore:shiny": 1,
+    "explore:sidem": 4,
+    "explore:gakuen": 3,
+    "explore:dsva": 4,
+    "explore:joint-other": 1,
+    "explore:trend": 3,
+    "grok:765as": 2,
+    "grok:cinderella": 2,
+    "grok:million": 4,
+    "grok:shiny": 2,
+    "grok:sidem": 4,
+    "grok:gakuen": 3,
+    "grok:dsva": 5,
+    "grok:joint-other": 2,
+    "grok:trend": 2
+   },
+   "normalized": 42,
+   "added": 29,
+   "verify": {
+    "confirmed": 30,
+    "unconfirmed": 9,
+    "failed": 3
+   },
+   "duration_s": 1585
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-04T06:20:25+09:00",
+   "edition": "2026-09-04",
+   "rounds": 4,
+   "approved": false,
+   "lint_green": true,
+   "planned": 32,
+   "written": 32,
+   "roundups": 2,
+   "dropped": 42,
+   "coverage": {
+    "subjects": 89,
+    "covered": 89,
+    "missing": 0
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 8.55211329460144,
+    "執筆": 5.495742849508921,
+    "社説と組版": 24.982883973916373,
+    "校閲": 2.6449325680732727
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [],
+   "duration_s": 5733
+  }
+ ]
+}

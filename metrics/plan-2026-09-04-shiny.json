@@ -1,0 +1,49 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-master-showpiece-venue-sales",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "283 PRODUCTION Solo Live Collection『Master ShowPiece』(9/26・27, 京王アリーナTOKYO)の会場物販実施決定と、CD/Blu-ray購入者向け特典の詳細を伝える",
+      "lead_score": 25,
+      "dedup_key": "shiny-283-production-solo-live-2026",
+      "candidate_ids": ["202609031835-watch-4", "202609031835-explore-12"]
+    },
+    {
+      "slug": "shiny-illumination-gasha-hiori-costume",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "開催中のイルミネガシャで、風野灯織の『アナザー衣装』が解放されたことを伝える",
+      "lead_score": 10,
+      "dedup_key": "shiny-ilumine-gasha-another-2026",
+      "candidate_ids": ["202609032335-explore-10", "202609040226-grok-41"]
+    },
+    {
+      "slug": "shiny-swimming-class-poll",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "公式Xが『水泳の授業、教えたい？教わりたい？』の投票企画を実施したことを伝える",
+      "lead_score": 5,
+      "dedup_key": "shiny-swimming-class-poll-2026",
+      "candidate_ids": ["202609032335-explore-12"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-calendar-2026-09",
+      "reason": "既報",
+      "note": "stock/stories.yml の shiny-calendar-2026-09-madoka-mei(9/1付、樋口円香・和泉愛依・壁紙案内)と同一内容で新事実なし"
+    },
+    {
+      "dedup_key": "shiny-master-showpiece-cd-bluray-benefits-2026",
+      "reason": "重複",
+      "note": "同一公演(Master ShowPiece)の会場物販の話であり、shiny-master-showpiece-venue-sales 記事に統合"
+    },
+    {
+      "dedup_key": "shiny-prism-illumination-gasha-costume-2026",
+      "reason": "重複",
+      "note": "shiny-ilumine-gasha-another-2026 と同一の告知(灯織アナザー衣装/イルミネガシャ)を別収集経路が拾ったもの。shiny-illumination-gasha-hiori-costume 記事に統合"
+    }
+  ],
+  "cross_brand": []
+}

@@ -70,5 +70,25 @@
   "verify": "confirmed",
   "src_candidate_id": "202609020736-watch-1",
   "event_date": "2026-09-26"
+ },
+ {
+  "id": "sched-2026-09-26-shiny-283-production-solo-live-2026-開幕",
+  "dedup_key": "shiny-283-production-solo-live-2026",
+  "brand": "shiny",
+  "subject": "283 PRODUCTION Solo Live Collection -Master ShowPiece-",
+  "kind": "開幕",
+  "note": "公演1日目、会場物販も実施",
+  "reserved_on": "2026-09-04",
+  "title": "シャニマス Solo Live Collection 物販開始",
+  "url": "https://idolmaster-official.jp/news/01_19780",
+  "source_type": "公式",
+  "facts": [
+   "会場は京王アリーナTOKYO、9月26日(土)16:00開場/17:00開演",
+   "会場物販は11:00～17:00、1F駐車場特設売り場で実施"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031835-watch-4",
+  "event_date": "2026-09-26"
  }
 ]

@@ -131,5 +131,44 @@
   "verify": "confirmed",
   "src_candidate_id": "202609030229-grok-58",
   "event_date": "2026-09-23"
+ },
+ {
+  "id": "sched-2026-09-23-gaku-live-tour-shirube-iwate-general-sale-2026-千秋楽",
+  "dedup_key": "gaku-live-tour-shirube-iwate-general-sale-2026",
+  "brand": "gaku",
+  "subject": "学マスLIVE TOUR 標 岩手公演",
+  "kind": "千秋楽",
+  "note": "岩手公演2日目",
+  "reserved_on": "2026-09-04",
+  "title": "LIVE TOUR -標- 岩手公演一般販売",
+  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/ticket/regional.php",
+  "source_type": "公式",
+  "facts": [
+   "岩手公演は9月22日(火)・23日(水)の2公演"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031236-explore-20",
+  "event_date": "2026-09-23"
+ },
+ {
+  "id": "sched-2026-09-23-sidem-2dmv-transcendent-goods-2026-09-締切",
+  "dedup_key": "sidem-2dmv-transcendent-goods-2026-09",
+  "brand": "sidem",
+  "subject": "SideM 2DMV公開記念グッズ第2弾・T@LESリリース記念グッズ第3弾",
+  "kind": "締切",
+  "note": "受注締切23:59",
+  "reserved_on": "2026-09-04",
+  "title": "SideM 2DMV公開記念グッズ第2弾 & TRANSCENDENT T@LESリリース記念グッズ第3弾発売決定",
+  "url": "https://idolmaster-official.jp/news/01_19786",
+  "source_type": "公式",
+  "facts": [
+   "受注販売期間は2026年9月3日12:00～9月23日23:59",
+   "2DMVグッズは11月中旬以降、T@LESグッズは11月下旬以降に順次発送予定"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031236-watch-0",
+  "deadline": "2026-09-23"
  }
 ]

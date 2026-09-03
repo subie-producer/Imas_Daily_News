@@ -204,5 +204,44 @@
   "src_candidate_id": "202609020736-watch-1",
   "event_date": "2026-09-30",
   "deadline": "2026-09-30"
+ },
+ {
+  "id": "sched-2026-09-27-shiny-283-production-solo-live-2026-千秋楽",
+  "dedup_key": "shiny-283-production-solo-live-2026",
+  "brand": "shiny",
+  "subject": "283 PRODUCTION Solo Live Collection -Master ShowPiece-",
+  "kind": "千秋楽",
+  "note": "公演2日目・千秋楽",
+  "reserved_on": "2026-09-04",
+  "title": "シャニマス Solo Live Collection 物販開始",
+  "url": "https://idolmaster-official.jp/news/01_19780",
+  "source_type": "公式",
+  "facts": [
+   "9月27日(日)16:00開場/17:00開演、会場物販は11:00～17:00"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031835-watch-4",
+  "event_date": "2026-09-27"
+ },
+ {
+  "id": "sched-2026-09-27-gaku-chugai-grace-cafe-revival-shibuya-2026-終了",
+  "dedup_key": "gaku-chugai-grace-cafe-revival-shibuya-2026",
+  "brand": "gaku",
+  "subject": "学マス×Chugai Grace Café リバイバル(渋谷)",
+  "kind": "終了",
+  "note": "開催終了",
+  "reserved_on": "2026-09-04",
+  "title": "Chugai Grace Caféリバイバル渋谷店",
+  "url": "https://chugai-grace-cafe.jp/collaboration/gakuen_idolmaster_revival_shibuya/",
+  "source_type": "当事者",
+  "facts": [
+   "開催期間は2026年9月3日(木)～9月27日(日)、渋谷モディ7Fで営業",
+   "先着予約受付は9月26日23:59まで"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031236-explore-18",
+  "deadline": "2026-09-27"
  }
 ]

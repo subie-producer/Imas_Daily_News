@@ -1,0 +1,95 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-roundup-0904",
+      "brand": "gaku",
+      "rank": "roundup",
+      "angle": "9月の定常運営情報まとめ:月間ミッションパス報酬(新髪型・無償ジュエル最大5,000)、渋谷Chugai Grace Caféリバイバル開催中、「ENDLESS DANCE」3人歌唱版配信開始を一括紹介",
+      "lead_score": 0,
+      "dedup_key": "gaku-mission-pass-2026-09",
+      "candidate_ids": [
+        "202609031236-explore-17",
+        "202609031236-explore-18",
+        "202609031835-explore-17",
+        "202609032335-explore-18"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-iwate-general-sale-0904",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "LIVE TOUR -標- 岩手公演のチケット一般販売(先着)が9/5(土)12:00〜9/9(水)23:59に受付。料金・顔写真登録必須・支払い方法の条件を伝える",
+      "lead_score": 15,
+      "dedup_key": "gaku-live-tour-shirube-iwate-general-sale-2026",
+      "candidate_ids": [
+        "202609031236-explore-20",
+        "202609031835-explore-26"
+      ]
+    },
+    {
+      "slug": "gaku-saki-ameagari-iris-figure-0904",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "花海咲季「雨上がりのアイリス」特訓前Ver. 1/7スケールフィギュア(MiraiMira)があみあみで案内、価格・発売時期を伝える",
+      "lead_score": 5,
+      "dedup_key": "gaku-saki-ameagari-iris-figure-2026",
+      "candidate_ids": [
+        "202609031835-explore-18"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-gasha-0904",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "「麻央&千奈&清夏 標ガシャ」が本日9/4(金)11:00より開催、新プロデュースアイドル3人(有村麻央・倉本千奈・紫雲清夏)の追加を伝える",
+      "lead_score": 65,
+      "dedup_key": "gakumasu-shirube-gasha-2026",
+      "candidate_ids": [
+        "202609031835-explore-30"
+      ]
+    },
+    {
+      "slug": "gaku-hatsuboshi-talk-guest-0904",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「はつぼし放課後とーく」十王星南・藤田ことねのH.I.F編に向けた回を9/9(水)20:00に放送決定、出演者を伝える",
+      "lead_score": 10,
+      "dedup_key": "gakuen-hatsuboshi-after-school-talk-2026-09",
+      "candidate_ids": [
+        "202609032335-explore-31"
+      ]
+    },
+    {
+      "slug": "gaku-swimsuit-gacha-end-0904",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "水着ガシャ「ねえ、言っちゃうよ。」(秦谷美鈴)と「アナザーアイドル'26水着ガシャ」が本日9/4(金)10:59に終了。関連のQUOカードキャンペーンも合わせて伝える",
+      "lead_score": 30,
+      "dedup_key": "gakumas-swimsuit-gacha-hataya-2026",
+      "candidate_ids": [
+        "202609031835-watch-3",
+        "sched-2026-09-04-gakumas-another-idol-26-swimsuit-gacha-2026-締切",
+        "sched-2026-09-04-gakumas-swimsuit-gacha-hataya-2026-締切"
+      ]
+    },
+    {
+      "slug": "gaku-asari-zemi-end-0904",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "イベント「あさり先生のプロデュースゼミ」が本日9/4(金)10:59に終了",
+      "lead_score": 5,
+      "dedup_key": "gaku-asari-zemi-memory-ability-fix-2026",
+      "candidate_ids": [
+        "sched-2026-09-04-gaku-asari-zemi-memory-ability-fix-2026-終了"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gaku-live-tour-shirube-fukuoka-goods-2026",
+      "reason": "既報",
+      "note": "8/29号既報 gakumas-shirube-livetour-2026 の published_facts と物販日時・中断時間・チケット所持者限定条件が完全一致し新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,0 +1,135 @@
+{
+  "articles": [
+    {
+      "slug": "million-kotobukiya-kuji-stage04",
+      "brand": "million",
+      "rank": "small",
+      "angle": "コトブキヤくじ「アイドルマスター」stage04の開催決定と、詳細発表・販売開始の予定日を伝える",
+      "lead_score": 10,
+      "dedup_key": "million-kotobukiya-kuji-stage04-2026",
+      "candidate_ids": ["202609031236-watch-2"]
+    },
+    {
+      "slug": "million-shizuka-animation-figure-preorder",
+      "brand": "million",
+      "rank": "small",
+      "angle": "コトブキヤ「最上静香-The Animation-」フィギュアの予約開始日(9/14)と仕様を伝える",
+      "lead_score": 10,
+      "dedup_key": "million-shizuka-the-animation-figure-2026",
+      "candidate_ids": ["202609031236-explore-8", "202609040226-explore-7"]
+    },
+    {
+      "slug": "million-seasonal-snapshot-christmas-order",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ「SEASONAL SNAPSHOT」12月クリスマステーマ(高槻やよい・伊吹翼)の受注開始を伝える",
+      "lead_score": 5,
+      "dedup_key": "million-seasonal-snapshot-christmas-2026",
+      "candidate_ids": ["202609031835-watch-1"]
+    },
+    {
+      "slug": "million-british-pub-hub-14th-collab",
+      "brand": "million",
+      "rank": "small",
+      "angle": "「14thLIVE × BRITISH PUB HUB」渋谷店コラボの開催期間と予約受付開始を伝える",
+      "lead_score": 5,
+      "dedup_key": "million-british-pub-hub-2026",
+      "candidate_ids": ["202609031835-watch-2"]
+    },
+    {
+      "slug": "million-cardfolio-vol4",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "「アイドルマスター カードフォリオ ミリオンライブ！ver.4」の発売日・価格・収録内容とMR描き下ろし公開状況を伝える",
+      "lead_score": 15,
+      "dedup_key": "million-cardfolio-vol4-2026",
+      "candidate_ids": ["202609031835-explore-11", "202609031835-explore-25", "202609040226-grok-37"]
+    },
+    {
+      "slug": "million-xstream-vol1-pass",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "ミリシタ新シリーズ「X-STREAM THEATER」の第一弾「X-STREAM VOL.1パス」の仕組みと交換ポイント・報酬内容を伝える",
+      "lead_score": 15,
+      "dedup_key": "million-x-stream-theater-vol1-2026",
+      "candidate_ids": ["202609031835-explore-32"]
+    },
+    {
+      "slug": "million-14th-live-goods-lottery",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "ミリオン14thLIVE会場物販、物販整理券の受付開始(本日9/4)と当落発表・デジタル注文書の日程を伝える",
+      "lead_score": 60,
+      "dedup_key": "million-14th-live-goods-2026",
+      "candidate_ids": ["202609032335-explore-27"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-14th-live-streaming-2026",
+      "reason": "既報",
+      "note": "配信チケット販売開始(価格・期間・アーカイブ日程)はstock/stories.yml『million-14th-live』に既に同内容で記録済み、新事実なし"
+    },
+    {
+      "dedup_key": "million-14th-live-bakuste-talk-2026",
+      "reason": "既報",
+      "note": "『ばくすて！とーく』配信決定(日程・出演者)はstock/stories.yml『million-14th-live』に既に同内容で記録済み"
+    },
+    {
+      "dedup_key": "million-x-stream-theater-2026",
+      "reason": "既報",
+      "note": "新シリーズ名『X-STREAM THEATER』の発表・9/2配信実施はstock/stories.yml『mltd-extreme-livestream-2026』に既に記録済み"
+    },
+    {
+      "dedup_key": "cardfolio-million-vol4-2026",
+      "reason": "重複",
+      "note": "million-cardfolio-vol4-2026と同一商品(カードフォリオvol.4)。同記事candidate_idsに統合"
+    },
+    {
+      "dedup_key": "million-refrain-kiss-buzz-2026",
+      "reason": "出典不足",
+      "note": "Yahoo!リアルタイム検索のバズまとめ(二次情報・verify unconfirmed)のみで公式出典なし。ファン発の現象としてrank:cultureで扱う余地はgeneral面限定のためmillion面では不採用"
+    },
+    {
+      "dedup_key": "million-sobetsu-apple-festival-2026",
+      "reason": "既報",
+      "note": "木下ひなた壮瞥町りんご大使就任・りんごまつり詳細はstock/stories.yml『millionlive-hinata-apple-ambassador-2026』により詳しく記録済み"
+    },
+    {
+      "dedup_key": "million-extreme-streaming-campaign-2026",
+      "reason": "既報",
+      "note": "生配信記念プレゼントキャンペーン(応募締切9/9)はstock/stories.yml『mltd-extreme-livestream-2026』に既に記録済み"
+    },
+    {
+      "dedup_key": "million-14th-live-stream-ticket-2026",
+      "reason": "既報",
+      "note": "million-14th-live-streaming-2026と同一の配信チケット販売開始ニュース。stock/stories.ymlに既に記録済み"
+    },
+    {
+      "dedup_key": "million-shizuka-animation-figure-2026",
+      "reason": "重複",
+      "note": "million-shizuka-the-animation-figure-2026と同一商品。同記事candidate_idsに統合"
+    },
+    {
+      "dedup_key": "million-login-bonus-autumn-2026",
+      "reason": "既報",
+      "note": "『食欲の秋スペシャルログインボーナス』(9/3〜9/9、500ミリオンジュエル)はstock/stories.yml『million-autumn-login-bonus-2026』に一言一句ほぼ同内容で記録済み、新事実なし"
+    },
+    {
+      "dedup_key": "million-platinum-star-tune-lilac-2026",
+      "reason": "既報",
+      "note": "TIntMe!『ライラックにつつまれて』プラチナスターチューン(10月上旬予定)はstock/stories.yml『mltd-extreme-livestream-2026』に既に記録済み"
+    },
+    {
+      "dedup_key": "million-linkage-kyoushitotachi-2026",
+      "reason": "既報",
+      "note": "次回ミリオンリンケージのタイトル・登場アイドルはstock/stories.yml『mltd-extreme-livestream-2026』に開催日(9/27)まで含めて既に記録済み"
+    },
+    {
+      "dedup_key": "million-cardfolio-vol4-mr-2026",
+      "reason": "重複",
+      "note": "million-cardfolio-vol4-2026と同一商品のMR判明情報。同記事candidate_idsに統合"
+    }
+  ],
+  "cross_brand": []
+}

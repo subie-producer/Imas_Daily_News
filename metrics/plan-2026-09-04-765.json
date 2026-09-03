@@ -1,0 +1,42 @@
+{
+  "articles": [
+    {
+      "slug": "765-961-xr-live-2027-announced",
+      "brand": "765",
+      "rank": "medium",
+      "angle": "IWSF2026の場で765プロ×961プロの新xRライブ「IDOL ULTIMATE ONCE AND FOR ALL」が2027年7月24・25日に京王アリーナTOKYOで開催されると発表",
+      "lead_score": 85,
+      "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+      "candidate_ids": ["202609032335-explore-1"]
+    },
+    {
+      "slug": "765-dual-twinlive-tokyo-finale-report",
+      "brand": "765",
+      "rank": "medium",
+      "angle": "三浦あずさ・秋月律子ツインライブ東京公演(ツアー千秋楽)のセットリストと新曲「Binary Star」披露、会場の反応を伝える公演レポート",
+      "lead_score": 40,
+      "dedup_key": "765-azusa-ritsuko-twin-live-tokyo-2026",
+      "candidate_ids": ["202609040226-explore-22"]
+    },
+    {
+      "slug": "765-sidem-11th-stage-bakusute-talk",
+      "brand": "765",
+      "rank": "small",
+      "angle": "SideM 11th STAGE公演後の振り返り生配信「ばくすて！とーく」に若林直美さんら765AS声優が出演すると発表",
+      "lead_score": 20,
+      "dedup_key": "sidem-11th-stage-bakusute-talk-2026",
+      "candidate_ids": ["202609031236-explore-4"]
+    },
+    {
+      "slug": "765-piano-collection-new-arrangements-preview",
+      "brand": "765",
+      "rank": "small",
+      "angle": "20周年ピアノコレクション、「恋をはじめよう」「HELLO」のピアノアレンジを初公開。受注締切が近いことを伝える",
+      "lead_score": 15,
+      "dedup_key": "imas-20th-piano-collection-2026",
+      "candidate_ids": ["202609040226-grok-25", "202609040226-grok-26"]
+    }
+  ],
+  "dropped": [],
+  "cross_brand": []
+}

@@ -1,20 +1,79 @@
 [
-  {
-    "id": "sched-2026-09-22-gaku-shirube-iwate-streaming-2026-開幕",
-    "dedup_key": "gaku-shirube-iwate-streaming-2026",
-    "brand": "gaku",
-    "subject": "学園アイドルマスター LIVE TOUR -標- 岩手公演",
-    "kind": "開幕",
-    "reserved_on": "2026-08-28",
-    "title": "標ツアー岩手公演の配信視聴チケット販売開始",
-    "url": "https://x.com/gkmas_official/status/2092900856488460535",
-    "source_type": "公式",
-    "facts": [
-      "公演名は「学園アイドルマスター LIVE TOUR -標- 岩手公演」",
-      "開催日は9月22日(火・祝)・9月23日(水・祝)",
-      "会場はトーサイクラシックホール岩手(岩手県民会館)大ホール"
-    ],
-    "event_date": "2026-09-22",
-    "src_candidate_id": "202608280232-grok-36"
-  }
+ {
+  "id": "sched-2026-09-22-gaku-shirube-iwate-streaming-2026-開幕",
+  "dedup_key": "gaku-shirube-iwate-streaming-2026",
+  "brand": "gaku",
+  "subject": "学園アイドルマスター LIVE TOUR -標- 岩手公演",
+  "kind": "開幕",
+  "reserved_on": "2026-08-28",
+  "title": "標ツアー岩手公演の配信視聴チケット販売開始",
+  "url": "https://x.com/gkmas_official/status/2092900856488460535",
+  "source_type": "公式",
+  "facts": [
+   "公演名は「学園アイドルマスター LIVE TOUR -標- 岩手公演」",
+   "開催日は9月22日(火・祝)・9月23日(水・祝)",
+   "会場はトーサイクラシックホール岩手(岩手県民会館)大ホール"
+  ],
+  "event_date": "2026-09-22",
+  "src_candidate_id": "202608280232-grok-36"
+ },
+ {
+  "id": "sched-2026-09-22-gaku-live-tour-shirube-iwate-general-sale-2026-開幕",
+  "dedup_key": "gaku-live-tour-shirube-iwate-general-sale-2026",
+  "brand": "gaku",
+  "subject": "学マスLIVE TOUR 標 岩手公演",
+  "kind": "開幕",
+  "note": "岩手公演1日目",
+  "reserved_on": "2026-09-04",
+  "title": "LIVE TOUR -標- 岩手公演一般販売",
+  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/ticket/regional.php",
+  "source_type": "公式",
+  "facts": [
+   "岩手公演は9月22日(火)・23日(水)の2公演",
+   "公式リセールは対象を9月22日・23日公演とし、9月5日15:00～9月10日9:59に受付"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031236-explore-20",
+  "event_date": "2026-09-22"
+ },
+ {
+  "id": "sched-2026-09-22-shiny-master-showpiece-cd-bluray-benefits-2026-結果",
+  "dedup_key": "shiny-master-showpiece-cd-bluray-benefits-2026",
+  "brand": "shiny",
+  "subject": "Master ShowPiece 会場物販整理券",
+  "kind": "結果",
+  "note": "当落発表13:00",
+  "reserved_on": "2026-09-04",
+  "title": "Master ShowPiece会場CD/Blu-ray物販特典を発表",
+  "url": "https://shinycolors.lantis.jp/extra/260903_1/",
+  "source_type": "準公式",
+  "facts": [
+   "整理券の当落発表は9月22日13:00から"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031835-explore-12",
+  "event_date": "2026-09-22"
+ },
+ {
+  "id": "sched-2026-09-22-cg-deresute-11th-anniversary-campaign-2026-締切",
+  "dedup_key": "cg-deresute-11th-anniversary-campaign-2026",
+  "brand": "cg",
+  "subject": "デレステ11周年 無料10連キャンペーン",
+  "kind": "締切",
+  "note": "1日1回無料10連キャンペーン終了(23:59)",
+  "reserved_on": "2026-09-04",
+  "title": "デレステ11周年、無料10連など記念施策を実施",
+  "url": "https://apis.game.starlight-stage.jp/information/detail/7864/1/10/1",
+  "source_type": "当事者",
+  "facts": [
+   "11周年記念!!プラチナオーディションガシャ1日1回10連無料キャンペーンは9月3日0時〜9月22日23時59分まで",
+   "プラチナスペシャルガシャセット等の販売・育成強化キャンペーンは9月30日23時59分まで別途継続"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031835-explore-5",
+  "event_date": "2026-09-22"
+ }
 ]

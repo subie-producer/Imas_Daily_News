@@ -1,0 +1,133 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-2dmv-transcendent-tales-goods-order",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "2DMV公開記念グッズ第2弾(Jupiter・Beit・THE虎牙道・F-LAGS)とTRANSCENDENT T@LESリリース記念グッズ第3弾(09〜12)の受注詳細(価格・受注期間9/3〜9/23・発送時期)を伝える",
+      "lead_score": 20,
+      "dedup_key": "sidem-2dmv-transcendent-goods-2026-09",
+      "candidate_ids": [
+        "202609031236-watch-0",
+        "202609032335-explore-13",
+        "202609040226-explore-10",
+        "202609040226-grok-46"
+      ]
+    },
+    {
+      "slug": "sidem-teddys-collection2-popup-open",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "「SideM Teddy's Collection II POP UP STORE」が新宿マルイアネックスで本日開幕、通販予約も本日12時から受付開始(なんばマルイは9/18から)",
+      "lead_score": 15,
+      "dedup_key": "sidem-teddys-collection2-popup-goods",
+      "candidate_ids": [
+        "202609031236-explore-15",
+        "sched-2026-09-04-sidem-teddys-collection2-popup-goods-開幕"
+      ]
+    },
+    {
+      "slug": "sidem-suntory-oolong-vending",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "SideMラベルのサントリー自販機ウーロンティーが9/14に全国発売決定、TOYOTA ARENA TOKYO会場設置自販機は9/12稼働予定",
+      "lead_score": 10,
+      "dedup_key": "sidem-suntory-oolong-2026",
+      "candidate_ids": [
+        "202609031835-watch-0"
+      ]
+    },
+    {
+      "slug": "sidem-transcendent-tales-guide-completes",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "TRANSCENDENT T@LES連動ストーリー＆楽曲ガイド第3回(09〜12)公開で全12作品の紹介が完結",
+      "lead_score": 5,
+      "dedup_key": "sidem-transcendent-tales-guide-09-12-2026",
+      "candidate_ids": [
+        "202609032335-explore-14"
+      ]
+    },
+    {
+      "slug": "sidem-divercity-tokyo-plaza-open",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "SideM×ダイバーシティ東京プラザのコラボが本日開幕(〜9/20)、Café Parade・Legendersの新規描き下ろしとコラボメニュー全16品・限定コースターを紹介",
+      "lead_score": 65,
+      "dedup_key": "sidem-divercity-tokyo-plaza-2026",
+      "candidate_ids": [
+        "202609040226-explore-13",
+        "202609040226-grok-48",
+        "sched-2026-09-04-sidem-divercity-tokyo-plaza-2026-開幕"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-kanon-new-cast-2026",
+      "reason": "既報",
+      "note": "9/1放送の特別生配信自体の紹介。新キャスト決定は8/28発表済み(既報台帳)で、生配信内容も9/4時点で3日前の出来事、本日のトリガーなし"
+    },
+    {
+      "dedup_key": "sidem-transcendent-tales-12-2026",
+      "reason": "既報",
+      "note": "発売日・品番・価格・収録内容とも既報台帳(story_id: sidem-transcendent-tales-12-2026)と一致、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-f-lags-meet-yumeno-topia-mv-2026",
+      "reason": "既報",
+      "note": "2DMVは9/2 21:00公開済み(既報台帳: sidem-flags-meet-yumenotopia-2dmv-2026で予告時点の内容と一致)、9/4時点で新事実・当日トリガーなし"
+    },
+    {
+      "dedup_key": "sidem-joypolis-collab-3-2026",
+      "reason": "既報",
+      "note": "開催概要・アンバサダー就任・上映内容とも既報台帳(sidem-joypolis3-2026)と一致、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-seibuen-retro-rose-party-2026",
+      "reason": "既報",
+      "note": "開催期間・休園日・キャスト登壇日とも既報台帳(sidem-super-retrose-party-2026)と一致、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-kanon-himeno-new-cast-2026",
+      "reason": "既報",
+      "note": "新キャスト伊能幸輝氏の決定は8/28発表済み(既報台帳: sidem-murase-himeno-graduation-2026に記載)、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-fantastic-battle-fes-wanna-step-in-2026",
+      "reason": "既報",
+      "note": "第2弾(長野・幕張)の開催概要・出演ユニットとも既報台帳(sidem-fantastic-battle-fes-2026)と一致、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-fantastic-battle-fes-2026",
+      "reason": "既報",
+      "note": "9/1生配信で案内されたキッチンカー整理券・CD会場先行発売・配信チケット情報は既報台帳(sidem-11th-stage-2026)の内容と一致、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-cardfolio-pasha-challenge-2026",
+      "reason": "既報",
+      "note": "パシャっとチャレンジの参加方法・当選者数315名とも既報台帳(sidem-cardfolio-vol2-2026)と一致、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-fantastic-battle-fes-wanna-step-in",
+      "reason": "既報",
+      "note": "出演キャスト全員分の詳細を含むが開催概要は既報台帳(sidem-fantastic-battle-fes-2026)と一致、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-315shop-cat-butler-2026",
+      "reason": "既報",
+      "note": "選抜メンバー・展開開始日・営業時間とも既報台帳(sidem-315-shop-5th-2026)と一致、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-himeno-kanon-new-cast-inou-2026",
+      "reason": "既報",
+      "note": "9/1生配信の紹介記事。新キャスト決定自体は8/28発表済みで、生配信内容も9/4時点で3日前の出来事、本日のトリガーなし"
+    },
+    {
+      "dedup_key": "sidem-kanon-cast-yukiteru-2026",
+      "reason": "既報",
+      "note": "報道由来の9/1生配信紹介記事。新キャスト決定自体は8/28発表済みで、生配信内容も9/4時点で3日前の出来事、本日のトリガーなし"
+    }
+  ],
+  "cross_brand": []
+}

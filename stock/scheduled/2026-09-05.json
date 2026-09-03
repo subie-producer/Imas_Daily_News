@@ -1,124 +1,164 @@
 [
-  {
-    "id": "sched-2026-09-05-gaku-shirube-fukuoka-ticket-general-resale-2026-開幕",
-    "dedup_key": "gaku-shirube-fukuoka-ticket-general-resale-2026",
-    "brand": "gaku",
-    "subject": "学マス標ツアー福岡公演",
-    "kind": "開幕",
-    "note": "福岡サンパレス DAY1",
-    "reserved_on": "2026-08-25",
-    "facts": [
-      "学園アイドルマスター LIVE TOUR -標- 福岡公演は2026年9月5日(土)・6日(日)、福岡サンパレス ホテル＆ホールで開催",
-      "9月5日(土)は開場17:30/開演18:30、9月6日(日)は開場15:30/開演16:30",
-      "出演は花海咲季、月村手毬、藤田ことね、篠澤広、雨夜燕",
-      "チケットは全席指定11,000円(税込)、立ち見指定10,500円(税込)"
-    ],
-    "title": "標ツアー福岡公演の一般先着・リセール開始",
-    "url": "https://idolmaster-official.jp/news/01_19655",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608240750-grok-31",
-    "event_date": "2026-09-05"
-  },
-  {
-    "id": "sched-2026-09-05-sidem-11th-stage-ticket-2026-締切",
-    "dedup_key": "sidem-11th-stage-ticket-2026",
-    "brand": "sidem",
-    "subject": "SideM 11th STAGE 現地チケット一般販売",
-    "kind": "締切",
-    "note": "現地チケット一般販売受付締切23:59",
-    "reserved_on": "2026-08-25",
-    "facts": [
-      "THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～の現地チケット一般販売は2026年8月22日(土)12:00開始",
-      "受付は2026年9月5日(金)23:59まで",
-      "公式リセールは2026年8月22日(土)15:00～9月6日(日)9:59まで",
-      "開催日程：2026年9月12日(土)・13日(日)、TOYOTA ARENA TOKYO"
-    ],
-    "title": "SideM 11th Stage 現地チケット一般販売開始",
-    "url": "https://idolmaster-official.jp/news/01_19610",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608240750-claude-53",
-    "event_date": "2026-09-12",
-    "deadline": "2026-09-05"
-  },
-  {
-    "id": "sched-2026-09-05-shiny-msp-live-tickets-2026-開始",
-    "dedup_key": "shiny-msp-live-tickets-2026",
-    "brand": "shiny",
-    "subject": "シャニマスソロライブMSP 公式リセール",
-    "kind": "開始",
-    "note": "公式リセール受付開始",
-    "title": "ソロライブMSP公式リセール、9月5日15時開始予定",
-    "url": "https://x.com/shinyc_official/status/2092220696764284969",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608260216-grok-43",
-    "event_date": "2026-09-05",
-    "facts": [
-      "公式リセールの受付開始予定は9月5日(土)15時"
-    ],
-    "reserved_on": "2026-08-26"
-  },
-  {
-    "id": "sched-2026-09-05-sidem-11th-kitchen-2026-開始",
-    "dedup_key": "sidem-11th-kitchen-2026",
-    "brand": "sidem",
-    "subject": "SideM11th会場「EVER EVER KITCHEN」整理券受付",
-    "kind": "開始",
-    "note": "事前整理券受付開始(LivePocket)",
-    "title": "SideM11th会場にEVER EVER KITCHEN出店",
-    "url": "https://idolmaster-official.jp/news/01_19709",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608281836-watch-3",
-    "event_date": "2026-09-05",
-    "facts": [
-      "キッチンカー「EVER EVER KITCHEN」の事前整理券受付は9月5日(土)12:00からLivePocketで先着順",
-      "現地チケットは不要、支払いは電子決済のみ、在庫があればフリー販売もあり完売時は実施なし",
-      "メニューは冬馬のバターチキンカレーパン・音楽隊のチキンカルツォーネ(各1000円)、お茶会カップケーキ(900円)、お菓子なジンジャーブレッドティーラテ・きびだんご黒みつきな粉ラテ(各800円)",
-      "購入特典で全12種「EVER EVER KITCHENブロマイド」を選んだグループからランダム配布"
-    ],
-    "reserved_on": "2026-08-29"
-  },
-  {
-    "id": "sched-2026-09-05-sidem-transcendent-tales-only-shop-2026-開幕",
-    "dedup_key": "sidem-transcendent-tales-only-shop-2026",
-    "brand": "sidem",
-    "subject": "SideM TRANSCENDENT T@LES 完結記念オンリーショップ",
-    "kind": "開幕",
-    "note": "アニメイト池袋本店7F NORTH開幕",
-    "reserved_on": "2026-08-30",
-    "title": "SideM完結記念オンリーショップ開催",
-    "url": "https://lantis.jp/sidem/extra/index.html",
-    "source_type": "準公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608300227-grok-79",
-    "event_date": "2026-09-05",
-    "facts": [
-      "アニメイト池袋本店7F NORTHで9月5日〜27日開催、営業時間は全日10時〜21時",
-      "9月5日・6日の入場はLINEアプリの先着整理券制、整理番号は即時発行・全枠終了次第受付終了",
-      "1,100円ごとの購入・予約内金でオリジナルブロマイド(全12種)を1枚進呈"
-    ]
-  },
-  {
-    "id": "sched-2026-09-05-gaku-shirube-livetour-fukuoka-show-2026-開幕",
-    "dedup_key": "gaku-shirube-livetour-fukuoka-show-2026",
-    "brand": "gaku",
-    "subject": "学園アイドルマスター LIVE TOUR -標- 福岡公演",
-    "kind": "開幕",
-    "note": "福岡公演1日目、福岡サンパレス ホテル＆ホール",
-    "reserved_on": "2026-09-01",
-    "title": "学マス福岡公演、物販と入場時刻を確認",
-    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/information/fukuoka.php",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202609010227-grok-31",
-    "event_date": "2026-09-05",
-    "facts": [
-      "2026年9月5日(土)17:30開場・18:30開演、福岡サンパレス ホテル＆ホール",
-      "出演は長月あおい(花海咲季役)・小鹿なお(月村手毬役)・飯田ヒカル(藤田ことね役)・川村玲奈(篠澤広役)・天音ゆかり(雨夜燕役)",
-      "全席指定席11,000円(税込)、立見指定10,500円(税込・福岡公演のみ)、未就学児入場不可"
-    ]
-  }
+ {
+  "id": "sched-2026-09-05-gaku-shirube-fukuoka-ticket-general-resale-2026-開幕",
+  "dedup_key": "gaku-shirube-fukuoka-ticket-general-resale-2026",
+  "brand": "gaku",
+  "subject": "学マス標ツアー福岡公演",
+  "kind": "開幕",
+  "note": "福岡サンパレス DAY1",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "学園アイドルマスター LIVE TOUR -標- 福岡公演は2026年9月5日(土)・6日(日)、福岡サンパレス ホテル＆ホールで開催",
+   "9月5日(土)は開場17:30/開演18:30、9月6日(日)は開場15:30/開演16:30",
+   "出演は花海咲季、月村手毬、藤田ことね、篠澤広、雨夜燕",
+   "チケットは全席指定11,000円(税込)、立ち見指定10,500円(税込)"
+  ],
+  "title": "標ツアー福岡公演の一般先着・リセール開始",
+  "url": "https://idolmaster-official.jp/news/01_19655",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608240750-grok-31",
+  "event_date": "2026-09-05"
+ },
+ {
+  "id": "sched-2026-09-05-sidem-11th-stage-ticket-2026-締切",
+  "dedup_key": "sidem-11th-stage-ticket-2026",
+  "brand": "sidem",
+  "subject": "SideM 11th STAGE 現地チケット一般販売",
+  "kind": "締切",
+  "note": "現地チケット一般販売受付締切23:59",
+  "reserved_on": "2026-08-25",
+  "facts": [
+   "THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～の現地チケット一般販売は2026年8月22日(土)12:00開始",
+   "受付は2026年9月5日(金)23:59まで",
+   "公式リセールは2026年8月22日(土)15:00～9月6日(日)9:59まで",
+   "開催日程：2026年9月12日(土)・13日(日)、TOYOTA ARENA TOKYO"
+  ],
+  "title": "SideM 11th Stage 現地チケット一般販売開始",
+  "url": "https://idolmaster-official.jp/news/01_19610",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608240750-claude-53",
+  "event_date": "2026-09-12",
+  "deadline": "2026-09-05"
+ },
+ {
+  "id": "sched-2026-09-05-shiny-msp-live-tickets-2026-開始",
+  "dedup_key": "shiny-msp-live-tickets-2026",
+  "brand": "shiny",
+  "subject": "シャニマスソロライブMSP 公式リセール",
+  "kind": "開始",
+  "note": "公式リセール受付開始",
+  "title": "ソロライブMSP公式リセール、9月5日15時開始予定",
+  "url": "https://x.com/shinyc_official/status/2092220696764284969",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608260216-grok-43",
+  "event_date": "2026-09-05",
+  "facts": [
+   "公式リセールの受付開始予定は9月5日(土)15時"
+  ],
+  "reserved_on": "2026-08-26"
+ },
+ {
+  "id": "sched-2026-09-05-sidem-11th-kitchen-2026-開始",
+  "dedup_key": "sidem-11th-kitchen-2026",
+  "brand": "sidem",
+  "subject": "SideM11th会場「EVER EVER KITCHEN」整理券受付",
+  "kind": "開始",
+  "note": "事前整理券受付開始(LivePocket)",
+  "title": "SideM11th会場にEVER EVER KITCHEN出店",
+  "url": "https://idolmaster-official.jp/news/01_19709",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608281836-watch-3",
+  "event_date": "2026-09-05",
+  "facts": [
+   "キッチンカー「EVER EVER KITCHEN」の事前整理券受付は9月5日(土)12:00からLivePocketで先着順",
+   "現地チケットは不要、支払いは電子決済のみ、在庫があればフリー販売もあり完売時は実施なし",
+   "メニューは冬馬のバターチキンカレーパン・音楽隊のチキンカルツォーネ(各1000円)、お茶会カップケーキ(900円)、お菓子なジンジャーブレッドティーラテ・きびだんご黒みつきな粉ラテ(各800円)",
+   "購入特典で全12種「EVER EVER KITCHENブロマイド」を選んだグループからランダム配布"
+  ],
+  "reserved_on": "2026-08-29"
+ },
+ {
+  "id": "sched-2026-09-05-sidem-transcendent-tales-only-shop-2026-開幕",
+  "dedup_key": "sidem-transcendent-tales-only-shop-2026",
+  "brand": "sidem",
+  "subject": "SideM TRANSCENDENT T@LES 完結記念オンリーショップ",
+  "kind": "開幕",
+  "note": "アニメイト池袋本店7F NORTH開幕",
+  "reserved_on": "2026-08-30",
+  "title": "SideM完結記念オンリーショップ開催",
+  "url": "https://lantis.jp/sidem/extra/index.html",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608300227-grok-79",
+  "event_date": "2026-09-05",
+  "facts": [
+   "アニメイト池袋本店7F NORTHで9月5日〜27日開催、営業時間は全日10時〜21時",
+   "9月5日・6日の入場はLINEアプリの先着整理券制、整理番号は即時発行・全枠終了次第受付終了",
+   "1,100円ごとの購入・予約内金でオリジナルブロマイド(全12種)を1枚進呈"
+  ]
+ },
+ {
+  "id": "sched-2026-09-05-gaku-shirube-livetour-fukuoka-show-2026-開幕",
+  "dedup_key": "gaku-shirube-livetour-fukuoka-show-2026",
+  "brand": "gaku",
+  "subject": "学園アイドルマスター LIVE TOUR -標- 福岡公演",
+  "kind": "開幕",
+  "note": "福岡公演1日目、福岡サンパレス ホテル＆ホール",
+  "reserved_on": "2026-09-01",
+  "title": "学マス福岡公演、物販と入場時刻を確認",
+  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/information/fukuoka.php",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609010227-grok-31",
+  "event_date": "2026-09-05",
+  "facts": [
+   "2026年9月5日(土)17:30開場・18:30開演、福岡サンパレス ホテル＆ホール",
+   "出演は長月あおい(花海咲季役)・小鹿なお(月村手毬役)・飯田ヒカル(藤田ことね役)・川村玲奈(篠澤広役)・天音ゆかり(雨夜燕役)",
+   "全席指定席11,000円(税込)、立見指定10,500円(税込・福岡公演のみ)、未就学児入場不可"
+  ]
+ },
+ {
+  "id": "sched-2026-09-05-cg-official-shop-photo-panel-2026-発売",
+  "dedup_key": "cg-official-shop-photo-panel-2026",
+  "brand": "cg",
+  "subject": "オフィシャルショップ新柄フォトパネル・くじ",
+  "kind": "発売",
+  "note": "新柄追加",
+  "reserved_on": "2026-09-04",
+  "title": "オフィシャルショップ、9月5日に新柄24種",
+  "url": "https://bandainamco-am.co.jp/chara_shop/idolmaster/NEWS/all/",
+  "source_type": "準公式",
+  "facts": [
+   "9月5日からアイドルフォトパネルに新柄6種を追加",
+   "同日からシンデレラガールズの抽選くじにも新柄18種が登場"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609032335-explore-3",
+  "event_date": "2026-09-05"
+ },
+ {
+  "id": "sched-2026-09-05-gaku-live-tour-shirube-iwate-general-sale-2026-開始",
+  "dedup_key": "gaku-live-tour-shirube-iwate-general-sale-2026",
+  "brand": "gaku",
+  "subject": "学マスLIVE TOUR標 岩手公演一般販売",
+  "kind": "開始",
+  "note": "一般販売(先着)開始",
+  "reserved_on": "2026-09-04",
+  "title": "学マス岩手公演、9/5から一般先着販売",
+  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/ticket/regional.php",
+  "source_type": "公式",
+  "facts": [
+   "岩手公演一般販売(先着)は9月5日(土)12:00〜9月9日(水)23:59、全席指定11,000円(税込)",
+   "公式リセールは9月5日(土)15:00〜9月10日(木)9:59、対象は9月22日・23日公演"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031236-explore-20",
+  "event_date": "2026-09-05"
+ }
 ]

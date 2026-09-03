@@ -1,0 +1,60 @@
+{
+  "articles": [
+    {
+      "slug": "cg-deresute-11th-anniversary-campaign-details",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "デレステ11周年記念キャンペーンの具体的な中身(1日1回無料10連ガシャ、期間限定ガシャセット販売、ガシャストック機能)を伝える",
+      "lead_score": 25,
+      "dedup_key": "deresute-11th-anniversary-campaign-2026",
+      "candidate_ids": ["202609031835-explore-5", "202609040226-explore-2"]
+    },
+    {
+      "slug": "cg-official-shop-new-goods-patterns-0905",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "アイドルマスターオフィシャルショップが9月5日からアイドルフォトパネル新柄6種・シンデレラガールズ抽選くじ新柄18種を展開すると告知",
+      "lead_score": 8,
+      "dedup_key": "cg-official-shop-photo-panel-2026",
+      "candidate_ids": ["202609032335-explore-3"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-kuji-buki-festival-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml cg-gacha-festival-2026-08(8/28公開)で開始日時・イラスト・賞品構成まで既報。新事実なし"
+    },
+    {
+      "dedup_key": "cg-bunkasai-kuji-2026",
+      "reason": "既報",
+      "note": "同上。cg-gacha-festival-2026-08と同一のくじ引き堂・文化祭テーマオンラインくじで新事実なし"
+    },
+    {
+      "dedup_key": "cg-deresute-11th-anniversary-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml cgss-11th-anniversary-campaign-2026(9/2公開)で「9/3に11周年・キャンペーン開催決定・詳細は今後案内」を既報。新事実なし"
+    },
+    {
+      "dedup_key": "deresute-11th-anniversary-2026",
+      "reason": "既報",
+      "note": "cgss-11th-anniversary-campaign-2026と同内容(周年到達・キャンペーン決定の告知)。エンゲージメント数値と感謝コメントのみで新事実なし"
+    },
+    {
+      "dedup_key": "cg-lets-amusement-okinawa-fukuoka-bluray-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml cg-ss10th-fukuoka-pv2-2026で発売日(9/2)・価格・収録内容とも既報。新事実なし"
+    },
+    {
+      "dedup_key": "cg-deresute-11th-anniversary-campaign-2026",
+      "reason": "重複",
+      "note": "デレステ11周年キャンペーン詳細として cg-deresute-11th-anniversary-campaign-details 記事に統合(同一キャンペーンの二次情報)"
+    },
+    {
+      "dedup_key": "cg-election-only-maker-2026",
+      "reason": "既報",
+      "note": "既報のcg-election-2026-official-goods(総選挙2026グッズ、締切9/13)と同一施策の一部。ONLY MAKERの受注は8/2開始で本日固有の動き・締切なし"
+    }
+  ],
+  "cross_brand": []
+}

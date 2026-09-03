@@ -220,5 +220,25 @@
   "src_candidate_id": "202609020736-watch-1",
   "event_date": "2026-09-13",
   "deadline": "2026-09-13"
+ },
+ {
+  "id": "sched-2026-09-13-cg-election-only-maker-2026-締切",
+  "dedup_key": "cg-election-only-maker-2026",
+  "brand": "cg",
+  "subject": "総選挙2026公式カスタマイズグッズ(ONLY MAKER)",
+  "kind": "締切",
+  "note": "受注締切",
+  "reserved_on": "2026-09-04",
+  "title": "総選挙2026公式グッズ ONLY MAKER",
+  "url": "https://shop.asobistore.jp/feature/onlymaker",
+  "source_type": "準公式",
+  "facts": [
+   "ASOBI STORE「ONLY MAKER」で公式カスタマイズTシャツ・アクリルスタンドボードを受注",
+   "受注期間は2026年8月2日～9月13日"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609040226-grok-39",
+  "deadline": "2026-09-13"
  }
 ]

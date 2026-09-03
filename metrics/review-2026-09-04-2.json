@@ -1,0 +1,116 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-04-765-961-idol-ultimate-2027-announce.md",
+   "issue": "ブロック項目1（出典にない事実の検証不能）：frontmatter に記載された candidate_ids の '202609032335-explore-1' ファイルが candidates/ に存在しない。出典の facts が記録されていないため、記事に出典にない事実が含まれているかを判断できない状態。再校閲（2回目）で前回の修正が完全に反映されていない。",
+   "quote": "candidate_ids:\n- 202609032335-explore-1\n\n（該当ファイルが /home/akabanep/git/imas-ops/candidates/ に存在しない）",
+   "scope": "article:2026-09-04-765-961-idol-ultimate-2027-announce.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-roundup-0904.md",
+   "issue": "出典との日付不一致 (ENDLESS DANCE配信日)",
+   "quote": "花海咲季・月村手毬・藤田ことねが歌う「ENDLESS DANCE（花海咲季・月村手毬・藤田ことね ver.）」が、9月4日付でStreaming&DLに追加されました。",
+   "scope": "article:2026-09-04-gaku-roundup-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-roundup-0904.md",
+   "issue": "frontmatter から candidate_ids が欠落。git logでは初版に存在したが削除されている",
+   "quote": "candidate_ids が frontmatter に記録されていない",
+   "scope": "article:2026-09-04-gaku-roundup-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-swimsuit-gacha-end-0904.md",
+   "issue": "【項目3】URL捏造・出典の不一致：sources に記載の news/01_19666 が記事の内容と一致しない",
+   "quote": "sources:\n- url: https://idolmaster-official.jp/news/01_19666\n  type: 公式\n  label: 【学マス】#美鈴水着ガシャ開催中 夏の思い出ポスター プレゼントキャンペーン開催中！",
+   "scope": "article:2026-09-04-gaku-swimsuit-gacha-end-0904.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-04-cg-official-shop-new-goods-patterns-0905.md",
+   "issue": "分量不足: 本文98字はrank:smallの下限250字に大きく及ばない。出典に記載されている店舗情報、抽選参加方法、ノベルティ詳細など、読者にできることを増やす情報が拾えば、容易に埋まるはずの記事",
+   "scope": "article:2026-09-04-cg-official-shop-new-goods-patterns-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-dsva-cosmo-rain-patterson-collab-0909.md",
+   "issue": "分量不足。rank: small(下限250字)に対して本文が約60字。出典には配信時刻「20時」、「今回から実装されたマルチプレイ」、役割(ビビり担当=宇宙、ツッコミ担当=パタ姉さん)など、記事に拾えていない詳細情報があり、補足できます",
+   "scope": "article:2026-09-04-dsva-cosmo-rain-patterson-collab-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-asari-zemi-end-0904.md",
+   "issue": "分量不足: rank=small で本文93字だが下限は250字。stories.yml の既報に「イベントモードで獲得したメモリーのアビリティを再抽選する内容」「HIF追加後初開催」「対象プランはセンス」など詳細がある。当日の締切告知に加えて「本日最後にプレイできるのは何か」など読者の判断材料になる情報を拾えば埋まる。ただし一般論・推測での水増しは不要",
+   "scope": "article:2026-09-04-gaku-asari-zemi-end-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-hatsuboshi-talk-guest-0904.md",
+   "issue": "分量不足：rank:small の下限は250字ですが、記事は約240字です。出典ページに記載されている配信URL（ニコニコ生放送：lv351266788、YouTube Live：8sZOp_vZQpo）を記事に追記することで分量基準に達することができます。",
+   "scope": "article:2026-09-04-gaku-hatsuboshi-talk-guest-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-general-hatano-20th-year-interview-0904.md",
+   "issue": "TGS 公式ページでスピーカー情報が記載されていない。記事では『公式サイトに...セッションが掲載されており、波多野氏の登壇が予定されている』と述べ、両情報が公式から得られたように読める表現になっていますが、実際にはセッション情報のみ確認でき、波多野氏のスピーカー情報は TGS 公式ページに記載されていません。sources に記載の複数出典（特に Gamer など報道媒体）から得られた総合情報であることをより明確にする表現が望ましい。",
+   "scope": "article:2026-09-04-general-hatano-20th-year-interview-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-million-kuji-stage04-announced.md",
+   "issue": "分量不足：本文が約155字で、rank: small の下限250字に達していない。ただし詳細は9月16日に公開予定のため、現時点では追加できる具体的情報がない",
+   "scope": "article:2026-09-04-million-kuji-stage04-announced.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-million-seasonal-snapshot-christmas-order.md",
+   "issue": "分量不足: rank=small は下限250字ですが、本文は約181字。出典の facts には価格（BOX 5,500円/個、ステッカーセット 2,000円、キャラファイングラフ 16,000円/枚）や具体的な商品ラインアップが記載されており、これを追加すれば分量要件を満たせます。",
+   "scope": "article:2026-09-04-million-seasonal-snapshot-christmas-order.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-shiny-ilumine-gasha-tomori-another-costume-0904.md",
+   "issue": "分量不足。rank: small は 250字が下限だが、現在は164字（lede 44字+本文 120字）。出典ツイートに追加情報が限定的と見られるため、水増しせず短いままとするか、または出典の Twitter に記載されているガシャ期間などの情報がありればそれを加えることで分量を補うことが検討課題",
+   "scope": "article:2026-09-04-shiny-ilumine-gasha-tomori-another-costume-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-shiny-swimming-class-poll-0904.md",
+   "issue": "分量不足：本文が221字で、rank: small の下限250字に達していない。見出し・lede・本文を合わせても基準を満たさない。ただし候補には「エンゲージメント：中」以外の追加可能な事実がないため、出典の URL で投票期間や詳細を確認できれば充実可能",
+   "scope": "article:2026-09-04-shiny-swimming-class-poll-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-sidem-suntory-oolong-vending.md",
+   "issue": "分量不足: rank: medium の下限は 450字だが、本文は約 363字（空白除く）で 87字足りない。出典ページに記載されている会場設置詳細・販売条件・キャンペーン内容などをさらに拾うことで分量を補える可能性がある。一般論や推測での水増しは避け、出典に実際に書かれている情報の追加を検討。",
+   "scope": "article:2026-09-04-sidem-suntory-oolong-vending.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-765-961-idol-ultimate-2027-announce.md",
+   "issue": "分量不足：rank: lead は本文1000字以上が目安。現在の本文は約195字で下限を大きく下回っている。イベント概要（会場名、チケット情報、公式情報ページ等）を追加すれば埋まるはずの記事。",
+   "scope": "article:2026-09-04-765-961-idol-ultimate-2027-announce.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-roundup-0904.md",
+   "issue": "候補 202609032335-explore-18 では ENDLESS DANCE 配信日が「2026年9月3日に公開」と記録され、unbacked_facts で「2026-09-03」「9月3日」が出典未確認の値として示されている。記事が「9月4日付」と明記している根拠が不明瞭。出典の学園アイドルマスター公式ディスコグラフィーページで実際の配信日付を確認し、候補との矛盾を解消する必要がある",
+   "scope": "article:2026-09-04-gaku-roundup-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-swimsuit-gacha-end-0904.md",
+   "issue": "sources 3 (news/01_19666) はポスタープレゼントキャンペーンについて報じており、記事本文で触れられている QUOカードプレゼントキャンペーン と異なる内容。記事では sources 3 が参照されていないため、適切な出典ではない",
+   "scope": "article:2026-09-04-gaku-swimsuit-gacha-end-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-swimsuit-gacha-end-0904.md",
+   "issue": "candidate_ids に記載の『sched-2026-09-04-gakumas-another-idol-26-swimsuit-gacha-2026-締切』『sched-2026-09-04-gakumas-swimsuit-gacha-hataya-2026-締切』が candidates ファイルに見つからない。frontmatter の指定に誤りがないか確認が必要",
+   "scope": "article:2026-09-04-gaku-swimsuit-gacha-end-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-sidem-divercity-tokyo-plaza-open.md",
+   "issue": "rank: large として本文が薄い（約558字、下限700字）。出典に各キャラクター別メニュー詳細が記載されているが、記事では一般化表記されている。「カールスジュニアの各ソーダ8種」を「神谷幸広の〇〇ソーダ、東雲荘一郎の〇〇ソーダ...」など、具体的なメニュー名を挙げて詳述することで分量を補填可能",
+   "scope": "article:2026-09-04-sidem-divercity-tokyo-plaza-open.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-sidem-transcendent-tales-guide-completes.md",
+   "issue": "分量：本文は約 620 字で rank:large の目安 700 字に約 80 字不足。ただし出典（PylonPort）に掲載されている配役詳細・CV・作詞作曲・品番情報等を取捨選択した結果と判断。無理な水増しは不要。",
+   "scope": "article:2026-09-04-sidem-transcendent-tales-guide-completes.md"
+  },
+  {
+   "file": "-",
+   "issue": "前回指摘の『規程違反：本数を理由としたドロップ』が依然として未修正。candidates に存在する記事化相当の公式発表が以下の通り紙面から漏れている：①シンデレラくじ引き堂文化祭テーマ（https://idolmaster-official.jp/news/01_19679）②ミリオン14th配信チケット販売開始（https://asobistage.asobistore.jp/event/million_14th/information）④SideM新キャスト発表 ⑤F-LAGS『ミート・ユメノトピア』2DMV公開 ⑥F@NTASTIC BATTLE FES第2弾詳細発表。③ばくすて！とーく配信決定のみ765-sidem-11th-stage-bakusute-talk-0912で補完されている",
+   "scope": "paper"
+  }
+ ]
+}

@@ -1,0 +1,108 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-04-765-961-idol-ultimate-2027-announce.md",
+   "issue": "規程3：出典の不一致。記事のsourcesに登録されている公式ポータルURL（https://idolmaster-official.jp/news/01_19349）は、実際には「20周年SP生配信 お知らせまとめ」ページであり、記事の主題である「IDOL ULTIMATE ONCE AND FOR ALL」に関する情報を含まない。",
+   "quote": "開催情報は、公式ポータルで7月26日付で発表されている。\n\nsources:\n- url: https://idolmaster-official.jp/news/01_19349\n  type: 公式\n  label: アイドルマスター公式ポータル",
+   "scope": "article:2026-09-04-765-961-idol-ultimate-2027-announce.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-roundup-0904.md",
+   "issue": "frontmatter の candidate_ids が存在しない。記事が参照する候補が検証不可能",
+   "quote": "candidate_ids:\n- 202609031236-explore-17\n- 202609031236-explore-18\n- 202609031835-explore-17\n- 202609032335-explore-18",
+   "scope": "article:2026-09-04-gaku-roundup-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-roundup-0904.md",
+   "issue": "出典にない事実：グッズの購入条件とランダム特典の詳細。記事が述べる『グッズはコラボメニュー注文者のみ購入できます』『メニュー1品ごと、またグッズ税込3,000円ごとにランダム特典が付き』がテキストで確認できない",
+   "quote": "グッズはコラボメニュー注文者のみ購入できます。メニュー1品ごと、またグッズ税込3,000円ごとにランダム特典が付き、特典はなくなり次第終了です。",
+   "scope": "article:2026-09-04-gaku-roundup-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-swimsuit-gacha-end-0904.md",
+   "issue": "校閲実行失敗: ",
+   "quote": "",
+   "scope": "article:2026-09-04-gaku-swimsuit-gacha-end-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-sidem-divercity-tokyo-plaza-open.md",
+   "issue": "出典にない事実：6Fの北陸富山回転寿司 PREMIUM 海王のメニューについての記載",
+   "quote": "メニューは、カールスジュニアの各ソーダ8種（各770円）、AMARAのラッシー2種（各800円）、日本橋 天丼 金子半之助の天丼2種（1,595円、1,925円）、ゴクゴクのドリンク3種（各880円）とデザートプレート（990円）、6Fの北陸富山回転寿司 PREMIUM 海王のメニュー2種（デザートプレート990円、イチゴミルクジュース880円）。",
+   "scope": "article:2026-09-04-sidem-divercity-tokyo-plaza-open.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-sidem-transcendent-tales-guide-completes.md",
+   "issue": "出典にない事実: 記事の複数箇所で「9月2日」（CD12の発売日、第3回記事の公開日）を記述しているが、候補の unbacked_facts に「2026-09-02」「9月2日」が挙げられており、これは出典から直接取得できない情報を示している。記事がこれを記載する根拠を確認する必要がある。",
+   "quote": "第3回記事が9月2日に公開され、全12作品のガイドが完結した。\n\n...第3回が、9月2日に公開された。\n\n...12は9月2日発売で、価格は2,200円（税込）／2,000円（税抜）。",
+   "scope": "article:2026-09-04-sidem-transcendent-tales-guide-completes.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-04-765-961-idol-ultimate-2027-announce.md",
+   "issue": "確認事項：公式ポータルURL（https://idolmaster-official.jp/news/01_19349）が正しいURLであるか再確認が必要。現在指定されているURLは別の話題のページである可能性が高い。Gamer記事（https://www.gamer.ne.jp/news/202609030018/）は出典として登録されているが、候補の出典となっているため、有効と考えられる。",
+   "scope": "article:2026-09-04-765-961-idol-ultimate-2027-announce.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-cg-official-shop-new-goods-patterns-0905.md",
+   "issue": "分量不足: 本文98字はrank:smallの下限250字に大きく及ばない。出典に記載されている店舗情報、抽選参加方法、ノベルティ詳細など、読者にできることを増やす情報が拾えば、容易に埋まるはずの記事",
+   "scope": "article:2026-09-04-cg-official-shop-new-goods-patterns-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-dsva-cosmo-rain-patterson-collab-0909.md",
+   "issue": "分量不足。rank: small(下限250字)に対して本文が約60字。出典には配信時刻「20時」、「今回から実装されたマルチプレイ」、役割(ビビり担当=宇宙、ツッコミ担当=パタ姉さん)など、記事に拾えていない詳細情報があり、補足できます",
+   "scope": "article:2026-09-04-dsva-cosmo-rain-patterson-collab-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-asari-zemi-end-0904.md",
+   "issue": "分量不足: rank=small で本文93字だが下限は250字。stories.yml の既報に「イベントモードで獲得したメモリーのアビリティを再抽選する内容」「HIF追加後初開催」「対象プランはセンス」など詳細がある。当日の締切告知に加えて「本日最後にプレイできるのは何か」など読者の判断材料になる情報を拾えば埋まる。ただし一般論・推測での水増しは不要",
+   "scope": "article:2026-09-04-gaku-asari-zemi-end-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-hatsuboshi-talk-guest-0904.md",
+   "issue": "分量不足：rank:small の下限は250字ですが、記事は約240字です。出典ページに記載されている配信URL（ニコニコ生放送：lv351266788、YouTube Live：8sZOp_vZQpo）を記事に追記することで分量基準に達することができます。",
+   "scope": "article:2026-09-04-gaku-hatsuboshi-talk-guest-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-gaku-roundup-0904.md",
+   "issue": "frontmatter の candidate_ids を修正する必要。候補ファイルに記事内容に該当する候補が存在するが（202609030229-explore-20、202609021835-explore-22 など）、frontmatter の ID が誤っている",
+   "scope": "article:2026-09-04-gaku-roundup-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-general-hatano-20th-year-interview-0904.md",
+   "issue": "TGS 公式ページでスピーカー情報が記載されていない。記事では『公式サイトに...セッションが掲載されており、波多野氏の登壇が予定されている』と述べ、両情報が公式から得られたように読める表現になっていますが、実際にはセッション情報のみ確認でき、波多野氏のスピーカー情報は TGS 公式ページに記載されていません。sources に記載の複数出典（特に Gamer など報道媒体）から得られた総合情報であることをより明確にする表現が望ましい。",
+   "scope": "article:2026-09-04-general-hatano-20th-year-interview-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-million-kuji-stage04-announced.md",
+   "issue": "分量不足：本文が約155字で、rank: small の下限250字に達していない。ただし詳細は9月16日に公開予定のため、現時点では追加できる具体的情報がない",
+   "scope": "article:2026-09-04-million-kuji-stage04-announced.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-million-seasonal-snapshot-christmas-order.md",
+   "issue": "分量不足: rank=small は下限250字ですが、本文は約181字。出典の facts には価格（BOX 5,500円/個、ステッカーセット 2,000円、キャラファイングラフ 16,000円/枚）や具体的な商品ラインアップが記載されており、これを追加すれば分量要件を満たせます。",
+   "scope": "article:2026-09-04-million-seasonal-snapshot-christmas-order.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-shiny-ilumine-gasha-tomori-another-costume-0904.md",
+   "issue": "分量不足。rank: small は 250字が下限だが、現在は164字（lede 44字+本文 120字）。出典ツイートに追加情報が限定的と見られるため、水増しせず短いままとするか、または出典の Twitter に記載されているガシャ期間などの情報がありればそれを加えることで分量を補うことが検討課題",
+   "scope": "article:2026-09-04-shiny-ilumine-gasha-tomori-another-costume-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-shiny-swimming-class-poll-0904.md",
+   "issue": "分量不足：本文が221字で、rank: small の下限250字に達していない。見出し・lede・本文を合わせても基準を満たさない。ただし候補には「エンゲージメント：中」以外の追加可能な事実がないため、出典の URL で投票期間や詳細を確認できれば充実可能",
+   "scope": "article:2026-09-04-shiny-swimming-class-poll-0904.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-04-sidem-suntory-oolong-vending.md",
+   "issue": "分量不足: rank: medium の下限は 450字だが、本文は約 363字（空白除く）で 87字足りない。出典ページに記載されている会場設置詳細・販売条件・キャンペーン内容などをさらに拾うことで分量を補える可能性がある。一般論や推測での水増しは避け、出典に実際に書かれている情報の追加を検討。",
+   "scope": "article:2026-09-04-sidem-suntory-oolong-vending.md"
+  },
+  {
+   "file": "-",
+   "issue": "candidates に有る記事化相当の公式発表が複数漏れている。規程の『本数を理由としたドロップは規程違反』に抵触する可能性。①シンデレラくじ引き堂文化祭テーマ（https://idolmaster-official.jp/news/01_19679）②ミリオン14th配信チケット販売開始（https://asobistage.asobistore.jp/event/million_14th/information）③14th後のばくすて！とーく配信決定④SideM新キャスト発表⑤F-LAGS『ミート・ユメノトピア』2DMV公開⑥F@NTASTIC BATTLE FES第2弾詳細発表",
+   "scope": "paper"
+  }
+ ]
+}

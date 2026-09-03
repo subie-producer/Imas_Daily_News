@@ -104,6 +104,10 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - news.livedoor.com     # 合議で追加: 公式発表・プレスリリースの言い換え、取材形跡なし
+  - gamerch.com           # 合議で追加: 攻略Wikiで公式発表を転載。編集メンバー77人による共編
+  - yutura.net            # 合議で追加: YouTube上の動画情報を集約するランキングサイト
+  - news.mixi.jp          # 合議で追加: 生配信とキャスト陣のX投稿を引用。取材形跡なし
   - melonpapapapa-n.com   # 合議で追加: ゲーム内スケジュール情報を集約・整理。他所の発表を伝えている
   - imas-history.com      # 合議で追加: 年表形式で公式発表やイベント情報を集約。自ら取材した形跡なし
   - raduga.pgw.jp         # みりしたらぼ(攻略・ボーダーまとめ)
@@ -152,6 +156,9 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - asmart.jp             # 合議で追加: A-on STOREによるSideM商品販売
+  - apis.game.starlight-stage.jp # 合議で追加: ゲーム運営元による11周年キャンペーン一次発信
+  - chugai-grace-cafe.jp  # 合議で追加: コラボカフェ運営会社が自社催しを告知
   - magnetbyshibuya109.jp # 合議で追加: 会場が自施設でのポップアップストア開催を直接告知している
   - prod.union-creative.jp # 合議で追加: フィギュアメーカーが自社製造商品を販売・予約受付している
   - kotobukiya.co.jp      # 合議で追加: フィギュアメーカーが自社商品・イベント情報を告知している

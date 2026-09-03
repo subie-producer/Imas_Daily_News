@@ -1,0 +1,21 @@
+{
+  "articles": [
+    {
+      "slug": "joint-tours-ranking-update-0902",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "『アイドルマスター TOURS』9月2日時点の公式ランキングを、対象楽曲と上位スコア・P.Lvとともに伝える",
+      "lead_score": 10,
+      "dedup_key": "tours-official-ranking-2026-09-02",
+      "candidate_ids": ["202609031236-explore-23"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "tours-late-summer-banatsu-2026",
+      "reason": "既報",
+      "note": "stock/stories.ymlのtours-late-summer-campaign-2026(2026-08-25初報)にキャンペーン期間・交換期間・ポイント制度・景品(Tシャツ120pt/ストレージボックス36pt/カード12pt)がすべて記載済みで、今回の候補facts(未確認ソース)に新事実が無い"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,0 +1,22 @@
+[
+ {
+  "id": "sched-2026-11-30-million-x-stream-theater-vol1-2026-終了",
+  "dedup_key": "million-x-stream-theater-vol1-2026",
+  "brand": "million",
+  "subject": "ミリシタ「X-STREAM THEATER」VOL.1パス",
+  "kind": "終了",
+  "note": "パス有効期間終了23:59",
+  "reserved_on": "2026-09-04",
+  "title": "ミリシタ新シリーズ、X-STREAM VOL.1パス開始",
+  "url": "https://idolmaster-official.jp/news/01_19738",
+  "source_type": "公式",
+  "facts": [
+   "「X-STREAM VOL.1パス」の有効期間は9月1日〜11月30日23:59",
+   "ポイント交換期限は12月15日23:59まで別途継続"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031835-explore-32",
+  "event_date": "2026-11-30"
+ }
+]

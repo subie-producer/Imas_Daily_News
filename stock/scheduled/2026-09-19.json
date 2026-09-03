@@ -1,87 +1,107 @@
 [
-  {
-    "id": "sched-2026-09-19-million-14th-live-開幕",
-    "dedup_key": "million-14th-live",
-    "brand": "million",
-    "subject": "ミリオン14thLIVE(9/19-20)とアソビストア先行",
-    "kind": "開幕",
-    "note": "14thLIVE DAY1 夢咲くワンダーミラージュ",
-    "reserved_on": "2026-07-13",
-    "facts": [
-      "THE IDOLM@STER MILLION LIVE! 14thLIVEは2026年9月19日(土)・20日(日)開催",
-      "アソビストア一般会員先行(抽選)の受付は2026年7月10日12:00〜7月30日23:59",
-      "当落発表は2026年8月11日13:00から、入金期間は8月11日13:00〜8月15日23:59",
-      "枚数制限は1人1公演につき2枚まで(複数公演申込可)、デジタルチケットのみ",
-      "DAY1の公演名は「夢咲くワンダーミラージュ」",
-      "未就学児入場不可、会場で本人確認を行う場合あり",
-      "案内では全席でスタンディングでの観覧が可能とされている",
-      "ポータル掲出は2026年7月10日付"
-    ],
-    "title": "ミリオン14thLIVE アソビストア一般会員先行 受付開始",
-    "url": "https://idolmaster-official.jp/news/01_19351",
-    "source_type": "公式",
-    "via": "",
-    "verify": "confirmed",
-    "src_candidate_id": "20260712-portal-ml14th-senko",
-    "event_date": "2026-09-19"
-  },
-  {
-    "id": "sched-2026-09-19-cg-kyomafu-2026-goods-開幕",
-    "dedup_key": "cg-kyomafu-2026-goods",
-    "brand": "joint",
-    "subject": "京まふ2026 デレマス・ミリオン新作グッズ",
-    "kind": "開幕",
-    "note": "京まふ2026 開幕日",
-    "reserved_on": "2026-08-24",
-    "facts": [
-      "京都国際マンガ・アニメフェア(京まふ)2026は2026年9月19日(土)〜9月20日(日)開催",
-      "THEキャラブースにシンデレラガールズ・ミリオンライブが出展、新規描き下ろしグッズと記念ドリンクを展開",
-      "ミリオンライブの描き下ろし対象は伊吹翼・大神環・高坂海美・佐竹美奈子・所恵美・舞浜歩・松田亜利沙・横山奈緒"
-    ],
-    "title": "京まふ2026でデレマスグッズと記念ドリンク",
-    "url": "https://idolmaster-official.jp/news/01_19659",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608232010-grok-19",
-    "event_date": "2026-09-19",
-    "deadline": "2026-09-20"
-  },
-  {
-    "id": "sched-2026-09-19-gaku-ichiban-kuji-part6-2026-発売",
-    "dedup_key": "gaku-ichiban-kuji-part6-2026",
-    "brand": "gaku",
-    "subject": "一番くじ 学園アイドルマスター Part6",
-    "kind": "発売",
-    "note": "店舗発売開始(順次)",
-    "title": "一番くじ学マスPart6、全ラインナップ公開",
-    "url": "https://idolmaster-official.jp/news/01_19668",
-    "source_type": "準公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608281836-watch-5",
-    "event_date": "2026-09-19",
-    "facts": [
-      "9月19日より順次発売、オンライン販売は9月24日17時開始、価格は1回850円(税込)",
-      "A賞有村麻央・B賞倉本千奈・C賞篠澤広の1/7スケールフィギュア「1/7 Gracemaster」ほかD〜H賞、ラストワン賞は有村麻央フィギュアラストワンVer."
-    ],
-    "reserved_on": "2026-08-29"
-  },
-  {
-    "id": "sched-2026-09-19-dsva-nagano-aniera-festa-2026-開幕",
-    "dedup_key": "dsva-nagano-aniera-festa-2026",
-    "brand": "dsva",
-    "subject": "ナガノアニエラフェスタ2026",
-    "kind": "開幕",
-    "note": "DAY1開幕",
-    "reserved_on": "2026-08-30",
-    "title": "ナガノアニエラフェスタ2026のタイムテーブル公開",
-    "url": "https://aniera-festa.com/news/timetable2026/",
-    "source_type": "当事者",
-    "verify": "confirmed",
-    "src_candidate_id": "202608300227-explore-15",
-    "event_date": "2026-09-19",
-    "facts": [
-      "9月19日・20日の2日間、TEMPEST STAGE・PHANTOM STAGE・観覧無料のLIGHTNING STAGEの全3ステージで展開",
-      "佐久平駅と会場駒場公園を結ぶ公式シャトルバスをチケットぴあで販売中、電子チケットのみ、各日2,000円(税込)"
-    ]
-  }
+ {
+  "id": "sched-2026-09-19-million-14th-live-開幕",
+  "dedup_key": "million-14th-live",
+  "brand": "million",
+  "subject": "ミリオン14thLIVE(9/19-20)とアソビストア先行",
+  "kind": "開幕",
+  "note": "14thLIVE DAY1 夢咲くワンダーミラージュ",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "THE IDOLM@STER MILLION LIVE! 14thLIVEは2026年9月19日(土)・20日(日)開催",
+   "アソビストア一般会員先行(抽選)の受付は2026年7月10日12:00〜7月30日23:59",
+   "当落発表は2026年8月11日13:00から、入金期間は8月11日13:00〜8月15日23:59",
+   "枚数制限は1人1公演につき2枚まで(複数公演申込可)、デジタルチケットのみ",
+   "DAY1の公演名は「夢咲くワンダーミラージュ」",
+   "未就学児入場不可、会場で本人確認を行う場合あり",
+   "案内では全席でスタンディングでの観覧が可能とされている",
+   "ポータル掲出は2026年7月10日付"
+  ],
+  "title": "ミリオン14thLIVE アソビストア一般会員先行 受付開始",
+  "url": "https://idolmaster-official.jp/news/01_19351",
+  "source_type": "公式",
+  "via": "",
+  "verify": "confirmed",
+  "src_candidate_id": "20260712-portal-ml14th-senko",
+  "event_date": "2026-09-19"
+ },
+ {
+  "id": "sched-2026-09-19-cg-kyomafu-2026-goods-開幕",
+  "dedup_key": "cg-kyomafu-2026-goods",
+  "brand": "joint",
+  "subject": "京まふ2026 デレマス・ミリオン新作グッズ",
+  "kind": "開幕",
+  "note": "京まふ2026 開幕日",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "京都国際マンガ・アニメフェア(京まふ)2026は2026年9月19日(土)〜9月20日(日)開催",
+   "THEキャラブースにシンデレラガールズ・ミリオンライブが出展、新規描き下ろしグッズと記念ドリンクを展開",
+   "ミリオンライブの描き下ろし対象は伊吹翼・大神環・高坂海美・佐竹美奈子・所恵美・舞浜歩・松田亜利沙・横山奈緒"
+  ],
+  "title": "京まふ2026でデレマスグッズと記念ドリンク",
+  "url": "https://idolmaster-official.jp/news/01_19659",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-grok-19",
+  "event_date": "2026-09-19",
+  "deadline": "2026-09-20"
+ },
+ {
+  "id": "sched-2026-09-19-gaku-ichiban-kuji-part6-2026-発売",
+  "dedup_key": "gaku-ichiban-kuji-part6-2026",
+  "brand": "gaku",
+  "subject": "一番くじ 学園アイドルマスター Part6",
+  "kind": "発売",
+  "note": "店舗発売開始(順次)",
+  "title": "一番くじ学マスPart6、全ラインナップ公開",
+  "url": "https://idolmaster-official.jp/news/01_19668",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608281836-watch-5",
+  "event_date": "2026-09-19",
+  "facts": [
+   "9月19日より順次発売、オンライン販売は9月24日17時開始、価格は1回850円(税込)",
+   "A賞有村麻央・B賞倉本千奈・C賞篠澤広の1/7スケールフィギュア「1/7 Gracemaster」ほかD〜H賞、ラストワン賞は有村麻央フィギュアラストワンVer."
+  ],
+  "reserved_on": "2026-08-29"
+ },
+ {
+  "id": "sched-2026-09-19-dsva-nagano-aniera-festa-2026-開幕",
+  "dedup_key": "dsva-nagano-aniera-festa-2026",
+  "brand": "dsva",
+  "subject": "ナガノアニエラフェスタ2026",
+  "kind": "開幕",
+  "note": "DAY1開幕",
+  "reserved_on": "2026-08-30",
+  "title": "ナガノアニエラフェスタ2026のタイムテーブル公開",
+  "url": "https://aniera-festa.com/news/timetable2026/",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202608300227-explore-15",
+  "event_date": "2026-09-19",
+  "facts": [
+   "9月19日・20日の2日間、TEMPEST STAGE・PHANTOM STAGE・観覧無料のLIGHTNING STAGEの全3ステージで展開",
+   "佐久平駅と会場駒場公園を結ぶ公式シャトルバスをチケットぴあで販売中、電子チケットのみ、各日2,000円(税込)"
+  ]
+ },
+ {
+  "id": "sched-2026-09-19-million-cardfolio-vol4-2026-発売",
+  "dedup_key": "million-cardfolio-vol4-2026",
+  "brand": "million",
+  "subject": "カードフォリオ ミリオンライブ！ver. vol.4",
+  "kind": "発売",
+  "note": "発売・14thLIVE会場先行販売",
+  "reserved_on": "2026-09-04",
+  "title": "カードフォリオ ミリオンライブ！ver. vol.4",
+  "url": "https://cardfolio.idolmaster-official.jp/news/?post_type=products&p=1093",
+  "source_type": "公式",
+  "facts": [
+   "発売日は2026年9月19日(土)、1BOX5,000円・1パック500円、全114種収録",
+   "ミリオン14thLIVE会場物販で先行販売"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609031835-explore-11",
+  "event_date": "2026-09-19"
+ }
 ]

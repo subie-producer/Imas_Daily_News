@@ -754,8 +754,10 @@ def posts_fingerprint(date: str) -> dict:
     {ファイル名: (読まれる中身, 組版が使う値)}
 
     - 読まれる中身 = 本文 + 見出し + リード。社説と digest が読む部分
-    - 組版が使う値 = candidate_ids・出典URL・brand・rank。
-      組版はこれを使って digest を作り、`stock/stories.yml` と続報予約を更新する
+    - 組版が使う値 = candidate_ids・出典URL・brand・rank・event_date。
+      組版はこれを使って digest を作り、`stock/stories.yml` と続報予約を更新する。
+      `event_date` を入れてあるのは、本文が変わらないまま日付だけ校閲で直ったとき、
+      続報予約が旧日付のまま残るため(監査指摘)
 
     ファイル全体のハッシュ1つで見ていたら、組版と lint 修正が frontmatter を
     整えるだけで「変わった」と判定していた(実測 2026-09-02: 32本が変化扱いだが
@@ -773,6 +775,7 @@ def posts_fingerprint(date: str) -> dict:
                 fm = yaml.safe_load(m.group(1)) or {}
                 head = f"{fm.get('title', '')}\n{fm.get('lede', '')}"
                 meta = json.dumps([fm.get("candidate_ids"), fm.get("brand"), fm.get("rank"),
+                                   str(fm.get("event_date") or ""),
                                    [s.get("url") for s in (fm.get("sources") or [])]],
                                   ensure_ascii=False, sort_keys=True)
             except Exception:
@@ -1052,7 +1055,9 @@ def repair_plan_shape(plan: dict) -> list[str]:
             a["rank"] = "large"
             fixed.append(f"{a.get('slug','?')}: 一面が複数あるので lead → large")
     elif not leads:
-        cand = [a for a in arts if a.get("rank") not in ("roundup", "culture")]
+        # 除外は roundup だけ。pick_lead も culture を一面候補として認めているので、
+        # ここで culture を外すと「残ったのが culture だけ」の号で一面が立たない(監査指摘)
+        cand = [a for a in arts if a.get("rank") != "roundup"]
         if cand:
             top = max(cand, key=lambda a: a.get("lead_score") or 0)
             top["rank"] = "lead"
@@ -1836,50 +1841,25 @@ def main() -> int:
     # 直った記事で書き直し、もう一度校閲に掛ける。ここを飛ばすと、
     # 直された事実を引用したままの社説が紙面に出る
     now_fp = posts_fingerprint(date)
-    # **参照している記事が変わったときだけ**やり直す。全部の変更でやり直すと、
-    # 組版セッション+社説+校閲でおよそ40分伸び、時間切れで号ごと落ちる(2026-08-31)。
+    # 社説も組版も、**その号の全記事を読んで**書かれる。社説プロンプトは
+    # 「事実の出所は本日の全記事」と言い、組版は全記事から台帳と続報予約を作る。
+    # だから「どの記事を参照したか」を絞り込む意味がない。参照先を推し当てようと
+    # slug や見出しで照合していたが、社説は slug を書かず見出しも言い換えるので、
+    # 取り直しがほとんど発火していなかった(監査指摘)。
+    #
+    # 絞り込みをやめても時間は増えない。**発火したら結局どちらも走る**からで、
+    # 2026-08-31 に時間切れを起こしたのは「frontmatter を整えただけの記事を
+    # 変化とみなしていた」ことのほうだった。それは指紋を用途で割って外してある。
     changed_read = posts_changed(posts_at_editorial, now_fp, 0)   # 読まれる中身
     changed_meta = posts_changed(posts_at_editorial, now_fp, 1)   # 組版が使う値
     changed_posts = sorted(set(changed_read) | set(changed_meta))
-
-    ed_file = ROOT / "docs" / "_editions" / f"{date}.md"
-    ed_snap = ed_file.read_text(encoding="utf-8") if ed_file.exists() else ""
-    ed_txt = ROOT / "docs" / "_editorials" / f"{date}.md"
-    ed_body = ed_txt.read_text(encoding="utf-8") if ed_txt.exists() else ""
-
-    # digest は slug を持つので、slug で照合できる。
-    # **組版が使う値(candidate_ids・出典URL・brand・rank)が変わった記事も対象**。
-    # 組版はそこから台帳と続報予約を作るので、変われば作り直しが要る(監査指摘)
-    slug_of = lambda n: n[len(date) + 1:].removesuffix(".md")
-    touches_digest = sorted({slug_of(n) for n in changed_read if slug_of(n) in ed_snap}
-                            | {slug_of(n) for n in changed_meta})
-
-    # **社説は slug を書かない。**slug で照合していたので、社説の取り直しは
-    # ほとんど発火していなかった(監査指摘)。起点にした記事と、
-    # 社説本文に見出しが出てくる記事で見る
-    def in_editorial(name: str) -> bool:
-        s = slug_of(name)
-        if s == plan.get("editorial_slug"):
-            return True
-        p2 = ROOT / "docs" / "_posts" / name
-        if not p2.exists() or not ed_body:
-            return False
-        m2 = re.match(r"^---\n(.*?)\n---\n", p2.read_text(encoding="utf-8"), re.S)
-        if not m2:
-            return False
+    touches_editorial = changed_read            # 社説は本文・見出し・リードを読む
+    touches_digest = changed_posts              # 組版はそれに加えて台帳用の値も使う
+    if changed_posts and review:
         try:
-            title = str((yaml.safe_load(m2.group(1)) or {}).get("title") or "")
-        except Exception:
-            return False
-        # 見出しは社説にそのまま出るとは限らないので、鉤括弧の中の固有名詞で照合する
-        keys = re.findall(r"[「『]([^」』]{3,30})[」』]", title) or ([title] if len(title) >= 6 else [])
-        return any(k in ed_body for k in keys)
-
-    touches_editorial = sorted({slug_of(n) for n in changed_read if in_editorial(n)})
-    if changed_posts and review and (touches_digest or touches_editorial):
-        try:
-            print(f"記事が {len(changed_posts)}本変わり、うち digest {len(touches_digest)}件 / "
-                  f"社説 {len(touches_editorial)}件が参照している。取り直す", flush=True)
+            print(f"記事が {len(changed_posts)}本変わった"
+                  f"(中身 {len(changed_read)}本 / 組版が使う値 {len(changed_meta)}本)。取り直す",
+                  flush=True)
             commit_and_push(branch, f"compose {date}: 校閲往復のあと(取り直し前)", "compose")
             ed_comments = [c for c in (review.get("comments") or [])
                            if (c.get("file") or "").startswith("docs/_editorials/")]
@@ -1893,9 +1873,10 @@ def main() -> int:
                 rewrite_editorial(date, number, plan.get("editorial_slug", ""),
                                   plan.get("editorial_brand", ""),
                                   [{"file": f"docs/_editorials/{date}.md",
-                                    "issue": "この社説が触れている記事が、校閲で直りました("
-                                             + "、".join(touches_editorial[:6])
-                                             + ")。**直った記事を読み直し**、社説が引用している事実が"
+                                    "issue": "本日の記事が校閲で直りました("
+                                             + "、".join(n[len(date) + 1:].removesuffix(".md")
+                                                         for n in touches_editorial[:6])
+                                             + " ほか)。**直った記事を読み直し**、社説が引用している事実が"
                                                "いまも紙面にあるか確かめて書き直してください。"
                                                "問題がなければ、直す必要はありません", "quote": ""}],
                                   must_change=False, comments=ed_comments)

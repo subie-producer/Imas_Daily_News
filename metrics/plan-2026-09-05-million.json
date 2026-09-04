@@ -1,0 +1,119 @@
+{
+  "articles": [
+    {
+      "slug": "million-cardfolio-vol4-mr-reveal",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "「アイドルマスター カードフォリオ ミリオンライブ！ver. vol.4」の発売決定、14thLIVE会場先行販売と収録内容・連日のMR公開を伝える",
+      "lead_score": 15,
+      "dedup_key": "million-cardfolio-vol4-2026",
+      "candidate_ids": ["202609040733-explore-4", "202609041234-explore-17", "202609050237-grok-60", "202609050237-grok-61"]
+    },
+    {
+      "slug": "million-x-stream-theater-announce",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "ミリシタ10年目の新シリーズ「X-STREAM THEATER」発表、9月開催「プラチナスターツアービンゴ～一旦愛して♡～」の詳細も判明",
+      "lead_score": 70,
+      "dedup_key": "million-x-stream-theater-2026",
+      "candidate_ids": ["202609041234-explore-19", "202609041234-explore-3"]
+    },
+    {
+      "slug": "million-chibigurumi-spade-q-namco",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "プライズぬいぐるみ「ちびぐるみ～スペードのQ～」2027年1月にナムコで順次展開決定、オンラインクレーン先行プレイ実施中",
+      "lead_score": 20,
+      "dedup_key": "million-chibigurumi-spade-of-q-2026",
+      "candidate_ids": ["202609041234-explore-5", "202609041836-watch-0"]
+    },
+    {
+      "slug": "million-kotobukiya-kuji-stage04",
+      "brand": "million",
+      "rank": "small",
+      "angle": "コトブキヤくじ「アイドルマスター ミリオンライブ！ stage04」登場決定、9/16詳細公開・9/18販売開始",
+      "lead_score": 15,
+      "dedup_key": "million-kotobukiya-kuji-stage04-2026",
+      "candidate_ids": ["202609041234-explore-22"]
+    },
+    {
+      "slug": "million-14th-dressing-room-flowers",
+      "brand": "million",
+      "rank": "small",
+      "angle": "14thLIVE楽屋花の受付詳細を更新、サイズ規定と設置場所の来場者向け変更を告知",
+      "lead_score": 5,
+      "dedup_key": "million-14th-dressing-room-flowers-2026",
+      "candidate_ids": ["202609041836-explore-12"]
+    },
+    {
+      "slug": "million-hinata-sobetsu-apple-ambassador",
+      "brand": "million",
+      "rank": "small",
+      "angle": "木下ひなたが「壮瞥町りんご大使」に4年連続就任、第50回そうべつりんごまつりが10/2開幕",
+      "lead_score": 10,
+      "dedup_key": "sobetsu-apple-festival-hinata-2026",
+      "candidate_ids": ["202609041836-explore-28"]
+    },
+    {
+      "slug": "million-seasonal-snapshot-december",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ新グッズ「SEASONAL SNAPSHOT」12月分(高槻やよい・伊吹翼)受注開始、9/20締切",
+      "lead_score": 10,
+      "dedup_key": "million-seasonal-snapshot-december-2026",
+      "candidate_ids": ["202609042337-explore-17", "202609050237-grok-62"]
+    },
+    {
+      "slug": "million-platinum-star-theater-roundup",
+      "brand": "million",
+      "rank": "roundup",
+      "angle": "開催中イベント「プラチナスターシアター～秘密のメモリーズ～」の進行中情報まとめ(消費倍率アップ・ストーリー・ショップ、9/8終了予定)",
+      "lead_score": 0,
+      "dedup_key": "x-com-imasml-theater-status-2095753730066993219-6",
+      "candidate_ids": ["202609050237-grok-63", "202609050237-grok-65", "202609050237-grok-66", "202609050237-grok-67", "202609050237-grok-68"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-14th-live-streaming-2026",
+      "reason": "既報",
+      "note": "stock/stories.ylのmillion-14th-liveに配信チケット価格・期間とも同一facts記載済み"
+    },
+    {
+      "dedup_key": "million-ittan-aishite-buzz-2026",
+      "reason": "出典不足",
+      "note": "二次情報(SNS検索)のみでverify unconfirmed、公式未到達のファン反応集約"
+    },
+    {
+      "dedup_key": "million-matsuriyu-2026",
+      "reason": "出典不足",
+      "note": "source_typesが未確認、公式コラボ発表に到達できず(規程2)"
+    },
+    {
+      "dedup_key": "million-14th-bakuste-talk-2026",
+      "reason": "既報",
+      "note": "stock/stories.ylに同内容(出演者・配信URL含む)記載済み"
+    },
+    {
+      "dedup_key": "million-14th-goods-2026",
+      "reason": "既報",
+      "note": "stock/stories.ylに受付期間9/4-9/9・当落発表9/15の記載済み"
+    },
+    {
+      "dedup_key": "x-com-imasml-theater-status-2095799025211457701-7",
+      "reason": "その他",
+      "note": "解消済みの購入不具合報告、規程2により済んだトラブル・お詫びは書かない"
+    },
+    {
+      "dedup_key": "idolmaster-official-jp-live-event-million14th-12",
+      "reason": "既報",
+      "note": "公演名・日程・会場ともstock/stories.ylに記載済みの静的情報"
+    },
+    {
+      "dedup_key": "idolmaster-official-jp-news-01-19715-15",
+      "reason": "既報",
+      "note": "million-14th-bakuste-talk-2026と同内容、既報かつ重複"
+    }
+  ],
+  "cross_brand": []
+}

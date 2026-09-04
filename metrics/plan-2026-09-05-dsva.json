@@ -1,0 +1,100 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-cosmo-birthday-live-schedule",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "上水流宇宙 BIRTHDAY ONLINE LIVE 2026、当日の上映スケジュールとアフタートーク配信・お見送り会の内容が判明",
+      "lead_score": 5,
+      "dedup_key": "valiv-cosmo-birthday-live-2026",
+      "candidate_ids": ["202609041234-explore-16"]
+    },
+    {
+      "slug": "dsva-cosmo-birthday-voice-sale",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "『vα-liv バースデー記念ボイス2026 上水流宇宙』が9月4日20:00に販売開始、期間限定9月27日まで",
+      "lead_score": 10,
+      "dedup_key": "valiv-birthday-voice-kamimizu-2026",
+      "candidate_ids": ["202609042337-watch-0", "202609050237-grok-31"]
+    },
+    {
+      "slug": "dsva-manaka-kpf2026-appearance",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "灯里愛夏、11月29日『KPF2026』(北九州メッセ)スペシャルトーク＆ライブステージへの出演が決定",
+      "lead_score": 15,
+      "dedup_key": "x-com-valiv-official-status-2095729948447363295-5",
+      "candidate_ids": ["202609050237-grok-34"]
+    },
+    {
+      "slug": "dsva-valiv-streaming-roundup-0905",
+      "brand": "dsva",
+      "rank": "roundup",
+      "angle": "vα-liv直近の配信活動まとめ(上水流宇宙『ACE COMBAT 7』プレイ配信・朝活配信、灯里愛夏のピーマン克服クッキング配信)",
+      "lead_score": 0,
+      "dedup_key": "valiv-ace-combat7-2026-09",
+      "candidate_ids": [
+        "202609041234-explore-12",
+        "202609041836-explore-21",
+        "202609041836-explore-23",
+        "202609042337-explore-29",
+        "202609050237-grok-33",
+        "202609050237-grok-35"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "tomori-spaghet-2026-09-02",
+      "reason": "既報",
+      "note": "9/4号ロールアップ(dsva-valiv-ops-roundup-2026-09-04)で既に報道済み、新事実なし"
+    },
+    {
+      "dedup_key": "cosmo-sleep-chat-2026-09-03",
+      "reason": "既報",
+      "note": "valiv-cosmo-sleep-chat-2026-09-03として既に報道済み、新事実なし"
+    },
+    {
+      "dedup_key": "valiv-manaka-vtuber-short-2026-09-03",
+      "reason": "既報",
+      "note": "valiv-manaka-vtuber-shorts-2026-09-03として既に報道済み、新事実なし"
+    },
+    {
+      "dedup_key": "valiv-cosmo-sleep-chat-20260903",
+      "reason": "既報",
+      "note": "同一配信(9/3寝落ち雑談)の既報、同時接続数等の数値は台帳的事実で新規性なし"
+    },
+    {
+      "dedup_key": "valiv-letora-silent-hill-20260905",
+      "reason": "出典不足",
+      "note": "出典が非公式wikiのみで公式告知に未到達(規程2)。配信の実施は必ず公式告知があるため、確認できるまで記事化しない"
+    },
+    {
+      "dedup_key": "x-com-valiv-official-status-2095814128484950151-3",
+      "reason": "既報",
+      "note": "dsva-situation-voice14-2026として8/27付で既報、9/6締切も既に報道済みで新事実なし"
+    },
+    {
+      "dedup_key": "x-com-valiv-official-status-2095497040625303719-7",
+      "reason": "既報",
+      "note": "9/3寝落ち雑談配信の告知投稿の重複、既報"
+    },
+    {
+      "dedup_key": "x-com-valiv-official-status-2095452315272790361-8",
+      "reason": "既報",
+      "note": "既報のショート動画『にじさんじ体操第一』の再掲・訂正告知のみで、読者の行動に関わる新事実なし"
+    },
+    {
+      "dedup_key": "x-com-valiv-official-status-2095451747208851600-9",
+      "reason": "既報",
+      "note": "灯里愛夏ショート『VTuberはいいぞ』の告知投稿の重複、既報"
+    },
+    {
+      "dedup_key": "x-com-valiv-official-status-2095353590508601470-10",
+      "reason": "既報",
+      "note": "9/3寝落ち雑談配信のTODAY'S LINEUP投稿の重複、既報"
+    }
+  ],
+  "cross_brand": []
+}

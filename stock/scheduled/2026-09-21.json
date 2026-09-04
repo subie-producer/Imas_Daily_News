@@ -18,5 +18,21 @@
     "verify": "confirmed",
     "deadline": "2026-09-21",
     "src_candidate_id": "202609020238-grok-31"
+  },
+  {
+    "id": "sched-2026-09-21-gaku-shirube-livetour-fukuoka-2026-締切",
+    "dedup_key": "gaku-shirube-livetour-fukuoka-2026",
+    "brand": "gaku",
+    "subject": "学マス標ツアー福岡公演 配信視聴チケット",
+    "kind": "締切",
+    "reserved_on": "2026-09-05",
+    "facts": [
+      "配信視聴チケットの販売期間は9月21日18時まで、視聴コメント付きアーカイブは9月21日23:59まで"
+    ],
+    "title": "学マス標ツアー福岡公演が開幕、物販・配信も",
+    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/information/fukuoka.php",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609050237-grok-40"
   }
 ]

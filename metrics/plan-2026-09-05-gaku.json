@@ -1,0 +1,160 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-shirube-fukuoka-live-opens",
+      "brand": "gaku",
+      "rank": "large",
+      "angle": "学園アイドルマスター LIVE TOUR -標- 福岡公演が開幕、2日間の会場物販・配信視聴・出演カスト歌唱の「修楽旅行」5人ver配信をまとめて報じる",
+      "lead_score": 70,
+      "dedup_key": "gaku-livetour-fukuoka-2026",
+      "candidate_ids": [
+        "202609042337-watch-4",
+        "202609050237-grok-40",
+        "202609050237-grok-42",
+        "202609050237-grok-47",
+        "202609050237-grok-48",
+        "sched-2026-09-05-gaku-shirube-fukuoka-ticket-general-resale-2026-開幕",
+        "sched-2026-09-05-gaku-shirube-livetour-fukuoka-show-2026-開幕"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-iwate-general-sale-start",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "学マスLIVE TOUR標 岩手公演のチケット一般先着販売が本日12時開始、公式リセールも同日夕方から",
+      "lead_score": 15,
+      "dedup_key": "gaku-live-tour-shirube-iwate-general-sale-2026",
+      "candidate_ids": [
+        "202609042337-explore-27",
+        "sched-2026-09-05-gaku-live-tour-shirube-iwate-general-sale-2026-開始"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-iwate-viewing-taiwan-presale",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "岩手公演のライブビューイング(台湾・秀泰影城)、本日正午から予售開始",
+      "lead_score": 5,
+      "dedup_key": "gaku-livetour-iwate-viewing-2026",
+      "candidate_ids": ["202609042337-watch-2"]
+    },
+    {
+      "slug": "gaku-shirube-iwate-goods-info",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "岩手公演(9/22・23)の会場物販の日時・会場・購入制限が判明、物販整理券の申込も受付開始",
+      "lead_score": 10,
+      "dedup_key": "gaku-shirube-iwate-goods-2026",
+      "candidate_ids": ["202609041836-explore-18", "202609050237-grok-44"]
+    },
+    {
+      "slug": "gaku-shirube-fukui-archive-deadline",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "標ツアー福井公演の配信アーカイブ視聴は本日まで、公演振り返りの一幕も紹介",
+      "lead_score": 5,
+      "dedup_key": "x-com-gkmas-official-status-2095821676646985898-3",
+      "candidate_ids": ["202609050237-grok-41"]
+    },
+    {
+      "slug": "gaku-story-event-saigo-no-bunkasai",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "新ストーリーイベント『さいごの文化祭』開催中、9月12日4:59までの期間を報じる",
+      "lead_score": 20,
+      "dedup_key": "x-com-gkmas-official-status-2095720759037415923-7",
+      "candidate_ids": ["202609050237-grok-45"]
+    },
+    {
+      "slug": "gaku-sugar-flavor-mv-1million",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "『SUGAR FLAVOR』MVが100万再生を突破",
+      "lead_score": 10,
+      "dedup_key": "x-com-gkmas-official-status-2095456769845928116-8",
+      "candidate_ids": ["202609050237-grok-46"]
+    },
+    {
+      "slug": "gaku-4koma-165-167",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "学マス4コマ漫画 第165〜167話が公開",
+      "lead_score": 5,
+      "dedup_key": "x-com-gkmas-official-status-2095799034770260046-5",
+      "candidate_ids": ["202609050237-grok-43"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gaku-standard-gacha-mao-china-seika-2026",
+      "reason": "既報",
+      "note": "9/4付でstock story gakumasu-shirube-gasha-2026として既に公開日時・実装アイドルとも同内容を記事化済み、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-miracle-nanau-2026",
+      "reason": "既報",
+      "note": "8/31付stock story gakumas-tracks-streaming-0831-2026(計5曲配信)と同一曲・同一クレジット、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-chugai-grace-cafe-revival-shibuya-2026",
+      "reason": "既報",
+      "note": "同一dedup_keyで9/4付stock storyとして既に公開済み、facts一致で新事実なし"
+    },
+    {
+      "dedup_key": "gaku-endless-dance-reiris-2026",
+      "reason": "既報",
+      "note": "咲季・手毬・ことねver.は8/31付gakumas-tracks-streaming-0831-2026および9/4付gaku-endless-dance-saki-temari-kotone-2026で既報、新事実なし"
+    },
+    {
+      "dedup_key": "gaku-endless-dance-lilya-china-rinami-2026",
+      "reason": "既報",
+      "note": "リーリヤ・千奈・莉波ver.は8/31付gakumas-tracks-streaming-0831-2026で既報、新事実なし"
+    },
+    {
+      "dedup_key": "gakumas-chugai-cafe-revival-2026",
+      "reason": "重複",
+      "note": "gaku-chugai-grace-cafe-revival-shibuya-2026と同一話題(渋谷Chugai Grace Caféリバイバル)、既報のため不採用"
+    },
+    {
+      "dedup_key": "gaku-chugai-grace-cafe-revival-2026",
+      "reason": "重複",
+      "note": "gaku-chugai-grace-cafe-revival-shibuya-2026と同一話題(渋谷Chugai Grace Caféリバイバル)、既報のため不採用"
+    },
+    {
+      "dedup_key": "endless-dance-mao-summer-hiro-2026",
+      "reason": "既報",
+      "note": "麻央・清夏・広ver.は8/31付gakumas-tracks-streaming-0831-2026で既報、新事実なし"
+    },
+    {
+      "dedup_key": "howling-over-the-world-2026",
+      "reason": "既報",
+      "note": "花海佑芽・秦谷美鈴・十王星南ver.は8/31付gakumas-tracks-streaming-0831-2026で既報、新事実なし"
+    },
+    {
+      "dedup_key": "idolmaster-official-jp-news-01-19668-13",
+      "reason": "既報",
+      "note": "8/29付stock story gaku-ichiban-kuji-part6-2026と同一のラインナップ公開情報、新事実なし"
+    },
+    {
+      "dedup_key": "x-com-3710miyacame-status-2095875035361599736-15",
+      "reason": "出典不足",
+      "note": "個人アカウント(未確認)のロケ番組配信のみで公式ブランドの告知に未到達、規程2により不採用"
+    },
+    {
+      "dedup_key": "x-com-gladgarb-x-status-2095838552718487894-17",
+      "reason": "出典不足",
+      "note": "コラボブランドの個人的アカウント(未確認)のみで公式到達なし、規程2により不採用"
+    },
+    {
+      "dedup_key": "x-com-ajt00869884-status-2095902696419328508-19",
+      "reason": "個人の話題",
+      "note": "個人SNS投稿への反応まとめであり単体記事化しない(規程4・5)"
+    },
+    {
+      "dedup_key": "x-com-hadican-ai-status-2095889626972197352-20",
+      "reason": "個人の話題",
+      "note": "ファンイラスト・コスプレの個人投稿であり単体記事化しない(規程4・5)"
+    }
+  ],
+  "cross_brand": []
+}

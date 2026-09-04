@@ -1,194 +1,210 @@
 [
- {
-  "id": "sched-2026-09-09-million-14th-live-締切前",
-  "dedup_key": "million-14th-live",
-  "brand": "million",
-  "subject": "ミリオン14thLIVE 現地チケット一般販売締切3日前",
-  "kind": "締切前",
-  "note": "一般販売(先着)締切(9/12 23:59)の3日前リマインド",
-  "reserved_on": "2026-08-24",
-  "facts": [
-   "一般販売(先着)の受付は2026年9月12日(土)23:59まで",
-   "対象は全席指定席14,000円・立見指定13,500円・ステージサイド席13,500円(税込)"
-  ],
-  "title": "ミリオン14th、現地チケット8/30受付開始",
-  "url": "https://idolmaster-official.jp/news/01_19676",
-  "source_type": "当事者",
-  "verify": "confirmed",
-  "src_candidate_id": "202608232010-watch-6"
- },
- {
-  "id": "sched-2026-09-09-imas-mor-413-eve-2026-開始",
-  "dedup_key": "imas-mor-413-eve-2026",
-  "brand": "joint",
-  "subject": "アイマスMOR413 松永あかねゲスト回放送",
-  "kind": "開始",
-  "reserved_on": "2026-08-28",
-  "title": "アイマスMOR413にイヴ・サンタクロース役松永あかねが出演、メールは8/27まで",
-  "url": "https://x.com/imas_musicradio/status/2092613535117562042",
-  "source_type": "準公式",
-  "facts": [
-   "アイマスMOR413（9月9日放送）は、シンデレラガールズ、イヴ・サンタクロース役の松永あかねさんをゲストにお迎えする",
-   "松永さん宛のメールは https://krs.bz/columbia/m/morform へ",
-   "ハッシュタグ: #アイマスMOR #imas_MOR"
-  ],
-  "event_date": "2026-09-09",
-  "src_candidate_id": "202608280232-grok-47"
- },
- {
-  "id": "sched-2026-09-09-cg-yamanashi-walk-wander-pedometer-2026-締切",
-  "dedup_key": "cg-yamanashi-walk-wander-pedometer-2026",
-  "brand": "cg",
-  "subject": "やまなし WALK & WANDER コラボ歩数計 先行受注",
-  "kind": "締切",
-  "note": "先行受注締切23:59",
-  "reserved_on": "2026-09-01",
-  "title": "山梨コラボ歩数計の先行受注",
-  "url": "https://hiromedo-store.com/products/detail/348",
-  "source_type": "未確認",
-  "verify": "unconfirmed",
-  "src_candidate_id": "202608312333-explore-3",
-  "event_date": "2026-09-09",
-  "facts": [
-   "コラボ歩数計(タニタ製、全10種)の先行受注は2026年9月9日23:59:59で終了、価格は各4,000円(税込)",
-   "販売サイトはhiromedo-store.com、現地でも数量限定で販売"
-  ]
- },
- {
-  "id": "sched-2026-09-09-million-autumn-login-bonus-2026-終了",
-  "dedup_key": "million-autumn-login-bonus-2026",
-  "brand": "million",
-  "subject": "ミリシタ「食欲の秋スペシャルログインボーナス」",
-  "kind": "終了",
-  "reserved_on": "2026-09-03",
-  "facts": [
-   "食欲の秋スペシャルログインボーナスは9月3日から9月9日まで開催",
-   "期間中ログインで合計500個のミリオンジュエルを受け取れる"
-  ],
-  "title": "ミリシタ、食欲の秋ログボ開始　最大500ジュエル",
-  "url": "https://x.com/imasml_theater/status/2095164846568362411",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202609030229-grok-42",
-  "event_date": "2026-09-09",
-  "deadline": "2026-09-09"
- },
- {
-  "id": "sched-2026-09-09-mltd-extreme-livestream-2026-締切",
-  "dedup_key": "mltd-extreme-livestream-2026",
-  "brand": "million",
-  "subject": "ミリシタExtreme生配信記念色紙プレゼントキャンペーン",
-  "kind": "締切",
-  "reserved_on": "2026-09-03",
-  "facts": [
-   "ミリシタExtreme生配信記念の色紙プレゼントキャンペーンを実施中",
-   "Xで公式アカウントをフォローし「#ミリシタExtreme生配信」を付けてポスト",
-   "キャンペーン期間は9月9日23時59分まで"
-  ],
-  "title": "ミリシタExtreme生配信記念色紙キャンペーン開催中",
-  "url": "https://idolmaster-official.jp/news/01_19697",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202609022336-watch-5",
-  "event_date": "2026-09-09",
-  "deadline": "2026-09-09"
- },
- {
-  "id": "sched-2026-09-09-cinderella-girl-vote2026-schedule-開始",
-  "dedup_key": "cinderella-girl-vote2026-schedule",
-  "brand": "cg",
-  "subject": "デレステ24/7 MV配信 次回更新",
-  "kind": "開始",
-  "reserved_on": "2026-09-03",
-  "facts": [
-   "24/7配信の次回更新は9月9日(水)23:00からを予定",
-   "190人のアイドルを4週に分けて#デレステ MVで紹介中"
-  ],
-  "title": "デレステ24/7 MV配信を更新、190人を4週で紹介",
-  "url": "https://x.com/imas_CGofficial/status/2095149746398904791",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202609030229-grok-34",
-  "event_date": "2026-09-09"
- },
- {
-  "id": "sched-2026-09-09-valiv-cosmo-jsp3-rain-patterson-2026-09-09-開始",
-  "dedup_key": "valiv-cosmo-jsp3-rain-patterson-2026-09-09",
-  "brand": "dsva",
-  "subject": "上水流宇宙×レイン・パターソン コラボ配信",
-  "kind": "開始",
-  "note": "コラボ配信",
-  "reserved_on": "2026-09-04",
-  "title": "上水流宇宙とレイン・パターソンのコラボ配信",
-  "url": "https://x.com/KamizuruCosmo/status/2095483513462300807",
-  "source_type": "公式",
-  "facts": [
-   "上水流宇宙が9月9日、にじさんじのレイン・パターソンと『日本事故物件監視協会3』でコラボ配信"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202609040226-grok-29",
-  "event_date": "2026-09-09"
- },
- {
-  "id": "sched-2026-09-09-gakuen-hatsuboshi-after-school-talk-2026-09-開始",
-  "dedup_key": "gakuen-hatsuboshi-after-school-talk-2026-09",
-  "brand": "gaku",
-  "subject": "学マス「はつぼし放課後とーく」",
-  "kind": "開始",
-  "note": "配信開始20:00",
-  "reserved_on": "2026-09-04",
-  "title": "学マス「はつぼし放課後とーく」追加出演者",
-  "url": "https://idolmaster-official.jp/news/01_19728",
-  "source_type": "公式",
-  "facts": [
-   "9月9日20:00より、十王星南・藤田ことねのH.I.F編に向けた「はつぼし放課後とーく」を配信",
-   "出演は陽高真白(十王星南役)、飯田ヒカル(藤田ことね役)、プロデューサー山本亮",
-   "配信先はニコニコ生放送、YouTube Live、学園アイドルマスター公式X"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202609032335-explore-31",
-  "event_date": "2026-09-09"
- },
- {
-  "id": "sched-2026-09-09-gaku-live-tour-shirube-iwate-general-sale-2026-締切",
-  "dedup_key": "gaku-live-tour-shirube-iwate-general-sale-2026",
-  "brand": "gaku",
-  "subject": "学マスLIVE TOUR 標 岩手公演 一般販売",
-  "kind": "締切",
-  "note": "一般販売(先着)締切23:59",
-  "reserved_on": "2026-09-04",
-  "title": "LIVE TOUR -標- 岩手公演一般販売",
-  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/ticket/regional.php",
-  "source_type": "公式",
-  "facts": [
-   "岩手公演一般販売(先着)は9月5日(土)12:00～9月9日(水)23:59",
-   "予定枚数に達し次第終了、料金は全席指定席11,000円(税込)"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202609031236-explore-20",
-  "deadline": "2026-09-09"
- },
- {
-  "id": "sched-2026-09-09-million-14th-live-goods-2026-締切",
-  "dedup_key": "million-14th-live-goods-2026",
-  "brand": "million",
-  "subject": "ミリオン14thLIVE会場物販整理券",
-  "kind": "締切",
-  "note": "整理券受付締切23:59",
-  "reserved_on": "2026-09-04",
-  "title": "ミリオン14thLIVE物販整理券、9/4受付開始",
-  "url": "https://idolmaster-official.jp/live_event/million14th/goods/",
-  "source_type": "公式",
-  "facts": [
-   "会場物販整理券受付は9月4日13:00〜9月9日23:59、1人1枚まで(公演日ごとに申込可)",
-   "抽選結果は9月15日13:00から発表"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202609032335-explore-27",
-  "event_date": "2026-09-19"
- }
+  {
+    "id": "sched-2026-09-09-million-14th-live-締切前",
+    "dedup_key": "million-14th-live",
+    "brand": "million",
+    "subject": "ミリオン14thLIVE 現地チケット一般販売締切3日前",
+    "kind": "締切前",
+    "note": "一般販売(先着)締切(9/12 23:59)の3日前リマインド",
+    "reserved_on": "2026-08-24",
+    "facts": [
+      "一般販売(先着)の受付は2026年9月12日(土)23:59まで",
+      "対象は全席指定席14,000円・立見指定13,500円・ステージサイド席13,500円(税込)"
+    ],
+    "title": "ミリオン14th、現地チケット8/30受付開始",
+    "url": "https://idolmaster-official.jp/news/01_19676",
+    "source_type": "当事者",
+    "verify": "confirmed",
+    "src_candidate_id": "202608232010-watch-6"
+  },
+  {
+    "id": "sched-2026-09-09-imas-mor-413-eve-2026-開始",
+    "dedup_key": "imas-mor-413-eve-2026",
+    "brand": "joint",
+    "subject": "アイマスMOR413 松永あかねゲスト回放送",
+    "kind": "開始",
+    "reserved_on": "2026-08-28",
+    "title": "アイマスMOR413にイヴ・サンタクロース役松永あかねが出演、メールは8/27まで",
+    "url": "https://x.com/imas_musicradio/status/2092613535117562042",
+    "source_type": "準公式",
+    "facts": [
+      "アイマスMOR413（9月9日放送）は、シンデレラガールズ、イヴ・サンタクロース役の松永あかねさんをゲストにお迎えする",
+      "松永さん宛のメールは https://krs.bz/columbia/m/morform へ",
+      "ハッシュタグ: #アイマスMOR #imas_MOR"
+    ],
+    "event_date": "2026-09-09",
+    "src_candidate_id": "202608280232-grok-47"
+  },
+  {
+    "id": "sched-2026-09-09-cg-yamanashi-walk-wander-pedometer-2026-締切",
+    "dedup_key": "cg-yamanashi-walk-wander-pedometer-2026",
+    "brand": "cg",
+    "subject": "やまなし WALK & WANDER コラボ歩数計 先行受注",
+    "kind": "締切",
+    "note": "先行受注締切23:59",
+    "reserved_on": "2026-09-01",
+    "title": "山梨コラボ歩数計の先行受注",
+    "url": "https://hiromedo-store.com/products/detail/348",
+    "source_type": "未確認",
+    "verify": "unconfirmed",
+    "src_candidate_id": "202608312333-explore-3",
+    "event_date": "2026-09-09",
+    "facts": [
+      "コラボ歩数計(タニタ製、全10種)の先行受注は2026年9月9日23:59:59で終了、価格は各4,000円(税込)",
+      "販売サイトはhiromedo-store.com、現地でも数量限定で販売"
+    ]
+  },
+  {
+    "id": "sched-2026-09-09-million-autumn-login-bonus-2026-終了",
+    "dedup_key": "million-autumn-login-bonus-2026",
+    "brand": "million",
+    "subject": "ミリシタ「食欲の秋スペシャルログインボーナス」",
+    "kind": "終了",
+    "reserved_on": "2026-09-03",
+    "facts": [
+      "食欲の秋スペシャルログインボーナスは9月3日から9月9日まで開催",
+      "期間中ログインで合計500個のミリオンジュエルを受け取れる"
+    ],
+    "title": "ミリシタ、食欲の秋ログボ開始　最大500ジュエル",
+    "url": "https://x.com/imasml_theater/status/2095164846568362411",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609030229-grok-42",
+    "event_date": "2026-09-09",
+    "deadline": "2026-09-09"
+  },
+  {
+    "id": "sched-2026-09-09-mltd-extreme-livestream-2026-締切",
+    "dedup_key": "mltd-extreme-livestream-2026",
+    "brand": "million",
+    "subject": "ミリシタExtreme生配信記念色紙プレゼントキャンペーン",
+    "kind": "締切",
+    "reserved_on": "2026-09-03",
+    "facts": [
+      "ミリシタExtreme生配信記念の色紙プレゼントキャンペーンを実施中",
+      "Xで公式アカウントをフォローし「#ミリシタExtreme生配信」を付けてポスト",
+      "キャンペーン期間は9月9日23時59分まで"
+    ],
+    "title": "ミリシタExtreme生配信記念色紙キャンペーン開催中",
+    "url": "https://idolmaster-official.jp/news/01_19697",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609022336-watch-5",
+    "event_date": "2026-09-09",
+    "deadline": "2026-09-09"
+  },
+  {
+    "id": "sched-2026-09-09-cinderella-girl-vote2026-schedule-開始",
+    "dedup_key": "cinderella-girl-vote2026-schedule",
+    "brand": "cg",
+    "subject": "デレステ24/7 MV配信 次回更新",
+    "kind": "開始",
+    "reserved_on": "2026-09-03",
+    "facts": [
+      "24/7配信の次回更新は9月9日(水)23:00からを予定",
+      "190人のアイドルを4週に分けて#デレステ MVで紹介中"
+    ],
+    "title": "デレステ24/7 MV配信を更新、190人を4週で紹介",
+    "url": "https://x.com/imas_CGofficial/status/2095149746398904791",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609030229-grok-34",
+    "event_date": "2026-09-09"
+  },
+  {
+    "id": "sched-2026-09-09-valiv-cosmo-jsp3-rain-patterson-2026-09-09-開始",
+    "dedup_key": "valiv-cosmo-jsp3-rain-patterson-2026-09-09",
+    "brand": "dsva",
+    "subject": "上水流宇宙×レイン・パターソン コラボ配信",
+    "kind": "開始",
+    "note": "コラボ配信",
+    "reserved_on": "2026-09-04",
+    "title": "上水流宇宙とレイン・パターソンのコラボ配信",
+    "url": "https://x.com/KamizuruCosmo/status/2095483513462300807",
+    "source_type": "公式",
+    "facts": [
+      "上水流宇宙が9月9日、にじさんじのレイン・パターソンと『日本事故物件監視協会3』でコラボ配信"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202609040226-grok-29",
+    "event_date": "2026-09-09"
+  },
+  {
+    "id": "sched-2026-09-09-gakuen-hatsuboshi-after-school-talk-2026-09-開始",
+    "dedup_key": "gakuen-hatsuboshi-after-school-talk-2026-09",
+    "brand": "gaku",
+    "subject": "学マス「はつぼし放課後とーく」",
+    "kind": "開始",
+    "note": "配信開始20:00",
+    "reserved_on": "2026-09-04",
+    "title": "学マス「はつぼし放課後とーく」追加出演者",
+    "url": "https://idolmaster-official.jp/news/01_19728",
+    "source_type": "公式",
+    "facts": [
+      "9月9日20:00より、十王星南・藤田ことねのH.I.F編に向けた「はつぼし放課後とーく」を配信",
+      "出演は陽高真白(十王星南役)、飯田ヒカル(藤田ことね役)、プロデューサー山本亮",
+      "配信先はニコニコ生放送、YouTube Live、学園アイドルマスター公式X"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202609032335-explore-31",
+    "event_date": "2026-09-09"
+  },
+  {
+    "id": "sched-2026-09-09-gaku-live-tour-shirube-iwate-general-sale-2026-締切",
+    "dedup_key": "gaku-live-tour-shirube-iwate-general-sale-2026",
+    "brand": "gaku",
+    "subject": "学マスLIVE TOUR 標 岩手公演 一般販売",
+    "kind": "締切",
+    "note": "一般販売(先着)締切23:59",
+    "reserved_on": "2026-09-04",
+    "title": "LIVE TOUR -標- 岩手公演一般販売",
+    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/ticket/regional.php",
+    "source_type": "公式",
+    "facts": [
+      "岩手公演一般販売(先着)は9月5日(土)12:00～9月9日(水)23:59",
+      "予定枚数に達し次第終了、料金は全席指定席11,000円(税込)"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202609031236-explore-20",
+    "deadline": "2026-09-09"
+  },
+  {
+    "id": "sched-2026-09-09-million-14th-live-goods-2026-締切",
+    "dedup_key": "million-14th-live-goods-2026",
+    "brand": "million",
+    "subject": "ミリオン14thLIVE会場物販整理券",
+    "kind": "締切",
+    "note": "整理券受付締切23:59",
+    "reserved_on": "2026-09-04",
+    "title": "ミリオン14thLIVE物販整理券、9/4受付開始",
+    "url": "https://idolmaster-official.jp/live_event/million14th/goods/",
+    "source_type": "公式",
+    "facts": [
+      "会場物販整理券受付は9月4日13:00〜9月9日23:59、1人1枚まで(公演日ごとに申込可)",
+      "抽選結果は9月15日13:00から発表"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202609032335-explore-27",
+    "event_date": "2026-09-19"
+  },
+  {
+    "id": "sched-2026-09-09-gaku-shirube-iwate-goods-2026-締切",
+    "dedup_key": "gaku-shirube-iwate-goods-2026",
+    "brand": "gaku",
+    "subject": "学マス標ツアー岩手公演 会場物販整理券",
+    "kind": "締切",
+    "reserved_on": "2026-09-05",
+    "facts": [
+      "会場物販の事前抽選整理券は9月9日23:59までASOBI TICKETで申込(ASOBI STORE会員登録要、1人1枚まで)"
+    ],
+    "title": "学マス標ツアー岩手公演、会場物販と整理券受付",
+    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/goods/iwate.php",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609050237-grok-44"
+  }
 ]

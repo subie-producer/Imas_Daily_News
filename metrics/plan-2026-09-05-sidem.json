@@ -1,0 +1,88 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-11th-ticket-deadline-0905",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM 11th STAGE 現地チケット一般販売(先着)、本日23:59で受付終了",
+      "lead_score": 25,
+      "dedup_key": "sidem-11th-stage-ticket-2026",
+      "candidate_ids": ["sched-2026-09-05-sidem-11th-stage-ticket-2026-締切", "202609050237-grok-86"]
+    },
+    {
+      "slug": "sidem-11th-venue-food-drink-0905",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "SideM 11th STAGE会場グルメ、キッチンカー「EVER EVER KITCHEN」整理券受付が本日開始・コースター付コラボドリンクも登場",
+      "lead_score": 20,
+      "dedup_key": "sidem-11th-kitchen-2026",
+      "candidate_ids": ["sched-2026-09-05-sidem-11th-kitchen-2026-開始", "202609041234-watch-0"]
+    },
+    {
+      "slug": "sidem-transcendent-onlyshop-open-0905",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "TRANSCENDENT T@LES完結記念オンリーショップ、アニメイト池袋本店で本日開幕(初日は整理券制)",
+      "lead_score": 20,
+      "dedup_key": "sidem-transcendent-tales-only-shop-2026",
+      "candidate_ids": ["sched-2026-09-05-sidem-transcendent-tales-only-shop-2026-開幕", "202609050237-grok-85"]
+    },
+    {
+      "slug": "sidem-315shop-5th-purchase-limit-0905",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "315!!!SHOP5周年「いらっしゃいませ！315にゃお店屋さん」、9月11日開始の新商品に購入点数制限を案内",
+      "lead_score": 10,
+      "dedup_key": "sidem-315shop-5th-anniversary-2026",
+      "candidate_ids": ["202609041836-explore-24", "202609041836-explore-31"]
+    },
+    {
+      "slug": "sidem-12th-anniversary-story-free-vol3-0905",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM12周年記念、ストーリー期間限定無料公開が第3弾へ(9月10日23:59まで)",
+      "lead_score": 10,
+      "dedup_key": "x-com-sidem-official-status-2095787196754305344-9",
+      "candidate_ids": ["202609050237-grok-91"]
+    },
+    {
+      "slug": "sidem-roundup-0905",
+      "brand": "sidem",
+      "rank": "roundup",
+      "angle": "SideM運営まとめ: 「アイドルたちの1コマ」更新、11th出演キャスト意気込みコメント(寺島拓篤さん・益山武明さん)、CD『TRANSCENDENT T@LES 12』発売中、「315プロNight!」放送",
+      "lead_score": 0,
+      "dedup_key": "x-com-sidem-official-status-2095889634492596568-6",
+      "candidate_ids": [
+        "202609050237-grok-88",
+        "202609050237-grok-89",
+        "202609050237-grok-92",
+        "202609050237-grok-93",
+        "202609050237-grok-94"
+      ]
+    }
+  ],
+  "dropped": [
+    {"dedup_key": "sidem-2dmv-transcendent-tales-goods-vol3-2026", "reason": "既報", "note": "9/4号既報の2DMV第2弾・T@LES第3弾グッズ受注(9/3-9/23)と同一、新事実なし"},
+    {"dedup_key": "sidem-2dmv-transcendent-goods-2026", "reason": "既報", "note": "同上の重複素材"},
+    {"dedup_key": "sidem-2dmv-tales-goods-2026", "reason": "既報", "note": "同上の重複素材"},
+    {"dedup_key": "sidem-teddys-collection-ii-popup-shinjuku-2026", "reason": "既報", "note": "既報(8/28)のTeddy's Collection II開催情報と同一。開幕(9/4)も既に過ぎており本日のトリガーなし"},
+    {"dedup_key": "sidem-divercity-tokyo-plaza-collab-2026", "reason": "既報", "note": "既報(8/24)のダイバーシティ東京プラザコラボと同一、新事実なし"},
+    {"dedup_key": "sidem-divercity-tokyo-2026", "reason": "既報", "note": "同上の重複素材"},
+    {"dedup_key": "sidem-gokugoku-collab-drinks-2026", "reason": "重複", "note": "既報のダイバーシティ東京プラザコラボ(コラボメニュー全16品)の一部で、単独の新施策ではない"},
+    {"dedup_key": "sidem-super-retro-roses-party-2026", "reason": "既報", "note": "既報(9/2)の西武園ゆうえんちコラボ第2弾と同一、新事実なし。開催は10/30〜で本日トリガーもない"},
+    {"dedup_key": "sidem-suntory-original-label-2026", "reason": "既報", "note": "既報(9/4)のサントリー自販機コラボと同一、新事実なし"},
+    {"dedup_key": "x-com-sidem-official-status-2095787448496423094-8", "reason": "既報", "note": "既報(8/29)のストーリーSNS投稿ルール案内と同内容。恒常的なFAQで本日の新規性・行動喚起なし"},
+    {"dedup_key": "sidem-himeno-kanon-new-cast-2026", "reason": "その他", "note": "9/1開催・9/2付で既に報じられた特別生配信の内容で、9/5時点では新規性なし・当日トリガーもなし(規程12)"},
+    {"dedup_key": "sidem-kanon-new-cast-2026", "reason": "その他", "note": "上記と同一事象の重複素材、同じ理由で鮮度切れ"},
+    {"dedup_key": "x-com-anmi2new-status-2095356811876720928-17", "reason": "個人の話題", "note": "個人ファンアカウントのSNS投稿(持ち物チェックリスト・私物開封)、単体記事化の対象外"},
+    {"dedup_key": "idolmaster-official-jp-live-event-sidem11th-information-3", "reason": "重複", "note": "sidem-11th-stage-ticket-2026記事(チケット一般販売締切)に統合"},
+    {"dedup_key": "x-com-sidem-lantis-status-2095814139251703940-2", "reason": "重複", "note": "sidem-transcendent-tales-only-shop-2026記事(オンリーショップ開幕)に統合"},
+    {"dedup_key": "sidem-315nya-shop-2026", "reason": "重複", "note": "sidem-315shop-5th-anniversary-2026記事(購入点数制限)に統合"},
+    {"dedup_key": "sidem-11th-stage-toyotaarena-drink-2026", "reason": "その他", "note": "sidem-11th-kitchen-2026記事(11th STAGE会場グルメ)に統合"},
+    {"dedup_key": "x-com-sidem-official-status-2095814138492571946-7", "reason": "その他", "note": "定常運営まとめ(roundup)記事に統合"},
+    {"dedup_key": "x-com-sidem-official-status-2095451740418265115-10", "reason": "その他", "note": "定常運営まとめ(roundup)記事に統合"},
+    {"dedup_key": "x-com-sidem-lantis-status-2095851370737766445-12", "reason": "その他", "note": "定常運営まとめ(roundup)記事に統合"},
+    {"dedup_key": "x-com-sidem-lantis-status-2095829228126339510-13", "reason": "その他", "note": "定常運営まとめ(roundup)記事に統合"}
+  ],
+  "cross_brand": []
+}

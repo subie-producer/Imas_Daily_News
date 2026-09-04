@@ -1,0 +1,76 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-05-cg-vote2026-247-stream-restart-0905.md",
+   "issue": "分量不足（167字 < 250字）。候補の facts に含まれる「候補アイドル190人の一挙紹介配信」「投票ページ」などの情報を補充すれば、分量と内容両面で記事を充実できます。",
+   "scope": "article:2026-09-05-cg-vote2026-247-stream-restart-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-dsva-manaka-kpf2026-appearance.md",
+   "issue": "分量不足: rank small (下限250字) だが本文が約120字。出典に記載の詳細情報（チケット情報・会場詳細など）が『後日発表』扱いのため現時点では追加情報が限定的。短編記事として許容範囲内だが、KPF公式サイト https://www.ktqpopfes.jp/2026/ をリンク参照で付記すれば読者の情報補完につながる。",
+   "scope": "article:2026-09-05-dsva-manaka-kpf2026-appearance.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-dsva-valiv-streaming-roundup-0905.md",
+   "issue": "灯里愛夏配信のタイトルが出典と異なる可能性。記事では「真夏の苦手克服クッキング！？」と記載しているが、候補では「ピーマン克服クッキング」（title）「やぴなま」（配信名）と記載されている。URL https://www.youtube.com/live/eQRtypVlFBs を実際に開いて、配信の正式なタイトルが記事の記述と一致するか確認が望ましい。候補ファイルの verify が「unconfirmed」のため、詳細な確認が未完了である可能性。",
+   "scope": "article:2026-09-05-dsva-valiv-streaming-roundup-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-gaku-shirube-iwate-general-sale-start.md",
+   "issue": "分量不足：rank が medium の場合、本文は 450 字以上必要ですが、現在は 343 字です。候補に記載されている会場情報や注意事項（例：スタンディング観覧が特別な体験であることの説明など）を補足することで分量を増やせます",
+   "scope": "article:2026-09-05-gaku-shirube-iwate-general-sale-start.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-gaku-story-event-saigo-no-bunkasai.md",
+   "issue": "分量不足: 本文114字で rank small の下限250字に達していない。候補の facts に記載されている開催期間（9/4 11:00～9/12 4:59）などの出典情報を追加すれば埋められる。",
+   "scope": "article:2026-09-05-gaku-story-event-saigo-no-bunkasai.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-gaku-sugar-flavor-mv-1million.md",
+   "issue": "分量不足（rank: small 目安250字に対し92字）。出典候補の gakuen.md に記載されている薄井友里のコメント詳細や、イベント達成の背景情報などを拾えば本文を充実できるはず。現状は必須事実のみをまとめた形だが、小さな記事としても最小限の厚みが欲しい場面",
+   "scope": "article:2026-09-05-gaku-sugar-flavor-mv-1million.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-million-14th-dressing-room-flowers.md",
+   "issue": "見出し・lede で『40cm四方以下』と表記していますが、本文では『高さ・横幅・奥行きが各40センチ以下』と明記しています。『四方』は通常2次元を指すため、『40cm立方以下』など統一すると読者に正確に伝わります。",
+   "scope": "article:2026-09-05-million-14th-dressing-room-flowers.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-million-chibigurumi-spade-q-namco.md",
+   "issue": "分量不足: rank: small に対して本文が 211字で、最小 250字に不足しています。出典には記事に未記載の詳細（例：先行プレイ開始日「2026年9月2日」など）が含まれており、これらを追加することで分量を補うことが可能です。",
+   "scope": "article:2026-09-05-million-chibigurumi-spade-q-namco.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-sidem-11th-venue-food-drink-0905.md",
+   "issue": "frontmatter の candidate_ids が誤っている。「sched-2026-09-05-sidem-11th-kitchen-2026-開始」は候補ファイルに存在しません。実際の対応候補は 202608281836-watch-3 (EVER EVER KITCHEN) と 202609041234-watch-0 (コラボドリンク) です。",
+   "scope": "article:2026-09-05-sidem-11th-venue-food-drink-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-sidem-11th-venue-food-drink-0905.md",
+   "issue": "分量が rank: medium の下限 (450字) に届いていません。本文は約330字。出典に記載されている営業情報・メニュー詳細・特典条件などを拾えば埋まるはずです。",
+   "scope": "article:2026-09-05-sidem-11th-venue-food-drink-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-sidem-315shop-5th-purchase-limit-0905.md",
+   "issue": "分量が rank:medium の下限（450字程度）より少し短い（約430字）。出典に記載されている会場・営業時間・購入制限の詳細・入店方法などを確認しましたが、記事が既に網羅しており、追加可能な情報が無いため、記事は簡潔で適切です。",
+   "scope": "article:2026-09-05-sidem-315shop-5th-purchase-limit-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-sidem-transcendent-onlyshop-open-0905.md",
+   "issue": "sources に記載の ランティス公式サイト URL（https://lantis.jp/sidem/extra/index.html）は candidates に無い独自出典。URL 構造は相応しく公式ドメインだが、実際に開いて記事内容の一致を確認することが望ましい。ただし記事の全事実は X投稿（公式情報）から導き出されており factually 正しい",
+   "scope": "article:2026-09-05-sidem-transcendent-onlyshop-open-0905.md"
+  },
+  {
+   "file": "docs/_editorials/2026-09-05.md",
+   "issue": "直近3日間の社説で最後の段落の閉じ方の反復。2026-09-03・2026-09-04と同様に、待機・確認する姿勢で締められている。閉じ方の多様化を検討されたい",
+   "scope": "editorial"
+  },
+  {
+   "file": "-",
+   "issue": "候補ファイルに複数の公式発表（デレステ11周年キャンペーン開始、ミリオン14thLIVE配信チケット販売開始など）が記事化されていない。ただし、紙面に36本の記事が掲載されており、本数制限による選別は適切に実施されている。これらが記事化相当な重要度であるか、または別の号での掲載予定であるか、編集判断の確認を推奨。",
+   "scope": "paper"
+  }
+ ]
+}

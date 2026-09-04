@@ -1,39 +1,54 @@
 [
- {
-  "id": "sched-2026-09-28-shiny-song-for-prism-season-35-pass-2026-締切",
-  "dedup_key": "shiny-song-for-prism-season-35-pass-2026",
-  "brand": "shiny",
-  "subject": "シャニソン シーズンパス「月の和」(シーズン35)",
-  "kind": "締切",
-  "note": "販売終了23:59:59",
-  "reserved_on": "2026-09-01",
-  "title": "シャニソン シーズン35「月の和」パス販売中",
-  "url": "https://webstore.asobistore.jp/shinycolors-song-for-prism",
-  "source_type": "準公式",
-  "verify": "unconfirmed",
-  "src_candidate_id": "202609010227-grok-37",
-  "event_date": "2026-09-28",
-  "facts": [
-   "シーズンパス「月の和」(1,960円)は2026年9月28日23時59分59秒(UTC+09:00)まで販売",
-   "購入でプレミアム報酬解放・シーズンメダル75個・無償プリズムジュエル250個・虹の結晶15個を獲得"
-  ]
- },
- {
-  "id": "sched-2026-09-28-million-14th-live-終了",
-  "dedup_key": "million-14th-live",
-  "brand": "million",
-  "subject": "ミリオン14thLIVE 配信チケット",
-  "kind": "終了",
-  "reserved_on": "2026-09-03",
-  "facts": [
-   "配信チケットの販売期間は9月2日21時〜9月28日18時",
-   "アーカイブは9月21日18時〜9月28日23時59分まで視聴可能"
-  ],
-  "title": "ミリオン14thLIVE、配信チケット販売開始",
-  "url": "https://idolmaster-official.jp/live_event/million14th/streaming/",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202609021235-explore-5",
-  "event_date": "2026-09-28"
- }
+  {
+    "id": "sched-2026-09-28-shiny-song-for-prism-season-35-pass-2026-締切",
+    "dedup_key": "shiny-song-for-prism-season-35-pass-2026",
+    "brand": "shiny",
+    "subject": "シャニソン シーズンパス「月の和」(シーズン35)",
+    "kind": "締切",
+    "note": "販売終了23:59:59",
+    "reserved_on": "2026-09-01",
+    "title": "シャニソン シーズン35「月の和」パス販売中",
+    "url": "https://webstore.asobistore.jp/shinycolors-song-for-prism",
+    "source_type": "準公式",
+    "verify": "unconfirmed",
+    "src_candidate_id": "202609010227-grok-37",
+    "event_date": "2026-09-28",
+    "facts": [
+      "シーズンパス「月の和」(1,960円)は2026年9月28日23時59分59秒(UTC+09:00)まで販売",
+      "購入でプレミアム報酬解放・シーズンメダル75個・無償プリズムジュエル250個・虹の結晶15個を獲得"
+    ]
+  },
+  {
+    "id": "sched-2026-09-28-million-14th-live-終了",
+    "dedup_key": "million-14th-live",
+    "brand": "million",
+    "subject": "ミリオン14thLIVE 配信チケット",
+    "kind": "終了",
+    "reserved_on": "2026-09-03",
+    "facts": [
+      "配信チケットの販売期間は9月2日21時〜9月28日18時",
+      "アーカイブは9月21日18時〜9月28日23時59分まで視聴可能"
+    ],
+    "title": "ミリオン14thLIVE、配信チケット販売開始",
+    "url": "https://idolmaster-official.jp/live_event/million14th/streaming/",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609021235-explore-5",
+    "event_date": "2026-09-28"
+  },
+  {
+    "id": "sched-2026-09-28-shiny-parallel-collection-popup-2026-開始",
+    "dedup_key": "shiny-parallel-collection-popup-2026",
+    "brand": "shiny",
+    "subject": "シャニマス「パラレルコレクション」オフィシャルショップ販売",
+    "kind": "開始",
+    "reserved_on": "2026-09-05",
+    "title": "シャニマス「パラレル回廊」詳細公開",
+    "url": "https://idolmaster-official.jp/news/01_19792",
+    "source_type": "公式",
+    "facts": [
+      "オフィシャルショップでの「パラレル回廊ver.」一部商品取扱いは9月28日〜10月12日、アトレ秋葉原・名古屋駅前・大阪日本橋・博多バスターミナル・仙台の5店舗で実施"
+    ],
+    "src_candidate_id": "202609050237-grok-82"
+  }
 ]

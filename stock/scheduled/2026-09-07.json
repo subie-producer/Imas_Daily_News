@@ -33,5 +33,37 @@
     ],
     "event_date": "2026-09-07",
     "src_candidate_id": "202608280232-grok-10"
+  },
+  {
+    "id": "sched-2026-09-07-cg-rose-tea-parlor-2026-reserve-開始",
+    "dedup_key": "cg-rose-tea-parlor-2026-reserve",
+    "brand": "cg",
+    "subject": "Rose Tea Parlorコラボカフェ 予約開始",
+    "kind": "開始",
+    "reserved_on": "2026-09-05",
+    "facts": [
+      "HP公開・予約開始は9月7日19時、ソウル ホンデ店の予約は別途案内"
+    ],
+    "title": "シンデレラガールズ、Rose Tea Parlorコラボカフェ開催決定",
+    "url": "https://idolmaster-official.jp/news/01_19811",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609050237-grok-28"
+  },
+  {
+    "id": "sched-2026-09-07-shiny-aki-idol-kyoka-2026-開始",
+    "dedup_key": "shiny-aki-idol-kyoka-2026",
+    "brand": "shiny",
+    "subject": "シャニマス秋の育成イベント「アイドル強化週間」",
+    "kind": "開始",
+    "reserved_on": "2026-09-05",
+    "facts": [
+      "育成イベント「秋のアイドル強化週間」の開始は9月7日予定"
+    ],
+    "title": "秋の育成イベント「アイドル強化週間」開催決定",
+    "url": "https://x.com/imassc_official/status/2095753978378441168",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609050237-grok-76"
   }
 ]

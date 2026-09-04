@@ -1,66 +1,81 @@
 [
- {
-  "id": "sched-2026-10-12-gaku-round1-collab-2026-千秋楽",
-  "dedup_key": "gaku-round1-collab-2026",
-  "brand": "gaku",
-  "subject": "学マス×ROUND1コラボキャンペーン",
-  "kind": "千秋楽",
-  "note": "開催終了",
-  "reserved_on": "2026-07-13",
-  "facts": [
-   "「学園アイドルマスター×ROUND1」コラボキャンペーンが2026年7月8日(火)～10月12日(日)の期間で全国のラウンドワン店舗にて開催中",
-   "詳細景品情報はラウンドワン公式サイトで順次公開",
-   "エンゲージメント: 中"
-  ],
-  "title": "学園アイドルマスター×ROUND1コラボキャンペーン開催中",
-  "url": "https://www.round1.co.jp/collaboration/gakuen_idol/index.html",
-  "source_type": "当事者",
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202607130340-claude-110",
-  "event_date": "2026-07-08",
-  "deadline": "2026-10-12"
- },
- {
-  "id": "sched-2026-10-12-tours-late-summer-campaign-2026-終了",
-  "dedup_key": "tours-late-summer-campaign-2026",
-  "brand": "joint",
-  "subject": "ツアマス「2026レイトサマーキャンペーン 晩夏の調べ」",
-  "kind": "終了",
-  "note": "キャンペーン開催終了25:59",
-  "reserved_on": "2026-08-25",
-  "facts": [
-   "『アイドルマスター TOURS』2026レイトサマーキャンペーン「晩夏の調べ」は2026年8月28日(金)07:00～10月12日(月)25:59開催",
-   "景品交換期間は2026年8月28日(金)07:00～10月13日(月)25:59",
-   "景品はオリジナルカード全12種(12ポイント)、カードストレージボックス全6種(36ポイント)、「MIXING PARADE」ライブTシャツ(120ポイント)、なくなり次第終了"
-  ],
-  "title": "アイドルマスター TOURS公式サイト「2026レイトサマーキャンペーン 晩夏の調べ」告知",
-  "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260824.html",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608241248-watch-0",
-  "event_date": "2026-08-28",
-  "deadline": "2026-10-12"
- },
- {
-  "id": "sched-2026-10-12-shiny-stillblue-asobipremium-lottery-締切",
-  "dedup_key": "shiny-stillblue-asobipremium-lottery",
-  "brand": "shiny",
-  "subject": "『Still blue』アソビストア一般会員先行",
-  "kind": "締切",
-  "note": "当選者入金期限",
-  "reserved_on": "2026-08-27",
-  "title": "Still blue チケット一般会員先行販売開始",
-  "url": "https://idolmaster-official.jp/live_event/REFRAC7IONS_Still_blue/ticket/",
-  "source_type": "公式",
-  "facts": [
-   "アソビストア一般会員先行販売: 2026年8月27日(木)12:00開始、販売期間: 8月27日(木)12:00〜9月23日(水)23:59",
-   "ライブ開催予定: 2026年12月19日(土)・20日(日) 国立代々木競技場 第一体育館",
-   "当落発表は10月8日13時から、入金期間は同時刻から10月12日23:59まで"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202608270220-claude-147",
-  "deadline": "2026-10-12"
- }
+  {
+    "id": "sched-2026-10-12-gaku-round1-collab-2026-千秋楽",
+    "dedup_key": "gaku-round1-collab-2026",
+    "brand": "gaku",
+    "subject": "学マス×ROUND1コラボキャンペーン",
+    "kind": "千秋楽",
+    "note": "開催終了",
+    "reserved_on": "2026-07-13",
+    "facts": [
+      "「学園アイドルマスター×ROUND1」コラボキャンペーンが2026年7月8日(火)～10月12日(日)の期間で全国のラウンドワン店舗にて開催中",
+      "詳細景品情報はラウンドワン公式サイトで順次公開",
+      "エンゲージメント: 中"
+    ],
+    "title": "学園アイドルマスター×ROUND1コラボキャンペーン開催中",
+    "url": "https://www.round1.co.jp/collaboration/gakuen_idol/index.html",
+    "source_type": "当事者",
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202607130340-claude-110",
+    "event_date": "2026-07-08",
+    "deadline": "2026-10-12"
+  },
+  {
+    "id": "sched-2026-10-12-tours-late-summer-campaign-2026-終了",
+    "dedup_key": "tours-late-summer-campaign-2026",
+    "brand": "joint",
+    "subject": "ツアマス「2026レイトサマーキャンペーン 晩夏の調べ」",
+    "kind": "終了",
+    "note": "キャンペーン開催終了25:59",
+    "reserved_on": "2026-08-25",
+    "facts": [
+      "『アイドルマスター TOURS』2026レイトサマーキャンペーン「晩夏の調べ」は2026年8月28日(金)07:00～10月12日(月)25:59開催",
+      "景品交換期間は2026年8月28日(金)07:00～10月13日(月)25:59",
+      "景品はオリジナルカード全12種(12ポイント)、カードストレージボックス全6種(36ポイント)、「MIXING PARADE」ライブTシャツ(120ポイント)、なくなり次第終了"
+    ],
+    "title": "アイドルマスター TOURS公式サイト「2026レイトサマーキャンペーン 晩夏の調べ」告知",
+    "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260824.html",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608241248-watch-0",
+    "event_date": "2026-08-28",
+    "deadline": "2026-10-12"
+  },
+  {
+    "id": "sched-2026-10-12-shiny-stillblue-asobipremium-lottery-締切",
+    "dedup_key": "shiny-stillblue-asobipremium-lottery",
+    "brand": "shiny",
+    "subject": "『Still blue』アソビストア一般会員先行",
+    "kind": "締切",
+    "note": "当選者入金期限",
+    "reserved_on": "2026-08-27",
+    "title": "Still blue チケット一般会員先行販売開始",
+    "url": "https://idolmaster-official.jp/live_event/REFRAC7IONS_Still_blue/ticket/",
+    "source_type": "公式",
+    "facts": [
+      "アソビストア一般会員先行販売: 2026年8月27日(木)12:00開始、販売期間: 8月27日(木)12:00〜9月23日(水)23:59",
+      "ライブ開催予定: 2026年12月19日(土)・20日(日) 国立代々木競技場 第一体育館",
+      "当落発表は10月8日13時から、入金期間は同時刻から10月12日23:59まで"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202608270220-claude-147",
+    "deadline": "2026-10-12"
+  },
+  {
+    "id": "sched-2026-10-12-shiny-parallel-collection-popup-2026-終了",
+    "dedup_key": "shiny-parallel-collection-popup-2026",
+    "brand": "shiny",
+    "subject": "シャニマス「パラレルコレクション」通販・オフィシャルショップ取扱い",
+    "kind": "終了",
+    "reserved_on": "2026-09-05",
+    "title": "シャニマス「パラレル回廊」詳細公開",
+    "url": "https://idolmaster-official.jp/news/01_19792",
+    "source_type": "公式",
+    "facts": [
+      "通販(ASOBI STORE・あみあみオンラインショップ)受付とオフィシャルショップでの取扱いは10月12日まで"
+    ],
+    "src_candidate_id": "202609050237-grok-82"
+  }
 ]

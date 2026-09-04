@@ -1,0 +1,97 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-05T02:38:12+09:00",
+   "edition": "2026-09-05",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 343,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 1,
+    "explore:million": 1,
+    "explore:shiny": 0,
+    "explore:sidem": 3,
+    "explore:gakuen": 5,
+    "explore:dsva": 3,
+    "explore:joint-other": 1,
+    "explore:trend": 4,
+    "grok:765as": 0,
+    "grok:cinderella": 12,
+    "grok:million": 13,
+    "grok:shiny": 12,
+    "grok:sidem": 12,
+    "grok:gakuen": 14,
+    "grok:dsva": 9,
+    "grok:joint-other": 6,
+    "grok:trend": 6
+   },
+   "normalized": 97,
+   "added": 83,
+   "verify": {
+    "confirmed": 72,
+    "unconfirmed": 25,
+    "failed": 0
+   },
+   "duration_s": 2254
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-05T05:22:23+09:00",
+   "edition": "2026-09-05",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 42,
+   "written": 38,
+   "roundups": 4,
+   "dropped": 80,
+   "coverage": {
+    "subjects": 154,
+    "covered": 154,
+    "missing": 0
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 11.501301888624827,
+    "執筆": 8.339897187550863,
+    "社説と組版": 20.01724547147751,
+    "校閲": 2.4752593517303465
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "cg-popn-toybox-memorial-goods-order-0905",
+    "cg-official-shop-photo-panel-0905",
+    "dsva-cosmo-birthday-live-schedule",
+    "shiny-maintenance-0907"
+   ],
+   "duration_s": 4905
+  }
+ ]
+}

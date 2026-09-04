@@ -1,0 +1,140 @@
+{
+  "articles": [
+    {
+      "slug": "cg-rose-tea-parlor-cafe-0905",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "『シンデレラガールズ』Rose Tea Parlorコラボカフェが名古屋・心斎橋で開催決定、予約は9月7日19時から",
+      "lead_score": 60,
+      "dedup_key": "cg-rose-tea-parlor-2026",
+      "candidate_ids": ["202609042337-watch-1", "202609050237-grok-28"]
+    },
+    {
+      "slug": "cg-election-cheer-contest-0905",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "シンデレラ総選挙2026、ニコニコ応援投稿祭(9/4-6)とXアートコンテスト(9/4-18)が同時開催",
+      "lead_score": 25,
+      "dedup_key": "cg-election-2026",
+      "candidate_ids": ["202609041836-watch-4", "202609050237-grok-22", "202609050237-grok-23"]
+    },
+    {
+      "slug": "cg-hojo-karen-birthday-0905",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "9月5日は北条加蓮の誕生日、アイマスchが祝福ムービーを公開",
+      "lead_score": 15,
+      "dedup_key": "hojo-karen-birthday-2026",
+      "candidate_ids": ["202609050237-grok-101"]
+    },
+    {
+      "slug": "cg-popn-toybox-memorial-goods-order-0905",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "『Pop'n ToyBox!!』開催記念グッズの受注、9月13日締切と判明",
+      "lead_score": 10,
+      "dedup_key": "x-com-imas-cgofficial-status-2095814130641060162-2",
+      "candidate_ids": ["202609050237-grok-19"]
+    },
+    {
+      "slug": "cg-official-shop-photo-panel-0905",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "アイマス オフィシャルショップ、9月5日にフォトパネル新柄6種・抽選くじ新柄18種を追加",
+      "lead_score": 8,
+      "dedup_key": "cg-official-shop-photo-panel-2026",
+      "candidate_ids": ["sched-2026-09-05-cg-official-shop-photo-panel-2026-発売"]
+    },
+    {
+      "slug": "cg-toybox-novel-extra9-0905",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "舞台『トイボ公演』連載ノベル、エクストラ9「ドント・ビー・ライク・ミー」公開",
+      "lead_score": 5,
+      "dedup_key": "x-com-imas-cgofficial-status-2095708430828785735-8",
+      "candidate_ids": ["202609050237-grok-25"]
+    },
+    {
+      "slug": "cg-vote2026-247-stream-restart-0905",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "シンデレラ総選挙2026、調整で止まっていた24/7配信を9月3日23時に更新再開",
+      "lead_score": 5,
+      "dedup_key": "x-com-imas-cgofficial-status-2095474385633296437-10",
+      "candidate_ids": ["202609050237-grok-27"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "deresute-11th-anniversary-2026",
+      "reason": "既報",
+      "note": "cgss-11th-anniversary-campaign-2026(9/2初報)・cg-deresute-11th-anniversary-campaign-2026(9/4)で既に詳報済み"
+    },
+    {
+      "dedup_key": "cinderella-kujibikido-bunkasai-2026",
+      "reason": "既報",
+      "note": "cg-gacha-festival-2026-08(8/28初報)で販売期間・描き下ろし4名・賞品構成まで既報"
+    },
+    {
+      "dedup_key": "cg-starlight-stage-10th-tour-bluray-okina-fukuoka-2026",
+      "reason": "既報",
+      "note": "cg-ss10th-fukuoka-pv2-2026で発売日・価格・仕様まで既報。曲目詳細は補足情報の域"
+    },
+    {
+      "dedup_key": "cg-memory-pict-2026-06",
+      "reason": "既報",
+      "note": "memory-pict-6th-kohimura-yoda-2026(8/28初報)で受注期間・ラインナップとも既報"
+    },
+    {
+      "dedup_key": "cg-deremasu-10th-bluray-2026",
+      "reason": "重複",
+      "note": "cg-starlight-stage-10th-tour-bluray-okina-fukuoka-2026と同一施策、既報内容と同一"
+    },
+    {
+      "dedup_key": "cg-bunkasai-online-kuji-2026",
+      "reason": "既報",
+      "note": "cinderella-kujibikido-bunkasai-2026と同一施策で既報"
+    },
+    {
+      "dedup_key": "cg-lets-amusement-okinawa-fukuoka-bluray-2026",
+      "reason": "既報",
+      "note": "cg-ss10th-fukuoka-pv2-2026でアソビストア特装版含め既報"
+    },
+    {
+      "dedup_key": "cg-dereste-11th-anniversary-2026",
+      "reason": "重複",
+      "note": "deresute-11th-anniversary-2026と同一施策、既報内容と同一"
+    },
+    {
+      "dedup_key": "cg-online-kuji-bunkasai-2026",
+      "reason": "既報",
+      "note": "cinderella-kujibikido-bunkasai-2026と同一施策で既報"
+    },
+    {
+      "dedup_key": "x-com-imas-cgofficial-status-2095799030664331671-3",
+      "reason": "既報",
+      "note": "xR配信チケット販売期間(9/13 21:00まで)はcg-popn-toybox-goods-2026で既報"
+    },
+    {
+      "dedup_key": "x-com-imas-cgofficial-status-2095799026020925590-4",
+      "reason": "既報",
+      "note": "memory-pict-6th-kohimura-yoda-2026で受注期間・グッズ内容とも既報"
+    },
+    {
+      "dedup_key": "x-com-imas-cgofficial-status-2095783926719549833-7",
+      "reason": "既報",
+      "note": "cg-15th-party-goods-2026(8/27初報)で受注開始・締切とも既報"
+    },
+    {
+      "dedup_key": "x-com-imas-cgofficial-status-2095481946436440138-9",
+      "reason": "既報",
+      "note": "cg-election-only-maker-2026(9/4初報)で受注期間・価格とも既報"
+    },
+    {
+      "dedup_key": "x-com-anxin-ds-status-2095889633007861788-16",
+      "reason": "個人の話題",
+      "note": "個人アカウントのファン投稿(誕生日イラスト・応援動画・コスプレ)の寄せ集めで単体記事化対象外"
+    }
+  ],
+  "cross_brand": []
+}

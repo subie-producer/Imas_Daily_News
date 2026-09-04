@@ -58,6 +58,206 @@
     "failed": 3
    },
    "duration_s": 1585
+  },
+  {
+   "at": "2026-09-04T07:33:52+09:00",
+   "edition": "2026-09-05",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 342,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 2,
+    "explore:million": 2,
+    "explore:shiny": 1,
+    "explore:sidem": 4,
+    "explore:gakuen": 3,
+    "explore:dsva": 2,
+    "explore:joint-other": 1,
+    "explore:trend": 2
+   },
+   "normalized": 16,
+   "added": 16,
+   "verify": {
+    "confirmed": 10,
+    "unconfirmed": 6,
+    "failed": 0
+   },
+   "duration_s": 195
+  },
+  {
+   "at": "2026-09-04T12:34:58+09:00",
+   "edition": "2026-09-05",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 1,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 342,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 1,
+    "facted": 1,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 2,
+    "explore:million": 3,
+    "explore:shiny": 1,
+    "explore:sidem": 3,
+    "explore:gakuen": 2,
+    "explore:dsva": 5,
+    "explore:joint-other": 2,
+    "explore:trend": 7
+   },
+   "normalized": 19,
+   "added": 14,
+   "verify": {
+    "confirmed": 11,
+    "unconfirmed": 8,
+    "failed": 0
+   },
+   "duration_s": 261
+  },
+  {
+   "at": "2026-09-04T18:37:13+09:00",
+   "edition": "2026-09-05",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 5,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 343,
+      "new": 1,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 6,
+    "facted": 6,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 6,
+    "explore:shiny": 1,
+    "explore:sidem": 3,
+    "explore:gakuen": 3,
+    "explore:dsva": 4,
+    "explore:joint-other": 2,
+    "explore:trend": 7
+   },
+   "normalized": 30,
+   "added": 20,
+   "verify": {
+    "confirmed": 22,
+    "unconfirmed": 7,
+    "failed": 1
+   },
+   "duration_s": 396
+  },
+  {
+   "at": "2026-09-04T23:37:42+09:00",
+   "edition": "2026-09-05",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 5,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 343,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 1,
+      "deferred": 0
+     }
+    },
+    "new": 6,
+    "facted": 6,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 4,
+    "explore:cinderella": 3,
+    "explore:million": 5,
+    "explore:shiny": 1,
+    "explore:sidem": 6,
+    "explore:gakuen": 4,
+    "explore:dsva": 5,
+    "explore:joint-other": 3,
+    "explore:trend": 6
+   },
+   "normalized": 35,
+   "added": 18,
+   "verify": {
+    "confirmed": 26,
+    "unconfirmed": 9,
+    "failed": 0
+   },
+   "duration_s": 425
   }
  ],
  "compose": [

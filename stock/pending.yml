@@ -103,3 +103,11 @@
   brand: general
   subject: 東京ゲームショウ2026 波多野公士氏登壇セッション
   watch: 「バーチャルを“リアル化”する条件とは」セッションの具体的な開催日程(判明次第 triggers へ)
+- dedup_key: million-chibigurumi-spade-of-q-2026
+  brand: million
+  subject: ミリオン「スペードのQ」ちびぐるみ(BANDAI SPIRITS)
+  watch: 2027年1月内の正式な店舗展開開始日(判明次第 triggers へ)
+- dedup_key: gaku-story-saigo-no-bunkasai-2026
+  brand: gaku
+  subject: 学マス新ストーリーイベント「さいごの文化祭」
+  watch: イベント終了日(判明次第 triggers へ)

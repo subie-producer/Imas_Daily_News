@@ -1,174 +1,190 @@
 [
- {
-  "id": "sched-2026-09-23-cg-star-village-achi-summer-2026-千秋楽",
-  "dedup_key": "cg-star-village-achi-summer-2026",
-  "brand": "cg",
-  "subject": "シンデレラガールズ×スタービレッジ阿智 コラボ千秋楽",
-  "kind": "千秋楽",
-  "note": "コラボ最終日",
-  "reserved_on": "2026-07-14",
-  "facts": [
-   "開催期間は2026年7月18日〜9月23日(水・秋分の日)"
-  ],
-  "title": "阿智村×シンデレラガールズ 星空コラボ決定",
-  "url": "https://idolmaster-official.jp/news/01_19356",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202607131241-watch-0",
-  "event_date": "2026-09-23"
- },
- {
-  "id": "sched-2026-09-23-gaku-live-tour-single-shugakuryoko-2026-締切",
-  "dedup_key": "gaku-live-tour-single-shugakuryoko-2026",
-  "brand": "gaku",
-  "subject": "初星学園 LIVE TOUR Single「修楽旅行」予約締切",
-  "kind": "締切",
-  "note": "アソビストア予約特典の受付締切",
-  "reserved_on": "2026-08-24",
-  "facts": [
-   "アソビストア予約特典(ジャケットイラストステッカー)の受付は9月23日(水)まで、なくなり次第終了",
-   "本編は2026年11月4日(水)発売、2,500円(税込)"
-  ],
-  "title": "「修楽旅行」11月4日発売決定",
-  "url": "https://gakuen-label.idolmaster-official.jp/news/schoosicaltrip",
-  "source_type": "準公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608232010-grok-46",
-  "event_date": "2026-11-04",
-  "deadline": "2026-09-23"
- },
- {
-  "id": "sched-2026-09-23-kotobukiya-kuji-summer-live-stage-2026-締切",
-  "dedup_key": "kotobukiya-kuji-summer-live-stage-2026",
-  "brand": "765",
-  "subject": "コトブキヤくじ「Summer Live st@ge」販売終了",
-  "kind": "締切",
-  "note": "販売・リポストキャンペーンともに23:59終了",
-  "reserved_on": "2026-08-24",
-  "facts": [
-   "コトブキヤくじ「アイドルマスター Summer Live st@ge」の販売期間は8月21日〜9月23日23:59",
-   "公式Xフォロー＆リポスト企画も同期間で実施、抽選3名にD賞全7種セットを進呈"
-  ],
-  "title": "コトブキヤくじ Summer Live st@ge販売開始",
-  "url": "https://idolmaster-official.jp/news/01_19560",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608232010-grok-8",
-  "event_date": "2026-08-21",
-  "deadline": "2026-09-23"
- },
- {
-  "id": "sched-2026-09-23-gaku-nemurase-tai-gashapon-2026-締切",
-  "dedup_key": "gaku-nemurase-tai-gashapon-2026",
-  "brand": "gaku",
-  "subject": "学園アイドルマスター「ねむらせ隊」ガシャポン",
-  "kind": "締切",
-  "note": "受注終了",
-  "reserved_on": "2026-08-27",
-  "title": "【学マス】「ねむらせ隊」がガシャポンに登場 予約受付中",
-  "url": "https://idolmaster-official.jp/news/01_19667",
-  "source_type": "準公式",
-  "facts": [
-   "ガシャポンオンライン受注期間: 2026年8月26日(水)17:00〜2026年9月23日(水・祝)23:59",
-   "お届け・一般発売: 2026年12月以降順次",
-   "ラインナップ: 倉本千奈、篠澤広、秦谷美鈴、花海佑芽"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202608262337-watch-2",
-  "deadline": "2026-09-23"
- },
- {
-  "id": "sched-2026-09-23-gaku-shirube-iwate-streaming-2026-千秋楽",
-  "dedup_key": "gaku-shirube-iwate-streaming-2026",
-  "brand": "gaku",
-  "subject": "学園アイドルマスター LIVE TOUR -標- 岩手公演",
-  "kind": "千秋楽",
-  "reserved_on": "2026-08-28",
-  "title": "標ツアー岩手公演の配信視聴チケット販売開始",
-  "url": "https://x.com/gkmas_official/status/2092900856488460535",
-  "source_type": "公式",
-  "facts": [
-   "公演名は「学園アイドルマスター LIVE TOUR -標- 岩手公演」",
-   "開催日は9月22日(火・祝)・9月23日(水・祝)",
-   "会場はトーサイクラシックホール岩手(岩手県民会館)大ホール"
-  ],
-  "event_date": "2026-09-23",
-  "src_candidate_id": "202608280232-grok-36"
- },
- {
-  "id": "sched-2026-09-23-shiny-stillblue-asobipremium-lottery-締切",
-  "dedup_key": "shiny-stillblue-asobipremium-lottery",
-  "brand": "shiny",
-  "subject": "『Still blue』アソビストア一般会員先行受付",
-  "kind": "締切",
-  "reserved_on": "2026-08-28",
-  "title": "REFRAC7IONS アソビストア一般会員先行が受付開始",
-  "url": "https://x.com/shinyc_official/status/2092809577427567001",
-  "source_type": "公式",
-  "facts": [
-   "公演名: shiny, the first REFRAC7IONS \" Still blue \"",
-   "アソビストア一般会員先行 本日より受付スタート",
-   "お申し込みは9/23(水・祝)まで",
-   "チケット詳細: https://idolmaster-official.jp/live_event/REFRAC7IONS_Still_blue/ticket/"
-  ],
-  "event_date": "2026-09-23",
-  "src_candidate_id": "202608280342-grok-34"
- },
- {
-  "id": "sched-2026-09-23-imas-mor-415-personalities-2026-開始",
-  "dedup_key": "imas-mor-415-personalities-2026",
-  "brand": "general",
-  "subject": "アイマスMOR415 新パーソナリティ初回放送",
-  "kind": "開始",
-  "reserved_on": "2026-09-03",
-  "facts": [
-   "アイマスMOR415は9月23日放送から汐谷文康さん・角元明日香さんが新パーソナリティ"
-  ],
-  "title": "アイマスMOR415、新パーソナリティ決定",
-  "url": "https://x.com/imas_musicradio/status/2095150250524578250",
-  "source_type": "準公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202609030229-grok-58",
-  "event_date": "2026-09-23"
- },
- {
-  "id": "sched-2026-09-23-gaku-live-tour-shirube-iwate-general-sale-2026-千秋楽",
-  "dedup_key": "gaku-live-tour-shirube-iwate-general-sale-2026",
-  "brand": "gaku",
-  "subject": "学マスLIVE TOUR 標 岩手公演",
-  "kind": "千秋楽",
-  "note": "岩手公演2日目",
-  "reserved_on": "2026-09-04",
-  "title": "LIVE TOUR -標- 岩手公演一般販売",
-  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/ticket/regional.php",
-  "source_type": "公式",
-  "facts": [
-   "岩手公演は9月22日(火)・23日(水)の2公演"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202609031236-explore-20",
-  "event_date": "2026-09-23"
- },
- {
-  "id": "sched-2026-09-23-sidem-2dmv-transcendent-goods-2026-09-締切",
-  "dedup_key": "sidem-2dmv-transcendent-goods-2026-09",
-  "brand": "sidem",
-  "subject": "SideM 2DMV公開記念グッズ第2弾・T@LESリリース記念グッズ第3弾",
-  "kind": "締切",
-  "note": "受注締切23:59",
-  "reserved_on": "2026-09-04",
-  "title": "SideM 2DMV公開記念グッズ第2弾 & TRANSCENDENT T@LESリリース記念グッズ第3弾発売決定",
-  "url": "https://idolmaster-official.jp/news/01_19786",
-  "source_type": "公式",
-  "facts": [
-   "受注販売期間は2026年9月3日12:00～9月23日23:59",
-   "2DMVグッズは11月中旬以降、T@LESグッズは11月下旬以降に順次発送予定"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202609031236-watch-0",
-  "deadline": "2026-09-23"
- }
+  {
+    "id": "sched-2026-09-23-cg-star-village-achi-summer-2026-千秋楽",
+    "dedup_key": "cg-star-village-achi-summer-2026",
+    "brand": "cg",
+    "subject": "シンデレラガールズ×スタービレッジ阿智 コラボ千秋楽",
+    "kind": "千秋楽",
+    "note": "コラボ最終日",
+    "reserved_on": "2026-07-14",
+    "facts": [
+      "開催期間は2026年7月18日〜9月23日(水・秋分の日)"
+    ],
+    "title": "阿智村×シンデレラガールズ 星空コラボ決定",
+    "url": "https://idolmaster-official.jp/news/01_19356",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202607131241-watch-0",
+    "event_date": "2026-09-23"
+  },
+  {
+    "id": "sched-2026-09-23-gaku-live-tour-single-shugakuryoko-2026-締切",
+    "dedup_key": "gaku-live-tour-single-shugakuryoko-2026",
+    "brand": "gaku",
+    "subject": "初星学園 LIVE TOUR Single「修楽旅行」予約締切",
+    "kind": "締切",
+    "note": "アソビストア予約特典の受付締切",
+    "reserved_on": "2026-08-24",
+    "facts": [
+      "アソビストア予約特典(ジャケットイラストステッカー)の受付は9月23日(水)まで、なくなり次第終了",
+      "本編は2026年11月4日(水)発売、2,500円(税込)"
+    ],
+    "title": "「修楽旅行」11月4日発売決定",
+    "url": "https://gakuen-label.idolmaster-official.jp/news/schoosicaltrip",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608232010-grok-46",
+    "event_date": "2026-11-04",
+    "deadline": "2026-09-23"
+  },
+  {
+    "id": "sched-2026-09-23-kotobukiya-kuji-summer-live-stage-2026-締切",
+    "dedup_key": "kotobukiya-kuji-summer-live-stage-2026",
+    "brand": "765",
+    "subject": "コトブキヤくじ「Summer Live st@ge」販売終了",
+    "kind": "締切",
+    "note": "販売・リポストキャンペーンともに23:59終了",
+    "reserved_on": "2026-08-24",
+    "facts": [
+      "コトブキヤくじ「アイドルマスター Summer Live st@ge」の販売期間は8月21日〜9月23日23:59",
+      "公式Xフォロー＆リポスト企画も同期間で実施、抽選3名にD賞全7種セットを進呈"
+    ],
+    "title": "コトブキヤくじ Summer Live st@ge販売開始",
+    "url": "https://idolmaster-official.jp/news/01_19560",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608232010-grok-8",
+    "event_date": "2026-08-21",
+    "deadline": "2026-09-23"
+  },
+  {
+    "id": "sched-2026-09-23-gaku-nemurase-tai-gashapon-2026-締切",
+    "dedup_key": "gaku-nemurase-tai-gashapon-2026",
+    "brand": "gaku",
+    "subject": "学園アイドルマスター「ねむらせ隊」ガシャポン",
+    "kind": "締切",
+    "note": "受注終了",
+    "reserved_on": "2026-08-27",
+    "title": "【学マス】「ねむらせ隊」がガシャポンに登場 予約受付中",
+    "url": "https://idolmaster-official.jp/news/01_19667",
+    "source_type": "準公式",
+    "facts": [
+      "ガシャポンオンライン受注期間: 2026年8月26日(水)17:00〜2026年9月23日(水・祝)23:59",
+      "お届け・一般発売: 2026年12月以降順次",
+      "ラインナップ: 倉本千奈、篠澤広、秦谷美鈴、花海佑芽"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202608262337-watch-2",
+    "deadline": "2026-09-23"
+  },
+  {
+    "id": "sched-2026-09-23-gaku-shirube-iwate-streaming-2026-千秋楽",
+    "dedup_key": "gaku-shirube-iwate-streaming-2026",
+    "brand": "gaku",
+    "subject": "学園アイドルマスター LIVE TOUR -標- 岩手公演",
+    "kind": "千秋楽",
+    "reserved_on": "2026-08-28",
+    "title": "標ツアー岩手公演の配信視聴チケット販売開始",
+    "url": "https://x.com/gkmas_official/status/2092900856488460535",
+    "source_type": "公式",
+    "facts": [
+      "公演名は「学園アイドルマスター LIVE TOUR -標- 岩手公演」",
+      "開催日は9月22日(火・祝)・9月23日(水・祝)",
+      "会場はトーサイクラシックホール岩手(岩手県民会館)大ホール"
+    ],
+    "event_date": "2026-09-23",
+    "src_candidate_id": "202608280232-grok-36"
+  },
+  {
+    "id": "sched-2026-09-23-shiny-stillblue-asobipremium-lottery-締切",
+    "dedup_key": "shiny-stillblue-asobipremium-lottery",
+    "brand": "shiny",
+    "subject": "『Still blue』アソビストア一般会員先行受付",
+    "kind": "締切",
+    "reserved_on": "2026-08-28",
+    "title": "REFRAC7IONS アソビストア一般会員先行が受付開始",
+    "url": "https://x.com/shinyc_official/status/2092809577427567001",
+    "source_type": "公式",
+    "facts": [
+      "公演名: shiny, the first REFRAC7IONS \" Still blue \"",
+      "アソビストア一般会員先行 本日より受付スタート",
+      "お申し込みは9/23(水・祝)まで",
+      "チケット詳細: https://idolmaster-official.jp/live_event/REFRAC7IONS_Still_blue/ticket/"
+    ],
+    "event_date": "2026-09-23",
+    "src_candidate_id": "202608280342-grok-34"
+  },
+  {
+    "id": "sched-2026-09-23-imas-mor-415-personalities-2026-開始",
+    "dedup_key": "imas-mor-415-personalities-2026",
+    "brand": "general",
+    "subject": "アイマスMOR415 新パーソナリティ初回放送",
+    "kind": "開始",
+    "reserved_on": "2026-09-03",
+    "facts": [
+      "アイマスMOR415は9月23日放送から汐谷文康さん・角元明日香さんが新パーソナリティ"
+    ],
+    "title": "アイマスMOR415、新パーソナリティ決定",
+    "url": "https://x.com/imas_musicradio/status/2095150250524578250",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609030229-grok-58",
+    "event_date": "2026-09-23"
+  },
+  {
+    "id": "sched-2026-09-23-gaku-live-tour-shirube-iwate-general-sale-2026-千秋楽",
+    "dedup_key": "gaku-live-tour-shirube-iwate-general-sale-2026",
+    "brand": "gaku",
+    "subject": "学マスLIVE TOUR 標 岩手公演",
+    "kind": "千秋楽",
+    "note": "岩手公演2日目",
+    "reserved_on": "2026-09-04",
+    "title": "LIVE TOUR -標- 岩手公演一般販売",
+    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/ticket/regional.php",
+    "source_type": "公式",
+    "facts": [
+      "岩手公演は9月22日(火)・23日(水)の2公演"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202609031236-explore-20",
+    "event_date": "2026-09-23"
+  },
+  {
+    "id": "sched-2026-09-23-sidem-2dmv-transcendent-goods-2026-09-締切",
+    "dedup_key": "sidem-2dmv-transcendent-goods-2026-09",
+    "brand": "sidem",
+    "subject": "SideM 2DMV公開記念グッズ第2弾・T@LESリリース記念グッズ第3弾",
+    "kind": "締切",
+    "note": "受注締切23:59",
+    "reserved_on": "2026-09-04",
+    "title": "SideM 2DMV公開記念グッズ第2弾 & TRANSCENDENT T@LESリリース記念グッズ第3弾発売決定",
+    "url": "https://idolmaster-official.jp/news/01_19786",
+    "source_type": "公式",
+    "facts": [
+      "受注販売期間は2026年9月3日12:00～9月23日23:59",
+      "2DMVグッズは11月中旬以降、T@LESグッズは11月下旬以降に順次発送予定"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202609031236-watch-0",
+    "deadline": "2026-09-23"
+  },
+  {
+    "id": "sched-2026-09-23-gakumas-shugakuryoko-single-2026-締切",
+    "dedup_key": "gakumas-shugakuryoko-single-2026",
+    "brand": "gaku",
+    "subject": "初星学園 LIVE TOUR Single「修楽旅行」予約特典",
+    "kind": "締切",
+    "reserved_on": "2026-09-05",
+    "facts": [
+      "アソビストア予約特典のジャケットイラストステッカーは9月23日まで予約受付(なくなり次第終了)"
+    ],
+    "title": "学マス標ツアー福岡公演が開幕、物販・配信も",
+    "url": "https://gakuen-label.idolmaster-official.jp/news/schoosicaltrip",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609050237-grok-47"
+  }
 ]

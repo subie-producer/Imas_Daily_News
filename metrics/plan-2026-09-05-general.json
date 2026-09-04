@@ -1,0 +1,46 @@
+{
+  "articles": [
+    {
+      "slug": "general-akemas-nakano-hakata-arcade-end",
+      "brand": "general",
+      "rank": "medium",
+      "angle": "アーケード版『THE IDOLM@STER』、namco中野店・namco博多バスターミナル店で通常稼働が終了(筐体は展示物として存続、シリーズ原点の20年史を振り返る)",
+      "lead_score": 30,
+      "dedup_key": "akemas-nakano-hakata-dengeki-2026-09-04",
+      "candidate_ids": [
+        "202609042337-watch-5",
+        "202609050237-grok-97",
+        "202609050237-grok-98",
+        "202609050237-grok-99",
+        "202609050237-grok-100"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "arcade-namco-nakano-end-2026",
+      "reason": "重複",
+      "note": "namco中野店アーケード稼働終了と同一事象。dedup_key: akemas-nakano-hakata-dengeki-2026-09-04 の記事に統合"
+    },
+    {
+      "dedup_key": "akemas-namco-nakano-end-2026",
+      "reason": "重複",
+      "note": "namco中野店公式ポストの一次情報。dedup_key: akemas-nakano-hakata-dengeki-2026-09-04 の記事に統合"
+    },
+    {
+      "dedup_key": "akemas-namco-hakata-end-2026",
+      "reason": "重複",
+      "note": "namco博多バスターミナル店公式ポストの一次情報。dedup_key: akemas-nakano-hakata-dengeki-2026-09-04 の記事に統合"
+    },
+    {
+      "dedup_key": "akemas-nakano-denfami-2026-09-04",
+      "reason": "重複",
+      "note": "電ファミによる中野店単独の報道。同一事象を両店舗までカバーする dengeki 記事に統合(dedup_key: akemas-nakano-hakata-dengeki-2026-09-04)"
+    },
+    {
+      "dedup_key": "x-com-imas-official-status-2095830995820019843-9",
+      "reason": "重複",
+      "note": "公式総合アカウントの告知寄せ集め。内容(vα-liv記念ボイス販売/dual twinオーコメ/学マス標福岡・岩手/Rose Tea Parlorカフェ)はいずれも他面(dsva/765/gaku/cg)が個別に記事化済みのため本面では扱わない"
+    }
+  ]
+}

@@ -17,5 +17,21 @@
       "『やまなし WALK & WANDER』は2026年12月27日(日)に終了",
       "15,000歩達成でウォークチャレンジの追加景品、コラボ歩数計はイベント後も通常の歩数計として使用可能"
     ]
+  },
+  {
+    "id": "sched-2026-12-27-cg-rose-tea-parlor-2026-seoul-終了",
+    "dedup_key": "cg-rose-tea-parlor-2026-seoul",
+    "brand": "cg",
+    "subject": "Rose Tea Parlorコラボカフェ ソウル ホンデ店",
+    "kind": "終了",
+    "reserved_on": "2026-09-05",
+    "facts": [
+      "ソウル ホンデ店の開催は12月27日まで"
+    ],
+    "title": "シンデレラガールズ、Rose Tea Parlorコラボカフェ開催決定",
+    "url": "https://idolmaster-official.jp/news/01_19811",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609050237-grok-28"
   }
 ]

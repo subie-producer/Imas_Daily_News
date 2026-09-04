@@ -1,82 +1,97 @@
 [
- {
-  "id": "sched-2026-09-16-cg-toppa-base-popup-2026-千秋楽",
-  "dedup_key": "cg-toppa-base-popup-2026",
-  "brand": "cg",
-  "subject": "シンデレラガールズ TOPPA!!!BASE POPUP SHOP",
-  "kind": "千秋楽",
-  "note": "秋葉原会場の会期最終日",
-  "reserved_on": "2026-07-13",
-  "facts": [
-   "秋葉原「TOPPA!!! BASE AKIBA」（エキュート秋葉原1F）は2026年8月27日(木)～9月16日(水)開催",
-   "札幌・仙台・名古屋・大阪・福岡の各TOPPA!!! BASE店舗は8月27日～9月14日開催",
-   "諸星きらり・城ヶ崎莉嘉・赤城みりあ・安部菜々・佐藤心・関裕美の6人による「バトルゲームワールド」テーマの描き下ろしグッズを展開",
-   "総選挙投票券に交換できるシリアルコード配布は9月14日まで",
-   "エンゲージメント: 中",
-   "言及アイドル: 諸星きらり、城ヶ崎莉嘉、赤城みりあ、安部菜々、佐藤心、関裕美"
-  ],
-  "title": "TOPPA!!!BASE シンデレラガールズPOPUP SHOP開催決定",
-  "url": "https://idolmaster-official.jp/news/01_19246",
-  "source_type": "公式",
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202607130340-claude-83",
-  "event_date": "2026-08-27",
-  "deadline": "2026-09-16"
- },
- {
-  "id": "sched-2026-09-16-shiny-hopeful-feathers-cd-2026-発売",
-  "dedup_key": "shiny-hopeful-feathers-cd-2026",
-  "brand": "shiny",
-  "subject": "シャニマスCDシリーズ『HOPEFUL FE@THERS』(-Stella-/-Luna-/-Sol-)",
-  "kind": "発売",
-  "note": "3作同時発売",
-  "title": "『HOPEFUL FE@THERS』3作の詳細解禁、9月16日発売",
-  "url": "https://x.com/lantis_imasSC/status/2092220748840706335",
-  "source_type": "準公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608260216-grok-73",
-  "event_date": "2026-09-16",
-  "facts": [
-   "「-Stella-」「-Luna-」「-Sol-」の3作が2026年9月16日(水)発売",
-   "アイドル28人の新ソロ曲ほかを収録、ポスター抽選会の実施も決定",
-   "-Stella-の1曲目は「MAGICAL FOREST」、櫻木真乃のソロ曲"
-  ],
-  "reserved_on": "2026-08-26"
- },
- {
-  "id": "sched-2026-09-16-imas-mor-414-asahi-2026-開始",
-  "dedup_key": "imas-mor-414-asahi-2026",
-  "brand": "joint",
-  "subject": "アイマスMOR414 田中有紀マスターソング特集放送",
-  "kind": "開始",
-  "reserved_on": "2026-08-28",
-  "title": "アイマスMOR414は芹沢あさひ役・田中有紀のマスターソング特集",
-  "url": "https://x.com/imas_musicradio/status/2092613786880647264",
-  "source_type": "準公式",
-  "facts": [
-   "アイマスMOR414（9月16日放送）は、シャイニーカラーズ・芹沢あさひ役、田中有紀さんのマスターソング特集をお届け",
-   "ハッシュタグ: #アイマスMOR #imas_MOR"
-  ],
-  "event_date": "2026-09-16",
-  "src_candidate_id": "202608280232-grok-48"
- },
- {
-  "id": "sched-2026-09-16-shiny-msp-live-tickets-2026-締切",
-  "dedup_key": "shiny-msp-live-tickets-2026",
-  "brand": "shiny",
-  "subject": "283 PRODUCTION Solo Live Collection -Master ShowPiece- 公式リセール",
-  "kind": "締切",
-  "note": "公式リセール受付締切(9:59)",
-  "reserved_on": "2026-09-02",
-  "title": "283 PRODUCTION Solo Live Collection -Master ShowPiece- チケット情報",
-  "url": "https://idolmaster-official.jp/news/01_19705",
-  "source_type": "公式",
-  "facts": [
-   "公式リセール受付は9月5日15時〜9月16日9時59分、受付URLは公演日ごとに分かれる"
-  ],
-  "verify": "confirmed",
-  "src_candidate_id": "202609011234-explore-10",
-  "deadline": "2026-09-16"
- }
+  {
+    "id": "sched-2026-09-16-cg-toppa-base-popup-2026-千秋楽",
+    "dedup_key": "cg-toppa-base-popup-2026",
+    "brand": "cg",
+    "subject": "シンデレラガールズ TOPPA!!!BASE POPUP SHOP",
+    "kind": "千秋楽",
+    "note": "秋葉原会場の会期最終日",
+    "reserved_on": "2026-07-13",
+    "facts": [
+      "秋葉原「TOPPA!!! BASE AKIBA」（エキュート秋葉原1F）は2026年8月27日(木)～9月16日(水)開催",
+      "札幌・仙台・名古屋・大阪・福岡の各TOPPA!!! BASE店舗は8月27日～9月14日開催",
+      "諸星きらり・城ヶ崎莉嘉・赤城みりあ・安部菜々・佐藤心・関裕美の6人による「バトルゲームワールド」テーマの描き下ろしグッズを展開",
+      "総選挙投票券に交換できるシリアルコード配布は9月14日まで",
+      "エンゲージメント: 中",
+      "言及アイドル: 諸星きらり、城ヶ崎莉嘉、赤城みりあ、安部菜々、佐藤心、関裕美"
+    ],
+    "title": "TOPPA!!!BASE シンデレラガールズPOPUP SHOP開催決定",
+    "url": "https://idolmaster-official.jp/news/01_19246",
+    "source_type": "公式",
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202607130340-claude-83",
+    "event_date": "2026-08-27",
+    "deadline": "2026-09-16"
+  },
+  {
+    "id": "sched-2026-09-16-shiny-hopeful-feathers-cd-2026-発売",
+    "dedup_key": "shiny-hopeful-feathers-cd-2026",
+    "brand": "shiny",
+    "subject": "シャニマスCDシリーズ『HOPEFUL FE@THERS』(-Stella-/-Luna-/-Sol-)",
+    "kind": "発売",
+    "note": "3作同時発売",
+    "title": "『HOPEFUL FE@THERS』3作の詳細解禁、9月16日発売",
+    "url": "https://x.com/lantis_imasSC/status/2092220748840706335",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608260216-grok-73",
+    "event_date": "2026-09-16",
+    "facts": [
+      "「-Stella-」「-Luna-」「-Sol-」の3作が2026年9月16日(水)発売",
+      "アイドル28人の新ソロ曲ほかを収録、ポスター抽選会の実施も決定",
+      "-Stella-の1曲目は「MAGICAL FOREST」、櫻木真乃のソロ曲"
+    ],
+    "reserved_on": "2026-08-26"
+  },
+  {
+    "id": "sched-2026-09-16-imas-mor-414-asahi-2026-開始",
+    "dedup_key": "imas-mor-414-asahi-2026",
+    "brand": "joint",
+    "subject": "アイマスMOR414 田中有紀マスターソング特集放送",
+    "kind": "開始",
+    "reserved_on": "2026-08-28",
+    "title": "アイマスMOR414は芹沢あさひ役・田中有紀のマスターソング特集",
+    "url": "https://x.com/imas_musicradio/status/2092613786880647264",
+    "source_type": "準公式",
+    "facts": [
+      "アイマスMOR414（9月16日放送）は、シャイニーカラーズ・芹沢あさひ役、田中有紀さんのマスターソング特集をお届け",
+      "ハッシュタグ: #アイマスMOR #imas_MOR"
+    ],
+    "event_date": "2026-09-16",
+    "src_candidate_id": "202608280232-grok-48"
+  },
+  {
+    "id": "sched-2026-09-16-shiny-msp-live-tickets-2026-締切",
+    "dedup_key": "shiny-msp-live-tickets-2026",
+    "brand": "shiny",
+    "subject": "283 PRODUCTION Solo Live Collection -Master ShowPiece- 公式リセール",
+    "kind": "締切",
+    "note": "公式リセール受付締切(9:59)",
+    "reserved_on": "2026-09-02",
+    "title": "283 PRODUCTION Solo Live Collection -Master ShowPiece- チケット情報",
+    "url": "https://idolmaster-official.jp/news/01_19705",
+    "source_type": "公式",
+    "facts": [
+      "公式リセール受付は9月5日15時〜9月16日9時59分、受付URLは公演日ごとに分かれる"
+    ],
+    "verify": "confirmed",
+    "src_candidate_id": "202609011234-explore-10",
+    "deadline": "2026-09-16"
+  },
+  {
+    "id": "sched-2026-09-16-shiny-parallel-collection-popup-2026-開始",
+    "dedup_key": "shiny-parallel-collection-popup-2026",
+    "brand": "shiny",
+    "subject": "シャニマス「パラレルコレクション」POP UP SHOP「パラレル回廊」空席先着予約",
+    "kind": "開始",
+    "reserved_on": "2026-09-05",
+    "title": "シャニマス「パラレル回廊」詳細公開",
+    "url": "https://idolmaster-official.jp/news/01_19792",
+    "source_type": "公式",
+    "facts": [
+      "「パラレル回廊」の空席分先着予約は9月16日18時から受付"
+    ],
+    "src_candidate_id": "202609050237-grok-82"
+  }
 ]

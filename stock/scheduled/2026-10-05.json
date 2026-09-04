@@ -1,40 +1,56 @@
 [
- {
-  "id": "sched-2026-10-05-shiny-msp-live-tickets-2026-終了",
-  "dedup_key": "shiny-msp-live-tickets-2026",
-  "brand": "shiny",
-  "subject": "シャニマスソロライブMSP 配信チケット",
-  "kind": "終了",
-  "note": "配信チケット販売終了(18時)・アーカイブ視聴終了(23:59)",
-  "reserved_on": "2026-08-26",
-  "facts": [
-   "配信チケットの販売期間は10月5日18時まで",
-   "アーカイブ視聴期間は9月28日18時から10月5日23時59分まで"
-  ],
-  "title": "ソロライブMSP配信チケット、10/5販売終了",
-  "url": "https://x.com/shinyc_official/status/2092220948803956826",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608260216-grok-42",
-  "event_date": "2026-10-05"
- },
- {
-  "id": "sched-2026-10-05-gaku-shirube-iwate-streaming-2026-締切前",
-  "dedup_key": "gaku-shirube-iwate-streaming-2026",
-  "brand": "gaku",
-  "subject": "学園アイドルマスター LIVE TOUR -標- 岩手公演 配信視聴チケット",
-  "kind": "締切前",
-  "note": "配信視聴チケット販売終了(10/8 18:00)の3日前リマインド",
-  "reserved_on": "2026-08-31",
-  "facts": [
-   "配信視聴チケットの販売期間は2026年8月27日18時から10月8日18時まで(予定)",
-   "券種は両日視聴チケット1万1000円、DAY1・DAY2チケット各5,500円(税込・機能利用料込)"
-  ],
-  "title": "学マス標ツアー岩手公演、配信券詳細",
-  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/streaming/iwate.php",
-  "source_type": "公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202608310229-grok-72",
-  "event_date": "2026-10-08"
- }
+  {
+    "id": "sched-2026-10-05-shiny-msp-live-tickets-2026-終了",
+    "dedup_key": "shiny-msp-live-tickets-2026",
+    "brand": "shiny",
+    "subject": "シャニマスソロライブMSP 配信チケット",
+    "kind": "終了",
+    "note": "配信チケット販売終了(18時)・アーカイブ視聴終了(23:59)",
+    "reserved_on": "2026-08-26",
+    "facts": [
+      "配信チケットの販売期間は10月5日18時まで",
+      "アーカイブ視聴期間は9月28日18時から10月5日23時59分まで"
+    ],
+    "title": "ソロライブMSP配信チケット、10/5販売終了",
+    "url": "https://x.com/shinyc_official/status/2092220948803956826",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608260216-grok-42",
+    "event_date": "2026-10-05"
+  },
+  {
+    "id": "sched-2026-10-05-gaku-shirube-iwate-streaming-2026-締切前",
+    "dedup_key": "gaku-shirube-iwate-streaming-2026",
+    "brand": "gaku",
+    "subject": "学園アイドルマスター LIVE TOUR -標- 岩手公演 配信視聴チケット",
+    "kind": "締切前",
+    "note": "配信視聴チケット販売終了(10/8 18:00)の3日前リマインド",
+    "reserved_on": "2026-08-31",
+    "facts": [
+      "配信視聴チケットの販売期間は2026年8月27日18時から10月8日18時まで(予定)",
+      "券種は両日視聴チケット1万1000円、DAY1・DAY2チケット各5,500円(税込・機能利用料込)"
+    ],
+    "title": "学マス標ツアー岩手公演、配信券詳細",
+    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/streaming/iwate.php",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202608310229-grok-72",
+    "event_date": "2026-10-08"
+  },
+  {
+    "id": "sched-2026-10-05-cg-rose-tea-parlor-2026-nagoya-終了",
+    "dedup_key": "cg-rose-tea-parlor-2026-nagoya",
+    "brand": "cg",
+    "subject": "Rose Tea Parlorコラボカフェ 名古屋栄店",
+    "kind": "終了",
+    "reserved_on": "2026-09-05",
+    "facts": [
+      "名古屋栄店の開催は10月05日まで"
+    ],
+    "title": "シンデレラガールズ、Rose Tea Parlorコラボカフェ開催決定",
+    "url": "https://idolmaster-official.jp/news/01_19811",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609050237-grok-28"
+  }
 ]

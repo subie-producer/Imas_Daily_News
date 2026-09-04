@@ -1,0 +1,24 @@
+{
+  "articles": [
+    {
+      "slug": "765-961-ultimate-once-for-all-title",
+      "brand": "765",
+      "rank": "small",
+      "angle": "765×961の2027年xRライブ、公演名「IDOL ULTIMATE ONCE AND FOR ALL」が判明(9/4発表の続報)",
+      "lead_score": 20,
+      "dedup_key": "765-ultimate-once-and-for-all",
+      "candidate_ids": ["202609040733-explore-0"]
+    },
+    {
+      "slug": "765-dual-twin-audiocommentary-0906",
+      "brand": "765",
+      "rank": "medium",
+      "angle": "dual twin live tour東京公演千秋楽、キャスト生オーディオコメンタリー配信が公式決定(9/6 20時〜)",
+      "lead_score": 10,
+      "dedup_key": "765-dual-twin-audiocommentary-2026",
+      "candidate_ids": ["202609042337-watch-3"]
+    }
+  ],
+  "dropped": [],
+  "cross_brand": []
+}

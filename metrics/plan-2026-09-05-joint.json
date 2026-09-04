@@ -1,0 +1,36 @@
+{
+  "articles": [
+    {
+      "slug": "joint-tours-ranking-0903",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "『アイドルマスター TOURS』公式ランキング、9月3日時点のスコア上位を更新",
+      "lead_score": 15,
+      "dedup_key": "tours-ranking-2026-09-03",
+      "candidate_ids": ["202609042337-explore-35"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "765-961-idol-ultimate-once-and-for-all",
+      "reason": "既報",
+      "note": "既報story 765-961-idol-ultimate-once-and-for-all-2027(2027年7月24-25日開催・京王アリーナTOKYOと9/4付で既に確定発表済み)およびdual twin live東京千秋楽の既報facts(Gamer報道済み)と同内容。本候補は『続報予告があった』とのみ記載し具体的な新事実を伴わない"
+    },
+    {
+      "dedup_key": "x-com-imas-columbia-status-2095844575252451818-2",
+      "reason": "既報",
+      "note": "既報story columbia-venue-cd-aftersale-2026-08(受付期間8/28 21:00〜9/13 23:59・全12種・10/2一斉発送を8/29付で既報)と同一内容の『来週締切』リマインド投稿。新しい品目・期限の変更なし。3日前などの続報トリガー日にも該当しない"
+    },
+    {
+      "dedup_key": "x-com-tours-imas-status-2095799030064492825-8",
+      "reason": "既報",
+      "note": "既報story tours-late-summer-campaign-2026の published_facts に『カードに収録の「恋花小町」「暁光ノ装」の着こなしを8月25日付で紹介』と全く同一内容が既に記録済み。9/4投稿は同内容の再掲で新事実なし"
+    },
+    {
+      "dedup_key": "bandainamco-am-co-jp-am-vg-idolmaster-tours-news-20260824-html-9",
+      "reason": "既報",
+      "note": "ページ日付2026.8.24の公式キャンペーン告知本体で、既報story tours-late-summer-campaign-2026(初報2026-08-25、周防桃子登場・開催期間8/28-10/12など)と全項目一致。新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

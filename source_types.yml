@@ -104,6 +104,8 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - vtuber-live.net       # 合議で追加: VTuberのアーカイブを集約掲載
+  - tokyo-odaiba.net      # 合議で追加: 東京お台場ポータルがイベント情報を掲載
   - news.livedoor.com     # 合議で追加: 公式発表・プレスリリースの言い換え、取材形跡なし
   - gamerch.com           # 合議で追加: 攻略Wikiで公式発表を転載。編集メンバー77人による共編
   - yutura.net            # 合議で追加: YouTube上の動画情報を集約するランキングサイト
@@ -156,6 +158,10 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - special.amiami.jp     # 合議で追加: ライセンス受けたグッズ販売会社がポップアップショップを主催・告知
+  - kujibikido.com        # 合議で追加: ライセンス受けたくじ販売会社が自社商品の販売ページを運営
+  - animall.jp            # 合議で追加: グッズ販売サイト（animo運営）。商品を売る会社として当事者
+  - mitsui-shopping-park.com # 合議で追加: ショッピングモール側による会場での催しの告知。会場がコラボメニューを発信している
   - asmart.jp             # 合議で追加: A-on STOREによるSideM商品販売
   - apis.game.starlight-stage.jp # 合議で追加: ゲーム運営元による11周年キャンペーン一次発信
   - chugai-grace-cafe.jp  # 合議で追加: コラボカフェ運営会社が自社催しを告知
@@ -272,6 +278,10 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - ajt00869884         # 合議で追加: ゲーム内イベントへのファンの感想・反応
+    - _anmi2New           # 合議で追加: ファンがイベント参加の準備状況を共有
+    - HADICAN_AI          # 合議で追加: ファンが自分のコスプレ・創作を発信
+    - ANXIN_Ds            # 合議で追加: ファンが推し(北条加蓮)の応援投稿祭に参加
     - syow_sumika         # 合議で追加: 個人によるアイマスキャラクターのファンイラスト投稿
     - izmcos              # 合議で追加: 個人によるアイマスキャラクターのコスプレ写真投稿
     - chagi_chage         # 生誕祭タグのファン投稿
@@ -294,6 +304,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - gladgarb_X          # 合議で追加: コラボブランドがライセンス商品を販売
     - sobetsuringofes     # 合議で追加: 祭りイベント主催者側による公式アカウント、ビジュアル配信
     - maruiwebchannel     # 合議で追加: 店舗の公式案内
     - dengeki_imas                    # 電撃(自社出版物の告知。報道ではない。監査指摘)

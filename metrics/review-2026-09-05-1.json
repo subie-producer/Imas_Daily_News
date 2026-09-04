@@ -1,0 +1,113 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-05-dsva-cosmo-birthday-voice-sale.md",
+   "issue": "規程5: 新事実なしの続報。既報(stock/stories.yml の story_id: cosmo-birthday-online-live-2026 の published_facts)と実質同内容で、新事実も当日トリガーもない",
+   "quote": "『vα-liv バースデー記念ボイス2026 上水流宇宙』が、9月4日20時から『vα-liv』特設BOOTHページで販売されている。販売期間は9月27日23時59分まで、価格は3,300円（税込）。\n\nvs. stories.yml: 「vα-liv バースデー記念ボイス2026 上水流宇宙」(前後編セット3,300円税込)を9月4日20時からBOOTHで販売開始、9月27日23:59まで (first_published: 2026-08-24)",
+   "scope": "article:2026-09-05-dsva-cosmo-birthday-voice-sale.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-joint-tours-ranking-0903.md",
+   "issue": "規程5: 新事実なしの続報。stories.yml の published_facts (tours-official-ranking-2026-09-03) と実質同内容で、新事実がなく、当日トリガーもない。既報は first_published: '2026-09-05' で本日同日に初出として記録済み。ランキング1位～5位のスコア、P.Lv、100位までの掲載、対象楽曲19曲、ランクF非掲載が完全に一致している。",
+   "quote": "『アイドルマスター TOURS』公式サイトに、2026年9月3日時点のランキングが掲載されている。スコアランキングの上位は、1位が18,518,323（P.Lv 70）、2位が17,373,016（P.Lv 61）、3位が17,203,483（P.Lv 64）、4位が17,103,724（P.Lv 66）、5位が15,857,119（P.Lv 70）。ランキングは100位まで掲載されている。",
+   "scope": "article:2026-09-05-joint-tours-ranking-0903.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-million-kotobukiya-kuji-stage04.md",
+   "issue": "新事実なしの続報（規程5）。2026-09-04に発表された同一内容が記事化されており、新しい情報・当日トリガーがない",
+   "quote": "記事全体。『最上静香、永吉 昴、七尾百合子の新規描き下ろしビジュアルを中心に、「〇〇の秋！」をテーマとしたラインナップになる。詳細は9月16日(水)にコトブキヤくじサイトと公式Xで公開予定。販売開始は9月18日(金)を予定している。』はstock/stories.yml の published_facts と完全に一致",
+   "scope": "article:2026-09-05-million-kotobukiya-kuji-stage04.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-shiny-msp-resale-start-0905.md",
+   "issue": "規程5：新事実なしの続報。既報（stories.yml: shiny-msp-live-tickets-2026, first_published: 2026-08-26）と実質同内容で、新事実も確認できない。08-26に『公式リセールは9月5日15時開始予定』が初出報告済み。本記事は同一内容の反復に過ぎず、当日の受付開始という『時間経過』以外の新情報がない。",
+   "quote": "「ソロライブMSP」の公式リセール受付は、9月5日(土)15時から開始予定。公式Xで案内されている。",
+   "scope": "article:2026-09-05-shiny-msp-resale-start-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-shiny-msp-resale-start-0905.md",
+   "issue": "規程3：出典参照の破損。記事のcandidate_ids『sched-2026-09-05-shiny-msp-live-tickets-2026-開始』がcandidates/2026-09-05.jsonに存在しない。記事のsources URLはcandidates/2026-08-26.jsonおよび2026-08-27.jsonに記録済みだが、記事がこれら正規の候補を参照していない。参照整合性の欠落。",
+   "quote": "candidate_ids: ['sched-2026-09-05-shiny-msp-live-tickets-2026-開始']",
+   "scope": "article:2026-09-05-shiny-msp-resale-start-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-sidem-transcendent-onlyshop-open-0905.md",
+   "issue": "時制矛盾（チェックリスト項目4）：発行日06:00時点ではショップはまだ営業していないのに、過去形で『開幕した』と記述している。営業開始は10:00のため、記事配信時には営業がまだ始まっていない状態で過去形を使用しているのは誤報。",
+   "quote": "lede: 「本日開幕した」、本文冒頭: 「9月5日に開幕した」。一方、見出しは「本日開幕」と現在形で正確。",
+   "scope": "article:2026-09-05-sidem-transcendent-onlyshop-open-0905.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-05-cg-vote2026-247-stream-restart-0905.md",
+   "issue": "分量不足（167字 < 250字）。候補の facts に含まれる「候補アイドル190人の一挙紹介配信」「投票ページ」などの情報を補充すれば、分量と内容両面で記事を充実できます。",
+   "scope": "article:2026-09-05-cg-vote2026-247-stream-restart-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-dsva-cosmo-birthday-voice-sale.md",
+   "issue": "分量不足: rank: small の下限は250字だが、本文は約110字。出典には販売ページURLや商品詳細があるため、拾えば分量は埋まるはずだが、既報であるため記事化自体が不要",
+   "scope": "article:2026-09-05-dsva-cosmo-birthday-voice-sale.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-dsva-manaka-kpf2026-appearance.md",
+   "issue": "分量不足: rank small (下限250字) だが本文が約120字。出典に記載の詳細情報（チケット情報・会場詳細など）が『後日発表』扱いのため現時点では追加情報が限定的。短編記事として許容範囲内だが、KPF公式サイト https://www.ktqpopfes.jp/2026/ をリンク参照で付記すれば読者の情報補完につながる。",
+   "scope": "article:2026-09-05-dsva-manaka-kpf2026-appearance.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-dsva-valiv-streaming-roundup-0905.md",
+   "issue": "灯里愛夏配信のタイトルが出典と異なる可能性。記事では「真夏の苦手克服クッキング！？」と記載しているが、候補では「ピーマン克服クッキング」（title）「やぴなま」（配信名）と記載されている。URL https://www.youtube.com/live/eQRtypVlFBs を実際に開いて、配信の正式なタイトルが記事の記述と一致するか確認が望ましい。候補ファイルの verify が「unconfirmed」のため、詳細な確認が未完了である可能性。",
+   "scope": "article:2026-09-05-dsva-valiv-streaming-roundup-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-gaku-shirube-iwate-general-sale-start.md",
+   "issue": "分量不足：rank が medium の場合、本文は 450 字以上必要ですが、現在は 343 字です。候補に記載されている会場情報や注意事項（例：スタンディング観覧が特別な体験であることの説明など）を補足することで分量を増やせます",
+   "scope": "article:2026-09-05-gaku-shirube-iwate-general-sale-start.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-gaku-story-event-saigo-no-bunkasai.md",
+   "issue": "分量不足: 本文114字で rank small の下限250字に達していない。候補の facts に記載されている開催期間（9/4 11:00～9/12 4:59）などの出典情報を追加すれば埋められる。",
+   "scope": "article:2026-09-05-gaku-story-event-saigo-no-bunkasai.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-gaku-sugar-flavor-mv-1million.md",
+   "issue": "分量不足（rank: small 目安250字に対し92字）。出典候補の gakuen.md に記載されている薄井友里のコメント詳細や、イベント達成の背景情報などを拾えば本文を充実できるはず。現状は必須事実のみをまとめた形だが、小さな記事としても最小限の厚みが欲しい場面",
+   "scope": "article:2026-09-05-gaku-sugar-flavor-mv-1million.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-million-14th-dressing-room-flowers.md",
+   "issue": "見出し・lede で『40cm四方以下』と表記していますが、本文では『高さ・横幅・奥行きが各40センチ以下』と明記しています。『四方』は通常2次元を指すため、『40cm立方以下』など統一すると読者に正確に伝わります。",
+   "scope": "article:2026-09-05-million-14th-dressing-room-flowers.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-million-chibigurumi-spade-q-namco.md",
+   "issue": "分量不足: rank: small に対して本文が 211字で、最小 250字に不足しています。出典には記事に未記載の詳細（例：先行プレイ開始日「2026年9月2日」など）が含まれており、これらを追加することで分量を補うことが可能です。",
+   "scope": "article:2026-09-05-million-chibigurumi-spade-q-namco.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-sidem-11th-venue-food-drink-0905.md",
+   "issue": "frontmatter の candidate_ids が誤っている。「sched-2026-09-05-sidem-11th-kitchen-2026-開始」は候補ファイルに存在しません。実際の対応候補は 202608281836-watch-3 (EVER EVER KITCHEN) と 202609041234-watch-0 (コラボドリンク) です。",
+   "scope": "article:2026-09-05-sidem-11th-venue-food-drink-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-sidem-11th-venue-food-drink-0905.md",
+   "issue": "分量が rank: medium の下限 (450字) に届いていません。本文は約330字。出典に記載されている営業情報・メニュー詳細・特典条件などを拾えば埋まるはずです。",
+   "scope": "article:2026-09-05-sidem-11th-venue-food-drink-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-sidem-315shop-5th-purchase-limit-0905.md",
+   "issue": "分量が rank:medium の下限（450字程度）より少し短い（約430字）。出典に記載されている会場・営業時間・購入制限の詳細・入店方法などを確認しましたが、記事が既に網羅しており、追加可能な情報が無いため、記事は簡潔で適切です。",
+   "scope": "article:2026-09-05-sidem-315shop-5th-purchase-limit-0905.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-sidem-transcendent-onlyshop-open-0905.md",
+   "issue": "既報との対応：2026-08-30付のstories.ym「sidem-transcendent-tales-only-shop-2026」と同内容で新事実なし。ただし発行日が開幕日そのもの（当日トリガー）のため、チェックリスト項目5「新事実なしの続報」の当日トリガー例外に該当し、ブロック対象ではない。",
+   "scope": "article:2026-09-05-sidem-transcendent-onlyshop-open-0905.md"
+  },
+  {
+   "file": "-",
+   "issue": "記事化相当の話題が掲載されていない: 【cg】デレステ11周年記念キャンペーン開始（9/3公式発表）、【cg】文化祭テーマのオンラインくじ販売開始（9/3 12:00販売開始）、【million】ミリオン14thLIVE配信チケット販売開始（9/19・20開催）、【gaku】麻央・千奈・清夏「標ガシャ」開催（9/4開始）。これらは候補JSONに公式発表・販売開始として収集されており、規程違反（本数を理由としたドロップ）の可能性がある",
+   "scope": "paper"
+  }
+ ]
+}

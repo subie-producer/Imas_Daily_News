@@ -1,0 +1,78 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-aki-idol-kyoka-week-start",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "育成イベント「秋のアイドル強化週間」9月7日開幕、期間限定特別オーディション等の詳細も判明",
+      "lead_score": 25,
+      "dedup_key": "shiny-aki-idol-kyoka-2026",
+      "candidate_ids": ["202609050237-grok-76", "202609050237-grok-84"]
+    },
+    {
+      "slug": "shiny-maintenance-0907",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "9月7日にメンテナンス実施、開催中の10連無料スタンプガシャはメンテ前が最終",
+      "lead_score": 10,
+      "dedup_key": "shiny-maintenance-2026-09-07",
+      "candidate_ids": ["202609050237-grok-75"]
+    },
+    {
+      "slug": "shiny-parallel-kairou-official-shop",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "POP UP SHOP「パラレル回廊」公式サイトが解禁、一部商品はオフィシャルショップでも9/28〜10/12に販売",
+      "lead_score": 10,
+      "dedup_key": "shiny-popup-parallel-kairou-2026-09",
+      "candidate_ids": ["202609050237-grok-82", "202609050237-grok-83"]
+    },
+    {
+      "slug": "shiny-msp-resale-start-0905",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "ソロライブMSP公式リセール、本日15時から受付開始",
+      "lead_score": 15,
+      "dedup_key": "shiny-msp-live-tickets-2026",
+      "candidate_ids": ["sched-2026-09-05-shiny-msp-live-tickets-2026-開始"]
+    },
+    {
+      "slug": "shiny-roundup-0905",
+      "brand": "shiny",
+      "rank": "roundup",
+      "angle": "進行中の運営・プロモーション情報まとめ(HBTK切り抜き公開、楽曲MV再生数マイルストーン2件、ポーズパック販売中、イルミネガシャのアナザー衣装追加紹介)",
+      "lead_score": 0,
+      "dedup_key": "shiny-mattari-hbtk-clip-2026-09-04",
+      "candidate_ids": [
+        "202609050237-grok-74",
+        "202609050237-grok-77",
+        "202609050237-grok-78",
+        "202609050237-grok-79",
+        "202609050237-grok-80"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-master-showpiece-cd-bd-goods-benefit-2026",
+      "reason": "既報",
+      "note": "CD・Blu-ray購入特典/整理券は9/4号既報(shiny-283-production-solo-live-2026)の published_facts と同内容、新事実なし"
+    },
+    {
+      "dedup_key": "shiny-solo-live-master-showpiece-cd-bluray-benefits-2026",
+      "reason": "既報",
+      "note": "上記と同一事実の重複収集。9/4号既報と同内容で新事実なし"
+    },
+    {
+      "dedup_key": "shiny-msp-venue-goods-2026",
+      "reason": "既報",
+      "note": "グッズ整理券9/10 13:00開始は9/4号既報(shiny-283-production-solo-live-2026)の published_facts と同一"
+    },
+    {
+      "dedup_key": "shiny-song-765-collab-5th-p-gacha-2026",
+      "reason": "既報",
+      "note": "8/29号既報(shiny-sfp-765-collab5-gacha-2026)の published_facts と同一内容、新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

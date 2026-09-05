@@ -56,6 +56,16 @@ EDITORIAL_MODEL = ENV.get("EDITORIAL_MODEL", "gpt-5.6-terra")
 # 校閲・機械検収エラーの修正に使う Claude モデル(claude -p --model に渡す)。
 # 執筆(Codex)と別ベンダーにするため Claude 側。既定は haiku(検品はコスト重視)
 REVIEW_MODEL = ENV.get("REVIEW_MODEL", "haiku")
+
+# **社説は 2026-09-06 号までで終了。**面白く作れなかったため断念(2026-09-06 決定)。
+# 過去号の社説は append-only でそのまま残す。日付で切るのは、既存号の lint と
+# 表示を壊さずに、翌号から書かない・求めない・校閲しないを一度に切り替えるため。
+EDITORIAL_UNTIL = "2026-09-06"
+
+
+def has_editorial(date: str) -> bool:
+    """その号に社説があるべきか(=書く・lint で求める・校閲する)。"""
+    return str(date) <= EDITORIAL_UNTIL
 # 暴走セッション対策の安全弁(--max-budget-usd)。通常運用なら到達しない額を目安に設定。
 # 注: codex exec には同等のコスト上限フラグが無いため、執筆(Codex)側には適用できない
 EXPLORE_MAX_BUDGET_USD = ENV.get("EXPLORE_MAX_BUDGET_USD", "1.5")

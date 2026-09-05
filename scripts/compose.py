@@ -42,7 +42,8 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      COMPOSE_ARTICLE_MAX_BUDGET_USD,
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, classify_source, commit_and_push,
-                     edition_date, extract_json_array, git, notify, notify_crash, now_jst)
+                     edition_date, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
+                     notify, notify_crash, now_jst)
 
 PAPER_STAGE = None  # main() で .env から
 
@@ -955,8 +956,10 @@ def assembly_prompt(date: str, number: int, aborted: list[str]) -> str:
 4. stock/pending.yml … 日付未確定の追跡事項の増減(日付が判明した項目は scheduled へ移して消す)
 
 ## 注意
-- 社説 docs/_editorials/{date}.md は**別セッションが同時に書いています**。読まないし、書き換えない
-  (まだ存在しないこともあります。存在を前提にした処理をしないこと)
+{'- 社説 docs/_editorials/' + date + '.md は**別セッションが同時に書いています**。読まないし、書き換えない'
+ + chr(10) + '  (まだ存在しないこともあります。存在を前提にした処理をしないこと)'
+ if has_editorial(date) else
+ '- **この号に社説はありません**(社説は ' + EDITORIAL_UNTIL + ' 号で終了)。docs/_editorials/ に何も作らないこと'}
 - 記事本文の事実関係は校閲済みの前提で**書き換えない**(digest は記事に書いてあることだけを使う)
 - 内規の文言を紙面に書かない{ab}
 
@@ -1311,11 +1314,129 @@ def pick_lead(date: str, plan: dict) -> None:
     plan["editorial_brand"] = (ed or {}).get("brand", "")
 
 
+def missing_plan_prompt(date: str, brand: str, rows: list[dict], existing: list[dict]) -> str:
+    """取りこぼした主題**だけ**を、その面の担当に突き返して判断させるプロンプト。
+
+    面の計画は十数〜三十主題を1セッションで裁くので、たまに1〜2主題が articles にも
+    dropped にも現れずに消える(実測 2026-09-06: cg 面 21主題のうち公式ポストが1件)。
+    これを「取りこぼし」と通知して終わりにしていたが、それでは主題が消えたまま
+    紙面が出る。消えた主題をピンポイントで見せ、**この主題はどうするのか**を答えさせる。
+    """
+    ex = json.dumps([{k: a.get(k) for k in ("slug", "rank", "angle", "dedup_key")} for a in existing],
+                    ensure_ascii=False, indent=1)
+    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の「{brand}」面の編集者です。
+{date}号のこの面の計画(metrics/plan-{date}-{brand}.json)を作ったとき、
+**次の{len(rows)}主題が、記事化にも roundup にも不採用にも入らず、判断されないまま消えました。**
+
+## 消えた主題(これだけを判断する)
+metrics/plan-index-{date}-{brand}-missing.json … 1主題1行。`ids` がその主題の候補ID。
+
+## この面で既に決まっている記事
+{ex}
+
+## やること
+消えた主題**1つずつ**に、次の3つのどれかを必ず答えてください。黙って落とすことはできません。
+1. **記事化**: 単独で記事になるなら `articles` に新しい記事を足す(既存の計画と同じ形式)
+2. **統合**: 既存の記事(上の一覧)や roundup と同じ話題なら `merge_into` に書く。
+   その記事の candidate_ids にこの主題の ids が加わります
+3. **不採用**: 理由を付けて `dropped` に書く(既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|その他)
+
+判断の基準は最初の計画と同じです(REQUIREMENTS.md 5章。「多いから落とす」「短いから落とす」は不可)。
+
+## 出力
+`metrics/plan-{date}-{brand}-missing.json` に次の JSON を書く(Write ツール使用):
+{{
+  "articles": [
+    {{"slug": "英小文字ハイフンの記事ID", "brand": "{brand}", "rank": "large|medium|small",
+      "angle": "切り口(1文)", "lead_score": 0, "dedup_key": "主題の dedup_key",
+      "candidate_ids": ["この主題の ids をそのまま"]}}
+  ],
+  "merge_into": [
+    {{"slug": "既存記事の slug", "dedup_key": "統合する主題の dedup_key", "candidate_ids": ["その主題の ids"]}}
+  ],
+  "dropped": [
+    {{"dedup_key": "主題の dedup_key", "reason": "上の語彙から1つ", "note": "一言(任意)"}}
+  ]
+}}
+{len(rows)}主題すべてが、articles / merge_into / dropped のどれかに1回ずつ現れること。
+最後に「{brand}: 記事N本 / 統合N件 / 不採用N件」の1行で報告してください。
+"""
+
+
+def replan_missing(date: str, plan: dict, by_brand: dict, cands: dict,
+                   missing: list[str], wave: int = 0) -> list[str]:
+    """取りこぼした主題を面ごとに突き返し、答えを計画へ機械で反映する。戻り値はログ行。"""
+    wave = wave or COMPOSE_WAVE
+    miss = set(missing)
+    rows_by_brand = {b: [r for r in rows if r.get("dedup_key") in miss] for b, rows in by_brand.items()}
+    rows_by_brand = {b: rows for b, rows in rows_by_brand.items() if rows}
+    if not rows_by_brand:
+        return []
+    jobs = []
+    for b, rows in rows_by_brand.items():
+        idx = ROOT / "metrics" / f"plan-index-{date}-{b}-missing.json"
+        idx.write_text("[\n" + ",\n".join(json.dumps(r, ensure_ascii=False, separators=(",", ":"))
+                                             for r in rows) + "\n]\n", encoding="utf-8")
+        out = ROOT / "metrics" / f"plan-{date}-{b}-missing.json"
+        out.unlink(missing_ok=True)
+        existing = [a for a in plan.get("articles", []) if a.get("brand") == b]
+        jobs.append((b, out, missing_plan_prompt(date, b, rows, existing)))
+    log: list[str] = []
+    slugs = {a.get("slug") for a in plan.get("articles", [])}
+    by_slug = {a.get("slug"): a for a in plan.get("articles", [])}
+    for i in range(0, len(jobs), wave):
+        procs = []
+        for b, out, prompt in jobs[i:i + wave]:
+            procs.append((b, out, subprocess.Popen(
+                ["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
+                 "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
+                stdin=subprocess.DEVNULL, cwd=ROOT)))
+        for b, out, p in procs:
+            try:
+                p.communicate(timeout=600)
+            except subprocess.TimeoutExpired:
+                p.kill()
+            try:
+                r = json.loads(out.read_text(encoding="utf-8"))
+            except Exception:
+                log.append(f"{b}: 拾い直しの答えが読めない(この面の取りこぼしは残る)")
+                continue
+            for a in r.get("articles") or []:
+                ids = [i for i in (a.get("candidate_ids") or []) if i in cands]
+                if not ids or a.get("dedup_key") not in miss:
+                    continue
+                a["brand"] = b
+                a["candidate_ids"] = ids
+                a.setdefault("rank", "small")
+                a.setdefault("lead_score", 0)
+                while a.get("slug") in slugs or not a.get("slug"):
+                    a["slug"] = f"{b}-{a.get('slug') or a['dedup_key'][:40]}-2"[:80]
+                slugs.add(a["slug"])
+                plan["articles"].append(a)
+                log.append(f"{b}: {a['dedup_key']} → 記事化({a['slug']})")
+            for m in r.get("merge_into") or []:
+                tgt = by_slug.get(m.get("slug"))
+                ids = [i for i in (m.get("candidate_ids") or []) if i in cands]
+                if not tgt or not ids or m.get("dedup_key") not in miss:
+                    continue
+                for i in ids:
+                    if i not in tgt["candidate_ids"]:
+                        tgt["candidate_ids"].append(i)
+                log.append(f"{b}: {m['dedup_key']} → {tgt['slug']} へ統合")
+            for d in r.get("dropped") or []:
+                if d.get("dedup_key") in miss:
+                    plan.setdefault("dropped", []).append(d)
+                    log.append(f"{b}: {d['dedup_key']} → 不採用({d.get('reason', '?')})")
+    return log
+
+
 def coverage_gaps(plan: dict, cands: dict, blocklist: dict) -> tuple[list[str], dict]:
     """主題の取りこぼし検査(編集規程11)。素材に現れた dedup_key が articles にも
     dropped にも現れないなら、それは「判断されずに消えた」主題である。
 
-    発行はブロックしない(再計画のフィードバックに回して自己修復させる)。
+    発行はブロックしない。**ただし通知で終わらせない。**消えた主題は
+    `replan_missing` でその面の担当に突き返し、判断させてから先へ進む。
     2026-08-25号で 198主題中 88主題が無言で消えていた事故に由来する検査。
     """
     usable = {c.get("dedup_key") for c in cands.values()
@@ -1326,7 +1447,8 @@ def coverage_gaps(plan: dict, cands: dict, blocklist: dict) -> tuple[list[str], 
     covered |= {a.get("dedup_key") for a in plan.get("articles", [])}
     covered |= {d.get("dedup_key") for d in plan.get("dropped") or []}
     missing = sorted(usable - covered)
-    stats = {"subjects": len(usable), "covered": len(usable) - len(missing), "missing": len(missing)}
+    stats = {"subjects": len(usable), "covered": len(usable) - len(missing),
+             "missing": len(missing), "missing_keys": missing}
     if not missing:
         return [], stats
     head = ", ".join(missing[:12]) + (" ほか" if len(missing) > 12 else "")
@@ -1903,11 +2025,27 @@ def main() -> int:
     if shape:
         plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
         print("計画の形を修復: " + " / ".join(shape), flush=True)
-    # errors = 発行を止める機械検証 / gaps = 止めない取りこぼし(通知して続行)
+    # errors = 発行を止める機械検証 / gaps = 止めない取りこぼし
     errors = validate_plan(plan, cands, blocklist)
     gaps, cov = coverage_gaps(plan, cands, blocklist)
     if gaps:
         print(f"取りこぼし: {gaps[0][:120]}", flush=True)
+        # **通知で終わらせない。**消えた主題だけをその面の担当に突き返し、
+        # 記事化・統合・不採用のどれかを答えさせて計画に反映する。
+        # 答えが返ったぶんは取りこぼしでなくなる。残ったものだけを通知する
+        with stage("選定の拾い直し"):
+            picked = replan_missing(date, plan, by_brand, cands, cov.get("missing_keys") or [])
+        for line in picked:
+            print(f"  拾い直し: {line}", flush=True)
+        if picked:
+            shape = repair_plan_shape(plan)
+            if shape:
+                print("計画の形を修復(拾い直し後): " + " / ".join(shape), flush=True)
+            plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+            errors = validate_plan(plan, cands, blocklist)
+            gaps, cov = coverage_gaps(plan, cands, blocklist)
+            if gaps:
+                print(f"拾い直しても残った取りこぼし: {gaps[0][:120]}", flush=True)
     # 素材に対して rank が小さい記事の可視化(規程9)。発行は止めない。
     # 束ねること自体は正しい(同じ系統の話を分けると全部が薄くなる)。問題は
     # 束ねたまま rank を上げないことで、書ける上限に収まらず中身が落ちる
@@ -1960,10 +2098,12 @@ def main() -> int:
     #     自己校閲になってしまうため。
     # 起点にする記事が**実際に書き上がっているか**を確かめる。執筆は不成立になることが
     # あり(aborted)、その記事を起点に指したままだと社説が存在しない記事から書き出す
+    # **社説は EDITORIAL_UNTIL 号まで。**それより後の号は書かない・校閲しない(pipelib を参照)
+    with_editorial = has_editorial(date)
     ed_slug = plan.get("editorial_slug", "")
     ed_brand = plan.get("editorial_brand", "")
     alive = {a["slug"]: a for a in written}
-    if ed_slug not in alive:
+    if with_editorial and ed_slug not in alive:
         lead_art = next((a for a in written if a.get("rank") == "lead"), None)
         fallback = lead_art or (written[0] if written else None)
         print(f"社説の起点 {ed_slug or '(未指定)'} が紙面に無い。"
@@ -2006,8 +2146,9 @@ def main() -> int:
     def assemble_job():
         print(claude_run(assembly_prompt(date, number, aborted))[-1000:], flush=True)
 
-    with stage("社説と組版"):
-        errs = run_parallel([("社説", write_editorial_job), ("組版", assemble_job)])
+    with stage("社説と組版" if with_editorial else "組版"):
+        errs = run_parallel(([("社説", write_editorial_job)] if with_editorial else [])
+                            + [("組版", assemble_job)])
     for e in errs:
         print(f"同時実行のうち失敗: {e}", flush=True)
 
@@ -2015,7 +2156,7 @@ def main() -> int:
     # 取り直しが失敗して巻き戻したときに「控えに無いファイル」として消される
     if ed_path.exists():
         pre_assembly[0][f"docs/_editorials/{date}.md"] = ed_path.read_bytes()
-    if not ed_path.exists():
+    if with_editorial and not ed_path.exists():
         # 以前は「組版セッションの lint 修正に委ねる」としていたが、その組版にも
         # lint 修正にも「社説には触るな」と指示しているので、誰も書かずに止まる経路だった。
         # 社説を書けるのは執筆側だけなので、ここで打ち切って人へ渡す
@@ -2033,7 +2174,7 @@ def main() -> int:
         # (実測: 2026-08-28号の社説が校閲側に書き換えられていた)
         ed_errs = [l for l in lint_out.splitlines()
                    if l.startswith("::error") and "docs/_editorials/" in l]
-        if ed_errs:
+        if with_editorial and ed_errs:
             rewrite_editorial(date, number, plan.get("editorial_slug", ""),
                               plan.get("editorial_brand", ""),
                               [{"file": f"docs/_editorials/{date}.md",
@@ -2071,7 +2212,7 @@ def main() -> int:
     # 付いたものは必ず直しに行くので、直さなかったファイルの判定は前巡のまま
     # 有効である。だから合議の verdict は、絞って見直しても紙面全体の答えになる
     retarget: list[str] | None = None
-    retarget_ed = True
+    retarget_ed = with_editorial
     for rounds in range(1, args.max_rounds + 2):
         # 紙面担当(主題の重複・記事の漏れ)は、**記事を直したら走らせる**。
         # 見出しや主題が変われば、別の記事との重複が新しく生まれうる(監査指摘)。
@@ -2160,7 +2301,7 @@ def main() -> int:
                     (ROOT / rel).write_bytes(pre_assembly[0][rel])
                 jobs.append(("組版", lambda: print(
                     claude_run(assembly_prompt(date, number, aborted))[-400:], flush=True)))
-            if touches_editorial:
+            if with_editorial and touches_editorial:
                 jobs.append(("社説", lambda: rewrite_editorial(
                     date, number, plan.get("editorial_slug", ""), plan.get("editorial_brand", ""),
                     [{"file": f"docs/_editorials/{date}.md",
@@ -2179,7 +2320,7 @@ def main() -> int:
             rounds += 1
             # 記事は往復で見終わっている。作り直したのは社説と digest なので、
             # 見直すのは社説と紙面担当(digest・主題の重複)。記事は見直さない
-            review = claude_review(date, rounds, targets=[], editorial=True, paper=True,
+            review = claude_review(date, rounds, targets=[], editorial=with_editorial, paper=True,
                                    carry=review)
         except Exception as e:
             traceback.print_exc()
@@ -2239,11 +2380,11 @@ def main() -> int:
             for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
                 (ROOT / rel).write_bytes(pre_assembly[0][rel])
             assign_ranks(date, plan, written, keep_lead=True)
-            errs = run_parallel([
+            errs = run_parallel(([
                 ("社説", lambda: rewrite_editorial(
                     date, number, plan.get("editorial_slug", ""), plan.get("editorial_brand", ""),
                     [{"file": f"docs/_editorials/{date}.md", "issue": why, "quote": ""}],
-                    must_change=must)),
+                    must_change=must))] if with_editorial else []) + [
                 ("組版", lambda: print(
                     claude_run(assembly_prompt(date, number, aborted))[-400:], flush=True)),
             ])
@@ -2261,7 +2402,7 @@ def main() -> int:
             rounds += 1
             # 残った記事は直していないので見直さない。落としたことで変わるのは
             # 社説と、紙面全体(主題の重複・記事の漏れ)だけ
-            review = claude_review(date, rounds, targets=[], editorial=True, paper=True,
+            review = claude_review(date, rounds, targets=[], editorial=with_editorial, paper=True,
                                    carry=review)
         except Exception as e:
             # **途中で落ちたら全部戻す。**記事を消した後に組版のやり直しが失敗すると、

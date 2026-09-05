@@ -55,7 +55,7 @@ collect(コード・毎日数回) → verify(コード) → compose(Claude・発
 
 - **記事** `docs/_posts/YYYY-MM-DD-<slug>.md` — frontmatter([schema/article.schema.json](schema/article.schema.json))+ Markdown 本文(中見出しは h2)。
 - **号スナップショット** `docs/_editions/YYYY-MM-DD.md` — frontmatter のみの .md([schema/edition.schema.json](schema/edition.schema.json))。`pages`・`article_count`・`corrected_count` は機械算出で、lint が記事群から再計算して照合する。
-- **社説** `docs/_editorials/YYYY-MM-DD.md` — frontmatter(title / excerpt)+本文([schema/editorial.schema.json](schema/editorial.schema.json))。
+- **社説(2026-09-06 号で終了。過去分のみ残す)** `docs/_editorials/YYYY-MM-DD.md` — frontmatter(title / excerpt)+本文([schema/editorial.schema.json](schema/editorial.schema.json))。
 - **収集候補** `candidates/YYYY-MM-DD.json`([schema/candidates.schema.json](schema/candidates.schema.json))。記事の出典 URL は candidates に存在しなければならない(collect 稼働後に有効化)。
 
 ## lint(required check)

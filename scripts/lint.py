@@ -28,7 +28,8 @@ import yaml
 from jsonschema import Draft202012Validator
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import classify_source, is_discovery_only  # noqa: E402  出典種別は URL から判定する
+from pipelib import (classify_source, is_discovery_only,  # noqa: E402  出典種別は URL から判定する
+                     has_editorial, EDITORIAL_UNTIL)
 
 ROOT = Path(__file__).resolve().parent.parent
 DOCS = ROOT / "docs"
@@ -529,8 +530,11 @@ def main() -> int:
         if expected != actual:
             rep.error(path, f"birthdays が名鑑と不一致(名鑑: {sorted(n for n, _ in expected)})")
 
-        if date_s not in editorials:
+        # 社説は EDITORIAL_UNTIL 号まで。それより後の号には求めない(pipelib を参照)
+        if has_editorial(date_s) and date_s not in editorials:
             rep.error(path, "同日の社説(docs/_editorials/)が存在しない")
+        elif not has_editorial(date_s) and date_s in editorials:
+            rep.error(path, f"社説は {EDITORIAL_UNTIL} 号で終了しているのに docs/_editorials/{date_s}.md がある")
 
     # -- 記事側から号への整合 --
     for _k, (path, fm, _) in posts.items():

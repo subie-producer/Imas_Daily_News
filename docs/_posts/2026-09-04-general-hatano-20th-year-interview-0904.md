@@ -2,7 +2,7 @@
 slug: general-hatano-20th-year-interview-0904
 edition: 2026-09-04
 brand: general
-src: 未確認
+src: 二次情報
 rank: medium
 corrected: false
 corrections: []
@@ -23,7 +23,7 @@ sources:
     type: 報道
   - url: https://tgs.cesa.or.jp/2026/business
     label: 東京ゲームショウ2026
-    type: 未確認
+    type: 当事者
   - url: https://atfes.com/contents/cho-retroseparty
     label: SideM×西武園ゆうえんち特設サイト
     type: 当事者

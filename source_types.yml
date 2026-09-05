@@ -158,6 +158,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - tgs.cesa.or.jp        # 東京ゲームショウ公式(主催 CESA=コンピュータエンターテインメント協会)。催しの主催者
+  - mequrimequru.jp       # メクリメクル(KADOKAWA が運営する連載サイト)。掲載作品の出版元=販売元
   - special.amiami.jp     # 合議で追加: ライセンス受けたグッズ販売会社がポップアップショップを主催・告知
   - kujibikido.com        # 合議で追加: ライセンス受けたくじ販売会社が自社商品の販売ページを運営
   - animall.jp            # 合議で追加: グッズ販売サイト（animo運営）。商品を売る会社として当事者
@@ -216,8 +218,25 @@ party_domains:
 # ドメインでは決まらない(監査指摘)。同じ youtube.com に公式チャンネルの PV と
 # レーベルの試聴動画が混在する。表に無い ID は未確認になる。
 # 新規収集時は oEmbed(YouTube)・番組ページ(ニコ生)で投稿者を確かめて足す。
+# --- YouTube はチャンネルでも決まる ---
+# ID は動画ごとに増える。ヴイアラ(876プロ)は毎日配信があり、1本ずつ人が見ていては
+# 追いつかない。チャンネルが分かっている相手は、ここに載せておけば
+# collect の合議工程が oEmbed で投稿者を確かめ、ID を上の表へ機械で足す。
+# **公式・準公式の判断は人がここで済ませている**ので、ID の追加は合議に掛けない。
+video_channels:
+  公式:
+    - imas-official    # アイドルマスターチャンネル
+    - TomoriManaka     # 灯里 愛夏(ヴイアラ・876プロ)の公式チャンネル
+    - KamizuruCosmo    # 上水流 宇宙(ヴイアラ・876プロ)の公式チャンネル
+  準公式:
+    - Lantis           # Lantis Channel
+
 video_ids:
   公式:
+    - rPLGMIEWNyI   # 灯里愛夏(ヴイアラ)配信「パスタって殴ると温められるらしいっすよ」
+    - eQRtypVlFBs   # 灯里愛夏(ヴイアラ)配信「真夏の苦手克服クッキング」
+    - sH7EfXv8zh4   # 上水流宇宙(ヴイアラ)配信「ACE COMBAT 7」
+    - Y3n-42r-m0A   # 上水流宇宙(ヴイアラ)配信「朝活」
     - wgCWiC2SQPw   # アイドルマスターチャンネル(@imas-official)「CLASH M@TCH!!」開催決定PV
   準公式:
     - fX4iinOuXQc   # Lantis Channel(@Lantis) SideM MONTHLY THEME SONG 試聴動画
@@ -242,7 +261,8 @@ x_accounts:
     - coherent_sc                     # シャニマス公式
     - SideM_official                  # SideM
     - gkmas_official                  # 学園アイドルマスター
-    - valiv_official                  # vα-liv
+    - hatsuboshi_gakuen               # 初星学園(学マス)公式
+    - valiv_official                  # vα-liv(ヴイアラ)公式
     - TOURS_imas                      # アイマス ツアーズ
     - imas_ch                         # アイマスチャンネル
     - dereparty                       # CINDERELLA PARTY!(公式番組)
@@ -252,6 +272,12 @@ x_accounts:
     - TomoriManaka
     - UtagawaLetora
   準公式:
+    # ㈱バンダイナムコアミューズメントの店舗・ショップ。グループ会社なので
+    # bandainamco-am.co.jp と同じく準公式(会場としての当事者ではなく、運営主体で決める)
+    - ImasShop_bnam       # アイドルマスター オフィシャルショップ(公式ストア)
+    - ASOBINOTES876       # アソビノート(規程2.5に準公式の例として明記)
+    - nakano_arcade       # namco中野店(バンダイナムコアミューズメント)
+    - namco_hakata        # namco博多バスターミナル店(バンダイナムコアミューズメント)
     - imas_lantis         # ランティスのアイマス公式BOT
     - imas_columbia                   # 日本コロムビア アイマス
     - NipponColumbia

@@ -277,6 +277,89 @@ def add_x_accounts(agreed: dict) -> None:
     p.write_text(text, encoding="utf-8")
 
 
+YT_ID = re.compile(r"(?:[?&]v=|youtu\.be/|/live/|/shorts/|/embed/)([A-Za-z0-9_-]{11})")
+
+
+def unknown_videos(date: str) -> dict[str, str]:
+    """判定表に無い YouTube 動画 ID → 代表 URL。"""
+    p = ROOT / "candidates" / f"{date}.json"
+    if not p.exists():
+        return {}
+    out: dict[str, str] = {}
+    for c in json.loads(p.read_text(encoding="utf-8")):
+        url = c.get("url") or ""
+        host = (urllib.parse.urlparse(url).hostname or "").removeprefix("www.")
+        if host not in ("youtube.com", "m.youtube.com", "youtu.be"):
+            continue
+        m = YT_ID.search(url)
+        if m and classify_source(url) == "未確認":
+            out.setdefault(m.group(1), url)
+    return out
+
+
+def video_author(vid: str) -> tuple[str, str]:
+    """oEmbed で投稿者のハンドルと題名を取る。(handle, title)。取れなければ ("", "")。"""
+    try:
+        import urllib.request
+        q = urllib.parse.urlencode({"url": f"https://www.youtube.com/watch?v={vid}", "format": "json"})
+        req = urllib.request.Request(f"https://www.youtube.com/oembed?{q}", headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            d = json.loads(r.read().decode("utf-8"))
+        handle = (d.get("author_url") or "").rstrip("/").rsplit("/", 1)[-1].removeprefix("@")
+        return handle, str(d.get("title") or "")
+    except Exception as e:
+        print(f"  oEmbed 取得できず {vid}: {type(e).__name__}", flush=True)
+        return "", ""
+
+
+def add_video_ids(found: dict[str, tuple[str, str]]) -> None:
+    p = ROOT / "source_types.yml"
+    text = p.read_text(encoding="utf-8")
+    mv = re.search(r"^video_ids:\n", text, re.M)
+    if not mv:
+        print("  ★video_ids が表に無いので足せない")
+        return
+    for vid, (typ, why) in found.items():
+        # `  公式:` は x_accounts にもあるので、video_ids: より後ろだけを探す
+        m = re.compile(rf"^  {typ}:\n", re.M).search(text, mv.end())
+        if not m:
+            print(f"  ★video_ids に {typ} の節が無いので {vid} を足せない")
+            continue
+        text = text[:m.end()] + f"    - {vid}   # 機械で追加: {why}\n" + text[m.end():]
+    p.write_text(text, encoding="utf-8")
+
+
+def resolve_videos(date: str, apply: bool) -> list[str]:
+    """チャンネルが表(video_channels)にある動画の ID を、video_ids へ機械で足す。
+
+    YouTube は投稿者で種別が決まるが、URL には ID しか無い。ヴイアラ(876プロ)は
+    毎日配信があり、ID を1本ずつ人が見ていては追いつかない(実測: 1号で4件が
+    未確認のまま紙面に載った)。チャンネルの公式・準公式は**人が表で決めてある**ので、
+    ID の追加は合議に掛けず、oEmbed で投稿者を確かめて足す。
+    戻り値は、チャンネルが表に無くて決まらなかったものの説明。
+    """
+    vids = unknown_videos(date)
+    if not vids:
+        return []
+    t = source_type_table()
+    chans = {h.lower(): typ for typ, hs in (t.get("video_channels") or {}).items() for h in hs or []}
+    print(f"\n{date}: 判定表に無い YouTube 動画 {len(vids)}件", flush=True)
+    found: dict[str, tuple[str, str]] = {}
+    left: list[str] = []
+    for vid in sorted(vids):
+        handle, title = video_author(vid)
+        typ = chans.get(handle.lower()) if handle else None
+        if typ:
+            found[vid] = (typ, f"@{handle}「{title[:30]}」")
+            print(f"  {typ}\t{vid}\t@{handle} {title[:40]}")
+        else:
+            left.append(f"youtube:{vid}(@{handle or '?'})")
+    if found and apply:
+        add_video_ids(found)
+        print(f"  → 動画 ID {len(found)}件を表に追加")
+    return left
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=None)
@@ -289,7 +372,7 @@ def main() -> int:
     date = args.date or edition_date()
 
     doms, accts = unknown_targets(date)
-    if not doms and not accts:
+    if not doms and not accts and not unknown_videos(date):
         print(f"{date}: 判定表に無い出典はありません")
         return 0
 
@@ -322,6 +405,9 @@ def main() -> int:
         if agreed and args.apply:
             add_x_accounts(agreed)
             print(f"  → X アカウント {len(agreed)}件を表に追加")
+
+    # YouTube はチャンネルが表にあれば合議なしで決まる(人が決めた種別を写すだけ)
+    split_all += resolve_videos(date, args.apply)
 
     # **決まらなかったものを、その場で人へ上げない。**
     #

@@ -2,7 +2,7 @@
 slug: cg-toybox-novel-extra9-0905
 edition: 2026-09-05
 brand: cg
-src: 未確認
+src: 当事者
 rank: small
 corrected: false
 corrections: []
@@ -19,7 +19,7 @@ sources:
   type: 公式
   label: シンデレラガールズ公式X
 - url: https://mequrimequru.jp/kp/regulars/details/idolmaster-cinderellagirls_toybox/
-  type: 未確認
+  type: 当事者
   label: メクリメクル
 - url: https://asobistage.asobistore.jp/event/cinderella_cg_ptb/ticket
   type: 準公式

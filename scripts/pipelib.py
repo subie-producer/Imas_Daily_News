@@ -329,7 +329,7 @@ def _check_table(t: dict, p) -> None:
                 "official_paths", "party_paths"):
         for v in t.get(key) or []:
             seen[v].append(key)
-    for group in ("x_accounts", "video_ids"):
+    for group in ("x_accounts", "video_ids", "video_channels"):
         for label, names in (t.get(group) or {}).items():
             for v in names or []:
                 # 判定器は X アカウントを小文字化して比べるので、検査側も揃える。

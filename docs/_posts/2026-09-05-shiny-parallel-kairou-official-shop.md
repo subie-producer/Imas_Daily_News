@@ -2,7 +2,7 @@
 slug: shiny-parallel-kairou-official-shop
 edition: 2026-09-05
 brand: shiny
-src: 未確認
+src: 準公式
 rank: large
 corrected: false
 corrections: []
@@ -21,7 +21,7 @@ sources:
   type: 公式
   label: アイドルマスター公式ポータル
 - url: https://x.com/ImasShop_bnam/status/2095795166519181764
-  type: 未確認
+  type: 準公式
   label: アイドルマスター公式ショップX
 ---
 アイドルたちの“ifの未来”を描く「パラレルコレクション」のPOP UP SHOP「パラレル回廊」について、公式ポータルが9月4日付でイベント詳細と商品情報を公開した。描き下ろしイラストを使った新商品、「パラコレ」イラストグッズを販売し、制作コメントと一部ラフイラストの展示も予定している。

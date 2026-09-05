@@ -2,7 +2,7 @@
 slug: dsva-valiv-ops-roundup-0904
 edition: 2026-09-04
 brand: dsva
-src: 未確認
+src: 二次情報
 rank: roundup
 corrected: false
 corrections: []
@@ -21,7 +21,7 @@ tags:
 event_date: 2026-09-03
 sources:
 - url: https://www.youtube.com/watch?v=rPLGMIEWNyI
-  type: 未確認
+  type: 公式
   label: YouTube配信アーカイブ
 - url: https://x.com/valiv_official
   type: 公式

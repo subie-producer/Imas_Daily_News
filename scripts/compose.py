@@ -1314,40 +1314,48 @@ def pick_lead(date: str, plan: dict) -> None:
     plan["editorial_brand"] = (ed or {}).get("brand", "")
 
 
-def missing_plan_prompt(date: str, brand: str, rows: list[dict], existing: list[dict]) -> str:
-    """取りこぼした主題**だけ**を、その面の担当に突き返して判断させるプロンプト。
+def missing_plan_prompt(date: str, rows: list[dict], existing: list[dict]) -> str:
+    """取りこぼした主題**だけ**を見せ、**まずどの面の話か**から判断させるプロンプト。
 
     面の計画は十数〜三十主題を1セッションで裁くので、たまに1〜2主題が articles にも
     dropped にも現れずに消える(実測 2026-09-06: cg 面 21主題のうち公式ポストが1件)。
-    これを「取りこぼし」と通知して終わりにしていたが、それでは主題が消えたまま
-    紙面が出る。消えた主題をピンポイントで見せ、**この主題はどうするのか**を答えさせる。
+    これを「取りこぼし」と通知して終わりにしていたが、それでは主題が消えたまま紙面が出る。
+
+    **面は決めつけない。**主題は収集時に付いた brand で面に配られるが、担当が
+    「これは自分の面じゃない」と思ったとき、不採用の理由語彙に「面違い」が無いので
+    黙って落とすのがいちばんありそうな経路である(監査指摘)。だから問いは
+    「この面でどうするか」ではなく「**この主題はどの面の話で、そこでどうするか**」にする。
+    面の役割を持たないセッションに、消えた主題と**全面の既存記事**を見せる。
     """
-    ex = json.dumps([{k: a.get(k) for k in ("slug", "rank", "angle", "dedup_key")} for a in existing],
-                    ensure_ascii=False, indent=1)
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の「{brand}」面の編集者です。
-{date}号のこの面の計画(metrics/plan-{date}-{brand}.json)を作ったとき、
-**次の{len(rows)}主題が、記事化にも roundup にも不採用にも入らず、判断されないまま消えました。**
+    ex = json.dumps([{k: a.get(k) for k in ("brand", "slug", "rank", "angle", "dedup_key")}
+                     for a in existing], ensure_ascii=False, indent=1)
+    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集長です。{date}号の面別の選定で、
+**次の{len(rows)}主題が、どの面でも記事化にも roundup にも不採用にも入らず、判断されないまま消えました。**
+面の担当が「自分の面の話ではない」と思って黙って落とした可能性があります。
 
 ## 消えた主題(これだけを判断する)
-metrics/plan-index-{date}-{brand}-missing.json … 1主題1行。`ids` がその主題の候補ID。
+metrics/plan-index-{date}-missing.json … 1主題1行。`brand` は**収集時の仮の面**で、正しいとは限りません。
+`ids` がその主題の候補ID。
 
-## この面で既に決まっている記事
+## 号全体で既に決まっている記事(全面)
 {ex}
 
 ## やること
-消えた主題**1つずつ**に、次の3つのどれかを必ず答えてください。黙って落とすことはできません。
-1. **記事化**: 単独で記事になるなら `articles` に新しい記事を足す(既存の計画と同じ形式)
-2. **統合**: 既存の記事(上の一覧)や roundup と同じ話題なら `merge_into` に書く。
+消えた主題**1つずつ**に、**まず「どの面の話か」を決め**、そのうえで次の3つのどれかを必ず答えてください。
+黙って落とすことはできません。面は general|765|cg|million|shiny|sidem|gaku|dsva|joint|other から選びます
+(複数ブランドにまたがる話は joint。どのブランドにも属さないアイマスの話は other)。
+1. **記事化**: 単独で記事になるなら `articles` に新しい記事を足す(brand に決めた面を書く)
+2. **統合**: 既存の記事(上の一覧。**面をまたいでよい**)や roundup と同じ話題なら `merge_into` に書く。
    その記事の candidate_ids にこの主題の ids が加わります
-3. **不採用**: 理由を付けて `dropped` に書く(既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|その他)
+3. **不採用**: 理由を付けて `dropped` に書く(既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|アイマス外|その他)
 
-判断の基準は最初の計画と同じです(REQUIREMENTS.md 5章。「多いから落とす」「短いから落とす」は不可)。
+判断の基準は面別の選定と同じです(REQUIREMENTS.md 5章。「多いから落とす」「短いから落とす」は不可)。
 
 ## 出力
-`metrics/plan-{date}-{brand}-missing.json` に次の JSON を書く(Write ツール使用):
+`metrics/plan-{date}-missing.json` に次の JSON を書く(Write ツール使用):
 {{
   "articles": [
-    {{"slug": "英小文字ハイフンの記事ID", "brand": "{brand}", "rank": "large|medium|small",
+    {{"slug": "英小文字ハイフンの記事ID(面名を含める)", "brand": "決めた面", "rank": "large|medium|small",
       "angle": "切り口(1文)", "lead_score": 0, "dedup_key": "主題の dedup_key",
       "candidate_ids": ["この主題の ids をそのまま"]}}
   ],
@@ -1355,79 +1363,72 @@ metrics/plan-index-{date}-{brand}-missing.json … 1主題1行。`ids` がその
     {{"slug": "既存記事の slug", "dedup_key": "統合する主題の dedup_key", "candidate_ids": ["その主題の ids"]}}
   ],
   "dropped": [
-    {{"dedup_key": "主題の dedup_key", "reason": "上の語彙から1つ", "note": "一言(任意)"}}
+    {{"dedup_key": "主題の dedup_key", "brand": "本来の面", "reason": "上の語彙から1つ", "note": "一言(任意)"}}
   ]
 }}
 {len(rows)}主題すべてが、articles / merge_into / dropped のどれかに1回ずつ現れること。
-最後に「{brand}: 記事N本 / 統合N件 / 不採用N件」の1行で報告してください。
+最後に「拾い直し: 記事N本 / 統合N件 / 不採用N件」の1行で報告してください。
 """
 
 
 def replan_missing(date: str, plan: dict, by_brand: dict, cands: dict,
                    missing: list[str], wave: int = 0) -> list[str]:
-    """取りこぼした主題を面ごとに突き返し、答えを計画へ機械で反映する。戻り値はログ行。"""
-    wave = wave or COMPOSE_WAVE
+    """取りこぼした主題を**面を決めるところから**問い直し、答えを計画へ機械で反映する。
+
+    1セッションで全部を見る(消えるのは号に1〜2主題なので、面ごとに分ける理由が無い)。
+    戻り値はログ行。
+    """
     miss = set(missing)
-    rows_by_brand = {b: [r for r in rows if r.get("dedup_key") in miss] for b, rows in by_brand.items()}
-    rows_by_brand = {b: rows for b, rows in rows_by_brand.items() if rows}
-    if not rows_by_brand:
+    rows = [r for rs in by_brand.values() for r in rs if r.get("dedup_key") in miss]
+    if not rows:
         return []
-    jobs = []
-    for b, rows in rows_by_brand.items():
-        idx = ROOT / "metrics" / f"plan-index-{date}-{b}-missing.json"
-        idx.write_text("[\n" + ",\n".join(json.dumps(r, ensure_ascii=False, separators=(",", ":"))
-                                             for r in rows) + "\n]\n", encoding="utf-8")
-        out = ROOT / "metrics" / f"plan-{date}-{b}-missing.json"
-        out.unlink(missing_ok=True)
-        existing = [a for a in plan.get("articles", []) if a.get("brand") == b]
-        jobs.append((b, out, missing_plan_prompt(date, b, rows, existing)))
+    idx = ROOT / "metrics" / f"plan-index-{date}-missing.json"
+    idx.write_text("[\n" + ",\n".join(json.dumps(r, ensure_ascii=False, separators=(",", ":"))
+                                         for r in rows) + "\n]\n", encoding="utf-8")
+    out = ROOT / "metrics" / f"plan-{date}-missing.json"
+    out.unlink(missing_ok=True)
+    prompt = missing_plan_prompt(date, rows, plan.get("articles", []))
+    try:
+        subprocess.run(["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
+                        "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
+                       stdin=subprocess.DEVNULL, cwd=ROOT, timeout=600)
+    except subprocess.TimeoutExpired:
+        pass
+    try:
+        r = json.loads(out.read_text(encoding="utf-8"))
+    except Exception:
+        return ["拾い直しの答えが読めない(取りこぼしは残る)"]
+
     log: list[str] = []
     slugs = {a.get("slug") for a in plan.get("articles", [])}
     by_slug = {a.get("slug"): a for a in plan.get("articles", [])}
-    for i in range(0, len(jobs), wave):
-        procs = []
-        for b, out, prompt in jobs[i:i + wave]:
-            procs.append((b, out, subprocess.Popen(
-                ["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
-                 "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
-                stdin=subprocess.DEVNULL, cwd=ROOT)))
-        for b, out, p in procs:
-            try:
-                p.communicate(timeout=600)
-            except subprocess.TimeoutExpired:
-                p.kill()
-            try:
-                r = json.loads(out.read_text(encoding="utf-8"))
-            except Exception:
-                log.append(f"{b}: 拾い直しの答えが読めない(この面の取りこぼしは残る)")
-                continue
-            for a in r.get("articles") or []:
-                ids = [i for i in (a.get("candidate_ids") or []) if i in cands]
-                if not ids or a.get("dedup_key") not in miss:
-                    continue
-                a["brand"] = b
-                a["candidate_ids"] = ids
-                a.setdefault("rank", "small")
-                a.setdefault("lead_score", 0)
-                while a.get("slug") in slugs or not a.get("slug"):
-                    a["slug"] = f"{b}-{a.get('slug') or a['dedup_key'][:40]}-2"[:80]
-                slugs.add(a["slug"])
-                plan["articles"].append(a)
-                log.append(f"{b}: {a['dedup_key']} → 記事化({a['slug']})")
-            for m in r.get("merge_into") or []:
-                tgt = by_slug.get(m.get("slug"))
-                ids = [i for i in (m.get("candidate_ids") or []) if i in cands]
-                if not tgt or not ids or m.get("dedup_key") not in miss:
-                    continue
-                for i in ids:
-                    if i not in tgt["candidate_ids"]:
-                        tgt["candidate_ids"].append(i)
-                log.append(f"{b}: {m['dedup_key']} → {tgt['slug']} へ統合")
-            for d in r.get("dropped") or []:
-                if d.get("dedup_key") in miss:
-                    plan.setdefault("dropped", []).append(d)
-                    log.append(f"{b}: {d['dedup_key']} → 不採用({d.get('reason', '?')})")
+    for a in r.get("articles") or []:
+        ids = [i for i in (a.get("candidate_ids") or []) if i in cands]
+        b = a.get("brand")
+        if not ids or a.get("dedup_key") not in miss or b not in BRANDS:
+            continue
+        a["candidate_ids"] = ids
+        a.setdefault("rank", "small")
+        a.setdefault("lead_score", 0)
+        while a.get("slug") in slugs or not a.get("slug"):
+            a["slug"] = f"{b}-{a.get('slug') or a['dedup_key'][:40]}-2"[:80]
+        slugs.add(a["slug"])
+        plan["articles"].append(a)
+        log.append(f"{a['dedup_key']} → {b} 面で記事化({a['slug']})")
+    for m in r.get("merge_into") or []:
+        tgt = by_slug.get(m.get("slug"))
+        ids = [i for i in (m.get("candidate_ids") or []) if i in cands]
+        if not tgt or not ids or m.get("dedup_key") not in miss:
+            continue
+        for i in ids:
+            if i not in tgt["candidate_ids"]:
+                tgt["candidate_ids"].append(i)
+        log.append(f"{m['dedup_key']} → {tgt.get('brand')} 面の {tgt['slug']} へ統合")
+    for d in r.get("dropped") or []:
+        if d.get("dedup_key") in miss:
+            plan.setdefault("dropped", []).append(d)
+            log.append(f"{d['dedup_key']} → 不採用({d.get('brand', '?')} 面 / {d.get('reason', '?')})")
     return log
 
 

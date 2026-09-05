@@ -1,0 +1,206 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-06-cg-yamanashi-pedometer-preorder-deadline-0906.md",
+   "issue": "規程5：新事実なしの続報。既報（stories.yml の story_id: cg-yamanashi-walk-wander-2026, first_published: 2026-08-29）と実質同内容であり、新事実も当日トリガーも無い。既報で既に「先行受注の締切は9月9日23時59分59秒(3日前リマインド)」と記載されており、この記事（9月6日発行）はその3日前リマインドに該当する冗長記事。締切は3日後（当日トリガーではない）。",
+   "quote": "先行受注が、9月9日23時59分59秒に締め切られる。...ひろめ堂の通販ページで、タニタ製の歩数計を税込4000円で受注している。全10種で、輾水幸子、柊志乃、橘ありす、久川颯、依田芳乃、氏家むつみ、鷺沢文香、佐藤心、高森藍子、松尾千鶴のデザインから選べる。...商品はひろめ堂から発送され、発送予定は11月上旬。...予約した歩数計は、11月21日から12月27日まで山梨県の甲府・石和・勝沼で開催される「やまなし WALK & WANDER」のウォークチャレンジにも使える。（すべて既報で報告済み）",
+   "scope": "article:2026-09-06-cg-yamanashi-pedometer-preorder-deadline-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-dsva-situation-voice14-deadline-0906.md",
+   "issue": "ブロック項目3: URL到達不可 — sources の URL が確認できません",
+   "quote": "sources:\n  - url: https://x.com/valiv_official/status/2092552640911786063\n    label: \"vα-liv公式Xの投稿\"\n    type: 公式",
+   "scope": "article:2026-09-06-dsva-situation-voice14-deadline-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gaku-fukuoka-memorial-gasha-0906.md",
+   "issue": "規程5: 新事実なしの続報。stories.yml に既に『福岡公演出演アイドルのみが登場する「LIVE TOUR -標- 福岡公演記念ガシャ」を開催中(9月5日付告知)』と記録されており、記事内容は既報と実質同内容で、新事実も当日トリガーもない。",
+   "quote": "lede: 「学園アイドルマスター」で、LIVE TOUR -標- 福岡公演出演アイドルのみが登場する記念ガシャが開催されている。 / 本文: 「学園アイドルマスター LIVE TOUR -標- 福岡公演 DAY1」の告知内容として、福岡公演出演アイドルのみが登場する「LIVE TOUR -標- 福岡公演記念ガシャ」の開催が案内されている。告知は2026年9月5日付。",
+   "scope": "article:2026-09-06-gaku-fukuoka-memorial-gasha-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gaku-gravure-solo-collection-preorder-0906.md",
+   "issue": "規程5「新事実なしの続報」: 既報(stories.yml)と実質同内容で、新事実も当日トリガーもない。既報『gakumas-gravure-solo-collection-vol1-2026』は2026-08-26初出であり、記事の全内容（発売日11月18日、価格3,500円、曲数15曲、予約期限9月27日、店舗別特典）が既報のpublished_factsに記載されている。記事の edition は2026-09-06で、当日トリガー（締切・開幕等）はない。候補は「9月5日の再告知」に基づくが、新規告知ではなく継続告知であり、読者向けの新しい情報価値はない。",
+   "quote": "記事本文全体が stories.yml の published_facts と一致: 「Vol.1「ねえ、言っちゃうよ。」は11月18日発売予定、3,500円(税込)」「月村手毬・秦谷美鈴・十王星南の3人歌唱版に加え、13名のソロ歌唱Full ver.・インスト版を含む全15曲収録」「予約は9月27日まで、店舗ごとに特典が異なる」「店舗別予約特典: [全て記載]」",
+   "scope": "article:2026-09-06-gaku-gravure-solo-collection-preorder-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gaku-tour-songs-new-versions-0906.md",
+   "issue": "新事実なしの続報（ブロック項目5）",
+   "quote": "学園アイドルマスターの「ENDLESS DANCE（葛城リーリヤ・倉本千奈・姫崎莉波 ver.）」「Howling over the World」「ENDLESS DANCE（有村麻央・紫雲清夏・篠澤広 ver.）」「ミラクルナナウ(ﾟ∀ﾟ)！」が、2026年9月6日付でStreaming&DLとして公開された。",
+   "scope": "article:2026-09-06-gaku-tour-songs-new-versions-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gaku-tour-songs-new-versions-0906.md",
+   "issue": "既報との矛盾・日付ズレ（ブロック項目12）",
+   "quote": "既報（stock/stories.yml: gakumas-tracks-streaming-0831-2026）では、同じ4曲が「8月31日にストリーミング&ダウンロードで公開」と記載。記事は「9月6日付でStreaming&DL」と述べており、同一の曲について異なる公開日が記述されている矛盾。既報では「9月6日付で公開と案内」と明記（=既報道の反復）",
+   "scope": "article:2026-09-06-gaku-tour-songs-new-versions-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gakuen-realescapegame-nagoya-finale-0906.md",
+   "issue": "規程5「新事実なしの続報」: 既報(stories.yml 初出2026-07-14)に『7月16日〜9月6日開催』と記載されている内容と実質同内容。記事が述べる『本日9月6日が千秋楽』『7月16日から9月6日まで』は既報から導出可能で、新しい情報を提供していない。",
+   "quote": "リアル脱出ゲーム×学園アイドルマスターの名古屋公演は、本日9月6日が千秋楽。公式ページでは、名古屋会場での開催期間を2026年7月16日から9月6日までとしている。",
+   "scope": "article:2026-09-06-gakuen-realescapegame-nagoya-finale-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gakuen-realescapegame-nagoya-finale-0906.md",
+   "issue": "規程10「読者に要らない事実」: 記事が『開催期間を2026年7月16日から9月6日までとしている』と述べているのは既に終わった期間。発行時刻06:00時点で読者が当日中に見に行ける可能性は営業時間次第だが、事前予約を要する脱出ゲームの性質上、読者が『今日できることを増やす事実』にはならない。",
+   "quote": "公式ページでは、名古屋会場での開催期間を2026年7月16日から9月6日までとしている。",
+   "scope": "article:2026-09-06-gakuen-realescapegame-nagoya-finale-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-joint-765-961-xr-teaser-0906.md",
+   "issue": "ブロック項目3「URL捏造・出典の不一致」：sources の URL が到達不可。記事のsource URL（https://x.com/imas_official/status/2093337815543328796）はHTTP 402で開けず、内容を確認できません。この URL は candidates に無く、記事が自力で見つけた出典のため、実際の内容確認が必須です。",
+   "quote": "sources:\n  - url: https://x.com/imas_official/status/2093337815543328796\n    label: \"アイドルマスター公式Xの投稿\"\n    type: 公式",
+   "scope": "article:2026-09-06-joint-765-961-xr-teaser-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-joint-765-961-xr-teaser-0906.md",
+   "issue": "候補ID参照エラー：frontmatterで参照している候補ID「sched-2026-09-06-imas-official-coming-soon-2026-0906-その他」が候補ファイル（2026-09-06.json）に存在しません。有効な候補は「202609060228-explore-3」のみです。",
+   "quote": "candidate_ids: [\"202609060228-explore-3\", \"sched-2026-09-06-imas-official-coming-soon-2026-0906-その他\"]",
+   "scope": "article:2026-09-06-joint-765-961-xr-teaser-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-million-cardfolio-vol4-mr-reveal-0906.md",
+   "issue": "規程5: 新事実なしの続報。記事内容が既報（story_id: million-cardfolio-vol4-2026、2026-09-04 first_published）で報道済みの内容と実質同一。既報で「9月4日付で桃子のMR公開、9月5日付で徳川まつりのMR公開、残り2種は9月6日正午に公開予定」と報道されており、本記事が新たに伝える事実がない。当日トリガー（締切・開幕など）も存在しない。",
+   "quote": "9月4日付の投稿で周防桃子、9月5日付の投稿で徳川まつりを公開。残り2種は、9月6日正午に公開予定と案内されている。",
+   "scope": "article:2026-09-06-million-cardfolio-vol4-mr-reveal-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-million-cardfolio-vol4-mr-reveal-0906.md",
+   "issue": "規程14: ニュース性の欠如。発行日（2026-09-06）時点で「新しく発表された・起きる・起きた」ことが記事の中核にない。既報で予定として案内されていた内容が予定通り進行する状況の報告に過ぎず、新規な発表・決定・判明がない。",
+   "quote": "「アイドルマスター カードフォリオ ミリオンライブ！ver. vol.4」の新規描きおろしMRが、公式Xで順次公開されている。",
+   "scope": "article:2026-09-06-million-cardfolio-vol4-mr-reveal-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-shiny-msp-venue-goods-cdbd-vouchers-0906.md",
+   "issue": "出典にない事実：記事に記載されている具体的な商品価格・名称がsources で指定された出典とcandidates から検証できない",
+   "quote": "グッズは、公式パンフレット4,500円、283プロ版・各アイドル版の公式コンサートライト各1,300円、公式Tシャツ（M／L／XL）各3,600円、タオル2,200円、クリアリストバンド1,000円、チケットケース1,700円、ショッピングバッグ500円、キーホルダー1,800円、トレーディングクリアチケット（全14種A／B）各600円。プロデュース商品は、杜野凛世の和風カーディガンと大崎甜花のプルオーバーパーカーが各15,000円、和泉愛依のドッキングデニムジャケットが23,000円、市川雛菜のユアクマルームウェア＆ぬいぐるみキーホルダーセットが18,000円。",
+   "scope": "article:2026-09-06-shiny-msp-venue-goods-cdbd-vouchers-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-shiny-msp-venue-goods-cdbd-vouchers-0906.md",
+   "issue": "出典にない事実：整理券受付期間・当落発表日時など会場物販オペレーション情報がsources から検証できない",
+   "quote": "グッズ販売コーナーの整理券は、ASOBI TICKETで9月10日（木）13時から9月15日（火）23時59分まで受け付け、9月22日（火・祝）13時から当落を発表する。",
+   "scope": "article:2026-09-06-shiny-msp-venue-goods-cdbd-vouchers-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-shiny-msp-venue-goods-cdbd-vouchers-0906.md",
+   "issue": "frontmatter の candidate_ids が参照不可：指定されているID（202609050735-explore-6, 202609051236-explore-7, 202609051835-explore-14）が候補ディレクトリに存在しない。実際の候補（202609030229-grok-55）には記事の主要情報が含まれていない",
+   "quote": "candidate_ids: [\"202609050735-explore-6\", \"202609051236-explore-7\", \"202609051835-explore-14\"]",
+   "scope": "article:2026-09-06-shiny-msp-venue-goods-cdbd-vouchers-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-sidem-11th-stage-collab-drink-0906.md",
+   "issue": "校閲実行失敗: ",
+   "quote": "",
+   "scope": "article:2026-09-06-sidem-11th-stage-collab-drink-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-sidem-11th-stage-resale-deadline-0906.md",
+   "issue": "校閲実行失敗: ",
+   "quote": "",
+   "scope": "article:2026-09-06-sidem-11th-stage-resale-deadline-0906.md"
+  },
+  {
+   "file": "docs/_editorials/2026-09-06.md",
+   "issue": "校閲実行失敗: ",
+   "quote": "",
+   "scope": "editorial"
+  },
+  {
+   "file": "-",
+   "issue": "校閲実行失敗: ",
+   "quote": "",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-06-765-dual-twin-audio-commentary-tokyo-0906.md",
+   "issue": "分量がやや不足。rank: medium の推奨分量は 450字以上だが、本文は約350字。ただし、出典（候補 202609051236-watch-0）に記載されている essential な情報は全て記載されており、追記する必要がある内容なし。記事の公告的・短報的な性質に適切な分量と判断される。",
+   "scope": "article:2026-09-06-765-dual-twin-audio-commentary-tokyo-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-cg-election-cheer-contest-deadline-0906.md",
+   "issue": "分量不足：rank small（250字以上が目安）に対して本文約207字と基準より短め。出典には投稿基準の詳細・参加資格（日本国内在住）・各部門のモチーフなど追加情報があり、拾えば埋まるはずだが、緊急性の高い当日締切情報として現状も許容範囲内",
+   "scope": "article:2026-09-06-cg-election-cheer-contest-deadline-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-cg-toybox-ops-roundup-0906.md",
+   "issue": "既報との差分：記事は『cg-popn-toybox-goods-2026』『cg-toybox-novel-serial-2026』の published_facts とほぼ同内容。ただしrankがroundupなので、既報の定常運営情報をまとめるのが本来の役割。新事実がなくても問題ない（規程14の例外）。",
+   "scope": "article:2026-09-06-cg-toybox-ops-roundup-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-cg-toybox-ops-roundup-0906.md",
+   "issue": "分量について：本文は約900字で、roundup向けとしては妥当。リード文も記事の意図（運営情報のまとめ）を適切に説明している。",
+   "scope": "article:2026-09-06-cg-toybox-ops-roundup-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-dsva-situation-voice14-deadline-0906.md",
+   "issue": "分量不足：rank: small で最低250字が必要ですが、本文は68字です。出典に記載されているボイスの内容（キャラクターなど）があれば補足できます。",
+   "scope": "article:2026-09-06-dsva-situation-voice14-deadline-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-dsva-situation-voice14-deadline-0906.md",
+   "issue": "候補ファイル欠落：frontmatter の candidate_ids に指定されている候補「sched-2026-09-06-dsva-situation-voice14-2026-締切」が見つかりません。",
+   "scope": "article:2026-09-06-dsva-situation-voice14-deadline-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gaku-fukuoka-memorial-gasha-0906.md",
+   "issue": "分量不足: small ランクは250字以上が下限。現在本文は約70字。candidate に記載の開催期限(9/20 10:59まで)・SSRプロデュースアイドル確定・名刺背景おまけなど、公式ページの詳細情報を加えると埋まるはず。",
+   "scope": "article:2026-09-06-gaku-fukuoka-memorial-gasha-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gaku-hatsuhoshi-fes-garakuta-road-vol5-0906.md",
+   "issue": "分量不足（コメント）: rank: small の下限は 250字だが、本文は約90字。出典の公式ニュースページに詳細情報（カード名・出現率・ジュエル数など）がなく（候補のnotes参照）、拾える情報がない。「詳細は9/9の生配信で告知予定」と明記して情報未定を伝えている点は評価。分量よりニュース性（ガシャ開催決定）の伝達を優先した記事として妥当。",
+   "scope": "article:2026-09-06-gaku-hatsuhoshi-fes-garakuta-road-vol5-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gaku-snap-series-preorder-0906.md",
+   "issue": "分量不足：rank=small で下限 250字ですが、本文は 242字です。受注終了日「2026年9月13日(日)」の記載がなく、これはsources のポータルURLに記載されている可能性が高い情報です。「受注は9月13日(日)までです」などの情報を追加すれば、分量不足が解決します。",
+   "scope": "article:2026-09-06-gaku-snap-series-preorder-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gakuen-realescapegame-nagoya-finale-0906.md",
+   "issue": "分量不足: rank=small で最低250字が下限。記事本文は約60字と不足。既報初出から2ヶ月経過した終了日当日の『千秋楽』記事として成立させるには、営業期間の振り返り、来場者の声、展示内容など、本文に実質的な情報を追加する必要がある。",
+   "scope": "article:2026-09-06-gakuen-realescapegame-nagoya-finale-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gakuen-realescapegame-nagoya-finale-0906.md",
+   "issue": "候補ID不一致: frontmatter の candidate_ids='sched-2026-09-06-gakuen-realescapegame-nagoya-2026-千秋楽' は2026-09-06.json に存在しない。実際の候補は2026-07-14.json の id='202607140344-claude-101' に該当。候補参照が正しく管理されていない(出典URLは一致するため内容的には問題なし)。",
+   "scope": "article:2026-09-06-gakuen-realescapegame-nagoya-finale-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-joint-anime-girls-project-store-shanghai.md",
+   "issue": "分量不足。rank: small は下限 250 字、本文は約 125 字。出典（bilibili 投稿）に記載されている会場名・位置・3作品名はすべて含まれているが、記事の分量が極めて短い",
+   "scope": "article:2026-09-06-joint-anime-girls-project-store-shanghai.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-joint-piano-collection-order-deadline-0906.md",
+   "issue": "分量不足：lead の下限は 1000 字（実際約 410 字）。出典の ASOBI STORE ページには予約開始日（2026年7月8日）、各付属品のサイズ仕様、発売元などが記載されており、これらを拾えば分量を増やせます",
+   "scope": "article:2026-09-06-joint-piano-collection-order-deadline-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-million-cardfolio-vol4-mr-reveal-0906.md",
+   "issue": "分量不足: rank: small（下限250字）に対し本文が177字と73字不足。候補の facts に「N/R/MLR/MRの種別数」「価格情報」「販売形式（BOX/パック単体）」などの詳細が存在するため、これらを加えれば字数を埋められるはずの記事。ただし分量増加は必須ではなく、短さ自体はブロック理由ではない。",
+   "scope": "article:2026-09-06-million-cardfolio-vol4-mr-reveal-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-million-premium-pickup-sr-gasha-0906.md",
+   "issue": "分量不足: 本文+lede で約200字。rank: small の下限は250字。出典に開催期間が無いため拡張困難だが、見出し補強やカード情報の詳細化で埋められる余地あり",
+   "scope": "article:2026-09-06-million-premium-pickup-sr-gasha-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-shiny-autumn-idol-enhancement-week-0906.md",
+   "issue": "分量不足：rank:small の下限は250字ですが、本文は約115字です。候補から見ると、公式投稿に報酬・対象条件・強化内容が記載されていないため、記事が補える情報がありません。出典の制限による自然な薄さですが、会場・価格・仕様・対象条件など記述可能な台帳的事実がないか、出典を再確認すると分量が増える可能性があります。",
+   "scope": "article:2026-09-06-shiny-autumn-idol-enhancement-week-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-shiny-utakata-ni-somaru-early-streaming-0906.md",
+   "issue": "分量: rank:small の下限 250 字に対して本文 251 字（URL含む）。出典に物理CD情報がないため、記事は拡張可能な情報を全て網羅している状態。",
+   "scope": "article:2026-09-06-shiny-utakata-ni-somaru-early-streaming-0906.md"
+  }
+ ]
+}

@@ -111,3 +111,7 @@
   brand: gaku
   subject: 学マス新ストーリーイベント「さいごの文化祭」
   watch: イベント終了日(判明次第 triggers へ)
+- dedup_key: gaku-fukuoka-live-memorial-gacha-2026-09
+  brand: gaku
+  subject: 学マス「標」福岡公演記念ガシャ
+  watch: 開催終了日(判明次第 triggers へ)

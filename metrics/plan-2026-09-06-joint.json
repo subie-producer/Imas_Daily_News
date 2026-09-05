@@ -1,0 +1,49 @@
+{
+  "articles": [
+    {
+      "slug": "joint-piano-collection-order-deadline-0906",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "20周年ピアノコレクションの予約受注が本日9月6日で締切。中川浩二氏メッセージと新規収録「クリスタライン」アレンジの初公開もあわせて伝える",
+      "lead_score": 45,
+      "dedup_key": "auto-84",
+      "candidate_ids": ["202609060228-grok-84", "202609060228-grok-85"]
+    },
+    {
+      "slug": "joint-765-961-xr-teaser-0906",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "公式Xの「765 PRODUCTION × 961 PRODUCTION」COMING SOON告知が本日正午に本予告、#xR_765vs961のYouTube動画へ誘導",
+      "lead_score": 25,
+      "dedup_key": "765-vs-961-xr-teaser-2026",
+      "candidate_ids": ["202609060228-explore-3", "sched-2026-09-06-imas-official-coming-soon-2026-0906-その他"]
+    },
+    {
+      "slug": "joint-anime-girls-project-store-shanghai",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "アイドルマスター中国公式が「Anime Girls Project Store」上海グランドオープン(9/22)を告知、3作品合同の新店舗",
+      "lead_score": 10,
+      "dedup_key": "anime-girls-project-store",
+      "candidate_ids": ["202609060228-grok-89"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "auto-82",
+      "reason": "既報",
+      "note": "namco中野店アーケード版稼働終了は前号ですでに報道済み(stock/stories.yml: akemas-namco-nakano-hakata-arcade-end-2026、初報2026-09-05)。本日の候補に新事実なし。"
+    },
+    {
+      "dedup_key": "2026",
+      "reason": "既報",
+      "note": "『2026レイトサマーキャンペーン 晩夏の調べ』開催中リマインドで、内容は既報(tours-late-summer-campaign-2026、初報2026-08-25)の範囲内。新事実なし。"
+    },
+    {
+      "dedup_key": "gigo",
+      "reason": "出典不足",
+      "note": "GiGOヴィータモールせいせき単店舗アカウント(未確認・Likes4/Views99の低エンゲージメント)による景品終了報告のみで、キャンペーン終了自体の公式裏付けがなく、全国紙面としての一次性に乏しい。"
+    }
+  ],
+  "cross_brand": []
+}

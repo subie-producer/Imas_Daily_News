@@ -1,0 +1,55 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-cosmo-birthday-voice-2026-sale",
+      "brand": "dsva",
+      "rank": "medium",
+      "angle": "上水流宇宙のバースデー記念ボイス2026がvα-liv公式BOOTHで発売中。前後編セット3,300円、誕生日前祝いのコミュボイスを9月27日まで販売",
+      "lead_score": 25,
+      "dedup_key": "dsva-cosmo-birthday-voice-2026",
+      "candidate_ids": ["202609050735-explore-19"]
+    },
+    {
+      "slug": "dsva-situation-voice14-deadline-0906",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "ヴイアラ シチュエーションボイス第14弾(テーマ「絶対にゆずれない…！」)が本日9/6 23:59で販売終了",
+      "lead_score": 10,
+      "dedup_key": "dsva-situation-voice14-2026",
+      "candidate_ids": ["sched-2026-09-06-dsva-situation-voice14-2026-締切"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "manaka-hakuno-izenzen-strong-2026",
+      "reason": "個人の話題",
+      "note": "vα-liv公式企画ではなく、他パーソナリティ(今酒ハクノ)主催の生誕祭へのゲスト出演で、規程4のアイマス外活動に該当。開催も9/5で発行時点(9/6 6:00)にはすでに終了しており当日読者ができることもない。"
+    },
+    {
+      "dedup_key": "gamer-interview-valiv-876-2026",
+      "reason": "既報",
+      "note": "同一インタビュー(gamer.ne.jp 9/3付、収録8/4)は9/4号でstory_id imas-20th-year-summary-interview-2026(general面)としてすでに記事化済み。ヴイアラ/876プロへの言及も同じ取材内の発言で新事実ではない。"
+    },
+    {
+      "dedup_key": "cosmo-ace7-2026-09-04",
+      "reason": "既報",
+      "note": "9/4 20:00の上水流宇宙ACE COMBAT 7配信は、9/5号story_id dsva-valiv-ops-roundup-2026-09-05の既報factsに『実施』として記載済み。この候補は未確認の予告情報のみで新事実なし。"
+    },
+    {
+      "dedup_key": "manaka-kpf2026-talk-live",
+      "reason": "既報",
+      "note": "9/5号story_id dsva-manaka-kpf2026-2026の既報factsと同一内容(11/29北九州メッセでの灯里愛夏スペシャルトーク＆ライブ)で新事実なし。"
+    },
+    {
+      "dedup_key": "cosmo-ace-combat7-2026-09-04",
+      "reason": "既報",
+      "note": "cosmo-ace7-2026-09-04と同一配信(9/4 20:00 ACE COMBAT 7)。9/5号story_id dsva-valiv-ops-roundup-2026-09-05の既報factsに実施済みとして記載済みで新事実なし。"
+    },
+    {
+      "dedup_key": "letora-silent-hill-f-2026-09-05",
+      "reason": "その他",
+      "note": "主内容の『9/5 21:00からレトラ配信予定』は発行時点(9/6 6:00)にはすでに終了しており、結果も伴わず読者が今日見に行ける・できることが無い(規程12)。同梱の上水流宇宙ショート動画公開は単独の主題として素材化されておらず、単体記事化に足る独立事実ではない。"
+    }
+  ],
+  "cross_brand": []
+}

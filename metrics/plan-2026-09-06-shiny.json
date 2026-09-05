@@ -1,0 +1,63 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-msp-venue-goods-cdbd-vouchers-0906",
+      "brand": "shiny",
+      "rank": "large",
+      "angle": "「283 PRODUCTION Solo Live Collection -Master ShowPiece-」会場物販情報が9月3日付で解禁。グッズ・CD/Blu-rayそれぞれの整理券受付(9/10-15)・当落発表(9/22)・購入特典・価格帯を一挙に伝える",
+      "lead_score": 35,
+      "dedup_key": "shiny-283-production-solo-live-collection-master-showpiece-goods-2026",
+      "candidate_ids": ["202609050735-explore-6", "202609051236-explore-7", "202609051835-explore-14"]
+    },
+    {
+      "slug": "shiny-autumn-idol-enhancement-week-0906",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "育成イベント「秋のアイドル強化週間」が9月7日開始。同日12〜15時のメンテナンスと、開催中の10連無料スタンプガシャがメンテ前までである点をあわせて伝える",
+      "lead_score": 20,
+      "dedup_key": "shiny-autumn-idol-enhancement-2026",
+      "candidate_ids": ["202609060228-explore-10", "202609060228-grok-71", "202609060228-grok-72"]
+    },
+    {
+      "slug": "shiny-utakata-ni-somaru-early-streaming-0906",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "書き下ろし曲「泡沫に染まる」が9月5日付で先行配信を開始。フルサイズは各配信ストアのリンクから聴取できる点を伝える",
+      "lead_score": 10,
+      "dedup_key": "2026-09-05-15-00",
+      "candidate_ids": ["202609060228-grok-75"]
+    },
+    {
+      "slug": "shiny-ongoing-ops-roundup-0906",
+      "brand": "shiny",
+      "rank": "roundup",
+      "angle": "開催中のガシャ・コンテンツまとめ: 765プロコラボ第5弾Pアイドルガシャ(亜美・真美)、イルミネのユニット衣装ガシャ、めぐるのアナザー衣装、まったりHBTK朗読コーナー切り抜き",
+      "lead_score": 0,
+      "dedup_key": "shinyson-ami-mami-appearance-2026",
+      "candidate_ids": ["202609060228-explore-12", "202609060228-grok-67", "202609060228-grok-73", "202609060228-grok-74"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "2026-09-05-06-00-msp",
+      "reason": "既報",
+      "note": "公式リセール受付期間(9/5 15:00〜9/16 9:59)はshiny-msp-live-tickets-2026で既報。開始時刻も06:00 JSTより前で新事実なし"
+    },
+    {
+      "dedup_key": "2026-09-04-10-07-hbtk",
+      "reason": "既報",
+      "note": "9月4日付の切り抜き公開はshiny-hbtk-september-mc-2026の published_facts に既出"
+    },
+    {
+      "dedup_key": "2026-09-05-09-00-9-7-11-59",
+      "reason": "既報",
+      "note": "コスチュームガシャの9/7 11:59終了はshiny-costume-gacha-2026-08で既報。締切3日前・当日のいずれのトリガーにも該当せず新事実なし"
+    },
+    {
+      "dedup_key": "2026-09-05-09-01",
+      "reason": "出典不足",
+      "note": "商品名・価格・終了日時が本文になく(バナー未読)特定できない"
+    }
+  ],
+  "cross_brand": []
+}

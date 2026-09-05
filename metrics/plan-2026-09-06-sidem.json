@@ -1,0 +1,81 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-11th-stage-resale-deadline-0906",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM 11th STAGE 現地チケットの公式リセール受付が本日9月6日9:59に締切、公演・席種ごとに受付URLが異なる",
+      "lead_score": 10,
+      "dedup_key": "sidem-11th-stage-ticket-2026",
+      "candidate_ids": [
+        "sched-2026-09-06-sidem-11th-stage-ticket-2026-締切",
+        "sched-2026-09-06-sidem-11th-stage-2026-締切"
+      ]
+    },
+    {
+      "slug": "sidem-11th-stage-collab-drink-0906",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM 11th STAGE会場のTOYOTA ARENA TOKYOでコラボドリンクを販売、注文者にオリジナルコースターをランダム進呈",
+      "lead_score": 5,
+      "dedup_key": "sidem-11th-stage-collab-drink-2026",
+      "candidate_ids": [
+        "202609051835-explore-17",
+        "202609052335-explore-17"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-2dmv-transcendent-tales-goods-2026-09-03",
+      "reason": "既報",
+      "note": "9/4号で既報の2DMV・T@LESグッズ第2・3弾(受注9/3-9/23)と同一、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-divercity-tokyo-plaza-2026",
+      "reason": "既報",
+      "note": "8/24号で既報のダイバーシティ東京コラボ(9/4開幕、期間中)と同一、本日はトリガー日でない"
+    },
+    {
+      "dedup_key": "sidem-teddys-collection-ii-2026",
+      "reason": "既報",
+      "note": "8/28号で既報のTeddy's Collection II POP UP STORE(9/4開催中)と同一、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-315nya-shop-2026",
+      "reason": "既報",
+      "note": "9/3号で既報の315!!!SHOP5周年猫耳執事展開(開始は9/11)と同一、本日はトリガー日でない"
+    },
+    {
+      "dedup_key": "sidem-2dmv-tales-goods-2026-2",
+      "reason": "重複",
+      "note": "sidem-2dmv-transcendent-tales-goods-2026-09-03と同一話題(2DMV・T@LESグッズ第2・3弾)"
+    },
+    {
+      "dedup_key": "sidem-suntory-oolong-2026",
+      "reason": "既報",
+      "note": "9/4号で既報のサントリー自販機コラボ(発売は9/14)と同一、本日はトリガー日でない"
+    },
+    {
+      "dedup_key": "sidem-meet-yumenotopia-2dmv-2026",
+      "reason": "既報",
+      "note": "8/29号で既報、公開は9/2に完了済み"
+    },
+    {
+      "dedup_key": "sidem-315nya-omise-2026",
+      "reason": "重複",
+      "note": "sidem-315nya-shop-2026と同一話題(315!!!SHOP5周年猫耳執事展開)"
+    },
+    {
+      "dedup_key": "sidem-transcendent-tales-12-2026",
+      "reason": "既報",
+      "note": "7/15号で既報、発売日9/2は既に終了済み"
+    },
+    {
+      "dedup_key": "sidem-divercity-tokyo-2026",
+      "reason": "既報",
+      "note": "8/24号で既報のダイバーシティ東京コラボ(9/4開幕、期間中)と同一、本日はトリガー日でない"
+    }
+  ],
+  "cross_brand": []
+}

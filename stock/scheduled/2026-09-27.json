@@ -259,5 +259,25 @@
     "source_type": "未確認",
     "verify": "confirmed",
     "src_candidate_id": "202609050237-grok-31"
+  },
+  {
+    "id": "sched-2026-09-27-gakumas-gravure-solo-collection-vol1-2026-締切",
+    "dedup_key": "gakumas-gravure-solo-collection-vol1-2026",
+    "brand": "gaku",
+    "subject": "学マス新CDシリーズ「Gravure Solo Collection」第1弾 予約",
+    "kind": "締切",
+    "note": "予約受付締切",
+    "reserved_on": "2026-09-06",
+    "facts": [
+      "Vol.1『ねえ、言っちゃうよ。』の予約受付は9月27日まで、価格3,500円(税込)、発売日は11月18日予定",
+      "月村手毬・秦谷美鈴・十王星南の3人歌唱版に加え、13名のソロ歌唱Full ver.とInstrumentalを含む全15曲を収録",
+      "店舗別予約特典: アニメイトはロングフォト3枚セット、Amazon.co.jpはトレーディングカード3枚セット、あみあみはましかくブロマイド、ゲーマーズは56mm缶バッジ3種セット、ソフマップ・アニメガはアクリルコースター、タワーレコードはホログラムカード3枚セット、diskunionは両面キーホルダー、とらのあなは月村手毬・十王星南・秦谷美鈴のL判ブロマイドセット、メロンブックスはスクエア缶バッジ、楽天ブックスはA4クリアポスター(ASOBI STORE特典は特典ステッカー)"
+    ],
+    "title": "学マス「ねえ、言っちゃうよ。」予約は9/27まで",
+    "url": "https://gakuen-label.idolmaster-official.jp/news/gravure1",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609060228-grok-54",
+    "event_date": "2026-09-27"
   }
 ]

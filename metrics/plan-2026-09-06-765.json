@@ -1,0 +1,37 @@
+{
+  "articles": [
+    {
+      "slug": "765-dual-twin-audio-commentary-tokyo-0906",
+      "brand": "765",
+      "rank": "medium",
+      "angle": "dual twin live tour東京公演「つみまつよるまち」のキャスト生オーディオコメンタリーが本日20時からASOBI STAGEで配信開始(たかはし智秋・若林直美・石田裕亮、視聴チケット所持者限定、9/23には「ふたごぼしのつばさ」回も予定)",
+      "lead_score": 20,
+      "dedup_key": "dual-twin-live-audio-commentary-2026",
+      "candidate_ids": [
+        "202609051236-watch-0",
+        "202609060228-explore-0",
+        "202609060228-grok-33",
+        "202609060228-grok-34",
+        "sched-2026-09-06-765-dual-twin-audiocommentary-2026-開始"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "765as-cd-postsales-2026",
+      "reason": "既報",
+      "note": "会場オリジナルCDの事後販売決定はstock/stories.yml(765-dual-twinlive-venue-cd)に既出。全12種・IWSF2026分の案内も本日起点のトリガーが無く、単なる継続案内"
+    },
+    {
+      "dedup_key": "765-production-961-production-idol-ultimate-once-and-for-all-2026-09-05",
+      "reason": "重複",
+      "note": "joint面 joint-765-961-xr-teaser-0906 が同じ本予告(9/6正午・#xR_765vs961)を既に記事化済み"
+    },
+    {
+      "dedup_key": "imas-20th-piano-collection-2026",
+      "reason": "重複",
+      "note": "joint面 joint-piano-collection-order-deadline-0906 が同じ受注締切(9/6)を既に記事化済み"
+    }
+  ],
+  "cross_brand": []
+}

@@ -104,6 +104,8 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - charakuji-news.com    # 合議で追加: キャラくじ発売速報というサイト名から複数くじ情報をまとめたサイト
+  - vstats.jp             # 合議で追加: VTuberのライブ配信予定を他プラットフォームから集約・表示
   - vtuber-live.net       # 合議で追加: VTuberのアーカイブを集約掲載
   - tokyo-odaiba.net      # 合議で追加: 東京お台場ポータルがイベント情報を掲載
   - news.livedoor.com     # 合議で追加: 公式発表・プレスリリースの言い換え、取材形跡なし
@@ -158,8 +160,12 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - kanko-shinjuku.jp     # 合議で追加: 会場側がポップアップストア企画を実施
+  - ktqpopfes.jp          # 合議で追加: フェスティバル主催者がイベント情報を掲載
   - tgs.cesa.or.jp        # 東京ゲームショウ公式(主催 CESA=コンピュータエンターテインメント協会)。催しの主催者
   - mequrimequru.jp       # メクリメクル(KADOKAWA が運営する連載サイト)。掲載作品の出版元=販売元
+  - volks.co.jp           # 合議で追加: フィギュアメーカーが自社商品の展示・販売を店舗ブログで発信
+  - hakunoimasaka.zaiko.io # 合議で追加: チケット販売プラットフォーム。チケット販売は当事者に該当
   - special.amiami.jp     # 合議で追加: ライセンス受けたグッズ販売会社がポップアップショップを主催・告知
   - kujibikido.com        # 合議で追加: ライセンス受けたくじ販売会社が自社商品の販売ページを運営
   - animall.jp            # 合議で追加: グッズ販売サイト（animo運営）。商品を売る会社として当事者
@@ -289,6 +295,7 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - aoi___nagatsuki     # 合議で追加: 出演者がDAY1終演後のコメントを発信。出演報告
     # **その作品を演じている人**とその所属事務所(規程2.5)。
     # コラボ先や販売元(当事者)とは立場が違うので分ける。
     - mao_ito05           # 出演キャスト本人
@@ -332,6 +339,8 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - smilebasecafe       # 合議で追加: コラボ先（カフェ）が自社のコラボドリンクを公開。自社商品の告知
+    - GiGO_seiseki_s      # 合議で追加: 会場（GiGO店舗）がキャンペーン終了を告知。自社催しを告知している
     - gladgarb_X          # 合議で追加: コラボブランドがライセンス商品を販売
     - sobetsuringofes     # 合議で追加: 祭りイベント主催者側による公式アカウント、ビジュアル配信
     - maruiwebchannel     # 合議で追加: 店舗の公式案内

@@ -1,0 +1,115 @@
+{
+  "articles": [
+    {
+      "slug": "million-matsuriyu-hanabidan-tsuhan-0906",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "「銭湯HANABI団」コラボグッズ、Animoで事後通販の受注を9/4 17:00より開始(10/5 17:00締切・2027年1月下旬発送)。2連アクリルキーホルダー・クリアファイルセット・トレーディングステッカーなど全13商品の価格とラインナップを列挙する",
+      "lead_score": 40,
+      "dedup_key": "million-matsuriyu-hanabidan-tsuhan-2026",
+      "candidate_ids": [
+        "202609051236-explore-6",
+        "202609052335-explore-11",
+        "202609052335-explore-12",
+        "202609052335-explore-13",
+        "202609060228-explore-8"
+      ]
+    },
+    {
+      "slug": "million-cardfolio-vol4-mr-reveal-0906",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "「カードフォリオ ミリオンライブ！ver. vol.4」(9/19発売・14thLIVE会場先行販売)の新規描き下ろしMRを公式Xが連日公開中。9/4は周防桃子、9/5は徳川まつりを公開し、残り2種を9/6正午に公開予定と告知",
+      "lead_score": 15,
+      "dedup_key": "cardfolio-million-vol4-2026",
+      "candidate_ids": [
+        "202609051835-explore-11",
+        "202609060228-grok-61"
+      ]
+    },
+    {
+      "slug": "million-14th-goods-lottery-deadline-0906",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリオン14thLIVE(9/19-20)会場物販の事前抽選整理券、受付締切は9/9(水)23:59。締切3日前を機に、受付方法と抽選結果発表(9/15 13:00〜)を案内する",
+      "lead_score": 10,
+      "dedup_key": "million-14thlive-2026-goods-lottery",
+      "candidate_ids": [
+        "202609060228-grok-64"
+      ]
+    },
+    {
+      "slug": "million-premium-pickup-sr-gasha-0906",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ「プレミアムピックアップSRガシャ」に新規限定SR4種(ロコ・横山奈緒・菊地真・周防桃子)が追加され、出現率アップ中",
+      "lead_score": 20,
+      "dedup_key": "mltd-premium-pickup-sr-gasha-2026-09",
+      "candidate_ids": [
+        "202609060228-grok-59"
+      ]
+    },
+    {
+      "slug": "million-ops-roundup-0906",
+      "brand": "million",
+      "rank": "roundup",
+      "angle": "開催中の運営情報まとめ: プラチナスターシアター「秘密のメモリーズ」(9/8まで)、同イベント期間限定ショップ、セカンドヘアスタイルガシャ「myブランド編 with glasses」(4コマ公開)、X-STREAM THEATERのイベント楽曲倍率固定アップデート",
+      "lead_score": 0,
+      "dedup_key": "mltd-pst-secret-memories-2026",
+      "candidate_ids": [
+        "202609060228-grok-57",
+        "202609060228-grok-58",
+        "202609060228-grok-60",
+        "202609051236-explore-18"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-chibigurumi-spade-q",
+      "reason": "既報",
+      "note": "9/5付でスペードのQちびぐるみ(全6種・2027年1月ナムコ順次登場・オンラインクレーン先行プレイ)は既報済み(stock: million-chibigurumi-spade-of-q-2026)。新事実なし"
+    },
+    {
+      "dedup_key": "seasonal-snapshot-christmas-2026",
+      "reason": "既報",
+      "note": "高槻やよい・伊吹翼のSeasonal Snapshotクリスマスグッズ受注(9/20締切)は9/4付で既報(stock: million-seasonal-snapshot-christmas-2026)。価格詳細以外に新事実なし"
+    },
+    {
+      "dedup_key": "soubetsu-apple-festival-2026",
+      "reason": "既報",
+      "note": "木下ひなた4回目のりんご大使就任・そうべつりんごまつり詳細は9/3付で既報(stock: millionlive-hinata-apple-ambassador-2026)と同内容"
+    },
+    {
+      "dedup_key": "million-14th-streaming-2026",
+      "reason": "既報",
+      "note": "14thLIVE配信チケット(両日13,000円等・販売期間9/2-9/28)は9/2付で既報(stock: million-14th-live)。本日はトリガー日(3日前/開始/締切)に当たらない"
+    },
+    {
+      "dedup_key": "million-14th-gift-rules-2026",
+      "reason": "既報",
+      "note": "プレゼント・楽屋花受付条件(サイズ40cm以下・フラワースタンド見合わせ等)は9/2付Q&A更新分として既報(stock: million-14th-live)"
+    },
+    {
+      "dedup_key": "x-stream-theater-costumes-2026",
+      "reason": "出典不足",
+      "note": "出典がファンWiki(gamerch)のみでverify=unconfirmed。ゲーム内施策(衣装入手方法)は公式一次情報が無ければ書かない(規程2)"
+    },
+    {
+      "dedup_key": "million-spade-q-chibigurumi-2026",
+      "reason": "既報",
+      "note": "重複: million-chibigurumi-spade-qと同一の話題(スペードのQちびぐるみ)。9/5付で既報済み"
+    },
+    {
+      "dedup_key": "million-14thlive-2026-ticket-general",
+      "reason": "既報",
+      "note": "現地チケット一般販売(先着・9/12締切)は8/30開始分として既報(stock: million-14th-live)。本日は締切3日前(=9/9)にも当たらず新事実なし"
+    },
+    {
+      "dedup_key": "fan-secret-memories-commu-2026-09",
+      "reason": "個人の話題",
+      "note": "個人のSNS投稿(コミュ感想・APレポート)であり単体記事化しない(規程4・5)。ミリオン面はculture面の受け皿を持たない"
+    }
+  ],
+  "cross_brand": []
+}

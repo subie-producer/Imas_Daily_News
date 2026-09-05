@@ -1,0 +1,74 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_editorials/2026-09-06.md",
+   "issue": "校閲実行失敗: ",
+   "quote": "",
+   "scope": "editorial"
+  },
+  {
+   "file": "-",
+   "issue": "校閲実行失敗: ",
+   "quote": "",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-06-765-dual-twin-audio-commentary-tokyo-0906.md",
+   "issue": "分量がやや不足。rank: medium の推奨分量は 450字以上だが、本文は約350字。ただし、出典（候補 202609051236-watch-0）に記載されている essential な情報は全て記載されており、追記する必要がある内容なし。記事の公告的・短報的な性質に適切な分量と判断される。",
+   "scope": "article:2026-09-06-765-dual-twin-audio-commentary-tokyo-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-cg-election-cheer-contest-deadline-0906.md",
+   "issue": "分量不足：rank small（250字以上が目安）に対して本文約207字と基準より短め。出典には投稿基準の詳細・参加資格（日本国内在住）・各部門のモチーフなど追加情報があり、拾えば埋まるはずだが、緊急性の高い当日締切情報として現状も許容範囲内",
+   "scope": "article:2026-09-06-cg-election-cheer-contest-deadline-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-cg-toybox-ops-roundup-0906.md",
+   "issue": "既報との差分：記事は『cg-popn-toybox-goods-2026』『cg-toybox-novel-serial-2026』の published_facts とほぼ同内容。ただしrankがroundupなので、既報の定常運営情報をまとめるのが本来の役割。新事実がなくても問題ない（規程14の例外）。",
+   "scope": "article:2026-09-06-cg-toybox-ops-roundup-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-cg-toybox-ops-roundup-0906.md",
+   "issue": "分量について：本文は約900字で、roundup向けとしては妥当。リード文も記事の意図（運営情報のまとめ）を適切に説明している。",
+   "scope": "article:2026-09-06-cg-toybox-ops-roundup-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gaku-hatsuhoshi-fes-garakuta-road-vol5-0906.md",
+   "issue": "分量不足（コメント）: rank: small の下限は 250字だが、本文は約90字。出典の公式ニュースページに詳細情報（カード名・出現率・ジュエル数など）がなく（候補のnotes参照）、拾える情報がない。「詳細は9/9の生配信で告知予定」と明記して情報未定を伝えている点は評価。分量よりニュース性（ガシャ開催決定）の伝達を優先した記事として妥当。",
+   "scope": "article:2026-09-06-gaku-hatsuhoshi-fes-garakuta-road-vol5-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gaku-snap-series-preorder-0906.md",
+   "issue": "分量不足：rank=small で下限 250字ですが、本文は 242字です。受注終了日「2026年9月13日(日)」の記載がなく、これはsources のポータルURLに記載されている可能性が高い情報です。「受注は9月13日(日)までです」などの情報を追加すれば、分量不足が解決します。",
+   "scope": "article:2026-09-06-gaku-snap-series-preorder-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-joint-anime-girls-project-store-shanghai.md",
+   "issue": "分量不足。rank: small は下限 250 字、本文は約 125 字。出典（bilibili 投稿）に記載されている会場名・位置・3作品名はすべて含まれているが、記事の分量が極めて短い",
+   "scope": "article:2026-09-06-joint-anime-girls-project-store-shanghai.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-joint-piano-collection-order-deadline-0906.md",
+   "issue": "分量不足：lead の下限は 1000 字（実際約 410 字）。出典の ASOBI STORE ページには予約開始日（2026年7月8日）、各付属品のサイズ仕様、発売元などが記載されており、これらを拾えば分量を増やせます",
+   "scope": "article:2026-09-06-joint-piano-collection-order-deadline-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-million-premium-pickup-sr-gasha-0906.md",
+   "issue": "分量不足: 本文+lede で約200字。rank: small の下限は250字。出典に開催期間が無いため拡張困難だが、見出し補強やカード情報の詳細化で埋められる余地あり",
+   "scope": "article:2026-09-06-million-premium-pickup-sr-gasha-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-shiny-autumn-idol-enhancement-week-0906.md",
+   "issue": "分量不足：rank:small の下限は250字ですが、本文は約115字です。候補から見ると、公式投稿に報酬・対象条件・強化内容が記載されていないため、記事が補える情報がありません。出典の制限による自然な薄さですが、会場・価格・仕様・対象条件など記述可能な台帳的事実がないか、出典を再確認すると分量が増える可能性があります。",
+   "scope": "article:2026-09-06-shiny-autumn-idol-enhancement-week-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-shiny-utakata-ni-somaru-early-streaming-0906.md",
+   "issue": "分量: rank:small の下限 250 字に対して本文 251 字（URL含む）。出典に物理CD情報がないため、記事は拡張可能な情報を全て網羅している状態。",
+   "scope": "article:2026-09-06-shiny-utakata-ni-somaru-early-streaming-0906.md"
+  }
+ ]
+}

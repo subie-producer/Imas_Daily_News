@@ -1,0 +1,171 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-shirube-fukuoka-day2-finale-0906",
+      "brand": "gaku",
+      "rank": "large",
+      "angle": "LIVE TOUR -標- 福岡公演、DAY1の結果(セットリスト・最速アーカイブ公開・新曲『nazonazo』初披露)を受けて本日16:30開演のDAY2(千秋楽)を迎える。会場物販・配信視聴チケット・デジタルチケット画像生成の案内もあわせて総括",
+      "lead_score": 70,
+      "dedup_key": "gaku-livetour-shirube-fukuoka-2026",
+      "candidate_ids": [
+        "202609051236-explore-13",
+        "202609051835-explore-23",
+        "202609052335-watch-0",
+        "202609052335-watch-1",
+        "202609060228-grok-46",
+        "202609060228-grok-47",
+        "202609060228-grok-48",
+        "202609060228-grok-56",
+        "sched-2026-09-06-gaku-shirube-fukuoka-ticket-general-resale-2026-千秋楽",
+        "sched-2026-09-06-gaku-shirube-livetour-fukuoka-show-2026-千秋楽"
+      ]
+    },
+    {
+      "slug": "gaku-hatsuhoshi-fes-garakuta-road-vol5-0906",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "初星フェス「ガラクタロード」vol.5で星南ガシャが開催、あわせて「H.I.F編」への星南&ことね実装が予告された",
+      "lead_score": 55,
+      "dedup_key": "gaku-hatsuhoshi-fes-garakuta-road-vol5-2026-09",
+      "candidate_ids": [
+        "202609060228-grok-50"
+      ]
+    },
+    {
+      "slug": "gaku-fukuoka-memorial-gasha-0906",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "LIVE TOUR -標- 福岡公演記念ガシャが開催中、有償10連でSSR確定・9/20締切",
+      "lead_score": 15,
+      "dedup_key": "gaku-fukuoka-live-memorial-gacha-2026-09",
+      "candidate_ids": [
+        "202609060228-grok-51"
+      ]
+    },
+    {
+      "slug": "gaku-tour-songs-new-versions-0906",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "標ツアー楽曲の新配信第2弾。「ENDLESS DANCE」の2ユニット版(リーリヤ・千奈・莉波/麻央・清夏・広)と「Howling over the World」「ミラクルナナウ(ﾟ∀ﾟ)！」が新たにStreaming&DL開始",
+      "lead_score": 20,
+      "dedup_key": "gaku-endless-dance-trio-2026",
+      "candidate_ids": [
+        "202609050735-explore-21",
+        "202609051236-explore-23",
+        "202609051236-explore-24",
+        "202609060228-explore-20"
+      ]
+    },
+    {
+      "slug": "gaku-schoosicaltrip-single-preorder-0906",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "初星学園 LIVE TOUR Single「修楽旅行」の予約が受付中、9/23締切",
+      "lead_score": 10,
+      "dedup_key": "gaku-schoosicaltrip-single-2026",
+      "candidate_ids": [
+        "202609060228-grok-52"
+      ]
+    },
+    {
+      "slug": "gaku-tsubame-single-preorder-0906",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "雨夜燕 2nd Single＆3rd Singleの予約が受付中、ASOBI STORE特典付き予約は10/4締切",
+      "lead_score": 10,
+      "dedup_key": "gaku-tsubame-2nd-3rd-single-2026",
+      "candidate_ids": [
+        "202609060228-grok-53"
+      ]
+    },
+    {
+      "slug": "gaku-gravure-solo-collection-preorder-0906",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "Gravure Solo Collection Vol.1「ねえ、言っちゃうよ。」の予約が受付中、9/27締切",
+      "lead_score": 8,
+      "dedup_key": "gaku-gravure-solo-collection-vol1-2026",
+      "candidate_ids": [
+        "202609060228-grok-54"
+      ]
+    },
+    {
+      "slug": "gaku-snap-series-preorder-0906",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "ASOBI STOREで「スナップシリーズ」が受注中、締切9/13",
+      "lead_score": 8,
+      "dedup_key": "gaku-snap-series-preorder-2026-09",
+      "candidate_ids": [
+        "202609060228-grok-55"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-tour-final-general-2nd-advance-0906",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "標ツアー最終公演(11/7)のアソビストア一般会員2次先行受付が開始、9/23締切",
+      "lead_score": 20,
+      "dedup_key": "gaku-live-tour-shirube-final-general-2nd-advance-2026",
+      "candidate_ids": [
+        "202609060228-explore-17",
+        "202609051835-explore-24"
+      ]
+    },
+    {
+      "slug": "gakuen-realescapegame-nagoya-finale-0906",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "リアル脱出ゲーム×学園アイドルマスター 名古屋公演、本日が千秋楽",
+      "lead_score": 15,
+      "dedup_key": "gakuen-realescapegame-nagoya-2026",
+      "candidate_ids": [
+        "sched-2026-09-06-gakuen-realescapegame-nagoya-2026-千秋楽"
+      ]
+    },
+    {
+      "slug": "gaku-dollfie-reiris-display-sapporo-0906",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "ボークス天使のすみか札幌店で『Re;IRIS』3人のドルフィードリーム展示を変更、藤田ことねは完売・花海咲季と月村手毬は店頭購入可",
+      "lead_score": 5,
+      "dedup_key": "gaku-dollfie-reiris-display-sapporo-2026",
+      "candidate_ids": [
+        "202609050735-explore-13"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gaku-mao-china-seika-shirube-gasha-2026",
+      "reason": "既報",
+      "note": "「麻央＆千奈＆清夏 標ガシャ」開催決定・9/4実装は9/4号(gakumasu-shirube-gasha-2026)で既報。新事実なし"
+    },
+    {
+      "dedup_key": "gaku-chugai-grace-cafe-revival-shibuya-2026",
+      "reason": "既報",
+      "note": "開催概要(9/3〜9/27・渋谷モディ・価格)は9/4号で既報。追加facts は終了済みの抽選予約・当落発表日程のみで読者が今日できることは増えない"
+    },
+    {
+      "dedup_key": "gaku-live-tour-shirube-iwate-goods-2026",
+      "reason": "既報",
+      "note": "岩手公演物販の日時・場所・購入制限・整理券は9/5号(gaku-shirube-iwate-goods-2026)で既報。新事実は「事前販売ファイナル非実施」のみで行動を増やさない"
+    },
+    {
+      "dedup_key": "gaku-star-mine-2026",
+      "reason": "既報",
+      "note": "「Star-mine」配信開始は8/30号(gaku-star-mine-2026)で既報と同一内容の再掲"
+    },
+    {
+      "dedup_key": "gaku-saigo-no-bunkasai-2026",
+      "reason": "出典不足",
+      "note": "出典が game8.jp のみ(二次情報・unconfirmed)で公式告知に未到達。規程2の対象(ゲーム内施策は公式必須)"
+    },
+    {
+      "dedup_key": "gaku-endless-dance-saki-temari-kotone-2026",
+      "reason": "既報",
+      "note": "花海咲季・月村手毬・藤田ことね ver.「ENDLESS DANCE」の配信(9/1開始)は9/4号で既報と同一内容の再掲"
+    }
+  ],
+  "cross_brand": []
+}

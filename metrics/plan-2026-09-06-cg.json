@@ -1,0 +1,128 @@
+{
+  "articles": [
+    {
+      "slug": "cg-election-cheer-contest-deadline-0906",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "シンデレラ総選挙2026「アイドル応援投稿祭」(ニコニコ動画)が本日23:59に応募締切",
+      "lead_score": 20,
+      "dedup_key": "cg-vote-video-festival-2026",
+      "candidate_ids": [
+        "202609050735-explore-1",
+        "202609060228-grok-37",
+        "sched-2026-09-06-cg-election-cheer-contest-2026-締切"
+      ]
+    },
+    {
+      "slug": "cg-15thparty-goods-presale-reveal-0906",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "シンデレラ15周年記念ライブ公式グッズ事前二次販売、ホログラムクリアチケット実物とカスタマイズジオラマ商品を公開(受注は9/13まで)",
+      "lead_score": 15,
+      "dedup_key": "2026-09-05-11-00-gmt-20-00-jst-15thparty",
+      "candidate_ids": [
+        "202609060228-grok-35",
+        "202609060228-grok-40"
+      ]
+    },
+    {
+      "slug": "cg-medicos-sweet-melty-whip-popup-0906",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "メディコス「シンデレラガールズ」POP UP SHOP ~Sweet Melty Whip~、9/10より渋谷・大阪で開催決定",
+      "lead_score": 8,
+      "dedup_key": "pop-up-shop-sweet-melty-whip",
+      "candidate_ids": [
+        "202609060228-grok-43"
+      ]
+    },
+    {
+      "slug": "cg-genka-yoenichi-popup-osaka-finale-0906",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "百鬼夜行POP UP『幻夏妖宴市』、大阪会場(日本橋店)が本日で最終日",
+      "lead_score": 10,
+      "dedup_key": "cg-genka-yoenichi-popup",
+      "candidate_ids": [
+        "sched-2026-09-06-cg-genka-yoenichi-popup-千秋楽"
+      ]
+    },
+    {
+      "slug": "cg-yamanashi-pedometer-preorder-deadline-0906",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "やまなしコラボ歩数計(タニタ製)、先行受注締切まで残り3日(9/9 23:59:59まで)",
+      "lead_score": 5,
+      "dedup_key": "cg-yamanashi-walk-wander-pedometer-2026",
+      "candidate_ids": [
+        "sched-2026-09-06-cg-yamanashi-walk-wander-pedometer-2026-締切前"
+      ]
+    },
+    {
+      "slug": "cg-toybox-ops-roundup-0906",
+      "brand": "cg",
+      "rank": "roundup",
+      "angle": "Pop'n ToyBox!!関連の進行中コンテンツまとめ(xR配信チケット継続販売と新チラ見せ楽曲2曲、開催記念グッズの商品詳細公開、ノベル連載最新話)",
+      "lead_score": 0,
+      "dedup_key": "2026-09-05-03-30-gmt-12-30-jst-hamburg-xr",
+      "candidate_ids": [
+        "202609060228-grok-39",
+        "202609060228-grok-41",
+        "202609060228-grok-45"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-school-festival-online-lottery-2026",
+      "reason": "既報",
+      "note": "文化祭テーマくじ引き堂オンラインくじは stock/stories.yml の cg-gacha-festival-2026-08(8/28初報)で賞品構成まで既報、新事実なし"
+    },
+    {
+      "dedup_key": "cg-starlight-stage-10th-okinawa-fukuoka-bluray-2026",
+      "reason": "既報",
+      "note": "9/2発売・価格・収録内容は stock の cg-ss10th-fukuoka-pv2-2026(8/29初報)で既報。品番・組数等は台帳的事実(編集規程2)で新規性なし"
+    },
+    {
+      "dedup_key": "cg-bunkasai-online-kuji-2026",
+      "reason": "既報",
+      "note": "cg-school-festival-online-lottery-2026と同一施策(重複)、かつ8/28に既報"
+    },
+    {
+      "dedup_key": "deresute-11th-free-10pull-2026",
+      "reason": "既報",
+      "note": "デレステ11周年キャンペーンは stock の cg-deresute-11th-anniversary-campaign-2026(9/4初報)で詳細まで既報"
+    },
+    {
+      "dedup_key": "cg-cultural-festival-kujibikido-2026",
+      "reason": "既報",
+      "note": "cg-school-festival-online-lottery-2026と同一施策、8/28に既報"
+    },
+    {
+      "dedup_key": "deresute-11th-anniversary-2026",
+      "reason": "既報",
+      "note": "deresute-11th-free-10pull-2026と同一、9/4に既報"
+    },
+    {
+      "dedup_key": "cg-school-festival-kujibikido-2026",
+      "reason": "既報",
+      "note": "cg-school-festival-online-lottery-2026と同一施策、8/28に既報(この候補自体の published_date も8/27)"
+    },
+    {
+      "dedup_key": "2026-09-05-10-00-gmt-19-00-jst-2026",
+      "reason": "既報",
+      "note": "総選挙2026公式グッズ(公約四字熟語アクリルキーホルダー)は stock の cg-election-2026-official-goods(9/1初報)・cinderella-girl-vote2026-schedule で既報"
+    },
+    {
+      "dedup_key": "memory-pict-6th-pict-november",
+      "reason": "既報",
+      "note": "Memory Pict.第6弾(小日向美穂・依田芳乃)は stock の memory-pict-6th-kohimura-yoda-2026(8/28初報)で受注期間・商品構成まで既報"
+    },
+    {
+      "dedup_key": "smile-base-cafe-rose-tea-parlor",
+      "reason": "既報",
+      "note": "Rose Tea Parlorコラボカフェは stock の cg-rose-tea-parlor-2026(9/5初報)で開催概要・予約開始日まで既報"
+    }
+  ],
+  "cross_brand": []
+}

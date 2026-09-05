@@ -75,5 +75,24 @@
   "verify": "confirmed",
   "src_candidate_id": "202609031835-explore-5",
   "event_date": "2026-09-22"
+ },
+ {
+  "id": "sched-2026-09-22-shiny-msp-goods-voucher-2026-結果",
+  "dedup_key": "shiny-msp-goods-voucher-2026",
+  "brand": "shiny",
+  "subject": "283 PRODUCTION Solo Live Collection -Master ShowPiece- 会場グッズ整理券",
+  "kind": "結果",
+  "note": "ASOBI TICKET整理券当落発表13:00",
+  "reserved_on": "2026-09-06",
+  "facts": [
+   "グッズ販売コーナーの整理券は、ASOBI TICKETで9月10日13時から9月15日23時59分まで受け付け、9月22日13時から当落を発表",
+   "整理券なしでも当選者の案内後に案内予定だが、当日の状況によって案内されない場合がある"
+  ],
+  "title": "シャニマス「Master ShowPiece」会場物販を更新",
+  "url": "https://idolmaster-official.jp/live_event/283production_msp/",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609050735-explore-6",
+  "event_date": "2026-09-22"
  }
 ]

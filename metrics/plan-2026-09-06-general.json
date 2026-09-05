@@ -1,0 +1,36 @@
+{
+  "articles": [],
+  "dropped": [
+    {
+      "dedup_key": "agp-store-shanghai-2026",
+      "reason": "重複",
+      "note": "joint面 joint-anime-girls-project-store-shanghai と同一の上海グランドオープン告知"
+    },
+    {
+      "dedup_key": "auto-78",
+      "reason": "重複",
+      "note": "同上(二次情報の後追い報道)。joint面 joint-anime-girls-project-store-shanghai に統合済み"
+    },
+    {
+      "dedup_key": "the-idolm-ster-20th-anniversary-piano-collection",
+      "reason": "重複",
+      "note": "joint面 joint-piano-collection-order-deadline-0906 と同一の予約締切リマインド(中川浩二氏メッセージ・クリスタラインアレンジ初公開も同記事でカバー済み)"
+    },
+    {
+      "dedup_key": "2026-09-06",
+      "reason": "その他",
+      "note": "亜夜さん誕生日は学園アイドルマスター個別の話題(facts内でも学マス面へと明記)。シリーズ横断のトレンドではなく、きょうの誕生日欄・学マス面の担当分野"
+    },
+    {
+      "dedup_key": "namco",
+      "reason": "既報",
+      "note": "stock/stories.yml の story_id akemas-namco-nakano-hakata-arcade-end-2026 で終了理由・展示継続・稼働史まで既に published_facts 済み。9/6時点で新事実なし"
+    },
+    {
+      "dedup_key": "auto-81",
+      "reason": "既報",
+      "note": "同上(電撃オンラインの後追い報道)。namco中野・博多の稼働終了は既報済みで新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

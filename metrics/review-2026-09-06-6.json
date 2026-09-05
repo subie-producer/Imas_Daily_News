@@ -1,0 +1,106 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-06-765-dual-twin-audio-commentary-tokyo-0906.md",
+   "issue": "分量がやや不足。rank: medium の推奨分量は 450字以上だが、本文は約350字。ただし、出典（候補 202609051236-watch-0）に記載されている essential な情報は全て記載されており、追記する必要がある内容なし。記事の公告的・短報的な性質に適切な分量と判断される。",
+   "scope": "article:2026-09-06-765-dual-twin-audio-commentary-tokyo-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-cg-election-cheer-contest-deadline-0906.md",
+   "issue": "分量不足：rank small（250字以上が目安）に対して本文約207字と基準より短め。出典には投稿基準の詳細・参加資格（日本国内在住）・各部門のモチーフなど追加情報があり、拾えば埋まるはずだが、緊急性の高い当日締切情報として現状も許容範囲内",
+   "scope": "article:2026-09-06-cg-election-cheer-contest-deadline-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-cg-toybox-ops-roundup-0906.md",
+   "issue": "既報との差分：記事は『cg-popn-toybox-goods-2026』『cg-toybox-novel-serial-2026』の published_facts とほぼ同内容。ただしrankがroundupなので、既報の定常運営情報をまとめるのが本来の役割。新事実がなくても問題ない（規程14の例外）。",
+   "scope": "article:2026-09-06-cg-toybox-ops-roundup-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-cg-toybox-ops-roundup-0906.md",
+   "issue": "分量について：本文は約900字で、roundup向けとしては妥当。リード文も記事の意図（運営情報のまとめ）を適切に説明している。",
+   "scope": "article:2026-09-06-cg-toybox-ops-roundup-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gaku-hatsuhoshi-fes-garakuta-road-vol5-0906.md",
+   "issue": "分量不足（コメント）: rank: small の下限は 250字だが、本文は約90字。出典の公式ニュースページに詳細情報（カード名・出現率・ジュエル数など）がなく（候補のnotes参照）、拾える情報がない。「詳細は9/9の生配信で告知予定」と明記して情報未定を伝えている点は評価。分量よりニュース性（ガシャ開催決定）の伝達を優先した記事として妥当。",
+   "scope": "article:2026-09-06-gaku-hatsuhoshi-fes-garakuta-road-vol5-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gaku-snap-series-preorder-0906.md",
+   "issue": "分量不足：rank=small で下限 250字ですが、本文は 242字です。受注終了日「2026年9月13日(日)」の記載がなく、これはsources のポータルURLに記載されている可能性が高い情報です。「受注は9月13日(日)までです」などの情報を追加すれば、分量不足が解決します。",
+   "scope": "article:2026-09-06-gaku-snap-series-preorder-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-joint-anime-girls-project-store-shanghai.md",
+   "issue": "分量不足。rank: small は下限 250 字、本文は約 125 字。出典（bilibili 投稿）に記載されている会場名・位置・3作品名はすべて含まれているが、記事の分量が極めて短い",
+   "scope": "article:2026-09-06-joint-anime-girls-project-store-shanghai.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-joint-piano-collection-order-deadline-0906.md",
+   "issue": "分量不足：lead の下限は 1000 字（実際約 410 字）。出典の ASOBI STORE ページには予約開始日（2026年7月8日）、各付属品のサイズ仕様、発売元などが記載されており、これらを拾えば分量を増やせます",
+   "scope": "article:2026-09-06-joint-piano-collection-order-deadline-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-million-premium-pickup-sr-gasha-0906.md",
+   "issue": "分量不足: 本文+lede で約200字。rank: small の下限は250字。出典に開催期間が無いため拡張困難だが、見出し補強やカード情報の詳細化で埋められる余地あり",
+   "scope": "article:2026-09-06-million-premium-pickup-sr-gasha-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-shiny-autumn-idol-enhancement-week-0906.md",
+   "issue": "分量不足：rank:small の下限は250字ですが、本文は約115字です。候補から見ると、公式投稿に報酬・対象条件・強化内容が記載されていないため、記事が補える情報がありません。出典の制限による自然な薄さですが、会場・価格・仕様・対象条件など記述可能な台帳的事実がないか、出典を再確認すると分量が増える可能性があります。",
+   "scope": "article:2026-09-06-shiny-autumn-idol-enhancement-week-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-shiny-utakata-ni-somaru-early-streaming-0906.md",
+   "issue": "分量: rank:small の下限 250 字に対して本文 251 字（URL含む）。出典に物理CD情報がないため、記事は拡張可能な情報を全て網羅している状態。",
+   "scope": "article:2026-09-06-shiny-utakata-ni-somaru-early-streaming-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-dsva-situation-voice14-deadline-0906.md",
+   "issue": "分量不足: 本文が41字（rank: small の想定下限250字に達していない）。ただし規程9では分量が理由のブロックは不可とされており、承認に影響しません。",
+   "scope": "article:2026-09-06-dsva-situation-voice14-deadline-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gaku-fukuoka-memorial-gasha-0906.md",
+   "issue": "分量不足: rank: small の最小値は 250 字であるべきだが、現在の本文は約 72 字。candidate の facts に「有償10連でSSRプロデュースアイドル確定」「名刺背景のおまけ付き」「開催期間：9/20(日)10:59まで」の情報があるが、記事に記載されていない。",
+   "scope": "article:2026-09-06-gaku-fukuoka-memorial-gasha-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gakuen-realescapegame-nagoya-finale-0906.md",
+   "issue": "分量不足: rank「small」の下限250字に対して、本文が著しく短い（lede+本文で約110字）。公式ページに記載されている会場住所・チケット料金・営業時間など、読者が「今日できること」を判断するために要る情報が不足している",
+   "scope": "article:2026-09-06-gakuen-realescapegame-nagoya-finale-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-gakuen-realescapegame-nagoya-finale-0906.md",
+   "issue": "frontmatter の candidate_ids「sched-2026-09-06-gakuen-realescapegame-nagoya-2026-千秋楽」が候補ファイルに存在しない。メタデータエラーの可能性。ただし sources URL は実在確認済み（https://realdgame.jp/s/gkmas/index01.html に「2026/7/16(木)～2026/9/6(日)」記載で記事内容と一致）",
+   "scope": "article:2026-09-06-gakuen-realescapegame-nagoya-finale-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-joint-765-961-xr-teaser-0906.md",
+   "issue": "分量不足（95字、small 下限 250字）。ただし「COMING SOON」という具体的な情報がない告知のため、推測や言い換えでの水増しは不可。現状の短さは許容範囲内と判定",
+   "scope": "article:2026-09-06-joint-765-961-xr-teaser-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-million-cardfolio-vol4-mr-reveal-0906.md",
+   "issue": "分量不足: 本文185字、rank:small の目標250字に大幅不足。候補に記載の商品構成（全114種収録 N52/R27/MLR27/MR8）や価格（BOX ¥5,000・単品 ¥500）を本文に加えれば補完可能",
+   "scope": "article:2026-09-06-million-cardfolio-vol4-mr-reveal-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-sidem-11th-stage-collab-drink-0906.md",
+   "issue": "sources に同一ページへの重複参照。URLが .html あり/なし で2行あるが、同じページを指している（canonicalization 不備）。1つに統一してください",
+   "scope": "article:2026-09-06-sidem-11th-stage-collab-drink-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-sidem-11th-stage-collab-drink-0906.md",
+   "issue": "分量不足。本文は約164字で、rank: small (250字以上)の下限に満たない。会場・日時・特典内容は候補に記載されているので、さらに詳しく書くことで埋まるはず（例：価格、注文方法、数量制限の有無など）。出典に情報がなければ現状でも許容",
+   "scope": "article:2026-09-06-sidem-11th-stage-collab-drink-0906.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-06-sidem-11th-stage-collab-drink-0906.md",
+   "issue": "既報との重複が多い。stories.yml の sidem-11th-stage-2026 に既に『会場内では11th STAGE記念コラボドリンク(オリジナルコースター付き)も販売』と記載されている。この記事は既報を詳細化したもので、新事実は『ランダムでプレゼント』のみ。当日トリガー(締切・開幕等)もない。記事の新規性が限定的",
+   "scope": "article:2026-09-06-sidem-11th-stage-collab-drink-0906.md"
+  }
+ ]
+}

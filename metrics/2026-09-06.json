@@ -1,0 +1,104 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-06T02:29:12+09:00",
+   "edition": "2026-09-06",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 343,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 5,
+    "explore:cinderella": 3,
+    "explore:million": 2,
+    "explore:shiny": 4,
+    "explore:sidem": 3,
+    "explore:gakuen": 5,
+    "explore:dsva": 1,
+    "explore:joint-other": 3,
+    "explore:trend": 6,
+    "grok:765as": 3,
+    "grok:cinderella": 11,
+    "grok:million": 9,
+    "grok:shiny": 10,
+    "grok:sidem": 0,
+    "grok:gakuen": 11,
+    "grok:dsva": 0,
+    "grok:joint-other": 7,
+    "grok:trend": 8
+   },
+   "normalized": 81,
+   "added": 67,
+   "verify": {
+    "confirmed": 58,
+    "unconfirmed": 20,
+    "failed": 3
+   },
+   "duration_s": 1714
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-06T05:06:55+09:00",
+   "edition": "2026-09-06",
+   "rounds": 5,
+   "approved": false,
+   "lint_green": true,
+   "planned": 34,
+   "written": 23,
+   "roundups": 3,
+   "dropped": 57,
+   "coverage": {
+    "subjects": 131,
+    "covered": 130,
+    "missing": 1
+   },
+   "dropped_by_review": [
+    "cg-yamanashi-pedometer-preorder-deadline-0906",
+    "dsva-situation-voice14-deadline-0906",
+    "gaku-fukuoka-memorial-gasha-0906",
+    "gaku-gravure-solo-collection-preorder-0906",
+    "gaku-tour-songs-new-versions-0906",
+    "gakuen-realescapegame-nagoya-finale-0906",
+    "joint-765-961-xr-teaser-0906",
+    "million-cardfolio-vol4-mr-reveal-0906",
+    "shiny-msp-venue-goods-cdbd-vouchers-0906",
+    "sidem-11th-stage-collab-drink-0906",
+    "sidem-11th-stage-resale-deadline-0906"
+   ],
+   "stages_min": {
+    "選定": 12.1770561337471,
+    "執筆": 7.861915119489034,
+    "社説と組版": 25.27367157936096,
+    "校閲": 0.03812773625055949
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [],
+   "duration_s": 3977
+  }
+ ]
+}

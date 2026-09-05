@@ -1801,9 +1801,12 @@ def _parse_review(text: str, err: str, where: str) -> dict:
             return json.loads(m.group(0))
         except Exception:
             pass
-    return {"verdict": "block",
-            "blockers": [{"file": where, "issue": f"校閲実行失敗: {err[-200:]}", "quote": ""}],
-            "comments": []}
+    # **実行できなかったことを、判定にしない。**以前はここで「校閲実行失敗」という
+    # ブロックを返していた。Claude の枠切れで校閲セッションが全滅した日、
+    # そのブロックを根拠に記事11本が「校閲が下ろさなかった」として紙面から
+    # 落とされた(実測 2026-09-06)。動かなかった検査は、答えが無いだけである
+    return {"verdict": "error", "error": (err[-200:].strip() or "出力が読めない"),
+            "blockers": [], "comments": []}
 
 
 def claude_review(date: str, round_no: int, targets: list[str] | None = None,
@@ -1855,16 +1858,7 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
 
     t_review = time.time()
     merged = {"verdict": "approve", "blockers": [], "comments": []}
-    # 今回走らせた担当。この担当の指摘だけが差し替わり、他は前回のを引き継ぐ
-    seen = {sc for _, _, _, sc in jobs}
-    if carry:
-        for key in ("blockers", "comments"):
-            merged[key] += [x for x in (carry.get(key) or [])
-                            if x.get("scope") not in seen
-                            # 消えた記事の指摘は持ち越さない
-                            and (not str(x.get("scope") or "").startswith("article:")
-                                 or (ROOT / "docs" / "_posts"
-                                     / str(x["scope"]).split(":", 1)[1]).exists())]
+    failed: list[tuple[str, str]] = []   # (scope, 理由)。動かなかった担当
     for i in range(0, len(jobs), COMPOSE_WAVE):
         procs = []
         for what, prompt, where, scope in jobs[i:i + COMPOSE_WAVE]:
@@ -1883,6 +1877,10 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                 p.kill()
                 so, se = "", "時間切れ"
             r = _parse_review(so or "", se or "", where)
+            if r.get("verdict") == "error":
+                # 動かなかった担当。その担当の前回の指摘は下で引き継ぐ(見直せていないので)
+                failed.append((scope, r.get("error", "")))
+                continue
             for key in ("blockers", "comments"):
                 for x in r.get(key) or []:
                     x["scope"] = scope
@@ -1893,8 +1891,28 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                     else:
                         x.setdefault("file", where)
                     merged[key].append(x)
+    # 引き継ぎは**セッションを走らせたあと**に決める。今回見た担当の指摘だけが
+    # 差し替わり、見なかった担当と**動かなかった担当**は前回の指摘を引き継ぐ
+    # (動かなかった担当を「見た」扱いにすると、前回のブロックが消えて approve になる)
+    seen = {sc for _, _, _, sc in jobs} - {sc for sc, _ in failed}
+    if carry:
+        for key in ("blockers", "comments"):
+            merged[key] += [x for x in (carry.get(key) or [])
+                            if x.get("scope") not in seen
+                            # 消えた記事の指摘は持ち越さない
+                            and (not str(x.get("scope") or "").startswith("article:")
+                                 or (ROOT / "docs" / "_posts"
+                                     / str(x["scope"]).split(":", 1)[1]).exists())]
     if merged["blockers"]:
         merged["verdict"] = "block"
+    if failed:
+        # **校閲が実行できなかった巡は、判定として扱わない。**呼び出し側はこれを見て
+        # 往復も除外もやめる。枠切れは待っても号の締切には戻らないので、
+        # 紙面を確定させて人へ渡す(release は approve が無ければ止まる)
+        merged["verdict"] = "error"
+        merged["failed"] = [f"{sc}: {why[:80]}" for sc, why in failed]
+        print(f"校閲{round_no}巡目: {len(failed)}件の担当が実行できなかった: "
+              + " / ".join(merged["failed"][:3]), flush=True)
     # 次の巡を始めてよいかの判断に使う。見込みではなく**この号の実測**で決める
     STAGE_MIN["校閲"] = (time.time() - t_review) / 60
     print(f"校閲{round_no}巡目: {len(jobs)}件を並列で見て "
@@ -2222,6 +2240,11 @@ def main() -> int:
                                paper=(retarget is None or bool(retarget)), carry=review)
         if review.get("verdict") == "approve":
             break
+        if review.get("verdict") == "error":
+            # 校閲が動かなかった(枠切れ等)。往復しても同じなので、ここで止めて人へ渡す
+            notify("compose", f"{date}: 校閲が実行できなかった({'; '.join(review.get('failed', [])[:3])})。"
+                              "往復を止めて紙面を確定する。approve が無いので release は止まる", ok=False)
+            break
         if rounds > args.max_rounds:
             break
         # 直す時間が無いなら、直しかけで時間切れになるより、いまの紙面を確定させる。
@@ -2286,7 +2309,7 @@ def main() -> int:
     # していたが、それだと直る前の事実を引用した社説と、古い台帳のまま
     # approve が出て発行できてしまう(監査指摘)。整合を取る工程は削らず、
     # 削るのは「もう1巡の校閲」のほうにする(COMPOSE_RESERVE_MIN で確保してある)
-    if changed_posts and review:
+    if changed_posts and review and review.get("verdict") != "error":
         try:
             print(f"記事が {len(changed_posts)}本変わった"
                   f"(中身 {len(changed_read)}本 / 組版が使う値 {len(changed_meta)}本)。取り直す",
@@ -2338,7 +2361,9 @@ def main() -> int:
     DROP_PASSES = 3
     dropped_by_review, unresolved = [], []
     for _pass in range(DROP_PASSES):
-        if not review or review.get("verdict") == "approve":
+        # 校閲が動かなかった巡(error)には指摘が無い。落とすものも無いし、
+        # 落としてはいけない(実測 2026-09-06: 実行失敗を指摘とみなして11本を落とした)
+        if not review or review.get("verdict") in ("approve", "error"):
             break
         # 1巡は「落とす+社説+組版+校閲」。始めたら最後まで通さないと、
         # 記事だけ消えて digest が古いままの紙面が残る
@@ -2415,7 +2440,10 @@ def main() -> int:
             dropped_by_review = []
             unresolved = [f"ブロック記事の除外処理が失敗({e})。紙面は組版直後の状態へ戻した"]
             break
-    if review and review.get("verdict") != "approve" and not unresolved:
+    if review and review.get("verdict") == "error":
+        unresolved = ["校閲が実行できなかった(判定なし): " + "; ".join(review.get("failed", [])[:3])] + [
+            f"{b.get('file')}: {(b.get('issue') or '')[:120]}" for b in review.get("blockers") or []]
+    elif review and review.get("verdict") != "approve" and not unresolved:
         unresolved = [f"{b.get('file')}: {(b.get('issue') or '')[:120]}"
                       for b in review.get("blockers") or []]
 

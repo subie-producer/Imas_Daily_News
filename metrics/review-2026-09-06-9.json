@@ -1,0 +1,9 @@
+{
+ "verdict": "error",
+ "blockers": [],
+ "comments": [],
+ "failed": [
+  "article:2026-09-06-a.md: You've hit your session limit · resets 9:30am",
+  "paper: You've hit your session limit · resets 9:30am"
+ ]
+}

@@ -225,9 +225,12 @@ party_domains:
 # **公式・準公式の判断は人がここで済ませている**ので、ID の追加は合議に掛けない。
 video_channels:
   公式:
-    - imas-official    # アイドルマスターチャンネル
-    - TomoriManaka     # 灯里 愛夏(ヴイアラ・876プロ)の公式チャンネル
-    - KamizuruCosmo    # 上水流 宇宙(ヴイアラ・876プロ)の公式チャンネル
+    - imas-official        # アイドルマスターチャンネル
+    - hatsuboshi_gakuen    # 初星学園(学マス)公式
+    - project_imas_va-liv  # ヴイアラ(876プロ)公式
+    - TomoriManaka         # 灯里 愛夏(ヴイアラ)の公式チャンネル
+    - KamizuruCosmo        # 上水流 宇宙(ヴイアラ)の公式チャンネル
+    - UtagawaLetora        # 歌川 レトラ(ヴイアラ)の公式チャンネル
   準公式:
     - Lantis           # Lantis Channel
 
@@ -261,7 +264,6 @@ x_accounts:
     - coherent_sc                     # シャニマス公式
     - SideM_official                  # SideM
     - gkmas_official                  # 学園アイドルマスター
-    - hatsuboshi_gakuen               # 初星学園(学マス)公式
     - valiv_official                  # vα-liv(ヴイアラ)公式
     - TOURS_imas                      # アイマス ツアーズ
     - imas_ch                         # アイマスチャンネル

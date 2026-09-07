@@ -1875,39 +1875,63 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
 
     t_review = time.time()
     merged = {"verdict": "approve", "blockers": [], "comments": []}
-    failed: list[tuple[str, str]] = []   # (scope, 理由)。動かなかった担当
+    failed: list[tuple[str, str]] = []   # (scope, 理由)。2回とも動かなかった担当
+    QUOTA = ("session limit", "Exceeded USD budget", "rate limit", "usage limit")
+
+    def spawn(prompt: str):
+        return subprocess.Popen(
+            ["claude", "-p", prompt, "--model", REVIEW_MODEL,
+             "--json-schema", schema, "--dangerously-skip-permissions",
+             # 1本ずつなので上限も1本分でよい(紙面まるごとの額を配ると
+             # 並列数ぶんの掛け算になる)
+             "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+            stdin=subprocess.DEVNULL, cwd=ROOT)
+
+    def collect(p, where):
+        try:
+            so, se = p.communicate(timeout=900)
+        except subprocess.TimeoutExpired:
+            p.kill()
+            so, se = "", "時間切れ"
+        return _parse_review(so or "", se or "", where)
+
+    def absorb(scope, where, r):
+        for key in ("blockers", "comments"):
+            for x in r.get(key) or []:
+                x["scope"] = scope
+                # 記事担当・社説担当は見た相手が決まっている。モデルが別の
+                # ファイル名を書いてきても、担当のファイルへ寄せる
+                if scope != "paper":
+                    x["file"] = where
+                else:
+                    x.setdefault("file", where)
+                merged[key].append(x)
+
+    # **1回の失敗で担当を失格にしない。**出力が読めない・時間切れは一過性が多い。
+    # 一度だけ同じプロンプトでやり直す。枠切れ(QUOTA)は待っても戻らないので再試行しない。
+    # 実測 2026-09-08: 23件中1件が「出力が読めない」だっただけで、残り4件の指摘の
+    # 修正も除外もせずに号ごと止めていた
+    retry: list[tuple[str, str, str]] = []
     for i in range(0, len(jobs), COMPOSE_WAVE):
-        procs = []
-        for what, prompt, where, scope in jobs[i:i + COMPOSE_WAVE]:
-            procs.append((scope, where, subprocess.Popen(
-                ["claude", "-p", prompt, "--model", REVIEW_MODEL,
-                 "--json-schema", schema, "--dangerously-skip-permissions",
-                 # 1本ずつなので上限も1本分でよい(紙面まるごとの額を配ると
-                 # 並列数ぶんの掛け算になる)
-                 "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-                stdin=subprocess.DEVNULL, cwd=ROOT)))
-        for scope, where, p in procs:
-            try:
-                so, se = p.communicate(timeout=900)
-            except subprocess.TimeoutExpired:
-                p.kill()
-                so, se = "", "時間切れ"
-            r = _parse_review(so or "", se or "", where)
-            if r.get("verdict") == "error":
-                # 動かなかった担当。その担当の前回の指摘は下で引き継ぐ(見直せていないので)
+        procs = [(scope, where, prompt, spawn(prompt))
+                 for what, prompt, where, scope in jobs[i:i + COMPOSE_WAVE]]
+        for scope, where, prompt, p in procs:
+            r = collect(p, where)
+            if r.get("verdict") != "error":
+                absorb(scope, where, r)
+            elif any(q.lower() in str(r.get("error", "")).lower() for q in QUOTA):
                 failed.append((scope, r.get("error", "")))
-                continue
-            for key in ("blockers", "comments"):
-                for x in r.get(key) or []:
-                    x["scope"] = scope
-                    # 記事担当・社説担当は見た相手が決まっている。モデルが別の
-                    # ファイル名を書いてきても、担当のファイルへ寄せる
-                    if scope != "paper":
-                        x["file"] = where
-                    else:
-                        x.setdefault("file", where)
-                    merged[key].append(x)
+            else:
+                retry.append((scope, where, prompt))
+    for i in range(0, len(retry), COMPOSE_WAVE):
+        procs = [(scope, where, spawn(prompt)) for scope, where, prompt in retry[i:i + COMPOSE_WAVE]]
+        for scope, where, p in procs:
+            r = collect(p, where)
+            if r.get("verdict") != "error":
+                absorb(scope, where, r)
+            else:
+                failed.append((scope, "2回とも: " + str(r.get("error", ""))[:60]))
     # 引き継ぎは**セッションを走らせたあと**に決める。今回見た担当の指摘だけが
     # 差し替わり、見なかった担当と**動かなかった担当**は前回の指摘を引き継ぐ
     # (動かなかった担当を「見た」扱いにすると、前回のブロックが消えて approve になる)
@@ -1920,16 +1944,34 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                             and (not str(x.get("scope") or "").startswith("article:")
                                  or (ROOT / "docs" / "_posts"
                                      / str(x["scope"]).split(":", 1)[1]).exists())]
-    if merged["blockers"]:
-        merged["verdict"] = "block"
-    if failed:
-        # **校閲が実行できなかった巡は、判定として扱わない。**呼び出し側はこれを見て
-        # 往復も除外もやめる。枠切れは待っても号の締切には戻らないので、
-        # 紙面を確定させて人へ渡す(release は approve が無ければ止まる)
+    # これまでに一度でも校閲できた担当。動かなかった担当の扱いを決めるのに使う
+    reviewed_before = set((carry or {}).get("reviewed") or [])
+    merged["reviewed"] = sorted(reviewed_before | seen)
+    quota_hit = any(any(q.lower() in why.lower() for q in QUOTA) for _, why in failed)
+    if failed and (quota_hit or len(failed) == len(jobs)):
+        # **全滅か枠切れのときだけ、巡ごと「判定なし」にする。**呼び出し側はこれを見て
+        # 往復も除外もやめ、紙面を確定して人へ渡す(release は approve が無ければ止まる)。
+        # 枠切れは待っても号の締切には戻らない
         merged["verdict"] = "error"
         merged["failed"] = [f"{sc}: {why[:80]}" for sc, why in failed]
-        print(f"校閲{round_no}巡目: {len(failed)}件の担当が実行できなかった: "
+        print(f"校閲{round_no}巡目: 実行できなかった({'枠切れ' if quota_hit else '全滅'}): "
               + " / ".join(merged["failed"][:3]), flush=True)
+    elif failed:
+        # 一部の担当だけが2回とも動かなかった。**巡は成立させる。**
+        # - 一度も校閲できていない記事は、校閲なしで載せられないので、落とす指摘を付ける
+        #   (号を止めるより、その1本を落とすほうが規程に合う)
+        # - 前に校閲できている記事・社説・紙面全体は、前回の指摘を引き継ぐだけでよい
+        merged["failed"] = [f"{sc}: {why[:80]}" for sc, why in failed]
+        for sc, why in failed:
+            if sc.startswith("article:") and sc not in reviewed_before:
+                name = sc.split(":", 1)[1]
+                merged["blockers"].append({"scope": sc, "file": f"docs/_posts/{name}",
+                                           "issue": f"校閲が2回とも実行できなかった({why[:60]})。"
+                                                    "校閲できていない記事は紙面に載せない", "quote": ""})
+        print(f"校閲{round_no}巡目: {len(failed)}件の担当が2回とも動かなかった(巡は成立): "
+              + " / ".join(merged["failed"][:3]), flush=True)
+    if merged["blockers"] and merged["verdict"] != "error":
+        merged["verdict"] = "block"
     # 次の巡を始めてよいかの判断に使う。見込みではなく**この号の実測**で決める
     STAGE_MIN["校閲"] = (time.time() - t_review) / 60
     print(f"校閲{round_no}巡目: {len(jobs)}件を並列で見て "

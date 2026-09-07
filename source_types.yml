@@ -171,6 +171,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - creators-edge.com     # Creators Edge(セミナー主催)。自社セミナーの案内ページ=主催者
   - medicos-e.net         # メディコス・エンタテインメント(グッズメーカー)。自社ポップアップの告知=販売元
   - bea-net.com           # 合議で追加: 会場がライブ情報を告知している
   - kanko-shinjuku.jp     # 合議で追加: 会場側がポップアップストア企画を実施

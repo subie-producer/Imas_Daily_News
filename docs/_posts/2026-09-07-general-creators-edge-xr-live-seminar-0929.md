@@ -2,7 +2,7 @@
 slug: general-creators-edge-xr-live-seminar-0929
 edition: 2026-09-07
 brand: general
-src: 未確認
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -16,7 +16,7 @@ sources:
     type: 二次情報
   - label: CREATORS EDGE 2026 セミナー詳細
     url: https://www.creators-edge.com/seminar
-    type: 未確認
+    type: 当事者
 event_date: 2026-09-29
 ---
 

@@ -1,0 +1,97 @@
+{
+  "articles": [
+    {
+      "slug": "cg-rose-tea-parlor-reserve-open",
+      "brand": "cg",
+      "rank": "large",
+      "angle": "Rose Tea Parlorコラボカフェ、名古屋栄・心斎橋・池袋・ソウルホンデの4店舗開催に伴いHP公開・予約受付が9/7 19時に開始することを伝え、フード・デザート・ドリンク・グッズ・ノベルティの全ラインナップと会期を列挙する",
+      "lead_score": 45,
+      "dedup_key": "cg-rose-tea-parlor-2026-reserve",
+      "candidate_ids": [
+        "202609070234-grok-32",
+        "sched-2026-09-07-cg-rose-tea-parlor-2026-reserve-開始"
+      ]
+    },
+    {
+      "slug": "cg-derepa-fukuhara-mail-deadline",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "「CINDERELLA PARTY!」9/16放送回、渋谷凛役・福原綾香さん出演回宛のリスナーメール受付が本日9/7で締切となることを伝える",
+      "lead_score": 10,
+      "dedup_key": "cg-derepa-broadcast-2026",
+      "candidate_ids": [
+        "sched-2026-09-07-cg-derepa-broadcast-2026-締切"
+      ]
+    },
+    {
+      "slug": "cg-mayu-sakuma-birthday",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "佐久間まゆさんの誕生日(9/7)を記念し、アイマス公式チャンネルが公開したお祝いムービーを伝える",
+      "lead_score": 10,
+      "dedup_key": "mayu-sakuma-birthday-2026",
+      "candidate_ids": [
+        "202609070234-grok-25"
+      ]
+    },
+    {
+      "slug": "cg-number-one-cross-over-cd",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "『THE IDOLM@STER CINDERELLA MASTER NUMBER ONE!』シリーズで、new generationsとUNICUSが歌う新曲「クロス×オーバー！」収録CDの発売決定を伝える",
+      "lead_score": 5,
+      "dedup_key": "starlight-stage-10th-okinawa-fukuoka-bluray-2026",
+      "candidate_ids": [
+        "202609060734-explore-3"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "yamanashi-walk-wander-2026",
+      "reason": "既報",
+      "note": "開催期間・PR/応援アイドル・歩数計全10種・先行受注(8/28〜9/9)は既に記事化済みで新事実なし。締切9/9の3日前リマインド想定日は9/6で本日はトリガー日ではない"
+    },
+    {
+      "dedup_key": "cg-yamanashi-walk-wander-2026",
+      "reason": "既報",
+      "note": "yamanashi-walk-wander-2026と同一施策。内容は既報と完全一致し新事実なし"
+    },
+    {
+      "dedup_key": "mora-cinderella-streaming-update-2026",
+      "reason": "出典不足",
+      "note": "随時更新ページの掲載一覧のみで、本日新たに配信されたと確認できる日付情報がない"
+    },
+    {
+      "dedup_key": "cg-bunkasai-online-kuji-2026",
+      "reason": "既報",
+      "note": "9/3開始のオンラインくじは既に記事化済みで新事実なし"
+    },
+    {
+      "dedup_key": "deresute-11th-anniversary-2026",
+      "reason": "既報",
+      "note": "9/3の11周年記念キャンペーン・オンラインくじは既に記事化済みで新事実なし"
+    },
+    {
+      "dedup_key": "cg-15th-party-goods-2026",
+      "reason": "既報",
+      "note": "受注期間(9/13まで)・商品ラインナップ・9/6付のホログラムクリアチケット公開は既に記事化済みで新事実なし"
+    },
+    {
+      "dedup_key": "cg-popn-toybox-archive-2026",
+      "reason": "出典不足",
+      "note": "8/13公演の未確認チラ見せ動画で、開催済みイベントの販促クリップにとどまり本日読者ができることがない"
+    },
+    {
+      "dedup_key": "cg-popn-toybox-goods-2026",
+      "reason": "既報",
+      "note": "受注商品ラインナップ・受注期間は既報と完全一致し新事実なし"
+    },
+    {
+      "dedup_key": "cg-masquerade-cosplay-2026-09-06",
+      "reason": "個人の話題",
+      "note": "個人ファンのコスプレSNS投稿であり単体記事化の対象外"
+    }
+  ],
+  "cross_brand": []
+}

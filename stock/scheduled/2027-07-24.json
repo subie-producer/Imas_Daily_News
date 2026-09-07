@@ -1,0 +1,25 @@
+[
+  {
+    "id": "sched-2027-07-24-765-961-idol-ultimate-once-and-for-all-2027-開幕",
+    "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+    "brand": "765",
+    "subject": "765プロ×961プロ合同ライブ「IDOL ULTIMATE ONCE AND FOR ALL」",
+    "kind": "開幕",
+    "note": "第一公演「TO:STARLIT OF PROMISE」開幕",
+    "reserved_on": "2026-09-07",
+    "title": "765×961合同ライブ、チケット先行開始",
+    "url": "https://idolmaster-official.jp/live_event/IUOAFA/",
+    "source_type": "公式",
+    "facts": [
+      "公演名は「765 PRODUCTION × 961 PRODUCTION IDOL ULTIMATE ONCE AND FOR ALL」、会場は京王アリーナ TOKYO",
+      "第一公演「TO:STARLIT OF PROMISE」は2027年7月24日(土)、開場17:00・開演18:00",
+      "第一公演の出演アイドルは星井美希、四条貴音、我那覇響、奥空心白、玲音、詩花、亜夜、and more",
+      "第二公演「BE:STELLA OF ABSOLUTE」は2027年7月25日(日)、開場11:00・開演12:00",
+      "第三公演「IF:THE DAY OF JUDGMENT」は2027年7月25日(日)、開場17:00・開演18:00"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202609061835-explore-4",
+    "event_date": "2027-07-24"
+  }
+]

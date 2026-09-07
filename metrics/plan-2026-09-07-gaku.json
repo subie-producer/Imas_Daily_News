@@ -1,0 +1,108 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-new-songs-sep6-streaming",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "初星学園の新曲4曲(「Howling over the World」花海佑芽・秦谷美鈴・十王星南ver./「ENDLESS DANCE」有村麻央・紫雲清夏・篠澤広ver./「ENDLESS DANCE」花海咲季・月村手毬・藤田ことねver./「Star-mine」)が9月6日付でStreaming&DL配信開始と伝える",
+      "lead_score": 25,
+      "dedup_key": "howling-over-the-world-2026",
+      "candidate_ids": [
+        "202609060734-explore-10",
+        "202609060734-explore-11",
+        "202609060734-explore-12",
+        "202609060734-explore-13"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-fukuoka-archive-streaming",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "学マス標ツアー福岡公演の配信アーカイブが本日9/7 18:00に「視聴コメント付き」へ切り替わり9/21まで視聴可能に、最速版アーカイブは本日18:00で終了と伝える",
+      "lead_score": 20,
+      "dedup_key": "gakumas-shirube-fukuoka-streaming-2026",
+      "candidate_ids": [
+        "202609060734-explore-14"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-fukuoka-day1-new-songs",
+      "brand": "gaku",
+      "rank": "large",
+      "angle": "標ツアー福岡公演DAY1(9/5)で新曲「Be proud」「神かわいい」「nazonazo」をサプライズ初披露、2年ぶりツアーのセットリストと反響を伝える",
+      "lead_score": 65,
+      "dedup_key": "gaku-shirube-fukuoka-day1-2026",
+      "candidate_ids": [
+        "202609060734-explore-24",
+        "202609060734-explore-25",
+        "202609061235-explore-20",
+        "202609061835-explore-21",
+        "202609062336-explore-14"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-iwate-goods-reception",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "標ツアー岩手公演のグッズ整理券受付(9/9締切・当落発表9/15)と当日物販(9/22・23実施)の詳細を伝える",
+      "lead_score": 10,
+      "dedup_key": "gakumas-shirube-iwate-goods-2026",
+      "candidate_ids": [
+        "202609061835-explore-13",
+        "202609062336-explore-13"
+      ]
+    },
+    {
+      "slug": "gaku-shirube-fukuoka-day2-new-songs-goods",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "標ツアー福岡公演DAY2(9/6)で月村手毬の新曲「ORDER FAKE」と篠澤広の新曲「め」をサプライズ初披露、セットリストとスナップシリーズグッズ受注中を伝える",
+      "lead_score": 30,
+      "dedup_key": "gkmas-livetour-shirube-fukuoka-day2-2026",
+      "candidate_ids": [
+        "202609062336-watch-0",
+        "202609062336-watch-1",
+        "202609062336-explore-21"
+      ]
+    },
+    {
+      "slug": "gaku-chugai-grace-cafe-revival",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「学園アイドルマスター」×Chugai Grace Cafeのリバイバルコラボが渋谷MODIで9/3〜9/27開催中と伝える",
+      "lead_score": 10,
+      "dedup_key": "gakumas-chugai-grace-cafe-revival-2026",
+      "candidate_ids": [
+        "202609062336-explore-22"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gakumas-shirube-fukuoka-goods-2026",
+      "reason": "既報",
+      "note": "福岡公演会場物販の日時・中断時間・当日券所持者限定の扱いは stock/stories.yml の gakumas-shirube-livetour-2026 published_facts と同一事実で新事実なし"
+    },
+    {
+      "dedup_key": "gakumas-shirube-gasha-2026",
+      "reason": "既報",
+      "note": "標(清夏＆麻央＆千奈)ガシャの9/4開催は stock/stories.yml の gakumas-shirube-game-implementation-2026 published_facts で既報、期間も同一で新事実なし"
+    },
+    {
+      "dedup_key": "gaku-gasha-schedule-2026-09",
+      "reason": "出典不足",
+      "note": "攻略サイト(game8/appgamelog系)のみの二次情報で、9/10のガラクタロード星南ガシャ開催や9/20の新曲追加は公式未到達(規程2)。標ガシャ自体は既報と重複"
+    },
+    {
+      "dedup_key": "gaku-live-tour-shirube-final-ticket-2026",
+      "reason": "既報",
+      "note": "アソビストア一般会員2次先行(9/5受付開始・9/23締切・条件)は stock/stories.yml の gaku-shirube-finale-ticket-buzz published_facts と同一事実"
+    },
+    {
+      "dedup_key": "gaku-live-tour-shirube-fukuoka-2026",
+      "reason": "既報",
+      "note": "未確認の音楽興行情報サイト由来で、会場・日程・料金・出演者は既報(gakumas-shirube-livetour-2026)の内容と重複し新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

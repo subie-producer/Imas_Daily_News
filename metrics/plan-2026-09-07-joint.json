@@ -1,0 +1,45 @@
+{
+  "articles": [
+    {
+      "slug": "joint-idol-ultimate-once-and-for-all-ticket-open",
+      "brand": "joint",
+      "rank": "large",
+      "angle": "765×961合同ライブ「IDOL ULTIMATE ONCE AND FOR ALL」の公式サイトオープンとチケット最速先行受付開始(9/6 12:00)、全3公演の会場・開場開演時刻・出演アイドル・ドレスコードを列挙して伝える",
+      "lead_score": 80,
+      "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+      "candidate_ids": ["202609061835-explore-4", "202609061835-explore-19", "202609070234-explore-8"]
+    },
+    {
+      "slug": "joint-961-reflame-chibigurumi-pouch-preorder",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "961 PRODUCTION「Re:FLAME」衣装のちびぐるみ＆ポーチセット、9/6 13時から予約受付開始と伝える",
+      "lead_score": 8,
+      "dedup_key": "961-reflame-chibigurumi-pouch-2026",
+      "candidate_ids": ["202609062336-explore-18"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "joint-idol-world-2014-day1-catalog-2026",
+      "reason": "過年度",
+      "note": "2014年開催『M@STERS OF IDOL WORLD!!2014 Day1』のBD/DVDがディスコグラフィーページに掲載されているだけで、本日時点の新規発表・発売・受付等のトリガーが facts に無い(エンゲージメント低とも明記)。台帳的事実として不採用"
+    },
+    {
+      "dedup_key": "765-961-idol-ultimate-2027",
+      "reason": "重複",
+      "note": "joint-idol-ultimate-once-and-for-all-ticket-open に統合(同一公演の詳細公開・チケット先行の同一系統)"
+    },
+    {
+      "dedup_key": "765-961-idol-ultimate-once-and-for-all",
+      "reason": "重複",
+      "note": "joint-idol-ultimate-once-and-for-all-ticket-open に統合(同一公演の開催決定・出演詳細の同一系統)"
+    },
+    {
+      "dedup_key": "deremilli-clash-match-2027",
+      "reason": "既報",
+      "note": "stock/stories.yml cg-million-coming-soon-2026-08-26(8/26公開)で公演日・会場・出演人数・ゲスト・チケット料金・先行日程まで既報。今回の facts に新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

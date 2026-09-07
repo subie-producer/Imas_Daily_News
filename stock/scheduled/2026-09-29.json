@@ -18,5 +18,27 @@
       "AXE8シリーズ限定アイドル【Grow to Glow】桑山千雪の特別アイドルスタンプガシャ・ステップアップガシャは2026年8月28日から9月29日まで開催",
       "千雪のピース付きパッケージ4個も販売"
     ]
+  },
+  {
+    "id": "sched-2026-09-29-creators-edge-xr-seminar-2026-開始",
+    "dedup_key": "creators-edge-xr-seminar-2026",
+    "brand": "general",
+    "subject": "CREATORS EDGE 2026 xRライブ特別セミナー",
+    "kind": "開始",
+    "note": "セミナー開催",
+    "reserved_on": "2026-09-07",
+    "title": "xRライブ制作セミナー、9月29日開催",
+    "url": "https://www.creators-edge.com/seminar",
+    "source_type": "未確認",
+    "facts": [
+      "特別セミナー「xRライブの作り方 ─DAIV×Unreal Engine」を2026年9月29日(火)11:00〜12:30、SPACE Gで開催",
+      "定員30名、参加費1,000円(税込)、参加特典として会場内で使える1,000円分のクーポン券を進呈",
+      "登壇はカゾエノブアキ氏(REZ&/Director・Visual Artist)、協賛は株式会社マウスコンピューター(DAIV by mousecomputer)",
+      "会場に『アイドルマスター』のxRライブで使用したライブセットを展示、セミナー後に見学可能"
+    ],
+    "via": "claude",
+    "verify": "unconfirmed",
+    "src_candidate_id": "202609070234-grok-23",
+    "event_date": "2026-09-29"
   }
 ]

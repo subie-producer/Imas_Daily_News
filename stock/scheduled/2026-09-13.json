@@ -1,5 +1,25 @@
 [
   {
+    "id": "sched-2026-09-13-765-dual-twin-live-cd-postorder-2026-締切",
+    "dedup_key": "765-dual-twin-live-cd-postorder-2026",
+    "brand": "765",
+    "subject": "765production dual twin live tourほか会場オリジナルCD事後通販",
+    "kind": "締切",
+    "note": "コロムビアミュージックショップ事後通販の受付終了",
+    "reserved_on": "2026-09-07",
+    "title": "会場オリジナルCD全12種、9/13まで事後通販",
+    "url": "https://columbia.jp/idolmaster/imasnews/260904.html",
+    "source_type": "準公式",
+    "facts": [
+      "765production dual twin live tourやIDOL WORLD SUPER FESTIVAL 2026などの会場オリジナルCD全12種の事後通販を、コロムビアミュージックショップで先着受付中",
+      "受付期間は2026年9月13日(日)23時59分まで、商品は10月2日(金)に一斉発送予定"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202609060734-explore-0",
+    "deadline": "2026-09-13"
+  },
+  {
     "id": "sched-2026-09-13-sidem-11th-stage-2026-千秋楽",
     "dedup_key": "sidem-11th-stage-2026",
     "brand": "sidem",

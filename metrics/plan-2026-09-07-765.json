@@ -1,0 +1,35 @@
+{
+  "articles": [
+    {
+      "slug": "765-dual-twin-live-cd-postorder",
+      "brand": "765",
+      "rank": "medium",
+      "angle": "765production dual twin live tour会場オリジナルCD(全12種)の事後通販が受付中、受付期限9/13・発送10/2を告知",
+      "lead_score": 20,
+      "dedup_key": "765-dual-twin-live-cd-postorder-2026",
+      "candidate_ids": ["202609060734-explore-0"]
+    },
+    {
+      "slug": "765-dual-twin-tokyo-audio-commentary",
+      "brand": "765",
+      "rank": "medium",
+      "angle": "「つみまつよるまち」東京公演の振り返り生オーディオコメンタリーが実施され、視聴チケット所持者向けにコメント付アーカイブを9/27まで公開すると伝える",
+      "lead_score": 15,
+      "dedup_key": "765-dual-twin-tokyo-audio-commentary-2026",
+      "candidate_ids": ["202609061235-explore-27"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "765-chibi-plush-reflame-2027",
+      "reason": "重複",
+      "note": "joint面 joint-961-reflame-chibigurumi-pouch-preorder(961 PRODUCTION「Re:FLAME」衣装ちびぐるみ＆ポーチセット、我那覇響・星井美希・四条貴音の同一商品の予約受付)と同一施策のため統合済み"
+    },
+    {
+      "dedup_key": "arcade-imas-namco-nakano-end-2026",
+      "reason": "その他",
+      "note": "通常稼働終了は9/4に発表・発生済みで、9/7に読者ができること/起きることが facts に無い(筐体は常設展示になるだけで本日固有のトリガーなし)。規程8・12の続報条件(新事実 or 当日トリガー)を満たさないため不採用"
+    }
+  ],
+  "cross_brand": []
+}

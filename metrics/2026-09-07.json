@@ -1,0 +1,99 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-07T02:35:35+09:00",
+   "edition": "2026-09-07",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 343,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 2,
+    "explore:gakuen": 3,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 3,
+    "grok:765as": 0,
+    "grok:cinderella": 6,
+    "grok:million": 3,
+    "grok:shiny": 2,
+    "grok:sidem": 4,
+    "grok:gakuen": 6,
+    "grok:dsva": 2,
+    "grok:joint-other": 2,
+    "grok:trend": 5
+   },
+   "normalized": 37,
+   "added": 27,
+   "verify": {
+    "confirmed": 19,
+    "unconfirmed": 14,
+    "failed": 4
+   },
+   "duration_s": 2097
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-07T05:23:14+09:00",
+   "edition": "2026-09-07",
+   "rounds": 5,
+   "approved": false,
+   "lint_green": true,
+   "planned": 24,
+   "written": 20,
+   "roundups": 1,
+   "dropped": 50,
+   "coverage": {
+    "subjects": 89,
+    "covered": 89,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "gaku-shirube-fukuoka-day1-new-songs"
+   ],
+   "stages_min": {
+    "選定": 8.93791658480962,
+    "執筆": 3.0941681067148843,
+    "組版": 16.294065256913502,
+    "校閲": 3.0251881162325542
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "joint-961-reflame-chibigurumi-pouch-preorder",
+    "cg-derepa-fukuhara-mail-deadline",
+    "dsva-cosmo-birthday-live-details"
+   ],
+   "duration_s": 4956
+  }
+ ]
+}

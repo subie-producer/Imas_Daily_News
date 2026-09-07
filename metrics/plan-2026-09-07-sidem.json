@@ -1,0 +1,89 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-transcendent-tales-lyricist-guide-4",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "TRANSCENDENT T@LES ストーリー＆楽曲ガイド第4回公開、シリーズ楽曲を手がけた作詞家7名の解説・コメントを担当曲とともに紹介",
+      "lead_score": 12,
+      "dedup_key": "sidem-transcendent-tales-lyricist-guide-4-2026",
+      "candidate_ids": ["202609061835-explore-12"]
+    },
+    {
+      "slug": "sidem-11th-cast-comment-barletta-yano",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM 11th STAGE出演キャスト意気込みコメントリレーにバレッタ裕さん(華村翔真役)・矢野奨吾さん(岡村直央役)が登場、チケット購入案内とあわせて伝える",
+      "lead_score": 5,
+      "dedup_key": "sidem-11th-comment-barletta-2026",
+      "candidate_ids": ["202609070234-explore-2", "202609070234-explore-3"]
+    },
+    {
+      "slug": "sidem-fan-fes-wsi-goods-sale",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "「FAN FES WSI」(F@NTASTIC BATTLE FES ～Wanna step in～)の公式グッズ販売開始を伝える",
+      "lead_score": 5,
+      "dedup_key": "sidem-fan-fes-wsi-goods-2026",
+      "candidate_ids": ["202609070234-grok-36"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-11th-toyota-arena-collab-drink-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml sidem-11th-stage-2026 に『会場内では11th STAGE記念コラボドリンク(オリジナルコースター付き)も販売』と既に記載済みで新事実なし"
+    },
+    {
+      "dedup_key": "sidem-divercity-tokyo-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml sidem-divercity-tokyo-2026(初報2026-08-24)に開催期間・グッズ・コラボメニュー・特典すべて既報。新事実なし"
+    },
+    {
+      "dedup_key": "sidem-2dmv-transcendent-tales-goods-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml sidem-2dmv-transcendent-goods-2026-09(初報2026-09-04)にラインナップ・価格すべて既報。新事実なし"
+    },
+    {
+      "dedup_key": "sidem-315nya-shop-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml sidem-315-shop-5th-2026(初報2026-09-03)に9/11からの購入制限が既報。新事実なし"
+    },
+    {
+      "dedup_key": "sidem-teddys-collection-ii-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml sidem-teddys-collection2-popup-goods(初報2026-08-28)に開催期間・購入制限すべて既報。新事実なし"
+    },
+    {
+      "dedup_key": "sidem-divercity-tokyo-plaza-2026",
+      "reason": "重複",
+      "note": "sidem-divercity-tokyo-2026と同一話題(既報のため不採用)"
+    },
+    {
+      "dedup_key": "sidem-11th-stage-collab-drink-2026",
+      "reason": "重複",
+      "note": "sidem-11th-toyota-arena-collab-drink-2026と同一話題(既報のため不採用)"
+    },
+    {
+      "dedup_key": "sidem-divercity-tokyo-plaza-collab-2026",
+      "reason": "重複",
+      "note": "sidem-divercity-tokyo-2026と同一話題(既報のため不採用)"
+    },
+    {
+      "dedup_key": "sidem-11th-comment-yano-2026",
+      "reason": "重複",
+      "note": "sidem-11th-comment-barletta-2026の記事に統合(同じ意気込みコメントリレー)"
+    },
+    {
+      "dedup_key": "sidem-fan-fes-wsi-premium-2026",
+      "reason": "既報",
+      "note": "WSI=『Wanna step in』=stock/stories.yml sidem-fantastic-battle-fes-2026(初報2026-09-03)。SP/S/A席・先行締切9/13まですべて既報。新事実なし"
+    },
+    {
+      "dedup_key": "sidem-315-episode-idols-one-scene-2026-09-05",
+      "reason": "出典不足",
+      "note": "facts が『エピソード更新』のみで話数タイトル・登場アイドル等の具体情報が無く記事化できない"
+    }
+  ],
+  "cross_brand": []
+}

@@ -104,6 +104,8 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - nyuka-now.com         # 合議で追加: 各店舗の在庫情報をまとめて掲載
+  - j-town.net            # 合議で追加: 取材の形跡がなく、商品情報・デッドラインを述べる告知的内容のみ
   - charakuji-news.com    # 合議で追加: キャラくじ発売速報というサイト名から複数くじ情報をまとめたサイト
   - vstats.jp             # 合議で追加: VTuberのライブ配信予定を他プラットフォームから集約・表示
   - vtuber-live.net       # 合議で追加: VTuberのアーカイブを集約掲載
@@ -160,6 +162,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - bea-net.com           # 合議で追加: 会場がライブ情報を告知している
   - kanko-shinjuku.jp     # 合議で追加: 会場側がポップアップストア企画を実施
   - ktqpopfes.jp          # 合議で追加: フェスティバル主催者がイベント情報を掲載
   - tgs.cesa.or.jp        # 東京ゲームショウ公式(主催 CESA=コンピュータエンターテインメント協会)。催しの主催者
@@ -242,6 +245,7 @@ video_channels:
 
 video_ids:
   公式:
+    - uZHdlZIrwWQ   # 機械で追加: @imas-official「【シンデレラ】もしも「カワイイ」が世界からなくなっても（夕方」
     - rPLGMIEWNyI   # 灯里愛夏(ヴイアラ)配信「パスタって殴ると温められるらしいっすよ」
     - eQRtypVlFBs   # 灯里愛夏(ヴイアラ)配信「真夏の苦手克服クッキング」
     - sH7EfXv8zh4   # 上水流宇宙(ヴイアラ)配信「ACE COMBAT 7」
@@ -313,6 +317,7 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - hit0de_             # 合議で追加: コスプレ合わせはファンが自分で企画・発信する営み
     - ajt00869884         # 合議で追加: ゲーム内イベントへのファンの感想・反応
     - _anmi2New           # 合議で追加: ファンがイベント参加の準備状況を共有
     - HADICAN_AI          # 合議で追加: ファンが自分のコスプレ・創作を発信

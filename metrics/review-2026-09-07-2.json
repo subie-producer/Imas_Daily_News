@@ -1,0 +1,131 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-07-765-dual-twin-tokyo-audio-commentary.md",
+   "issue": "新事実なしの続報（規程5）。stories.yml の published_facts（行34・45）に既に同じ内容『あずさ・律子公演の生オーディオコメンタリーを9月6日20時に実施、視聴コメント付きアーカイブは9月27日23:59まで公開』と記載されている。記事の lede がこれと実質同内容で、新たな事実がない。また、当日トリガーもない（9月6日の実施は前日、アーカイブ公開期限9月27日は当日でない）。ただの既報の焼き増し。",
+   "quote": "lede: 三浦あずさ・秋月律子 twin live「つみまつよるまち」東京公演の生オーディオコメンタリーが9月6日に実施され、視聴コメント付きアーカイブが9月27日23時59分まで公開される。",
+   "scope": "article:2026-09-07-765-dual-twin-tokyo-audio-commentary.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-dsva-cosmo-ace-combat8-tgs-reward.md",
+   "issue": "出典隠し：記事の事実が sources に記録されていない。HEAD では candidate_ids: [\"202609060734-explore-19\"] と sources が設定されていたのに、現在の作業ツリーで削除されている。記事の事実（ACE COMBAT 7クリア褒美、試遊データ、TGS2026出展）はすべてこの候補に基づいているが、sources に記録されていない。",
+   "quote": "candidate_ids: []\n(sources セクション削除)",
+   "scope": "article:2026-09-07-dsva-cosmo-ace-combat8-tgs-reward.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-dsva-cosmo-ace-combat8-tgs-reward.md",
+   "issue": "公式が無い：frontmatter で src: 公式と宣言しているのに、sources が空である。アイドルマスター公式（公式ポータル・ブランド公式サイト・公式Xアカウント）の出典がない。",
+   "quote": "src: 公式\n[sources が完全に削除されている]",
+   "scope": "article:2026-09-07-dsva-cosmo-ace-combat8-tgs-reward.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-dsva-manaka-kpf2026-detail.md",
+   "issue": "ブロック項目3「出典の不一致」：記事では灯里愛夏が「北九州メッセ（旧・西展新館）とあるあるCityで出演する」と述べているが、sources に掲載されている北九州ポップカルチャーフェスティバル2026公式サイト（https://www.ktqpopfes.jp/2026/event/detail.php?id=582）には灯里愛夏のスペシャルトーク＆ライブの会場として「北九州メッセ（旧:西日本総合展示場 新館）」のみが記載されており、あるあるCityについては言及がない。",
+   "quote": "灯里愛夏は、2026年11月29日に開催される北九州ポップカルチャーフェスティバル2026（KPF2026）において、スペシャルトーク＆ライブとして北九州メッセ（旧・西展新館）とあるあるCityで出演する。",
+   "scope": "article:2026-09-07-dsva-manaka-kpf2026-detail.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-dsva-manaka-kpf2026-detail.md",
+   "issue": "ブロック項目4「時制矛盾」またはブロック項目3「出典の不一致」：記事が「2026年11月29日に開催される北九州ポップカルチャーフェスティバル2026」と述べているが、sources に掲載されている報道記事（https://panora.tokyo/archives/155640）では「2026年11月28日・29日と開催されるうち、29日のグリーンステージに出演」と明記されており、フェスティバル全体は両日開催である。記事の表現では29日のみの開催と読める可能性があり、曖昧または誤報。",
+   "quote": "灯里愛夏は、2026年11月29日に開催される北九州ポップカルチャーフェスティバル2026（KPF2026）において",
+   "scope": "article:2026-09-07-dsva-manaka-kpf2026-detail.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md",
+   "issue": "記事に本文がない。rank: medium は最低450字の本文が必須だが、frontmatter と lede のみで body content が全くない。記事として成立していない（規程9）",
+   "quote": "frontmatter 終了後に内容なし。lede は以下のみ：\n学園アイドルマスターの「LIVE TOUR -標-」福岡公演DAY1で、新曲「Be proud」「神かわいい」「nazonazo」がサプライズ初披露され、9月6日から配信を開始した。\n\n本文: なし",
+   "scope": "article:2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md",
+   "issue": "新曲の数が出典と一致しない。candidates の 202609060734-explore-24 では「Be proud」「クライアイ」「nazonazo」「神かわいい」の4曲が披露されたと記載されているが、記事は3曲のみを列挙。「クライアイ」が欠落している（規程1、出典にない明示的な排外）",
+   "quote": "記事 lede: 新曲「Be proud」「神かわいい」「nazonazo」がサプライズ初披露\n\ncandidate 202609060734-explore-24: 福岡公演DAY1で『Be proud』『クライアイ』『nazonazo』『神かわいい』が披露されたとまとめられている",
+   "scope": "article:2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md",
+   "issue": "sources の famitsu.com URL 形式が非標準。/article/202609/86835 は famitsu.com の通常 URL 形式（/article/YYYY/MM/ID）と一致しない。到達確認が必須（規程3）",
+   "quote": "sources:\n  - label: 『学マス』標ツアー福岡公演Day1リポート\n    url: https://www.famitsu.com/article/202609/86835\n    type: 報道",
+   "scope": "article:2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-joint-idol-ultimate-once-and-for-all-ticket-open.md",
+   "issue": "出典の不一致：第二公演の開場・開演時間が公式サイトと異なる。記事では開場12時・開演13時と記述されているが、公式サイト（https://idolmaster-official.jp/live_event/IUOAFA/）では開場11:00・開演12:00と明記されている。記事の sources に公式サイトが指定されているため、公式情報と一致する必要がある（ブロック項目3・規程1）。",
+   "quote": "第二公演「BE:STELLA OF ABSOLUTE」は7月25日、開場12時・開演13時で、如月千早、高槻やよい、秋月律子、三浦あずさ、水瀬伊織、菊地真、双海亜美、双海真美、玲音、詩花。",
+   "scope": "article:2026-09-07-joint-idol-ultimate-once-and-for-all-ticket-open.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-07-765-dual-twin-tokyo-audio-commentary.md",
+   "issue": "分量不足（コメント項目）。rank: small の下限 250字を大幅に下回っている。本文がなく『## 出典』セクションのみで、実質的な記事本文がない。lede が記事の全てになっており、計画の angle『視聴チケット所持者向けにコメント付アーカイブを公開する』という情報を展開できていない。",
+   "scope": "article:2026-09-07-765-dual-twin-tokyo-audio-commentary.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-765-dual-twin-tokyo-audio-commentary.md",
+   "issue": "rank が計画の medium から small に変更されているが、本文がない状態では small 扱いでも成立せず。計画段階では『振り返り生オーディオコメンタリー』の詳細情報（出演者、配信時刻、視聴対象、ハッシュタグなど候補 facts に記載されている情報）を盛り込む予定だったはずが、反映されていない。",
+   "scope": "article:2026-09-07-765-dual-twin-tokyo-audio-commentary.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-dsva-cosmo-ace-combat8-tgs-reward.md",
+   "issue": "出典の性質の誤分類（参考）：HEAD では label: 上水流宇宙 公式X、type: 公式と記載されているが、@KamizuruCosmo は個人ライバーアカウント（準公式または当事者）であり、アイマス公式Xアカウントではない。sources を復元する際は type を修正すること。",
+   "scope": "article:2026-09-07-dsva-cosmo-ace-combat8-tgs-reward.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md",
+   "issue": "src が「二次情報」だが sources に「公式」を筆頭に掲載している。src の判定を再検討するか、sources の順序を見直す必要がある（出典隠しの疑い回避）",
+   "scope": "article:2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md"
+  },
+  {
+   "file": "-",
+   "issue": "公式発表の締切情報が漏れている可能性：アイマスピアノ『THE IDOLM@STER 20th Anniversary Piano Collection』の予約締切（本日 2026-09-07）が紙面から漏れている（候補 202609061835-watch-1）。「公式」ソース・deadline 情報のため、本数制限ではなく別の理由で未実装と思われる。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "vα-liv 関連の複数の公開情報が未実装のまま：上水流宇宙バースデー記念ボイス販売（202609061835-explore-16 / 公式）、vα-liv 上水流宇宙 BIRTHDAY ONLINE LIVE 2026（202609070234-grok-21 / 公式）。現在の実装は dsva-valiv-ops-roundup-0907（配信・出演まとめ）のみで、これら個別の公式情報は紙面に反映されていない。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-cg-mayu-sakuma-birthday.md",
+   "issue": "本文の分量が極めて少ない。rank: small でも通常 250字以上を想定するが、この記事は大幅に下回っている。ただし規程9で「分量は記事の成立を阻害しない」と明記されているため指摘のみ",
+   "scope": "article:2026-09-07-cg-mayu-sakuma-birthday.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-cg-number-one-cross-over-cd.md",
+   "issue": "分量不足：rank: small でも 250字以上推奨だが、本文は約110字。出典のコロムビア公式ページに発売日・価格・収録内容などの詳細が掲載されていれば、記事で補足可能。ただし詳細が未発表なら現状で問題なし",
+   "scope": "article:2026-09-07-cg-number-one-cross-over-cd.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-cg-rose-tea-parlor-reserve-open.md",
+   "issue": "candidate_ids に存在しない候補を参照。'sched-2026-09-07-cg-rose-tea-parlor-2026-reserve-開始' が candidates ファイルに見つからない。ただし記事内容は sources（公式・当事者）で適切に支持されており、出典隠しではない。データ管理上のエラーのみ",
+   "scope": "article:2026-09-07-cg-rose-tea-parlor-reserve-open.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-general-creators-edge-xr-live-seminar-0929.md",
+   "issue": "分量: 出典に記載されている開催時間（11:00～12:30）・会場名（SPACE G）・協賛企業（株式会社マウスコンピューター）が記事に未記載。候補から取得可能な情報で、読者に有用な詳細情報",
+   "scope": "article:2026-09-07-general-creators-edge-xr-live-seminar-0929.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-shiny-aki-idol-kyoka-week-starts.md",
+   "issue": "分量不足：rank:small で最小250字ですが、記事は39字。候補に含まれるイベント期間（9月7日～29日）、報酬（SRサポートアイドル・称号・チケット）、特別オーディション、アイデアノートなどの詳細情報を本文に追加すれば充実するはずです。",
+   "scope": "article:2026-09-07-shiny-aki-idol-kyoka-week-starts.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-shiny-noctchill-event-ends-today.md",
+   "issue": "candidate_ids の形式『sched-2026-09-07-shiny-noctchill-event-2026-終了』が、実際の候補ファイル ID『202608260216-grok-35』と異なります。ただし出典 URL 照合で記事の正確性は確認済み（記事の『11時59分』『9月7日』は候補ファイル facts で確認）",
+   "scope": "article:2026-09-07-shiny-noctchill-event-ends-today.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-sidem-11th-cast-comment-barletta-yano.md",
+   "issue": "分量不足：rank: small で下限250字に対して209字（lede+本文）。41字不足。出典の facts に掲載されている「配信チケット購入案内」「現地チケット購入案内」の詳細や、SideM11th自体の開催日時・会場など補足情報を追加することで分量を埋められます。",
+   "scope": "article:2026-09-07-sidem-11th-cast-comment-barletta-yano.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-sidem-fan-fes-wsi-goods-sale.md",
+   "issue": "分量不足: 本文は約65字で、rank: small の下限250字を大きく下回っています。出典(SideM公式ツイート)にはグッズの種類・価格・販売期限などの詳細が書かれているはずですが、記事では最小限の情報のみを掲載しています。",
+   "scope": "article:2026-09-07-sidem-fan-fes-wsi-goods-sale.md"
+  }
+ ]
+}

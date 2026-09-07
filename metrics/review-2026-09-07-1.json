@@ -1,0 +1,121 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-07-765-dual-twin-tokyo-audio-commentary.md",
+   "issue": "規程5: 新事実なしの続報。既報(765-dual-twinlive-venue-cd, 2026-07-12初報)に記載済みの事実（実施日時・出演者・視聴対象・アーカイブ期限・ハッシュタグ）を繰り返しているだけで、新たな事実がない。当日トリガー(締切・開幕)もない。",
+   "quote": "本文全体: 「9月6日20時からASOBI STAGEで実施」「出演は、たかはし智秋（三浦あずさ役）、若林直美（秋月律子役）、石田裕亮」「視聴できるのは対象公演の配信視聴チケット所持者」「本配信の視聴コメント付きアーカイブは、9月27日23時59分まで公開予定」—既報line 33・44と実質同内容",
+   "scope": "article:2026-09-07-765-dual-twin-tokyo-audio-commentary.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-dsva-cosmo-ace-combat8-tgs-reward.md",
+   "issue": "出典URL が不完全。sources に挙げられている URL は https://x.com/KamizuruCosmo （プロフィールページ）のみ。記事が「公式X投稿で告知している」と述べているなら、具体的な投稿 URL（https://x.com/KamizuruCosmo/status/... 形式）を sources に明記する必要がある。プロフィールページだけでは、「ACE COMBAT 7 クリアのご褒美として ACE COMBAT 8 試遊データをプレイできるようになった」という記事の記述を確認できない（規程3）。",
+   "quote": "sources:\n  - label: 上水流宇宙 公式X\n    url: https://x.com/KamizuruCosmo\n    type: 公式",
+   "scope": "article:2026-09-07-dsva-cosmo-ace-combat8-tgs-reward.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-dsva-cosmo-ace-combat8-tgs-reward.md",
+   "issue": "frontmatter の candidate_ids に指定された ID「202609060734-explore-19」が candidates/2026-09-06.json に存在しない。出典の事実が candidates から導けるか確認できず、記事が出典ベースで書かれたかを検証できない（規程1）。",
+   "quote": "candidate_ids: [\"202609060734-explore-19\"]",
+   "scope": "article:2026-09-07-dsva-cosmo-ace-combat8-tgs-reward.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-dsva-manaka-kpf2026-detail.md",
+   "issue": "出典に見つからない日付情報（規程1）: 候補ファイルの unbacked_facts に「2026-11-29」「11月29日」が記録されており、出典（パノラ）から日付が検出できなかった。しかし記事本文では「2026年11月28日・29日に開催される」「11月29日にグリーンステージへ出演する」と明記。sources の優先順位（1番目パノラ、2番目公式サイト）が不明確で、記事が実際にどの出典から日付情報を得たのか不透明。パノラ記事に日付がない場合、sources を再整理すべき。",
+   "quote": "灯里愛夏は、2026年11月28日・29日に開催される北九州ポップカルチャーフェスティバル2026（KPF2026）のうち、11月29日にグリーンステージへ出演する。",
+   "scope": "article:2026-09-07-dsva-manaka-kpf2026-detail.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-dsva-manaka-kpf2026-detail.md",
+   "issue": "会場情報の出典不明確（規程1/2）: 記事では「北九州メッセ（旧・西展新館）とあるあるCityで行われる」と記載。候補の facts にも同内容があるが、sources に「パノラ（報道）」と「公式サイト」しか挙げられていない。パノラの記事タイトルは「灯里愛夏がKPF2026に出演」であり、会場名は出典タイトルに含まれていない可能性。「あるあるCity」の情報がどの出典から来たのか sources に明記されていない。",
+   "quote": "スペシャルトーク＆ライブとして、北九州メッセ（旧・西展新館）とあるあるCityで行われる。",
+   "scope": "article:2026-09-07-dsva-manaka-kpf2026-detail.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-gaku-new-songs-sep6-streaming.md",
+   "issue": "出典の配信日付と記事の日付が矛盾。候補データでは全て「2026.09.06に公開」と記載されているのに、記事は「9月7日付でStreaming&DL公開」と記述。配信の実際の公開日時を確認する必要があります（ブロック項目1: 出典にない事実 または ブロック項目4: 時制矛盾）。",
+   "quote": "lede: 「初星学園の新曲4曲が9月7日、Streaming&DLで公開された」 vs. 候補事実: 「2026.09.06に『Howling over the World』をStreaming&DLとして公開」",
+   "scope": "article:2026-09-07-gaku-new-songs-sep6-streaming.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md",
+   "issue": "規程5：新事実なしの続報。既報（stock/stories.yml の gaku-shirube-livetour-fukuoka-2026、first_published: 2026-09-05）と実質同内容で、新事実も当日トリガーもない",
+   "quote": "本記事は DAY1 開催日、出演者、新曲3曲、セットリスト全20曲（ソロ15曲・全員歌唱5曲）、各出演者ソロ3曲、配信開始日（2026-09-06 0時）をすべて記載。これらはすべて既報に含まれており、9月5日-6日の時点で既に報道済み。記事で新たに記載されている『Yahoo!リアルタイム検索の投稿が1,216件』は単なる SNS 言及数で、新事実とは言えない。公演は 2026-09-05 に終了（過去のできごと）、配信は 2026-09-06 から開始（既に有効）であり、当日トリガーなし。2026-09-07 の後出しで既報と同内容を繰り返す記事のため、規程5 でブロック。",
+   "scope": "article:2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-gaku-shirube-fukuoka-day2-new-songs-goods.md",
+   "issue": "URL捏造・出典の不一致: セットリスト関連の記事の記述と sources が一致していない。sources に含まれる候補1（imasnews765.com）では曲名が『修学旅行』『クライアライ』で、歌手が『ORDER FAKE — 小鹿なお』『め — 川村玲奈』となっているが、記事では『修楽旅行』『クライアイ』『月村手毬の ORDER FAKE』『篠澤広の め』と異なる表記・情報。sources の URL を開いても記事の記述と一致しない。",
+   "quote": "セットリストは、Fighting My Way、Luna say maybe、世界一可愛い私、光景、理論武装して、修楽旅行、ORDER FAKE、め、Boom Boom Pow、自己肯定感爆上げ↑↑しゅきしゅきソング、「ねえ、言っちゃうよ。」、三分半の創世、ふわふわ、コンテンポラリのダンス、Unhappy Light、Wildest Flower、クライアイ、標、古今東西ちょちょいのちょい、初。公式告知では「ORDER FAKE」と「め」の配信を9月7日0時から開始すると案内しており、作詞・作曲・編曲は前者がにほしか、後者が虻瀬犬。",
+   "scope": "article:2026-09-07-gaku-shirube-fukuoka-day2-new-songs-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-joint-idol-ultimate-once-and-for-all-ticket-open.md",
+   "issue": "ブロック項目3「URL捏造・出典の不一致」: sources に記載されている Famitsu 記事では、第二公演「BE:STELLA OF ABSOLUTE」の開場時間を『12:00開場、13:00開演』と記載しており、記事の記述『開場11時・開演12時』と矛盾している。sources に含まれる URL の実際の内容が記事の記述と一致していない。",
+   "quote": "第二公演「BE:STELLA OF ABSOLUTE」は7月25日、開場11時・開演12時で、如月千早、高槻やよい、秋月律子、三浦あずさ、水瀬伊織、菊地真、双海亜美、双海真美、玲音、詩花。",
+   "scope": "article:2026-09-07-joint-idol-ultimate-once-and-for-all-ticket-open.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-07-cg-mayu-sakuma-birthday.md",
+   "issue": "本文の分量が極めて少ない。rank: small でも通常 250字以上を想定するが、この記事は大幅に下回っている。ただし規程9で「分量は記事の成立を阻害しない」と明記されているため指摘のみ",
+   "scope": "article:2026-09-07-cg-mayu-sakuma-birthday.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-cg-number-one-cross-over-cd.md",
+   "issue": "分量不足：rank: small でも 250字以上推奨だが、本文は約110字。出典のコロムビア公式ページに発売日・価格・収録内容などの詳細が掲載されていれば、記事で補足可能。ただし詳細が未発表なら現状で問題なし",
+   "scope": "article:2026-09-07-cg-number-one-cross-over-cd.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-cg-rose-tea-parlor-reserve-open.md",
+   "issue": "candidate_ids に存在しない候補を参照。'sched-2026-09-07-cg-rose-tea-parlor-2026-reserve-開始' が candidates ファイルに見つからない。ただし記事内容は sources（公式・当事者）で適切に支持されており、出典隠しではない。データ管理上のエラーのみ",
+   "scope": "article:2026-09-07-cg-rose-tea-parlor-reserve-open.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-dsva-manaka-kpf2026-detail.md",
+   "issue": "既報との関係性が不明確（規程5参考）: 本記事は 2026-09-07 発行だが、同じ話題の既報が 2026-09-04 に stories.yml に記録されている（story_id: dsva-manaka-kpf2026-2026）。既報では「詳細は後日発表」とあり、会場「あるあるCity」の追加情報は新事実だが、本文に「詳細判明」や「追加情報」といった新規性の表現がない。見出しと本文から、これが既報の詳報なのか新たなニュースなのか判然としない。",
+   "scope": "article:2026-09-07-dsva-manaka-kpf2026-detail.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-gaku-new-songs-sep6-streaming.md",
+   "issue": "分量不足: 本文は約185字で、small ランク下限の250字に達していません。出典ページに記載されている追加情報（例: 各曲のジャンル、ゲーム内での位置付け、歌唱キャラクター設定など）があれば活用して充実させてください。",
+   "scope": "article:2026-09-07-gaku-new-songs-sep6-streaming.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-gaku-shirube-fukuoka-day2-new-songs-goods.md",
+   "issue": "src が『二次情報』でありながら sources に『公式』が含まれている。一貫性が必要。",
+   "scope": "article:2026-09-07-gaku-shirube-fukuoka-day2-new-songs-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-general-creators-edge-xr-live-seminar-0929.md",
+   "issue": "分量: 出典に記載されている開催時間（11:00～12:30）・会場名（SPACE G）・協賛企業（株式会社マウスコンピューター）が記事に未記載。候補から取得可能な情報で、読者に有用な詳細情報",
+   "scope": "article:2026-09-07-general-creators-edge-xr-live-seminar-0929.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-shiny-aki-idol-kyoka-week-starts.md",
+   "issue": "分量不足：rank:small で最小250字ですが、記事は39字。候補に含まれるイベント期間（9月7日～29日）、報酬（SRサポートアイドル・称号・チケット）、特別オーディション、アイデアノートなどの詳細情報を本文に追加すれば充実するはずです。",
+   "scope": "article:2026-09-07-shiny-aki-idol-kyoka-week-starts.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-shiny-noctchill-event-ends-today.md",
+   "issue": "candidate_ids の形式『sched-2026-09-07-shiny-noctchill-event-2026-終了』が、実際の候補ファイル ID『202608260216-grok-35』と異なります。ただし出典 URL 照合で記事の正確性は確認済み（記事の『11時59分』『9月7日』は候補ファイル facts で確認）",
+   "scope": "article:2026-09-07-shiny-noctchill-event-ends-today.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-sidem-11th-cast-comment-barletta-yano.md",
+   "issue": "分量不足：rank: small で下限250字に対して209字（lede+本文）。41字不足。出典の facts に掲載されている「配信チケット購入案内」「現地チケット購入案内」の詳細や、SideM11th自体の開催日時・会場など補足情報を追加することで分量を埋められます。",
+   "scope": "article:2026-09-07-sidem-11th-cast-comment-barletta-yano.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-sidem-fan-fes-wsi-goods-sale.md",
+   "issue": "分量不足: 本文は約65字で、rank: small の下限250字を大きく下回っています。出典(SideM公式ツイート)にはグッズの種類・価格・販売期限などの詳細が書かれているはずですが、記事では最小限の情報のみを掲載しています。",
+   "scope": "article:2026-09-07-sidem-fan-fes-wsi-goods-sale.md"
+  },
+  {
+   "file": "-",
+   "issue": "本日（2026-09-07）の重要な締切情報が紙面から漏れている可能性。candidates の ID「202609061835-watch-1」に『【#アイマスピアノ】本日予約締切「THE IDOLM@STER」譜面に田宮清高さん完全監修の描き下ろしイラスト』という公式発表がありますが、紙面には記事がありません。本数制限によるドロップか、見落としかの確認が必要。",
+   "scope": "paper"
+  }
+ ]
+}

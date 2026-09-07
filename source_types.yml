@@ -30,6 +30,9 @@
 official_paths:
   # バンナムAM配下のツアマス公式サイト(規程2.5に例として明記されている)
   - bandainamco-am.co.jp/am/vg/idolmaster-tours/
+  # bilibili は多数の利用者が同居する場で、投稿 URL にアカウントが出ない。
+  # 投稿者「偶像大师官方」(アイドルマスター中国公式)を確認した投稿だけを個別に載せる
+  - bilibili.com/opus/1244186744338776068
 
 official_domains:
   - idolmaster-official.jp                          # 公式ポータル
@@ -58,6 +61,10 @@ semi_official_domains:
   - bandainamco-am.co.jp                  # バンナムAM(上の official_paths 以外)
   - parks2.bandainamco-am.co.jp
   - p-bandai.jp                           # プレミアムバンダイ
+# 多数のレーベルが同居する配信リンク(Linkfire 等)は、ドメインでは決まらない。
+# パスのレーベル記号(品番の頭)で決める(区切りを見ない素の前方一致)
+semi_official_paths:
+  - lnk.to/LZC-                           # ランティスの品番(LZC-xxxx)の配信リンク
 
 # --- 種類でまとめて決まるもの(末尾一致。個別指定と特設サイトの後に見る) ---
 # 自治体や政府機関は、どこであってもコラボ・寄贈・観光施策の**当事者**である。
@@ -162,6 +169,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - medicos-e.net         # メディコス・エンタテインメント(グッズメーカー)。自社ポップアップの告知=販売元
   - bea-net.com           # 合議で追加: 会場がライブ情報を告知している
   - kanko-shinjuku.jp     # 合議で追加: 会場側がポップアップストア企画を実施
   - ktqpopfes.jp          # 合議で追加: フェスティバル主催者がイベント情報を掲載

@@ -336,7 +336,7 @@ def _check_table(t: dict, p) -> None:
     seen = collections.defaultdict(list)
     for key in ("official_domains", "semi_official_domains", "press_domains",
                 "secondary_domains", "fan_domains", "party_domains",
-                "official_paths", "party_paths"):
+                "official_paths", "semi_official_paths", "party_paths"):
         for v in t.get(key) or []:
             seen[v].append(key)
     for group in ("x_accounts", "video_ids", "video_channels"):
@@ -403,6 +403,12 @@ def classify_source(url: str) -> str:
     for pre in t.get("official_paths") or []:
         if under(pre):
             return "公式"
+    # 多数のレーベルが同居する配信リンク(lnk.to など)は、パスのレーベル記号で決まる。
+    # `lnk.to/LZC-` のように**品番の頭**で当てるので、ここだけは区切りを見ない素の前方一致
+    # (区切りまで見る under() では `LZC-3650` が `LZC` に当たらない)
+    for pre in t.get("semi_official_paths") or []:
+        if path.startswith(pre):
+            return "準公式"
     for pre in t.get("party_paths") or []:
         if under(pre):
             return "当事者"

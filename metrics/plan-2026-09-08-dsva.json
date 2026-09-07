@@ -1,0 +1,40 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-nagano-aniera-festa-lineup",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "「ナガノアニエラフェスタ2026」(9/19-20)にvα-livのレトラ・上水流宇宙の出演が判明。DAY1にレトラ、DAY2に上水流宇宙がDJ setでPHANTOM STAGEに出演する新事実を、既報の会場・チケット情報に続く続報として伝える。",
+      "lead_score": 10,
+      "dedup_key": "nagano-aniera-festa-2026-valiv",
+      "candidate_ids": ["202609080227-explore-13"]
+    },
+    {
+      "slug": "dsva-valiv-ops-roundup-0908",
+      "brand": "dsva",
+      "rank": "roundup",
+      "angle": "vα-liv定常運営まとめ: 9/7週配信スケジュール公開・上水流宇宙の踊ってみた新作公開、灯里愛夏「BIOHAZARD RE:2」初配信、レトラの雑談配信など進行中の配信活動。",
+      "lead_score": 0,
+      "dedup_key": "valiv-weekly-schedule-2026-09-07",
+      "candidate_ids": ["202609071836-explore-18", "202609080227-explore-14"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "dsva-cosmo-birthday-voice-2026",
+      "reason": "既報",
+      "note": "story_id valiv-birthday-voice-kamimizu-2026(初報2026-09-06)と価格・期間・販売ページとも同一で新事実なし"
+    },
+    {
+      "dedup_key": "dsva-manaka-kpf-2026",
+      "reason": "既報",
+      "note": "story_id dsva-manaka-kpf2026-2026(初報2026-09-05)と開催日・会場・入場料・2年連続の情報が同一で新事実なし"
+    },
+    {
+      "dedup_key": "dsva-izenzen-strong-2026",
+      "reason": "既報",
+      "note": "9/5開催の同イベントは story_id dsva-valiv-ops-roundup-2026-09-07(初報2026-09-07)で既に報じ済み。加えて今酒ハクノ側の私設生誕イベントでvα-liv公式主催ではなく単体記事化にも馴染まない"
+    }
+  ],
+  "cross_brand": []
+}

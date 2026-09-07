@@ -1,0 +1,88 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-11th-stage-goods-cd-lottery-result",
+      "brand": "sidem",
+      "rank": "large",
+      "angle": "「THE IDOLM@STER SideM 11th STAGE」9/12-13開催直前、会場物販整理券・CD/映像整理券の当落発表が9/8 13:00に始まり同時にデジタル注文書も利用可能に。開場/開演時刻などの公演概要、キッチンカー決済方法の更新、出演キャストの日替わり意気込みコメントもあわせて伝える直前情報まとめ。",
+      "lead_score": 75,
+      "dedup_key": "sidem-11th-stage-2026",
+      "candidate_ids": [
+        "202609071836-watch-1",
+        "sched-2026-09-08-sidem-11th-stage-2026-結果",
+        "202609080227-grok-85",
+        "202609080227-grok-86",
+        "202609080227-grok-87",
+        "202609080227-grok-88",
+        "202609080227-grok-89"
+      ]
+    },
+    {
+      "slug": "sidem-shosen-kaeru-plush",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "書泉オンラインが『理由（ワケ）あって書店員！Beit in 書泉ブックタワー』より書泉エプロン着用verのカエールぬいぐるみ発売を告知。",
+      "lead_score": 5,
+      "dedup_key": "sidem-2096804514628349954",
+      "candidate_ids": ["202609080227-grok-92"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-transcendent-tales-only-shop-2026",
+      "reason": "既報",
+      "note": "2026-08-30号ですでに開催期間・整理券制・特典など同一facts を報じ済み(stock: sidem-transcendent-tales-only-shop-2026)。本日トリガーとなる新事実なし"
+    },
+    {
+      "dedup_key": "sidem-teddys-collection-ii-popup-2026",
+      "reason": "既報",
+      "note": "2026-08-28号で東京会場の期間・購入制限・LINE予約制などを報じ済み(stock: sidem-teddys-collection2-popup-goods)。新事実なし"
+    },
+    {
+      "dedup_key": "sidem-divercity-tokyo-plaza-2026",
+      "reason": "既報",
+      "note": "sidem-divercity-2026 と同一施策。2026-08-24号ですでに開催期間・グッズ・スタンプラリー等を報じ済み(stock: sidem-divercity-tokyo-2026)。予約制入場日の追記のみで当日トリガーなし"
+    },
+    {
+      "dedup_key": "sidem11th-ever-ever-kitchen-2026",
+      "reason": "既報",
+      "note": "メニュー・価格・営業時間はすべて既報(stock: sidem-11th-stage-2026)。新事実は sidem-11th-stage-2026 記事に統合済み"
+    },
+    {
+      "dedup_key": "sidem-renaissance-fitness-2026",
+      "reason": "出典不足",
+      "note": "出典がファンまとめブログ(未確認)のみで、SideM公式・ルネサンス公式のいずれにも到達できていない(規程2)"
+    },
+    {
+      "dedup_key": "sidem315shop-nekomimi-2026",
+      "reason": "既報",
+      "note": "2026-09-03号で展開日・グッズ内容・営業時間を報じ済み(stock: sidem-315-shop-5th-2026)。新事実なし"
+    },
+    {
+      "dedup_key": "sidem-divercity-2026",
+      "reason": "既報",
+      "note": "sidem-divercity-tokyo-plaza-2026 と同一施策。2026-08-24号で報じ済み(stock: sidem-divercity-tokyo-2026)"
+    },
+    {
+      "dedup_key": "sidem-joypolis3-2026",
+      "reason": "既報",
+      "note": "2026-08-26号で開催期間・料金・スペシャルショー時間等を報じ済み(stock: sidem-joypolis3-2026)。新事実なし"
+    },
+    {
+      "dedup_key": "sidem-2096523804180685169",
+      "reason": "既報",
+      "note": "「F@NTASTIC BATTLE FES ～Wanna step in～」第2弾のアソビストアプレミアム会員先行は2026-09-03号で既報(stock: sidem-fantastic-battle-fes-2026、先行は9/13まで)。新事実なし"
+    },
+    {
+      "dedup_key": "sidem-2096538903889199197",
+      "reason": "既報",
+      "note": "9/6付バレッタ裕さんの意気込みコメントはすでに続報台帳に記載済み(stock: sidem-11th-cast-comment-relay-2026)"
+    },
+    {
+      "dedup_key": "sidem-2096931498456990136",
+      "reason": "既報",
+      "note": "作詞家インタビュー最終回(松井洋平・真崎エリカ他)は2026-09-07号で報じ済み(stock: sidem-transcendent-tales-lyricist-guide-2026)。新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

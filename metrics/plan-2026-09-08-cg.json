@@ -1,0 +1,94 @@
+{
+  "articles": [
+    {
+      "slug": "cg-vote2026-special-exhibition-shibuya",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "シンデレラガール総選挙2026「特別展示」が9月12・13日、渋谷ちかみちで開催決定。入場無料、チェックインで投票券10枚、190人紹介動画や公式グッズ展示も。",
+      "lead_score": 20,
+      "dedup_key": "cg-vote-2026-special-exhibition",
+      "candidate_ids": ["202609071836-watch-2", "202609080227-grok-37"]
+    },
+    {
+      "slug": "cg-vote2026-goods-sticker-added",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "総選挙2026公式グッズに「公約四字熟語」トレーディングステッカー(400円・全10種)が新たに登場、受注は9月13日まで。",
+      "lead_score": 5,
+      "dedup_key": "cg-2096901292841119854",
+      "candidate_ids": ["202609071836-explore-6", "202609080227-grok-38"]
+    },
+    {
+      "slug": "cg-popn-toybox-yugata-chirami-tokkyu-nozomi",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "『Pop'n ToyBox!!』夕方公演の「とっきゅーのぞみ」コーナー映像がチラ見せ公開、アーカイブ視聴は9月13日まで。",
+      "lead_score": 0,
+      "dedup_key": "cg-2096546451337756711",
+      "candidate_ids": ["202609080227-grok-33"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "deresute-10th-tour-okinawa-fukuoka-bluray-2026",
+      "reason": "既報",
+      "note": "収録内容・発売日・価格は既報(cg-ss10th-fukuoka-pv2-2026)の内容と一致、新事実なし"
+    },
+    {
+      "dedup_key": "cg-15th-party-goods-2026",
+      "reason": "既報",
+      "note": "受注期間・価格・9/6付ビジュアル公開は既報(cg-15th-party-goods-2026)と一致"
+    },
+    {
+      "dedup_key": "cg-vote2026-support-video-festival",
+      "reason": "既報",
+      "note": "ニコニコ投稿祭の内容・期間は既報(cg-election-cheer-contest-2026)と一致"
+    },
+    {
+      "dedup_key": "cg-election-2026-support-works",
+      "reason": "既報",
+      "note": "投稿祭・アートコンテストの内容は既報(cg-election-cheer-contest-2026)と一致"
+    },
+    {
+      "dedup_key": "cg-yamanashi-walk-wander-pedometer-2026",
+      "reason": "既報",
+      "note": "歩数計の価格・先行受注期間は既報(cg-yamanashi-walk-wander-2026)と一致"
+    },
+    {
+      "dedup_key": "cg-yamanashi-walk-wander-2026",
+      "reason": "既報",
+      "note": "先行予約締切9/9のリマインドで、既報(cg-yamanashi-walk-wander-2026)に同内容あり"
+    },
+    {
+      "dedup_key": "cg-2096553999990501640",
+      "reason": "既報",
+      "note": "投稿祭「本日まで」のリマインドで新事実なし、既報(cg-election-cheer-contest-2026)と一致"
+    },
+    {
+      "dedup_key": "cg-2096795591648882998",
+      "reason": "既報",
+      "note": "Memory Pict. November の価格・受注締切は既報(memory-pict-6th-kohimura-yoda-2026)と一致"
+    },
+    {
+      "dedup_key": "cg-2096916399415304218",
+      "reason": "既報",
+      "note": "ミッションチャレンジ9/14締切のリマインドで、既報(cg-election-2026-official-goods)と一致"
+    },
+    {
+      "dedup_key": "https-smilebase-co-jp-event-13003",
+      "reason": "既報",
+      "note": "9/7 19時の予約開始は既報(cg-rose-tea-parlor-2026)の予告通りの内容と一致"
+    },
+    {
+      "dedup_key": "cg-2096865751760331019",
+      "reason": "その他",
+      "note": "会期(8/21-9/6)が既に終了した企画の未引き取り案内で、9/8時点で読者が見に行ける催し・取れる行動がない(規程12)"
+    },
+    {
+      "dedup_key": "cg-2096931489418293466",
+      "reason": "出典不足",
+      "note": "案内の中身(対象スポット・時間外可否)が未読の画像内にあり、本文化できる具体事実がない"
+    }
+  ],
+  "cross_brand": []
+}

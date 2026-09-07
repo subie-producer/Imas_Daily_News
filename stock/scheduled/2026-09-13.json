@@ -275,5 +275,39 @@
       "「パラレル回廊」の事前予約抽選は9月13日23:59まで申込"
     ],
     "src_candidate_id": "202609050237-grok-82"
+  },
+  {
+    "id": "sched-2026-09-13-cg-vote-2026-special-exhibition-終了",
+    "dedup_key": "cg-vote-2026-special-exhibition",
+    "brand": "cg",
+    "subject": "シンデレラガール総選挙2026 特別展示(渋谷)",
+    "kind": "終了",
+    "note": "PickUpランキン 渋谷ちかみち展示、最終日(21時まで)",
+    "reserved_on": "2026-09-08",
+    "title": "総選挙2026特別展示、9月12・13日に渋谷で開催",
+    "url": "https://idolmaster-official.jp/news/01_19787",
+    "source_type": "公式",
+    "facts": [
+      "シンデレラガール総選挙2026の特別展示は9月12日・13日10時〜21時にPickUpランキン 渋谷ちかみちで開催"
+    ],
+    "src_candidate_id": "202609071836-watch-2",
+    "event_date": "2026-09-13"
+  },
+  {
+    "id": "sched-2026-09-13-idol-ultimate-street-ads-2026-終了",
+    "dedup_key": "idol-ultimate-street-ads-2026",
+    "brand": "joint",
+    "subject": "765×961合同ライブ 街頭広告",
+    "kind": "終了",
+    "note": "渋谷・名古屋・大阪3駅の掲出最終日",
+    "reserved_on": "2026-09-08",
+    "title": "765×961街頭広告、3都市で同時掲出",
+    "url": "https://x.com/imas_official",
+    "source_type": "公式",
+    "facts": [
+      "「IDOL ULTIMATE ONCE AND FOR ALL」の街頭広告を渋谷駅・名古屋駅・大阪駅で9月7日〜13日に同時掲出"
+    ],
+    "src_candidate_id": "202609080227-explore-18",
+    "event_date": "2026-09-13"
   }
 ]

@@ -1,0 +1,105 @@
+{
+ "verdict": "error",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-08-dsva-nagano-aniera-festa-lineup.md",
+   "issue": "規程5：新事実なしの続報。既報(story_id: dsva-nagano-aniera-festa-2026, first_published: 2026-08-30)で同じ内容が報道されており、本記事は実質同内容で新事実もなく、当日トリガーもない。「6月12日付」「7月10日付」という告知日は過去の情報で、読者にとって新しいニュース価値がない。",
+   "quote": "公式サイトは6月12日付の告知でDAY1のPHANTOM STAGEにヴイアライヴのレトラ、7月10日付の告知でDAY2の同ステージに上水流宇宙（DJ set）が出演するとしている。\n\nチケットは9月19日・20日の各1日券が13,000円（税込）で、公式サイトによると一般発売中。2日通し券25,000円（税込）はSOLD OUTとなっている。",
+   "scope": "article:2026-09-08-dsva-nagano-aniera-festa-lineup.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-dsva-valiv-ops-roundup-0908.md",
+   "issue": "規程10（読者に要らない事実）：既に終わった配信の記載。9月6日のレトラの配信は2日前に終了しており、読者が今日視聴することはできない。記事は『今週の配信』と題して『9月7日週』のスケジュールを案内していながら、9月6日（前週の日曜日）の終了済み配信を含めており、読者にできることを増やさない。",
+   "quote": "9月6日にはレトラの『【雑談配信】お昼ののんびり雑談【#ヴイアラ / レトラ】』も記録されている。",
+   "scope": "article:2026-09-08-dsva-valiv-ops-roundup-0908.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-gaku-keikou-mv-5million-views.md",
+   "issue": "【ブロック項目1】出典にない事実：記事が「篠澤広ソロ曲」と言及しているが、sources に記載されているXのポスト（出典の根拠）に『篠澤広』という情報が記載されていない。candidate 202609080227-grok-52 の facts にも『篠澤広』が記載されていない。",
+   "quote": "lede: 篠澤広ソロ曲「光景」のMusic Videoが500万再生を突破したと、学マス公式Xが9月7日に発表した。\n本文: 篠澤広ソロ曲「光景」のMusic Videoが500万再生を突破した。",
+   "scope": "article:2026-09-08-gaku-keikou-mv-5million-views.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-joint-gigo-kanayama-late-summer-cp-end.md",
+   "issue": "ブロック5「新事実なしの続報」：stories.yml(story_id: tours-late-summer-campaign-2026)に既に報道済みの内容と実質同内容で、新事実および当日トリガーが無い",
+   "quote": "GiGO金山は9月7日付の公式X投稿で、同店における『アイドルマスターTOURS 2026 レイトサマーキャンペーン 晩夏の調べ』の景品配布が終了したと告知した。投稿では、利用者への感謝も伝えている。ツアマス公式告知によるキャンペーン全体の景品交換期間は10月13日25時59分まで。ただし景品は在庫がなくなり次第終了すると案内されており、今回の終了はGiGO金山での配布に限られる。",
+   "scope": "article:2026-09-08-joint-gigo-kanayama-late-summer-cp-end.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-shiny-coherent-light-novel-restart-2026.md",
+   "issue": "新事実なしの続報。既報(stories.yml)では2026-08-25にすでに『連載を9月8日に再開』『第26話をカドコミで無料公開中』と記録されており、この記事はその同内容を発行日に過去形で述べているだけ。新たな事実（再開時刻、新章立ての詳細、当日の告知内容など）が追加されていない。当日トリガーも、既報で既に決定していた予定の実施に過ぎないため、例外にはならない。",
+   "quote": "連載小説「コヒーレントライト」が9月8日に連載を再開した。第26話まではカドコミで無料公開中。",
+   "scope": "article:2026-09-08-shiny-coherent-light-novel-restart-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-08-765-idol-ultimate-cast-reveal-keyvisual.md",
+   "issue": "分量不足：rank: lead では 1000 字以上必要ですが、本文は 645 字。出典に会場（京王アリーナ TOKYO）・主催・企画・制作などの追加可能な情報があります。",
+   "scope": "article:2026-09-08-765-idol-ultimate-cast-reveal-keyvisual.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-dsva-valiv-ops-roundup-0908.md",
+   "issue": "記事の時間軸が曖昧。タイトルは『今週の配信』、本文は『9月7日週』を明示しているのに、前週の日曜日（9月6日）の配信を含めている。『配信一覧では』というWiki出典の複数情報をまとめて記述する際は、時間軸を揃えるか、範囲を明確にすべき。",
+   "scope": "article:2026-09-08-dsva-valiv-ops-roundup-0908.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-gaku-google-play-ranking-top20-0907.md",
+   "issue": "分量不足の可能性: 記事本文が約155字で、small記事の下限250字に達していません",
+   "scope": "article:2026-09-08-gaku-google-play-ranking-top20-0907.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-gaku-keikou-mv-5million-views.md",
+   "issue": "【分量不足（コメント）】rank: small 記事として本文が短い（1文）。ただし分量不足はブロック理由にはならない。",
+   "scope": "article:2026-09-08-gaku-keikou-mv-5million-views.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-joint-961-reflame-chibigurumi-yoyaku.md",
+   "issue": "表記ゆれ：「Re:FLAME」（frontmatter・lede で半角コロン）と「Re：FLAME」（本文で全角コロン）が混在。統一が必要",
+   "scope": "article:2026-09-08-joint-961-reflame-chibigurumi-yoyaku.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-joint-gigo-kanayama-late-summer-cp-end.md",
+   "issue": "rank: small(250字以上が下限)に対して本文が160字程度で分量不足（ただしブロック5で不適切であるため、この記事が採用されない場合は分量の問題は不要）",
+   "scope": "article:2026-09-08-joint-gigo-kanayama-late-summer-cp-end.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-joint-gigo-osaka-tours-s1-restock.md",
+   "issue": "分量不足：本文は83字で、rank: small（250字要件）に達していません。ただし、出典の投稿に追加可能な実質的な情報（価格、期間、対象条件など）が無いため、現在の内容が適切です",
+   "scope": "article:2026-09-08-joint-gigo-osaka-tours-s1-restock.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-joint-idol-ultimate-street-ads.md",
+   "issue": "分量が250字要件より14字不足（本文約236字）。候補に記載されているファン投稿の日時情報を追加することで埋まる。",
+   "scope": "article:2026-09-08-joint-idol-ultimate-street-ads.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-million-cardfolio-vol4-mr-complete.md",
+   "issue": "分量不足：small rank の下限 250 字に対して約 235 字。出典（candidates の facts）に記載されている販売価格（1BOX 5,000円・1パック 500円）や発売日（2026年9月19日）、商品構成（全114種、N52/R27/MLR27/MR8）を追加することで、記事の情報価値が高まります。",
+   "scope": "article:2026-09-08-million-cardfolio-vol4-mr-complete.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-shiny-illumination-unit-costume-gacha-2026.md",
+   "issue": "分量不足: small rank は下限 250字以上が要件だが、本文は 80字のみ。出典の公式X投稿に開催期間・対象キャラクターなどの詳細情報が無いため本文が簡潔にならざるを得ないが、ガシャの「いつまで」「誰が」といった読者が必要とする基本情報が完全に不足。出典では提供できない情報は補える（例: イルミネーションスターズとはどんなユニットか）なら補い、250字を目指す。難しければ、詳細不足の理由を明確にして検討要。",
+   "scope": "article:2026-09-08-shiny-illumination-unit-costume-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-shiny-prelude-collection-mei-izumi-2026.md",
+   "issue": "重要な開催期間情報が漏れている。candidates の 202609072334-explore-6（gameo.jp）には『開催期間: 2026年9月7日～2026年9月29日 11:59まで（予定）』が記載されているが、記事に反映されていない。読者が『いつまでガシャを引けるのか』『いつまでパッケージを購入できるのか』を知るために重要な情報。",
+   "scope": "article:2026-09-08-shiny-prelude-collection-mei-izumi-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-shiny-prelude-collection-mei-izumi-2026.md",
+   "issue": "frontmatter の src（二次情報）と sources の構成が不一致。sources に公式が2個、二次情報が2個含まれているのに対し、src は「二次情報」と分類されている。記事の主要内容が公式X投稿に基づいている場合、src を「公式」にするか、sources の優先度を見直すべき。",
+   "scope": "article:2026-09-08-shiny-prelude-collection-mei-izumi-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-sidem-shosen-kaeru-plush.md",
+   "issue": "分量不足：rank:small の下限(250字)に対して本文が約104字。出典に価格・在庫情報が無い(文字化けのため)ため、現在の情報量では埋まりません。可能でしたら、商品ページから取得可能な仕様・価格などを追加して250字以上に拡充してください。",
+   "scope": "article:2026-09-08-sidem-shosen-kaeru-plush.md"
+  }
+ ],
+ "failed": [
+  "article:2026-09-08-million-platinum-star-theater-finale.md: 出力が読めない"
+ ]
+}

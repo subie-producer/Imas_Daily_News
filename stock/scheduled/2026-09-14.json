@@ -150,5 +150,23 @@
     "verify": "confirmed",
     "src_candidate_id": "202609061835-explore-12",
     "event_date": "2026-09-14"
+  },
+  {
+    "id": "sched-2026-09-14-shiny-mikoto-birthday-2026-終了",
+    "dedup_key": "shiny-mikoto-birthday-2026",
+    "brand": "shiny",
+    "subject": "緋田美琴の誕生日記念施策(2026)",
+    "kind": "終了",
+    "note": "Song for Prism誕生日記念ガシャ終了23:59",
+    "reserved_on": "2026-09-08",
+    "title": "緋田美琴の誕生日、記念施策が一斉展開",
+    "url": "https://x.com/imassc_prism/status/2096977037504503948",
+    "source_type": "公式",
+    "facts": [
+      "Song for Prismの緋田美琴誕生日記念ガシャは9月14日23:59まで開催",
+      "★5まで特訓すると誕生日衣装のアナザー衣装・記念称号を獲得可能"
+    ],
+    "src_candidate_id": "202609080227-grok-76",
+    "event_date": "2026-09-14"
   }
 ]

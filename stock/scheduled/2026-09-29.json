@@ -40,5 +40,23 @@
     "verify": "unconfirmed",
     "src_candidate_id": "202609070234-grok-23",
     "event_date": "2026-09-29"
+  },
+  {
+    "id": "sched-2026-09-29-shiny-prelude-collection-mei-izumi-2026-終了",
+    "dedup_key": "shiny-prelude-collection-mei-izumi-2026",
+    "brand": "shiny",
+    "subject": "シャニマス「プレリュードコレクション」和泉愛依",
+    "kind": "終了",
+    "note": "特別ミッション終了",
+    "reserved_on": "2026-09-08",
+    "title": "和泉愛依がプレコレに登場、限定ミッションも",
+    "url": "https://gameo.jp/imassc/167337",
+    "source_type": "二次情報",
+    "verify": "unconfirmed",
+    "facts": [
+      "SSRサポートアイドル「【三つ子の魂えたーなる！】和泉 愛依」の特別ミッションは9月29日まで開催"
+    ],
+    "src_candidate_id": "202609072334-explore-6",
+    "event_date": "2026-09-29"
   }
 ]

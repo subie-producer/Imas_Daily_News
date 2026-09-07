@@ -1,0 +1,95 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-08T02:28:24+09:00",
+   "edition": "2026-09-08",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 343,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 2,
+    "explore:million": 0,
+    "explore:shiny": 3,
+    "explore:sidem": 5,
+    "explore:gakuen": 2,
+    "explore:dsva": 3,
+    "explore:joint-other": 1,
+    "explore:trend": 5,
+    "grok:765as": 11,
+    "grok:cinderella": 10,
+    "grok:million": 8,
+    "grok:shiny": 13,
+    "grok:sidem": 10,
+    "grok:gakuen": 12,
+    "grok:dsva": 0,
+    "grok:joint-other": 7,
+    "grok:trend": 0
+   },
+   "normalized": 84,
+   "added": 74,
+   "verify": {
+    "confirmed": 58,
+    "unconfirmed": 26,
+    "failed": 0
+   },
+   "duration_s": 1666
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-08T04:44:07+09:00",
+   "edition": "2026-09-08",
+   "rounds": 1,
+   "approved": false,
+   "lint_green": true,
+   "planned": 23,
+   "written": 22,
+   "roundups": 0,
+   "dropped": 89,
+   "coverage": {
+    "subjects": 123,
+    "covered": 123,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 12.02245997985204,
+    "執筆": 4.0257794459660845,
+    "組版": 14.488615620136262,
+    "校閲": 11.374745174249012
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "765-tsumimatsu-oacome-archive-and-next"
+   ],
+   "duration_s": 2610
+  }
+ ]
+}

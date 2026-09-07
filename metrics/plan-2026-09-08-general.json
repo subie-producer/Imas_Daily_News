@@ -1,0 +1,16 @@
+{
+  "articles": [],
+  "dropped": [
+    {
+      "dedup_key": "imas-20th-piano-collection",
+      "reason": "既報",
+      "note": "予約受付・価格・収録曲・締切等はstock/stories.yml(piano-collection-preorder-2026, imas-20th-piano-collection-2026)で既報。予約締切9/6は発行日9/8の06:00 JST時点で既に終了しており本日読者ができることが無い(規程12)。"
+    },
+    {
+      "dedup_key": "xrlive-seminar-2026-09",
+      "reason": "既報",
+      "note": "同一セミナーはstock/stories.yml(general-creators-edge-xr-seminar-2026, 9/7初報)で開催日・時間・会場・登壇者・定員・参加費・展示を既報。今号の素材は同一出典(imasnews765.com/?p=32426、公開日9/6)からの講演内容・背景の補足説明のみで、新規発表や当日トリガーが無い(規程8)。"
+    }
+  ],
+  "cross_brand": []
+}

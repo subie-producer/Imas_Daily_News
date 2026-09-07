@@ -1,0 +1,68 @@
+{
+  "articles": [
+    {
+      "slug": "joint-961-reflame-chibigurumi-yoyaku",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "「961 PRODUCTION presents Re:FLAME」衣装のちびぐるみ＆ポーチセットがプレミアムバンダイで予約開始。価格・サイズ・対象年齢を伝える発売告知。",
+      "lead_score": 10,
+      "dedup_key": "961-reflame-chibigurumi-2026",
+      "candidate_ids": ["202609070736-explore-26"]
+    },
+    {
+      "slug": "joint-idol-ultimate-street-ads",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "765×961合同ライブ「IDOL ULTIMATE ONCE AND FOR ALL」の街頭広告が渋谷・名古屋・大阪の3駅に9/7〜13の期間限定で同時掲出。公式告知に加え、実際に掲出を確認したファンの目撃投稿から現地の状況も伝える。",
+      "lead_score": 55,
+      "dedup_key": "idol-ultimate-street-ads-2026",
+      "candidate_ids": ["202609080227-explore-18", "202609080227-grok-57"]
+    },
+    {
+      "slug": "joint-gigo-osaka-tours-s1-restock",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "GiGO大阪第4ビルでアイドルマスターツアーズS1弾カードが再入荷し、全台S1弾カードで稼働中であることを伝える店舗運営情報。",
+      "lead_score": 5,
+      "dedup_key": "joint-2096848645236904089",
+      "candidate_ids": ["202609080227-grok-60"]
+    },
+    {
+      "slug": "joint-gigo-kanayama-late-summer-cp-end",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "GiGO金山で「アイドルマスターTOURS 2026 レイトサマーキャンペーン 晩夏の調べ」の景品配布が終了したことを伝える店舗運営情報。",
+      "lead_score": 5,
+      "dedup_key": "joint-2096799758400790864",
+      "candidate_ids": ["202609080227-grok-61"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "765-961-idol-ultimate",
+      "reason": "既報",
+      "note": "IWSF2026会場での発表・公式サイトオープン・チケット料金体系・全3公演構成は stock/stories.yml(765-961-idol-ultimate-once-and-for-all-2027, first_published 2026-09-04)に既報。今回の候補facts(公演名・第一〜第三公演の日程)は既報facts と一致し新事実なし。"
+    },
+    {
+      "dedup_key": "joint-2096430774216245354",
+      "reason": "既報",
+      "note": "9/6 12:00の重大告知配信そのものの「開始10分前」告知。配信自体は9/6に終了済みで、9/8発行時点で読者が見に行ける・できることが何も無い。"
+    },
+    {
+      "dedup_key": "joint-2096454823541653674",
+      "reason": "個人の話題",
+      "note": "寺島拓篤さん(天ヶ瀬冬馬役)個人のSNS感想投稿。規程4により声優個人の投稿・アイマス外の個人発信は対象外。"
+    },
+    {
+      "dedup_key": "joint-2096594155367714872",
+      "reason": "個人の話題",
+      "note": "第三公演ビジュアルを題材にしたファンイラストの個人投稿。単体記事化不可(規程4)。ファン創作のまとめ(rank: culture)は brand: general の管轄で本面の対象外。"
+    },
+    {
+      "dedup_key": "joint-2096440535968035228",
+      "reason": "個人の話題",
+      "note": "「チケット種別で座席ブロックが分かれる」というファン個人の読み解き投稿。一次情報は公式サイトのATTENTION欄であり、この投稿自体は新事実を含まない。"
+    }
+  ],
+  "cross_brand": []
+}

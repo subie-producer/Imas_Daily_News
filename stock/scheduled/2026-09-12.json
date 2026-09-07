@@ -135,5 +135,23 @@
       "SideM 11th STAGE現地物販会場で先行販売、オンライン販売は後日告知予定",
       "購入者は「パシャっとチャレンジ」に参加可能(シリアル入りチケット同梱)"
     ]
+  },
+  {
+    "id": "sched-2026-09-12-cg-vote-2026-special-exhibition-開始",
+    "dedup_key": "cg-vote-2026-special-exhibition",
+    "brand": "cg",
+    "subject": "シンデレラガール総選挙2026 特別展示(渋谷)",
+    "kind": "開始",
+    "note": "PickUpランキン 渋谷ちかみちで開幕(9/12・13の2日間)",
+    "reserved_on": "2026-09-08",
+    "title": "総選挙2026特別展示、9月12・13日に渋谷で開催",
+    "url": "https://idolmaster-official.jp/news/01_19787",
+    "source_type": "公式",
+    "facts": [
+      "シンデレラガール総選挙2026の特別展示を9月12日・13日10時〜21時にPickUpランキン 渋谷ちかみちで開催、入場無料",
+      "会場はチェックインスポットになり、チェックインすると投票券10枚を獲得可能"
+    ],
+    "src_candidate_id": "202609071836-watch-2",
+    "event_date": "2026-09-12"
   }
 ]

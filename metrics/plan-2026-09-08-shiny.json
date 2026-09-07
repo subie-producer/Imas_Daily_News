@@ -1,0 +1,146 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-mikoto-birthday-2026",
+      "brand": "shiny",
+      "rank": "large",
+      "angle": "「シーズ」緋田美琴の誕生日(9/8)を記念し、誕生日ミニコミュ・限定スタンプガシャ・誕生日記念ガシャ・記念パック・復刻パック・フェザージュエルセールなど複数施策が一斉展開されたことを伝える。",
+      "lead_score": 60,
+      "dedup_key": "shiny-2096977037793886681",
+      "candidate_ids": [
+        "202609080227-grok-70",
+        "202609080227-grok-71",
+        "202609080227-grok-72",
+        "202609080227-grok-75",
+        "202609080227-grok-76",
+        "202609080227-grok-77",
+        "202609080227-grok-78"
+      ]
+    },
+    {
+      "slug": "shiny-prelude-collection-mei-izumi-2026",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "限定シリーズ「プレリュードコレクション」に新SSRサポートアイドル和泉愛依が登場、専用ミッションやピース付きパッケージ販売など関連施策をまとめて伝える。",
+      "lead_score": 15,
+      "dedup_key": "shiny-prelude-collection-mei-2026",
+      "candidate_ids": [
+        "202609071836-explore-9",
+        "202609080227-explore-3",
+        "202609072334-explore-6",
+        "202609080227-grok-74"
+      ]
+    },
+    {
+      "slug": "shiny-kazano-hiori-bunkei-package-2026",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "「【分景】風野灯織ピース付きパッケージ」が販売開始、新登場S-SSRピースと専用ガシャチケットのセット内容を伝える。",
+      "lead_score": 5,
+      "dedup_key": "shiny-2096886692242460986",
+      "candidate_ids": [
+        "202609080227-grok-73"
+      ]
+    },
+    {
+      "slug": "shiny-illumination-unit-costume-gacha-2026",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "イルミネーションスターズのユニット衣装ピックアップガシャが開催中であることを伝える。",
+      "lead_score": 0,
+      "dedup_key": "shiny-2096901290630455349",
+      "candidate_ids": [
+        "202609080227-grok-79"
+      ]
+    },
+    {
+      "slug": "shiny-coherent-light-novel-restart-2026",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "連載小説『コヒーレントライト』が9月8日に連載再開したことを伝える。",
+      "lead_score": 5,
+      "dedup_key": "shiny-coherent-light-novel-2026",
+      "candidate_ids": [
+        "sched-2026-09-08-shiny-coherent-light-novel-2026-開始"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-upcoming-idol-2026-09",
+      "reason": "その他",
+      "note": "9/7 15:00の近日登場アイドル予告のみで正体判明の続報が無く、掲載時点(9/8 06:00 JST)で読者が見に行ける新事実がない(規程12)。同投稿内の水着コスチュームガシャ終了(9/7 11:59)は既報(shiny-costume-gacha-2026-08)。"
+    },
+    {
+      "dedup_key": "shiny-prelude-collection-2026",
+      "reason": "重複",
+      "note": "shiny-prelude-collection-mei-izumi-2026 記事に統合"
+    },
+    {
+      "dedup_key": "shiny-illumination-stars-dmm-scratch-2026",
+      "reason": "出典不足",
+      "note": "出典がくじ紹介サイト(二次情報)のみで、公式・当事者(DMM等)の告知に未到達"
+    },
+    {
+      "dedup_key": "shiny-autumn-idol-training-2026",
+      "reason": "出典不足",
+      "note": "秋のアイドル強化週間の開始自体は既報(shiny-aki-idol-kyoka-2026)。新登場SR「園田智代子」は二次情報(Yahooリアルタイム検索まとめ)のみで公式未確認のため書けない"
+    },
+    {
+      "dedup_key": "general-mikoto-birthday-2026",
+      "reason": "個人の話題",
+      "note": "個人のSNS投稿(誕生日祝いハッシュタグ)のため単体記事化しない"
+    },
+    {
+      "dedup_key": "shiny-2096978044804067836",
+      "reason": "重複",
+      "note": "shiny-mikoto-birthday-2026 記事に統合"
+    },
+    {
+      "dedup_key": "shiny-2096978295753449737",
+      "reason": "重複",
+      "note": "shiny-mikoto-birthday-2026 記事に統合"
+    },
+    {
+      "dedup_key": "shiny-2096886440374501693",
+      "reason": "重複",
+      "note": "shiny-prelude-collection-mei-izumi-2026 記事に統合"
+    },
+    {
+      "dedup_key": "shiny-2096976794541081054",
+      "reason": "重複",
+      "note": "shiny-mikoto-birthday-2026 記事に統合"
+    },
+    {
+      "dedup_key": "shiny-2096977037504503948",
+      "reason": "重複",
+      "note": "shiny-mikoto-birthday-2026 記事に統合"
+    },
+    {
+      "dedup_key": "shiny-2096977289141776586",
+      "reason": "重複",
+      "note": "shiny-mikoto-birthday-2026 記事に統合"
+    },
+    {
+      "dedup_key": "shiny-2096977541466566858",
+      "reason": "重複",
+      "note": "shiny-mikoto-birthday-2026 記事に統合"
+    },
+    {
+      "dedup_key": "shiny-2096886201118839065",
+      "reason": "既報",
+      "note": "「パラレル回廊」の名称・会期(9/20-27)・会場は shiny-parallel-collection-popup-2026 で既報。新事実なし"
+    },
+    {
+      "dedup_key": "https-idolmaster-official-jp-live-event-283production-msp",
+      "reason": "既報",
+      "note": "283 PRODUCTION Solo Live -Master ShowPiece- の公演情報・グッズ詳細は shiny-283-production-solo-live-2026 で既報。新事実なし"
+    },
+    {
+      "dedup_key": "s-www-city-chikusei-lg-jp-kankou-kankou-news-page013798-html",
+      "reason": "既報",
+      "note": "筑西市コラボの期間・グッズ詳細は shiny-chikusei-collab-2026 で既報。新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

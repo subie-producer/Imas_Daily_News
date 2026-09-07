@@ -1,0 +1,125 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-google-play-ranking-top20-0907",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "『学園アイドルマスター』が9月7日時点のGoogle Play売上ランキング(ゲームカテゴリー)でトップ20圏内に復帰。9月4日開催の「麻央&千奈&清夏 標ガシャ」が押し上げ要因と報じられている。",
+      "lead_score": 20,
+      "dedup_key": "gaku-google-play-ranking-top20-2026-09-07",
+      "candidate_ids": ["202609071836-explore-17"]
+    },
+    {
+      "slug": "gaku-keikou-mv-5million-views",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "篠澤広ソロ曲「光景」のMusic Videoが公開から500万再生を突破したと学マス公式Xが発表。",
+      "lead_score": 10,
+      "dedup_key": "gaku-2096901289485492365",
+      "candidate_ids": ["202609080227-grok-52"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "gaku-livetour-shirube-fukuoka-2026",
+      "reason": "既報",
+      "note": "スナップシリーズ受注・Season solo Collection先行販売は既報(gaku-shirube-livetour-fukuoka-2026／gaku-shirube-iwate-goods-2026)と同内容"
+    },
+    {
+      "dedup_key": "gaku-livetour-shirube-fukuoka-setlist-2026",
+      "reason": "既報",
+      "note": "福岡DAY2の新曲披露・アーカイブ計画は既報(gaku-shirube-livetour-fukuoka-2026)と同内容"
+    },
+    {
+      "dedup_key": "gaku-fukuoka-day1-official-announcements-2026",
+      "reason": "既報",
+      "note": "「修楽旅行」CD予約(既報:gakumas-shugakuryoko-single-2026)とSeason solo Collection先行販売(既報:gaku-shirube-iwate-goods-2026)の再掲"
+    },
+    {
+      "dedup_key": "gaku-shirube-final-asobistore-second-advance-2026",
+      "reason": "既報",
+      "note": "ファイナル公演2次先行の日程・価格は既報(gaku-shirube-finale-ticket-buzz)と完全一致"
+    },
+    {
+      "dedup_key": "gaku-shirube-fukuoka-day1-report-2026",
+      "reason": "既報",
+      "note": "新曲「nazonazo」「神かわいい」初披露は既報(gaku-shirube-livetour-fukuoka-2026)。福岡限定演出等の追加描写のみで新事実なし"
+    },
+    {
+      "dedup_key": "gaku-shirube-fukuoka-day2-setlist-2026",
+      "reason": "重複",
+      "note": "福岡DAY2は既報(gaku-shirube-livetour-fukuoka-2026)。同一公演の二次情報による詳細セットリストで新事実なし"
+    },
+    {
+      "dedup_key": "gaku-shirube-fukuoka-day2-order-fake-me",
+      "reason": "既報",
+      "note": "「ORDER FAKE」「め」初披露・配信開始日は既報(gaku-shirube-livetour-fukuoka-2026)と同内容"
+    },
+    {
+      "dedup_key": "gaku-live-tour-shirube-fukuoka-2026",
+      "reason": "既報",
+      "note": "視聴コメント付きアーカイブの販売・視聴期間は既報(gaku-shirube-livetour-fukuoka-2026)と同内容"
+    },
+    {
+      "dedup_key": "gaku-star-mine-streaming-2026",
+      "reason": "既報",
+      "note": "「Star-mine」配信は8/30初出、9/6付でも既報(gakumas-tracks-streaming-0831-2026)"
+    },
+    {
+      "dedup_key": "gakumas-shirube-fukuoka-day1-2026",
+      "reason": "重複",
+      "note": "福岡DAY1の新曲初披露は既報。同一事実を扱う二次情報で新事実なし"
+    },
+    {
+      "dedup_key": "gaku-2096527197687214179",
+      "reason": "既報",
+      "note": "Gravure Solo Collection Vol.1の発売日・価格・特典・予約期限は既報(gakumas-gravure-solo-collection-vol1-2026)と同内容の公式リマインド投稿"
+    },
+    {
+      "dedup_key": "gaku-2096527235742400647",
+      "reason": "既報",
+      "note": "雨夜燕2nd&3rd Singleの収録内容・予約期限は既報(gaku-tsubame-2nd-3rd-single-preorder-2026)と同内容の公式リマインド投稿"
+    },
+    {
+      "dedup_key": "gaku-2096527279946178737",
+      "reason": "既報",
+      "note": "「ORDER FAKE」配信開始(9/7)は既報(gaku-shirube-livetour-fukuoka-2026)と同内容"
+    },
+    {
+      "dedup_key": "gaku-2096527306944852209",
+      "reason": "既報",
+      "note": "「め」配信開始(9/7)は既報(gaku-shirube-livetour-fukuoka-2026)と同内容"
+    },
+    {
+      "dedup_key": "gaku-2096527650382889023",
+      "reason": "既報",
+      "note": "「め」ガシャ開催決定(9/20予定)は既報(gaku-shirube-livetour-fukuoka-2026)と同内容"
+    },
+    {
+      "dedup_key": "gaku-2096535656998850856",
+      "reason": "その他",
+      "note": "DAY2終演の謝辞投稿のみで新事実なし。次公演が岩手であることも既報"
+    },
+    {
+      "dedup_key": "gaku-2096535771947937913",
+      "reason": "既報",
+      "note": "DAY2セットリスト公開の告知は既報(gaku-shirube-livetour-fukuoka-2026)と同内容"
+    },
+    {
+      "dedup_key": "gaku-2096544025813868796",
+      "reason": "既報",
+      "note": "DAY2最速版アーカイブの公開時間は既報(gaku-shirube-livetour-fukuoka-2026)と同内容"
+    },
+    {
+      "dedup_key": "gaku-2096886986317730066",
+      "reason": "既報",
+      "note": "視聴コメント付きアーカイブ公開時間は既報。公演アンケート実施は新事実に乏しく単独記事化基準に届かない"
+    },
+    {
+      "dedup_key": "l-jp-live-event-gkmas-livetour-shirube-information-iwate-php",
+      "reason": "既報",
+      "note": "岩手公演の日程・開場開演時刻・会場物販・チケット情報は既報(gaku-shirube-iwate-streaming-2026／gaku-live-tour-shirube-iwate-general-sale-2026／gaku-shirube-iwate-goods-2026)と同内容"
+    }
+  ],
+  "cross_brand": []
+}

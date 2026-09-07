@@ -169,6 +169,9 @@
   - 会場物販整理券の受付は9月4日13:00〜9月9日23:59、抽選結果(当落発表)は9月15日13:00から
   - 楽屋花は高さ・幅・奥行き各40cm以下の自立式に限定、設置場所はバックステージから来場者が見える場所に変更(観覧は開場後〜開演前)、送付先は代々木第一体育館(指定日時9月18日10時〜16時)
   - プレゼントは手紙・色紙等メッセージ類のみ受付、公演当日にメッセージBOXへ直接持込み(9月19・20日とも11時〜開演)、フラワースタンドの設置は見合わせ
+  - 会場物販グッズに「アイドルマスター カードフォリオ ミリオンライブ！ ver. Vol.4」(1パック500円、BOX 5,000円)、購入上限は通常商品1商品3点まで・カードフォリオ1パック5個またはBOX10個まで
+  - CD・映像売り場で対象商品3,000円購入ごとにA3ポスター(全4種)をランダム配布、12,000円以上購入で全種セット配布(特典は無くなり次第終了)
+  - 会場オリジナルCD「THE IDOLM@STER LIVE THE@TER SOLO COLLECTION『ドレスコード：最上級』」のPRINCESS STARS・FAIRY STARS・ANGEL STARS・765PRO ALLSTARSを各3,300円(税込)で9月19日発売
 - story_id: shiny-msp-goods-presale
   brand: shiny
   subject: シャニマス ソロライブMSP公式グッズ事前販売
@@ -289,6 +292,7 @@
   - 「公約四字熟語」グループH・I・Jのデザインを8月29日・30日に公開、アクリルキーホルダー(800円)・ステッカー(400円)は9月13日23:59まで受注
   - 総選挙2026公式応援3wayトートバッグ(税込8,800円、数量限定)を販売中、商品は2026年11月下旬以降順次届く
   - 総選挙24/7配信は一時更新を中断していたが、公開準備を終えて9月4日付で更新を再開(更新時刻は23時)
+  - 「公約四字熟語」公式グッズにグループRのトレーディングステッカーが追加、9月13日23:59まで受注(アソビストア)
 - story_id: shiny-illumine-anisama2026
   brand: shiny
   subject: アニサマ2026にイルミネーションスターズ出演
@@ -819,6 +823,9 @@
   - 公演終了後、DAY1・DAY2それぞれで振り返り生配信「ばくすて！とーく」を実施、DAY1は若林直美・斉藤佑圭、DAY2は若林直美・赤羽根健治が出演
   - 現地チケット一般販売(先着)は9月5日23:59に締切(9月3日以降の支払いはクレジットカードのみ)。公式リセールは9月6日9:59まで受付
   - キッチンカー「EVER EVER KITCHEN」の事前整理券受付を9月5日12時にLivePocketで開始、会場内では11th STAGE記念コラボドリンク(オリジナルコースター付き)も販売
+  - 会場物販整理券・CD映像整理券の当落発表は9月8日13:00から、公式グッズのデジタル注文書も同時刻に利用開始
+  - キッチンカー「EVER EVER KITCHEN」は電子決済のみ、9月7日付で決済方法の案内を更新
+  - キャスト意気込みコメントリレーで汐谷文康さん(北村想楽役)の動画を9月7日付で公開
 - story_id: cg-star-village-achi-summer-2026
   brand: cg
   subject: シンデレラガールズ×スタービレッジ阿智 コラボ2026
@@ -2195,6 +2202,7 @@
   - イベント期間限定ショップは8月31日15時〜9月8日20時59分、セットA〜Dで有償/無償ミリオンジュエルと消耗アイテムを販売(1日1〜3回、最終日利用不可のセットあり)
   - イベントptランキング報酬はSR「2人だけの秘密 四条貴音」、累積イベントpt報酬はSR「2人だけの秘密 豊川風花」
   - プレミアムパスDX/DX+購入者向け特典アイテムセットはスパークドリンクMAX5個+期間限定オートライブPASS5枚(無償ミリオンジュエル250個)、1度に20セットまで利用可
+  - 最終日(9月8日20:59まで)はセットC・Dが利用不可、セットA・Bはそれぞれ有償または無償ミリオンジュエル250個でスパークドリンクMAX5個とオートライブPASS5枚に交換可
 - story_id: reprint-pickup-gacha-2026-08-27
   brand: million
   subject: ミリシタ『日替わりピックアップ！限定復刻ガシャ』
@@ -3029,6 +3037,8 @@
   - 公式サイトが9月6日にオープンし、アソビストアプレミアム12か月会員先行のチケット申込を開始、受付は10月28日23:59まで(当落発表11月16日13:00〜)
   - 第一公演「TO:STARLIT OF PROMISE」(7/24 開場17:00・開演18:00)、第二公演「BE:STELLA OF ABSOLUTE」(7/25 開場11:00・開演12:00)、第三公演「IF:THE DAY OF JUDGMENT」(7/25 開場17:00・開演18:00)の全3公演
   - 限定グッズ付き全公演通し券は各54,000円、限定グッズ付き各公演チケットは各18,000円、通常チケットは各12,000円(いずれも税込)、枚数制限は1公演につき2枚まで
+  - 公演別出演アイドルを公開。第一公演「TO:STARLIT OF PROMISE」は星井美希・四条貴音・我那覇響・奥空心白・玲音・詩花・亜夜 and more、第二公演「BE:STELLA OF ABSOLUTE」は如月千早・高槻やよい・秋月律子・三浦あずさ・水瀬伊織・菊地真・双海亜美・双海真美・玲音・詩花、第三公演「IF:THE DAY OF JUDGMENT」は天海春香・如月千早・萩原雪歩・星井美希・四条貴音・我那覇響・天ヶ瀬冬馬・伊集院北斗・御手洗翔太
+  - ドレスコードは「所属プロダクションを表すアイテム」、可能な範囲での協力を呼びかけ
 - story_id: imas-20th-piano-collection-2026
   brand: '765'
   subject: アイマスピアノコレクション(20周年記念)
@@ -3116,6 +3126,7 @@
   - ASOBI STOREでのパック単体販売予定はなし
   - 9月4日付の投稿で桃子の新規描きおろしMRを公開、投稿時点で残り3種は次弾公開予定
   - 9月5日付の投稿で徳川まつりの新規描きおろしMRを公開、残り2種は9月6日正午に公開予定
+  - 9月6日に馬場このみ、9月7日に白石紬の新規描きおろしMRを公開し、全8種の公開が完了
 - story_id: million-kotobukiya-kuji-stage04-2026
   brand: million
   subject: ミリオン コトブキヤくじ stage04
@@ -3645,3 +3656,97 @@
   first_published: '2026-09-07'
   published_facts:
   - 「FAN FES WSI」(F@NTASTIC BATTLE FES ～Wanna step in～)のイベント公式グッズを販売中、SideM公式Xが9月5日付で告知
+- story_id: cg-vote-2026-special-exhibition
+  brand: cg
+  subject: シンデレラガール総選挙2026 特別展示(渋谷)
+  status: active
+  first_published: '2026-09-08'
+  published_facts:
+  - 特別展示を9月12日・13日10時〜21時にPickUpランキン 渋谷ちかみちで開催、入場無料
+  - 会場がチェックインスポットになり、アイドルマスターポータルでチェックインすると投票券10枚を獲得可能
+  - アイドル190人の紹介動画や公式出馬風ポスタービジュアルを使用した装飾のほか、総選挙2026公式グッズと15周年イベント公式グッズの一部を展示(デザインは監修中で実際の商品と異なる場合あり)
+- story_id: idol-ultimate-street-ads-2026
+  brand: joint
+  subject: 765×961合同ライブ 街頭広告
+  status: active
+  first_published: '2026-09-08'
+  published_facts:
+  - 「IDOL ULTIMATE ONCE AND FOR ALL」の街頭広告を渋谷駅・名古屋駅・大阪駅で9月7日〜13日に同時掲出、公式Xが目撃時のハッシュタグ「#xR_765vs961」投稿を呼びかけ
+  - ファン投稿では、名古屋駅ユニモール入口・渋谷・大阪駅での掲出目撃が報告されている
+- story_id: shiny-prelude-collection-mei-izumi-2026
+  brand: shiny
+  subject: シャニマス「プレリュードコレクション」和泉愛依
+  status: active
+  first_published: '2026-09-08'
+  published_facts:
+  - SSRサポートアイドル「【三つ子の魂えたーなる！】和泉 愛依」が登場、獲得すると幼少期の和泉愛依をホームユニットに設定可能
+  - スタンプ5個・10個でメモリーチャーム、20個で限定入りSSR以上確定ガシャチケット、30個で専用セレチケを獲得できるスペシャル/特別ミッションを開催中
+  - 「プレリュードコレクション愛依ピース付きパッケージ」(S-SSRピース×10+同内容ガシャチケット)を販売中、購入は1人4回まで
+- story_id: shiny-mikoto-birthday-2026
+  brand: shiny
+  subject: 緋田美琴の誕生日記念施策(2026)
+  status: active
+  first_published: '2026-09-08'
+  published_facts:
+  - シャニマス本編で「誕生日ミニコミュ」「限定入り HAPPY BIRTHDAY 美琴スタンプガシャ」を開催、フェザージュエル300個をプレゼント
+  - 誕生日ガシャ専用S-SSR「【NAP】緋田 美琴」が新登場、2025年ガシャのS-SSR「【SPECTACLES】緋田 美琴」も復刻
+  - Song for Prismでは誕生日記念ガシャを9月14日23:59まで開催、★5まで特訓するとアナザー衣装と記念称号を獲得可能
+  - 記念商品「美琴誕生日記念パック2026」「【Sweetie! a piece】緋田 美琴 特訓パック」「【precious, Grats!】緋田 美琴パック」(2025年衣装の復刻)を販売中
+- story_id: shiny-illumination-unit-costume-gacha-2026
+  brand: shiny
+  subject: イルミネーションスターズ ユニット衣装ピックアップガシャ
+  status: active
+  first_published: '2026-09-08'
+  published_facts:
+  - ユニット衣装ピックアップガシャを開催中、9月7日付公式Xで3人が「KoiKyun!」を踊る動画を公開
+- story_id: shiny-kazano-hiori-bunkei-package-2026
+  brand: shiny
+  subject: シャニマス「【分景】風野灯織」ピース付きパッケージ
+  status: active
+  first_published: '2026-09-08'
+  published_facts:
+  - 「【分景】風野 灯織ピース付きパッケージ」を販売中。S-SSR「【分景】風野 灯織のピース」10個+同ガシャチケット1枚のセットで、購入は4回まで
+- story_id: 961-reflame-chibigurumi-2026
+  brand: joint
+  subject: 「961 PRODUCTION presents Re:FLAME」ちびぐるみ＆ポーチセット
+  status: active
+  first_published: '2026-09-08'
+  published_facts:
+  - 星井美希・四条貴音・我那覇響を立体化したちびぐるみ＆ポーチセット(各4,950円税込)の予約を9月6日13:00から開始、準備数に達し次第終了
+  - 2027年4月発送予定、アミューズメント景品としての展開予定はなし
+- story_id: joint-gigo-osaka-tours-s1-restock-2026
+  brand: joint
+  subject: GiGO大阪第4ビル ツアマスS1弾カード稼働状況
+  status: active
+  first_published: '2026-09-08'
+  published_facts:
+  - GiGO大阪第4ビルが9月7日、ツアマスS1弾カードを再入荷し全台がS1弾カードで稼働と告知
+- story_id: gaku-google-play-ranking-top20-2026-09-07
+  brand: gaku
+  subject: 学マス Google Play売上ランキング(9/7時点)
+  status: active
+  first_published: '2026-09-08'
+  published_facts:
+  - 9月7日9:30時点のGoogle Play売上ランキング(ゲームカテゴリー、Sensor Tower調べ)で20位となりトップ20圏内に復帰、9月4日開始の「麻央＆千奈＆清夏 標ガシャ」が押し上げ要因とみられる
+- story_id: sidem-shosen-kaeru-plush-2026
+  brand: sidem
+  subject: 「カエールぬいぐるみ 書泉エプロン着用ver.」
+  status: active
+  first_published: '2026-09-08'
+  published_facts:
+  - 書泉オンラインが9月7日付で『理由(ワケ)あって書店員！Beit in 書泉ブックタワー』の「カエールぬいぐるみ 書泉エプロン着用ver.」を案内
+- story_id: cg-popn-toybox-video-yugata-2026
+  brand: cg
+  subject: 「Pop'n ToyBox!!」夕方公演 映像アーカイブ
+  status: active
+  first_published: '2026-09-08'
+  published_facts:
+  - 8月13日夕方公演の「もしも『カワイイ』が世界からなくなっても」から「とっきゅーのぞみ」コーナーを特別編集した映像を9月6日にアイドルマスターチャンネルで公開
+- story_id: dsva-valiv-ops-roundup-2026-09-08
+  brand: dsva
+  subject: vα-liv 直近配信・出演まとめ(9月6〜8日)
+  status: active
+  first_published: '2026-09-08'
+  published_facts:
+  - 上水流宇宙が「【踊ってみた】『すきっ！〜超ver〜 / 超ときめき♡宣伝部』」をYouTube・TikTokで公開
+  - 9月8日、灯里愛夏が「#1【BIOHAZARD RE:2】はじめてのバイオ！！」を配信

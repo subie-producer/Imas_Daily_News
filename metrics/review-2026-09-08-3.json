@@ -1,0 +1,66 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "candidates に公式発表で verify:confirmed の話題が複数あり、紙面から漏れている。特に以下の高エンゲージメント話題：\n\n1. **765 PRODUCTION × 961 PRODUCTION xRライブ公演詳細発表＆チケット販売開始**（公式、2026-09-06発表、verify: confirmed）\n   - 765×961ライブ（IDOL ULTIMATE）のxRライブ版。別イベント。\n\n2. **SideM11th公式キッチンカー出店**（公式、verify: confirmed）\n   - SideM11th イベント会場での キッチンカー出店情報。記事17との関連施策だが別記事化相当。\n\n3. **ファイナル公演アソビストア一般会員2次先行**（公式、verify: confirmed）\n   - 学マスファイナル公演のチケット先行予約情報。\n\nこれらは「本数を理由としたドロップ」に該当する可能性がある。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-million-platinum-star-theater-finale.md",
+   "issue": "分量不足：本文236字（rank: small では最低250字）。出典にセットC・Dの内容（スパークドリンクMAX 5個 + 期間限定ライブスキップPASS 1枚）が記載されており、セットA・Bとの区別を明示することで読者理解を深める余地があります。",
+   "scope": "article:2026-09-08-million-platinum-star-theater-finale.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-765-idol-ultimate-cast-reveal-keyvisual.md",
+   "issue": "分量不足：rank: lead では 1000 字以上必要ですが、本文は 645 字。出典に会場（京王アリーナ TOKYO）・主催・企画・制作などの追加可能な情報があります。",
+   "scope": "article:2026-09-08-765-idol-ultimate-cast-reveal-keyvisual.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-gaku-google-play-ranking-top20-0907.md",
+   "issue": "分量不足の可能性: 記事本文が約155字で、small記事の下限250字に達していません",
+   "scope": "article:2026-09-08-gaku-google-play-ranking-top20-0907.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-joint-961-reflame-chibigurumi-yoyaku.md",
+   "issue": "表記ゆれ：「Re:FLAME」（frontmatter・lede で半角コロン）と「Re：FLAME」（本文で全角コロン）が混在。統一が必要",
+   "scope": "article:2026-09-08-joint-961-reflame-chibigurumi-yoyaku.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-joint-gigo-osaka-tours-s1-restock.md",
+   "issue": "分量不足：本文は83字で、rank: small（250字要件）に達していません。ただし、出典の投稿に追加可能な実質的な情報（価格、期間、対象条件など）が無いため、現在の内容が適切です",
+   "scope": "article:2026-09-08-joint-gigo-osaka-tours-s1-restock.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-joint-idol-ultimate-street-ads.md",
+   "issue": "分量が250字要件より14字不足（本文約236字）。候補に記載されているファン投稿の日時情報を追加することで埋まる。",
+   "scope": "article:2026-09-08-joint-idol-ultimate-street-ads.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-million-cardfolio-vol4-mr-complete.md",
+   "issue": "分量不足：small rank の下限 250 字に対して約 235 字。出典（candidates の facts）に記載されている販売価格（1BOX 5,000円・1パック 500円）や発売日（2026年9月19日）、商品構成（全114種、N52/R27/MLR27/MR8）を追加することで、記事の情報価値が高まります。",
+   "scope": "article:2026-09-08-million-cardfolio-vol4-mr-complete.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-shiny-illumination-unit-costume-gacha-2026.md",
+   "issue": "分量不足: small rank は下限 250字以上が要件だが、本文は 80字のみ。出典の公式X投稿に開催期間・対象キャラクターなどの詳細情報が無いため本文が簡潔にならざるを得ないが、ガシャの「いつまで」「誰が」といった読者が必要とする基本情報が完全に不足。出典では提供できない情報は補える（例: イルミネーションスターズとはどんなユニットか）なら補い、250字を目指す。難しければ、詳細不足の理由を明確にして検討要。",
+   "scope": "article:2026-09-08-shiny-illumination-unit-costume-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-shiny-prelude-collection-mei-izumi-2026.md",
+   "issue": "重要な開催期間情報が漏れている。candidates の 202609072334-explore-6（gameo.jp）には『開催期間: 2026年9月7日～2026年9月29日 11:59まで（予定）』が記載されているが、記事に反映されていない。読者が『いつまでガシャを引けるのか』『いつまでパッケージを購入できるのか』を知るために重要な情報。",
+   "scope": "article:2026-09-08-shiny-prelude-collection-mei-izumi-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-shiny-prelude-collection-mei-izumi-2026.md",
+   "issue": "frontmatter の src（二次情報）と sources の構成が不一致。sources に公式が2個、二次情報が2個含まれているのに対し、src は「二次情報」と分類されている。記事の主要内容が公式X投稿に基づいている場合、src を「公式」にするか、sources の優先度を見直すべき。",
+   "scope": "article:2026-09-08-shiny-prelude-collection-mei-izumi-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-08-sidem-shosen-kaeru-plush.md",
+   "issue": "分量不足：rank:small の下限(250字)に対して本文が約104字。出典に価格・在庫情報が無い(文字化けのため)ため、現在の情報量では埋まりません。可能でしたら、商品ページから取得可能な仕様・価格などを追加して250字以上に拡充してください。",
+   "scope": "article:2026-09-08-sidem-shosen-kaeru-plush.md"
+  }
+ ]
+}

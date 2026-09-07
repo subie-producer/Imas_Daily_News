@@ -1,0 +1,82 @@
+{
+  "articles": [
+    {
+      "slug": "million-cardfolio-vol4-mr-complete",
+      "brand": "million",
+      "rank": "small",
+      "angle": "「アイドルマスター カードフォリオ ミリオンライブ！ver. vol.4」の新規描き下ろしMR全8種の公開が完了(9/6このみ、9/7紬で最後の1枚)。14thLIVE会場での先行販売を告知。",
+      "lead_score": 40,
+      "dedup_key": "million-cardfolio-vol4-cardlist-2026",
+      "candidate_ids": ["202609072334-explore-4", "202609080227-grok-64"]
+    },
+    {
+      "slug": "million-14th-live-goods-info",
+      "brand": "million",
+      "rank": "small",
+      "angle": "14thLIVE会場物販(グッズ・CD・映像)の日時・場所を案内(9/19 11:00〜17:30、9/20 11:00〜16:30、国立代々木競技場第一体育館原宿口前特設テント)。カードフォリオvol.4も先行販売対象。",
+      "lead_score": 10,
+      "dedup_key": "https-idolmaster-official-jp-live-event-million14th-goods",
+      "candidate_ids": ["202609080227-grok-68"]
+    },
+    {
+      "slug": "million-platinum-star-theater-finale",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ「プラチナスターシアター〜秘密のメモリーズ〜」が本日20:59に終了。イベント期間限定ショップも同時刻まで、ランキング報酬SR四条貴音・累積pt報酬SR豊川風花を狙える最終日であることを伝える。",
+      "lead_score": 25,
+      "dedup_key": "million-platinum-star-theater-2026-09-01",
+      "candidate_ids": [
+        "sched-2026-09-08-million-platinum-star-theater-2026-09-01-終了",
+        "sched-2026-09-08-pst-himitsu-no-memories-終了"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-premium-pickup-sr-gacha-2026-09",
+      "reason": "出典不足",
+      "note": "出典は攻略Wiki(gamerch)のみでverify=unconfirmed。ゲーム内施策は公式告知が必須(規程2)だが未到達。"
+    },
+    {
+      "dedup_key": "million-tsubasa-p-understanding-2026",
+      "reason": "個人の話題",
+      "note": "個人ファンブログの1記事(未確認)。規程4により個人のSNS/ブログ投稿は単体で記事化しない。"
+    },
+    {
+      "dedup_key": "million-official-shop-lottery-stock-nipponbashi-2026-09-07",
+      "reason": "既報",
+      "note": "stock/stories.ymlのmillion-shop-lottery-stock-osaka-2026-08-31(8/31更新)と在庫状況が完全に同一(A賞6種・B賞5種の品切れ内訳が一致)。新事実なし。"
+    },
+    {
+      "dedup_key": "million-2096908837924339916",
+      "reason": "既報",
+      "note": "second-hairstyle-gacha-mybrand-glasses-ayumu-akane(初報8/28)と同一ガシャの販促再掲。新しい日付・締切等のトリガーなし。"
+    },
+    {
+      "dedup_key": "million-2096893738023002565",
+      "reason": "その他",
+      "note": "締切は投稿日9/7 23:59で、発行日(9/8)06:00より前に終了済み(規程12)。"
+    },
+    {
+      "dedup_key": "million-2096523808509235262",
+      "reason": "既報",
+      "note": "cg-million-coming-soon-2026-08-26で最速先行(受付8/26 12:00〜9/13 23:59締切)は既に公開済み。今回の投稿は同一締切の再掲で新事実なし。"
+    },
+    {
+      "dedup_key": "ps-idolmaster-official-jp-live-event-million14th-information",
+      "reason": "既報",
+      "note": "公演日程・会場・料金はmillion-14th-live(初報7/12)で既報。ページ更新はSTREAMING/GOODS等でINFORMATION自体に新事実なし。"
+    },
+    {
+      "dedup_key": "https-idolmaster-official-jp-live-event-million14th-ticket",
+      "reason": "既報",
+      "note": "一般販売(先着)8/30 12:00〜9/12 23:59はmillion-14th-liveで既報。締切3日前トリガー(9/9)にも未到達で新事実なし。"
+    },
+    {
+      "dedup_key": "million-2096848529159602215",
+      "reason": "個人の話題",
+      "note": "声優個人(諏訪彩花)のSNS投稿。引用元の公式投稿も対象期間外(9/2)で新規性なし。規程4。"
+    }
+  ],
+  "cross_brand": []
+}

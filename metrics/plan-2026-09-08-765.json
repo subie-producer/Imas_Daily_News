@@ -1,0 +1,90 @@
+{
+  "articles": [
+    {
+      "slug": "765-idol-ultimate-cast-reveal-keyvisual",
+      "brand": "765",
+      "rank": "medium",
+      "angle": "「765 PRODUCTION×961 PRODUCTION IDOL ULTIMATE ONCE AND FOR ALL」で天海春香×天ヶ瀬冬馬が対峙するキービジュアルが公開され、第一・第二公演の出演アイドルが解禁。公演ごとのドレスコードがあることも判明(サイトオープン・先行チケット販売開始は既報のため新事実部分を中心に伝える)。",
+      "lead_score": 55,
+      "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+      "candidate_ids": [
+        "202609070736-explore-6",
+        "202609070736-explore-4",
+        "202609080227-grok-22",
+        "202609080227-grok-29",
+        "202609080227-grok-30"
+      ]
+    },
+    {
+      "slug": "765-tsumimatsu-oacome-archive-and-next",
+      "brand": "765",
+      "rank": "small",
+      "angle": "dual twin live「つみまつよるまち」キャスト生オーコメ配信のアーカイブが9/27まで公開中と判明。あわせて次回「ふたごぼしのつばさ」キャスト生オーコメ配信が9/23(水・祝)19:00に開催されることも告知された。",
+      "lead_score": 15,
+      "dedup_key": "765-2096554154689012017",
+      "candidate_ids": [
+        "202609080227-grok-24",
+        "202609080227-grok-25",
+        "202609080227-grok-26"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "765as-venue-cd-postorder-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml の columbia-venue-cd-aftersale-2026-08(brand: joint, 初出8/29)に同一の受付期間(〜9/13 23:59)・全12種・発送日(10/2)が既報。新事実なし"
+    },
+    {
+      "dedup_key": "765-reflame-chibigurumi-pouch-2026",
+      "reason": "重複",
+      "note": "既に合同面が joint-961-reflame-chibigurumi-yoyaku として記事化済み(961 Re:FLAME衣装のちびぐるみ&ポーチ、我那覇響・星井美希・四条貴音)。同一施策"
+    },
+    {
+      "dedup_key": "765-2096433211253703146",
+      "reason": "重複",
+      "note": "記事化(765-idol-ultimate-cast-reveal-keyvisual)へ統合。キービジュアル公開のX投稿"
+    },
+    {
+      "dedup_key": "765-2096439907724243335",
+      "reason": "既報",
+      "note": "アソビストアプレミアム会員先行チケット発売開始は stock/stories.yml に既報(公式サイトオープンとあわせて受付・当落日程まで既出)。ポスト本文にも新規情報なし"
+    },
+    {
+      "dedup_key": "765-2096868423641051423",
+      "reason": "重複",
+      "note": "既に合同面が joint-idol-ultimate-street-ads として記事化済み(渋谷・名古屋・大阪の街頭広告、9/7〜13)。同一施策"
+    },
+    {
+      "dedup_key": "765-2096893990041743484",
+      "reason": "既報",
+      "note": "stock/stories.yml の million ブランド運営まとめに同一ガシャ(dual twin live tour東京公演打ち上げ39ガシャ)が既報。加えて締切は9/7 23:59で、発行時点(9/8 06:00)より前に終了しており規程12により本日のニュースとして書けない"
+    },
+    {
+      "dedup_key": "765-2096592005048803335",
+      "reason": "重複",
+      "note": "記事化(765-tsumimatsu-oacome-archive-and-next)へ統合。オーコメ終了報告+次回「ふたごぼしのつばさ」告知のX投稿"
+    },
+    {
+      "dedup_key": "765-2096901294069792785",
+      "reason": "重複",
+      "note": "記事化(765-tsumimatsu-oacome-archive-and-next)へ統合。オーコメアーカイブ公開のX投稿"
+    },
+    {
+      "dedup_key": "https-www-famitsu-com-article-202609-86841",
+      "reason": "重複",
+      "note": "記事化(765-idol-ultimate-cast-reveal-keyvisual)へ統合"
+    },
+    {
+      "dedup_key": "https-news-denfaminicogamer-jp-news-260906e",
+      "reason": "重複",
+      "note": "記事化(765-idol-ultimate-cast-reveal-keyvisual)へ統合"
+    },
+    {
+      "dedup_key": "765-2096994629434626438",
+      "reason": "重複",
+      "note": "既に合同面 joint-idol-ultimate-street-ads の切り口(現地目撃投稿を含めて伝える)に統合済みの話題"
+    }
+  ],
+  "cross_brand": []
+}

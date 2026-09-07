@@ -2,7 +2,7 @@
 slug: joint-anime-girls-project-store-shanghai
 edition: 2026-09-06
 brand: joint
-src: 未確認
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -16,7 +16,7 @@ tags:
 sources:
   - url: https://www.bilibili.com/opus/1244186744338776068
     label: "偶像大师官方(アイドルマスター中国公式)の投稿"
-    type: 未確認
+    type: 公式
 event_date: 2026-09-22
 ---
 

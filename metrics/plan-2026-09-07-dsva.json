@@ -1,0 +1,57 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-cosmo-birthday-live-details",
+      "brand": "dsva",
+      "rank": "medium",
+      "angle": "上水流宇宙「BIRTHDAY ONLINE LIVE 2026」(9/12)の公式ページ公開で判明した公演スケジュール・会場・ゲスト出演者・配信特典を詳報",
+      "lead_score": 25,
+      "dedup_key": "dsva-cosmo-birthday-live-2026",
+      "candidate_ids": ["202609070234-grok-21"]
+    },
+    {
+      "slug": "dsva-cosmo-ace-combat8-tgs-reward",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "上水流宇宙、ACE COMBAT7配信クリアのご褒美でTGS2026出展のACE COMBAT8試遊データをプレイへ",
+      "lead_score": 5,
+      "dedup_key": "cosmo-ace-combat-8-tgs2026",
+      "candidate_ids": ["202609060734-explore-19"]
+    },
+    {
+      "slug": "dsva-manaka-kpf2026-detail",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "灯里愛夏、KPF2026(11/28-29・北九州メッセ/あるあるCity)出演の会場・入場無料・出演ステージ詳細が判明(2年連続出演)",
+      "lead_score": 5,
+      "dedup_key": "valiv-manaka-kpf2026",
+      "candidate_ids": ["202609061835-explore-18"]
+    },
+    {
+      "slug": "dsva-valiv-ops-roundup-0907",
+      "brand": "dsva",
+      "rank": "roundup",
+      "angle": "vα-liv直近の配信・出演まとめ: レトラ「SILENT HILL f」DAY05配信、上水流宇宙ショート動画公開、灯里愛夏がハクノ生誕イベント出演",
+      "lead_score": 0,
+      "dedup_key": "valiv-silent-hill-f-2026",
+      "candidate_ids": [
+        "202609060734-explore-17",
+        "202609061235-explore-21",
+        "202609060734-explore-21"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "valiv-yuzurenai-voice-2026",
+      "reason": "その他",
+      "note": "販売期間は2026年9月6日23:59までで、発行時点(9/7 06:00 JST)には既に終了しており「締切迫る」として報じられない(規程12)"
+    },
+    {
+      "dedup_key": "valiv-cosmo-birthday-voice-2026",
+      "reason": "既報",
+      "note": "stock/stories.ymlのvaliv-birthday-voice-kamimizu-2026(2026-09-06付既報)と販売期間・価格が完全一致、新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

@@ -115,3 +115,11 @@
   brand: gaku
   subject: 学マス「標」福岡公演記念ガシャ
   watch: 開催終了日(判明次第 triggers へ)
+- dedup_key: cg-number-one-cross-over-cd-2026
+  brand: cg
+  subject: 「CINDERELLA MASTER NUMBER ONE!」クロス×オーバー！CD化
+  watch: 発売日・価格(判明次第 triggers へ)
+- dedup_key: dsva-cosmo-ace-combat8-tgs-2026
+  brand: dsva
+  subject: 上水流宇宙 ACE COMBAT 8試遊配信
+  watch: 配信の具体的な日時(判明次第 triggers へ)

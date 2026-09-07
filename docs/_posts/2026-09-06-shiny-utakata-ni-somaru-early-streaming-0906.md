@@ -2,7 +2,7 @@
 slug: shiny-utakata-ni-somaru-early-streaming-0906
 edition: 2026-09-06
 brand: shiny
-src: 未確認
+src: 準公式
 rank: small
 corrected: false
 corrections: []
@@ -16,7 +16,7 @@ sources:
     type: 準公式
   - url: https://lnk.to/LZC-3650
     label: "配信リンク(lnk.to)"
-    type: 未確認
+    type: 準公式
 event_date: 2026-09-05
 ---
 

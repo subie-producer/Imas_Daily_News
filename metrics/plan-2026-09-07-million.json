@@ -1,0 +1,46 @@
+{
+  "articles": [],
+  "dropped": [
+    {
+      "dedup_key": "million-14th-goods-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml『ミリオン14thLIVE会場物販整理券』(first_published 2026-09-04)で受付期間・当落発表・会場物販の日時/場所/価格まで既出。新事実なし"
+    },
+    {
+      "dedup_key": "million-kotobukiya-kuji-stage04-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml『ミリオン コトブキヤくじ stage04』(first_published 2026-09-04)でテーマ・詳細発表日・販売開始日とも既出。新事実なし"
+    },
+    {
+      "dedup_key": "million-premium-pickup-sr-gasha-2026-09",
+      "reason": "既報",
+      "note": "stock/stories.yml『ミリシタ『プレミアムピックアップSRガシャ』新規4種追加』(first_published 2026-09-06)で追加SR4種・カード名まで既出。出典も二次情報(gamerch)のみで公式未到達、新規記述(シリーズ名・衣装テーマ)を単独で足す根拠に足りない"
+    },
+    {
+      "dedup_key": "million-platinum-star-theater-secret-memories-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml『プラチナスターシアター『秘密のメモリーズ』』(first_published 2026-08-28、9/4折り返し情報まで既出)でランキング報酬・累積報酬・開催期間は既出。出典も二次情報(gamerch)のみで新事実(マスターランク4アナザー衣装・楽曲タイプ)を記事化する根拠に足りない"
+    },
+    {
+      "dedup_key": "million-x-stream-theater-2026",
+      "reason": "出典不足",
+      "note": "シリーズ自体はstock『ミリシタ「X-STREAM THEATER」VOL.1パス』(2026-09-04)で公式発表済みだが、本候補が挙げる上位/累計報酬アイドルや10月チューンイベントは出典がファンサイト(raduga.pgw.jp/mililab)のみ・verify=unconfirmedで公式未到達のため書けない(規程2)"
+    },
+    {
+      "dedup_key": "million-sentou-hanabidan-tote-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml『ミリオンライブ！×まつり湯コラボ「ほ？っとひと息 銭湯HANABI団」グッズ通販』(first_published 2026-09-06)で予約開始9/4 17時・締切10/5・発送時期・トートバッグ2,200円含む価格一覧まで既出。新事実なし"
+    },
+    {
+      "dedup_key": "million-cardfolio-vol4-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml『カードフォリオ ミリオンライブ！ver. vol.4』(first_published 2026-09-04)で発売日・価格・内容・種類数まで既出。新事実なし"
+    },
+    {
+      "dedup_key": "million-second-hairstyle-mybrand-glasses-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml『セカンドヘアスタイルガシャ～myブランド編 with glasses～(舞浜歩・野々原茜)』(first_published 2026-08-28)でカード名・衣装名・同時登場SRまで既出。開催期間の確定日付のみの差分で新事実に当たらない"
+    }
+  ],
+  "cross_brand": []
+}

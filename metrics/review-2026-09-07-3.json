@@ -1,0 +1,92 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-07-765-dual-twin-tokyo-audio-commentary.md",
+   "issue": "規程5：新事実なしの続報。既報（stock/stories.yml の story_id: 765-dual-twinlive-venue-cd、初出：2026-07-12）の published_facts に『あずさ・律子公演の生オーディオコメンタリーを9月6日20時に実施、視聴コメント付きアーカイブは9月27日23:59まで公開中』と既に記載されており、記事はこの既報内容を繰り返しているだけで新たな事実を追加していない。また当日トリガーもない（実施日は9月6日＝前日、公開期限は9月27日だが記事は『公開予定』との現在進行形で述べており、すでに期限日の当日でもある）。削除が正当。",
+   "quote": "記事 lede: 三浦あずさ・秋月律子 twin live「つみまつよるまち」東京公演の生オーディオコメンタリーが9月6日に実施され、視聴コメント付きアーカイブが9月27日23時59分まで公開される。\n\nstories.yml published_facts: あずさ・律子公演の生オーディオコメンタリーを9月6日20時に実施、視聴コメント付きアーカイブは9月27日23:59まで公開中",
+   "scope": "article:2026-09-07-765-dual-twin-tokyo-audio-commentary.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md",
+   "issue": "「クライアイ」を新曲として記載しているが、出典から新曲の定義が導けない（ブロック項目1）",
+   "quote": "新曲「Be proud」「クライアイ」「nazonazo」「神かわいい」がサプライズ初披露され",
+   "scope": "article:2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md",
+   "issue": "新曲の定義が出典間で矛盾している。記事は4曲の新曲を記載するが、ファミ通（報道）では「初解禁の新曲『神かわいい』」「サプライズ発表となった新曲『nazonazo』」の2曲のみ。公式候補でも『クライアイ』の作詞・作曲・編曲情報がない（ブロック項目1）",
+   "quote": "福岡公演DAY1では、サプライズとして4曲の新曲が披露された。「Be proud」の作詞・作曲はkenchang、編曲は齋藤優輝。「神かわいい」の作詞は早川博隆、作曲は早川博隆・広島拓弥、編曲は広島拓弥による楽曲。「nazonazo」はladyhood（Digz, Inc. Group）により作詞・作曲され、Connexio（Digz, Inc. Group）が編曲を担当した。",
+   "scope": "article:2026-09-07-gaku-shirube-fukuoka-day1-new-songs.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-joint-idol-ultimate-once-and-for-all-ticket-open.md",
+   "issue": "Sources に掲載されている Famitsu URL の内容が、記事の記述と不一致。記事では第二公演『開場11時・開演12時』と記述しているが、Famitsu 候補には『12:00開場、13:00開演』と異なる情報を保有。出典照合不可（規程3）",
+   "quote": "sources: [Famitsu URL: https://www.famitsu.com/article/202609/86841] と 記事本文: 『第二公演「BE:STELLA OF ABSOLUTE」は7月25日、開場11時・開演12時』",
+   "scope": "article:2026-09-07-joint-idol-ultimate-once-and-for-all-ticket-open.md"
+  },
+  {
+   "file": "docs/_editions/2026-09-07.md",
+   "issue": "版スナップショットの digest に削除予定の記事が参照されている。削除前に digest を更新する必要がある",
+   "quote": "digest昨日セクション:\n  - k: 配\n    t: つみまつよるまちオーコメ\n    slug: 765-dual-twin-tokyo-audio-commentary\n\n→ この記事は git status で D（削除）となっており、docs/_posts に存在しない",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-07-765-dual-twin-tokyo-audio-commentary.md",
+   "issue": "削除が実行された。ブロック理由（規程5）は前回の校閲指摘と変わっておらず、かつ既報の内容と実質同一であることが確認された。削除は妥当な判定であり、修正による再掲載は不可（新事実が追加されない限り）。",
+   "scope": "article:2026-09-07-765-dual-twin-tokyo-audio-commentary.md"
+  },
+  {
+   "file": "-",
+   "issue": "前回校閲の指摘が着実に反映されている。修正内容：① joint-idol-ultimate-once-and-for-all-ticket-open で第二公演開場時間が 12時→11時 に修正、② gaku-shirube-fukuoka-day1-new-songs で本文追加・新曲4曲明記、③ dsva-manaka-kpf2026-detail で『あるあるCity』言及削除・フェスティバル開催日を『28日・29日』に明確化",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-dsva-cosmo-ace-combat8-tgs-reward.md",
+   "issue": "前回指摘の type: 公式 分類が未修正。@KamizuruCosmo は個人ライバーアカウントで、type: 当事者 または type: 準公式 への変更が必要",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-cg-mayu-sakuma-birthday.md",
+   "issue": "本文の分量が極めて少ない。rank: small でも通常 250字以上を想定するが、この記事は大幅に下回っている。ただし規程9で「分量は記事の成立を阻害しない」と明記されているため指摘のみ",
+   "scope": "article:2026-09-07-cg-mayu-sakuma-birthday.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-cg-number-one-cross-over-cd.md",
+   "issue": "分量不足：rank: small でも 250字以上推奨だが、本文は約110字。出典のコロムビア公式ページに発売日・価格・収録内容などの詳細が掲載されていれば、記事で補足可能。ただし詳細が未発表なら現状で問題なし",
+   "scope": "article:2026-09-07-cg-number-one-cross-over-cd.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-cg-rose-tea-parlor-reserve-open.md",
+   "issue": "candidate_ids に存在しない候補を参照。'sched-2026-09-07-cg-rose-tea-parlor-2026-reserve-開始' が candidates ファイルに見つからない。ただし記事内容は sources（公式・当事者）で適切に支持されており、出典隠しではない。データ管理上のエラーのみ",
+   "scope": "article:2026-09-07-cg-rose-tea-parlor-reserve-open.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-general-creators-edge-xr-live-seminar-0929.md",
+   "issue": "分量: 出典に記載されている開催時間（11:00～12:30）・会場名（SPACE G）・協賛企業（株式会社マウスコンピューター）が記事に未記載。候補から取得可能な情報で、読者に有用な詳細情報",
+   "scope": "article:2026-09-07-general-creators-edge-xr-live-seminar-0929.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-shiny-aki-idol-kyoka-week-starts.md",
+   "issue": "分量不足：rank:small で最小250字ですが、記事は39字。候補に含まれるイベント期間（9月7日～29日）、報酬（SRサポートアイドル・称号・チケット）、特別オーディション、アイデアノートなどの詳細情報を本文に追加すれば充実するはずです。",
+   "scope": "article:2026-09-07-shiny-aki-idol-kyoka-week-starts.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-shiny-noctchill-event-ends-today.md",
+   "issue": "candidate_ids の形式『sched-2026-09-07-shiny-noctchill-event-2026-終了』が、実際の候補ファイル ID『202608260216-grok-35』と異なります。ただし出典 URL 照合で記事の正確性は確認済み（記事の『11時59分』『9月7日』は候補ファイル facts で確認）",
+   "scope": "article:2026-09-07-shiny-noctchill-event-ends-today.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-sidem-11th-cast-comment-barletta-yano.md",
+   "issue": "分量不足：rank: small で下限250字に対して209字（lede+本文）。41字不足。出典の facts に掲載されている「配信チケット購入案内」「現地チケット購入案内」の詳細や、SideM11th自体の開催日時・会場など補足情報を追加することで分量を埋められます。",
+   "scope": "article:2026-09-07-sidem-11th-cast-comment-barletta-yano.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-07-sidem-fan-fes-wsi-goods-sale.md",
+   "issue": "分量不足: 本文は約65字で、rank: small の下限250字を大きく下回っています。出典(SideM公式ツイート)にはグッズの種類・価格・販売期限などの詳細が書かれているはずですが、記事では最小限の情報のみを掲載しています。",
+   "scope": "article:2026-09-07-sidem-fan-fes-wsi-goods-sale.md"
+  }
+ ]
+}

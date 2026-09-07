@@ -185,5 +185,25 @@
   "verify": "confirmed",
   "src_candidate_id": "202609040226-explore-13",
   "deadline": "2026-09-20"
+ },
+ {
+  "id": "sched-2026-09-20-gaku-live-tour-shirube-fukuoka-me-gasha-2026-開始",
+  "dedup_key": "gakumas-shirube-fukuoka-day2-2026",
+  "brand": "gaku",
+  "subject": "篠澤広「め」ガシャ",
+  "kind": "開始",
+  "note": "福岡公演記念ガシャ(篠澤広「め」)開催",
+  "reserved_on": "2026-09-07",
+  "title": "学マス標ツアー福岡DAY2で新曲2曲",
+  "url": "https://idolmaster-official.jp/news/01_19744",
+  "source_type": "公式",
+  "facts": [
+   "篠澤広の歌う新曲「め」のガシャを2026年9月20日(日)に開催予定",
+   "福岡公演出演アイドルのみが登場する「LIVE TOUR -標- 福岡公演記念ガシャ」の一環"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609062336-watch-0",
+  "event_date": "2026-09-20"
  }
 ]

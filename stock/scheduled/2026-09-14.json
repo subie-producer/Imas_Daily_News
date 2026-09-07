@@ -130,5 +130,25 @@
       "「パラレル回廊」事前予約抽選の当落発表は9月14日12時頃"
     ],
     "src_candidate_id": "202609050237-grok-82"
+  },
+  {
+    "id": "sched-2026-09-14-sidem-transcendent-tales-lyricist-guide-4-2026-終了",
+    "dedup_key": "sidem-transcendent-tales-lyricist-guide-4-2026",
+    "brand": "sidem",
+    "subject": "SideM「TRANSCENDENT T@LES」舞台劇シーン試し読み動画",
+    "kind": "終了",
+    "note": "試し読み動画アーカイブ公開終了(10:00)",
+    "reserved_on": "2026-09-07",
+    "title": "SideM楽曲ガイド最終回、作詞家7人の解説",
+    "url": "https://pylonport.bandainamcomusiclive.co.jp/recommendmusic/822",
+    "source_type": "準公式",
+    "facts": [
+      "連動ストーリー12作品の舞台劇シーンをまとめた試し読み動画を期間限定公開",
+      "アーカイブ公開期間は2026年9月14日(月)10:00まで"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202609061835-explore-12",
+    "event_date": "2026-09-14"
   }
 ]

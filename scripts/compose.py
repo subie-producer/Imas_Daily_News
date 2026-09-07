@@ -1549,9 +1549,11 @@ def drop_blocked_articles(date: str, review: dict, written: list[dict]) -> tuple
     かといって号ごと止めるのは規程に反する(「発行を止めるくらいなら薄い紙面を出す」)。
     問題のある記事だけを落として、残りで出す。
 
-    **一面が指摘されている場合は落とさない。**号スナップショットの lead_slug と
-    digest が一面を指しているため、機械で抜くと組版と食い違う。
-    そこは人が見るべきなので、落とせなかったものとして返す。
+    **一面も落とす。**以前は「lead_slug と digest が一面を指しているので機械で抜くと
+    組版と食い違う」として落とさず、人へ回していた。だが呼び出し側は落としたあとに
+    必ず組版をやり直すので、食い違いは起きない。一面を残す運用は、一面1本の指摘で
+    号ごと止まる結果になった(実測 2026-09-07: ファミ通の時刻が公式と食い違う、
+    という一面の指摘1件で発行中止)。落として、残りから lead_score 最大を一面に立てる。
     """
     dropped, unresolved = [], []
     by_slug = {a["slug"]: a for a in written}
@@ -1563,15 +1565,26 @@ def drop_blocked_articles(date: str, review: dict, written: list[dict]) -> tuple
             unresolved.append(f"{f or '(対象不明)'}: {issue}")
             continue
         slug = name[len(date) + 1:].removesuffix(".md")
-        if by_slug.get(slug, {}).get("rank") == "lead":
-            unresolved.append(f"{f}(一面): {issue}")
-            continue
         p = ROOT / "docs" / "_posts" / name
         if p.exists():
             p.unlink()
         if slug not in dropped:
             dropped.append(slug)
     written[:] = [a for a in written if a["slug"] not in dropped]
+
+    # 一面が落ちたら立て直す。pick_lead と同じく roundup だけを除外する
+    if written and not any(a.get("rank") == "lead" for a in written):
+        cand = [a for a in written if a.get("rank") != "roundup"] or written
+        top = max(cand, key=lambda a: a.get("lead_score") or 0)
+        top["rank"] = "lead"
+        p = ROOT / "docs" / "_posts" / f"{date}-{top['slug']}.md"
+        if p.exists():
+            txt = p.read_text(encoding="utf-8")
+            m = re.match(r"^---\n(.*?)\n---\n", txt, re.S)
+            if m:
+                head = re.sub(r"^rank:.*$", "rank: lead", m.group(1), count=1, flags=re.M)
+                p.write_text("---\n" + head + "\n---\n" + txt[m.end():], encoding="utf-8")
+        print(f"一面が落ちたので {top['slug']} を一面に立てる(lead_score 最大)", flush=True)
     return dropped, unresolved
 
 
@@ -1767,6 +1780,10 @@ def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
                  "candidates の facts と照合して修正してください。他のファイルには触らないこと。\n"
                  "**`docs/_editorials/` には触らないこと。**社説は別のセッションが直します。\n"
                  "修正できない(出典に無い事実で、消すしかない)なら、その記述を削ってください。\n"
+                 "**出典同士が食い違っているなら、公式・当事者の記述に合わせ、食い違う弱いほうの出典を "
+                 "sources から外してください。**記事を弱い出典に合わせて書き換えてはいけません"
+                 "(実測 2026-09-07: 公式と電撃が『開場11時』、ファミ通だけ『12時』。記事は正しかったのに、"
+                 "ファミ通に合わせようとして4巡直らず、一面ごと発行が止まった)。\n"
                  + json.dumps(bs, ensure_ascii=False, indent=2)))
             for f, bs in by_file.items() if f.startswith("docs/_posts/")]
     if not jobs:

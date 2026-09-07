@@ -1,0 +1,41 @@
+{
+  "articles": [
+    {
+      "slug": "general-creators-edge-xr-live-seminar-0929",
+      "brand": "general",
+      "rank": "medium",
+      "angle": "9月29日にCreators Edgeで開催されるxRライブ制作セミナー「xRライブの作り方─DAIV×Unreal Engine」の詳細(講師・定員・参加費・協賛)と、会場に『アイドルマスター』xRライブ実機セットが展示され触れられることを非断定の文体で伝える",
+      "lead_score": 10,
+      "dedup_key": "xrlive-seminar-2026",
+      "candidate_ids": ["202609061235-watch-0", "202609070234-grok-23"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "mekurume-fukuoka-sns-buzz-2026",
+      "reason": "重複",
+      "note": "9/5標ツアー福岡公演DAY1の同一公演。gaku面「gaku-shirube-fukuoka-day1-new-songs」が同公演のセットリストと反響を既に扱う"
+    },
+    {
+      "dedup_key": "765-961-xr-live-2027",
+      "reason": "重複",
+      "note": "765×961 xRライブの公式サイトオープン・チケット販売開始として joint面「joint-idol-ultimate-once-and-for-all-ticket-open」が既に会場・時刻・出演・ドレスコードを列挙して扱う同一施策"
+    },
+    {
+      "dedup_key": "imas-20th-anniversary-piano",
+      "reason": "既報",
+      "note": "予約締切は9/6(出典も『本日締切』は9/6付)。stock/stories.ymlに同一の締切日・価格・特典が既報(imas-20th-piano-collection-2026, piano-collection-preorder-2026)。新事実なく、9/7号発行時点では締切済みで読者が今日できることも無い"
+    },
+    {
+      "dedup_key": "iuoafa-fan-reaction-2026-09-06",
+      "reason": "重複",
+      "note": "765×961 xRライブ公式発表(joint面が既に記事化)への反応数値のみで、独立した現象・トレンドとまでは言えず同一施策の付随情報"
+    },
+    {
+      "dedup_key": "anime-girls-project-store-shanghai-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml『joint-anime-girls-project-store-shanghai-2026』(first_published 2026-09-06)に開業日・住所・出展3作品が既報。新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

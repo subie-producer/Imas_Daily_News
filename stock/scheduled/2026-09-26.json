@@ -1,5 +1,26 @@
 [
  {
+  "id": "sched-2026-09-26-gakumasu-chugai-cafe-revival-shibuya-2026-締切",
+  "dedup_key": "gakumasu-chugai-cafe-revival-shibuya-2026",
+  "brand": "gaku",
+  "subject": "学マス×Chugai Grace Café渋谷リバイバル",
+  "kind": "締切",
+  "note": "先着予約受付終了(23:59)",
+  "reserved_on": "2026-09-07",
+  "title": "学マス×Chugai Grace Cafeが渋谷で復刻",
+  "url": "https://chugai-grace-cafe.jp/collaboration/gakuen_idolmaster_revival_shibuya/",
+  "source_type": "当事者",
+  "facts": [
+   "渋谷MODI 7Fでの先着予約受付は9月26日(土)23時59分まで",
+   "コラボ開催自体は9月27日(日)まで、当日空席があれば予約なしでも利用可"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202609062336-explore-22",
+  "event_date": "2026-09-03",
+  "deadline": "2026-09-26"
+ },
+ {
   "id": "sched-2026-09-26-shiny-msp-live-tickets-2026-開幕",
   "dedup_key": "shiny-msp-live-tickets-2026",
   "brand": "shiny",

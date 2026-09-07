@@ -1,0 +1,45 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-aki-idol-kyoka-week-starts",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "育成イベント「秋のアイドル強化週間」が9/7開幕。W.I.N.G.編の期間限定特別オーディション、ファン感謝祭編の期間限定アイデアノート、G.R.A.D.編PRのファン満足度上昇量アップなど当日から使える仕様を伝える",
+      "lead_score": 20,
+      "dedup_key": "shiny-aki-idol-kyoka-2026",
+      "candidate_ids": ["202609060734-explore-8", "sched-2026-09-07-shiny-aki-idol-kyoka-2026-開始"]
+    },
+    {
+      "slug": "shiny-noctchill-event-ends-today",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "ノクチルのシナリオイベント「いつか風が止むその日まで」、本日9/7 11:59で開催終了。プレイできるのは今日まで",
+      "lead_score": 10,
+      "dedup_key": "shiny-noctchill-event-2026",
+      "candidate_ids": ["sched-2026-09-07-shiny-noctchill-event-2026-終了"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-parallel-corridor-2026",
+      "reason": "既報",
+      "note": "POP UP SHOP「パラレル回廊」の開催決定・会期(9/20-9/27)・会場・展示内容・事前予約抽選日程は8/26付ストック(shiny-parallel-collection-popup-2026)で既報。今回追加された休業日/入場料/営業時間は付随情報にとどまり、9/7時点で新たな行動喚起はない"
+    },
+    {
+      "dedup_key": "shiny-msp-official-resale-2026",
+      "reason": "既報",
+      "note": "283 PRODUCTION Solo Live Collection公式リセール9/5開始は8/26付ストック(shiny-msp-live-tickets-2026)で既報。出典もYahooリアルタイム検索の二次情報で未確認"
+    },
+    {
+      "dedup_key": "shiny-union-arena-restock-2026",
+      "reason": "出典不足",
+      "note": "未確認の非公式まとめサイト(nyuka-now.com)による一般的な品薄・再販傾向の紹介で、9/7に何か新しく発表・開始されたわけではない。エンゲージメントも低"
+    },
+    {
+      "dedup_key": "shiny-msp-resale-2026",
+      "reason": "既報",
+      "note": "shiny-msp-official-resale-2026と同一事象(公式リセール9/5開始、受付9/16まで)。公演詳細・価格・販売期間ともに8/26付ストックで既報済みで、9/7時点で新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

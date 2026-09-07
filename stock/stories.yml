@@ -41,6 +41,7 @@
   - 東京公演アンコールでは、あずさがロングヘア、律子が三つ編みの髪型を披露し、会場から大きなどよめきが起きた
   - 東京公演の千秋楽をGamerが報道、アーカイブ販売期間は9月27日22時まで(視聴期限は9月27日23:59)
   - オーコメ視聴のハッシュタグは「#つみまつ_オーコメ」(あずさ・律子)、「#ふたごぼし_オーコメ」(亜美・真美)、全6公演のxRライブストリーミングチケットは9月27日まで販売中
+  - 会場オリジナルCD全12種の事後通販をコロムビアミュージックショップで受付中、受付期間は9月13日23:59まで、発送は10月2日一斉予定
 - story_id: million-9th-anniversary-mission
   brand: million
   subject: ミリシタ9周年アニバーサリーミッションとイベント「最上級:Invit@tion!」
@@ -1941,6 +1942,7 @@
   - 8月28日開始、開催期間は2026年8月28日〜9月7日11:59の予定
   - 公式がイベント予告動画を公開
   - 新登場のSSRサポートアイドルは【なんでもない夏】福丸小糸
+  - 予定通り9月7日11時59分に終了予定
 - story_id: million-item-exchange-2026-08
   brand: million
   subject: ミリシタ イベントアイテム交換所 追加
@@ -1976,6 +1978,7 @@
   - 8月29日付は浦尾岳大さん(兜大吾役)のコメントを紹介
   - 8月31日付は深町寿成さん(黒野玄武役)のコメント動画を紹介
   - 9月2日付は熊谷健太郎さん(握野英雄役)のコメント動画を紹介、約118秒
+  - 意気込みコメントリレー、9月5日付は矢野奨吾さん(岡村直央役)、9月6日付はバレッタ裕さん(華村翔真役)を紹介
 - story_id: sidem-315pro-night-2026
   brand: sidem
   subject: SideM「315プロNight」
@@ -2589,6 +2592,7 @@
   first_published: '2026-08-31'
   published_facts:
   - 「Howling over the World」(烏屋茶房作詞・作曲・編曲、花海佑芽・秦谷美鈴・十王星南)、「ミラクルナナウ(ﾟ∀ﾟ)！」(YUC'e作、葛城リーリヤ・倉本千奈・姫崎莉波)、「ENDLESS DANCE」3編成版(リーリヤ・千奈・莉波/咲季・手毬・ことね/麻央・清夏・広、首藤義勝作詞作曲・藤永龍太郎編曲)の計5曲を8月31日にストリーミング&ダウンロードで公開
+  - 「Howling over the World」「ENDLESS DANCE」(有村麻央・紫雲清夏・篠澤広ver./花海咲季・月村手毬・藤田ことねver.)「Star-mine」が9月6日付でStreaming&DL公開、Star-mineの作詞・作曲・編曲はじんが担当
   - 「ENDLESS DANCE」2ver.・「Howling over the World」・「ミラクルナナウ(ﾟ∀ﾟ)！」を2026年9月6日付でStreaming&DL公開と案内
 - story_id: joint-atre-akihabara-kuji-stock-2026
   brand: joint
@@ -3022,6 +3026,9 @@
   published_facts:
   - IWSF2026の場で発表、開催日は2027年7月24日(土)・25日(日)、会場は京王アリーナTOKYO
   - シリーズ統括の波多野公士氏が、開催の約1年前に発表した理由を説明
+  - 公式サイトが9月6日にオープンし、アソビストアプレミアム12か月会員先行のチケット申込を開始、受付は10月28日23:59まで(当落発表11月16日13:00〜)
+  - 第一公演「TO:STARLIT OF PROMISE」(7/24 開場17:00・開演18:00)、第二公演「BE:STELLA OF ABSOLUTE」(7/25 開場11:00・開演12:00)、第三公演「IF:THE DAY OF JUDGMENT」(7/25 開場17:00・開演18:00)の全3公演
+  - 限定グッズ付き全公演通し券は各54,000円、限定グッズ付き各公演チケットは各18,000円、通常チケットは各12,000円(いずれも税込)、枚数制限は1公演につき2枚まで
 - story_id: imas-20th-piano-collection-2026
   brand: '765'
   subject: アイマスピアノコレクション(20周年記念)
@@ -3189,6 +3196,16 @@
   - 11th STAGE会場(TOYOTA ARENA TOKYO)にも9月12・13日に専用自販機が先行登場
   - アニメイト札幌・山形・郡山でも専用自販機を設置、ラベルはステッカーとしても利用可、数量限定のオリジナルアクキーが当たる場合あり
   - 11th STAGE会場の専用自販機はTOYOTA ARENA TOKYOゲートプラザに設置、9月12・13日の各10:00〜17:30予定
+- story_id: sidem-transcendent-tales-lyricist-guide-2026
+  brand: sidem
+  subject: SideM「TRANSCENDENT T@LES」楽曲ガイド(作詞家インタビュー全4回)
+  status: active
+  first_published: '2026-09-07'
+  published_facts:
+  - 全4回連載の最終回で、シリーズ楽曲を手がけた7名の作詞家(松井洋平・真崎エリカ・マイクスギヤマ・結城アイラ・Safari Natsukawa・山崎寛子・新谷風太)が担当曲の制作意図を語る
+  - 松井洋平は「Wonderlander's Party」「奇想天外狂詩曲-FANTASTIC RHAPSODY-」、真崎エリカは「竜宮逢幻記」「True End's Tapestry」、マイクスギヤマは「CAST A SPELL」「お菓子なアドベンチャー」を担当
+  - 結城アイラは「LET'S HAVE!」「OLYMPUS GOD STARS」、Safari Natsukawaは「YELLOW!」、山崎寛子は「Duckling Soars」「Ring Ding Wrong」、新谷風太は「てのうえで踊るメヌエット」を担当
+  - 連動ストーリー12作品の舞台劇シーンをまとめた試し読み動画を期間限定公開、アーカイブ期間は9月14日10:00まで
 - story_id: sidem-transcendent-tales-guide-09-12-2026
   brand: sidem
   subject: SideM「TRANSCENDENT T@LES」連動ストーリー＆楽曲ガイド
@@ -3283,6 +3300,8 @@
   published_facts:
   - 渋谷モディ7Fで9月3日〜9月27日開催、入場予約チケット500円(飲食代として利用可)
   - 新メニュー3種(各1,800円税込)、13人イメージのメニュー・スイーツ衣装の新作グッズも展開
+  - 各回80分制で5部制(11:10〜19:50)、先着予約受付は9月26日23:59まで
+  - ドリンクチケットは後日再来店時にランダムラテと引き換え可能、有効期限は9月27日まで
 - story_id: gaku-endless-dance-saki-temari-kotone-2026
   brand: gaku
   subject: 「ENDLESS DANCE」3人歌唱版配信
@@ -3344,6 +3363,7 @@
   - 9月4日付で開催発表、テーマは「Rose Tea Parlor」「Crescent Princess」、新規描き下ろしイラストのグッズとコラボメニューを展開
   - 名古屋栄店10月1〜5日、心斎橋店10月28日〜11月4日、池袋店11月19〜26日、ソウル ホンデ店12月10〜27日で開催
   - HP公開・予約開始は9月7日19時、ソウル ホンデ店の予約は別途案内
+  - 予定通り9月7日19時にHP公開・予約受付を開始、フード「イヴ・サンタクロースのからあげ入りぬくもりダンボール」ほか、ドリンクは輿水幸子・佐久間まゆ・佐藤心・城ヶ崎莉嘉・望月聖・横山千佳をイメージした6種を用意
 - story_id: dsva-manaka-kpf2026-2026
   brand: dsva
   subject: 灯里愛夏 KPF2026出演
@@ -3351,6 +3371,7 @@
   first_published: '2026-09-05'
   published_facts:
   - 9月4日付Xで告知、11月29日に北九州メッセ(旧西展新館)で「灯里愛夏 スペシャルトーク＆ライブ」を開催、KPF2026会期は11月28〜29日、詳細は後日発表
+  - 29日のグリーンステージに出演、入場料・観覧料は無料、2025年に続き2年連続の出演
 - story_id: dsva-valiv-ops-roundup-2026-09-05
   brand: dsva
   subject: vα-liv 直近配信活動まとめ(9月2〜4日)
@@ -3390,6 +3411,9 @@
   - DAY2は9月6日15時30分開場・16時30分開演、配信視聴チケットは両日11,000円・DAY1/DAY2各5,500円(税込)
   - DAY2最速版アーカイブは公演終了1時間後〜9月7日18時、視聴コメント付きアーカイブは9月7日18時〜9月21日23:59。公演オリジナルデジタルチケット画像の生成期間は9月21日23:59まで
   - 福岡公演出演アイドルのみが登場する「LIVE TOUR -標- 福岡公演記念ガシャ」を開催中(9月5日付告知)
+  - DAY1セットリスト全20曲(ソロ15曲・全員歌唱5曲)を公式プレイリストで公開、新曲「Be proud」(kenchang作詞作曲・齋藤優輝編曲)「神かわいい」(早川博隆作詞・早川博隆/広島拓弥作曲・広島拓弥編曲)「nazonazo」(ladyhood作詞作曲・Connexio編曲)をサプライズ披露、配信は9月6日0時開始
+  - DAY2(9月6日)で新曲「ORDER FAKE」(にほしか作詞作曲編曲)「め」(虻瀬犬作詞作曲編曲)を披露、配信は9月7日0時から開始、「め」ガシャを9月20日に開催予定、福岡公演記念「スナップシリーズ」をアソビストアで受注中
+  - 福岡公演の最速版アーカイブは9月7日18時に終了し、同時刻から視聴コメント付きアーカイブへ切替(9月21日23:59まで)、プレゼント用視聴チケットの販売も決定
 - story_id: gaku-shirube-iwate-goods-2026
   brand: gaku
   subject: 学マス標ツアー岩手公演 会場物販
@@ -3399,6 +3423,8 @@
   - 会場物販はトーサイクラシックホール岩手で9月22日12時〜18時30分・23日11時〜16時30分に実施、公演チケットの有無にかかわらず利用可
   - 一部時間帯は事前抽選の整理券制、申込は9月9日23:59までASOBI TICKETで受付(ASOBI STORE会員登録要)、当落発表は9月15日13時から、1人1枚まで
   - 購入は1会計につき1商品3点まで、コンサートライト・Tシャツ・アクリルスタンド等各種グッズと3rd Single4作品(倉本千奈「空と約束」、紫雲清夏「Love & Joy」、秦谷美鈴「VEIL」、十王星南「赤裸々」、各2,500円)を販売
+  - 整理券を持たない人への当日案内は、9月22日は13時、9月23日は11時30分からの予定(当日の状況次第)
+  - Season Solo Collection(花海佑芽・十王星南・雨夜燕・秦谷美鈴、各3,000円)を販売、デジタル注文書は9月15日13時から利用可
 - story_id: gaku-livetour-iwate-viewing-2026
   brand: gaku
   subject: 学マス標ツアー岩手公演 台湾・香港ライブビューイング
@@ -3453,6 +3479,7 @@
   first_published: '2026-09-05'
   published_facts:
   - 秋の育成イベント「秋のアイドル強化週間」の開催を告知、開始は9月7日予定
+  - 予定通り9月7日に開始
 - story_id: shiny-countdown-love-3m-views-2026-09
   brand: shiny
   subject: シャニマス「カウントダウンラブ」MV再生数
@@ -3572,3 +3599,49 @@
   first_published: '2026-09-06'
   published_facts:
   - 福岡公演出演アイドルのみが登場する「LIVE TOUR -標- 福岡公演記念ガシャ」が開催中(9月5日付告知)
+- story_id: cg-mayu-sakuma-birthday-2026
+  brand: cg
+  subject: 佐久間まゆバースデー2026
+  status: active
+  first_published: '2026-09-07'
+  published_facts:
+  - アイマスchが9月7日の佐久間まゆさんの誕生日を祝うお祝いムービー「9/7 佐久間まゆさん Happy Birthday‼」を公開
+- story_id: cg-number-one-cross-over-cd-2026
+  brand: cg
+  subject: 「CINDERELLA MASTER NUMBER ONE!」クロス×オーバー！CD化
+  status: active
+  first_published: '2026-09-07'
+  published_facts:
+  - 「THE IDOLM@STER CINDERELLA MASTER NUMBER ONE!」シリーズでnew generationsとUNICUSが歌う「クロス×オーバー！」を収録したCDの発売が決定(発売日未定)、コロムビア公式ページが9月4日付で告知
+- story_id: dsva-cosmo-ace-combat8-tgs-2026
+  brand: dsva
+  subject: 上水流宇宙 ACE COMBAT 8試遊配信
+  status: active
+  first_published: '2026-09-07'
+  published_facts:
+  - 「ACE COMBAT 7」の配信クリア報酬として、TGS2026出展版「ACE COMBAT 8」の試遊データをプレイすると告知(配信日時は続報待ち)
+- story_id: dsva-valiv-ops-roundup-2026-09-07
+  brand: dsva
+  subject: vα-liv 直近配信・出演まとめ(9月5〜6日)
+  status: active
+  first_published: '2026-09-07'
+  published_facts:
+  - レトラが9月5日21時から「SILENT HILL f」DAY05を配信(ネタバレ注意)
+  - 上水流宇宙のショート動画「【162cm】How Tall Are You?」をYouTube Shorts・TikTokで公開
+  - 灯里愛夏が今酒ハクノの生誕イベント「#依然ストロング生2026」に出演、公式Xで第1部の終了を報告し、福岡で来場者と誕生日を祝った
+- story_id: general-creators-edge-xr-seminar-2026
+  brand: general
+  subject: CREATORS EDGE 2026 xRライブ特別セミナー
+  status: active
+  first_published: '2026-09-07'
+  published_facts:
+  - 「xRライブの作り方 ─DAIV×Unreal Engine」を9月29日11:00〜12:30、SPACE Gにて開催予定
+  - 定員30名・参加費1,000円(税込、買い物クーポン1,000円分の特典付き)、登壇はカゾエノブアキ氏(REZ&)
+  - 会場に『アイドルマスター』xRライブで使用したライブセットを展示、セミナー後に見学可能
+- story_id: sidem-fan-fes-wsi-goods-2026
+  brand: sidem
+  subject: SideM「FAN FES WSI」公式グッズ販売
+  status: active
+  first_published: '2026-09-07'
+  published_facts:
+  - 「FAN FES WSI」(F@NTASTIC BATTLE FES ～Wanna step in～)のイベント公式グッズを販売中、SideM公式Xが9月5日付で告知

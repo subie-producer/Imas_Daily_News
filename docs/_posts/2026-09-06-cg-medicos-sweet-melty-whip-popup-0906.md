@@ -2,7 +2,7 @@
 slug: cg-medicos-sweet-melty-whip-popup-0906
 edition: 2026-09-06
 brand: cg
-src: 未確認
+src: 当事者
 rank: medium
 corrected: false
 corrections: []
@@ -13,7 +13,7 @@ tags: [シンデレラガールズ, POP UP, グッズ, 抽選]
 sources:
   - url: https://www.medicos-e.net/newsdetail/imas_cinderella_popup2/
     label: "メディコス公式サイトの告知"
-    type: 未確認
+    type: 当事者
 event_date: 2026-09-10
 ---
 

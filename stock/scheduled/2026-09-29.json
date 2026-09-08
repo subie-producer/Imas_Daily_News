@@ -1,5 +1,23 @@
 [
   {
+    "id": "sched-2026-09-29-shiny-aki-idol-kyoka-2026-終了",
+    "dedup_key": "shiny-aki-idol-kyoka-2026",
+    "brand": "shiny",
+    "subject": "シャニマス秋の育成イベント「秋のアイドル強化週間」第16回",
+    "kind": "終了",
+    "note": "イベント期間終了11:59",
+    "reserved_on": "2026-09-09",
+    "title": "秋のアイドル強化週間 第16回",
+    "url": "https://wikiwiki.jp/shinycolors/%E7%A7%8B%E3%81%AE%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E5%BC%B7%E5%8C%96%E9%80%B1%E9%96%93%E3%80%90%E7%AC%AC16%E5%9B%9E%E3%80%91",
+    "source_type": "二次情報",
+    "facts": [
+      "「秋のアイドル強化週間」第16回の開催期間は9月29日11時59分まで",
+      "報酬はSRサポートアイドル【metomeスパークル】園田智代子、イベントミッションは全65個"
+    ],
+    "src_candidate_id": "202609080735-explore-7",
+    "deadline": "2026-09-29"
+  },
+  {
     "id": "sched-2026-09-29-shiny-axe8-2026-終了",
     "dedup_key": "shiny-axe8-2026",
     "brand": "shiny",

@@ -1,0 +1,77 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-shinkaifes-2026-valiv-lineup-0909",
+      "brand": "dsva",
+      "rank": "medium",
+      "angle": "「深海フェス2026」にヴイアラ3名(上水流宇宙・レトラ・灯里愛夏)の出演が決定、10月17-18日に渋谷ストリームホールで開催",
+      "lead_score": 65,
+      "dedup_key": "shinkaifes-2026-valiv",
+      "candidate_ids": ["202609090228-grok-31", "202609090228-grok-32"]
+    },
+    {
+      "slug": "dsva-cosmo-birthday-live-countdown-0909",
+      "brand": "dsva",
+      "rank": "medium",
+      "angle": "上水流宇宙「BIRTHDAY ONLINE LIVE 2026」まであと4日、9/11前夜祭・9/12本番に向け配信チケット販売中",
+      "lead_score": 30,
+      "dedup_key": "cosmo-birthday-live-2026",
+      "candidate_ids": ["202609090228-explore-18"]
+    },
+    {
+      "slug": "dsva-manaka-biohazard-postponed-0909",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "灯里愛夏、体調不良のため予定していた『BIOHAZARD RE:2』初見配信を見送り",
+      "lead_score": 15,
+      "dedup_key": "valiv-manaka-biohazard-re2-postponed-2026",
+      "candidate_ids": ["202609080735-explore-25", "202609082334-explore-19", "202609081234-explore-22"]
+    },
+    {
+      "slug": "dsva-cosmo-birthday-voice-sale-0909",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "上水流宇宙のバースデー記念ボイス2026、vα-liv特設BOOTHで9月27日まで期間限定販売中(9月4日発表)",
+      "lead_score": 5,
+      "dedup_key": "valiv-cosmo-birthday-voice-2026",
+      "candidate_ids": ["202609090228-grok-34"]
+    },
+    {
+      "slug": "dsva-cosmo-jsp3-collab-0909",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "上水流宇宙、本日にじさんじ・レイン・パターソンと『日本事故物件監視協会3』でコラボ配信",
+      "lead_score": 10,
+      "dedup_key": "valiv-cosmo-jsp3-rain-patterson-2026-09-09",
+      "candidate_ids": ["sched-2026-09-09-valiv-cosmo-jsp3-rain-patterson-2026-09-09-開始"]
+    },
+    {
+      "slug": "dsva-ops-roundup-0909",
+      "brand": "dsva",
+      "rank": "roundup",
+      "angle": "ヴイアラ各アイドルの配信・投稿ひとくちまとめ(レトラの雑談配信と防音室DIY、9/7週の配信スケジュール公開、宇宙のダンスショート、愛夏のショート動画)",
+      "lead_score": 0,
+      "dedup_key": "letora-chat-2026-09-06",
+      "candidate_ids": [
+        "202609080735-explore-26",
+        "202609081234-explore-20",
+        "202609081234-explore-21",
+        "202609090228-explore-20",
+        "202609090228-grok-51"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "manaka-biohazard-re2-2026",
+      "reason": "重複",
+      "note": "同日中に見送りとなったため、postponed記事(valiv-manaka-biohazard-re2-postponed-2026)に統合"
+    },
+    {
+      "dedup_key": "shinkaifes-2026",
+      "reason": "重複",
+      "note": "同一イベントの会場・日程一般情報。ヴイアラ出演記事(shinkaifes-2026-valiv)に統合"
+    }
+  ],
+  "cross_brand": []
+}

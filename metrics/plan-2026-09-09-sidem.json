@@ -1,0 +1,28 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-11th-stage-online-venue-measures-0909",
+      "brand": "sidem",
+      "rank": "large",
+      "angle": "SideM 11th STAGE ～EVER EVER＠FTER～、冒頭無料生配信や差し入れ企画『315デリバリー』など開幕直前のオンライン・現地施策が判明",
+      "lead_score": 25,
+      "dedup_key": "sidem-11th-stage-2026",
+      "candidate_ids": [
+        "202609080735-watch-1",
+        "202609081834-explore-12",
+        "202609090228-grok-46",
+        "202609090228-grok-47",
+        "202609090228-grok-48",
+        "202609090228-grok-57"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-transcendent-tales-only-shop-2026",
+      "reason": "既報",
+      "note": "アニメイト池袋本店のオンリーショップは stock/stories.yml に同一 story_id で既報(8/30号、開催期間9/5〜27・整理券制・特典を掲載済み)。今回のfactsは『開催中』の再掲のみで新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

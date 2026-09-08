@@ -1,0 +1,46 @@
+{
+  "articles": [
+    {
+      "slug": "joint-mor413-eve-matsunaga-broadcast-0909",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "アイマスMOR413が本日放送、イヴ・サンタクロース役 松永あかねさんがゲスト出演",
+      "lead_score": 15,
+      "dedup_key": "imas-mor-413-eve-2026",
+      "candidate_ids": ["sched-2026-09-09-imas-mor-413-eve-2026-開始"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "idol-ultimate-once-and-for-all",
+      "reason": "既報",
+      "note": "9/6発表時の告知動画(天海春香・天ヶ瀬冬馬の掛け合い)を報じる記事だが、両者が第三公演に出演することは既にstock(765-961-idol-ultimate-once-and-for-all-2027, 9/4付既報)で公開済みで、動画の台詞は読者の行動にも今日の理解にも寄与しない"
+    },
+    {
+      "dedup_key": "765-961-idol-ultimate-2026",
+      "reason": "既報",
+      "note": "公演名・日程・会場・出演者などdengekionline記事の内容は、dedup_keyは異なるがstock(765-961-idol-ultimate-once-and-for-all-2027, 9/4付既報)と同一施策・同一内容で新事実なし"
+    },
+    {
+      "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+      "reason": "既報",
+      "note": "stockのstory_idと完全一致。公式サイト開設・チケット申込開始・公演別出演者・価格・ドレスコードまで9/4付で既報済み、新事実なし"
+    },
+    {
+      "dedup_key": "idol-ultimate-street-ads-2026",
+      "reason": "既報",
+      "note": "stockのstory_idと完全一致。渋谷・名古屋・大阪駅の街頭広告(9/7〜13)は9/8付で既報済み、新事実なし"
+    },
+    {
+      "dedup_key": "iuoafa-street-ads-2026-09",
+      "reason": "重複",
+      "note": "idol-ultimate-street-ads-2026と同一の街頭広告キャンペーンを別収集エンジンが拾ったもの。stockに9/8付で既報済み"
+    },
+    {
+      "dedup_key": "iwsf-2026-961-kohaku-765-cd",
+      "reason": "既報",
+      "note": "SACX-1149の受注(8/28 21:00〜9/13 23:59、10/2発送)はstock(columbia-venue-cd-aftersale-2026-08, 8/29付既報)の12種セットの一部として既に詳細公開済み、新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

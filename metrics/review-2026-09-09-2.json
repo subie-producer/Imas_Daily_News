@@ -1,0 +1,181 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-09-cg-vote2026-247-mv-update-0909.md",
+   "issue": "時制矛盾：タイトルと本文の時制が不一致。タイトルは『本日23時に更新』（未来を示唆）だが、本文は『更新された』（過去形）と書かれている。加えて、候補のfactsは『23:00からを予定』と明記されているのに、記事は『更新された』と完了形で断定している。これは出典の『予定』という情報を『完了』に置き換えた矛盾で、出典にない事実である。",
+   "quote": "title: デレステ24/7 MV配信、本日23時に更新\nlede: シンデレラガール総選挙2026の「デレステ24/7 MV配信」は、本日9月9日に更新された。\n本文: シンデレラガール総選挙2026の「デレステ24/7 MV配信」は、本日9月9日に更新された。\n\n[vs] 候補facts: 24/7配信の次回更新は9月9日(水)23:00からを予定",
+   "scope": "article:2026-09-09-cg-vote2026-247-mv-update-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-dsva-cosmo-jsp3-collab-0909.md",
+   "issue": "出典にない事実（規程1）。candidate_ids に指定されているID 'sched-2026-09-09-valiv-cosmo-jsp3-rain-patterson-2026-09-09-開始' が candidates/2026-09-09.json に存在しないため、記事の出典が確認できない。sources に X の URL が指定されているが、candidates に対応するIDがないため、出典の追跡ができない。",
+   "quote": "candidate_ids:\n- sched-2026-09-09-valiv-cosmo-jsp3-rain-patterson-2026-09-09-開始",
+   "scope": "article:2026-09-09-dsva-cosmo-jsp3-collab-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-dsva-manaka-biohazard-postponed-0909.md",
+   "issue": "出典隠し（規程2）: 記事の candidate_ids に含まれる202609082334-explore-19は二次情報（vα-liv Wiki）で、『灯里愛夏がBIOHAZARD RE:2を初見配信した』と記載されている。しかし sources にはこのWiki情報が記載されておらず、sources は公式情報（YouTubeとX）のみで構成されている。二次情報由来の内容が sources に記載されていない場合、これは出典を隠すことになり、読者を欺く。",
+   "quote": "candidate_ids: ['202609080735-explore-25', '202609082334-explore-19', '202609081234-explore-22'] vs sources: [{'type': '公式', 'url': 'https://www.youtube.com/watch?v=vjDPwOxX6jA'}, {'type': '公式', 'url': 'https://x.com/valiv_official/status/2097157991564820879'}]",
+   "scope": "article:2026-09-09-dsva-manaka-biohazard-postponed-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-dsva-manaka-biohazard-postponed-0909.md",
+   "issue": "URL捏造・出典の不一致（規程3）: sources のYouTube URL (https://www.youtube.com/watch?v=vjDPwOxX6jA) が実在するか、内容が『灯里愛夏が『BIOHAZARD RE:2』初見配信を予定』という内容か確認不可。このURLは candidates に含まれておらず、実際に開いて検証する必要があるが、存在するか・内容が記事と一致するか明らかでない。",
+   "quote": "sources: [{'type': '公式', 'label': '灯里愛夏が『BIOHAZARD RE:2』初見配信を予定', 'url': 'https://www.youtube.com/watch?v=vjDPwOxX6jA'}, ...]",
+   "scope": "article:2026-09-09-dsva-manaka-biohazard-postponed-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-dsva-manaka-biohazard-postponed-0909.md",
+   "issue": "候補ID不一致: candidate_ids に202609080735-explore-25が指定されているが、候補ファイル(2026-09-08.json、2026-09-09.json)に実在しない。記事が参照する出典の整合性が疑われる。",
+   "quote": "candidate_ids: ['202609080735-explore-25', '202609082334-explore-19', '202609081234-explore-22']",
+   "scope": "article:2026-09-09-dsva-manaka-biohazard-postponed-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-gaku-roundup-ongoing-0909.md",
+   "issue": "新事実なしの続報（規程5）",
+   "quote": "学マスでは、2026年9月8日掲載の楽曲4件がStreaming&DLで案内されている。",
+   "scope": "article:2026-09-09-gaku-roundup-ongoing-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+   "issue": "規程5：新事実なしの続報。既報（stories.yml, first_published: 2026-08-28）では「アイマスMOR413(9月9日放送予定)に松永あかねさんがゲスト出演予定」と報じられ、さらに「予定通り9月9日に放送」と記載済み。本記事はこの予定通りの放送を改めて報じるだけで、新規発表または新事実がない。当日トリガー（放送の実施）も既に予定済みであり、読者が本日取りうる新しい行動がない。続報として成立していない。",
+   "quote": "記事本文：「「アイマスMOR413」が本日放送される。ゲストは、シンデレラガールズでイヴ・サンタクロース役を務める松永あかねさん。\"\n\n既報(stories.yml)：アイマスMOR413 イヴ・サンタクロース役 松永あかねゲスト出演\n- first_published: 2026-08-28\n- published_facts: 「アイマスMOR413(9月9日放送予定)に、シンデレラガールズ・イヴ・サンタクロース役の松永あかねさんがゲスト出演予定」",
+   "scope": "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-autumn-login-bonus-end-0909.md",
+   "issue": "ファイルが削除マーク（D）になっており、校閲対象として存在しません。git status で削除対象になっています。",
+   "quote": "D  docs/_posts/2026-09-09-million-autumn-login-bonus-end-0909.md",
+   "scope": "article:2026-09-09-million-autumn-login-bonus-end-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-shiny-mikoto-birthday-nap-gasha.md",
+   "issue": "既報との比較で新事実がなく、規程5違反の可能性。stock/stories.yml の shiny-mikoto-birthday-2026 に同内容が first_published: 2026-09-08 で既に記載。対象記事は同じ話題の継報だが、新たな情報（新SKU、新ガシャ機能、新販売期間など）が見当たらない。当日トリガーはあるが（誕生日当日を報道）、既報との実質的な区別ができない内容",
+   "quote": "9月8日は、シーズの緋田美琴の誕生日。公式告知では、誕生日ミニコミュと「限定入り HAPPY BIRTHDAY 美琴スタンプガシャ」を開催し、フェザージュエル×300をプレゼントすると案内している。ガシャは有償ジュエル限定で、「ifの未来」の美琴に出会える内容。誕生日ガシャ専用S-SSR「NAP 緋田美琴」が本ガシャ限定で新登場し、2025年の誕生日ガシャで登場したS-SSR「SPECTACLES 緋田美琴」も復刻登場している。",
+   "scope": "article:2026-09-09-shiny-mikoto-birthday-nap-gasha.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-shiny-mikoto-birthday-nap-gasha.md",
+   "issue": "候補IDの日付ズレ・不完全。frontmatter の candidate_ids は 202609082334-explore-* を指すが、2026-09-08.json には存在せず、実際には 202609072334-explore-* が存在（1日のズレ）。さらに 202609081834-explore-11 と 202609081834-explore-5 は候補ファイル内に見つからない。出典参照の整合性が疑わしい",
+   "quote": "candidate_ids:\n- 202609082334-explore-4\n- 202609082334-explore-5\n- 202609081834-explore-11\n- 202609081834-explore-5\n- 202609082334-explore-6",
+   "scope": "article:2026-09-09-shiny-mikoto-birthday-nap-gasha.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-shiny-mikoto-birthday-nap-gasha.md",
+   "issue": "出典隠しの懸念。article の src が「二次情報」と記載されているが、sources に公式（X）が2件記載。二次情報由来の事実（「ifの未来」の美琴など）と公式由来の事実の区分が曖昧で、実際に記事本文のどの部分がどの出典から来たのか不透明",
+   "quote": "src: 二次情報 ... sources:\n- type: 公式\n- type: 公式\n- type: 二次情報\n- type: 二次情報",
+   "scope": "article:2026-09-09-shiny-mikoto-birthday-nap-gasha.md"
+  },
+  {
+   "file": "docs/_editions/2026-09-09.md",
+   "issue": "digest に 2つの削除済み記事が参照されている。シナップショットの不整合。",
+   "quote": "昨日の slug: shiny-mikoto-birthday-nap-gasha（削除済み）および 明日の slug: dsva-cosmo-birthday-live-countdown-0909（削除済み）が digest に記載されているが、実ファイルが存在しない",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-09-dsva-cosmo-birthday-live-countdown-0909.md",
+   "issue": "分量不足：rank=small として最低 250 字必要だが、現在約 86 字に留まっている。候補の facts に具体的な実施時刻（前夜祭＆カウントダウン「宇宙に響け歌枠リレー」は 9 月 11 日 18:30 から、「宇宙誕生祭 2026」は 9 月 12 日 15:00 から）やバースデーボイス販売期間（9/27 まで）など、出典に含まれている詳細情報があり、これらを記事本文に組み込むことで分量を増やすことができます。",
+   "scope": "article:2026-09-09-dsva-cosmo-birthday-live-countdown-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-dsva-cosmo-jsp3-collab-0909.md",
+   "issue": "分量不足。rank: small に対して本文が約40字（下限250字）で著しく不足している。また、記事が現在削除されている状態（git status で D と表示）。前回の指摘への修正内容が不明確。",
+   "scope": "article:2026-09-09-dsva-cosmo-jsp3-collab-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-gaku-roundup-ongoing-0909.md",
+   "issue": "既報との重複：既報『gakumas-tracks-streaming-0831-2026』（2026-08-31初出）の published_facts に『9月8日付でも同5曲の掲載を学マスレーベル公式サイトで確認』と既に明記されている。記事が書く『9月8日掲載の楽曲』は既報で既に言及されており、新しいニュース性がない。記事は既報の新事実なし続報に相当する。",
+   "scope": "article:2026-09-09-gaku-roundup-ongoing-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+   "issue": "候補ファイル参照不可：frontmatter の candidate_ids に指定の「sched-2026-09-09-imas-mor-413-eve-2026-開始」が candidates/2026-09-09.json に存在しない。出典の facts を照合できず、記事の記述の裏付けが取れていない。",
+   "scope": "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+   "issue": "sources の X リンク（https://x.com/imas_musicradio/status/2092613535117562042）にアクセスして検証が必要（前回の校閲で確認困難だったため再検証対象）。出典内容と記事の記述が一致するか確認してください。",
+   "scope": "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+   "issue": "分量不足：rank: small の下限は250字だが、lede + 本文合計100字程度で大幅に不足。放送時間・番組内容・メール応募方法など、既報（stories.yml）に記載されている補足情報を加えて本文を補強してください。",
+   "scope": "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-14th-live-goods-voucher-deadline-0909.md",
+   "issue": "分量不足。rank: small の下限 250 字に対して本文約 80 字。出典に受付 URL、枚数制限（1 枚まで）、購入上限、会場日時などの詳細があり、読者が申し込む際に役立つ情報の追加で埋まるはずです",
+   "scope": "article:2026-09-09-million-14th-live-goods-voucher-deadline-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-shiny-mikoto-birthday-nap-gasha.md",
+   "issue": "分量不足（rank: small）。本文が約270字程度で下限250字に近く、既報と区別する新情報を拾い切れていない。既報に『Song for Prismでの誕生日記念ガシャ』『記念商品パック販売』などの新事実があるが、対象記事に反映されていない",
+   "scope": "article:2026-09-09-shiny-mikoto-birthday-nap-gasha.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-shiny-mikoto-birthday-nap-gasha.md",
+   "issue": "ファイル削除状態。git status で D（削除）表示。校閲対象として指定されているが、作業ツリーに物理的に存在しない。これが意図的な削除か誤操作かが不明",
+   "scope": "article:2026-09-09-shiny-mikoto-birthday-nap-gasha.md"
+  },
+  {
+   "file": "-",
+   "issue": "候補に公式発表がある重要話題が紙面から漏れている可能性。gaku-shirube-fukuoka-archive-2026（学マス福岡公演アーカイブ）、cg-election-2026-display（CG総選挙特別展示）、765-961-idol-ultimate-2027（765×961新ライブ）が候補には存在するが記事化されていない",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "記事本数の不一致。号スナップショットの article_count は 18 だが、実際の記事ファイルは 19 本存在する",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-cg-yamanashi-pedometer-preorder-deadline-0909.md",
+   "issue": "candidate_ids に指定された ID「sched-2026-09-09-cg-yamanashi-walk-wander-pedometer-2026-締切」が候補ファイル(2026-09-09.json)に存在しません。実際の候補は 2026-08-31.json の「202608300735-explore-4」「202608310229-explore-23」です。記事の内容は出典URLで確認済み（正確）ですが、candidate_ids のマッピングを修正してください。",
+   "scope": "article:2026-09-09-cg-yamanashi-pedometer-preorder-deadline-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-extreme-livestream-shikishi-deadline-0909.md",
+   "issue": "分量不足：rank: small の目標字数は 250字ですが、本文は約67字です。出典ページには応募開始日、賞品送付予定時期（既報では10月中）、より詳細な応募ルールなど、追加可能な情報がありますが、当日締切通知という記事の性質から言えば、簡潔さも適切な可能性があります。",
+   "scope": "article:2026-09-09-million-extreme-livestream-shikishi-deadline-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-theater-access-issue-0909.md",
+   "issue": "分量不足: 本文222字（rank:small の下限は250字）。出典に記載されている詳細情報を拾えば埋まるはずだが、この記事ではアプリ内お知らせへの誘導で省略されている",
+   "scope": "article:2026-09-09-million-theater-access-issue-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-shiny-autumn-idol-enhancement-week-16.md",
+   "issue": "分量不足：rank:mediumは450字以上が目安だが、本文は約380字。Wiki出典に記載されているビギナー/ミドルモード対応の有無、各モード別の達成難易度、S.T.E.P.編での戦略情報などを加えるか、現分量が妥当か検討を",
+   "scope": "article:2026-09-09-shiny-autumn-idol-enhancement-week-16.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-09-cg-official-shop-kuji-stock-update-0909.md",
+  "article:2026-09-09-cg-vote2026-247-mv-update-0909.md",
+  "article:2026-09-09-cg-yamanashi-pedometer-preorder-deadline-0909.md",
+  "article:2026-09-09-dsva-cosmo-birthday-live-countdown-0909.md",
+  "article:2026-09-09-dsva-cosmo-birthday-voice-sale-0909.md",
+  "article:2026-09-09-dsva-cosmo-jsp3-collab-0909.md",
+  "article:2026-09-09-dsva-manaka-biohazard-postponed-0909.md",
+  "article:2026-09-09-dsva-ops-roundup-0909.md",
+  "article:2026-09-09-dsva-shinkaifes-2026-valiv-lineup-0909.md",
+  "article:2026-09-09-gaku-hif-hatsuboshi-talk-pv-0909.md",
+  "article:2026-09-09-gaku-roundup-ongoing-0909.md",
+  "article:2026-09-09-gaku-shirube-iwate-goods-lottery-deadline-0909.md",
+  "article:2026-09-09-gaku-shirube-iwate-ticket-deadline-0909.md",
+  "article:2026-09-09-gaku-temari-figure-preorder-0909.md",
+  "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+  "article:2026-09-09-million-14th-live-goods-voucher-deadline-0909.md",
+  "article:2026-09-09-million-14th-live-ticket-deadline-0909.md",
+  "article:2026-09-09-million-autumn-login-bonus-end-0909.md",
+  "article:2026-09-09-million-extreme-livestream-shikishi-deadline-0909.md",
+  "article:2026-09-09-million-otona-birthday-0909.md",
+  "article:2026-09-09-million-theater-access-issue-0909.md",
+  "article:2026-09-09-shiny-autumn-idol-enhancement-week-16.md",
+  "article:2026-09-09-shiny-mikoto-birthday-nap-gasha.md",
+  "article:2026-09-09-sidem-11th-stage-online-venue-measures-0909.md",
+  "paper"
+ ]
+}

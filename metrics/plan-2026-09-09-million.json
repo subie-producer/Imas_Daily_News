@@ -1,0 +1,81 @@
+{
+  "articles": [
+    {
+      "slug": "million-theater-access-issue-0909",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタで9/8夜にアクセス障害、サーバー管理システム側の異常の可能性で継続調査中",
+      "lead_score": 25,
+      "dedup_key": "million-theater-access-issue-2026-09-08",
+      "candidate_ids": ["202609090228-grok-54", "202609090228-grok-55"]
+    },
+    {
+      "slug": "million-otona-birthday-0909",
+      "brand": "million",
+      "rank": "small",
+      "angle": "本日は音無先輩の誕生日、劇場で亜美・ジュリア・瑞希らがお祝いメッセージ",
+      "lead_score": 5,
+      "dedup_key": "million-otona-birthday-2026",
+      "candidate_ids": ["202609090228-grok-56"]
+    },
+    {
+      "slug": "million-14th-live-ticket-deadline-0909",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリオン14thLIVE現地チケット一般販売(先着)、締切9/12 23:59まで残り3日",
+      "lead_score": 15,
+      "dedup_key": "million-14th-live",
+      "candidate_ids": ["sched-2026-09-09-million-14th-live-締切前"]
+    },
+    {
+      "slug": "million-autumn-login-bonus-end-0909",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタ「食欲の秋スペシャルログインボーナス」、本日最終日",
+      "lead_score": 5,
+      "dedup_key": "million-autumn-login-bonus-2026",
+      "candidate_ids": ["sched-2026-09-09-million-autumn-login-bonus-2026-終了"]
+    },
+    {
+      "slug": "million-extreme-livestream-shikishi-deadline-0909",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリシタExtreme生配信記念の色紙プレゼント企画、本日23:59応募締切",
+      "lead_score": 5,
+      "dedup_key": "mltd-extreme-livestream-2026",
+      "candidate_ids": ["sched-2026-09-09-mltd-extreme-livestream-2026-締切"]
+    },
+    {
+      "slug": "million-14th-live-goods-voucher-deadline-0909",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ミリオン14thLIVE会場物販整理券、本日23:59受付締切",
+      "lead_score": 10,
+      "dedup_key": "million-14th-live-goods-2026",
+      "candidate_ids": ["sched-2026-09-09-million-14th-live-goods-2026-締切"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-cardfolio-vol4-mr-2026",
+      "reason": "既報",
+      "note": "MR全8種公開は9/7付で完了済みと stock/stories.yml(million-cardfolio-vol4-2026)に既報。新事実なし"
+    },
+    {
+      "dedup_key": "million-cardfolio-vol4-2026",
+      "reason": "既報",
+      "note": "発売日・価格・種類数はstock/stories.ymlに既報(first_published 2026-09-04)と完全一致。新事実なし"
+    },
+    {
+      "dedup_key": "million-mybrand-glasses-gacha-2026",
+      "reason": "既報",
+      "note": "開催内容・対象カードはstock/stories.yml(second-hairstyle-gacha-mybrand-glasses-ayumu-akane, first_published 2026-08-28)に既報。本日はトリガー日(開幕/終了)でもなく新事実もない"
+    },
+    {
+      "dedup_key": "million-14th-live-2026",
+      "reason": "既報",
+      "note": "公演名・会場・料金はstock/stories.yml(million-14th-live, first_published 2026-07-12)に既報。新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

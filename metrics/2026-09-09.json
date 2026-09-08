@@ -1,0 +1,96 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-09T02:29:04+09:00",
+   "edition": "2026-09-09",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 343,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 2,
+    "explore:million": 1,
+    "explore:shiny": 1,
+    "explore:sidem": 5,
+    "explore:gakuen": 4,
+    "explore:dsva": 7,
+    "explore:joint-other": 2,
+    "explore:trend": 4,
+    "grok:765as": 2,
+    "grok:cinderella": 0,
+    "grok:million": 7,
+    "grok:shiny": 3,
+    "grok:sidem": 5,
+    "grok:gakuen": 4,
+    "grok:dsva": 7,
+    "grok:joint-other": 3,
+    "grok:trend": 1
+   },
+   "normalized": 45,
+   "added": 33,
+   "verify": {
+    "confirmed": 33,
+    "unconfirmed": 11,
+    "failed": 1
+   },
+   "duration_s": 1707
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-09T05:29:01+09:00",
+   "edition": "2026-09-09",
+   "rounds": 5,
+   "approved": false,
+   "lint_green": true,
+   "planned": 24,
+   "written": 22,
+   "roundups": 2,
+   "dropped": 36,
+   "coverage": {
+    "subjects": 84,
+    "covered": 84,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "dsva-manaka-biohazard-postponed-0909",
+    "million-autumn-login-bonus-end-0909"
+   ],
+   "stages_min": {
+    "選定": 9.682234752178193,
+    "執筆": 3.720791478951772,
+    "組版": 14.015268977483114,
+    "校閲": 1.9190805991490683
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [],
+   "duration_s": 5303
+  }
+ ]
+}

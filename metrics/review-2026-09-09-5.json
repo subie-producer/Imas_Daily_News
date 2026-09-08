@@ -1,0 +1,95 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "-",
+   "issue": "上水流宇宙 BIRTHDAY ONLINE LIVE 2026（誕生日ライブ）の記事が紙面から漏れている。公式告知で記事化相当の話題。candidates に ID:sched-2026-08-17 で記載される主要イベント",
+   "quote": "candidates/2026-09-09.json では「上水流宇宙 BIRTHDAY ONLINE LIVE 2026」(source_type: 公式、event: 2026-09-12) が記載されている一方、紙面には dsva-cosmo-birthday-voice-sale-0909（ボイス販売）のみ掲載",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "765PRO ALLSTARS新作ソロコレクション CD（ミリオン14th会場販売）が candidates に記載されているが紙面に記事がない。ただし、限定販売（会場販売のみ）のため記事化判断の参考に",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "マトリックス確認：本日（2026-09-09）19本掲載。digest は仕様通り本日3行 + 昨日2行 + 継続中3行 + 明日2行 = 計10行（4群の構成は正常）。記事数と digest 不一致は仕様どおり",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-cg-vote2026-247-mv-update-0909.md",
+   "issue": "候補ファイル参照不可：frontmatter の candidate_ids に指定された 'sched-2026-09-09-cinderella-girl-vote2026-schedule-開始' が候補ファイルに見つかりませんが、sources URL のツイート（2095149746398904791）の backing は候補 202609030229-grok-34 で確認済み。出典の backing に問題なし。",
+   "scope": "article:2026-09-09-cg-vote2026-247-mv-update-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-cg-vote2026-247-mv-update-0909.md",
+   "issue": "分量：rank: small の下限 250字に対して、本文は約90字です。当日23時の更新告知という性質から分量が少ないのは短報として許容範囲と思われます。",
+   "scope": "article:2026-09-09-cg-vote2026-247-mv-update-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+   "issue": "分量不足（rank:small。250字下限に対して現在約100字）。候補にある「メール送信先」「ハッシュタグ」「放送時刻」などの詳細情報を出典から拾えば分量が埋まるはず（ただしメール締切8/27は既過のため記載不可）",
+   "scope": "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+   "issue": "放送時刻が未記載。「本日放送される」のみでは読者が「何時に放送か」を知ることができない。候補に情報があれば記事に含めるべき",
+   "scope": "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-14th-live-goods-voucher-deadline-0909.md",
+   "issue": "分量不足。rank: small の下限 250 字に対して本文約 80 字。出典に受付 URL、枚数制限（1 枚まで）、購入上限、会場日時などの詳細があり、読者が申し込む際に役立つ情報の追加で埋まるはずです",
+   "scope": "article:2026-09-09-million-14th-live-goods-voucher-deadline-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-cg-yamanashi-pedometer-preorder-deadline-0909.md",
+   "issue": "candidate_ids に指定された ID「sched-2026-09-09-cg-yamanashi-walk-wander-pedometer-2026-締切」が候補ファイル(2026-09-09.json)に存在しません。実際の候補は 2026-08-31.json の「202608300735-explore-4」「202608310229-explore-23」です。記事の内容は出典URLで確認済み（正確）ですが、candidate_ids のマッピングを修正してください。",
+   "scope": "article:2026-09-09-cg-yamanashi-pedometer-preorder-deadline-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-extreme-livestream-shikishi-deadline-0909.md",
+   "issue": "分量不足：rank: small の目標字数は 250字ですが、本文は約67字です。出典ページには応募開始日、賞品送付予定時期（既報では10月中）、より詳細な応募ルールなど、追加可能な情報がありますが、当日締切通知という記事の性質から言えば、簡潔さも適切な可能性があります。",
+   "scope": "article:2026-09-09-million-extreme-livestream-shikishi-deadline-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-theater-access-issue-0909.md",
+   "issue": "分量不足: 本文222字（rank:small の下限は250字）。出典に記載されている詳細情報を拾えば埋まるはずだが、この記事ではアプリ内お知らせへの誘導で省略されている",
+   "scope": "article:2026-09-09-million-theater-access-issue-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-shiny-autumn-idol-enhancement-week-16.md",
+   "issue": "分量不足：rank:mediumは450字以上が目安だが、本文は約380字。Wiki出典に記載されているビギナー/ミドルモード対応の有無、各モード別の達成難易度、S.T.E.P.編での戦略情報などを加えるか、現分量が妥当か検討を",
+   "scope": "article:2026-09-09-shiny-autumn-idol-enhancement-week-16.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-09-cg-official-shop-kuji-stock-update-0909.md",
+  "article:2026-09-09-cg-vote2026-247-mv-update-0909.md",
+  "article:2026-09-09-cg-yamanashi-pedometer-preorder-deadline-0909.md",
+  "article:2026-09-09-dsva-cosmo-birthday-live-countdown-0909.md",
+  "article:2026-09-09-dsva-cosmo-birthday-voice-sale-0909.md",
+  "article:2026-09-09-dsva-cosmo-jsp3-collab-0909.md",
+  "article:2026-09-09-dsva-manaka-biohazard-postponed-0909.md",
+  "article:2026-09-09-dsva-ops-roundup-0909.md",
+  "article:2026-09-09-dsva-shinkaifes-2026-valiv-lineup-0909.md",
+  "article:2026-09-09-gaku-hif-hatsuboshi-talk-pv-0909.md",
+  "article:2026-09-09-gaku-roundup-ongoing-0909.md",
+  "article:2026-09-09-gaku-shirube-iwate-goods-lottery-deadline-0909.md",
+  "article:2026-09-09-gaku-shirube-iwate-ticket-deadline-0909.md",
+  "article:2026-09-09-gaku-temari-figure-preorder-0909.md",
+  "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+  "article:2026-09-09-million-14th-live-goods-voucher-deadline-0909.md",
+  "article:2026-09-09-million-14th-live-ticket-deadline-0909.md",
+  "article:2026-09-09-million-autumn-login-bonus-end-0909.md",
+  "article:2026-09-09-million-extreme-livestream-shikishi-deadline-0909.md",
+  "article:2026-09-09-million-otona-birthday-0909.md",
+  "article:2026-09-09-million-theater-access-issue-0909.md",
+  "article:2026-09-09-shiny-autumn-idol-enhancement-week-16.md",
+  "article:2026-09-09-shiny-mikoto-birthday-nap-gasha.md",
+  "article:2026-09-09-sidem-11th-stage-online-venue-measures-0909.md",
+  "paper"
+ ]
+}

@@ -111,6 +111,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - bikers.hateblo.jp     # 合議で追加: 個人ブログ。Xのトレンドをもとに公式発表を説明。独立取材なし
   - dtimes.jp             # 合議で追加: 公式発表の日程・出演者情報を定型的にまとめたもの。独立取材の形跡がない
   - sidematome.xxxblog.jp # 合議で追加: 『情報をまとめる』ことが主体と明記。他所の発表をまとめている
   - sorekarano.blog.jp    # 合議で追加: ブログ冒頭で「アイマスまとめ」と明記。取材の形跡なく、他所の発表を集約
@@ -173,6 +174,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - pjblue.zaiko.io       # 合議で追加: イベント主催者が公式プラットフォーム上でイベント情報を一次発信
   - creators-edge.com     # Creators Edge(セミナー主催)。自社セミナーの案内ページ=主催者
   - medicos-e.net         # メディコス・エンタテインメント(グッズメーカー)。自社ポップアップの告知=販売元
   - bea-net.com           # 合議で追加: 会場がライブ情報を告知している
@@ -258,6 +260,9 @@ video_channels:
 
 video_ids:
   公式:
+    - 2zyQKgtpAVo   # 機械で追加: @imas-official「【シャニラジHBTK】はばたきラジオステーション #399【」
+    - vjDPwOxX6jA   # 機械で追加: @TomoriManaka「#1【BIOHAZARD RE:2】はじめてのバイオ！！初見」
+    - VbKy6zQfurE   # 機械で追加: @UtagawaLetora「【雑談配信】お昼ののんびり雑談【#ヴイアラ / レトラ】」
     - uZHdlZIrwWQ   # 機械で追加: @imas-official「【シンデレラ】もしも「カワイイ」が世界からなくなっても（夕方」
     - rPLGMIEWNyI   # 灯里愛夏(ヴイアラ)配信「パスタって殴ると温められるらしいっすよ」
     - eQRtypVlFBs   # 灯里愛夏(ヴイアラ)配信「真夏の苦手克服クッキング」
@@ -332,6 +337,7 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - imas_DB             # 合議で追加: ファンが自分で駅広告を目撃して、それを発信している。自分の営みを自分で発信してい
     - oken_vortis         # 合議で追加: ファン作成のイラスト投稿
     - hope_13isp          # 合議で追加: ファンによるチケット情報の注意喚起
     - hit0de_             # 合議で追加: コスプレ合わせはファンが自分で企画・発信する営み

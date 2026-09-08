@@ -1,0 +1,31 @@
+{
+  "articles": [],
+  "dropped": [
+    {
+      "dedup_key": "765-961-idol-ultimate-2027",
+      "reason": "既報",
+      "note": "stock/stories.yml の765-961-idol-ultimate-once-and-for-all-2027(初報2026-09-04)で開催日程・会場・先行受付・出演者まで既に報じ済み。9/9に新たな事実・トリガーなし"
+    },
+    {
+      "dedup_key": "765-reflame-chibigurumi-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml の961-reflame-chibigurumi-2026(初報2026-09-08、joint面)で価格・予約開始9/6・発送時期を既報。受注終了日の追記のみで、9/9に起きる出来事はない"
+    },
+    {
+      "dedup_key": "765pro-allstars-dress-code-solo-collection-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml のmillion-14th-liveに当該CD(765PRO ALLSTARS版含む4形態・各3,300円・9/19発売・購入特典ポスター)が既報。物販時間帯の追記のみ"
+    },
+    {
+      "dedup_key": "tsumimatsu-commentary-archive-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml の765-dual-twinlive-venue-cdでオーコメ実施(9/6)とアーカイブ公開(9/27まで)を既報。9/9に新たに起きることはない"
+    },
+    {
+      "dedup_key": "columbia-venue-cd-mailorder-2026",
+      "reason": "既報",
+      "note": "stock/stories.yml のcolumbia-venue-cd-aftersale-2026-08(初報2026-08-29、joint面)および765-dual-twinlive-venue-cdで受注期間8/28-9/13・全12種・支払方法まで既報"
+    }
+  ],
+  "cross_brand": []
+}

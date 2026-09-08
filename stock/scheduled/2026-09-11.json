@@ -91,5 +91,59 @@
     ],
     "deadline": "2026-09-12",
     "src_candidate_id": "202609050237-grok-45"
+  },
+  {
+    "id": "sched-2026-09-11-cosmo-birthday-live-2026-eve-開始",
+    "dedup_key": "cosmo-birthday-live-2026-eve",
+    "brand": "dsva",
+    "subject": "上水流宇宙 20歳バースデー前夜祭「宇宙に響け歌枠リレー」",
+    "kind": "開始",
+    "note": "前夜祭＆カウントダウン企画",
+    "reserved_on": "2026-09-09",
+    "title": "上水流宇宙BD LIVEまであと4日",
+    "url": "https://x.com/KamizuruCosmo",
+    "source_type": "公式",
+    "facts": [
+      "前夜祭＆カウントダウン「宇宙に響け歌枠リレー」は9月11日18:30から実施",
+      "本番「宇宙誕生祭2026」は9月12日15:00から実施、配信チケット販売中"
+    ],
+    "src_candidate_id": "202609090228-explore-18",
+    "event_date": "2026-09-11"
+  },
+  {
+    "id": "sched-2026-09-11-sidem-11th-stage-315-delivery-2026-開始",
+    "dedup_key": "sidem-11th-stage-315-delivery-2026",
+    "brand": "sidem",
+    "subject": "SideM11th STAGE 差し入れ企画「315デリバリー」",
+    "kind": "開始",
+    "note": "販売開始17:00",
+    "reserved_on": "2026-09-09",
+    "title": "THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～ イベント施策発表",
+    "url": "https://idolmaster-official.jp/news/01_19776",
+    "source_type": "公式",
+    "facts": [
+      "差し入れ企画『みんなで食べよう！パッション全開！315デリバリー!!!!!!!!!!!』の販売期間は9月11日17:00〜9月13日23:59",
+      "差し入れ1件315円(税込)、出演アイドルへの差し入れ・ニックネーム付きメッセージ送信・お礼画像受け取りが可能"
+    ],
+    "src_candidate_id": "202609080735-watch-1",
+    "event_date": "2026-09-11"
+  },
+  {
+    "id": "sched-2026-09-11-sidem-11th-stage-sponsor-goods-2026-開始",
+    "dedup_key": "sidem-11th-stage-sponsor-goods-2026",
+    "brand": "sidem",
+    "subject": "SideM11th STAGE 協賛社グッズ(ASOBI STORE)",
+    "kind": "開始",
+    "note": "WEB販売開始17:00",
+    "reserved_on": "2026-09-09",
+    "title": "THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～ イベント施策発表",
+    "url": "https://idolmaster-official.jp/news/01_19776",
+    "source_type": "公式",
+    "facts": [
+      "協賛社グッズの販売期間は9月11日17:00〜10月4日(予定)、ASOBI STOREで取り扱い",
+      "販売ページ: https://shop.asobistore.jp/feature/sidem11th_p"
+    ],
+    "src_candidate_id": "202609080735-watch-1",
+    "event_date": "2026-09-11"
   }
 ]

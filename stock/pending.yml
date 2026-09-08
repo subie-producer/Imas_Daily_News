@@ -111,10 +111,6 @@
   brand: million
   subject: ミリオン「スペードのQ」ちびぐるみ(BANDAI SPIRITS)
   watch: 2027年1月内の正式な店舗展開開始日(判明次第 triggers へ)
-- dedup_key: gaku-story-saigo-no-bunkasai-2026
-  brand: gaku
-  subject: 学マス新ストーリーイベント「さいごの文化祭」
-  watch: イベント終了日(判明次第 triggers へ)
 - dedup_key: gaku-fukuoka-live-memorial-gacha-2026-09
   brand: gaku
   subject: 学マス「標」福岡公演記念ガシャ
@@ -127,3 +123,19 @@
   brand: dsva
   subject: 上水流宇宙 ACE COMBAT 8試遊配信
   watch: 配信の具体的な日時(判明次第 triggers へ)
+- dedup_key: dsva-manaka-biohazard-postponed-2026
+  brand: dsva
+  subject: 灯里愛夏『BIOHAZARD RE:2』初見配信(見送り分)
+  watch: 配信の新日程が判明次第 triggers へ
+- dedup_key: gaku-hif-story-implementation-2026
+  brand: gaku
+  subject: 学マス新シナリオ「H.I.F編」
+  watch: 9/9生配信「はつぼし放課後とーく」後に判明する実装時期・詳細(判明次第 triggers へ)
+- dedup_key: million-theater-access-issue-2026-09
+  brand: million
+  subject: ミリシタ アクセス障害(9月8日発生)
+  watch: 原因判明・復旧報告(判明次第 triggers へ)
+- dedup_key: dsva-shinkaifes-2026
+  brand: dsva
+  subject: 深海フェス2026「超・深海」
+  watch: 開場・開演時刻の正式発表(判明次第 triggers へ)

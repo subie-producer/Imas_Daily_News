@@ -16,5 +16,22 @@
       "コトブキヤ秋葉原館5Fでの開催は10月18日まで"
     ],
     "reserved_on": "2026-08-29"
+  },
+  {
+    "id": "sched-2026-10-18-dsva-shinkaifes-2026-千秋楽",
+    "dedup_key": "dsva-shinkaifes-2026",
+    "brand": "dsva",
+    "subject": "深海フェス2026「超・深海」",
+    "kind": "千秋楽",
+    "note": "DAY2、渋谷ストリームホール",
+    "reserved_on": "2026-09-09",
+    "title": "深海フェス2026 超・深海",
+    "url": "https://pjblue.zaiko.io/ja/item/383839",
+    "source_type": "当事者",
+    "facts": [
+      "DAY2は10月18日(日)、渋谷ストリームホールで開催、グランドステージに灯里愛夏が出演"
+    ],
+    "src_candidate_id": "202609090228-grok-32",
+    "event_date": "2026-10-18"
   }
 ]

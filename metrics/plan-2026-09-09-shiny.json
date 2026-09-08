@@ -1,0 +1,66 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-autumn-idol-enhancement-week-16",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "「秋のアイドル強化週間 第16回」開催中、報酬SRサポートアイドルに園田智代子",
+      "lead_score": 10,
+      "dedup_key": "shiny-autumn-idol-enhancement-week-2026",
+      "candidate_ids": ["202609080735-explore-7", "202609081834-explore-5"]
+    },
+    {
+      "slug": "shiny-mikoto-birthday-nap-gasha",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "緋田美琴の誕生日施策、誕生日限定SSR「NAP 緋田美琴」の限定スタンプガシャが開催中",
+      "lead_score": 15,
+      "dedup_key": "shiny-mikoto-hinata-birthday-2026",
+      "candidate_ids": [
+        "202609082334-explore-4",
+        "202609082334-explore-5",
+        "202609081834-explore-11",
+        "202609081834-explore-5",
+        "202609082334-explore-6"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-maintenance-2026-09-07",
+      "reason": "その他",
+      "note": "メンテナンスは9/7 15:00に終了済みで9/9号発行時点では既に過去の出来事(規程12)。出典もYahoo!リアルタイム検索経由の二次情報のみで公式一次情報に未到達"
+    },
+    {
+      "dedup_key": "shiny-solo-live-msp-2026",
+      "reason": "既報",
+      "note": "会場・日程・価格・公式リセール期間はstock/stories.yml shiny-msp-live-tickets-2026で既報。今回の候補に新事実なし"
+    },
+    {
+      "dedup_key": "shiny-prelude-collection-mei-2026",
+      "reason": "出典不足",
+      "note": "ガシャ関連の施策だがgameo.jpの二次情報のみで公式告知に未到達(規程2)"
+    },
+    {
+      "dedup_key": "shiny-axe8-release-campaign-2026",
+      "reason": "出典不足",
+      "note": "「A.X.E.8.編リリース記念CP第2弾」はまとめサイト(二次情報)のみで公式告知に未到達(規程2)。ストックのCP第1弾とは別施策"
+    },
+    {
+      "dedup_key": "shiny-parallel-kairo-2026",
+      "reason": "既報",
+      "note": "オフィシャルショップでの9/28-10/12取り扱いはstock/stories.yml shiny-parallel-collection-popup-2026で既報。新事実なし"
+    },
+    {
+      "dedup_key": "shiny-habataki-radio-399",
+      "reason": "その他",
+      "note": "放送は9/8実施済みで9/9号発行時点では既に過去(規程12)。アーカイブ視聴以外に本日できることが無く、出典も未確認扱い"
+    },
+    {
+      "dedup_key": "shiny-parallel-corridor-2026",
+      "reason": "既報",
+      "note": "会場・事前予約抽選期間・通販日程はstock/stories.yml shiny-parallel-collection-popup-2026で既報。特設サイト公開は既報事実の掲載場所が変わっただけで新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,0 +1,196 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-09-cg-official-shop-kuji-stock-update-0909.md",
+   "issue": "規程5：新事実なしの続報。既報（2026-09-03, story_id: idolmaster-official-shop-kuji-inventory-2026-09）で『大阪日本橋店(9月8日付)・博多バスターミナル店(9月7日付)の抽選くじ在庫状況を更新』と既に報道されている。本日の記事は、既報で予告された更新の詳細を報告しているが、新事実がない。",
+   "quote": "記事全体：既報で9月8日・9月7日の在庫更新が予告されており、本日の記事がその詳細報告",
+   "scope": "article:2026-09-09-cg-official-shop-kuji-stock-update-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-cg-vote2026-247-mv-update-0909.md",
+   "issue": "出典にない事実（ブロック項目1）",
+   "quote": "9月9日(水)23:00に次回更新を予定している",
+   "scope": "article:2026-09-09-cg-vote2026-247-mv-update-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-dsva-cosmo-birthday-live-countdown-0909.md",
+   "issue": "新事実なしの続報（規程5）。既報(stories.yml の cosmo-birthday-online-live-2026)で8月24日に『BD LIVEまであと4日と告知(9/9時点)』『前夜祭の歌枠リレー開催』『配信チケット販売』『バースデーボイス販売期限9/27』が全て報道済み。9月9日発行の当記事は新事実を追加していない。当日トリガー（読者が本日中に取れる行動）も無し。",
+   "quote": "上水流宇宙のBD LIVEまであと4日と、公式Xが告知した。前夜祭・カウントダウン「宇宙に響け歌枠リレー」と、本番の「宇宙誕生祭2026」を実施予定で、配信チケットを販売中。バースデーボイスの販売期限も案内されている。",
+   "scope": "article:2026-09-09-dsva-cosmo-birthday-live-countdown-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-dsva-cosmo-jsp3-collab-0909.md",
+   "issue": "ブロック項目 5：新事実なしの続報。既報（stories.yml の valiv-cosmo-jsp3-rain-patterson-2026-09-09、first_published: 2026-09-04）と実質同内容で、新事実も当日トリガー（締切・開幕等）もない。既報の published_facts に『上水流宇宙が9月9日にコラボ配信』と『予定通り9月9日にコラボ配信を実施』が既に記録されており、本記事は同一内容を繰り返しているだけである",
+   "quote": "上水流宇宙は本日、にじさんじのレイン・パターソンと『日本事故物件監視協会3』でコラボ配信を行う。",
+   "scope": "article:2026-09-09-dsva-cosmo-jsp3-collab-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-dsva-cosmo-jsp3-collab-0909.md",
+   "issue": "ブロック項目 3：出典候補の不在。candidate_ids に指定された『sched-2026-09-09-valiv-cosmo-jsp3-rain-patterson-2026-09-09-開始』が candidates/2026-09-09.json に存在しない。出典となるべき候補の backing がない状態で記事が成立している",
+   "quote": "candidate_ids:\n- sched-2026-09-09-valiv-cosmo-jsp3-rain-patterson-2026-09-09-開始",
+   "scope": "article:2026-09-09-dsva-cosmo-jsp3-collab-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-dsva-manaka-biohazard-postponed-0909.md",
+   "issue": "出典の不一致（項目3）。記事のsourcesに二次情報として載せているAtWiki(候補19)には『2026年9月8日に灯里愛夏が BIOHAZARD RE:2を初見配信した』と記述されているが、記事本文は『見送られた』と述べている。AtWikiの最終更新は02:05（見送り告知12:34の前）で、sourcesに載せている出典の内容と記事の記述が矛盾している。",
+   "quote": "sources の二次情報セクション: type: 二次情報, label: 灯里愛夏がBIOHAZARD RE:2初配信, url: https://w.atwiki.jp/va_liv/pages/36.html\n\nvs. 記事の述べる内容: 『灯里愛夏が予定していた『BIOHAZARD RE:2』初見配信は、体調不良のため見送られた』",
+   "scope": "article:2026-09-09-dsva-manaka-biohazard-postponed-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-gaku-roundup-ongoing-0909.md",
+   "issue": "出典にない事実・出典の不一致：日付矛盾",
+   "quote": "学マスでは、2026年9月9日掲載の楽曲4件がStreaming&DLで案内されている。\n- 「ミラクルナナウ(ﾟ∀ﾟ)！」：2026年9月9日掲載。\n- 「ENDLESS DANCE（花海咲季・月村手毬・藤田ことね ver.）」：2026年9月9日掲載。\n- 「ENDLESS DANCE（有村麻央・紫雲清夏・篠澤広 ver.）」：2026年9月9日掲載。\n- 「Star-mine」：2026年9月9日掲載。",
+   "scope": "article:2026-09-09-gaku-roundup-ongoing-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+   "issue": "規程5（新事実なしの続報）。既報（stories.yml）では2026-08-28に「アイマスMOR413(9月9日放送予定)に松永あかねさんがゲスト出演予定」と報じられ、さらに「予定通り9月9日に放送、松永あかねさんが出演」と記載済み。本記事はこの予定通りの放送を改めて報じるだけで、新規発表または新事実がない。当日トリガー（放送の実施）も既に予定済みのため、続報として成立しない。",
+   "quote": "「アイマスMOR413」が本日放送される。ゲストは、シンデレラガールズでイヴ・サンタクロース役を務める松永あかねさん。",
+   "scope": "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-14th-live-goods-voucher-deadline-0909.md",
+   "issue": "新事実なしの続報：既報と実質同内容で、当日トリガーは「締切」だが、記事が当日トリガーとして機能していない。既報（first_published 2026-09-04）から5日後のリマインド記事で、その日の読者に対して新たに「できることが増える」という利益がない（既に申し込み期間終了が近づいている状態の警告ではなく、事実の単なる反復）。規程10で述べる通り『済んだ・終わった』情報ではなく「まだ有効な期間」だが、規程14のニュース性の基準では『その日に新しく起きること・起きた』ことが中核にないリマインド記事は定常運営情報の寄せ集めに該当する可能性がある。",
+   "quote": "ミリオン14thLIVE会場物販の整理券受付が、本日23:59に締め切られる。抽選結果は9月15日13:00から発表される。",
+   "scope": "article:2026-09-09-million-14th-live-goods-voucher-deadline-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-14th-live-goods-voucher-deadline-0909.md",
+   "issue": "candidate_ids が存在しない：frontmatter で candidate_ids に指定されている『sched-2026-09-09-million-14th-live-goods-2026-締切』が候補ファイル群に存在しない。既報には該当のストーリーが記載されているが、出典の参照関係が不完全である。",
+   "quote": "candidate_ids:\n- sched-2026-09-09-million-14th-live-goods-2026-締切",
+   "scope": "article:2026-09-09-million-14th-live-goods-voucher-deadline-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-autumn-login-bonus-end-0909.md",
+   "issue": "新事実なしの続報。既報（2026-09-03発表）で「9月3日〜9日に開催」と明記されており、本記事で報告する「本日9月9日が最終日」は既知情報。stories.yml の published_facts にも「予定通り9月9日に開催最終日を迎えた」と記載済み",
+   "quote": "title: ミリシタ秋ログボ、本日が最終日\nlede: ミリシタの「食欲の秋スペシャルログインボーナス」は、本日9月9日が開催最終日となる。\n本文: ミリシタの「食欲の秋スペシャルログインボーナス」は、本日9月9日が開催最終日。期間中にログインすると、合計500個のミリオンジュエルを受け取れる。",
+   "scope": "article:2026-09-09-million-autumn-login-bonus-end-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-shiny-mikoto-birthday-nap-gasha.md",
+   "issue": "規程5「新事実なしの続報」: 記事の内容が既報(story_id: shiny-mikoto-birthday-2026, first_published: 2026-09-08)と実質同内容で、新事実がない",
+   "quote": "記事本文: 「シャニマス本編で「誕生日ミニコミュ」と「限定入り HAPPY BIRTHDAY 美琴スタンプガシャ」を開催、S-SSR「NAP 緋田美琴」が新登場、2025年ガシャのS-SSR「SPECTACLES 緋田美琴」も復刻。Yahoo!リアルタイム検索で関連ポスト395件を集計」\n\n既報: stock/stories.yml line 3710-3714に同一内容が記載済み。新事実なし、当日トリガーなし",
+   "scope": "article:2026-09-09-shiny-mikoto-birthday-nap-gasha.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-09-cg-vote2026-247-mv-update-0909.md",
+   "issue": "候補ファイル参照不可：candidate_ids に指定の 'sched-2026-09-09-cinderella-girl-vote2026-schedule-開始' が候補ファイルに存在しません。sources のツイートからは具体的な時刻「23:00」が確認できず、この情報の出典が不明です。デレステ 24/7 MV 配信の公式ページなど、時刻情報の出源を sources に追加する必要があります。",
+   "scope": "article:2026-09-09-cg-vote2026-247-mv-update-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-cg-vote2026-247-mv-update-0909.md",
+   "issue": "分量：rank: small として本文は最小限ですが、記事として成立しています。出典の不備が解決すれば承認可。",
+   "scope": "article:2026-09-09-cg-vote2026-247-mv-update-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-cg-yamanashi-pedometer-preorder-deadline-0909.md",
+   "issue": "candidate_ids に指定された ID「sched-2026-09-09-cg-yamanashi-walk-wander-pedometer-2026-締切」が候補ファイル(2026-09-09.json)に存在しません。実際の候補は 2026-08-31.json の「202608300735-explore-4」「202608310229-explore-23」です。記事の内容は出典URLで確認済み（正確）ですが、candidate_ids のマッピングを修正してください。",
+   "scope": "article:2026-09-09-cg-yamanashi-pedometer-preorder-deadline-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-dsva-cosmo-birthday-live-countdown-0909.md",
+   "issue": "分量不足（rank: small で期待値 250字以上、記事は本文わずか75字）。既報には参加者名『常磐カナメ・日向奈央・蛇宵ティア・マリアマリオネット』や会場『ユナイテッド・シネマ アクアシティお台場3番スクリーン』などの具体情報があり、候補にも日時情報『9月11日18:30』『9月12日15:00』があるが、記事は全て省略。補足できる情報多数あり。",
+   "scope": "article:2026-09-09-dsva-cosmo-birthday-live-countdown-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-dsva-manaka-biohazard-postponed-0909.md",
+   "issue": "分量不足。rank: small の下限は250字だが、現状は lede 46字 + body 105字 = 151字。99字不足。出典の公式Xの告知から『体調不良の詳細』『振替配信の有無』『チャンネル・ゲーム情報』など追加可能な要素がないか確認し、加筆が望ましい。",
+   "scope": "article:2026-09-09-dsva-manaka-biohazard-postponed-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-gaku-roundup-ongoing-0909.md",
+   "issue": "候補資料との日付矛盾：candidates の facts では全て『2026年9月8日に...掲載』と記載。かつ unbacked_facts=['2026-09-08', '9月8日'] で、この日付が出典ページに明記されていないことが示唆されている。既報台帳（stories.yml）でも『9月8日付でも同5曲の掲載を学マスレーベル公式サイトで確認』と記載。記事が「9月9日掲載」と述べているのに対し、candidates と既報では「9月8日」と一貫している。出典ページから「9月9日」という日付が導けるか、URLを確認・アクセスして検証が必要。",
+   "scope": "article:2026-09-09-gaku-roundup-ongoing-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-gaku-roundup-ongoing-0909.md",
+   "issue": "楽曲数の不一致：記事では『4曲』と明記し『Howling over the World』を記載していないが、既報台帳では『9月8日付でも同5曲の掲載を確認』と記載。候補資料にも『Howling over the World』(ID: 202609081834-explore-23, 準公式, URL: https://gakuen-label.idolmaster-official.jp/discography/4ldqseah4) が含まれている。この5曲目を除いた理由が不明確。",
+   "scope": "article:2026-09-09-gaku-roundup-ongoing-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-gaku-roundup-ongoing-0909.md",
+   "issue": "candidates の検証ステータス：4曲全てが Verify: unconfirmed となっている。出典ページが実在し、記事の記述と一致するか確認が必要。",
+   "scope": "article:2026-09-09-gaku-roundup-ongoing-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+   "issue": "分量不足。rank:small の下限は250字だが、本文は1文のみで極端に不足。lede + 本文合わせても100字程度。",
+   "scope": "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+   "issue": "候補ファイルが見当たらない。frontmatter の candidate_ids に「sched-2026-09-09-imas-mor-413-eve-2026-開始」が指定されているが、candidates/2026-09-09.json に該当する候補が存在しない。出典の facts を照合できず、出典隠し（規程2）や出典の不一致（規程3）を検証できない。",
+   "scope": "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+   "issue": "sources の X リンク（https://x.com/imas_musicradio/status/2092613535117562042）にアクセスできない（HTTP 402）。出典内容を確認できないため、記事の記述が出典と一致するか検証できない。",
+   "scope": "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-14th-live-goods-voucher-deadline-0909.md",
+   "issue": "分量不足：rank: small に対して本文が 75 字で下限 250 字の 1/3 程度。既報で記載されている『整理券の概要（混雑回避目的）』『申込上限（1人1枚）』『当選後の流れ（9月15日発表 → 入金期間）』『物販日時・場所』などを詳しく書けば埋まるはず。またイベント日（9月19-20日）への誘導や、整理券制の背景説明などで補強可能。",
+   "scope": "article:2026-09-09-million-14th-live-goods-voucher-deadline-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-autumn-login-bonus-end-0909.md",
+   "issue": "候補ID不一致: candidate_ids に指定されている 'sched-2026-09-09-million-autumn-login-bonus-2026-終了' が見つかりません。該当する候補は2026-09-03.jsonの 'id: 202609030229-grok-42' (dedup_key: 'million-autumn-login-bonus-2026') ですが、IDが異なります",
+   "scope": "article:2026-09-09-million-autumn-login-bonus-end-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-extreme-livestream-shikishi-deadline-0909.md",
+   "issue": "分量不足：rank: small の目標字数は 250字ですが、本文は約67字です。出典ページには応募開始日、賞品送付予定時期（既報では10月中）、より詳細な応募ルールなど、追加可能な情報がありますが、当日締切通知という記事の性質から言えば、簡潔さも適切な可能性があります。",
+   "scope": "article:2026-09-09-million-extreme-livestream-shikishi-deadline-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-million-theater-access-issue-0909.md",
+   "issue": "分量不足: 本文222字（rank:small の下限は250字）。出典に記載されている詳細情報を拾えば埋まるはずだが、この記事ではアプリ内お知らせへの誘導で省略されている",
+   "scope": "article:2026-09-09-million-theater-access-issue-0909.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-shiny-autumn-idol-enhancement-week-16.md",
+   "issue": "分量不足：rank:mediumは450字以上が目安だが、本文は約380字。Wiki出典に記載されているビギナー/ミドルモード対応の有無、各モード別の達成難易度、S.T.E.P.編での戦略情報などを加えるか、現分量が妥当か検討を",
+   "scope": "article:2026-09-09-shiny-autumn-idol-enhancement-week-16.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-09-shiny-mikoto-birthday-nap-gasha.md",
+   "issue": "frontmatter の src フィールドが「二次情報」だが、sources に公式(X)が複数記載されている。メタデータの矛盾",
+   "scope": "article:2026-09-09-shiny-mikoto-birthday-nap-gasha.md"
+  },
+  {
+   "file": "-",
+   "issue": "765×961新ライブの詳細・先行受付開始（202609080735-explore-3）が紙面から漏れている。本日7:35に公式発表された『765 PRODUCTION×961 PRODUCTION IDOL ULTIMATE ONCE AND FOR ALL』の詳細情報と先行受付は、多数の候補で扱われた主要な話題だが、関連記事が存在しない。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-09-cg-official-shop-kuji-stock-update-0909.md",
+  "article:2026-09-09-cg-vote2026-247-mv-update-0909.md",
+  "article:2026-09-09-cg-yamanashi-pedometer-preorder-deadline-0909.md",
+  "article:2026-09-09-dsva-cosmo-birthday-live-countdown-0909.md",
+  "article:2026-09-09-dsva-cosmo-birthday-voice-sale-0909.md",
+  "article:2026-09-09-dsva-cosmo-jsp3-collab-0909.md",
+  "article:2026-09-09-dsva-manaka-biohazard-postponed-0909.md",
+  "article:2026-09-09-dsva-ops-roundup-0909.md",
+  "article:2026-09-09-dsva-shinkaifes-2026-valiv-lineup-0909.md",
+  "article:2026-09-09-gaku-hif-hatsuboshi-talk-pv-0909.md",
+  "article:2026-09-09-gaku-roundup-ongoing-0909.md",
+  "article:2026-09-09-gaku-shirube-iwate-goods-lottery-deadline-0909.md",
+  "article:2026-09-09-gaku-shirube-iwate-ticket-deadline-0909.md",
+  "article:2026-09-09-gaku-temari-figure-preorder-0909.md",
+  "article:2026-09-09-joint-mor413-eve-matsunaga-broadcast-0909.md",
+  "article:2026-09-09-million-14th-live-goods-voucher-deadline-0909.md",
+  "article:2026-09-09-million-14th-live-ticket-deadline-0909.md",
+  "article:2026-09-09-million-autumn-login-bonus-end-0909.md",
+  "article:2026-09-09-million-extreme-livestream-shikishi-deadline-0909.md",
+  "article:2026-09-09-million-otona-birthday-0909.md",
+  "article:2026-09-09-million-theater-access-issue-0909.md",
+  "article:2026-09-09-shiny-autumn-idol-enhancement-week-16.md",
+  "article:2026-09-09-shiny-mikoto-birthday-nap-gasha.md",
+  "article:2026-09-09-sidem-11th-stage-online-venue-measures-0909.md",
+  "paper"
+ ]
+}

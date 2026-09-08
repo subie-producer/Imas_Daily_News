@@ -1,0 +1,49 @@
+{
+  "articles": [
+    {
+      "slug": "cg-yamanashi-pedometer-preorder-deadline-0909",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "やまなしWALK & WANDERコラボ歩数計(タニタ製・全10種)、通販先行受注が本日23:59:59に締切",
+      "lead_score": 10,
+      "dedup_key": "cg-yamanashi-walk-wander-pedometer-2026",
+      "candidate_ids": ["sched-2026-09-09-cg-yamanashi-walk-wander-pedometer-2026-締切"]
+    },
+    {
+      "slug": "cg-vote2026-247-mv-update-0909",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "シンデレラガール総選挙2026、24/7 MV配信の次回更新が本日23時から",
+      "lead_score": 15,
+      "dedup_key": "cinderella-girl-vote2026-schedule",
+      "candidate_ids": ["sched-2026-09-09-cinderella-girl-vote2026-schedule-開始"]
+    },
+    {
+      "slug": "cg-official-shop-kuji-stock-update-0909",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "公式抽選くじ在庫状況、大阪日本橋店(9/8付)・博多バスターミナル店(9/7付)を更新",
+      "lead_score": 0,
+      "dedup_key": "cg-lottery-stock-osaka-2026-09-08",
+      "candidate_ids": ["202609081834-explore-4", "202609090228-explore-2"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-election-2026-display",
+      "reason": "既報",
+      "note": "特別展示の日時・場所・入場無料・チェックイン特典(投票券10枚)は2026-09-08号(story: cg-vote-2026-special-exhibition)で既報。今回の新事実は「チェックインスポットはイベント当日までに公開予定」のみで、記事化に足る新事実がない"
+    },
+    {
+      "dedup_key": "cg-rose-tea-parlor-2026",
+      "reason": "既報",
+      "note": "開催店舗・日程・HP公開/予約開始は2026-09-05号(story: cg-rose-tea-parlor-2026)で既報。今回の新事実は「名古屋栄店10/5は昼の部①のみ営業」という運営上の細目のみで、記事化に足る新事実がない"
+    },
+    {
+      "dedup_key": "cg-official-shop-hakata-kuji-stock-2026-09-07",
+      "reason": "重複",
+      "note": "同一系統(公式抽選くじ在庫状況)の話題のため、大阪日本橋店の在庫記事(cg-official-shop-kuji-stock-update-0909)に統合"
+    }
+  ],
+  "cross_brand": []
+}

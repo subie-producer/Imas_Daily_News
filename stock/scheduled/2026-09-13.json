@@ -309,5 +309,22 @@
     ],
     "src_candidate_id": "202609080227-explore-18",
     "event_date": "2026-09-13"
+  },
+  {
+    "id": "sched-2026-09-13-sidem-11th-stage-315-delivery-2026-締切",
+    "dedup_key": "sidem-11th-stage-315-delivery-2026",
+    "brand": "sidem",
+    "subject": "SideM11th STAGE 差し入れ企画「315デリバリー」",
+    "kind": "締切",
+    "note": "販売終了23:59",
+    "reserved_on": "2026-09-09",
+    "title": "THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～ イベント施策発表",
+    "url": "https://idolmaster-official.jp/news/01_19776",
+    "source_type": "公式",
+    "facts": [
+      "差し入れ企画『みんなで食べよう！パッション全開！315デリバリー!!!!!!!!!!!』の販売期間は9月11日17:00〜9月13日23:59"
+    ],
+    "src_candidate_id": "202609080735-watch-1",
+    "deadline": "2026-09-13"
   }
 ]

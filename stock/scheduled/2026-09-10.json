@@ -1,5 +1,23 @@
 [
   {
+    "id": "sched-2026-09-10-dsva-shinkaifes-2026-締切",
+    "dedup_key": "dsva-shinkaifes-2026",
+    "brand": "dsva",
+    "subject": "深海フェス2026「超・深海」チケット第一次販売",
+    "kind": "締切",
+    "note": "第一次販売終了23:59",
+    "reserved_on": "2026-09-09",
+    "title": "深海フェス2026 超・深海",
+    "url": "https://pjblue.zaiko.io/ja/item/383839",
+    "source_type": "当事者",
+    "facts": [
+      "深海フェス2026「超・深海」チケットの第一次販売は9月10日23時59分に終了予定",
+      "VVIPチケット各日29,800円、VIPチケット各日19,800円、1DAYチケット各日9,800円(ワンドリンク代600円別途、全券種先着順)"
+    ],
+    "src_candidate_id": "202609090228-grok-32",
+    "deadline": "2026-09-10"
+  },
+  {
     "id": "sched-2026-09-10-sidem-hands-knickknacks-2026-締切前",
     "dedup_key": "sidem-hands-knickknacks-2026",
     "brand": "sidem",

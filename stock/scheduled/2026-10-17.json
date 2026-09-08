@@ -1,21 +1,39 @@
 [
- {
-  "id": "sched-2026-10-17-shiny-chikusei-collab-2026-その他",
-  "dedup_key": "shiny-chikusei-collab-2026",
-  "brand": "shiny",
-  "subject": "筑西市×シャニマスコラボ ちくせい花火大会2026",
-  "kind": "その他",
-  "note": "スペシャルコラボミュージックスターマイン、荒天時は10/18に順延",
-  "reserved_on": "2026-09-02",
-  "title": "筑西市×シャニマスコラボ",
-  "url": "https://www.city.chikusei.lg.jp/kankou/kankou-news/page013798.html",
-  "source_type": "当事者",
-  "facts": [
-   "10月17日のちくせい花火大会2026でスペシャルコラボミュージックスターマインを実施、打ち揚げ前に黛冬優子が場内アナウンス、応援席は12,000円(税込・限定クリアボトル付き)",
-   "荒天時は10月18日に順延"
-  ],
-  "verify": "confirmed",
-  "src_candidate_id": "202609012336-explore-11",
-  "event_date": "2026-10-17"
- }
+  {
+    "id": "sched-2026-10-17-shiny-chikusei-collab-2026-その他",
+    "dedup_key": "shiny-chikusei-collab-2026",
+    "brand": "shiny",
+    "subject": "筑西市×シャニマスコラボ ちくせい花火大会2026",
+    "kind": "その他",
+    "note": "スペシャルコラボミュージックスターマイン、荒天時は10/18に順延",
+    "reserved_on": "2026-09-02",
+    "title": "筑西市×シャニマスコラボ",
+    "url": "https://www.city.chikusei.lg.jp/kankou/kankou-news/page013798.html",
+    "source_type": "当事者",
+    "facts": [
+      "10月17日のちくせい花火大会2026でスペシャルコラボミュージックスターマインを実施、打ち揚げ前に黛冬優子が場内アナウンス、応援席は12,000円(税込・限定クリアボトル付き)",
+      "荒天時は10月18日に順延"
+    ],
+    "verify": "confirmed",
+    "src_candidate_id": "202609012336-explore-11",
+    "event_date": "2026-10-17"
+  },
+  {
+    "id": "sched-2026-10-17-dsva-shinkaifes-2026-開幕",
+    "dedup_key": "dsva-shinkaifes-2026",
+    "brand": "dsva",
+    "subject": "深海フェス2026「超・深海」",
+    "kind": "開幕",
+    "note": "DAY1、渋谷ストリームホール",
+    "reserved_on": "2026-09-09",
+    "title": "深海フェス2026 超・深海",
+    "url": "https://pjblue.zaiko.io/ja/item/383839",
+    "source_type": "当事者",
+    "facts": [
+      "DAY1は10月17日(土)、渋谷ストリームホールで開催、グランドステージに上水流宇宙・レトラ、グルーヴステージに上水流宇宙(DJ set)が出演",
+      "VIPチケット各日19,800円、1DAYチケット各日9,800円、ワンドリンク制(600円)、全券種先着順"
+    ],
+    "src_candidate_id": "202609090228-grok-32",
+    "event_date": "2026-10-17"
+  }
 ]

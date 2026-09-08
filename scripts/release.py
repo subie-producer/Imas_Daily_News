@@ -129,9 +129,46 @@ def deploy_site() -> str:
 
 def ensure_next_branch(next_name: str, dry: bool) -> None:
     if branch_exists(next_name) or branch_exists(next_name, remote=True):
-        print(f"翌日ブランチ {next_name} は既に存在", flush=True)
-        if branch_exists(next_name):
+        # **既にあるなら main を取り込む。**collect は翌日ブランチを main から先に切る。
+        # その日の発行が遅れると、翌日ブランチは発行前の main から出発したまま、
+        # 発行で main に入った修正(スクリプト・判定表)を持たない。以前は
+        # 「既に存在」と言うだけで放置し、毎日人が手でマージして衝突を解いていた
+        # (2026-09-07〜09、3日連続)。衝突するのは決まって2種類なので、機械で解く:
+        #   metrics/<発行日>.json … 発行側(main)を採る
+        #   stock/watch-state.json … 生きているブランチ側(新しいほう)を採る
+        # それ以外の衝突は解かずに戻し、人へ知らせる
+        print(f"翌日ブランチ {next_name} は既に存在。main を取り込む", flush=True)
+        if dry:
+            return
+        if not branch_exists(next_name):
+            git("checkout", "-B", next_name, f"origin/{next_name}")
+        else:
             git("checkout", next_name)
+            if branch_exists(next_name, remote=True):
+                git("pull", "--ff-only", "origin", next_name, check=False)
+        r = git("merge", "main", "-m", f"Merge branch 'main' into {next_name}(発行後の取り込み)", check=False)
+        if r.returncode != 0:
+            conflicted = [l.split("\t", 1)[1] for l in
+                          git("diff", "--name-only", "--diff-filter=U", check=False).stdout.splitlines()
+                          if "\t" in l] or git("diff", "--name-only", "--diff-filter=U", check=False).stdout.split()
+            others = []
+            for f in conflicted:
+                if re.fullmatch(r"metrics/\d{4}-\d{2}-\d{2}\.json", f):
+                    git("checkout", "--theirs", f)      # main 側
+                    git("add", f)
+                elif f == "stock/watch-state.json":
+                    git("checkout", "--ours", f)        # ブランチ側
+                    git("add", f)
+                else:
+                    others.append(f)
+            if others:
+                git("merge", "--abort", check=False)
+                notify(f"翌日ブランチ {next_name} への main の取り込みが衝突した(手で解くこと): "
+                       + ", ".join(others[:8]), ok=False)
+                return
+            git("commit", "--no-edit", check=False)
+        git("push", "origin", next_name)
+        print(f"翌日ブランチ {next_name} に main を取り込んで push", flush=True)
         return
     if dry:
         print(f"[dry-run] {next_name} を main から作成して push する", flush=True)

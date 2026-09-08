@@ -1896,6 +1896,18 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
             so, se = "", "時間切れ"
         return _parse_review(so or "", se or "", where)
 
+    def actionable(x) -> bool:
+        """機械が対応できる指摘か。**対応できない指摘に発行を止める権限を持たせない。**
+
+        紙面担当が「記事が漏れている」を file="-" のブロックで返し、直すことも落とす
+        こともできないまま5巡回って号が止まった(実測 2026-09-09。しかもその記事は
+        計画にあり、別の担当が「新事実なしの続報」として落としたものだった)。
+        指摘が指す先が存在する記事か社説でなければ、ブロックではなくコメントにする。
+        記事の漏れ(規程11)は選定と拾い直しの仕事で、校閲が止める種類の話ではない。
+        """
+        f = str(x.get("file") or "")
+        return (f.startswith("docs/_posts/") or f.startswith("docs/_editorials/")) and (ROOT / f).exists()
+
     def absorb(scope, where, r):
         for key in ("blockers", "comments"):
             for x in r.get(key) or []:
@@ -1906,6 +1918,10 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                     x["file"] = where
                 else:
                     x.setdefault("file", where)
+                if key == "blockers" and not actionable(x):
+                    x["issue"] = "(対象の記事を指していないためコメント扱い) " + str(x.get("issue") or "")
+                    merged["comments"].append(x)
+                    continue
                 merged[key].append(x)
 
     # **1回の失敗で担当を失格にしない。**出力が読めない・時間切れは一過性が多い。

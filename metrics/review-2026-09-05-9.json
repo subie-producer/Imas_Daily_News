@@ -1,0 +1,35 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-05-765-961-ultimate-once-for-all-title.md",
+   "issue": "記事が漏れている",
+   "quote": "",
+   "scope": "article:2026-09-05-765-961-ultimate-once-for-all-title.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-765-961-ultimate-once-for-all-title.md",
+   "issue": "重複: 落とすべき",
+   "quote": "",
+   "scope": "article:2026-09-05-765-961-ultimate-once-for-all-title.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-05-765-961-ultimate-once-for-all-title.md",
+   "issue": "重複: 落とすべき",
+   "quote": "",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "(対象の記事を指していないためコメント扱い) 記事が漏れている",
+   "quote": "",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-05-765-961-ultimate-once-for-all-title.md",
+  "paper"
+ ]
+}

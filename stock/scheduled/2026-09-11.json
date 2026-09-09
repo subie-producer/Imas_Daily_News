@@ -145,5 +145,25 @@
     ],
     "src_candidate_id": "202609080735-watch-1",
     "event_date": "2026-09-11"
+  },
+  {
+    "id": "sched-2026-09-11-765-onkyo-miki-earphone-voice-2026-締切",
+    "dedup_key": "765-onkyo-miki-earphone-voice-2026",
+    "brand": "765",
+    "subject": "星井美希ボイス搭載ワイヤレスイヤホン(20周年記念)再受注",
+    "kind": "締切",
+    "note": "再受注締切15:00",
+    "reserved_on": "2026-09-10",
+    "title": "『アイドルマスター』20周年記念 星井美希ボイス搭載ワイヤレスイヤホン 再受注締切リマインド",
+    "url": "https://onkyodirect.jp/shop/g/gMO1_AMH1AOW01MK2W/",
+    "source_type": "未確認",
+    "facts": [
+      "再受注(再販)の受付は2026年9月11日15:00まで",
+      "価格22,000円(税込)、出荷予定は2026年11月中旬〜下旬、受注生産のためキャンセル・返品・交換不可",
+      "3年保証付き延長保証セット24,640円(税込)も同時受注"
+    ],
+    "src_candidate_id": "202609100228-grok-127",
+    "event_date": "2026-09-10",
+    "deadline": "2026-09-11"
   }
 ]

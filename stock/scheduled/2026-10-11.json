@@ -13,5 +13,23 @@
       "「そうべつ物産市」を10月11日9時から開催"
     ],
     "src_candidate_id": "202609041836-explore-28"
+  },
+  {
+    "id": "sched-2026-10-11-sidem-joypolis3-2026-開始",
+    "dedup_key": "sidem-joypolis3-2026",
+    "brand": "sidem",
+    "subject": "アイドルマスター SideM in JOYPOLIS 3(第2弾)",
+    "kind": "開始",
+    "note": "スペシャルショー第2弾ユニット切替",
+    "reserved_on": "2026-09-10",
+    "title": "アイドルマスター SideM in JOYPOLIS 3",
+    "url": "https://tokyo-joypolis.com/event/sidem_jp2026/index.html",
+    "source_type": "当事者",
+    "facts": [
+      "第2弾(10月11日〜11月7日)の登場ユニットはAltessimo・Beit・もふもふえん・S.E.M・C.FIRST・315 ALLSTARS",
+      "スペシャルショーは1st Floorメインステージで12時・15時・17時に無料上映"
+    ],
+    "src_candidate_id": "202609100228-grok-123",
+    "event_date": "2026-09-12〜2026-12-06"
   }
 ]

@@ -1,0 +1,45 @@
+{
+  "articles": [
+    {
+      "slug": "general-column-cd-aftermarket-deadline-2026-09-10",
+      "brand": "general",
+      "rank": "small",
+      "angle": "会場オリジナルCDの事後通販、Columbia公式ショップでの受付が9月13日23:59に締切(3日前)",
+      "lead_score": 5,
+      "dedup_key": "column-cd-aftermarket-2026",
+      "candidate_ids": ["202609091835-watch-0"]
+    },
+    {
+      "slug": "general-mor415-new-personality-mail-deadline-2026-09-10",
+      "brand": "general",
+      "rank": "small",
+      "angle": "9月23日放送のアイマスMOR415から汐谷文康さん・角元明日香さんが新パーソナリティに、宛先メールは本日9/10締切",
+      "lead_score": 5,
+      "dedup_key": "imas-mor-415-personalities-2026",
+      "candidate_ids": ["sched-2026-09-10-imas-mor-415-personalities-2026-締切"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "takao-shijou-birthday-live-2026",
+      "reason": "重複",
+      "note": "上水流宇宙BIRTHDAY ONLINE LIVE 2026への四条貴音ゲスト出演は、dsva面(dsva-cosmo-birthday-live-takane-guest)と765面(765-valiv-cosmo-birthday-live-takane-guest-2026-09-10)の両方が既に記事化済み"
+    },
+    {
+      "dedup_key": "2-mor",
+      "reason": "重複",
+      "note": "22:00 @dereparty枠の本田未央役・原紗友里さんゲストはcg面のcg-mor416-honda-mio-mail-deadline-2026-09-10と同一事象。同ツイートは@dereparty/@imas_musicradioの2番組の出演者を一括告知しており、残る22:30枠(田中有紀・角元明日香・松永あかね)も1記事1主題で切り出すに足る独立した新事実が無い"
+    },
+    {
+      "dedup_key": "trend-102",
+      "reason": "個人の話題",
+      "note": "MOR出演者本人の感想ツイート1件のみで、番組名・放送回番号の記載も無く単体記事化の対象外(規程4)"
+    },
+    {
+      "dedup_key": "app-store-1",
+      "reason": "出典不足",
+      "note": "発信元がアプリ本体および『アイマス非公式アプリ』を名乗るアカウントの自己申告のみで、公式(バンダイナムコ等)の発表に到達できない(規程2)"
+    }
+  ],
+  "cross_brand": []
+}

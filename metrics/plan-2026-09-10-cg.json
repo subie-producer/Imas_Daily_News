@@ -1,0 +1,122 @@
+{
+  "articles": [
+    {
+      "slug": "cg-dam-songs-2026-09-10",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "デレマス楽曲「シンデレラNo.1」「ROSE ～禁じられた愛～」がカラオケDAMに追加",
+      "lead_score": 5,
+      "dedup_key": "cg-dam-songs-2026-09",
+      "candidate_ids": ["202609092335-explore-5"]
+    },
+    {
+      "slug": "cg-vote2026-247mv-update-2026-09-10",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "総選挙2026 24/7配信のデレステMVを更新、次のアイドル群を紹介中",
+      "lead_score": 5,
+      "dedup_key": "24-7-mv-23-00",
+      "candidate_ids": ["202609100228-grok-29"]
+    },
+    {
+      "slug": "cg-vote2026-goods-cardfolio-deadline-2026-09-10",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "総選挙2026公式グッズ・カードフォリオvol.4〜6、受注締切9/13まで残り3日",
+      "lead_score": 10,
+      "dedup_key": "2026",
+      "candidate_ids": ["202609100228-grok-30", "202609100228-grok-31"]
+    },
+    {
+      "slug": "cg-toybox-anniv-goods-2026-09-10",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "#トイボ公演 開催記念グッズ(アクリルボックススタンド等)、受注は9/13まで",
+      "lead_score": 5,
+      "dedup_key": "cinderella-8",
+      "candidate_ids": ["202609100228-grok-32"]
+    },
+    {
+      "slug": "cg-memorypict-6th-kohimura-yoda-deadline-2026-09-10",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "Memory Pict.第6弾(小日向美穂・依田芳乃)、受注締切9/13まで残り3日",
+      "lead_score": 10,
+      "dedup_key": "memory-pict-6th-kohimura-yoda-2026",
+      "candidate_ids": ["202609100228-grok-33", "sched-2026-09-10-memory-pict-6th-kohimura-yoda-2026-締切前"]
+    },
+    {
+      "slug": "cg-toybox-xr-ticket-deadline-2026-09-10",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "#トイボ公演 xRライブストリーミングチケット、販売は今週末9/13 21:00まで(チラ見せ「よりみちリトルスター」公開)",
+      "lead_score": 8,
+      "dedup_key": "xr",
+      "candidate_ids": ["202609100228-grok-34"]
+    },
+    {
+      "slug": "cg-15th-party-goods-deadline-2026-09-10",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "15周年記念ライブ公式グッズ事前二次販売、受注締切9/13まで残り3日",
+      "lead_score": 12,
+      "dedup_key": "cg-15th-party-goods-2026",
+      "candidate_ids": ["202609100228-grok-35", "202609100228-grok-36", "sched-2026-09-10-cg-15th-party-goods-2026-締切前"]
+    },
+    {
+      "slug": "cg-vote2026-mission-challenge-deadline-2026-09-10",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "総選挙2026ミッションチャレンジ、期間終了(9/14)まで残りわずか",
+      "lead_score": 8,
+      "dedup_key": "5",
+      "candidate_ids": ["202609100228-grok-37"]
+    },
+    {
+      "slug": "cg-toybox-staff-talk-survey-deadline-2026-09-10",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "#トイボ公演 スタッフ振り返りトークのアンケート、公開終了は9/13まで残り3日",
+      "lead_score": 8,
+      "dedup_key": "cg-popn-toybox-goods-2026",
+      "candidate_ids": ["sched-2026-09-10-cg-popn-toybox-goods-2026-締切前"]
+    },
+    {
+      "slug": "cg-mor416-honda-mio-mail-deadline-2026-09-10",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "アイマスMOR416 本田未央役・原紗友里さんゲスト回、メール受付は本日9/10締切",
+      "lead_score": 8,
+      "dedup_key": "imas-mor-416-honda-mio-2026",
+      "candidate_ids": ["sched-2026-09-10-imas-mor-416-honda-mio-2026-締切"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-election-2026-special-exhibition",
+      "reason": "既報",
+      "note": "既報cg-vote-2026-special-exhibition(初報2026-09-08)と会場・日時・特典が完全一致し新事実なし"
+    },
+    {
+      "dedup_key": "cinderella-14",
+      "reason": "個人の話題",
+      "note": "ファンによる個別の投票呼びかけ・買取告知の集積で、公式発表を含まない"
+    },
+    {
+      "dedup_key": "cinderella-15",
+      "reason": "個人の話題",
+      "note": "8月に終了済みの公演の切り抜き・チラ見せへのファン反応で、未確認出典のみ"
+    },
+    {
+      "dedup_key": "11-1-1-10-x",
+      "reason": "既報",
+      "note": "デレステ11周年ガシャは既報cgss-11th-anniversary-campaign-2026等で報道済み。本件はゲーム内シェア文の転載のみで新事実・公式一次ソースなし"
+    },
+    {
+      "dedup_key": "trend-100",
+      "reason": "その他",
+      "note": "9/9の誕生日(前日)ムービーで、9/10発行時点(06:00 JST)ではすでに終わった話題"
+    }
+  ],
+  "cross_brand": []
+}

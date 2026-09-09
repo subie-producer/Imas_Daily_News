@@ -1,0 +1,73 @@
+{
+  "articles": [
+    {
+      "slug": "million-access-issue-followup-2026-09-10",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "ミリシタのアクセス障害、原因はサーバー自動増強機能の不具合と判明・影響を受けた利用者のデータ状況を確認し対応を検討中",
+      "lead_score": 55,
+      "dedup_key": "mirishita-access-issue-2026-09",
+      "candidate_ids": [
+        "202609090734-explore-1",
+        "202609091235-explore-6",
+        "202609100228-grok-86",
+        "202609100228-grok-90",
+        "202609100228-grok-92",
+        "202609100228-grok-97",
+        "202609100228-grok-87",
+        "202609100228-grok-88"
+      ]
+    },
+    {
+      "slug": "million-second-hairstyle-gacha-deadline-2026-09-10",
+      "brand": "million",
+      "rank": "small",
+      "angle": "「セカンドヘアスタイルガシャ～myブランド編 with glasses～」が本日14:59に終了、舞浜歩・野々原茜の新SSRなど",
+      "lead_score": 15,
+      "dedup_key": "second-hairstyle-gacha-mybrand-glasses-ayumu-akane",
+      "candidate_ids": [
+        "202609100228-grok-85",
+        "sched-2026-09-10-second-hairstyle-gacha-mybrand-glasses-ayumu-akane-締切"
+      ]
+    },
+    {
+      "slug": "million-millicole-announcement-2026-09-10",
+      "brand": "million",
+      "rank": "small",
+      "angle": "月例イベント『ミリコレ！～MILLIONLIVE COLLECTION～』が本日15時から開催、詳細は開催後に発表",
+      "lead_score": 10,
+      "dedup_key": "millionlive-collection",
+      "candidate_ids": [
+        "202609100228-grok-91"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-65",
+      "reason": "既報",
+      "note": "9/9付の音無小鳥誕生日ストーリー(million-otona-birthday-2026)で同内容を既に報道済み、新事実なし"
+    },
+    {
+      "dedup_key": "14th",
+      "reason": "既報",
+      "note": "million-14th-liveの既報に『現地チケット一般販売の締切まで残り3日(9/9時点、締切9/12 23:59)』が既に記載済み、新事実なし"
+    },
+    {
+      "dedup_key": "million-70",
+      "reason": "既報",
+      "note": "million-14th-liveの既報に同じ受付期間(9/4-9/9 23:59)・当落発表日(9/15 13:00)が記載済み、新事実なし"
+    },
+    {
+      "dedup_key": "cd",
+      "reason": "出典不足",
+      "note": "URLがSideM11th関連ページを含み対象公演を特定できない上、受付は9/9 23:59で既に終了しており9/10時点で読者が取れる行動が無い"
+    },
+    {
+      "dedup_key": "million-74",
+      "reason": "個人の話題",
+      "note": "個人ファンのSNS投稿紹介とファンの誤情報訂正が中心で、公式発表の新事実を伴わない(規程4・5)"
+    }
+  ],
+  "cross_brand": []
+}

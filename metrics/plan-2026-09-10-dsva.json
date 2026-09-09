@@ -1,0 +1,77 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-shinkaifes-2026-ticket-deadline",
+      "brand": "dsva",
+      "rank": "medium",
+      "angle": "深海フェス2026「超・深海」チケット第一次受付が本日23:59締切。ヴイアラ3名(上水流宇宙・レトラ・灯里愛夏)の出演日・ステージ・DJset・券種価格を添えて案内",
+      "lead_score": 55,
+      "dedup_key": "dsva-shinkaifes-2026",
+      "candidate_ids": [
+        "sched-2026-09-10-dsva-shinkaifes-2026-締切",
+        "202609092335-explore-21",
+        "202609100228-grok-46"
+      ]
+    },
+    {
+      "slug": "dsva-valiv-1on1-13th-lottery-open",
+      "brand": "dsva",
+      "rank": "medium",
+      "angle": "PROJECT vα-liv 第13回限定オンライン1on1、抽選受付が本日12:00開始(愛夏10/3・宇宙とレトラ10/4開催、レッスン種別ごとの料金と時間を列挙)",
+      "lead_score": 20,
+      "dedup_key": "dsva-online-1on1-13th-2026",
+      "candidate_ids": [
+        "202609092335-watch-2",
+        "202609100228-grok-43"
+      ]
+    },
+    {
+      "slug": "dsva-cosmo-birthday-live-takane-guest",
+      "brand": "dsva",
+      "rank": "small",
+      "angle": "上水流宇宙 BIRTHDAY ONLINE LIVE 2026(9/12開催)にスペシャルゲストとして四条貴音の出演が決定",
+      "lead_score": 10,
+      "dedup_key": "birthday-online-live-2026",
+      "candidate_ids": [
+        "202609100228-grok-44",
+        "202609091235-explore-22"
+      ]
+    },
+    {
+      "slug": "dsva-valiv-ops-roundup-0910",
+      "brand": "dsva",
+      "rank": "roundup",
+      "angle": "ヴイアラ各メンバーの直近配信・投稿まとめ(朝活配信、JSP3コラボ配信、踊ってみたショート動画、ヴイアラ4コマ最新話)",
+      "lead_score": 0,
+      "dedup_key": "9-9",
+      "candidate_ids": [
+        "202609090734-explore-18",
+        "202609091235-explore-25",
+        "202609100228-explore-17",
+        "202609100228-grok-41",
+        "202609100228-grok-42",
+        "202609100228-grok-45",
+        "202609100228-grok-128",
+        "202609090734-explore-21"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "manaka-biohazard-re2-cancel-2026",
+      "reason": "既報",
+      "note": "9/9号(story: dsva-manaka-biohazard-postponed-2026)で灯里愛夏の体調不良による配信見送りを既報済み。新事実なし"
+    },
+    {
+      "dedup_key": "biohazard-re-2",
+      "reason": "既報",
+      "note": "同上。9/9号で既報の同一事実の重複ソース"
+    },
+    {
+      "dedup_key": "dsva-23",
+      "reason": "既報",
+      "note": "灯里愛夏ショート動画『パパとママの馴れ初め』は9/9号roundup(dsva-valiv-ops-roundup-2026-09-09)で既報済み"
+    }
+  ],
+  "cross_brand": []
+}

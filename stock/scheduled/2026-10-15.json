@@ -1,0 +1,19 @@
+[
+  {
+    "id": "sched-2026-10-15-dsva-shinkaifes-2026-締切",
+    "dedup_key": "dsva-shinkaifes-2026",
+    "brand": "dsva",
+    "subject": "深海フェス2026「超・深海」第三次販売",
+    "kind": "締切",
+    "note": "第三次販売(先着)終了23:59",
+    "reserved_on": "2026-09-10",
+    "title": "深海フェス2026 超・深海",
+    "url": "https://pjblue.zaiko.io/ja/item/383839",
+    "source_type": "当事者",
+    "facts": [
+      "第三次販売(先着)は2026年9月23日22:00〜10月15日23:59"
+    ],
+    "src_candidate_id": "202609100228-grok-46",
+    "event_date": "2026-10-17"
+  }
+]

@@ -111,6 +111,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - mybuzz.tokyo          # 合議で追加: 「本リリース」と明記され、プレスリリースの言い換え。「バズ情報」サイトとして他所
   - bikers.hateblo.jp     # 合議で追加: 個人ブログ。Xのトレンドをもとに公式発表を説明。独立取材なし
   - dtimes.jp             # 合議で追加: 公式発表の日程・出演者情報を定型的にまとめたもの。独立取材の形跡がない
   - sidematome.xxxblog.jp # 合議で追加: 『情報をまとめる』ことが主体と明記。他所の発表をまとめている
@@ -174,6 +175,9 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - web-ace.jp            # 合議で追加: KADOKAWA傘下社が自社プラットフォームで自社作品を掲載
+  - club-animate.jp       # 合議で追加: グッズ販売会社による自社会員向けイベント告知ページ
+  - toyota-arena-tokyo.jp # 合議で追加: 会場のTOYOTA ARENA TOKYOがコラボドリンク販売を自社サイトで告知
   - pjblue.zaiko.io       # 合議で追加: イベント主催者が公式プラットフォーム上でイベント情報を一次発信
   - creators-edge.com     # Creators Edge(セミナー主催)。自社セミナーの案内ページ=主催者
   - medicos-e.net         # メディコス・エンタテインメント(グッズメーカー)。自社ポップアップの告知=販売元
@@ -317,6 +321,8 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - ma_akane1014        # 合議で追加: 出演者による反応投稿
+    - jurieedom           # 合議で追加: 担当声優による祝福・イラスト
     - Terashima_dayo      # 合議で追加: 声優本人のアカウント
     - Suwa_Ayaka          # 合議で追加: 声優本人。出演作の情報を発信
     - aoi___nagatsuki     # 合議で追加: 出演者がDAY1終演後のコメントを発信。出演報告
@@ -334,9 +340,19 @@ x_accounts:
     - famitsu
     - GamerNeJp
   二次情報:
+    - gkmas_GR            # 合議で追加: 雑誌情報を伝達、独自取材なし
     - imasnews765
     - zutapoke
   ファン:
+    - umarcs000           # 合議で追加: 視聴反応投稿
+    - sunrise_555         # 合議で追加: ゲスト発表へのファン反応
+    - redstar2588         # 合議で追加: グッズ到着レポート
+    - cosplay_neu         # 合議で追加: コスプレ投稿
+    - Saito_han           # 合議で追加: 公演の切り抜き視聴反応
+    - SGKXTY              # 合議で追加: 現地コラボへの反応投稿（kind=fan）
+    - Prismrailway        # 合議で追加: 誕生日のファン側投稿
+    - Asakaze_727         # 合議で追加: 誕生日のファン祝賀投稿
+    - Anjelain            # 合議で追加: ファン側の生誕絵・ハッシュタグ投稿
     - imas_DB             # 合議で追加: ファンが自分で駅広告を目撃して、それを発信している。自分の営みを自分で発信してい
     - oken_vortis         # 合議で追加: ファン作成のイラスト投稿
     - hope_13isp          # 合議で追加: ファンによるチケット情報の注意喚起
@@ -367,6 +383,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - lumica_JP           # 合議で追加: ルミカ社による回収告知
     - shosen_online       # 合議で追加: 書店。商品販売の一次発信
     - hiromedo            # 合議で追加: 販売元・イベント主催。商品先行販売を告知
     - GiGO_Misto2         # 合議で追加: 店舗の公式アカウント。自店の商品入荷を告知

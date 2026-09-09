@@ -1,0 +1,107 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-10T02:29:39+09:00",
+   "edition": "2026-09-10",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 343,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 66,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 4,
+    "explore:shiny": 2,
+    "explore:sidem": 2,
+    "explore:gakuen": 6,
+    "explore:dsva": 4,
+    "explore:joint-other": 0,
+    "explore:trend": 5,
+    "grok:765as": 5,
+    "grok:cinderella": 12,
+    "grok:million": 14,
+    "grok:shiny": 11,
+    "grok:sidem": 14,
+    "grok:gakuen": 19,
+    "grok:dsva": 8,
+    "grok:joint-other": 17,
+    "grok:trend": 9
+   },
+   "normalized": 125,
+   "added": 111,
+   "verify": {
+    "confirmed": 83,
+    "unconfirmed": 40,
+    "failed": 2
+   },
+   "duration_s": 1742
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-10T05:53:09+09:00",
+   "edition": "2026-09-10",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 50,
+   "written": 38,
+   "roundups": 3,
+   "dropped": 73,
+   "coverage": {
+    "subjects": 163,
+    "covered": 163,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "dsva-cosmo-birthday-live-takane-guest",
+    "765-valiv-cosmo-birthday-live-takane-guest-2026-09-10",
+    "cg-mor416-honda-mio-mail-deadline-2026-09-10",
+    "cg-vote2026-247mv-update-2026-09-10",
+    "cg-vote2026-mission-challenge-deadline-2026-09-10",
+    "gaku-endless-dance-two-versions-2026-09-10",
+    "gaku-gold-rush-ch69-delay-2026-09-10",
+    "gaku-idol-no-michi-new-stages-2026-09-10",
+    "gaku-saigo-no-bunkasai-ongoing-2026-09-10",
+    "sidem-12th-free-story-vol3-last-day"
+   ],
+   "stages_min": {
+    "選定": 17.317819396654766,
+    "執筆": 8.358248829841614,
+    "組版": 26.399761565526326,
+    "校閲": 2.4009687582651775
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "gaku-snap-series-order-deadline-2026-09-10",
+    "general-mor415-new-personality-mail-deadline-2026-09-10"
+   ],
+   "duration_s": 6751
+  }
+ ]
+}

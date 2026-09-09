@@ -127,10 +127,6 @@
   brand: dsva
   subject: 灯里愛夏『BIOHAZARD RE:2』初見配信(見送り分)
   watch: 配信の新日程が判明次第 triggers へ
-- dedup_key: gaku-hif-story-implementation-2026
-  brand: gaku
-  subject: 学マス新シナリオ「H.I.F編」
-  watch: 9/9生配信「はつぼし放課後とーく」後に判明する実装時期・詳細(判明次第 triggers へ)
 - dedup_key: million-theater-access-issue-2026-09
   brand: million
   subject: ミリシタ アクセス障害(9月8日発生)
@@ -139,3 +135,15 @@
   brand: dsva
   subject: 深海フェス2026「超・深海」
   watch: 開場・開演時刻の正式発表(判明次第 triggers へ)
+- dedup_key: gaku-espresto-sweet-moment-another-color-2027
+  brand: gaku
+  subject: 学マスESPRESTO「Sweet moment」姫崎莉波・十王星南 Another color ver.
+  watch: 2027年2月予定の正式発売日(判明次第 triggers へ)
+- dedup_key: shiny-glasses-rerun-gacha-2026
+  brand: shiny
+  subject: シャニマス復刻ピックアップガシャ「眼鏡越しに映るキミは」
+  watch: 開催終了日(判明次第 triggers へ)
+- dedup_key: shiny-lycoris-letter-gacha-2026
+  brand: shiny
+  subject: シャニマス新ピックアップガシャ「Lycoris Letter」
+  watch: 開催終了日(判明次第 triggers へ)

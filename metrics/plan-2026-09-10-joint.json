@@ -1,0 +1,100 @@
+{
+  "articles": [
+    {
+      "slug": "joint-cg-million-clashmatch-lottery-deadline-2026-09-10",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "デレミリ合同ライブ『CLASH M@TCH!!』最速先行抽選、申込締切まで残り3日(9/13 23:59まで)",
+      "lead_score": 20,
+      "dedup_key": "cg-million-coming-soon-2026-08-26",
+      "candidate_ids": ["sched-2026-09-10-cg-million-coming-soon-2026-08-26-締切前"]
+    },
+    {
+      "slug": "joint-tours-s1-ex-reveal-today-2026-09-10",
+      "brand": "joint",
+      "rank": "small",
+      "angle": "ツアマス公式が本日18時に『S1弾Ex』情報解禁を予告(周防桃子関連)",
+      "lead_score": 5,
+      "dedup_key": "tours-s1-ex-2026",
+      "candidate_ids": ["202609100228-grok-68"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "idol-ultimate-765-961",
+      "reason": "既報",
+      "note": "765×961『IDOL ULTIMATE』の公演詳細・出演者は既報(story_id: 765-961-idol-ultimate-once-and-for-all-2027, 初報2026-09-04)と同一内容で新事実なし"
+    },
+    {
+      "dedup_key": "765-961-idol-ultimate-once-and-for-all",
+      "reason": "既報",
+      "note": "公式サイトオープン(9/6)・チケット先行受付開始も既報(story_id: 765-961-idol-ultimate-once-and-for-all-2027)の published_facts と同一で新事実なし"
+    },
+    {
+      "dedup_key": "columbia-venue-cd-aftersale-2026-09",
+      "reason": "既報",
+      "note": "会場CD全12種事後通販(受付8/28 21:00〜9/13 23:59、発送10/2)は story_id: columbia-venue-cd-aftersale-2026-08(初報2026-08-29)で既報、期間・対象に変更なし"
+    },
+    {
+      "dedup_key": "iwsf-2026-venue-cd-961-kohaku-765",
+      "reason": "既報",
+      "note": "IWSF2026盤(SACX-1149)の内容・トラックリストは story_id: iwsf2026-venue-cd で既報"
+    },
+    {
+      "dedup_key": "876pro-under-one-sky-dearly-stars",
+      "reason": "既報",
+      "note": "876PRO ALLSTARS『UNDER ONE SKY!!!!!!』Dearly Stars盤(SACX-1137)は story_id: dsva-under-one-sky-album-release で既報"
+    },
+    {
+      "dedup_key": "876pro-fes-alt-tracks-dearly-stars",
+      "reason": "既報",
+      "note": "『876 PRODUCTION FES. Alternative Tracks Collection』Dearly Stars盤(SACX-1148)は story_id: columbia-venue-cd-aftersale-2026-08 で既報"
+    },
+    {
+      "dedup_key": "iw2025-venue-cd-kohaku-961",
+      "reason": "既報",
+      "note": "IW2025 STARLIT SEASON KOHAKU&961盤(2枚組4,500円)は story_id: columbia-venue-cd-aftersale-2026-08 で既報"
+    },
+    {
+      "dedup_key": "961-reflame-venue-cd",
+      "reason": "既報",
+      "note": "961PRODUCTION『Re:FLAME』通常盤は story_id: columbia-venue-cd-aftersale-2026-08 で既報"
+    },
+    {
+      "dedup_key": "961-reflame-additional-venue-cd",
+      "reason": "既報",
+      "note": "961PRODUCTION『Re:FLAME』-Additional Show-盤は story_id: columbia-venue-cd-aftersale-2026-08 で既報"
+    },
+    {
+      "dedup_key": "iw2025-venue-cd-765as",
+      "reason": "既報",
+      "note": "IW2025 STARLIT SEASON 765PRO ALLSTARS盤(3枚組5,000円)は story_id: columbia-venue-cd-aftersale-2026-08 で既報"
+    },
+    {
+      "dedup_key": "765-twinlive-ami-mami-futagoboshi-cd",
+      "reason": "既報",
+      "note": "双海亜美・真美CD(SACX-1140)『北極星をズラしちゃえ!』は story_id: 765-dual-twinlive-venue-cd で既報"
+    },
+    {
+      "dedup_key": "765-twinlive-azusa-ritsuko-cd",
+      "reason": "既報",
+      "note": "三浦あずさ・秋月律子CD(SACX-1139)『Binary Star』は story_id: 765-dual-twinlive-venue-cd で既報"
+    },
+    {
+      "dedup_key": "chihaya-oathone-venue-cd",
+      "reason": "既報",
+      "note": "如月千早『OathONE』会場CDは story_id: columbia-venue-cd-aftersale-2026-08 で既報"
+    },
+    {
+      "dedup_key": "765-twinlive-yayoi-iori-cd",
+      "reason": "既報",
+      "note": "高槻やよい・水瀬伊織『いつまでもなかよし！』CDは story_id: columbia-venue-cd-aftersale-2026-08 で既報"
+    },
+    {
+      "dedup_key": "765-twinlive-makoto-yukiho-cd",
+      "reason": "既報",
+      "note": "菊地真・萩原雪歩『はんげつであえたら』CDは story_id: columbia-venue-cd-aftersale-2026-08 で既報"
+    }
+  ],
+  "cross_brand": []
+}

@@ -1,0 +1,120 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-11th-kamisabi-drinks-goods",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "SideM11th STAGE、会場限定「KAMISABI」販売・体験会と6種コラボドリンクの詳細が判明",
+      "lead_score": 25,
+      "dedup_key": "kamisabi-sidem11th-2026",
+      "candidate_ids": [
+        "202609091235-watch-0",
+        "202609100228-grok-113",
+        "202609091835-explore-10"
+      ]
+    },
+    {
+      "slug": "sidem-joypolis3-phase-schedule",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "「SideM in JOYPOLIS 3」9/12開幕、全3弾の出演ユニット・上映時間・入場料が判明",
+      "lead_score": 15,
+      "dedup_key": "sidem-in-joypolis-3",
+      "candidate_ids": [
+        "202609100228-grok-123"
+      ]
+    },
+    {
+      "slug": "sidem-hands-knickknacks-deadline-reminder",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM×ハンズ「knick-knacks Vol.1」、開催終了(9/13)まで残り3日",
+      "lead_score": 0,
+      "dedup_key": "sidem-hands-knickknacks-2026",
+      "candidate_ids": [
+        "sched-2026-09-10-sidem-hands-knickknacks-2026-締切前"
+      ]
+    },
+    {
+      "slug": "sidem-fantastic-battle-fes-member-presale-deadline",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "「F@NTASTIC BATTLE FES」第2弾、アソビストアプレミアム会員先行の申込締切まで残り3日",
+      "lead_score": 0,
+      "dedup_key": "sidem-fantastic-battle-fes-2026",
+      "candidate_ids": [
+        "sched-2026-09-10-sidem-fantastic-battle-fes-2026-締切前"
+      ]
+    },
+    {
+      "slug": "sidem-12th-free-story-vol3-last-day",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM12周年記念ストーリー第3弾の無料公開、本日9/10で終了",
+      "lead_score": 0,
+      "dedup_key": "sidem-12th-free-story-2026-08",
+      "candidate_ids": [
+        "sched-2026-09-10-sidem-12th-free-story-2026-08-終了"
+      ]
+    },
+    {
+      "slug": "sidem-roundup-2026-09-10",
+      "brand": "sidem",
+      "rank": "roundup",
+      "angle": "SideM運営情報まとめ: 11th出演キャスト意気込みコメント続報・315プロNight動画・Apple Musicプレイリスト選出・完結記念オンリーショップ展示",
+      "lead_score": 0,
+      "dedup_key": "sidem11th",
+      "candidate_ids": [
+        "202609100228-grok-110",
+        "202609100228-grok-111",
+        "202609100228-grok-122",
+        "202609100228-grok-112",
+        "202609100228-grok-114",
+        "202609100228-grok-115"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem-315-delivery-2026",
+      "reason": "既報",
+      "note": "価格315円・販売期間9/11 17:00〜9/13 23:59・特典内容はいずれも既報(sidem-11th-stage-2026, 7/13号以降)と同一"
+    },
+    {
+      "dedup_key": "sidem-11th-stage-2026",
+      "reason": "既報",
+      "note": "冒頭無料生配信・WEB協賛社グッズ販売・会場展示・キッチンカーはいずれも既報の再掲、新事実なし"
+    },
+    {
+      "dedup_key": "sidem-retro-rose-party-2026",
+      "reason": "既報",
+      "note": "既報(sidem-super-retrose-party-2026, 9/2号)と同一内容を未確認の二次ブログが再掲したもの"
+    },
+    {
+      "dedup_key": "sidem-ws-blau-wgp2026-hakata-result",
+      "reason": "出典不足",
+      "note": "デッキレシピ紹介サイト単独の記載で公式・報道の裏付けなし。ヴァイスシュヴァルツ大会結果でSideM公式の話題性も薄い"
+    },
+    {
+      "dedup_key": "sidem-92",
+      "reason": "その他",
+      "note": "公演日時・会場は既報。出典は公式ページだが掲載日不明で本日のトリガーが無い基礎情報の再掲"
+    },
+    {
+      "dedup_key": "sidem-93",
+      "reason": "その他",
+      "note": "出演者一覧は基礎情報。新事実・当日トリガーが無く単独記事化の根拠がない"
+    },
+    {
+      "dedup_key": "sidem-94",
+      "reason": "その他",
+      "note": "券種・座席情報は基礎情報。新事実・当日トリガーが無く単独記事化の根拠がない"
+    },
+    {
+      "dedup_key": "sidem-97",
+      "reason": "既報",
+      "note": "既報(sidem-11th-stage-bakusute-talk-2026, 9/4号)とDAY1/DAY2出演者まで完全一致"
+    }
+  ],
+  "cross_brand": []
+}

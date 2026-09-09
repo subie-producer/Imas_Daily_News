@@ -1,0 +1,65 @@
+{
+  "articles": [
+    {
+      "slug": "765-valiv-cosmo-birthday-live-takane-guest-2026-09-10",
+      "brand": "765",
+      "rank": "medium",
+      "angle": "上水流宇宙バースデーオンラインライブ(9/12)に四条貴音がスペシャルゲスト出演、配信チケット販売中",
+      "lead_score": 15,
+      "dedup_key": "valiv-cosmo-bd-live-2026-takane-guest",
+      "candidate_ids": ["202609100228-grok-24"]
+    },
+    {
+      "slug": "765-onkyo-miki-earphone-reorder-deadline-2026-09-10",
+      "brand": "765",
+      "rank": "small",
+      "angle": "20周年記念・星井美希ボイス搭載ワイヤレスイヤホン、再受注締切は9月11日15時まで",
+      "lead_score": 5,
+      "dedup_key": "20",
+      "candidate_ids": ["202609100228-grok-127"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million14th-765as-solo-collection-2026",
+      "reason": "既報",
+      "note": "会場物販の日時・場所・チケット要否・枚数制限・CD発売情報は既報台帳のstory_id million-14th-live-goods-2026/million-14th-live(brand:million)に同内容で掲載済み。新事実なし"
+    },
+    {
+      "dedup_key": "765-cd-postorder-2026",
+      "reason": "既報",
+      "note": "既報台帳story_id columbia-venue-cd-aftersale-2026-08(brand:joint、8/29初報)に対象12種・期間・支払方法まで同内容で掲載済み。トラック収録情報の追加のみで当日トリガーなし"
+    },
+    {
+      "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+      "reason": "既報",
+      "note": "既報台帳story_id 765-961-idol-ultimate-once-and-for-all-2027(9/4初報)に開催日・会場・3公演の時間/出演アイドルまで一言一句同内容で掲載済み。新事実なし"
+    },
+    {
+      "dedup_key": "p-bandai-chibigurumi-reflame-fairy-2026",
+      "reason": "既報",
+      "note": "既報台帳story_id 961-reflame-chibigurumi-2026(brand:joint、9/8初報)で予約開始・価格・発送時期を報道済み。出典日も9/6のままで本日のトリガーなし"
+    },
+    {
+      "dedup_key": "otonashi-kotori-birthday-2026-fan",
+      "reason": "個人の話題",
+      "note": "公式発表なし、ファンのハッシュタグ投稿のみ・エンゲージメント低。単体記事化の対象外(規程4)"
+    },
+    {
+      "dedup_key": "valiv-cosmo-bd-live-2026-takane-guest-fan",
+      "reason": "個人の話題",
+      "note": "ゲスト発表への個人アカウントの感想投稿。単体記事化の対象外(規程4)"
+    },
+    {
+      "dedup_key": "trend-105",
+      "reason": "個人の話題",
+      "note": "個人が描いた誕生祭イラスト投稿の紹介。単体記事化の対象外(規程4、ファンまとめはgeneral面のculture枠)"
+    },
+    {
+      "dedup_key": "trend-106",
+      "reason": "個人の話題",
+      "note": "ファンの生誕絵・ハッシュタグ投稿。単体記事化の対象外(規程4、ファンまとめはgeneral面のculture枠)"
+    }
+  ],
+  "cross_brand": []
+}

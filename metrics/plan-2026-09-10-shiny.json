@@ -1,0 +1,123 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-master-showpiece-goods-voucher-open-2026-09-10",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "283 PRODUCTION Solo Live Collection -Master ShowPiece-、会場CD/Blu-ray特典物販・グッズ販売コーナーの整理券抽選受付が本日13時開始",
+      "lead_score": 35,
+      "dedup_key": "shiny-master-showpiece-cd-bluray-benefits-2026",
+      "candidate_ids": [
+        "sched-2026-09-10-shiny-master-showpiece-cd-bluray-benefits-2026-開始",
+        "sched-2026-09-10-shiny-msp-goods-voucher-2026-開始",
+        "202609100228-grok-108"
+      ]
+    },
+    {
+      "slug": "shiny-lycoris-letter-gacha-2026-09-09",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "新ピックアップガシャ「Lycoris Letter」(★3三峰結華)と同時開催のステップアップガシャが開始",
+      "lead_score": 20,
+      "dedup_key": "lycoris-letter-3",
+      "candidate_ids": [
+        "202609100228-grok-99",
+        "202609100228-grok-100"
+      ]
+    },
+    {
+      "slug": "shiny-glasses-rerun-gacha-2026-09-09",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "復刻ピックアップガシャ「眼鏡越しに映るキミは」(★3芹沢あさひ)と同時開催のステップアップガシャが開始",
+      "lead_score": 15,
+      "dedup_key": "shiny-77",
+      "candidate_ids": [
+        "202609100228-grok-101",
+        "202609100228-grok-102"
+      ]
+    },
+    {
+      "slug": "shiny-parallel-corridor-shop-goods-2026-09-08",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "POP UP SHOP「パラレル回廊」商品をアイドルマスターオフィシャルショップでも取り扱いへ(9/28〜10/12)",
+      "lead_score": 10,
+      "dedup_key": "shiny-parallel-corridor-shop-2026",
+      "candidate_ids": [
+        "202609091235-explore-9"
+      ]
+    },
+    {
+      "slug": "shiny-hbtk-0915-guest-letter-deadline-2026-09-10",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "まったりHBTK 9/15放送回のゲストが判明、おたよりは本日9/10頃締切",
+      "lead_score": 10,
+      "dedup_key": "hbtk-9-15",
+      "candidate_ids": [
+        "202609100228-grok-106"
+      ]
+    },
+    {
+      "slug": "shiny-hopeful-fethers-preview-2026-09-09",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "9/16発売ソロアルバム「HOPEFUL FE@THERS」3タイトルの試聴動画が公開",
+      "lead_score": 15,
+      "dedup_key": "hopeful-fe-thers-3-2026-09-16",
+      "candidate_ids": [
+        "202609100228-grok-107"
+      ]
+    },
+    {
+      "slug": "shiny-ongoing-ops-roundup-2026-09-10",
+      "brand": "shiny",
+      "rank": "roundup",
+      "angle": "進行中の運営施策まとめ(ソロ歌唱曲追加/シャイニーパーティー/名古屋店くじ在庫/Web4コマ最新話)",
+      "lead_score": 5,
+      "dedup_key": "wandering-dream-chaser",
+      "candidate_ids": [
+        "202609100228-grok-103",
+        "202609100228-grok-104",
+        "202609091835-explore-5",
+        "202609090734-explore-5",
+        "202609091235-explore-11",
+        "202609092335-explore-9"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-mikoto-birthday-jewel-sale-2026",
+      "reason": "出典不足",
+      "note": "ゲーム内施策だが出典がpic.x.comの未確認投稿のみで公式告知に未到達(規程2)"
+    },
+    {
+      "dedup_key": "shiny-autumn-idol-training-week-2026",
+      "reason": "出典不足",
+      "note": "育成イベント開始の出典が未確認投稿のみで公式告知に未到達(規程2)"
+    },
+    {
+      "dedup_key": "shiny-prelude-collection-mei-2026",
+      "reason": "出典不足",
+      "note": "出典が未確認投稿とゲーム攻略サイト(二次情報)のみで公式告知に未到達(規程2)"
+    },
+    {
+      "dedup_key": "shiny-coherent-light-manga-2026",
+      "reason": "出典不足",
+      "note": "連載一覧の掲載順更新のみで、新話公開など具体的な新事実を確認できる一次情報がない"
+    },
+    {
+      "dedup_key": "399-2026-09-08",
+      "reason": "その他",
+      "note": "放送は9/8夜に終了済みで発行日06:00時点で新事実なし。鮮度規程(12)に抵触するため見送り"
+    },
+    {
+      "dedup_key": "kenken",
+      "reason": "個人の話題",
+      "note": "個人の取り違え訂正に関するSNS投稿(規程4・5)"
+    }
+  ],
+  "cross_brand": []
+}

@@ -186,5 +186,22 @@
     "source_type": "準公式",
     "verify": "confirmed",
     "src_candidate_id": "202609050237-grok-47"
+  },
+  {
+    "id": "sched-2026-09-23-dsva-shinkaifes-2026-開始",
+    "dedup_key": "dsva-shinkaifes-2026",
+    "brand": "dsva",
+    "subject": "深海フェス2026「超・深海」第三次販売",
+    "kind": "開始",
+    "note": "第三次販売(先着)開始22:00",
+    "reserved_on": "2026-09-10",
+    "title": "深海フェス2026 超・深海",
+    "url": "https://pjblue.zaiko.io/ja/item/383839",
+    "source_type": "当事者",
+    "facts": [
+      "第三次販売(先着)は2026年9月23日22:00〜10月15日23:59"
+    ],
+    "src_candidate_id": "202609100228-grok-46",
+    "event_date": "2026-10-17"
   }
 ]

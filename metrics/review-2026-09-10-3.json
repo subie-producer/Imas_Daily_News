@@ -1,0 +1,152 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "候補に収集されている公開/発表の話題が記事に漏れている。(1)四条貴音ゲスト発表へのファン反応（765/fans、dsva側のスペシャルゲスト発表の二次反応）(2)初星学園放送部 次回9/16ゲスト発表（gaku）。ただし前回校閲での落とし理由が不明なため、意図的ドロップの可能性あり。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-765-onkyo-miki-earphone-reorder-deadline-2026-09-10.md",
+   "issue": "分量不足: 記事本文は309字で、rank: medium の最低基準（450字）に不足。ただし出典から拾うべき価格・支払方法・送料・出荷予定などの主要情報はすべて含まれており、情報の漏れがあるわけではない",
+   "scope": "article:2026-09-10-765-onkyo-miki-earphone-reorder-deadline-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-cg-15th-party-goods-deadline-2026-09-10.md",
+   "issue": "見出しと lede・本文で公演名の表記が異なる。lede では「シンデレラガールズ 15th ANNIVERSARY PARTY!!!!」（部分形）だが、本文では「THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSARY PARTY!!!! ~ for your ONE ~」（正式名）と表記。lede での完全形表記への統一を検討できます。",
+   "scope": "article:2026-09-10-cg-15th-party-goods-deadline-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-cg-toybox-staff-talk-survey-deadline-2026-09-10.md",
+   "issue": "frontmatter の candidate_ids に指定された `sched-2026-09-10-cg-popn-toybox-goods-2026-締切前` が候補ファイルに実装されていない（実装上の警告。記事の品質には影響なし）",
+   "scope": "article:2026-09-10-cg-toybox-staff-talk-survey-deadline-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-dsva-valiv-1on1-13th-lottery-open.md",
+   "issue": "分量不足。rank: small は最小250字必要だが、本文は150字。候補の facts に記載のあるイベント説明（「プロデューサー向けオンラインレッスン」など）やチケットページURL、受付開始時間（12:00）を拾えば埋まるはず",
+   "scope": "article:2026-09-10-dsva-valiv-1on1-13th-lottery-open.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-espresto-swallow-pattern-tsubame-2026-09-10.md",
+   "issue": "分量不足。rank: small は250字以上が目安ですが、タイトル(20字) + lede(73字) + 本文(79字) = 172字と大幅に短い。出典ページにはフィギュアの製品仕様（金型・素材など）や販売形態に関する情報があれば、それらを加えて充実させられます。",
+   "scope": "article:2026-09-10-gaku-espresto-swallow-pattern-tsubame-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-espresto-sweet-moment-another-color-2027-02.md",
+   "issue": "分量不足: rank: small の下限は約250字だが、記事本体は約215字。候補の facts に追加で記載可能な仕様・サイズ詳細の拡充を検討",
+   "scope": "article:2026-09-10-gaku-espresto-sweet-moment-another-color-2027-02.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-hatsuboshistore-next-theme-2026-09-10.md",
+   "issue": "分量不足：rank: small で下限250字に対し本文74字。出典の候補に「渋谷サクラステージ SHIBUYA SIDE 3F」といった店舗情報が記載されているが、記事に反映されていない。詳細発表待ちの時点では補足情報も限定的だが、検討を要する",
+   "scope": "article:2026-09-10-gaku-hatsuboshistore-next-theme-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-hif-implementation-garakuta-road-gacha-2026-09-10.md",
+   "issue": "分量不足：lead ランクで 1000 字が目安のところ、本文は約 236 字。出典の facts には「ガシャ開始日時 9/10(木) 11:00 ～ 9/20(日) 10:59（予定）」など記事に含まれていない具体的な情報が多数記載されている。日時や詳細条件を追加すれば分量が埋まる可能性がある",
+   "scope": "article:2026-09-10-gaku-hif-implementation-garakuta-road-gacha-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-howling-over-the-world-streaming-2026-09-10.md",
+   "issue": "分量不足：rank small は 250 字下限だが、記事本文は約 70 字。作詞・作曲・編曲の詳細がありながら記事には「烏屋茶房が担当」の記載のみ。出典ページの情報（配信プラットフォーム、楽曲概要など）を活用して充実を検討",
+   "scope": "article:2026-09-10-gaku-howling-over-the-world-streaming-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-miracle-nanau-streaming-2026-09-10.md",
+   "issue": "分量不足：small ランク下限 250字に対して本文 138字。ただし出典（レーベル公式ページ）に追加情報がないため、現状で最適と判断",
+   "scope": "article:2026-09-10-gaku-miracle-nanau-streaming-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-star-mine-streaming-2026-09-10.md",
+   "issue": "分量不足 — rank=small (250字以上) に対し、本文が約60字。出典に『購入/視聴する』リンクと配信情報があるのに、記事では『掲載された』『区分は Streaming&DL』『作詞作曲編曲はじん』のみ。新楽曲配信の具体的なアクション（どのサービスで聴けるか、など）を追記すれば読者への情報価値が向上します。",
+   "scope": "article:2026-09-10-gaku-star-mine-streaming-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-joint-cg-million-clashmatch-lottery-deadline-2026-09-10.md",
+   "issue": "候補IDが存在しない。frontmatterの candidate_ids が『sched-2026-09-10-cg-million-coming-soon-2026-08-26-締切前』ですが、このIDはシステムに存在せず、実際の候補ID は『202608261235-watch-0』（2026-08-27.json 収録）です。記事の出典URL は当該候補に既に記載されているため、内容の正確性に支障はありませんが、frontmatter の候補IDを修正する必要があります。",
+   "scope": "article:2026-09-10-joint-cg-million-clashmatch-lottery-deadline-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-joint-tours-s1-ex-reveal-today-2026-09-10.md",
+   "issue": "分量不足：rank が small（最小250字）に対して本文が約110字。ただし、出典の投稿に詳細情報がない（「ガシャ名・カード名・出現率・追加楽曲名・稼働開始日時は書かれていない」と候補に記載）ため、拡充は難しい。当日18時の情報解禁待ちの予告記事として、現時点での分量限定は やむを得ない。",
+   "scope": "article:2026-09-10-joint-tours-s1-ex-reveal-today-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-million-millicole-announcement-2026-09-10.md",
+   "issue": "分量不足：rank: small (下限250字)に対し本文が約70字。ただし出典（公式X投稿）に詳細未記載のため致命的ではない",
+   "scope": "article:2026-09-10-million-millicole-announcement-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-shiny-lycoris-letter-gacha-2026-09-09.md",
+   "issue": "分量不足: 本文が147字で、rank:small の標準(250字)を大きく下回っています。ガシャの詳細情報（開催期間、出現率、消費ジュエル数、対象キャラの説明など）がまとめられば分量を増やせます",
+   "scope": "article:2026-09-10-shiny-lycoris-letter-gacha-2026-09-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-shiny-master-showpiece-goods-voucher-open-2026-09-10.md",
+   "issue": "分量不足（rank: medium は 450字以上が目安）。現状は約350字。グッズリストの詳細や特典カラー・アイテム種別を grok-108 の facts から拾えば埋まる可能性あり。sources の公式ページにも詳細な商品リスト記載。",
+   "scope": "article:2026-09-10-shiny-master-showpiece-goods-voucher-open-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-sidem-fantastic-battle-fes-member-presale-deadline.md",
+   "issue": "分量不足：rank=small で下限250字に対し、本文は約130字。既報（2026-09-03）では当選時期・入金期間が既に告知されているため、締切の迫った先行枠に絞った記事なら、現状の長さでも成立しますが、公式告知をリンクする前に、最低限「第2弾の開催日程」など初出であれば記述を検討してください。当日トリガー（3日後締切）として機能しているため、短さ自体はブロック理由ではありません。",
+   "scope": "article:2026-09-10-sidem-fantastic-battle-fes-member-presale-deadline.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-sidem-hands-knickknacks-deadline-reminder.md",
+   "issue": "出典種別の矛盾：候補ファイル(stock/scheduled/2026-09-10.json → candidates/2026-08-23.json)では source_type が「準公式」と記載されているが、記事の frontmatter では src が「当事者」と記載。REQUIREMENTS 2.5 によると、PR Times のハンズプレスリリースは「当事者」（販売元の一次発信）が正確な分類だが、候補側の記録が異なっている。その記事自体の内容は正確だが、候補管理の追跡可能性に問題がある",
+   "scope": "article:2026-09-10-sidem-hands-knickknacks-deadline-reminder.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-10-765-onkyo-miki-earphone-reorder-deadline-2026-09-10.md",
+  "article:2026-09-10-765-valiv-cosmo-birthday-live-takane-guest-2026-09-10.md",
+  "article:2026-09-10-cg-15th-party-goods-deadline-2026-09-10.md",
+  "article:2026-09-10-cg-dam-songs-2026-09-10.md",
+  "article:2026-09-10-cg-memorypict-6th-kohimura-yoda-deadline-2026-09-10.md",
+  "article:2026-09-10-cg-mor416-honda-mio-mail-deadline-2026-09-10.md",
+  "article:2026-09-10-cg-toybox-anniv-goods-2026-09-10.md",
+  "article:2026-09-10-cg-toybox-staff-talk-survey-deadline-2026-09-10.md",
+  "article:2026-09-10-cg-toybox-xr-ticket-deadline-2026-09-10.md",
+  "article:2026-09-10-cg-vote2026-247mv-update-2026-09-10.md",
+  "article:2026-09-10-cg-vote2026-goods-cardfolio-deadline-2026-09-10.md",
+  "article:2026-09-10-cg-vote2026-mission-challenge-deadline-2026-09-10.md",
+  "article:2026-09-10-dsva-cosmo-birthday-live-takane-guest.md",
+  "article:2026-09-10-dsva-shinkaifes-2026-ticket-deadline.md",
+  "article:2026-09-10-dsva-valiv-1on1-13th-lottery-open.md",
+  "article:2026-09-10-dsva-valiv-ops-roundup-0910.md",
+  "article:2026-09-10-gaku-endless-dance-two-versions-2026-09-10.md",
+  "article:2026-09-10-gaku-espresto-swallow-pattern-tsubame-2026-09-10.md",
+  "article:2026-09-10-gaku-espresto-sweet-moment-another-color-2027-02.md",
+  "article:2026-09-10-gaku-gold-rush-ch69-delay-2026-09-10.md",
+  "article:2026-09-10-gaku-hatsuboshistore-next-theme-2026-09-10.md",
+  "article:2026-09-10-gaku-hif-15m-milestone-campaign-2026-09-10.md",
+  "article:2026-09-10-gaku-hif-implementation-garakuta-road-gacha-2026-09-10.md",
+  "article:2026-09-10-gaku-howling-over-the-world-streaming-2026-09-10.md",
+  "article:2026-09-10-gaku-idol-no-michi-new-stages-2026-09-10.md",
+  "article:2026-09-10-gaku-me-mv-season-solo-collection-2026-09-10.md",
+  "article:2026-09-10-gaku-miracle-nanau-streaming-2026-09-10.md",
+  "article:2026-09-10-gaku-saigo-no-bunkasai-ongoing-2026-09-10.md",
+  "article:2026-09-10-gaku-star-mine-streaming-2026-09-10.md",
+  "article:2026-09-10-general-column-cd-aftermarket-deadline-2026-09-10.md",
+  "article:2026-09-10-joint-cg-million-clashmatch-lottery-deadline-2026-09-10.md",
+  "article:2026-09-10-joint-tours-s1-ex-reveal-today-2026-09-10.md",
+  "article:2026-09-10-million-access-issue-followup-2026-09-10.md",
+  "article:2026-09-10-million-millicole-announcement-2026-09-10.md",
+  "article:2026-09-10-million-second-hairstyle-gacha-deadline-2026-09-10.md",
+  "article:2026-09-10-shiny-glasses-rerun-gacha-2026-09-09.md",
+  "article:2026-09-10-shiny-hbtk-0915-guest-letter-deadline-2026-09-10.md",
+  "article:2026-09-10-shiny-hopeful-fethers-preview-2026-09-09.md",
+  "article:2026-09-10-shiny-lycoris-letter-gacha-2026-09-09.md",
+  "article:2026-09-10-shiny-master-showpiece-goods-voucher-open-2026-09-10.md",
+  "article:2026-09-10-shiny-ongoing-ops-roundup-2026-09-10.md",
+  "article:2026-09-10-shiny-parallel-corridor-shop-goods-2026-09-08.md",
+  "article:2026-09-10-sidem-11th-kamisabi-drinks-goods.md",
+  "article:2026-09-10-sidem-12th-free-story-vol3-last-day.md",
+  "article:2026-09-10-sidem-fantastic-battle-fes-member-presale-deadline.md",
+  "article:2026-09-10-sidem-hands-knickknacks-deadline-reminder.md",
+  "article:2026-09-10-sidem-joypolis3-phase-schedule.md",
+  "article:2026-09-10-sidem-roundup-2026-09-10.md",
+  "paper"
+ ]
+}

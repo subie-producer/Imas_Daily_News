@@ -1779,6 +1779,9 @@ def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
     jobs = [(f, ("校閲AIから以下のブロック指摘がありました。**"+f+" だけ**を、"
                  "candidates の facts と照合して修正してください。他のファイルには触らないこと。\n"
                  "**`docs/_editorials/` には触らないこと。**社説は別のセッションが直します。\n"
+                 "**「出典隠し」「sources に無い」の指摘なら、答えは出典を足すことです。**指摘に URL が"
+                 "書いてあるか、candidates の facts にその事実の出典 URL があるなら、それを sources に"
+                 "足してください(label は出典元表記「告知タイトル」(日付) の形)。記述を削って逃げないこと。\n"
                  "修正できない(出典に無い事実で、消すしかない)なら、その記述を削ってください。\n"
                  "**出典同士が食い違っているなら、公式・当事者の記述に合わせ、食い違う弱いほうの出典を "
                  "sources から外してください。**記事を弱い出典に合わせて書き換えてはいけません"
@@ -1788,6 +1791,11 @@ def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
             for f, bs in by_file.items() if f.startswith("docs/_posts/")]
     if not jobs:
         return
+    def digest(f: str) -> str:
+        p = ROOT / f
+        return hashlib.sha256(p.read_bytes()).hexdigest() if p.exists() else ""
+
+    before = {f: digest(f) for f, _ in jobs}
     for i in range(0, len(jobs), COMPOSE_WAVE):
         procs = []
         for f, prompt in jobs[i:i + COMPOSE_WAVE]:
@@ -1802,7 +1810,12 @@ def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
                 p.communicate(timeout=900)
             except subprocess.TimeoutExpired:
                 p.kill()
-    print(f"校閲の指摘で {len(jobs)}本を並列で修正した", flush=True)
+    # **何も変えなかった修正セッションを見えるようにする。**同じ指摘が次の巡にも
+    # そのまま出て、最後に記事ごと落ちる。黙って通り過ぎると誰も気づけない
+    untouched = [f for f, _ in jobs if digest(f) == before[f]]
+    print(f"校閲の指摘で {len(jobs)}本を並列で修正した"
+          + (f"(うち {len(untouched)}本は何も変わらなかった: "
+             + ", ".join(Path(f).name for f in untouched[:5]) + ")" if untouched else ""), flush=True)
 
 
 def _parse_review(text: str, err: str, where: str) -> dict:
@@ -1988,8 +2001,14 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
               + " / ".join(merged["failed"][:3]), flush=True)
     if merged["blockers"] and merged["verdict"] != "error":
         merged["verdict"] = "block"
-    # 次の巡を始めてよいかの判断に使う。見込みではなく**この号の実測**で決める
-    STAGE_MIN["校閲"] = (time.time() - t_review) / 60
+    # 次の巡を始めてよいかの判断に使う。見込みではなく**この号の実測**で決める。
+    # **1波あたりの時間**で持つ。巡の合計で持つと、49件を見た1巡目の24分を
+    # 「次の10件の巡」の見込みに使ってしまい、7分で済む修正の巡を時間切れと誤判定して
+    # 飛ばし、直せた10本を全部落とした(実測 2026-09-10)
+    took = (time.time() - t_review) / 60
+    waves = max(1, -(-len(jobs) // COMPOSE_WAVE))
+    STAGE_MIN["校閲"] = took
+    STAGE_MIN["校閲1波"] = took / waves
     print(f"校閲{round_no}巡目: {len(jobs)}件を並列で見て "
           f"ブロック{len(merged['blockers'])}件 / コメント{len(merged['comments'])}件 "
           f"({STAGE_MIN['校閲']:.0f}分)", flush=True)
@@ -2322,10 +2341,6 @@ def main() -> int:
             break
         if rounds > args.max_rounds:
             break
-        # 直す時間が無いなら、直しかけで時間切れになるより、いまの紙面を確定させる。
-        # 見直しの前に「社説の書き直し+記事の修正(並列)」が入るので、その分も積む
-        if not afford(t0, "校閲", 6, "校閲の往復", extra=9):
-            break
         # **社説への指摘は執筆側(Codex)へ返す。**校閲は Claude、社説の執筆は Codex という
         # 別ベンダー分離(要件4.5)が、修正セッションで壊れていた。実測: 2026-08-28号の
         # 校閲記録が引用した社説の一文が、現在の社説に存在しない。校閲側が書き直している。
@@ -2346,6 +2361,15 @@ def main() -> int:
         retarget = sorted(f.rsplit("/", 1)[-1] for f in by_file)
         if not (ed_blockers or by_file):
             continue
+        # 直す時間が無いなら、直しかけで時間切れになるより、いまの紙面を確定させる。
+        # **次の巡の値段は、見直す件数から出す。**前の巡の合計(紙面全体)で見積もると、
+        # 49件の巡の24分を10件の巡に当てはめて「時間が無い」と誤判定し、修正を飛ばして
+        # 10本を落とした(実測 2026-09-10)。見直すのは指摘の付いた記事+社説+紙面担当だけ
+        n_next = len(retarget) + (1 if ed_blockers else 0) + 1
+        waves = -(-n_next // COMPOSE_WAVE)
+        if not afford(t0, "校閲1波", 4, f"校閲の往復({n_next}件・{waves}波)",
+                      extra=(stage_cost("校閲1波", 4) * (waves - 1)) + 9):
+            break
         # 社説の書き直しと記事の修正は互いに触らないので同時に走らせる。
         # 記事の修正も1本1セッションで並列(指摘は記事ごとに独立している)
         jobs = []
@@ -2443,7 +2467,8 @@ def main() -> int:
         # 1巡は「落とす+社説+組版+校閲」。始めたら最後まで通さないと、
         # 記事だけ消えて digest が古いままの紙面が残る
         # 1巡は「落とす+(社説∥組版)+校閲」。社説と組版は同時に走るので長いほうだけ積む
-        if not afford(t0, "校閲", 6, f"ブロック記事の除外({_pass + 1}巡目)", extra=12):
+        # 除外後の校閲は社説+紙面担当だけ(1波)。紙面全体の巡の合計で見積もらない
+        if not afford(t0, "校閲1波", 4, f"ブロック記事の除外({_pass + 1}巡目)", extra=12):
             # ここは**人へ見せる文字列**の一覧。dict を入れると最後の通知組み立てで
             # 落ちる(実測 2026-09-04: 紙面は出来ていたのに compose が例外で終わった)
             unresolved = [f"{b.get('file')}: {(b.get('issue') or '')[:120]}"

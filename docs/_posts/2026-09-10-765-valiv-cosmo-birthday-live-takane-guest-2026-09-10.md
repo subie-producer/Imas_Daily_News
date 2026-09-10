@@ -1,7 +1,7 @@
 ---
 slug: 765-valiv-cosmo-birthday-live-takane-guest-2026-09-10
 edition: 2026-09-10
-brand: '765'
+brand: dsva
 src: 準公式
 rank: small
 corrected: false

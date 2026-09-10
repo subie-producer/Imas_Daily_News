@@ -42,7 +42,6 @@
   - 東京公演の千秋楽をGamerが報道、アーカイブ販売期間は9月27日22時まで(視聴期限は9月27日23:59)
   - オーコメ視聴のハッシュタグは「#つみまつ_オーコメ」(あずさ・律子)、「#ふたごぼし_オーコメ」(亜美・真美)、全6公演のxRライブストリーミングチケットは9月27日まで販売中
   - 会場オリジナルCD全12種の事後通販をコロムビアミュージックショップで受付中、受付期間は9月13日23:59まで、発送は10月2日一斉予定
-  - 事後通販は1会計につき各タイトル3枚まで購入可、価格帯は税込3,000〜5,000円。支払いはクレジットカード・GMO後払い・代金引換に対応(Amazon Payは不可)、注文には会員登録が必要
 - story_id: million-9th-anniversary-mission
   brand: million
   subject: ミリシタ9周年アニバーサリーミッションとイベント「最上級:Invit@tion!」
@@ -4011,47 +4010,3 @@
   status: active
   published_facts:
   - Apple Music公式プレイリスト「最新ソング：アニメ」にLegenders「Remain Viable」が選出
-- story_id: gaku-gold-rush-ch69-delay-2026
-  brand: gaku
-  subject: 学マス漫画『GOLD RUSH』第69話 掲載延期
-  first_published: '2026-09-10'
-  status: active
-  published_facts:
-  - 『学園アイドルマスター GOLD RUSH』第69話は、9月10日発売の週刊少年チャンピオン41号を休載
-  - 第69話は10月1日発売の週刊少年チャンピオン44号に掲載予定
-- story_id: gaku-hif-15m-milestone-campaign-2026
-  brand: gaku
-  subject: 学マスH.I.F挑戦回数1,500万回突破記念キャンペーン
-  first_published: '2026-09-10'
-  status: active
-  published_facts:
-  - H.I.Fの挑戦回数1,500万回突破を記念し、APドリンク30本の配布を予定
-  - 「プロデュース応援キャンペーン」も開催予定、詳細はゲーム内のお知らせで案内
-- story_id: gaku-howling-over-the-world-2026
-  brand: gaku
-  subject: 学マス楽曲「Howling over the World」配信
-  first_published: '2026-09-10'
-  status: active
-  published_facts:
-  - 「Howling over the World」がStreaming&DLで公開、歌唱は花海佑芽・秦谷美鈴・十王星南
-  - 作詞・作曲・編曲は烏屋茶房が担当
-- story_id: sidem-11th-kamisabi-drinks-goods-2026
-  brand: sidem
-  subject: SideM11th STAGE会場「KAMISABI」販売・体験会とコラボドリンク
-  first_published: '2026-09-10'
-  status: active
-  published_facts:
-  - TOYOTA ARENA TOKYOサブアリーナで、ゲーム「KAMISABI」の会場販売・無料体験会を9月12日・13日各10:00〜17:30実施(売り切れ次第終了、内容は当日変更の場合あり)
-  - 購入は「KAMISABIアルバムセット」1会計につき1人3点まで、体験会は「イントロクイズ×かるた」参加費無料
-  - 会場内常設売店で9月12日・13日16:00〜17:30に限定コラボドリンク6種を各1,000円(税込)で販売、1点ごとに全12種からランダムでコースター1枚進呈
-  - ドリンクはキャッシュレス決済のみ、場外売店「ARENA Miraie」とJOINT PARKのキッチンカーでは取り扱わない。テラススイート利用者向けJALラウンジ専用売店は全種類購入可・19時まで営業
-- story_id: shiny-parallel-corridor-official-shop-2026
-  brand: shiny
-  subject: シャニマス「パラレル回廊」公式ショップ販売
-  first_published: '2026-09-10'
-  status: active
-  published_facts:
-  - 「パラレル回廊ver.」グッズをアイドルマスター オフィシャルショップ5店舗で9月28日〜10月12日に取り扱い、各店フリー入場
-  - 超デカアクリルスタンド・フルグラフィックTシャツ(Lサイズ)・デスクマット(各全8種)は名古屋駅前店・大阪日本橋店、ぴかデコいろどりステッカー(全8種)は同2店+博多バスターミナル店で販売
-  - アクリルスタンド・缶バッジ(各全8種)はアトレ秋葉原店・仙台店・名古屋駅前店・大阪日本橋店・博多バスターミナル店、A4クリアファイル(全8種)はアトレ秋葉原店・名古屋駅前店・大阪日本橋店・博多バスターミナル店で取り扱い
-  - 在庫に限りがあり取り置き・予約・取り寄せ不可、店舗により購入制限の場合あり、POP UP SHOP購入特典の配布と展示施策は実施しない

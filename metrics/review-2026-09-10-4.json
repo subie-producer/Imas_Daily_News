@@ -1,0 +1,75 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-10-765-valiv-cosmo-birthday-live-takane-guest-2026-09-10.md",
+   "issue": "規程5: 新事実なしの続報。既報(stories.yml: cosmo-birthday-online-live-2026, first_published 2026-08-24)と実質同内容で、新事実も当日トリガーも無い。スペシャルゲスト決定の告知は9/9付だが、記事の内容はそれを繰り返しているだけであり、追加情報がない。既報の published_facts に「上水流宇宙本人が四条貴音のゲスト出演について『念願の共演、精一杯頑張る』とコメント」と記載されているのに、記事には含まれていない。",
+   "quote": "全文（見出し：上水流宇宙BDライブ、四条貴音が出演）。本文は既報と同じ「9月12日(土)15時から本編を予定。主演は上水流宇宙、ゲストは灯里愛夏とレトラ、スペシャルゲストは四条貴音。配信チケットはASOBI STAGEで5,000円（税込・機能利用料込）で販売され、終演後のアフタートーク配信視聴権が付く。販売期間は10月12日(月・祝)18時まで（予定）。配信期間は9月12日(土)から10月12日(月・祝)23時59分まで（予定）で、リアルタイム配信に加えてアーカイブを視聴できる。本編後のアフタートーク配信は21時からを予定し、上水流宇宙のYouTubeチャンネルでは冒頭無料配信も予定している。」",
+   "scope": "article:2026-09-10-765-valiv-cosmo-birthday-live-takane-guest-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-saigo-no-bunkasai-ongoing-2026-09-10.md",
+   "issue": "規程9: 公式が無い — ゲーム内イベントは公式が出すべき話題だが、sources に公式・準公式が記載されていない。game8.jp は攻略サイト（二次情報）のため、sources を公式ソース（例：idolmaster-official.jp）に差し替えるか、公式ソースを sources に追加する必要がある",
+   "quote": "sources:\n- url: https://game8.jp/gakuen-idolmaster/610573\n  type: 二次情報\n  label: ゲーム内イベント「さいごの文化祭」開催中",
+   "scope": "article:2026-09-10-gaku-saigo-no-bunkasai-ongoing-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-idol-no-michi-new-stages-2026-09-10.md",
+   "issue": "gaku-hif-implementation-garakuta-road-gacha-2026-09-10 との重複",
+   "quote": "学マス「アイドルへの道」に新ステージ26・27 | H.I.F編、ことね＆星南が本日実装　星南ガシャも（最後のパラグラフで「「アイドルへの道」への新ステージ26・27追加も予定されている」と記載済み）",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-10-cg-vote2026-247mv-update-2026-09-10.md",
+   "issue": "分量不足：記事本文が約145字で、rank: small の下限250字に達していない。ただし短報として許容。投票ページに記載されている投票方法・受付対象条件などを拾えば自然に埋まる可能性がある。",
+   "scope": "article:2026-09-10-cg-vote2026-247mv-update-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-gold-rush-ch69-delay-2026-09-10.md",
+   "issue": "分量不足。rank: small（下限250字）に対して記事本文が約50字。ただしブロック対象ではない（規程14参照）",
+   "scope": "article:2026-09-10-gaku-gold-rush-ch69-delay-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-idol-no-michi-new-stages-2026-09-10.md",
+   "issue": "分量不足: rank=small(下限250字)に対し、lede+本文が約100字。candidates の facts には ステージ26・27 の追加のみで追加詳細が無いため、出典に基づく水増しは不可。現在の分量は出典から導き出せる最小限の内容。本編が短いままでも問題なし(既報の当日トリガー記事として成立)。",
+   "scope": "article:2026-09-10-gaku-idol-no-michi-new-stages-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-saigo-no-bunkasai-ongoing-2026-09-10.md",
+   "issue": "分量不足：rank=small であり、本文は約85字。rank に対して記事が薄く、イベント内容・報酬詳細等の出典に掲載されている情報が取られていない。出典の facts に「3種類のステージ」「報酬サポートカード『イクラ〜♪ウニ〜♪』」等が記載されており、これらを展開すれば250字に満たないまでも分量は改善できるはず",
+   "scope": "article:2026-09-10-gaku-saigo-no-bunkasai-ongoing-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-sidem-12th-free-story-vol3-last-day.md",
+   "issue": "candidate_ids の不一致: 記事は「sched-2026-09-10-sidem-12th-free-story-2026-08-終了」を指定していますが、該当候補は candidate ファイルに存在しません。実際の出典（X/SideM_official）から確認した候補ID は「202609050237-grok-91」(2026-09-05.json)です。frontmatter の candidate_ids を修正してください。",
+   "scope": "article:2026-09-10-sidem-12th-free-story-vol3-last-day.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-sidem-12th-free-story-vol3-last-day.md",
+   "issue": "分量不足: rank: small で本文24字は、規程9の下限(small 250字)に大きく満たない。候補 facts から「舞台劇プロジェクト第9弾」「ギリシャ神話第10弾」といった作品背景、各19話・275PP報酬などの仕様を拾えば充実します。",
+   "scope": "article:2026-09-10-sidem-12th-free-story-vol3-last-day.md"
+  },
+  {
+   "file": "-",
+   "issue": "候補に「総選挙2026特別展示を開催」（cg・公式・9/12-13開催）が在るが、紙面に掲載されていない。期間限定の重要な公式イベント。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "候補に「SideM11th「315デリバリー」実施決定」（sidem・公式）が在るが、紙面に掲載されていない。SideM11th 関連のイベント施策。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-10-765-valiv-cosmo-birthday-live-takane-guest-2026-09-10.md",
+  "article:2026-09-10-cg-vote2026-247mv-update-2026-09-10.md",
+  "article:2026-09-10-cg-vote2026-mission-challenge-deadline-2026-09-10.md",
+  "article:2026-09-10-gaku-gold-rush-ch69-delay-2026-09-10.md",
+  "article:2026-09-10-gaku-idol-no-michi-new-stages-2026-09-10.md",
+  "article:2026-09-10-gaku-saigo-no-bunkasai-ongoing-2026-09-10.md",
+  "article:2026-09-10-sidem-12th-free-story-vol3-last-day.md",
+  "paper"
+ ]
+}

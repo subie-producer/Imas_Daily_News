@@ -1,0 +1,69 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-10-gaku-saigo-no-bunkasai-ongoing-2026-09-10.md",
+   "issue": "【規程9: 公式が無い】ゲーム内イベント「さいごの文化祭」は公式が出すべき話題だが、sources が空で公式・準公式ソースが1つもない。本文が削除されており、記事として成立していない。",
+   "quote": "src: 公式なし\nsources: []\ncandidate_ids: []\nlede: 削除: ゲーム内イベント情報は公式ソースが不明なため削除",
+   "scope": "article:2026-09-10-gaku-saigo-no-bunkasai-ongoing-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-idol-no-michi-new-stages-2026-09-10.md",
+   "issue": "gaku-hif-implementation-garakuta-road-gacha-2026-09-10 との重複",
+   "quote": "学マス「アイドルへの道」に新ステージ26・27 | H.I.F編、ことね＆星南が本日実装　星南ガシャも（最後のパラグラフで「「アイドルへの道」への新ステージ26・27追加も予定されている」と記載済み）",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-10-gaku-saigo-no-bunkasai-ongoing-2026-09-10.md",
+   "issue": "本文が完全に削除されています。frontmatter のみの状態では記事として機能しません。公式に到達できないのであれば、記事ファイル全体を削除するか、frontmatter も削除してリポジトリから除外する必要があります。",
+   "scope": "article:2026-09-10-gaku-saigo-no-bunkasai-ongoing-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-cg-vote2026-247mv-update-2026-09-10.md",
+   "issue": "分量不足：記事本文が約145字で、rank: small の下限250字に達していない。ただし短報として許容。投票ページに記載されている投票方法・受付対象条件などを拾えば自然に埋まる可能性がある。",
+   "scope": "article:2026-09-10-cg-vote2026-247mv-update-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-gold-rush-ch69-delay-2026-09-10.md",
+   "issue": "分量不足。rank: small（下限250字）に対して記事本文が約50字。ただしブロック対象ではない（規程14参照）",
+   "scope": "article:2026-09-10-gaku-gold-rush-ch69-delay-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-gaku-idol-no-michi-new-stages-2026-09-10.md",
+   "issue": "分量不足: rank=small(下限250字)に対し、lede+本文が約100字。candidates の facts には ステージ26・27 の追加のみで追加詳細が無いため、出典に基づく水増しは不可。現在の分量は出典から導き出せる最小限の内容。本編が短いままでも問題なし(既報の当日トリガー記事として成立)。",
+   "scope": "article:2026-09-10-gaku-idol-no-michi-new-stages-2026-09-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-sidem-12th-free-story-vol3-last-day.md",
+   "issue": "candidate_ids の不一致: 記事は「sched-2026-09-10-sidem-12th-free-story-2026-08-終了」を指定していますが、該当候補は candidate ファイルに存在しません。実際の出典（X/SideM_official）から確認した候補ID は「202609050237-grok-91」(2026-09-05.json)です。frontmatter の candidate_ids を修正してください。",
+   "scope": "article:2026-09-10-sidem-12th-free-story-vol3-last-day.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-10-sidem-12th-free-story-vol3-last-day.md",
+   "issue": "分量不足: rank: small で本文24字は、規程9の下限(small 250字)に大きく満たない。候補 facts から「舞台劇プロジェクト第9弾」「ギリシャ神話第10弾」といった作品背景、各19話・275PP報酬などの仕様を拾えば充実します。",
+   "scope": "article:2026-09-10-sidem-12th-free-story-vol3-last-day.md"
+  },
+  {
+   "file": "-",
+   "issue": "候補に「総選挙2026特別展示を開催」（cg・公式・9/12-13開催）が在るが、紙面に掲載されていない。期間限定の重要な公式イベント。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "候補に「SideM11th「315デリバリー」実施決定」（sidem・公式）が在るが、紙面に掲載されていない。SideM11th 関連のイベント施策。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-10-765-valiv-cosmo-birthday-live-takane-guest-2026-09-10.md",
+  "article:2026-09-10-cg-vote2026-247mv-update-2026-09-10.md",
+  "article:2026-09-10-cg-vote2026-mission-challenge-deadline-2026-09-10.md",
+  "article:2026-09-10-gaku-gold-rush-ch69-delay-2026-09-10.md",
+  "article:2026-09-10-gaku-idol-no-michi-new-stages-2026-09-10.md",
+  "article:2026-09-10-gaku-saigo-no-bunkasai-ongoing-2026-09-10.md",
+  "article:2026-09-10-sidem-12th-free-story-vol3-last-day.md",
+  "paper"
+ ]
+}

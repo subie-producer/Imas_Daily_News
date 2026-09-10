@@ -52,5 +52,23 @@
     "source_type": "公式",
     "verify": "confirmed",
     "src_candidate_id": "202609050237-grok-28"
+  },
+  {
+    "id": "sched-2026-10-01-gaku-gold-rush-ch69-44go-2026-発売",
+    "dedup_key": "gaku-gold-rush-ch69-44go-2026",
+    "brand": "gaku",
+    "subject": "学マス漫画『GOLD RUSH』第69話(週刊少年チャンピオン44号)",
+    "kind": "発売",
+    "note": "41号休載分の69話を44号に掲載",
+    "reserved_on": "2026-09-10",
+    "title": "2026-09-09　週刊少年チャンピオン41号は休載、69話は44号へ",
+    "url": "https://x.com/gkmas_GR/status/2097701773771419900",
+    "source_type": "二次情報",
+    "facts": [
+      "『学園アイドルマスター GOLD RUSH』第69話は、9月10日発売の週刊少年チャンピオン41号を休載",
+      "第69話は10月1日発売の週刊少年チャンピオン44号に掲載"
+    ],
+    "src_candidate_id": "202609100228-grok-64",
+    "event_date": "2026-10-01"
   }
 ]

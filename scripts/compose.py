@@ -2314,6 +2314,13 @@ def main() -> int:
     # 途中で死んでも、人が lint と校閲記録を見て確定できる状態を残す
     commit_and_push(branch, f"compose {date}: 紙面生成(校閲前・lint green)", "compose")
 
+    # 校閲が既報判定に使う台帳は**組版前の**もの。組版は stock/stories.yml にこの号の
+    # 記事の事実を書き足すので、それを読ませるとどの記事も自分自身を根拠に「既報」に
+    # 見える(実測 2026-09-10: 当日発表のゲスト出演記事が「新事実なしの続報」で落ちた。
+    # 台帳の事実には日付が無く、校閲には今日足された分が見分けられない)
+    before_yml = pre_assembly[0].get("stock/stories.yml")
+    (ROOT / "metrics" / f"stories-before-{date}.yml").write_bytes(before_yml or b"[]\n")
+
     # 3. 校閲往復
     rounds = 0
     review = None

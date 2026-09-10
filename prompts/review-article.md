@@ -6,7 +6,10 @@
 対象:
 - docs/_posts/{FILE} … 校閲する記事(frontmatter+本文)
 - candidates/*.json … この記事の frontmatter の candidate_ids が指す候補。出典と facts の照合元
-- stock/stories.yml … 既報台帳(続報の新事実判定に使う)
+- metrics/stories-before-{DATE}.yml … **この号の組版前の**既報台帳(続報の新事実判定はこれで行う)。
+  `stock/stories.yml` は組版がこの号の記事の事実を**既に書き足したあと**なので、それで判定すると
+  どの記事も「既報」に見える(実測 2026-09-10: 当日発表のゲスト出演記事を、自分自身の台帳記入を
+  根拠に「新事実なしの続報」と判定した)。stock/stories.yml は読まないこと
 
 【ブロック項目】(1件でもあれば verdict=block)
 1. 出典にない事実: 記事の本文・lede・見出しに、candidates の facts から導けない具体的事実(日付・価格・人名・数量など)が書かれている。

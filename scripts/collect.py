@@ -207,11 +207,21 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
             "各ページの内容を事実として抽出してください(まとめサイトの場合はページ内の一次ソースURLを url に採用)。"
             + ITEM_FORMAT + "\n\n" + json.dumps(blobs, ensure_ascii=False))
         cands = claude_call(prompt, timeout=420)
+        bad = state.setdefault("_unreadable", {})   # url → 読めなかった回数
         if cands is None:
-            # 読めなかったバッチは既読にしない(次回そのまま拾い直す)。0件とは別
-            notify("collect", f"定点観測: facts 化の出力が読めなかった({len(batch)}件)。次回に持ち越す", ok=False)
-            batch = []
+            # 読めなかったバッチは既読にしない(次回そのまま拾い直す)。0件とは別。
+            # ただし同じ URL が2回読めなければ諦めて既読にする。毎回同じ先頭バッチを
+            # やり直すと、上限の外の新着が永久に後回しになる(監査指摘)
+            for it in batch:
+                bad[it["url"]] = bad.get(it["url"], 0) + 1
+            give_up = [it for it in batch if bad[it["url"]] >= 2]
+            notify("collect", f"定点観測: facts 化の出力が読めなかった({len(batch)}件)。"
+                              f"次回に持ち越す(諦めて既読にしたもの {len(give_up)}件)", ok=False)
+            batch = give_up
             cands = []
+        else:
+            for it in batch:
+                bad.pop(it["url"], None)
         for c in cands:
             c["_via"] = "watch"
 
@@ -231,7 +241,10 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
         state[sid] = (keep + [u for u in seen if u not in keep])[:500]
         if sid in stats:
             stats[sid]["deferred"] = len([n for n in deferred if n["source_id"] == sid])
-    STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    # **ここでは保存しない。**既読の確定は candidates への書き込みと同じ成功境界にする。
+    # 先に既読にすると、後段(正規化・verify・保存)が例外で落ちたとき、新着は既読なのに
+    # candidates に無い、という取りこぼしになる(監査指摘)。main が保存後に書く
+    stats["_state"] = state
 
     if deferred:
         print(f"定点観測: 新着 {len(new_items)}件のうち {len(batch)}件を処理、"
@@ -879,6 +892,10 @@ def main() -> int:
     cands = normalize(watch_cands + explore_items)
     vcounts = verify(cands)
     added = merge_into_day_file(cands)
+    # candidates が保存できてから、定点観測の既読を確定する(同じ成功境界。監査指摘)
+    watch_state = (watch_info.get("stats") or {}).pop("_state", None) if isinstance(watch_info, dict) else None
+    if watch_state is not None:
+        STATE_PATH.write_text(json.dumps(watch_state, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     dur = int(time.time() - t0)
     append_metric("collect", {"edition": date, "watch": watch_info, "per_query": per_query,
                               "normalized": len(cands), "added": added, "verify": vcounts,

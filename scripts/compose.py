@@ -1223,6 +1223,37 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
             arts.append(a)
         dropped += r.get("dropped") or []
 
+    # 同じ wave で並列に選んだ面同士は claimed を見ていない(既定8並列なら通常ブランド7面が
+    # 同じ wave)。同じ話題が2面に立ちうるので、dedup_key か素材 id が重なる記事は機械で
+    # 1本にする(監査指摘)。残すのは主題の収集時の面に合う記事、どちらも合わなければ先の面。
+    # 素材は統合し、消した側は「重複」として不採用に記録する
+    subject_brand = {s["dedup_key"]: b for b, rows in by_brand.items() for s in rows}
+    merged_away: set[str] = set()
+    for i, a in enumerate(arts):
+        if a.get("rank") == "roundup" or a["slug"] in merged_away:
+            continue
+        for b2 in arts[i + 1:]:
+            if b2.get("rank") == "roundup" or b2["slug"] in merged_away or b2["brand"] == a["brand"]:
+                continue
+            same = (a.get("dedup_key") == b2.get("dedup_key")
+                    or bool(set(a["candidate_ids"]) & set(b2["candidate_ids"])))
+            if not same:
+                continue
+            keep, drop = a, b2
+            if (subject_brand.get(a.get("dedup_key")) != a["brand"]
+                    and subject_brand.get(b2.get("dedup_key")) == b2["brand"]):
+                keep, drop = b2, a
+            keep["candidate_ids"] = keep["candidate_ids"] + [c for c in drop["candidate_ids"]
+                                                             if c not in keep["candidate_ids"]]
+            merged_away.add(drop["slug"])
+            dropped.append({"dedup_key": drop.get("dedup_key"), "reason": "重複",
+                            "note": f"{keep['brand']} 面の {keep['slug']} に統合(面をまたぐ重複)"})
+            print(f"面をまたぐ重複: {drop['brand']}/{drop['slug']} → {keep['brand']}/{keep['slug']} に統合", flush=True)
+            if drop is a:
+                break
+    arts = [a for a in arts if a["slug"] not in merged_away]
+    by_slug = {a["slug"]: a for a in arts}
+
     # 面をまたぐ話題の格上げ。後続の面が「先に取られたが、この面にも同じくらい属する」と
     # 申告したものを合同(joint)へ移し、両面の素材を統合する。
     # 片方の面に寄せたままにすると、もう一方のファンにとっては紙面から消えたのと同じになる。
@@ -2188,9 +2219,16 @@ def main() -> int:
     by_brand, n_subjects = write_plan_index(date, cands, blocklist)
     print(f"選定インデックス: {n_subjects}主題 / {len(by_brand)}面 "
           f"({', '.join(f'{b}:{len(v)}' for b, v in sorted(by_brand.items()))})", flush=True)
-    with stage("選定"):
-        plan = run_plan(date, by_brand, triggers)
-    pick_lead(date, plan)
+    plan_saved = ROOT / "metrics" / f"plan-{date}.json"
+    if args.reuse_plan and plan_saved.exists():
+        # **保存した計画を本当に使う。**以前は旗があるだけで毎回選定し直しており、
+        # 再試行で判断が変わると新しい計画と古い記事が混在した(監査指摘)
+        plan = json.loads(plan_saved.read_text(encoding="utf-8"))
+        print(f"選定を再利用: {plan_saved.name}({len(plan.get('articles') or [])}本)", flush=True)
+    else:
+        with stage("選定"):
+            plan = run_plan(date, by_brand, triggers)
+        pick_lead(date, plan)
     plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     # **素材を先に確定させてから、紙面の形を直す。**
     # 逆にすると、形を直したあとで素材が減って形が崩れる(監査指摘):

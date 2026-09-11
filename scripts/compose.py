@@ -2206,7 +2206,9 @@ def main() -> int:
                                 [t for t in triggers if t.get("brand") == args.plan]))
         return 0
 
-    if (ROOT / "docs" / "_editions" / f"{date}.md").exists():
+    if (ROOT / "docs" / "_editions" / f"{date}.md").exists() and not args.reuse_plan:
+        # 二重実行のガード。--reuse-plan は「出来ているところから続ける」なので通す
+        # (実測 2026-09-12: lint 赤で止まった号を --reuse-plan で回し直そうとして、ここで中止された)
         notify("compose", f"{date}: 号スナップショットが既に存在(compose 済み?)。中止")
         return 0
 

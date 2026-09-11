@@ -21,8 +21,15 @@ RANKS = ("large", "medium", "small")
 REASONS = ("既報", "過年度", "同人・ファン主催", "個人の話題", "重複", "出典不足", "面違い", "その他")
 
 
-def plan_schema(keys: list[str]) -> dict:
-    """その面の主題キー全部を required にした判定 schema。"""
+def plan_schema(keys: list[str], brand: str = "", claimed_slugs: list[str] | None = None) -> dict:
+    """その面の主題キー全部を required にした判定 schema。
+
+    rank の語彙は面で変わる(ファン面 culture は general だけ。規程4の例外)。
+    cross_brand の claimed_slug は**提示した slug の enum**にする(未知の slug が返ると
+    その判定ごと消えていた。監査指摘)。
+    """
+    ranks = list(RANKS) + (["culture"] if brand == "general" else []) + [""]
+    claimed = sorted({s for s in (claimed_slugs or []) if s}) + [""]
     decision = {
         "type": "object",
         "required": ["action", "angle", "rank", "lead_score", "merge_into", "claimed_slug", "reason", "note"],
@@ -31,11 +38,11 @@ def plan_schema(keys: list[str]) -> dict:
             "action": {"enum": list(ACTIONS)},
             "angle": {"type": "string", "maxLength": 120,
                       "description": "記事の切り口(article/roundup のとき。roundup なら束ねる観点)"},
-            "rank": {"enum": list(RANKS) + [""], "description": "article のとき。他は空"},
+            "rank": {"enum": ranks, "description": "article のとき。他は空"},
             "lead_score": {"type": "integer", "minimum": 0, "maximum": 100,
                            "description": "号の一面に値する度合い。面で最大の1本にだけ高く、他は0〜30"},
             "merge_into": {"type": "string", "description": "merge のとき: この面の別の主題キー(そこへ素材を統合)。他は空"},
-            "claimed_slug": {"type": "string", "description": "cross_brand のとき: 他の面が既に立てた記事の slug。他は空"},
+            "claimed_slug": {"enum": claimed, "description": "cross_brand のとき: 他の面が既に立てた記事の slug。他は空"},
             "reason": {"enum": list(REASONS) + [""], "description": "drop のとき。他は空"},
             "note": {"type": "string", "maxLength": 160},
         },
@@ -86,8 +93,9 @@ def decisions_to_plan(brand: str, rows: list[dict], decisions: dict, taken: set[
         d = decisions.get(key) or {"action": "drop", "reason": "その他", "note": "判定なし"}
         act = d.get("action")
         if act == "article":
+            ok_ranks = set(RANKS) | ({"culture"} if brand == "general" else set())
             arts[key] = {"slug": slugify(brand, key, taken), "brand": brand,
-                         "rank": d.get("rank") if d.get("rank") in RANKS else "small",
+                         "rank": d.get("rank") if d.get("rank") in ok_ranks else "small",
                          "angle": d.get("angle") or r.get("title") or key,
                          "lead_score": int(d.get("lead_score") or 0), "dedup_key": key,
                          "candidate_ids": list(r.get("ids") or [])}

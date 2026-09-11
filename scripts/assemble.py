@@ -103,11 +103,17 @@ def build_input(date: str, posts: list[dict], mats: dict, stories: list[dict], p
     for fm in posts:
         ids = fm.get("candidate_ids") or []
         key = primary_key(fm, mats)
-        facts = []
+        # 事実には id を振る(F1, F2, …)。モデルは既報にする事実を id で指せるので、
+        # 言い換えの検算で正しい事実を落とすことが無い(監査指摘)。日付付きを先に、
+        # 価格・出演者など日付の無い事実も少し渡す(台帳に残せるように)
+        raw = []
         for i in ids:
             for f in (mats.get(i) or {}).get("facts") or []:
-                if DATE_RE.search(f) and f not in facts:
-                    facts.append(f[:140])
+                if f not in raw:
+                    raw.append(f)
+        dated = [f for f in raw if DATE_RE.search(f)]
+        undated = [f for f in raw if not DATE_RE.search(f)]
+        facts = [{"id": f"F{n + 1}", "text": f[:140]} for n, f in enumerate((dated[:6] + undated)[:9])]
         exist = by_id.get(key)
         arts.append({
             "slug": fm.get("slug"), "brand": fm.get("brand"), "rank": fm.get("rank"),
@@ -116,7 +122,7 @@ def build_input(date: str, posts: list[dict], mats: dict, stories: list[dict], p
             "dedup_key": key, "candidate_ids": ids,
             "existing_story": ({"story_id": exist.get("story_id"), "subject": exist.get("subject"),
                                 "known_facts": (exist.get("published_facts") or [])[-3:]} if exist else None),
-            "dated_facts": facts[:6],
+            "facts": facts,
         })
     d = datetime.date.fromisoformat(date)
     tomorrow = (d + datetime.timedelta(days=1)).isoformat()
@@ -153,7 +159,8 @@ def prompt(date: str, inp: dict) -> str:
 ### stories(既報台帳に残す事実。記事ごとに1件)
 - story_id: existing_story があればその story_id、無ければ dedup_key
 - subject: 話題の件名(60字以内)。既存があれば同じでよい
-- published_facts: この記事が伝えた事実を1〜4行、各140字以内、**dated_facts と title/lede から**。
+- published_facts: この記事が伝えた事実を1〜4件。**入力の facts の id(例 "F2")をそのまま書く**のが基本。
+  facts に無く title/lede にだけある事実は、その文をほぼそのまま短く書く(140字以内)。
   既存の known_facts と同じ内容は繰り返さない。推測・言い換えの水増しをしない
 
 ### reservations(続報予約。**その日、読者が何かを見に行ける・できる日**だけ)
@@ -196,7 +203,16 @@ def _date_forms(iso: str) -> list[str]:
     except ValueError:
         return []
     return [iso, f"{d.month}月{d.day}日", f"{d.month:02d}月{d.day:02d}日", f"{d.month}/{d.day}",
-            f"{d.month:02d}/{d.day:02d}", f"{d.year}/{d.month}/{d.day}", f"{d.year}年{d.month}月{d.day}日"]
+            f"{d.month:02d}/{d.day:02d}", f"{d.year}/{d.month}/{d.day}", f"{d.year}年{d.month}月{d.day}日",
+            f"{d.year}.{d.month}.{d.day}", f"{d.month}.{d.day}", f"{d.month}-{d.day}", f"{d.year}-{d.month}-{d.day}"]
+
+
+_ZEN = str.maketrans("０１２３４５６７８９／．－", "0123456789/.-")
+
+
+def _norm(text: str) -> str:
+    """全角数字・記号を半角にする(素材の日付照合用。監査指摘)。"""
+    return (text or "").translate(_ZEN)
 
 
 def _supported(fact: str, text: str, n: int = 6) -> bool:
@@ -232,6 +248,15 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict) -> 
             if not s and g.get("label") != "明日":
                 # 記事を指さない行は「明日」の予約分だけ。他の群で作られたら入力に無い行
                 notes.append(f"digest: 記事を指さない行を {g.get('label')} から捨てた({r.get('t')!r})"); continue
+            # 行の文言が入力に根拠を持つか(記事なら見出し・リード・素材、明日の予約行なら予約の件名)
+            if s:
+                a = art_in.get(s) or {}
+                basis = " ".join([str(a.get("title") or ""), str(a.get("lede") or "")]
+                                 + [f["text"] for f in (a.get("facts") or [])])
+            else:
+                basis = " ".join(str(t.get("subject") or "") for t in (inp.get("tomorrow_reservations") or []))
+            if not _supported(str(r.get("t") or ""), basis, n=3):
+                notes.append(f"digest: 入力に根拠の無い行を捨てた({r.get('t')!r})"); continue
             if r.get("k") not in K_VOCAB or not r.get("t") or len(r["t"]) > 20 or len(r.get("d") or "") > 25:
                 notes.append(f"digest: 形式外の行を捨てた({r.get('t')!r})"); continue
             row = {"k": r["k"], "t": r["t"], "d": r.get("d") or "", "brand": brand_of.get(s) or r.get("brand")}
@@ -271,11 +296,20 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict) -> 
         if s["story_id"] not in allowed:
             notes.append(f"stories: {slug} が無関係な話題 {s['story_id']} に結合しようとした → {a.get('dedup_key')} にする")
             s["story_id"] = a.get("dedup_key")
-        basis = " ".join([str(a.get("title") or ""), str(a.get("lede") or "")] + list(a.get("dated_facts") or []))
+        fact_by_id = {f["id"]: f["text"] for f in (a.get("facts") or [])}
+        basis = " ".join([str(a.get("title") or ""), str(a.get("lede") or "")] + list(fact_by_id.values()))
         facts = []
         for f in s["published_facts"][:4]:
-            f = str(f)[:140]
-            if _supported(f, basis):
+            f = str(f).strip()
+            if re.fullmatch(r"F\d+", f):
+                if f in fact_by_id and fact_by_id[f] not in facts:
+                    facts.append(fact_by_id[f])          # id で指した事実は素材そのもの
+                else:
+                    notes.append(f"stories: 無い事実 id {f} を捨てた({slug})")
+                continue
+            f = f[:140]
+            # 自由文は見出し・リード・素材との4文字一致で粗く確かめる(言い換えは許す)
+            if _supported(f, basis, n=4):
                 facts.append(f)
             else:
                 notes.append(f"stories: 入力に無い事実を捨てた({slug}: {f[:40]})")
@@ -285,6 +319,15 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict) -> 
         seen_story_slugs.add(slug)
         stories.append({"slug": slug, "story_id": s["story_id"], "subject": (s.get("subject") or "")[:60],
                         "published_facts": facts})
+    # **記事ごとに必ず1件。**返ってこなかった記事は見出しを事実として台帳に残す
+    # (台帳に無い記事は翌日「既報」にならず、同じ話題がまた記事になる。監査指摘)
+    for slug, a in art_in.items():
+        if slug not in seen_story_slugs:
+            notes.append(f"stories: {slug} の分が無いので見出しで補った")
+            exist = a.get("existing_story") or {}
+            stories.append({"slug": slug, "story_id": exist.get("story_id") or a.get("dedup_key"),
+                            "subject": (exist.get("subject") or str(a.get("title") or ""))[:60],
+                            "published_facts": [str(a.get("title") or "")[:140]]})
 
     res = []
     for r in out.get("reservations") or []:
@@ -299,8 +342,8 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict) -> 
         if dt.isoformat() <= date or r.get("kind") not in KINDS:
             notes.append(f"reservations: 過去日か種別不正 {r.get('date')}/{r.get('kind')}"); continue
         c = mats[cid]
-        hay = " ".join(list(c.get("facts") or []) + [str(c.get("event_date") or ""), str(c.get("deadline") or ""),
-                                                     str(c.get("title") or "")])
+        hay = _norm(" ".join(list(c.get("facts") or []) + [str(c.get("event_date") or ""), str(c.get("deadline") or ""),
+                                                           str(c.get("title") or "")]))
         # 締切前(3日前)は締切日そのものが素材にあればよい
         probe = [dt] + ([dt + datetime.timedelta(days=3)] if r.get("kind") == "締切前" else []) + \
                 ([dt + datetime.timedelta(days=1)] if r.get("kind") in ("締切", "終了") else [])
@@ -350,13 +393,39 @@ def strip_edition(date: str, stories: list[dict]) -> list[dict]:
 
 
 def baseline_stories(date: str) -> list[dict]:
-    """組版前の台帳 = 現在の台帳からこの号の寄与を剥がしたもの。
+    """組版前の台帳。
 
     **入力を作るときも反映するときも、同じこれを使う。**反映時だけ剥がすと、
     再実行のときに前回この号が足した事実を「既報」としてモデルに渡し、モデルが
     それを繰り返さず、反映直前に剥がされて台帳から消える(監査指摘 P0-2)。
+
+    当日の再実行は「現在の台帳からこの号の寄与を剥がしたもの」で足りるが、後続号が
+    台帳に入ったあとに過去号を組み直すと、後続号の事実が「組版前」に混ざる。
+    初回に控えた metrics/stories-before-<日付>.yml があればそれを起点にする(監査指摘)。
+    ただし後続号が同じ話題に足した事実は、控えには無いので現在の台帳から補う
+    (剥がすのはこの号の寄与だけ)。
     """
-    return strip_edition(date, load_yaml_list(STORIES))
+    current = strip_edition(date, load_yaml_list(STORIES))
+    saved_p = ROOT / "metrics" / f"stories-before-{date}.yml"
+    if not saved_p.exists():
+        return current
+    saved = load_yaml_list(saved_p)
+    saved_ids = {e.get("story_id") for e in saved}
+    by_id = {e.get("story_id"): e for e in current}
+    out = []
+    for e in saved:
+        cur = by_id.get(e.get("story_id"))
+        if cur is not None:
+            # 控えの事実 + 後続号が足した事実(この号の分は剥がし済み)
+            merged = dict(cur)
+            merged["published_facts"] = list(e.get("published_facts") or []) + [
+                f for f in (cur.get("published_facts") or []) if f not in (e.get("published_facts") or [])]
+            out.append(merged)
+        else:
+            out.append(e)
+    # 後続号が新しく作った話題(古い項目の first_published は dict のこともあるので文字列で比べる)
+    out += [e for e in current if e.get("story_id") not in saved_ids and str(e.get("first_published") or "") > date]
+    return out
 
 
 def baseline_pending(date: str, dry: bool) -> list[dict]:

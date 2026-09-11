@@ -88,7 +88,8 @@ def article_hash(path) -> str:
     seen = {"title": fm.get("title"), "lede": fm.get("lede"), "brand": fm.get("brand"),
             "candidate_ids": fm.get("candidate_ids"), "event_date": str(fm.get("event_date") or ""),
             "tags": fm.get("tags"), "corrected": fm.get("corrected"), "corrections": fm.get("corrections"),
-            "sources": [[s.get("url"), s.get("label")] for s in (fm.get("sources") or [])]}
+            # 出典の種別も読者に表示される。校閲後に変えても指紋が一致してはいけない(監査指摘)
+            "sources": [[s.get("url"), s.get("label"), s.get("type")] for s in (fm.get("sources") or [])]}
     return hashlib.sha256((_json.dumps(seen, ensure_ascii=False, sort_keys=True, default=str) + "\n" + body)
                           .encode("utf-8")).hexdigest()
 

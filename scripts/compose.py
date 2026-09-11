@@ -1081,8 +1081,10 @@ def repair_plan_shape(plan: dict) -> list[str]:
             fixed.append(f"{a.get('slug','?')}: 一面が複数あるので lead → large")
     elif not leads:
         # 除外は roundup だけ。pick_lead も culture を一面候補として認めているので、
-        # ここで culture を外すと「残ったのが culture だけ」の号で一面が立たない(監査指摘)
-        cand = [a for a in arts if a.get("rank") != "roundup"]
+        # ここで culture を外すと「残ったのが culture だけ」の号で一面が立たない(監査指摘)。
+        # roundup しか残らない号(schema 上は正しい出力)でも一面の無い紙面は出せないので、
+        # そのときは roundup を一面に立てる(監査指摘)
+        cand = [a for a in arts if a.get("rank") != "roundup"] or list(arts)
         if cand:
             top = max(cand, key=lambda a: a.get("lead_score") or 0)
             top["rank"] = "lead"
@@ -1172,9 +1174,10 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
             # 以前はファイルに JSON を書かせ、id の写し間違いを別セッションで直し、
             # 漏れを別セッションで拾い直していた(監査指摘 P1-1/P1-2)
             keys = [s["dedup_key"] for s in by_brand[b]]
+            schema = planlib.plan_schema(keys, b, [c.get("slug") for c in claimed])
             procs.append((b, out, subprocess.Popen(
                 ["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
-                 "--json-schema", json.dumps(planlib.plan_schema(keys), ensure_ascii=False),
+                 "--json-schema", json.dumps(schema, ensure_ascii=False),
                  "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
@@ -1517,12 +1520,15 @@ def canonicalize_article(date: str, art: dict, cands: dict) -> list[str]:
             s["label"] = title_by_url.get(s["url"]) or urllib.parse.urlparse(s["url"]).hostname or s["url"]
             log.append("出典 label を補った")
         srcs.append({"label": s["label"], "url": s["url"], "type": s["type"]})
+    # 無条件に置き換える。空のときに元の不正な sources を残すと lint 赤から戻れない(監査指摘)
+    fm["sources"] = srcs
     if srcs:
-        fm["sources"] = srcs
         src = weakest_src(s["type"] for s in srcs)
         if fm.get("src") != src:
             log.append(f"src: {fm.get('src')} → {src}")
             fm["src"] = src
+    else:
+        log.append("出典が1つも残らない(記事は不成立として落とす)")
     order = ["slug", "edition", "brand", "src", "rank", "corrected", "corrections", "candidate_ids",
              "title", "lede", "tags", "sources", "event_date"]
     ordered = {k: fm[k] for k in order if k in fm}
@@ -1551,6 +1557,9 @@ def validate_article_file(date: str, art: dict, cands: dict) -> list[str]:
             errors.append(f"{key} が計画と不一致(計画 {want} / 実際 {got})")
     if sorted(fm.get("candidate_ids") or []) != sorted(art["candidate_ids"]):
         errors.append("candidate_ids が計画と不一致")
+    if not fm.get("sources"):
+        # 正規化で url の無い出典を捨てた結果、出典が残らなかった記事は成立しない
+        errors.append("出典が1つも無い")
     return errors
 
 

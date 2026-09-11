@@ -215,6 +215,8 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
             for it in batch:
                 bad[it["url"]] = bad.get(it["url"], 0) + 1
             give_up = [it for it in batch if bad[it["url"]] >= 2]
+            for it in give_up:
+                bad.pop(it["url"], None)   # 諦めたら回数も消す。残すと再登場時に1回で即既読になる(監査指摘)
             notify("collect", f"定点観測: facts 化の出力が読めなかった({len(batch)}件)。"
                               f"次回に持ち越す(諦めて既読にしたもの {len(give_up)}件)", ok=False)
             batch = give_up

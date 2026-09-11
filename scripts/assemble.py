@@ -405,27 +405,13 @@ def baseline_stories(date: str) -> list[dict]:
     ただし後続号が同じ話題に足した事実は、控えには無いので現在の台帳から補う
     (剥がすのはこの号の寄与だけ)。
     """
-    current = strip_edition(date, load_yaml_list(STORIES))
+    # **入力用と反映用は別の系統**(監査指摘)。ここは入力用: 初回に控えた組版前の台帳
+    # そのもの(後続号の事実を混ぜない。混ぜると過去号の組み直しで未来の事実が「既報」に
+    # 見え、当時残すべき事実を省く)。反映は apply が現在の台帳へ合流させる
     saved_p = ROOT / "metrics" / f"stories-before-{date}.yml"
-    if not saved_p.exists():
-        return current
-    saved = load_yaml_list(saved_p)
-    saved_ids = {e.get("story_id") for e in saved}
-    by_id = {e.get("story_id"): e for e in current}
-    out = []
-    for e in saved:
-        cur = by_id.get(e.get("story_id"))
-        if cur is not None:
-            # 控えの事実 + 後続号が足した事実(この号の分は剥がし済み)
-            merged = dict(cur)
-            merged["published_facts"] = list(e.get("published_facts") or []) + [
-                f for f in (cur.get("published_facts") or []) if f not in (e.get("published_facts") or [])]
-            out.append(merged)
-        else:
-            out.append(e)
-    # 後続号が新しく作った話題(古い項目の first_published は dict のこともあるので文字列で比べる)
-    out += [e for e in current if e.get("story_id") not in saved_ids and str(e.get("first_published") or "") > date]
-    return out
+    if saved_p.exists():
+        return load_yaml_list(saved_p)
+    return strip_edition(date, load_yaml_list(STORIES))
 
 
 def baseline_pending(date: str, dry: bool) -> list[dict]:
@@ -448,11 +434,12 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
     log: list[str] = []
     d = datetime.date.fromisoformat(date)
 
-    # 1. 既報台帳(組版前の状態 = baseline を控える)
-    stories = stories if stories is not None else baseline_stories(date)
+    # 1. 既報台帳。**反映用**は現在の台帳からこの号の寄与を剥がしたもの(後続号の事実は残る)。
+    #    **入力用**の控え(stories-before)は初回だけ書き、以後は触らない(監査指摘)
     before = ROOT / "metrics" / f"stories-before-{date}.yml"
-    if not dry:
-        dump_yaml(before, stories)
+    if not dry and not before.exists():
+        dump_yaml(before, stories if stories is not None else strip_edition(date, load_yaml_list(STORIES)))
+    stories = strip_edition(date, load_yaml_list(STORIES))
     by_id = {e.get("story_id"): e for e in stories}
     brand_of = {fm.get("slug"): fm.get("brand") for fm in posts}
     n_new = n_app = 0

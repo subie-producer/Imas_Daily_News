@@ -1,4 +1,4 @@
-# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。
+# 日付未確定の追跡事項(watchlist)。日付が判明したら compose が stock/scheduled/<日付>.json へ予約して、ここから消す。
 - dedup_key: gaku-hif-15m-milestone-campaign-2026
   brand: gaku
   subject: 学マスH.I.F挑戦回数1,500万回突破記念キャンペーン

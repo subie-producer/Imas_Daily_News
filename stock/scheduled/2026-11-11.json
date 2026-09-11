@@ -1,42 +1,37 @@
 [
- {
-  "id": "sched-2026-11-11-millionlive-hinata-apple-ambassador-2026-締切",
-  "dedup_key": "millionlive-hinata-apple-ambassador-2026",
-  "brand": "million",
-  "subject": "第50回そうべつりんごまつり「そうべつりんごめぐり」スタンプ賞品応募",
-  "kind": "締切",
-  "reserved_on": "2026-09-05",
-  "title": "木下ひなた、壮瞥町りんご大使に4年連続",
-  "url": "https://www.town.sobetsu.lg.jp/iju/kyo/2026/09/50.html",
-  "source_type": "当事者",
-  "facts": [
-   "「そうべつりんごめぐり」スタンプ2個で木下ひなたオリジナルステッカー進呈、応募締切は11月11日"
-  ],
-  "src_candidate_id": "202609041836-explore-28"
- },
- {
-  "id": "sched-2026-11-11-4-締切",
-  "dedup_key": "4",
-  "brand": "gaku",
-  "subject": "プロデューサーランキング シーズン4",
-  "kind": "締切",
-  "note": "エントリー期間終了(11/12 4:59締切)",
-  "reserved_on": "2026-09-11",
-  "title": "イベント開催中『プロデューサーランキング シーズン4』",
-  "url": "https://x.com/gkmas_official/status/2097880490074378578",
-  "source_type": "公式",
-  "facts": [
-   "投稿URL: https://x.com/gkmas_official/status/2097880490074378578",
-   "投稿日時: 2026-09-10 02:51:00 GMT",
-   "エンゲージメント: Likes 1170 / Reposts 152 / Quotes 9 / Bookmarks 23 / Views 127316",
-   "イベント開催中『プロデューサーランキング シーズン4』",
-   "初星課題60を達成して参加",
-   "開催期間：11/12(木)4:59まで(予定)",
-   "集計期間：11/12(木)5:00～11/15(日)10:59まで(予定)",
-   "エンゲージメント: 中"
-  ],
-  "via": "grok",
-  "verify": "confirmed",
-  "src_candidate_id": "202609110225-grok-43"
- }
+  {
+    "id": "sched-2026-11-11-millionlive-hinata-apple-ambassador-2026-締切",
+    "dedup_key": "millionlive-hinata-apple-ambassador-2026",
+    "brand": "million",
+    "subject": "第50回そうべつりんごまつり「そうべつりんごめぐり」スタンプ賞品応募",
+    "kind": "締切",
+    "reserved_on": "2026-09-05",
+    "title": "木下ひなた、壮瞥町りんご大使に4年連続",
+    "url": "https://www.town.sobetsu.lg.jp/iju/kyo/2026/09/50.html",
+    "source_type": "当事者",
+    "facts": [
+      "「そうべつりんごめぐり」スタンプ2個で木下ひなたオリジナルステッカー進呈、応募締切は11月11日"
+    ],
+    "src_candidate_id": "202609041836-explore-28"
+  },
+  {
+    "id": "sched-2026-11-11-gaku-producer-ranking-season4-2026-終了",
+    "dedup_key": "gaku-producer-ranking-season4-2026",
+    "brand": "gaku",
+    "subject": "学マスプロデューサーランキング シーズン4",
+    "kind": "終了",
+    "note": "開催期間の終了時刻は11/12(木)4:59。読者が読む11/12 06:00には終了済みのため前日に予約",
+    "reserved_on": "2026-09-11",
+    "facts": [
+      "開催期間は11月12日(木)4:59まで(予定)",
+      "集計期間は11月12日(木)5:00〜11月15日(日)10:59まで(予定)"
+    ],
+    "title": "プロデューサーランキング シーズン4開催中",
+    "url": "https://x.com/gkmas_official/status/2097880490074378578",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "event_date": "2026-09-11",
+    "deadline": "2026-11-12",
+    "src_candidate_id": "202609110225-grok-43"
+  }
 ]

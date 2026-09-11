@@ -1,202 +1,172 @@
 [
- {
-  "id": "sched-2026-09-14-cg-toppa-base-popup-2026-締切",
-  "dedup_key": "cg-toppa-base-popup-2026",
-  "brand": "cg",
-  "subject": "シンデレラガールズ TOPPA!!!BASE POPUP SHOP",
-  "kind": "締切",
-  "note": "総選挙投票券シリアル配布終了(地方5店舗の会期最終日)",
-  "reserved_on": "2026-07-13",
-  "facts": [
-   "秋葉原「TOPPA!!! BASE AKIBA」（エキュート秋葉原1F）は2026年8月27日(木)～9月16日(水)開催",
-   "札幌・仙台・名古屋・大阪・福岡の各TOPPA!!! BASE店舗は8月27日～9月14日開催",
-   "諸星きらり・城ヶ崎莉嘉・赤城みりあ・安部菜々・佐藤心・関裕美の6人による「バトルゲームワールド」テーマの描き下ろしグッズを展開",
-   "総選挙投票券に交換できるシリアルコード配布は9月14日まで",
-   "エンゲージメント: 中",
-   "言及アイドル: 諸星きらり、城ヶ崎莉嘉、赤城みりあ、安部菜々、佐藤心、関裕美"
-  ],
-  "title": "TOPPA!!!BASE シンデレラガールズPOPUP SHOP開催決定",
-  "url": "https://idolmaster-official.jp/news/01_19246",
-  "source_type": "公式",
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202607130340-claude-83",
-  "event_date": "2026-08-27",
-  "deadline": "2026-09-16"
- },
- {
-  "id": "sched-2026-09-14-cg-popn-toybox-goods-2026-終了",
-  "dedup_key": "cg-popn-toybox-goods-2026",
-  "brand": "cg",
-  "subject": "Pop'n ToyBox!!エクストラストーリー連載終了",
-  "kind": "終了",
-  "reserved_on": "2026-08-28",
-  "title": "Pop'n ToyBox!!エクストラストーリー第5話「思い出ランチを、君と」更新",
-  "url": "https://x.com/imas_CGofficial/status/2092809335365906572",
-  "source_type": "公式",
-  "facts": [
-   "トイボックス・エクストラ5「思い出ランチを、君と」更新",
-   "2026年9月14日まで隔日12時頃に更新予定",
-   "掲載URL: https://mequrimequru.jp/kp/regulars/details/idolmaster-cinderellagirls_toybox/"
-  ],
-  "event_date": "2026-09-14",
-  "src_candidate_id": "202608280232-grok-7"
- },
- {
-  "id": "sched-2026-09-14-cinderella-girl-vote2026-schedule-締切",
-  "dedup_key": "cinderella-girl-vote2026-schedule",
-  "brand": "cg",
-  "subject": "総選挙2026「公約四字熟語」Sキーホルダー ミッションチャレンジ期間",
-  "kind": "締切",
-  "note": "ミッションチャレンジ期間の終了(23:59)",
-  "reserved_on": "2026-09-03",
-  "facts": [
-   "ミッションチャレンジ期間: 2026年7月1日12:00〜2026年9月14日23:59"
-  ],
-  "title": "総選挙2026「公約四字熟語」Sグッズ登場",
-  "url": "https://shop.asobistore.jp/products/detail/246751-00-00-type_S",
-  "source_type": "準公式",
-  "verify": "confirmed",
-  "src_candidate_id": "202609030229-grok-35",
-  "event_date": "2026-09-14"
- },
- {
-  "id": "sched-2026-09-14-million-shizuka-the-animation-figure-2026-開始",
-  "dedup_key": "million-shizuka-the-animation-figure-2026",
-  "brand": "million",
-  "subject": "コトブキヤ「最上静香-The Animation-」フィギュア",
-  "kind": "開始",
-  "note": "予約受付開始",
-  "reserved_on": "2026-09-04",
-  "title": "最上静香フィギュアの予約開始日と彩色原型を発表",
-  "url": "https://hobby.watch.impress.co.jp/docs/news/2137788.html",
-  "source_type": "報道",
-  "facts": [
-   "コトブキヤが「最上静香-The Animation-」の予約受付を2026年9月14日に開始",
-   "アニメ「ミリオンライブ！」メモリアルフィギュア第一弾"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202609031236-explore-8",
-  "event_date": "2026-09-14"
- },
- {
-  "id": "sched-2026-09-14-sidem-suntory-oolong-2026-発売",
-  "dedup_key": "sidem-suntory-oolong-2026",
-  "brand": "sidem",
-  "subject": "SideM×サントリー ウーロンティー自販機",
-  "kind": "発売",
-  "note": "全国発売開始",
-  "reserved_on": "2026-09-04",
-  "title": "SideM サントリー自販機ウーロンティー販売",
-  "url": "https://idolmaster-official.jp/news/01_19767",
-  "source_type": "公式",
-  "facts": [
-   "9月14日(月)より全国のサントリー自販機約400台でオリジナルラベル缶を発売",
-   "「TRANSCENDENT T@LES」シリーズのイラストで全12種を展開"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202609031835-watch-0",
-  "event_date": "2026-09-14"
- },
- {
-  "id": "sched-2026-09-14-cg-toybox-novel-serial-2026-終了",
-  "dedup_key": "cg-toybox-novel-serial-2026",
-  "brand": "cg",
-  "subject": "『トイボ公演』スペシャルノベル連載 最終回",
-  "kind": "終了",
-  "reserved_on": "2026-09-05",
-  "facts": [
-   "トイボックス・エクストラの連載は9月14日まで隔日12時ごろ更新予定"
-  ],
-  "title": "『トイボ公演』ノベル、エクストラ9公開",
-  "url": "https://mequrimequru.jp/kp/regulars/details/idolmaster-cinderellagirls_toybox/",
-  "source_type": "未確認",
-  "verify": "confirmed",
-  "src_candidate_id": "202609050237-grok-25"
- },
- {
-  "id": "sched-2026-09-14-shiny-parallel-collection-popup-2026-結果",
-  "dedup_key": "shiny-parallel-collection-popup-2026",
-  "brand": "shiny",
-  "subject": "シャニマス「パラレルコレクション」POP UP SHOP「パラレル回廊」事前予約抽選",
-  "kind": "結果",
-  "reserved_on": "2026-09-05",
-  "title": "シャニマス「パラレル回廊」詳細公開",
-  "url": "https://idolmaster-official.jp/news/01_19792",
-  "source_type": "公式",
-  "facts": [
-   "「パラレル回廊」事前予約抽選の当落発表は9月14日12時頃"
-  ],
-  "src_candidate_id": "202609050237-grok-82"
- },
- {
-  "id": "sched-2026-09-14-sidem-transcendent-tales-lyricist-guide-4-2026-終了",
-  "dedup_key": "sidem-transcendent-tales-lyricist-guide-4-2026",
-  "brand": "sidem",
-  "subject": "SideM「TRANSCENDENT T@LES」舞台劇シーン試し読み動画",
-  "kind": "終了",
-  "note": "試し読み動画アーカイブ公開終了(10:00)",
-  "reserved_on": "2026-09-07",
-  "title": "SideM楽曲ガイド最終回、作詞家7人の解説",
-  "url": "https://pylonport.bandainamcomusiclive.co.jp/recommendmusic/822",
-  "source_type": "準公式",
-  "facts": [
-   "連動ストーリー12作品の舞台劇シーンをまとめた試し読み動画を期間限定公開",
-   "アーカイブ公開期間は2026年9月14日(月)10:00まで"
-  ],
-  "via": "claude",
-  "verify": "confirmed",
-  "src_candidate_id": "202609061835-explore-12",
-  "event_date": "2026-09-14"
- },
- {
-  "id": "sched-2026-09-14-shiny-mikoto-birthday-2026-終了",
-  "dedup_key": "shiny-mikoto-birthday-2026",
-  "brand": "shiny",
-  "subject": "緋田美琴の誕生日記念施策(2026)",
-  "kind": "終了",
-  "note": "Song for Prism誕生日記念ガシャ終了23:59",
-  "reserved_on": "2026-09-08",
-  "title": "緋田美琴の誕生日、記念施策が一斉展開",
-  "url": "https://x.com/imassc_prism/status/2096977037504503948",
-  "source_type": "公式",
-  "facts": [
-   "Song for Prismの緋田美琴誕生日記念ガシャは9月14日23:59まで開催",
-   "★5まで特訓すると誕生日衣装のアナザー衣装・記念称号を獲得可能"
-  ],
-  "src_candidate_id": "202609080227-grok-76",
-  "event_date": "2026-09-14"
- },
- {
-  "id": "sched-2026-09-14-4-2026-4-締切",
-  "dedup_key": "4-2026-4",
-  "brand": "cg",
-  "subject": "シンデレラガール総選挙2026 ミッションチャレンジ",
-  "kind": "締切",
-  "note": "ミッションチャレンジ終了(23:59まで挑戦可)",
-  "reserved_on": "2026-09-11",
-  "title": "4. シンデレラガール総選挙2026 ミッションチャレンジ終了まであと4日",
-  "url": "https://x.com/imas_CGofficial/status/2097897854723338650",
-  "source_type": "公式",
-  "facts": [
-   "投稿: 2026-09-10 13:00 JST（ソースUTC 04:00）",
-   "ポスト: https://x.com/imas_CGofficial/status/2097897854723338650",
-   "ミッション案内: https://idolmaster-official.jp/cinderellagirls/vote2026/vote/mission",
-   "特設: https://idolmaster-official.jp/cinderellagirls/vote2026",
-   "ポスト本文で確認できたこと:",
-   "`#シンデレラガール総選挙2026` ミッションチャレンジ期間終了まであと４日",
-   "みなさんにご協力いただくことで達成できる MVやコミュ動画の再生回数ミッションもある",
-   "ミッションチャレンジ期間 ～2026/9/14(月)23:59",
-   "投票期間 ～2026/9/18(金)23:59",
-   "特設トップで確認できた期間ラベル（ポストと同じラベル）:",
-   "ミッションチャレンジ期間: 2026年7月1日(水) 12:00 ～ 2026年9月14日(月) 23:59まで",
-   "シリアルコードの引換期間および投票券の受取期間: 2026年7月1日(水) 12:00 ～ 2026年9月18日(金) 23:59まで"
-  ],
-  "via": "grok",
-  "verify": "confirmed",
-  "src_candidate_id": "202609110225-grok-26",
-  "deadline": "2026-09-18"
- }
+  {
+    "id": "sched-2026-09-14-cg-toppa-base-popup-2026-締切",
+    "dedup_key": "cg-toppa-base-popup-2026",
+    "brand": "cg",
+    "subject": "シンデレラガールズ TOPPA!!!BASE POPUP SHOP",
+    "kind": "締切",
+    "note": "総選挙投票券シリアル配布終了(地方5店舗の会期最終日)",
+    "reserved_on": "2026-07-13",
+    "facts": [
+      "秋葉原「TOPPA!!! BASE AKIBA」（エキュート秋葉原1F）は2026年8月27日(木)～9月16日(水)開催",
+      "札幌・仙台・名古屋・大阪・福岡の各TOPPA!!! BASE店舗は8月27日～9月14日開催",
+      "諸星きらり・城ヶ崎莉嘉・赤城みりあ・安部菜々・佐藤心・関裕美の6人による「バトルゲームワールド」テーマの描き下ろしグッズを展開",
+      "総選挙投票券に交換できるシリアルコード配布は9月14日まで",
+      "エンゲージメント: 中",
+      "言及アイドル: 諸星きらり、城ヶ崎莉嘉、赤城みりあ、安部菜々、佐藤心、関裕美"
+    ],
+    "title": "TOPPA!!!BASE シンデレラガールズPOPUP SHOP開催決定",
+    "url": "https://idolmaster-official.jp/news/01_19246",
+    "source_type": "公式",
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202607130340-claude-83",
+    "event_date": "2026-08-27",
+    "deadline": "2026-09-16"
+  },
+  {
+    "id": "sched-2026-09-14-cg-popn-toybox-goods-2026-終了",
+    "dedup_key": "cg-popn-toybox-goods-2026",
+    "brand": "cg",
+    "subject": "Pop'n ToyBox!!エクストラストーリー連載終了",
+    "kind": "終了",
+    "reserved_on": "2026-08-28",
+    "title": "Pop'n ToyBox!!エクストラストーリー第5話「思い出ランチを、君と」更新",
+    "url": "https://x.com/imas_CGofficial/status/2092809335365906572",
+    "source_type": "公式",
+    "facts": [
+      "トイボックス・エクストラ5「思い出ランチを、君と」更新",
+      "2026年9月14日まで隔日12時頃に更新予定",
+      "掲載URL: https://mequrimequru.jp/kp/regulars/details/idolmaster-cinderellagirls_toybox/"
+    ],
+    "event_date": "2026-09-14",
+    "src_candidate_id": "202608280232-grok-7"
+  },
+  {
+    "id": "sched-2026-09-14-cinderella-girl-vote2026-schedule-締切",
+    "dedup_key": "cinderella-girl-vote2026-schedule",
+    "brand": "cg",
+    "subject": "総選挙2026「公約四字熟語」Sキーホルダー ミッションチャレンジ期間",
+    "kind": "締切",
+    "note": "ミッションチャレンジ期間の終了(23:59)",
+    "reserved_on": "2026-09-03",
+    "facts": [
+      "ミッションチャレンジ期間: 2026年7月1日12:00〜2026年9月14日23:59"
+    ],
+    "title": "総選挙2026「公約四字熟語」Sグッズ登場",
+    "url": "https://shop.asobistore.jp/products/detail/246751-00-00-type_S",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "src_candidate_id": "202609030229-grok-35",
+    "event_date": "2026-09-14"
+  },
+  {
+    "id": "sched-2026-09-14-million-shizuka-the-animation-figure-2026-開始",
+    "dedup_key": "million-shizuka-the-animation-figure-2026",
+    "brand": "million",
+    "subject": "コトブキヤ「最上静香-The Animation-」フィギュア",
+    "kind": "開始",
+    "note": "予約受付開始",
+    "reserved_on": "2026-09-04",
+    "title": "最上静香フィギュアの予約開始日と彩色原型を発表",
+    "url": "https://hobby.watch.impress.co.jp/docs/news/2137788.html",
+    "source_type": "報道",
+    "facts": [
+      "コトブキヤが「最上静香-The Animation-」の予約受付を2026年9月14日に開始",
+      "アニメ「ミリオンライブ！」メモリアルフィギュア第一弾"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202609031236-explore-8",
+    "event_date": "2026-09-14"
+  },
+  {
+    "id": "sched-2026-09-14-sidem-suntory-oolong-2026-発売",
+    "dedup_key": "sidem-suntory-oolong-2026",
+    "brand": "sidem",
+    "subject": "SideM×サントリー ウーロンティー自販機",
+    "kind": "発売",
+    "note": "全国発売開始",
+    "reserved_on": "2026-09-04",
+    "title": "SideM サントリー自販機ウーロンティー販売",
+    "url": "https://idolmaster-official.jp/news/01_19767",
+    "source_type": "公式",
+    "facts": [
+      "9月14日(月)より全国のサントリー自販機約400台でオリジナルラベル缶を発売",
+      "「TRANSCENDENT T@LES」シリーズのイラストで全12種を展開"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202609031835-watch-0",
+    "event_date": "2026-09-14"
+  },
+  {
+    "id": "sched-2026-09-14-cg-toybox-novel-serial-2026-終了",
+    "dedup_key": "cg-toybox-novel-serial-2026",
+    "brand": "cg",
+    "subject": "『トイボ公演』スペシャルノベル連載 最終回",
+    "kind": "終了",
+    "reserved_on": "2026-09-05",
+    "facts": [
+      "トイボックス・エクストラの連載は9月14日まで隔日12時ごろ更新予定"
+    ],
+    "title": "『トイボ公演』ノベル、エクストラ9公開",
+    "url": "https://mequrimequru.jp/kp/regulars/details/idolmaster-cinderellagirls_toybox/",
+    "source_type": "未確認",
+    "verify": "confirmed",
+    "src_candidate_id": "202609050237-grok-25"
+  },
+  {
+    "id": "sched-2026-09-14-shiny-parallel-collection-popup-2026-結果",
+    "dedup_key": "shiny-parallel-collection-popup-2026",
+    "brand": "shiny",
+    "subject": "シャニマス「パラレルコレクション」POP UP SHOP「パラレル回廊」事前予約抽選",
+    "kind": "結果",
+    "reserved_on": "2026-09-05",
+    "title": "シャニマス「パラレル回廊」詳細公開",
+    "url": "https://idolmaster-official.jp/news/01_19792",
+    "source_type": "公式",
+    "facts": [
+      "「パラレル回廊」事前予約抽選の当落発表は9月14日12時頃"
+    ],
+    "src_candidate_id": "202609050237-grok-82"
+  },
+  {
+    "id": "sched-2026-09-14-sidem-transcendent-tales-lyricist-guide-4-2026-終了",
+    "dedup_key": "sidem-transcendent-tales-lyricist-guide-4-2026",
+    "brand": "sidem",
+    "subject": "SideM「TRANSCENDENT T@LES」舞台劇シーン試し読み動画",
+    "kind": "終了",
+    "note": "試し読み動画アーカイブ公開終了(10:00)",
+    "reserved_on": "2026-09-07",
+    "title": "SideM楽曲ガイド最終回、作詞家7人の解説",
+    "url": "https://pylonport.bandainamcomusiclive.co.jp/recommendmusic/822",
+    "source_type": "準公式",
+    "facts": [
+      "連動ストーリー12作品の舞台劇シーンをまとめた試し読み動画を期間限定公開",
+      "アーカイブ公開期間は2026年9月14日(月)10:00まで"
+    ],
+    "via": "claude",
+    "verify": "confirmed",
+    "src_candidate_id": "202609061835-explore-12",
+    "event_date": "2026-09-14"
+  },
+  {
+    "id": "sched-2026-09-14-shiny-mikoto-birthday-2026-終了",
+    "dedup_key": "shiny-mikoto-birthday-2026",
+    "brand": "shiny",
+    "subject": "緋田美琴の誕生日記念施策(2026)",
+    "kind": "終了",
+    "note": "Song for Prism誕生日記念ガシャ終了23:59",
+    "reserved_on": "2026-09-08",
+    "title": "緋田美琴の誕生日、記念施策が一斉展開",
+    "url": "https://x.com/imassc_prism/status/2096977037504503948",
+    "source_type": "公式",
+    "facts": [
+      "Song for Prismの緋田美琴誕生日記念ガシャは9月14日23:59まで開催",
+      "★5まで特訓すると誕生日衣装のアナザー衣装・記念称号を獲得可能"
+    ],
+    "src_candidate_id": "202609080227-grok-76",
+    "event_date": "2026-09-14"
+  }
 ]

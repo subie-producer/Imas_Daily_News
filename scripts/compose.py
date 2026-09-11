@@ -402,7 +402,9 @@ def article_prompt(date: str, art: dict, materials: list[dict], story_facts: lis
 - event_date は、記事の出来事が起きる(始まる)日を **1つだけ** YYYY-MM-DD で。範囲や複数なら開始日。無ければ null
 - 書けないなら status を abort にし、abort_code(NO_PRIMARY_SOURCE / SOURCE_MISMATCH / TOO_FEW_MATERIALS / NOT_NEWS / OTHER)と
   abort_detail に理由を書く。abort のとき記事の項目は空でよい
-- slug / brand / candidate_ids / rank / src は書きません(計画と判定表からコードが付けます)"""
+- slug / brand / candidate_ids / rank / src は書きません(計画と判定表からコードが付けます)
+- この指示の他の箇所にある「ファイルを作らず『ABORT: 理由』とだけ出力して終わる」は、
+  **status を abort にして abort_code と abort_detail に理由を書く**、と読み替えてください"""
     else:
         out_section = f"""`docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
 - frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']}(**仮の値**。発行前に機械が付け直します) / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}

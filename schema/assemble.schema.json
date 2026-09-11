@@ -1,0 +1,70 @@
+{
+  "title": "assemble",
+  "description": "組版セッションの出力。判断だけを返し、ファイルへの反映は scripts/assemble.py が行う",
+  "type": "object",
+  "required": ["digest", "stories", "reservations", "pending_add", "pending_remove"],
+  "additionalProperties": false,
+  "properties": {
+    "digest": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "items": {
+        "type": "object", "required": ["label", "rows"], "additionalProperties": false,
+        "properties": {
+          "label": {"enum": ["本日", "昨日", "継続中", "明日"]},
+          "rows": {
+            "type": "array", "maxItems": 4,
+            "items": {
+              "type": "object", "required": ["k", "t", "d", "brand", "slug"], "additionalProperties": false,
+              "properties": {
+                "k": {"enum": ["誕", "開", "終", "配", "売", "受", "締", "発", "演"]},
+                "t": {"type": "string", "minLength": 1, "maxLength": 20},
+                "d": {"type": "string", "maxLength": 25},
+                "brand": {"enum": ["general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"]},
+                "slug": {"type": "string", "description": "行が指す記事の slug。記事が無い行(明日の予約など)は空文字"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "stories": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["slug", "story_id", "subject", "published_facts"], "additionalProperties": false,
+        "properties": {
+          "slug": {"type": "string", "minLength": 1},
+          "story_id": {"type": "string", "minLength": 1, "description": "既存の話題ならその story_id、新規なら主題の dedup_key"},
+          "subject": {"type": "string", "minLength": 1, "maxLength": 60},
+          "published_facts": {"type": "array", "minItems": 1, "maxItems": 4, "items": {"type": "string", "minLength": 1, "maxLength": 140}}
+        }
+      }
+    },
+    "reservations": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["slug", "candidate_id", "date", "kind", "subject", "note"], "additionalProperties": false,
+        "properties": {
+          "slug": {"type": "string", "minLength": 1},
+          "candidate_id": {"type": "string", "minLength": 1, "description": "素材スナップショットの元になる候補 id(その記事の candidate_ids から)"},
+          "date": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "description": "その日、読者が何かを見に行ける・できる日"},
+          "kind": {"enum": ["締切前", "締切", "開幕", "千秋楽", "発売", "結果", "終了", "開始", "その他"]},
+          "subject": {"type": "string", "minLength": 1, "maxLength": 60},
+          "note": {"type": "string", "maxLength": 120}
+        }
+      }
+    },
+    "pending_add": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["dedup_key", "brand", "subject", "watch"], "additionalProperties": false,
+        "properties": {
+          "dedup_key": {"type": "string", "minLength": 1},
+          "brand": {"enum": ["general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"]},
+          "subject": {"type": "string", "minLength": 1, "maxLength": 60},
+          "watch": {"type": "string", "minLength": 1, "maxLength": 140}
+        }
+      }
+    },
+    "pending_remove": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  }
+}

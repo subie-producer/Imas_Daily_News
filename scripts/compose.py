@@ -32,6 +32,7 @@ import tempfile
 import threading
 import time
 import traceback
+import urllib.parse
 from pathlib import Path
 
 import yaml
@@ -947,6 +948,21 @@ def prune_prompt(date: str, dropped: list[str]) -> str:
 """
 
 
+def run_assemble(date: str, number: int) -> None:
+    """組版(scripts/assemble.py)。判断は小さな構造化セッション、反映はコード、結果は冪等。
+
+    以前はここが Claude の1セッションで、40本に24.7分かかっていた(ツール呼び出し96回。
+    大半が台帳の事務処理を即席のシェルと python で組み立てて lint に叩かれる時間)。
+    冪等なので、記事が落ちても増えても**もう一度呼ぶだけ**でよい。組版前へ巻き戻す・
+    成果物から抜く、という手順はもう要らない。
+    """
+    import assemble as _assemble
+    code = _assemble.run(date, number)
+    if code == 1:
+        raise RuntimeError("組版: 記事が無い")
+    # 2 = lint が赤い(組版の欠陥として通知済み)。呼び出し側の lint ゲートで扱う
+
+
 def assembly_prompt(date: str, number: int, aborted: list[str]) -> str:
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
     ab = (f"\n- 計画されたが出典照合で不成立になり存在しない記事: {', '.join(aborted)}(digest 等から参照しないこと)"
@@ -1504,6 +1520,66 @@ def parse_front_matter(path: Path) -> dict | None:
         return None
 
 
+def canonicalize_article(date: str, art: dict, cands: dict) -> list[str]:
+    """記事 frontmatter の**固定項目を計画からコードで上書きする**。戻り値はログ。
+
+    以前は執筆セッションが転記した slug/edition/brand/candidate_ids が計画と食い違うと、
+    別の Claude セッションに「直せ」と頼んでいた(最大600秒。直らなければ記事ごと落とす)。
+    正解は全部計画側にあるので、写す係にモデルを使う理由がない(監査指摘 P0-1)。
+    出典の種別も判定表で決まる(src は最弱)。label が無ければ候補の題名で埋める。
+    モデルから受け取るのは本文・見出し・リード・出典 URL・tags・event_date だけ。
+    """
+    path = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
+    if not path.exists():
+        return []
+    text = path.read_text(encoding="utf-8")
+    m = re.match(r"^---\n(.*?)\n---\n", text, re.S)
+    if not m:
+        return []
+    try:
+        fm = yaml.safe_load(m.group(1)) or {}
+    except Exception:
+        return []
+    body = text[m.end():]
+    log = []
+    for key, want in (("slug", art["slug"]), ("edition", date), ("brand", art["brand"])):
+        if str(fm.get(key)) != str(want):
+            log.append(f"{key}: {fm.get(key)!r} → {want!r}")
+            fm[key] = want
+    if sorted(fm.get("candidate_ids") or []) != sorted(art["candidate_ids"]):
+        log.append("candidate_ids を計画に合わせた")
+        fm["candidate_ids"] = list(art["candidate_ids"])
+    fm.setdefault("corrected", False)
+    fm.setdefault("corrections", [])
+    fm.setdefault("rank", art.get("rank") or "small")
+    title_by_url = {c.get("url"): c.get("title") for i in art["candidate_ids"] for c in [cands.get(i) or {}] if c.get("url")}
+    srcs = []
+    for s in fm.get("sources") or []:
+        if not isinstance(s, dict) or not s.get("url"):
+            continue
+        t = classify_source(s["url"])
+        if s.get("type") != t:
+            log.append(f"出典種別: {s.get('type')} → {t}({s['url'][:50]})")
+        s["type"] = t
+        if not s.get("label"):
+            s["label"] = title_by_url.get(s["url"]) or urllib.parse.urlparse(s["url"]).hostname or s["url"]
+            log.append("出典 label を補った")
+        srcs.append({"label": s["label"], "url": s["url"], "type": s["type"]})
+    if srcs:
+        fm["sources"] = srcs
+        src = weakest_src(s["type"] for s in srcs)
+        if fm.get("src") != src:
+            log.append(f"src: {fm.get('src')} → {src}")
+            fm["src"] = src
+    order = ["slug", "edition", "brand", "src", "rank", "corrected", "corrections", "candidate_ids",
+             "title", "lede", "tags", "sources", "event_date"]
+    ordered = {k: fm[k] for k in order if k in fm}
+    ordered.update({k: v for k, v in fm.items() if k not in ordered})
+    head = yaml.safe_dump(ordered, allow_unicode=True, sort_keys=False, width=200, default_flow_style=None)
+    path.write_text("---\n" + head + "---\n" + body, encoding="utf-8")
+    return log
+
+
 def validate_article_file(date: str, art: dict, cands: dict) -> list[str]:
     """個別執筆の機械検収: 計画どおりの frontmatter か・出典が系譜内か。"""
     path = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
@@ -1742,16 +1818,12 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                 print(f"記事 {art['slug']} は出典照合で不成立: {reason}", flush=True)
                 aborted.append(art["slug"])
                 continue
+            # 固定項目はコードで計画に合わせる(モデルに写させない・直させない)。
+            # 残る検収エラーは「ファイルが無い」「frontmatter が読めない」だけ
+            fixed = canonicalize_article(date, art, cands)
+            if fixed:
+                print(f"記事 {art['slug']} の固定項目を正規化: " + " / ".join(fixed[:4]), flush=True)
             errs = validate_article_file(date, art, cands)
-            if errs:
-                # 検収エラーは同一素材で1回だけ書き直させる(検品=Claude/REVIEW_MODEL)
-                fixp = (f"docs/_posts/{date}-{art['slug']}.md の機械検収エラーを修正してください(Edit ツール使用):\n- "
-                        + "\n- ".join(errs))
-                subprocess.run(["claude", "-p", fixp, "--model", REVIEW_MODEL, "--dangerously-skip-permissions",
-                               "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                               capture_output=True, text=True, timeout=600,
-                               stdin=subprocess.DEVNULL, cwd=ROOT)
-                errs = validate_article_file(date, art, cands)
             if errs:
                 print(f"記事 {art['slug']} 検収不合格: {errs}", flush=True)
                 aborted.append(art["slug"])
@@ -2049,6 +2121,10 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     print(f"校閲{round_no}巡目: {len(jobs)}件を並列で見て "
           f"ブロック{len(merged['blockers'])}件 / コメント{len(merged['comments'])}件 "
           f"({STAGE_MIN['校閲']:.0f}分)", flush=True)
+    # approve が「どの中身」に対するものかを残す。release はこれと現在の指紋を照合し、
+    # 校閲のあとに変わった紙面を古い approve で出さない(監査指摘)
+    from pipelib import review_manifest
+    merged["hashes"] = review_manifest(date)
     (ROOT / "metrics" / f"review-{date}-{round_no}.json").write_text(
         json.dumps(merged, ensure_ascii=False, indent=1), encoding="utf-8")
     return merged
@@ -2294,7 +2370,7 @@ def main() -> int:
         raise RuntimeError("社説が2回とも書かれなかった")
 
     def assemble_job():
-        print(claude_run(assembly_prompt(date, number, aborted))[-1000:], flush=True)
+        run_assemble(date, number)
 
     with stage("社説と組版" if with_editorial else "組版"):
         errs = run_parallel(([("社説", write_editorial_job)] if with_editorial else [])
@@ -2331,12 +2407,19 @@ def main() -> int:
                                 "issue": "lint: " + e.split("::", 2)[-1], "quote": ""} for e in ed_errs])
             code, lint_out = run_lint(date)
     if code != 0:
-        # 一度だけ Claude(検品=REVIEW_MODEL)に lint 修正を依頼
-        claude_run(f"アイマスNEWS {date}号の lint がエラーです。`python3 scripts/lint.py --base origin/main` を実行し、"
-                   f"エラー0になるまで docs/ と stock/ を修正してください。修正後 derive.py --date {date} --write も再実行すること。\n"
-                   f"**`docs/_editorials/` には触らないこと。**社説は執筆側のセッションが直します。"
-                   f"社説の lint エラーが残っている場合は、直さずそのまま報告してください。",
-                   model=REVIEW_MODEL)
+        # **lint の赤をモデルに直させない。**以前は「エラー0になるまで docs/ と stock/ を
+        # 修正せよ」と Claude に丸投げしていた(最大2400秒、lint 対象外の文章や台帳まで
+        # 変えられる)。機械で直せるものは機械で直す: 記事の固定項目は計画から正規化し、
+        # 組版は冪等なのでもう一度呼ぶ。それでも赤なら組版か執筆の欠陥なので、人へ渡す
+        print("lint 赤。固定項目の正規化と組版のやり直しで対応する(モデルには直させない)", flush=True)
+        by_slug_plan = {a["slug"]: a for a in plan["articles"]}
+        for a in written:
+            if a["slug"] in by_slug_plan:
+                canonicalize_article(date, by_slug_plan[a["slug"]], cands)
+        try:
+            run_assemble(date, number)
+        except Exception as e:
+            print(f"組版のやり直しに失敗: {e}", flush=True)
         code, lint_out = run_lint(date)
         if code != 0:
             notify("compose", f"{date}: lint 赤が解消できず。人間判断が必要\n{lint_out[-500:]}", ok=False)
@@ -2351,12 +2434,9 @@ def main() -> int:
     # 途中で死んでも、人が lint と校閲記録を見て確定できる状態を残す
     commit_and_push(branch, f"compose {date}: 紙面生成(校閲前・lint green)", "compose")
 
-    # 校閲が既報判定に使う台帳は**組版前の**もの。組版は stock/stories.yml にこの号の
-    # 記事の事実を書き足すので、それを読ませるとどの記事も自分自身を根拠に「既報」に
-    # 見える(実測 2026-09-10: 当日発表のゲスト出演記事が「新事実なしの続報」で落ちた。
-    # 台帳の事実には日付が無く、校閲には今日足された分が見分けられない)
-    before_yml = pre_assembly[0].get("stock/stories.yml")
-    (ROOT / "metrics" / f"stories-before-{date}.yml").write_bytes(before_yml or b"[]\n")
+    # 校閲が既報判定に使う台帳は**組版前の**もの(metrics/stories-before-<日付>.yml)。
+    # 組版(assemble.py)がこの号の寄与を剥がした状態を書いている。組版後の台帳を読ませると
+    # どの記事も自分自身の記入を根拠に「既報」に見える(実測 2026-09-10)
 
     # 3. 校閲往復
     rounds = 0
@@ -2462,12 +2542,9 @@ def main() -> int:
                            if (c.get("file") or "").startswith("docs/_editorials/")]
             jobs = []
             if touches_digest:
-                # digest と台帳も直る前の記事から作られている。台帳は追記なので、
-                # 組版前まで巻き戻してから作り直させる(除外のときと同じ手順)
-                for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
-                    (ROOT / rel).write_bytes(pre_assembly[0][rel])
-                jobs.append(("組版", lambda: print(
-                    claude_run(assembly_prompt(date, number, aborted))[-400:], flush=True)))
+                # digest と台帳も直る前の記事から作られている。組版は冪等なので
+                # もう一度呼ぶだけでよい(巻き戻しは要らない)
+                jobs.append(("組版", lambda: run_assemble(date, number)))
             if with_editorial and touches_editorial:
                 jobs.append(("社説", lambda: rewrite_editorial(
                     date, number, plan.get("editorial_slug", ""), plan.get("editorial_brand", ""),
@@ -2545,16 +2622,13 @@ def main() -> int:
                        + ")。社説がその記事に触れているなら、書き直してください。"
                          "触れていなければ直す必要はありません")
                 must = False
-            # **落とした記事を、組版の成果物から抜く。**digest が落とした記事を指したままだと
-            # lint が落ちるし、既報台帳には「発行した」と残る。以前は台帳を組版前へ巻き戻して
-            # 組版をまるごとやり直していたが、組版は記事数に比例して伸び(43本で25分)、
-            # 1本落とすたびに25分。締切前にそれが払えず、除外の巡に入れないまま号が止まった
-            # (2026-09-11: 残り24分/必要31分)。抜くだけのセッション(数分)で済ませ、
-            # 抜けたことを機械で確かめる。確かめられなければ従来どおり作り直す
+            # **組版をもう一度呼ぶ。**冪等なので、落とした記事の痕跡(digest の行・この号で
+            # 足した台帳の事実・予約)は再実行で消える。以前は台帳を組版前へ巻き戻して
+            # セッションに作り直させ(43本で25分)、締切前にそれが払えず号が止まった(2026-09-11)。
+            # 巻き戻しも「抜く」セッションも要らない
             assign_ranks(date, plan, written, keep_lead=True)
             ed_file = ROOT / "docs" / "_editions" / f"{date}.md"
-            jobs = [("組版から抜く", lambda: print(
-                claude_run(prune_prompt(date, dropped), timeout=900)[-300:], flush=True))]
+            jobs = [("組版", lambda: run_assemble(date, number))]
             if with_editorial:
                 jobs.insert(0, ("社説", lambda: rewrite_editorial(
                     date, number, plan.get("editorial_slug", ""), plan.get("editorial_brand", ""),
@@ -2563,24 +2637,10 @@ def main() -> int:
             errs = run_parallel(jobs)
             if errs:
                 raise RuntimeError("；".join(errs))
-            subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
-                            "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
-
-            def still_there() -> list[str]:
-                return [s for s in dropped_by_review
-                        if ed_file.exists() and s in ed_file.read_text(encoding="utf-8")]
-
-            code, _ = run_lint(date)
-            if still_there() or code != 0:
-                # 抜き損ねた(または lint が赤い)。台帳を組版前へ巻き戻して、作り直す
-                print(f"組版から抜けなかった(digest に残り {still_there()} / lint {code})。作り直す", flush=True)
-                for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
-                    (ROOT / rel).write_bytes(pre_assembly[0][rel])
-                print(claude_run(assembly_prompt(date, number, aborted + dropped_by_review))[-400:], flush=True)
-                subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
-                                "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
-                if still_there():
-                    raise RuntimeError(f"組版のやり直しが、落とした記事を号に戻した: {still_there()}")
+            back = [s for s in dropped_by_review
+                    if ed_file.exists() and s in ed_file.read_text(encoding="utf-8")]
+            if back:
+                raise RuntimeError(f"組版のやり直しが、落とした記事を号に戻した: {back}")
 
             rounds += 1
             # 残った記事は直していないので見直さない。落としたことで変わるのは

@@ -103,6 +103,18 @@ def review_verdict(date: str) -> tuple[str, str]:
     except Exception as e:
         return "unreadable", f"{files[-1].name} が読めない: {e}"
     if d.get("verdict") == "approve":
+        # approve は「その時点の中身」への判定。校閲のあとに記事や digest が変わって
+        # いたら、その approve は現在の紙面のものではない(監査指摘)。校閲が残した指紋と
+        # 現在の指紋を照合する。指紋の無い古い記録は照合できないので、そのまま通す
+        recorded = d.get("hashes") or {}
+        if recorded:
+            sys.path.insert(0, str(ROOT / "scripts"))
+            from pipelib import review_manifest
+            now = review_manifest(date)
+            changed = sorted(k for k in set(recorded) | set(now) if recorded.get(k) != now.get(k))
+            if changed:
+                return "stale", (f"{files[-1].name} の approve のあとに中身が変わっている"
+                                 f"({len(changed)}件: " + ", ".join(Path(c).name for c in changed[:4]) + ")")
         return "approve", files[-1].name
     blockers = d.get("blockers") or []
     head = "; ".join(f"{b.get('file')}: {(b.get('issue') or '')[:80]}" for b in blockers[:3])

@@ -175,6 +175,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - onkyodirect.jp        # ONKYO DIRECT(メーカー直販)。コラボイヤホンの受注ページ=販売元
   - alter-web.jp          # 合議で追加: フィギュアメーカーがライセンス商品を自社サイトで販売紹介
   - union-creative.jp     # 合議で追加: ライセンスを受けたフィギュアメーカーが自社商品を自社サイトで販売している売上/販
   - ws-blau.com           # 合議で追加: カードゲーム公式サイトがイベント入賞結果を掲載

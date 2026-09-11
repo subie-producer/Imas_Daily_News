@@ -66,6 +66,55 @@ EDITORIAL_UNTIL = "2026-09-06"
 def has_editorial(date: str) -> bool:
     """その号に社説があるべきか(=書く・lint で求める・校閲する)。"""
     return str(date) <= EDITORIAL_UNTIL
+
+
+# --- 校閲した中身の指紋 ---------------------------------------------------
+# approve は「その時点の中身」に対する判定である。release が「最後の review JSON に
+# approve と書いてあるか」しか見ないと、校閲のあとに記事や digest が変わっても古い
+# approve で発行できる(監査指摘)。校閲が見る部分だけの指紋を review JSON に残し、
+# release は現在の指紋と一致する approve だけを有効にする。
+# rank・src・機械算出欄は校閲対象外(校閲後に assign_ranks / derive が書き換える)なので含めない。
+def article_hash(path) -> str:
+    import hashlib
+    import json as _json
+    import re as _re
+    import yaml as _yaml
+    text = Path(path).read_text(encoding="utf-8")
+    m = _re.match(r"^---\n(.*?)\n---\n", text, _re.S)
+    fm = (_yaml.safe_load(m.group(1)) or {}) if m else {}
+    body = text[m.end():] if m else text
+    seen = {"title": fm.get("title"), "lede": fm.get("lede"), "brand": fm.get("brand"),
+            "candidate_ids": fm.get("candidate_ids"),
+            "sources": [[s.get("url"), s.get("label")] for s in (fm.get("sources") or [])]}
+    return hashlib.sha256((_json.dumps(seen, ensure_ascii=False, sort_keys=True) + "\n" + body)
+                          .encode("utf-8")).hexdigest()
+
+
+def edition_hash(date: str) -> str:
+    import hashlib
+    import json as _json
+    import re as _re
+    import yaml as _yaml
+    p = ROOT / "docs" / "_editions" / f"{date}.md"
+    if not p.exists():
+        return ""
+    m = _re.match(r"^---\n(.*?)\n---\n", p.read_text(encoding="utf-8"), _re.S)
+    fm = (_yaml.safe_load(m.group(1)) or {}) if m else {}
+    seen = {"lead_slug": fm.get("lead_slug"), "digest": fm.get("digest")}
+    return hashlib.sha256(_json.dumps(seen, ensure_ascii=False, sort_keys=True, default=str)
+                          .encode("utf-8")).hexdigest()
+
+
+def review_manifest(date: str) -> dict[str, str]:
+    """校閲が見る中身の指紋。{相対パス: sha256}。号スナップショットは digest と一面だけ。"""
+    out = {}
+    for p in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md")):
+        out[f"docs/_posts/{p.name}"] = article_hash(p)
+    ed = ROOT / "docs" / "_editorials" / f"{date}.md"
+    if ed.exists():
+        out[f"docs/_editorials/{date}.md"] = article_hash(ed)
+    out[f"docs/_editions/{date}.md"] = edition_hash(date)
+    return out
 # 暴走セッション対策の安全弁(--max-budget-usd)。通常運用なら到達しない額を目安に設定。
 # 注: codex exec には同等のコスト上限フラグが無いため、執筆(Codex)側には適用できない
 EXPLORE_MAX_BUDGET_USD = ENV.get("EXPLORE_MAX_BUDGET_USD", "1.5")

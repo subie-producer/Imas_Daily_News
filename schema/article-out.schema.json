@@ -1,0 +1,42 @@
+{
+  "title": "article-out",
+  "description": "執筆セッションの出力契約。判断と文章だけを返し、frontmatter とファイルはコードが作る(構造は生成時に強制する)",
+  "type": "object",
+  "required": ["status", "abort_code", "abort_detail", "title", "title_fact_ids", "lede", "lede_fact_ids", "blocks", "tags", "sources", "event_date"],
+  "additionalProperties": false,
+  "properties": {
+    "status": {"enum": ["ok", "abort"]},
+    "abort_code": {"enum": ["", "NO_PRIMARY_SOURCE", "SOURCE_MISMATCH", "TOO_FEW_MATERIALS", "NOT_NEWS", "OTHER"],
+                   "description": "abort のときだけ。ok なら空文字"},
+    "abort_detail": {"type": "string", "maxLength": 300},
+    "title": {"type": "string", "maxLength": 45, "description": "見出し(全角換算〜28字目安)。abort なら空"},
+    "title_fact_ids": {"type": "array", "items": {"type": "string"}, "description": "見出しの根拠になった素材の事実 id(F1…)"},
+    "lede": {"type": "string", "maxLength": 140, "description": "リード1文。abort なら空"},
+    "lede_fact_ids": {"type": "array", "items": {"type": "string"}},
+    "blocks": {
+      "type": "array",
+      "description": "本文の段落(Markdown)。段落ごとに根拠の事実 id を付ける。abort なら空配列",
+      "items": {
+        "type": "object", "required": ["markdown", "fact_ids"], "additionalProperties": false,
+        "properties": {
+          "markdown": {"type": "string", "minLength": 1, "maxLength": 1500},
+          "fact_ids": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "tags": {"type": "array", "minItems": 0, "maxItems": 4, "items": {"type": "string", "maxLength": 24}},
+    "sources": {
+      "type": "array",
+      "description": "記事の出典。url は素材の出典か、執筆中に読んで確認した一次情報の URL",
+      "items": {
+        "type": "object", "required": ["url", "label"], "additionalProperties": false,
+        "properties": {
+          "url": {"type": "string", "minLength": 8},
+          "label": {"type": "string", "minLength": 1, "maxLength": 80, "description": "出典元表記「告知タイトル」(日付)。Markdown 禁止"}
+        }
+      }
+    },
+    "event_date": {"type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+                   "description": "記事の出来事が起きる(始まる)日。1日だけ。範囲や複数なら開始日。無ければ null"}
+  }
+}

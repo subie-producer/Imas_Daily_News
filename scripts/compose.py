@@ -39,6 +39,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import planlib
+import renderlib
 import tags as tags_lib
 from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, EDITORIAL_MODEL,
                      COMPOSE_ARTICLE_MAX_BUDGET_USD,
@@ -46,6 +47,10 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      checkout_edition_branch, classify_source, commit_and_push,
                      edition_date, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
                      notify, notify_crash, now_jst)
+
+# 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
+# file = 従来どおり執筆セッションが Markdown ファイルを書く。切り替えは .env の WRITE_MODE
+STRUCTURED_WRITE = ENV.get("WRITE_MODE", "file").lower() == "structured"
 
 PAPER_STAGE = None  # main() で .env から
 
@@ -381,8 +386,33 @@ def lead_prompt(date: str, arts: list[dict]) -> str:
 
 
 def article_prompt(date: str, art: dict, materials: list[dict], story_facts: list[str],
-                   trigger: dict | None, src: str) -> str:
+                   trigger: dict | None, src: str, structured: bool = False) -> str:
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
+    if structured:
+        # **構造は生成時に強制する。**ファイルは作らせず、判断と文章だけを schema で受け、
+        # frontmatter とファイルはコードが作る(renderlib)。以前は Markdown を自由に書かせて
+        # 固定項目・日付の形・出典の種別を事後に直していた(監査の設計レビュー)
+        out_section = f"""**ファイルは作りません。**記事を JSON で返してください(schema で形が決まっています)。
+- title(全角換算〜28字)・lede(1文。記事の中身を1文で言い切る)・blocks(本文の段落。Markdown 可、中見出しは `## `)
+- **段落ごとに、根拠にした素材の事実 id(F1, F2, …)を fact_ids に付ける。**見出し・リードも同じ。
+  素材に無い事実は書けない(id を付けられない文は書かない)
+- sources は url と label だけ(label は 出典元表記「告知タイトル」(日付) の形。Markdown 記号は使わない)。
+  url は素材の出典か、執筆中に読んで確認した一次情報の URL。**種別は書かない**(判定表がコードで付ける)
+- tags は2〜4個。下記「タグ語彙」に従う
+- event_date は、記事の出来事が起きる(始まる)日を **1つだけ** YYYY-MM-DD で。範囲や複数なら開始日。無ければ null
+- 書けないなら status を abort にし、abort_code(NO_PRIMARY_SOURCE / SOURCE_MISMATCH / TOO_FEW_MATERIALS / NOT_NEWS / OTHER)と
+  abort_detail に理由を書く。abort のとき記事の項目は空でよい
+- slug / brand / candidate_ids / rank / src は書きません(計画と判定表からコードが付けます)"""
+    else:
+        out_section = f"""`docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
+- frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']}(**仮の値**。発行前に機械が付け直します) / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
+- title(全角換算〜28字)・lede(1文。字数指定なし。記事の中身を1文で言い切る)・tags(2〜4個。下記「タグ語彙」に従う)・sources・event_date(素材にあれば。YYYY-MM-DD を1つだけ)は自分で書く
+- **sources の `type` は自分で判断しない。**次のコマンドで引いた値をそのまま書く:
+
+      python3 scripts/source_type.py <url> [<url> ...]
+
+  種別は `source_types.yml` が決める。素材の `source_type` は収集時点の申告で、
+  古い値が残っていることがある。**自分で見つけて追加した出典も、必ずこのコマンドで引く。**"""
 
     trig = (f"\n- この記事は続報トリガー({trigger['kind']}: {trigger.get('note') or trigger['subject']})の消化です。"
             "トリガーの当日性(締切・開幕等)を記事の軸にすること" if trigger else "")
@@ -560,18 +590,7 @@ lint がエラーにする。
 中身の無い記事を1本増やすより、落としたほうが紙面はよくなる。
 
 ## 出力
-`docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
-- frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']}(**仮の値**。発行前に機械が付け直します) / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
-- title(全角換算〜28字)・lede(1文。字数指定なし。記事の中身を1文で言い切る)・tags(2〜4個。下記「タグ語彙」に従う)・sources・event_date(素材にあれば)は自分で書く
-- **sources の `type` は自分で判断しない。**次のコマンドで引いた値をそのまま書く:
-
-      python3 scripts/source_type.py <url> [<url> ...]
-
-  種別は `source_types.yml` が決める。素材の `source_type` は収集時点の申告で、
-  古い値が残っていることがある(実測: アソビストアの受注ページを「公式」と
-  申告した候補があり、毎回 lint が赤くなっていた)。
-  **自分で見つけて追加した出典も、必ずこのコマンドで引く。**
-  lint は同じ表と照合するので、ここで引いた値なら食い違わない
+{out_section}
 - 本文の**字数指定はありません。**確認できた事実を、水増しせずに書けるだけ書いてください。紙面のどの枠に入れるかは、書き上がった長さと話題の大きさから機械が決めます。切り口: {art['angle']}{trig}{roundup}{culture}
 
 ## タグ語彙(タグは索引・検索に使われる。表記ゆれは索引を壊すため厳守)
@@ -1794,33 +1813,60 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
         src = weakest_src(classify_source(c.get("url", "") or "") for c in materials)
         dks = {c.get("dedup_key") for c in materials} | {art.get("dedup_key")}
         facts = [f for dk in dks if dk in stories for f in stories[dk]]
-        jobs.append((art, src, article_prompt(date, art, materials, facts,
-                                              trig_by_key.get(art.get("dedup_key")), src)))
+        # 構造化モード: 素材の事実に id を振り、執筆は JSON を返す(ファイルはコードが作る)
+        mats_in, fact_by_id = (renderlib.materials_with_ids(materials) if STRUCTURED_WRITE else (materials, {}))
+        jobs.append((art, src, article_prompt(date, art, mats_in, facts,
+                                              trig_by_key.get(art.get("dedup_key")), src,
+                                              structured=STRUCTURED_WRITE), fact_by_id, materials))
     written, aborted = list(written_before), []
     if written_before:
         print(f"既存の記事 {len(written_before)}本は再執筆しない(--reuse-plan)", flush=True)
+    schema_out = ROOT / "schema" / "article-out.schema.json"
     for i in range(0, len(jobs), wave):
         procs = []
-        for art, src, prompt in jobs[i:i + wave]:
+        for art, src, prompt, fact_by_id, materials in jobs[i:i + wave]:
             fd, out_name = tempfile.mkstemp(prefix=f"codexwrite-{art['slug']}-", suffix=".txt")
             os.close(fd)
             out_path = Path(out_name)
-            procs.append((art, src, out_path, subprocess.Popen(
-                ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
-                 # 既定では sandbox が通信を遮断する。これが無いと出典照合が
-                 # 実行できず、収集段階の誤りがそのまま紙面に出る
-                 "-c", "sandbox_workspace_write.network_access=true",
-                 "--output-last-message", str(out_path), prompt],
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
+            cmd = ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
+                   # 既定では sandbox が通信を遮断する。これが無いと出典照合が
+                   # 実行できず、収集段階の誤りがそのまま紙面に出る
+                   "-c", "sandbox_workspace_write.network_access=true",
+                   "--output-last-message", str(out_path)]
+            if STRUCTURED_WRITE:
+                cmd += ["--output-schema", str(schema_out)]
+            procs.append((art, src, out_path, fact_by_id, materials, subprocess.Popen(
+                cmd + [prompt], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
-        for art, src, out_path, p in procs:
+        for art, src, out_path, fact_by_id, materials, p in procs:
             try:
                 p.communicate(timeout=900)
             except subprocess.TimeoutExpired:
                 p.kill()
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             out_path.unlink(missing_ok=True)
-            if "ABORT:" in out[-2000:] and not (ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md").exists():
+            target = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
+            if STRUCTURED_WRITE:
+                # 判断と文章を JSON で受け、検算して、コードがファイルを作る(renderlib)。
+                # 形は schema、中身(事実 id・出典・タグ・日付)はここで検める
+                target.unlink(missing_ok=True)   # モデルが勝手に書いたファイルは使わない
+                try:
+                    ans = json.loads(out.strip())
+                except Exception:
+                    print(f"記事 {art['slug']} の出力が JSON として読めない(exit {p.returncode})", flush=True)
+                    aborted.append(art["slug"])
+                    continue
+                if ans.get("status") == "abort":
+                    print(f"記事 {art['slug']} は不成立: {ans.get('abort_code')} {str(ans.get('abort_detail') or '')[:120]}", flush=True)
+                    aborted.append(art["slug"])
+                    continue
+                problems = renderlib.check_output(ans, fact_by_id, materials)
+                if problems:
+                    print(f"記事 {art['slug']} は検算不合格: " + " / ".join(problems[:4]), flush=True)
+                    aborted.append(art["slug"])
+                    continue
+                renderlib.render_article(target, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
+            elif "ABORT:" in out[-2000:] and not target.exists():
                 reason = out.rsplit("ABORT:", 1)[-1].strip()[:200]
                 print(f"記事 {art['slug']} は出典照合で不成立: {reason}", flush=True)
                 aborted.append(art["slug"])

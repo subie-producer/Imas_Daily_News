@@ -192,6 +192,9 @@ def fix_prompt(stage: str, date: str, context: str, objections: list[dict] | Non
 5. rerun_mode を答える: 計画・執筆・組版の層(compose.py / planlib / renderlib / assemble / prompts /
    出力 schema)を直したなら rebuild(号を作り直す)。それ以外で続きから走れるなら resume。
    再実行しても意味が無いなら none
+6. status は変更と一致させる: **scripts/test_pipeline.py 以外のファイルを1つでも変えたなら fixed**、
+   変えていない(回帰テストだけ足した場合を含む)なら no_fix_needed。食い違うと取り込まれない。
+   監査の指摘を取り込む2巡目でコードを変えたなら、その答えでも status を fixed に改めること
 
 ## 設計の原則(これに反する直し方をしない)
 - 判断は小さな構造化セッション、写す・数える・整える・反映するはコード
@@ -355,6 +358,14 @@ def report_change(stage: str, date: str, fix: dict, transcript: list[dict], base
 
 def needs_full_rerun(changed: list[str]) -> bool:
     return any(p.startswith(pre) for p in changed for pre in FULL_RERUN_IF)
+
+
+def status_consistent(status: str, changed: list[str]) -> bool:
+    """報告の status と差分の整合: fixed ⇔ 回帰テスト以外のファイルを変えた。
+    「欠陥ではないが回帰テストだけ足した」(no_fix_needed + test_pipeline.py の差分)は許す
+    (配管テスト 2026-09-12 で、テストだけ足した2巡目が status_mismatch で落ちた)。"""
+    code_changed = any(p != "scripts/test_pipeline.py" for p in changed)
+    return (status == "fixed") == code_changed
 
 
 def apply_integrate(fix: dict, integ: dict) -> dict:
@@ -616,7 +627,7 @@ def main() -> int:
                 fix.update(status="cannot_fix", notes=f"差分が大きすぎて監査できない({len(diff)} 字)")
                 break
             # 報告と差分の整合(監査指摘): 直したと言うのに差分が無い / 欠陥ではないと言うのに差分がある
-            if (fix.get("status") == "fixed") != bool(diff.strip()):
+            if not status_consistent(str(fix.get("status") or ""), changed):
                 transcript.append({"round": rnd, "status_mismatch": {"status": fix.get("status"), "diff": bool(diff.strip())}})
                 fix.update(status="cannot_fix", notes="報告の status と差分が食い違う")
                 break

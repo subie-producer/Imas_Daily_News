@@ -1433,6 +1433,39 @@ def parse_front_matter(path: Path) -> dict | None:
         return None
 
 
+def yaml_dump_keeping_strings(data) -> str:
+    """frontmatter の再ダンプで**文字列の字面を壊さない**。
+
+    PyYAML は未引用の `yes/on/off` を bool、`0012` を整数、`1:20` を整数(六十進)、
+    日付形を date として読む。見出し・tags・出典 label にそういう文字列があると、
+    素の safe_dump → safe_load の往復で型が変わる(監査指摘)。読み戻して同じ文字列に
+    ならない値だけを引用符付きで書く。
+    """
+    class Quoted(str):
+        pass
+
+    def rep(dumper, s):
+        return dumper.represent_scalar("tag:yaml.org,2002:str", str(s), style='"')
+
+    yaml.add_representer(Quoted, rep, Dumper=yaml.SafeDumper)
+
+    def wrap(v):
+        if isinstance(v, str):
+            try:
+                back = yaml.safe_load(v)
+            except Exception:
+                back = None
+            return v if (isinstance(back, str) and back == v) else Quoted(v)
+        if isinstance(v, list):
+            return [wrap(x) for x in v]
+        if isinstance(v, dict):
+            return {k: wrap(x) for k, x in v.items()}
+        return v
+
+    return yaml.safe_dump(wrap(data), allow_unicode=True, sort_keys=False, width=200,
+                          default_flow_style=None)
+
+
 def canonicalize_article(date: str, art: dict, cands: dict) -> list[str]:
     """記事 frontmatter の**固定項目を計画からコードで上書きする**。戻り値はログ。
 
@@ -1462,13 +1495,19 @@ def canonicalize_article(date: str, art: dict, cands: dict) -> list[str]:
     if sorted(fm.get("candidate_ids") or []) != sorted(art["candidate_ids"]):
         log.append("candidate_ids を計画に合わせた")
         fm["candidate_ids"] = list(art["candidate_ids"])
-    fm.setdefault("corrected", False)
-    fm.setdefault("corrections", [])
+    # 新規記事の訂正欄は固定値。初稿が corrected: true や架空の訂正を書いても残さない(監査指摘)
+    if fm.get("corrected") or fm.get("corrections"):
+        log.append("corrected/corrections を初期値に戻した")
+    fm["corrected"] = False
+    fm["corrections"] = []
     fm.setdefault("rank", art.get("rank") or "small")
     title_by_url = {c.get("url"): c.get("title") for i in art["candidate_ids"] for c in [cands.get(i) or {}] if c.get("url")}
     srcs = []
     for s in fm.get("sources") or []:
         if not isinstance(s, dict) or not s.get("url"):
+            # 黙って捨てない。弱い出典の url の転記ミスで、強い出典だけが残ると
+            # 過大表示になる(監査指摘)。捨てた事実をログに残す
+            log.append(f"url の無い出典を捨てた({str(s)[:60]})")
             continue
         t = classify_source(s["url"])
         if s.get("type") != t:
@@ -1488,7 +1527,7 @@ def canonicalize_article(date: str, art: dict, cands: dict) -> list[str]:
              "title", "lede", "tags", "sources", "event_date"]
     ordered = {k: fm[k] for k in order if k in fm}
     ordered.update({k: v for k, v in fm.items() if k not in ordered})
-    head = yaml.safe_dump(ordered, allow_unicode=True, sort_keys=False, width=200, default_flow_style=None)
+    head = yaml_dump_keeping_strings(ordered)
     path.write_text("---\n" + head + "---\n" + body, encoding="utf-8")
     return log
 

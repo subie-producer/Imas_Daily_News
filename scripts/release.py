@@ -107,6 +107,10 @@ def review_verdict(date: str) -> tuple[str, str]:
         # いたら、その approve は現在の紙面のものではない(監査指摘)。校閲が残した指紋と
         # 現在の指紋を照合する。指紋の無い古い記録は照合できないので、そのまま通す
         recorded = d.get("hashes") or {}
+        if not recorded and date >= "2026-09-12":
+            # 指紋の無い approve は「何を承認したか」が分からない。指紋を残す実装より
+            # 後の号では、それを approve と見なさない(監査指摘)。それより前の号だけ通す
+            return "stale", f"{files[-1].name} に指紋(hashes)が無い。何を承認したのか照合できない"
         if recorded:
             sys.path.insert(0, str(ROOT / "scripts"))
             from pipelib import review_manifest

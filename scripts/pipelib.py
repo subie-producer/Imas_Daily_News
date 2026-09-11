@@ -83,10 +83,13 @@ def article_hash(path) -> str:
     m = _re.match(r"^---\n(.*?)\n---\n", text, _re.S)
     fm = (_yaml.safe_load(m.group(1)) or {}) if m else {}
     body = text[m.end():] if m else text
+    # 校閲が判断に使う項目と、読者に表示される項目を全部入れる(監査指摘)。
+    # event_date は時制・鮮度の判断対象、tags と corrections は記事ページに出る
     seen = {"title": fm.get("title"), "lede": fm.get("lede"), "brand": fm.get("brand"),
-            "candidate_ids": fm.get("candidate_ids"),
+            "candidate_ids": fm.get("candidate_ids"), "event_date": str(fm.get("event_date") or ""),
+            "tags": fm.get("tags"), "corrected": fm.get("corrected"), "corrections": fm.get("corrections"),
             "sources": [[s.get("url"), s.get("label")] for s in (fm.get("sources") or [])]}
-    return hashlib.sha256((_json.dumps(seen, ensure_ascii=False, sort_keys=True) + "\n" + body)
+    return hashlib.sha256((_json.dumps(seen, ensure_ascii=False, sort_keys=True, default=str) + "\n" + body)
                           .encode("utf-8")).hexdigest()
 
 
@@ -100,13 +103,19 @@ def edition_hash(date: str) -> str:
         return ""
     m = _re.match(r"^---\n(.*?)\n---\n", p.read_text(encoding="utf-8"), _re.S)
     fm = (_yaml.safe_load(m.group(1)) or {}) if m else {}
-    seen = {"lead_slug": fm.get("lead_slug"), "digest": fm.get("digest")}
+    seen = {k: fm.get(k) for k in ("number", "date", "weekday", "issued_at", "lead_slug", "digest")}
     return hashlib.sha256(_json.dumps(seen, ensure_ascii=False, sort_keys=True, default=str)
                           .encode("utf-8")).hexdigest()
 
 
 def review_manifest(date: str) -> dict[str, str]:
-    """校閲が見る中身の指紋。{相対パス: sha256}。号スナップショットは digest と一面だけ。"""
+    """校閲が見る中身の指紋。{相対パス: sha256}。
+
+    号スナップショットは digest・一面・号の識別情報(機械算出欄は除く)。
+    既報判定の根拠(組版前の台帳)も入れる。校閲後に根拠が差し替わったら approve は
+    その紙面のものではない(監査指摘)。
+    """
+    import hashlib
     out = {}
     for p in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md")):
         out[f"docs/_posts/{p.name}"] = article_hash(p)
@@ -114,6 +123,9 @@ def review_manifest(date: str) -> dict[str, str]:
     if ed.exists():
         out[f"docs/_editorials/{date}.md"] = article_hash(ed)
     out[f"docs/_editions/{date}.md"] = edition_hash(date)
+    before = ROOT / "metrics" / f"stories-before-{date}.yml"
+    if before.exists():
+        out[f"metrics/stories-before-{date}.yml"] = hashlib.sha256(before.read_bytes()).hexdigest()
     return out
 # 暴走セッション対策の安全弁(--max-budget-usd)。通常運用なら到達しない額を目安に設定。
 # 注: codex exec には同等のコスト上限フラグが無いため、執筆(Codex)側には適用できない

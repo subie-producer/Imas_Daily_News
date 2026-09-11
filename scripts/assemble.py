@@ -91,7 +91,10 @@ def primary_key(fm: dict, mats: dict) -> str:
     keys = [mats[i].get("dedup_key") for i in fm.get("candidate_ids") or [] if i in mats and mats[i].get("dedup_key")]
     if not keys:
         return fm.get("slug", "")
-    return max(set(keys), key=keys.count)
+    # 最頻値。同数なら candidate_ids の並びで先に出たものを採る(set の反復順は
+    # プロセスごとに変わり、再実行で story_id が変わっていた。監査指摘 P0-3)
+    order = {k: i for i, k in reversed(list(enumerate(keys)))}
+    return max(keys, key=lambda k: (keys.count(k), -order[k], k))
 
 
 def build_input(date: str, posts: list[dict], mats: dict, stories: list[dict], pending: list[dict]) -> dict:
@@ -186,12 +189,37 @@ def run_session(text: str) -> dict:
 
 
 # ---------------------------------------------------------------- 検証
-def validate(date: str, out: dict, posts: list[dict], mats: dict) -> tuple[dict, list[str]]:
-    """モデルの答えを機械で検める。通らないものは捨てて理由を残す(直しはしない)。"""
+def _date_forms(iso: str) -> list[str]:
+    """2026-09-12 → その日付の書き方いろいろ(素材の facts と照合するため)。"""
+    try:
+        d = datetime.date.fromisoformat(iso)
+    except ValueError:
+        return []
+    return [iso, f"{d.month}月{d.day}日", f"{d.month:02d}月{d.day:02d}日", f"{d.month}/{d.day}",
+            f"{d.month:02d}/{d.day:02d}", f"{d.year}/{d.month}/{d.day}", f"{d.year}年{d.month}月{d.day}日"]
+
+
+def _supported(fact: str, text: str, n: int = 6) -> bool:
+    """fact の連続 n 文字のどれかが入力にあるか(自由文の事実が入力から来ているかの粗い検算)。"""
+    f = re.sub(r"\s", "", fact)
+    t = re.sub(r"\s", "", text)
+    return any(f[i:i + n] in t for i in range(0, max(1, len(f) - n + 1)))
+
+
+def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict) -> tuple[dict, list[str]]:
+    """モデルの答えを機械で検める。通らないものは捨てて理由を残す(直しはしない)。
+
+    schema は形しか守らない。中身の危険(入力に無い記事を digest に書く、無関係な話題へ
+    結合する、入力に無い事実を既報にする、素材に無い日付を予約する)はここで止める(監査指摘)。
+    """
     notes: list[str] = []
     slugs = {fm.get("slug") for fm in posts}
     ids_of = {fm.get("slug"): set(fm.get("candidate_ids") or []) for fm in posts}
     brand_of = {fm.get("slug"): fm.get("brand") for fm in posts}
+    art_in = {a["slug"]: a for a in inp.get("articles") or []}
+    pending_keys = {x.get("dedup_key") for x in inp.get("pending") or []}
+    subject_keys = {a.get("dedup_key") for a in art_in.values()} | {
+        (mats.get(i) or {}).get("dedup_key") for s in ids_of.values() for i in s}
 
     digest = []
     seen_labels = []
@@ -201,6 +229,9 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict) -> tuple[dict,
             s = r.get("slug") or ""
             if s and s not in slugs:
                 notes.append(f"digest: 無い記事 {s} を指す行を捨てた"); continue
+            if not s and g.get("label") != "明日":
+                # 記事を指さない行は「明日」の予約分だけ。他の群で作られたら入力に無い行
+                notes.append(f"digest: 記事を指さない行を {g.get('label')} から捨てた({r.get('t')!r})"); continue
             if r.get("k") not in K_VOCAB or not r.get("t") or len(r["t"]) > 20 or len(r.get("d") or "") > 25:
                 notes.append(f"digest: 形式外の行を捨てた({r.get('t')!r})"); continue
             row = {"k": r["k"], "t": r["t"], "d": r.get("d") or "", "brand": brand_of.get(s) or r.get("brand")}
@@ -228,30 +259,70 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict) -> tuple[dict,
         notes.append("digest: 一面が無かったので本日の先頭に足した")
 
     stories = []
+    seen_story_slugs: set[str] = set()
     for s in out.get("stories") or []:
-        if s.get("slug") not in slugs or not s.get("story_id") or not s.get("published_facts"):
-            notes.append(f"stories: 不正な項目を捨てた({s.get('slug')})"); continue
-        stories.append({"slug": s["slug"], "story_id": s["story_id"], "subject": (s.get("subject") or "")[:60],
-                        "published_facts": [str(f)[:140] for f in s["published_facts"][:4]]})
+        slug = s.get("slug")
+        a = art_in.get(slug)
+        if a is None or not s.get("story_id") or not s.get("published_facts"):
+            notes.append(f"stories: 不正な項目を捨てた({slug})"); continue
+        if slug in seen_story_slugs:
+            notes.append(f"stories: {slug} の2件目を捨てた(記事ごとに1件)"); continue
+        allowed = {a.get("dedup_key")} | ({(a.get("existing_story") or {}).get("story_id")} if a.get("existing_story") else set())
+        if s["story_id"] not in allowed:
+            notes.append(f"stories: {slug} が無関係な話題 {s['story_id']} に結合しようとした → {a.get('dedup_key')} にする")
+            s["story_id"] = a.get("dedup_key")
+        basis = " ".join([str(a.get("title") or ""), str(a.get("lede") or "")] + list(a.get("dated_facts") or []))
+        facts = []
+        for f in s["published_facts"][:4]:
+            f = str(f)[:140]
+            if _supported(f, basis):
+                facts.append(f)
+            else:
+                notes.append(f"stories: 入力に無い事実を捨てた({slug}: {f[:40]})")
+        if not facts:
+            notes.append(f"stories: {slug} は残る事実が無いので見出しを事実にする")
+            facts = [str(a.get("title") or "")[:140]]
+        seen_story_slugs.add(slug)
+        stories.append({"slug": slug, "story_id": s["story_id"], "subject": (s.get("subject") or "")[:60],
+                        "published_facts": facts})
 
     res = []
     for r in out.get("reservations") or []:
         s = r.get("slug")
-        if s not in slugs or r.get("candidate_id") not in ids_of.get(s, set()) or r.get("candidate_id") not in mats:
-            notes.append(f"reservations: 記事か素材が合わないので捨てた({s}/{r.get('candidate_id')})"); continue
+        cid = r.get("candidate_id")
+        if s not in slugs or cid not in ids_of.get(s, set()) or cid not in mats:
+            notes.append(f"reservations: 記事か素材が合わないので捨てた({s}/{cid})"); continue
         try:
             dt = datetime.date.fromisoformat(r.get("date") or "")
         except ValueError:
             notes.append(f"reservations: 日付が読めない {r.get('date')!r}"); continue
         if dt.isoformat() <= date or r.get("kind") not in KINDS:
             notes.append(f"reservations: 過去日か種別不正 {r.get('date')}/{r.get('kind')}"); continue
-        res.append({"slug": s, "candidate_id": r["candidate_id"], "date": dt.isoformat(), "kind": r["kind"],
+        c = mats[cid]
+        hay = " ".join(list(c.get("facts") or []) + [str(c.get("event_date") or ""), str(c.get("deadline") or ""),
+                                                     str(c.get("title") or "")])
+        # 締切前(3日前)は締切日そのものが素材にあればよい
+        probe = [dt] + ([dt + datetime.timedelta(days=3)] if r.get("kind") == "締切前" else []) + \
+                ([dt + datetime.timedelta(days=1)] if r.get("kind") in ("締切", "終了") else [])
+        if not any(form in hay for p in probe for form in _date_forms(p.isoformat())):
+            notes.append(f"reservations: 素材に無い日付 {dt.isoformat()} を捨てた({s})"); continue
+        res.append({"slug": s, "candidate_id": cid, "date": dt.isoformat(), "kind": r["kind"],
                     "subject": (r.get("subject") or "")[:60], "note": (r.get("note") or "")[:120]})
 
-    p_add = [{"dedup_key": x["dedup_key"], "brand": x.get("brand"), "subject": (x.get("subject") or "")[:60],
-              "watch": (x.get("watch") or "")[:140]}
-             for x in (out.get("pending_add") or []) if x.get("dedup_key") and x.get("brand") in BRANDS]
-    p_rm = [str(x) for x in (out.get("pending_remove") or [])]
+    p_add = []
+    for x in out.get("pending_add") or []:
+        if not x.get("dedup_key") or x.get("brand") not in BRANDS:
+            continue
+        if x["dedup_key"] not in subject_keys:
+            notes.append(f"pending_add: この号の主題でない {x['dedup_key']} を捨てた"); continue
+        p_add.append({"dedup_key": x["dedup_key"], "brand": x.get("brand"), "subject": (x.get("subject") or "")[:60],
+                      "watch": (x.get("watch") or "")[:140]})
+    p_rm = []
+    for x in out.get("pending_remove") or []:
+        if str(x) in pending_keys:
+            p_rm.append(str(x))
+        else:
+            notes.append(f"pending_remove: 無い項目 {x} を無視した")
     return {"digest": digest, "stories": stories, "reservations": res, "pending_add": p_add, "pending_remove": p_rm}, notes
 
 
@@ -270,16 +341,46 @@ def strip_edition(date: str, stories: list[dict]) -> list[dict]:
             e.pop("edition_facts", None)
         if e.get("first_published") == date and not e.get("published_facts"):
             continue  # この号が作った話題で、剥がしたら空になった
+        if e.get("first_published") == date and ef:
+            # この号が作った話題だが、後続号の事実が残っている。初出を残っている最古の号にする
+            # (剥がした号を初出として指し続けない。監査指摘)
+            e["first_published"] = min(ef)
         out.append(e)
     return out
 
 
-def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry: bool) -> list[str]:
+def baseline_stories(date: str) -> list[dict]:
+    """組版前の台帳 = 現在の台帳からこの号の寄与を剥がしたもの。
+
+    **入力を作るときも反映するときも、同じこれを使う。**反映時だけ剥がすと、
+    再実行のときに前回この号が足した事実を「既報」としてモデルに渡し、モデルが
+    それを繰り返さず、反映直前に剥がされて台帳から消える(監査指摘 P0-2)。
+    """
+    return strip_edition(date, load_yaml_list(STORIES))
+
+
+def baseline_pending(date: str, dry: bool) -> list[dict]:
+    """組版前の pending。初回に控え(metrics/pending-before-<日付>.yml)、以後はそれを起点にする。
+
+    pending には号の印を付けられない(削除は印が残らない)ので、控えから毎回組み立て直す。
+    初回だけは現在の pending がそのまま控えになる(監査指摘 P0-4)。
+    """
+    p = ROOT / "metrics" / f"pending-before-{date}.yml"
+    if p.exists():
+        return load_yaml_list(p)
+    cur = load_yaml_list(PENDING)
+    if not dry:
+        dump_yaml(p, cur)
+    return cur
+
+
+def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry: bool,
+          stories: list[dict] | None = None) -> list[str]:
     log: list[str] = []
     d = datetime.date.fromisoformat(date)
 
-    # 1. 既報台帳(組版前の状態を先に控える)
-    stories = strip_edition(date, load_yaml_list(STORIES))
+    # 1. 既報台帳(組版前の状態 = baseline を控える)
+    stories = stories if stories is not None else baseline_stories(date)
     before = ROOT / "metrics" / f"stories-before-{date}.yml"
     if not dry:
         dump_yaml(before, stories)
@@ -295,7 +396,10 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
         added = [f for f in s["published_facts"] if f not in (e.get("published_facts") or [])]
         if added:
             e.setdefault("published_facts", []).extend(added)
-            e.setdefault("edition_facts", {})[date] = added
+            # 同じ話題に同号の記事が2本寄与しても、所有記録は**足す**(上書きすると
+            # 先の記事の分が剥がせなくなる。監査指摘)
+            mine = e.setdefault("edition_facts", {}).setdefault(date, [])
+            mine.extend(f for f in added if f not in mine)
             n_app += len(added)
     log.append(f"台帳: 新規 {n_new} 話題 / 事実 {n_app} 件")
 
@@ -331,8 +435,8 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
         rows.append(entry); files[p] = rows; n_res += 1
     log.append(f"予約: {n_res} 件")
 
-    # 3. pending
-    pending = load_yaml_list(PENDING)
+    # 3. pending(組版前の控えから毎回組み立て直す。追加も削除も号の差分として効く)
+    pending = [dict(x) for x in baseline_pending(date, dry)]
     rm = set(out["pending_remove"])
     pending = [x for x in pending if x.get("dedup_key") not in rm]
     have = {x.get("dedup_key") for x in pending}
@@ -375,12 +479,15 @@ def run(date: str, number: int | None = None, dry: bool = False) -> int:
         print(f"{date}: 記事が無い", flush=True)
         return 1
     mats = load_materials(date)
-    inp = build_input(date, posts, mats, load_yaml_list(STORIES), load_yaml_list(PENDING))
+    # 入力も反映も**同じ組版前の状態**から(この号の寄与を剥がした台帳・控えた pending)
+    stories = baseline_stories(date)
+    pending = baseline_pending(date, dry)
+    inp = build_input(date, posts, mats, stories, pending)
     out = run_session(prompt(date, inp))
-    clean, notes = validate(date, out, posts, mats)
+    clean, notes = validate(date, out, posts, mats, inp)
     for n in notes:
         print("  検算:", n, flush=True)
-    for line in apply(date, number, clean, posts, mats, dry):
+    for line in apply(date, number, clean, posts, mats, dry, stories=stories):
         print("  " + line, flush=True)
     if dry:
         return 0

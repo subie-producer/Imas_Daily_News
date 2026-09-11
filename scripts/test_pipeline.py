@@ -392,6 +392,12 @@ def test_oncall_apply_integrate():
     check(fix3["risk"].splitlines() == ["重大な情報漏えい", "[監査後の変更で] 情報漏えい"], f"部分一致で別の risk を捨てた: {fix3}")
     oncall.apply_integrate(fix3, {"status": "unchanged", "rerun_mode": "unchanged", "risk": "情報漏えい"})
     check(len(fix3["risk"].splitlines()) == 2, "完全一致の risk が重複した")
+    # status と差分の整合: fixed ⇔ 回帰テスト以外を変えた(テストだけ足した no_fix_needed は許す。配管テスト 2026-09-12)
+    check(oncall.status_consistent("fixed", ["scripts/compose.py"]) and oncall.status_consistent("no_fix_needed", [])
+          and oncall.status_consistent("no_fix_needed", ["scripts/test_pipeline.py"])
+          and not oncall.status_consistent("no_fix_needed", ["scripts/compose.py"])
+          and not oncall.status_consistent("fixed", []) and not oncall.status_consistent("fixed", ["scripts/test_pipeline.py"]),
+          "status と差分の整合判定")
     # 複数行の risk を2回渡しても各項目は1回だけ(監査指摘 R21-P1-1)
     fix4 = {"status": "fixed", "risk": "重大な情報漏えい"}
     for _ in range(2):

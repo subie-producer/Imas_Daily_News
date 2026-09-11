@@ -1535,6 +1535,21 @@ def canonicalize_article(date: str, art: dict, cands: dict) -> list[str]:
     fm["corrected"] = False
     fm["corrections"] = []
     fm.setdefault("rank", art.get("rank") or "small")
+    # event_date は YYYY-MM-DD 1つだけ。執筆は範囲(2026-09-12〜13)・配列・和暦で書いてくる。
+    # 以前は lint の赤を Claude が直していたので見えていなかった(実測 2026-09-12: 5本が
+    # schema 違反になり、その記事を指す digest 行まで「記事が無い」扱いで lint 赤)。
+    # 最初の日付を採り、日付が取れなければ欄ごと外す(任意項目)
+    ev = fm.get("event_date")
+    if ev is not None:
+        raw = " ".join(str(x) for x in ev) if isinstance(ev, list) else str(ev)
+        m2 = re.search(r"(\d{4})[-/年.](\d{1,2})[-/月.](\d{1,2})", raw)
+        norm = f"{int(m2.group(1)):04d}-{int(m2.group(2)):02d}-{int(m2.group(3)):02d}" if m2 else None
+        if norm != (str(ev) if isinstance(ev, str) else None):
+            log.append(f"event_date: {raw[:30]!r} → {norm!r}")
+        if norm:
+            fm["event_date"] = norm
+        else:
+            fm.pop("event_date", None)
     title_by_url = {c.get("url"): c.get("title") for i in art["candidate_ids"] for c in [cands.get(i) or {}] if c.get("url")}
     srcs = []
     for s in fm.get("sources") or []:
@@ -2420,6 +2435,39 @@ def main() -> int:
         except Exception as e:
             print(f"組版のやり直しに失敗: {e}", flush=True)
         code, lint_out = run_lint(date)
+
+        def post_errors(out: str) -> dict[str, list[dict]]:
+            by_file: dict[str, list[dict]] = {}
+            for l in out.splitlines():
+                m2 = re.match(r"::error file=(docs/_posts/[^:]+)::(.*)$", l)
+                if m2:
+                    by_file.setdefault(m2.group(1), []).append({"file": m2.group(1), "issue": "lint: " + m2.group(2), "quote": ""})
+            return by_file
+
+        if code != 0 and post_errors(lint_out):
+            # 機械で直せない記事の赤(時制矛盾など本文の話)は、**その記事だけ**を小さな修正セッションへ。
+            # 直らなければ落として組版し直す(号を止めない)
+            by_file = post_errors(lint_out)
+            print(f"lint 赤(記事の中身) {len(by_file)}本を個別に修正させる", flush=True)
+            fix_articles(date, by_file)
+            for a in written:
+                if a["slug"] in by_slug_plan:
+                    canonicalize_article(date, by_slug_plan[a["slug"]], cands)
+            code, lint_out = run_lint(date)
+            still = post_errors(lint_out)
+            if still:
+                names = [Path(f).name for f in still]
+                print(f"直らなかった {len(still)}本を落とす: {names}", flush=True)
+                for f in still:
+                    (ROOT / f).unlink(missing_ok=True)
+                gone = {n[len(date) + 1:].removesuffix(".md") for n in names}
+                written[:] = [a for a in written if a["slug"] not in gone]
+                aborted.extend(sorted(gone))
+            try:
+                run_assemble(date, number)
+            except Exception as e:
+                print(f"組版のやり直しに失敗: {e}", flush=True)
+            code, lint_out = run_lint(date)
         if code != 0:
             notify("compose", f"{date}: lint 赤が解消できず。人間判断が必要\n{lint_out[-500:]}", ok=False)
             commit_and_push(branch, f"compose {date}: lint未解消(要人間判断)", "compose")

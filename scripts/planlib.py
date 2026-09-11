@@ -116,11 +116,23 @@ def decisions_to_plan(brand: str, rows: list[dict], decisions: dict, taken: set[
                        "angle": decisions.get(k, {}).get("angle") or r.get("title") or k,
                        "lead_score": 0, "dedup_key": k, "candidate_ids": list(r.get("ids") or [])}
 
-    # merge: 素材を相手の記事へ。相手が記事でなければ自分の記事にする(黙って消さない)
+    # merge: 素材を相手の記事へ。相手がさらに merge なら辿る(連鎖)。循環したり、
+    # 相手が記事でなければ自分の記事にする(黙って消さない)
+    merge_map = dict(merges)
+
+    def resolve(target: str) -> dict | None:
+        seen: set[str] = set()
+        while target and target not in seen:
+            seen.add(target)
+            if target in arts:
+                return arts[target]
+            if target in roundup_keys and "__roundup__" in arts:
+                return arts["__roundup__"]
+            target = merge_map.get(target, "")
+        return None
+
     for key, target in merges:
-        tgt = arts.get(target)
-        if tgt is None and target in roundup_keys and "__roundup__" in arts:
-            tgt = arts["__roundup__"]
+        tgt = resolve(target)
         if tgt is None:
             r = by_key[key]
             arts[key] = {"slug": slugify(brand, key, taken), "brand": brand, "rank": "small",

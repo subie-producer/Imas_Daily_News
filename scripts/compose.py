@@ -42,7 +42,7 @@ import planlib
 import renderlib
 import tags as tags_lib
 from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, EDITORIAL_MODEL,
-                     COMPOSE_ARTICLE_MAX_BUDGET_USD,
+                     COMPOSE_ARTICLE_MAX_BUDGET_USD, JobLockTimeout, job_lock,
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, classify_source, commit_and_push,
                      edition_date, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
@@ -393,13 +393,21 @@ def article_prompt(date: str, art: dict, materials: list[dict], story_facts: lis
         # frontmatter とファイルはコードが作る(renderlib)。以前は Markdown を自由に書かせて
         # 固定項目・日付の形・出典の種別を事後に直していた(監査の設計レビュー)
         out_section = f"""**ファイルは作りません。**記事を JSON で返してください(schema で形が決まっています)。
-- title(全角換算〜28字)・lede(1文。記事の中身を1文で言い切る)・blocks(本文の段落。Markdown 可、中見出しは `## `)
+- title(全角換算〜28字)・lede(1文。記事の中身を1文で言い切る)・blocks(本文の段落。Markdown 可)
+- **1 block = 1 段落**(block の中に空行を入れない。検算で落ちる)。中見出しは `## 見出し` だけの
+  block にする(その block は fact_ids が空でよい)。箇条書きは1行1項目で、1つの block にまとめてよい
 - **段落ごとに、根拠にした素材の事実 id(F1, F2, …)を fact_ids に付ける。**見出し・リードも同じ。
   素材に無い事実は書けない(id を付けられない文は書かない)
+- 素材に無い事実を、一次情報(公式の告知など)を `fetch_page.py` で**実際に読んで**確かめたなら、
+  `new_facts` に {{id: "N1", text: 確かめた事実, url: 読んだページ}} を書く。段落の fact_ids には
+  その N1 を付けられる。**読んでいないページの事実を new_facts に書かない**
+  (素材の `unbacked_facts` を出典本文で確かめられたときも、ここに書く)
 - sources は url と label だけ(label は 出典元表記「告知タイトル」(日付) の形。Markdown 記号は使わない)。
-  url は素材の出典か、執筆中に読んで確認した一次情報の URL。**種別は書かない**(判定表がコードで付ける)
+  url は素材の出典か、new_facts に書いた URL だけ(**それ以外の URL は検算で落ちる**)。
+  **種別は書かない**(判定表がコードで付ける)
 - tags は2〜4個。下記「タグ語彙」に従う
-- event_date は、記事の出来事が起きる(始まる)日を **1つだけ** YYYY-MM-DD で。範囲や複数なら開始日。無ければ null
+- event_date は、記事の出来事が起きる(始まる)日を **1つだけ** YYYY-MM-DD で。範囲や複数なら開始日。無ければ null。
+  素材か new_facts に出てくる日付であること(検算する)
 - 書けないなら status を abort にし、abort_code(NO_PRIMARY_SOURCE / SOURCE_MISMATCH / TOO_FEW_MATERIALS / NOT_NEWS / OTHER)と
   abort_detail に理由を書く。abort のとき記事の項目は空でよい
 - slug / brand / candidate_ids / rank / src は書きません(計画と判定表からコードが付けます)
@@ -1521,6 +1529,24 @@ def yaml_dump_keeping_strings(data) -> str:
                           default_flow_style=None)
 
 
+def earliest_date(raw: str) -> str | None:
+    """文字列に含まれる日付のうち**いちばん早い**ものを YYYY-MM-DD で返す(無ければ None)。
+
+    範囲(2026-09-12〜13)は開始日、配列は最も早い日。和暦(令和8年9月12日)も読む。
+    暦に無い日(2026-02-30)は捨てる。最初に見つかった日付を採ると「9月13日〜12日」のような
+    書き方で終了日を拾う(監査指摘)
+    """
+    raw = (raw or "").translate(str.maketrans("０１２３４５６７８９／．－", "0123456789/.-"))
+    found = []
+    for m in re.finditer(r"(?:(\d{4})|令和\s*(\d{1,2}|元))\s*[-/年.]\s*(\d{1,2})\s*[-/月.]\s*(\d{1,2})", raw):
+        year = int(m.group(1)) if m.group(1) else (2018 + (1 if m.group(2) == "元" else int(m.group(2))))
+        try:
+            found.append(datetime.date(year, int(m.group(3)), int(m.group(4))))
+        except ValueError:
+            continue
+    return min(found).isoformat() if found else None
+
+
 def canonicalize_article(date: str, art: dict, cands: dict) -> list[str]:
     """記事 frontmatter の**固定項目を計画からコードで上書きする**。戻り値はログ。
 
@@ -1563,8 +1589,7 @@ def canonicalize_article(date: str, art: dict, cands: dict) -> list[str]:
     ev = fm.get("event_date")
     if ev is not None:
         raw = " ".join(str(x) for x in ev) if isinstance(ev, list) else str(ev)
-        m2 = re.search(r"(\d{4})[-/年.](\d{1,2})[-/月.](\d{1,2})", raw)
-        norm = f"{int(m2.group(1)):04d}-{int(m2.group(2)):02d}-{int(m2.group(3)):02d}" if m2 else None
+        norm = earliest_date(raw)
         if norm != (str(ev) if isinstance(ev, str) else None):
             log.append(f"event_date: {raw[:30]!r} → {norm!r}")
         if norm:
@@ -1633,7 +1658,7 @@ def validate_article_file(date: str, art: dict, cands: dict) -> list[str]:
 def body_length(path: Path) -> int:
     """本文の非空白文字数(中見出し行は除く)。lint の分量計算と同じ定義。"""
     text = path.read_text(encoding="utf-8")
-    body = re.split(r"\n---\n", text, maxsplit=1)[-1]
+    body = renderlib.strip_fact_notes(re.split(r"\n---\n", text, maxsplit=1)[-1])
     return len(re.sub(r"\s", "", re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)))
 
 
@@ -1858,11 +1883,13 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                     print(f"記事 {art['slug']} の出力が JSON として読めない(exit {p.returncode})", flush=True)
                     aborted.append(art["slug"])
                     continue
-                if ans.get("status") == "abort":
+                # 検算を status の分岐より**先に**掛ける(理由の無い abort を素通りさせない。監査指摘)
+                problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date,
+                                                  fetched=fetched_urls())
+                if ans.get("status") == "abort" and not problems:
                     print(f"記事 {art['slug']} は不成立: {ans.get('abort_code')} {str(ans.get('abort_detail') or '')[:120]}", flush=True)
                     aborted.append(art["slug"])
                     continue
-                problems = renderlib.check_output(ans, fact_by_id, materials)
                 if problems:
                     print(f"記事 {art['slug']} は検算不合格: " + " / ".join(problems[:4]), flush=True)
                     aborted.append(art["slug"])
@@ -1903,7 +1930,8 @@ def load_story_facts() -> dict:
 def run_lint(date: str) -> tuple[int, str]:
     r = subprocess.run([sys.executable, str(ROOT / "scripts" / "lint.py"), "--base", "origin/main"],
                        capture_output=True, text=True, cwd=ROOT)
-    return r.returncode, r.stdout[-1500:]
+    # 全文を返す。末尾だけ返すと、先頭側の記事の所見(::warning)が校閲に渡らない(監査指摘)
+    return r.returncode, r.stdout
 
 
 def run_parallel(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[str]:
@@ -1936,7 +1964,7 @@ def run_parallel(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[
 
 def revise_prompt(date: str, art: dict, mats_in: list[dict], current: str, issues: list[dict]) -> str:
     """校閲の指摘を受けた**執筆側(Codex)**の書き直し。同じ出力契約(article-out)で返す。"""
-    iss = json.dumps([{k: b.get(k) for k in ("rule_id", "issue", "quote", "repair", "fact_ids", "expected")}
+    iss = json.dumps([{k: b.get(k) for k in ("issue_id", "rule_id", "issue", "quote", "repair", "fact_ids", "expected")}
                       for b in issues], ensure_ascii=False, indent=1)
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の記者です。{date}号のあなたの記事に、別ベンダーの校閲から
 ブロック指摘が付きました。**指摘に対応した稿を JSON で返してください**(schema で形が決まっています。
@@ -1950,20 +1978,166 @@ def revise_prompt(date: str, art: dict, mats_in: list[dict], current: str, issue
 ## 素材(この記事に使ってよい情報の全て。事実には id が付いています)
 {json.dumps(mats_in, ensure_ascii=False, indent=1)}
 
-## 校閲の指摘(それぞれ repair の指示に従う)
+## 校閲の指摘
 {iss}
 
 ## 直し方
+`repair` は校閲の**提案**であって命令ではない。素材と出典に照らして、あなたが正しい直し方を決める
+(校閲が「消せ」と言った事実が出典で確かめられるなら、消さずに根拠を付けて残してよい)。
+ただし、指摘の `quote` の記述を**そのまま残すことはできない**(出典どおりに書き直す・消す・記事を落とす、のどれか。
+一次情報で確かめて残すなら、その出典の表現に合わせて書き直し、new_facts に読んだ URL と事実を書く。
+根拠 id を付けるだけで字面を変えないのは対応にならない)。
 - `rewrite_claim`: その記述を素材の事実どおりに直す。段落の fact_ids に根拠を付ける
 - `drop_claim`: 素材に無い記述を消す。消して段落が空になるなら段落ごと消す
 - `add_source`: 足りない出典を sources に加える(素材にある URL か、`python3 scripts/fetch_page.py <url>` で
-  読んで確認した一次情報の URL だけ)。**指摘に URL が書いてあるならそれを加える**
+  読んで確認した一次情報の URL。後者は new_facts に「読んだ URL と確かめた事実」を書く)。
+  **指摘に URL が書いてあるならそれを読んで加える**
 - `drop_source`: 食い違う弱い出典を sources から外し、記事は強い出典に合わせる(弱い出典に合わせて書き換えない)
 - `drop_article`: 記事として成立しないなら status を abort にし、abort_code と理由を書く。無理に残さない
 - **指摘に無い箇所は変えない**(見出し・他の段落・出典は原則そのまま)。直したふりをしない
-- 対応した指摘の rule_id を addressed_issue_ids に列挙する
+- 対応した指摘の **issue_id**(I1, I2 …)を addressed_issue_ids に列挙する。対応しなかった指摘は書かない
+- 本文の段落末にある `<!-- F1 F3 -->` は根拠 id の控えなので、markdown には含めない(fact_ids に書く)
 - slug / brand / candidate_ids / rank / src は書かない(コードが付ける)。event_date は YYYY-MM-DD を1つだけか null
 """
+
+
+def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: str) -> list[str]:
+    """書き直しが**指摘に対応し、指摘の外を変えていないか**の機械検査(監査指摘: 直したふりを通さない)。
+
+    - 渡した指摘は全部 addressed_issue_ids に入っている(知らない id は不可)。対応の中身は
+      「直した・消した・根拠を付けた・記事を落とした」のどれかで、放置は無い
+    - rewrite/drop の指摘の quote(8字以上)が新しい稿にそのまま残っているなら、その段落に
+      new_facts(N id)の根拠が付いているときだけ通す(出典を読んで確かめた、と示したことになる)
+    - 見出しは、指摘の quote が見出しに掛かっていない限り変えない
+    - 出典は、add_source の指摘があれば増える方向だけ、drop_source があれば減る方向だけ、
+      どちらも無ければ変えない
+    """
+    ids = [b["issue_id"] for b in issues]
+    addressed = [str(x) for x in (ans.get("addressed_issue_ids") or [])]
+    problems = []
+    unknown = [x for x in addressed if x not in ids]
+    if unknown:
+        problems.append(f"知らない issue_id を対応済みにした: {unknown[:4]}")
+    left = [i for i in ids if i not in addressed]
+    if left:
+        problems.append(f"対応していない指摘がある: {left[:4]}")
+    # 照合は**読者に見える字面**で行う(renderlib.visible_text: コメント・タグ・文字参照・リンク・
+    # 装飾・エスケープ・ゼロ幅文字・空白を落とし NFKC 正規化)。引用の途中に何かを挟んで検査を
+    # すり抜ける手を塞ぐ(監査指摘)
+    norm = renderlib.visible_text
+    blocks = ans.get("blocks") or []
+    for b in issues:
+        q = norm(b.get("quote"))
+        if b.get("repair") not in ("rewrite_claim", "drop_claim") or len(q) < 8:
+            continue
+        # 引用がどこか(段落・見出し・リード)にそのまま残っていれば未対応。N id を付けるだけでは
+        # 解消にならない(無関係な new_fact で通せてしまう。監査指摘)。確かめた事実なら、
+        # 出典どおりの記述に**書き直す**(字面が変わる)こと
+        left_over = ([blk for blk in blocks if q in norm(blk.get("markdown"))]
+                     + (["title"] if q in norm(ans.get("title")) else [])
+                     + (["lede"] if q in norm(ans.get("lede")) else []))
+        if left_over:
+            problems.append(f"{b['issue_id']} の引用が {len(left_over)} 箇所にそのまま残っている(出典どおりに直すか消す): {q[:30]}")
+    # lint の指摘(構造の赤)は直し方を限定できないので、指摘の外の検査は掛けない
+    if old_fm and not any(b.get("rule_id") == "LINT" for b in issues):
+        quotes = [norm(b.get("quote")) for b in issues if len(norm(b.get("quote"))) >= 8]
+        touched = lambda s: any(q in s for q in quotes)
+        old_title = norm(old_fm.get("title"))
+        if norm(ans.get("title")) != old_title and not touched(old_title):
+            problems.append("指摘に無い見出しを変えた")
+        old_lede = norm(old_fm.get("lede"))
+        if norm(ans.get("lede")) != old_lede and not touched(old_lede):
+            problems.append("指摘に無いリードを変えた")
+        old_tags = [str(t) for t in (old_fm.get("tags") or [])]
+        tags_targeted = any(touched(norm(t)) for t in old_tags) or any(
+            re.search(r"tag|タグ", str(b.get("issue") or ""), re.I) for b in issues)
+        if sorted(str(t) for t in (ans.get("tags") or [])) != sorted(old_tags) and not tags_targeted:
+            problems.append("指摘に無い tags を変えた")
+        if str(ans.get("event_date") or "") != str(old_fm.get("event_date") or "") and not any(
+                q in norm(str(old_fm.get("event_date") or "")) for q in quotes):
+            problems.append("指摘に無い event_date を変えた")
+        # 本文: 指摘の quote を含む段落だけ変えてよい。他の段落は**字面も根拠 id も**そのまま、順序も
+        # 保つ。指摘の段落1つにつき新しい段落は1つまで(勝手な追加を許さない)(監査指摘)。
+        # quote の無い指摘(場所を特定できない)が混ざっているときは段落の検査を掛けない
+        if all(len(norm(b.get("quote"))) >= 8 for b in issues):
+            def para(text, ids=None):
+                m = renderlib.FACT_NOTE.search(text or "")
+                ids = ids if ids is not None else (m.group(1).split() if m else [])
+                return norm(renderlib.strip_fact_notes(text)), tuple(sorted(str(i) for i in ids))
+            old_paras = [para(p) for p in re.split(r"\n\s*\n", old_body or "") if p.strip()]
+            new_paras = [para(b.get("markdown"), b.get("fact_ids") or []) for b in blocks]
+            # 一対一の対応: 未指摘の旧段落を順に、新しい段落から**1つずつ消費**して探す
+            # (同じ段落が2つあれば2つ要る。集合の membership では複製・片方の削除を見逃す。監査指摘)
+            consumed = [False] * len(new_paras)
+            cursor = 0
+            for p in old_paras:
+                if touched(p[0]):
+                    continue
+                try:
+                    j = next(k for k in range(cursor, len(new_paras)) if new_paras[k] == p and not consumed[k])
+                except StopIteration:
+                    if any(new_paras[k] == p and not consumed[k] for k in range(len(new_paras))):
+                        problems.append("指摘に無い段落の順序を入れ替えた")
+                    else:
+                        problems.append(f"指摘に無い段落を変えた・消した(字面か根拠 id): {p[0][:30]}")
+                    continue
+                consumed[j] = True
+                cursor = j + 1
+            n_allowed = sum(1 for p in old_paras if touched(p[0]))
+            n_new = sum(1 for c in consumed if not c)
+            if n_new > n_allowed:
+                problems.append(f"指摘に無い段落を足した(新しい段落 {n_new} / 指摘の段落 {n_allowed})")
+        old_urls = {s.get("url") for s in (old_fm.get("sources") or []) if isinstance(s, dict)}
+        new_urls = {s.get("url") for s in (ans.get("sources") or [])}
+        repairs = {b.get("repair") for b in issues}
+        add, drop = "add_source" in repairs, "drop_source" in repairs
+        if not add and not drop and new_urls != old_urls:
+            problems.append(f"出典の指摘が無いのに出典を変えた: {sorted(new_urls ^ old_urls)[:2]}")
+        elif add and not drop and not new_urls >= old_urls:
+            problems.append(f"add_source の指摘なのに出典を外した: {sorted(old_urls - new_urls)[:2]}")
+        elif drop and not add and not new_urls <= old_urls:
+            problems.append(f"drop_source の指摘なのに出典を足した: {sorted(new_urls - old_urls)[:2]}")
+    return problems
+
+
+def fetched_urls(max_age_h: int = 12) -> set[str]:
+    """fetch_page.py が実際に読めた URL(metrics/fetch-ledger.jsonl)。new_facts の証跡(監査指摘)。"""
+    p = ROOT / "metrics" / "fetch-ledger.jsonl"
+    if not p.exists():
+        return set()
+    since = time.time() - max_age_h * 3600
+    out = set()
+    for line in p.read_text(encoding="utf-8").splitlines():
+        try:
+            row = json.loads(line)
+            if int(row.get("at") or 0) >= since and row.get("url"):
+                out.add(row["url"])
+        except Exception:
+            continue
+    return out
+
+
+def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, materials: list[dict],
+                 issues: list[dict]) -> tuple[str, str]:
+    """書き直しの答えを記事に反映する。戻りは ("fixed"|"dropped"|"kept", 説明)。
+
+    検算(check_output)を status の分岐より**先に**掛ける。理由(abort_code/abort_detail)の無い abort は
+    不合格で、既存の記事は残す(理由なしで記事を消させない。監査指摘)。
+    """
+    problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date,
+                                      fetched=fetched_urls())
+    if ans.get("status") == "abort":
+        if problems:
+            return "kept", "理由の無い abort(" + " / ".join(problems[:2]) + ")。元の稿のまま"
+        path.unlink(missing_ok=True)
+        return "dropped", f"執筆側が不成立と判断({ans.get('abort_code')})。落とす"
+    old_text = path.read_text(encoding="utf-8") if path.exists() else ""
+    problems += revise_check(ans, issues, parse_front_matter(path) if path.exists() else None,
+                             re.split(r"\n---\n", old_text, maxsplit=1)[-1])
+    if problems:
+        return "kept", "検算不合格 " + " / ".join(problems[:3]) + "(元の稿のまま)"
+    renderlib.render_article(path, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
+    return "fixed", f"対応 {ans.get('addressed_issue_ids')}"
 
 
 def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands: dict,
@@ -1986,7 +2160,9 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
             continue
         materials = [cands[c] for c in art["candidate_ids"] if c in cands]
         mats_in, fact_by_id = renderlib.materials_with_ids(materials)
-        jobs.append((art, path, fact_by_id, materials,
+        # 指摘に機械の id を振る(rule_id は同じ規則で複数付くので、対応の照合に使えない。監査指摘)
+        issues = [{**b, "issue_id": f"I{k + 1}"} for k, b in enumerate(issues)]
+        jobs.append((art, path, fact_by_id, materials, issues,
                      revise_prompt(date, art, mats_in, path.read_text(encoding="utf-8"), issues)))
     if not jobs:
         return
@@ -1994,15 +2170,15 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
     n_fixed = n_dropped = 0
     for i in range(0, len(jobs), COMPOSE_WAVE):
         procs = []
-        for art, path, fact_by_id, materials, prompt in jobs[i:i + COMPOSE_WAVE]:
+        for art, path, fact_by_id, materials, issues, prompt in jobs[i:i + COMPOSE_WAVE]:
             fd, out_name = tempfile.mkstemp(prefix=f"codexrevise-{art['slug']}-", suffix=".txt")
             os.close(fd)
-            procs.append((art, path, fact_by_id, materials, Path(out_name), subprocess.Popen(
+            procs.append((art, path, fact_by_id, materials, issues, Path(out_name), subprocess.Popen(
                 ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
                  "-c", "sandbox_workspace_write.network_access=true",
                  "--output-last-message", out_name, "--output-schema", str(schema_out), prompt],
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True, stdin=subprocess.DEVNULL, cwd=ROOT)))
-        for art, path, fact_by_id, materials, out_path, p in procs:
+        for art, path, fact_by_id, materials, issues, out_path, p in procs:
             try:
                 p.communicate(timeout=900)
             except subprocess.TimeoutExpired:
@@ -2014,20 +2190,14 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
             except Exception:
                 print(f"書き直し {art['slug']}: 出力が読めない(そのまま次の巡へ)", flush=True)
                 continue
-            if ans.get("status") == "abort":
-                print(f"書き直し {art['slug']}: 執筆側が不成立と判断({ans.get('abort_code')})。落とす", flush=True)
-                path.unlink(missing_ok=True)
+            outcome, msg = revise_apply(date, art, path, ans, fact_by_id, materials, issues)
+            print(f"書き直し {art['slug']}: {msg}", flush=True)
+            if outcome == "dropped":
                 if aborted is not None:
                     aborted.append(art["slug"])
                 n_dropped += 1
-                continue
-            problems = renderlib.check_output(ans, fact_by_id, materials)
-            if problems:
-                print(f"書き直し {art['slug']}: 検算不合格 " + " / ".join(problems[:3]) + "(元の稿のまま)", flush=True)
-                continue
-            renderlib.render_article(path, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
-            n_fixed += 1
-            print(f"書き直し {art['slug']}: 対応 {ans.get('addressed_issue_ids')}", flush=True)
+            elif outcome == "fixed":
+                n_fixed += 1
     print(f"校閲の指摘で執筆側が {n_fixed}本を書き直し、{n_dropped}本を落とした", flush=True)
 
 
@@ -2154,9 +2324,14 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                      (ROOT / "prompts" / "review-editorial.md").read_text(encoding="utf-8")
                      .replace("{DATE}", date) + again, f"docs/_editorials/{date}.md", "editorial"))
     if paper:
+        # 号スナップショット(digest)への lint 所見は紙面担当に渡す(記事担当には見えない。監査指摘)
+        paper_notes = [l.split("::", 2)[-1] for l in (findings or "").splitlines()
+                       if re.match(r"::warning file=docs/_editions/", l)]
+        hint = (("\n\n## 機械の所見(号スナップショットについて。当たっていればブロック、外れていれば無視)\n- "
+                 + "\n- ".join(paper_notes)) if paper_notes else "")
         jobs.append(("紙面全体",
                      (ROOT / "prompts" / "review-paper.md").read_text(encoding="utf-8")
-                     .replace("{DATE}", date) + again, "-", "paper"))
+                     .replace("{DATE}", date) + hint + again, "-", "paper"))
 
     t_review = time.time()
     merged = {"verdict": "approve", "blockers": [], "comments": []}
@@ -2334,6 +2509,13 @@ def main() -> int:
     branch = f"edition/{date}"
     triggers = None
 
+    # 同じ作業ツリーを collect/release/当番と同時に触らない(監査指摘)
+    if not args.plan:
+        try:
+            _lock = job_lock("compose", wait_min=10)
+        except JobLockTimeout as e:
+            notify("compose", str(e), ok=False)
+            return 1
     if not args.plan and not checkout_edition_branch(date, "compose"):
         return 1
 
@@ -2460,8 +2642,9 @@ def main() -> int:
     if thin:
         print("素材に対して rank が小さい: " + ", ".join(thin), flush=True)
     if errors:
-        notify("compose", f"{date}: 記事計画が機械検証を通らず。人間判断が必要\n- " + "\n- ".join(errors[:8]), ok=False)
-        commit_and_push(branch, f"compose {date}: 計画不成立(要人間判断)", "compose")
+        notify("compose", f"{date}: 記事計画が機械検証を通らず。当番に渡す\n- " + "\n- ".join(errors[:8]), ok=False)
+        commit_and_push(branch, f"compose {date}: 計画不成立(当番へ)", "compose")
+        escalate("compose", date, "記事計画が機械検証を通らず:\n- " + "\n- ".join(errors[:20]))
         return 1
     arts_plan = plan["articles"]
     n_plan = len(arts_plan)
@@ -2487,7 +2670,8 @@ def main() -> int:
     if len(written) < 1 or (aborted and len(written) < 8):
         notify("compose", f"{date}: 執筆成立 {len(written)}本/計画 {n_plan}本(不成立: {aborted})。下限割れの疑い", ok=False)
     if not written:
-        commit_and_push(branch, f"compose {date}: 執筆全滅(要人間判断)", "compose")
+        commit_and_push(branch, f"compose {date}: 執筆全滅(当番へ)", "compose")
+        escalate("compose", date, f"執筆が全滅(計画 {n_plan}本、不成立 {aborted})。執筆の出力契約・検算・素材の切り出しを疑うこと")
         return 1
 
     # 1c. 社説: 専任セッション(組版から分離。人格・文体に集中させる)。

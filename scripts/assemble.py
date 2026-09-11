@@ -33,6 +33,7 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import renderlib
 from pipelib import (ROOT, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, classify_source,
                      extract_json_array, notify)
 
@@ -347,7 +348,8 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict) -> 
         # 締切前(3日前)は締切日そのものが素材にあればよい
         probe = [dt] + ([dt + datetime.timedelta(days=3)] if r.get("kind") == "締切前" else []) + \
                 ([dt + datetime.timedelta(days=1)] if r.get("kind") in ("締切", "終了") else [])
-        if not any(form in hay for p in probe for form in _date_forms(p.isoformat())):
+        years = renderlib.years_in(hay + " " + str(c.get("published_date") or "") + " " + str(c.get("url") or "") + " " + date)
+        if not any(renderlib.date_mentioned(p.isoformat(), hay, years) for p in probe):
             notes.append(f"reservations: 素材に無い日付 {dt.isoformat()} を捨てた({s})"); continue
         res.append({"slug": s, "candidate_id": cid, "date": dt.isoformat(), "kind": r["kind"],
                     "subject": (r.get("subject") or "")[:60], "note": (r.get("note") or "")[:120]})
@@ -390,6 +392,41 @@ def strip_edition(date: str, stories: list[dict]) -> list[dict]:
             e["first_published"] = min(ef)
         out.append(e)
     return out
+
+
+def rollback(date: str) -> list[str]:
+    """この号の組版の寄与を stock から剥がし、組版前の状態に戻す(号を作り直すときに使う)。
+
+    台帳は edition_facts[date] の印で剥がす。予約は reserved_on == date を消す。
+    pending は初回に控えた組版前の写しに戻す。控え(metrics/*-before-<日付>.yml)は**消さない**:
+    消すと次の組版が「組版後の状態」を新しい組版前として控え直し、消した追跡事項が
+    戻らず、記事の既報判定にこの号自身の事実が混ざる(監査指摘)。
+    """
+    log = []
+    stories = load_yaml_list(STORIES)
+    # strip_edition は dict を**その場で**書き換えるので、印の有無は剥がす前に見る(監査指摘)
+    had = any(date in (e.get("edition_facts") or {}) for e in stories)
+    kept = strip_edition(date, stories)
+    if had or len(kept) != len(stories):
+        dump_yaml(STORIES, kept)
+        log.append(f"台帳からこの号の寄与を剥がした({len(stories)}→{len(kept)} 話題)")
+    for p in SCHEDULED.glob("*.json"):
+        rows = json.loads(p.read_text(encoding="utf-8"))
+        rest = [r for r in rows if r.get("reserved_on") != date]
+        if len(rest) != len(rows):
+            if rest:
+                p.write_text(json.dumps(rest, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+            else:
+                p.unlink()
+            log.append(f"予約 {p.name}: この号の {len(rows) - len(rest)} 件を外した")
+    before = ROOT / "metrics" / f"pending-before-{date}.yml"
+    if before.exists():
+        want = load_yaml_list(before)
+        if load_yaml_list(PENDING) != want:
+            dump_yaml(PENDING, want,
+                      header="# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。")
+            log.append("pending を組版前の控えに戻した")
+    return log
 
 
 def baseline_stories(date: str) -> list[dict]:

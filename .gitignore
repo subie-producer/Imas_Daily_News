@@ -20,3 +20,9 @@ candidates/.grok/
 
 # 選定用の主題インデックス(candidates から機械生成される派生物)
 metrics/plan-index-*.json
+# 当番(oncall)の状態・記録は Git 管理外(作業ツリーを dirty にすると再実行が拒否される。監査指摘)
+metrics/oncall-*
+# 工程の排他(flock)。中身は無い
+metrics/*.lock
+# fetch_page.py の取得証跡(new_facts の URL を実際に読んだかの検算に使う)
+metrics/fetch-ledger*

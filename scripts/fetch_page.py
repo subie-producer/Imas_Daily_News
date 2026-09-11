@@ -66,6 +66,18 @@ def main() -> int:
         print("FETCH_FAILED: 本文を取得できませんでした")
         return 1
 
+    # 取得の証跡(URL・時刻・本文の指紋)。執筆が new_facts に書く URL は、ここに残っている
+    # (=実際に読めた)ものだけを検算が認める(監査指摘)。Git 管理外
+    try:
+        import hashlib, json, time
+        (ROOT / "metrics").mkdir(exist_ok=True)
+        with (ROOT / "metrics" / "fetch-ledger.jsonl").open("a", encoding="utf-8") as f:
+            f.write(json.dumps({"url": args.url, "at": int(time.time()),
+                                "sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(), "chars": len(text)},
+                               ensure_ascii=False) + "\n")
+    except Exception:
+        pass
+
     periods = extract_periods(text)
     print(f"URL: {args.url}")
     if periods:

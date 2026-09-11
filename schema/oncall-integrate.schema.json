@@ -2,9 +2,17 @@
   "title": "oncall-integrate",
   "description": "当番(Opus)が監査の指摘を敵対的に取り込んだ結果。受け入れたものは直し、反論するものは根拠を示す",
   "type": "object",
-  "required": ["accepted", "refuted", "changed_files", "test_evidence", "notes"],
+  "required": ["accepted", "refuted", "changed_files", "test_evidence", "status", "rerun_mode", "diagnosis", "root_cause", "recovery", "risk", "notes"],
   "additionalProperties": false,
   "properties": {
+    "status": {"enum": ["unchanged", "fixed", "no_fix_needed", "cannot_fix"],
+               "description": "監査の指摘で結論を改めるなら新しい値(no_fix_needed と言っていたが直した → fixed、差分を全部撤回した → no_fix_needed、人が要る → cannot_fix)。変えないなら unchanged"},
+    "rerun_mode": {"enum": ["unchanged", "rebuild", "resume", "none"],
+                   "description": "監査の指摘で再実行の仕方を改めるなら新しい値(rebuild=号を作り直す / resume=続きから / none=再実行しない)。変えないなら unchanged"},
+    "diagnosis": {"type": "string", "maxLength": 1200, "description": "診断を改めたなら新しい診断。変えないなら空文字"},
+    "root_cause": {"type": "string", "maxLength": 800, "description": "原因を改めたなら新しい原因。変えないなら空文字"},
+    "recovery": {"type": "string", "maxLength": 600, "description": "no_fix_needed に改めたときの、同じ入力で今度は通る根拠。それ以外は空文字"},
+    "risk": {"type": "string", "maxLength": 600, "description": "この巡の変更で新しく壊れうるもの。変えないなら空文字"},
     "accepted": {
       "type": "array",
       "items": {"type": "object", "required": ["id", "fix"], "additionalProperties": false,

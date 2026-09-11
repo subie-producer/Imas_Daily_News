@@ -4,7 +4,10 @@
 紙面全体の話(記事の漏れ、面のバランス、社説)は別の担当が見ます。
 
 対象:
-- docs/_posts/{FILE} … 校閲する記事(frontmatter+本文)
+- docs/_posts/{FILE} … 校閲する記事(frontmatter+本文)。本文の段落末にある `<!-- F1 F3 -->` は
+  執筆が付けた根拠の控えで、F は candidates の facts を素材順に通し番号にしたもの、N は frontmatter の
+  `verified_facts`(執筆が一次情報のページを読んで確かめた事実。url 付き)を指す。
+  段落の記述がその根拠から導けるかを見る(コメント自体は表示されない。指摘の対象にしない)
 - candidates/*.json … この記事の frontmatter の candidate_ids が指す候補。出典と facts の照合元
 - metrics/stories-before-{DATE}.yml … **この号の組版前の**既報台帳(続報の新事実判定はこれで行う)。
   `stock/stories.yml` は組版がこの号の記事の事実を**既に書き足したあと**なので、それで判定すると

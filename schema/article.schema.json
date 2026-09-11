@@ -75,6 +75,30 @@
       "type": "string",
       "minLength": 1
     },
+    "title_fact_ids": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^[FN]\\d+$"},
+      "description": "見出しの根拠(素材の事実 id F…、執筆が確かめた事実 N…)。構造化執筆(renderlib)が付ける。校閲が突き合わせる"
+    },
+    "lede_fact_ids": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^[FN]\\d+$"},
+      "description": "リードの根拠 id。同上"
+    },
+    "verified_facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "text", "url"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string", "pattern": "^N\\d+$"},
+          "text": {"type": "string", "minLength": 1, "maxLength": 300},
+          "url": {"type": "string", "pattern": "^https?://"}
+        }
+      },
+      "description": "素材に無く、執筆が一次情報のページを読んで確かめた事実(id・事実・読んだ URL)。本文の根拠コメント <!-- N1 --> が指す"
+    },
     "tags": {
       "type": "array",
       "items": {

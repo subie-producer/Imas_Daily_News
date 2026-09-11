@@ -37,7 +37,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
-                     EXPLORE_MAX_BUDGET_USD, JST, append_metric, classify_source,
+                     EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, append_metric, classify_source,
                      extract_periods, html_to_text, set_quiet, unbacked_facts,
                      checkout_edition_branch, commit_and_push, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst)
@@ -875,6 +875,13 @@ def main() -> int:
     args = ap.parse_args()
     # 試験実行(--no-git)では Discord へ通知しない。本物の警報と見分けが付かなくなる
     set_quiet(args.no_git)
+    # 同じ作業ツリーを compose/release/当番と同時に触らない(監査指摘)。当番の再実行が長引くと
+    # ここで待つ。空かなければこの回は諦める(次の timer で拾う)
+    try:
+        _lock = job_lock("collect", wait_min=30)
+    except JobLockTimeout as e:
+        notify("collect", str(e), ok=False)
+        return 1
     t0 = time.time()
     date = edition_date()
     branch = f"edition/{date}"

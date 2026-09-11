@@ -1,0 +1,357 @@
+{
+ "decisions": {
+  "sidem-transcendent-goods-4": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/11号で既報(第4弾グッズ受注・発送時期とも一致)。新事実なし"
+  },
+  "sidem-anideal-cologne-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/11号で既報(予約期間・特典とも一致)。新事実なし"
+  },
+  "sidem-monthly-theme-song-13-jupiter-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/11号で既報。店舗特典まで既に台帳と一致、新事実なし"
+  },
+  "sidem-joypolis-3-2026": {
+   "action": "article",
+   "angle": "東京ジョイポリス第3弾が本日開幕、第1弾出演ユニットと30周年アンバサダーを紹介",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-315shop-5th-anniversary-2026": {
+   "action": "article",
+   "angle": "315!!!SHOP5周年『にゃお店屋さん』フルグラフィックTシャツがASOBI STOREで先行受注開始",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-11th-stage-ever-ever-after-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕当日の会場Q&A更新情報。開幕記事に統合"
+  },
+  "sidem-11th-collab-drink-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "出典が「未確認」かつ不審なamplifyapp.comドメインのみで公式発表が確認できない"
+  },
+  "sidem-monthly-theme-song-12-cafe-parade": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/11号で既報。新事実なし"
+  },
+  "sidem-11th-stage-present-reception-hours-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕当日の会場プレゼント受付案内。開幕記事に統合"
+  },
+  "sidem-315nyao-fullgraphic-tshirt-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315shop-5th-anniversary-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一Tシャツ先行受注の二次情報。同記事に統合"
+  },
+  "sidem-01": {
+   "action": "article",
+   "angle": "315プロダクションエピソード『アイドルたちの1コマ』に本日新エピソード追加",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-02": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11th STAGE当日券販売決定。開幕記事に統合(sidem-03と同一内容)"
+  },
+  "sidem-03": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "sidem-02と同一内容(当日券販売決定)。開幕記事に統合"
+  },
+  "sidem-04": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "差し入れ企画・協賛グッズ販売はいずれも9/11号で個別に既報済み、新事実なし"
+  },
+  "sidem-05": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出演キャスト意気込みコメントリレー最新回。開幕記事に統合"
+  },
+  "sidem-06": {
+   "action": "article",
+   "angle": "Altessimo新曲『Panorama's Fanfare』2DMV公開日が9月23日に決定",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-07": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "MV公開の告知自体は既報済みで、公開時刻(前日22時)も号の06:00より前に終了済み。新事実なし"
+  },
+  "sidem-08": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "放送告知は既報の番組continuation。放送時刻(前日21時)も号の06:00より前に終了済み。新事実なし"
+  },
+  "sidem-11th-stage-2026": {
+   "action": "article",
+   "angle": "SideM 11th STAGE ～EVER EVER＠FTER～ DAY1開幕。当日券販売・会場CD発売・プレゼント受付・キャストコメント等、開幕当日の情報を総まとめ",
+   "rank": "large",
+   "lead_score": 90,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-joypolis3-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-joypolis-3-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一開幕情報の重複素材(アンバサダー情報を統合)"
+  },
+  "sidem-royal-chess-lounge-2026": {
+   "action": "article",
+   "angle": "『Royal Chess Lounge』コラボカフェ心斎橋店が本日開幕",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-cardfolio-vol2-2026": {
+   "action": "article",
+   "angle": "カードフォリオ SideM ver. vol.2が本日発売、11th STAGE会場で先行販売",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-joypolis-3-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "東京ジョイポリス第3弾が本日開幕、第1弾出演ユニットと30周年アンバサダーを紹介",
+    "lead_score": 30,
+    "dedup_key": "sidem-joypolis-3-2026",
+    "candidate_ids": [
+     "202609110736-explore-15",
+     "202609111236-explore-14",
+     "sched-2026-09-12-sidem-joypolis3-2026-開幕"
+    ]
+   },
+   {
+    "slug": "sidem-315shop-5th-anniversary-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315!!!SHOP5周年『にゃお店屋さん』フルグラフィックTシャツがASOBI STOREで先行受注開始",
+    "lead_score": 5,
+    "dedup_key": "sidem-315shop-5th-anniversary-2026",
+    "candidate_ids": [
+     "202609111236-watch-2",
+     "202609112335-explore-29"
+    ]
+   },
+   {
+    "slug": "sidem-01-dc8749",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315プロダクションエピソード『アイドルたちの1コマ』に本日新エピソード追加",
+    "lead_score": 0,
+    "dedup_key": "sidem-01",
+    "candidate_ids": [
+     "202609120228-grok-90"
+    ]
+   },
+   {
+    "slug": "sidem-06-02056a",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Altessimo新曲『Panorama's Fanfare』2DMV公開日が9月23日に決定",
+    "lead_score": 0,
+    "dedup_key": "sidem-06",
+    "candidate_ids": [
+     "202609120228-grok-95"
+    ]
+   },
+   {
+    "slug": "sidem-11th-stage-2026",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "SideM 11th STAGE ～EVER EVER＠FTER～ DAY1開幕。当日券販売・会場CD発売・プレゼント受付・キャストコメント等、開幕当日の情報を総まとめ",
+    "lead_score": 90,
+    "dedup_key": "sidem-11th-stage-2026",
+    "candidate_ids": [
+     "sched-2026-09-12-sidem-11th-stage-2026-開幕",
+     "sched-2026-09-12-sidem-11th-stage-2026-発売",
+     "202609111236-explore-26",
+     "202609111836-explore-12",
+     "202609120228-grok-91",
+     "202609120228-grok-92",
+     "202609120228-grok-94"
+    ]
+   },
+   {
+    "slug": "sidem-royal-chess-lounge-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "『Royal Chess Lounge』コラボカフェ心斎橋店が本日開幕",
+    "lead_score": 10,
+    "dedup_key": "sidem-royal-chess-lounge-2026",
+    "candidate_ids": [
+     "sched-2026-09-12-sidem-royal-chess-lounge-2026-開幕"
+    ]
+   },
+   {
+    "slug": "sidem-cardfolio-vol2-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "カードフォリオ SideM ver. vol.2が本日発売、11th STAGE会場で先行販売",
+    "lead_score": 15,
+    "dedup_key": "sidem-cardfolio-vol2-2026",
+    "candidate_ids": [
+     "sched-2026-09-12-sidem-cardfolio-vol2-2026-発売"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-transcendent-goods-4",
+    "reason": "既報",
+    "note": "9/11号で既報(第4弾グッズ受注・発送時期とも一致)。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-anideal-cologne-2026",
+    "reason": "既報",
+    "note": "9/11号で既報(予約期間・特典とも一致)。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-monthly-theme-song-13-jupiter-2026",
+    "reason": "既報",
+    "note": "9/11号で既報。店舗特典まで既に台帳と一致、新事実なし"
+   },
+   {
+    "dedup_key": "sidem-11th-collab-drink-2026",
+    "reason": "出典不足",
+    "note": "出典が「未確認」かつ不審なamplifyapp.comドメインのみで公式発表が確認できない"
+   },
+   {
+    "dedup_key": "sidem-monthly-theme-song-12-cafe-parade",
+    "reason": "既報",
+    "note": "9/11号で既報。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-04",
+    "reason": "既報",
+    "note": "差し入れ企画・協賛グッズ販売はいずれも9/11号で個別に既報済み、新事実なし"
+   },
+   {
+    "dedup_key": "sidem-07",
+    "reason": "既報",
+    "note": "MV公開の告知自体は既報済みで、公開時刻(前日22時)も号の06:00より前に終了済み。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-08",
+    "reason": "既報",
+    "note": "放送告知は既報の番組continuation。放送時刻(前日21時)も号の06:00より前に終了済み。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

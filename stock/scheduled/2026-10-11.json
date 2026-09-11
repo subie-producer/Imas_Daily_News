@@ -1,35 +1,66 @@
 [
-  {
-    "id": "sched-2026-10-11-millionlive-hinata-apple-ambassador-2026-開始",
-    "dedup_key": "millionlive-hinata-apple-ambassador-2026",
-    "brand": "million",
-    "subject": "第50回そうべつりんごまつり「そうべつ物産市」",
-    "kind": "開始",
-    "reserved_on": "2026-09-05",
-    "title": "木下ひなた、壮瞥町りんご大使に4年連続",
-    "url": "https://www.town.sobetsu.lg.jp/iju/kyo/2026/09/50.html",
-    "source_type": "当事者",
-    "facts": [
-      "「そうべつ物産市」を10月11日9時から開催"
-    ],
-    "src_candidate_id": "202609041836-explore-28"
-  },
-  {
-    "id": "sched-2026-10-11-sidem-joypolis3-2026-開始",
-    "dedup_key": "sidem-joypolis3-2026",
-    "brand": "sidem",
-    "subject": "アイドルマスター SideM in JOYPOLIS 3(第2弾)",
-    "kind": "開始",
-    "note": "スペシャルショー第2弾ユニット切替",
-    "reserved_on": "2026-09-10",
-    "title": "アイドルマスター SideM in JOYPOLIS 3",
-    "url": "https://tokyo-joypolis.com/event/sidem_jp2026/index.html",
-    "source_type": "当事者",
-    "facts": [
-      "第2弾(10月11日〜11月7日)の登場ユニットはAltessimo・Beit・もふもふえん・S.E.M・C.FIRST・315 ALLSTARS",
-      "スペシャルショーは1st Floorメインステージで12時・15時・17時に無料上映"
-    ],
-    "src_candidate_id": "202609100228-grok-123",
-    "event_date": "2026-09-12〜2026-12-06"
-  }
+ {
+  "id": "sched-2026-10-11-millionlive-hinata-apple-ambassador-2026-開始",
+  "dedup_key": "millionlive-hinata-apple-ambassador-2026",
+  "brand": "million",
+  "subject": "第50回そうべつりんごまつり「そうべつ物産市」",
+  "kind": "開始",
+  "reserved_on": "2026-09-05",
+  "title": "木下ひなた、壮瞥町りんご大使に4年連続",
+  "url": "https://www.town.sobetsu.lg.jp/iju/kyo/2026/09/50.html",
+  "source_type": "当事者",
+  "facts": [
+   "「そうべつ物産市」を10月11日9時から開催"
+  ],
+  "src_candidate_id": "202609041836-explore-28"
+ },
+ {
+  "id": "sched-2026-10-11-sidem-joypolis3-2026-開始",
+  "dedup_key": "sidem-joypolis3-2026",
+  "brand": "sidem",
+  "subject": "アイドルマスター SideM in JOYPOLIS 3(第2弾)",
+  "kind": "開始",
+  "note": "スペシャルショー第2弾ユニット切替",
+  "reserved_on": "2026-09-10",
+  "title": "アイドルマスター SideM in JOYPOLIS 3",
+  "url": "https://tokyo-joypolis.com/event/sidem_jp2026/index.html",
+  "source_type": "当事者",
+  "facts": [
+   "第2弾(10月11日〜11月7日)の登場ユニットはAltessimo・Beit・もふもふえん・S.E.M・C.FIRST・315 ALLSTARS",
+   "スペシャルショーは1st Floorメインステージで12時・15時・17時に無料上映"
+  ],
+  "src_candidate_id": "202609100228-grok-123",
+  "event_date": "2026-09-12〜2026-12-06"
+ },
+ {
+  "id": "sched-2026-10-11-sidem-joypolis-3-2026-開始",
+  "dedup_key": "sidem-joypolis-3-2026",
+  "brand": "sidem",
+  "subject": "SideM×JOYPOLIS3、第2弾",
+  "kind": "開始",
+  "note": "第2弾ラインナップ・メニューに切替",
+  "reserved_on": "2026-09-12",
+  "title": "SideM×東京ジョイポリス第3弾を9月12日から開催",
+  "url": "https://collabo-cafe.com/events/collabo/idolmaster-sidem-theme-park-joypolis-2026/",
+  "source_type": "二次情報",
+  "facts": [
+   "『アイドルマスター SideM』と東京ジョイポリスのコラボ第3弾「アイドルマスター SideM in JOYPOLIS 3」を2026年9月12日〜12月6日に開催。",
+   "会場: 東京ジョイポリス",
+   "入場料: 大人(18歳以上)1,700円／小中高生1,400円",
+   "東京ジョイポリス30周年アンバサダー: High×Joker、神速一魂",
+   "全16ユニットの3Dライブ映像を使ったスペシャルショーを3期に分けて上映。",
+   "第1弾: 2026年9月12日〜10月10日。DRAMATIC STARS、彩、神速一魂、Café Parade、THE 虎牙道、315 ALLSTARS。",
+   "第1弾楽曲: 神速一魂「ROUTE77」、DRAMATIC STARS「Change to Chance」、彩「いとをかし!〜一彩×合彩〜」、Café Parade「Pavé Étoiles」、THE 虎牙道「K.now O.nly」、315 ALLSTARS「SUPREME STARS !!!」。",
+   "第2弾: 2026年10月11日〜11月7日。Altessimo、Beit、もふもふえん、S.E.M、C.FIRST、315 ALLSTARS。",
+   "第2弾楽曲: C.FIRST「We’re the one」、Altessimo「Infinite Octave!」、Beit「Platinum MASK」、S.E.M「Multiple Entertainment Show!」、もふもふえん「はるかぜバトン」、315 ALLSTARS「SUPREME STARS !!!」。",
+   "第3弾: 2026年11月8日〜12月6日。Jupiter、W、FRAME、High×Joker、F-LAGS、Legenders、315 ALLSTARS。",
+   "第3弾楽曲: Jupiter「Inner Dignity」、W「VIVA!!ファミリーリズム」、FRAME「Plus 1 Good Day!」、F-LAGS「Made in『♪』」、Legenders「Time Before Time」、High×Joker「JOYFUL HEART MAKER」、315 ALLSTARS「SUPREME STARS !!!」。",
+   "スペシャルショー上映時間: 12:00／15:00／17:00"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609110736-explore-15",
+  "event_date": "2026-09-12",
+  "deadline": "2026-12-06"
+ }
 ]

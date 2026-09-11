@@ -1,0 +1,302 @@
+{
+ "decisions": {
+  "cg-2026-09-11-goods": {
+   "action": "article",
+   "angle": "総選挙2026公式グッズ・15周年記念ライブグッズなど、アソビストア受注商品が今週末9/13(日)23:59に一斉締切",
+   "rank": "large",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-vote-goods-deadline-2026・cinderella-01/02/03/04/08を統合。総選挙グッズ、ONLY MAKER、カードフォリオ、Pop'n ToyBox記念グッズ、Memory Pict.November、15th PARTY事前二次販売の受注締切をまとめる"
+  },
+  "cg-election-special-exhibition-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-election-2026-special-exhibition",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の特別展示(渋谷ちかみち9/12-13)告知。公式ニュース記事の詳細版に統合"
+  },
+  "cg-vote-goods-deadline-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-2026-09-11-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "総選挙投票券付与対象グッズ受注9/13締切。同一施策のグッズ受注締切記事に統合"
+  },
+  "cg-cinderella-master-number-one-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-master-number-one-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一CD「クロス×オーバー！」の発売情報。トラックリストまで判明している詳細版に統合"
+  },
+  "cinderella-master-number-one-2026": {
+   "action": "article",
+   "angle": "「CINDERELLA MASTER NUMBER ONE! クロス×オーバー！」CD、9/30発売決定・全14トラックの収録内容判明",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(cg-number-one-cross-over-cd-2026、発売日未定)から発売日・価格・品番・トラックリストが新たに判明"
+  },
+  "cg-election-2026-special-exhibition": {
+   "action": "article",
+   "angle": "シンデレラガール総選挙2026特別展示、渋谷ちかみちで本日9/12開幕(〜13日・入場無料・チェックインで投票券10枚)",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-election-special-exhibition-2026・cg-vote-2026-special-exhibitionを統合。予約(sched-...-開始)にも対応、本日が開幕日"
+  },
+  "cg-sweet-melty-whip-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "開催概要(会場・期間・出演アイドル)は既報cg-medicos-sweet-melty-whip-popup-2026と同内容で新事実なし。完売情報はcinderella-10で別記事化"
+  },
+  "cinderella-01": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-2026-09-11-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "総選挙グッズ(真纏麗羅武闘服ビジュアル)受注あと2日。同一施策の受注締切記事に統合"
+  },
+  "cinderella-02": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-2026-09-11-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "カードフォリオvol.4-6も同じ受注締切9/13。統合"
+  },
+  "cinderella-03": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-2026-09-11-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Pop'n ToyBox!!開催記念グッズも受注締切9/13で同一の受注ラッシュ。既報cg-popn-toybox-memorial-goods-2026と同内容のため単独記事にせず統合"
+  },
+  "cinderella-04": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-2026-09-11-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Memory Pict. Novemberも受注締切9/13。既報と同内容のため単独記事にせず統合"
+  },
+  "cinderella-05": {
+   "action": "article",
+   "angle": "舞台『Pop'n ToyBox!!』新チラ見せ「私色ギフト」公開、xRライブ配信チケットは9/13 21:00締切",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信チケット締切は既報の枠内だが「私色ギフト」チラ見せは新公開情報。グッズ受注とは別の締切(視聴チケット)のため別記事"
+  },
+  "cinderella-06": {
+   "action": "article",
+   "angle": "デレミリ合同ライブ、アソビストアプレミアム会員最速先行の現地チケット抽選申込が9/13 23:59締切",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CINDERELLA GIRLS×MILLION LIVE!の共同主催企画(cg-million-coming-soon-2026-08-26は既報でjoint扱い)。本日号の合同面クレーム済み記事一覧に本件は無いためcg面で締切リマインドとして掲載"
+  },
+  "cinderella-07": {
+   "action": "article",
+   "angle": "シンデレラガール総選挙2026、総投票数1億枚突破を記念し投票券100枚プレゼント(投票は9/18まで)",
+   "rank": "medium",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報台帳に1億枚突破の記載なし。総選挙関連では最も新規性の高い数字ニュースで面のトップ候補"
+  },
+  "cinderella-08": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-2026-09-11-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "15th PARTY公式グッズ事前二次販売も受注締切9/13。既報cg-15th-party-goods-2026と同内容のため単独記事にせず統合"
+  },
+  "cinderella-10": {
+   "action": "article",
+   "angle": "Sweet Melty Whip POP UP SHOP、開催中にBIGアクリルネームプレートキーホルダー(橘ありす)が完売・再入荷未定",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催概要自体は既報だが完売・再入荷情報は新事実。既報のcg-sweet-melty-whip-popup-2026とは切り分けて短信扱い"
+  },
+  "cinderella-11": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "デレステ11周年プラチナオーディションガシャ無料10連は既報cg-deresute-11th-anniversary-campaign-2026と同内容。出典も未確認のファン投稿のみ"
+  },
+  "cinderella-12": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "ファン主催の非公式ツール・個人の予想・非公式買取情報の調査メモで、記事化できる公式事実がない"
+  },
+  "cg-vote-2026-special-exhibition": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-election-2026-special-exhibition",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(sched-2026-09-12-cg-vote-2026-special-exhibition-開始)。開幕日の記事化は原則通り実施するが、公式ニュース版と同一話題のため統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-2026-09-11-goods",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "総選挙2026公式グッズ・15周年記念ライブグッズなど、アソビストア受注商品が今週末9/13(日)23:59に一斉締切",
+    "lead_score": 20,
+    "dedup_key": "cg-2026-09-11-goods",
+    "candidate_ids": [
+     "202609111236-watch-0",
+     "202609111236-explore-6",
+     "202609120228-grok-24",
+     "202609120228-grok-25",
+     "202609120228-grok-26",
+     "202609120228-grok-27",
+     "202609120228-grok-31"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-master-number-one-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "「CINDERELLA MASTER NUMBER ONE! クロス×オーバー！」CD、9/30発売決定・全14トラックの収録内容判明",
+    "lead_score": 15,
+    "dedup_key": "cinderella-master-number-one-2026",
+    "candidate_ids": [
+     "202609112335-watch-0",
+     "202609111836-watch-3"
+    ]
+   },
+   {
+    "slug": "cg-election-2026-special-exhibition",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "シンデレラガール総選挙2026特別展示、渋谷ちかみちで本日9/12開幕(〜13日・入場無料・チェックインで投票券10枚)",
+    "lead_score": 25,
+    "dedup_key": "cg-election-2026-special-exhibition",
+    "candidate_ids": [
+     "202609112335-explore-4",
+     "202609111236-explore-3",
+     "sched-2026-09-12-cg-vote-2026-special-exhibition-開始"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-05",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "舞台『Pop'n ToyBox!!』新チラ見せ「私色ギフト」公開、xRライブ配信チケットは9/13 21:00締切",
+    "lead_score": 10,
+    "dedup_key": "cinderella-05",
+    "candidate_ids": [
+     "202609120228-grok-28"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-06",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレミリ合同ライブ、アソビストアプレミアム会員最速先行の現地チケット抽選申込が9/13 23:59締切",
+    "lead_score": 10,
+    "dedup_key": "cinderella-06",
+    "candidate_ids": [
+     "202609120228-grok-29"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-07",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "シンデレラガール総選挙2026、総投票数1億枚突破を記念し投票券100枚プレゼント(投票は9/18まで)",
+    "lead_score": 75,
+    "dedup_key": "cinderella-07",
+    "candidate_ids": [
+     "202609120228-grok-30"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-10",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Sweet Melty Whip POP UP SHOP、開催中にBIGアクリルネームプレートキーホルダー(橘ありす)が完売・再入荷未定",
+    "lead_score": 5,
+    "dedup_key": "cinderella-10",
+    "candidate_ids": [
+     "202609120228-grok-33"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-sweet-melty-whip-popup-2026",
+    "reason": "既報",
+    "note": "開催概要(会場・期間・出演アイドル)は既報cg-medicos-sweet-melty-whip-popup-2026と同内容で新事実なし。完売情報はcinderella-10で別記事化"
+   },
+   {
+    "dedup_key": "cinderella-11",
+    "reason": "既報",
+    "note": "デレステ11周年プラチナオーディションガシャ無料10連は既報cg-deresute-11th-anniversary-campaign-2026と同内容。出典も未確認のファン投稿のみ"
+   },
+   {
+    "dedup_key": "cinderella-12",
+    "reason": "出典不足",
+    "note": "ファン主催の非公式ツール・個人の予想・非公式買取情報の調査メモで、記事化できる公式事実がない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

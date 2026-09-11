@@ -136,5 +136,63 @@
   "verify": "confirmed",
   "src_candidate_id": "202609031236-explore-17",
   "deadline": "2026-10-01"
+ },
+ {
+  "id": "sched-2026-09-30-cinderella-06-結果",
+  "dedup_key": "cinderella-06",
+  "brand": "cg",
+  "subject": "デレミリ合同ライブ現地チケット当落",
+  "kind": "結果",
+  "note": "最速先行の当落発表(13:00予定)",
+  "reserved_on": "2026-09-12",
+  "title": "デレミリ合同ライブ 現地チケット アソビストアプレミアム会員最速先行 締切あと2日",
+  "url": "https://x.com/imas_CGofficial/status/2098335754036363324",
+  "source_type": "公式",
+  "facts": [
+   "締切まであと2日 #デレミリ合同ライブ 現地チケット最速先行",
+   "アソビストアプレミアム会員最速先行の受付は今週末【9/13(日)】まで",
+   "ニュースページで確認できた事実:",
+   "公演タイトル: THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!",
+   "公演日時: 2027年2月27日(土) 開場15:30 / 開演17:00",
+   "公演日時: 2027年2月28日(日) 開場15:30 / 開演17:00",
+   "会場: 愛知県・IGアリーナ",
+   "両日ゲスト: CINDERELLA BAND ＆ MILLION STRINGS の出演も決定（ニュース見出し部）",
+   "アソビストアプレミアム会員最速先行（抽選）",
+   "受付対象席種: アリーナ前方席 / プレミアムラウンジ付指定席 / 一般指定席",
+   "受付期間: 2026年8月26日(水)12:00～2026年9月13日(日)23:59",
+   "当落発表: 2026年9月30日(水)13:00～"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609120228-grok-29"
+ },
+ {
+  "id": "sched-2026-09-30-cinderella-master-number-one-2026-発売",
+  "dedup_key": "cinderella-master-number-one-2026",
+  "brand": "cg",
+  "subject": "「クロス×オーバー！」CD発売",
+  "kind": "発売",
+  "note": "全14トラック収録のCDが発売",
+  "reserved_on": "2026-09-12",
+  "title": "「THE IDOLM@STER CINDERELLA MASTER NUMBER ONE! クロス×オーバー！」CD発売",
+  "url": "https://imasnews765.com/?p=32442",
+  "source_type": "二次情報",
+  "facts": [
+   "商品名: 「THE IDOLM@STER CINDERELLA MASTER NUMBER ONE! クロス×オーバー！」",
+   "発売日: 2026年9月30日",
+   "型番: SACX-1151",
+   "仕様: CD1枚組",
+   "価格: ¥2,000（税抜 ¥1,818）",
+   "トラック数: 14トラック",
+   "収録内容: メインテーマ「クロス×オーバー！」を含む複数バージョン、カラオケ版、ゲーム版を収録",
+   "ボーナストラック: ソロ・リミックス7曲を収録",
+   "出演キャラクター: 島村卯月(CV：大橋彩香)",
+   "出演キャラクター: 渋谷凛(CV：福原綾香)",
+   "出演キャラクター: 本田未央(CV：原紗友里)",
+   "出演キャラクター: 辻野あかり(CV：梅澤めぐ)"
+  ],
+  "via": "watch",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609112335-watch-0"
  }
 ]

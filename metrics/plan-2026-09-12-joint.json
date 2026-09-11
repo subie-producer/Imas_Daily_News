@@ -1,0 +1,182 @@
+{
+ "decisions": {
+  "tours-s1-ex-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/10号(joint-tours-s1-ex-2026)で開始日・周防桃子登場・ソロ曲・28種ツアーズレア・SSR・新衣装・新アクセサリーを全て既報。新事実なし。"
+  },
+  "tours-ranking-20260910": {
+   "action": "article",
+   "angle": "9月10日時点のツアマスランキング上位陣のスコアを速報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/2・9/3時点の既報ランキング記事に続く更新版。9/10時点のスコアは未報のため新事実あり。"
+  },
+  "joint-other-01": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "S1弾Ex新衣装カード紹介ツイート。tours-s1-ex-2026-09と同一トピックで9/10号既報の範囲内、材料不足。"
+  },
+  "joint-other-02": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "会場CD事後通販9/13締切は8/29号(columbia-venue-cd-aftersale-2026-08)で既報。前日のリマインドのみで新事実なし、締切3日前/当日にも非該当。"
+  },
+  "joint-other-03": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "IWSF2026会場CD(価格4,000円・10/2発送)は8/29号で既報。新事実なし。"
+  },
+  "joint-other-04": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "876 PRODUCTION FES CD情報(3,500円・10/2発送)は8/29号で既報。新事実なし。"
+  },
+  "joint-other-05": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "UNDER ONE SKY CD情報(4,000円)は8/29号で既報。品番SACX-1137は台帳的事実で記事化対象外。"
+  },
+  "joint-other-06": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "MOIW2025盤など同キャンペーン内価格の再掲。8/29号で既報、新事実なし。"
+  },
+  "joint-other-07": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "レイトサマーキャンペーンでの周防桃子先行登場はtours-late-summer-campaign-2026で既報。facts も同一で新事実なし。"
+  },
+  "joint-other-08": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人アカウントの感想・反応ツイート。単体記事化不可(規程4・5)。ファン現象として扱うならgeneral面culture roundupの管轄。"
+  },
+  "joint-other-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "IWSF2026後の個人的回顧・カードフォリオの同人間譲渡等。新規公式告知なし。general面cultureの管轄。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-ranking-20260910",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "9月10日時点のツアマスランキング上位陣のスコアを速報",
+    "lead_score": 5,
+    "dedup_key": "tours-ranking-20260910",
+    "candidate_ids": [
+     "202609112335-explore-24"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-s1-ex-2026-09",
+    "reason": "既報",
+    "note": "9/10号(joint-tours-s1-ex-2026)で開始日・周防桃子登場・ソロ曲・28種ツアーズレア・SSR・新衣装・新アクセサリーを全て既報。新事実なし。"
+   },
+   {
+    "dedup_key": "joint-other-01",
+    "reason": "既報",
+    "note": "S1弾Ex新衣装カード紹介ツイート。tours-s1-ex-2026-09と同一トピックで9/10号既報の範囲内、材料不足。"
+   },
+   {
+    "dedup_key": "joint-other-02",
+    "reason": "既報",
+    "note": "会場CD事後通販9/13締切は8/29号(columbia-venue-cd-aftersale-2026-08)で既報。前日のリマインドのみで新事実なし、締切3日前/当日にも非該当。"
+   },
+   {
+    "dedup_key": "joint-other-03",
+    "reason": "既報",
+    "note": "IWSF2026会場CD(価格4,000円・10/2発送)は8/29号で既報。新事実なし。"
+   },
+   {
+    "dedup_key": "joint-other-04",
+    "reason": "既報",
+    "note": "876 PRODUCTION FES CD情報(3,500円・10/2発送)は8/29号で既報。新事実なし。"
+   },
+   {
+    "dedup_key": "joint-other-05",
+    "reason": "既報",
+    "note": "UNDER ONE SKY CD情報(4,000円)は8/29号で既報。品番SACX-1137は台帳的事実で記事化対象外。"
+   },
+   {
+    "dedup_key": "joint-other-06",
+    "reason": "既報",
+    "note": "MOIW2025盤など同キャンペーン内価格の再掲。8/29号で既報、新事実なし。"
+   },
+   {
+    "dedup_key": "joint-other-07",
+    "reason": "既報",
+    "note": "レイトサマーキャンペーンでの周防桃子先行登場はtours-late-summer-campaign-2026で既報。facts も同一で新事実なし。"
+   },
+   {
+    "dedup_key": "joint-other-08",
+    "reason": "個人の話題",
+    "note": "個人アカウントの感想・反応ツイート。単体記事化不可(規程4・5)。ファン現象として扱うならgeneral面culture roundupの管轄。"
+   },
+   {
+    "dedup_key": "joint-other-09",
+    "reason": "個人の話題",
+    "note": "IWSF2026後の個人的回顧・カードフォリオの同人間譲渡等。新規公式告知なし。general面cultureの管轄。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

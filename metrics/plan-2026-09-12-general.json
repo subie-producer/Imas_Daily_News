@@ -1,0 +1,47 @@
+{
+ "decisions": {
+  "riamu-cosmo-birthday-official-2026": {
+   "action": "article",
+   "angle": "公式アイマスchが夢見りあむ・上水流宇宙(本日20歳)への誕生日お祝いムービーを公開、上水流宇宙の成人を祝うファンイラストも多数",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dsva面のバースデーライブ記事(本人ツイート含む)とは別に、全ブランド公式アカウントによる両ブランドまたぎの合同祝いムービーという別の発信物を扱う"
+  },
+  "columbia-venue-cd-aftersale-2026-09-twinlive-reminder": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stock/stories.ylのcolumbia-venue-cd-aftersale-2026-08(8/29公開、受付期間8/28 21:00〜9/13 23:59を既に告知)の単なるリマインド投稿で新事実なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-riamu-cosmo-birthday-official-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "公式アイマスchが夢見りあむ・上水流宇宙(本日20歳)への誕生日お祝いムービーを公開、上水流宇宙の成人を祝うファンイラストも多数",
+    "lead_score": 15,
+    "dedup_key": "riamu-cosmo-birthday-official-2026",
+    "candidate_ids": [
+     "202609120228-grok-98"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "columbia-venue-cd-aftersale-2026-09-twinlive-reminder",
+    "reason": "既報",
+    "note": "stock/stories.ylのcolumbia-venue-cd-aftersale-2026-08(8/29公開、受付期間8/28 21:00〜9/13 23:59を既に告知)の単なるリマインド投稿で新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

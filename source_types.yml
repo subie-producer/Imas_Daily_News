@@ -175,6 +175,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - pr-233.dngxvlzzy89ep.amplifyapp.com # 合議で追加: 会場（TOYOTA ARENA TOKYO）が自施設でのコラボドリンク販売を一次
   - onkyodirect.jp        # ONKYO DIRECT(メーカー直販)。コラボイヤホンの受注ページ=販売元
   - alter-web.jp          # 合議で追加: フィギュアメーカーがライセンス商品を自社サイトで販売紹介
   - union-creative.jp     # 合議で追加: ライセンスを受けたフィギュアメーカーが自社商品を自社サイトで販売している売上/販
@@ -279,6 +280,9 @@ video_ids:
     - Y3n-42r-m0A   # 上水流宇宙(ヴイアラ)配信「朝活」
     - wgCWiC2SQPw   # アイドルマスターチャンネル(@imas-official)「CLASH M@TCH!!」開催決定PV
   準公式:
+    - jnsINjCz6P4   # 機械で追加: @Lantis「【試聴動画】THE IDOLM@STER SHINY COL」
+    - fUaUvVZE9jU   # 機械で追加: @Lantis「【試聴動画】THE IDOLM@STER SHINY COL」
+    - L5fny8h7Ts0   # 機械で追加: @Lantis「【試聴動画】THE IDOLM@STER SHINY COL」
     - fX4iinOuXQc   # Lantis Channel(@Lantis) SideM MONTHLY THEME SONG 試聴動画
     - lv351005906   # CINDERELLA PARTY! #614(日本コロムビア)
     - lv351005960   # THE IDOLM@STER MUSIC ON THE RADIO #411(日本コロムビア)
@@ -350,6 +354,10 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - l7767238940         # 合議で追加: 視聴者としての反応で、イベント参加ファンの投稿
+    - gannbarebeeeeem     # 合議で追加: ゲーム内イベントについての個人的な感想
+    - dragonsleft         # 合議で追加: 投稿要約にfan明記
+    - YK92                # 合議で追加: 投稿要約にfan明記
     - shinkunohakuba      # 合議で追加: イベント無料配信視聴の個人感想
     - p0t0_0t0p0          # 合議で追加: キャラのファンイラスト投稿
     - kuririntech         # 合議で追加: キャラクターのコスプレ写真を投稿

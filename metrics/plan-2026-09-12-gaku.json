@@ -1,0 +1,334 @@
+{
+ "decisions": {
+  "gaku-quocard-campaign-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "応募締切は9/10(木)23:59で本号06:00 JSTより前に終了済み。当選発表日も未定で本日読者ができることが無い(規程12)。"
+  },
+  "gaku-hif-step4-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "H.I.F編実装自体はgaku-hatsuhoshi-fes-garakuta-road-vol5-2026等で既報。STEP4のシナリオ内容は二次情報(game8)のみで公式未到達(規程2)。"
+  },
+  "gaku-miracle-nanau-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "gakumas-tracks-streaming-0831-2026等で配信情報は既報(9/8時点で確認済み)。新事実なし。"
+  },
+  "gaku-endless-dance-signal-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "咲季・手毬・ことねver.はgaku-endless-dance-saki-temari-kotone-2026等で既報。新事実なし。"
+  },
+  "gaku-endless-dance-mao-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "麻央・清夏・広ver.もgakumas-tracks-streaming-0831-2026で9/6付配信済みと既報。新事実なし。"
+  },
+  "gaku-star-mine-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一dedup_keyで8/30に既報済み(story_id: gaku-star-mine-2026)。新事実なし。"
+  },
+  "gaku-howling-over-the-world-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一dedup_keyで9/10に既報済み。新事実なし。"
+  },
+  "gaku-fujita-kotone-figurine-2027": {
+   "action": "article",
+   "angle": "ALTER『藤田ことね 冠菊Ver.』フィギュアの価格(29,480円)と発売時期(2027年9月)が公式サイトで確定",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "予約開始自体は9/11号で既報(gaku-fujita-kanagiku-figure-2026)。価格・発売月は新事実。"
+  },
+  "gaku-ichiban-kuji-part6-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "8/29号で全ラインナップ・価格・発売日とも既報済み。今回の facts と同内容で新事実なし。"
+  },
+  "guts-road-sena-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ガシャ実装自体は既報。終了日(9/20)は二次情報(game8)のみで公式未確認、記載は見送り。"
+  },
+  "kotone-snap-series-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注9/13までは9/6号で既報。同梱の「さいごの文化祭」終了(4:59)は本号06:00より前で既に終了、本日トリガーなし。"
+  },
+  "gaku-hif-kotone-sena-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "実装・ガシャ・AP配布・ステージ26/27追加、いずれもgaku-hatsuhoshi-fes-garakuta-road-vol5-2026等で既報。"
+  },
+  "gaku-fujita-kotone-kanagiku-figure-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-fujita-kotone-figurine-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じALTER『冠菊Ver.』フィギュアのデコマス公開。価格・発売日確定の記事に統合。"
+  },
+  "gaku-amane-yukari-voice-acting-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人の来校アフレコ体験イベントで、学マス公式施策ではない(規程4)。"
+  },
+  "gaku-appstore-ranking-second-2026-09-11": {
+   "action": "article",
+   "angle": "初星フェス(H.I.F編実装記念ガシャ)を背景に学マスがApp Storeセールスランキング2位へ浮上(9/11時点)",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "報道(gamebiz)による新規ランキング速報。8/27の既報とは別時点・別順位で新事実。"
+  },
+  "gakuen-01": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「クライアイ」MV100万再生は9/11号で既報(gaku-kuraiai-mv-2026)。新事実なし。"
+  },
+  "gakuen-02": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "スナップシリーズ受注(9/13まで)は9/6号で既報。アイドル別の同一告知の連投で新事実なし。"
+  },
+  "gakuen-03": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "『さいごの文化祭』終了は9/12 4:59で本号06:00 JSTより前。読者が読む時点で既に終了しており本日のニュースにならない(規程12)。"
+  },
+  "gakuen-04": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "福岡公演の配信チケット販売期間・アーカイブ期間は既報(gaku-shirube-livetour-fukuoka-2026)と同一。"
+  },
+  "gakuen-05": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "岩手公演の日程・会場は既報。出演声優情報は出典ページの更新日が2026-03-27で新規性なし(規程12)。"
+  },
+  "gakuen-06": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人ファンのSNS感想投稿。単体記事化不可(規程4)。general面のculture roundup向け素材。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-fujita-kotone-figurine-2027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ALTER『藤田ことね 冠菊Ver.』フィギュアの価格(29,480円)と発売時期(2027年9月)が公式サイトで確定",
+    "lead_score": 10,
+    "dedup_key": "gaku-fujita-kotone-figurine-2027",
+    "candidate_ids": [
+     "202609111236-watch-1",
+     "202609112335-explore-28"
+    ]
+   },
+   {
+    "slug": "gaku-appstore-ranking-second-2026-09-11",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "初星フェス(H.I.F編実装記念ガシャ)を背景に学マスがApp Storeセールスランキング2位へ浮上(9/11時点)",
+    "lead_score": 55,
+    "dedup_key": "gaku-appstore-ranking-second-2026-09-11",
+    "candidate_ids": [
+     "202609120228-explore-16"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-quocard-campaign-2026-09",
+    "reason": "その他",
+    "note": "応募締切は9/10(木)23:59で本号06:00 JSTより前に終了済み。当選発表日も未定で本日読者ができることが無い(規程12)。"
+   },
+   {
+    "dedup_key": "gaku-hif-step4-2026",
+    "reason": "出典不足",
+    "note": "H.I.F編実装自体はgaku-hatsuhoshi-fes-garakuta-road-vol5-2026等で既報。STEP4のシナリオ内容は二次情報(game8)のみで公式未到達(規程2)。"
+   },
+   {
+    "dedup_key": "gaku-miracle-nanau-2026",
+    "reason": "既報",
+    "note": "gakumas-tracks-streaming-0831-2026等で配信情報は既報(9/8時点で確認済み)。新事実なし。"
+   },
+   {
+    "dedup_key": "gaku-endless-dance-signal-2026",
+    "reason": "既報",
+    "note": "咲季・手毬・ことねver.はgaku-endless-dance-saki-temari-kotone-2026等で既報。新事実なし。"
+   },
+   {
+    "dedup_key": "gaku-endless-dance-mao-2026",
+    "reason": "既報",
+    "note": "麻央・清夏・広ver.もgakumas-tracks-streaming-0831-2026で9/6付配信済みと既報。新事実なし。"
+   },
+   {
+    "dedup_key": "gaku-star-mine-2026",
+    "reason": "既報",
+    "note": "同一dedup_keyで8/30に既報済み(story_id: gaku-star-mine-2026)。新事実なし。"
+   },
+   {
+    "dedup_key": "gaku-howling-over-the-world-2026",
+    "reason": "既報",
+    "note": "同一dedup_keyで9/10に既報済み。新事実なし。"
+   },
+   {
+    "dedup_key": "gaku-ichiban-kuji-part6-2026",
+    "reason": "既報",
+    "note": "8/29号で全ラインナップ・価格・発売日とも既報済み。今回の facts と同内容で新事実なし。"
+   },
+   {
+    "dedup_key": "guts-road-sena-gasha-2026",
+    "reason": "既報",
+    "note": "ガシャ実装自体は既報。終了日(9/20)は二次情報(game8)のみで公式未確認、記載は見送り。"
+   },
+   {
+    "dedup_key": "kotone-snap-series-2026",
+    "reason": "既報",
+    "note": "受注9/13までは9/6号で既報。同梱の「さいごの文化祭」終了(4:59)は本号06:00より前で既に終了、本日トリガーなし。"
+   },
+   {
+    "dedup_key": "gaku-hif-kotone-sena-2026",
+    "reason": "既報",
+    "note": "実装・ガシャ・AP配布・ステージ26/27追加、いずれもgaku-hatsuhoshi-fes-garakuta-road-vol5-2026等で既報。"
+   },
+   {
+    "dedup_key": "gaku-amane-yukari-voice-acting-event-2026",
+    "reason": "個人の話題",
+    "note": "声優個人の来校アフレコ体験イベントで、学マス公式施策ではない(規程4)。"
+   },
+   {
+    "dedup_key": "gakuen-01",
+    "reason": "既報",
+    "note": "「クライアイ」MV100万再生は9/11号で既報(gaku-kuraiai-mv-2026)。新事実なし。"
+   },
+   {
+    "dedup_key": "gakuen-02",
+    "reason": "既報",
+    "note": "スナップシリーズ受注(9/13まで)は9/6号で既報。アイドル別の同一告知の連投で新事実なし。"
+   },
+   {
+    "dedup_key": "gakuen-03",
+    "reason": "その他",
+    "note": "『さいごの文化祭』終了は9/12 4:59で本号06:00 JSTより前。読者が読む時点で既に終了しており本日のニュースにならない(規程12)。"
+   },
+   {
+    "dedup_key": "gakuen-04",
+    "reason": "既報",
+    "note": "福岡公演の配信チケット販売期間・アーカイブ期間は既報(gaku-shirube-livetour-fukuoka-2026)と同一。"
+   },
+   {
+    "dedup_key": "gakuen-05",
+    "reason": "既報",
+    "note": "岩手公演の日程・会場は既報。出演声優情報は出典ページの更新日が2026-03-27で新規性なし(規程12)。"
+   },
+   {
+    "dedup_key": "gakuen-06",
+    "reason": "個人の話題",
+    "note": "個人ファンのSNS感想投稿。単体記事化不可(規程4)。general面のculture roundup向け素材。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

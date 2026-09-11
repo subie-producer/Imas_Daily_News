@@ -1,0 +1,40 @@
+{
+ "decisions": {
+  "va-liv-cosmo-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "上水流宇宙BIRTHDAY ONLINE LIVE 2026の配信チケット情報。dsva面が同公演を dsva-cosmo-birthday-online-live-2026-special-guest として本日開幕記事に既に取り上げ済み(主催はvα-liv=dsva、四条貴音はゲスト出演のみ)"
+  },
+  "kamizuru-cosmo-birthday-online-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "同じ上水流宇宙BIRTHDAY ONLINE LIVE 2026の開催告知(四条貴音ゲスト出演)。dsva面の dsva-cosmo-birthday-online-live-2026-special-guest と同一施策のため統合済み扱い"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "va-liv-cosmo-birthday-2026",
+    "reason": "重複",
+    "note": "上水流宇宙BIRTHDAY ONLINE LIVE 2026の配信チケット情報。dsva面が同公演を dsva-cosmo-birthday-online-live-2026-special-guest として本日開幕記事に既に取り上げ済み(主催はvα-liv=dsva、四条貴音はゲスト出演のみ)"
+   },
+   {
+    "dedup_key": "kamizuru-cosmo-birthday-online-live-2026",
+    "reason": "重複",
+    "note": "同じ上水流宇宙BIRTHDAY ONLINE LIVE 2026の開催告知(四条貴音ゲスト出演)。dsva面の dsva-cosmo-birthday-online-live-2026-special-guest と同一施策のため統合済み扱い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

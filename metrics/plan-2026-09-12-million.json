@@ -1,0 +1,364 @@
+{
+ "decisions": {
+  "million-opera-seria-2026-09": {
+   "action": "article",
+   "angle": "秋葉原POP UP SHOP『オペラセリア』、受注グッズ受付開始と混雑緩和QR整理券配布(9/11〜13・9-10:30受付)を報じる",
+   "rank": "small",
+   "lead_score": 12,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "8/29号は開催期間・場所のみ既報。受注開始とQR整理券運用は新事実"
+  },
+  "million-battle-of-theater-11-black-lips-store-benefits-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/11号(million-battle-of-theater11-black-lips-2026)で全店舗特典を既報。新事実なし"
+  },
+  "million-miricore-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/10号(million-millicole-2026-09)で開催期間・限定カードを既報、二次情報のみで新事実なし"
+  },
+  "million-ssr-pickup-gasha-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/11号(million-master-rank5-2026)でピックアップガシャを既報、新事実なし"
+  },
+  "million-battle-of-theater-11-black-lips": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一店舗特典告知、9/11号既報に包含済み"
+  },
+  "million-battle-of-theater-11-black-lips-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一店舗特典告知(エンゲージメント低・要約重複)、9/11号既報に包含済み"
+  },
+  "million-seasonal-snapshot-christmas-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/4号で受注期間・内容を既報。価格情報の追加のみで新規記事に値する新事実は薄い"
+  },
+  "million-song-for-you-vol78-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "millishita-song-for-you-gasha-vol78-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "VOL.78開始の重複ソース(二次情報・gamerch)"
+  },
+  "million-black-lips-store-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/11号既報(あみあみ・タワレコ等含むより詳細な内容)に包含済み"
+  },
+  "million-14th-ticket-sales-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "14thLIVE現地チケット一般販売締切の重複ソース"
+  },
+  "million-14th-jewelry-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "millishita-14thlive-memorial-jewels-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "記念宝石告知の重複ソース(ログインボーナス言及部分は別主題として分離)"
+  },
+  "million-song-for-you-gasha-vol-78-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "millishita-song-for-you-gasha-vol78-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "VOL.78開始の重複ソース(二次情報・gamerch)"
+  },
+  "millishita-song-for-you-gasha-vol78-2026": {
+   "action": "roundup",
+   "angle": "進行中の運営情報まとめ:SONG FOR YOU!ガシャVOL.78(新規カード・新衣装追加、公式Xで確認)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/3号は事前予告のみ既報。9/10開始後の具体的な実施内容は新事実"
+  },
+  "millishita-access-outage-compensation-memories-of-you-2026-09": {
+   "action": "article",
+   "angle": "アクセス障害の補填、衣装[メモリーズ・オブ・ユー]引換券を先行配布(引換期限9/18)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "millishita-14thlive-countdown-login-bonus-2026": {
+   "action": "article",
+   "angle": "『14thLIVEカウントダウンログインボーナス』開始、9/18までミリオンジュエル500個を配布",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "millishita-14thlive-memorial-jewels-2026": {
+   "action": "article",
+   "angle": "14thLIVE開催記念、11th〜14th主演モチーフの宝石が9/12〜27に登場、セット販売も",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "millishita-lesson-wear-14th-maker-2026": {
+   "action": "roundup",
+   "angle": "進行中の運営情報まとめ:レッスンウェア『14th-MaKER』追加(リハーサル用)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "millishita-gravure-studio-nui-katsu-2026-09": {
+   "action": "roundup",
+   "angle": "進行中の運営情報まとめ:グラビアスタジオARモードに新規オーダー『ぬい活しよう!』追加",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "deremilli-clash-match-premium-presale-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "デレとミリ合同『CLASH M@TCH!!』のプレミアム会員先行締切(9/13)。両ブランド共同名義のため合同(joint)面の話題"
+  },
+  "million-14thlive-general-sale-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "チケット一般販売締切の重複ソース(公式X投稿)"
+  },
+  "million-14thlive-streaming-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/2発表分と同内容(既報facts一致)。本日新規事実なし"
+  },
+  "million-14thlive-venue-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "事前物販は終了済み、会場物販情報も9/4号既報(million-14th-live-goods-2026)と同一"
+  },
+  "million-14th-live": {
+   "action": "article",
+   "angle": "14thLIVE現地チケット一般販売が本日23:59締切、公式リセールは13日9:59まで受付",
+   "rank": "medium",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "規程8の締切当日トリガー。本日が読者の最終購入機会"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-opera-seria-2026-09",
+    "brand": "million",
+    "rank": "small",
+    "angle": "秋葉原POP UP SHOP『オペラセリア』、受注グッズ受付開始と混雑緩和QR整理券配布(9/11〜13・9-10:30受付)を報じる",
+    "lead_score": 12,
+    "dedup_key": "million-opera-seria-2026-09",
+    "candidate_ids": [
+     "202609110736-watch-0"
+    ]
+   },
+   {
+    "slug": "million-millishita-access-outage-compensation-memories-of-you-2026-09",
+    "brand": "million",
+    "rank": "small",
+    "angle": "アクセス障害の補填、衣装[メモリーズ・オブ・ユー]引換券を先行配布(引換期限9/18)",
+    "lead_score": 10,
+    "dedup_key": "millishita-access-outage-compensation-memories-of-you-2026-09",
+    "candidate_ids": [
+     "202609120228-grok-68"
+    ]
+   },
+   {
+    "slug": "million-millishita-14thlive-countdown-login-bonus-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "『14thLIVEカウントダウンログインボーナス』開始、9/18までミリオンジュエル500個を配布",
+    "lead_score": 15,
+    "dedup_key": "millishita-14thlive-countdown-login-bonus-2026",
+    "candidate_ids": [
+     "202609120228-grok-69"
+    ]
+   },
+   {
+    "slug": "million-millishita-14thlive-memorial-jewels-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "14thLIVE開催記念、11th〜14th主演モチーフの宝石が9/12〜27に登場、セット販売も",
+    "lead_score": 20,
+    "dedup_key": "millishita-14thlive-memorial-jewels-2026",
+    "candidate_ids": [
+     "202609120228-grok-70",
+     "202609120228-explore-2"
+    ]
+   },
+   {
+    "slug": "million-14th-live",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "14thLIVE現地チケット一般販売が本日23:59締切、公式リセールは13日9:59まで受付",
+    "lead_score": 65,
+    "dedup_key": "million-14th-live",
+    "candidate_ids": [
+     "sched-2026-09-12-million-14th-live-締切",
+     "202609120228-explore-1",
+     "202609120228-grok-74"
+    ]
+   },
+   {
+    "slug": "million-ops-roundup",
+    "brand": "million",
+    "rank": "roundup",
+    "angle": "進行中の運営情報まとめ:SONG FOR YOU!ガシャVOL.78(新規カード・新衣装追加、公式Xで確認)",
+    "lead_score": 0,
+    "dedup_key": "millishita-song-for-you-gasha-vol78-2026",
+    "candidate_ids": [
+     "202609120228-grok-67",
+     "202609120228-grok-71",
+     "202609120228-grok-72",
+     "202609112335-explore-9",
+     "202609120228-explore-6"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-battle-of-theater-11-black-lips-store-benefits-2026",
+    "reason": "既報",
+    "note": "9/11号(million-battle-of-theater11-black-lips-2026)で全店舗特典を既報。新事実なし"
+   },
+   {
+    "dedup_key": "million-miricore-2026-09",
+    "reason": "既報",
+    "note": "9/10号(million-millicole-2026-09)で開催期間・限定カードを既報、二次情報のみで新事実なし"
+   },
+   {
+    "dedup_key": "million-ssr-pickup-gasha-2026-09",
+    "reason": "既報",
+    "note": "9/11号(million-master-rank5-2026)でピックアップガシャを既報、新事実なし"
+   },
+   {
+    "dedup_key": "million-battle-of-theater-11-black-lips",
+    "reason": "既報",
+    "note": "同一店舗特典告知、9/11号既報に包含済み"
+   },
+   {
+    "dedup_key": "million-battle-of-theater-11-black-lips-2026",
+    "reason": "既報",
+    "note": "同一店舗特典告知(エンゲージメント低・要約重複)、9/11号既報に包含済み"
+   },
+   {
+    "dedup_key": "million-seasonal-snapshot-christmas-2026",
+    "reason": "既報",
+    "note": "9/4号で受注期間・内容を既報。価格情報の追加のみで新規記事に値する新事実は薄い"
+   },
+   {
+    "dedup_key": "million-black-lips-store-bonus-2026",
+    "reason": "既報",
+    "note": "9/11号既報(あみあみ・タワレコ等含むより詳細な内容)に包含済み"
+   },
+   {
+    "dedup_key": "deremilli-clash-match-premium-presale-2026",
+    "reason": "面違い",
+    "note": "デレとミリ合同『CLASH M@TCH!!』のプレミアム会員先行締切(9/13)。両ブランド共同名義のため合同(joint)面の話題"
+   },
+   {
+    "dedup_key": "million-14thlive-streaming-ticket-2026",
+    "reason": "既報",
+    "note": "9/2発表分と同内容(既報facts一致)。本日新規事実なし"
+   },
+   {
+    "dedup_key": "million-14thlive-venue-goods-2026",
+    "reason": "既報",
+    "note": "事前物販は終了済み、会場物販情報も9/4号既報(million-14th-live-goods-2026)と同一"
+   }
+  ],
+  "cross_brand": []
+ }
+}

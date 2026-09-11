@@ -1,20 +1,51 @@
 [
-    {
-        "id": "sched-2026-12-06-sidem-joypolis3-2026-終了",
-        "dedup_key": "sidem-joypolis3-2026",
-        "brand": "sidem",
-        "subject": "アイドルマスター SideM in JOYPOLIS 3",
-        "kind": "終了",
-        "note": "開催終了",
-        "title": "SideM in JOYPOLIS 3、開催終了",
-        "url": "https://x.com/GamerNeJp/status/2092090074058096746",
-        "source_type": "報道",
-        "verify": "confirmed",
-        "src_candidate_id": "202608260216-grok-97",
-        "event_date": "2026-12-06",
-        "facts": [
-            "「アイドルマスター SideM in JOYPOLIS 3」は12月6日まで東京ジョイポリスで開催"
-        ],
-        "reserved_on": "2026-08-26"
-    }
+ {
+  "id": "sched-2026-12-06-sidem-joypolis3-2026-終了",
+  "dedup_key": "sidem-joypolis3-2026",
+  "brand": "sidem",
+  "subject": "アイドルマスター SideM in JOYPOLIS 3",
+  "kind": "終了",
+  "note": "開催終了",
+  "title": "SideM in JOYPOLIS 3、開催終了",
+  "url": "https://x.com/GamerNeJp/status/2092090074058096746",
+  "source_type": "報道",
+  "verify": "confirmed",
+  "src_candidate_id": "202608260216-grok-97",
+  "event_date": "2026-12-06",
+  "facts": [
+   "「アイドルマスター SideM in JOYPOLIS 3」は12月6日まで東京ジョイポリスで開催"
+  ],
+  "reserved_on": "2026-08-26"
+ },
+ {
+  "id": "sched-2026-12-06-sidem-joypolis-3-2026-終了",
+  "dedup_key": "sidem-joypolis-3-2026",
+  "brand": "sidem",
+  "subject": "SideM×JOYPOLIS3",
+  "kind": "終了",
+  "note": "コラボ開催最終日",
+  "reserved_on": "2026-09-12",
+  "title": "SideM×東京ジョイポリス第3弾を9月12日から開催",
+  "url": "https://collabo-cafe.com/events/collabo/idolmaster-sidem-theme-park-joypolis-2026/",
+  "source_type": "二次情報",
+  "facts": [
+   "『アイドルマスター SideM』と東京ジョイポリスのコラボ第3弾「アイドルマスター SideM in JOYPOLIS 3」を2026年9月12日〜12月6日に開催。",
+   "会場: 東京ジョイポリス",
+   "入場料: 大人(18歳以上)1,700円／小中高生1,400円",
+   "東京ジョイポリス30周年アンバサダー: High×Joker、神速一魂",
+   "全16ユニットの3Dライブ映像を使ったスペシャルショーを3期に分けて上映。",
+   "第1弾: 2026年9月12日〜10月10日。DRAMATIC STARS、彩、神速一魂、Café Parade、THE 虎牙道、315 ALLSTARS。",
+   "第1弾楽曲: 神速一魂「ROUTE77」、DRAMATIC STARS「Change to Chance」、彩「いとをかし!〜一彩×合彩〜」、Café Parade「Pavé Étoiles」、THE 虎牙道「K.now O.nly」、315 ALLSTARS「SUPREME STARS !!!」。",
+   "第2弾: 2026年10月11日〜11月7日。Altessimo、Beit、もふもふえん、S.E.M、C.FIRST、315 ALLSTARS。",
+   "第2弾楽曲: C.FIRST「We’re the one」、Altessimo「Infinite Octave!」、Beit「Platinum MASK」、S.E.M「Multiple Entertainment Show!」、もふもふえん「はるかぜバトン」、315 ALLSTARS「SUPREME STARS !!!」。",
+   "第3弾: 2026年11月8日〜12月6日。Jupiter、W、FRAME、High×Joker、F-LAGS、Legenders、315 ALLSTARS。",
+   "第3弾楽曲: Jupiter「Inner Dignity」、W「VIVA!!ファミリーリズム」、FRAME「Plus 1 Good Day!」、F-LAGS「Made in『♪』」、Legenders「Time Before Time」、High×Joker「JOYFUL HEART MAKER」、315 ALLSTARS「SUPREME STARS !!!」。",
+   "スペシャルショー上映時間: 12:00／15:00／17:00"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609110736-explore-15",
+  "event_date": "2026-09-12",
+  "deadline": "2026-12-06"
+ }
 ]

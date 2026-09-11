@@ -1,0 +1,194 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-12-dsva-10-e82f84.md",
+   "issue": "出典の日付と記事の日付が矛盾。記事は「ヴイアラ公式Xは9月8日」と書いているが、候補の published_date は2026-09-10（X投稿は9月10日）。既報台帳でも first_published は 2026-09-09。記事の「9月8日」は誤り。",
+   "quote": "ヴイアラ公式Xは9月8日、同日21時から予定していた灯里愛夏の「BIOHAZARD RE:2」配信について、体調不良のため大事を取って見送ると告知した。",
+   "scope": "article:2026-09-12-dsva-10-e82f84.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-dsva-10-e82f84.md",
+   "issue": "新事実なしの続報。この話題は既報台帳（story_id: dsva-manaka-biohazard-postponed-2026）に2026-09-09で既に記載済み。記事の内容は既報と同じ（9月8日21時の配信予定を体調不良で見送り、謝罪）で、新事実も当日トリガーもない。",
+   "quote": "灯里愛夏の体調不良を受け、9月8日21時から予定されていた「BIOHAZARD RE:2」配信が見送られた。",
+   "scope": "article:2026-09-12-dsva-10-e82f84.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-gaku-appstore-ranking-second-2026-09-11.md",
+   "issue": "規程9「公式が無い」: 記事が「初星フェス」ガシャの詳細（SSR倍率1.5倍、ピックアップ内容）を記載していますが、sources に公式・準公式が1つも無く、gamebiz.jp（報道）のみです。ゲーム内施策のガシャについては公式情報が sources に必要です。",
+   "quote": "背景には、SSR出現率が通常の1.5倍になる初星フェスの開催がある。初星フェスでは、限定Pアイドル「ガラクタロード」十王星南と、新SSRサポートカード「もうすぐ本番ですね」がラインアップされている。",
+   "scope": "article:2026-09-12-gaku-appstore-ranking-second-2026-09-11.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-sidem-11th-stage-2026.md",
+   "issue": "チェックリスト項目8(誤字)：lede で「幕を開け」は文法的に誤り。現代日本語では「幕を開く」が正しい。命令形の古い活用で、この文脈では不適切",
+   "quote": "「THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～」が9月12日、TOYOTA ARENA TOKYOでDAY1の幕を開け、会場では",
+   "scope": "article:2026-09-12-sidem-11th-stage-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-12-cg-cinderella-07.md",
+   "issue": "分量不足。rank:small に対して本文が約100字で、目安の250字に届いていない。候補に記載されている投票期間（8/3～9/18）、引換期間、ミッション期間などの詳細情報を加えることで拡充できる見込み",
+   "scope": "article:2026-09-12-cg-cinderella-07.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-cg-cinderella-10.md",
+   "issue": "(対象の記事を指していないためコメント扱い) 記事ファイルが存在しません。前回のコミット add19e8 で「規程5: 新事実なしの続報として」削除されたままです。再校閲を実施するには、ファイルが復活していなければなりません。",
+   "quote": "ファイルが見つかりません",
+   "scope": "article:2026-09-12-cg-cinderella-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-gaku-appstore-ranking-second-2026-09-11.md",
+   "issue": "分量不足: small ランク 250字以上が必要ですが、現在228字（lede 62字 + 本文 166字）。22字不足です。",
+   "scope": "article:2026-09-12-gaku-appstore-ranking-second-2026-09-11.md"
+  },
+  {
+   "file": "docs/_editions/2026-09-12.md",
+   "issue": "(対象の記事を指していないためコメント扱い) digest（「継続中」セクション）で削除済みの記事 cg-cinderella-10 を参照している",
+   "quote": "継続中セクション: slug: cg-cinderella-10 (Sweet Melty Whip開催中) ← 実ファイルは存在しません",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "digestに参照される前日の記事 cg-cinderella-10 が削除（commit add19e8）されたにもかかわらず、号スナップショットが更新されていない。digestの「継続中」セクションから削除し、別の記事で補充する必要あり",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-cg-cinderella-05.md",
+   "issue": "分量不足。記事本文約130字（lede 40字 + body 90字）は rank: small の下限 250字に対して大きく不足。候補の facts に『チケットページ本文はほぼ空』『席種・料金・公演日はこのページ本文では確認できず』という内容が収集されているなら、チケット購入に関する情報不足を読者に伝える価値があります。または最低限、期限（9/13 21:00まで）を本文に明記することで分量と情報性を補う方法も考えられます。タイトルと出典ラベルには期限が書かれているのに、本文に無いため、本文のみの流し読みでは販売期間が不明。",
+   "scope": "article:2026-09-12-cg-cinderella-05.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-dsva-11-a79fb9.md",
+   "issue": "分量不足: rank=small(250字以上)に対し、本文が約80字。ショート動画公開という軽度の話題なので必須ではないが、ハッシュタグの採用契機や動画の内容(キャラクター造形)など補足があれば充実する",
+   "scope": "article:2026-09-12-dsva-11-a79fb9.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-dsva-cosmo-birthday-online-live-2026-special-guest.md",
+   "issue": "分量不足: rank が large（700字以上）に指定されていますが、本文は547字です。既報の側面もありますが、出典の公式ニュースには限定グッズ付きライブビューイングチケットの価格や受付期限、プレゼント用視聴チケットなど、読者に有用な詳細情報が含まれている可能性があります。記事に追加できる要素を検討してください",
+   "scope": "article:2026-09-12-dsva-cosmo-birthday-online-live-2026-special-guest.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-million-millishita-14thlive-countdown-login-bonus-2026.md",
+   "issue": "分量不足: rank:small（下限250字）に対し、本文は約74字。candidates の facts に「日毎の個数内訳は投稿に無い」と記載されており、出典に詳細情報がない状態。無理な加筆は避けるべきが、最低限の情報補強（どの画面から確認できるか、ミッション達成時のボーナス説明など）があれば望ましい",
+   "scope": "article:2026-09-12-million-millishita-14thlive-countdown-login-bonus-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-million-millishita-14thlive-memorial-jewels-2026.md",
+   "issue": "分量不足：rank: small に対して本文が薄い（現在 約160字）。出典に記載されている「期間 2026年9月12日～9月27日」「セット販売：有償ミリオンジュエル2500個で『プラチナガシャ10回チケット』に宝石3種が付く」などの情報が入手可能なため、追加することで 250字近くまで充実させられます。",
+   "scope": "article:2026-09-12-million-millishita-14thlive-memorial-jewels-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-million-millishita-access-outage-compensation-memories-of-you-2026-09.md",
+   "issue": "分量不足。rank: small の下限は250字ですが、現在の記事は約141字（lede 46字 + 本文 95字）で、109字不足しています。candidates の facts に「引換期限は9/18(金)14:59まで」があります。期限情報は読者にとって重要（いつまで引き換えられるか）なので、追加を検討してください。",
+   "scope": "article:2026-09-12-million-millishita-access-outage-compensation-memories-of-you-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-shiny-jimushiny-ch23-blood-and-marrow-zenpen-2026-09-12.md",
+   "issue": "分量不足: rank=small (下限250字) に対して本文が約145字。出典の候補 facts には「コミックス: アイドルマスター シャイニーカラーズ 事務的光空記録 (4) (サンデーうぇぶり)」など拾える情報が存在",
+   "scope": "article:2026-09-12-shiny-jimushiny-ch23-blood-and-marrow-zenpen-2026-09-12.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-shiny-msp-2026-fuwaface-venue-cancel.md",
+   "issue": "分量不足: 本文156字で rank: small の下限250字に達していない。ただし出典のX投稿には対象商品と理由のみで、会場・日時・代替販売情報が記載されていないため、拾える内容が限定的。一般論・推測での水増しは避け、短いままでよい。",
+   "scope": "article:2026-09-12-shiny-msp-2026-fuwaface-venue-cancel.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-shiny-ops-roundup.md",
+   "issue": "分量不足：rank: roundup で本文が約210字。記事化の基準（small 250字）に達していない。記事の内容は出典から導出可能だが（動画、楽曲名、実装内容、キャラ名等）、圧縮が過度に思える",
+   "scope": "article:2026-09-12-shiny-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-sidem-06-02056a.md",
+   "issue": "分量不足：rank: small の目安250字に対して本文約86字。ただし、出典（X投稿）に記載されている主要情報はすべて網羅されており、追加すべき事実はないと判断",
+   "scope": "article:2026-09-12-sidem-06-02056a.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-sidem-315shop-5th-anniversary-2026.md",
+   "issue": "分量不足（rank: small は 250字以上が要件）。現在約 215字。候補の facts に「先行受注販売期間: 2026年9月11日(金)～9月28日(月)」の開始日が記載されており、「9月11日から先行受注開始」と明記することで拡充できます",
+   "scope": "article:2026-09-12-sidem-315shop-5th-anniversary-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-12-sidem-royal-chess-lounge-2026.md",
+   "issue": "分量不足: rank: small の下限は 250字ですが、本文は約60字です。出典に含まれるイラストテーマ（チェス）、キャラクター情報、スマイルベースカフェ公式サイトへのリンクなど、詳細情報を活用すれば分量を補えます。",
+   "scope": "article:2026-09-12-sidem-royal-chess-lounge-2026.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-12-cg-2026-09-11-goods.md",
+  "article:2026-09-12-cg-cinderella-05.md",
+  "article:2026-09-12-cg-cinderella-06.md",
+  "article:2026-09-12-cg-cinderella-07.md",
+  "article:2026-09-12-cg-cinderella-10.md",
+  "article:2026-09-12-cg-cinderella-master-number-one-2026.md",
+  "article:2026-09-12-cg-election-2026-special-exhibition.md",
+  "article:2026-09-12-dsva-05-be357f.md",
+  "article:2026-09-12-dsva-10-e82f84.md",
+  "article:2026-09-12-dsva-11-a79fb9.md",
+  "article:2026-09-12-dsva-cosmo-birthday-online-live-2026-special-guest.md",
+  "article:2026-09-12-dsva-shinkai-fes-2026-dsva.md",
+  "article:2026-09-12-gaku-appstore-ranking-second-2026-09-11.md",
+  "article:2026-09-12-gaku-fujita-kotone-figurine-2027.md",
+  "article:2026-09-12-general-riamu-cosmo-birthday-official-2026.md",
+  "article:2026-09-12-joint-tours-ranking-20260910.md",
+  "article:2026-09-12-million-14th-live.md",
+  "article:2026-09-12-million-millishita-14thlive-countdown-login-bonus-2026.md",
+  "article:2026-09-12-million-millishita-14thlive-memorial-jewels-2026.md",
+  "article:2026-09-12-million-millishita-access-outage-compensation-memories-of-you-2026-09.md",
+  "article:2026-09-12-million-opera-seria-2026-09.md",
+  "article:2026-09-12-million-ops-roundup.md",
+  "article:2026-09-12-shiny-jimushiny-ch23-blood-and-marrow-zenpen-2026-09-12.md",
+  "article:2026-09-12-shiny-msp-2026-fuwaface-venue-cancel.md",
+  "article:2026-09-12-shiny-ops-roundup.md",
+  "article:2026-09-12-shiny-sfpr-technical-challenge-16-2026-09.md",
+  "article:2026-09-12-shiny-whisper-amana-piece-pack-reprint-2026-09.md",
+  "article:2026-09-12-shiny-whisper-amana-reprint-2026-09.md",
+  "article:2026-09-12-sidem-01-dc8749.md",
+  "article:2026-09-12-sidem-06-02056a.md",
+  "article:2026-09-12-sidem-11th-stage-2026.md",
+  "article:2026-09-12-sidem-315shop-5th-anniversary-2026.md",
+  "article:2026-09-12-sidem-cardfolio-vol2-2026.md",
+  "article:2026-09-12-sidem-joypolis-3-2026.md",
+  "article:2026-09-12-sidem-royal-chess-lounge-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-12-cg-2026-09-11-goods.md": "d8951b91a0bf1737a82a0a63f27edd4dd56d5cfb620eb8577531f2aad2d24b3d",
+  "docs/_posts/2026-09-12-cg-cinderella-05.md": "defb53de45179146d2dade95351597bbdd9674360576286ac72037eb703f0035",
+  "docs/_posts/2026-09-12-cg-cinderella-06.md": "79a1e0c73e2de7f60546f258884a012b932cb8cf83868078cae0087eb74cf660",
+  "docs/_posts/2026-09-12-cg-cinderella-07.md": "9356d41036317a2a81328fbd07444207148108757041ce3dd7773671588c51e2",
+  "docs/_posts/2026-09-12-cg-cinderella-master-number-one-2026.md": "9e5cbab5fca30472b83d529fa8328b42825d7e509cef63a9e0f227e63e7836a8",
+  "docs/_posts/2026-09-12-cg-election-2026-special-exhibition.md": "ec59bdcad9e4e1acd27be2f9b7e2711ef00722ab1c0d1fbdb1ba1a5f8e107acf",
+  "docs/_posts/2026-09-12-dsva-05-be357f.md": "17a6fbdbb9e4a9235c8a945f8676f0c7515f3177cf6d2dc317830f3f86cf13ee",
+  "docs/_posts/2026-09-12-dsva-10-e82f84.md": "37caa976a5a3ca94faa115d3ba6bf8fac7bb3fa4fd9b79938a219bfbff8e5a31",
+  "docs/_posts/2026-09-12-dsva-11-a79fb9.md": "999b7c1b102a2b262298728d227a29b59b1c6c58b1c3556e2a2f7eebc925524b",
+  "docs/_posts/2026-09-12-dsva-cosmo-birthday-online-live-2026-special-guest.md": "686dd16db1c9f68747a032225f4c4f04c32d96d1e916a990cd9591dbc48841cc",
+  "docs/_posts/2026-09-12-dsva-shinkai-fes-2026-dsva.md": "536201268c6ff887a74e1de84d20d0db128b14db1d9701dd1097416629be03c2",
+  "docs/_posts/2026-09-12-gaku-appstore-ranking-second-2026-09-11.md": "39b11f333a965b7fe591424718a549917d98f8f4a90473abd3c63bb3e374d163",
+  "docs/_posts/2026-09-12-gaku-fujita-kotone-figurine-2027.md": "000a67083c6134a6de298b5b21a72930b13ad0454d9a253c0f6f8f5d560c1e40",
+  "docs/_posts/2026-09-12-general-riamu-cosmo-birthday-official-2026.md": "c5d55b915026429c4dd87e7d2874810399d87baaa1bf97c1156cab90ce233261",
+  "docs/_posts/2026-09-12-joint-tours-ranking-20260910.md": "b7aef3f86392f0eaf879cb59dcd2ffeaaf778a73f9a19242fced625c86a585c1",
+  "docs/_posts/2026-09-12-million-14th-live.md": "aa559ca971c3ba607c04f7e70eba1ef8378506b581c9d03fc7354fe630660ecd",
+  "docs/_posts/2026-09-12-million-millishita-14thlive-countdown-login-bonus-2026.md": "2fbf84e37d97e8c1f92e4e33ccef5246f356772fa69b51c84cc12074c5f8ce58",
+  "docs/_posts/2026-09-12-million-millishita-14thlive-memorial-jewels-2026.md": "fc8089b9383c6ad8ba88fd4fdca10f6559687282c0b5748a0c9868f494b230e6",
+  "docs/_posts/2026-09-12-million-millishita-access-outage-compensation-memories-of-you-2026-09.md": "49de326ea94ac793945339c26eaaf91d0dd3ee85c36afc0cbbac6b6a0c011eb0",
+  "docs/_posts/2026-09-12-million-opera-seria-2026-09.md": "9299235eff52a5be86607e597fa2ac65db95265f7e4371487e5c8b3846f6b0fc",
+  "docs/_posts/2026-09-12-million-ops-roundup.md": "54d2f7053f3da76d631044acb47a657554dd07557f6d86aa61737fa08d071b1b",
+  "docs/_posts/2026-09-12-shiny-jimushiny-ch23-blood-and-marrow-zenpen-2026-09-12.md": "45fe0337dd6e94bd9e786caa894502b7db1f7a128e8bc950d15aad24de9a66ce",
+  "docs/_posts/2026-09-12-shiny-msp-2026-fuwaface-venue-cancel.md": "c67f3661e799d26ba73a3ed5e9e914f4d090a601390f6ccb306ae19340a0d55a",
+  "docs/_posts/2026-09-12-shiny-ops-roundup.md": "b59010c781139594435ec6bceb3eccc6483db95cee80a70dc34389db29e35d52",
+  "docs/_posts/2026-09-12-shiny-sfpr-technical-challenge-16-2026-09.md": "6d3dd21d96b55b0a032c0f855a67dd7d28b30d4b1bb8ec16ded8eccb19dc32b4",
+  "docs/_posts/2026-09-12-shiny-whisper-amana-piece-pack-reprint-2026-09.md": "23067d5abba7ec3e530a5ff53af5b72f7caa5dcd086ecb63e8a45fcc4d7f5e43",
+  "docs/_posts/2026-09-12-shiny-whisper-amana-reprint-2026-09.md": "cddf7c9f8d583496da616baa38016eaab0321ea92b9e8793d47fd4490939d19d",
+  "docs/_posts/2026-09-12-sidem-01-dc8749.md": "4bdc4c8ded295f1913d8a46e71dba2eedd75942f81b1aee57cff019eb743cf48",
+  "docs/_posts/2026-09-12-sidem-06-02056a.md": "07ff81d5313f5a8eb9e7dd80a21f7d29fb03e96935af483111ffb4bf04a6967c",
+  "docs/_posts/2026-09-12-sidem-11th-stage-2026.md": "eb57d6db4e173ef03015cddc079c2cb6054e18776cae5e6216be8a6c602d7547",
+  "docs/_posts/2026-09-12-sidem-315shop-5th-anniversary-2026.md": "8fbea59f1de443901b02d3fbd28cbf1382ad2f7ade0542ba60377c41ba3551a5",
+  "docs/_posts/2026-09-12-sidem-cardfolio-vol2-2026.md": "a2af207426ca27af2036fc2b19acab000dcf2d8afea1f6254413b266a241e355",
+  "docs/_posts/2026-09-12-sidem-joypolis-3-2026.md": "08707967992fe5140c1f32b4ee5d18e075ffee6b451e5de955a0d2506f510a15",
+  "docs/_posts/2026-09-12-sidem-royal-chess-lounge-2026.md": "bcc31b1370db54d56e767f3c075f62f1934b0cfc08b71aeb1b6837b233c75619",
+  "docs/_editions/2026-09-12.md": "48f441e1054db27ce5942513d6483b4ac7186a23faaeb051344a35a7605e827f",
+  "metrics/stories-before-2026-09-12.yml": "ae4d400803886b77f8fbe7e2c2864fa5eb960d7a508e94cb0ad621e108ef6184"
+ }
+}

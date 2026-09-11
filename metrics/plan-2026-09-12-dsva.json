@@ -1,0 +1,330 @@
+{
+ "decisions": {
+  "cosmo-birthday-online-live-2026-special-guest": {
+   "action": "article",
+   "angle": "上水流宇宙20歳バースデーライブが本日15時開幕。四条貴音ゲスト出演、前夜祭歌枠リレーの盛況、本人の20歳ツイートも合わせて特集",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "この面の最大の話題。開幕(当日トリガー)を軸に周辺素材を統合"
+  },
+  "manaka-biohazard-re2-stream-cancellation-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dsva-10と同一の配信見送り告知(内容重複、dsva-10の方が確度verify済み)"
+  },
+  "cosmo-birthday-live-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cosmo-birthday-online-live-2026-special-guest",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報源によるゲスト決定の再掲。既報内容だが本編記事の裏付け素材として統合"
+  },
+  "876-cd-after-sale-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "joint既報(columbia-venue-cd-aftersale-2026-08)と受付期間・発送日・上限枚数まで同一、新事実なし"
+  },
+  "shinkai-fes-2026-dsva": {
+   "action": "article",
+   "angle": "深海フェス2026「超・深海」第3弾出演者に上水流宇宙・レトラが決定、二次先着チケットは本日22時開始",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "主催は他社だが876プロ勢2名が出演する自社アイドルの活動として面違いではない"
+  },
+  "cosmo-birthday-eve-song-relay-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cosmo-birthday-online-live-2026-special-guest",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "前夜祭の出演者情報は既報だが、本日のバースデーライブ記事内の背景として統合"
+  },
+  "dsva-01": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cosmo-birthday-online-live-2026-special-guest",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開演カウントダウン投稿。本編記事の素材として統合"
+  },
+  "dsva-03": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cosmo-birthday-online-live-2026-special-guest",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信チケット特典の告知。本編記事の素材として統合"
+  },
+  "dsva-04": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cosmo-birthday-online-live-2026-special-guest",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "前夜祭タイムテーブル告知。本編記事の素材として統合"
+  },
+  "dsva-05": {
+   "action": "article",
+   "angle": "vα-liv第13回オンライン1on1、灯里愛夏・上水流宇宙・レトラの抽選受付は9/15(火)23:59まで",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受付開始・締切ニュースのため単独記事(規程13の例外に該当せず)。3名分のLivePocketページを統合"
+  },
+  "dsva-06": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-05",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第13回1on1・灯里愛夏分の申込ページ"
+  },
+  "dsva-07": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-05",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第13回1on1・上水流宇宙分の申込ページ"
+  },
+  "dsva-08": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-05",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第13回1on1・レトラ分の申込ページ"
+  },
+  "dsva-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cosmo-birthday-online-live-2026-special-guest",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "バースデー記念ボイス(9/4〜9/27販売中)。誕生日記事の関連商品として統合、単独の販売開始/終了トリガーではない"
+  },
+  "dsva-10": {
+   "action": "article",
+   "angle": "愛夏、体調不良により本日予定の「BIOHAZARD RE:2」配信を見送りと告知",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式アカウントによる配信中止告知。素材は薄いが規程9によりそのまま短い記事にする"
+  },
+  "dsva-11": {
+   "action": "article",
+   "angle": "愛夏の新作ショート動画「自己紹介でキャラ作りにめっちゃこだわるD」公開",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営系だが roundup 対象がこの1件のみで3件未満のため単独small記事にする"
+  },
+  "dsva-12": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cosmo-birthday-online-live-2026-special-guest",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本人による20歳誕生日の本人発信。本編記事の核となる新素材として統合"
+  },
+  "dsva-13": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cosmo-birthday-online-live-2026-special-guest",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "前夜祭終了後の本人お礼投稿。本編記事の背景として統合"
+  },
+  "dsva-14": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個別ファン創作の現象記述のみで、公式発表に基づく事実がない"
+  },
+  "dsva-15": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "無関係の外部アカウントによる単発投稿、未確認・低エンゲージで裏付けなし"
+  },
+  "dsva-16": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "リサーチメモ(何が見つからなかったかの記録)で、記事化できる新事実がない"
+  },
+  "cosmo-birthday-online-live-2026-lv-lottery": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cosmo-birthday-online-live-2026-special-guest",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本日開幕(開幕予約)のトリガー。LV抽選自体は8/24締切済みの既報だが開催日そのものとして本編に統合"
+  },
+  "dsva-shinkaifes-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shinkai-fes-2026-dsva",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次先着チケット本日22時開始(予約)。第3弾出演者発表と同一イベントのため統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-cosmo-birthday-online-live-2026-special-guest",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "上水流宇宙20歳バースデーライブが本日15時開幕。四条貴音ゲスト出演、前夜祭歌枠リレーの盛況、本人の20歳ツイートも合わせて特集",
+    "lead_score": 85,
+    "dedup_key": "cosmo-birthday-online-live-2026-special-guest",
+    "candidate_ids": [
+     "202609110736-explore-24",
+     "202609111236-explore-20",
+     "202609120228-explore-18",
+     "202609120228-grok-36",
+     "202609120228-grok-38",
+     "202609120228-grok-39",
+     "202609120228-grok-44",
+     "202609120228-grok-47",
+     "202609120228-grok-48",
+     "sched-2026-09-12-cosmo-birthday-online-live-2026-lv-lottery-開幕"
+    ]
+   },
+   {
+    "slug": "dsva-shinkai-fes-2026-dsva",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "深海フェス2026「超・深海」第3弾出演者に上水流宇宙・レトラが決定、二次先着チケットは本日22時開始",
+    "lead_score": 20,
+    "dedup_key": "shinkai-fes-2026-dsva",
+    "candidate_ids": [
+     "202609111836-explore-20",
+     "sched-2026-09-12-dsva-shinkaifes-2026-開始"
+    ]
+   },
+   {
+    "slug": "dsva-05-be357f",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "vα-liv第13回オンライン1on1、灯里愛夏・上水流宇宙・レトラの抽選受付は9/15(火)23:59まで",
+    "lead_score": 15,
+    "dedup_key": "dsva-05",
+    "candidate_ids": [
+     "202609120228-grok-40",
+     "202609120228-grok-41",
+     "202609120228-grok-42",
+     "202609120228-grok-43"
+    ]
+   },
+   {
+    "slug": "dsva-10-e82f84",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "愛夏、体調不良により本日予定の「BIOHAZARD RE:2」配信を見送りと告知",
+    "lead_score": 8,
+    "dedup_key": "dsva-10",
+    "candidate_ids": [
+     "202609120228-grok-45",
+     "202609110736-explore-25"
+    ]
+   },
+   {
+    "slug": "dsva-11-a79fb9",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "愛夏の新作ショート動画「自己紹介でキャラ作りにめっちゃこだわるD」公開",
+    "lead_score": 0,
+    "dedup_key": "dsva-11",
+    "candidate_ids": [
+     "202609120228-grok-46"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "876-cd-after-sale-2026",
+    "reason": "既報",
+    "note": "joint既報(columbia-venue-cd-aftersale-2026-08)と受付期間・発送日・上限枚数まで同一、新事実なし"
+   },
+   {
+    "dedup_key": "dsva-14",
+    "reason": "出典不足",
+    "note": "個別ファン創作の現象記述のみで、公式発表に基づく事実がない"
+   },
+   {
+    "dedup_key": "dsva-15",
+    "reason": "出典不足",
+    "note": "無関係の外部アカウントによる単発投稿、未確認・低エンゲージで裏付けなし"
+   },
+   {
+    "dedup_key": "dsva-16",
+    "reason": "出典不足",
+    "note": "リサーチメモ(何が見つからなかったかの記録)で、記事化できる新事実がない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

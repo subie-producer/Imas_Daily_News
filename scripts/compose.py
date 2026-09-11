@@ -915,6 +915,38 @@ def rewrite_editorial(date: str, number: int, topic: str, brand: str,
     return ok
 
 
+def prune_prompt(date: str, dropped: list[str]) -> str:
+    """落とした記事を、組版の成果物(digest・台帳・予約)から**抜くだけ**のセッション。
+
+    以前は記事を落とすたびに台帳を組版前へ巻き戻し、組版をまるごとやり直していた。
+    組版は記事数に比例して伸び(43本で25分)、1本落とすたびに25分。締切前にそれが
+    払えず、除外の巡に入れないまま号が止まった(実測 2026-09-11: 残り24分/必要31分)。
+    抜くだけなら数分で済む。抜けたかどうかは機械で確かめる(digest に slug が残って
+    いないこと・lint が通ること)。確かめられなければ、従来どおり作り直す。
+    """
+    names = "\n".join(f"- {s}" for s in dropped)
+    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の組版担当です。{date}号は組版済みですが、
+校閲の結果、次の記事が**紙面から外れました**(ファイルは既に削除されています)。
+
+{names}
+
+やることは**外れた記事の痕跡を組版の成果物から抜くことだけ**です。他は一切変えないでください。
+
+1. docs/_editions/{date}.md … digest の中で、上の slug を指している行を消す。
+   4群(本日/昨日/継続中/明日)の構造は保つ。行が減った群はそのままでよい(**別の記事で埋め直さない**)。
+   lead_slug が上の slug なら、残っている記事のうち rank: lead のものに差し替える
+2. stock/stories.yml … 上の記事の candidate_ids に由来して**この号で書き足された** published_facts を消す。
+   その話題のエントリがこの号で新規に作られたもので、他の記事が触れていないなら、エントリごと消す。
+   **この号より前からある事実は消さない**(metrics/stories-before-{date}.yml が組版前の台帳。これに
+   あるものは残す)
+3. stock/scheduled/*.json と stock/pending.yml … 上の記事の素材から**この号で**作られた予約・追跡を消す
+   (素材スナップショットの候補 id で分かる)。組版前からあったものは残す
+
+削除以外の編集(文言の手直し、行の追加、並べ替え)はしないこと。
+最後に「抜いた: digest N行 / 台帳 N件 / 予約 N件」の1行で報告してください。
+"""
+
+
 def assembly_prompt(date: str, number: int, aborted: list[str]) -> str:
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
     ab = (f"\n- 計画されたが出典照合で不成立になり存在しない記事: {', '.join(aborted)}(digest 等から参照しないこと)"
@@ -2479,8 +2511,9 @@ def main() -> int:
         # 1巡は「落とす+社説+組版+校閲」。始めたら最後まで通さないと、
         # 記事だけ消えて digest が古いままの紙面が残る
         # 1巡は「落とす+(社説∥組版)+校閲」。社説と組版は同時に走るので長いほうだけ積む
-        # 除外後の校閲は社説+紙面担当だけ(1波)。紙面全体の巡の合計で見積もらない
-        if not afford(t0, "校閲1波", 4, f"ブロック記事の除外({_pass + 1}巡目)", extra=12):
+        # 除外後の校閲は社説+紙面担当だけ(1波)。紙面全体の巡の合計で見積もらない。
+        # 組版は作り直さず「抜く」だけなので数分(作り直しは抜き損ねたときの保険)
+        if not afford(t0, "校閲1波", 4, f"ブロック記事の除外({_pass + 1}巡目)", extra=6):
             # ここは**人へ見せる文字列**の一覧。dict を入れると最後の通知組み立てで
             # 落ちる(実測 2026-09-04: 紙面は出来ていたのに compose が例外で終わった)
             unresolved = [f"{b.get('file')}: {(b.get('issue') or '')[:120]}"
@@ -2512,30 +2545,42 @@ def main() -> int:
                        + ")。社説がその記事に触れているなら、書き直してください。"
                          "触れていなければ直す必要はありません")
                 must = False
-            # **組版をやり直す。**digest が落とした記事を指したままだと lint が落ちるし、
-            # 既報台帳には「発行した」と残る。台帳は追記なので組版前まで巻き戻してから、
-            # 生き残った記事だけで作り直させる。社説の書き直しとは互いに触らないので同時に走らせる
-            for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
-                (ROOT / rel).write_bytes(pre_assembly[0][rel])
+            # **落とした記事を、組版の成果物から抜く。**digest が落とした記事を指したままだと
+            # lint が落ちるし、既報台帳には「発行した」と残る。以前は台帳を組版前へ巻き戻して
+            # 組版をまるごとやり直していたが、組版は記事数に比例して伸び(43本で25分)、
+            # 1本落とすたびに25分。締切前にそれが払えず、除外の巡に入れないまま号が止まった
+            # (2026-09-11: 残り24分/必要31分)。抜くだけのセッション(数分)で済ませ、
+            # 抜けたことを機械で確かめる。確かめられなければ従来どおり作り直す
             assign_ranks(date, plan, written, keep_lead=True)
-            errs = run_parallel(([
-                ("社説", lambda: rewrite_editorial(
+            ed_file = ROOT / "docs" / "_editions" / f"{date}.md"
+            jobs = [("組版から抜く", lambda: print(
+                claude_run(prune_prompt(date, dropped), timeout=900)[-300:], flush=True))]
+            if with_editorial:
+                jobs.insert(0, ("社説", lambda: rewrite_editorial(
                     date, number, plan.get("editorial_slug", ""), plan.get("editorial_brand", ""),
                     [{"file": f"docs/_editorials/{date}.md", "issue": why, "quote": ""}],
-                    must_change=must))] if with_editorial else []) + [
-                ("組版", lambda: print(
-                    claude_run(assembly_prompt(date, number, aborted))[-400:], flush=True)),
-            ])
+                    must_change=must)))
+            errs = run_parallel(jobs)
             if errs:
                 raise RuntimeError("；".join(errs))
             subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
                             "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
-            # 組版が落とした記事を書き戻していないか機械で確かめる
-            ed_file = ROOT / "docs" / "_editions" / f"{date}.md"
-            back = [s for s in dropped_by_review
-                    if ed_file.exists() and s in ed_file.read_text(encoding="utf-8")]
-            if back:
-                raise RuntimeError(f"組版のやり直しが、落とした記事を号に戻した: {back}")
+
+            def still_there() -> list[str]:
+                return [s for s in dropped_by_review
+                        if ed_file.exists() and s in ed_file.read_text(encoding="utf-8")]
+
+            code, _ = run_lint(date)
+            if still_there() or code != 0:
+                # 抜き損ねた(または lint が赤い)。台帳を組版前へ巻き戻して、作り直す
+                print(f"組版から抜けなかった(digest に残り {still_there()} / lint {code})。作り直す", flush=True)
+                for rel in [r for r in pre_assembly[0] if r.startswith("stock/")]:
+                    (ROOT / rel).write_bytes(pre_assembly[0][rel])
+                print(claude_run(assembly_prompt(date, number, aborted + dropped_by_review))[-400:], flush=True)
+                subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
+                                "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
+                if still_there():
+                    raise RuntimeError(f"組版のやり直しが、落とした記事を号に戻した: {still_there()}")
 
             rounds += 1
             # 残った記事は直していないので見直さない。落としたことで変わるのは

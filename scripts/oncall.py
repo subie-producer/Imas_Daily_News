@@ -195,6 +195,50 @@ def rerun_stage(stage: str, date: str) -> int:
     return r.returncode
 
 
+def notify_long(job: str, text: str, ok: bool = True, limit: int = 1900) -> None:
+    """Discord の 2000 字上限に合わせて分割して送る。"""
+    chunks, cur = [], ""
+    for line in text.splitlines(keepends=True):
+        if len(cur) + len(line) > limit and cur:
+            chunks.append(cur)
+            cur = ""
+        cur += line
+    if cur:
+        chunks.append(cur)
+    for i, c in enumerate(chunks):
+        notify(job, (f"({i + 1}/{len(chunks)}) " if len(chunks) > 1 else "") + c, ok=ok)
+
+
+def report_change(stage: str, date: str, fix: dict, transcript: list[dict], wt: Path,
+                  commit: str, branch: str, targets: list[str]) -> None:
+    """当番が入れた修正の報告。**必須**(編集長の指示: 勝手に変な変更を入れていないかを
+    人が見られるように)。何を・なぜ・どう検証したか・監査の判定・差分の要点・戻し方。
+    全文は metrics/oncall-<日付>-<工程>-report.md に、要約を Discord に流す。
+    """
+    stat = sh(["git", "show", "--stat", "--format=", commit], cwd=ROOT).stdout.strip()
+    diff = sh(["git", "show", "--format=", "--unified=2", commit], cwd=ROOT).stdout
+    reviews = [t.get("review") for t in transcript if t.get("review")]
+    integ = [t.get("integrate") for t in transcript if t.get("integrate")]
+    last = reviews[-1] if reviews else {}
+    verdict = f"{last.get('verdict', '?')}(往復 {len(reviews)}回)"
+    if integ:
+        verdict += f" / 当番が受け入れた指摘 {sum(len(x.get('accepted') or []) for x in integ)}件・反論 {sum(len(x.get('refuted') or []) for x in integ)}件"
+    head = (f"🛠 当番の修正報告: {stage} {date}\n"
+            f"commit: {commit[:10]}(main と {', '.join(targets) or 'main'})/ 退避ブランチ: {branch}\n"
+            f"診断: {(fix.get('diagnosis') or '')[:500]}\n"
+            f"原因: {(fix.get('root_cause') or '')[:400]}\n"
+            f"検証: {(fix.get('test_evidence') or '')[:500]}\n"
+            f"監査(Sol): {verdict}\n"
+            f"リスク: {(fix.get('risk') or '')[:300]} / 確信度 {fix.get('confidence', '?')}\n"
+            f"変更:\n{stat[:600]}\n"
+            f"戻し方: git revert {commit[:10]}(ops で実行し、生きているブランチにも取り込む)\n")
+    full = head + "\n## 差分\n```diff\n" + diff + "\n```\n\n## 往復の記録\n" + json.dumps(transcript, ensure_ascii=False, indent=1)
+    (ROOT / "metrics" / f"oncall-{date}-{stage}-report.md").write_text(full, encoding="utf-8")
+    # Discord には要点と差分の先頭を送る(全文は metrics に残す)
+    excerpt = "\n".join(l for l in diff.splitlines() if l.startswith(("+", "-")) and not l.startswith(("+++", "---")))[:1500]
+    notify_long("oncall", head + "差分の要点(全文: metrics/oncall-" + date + "-" + stage + "-report.md):\n```diff\n" + excerpt + "\n```")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", required=True, choices=["compose", "release"])
@@ -312,8 +356,10 @@ def main() -> int:
                     notify("oncall", f"{date} {stage}: 修正は main に入ったが {cur} への取り込みが衝突。手で解くこと", ok=False)
                     return 1
                 sh(["git", "push", "origin", cur], cwd=ROOT, timeout=120)
-            notify("oncall", f"{date} {stage}: 修正を main と {cur or 'main'} に入れた。"
-                             f"診断: {(fix.get('diagnosis') or '')[:200]} / 変更: {', '.join(fix.get('changed_files') or [])[:200]}")
+            # **報告は必須。**何を・なぜ・どう検証したか・監査の判定・差分の要点・戻し方を Discord へ
+            commit = sh(["git", "rev-parse", f"origin/{branch}"], cwd=ROOT).stdout.strip()
+            report_change(stage, date, fix, transcript, wt, commit, branch,
+                          ["main"] + ([cur] if cur and cur != "main" else []))
         else:
             notify("oncall", f"{date} {stage}: コードの欠陥ではないと判断(no_fix_needed): {(fix.get('diagnosis') or '')[:300]}")
         if a.no_rerun:

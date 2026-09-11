@@ -22,6 +22,7 @@ lint.py は紙面を検査するもので、スクリプト自身は見ていな
 import argparse
 import ast
 import builtins
+import subprocess
 import sys
 from pathlib import Path
 
@@ -112,8 +113,15 @@ def main() -> int:
         for e in errs:
             print(f"::error file=scripts/{name}::{e}")
             print(f"  [ERROR] scripts/{name}: {e}", file=sys.stderr)
+    # 静的検査だけでは実行時の欠陥(未定義変数・保存漏れ)を見逃す(監査指摘)。回帰テストも走らせる
+    r = subprocess.run([sys.executable, str(ROOT / "scripts" / "test_pipeline.py")],
+                       capture_output=True, text=True, cwd=ROOT, stdin=subprocess.DEVNULL)
+    if r.returncode != 0:
+        total += 1
+        print("::error file=scripts/test_pipeline.py::回帰テストが赤")
+        print((r.stdout + r.stderr)[-2000:], file=sys.stderr)
     if not args.quiet:
-        print(f"selfcheck: {total} errors ({len(TARGETS)} scripts)")
+        print(f"selfcheck: {total} errors ({len(TARGETS)} scripts + 回帰テスト)")
     return 1 if total else 0
 
 

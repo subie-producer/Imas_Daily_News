@@ -376,6 +376,8 @@ def main() -> int:
         else:
             # 分量基準: 中見出し行を除いた本文の非空白文字数
             prose = re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)
+            # 段落末の根拠 id コメント(<!-- F1 N2 -->。renderlib が付ける)は字数に入れない
+            prose = re.sub(r"<!--\s*(?:[FN]\d+\s*)+-->", "", prose)
             body_len = len(re.sub(r"\s", "", prose))
             # 枠と長さの整合は、**その規則で組まれた号だけ**に適用する。
             # それ以前は字数を先に決めて書かせていたので、いまの範囲には収まらない。

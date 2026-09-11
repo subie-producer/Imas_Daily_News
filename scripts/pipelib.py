@@ -114,6 +114,9 @@ def article_hash(path) -> str:
     seen = {"title": fm.get("title"), "lede": fm.get("lede"), "brand": fm.get("brand"),
             "candidate_ids": fm.get("candidate_ids"), "event_date": str(fm.get("event_date") or ""),
             "tags": fm.get("tags"), "corrected": fm.get("corrected"), "corrections": fm.get("corrections"),
+            # 校閲が突き合わせる根拠(見出し・リードの id、執筆が確かめた事実)も指紋に入れる(監査指摘)
+            "title_fact_ids": fm.get("title_fact_ids"), "lede_fact_ids": fm.get("lede_fact_ids"),
+            "verified_facts": fm.get("verified_facts"),
             # 出典の種別も読者に表示される。校閲後に変えても指紋が一致してはいけない(監査指摘)
             "sources": [[s.get("url"), s.get("label"), s.get("type")] for s in (fm.get("sources") or [])]}
     return hashlib.sha256((_json.dumps(seen, ensure_ascii=False, sort_keys=True, default=str) + "\n" + body)
@@ -177,22 +180,60 @@ def set_quiet(on: bool) -> None:
     _QUIET = on
 
 
-def notify(job: str, msg: str, ok: bool = True) -> None:
+def notify(job: str, msg: str, ok: bool = True, require: bool = False) -> bool:
+    """Discord へ通知する。戻り値は**届いたか**。
+    require=True は「人に届かなければ先へ進んではいけない」通知(当番の修正報告)で、webhook 未設定・
+    試験実行も**届いていない**として False を返す(監査指摘)。通常の通知は未設定なら True(黙認)。"""
     prefix = "✅" if ok else "🚨"
     text = f"{prefix} アイマスNEWS {job}: {msg}"
     if _QUIET:
         print(f"[試験実行・通知しない] {text}", flush=True)
-        return
+        return not require
     print(text, flush=True)
     url = ENV.get("DISCORD_WEBHOOK_URL")
-    if url:
+    if not url:
+        return not require
+    try:
+        req = urllib.request.Request(
+            url, data=json.dumps({"content": text}).encode(),
+            headers={"Content-Type": "application/json", "User-Agent": "ImasNewsBot/1.0"})
+        urllib.request.urlopen(req, timeout=15)
+        return True
+    except Exception as e:
+        print(f"(Discord 通知失敗: {e})", flush=True)
+        return False
+
+
+class JobLockTimeout(RuntimeError):
+    pass
+
+
+def job_lock(job: str, wait_min: int = 0):
+    """collect / compose / release / oncall が**同じ作業ツリーと Git を同時に触らない**ための排他。
+
+    pgrep で「いま走っていないか」を見るだけでは、確認した直後に timer が別の工程を起動できる
+    (監査指摘)。flock は OS が保証し、プロセスが死ねば外れる。
+    wait_min=0 なら取れなければ即 JobLockTimeout、それ以外はその分だけ待つ。
+    当番が起動する再実行(子プロセス)は、親が持っているので IMAS_JOB_LOCK=held で取らない。
+    戻り値は開いた fd(閉じるまで保持。プロセス終了で自動的に外れる)。
+    """
+    import fcntl
+    import os
+    if os.environ.get("IMAS_JOB_LOCK") == "held":
+        return None
+    (ROOT / "metrics").mkdir(exist_ok=True)
+    fd = os.open(ROOT / "metrics" / "jobs.lock", os.O_RDWR | os.O_CREAT, 0o644)
+    t0 = time.time()
+    while True:
         try:
-            req = urllib.request.Request(
-                url, data=json.dumps({"content": text}).encode(),
-                headers={"Content-Type": "application/json", "User-Agent": "ImasNewsBot/1.0"})
-            urllib.request.urlopen(req, timeout=15)
-        except Exception as e:
-            print(f"(Discord 通知失敗: {e})", flush=True)
+            fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            return fd
+        except OSError:
+            if time.time() - t0 >= wait_min * 60:
+                os.close(fd)
+                raise JobLockTimeout(f"{job}: 他の工程が作業ツリーを使っている(metrics/jobs.lock)。"
+                                     + (f"{wait_min}分待ったが空かない" if wait_min else "同時には走らせない"))
+            time.sleep(10)
 
 
 def notify_crash(job: str, e: Exception) -> None:

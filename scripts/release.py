@@ -208,6 +208,14 @@ def main() -> int:
     global DRY_RUN
     DRY_RUN = dry
 
+    # 同じ作業ツリーを collect/compose/当番と同時に触らない(監査指摘)。組版が長引いていれば待つ
+    from pipelib import JobLockTimeout, job_lock
+    try:
+        _lock = job_lock("release", wait_min=30)
+    except JobLockTimeout as e:
+        notify(str(e), ok=False)
+        return 1
+
     # 0. 作業ツリーが汚れていたら触らない(自動実行の安全弁)
     dirty = git("status", "--porcelain").stdout.strip()
     if dirty:
@@ -279,6 +287,10 @@ def main() -> int:
     print(r.stdout[-2000:], flush=True)
     if r.returncode != 0:
         notify(f"{date}: 発行中止(第{number}号)。{lint_failure_summary(r)}", ok=False)
+        # 組版が緑で通した号が発行時に赤なら、組版と発行の間の食い違い(基準コミット・台帳)か
+        # lint 自体の欠陥。人ではなく当番に渡す(監査指摘)
+        from pipelib import escalate
+        escalate("release", date, "発行前の lint が赤:\n" + (r.stdout or "")[-3000:])
         return 1
 
     label = f"第{number}号" + ("(試験)" if number == 0 else "")

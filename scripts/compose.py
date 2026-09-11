@@ -2471,8 +2471,10 @@ def main() -> int:
                 print(f"組版のやり直しに失敗: {e}", flush=True)
             code, lint_out = run_lint(date)
         if code != 0:
-            notify("compose", f"{date}: lint 赤が解消できず。人間判断が必要\n{lint_out[-500:]}", ok=False)
-            commit_and_push(branch, f"compose {date}: lint未解消(要人間判断)", "compose")
+            notify("compose", f"{date}: lint 赤が解消できず。当番に渡す\n{lint_out[-500:]}", ok=False)
+            commit_and_push(branch, f"compose {date}: lint未解消(当番へ)", "compose")
+            from pipelib import escalate
+            escalate("compose", date, "lint 赤が解消できず:\n" + lint_out[-3000:])
             return 1
 
     # **ここで一度コミットする。**以前はコミットが最後の1回しか無く、
@@ -2754,7 +2756,11 @@ def main() -> int:
         errs = [l for l in lint_out.splitlines() if l.startswith("::error")]
         reasons.append(f"lint エラー {len(errs)} 件:\n- " + "\n- ".join(
             e.split("::", 2)[-1] for e in errs[:5]))
-    notify("compose", f"{date}号: 発行前に人間判断が必要。" + "\n".join(reasons), ok=False)
+    notify("compose", f"{date}号: 発行前に人間判断が必要。当番に渡す。" + "\n".join(reasons), ok=False)
+    # 校閲が下ろさなかった指摘や lint 赤で止まった号は、実装の欠陥であることが多い。
+    # 人が起きるまで待たず、当番(Opus)が診断・修正し、監査(Sol)を通して回し直す
+    from pipelib import escalate
+    escalate("compose", date, "発行前に人間判断が必要:\n" + "\n".join(reasons)[:3000])
     return 1
 
 
@@ -2763,4 +2769,10 @@ if __name__ == "__main__":
         sys.exit(main())
     except Exception as e:
         notify_crash("compose", e)
+        # 例外で落ちたら実装の欠陥。当番へ(人が起きるまで待たない)
+        try:
+            from pipelib import escalate
+            escalate("compose", edition_date(), f"例外で停止: {type(e).__name__}: {e}\n{traceback.format_exc()[-2500:]}")
+        except Exception:
+            pass
         sys.exit(1)

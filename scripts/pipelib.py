@@ -68,6 +68,32 @@ def has_editorial(date: str) -> bool:
     return str(date) <= EDITORIAL_UNTIL
 
 
+# --- 当番(oncall)への引き継ぎ -------------------------------------------------
+# 工程が「人間判断が必要」で止まるとき、人へ投げる前に scripts/oncall.py を起動する。
+# 当番(Opus)が診断・修正し、監査(Sol)の敵対的レビューを通ったものだけを取り込んで再実行する。
+# 呼び出し側は今までどおり通知して終わってよい(当番は別プロセスで動く)。
+# ONCALL=off で止められる。当番自身が再実行する工程には ONCALL=off が付く(無限ループ防止)
+def escalate(stage: str, date: str, reason: str) -> bool:
+    import os
+    if ENV.get("ONCALL", "on").lower() == "off" or os.environ.get("ONCALL", "").lower() == "off":
+        return False
+    script = ROOT / "scripts" / "oncall.py"
+    if not script.exists():
+        return False
+    log = ROOT / "metrics" / f"oncall-{date}-{stage}.log"
+    try:
+        with log.open("a", encoding="utf-8") as f:
+            subprocess.Popen([sys.executable, str(script), "--stage", stage, "--date", date,
+                              "--reason", reason[:4000]],
+                             cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
+                             start_new_session=True)
+        print(f"当番(oncall)を起動した: {stage} {date}", flush=True)
+        return True
+    except Exception as e:
+        print(f"当番の起動に失敗: {e}", flush=True)
+        return False
+
+
 # --- 校閲した中身の指紋 ---------------------------------------------------
 # approve は「その時点の中身」に対する判定である。release が「最後の review JSON に
 # approve と書いてあるか」しか見ないと、校閲のあとに記事や digest が変わっても古い

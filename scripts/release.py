@@ -265,6 +265,10 @@ def main() -> int:
     verdict, detail = review_verdict(date)
     if verdict != "approve":
         notify(f"{date}: 発行中止(第{number}号)。校閲が approve していない({detail})", ok=False)
+        # 人へ投げる前に当番へ。compose が途中で止まった号は、当番が直して compose を回し直す
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from pipelib import escalate
+        escalate("compose", date, f"release: 校閲が approve していない({detail})")
         return 1
 
     # 4. マージ前ゲート: lint(REQUIREMENTS 4.4)

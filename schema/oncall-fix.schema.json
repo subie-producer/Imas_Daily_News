@@ -1,0 +1,17 @@
+{
+  "title": "oncall-fix",
+  "description": "当番(Opus)の修正報告。判断はここに、変更は作業ツリーに",
+  "type": "object",
+  "required": ["status", "diagnosis", "root_cause", "changed_files", "test_evidence", "risk", "confidence", "notes"],
+  "additionalProperties": false,
+  "properties": {
+    "status": {"enum": ["fixed", "no_fix_needed", "cannot_fix"], "description": "fixed=コードを直した / no_fix_needed=コードの欠陥ではない(データ・環境) / cannot_fix=人が要る"},
+    "diagnosis": {"type": "string", "maxLength": 1200, "description": "何が起きたか(ログ・状態からの事実)"},
+    "root_cause": {"type": "string", "maxLength": 800, "description": "設計・実装のどこが原因か"},
+    "changed_files": {"type": "array", "items": {"type": "string"}},
+    "test_evidence": {"type": "string", "maxLength": 1200, "description": "selfcheck と、直した箇所を実際に踏ませたテストの結果"},
+    "risk": {"type": "string", "maxLength": 600, "description": "この修正で新しく壊れうるもの"},
+    "confidence": {"type": "integer", "minimum": 0, "maximum": 100},
+    "notes": {"type": "string", "maxLength": 800}
+  }
+}

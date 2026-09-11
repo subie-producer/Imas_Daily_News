@@ -1,0 +1,25 @@
+{
+  "title": "oncall-review",
+  "description": "監査(Sol)の敵対的レビューの判定",
+  "type": "object",
+  "required": ["verdict", "must_fix", "notes"],
+  "additionalProperties": false,
+  "properties": {
+    "verdict": {"enum": ["approve", "reject"]},
+    "must_fix": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "claim", "evidence", "severity"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string"},
+          "claim": {"type": "string", "maxLength": 400, "description": "何が問題か(1文)"},
+          "evidence": {"type": "string", "maxLength": 600, "description": "根拠(ファイル:行、再現した入力、実測)。推測なら (推測) と書く"},
+          "severity": {"enum": ["blocks_publish", "corrupts_data", "quality", "style"]}
+        }
+      }
+    },
+    "notes": {"type": "string", "maxLength": 800}
+  }
+}

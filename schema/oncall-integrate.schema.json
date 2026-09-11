@@ -1,0 +1,22 @@
+{
+  "title": "oncall-integrate",
+  "description": "当番(Opus)が監査の指摘を敵対的に取り込んだ結果。受け入れたものは直し、反論するものは根拠を示す",
+  "type": "object",
+  "required": ["accepted", "refuted", "changed_files", "test_evidence", "notes"],
+  "additionalProperties": false,
+  "properties": {
+    "accepted": {
+      "type": "array",
+      "items": {"type": "object", "required": ["id", "fix"], "additionalProperties": false,
+                "properties": {"id": {"type": "string"}, "fix": {"type": "string", "maxLength": 400}}}
+    },
+    "refuted": {
+      "type": "array",
+      "items": {"type": "object", "required": ["id", "evidence"], "additionalProperties": false,
+                "properties": {"id": {"type": "string"}, "evidence": {"type": "string", "maxLength": 600, "description": "指摘が当たらない根拠(再現しない入力、コードの該当行、実測)"}}}
+    },
+    "changed_files": {"type": "array", "items": {"type": "string"}},
+    "test_evidence": {"type": "string", "maxLength": 1200},
+    "notes": {"type": "string", "maxLength": 600}
+  }
+}

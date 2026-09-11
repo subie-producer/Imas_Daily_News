@@ -1,38 +1,44 @@
 [
-  {
-    "id": "sched-2026-10-15-dsva-shinkaifes-2026-締切",
-    "dedup_key": "dsva-shinkaifes-2026",
-    "brand": "dsva",
-    "subject": "深海フェス2026「超・深海」第三次販売",
-    "kind": "締切",
-    "note": "第三次販売(先着)終了23:59",
-    "reserved_on": "2026-09-10",
-    "title": "深海フェス2026 超・深海",
-    "url": "https://pjblue.zaiko.io/ja/item/383839",
-    "source_type": "当事者",
-    "facts": [
-      "第三次販売(先着)は2026年9月23日22:00〜10月15日23:59"
-    ],
-    "src_candidate_id": "202609100228-grok-46",
-    "event_date": "2026-10-17"
-  },
-  {
-    "id": "sched-2026-10-15-sidem-anideal-daimaru-fragrance-2026-締切",
-    "dedup_key": "sidem-anideal-daimaru-fragrance-2026",
-    "brand": "sidem",
-    "subject": "SideM×Anideal・大丸コラボ香水",
-    "kind": "締切",
-    "reserved_on": "2026-09-11",
-    "facts": [
-      "予約期間は2026年9月11日(金)12:00〜10月15日(木)14:59",
-      "コラボビジュアル使用のサイン入りポストカードが付属、お届けは2027年3月中旬以降予定"
-    ],
-    "title": "SideM×Anideal・大丸香水を本日予約開始",
-    "url": "https://idolmaster-official.jp/news/01_19820",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "event_date": "2026-09-11",
-    "deadline": "2026-10-15",
-    "src_candidate_id": "202609101235-watch-0"
-  }
+ {
+  "id": "sched-2026-10-15-dsva-shinkaifes-2026-締切",
+  "dedup_key": "dsva-shinkaifes-2026",
+  "brand": "dsva",
+  "subject": "深海フェス2026「超・深海」第三次販売",
+  "kind": "締切",
+  "note": "第三次販売(先着)終了23:59",
+  "reserved_on": "2026-09-10",
+  "title": "深海フェス2026 超・深海",
+  "url": "https://pjblue.zaiko.io/ja/item/383839",
+  "source_type": "当事者",
+  "facts": [
+   "第三次販売(先着)は2026年9月23日22:00〜10月15日23:59"
+  ],
+  "src_candidate_id": "202609100228-grok-46",
+  "event_date": "2026-10-17"
+ },
+ {
+  "id": "sched-2026-10-15-sidem-anideal-daimaru-fragrance-2026-締切",
+  "dedup_key": "sidem-anideal-daimaru-fragrance-2026",
+  "brand": "sidem",
+  "subject": "SideM×Anideal大丸コラボ香水予約",
+  "kind": "締切",
+  "note": "予約受付終了(14:59)",
+  "reserved_on": "2026-09-11",
+  "title": "SideM × Anideal・大丸コラボレーション香水",
+  "url": "https://idolmaster-official.jp/news/01_19820",
+  "source_type": "公式",
+  "facts": [
+   "フレグランスブランドAnidealとの大丸コラボ第1弾メンバーのコラボレーション香水",
+   "予約期間: 2026年9月11日(金)12:00 ～ 2026年10月15日(木)14:59",
+   "付属品: コラボビジュアルを使用したサイン入りポストカード",
+   "お届け予定: 2027年3月中旬以降",
+   "販売ページ: https://info-anideal.com/",
+   "公式X: https://x.com/Anideal_info",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609101235-watch-0",
+  "deadline": "2026-10-15"
+ }
 ]

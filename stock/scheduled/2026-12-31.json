@@ -1,21 +1,29 @@
 [
-  {
-    "id": "sched-2026-12-31-gaku-garakuta-road-disc2-exchange-2026-締切",
-    "dedup_key": "gaku-garakuta-road-disc2-exchange-2026",
-    "brand": "gaku",
-    "subject": "「ガラクタロード」特装盤Disc2の12cm規格CD交換",
-    "kind": "締切",
-    "reserved_on": "2026-09-11",
-    "facts": [
-      "交換受付期限は2026年12月31日23時59分まで",
-      "交換対象は2026年9月10日11時59分までにASOBI STOREで注文した購入者、開封・使用済み品も対象"
-    ],
-    "title": "ガラクタロードDisc2、12cm CDへ交換対応",
-    "url": "https://shop.asobistore.jp/s/news/316",
-    "source_type": "準公式",
-    "verify": "confirmed",
-    "event_date": "2026-12-31",
-    "deadline": "2026-12-31",
-    "src_candidate_id": "202609100734-explore-5"
-  }
+ {
+  "id": "sched-2026-12-31-garakuta-road-disc2-exchange-締切",
+  "dedup_key": "garakuta-road-disc2-exchange",
+  "brand": "gaku",
+  "subject": "ガラクタロードDisc2交換受付",
+  "kind": "締切",
+  "note": "12cm規格CDへの交換受付終了",
+  "reserved_on": "2026-09-11",
+  "title": "ガラクタロード特装盤Disc2の交換対応",
+  "url": "https://shop.asobistore.jp/s/news/316",
+  "source_type": "準公式",
+  "facts": [
+   "対象商品は初星学園 H.I.F Memorial Single 特装盤「ガラクタロード」。",
+   "Disc2が8cmCDという特殊規格であることを商品ページに事前掲載できていなかった。",
+   "一部の再生機器でDisc2を再生できないとの問い合わせが発生している。",
+   "ASOBI STORE購入者の希望者を対象に、返品後、12cm規格CDへの交換対応を行う。",
+   "規格変更に伴い、デザインが一部変更される。",
+   "開封済み・使用済みの商品も交換対応の対象となる。",
+   "【交換受付期限】: 2026年12月31日（木）23:59まで。",
+   "交換対象: 2026年9月10日（木）11:59までに注文した購入者。",
+   "エンゲージメント: 高"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609100734-explore-5",
+  "deadline": "2026-12-31"
+ }
 ]

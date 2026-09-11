@@ -1,175 +1,237 @@
 [
-  {
-    "id": "sched-2026-09-12-sidem-11th-stage-2026-開幕",
-    "dedup_key": "sidem-11th-stage-2026",
-    "brand": "sidem",
-    "subject": "SideM 11th STAGE ～EVER EVER＠FTER～",
-    "kind": "開幕",
-    "note": "DAY1(TOYOTA ARENA TOKYO)",
-    "reserved_on": "2026-07-13",
-    "facts": [
-      "2026年9月12日(土)・13日(日)、TOYOTA ARENA TOKYOにて開催",
-      "テーマは「語り継がれる物語」、CDシリーズ「TRANSCENDENT T@LES」と連動",
-      "チケットはテラススイートプレミアム(1室5万円)、テラススイート(5万円)、スイート指定席(2.5万円)、一般指定席(1.35万円)",
-      "アソビストアプレミアム会員先行が複数次にわたり実施され、公式グッズ事前販売も第2弾までスタート済み",
-      "エンゲージメント: 高"
-    ],
-    "title": "SideM 11th STAGE ～EVER EVER＠FTER～ 9月開催決定",
-    "url": "https://idolmaster-official.jp/live_event/sidem11th/",
-    "source_type": "公式",
-    "via": "claude",
-    "verify": "confirmed",
-    "src_candidate_id": "202607130340-claude-104",
-    "event_date": "2026-09-12",
-    "deadline": "2026-09-13"
-  },
-  {
-    "id": "sched-2026-09-12-million-14th-live-締切",
-    "dedup_key": "million-14th-live",
-    "brand": "million",
-    "subject": "ミリオン14thLIVE 現地チケット一般販売締切",
-    "kind": "締切",
-    "note": "一般販売(先着)受付締切23:59",
-    "reserved_on": "2026-08-24",
-    "facts": [
-      "一般販売(先着)は2026年8月30日(日)12:00〜9月12日(土)23:59",
-      "公式リセール(抽選)は9月13日(日)9:59まで別途受付"
-    ],
-    "title": "ミリオン14th、現地チケット8/30受付開始",
-    "url": "https://idolmaster-official.jp/news/01_19676",
-    "source_type": "当事者",
-    "verify": "confirmed",
-    "src_candidate_id": "202608232010-watch-6"
-  },
-  {
-    "id": "sched-2026-09-12-cosmo-birthday-online-live-2026-lv-lottery-開幕",
-    "dedup_key": "cosmo-birthday-online-live-2026-lv-lottery",
-    "brand": "dsva",
-    "subject": "上水流宇宙 BIRTHDAY ONLINE LIVE 2026",
-    "kind": "開幕",
-    "note": "上水流宇宙20歳の誕生日ライブ本番",
-    "reserved_on": "2026-08-24",
-    "facts": [
-      "9/12バースデーライブのライブビューイング先行抽選申込は8/24 23:59まで(LivePocket)",
-      "上水流宇宙20歳の誕生日ライブ。配信と現地ライブビューイングを用意"
-    ],
-    "title": "上水流宇宙BDライブ現地LV抽選は明日23:59まで",
-    "url": "https://x.com/KamizuruCosmo/status/2091380172771782935",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608232010-grok-54",
-    "event_date": "2026-09-12"
-  },
-  {
-    "id": "sched-2026-09-12-sidem-joypolis3-2026-開幕",
-    "dedup_key": "sidem-joypolis3-2026",
-    "brand": "sidem",
-    "subject": "アイドルマスター SideM in JOYPOLIS 3",
-    "kind": "開幕",
-    "note": "開催開始",
-    "title": "SideM in JOYPOLIS 3詳細公開、2組が30周年アンバサダー",
-    "url": "https://x.com/GamerNeJp/status/2092090074058096746",
-    "source_type": "報道",
-    "verify": "confirmed",
-    "src_candidate_id": "202608260216-grok-97",
-    "event_date": "2026-09-12",
-    "facts": [
-      "「アイドルマスター SideM in JOYPOLIS 3」は2026年9月12日から12月6日まで東京ジョイポリスで開催",
-      "High×Jokerと神速一魂が東京ジョイポリス30周年アンバサダーに就任"
-    ],
-    "reserved_on": "2026-08-26"
-  },
-  {
-    "id": "sched-2026-09-12-sidem-royal-chess-lounge-2026-開幕",
-    "dedup_key": "sidem-royal-chess-lounge-2026",
-    "brand": "sidem",
-    "subject": "SideM×「Royal Chess Lounge」コラボカフェ 心斎橋店",
-    "kind": "開幕",
-    "note": "心斎橋店開催開始",
-    "title": "Royal Chess Lounge、心斎橋店開幕",
-    "url": "https://idolmaster-official.jp/news/01_19442",
-    "source_type": "準公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608251235-claude-13",
-    "event_date": "2026-09-12",
-    "facts": [
-      "「Royal Chess Lounge」コラボカフェの心斎橋店(SMILE BASE CAFE)は9月12日〜24日開催"
-    ],
-    "reserved_on": "2026-08-26"
-  },
-  {
-    "id": "sched-2026-09-12-sidem-11th-stage-2026-発売",
-    "dedup_key": "sidem-11th-stage-2026",
-    "brand": "sidem",
-    "subject": "SideM11th STAGE 会場CD発売(SOLO COLLECTION 04/JUMBLED SOLO COLLECTION 01)",
-    "kind": "発売",
-    "reserved_on": "2026-08-28",
-    "title": "【SideM11th】会場物販、CD・映像販売情報公開！& 配信チケットも販売中！",
-    "url": "https://idolmaster-official.jp/news/01_19627",
-    "source_type": "公式",
-    "facts": [
-      "「THE IDOLM@STER SideM 10th ANNIVERSARY P@SSION SOLO COLLECTION 04」(LACZ-10372、2,750円、THE虎牙道・F-LAGS・Legenders・C.FIRSTのソロVer.収録、全12曲)を発売",
-      "「THE IDOLM@STER SideM JUMBLED SOLO COLLECTION 01」(LACZ-10373、2,750円、Beit・W・High×Joker・S.E.Mのソロ Ver.収録、全11曲)を発売",
-      "発売日は9月12日、会場物販開催日時: 9月12日(土)・13日(日) TOYOTA ARENA TOKYO",
-      "いずれも通販を予定、詳細は後日案内"
-    ],
-    "event_date": "2026-09-12",
-    "src_candidate_id": "202608280232-claude-107"
-  },
-  {
-    "id": "sched-2026-09-12-sidem-cardfolio-vol2-2026-発売",
-    "dedup_key": "sidem-cardfolio-vol2-2026",
-    "brand": "sidem",
-    "subject": "アイドルマスター カードフォリオ SideM ver. vol.2",
-    "kind": "発売",
-    "note": "SideM 11th STAGE現地物販会場で先行販売",
-    "reserved_on": "2026-09-01",
-    "title": "カードフォリオ SideM ver. vol.2",
-    "url": "https://cardfolio.idolmaster-official.jp/news/?p=1057",
-    "source_type": "公式",
-    "verify": "unconfirmed",
-    "src_candidate_id": "202609010227-grok-40",
-    "event_date": "2026-09-12",
-    "facts": [
-      "9月12日(土)発売、1BOX 5,000円・1パック500円(1BOX10パック入り、1パック8枚入り)、全82種",
-      "SideM 11th STAGE現地物販会場で先行販売、オンライン販売は後日告知予定",
-      "購入者は「パシャっとチャレンジ」に参加可能(シリアル入りチケット同梱)"
-    ]
-  },
-  {
-    "id": "sched-2026-09-12-cg-vote-2026-special-exhibition-開始",
-    "dedup_key": "cg-vote-2026-special-exhibition",
-    "brand": "cg",
-    "subject": "シンデレラガール総選挙2026 特別展示(渋谷)",
-    "kind": "開始",
-    "note": "PickUpランキン 渋谷ちかみちで開幕(9/12・13の2日間)",
-    "reserved_on": "2026-09-08",
-    "title": "総選挙2026特別展示、9月12・13日に渋谷で開催",
-    "url": "https://idolmaster-official.jp/news/01_19787",
-    "source_type": "公式",
-    "facts": [
-      "シンデレラガール総選挙2026の特別展示を9月12日・13日10時〜21時にPickUpランキン 渋谷ちかみちで開催、入場無料",
-      "会場はチェックインスポットになり、チェックインすると投票券10枚を獲得可能"
-    ],
-    "src_candidate_id": "202609071836-watch-2",
-    "event_date": "2026-09-12"
-  },
-  {
-    "id": "sched-2026-09-12-dsva-shinkaifes-2026-開始",
-    "dedup_key": "dsva-shinkaifes-2026",
-    "brand": "dsva",
-    "subject": "深海フェス2026「超・深海」第二次販売",
-    "kind": "開始",
-    "note": "第二次販売(先着)開始22:00",
-    "reserved_on": "2026-09-10",
-    "title": "深海フェス2026 超・深海",
-    "url": "https://pjblue.zaiko.io/ja/item/383839",
-    "source_type": "当事者",
-    "facts": [
-      "第二次販売(先着)は2026年9月12日22:00〜9月19日23:59",
-      "会場は渋谷ストリームホール、開催日は10月17日・18日"
-    ],
-    "src_candidate_id": "202609100228-grok-46",
-    "event_date": "2026-10-17"
-  }
+ {
+  "id": "sched-2026-09-12-sidem-11th-stage-2026-開幕",
+  "dedup_key": "sidem-11th-stage-2026",
+  "brand": "sidem",
+  "subject": "SideM 11th STAGE ～EVER EVER＠FTER～",
+  "kind": "開幕",
+  "note": "DAY1(TOYOTA ARENA TOKYO)",
+  "reserved_on": "2026-07-13",
+  "facts": [
+   "2026年9月12日(土)・13日(日)、TOYOTA ARENA TOKYOにて開催",
+   "テーマは「語り継がれる物語」、CDシリーズ「TRANSCENDENT T@LES」と連動",
+   "チケットはテラススイートプレミアム(1室5万円)、テラススイート(5万円)、スイート指定席(2.5万円)、一般指定席(1.35万円)",
+   "アソビストアプレミアム会員先行が複数次にわたり実施され、公式グッズ事前販売も第2弾までスタート済み",
+   "エンゲージメント: 高"
+  ],
+  "title": "SideM 11th STAGE ～EVER EVER＠FTER～ 9月開催決定",
+  "url": "https://idolmaster-official.jp/live_event/sidem11th/",
+  "source_type": "公式",
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202607130340-claude-104",
+  "event_date": "2026-09-12",
+  "deadline": "2026-09-13"
+ },
+ {
+  "id": "sched-2026-09-12-million-14th-live-締切",
+  "dedup_key": "million-14th-live",
+  "brand": "million",
+  "subject": "ミリオン14thLIVE 現地チケット一般販売締切",
+  "kind": "締切",
+  "note": "一般販売(先着)受付締切23:59",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "一般販売(先着)は2026年8月30日(日)12:00〜9月12日(土)23:59",
+   "公式リセール(抽選)は9月13日(日)9:59まで別途受付"
+  ],
+  "title": "ミリオン14th、現地チケット8/30受付開始",
+  "url": "https://idolmaster-official.jp/news/01_19676",
+  "source_type": "当事者",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-watch-6"
+ },
+ {
+  "id": "sched-2026-09-12-cosmo-birthday-online-live-2026-lv-lottery-開幕",
+  "dedup_key": "cosmo-birthday-online-live-2026-lv-lottery",
+  "brand": "dsva",
+  "subject": "上水流宇宙 BIRTHDAY ONLINE LIVE 2026",
+  "kind": "開幕",
+  "note": "上水流宇宙20歳の誕生日ライブ本番",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "9/12バースデーライブのライブビューイング先行抽選申込は8/24 23:59まで(LivePocket)",
+   "上水流宇宙20歳の誕生日ライブ。配信と現地ライブビューイングを用意"
+  ],
+  "title": "上水流宇宙BDライブ現地LV抽選は明日23:59まで",
+  "url": "https://x.com/KamizuruCosmo/status/2091380172771782935",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-grok-54",
+  "event_date": "2026-09-12"
+ },
+ {
+  "id": "sched-2026-09-12-sidem-joypolis3-2026-開幕",
+  "dedup_key": "sidem-joypolis3-2026",
+  "brand": "sidem",
+  "subject": "アイドルマスター SideM in JOYPOLIS 3",
+  "kind": "開幕",
+  "note": "開催開始",
+  "title": "SideM in JOYPOLIS 3詳細公開、2組が30周年アンバサダー",
+  "url": "https://x.com/GamerNeJp/status/2092090074058096746",
+  "source_type": "報道",
+  "verify": "confirmed",
+  "src_candidate_id": "202608260216-grok-97",
+  "event_date": "2026-09-12",
+  "facts": [
+   "「アイドルマスター SideM in JOYPOLIS 3」は2026年9月12日から12月6日まで東京ジョイポリスで開催",
+   "High×Jokerと神速一魂が東京ジョイポリス30周年アンバサダーに就任"
+  ],
+  "reserved_on": "2026-08-26"
+ },
+ {
+  "id": "sched-2026-09-12-sidem-royal-chess-lounge-2026-開幕",
+  "dedup_key": "sidem-royal-chess-lounge-2026",
+  "brand": "sidem",
+  "subject": "SideM×「Royal Chess Lounge」コラボカフェ 心斎橋店",
+  "kind": "開幕",
+  "note": "心斎橋店開催開始",
+  "title": "Royal Chess Lounge、心斎橋店開幕",
+  "url": "https://idolmaster-official.jp/news/01_19442",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608251235-claude-13",
+  "event_date": "2026-09-12",
+  "facts": [
+   "「Royal Chess Lounge」コラボカフェの心斎橋店(SMILE BASE CAFE)は9月12日〜24日開催"
+  ],
+  "reserved_on": "2026-08-26"
+ },
+ {
+  "id": "sched-2026-09-12-sidem-11th-stage-2026-発売",
+  "dedup_key": "sidem-11th-stage-2026",
+  "brand": "sidem",
+  "subject": "SideM11th STAGE 会場CD発売(SOLO COLLECTION 04/JUMBLED SOLO COLLECTION 01)",
+  "kind": "発売",
+  "reserved_on": "2026-08-28",
+  "title": "【SideM11th】会場物販、CD・映像販売情報公開！& 配信チケットも販売中！",
+  "url": "https://idolmaster-official.jp/news/01_19627",
+  "source_type": "公式",
+  "facts": [
+   "「THE IDOLM@STER SideM 10th ANNIVERSARY P@SSION SOLO COLLECTION 04」(LACZ-10372、2,750円、THE虎牙道・F-LAGS・Legenders・C.FIRSTのソロVer.収録、全12曲)を発売",
+   "「THE IDOLM@STER SideM JUMBLED SOLO COLLECTION 01」(LACZ-10373、2,750円、Beit・W・High×Joker・S.E.Mのソロ Ver.収録、全11曲)を発売",
+   "発売日は9月12日、会場物販開催日時: 9月12日(土)・13日(日) TOYOTA ARENA TOKYO",
+   "いずれも通販を予定、詳細は後日案内"
+  ],
+  "event_date": "2026-09-12",
+  "src_candidate_id": "202608280232-claude-107"
+ },
+ {
+  "id": "sched-2026-09-12-sidem-cardfolio-vol2-2026-発売",
+  "dedup_key": "sidem-cardfolio-vol2-2026",
+  "brand": "sidem",
+  "subject": "アイドルマスター カードフォリオ SideM ver. vol.2",
+  "kind": "発売",
+  "note": "SideM 11th STAGE現地物販会場で先行販売",
+  "reserved_on": "2026-09-01",
+  "title": "カードフォリオ SideM ver. vol.2",
+  "url": "https://cardfolio.idolmaster-official.jp/news/?p=1057",
+  "source_type": "公式",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609010227-grok-40",
+  "event_date": "2026-09-12",
+  "facts": [
+   "9月12日(土)発売、1BOX 5,000円・1パック500円(1BOX10パック入り、1パック8枚入り)、全82種",
+   "SideM 11th STAGE現地物販会場で先行販売、オンライン販売は後日告知予定",
+   "購入者は「パシャっとチャレンジ」に参加可能(シリアル入りチケット同梱)"
+  ]
+ },
+ {
+  "id": "sched-2026-09-12-cg-vote-2026-special-exhibition-開始",
+  "dedup_key": "cg-vote-2026-special-exhibition",
+  "brand": "cg",
+  "subject": "シンデレラガール総選挙2026 特別展示(渋谷)",
+  "kind": "開始",
+  "note": "PickUpランキン 渋谷ちかみちで開幕(9/12・13の2日間)",
+  "reserved_on": "2026-09-08",
+  "title": "総選挙2026特別展示、9月12・13日に渋谷で開催",
+  "url": "https://idolmaster-official.jp/news/01_19787",
+  "source_type": "公式",
+  "facts": [
+   "シンデレラガール総選挙2026の特別展示を9月12日・13日10時〜21時にPickUpランキン 渋谷ちかみちで開催、入場無料",
+   "会場はチェックインスポットになり、チェックインすると投票券10枚を獲得可能"
+  ],
+  "src_candidate_id": "202609071836-watch-2",
+  "event_date": "2026-09-12"
+ },
+ {
+  "id": "sched-2026-09-12-dsva-shinkaifes-2026-開始",
+  "dedup_key": "dsva-shinkaifes-2026",
+  "brand": "dsva",
+  "subject": "深海フェス2026「超・深海」第二次販売",
+  "kind": "開始",
+  "note": "第二次販売(先着)開始22:00",
+  "reserved_on": "2026-09-10",
+  "title": "深海フェス2026 超・深海",
+  "url": "https://pjblue.zaiko.io/ja/item/383839",
+  "source_type": "当事者",
+  "facts": [
+   "第二次販売(先着)は2026年9月12日22:00〜9月19日23:59",
+   "会場は渋谷ストリームホール、開催日は10月17日・18日"
+  ],
+  "src_candidate_id": "202609100228-grok-46",
+  "event_date": "2026-10-17"
+ },
+ {
+  "id": "sched-2026-09-12-cg-election-2026-special-exhibition-開幕",
+  "dedup_key": "cg-election-2026-special-exhibition",
+  "brand": "cg",
+  "subject": "総選挙2026特別展示(渋谷)",
+  "kind": "開幕",
+  "note": "来場・チェックインで投票券10枚がもらえる",
+  "reserved_on": "2026-09-11",
+  "title": "シンデレラガール総選挙2026特別展示",
+  "url": "https://idolmaster-official.jp/news/01_19787",
+  "source_type": "公式",
+  "facts": [
+   "シンデレラガール総選挙2026のミッションチャレンジ期間終了直前に特別展示を開催。",
+   "開催日: 時：2026年9月12日（土）〜 13日（日）10:00～21:00",
+   "場所はPickUpランキン 渋谷ちかみち。",
+   "所在地は〒150-0043 東京都渋谷区道玄坂1-1-1、東京メトロ半蔵門線渋谷駅B2階。",
+   "入場料は無料。",
+   "展示期間中、PickUpランキン 渋谷ちかみちがチェックインスポットになる。",
+   "展示を見てアイドルマスターポータルでチェックインすると投票券10枚を受け取れる。",
+   "アイドル190人の紹介動画や公式出馬風ポスタービジュアルを使用した装飾を展示予定。",
+   "シンデレラガール総選挙2026の投票券がもらえる公式グッズや15周年イベント公式グッズの一部商品を展示予定。",
+   "展示商品はすべて監修中のデザインで、実際の商品と異なる場合がある。",
+   "グッズの購入はいずれも9月13日(日)まで。",
+   "エンゲージメント: 高"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609100734-explore-18",
+  "event_date": "2026-09-12",
+  "deadline": "2026-09-13"
+ },
+ {
+  "id": "sched-2026-09-12-cosmo-birthday-online-live-2026-開幕",
+  "dedup_key": "cosmo-birthday-online-live-2026",
+  "brand": "dsva",
+  "subject": "上水流宇宙BIRTHDAY ONLINE LIVE 2026",
+  "kind": "開幕",
+  "note": "誕生日ライブ本編開幕、四条貴音がゲスト出演",
+  "reserved_on": "2026-09-11",
+  "title": "上水流宇宙BDライブに四条貴音が出演",
+  "url": "https://idolmaster-official.jp/news/01_19835",
+  "source_type": "公式",
+  "facts": [
+   "2026年9月12日(土)開催の「上水流宇宙 BIRTHDAY ONLINE LIVE 2026」で、四条貴音がスペシャルゲストとして出演する。",
+   "公演名: 上水流宇宙 BIRTHDAY ONLINE LIVE 2026",
+   "開催場所: ASOBI STAGE（通常配信チケット対象）",
+   "開催場所: ユナイテッド・シネマ アクアシティお台場 [3番スクリーン]（限定グッズ付きライブビューイングチケット対象）",
+   "ライブビューイング会場は開場14:00／開演15:00予定。",
+   "本編は15:00～16:30予定。",
+   "配信チケット特典として終演後の「アフタートーク配信」を実施する。",
+   "アフタートーク配信は21:00～予定。",
+   "主演: 上水流宇宙",
+   "ゲスト: 灯里愛夏、レトラ",
+   "スペシャルゲスト: 四条貴音",
+   "ASOBI STAGE配信チケット価格: 5,000円（税込・機能利用料込）。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609100734-explore-10",
+  "event_date": "2026-09-12",
+  "deadline": "2026-10-12"
+ }
 ]

@@ -21,10 +21,10 @@ sources:
   type: 未確認
   label: 『アイドルマスター』20周年記念 星井美希ボイス搭載ワイヤレスイヤホン 再受注締切リマインド
 - url: https://onkyodirect.jp/shop/g/gMO1_AMH1AOW01MK2W/
-  type: 未確認
+  type: 当事者
   label: 星井美希コラボモデル 商品ページ
 - url: https://onkyodirect.jp/shop/pages/MIKI_EARPHONE.aspx
-  type: 未確認
+  type: 当事者
   label: 星井美希イヤホン 特設ページ
 ---
 オンキヨーは、『アイドルマスター』20周年記念「星井美希」モデルの再受注を9月11日15時まで受け付けている。星井美希（CV：長谷川明子）の新規録り下ろしボイスを搭載した、AOW01 MARKⅡの完全ワイヤレスイヤホンで、アクティブノイズキャンセリング、ゲームモード、オフモード／オンモードの2モードチェンジ、音声ガイダンス計52ワードに対応する。

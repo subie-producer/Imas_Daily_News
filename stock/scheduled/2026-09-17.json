@@ -1,21 +1,32 @@
 [
-  {
-    "id": "sched-2026-09-17-joint-tours-s1-ex-2026-開幕",
-    "dedup_key": "joint-tours-s1-ex-2026",
-    "brand": "joint",
-    "subject": "ツアマス「S1弾Ex」",
-    "kind": "開幕",
-    "reserved_on": "2026-09-11",
-    "facts": [
-      "S1弾Exは9月17日(木)午前7時開始、周防桃子とソロ曲「ローリング△さんかく」が追加される",
-      "全28種「S1弾Exツアーズレアカード」にSSRサポートカード「our summer continues」、新衣装「サマーティースタイル」、新アクセサリー「ドリルアーム」が登場",
-      "新シリーズ開幕記念ログインボーナスも同時開催、1日1回・5日ログインでツアーズレアチケット計1000枚(所持上限999枚)"
-    ],
-    "title": "『アイドルマスター TOURS』S1弾Ex、9/17開始",
-    "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260910.html",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "event_date": "2026-09-17",
-    "src_candidate_id": "202609101835-watch-4"
-  }
+ {
+  "id": "sched-2026-09-17-tours-s1-ex-2026-開始",
+  "dedup_key": "tours-s1-ex-2026",
+  "brand": "joint",
+  "subject": "ツアマス「S1弾Ex」",
+  "kind": "開始",
+  "note": "周防桃子・新曲・レアカードが登場開始",
+  "reserved_on": "2026-09-11",
+  "title": "アイドルマスター ツアーズ S1弾Ex開始",
+  "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260910.html",
+  "source_type": "公式",
+  "facts": [
+   "シリーズ名: 「S1弾Ex」",
+   "開始日時: 2026年9月17日(水) 午前7時00分",
+   "終了日時: 2026年10月28日(火) 23時59分",
+   "新キャラクター: 桃子 春穂（SSR支援カード「our summer continues」）",
+   "新楽曲: 「ローリング△さんかく」",
+   "新アイテム: 夏テーマの衣装と「Drill Arm」アクセサリー",
+   "28種類の「Tours Rare Cards」コレクション対象",
+   "ツアーズレアカード入手方法: ツアーズレアチケット20枚またはP マイル20+クレジット2で経験値UPチケット1枚とカード1枚獲得",
+   "ログインボーナスキャンペーン: イベント期間中5日連続ログインで最大1,000ツアーズレアチケット獲得",
+   "エンゲージメント: 中",
+   "言及アイドル: 桃子 春穂"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609101835-watch-4",
+  "event_date": "2026-09-17",
+  "deadline": "2026-10-28"
+ }
 ]

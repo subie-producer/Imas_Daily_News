@@ -288,15 +288,28 @@ def append_metric(kind: str, data: dict) -> None:
 
 
 def extract_json_array(text: str):
-    """LLM 出力から最初の JSON 配列を寛容に取り出す。"""
-    m = re.search(r"\[.*\]", text, re.DOTALL)
+    """LLM 出力から最初の JSON 配列を寛容に取り出す。読めなければ空配列。
+
+    「読めなかった」と「0件だった」を区別したい呼び出し側は extract_json_array_strict を使う。
+    """
+    v = extract_json_array_strict(text)
+    return v if v is not None else []
+
+
+def extract_json_array_strict(text: str):
+    """LLM 出力から最初の JSON 配列を取り出す。**読めなければ None**(0件とは別)。
+
+    定点観測は「処理を試みた URL」を既読にするので、出力が読めなかっただけの
+    バッチを 0 件として既読にすると、その新着は二度と候補にならない(監査指摘 P1-5)。
+    """
+    m = re.search(r"\[.*\]", text or "", re.DOTALL)
     if not m:
-        return []
+        return None
     try:
         v = json.loads(m.group(0))
-        return v if isinstance(v, list) else []
+        return v if isinstance(v, list) else None
     except json.JSONDecodeError:
-        return []
+        return None
 
 
 # 期間ラベル(編集規程15)。誰がいつ買えるのかが変わる語だけを列挙する。

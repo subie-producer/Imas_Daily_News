@@ -207,6 +207,11 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
             "各ページの内容を事実として抽出してください(まとめサイトの場合はページ内の一次ソースURLを url に採用)。"
             + ITEM_FORMAT + "\n\n" + json.dumps(blobs, ensure_ascii=False))
         cands = claude_call(prompt, timeout=420)
+        if cands is None:
+            # 読めなかったバッチは既読にしない(次回そのまま拾い直す)。0件とは別
+            notify("collect", f"定点観測: facts 化の出力が読めなかった({len(batch)}件)。次回に持ち越す", ok=False)
+            batch = []
+            cands = []
         for c in cands:
             c["_via"] = "watch"
 
@@ -291,14 +296,23 @@ def explore_argv(prompt: str) -> list[str]:
             "-c", "sandbox_workspace_write.network_access=true", prompt]
 
 
-def claude_exec(prompt: str, timeout: int = 300) -> list:
-    """定点観測の facts 化に使う Claude 呼び出し(探索とは別役)。"""
+def claude_exec(prompt: str, timeout: int = 300):
+    """定点観測の facts 化に使う Claude 呼び出し(探索とは別役)。
+
+    **読めなかったら None を返す**(0件の [] とは別)。呼び出し側はそのバッチを
+    既読にしない。以前は読めない出力も0件として既読にし、新着が二度と候補に
+    ならなかった(監査指摘 P1-5)。
+    """
+    from pipelib import extract_json_array_strict
     r = subprocess.run(
         ["claude", "-p", prompt, "--model", COLLECT_MODEL,
          "--allowedTools", "WebSearch,WebFetch",
          "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
         capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
-    return extract_json_array(r.stdout)
+    got = extract_json_array_strict(r.stdout)
+    if got is None:
+        print(f"定点観測: facts 化の出力が読めない(stderr: {(r.stderr or '')[-160:]})", flush=True)
+    return got
 
 
 def write_grok_prompt(outdir: Path, q: dict) -> Path:
@@ -497,8 +511,15 @@ def collect_explore(key: str, proc, out_f, err_f, deadline: float) -> tuple[list
         else:
             err = text
     err = (err or "") + cut
-    got = extract_json_array(out)
-    if not got:
+    from pipelib import extract_json_array_strict
+    got = extract_json_array_strict(out)
+    if got is None:
+        # 「読めなかった」は「0件」と別の失敗。前置き・途中切れ・JSON 破損で調査結果が丸ごと
+        # 消える経路なので、そう分かる形で残す(監査指摘 P1-5)
+        print(f"探索: {key} の出力が読めない(本文 {len(out or '')}字) stderr: {err.strip()[-200:]}", flush=True)
+        err = (err or "") + "\n[出力が読めない]"
+        got = []
+    elif not got:
         # 失敗の原因を捨てない(全滅したときに理由が分からなくなる)
         print(f"探索: {key} が0件 stderr: {err.strip()[-200:]}", flush=True)
     return got, err

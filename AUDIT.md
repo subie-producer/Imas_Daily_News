@@ -88,7 +88,7 @@ Grok に JSON を書かせると調べる能力が整形に食われるため、
    `scripts/fetch_page.py` で出典ページを読み直してから書く
 3. **枠割り**: 書き上がった本文の長さから rank を機械で決める(`assign_ranks`)
 4. **社説**: codex(terra)が1本書く — **2026-09-06 号で終了**。以後の号は書かない・校閲しない(`pipelib.EDITORIAL_UNTIL`)
-5. **組版**: Claude が号スナップショット(digest 等)を作る
+5. **組版**(`scripts/assemble.py`): コードが記事の要点を圧縮して渡し、1つの構造化セッションが digest・既報事実・続報予約・pending の**判断だけ**を JSON で返す。反映はコードで冪等(号の印を付けて剥がす)。lint が赤なら組版の欠陥として人へ渡す
 6. **校閲**: Claude(haiku)が**記事1本につき1セッション**(`prompts/review-article.md`)で並列に検査し、
    社説は `prompts/review-editorial.md`、紙面全体(主題の重複・記事の漏れ)は `prompts/review-paper.md`。
    ブロックがあれば**その記事だけ**を直して見直す

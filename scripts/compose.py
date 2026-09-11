@@ -38,6 +38,7 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import planlib
 import tags as tags_lib
 from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, EDITORIAL_MODEL,
                      COMPOSE_ARTICLE_MAX_BUDGET_USD,
@@ -327,40 +328,20 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
   - roundup は記事本数の下限に算入しない。「roundup があるから記事は少なくてよい」は誤り
 {fb}
 ## 出力
-`metrics/plan-{date}-{brand}.json` に次の JSON を書く(Write ツール使用。これ以外のファイルは作らない):
-{{
-  "articles": [
-    {{"slug": "英小文字ハイフンの記事ID(号内で一意になるよう面名や主題を含める)",
-      "brand": "{brand}",
-      "rank": "large|medium|small|roundup",
-      "angle": "記事の切り口・見出しの方向性(1文。roundup なら束ねる観点)",
-      "lead_score": 0,
-      "dedup_key": "主話題の dedup_key",
-      "candidate_ids": ["素材にする候補の id(統合分は全部。roundup は束ねる全件)"]}}
-  ],
-  "dropped": [
-    {{"dedup_key": "記事にも roundup にもしなかった主題の dedup_key",
-      "reason": "既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|その他",
-      "note": "reason だけで説明がつかない場合の一言(任意)"}}
-  ],
-  "cross_brand": [
-    {{"slug": "他の面が既に立てた記事の slug",
-      "dedup_key": "この面の主題(その記事へ統合する)",
-      "note": "なぜ両方の面にまたがるのか(1文)"}}
-  ]
-}}
+**ファイルは作りません。**答えを JSON で返してください(スキーマで、この面の{n_subjects}主題
+**それぞれに必ず1つ**の判定が求められます。id や slug は書きません。プログラムが付けます)。
 
-`cross_brand` は、他の面が取った話題が**この面にも同じくらい属する**ときだけ使います
-(該当が無ければ空配列)。記事は合同(joint)面へ移り、両面の素材が統合されます。
+主題キー(dedup_key)ごとの判定 `decisions[<dedup_key>]`:
+- `action`:
+  - `article` … 単独の記事にする。`angle`(切り口1文)・`rank`(large|medium|small)・`lead_score`(0〜100)を付ける
+  - `roundup` … 定常運営まとめに束ねる(規程13の例外)。`angle` に束ねる観点。面で1本にまとまります
+  - `merge` … この面の**別の主題**と同じ出来事なので、そちらの記事へ素材を統合する。`merge_into` に相手の dedup_key
+  - `drop` … 不採用。`reason`(既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|面違い|その他)と必要なら `note`
+  - `cross_brand` … 他の面が既に立てた記事の話題で、この面にも同じくらい属する。`claimed_slug` にその記事の slug
+- 使わない項目は空文字(lead_score は 0)にします
 
-`lead_score` は「この記事が号の一面に値する度合い」を 0〜100 で自己申告する値です
-(面内で最も大きなニュース1本にだけ高い値を付け、残りは 0〜30 程度)。
-
-**dropped は必須です。**この面の {n_subjects} 主題は、articles か dropped の
-どちらかに必ず1回現れなければなりません。書ききれないから省く、は不可です
-(不採用そのものは正当な判断です。理由を残さないことだけが問題です)。
-
-最後に「{brand}: 記事N本 / roundupN本 / 不採用N件」の1行で報告してください。
+`lead_score` は「この記事が号の一面に値する度合い」です(面内で最も大きなニュース1本にだけ高い値を付け、残りは 0〜30 程度)。
+不採用そのものは正当な判断です。理由を残すことだけが求められます。
 """
 
 
@@ -393,9 +374,9 @@ def lead_prompt(date: str, arts: list[dict]) -> str:
 あなたの仕事は「この記事から始めるとよい」と1本指すことだけである。
 
 ## 出力
-`metrics/plan-lead-{date}.json` に次の JSON を書く(Write ツール使用。これ以外のファイルは作らない):
-{{"lead_slug": "一面にする記事の slug(上のリストから1つ)",
-  "editorial_slug": "社説が起点にする記事の slug(上のリストから1つ。一面と同じでもよい)"}}
+**ファイルは作らず**、次の JSON だけを返してください(slug は上のリストから選びます):
+{{"lead_slug": "一面にする記事の slug",
+  "editorial_slug": "社説が起点にする記事の slug(一面と同じでもよい)"}}
 """
 
 
@@ -916,38 +897,6 @@ def rewrite_editorial(date: str, number: int, topic: str, brand: str,
     return ok
 
 
-def prune_prompt(date: str, dropped: list[str]) -> str:
-    """落とした記事を、組版の成果物(digest・台帳・予約)から**抜くだけ**のセッション。
-
-    以前は記事を落とすたびに台帳を組版前へ巻き戻し、組版をまるごとやり直していた。
-    組版は記事数に比例して伸び(43本で25分)、1本落とすたびに25分。締切前にそれが
-    払えず、除外の巡に入れないまま号が止まった(実測 2026-09-11: 残り24分/必要31分)。
-    抜くだけなら数分で済む。抜けたかどうかは機械で確かめる(digest に slug が残って
-    いないこと・lint が通ること)。確かめられなければ、従来どおり作り直す。
-    """
-    names = "\n".join(f"- {s}" for s in dropped)
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の組版担当です。{date}号は組版済みですが、
-校閲の結果、次の記事が**紙面から外れました**(ファイルは既に削除されています)。
-
-{names}
-
-やることは**外れた記事の痕跡を組版の成果物から抜くことだけ**です。他は一切変えないでください。
-
-1. docs/_editions/{date}.md … digest の中で、上の slug を指している行を消す。
-   4群(本日/昨日/継続中/明日)の構造は保つ。行が減った群はそのままでよい(**別の記事で埋め直さない**)。
-   lead_slug が上の slug なら、残っている記事のうち rank: lead のものに差し替える
-2. stock/stories.yml … 上の記事の candidate_ids に由来して**この号で書き足された** published_facts を消す。
-   その話題のエントリがこの号で新規に作られたもので、他の記事が触れていないなら、エントリごと消す。
-   **この号より前からある事実は消さない**(metrics/stories-before-{date}.yml が組版前の台帳。これに
-   あるものは残す)
-3. stock/scheduled/*.json と stock/pending.yml … 上の記事の素材から**この号で**作られた予約・追跡を消す
-   (素材スナップショットの候補 id で分かる)。組版前からあったものは残す
-
-削除以外の編集(文言の手直し、行の追加、並べ替え)はしないこと。
-最後に「抜いた: digest N行 / 台帳 N件 / 予約 N件」の1行で報告してください。
-"""
-
-
 def run_assemble(date: str, number: int) -> None:
     """組版(scripts/assemble.py)。判断は小さな構造化セッション、反映はコード、結果は冪等。
 
@@ -961,66 +910,6 @@ def run_assemble(date: str, number: int) -> None:
     if code == 1:
         raise RuntimeError("組版: 記事が無い")
     # 2 = lint が赤い(組版の欠陥として通知済み)。呼び出し側の lint ゲートで扱う
-
-
-def assembly_prompt(date: str, number: int, aborted: list[str]) -> str:
-    weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    ab = (f"\n- 計画されたが出典照合で不成立になり存在しない記事: {', '.join(aborted)}(digest 等から参照しないこと)"
-          if aborted else "")
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集部です。{date}({weekday}曜)号(number: {number})の記事群は docs/_posts/{date}-*.md に**執筆済み**です。組版と台帳更新だけを行ってください。
-
-## 作成物
-1. docs/_editions/{date}.md … 号スナップショット(frontmatter のみ。number: {number}, issued_at: "{date}T06:00:00+09:00"。
-   形式は直近の既存号と schema/edition.schema.json を確認。pages/article_count/corrected_count/ranking/birthdays は
-   後で scripts/derive.py が上書きするため仮値でよい。digest はあなたが本気で組む: 4群固定・SP1画面制約(各群4行・計12行)。
-   lead が存在しない場合のみ、最も重要な記事の rank を lead に昇格させ本文を lead の分量(800〜1200字)に加筆する)
-2. stock/stories.yml … 記事化した各話題の published_facts を追記(新規話題はエントリ追加。dedup_key は記事 frontmatter の candidate_ids から candidates を引く)
-3. stock/scheduled/<未来日>.json … 記事・候補から新しく判明した未来日程を続報予約する(締切前3日・締切・開幕・千秋楽・発売・結果)。
-
-   ### 何を予約してよいか(ここを間違えると、その日に書くことが無い記事が生まれる)
-
-   予約できるのは、**その日に催しが動くか、読者が何かをできる日**だけである。
-
-   - 予約してよい: 受付や販売の締切、抽選結果の発表、公演やイベントの開幕・千秋楽、
-     商品の発売、配信・放送の開始、期間限定施策の終了
-   - **予約してはいけない**:
-     - **その日に何も起きない、名目上の日付**(担当者の在籍最終日、契約上の区切り、
-       「◯月いっぱいで」の月末など)。読者が見に行ける催しも、できる手続きも無い
-     - **催しがもう終わっている話題の、後日の日付**。最終回・千秋楽・発売が済んだなら、
-       その話題の予約はもう作らない
-     - 発表そのものの記念日、告知から一定期間後、といった書き手が作った区切り
-
-   **迷ったら「その日、読者は何を見に行けるか・何ができるか」を一言で書けるか試す。**
-   書けないなら予約しない。日付が紙面に出てくるだけでは予約の理由にならない。
-
-   **紙面が読者に届くのは 06:00 である。**締切・終了の時刻がその日の 06:00 より前なら、
-   当日に予約しても読者は間に合わない。**前日に予約する。**
-   ゲームの締切は 4:59 が定番なので、これは頻繁に起きる
-   (実測: 4時59分に終わるランキングを当日号で報じ、読者が読む時点では終わっていた)。
-
-   (実測: 2026-08-28に「アイマスch APかっしー卒業」を8月31日の`終了`として予約したが、
-   最終配信は8月26日に済んでおり、31日には何も起きなかった。それでも予約が発火して
-   記事が1本生まれ、8月4日付の告知を本日のニュースとして報じることになった)
-
-   **素材スナップショット同梱が必須**: 形式は schema/scheduled.schema.json と既存ファイルを確認し、元候補の
-   title/url/facts/src_candidate_id を必ず写す(発火日は古い candidates を読まないため、ここが唯一の素材になる)。
-   `source_type` は候補の申告を写さず、`python3 scripts/source_type.py <url>` で引いた値を書く。
-   既に同じ id の予約がある場合は重複させない
-4. stock/pending.yml … 日付未確定の追跡事項の増減(日付が判明した項目は scheduled へ移して消す)
-
-## 注意
-{'- 社説 docs/_editorials/' + date + '.md は**別セッションが同時に書いています**。読まないし、書き換えない'
- + chr(10) + '  (まだ存在しないこともあります。存在を前提にした処理をしないこと)'
- if has_editorial(date) else
- '- **この号に社説はありません**(社説は ' + EDITORIAL_UNTIL + ' 号で終了)。docs/_editorials/ に何も作らないこと'}
-- 記事本文の事実関係は校閲済みの前提で**書き換えない**(digest は記事に書いてあることだけを使う)
-- 内規の文言を紙面に書かない{ab}
-
-## 仕上げ
-- `python3 scripts/derive.py --date {date} --write` を実行して機械算出フィールドを確定する
-- `python3 scripts/lint.py --base origin/main` を実行し、エラー0まで自分で修正する(警告も可能な限り解消)
-- 完了したら digest 4群の見出しを最後に報告する
-"""
 
 
 def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str:
@@ -1266,6 +1155,7 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
         trig_by_brand.setdefault(t.get("brand") or "other", []).append(t)
     results: dict[str, dict] = {}
     claimed: list[dict] = []
+    taken: set[str] = set()   # slug は号内で一意。面をまたいでコードが付ける
     groups = []
     for stage in order:
         present = [b for b in stage if b in by_brand]
@@ -1278,20 +1168,34 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
             out.unlink(missing_ok=True)  # 残骸の誤読防止
             prompt = brand_plan_prompt(date, b, len(by_brand[b]), trig_by_brand.get(b, []),
                                        claimed=claimed)
+            # **主題ごとに必ず1つの判定**を schema で求める(planlib)。id や slug は書かせない。
+            # 以前はファイルに JSON を書かせ、id の写し間違いを別セッションで直し、
+            # 漏れを別セッションで拾い直していた(監査指摘 P1-1/P1-2)
+            keys = [s["dedup_key"] for s in by_brand[b]]
             procs.append((b, out, subprocess.Popen(
                 ["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
+                 "--json-schema", json.dumps(planlib.plan_schema(keys), ensure_ascii=False),
                  "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
         for b, out, p in procs:
             try:
-                p.communicate(timeout=900)
+                so, se = p.communicate(timeout=900)
             except subprocess.TimeoutExpired:
                 p.kill()
+                so, se = "", "時間切れ"
             try:
-                results[b] = json.loads(out.read_text(encoding="utf-8"))
-            except Exception:
-                print(f"選定: {b} 面が計画を出せず(この面は不採用扱いで続行)", flush=True)
+                text = (so or "").strip()
+                try:
+                    ans = json.loads(text)
+                except Exception:
+                    ans = json.loads(re.search(r"\{.*\}", text, re.S).group(0))
+                results[b] = planlib.decisions_to_plan(b, by_brand[b], ans.get("decisions") or {}, taken)
+                out.write_text(json.dumps({"decisions": ans.get("decisions"), "plan": results[b]},
+                                          ensure_ascii=False, indent=1), encoding="utf-8")
+            except Exception as e:
+                print(f"選定: {b} 面が計画を出せず({type(e).__name__}: {(se or '')[-120:]})。"
+                      "この面は不採用扱いで続行", flush=True)
                 continue
             n_a = len(results[b].get("articles") or [])
             n_d = len(results[b].get("dropped") or [])
@@ -1341,14 +1245,23 @@ def pick_lead(date: str, plan: dict) -> None:
     arts = plan["articles"]
     if not arts:
         return
-    out = ROOT / "metrics" / f"plan-lead-{date}.json"
-    out.unlink(missing_ok=True)
-    claude_run(lead_prompt(date, arts), timeout=600)
+    # 答えは schema で受ける(slug は一覧の中から)。ファイルを書かせない
+    slugs = [a["slug"] for a in arts]
+    schema = json.dumps({"type": "object", "required": ["lead_slug", "editorial_slug"],
+                         "additionalProperties": False,
+                         "properties": {"lead_slug": {"enum": slugs}, "editorial_slug": {"enum": slugs}}},
+                        ensure_ascii=False)
     pick = {}
     try:
-        pick = json.loads(out.read_text(encoding="utf-8"))
-    except Exception:
-        pass
+        r = subprocess.run(["claude", "-p", lead_prompt(date, arts), "--model", CLAUDE_MODEL,
+                            "--json-schema", schema, "--dangerously-skip-permissions",
+                            "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+                           capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL, cwd=ROOT)
+        text = (r.stdout or "").strip()
+        pick = json.loads(text) if text.startswith("{") else json.loads(re.search(r"\{.*\}", text, re.S).group(0))
+        (ROOT / "metrics" / f"plan-lead-{date}.json").write_text(json.dumps(pick, ensure_ascii=False), encoding="utf-8")
+    except Exception as e:
+        print(f"一面の選定セッションが答えを返さなかった({type(e).__name__})", flush=True)
     by_slug = {a["slug"]: a for a in arts}
     lead = by_slug.get(pick.get("lead_slug"))
     if lead is None or lead.get("rank") == "roundup":

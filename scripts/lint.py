@@ -245,9 +245,11 @@ def check_before_issue(rep, path, text, edition_date, where):
             continue
         hit = [w for w in UPCOMING_WORDS if w in sentence]
         if hit:
-            rep.error(path, f"発行前の時刻({where}): 「{marks[0]}」は発行 {ISSUE_HOUR}:00 より前なのに"
-                            f"「{'/'.join(hit)}」と、これからのこととして書いている。"
-                            f"過去として書くか、前日の号で扱う(規程12)")
+            # 語の近接で見るヒューリスティック。引用や複数の催しが混ざる文を理解しないので、
+            # **赤にせず所見として校閲へ渡す**(監査指摘)。校閲が文脈を確かめて判定する
+            rep.warn(path, f"[所見] 発行前の時刻({where}): 「{marks[0]}」は発行 {ISSUE_HOUR}:00 より前なのに"
+                           f"「{'/'.join(hit)}」と、これからのこととして書いている可能性。"
+                           f"当たっていれば過去として書くか、前日の号で扱う(規程12)")
 
 
 def check_tense(rep, path, text, edition_date, where):
@@ -262,10 +264,12 @@ def check_tense(rep, path, text, edition_date, where):
                 (edition_date + datetime.timedelta(days=RELATIVE_WORDS[w])) for w in rels
             }
             if not any(e.month == month and e.day == day for e in expected):
-                rep.error(
+                # 相対語と日付の共起だけで見るヒューリスティック(「本日発表、9月19日開催」の
+                # ような正しい文も引っかかる)。**赤にせず所見として校閲へ渡す**(監査指摘)
+                rep.warn(
                     path,
-                    f"時制矛盾({where}): 「{'/'.join(rels)}」と「{m.group(0)}」が同一文に共起するが"
-                    f"号日付 {edition_date} と整合しない",
+                    f"[所見] 時制矛盾({where}): 「{'/'.join(rels)}」と「{m.group(0)}」が同一文に共起するが"
+                    f"号日付 {edition_date} と整合しない可能性。文脈を確かめて判定すること",
                 )
 
 

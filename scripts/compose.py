@@ -1957,7 +1957,7 @@ def _parse_review(text: str, err: str, where: str) -> dict:
 
 def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                   editorial: bool = True, paper: bool = True,
-                  carry: dict | None = None) -> dict:
+                  carry: dict | None = None, findings: str = "") -> dict:
     """校閲。執筆(Codex)と別ベンダーにするため Claude(REVIEW_MODEL=haiku)で実施。
 
     **記事は1本ずつ、並列で見る。**紙面まるごとを1セッションで校閲していたが、
@@ -1990,8 +1990,19 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     # 消える(監査指摘)。担当が走り直すまで、その担当の指摘は残す
     jobs = []
     art_ck = (ROOT / "prompts" / "review-article.md").read_text(encoding="utf-8")
+    # lint の機械所見(時制・発行前の時刻など、語の近接で見るヒューリスティック)は赤にせず、
+    # その記事の校閲へ渡す。校閲が文脈を確かめ、当たっていればブロックにする(監査指摘)
+    notes_by_file: dict[str, list[str]] = {}
+    for l in (findings or "").splitlines():
+        m3 = re.match(r"::warning file=(docs/_posts/[^:]+)::(\[所見\].*)$", l)
+        if m3:
+            notes_by_file.setdefault(m3.group(1), []).append(m3.group(2))
     for n in names:
-        jobs.append((n, art_ck.replace("{DATE}", date).replace("{FILE}", n) + again,
+        hint = ""
+        if notes_by_file.get(f"docs/_posts/{n}"):
+            hint = ("\n\n## 機械の所見(語の近接で見た仮説。文脈を確かめ、当たっていればブロック、外れていれば無視)\n- "
+                    + "\n- ".join(notes_by_file[f"docs/_posts/{n}"]))
+        jobs.append((n, art_ck.replace("{DATE}", date).replace("{FILE}", n) + hint + again,
                      f"docs/_posts/{n}", f"article:{n}"))
     if editorial and (ROOT / "docs" / "_editorials" / f"{date}.md").exists():
         jobs.append(("社説",
@@ -2506,7 +2517,8 @@ def main() -> int:
         # 見出しや主題が変われば、別の記事との重複が新しく生まれうる(監査指摘)。
         # 見出しだけ読む担当なので1セッションで済む
         review = claude_review(date, rounds, targets=retarget, editorial=retarget_ed,
-                               paper=(retarget is None or bool(retarget)), carry=review)
+                               paper=(retarget is None or bool(retarget)), carry=review,
+                               findings=lint_out)
         if review.get("verdict") == "approve":
             break
         if review.get("verdict") == "error":

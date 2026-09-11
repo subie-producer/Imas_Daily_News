@@ -93,5 +93,24 @@
       "「パラレル回廊」の空席分先着予約は9月16日18時から受付"
     ],
     "src_candidate_id": "202609050237-grok-82"
+  },
+  {
+    "id": "sched-2026-09-16-million-millicol-2026-09-終了",
+    "dedup_key": "million-millicol-2026-09",
+    "brand": "million",
+    "subject": "ミリシタ月例イベント「ミリコレ！～MILLIONLIVE COLLECTION～」(9月)",
+    "kind": "終了",
+    "reserved_on": "2026-09-11",
+    "facts": [
+      "開催期間は9月10日15:00〜9月16日20:59まで",
+      "限定カードはSR「夜明けの魔法少女 北沢志保」とSR「水神の破魔弓 エミリー」、先行追加カードはR「エキサイティングダンス 馬場このみ」"
+    ],
+    "title": "ミリシタ「ミリコレ！」9/10開幕、限定カード登場",
+    "url": "https://x.com/imasml_theater/status/2097929312095875138",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "event_date": "2026-09-16",
+    "deadline": "2026-09-16",
+    "src_candidate_id": "202609110225-grok-59"
   }
 ]

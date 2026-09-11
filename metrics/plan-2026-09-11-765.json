@@ -1,0 +1,26 @@
+{
+  "articles": [
+    {
+      "slug": "765-onkyo-miki-earphone-reorder-deadline",
+      "brand": "765",
+      "rank": "small",
+      "angle": "20周年記念「星井美希」モデル完全ワイヤレスイヤホンの再受注、本日9月11日15時に締切",
+      "lead_score": 5,
+      "dedup_key": "765-onkyo-miki-earphone-voice-2026",
+      "candidate_ids": ["sched-2026-09-11-765-onkyo-miki-earphone-voice-2026-締切"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "1-2026-09-10-21-00-jst-twin-live",
+      "reason": "既報",
+      "note": "『dual twin live tour』の配信プロデュースショット投稿キャンペーン(#ふたごぼしプロデュースショット等、9/27まで募集)は765-dual-twinlive-venue-cdで既報。9/10の公式紹介ポストは同キャンペーンの一環の紹介で新事実なく、締切・開幕・千秋楽等の当日トリガーにも該当しない。"
+    },
+    {
+      "dedup_key": "3-dual-twin-live-tour-6",
+      "reason": "既報",
+      "note": "全6公演の配信視聴(xRライブストリーミング)チケットが9/27まで販売中であることは765-dual-twinlive-venue-cdで既報。「現在受付中」という現状案内のみで新事実なし。verify=unconfirmedかつevent_date/published_dateが2026-11-25という本号と整合しない値で出典の信頼性も低い。"
+    }
+  ],
+  "cross_brand": []
+}

@@ -326,5 +326,25 @@
     ],
     "src_candidate_id": "202609080735-watch-1",
     "deadline": "2026-09-13"
+  },
+  {
+    "id": "sched-2026-09-13-gaku-snap-series-2026-締切",
+    "dedup_key": "gaku-snap-series-2026",
+    "brand": "gaku",
+    "subject": "学園アイドルマスター「スナップシリーズ」グッズ",
+    "kind": "締切",
+    "reserved_on": "2026-09-11",
+    "facts": [
+      "受注は9月13日(日)まで、アソビストアで販売中",
+      "トレーディングチェキ600円、チェキホルダー1,500円、アクリルチェキスタンド2,800円、キャラファイングラフ16,000円、B2タペストリー5,000円(いずれも税込)",
+      "発送は2026年12月中旬以降順次予定"
+    ],
+    "title": "学マス「スナップシリーズ」9月13日まで受注",
+    "url": "https://x.com/gkmas_official/status/2097646887763652763",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "event_date": "2026-09-13",
+    "deadline": "2026-09-13",
+    "src_candidate_id": "202609101235-explore-11"
   }
 ]

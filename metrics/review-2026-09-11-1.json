@@ -1,0 +1,230 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-11-cg-dam-karaoke-song-add.md",
+   "issue": "新事実なしの続報（規程5）",
+   "quote": "lede: カラオケDAMで『アイドルマスター シンデレラガールズ』の「シンデレラNo.1」と「ROSE ～禁じられた愛～」が9月9日付で追加配信された。",
+   "scope": "article:2026-09-11-cg-dam-karaoke-song-add.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-cg-election-2026-goods-wave2.md",
+   "issue": "新事実なしの続報＆ニュース性の欠如。発行日（9月11日）時点で新しく発表されたことがない。記事の対象は9月10日にX投稿された情報であり、セット内容詳細の記載があるものの、受注開始・終了などの当日トリガーがなく、既報（metrics/stories-before-2026-09-11.yml）には『シンデレラガール総選挙2026』項下で『このほか公式プレミアムプロデューサーオーソライズセット(5,000円)、公式カードコレクションブックケース(2,500円)、公式カードコレクションメタルオーナメントも受注対象、商品は11月下旬以降順次発送予定』と既に記載されている。",
+   "quote": "アイドルマスター シンデレラガールズ公式Xは9月10日、「シンデレラガール総選挙2026」公式グッズのプレミアムプロデューサーオーソライズセットを案内した。受注は9月13日(日)23時59分まで。",
+   "scope": "article:2026-09-11-cg-election-2026-goods-wave2.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-gaku-hatsuboshi-afterschool-talk-roadmap.md",
+   "issue": "【ブロック項目3: URL捏造・出典の不一致】sources に記載されている公式URL (https://idolmaster-official.jp/news/01_19731) は、候補ファイルでは別の話題「学マスH.I.F編・新ガシャなど発表」に紐付いている。記事本文の「公式ポータルも同配信の告知を9月9日付で掲載している」という記述は、「はつぼし放課後とーく」の告知ページを指していると解釈されるが、sources の URL はH.I.F編の話題ページであり不一致である。別の話題のページである場合はブロック対象。",
+   "quote": "なお、公式ポータルも同配信の告知を9月9日付で掲載している。",
+   "scope": "article:2026-09-11-gaku-hatsuboshi-afterschool-talk-roadmap.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-11-765-onkyo-miki-earphone-reorder-deadline.md",
+   "issue": "候補ファイルが無効: frontmatter の candidate_ids で指定された候補「sched-2026-09-11-765-onkyo-miki-earphone-voice-2026-締切」が candidates ファイルに存在しません。出典確認のプロセスエラーの可能性があります。",
+   "scope": "article:2026-09-11-765-onkyo-miki-earphone-reorder-deadline.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-765-onkyo-miki-earphone-reorder-deadline.md",
+   "issue": "出典確認が必須: sources が「未確認」というラベルで、新事実（支払い方法・送料無料）が onkyodirect.jp のページに実際に記載されているか、URL を開いて確認してください。",
+   "scope": "article:2026-09-11-765-onkyo-miki-earphone-reorder-deadline.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-765-onkyo-miki-earphone-reorder-deadline.md",
+   "issue": "分量不足の可能性: 本文が約183字で、rank: small の下限（250字）に満たない可能性があります。sources に商品仕様（AOW01 MARKⅡ、音声ガイダンス仕様など）の情報があれば、記事に追加して分量を補うことを検討してください。",
+   "scope": "article:2026-09-11-765-onkyo-miki-earphone-reorder-deadline.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-cg-dam-karaoke-song-add.md",
+   "issue": "既報との照合：このカラオケDAMへのシンデレラガールズ楽曲追加の話題は、2026-09-10号ですでに掲載済み（story_id: cg-dam-songs-2026、first_published: 2026-09-10）。既報の published_facts と今回の記事を比較すると、「配信日：9月9日」「曲名」「歌唱者」ともに既報と同一内容であり、新しい事実がない。また、9月9日は発行日（9月11日）より前の過去の出来事であり、「本日終了」「本日開幕」「本日発売」などの当日トリガーに該当しない。新事実も当日トリガーもない続報のため、規程5によりブロック対象。",
+   "scope": "article:2026-09-11-cg-dam-karaoke-song-add.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-cg-election-2026-goods-wave2.md",
+   "issue": "分量不足：rank: small の下限は250字だが、本文は約190字。セット内容詳細以外に、商品の用途（『名刺交換などに使える』lede）や購入可能な拠点などを補足して分量を増やすか、より重要度の高い当日ニュース・当日トリガーのある記事に差し替えを検討。",
+   "scope": "article:2026-09-11-cg-election-2026-goods-wave2.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-cg-election-2026-mission-deadline.md",
+   "issue": "分量不足（174字、rank: small の目安250字以上）。ただし当日トリガー（ミッション終了3日前）の短報として機能しており、出典に追加可能な新情報は投票期間開始日など過去の日付に限定されるため、短いままでも許容できる。",
+   "scope": "article:2026-09-11-cg-election-2026-mission-deadline.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-cg-election-2026-special-exhibition.md",
+   "issue": "frontmatter の candidate_ids が存在しないID（202609100734-explore-18）を指しています。正しくは 202609090734-explore-0 です。sources は正しく指定されているため読者への影響なし。",
+   "scope": "article:2026-09-11-cg-election-2026-special-exhibition.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-cg-toybox-extra12-novel.md",
+   "issue": "分量不足：rank: small では 250 字以上が目安ですが、本文は 206 字です。出典のメクリメクル連載ページや公式 X ポスト、公式サイトに記載されているライブ開催場所（Shibuya LOVEZ）、ストーリー概要、協力企業などの詳細を追加できます。",
+   "scope": "article:2026-09-11-cg-toybox-extra12-novel.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-gaku-4koma-169.md",
+   "issue": "分量不足: rank small（下限250字）に対して本文が約40字と著しく不足。候補から「第169話『百発百中☆イントロクイズ』」といった最小限の情報しか抽出されていない。公式Xにおける投稿内容は画像のみで詳細情報が得られない制約はありますが、4コマのタイトル以外に読者の興味を引く要素が記事に無い状態。",
+   "scope": "article:2026-09-11-gaku-4koma-169.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-gaku-afterschool-namco-campaign.md",
+   "issue": "分量不足：本文が82文字で、small ランク下限の250文字に達していない。候補の facts に「キャンペーンは2026年9月25日から開始」と記載されているが、記事には開始日が記載されていない。「9月25日開始」「2026年9月25日から」などを追加することで、読者の理解が深まり、分量も埋まる見込み。",
+   "scope": "article:2026-09-11-gaku-afterschool-namco-campaign.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-gaku-fujita-kanagiku-figure-order.md",
+   "issue": "分量不足: rank: small の下限 250字に対し本文が約 180字。ただし出典に価格・発売日等の詳細情報が無く、拾える情報は限定的。",
+   "scope": "article:2026-09-11-gaku-fujita-kanagiku-figure-order.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-gaku-goldrush-ep66-free.md",
+   "issue": "分量不足。rank:small の目安は 250 字。本文は lede を含めて約 190 字。出典には単行本情報や他話数の掲載日が記載されているが、記事の本質を損なわない範囲での追加情報がないか検討されたい",
+   "scope": "article:2026-09-11-gaku-goldrush-ep66-free.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-gaku-hatsuboshi-afterschool-talk-roadmap.md",
+   "issue": "記事の主要な事実（ガラクタロード実装見通し等）は二次情報(AppGameLog)から来ており、候補ファイルの facts に全て記載されている。ただし sources に追加されている公式URL の正当性に疑問がある。同じ URL が候補ファイルで別の話題に紐付いているため、適切な公式出典が sources に含まれているかの確認が必要。",
+   "scope": "article:2026-09-11-gaku-hatsuboshi-afterschool-talk-roadmap.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-gaku-producer-ranking-season4.md",
+   "issue": "分量不足: rank:small は 250字以上が要件ですが、記事は 58字に留まっています。出典候補に「開催期間：11/12(木)4:59まで(予定)」「集計期間：11/15(日)10:59まで(予定)」という情報があり、これらを本文に追加すれば容易に字数を埋められます。",
+   "scope": "article:2026-09-11-gaku-producer-ranking-season4.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-gaku-shinozawa-me-mv-announce.md",
+   "issue": "分量不足。候補の facts に「22:00から初星学園チャンネルで公開予定」と記載されているが、記事には公開時間が未記載。出典に記載されている具体的な日時（9月20日22:00）を含めて本文を拡充できます（現在66字、小報の最小250字に大幅不足）。",
+   "scope": "article:2026-09-11-gaku-shinozawa-me-mv-announce.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-gaku-shurakuryoko-3rd-ver-stream.md",
+   "issue": "分量不足：small ランクの下限は 250字だが、本文は 116字。出典の候補に「2026年9月22日から配信開始」「サブスク・ダウンロードで配信」という情報が含まれているため、これらを追加することで分量を補える。",
+   "scope": "article:2026-09-11-gaku-shurakuryoko-3rd-ver-stream.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-general-sidem-shiny-gaku-wallpaper-distribution.md",
+   "issue": "分量不足：rank: small で 80 字程度。目安の 250 字に大きく下回っています。ただし候補のfactsで「本文にダウンロードURLの記載はなし」と明記されており、出典にダウンロード方法・配布期間などの詳細情報がないため拡張困難。",
+   "scope": "article:2026-09-11-general-sidem-shiny-gaku-wallpaper-distribution.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-joint-tours-s1-ex-open.md",
+   "issue": "分量不足：rank=lead は 1000 字要件だが、本文は 700 字（300 字不足）。出典に記載されている Pマイル獲得方法の詳細（通常プレイで 1、報酬ブーストプレイで 6、その日初回でさらに +2、4 枚追加購入でさらに +3）、ツアーズレアカード 28 種の具体的なラインナップ説明、SSR サポートカード『our summer continues』の効果説明などを拾えば埋まるはず。",
+   "scope": "article:2026-09-11-joint-tours-s1-ex-open.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-million-millicol-202609-details.md",
+   "issue": "分量不足: rank: small で本文が約200字ですが、下限は250字です。gamerch の出典には「豪華報酬」「詳細はイベント専用ページで」の他に、獲得可能なアイテムや報酬の階級別情報が記載されている可能性があります。",
+   "scope": "article:2026-09-11-million-millicol-202609-details.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-million-milliradio-0910.md",
+   "issue": "分量不足: 本文が約213字で rank: small の下限250字に達していない。「毎週配信」「14thライブ日程」「チケット申込状況」など、出典に書かれている背景情報を拾えば埋まるはず",
+   "scope": "article:2026-09-11-million-milliradio-0910.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-million-opera-seria-popup-open.md",
+   "issue": "分量不足。rank: small の下限は 250 字ですが、本文は約 210 字です。出典に記載されている購入特典（ポストカード・ポスター）や受注商品（等身大パネル・ぬいぐるみ・ショルダーポーチ）の情報を追加すれば下限に到達できます。",
+   "scope": "article:2026-09-11-million-opera-seria-popup-open.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-million-song-for-you-vol78-4koma.md",
+   "issue": "分量不足: rank: small は250字以上必要だが、本文が約65字。出典に明記されている4コマの内容・公開時刻・リアクション数など、読者の理解を深める情報が拾える可能性あり",
+   "scope": "article:2026-09-11-million-song-for-you-vol78-4koma.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-shiny-towa-collection-stepup-gacha-72h.md",
+   "issue": "分量不足: 225文字で、rank: small の下限 250字より 25字短い。出典に STEP の価格・ジュエル数（投稿に無い）や企画背景があれば補充可能",
+   "scope": "article:2026-09-11-shiny-towa-collection-stepup-gacha-72h.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-sidem-11th-cast-comment-enoki.md",
+   "issue": "分量不足。rank: small は最小250字必要だが、本文は約129字。出典に記載されるイベント日程、配信形態、チケット情報等の詳細を記事に織り込めば埋められるはず",
+   "scope": "article:2026-09-11-sidem-11th-cast-comment-enoki.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-sidem-11th-stage-delivery-goods-sale-start.md",
+   "issue": "分量不足: rank: small の下限 250字に対して、記事は 209字（41字不足）。候補の facts に「グッズは原則1会計につき1商品3点まで。カードフォリオ SideM ver.2は5パック、BOX は10BOX」などの購入制限情報があり、sources の ASOBI STORE 特設ページに商品ラインナップ詳細があると見られます。これらを補足すれば下限に到達できます。",
+   "scope": "article:2026-09-11-sidem-11th-stage-delivery-goods-sale-start.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-sidem-315shop-5th-neko-butler-open.md",
+   "issue": "分量不足: rank:small の下限 250 字に対し本文は約 184 字。既報や出典に記載される「オリジナルグッズの具体例」「購入制限の内容」「フォーチューンラテの新柄」などの詳細が記事に含まれていない。出典ページを参照して情報を追加すれば 250 字に到達するはず",
+   "scope": "article:2026-09-11-sidem-315shop-5th-neko-butler-open.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-sidem-delight-excursion-2dmv-premiere.md",
+   "issue": "frontmatter の candidate_ids に記載されている \"sched-2026-09-11-sidem-delight-excursion-2026-開始\" が候補ファイルに見つかりません（frontmatter のエラー）",
+   "scope": "article:2026-09-11-sidem-delight-excursion-2dmv-premiere.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-sidem-delight-excursion-2dmv-premiere.md",
+   "issue": "sources の予告 URL (https://x.com/SideM_lantis/status/2095122064172806631) は候補に記載されていません。記事の事実は実在する候補から確認できており、この URL に新しい事実が書かれているわけではないので問題ありませんが、該当候補の記載が無いため機械的な検証ができません",
+   "scope": "article:2026-09-11-sidem-delight-excursion-2dmv-premiere.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-11-sidem-tales-goods-wave4-preorder.md",
+   "issue": "分量不足。rank: small（下限250字）に対して本文が約123字。出典に記載されているグッズの種類・価格（アクリルスタンド1,500円、クリアカード700円、クリアポーチ2,000円など複数商品）を追加することで解決可能",
+   "scope": "article:2026-09-11-sidem-tales-goods-wave4-preorder.md"
+  },
+  {
+   "file": "-",
+   "issue": "9月13日締切の「総選挙2026カードフォリオグッズ受注」が candidates にあるが紙面化されていない。「cg-election-2026-goods-wave2」とは異なるグッズ（ID: 202609100734-explore-0）",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "9月13日締切の「876 PRODUCTION FES. Dearly Stars盤CD事後通販」が candidates にあるが紙面化されていない（ID: 202609102333-explore-17）",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "765Pro関連記事が「星井美希イヤホン再受注」1件のみ。双海亜美・真美の「dual twin live tour」配信キャンペーン（9月27日まで）など他の765話題が candidates に存在（ID: 202609110225-grok-21）",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-11-765-onkyo-miki-earphone-reorder-deadline.md",
+  "article:2026-09-11-cg-dam-karaoke-song-add.md",
+  "article:2026-09-11-cg-election-2026-goods-wave2.md",
+  "article:2026-09-11-cg-election-2026-mission-deadline.md",
+  "article:2026-09-11-cg-election-2026-special-exhibition.md",
+  "article:2026-09-11-cg-nichijo-ochitsuki-comic.md",
+  "article:2026-09-11-cg-popn-toybox-cd-post-shipping.md",
+  "article:2026-09-11-cg-toybox-extra12-novel.md",
+  "article:2026-09-11-dsva-cosmo-birthday-eve-live-details.md",
+  "article:2026-09-11-gaku-4koma-169.md",
+  "article:2026-09-11-gaku-afterschool-namco-campaign.md",
+  "article:2026-09-11-gaku-fujita-kanagiku-figure-order.md",
+  "article:2026-09-11-gaku-garakuta-road-disc2-exchange.md",
+  "article:2026-09-11-gaku-goldrush-ep66-free.md",
+  "article:2026-09-11-gaku-hatsuboshi-afterschool-talk-roadmap.md",
+  "article:2026-09-11-gaku-kuraiai-mv-1million.md",
+  "article:2026-09-11-gaku-producer-ranking-season4.md",
+  "article:2026-09-11-gaku-shinozawa-me-mv-announce.md",
+  "article:2026-09-11-gaku-shurakuryoko-3rd-ver-stream.md",
+  "article:2026-09-11-gaku-snap-series-order-deadline.md",
+  "article:2026-09-11-general-sidem-shiny-gaku-wallpaper-distribution.md",
+  "article:2026-09-11-joint-tours-s1-ex-open.md",
+  "article:2026-09-11-million-battle-of-theater11-black-lips-benefits.md",
+  "article:2026-09-11-million-master-rank5-pickup-gacha.md",
+  "article:2026-09-11-million-millicol-202609-details.md",
+  "article:2026-09-11-million-milliradio-0910.md",
+  "article:2026-09-11-million-opera-seria-popup-open.md",
+  "article:2026-09-11-million-song-for-you-vol78-4koma.md",
+  "article:2026-09-11-shiny-runway-summer-photocontest-result.md",
+  "article:2026-09-11-shiny-song-for-prism-album-store-bonus.md",
+  "article:2026-09-11-shiny-style-collection-vol1-order.md",
+  "article:2026-09-11-shiny-towa-collection-stepup-gacha-72h.md",
+  "article:2026-09-11-shiny-yuika-another-costume-intro.md",
+  "article:2026-09-11-sidem-11th-cast-comment-enoki.md",
+  "article:2026-09-11-sidem-11th-stage-delivery-goods-sale-start.md",
+  "article:2026-09-11-sidem-315shop-5th-neko-butler-open.md",
+  "article:2026-09-11-sidem-anideal-daimaru-fragrance-preorder.md",
+  "article:2026-09-11-sidem-animo-summer-splash-mailorder-deadline.md",
+  "article:2026-09-11-sidem-delight-excursion-2dmv-premiere.md",
+  "article:2026-09-11-sidem-monthly-theme-song-12-cafe-parade-bonus.md",
+  "article:2026-09-11-sidem-monthly-theme-song-13-jupiter-bonus.md",
+  "article:2026-09-11-sidem-tales-goods-wave4-preorder.md",
+  "paper"
+ ]
+}

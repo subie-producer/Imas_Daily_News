@@ -50,7 +50,7 @@
 - dedup_key: gakumas-shirube-game-implementation-2026
   brand: gaku
   subject: 学マス「標」ゲーム内実装
-  watch: 実装時期・他アイドル登場時期の詳細(判明次第 triggers へ)
+  watch: 実装時期・他アイドル登場時期の詳細(9/9はつぼし放課後とーくで「ガラクタロードよりもう少し先」と言及、正式時期は未定。判明次第 triggers へ)
 - dedup_key: shiny-axe8-2026
   brand: shiny
   subject: Project "ReLight" AXE8 第2弾(イルミネーションスターズ「I=WE」)
@@ -151,3 +151,15 @@
   brand: shiny
   subject: シャニマス新ピックアップガシャ「Lycoris Letter」
   watch: 開催終了日(判明次第 triggers へ)
+- dedup_key: gaku-fujita-kanagiku-figure-2026
+  brand: gaku
+  subject: ALTER 藤田ことね「冠菊Ver.」フィギュア
+  watch: 価格・予約期間(各店舗の告知待ち、判明次第 triggers へ)
+- dedup_key: shiny-towacollection-stepup-72h-202609
+  brand: shiny
+  subject: シャニマス「トワコレP-SSR/S-SSRセレチケ付きステップアップガシャ」(72時間限定)
+  watch: 終了の年月日時(投稿に数値なし、72時間限定とのみ。判明次第 triggers へ)
+- dedup_key: million-master-rank5-2026
+  brand: million
+  subject: ミリシタ マスターランク5記念ピックアップガシャ2種
+  watch: 開催期間(投稿・アプリ内告知に期間の記載なし、判明次第 triggers へ)

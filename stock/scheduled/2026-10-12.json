@@ -77,5 +77,43 @@
       "通販(ASOBI STORE・あみあみオンラインショップ)受付とオフィシャルショップでの取扱いは10月12日まで"
     ],
     "src_candidate_id": "202609050237-grok-82"
+  },
+  {
+    "id": "sched-2026-10-12-sidem-anideal-daimaru-fragrance-2026-締切前",
+    "dedup_key": "sidem-anideal-daimaru-fragrance-2026",
+    "brand": "sidem",
+    "subject": "SideM×Anideal・大丸コラボ香水",
+    "kind": "締切前",
+    "reserved_on": "2026-09-11",
+    "facts": [
+      "予約期間は2026年9月11日(金)12:00〜10月15日(木)14:59",
+      "コラボビジュアル使用のサイン入りポストカードが付属、お届けは2027年3月中旬以降予定"
+    ],
+    "title": "SideM×Anideal・大丸香水を本日予約開始",
+    "url": "https://idolmaster-official.jp/news/01_19820",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "event_date": "2026-09-11",
+    "deadline": "2026-10-15",
+    "src_candidate_id": "202609101235-watch-0"
+  },
+  {
+    "id": "sched-2026-10-12-cosmo-birthday-online-live-2026-終了",
+    "dedup_key": "cosmo-birthday-online-live-2026",
+    "brand": "dsva",
+    "subject": "上水流宇宙 BIRTHDAY ONLINE LIVE 2026",
+    "kind": "終了",
+    "note": "配信アーカイブ・現地LVチケット販売の終了予定日",
+    "reserved_on": "2026-09-11",
+    "facts": [
+      "販売期間は10月12日(月・祝)18:00まで(予定)、配信アーカイブ期間は10月12日23:59まで(予定)"
+    ],
+    "title": "上水流宇宙BD前夜祭、今夜18時30分から",
+    "url": "https://idolmaster-official.jp/news/01_19835",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "event_date": "2026-09-12",
+    "deadline": "2026-10-12",
+    "src_candidate_id": "202609100734-explore-10"
   }
 ]

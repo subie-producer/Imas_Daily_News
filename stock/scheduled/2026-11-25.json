@@ -17,5 +17,44 @@
       "2025年8月2日・3日Kアリーナ横浜公演を完全収録"
     ],
     "reserved_on": "2026-08-29"
+  },
+  {
+    "id": "sched-2026-11-25-sidem-monthly-theme-song-13-jupiter-2026-発売",
+    "dedup_key": "sidem-monthly-theme-song-13-jupiter-2026",
+    "brand": "sidem",
+    "subject": "SideM MONTHLY THEME SONG第13弾「Jupiter」",
+    "kind": "発売",
+    "reserved_on": "2026-09-11",
+    "facts": [
+      "MONTHLY THEME SONG 13 Jupiterは11月25日発売、価格2,200円(税込)/2,000円(税抜)",
+      "歌唱は天ヶ瀬冬馬・御手洗翔太・伊集院北斗",
+      "店舗特典はアソビストア・ゲーマーズ・タワーレコード・とらのあながL判ブロマイド、アニメイトがミニフォト＆ロングフォト、Amazonが缶バッジ、ソフマップ・アニメガがアクリルコースター、TSUTAYA RECORDSがましかくブロマイド、楽天ブックスがトレーディングカード"
+    ],
+    "title": "Jupiter CD店舗特典、11月25日発売",
+    "url": "https://www.lantis.jp/sidem/extra/index.html#20260910_2",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "event_date": "2026-11-25",
+    "deadline": "2026-11-25",
+    "src_candidate_id": "202609101835-explore-11"
+  },
+  {
+    "id": "sched-2026-11-25-million-battle-of-theater11-black-lips-2026-発売",
+    "dedup_key": "million-battle-of-theater11-black-lips-2026",
+    "brand": "million",
+    "subject": "「MILLION BATTLE OF THE＠TER 11 BLACK LIPS」",
+    "kind": "発売",
+    "reserved_on": "2026-09-11",
+    "facts": [
+      "11月25日発売、価格1,870円(税込)/1,700円(税抜)、天空橋朋花・篠宮可憐・菊地真・桜守歌織・徳川まつり・舞浜歩が参加",
+      "店舗特典はアソビストア・あみあみ・ゲーマーズ・タワーレコード・とらのあながL判ブロマイド、アニメイトがミニフォト＆メタリックシール、Amazonがメガジャケ、ソフマップ・アニメガがアクリルコースター、楽天ブックスがスマホサイズブロマイド"
+    ],
+    "title": "BLACK LIPS、店舗特典決定",
+    "url": "https://www.lantis.jp/imas/extra.html#20260910",
+    "source_type": "準公式",
+    "verify": "confirmed",
+    "event_date": "2026-11-25",
+    "deadline": "2026-11-25",
+    "src_candidate_id": "202609110225-explore-5"
   }
 ]

@@ -1,0 +1,148 @@
+{
+  "articles": [
+    {
+      "slug": "sidem-11th-stage-delivery-goods-sale-start",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM11th STAGE当日を前に、差し入れ企画『315デリバリー』と協賛社グッズのWEB販売が本日17時から一斉スタート。それぞれの価格・特典・販売期間を伝える",
+      "lead_score": 30,
+      "dedup_key": "sidem-11th-stage-315-delivery-2026",
+      "candidate_ids": [
+        "sched-2026-09-11-sidem-11th-stage-315-delivery-2026-開始",
+        "sched-2026-09-11-sidem-11th-stage-sponsor-goods-2026-開始"
+      ]
+    },
+    {
+      "slug": "sidem-315shop-5th-neko-butler-open",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "315!!!SHOP5周年企画の猫耳執事衣装展開が本日10時にサンシャインシティで開始。対象5名と会場を伝える",
+      "lead_score": 15,
+      "dedup_key": "sidem-315-shop-5th-2026",
+      "candidate_ids": [
+        "sched-2026-09-11-sidem-315-shop-5th-2026-開始"
+      ]
+    },
+    {
+      "slug": "sidem-delight-excursion-2dmv-premiere",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "DRAMATIC STARS「Delight Excursion」2DMVが本日22時にプレミア公開。視聴URLとともに伝える",
+      "lead_score": 15,
+      "dedup_key": "sidem-delight-excursion-2026",
+      "candidate_ids": [
+        "sched-2026-09-11-sidem-delight-excursion-2026-開始",
+        "202609110225-grok-81"
+      ]
+    },
+    {
+      "slug": "sidem-anideal-daimaru-fragrance-preorder",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "フレグランスブランドAnideal×大丸コラボ第1弾のSideMコラボ香水、本日12時から予約受付開始。特典・届け予定時期を伝える",
+      "lead_score": 10,
+      "dedup_key": "sidem-anideal-daimaru-fragrance-2026",
+      "candidate_ids": [
+        "202609101235-watch-0"
+      ]
+    },
+    {
+      "slug": "sidem-tales-goods-wave4-preorder",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "「CONNECT WITH MUSIC! TRANSCENDENT T@LES」公式グッズ第4弾、ユニット横断シャッフルスチルの受注販売を9月27日締切で実施中と伝える",
+      "lead_score": 10,
+      "dedup_key": "sidem-connect-with-music-transcendent-tales-goods-4",
+      "candidate_ids": [
+        "202609101835-watch-1"
+      ]
+    },
+    {
+      "slug": "sidem-monthly-theme-song-13-jupiter-bonus",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "MONTHLY THEME SONG 13 Jupiter(11月25日発売)の店舗購入特典が決定。アソビストア・アニメイト各特典の内容を伝える",
+      "lead_score": 5,
+      "dedup_key": "sidem-monthly-theme-song-13-jupiter-store-bonus-2026",
+      "candidate_ids": [
+        "202609101835-explore-11",
+        "202609102333-explore-9",
+        "202609110225-explore-9",
+        "202609110225-grok-84"
+      ]
+    },
+    {
+      "slug": "sidem-monthly-theme-song-12-cafe-parade-bonus",
+      "brand": "sidem",
+      "rank": "medium",
+      "angle": "MONTHLY THEME SONG 12 Café Parade(10月21日発売)のジャケット・試聴動画が公開、店舗特典デザインも決定。店舗特典一覧画像の誤りと訂正再投稿の経緯もあわせて伝える",
+      "lead_score": 5,
+      "dedup_key": "sidem-monthly-theme-song-12-cafe-parade-store-bonus-2026",
+      "candidate_ids": [
+        "202609101835-explore-12",
+        "202609110225-grok-82",
+        "202609110225-grok-83"
+      ]
+    },
+    {
+      "slug": "sidem-animo-summer-splash-mailorder-deadline",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "Animo「SideM SUMMER SPLASH!POP UP SHOP」の事後通販が本日17時で受付終了。駆け込み購入を呼びかける",
+      "lead_score": 5,
+      "dedup_key": "11-animo-sidem-summer-splash-pop-up-shop-17-00",
+      "candidate_ids": [
+        "202609110225-grok-91"
+      ]
+    },
+    {
+      "slug": "sidem-11th-cast-comment-enoki",
+      "brand": "sidem",
+      "rank": "small",
+      "angle": "SideM11th STAGE出演キャスト意気込みコメントリレーに榎木淳弥さん(舞田類役)が登場したことを伝える",
+      "lead_score": 0,
+      "dedup_key": "6-sidem11th",
+      "candidate_ids": [
+        "202609110225-grok-86"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "sidem11th-collab-drinks-2026",
+      "reason": "既報",
+      "note": "会場限定コラボドリンクの詳細は9/10付記事(sidem-11th-kamisabi-drinks-goods-2026)で価格・コースター特典・取扱場所まで既報。今回の追加情報は販売カウンターの内訳のみで新事実に乏しい"
+    },
+    {
+      "dedup_key": "sidem-kamisabi-side-m-11th-2026",
+      "reason": "既報",
+      "note": "KAMISABI会場販売・体験会は同じ9/10付記事で既報"
+    },
+    {
+      "dedup_key": "sidem-11th-delivery-and-onsite-2026",
+      "reason": "既報",
+      "note": "施策発表自体は9/7付で既報台帳(sidem-11th-stage-2026)に記載済み。本日の実際の販売開始は別記事(sidem-11th-stage-315-delivery-2026)で扱う"
+    },
+    {
+      "dedup_key": "wsb-wgp2026-hakata-sidem",
+      "reason": "同人・ファン主催",
+      "note": "ファン主催のヴァイスシュヴァルツブラウ大会「ブラウファイトin WGP2026博多会場」での個人の入賞デッキ紹介。verify=unconfirmedかつ出典もファンサイトで公式性がない"
+    },
+    {
+      "dedup_key": "sidem-11th-stage-ever-ever-after-2026",
+      "reason": "既報",
+      "note": "sidem-11th-delivery-and-onsite-2026と同一の9/7付発表(施策一覧)の重複取得。既報台帳(sidem-11th-stage-2026)に記載済み"
+    },
+    {
+      "dedup_key": "5-apple-music-legenders-remain-viable",
+      "reason": "既報",
+      "note": "Apple Musicプレイリスト選出は既報台帳(sidem-legenders-apple-music-playlist-2026、first_published 2026-09-10)と完全一致、新事実なし"
+    },
+    {
+      "dedup_key": "7-sidem11th",
+      "reason": "既報",
+      "note": "児玉卓也さん(卯月巻緒役)の9/9付意気込みコメントは既報台帳(sidem-11th-cast-comment-relay-2026)に既に記載済み"
+    }
+  ],
+  "cross_brand": []
+}

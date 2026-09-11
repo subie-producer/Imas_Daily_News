@@ -1,0 +1,135 @@
+{
+  "articles": [
+    {
+      "slug": "cg-election-2026-special-exhibition",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "シンデレラガール総選挙2026特別展示が9/12-13渋谷ちかみちで開催、来場チェックインで投票券10枚を配布",
+      "lead_score": 55,
+      "dedup_key": "cg-election-2026-special-exhibition",
+      "candidate_ids": ["202609100734-explore-18"]
+    },
+    {
+      "slug": "cg-dam-karaoke-song-add",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "カラオケDAMに「シンデレラNo.1」「ROSE ～禁じられた愛～」が9月9日付で追加配信",
+      "lead_score": 10,
+      "dedup_key": "cg-dam-song-release-2026-09-09",
+      "candidate_ids": ["202609101235-explore-1"]
+    },
+    {
+      "slug": "cg-election-2026-goods-wave2",
+      "brand": "cg",
+      "rank": "medium",
+      "angle": "総選挙2026公式グッズ第2弾、190人の新規描き下ろしビジュアルとプレミアムプロデューサーオーソライズセットが本日16時発売",
+      "lead_score": 40,
+      "dedup_key": "cg-election-2026-official-goods",
+      "candidate_ids": ["202609110225-explore-0", "202609110225-grok-32"]
+    },
+    {
+      "slug": "cg-election-2026-mission-deadline",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "総選挙2026ミッションチャレンジ終了まであと3日、MV・コミュ動画再生協力のラストスパート",
+      "lead_score": 25,
+      "dedup_key": "4-2026-4",
+      "candidate_ids": ["202609110225-grok-26"]
+    },
+    {
+      "slug": "cg-toybox-extra12-novel",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "トイボックス・エクストラ12「ザ・ラスト・ローズ・オブ・サマー」公開",
+      "lead_score": 5,
+      "dedup_key": "2-12",
+      "candidate_ids": ["202609110225-grok-24"]
+    },
+    {
+      "slug": "cg-nichijo-ochitsuki-comic",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "「シンデレラガールズの日常」最新話「落ち着きの末に」を公開",
+      "lead_score": 5,
+      "dedup_key": "8",
+      "candidate_ids": ["202609110225-grok-30"]
+    },
+    {
+      "slug": "cg-popn-toybox-cd-post-shipping",
+      "brand": "cg",
+      "rank": "small",
+      "angle": "Pop'n ToyBox!!会場オリジナルCD事後通販、本日発送開始",
+      "lead_score": 10,
+      "dedup_key": "cg-pop-n-toybox-cd-2026",
+      "candidate_ids": ["sched-2026-09-11-cg-pop-n-toybox-cd-2026-その他"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "cg-vote2026-cardfolio-goods",
+      "reason": "既報",
+      "note": "ブックケース・メタルオーナメント・ミラーアクリルジオラマは9/1付cg-election-2026-official-goodsで既報、価格・締切(9/13)とも新事実なし"
+    },
+    {
+      "dedup_key": "cg-popn-toybox-goods-2026",
+      "reason": "既報",
+      "note": "アクリルボックススタンドはcg-popn-toybox-memorial-goods-2026(9/1付)で既報、締切(9/13)も同一"
+    },
+    {
+      "dedup_key": "cg-popup-sweet-melty-whip-2026",
+      "reason": "既報",
+      "note": "cg-medicos-sweet-melty-whip-popup-2026(9/6付)で会場・日程・商品構成とも既報"
+    },
+    {
+      "dedup_key": "cg-election-support-ads-seirai-2026",
+      "reason": "同人・ファン主催",
+      "note": "ファン有志のクラウドファンディング応援広告(note.com個人発信)。掲出期間も9/10で終了済み"
+    },
+    {
+      "dedup_key": "cg-mayu-birthday-support-ad-2026",
+      "reason": "同人・ファン主催",
+      "note": "ファン有志の誕生日応援広告(note.com個人発信)。掲出期間は9/2-9/8で終了済み"
+    },
+    {
+      "dedup_key": "1-24-7-190-mv",
+      "reason": "既報",
+      "note": "24/7配信の9/9付MV更新はstock既報(総選挙24/7配信、9月9日付更新)と同一内容"
+    },
+    {
+      "dedup_key": "3-2026-only-maker",
+      "reason": "既報",
+      "note": "ONLY MAKER受注(9/13締切)はcg-election-2026-official-goods(9/1付)で既報、新事実なし"
+    },
+    {
+      "dedup_key": "5-vol-4-vol-6-190",
+      "reason": "既報",
+      "note": "カードフォリオvol.4-6(190人)はcg-election-2026-official-goods(9/1付)で既報、締切(9/13)・価格とも新事実なし"
+    },
+    {
+      "dedup_key": "6-memory-pict-november",
+      "reason": "既報",
+      "note": "Memory Pict.第6弾(小日向美穂・依田芳乃)はmemory-pict-6th-kohimura-yoda-2026(8/28付)で既報、締切(9/13)・価格とも新事実なし"
+    },
+    {
+      "dedup_key": "7-3",
+      "reason": "重複",
+      "note": "デレミリ合同ライブは既存story cg-million-coming-soon-2026-08-26でbrand:jointとして管理されているjoint面の話題。現地チケット最速先行締切(あと3日)の続報もjoint面が扱う"
+    },
+    {
+      "dedup_key": "9-cinderella-girls-pop-n-toybox",
+      "reason": "既報",
+      "note": "つながるリボンハート仕掛けのグッズはcg-popn-toybox-memorial-goods-2026(9/1付)で既報、締切(9/13)も同一"
+    },
+    {
+      "dedup_key": "10-2026",
+      "reason": "重複",
+      "note": "cg-election-2026-goods-wave2記事(dedup_key: cg-election-2026-official-goods)に統合"
+    },
+    {
+      "dedup_key": "12-pop-up-shop-sweet-melty-whip",
+      "reason": "既報",
+      "note": "cg-medicos-sweet-melty-whip-popup-2026(9/6付)で会場・日程・新規イラスト・特典クリアカードとも既報"
+    }
+  ],
+  "cross_brand": []
+}

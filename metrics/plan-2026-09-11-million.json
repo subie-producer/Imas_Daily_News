@@ -1,0 +1,117 @@
+{
+  "articles": [
+    {
+      "slug": "million-master-rank5-pickup-gacha",
+      "brand": "million",
+      "rank": "large",
+      "angle": "ミリシタに「マスターランク5」が実装され、対象カードのボーカル・ダンス・ビジュアル基礎ステータス上昇とスキルLv上限上昇、アナザー2衣装解放を紹介。対象6カード(桜守歌織の新衣装『ブルースカイ：オーヴァチュア』、徳川まつり『モンスター！イエティ』、真壁瑞希『モンスター！デビル』ほか)と、それらを狙える『1回限り！SSR確定ピックアップガシャ』(有償ジュエル2500個)・『ピックアップステップガシャ』(1〜3ステップ計3回、3ステップ目SSR確定)の仕組みをまとめて伝える",
+      "lead_score": 55,
+      "dedup_key": "million-shitashita-master-rank-5-2026",
+      "candidate_ids": [
+        "202609102333-explore-2",
+        "202609110225-grok-60",
+        "202609110225-grok-74",
+        "202609110225-grok-61",
+        "202609110225-grok-62",
+        "202609110225-grok-63",
+        "202609110225-grok-64"
+      ]
+    },
+    {
+      "slug": "million-opera-seria-popup-open",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "POP UP SHOP「オペラセリア」がコトブキヤ秋葉原館5Fで本日9月11日開幕(〜9/27)。劇中劇『Parade d'amour』モチーフの新規描き下ろしグッズ・受注販売開始と、開幕初日から3日間(9/11〜9/13)実施のデジタルQR整理券の申込・開示時間を伝える",
+      "lead_score": 35,
+      "dedup_key": "million-opera-seria-2026",
+      "candidate_ids": [
+        "202609101835-watch-0",
+        "sched-2026-09-11-million-opera-seria-2026-開幕",
+        "202609102333-explore-6"
+      ]
+    },
+    {
+      "slug": "million-millicol-202609-details",
+      "brand": "million",
+      "rank": "medium",
+      "angle": "月例イベント『ミリコレ！～MILLIONLIVE COLLECTION～』202609が9/10 15:00に開幕(〜9/16 20:59)。ライブ・お仕事でコインを集めてイベント限定ガシャを引く仕組みと、限定カード(SR「夜明けの魔法少女 北沢志保」・SR「水神の破魔弓 エミリー」、先行追加R「エキサイティングダンス 馬場このみ」)を伝える",
+      "lead_score": 20,
+      "dedup_key": "million-millicol-2026-09",
+      "candidate_ids": [
+        "202609110225-explore-6",
+        "202609110225-grok-59"
+      ]
+    },
+    {
+      "slug": "million-battle-of-theater11-black-lips-benefits",
+      "brand": "million",
+      "rank": "small",
+      "angle": "『THE IDOLM@STER MILLION BATTLE OF THE＠TER 11 BLACK LIPS』(11/25発売、天空橋朋花・篠宮可憐・菊地真・桜守歌織)の店舗特典が決定したと伝える",
+      "lead_score": 15,
+      "dedup_key": "million-battle-of-theater-11-black-lips-benefits",
+      "candidate_ids": [
+        "202609110225-explore-5"
+      ]
+    },
+    {
+      "slug": "million-song-for-you-vol78-4koma",
+      "brand": "million",
+      "rank": "small",
+      "angle": "開催中の『SONG FOR YOU！ガシャ VOL.78』に登場する双海亜美・桜守歌織の4コマまんがが公開されたと伝える",
+      "lead_score": 5,
+      "dedup_key": "11-song-for-you-vol-78-4",
+      "candidate_ids": [
+        "202609110225-grok-65"
+      ]
+    },
+    {
+      "slug": "million-milliradio-0910",
+      "brand": "million",
+      "rank": "small",
+      "angle": "ランティス公式番組「ミリラジ」が9/10 21:00にニコニコ生放送で放送され、14thLIVE目前の呼びかけと『ドレスコード：最上級』ソロコレ関連コーナーを伝えたと紹介する",
+      "lead_score": 5,
+      "dedup_key": "13-9-10-21-00",
+      "candidate_ids": [
+        "202609110225-grok-67"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "million-birthday-live-2026",
+      "reason": "その他",
+      "note": "音無小鳥Birthday Live関連ページ更新は9/9の誕生日に紐づく話題(published_date/event_dateとも9/9)。9/11号の発行時点では2日前の出来事で、当日読者が見に行ける・できることが facts に無い(規程12)"
+    },
+    {
+      "dedup_key": "million-14th-day2-blooming-sign-2026",
+      "reason": "出典不足",
+      "note": "note.com個人ブログによるDAY2セットリスト予想記事(未確認)。公式一次情報が無く、公演の基本情報(会場・開場開演・主演)はmillion-14th-liveで既報済み"
+    },
+    {
+      "dedup_key": "million-access-outage-2026-09",
+      "reason": "既報",
+      "note": "9/8発生の障害内容・原因調査・ランキング枠拡張による補填方針はmillion-theater-access-issue-2026-09で既報。今回の facts は同内容の詳細数値のみで新事実なし"
+    },
+    {
+      "dedup_key": "1-the-idolm-ster-million-live-14thlive-9-12",
+      "reason": "既報",
+      "note": "14thLIVE現地チケット一般販売(先着)の締切9/12 23:59はmillion-14th-liveで既報(9/9付「残り3日」告知も既報済み)。9/11は締切3日前・当日のいずれのトリガー日でもなく新事実もない"
+    },
+    {
+      "dedup_key": "2-14thlive-streaming",
+      "reason": "既報",
+      "note": "配信チケットの価格・販売期間(9/2 21:00〜9/28 18:00)はmillion-14th-liveで既報、新事実なし"
+    },
+    {
+      "dedup_key": "4-9-13",
+      "reason": "既報",
+      "note": "デレミリ合同ライブのアソビストアプレミアム会員最速先行(抽選)締切9/13 23:59は、joint面のcg-million-coming-soon-2026-08-26で8/26付にて既報済み。本日の投稿は同内容の再告知で新事実なし"
+    },
+    {
+      "dedup_key": "14",
+      "reason": "個人の話題",
+      "note": "桜守歌織役・香里有佐の個人アカウントによる新カードへの言及。個人のSNS投稿は単体で記事化しない(規程4・5)"
+    }
+  ],
+  "cross_brand": []
+}

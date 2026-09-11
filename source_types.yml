@@ -175,6 +175,9 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - alter-web.jp          # 合議で追加: フィギュアメーカーがライセンス商品を自社サイトで販売紹介
+  - union-creative.jp     # 合議で追加: ライセンスを受けたフィギュアメーカーが自社商品を自社サイトで販売している売上/販
+  - ws-blau.com           # 合議で追加: カードゲーム公式サイトがイベント入賞結果を掲載
   - web-ace.jp            # 合議で追加: KADOKAWA傘下社が自社プラットフォームで自社作品を掲載
   - club-animate.jp       # 合議で追加: グッズ販売会社による自社会員向けイベント告知ページ
   - toyota-arena-tokyo.jp # 合議で追加: 会場のTOYOTA ARENA TOKYOがコラボドリンク販売を自社サイトで告知
@@ -264,6 +267,7 @@ video_channels:
 
 video_ids:
   公式:
+    - 2A4IdCmvdHg   # 機械で追加: @imas-official「【生配信】IDOL WORLD SUPER FESTIVAL」
     - 2zyQKgtpAVo   # 機械で追加: @imas-official「【シャニラジHBTK】はばたきラジオステーション #399【」
     - vjDPwOxX6jA   # 機械で追加: @TomoriManaka「#1【BIOHAZARD RE:2】はじめてのバイオ！！初見」
     - VbKy6zQfurE   # 機械で追加: @UtagawaLetora「【雑談配信】お昼ののんびり雑談【#ヴイアラ / レトラ】」
@@ -321,6 +325,7 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - arisa_kori          # 合議で追加: 声優本人が自作のキャラへの言及を発信
     - ma_akane1014        # 合議で追加: 出演者による反応投稿
     - jurieedom           # 合議で追加: 担当声優による祝福・イラスト
     - Terashima_dayo      # 合議で追加: 声優本人のアカウント
@@ -344,6 +349,9 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - shinkunohakuba      # 合議で追加: イベント無料配信視聴の個人感想
+    - p0t0_0t0p0          # 合議で追加: キャラのファンイラスト投稿
+    - kuririntech         # 合議で追加: キャラクターのコスプレ写真を投稿
     - umarcs000           # 合議で追加: 視聴反応投稿
     - sunrise_555         # 合議で追加: ゲスト発表へのファン反応
     - redstar2588         # 合議で追加: グッズ到着レポート
@@ -383,6 +391,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - matsudo_arcade      # 合議で追加: 店舗がTOURS設置を自社告知
     - lumica_JP           # 合議で追加: ルミカ社による回収告知
     - shosen_online       # 合議で追加: 書店。商品販売の一次発信
     - hiromedo            # 合議で追加: 販売元・イベント主催。商品先行販売を告知

@@ -1,0 +1,30 @@
+{
+  "articles": [
+    {
+      "slug": "dsva-cosmo-birthday-eve-live-details",
+      "brand": "dsva",
+      "rank": "medium",
+      "angle": "上水流宇宙20歳バースデーウィーク、本日18:30の前夜祭「宇宙に響け歌枠リレー」開始と、明日9/12本番BDライブのライブビューイング会場・配信時間帯などの詳細をまとめて伝える",
+      "lead_score": 55,
+      "dedup_key": "cosmo-birthday-online-live-2026",
+      "candidate_ids": [
+        "202609100734-explore-10",
+        "202609100734-explore-11",
+        "sched-2026-09-11-cosmo-birthday-live-2026-eve-開始"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "876-production-fes-dearly-stars-cd-mailorder-2026",
+      "reason": "既報",
+      "note": "受付期間(8/28 21:00〜9/13 23:59)・価格3,500円・収録曲は2026-08-29号(joint, columbia-venue-cd-aftersale-2026-08)で既報の内容と同一。新事実なし"
+    },
+    {
+      "dedup_key": "cosmo-birthday-online-live-special-guest-2026",
+      "reason": "重複",
+      "note": "四条貴音ゲスト決定の事実は主題cosmo-birthday-online-live-2026(公式・確度の高い出典)側で扱う。本候補は二次情報経由で同一内容を伝えるのみ"
+    }
+  ],
+  "cross_brand": []
+}

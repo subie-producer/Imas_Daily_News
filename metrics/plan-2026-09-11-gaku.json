@@ -1,0 +1,252 @@
+{
+  "articles": [
+    {
+      "slug": "gaku-garakuta-road-disc2-exchange",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "特装盤「ガラクタロード」Disc2が8cmCD規格で一部機器で再生不可、ASOBI STORE購入者に12cm規格への交換対応を告知。対象・交換手順・期限を伝える",
+      "lead_score": 20,
+      "dedup_key": "garakuta-road-disc2-exchange",
+      "candidate_ids": ["202609100734-explore-5", "202609102333-explore-15"]
+    },
+    {
+      "slug": "gaku-shinozawa-me-mv-announce",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "篠澤広の新曲「め」MVが9月20日22時に初星学園チャンネルで公開決定、ティザーも公開",
+      "lead_score": 5,
+      "dedup_key": "gaku-shinozawa-me-mv-2026",
+      "candidate_ids": ["202609101235-explore-9"]
+    },
+    {
+      "slug": "gaku-afterschool-namco-campaign",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "ナムコ店舗・オンラインクレーンで「After School キャンペーン in namco」が9月25日開始、月村手毬「ゴールドの輝き」衣装フィギュアが景品に",
+      "lead_score": 5,
+      "dedup_key": "gaku-after-school-namco-2026",
+      "candidate_ids": ["202609101235-explore-10"]
+    },
+    {
+      "slug": "gaku-snap-series-order-deadline",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "「自撮り」テーマの新グッズ「スナップシリーズ」受注、締切は9月13日。トレーディングチェキ等の商品構成と購入先をまとめる",
+      "lead_score": 15,
+      "dedup_key": "gaku-snap-series-order-2026",
+      "candidate_ids": [
+        "202609101235-explore-11",
+        "202609110225-grok-35",
+        "202609110225-grok-36",
+        "202609110225-grok-37",
+        "202609110225-grok-38"
+      ]
+    },
+    {
+      "slug": "gaku-shurakuryoko-3rd-ver-stream",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「修楽旅行」3バージョン目(倉本千奈・紫雲清夏・十王星南・秦谷美鈴ver.)が9月22日から配信開始予定",
+      "lead_score": 5,
+      "dedup_key": "gaku-shurakuryoko-stream-2026",
+      "candidate_ids": ["202609101235-explore-12"]
+    },
+    {
+      "slug": "gaku-fujita-kanagiku-figure-order",
+      "brand": "gaku",
+      "rank": "medium",
+      "angle": "藤田ことね「冠菊Ver.」1/7スケールフィギュアがALTER取扱店舗で9月11日受注開始、原型・彩色担当や仕様を伝える",
+      "lead_score": 10,
+      "dedup_key": "kotone-kanagiku-figure-2026",
+      "candidate_ids": ["202609110225-explore-13"]
+    },
+    {
+      "slug": "gaku-hatsuboshi-afterschool-talk-roadmap",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「はつぼし放課後とーく」で明らかになった今後の実装ロードマップ(ガラクタロード全員実装時期、標の実装見通し、私服復刻の常設化など)を伝える",
+      "lead_score": 10,
+      "dedup_key": "gaku-hatsuboshi-after-talk-2026-09",
+      "candidate_ids": ["202609110225-explore-18"]
+    },
+    {
+      "slug": "gaku-kuraiai-mv-1million",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "『クライアイ』Music Videoが100万再生を突破",
+      "lead_score": 5,
+      "dedup_key": "mv-100",
+      "candidate_ids": ["202609110225-grok-39"]
+    },
+    {
+      "slug": "gaku-4koma-169",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "学マス4コマ第169話「百発百中☆イントロクイズ」公開",
+      "lead_score": 0,
+      "dedup_key": "4-169",
+      "candidate_ids": ["202609110225-grok-41"]
+    },
+    {
+      "slug": "gaku-producer-ranking-season4",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "「プロデューサーランキング シーズン4」開催中、参加条件と開催・集計期間を伝える",
+      "lead_score": 5,
+      "dedup_key": "4",
+      "candidate_ids": ["202609110225-grok-43"]
+    },
+    {
+      "slug": "gaku-goldrush-ep66-free",
+      "brand": "gaku",
+      "rank": "small",
+      "angle": "チャンピオンクロスで『学園アイドルマスター GOLD RUSH』第66話の無料公開が開始",
+      "lead_score": 0,
+      "dedup_key": "66",
+      "candidate_ids": ["202609110225-grok-45"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "ichiban-kuji-gakumas-part6",
+      "reason": "既報",
+      "note": "8/29既報(story_id: gaku-ichiban-kuji-part6-2026)。ラインナップ・価格・発売日・取扱店とも一致し新事実なし"
+    },
+    {
+      "dedup_key": "amg-amane-yukari-afureco-2026",
+      "reason": "個人の話題",
+      "note": "アミューズメントメディア総合学院(専門学校)が卒業生声優・天音ゆかりをゲストに開くアフレコ体験イベント。学マス公式の企画ではなく声優個人のアイマス外活動(規程4対象外)"
+    },
+    {
+      "dedup_key": "saigo-no-bunkasai-2026",
+      "reason": "既報",
+      "note": "開催中のストーリーイベントとして既報済み(story_id: gaku-story-saigo-no-bunkasai-2026)。実際の終了は9/12 4:59であり、本日9/11に終了・開催決定などの新事実は無い"
+    },
+    {
+      "dedup_key": "gakumas-gacha-2026-09",
+      "reason": "重複",
+      "note": "game8まとめ(9/8付)。福岡公演記念ガシャ・プラチナガシャは既に福岡公演の記事で既報、標ガシャは9/10で終了済み、ガラクタロード星南ガチャはH.I.F編最新情報として既報(下記)と重複"
+    },
+    {
+      "dedup_key": "gaku-hif-1500man-and-new-info-2026",
+      "reason": "既報",
+      "note": "story_id: gaku-hatsuhoshi-fes-garakuta-road-vol5-2026として既報済み。H.I.F編実装・星南ガシャ・APドリンク30本・アイドルへの道新ステージ26,27とも既に公開facts一致"
+    },
+    {
+      "dedup_key": "gaku-espresto-happy-millefeuille-another-color-2026",
+      "reason": "既報",
+      "note": "9/10既報(story_id: gaku-espresto-sweet-moment-another-color-2027)。商品名・サイズ・登場時期とも一致し新事実なし"
+    },
+    {
+      "dedup_key": "gaku-shirube-fukuoka-archive-2026",
+      "reason": "既報",
+      "note": "福岡公演アーカイブ公開・アンケート実施は既にstory_id: gakumas-shirube-livetour-2026で既報済み。新事実なし"
+    },
+    {
+      "dedup_key": "gaku-kuji-part6-2026",
+      "reason": "既報",
+      "note": "ichiban-kuji-gakumas-part6と同一話題(一番くじPart6)。8/29既報済みで新事実なし"
+    },
+    {
+      "dedup_key": "gaku-shinai-step4-2026",
+      "reason": "既報",
+      "note": "H.I.F編実装(story_id: gaku-hatsuhoshi-fes-garakuta-road-vol5-2026)に付随する詳細で、同ストーリーの一部として既報範囲に含まれる。単独の新事実に乏しい"
+    },
+    {
+      "dedup_key": "gaku-gravure-solo-collection-vol1-2026",
+      "reason": "既報",
+      "note": "8/26既報(story_id: gakumas-gravure-solo-collection-vol1-2026)。収録内容・予約期限とも一致し新事実なし"
+    },
+    {
+      "dedup_key": "gakumas-live-tour-shirube-fukuoka-report-2026",
+      "reason": "既報",
+      "note": "福岡公演のセットリスト・新曲披露は既にstory_id: gakumas-shirube-livetour-2026で詳細既報済み(DAY1「nazonazo」「神かわいい」「Be proud」、DAY2「ORDER FAKE」「め」等)。新事実なし"
+    },
+    {
+      "dedup_key": "gaku-quo-card-campaign-2026",
+      "reason": "その他",
+      "note": "応募締切は9月10日23:59で、発行時刻(本日06:00 JST)より前に終了済み(規程12)。結果発表等の新事実も無い"
+    },
+    {
+      "dedup_key": "gaku-star-mine-streaming-2026",
+      "reason": "既報",
+      "note": "8/30既報(story_id: gaku-star-mine-2026)。Streaming&DL公開・作詞作曲編曲とも一致し新事実なし"
+    },
+    {
+      "dedup_key": "gaku-garakuta-road-senan-gacha-2026",
+      "reason": "既報",
+      "note": "H.I.F編最新情報(story_id: gaku-hatsuhoshi-fes-garakuta-road-vol5-2026)として既報済みのガチャ・サポートカードの詳細補足。新事実に乏しい"
+    },
+    {
+      "dedup_key": "gaku-tsukimura-temari-1-6-figure-2026",
+      "reason": "既報",
+      "note": "既報済み(story_id: ユニオンクリエイティブ 月村手毬1/6スケールフィギュア)。発売元・発売予定時期とも一致し新事実なし"
+    },
+    {
+      "dedup_key": "gaku-endless-dance-mao-summer-hiro-2026",
+      "reason": "既報",
+      "note": "有村麻央・紫雲清夏・篠澤広verの「ENDLESS DANCE」は8月31日付で既に配信開始・既報済み。新事実なし"
+    },
+    {
+      "dedup_key": "gaku-garaku-road-disc2-exchange-2026",
+      "reason": "重複",
+      "note": "garakuta-road-disc2-exchangeと同一話題。記事側の candidate_ids に統合済み"
+    },
+    {
+      "dedup_key": "miracle-nanau-2026",
+      "reason": "既報",
+      "note": "既に9/10付で既報済み(story_id: gaku-miracle-nanau-2026)。歌唱メンバー・作家陣とも一致し新事実なし"
+    },
+    {
+      "dedup_key": "gaku-hatsuboshi-after-talk-2026-09",
+      "reason": "重複",
+      "note": "記事側の candidate_ids に統合済み(gaku-hatsuboshi-afterschool-talk-roadmap)"
+    },
+    {
+      "dedup_key": "100-quo",
+      "reason": "重複",
+      "note": "gaku-quo-card-campaign-2026と同一施策(#明日までギリギリ100連無料QUOカードキャンペーン)。締切9/10 23:59は本日の発行時刻より前に終了済み"
+    },
+    {
+      "dedup_key": "h-i-f-1-500-ap-30",
+      "reason": "既報",
+      "note": "H.I.F編最新情報(story_id: gaku-hatsuhoshi-fes-garakuta-road-vol5-2026)として既報済みのAPドリンク30本配布と重複"
+    },
+    {
+      "dedup_key": "26-27",
+      "reason": "既報",
+      "note": "H.I.F編最新情報(story_id: gaku-hatsuhoshi-fes-garakuta-road-vol5-2026)として既報済みの「アイドルへの道」新ステージ26・27と重複"
+    },
+    {
+      "dedup_key": "live-tour",
+      "reason": "既報",
+      "note": "LIVE TOUR -標- ファイナル公演(11/7・8、Kアリーナ横浜)の日程・出演は既にstory_id: gakumas-livetour-shirube-final-goods-2026等で既報済み。新事実なし"
+    },
+    {
+      "dedup_key": "gaku-story-saigo-no-bunkasai-2026",
+      "reason": "既報",
+      "note": "saigo-no-bunkasai-2026と同一話題。予約は本日『終了』としていたが実際の終了は9/12 4:59で本日は何も起きない(誤った予約)。開催中の事実自体も既報済み"
+    },
+    {
+      "dedup_key": "c5a01475959e",
+      "reason": "重複",
+      "note": "藤田ことね「スナップシリーズ」受注告知。記事側の candidate_ids に統合済み(gaku-snap-series-order-deadline)"
+    },
+    {
+      "dedup_key": "3303d80e32f4",
+      "reason": "重複",
+      "note": "月村手毬「スナップシリーズ」受注告知。記事側の candidate_ids に統合済み(gaku-snap-series-order-deadline)"
+    },
+    {
+      "dedup_key": "0f5530ac7db7",
+      "reason": "重複",
+      "note": "花海咲季「スナップシリーズ」受注告知。記事側の candidate_ids に統合済み(gaku-snap-series-order-deadline)"
+    },
+    {
+      "dedup_key": "c8426b1c648c",
+      "reason": "重複",
+      "note": "アソビストア「スナップシリーズ」商品ページ。記事側の candidate_ids に統合済み(gaku-snap-series-order-deadline)"
+    }
+  ],
+  "cross_brand": []
+}

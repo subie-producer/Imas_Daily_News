@@ -1,0 +1,51 @@
+{
+  "articles": [
+    {
+      "slug": "joint-tours-s1-ex-open",
+      "brand": "joint",
+      "rank": "medium",
+      "angle": "『アイドルマスター TOURS』新シリーズ「S1弾Ex」が9月17日開幕。新キャラ・新曲・新アイテムに加え、ツアーズレアの入手手順と開幕記念ログインボーナス(合計1000枚)をまとめて伝える",
+      "lead_score": 35,
+      "dedup_key": "tours-s1-ex-2026",
+      "candidate_ids": [
+        "202609101835-watch-4",
+        "202609110225-grok-47",
+        "202609110225-grok-48",
+        "202609110225-grok-49"
+      ]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "joint-idol-ultimate-once-and-for-all-2027",
+      "reason": "既報",
+      "note": "765面で2026-09-04〜09-06に既報済み(story_id: 765-961-idol-ultimate-once-and-for-all-2027)。日程・料金・出演・先行受付期間とも今回の候補と完全一致し新事実なし。公開年月日も9/6で発行日より5日前"
+    },
+    {
+      "dedup_key": "5-iwsf2026-cd-876-production-fes-alternative-tracks-collection-dearly-stars",
+      "reason": "既報",
+      "note": "8/29既報(story_id: columbia-venue-cd-aftersale-2026-08)。受付期間(8/28 21:00〜9/13 23:59)・対象12種・支払方法とも一致し新事実なし。締切3日前トリガーは9/10で本日は該当しない"
+    },
+    {
+      "dedup_key": "6-iwsf2026-cd-961production-kohaku-765pro-allstars",
+      "reason": "既報",
+      "note": "同上の事後通販対象商品の商品ページ。価格・収録曲・受付期間とも既報と一致し新事実なし"
+    },
+    {
+      "dedup_key": "7-876-production-fes-alternative-tracks-collection-dearly-stars",
+      "reason": "既報",
+      "note": "同上。価格・収録曲・受付期間とも既報と一致し新事実なし"
+    },
+    {
+      "dedup_key": "8-namco-tours-1-5-1",
+      "reason": "出典不足",
+      "note": "単一店舗(namco松戸店)の未確認投稿のみで、ブランド公式の告知が無い(規程2)"
+    },
+    {
+      "dedup_key": "10-iwsf2026-day1",
+      "reason": "個人の話題",
+      "note": "個人のSNS感想の紹介にとどまり、対象のIWSF2026本編は7月開催済みで本日の当日トリガーも無い"
+    }
+  ],
+  "cross_brand": []
+}

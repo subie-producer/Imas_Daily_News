@@ -1,5 +1,10 @@
 {
  "imas-portal": [
+  "https://idolmaster-official.jp/news/01_19823",
+  "https://idolmaster-official.jp/news/01_19788",
+  "https://idolmaster-official.jp/news/01_19826",
+  "https://idolmaster-official.jp/news/01_19820",
+  "https://idolmaster-official.jp/news/01_19812",
   "https://idolmaster-official.jp/news/01_19731",
   "https://idolmaster-official.jp/news/01_19793",
   "https://idolmaster-official.jp/news/01_19842",
@@ -9,9 +14,9 @@
   "https://idolmaster-official.jp/news/01_19817",
   "https://idolmaster-official.jp/news/01_19776",
   "https://idolmaster-official.jp/news/01_19787",
-  "https://idolmaster-official.jp/news/01_19815",
-  "https://idolmaster-official.jp/news/01_19816",
   "https://idolmaster-official.jp/news/01_19744",
+  "https://idolmaster-official.jp/news/01_19816",
+  "https://idolmaster-official.jp/news/01_19815",
   "https://idolmaster-official.jp/news/01_19807",
   "https://idolmaster-official.jp/news/01_19743",
   "https://idolmaster-official.jp/news/01_19809",
@@ -475,6 +480,7 @@
   "https://columbia.jp/idolmaster/imasnews/200605.html"
  ],
  "bnam-tours": [
+  "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260910.html",
   "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260824.html",
   "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260421.html",
   "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260804.html",

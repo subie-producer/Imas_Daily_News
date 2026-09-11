@@ -1,0 +1,97 @@
+{
+  "articles": [
+    {
+      "slug": "shiny-style-collection-vol1-order",
+      "brand": "shiny",
+      "rank": "medium",
+      "angle": "新グッズシリーズ「SHINY Style COLLECTION」第1弾(「I'm a Cutie Finder」「ザ・ふたりトラベラー」対象)の受注が9月27日締切で開始。ASOBI STOREでの購入方法とラインナップ(グッズセット5,000円・アクリルシャドーボックス4,000円)を伝える",
+      "lead_score": 20,
+      "dedup_key": "shiny-style-collection-2026",
+      "candidate_ids": ["202609101835-watch-2", "202609110225-grok-69"]
+    },
+    {
+      "slug": "shiny-song-for-prism-album-store-bonus",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "12月23日発売のシャニソン新アルバム『Song for Prism』の店舗特典が決定(アニメイトA3クリアポスター、Amazonメガジャケ)。品番・価格とあわせて伝える",
+      "lead_score": 5,
+      "dedup_key": "shiny-song-for-prism-new-album-bonus-2026",
+      "candidate_ids": ["202609102333-explore-7", "202609110225-explore-7"]
+    },
+    {
+      "slug": "shiny-towa-collection-stepup-gacha-72h",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "「有償限定 72時間限定 トワコレP-SSR/S-SSRセレチケ付きステップアップガシャ」が9月11日0時開始。期間限定であることを伝える",
+      "lead_score": 0,
+      "dedup_key": "shiny-towacollection-stepup-72h-202609",
+      "candidate_ids": ["202609110225-grok-72"]
+    },
+    {
+      "slug": "shiny-runway-summer-photocontest-result",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "「Shiny Runway 2026 Summer Collection」フォトコンテストの結果発表(メイクアップ部門・きみと夏祭り部門・はじける夏と泡沫部門)",
+      "lead_score": 0,
+      "dedup_key": "shiny-runway-2026-summer-photocontest-result",
+      "candidate_ids": ["202609110225-grok-75"]
+    },
+    {
+      "slug": "shiny-yuika-another-costume-intro",
+      "brand": "shiny",
+      "rank": "small",
+      "angle": "公式Xが★3「知らなければ、罪」三峰結華のアナザー衣装を紹介",
+      "lead_score": 0,
+      "dedup_key": "shiny-sfp-yuika-another-costume-2026",
+      "candidate_ids": ["202609110225-grok-76"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "shiny-parallel-kairo-shop-2026",
+      "reason": "既報",
+      "note": "9/10付で同内容(9/28-10/12・オフィシャルショップ5店舗・在庫限定・取り置き不可)をshiny-parallel-corridor-official-shop-2026として既に記事化済み、新事実なし"
+    },
+    {
+      "dedup_key": "shiny-mikoto-birthday-2026",
+      "reason": "既報",
+      "note": "9/8付で誕生日施策(誕生日ミニコミュ・スタンプガシャ・S-SSR「NAP緋田美琴」・記念商品)を既に記事化済み。今回はファン投稿395件のまとめが中心で新事実なし(個人SNS投稿の集積は単体記事化不可、規程4/5)"
+    },
+    {
+      "dedup_key": "shanison-new-album-store-bonus-2026",
+      "reason": "重複",
+      "note": "同一告知(Song for Prismニューアルバム店舗特典決定)。「shiny-song-for-prism-album-store-bonus」記事に統合"
+    },
+    {
+      "dedup_key": "1-shiny-style-collection-1",
+      "reason": "重複",
+      "note": "同一告知(SHINY Style COLLECTION第1弾受注開始)。「shiny-style-collection-vol1-order」記事に統合"
+    },
+    {
+      "dedup_key": "2-283-production-solo-live-collection-master-showpiece",
+      "reason": "既報",
+      "note": "会場物販整理券抽選受付(9/10-9/15、当落発表9/22)はshiny-msp-goods-voucher-2026として9/10付で既に記事化済み、新事実なし"
+    },
+    {
+      "dedup_key": "5-9",
+      "reason": "既報",
+      "note": "9月カレンダー(樋口円香・和泉愛依)はshiny-calendar-2026-09-madoka-meiとして9/2付で既報。今回は再掲のみで、素材facts内に次回ヒントの具体的な新事実の記述なし"
+    },
+    {
+      "dedup_key": "9-the-idolm-ster-shiny-colors-hopeful-fe-thers-stella-9-16",
+      "reason": "既報",
+      "note": "試聴動画公開(9/9)はshiny-hopeful-feathers-cd-2026の published_facts に既に記載済み。今回は声優(山根綺)による引用RTのみで新事実なし"
+    },
+    {
+      "dedup_key": "11",
+      "reason": "個人の話題",
+      "note": "個人アカウントのコスプレ写真投稿。単体記事化不可(規程4/5)"
+    },
+    {
+      "dedup_key": "12",
+      "reason": "個人の話題",
+      "note": "個人アカウントのファンイラスト投稿(トレカ個人間取引の話題も含む)。単体記事化不可(規程4/5)"
+    }
+  ],
+  "cross_brand": []
+}

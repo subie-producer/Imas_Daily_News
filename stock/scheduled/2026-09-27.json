@@ -279,5 +279,44 @@
     "verify": "confirmed",
     "src_candidate_id": "202609060228-grok-54",
     "event_date": "2026-09-27"
+  },
+  {
+    "id": "sched-2026-09-27-shiny-style-collection-vol1-2026-締切",
+    "dedup_key": "shiny-style-collection-vol1-2026",
+    "brand": "shiny",
+    "subject": "シャニマス新グッズ「SHINY Style COLLECTION」第1弾",
+    "kind": "締切",
+    "reserved_on": "2026-09-11",
+    "facts": [
+      "ASOBI STOREで9月27日(日)まで受注販売",
+      "第1弾テーマは「I'm a Cutie Finder」の「Dolce Style」と「ザ・ふたりトラベラー」の「ギンガムレトロStyle」",
+      "発送は2026年12月中旬以降順次予定"
+    ],
+    "title": "シャニマス新グッズ第1弾、9月27日まで受注",
+    "url": "https://idolmaster-official.jp/news/01_19826",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "event_date": "2026-09-27",
+    "deadline": "2026-09-27",
+    "src_candidate_id": "202609101835-watch-2"
+  },
+  {
+    "id": "sched-2026-09-27-sidem-tales-goods-wave4-2026-締切",
+    "dedup_key": "sidem-tales-goods-wave4-2026",
+    "brand": "sidem",
+    "subject": "「CONNECT WITH MUSIC！TRANSCENDENT T@LES」公式グッズ第4弾",
+    "kind": "締切",
+    "reserved_on": "2026-09-11",
+    "facts": [
+      "ASOBI STOREで9月27日まで受注販売、ユニット横断シャッフルメンバーのスチルイラストを使用",
+      "発送は2026年12月下旬以降順次予定"
+    ],
+    "title": "SideMシャッフルスチル第4弾、9月27日まで受注",
+    "url": "https://idolmaster-official.jp/news/01_19788",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "event_date": "2026-09-27",
+    "deadline": "2026-09-27",
+    "src_candidate_id": "202609101835-watch-1"
   }
 ]

@@ -35,5 +35,25 @@
     "verify": "confirmed",
     "src_candidate_id": "202609061835-explore-4",
     "event_date": "2026-10-28"
+  },
+  {
+    "id": "sched-2026-10-28-joint-tours-s1-ex-2026-終了",
+    "dedup_key": "joint-tours-s1-ex-2026",
+    "brand": "joint",
+    "subject": "ツアマス「S1弾Ex」",
+    "kind": "終了",
+    "note": "ツアーズレア導入期間の終了時刻は25:59(=10/29 1:59)、ログインボーナスは23:59。読者が読む10/29 06:00には終了済みのため前日に予約",
+    "reserved_on": "2026-09-11",
+    "facts": [
+      "S1弾Exツアーズレア導入期間は2026年10月28日(水)25:59まで(=10月29日1:59)",
+      "新シリーズ開幕記念ログインボーナスの期間は2026年10月28日(水)23時59分まで"
+    ],
+    "title": "『アイドルマスター TOURS』S1弾Ex、9/17開始",
+    "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260910.html",
+    "source_type": "公式",
+    "verify": "confirmed",
+    "event_date": "2026-09-17",
+    "deadline": "2026-10-28",
+    "src_candidate_id": "202609101835-watch-4"
   }
 ]

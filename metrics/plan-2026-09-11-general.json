@@ -1,0 +1,36 @@
+{
+  "articles": [
+    {
+      "slug": "general-sidem-shiny-gaku-wallpaper-distribution",
+      "brand": "general",
+      "rank": "small",
+      "angle": "公式英語アカウント(idolmaster_en)がSideM・シャニマス・学マスの壁紙3点をまとめて配布したと伝える",
+      "lead_score": 5,
+      "dedup_key": "sidem-shiny-colors-gakuen",
+      "candidate_ids": ["202609110225-grok-96"]
+    }
+  ],
+  "dropped": [
+    {
+      "dedup_key": "765-production-961-production-idol-ultimate-once-and-for-all-3",
+      "reason": "既報",
+      "note": "stock/stories.yml の idol-ultimate-street-ads-2026(2026-09-08初報、joint面)で3都市同時掲出・掲出期間・ハッシュタグ告知まで既に報じ済み。新規候補にエンゲージ数以外の新事実なし"
+    },
+    {
+      "dedup_key": "a4e1ec5bf349",
+      "reason": "重複",
+      "note": "上記と同一の街頭広告(渋谷駅)をサイン・ディスプレイ業界の一般メディアが紹介しているだけで、既報story idol-ultimate-street-ads-2026の範囲内。出典も未確認・低エンゲージ"
+    },
+    {
+      "dedup_key": "iwsf2026-cd-961production-kohaku-765pro-allstars",
+      "reason": "既報",
+      "note": "stock/stories.yml の iwsf2026-venue-cd(joint面)で商品構成・事後通販受付(8/21〜8/31)・発送(9/11)まで既報。新候補の「今週販売〆切」は日付不明の未確認情報で、既報の日程と整合しない"
+    },
+    {
+      "dedup_key": "iwsf2026",
+      "reason": "その他",
+      "note": "素材自身が「公演自体は過去。新規告知ではない」と明記するファン投稿への言及のみで、挙げられている個別ニュース(ミリオン/SideM/学マス)はいずれも今号の他面が既に記事化済み。general面として書ける新事実なし"
+    }
+  ],
+  "cross_brand": []
+}

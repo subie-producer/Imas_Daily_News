@@ -1934,6 +1934,103 @@ def run_parallel(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[
     return [f"{n}: {why}" for n, why in errs.items()]
 
 
+def revise_prompt(date: str, art: dict, mats_in: list[dict], current: str, issues: list[dict]) -> str:
+    """校閲の指摘を受けた**執筆側(Codex)**の書き直し。同じ出力契約(article-out)で返す。"""
+    iss = json.dumps([{k: b.get(k) for k in ("rule_id", "issue", "quote", "repair", "fact_ids", "expected")}
+                      for b in issues], ensure_ascii=False, indent=1)
+    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の記者です。{date}号のあなたの記事に、別ベンダーの校閲から
+ブロック指摘が付きました。**指摘に対応した稿を JSON で返してください**(schema で形が決まっています。
+ファイルは作りません)。
+
+## 現在の記事
+```
+{current[:12000]}
+```
+
+## 素材(この記事に使ってよい情報の全て。事実には id が付いています)
+{json.dumps(mats_in, ensure_ascii=False, indent=1)}
+
+## 校閲の指摘(それぞれ repair の指示に従う)
+{iss}
+
+## 直し方
+- `rewrite_claim`: その記述を素材の事実どおりに直す。段落の fact_ids に根拠を付ける
+- `drop_claim`: 素材に無い記述を消す。消して段落が空になるなら段落ごと消す
+- `add_source`: 足りない出典を sources に加える(素材にある URL か、`python3 scripts/fetch_page.py <url>` で
+  読んで確認した一次情報の URL だけ)。**指摘に URL が書いてあるならそれを加える**
+- `drop_source`: 食い違う弱い出典を sources から外し、記事は強い出典に合わせる(弱い出典に合わせて書き換えない)
+- `drop_article`: 記事として成立しないなら status を abort にし、abort_code と理由を書く。無理に残さない
+- **指摘に無い箇所は変えない**(見出し・他の段落・出典は原則そのまま)。直したふりをしない
+- 対応した指摘の rule_id を addressed_issue_ids に列挙する
+- slug / brand / candidate_ids / rank / src は書かない(コードが付ける)。event_date は YYYY-MM-DD を1つだけか null
+"""
+
+
+def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands: dict,
+                    aborted: list[str] | None = None) -> None:
+    """校閲の指摘を**執筆側(Codex)**に構造化で直させる。校閲側(Claude)には編集させない(監査の設計レビュー)。
+
+    直した稿は初稿と同じ検算(事実 id・出典・タグ・日付)を通してからファイルにする。
+    abort が返れば記事を落とす。何も直せないままなら次の巡でまたブロックが付き、上限で落ちる。
+    """
+    by_slug_plan = {a["slug"]: a for a in plan.get("articles") or []}
+    jobs = []
+    for f, issues in by_file.items():
+        if not f.startswith("docs/_posts/"):
+            continue
+        name = Path(f).name
+        slug = name[len(date) + 1:].removesuffix(".md")
+        art = by_slug_plan.get(slug)
+        path = ROOT / f
+        if art is None or not path.exists():
+            continue
+        materials = [cands[c] for c in art["candidate_ids"] if c in cands]
+        mats_in, fact_by_id = renderlib.materials_with_ids(materials)
+        jobs.append((art, path, fact_by_id, materials,
+                     revise_prompt(date, art, mats_in, path.read_text(encoding="utf-8"), issues)))
+    if not jobs:
+        return
+    schema_out = ROOT / "schema" / "article-out.schema.json"
+    n_fixed = n_dropped = 0
+    for i in range(0, len(jobs), COMPOSE_WAVE):
+        procs = []
+        for art, path, fact_by_id, materials, prompt in jobs[i:i + COMPOSE_WAVE]:
+            fd, out_name = tempfile.mkstemp(prefix=f"codexrevise-{art['slug']}-", suffix=".txt")
+            os.close(fd)
+            procs.append((art, path, fact_by_id, materials, Path(out_name), subprocess.Popen(
+                ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
+                 "-c", "sandbox_workspace_write.network_access=true",
+                 "--output-last-message", out_name, "--output-schema", str(schema_out), prompt],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True, stdin=subprocess.DEVNULL, cwd=ROOT)))
+        for art, path, fact_by_id, materials, out_path, p in procs:
+            try:
+                p.communicate(timeout=900)
+            except subprocess.TimeoutExpired:
+                p.kill()
+            out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
+            out_path.unlink(missing_ok=True)
+            try:
+                ans = json.loads(out.strip())
+            except Exception:
+                print(f"書き直し {art['slug']}: 出力が読めない(そのまま次の巡へ)", flush=True)
+                continue
+            if ans.get("status") == "abort":
+                print(f"書き直し {art['slug']}: 執筆側が不成立と判断({ans.get('abort_code')})。落とす", flush=True)
+                path.unlink(missing_ok=True)
+                if aborted is not None:
+                    aborted.append(art["slug"])
+                n_dropped += 1
+                continue
+            problems = renderlib.check_output(ans, fact_by_id, materials)
+            if problems:
+                print(f"書き直し {art['slug']}: 検算不合格 " + " / ".join(problems[:3]) + "(元の稿のまま)", flush=True)
+                continue
+            renderlib.render_article(path, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
+            n_fixed += 1
+            print(f"書き直し {art['slug']}: 対応 {ans.get('addressed_issue_ids')}", flush=True)
+    print(f"校閲の指摘で執筆側が {n_fixed}本を書き直し、{n_dropped}本を落とした", flush=True)
+
+
 def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
     """校閲のブロック指摘を、**記事1本につき1セッション**で直させる(並列)。
 
@@ -2510,7 +2607,15 @@ def main() -> int:
             # 直らなければ落として組版し直す(号を止めない)
             by_file = post_errors(lint_out)
             print(f"lint 赤(記事の中身) {len(by_file)}本を個別に修正させる", flush=True)
-            fix_articles(date, by_file)
+            if STRUCTURED_WRITE:
+                for f, bs in by_file.items():   # lint の指摘には rule_id が無いので補う
+                    for b in bs:
+                        b.setdefault("rule_id", "LINT"); b.setdefault("repair", "rewrite_claim")
+                        b.setdefault("fact_ids", []); b.setdefault("expected", "lint が通る状態")
+                revise_articles(date, by_file, plan, cands, aborted)
+                written[:] = [a for a in written if (ROOT / "docs" / "_posts" / f"{date}-{a['slug']}.md").exists()]
+            else:
+                fix_articles(date, by_file)
             for a in written:
                 if a["slug"] in by_slug_plan:
                     canonicalize_article(date, by_slug_plan[a["slug"]], cands)
@@ -2613,9 +2718,15 @@ def main() -> int:
                 date, number, plan.get("editorial_slug", ""),
                 plan.get("editorial_brand", ""), ed_blockers)))
         if by_file:
-            jobs.append(("記事の修正", lambda: fix_articles(date, by_file)))
+            if STRUCTURED_WRITE:
+                # 中身の修正は**執筆側(Codex)**が構造化で書き直す。校閲側(Claude)に記事を編集させない
+                jobs.append(("記事の書き直し", lambda: revise_articles(date, by_file, plan, cands, aborted)))
+            else:
+                jobs.append(("記事の修正", lambda: fix_articles(date, by_file)))
         for e in run_parallel(jobs):
             print(f"同時実行のうち失敗: {e}", flush=True)
+        # 書き直しで落ちた記事(abort)を written から外す
+        written[:] = [a for a in written if (ROOT / "docs" / "_posts" / f"{date}-{a['slug']}.md").exists()]
         subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
                        cwd=ROOT, capture_output=True, text=True)
 

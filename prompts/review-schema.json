@@ -9,9 +9,14 @@
         "properties": {
           "file": { "type": "string" },
           "issue": { "type": "string" },
-          "quote": { "type": "string" }
+          "quote": { "type": "string" },
+          "rule_id": { "type": "string", "description": "チェックリストの項目番号(R1〜R16、社説は E、紙面は P)" },
+          "repair": { "enum": ["rewrite_claim", "drop_claim", "add_source", "drop_source", "drop_article", "none"],
+                      "description": "修正の種類。執筆側はこれに従って直す" },
+          "fact_ids": { "type": "array", "items": { "type": "string" }, "description": "関係する素材の事実 id(分かれば)" },
+          "expected": { "type": "string", "description": "直したあとに満たすべき状態(1文)" }
         },
-        "required": ["file", "issue", "quote"],
+        "required": ["file", "issue", "quote", "rule_id", "repair", "fact_ids", "expected"],
         "additionalProperties": false
       }
     },

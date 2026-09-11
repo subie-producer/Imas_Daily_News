@@ -88,3 +88,11 @@
 
 判定は JSON で出力してください。blockers / comments の file には `docs/_posts/{FILE}` を書き、
 該当箇所の引用(quote)を付けること。この記事に問題が無ければ verdict は approve。
+
+blockers の各項目には、執筆側が機械的に直せるように次を付けてください:
+- `rule_id`: 上の項目番号(例 "R1"、"R5"、"R9")
+- `repair`: 直し方。`rewrite_claim`(記述を出典どおりに直す)/ `drop_claim`(出典に無い記述を消す)/
+  `add_source`(足りない出典を加える。素材にある URL か、確認した一次情報)/ `drop_source`(食い違う弱い出典を外す)/
+  `drop_article`(記事として成立しない。既報・同人・ニュース性なし・公式が無い など)/ `none`
+- `fact_ids`: 関係する素材の事実 id(記事の段落に付いている F1… が分かれば)
+- `expected`: 直したあとに満たすべき状態を1文で

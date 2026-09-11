@@ -2,7 +2,7 @@
   "title": "article-out",
   "description": "執筆セッションの出力契約。判断と文章だけを返し、frontmatter とファイルはコードが作る(構造は生成時に強制する)",
   "type": "object",
-  "required": ["status", "abort_code", "abort_detail", "title", "title_fact_ids", "lede", "lede_fact_ids", "blocks", "tags", "sources", "event_date"],
+  "required": ["status", "abort_code", "abort_detail", "title", "title_fact_ids", "lede", "lede_fact_ids", "blocks", "tags", "sources", "event_date", "addressed_issue_ids"],
   "additionalProperties": false,
   "properties": {
     "status": {"enum": ["ok", "abort"]},
@@ -37,6 +37,8 @@
       }
     },
     "event_date": {"type": ["string", "null"], "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
-                   "description": "記事の出来事が起きる(始まる)日。1日だけ。範囲や複数なら開始日。無ければ null"}
+                   "description": "記事の出来事が起きる(始まる)日。1日だけ。範囲や複数なら開始日。無ければ null"},
+    "addressed_issue_ids": {"type": "array", "items": {"type": "string"},
+                            "description": "書き直しのとき: 対応した校閲指摘の issue_id。初稿では空配列"}
   }
 }

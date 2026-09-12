@@ -402,8 +402,8 @@ def article_prompt(date: str, art: dict, materials: list[dict], story_facts: lis
   `new_facts` に {{id: "N1", text: 確かめた事実, url: 読んだページ}} を書く。段落の fact_ids には
   その N1 を付けられる。**読んでいないページの事実を new_facts に書かない**
   (素材の `unbacked_facts` を出典本文で確かめられたときも、ここに書く)
-- sources は url と label だけ(label は 出典元表記「告知タイトル」(日付) の形。Markdown 記号は使わない)。
-  url は素材の出典か、new_facts に書いた URL だけ(**それ以外の URL は検算で落ちる**)。
+- sources は url と label だけ(label は 出典元表記「告知タイトル」(日付) の形。Markdown のリンク・強調記号は使わない)。
+  url は素材の出典か、執筆中に読んで確認した一次情報の URL(読んだページの事実は new_facts に書く)。
   **種別は書かない**(判定表がコードで付ける)
 - tags は2〜4個。下記「タグ語彙」に従う
 - event_date は、記事の出来事が起きる(始まる)日を **1つだけ** YYYY-MM-DD で。範囲や複数なら開始日。無ければ null。

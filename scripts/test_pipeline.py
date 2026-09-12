@@ -53,8 +53,11 @@ def test_check_output():
                 new_facts=[{"id": "N1", "text": "9月25日発売", "url": "https://z.example/9"}], event_date="2026-09-25",
                 blocks=[{"markdown": "x", "fact_ids": ["F1", "F3", "F4", "N1"]}])
     check(C(good) == [], f"new_facts 付きの出力が落ちた: {C(good)}")
-    check(any("new_facts" in p for p in C(dict(OK, sources=OK["sources"] + [{"url": "https://q.example", "label": "q"}]))),
-          "読んでいない URL の出典が通った")
+    # 素材に無い URL(執筆が見つけた出典)は許す。実在・一致の確認は校閲(項目3)
+    check(C(dict(OK, sources=OK["sources"] + [{"url": "https://q.example", "label": "q"}])) == [], "素材に無い出典 URL を機械が落とした")
+    check(C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "#タグ_付き ID"}])) == [], "label の # や _ を落とした")
+    check(any("Markdown" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "[リンク](x)"}]))),
+          "label の Markdown リンクが通った")
     check(any("tags" in p for p in C(dict(OK, tags=["a"]))), "tags 1個が通った")
     check(any("見出し" in p for p in C(dict(OK, title_fact_ids=[]))), "見出しの根拠無しが通った")
     check(len(C({"status": "decline", "decline_code": "", "decline_detail": ""})) == 2, "理由の無い decline が通った")

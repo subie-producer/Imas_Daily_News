@@ -130,7 +130,6 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         if f.get("id") in known_ids:
             problems.append(f"new_facts の id が重複: {f.get('id')}")
         known_ids[f.get("id")] = str(f.get("text") or "")
-    known_urls = {c.get("url") for c in materials if c.get("url")} | {f.get("url") for f in new_facts}
     if not str(out.get("title") or "").strip() or not str(out.get("lede") or "").strip():
         problems.append("見出しかリードが空")
     if not out.get("blocks"):
@@ -178,12 +177,13 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         u = s.get("url") or ""
         if not re.match(r"^https?://", u):
             problems.append(f"出典 url の形が不正: {u[:60]}")
-        elif u not in known_urls:
-            problems.append(f"素材にも new_facts にも無い出典 url(読んだなら new_facts に事実を書く): {u[:70]}")
+        # 素材に無い URL(執筆が自分で見つけた出典)は許す。実在と一致の確認は校閲(項目3)の仕事。
+        # 「new_facts に書いたものだけ」と縛ったら、公式ストアやチケットページを出典にした記事が
+        # 4本落ちた(実測 2026-09-13)
         if u in seen:
             problems.append(f"出典 url が重複: {u[:60]}")
         seen.add(u)
-        if re.search(r"[\[\]*_`#]", s.get("label") or ""):
+        if re.search(r"[\[\]*`]", s.get("label") or ""):   # # や _ はハッシュタグ・ID に普通に出る
             problems.append(f"出典 label に Markdown 記号: {s.get('label')!r}")
     # 「使った事実の出典を隠していないか」「素材に無い URL を本当に読んだか」は校閲(モデル)の判断。
     # ここでは見ない(校閲の機械化はしない。編集長の指示)

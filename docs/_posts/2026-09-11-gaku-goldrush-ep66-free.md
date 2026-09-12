@@ -2,7 +2,7 @@
 slug: gaku-goldrush-ep66-free
 edition: 2026-09-11
 brand: gaku
-src: 未確認
+src: 二次情報
 rank: small
 corrected: false
 corrections: []
@@ -15,10 +15,9 @@ sources:
     type: 二次情報
     label: "チャンピオンクロスで第66話の無料公開開始"
   - url: https://championcross.jp/episodes/7382e66ce1257
-    type: 未確認
+    type: 準公式
     label: "『学園アイドルマスター GOLD RUSH』第66話(チャンピオンクロス)"
 event_date: 2026-09-10
-
 ---
 
 『学園アイドルマスター GOLD RUSH』第66話が、チャンピオンクロスで無料公開されている。公開ページ上の第66話の日付表示は2026年8月27日。脚本・構成は猪ノ谷言葉、作画は沖乃ゆう、原作はバンダイナムコエンターテインメント。

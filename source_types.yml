@@ -52,6 +52,7 @@ semi_official_domains:
   - shop.columbia.jp
   - lantis.jp                             # ランティス
   - shinycolors.lantis.jp
+  - championcross.jp                      # チャンピオンクロス(秋田書店。「ゴールドラッシュ」等の連載先)
   - shop.asobistore.jp                    # アソビストア
   - webstore.asobistore.jp                # アソビストア(別ドメイン)
   - asobistory.asobistore.jp
@@ -284,6 +285,7 @@ video_ids:
     - fUaUvVZE9jU   # 機械で追加: @Lantis「【試聴動画】THE IDOLM@STER SHINY COL」
     - L5fny8h7Ts0   # 機械で追加: @Lantis「【試聴動画】THE IDOLM@STER SHINY COL」
     - fX4iinOuXQc   # Lantis Channel(@Lantis) SideM MONTHLY THEME SONG 試聴動画
+    - 2P5JMdA1KjI   # Lantis Channel(@Lantis) SideM「DELIGHT EXCURSION」2DMV(oEmbed 失敗で未確認のまま載った)
     - lv351005906   # CINDERELLA PARTY! #614(日本コロムビア)
     - lv351005960   # THE IDOLM@STER MUSIC ON THE RADIO #411(日本コロムビア)
     - lv350975991   # THE IDOLM@STER MillionRADIO(バンダイナムコミュージックライブ)
@@ -295,6 +297,8 @@ video_ids:
 x_accounts:
   公式:
     - imas_official                   # アイドルマスター公式
+    - idolmaster_en                   # アイドルマスター公式(英語)
+    - jimushiny_oa                    # 「事務所のシャイニーカラーズ(ジムシャニ)」作品公式
     - imas_CGofficial                 # シンデレラガールズ
     - imascg_stage                    # シンデレラガールズ ステージ
     - imasml_theater                  # ミリオンライブ! シアターデイズ
@@ -354,6 +358,7 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - yuzu_yng            # ファン投稿(街頭広告の目撃)
     - l7767238940         # 合議で追加: 視聴者としての反応で、イベント参加ファンの投稿
     - gannbarebeeeeem     # 合議で追加: ゲーム内イベントについての個人的な感想
     - dragonsleft         # 合議で追加: 投稿要約にfan明記
@@ -401,6 +406,7 @@ x_accounts:
     - yutaleP
   当事者:
     - X_VORDER_RUNWAY     # 合議で追加: グッズ販売時間を告知する売り手側の公式アカウント
+    - onkyodav            # オンキヨー(メーカー。コラボイヤホンの販売元)
     - matsudo_arcade      # 合議で追加: 店舗がTOURS設置を自社告知
     - lumica_JP           # 合議で追加: ルミカ社による回収告知
     - shosen_online       # 合議で追加: 書店。商品販売の一次発信

@@ -9,8 +9,8 @@
 未確認のまま記事に載っていた)。
 
 そこで、未知のドメインを**別ベンダーの2モデルに独立して分類させ、一致したものだけ**
-表へ足す。「不明」は棄権で、片方が具体的に答えれば採る。公式・準公式(バッジが上がる側)だけは
-2モデルの一致が要る。具体的な答え同士が食い違えば足さず、未確認のまま人へ回す。
+表へ足す。割れたら2巡目で相手の答えと根拠を見せて検証させ、賛成か反論かを答えさせる(議論)。
+2巡目でも割れたものだけ、両方の言い分を付けて未確認のまま人へ回す。
 
 **公式・準公式は自動で足さない。**この2つは「アイマス公式である」「公式の
 グループ企業である」という強い主張で、外から見て確かめようがない。
@@ -36,9 +36,8 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, classify_source,
 
 # 合議で足してよい種別。公式・準公式も答えさせる(作品・ブランドの公式アカウントを「不明」で人へ回して
 # いたら、@idolmaster_en もジムシャニ公式も未確認のまま紙面に載った。編集長の指摘)。
-# ただし公式・準公式(バッジが上がる側)は2モデルの一致が要る(consensus)
+# どの種別も2モデルの一致が要る。割れたら議論(consensus の2巡目)
 ALLOWED = ("公式", "準公式", "当事者", "演者", "報道", "二次情報", "ファン")
-BADGE_UP = ("公式", "準公式")
 # ドメインの一覧は種別ごと。演者はドメインを持たない(X アカウントで表す)ので入れない
 LIST_OF = {"公式": "official_domains", "準公式": "semi_official_domains",
            "当事者": "party_domains", "報道": "press_domains",
@@ -233,33 +232,69 @@ X のアカウントは次のどれかに当たることが多いので、目安
 """
 
 
+CMD_A = ["claude", "-p", "--model", COLLECT_MODEL, "--dangerously-skip-permissions"]
+CMD_B = ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "read-only", "--skip-git-repo-check"]
+
+
+def _by_host(rows: list) -> dict[str, dict]:
+    return {str(d.get("host", "")).lstrip("@"): d for d in rows if isinstance(d, dict)}
+
+
+def debate_prompt(prompt: str, split_keys: list[str], mine: dict, theirs: dict) -> str:
+    """2巡目: 割れた対象について、相手の答えと根拠を見せ、検証して賛成か反論かを答えさせる。"""
+    rows = []
+    for k in split_keys:
+        m, t = mine.get(k) or {}, theirs.get(k) or {}
+        rows.append(f"- {k}: あなた={m.get('type') or '—'}({m.get('why') or '根拠なし'}) / "
+                    f"相手={t.get('type') or '—'}({t.get('why') or '根拠なし'})")
+    return (prompt + "\n\n## 2巡目: 相手の答えと食い違った対象\n"
+            "別のモデルが同じ材料で独立に答え、次の対象で食い違いました。**相手の根拠を読み、材料(ページ冒頭・"
+            "投稿の要約)と知識で検証してから**答え直してください。\n"
+            + "\n".join(rows) + "\n\n"
+            "- 相手が正しいと分かったら相手の種別を答える(自分の1巡目に固執しない)\n"
+            "- 相手が間違っていると分かったら自分の種別を答え、**相手の根拠のどこが違うか**を why に書く\n"
+            "- 「不明」で済ませない。1巡目に不明と答えたなら、相手の根拠を材料に照らして賛成か反論かを決める。"
+            "どうしても決められないなら why に「何が分かれば決められるか」を書く\n"
+            "- 出力は1巡目と同じ JSON 配列(上の対象だけ)\n")
+
+
 def consensus(prompt: str, keys: list[str]) -> tuple[dict, list[str]]:
-    """別ベンダーの2モデルに独立して答えさせ、一致したものだけ返す。
+    """別ベンダーの2モデルの合議。1巡目は独立に答え、割れたものは**議論**する(2巡目)。
 
     同じベンダーだと同じ誤りを共有するので、Claude と Codex に分ける。
+    1巡目で割れた対象は、相手の答えと根拠を見せて検証させ、賛成か反論かを答えさせる。
+    片方が「不明」と言い、もう片方が「これ」と言ったのに、不明側が検証もせず終わっていた
+    (実測 2026-09-08〜12: @yuzu_yng 不明/ファン、@onkyodav 不明/当事者)。多数決や棄権扱いで
+    誤魔化さず、答えた側の根拠に向き合わせる。2巡目でも割れたら両方の言い分を付けて人へ。
     """
-    a = {str(d.get("host", "")).lstrip("@"): d for d in ask(
-        ["claude", "-p", "--model", COLLECT_MODEL, "--dangerously-skip-permissions"], prompt)
-        if isinstance(d, dict)}
-    b = {str(d.get("host", "")).lstrip("@"): d for d in ask(
-        ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "read-only", "--skip-git-repo-check"], prompt)
-        if isinstance(d, dict)}
+    a = _by_host(ask(CMD_A, prompt))
+    b = _by_host(ask(CMD_B, prompt))
+
+    def agree(k):
+        ta, tb = (a.get(k) or {}).get("type"), (b.get(k) or {}).get("type")
+        return ta if (ta and ta == tb and ta in ALLOWED) else None
+
+    split_keys = [k for k in keys if not agree(k)]
+    if split_keys:
+        print(f"  1巡目で割れた {len(split_keys)}件を議論させる: "
+              + ", ".join(f"{k}({(a.get(k) or {}).get('type') or '—'}/{(b.get(k) or {}).get('type') or '—'})" for k in split_keys),
+              flush=True)
+        a2 = _by_host(ask(CMD_A, debate_prompt(prompt, split_keys, a, b)))
+        b2 = _by_host(ask(CMD_B, debate_prompt(prompt, split_keys, b, a)))
+        for k in split_keys:
+            if k in a2:
+                a[k] = a2[k]
+            if k in b2:
+                b[k] = b2[k]
     agreed, split = {}, []
     for k in keys:
-        da, db = a.get(k) or {}, b.get(k) or {}
-        ta, tb = da.get("type"), db.get("type")
-        if ta and ta == tb and ta in ALLOWED:
-            agreed[k] = (ta, str(da.get("why", ""))[:40])
-            continue
-        # 「不明」は反対意見ではなく棄権。片方が具体的に答え、もう片方が不明なら、答えた側を採る
-        # (実測: @yuzu_yng は 不明/ファン、@onkyodav は 不明/当事者 で、正解が捨てられていた)。
-        # ただしバッジが上がる公式・準公式は2モデルの一致が要る
-        concrete = [(t, d) for t, d in ((ta, da), (tb, db)) if t in ALLOWED]
-        abstain = [t for t in (ta, tb) if t in (None, "", "不明")]
-        if len(concrete) == 1 and abstain and concrete[0][0] not in BADGE_UP:
-            agreed[k] = (concrete[0][0], str(concrete[0][1].get("why", ""))[:40])
-            continue
-        split.append(f"{k}: {ta or '—'} / {tb or '—'}")
+        t = agree(k)
+        if t:
+            agreed[k] = (t, str((a.get(k) or {}).get("why", ""))[:40])
+        else:
+            da, db = a.get(k) or {}, b.get(k) or {}
+            split.append(f"{k}: {da.get('type') or '—'}「{str(da.get('why') or '')[:60]}」 / "
+                         f"{db.get('type') or '—'}「{str(db.get('why') or '')[:60]}」")
     return agreed, split
 
 

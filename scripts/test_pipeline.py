@@ -548,20 +548,38 @@ def test_classify_consensus(tmp: Path):
     """合議: 不明は棄権(具体的な答えを採る)、公式・準公式は一致が要る、X の節は x_accounts の中に足す。"""
     import classify_sources as cs
     saved = (cs.ask, cs.ROOT)
-    answers = iter([
-        [{"host": "yuzu_yng", "type": "不明"}, {"host": "onkyodav", "type": "不明"}, {"host": "idolmaster_en", "type": "公式", "why": "英語公式"},
-         {"host": "jimushiny_oa", "type": "公式", "why": "作品公式"}, {"host": "x1", "type": "ファン"}, {"host": "x2", "type": "報道"}],
-        [{"host": "yuzu_yng", "type": "ファン", "why": "目撃投稿"}, {"host": "onkyodav", "type": "当事者", "why": "メーカー"}, {"host": "idolmaster_en", "type": "公式"},
-         {"host": "jimushiny_oa", "type": "不明"}, {"host": "x1", "type": "当事者"}, {"host": "x2", "type": "報道"}],
-    ])
+    calls = []
+    # 1巡目: A(claude)と B(codex)が独立に答える。割れたら2巡目で相手の根拠を見て答え直す
+    r1a = [{"host": "yuzu_yng", "type": "不明"}, {"host": "onkyodav", "type": "不明"}, {"host": "idolmaster_en", "type": "公式", "why": "英語公式"},
+           {"host": "jimushiny_oa", "type": "公式", "why": "作品公式"}, {"host": "x1", "type": "ファン", "why": "感想"}, {"host": "x2", "type": "報道"}]
+    r1b = [{"host": "yuzu_yng", "type": "ファン", "why": "目撃投稿"}, {"host": "onkyodav", "type": "当事者", "why": "メーカー"}, {"host": "idolmaster_en", "type": "公式"},
+           {"host": "jimushiny_oa", "type": "不明"}, {"host": "x1", "type": "当事者", "why": "店舗"}, {"host": "x2", "type": "報道"}]
+    # 2巡目: A は相手の根拠を検証して yuzu/onkyo に賛成、jimushiny は公式を維持。x1 は双方譲らず
+    r2a = [{"host": "yuzu_yng", "type": "ファン", "why": "相手の根拠どおり個人の目撃"}, {"host": "onkyodav", "type": "当事者", "why": "メーカー"},
+           {"host": "jimushiny_oa", "type": "公式", "why": "作品公式"}, {"host": "x1", "type": "ファン", "why": "店舗の根拠が無い"}]
+    r2b = [{"host": "yuzu_yng", "type": "ファン"}, {"host": "onkyodav", "type": "当事者"},
+           {"host": "jimushiny_oa", "type": "公式", "why": "作品名を名乗る告知"}, {"host": "x1", "type": "当事者", "why": "店舗名"}]
+    answers = iter([r1a, r1b, r2a, r2b])
+
+    def fake_ask(cmd, prompt):
+        calls.append((cmd[0], prompt))
+        return next(answers)
     try:
-        cs.ask = lambda cmd, prompt: next(answers)
+        cs.ask = fake_ask
         agreed, split = cs.consensus("p", ["yuzu_yng", "onkyodav", "idolmaster_en", "jimushiny_oa", "x1", "x2"])
+        check(len(calls) == 4 and calls[2][0] == "claude" and calls[3][0] == "codex", f"2巡目が両モデルに掛かっていない: {[c[0] for c in calls]}")
+        check("相手=ファン(目撃投稿)" in calls[2][1] and "あなた=不明" in calls[2][1], "2巡目の prompt に相手の答えと根拠が無い")
+        check("x2" not in calls[2][1].split("2巡目")[1], "一致した対象まで議論させている")
         check(agreed.get("yuzu_yng", ("",))[0] == "ファン" and agreed.get("onkyodav", ("",))[0] == "当事者",
-              f"不明と具体的な答えの組で、答えが捨てられた: {agreed} {split}")
-        check(agreed.get("idolmaster_en", ("",))[0] == "公式", f"2モデル一致の公式が採られない: {agreed}")
-        check("jimushiny_oa" not in agreed and any(s.startswith("jimushiny_oa") for s in split), "片方だけの公式が採られた(一致が要る)")
-        check("x1" not in agreed and agreed.get("x2", ("",))[0] == "報道", f"具体的な答え同士の食い違いが採られた: {agreed}")
+              f"議論で一致した答えが採られない: {agreed} {split}")
+        check(agreed.get("idolmaster_en", ("",))[0] == "公式" and agreed.get("jimushiny_oa", ("",))[0] == "公式", f"公式が採られない: {agreed}")
+        check("x1" not in agreed and any(s.startswith("x1") and "店舗の根拠が無い" in s and "店舗名" in s for s in split),
+              f"議論後も割れたものは両方の言い分を付けて人へ: {split}")
+        check(agreed.get("x2", ("",))[0] == "報道", "1巡目で一致したものが消えた")
+        # 1巡目で全部一致なら2巡目は掛からない
+        calls.clear()
+        answers = iter([[{"host": "h", "type": "報道"}], [{"host": "h", "type": "報道"}]])
+        check(cs.consensus("p", ["h"])[0].get("h", ("",))[0] == "報道" and len(calls) == 2, "一致しているのに2巡目を掛けた")
         # x_accounts の節に足す(video_channels の「公式:」に差し込まない)
         tmp.mkdir(parents=True, exist_ok=True)
         (tmp / "source_types.yml").write_text(

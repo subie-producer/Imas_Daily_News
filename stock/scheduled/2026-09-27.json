@@ -379,5 +379,60 @@
   "verify": "confirmed",
   "src_candidate_id": "202609110736-watch-0",
   "deadline": "2026-09-27"
+ },
+ {
+  "id": "sched-2026-09-27-x-vorder-runway-goods-onsite-2026-発売",
+  "dedup_key": "x-vorder-runway-goods-onsite-2026",
+  "brand": "765",
+  "subject": "X VORDER RUNWAY 当日グッズ販売",
+  "kind": "発売",
+  "note": "幕張メッセホール4で現地購入できる",
+  "reserved_on": "2026-09-13",
+  "title": "X VORDER RUNWAY当日グッズ販売時間を告知",
+  "url": "https://x.com/X_VORDER_RUNWAY",
+  "source_type": "当事者",
+  "facts": [
+   "2026年9月27日(日)開催の「X VORDER RUNWAY」について、当日グッズ販売のお知らせが投稿された。",
+   "当日販売時間: 10:00〜18:30（予定）",
+   "当日販売場所: 幕張メッセ ホール4",
+   "オンラインショップで完売した商品も、現地販売分の在庫がある。",
+   "エンゲージメント: 中",
+   "言及アイドル: 天海春香、如月千早、星井美希"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609121234-explore-0",
+  "event_date": "2026-09-27"
+ },
+ {
+  "id": "sched-2026-09-27-million-opera-seria-popup-2026-終了",
+  "dedup_key": "million-opera-seria-popup-2026",
+  "brand": "million",
+  "subject": "POP UP SHOP「オペラセリア」閉幕",
+  "kind": "終了",
+  "note": "コトブキヤ秋葉原館での開催最終日",
+  "reserved_on": "2026-09-13",
+  "title": "ミリオン「オペラセリア」POP UP SHOP",
+  "url": "https://idolmaster-official.jp/news/01_19823",
+  "source_type": "公式",
+  "facts": [
+   "POP UP SHOP「オペラセリア」を2026年9月11日(金)から開催する。",
+   "新規描き下ろしイラストグッズを販売する。",
+   "劇中劇「Parade d'amour」をイメージしたグッズを販売する。",
+   "受注販売グッズの受付を2026年9月11日(金)より開始する。",
+   "2026年9月11日(金)・12日(土)・13日(日)は混雑緩和のためデジタルQR整理券を配布する。",
+   "整理券はLINEアプリを使用したデジタルQR整理券「mogily」で案内する。",
+   "申込受付時間: 各日9:00～10:30",
+   "整理券番号開示時間: 各日10:35～",
+   "整理券取得用QRコード掲示場所: コトブキヤ秋葉原館1階店頭シャッター",
+   "開催期間: 2026年9月11日(金)～9月27日(日)",
+   "開催場所: コトブキヤ秋葉原館5F",
+   "参加者にハッシュタグ「#ミリオンコラボ現場視察」を付けた報告を呼びかけている。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609120734-explore-14",
+  "event_date": "2026-09-11",
+  "deadline": "2026-09-27"
  }
 ]

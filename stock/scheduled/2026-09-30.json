@@ -194,5 +194,34 @@
   "via": "watch",
   "verify": "unconfirmed",
   "src_candidate_id": "202609112335-watch-0"
+ },
+ {
+  "id": "sched-2026-09-30-imas-cross-over-cd-2026-発売",
+  "dedup_key": "imas-cross-over-cd-2026",
+  "brand": "joint",
+  "subject": "「クロス×オーバー！」発売",
+  "kind": "発売",
+  "note": "CINDERELLA MASTER NUMBER ONE!第3弾CDが発売",
+  "reserved_on": "2026-09-13",
+  "title": "合同ライブ会場オリジナルCDの事後通販終了間近、新CD発売決定",
+  "url": "https://columbia.jp/idolmaster/",
+  "source_type": "準公式",
+  "facts": [
+   "「THE IDOLM@STER CINDERELLA MASTER NUMBER ONE!」シリーズ第3弾として「THE IDOLM@STER CINDERELLA MASTER NUMBER ONE! クロス×オーバー！」を2026年9月30日に発売する。",
+   "「クロス×オーバー！」はnew generationsとUNICUSが歌う。",
+   "『765production dual twin live tour』販売タイトルなど、会場オリジナルCD全12種の事後通販受付がまもなく終了する。",
+   "『IDOL WORLD SUPER FESTIVAL 2026』販売タイトルなど、会場オリジナルCD全12種の事後通販受付がまもなく終了する。",
+   "エンゲージメント: 中",
+   "言及アイドル: new generations、UNICUS",
+   "「THE IDOLM@STER CINDERELLA MASTER NUMBER ONE!」シリーズ第3弾として「THE IDOLM@STER CINDERELLA MASTER NUMBER ONE! クロス×オーバー！」が9月30日に発売される。",
+   "「クロス×オーバー！」はnew generationsとUNICUSが歌う楽曲である。",
+   "「765production dual twin live tour」販売タイトルなど全12種の会場オリジナルCDについて事後通販の受付がまもなく終了する。",
+   "「IDOL WORLD SUPER FESTIVAL 2026」販売タイトルなど全12種の会場オリジナルCDについて事後通販の受付がまもなく終了する。",
+   "エンゲージメント: 高"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609121836-explore-22",
+  "event_date": "2026-09-30"
  }
 ]

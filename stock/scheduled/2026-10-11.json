@@ -62,5 +62,31 @@
   "src_candidate_id": "202609110736-explore-15",
   "event_date": "2026-09-12",
   "deadline": "2026-12-06"
+ },
+ {
+  "id": "sched-2026-10-11-gakumas-miraimira-temari-iris-2026-締切",
+  "dedup_key": "gakumas-miraimira-temari-iris-2026",
+  "brand": "gaku",
+  "subject": "月村手毬フィギュアプレゼント応募締切",
+  "kind": "締切",
+  "note": "MiraiMiraキャンペーンの応募最終日",
+  "reserved_on": "2026-09-13",
+  "title": "16. MiraiMira『月村手毬 雨上がりのアイリス 特訓前Ver.』予約開始＆プレゼント",
+  "url": "https://x.com/Miraimiratoys/status/2098607534089125976",
+  "source_type": "当事者",
+  "facts": [
+   "本文: 新商品情報&プレゼントキャンペーン／『月村手毬 雨上がりのアイリス 特訓前Ver.』／『学園アイドルマスター』より、Re;IRIS「月村手毬」が『雨上がりのアイリス』の特訓前姿でスケールフィギュアになって登場／抽選で1名様にプレゼント／応募方法: ①@Miraimiratoys をフォロー ②このポストをRP",
+   "【応募期間】2026/9/12 12:00 ～2026/10/11 23:59",
+   "※当選者様には後日DMにてご連絡",
+   "*本商品には専用台座が付属",
+   "本日より予約受付開始",
+   "ハッシュタグ: #学マス #月村手毬 #MiraiMira",
+   "予約URLはポスト内 t.co のため、このポスト本文に書かれた事実のみ採用（リンク先は未展開）。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609130227-grok-69",
+  "deadline": "2026-10-11"
  }
 ]

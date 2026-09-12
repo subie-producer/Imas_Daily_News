@@ -1,4 +1,3 @@
-# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。
 - dedup_key: gaku-hif-15m-milestone-campaign-2026
   brand: gaku
   subject: 学マスH.I.F挑戦回数1,500万回突破記念キャンペーン
@@ -155,7 +154,3 @@
   brand: million
   subject: ミリシタ マスターランク5記念ピックアップガシャ2種
   watch: 開催期間(投稿・アプリ内告知に期間の記載なし、判明次第 triggers へ)
-- dedup_key: sidem-mfes-2026-winter-wonderland
-  brand: sidem
-  subject: SideM「Mフェス2026 in Winter Wonderland」
-  watch: 開催日程・会場等の詳細(判明次第 triggers へ)

@@ -115,5 +115,35 @@
   "event_date": "2026-09-12",
   "deadline": "2026-10-12",
   "src_candidate_id": "202609100734-explore-10"
+ },
+ {
+  "id": "sched-2026-10-12-sidem-shinycolors-sparkle-showdown-2027-06-締切",
+  "dedup_key": "sidem-shinycolors-sparkle-showdown-2027-06",
+  "brand": "joint",
+  "subject": "SideM×シャニマス合同ライブ 先行抽選締切",
+  "kind": "締切",
+  "note": "アソビストア先行抽選の申込最終日",
+  "reserved_on": "2026-09-13",
+  "title": "SideM × SHINY COLORS SPARKLE SHOWDOWN 開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19789",
+  "source_type": "公式",
+  "facts": [
+   "公演タイトル: THE IDOLM@STER SideM × SHINY COLORS SPARKLE SHOWDOWN",
+   "DAY1開催日時: 2027年6月5日(土) 開場16:00 / 開演17:30(予定)",
+   "DAY2開催日時: 2027年6月6日(日) 開場16:00 / 開演17:30(予定)",
+   "会場: 横浜アリーナ",
+   "DAY1 SideM出演グループ: W、FRAME、High×Joker、神速一魂、C.FIRST",
+   "DAY1 W出演者: 菊池 勇成(蒼井 悠介役)、山谷 祥生(蒼井 享介役)",
+   "DAY1 FRAME出演者: 熊谷 健太郎(握野 英雄役)、濱 健人(木村 龍役)、増元 拓也(信玄 誠司役)",
+   "DAY1 High×Joker出演者: 永塚 拓馬(冬美 旬役)、渡辺 紘(榊 夏来役)、白井 悠介(若里 春名役)、野上 翔(伊瀬谷 四季役)",
+   "DAY1 神速一魂出演者: 益山 武明(紅井 朱雀役)、深町 寿成(黒野 玄武役)",
+   "DAY1 C.FIRST出演者: 伊瀬 結陸(天峰 秀役)、宮﨑 雅也(花園 百々人役)",
+   "DAY1 シャイニーカラーズ出演グループ: 放課後クライマックスガールズ、アルストロメリア、シーズ、コメティック",
+   "DAY1 放課後クライマックスガールズ出演: 河野 ひより(小宮 果穂役)、永井 真里子(西城 樹里役)、丸岡 和佳奈(杜野 凛世役)、涼本 あきほ(有栖川 夏葉役)"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609122336-watch-1",
+  "event_date": "2027-06-05"
  }
 ]

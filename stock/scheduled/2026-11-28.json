@@ -1,0 +1,33 @@
+[
+ {
+  "id": "sched-2026-11-28-cg-15th-party-goods-preorder-2nd-2026-開幕",
+  "dedup_key": "cg-15th-party-goods-preorder-2nd-2026",
+  "brand": "cg",
+  "subject": "シンデレラ15周年記念ライブ DAY1開幕",
+  "kind": "開幕",
+  "note": "Kアリーナ横浜でDAY1が開演",
+  "reserved_on": "2026-09-13",
+  "title": "7. #シンデレラ15thPARTY 公式グッズ事前二次販売 明日23:59まで",
+  "url": "https://x.com/imas_CGofficial/status/2098683037957435719",
+  "source_type": "公式",
+  "facts": [
+   "投稿: https://x.com/imas_CGofficial/status/2098683037957435719",
+   "販売ページ: https://shop.asobistore.jp/feature/cg_15th_for_your_one",
+   "イベント公式サイト（販売ページ末尾から）: https://idolmaster-official.jp/live_event/cg_15th_for_your_one/",
+   "事実（X）:",
+   "#シンデレラ15thPARTY 公式グッズ事前二次販売",
+   "⚠️明日23:59まで⚠️",
+   "イメージカラーとお花のドレス姿",
+   "受注は明日9/13(日)23:59まで",
+   "事実（販売ページ・共通グッズ 税込）:",
+   "ページタイトル: CINDERELLA GIRLS 15周年記念イベント 事前グッズ販売",
+   "公式パンフレット 4,000円",
+   "公式Tシャツ 3,600円"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609130227-grok-85",
+  "event_date": "2026-11-28",
+  "deadline": "2026-09-13"
+ }
+]

@@ -30,7 +30,7 @@ MATS = [{"id": "c1", "url": "https://a.example/1", "title": "告知 2026-10-01",
          "facts": ["9月13日開催", "価格3000円"], "unbacked_facts": ["9月20日"]},
         {"id": "c2", "url": "https://b.example/2", "facts": ["出演A"], "deadline": "2026-09-30"},
         {"id": "c3", "url": "https://c.example/3", "facts": ["出演B"]}]
-OK = {"status": "ok", "abort_code": "", "abort_detail": "", "title": "t", "title_fact_ids": ["F1"], "lede": "l",
+OK = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "t", "title_fact_ids": ["F1"], "lede": "l",
       "lede_fact_ids": ["F1"], "blocks": [{"markdown": "x", "fact_ids": ["F1", "F3", "F4"]}], "tags": ["a", "b"],
       "sources": [{"url": "https://a.example/1", "label": "x"}, {"url": "https://b.example/2", "label": "y"},
                   {"url": "https://c.example/3", "label": "z"}],
@@ -60,9 +60,9 @@ def test_check_output():
     check(C(good, fetched={"https://z.example/9"}) == [], f"証跡のある new_facts が落ちた: {C(good, fetched={'https://z.example/9'})}")
     check(any("tags" in p for p in C(dict(OK, tags=["a"]))), "tags 1個が通った")
     check(any("見出し" in p for p in C(dict(OK, title_fact_ids=[]))), "見出しの根拠無しが通った")
-    check(len(C({"status": "abort", "abort_code": "", "abort_detail": ""})) == 2, "理由の無い abort が通った")
-    check(C({"status": "abort", "abort_code": "NOT_NEWS", "abort_detail": "x"}) == [], "正当な abort が落ちた")
-    check(any("abort_code" in p for p in C(dict(OK, abort_code="OTHER"))), "ok なのに abort_code ありが通った")
+    check(len(C({"status": "decline", "decline_code": "", "decline_detail": ""})) == 2, "理由の無い decline が通った")
+    check(C({"status": "decline", "decline_code": "NOT_NEWS", "decline_detail": "x"}) == [], "正当な decline が落ちた")
+    check(any("decline_code" in p for p in C(dict(OK, decline_code="OTHER"))), "ok なのに decline_code ありが通った")
 
 
 def test_render_and_length():
@@ -406,19 +406,19 @@ def test_oncall_apply_integrate():
           f"複数行の risk の重複除去: {fix4}")
 
 
-def test_revise_apply_abort(tmp: Path):
-    """書き直しの abort は理由付きだけが記事を消す。理由なしは元の稿を残す(監査指摘 R21-P1-2)。"""
+def test_revise_apply_decline(tmp: Path):
+    """書き直しの decline は理由付きだけが記事を消す。理由なしは元の稿を残す(監査指摘 R21-P1-2)。"""
     tmp.mkdir(parents=True, exist_ok=True)
     _, fb = renderlib.materials_with_ids(MATS)
     art = {"slug": "x", "brand": "765", "candidate_ids": ["c1"], "rank": "small"}
     p = tmp / "2026-09-12-x.md"
     p.write_text("---\ntitle: t\n---\n本文\n", encoding="utf-8")
-    bad = {"status": "abort", "abort_code": "", "abort_detail": "", "new_facts": []}
+    bad = {"status": "decline", "decline_code": "", "decline_detail": "", "new_facts": []}
     outcome, msg = compose.revise_apply("2026-09-12", art, p, bad, fb, MATS, [])
-    check(outcome == "kept" and p.exists(), f"理由なし abort で記事が消えた: {outcome} {msg}")
-    good = {"status": "abort", "abort_code": "NOT_NEWS", "abort_detail": "既報", "new_facts": []}
+    check(outcome == "kept" and p.exists(), f"理由なし decline で記事が消えた: {outcome} {msg}")
+    good = {"status": "decline", "decline_code": "NOT_NEWS", "decline_detail": "既報", "new_facts": []}
     outcome, msg = compose.revise_apply("2026-09-12", art, p, good, fb, MATS, [])
-    check(outcome == "dropped" and not p.exists(), f"理由付き abort で記事が消えない: {outcome} {msg}")
+    check(outcome == "dropped" and not p.exists(), f"理由付き decline で記事が消えない: {outcome} {msg}")
     # 引用の途中に HTML コメントや Markdown 装飾を挟んでも、保存される字面で照合して拒否する(監査指摘 R26-P1-1)
     old = ("---\n" + compose.yaml_dump_keeping_strings({"title": "t", "lede": "l", "tags": ["a", "b"], "event_date": "2026-09-13",
                                                          "sources": [{"url": u["url"], "label": "x", "type": "公式"} for u in OK["sources"]]})
@@ -640,7 +640,7 @@ def main() -> int:
     test_job_lock()
     test_notify_require()
     test_oncall_rerun_policy()
-    test_revise_apply_abort(tmp / "ra")
+    test_revise_apply_decline(tmp / "ra")
     test_notify_long()
     test_oncall_state(tmp / "st")
     test_oncall_restore_cleans_untracked()

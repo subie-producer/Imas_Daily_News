@@ -360,6 +360,8 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - tsukasa_rei         # 合議で追加: 個人アカウント。現地感想・目撃情報
+    - oyupuyo             # 合議で追加: 個人アカウント。ファン感想・まとめ投稿
     - yuzu_yng            # ファン投稿(街頭広告の目撃)
     - Ren00136942         # 個人(公式キャンペーンの紹介。個人はファン)
     - tsubame_okuno       # 個人(投票手順の共有。個人はファン)
@@ -409,6 +411,10 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - ichibanKUJI         # 合議で追加: くじ運営者。ライセンス商品販売告知
+    - Miraimiratoys       # 合議で追加: フィギュアメーカー。ライセンス品製造販売
+    - Gashapon_Bandai     # 合議で追加: ガシャポン運営。ライセンス品販売・告知
+    - Anideal_info        # 合議で追加: 香水ブランド。ライセンス商品の販売・告知
     - X_VORDER_RUNWAY     # 合議で追加: グッズ販売時間を告知する売り手側の公式アカウント
     - onkyodav            # オンキヨー(メーカー。コラボイヤホンの販売元)
     - matsudo_arcade      # 合議で追加: 店舗がTOURS設置を自社告知

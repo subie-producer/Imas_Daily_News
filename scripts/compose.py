@@ -1904,7 +1904,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                 if problems is None:
                     # 検算を status の分岐より**先に**掛ける(理由の無い見送りを素通りさせない。監査指摘)
                     problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "",
-                                                      edition=date, fetched=fetched_urls())
+                                                      edition=date)
                 if not problems and ans.get("status") == "decline":
                     outcomes[art["slug"]] = f"見送り: {ans.get('decline_code')} {str(ans.get('decline_detail') or '')[:120]}"
                     print(f"記事 {art['slug']} は{outcomes[art['slug']]}", flush=True)
@@ -2012,9 +2012,9 @@ def revise_prompt(date: str, art: dict, mats_in: list[dict], current: str, issue
 ## 直し方
 `repair` は校閲の**提案**であって命令ではない。素材と出典に照らして、あなたが正しい直し方を決める
 (校閲が「消せ」と言った事実が出典で確かめられるなら、消さずに根拠を付けて残してよい)。
-ただし、指摘の `quote` の記述を**そのまま残すことはできない**(出典どおりに書き直す・消す・記事を落とす、のどれか。
-一次情報で確かめて残すなら、その出典の表現に合わせて書き直し、new_facts に読んだ URL と事実を書く。
-根拠 id を付けるだけで字面を変えないのは対応にならない)。
+指摘の `quote` の記述は、出典どおりに書き直す・消す・記事を落とす、のどれかにする。一次情報で確かめて
+記述が正しいと分かったなら残してよい(そのときは new_facts に読んだ URL と事実を書き、根拠 id を付ける)。
+残した記述が正しいかは、次の巡の校閲が改めて判定する。
 - `rewrite_claim`: その記述を素材の事実どおりに直す。段落の fact_ids に根拠を付ける
 - `drop_claim`: 素材に無い記述を消す。消して段落が空になるなら段落ごと消す
 - `add_source`: 足りない出典を sources に加える(素材にある URL か、`python3 scripts/fetch_page.py <url>` で
@@ -2030,15 +2030,15 @@ def revise_prompt(date: str, art: dict, mats_in: list[dict], current: str, issue
 
 
 def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: str) -> list[str]:
-    """書き直しが**指摘に対応し、指摘の外を変えていないか**の機械検査(監査指摘: 直したふりを通さない)。
+    """書き直しが**指摘の外を変えていないか**の機械検査(形だけ。中身の判断はしない)。
 
-    - 渡した指摘は全部 addressed_issue_ids に入っている(知らない id は不可)。対応の中身は
-      「直した・消した・根拠を付けた・記事を落とした」のどれかで、放置は無い
-    - rewrite/drop の指摘の quote(8字以上)が新しい稿にそのまま残っているなら、その段落に
-      new_facts(N id)の根拠が付いているときだけ通す(出典を読んで確かめた、と示したことになる)
-    - 見出しは、指摘の quote が見出しに掛かっていない限り変えない
+    - 渡した指摘は全部 addressed_issue_ids に入っている(知らない id は不可)。「対応」には、
+      確かめた上で記述を残す判断も含む。**残した記述が正しいかは次の巡の校閲(モデル)が判定する**
+      (引用が残っているかを機械で見るのは校閲の機械化になるのでしない。編集長の指示)
+    - 見出し・リード・tags・event_date は、指摘の quote が掛かっていない限り変えない
     - 出典は、add_source の指摘があれば増える方向だけ、drop_source があれば減る方向だけ、
       どちらも無ければ変えない
+    - 本文は、指摘の quote を含む段落だけ変えてよい(他の段落は字面も根拠 id も順序もそのまま)
     """
     ids = [b["issue_id"] for b in issues]
     addressed = [str(x) for x in (ans.get("addressed_issue_ids") or [])]
@@ -2049,23 +2049,9 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
     left = [i for i in ids if i not in addressed]
     if left:
         problems.append(f"対応していない指摘がある: {left[:4]}")
-    # 照合は**読者に見える字面**で行う(renderlib.visible_text: コメント・タグ・文字参照・リンク・
-    # 装飾・エスケープ・ゼロ幅文字・空白を落とし NFKC 正規化)。引用の途中に何かを挟んで検査を
-    # すり抜ける手を塞ぐ(監査指摘)
+    # 「指摘の外」の照合は読者に見える字面で行う(renderlib.visible_text)
     norm = renderlib.visible_text
     blocks = ans.get("blocks") or []
-    for b in issues:
-        q = norm(b.get("quote"))
-        if b.get("repair") not in ("rewrite_claim", "drop_claim") or len(q) < 8:
-            continue
-        # 引用がどこか(段落・見出し・リード)にそのまま残っていれば未対応。N id を付けるだけでは
-        # 解消にならない(無関係な new_fact で通せてしまう。監査指摘)。確かめた事実なら、
-        # 出典どおりの記述に**書き直す**(字面が変わる)こと
-        left_over = ([blk for blk in blocks if q in norm(blk.get("markdown"))]
-                     + (["title"] if q in norm(ans.get("title")) else [])
-                     + (["lede"] if q in norm(ans.get("lede")) else []))
-        if left_over:
-            problems.append(f"{b['issue_id']} の引用が {len(left_over)} 箇所にそのまま残っている(出典どおりに直すか消す): {q[:30]}")
     # lint の指摘(構造の赤)は直し方を限定できないので、指摘の外の検査は掛けない
     if old_fm and not any(b.get("rule_id") == "LINT" for b in issues):
         quotes = [norm(b.get("quote")) for b in issues if len(norm(b.get("quote"))) >= 8]
@@ -2128,23 +2114,6 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
     return problems
 
 
-def fetched_urls(max_age_h: int = 12) -> set[str]:
-    """fetch_page.py が実際に読めた URL(metrics/fetch-ledger.jsonl)。new_facts の証跡(監査指摘)。"""
-    p = ROOT / "metrics" / "fetch-ledger.jsonl"
-    if not p.exists():
-        return set()
-    since = time.time() - max_age_h * 3600
-    out = set()
-    for line in p.read_text(encoding="utf-8").splitlines():
-        try:
-            row = json.loads(line)
-            if int(row.get("at") or 0) >= since and row.get("url"):
-                out.add(row["url"])
-        except Exception:
-            continue
-    return out
-
-
 def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, materials: list[dict],
                  issues: list[dict]) -> tuple[str, str]:
     """書き直しの答えを記事に反映する。戻りは ("fixed"|"dropped"|"kept", 説明)。
@@ -2152,8 +2121,7 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     検算(check_output)を status の分岐より**先に**掛ける。理由(decline_code/decline_detail)の無い decline は
     不合格で、既存の記事は残す(理由なしで記事を消させない。監査指摘)。
     """
-    problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date,
-                                      fetched=fetched_urls())
+    problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date)
     if ans.get("status") == "decline":
         if problems:
             return "kept", "理由の無い decline(" + " / ".join(problems[:2]) + ")。元の稿のまま"

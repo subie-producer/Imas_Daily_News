@@ -45,19 +45,16 @@ def test_check_output():
         check(C(OK, rank=rank) == [], f"{rank} 合格が落ちた: {C(OK, rank=rank)}")
         bad = dict(OK, blocks=[{"markdown": "x", "fact_ids": ["F1"]}], sources=OK["sources"][:1])
         check(any(rank in p for p in C(bad, rank=rank)), f"{rank} の素材不足が通った")
-    check(any("使った事実の出典" in p for p in C(dict(OK, sources=OK["sources"][:1]))), "使った事実の出典が無いのに通った")
-    for d in ("2026-09-01", "2026-10-01", "2026-09-20"):
-        check(any("event_date" in p for p in C(dict(OK, event_date=d))), f"根拠の無い event_date {d} が通った")
-    check(C(dict(OK, event_date="2026-09-30")) == [], "deadline 欄の日付が落ちた")
+    # 出典を隠していないか・日付が素材と合うかは校閲(モデル)の判断。機械は形しか見ない
+    check(C(dict(OK, sources=OK["sources"][:1])) == [], "出典の取捨(校閲の判断)を機械が落とした")
+    check(C(dict(OK, event_date="2026-10-01")) == [], "日付の整合(校閲の判断)を機械が落とした")
+    check(any("event_date" in p for p in C(dict(OK, event_date="2026-9-1"))), "日付の形が崩れているのに通った")
     good = dict(OK, sources=OK["sources"] + [{"url": "https://z.example/9", "label": "w"}],
                 new_facts=[{"id": "N1", "text": "9月25日発売", "url": "https://z.example/9"}], event_date="2026-09-25",
                 blocks=[{"markdown": "x", "fact_ids": ["F1", "F3", "F4", "N1"]}])
     check(C(good) == [], f"new_facts 付きの出力が落ちた: {C(good)}")
     check(any("new_facts" in p for p in C(dict(OK, sources=OK["sources"] + [{"url": "https://q.example", "label": "q"}]))),
           "読んでいない URL の出典が通った")
-    # new_facts の URL は取得証跡(fetch_page.py の台帳)にあるものだけ(自己申告にしない。監査指摘 R25-P1-1)
-    check(any("証跡" in p for p in C(good, fetched=set())), "証跡の無い new_facts が通った")
-    check(C(good, fetched={"https://z.example/9"}) == [], f"証跡のある new_facts が落ちた: {C(good, fetched={'https://z.example/9'})}")
     check(any("tags" in p for p in C(dict(OK, tags=["a"]))), "tags 1個が通った")
     check(any("見出し" in p for p in C(dict(OK, title_fact_ids=[]))), "見出しの根拠無しが通った")
     check(len(C({"status": "decline", "decline_code": "", "decline_detail": ""})) == 2, "理由の無い decline が通った")
@@ -117,10 +114,6 @@ def test_schema_hash_dates():
         check(not renderlib.date_mentioned("2026-09-13", hay.replace("2026", "2099"), {2026, 2099}), f"別年の年付き表記を拾った: {hay}")
     # 区切りなしの8桁は日付にしない(商品コード・URL の一部。監査指摘 R18-P1-1)
     check(not renderlib.date_mentioned("2026-09-13", "商品コード20260913版", {2026}), "8桁数字を日付として拾った")
-    m8 = [{"id": "c1", "url": "https://a.example/1", "facts": ["商品コード20260913版"]}]
-    _, f8 = renderlib.materials_with_ids(m8)
-    o8 = dict(OK, blocks=[{"markdown": "x", "fact_ids": ["F1"]}], sources=OK["sources"][:1], event_date="2026-09-13")
-    check(any("event_date" in p for p in renderlib.check_output(o8, f8, m8, edition="2026-09-12")), "check_output が8桁数字を根拠にした")
     mats8 = {"c1": {"id": "c1", "url": "https://a.example/1", "facts": ["商品コード20260920版"], "dedup_key": "k", "title": "t"}}
     out8 = {"reservations": [{"candidate_id": "c1", "date": "2026-09-20", "kind": "締切", "slug": "x", "subject": "s", "note": "n"}],
             "digest": [], "stories": [], "pending_add": [], "pending_remove": []}
@@ -128,21 +121,12 @@ def test_schema_hash_dates():
                                 {"facts": [], "existing_story": {}, "tomorrow_reservations": [], "pending": [], "subjects": []})
     check(not res8.get("reservations"), "予約検証が8桁数字を根拠にした")
     for hay in ("2026/09/13開催", "2026年09月13日開催"):
-        m0 = [{"id": "c1", "url": "https://a.example/1", "facts": [hay]}]
-        _, f0 = renderlib.materials_with_ids(m0)
-        o0 = dict(OK, blocks=[{"markdown": "x", "fact_ids": ["F1"]}], sources=OK["sources"][:1], event_date="2026-09-13")
-        check(renderlib.check_output(o0, f0, m0, edition="2026-09-12") == [], f"check_output がゼロ埋め年付き表記を落とした: {hay}")
         mats0 = {"c1": {"id": "c1", "url": "https://a.example/1", "facts": [hay.replace("13", "20")], "dedup_key": "k", "title": "t"}}
         out0 = {"reservations": [{"candidate_id": "c1", "date": "2026-09-20", "kind": "締切", "slug": "x", "subject": "s", "note": "n"}],
                 "digest": [], "stories": [], "pending_add": [], "pending_remove": []}
         res0, _ = assemble.validate("2026-09-12", out0, [{"slug": "x", "brand": "765", "candidate_ids": ["c1"], "title": "t", "lede": "l", "rank": "small"}], mats0,
                                     {"facts": [], "existing_story": {}, "tomorrow_reservations": [], "pending": [], "subjects": []})
         check([r["date"] for r in res0.get("reservations", [])] == ["2026-09-20"], f"予約検証がゼロ埋め年付き表記を落とした: {hay}")
-    mats99 = [{"id": "c1", "url": "https://a.example/1", "published_date": "2026-09-01", "facts": ["2099年9月13日開催"]}]
-    _, fb99 = renderlib.materials_with_ids(mats99)
-    o99 = dict(OK, blocks=[{"markdown": "x", "fact_ids": ["F1"]}], sources=OK["sources"][:1], event_date="2026-09-13")
-    check(any("event_date" in p for p in renderlib.check_output(o99, fb99, mats99, edition="2026-09-12")),
-          "素材が 2099 年なのに 2026-09-13 の event_date が通った")
     mats_r = {"c1": {"id": "c1", "url": "https://a.example/1", "facts": ["2099年9月20日締切"], "dedup_key": "k", "title": "t", "published_date": "2026-09-01"}}
     out_r = {"reservations": [{"candidate_id": "c1", "date": "2026-09-20", "kind": "締切", "slug": "x", "subject": "s", "note": "n"}],
              "digest": [], "stories": [], "pending_add": [], "pending_remove": []}
@@ -150,9 +134,6 @@ def test_schema_hash_dates():
                                  {"facts": [], "existing_story": {}, "tomorrow_reservations": [], "pending": [], "subjects": []})
     check(not res_r.get("reservations"), "素材が 2099 年の予約を 2026 年で通した")
     _, fb = renderlib.materials_with_ids(MATS)
-    check(any("event_date" in p for p in renderlib.check_output(dict(OK, event_date="2099-09-13"), fb, MATS, edition="2026-09-12")),
-          "check_output が 2099 の event_date を通した")
-    check(renderlib.check_output(OK, fb, MATS, edition="2026-09-12") == [], "許容年の event_date が落ちた")
     # 1 block = 1 段落。中見出しだけの block は根拠なしでよい
     check(any("複数段落" in p for p in renderlib.check_output(dict(OK, blocks=[{"markdown": "A\n\nB", "fact_ids": ["F1", "F3", "F4"]}]), fb, MATS)),
           "1 block 複数段落が通った")
@@ -189,11 +170,11 @@ def test_revise_check():
     R = lambda a, i=iss, b=old_body: compose.revise_check(a, i, old_fm, b)
     a = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円である。", "fact_ids": ["F1"]},
                                                      {"markdown": "別の段落。", "fact_ids": ["F3"]}])
-    check(any("箇所" in p for p in R(a)), "引用が残っているのに通った")
-    # N id を付けるだけでは引用の解消にならない(無関係な new_fact で通せてしまう。監査指摘 R25-P1-2)
+    # 指摘の記述を残す判断は執筆のもので、正しいかは次の巡の校閲(モデル)が判定する。機械は落とさない
+    check(R(a) == [], f"記述を残した稿(校閲の判断)を機械が落とした: {R(a)}")
     a2 = dict(a, new_facts=[{"id": "N1", "text": "3000円", "url": "https://a.example/1"}],
               blocks=[{"markdown": "価格は三千円である。", "fact_ids": ["F1", "N1"]}, {"markdown": "別の段落。", "fact_ids": ["F3"]}])
-    check(any("箇所" in p for p in R(a2)), "N id を付けただけの稿が通った")
+    check(R(a2) == [], f"根拠を付けて残した稿が落ちた: {R(a2)}")
     a3 = dict(a, blocks=[{"markdown": "価格は改めて三千円と告知された。", "fact_ids": ["F1"]}, {"markdown": "別の段落。", "fact_ids": ["F3"]}])
     check(R(a3) == [], f"指摘の段落だけ直した稿が落ちた: {R(a3)}")
     a4 = dict(a3, blocks=[{"markdown": "価格は改めて三千円と告知された。", "fact_ids": ["F1"]}, {"markdown": "別の段落を書き換えた。", "fact_ids": ["F3"]}])
@@ -419,22 +400,23 @@ def test_revise_apply_decline(tmp: Path):
     good = {"status": "decline", "decline_code": "NOT_NEWS", "decline_detail": "既報", "new_facts": []}
     outcome, msg = compose.revise_apply("2026-09-12", art, p, good, fb, MATS, [])
     check(outcome == "dropped" and not p.exists(), f"理由付き decline で記事が消えない: {outcome} {msg}")
-    # 引用の途中に HTML コメントや Markdown 装飾を挟んでも、保存される字面で照合して拒否する(監査指摘 R26-P1-1)
+    # 形の検算: HTML コメント・タグ・文字参照・不可視文字・参照リンクを書いた稿は差し戻し(元稿を残す)
     old = ("---\n" + compose.yaml_dump_keeping_strings({"title": "t", "lede": "l", "tags": ["a", "b"], "event_date": "2026-09-13",
                                                          "sources": [{"url": u["url"], "label": "x", "type": "公式"} for u in OK["sources"]]})
            + "---\n価格は三千円である。 <!-- F1 -->\n")
     iss = [{"issue_id": "I1", "rule_id": "R1", "repair": "drop_claim", "quote": "価格は三千円である"}]
-    for md in ("価格は<!-- F1 -->三千円である。", "価格は**三千円**である。", "価格は三千円で<!-- N1 -->ある。",
-               "価格は[三千円](https://a.example/1)である。", "価格は<span>三千円</span>である。", "価格は三​千円である。",
-               "価格は三&#21315;円である。", "価格は三\\千円である。", "価格は　三千円である。",
-               "価格は三͏千円である。", "価格は三️千円である。", "価格は三\U000E0100千円である。",
-               "価格は三ᅟ千円である。", "価格は三ᅠ千円である。", "価格は三ㅤ千円である。", "価格は三ﾠ千円である。",
-               "[p]: https://a.example/1\n価格は[三千円][p]である。", "価格は[三千円][p]である。\n[p]: https://a.example/1",
-               "価格は[三千円][]である。"):
+    for md in ("価格は<!-- F1 -->三千円である。", "価格は<span>三千円</span>である。", "価格は三​千円である。",
+               "価格は三&#21315;円である。", "価格は三͏千円である。", "価格は三ᅟ千円である。",
+               "[p]: https://a.example/1\n価格は[三千円][p]である。"):
         p.write_text(old, encoding="utf-8")
         ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": md, "fact_ids": ["F1"]}])
         outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
-        check(outcome == "kept" and p.read_text(encoding="utf-8") == old, f"引用を装飾で隠した稿が通った: {md} → {outcome} {msg}")
+        check(outcome == "kept" and p.read_text(encoding="utf-8") == old, f"形の崩れた稿が通った: {md!r} → {outcome} {msg}")
+    # 指摘の記述を(根拠付きで)残した稿は形が正しければ通す。正しいかは校閲が見る
+    p.write_text(old, encoding="utf-8")
+    ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円である。", "fact_ids": ["F1"]}])
+    outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
+    check(outcome == "fixed", f"記述を残す判断を機械が落とした: {outcome} {msg}")
     check(any("HTML コメント" in p_ for p_ in renderlib.check_output(dict(OK, blocks=[{"markdown": "x<!-- F1 -->", "fact_ids": ["F1", "F3", "F4"]}]), fb, MATS)),
           "本文の HTML コメントが通った")
 

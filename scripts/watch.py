@@ -128,7 +128,10 @@ def main() -> int:
     # それを収集のたびに1件ずつ通知していたら、記事にならずに消える候補まで
     # 人の判断待ちになり、通知が意味を失った。
     # **実際に紙面へ出たものだけ**がバッジに影響するので、ここでまとめる。
-    unknown = collections.Counter()
+    # 人が見て決められるように、**判定表に書く単位(ベース URL)と、実際に載った資料の URL を併記**する
+    # (「x.com/@handle(1)」だけでは開けず、判断するのに手間が掛かる。編集長の指摘)。
+    # Discord は <url> で囲むと埋め込みを出さない
+    unknown: dict[str, list[tuple[str, str]]] = {}
     for p in sorted((ROOT / "docs" / "_posts").glob("*.md")):
         m = re.match(r"^---\n(.*?)\n---\n", p.read_text(encoding="utf-8"), re.S)
         if not m:
@@ -140,15 +143,28 @@ def main() -> int:
         for s in (fm.get("sources") or []):
             if s.get("type") != "未確認":
                 continue
-            u = urllib.parse.urlparse(s.get("url") or "")
+            url = s.get("url") or ""
+            u = urllib.parse.urlparse(url)
             host = (u.hostname or "").removeprefix("www.")
             seg = [x for x in u.path.split("/") if x]
-            unknown[f"x.com/@{seg[0]}" if host in ("x.com", "twitter.com") and seg else host] += 1
+            if host in ("x.com", "twitter.com") and seg:
+                base = f"https://x.com/{seg[0]}"
+            elif host in ("youtube.com", "m.youtube.com") and seg and seg[0].startswith("@"):
+                base = f"https://www.youtube.com/{seg[0]}"
+            else:
+                base = f"https://{host}/"
+            unknown.setdefault(base, []).append((url, p.stem))
     if unknown:
+        lines = []
+        for base, items in sorted(unknown.items(), key=lambda kv: -len(kv[1]))[:12]:
+            for url, slug in items[:3]:
+                lines.append(f"  {base} ← <{url}>({slug})")
+            if len(items) > 3:
+                lines.append(f"  {base} … 他 {len(items) - 3} 件")
         problems.append(
-            f"紙面に未確認の出典が {sum(unknown.values())}件 / {len(unknown)}種 残っている"
-            "(種別を決めれば直る。合議で決まらなかったもの): "
-            + ", ".join(f"{h}({n})" for h, n in unknown.most_common(10)))
+            f"紙面に未確認の出典が {sum(len(v) for v in unknown.values())}件 / {len(unknown)}種 残っている"
+            "(左=判定表に書くベース URL、右=紙面に載った資料と記事。種別を決めれば直る):\n"
+            + "\n".join(lines))
 
     if problems:
         notify("watch", "異常検知:\n- " + "\n- ".join(problems), ok=False)

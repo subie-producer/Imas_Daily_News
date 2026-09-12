@@ -35,7 +35,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import renderlib
 from pipelib import (ROOT, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, classify_source,
-                     extract_json_array, notify)
+                     extract_json_array, notify, prompt_file)
 
 POSTS = ROOT / "docs" / "_posts"
 EDITIONS = ROOT / "docs" / "_editions"
@@ -178,9 +178,10 @@ def prompt(date: str, inp: dict) -> str:
 """
 
 
-def run_session(text: str) -> dict:
+def run_session(text: str, date: str = "") -> dict:
     schema = (ROOT / "schema" / "assemble.schema.json").read_text(encoding="utf-8")
-    r = subprocess.run(["claude", "-p", text, "--model", CLAUDE_MODEL, "--json-schema", schema,
+    # 入力(全記事の事実・台帳・予約)はファイルで渡す(引数に詰めると 128KB で落ちる)
+    r = subprocess.run(["claude", "-p", prompt_file(date or "assemble", "assemble", text), "--model", CLAUDE_MODEL, "--json-schema", schema,
                         "--dangerously-skip-permissions", "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
                        capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL, cwd=ROOT)
     out = (r.stdout or "").strip()
@@ -576,7 +577,7 @@ def run(date: str, number: int | None = None, dry: bool = False) -> int:
     stories = baseline_stories(date)
     pending = baseline_pending(date, dry)
     inp = build_input(date, posts, mats, stories, pending)
-    out = run_session(prompt(date, inp))
+    out = run_session(prompt(date, inp), date)
     clean, notes = validate(date, out, posts, mats, inp)
     for n in notes:
         print("  検算:", n, flush=True)

@@ -24,3 +24,5 @@ metrics/plan-index-*.json
 metrics/oncall-*
 # 工程の排他(flock)。中身は無い
 metrics/*.lock
+# モデルに渡す指示・素材ファイル(prompt_file)。号ごとの作業物
+metrics/work/

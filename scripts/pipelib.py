@@ -204,6 +204,24 @@ def notify(job: str, msg: str, ok: bool = True, require: bool = False) -> bool:
         return False
 
 
+def prompt_file(date: str, name: str, text: str) -> str:
+    """指示と素材を**ファイルに書き**、短い指示だけを返す。
+
+    claude / codex は単発の API ではなく、このフォルダで自律して動くエージェントである。
+    素材をプロンプトに詰め込む必要は無く、ファイルを読ませればよい(編集長の指示)。
+    引数に詰めると 128KB(MAX_ARG_STRLEN)を超えたところで
+    `OSError: [Errno 7] Argument list too long` で工程ごと落ちる(実測 2026-09-13 04:15)。
+    置き場は metrics/work/<日付>/(Git 管理外)。
+    """
+    d = ROOT / "metrics" / "work" / date
+    d.mkdir(parents=True, exist_ok=True)
+    p = d / f"{name}.md"
+    p.write_text(text, encoding="utf-8")
+    rel = p.relative_to(ROOT)
+    return (f"指示と素材は `{rel}` に書いてあります。まずそのファイルを全部読み、書かれたとおりに実行して、"
+            f"そこで指示された形式で答えてください。")
+
+
 class JobLockTimeout(RuntimeError):
     pass
 

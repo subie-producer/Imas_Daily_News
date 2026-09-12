@@ -42,7 +42,7 @@ import planlib
 import renderlib
 import tags as tags_lib
 from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, EDITORIAL_MODEL,
-                     COMPOSE_ARTICLE_MAX_BUDGET_USD, JobLockTimeout, job_lock,
+                     COMPOSE_ARTICLE_MAX_BUDGET_USD, JobLockTimeout, job_lock, prompt_file,
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, classify_source, commit_and_push,
                      edition_date, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
@@ -946,7 +946,8 @@ def run_assemble(date: str, number: int) -> None:
 
 def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str:
     r = subprocess.run(
-        ["claude", "-p", prompt, "--model", model or CLAUDE_MODEL, "--dangerously-skip-permissions",
+        ["claude", "-p", prompt_file(edition_date(), "claude-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt),
+         "--model", model or CLAUDE_MODEL, "--dangerously-skip-permissions",
          "--max-budget-usd", COMPOSE_WHOLE_MAX_BUDGET_USD],
         capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
     # **予算切れは黙って通り過ぎていた。**組版セッションが途中で打ち切られ、
@@ -969,7 +970,8 @@ def codex_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str
     try:
         subprocess.run(
             ["codex", "exec", "-m", model or CODEX_WRITE_MODEL, "-s", "workspace-write",
-             "--output-last-message", str(out_path), prompt],
+             "--output-last-message", str(out_path),
+             prompt_file(edition_date(), "codex-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt)],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
             timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
     except subprocess.TimeoutExpired:
@@ -1208,7 +1210,7 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
             keys = [s["dedup_key"] for s in by_brand[b]]
             schema = planlib.plan_schema(keys, b, [c.get("slug") for c in claimed])
             procs.append((b, out, subprocess.Popen(
-                ["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
+                ["claude", "-p", prompt_file(date, f"plan-{b}", prompt), "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
                  "--json-schema", json.dumps(schema, ensure_ascii=False),
                  "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
@@ -1421,8 +1423,8 @@ def replan_missing(date: str, plan: dict, by_brand: dict, cands: dict,
     out.unlink(missing_ok=True)
     prompt = missing_plan_prompt(date, rows, plan.get("articles", []))
     try:
-        subprocess.run(["claude", "-p", prompt, "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
-                        "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+        subprocess.run(["claude", "-p", prompt_file(date, "plan-missing", prompt), "--model", CLAUDE_MODEL,
+                        "--dangerously-skip-permissions", "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
                        stdin=subprocess.DEVNULL, cwd=ROOT, timeout=600)
     except subprocess.TimeoutExpired:
@@ -1884,8 +1886,10 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                    "--output-last-message", str(out_path)]
             if STRUCTURED_WRITE:
                 cmd += ["--output-schema", str(schema_out)]
+            # 素材と指示はファイルで渡す(引数に詰めると 128KB で落ちる。エージェントは自分で読める)
             procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, subprocess.Popen(
-                cmd + [prompt], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
+                cmd + [prompt_file(date, f"write-{art['slug']}-{tries}", prompt)],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
         for art, src, prompt, out_path, fact_by_id, materials, tries, p in procs:
             try:
@@ -2176,7 +2180,8 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
             procs.append((art, path, fact_by_id, materials, issues, Path(out_name), subprocess.Popen(
                 ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
                  "-c", "sandbox_workspace_write.network_access=true",
-                 "--output-last-message", out_name, "--output-schema", str(schema_out), prompt],
+                 "--output-last-message", out_name, "--output-schema", str(schema_out),
+                 prompt_file(date, f"revise-{art['slug']}", prompt)],
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True, stdin=subprocess.DEVNULL, cwd=ROOT)))
         for art, path, fact_by_id, materials, issues, out_path, p in procs:
             try:

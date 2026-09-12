@@ -1,0 +1,32 @@
+[
+ {
+  "id": "sched-2027-03-13-sidem-promi-2027-開幕",
+  "dedup_key": "sidem-promi-2027",
+  "brand": "sidem",
+  "subject": "SideMプロミ2027",
+  "kind": "開幕",
+  "note": "京王アリーナTOKYOでDAY1開幕、開演17:00予定",
+  "reserved_on": "2026-09-13",
+  "title": "SideMプロミ2027「AJewelholIc!!!」開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19799",
+  "source_type": "公式",
+  "facts": [
+   "公演名: THE IDOLM@STER SideM PRODUCER MEETING ～AJewelholIc!!!～",
+   "DAY1開催日時: 2027年3月13日（土）16:00開場/17:00開演（予定）",
+   "DAY2開催日時: 2027年3月14日（日）15:30開場/16:30開演（予定）",
+   "開催場所: 京王アリーナTOKYO",
+   "公式サイト: https://keio-arena.tokyo/",
+   "現地チケット全席指定: 11,000円(税込)",
+   "アソビストアプレミアム会員先行抽選受付期間: 2026年9月12日（土）21:00～10月4日（日）23:59",
+   "受付URL: https://asobiticket2.asobistore.jp/receptions/24aba7f8-77de-43d3-8af4-2f2fdf5d082a",
+   "当落発表: 2026年10月17日（土）13:00～",
+   "枚数制限: お一人様1公演につき4枚まで(複数公演申込可)",
+   "本先行対象: アソビストアプレミアム12か月会員のみ",
+   "公演時間等は予告なく変更になる場合があります"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609122336-watch-3",
+  "event_date": "2027-03-13"
+ }
+]

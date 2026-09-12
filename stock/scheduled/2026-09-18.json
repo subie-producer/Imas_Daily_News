@@ -285,36 +285,5 @@
   "verify": "confirmed",
   "src_candidate_id": "202609120228-grok-67",
   "deadline": "2026-09-18"
- },
- {
-  "id": "sched-2026-09-18-shiny-party-september-2026-終了",
-  "dedup_key": "shiny-party-september-2026",
-  "brand": "shiny",
-  "subject": "シャニソン「シャイニーパーティー」終了",
-  "kind": "終了",
-  "note": "ミッション達成・アイテム交換の最終日",
-  "reserved_on": "2026-09-13",
-  "title": "シャイニーパーティー in September開催",
-  "url": "https://wikiwiki.jp/songforprism/%E3%82%B7%E3%83%A3%E3%83%8B%E3%83%912609",
-  "source_type": "二次情報",
-  "facts": [
-   "「シャイニーパーティー in September（2026）」が開催されている。",
-   "シャニパ開催期間: 2026/09/10 00:00 ～ 2026/09/18 23:59。",
-   "アイテム受取期限: 2026/09/21 11:59。",
-   "交換アイテム名は「しいたけ」。",
-   "シャニパミッション達成で交換用アイテムを獲得できる。",
-   "交換用アイテムは専用交換所で報酬SSRのピース、プリズムジュエル、虹の結晶などと交換できる。",
-   "楽曲Aは「Sleepless Nights」。プレイ、手動クリア、MV視聴がミッション対象。",
-   "楽曲Bは「Future Transit」。",
-   "楽曲Cは「ダブル・イフェクト」。プレイがミッション対象。",
-   "楽曲Dは「Bloomy!」。",
-   "楽曲Eは「Real Mind Shakes」。",
-   "楽曲Fは「LINKs」。"
-  ],
-  "via": "explore",
-  "verify": "unconfirmed",
-  "src_candidate_id": "202609121234-explore-9",
-  "event_date": "2026-09-10",
-  "deadline": "2026-09-18"
  }
 ]

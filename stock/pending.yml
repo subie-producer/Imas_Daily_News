@@ -158,4 +158,12 @@
 - dedup_key: sidem-mfes-2026-winter-wonderland
   brand: sidem
   subject: SideM「Mフェス2026 in Winter Wonderland」
-  watch: 開催日程・会場等の詳細(判明次第 triggers へ)
+  watch: 開催日時・会場、全12企業施策とテーマソングCDの詳細(判明次第 triggers へ)
+- dedup_key: grok-076
+  brand: million
+  subject: ミリシタARモード「ぬい活しよう！」
+  watch: 価格・対象条件・実施期間(投稿本文に記載なし、判明次第 triggers へ)
+- dedup_key: grok-077
+  brand: million
+  subject: ミリシタ14thLIVE記念ウェア「14th-MaKER」
+  watch: 入手方法・価格の詳細(アプリ内告知参照、判明次第 triggers へ)

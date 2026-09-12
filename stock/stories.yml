@@ -861,9 +861,10 @@
   - DAY1は2026年9月12日(土)に開催される。
   - DAY2は2026年9月13日(日)に開催される。
   - チケットはテラススイートプレミアム(1室5万円)、テラススイート(5万円)、スイート指定席(2.5万円)、一般指定席(1.35万円)
-  - '販売期間: 2026年9月11日(金)17:00～2026年10月4日(日)（予定）'
+  - DAY1の全34曲の公開とライブBlu-ray化が案内された。
+  - '販売期間: 2026年9月11日（金）17:00～2026年9月13日（日）23:59'
   - 「みんなで食べよう！315デリバリー!!!!!!!!!!!」を実施する。
-  - '価格: ¥315（税込）'
+  - 出演アイドルへの差し入れ、ニックネーム付きメッセージ送信、アイドルからのお礼画像、MyTicketページからの「11th STAGEバックステージパス」画像ダウンロードが購入特典。
   edition_facts:
     '2026-09-12':
     - 2026年9月12日(土)・13日(日)、TOYOTA ARENA TOKYOにて開催
@@ -871,9 +872,10 @@
     - DAY2は2026年9月13日(日)に開催される。
     - チケットはテラススイートプレミアム(1室5万円)、テラススイート(5万円)、スイート指定席(2.5万円)、一般指定席(1.35万円)
     '2026-09-13':
-    - '販売期間: 2026年9月11日(金)17:00～2026年10月4日(日)（予定）'
+    - DAY1の全34曲の公開とライブBlu-ray化が案内された。
+    - '販売期間: 2026年9月11日（金）17:00～2026年9月13日（日）23:59'
     - 「みんなで食べよう！315デリバリー!!!!!!!!!!!」を実施する。
-    - '価格: ¥315（税込）'
+    - 出演アイドルへの差し入れ、ニックネーム付きメッセージ送信、アイドルからのお礼画像、MyTicketページからの「11th STAGEバックステージパス」画像ダウンロードが購入特典。
 - story_id: cg-star-village-achi-summer-2026
   brand: cg
   subject: シンデレラガールズ×スタービレッジ阿智 コラボ2026
@@ -1982,12 +1984,10 @@
   - アイドル別グッズ: コンサートライト1,300円、アクリルスタンド1,900円、ホログラムクリアチケット900円、オーロラ缶バッジ500円、応援フラッグ1,500円、法被6,600円(数量限定)など(税込)
   - 公演はKアリーナ横浜、DAY1は11月28日・DAY2は11月29日いずれも開場15時30分・開演17時。グッズは開催前の11月下旬から順次発送予定
   - 公式グッズ事前二次販売開始、受注期間は2026年9月13日(日)23:59まで
-  - 本公演の描きおろしビジュアルを使用したグッズ
   - シンデレラガール総選挙2026の投票券獲得の対象
   edition_facts:
     '2026-09-13':
     - 公式グッズ事前二次販売開始、受注期間は2026年9月13日(日)23:59まで
-    - 本公演の描きおろしビジュアルを使用したグッズ
     - シンデレラガール総選挙2026の投票券獲得の対象
 - story_id: million-karen-birthday-2026
   brand: million
@@ -2818,10 +2818,12 @@
   published_facts:
   - ASOBI STOREに「CINDERELLA GIRLS Pop'n ToyBox!! 開催記念 グッズ販売」ページが掲載
   - 受注は9月13日まで。公式アクリルスタンド【三船美優】1,900円、アクリルクリップ【三船美優】900円、アクリルスタンド【市原仁奈】1,900円、アクリルクリップ【市原仁奈】900円、ぬいぐるみパスケース4,000円、パッケージ風アクリルキーホルダー1,200円、アクリルボックススタンド3,500円、つながるアクリルパネル2,100円(いずれも税込)。発送は2027年2月上旬以降順次予定
+  - 受注は9月13日(日)23:59まで。
   - アイドル達のお顔ぬいが販売されている。
   - ぬいぐるみはもちもち触感が魅力と案内されている。
   edition_facts:
     '2026-09-13':
+    - 受注は9月13日(日)23:59まで。
     - アイドル達のお顔ぬいが販売されている。
     - ぬいぐるみはもちもち触感が魅力と案内されている。
 - story_id: cg-popn-toybox-staff-talk-2026
@@ -4443,6 +4445,7 @@
   - '開催場所: PickUpランキン 渋谷ちかみち。'
   - 'シンデレラガール総選挙2026公式グッズと15周年イベント公式グッズの購入期限: 2026年9月13日（日）まで'
   - 総選挙投票は9月18日まで。
+  - シンデレラガール総選挙2026のミッションチャレンジ終了直前に、特別展示を開催する。
   - '所在地: 〒150-0043 東京都渋谷区道玄坂1-1-1'
   edition_facts:
     '2026-09-12':
@@ -4452,6 +4455,7 @@
     '2026-09-13':
     - 'シンデレラガール総選挙2026公式グッズと15周年イベント公式グッズの購入期限: 2026年9月13日（日）まで'
     - 総選挙投票は9月18日まで。
+    - シンデレラガール総選挙2026のミッションチャレンジ終了直前に、特別展示を開催する。
     - '所在地: 〒150-0043 東京都渋谷区道玄坂1-1-1'
 - story_id: dsva-05
   brand: dsva
@@ -4782,7 +4786,7 @@
     - 東京ジョイポリス30周年アンバサダーはHigh×Jokerと神速一魂。
 - story_id: x-vorder-runway-goods-onsite-2026
   brand: '765'
-  subject: 「X VORDER RUNWAY」当日グッズ販売
+  subject: X VORDER RUNWAY 現地グッズ販売
   status: active
   first_published: '2026-09-13'
   published_facts:
@@ -4798,7 +4802,7 @@
     - オンラインショップで完売した商品も、現地販売分の在庫がある。
 - story_id: cg-toybox-extra-13-2026
   brand: cg
-  subject: トイボックス外伝(エクストラ)第13回公開
+  subject: トイボックス外伝(池袋晶葉とウサちゃんロボ)
   status: active
   first_published: '2026-09-13'
   published_facts:
@@ -4812,21 +4816,21 @@
     - 配信アーカイブへの案内も掲載されている。
 - story_id: gakumas-miraimira-temari-iris-2026
   brand: gaku
-  subject: 月村手毬「雨上がりのアイリス」特訓前フィギュア予約
+  subject: 月村手毬「雨上がりのアイリス」特訓前フィギュア
   status: active
   first_published: '2026-09-13'
   published_facts:
   - 【応募期間】2026/9/12 12:00 ～2026/10/11 23:59
-  - 本日より予約受付開始
   - '*本商品には専用台座が付属'
+  - 本日より予約受付開始
   edition_facts:
     '2026-09-13':
     - 【応募期間】2026/9/12 12:00 ～2026/10/11 23:59
-    - 本日より予約受付開始
     - '*本商品には専用台座が付属'
+    - 本日より予約受付開始
 - story_id: imas-cross-over-cd-2026
   brand: joint
-  subject: 「クロス×オーバー！」発売、会場CD通販終了間近
+  subject: 「クロス×オーバー！」9月30日発売
   status: active
   first_published: '2026-09-13'
   published_facts:
@@ -4840,7 +4844,7 @@
     - 『765production dual twin live tour』販売タイトルなど、会場オリジナルCD全12種の事後通販受付がまもなく終了する。
 - story_id: sidem-11th-backstage-talk-2026
   brand: joint
-  subject: SideM11th STAGE、ブランド横断トーク
+  subject: SideM11th初日、終演後に横断トーク
   status: active
   first_published: '2026-09-13'
   published_facts:
@@ -4854,7 +4858,7 @@
     - 1日目公演終了後の「ばくすて！とーく」出演者は斉藤佑圭、若林直美。
 - story_id: sidem-shiny-sparkle-showdown-2027
   brand: joint
-  subject: SideM×シャニマス合同ライブ SPARKLE SHOWDOWN
+  subject: SideM×シャニマス合同ライブ、2027年6月開催へ
   status: active
   first_published: '2026-09-13'
   published_facts:
@@ -4870,7 +4874,7 @@
     - 'アソビストアプレミアム会員先行抽選受付期間: 2026年9月12日(土)21:00～2026年10月12日(月)23:59'
 - story_id: tours-ranking-2026-09-11
   brand: joint
-  subject: ツアマス2026年9月11日時点ランキング
+  subject: ツアマス9月11日時点ランキング
   status: active
   first_published: '2026-09-13'
   published_facts:
@@ -4882,21 +4886,9 @@
     - 2026/9/11時点でのランキングが掲載されている。
     - Master部門1位のスコアは27,365,605で、プレイヤー名は空門雪、P.Lvは65。
     - Expert部門1位のスコアは27,365,605で、プレイヤー名はティマ、P.Lvは64。
-- story_id: million-battle-of-theater-11-black-lips
-  brand: million
-  subject: 「BLACK LIPS」店舗特典決定
-  status: active
-  first_published: '2026-09-13'
-  published_facts:
-  - 2026年11月25日発売の「THE IDOLM@STER MILLION BATTLE OF THE＠TER 11 BLACK LIPS」の店舗特典が決定した。
-  - '発売日: 2026年11月25日（水）'
-  edition_facts:
-    '2026-09-13':
-    - 2026年11月25日発売の「THE IDOLM@STER MILLION BATTLE OF THE＠TER 11 BLACK LIPS」の店舗特典が決定した。
-    - '発売日: 2026年11月25日（水）'
 - story_id: grok-076
   brand: million
-  subject: ミリシタAR「ぬい活しよう！」追加
+  subject: ミリシタARモード「ぬい活しよう！」追加
   status: active
   first_published: '2026-09-13'
   published_facts:
@@ -4908,7 +4900,7 @@
     - アイドルたちのプライベートな姿を写真に収めましょう
 - story_id: grok-077
   brand: million
-  subject: ミリシタ「14th-MaKER」レッスンウェア追加
+  subject: ミリシタ14thLIVE記念ウェア「14th-MaKER」追加
   status: active
   first_published: '2026-09-13'
   published_facts:
@@ -4918,7 +4910,7 @@
     - 2026/09/19（土）、2026/09/20（日）に開催される『THE IDOLM@STER MILLION LIVE! 14thLIVE』を記念して、リハーサルで着用できるレッスンウェアに「14th-MaKER」を追加
 - story_id: million-opera-seria-popup-2026
   brand: million
-  subject: POP UP SHOP「オペラセリア」秋葉原開催
+  subject: ミリオンPOP UP SHOP「オペラセリア」
   status: active
   first_published: '2026-09-13'
   published_facts:
@@ -4934,7 +4926,7 @@
     - 整理券はLINEアプリを使用したデジタルQR整理券「mogily」で案内する。
 - story_id: million-seasonal-snapshot-2026-12
   brand: million
-  subject: SEASONAL SNAPSHOT 12月(クリスマス)グッズ
+  subject: ミリオンライブ12月クリスマスグッズ受注中
   status: active
   first_published: '2026-09-13'
   published_facts:
@@ -4946,23 +4938,9 @@
     - 受注期間：2026年9月20日(日)まで
     - 12月はクリスマスをテーマ
     - 対象アイドル：高槻やよい、伊吹翼
-- story_id: shiny-party-september-2026
-  brand: shiny
-  subject: シャニソン「シャイニーパーティー in September」
-  status: active
-  first_published: '2026-09-13'
-  published_facts:
-  - 'シャニパ開催期間: 2026/09/10 00:00 ～ 2026/09/18 23:59。'
-  - 'アイテム受取期限: 2026/09/21 11:59。'
-  - 交換アイテム名は「しいたけ」。
-  edition_facts:
-    '2026-09-13':
-    - 'シャニパ開催期間: 2026/09/10 00:00 ～ 2026/09/18 23:59。'
-    - 'アイテム受取期限: 2026/09/21 11:59。'
-    - 交換アイテム名は「しいたけ」。
 - story_id: shiny-song-for-prism-koito-solo-vocal-2026
   brand: shiny
-  subject: シャニソン福丸小糸ソロ歌唱追加
+  subject: シャニソンに福丸小糸のソロ歌唱追加
   status: active
   first_published: '2026-09-13'
   published_facts:
@@ -4974,43 +4952,47 @@
     - 「いつだって僕らは」のソロ歌唱担当は福丸小糸。
 - story_id: grok-070
   brand: sidem
-  subject: SideM『魂環の人形』主題歌配信開始
+  subject: SideM『アニマ・フォルトゥナ』配信開始
   status: active
   first_published: '2026-09-13'
   published_facts:
   - THE IDOLM@STER SideM 魂環の人形 主題歌 「アニマ・フォルトゥナ」 & サウンドトラック
   - DL&サブスク配信開始
+  - '商品詳細はランティス発売ページ（CD発売は 2026.3.14。配信開始日はこのページには書いていない。カタログ情報のみ）:'
   edition_facts:
     '2026-09-13':
     - THE IDOLM@STER SideM 魂環の人形 主題歌 「アニマ・フォルトゥナ」 & サウンドトラック
     - DL&サブスク配信開始
+    - '商品詳細はランティス発売ページ（CD発売は 2026.3.14。配信開始日はこのページには書いていない。カタログ情報のみ）:'
 - story_id: sidem-mfes-2026-winter-wonderland
   brand: sidem
-  subject: SideM「Mフェス2026 in Winter Wonderland」開催決定
+  subject: SideM「Mフェス2026 in Winter Wonderland」
   status: active
   first_published: '2026-09-13'
   published_facts:
-  - 今年のMフェスは史上最大規模
+  - 'イベント名: THE IDOLM@STER SideM Mフェス 2026 in Winter Wonderland'
   - 全12企業の施策
   - Mフェス初のテーマソングCD発売
+  - 315プロNight公録イベントも開催
   edition_facts:
     '2026-09-13':
-    - 今年のMフェスは史上最大規模
+    - 'イベント名: THE IDOLM@STER SideM Mフェス 2026 in Winter Wonderland'
     - 全12企業の施策
     - Mフェス初のテーマソングCD発売
+    - 315プロNight公録イベントも開催
 - story_id: sidem-promi-2027
   brand: sidem
-  subject: SideM PRODUCER MEETING ～AJewelholIc!!!～ 2027年3月開催
+  subject: SideMプロミ2027、3月開催決定
   status: active
   first_published: '2026-09-13'
   published_facts:
   - 'DAY1開催日時: 2027年3月13日（土）16:00開場/17:00開演（予定）'
   - 'DAY2開催日時: 2027年3月14日（日）15:30開場/16:30開演（予定）'
   - 'アソビストアプレミアム会員先行抽選受付期間: 2026年9月12日（土）21:00～10月4日（日）23:59'
-  - '現地チケット全席指定: 11,000円(税込)'
+  - '開催場所: 京王アリーナTOKYO'
   edition_facts:
     '2026-09-13':
     - 'DAY1開催日時: 2027年3月13日（土）16:00開場/17:00開演（予定）'
     - 'DAY2開催日時: 2027年3月14日（日）15:30開場/16:30開演（予定）'
     - 'アソビストアプレミアム会員先行抽選受付期間: 2026年9月12日（土）21:00～10月4日（日）23:59'
-    - '現地チケット全席指定: 11,000円(税込)'
+    - '開催場所: 京王アリーナTOKYO'

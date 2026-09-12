@@ -56,35 +56,5 @@
   "event_date": "2026-11-25",
   "deadline": "2026-11-25",
   "src_candidate_id": "202609110225-explore-5"
- },
- {
-  "id": "sched-2026-11-25-million-battle-of-theater-11-black-lips-発売",
-  "dedup_key": "million-battle-of-theater-11-black-lips",
-  "brand": "million",
-  "subject": "「BLACK LIPS」発売",
-  "kind": "発売",
-  "note": "店舗特典付きCDが発売される",
-  "reserved_on": "2026-09-13",
-  "title": "MILLION BATTLE OF THE＠TER 11 店舗特典決定",
-  "url": "https://www.lantis.jp/imas/extra.html",
-  "source_type": "準公式",
-  "facts": [
-   "2026年11月25日発売の「THE IDOLM@STER MILLION BATTLE OF THE＠TER 11 BLACK LIPS」の店舗特典が決定した。",
-   "発売日: 2026年11月25日（水）",
-   "タイトル: THE IDOLM@STER MILLION BATTLE OF THE＠TER 11 BLACK LIPS",
-   "アーティスト: 天空橋朋花 (CV.小岩井ことり)",
-   "アーティスト: 篠宮可憐 (CV.近藤 唯)",
-   "アーティスト: 菊地 真 (CV.平田宏美)",
-   "アーティスト: 桜守歌織 (CV.香里有佐)",
-   "アーティスト: 徳川まつり (CV.諏訪彩花)",
-   "アーティスト: 舞浜 歩 (CV.戸田めぐみ)",
-   "品番: LACA-25291",
-   "価格: 1,870円（10％税込）/ 1,700円（税抜）",
-   "アソビストアの特典はL判ブロマイド。"
-  ],
-  "via": "explore",
-  "verify": "confirmed",
-  "src_candidate_id": "202609121234-explore-4",
-  "event_date": "2026-11-25"
  }
 ]

@@ -1,37 +1,68 @@
 [
-  {
-    "id": "sched-2026-11-29-cg-15th-anniversary-party-2026-開幕",
-    "dedup_key": "cg-15th-anniversary-party-2026",
-    "brand": "cg",
-    "subject": "THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSARY PARTY!!!! ~for your ONE~ DAY2",
-    "kind": "開幕",
-    "note": "DAY2開幕(Kアリーナ横浜)。深川芹亜出演",
-    "title": "深川芹亜、15周年ライブDAY2出演",
-    "url": "https://x.com/axlone_staff/status/2092074525475451215",
-    "source_type": "当事者",
-    "verify": "unconfirmed",
-    "src_candidate_id": "202608260216-grok-23",
-    "event_date": "2026-11-29",
-    "facts": [
-      "アクセルワンスタッフが深川芹亜のDAY2出演を8月25日付で告知(所属事務所発、未確認情報)",
-      "DAY2はKアリーナ横浜、開場15時30分・開演17時"
-    ],
-    "reserved_on": "2026-08-26"
-  },
-  {
-    "id": "sched-2026-11-29-dsva-manaka-kpf2026-2026-開幕",
-    "dedup_key": "dsva-manaka-kpf2026-2026",
-    "brand": "dsva",
-    "subject": "灯里愛夏 KPF2026出演",
-    "kind": "開幕",
-    "reserved_on": "2026-09-05",
-    "facts": [
-      "11月29日、北九州メッセ(旧西展新館)で「灯里愛夏 スペシャルトーク＆ライブ」を開催、KPF2026会期は11月28〜29日"
-    ],
-    "title": "灯里愛夏、KPF2026出演決定",
-    "url": "https://x.com/valiv_official/status/2095729948447363295",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202609050237-grok-34"
-  }
+ {
+  "id": "sched-2026-11-29-cg-15th-anniversary-party-2026-開幕",
+  "dedup_key": "cg-15th-anniversary-party-2026",
+  "brand": "cg",
+  "subject": "THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSARY PARTY!!!! ~for your ONE~ DAY2",
+  "kind": "開幕",
+  "note": "DAY2開幕(Kアリーナ横浜)。深川芹亜出演",
+  "title": "深川芹亜、15周年ライブDAY2出演",
+  "url": "https://x.com/axlone_staff/status/2092074525475451215",
+  "source_type": "当事者",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202608260216-grok-23",
+  "event_date": "2026-11-29",
+  "facts": [
+   "アクセルワンスタッフが深川芹亜のDAY2出演を8月25日付で告知(所属事務所発、未確認情報)",
+   "DAY2はKアリーナ横浜、開場15時30分・開演17時"
+  ],
+  "reserved_on": "2026-08-26"
+ },
+ {
+  "id": "sched-2026-11-29-dsva-manaka-kpf2026-2026-開幕",
+  "dedup_key": "dsva-manaka-kpf2026-2026",
+  "brand": "dsva",
+  "subject": "灯里愛夏 KPF2026出演",
+  "kind": "開幕",
+  "reserved_on": "2026-09-05",
+  "facts": [
+   "11月29日、北九州メッセ(旧西展新館)で「灯里愛夏 スペシャルトーク＆ライブ」を開催、KPF2026会期は11月28〜29日"
+  ],
+  "title": "灯里愛夏、KPF2026出演決定",
+  "url": "https://x.com/valiv_official/status/2095729948447363295",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609050237-grok-34"
+ },
+ {
+  "id": "sched-2026-11-29-cg-15th-party-goods-preorder-2nd-2026-千秋楽",
+  "dedup_key": "cg-15th-party-goods-preorder-2nd-2026",
+  "brand": "cg",
+  "subject": "シンデレラガールズ15周年記念ライブ",
+  "kind": "千秋楽",
+  "note": "Kアリーナ横浜でDAY2千秋楽、開演17:00",
+  "reserved_on": "2026-09-13",
+  "title": "7. #シンデレラ15thPARTY 公式グッズ事前二次販売 明日23:59まで",
+  "url": "https://x.com/imas_CGofficial/status/2098683037957435719",
+  "source_type": "公式",
+  "facts": [
+   "投稿: https://x.com/imas_CGofficial/status/2098683037957435719",
+   "販売ページ: https://shop.asobistore.jp/feature/cg_15th_for_your_one",
+   "イベント公式サイト（販売ページ末尾から）: https://idolmaster-official.jp/live_event/cg_15th_for_your_one/",
+   "事実（X）:",
+   "#シンデレラ15thPARTY 公式グッズ事前二次販売",
+   "⚠️明日23:59まで⚠️",
+   "イメージカラーとお花のドレス姿",
+   "受注は明日9/13(日)23:59まで",
+   "事実（販売ページ・共通グッズ 税込）:",
+   "ページタイトル: CINDERELLA GIRLS 15周年記念イベント 事前グッズ販売",
+   "公式パンフレット 4,000円",
+   "公式Tシャツ 3,600円"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609130227-grok-85",
+  "event_date": "2026-11-28",
+  "deadline": "2026-09-13"
+ }
 ]

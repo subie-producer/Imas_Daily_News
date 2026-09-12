@@ -228,9 +228,9 @@
   "id": "sched-2026-09-20-million-seasonal-snapshot-2026-12-締切",
   "dedup_key": "million-seasonal-snapshot-2026-12",
   "brand": "million",
-  "subject": "SEASONAL SNAPSHOT 12月グッズ受注締切",
+  "subject": "ミリオンSEASONAL SNAPSHOT 12月分",
   "kind": "締切",
-  "note": "高槻やよい・伊吹翼グッズ受注の最終日",
+  "note": "高槻やよい・伊吹翼クリスマスグッズ受注23:59締切",
   "reserved_on": "2026-09-13",
   "title": "ミリオンライブ SEASONAL SNAPSHOT 12月クリスマスグッズ（高槻やよい、伊吹翼）",
   "url": "https://idolmaster-official.jp/news/01_19844",
@@ -254,5 +254,28 @@
   "src_candidate_id": "202609121836-watch-2",
   "event_date": "2026-12-01",
   "deadline": "2026-09-20"
+ },
+ {
+  "id": "sched-2026-09-20-grok-077-千秋楽",
+  "dedup_key": "grok-077",
+  "brand": "million",
+  "subject": "MILLION LIVE! 14thLIVE",
+  "kind": "千秋楽",
+  "note": "14thLIVE DAY2千秋楽",
+  "reserved_on": "2026-09-13",
+  "title": "9. 14thLIVE記念レッスンウェア「14th-MaKER」追加",
+  "url": "https://x.com/imasml_theater/status/2098427092388200562",
+  "source_type": "公式",
+  "facts": [
+   "投稿: https://x.com/imasml_theater/status/2098427092388200562",
+   "Likes 547 / RP 160 / Views 39902",
+   "2026/09/19（土）、2026/09/20（日）に開催される『THE IDOLM@STER MILLION LIVE! 14thLIVE』を記念して、リハーサルで着用できるレッスンウェアに「14th-MaKER」を追加",
+   "詳細はアプリ内お知らせをご確認ください",
+   "#ミリシタ #ミリオン14th",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609130227-grok-113"
  }
 ]

@@ -151,5 +151,28 @@
   "src_candidate_id": "202609120228-grok-74",
   "event_date": "2026-09-19",
   "deadline": "2026-09-12"
+ },
+ {
+  "id": "sched-2026-09-19-grok-077-開幕",
+  "dedup_key": "grok-077",
+  "brand": "million",
+  "subject": "MILLION LIVE! 14thLIVE",
+  "kind": "開幕",
+  "note": "14thLIVE DAY1開幕(記念ウェア「14th-MaKER」既報)",
+  "reserved_on": "2026-09-13",
+  "title": "9. 14thLIVE記念レッスンウェア「14th-MaKER」追加",
+  "url": "https://x.com/imasml_theater/status/2098427092388200562",
+  "source_type": "公式",
+  "facts": [
+   "投稿: https://x.com/imasml_theater/status/2098427092388200562",
+   "Likes 547 / RP 160 / Views 39902",
+   "2026/09/19（土）、2026/09/20（日）に開催される『THE IDOLM@STER MILLION LIVE! 14thLIVE』を記念して、リハーサルで着用できるレッスンウェアに「14th-MaKER」を追加",
+   "詳細はアプリ内お知らせをご確認ください",
+   "#ミリシタ #ミリオン14th",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609130227-grok-113"
  }
 ]

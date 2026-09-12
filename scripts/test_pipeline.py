@@ -544,6 +544,39 @@ def test_oncall_restore_cleans_untracked():
         oncall.sh = saved
 
 
+def test_classify_consensus(tmp: Path):
+    """合議: 不明は棄権(具体的な答えを採る)、公式・準公式は一致が要る、X の節は x_accounts の中に足す。"""
+    import classify_sources as cs
+    saved = (cs.ask, cs.ROOT)
+    answers = iter([
+        [{"host": "yuzu_yng", "type": "不明"}, {"host": "onkyodav", "type": "不明"}, {"host": "idolmaster_en", "type": "公式", "why": "英語公式"},
+         {"host": "jimushiny_oa", "type": "公式", "why": "作品公式"}, {"host": "x1", "type": "ファン"}, {"host": "x2", "type": "報道"}],
+        [{"host": "yuzu_yng", "type": "ファン", "why": "目撃投稿"}, {"host": "onkyodav", "type": "当事者", "why": "メーカー"}, {"host": "idolmaster_en", "type": "公式"},
+         {"host": "jimushiny_oa", "type": "不明"}, {"host": "x1", "type": "当事者"}, {"host": "x2", "type": "報道"}],
+    ])
+    try:
+        cs.ask = lambda cmd, prompt: next(answers)
+        agreed, split = cs.consensus("p", ["yuzu_yng", "onkyodav", "idolmaster_en", "jimushiny_oa", "x1", "x2"])
+        check(agreed.get("yuzu_yng", ("",))[0] == "ファン" and agreed.get("onkyodav", ("",))[0] == "当事者",
+              f"不明と具体的な答えの組で、答えが捨てられた: {agreed} {split}")
+        check(agreed.get("idolmaster_en", ("",))[0] == "公式", f"2モデル一致の公式が採られない: {agreed}")
+        check("jimushiny_oa" not in agreed and any(s.startswith("jimushiny_oa") for s in split), "片方だけの公式が採られた(一致が要る)")
+        check("x1" not in agreed and agreed.get("x2", ("",))[0] == "報道", f"具体的な答え同士の食い違いが採られた: {agreed}")
+        # x_accounts の節に足す(video_channels の「公式:」に差し込まない)
+        tmp.mkdir(parents=True, exist_ok=True)
+        (tmp / "source_types.yml").write_text(
+            "video_channels:\n  公式:\n    - imas-official\nx_accounts:\n  公式:\n    - imas_official\n  ファン:\n    - a\n", encoding="utf-8")
+        cs.ROOT = tmp
+        cs.add_x_accounts({"idolmaster_en": ("公式", "英語公式"), "newfan": ("ファン", "f"), "actor": ("演者", "e")})
+        import yaml
+        t = yaml.safe_load((tmp / "source_types.yml").read_text(encoding="utf-8"))
+        check(t["video_channels"]["公式"] == ["imas-official"], f"動画チャンネルの節に混入した: {t}")
+        check("idolmaster_en" in t["x_accounts"]["公式"] and "newfan" in t["x_accounts"]["ファン"] and t["x_accounts"].get("演者") == ["actor"],
+              f"x_accounts への追加: {t}")
+    finally:
+        cs.ask, cs.ROOT = saved
+
+
 def test_oncall_undo_merge():
     """merge --abort が失敗しても、merge 前のハッシュへ reset --hard する(監査指摘 R13-P0-1)。"""
     import oncall
@@ -626,6 +659,7 @@ def main() -> int:
     test_notify_long()
     test_oncall_state(tmp / "st")
     test_oncall_restore_cleans_untracked()
+    test_classify_consensus(tmp / "cs")
     test_oncall_undo_merge()
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()

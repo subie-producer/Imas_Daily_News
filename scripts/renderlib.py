@@ -88,18 +88,6 @@ def date_mentioned(iso: str, hay: str, years: set[int] | None = None) -> bool:
     return False
 
 
-def material_years_text(materials: list[dict], new_facts: list[dict]) -> str:
-    """許容年を拾うための文言: 素材の日付欄・掲載日・題名・事実・URL と new_facts。"""
-    parts = []
-    for c in materials:
-        for k in ("title", "published_date", "event_date", "deadline", "url"):
-            if c.get(k):
-                parts.append(str(c[k]))
-        parts.extend(str(f) for f in (c.get("facts") or []))
-    parts.extend(str(f.get("text") or "") for f in new_facts)
-    return "\n".join(parts)
-
-
 def fact_index(materials: list[dict]) -> dict[str, int]:
     """F id → 素材の添字(materials_with_ids と同じ順で振り直す)。"""
     cand_of: dict[str, int] = {}
@@ -111,38 +99,19 @@ def fact_index(materials: list[dict]) -> dict[str, int]:
     return cand_of
 
 
-def used_fact_ids(out: dict) -> list[str]:
-    ids = list(out.get("title_fact_ids") or []) + list(out.get("lede_fact_ids") or [])
-    for b in out.get("blocks") or []:
-        ids.extend(b.get("fact_ids") or [])
-    return [str(i) for i in ids]
-
-
-def event_date_text(out: dict, fact_by_id: dict[str, str], materials: list[dict], new_facts: list[dict]) -> str:
-    """event_date の根拠にしてよい文言: 素材の event_date/deadline 欄、**使った**事実、new_facts。
-    掲載日・URL・題名・未確認の値(unbacked_facts)との偶然の一致は根拠にしない(監査指摘)。"""
-    parts = []
-    for c in materials:
-        for k in ("event_date", "deadline"):
-            if c.get(k):
-                parts.append(str(c[k]))
-    known = dict(fact_by_id)
-    known.update({str(f.get("id")): str(f.get("text") or "") for f in new_facts})
-    parts.extend(known.get(i, "") for i in used_fact_ids(out))
-    return "\n".join(parts).translate(_ZEN)
-
-
 def heading_only(markdown) -> bool:
     return bool(re.fullmatch(r"#{2,3} [^\n]+", str(markdown or "").strip()))
 
 
 def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], rank: str = "",
-                 edition: str = "", fetched: set[str] | None = None) -> list[str]:
-    """出力の中身の検算(schema は形しか見ない)。通らない理由を返す(空なら合格)。
+                 edition: str = "") -> list[str]:
+    """出力の**形**の検算(schema は型しか見ない)。通らない理由を返す(空なら合格)。
 
-    監査指摘で固めた: 見出し・リードにも根拠 id が要る / 素材に無い URL は new_facts で「読んだ」と
-    示したものだけ / tags は2〜4 / event_date は素材か new_facts に出てくる日付 / decline は理由付き /
-    roundup・culture は3件以上の素材の事実を使っている(束ねが成立している)
+    見るのは形だけ: 見出し・リード・段落に根拠 id が付いていて実在する / 出典 URL は素材か new_facts の
+    もの / tags は2〜4 / event_date は日付の形 / 見送りは理由付き / roundup・culture は3件以上の素材を
+    使っている / 1 block = 1 段落 / HTML・参照リンク・不可視文字を書いていない。
+    **中身の判断(出典を隠していないか、日付が素材と合うか、new_facts を本当に読んだか)は校閲(モデル)の
+    仕事で、ここではしない**(校閲の機械化はしない。編集長の指示)
     """
     problems = []
     if out.get("status") == "decline":
@@ -158,9 +127,6 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
     for f in new_facts:
         if not re.match(r"^https?://", str(f.get("url") or "")) or not str(f.get("text") or "").strip():
             problems.append(f"new_facts の形が不正: {str(f)[:60]}")
-        elif fetched is not None and f.get("url") not in fetched:
-            # 「読んで確かめた」は自己申告にしない: fetch_page.py の取得証跡にある URL だけ(監査指摘)
-            problems.append(f"new_facts の URL を実際に読んだ証跡が無い: {str(f.get('url'))[:70]}")
         if f.get("id") in known_ids:
             problems.append(f"new_facts の id が重複: {f.get('id')}")
         known_ids[f.get("id")] = str(f.get("text") or "")
@@ -219,16 +185,8 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         seen.add(u)
         if re.search(r"[\[\]*_`#]", s.get("label") or ""):
             problems.append(f"出典 label に Markdown 記号: {s.get('label')!r}")
-    # 使った事実の出典が sources に載っていること(事実を使いながら弱い出典を隠さない。監査指摘)。
-    # 一次情報で取り直して二次情報を外すなら、その事実は N id(new_facts)で引く
-    url_of_new = {str(f.get("id")): f.get("url") for f in new_facts}
-    missing = set()
-    for i in used_fact_ids(out):
-        u = materials[cand_of[i]].get("url") if i in cand_of else url_of_new.get(i)
-        if u and u not in seen:
-            missing.add(u)
-    if missing:
-        problems.append("使った事実の出典が sources に無い: " + ", ".join(sorted(missing))[:160])
+    # 「使った事実の出典を隠していないか」「素材に無い URL を本当に読んだか」は校閲(モデル)の判断。
+    # ここでは見ない(校閲の機械化はしない。編集長の指示)
     tags = [str(t).strip() for t in (out.get("tags") or []) if str(t).strip()]
     if not 2 <= len(tags) <= 4:
         problems.append(f"tags が {len(tags)} 個(2〜4個)")
@@ -241,11 +199,7 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
             datetime.date.fromisoformat(ev)
         except ValueError:
             problems.append(f"event_date が日付でない: {ev!r}")
-        else:
-            hay = event_date_text(out, fact_by_id, materials, new_facts)
-            years = years_in(material_years_text(materials, new_facts) + " " + edition)
-            if not date_mentioned(ev, hay, years):
-                problems.append(f"event_date {ev} が素材の日付欄にも、使った事実にも、new_facts にも出てこない")
+        # その日付が出来事の日として素材と合うか(年ズレを含む)は校閲の判断(校閲項目 4・12)
     return problems
 
 

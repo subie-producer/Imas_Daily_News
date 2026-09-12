@@ -24,5 +24,3 @@ metrics/plan-index-*.json
 metrics/oncall-*
 # 工程の排他(flock)。中身は無い
 metrics/*.lock
-# fetch_page.py の取得証跡(new_facts の URL を実際に読んだかの検算に使う)
-metrics/fetch-ledger*

@@ -80,6 +80,12 @@ def rewrite(text: str, types: list[str], src: str | None) -> str:
             out.append(f"{mt.group(1)}type: {types[i]}")
             i += 1
             continue
+        # 1行の流れ形式 `- {label: …, url: …, type: 未確認}`(構造化執筆の初期の号)も拾う
+        mf = in_sources and re.match(r"^(\s*-\s+\{.*?[,{]\s*type:\s*)([^,}]+)(\s*[,}].*)$", line)
+        if mf:
+            out.append(f"{mf.group(1)}{types[i]}{mf.group(3)}")
+            i += 1
+            continue
         out.append(line)
     if i != len(types):
         raise SystemExit(f"type 行の数({i})が出典の数({len(types)})と合わない")

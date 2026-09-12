@@ -400,6 +400,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - X_VORDER_RUNWAY     # 合議で追加: グッズ販売時間を告知する売り手側の公式アカウント
     - matsudo_arcade      # 合議で追加: 店舗がTOURS設置を自社告知
     - lumica_JP           # 合議で追加: ルミカ社による回収告知
     - shosen_online       # 合議で追加: 書店。商品販売の一次発信

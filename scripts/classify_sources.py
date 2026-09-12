@@ -359,7 +359,7 @@ def video_author(vid: str) -> tuple[str, str]:
         req = urllib.request.Request(f"https://www.youtube.com/oembed?{q}", headers={"User-Agent": UA})
         with urllib.request.urlopen(req, timeout=20) as r:
             d = json.loads(r.read().decode("utf-8"))
-        handle = (d.get("author_url") or "").rstrip("/").rsplit("/", 1)[-1].removeprefix("@")
+        handle = urllib.parse.unquote((d.get("author_url") or "").rstrip("/").rsplit("/", 1)[-1]).removeprefix("@")
         return handle, str(d.get("title") or "")
     except Exception as e:
         print(f"  oEmbed 取得できず {vid}: {type(e).__name__}。視聴ページから読む", flush=True)

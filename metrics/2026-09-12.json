@@ -158,6 +158,56 @@
     "failed": 0
    },
    "duration_s": 226
+  },
+  {
+   "at": "2026-09-12T18:36:39+09:00",
+   "edition": "2026-09-13",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 4,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 344,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 4,
+    "facted": 4,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 2,
+    "explore:shiny": 3,
+    "explore:sidem": 5,
+    "explore:gakuen": 6,
+    "explore:dsva": 2,
+    "explore:joint-other": 1,
+    "explore:trend": 7
+   },
+   "normalized": 25,
+   "added": 18,
+   "verify": {
+    "confirmed": 19,
+    "unconfirmed": 6,
+    "failed": 0
+   },
+   "duration_s": 361
   }
  ],
  "compose": [

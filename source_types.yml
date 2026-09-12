@@ -112,6 +112,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - e.usen.com            # 合議で追加: プレスリリース情報を言い換え掲載。独自取材の根拠なし
   - mybuzz.tokyo          # 合議で追加: 「本リリース」と明記され、プレスリリースの言い換え。「バズ情報」サイトとして他所
   - bikers.hateblo.jp     # 合議で追加: 個人ブログ。Xのトレンドをもとに公式発表を説明。独立取材なし
   - dtimes.jp             # 合議で追加: 公式発表の日程・出演者情報を定型的にまとめたもの。独立取材の形跡がない
@@ -176,6 +177,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - unionarena-tcg.com    # 合議で追加: UNION ARENAゲーム製品の公式運営・販売元の一次発信
   - pr-233.dngxvlzzy89ep.amplifyapp.com # 合議で追加: 会場（TOYOTA ARENA TOKYO）が自施設でのコラボドリンク販売を一次
   - onkyodirect.jp        # ONKYO DIRECT(メーカー直販)。コラボイヤホンの受注ページ=販売元
   - alter-web.jp          # 合議で追加: フィギュアメーカーがライセンス商品を自社サイトで販売紹介

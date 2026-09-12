@@ -1,0 +1,110 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-13T02:27:58+09:00",
+   "edition": "2026-09-13",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 344,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 3,
+    "explore:cinderella": 8,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 2,
+    "explore:gakuen": 1,
+    "explore:dsva": 1,
+    "explore:joint-other": 3,
+    "explore:trend": 4,
+    "grok:765as": 7,
+    "grok:cinderella": 10,
+    "grok:million": 3,
+    "grok:shiny": 0,
+    "grok:sidem": 11,
+    "grok:gakuen": 5,
+    "grok:dsva": 25,
+    "grok:joint-other": 7,
+    "grok:trend": 24
+   },
+   "normalized": 107,
+   "added": 94,
+   "verify": {
+    "confirmed": 71,
+    "unconfirmed": 31,
+    "failed": 5
+   },
+   "duration_s": 1641
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-13T05:27:12+09:00",
+   "edition": "2026-09-13",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 40,
+   "written": 25,
+   "roundups": 0,
+   "dropped": 7,
+   "coverage": {
+    "subjects": 153,
+    "covered": 153,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "sidem-11th-stage-2026",
+    "sidem-promi-2027"
+   ],
+   "stages_min": {
+    "執筆": 10.938251153628032,
+    "組版": 5.945567484696706,
+    "校閲": 1.9649012327194213,
+    "校閲1波": 1.9649012327194213
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "joint-idol-ultimate-street-ads-2026",
+    "sidem-315mode-2026-09",
+    "cg-memory-pict-6th-kohimura-yoda-2026",
+    "million-14thlive-general-sale-2026",
+    "cg-vote2026-goods-deadline",
+    "cg-election-mission-last-spurt-2026",
+    "cg-cinderella-05",
+    "dsva-valiv-cosmo-birthday-2026",
+    "dsva-grok-002",
+    "dsva-grok-006",
+    "general-sidem-shiny-sparkle-showdown-2027-fanlist",
+    "million-battle-of-theater-11-black-lips",
+    "shiny-party-september-2026"
+   ],
+   "duration_s": 3998
+  }
+ ]
+}

@@ -112,6 +112,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - e.usen.com            # 合議で追加: プレスリリース情報を言い換え掲載。独自取材の根拠なし
   - mybuzz.tokyo          # 合議で追加: 「本リリース」と明記され、プレスリリースの言い換え。「バズ情報」サイトとして他所
   - bikers.hateblo.jp     # 合議で追加: 個人ブログ。Xのトレンドをもとに公式発表を説明。独立取材なし
   - dtimes.jp             # 合議で追加: 公式発表の日程・出演者情報を定型的にまとめたもの。独立取材の形跡がない
@@ -176,6 +177,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - unionarena-tcg.com    # 合議で追加: UNION ARENAゲーム製品の公式運営・販売元の一次発信
   - pr-233.dngxvlzzy89ep.amplifyapp.com # 合議で追加: 会場（TOYOTA ARENA TOKYO）が自施設でのコラボドリンク販売を一次
   - onkyodirect.jp        # ONKYO DIRECT(メーカー直販)。コラボイヤホンの受注ページ=販売元
   - alter-web.jp          # 合議で追加: フィギュアメーカーがライセンス商品を自社サイトで販売紹介
@@ -358,6 +360,8 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - tsukasa_rei         # 合議で追加: 個人アカウント。現地感想・目撃情報
+    - oyupuyo             # 合議で追加: 個人アカウント。ファン感想・まとめ投稿
     - yuzu_yng            # ファン投稿(街頭広告の目撃)
     - Ren00136942         # 個人(公式キャンペーンの紹介。個人はファン)
     - tsubame_okuno       # 個人(投票手順の共有。個人はファン)
@@ -407,6 +411,11 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - ichibanKUJI         # 合議で追加: くじ運営者。ライセンス商品販売告知
+    - Miraimiratoys       # 合議で追加: フィギュアメーカー。ライセンス品製造販売
+    - Gashapon_Bandai     # 合議で追加: ガシャポン運営。ライセンス品販売・告知
+    - Anideal_info        # 合議で追加: 香水ブランド。ライセンス商品の販売・告知
+    - X_VORDER_RUNWAY     # 合議で追加: グッズ販売時間を告知する売り手側の公式アカウント
     - onkyodav            # オンキヨー(メーカー。コラボイヤホンの販売元)
     - matsudo_arcade      # 合議で追加: 店舗がTOURS設置を自社告知
     - lumica_JP           # 合議で追加: ルミカ社による回収告知

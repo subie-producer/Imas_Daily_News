@@ -1,0 +1,220 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-13-sidem-11th-stage-2026.md",
+   "rule_id": "R2",
+   "issue": "出典隠し: sources に公式URLが列挙されていない。候補ファイルから確認すると、記事に使われている複数の公式URLが sources に載っていない。DAY2日時（F44/F45）は https://idolmaster-official.jp/live_event/sidem11th/information/ から、315デリバリー（F3-F5/F110）は https://idolmaster-official.jp/news/01_19776 から、セットリスト（F259-F296）の一部は https://x.com/SideM_official/status/2098755409331081301 から引かれている。また二次情報（imasnews765.com）も候補に含まれているが sources に列挙されていない。",
+   "quote": "sources に列挙: idolmaster-official.jp/news/01_19805, x.com/SideM_official/status/2098787467042152833, idolmaster-official.jp/live_event/sidem11th/bluray/ の3つのみ。但し候補ファイル202609120734-explore-12(news/01_19776)、202609121234-explore-22(information/)、202609130227-grok-104(X url)、202609122336-watch-5(二次情報)から引かれた事実が記事に含まれている。",
+   "fact_ids": [
+    "F3",
+    "F4",
+    "F5",
+    "F44",
+    "F45",
+    "F110",
+    "F259",
+    "F263",
+    "F296"
+   ],
+   "repair": "add_source",
+   "expected": "sources に足りない公式・二次URLを追加: https://idolmaster-official.jp/news/01_19776、https://idolmaster-official.jp/live_event/sidem11th/information/、https://x.com/SideM_official/status/2098755409331081301、および二次情報 imasnews765.com。または一次情報を sources に統一する。",
+   "scope": "article:2026-09-13-sidem-11th-stage-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-sidem-promi-2027.md",
+   "rule_id": "R8",
+   "issue": "sources のラベルが破損テキストで途中で切れている",
+   "quote": "- label: 【SideMプロミ2027】2027年3月13日(土)･14日(日) 京王アリーナTOKYOにて「THE IDOLM@STER SideM PRODUCER 縺",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "sources の最初のラベルを完全なテキストで復元する（公式ページのタイトル参照）",
+   "scope": "article:2026-09-13-sidem-promi-2027.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "候補に『上水流宇宙 BIRTHDAY ONLINE LIVE 2026』に関する複数の話題が見える（スペシャルゲスト決定、開催御礼、セットリスト公開、グッズ受注開始など）。本日のイベント開催で記事化相当と思われるが、紙面に出ていない。ただし、他の担当が理由を付けて落とした結果の可能性が高い。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-sidem-11th-stage-2026.md",
+   "issue": "セットリスト記述の根拠不足: 記事段落2の「1. お菓子なアドベンチャー / 2. Chocolate Special」に対して、根拠Fidが付与されていない。候補ファイル202609130227-grok-104から F257=M1、F258=M2が確認できるが、記事のコメントでは F259（M3）から始まっている。記事の全34曲リスト全体が根拠 F259-F296 で十分カバーされているか確認が必要。",
+   "scope": "article:2026-09-13-sidem-11th-stage-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-sidem-mfes-2026-winter-wonderland.md",
+   "issue": "分量不足: 本文111字 < small ランク下限250字。出典の facts には、記事に含まれていないイラスト関連の情報（描き下ろしイラスト、ミニキャラ）や、イベント名の完全表記も含まれています。出典本文を活用すれば分量を埋められるはず。",
+   "scope": "article:2026-09-13-sidem-mfes-2026-winter-wonderland.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-765-x-vorder-runway-goods-onsite-2026.md",
+   "issue": "分量不足：rank: small は250字以上が必要だが、本文は約50字。公式サイトのGoods欄に記載されているグッズ品揃い・詳細情報を補充できればボリューム不足を解消できる。ただし一般論・推測での水増しは不可（より短いままのほうがよい）",
+   "scope": "article:2026-09-13-765-x-vorder-runway-goods-onsite-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-cg-15th-party-goods-2026.md",
+   "issue": "分量不足: rank: small で本文が約65字（下限250字）と大きく不足。候補ファイル(202609130227-grok-85)のグッズ詳細（価格・仕様・対象商品）を拾えば埋まる可能性があります。ただし内容は正確で根拠が明確に付されているため、短さは致命的ではありません。",
+   "scope": "article:2026-09-13-cg-15th-party-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-cg-popn-toybox-goods-2026.md",
+   "issue": "分量不足: 本文96字は rank: small の下限250字に大きく達しない。当日トリガー（本日23:59締切）の短報として成立するが、出典の公式ニュース記事に書かれている可能性のあるアンケート回答時の具体的な操作手順・対象外の期間・その他の条件などを拾えば、記事をより実用的にできるかもしれません。",
+   "scope": "article:2026-09-13-cg-popn-toybox-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-cg-popn-toybox-memorial-goods-2026.md",
+   "issue": "分量不足: rank=small の下限は250字以上だが、本文は約200字。lede+本文2段落で計200字程度。sources のページに商品説明や画像がある場合は、詳細を追加することで字数を埋められる可能性あり。ただし、当日締切の短報として許容範囲の可能性もあり、重度の問題ではない。",
+   "scope": "article:2026-09-13-cg-popn-toybox-memorial-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-cg-toybox-extra-13-2026.md",
+   "issue": "分量不足: rank:small で最小250字要求に対し、本文65字+lede55字で基準の48%。出典（X投稿）の詳細確認が機械からできないため、シナリオライター・公開時刻など追加情報の有無を確認し、記述増も検討してください。",
+   "scope": "article:2026-09-13-cg-toybox-extra-13-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-gaku-gakumas-miraimira-temari-iris-2026.md",
+   "issue": "プレゼントキャンペーンの応募期間（2026/9/12 12:00～2026/10/11 23:59）が記事に記載されていません。候補素材の facts に記載されており、発行日時点でまだ有効な情報です。読者が応募を検討する際に必要な情報なので、段落3に追加を検討してください。",
+   "scope": "article:2026-09-13-gaku-gakumas-miraimira-temari-iris-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-gaku-snap-series-2026.md",
+   "issue": "段落2の根拠ID(F9 F10 F11)が、frontmatter の candidate_ids に記載されている 202609120734-explore-6 のfacts(F1-F8)に対応していない。実際には、複数候補の情報が組み合わされている可能性あり。202609130227-grok-96 など価格情報を詳細に含む候補の根拠IDとの対応関係を確認し、candidate_ids と根拠ID のいずれかを修正すべき",
+   "scope": "article:2026-09-13-gaku-snap-series-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-joint-cg-million-coming-soon-2026-08-26.md",
+   "issue": "分量不足: rank: small で下限250字に対し、本文が216字。候補の facts に記載されたゲスト情報（CINDERELLA BAND＆MILLION STRINGS出演）と出演者数（DAY1各13人/DAY2各14人）を追加して埋まる。",
+   "scope": "article:2026-09-13-joint-cg-million-coming-soon-2026-08-26.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-joint-imas-cross-over-cd-2026.md",
+   "issue": "分量不足: 本文231字が rank:small の要件250字に19字不足。出典(columbia.jp)に記載されている会場タイトルの詳細(765production dual twin live tour + IDOL WORLD SUPER FESTIVAL 2026 の両方について述べる)や対象CD全12種の内訳、または既報にある具体的な終了期限(9月13日23:59)を補足すれば埋まる可能性がある。ただし規程14では分量が少ないことはブロック理由にならないため、現状の記事でも許容範囲",
+   "scope": "article:2026-09-13-joint-imas-cross-over-cd-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-joint-sidem-11th-backstage-talk-2026.md",
+   "issue": "event_date が 2026-09-12 だが、記事の主焦点（lede で述べられた「2日目が9月13日に開催」）は 2026-09-13。frontmatter のメタデータを記事の主題の日付に合わせるべき",
+   "scope": "article:2026-09-13-joint-sidem-11th-backstage-talk-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-joint-sidem-11th-backstage-talk-2026.md",
+   "issue": "タイトル「初日」と本文の主焦点「2日目」が不整合。タイトルで初日を謳いながら lede と第1段落は2日目から始まり、第2段落で初日を補足情報として扱っている。タイトルと本文の構成に齟齬がある",
+   "scope": "article:2026-09-13-joint-sidem-11th-backstage-talk-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-joint-tours-ranking-2026-09-11.md",
+   "issue": "分量不足：rank: medium は 450字以上が基準だが、本文は約382字。出典の公式ランキングページには別ランキングの詳細や上位者情報など、さらに書き足せる内容が含まれているはずである。記事をより充実させることを推奨する。",
+   "scope": "article:2026-09-13-joint-tours-ranking-2026-09-11.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-million-grok-077.md",
+   "issue": "分量不足：rank: small で下限250字のところ、本文は44字（lede + 本文2段落）。候補の facts に『2026年9月19-20日開催の14thLIVE』『リハーサルで着用可』『詳細はアプリ内お知らせ』と記載があり、イベント情報や機能説明を拾えば250字に達する。ただし内容的には完結しており、追加が必須ではない。",
+   "scope": "article:2026-09-13-million-grok-077.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-million-opera-seria-popup-2026.md",
+   "issue": "候補 ID の不一致 - frontmatter の candidate_ids（202609120734-explore-14, 202609121234-explore-6）が candidates/2026-09-12.json に見当たりません。実際に記事で使用されている candidates は 202609110736-watch-0 と 202609120228-grok-77 です。候補 ID の記録エラーの可能性があります。ただし、sources の URL で記事の事実がすべて確認できるため、校閲上の致命的な問題ではありません。",
+   "scope": "article:2026-09-13-million-opera-seria-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-million-seasonal-snapshot-2026-12.md",
+   "issue": "分量不足：rank:small の下限は250字。現在約240字。出典に記載されている商品価格（公式シーズナルBOX 5,500円、ステッカーセット 2,000円、キャラファイングラフ各16,000円）を追加することで基準に達します",
+   "scope": "article:2026-09-13-million-seasonal-snapshot-2026-12.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-shiny-parallel-collection-popup-2026.md",
+   "issue": "rank: small の最低分量（250字）に対して本文が極めて短い。記事本文は約40字で、通常の short news の基準を大きく下回っている。出典に会場、商品情報、購入特典なども記載されているため、読者にとって有用な詳細を追加できる余地がある。ただし、『本日締切』という当日トリガーのみで成立する記事として認めるなら、簡潔さ自体は長所でもある。",
+   "scope": "article:2026-09-13-shiny-parallel-collection-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-shiny-song-for-prism-koito-solo-vocal-2026.md",
+   "issue": "rank: small の下限 250 字に対して、本文が約 80 字で大きく不足しています。ソロ歌唱モードの詳細（楽曲の概要、福丸小糸の役割、他の実装済みメンバーなど）を追加すれば達成可能です。ただし出典に無い情報を追加することは避けてください。",
+   "scope": "article:2026-09-13-shiny-song-for-prism-koito-solo-vocal-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-sidem-fantastic-battle-fes-2026.md",
+   "issue": "分量不足の可能性：rank:small の下限（250字以上）に対して、本文が約150字。ただし「9月13日23:59締切」という deadline 記事として、読者に必要な情報（締め切り日時・券種・価格）は明確に伝わっており、sources に公式が載っており詳細情報へのリンク（「詳細発表」と明記）も提供されているため、記事として成立している。",
+   "scope": "article:2026-09-13-sidem-fantastic-battle-fes-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-sidem-hands-knickknacks-2026.md",
+   "issue": "分量不足：rank: small の下限 250字に対し、実測は 155字（見出し18字+リード58字+本文79字）。出典（PR Times）には「12名のアイドルがハンズスタッフに扮したエプロン姿の新規描き下ろしイラスト展開」「オリジナルグッズを販売予定」などの詳細情報があり、これらを追加すれば埋まるはずです。",
+   "scope": "article:2026-09-13-sidem-hands-knickknacks-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-sidem-joypolis-3-2026.md",
+   "issue": "rank: medium の下限 450 字に対して本文が 345 字程度。出典の公式サイトには会場配置(3rd Floor フォーチュンフォレスト、1st Floor メインステージなど)、営業時間、各アトラクション説明、グッズ情報など詳細があり、追加で埋められる可能性があります。ただしこれは分量の目安であり、簡潔な記事として許容できます。",
+   "scope": "article:2026-09-13-sidem-joypolis-3-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-13-sidem-teddys-collection2-popup-goods.md",
+   "issue": "分量不足: 本文が約71文字で、rank: small の最小値250文字を大きく下回っています。本日の営業時間(10:30～19:00)を明記すると、読者が訪問可能な時間帯が明確になり、ニュース価値が高まります。",
+   "scope": "article:2026-09-13-sidem-teddys-collection2-popup-goods.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-13-765-x-vorder-runway-goods-onsite-2026.md",
+  "article:2026-09-13-cg-15th-party-goods-2026.md",
+  "article:2026-09-13-cg-popn-toybox-goods-2026.md",
+  "article:2026-09-13-cg-popn-toybox-memorial-goods-2026.md",
+  "article:2026-09-13-cg-toybox-extra-13-2026.md",
+  "article:2026-09-13-cg-vote-2026-special-exhibition.md",
+  "article:2026-09-13-gaku-gakumas-miraimira-temari-iris-2026.md",
+  "article:2026-09-13-gaku-snap-series-2026.md",
+  "article:2026-09-13-joint-cg-million-coming-soon-2026-08-26.md",
+  "article:2026-09-13-joint-imas-cross-over-cd-2026.md",
+  "article:2026-09-13-joint-sidem-11th-backstage-talk-2026.md",
+  "article:2026-09-13-joint-sidem-shinycolors-sparkle-showdown-2027-06.md",
+  "article:2026-09-13-joint-tours-ranking-2026-09-11.md",
+  "article:2026-09-13-million-battle-of-theater-11-black-lips.md",
+  "article:2026-09-13-million-grok-076.md",
+  "article:2026-09-13-million-grok-077.md",
+  "article:2026-09-13-million-opera-seria-popup-2026.md",
+  "article:2026-09-13-million-seasonal-snapshot-2026-12.md",
+  "article:2026-09-13-shiny-parallel-collection-popup-2026.md",
+  "article:2026-09-13-shiny-party-september-2026.md",
+  "article:2026-09-13-shiny-song-for-prism-koito-solo-vocal-2026.md",
+  "article:2026-09-13-sidem-11th-stage-2026.md",
+  "article:2026-09-13-sidem-fantastic-battle-fes-2026.md",
+  "article:2026-09-13-sidem-grok-070.md",
+  "article:2026-09-13-sidem-hands-knickknacks-2026.md",
+  "article:2026-09-13-sidem-joypolis-3-2026.md",
+  "article:2026-09-13-sidem-mfes-2026-winter-wonderland.md",
+  "article:2026-09-13-sidem-promi-2027.md",
+  "article:2026-09-13-sidem-teddys-collection2-popup-goods.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-13-765-x-vorder-runway-goods-onsite-2026.md": "51ab9cbed041c08cbc868ad5366b043895127aac01fe583f864010947454db01",
+  "docs/_posts/2026-09-13-cg-15th-party-goods-2026.md": "a739efd5cbc40542b197d5133f9f42fef3727705549fa0590677399bff01d3d2",
+  "docs/_posts/2026-09-13-cg-popn-toybox-goods-2026.md": "397a4d75367aaa657e15d1434b6db7d3ec3b420dc4c911315106067ca37a7d3a",
+  "docs/_posts/2026-09-13-cg-popn-toybox-memorial-goods-2026.md": "8fcfc151a3715c501f5b22113cdeccd0ae33ab8c94ba30398faec1e448a41bcf",
+  "docs/_posts/2026-09-13-cg-toybox-extra-13-2026.md": "9294abe4230efbd26e3d8a4195417158a54f92b02b960d822059c61ca2fd6378",
+  "docs/_posts/2026-09-13-cg-vote-2026-special-exhibition.md": "91e5d1cdbc87861eeae6aed8efa1cb2dc7777207c61c9847f8e018d0424f8fcf",
+  "docs/_posts/2026-09-13-gaku-gakumas-miraimira-temari-iris-2026.md": "03288678b04a25f5dbc2ac48d96fbfbeb2967b3df3b5a32a7f4a913f6d103e3a",
+  "docs/_posts/2026-09-13-gaku-snap-series-2026.md": "7a71fabcff0cbcaa41c6985394fd6633afd1ce63ff4270fe57f83750d51b519e",
+  "docs/_posts/2026-09-13-joint-cg-million-coming-soon-2026-08-26.md": "09d027054240afff1b6915bc262a0bc75f715867cf6f534fd9a96526da8ad985",
+  "docs/_posts/2026-09-13-joint-imas-cross-over-cd-2026.md": "eeafa37c373b2f7a981c4c27dd56872b9f3725b06c76132a3b11885516e71409",
+  "docs/_posts/2026-09-13-joint-sidem-11th-backstage-talk-2026.md": "ed26ee3112e29bb4c9246775046d98b93bb5c13e32705ef833861000237e14e4",
+  "docs/_posts/2026-09-13-joint-sidem-shinycolors-sparkle-showdown-2027-06.md": "94af9636896e25d138f7e204b4deceb284ce7ac881174561523bd307bc43c46c",
+  "docs/_posts/2026-09-13-joint-tours-ranking-2026-09-11.md": "7b1577e67f568817cc2f1240e6ca761bcf2a7533793fe4e94b432b9c8c8dee31",
+  "docs/_posts/2026-09-13-million-grok-076.md": "2be252db7edbd350c7a2dcbdcb9759d4565018cb333560b8939768174fb1418d",
+  "docs/_posts/2026-09-13-million-grok-077.md": "454300c00b5b10ab58d981a7c030097ccae3d1522600b7c990f8e03d08d9f722",
+  "docs/_posts/2026-09-13-million-opera-seria-popup-2026.md": "6fa83d2ab9b04fa711abcd849afb6e36a14f167a4528e99de3d8ac9a37a4bf3a",
+  "docs/_posts/2026-09-13-million-seasonal-snapshot-2026-12.md": "44445456da5b4681841141ac65bdc66e3fade9ff778f373ff4caef1ff518b1ee",
+  "docs/_posts/2026-09-13-shiny-parallel-collection-popup-2026.md": "ce2e7b11472ac3bcac692c794007dc510b02182de29d1a6c97b19965e16f0ae2",
+  "docs/_posts/2026-09-13-shiny-song-for-prism-koito-solo-vocal-2026.md": "82ce0c3a12c7201d182bb77665659fd817a98b6f78326717f341a32d90d3d88f",
+  "docs/_posts/2026-09-13-sidem-11th-stage-2026.md": "f1435c935c7945ba7205f172299065619ca9e578c6f5349002a7065c8a0baa08",
+  "docs/_posts/2026-09-13-sidem-fantastic-battle-fes-2026.md": "cec0b51187f8b01ab2b4f64cde60901664491c30e6e7988e06dc0fd70b99ad88",
+  "docs/_posts/2026-09-13-sidem-grok-070.md": "5da29d946492dcb6a20b7d9ea96ba3ec2642784c4b1406407b3f81319863459c",
+  "docs/_posts/2026-09-13-sidem-hands-knickknacks-2026.md": "e7967f620844486c4381aac208c37ea77dfef2a1ebb976729f2e2b4042ed0d87",
+  "docs/_posts/2026-09-13-sidem-joypolis-3-2026.md": "676cdfa3668860d43c8f7b6fb1f8ebe42de132790d93be4923c3a92112a6ba15",
+  "docs/_posts/2026-09-13-sidem-mfes-2026-winter-wonderland.md": "ed0aaeba5ce1c243c6e5ad195e4300835a40c237d17e1ecd58576c6144b7ae34",
+  "docs/_posts/2026-09-13-sidem-promi-2027.md": "42b9cec0b32225e2846016b32cdcf15abf81c00972e4b2ed6b7e5c5e63566c2c",
+  "docs/_posts/2026-09-13-sidem-teddys-collection2-popup-goods.md": "ea4c49ac2d522fc4c4cee1a36b1034652347350b7ff74a709094b394d9edad1d",
+  "docs/_editions/2026-09-13.md": "9b975b8c5c66206fe4d902eeadcbd5fa08ca33a4a935492607cb4686c0a0194c",
+  "metrics/stories-before-2026-09-13.yml": "4b3b237e228d9092746c9670544dab4620130c8c811c0b390ee59c0d3b1c6bd4"
+ }
+}

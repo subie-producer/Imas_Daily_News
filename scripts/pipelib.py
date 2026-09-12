@@ -3,6 +3,7 @@ import datetime
 import html as html_lib
 import json
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -81,11 +82,24 @@ def escalate(stage: str, date: str, reason: str) -> bool:
     if not script.exists():
         return False
     log = ROOT / "metrics" / f"oncall-{date}-{stage}.log"
+    args = [sys.executable, str(script), "--stage", stage, "--date", date, "--reason", reason[:4000]]
+    # **systemd の service から呼ばれたときは、別の transient unit として起動する。**
+    # Popen(start_new_session=True) で子を切り離しても cgroup は同じなので、compose の service が
+    # 終わった瞬間に systemd が当番ごと殺す(実測 2026-09-13 04:15: 当番のログが空のまま消えた)
+    if shutil.which("systemd-run") and os.environ.get("INVOCATION_ID"):
+        unit = f"imas-oncall-{date}-{stage}-{int(time.time())}"
+        r = subprocess.run(["systemd-run", "--user", "--collect", "--unit", unit,
+                            f"--working-directory={ROOT}", f"--setenv=PATH={os.environ.get('PATH', '')}",
+                            f"--setenv=HOME={os.environ.get('HOME', '')}",
+                            f"--property=StandardOutput=append:{log}", "--property=StandardError=inherit"] + args,
+                           capture_output=True, text=True, stdin=subprocess.DEVNULL)
+        if r.returncode == 0:
+            print(f"当番(oncall)を起動した: {stage} {date}(unit {unit})", flush=True)
+            return True
+        print(f"systemd-run での当番の起動に失敗({r.stderr.strip()[:200]})。直接起動する", flush=True)
     try:
         with log.open("a", encoding="utf-8") as f:
-            subprocess.Popen([sys.executable, str(script), "--stage", stage, "--date", date,
-                              "--reason", reason[:4000]],
-                             cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
+            subprocess.Popen(args, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
                              start_new_session=True)
         print(f"当番(oncall)を起動した: {stage} {date}", flush=True)
         return True

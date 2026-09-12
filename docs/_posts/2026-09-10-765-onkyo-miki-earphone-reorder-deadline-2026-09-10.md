@@ -2,7 +2,7 @@
 slug: 765-onkyo-miki-earphone-reorder-deadline-2026-09-10
 edition: 2026-09-10
 brand: '765'
-src: 未確認
+src: 当事者
 rank: medium
 corrected: false
 corrections: []
@@ -18,7 +18,7 @@ tags:
 - 締切
 sources:
 - url: https://x.com/onkyodav/status/2097158068467605638
-  type: 未確認
+  type: 当事者
   label: 『アイドルマスター』20周年記念 星井美希ボイス搭載ワイヤレスイヤホン 再受注締切リマインド
 - url: https://onkyodirect.jp/shop/g/gMO1_AMH1AOW01MK2W/
   type: 当事者

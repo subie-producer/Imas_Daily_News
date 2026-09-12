@@ -308,8 +308,23 @@ def video_author(vid: str) -> tuple[str, str]:
         handle = (d.get("author_url") or "").rstrip("/").rsplit("/", 1)[-1].removeprefix("@")
         return handle, str(d.get("title") or "")
     except Exception as e:
-        print(f"  oEmbed 取得できず {vid}: {type(e).__name__}", flush=True)
-        return "", ""
+        print(f"  oEmbed 取得できず {vid}: {type(e).__name__}。視聴ページから読む", flush=True)
+    # oEmbed が断続的に失敗する(実測 2026-09-12: Lantis の動画が HTTPError で未確認のまま紙面に載った)。
+    # 視聴ページの埋め込み情報(ownerProfileUrl / <link itemprop=name>)から投稿者を取る
+    try:
+        import urllib.request
+        req = urllib.request.Request(f"https://www.youtube.com/watch?v={vid}",
+                                     headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "ja"})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            html = r.read().decode("utf-8", "replace")
+        m = re.search(r'"ownerProfileUrl":"[^"]*?/@([^"/]+)"', html) or re.search(r'"canonicalBaseUrl":"/@([^"/]+)"', html)
+        t = re.search(r'<meta name="title" content="([^"]*)"', html) or re.search(r'<title>([^<]*)</title>', html)
+        if m:
+            return m.group(1), (t.group(1) if t else "").replace(" - YouTube", "")
+        print(f"  視聴ページからも投稿者が取れず {vid}", flush=True)
+    except Exception as e:
+        print(f"  視聴ページ取得できず {vid}: {type(e).__name__}", flush=True)
+    return "", ""
 
 
 def add_video_ids(found: dict[str, tuple[str, str]]) -> None:

@@ -2,7 +2,7 @@
 slug: joint-idol-ultimate-street-ads
 edition: 2026-09-08
 brand: joint
-src: 未確認
+src: ファン
 rank: small
 corrected: false
 corrections: []
@@ -11,10 +11,10 @@ title: "765×961街頭広告、3都市で同時掲出"
 lede: "765×961合同ライブ「IDOL ULTIMATE ONCE AND FOR ALL」の街頭広告が、渋谷・名古屋・大阪の3駅で9月13日まで掲出されている。"
 tags: [合同, ライブ, イベント]
 sources:
-  - type: "公式"
+  - type: 公式
     label: "765×961「IDOL ULTIMATE」3都市街頭広告を同時掲出"
     url: "https://x.com/imas_official"
-  - type: "未確認"
+  - type: ファン
     label: "街頭広告の目撃が3都市で出ている(trend)"
     url: "https://x.com/yuzu_yng/status/2096940563249725949"
 event_date: 2026-09-07

@@ -2,20 +2,20 @@
   "title": "article-out",
   "description": "執筆セッションの出力契約。判断と文章だけを返し、frontmatter とファイルはコードが作る(構造は生成時に強制する)",
   "type": "object",
-  "required": ["status", "abort_code", "abort_detail", "title", "title_fact_ids", "lede", "lede_fact_ids", "blocks", "tags", "sources", "event_date", "new_facts", "addressed_issue_ids"],
+  "required": ["status", "decline_code", "decline_detail", "title", "title_fact_ids", "lede", "lede_fact_ids", "blocks", "tags", "sources", "event_date", "new_facts", "addressed_issue_ids"],
   "additionalProperties": false,
   "properties": {
-    "status": {"enum": ["ok", "abort"]},
-    "abort_code": {"enum": ["", "NO_PRIMARY_SOURCE", "SOURCE_MISMATCH", "TOO_FEW_MATERIALS", "NOT_NEWS", "OTHER"],
-                   "description": "abort のときだけ。ok なら空文字"},
-    "abort_detail": {"type": "string", "maxLength": 300},
-    "title": {"type": "string", "maxLength": 45, "description": "見出し(全角換算〜28字目安)。abort なら空"},
+    "status": {"enum": ["ok", "decline"]},
+    "decline_code": {"enum": ["", "NO_PRIMARY_SOURCE", "SOURCE_MISMATCH", "TOO_FEW_MATERIALS", "NOT_NEWS", "OTHER"],
+                   "description": "decline のときだけ。ok なら空文字"},
+    "decline_detail": {"type": "string", "maxLength": 300},
+    "title": {"type": "string", "maxLength": 45, "description": "見出し(全角換算〜28字目安)。decline なら空"},
     "title_fact_ids": {"type": "array", "items": {"type": "string"}, "description": "見出しの根拠になった素材の事実 id(F1…)"},
-    "lede": {"type": "string", "maxLength": 140, "description": "リード1文。abort なら空"},
+    "lede": {"type": "string", "maxLength": 140, "description": "リード1文。decline なら空"},
     "lede_fact_ids": {"type": "array", "items": {"type": "string"}},
     "blocks": {
       "type": "array",
-      "description": "本文の段落(Markdown)。段落ごとに根拠の事実 id を付ける。abort なら空配列",
+      "description": "本文の段落(Markdown)。段落ごとに根拠の事実 id を付ける。decline なら空配列",
       "items": {
         "type": "object", "required": ["markdown", "fact_ids"], "additionalProperties": false,
         "properties": {
@@ -27,7 +27,7 @@
     "tags": {"type": "array", "minItems": 0, "maxItems": 4, "items": {"type": "string", "maxLength": 24}},
     "new_facts": {
       "type": "array",
-      "description": "素材に無いが、執筆中に一次情報のページを実際に読んで確かめた事実。id は N1, N2 …。url は読んだページ。素材に無い URL を sources に載せるには、ここにその URL の事実が要る。abort なら空配列",
+      "description": "素材に無いが、執筆中に一次情報のページを実際に読んで確かめた事実。id は N1, N2 …。url は読んだページ。素材に無い URL を sources に載せるには、ここにその URL の事実が要る。decline なら空配列",
       "items": {
         "type": "object", "required": ["id", "text", "url"], "additionalProperties": false,
         "properties": {

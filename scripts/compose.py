@@ -408,11 +408,12 @@ def article_prompt(date: str, art: dict, materials: list[dict], story_facts: lis
 - tags は2〜4個。下記「タグ語彙」に従う
 - event_date は、記事の出来事が起きる(始まる)日を **1つだけ** YYYY-MM-DD で。範囲や複数なら開始日。無ければ null。
   素材か new_facts に出てくる日付であること(検算する)
-- 書けないなら status を abort にし、abort_code(NO_PRIMARY_SOURCE / SOURCE_MISMATCH / TOO_FEW_MATERIALS / NOT_NEWS / OTHER)と
-  abort_detail に理由を書く。abort のとき記事の項目は空でよい
+- 記事として成立しない(出典に到達できない・出典と食い違う・素材不足・ニュースでない)と判断したら
+  **見送り**: status を decline にし、decline_code(NO_PRIMARY_SOURCE / SOURCE_MISMATCH / TOO_FEW_MATERIALS / NOT_NEWS / OTHER)と
+  decline_detail に理由を書く。decline のとき記事の項目は空でよい
 - slug / brand / candidate_ids / rank / src は書きません(計画と判定表からコードが付けます)
 - この指示の他の箇所にある「ファイルを作らず『ABORT: 理由』とだけ出力して終わる」は、
-  **status を abort にして abort_code と abort_detail に理由を書く**、と読み替えてください"""
+  **status を decline にして decline_code と decline_detail に理由を書く**、と読み替えてください"""
     else:
         out_section = f"""`docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
 - frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']}(**仮の値**。発行前に機械が付け直します) / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
@@ -1815,6 +1816,16 @@ def assign_ranks(date: str, plan: dict, written: list[dict], keep_lead: bool = F
     return plan
 
 
+WRITE_OUTCOMES: dict[str, dict[str, str]] = {}   # 日付 → {slug: 書けなかった理由(見送り/落とした)}
+
+
+def returned_note(problems: list[str]) -> str:
+    """差し戻しの追記: 機械検算で落ちた点だけを示し、同じ契約で書き直させる。"""
+    return ("\n\n## 差し戻し(機械検算の不合格。この点だけ直して、同じ形の JSON を返す)\n"
+            + "\n".join(f"- {p}" for p in problems[:8])
+            + "\n記事として成立しないと判断するなら status を decline にし、理由コードと説明を書く。")
+
+
 def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                    stories: dict, wave: int = 0,
                    reuse: bool = False) -> tuple[list[dict], list[str]]:
@@ -1849,9 +1860,16 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
     if written_before:
         print(f"既存の記事 {len(written_before)}本は再執筆しない(--reuse-plan)", flush=True)
     schema_out = ROOT / "schema" / "article-out.schema.json"
-    for i in range(0, len(jobs), wave):
+    WRITE_OUTCOMES[date] = outcomes = {}
+    # 執筆の結果は3種類で、名前を分ける(「不成立」で一括りにしない。編集長の指摘):
+    #   見送り   = 執筆側の判断(記事として成立しない。理由コード付き)。落ちるのが正しい
+    #   差し戻し = 機械検算の不合格。**その点だけを示して1回やり直させる**(例外で終わらせない)
+    #   落とした = 差し戻しても通らなかった・出力が読めなかった。理由を記録して紙面から外す
+    queue = [(art, src, prompt, fact_by_id, materials, 0) for art, src, prompt, fact_by_id, materials in jobs]
+    while queue:
+        batch, queue = queue[:wave], queue[wave:]
         procs = []
-        for art, src, prompt, fact_by_id, materials in jobs[i:i + wave]:
+        for art, src, prompt, fact_by_id, materials, tries in batch:
             fd, out_name = tempfile.mkstemp(prefix=f"codexwrite-{art['slug']}-", suffix=".txt")
             os.close(fd)
             out_path = Path(out_name)
@@ -1862,10 +1880,10 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                    "--output-last-message", str(out_path)]
             if STRUCTURED_WRITE:
                 cmd += ["--output-schema", str(schema_out)]
-            procs.append((art, src, out_path, fact_by_id, materials, subprocess.Popen(
+            procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, subprocess.Popen(
                 cmd + [prompt], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
-        for art, src, out_path, fact_by_id, materials, p in procs:
+        for art, src, prompt, out_path, fact_by_id, materials, tries, p in procs:
             try:
                 p.communicate(timeout=900)
             except subprocess.TimeoutExpired:
@@ -1879,22 +1897,32 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                 target.unlink(missing_ok=True)   # モデルが勝手に書いたファイルは使わない
                 try:
                     ans = json.loads(out.strip())
+                    problems = None
                 except Exception:
-                    print(f"記事 {art['slug']} の出力が JSON として読めない(exit {p.returncode})", flush=True)
-                    aborted.append(art["slug"])
-                    continue
-                # 検算を status の分岐より**先に**掛ける(理由の無い abort を素通りさせない。監査指摘)
-                problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date,
-                                                  fetched=fetched_urls())
-                if ans.get("status") == "abort" and not problems:
-                    print(f"記事 {art['slug']} は不成立: {ans.get('abort_code')} {str(ans.get('abort_detail') or '')[:120]}", flush=True)
+                    ans = {}
+                    problems = [f"出力が JSON として読めない(exit {p.returncode})"]
+                if problems is None:
+                    # 検算を status の分岐より**先に**掛ける(理由の無い見送りを素通りさせない。監査指摘)
+                    problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "",
+                                                      edition=date, fetched=fetched_urls())
+                if not problems and ans.get("status") == "decline":
+                    outcomes[art["slug"]] = f"見送り: {ans.get('decline_code')} {str(ans.get('decline_detail') or '')[:120]}"
+                    print(f"記事 {art['slug']} は{outcomes[art['slug']]}", flush=True)
                     aborted.append(art["slug"])
                     continue
                 if problems:
-                    print(f"記事 {art['slug']} は検算不合格: " + " / ".join(problems[:4]), flush=True)
-                    aborted.append(art["slug"])
+                    if tries == 0:
+                        # 差し戻し: 落ちた点だけを示して、同じ契約でもう一度だけ書かせる
+                        print(f"記事 {art['slug']} を差し戻し: " + " / ".join(problems[:4]), flush=True)
+                        queue.append((art, src, prompt + returned_note(problems), fact_by_id, materials, 1))
+                    else:
+                        outcomes[art["slug"]] = "落とした(差し戻しても検算不合格): " + " / ".join(problems[:4])
+                        print(f"記事 {art['slug']} を{outcomes[art['slug']]}", flush=True)
+                        aborted.append(art["slug"])
                     continue
                 renderlib.render_article(target, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
+                if tries:
+                    print(f"記事 {art['slug']}: 差し戻し後に合格", flush=True)
             elif "ABORT:" in out[-2000:] and not target.exists():
                 reason = out.rsplit("ABORT:", 1)[-1].strip()[:200]
                 print(f"記事 {art['slug']} は出典照合で不成立: {reason}", flush=True)
@@ -1993,7 +2021,7 @@ def revise_prompt(date: str, art: dict, mats_in: list[dict], current: str, issue
   読んで確認した一次情報の URL。後者は new_facts に「読んだ URL と確かめた事実」を書く)。
   **指摘に URL が書いてあるならそれを読んで加える**
 - `drop_source`: 食い違う弱い出典を sources から外し、記事は強い出典に合わせる(弱い出典に合わせて書き換えない)
-- `drop_article`: 記事として成立しないなら status を abort にし、abort_code と理由を書く。無理に残さない
+- `drop_article`: 記事として成立しないなら status を decline にし、decline_code と理由を書く。無理に残さない
 - **指摘に無い箇所は変えない**(見出し・他の段落・出典は原則そのまま)。直したふりをしない
 - 対応した指摘の **issue_id**(I1, I2 …)を addressed_issue_ids に列挙する。対応しなかった指摘は書かない
 - 本文の段落末にある `<!-- F1 F3 -->` は根拠 id の控えなので、markdown には含めない(fact_ids に書く)
@@ -2121,16 +2149,16 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
                  issues: list[dict]) -> tuple[str, str]:
     """書き直しの答えを記事に反映する。戻りは ("fixed"|"dropped"|"kept", 説明)。
 
-    検算(check_output)を status の分岐より**先に**掛ける。理由(abort_code/abort_detail)の無い abort は
+    検算(check_output)を status の分岐より**先に**掛ける。理由(decline_code/decline_detail)の無い decline は
     不合格で、既存の記事は残す(理由なしで記事を消させない。監査指摘)。
     """
     problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date,
                                       fetched=fetched_urls())
-    if ans.get("status") == "abort":
+    if ans.get("status") == "decline":
         if problems:
-            return "kept", "理由の無い abort(" + " / ".join(problems[:2]) + ")。元の稿のまま"
+            return "kept", "理由の無い decline(" + " / ".join(problems[:2]) + ")。元の稿のまま"
         path.unlink(missing_ok=True)
-        return "dropped", f"執筆側が不成立と判断({ans.get('abort_code')})。落とす"
+        return "dropped", f"執筆側が不成立と判断({ans.get('decline_code')})。落とす"
     old_text = path.read_text(encoding="utf-8") if path.exists() else ""
     problems += revise_check(ans, issues, parse_front_matter(path) if path.exists() else None,
                              re.split(r"\n---\n", old_text, maxsplit=1)[-1])
@@ -2145,7 +2173,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
     """校閲の指摘を**執筆側(Codex)**に構造化で直させる。校閲側(Claude)には編集させない(監査の設計レビュー)。
 
     直した稿は初稿と同じ検算(事実 id・出典・タグ・日付)を通してからファイルにする。
-    abort が返れば記事を落とす。何も直せないままなら次の巡でまたブロックが付き、上限で落ちる。
+    decline(見送り)が返れば記事を落とす。何も直せないままなら次の巡でまたブロックが付き、上限で落ちる。
     """
     by_slug_plan = {a["slug"]: a for a in plan.get("articles") or []}
     jobs = []
@@ -2662,7 +2690,17 @@ def main() -> int:
     with stage("執筆"):
         written, aborted = write_articles(date, plan, cands, triggers, load_story_facts(),
                                           reuse=args.reuse_plan)
-    print(f"執筆: {len(written)}/{n_plan}本(不成立 {len(aborted)}: {aborted})", flush=True)
+    outcomes = WRITE_OUTCOMES.get(date) or {}
+    n_decl = sum(1 for v in outcomes.values() if v.startswith("見送り"))
+    n_drop = len(aborted) - n_decl
+    print(f"執筆: {len(written)}/{n_plan}本(見送り {n_decl} / 落とした {n_drop})", flush=True)
+    for slug, why in outcomes.items():
+        print(f"  {slug}: {why}", flush=True)
+    if n_drop:
+        # 落としたのは機械検算を2回通らなかった記事。検算が厳しすぎるのか執筆が守れないのかを
+        # 人が見られるように、理由ごと知らせる(黙って落とさない)
+        notify("compose", f"{date}: 差し戻しても通らず落とした記事 {n_drop}本:\n"
+                          + "\n".join(f"- {s}: {w[:200]}" for s, w in outcomes.items() if not w.startswith("見送り")), ok=False)
     # **書き上がりから枠を当てる**(字数を枠に合わせさせない。規程9)。
     # 組版より前に確定させる: 号スナップショットの lead_slug が一面に依存するため
     assign_ranks(date, plan, written)
@@ -2909,7 +2947,7 @@ def main() -> int:
                 jobs.append(("記事の修正", lambda: fix_articles(date, by_file)))
         for e in run_parallel(jobs):
             print(f"同時実行のうち失敗: {e}", flush=True)
-        # 書き直しで落ちた記事(abort)を written から外す
+        # 書き直しで落ちた記事(見送り)を written から外す
         written[:] = [a for a in written if (ROOT / "docs" / "_posts" / f"{date}-{a['slug']}.md").exists()]
         subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
                        cwd=ROOT, capture_output=True, text=True)

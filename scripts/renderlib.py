@@ -17,7 +17,7 @@ import datetime
 import re
 from pathlib import Path
 
-ABORT_CODES = ("NO_PRIMARY_SOURCE", "SOURCE_MISMATCH", "TOO_FEW_MATERIALS", "NOT_NEWS", "OTHER")
+DECLINE_CODES = ("NO_PRIMARY_SOURCE", "SOURCE_MISMATCH", "TOO_FEW_MATERIALS", "NOT_NEWS", "OTHER")
 FACT_NOTE = re.compile(r"\s*<!--\s*((?:[FN]\d+\s*)+)-->\s*$")
 _ZEN = str.maketrans("０１２３４５６７８９／．－", "0123456789/.-")
 
@@ -141,18 +141,18 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
     """出力の中身の検算(schema は形しか見ない)。通らない理由を返す(空なら合格)。
 
     監査指摘で固めた: 見出し・リードにも根拠 id が要る / 素材に無い URL は new_facts で「読んだ」と
-    示したものだけ / tags は2〜4 / event_date は素材か new_facts に出てくる日付 / abort は理由付き /
+    示したものだけ / tags は2〜4 / event_date は素材か new_facts に出てくる日付 / decline は理由付き /
     roundup・culture は3件以上の素材の事実を使っている(束ねが成立している)
     """
     problems = []
-    if out.get("status") == "abort":
-        if out.get("abort_code") not in ABORT_CODES:
-            problems.append("abort に abort_code が無い")
-        if not str(out.get("abort_detail") or "").strip():
-            problems.append("abort に abort_detail が無い")
+    if out.get("status") == "decline":
+        if out.get("decline_code") not in DECLINE_CODES:
+            problems.append("decline に decline_code が無い")
+        if not str(out.get("decline_detail") or "").strip():
+            problems.append("decline に decline_detail が無い")
         return problems
-    if out.get("abort_code"):
-        problems.append("ok なのに abort_code がある")
+    if out.get("decline_code"):
+        problems.append("ok なのに decline_code がある")
     new_facts = [f for f in (out.get("new_facts") or []) if isinstance(f, dict)]
     known_ids = dict(fact_by_id)
     for f in new_facts:

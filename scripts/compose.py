@@ -1526,8 +1526,10 @@ def yaml_dump_keeping_strings(data) -> str:
             return {k: wrap(x) for k, x in v.items()}
         return v
 
+    # ブロック形式に固定する(None だと短い出典が `- {label: …, type: …}` の1行になり、過去号と
+    # 形が違って retag_sources が type 行を数えられなかった。実測 2026-09-12)
     return yaml.safe_dump(wrap(data), allow_unicode=True, sort_keys=False, width=200,
-                          default_flow_style=None)
+                          default_flow_style=False)
 
 
 def earliest_date(raw: str) -> str | None:

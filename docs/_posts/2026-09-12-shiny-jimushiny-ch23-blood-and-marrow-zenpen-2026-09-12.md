@@ -2,7 +2,7 @@
 slug: shiny-jimushiny-ch23-blood-and-marrow-zenpen-2026-09-12
 edition: 2026-09-12
 brand: shiny
-src: 未確認
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -11,7 +11,7 @@ title: 『事務的光空記録』第23話前編公開
 lede: Web漫画『アイドルマスター シャイニーカラーズ 事務的光空記録』第23話前編が公開された。
 tags: [シャニマス, 漫画, お知らせ]
 sources:
-- {label: 『アイドルマスター シャイニーカラーズ 事務的光空記録』第23話前編, url: 'https://x.com/jimushiny_oa/status/2098426706579407286', type: 未確認}
+- {label: 『アイドルマスター シャイニーカラーズ 事務的光空記録』第23話前編, url: 'https://x.com/jimushiny_oa/status/2098426706579407286', type: 公式}
 event_date: "2026-09-12"
 ---
 

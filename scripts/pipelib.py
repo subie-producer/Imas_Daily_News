@@ -441,7 +441,23 @@ _TAG_RE = re.compile(r"(?is)<(script|style)[^>]*>.*?</\1>|<[^>]+>")
 
 
 def html_to_text(raw: bytes, charset: str | None = None) -> str:
-    t = raw.decode(charset or "utf-8", errors="replace")
+    # ヘッダに charset が無い古いサイト(Shift_JIS / EUC-JP の会社概要ページ等)は <meta> から拾う。
+    # 決め打ちの utf-8 だと文字化けして運営者名が読めない(実測 2026-09-13: ホビーストック会社概要)
+    if not charset:
+        m = re.search(rb'<meta[^>]+charset=["\']?\s*([A-Za-z0-9_-]+)', raw[:4000], re.I)
+        charset = m.group(1).decode("ascii", "ignore") if m else None
+    try:
+        t = raw.decode(charset or "utf-8", errors="strict")
+    except (UnicodeDecodeError, LookupError):
+        t = None
+        for enc in ("utf-8", "cp932", "euc_jp"):
+            try:
+                t = raw.decode(enc, errors="strict")
+                break
+            except UnicodeDecodeError:
+                continue
+        if t is None:
+            t = raw.decode(charset or "utf-8", errors="replace")
     t = _TAG_RE.sub("\n", t)
     t = html_lib.unescape(t)
     return re.sub(r"[ \t　]+", " ", t)

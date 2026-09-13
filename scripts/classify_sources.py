@@ -157,6 +157,63 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     return doms, accts
 
 
+def page_meta(url: str) -> tuple[str, str, str]:
+    """(title, meta description, 生 HTML)。JS で描画するページでも title/description は残っている。"""
+    try:
+        import urllib.request
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "ja"})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            html = r.read(400_000).decode(r.headers.get_content_charset() or "utf-8", "replace")
+        t = re.search(r"<title[^>]*>(.*?)</title>", html, re.S | re.I)
+        d = re.search(r'<meta[^>]+(?:name|property)=["\'](?:description|og:description|og:site_name)["\'][^>]+content=["\']([^"\']*)', html, re.I)
+        return (re.sub(r"\s+", " ", t.group(1)).strip() if t else "", (d.group(1).strip() if d else ""), html)
+    except Exception:
+        return "", "", ""
+
+
+def rendered_excerpt(url: str, chars: int = 1200) -> str:
+    """本文の冒頭。JS 描画のページは fetch_page.py が描画して読み直す。"""
+    try:
+        r = subprocess.run([sys.executable, str(ROOT / "scripts" / "fetch_page.py"), url, "--chars", str(chars)],
+                           capture_output=True, text=True, timeout=150, stdin=subprocess.DEVNULL, cwd=ROOT)
+        body = r.stdout.split("--- 本文(要約なし) ---", 1)[-1] if "--- 本文" in r.stdout else r.stdout
+        return re.sub(r"\s+", " ", body).strip()[:chars]
+    except Exception as e:
+        return f"(取得できず: {type(e).__name__})"
+
+
+def site_profile(host: str, url: str) -> str:
+    """「このサイトは何の主体か」を掘るための材料: 当該ページ、サイトのトップ、運営者情報(会社概要・
+    About・特定商取引法)のページ。URL の字面だけで判定しない(編集長の指摘)。"""
+    parts = []
+    title, desc, _ = page_meta(url)
+    parts.append(f"代表URL: {url}\ntitle: {title or '-'}\ndescription: {desc or '-'}\nページ冒頭: {rendered_excerpt(url)}")
+    top = f"https://{host}/"
+    ttitle, tdesc, thtml = page_meta(top)
+    top_text = rendered_excerpt(top, 3000)
+    parts.append(f"サイトのトップ {top}\ntitle: {ttitle or '-'}\ndescription: {tdesc or '-'}\n冒頭: {top_text[:800]}")
+    # 会社概要・運営会社・特定商取引法のどれか(その順で優先)。ナビの文言はトップと共通なので、
+    # 共通の前置きを除いた本文を渡す(メニューだけで枠が埋まって運営者名が届かないのを防ぐ)
+    links = re.findall(r'href=["\']([^"\']+)["\'][^>]*>\s*(?:<[^>]+>\s*)*([^<]{0,40})', thtml, re.I)
+    about = None
+    for kw in ("会社概要", "運営会社", "運営者", "企業情報", "特定商取引", "Company", "Corporate", "About"):
+        for href, label in links:
+            if kw.lower() in label.lower():
+                about, about_kw = urllib.parse.urljoin(top, href), kw
+                break
+        if about:
+            break
+    if about:
+        text = rendered_excerpt(about, 4000)
+        import os as _os
+        common = len(_os.path.commonprefix([top_text, text]))
+        text = text[common:] if common > 200 else text
+        parts.append(f"運営者情報 {about}({about_kw}):\n{text[:1200]}")
+    else:
+        parts.append("運営者情報: トップから会社概要・About・特定商取引法のリンクを見つけられず(サイト内を fetch_page.py で探すこと)")
+    return "\n".join(parts)
+
+
 def page_excerpt(url: str, chars: int = 1200) -> str:
     """判断材料としてページ本文の冒頭を取る。取れなくても続ける。"""
     try:
@@ -181,22 +238,30 @@ def ask(cmd: list[str], prompt: str, timeout: int = 900) -> list[dict]:
 
 def build_prompt(items: list[tuple[str, str, str]]) -> str:
     known = known_official()
-    body = "\n\n".join(f"### {h}\n代表URL: {u}\nページ冒頭: {x}" for h, u, x in items)
+    body = "\n\n".join(f"### {h}\n{x}" for h, u, x in items)
     return (f"""次のサイトを、この新聞の出典種別に分類してください。
 
 {RULES}
 
 {known}
 
+## やり方
+**URL の字面で決めない。まず「このサイトは何の主体か(誰が運営し、何をしている会社・団体・個人か)」を
+掘ってから種別を決める。**材料として、当該ページ・サイトのトップ・運営者情報(会社概要/About/特定商取引法)の
+冒頭を付けてある。足りなければこのフォルダで `python3 scripts/fetch_page.py <url>` を実行して、
+サイト内の会社概要・運営情報・特定商取引法のページを自分で読むこと。
+例: ホビー・フィギュアの通販店の商品ページなら、運営主体は「玩具・フィギュアの販売店」で種別は当事者
+(販売元)。ライブの特設サイトなら、主催・運営が誰か(公式か、興行会社か)を特設サイトの下部やクレジットで確かめる。
+
 ## 対象
 {body}
 
 ## 出力
 **JSON 配列だけ**を出力してください。ほかの文字は書かないこと。
-[{{"host": "ドメイン", "type": "公式|準公式|当事者|報道|二次情報|ファン|不明", "why": "40字以内の根拠"}}]
+[{{"host": "ドメイン", "operator": "運営主体(何の会社・団体・個人か。30字以内)", "type": "公式|準公式|当事者|報道|二次情報|ファン|不明", "why": "40字以内の根拠"}}]
 
-- ページ冒頭に書いてあることと、**アイマスの作品・ブランド・レーベル・連載先について知っていること**で判断する
-- 根拠を挙げられないときだけ `不明`
+- 運営主体が分かれば種別は定義から決まる。**アイマスの作品・ブランド・レーベル・連載先について知っていること**も使う
+- 運営主体がどうしても分からないときだけ `不明`(why に「何を見たが分からなかったか」を書く)
 """)
 
 
@@ -452,7 +517,7 @@ def main() -> int:
     split_all = []
     if doms:
         print(f"{date}: 判定表に無いドメイン {len(doms)}件 → {', '.join(sorted(doms))}", flush=True)
-        items = [(h, u, page_excerpt(u)) for h, u in sorted(doms.items())]
+        items = [(h, u, site_profile(h, u)) for h, u in sorted(doms.items())]
         agreed, split = consensus(build_prompt(items), sorted(doms))
         for h, (t, why) in agreed.items():
             print(f"  一致 {t}\t{h}\t{why}")

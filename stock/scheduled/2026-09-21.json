@@ -1,38 +1,69 @@
 [
-  {
-    "id": "sched-2026-09-21-gakumas-shirube-livetour-2026-福岡配信-締切",
-    "dedup_key": "gakumas-shirube-livetour-2026",
-    "brand": "gaku",
-    "subject": "学園アイドルマスター LIVE TOUR -標- 福岡公演 配信チケット",
-    "kind": "締切",
-    "note": "配信チケット販売終了",
-    "reserved_on": "2026-09-02",
-    "title": "学マス標ツアー福岡公演、週末開催へ",
-    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/streaming/fukuoka.php",
-    "source_type": "公式",
-    "facts": [
-      "配信チケットは9月21日(月・祝)18時まで販売予定、両日視聴が11,000円、DAY1・DAY2が各5,500円",
-      "コメント付きアーカイブは9月7日18時から9月21日23時59分まで視聴できる予定"
-    ],
-    "via": "grok",
-    "verify": "confirmed",
-    "deadline": "2026-09-21",
-    "src_candidate_id": "202609020238-grok-31"
-  },
-  {
-    "id": "sched-2026-09-21-gaku-shirube-livetour-fukuoka-2026-締切",
-    "dedup_key": "gaku-shirube-livetour-fukuoka-2026",
-    "brand": "gaku",
-    "subject": "学マス標ツアー福岡公演 配信視聴チケット",
-    "kind": "締切",
-    "reserved_on": "2026-09-05",
-    "facts": [
-      "配信視聴チケットの販売期間は9月21日18時まで、視聴コメント付きアーカイブは9月21日23:59まで"
-    ],
-    "title": "学マス標ツアー福岡公演が開幕、物販・配信も",
-    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/information/fukuoka.php",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202609050237-grok-40"
-  }
+ {
+  "id": "sched-2026-09-21-gakumas-shirube-livetour-2026-福岡配信-締切",
+  "dedup_key": "gakumas-shirube-livetour-2026",
+  "brand": "gaku",
+  "subject": "学園アイドルマスター LIVE TOUR -標- 福岡公演 配信チケット",
+  "kind": "締切",
+  "note": "配信チケット販売終了",
+  "reserved_on": "2026-09-02",
+  "title": "学マス標ツアー福岡公演、週末開催へ",
+  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/streaming/fukuoka.php",
+  "source_type": "公式",
+  "facts": [
+   "配信チケットは9月21日(月・祝)18時まで販売予定、両日視聴が11,000円、DAY1・DAY2が各5,500円",
+   "コメント付きアーカイブは9月7日18時から9月21日23時59分まで視聴できる予定"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-09-21",
+  "src_candidate_id": "202609020238-grok-31"
+ },
+ {
+  "id": "sched-2026-09-21-gaku-shirube-livetour-fukuoka-2026-締切",
+  "dedup_key": "gaku-shirube-livetour-fukuoka-2026",
+  "brand": "gaku",
+  "subject": "学マス標ツアー福岡公演 配信視聴チケット",
+  "kind": "締切",
+  "reserved_on": "2026-09-05",
+  "facts": [
+   "配信視聴チケットの販売期間は9月21日18時まで、視聴コメント付きアーカイブは9月21日23:59まで"
+  ],
+  "title": "学マス標ツアー福岡公演が開幕、物販・配信も",
+  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/information/fukuoka.php",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609050237-grok-40"
+ },
+ {
+  "id": "sched-2026-09-21-sidem-11th-stage-day1-setlist-2026-終了",
+  "dedup_key": "sidem-11th-stage-day1-setlist-2026",
+  "brand": "sidem",
+  "subject": "SideM11thSTAGE配信",
+  "kind": "終了",
+  "note": "アーカイブ視聴・販売が終了",
+  "reserved_on": "2026-09-14",
+  "title": "SideM 11th STAGE DAY1 セットリスト公開",
+  "url": "https://pylonport.bandainamcomusiclive.co.jp/report/842",
+  "source_type": "準公式",
+  "facts": [
+   "2026年9月12日(土)にTOYOTA ARENA TOKYOでDAY1公演を開催。",
+   "公演日時: 2026年9月12日(土) 16:00開場 / 17:30開演。",
+   "出演者: 仲村宗悟（天道輝役）、神原大地（伊集院北斗役）、永野由祐（神楽麗役）、菊池勇成（蒼井悠介役）、山谷祥生（蒼井享介役）、熊谷健太郎（握野英雄役）、増元拓也（信玄誠司役）、バレッタ裕（華村翔真役）、中田祐矢（清澄九郎役）、千葉翔也（秋山隼人役）、永塚拓馬（冬美旬役）、渡辺紘（榊夏来役）、白井悠介（若里春名役）、野上翔（伊瀬谷四季役）、益山武明（紅井朱雀役）、深町寿成（黒野玄武役）、児玉卓也（卯月巻緒役）、小林大紀（水嶋咲役）、伊東健人（硲道夫役）、中島ヨシキ（山下次郎役）、寺島惇太（大河タケル役）、浦尾岳大（兜大吾役）、比留間俊哉（九十九一希役）、笠間淳（葛之葉雨彦役）、汐谷文康（北村想楽役）、伊瀬結陸（天峰秀役）、宮﨑雅也（花園百々人役）、大塚剛央（眉見鋭心役）。",
+   "販売期間: 2026年8月4日(火)12:00～9月21日(月・祝)18:00（予定）。",
+   "最速版アーカイブ: 各公演イベント本編終了1時間後～2026年9月14日(月)18:00（予定）。",
+   "正式版アーカイブ: 2026年9月14日(月)18:00～9月21日(月)23:59（予定）。",
+   "M1. お菓子なアドベンチャー。",
+   "M2. Chocolate Special。",
+   "M3. Miraculous White Day。",
+   "M4. いとをかし！～一彩×合彩～。",
+   "M5. Feeeel Gooood！。",
+   "M6. Smiles In Wonderland!。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609140234-explore-2",
+  "event_date": "2026-09-12",
+  "deadline": "2026-09-21"
+ }
 ]

@@ -1,0 +1,58 @@
+{
+ "decisions": {
+  "tours-s1-ex-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/17開始・10/28までの実施期間は2026-09-10号(joint-tours-s1-ex-2026)で既報。今回のfactsに新事実なし。"
+  },
+  "sidem-shiny-colors-sparkle-showdown-2027": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-shiny-sparkle-showdown-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一公演(SideM×SHINY COLORS SPARKLE SHOWDOWN、2027/6/5-6横浜アリーナ)の開催決定告知。詳細出典を持つ主題に統合。"
+  },
+  "sidem-shiny-sparkle-showdown-2027": {
+   "action": "article",
+   "angle": "SideM×SHINY COLORS SPARKLE SHOWDOWNの座席種別・価格(SPプロデューサーシート/プロデューサーシート)が判明",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "日程・先行抽選期間・DAY1出演は9/13号で既報。新事実は座席価格2件のみのためsmall。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-sidem-shiny-sparkle-showdown-2027",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "SideM×SHINY COLORS SPARKLE SHOWDOWNの座席種別・価格(SPプロデューサーシート/プロデューサーシート)が判明",
+    "lead_score": 20,
+    "dedup_key": "sidem-shiny-sparkle-showdown-2027",
+    "candidate_ids": [
+     "202609140234-grok-19",
+     "202609132336-explore-8"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-s1-ex-2026",
+    "reason": "既報",
+    "note": "9/17開始・10/28までの実施期間は2026-09-10号(joint-tours-s1-ex-2026)で既報。今回のfactsに新事実なし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

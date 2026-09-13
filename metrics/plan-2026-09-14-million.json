@@ -1,0 +1,131 @@
+{
+ "decisions": {
+  "million-amimi-special-video-2026": {
+   "action": "article",
+   "angle": "ミリシタ公式チャンネルが双海亜美スペシャル動画を公開",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式チャンネル公開の事実以外は案内文の定型情報のみで新事実は薄い"
+  },
+  "million-tours-s1-ex-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同内容を2026-09-10付でjoint面が記事化済み(story: joint-tours-s1-ex-info-2026)。新事実なし"
+  },
+  "million-mirishita-kaori-special-video-2026": {
+   "action": "article",
+   "angle": "ミリシタ公式チャンネルが桜守歌織スペシャル動画を公開",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式チャンネル公開の事実以外に新事実は無く短報"
+  },
+  "million-miricore-2026-09": {
+   "action": "article",
+   "angle": "月例イベント「ミリコレ」開催期間が9/18に延長、SSR双海亜美カード追加",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2026-09-10付で開催告知済みだが、終了時刻の変更(9/16→9/18)と新規SSR追加は新事実"
+  },
+  "million-14th-streaming-2026": {
+   "action": "article",
+   "angle": "ミリオン14thLIVE配信チケット、価格・販売期間・アーカイブ視聴期間が判明",
+   "rank": "medium",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "初報。券種別価格・販売期間・アーカイブ期間・特典など事実量が多い"
+  },
+  "million-shizuka-the-animation-figure-2026": {
+   "action": "article",
+   "angle": "コトブキヤ「最上静香-The Animation-」の予約受付が本日開始",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/4付初報で予告された予約開始日が本日。読者が今日予約できる、というトリガー日の続報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-amimi-special-video-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ公式チャンネルが双海亜美スペシャル動画を公開",
+    "lead_score": 5,
+    "dedup_key": "million-amimi-special-video-2026",
+    "candidate_ids": [
+     "202609130733-explore-5"
+    ]
+   },
+   {
+    "slug": "million-mirishita-kaori-special-video-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ公式チャンネルが桜守歌織スペシャル動画を公開",
+    "lead_score": 5,
+    "dedup_key": "million-mirishita-kaori-special-video-2026",
+    "candidate_ids": [
+     "202609132336-explore-7"
+    ]
+   },
+   {
+    "slug": "million-miricore-2026-09",
+    "brand": "million",
+    "rank": "small",
+    "angle": "月例イベント「ミリコレ」開催期間が9/18に延長、SSR双海亜美カード追加",
+    "lead_score": 20,
+    "dedup_key": "million-miricore-2026-09",
+    "candidate_ids": [
+     "202609140234-explore-0"
+    ]
+   },
+   {
+    "slug": "million-14th-streaming-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリオン14thLIVE配信チケット、価格・販売期間・アーカイブ視聴期間が判明",
+    "lead_score": 75,
+    "dedup_key": "million-14th-streaming-2026",
+    "candidate_ids": [
+     "202609140234-grok-25"
+    ]
+   },
+   {
+    "slug": "million-shizuka-the-animation-figure-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "コトブキヤ「最上静香-The Animation-」の予約受付が本日開始",
+    "lead_score": 15,
+    "dedup_key": "million-shizuka-the-animation-figure-2026",
+    "candidate_ids": [
+     "sched-2026-09-14-million-shizuka-the-animation-figure-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-tours-s1-ex-2026",
+    "reason": "既報",
+    "note": "同内容を2026-09-10付でjoint面が記事化済み(story: joint-tours-s1-ex-info-2026)。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

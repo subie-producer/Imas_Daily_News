@@ -1,0 +1,33 @@
+[
+ {
+  "id": "sched-2027-03-13-sidem-producer-meeting-ajewelholic-2027-開幕",
+  "dedup_key": "sidem-producer-meeting-ajewelholic-2027",
+  "brand": "sidem",
+  "subject": "SideM PRODUCER MEETING AJewelholIc!!!",
+  "kind": "開幕",
+  "note": "京王アリーナ、DAY1開演",
+  "reserved_on": "2026-09-14",
+  "title": "SideM PRODUCER MEETING AJewelholIc",
+  "url": "https://idolmaster-official.jp/live_event/sidem_pm2027/information/",
+  "source_type": "公式",
+  "facts": [
+   "公演名: THE IDOLM@STER SideM PRODUCER MEETING ～AJewelholIc!!!～",
+   "公演日時: 2027年3月13日(土) 16:00開場/17:00開演(予定)",
+   "公演日時: 2027年3月14日(日) 15:30開場/16:30開演(予定)",
+   "開催場所: 京王アリーナ TOKYO",
+   "主催・企画: 株式会社バンダイナムコエンターテインメント",
+   "制作: 株式会社バンダイナムコミュージックライブ",
+   "現地チケット全席指定: 11,000円(税込)",
+   "アソビストアプレミアム会員先行の受付期間: 2026年9月12日(土)21:00～10月4日(日)23:59",
+   "当落発表: 2026年10月17日(土)13:00～",
+   "入金期間: 2026年10月17日(土)13:00～10月21日(水)23:59",
+   "枚数制限: お一人様1公演につき4枚まで(複数公演申込可)",
+   "対象: アソビストアプレミアム12か月会員のみ。1か月会員は対象外"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609140234-grok-23",
+  "event_date": "2027-03-13",
+  "deadline": "2026-10-04"
+ }
+]

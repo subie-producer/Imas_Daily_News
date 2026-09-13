@@ -1,0 +1,31 @@
+{
+ "decisions": {
+  "official-shop-osaka-lottery-stock-2026-09-13": {
+   "action": "article",
+   "angle": "大阪日本橋店の抽選くじ在庫状況を9月13日付で更新、シンデレラガールズ・ミリオンライブ・シャイニーカラーズ・学園アイドルマスター4ブランドのA賞アクリルボードラインナップが判明",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(8/31・9/8付の同店更新)から日付・在庫ラインナップが更新されており新事実あり。店頭在庫のみで通販・予約不可、現地に行ける読者向けの実利情報のため記事化。他面の合同確定リストとは重複なし。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-official-shop-osaka-lottery-stock-2026-09-13",
+    "brand": "general",
+    "rank": "small",
+    "angle": "大阪日本橋店の抽選くじ在庫状況を9月13日付で更新、シンデレラガールズ・ミリオンライブ・シャイニーカラーズ・学園アイドルマスター4ブランドのA賞アクリルボードラインナップが判明",
+    "lead_score": 5,
+    "dedup_key": "official-shop-osaka-lottery-stock-2026-09-13",
+    "candidate_ids": [
+     "202609140234-explore-7"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

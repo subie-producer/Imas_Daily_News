@@ -1,0 +1,40 @@
+{
+ "decisions": {
+  "ami-mami-twin-live-cd-mailorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受付期間(8/28 21:00〜9/13 23:59)・発送(10/2一斉)は既報facts(stories.yml)と同一内容。締切も9/14 06:00より前に終了済みで、本日読者ができることがない。"
+  },
+  "765-961-idol-ultimate-once-and-for-all-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "タイトルは「先行受付」だが全文facts(受付期間9/6〜10/28・価格・出演者・当落発表)は9/4号の既報published_factsと同一。今日は受付開始・締切・当落発表いずれの日でもなく新事実なし。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "ami-mami-twin-live-cd-mailorder-2026",
+    "reason": "既報",
+    "note": "受付期間(8/28 21:00〜9/13 23:59)・発送(10/2一斉)は既報facts(stories.yml)と同一内容。締切も9/14 06:00より前に終了済みで、本日読者ができることがない。"
+   },
+   {
+    "dedup_key": "765-961-idol-ultimate-once-and-for-all-2027",
+    "reason": "既報",
+    "note": "タイトルは「先行受付」だが全文facts(受付期間9/6〜10/28・価格・出演者・当落発表)は9/4号の既報published_factsと同一。今日は受付開始・締切・当落発表いずれの日でもなく新事実なし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,149 @@
+{
+ "decisions": {
+  "cg-cross-over-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「クロス×オーバー！」CD発売決定・事後通販受付終了は2026-09-12号(cinderella-master-number-one-2026)で既報。9/14時点で新事実なし。"
+  },
+  "cg-goods-order-deadline-sep13-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "総選挙グッズ・15周年グッズ事前二次販売(9/13締切)は2026-09-12号で既報。締切も前日に終了済みで9/14に読者ができることがない。"
+  },
+  "cinderella-election-2026-shibuya-exhibition": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "渋谷ちかみち特別展示(9/12〜13)は2026-09-12号(cg-election-2026-special-exhibition)で既報。会期も9/13で終了済み。"
+  },
+  "cg-toppa-base-popup-2026": {
+   "action": "article",
+   "angle": "総選挙投票券シリアルコード配布と札幌・仙台・名古屋・大阪・福岡の会期が本日最終日(秋葉原店は9/16まで継続)",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "シリアルコード配布終了は新事実。地方5店舗の最終日という当日トリガーも読者の行動につながる。"
+  },
+  "cg-popn-toybox-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "facts が8/27公開済みの「エクストラ5」を再掲するのみで、本日更新の内容を裏付ける新事実がない(verify unconfirmed)。"
+  },
+  "cinderella-girl-vote2026-schedule": {
+   "action": "article",
+   "angle": "総選挙2026「公約四字熟語」Sキーホルダー等のミッションチャレンジが本日23:59で受付終了",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "期間自体は既知だが、本日が実際の締切日という当日トリガー。素材は薄いが短い記事として扱う。"
+  },
+  "cg-toybox-novel-serial-2026": {
+   "action": "article",
+   "angle": "舞台『トイボ公演』スペシャルノベル、隔日更新の連載が本日最終回",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "エクストラ6→9→12と続いた連載(verify confirmed)が本日9/14で更新終了という当日トリガー。"
+  },
+  "cinderella-07": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "投票券100枚プレゼント・あいことばキャンペーンは2026-09-12号(cinderella-07)で既報。同一ツイート内容で新事実なし。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-toppa-base-popup-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "総選挙投票券シリアルコード配布と札幌・仙台・名古屋・大阪・福岡の会期が本日最終日(秋葉原店は9/16まで継続)",
+    "lead_score": 15,
+    "dedup_key": "cg-toppa-base-popup-2026",
+    "candidate_ids": [
+     "sched-2026-09-14-cg-toppa-base-popup-2026-締切"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-girl-vote2026-schedule",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "総選挙2026「公約四字熟語」Sキーホルダー等のミッションチャレンジが本日23:59で受付終了",
+    "lead_score": 5,
+    "dedup_key": "cinderella-girl-vote2026-schedule",
+    "candidate_ids": [
+     "sched-2026-09-14-cinderella-girl-vote2026-schedule-締切"
+    ]
+   },
+   {
+    "slug": "cg-toybox-novel-serial-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "舞台『トイボ公演』スペシャルノベル、隔日更新の連載が本日最終回",
+    "lead_score": 8,
+    "dedup_key": "cg-toybox-novel-serial-2026",
+    "candidate_ids": [
+     "sched-2026-09-14-cg-toybox-novel-serial-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-cross-over-cd-2026",
+    "reason": "既報",
+    "note": "「クロス×オーバー！」CD発売決定・事後通販受付終了は2026-09-12号(cinderella-master-number-one-2026)で既報。9/14時点で新事実なし。"
+   },
+   {
+    "dedup_key": "cg-goods-order-deadline-sep13-2026",
+    "reason": "既報",
+    "note": "総選挙グッズ・15周年グッズ事前二次販売(9/13締切)は2026-09-12号で既報。締切も前日に終了済みで9/14に読者ができることがない。"
+   },
+   {
+    "dedup_key": "cinderella-election-2026-shibuya-exhibition",
+    "reason": "既報",
+    "note": "渋谷ちかみち特別展示(9/12〜13)は2026-09-12号(cg-election-2026-special-exhibition)で既報。会期も9/13で終了済み。"
+   },
+   {
+    "dedup_key": "cg-popn-toybox-goods-2026",
+    "reason": "出典不足",
+    "note": "facts が8/27公開済みの「エクストラ5」を再掲するのみで、本日更新の内容を裏付ける新事実がない(verify unconfirmed)。"
+   },
+   {
+    "dedup_key": "cinderella-07",
+    "reason": "既報",
+    "note": "投票券100枚プレゼント・あいことばキャンペーンは2026-09-12号(cinderella-07)で既報。同一ツイート内容で新事実なし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

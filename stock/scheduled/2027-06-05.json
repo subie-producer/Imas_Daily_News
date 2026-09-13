@@ -28,5 +28,36 @@
   "verify": "confirmed",
   "src_candidate_id": "202609122336-watch-1",
   "event_date": "2027-06-05"
+ },
+ {
+  "id": "sched-2027-06-05-sidem-shiny-sparkle-showdown-2027-開幕",
+  "dedup_key": "sidem-shiny-sparkle-showdown-2027",
+  "brand": "joint",
+  "subject": "SideM×SHINY COLORS SPARKLE SHOWDOWN",
+  "kind": "開幕",
+  "note": "横浜アリーナ、DAY1開演",
+  "reserved_on": "2026-09-14",
+  "title": "SideM×シャニマス SPARKLE SHOWDOWN",
+  "url": "https://idolmaster-official.jp/live_event/sidem_shinycolors_ss/information/",
+  "source_type": "公式",
+  "facts": [
+   "公演名: THE IDOLM@STER SideM × SHINY COLORS SPARKLE SHOWDOWN",
+   "公演日時: 2027年6月5日(土) 16:00開場／17:30開演(予定)",
+   "公演日時: 2027年6月6日(日) 16:00開場／17:30開演(予定)",
+   "開催場所: 横浜アリーナ",
+   "315プロダクションと283プロダクションによる対バンライブ",
+   "アソビストアプレミアム会員先行の受付期間: 2026年9月12日(土)21:00～2026年10月12日(月)23:59",
+   "SPプロデューサーシート: 20,000円(税込)",
+   "プロデューサーシート: 14,000円(税込)",
+   "全席指定席: 13,500円(税込)",
+   "SPプロデューサーシートにはエリア指定と限定グッズが付く",
+   "出演者は予告なく変更となる場合があり、それに伴うチケット代・交通費等の払戻しはしない",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609140234-grok-19",
+  "event_date": "2027-06-05",
+  "deadline": "2026-10-12"
  }
 ]

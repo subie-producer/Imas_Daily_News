@@ -1,0 +1,261 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-14-cg-cinderella-girl-vote2026-schedule.md",
+   "issue": "候補ファイルが見つからない。frontmatter で指定された candidate_ids の候補ファイル「sched-2026-09-14-cinderella-girl-vote2026-schedule-締切」が candidates ディレクトリに存在しません。記事の第1段落で根拠 F1 を参照していますが、それを検証できません。",
+   "quote": "candidate_ids:\n- sched-2026-09-14-cinderella-girl-vote2026-schedule-締切",
+   "rule_id": "R1",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "F1"
+   ],
+   "expected": "記事の根拠を candidates の facts で定義するか、候補IDを削除して verified_facts のみで構成する。",
+   "scope": "article:2026-09-14-cg-cinderella-girl-vote2026-schedule.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-dsva-cosmo-birthday-live-2026.md",
+   "rule_id": "R7",
+   "issue": "「公式」バッジの誤用: YouTube 配信チャンネルが個人アイドル(上水流宇宙)のチャンネルであるのに「公式」と表記",
+   "quote": "- label: 上水流宇宙 BIRTHDAY ONLINE LIVE 2026 冒頭無料配信(2026-09-12)\n  url: https://www.youtube.com/watch?v=bh1-3oPDkXY\n  type: 公式",
+   "repair": "drop_source",
+   "fact_ids": [
+    "202609140234-explore-6"
+   ],
+   "expected": "sources の YouTube URL の type を「公式」から「当事者」に修正、または出典から削除して Famitsu(報道)のみを出典とする",
+   "scope": "article:2026-09-14-dsva-cosmo-birthday-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-dsva-online-1on1-13-2026.md",
+   "rule_id": "R8",
+   "issue": "frontmatter のタグに破損テキスト。「上水流宇宙】【レトラ」が1つのタグになっており、「】【」という破損文字が含まれている。",
+   "quote": "tags:\n- ヴイアラ\n- オンライン1on1\n- 灯里愛夏\n- 上水流宇宙】【レトラ",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "tags は「上水流宇宙」と「レトラ」に分割される（各行に1タグ）",
+   "scope": "article:2026-09-14-dsva-online-1on1-13-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-shiny-kutsurogi-climax-girls-2026.md",
+   "rule_id": "R1",
+   "issue": "出典にない具体的事実。記事本文に記載されているアイドル名（小宮果穂、園田智代子、西城樹里、杜野凛世、有栖川夏葉）が、sources の X 投稿本文に記載されていない。候補ファイル shiny.md セクション6では『放課後クライマックスガールズの皆さん』という抽象的表現のみで、具体的なアイドル名の列挙がない。frontmatter に verified_facts がないため、執筆者が一次情報で確認していない。",
+   "quote": "放課後クライマックスガールズの小宮果穂、園田智代子、西城樹里、杜野凛世、有栖川夏葉が登場するイベント。",
+   "fact_ids": [],
+   "repair": "drop_claim",
+   "expected": "記事本文は『放課後クライマックスガールズの物語を描いたシナリオイベント』という出典に基づいた記述のみに修正するか、アイドル名を記載する場合は出典で確認できる情報源（ゲーム内ポータルニュースなど）を追加して verified_facts に記載すること",
+   "scope": "article:2026-09-14-shiny-kutsurogi-climax-girls-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-shiny-mikoto-birthday-2026.md",
+   "issue": "記事で指定された候補 ID が候補ファイルに存在しない。frontmatter の candidate_ids に 'sched-2026-09-14-shiny-mikoto-birthday-2026-終了' が指定されているが、candidates/2026-09-14.json に該当候補がない。そのため記事の根拠となる facts が確認できない",
+   "quote": "candidate_ids:\n- sched-2026-09-14-shiny-mikoto-birthday-2026-終了",
+   "rule_id": "R1",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1",
+    "F2"
+   ],
+   "expected": "記事の candidate_ids を candidates/2026-09-14.json に存在する候補 ID に修正するか、sources の X ポストから直接取得した facts を明記する",
+   "scope": "article:2026-09-14-shiny-mikoto-birthday-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-sidem-11th-live-bluray-2027.md",
+   "rule_id": "R1",
+   "issue": "記事に書かれた「2026年9月12、13日にTOYOTA ARENA TOKYOで開催された公演」という具体的な日付が、sources に記載されている公式ページから直接導けない。candidates の grok-18（公式出典）では、開催日の年月日がHTMLから抽出されず unbacked_facts に分類されている。つまり、公式ページのHTMLには開催日が直接記載されていない、と収集が判定している。記事の根拠 F3 は unbacked_facts に含まれており、出典から導けない事実である。",
+   "quote": "2026年9月12、13日にTOYOTA ARENA TOKYOで開催された公演を映像化。",
+   "fact_ids": [
+    "F3"
+   ],
+   "repair": "add_source",
+   "expected": "開催日（2026年9月12日・13日）が sources に記載されている公式ページに実際に記載されているか確認し、記載されていない場合は出典を追加するか、または開催日の記述を削除する。",
+   "scope": "article:2026-09-14-sidem-11th-live-bluray-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-sidem-11th-live-bluray-2027.md",
+   "rule_id": "R8",
+   "issue": "sources の2番目のラベルに文字化けがある。「2026-09-ย」でタイ語の「ย」（U+0E22）が混入しており、正しい日付表記ではない。正しくは「2026-09-13」などの日付であるべき。",
+   "quote": "- label: THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～ LIVE Blu-ray店舗特典が決定！ (2026-09-ย",
+   "fact_ids": [],
+   "repair": "rewrite_claim",
+   "expected": "sources[1].label の日付部分を正しい日付「2026-09-13」に修正する。",
+   "scope": "article:2026-09-14-sidem-11th-live-bluray-2027.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-14-cg-cinderella-girl-vote2026-schedule.md",
+   "issue": "記事は当日終了(9月14日23:59)を主題とする短報で、既報の content を繰り返していますが、当日トリガーの該当により許容されます。ただし、タイトル・本文の「本日中に済ませたい」は微妙なニュアンスです。紙面が読者に届く06:00と23:59の間に約17時間あり、読者には実行時間がありますが、念のため確認してください。",
+   "scope": "article:2026-09-14-cg-cinderella-girl-vote2026-schedule.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-cg-toppa-base-popup-2026.md",
+   "issue": "分量不足: rank=small に対して本文が約240字程度で、下限の250字に達していない。記事内容は公式出典から適切に導出でき、新事実（シリアルコード配布）と当日トリガー（会期最終日通知）を含むため、ニュース性は確保している。出典に記載されている営業時間や店舗所在地など詳細情報の補足を検討してください。",
+   "scope": "article:2026-09-14-cg-toppa-base-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-dsva-cosmo-birthday-live-2026.md",
+   "issue": "記事分量: rank:large(700字以上)に対して、本文が約500字と短い。セットリスト以外の演出内容(DJライブドローイングの具体的な曲名、灯里愛夏・レトラとのコラボ曲など)を拾い足すと分量が埋まる可能性あり",
+   "scope": "article:2026-09-14-dsva-cosmo-birthday-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-dsva-online-1on1-13-2026.md",
+   "issue": "分量不足。rank: small の下限は250字だが、本文は約75字。候補の情報から「抽選申込受付期限: 9月15日23:59」や開催日時・価格などを追加すれば改善できる。",
+   "scope": "article:2026-09-14-dsva-online-1on1-13-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-gaku-sevenprint-bromide-202609.md",
+   "issue": "分量不足：本文約215字で rank:small の下限250字に未達。候補に「画像はイメージで、実物は画像と異なる場合がある」の注記があるため、追加して分量を埋めることが可能",
+   "scope": "article:2026-09-14-gaku-sevenprint-bromide-202609.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-general-official-shop-osaka-lottery-stock-2026-09-13.md",
+   "issue": "tags に記事で詳しく扱われている「シャイニーカラーズ」が記載されていない。本文では「シンデレラガールズ、ミリオンライブ、シャイニーカラーズ、学園アイドルマスター」の4ブランドが同等の分量で記述されているのに、tags には「くじ、シンデレラガールズ、ミリオンライブ、学マス」のみ。シャイニーカラーズの記述は段落3全体で約130字を占める",
+   "scope": "article:2026-09-14-general-official-shop-osaka-lottery-stock-2026-09-13.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-joint-sidem-shiny-sparkle-showdown-2027.md",
+   "issue": "rank: small の分量基準（250字）に対して本文が204字。46字不足しています。既報の『アソビストアプレミアム会員先行の受付期間: 2026年9月12日(土)21:00～2026年10月12日(月)23:59』を補足として追加するか、座席種の詳細説明（どのシートがどのファンに推奨されるか、など）を補足することで250字到達が可能です。",
+   "scope": "article:2026-09-14-joint-sidem-shiny-sparkle-showdown-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-million-amimi-special-video-2026.md",
+   "issue": "分量不足：rank: small に対して、本文が約30字で著しく短い（小サイズの最低基準は約250字）。候補の facts に「ミリシタ公式HPとして https://millionlive-theaterdays.idolmaster-official.jp/」「ミリシタ公式Xとして https://x.com/imasml_theater」など複数の公式サイトが記載されており、動画の詳細情報（対応デバイス、再生時間、シリーズ内容など）を sources に追加すれば分量を増やせます。ただしルール規程9では分量不足は落とし理由にはならないと明記されています。",
+   "scope": "article:2026-09-14-million-amimi-special-video-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-million-miricore-2026-09.md",
+   "issue": "sources に公式X が入っているが、candidates に記録がなく、本文のメモ（<!-- F1 F3 -->）で根拠がない。frontmatter に verified_facts がないため、執筆者が公式X を確認していないにもかかわらず sources に列挙されている。二次情報ベース(src: 二次情報)の記事で sources に未確認の一次情報を入れるのは、読者に誤解を招く可能性がある。sources から公式X を外すか、または verified_facts を追加して一次情報確認を記録するべき",
+   "scope": "article:2026-09-14-million-miricore-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-million-mirishita-kaori-special-video-2026.md",
+   "issue": "分量不足：rank: small の下限 250 字に対して本文が 44 字。出典の YouTube ページに動画の対象アプリ『アイドルマスター ミリオンライブ！ シアターデイズ』や その他詳細情報が記載されているはずなので、それを補足して分量を増やすことが可能",
+   "scope": "article:2026-09-14-million-mirishita-kaori-special-video-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-million-shizuka-the-animation-figure-2026.md",
+   "issue": "分量不足: 記事本文が77字で、rank:small の下限250字に満たない。出典に記載されている衣装（スターティング・ブルーム、白ジャケット、赤スカート）、台座の種類（通常台座・背景シート付台座）、デコマス展示（コトブキヤ秋葉原館・9月3日より）、シリーズ情報（第2弾・伊吹翼、第3弾・春日未来）などの詳細を加えれば充足できるはず。ただし、本日予約開始という当日トリガー記事であり、短いままでも新聞速報として成立する場合もある。",
+   "scope": "article:2026-09-14-million-shizuka-the-animation-figure-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-shiny-kutsurogi-climax-girls-2026.md",
+   "issue": "分量不足。rank=small で最小250字が必要だが、本文は約35字のみ。候補ファイルには『開催期間：2026年9月16日～2026年9月29日 11:59』の終了日情報があるが、記事に記載されていない。本体の記述では『皆さんの物語を描いたシナリオイベント』という説明もあり、これらを活用すれば分量要件を満たせる。",
+   "scope": "article:2026-09-14-shiny-kutsurogi-climax-girls-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-shiny-mattari-hbtk-reading-cut-2026-09-12.md",
+   "issue": "分量不足: rank small(250字以上)に対して本文が143字(見出し+lede+本文)。出典のX投稿に詳細情報(朗読内容の具体的描写、配信プラットフォーム、複数の切り抜き動画の情報など)があれば追加することで改善可能。",
+   "scope": "article:2026-09-14-shiny-mattari-hbtk-reading-cut-2026-09-12.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-shiny-mikoto-birthday-2026.md",
+   "issue": "rank: small の分量確認。本文が2段落・計52字。small 記事の下限（250字）に大幅に不足。lede + 本文あわせても93字。出典にある内容（ガシャの詳細情報・報酬内容など）を拾えば埋まるはず。ただし根拠の候補が存在しないため、sources の X ポストを確認してから分量補強が必要",
+   "scope": "article:2026-09-14-shiny-mikoto-birthday-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-shiny-parallel-collection-popup-2026.md",
+   "issue": "分量不足：rank: small で約50字。小記事の下限は250字。出典（公式ページ）から会場情報・商品販売方法・通販受付期間など詳細を拾えば充実させられます。",
+   "scope": "article:2026-09-14-shiny-parallel-collection-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-sidem-11th-goods-2026-09.md",
+   "issue": "分量不足: small ランク下限 250字に対して 226字（24字不足）。候補の商品詳細情報（価格、商品名、セット販売など）を記事に追加すれば埋まる可能性がある。",
+   "scope": "article:2026-09-14-sidem-11th-goods-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-sidem-11th-stage-day1-setlist-2026.md",
+   "issue": "lede で「プレイリスト」に言及しているが、本文に詳細が記載されていない。sources の label では「セットリスト」が主体であり、プレイリスト（配信プラットフォームの再生リスト等）の詳細が sources に明示されていない場合、lede の表現が過度に広い可能性がある。sources で「プレイリスト」URL が確認できれば問題なし。",
+   "scope": "article:2026-09-14-sidem-11th-stage-day1-setlist-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-sidem-cardfolio-pasha-challenge-2026.md",
+   "issue": "sources の label に不完全なテキスト '(日付' が残っている。正しいニュースタイトルは括弧で閉じるべき。公式ページで確認して修正してください。",
+   "scope": "article:2026-09-14-sidem-cardfolio-pasha-challenge-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-sidem-home-console-game-2026.md",
+   "issue": "分量不足: lead 記事として本文が 150 字程度で、目安の 1000 字に対して大幅に不足。sources（X のポスト）が限定的な情報のみを含む場合、追加情報の取得を検討してください。",
+   "scope": "article:2026-09-14-sidem-home-console-game-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-14-sidem-suntory-oolong-2026.md",
+   "issue": "分量不足：約80字で、rank: small の目標250字を大きく下回る。sources のニュースには会場での先行販売や他の販売場所（アニメイト）の情報が記載されている可能性が高いが、記事に反映されていない。『ラベルはステッカーとしても利用可』といった読者向けの使用方法についても sources から拾えるはず。既報との差別化のため、TRANSCENDENT T@LES シリーズ以外の新情報を加えて分量を増やす検討が必要",
+   "scope": "article:2026-09-14-sidem-suntory-oolong-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "候補に『new generations×UNICUS「クロス×オーバー！」CD化』（CGブランド、発売2026-09-30、アソビストア予約締切2026-09-14 23:59）が掲載相当の話題として記載されているが、紙面に記事化されていない。本数制限による落とされの可能性。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "候補に『双海亜美・真美 twin live会場CDの事後通販』など複数のCD事後通販情報（765production dual twin live tour、IDOL WORLD SUPER FESTIVALなど全12種、期限2026-09-13 23:59）が掲載相当の話題として記載されているが、記事化されていない。複合CD通販サービスとしてのニュースが漏れている可能性。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-14-cg-cinderella-girl-vote2026-schedule.md",
+  "article:2026-09-14-cg-toppa-base-popup-2026.md",
+  "article:2026-09-14-cg-toybox-novel-serial-2026.md",
+  "article:2026-09-14-dsva-cosmo-birthday-live-2026.md",
+  "article:2026-09-14-dsva-online-1on1-13-2026.md",
+  "article:2026-09-14-dsva-valiv-cosmo-birthday-goods-2026.md",
+  "article:2026-09-14-gaku-sevenprint-bromide-202609.md",
+  "article:2026-09-14-general-official-shop-osaka-lottery-stock-2026-09-13.md",
+  "article:2026-09-14-joint-sidem-shiny-sparkle-showdown-2027.md",
+  "article:2026-09-14-million-14th-streaming-2026.md",
+  "article:2026-09-14-million-amimi-special-video-2026.md",
+  "article:2026-09-14-million-miricore-2026-09.md",
+  "article:2026-09-14-million-mirishita-kaori-special-video-2026.md",
+  "article:2026-09-14-million-shizuka-the-animation-figure-2026.md",
+  "article:2026-09-14-shiny-kutsurogi-climax-girls-2026.md",
+  "article:2026-09-14-shiny-mattari-hbtk-reading-cut-2026-09-12.md",
+  "article:2026-09-14-shiny-mikoto-birthday-2026.md",
+  "article:2026-09-14-shiny-msp-goods-2026.md",
+  "article:2026-09-14-shiny-parallel-collection-popup-2026.md",
+  "article:2026-09-14-sidem-11th-goods-2026-09.md",
+  "article:2026-09-14-sidem-11th-live-bluray-2027.md",
+  "article:2026-09-14-sidem-11th-stage-day1-setlist-2026.md",
+  "article:2026-09-14-sidem-315nya-shop-2026.md",
+  "article:2026-09-14-sidem-cardfolio-pasha-challenge-2026.md",
+  "article:2026-09-14-sidem-fbfes-movie-2026-11-20.md",
+  "article:2026-09-14-sidem-home-console-game-2026.md",
+  "article:2026-09-14-sidem-m-fes-2026-theme-cd.md",
+  "article:2026-09-14-sidem-producer-meeting-ajewelholic-2027.md",
+  "article:2026-09-14-sidem-suntory-oolong-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-14-cg-cinderella-girl-vote2026-schedule.md": "1efa4880a4c74750f18e95b5d1d45ae4986e0aa3b66f8b56cb5f14a9b61ceaf5",
+  "docs/_posts/2026-09-14-cg-toppa-base-popup-2026.md": "59ad5905bb4d27042fba2a18de68713fc4fd5215e769ce6b5f2f072c08905ea6",
+  "docs/_posts/2026-09-14-cg-toybox-novel-serial-2026.md": "2bf114218c0e433aaa7afdd6bdbd3413d0044490d981d5f93732f8b4ec896b57",
+  "docs/_posts/2026-09-14-dsva-cosmo-birthday-live-2026.md": "67d288328ab3a594bab0c6b8993adea99724c20d672b3515101168e3c9ee399b",
+  "docs/_posts/2026-09-14-dsva-online-1on1-13-2026.md": "37089beb1d0eb9a48387b0e471092d7055b5d8f9bdd4535aaab26df68832cb56",
+  "docs/_posts/2026-09-14-dsva-valiv-cosmo-birthday-goods-2026.md": "f4ef442913ef0411c83518630202ebfecbe06275287de38d3c68b50dc5abdec9",
+  "docs/_posts/2026-09-14-gaku-sevenprint-bromide-202609.md": "2707ab4bf5e073d18871796a3aa685d4fbc70f61709402a5b39dc9f7d03445bb",
+  "docs/_posts/2026-09-14-general-official-shop-osaka-lottery-stock-2026-09-13.md": "af167e317e585264029b125677df593ee6acf1653c7e83a9c21d821559d8436a",
+  "docs/_posts/2026-09-14-joint-sidem-shiny-sparkle-showdown-2027.md": "d57f5701913f746d1ebdcc978e901c67a925498f46274c642c567f0801e228a0",
+  "docs/_posts/2026-09-14-million-14th-streaming-2026.md": "d301079ebd0577757c5909d1234d24418c0374061596c5b94c3dee542563775d",
+  "docs/_posts/2026-09-14-million-amimi-special-video-2026.md": "f2d034c37a6c80d45e61260b61900b6a4bc1f78028c3660d0e2741fab3e4f433",
+  "docs/_posts/2026-09-14-million-miricore-2026-09.md": "66418eddebad929abe885e636be568a0c2972af42122bf748164ad9cb71752f6",
+  "docs/_posts/2026-09-14-million-mirishita-kaori-special-video-2026.md": "fe2d675da3d68001782e2b9ccd04d850f27625fa7430717e10808df6ae9063ce",
+  "docs/_posts/2026-09-14-million-shizuka-the-animation-figure-2026.md": "b60870de32916ce195e8375e63dfbef27d3ea2ec372255e6b97ac2f79ec25f63",
+  "docs/_posts/2026-09-14-shiny-kutsurogi-climax-girls-2026.md": "3edfc3ef9d7275238a1f0d946c7d6b402dea4e743c1a2bcc02b13364542599b6",
+  "docs/_posts/2026-09-14-shiny-mattari-hbtk-reading-cut-2026-09-12.md": "c16b4739e90e20b15669e409b93f87619937bac67f0f78e171a11d37c3680359",
+  "docs/_posts/2026-09-14-shiny-mikoto-birthday-2026.md": "92b00118e565645a281d22627067fe29ca17b92c2ddba8b55fd4bab41d0f541f",
+  "docs/_posts/2026-09-14-shiny-msp-goods-2026.md": "87e40112ad81281c19f28d3635c867fdb2c437a6d95e77709676c71c22bf1f32",
+  "docs/_posts/2026-09-14-shiny-parallel-collection-popup-2026.md": "2fd6c5c0def8f50ae178fc2dfd81db931e69e7f9a4242da7a76634156e5c9f3a",
+  "docs/_posts/2026-09-14-sidem-11th-goods-2026-09.md": "2838d3b37426b46cdba4bad46cfa0d756376ad33205384288f9c2fcc3e6ce8d1",
+  "docs/_posts/2026-09-14-sidem-11th-live-bluray-2027.md": "a092598a2b38d55438fcd5076c00c9058b8e92aa9c6f367518145c254b604e87",
+  "docs/_posts/2026-09-14-sidem-11th-stage-day1-setlist-2026.md": "4671d1a7c090672868d4efbdb623931a1096c4115c6204fbff7346dcf036ab8a",
+  "docs/_posts/2026-09-14-sidem-315nya-shop-2026.md": "c16c4cd5f7b64aa3b07a39295428bba1e12bf9c469618a1dae6f52adf24a3986",
+  "docs/_posts/2026-09-14-sidem-cardfolio-pasha-challenge-2026.md": "995920ad4914dc95b761938226a24bddd6f56c52409e30dfa303780e3e2b9ab1",
+  "docs/_posts/2026-09-14-sidem-fbfes-movie-2026-11-20.md": "b53884b1b99871e330d2fc036897a8d39067236afe3b18d71831b6bd44add455",
+  "docs/_posts/2026-09-14-sidem-home-console-game-2026.md": "eb120e7d8e88aa53b951cd00c9f1910ac4dc844870d42cbd25a84e3f4841c887",
+  "docs/_posts/2026-09-14-sidem-m-fes-2026-theme-cd.md": "a85f4c8eb5718ec506ebd451d02e74aa5dc727bacd9559fca17918f65a4943f9",
+  "docs/_posts/2026-09-14-sidem-producer-meeting-ajewelholic-2027.md": "e894b67d6618ef8f38f2fdb04fe7e72b85e2df16f02c94428fbcbfe1613b75ec",
+  "docs/_posts/2026-09-14-sidem-suntory-oolong-2026.md": "df82b24e13067351719e58f864a8b76f15150002024215f31025f451ee9ee965",
+  "docs/_editions/2026-09-14.md": "724fd87fe2649df6ed24266fe2574a00dd45530787373274043b2965a326ea43",
+  "metrics/stories-before-2026-09-14.yml": "8aa13c438ed6df0dbbb7237cf1b6190773f4fda5440547cb38a344f793d60e3f"
+ }
+}

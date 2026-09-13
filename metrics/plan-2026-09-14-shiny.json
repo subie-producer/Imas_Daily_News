@@ -1,0 +1,176 @@
+{
+ "decisions": {
+  "shiny-msp-goods-2026": {
+   "action": "article",
+   "angle": "ソロライブMSP京王アリーナ公演の会場物販詳細(抽選整理券・購入制限・一部商品の販売中止)を告知",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/11付GOODS更新。8件の具体的運用ルールがあり medium 相当"
+  },
+  "shiny-twilight-p-ssr-select-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "期間9/11-9/13 23:59で発行06:00より前に終了済み。stories.ymlのshiny-towa-collection-stepup-72h-2026と同内容で新事実なし"
+  },
+  "shiny-style-collection-gingham-retro-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "shiny-style-collection-vol1-2026(既報9/11)にテーマ名・受注締切9/27とも含まれ新事実なし。キャッチコピーのみで規程2の水増しに該当"
+  },
+  "mattari-hbtk-reading-cut-2026-09-12": {
+   "action": "article",
+   "angle": "シャニラジ「まったりHBTK」朗読コーナーの切り抜き動画を公開",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営ネタだがroundup候補がこの1件のみで3件未満のため単独small扱い(規程13)"
+  },
+  "shiny-style-collection-dolce-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "shiny-style-collection-vol1-2026(既報9/11)にDolce Styleテーマ・受注締切9/27とも含まれ新事実なし"
+  },
+  "shiny-style-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/10発表の第1弾受注情報はshiny-style-collection-vol1-2026として9/11に既報。ラインナップ・発送時期とも同内容"
+  },
+  "shiny-kutsurogi-climax-girls-2026": {
+   "action": "article",
+   "angle": "シナリオイベント「くつろぎクライマックスガールズ」が9/16から復刻開催決定",
+   "rank": "small",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/13付公式発表の新規開催決定。この面で最も規模の大きい新報"
+  },
+  "shiny-parallel-collection-popup-2026": {
+   "action": "article",
+   "angle": "「パラレル回廊」事前予約抽選、本日12時頃に当落発表",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(結果発表)の当日トリガーとして正当。既報story shiny-parallel-collection-popup-2026の結果回収"
+  },
+  "shiny-mikoto-birthday-2026": {
+   "action": "article",
+   "angle": "緋田美琴誕生日記念、Song for Prismの記念ガシャが本日23:59で終了",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了時刻23:59は発行06:00より後で読者はまだ間に合う。既報story shiny-mikoto-birthday-2026の締切当日トリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-msp-goods-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "ソロライブMSP京王アリーナ公演の会場物販詳細(抽選整理券・購入制限・一部商品の販売中止)を告知",
+    "lead_score": 25,
+    "dedup_key": "shiny-msp-goods-2026",
+    "candidate_ids": [
+     "202609130733-explore-6"
+    ]
+   },
+   {
+    "slug": "shiny-mattari-hbtk-reading-cut-2026-09-12",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニラジ「まったりHBTK」朗読コーナーの切り抜き動画を公開",
+    "lead_score": 5,
+    "dedup_key": "mattari-hbtk-reading-cut-2026-09-12",
+    "candidate_ids": [
+     "202609132336-explore-10"
+    ]
+   },
+   {
+    "slug": "shiny-kutsurogi-climax-girls-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シナリオイベント「くつろぎクライマックスガールズ」が9/16から復刻開催決定",
+    "lead_score": 55,
+    "dedup_key": "shiny-kutsurogi-climax-girls-2026",
+    "candidate_ids": [
+     "202609140234-grok-21"
+    ]
+   },
+   {
+    "slug": "shiny-parallel-collection-popup-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「パラレル回廊」事前予約抽選、本日12時頃に当落発表",
+    "lead_score": 15,
+    "dedup_key": "shiny-parallel-collection-popup-2026",
+    "candidate_ids": [
+     "sched-2026-09-14-shiny-parallel-collection-popup-2026-結果"
+    ]
+   },
+   {
+    "slug": "shiny-mikoto-birthday-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "緋田美琴誕生日記念、Song for Prismの記念ガシャが本日23:59で終了",
+    "lead_score": 20,
+    "dedup_key": "shiny-mikoto-birthday-2026",
+    "candidate_ids": [
+     "sched-2026-09-14-shiny-mikoto-birthday-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-twilight-p-ssr-select-2026-09",
+    "reason": "既報",
+    "note": "期間9/11-9/13 23:59で発行06:00より前に終了済み。stories.ymlのshiny-towa-collection-stepup-72h-2026と同内容で新事実なし"
+   },
+   {
+    "dedup_key": "shiny-style-collection-gingham-retro-2026",
+    "reason": "既報",
+    "note": "shiny-style-collection-vol1-2026(既報9/11)にテーマ名・受注締切9/27とも含まれ新事実なし。キャッチコピーのみで規程2の水増しに該当"
+   },
+   {
+    "dedup_key": "shiny-style-collection-dolce-2026",
+    "reason": "既報",
+    "note": "shiny-style-collection-vol1-2026(既報9/11)にDolce Styleテーマ・受注締切9/27とも含まれ新事実なし"
+   },
+   {
+    "dedup_key": "shiny-style-collection-2026",
+    "reason": "既報",
+    "note": "9/10発表の第1弾受注情報はshiny-style-collection-vol1-2026として9/11に既報。ラインナップ・発送時期とも同内容"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -155,7 +155,7 @@
   brand: million
   subject: ミリシタ マスターランク5記念ピックアップガシャ2種
   watch: 開催期間(投稿・アプリ内告知に期間の記載なし、判明次第 triggers へ)
-- dedup_key: sidem-mfes-2026-winter-wonderland
+- dedup_key: sidem-home-console-game-2026
   brand: sidem
-  subject: SideM「Mフェス 2026 in Winter Wonderland」開催決定
-  watch: 具体的な開催日程・全12企業施策の詳細(判明次第 triggers へ)
+  subject: SideM初の家庭用ゲームプロジェクト
+  watch: 正式タイトル・発売時期などの詳細(判明次第 triggers へ)

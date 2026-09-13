@@ -1,0 +1,431 @@
+{
+ "decisions": {
+  "sidem-11th-stage-day1-cast-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day1-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1出演者リストは同一公演のDAY1セットリスト記事に統合"
+  },
+  "sidem-11th-stage-solo-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "会場物販CDの品番・価格・日時はstock story(sidem-11th-stage-2026)のpublished_factsと一致、新事実無し"
+  },
+  "sidem-in-joypolis-3-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "開催概要・出演ユニット・上映時間はstory sidem-joypolis3-2026と一致、9/14時点で新規事実無し"
+  },
+  "sidem-315pronight-mfest-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-m-fes-2026-theme-cd",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Mフェス2026テーマソング発売告知に付随する公開録音イベント。同一告知として統合"
+  },
+  "sidem-11th-stage-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "機材席開放・当日券は9/12-13公演当日限定の案内。公演は終了済みで9/14に読者ができることが無い"
+  },
+  "sidem-315shop-cat-butler-tshirt-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315nya-shop-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "315にゃお店屋さんテーマTシャツ先行受注の重複収集(sidem-315nya-shop-tshirt-2026と同一商品)"
+  },
+  "sidem-teddys-collection-ii-shinjuku-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "新宿会場は9/13開催終了済み(story既報)、通販期間も既出。9/14の新規トリガー無し"
+  },
+  "sidem-11th-stage-ever-ever-after-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公演日時・会場・チケット券種価格はstory sidem-11th-stage-2026のpublished_factsと一致"
+  },
+  "sidem-cardfolio-pasha-challenge-2026": {
+   "action": "article",
+   "angle": "カードフォリオSideM ver.vol.2購入者向け抽選キャンペーン、Fan Fun Spotアプリのシリアルコードで参加",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "進行中の単発キャンペーン。roundup対象は他に無く3件未満のためsmall記事とする"
+  },
+  "sidem11th-backstage-talk-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「ばくすて！とーく」の実施・出演者はstory既報。DAY1/DAY2とも公演終了済み"
+  },
+  "sidem-11th-stage-day2-2026-09-13": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day1-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2セットリスト・アーカイブ日程はDAY1セットリスト記事に統合。グッズ受注はsidem-11th-goods-2026-09で別記事化"
+  },
+  "sidem-11th-goods-2026-09": {
+   "action": "article",
+   "angle": "11th STAGE開催記念グッズ、ASOBI STOREで受注受付開始(9/13〜10/11)",
+   "rank": "medium",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-fbfes-movie-2026-11-20": {
+   "action": "article",
+   "angle": "劇場版SideM F@NTASTIC BATTLE FES ～Who goes first～ 11/20公開決定、通常・応援上映を実施",
+   "rank": "large",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "sidem-fantastic-battle-fes-movie-2026と同一告知の別収集を統合済み"
+  },
+  "sidem-switch2-game-project": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-home-console-game-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の家庭用ゲームプロジェクト始動告知(二次情報)。公式発表(sidem-home-console-game-2026)に統合"
+  },
+  "sidem-315nya-shop-tshirt-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315nya-shop-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一Tシャツ先行受注情報の重複収集"
+  },
+  "sidem-315nya-shop-2026": {
+   "action": "article",
+   "angle": "315!!!SHOP5周年テーマ「いらっしゃいませ！315にゃお店屋さん」猫耳執事衣装グッズ展開、フルグラフィックTシャツ先行受注",
+   "rank": "medium",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "sidem-315shop-cat-butler-tshirt-2026・sidem-315nya-shop-tshirt-2026を統合"
+  },
+  "sidem-11th-stage-day1-setlist-2026": {
+   "action": "article",
+   "angle": "SideM 11th STAGE DAY1・DAY2セットリスト公開、正式版アーカイブは本日18時から視聴可能",
+   "rank": "large",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1出演者・DAY2セットリスト・DAY2告知(sidem-11th-stage-day2-2026-09-13等)を統合"
+  },
+  "sidem-11th-stage-day2-setlist-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day1-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2セットリストをDAY1と合わせて1記事に統合"
+  },
+  "sidem-11th-live-bluray-store-benefits-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-live-bluray-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一Blu-ray商品のアニメイト店舗特典情報。発売決定記事に統合"
+  },
+  "sidem-home-console-game-2026": {
+   "action": "article",
+   "angle": "SideMシリーズ初の家庭用ゲームプロジェクト始動、Nintendo Switch2/Switch向けに特報公開",
+   "rank": "medium",
+   "lead_score": 90,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "sidem-switch2-game-project(二次情報の重複)を統合。公式アカウント発表が一次情報"
+  },
+  "sidem-fantastic-battle-fes-movie-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026-11-20",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇場版公開決定の同一告知の別収集。統合"
+  },
+  "sidem-11th-live-bluray-2027": {
+   "action": "article",
+   "angle": "SideM 11th STAGE LIVE Blu-ray 2027年7月14日発売決定、アニメイト購入特典も判明",
+   "rank": "large",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "sidem-11th-live-bluray-store-benefits-2026を統合"
+  },
+  "sidem-producer-meeting-ajewelholic-2027": {
+   "action": "article",
+   "angle": "SideM PRODUCER MEETING ～AJewelholIc!!!～ 2027年3月開催決定、アソビストアプレミアム会員先行受付開始",
+   "rank": "medium",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-m-fes-2026-theme-cd": {
+   "action": "article",
+   "angle": "Mフェス2026 in Winter Wonderland開催決定、テーマソングCD発売と315プロNight!出張版公開録音も",
+   "rank": "large",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "sidem-315pronight-mfest-2026(公開録音イベント)を統合"
+  },
+  "sidem-suntory-oolong-2026": {
+   "action": "article",
+   "angle": "SideM×サントリー ウーロン茶自販機、本日全国約400台で発売開始",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-transcendent-tales-lyricist-guide-4-2026": {
+   "action": "article",
+   "angle": "TRANSCENDENT T@LES楽曲ガイド最終回、舞台劇シーン試し読み動画は本日10時にアーカイブ終了",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-cardfolio-pasha-challenge-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "カードフォリオSideM ver.vol.2購入者向け抽選キャンペーン、Fan Fun Spotアプリのシリアルコードで参加",
+    "lead_score": 5,
+    "dedup_key": "sidem-cardfolio-pasha-challenge-2026",
+    "candidate_ids": [
+     "202609131235-explore-11"
+    ]
+   },
+   {
+    "slug": "sidem-11th-goods-2026-09",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "11th STAGE開催記念グッズ、ASOBI STOREで受注受付開始(9/13〜10/11)",
+    "lead_score": 10,
+    "dedup_key": "sidem-11th-goods-2026-09",
+    "candidate_ids": [
+     "202609132336-watch-1"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-movie-2026-11-20",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "劇場版SideM F@NTASTIC BATTLE FES ～Who goes first～ 11/20公開決定、通常・応援上映を実施",
+    "lead_score": 25,
+    "dedup_key": "sidem-fbfes-movie-2026-11-20",
+    "candidate_ids": [
+     "202609132336-watch-2",
+     "202609140234-grok-17"
+    ]
+   },
+   {
+    "slug": "sidem-315nya-shop-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "315!!!SHOP5周年テーマ「いらっしゃいませ！315にゃお店屋さん」猫耳執事衣装グッズ展開、フルグラフィックTシャツ先行受注",
+    "lead_score": 8,
+    "dedup_key": "sidem-315nya-shop-2026",
+    "candidate_ids": [
+     "202609132336-explore-28",
+     "202609131235-explore-6",
+     "202609132336-explore-12"
+    ]
+   },
+   {
+    "slug": "sidem-11th-stage-day1-setlist-2026",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "SideM 11th STAGE DAY1・DAY2セットリスト公開、正式版アーカイブは本日18時から視聴可能",
+    "lead_score": 20,
+    "dedup_key": "sidem-11th-stage-day1-setlist-2026",
+    "candidate_ids": [
+     "202609140234-explore-2",
+     "202609130733-explore-7",
+     "202609132336-watch-0",
+     "202609140234-explore-3"
+    ]
+   },
+   {
+    "slug": "sidem-home-console-game-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideMシリーズ初の家庭用ゲームプロジェクト始動、Nintendo Switch2/Switch向けに特報公開",
+    "lead_score": 90,
+    "dedup_key": "sidem-home-console-game-2026",
+    "candidate_ids": [
+     "202609140234-grok-16",
+     "202609132336-watch-3"
+    ]
+   },
+   {
+    "slug": "sidem-11th-live-bluray-2027",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "SideM 11th STAGE LIVE Blu-ray 2027年7月14日発売決定、アニメイト購入特典も判明",
+    "lead_score": 15,
+    "dedup_key": "sidem-11th-live-bluray-2027",
+    "candidate_ids": [
+     "202609140234-grok-18",
+     "202609140234-explore-9"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-2027",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM PRODUCER MEETING ～AJewelholIc!!!～ 2027年3月開催決定、アソビストアプレミアム会員先行受付開始",
+    "lead_score": 10,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027",
+    "candidate_ids": [
+     "202609140234-grok-23"
+    ]
+   },
+   {
+    "slug": "sidem-m-fes-2026-theme-cd",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "Mフェス2026 in Winter Wonderland開催決定、テーマソングCD発売と315プロNight!出張版公開録音も",
+    "lead_score": 15,
+    "dedup_key": "sidem-m-fes-2026-theme-cd",
+    "candidate_ids": [
+     "202609140234-grok-24",
+     "202609130733-explore-11"
+    ]
+   },
+   {
+    "slug": "sidem-suntory-oolong-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×サントリー ウーロン茶自販機、本日全国約400台で発売開始",
+    "lead_score": 10,
+    "dedup_key": "sidem-suntory-oolong-2026",
+    "candidate_ids": [
+     "sched-2026-09-14-sidem-suntory-oolong-2026-発売"
+    ]
+   },
+   {
+    "slug": "sidem-transcendent-tales-lyricist-guide-4-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "TRANSCENDENT T@LES楽曲ガイド最終回、舞台劇シーン試し読み動画は本日10時にアーカイブ終了",
+    "lead_score": 0,
+    "dedup_key": "sidem-transcendent-tales-lyricist-guide-4-2026",
+    "candidate_ids": [
+     "sched-2026-09-14-sidem-transcendent-tales-lyricist-guide-4-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-11th-stage-solo-collection-2026",
+    "reason": "既報",
+    "note": "会場物販CDの品番・価格・日時はstock story(sidem-11th-stage-2026)のpublished_factsと一致、新事実無し"
+   },
+   {
+    "dedup_key": "sidem-in-joypolis-3-2026",
+    "reason": "既報",
+    "note": "開催概要・出演ユニット・上映時間はstory sidem-joypolis3-2026と一致、9/14時点で新規事実無し"
+   },
+   {
+    "dedup_key": "sidem-11th-stage-2026",
+    "reason": "その他",
+    "note": "機材席開放・当日券は9/12-13公演当日限定の案内。公演は終了済みで9/14に読者ができることが無い"
+   },
+   {
+    "dedup_key": "sidem-teddys-collection-ii-shinjuku-2026",
+    "reason": "既報",
+    "note": "新宿会場は9/13開催終了済み(story既報)、通販期間も既出。9/14の新規トリガー無し"
+   },
+   {
+    "dedup_key": "sidem-11th-stage-ever-ever-after-2026",
+    "reason": "既報",
+    "note": "公演日時・会場・チケット券種価格はstory sidem-11th-stage-2026のpublished_factsと一致"
+   },
+   {
+    "dedup_key": "sidem11th-backstage-talk-2026",
+    "reason": "既報",
+    "note": "「ばくすて！とーく」の実施・出演者はstory既報。DAY1/DAY2とも公演終了済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

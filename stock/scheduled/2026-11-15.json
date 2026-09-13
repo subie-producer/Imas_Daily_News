@@ -34,5 +34,36 @@
   "verify": "confirmed",
   "src_candidate_id": "202609022336-watch-4",
   "event_date": "2026-11-15"
+ },
+ {
+  "id": "sched-2026-11-15-sidem-cardfolio-pasha-challenge-2026-締切",
+  "dedup_key": "sidem-cardfolio-pasha-challenge-2026",
+  "brand": "sidem",
+  "subject": "SideMカードフォリオ抽選CP",
+  "kind": "締切",
+  "note": "23:59応募締切",
+  "reserved_on": "2026-09-14",
+  "title": "SideMカードフォリオ抽選キャンペーン開始",
+  "url": "https://cardfolio.idolmaster-official.jp/news/?p=1039",
+  "source_type": "公式",
+  "facts": [
+   "アイドルマスター カードフォリオ SideM ver. vol.2の購入者が参加できる特別キャンペーン。",
+   "カードフォリオ内に同梱されたチケットのシリアルコードを入力して抽選に参加する。",
+   "描きおろしイラストを使用したオリジナルグッズが315名に当たる。",
+   "抽選には『バンダイナムコ Fan Fun Spot』アプリを使用する。",
+   "対象商品：アイドルマスター カードフォリオ SideM ver. vol.2。",
+   "対象商品にはパック内にキャンペーン告知用チケットが1枚封入されている。",
+   "賞品：THE IDOLM@STER SideM パシャっとチャレンジキャンペーン公式カードホルダー25名様。",
+   "賞品：THE IDOLM@STER SideM パシャっとチャレンジキャンペーン公式A3クリアポスター50名様。",
+   "賞品：THE IDOLM@STER SideM パシャっとチャレンジキャンペーン公式スクエア缶バッジ240名様。",
+   "キャンペーン期間: 2026年9月12日(土)10:00～2026年11月15日(日)23:59。",
+   "キャンペーン期間を過ぎると抽選に申し込めない。",
+   "カードフォリオは数量限定販売で、予定数量に達し次第販売終了する。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609131235-explore-11",
+  "event_date": "2026-09-12",
+  "deadline": "2026-11-15"
  }
 ]

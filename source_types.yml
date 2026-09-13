@@ -112,6 +112,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - hjweb.jp              # 合議で追加: ホビージャパンがメーカー発表を掲載。取材形跡なし
   - e.usen.com            # 合議で追加: プレスリリース情報を言い換え掲載。独自取材の根拠なし
   - mybuzz.tokyo          # 合議で追加: 「本リリース」と明記され、プレスリリースの言い換え。「バズ情報」サイトとして他所
   - bikers.hateblo.jp     # 合議で追加: 個人ブログ。Xのトレンドをもとに公式発表を説明。独立取材なし
@@ -177,6 +178,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - sej.co.jp             # 合議で追加: ライセンス販売元。マルチコピー機でブロマイドを販売しており、自社サイトで商品告知
+  - gashapon.jp           # 合議で追加: アイマス関連グッズをライセンス販売している販売元
   - hobbystock.jp         # ホビーストック(株式会社ホビーストック。ホビー・フィギュアの通販店=販売元)
   - xvorder-runway.com    # X VORDER RUNWAY(9/27 幕張メッセのライブの特設サイト。主催側の一次発信)
   - unionarena-tcg.com    # 合議で追加: UNION ARENAゲーム製品の公式運営・販売元の一次発信
@@ -274,6 +277,9 @@ video_channels:
 
 video_ids:
   公式:
+    - bh1-3oPDkXY   # 機械で追加: @KamizuruCosmo「【#宇宙誕生祭2026 冒頭無料配信】上水流宇宙 BIRTH」
+    - SKg_lOJcmQw   # 機械で追加: @imas-official「ゲーム【ミリシタ】桜守 歌織 スペシャル動画【アイドルマスタ」
+    - JQ4XDj8lzw0   # 機械で追加: @imas-official「ゲーム【ミリシタ】双海 亜美 スペシャル動画【アイドルマスタ」
     - 2A4IdCmvdHg   # 機械で追加: @imas-official「【生配信】IDOL WORLD SUPER FESTIVAL」
     - 2zyQKgtpAVo   # 機械で追加: @imas-official「【シャニラジHBTK】はばたきラジオステーション #399【」
     - vjDPwOxX6jA   # 機械で追加: @TomoriManaka「#1【BIOHAZARD RE:2】はじめてのバイオ！！初見」

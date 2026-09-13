@@ -1,21 +1,51 @@
 [
-  {
-    "id": "sched-2026-09-17-joint-tours-s1-ex-2026-開幕",
-    "dedup_key": "joint-tours-s1-ex-2026",
-    "brand": "joint",
-    "subject": "ツアマス「S1弾Ex」",
-    "kind": "開幕",
-    "reserved_on": "2026-09-11",
-    "facts": [
-      "S1弾Exは9月17日(木)午前7時開始、周防桃子とソロ曲「ローリング△さんかく」が追加される",
-      "全28種「S1弾Exツアーズレアカード」にSSRサポートカード「our summer continues」、新衣装「サマーティースタイル」、新アクセサリー「ドリルアーム」が登場",
-      "新シリーズ開幕記念ログインボーナスも同時開催、1日1回・5日ログインでツアーズレアチケット計1000枚(所持上限999枚)"
-    ],
-    "title": "『アイドルマスター TOURS』S1弾Ex、9/17開始",
-    "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260910.html",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "event_date": "2026-09-17",
-    "src_candidate_id": "202609101835-watch-4"
-  }
+ {
+  "id": "sched-2026-09-17-joint-tours-s1-ex-2026-開幕",
+  "dedup_key": "joint-tours-s1-ex-2026",
+  "brand": "joint",
+  "subject": "ツアマス「S1弾Ex」",
+  "kind": "開幕",
+  "reserved_on": "2026-09-11",
+  "facts": [
+   "S1弾Exは9月17日(木)午前7時開始、周防桃子とソロ曲「ローリング△さんかく」が追加される",
+   "全28種「S1弾Exツアーズレアカード」にSSRサポートカード「our summer continues」、新衣装「サマーティースタイル」、新アクセサリー「ドリルアーム」が登場",
+   "新シリーズ開幕記念ログインボーナスも同時開催、1日1回・5日ログインでツアーズレアチケット計1000枚(所持上限999枚)"
+  ],
+  "title": "『アイドルマスター TOURS』S1弾Ex、9/17開始",
+  "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260910.html",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "event_date": "2026-09-17",
+  "src_candidate_id": "202609101835-watch-4"
+ },
+ {
+  "id": "sched-2026-09-17-shiny-msp-goods-2026-開始",
+  "dedup_key": "shiny-msp-goods-2026",
+  "brand": "shiny",
+  "subject": "MSP会場物販デジタル注文書",
+  "kind": "開始",
+  "note": "13:00から利用可能",
+  "reserved_on": "2026-09-14",
+  "title": "ソロライブ会場物販情報更新・一部商品の販売中止",
+  "url": "https://idolmaster-official.jp/live_event/283production_msp/",
+  "source_type": "公式",
+  "facts": [
+   "2026.09.11に「GOODS」が更新された。",
+   "公演は2026年9月26日(土)・27日(日)に京王アリーナTOKYOで開催される。",
+   "会場物販は2026年9月26日(土)11:00～17:00、9月27日(日)11:00～17:00の予定。",
+   "会場物販場所は京王アリーナTOKYO 1F駐車場の特設売り場。",
+   "グッズ売場とCD・映像売場は分けられ、片方のレジで両方を同時購入することはできない。",
+   "会場物販はライブチケット所持者・非所持者のいずれも利用できる。",
+   "一部時間帯の購入には、利用時間枠を指定した事前抽選の整理券が必要。",
+   "各商品は1会計につき1商品3点まで。サイズ別商品はサイズ合計3点まで。トレーディング仕様商品は種類数が上限。",
+   "グッズ販売は9月26日は12:00、9月27日は11:30からを予定しているが、当日の状況により保証されない。",
+   "デジタル注文書は2026年9月17日(木)13:00から利用できる。",
+   "公式パンフレットは4,500円(税込)。",
+   "公式コンサートライト283プロ シャイニーカラーズ ver.は1,300円(税込)。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609130733-explore-6",
+  "event_date": "2026-09-26"
+ }
 ]

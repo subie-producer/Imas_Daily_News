@@ -1,0 +1,25 @@
+[
+ {
+  "id": "sched-2027-07-14-sidem-11th-live-bluray-2027-発売",
+  "dedup_key": "sidem-11th-live-bluray-2027",
+  "brand": "sidem",
+  "subject": "SideM 11th STAGE LIVE Blu-ray",
+  "kind": "発売",
+  "note": "アソビストア特装版も同時発売",
+  "reserved_on": "2026-09-14",
+  "title": "SideM 11th STAGE LIVE Blu-ray",
+  "url": "https://idolmaster-official.jp/live_event/sidem11th/bluray/",
+  "source_type": "公式",
+  "facts": [
+   "LIVE Blu-ray 2027年7月14日(水)に発売決定",
+   "商品タイトル: THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～ LIVE Blu-ray",
+   "2026年9月12日(土)・9月13日(日)にTOYOTA ARENA TOKYOにて開催した公演のLIVE Blu-ray",
+   "アソビストア特装版の商品タイトル: THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～ LIVE Blu-ray アソビストア特装版",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609140234-grok-18",
+  "event_date": "2027-07-14"
+ }
+]

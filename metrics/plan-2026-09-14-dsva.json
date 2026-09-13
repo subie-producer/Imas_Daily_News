@@ -1,0 +1,100 @@
+{
+ "decisions": {
+  "valiv-cosmo-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信チケット価格・販売期間・ゲスト決定はstock(cosmo-birthday-online-live-2026/-special-guest)に既出。イベント自体も9/12で終了済みで新事実なし。"
+  },
+  "dsva-cosmo-birthday-live-2026": {
+   "action": "article",
+   "angle": "上水流宇宙20歳バースデーライブの当日レポート(セットリスト・カバー曲・LV会場でのお見送り会)。あわせて公開された冒頭無料配信も統合。",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Famitsu報道による新事実(披露曲・学マス曲カバー・LV会場詳細)。冒頭無料配信公開(cosmo-birthday-online-live-2026-free-opening)は同一公演を巡る続きの出来事として統合。"
+  },
+  "cosmo-birthday-online-live-2026-free-opening": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-cosmo-birthday-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ上水流宇宙BIRTHDAY ONLINE LIVE 2026を巡る出来事(開幕/レポート+冒頭無料配信公開)。分けると both薄くなるため1本にまとめる。"
+  },
+  "dsva-online-1on1-13-2026": {
+   "action": "article",
+   "angle": "第13回オンライン1on1、抽選申込締切が9/15に迫る。追加販売・一般販売なし、キャスト同日開催時の時間重複調整、参加証明書なしの注意点。",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催日・受付期限は既報(dsva-valiv-1on1-13th-2026等)だが、追加販売の有無や時間重複調整など新事実あり。締切前日のリマインドとして規程8の対象。"
+  },
+  "valiv-cosmo-birthday-goods-2026": {
+   "action": "article",
+   "angle": "上水流宇宙バースデー記念グッズ5点セット(森倉円描き下ろし)が受注開始。",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "チケット/ライブ記事とは別施策(グッズ受注)のため単独記事。品目ごとのサイズ等スペックが列挙可能な分量あり。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-cosmo-birthday-live-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "上水流宇宙20歳バースデーライブの当日レポート(セットリスト・カバー曲・LV会場でのお見送り会)。あわせて公開された冒頭無料配信も統合。",
+    "lead_score": 55,
+    "dedup_key": "dsva-cosmo-birthday-live-2026",
+    "candidate_ids": [
+     "202609131834-explore-11",
+     "202609140234-explore-6"
+    ]
+   },
+   {
+    "slug": "dsva-online-1on1-13-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "第13回オンライン1on1、抽選申込締切が9/15に迫る。追加販売・一般販売なし、キャスト同日開催時の時間重複調整、参加証明書なしの注意点。",
+    "lead_score": 8,
+    "dedup_key": "dsva-online-1on1-13-2026",
+    "candidate_ids": [
+     "202609140234-grok-14"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-cosmo-birthday-goods-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "上水流宇宙バースデー記念グッズ5点セット(森倉円描き下ろし)が受注開始。",
+    "lead_score": 25,
+    "dedup_key": "valiv-cosmo-birthday-goods-2026",
+    "candidate_ids": [
+     "202609140234-grok-15"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-cosmo-birthday-live-2026",
+    "reason": "既報",
+    "note": "配信チケット価格・販売期間・ゲスト決定はstock(cosmo-birthday-online-live-2026/-special-guest)に既出。イベント自体も9/12で終了済みで新事実なし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

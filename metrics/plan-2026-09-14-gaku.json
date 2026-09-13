@@ -1,0 +1,181 @@
+{
+ "decisions": {
+  "chinatsuru-wonder-scale-figure-2026": {
+   "action": "article",
+   "angle": "倉本千奈のスケールフィギュア「Wonder Scale」を発表、PLUM直販限定の豪華版(表情パーツ2種)も同時展開",
+   "rank": "medium",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新規の商品発表で既報なし。1/7スケール、通常27,500円/直販限定30,800円、10月発売予定。"
+  },
+  "gakumasu-app-store-ranking-2nd-2026-09-11": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/12号(gaku-appstore-ranking-second-2026-09-11)で同一facts(9/11時点2位・78ランクアップ)を既報。新事実なし。"
+  },
+  "gaku-miracle-nanau-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/10号(同dedup_key)で既報。公式ディスコグラフィページの定期再取得による重複で新事実なし。"
+  },
+  "gaku-endless-dance-mao-sena-shino-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "8/31号(gakumas-tracks-streaming-0831-2026)で9/6付配信として既報。新事実なし。"
+  },
+  "gaku-endless-dance-saki-temari-kotone-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/4号(同dedup_key)で9/1配信開始として既報。新事実なし。"
+  },
+  "gaku-star-mine-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "8/30号(同dedup_key)、9/6付再掲でも既報。新事実なし。"
+  },
+  "gaku-animate-big-towel-20260911": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-animate-goods-2026-09-11",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ9/11発売のアニメイト新作ビッグタオル。goods記事に素材を統合(花海佑芽が両主題で重複)。"
+  },
+  "gaku-animate-goods-2026-09-11": {
+   "action": "article",
+   "angle": "9月11日発売の学マス新作グッズ、ビッグタオル計6種とミニ色紙コレクションがアニメイトに登場",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gaku-animate-big-towel-20260911の素材を統合。7種の商品情報を列挙。"
+  },
+  "gaku-rivalava-2026-09": {
+   "action": "article",
+   "angle": "ガシャポン『学園アイドルマスター リバラバ！』が今週発売、Re;IRIS・Begraziaの6人をラバーマスコット化",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報のリバラバ！2(7月発売・別6人)とは別商品。単独の販売開始ニュース。"
+  },
+  "gaku-sevenprint-bromide-202609": {
+   "action": "article",
+   "angle": "セブン-イレブンで学マスランダムブロマイド、本日9月14日から店内マルチコピー機で購入開始",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "全13種ランダム、L判200円/2L判300円、販売期間は10/11まで。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-chinatsuru-wonder-scale-figure-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "倉本千奈のスケールフィギュア「Wonder Scale」を発表、PLUM直販限定の豪華版(表情パーツ2種)も同時展開",
+    "lead_score": 45,
+    "dedup_key": "chinatsuru-wonder-scale-figure-2026",
+    "candidate_ids": [
+     "202609130733-explore-12"
+    ]
+   },
+   {
+    "slug": "gaku-animate-goods-2026-09-11",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "9月11日発売の学マス新作グッズ、ビッグタオル計6種とミニ色紙コレクションがアニメイトに登場",
+    "lead_score": 15,
+    "dedup_key": "gaku-animate-goods-2026-09-11",
+    "candidate_ids": [
+     "202609132336-explore-16",
+     "202609131834-explore-10"
+    ]
+   },
+   {
+    "slug": "gaku-rivalava-2026-09",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ガシャポン『学園アイドルマスター リバラバ！』が今週発売、Re;IRIS・Begraziaの6人をラバーマスコット化",
+    "lead_score": 10,
+    "dedup_key": "gaku-rivalava-2026-09",
+    "candidate_ids": [
+     "202609132336-explore-17"
+    ]
+   },
+   {
+    "slug": "gaku-sevenprint-bromide-202609",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "セブン-イレブンで学マスランダムブロマイド、本日9月14日から店内マルチコピー機で購入開始",
+    "lead_score": 10,
+    "dedup_key": "gaku-sevenprint-bromide-202609",
+    "candidate_ids": [
+     "202609140234-grok-11"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gakumasu-app-store-ranking-2nd-2026-09-11",
+    "reason": "既報",
+    "note": "9/12号(gaku-appstore-ranking-second-2026-09-11)で同一facts(9/11時点2位・78ランクアップ)を既報。新事実なし。"
+   },
+   {
+    "dedup_key": "gaku-miracle-nanau-2026",
+    "reason": "既報",
+    "note": "9/10号(同dedup_key)で既報。公式ディスコグラフィページの定期再取得による重複で新事実なし。"
+   },
+   {
+    "dedup_key": "gaku-endless-dance-mao-sena-shino-2026",
+    "reason": "既報",
+    "note": "8/31号(gakumas-tracks-streaming-0831-2026)で9/6付配信として既報。新事実なし。"
+   },
+   {
+    "dedup_key": "gaku-endless-dance-saki-temari-kotone-2026",
+    "reason": "既報",
+    "note": "9/4号(同dedup_key)で9/1配信開始として既報。新事実なし。"
+   },
+   {
+    "dedup_key": "gaku-star-mine-2026",
+    "reason": "既報",
+    "note": "8/30号(同dedup_key)、9/6付再掲でも既報。新事実なし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

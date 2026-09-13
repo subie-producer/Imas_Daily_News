@@ -1,80 +1,103 @@
 [
-  {
-    "id": "sched-2026-09-29-shiny-aki-idol-kyoka-2026-終了",
-    "dedup_key": "shiny-aki-idol-kyoka-2026",
-    "brand": "shiny",
-    "subject": "シャニマス秋の育成イベント「秋のアイドル強化週間」第16回",
-    "kind": "終了",
-    "note": "イベント期間終了11:59",
-    "reserved_on": "2026-09-09",
-    "title": "秋のアイドル強化週間 第16回",
-    "url": "https://wikiwiki.jp/shinycolors/%E7%A7%8B%E3%81%AE%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E5%BC%B7%E5%8C%96%E9%80%B1%E9%96%93%E3%80%90%E7%AC%AC16%E5%9B%9E%E3%80%91",
-    "source_type": "二次情報",
-    "facts": [
-      "「秋のアイドル強化週間」第16回の開催期間は9月29日11時59分まで",
-      "報酬はSRサポートアイドル【metomeスパークル】園田智代子、イベントミッションは全65個"
-    ],
-    "src_candidate_id": "202609080735-explore-7",
-    "deadline": "2026-09-29"
-  },
-  {
-    "id": "sched-2026-09-29-shiny-axe8-2026-終了",
-    "dedup_key": "shiny-axe8-2026",
-    "brand": "shiny",
-    "subject": "Project \"ReLight\" AXE8",
-    "kind": "終了",
-    "note": "【Grow to Glow】桑山千雪 特別アイドルスタンプ/ステップアップガシャの終了予定日",
-    "reserved_on": "2026-08-31",
-    "title": "シャニマス「Grow to Glow」桑山千雪ガシャ開始",
-    "url": "https://wikiwiki.jp/shinycolors/%E3%82%AC%E3%82%B7%E3%83%A3",
-    "source_type": "未確認",
-    "verify": "unconfirmed",
-    "src_candidate_id": "202608302334-explore-6",
-    "event_date": "2026-08-28",
-    "deadline": "2026-09-29",
-    "facts": [
-      "AXE8シリーズ限定アイドル【Grow to Glow】桑山千雪の特別アイドルスタンプガシャ・ステップアップガシャは2026年8月28日から9月29日まで開催",
-      "千雪のピース付きパッケージ4個も販売"
-    ]
-  },
-  {
-    "id": "sched-2026-09-29-creators-edge-xr-seminar-2026-開始",
-    "dedup_key": "creators-edge-xr-seminar-2026",
-    "brand": "general",
-    "subject": "CREATORS EDGE 2026 xRライブ特別セミナー",
-    "kind": "開始",
-    "note": "セミナー開催",
-    "reserved_on": "2026-09-07",
-    "title": "xRライブ制作セミナー、9月29日開催",
-    "url": "https://www.creators-edge.com/seminar",
-    "source_type": "未確認",
-    "facts": [
-      "特別セミナー「xRライブの作り方 ─DAIV×Unreal Engine」を2026年9月29日(火)11:00〜12:30、SPACE Gで開催",
-      "定員30名、参加費1,000円(税込)、参加特典として会場内で使える1,000円分のクーポン券を進呈",
-      "登壇はカゾエノブアキ氏(REZ&/Director・Visual Artist)、協賛は株式会社マウスコンピューター(DAIV by mousecomputer)",
-      "会場に『アイドルマスター』のxRライブで使用したライブセットを展示、セミナー後に見学可能"
-    ],
-    "via": "claude",
-    "verify": "unconfirmed",
-    "src_candidate_id": "202609070234-grok-23",
-    "event_date": "2026-09-29"
-  },
-  {
-    "id": "sched-2026-09-29-shiny-prelude-collection-mei-izumi-2026-終了",
-    "dedup_key": "shiny-prelude-collection-mei-izumi-2026",
-    "brand": "shiny",
-    "subject": "シャニマス「プレリュードコレクション」和泉愛依",
-    "kind": "終了",
-    "note": "特別ミッション終了",
-    "reserved_on": "2026-09-08",
-    "title": "和泉愛依がプレコレに登場、限定ミッションも",
-    "url": "https://gameo.jp/imassc/167337",
-    "source_type": "二次情報",
-    "verify": "unconfirmed",
-    "facts": [
-      "SSRサポートアイドル「【三つ子の魂えたーなる！】和泉 愛依」の特別ミッションは9月29日まで開催"
-    ],
-    "src_candidate_id": "202609072334-explore-6",
-    "event_date": "2026-09-29"
-  }
+ {
+  "id": "sched-2026-09-29-shiny-aki-idol-kyoka-2026-終了",
+  "dedup_key": "shiny-aki-idol-kyoka-2026",
+  "brand": "shiny",
+  "subject": "シャニマス秋の育成イベント「秋のアイドル強化週間」第16回",
+  "kind": "終了",
+  "note": "イベント期間終了11:59",
+  "reserved_on": "2026-09-09",
+  "title": "秋のアイドル強化週間 第16回",
+  "url": "https://wikiwiki.jp/shinycolors/%E7%A7%8B%E3%81%AE%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E5%BC%B7%E5%8C%96%E9%80%B1%E9%96%93%E3%80%90%E7%AC%AC16%E5%9B%9E%E3%80%91",
+  "source_type": "二次情報",
+  "facts": [
+   "「秋のアイドル強化週間」第16回の開催期間は9月29日11時59分まで",
+   "報酬はSRサポートアイドル【metomeスパークル】園田智代子、イベントミッションは全65個"
+  ],
+  "src_candidate_id": "202609080735-explore-7",
+  "deadline": "2026-09-29"
+ },
+ {
+  "id": "sched-2026-09-29-shiny-axe8-2026-終了",
+  "dedup_key": "shiny-axe8-2026",
+  "brand": "shiny",
+  "subject": "Project \"ReLight\" AXE8",
+  "kind": "終了",
+  "note": "【Grow to Glow】桑山千雪 特別アイドルスタンプ/ステップアップガシャの終了予定日",
+  "reserved_on": "2026-08-31",
+  "title": "シャニマス「Grow to Glow」桑山千雪ガシャ開始",
+  "url": "https://wikiwiki.jp/shinycolors/%E3%82%AC%E3%82%B7%E3%83%A3",
+  "source_type": "未確認",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202608302334-explore-6",
+  "event_date": "2026-08-28",
+  "deadline": "2026-09-29",
+  "facts": [
+   "AXE8シリーズ限定アイドル【Grow to Glow】桑山千雪の特別アイドルスタンプガシャ・ステップアップガシャは2026年8月28日から9月29日まで開催",
+   "千雪のピース付きパッケージ4個も販売"
+  ]
+ },
+ {
+  "id": "sched-2026-09-29-creators-edge-xr-seminar-2026-開始",
+  "dedup_key": "creators-edge-xr-seminar-2026",
+  "brand": "general",
+  "subject": "CREATORS EDGE 2026 xRライブ特別セミナー",
+  "kind": "開始",
+  "note": "セミナー開催",
+  "reserved_on": "2026-09-07",
+  "title": "xRライブ制作セミナー、9月29日開催",
+  "url": "https://www.creators-edge.com/seminar",
+  "source_type": "未確認",
+  "facts": [
+   "特別セミナー「xRライブの作り方 ─DAIV×Unreal Engine」を2026年9月29日(火)11:00〜12:30、SPACE Gで開催",
+   "定員30名、参加費1,000円(税込)、参加特典として会場内で使える1,000円分のクーポン券を進呈",
+   "登壇はカゾエノブアキ氏(REZ&/Director・Visual Artist)、協賛は株式会社マウスコンピューター(DAIV by mousecomputer)",
+   "会場に『アイドルマスター』のxRライブで使用したライブセットを展示、セミナー後に見学可能"
+  ],
+  "via": "claude",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609070234-grok-23",
+  "event_date": "2026-09-29"
+ },
+ {
+  "id": "sched-2026-09-29-shiny-prelude-collection-mei-izumi-2026-終了",
+  "dedup_key": "shiny-prelude-collection-mei-izumi-2026",
+  "brand": "shiny",
+  "subject": "シャニマス「プレリュードコレクション」和泉愛依",
+  "kind": "終了",
+  "note": "特別ミッション終了",
+  "reserved_on": "2026-09-08",
+  "title": "和泉愛依がプレコレに登場、限定ミッションも",
+  "url": "https://gameo.jp/imassc/167337",
+  "source_type": "二次情報",
+  "verify": "unconfirmed",
+  "facts": [
+   "SSRサポートアイドル「【三つ子の魂えたーなる！】和泉 愛依」の特別ミッションは9月29日まで開催"
+  ],
+  "src_candidate_id": "202609072334-explore-6",
+  "event_date": "2026-09-29"
+ },
+ {
+  "id": "sched-2026-09-29-shiny-kutsurogi-climax-girls-2026-終了",
+  "dedup_key": "shiny-kutsurogi-climax-girls-2026",
+  "brand": "shiny",
+  "subject": "「くつろぎクライマックスガールズ」復刻",
+  "kind": "終了",
+  "note": "11:59終了",
+  "reserved_on": "2026-09-14",
+  "title": "くつろぎクライマックスガールズ復刻",
+  "url": "https://x.com/imassc_official/status/2099015720726102442",
+  "source_type": "公式",
+  "facts": [
+   "以前開催した放課後クライマックスガールズの皆さんの物語を描いたシナリオイベント「くつろぎクライマックスガールズ」が復刻開催",
+   "●開催期間: 2026年9月16日 ～ 2026年9月29日 11:59（予定）",
+   "エンゲージメント: 中",
+   "言及アイドル: 小宮果穂、園田智代子、西城樹里、杜野凛世、有栖川夏葉"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609140234-grok-21",
+  "event_date": "2026-09-16",
+  "deadline": "2026-09-29"
+ }
 ]

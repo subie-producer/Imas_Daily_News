@@ -177,6 +177,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - hobbystock.jp         # ホビーストック(株式会社ホビーストック。ホビー・フィギュアの通販店=販売元)
+  - xvorder-runway.com    # X VORDER RUNWAY(9/27 幕張メッセのライブの特設サイト。主催側の一次発信)
   - unionarena-tcg.com    # 合議で追加: UNION ARENAゲーム製品の公式運営・販売元の一次発信
   - pr-233.dngxvlzzy89ep.amplifyapp.com # 合議で追加: 会場（TOYOTA ARENA TOKYO）が自施設でのコラボドリンク販売を一次
   - onkyodirect.jp        # ONKYO DIRECT(メーカー直販)。コラボイヤホンの受注ページ=販売元

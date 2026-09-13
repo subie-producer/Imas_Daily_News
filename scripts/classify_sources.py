@@ -132,11 +132,25 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     (実測: 178件が未分類のまま溜まっていた)。ここも合議に掛ける。
     """
     p = ROOT / "candidates" / f"{date}.json"
-    if not p.exists():
+    rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
+    # 執筆が自分で見つけて記事に載せた出典(候補に無い URL)も合議に掛ける。候補だけ見ていると、
+    # 紙面に載った販売店やイベント特設サイトが未確認のまま残る(実測 2026-09-13: hobbystock.jp, xvorder-runway.com)
+    for post in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md")):
+        m = re.match(r"^---\n(.*?)\n---\n", post.read_text(encoding="utf-8"), re.S)
+        if not m:
+            continue
+        try:
+            fm = yaml.safe_load(m.group(1)) or {}
+        except Exception:
+            continue
+        for s in fm.get("sources") or []:
+            if isinstance(s, dict) and s.get("url"):
+                rows.append({"url": s["url"], "title": f"{fm.get('title') or ''}(記事の出典: {s.get('label') or ''})"})
+    if not rows:
         return {}, {}
     doms: dict[str, str] = {}
     accts: dict[str, tuple[str, list[str]]] = {}
-    for c in json.loads(p.read_text(encoding="utf-8")):
+    for c in rows:
         url = c.get("url") or ""
         if not url or classify_source(url) != "未確認":
             continue

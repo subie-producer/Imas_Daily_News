@@ -2,7 +2,7 @@
 slug: 765-x-vorder-runway-goods-onsite-2026
 edition: "2026-09-13"
 brand: "765"
-src: 未確認
+src: 当事者
 rank: small
 corrected: false
 corrections: []
@@ -18,7 +18,7 @@ tags:
 sources:
 - label: X VORDER RUNWAY公式サイト「Goods」(2026年9月13日)
   url: https://xvorder-runway.com/
-  type: 未確認
+  type: 当事者
 event_date: "2026-09-27"
 title_fact_ids:
 - N1

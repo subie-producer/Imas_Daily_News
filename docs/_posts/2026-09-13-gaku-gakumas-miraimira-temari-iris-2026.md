@@ -2,7 +2,7 @@
 slug: gaku-gakumas-miraimira-temari-iris-2026
 edition: "2026-09-13"
 brand: gaku
-src: 未確認
+src: 当事者
 rank: small
 corrected: false
 corrections: []
@@ -21,7 +21,7 @@ sources:
   type: 当事者
 - label: MiraiMira 学園アイドルマスター 1/7 月村手毬 雨上がりのアイリス 特訓前Ver.（日付不明）
   url: https://www.hobbystock.jp/item/view/hby-gcf-00021212
-  type: 未確認
+  type: 当事者
 title_fact_ids:
 - F1
 - F5

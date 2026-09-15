@@ -64,7 +64,10 @@ def plan_schema(keys: list[str], brand: str = "", claimed_slugs: list[str] | Non
 
 def slugify(brand: str, key: str, taken: set[str]) -> str:
     import hashlib
-    k = re.sub(r"[^a-z0-9-]+", "-", key.lower()).strip("-")
+    # 区切り(記号・空白・既存ハイフン)はすべて 1 本のハイフンに畳む。既存ハイフンを残すと
+    # 「ハイフンで挟まれた日本語」が畳まれても両隣のハイフンが残り、slug が `ex-----28` のように
+    # 連続ハイフンになって英小文字ハイフン形式の検証に落ちる(2026-09-16 の計画不成立)
+    k = re.sub(r"[^a-z0-9]+", "-", key.lower()).strip("-")
     if k.startswith(brand.lower() + "-"):
         k = k[len(brand) + 1:]            # 主題キーが面名で始まるときに二重にしない(cg-cg-…)
     if len(re.sub(r"[^a-z]", "", k)) < 4:  # 英字がほとんど無い(日本語キー)なら短い印を足して読める形にする
@@ -72,7 +75,7 @@ def slugify(brand: str, key: str, taken: set[str]) -> str:
     base = f"{brand.lower()}-{k}"[:70].rstrip("-")
     s, n = base, 2
     while s in taken:
-        s = f"{base[:66]}-{n}"
+        s = f"{base[:66].rstrip('-')}-{n}"
         n += 1
     taken.add(s)
     return s

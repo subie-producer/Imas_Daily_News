@@ -1,0 +1,179 @@
+{
+ "decisions": {
+  "imas-radio-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "番組名・パーソナリティ・初回放送日時等はstock story imas-radio-2026に既報。新事実なし。当日進行分は765as-5系へ統合し記事化"
+  },
+  "million14th-765as-solo-collection-dress-code-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ミリオン14thLIVE会場限定CD(765PRO ALLSTARS盤含む)は発売日・価格ともstory million-14th-liveに既報。主催もミリオン面の施策"
+  },
+  "765as-1----------2026-09-15-19-30-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-5--------2026-09-15-22-34-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "IM@S RADIO第1回放送開始告知。同日の放送進行の一部として765as-5にまとめる"
+  },
+  "765as-2----------------2026-09-15-20-35-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-5--------2026-09-15-22-34-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本編終了・アーカイブ案内。765as-5にまとめる"
+  },
+  "765as-3----------------------2026-09-15-20-39-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-5--------2026-09-15-22-34-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "メンバーシップ限定アフタートーク配信開始。765as-5にまとめる"
+  },
+  "765as-4--------2----------2026-09-15-21-53-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-5--------2026-09-15-22-34-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "パーソナリティ2名からの放送後メッセージ。765as-5にまとめる"
+  },
+  "765as-5--------2026-09-15-22-34-jst": {
+   "action": "article",
+   "angle": "IM@S RADIO第1回放送(9/15)を実施—本編アーカイブ公開・メンバー限定アフタートーク配信、次回9/29(ゲスト:神原大地)とお便り募集を発表",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "765as-1,2,3,4,6,7を統合(計7件)。開始告知〜終了〜アフタートーク〜次回告知〜お便り募集までを1系統として記事化"
+  },
+  "765as-6-------2026-09-15-22-36-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-5--------2026-09-15-22-34-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "お便り募集告知(次回テーマ含む)。765as-5にまとめる"
+  },
+  "765as-7------------2026-09-15-22-22-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-5--------2026-09-15-22-34-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ポータルニュースでの次回放送告知。765as-5と同一内容(次回9/29・ゲスト神原大地)、出典を追加する形で統合"
+  },
+  "765as-8": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人アカウントの視聴感想ツイート。出典も未確認で単体記事化の対象外(規程4・5)"
+  },
+  "765as-9----mc": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ラジオMC就任を祝う個人ファンアート。ファン創作はgeneral面のculture roundup(別クエリ収集)の対象であり765面では記事化しない"
+  },
+  "trend-1------------1-3-3-3": {
+   "action": "article",
+   "angle": "『ぷちます!』最終回を12月25日に発表(全3回構成のツイートで告知)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は電撃media一次投稿のみでverify unconfirmed。公式一次情報への到達が弱いため非断定の文体で記述すること"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-765as-5--------2026-09-15-22-34-jst",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "IM@S RADIO第1回放送(9/15)を実施—本編アーカイブ公開・メンバー限定アフタートーク配信、次回9/29(ゲスト:神原大地)とお便り募集を発表",
+    "lead_score": 55,
+    "dedup_key": "765as-5--------2026-09-15-22-34-jst",
+    "candidate_ids": [
+     "202609160231-grok-28",
+     "202609160231-grok-24",
+     "202609160231-grok-25",
+     "202609160231-grok-26",
+     "202609160231-grok-27",
+     "202609160231-grok-29",
+     "202609160231-grok-30"
+    ]
+   },
+   {
+    "slug": "765-trend-1------------1-3-3-3",
+    "brand": "765",
+    "rank": "small",
+    "angle": "『ぷちます!』最終回を12月25日に発表(全3回構成のツイートで告知)",
+    "lead_score": 10,
+    "dedup_key": "trend-1------------1-3-3-3",
+    "candidate_ids": [
+     "202609160231-grok-109"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "imas-radio-2026",
+    "reason": "既報",
+    "note": "番組名・パーソナリティ・初回放送日時等はstock story imas-radio-2026に既報。新事実なし。当日進行分は765as-5系へ統合し記事化"
+   },
+   {
+    "dedup_key": "million14th-765as-solo-collection-dress-code-2026",
+    "reason": "既報",
+    "note": "ミリオン14thLIVE会場限定CD(765PRO ALLSTARS盤含む)は発売日・価格ともstory million-14th-liveに既報。主催もミリオン面の施策"
+   },
+   {
+    "dedup_key": "765as-8",
+    "reason": "個人の話題",
+    "note": "個人アカウントの視聴感想ツイート。出典も未確認で単体記事化の対象外(規程4・5)"
+   },
+   {
+    "dedup_key": "765as-9----mc",
+    "reason": "個人の話題",
+    "note": "ラジオMC就任を祝う個人ファンアート。ファン創作はgeneral面のculture roundup(別クエリ収集)の対象であり765面では記事化しない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

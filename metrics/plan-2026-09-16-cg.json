@@ -1,0 +1,126 @@
+{
+ "decisions": {
+  "cinderella-girls-15th-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-2026-09-15-12-00-jst-15-----12-00",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の15周年情報解禁の話題。二次情報・未確認で9/26解禁と主張するが、公式ツイート(確認済)は「明日12:00解禁」=本日9/16 12:00と明言し矛盾。規程1により確認済み一次情報側へ統合し、未確認の日付は本文で断定しない扱いとする。"
+  },
+  "cg-vote2026-final-goods-deadlines": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "カードフォリオvol.4-6・ONLY MAKER受注(9/13締切)はstock/stories.ymlのcg-election-2026-official-goods/cg-election-only-maker-2026に同一内容が既報。締切も9/13で本日(9/16)には既に終了しており新事実なし。"
+  },
+  "cg-vote2026-deadline-status": {
+   "action": "article",
+   "angle": "投票期間終了(9/18 23:59)まで残りわずか。シリアルコード引換・投票券IDの取り違え注意を呼びかけ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cinderella-2026-09-15-13-00-jst(あと3日／ID注意ツイート)の素材を統合。投票期間・引換期間の終了日自体は既報だが、投票券IDの取り違え注意喚起は新規の実利情報。"
+  },
+  "cinderella-2026-09-15-13-30-jst": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "『#CG総選挙アートコンテスト』(9/18締切)はstock/stories.ymlのcg-election-cheer-contest-2026(9/5初報)と同一企画。本日の候補facts自体が本文未取得(プレースホルダのみ)で新事実もなし。"
+  },
+  "cinderella-2026-09-15-13-00-jst--------------3------id": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-vote2026-deadline-status",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "投票期間終了(9/18)に関する公式リマインドで、cg-vote2026-deadline-statusと同一トピック。"
+  },
+  "cinderella-2026-09-15-12-00-jst-15-----12-00": {
+   "action": "article",
+   "angle": "シンデレラガールズ15周年、公式が本日9/16 12:00の情報解禁を予告(前日ツイートは高エンゲージメント)",
+   "rank": "small",
+   "lead_score": 90,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cinderella-girls-15th-2026の素材を統合。確認できる事実は「本日12時解禁」という予告のみで分量は薄いが、15周年という節目でエンゲージメントも突出しており面の一面候補。"
+  },
+  "cg-toppa-base-popup-2026": {
+   "action": "article",
+   "angle": "TOPPA!!!BASE POPUP SHOP、秋葉原会場が本日9/16で会期終了(千秋楽・最終来場日)",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "秋葉原(8/27〜9/16)は本日が最終日で読者が今日行ける最後の機会。他都市は9/14に既に終了済み。新事実は「本日が最終日」の一点のみのため小規模。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-vote2026-deadline-status",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "投票期間終了(9/18 23:59)まで残りわずか。シリアルコード引換・投票券IDの取り違え注意を呼びかけ",
+    "lead_score": 25,
+    "dedup_key": "cg-vote2026-deadline-status",
+    "candidate_ids": [
+     "202609152336-explore-5",
+     "202609160231-grok-34"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-2026-09-15-12-00-jst-15-----12-00",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "シンデレラガールズ15周年、公式が本日9/16 12:00の情報解禁を予告(前日ツイートは高エンゲージメント)",
+    "lead_score": 90,
+    "dedup_key": "cinderella-2026-09-15-12-00-jst-15-----12-00",
+    "candidate_ids": [
+     "202609160231-grok-35",
+     "202609152336-watch-2"
+    ]
+   },
+   {
+    "slug": "cg-toppa-base-popup-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "TOPPA!!!BASE POPUP SHOP、秋葉原会場が本日9/16で会期終了(千秋楽・最終来場日)",
+    "lead_score": 5,
+    "dedup_key": "cg-toppa-base-popup-2026",
+    "candidate_ids": [
+     "sched-2026-09-16-cg-toppa-base-popup-2026-千秋楽"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-vote2026-final-goods-deadlines",
+    "reason": "既報",
+    "note": "カードフォリオvol.4-6・ONLY MAKER受注(9/13締切)はstock/stories.ymlのcg-election-2026-official-goods/cg-election-only-maker-2026に同一内容が既報。締切も9/13で本日(9/16)には既に終了しており新事実なし。"
+   },
+   {
+    "dedup_key": "cinderella-2026-09-15-13-30-jst",
+    "reason": "既報",
+    "note": "『#CG総選挙アートコンテスト』(9/18締切)はstock/stories.ymlのcg-election-cheer-contest-2026(9/5初報)と同一企画。本日の候補facts自体が本文未取得(プレースホルダのみ)で新事実もなし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

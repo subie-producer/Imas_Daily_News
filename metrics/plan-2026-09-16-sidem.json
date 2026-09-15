@@ -1,0 +1,338 @@
+{
+ "decisions": {
+  "sidem-adventure-game-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "家庭用ゲーム発表(前号既報)のインタビュー版で新規トリガーなし"
+  },
+  "sidem-home-game-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "前号(9/15)で発表そのものを既報済み"
+  },
+  "sidem-315pronight-public-recording-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "前号既報の公録イベント告知の詳細版、新規トリガーなし"
+  },
+  "sidem-11th-stage-day2-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY2セトリは前号で既報(sidem-11th-stage-day2-setlist-2026)"
+  },
+  "sidem-stage-play-within-play-guide-2026": {
+   "action": "article",
+   "angle": "11th STAGEの劇中劇・PRS楽曲ガイドを紹介、アーカイブ視聴の手引きに",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "X告知2件(劇中劇編/PRS編)を同一特集として統合"
+  },
+  "sidem-11th-stage-archive-2026": {
+   "action": "article",
+   "angle": "11th STAGEアーカイブ配信中、9/19・20にキャスト出演の同時視聴上映会を開催",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注グッズ候補から同時視聴上映会DAY1キャスト情報のみ統合"
+  },
+  "sidem-11th-stage-commemorative-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-archive-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注情報は既報。同時視聴上映会キャスト情報のみ新規のため統合"
+  },
+  "sidem-fantastic-battle-fes-movie-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "前号(9/15)で既報の劇場版公開決定と同内容"
+  },
+  "sidem-11th-stage-day1-announcements-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY1セトリは前号で既報(sidem-11th-stage-day1-setlist-2026)"
+  },
+  "sidem-console-game-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "家庭用ゲーム発表(前号既報)の別ソース詳報、新規トリガーなし"
+  },
+  "sidem-aji-project-2026": {
+   "action": "article",
+   "angle": "新連動企画『AJIプロジェクト』始動、3チーム編成で10月から全6話の新ストーリー展開",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "前号は『10月始動』の一言のみ既報。チーム編成・話数・新曲数は新事実"
+  },
+  "im-at-s-radio-2026-09-29": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "IM@S RADIOは765側の番組でSideMはゲスト出演のみ、主催面ではない"
+  },
+  "sidem-first-console-game-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "家庭用ゲーム発表(前号既報)の報道記事、新規トリガーなし"
+  },
+  "sidem-315shop-lottery-stock-2026-09-15": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "抽選くじ在庫のスナップショット更新のみで新事実・行動喚起なし"
+  },
+  "sidem-1---------------2026-09-14-15-00-03-gmt-2026-09-15-00-00-jst": {
+   "action": "article",
+   "angle": "秋月涼の誕生日を公式が祝福、F-LAGSメンバーへの言及コメントを紹介",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-2-11th-stage--------------2026-09-15-11-31-27-gmt-20-31-jst": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "開催記念グッズ受注は前号既報(sidem-11th-goods-2026-09)と同内容"
+  },
+  "sidem-3-11th-stage-day2--------------------2026-09-14-03-09-25-gmt-12-09-jst": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY2セトリXポストは前号既報の内容と同一"
+  },
+  "sidem-4-------------2026-09-14-09-04-29-gmt-18-04-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-stage-play-within-play-guide-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇中劇ガイド本体と同一記事の告知ポスト"
+  },
+  "sidem-5-315--night------------2026-09-14-15-14-24-gmt-2026-09-15-00-14-jst": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "おたより大募集は前号既報(315-night)と同内容"
+  },
+  "sidem-6-prs---------2026-09-15-09-25-52-gmt-18-25-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-stage-play-within-play-guide-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇中劇ガイドのPart.2(PRS編)として同一特集に統合"
+  },
+  "sidem-9-------------------extra--------x": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アニメイト池袋の特典施策は8/30初報・9/5開幕済みで既報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-stage-play-within-play-guide-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "11th STAGEの劇中劇・PRS楽曲ガイドを紹介、アーカイブ視聴の手引きに",
+    "lead_score": 15,
+    "dedup_key": "sidem-stage-play-within-play-guide-2026",
+    "candidate_ids": [
+     "202609151258-explore-8",
+     "202609160231-grok-104",
+     "202609160231-grok-106"
+    ]
+   },
+   {
+    "slug": "sidem-11th-stage-archive-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "11th STAGEアーカイブ配信中、9/19・20にキャスト出演の同時視聴上映会を開催",
+    "lead_score": 20,
+    "dedup_key": "sidem-11th-stage-archive-2026",
+    "candidate_ids": [
+     "202609151837-watch-4",
+     "202609151837-explore-15"
+    ]
+   },
+   {
+    "slug": "sidem-aji-project-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "新連動企画『AJIプロジェクト』始動、3チーム編成で10月から全6話の新ストーリー展開",
+    "lead_score": 55,
+    "dedup_key": "sidem-aji-project-2026",
+    "candidate_ids": [
+     "202609151837-explore-35"
+    ]
+   },
+   {
+    "slug": "sidem-1---------------2026-09-14-15-00-03-gmt-2026-09-15-00-00-jst",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "秋月涼の誕生日を公式が祝福、F-LAGSメンバーへの言及コメントを紹介",
+    "lead_score": 10,
+    "dedup_key": "sidem-1---------------2026-09-14-15-00-03-gmt-2026-09-15-00-00-jst",
+    "candidate_ids": [
+     "202609160231-grok-101"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-adventure-game-2026",
+    "reason": "既報",
+    "note": "家庭用ゲーム発表(前号既報)のインタビュー版で新規トリガーなし"
+   },
+   {
+    "dedup_key": "sidem-home-game-2026",
+    "reason": "既報",
+    "note": "前号(9/15)で発表そのものを既報済み"
+   },
+   {
+    "dedup_key": "sidem-315pronight-public-recording-2026",
+    "reason": "既報",
+    "note": "前号既報の公録イベント告知の詳細版、新規トリガーなし"
+   },
+   {
+    "dedup_key": "sidem-11th-stage-day2-report-2026",
+    "reason": "既報",
+    "note": "DAY2セトリは前号で既報(sidem-11th-stage-day2-setlist-2026)"
+   },
+   {
+    "dedup_key": "sidem-fantastic-battle-fes-movie-2026",
+    "reason": "既報",
+    "note": "前号(9/15)で既報の劇場版公開決定と同内容"
+   },
+   {
+    "dedup_key": "sidem-11th-stage-day1-announcements-2026",
+    "reason": "既報",
+    "note": "DAY1セトリは前号で既報(sidem-11th-stage-day1-setlist-2026)"
+   },
+   {
+    "dedup_key": "sidem-console-game-2026",
+    "reason": "既報",
+    "note": "家庭用ゲーム発表(前号既報)の別ソース詳報、新規トリガーなし"
+   },
+   {
+    "dedup_key": "im-at-s-radio-2026-09-29",
+    "reason": "面違い",
+    "note": "IM@S RADIOは765側の番組でSideMはゲスト出演のみ、主催面ではない"
+   },
+   {
+    "dedup_key": "sidem-first-console-game-2026",
+    "reason": "既報",
+    "note": "家庭用ゲーム発表(前号既報)の報道記事、新規トリガーなし"
+   },
+   {
+    "dedup_key": "sidem-315shop-lottery-stock-2026-09-15",
+    "reason": "その他",
+    "note": "抽選くじ在庫のスナップショット更新のみで新事実・行動喚起なし"
+   },
+   {
+    "dedup_key": "sidem-2-11th-stage--------------2026-09-15-11-31-27-gmt-20-31-jst",
+    "reason": "既報",
+    "note": "開催記念グッズ受注は前号既報(sidem-11th-goods-2026-09)と同内容"
+   },
+   {
+    "dedup_key": "sidem-3-11th-stage-day2--------------------2026-09-14-03-09-25-gmt-12-09-jst",
+    "reason": "既報",
+    "note": "DAY2セトリXポストは前号既報の内容と同一"
+   },
+   {
+    "dedup_key": "sidem-5-315--night------------2026-09-14-15-14-24-gmt-2026-09-15-00-14-jst",
+    "reason": "既報",
+    "note": "おたより大募集は前号既報(315-night)と同内容"
+   },
+   {
+    "dedup_key": "sidem-9-------------------extra--------x",
+    "reason": "既報",
+    "note": "アニメイト池袋の特典施策は8/30初報・9/5開幕済みで既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

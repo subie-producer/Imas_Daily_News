@@ -1,0 +1,339 @@
+{
+ "decisions": {
+  "million-14th-ticket-second-sale-2026": {
+   "action": "article",
+   "angle": "ミリオン14thLIVE現地チケット一般販売2次(先着)が9/15 18:00スタート、当日券発売も決定—価格・受付期間・枚数制限を網羅",
+   "rank": "large",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一告知(01_19870)の公式サイト・765PRO告知・当日券詳細ページを統合、素材6件"
+  },
+  "million-official-shop-lottery-panel-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/15号(million-official-shop-lottery-2026-09)で抽選くじ新賞品11種・フォトパネル新柄3種・9/18開始・価格を既報、新事実なし"
+  },
+  "million-hinata-apple-ambassador-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/3号(millionlive-hinata-apple-ambassador-2026)で就任式10/2・スタンプ企画を既報、窓口階数等の軽微な補足のみで新事実に乏しい"
+  },
+  "million-lottery-goods-photo-panel-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/15号(million-official-shop-lottery-2026-09)と同一施策、A賞B賞の内訳追加のみで独立記事化には及ばない"
+  },
+  "million-shizuka-figure-animation-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/14号(million-shizuka-the-animation-figure-2026)で予約開始・衣装・台座・第2/3弾を既報、新事実なし"
+  },
+  "million-14th-ticket-update-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-ticket-second-sale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/14のTICKETページ更新検知のみで内容記述なし、2次先着発表と同一事象"
+  },
+  "million-14th-streaming-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/14号で両日券価格・販売期間・アーカイブ期間を既報、単日券価格(算出可)とプレゼント券の詳細不明追加のみ"
+  },
+  "million-14th-live-last-minute-tickets-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-ticket-second-sale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2次先着・当日券の詳細(同一告知)"
+  },
+  "million-1": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "詩花の誕生日(9/16)はjoint-other-7-9-16(記念ムービー)で既に扱われる同一の主題"
+  },
+  "million-2": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "劇場公式Xの人狼ミニゲーム紹介投稿。読者が今日できること/理解に要る事実(規程2)を満たさない"
+  },
+  "million-3-------------------300": {
+   "action": "article",
+   "angle": "未到達分報酬の補填実施と全プレイヤーへのお詫びジュエル300個配布を案内",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/15の告知、詳細確認はアプリ内お知らせへ誘導"
+  },
+  "million-4": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "劇場公式Xの雑談投稿(おすすめラーメン募集)。運営情報でも新規発表でもなく規程2の基準を満たさない"
+  },
+  "million-5-----------12": {
+   "action": "article",
+   "angle": "「ミリオンシーズナル」12月(高槻やよい・伊吹翼)受注が9/20締切と迫っていることを案内",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注開始・締切自体は9/4号で既報。締切接近のリマインドとして扱う(規程8)"
+  },
+  "million-6-----14th------------2-------18-00": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-ticket-second-sale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "765PRO公式Xによる2次先着開始告知、公式ニュースと同一事象"
+  },
+  "million-7-----14th------------2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-ticket-second-sale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "765PRO公式Xによる2次先着開始直前告知、同一事象"
+  },
+  "million---------------------2026-9-14-update": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-ticket-second-sale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日券の受付期間・枚数制限の詳細、同一告知"
+  },
+  "million------information": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY1/DAY2公演名・開場開演時刻・会場は初報(million-14th-live)で既報、新事実なし"
+  },
+  "million-8-9-16": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "詩花誕生日タグの盛り上がりはjoint-other-7-9-16と同一主題、個人アカウントの言及で単体記事化もしない"
+  },
+  "million-9": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "演者個人アカウントの投稿のみが出典で主催者・掲出主体不明、規程4により単体記事化しない"
+  },
+  "million-10": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人の憶測投稿のみで公式情報なし、facts自体が噂として扱わないと明記"
+  },
+  "million-millicol-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "終了日時(9/16 20:59)は9/10開幕記事で既報済み、本日発生する新事実がない予約"
+  },
+  "million-miricore-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "million-millicol-2026-09と同一イベント(ミリコレ)の二次情報、期間記述に矛盾もあり不採用"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-14th-ticket-second-sale-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "ミリオン14thLIVE現地チケット一般販売2次(先着)が9/15 18:00スタート、当日券発売も決定—価格・受付期間・枚数制限を網羅",
+    "lead_score": 75,
+    "dedup_key": "million-14th-ticket-second-sale-2026",
+    "candidate_ids": [
+     "202609151258-explore-2",
+     "202609160231-explore-2",
+     "202609160231-explore-22",
+     "202609160231-grok-71",
+     "202609160231-grok-72",
+     "202609160231-grok-74"
+    ]
+   },
+   {
+    "slug": "million-3-------------------300-470bfc",
+    "brand": "million",
+    "rank": "small",
+    "angle": "未到達分報酬の補填実施と全プレイヤーへのお詫びジュエル300個配布を案内",
+    "lead_score": 15,
+    "dedup_key": "million-3-------------------300",
+    "candidate_ids": [
+     "202609160231-grok-68"
+    ]
+   },
+   {
+    "slug": "million-5-----------12-3fcbb4",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「ミリオンシーズナル」12月(高槻やよい・伊吹翼)受注が9/20締切と迫っていることを案内",
+    "lead_score": 10,
+    "dedup_key": "million-5-----------12",
+    "candidate_ids": [
+     "202609160231-grok-70"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-official-shop-lottery-panel-2026",
+    "reason": "既報",
+    "note": "9/15号(million-official-shop-lottery-2026-09)で抽選くじ新賞品11種・フォトパネル新柄3種・9/18開始・価格を既報、新事実なし"
+   },
+   {
+    "dedup_key": "million-hinata-apple-ambassador-2026",
+    "reason": "既報",
+    "note": "9/3号(millionlive-hinata-apple-ambassador-2026)で就任式10/2・スタンプ企画を既報、窓口階数等の軽微な補足のみで新事実に乏しい"
+   },
+   {
+    "dedup_key": "million-lottery-goods-photo-panel-2026-09",
+    "reason": "既報",
+    "note": "9/15号(million-official-shop-lottery-2026-09)と同一施策、A賞B賞の内訳追加のみで独立記事化には及ばない"
+   },
+   {
+    "dedup_key": "million-shizuka-figure-animation-2026",
+    "reason": "既報",
+    "note": "9/14号(million-shizuka-the-animation-figure-2026)で予約開始・衣装・台座・第2/3弾を既報、新事実なし"
+   },
+   {
+    "dedup_key": "million-14th-streaming-2026",
+    "reason": "既報",
+    "note": "9/14号で両日券価格・販売期間・アーカイブ期間を既報、単日券価格(算出可)とプレゼント券の詳細不明追加のみ"
+   },
+   {
+    "dedup_key": "million-1",
+    "reason": "重複",
+    "note": "詩花の誕生日(9/16)はjoint-other-7-9-16(記念ムービー)で既に扱われる同一の主題"
+   },
+   {
+    "dedup_key": "million-2",
+    "reason": "その他",
+    "note": "劇場公式Xの人狼ミニゲーム紹介投稿。読者が今日できること/理解に要る事実(規程2)を満たさない"
+   },
+   {
+    "dedup_key": "million-4",
+    "reason": "その他",
+    "note": "劇場公式Xの雑談投稿(おすすめラーメン募集)。運営情報でも新規発表でもなく規程2の基準を満たさない"
+   },
+   {
+    "dedup_key": "million------information",
+    "reason": "既報",
+    "note": "DAY1/DAY2公演名・開場開演時刻・会場は初報(million-14th-live)で既報、新事実なし"
+   },
+   {
+    "dedup_key": "million-8-9-16",
+    "reason": "重複",
+    "note": "詩花誕生日タグの盛り上がりはjoint-other-7-9-16と同一主題、個人アカウントの言及で単体記事化もしない"
+   },
+   {
+    "dedup_key": "million-9",
+    "reason": "個人の話題",
+    "note": "演者個人アカウントの投稿のみが出典で主催者・掲出主体不明、規程4により単体記事化しない"
+   },
+   {
+    "dedup_key": "million-10",
+    "reason": "出典不足",
+    "note": "個人の憶測投稿のみで公式情報なし、facts自体が噂として扱わないと明記"
+   },
+   {
+    "dedup_key": "million-millicol-2026-09",
+    "reason": "既報",
+    "note": "終了日時(9/16 20:59)は9/10開幕記事で既報済み、本日発生する新事実がない予約"
+   },
+   {
+    "dedup_key": "million-miricore-2026-09",
+    "reason": "重複",
+    "note": "million-millicol-2026-09と同一イベント(ミリコレ)の二次情報、期間記述に矛盾もあり不採用"
+   }
+  ],
+  "cross_brand": []
+ }
+}

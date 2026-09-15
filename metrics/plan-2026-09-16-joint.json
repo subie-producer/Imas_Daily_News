@@ -1,0 +1,162 @@
+{
+ "decisions": {
+  "joint-other-7-9-16": {
+   "action": "article",
+   "angle": "アイマスch、神谷奈緒役・詩花役の誕生日を同時に祝う記念ムービーを公開",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "joint-other-8-s1--------------9-17": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "joint-other-10-s1-ex-----------------------28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "S1弾ツアーズレアのカード紹介ツイート。同一施策(S1弾Ex 9/17開始)の詳細記事に統合"
+  },
+  "joint-other-9-s1-----------------s1-ex--9-17": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "joint-other-10-s1-ex-----------------------28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "カードリスト公開とS1弾Ex開始告知。同一施策の詳細記事に統合"
+  },
+  "joint-other-10-s1-ex-----------------------28": {
+   "action": "article",
+   "angle": "『アイドルマスターTOURS』S1弾Ex(9/17開始)の全貌—新キャラ周防桃子・新曲・ツアーズレア全28種・ログインボーナス",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "カード紹介・カードリスト公開の2件を統合。面内最大級のニュース"
+  },
+  "joint-other-11-----------after-school--------in-namco": {
+   "action": "article",
+   "angle": "学マス×TOURS『After School』キャンペーンをnamco店舗で実施、プロモカード7種と学マス支援カード復刻(9/25開始)",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "S1弾Exとは別施策(店舗キャンペーン、開始日も別)のため独立記事"
+  },
+  "joint-other-12-p----------------tours----9-26": {
+   "action": "article",
+   "angle": "Pステ大阪日本橋で『アイドルマスターTOURS』交流会を開催(9/26)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "joint-other-14-im-s-radio": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "brand: generalのファン視聴感想。新規公式発表なし。joint面ではなくgeneral面の文化枠(rank:culture)向け素材"
+  },
+  "joint-other-15--------------------iwsf": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "brand: generalのファン間雑談で新規公式告知なし。他面の担当話題に触れるのみで本面の材料が無い"
+  },
+  "imas-mor-414-asahi-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stock/stories.yml既報(2026-08-28初出)のpublished_factsと同内容で新事実なし。放送実施の確認事実も無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-other-7-9-16",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "アイマスch、神谷奈緒役・詩花役の誕生日を同時に祝う記念ムービーを公開",
+    "lead_score": 5,
+    "dedup_key": "joint-other-7-9-16",
+    "candidate_ids": [
+     "202609160231-grok-57"
+    ]
+   },
+   {
+    "slug": "joint-other-10-s1-ex-----------------------28",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "『アイドルマスターTOURS』S1弾Ex(9/17開始)の全貌—新キャラ周防桃子・新曲・ツアーズレア全28種・ログインボーナス",
+    "lead_score": 55,
+    "dedup_key": "joint-other-10-s1-ex-----------------------28",
+    "candidate_ids": [
+     "202609160231-grok-60",
+     "202609160231-grok-58",
+     "202609160231-grok-59"
+    ]
+   },
+   {
+    "slug": "joint-other-11-----------after-school--------in-namco",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "学マス×TOURS『After School』キャンペーンをnamco店舗で実施、プロモカード7種と学マス支援カード復刻(9/25開始)",
+    "lead_score": 15,
+    "dedup_key": "joint-other-11-----------after-school--------in-namco",
+    "candidate_ids": [
+     "202609160231-grok-61"
+    ]
+   },
+   {
+    "slug": "joint-other-12-p----------------tours----9-26",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "Pステ大阪日本橋で『アイドルマスターTOURS』交流会を開催(9/26)",
+    "lead_score": 10,
+    "dedup_key": "joint-other-12-p----------------tours----9-26",
+    "candidate_ids": [
+     "202609160231-grok-62"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "joint-other-14-im-s-radio",
+    "reason": "面違い",
+    "note": "brand: generalのファン視聴感想。新規公式発表なし。joint面ではなくgeneral面の文化枠(rank:culture)向け素材"
+   },
+   {
+    "dedup_key": "joint-other-15--------------------iwsf",
+    "reason": "面違い",
+    "note": "brand: generalのファン間雑談で新規公式告知なし。他面の担当話題に触れるのみで本面の材料が無い"
+   },
+   {
+    "dedup_key": "imas-mor-414-asahi-2026",
+    "reason": "既報",
+    "note": "stock/stories.yml既報(2026-08-28初出)のpublished_factsと同内容で新事実なし。放送実施の確認事実も無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,107 @@
+{
+ "decisions": {
+  "puchimasufinal2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "765面が同一話題(『ぷちます!』最終回12/25発表)を既に記事化(slug: 765-trend-1)。同じ出来事のため本面では不採用。"
+  },
+  "tours-s1-ex-momoko-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "joint面が同一話題(TOURS S1弾Ex・周防桃子・ツアーズレア全28種・ログインボーナス)を既に記事化(slug: joint-other-10)。素材も一致するため本面では不採用。"
+  },
+  "trend-2-----------18": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "電撃オンラインの報道も『ぷちます!』最終回12/25発表という同一事実の確認記事。765面の既存記事(765-trend-1)と同一話題のため不採用。"
+  },
+  "trend-3------12-25": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "電ファミの報道も同じく『ぷちます!』最終回12/25発表の確認記事。765面の既存記事(765-trend-1)と同一話題のため不採用。"
+  },
+  "trend-4------web----194": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "ニコニコ漫画のWEB特別編#194・完結案内ページも同一の最終回発表に付随する素材。765面の既存記事(765-trend-1)と同一話題のため不採用。"
+  },
+  "trend-12": {
+   "action": "article",
+   "angle": "学マス関連のファン創作(30MS 雨夜燕プラモ披露・紫雲清夏コスプレ)をまとめて紹介する界隈の盛り上がり",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人のSNS投稿単体では記事化しないが、規程4のファン面例外に基づき1本にまとめて紹介する。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-trend-12",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "学マス関連のファン創作(30MS 雨夜燕プラモ披露・紫雲清夏コスプレ)をまとめて紹介する界隈の盛り上がり",
+    "lead_score": 5,
+    "dedup_key": "trend-12",
+    "candidate_ids": [
+     "202609160231-grok-114"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "puchimasufinal2026",
+    "reason": "重複",
+    "note": "765面が同一話題(『ぷちます!』最終回12/25発表)を既に記事化(slug: 765-trend-1)。同じ出来事のため本面では不採用。"
+   },
+   {
+    "dedup_key": "tours-s1-ex-momoko-2026",
+    "reason": "重複",
+    "note": "joint面が同一話題(TOURS S1弾Ex・周防桃子・ツアーズレア全28種・ログインボーナス)を既に記事化(slug: joint-other-10)。素材も一致するため本面では不採用。"
+   },
+   {
+    "dedup_key": "trend-2-----------18",
+    "reason": "重複",
+    "note": "電撃オンラインの報道も『ぷちます!』最終回12/25発表という同一事実の確認記事。765面の既存記事(765-trend-1)と同一話題のため不採用。"
+   },
+   {
+    "dedup_key": "trend-3------12-25",
+    "reason": "重複",
+    "note": "電ファミの報道も同じく『ぷちます!』最終回12/25発表の確認記事。765面の既存記事(765-trend-1)と同一話題のため不採用。"
+   },
+   {
+    "dedup_key": "trend-4------web----194",
+    "reason": "重複",
+    "note": "ニコニコ漫画のWEB特別編#194・完結案内ページも同一の最終回発表に付随する素材。765面の既存記事(765-trend-1)と同一話題のため不採用。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

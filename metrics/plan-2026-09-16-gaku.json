@@ -1,0 +1,180 @@
+{
+ "decisions": {
+  "gaku-ios27-compatibility-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stock story ios-27-ipados-27(2026-09-15既報)と同一facts。新事実なし(対応完了等の進展もまだ報告されていない)"
+  },
+  "gaku-ribalaba-gashapon-2026-09": {
+   "action": "article",
+   "angle": "『学園アイドルマスター リバラバ！』ガシャポン新商品、Re;IRIS・Begrazia6人を9月第2週から順次発売",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "stock『リバラバ！2』(7月・別6キャラ)とは別商品。新規告知で新事実あり"
+  },
+  "gaku-tezuki-temari-figure-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stock gaku-miraimira-tsukimura-temari-2026(2026-09-15既報)と同一商品・同一予約開始告知。受注締切(11/11)は付随情報で当日トリガーでもなく新報性なし"
+  },
+  "gaku-after-school-namco-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "joint-other-11(学マス×TOURS After Schoolキャンペーンin namco)と同一施策(9/25開始・プロモカード7種)。付随のナムコ週替わりESPRESTO景品情報も同一PR TIMES発表内の記載で分割不要"
+  },
+  "gkmas-tsukimura-temari-ameagari-iris-figure-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "gaku-tezuki-temari-figure-2026と同一商品(報道媒体による後追い記事)。いずれも既報のため不採用"
+  },
+  "gakuen-2026-09-14-02-30-utc-ios-27-ipados-27": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "gaku-ios27-compatibility-2026と同一投稿・同一facts。stock既報かつ進展なし"
+  },
+  "gakuen-2026-09-14-10-00-utc-------------------------day1": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stock gaku-shirube-livetour-fukuoka-2026に配信チケット販売期間(9/21まで)・新曲「神かわいい」配信開始(9/6)とも既報。新事実なし"
+  },
+  "gakuen-2026-09-15-10-00-utc-----------mv-100": {
+   "action": "roundup",
+   "angle": "学マス楽曲MV再生数マイルストーンまとめ(『ねえ、言っちゃうよ。』100万再生)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日発表の他2曲マイルストーンと合わせ3件でroundup成立"
+  },
+  "gakuen-2026-09-15-10-15-utc-atmosphere-mv-100": {
+   "action": "roundup",
+   "angle": "学マス楽曲MV再生数マイルストーンまとめ(『Atmosphere』100万再生)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日発表の他2曲マイルストーンと合わせ3件でroundup成立"
+  },
+  "gakuen-2026-09-15-10-30-utc----------mv-300": {
+   "action": "roundup",
+   "angle": "学マス楽曲MV再生数マイルストーンまとめ(『みちなるひろがる』300万再生)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日発表の他2曲マイルストーンと合わせ3件でroundup成立"
+  },
+  "gakuen-2026-09-15------------2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "発信元はアトフェス(第三者物販企画)公式でgaku非公式。verify=unconfirmed・未確認・表示数も僅少で公式到達なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-ribalaba-gashapon-2026-09",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "『学園アイドルマスター リバラバ！』ガシャポン新商品、Re;IRIS・Begrazia6人を9月第2週から順次発売",
+    "lead_score": 20,
+    "dedup_key": "gaku-ribalaba-gashapon-2026-09",
+    "candidate_ids": [
+     "202609151837-watch-1"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "学マス楽曲MV再生数マイルストーンまとめ(『ねえ、言っちゃうよ。』100万再生)",
+    "lead_score": 0,
+    "dedup_key": "gakuen-2026-09-15-10-00-utc-----------mv-100",
+    "candidate_ids": [
+     "202609160231-grok-52",
+     "202609160231-grok-53",
+     "202609160231-grok-54"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-ios27-compatibility-2026",
+    "reason": "既報",
+    "note": "stock story ios-27-ipados-27(2026-09-15既報)と同一facts。新事実なし(対応完了等の進展もまだ報告されていない)"
+   },
+   {
+    "dedup_key": "gaku-tezuki-temari-figure-2026",
+    "reason": "既報",
+    "note": "stock gaku-miraimira-tsukimura-temari-2026(2026-09-15既報)と同一商品・同一予約開始告知。受注締切(11/11)は付随情報で当日トリガーでもなく新報性なし"
+   },
+   {
+    "dedup_key": "gaku-after-school-namco-2026",
+    "reason": "重複",
+    "note": "joint-other-11(学マス×TOURS After Schoolキャンペーンin namco)と同一施策(9/25開始・プロモカード7種)。付随のナムコ週替わりESPRESTO景品情報も同一PR TIMES発表内の記載で分割不要"
+   },
+   {
+    "dedup_key": "gkmas-tsukimura-temari-ameagari-iris-figure-2026",
+    "reason": "重複",
+    "note": "gaku-tezuki-temari-figure-2026と同一商品(報道媒体による後追い記事)。いずれも既報のため不採用"
+   },
+   {
+    "dedup_key": "gakuen-2026-09-14-02-30-utc-ios-27-ipados-27",
+    "reason": "既報",
+    "note": "gaku-ios27-compatibility-2026と同一投稿・同一facts。stock既報かつ進展なし"
+   },
+   {
+    "dedup_key": "gakuen-2026-09-14-10-00-utc-------------------------day1",
+    "reason": "既報",
+    "note": "stock gaku-shirube-livetour-fukuoka-2026に配信チケット販売期間(9/21まで)・新曲「神かわいい」配信開始(9/6)とも既報。新事実なし"
+   },
+   {
+    "dedup_key": "gakuen-2026-09-15------------2026",
+    "reason": "出典不足",
+    "note": "発信元はアトフェス(第三者物販企画)公式でgaku非公式。verify=unconfirmed・未確認・表示数も僅少で公式到達なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,79 @@
+{
+ "decisions": {
+  "kamizuru-cosmo-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "上水流宇宙(ヴイアラ)本人のバースデーライブに四条貴音がゲスト出演しただけ。主催はdsva側で765面の話題ではない(実測2026-09-10のヴイアラ×四条貴音と同型事故を回避)。"
+  },
+  "million14th-765as-solo-collection-10359": {
+   "action": "article",
+   "angle": "765PRO ALLSTARS新作ソロコレクションCD、ミリオン14thライブ会場の特設テントで9/19-20物販",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "価格・発売日はミリオン14thライブの既報(stock)と重複するが、品番LACZ-10359・物販日時・物販場所(特設テント)は新事実。"
+  },
+  "imas-radio-start-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-radio-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "IM＠S RADIO初回放送と同一話題。confirmed側のimas-radio-2026(続報予約)へ素材統合。"
+  },
+  "imas-radio-2026": {
+   "action": "article",
+   "angle": "IM＠S RADIO、本日20時に初回放送。視聴方法・パーソナリティ・隔週予定・アフタートーク",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕当日の続報予約。既報facts(パーソナリティ・スケジュール等)に加え、実際に放送が始まったこと自体が本日のニュース。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-million14th-765as-solo-collection-10359",
+    "brand": "765",
+    "rank": "small",
+    "angle": "765PRO ALLSTARS新作ソロコレクションCD、ミリオン14thライブ会場の特設テントで9/19-20物販",
+    "lead_score": 10,
+    "dedup_key": "million14th-765as-solo-collection-10359",
+    "candidate_ids": [
+     "202609150230-explore-0"
+    ]
+   },
+   {
+    "slug": "765-imas-radio-2026",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "IM＠S RADIO、本日20時に初回放送。視聴方法・パーソナリティ・隔週予定・アフタートーク",
+    "lead_score": 60,
+    "dedup_key": "imas-radio-2026",
+    "candidate_ids": [
+     "sched-2026-09-15-imas-radio-2026-開始",
+     "202609150230-explore-19"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "kamizuru-cosmo-birthday-live-2026",
+    "reason": "面違い",
+    "note": "上水流宇宙(ヴイアラ)本人のバースデーライブに四条貴音がゲスト出演しただけ。主催はdsva側で765面の話題ではない(実測2026-09-10のヴイアラ×四条貴音と同型事故を回避)。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

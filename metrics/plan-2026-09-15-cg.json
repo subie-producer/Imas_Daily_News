@@ -1,0 +1,194 @@
+{
+ "decisions": {
+  "cg-election-2026-special-exhibition": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/12-13開催の告知そのもの(公開9/7・facts も同一)。9/08〜9/13号で告知・開幕・最終日まで既に記事化済みで新事実なし。"
+  },
+  "cg-election-2026-mission-final": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ミッションチャレンジ9/14 23:59終了は9/14号「総選挙2026、投票券ミッションが本日23:59終了」で既報。新事実なし。"
+  },
+  "cg-toppa-withshot-restart-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "済んだ不具合の再開とお詫びで規程2の対象外(未確認出典)。POPUP SHOP終了日(9/16)は9/14号で既報済み。"
+  },
+  "cg-vote-2026-mission-end": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じミッションチャレンジ終了(9/14 23:59)の別ソース。9/14号で既報、新事実なし(cg-election-2026-mission-finalと同一事象)。"
+  },
+  "cg-toybox-novel-extra-final-2026": {
+   "action": "article",
+   "angle": "「池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る」トイボックス・エクストラが完結、最終話を公開",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/14号は「本日最終更新予定」の予告のみ。完結の確定と最終話公開・締めの言葉は新事実。"
+  },
+  "cg-vote-2026-special-exhibit": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "特別展示2日間の御礼ポスト。9/13号「本日21時まで」で最終日を既報済みで開催は終了、読者ができることが無い。"
+  },
+  "cg-vote-2026-seiyuu-support": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人のSNS投稿による特定アイドルへの応援。規程4・5により単体記事化しない。"
+  },
+  "cg-vote-2026-last-spurt-fan": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人の投稿(残票の使い道募集等)。個人名は伏せてあるが単体記事化の対象外で、ファン面(general/culture)向けの素材。"
+  },
+  "imascg-stage": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "期間内投稿0件。進行中ガシャ等も公式一次情報に到達できず確認不能(規程2)で候補化見送りと明記されている。"
+  },
+  "cinderella-girl-vote2026-schedule": {
+   "action": "article",
+   "angle": "総選挙2026、投票締切(9/18 23:59)まであと3日",
+   "rank": "medium",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "予約は締切3日前の正規トリガー(規程8)。190人参加・xR出演権が懸かる本紙面最大の継続企画の佳境。"
+  },
+  "cg-election-cheer-contest-2026": {
+   "action": "article",
+   "angle": "Xアートコンテスト「#CG総選挙アートコンテスト」、応募締切(9/18 23:59)まであと3日",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "予約は締切3日前の正規トリガー。ニコニコ企画は9/6締切済みのため対象外、現行のXコンテストのみ扱う。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-toybox-novel-extra-final-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「池袋晶葉とウサちゃんロボはオモチャ箱の夢を見る」トイボックス・エクストラが完結、最終話を公開",
+    "lead_score": 15,
+    "dedup_key": "cg-toybox-novel-extra-final-2026",
+    "candidate_ids": [
+     "202609150230-grok-22"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-girl-vote2026-schedule",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "総選挙2026、投票締切(9/18 23:59)まであと3日",
+    "lead_score": 65,
+    "dedup_key": "cinderella-girl-vote2026-schedule",
+    "candidate_ids": [
+     "sched-2026-09-15-cinderella-girl-vote2026-schedule-締切前"
+    ]
+   },
+   {
+    "slug": "cg-election-cheer-contest-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Xアートコンテスト「#CG総選挙アートコンテスト」、応募締切(9/18 23:59)まであと3日",
+    "lead_score": 10,
+    "dedup_key": "cg-election-cheer-contest-2026",
+    "candidate_ids": [
+     "sched-2026-09-15-cg-election-cheer-contest-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-election-2026-special-exhibition",
+    "reason": "既報",
+    "note": "9/12-13開催の告知そのもの(公開9/7・facts も同一)。9/08〜9/13号で告知・開幕・最終日まで既に記事化済みで新事実なし。"
+   },
+   {
+    "dedup_key": "cg-election-2026-mission-final",
+    "reason": "既報",
+    "note": "ミッションチャレンジ9/14 23:59終了は9/14号「総選挙2026、投票券ミッションが本日23:59終了」で既報。新事実なし。"
+   },
+   {
+    "dedup_key": "cg-toppa-withshot-restart-2026",
+    "reason": "その他",
+    "note": "済んだ不具合の再開とお詫びで規程2の対象外(未確認出典)。POPUP SHOP終了日(9/16)は9/14号で既報済み。"
+   },
+   {
+    "dedup_key": "cg-vote-2026-mission-end",
+    "reason": "既報",
+    "note": "同じミッションチャレンジ終了(9/14 23:59)の別ソース。9/14号で既報、新事実なし(cg-election-2026-mission-finalと同一事象)。"
+   },
+   {
+    "dedup_key": "cg-vote-2026-special-exhibit",
+    "reason": "既報",
+    "note": "特別展示2日間の御礼ポスト。9/13号「本日21時まで」で最終日を既報済みで開催は終了、読者ができることが無い。"
+   },
+   {
+    "dedup_key": "cg-vote-2026-seiyuu-support",
+    "reason": "個人の話題",
+    "note": "声優個人のSNS投稿による特定アイドルへの応援。規程4・5により単体記事化しない。"
+   },
+   {
+    "dedup_key": "cg-vote-2026-last-spurt-fan",
+    "reason": "個人の話題",
+    "note": "ファン個人の投稿(残票の使い道募集等)。個人名は伏せてあるが単体記事化の対象外で、ファン面(general/culture)向けの素材。"
+   },
+   {
+    "dedup_key": "imascg-stage",
+    "reason": "出典不足",
+    "note": "期間内投稿0件。進行中ガシャ等も公式一次情報に到達できず確認不能(規程2)で候補化見送りと明記されている。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

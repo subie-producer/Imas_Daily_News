@@ -277,5 +277,34 @@
   "src_candidate_id": "202609121836-watch-2",
   "event_date": "2026-12-01",
   "deadline": "2026-09-20"
+ },
+ {
+  "id": "sched-2026-09-20-million-14th-live-general-sale-second-2026-千秋楽",
+  "dedup_key": "million-14th-live-general-sale-second-2026",
+  "brand": "million",
+  "subject": "ミリオン14thLIVE DAY2(千秋楽)",
+  "kind": "千秋楽",
+  "note": "14thLIVE最終日を現地・配信で見られる日",
+  "reserved_on": "2026-09-15",
+  "title": "ミリオン14thLIVE 一般販売2次受付",
+  "url": "https://idolmaster-official.jp/live_event/million14th/ticket/",
+  "source_type": "公式",
+  "facts": [
+   "一般販売2次(先着)が2026年9月14日に更新された。",
+   "受付対象席種: 全席指定14,000円(税込)。",
+   "受付対象席種: 立見指定13,500円(税込)。",
+   "受付対象席種: ステージサイド席13,500円(税込)。",
+   "本受付ではアリーナ前方席および2026年9月20日(日)の全席指定席は取り扱わない。",
+   "立見指定は指定された位置での立見観覧となる。",
+   "ステージサイド席は、機材・会場設備などにより出演者、映像、演出などの一部が見えづらい可能性がある。",
+   "車いすエリア・身障者エリアの利用希望者は全席指定席を購入する。",
+   "受付URL: https://asobiticket2.asobistore.jp/receptions/0f7717d2-345a-4050-92d8-8c78333d12bb",
+   "受付期間: 2026年9月15日(火)18:00～各公演前日23:00まで",
+   "枚数制限: お一人様1公演につき2枚まで（複数公演申込可）。",
+   "先着順で、予定枚数に達し次第受付終了となる。"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609150230-explore-1"
  }
 ]

@@ -21,5 +21,35 @@
   "verify": "unconfirmed",
   "src_candidate_id": "202609140234-grok-18",
   "event_date": "2027-07-14"
+ },
+ {
+  "id": "sched-2027-07-14-sidem-11th-live-bluray-store-benefits-2026-発売",
+  "dedup_key": "sidem-11th-live-bluray-store-benefits-2026",
+  "brand": "sidem",
+  "subject": "SideM 11th LIVE Blu-ray発売",
+  "kind": "発売",
+  "note": "店舗特典付きBlu-rayを買える発売日",
+  "reserved_on": "2026-09-15",
+  "title": "SideM 11th STAGE LIVE Blu-ray店舗特典決定",
+  "url": "https://www.lantis.jp/sidem/extra/",
+  "source_type": "準公式",
+  "facts": [
+   "2027年7月14日に「THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～ LIVE Blu-ray」を発売する。",
+   "商品名：THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～ LIVE Blu-ray。",
+   "アーティスト：V.A.。",
+   "品番：LABX-18001~5（BD5枚組）。",
+   "価格：26,400円（10％税込）／24,000円（税抜）。",
+   "アニメイト特典：アクリルキーホルダー3種セット＆ミニフォト11種セット。対象ユニットはJupiter、Café Parade、C.FIRST。",
+   "Amazon特典：キャラファインマット2種セット。対象ユニットはAltessimo、High×Joker。",
+   "ゲーマーズ特典：マルチクロス3枚セット。対象ユニットはBeit、THE 虎牙道、もふもふえん。",
+   "ソフマップ・アニメガ特典：ソロアクリルコースター（76mm）＋ソロクリアミニ色紙セット。対象ユニットはW、F-LAGS、S.E.M。",
+   "タワーレコード特典：両面レプリカチケット。対象ユニットはFRAME、Legenders。",
+   "楽天ブックス特典：2L判ブロマイド8枚セット。対象ユニットはDRAMATIC STARS、彩、神速一魂。",
+   "店舗特典の絵柄には11th STAGE衣装「トランセンデントリルード」を着用したアイドルの等身イラストを使用する。"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609140734-explore-4",
+  "event_date": "2027-07-14"
  }
 ]

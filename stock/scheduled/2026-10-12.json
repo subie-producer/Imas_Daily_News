@@ -145,5 +145,36 @@
   "verify": "confirmed",
   "src_candidate_id": "202609122336-watch-1",
   "event_date": "2027-06-05"
+ },
+ {
+  "id": "sched-2026-10-12-joint-sidem-shiny-sparkle-showdown-2027-締切",
+  "dedup_key": "joint-sidem-shiny-sparkle-showdown-2027",
+  "brand": "joint",
+  "subject": "SideM×シャニマス合同ライブ プレミアム先行受付締切",
+  "kind": "締切",
+  "note": "アソビストアプレミアム先行抽選に申し込める最終日",
+  "reserved_on": "2026-09-15",
+  "title": "SideM×シャニマス合同ライブ「SPARKLE SHOWDOWN」開催決定",
+  "url": "https://www.famitsu.com/article/202609/87742",
+  "source_type": "報道",
+  "facts": [
+   "THE IDOLM@STER SideM × SHINY COLORS SPARKLE SHOWDOWNの開催が決定した。",
+   "公演は2027年6月5日（土）・6日（日）に開催される。",
+   "会場は神奈川県の横浜アリーナ。",
+   "両日とも16:00開場、17:30開演予定。",
+   "DAY1のSideM出演者はW：菊池勇成（蒼井悠介役）、山谷祥生（蒼井享介役）。",
+   "DAY1のSideM出演者はFRAME：熊谷健太郎（握野英雄役）、濱健人（木村龍役）、増元拓也（信玄誠司役）。",
+   "DAY1のSideM出演者はHigh×Joker：永塚拓馬（冬美旬役）、渡辺紘（榊夏来役）、白井悠介（若里春名役）、野上翔（伊瀬谷四季役）。",
+   "DAY1のSideM出演者は神速一魂：益山武明（紅井朱雀役）、深町寿成（黒野玄武役）。",
+   "DAY1のSideM出演者はC.FIRST：伊瀬結陸（天峰秀役）、宮﨑雅也（花園百々人役）。",
+   "DAY1のSHINY COLORS出演者は放課後クライマックスガールズ：河野ひより（小宮果穂役）、永井真里子（西城樹里役）、丸岡和佳奈（杜野凛世役）、涼本あきほ（有栖川夏葉役）。",
+   "DAY1のSHINY COLORS出演者はアルストロメリア：前川涼子（大崎甜花役）、芝崎典子（桑山千雪役）。",
+   "DAY1のSHINY COLORS出演者はシーズ：紫月杏朱彩（七草にちか役）、山根綺（緋田美琴役）。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609150230-explore-15",
+  "event_date": "2027-06-05",
+  "deadline": "2026-10-12"
  }
 ]

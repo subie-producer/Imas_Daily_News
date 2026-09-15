@@ -1,0 +1,453 @@
+{
+ "decisions": {
+  "shiny-autumn-maple-box-2026": {
+   "action": "article",
+   "angle": "新プロデュースイベント『オータム・メイプル・ボックス』が9/16開幕予告",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shinyson-mikoto-birthday-pack-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "対象パックは9/14 23:59終了。発行日06:00より前に終わっており規程12により本日ニュースにならない"
+  },
+  "sidem-shiny-sparkle-showdown-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "joint面がjoint-sidem-shiny-sparkle-showdown-2027として既に記事化済み(共同主催のため合同面が正)"
+  },
+  "shiny-solo-live-collection-cd-2026": {
+   "action": "article",
+   "angle": "MSP会場CD発売決定、品番・収録曲(クローバー杜野凛世Ver./大崎甘奈Ver.)が判明",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-official-shop-photo-panel-2026-09-18": {
+   "action": "article",
+   "angle": "公式ショップに新柄アイドルフォトパネル(真乃・灯織・めぐる)9/18発売",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-solo-collection-master-showpiece-cd-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-solo-live-collection-cd-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一CD発売情報(Lantis)の別ソースによる重複"
+  },
+  "shiny-solo-collection-master-showpiece-cd-video-benefit-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "CD・Blu-ray購入特典(ステッカー)は9/4・9/10に既報。本日分に新事実なし"
+  },
+  "shiny-solo-live-master-showpiece-goods-update-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "GOODSページ更新の内容はチケット価格の再掲のみ(8/26既報と一致)"
+  },
+  "shiny-style-collection-2026-vol1": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注期間・ラインナップは9/11に既報。本日分はタレントコメント紹介のみで新事実なし"
+  },
+  "sfp-solo-oh-my-god-mikoto-2026-09": {
+   "action": "article",
+   "angle": "ソロ歌唱モードに新曲『OH MY GOD』(緋田美琴)を追加",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sfp-kawaii-metamoru-1m-views-2026-09": {
+   "action": "article",
+   "angle": "『KAWAII♡めたもる交響曲』MVが100万再生を突破",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sfp-illumine-gacha-fantasy-sonare-another-2026-09": {
+   "action": "article",
+   "angle": "開催中のイルミネガシャ、『ファンテジィソナーレ』アナザー衣装(アルストロメリア)を紹介",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sfp-new-feature-teaser-2026-09-14": {
+   "action": "article",
+   "angle": "公式が近日の新機能追加を予告(詳細は後日)",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-producers-cup-8-5th-2026-10": {
+   "action": "article",
+   "angle": "8.5th Anniversary記念『プロデューサーズカップ』10/17-19開催予定",
+   "rank": "medium",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-new-idol-teaser-2026-09-16": {
+   "action": "article",
+   "angle": "近日登場のアイドルを9/16 15時にチラ見せ予告",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-new-idol-gacha-package-ending-soon-2026-09-14": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "ガシャ名・終了日時が本文になく事実を確認できない"
+  },
+  "shiny-bargain-gacha-ending-soon-2026-09-14": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "本文中の締切は9/13 23:59で既に終了済み(既報のトワコレ72hガシャと同一、規程12型の事故)"
+  },
+  "mv-100": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sfp-kawaii-metamoru-1m-views-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同MVの100万再生達成へのファン反応。個人アカウント名は出さずに公式告知記事へ統合"
+  },
+  "shiny-meguru-unused-motion-fan-2026-09-14": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人アカウントのファン動画。単体記事化不可、ファン文化まとめはbrand:general管轄"
+  },
+  "auto-69": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のファン創作・スクショの寄せ集め。brand:generalのrank:cultureまとめの管轄でshiny面対象外"
+  },
+  "shiny-smile-base-cafe-sporty-china-style-2026": {
+   "action": "article",
+   "angle": "SMILE BASEカフェ池袋店、本日千秋楽&受注限定グッズ締切23:59",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-msp-live-tickets-2026": {
+   "action": "article",
+   "angle": "MSPライブ現地チケット一般発売、本日23:59で受付終了",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-master-showpiece-cd-bluray-benefits-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-goods-voucher-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じMSP会場物販整理券の締切告知(CD/Blu-rayブース分)をグッズ整理券記事に統合"
+  },
+  "shiny-msp-goods-voucher-2026": {
+   "action": "article",
+   "angle": "MSP会場物販(グッズ/CD・Blu-ray)整理券抽選、本日23:59受付締切",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hbtk-september-mc-2026": {
+   "action": "article",
+   "angle": "『まったりHBTK』9/15放送回、めぐる役・峯田茉優さんと雛菜役・岡咲美保さんがゲスト出演",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-autumn-maple-box-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "新プロデュースイベント『オータム・メイプル・ボックス』が9/16開幕予告",
+    "lead_score": 20,
+    "dedup_key": "shiny-autumn-maple-box-2026",
+    "candidate_ids": [
+     "202609141235-explore-4"
+    ]
+   },
+   {
+    "slug": "shiny-solo-live-collection-cd-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "MSP会場CD発売決定、品番・収録曲(クローバー杜野凛世Ver./大崎甘奈Ver.)が判明",
+    "lead_score": 25,
+    "dedup_key": "shiny-solo-live-collection-cd-2026",
+    "candidate_ids": [
+     "202609142335-explore-8",
+     "202609150230-explore-4"
+    ]
+   },
+   {
+    "slug": "shiny-official-shop-photo-panel-2026-09-18",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "公式ショップに新柄アイドルフォトパネル(真乃・灯織・めぐる)9/18発売",
+    "lead_score": 10,
+    "dedup_key": "shiny-official-shop-photo-panel-2026-09-18",
+    "candidate_ids": [
+     "202609142335-explore-23"
+    ]
+   },
+   {
+    "slug": "shiny-sfp-solo-oh-my-god-mikoto-2026-09",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ソロ歌唱モードに新曲『OH MY GOD』(緋田美琴)を追加",
+    "lead_score": 10,
+    "dedup_key": "sfp-solo-oh-my-god-mikoto-2026-09",
+    "candidate_ids": [
+     "202609150230-grok-59"
+    ]
+   },
+   {
+    "slug": "shiny-sfp-kawaii-metamoru-1m-views-2026-09",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『KAWAII♡めたもる交響曲』MVが100万再生を突破",
+    "lead_score": 15,
+    "dedup_key": "sfp-kawaii-metamoru-1m-views-2026-09",
+    "candidate_ids": [
+     "202609150230-grok-60",
+     "202609150230-grok-67"
+    ]
+   },
+   {
+    "slug": "shiny-sfp-illumine-gacha-fantasy-sonare-another-2026-09",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "開催中のイルミネガシャ、『ファンテジィソナーレ』アナザー衣装(アルストロメリア)を紹介",
+    "lead_score": 5,
+    "dedup_key": "sfp-illumine-gacha-fantasy-sonare-another-2026-09",
+    "candidate_ids": [
+     "202609150230-grok-61"
+    ]
+   },
+   {
+    "slug": "shiny-sfp-new-feature-teaser-2026-09-14",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "公式が近日の新機能追加を予告(詳細は後日)",
+    "lead_score": 5,
+    "dedup_key": "sfp-new-feature-teaser-2026-09-14",
+    "candidate_ids": [
+     "202609150230-grok-62"
+    ]
+   },
+   {
+    "slug": "shiny-producers-cup-8-5th-2026-10",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "8.5th Anniversary記念『プロデューサーズカップ』10/17-19開催予定",
+    "lead_score": 65,
+    "dedup_key": "shiny-producers-cup-8-5th-2026-10",
+    "candidate_ids": [
+     "202609150230-grok-63"
+    ]
+   },
+   {
+    "slug": "shiny-new-idol-teaser-2026-09-16",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "近日登場のアイドルを9/16 15時にチラ見せ予告",
+    "lead_score": 15,
+    "dedup_key": "shiny-new-idol-teaser-2026-09-16",
+    "candidate_ids": [
+     "202609150230-grok-64"
+    ]
+   },
+   {
+    "slug": "shiny-smile-base-cafe-sporty-china-style-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "SMILE BASEカフェ池袋店、本日千秋楽&受注限定グッズ締切23:59",
+    "lead_score": 15,
+    "dedup_key": "shiny-smile-base-cafe-sporty-china-style-2026",
+    "candidate_ids": [
+     "sched-2026-09-15-shiny-smile-base-cafe-sporty-china-style-2026-千秋楽池袋",
+     "sched-2026-09-15-shiny-smile-base-cafe-sporty-china-style-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-msp-live-tickets-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "MSPライブ現地チケット一般発売、本日23:59で受付終了",
+    "lead_score": 30,
+    "dedup_key": "shiny-msp-live-tickets-2026",
+    "candidate_ids": [
+     "sched-2026-09-15-shiny-msp-live-tickets-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-msp-goods-voucher-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "MSP会場物販(グッズ/CD・Blu-ray)整理券抽選、本日23:59受付締切",
+    "lead_score": 20,
+    "dedup_key": "shiny-msp-goods-voucher-2026",
+    "candidate_ids": [
+     "sched-2026-09-15-shiny-msp-goods-voucher-2026-締切",
+     "sched-2026-09-15-shiny-master-showpiece-cd-bluray-benefits-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-hbtk-september-mc-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『まったりHBTK』9/15放送回、めぐる役・峯田茉優さんと雛菜役・岡咲美保さんがゲスト出演",
+    "lead_score": 10,
+    "dedup_key": "shiny-hbtk-september-mc-2026",
+    "candidate_ids": [
+     "sched-2026-09-15-shiny-hbtk-september-mc-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shinyson-mikoto-birthday-pack-2026",
+    "reason": "その他",
+    "note": "対象パックは9/14 23:59終了。発行日06:00より前に終わっており規程12により本日ニュースにならない"
+   },
+   {
+    "dedup_key": "sidem-shiny-sparkle-showdown-2027",
+    "reason": "重複",
+    "note": "joint面がjoint-sidem-shiny-sparkle-showdown-2027として既に記事化済み(共同主催のため合同面が正)"
+   },
+   {
+    "dedup_key": "shiny-solo-collection-master-showpiece-cd-video-benefit-2026",
+    "reason": "既報",
+    "note": "CD・Blu-ray購入特典(ステッカー)は9/4・9/10に既報。本日分に新事実なし"
+   },
+   {
+    "dedup_key": "shiny-solo-live-master-showpiece-goods-update-2026",
+    "reason": "既報",
+    "note": "GOODSページ更新の内容はチケット価格の再掲のみ(8/26既報と一致)"
+   },
+   {
+    "dedup_key": "shiny-style-collection-2026-vol1",
+    "reason": "既報",
+    "note": "受注期間・ラインナップは9/11に既報。本日分はタレントコメント紹介のみで新事実なし"
+   },
+   {
+    "dedup_key": "shiny-new-idol-gacha-package-ending-soon-2026-09-14",
+    "reason": "出典不足",
+    "note": "ガシャ名・終了日時が本文になく事実を確認できない"
+   },
+   {
+    "dedup_key": "shiny-bargain-gacha-ending-soon-2026-09-14",
+    "reason": "その他",
+    "note": "本文中の締切は9/13 23:59で既に終了済み(既報のトワコレ72hガシャと同一、規程12型の事故)"
+   },
+   {
+    "dedup_key": "shiny-meguru-unused-motion-fan-2026-09-14",
+    "reason": "個人の話題",
+    "note": "個人アカウントのファン動画。単体記事化不可、ファン文化まとめはbrand:general管轄"
+   },
+   {
+    "dedup_key": "auto-69",
+    "reason": "個人の話題",
+    "note": "個人のファン創作・スクショの寄せ集め。brand:generalのrank:cultureまとめの管轄でshiny面対象外"
+   }
+  ],
+  "cross_brand": []
+ }
+}

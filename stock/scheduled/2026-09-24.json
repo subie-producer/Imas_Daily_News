@@ -1,39 +1,69 @@
 [
-  {
-    "id": "sched-2026-09-24-sidem-royal-chess-lounge-2026-終了",
-    "dedup_key": "sidem-royal-chess-lounge-2026",
-    "brand": "sidem",
-    "subject": "SideM×「Royal Chess Lounge」コラボカフェ心斎橋店",
-    "kind": "終了",
-    "note": "心斎橋店開催終了",
-    "reserved_on": "2026-08-26",
-    "facts": [
-      "「Royal Chess Lounge」コラボカフェの心斎橋店(SMILE BASE CAFE)は9月12日〜9月24日開催"
-    ],
-    "title": "Royal Chess Lounge、心斎橋店終了",
-    "url": "https://idolmaster-official.jp/news/01_19442",
-    "source_type": "準公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608251235-claude-13",
-    "event_date": "2026-09-24"
-  },
-  {
-    "id": "sched-2026-09-24-765-never-end-idol-bluray-2026-締切前",
-    "dedup_key": "765-never-end-idol-bluray-2026",
-    "brand": "765",
-    "subject": "765PRO ALLSTARSライブBlu-ray「NEVER END IDOL!!!!!!!!!!!!!」予約締切",
-    "kind": "締切前",
-    "note": "予約締切3日前",
-    "title": "765ASライブ映像、11月25日発売",
-    "url": "https://shop.asobistore.jp/products/detail/225029-00-00-00",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608290225-claude-46",
-    "event_date": "2026-11-25",
-    "deadline": "2026-09-27",
-    "facts": [
-      "アソビストア特装版は2026年11月25日発売、39,050円(税込)、予約受付は9月27日まで"
-    ],
-    "reserved_on": "2026-08-29"
-  }
+ {
+  "id": "sched-2026-09-24-sidem-royal-chess-lounge-2026-終了",
+  "dedup_key": "sidem-royal-chess-lounge-2026",
+  "brand": "sidem",
+  "subject": "SideM×「Royal Chess Lounge」コラボカフェ心斎橋店",
+  "kind": "終了",
+  "note": "心斎橋店開催終了",
+  "reserved_on": "2026-08-26",
+  "facts": [
+   "「Royal Chess Lounge」コラボカフェの心斎橋店(SMILE BASE CAFE)は9月12日〜9月24日開催"
+  ],
+  "title": "Royal Chess Lounge、心斎橋店終了",
+  "url": "https://idolmaster-official.jp/news/01_19442",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608251235-claude-13",
+  "event_date": "2026-09-24"
+ },
+ {
+  "id": "sched-2026-09-24-765-never-end-idol-bluray-2026-締切前",
+  "dedup_key": "765-never-end-idol-bluray-2026",
+  "brand": "765",
+  "subject": "765PRO ALLSTARSライブBlu-ray「NEVER END IDOL!!!!!!!!!!!!!」予約締切",
+  "kind": "締切前",
+  "note": "予約締切3日前",
+  "title": "765ASライブ映像、11月25日発売",
+  "url": "https://shop.asobistore.jp/products/detail/225029-00-00-00",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608290225-claude-46",
+  "event_date": "2026-11-25",
+  "deadline": "2026-09-27",
+  "facts": [
+   "アソビストア特装版は2026年11月25日発売、39,050円(税込)、予約受付は9月27日まで"
+  ],
+  "reserved_on": "2026-08-29"
+ },
+ {
+  "id": "sched-2026-09-24-gaku-hif-15m-produce-campaign-2026-終了",
+  "dedup_key": "gaku-hif-15m-produce-campaign-2026",
+  "brand": "gaku",
+  "subject": "H.I.F1500万回突破記念キャンペーン終了",
+  "kind": "終了",
+  "note": "プロデュース応援キャンペーンに参加できる最終日",
+  "reserved_on": "2026-09-15",
+  "title": "H.I.F挑戦1,500万回突破記念プロデュース応援キャンペーン",
+  "url": "https://x.com/gkmas_official",
+  "source_type": "公式",
+  "facts": [
+   "H.I.F挑戦1,500万回突破記念としてプロデュース応援キャンペーンを開催中。",
+   "プロデュースで応援コインを集めると、サポートセレクションチケットなどを獲得できる。",
+   "開催期間: 9/24(木)10:59まで（予定）。",
+   "エンゲージメント: 高",
+   "H.I.F挑戦1,500万回突破記念としてジュエル2,500個をプレゼント。",
+   "開催期間: 10/1(木)4:59まで（予定）。",
+   "学マス公式グッズとして「スナップシリーズ」を受注中。",
+   "受注対象として花海咲季、月村手毬、藤田ことね、有村麻央、葛城リーリヤ、倉本千奈、紫雲清夏、篠澤広、姫崎莉波、秦谷美鈴、十王星南、雨夜燕が案内されている。",
+   "受注期間: 9月13日(日)まで。",
+   "販売先としてアソビストアが案内されている。",
+   "言及アイドル: 花海咲季、月村手毬、藤田ことね、有村麻央、葛城リーリヤ、倉本千奈、紫雲清夏、篠澤広、姫崎莉波、秦谷美鈴、十王星南、雨夜燕",
+   "学マス標ツアー福岡公演の配信視聴チケットを販売中。"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609140734-explore-8",
+  "deadline": "2026-09-24"
+ }
 ]

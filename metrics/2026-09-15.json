@@ -1,0 +1,154 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-15T02:30:44+09:00",
+   "edition": "2026-09-15",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 344,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 0,
+    "explore:million": 3,
+    "explore:shiny": 3,
+    "explore:sidem": 5,
+    "explore:gakuen": 2,
+    "explore:dsva": 1,
+    "explore:joint-other": 1,
+    "explore:trend": 5,
+    "grok:765as": 0,
+    "grok:cinderella": 9,
+    "grok:million": 0,
+    "grok:shiny": 12,
+    "grok:sidem": 9,
+    "grok:gakuen": 10,
+    "grok:dsva": 10,
+    "grok:joint-other": 8,
+    "grok:trend": 0
+   },
+   "normalized": 75,
+   "added": 70,
+   "verify": {
+    "confirmed": 17,
+    "unconfirmed": 45,
+    "failed": 13
+   },
+   "duration_s": 1806
+  },
+  {
+   "at": "2026-09-15T12:59:09+09:00",
+   "edition": "2026-09-16",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 0,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 344,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 2,
+      "deferred": 0
+     }
+    },
+    "new": 2,
+    "facted": 2,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 2,
+    "explore:shiny": 1,
+    "explore:sidem": 4,
+    "explore:gakuen": 3,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 4
+   },
+   "normalized": 12,
+   "added": 12,
+   "verify": {
+    "confirmed": 7,
+    "unconfirmed": 5,
+    "failed": 0
+   },
+   "duration_s": 301
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-15T12:53:57+09:00",
+   "edition": "2026-09-15",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 43,
+   "written": 34,
+   "roundups": 0,
+   "dropped": 1,
+   "coverage": {
+    "subjects": 119,
+    "covered": 119,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "gaku-contest-season-52-2026"
+   ],
+   "stages_min": {
+    "執筆": 8.496892229715984,
+    "組版": 9.181198863188426,
+    "校閲": 2.2131375908851623,
+    "校閲1波": 2.2131375908851623
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "sidem-solo-collection-04-jumbled-01-2026",
+    "shiny-autumn-maple-box-2026",
+    "shiny-producers-cup-8-5th-2026-10",
+    "shiny-new-idol-teaser-2026-09-16",
+    "gaku-ribaraba-gashapon-2026",
+    "gaku-chinatsu-wonder-scale-2026",
+    "cg-cinderella-girl-vote2026-schedule",
+    "cg-election-cheer-contest-2026"
+   ],
+   "duration_s": 5318
+  }
+ ]
+}

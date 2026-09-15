@@ -1,0 +1,276 @@
+{
+ "decisions": {
+  "gaku-chinatsu-wonder-scale-2026": {
+   "action": "article",
+   "angle": "倉本千奈[Wonder Scale]フィギュア化、PLUM/PMOAより10月発売・直販限定豪華版も",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-prize-september-october-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "BNA公式未到達の集約サイトのみが出典。掲載6商品の大半(9/3・9/10開始分)は発行日時点で既に始まっており新報性が無い"
+  },
+  "gaku-hif-15m-produce-campaign-2026": {
+   "action": "article",
+   "angle": "H.I.F挑戦1,500万回突破記念、プロデュース応援キャンペーンとジュエル2,500個プレゼントの開催期間が判明",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(stock: gaku-hif-15m-milestone-campaign-2026)の続報。具体的な開催期間(9/24・10/1締切)が新事実"
+  },
+  "gaku-weekend-citron-hatsuboshi-store-2026": {
+   "action": "article",
+   "angle": "ハツボシストア新テーマ「ウィークエンドシトロン」(藤田ことね担当)、9/25オープンでグッズ発売・入店制限も告知",
+   "rank": "medium",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当事者公式アカウント発信、具体的な開店日・グッズ・入店制限日程がそろう新規告知"
+  },
+  "gaku-ribaraba-gashapon-2026": {
+   "action": "article",
+   "angle": "ガシャポン「学園アイドルマスター リバラバ！」がガシャポンのデパートに掲載、400円で入手可能に",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報のリバラバ2(7月予約分)とは別名称の掲載。準公式(バンダイナムコアミューズメント)ページが出典"
+  },
+  "gaku-miraimira-tsukimura-temari-2026": {
+   "action": "article",
+   "angle": "MiraiMira「月村手毬 雨上がりのアイリス 特訓前Ver.」1/7フィギュア予約開始、22,000円・受注締切11/11",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gaku-temari-ameagari-iris-figure-2026を統合。発売月は公式(idolmaster-official.jp)の2027年5月を採用"
+  },
+  "gaku-ios27-compatibility-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "ios-27-ipados-27",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一のiOS27/iPadOS27動作確認告知。同梱のスナップシリーズ言及は9/13で終了済みの既報"
+  },
+  "gaku-temari-ameagari-iris-figure-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-miraimira-tsukimura-temari-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一フィギュアの二次情報。公式ソースの主題へ統合し、発売月の齟齬(6月表記)は参考情報に留める"
+  },
+  "contest-season-52-2026": {
+   "action": "article",
+   "angle": "「コンテストシーズン52」開催を公式Xで告知",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同素材内の4コマ漫画・H.I.Fキャンペーン言及は他主題と重複するため扱わない"
+  },
+  "day1": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信視聴チケット期間・DAY1新曲「神かわいい」は既報(stock: gaku-shirube-livetour-fukuoka-2026)と同一事実、新事実なし"
+  },
+  "ios-27-ipados-27": {
+   "action": "article",
+   "angle": "iOS 27/iPadOS 27配信、学マス公式が動作確認中としアップデートに注意喚起",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gaku-ios27-compatibility-2026を統合(同一告知の二次情報)。公式Xが一次ソース"
+  },
+  "auto-42": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "スナップシリーズ受注最終日は9/13で発行日(9/15)には終了済み。既報(stock: gaku-snap-series-2026)と同一"
+  },
+  "fa": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "二次創作の傾向紹介は規程4例外によりrank:culture(general面)でまとめる話題であり、gaku面の対象外"
+  },
+  "auto-49": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のファン準備報告でfan-culture(general/culture)の対象。トレンド入り等の裏付けも確認できず"
+  },
+  "gaku-shirube-iwate-goods-2026": {
+   "action": "article",
+   "angle": "学マス標ツアー岩手公演、会場物販整理券の当落発表が本日13時から",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(結果発表日トリガー)、規程8に合致"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-chinatsu-wonder-scale-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "倉本千奈[Wonder Scale]フィギュア化、PLUM/PMOAより10月発売・直販限定豪華版も",
+    "lead_score": 8,
+    "dedup_key": "gaku-chinatsu-wonder-scale-2026",
+    "candidate_ids": [
+     "202609140734-explore-6"
+    ]
+   },
+   {
+    "slug": "gaku-hif-15m-produce-campaign-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "H.I.F挑戦1,500万回突破記念、プロデュース応援キャンペーンとジュエル2,500個プレゼントの開催期間が判明",
+    "lead_score": 10,
+    "dedup_key": "gaku-hif-15m-produce-campaign-2026",
+    "candidate_ids": [
+     "202609140734-explore-8"
+    ]
+   },
+   {
+    "slug": "gaku-weekend-citron-hatsuboshi-store-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "ハツボシストア新テーマ「ウィークエンドシトロン」(藤田ことね担当)、9/25オープンでグッズ発売・入店制限も告知",
+    "lead_score": 65,
+    "dedup_key": "gaku-weekend-citron-hatsuboshi-store-2026",
+    "candidate_ids": [
+     "202609140734-explore-11"
+    ]
+   },
+   {
+    "slug": "gaku-ribaraba-gashapon-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ガシャポン「学園アイドルマスター リバラバ！」がガシャポンのデパートに掲載、400円で入手可能に",
+    "lead_score": 8,
+    "dedup_key": "gaku-ribaraba-gashapon-2026",
+    "candidate_ids": [
+     "202609140734-explore-12"
+    ]
+   },
+   {
+    "slug": "gaku-miraimira-tsukimura-temari-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "MiraiMira「月村手毬 雨上がりのアイリス 特訓前Ver.」1/7フィギュア予約開始、22,000円・受注締切11/11",
+    "lead_score": 25,
+    "dedup_key": "gaku-miraimira-tsukimura-temari-2026",
+    "candidate_ids": [
+     "202609141235-watch-1",
+     "202609141835-explore-9"
+    ]
+   },
+   {
+    "slug": "gaku-contest-season-52-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「コンテストシーズン52」開催を公式Xで告知",
+    "lead_score": 8,
+    "dedup_key": "contest-season-52-2026",
+    "candidate_ids": [
+     "202609142335-explore-15"
+    ]
+   },
+   {
+    "slug": "gaku-ios-27-ipados-27",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "iOS 27/iPadOS 27配信、学マス公式が動作確認中としアップデートに注意喚起",
+    "lead_score": 30,
+    "dedup_key": "ios-27-ipados-27",
+    "candidate_ids": [
+     "202609150230-grok-41",
+     "202609141235-explore-15"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-iwate-goods-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス標ツアー岩手公演、会場物販整理券の当落発表が本日13時から",
+    "lead_score": 15,
+    "dedup_key": "gaku-shirube-iwate-goods-2026",
+    "candidate_ids": [
+     "sched-2026-09-15-gaku-shirube-iwate-goods-2026-結果"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-prize-september-october-2026",
+    "reason": "出典不足",
+    "note": "BNA公式未到達の集約サイトのみが出典。掲載6商品の大半(9/3・9/10開始分)は発行日時点で既に始まっており新報性が無い"
+   },
+   {
+    "dedup_key": "day1",
+    "reason": "既報",
+    "note": "配信視聴チケット期間・DAY1新曲「神かわいい」は既報(stock: gaku-shirube-livetour-fukuoka-2026)と同一事実、新事実なし"
+   },
+   {
+    "dedup_key": "auto-42",
+    "reason": "既報",
+    "note": "スナップシリーズ受注最終日は9/13で発行日(9/15)には終了済み。既報(stock: gaku-snap-series-2026)と同一"
+   },
+   {
+    "dedup_key": "fa",
+    "reason": "面違い",
+    "note": "二次創作の傾向紹介は規程4例外によりrank:culture(general面)でまとめる話題であり、gaku面の対象外"
+   },
+   {
+    "dedup_key": "auto-49",
+    "reason": "面違い",
+    "note": "個人のファン準備報告でfan-culture(general/culture)の対象。トレンド入り等の裏付けも確認できず"
+   }
+  ],
+  "cross_brand": []
+ }
+}

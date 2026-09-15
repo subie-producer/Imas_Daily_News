@@ -1,0 +1,224 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "(対象の記事を指していないためコメント扱い) digestの『明日』の行にslugs（記事リンク）が欠落している。2件のイベント情報が登場しているが、記事へのリンク情報がない",
+   "quote": "- label: 明日\n  rows:\n  - k: 終\n    t: TOPPA!!!BASE千秋楽\n    d: ポップアップショップ最終日\n    brand: cg\n  - k: 売\n    t: HOPEFUL FE@THERS発売\n    d: シャニマスCD3形態発売\n    brand: shiny",
+   "rule_id": "R1",
+   "repair": "none",
+   "fact_ids": [],
+   "expected": "digestの各行にslugs値が必要。該当する記事が存在する場合は記事のslugを追加、存在しない場合は行全体を削除する",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "候補に記事化相当の話題が複数存在するが紙面に漏れている。ただし指定通り、別の担当の判断で落とされた可能性があるためコメントのみ。該当話題例：学マスの新商品紹介（フィギュア・ガシャポン・プライズ等）、SideM JOYPOLIS 3開始、シンデレラガール総選挙特別展示など",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-sidem-315-night.md",
+   "issue": "見出しの『9月』が title_fact_ids に記載されていない。見出し『315プロNight! 9月のおたより募集中』の『9月』は candidate F3『9月パーソナリティ』から導出されるはずだが、title_fact_ids は『F2』のみで F3 への参照がない。ニコニコチャンネルで『9月11日放送』『パーソナリティは仲村宗悟さん・小林大紀さん・浦尾岳大さん』と確認可能な事実だが、frontmatter 記録が不完全。修正: title_fact_ids を ['F2', 'F3'] に更新。",
+   "scope": "article:2026-09-15-sidem-315-night.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-sidem-315-night.md",
+   "issue": "frontmatter に event_date が記載されていない。sources の label『アイドルマスター SideM ラジオ 315プロNight!（2026-09-11）』に日付が明記され、ニコニコチャンネルでも『9月11日の放送』と確認されているが、記事の event_date フィールドが欠落。鮮度・年管理のため必須。修正: event_date: 2026-09-11 を追加。",
+   "scope": "article:2026-09-15-sidem-315-night.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-sidem-315-night.md",
+   "issue": "sources の3番目『アイドルマスター SideM ラジオ 315プロNight!』の type が『未確認』と記載されているが、URL (https://ch.nicovideo.jp/sidem) はニコニコ公式チャンネルであり『公式』に分類すべき。sources に記載の準公式（ランティス）と合わせて、公式情報源が確認される。修正: type を『公式』に変更。",
+   "scope": "article:2026-09-15-sidem-315-night.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-765-imas-radio-2026.md",
+   "issue": "分量不足。rank: lead として目安下限 1000 字に対し、現在の本文は約 150 字。公式サイトに記載される配信 URL、メンバーシップ登録方法、メール・ファンアート募集などを追加することで充実させられる余地がある。",
+   "scope": "article:2026-09-15-765-imas-radio-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-765-imas-radio-2026.md",
+   "issue": "candidate_ids の不完全性。記事が候補 ID 'sched-2026-09-15-imas-radio-2026-開始' を参照しているが、候補ファイルに見当たらない。また、本文第 2 段の根拠コメント 'F11' が候補 202609150230-explore-19 に存在しない（facts は F0-F10 のみ）。根拠コメントの番号付けまたは candidate_ids の完全性を確認すること。",
+   "scope": "article:2026-09-15-765-imas-radio-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-dsva-05-be357f.md",
+   "issue": "分量が小ぶり。rank: small の下限 250字に対し、見出し・リード・本文あわせて約 250字で境界線上。候補に記載の開催時間（灯里愛夏 10月3日 10:00、上水流宇宙/レトラ 10月4日 10:00）や当落発表日（9月18日予定）などを拾えば記事にボリュームが出る余地あり。ただしランク分量としては許容範囲内",
+   "scope": "article:2026-09-15-dsva-05-be357f.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-dsva-code-vein-7.md",
+   "issue": "分量不足。rank: small で 250字以上必要だが、本文は約110字。候補の facts に視聴プラットフォーム・会場・視聴開始時刻などの情報がないため、記事に拾える情報はすべて拾われている。水増しは不可。",
+   "scope": "article:2026-09-15-dsva-code-vein-7.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-dsva-how-to-fish-2026.md",
+   "issue": "分量不足: rank: small での下限 250字に対して、本文は約110字（Markdown 整形後）。候補の facts から拾える情報として、配信時間帯の詳細（「20時開始」で「何時終了予定か」は candidates に記載なし）、ゲームのジャンル・内容説明、ライバーアイドル3人のプロフィール要素などが出典に存在する場合は補足できます。ただし、現状の短さが記事として致命的ではない場合は短報として容認可能です",
+   "scope": "article:2026-09-15-dsva-how-to-fish-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-dsva-karaage.md",
+   "issue": "分量不足: rank: small は下限250字ですが、本文は約89字で半分以下です。出典（X投稿・TikTok）には「いいね188/リポスト63」などのエンゲージメント情報が記載されていますが、活用されていません。ただし、ショート動画自体の詳細情報（尺、内容等）は出典に無く、水増しは推奨されません。短報としての分量に留める場合はこのままでも許容できますが、来ターンの短報・定常情報（rank: roundup）記事との分量バランスを確認してください。",
+   "scope": "article:2026-09-15-dsva-karaage.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-gaku-hif-15m-produce-campaign-2026.md",
+   "issue": "分量不足: rank=small で下限 250字に対し本文が約60字。candidates の facts に記載されている開催期間（応援コイン配信は9/24 10:59まで、ジュエルプレゼントは10/1 4:59まで）を追加すれば、読者に実用的な情報が増える",
+   "scope": "article:2026-09-15-gaku-hif-15m-produce-campaign-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-gaku-ios-27-ipados-27.md",
+   "issue": "分量不足: rank: small（下限250字）に対して本文が187字（lede除く）。出典の X ポストにさらに記述がないか確認してください。",
+   "scope": "article:2026-09-15-gaku-ios-27-ipados-27.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-gaku-weekend-citron-hatsuboshi-store-2026.md",
+   "issue": "表記ゆれ: 価格表記が「2万4,700円」と「24,700円」で統一されていない。本文段落2では「同2万4,700円」、lede では確認できませんが、統一した方が読みやすい。",
+   "scope": "article:2026-09-15-gaku-weekend-citron-hatsuboshi-store-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-joint-akizuki-ryo-birthday-2026.md",
+   "issue": "分量不足：rank: small で下限は 250 字ですが、記事は 147 字（lede 41 字＋段落1 54 字＋段落2 52 字）。出典の candidates に記載されているチャンネル情報（アイドルマスターチャンネル）、YouTube Shorts の専用 URL、再生数・高評価数、秋月涼のアイドル名鑑プロフィールリンクなどを拾えば分量は埋まるはず。ただし単なる数字の羅列ではなく、読者向けの文脈を付けて追加すること",
+   "scope": "article:2026-09-15-joint-akizuki-ryo-birthday-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-million-milishita-song-for-you-vol-78-ami-2026.md",
+   "issue": "分量不足: rank: small の下限目安250字に対し、本文が約50字。candidates の facts に「ガシャは2026年9月18日（金）14:59まで。」という期限情報も記載されているため、拾えば分量を増やせる。ただし短報としての分量は規程では許容。",
+   "scope": "article:2026-09-15-million-milishita-song-for-you-vol-78-ami-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-shiny-hbtk-september-mc-2026.md",
+   "issue": "frontmatter の candidate_ids が実際の候補を指していない。記載値 'sched-2026-09-15-shiny-hbtk-september-mc-2026-開始' はファイルとして存在せず、実際の候補は 202609100228-grok-106（2026-09-10.json 内）。ただし sources に正確な URL が記載されているため、出典隠しではなくメタデータの不整合に限定される",
+   "scope": "article:2026-09-15-shiny-hbtk-september-mc-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-shiny-hbtk-september-mc-2026.md",
+   "issue": "本文が短い。rank: small の下限は 250 字だが、記事は約 120 字。出典には『おたよりは 9/10 頃までに』などの追加情報があるが、記事に記載されていない。当日トリガー（本日 23 時放送開始）の短報として許容できる分量だが、必要に応じて出典から詳細を補足することで改善可能",
+   "scope": "article:2026-09-15-shiny-hbtk-september-mc-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-shiny-msp-goods-voucher-2026.md",
+   "issue": "frontmatter の candidate_ids（sched-2026-09-15-shiny-msp-goods-voucher-2026-締切, sched-2026-09-15-shiny-master-showpiece-cd-bluray-benefits-2026-締切）が candidates/2026-09-15.json に存在しない。根拠の追跡ができないため、frontmatter の再確認を推奨。ただし sources は公開ページで確認でき、記事の事実は sources で支持されているため、公開に問題はない。",
+   "scope": "article:2026-09-15-shiny-msp-goods-voucher-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-shiny-msp-live-tickets-2026.md",
+   "issue": "candidate_ids のフォーマットが実装形式と一致していません。指定された ID（sched-2026-09-15-shiny-msp-live-tickets-2026-締切）は候補ファイルに見つかりません。実装されている形式は 202609140734-explore-0 のようなタイムスタンプ形式です。このため根拠の詳細検証ができていませんが、sources に正しい公式ニュースが記載されており、記事の内容は既報台帳（stories-before-2026-09-15.yml）で確認できるため、ブロック対象にはしていません。ただし、今後の記事では候補 ID の形式を正確に指定してください。",
+   "scope": "article:2026-09-15-shiny-msp-live-tickets-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-shiny-official-shop-photo-panel-2026-09-18.md",
+   "issue": "分量不足（rank:small 下限250字に対し本文114字）。出典では商品の素材・仕様を詳しく説明しており、シャイニーカラーズの新柄フォトパネルという商品の背景を補足すれば下限に達します",
+   "scope": "article:2026-09-15-shiny-official-shop-photo-panel-2026-09-18.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-shiny-sfp-new-feature-teaser-2026-09-14.md",
+   "issue": "分量不足：rank:small に対して本文が約60字（下限250字の大幅下回り）。ただし予告段階の短報として妥当、またブロック項目ではない",
+   "scope": "article:2026-09-15-shiny-sfp-new-feature-teaser-2026-09-14.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-shiny-sfp-solo-oh-my-god-mikoto-2026-09.md",
+   "issue": "分量不足：rank=small(下限250字)に対し本文99字。候補ファイルにゲーム内告知ページのURLが無いと記載されているため、sources に追加の公式出典があるか確認し、記事を拡張可能か検討してください。",
+   "scope": "article:2026-09-15-shiny-sfp-solo-oh-my-god-mikoto-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-shiny-smile-base-cafe-sporty-china-style-2026.md",
+   "issue": "candidate_ids が candidates/2026-09-15.json に見つかりません。frontmatter で指定された `sched-2026-09-15-shiny-smile-base-cafe-sporty-china-style-2026-千秋楽池袋` と `sched-2026-09-15-shiny-smile-base-cafe-sporty-china-style-2026-締切` は候補ファイルに存在しませんが、記事の全事実が sources に直接記載された SMILE BASE 公式 URL (https://smilebase.co.jp/event/12438/) で確認できるため、校閲上の『出典隠し』『出典不明』には該当しません。ただし、候補生成プロセスに不正があった可能性があります。",
+   "scope": "article:2026-09-15-shiny-smile-base-cafe-sporty-china-style-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-shiny-solo-live-collection-cd-2026.md",
+   "issue": "段落1の表現「シャイニーカラーズ名義の」は不自然。「シャイニーカラーズの」または「シャイニーカラーズによる」の方が自然な日本語です。",
+   "scope": "article:2026-09-15-shiny-solo-live-collection-cd-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-sidem-11th-live-bluray-store-benefits-2026.md",
+   "issue": "frontmatter の candidate_ids に記載された 202609140734-explore-4 が見つかりません。実際には 202609140234-explore-9 が対応する候補と思われます。ID の誤りを確認し、正しい候補 ID に修正してください。",
+   "scope": "article:2026-09-15-sidem-11th-live-bluray-store-benefits-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-15-sidem-11th-live-bluray-store-benefits-2026.md",
+   "issue": "event_date が 2027-07-14（Blu-ray発売日）に設定されていますが、記事の出来事の日は 2026-09-12（店舗特典の案内日）です。メタデータの整合性のため、event_date を 2026-09-12 に修正することが推奨されます。",
+   "scope": "article:2026-09-15-sidem-11th-live-bluray-store-benefits-2026.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-15-765-imas-radio-2026.md",
+  "article:2026-09-15-765-million14th-765as-solo-collection-10359.md",
+  "article:2026-09-15-cg-cinderella-girl-vote2026-schedule.md",
+  "article:2026-09-15-cg-election-cheer-contest-2026.md",
+  "article:2026-09-15-cg-toybox-novel-extra-final-2026.md",
+  "article:2026-09-15-dsva-05-be357f.md",
+  "article:2026-09-15-dsva-code-vein-7.md",
+  "article:2026-09-15-dsva-how-to-fish-2026.md",
+  "article:2026-09-15-dsva-karaage.md",
+  "article:2026-09-15-gaku-contest-season-52-2026.md",
+  "article:2026-09-15-gaku-hif-15m-produce-campaign-2026.md",
+  "article:2026-09-15-gaku-ios-27-ipados-27.md",
+  "article:2026-09-15-gaku-miraimira-tsukimura-temari-2026.md",
+  "article:2026-09-15-gaku-shirube-iwate-goods-2026.md",
+  "article:2026-09-15-gaku-weekend-citron-hatsuboshi-store-2026.md",
+  "article:2026-09-15-joint-akizuki-ryo-birthday-2026.md",
+  "article:2026-09-15-joint-sidem-shiny-sparkle-showdown-2027.md",
+  "article:2026-09-15-million-14th-2026-34de9d.md",
+  "article:2026-09-15-million-14th-live-goods-2026.md",
+  "article:2026-09-15-million-milishita-song-for-you-vol-78-ami-2026.md",
+  "article:2026-09-15-million-official-shop-lottery-2026-09.md",
+  "article:2026-09-15-million-shizuka-birthday-2026.md",
+  "article:2026-09-15-shiny-hbtk-september-mc-2026.md",
+  "article:2026-09-15-shiny-msp-goods-voucher-2026.md",
+  "article:2026-09-15-shiny-msp-live-tickets-2026.md",
+  "article:2026-09-15-shiny-official-shop-photo-panel-2026-09-18.md",
+  "article:2026-09-15-shiny-sfp-illumine-gacha-fantasy-sonare-another-2026-09.md",
+  "article:2026-09-15-shiny-sfp-kawaii-metamoru-1m-views-2026-09.md",
+  "article:2026-09-15-shiny-sfp-new-feature-teaser-2026-09-14.md",
+  "article:2026-09-15-shiny-sfp-solo-oh-my-god-mikoto-2026-09.md",
+  "article:2026-09-15-shiny-smile-base-cafe-sporty-china-style-2026.md",
+  "article:2026-09-15-shiny-solo-live-collection-cd-2026.md",
+  "article:2026-09-15-sidem-11th-live-bluray-store-benefits-2026.md",
+  "article:2026-09-15-sidem-11th-stage-day2-setlist-2026.md",
+  "article:2026-09-15-sidem-315-night.md",
+  "article:2026-09-15-sidem-fantastic-battle-fes-movie-2026.md",
+  "article:2026-09-15-sidem-home-game-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-15-765-imas-radio-2026.md": "501016a30e6c748921ad35709a736fe3ee1ddcb6736b7ec2e7bff171b964d88e",
+  "docs/_posts/2026-09-15-765-million14th-765as-solo-collection-10359.md": "b743636d7a254601b0a459e4030d9cfcc789c533327a65cb7719622c693e1e0c",
+  "docs/_posts/2026-09-15-cg-toybox-novel-extra-final-2026.md": "f8d459f91e66d3b87590df9093b083b859556e72ad1e5ebd09e6d64b190a7443",
+  "docs/_posts/2026-09-15-dsva-05-be357f.md": "f06628e4f823db41dcef90bc04e7a497379a82bc65d2ededcec322a93474be97",
+  "docs/_posts/2026-09-15-dsva-code-vein-7.md": "c5103be22ed2fcc57d7d779fc7eee0cce57ab435c1b96eb4dae0c64355238152",
+  "docs/_posts/2026-09-15-dsva-how-to-fish-2026.md": "b231960196ddb43e35fba8233915674b1d1b636f41397190c21fd63668ef35c0",
+  "docs/_posts/2026-09-15-dsva-karaage.md": "718eb00ff4c2787347e7e875fc14d64b71fef0251a7ebbc95698db2f64cd2306",
+  "docs/_posts/2026-09-15-gaku-hif-15m-produce-campaign-2026.md": "31abaab6298ef0c2a59894268d223bfbd36aa9724e38fcb2480034ac313a228f",
+  "docs/_posts/2026-09-15-gaku-ios-27-ipados-27.md": "51001a7e952cdd1b4c5a59f78c31949b8df1e41a6427cc1eb6faa9c2972686d6",
+  "docs/_posts/2026-09-15-gaku-miraimira-tsukimura-temari-2026.md": "1a7dba15e251bab4ea0c32b26c49f4598319312688c56c0fe4dc32d8024857b9",
+  "docs/_posts/2026-09-15-gaku-shirube-iwate-goods-2026.md": "0450876d84061a0d2946e5613eb337d627cae2ee5c34651555ef700f30723788",
+  "docs/_posts/2026-09-15-gaku-weekend-citron-hatsuboshi-store-2026.md": "f9dd6cc6c2a0b48bdba9bbae8aa626707d722f6faa3e5063b4ae805bf52b5e28",
+  "docs/_posts/2026-09-15-joint-akizuki-ryo-birthday-2026.md": "c0032b46f43b0bd2f2b644ba8dfd7dcfc9e3f3c904d9ba9aea139c0ca4ae85d3",
+  "docs/_posts/2026-09-15-joint-sidem-shiny-sparkle-showdown-2027.md": "34b48e04be87c7b26db604c301b36c23f5c4c299f86accde12c5b8c0e0f50f83",
+  "docs/_posts/2026-09-15-million-14th-2026-34de9d.md": "4355334097c52668a84a2eb43857113c29361bdf2f3c7a4f94369f9b8b0a5132",
+  "docs/_posts/2026-09-15-million-14th-live-goods-2026.md": "05e9bcdbf42bd31298ad2d6c9736ac1fd2dfbc9f0fe67dabd4e78fcc7f4abadd",
+  "docs/_posts/2026-09-15-million-milishita-song-for-you-vol-78-ami-2026.md": "e6c2a4acf5f022a1e6ada59b3b62f6753184d9db9ca2a08408cfbc78b4c22997",
+  "docs/_posts/2026-09-15-million-official-shop-lottery-2026-09.md": "d5a99bc3f9d238bbaa8064ec4a22a34889803c52c0d06633c517b649c3615e34",
+  "docs/_posts/2026-09-15-million-shizuka-birthday-2026.md": "e41d14f7c68c06bf2c6536ca9439ac57362df3613e292b9b8e14f051bcb1913e",
+  "docs/_posts/2026-09-15-shiny-hbtk-september-mc-2026.md": "d935bddffe980673dd4aec0142939d048790e3c883afd08a9a92791766f244f6",
+  "docs/_posts/2026-09-15-shiny-msp-goods-voucher-2026.md": "efc8e2d5585212ccf6fd0418b87ee4ed4dcf3bcd6e9e87117754e8ef3aec9c98",
+  "docs/_posts/2026-09-15-shiny-msp-live-tickets-2026.md": "ceff86a2c37f237cddd9ca41784bd967a86c57fe5fd1d80d61d890e4e5595ba3",
+  "docs/_posts/2026-09-15-shiny-official-shop-photo-panel-2026-09-18.md": "842a436364f5ff0668a5c292887294e5fa2c29eeaefc9490e896f8e068b9f8eb",
+  "docs/_posts/2026-09-15-shiny-sfp-illumine-gacha-fantasy-sonare-another-2026-09.md": "00c35298be9c1a177b5304570b4cef7e6e39fcfe3c527b36311db7cef971842d",
+  "docs/_posts/2026-09-15-shiny-sfp-kawaii-metamoru-1m-views-2026-09.md": "aa4fb89bbb728a0ec19f43ac824a6d6d5fb2b032c8ea6716cf9532ca8e5ecd0a",
+  "docs/_posts/2026-09-15-shiny-sfp-new-feature-teaser-2026-09-14.md": "d27a51c138c569fede2ad3bb461112f0a120bd5b1de5ecac6a32b90baa55f3f9",
+  "docs/_posts/2026-09-15-shiny-sfp-solo-oh-my-god-mikoto-2026-09.md": "af4898c6935c1392cb48128c64b515903b3324824c932c5e514313bf655f2636",
+  "docs/_posts/2026-09-15-shiny-smile-base-cafe-sporty-china-style-2026.md": "5545f914a008f57465cf8a63745f3dc0f0c1fea87c75dea027d59203f221a229",
+  "docs/_posts/2026-09-15-shiny-solo-live-collection-cd-2026.md": "ed1f1df37eaeda20112423b083f6d1dcbfe17409cd53ba0ec283bf5e54d56e2a",
+  "docs/_posts/2026-09-15-sidem-11th-live-bluray-store-benefits-2026.md": "0ae8c4b0d6708fb3a075818f2e1c8bc519ea1823e432f6e3badddfa43387a70e",
+  "docs/_posts/2026-09-15-sidem-11th-stage-day2-setlist-2026.md": "c377d92e4c1d2d712dbcf354abdb3c97e98dde80abeef2650fc3760ef4f5ce4d",
+  "docs/_posts/2026-09-15-sidem-315-night.md": "01a09b78cbec2965ab4990cd3d158b5031f88378d49d0074e26fde8d959e519c",
+  "docs/_posts/2026-09-15-sidem-fantastic-battle-fes-movie-2026.md": "f251b6ecf42ec5627cfda06c7de8ba9d11b2b5055abc3cf73583e443eeb263ec",
+  "docs/_posts/2026-09-15-sidem-home-game-2026.md": "724c8773ccfecb0051a591303af1b298dc8a31ab22e90c512616e76b6845af26",
+  "docs/_editions/2026-09-15.md": "ac8d026ed8a043b15bf9cdbb8f90d0c017065b9e272350a5ae4582aa5f36aa66",
+  "metrics/stories-before-2026-09-15.yml": "746360eace0657dcffd98a099f5af89edb33004caa8ff389ac0b69dc429a73e7"
+ }
+}

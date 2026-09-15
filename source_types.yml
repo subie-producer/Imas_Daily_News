@@ -35,6 +35,7 @@ official_paths:
   - bilibili.com/opus/1244186744338776068
 
 official_domains:
+  - idolmaster-tours-w.bn-am.net # 合議で追加: TOURS公式マイページ、バンダイナムコアミューズメント直営の一次発信
   - idolmaster-official.jp                          # 公式ポータル
   - cinderellagirls.idolmaster-official.jp          # シンデレラガールズ公式
   - millionlive-theaterdays.idolmaster-official.jp  # ミリオンライブ! 公式
@@ -112,6 +113,10 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - test.o-yake.com       # 合議で追加: ネット話題をまとめて解説。公開情報をもとに記事作成
+  - jpjj.jp               # 合議で追加: 公式ポータル発表を紹介。現地取材・関係者取材の形跡なし
+  - imas-db.jp            # 合議で追加: 自称『非公式ファンサイト』。セットリスト・楽曲データなど他所の発表をまとめて提示
+  - prize-nyuka.com       # 合議で追加: メーカー公式の一次情報を整理・掲載する非公式メディア。自ら取材しない
   - hjweb.jp              # 合議で追加: ホビージャパンがメーカー発表を掲載。取材形跡なし
   - e.usen.com            # 合議で追加: プレスリリース情報を言い換え掲載。独自取材の根拠なし
   - mybuzz.tokyo          # 合議で追加: 「本リリース」と明記され、プレスリリースの言い換え。「バズ情報」サイトとして他所
@@ -277,6 +282,7 @@ video_channels:
 
 video_ids:
   公式:
+    - Yn9cXzpGJIU   # 機械で追加: @imas-official「【ラジオ】新番組「IM＠S RADIO」スタート！【アイドル」
     - bh1-3oPDkXY   # 機械で追加: @KamizuruCosmo「【#宇宙誕生祭2026 冒頭無料配信】上水流宇宙 BIRTH」
     - SKg_lOJcmQw   # 機械で追加: @imas-official「ゲーム【ミリシタ】桜守 歌織 スペシャル動画【アイドルマスタ」
     - JQ4XDj8lzw0   # 機械で追加: @imas-official「ゲーム【ミリシタ】双海 亜美 スペシャル動画【アイドルマスタ」
@@ -344,6 +350,7 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - nojomiy             # 合議で追加: 声優本人による応援投稿
     - arisa_kori          # 合議で追加: 声優本人が自作のキャラへの言及を発信
     - ma_akane1014        # 合議で追加: 出演者による反応投稿
     - jurieedom           # 合議で追加: 担当声優による祝福・イラスト
@@ -368,6 +375,14 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - windbellsP          # 合議で追加: 個人アカウント、ファン側の活動情報
+    - tyna7Z6             # 合議で追加: 個人アカウント、公式MV反応
+    - raon555             # 合議で追加: 個人によるゲーム比較動画投稿
+    - matcha_100          # 合議で追加: 個人アカウント、ファンアート他
+    - djkonomi            # 合議で追加: 個人による目撃情報投稿
+    - _swt2               # 合議で追加: 個人アカウント、二次創作
+    - P39571776           # 合議で追加: 個人アカウント、ファン創作
+    - AP1sumiken          # 合議で追加: 個人アカウント、ファン活動
     - tsukasa_rei         # 合議で追加: 個人アカウント。現地感想・目撃情報
     - oyupuyo             # 合議で追加: 個人アカウント。ファン感想・まとめ投稿
     - yuzu_yng            # ファン投稿(街頭広告の目撃)
@@ -419,6 +434,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - oshitabi_update     # 合議で追加: JR東海推し旅キャンペーン公式
     - ichibanKUJI         # 合議で追加: くじ運営者。ライセンス商品販売告知
     - Miraimiratoys       # 合議で追加: フィギュアメーカー。ライセンス品製造販売
     - Gashapon_Bandai     # 合議で追加: ガシャポン運営。ライセンス品販売・告知

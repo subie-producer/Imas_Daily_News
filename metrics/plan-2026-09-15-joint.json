@@ -1,0 +1,124 @@
+{
+ "decisions": {
+  "joint-sidem-shiny-sparkle-showdown-2027": {
+   "action": "article",
+   "angle": "SPARKLE SHOWDOWN DAY1出演声優ラインナップが判明(W/FRAME/High×Joker/神速一魂ほか)",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(9/13〜14)は日程・会場・価格・先行抽選。今回は個人名の出演声優一覧が新出。規程9に従い列挙する"
+  },
+  "tours-s1-ex-tours-rare-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認ソースのティザー投稿。カードリスト本体は明日(9/16)公開予定で、今日読める具体的な新事実がない"
+  },
+  "tours-s1-ex-login-bonus-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "内容がjoint-tours-s1-ex-2026(9/10既報)のログインボーナス詳細(期間・枚数・上限)と同一で新事実なし"
+  },
+  "akizuki-ryo-birthday-2026": {
+   "action": "article",
+   "angle": "秋月涼、誕生日を公式アイマスchがお祝いムービーで祝福",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式チャンネルの当日公開コンテンツ。読者は今日動画を見られる"
+  },
+  "jr-central-oshitabi-tabimasu-akizuki-ryo-bd-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "akizuki-ryo-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ「秋月涼誕生日」という1系統の出来事。JR東海公式パートナー(推し旅)側の祝福として本記事に統合"
+  },
+  "shibuya-ai-vision-akizuki-ryo-bd-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "渋谷愛ビジョンはファンがクラウドファンディングで出稿する誕生日広告。ファン面(general/culture)の対象"
+  },
+  "akizuki-ryo-birthday-fan-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人SNS投稿・ハッシュタグの集積。単体記事化しない規程4に該当し、ファン面の対象"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-sidem-shiny-sparkle-showdown-2027",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "SPARKLE SHOWDOWN DAY1出演声優ラインナップが判明(W/FRAME/High×Joker/神速一魂ほか)",
+    "lead_score": 50,
+    "dedup_key": "joint-sidem-shiny-sparkle-showdown-2027",
+    "candidate_ids": [
+     "202609150230-explore-15"
+    ]
+   },
+   {
+    "slug": "joint-akizuki-ryo-birthday-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "秋月涼、誕生日を公式アイマスchがお祝いムービーで祝福",
+    "lead_score": 8,
+    "dedup_key": "akizuki-ryo-birthday-2026",
+    "candidate_ids": [
+     "202609150230-grok-53",
+     "202609150230-grok-54"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-s1-ex-tours-rare-2026",
+    "reason": "出典不足",
+    "note": "未確認ソースのティザー投稿。カードリスト本体は明日(9/16)公開予定で、今日読める具体的な新事実がない"
+   },
+   {
+    "dedup_key": "tours-s1-ex-login-bonus-2026-09",
+    "reason": "既報",
+    "note": "内容がjoint-tours-s1-ex-2026(9/10既報)のログインボーナス詳細(期間・枚数・上限)と同一で新事実なし"
+   },
+   {
+    "dedup_key": "shibuya-ai-vision-akizuki-ryo-bd-2026",
+    "reason": "同人・ファン主催",
+    "note": "渋谷愛ビジョンはファンがクラウドファンディングで出稿する誕生日広告。ファン面(general/culture)の対象"
+   },
+   {
+    "dedup_key": "akizuki-ryo-birthday-fan-2026",
+    "reason": "同人・ファン主催",
+    "note": "個人SNS投稿・ハッシュタグの集積。単体記事化しない規程4に該当し、ファン面の対象"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -47,5 +47,35 @@
   "verify": "confirmed",
   "src_candidate_id": "202609130733-explore-6",
   "event_date": "2026-09-26"
+ },
+ {
+  "id": "sched-2026-09-17-dsva-how-to-fish-2026-開始",
+  "dedup_key": "dsva-how-to-fish-2026",
+  "brand": "dsva",
+  "subject": "愛夏・宇宙・レトラ「How to Fish」配信",
+  "kind": "開始",
+  "note": "3人の合同ゲーム配信を視聴できる日",
+  "reserved_on": "2026-09-15",
+  "title": "3人合同「How to Fish」配信決定",
+  "url": "https://search.yahoo.co.jp/realtime/search?ei=UTF-8&md=h&p=%23%E3%83%B4%E3%82%A4%E3%82%A2%E3%83%A9&rkf=1",
+  "source_type": "二次情報",
+  "facts": [
+   "vα-liv公式がライバーアイドル3人の合同配信実施決定を告知した。",
+   "配信日時: 2026年9月17日(木)20:00〜。",
+   "配信タイトル: 「How to Fish」プレイ配信。",
+   "灯里愛夏視点の配信先が案内された。",
+   "上水流宇宙視点の配信先が案内された。",
+   "レトラ視点の配信先が案内された。",
+   "エンゲージメント: 中",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ",
+   "vα-liv公式が、同日22:00から予定していた灯里愛夏の「BIOHAZARD RE:2」配信を延期すると告知した。",
+   "延期理由として、灯里愛夏が体調を万全に整えるためと説明した。",
+   "延期後の配信日時は本文中で案内されていない。",
+   "楽しみにしていた視聴者に対して謝罪した。"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609140734-explore-13",
+  "event_date": "2026-09-17"
  }
 ]

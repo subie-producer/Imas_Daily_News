@@ -1,0 +1,195 @@
+{
+ "decisions": {
+  "dsva-how-to-fish-2026": {
+   "action": "article",
+   "angle": "灯里愛夏・上水流宇宙・レトラ3人合同「How to Fish」プレイ配信、9/17(木)20:00開始決定",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "3-how-to-fishを統合(同一告知の別収集エンジン分)"
+  },
+  "dsva-cosmo-birthday-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/14号で受注期間・ボイス販売期間・グッズ5点セットを既報(valiv-cosmo-birthday-goods-2026)。価格・仕様の追加判明のみで新規トリガー無し"
+  },
+  "valiv-online-1on1-13-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-05",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第13回1on1抽選申込締切(本日23:59)の同一素材"
+  },
+  "code-vein-7": {
+   "action": "article",
+   "angle": "灯里愛夏、「CODE VEIN」シリーズ7周年記念特番へのゲスト出演が決定(9/25放送)",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "9-14-13-1on1": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-05",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "週次配信予定の告知。固有の新事実は乏しく1on1締切の再掲とバースデー導線のみ"
+  },
+  "13-1on1-1-9-15-23-59": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-05",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "「締切あと1日」告知。同一締切(本日23:59)の重複素材"
+  },
+  "3-how-to-fish": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-how-to-fish-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "How to Fish配信決定の同一告知(収集エンジン違い)"
+  },
+  "karaage": {
+   "action": "article",
+   "angle": "上水流宇宙、新作ダンス動画「KARAAGE」を公開",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "biohazard-re-2": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/12号で愛夏「BIOHAZARD RE:2」延期を既報(dsva-10)。9/13付の同種延期告知で本号時点の新事実・トリガー無し"
+  },
+  "auto-39": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "秋月涼生誕祭への個人ファン投稿。公式の祝福はjoint-akizuki-ryo-birthday-2026で既に記事化済み"
+  },
+  "dsva-valiv-1on1-13th-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-05",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の第13回1on1抽選締切(本日23:59)の予約素材"
+  },
+  "dsva-05": {
+   "action": "article",
+   "angle": "vα-liv第13回オンライン1on1、抽選申込が本日23:59締切",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dsva-valiv-1on1-13th-2026・valiv-online-1on1-13-2026・13-1on1-1-9-15-23-59・9-14-13-1on1を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-how-to-fish-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏・上水流宇宙・レトラ3人合同「How to Fish」プレイ配信、9/17(木)20:00開始決定",
+    "lead_score": 20,
+    "dedup_key": "dsva-how-to-fish-2026",
+    "candidate_ids": [
+     "202609140734-explore-13",
+     "202609150230-grok-33"
+    ]
+   },
+   {
+    "slug": "dsva-code-vein-7",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏、「CODE VEIN」シリーズ7周年記念特番へのゲスト出演が決定(9/25放送)",
+    "lead_score": 25,
+    "dedup_key": "code-vein-7",
+    "candidate_ids": [
+     "202609150230-grok-30"
+    ]
+   },
+   {
+    "slug": "dsva-karaage",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙、新作ダンス動画「KARAAGE」を公開",
+    "lead_score": 5,
+    "dedup_key": "karaage",
+    "candidate_ids": [
+     "202609150230-grok-34"
+    ]
+   },
+   {
+    "slug": "dsva-05-be357f",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "vα-liv第13回オンライン1on1、抽選申込が本日23:59締切",
+    "lead_score": 60,
+    "dedup_key": "dsva-05",
+    "candidate_ids": [
+     "sched-2026-09-15-dsva-05-締切",
+     "202609141235-explore-22",
+     "202609150230-grok-31",
+     "202609150230-grok-32",
+     "sched-2026-09-15-dsva-valiv-1on1-13th-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "dsva-cosmo-birthday-goods-2026",
+    "reason": "既報",
+    "note": "9/14号で受注期間・ボイス販売期間・グッズ5点セットを既報(valiv-cosmo-birthday-goods-2026)。価格・仕様の追加判明のみで新規トリガー無し"
+   },
+   {
+    "dedup_key": "biohazard-re-2",
+    "reason": "既報",
+    "note": "9/12号で愛夏「BIOHAZARD RE:2」延期を既報(dsva-10)。9/13付の同種延期告知で本号時点の新事実・トリガー無し"
+   },
+   {
+    "dedup_key": "auto-39",
+    "reason": "個人の話題",
+    "note": "秋月涼生誕祭への個人ファン投稿。公式の祝福はjoint-akizuki-ryo-birthday-2026で既に記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

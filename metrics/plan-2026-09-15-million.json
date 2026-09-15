@@ -1,0 +1,194 @@
+{
+ "decisions": {
+  "million-shizuka-birthday-2026": {
+   "action": "article",
+   "angle": "最上静香の誕生日(9/14)を祝う公式告知とBirthdayガシャ(衣装付き)が継続中",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "初出は9/14付。誕生祭・ガシャは本日も継続中で読者は参加可能なため新規記事化"
+  },
+  "million-official-shop-lottery-2026-09": {
+   "action": "article",
+   "angle": "オフィシャルショップ抽選くじに新賞品11種、フォトパネル新柄3種も9/18から4店舗で発売",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-official-shop-lottery-photo-panel-2026-09-18は同一告知のため統合"
+  },
+  "million-kotobukiya-animation-figure-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「予約受付開始」は9/14号でedition_facts記載済み。今回の素材に新事実なし"
+  },
+  "million-14th-live-gem-sets-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "gamerch(二次情報)のみでガシャ内施策の公式確認が無い(規程2)。9/12号既報部分も新事実なし"
+  },
+  "million-14th-2026": {
+   "action": "article",
+   "angle": "14thLIVE一般販売2次(先着)が本日18時受付開始、DAY1/DAY2の会場・時間・券種・除外条件を網羅",
+   "rank": "large",
+   "lead_score": 78,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-14th-live-general-sale-second-2026は同一受付の告知のため統合。席種除外・立見・車いす案内も含む"
+  },
+  "milishita-song-for-you-vol-78-ami-2026": {
+   "action": "article",
+   "angle": "SONG FOR YOU!ガシャVOL.78、双海亜美・桜守歌織のピックアップが9/18まで継続中",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "milishita-song-for-you-vol-78-kaori-2026は同一ガシャのため統合"
+  },
+  "milishita-song-for-you-vol-78-kaori-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "milishita-song-for-you-vol-78-ami-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一ガシャ(VOL.78)の別アイドルピックアップのため統合"
+  },
+  "million-14thlive-countdown-login-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "gamerch(二次情報)のみで公式確認なし(規程2)。内容も9/12号で既報と同一で新事実なし"
+  },
+  "million-official-shop-lottery-photo-panel-2026-09-18": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-official-shop-lottery-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "抽選くじ新賞品+フォトパネルの同一告知(準公式ソース)のため統合"
+  },
+  "million-14th-live-general-sale-second-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ一般販売2次(先着)受付の告知のため統合"
+  },
+  "million-14th-live-goods-2026": {
+   "action": "article",
+   "angle": "14thLIVE会場物販整理券の抽選結果が本日13時発表、デジタル注文書も同時刻から利用可能",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約どおり。本日は結果発表という当日トリガーに該当し読者が確認できる"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-shizuka-birthday-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "最上静香の誕生日(9/14)を祝う公式告知とBirthdayガシャ(衣装付き)が継続中",
+    "lead_score": 10,
+    "dedup_key": "million-shizuka-birthday-2026",
+    "candidate_ids": [
+     "202609140734-explore-0"
+    ]
+   },
+   {
+    "slug": "million-official-shop-lottery-2026-09",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "オフィシャルショップ抽選くじに新賞品11種、フォトパネル新柄3種も9/18から4店舗で発売",
+    "lead_score": 15,
+    "dedup_key": "million-official-shop-lottery-2026-09",
+    "candidate_ids": [
+     "202609141235-watch-0",
+     "202609142335-explore-24"
+    ]
+   },
+   {
+    "slug": "million-14th-2026-34de9d",
+    "brand": "million",
+    "rank": "large",
+    "angle": "14thLIVE一般販売2次(先着)が本日18時受付開始、DAY1/DAY2の会場・時間・券種・除外条件を網羅",
+    "lead_score": 78,
+    "dedup_key": "million-14th-2026",
+    "candidate_ids": [
+     "202609141835-watch-0",
+     "202609150230-explore-1"
+    ]
+   },
+   {
+    "slug": "million-milishita-song-for-you-vol-78-ami-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "SONG FOR YOU!ガシャVOL.78、双海亜美・桜守歌織のピックアップが9/18まで継続中",
+    "lead_score": 5,
+    "dedup_key": "milishita-song-for-you-vol-78-ami-2026",
+    "candidate_ids": [
+     "202609142335-explore-4",
+     "202609142335-explore-5"
+    ]
+   },
+   {
+    "slug": "million-14th-live-goods-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "14thLIVE会場物販整理券の抽選結果が本日13時発表、デジタル注文書も同時刻から利用可能",
+    "lead_score": 25,
+    "dedup_key": "million-14th-live-goods-2026",
+    "candidate_ids": [
+     "sched-2026-09-15-million-14th-live-goods-2026-結果"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-kotobukiya-animation-figure-2026",
+    "reason": "既報",
+    "note": "「予約受付開始」は9/14号でedition_facts記載済み。今回の素材に新事実なし"
+   },
+   {
+    "dedup_key": "million-14th-live-gem-sets-2026",
+    "reason": "出典不足",
+    "note": "gamerch(二次情報)のみでガシャ内施策の公式確認が無い(規程2)。9/12号既報部分も新事実なし"
+   },
+   {
+    "dedup_key": "million-14thlive-countdown-login-bonus-2026",
+    "reason": "出典不足",
+    "note": "gamerch(二次情報)のみで公式確認なし(規程2)。内容も9/12号で既報と同一で新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

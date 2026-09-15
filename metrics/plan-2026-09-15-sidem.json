@@ -1,0 +1,531 @@
+{
+ "decisions": {
+  "sidem-11th-live-bluray-store-benefits-2026": {
+   "action": "article",
+   "angle": "SideM 11th STAGE LIVE Blu-ray、店舗別特典の内容が判明(アニメイト/Amazon/ゲーマーズ/アソビストア特装版)",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アソビストア特装版(11th-stage-live-blu-ray)の価格・特典を統合"
+  },
+  "sidem-11th-stage-ever-ever-after-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "当日券・差し入れ企画は開催済みで販売終了。公演概要も7/13付で既報(sidem-11th-stage-2026)"
+  },
+  "sidem-joypolis-3-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml sidem-joypolis-3-2026で9/12・9/13付として既報、新事実なし"
+  },
+  "sidem-cardfolio-vol2-challenge-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml sidem-cardfolio-pasha-challenge-2026(9/14号)と同内容"
+  },
+  "sidem-315shop-cat-butler-tshirt-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml sidem-315nya-shop-2026等(9/12・9/14号)と同内容"
+  },
+  "sidem-11th-stage-overview-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公演概要は7/13付sidem-11th-stage-2026で既報"
+  },
+  "sidem-11th-stage-cast-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "終了済み公演の出演者一覧。既報の11th STAGEの一部で新事実なし"
+  },
+  "sidem-11th-stage-day1-setlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml sidem-11th-stage-day1-setlist-2026(9/14号)と同内容"
+  },
+  "sidem-11th-stage-day2-setlist-2026": {
+   "action": "article",
+   "angle": "SideM 11th STAGE DAY2、アーカイブ配信中+同時視聴上映会(9/19)決定。DAY2セットリスト・アンコール詳細も判明",
+   "rank": "large",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2セトリ・ばくすて!とーく(DAY2)・アーカイブ/上映会・アンコール反響を統合"
+  },
+  "sidem-solo-collection-04-jumbled-01-2026": {
+   "action": "article",
+   "angle": "SideM 11th STAGE会場限定、新譜ソロコレクション2タイトルを発売",
+   "rank": "medium",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "stories.ymlに未収載の新規CD発売情報(品番・価格・収録曲)"
+  },
+  "sidem-315shop-neko-mimi-butler-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml sidem-315-shop-5th-2026(9/3号)で選抜メンバー・展開内容とも既報"
+  },
+  "sidem-315pro-night-mfes-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml sidem-m-fes-2026-theme-cd(9/14号)で12/12公録イベントは既報"
+  },
+  "sidem-11th-backstage-talk-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day2-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2ばくすて!とーく(赤羽根健治出演)は新事実。DAY2まとめ記事へ統合"
+  },
+  "sidem-11th-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day2-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アーカイブ公開・同時視聴上映会(9/19)情報をDAY2まとめ記事へ統合"
+  },
+  "sidem-home-game-2026": {
+   "action": "article",
+   "angle": "SideM初の家庭用ゲーム、315パッションコンテンツと地続きの世界観と判明(制作者インタビュー)",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発表自体は既報だが、世界観設定・制作背景は新事実"
+  },
+  "sidem-producer-meeting-ajewelholic-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml sidem-producer-meeting-ajewelholic-2027(9/14号)と同内容"
+  },
+  "sidem-first-home-console-game-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml sidem-home-console-game-2026(9/14号)の発表内容と同一"
+  },
+  "sidem-fantastic-battle-fes-movie-2026": {
+   "action": "article",
+   "angle": "劇場版SideM予告映像を公開、新CD連動ストーリー『AJIプロジェクト』10月始動も判明",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "映画本体の公開日等は既報だが予告公開・AJIプロジェクトは新事実"
+  },
+  "sidem-11th-stage-day2-new-announcements-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day2-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2アンコール(315STARS『DRIVE A LIVE』等)の詳細をDAY2まとめ記事へ統合"
+  },
+  "sidem-joypolis-fan-buzz-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "Yahoo!リアルタイム検索の個人投稿集約で未確認、具体的な新事実なし"
+  },
+  "sidem-11th-day2-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day2-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2セットリスト(pylonport)素材としてDAY2まとめ記事へ統合"
+  },
+  "sidem-console-game-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "家庭用ゲーム発表の二次情報。既報の発表内容と同一で新事実なし"
+  },
+  "sidem-11th-live-media-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "jpjj二次情報による既報事実の要約で新事実なし"
+  },
+  "sidem-m-fes-theme-song-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml sidem-m-fes-2026-theme-cd(9/14号)で商品名・発売日とも既報"
+  },
+  "sidem-315pronight-public-recording-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "315pro-night-mfesと同一施策。stories.ymlで既報(9/14号)"
+  },
+  "sidem-beekuro-braver-beat-buzz-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の個人ブログ由来のファン反応紹介で一次情報未到達"
+  },
+  "bd2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "秋月涼誕生日祝賀はjoint-akizuki-ryo-birthday-2026(joint面)で既に記事化"
+  },
+  "the-idolm-ster-sidem-11th-stage": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "全公演終了の挨拶ツイートのみで新事実なし"
+  },
+  "11th-stage-live-blu-ray": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-live-bluray-store-benefits-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アソビストア特装版の価格・特典を店舗特典記事へ統合"
+  },
+  "day2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day2-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2最速アーカイブ公開の告知をDAY2まとめ記事へ統合"
+  },
+  "auto-75": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "家庭用ゲーム特報ツイート。既報の発表内容と同一"
+  },
+  "315-night": {
+   "action": "article",
+   "angle": "SideM公式ラジオ「315プロNight!」おたより大募集中(9月パーソナリティ)",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "roundup成立(3件以上)に届かないため通常のsmall記事扱い"
+  },
+  "11th-stage-pylon-port": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "PYLON PORT特集記事の紹介ツイートのみで具体的な新事実に乏しい"
+  },
+  "11th-stage-day2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day2-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "PYLON PORT DAY2セットリスト・プレイリストをDAY2まとめ記事へ統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-11th-live-bluray-store-benefits-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM 11th STAGE LIVE Blu-ray、店舗別特典の内容が判明(アニメイト/Amazon/ゲーマーズ/アソビストア特装版)",
+    "lead_score": 15,
+    "dedup_key": "sidem-11th-live-bluray-store-benefits-2026",
+    "candidate_ids": [
+     "202609140734-explore-4",
+     "202609150230-grok-73"
+    ]
+   },
+   {
+    "slug": "sidem-11th-stage-day2-setlist-2026",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "SideM 11th STAGE DAY2、アーカイブ配信中+同時視聴上映会(9/19)決定。DAY2セットリスト・アンコール詳細も判明",
+    "lead_score": 25,
+    "dedup_key": "sidem-11th-stage-day2-setlist-2026",
+    "candidate_ids": [
+     "202609141235-explore-11",
+     "202609141235-explore-27",
+     "202609141835-watch-1",
+     "202609141835-explore-13",
+     "202609142335-explore-11",
+     "202609150230-grok-74",
+     "202609150230-grok-78"
+    ]
+   },
+   {
+    "slug": "sidem-solo-collection-04-jumbled-01-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM 11th STAGE会場限定、新譜ソロコレクション2タイトルを発売",
+    "lead_score": 10,
+    "dedup_key": "sidem-solo-collection-04-jumbled-01-2026",
+    "candidate_ids": [
+     "202609141235-explore-12"
+    ]
+   },
+   {
+    "slug": "sidem-home-game-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM初の家庭用ゲーム、315パッションコンテンツと地続きの世界観と判明(制作者インタビュー)",
+    "lead_score": 20,
+    "dedup_key": "sidem-home-game-2026",
+    "candidate_ids": [
+     "202609141835-watch-2",
+     "202609150230-explore-7"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-movie-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版SideM予告映像を公開、新CD連動ストーリー『AJIプロジェクト』10月始動も判明",
+    "lead_score": 55,
+    "dedup_key": "sidem-fantastic-battle-fes-movie-2026",
+    "candidate_ids": [
+     "202609141835-explore-12",
+     "202609150230-explore-8"
+    ]
+   },
+   {
+    "slug": "sidem-315-night",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM公式ラジオ「315プロNight!」おたより大募集中(9月パーソナリティ)",
+    "lead_score": 0,
+    "dedup_key": "315-night",
+    "candidate_ids": [
+     "202609150230-grok-76"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-11th-stage-ever-ever-after-2026",
+    "reason": "既報",
+    "note": "当日券・差し入れ企画は開催済みで販売終了。公演概要も7/13付で既報(sidem-11th-stage-2026)"
+   },
+   {
+    "dedup_key": "sidem-joypolis-3-2026",
+    "reason": "既報",
+    "note": "stories.yml sidem-joypolis-3-2026で9/12・9/13付として既報、新事実なし"
+   },
+   {
+    "dedup_key": "sidem-cardfolio-vol2-challenge-2026",
+    "reason": "既報",
+    "note": "stories.yml sidem-cardfolio-pasha-challenge-2026(9/14号)と同内容"
+   },
+   {
+    "dedup_key": "sidem-315shop-cat-butler-tshirt-2026",
+    "reason": "既報",
+    "note": "stories.yml sidem-315nya-shop-2026等(9/12・9/14号)と同内容"
+   },
+   {
+    "dedup_key": "sidem-11th-stage-overview-2026",
+    "reason": "既報",
+    "note": "公演概要は7/13付sidem-11th-stage-2026で既報"
+   },
+   {
+    "dedup_key": "sidem-11th-stage-cast-2026",
+    "reason": "既報",
+    "note": "終了済み公演の出演者一覧。既報の11th STAGEの一部で新事実なし"
+   },
+   {
+    "dedup_key": "sidem-11th-stage-day1-setlist-2026",
+    "reason": "既報",
+    "note": "stories.yml sidem-11th-stage-day1-setlist-2026(9/14号)と同内容"
+   },
+   {
+    "dedup_key": "sidem-315shop-neko-mimi-butler-2026",
+    "reason": "既報",
+    "note": "stories.yml sidem-315-shop-5th-2026(9/3号)で選抜メンバー・展開内容とも既報"
+   },
+   {
+    "dedup_key": "sidem-315pro-night-mfes-2026",
+    "reason": "既報",
+    "note": "stories.yml sidem-m-fes-2026-theme-cd(9/14号)で12/12公録イベントは既報"
+   },
+   {
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027",
+    "reason": "既報",
+    "note": "stories.yml sidem-producer-meeting-ajewelholic-2027(9/14号)と同内容"
+   },
+   {
+    "dedup_key": "sidem-first-home-console-game-2026",
+    "reason": "既報",
+    "note": "stories.yml sidem-home-console-game-2026(9/14号)の発表内容と同一"
+   },
+   {
+    "dedup_key": "sidem-joypolis-fan-buzz-2026",
+    "reason": "出典不足",
+    "note": "Yahoo!リアルタイム検索の個人投稿集約で未確認、具体的な新事実なし"
+   },
+   {
+    "dedup_key": "sidem-console-game-2026",
+    "reason": "既報",
+    "note": "家庭用ゲーム発表の二次情報。既報の発表内容と同一で新事実なし"
+   },
+   {
+    "dedup_key": "sidem-11th-live-media-2026",
+    "reason": "既報",
+    "note": "jpjj二次情報による既報事実の要約で新事実なし"
+   },
+   {
+    "dedup_key": "sidem-m-fes-theme-song-2026",
+    "reason": "既報",
+    "note": "stories.yml sidem-m-fes-2026-theme-cd(9/14号)で商品名・発売日とも既報"
+   },
+   {
+    "dedup_key": "sidem-315pronight-public-recording-2026",
+    "reason": "既報",
+    "note": "315pro-night-mfesと同一施策。stories.ymlで既報(9/14号)"
+   },
+   {
+    "dedup_key": "sidem-beekuro-braver-beat-buzz-2026",
+    "reason": "出典不足",
+    "note": "未確認の個人ブログ由来のファン反応紹介で一次情報未到達"
+   },
+   {
+    "dedup_key": "bd2026",
+    "reason": "重複",
+    "note": "秋月涼誕生日祝賀はjoint-akizuki-ryo-birthday-2026(joint面)で既に記事化"
+   },
+   {
+    "dedup_key": "the-idolm-ster-sidem-11th-stage",
+    "reason": "既報",
+    "note": "全公演終了の挨拶ツイートのみで新事実なし"
+   },
+   {
+    "dedup_key": "auto-75",
+    "reason": "既報",
+    "note": "家庭用ゲーム特報ツイート。既報の発表内容と同一"
+   },
+   {
+    "dedup_key": "11th-stage-pylon-port",
+    "reason": "出典不足",
+    "note": "PYLON PORT特集記事の紹介ツイートのみで具体的な新事実に乏しい"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,58 +1,114 @@
 [
-  {
-    "id": "sched-2026-09-25-valiv-life-like-a-live-12-2026-開幕",
-    "dedup_key": "valiv-life-like-a-live-12-2026",
-    "brand": "dsva",
-    "subject": "ヴイアラ、えるすりー12出演",
-    "kind": "開幕",
-    "note": "ヴイアラ出演初日(第一公演、オープニングのみ)",
-    "reserved_on": "2026-08-24",
-    "facts": [
-      "2026年9月25日〜27日開催「Life Like a Live!12〜ドラマチックアワー〜」に上水流宇宙・灯里愛夏・レトラが出演",
-      "9月25日(金)は第一公演のオープニングのみ出演"
-    ],
-    "title": "えるすりー12にヴイアラ3名出演決定",
-    "url": "https://x.com/valiv_official/status/2091146328801943948",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202608232010-grok-53",
-    "event_date": "2026-09-25"
-  },
-  {
-    "id": "sched-2026-09-25-imas-ch-member-stream-2026-09-開始",
-    "dedup_key": "imas-ch-member-stream-2026-09",
-    "brand": "joint",
-    "subject": "アイマスch 9月度メンバー限定配信",
-    "kind": "開始",
-    "reserved_on": "2026-09-03",
-    "facts": [
-      "アイマスchは9月25日(金)配信のメンバー限定配信に向けお便り・ファンアートを募集中",
-      "MCは原由実さん(四条貴音役)、ゲストは香里有佐さん(桜守歌織役)"
-    ],
-    "title": "アイマスch、9月限定配信のお便り募集",
-    "url": "https://x.com/imas_ch/status/2095124306816856363",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202609030229-grok-32",
-    "event_date": "2026-09-25"
-  },
-  {
-    "id": "sched-2026-09-25-gaku-after-school-namco-2026-開始",
-    "dedup_key": "gaku-after-school-namco-2026",
-    "brand": "gaku",
-    "subject": "「After School キャンペーン in namco」",
-    "kind": "開始",
-    "reserved_on": "2026-09-11",
-    "facts": [
-      "ナムコの店舗とナムコオンラインクレーンで実施",
-      "月村手毬「ゴールドの輝き」衣装のフィギュアがナムコ限定景品として登場",
-      "キャンペーンは2026年9月25日から開始"
-    ],
-    "title": "ナムコで月村手毬フィギュア景品キャンペーン",
-    "url": "https://x.com/gkmas_official/status/2097647121172484112",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "event_date": "2026-09-25",
-    "src_candidate_id": "202609101235-explore-10"
-  }
+ {
+  "id": "sched-2026-09-25-valiv-life-like-a-live-12-2026-開幕",
+  "dedup_key": "valiv-life-like-a-live-12-2026",
+  "brand": "dsva",
+  "subject": "ヴイアラ、えるすりー12出演",
+  "kind": "開幕",
+  "note": "ヴイアラ出演初日(第一公演、オープニングのみ)",
+  "reserved_on": "2026-08-24",
+  "facts": [
+   "2026年9月25日〜27日開催「Life Like a Live!12〜ドラマチックアワー〜」に上水流宇宙・灯里愛夏・レトラが出演",
+   "9月25日(金)は第一公演のオープニングのみ出演"
+  ],
+  "title": "えるすりー12にヴイアラ3名出演決定",
+  "url": "https://x.com/valiv_official/status/2091146328801943948",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202608232010-grok-53",
+  "event_date": "2026-09-25"
+ },
+ {
+  "id": "sched-2026-09-25-imas-ch-member-stream-2026-09-開始",
+  "dedup_key": "imas-ch-member-stream-2026-09",
+  "brand": "joint",
+  "subject": "アイマスch 9月度メンバー限定配信",
+  "kind": "開始",
+  "reserved_on": "2026-09-03",
+  "facts": [
+   "アイマスchは9月25日(金)配信のメンバー限定配信に向けお便り・ファンアートを募集中",
+   "MCは原由実さん(四条貴音役)、ゲストは香里有佐さん(桜守歌織役)"
+  ],
+  "title": "アイマスch、9月限定配信のお便り募集",
+  "url": "https://x.com/imas_ch/status/2095124306816856363",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609030229-grok-32",
+  "event_date": "2026-09-25"
+ },
+ {
+  "id": "sched-2026-09-25-gaku-after-school-namco-2026-開始",
+  "dedup_key": "gaku-after-school-namco-2026",
+  "brand": "gaku",
+  "subject": "「After School キャンペーン in namco」",
+  "kind": "開始",
+  "reserved_on": "2026-09-11",
+  "facts": [
+   "ナムコの店舗とナムコオンラインクレーンで実施",
+   "月村手毬「ゴールドの輝き」衣装のフィギュアがナムコ限定景品として登場",
+   "キャンペーンは2026年9月25日から開始"
+  ],
+  "title": "ナムコで月村手毬フィギュア景品キャンペーン",
+  "url": "https://x.com/gkmas_official/status/2097647121172484112",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "event_date": "2026-09-25",
+  "src_candidate_id": "202609101235-explore-10"
+ },
+ {
+  "id": "sched-2026-09-25-gaku-weekend-citron-hatsuboshi-store-2026-開始",
+  "dedup_key": "gaku-weekend-citron-hatsuboshi-store-2026",
+  "brand": "gaku",
+  "subject": "ハツボシストア新テーマ「ウィークエンドシトロン」販売開始",
+  "kind": "開始",
+  "note": "新テーマのグッズを店舗・通販で買える日",
+  "reserved_on": "2026-09-15",
+  "title": "ハツボシストア新テーマ「ウィークエンドシトロン」",
+  "url": "https://x.com/hatsuboshistore",
+  "source_type": "当事者",
+  "facts": [
+   "ハツボシストアの新テーマ「ウィークエンドシトロン」が公開された。",
+   "「ウィークエンドシトロン」の担当は藤田ことね。",
+   "「ウィークエンドシトロン」のオリジナルグッズラインナップが公開された。",
+   "オリジナルグッズは9月25日(金)のオープンから登場する。",
+   "ハツボシストアONLINEでも9月25日(金)から販売開始する。",
+   "選べる「A5クリアボード」に9月25日(金)から「ウィークエンドシトロン ver.」の2種が追加される。",
+   "2026年9月25日(金)～9月27日(日)の3日間は終日入店制限を実施する。",
+   "エンゲージメント: 高",
+   "言及アイドル: 藤田ことね"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609140734-explore-11",
+  "event_date": "2026-09-25"
+ },
+ {
+  "id": "sched-2026-09-25-code-vein-7-開始",
+  "dedup_key": "code-vein-7",
+  "brand": "dsva",
+  "subject": "CODE VEIN7周年特番、灯里愛夏ゲスト出演",
+  "kind": "開始",
+  "note": "特番で愛夏さんの出演を視聴できる日",
+  "reserved_on": "2026-09-15",
+  "title": "CODE VEINシリーズ7周年記念特番に灯里愛夏がゲスト出演",
+  "url": "https://x.com/valiv_official/status/2099457347316035967\n-",
+  "source_type": "未確認",
+  "facts": [
+   "公式投稿: https://x.com/valiv_official/status/2099457347316035967",
+   "いいね293 / リポスト189 / 引用2 / 表示12,903",
+   "見出し: ◤◢◤出演情報!!!◢◤◢",
+   "9月25日に放送される #CODEVEIN シリーズ7周年記念特番に、#ヴイアラ 灯里愛夏のゲスト出演が決定。",
+   "「応援よろしくお願いします！」",
+   "「▽詳細はこちら」として下記を引用。",
+   "言及: 灯里愛夏",
+   "いいね1,162 / リポスト482 / 引用37 / ブックマーク110 / 表示62,856",
+   "番組名: #CODEVEIN シリーズ 7周年記念特番「🥂吸血鬼たちの祝賀🥂」",
+   "内容: 9/9配信の拡張DLC紹介＆灯里愛夏さん（@TomoriManaka）によるゲームプレイ",
+   "記念イラストの公開",
+   "事前に募集したおたより紹介"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609150230-grok-30"
+ }
 ]

@@ -141,5 +141,35 @@
   "verify": "confirmed",
   "src_candidate_id": "202609130733-explore-6",
   "event_date": "2026-09-26"
+ },
+ {
+  "id": "sched-2026-09-26-shiny-solo-live-collection-cd-2026-発売",
+  "dedup_key": "shiny-solo-live-collection-cd-2026",
+  "brand": "shiny",
+  "subject": "シャニマス「ソロコレMSP」CD発売",
+  "kind": "発売",
+  "note": "ソロ歌唱CDを店頭・通販で買える発売日",
+  "reserved_on": "2026-09-15",
+  "title": "ソロライブ会場限定CD発売決定",
+  "url": "https://shinycolors.lantis.jp/extra/",
+  "source_type": "準公式",
+  "facts": [
+   "2026年9月26日(土)、27日(日)開催の『283 PRODUCTION Solo Live Collection -Master ShowPiece-』に合わせ、オリジナルCDの発売が決定した。",
+   "発売日：2026年9月26日(土)",
+   "商品名：THE IDOLM@STER SHINY COLORS SOLO COLLECTION 283 PRODUCTION Solo Live Collection -Master ShowPiece-",
+   "アーティスト：シャイニーカラーズ",
+   "品番：LACZ-10374",
+   "価格：2,640円（10%税込）／2,400円（税抜）",
+   "収録曲：クローバー（杜野凛世Ver.）",
+   "収録曲：クローバー（大崎甘奈Ver.）",
+   "収録曲：クローバー（市川雛菜Ver.）",
+   "収録曲：クローバー（七草にちかVer.）",
+   "収録曲：プラニスフィア ～planisphere～（緋田美琴Ver.）",
+   "収録曲：プラニスフィア ～planisphere～（鈴木羽那Ver.）"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609142335-explore-8",
+  "event_date": "2026-09-26"
  }
 ]

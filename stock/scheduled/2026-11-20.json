@@ -28,5 +28,36 @@
   "verify": "confirmed",
   "src_candidate_id": "202609132336-watch-2",
   "event_date": "2026-11-20"
+ },
+ {
+  "id": "sched-2026-11-20-sidem-fantastic-battle-fes-movie-2026-開幕",
+  "dedup_key": "sidem-fantastic-battle-fes-movie-2026",
+  "brand": "sidem",
+  "subject": "SideM劇場版『F＠NTASTIC BATTLE FES』上映開始",
+  "kind": "開幕",
+  "note": "劇場で劇場版を観られる公開初日",
+  "reserved_on": "2026-09-15",
+  "title": "SideM劇場版が11月20日全国上映",
+  "url": "https://www.famitsu.com/article/202609/87805",
+  "source_type": "報道",
+  "facts": [
+   "2026年9月13日、TOYOTA ARENA TOKYOで開催されたSideM11周年記念ライブDAY2で最新情報が発表された。",
+   "劇場版『アイドルマスター SideM F＠NTASTIC BATTLE FES ～Who goes first～』を2026年11月20日から全国の劇場で上映する。",
+   "315プロダクションのアイドルたちが本気のパフォーマンスでぶつかり合うバトルフェスを描く。",
+   "8ユニット、総勢25名のアイドルが登場する。",
+   "劇場版の予告映像を公開した。",
+   "2026年9月13日22時から『CONNECT WITH STAGE!』でSideM 11th STAGE連動ストーリーを公開した。",
+   "2026年10月から新しいCD連動ストーリーシリーズ『AJIプロジェクト』を開始する。",
+   "AJIプロジェクトでは315プロダクションのアイドルをチーム・スイート、チーム・スパイシー、チーム・ビターの3組に分ける。",
+   "AJIプロジェクトではスペシャルメンバーによる新曲3曲を披露する。",
+   "AJIプロジェクトのストーリーは全6話で展開する。",
+   "開催記念グッズの受注期間: 2026年9月13日（日）～10月11日（日）",
+   "ライブ衣装『トランセンデントリヴェイル』をライブ用にアレンジした『トランセンデントリヴェイル ライブパフォーマンスバージョン』のビジュアルを使用したグッズを販売する。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609141835-explore-12",
+  "event_date": "2026-09-13",
+  "deadline": "2026-11-20"
  }
 ]

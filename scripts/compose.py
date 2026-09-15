@@ -3134,15 +3134,43 @@ def main() -> int:
     return 1
 
 
+def _leave_tree_clean(reason: str) -> None:
+    """途中で落ちても作業ツリーを dirty のまま残さない。残すと release も collect も当番も
+    「未コミットの変更がある」で拒否し、号が出ない(実測 2026-09-15: 計画ファイルだけ残って
+    06:00 の発行と 07:30 の収集が止まった)。"""
+    try:
+        if git("status", "--porcelain").stdout.strip():
+            commit_and_push(f"edition/{edition_date()}", f"compose {edition_date()}: 途中終了時点の成果物({reason[:60]})", "compose")
+    except Exception as e:
+        print(f"途中終了時の commit に失敗: {e}", flush=True)
+
+
 if __name__ == "__main__":
     try:
-        sys.exit(main())
+        code = main()
+    except SystemExit as e:
+        # 判定表の検査などが SystemExit で止める。Exception ではないので、以前は commit も当番も無しに
+        # 黙って落ちていた(実測 2026-09-15: 判定表の重複で執筆前に停止)
+        code = e.code if isinstance(e.code, int) else 1
+        if code:
+            notify("compose", f"停止: {e.code}", ok=False)
+            _leave_tree_clean(str(e.code))
+            try:
+                from pipelib import escalate
+                escalate("compose", edition_date(), f"SystemExit で停止: {e.code}")
+            except Exception:
+                pass
     except Exception as e:
         notify_crash("compose", e)
+        _leave_tree_clean(f"{type(e).__name__}: {e}")
         # 例外で落ちたら実装の欠陥。当番へ(人が起きるまで待たない)
         try:
             from pipelib import escalate
             escalate("compose", edition_date(), f"例外で停止: {type(e).__name__}: {e}\n{traceback.format_exc()[-2500:]}")
         except Exception:
             pass
-        sys.exit(1)
+        code = 1
+    else:
+        if code:
+            _leave_tree_clean(f"exit {code}")
+    sys.exit(code)

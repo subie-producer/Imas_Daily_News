@@ -45,7 +45,7 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      COMPOSE_ARTICLE_MAX_BUDGET_USD, JobLockTimeout, job_lock, prompt_file,
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, classify_source, commit_and_push,
-                     edition_date, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
+                     edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
                      notify, notify_crash, now_jst)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
@@ -2836,7 +2836,6 @@ def main() -> int:
         if code != 0:
             notify("compose", f"{date}: lint 赤が解消できず。当番に渡す\n{lint_out[-500:]}", ok=False)
             commit_and_push(branch, f"compose {date}: lint未解消(当番へ)", "compose")
-            from pipelib import escalate
             escalate("compose", date, "lint 赤が解消できず:\n" + lint_out[-3000:])
             return 1
 
@@ -3129,7 +3128,6 @@ def main() -> int:
     notify("compose", f"{date}号: 発行前に人間判断が必要。当番に渡す。" + "\n".join(reasons), ok=False)
     # 校閲が下ろさなかった指摘や lint 赤で止まった号は、実装の欠陥であることが多い。
     # 人が起きるまで待たず、当番(Opus)が診断・修正し、監査(Sol)を通して回し直す
-    from pipelib import escalate
     escalate("compose", date, "発行前に人間判断が必要:\n" + "\n".join(reasons)[:3000])
     return 1
 

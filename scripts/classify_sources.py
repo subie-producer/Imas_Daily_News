@@ -151,7 +151,9 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     doms: dict[str, str] = {}
     accts: dict[str, tuple[str, list[str]]] = {}
     for c in rows:
-        url = c.get("url") or ""
+        # 候補の URL に改行やゴミ(`…\n-`)が付いていると判定表に当たらず、登録済みの公式まで合議に回る
+        # (実測 2026-09-15: 公式 X 9件が重複登録され compose が止まった)。空白で切る
+        url = ((c.get("url") or "").split() or [""])[0]
         if not url or classify_source(url) != "未確認":
             continue
         u = urllib.parse.urlparse(url)
@@ -401,6 +403,11 @@ def add_x_accounts(agreed: dict) -> None:
         mx = re.search(r"^x_accounts:\n", text, re.M)
         if not mx:
             print(f"  ★x_accounts が表に無いので @{a} を足せない")
+            continue
+        # 既に(大文字小文字を問わず)載っているアカウントは足さない(重複すると selfcheck が赤になり
+        # compose が止まる。実測 2026-09-15)
+        if re.search(rf"^\s+-\s+{re.escape(a)}\b", text[mx.end():], re.M | re.I):
+            print(f"  @{a} は既に表にある({t} と合議したが足さない)")
             continue
         # 種別の節は **x_accounts の中**で探す(video_channels にも「公式:」があり、そちらに
         # 差し込むと X アカウントが動画チャンネル扱いになる)

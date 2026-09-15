@@ -687,7 +687,10 @@ def normalize(items: list[dict]) -> list[dict]:
     idols = load_idol_brands()
     for i, it in enumerate(items):
         try:
-            url = (it.get("url") or "").strip()
+            # 探索(Grok/Luna)の出力は URL の後ろに改行やゴミ(`\n-`)を付けてくることがある。
+            # strip() では消えず、判定表に当たらない・出典 URL が壊れる(実測 2026-09-15: 50件)。
+            # 最初の空白で切る
+            url = ((it.get("url") or "").split() or [""])[0].rstrip(")]>,。、")
             if not url.startswith("http"):
                 continue
             valid = {"general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"}

@@ -1,0 +1,264 @@
+{
+ "decisions": {
+  "dsva-voice-15-villainess-2026-09": {
+   "action": "article",
+   "angle": "vα-liv シチュエーションボイス第15弾「悪役令嬢ボイス」がBOOTHで販売開始、灯里愛夏・上水流宇宙・レトラ+全員集合の全4種",
+   "rank": "medium",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dsva-2026-09-15-09-00(同一告知)を統合。9月度シチュボの発売開始という単発ニュースで規程13のroundup対象外"
+  },
+  "cosmo-karaage-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "KARAAGEダンス動画は既に9/15号(story: karaage)で記事化済み。付随する振り返り動画の言及は未確認・出典薄で独立記事化は不可"
+  },
+  "va-liv-online-1on1-13": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "抽選申込締切は9/15(火)23:59で本号06:00より前に終了済み。受付期間自体は9/10・9/12号で既報、本日読者ができることは無い"
+  },
+  "valiv-weekly-schedule-2026-09-14": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/14週の配信スケジュール公開は9/15号(dsva-05)で既報、新事実なし"
+  },
+  "manaka-nonoha-asobi-taizen-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "他社(にじさんじ)とのコラボ配信だが出典がファンWiki更新のみで公式告知に未到達(規程2)"
+  },
+  "dsva-2026-09-14-03-15-9-14": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "valiv-weekly-schedule-2026-09-14と同一告知の重複収集。9/15号で既報"
+  },
+  "dsva-2026-09-14-11-16-code-vein----7": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "story: code-vein-7として9/15号で記事化済み、facts完全一致で新事実なし"
+  },
+  "dsva-2026-09-15-03-00-14-30--13------1on1": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "第13回1on1抽選締切の告知。締切は本号06:00より前に終了しており、内容は既報(9/10・9/12号)と同一"
+  },
+  "dsva-2026-09-15-03-30-10-00-9-15": {
+   "action": "roundup",
+   "angle": "vα-liv 定常配信まとめ(バースデーライブ振り返り配信・メン限配信・ショート動画公開)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/15夜の振り返り配信・メン限配信案内。dsva(バースデーライブ振り返り配信とメン限「カヌレ会」)を統合先とする"
+  },
+  "dsva-2026-09-15-09-00": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-voice-15-villainess-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "シチュエーションボイス第15弾発売開始の同一告知"
+  },
+  "dsva-2026-09-15-09-00----------------bad-ateez": {
+   "action": "roundup",
+   "angle": "vα-liv 定常配信まとめ(バースデーライブ振り返り配信・メン限配信・ショート動画公開)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "上水流宇宙の踊ってみたショート動画「BAD/ATEEZ」公開"
+  },
+  "dsva-2026-09-15-10-00": {
+   "action": "roundup",
+   "angle": "vα-liv 定常配信まとめ(バースデーライブ振り返り配信・メン限配信・ショート動画公開)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "灯里愛夏のショート動画「ボイス収録新人とベテランの違い」公開"
+  },
+  "dsva-2026-09-15-11-30-------birthday-online-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アーカイブ販売中・グッズ受注中・ボイス販売中の告知はいずれも既報(8/24・9/6・9/14号)の繰り返しで新事実なし"
+  },
+  "dsva--13------1on1-livepocket": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "第13回1on1の常設案内ページ(未確認)。締切は本号06:00より前に終了済みで内容は既報と同一"
+  },
+  "dsva-------------------2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "story: valiv-cosmo-birthday-goods-2026として9/14号で記事化済み、facts一致で新事実なし"
+  },
+  "dsva-----------------2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "上水流宇宙バースデー記念ボイス2026は9/6号で既報、新事実なし"
+  },
+  "dsva": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-2026-09-15-03-30-10-00-9-15",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の振り返り配信・メン限配信を指す重複収集"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-voice-15-villainess-2026-09",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "vα-liv シチュエーションボイス第15弾「悪役令嬢ボイス」がBOOTHで販売開始、灯里愛夏・上水流宇宙・レトラ+全員集合の全4種",
+    "lead_score": 45,
+    "dedup_key": "dsva-voice-15-villainess-2026-09",
+    "candidate_ids": [
+     "202609151837-watch-2",
+     "202609160231-grok-40"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "vα-liv 定常配信まとめ(バースデーライブ振り返り配信・メン限配信・ショート動画公開)",
+    "lead_score": 0,
+    "dedup_key": "dsva-2026-09-15-03-30-10-00-9-15",
+    "candidate_ids": [
+     "202609160231-grok-39",
+     "202609160231-grok-41",
+     "202609160231-grok-42",
+     "202609160231-grok-47",
+     "202609160231-grok-48",
+     "202609160231-grok-49"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cosmo-karaage-dance-2026",
+    "reason": "既報",
+    "note": "KARAAGEダンス動画は既に9/15号(story: karaage)で記事化済み。付随する振り返り動画の言及は未確認・出典薄で独立記事化は不可"
+   },
+   {
+    "dedup_key": "va-liv-online-1on1-13",
+    "reason": "既報",
+    "note": "抽選申込締切は9/15(火)23:59で本号06:00より前に終了済み。受付期間自体は9/10・9/12号で既報、本日読者ができることは無い"
+   },
+   {
+    "dedup_key": "valiv-weekly-schedule-2026-09-14",
+    "reason": "既報",
+    "note": "9/14週の配信スケジュール公開は9/15号(dsva-05)で既報、新事実なし"
+   },
+   {
+    "dedup_key": "manaka-nonoha-asobi-taizen-2026",
+    "reason": "出典不足",
+    "note": "他社(にじさんじ)とのコラボ配信だが出典がファンWiki更新のみで公式告知に未到達(規程2)"
+   },
+   {
+    "dedup_key": "dsva-2026-09-14-03-15-9-14",
+    "reason": "既報",
+    "note": "valiv-weekly-schedule-2026-09-14と同一告知の重複収集。9/15号で既報"
+   },
+   {
+    "dedup_key": "dsva-2026-09-14-11-16-code-vein----7",
+    "reason": "既報",
+    "note": "story: code-vein-7として9/15号で記事化済み、facts完全一致で新事実なし"
+   },
+   {
+    "dedup_key": "dsva-2026-09-15-03-00-14-30--13------1on1",
+    "reason": "既報",
+    "note": "第13回1on1抽選締切の告知。締切は本号06:00より前に終了しており、内容は既報(9/10・9/12号)と同一"
+   },
+   {
+    "dedup_key": "dsva-2026-09-15-11-30-------birthday-online-live-2026",
+    "reason": "既報",
+    "note": "アーカイブ販売中・グッズ受注中・ボイス販売中の告知はいずれも既報(8/24・9/6・9/14号)の繰り返しで新事実なし"
+   },
+   {
+    "dedup_key": "dsva--13------1on1-livepocket",
+    "reason": "既報",
+    "note": "第13回1on1の常設案内ページ(未確認)。締切は本号06:00より前に終了済みで内容は既報と同一"
+   },
+   {
+    "dedup_key": "dsva-------------------2026",
+    "reason": "既報",
+    "note": "story: valiv-cosmo-birthday-goods-2026として9/14号で記事化済み、facts一致で新事実なし"
+   },
+   {
+    "dedup_key": "dsva-----------------2026",
+    "reason": "既報",
+    "note": "上水流宇宙バースデー記念ボイス2026は9/6号で既報、新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

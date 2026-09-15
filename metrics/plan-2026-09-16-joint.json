@@ -1,0 +1,162 @@
+{
+ "decisions": {
+  "joint-other-7-9-16": {
+   "action": "article",
+   "angle": "アイマスchが神谷奈緒さん・詩花さんの誕生日を同日に祝う記念ムービーを公開",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "joint-other-8-s1--------------9-17": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "joint-other-9-s1-----------------s1-ex--9-17",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "デフォルメ姿アクセサリー等の新カード紹介。同じS1弾Ex(9/17開始)の一連告知として本記事に統合"
+  },
+  "joint-other-9-s1-----------------s1-ex--9-17": {
+   "action": "article",
+   "angle": "ツアマスS1弾Ex(9/17開始)のツアーズレア全カードリストが公開、新カード・新アクセサリーの詳細も判明",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "joint-other-8・joint-other-10の素材を統合。カードリスト公開は新事実、キャンペーン詳細は既報部分を補足として使用"
+  },
+  "joint-other-10-s1-ex-----------------------28": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "joint-other-9-s1-----------------s1-ex--9-17",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/10ニュースページの内容(周防桃子登場・ログインボーナス等)は既報。9/15開始告知Xも新事実なしのため統合のみ"
+  },
+  "joint-other-11-----------after-school--------in-namco": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ナムコ限定景品キャンペーンはgaku面で既報・継続中(gaku-after-school-namco-2026、9/11既報)。新事実(プロモカード7種・TR復刻3種)はgaku面の続報として扱うべき話題"
+  },
+  "joint-other-12-p----------------tours----9-26": {
+   "action": "article",
+   "angle": "Pステ大阪日本橋でツアマス交流会(9/26)、店舗が公式告知",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "joint-other-14-im-s-radio": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "初回放送への視聴感想集はファン発の個人的感想(brand: general)。規程4例外のgeneral面rank:culture枠で扱うべき話題でjoint面の対象外"
+  },
+  "joint-other-15--------------------iwsf": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "対バングッズ特典を過去のIWSFグッズと比べるファンの会話。期間内の新規公式告知は確認できず、個人的な比較談義のため不採用"
+  },
+  "imas-mor-414-asahi-2026": {
+   "action": "article",
+   "angle": "本日9/16放送のアイマスMOR414、芹沢あさひ役・田中有紀さんのマスターソング特集",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕当日トリガー)。放送当日で読者が今日聴けるため記事化。stock既報と同内容だが放送日到達自体が新報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-other-7-9-16",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "アイマスchが神谷奈緒さん・詩花さんの誕生日を同日に祝う記念ムービーを公開",
+    "lead_score": 8,
+    "dedup_key": "joint-other-7-9-16",
+    "candidate_ids": [
+     "202609160231-grok-57"
+    ]
+   },
+   {
+    "slug": "joint-other-9-s1-s1-ex-9-17",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ツアマスS1弾Ex(9/17開始)のツアーズレア全カードリストが公開、新カード・新アクセサリーの詳細も判明",
+    "lead_score": 55,
+    "dedup_key": "joint-other-9-s1-----------------s1-ex--9-17",
+    "candidate_ids": [
+     "202609160231-grok-59",
+     "202609160231-grok-58",
+     "202609160231-grok-60"
+    ]
+   },
+   {
+    "slug": "joint-other-12-p-tours-9-26",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "Pステ大阪日本橋でツアマス交流会(9/26)、店舗が公式告知",
+    "lead_score": 10,
+    "dedup_key": "joint-other-12-p----------------tours----9-26",
+    "candidate_ids": [
+     "202609160231-grok-62"
+    ]
+   },
+   {
+    "slug": "joint-imas-mor-414-asahi-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "本日9/16放送のアイマスMOR414、芹沢あさひ役・田中有紀さんのマスターソング特集",
+    "lead_score": 8,
+    "dedup_key": "imas-mor-414-asahi-2026",
+    "candidate_ids": [
+     "sched-2026-09-16-imas-mor-414-asahi-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "joint-other-11-----------after-school--------in-namco",
+    "reason": "面違い",
+    "note": "ナムコ限定景品キャンペーンはgaku面で既報・継続中(gaku-after-school-namco-2026、9/11既報)。新事実(プロモカード7種・TR復刻3種)はgaku面の続報として扱うべき話題"
+   },
+   {
+    "dedup_key": "joint-other-14-im-s-radio",
+    "reason": "面違い",
+    "note": "初回放送への視聴感想集はファン発の個人的感想(brand: general)。規程4例外のgeneral面rank:culture枠で扱うべき話題でjoint面の対象外"
+   },
+   {
+    "dedup_key": "joint-other-15--------------------iwsf",
+    "reason": "個人の話題",
+    "note": "対バングッズ特典を過去のIWSFグッズと比べるファンの会話。期間内の新規公式告知は確認できず、個人的な比較談義のため不採用"
+   }
+  ],
+  "cross_brand": []
+ }
+}

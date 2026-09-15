@@ -1,0 +1,429 @@
+{
+ "decisions": {
+  "sidem-shiny-colors-sparkle-showdown-2027": {
+   "action": "cross_brand",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-photo-panel-new-2026-09": {
+   "action": "article",
+   "angle": "アイドルフォトパネル新柄5種を9/18よりショップ5店で発売、うちイルミネーションスターズ3柄の価格・仕様が判明",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-msp-solo-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "品番・発売日は9/15号で既報(shiny-solo-live-collection-cd-2026)。新規は収録曲2曲のみで単独記事化基準に届かず"
+  },
+  "shiny-msp-cd-bluray-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "整理券受付(9/10-15)はshiny-msp-goods-voucher-2026で既報、締切も9/15で本日のトリガーなし"
+  },
+  "shiny-idol-photo-panel-illumination-stars-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-photo-panel-new-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hopeful-feathers-stella-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hopeful-feathers-cd-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hopeful-feathers-luna-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hopeful-feathers-cd-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hopeful-feathers-sol-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hopeful-feathers-cd-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-1-shiny-style-collection-i-m-a-cutie-finder-dolce-style": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "SHINY Style COLLECTION第1弾のテーマ・受注期限(9/27)・価格は既報。個別キャスト紹介コメントのみで新事実なし"
+  },
+  "shiny-2---------------------400": {
+   "action": "roundup",
+   "angle": "定常運営まとめ:ドレスオーダー強化週間/ソロ歌唱モード楽曲追加(杜野凛世)/はばたきラジオ第400回放送",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-3-shiny-style-collection-i-m-a-cutie-finder-dolce-style": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "SHINY Style COLLECTION第1弾のテーマ・受注期限(9/27)・価格は既報。個別キャスト紹介コメントのみで新事実なし"
+  },
+  "shiny-4--400": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-2---------------------400",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-5--400-------------------msp": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-2---------------------400",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-6--------msp--------hopeful-fe-thers": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-2---------------------400",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-7": {
+   "action": "roundup",
+   "angle": "定常運営まとめ:ドレスオーダー強化週間/ソロ歌唱モード楽曲追加(杜野凛世)/はばたきラジオ第400回放送",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-8----------------after-school": {
+   "action": "roundup",
+   "angle": "定常運営まとめ:ドレスオーダー強化週間/ソロ歌唱モード楽曲追加(杜野凛世)/はばたきラジオ第400回放送",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-9": {
+   "action": "article",
+   "angle": "近日登場の新ガシャシリーズを予告、★3排出率1.5倍・月末更新の新衣装は3DMV対応",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-10------------------9-16--15-00": {
+   "action": "article",
+   "angle": "本日15時から近日登場アイドルのチラ見せを実施",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-12--------------400-----hopeful-fe-thers": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-2---------------------400",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-13-----------------hsv": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hopeful-feathers-cd-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-i-m-a-cutie-finder-dolce-style": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "価格・ラインナップはshiny-style-collection-vol1-2026で既報。商品ページの個別URL列挙のみで新事実なし"
+  },
+  "shiny-------------------style": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "価格・ラインナップはshiny-style-collection-vol1-2026で既報。商品ページの個別URL列挙のみで新事実なし"
+  },
+  "shiny": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny--------streaming": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hopeful-feathers-cd-2026": {
+   "action": "article",
+   "angle": "『HOPEFUL FE@THERS』-Stella-/-Luna-/-Sol- 3作同時発売、アイドル28人の新ソロ曲を収録",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-msp-live-tickets-2026": {
+   "action": "article",
+   "angle": "MSPチケット公式リセールが本日9:59締切、配信チケットは10/5まで販売中",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-parallel-collection-popup-2026": {
+   "action": "article",
+   "angle": "「パラレル回廊」の空席分先着予約を本日18時から受付開始",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-kutsurogi-climax-girls-2026": {
+   "action": "article",
+   "angle": "「くつろぎクライマックスガールズ」が本日開幕、放課後クライマックスガールズ描くシナリオイベント復刻",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-photo-panel-new-2026-09",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "アイドルフォトパネル新柄5種を9/18よりショップ5店で発売、うちイルミネーションスターズ3柄の価格・仕様が判明",
+    "lead_score": 15,
+    "dedup_key": "shiny-photo-panel-new-2026-09",
+    "candidate_ids": [
+     "202609151837-watch-3",
+     "202609152336-explore-10"
+    ]
+   },
+   {
+    "slug": "shiny-9-f651bf",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "近日登場の新ガシャシリーズを予告、★3排出率1.5倍・月末更新の新衣装は3DMV対応",
+    "lead_score": 10,
+    "dedup_key": "shiny-9",
+    "candidate_ids": [
+     "202609160231-grok-90"
+    ]
+   },
+   {
+    "slug": "shiny-10-9-16-15-00-e7f8c5",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "本日15時から近日登場アイドルのチラ見せを実施",
+    "lead_score": 15,
+    "dedup_key": "shiny-10------------------9-16--15-00",
+    "candidate_ids": [
+     "202609160231-grok-91"
+    ]
+   },
+   {
+    "slug": "shiny-hopeful-feathers-cd-2026",
+    "brand": "shiny",
+    "rank": "large",
+    "angle": "『HOPEFUL FE@THERS』-Stella-/-Luna-/-Sol- 3作同時発売、アイドル28人の新ソロ曲を収録",
+    "lead_score": 85,
+    "dedup_key": "shiny-hopeful-feathers-cd-2026",
+    "candidate_ids": [
+     "sched-2026-09-16-shiny-hopeful-feathers-cd-2026-発売",
+     "202609160231-explore-4",
+     "202609160231-explore-5",
+     "202609160231-explore-6",
+     "202609160231-grok-94"
+    ]
+   },
+   {
+    "slug": "shiny-msp-live-tickets-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "MSPチケット公式リセールが本日9:59締切、配信チケットは10/5まで販売中",
+    "lead_score": 20,
+    "dedup_key": "shiny-msp-live-tickets-2026",
+    "candidate_ids": [
+     "sched-2026-09-16-shiny-msp-live-tickets-2026-締切",
+     "202609160231-grok-97",
+     "202609160231-grok-99",
+     "202609160231-grok-98"
+    ]
+   },
+   {
+    "slug": "shiny-parallel-collection-popup-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「パラレル回廊」の空席分先着予約を本日18時から受付開始",
+    "lead_score": 15,
+    "dedup_key": "shiny-parallel-collection-popup-2026",
+    "candidate_ids": [
+     "sched-2026-09-16-shiny-parallel-collection-popup-2026-開始"
+    ]
+   },
+   {
+    "slug": "shiny-kutsurogi-climax-girls-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「くつろぎクライマックスガールズ」が本日開幕、放課後クライマックスガールズ描くシナリオイベント復刻",
+    "lead_score": 25,
+    "dedup_key": "shiny-kutsurogi-climax-girls-2026",
+    "candidate_ids": [
+     "sched-2026-09-16-shiny-kutsurogi-climax-girls-2026-開幕"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "定常運営まとめ:ドレスオーダー強化週間/ソロ歌唱モード楽曲追加(杜野凛世)/はばたきラジオ第400回放送",
+    "lead_score": 0,
+    "dedup_key": "shiny-2---------------------400",
+    "candidate_ids": [
+     "202609160231-grok-83",
+     "202609160231-grok-88",
+     "202609160231-grok-89",
+     "202609160231-grok-85",
+     "202609160231-grok-86",
+     "202609160231-grok-87",
+     "202609160231-grok-93"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-msp-solo-cd-2026",
+    "reason": "既報",
+    "note": "品番・発売日は9/15号で既報(shiny-solo-live-collection-cd-2026)。新規は収録曲2曲のみで単独記事化基準に届かず"
+   },
+   {
+    "dedup_key": "shiny-msp-cd-bluray-bonus-2026",
+    "reason": "既報",
+    "note": "整理券受付(9/10-15)はshiny-msp-goods-voucher-2026で既報、締切も9/15で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-1-shiny-style-collection-i-m-a-cutie-finder-dolce-style",
+    "reason": "既報",
+    "note": "SHINY Style COLLECTION第1弾のテーマ・受注期限(9/27)・価格は既報。個別キャスト紹介コメントのみで新事実なし"
+   },
+   {
+    "dedup_key": "shiny-3-shiny-style-collection-i-m-a-cutie-finder-dolce-style",
+    "reason": "既報",
+    "note": "SHINY Style COLLECTION第1弾のテーマ・受注期限(9/27)・価格は既報。個別キャスト紹介コメントのみで新事実なし"
+   },
+   {
+    "dedup_key": "shiny-i-m-a-cutie-finder-dolce-style",
+    "reason": "既報",
+    "note": "価格・ラインナップはshiny-style-collection-vol1-2026で既報。商品ページの個別URL列挙のみで新事実なし"
+   },
+   {
+    "dedup_key": "shiny-------------------style",
+    "reason": "既報",
+    "note": "価格・ラインナップはshiny-style-collection-vol1-2026で既報。商品ページの個別URL列挙のみで新事実なし"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "",
+    "dedup_key": "sidem-shiny-colors-sparkle-showdown-2027",
+    "note": ""
+   }
+  ]
+ }
+}

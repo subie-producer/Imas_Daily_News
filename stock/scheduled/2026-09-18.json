@@ -397,5 +397,34 @@
   "verify": "confirmed",
   "src_candidate_id": "202609142335-explore-23",
   "event_date": "2026-09-18"
+ },
+ {
+  "id": "sched-2026-09-18-million-lottery-goods-photo-panel-2026-09-発売",
+  "dedup_key": "million-lottery-goods-photo-panel-2026-09",
+  "brand": "million",
+  "subject": "ミリオンくじ新賞品・フォトパネル新柄",
+  "kind": "発売",
+  "note": "オフィシャルショップで取扱開始",
+  "reserved_on": "2026-09-16",
+  "title": "ミリオン オフィシャルショップ抽選くじ新賞品11種、アイドルフォトパネル新柄3種発売",
+  "url": "https://idolmaster-official.jp/news/01_19821",
+  "source_type": "公式",
+  "facts": [
+   "アイドルマスター オフィシャルショップ ミリオンライブ！ 抽選くじに新賞品11種が登場",
+   "取扱開始日：9月18日(金)より",
+   "1回540円(税込)",
+   "4等級・はずれなし",
+   "1会計の購入制限は10回まで",
+   "A賞 アクリルボード 6種が新登場（全27種）",
+   "B賞 アクリルキーホルダー 5種が新登場（全39種）",
+   "取扱店舗：アイドルマスター オフィシャルショップ",
+   "取扱店舗：アトレ秋葉原店",
+   "取扱店舗：名古屋駅前店",
+   "取扱店舗：大阪日本橋店",
+   "取扱店舗：博多バスターミナル店"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609151837-watch-6"
  }
 ]

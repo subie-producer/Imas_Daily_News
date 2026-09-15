@@ -48,6 +48,7 @@ official_suffixes:
 
 # --- 準公式: 公式レーベル・公式ストア等のグループ/パートナー企業 ---
 semi_official_domains:
+  - asobiticket2.asobistore.jp # 合議で追加: asobistore.jp配下、登録済み同系列ドメインと同じ公式プラットフォーム
   - gakuen-label.idolmaster-official.jp   # 学マスレーベル(公式レーベル)
   - columbia.jp                           # 日本コロムビア
   - shop.columbia.jp
@@ -170,6 +171,7 @@ secondary_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - ckworks.jp            # 合議で追加: 個人ブログ・サービス。アニメレポート・VTuber情報
   - motoraji.jugem.jp     # もとラジ!(ファン番組の自己発信)
 
 # --- 当事者: 主催者・販売元・自治体・コラボ先などの一次発信 ---
@@ -335,6 +337,7 @@ x_accounts:
     - TomoriManaka
     - UtagawaLetora
   準公式:
+    - dengeki_maoh        # 合議で追加: 『ぷちます！』連載誌。連載サイト・連載誌は準公式
     # ㈱バンダイナムコアミューズメントの店舗・ショップ。グループ会社なので
     # bandainamco-am.co.jp と同じく準公式(会場としての当事者ではなく、運営主体で決める)
     - ImasShop_bnam       # アイドルマスター オフィシャルショップ(公式ストア)
@@ -350,6 +353,8 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - ozawa_rena          # 合議で追加: 郁田はるき役声優本人。出演者本人またはその事務所
+    - mineda_mayu         # 合議で追加: 八宮めぐる役声優本人。出演者本人またはその事務所
     - nojomiy             # 合議で追加: 声優本人による応援投稿
     - arisa_kori          # 合議で追加: 声優本人が自作のキャラへの言及を発信
     - ma_akane1014        # 合議で追加: 出演者による反応投稿
@@ -375,6 +380,11 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - yunonhbk1618        # 合議で追加: 個人によるプラモ・コスプレ創作。ファン創作は個人
+    - hoshi_ringo24       # 合議で追加: 人狼投稿への個人の反応。個人の発信はファン
+    - dasiderp            # 合議で追加: 放送への個人による視聴反応。個人の発信はファン
+    - E_Cobra85           # 合議で追加: 生誕タグ動向への個人の反応。個人の発信はファン
+    - Broadcast_4019      # 合議で追加: 個人によるファンアート創作。個人投稿は内容問わずファン
     - windbellsP          # 合議で追加: 個人アカウント、ファン側の活動情報
     - tyna7Z6             # 合議で追加: 個人アカウント、公式MV反応
     - raon555             # 合議で追加: 個人によるゲーム比較動画投稿
@@ -434,6 +444,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - Atfes_portal        # 合議で追加: イベント主催者の公式アカウント（会場・イベント主催は当事者）
     - oshitabi_update     # 合議で追加: JR東海推し旅キャンペーン公式
     - ichibanKUJI         # 合議で追加: くじ運営者。ライセンス商品販売告知
     - Miraimiratoys       # 合議で追加: フィギュアメーカー。ライセンス品製造販売

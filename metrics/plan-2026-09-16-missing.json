@@ -1,0 +1,12 @@
+{
+  "articles": [],
+  "merge_into": [],
+  "dropped": [
+    {
+      "dedup_key": "sidem-shiny-colors-sparkle-showdown-2027",
+      "brand": "joint",
+      "reason": "既報",
+      "note": "SideM×シャニマス「SPARKLE SHOWDOWN」DAY1出演者情報は2026-09-13/14/15号で既に記事化済み(docs/_posts/2026-09-13-joint-sidem-shinycolors-sparkle-showdown-2027-06.md ほか)。今回の素材(published_date 2026-09-12)に新事実なし。"
+    }
+  ]
+}

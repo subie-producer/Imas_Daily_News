@@ -1,0 +1,130 @@
+{
+ "decisions": {
+  "cinderella-girls-15th-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "二次情報(未確認)は『9/26 12時解禁』と伝えるが、確認済み公式ツイート(9/15投稿『明日12:00情報解禁』=本日16日)と矛盾。確認済み情報のみ採用しこちらは不採用。"
+  },
+  "cg-vote2026-final-goods-deadlines": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注・購入・二次販売の締切は9/13 23:59で発行日06:00より前に終了済み。カードフォリオ等の個別事実もstock published_factsと重複。"
+  },
+  "cg-vote2026-deadline-status": {
+   "action": "article",
+   "angle": "総選挙2026投票期間(〜9/18 23:59)終了間近、投票券引換・受取期限も同日までとリマインド",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cinderella-2026-09-15-13-00-jst(あと3日/ID注意ツイート)を統合。規程8の締切前トリガーに該当、投票期間はまだ有効。"
+  },
+  "cinderella-2026-09-15-13-30-jst": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "告知ページ本文が『（ページ本文は追記予定）』のままで内容未収集、記事化できる事実が無い。"
+  },
+  "cinderella-2026-09-15-13-00-jst--------------3------id": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-vote2026-deadline-status",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "総選挙2026投票締切の同一カウントダウン。cg-vote2026-deadline-statusへ統合(詳細は同topicの確定facts側で記述)。"
+  },
+  "cinderella-2026-09-15-12-00-jst-15-----12-00": {
+   "action": "article",
+   "angle": "公式が『明日12:00情報解禁』を予告、本日正午に15周年関連の新情報が解禁予定",
+   "rank": "small",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "確認済み公式ツイート、高エンゲージメント(Likes8619・Views72万超)。本日この面で最大の話題。素材は予告ツイートのみで短くなるがlead候補。"
+  },
+  "cg-toppa-base-popup-2026": {
+   "action": "article",
+   "angle": "TOPPA!!!BASE POPUP SHOP秋葉原会場が本日9/16で会期終了(千秋楽)、6人のグッズ展開を紹介",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約どおり記事化。本日が秋葉原会場の最終営業日で読者が今日行ける。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-vote2026-deadline-status",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "総選挙2026投票期間(〜9/18 23:59)終了間近、投票券引換・受取期限も同日までとリマインド",
+    "lead_score": 25,
+    "dedup_key": "cg-vote2026-deadline-status",
+    "candidate_ids": [
+     "202609152336-explore-5",
+     "202609160231-grok-34"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-2026-09-15-12-00-jst-15-12-00",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "公式が『明日12:00情報解禁』を予告、本日正午に15周年関連の新情報が解禁予定",
+    "lead_score": 85,
+    "dedup_key": "cinderella-2026-09-15-12-00-jst-15-----12-00",
+    "candidate_ids": [
+     "202609160231-grok-35"
+    ]
+   },
+   {
+    "slug": "cg-toppa-base-popup-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "TOPPA!!!BASE POPUP SHOP秋葉原会場が本日9/16で会期終了(千秋楽)、6人のグッズ展開を紹介",
+    "lead_score": 15,
+    "dedup_key": "cg-toppa-base-popup-2026",
+    "candidate_ids": [
+     "sched-2026-09-16-cg-toppa-base-popup-2026-千秋楽"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-girls-15th-2026",
+    "reason": "出典不足",
+    "note": "二次情報(未確認)は『9/26 12時解禁』と伝えるが、確認済み公式ツイート(9/15投稿『明日12:00情報解禁』=本日16日)と矛盾。確認済み情報のみ採用しこちらは不採用。"
+   },
+   {
+    "dedup_key": "cg-vote2026-final-goods-deadlines",
+    "reason": "既報",
+    "note": "受注・購入・二次販売の締切は9/13 23:59で発行日06:00より前に終了済み。カードフォリオ等の個別事実もstock published_factsと重複。"
+   },
+   {
+    "dedup_key": "cinderella-2026-09-15-13-30-jst",
+    "reason": "出典不足",
+    "note": "告知ページ本文が『（ページ本文は追記予定）』のままで内容未収集、記事化できる事実が無い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

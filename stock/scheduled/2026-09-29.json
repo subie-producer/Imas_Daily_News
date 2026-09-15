@@ -99,5 +99,28 @@
   "src_candidate_id": "202609140234-grok-21",
   "event_date": "2026-09-16",
   "deadline": "2026-09-29"
+ },
+ {
+  "id": "sched-2026-09-29-shiny-kutsurogi-climax-girls-2026-千秋楽",
+  "dedup_key": "shiny-kutsurogi-climax-girls-2026",
+  "brand": "shiny",
+  "subject": "「くつろぎクライマックスガールズ」復刻",
+  "kind": "千秋楽",
+  "note": "復刻イベント最終日",
+  "reserved_on": "2026-09-16",
+  "title": "くつろぎクライマックスガールズ復刻",
+  "url": "https://x.com/imassc_official/status/2099015720726102442",
+  "source_type": "公式",
+  "facts": [
+   "以前開催した放課後クライマックスガールズの皆さんの物語を描いたシナリオイベント「くつろぎクライマックスガールズ」が復刻開催",
+   "●開催期間: 2026年9月16日 ～ 2026年9月29日 11:59（予定）",
+   "エンゲージメント: 中",
+   "言及アイドル: 小宮果穂、園田智代子、西城樹里、杜野凛世、有栖川夏葉"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "sched-2026-09-16-shiny-kutsurogi-climax-girls-2026-開幕",
+  "event_date": "2026-09-16",
+  "deadline": "2026-09-29"
  }
 ]

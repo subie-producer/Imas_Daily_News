@@ -1,0 +1,343 @@
+{
+ "decisions": {
+  "million-14th-ticket-second-sale-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-last-minute-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一告知(9/14付公式ニュース)の2次先着発売。当日券まで含む同一記事へ統合"
+  },
+  "million-official-shop-lottery-panel-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-lottery-goods-photo-panel-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策(抽選くじ新賞品11種+フォトパネル新柄3種、9/18発売)。情報量の多い方へ統合"
+  },
+  "million-hinata-apple-ambassador-2026": {
+   "action": "article",
+   "angle": "木下ひなたの壮瞥町りんご大使就任、ステッカー引換・抽選応募窓口の場所と受付時間が新たに判明",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(9/3)の続報。窓口場所・平日土日祝の時間帯という新事実あり"
+  },
+  "million-lottery-goods-photo-panel-2026-09": {
+   "action": "article",
+   "angle": "ミリオン抽選くじ新賞品11種とフォトパネル新柄3種、9/18発売開始",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "official-shop-lottery-panelの素材を統合、価格・等級・購入制限・取扱店舗を列挙"
+  },
+  "million-shizuka-figure-animation-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/14付予約受付開始は9/14号(edition_facts)で既報、今回の候補に新事実なし"
+  },
+  "million-14th-ticket-update-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-last-minute-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式サイトTICKET更新=2次先着・当日券告知そのもの。詳細記事へ統合"
+  },
+  "million-14th-streaming-2026": {
+   "action": "article",
+   "angle": "14thLIVE配信チケット、プレゼント用視聴チケットの販売が新たに決定",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信チケット詳細は既報だが「プレゼント用」販売決定は新事実。現地チケットとは別の購入行動"
+  },
+  "million-14th-live-last-minute-tickets-2026": {
+   "action": "article",
+   "angle": "14thLIVE現地チケット、一般販売2次(先着)が開始・当日券の発売も決定",
+   "rank": "large",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "6件の素材を統合。席種別価格・受付期間・枚数制限・支払方法などを列挙"
+  },
+  "million-1": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "詩花誕生日の話題はjoint-other-7-9-16(アイマスch記念ムービー)で既に紙面化済み"
+  },
+  "million-2": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "劇場公式の人狼ゲーム紹介投稿。読者の行動材料にも背景理解にもならず規程2の基準を満たさない"
+  },
+  "million-3-------------------300": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "補填・お詫び配布は完了済みの対応。規程2により済んだトラブル対応は記事化しない"
+  },
+  "million-4": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "ラーメンおすすめ募集の雑談投稿。規程2の記事化基準(行動材料/背景理解)を満たさない"
+  },
+  "million-5-----------12": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "12月シーズナル受注締切9/20はstories.ymlに既出の事実そのままで新事実なし"
+  },
+  "million-6-----14th------------2-------18-00": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-last-minute-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "765PRO告知も同一の2次先着・当日券ニュース"
+  },
+  "million-7-----14th------------2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-last-minute-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同上、まもなくスタート告知の重複ポスト"
+  },
+  "million---------------------2026-9-14-update": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-last-minute-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日券受付ページの内容は主記事の事実と一致するため統合"
+  },
+  "million------information": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公演名・会場・開場開演時刻はstories.yml(million-14th-live)に既出で新事実なし"
+  },
+  "million-8-9-16": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人アカウントのお祝いハッシュタグ投稿、未確認で単体記事化しない"
+  },
+  "million-9": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "演者個人アカウントの動画紹介で、主催者・掲出期間など未確認。裏付け不足"
+  },
+  "million-10": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人アカウントの憶測投稿で公式の裏付けなし"
+  },
+  "million-millicol-2026-09": {
+   "action": "article",
+   "angle": "ミリシタ月例イベント「ミリコレ」、本日20:59終了・報酬カード獲得はラストチャンス",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了日)を採用。20:59まで読者が行動できる"
+  },
+  "million-miricore-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-millicol-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一イベント。未確認の二次情報のため公式ソース側の記事へ統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-hinata-apple-ambassador-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "木下ひなたの壮瞥町りんご大使就任、ステッカー引換・抽選応募窓口の場所と受付時間が新たに判明",
+    "lead_score": 10,
+    "dedup_key": "million-hinata-apple-ambassador-2026",
+    "candidate_ids": [
+     "202609151837-watch-0"
+    ]
+   },
+   {
+    "slug": "million-lottery-goods-photo-panel-2026-09",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリオン抽選くじ新賞品11種とフォトパネル新柄3種、9/18発売開始",
+    "lead_score": 20,
+    "dedup_key": "million-lottery-goods-photo-panel-2026-09",
+    "candidate_ids": [
+     "202609151837-watch-6",
+     "202609151258-explore-3"
+    ]
+   },
+   {
+    "slug": "million-14th-streaming-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "14thLIVE配信チケット、プレゼント用視聴チケットの販売が新たに決定",
+    "lead_score": 10,
+    "dedup_key": "million-14th-streaming-2026",
+    "candidate_ids": [
+     "202609160231-explore-3"
+    ]
+   },
+   {
+    "slug": "million-14th-live-last-minute-tickets-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "14thLIVE現地チケット、一般販売2次(先着)が開始・当日券の発売も決定",
+    "lead_score": 65,
+    "dedup_key": "million-14th-live-last-minute-tickets-2026",
+    "candidate_ids": [
+     "202609160231-explore-22",
+     "202609151258-explore-2",
+     "202609160231-explore-2",
+     "202609160231-grok-71",
+     "202609160231-grok-72",
+     "202609160231-grok-74"
+    ]
+   },
+   {
+    "slug": "million-millicol-2026-09",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ月例イベント「ミリコレ」、本日20:59終了・報酬カード獲得はラストチャンス",
+    "lead_score": 15,
+    "dedup_key": "million-millicol-2026-09",
+    "candidate_ids": [
+     "sched-2026-09-16-million-millicol-2026-09-終了",
+     "sched-2026-09-16-million-miricore-2026-09-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-shizuka-figure-animation-2026",
+    "reason": "既報",
+    "note": "9/14付予約受付開始は9/14号(edition_facts)で既報、今回の候補に新事実なし"
+   },
+   {
+    "dedup_key": "million-1",
+    "reason": "重複",
+    "note": "詩花誕生日の話題はjoint-other-7-9-16(アイマスch記念ムービー)で既に紙面化済み"
+   },
+   {
+    "dedup_key": "million-2",
+    "reason": "その他",
+    "note": "劇場公式の人狼ゲーム紹介投稿。読者の行動材料にも背景理解にもならず規程2の基準を満たさない"
+   },
+   {
+    "dedup_key": "million-3-------------------300",
+    "reason": "その他",
+    "note": "補填・お詫び配布は完了済みの対応。規程2により済んだトラブル対応は記事化しない"
+   },
+   {
+    "dedup_key": "million-4",
+    "reason": "その他",
+    "note": "ラーメンおすすめ募集の雑談投稿。規程2の記事化基準(行動材料/背景理解)を満たさない"
+   },
+   {
+    "dedup_key": "million-5-----------12",
+    "reason": "既報",
+    "note": "12月シーズナル受注締切9/20はstories.ymlに既出の事実そのままで新事実なし"
+   },
+   {
+    "dedup_key": "million------information",
+    "reason": "既報",
+    "note": "公演名・会場・開場開演時刻はstories.yml(million-14th-live)に既出で新事実なし"
+   },
+   {
+    "dedup_key": "million-8-9-16",
+    "reason": "個人の話題",
+    "note": "個人アカウントのお祝いハッシュタグ投稿、未確認で単体記事化しない"
+   },
+   {
+    "dedup_key": "million-9",
+    "reason": "出典不足",
+    "note": "演者個人アカウントの動画紹介で、主催者・掲出期間など未確認。裏付け不足"
+   },
+   {
+    "dedup_key": "million-10",
+    "reason": "個人の話題",
+    "note": "個人アカウントの憶測投稿で公式の裏付けなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

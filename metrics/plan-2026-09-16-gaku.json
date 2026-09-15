@@ -1,0 +1,188 @@
+{
+ "decisions": {
+  "gaku-ios27-compatibility-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/15号で既報の動作確認告知(stock: ios-27-ipados-27)と同内容、新事実なし"
+  },
+  "gaku-ribalaba-gashapon-2026-09": {
+   "action": "article",
+   "angle": "「リバラバ！」新デザインのRe;IRIS・Begrazia6人がガシャポン全6種で登場、発売日と仕様を紹介",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-tezuki-temari-figure-2026": {
+   "action": "article",
+   "angle": "MiraiMira製月村手毬フィギュアの予約受付、メーカー受注締切(11/11)を軸に商品詳細を紹介",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/15号既報(価格・発売月)に対し受注締切11/11等の新事実あり。inside-games記事(gkmas-tsukimura-temari-ameagari-iris-figure-2026)を統合"
+  },
+  "gaku-after-school-namco-2026": {
+   "action": "article",
+   "angle": "ナムコ「After Schoolキャンペーン」の全容(9/25〜11/1、週替わり景品とツアーズカード配布)をPR TIMES公式発表で詳報",
+   "rank": "medium",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/11号既報の速報に対しPR TIMESで開催期間・週替わり景品全種など新事実が判明"
+  },
+  "gkmas-tsukimura-temari-ameagari-iris-figure-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-tezuki-temari-figure-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MiraiMira月村手毬フィギュア予約と同一商品の報道記事、公式発表側に統合"
+  },
+  "gakuen-2026-09-14-02-30-utc-ios-27-ipados-27": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "gaku-ios27-compatibility-2026と同一投稿の再取得で、内容はstockと同一。新事実なし"
+  },
+  "gakuen-2026-09-14-10-00-utc-------------------------day1": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "福岡公演配信チケット・新曲「神かわいい」いずれもstockのgaku-shirube-livetour-fukuoka-2026で既報、新事実なし"
+  },
+  "gakuen-2026-09-15------------2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "発信元がgkmas公式ではなくアトフェス運営(未確認)、学マスは21タイトル中の1つで公式発表未確認"
+  },
+  "gakuen-2026-09-15-10-00-utc-----------mv-100": {
+   "action": "roundup",
+   "angle": "楽曲MVの再生数節目(100万・300万再生突破)を1本にまとめる",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakuen-2026-09-15-10-15-utc-atmosphere-mv-100": {
+   "action": "roundup",
+   "angle": "楽曲MVの再生数節目(100万・300万再生突破)を1本にまとめる",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakuen-2026-09-15-10-30-utc----------mv-300": {
+   "action": "roundup",
+   "angle": "楽曲MVの再生数節目(100万・300万再生突破)を1本にまとめる",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-ribalaba-gashapon-2026-09",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「リバラバ！」新デザインのRe;IRIS・Begrazia6人がガシャポン全6種で登場、発売日と仕様を紹介",
+    "lead_score": 15,
+    "dedup_key": "gaku-ribalaba-gashapon-2026-09",
+    "candidate_ids": [
+     "202609151837-watch-1"
+    ]
+   },
+   {
+    "slug": "gaku-tezuki-temari-figure-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "MiraiMira製月村手毬フィギュアの予約受付、メーカー受注締切(11/11)を軸に商品詳細を紹介",
+    "lead_score": 20,
+    "dedup_key": "gaku-tezuki-temari-figure-2026",
+    "candidate_ids": [
+     "202609151837-watch-7",
+     "202609160231-explore-13"
+    ]
+   },
+   {
+    "slug": "gaku-after-school-namco-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "ナムコ「After Schoolキャンペーン」の全容(9/25〜11/1、週替わり景品とツアーズカード配布)をPR TIMES公式発表で詳報",
+    "lead_score": 45,
+    "dedup_key": "gaku-after-school-namco-2026",
+    "candidate_ids": [
+     "202609151837-explore-21"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "楽曲MVの再生数節目(100万・300万再生突破)を1本にまとめる",
+    "lead_score": 0,
+    "dedup_key": "gakuen-2026-09-15-10-00-utc-----------mv-100",
+    "candidate_ids": [
+     "202609160231-grok-52",
+     "202609160231-grok-53",
+     "202609160231-grok-54"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-ios27-compatibility-2026",
+    "reason": "既報",
+    "note": "9/15号で既報の動作確認告知(stock: ios-27-ipados-27)と同内容、新事実なし"
+   },
+   {
+    "dedup_key": "gakuen-2026-09-14-02-30-utc-ios-27-ipados-27",
+    "reason": "既報",
+    "note": "gaku-ios27-compatibility-2026と同一投稿の再取得で、内容はstockと同一。新事実なし"
+   },
+   {
+    "dedup_key": "gakuen-2026-09-14-10-00-utc-------------------------day1",
+    "reason": "既報",
+    "note": "福岡公演配信チケット・新曲「神かわいい」いずれもstockのgaku-shirube-livetour-fukuoka-2026で既報、新事実なし"
+   },
+   {
+    "dedup_key": "gakuen-2026-09-15------------2026",
+    "reason": "出典不足",
+    "note": "発信元がgkmas公式ではなくアトフェス運営(未確認)、学マスは21タイトル中の1つで公式発表未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

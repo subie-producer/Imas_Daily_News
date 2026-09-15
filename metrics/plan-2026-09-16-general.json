@@ -1,0 +1,101 @@
+{
+ "decisions": {
+  "puchimasufinal2026": {
+   "action": "article",
+   "angle": "『ぷちます！』が電撃マオウ2026年12月25日発売号で18年の連載に完結、最終巻は2027年2月発売(電撃オンライン・電ファミ通信も同日報道)",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "trend-2/trend-3(メディア報道)とtrend-4(ニコニコ漫画WEB特別編194・完結お知らせページ)を統合"
+  },
+  "tours-s1-ex-momoko-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "joint面がslug joint-other-9-s1-s1-ex-9-17で同一の話題(S1弾Ex 9/17開始・周防桃子・ツアーズレア全カード)を記事化済み"
+  },
+  "trend-2-----------18": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "puchimasufinal2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の『ぷちます！』完結ニュース(電撃オンライン報道)。主記事に統合"
+  },
+  "trend-3------12-25": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "puchimasufinal2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の『ぷちます！』完結ニュース(電ファミ通信報道)。主記事に統合"
+  },
+  "trend-4------web----194": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "puchimasufinal2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一話題の掲載元(ニコニコ漫画WEB特別編194・完結お知らせページ)。主記事に統合"
+  },
+  "trend-12": {
+   "action": "article",
+   "angle": "学マス関連のファン創作(30MSプラモ改造・コスプレ)の広がりをまとめて紹介",
+   "rank": "culture",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人アカウント名は紙面に出さず傾向として紹介"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-puchimasufinal2026",
+    "brand": "general",
+    "rank": "medium",
+    "angle": "『ぷちます！』が電撃マオウ2026年12月25日発売号で18年の連載に完結、最終巻は2027年2月発売(電撃オンライン・電ファミ通信も同日報道)",
+    "lead_score": 55,
+    "dedup_key": "puchimasufinal2026",
+    "candidate_ids": [
+     "202609151258-watch-0",
+     "202609160231-grok-110",
+     "202609160231-grok-111",
+     "202609160231-grok-112"
+    ]
+   },
+   {
+    "slug": "general-trend-12",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "学マス関連のファン創作(30MSプラモ改造・コスプレ)の広がりをまとめて紹介",
+    "lead_score": 0,
+    "dedup_key": "trend-12",
+    "candidate_ids": [
+     "202609160231-grok-114"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-s1-ex-momoko-2026",
+    "reason": "重複",
+    "note": "joint面がslug joint-other-9-s1-s1-ex-9-17で同一の話題(S1弾Ex 9/17開始・周防桃子・ツアーズレア全カード)を記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

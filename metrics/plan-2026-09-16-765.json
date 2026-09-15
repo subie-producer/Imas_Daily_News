@@ -1,0 +1,175 @@
+{
+ "decisions": {
+  "imas-radio-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-2----------------2026-09-15-20-35-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "番組概要は既報(stock 2026-08-29)と重複。初回放送の記事の背景説明として統合"
+  },
+  "million14th-765as-solo-collection-dress-code-2026": {
+   "action": "article",
+   "angle": "ミリオンライブ14thLIVE会場で765PRO ALLSTARS新作ソロコレクションCD『ドレスコード:最上級』を9/19発売・物販実施",
+   "rank": "small",
+   "lead_score": 12,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "単一公式ソースだが発売日・価格・品番・物販時間が具体的で独立記事化可"
+  },
+  "765as-1----------2026-09-15-19-30-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-2----------------2026-09-15-20-35-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "放送開始30分前の告知。主記事に統合"
+  },
+  "765as-2----------------2026-09-15-20-35-jst": {
+   "action": "article",
+   "angle": "新ラジオ番組「IM＠S RADIO」初回放送が終了・アーカイブ公開、メンバー限定アフタートークも実施、次回9/29(ゲスト神原大地)を予告",
+   "rank": "large",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "imas-radio-2026と765as-1,3,4,5,6,7を統合(素材8件)。時系列の事実が豊富でlarge相当"
+  },
+  "765as-3----------------------2026-09-15-20-39-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-2----------------2026-09-15-20-35-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本編終了直後のアフタートーク開始告知。主記事に統合"
+  },
+  "765as-4--------2----------2026-09-15-21-53-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-2----------------2026-09-15-20-35-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "パーソナリティ2名からの放送後メッセージ。主記事に統合"
+  },
+  "765as-5--------2026-09-15-22-34-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-2----------------2026-09-15-20-35-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "次回9/29・ゲスト神原大地の告知。主記事に統合"
+  },
+  "765as-6-------2026-09-15-22-36-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-2----------------2026-09-15-20-35-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "お便り募集(次回テーマ含む)。締切なしの常設要素として主記事に統合"
+  },
+  "765as-7------------2026-09-15-22-22-jst": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-2----------------2026-09-15-20-35-jst",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式ポータル掲載。765as-5と同内容(次回告知)のため主記事に統合"
+  },
+  "765as-8": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "視聴者個人のSNS感想の寄せ集めで出典も未確認。単体記事化不可(規程4)。ファン面候補にはなり得るが本面の対象外"
+  },
+  "765as-9----mc": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人アカウントのファンアート投稿1件、未確認。規程4によりハンドル名も紙面に出せず単体記事化不可"
+  },
+  "trend-1------------1-3-3-3": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "電撃系アカウントの未確認ツイートのみで公式一次情報に未到達。12/25最終回情報の裏付けが取れない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-million14th-765as-solo-collection-dress-code-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "ミリオンライブ14thLIVE会場で765PRO ALLSTARS新作ソロコレクションCD『ドレスコード:最上級』を9/19発売・物販実施",
+    "lead_score": 12,
+    "dedup_key": "million14th-765as-solo-collection-dress-code-2026",
+    "candidate_ids": [
+     "202609152336-explore-3"
+    ]
+   },
+   {
+    "slug": "765-765as-2-2026-09-15-20-35-jst",
+    "brand": "765",
+    "rank": "large",
+    "angle": "新ラジオ番組「IM＠S RADIO」初回放送が終了・アーカイブ公開、メンバー限定アフタートークも実施、次回9/29(ゲスト神原大地)を予告",
+    "lead_score": 55,
+    "dedup_key": "765as-2----------------2026-09-15-20-35-jst",
+    "candidate_ids": [
+     "202609160231-grok-25",
+     "202609151258-explore-12",
+     "202609160231-grok-24",
+     "202609160231-grok-26",
+     "202609160231-grok-27",
+     "202609160231-grok-28",
+     "202609160231-grok-29",
+     "202609160231-grok-30"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765as-8",
+    "reason": "個人の話題",
+    "note": "視聴者個人のSNS感想の寄せ集めで出典も未確認。単体記事化不可(規程4)。ファン面候補にはなり得るが本面の対象外"
+   },
+   {
+    "dedup_key": "765as-9----mc",
+    "reason": "個人の話題",
+    "note": "個人アカウントのファンアート投稿1件、未確認。規程4によりハンドル名も紙面に出せず単体記事化不可"
+   },
+   {
+    "dedup_key": "trend-1------------1-3-3-3",
+    "reason": "出典不足",
+    "note": "電撃系アカウントの未確認ツイートのみで公式一次情報に未到達。12/25最終回情報の裏付けが取れない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

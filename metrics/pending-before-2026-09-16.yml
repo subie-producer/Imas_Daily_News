@@ -1,4 +1,3 @@
-# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。
 - dedup_key: gaku-hif-15m-milestone-campaign-2026
   brand: gaku
   subject: 学マスH.I.F挑戦回数1,500万回突破記念キャンペーン
@@ -91,6 +90,10 @@
   brand: gaku
   subject: ユニオンクリエイティブ 月村手毬1/6スケールフィギュア
   watch: 2027年6月内の正式発売日(判明次第 triggers へ)
+- dedup_key: gakumasu-rivalava-2026
+  brand: gaku
+  subject: 学園アイドルマスター リバラバ！
+  watch: 2026年9月第2週予定の正式発売日(判明次第 triggers へ)
 - dedup_key: saki-ameagari-iris-figure-2026
   brand: gaku
   subject: 花海咲季「雨上がりのアイリス 特訓前Ver.」1/7スケールフィギュア
@@ -155,15 +158,3 @@
   brand: sidem
   subject: SideM初の家庭用ゲームプロジェクト
   watch: 正式タイトル・発売時期などの詳細(判明次第 triggers へ)
-- dedup_key: shiny-9
-  brand: shiny
-  subject: シャニマス新ガシャシリーズ予告(★3確率1.5倍/新衣装)
-  watch: ガシャ名・開催日時(判明次第 triggers へ)
-- dedup_key: shiny-10------------------9-16--15-00
-  brand: shiny
-  subject: 近日登場予定のアイドルのチラ見せ(9/16 15:00発表予定)
-  watch: 登場アイドル名(9/16 15:00判明次第 triggers へ)
-- dedup_key: sidem-aji-project-2026
-  brand: sidem
-  subject: SideM「AJIプロジェクト」新ストーリーシリーズ
-  watch: 2026年10月開始予定の正式日程・詳細(判明次第 triggers へ)

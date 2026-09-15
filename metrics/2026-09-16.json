@@ -1,0 +1,101 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-16T02:32:09+09:00",
+   "edition": "2026-09-16",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 344,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 4,
+    "explore:shiny": 6,
+    "explore:sidem": 2,
+    "explore:gakuen": 2,
+    "explore:dsva": 4,
+    "explore:joint-other": 2,
+    "explore:trend": 4,
+    "grok:765as": 9,
+    "grok:cinderella": 3,
+    "grok:million": 16,
+    "grok:shiny": 19,
+    "grok:sidem": 8,
+    "grok:gakuen": 7,
+    "grok:dsva": 14,
+    "grok:joint-other": 9,
+    "grok:trend": 6
+   },
+   "normalized": 106,
+   "added": 92,
+   "verify": {
+    "confirmed": 77,
+    "unconfirmed": 28,
+    "failed": 1
+   },
+   "duration_s": 1891
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-16T05:27:57+09:00",
+   "edition": "2026-09-16",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 37,
+   "written": 32,
+   "roundups": 3,
+   "dropped": 1,
+   "coverage": {
+    "subjects": 133,
+    "covered": 133,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 11.652572127183278,
+    "選定の拾い直し": 0.5481942454973857,
+    "執筆": 8.624365957578023,
+    "組版": 6.225156315167745,
+    "校閲": 3.1245468815167743,
+    "校閲1波": 3.1245468815167743
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "shiny-photo-panel-new-2026-09",
+    "gaku-after-school-namco-2026",
+    "general-trend-12",
+    "cg-vote2026-deadline-status",
+    "sidem-9-extra-x"
+   ],
+   "duration_s": 3973
+  }
+ ]
+}

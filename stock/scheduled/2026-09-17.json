@@ -77,5 +77,35 @@
   "verify": "unconfirmed",
   "src_candidate_id": "202609140734-explore-13",
   "event_date": "2026-09-17"
+ },
+ {
+  "id": "sched-2026-09-17-joint-other-9-s1-----------------s1-ex--9-17-開始",
+  "dedup_key": "joint-other-9-s1-----------------s1-ex--9-17",
+  "brand": "joint",
+  "subject": "TOURS「S1弾Ex」",
+  "kind": "開始",
+  "note": "周防桃子の新曲とともに開始",
+  "reserved_on": "2026-09-16",
+  "title": "S1弾ツアーズレア カードリスト公開／S1弾Exは 9月17日(木)開始",
+  "url": "https://x.com/TOURS_imas/status/2099710600104599674",
+  "source_type": "公式",
+  "facts": [
+   "投稿日時: 2026-09-15 04:03:12 GMT",
+   "published_date: 2026-09-15",
+   "event_date: 2026-09-17",
+   "kind: official / brand: joint",
+   "engagement: 高（Likes=1256, Reposts=508, Views=69948）",
+   "投稿 URL: https://x.com/TOURS_imas/status/2099710600104599674",
+   "カードリスト: https://bandainamco-am.co.jp/am/vg/idolmaster-tours/cardlist/",
+   "S1弾ツアーズレアカードリスト公開",
+   "S1弾Exは、9月17日(木)開始",
+   "ハッシュタグ: #ツアマス #ツアマスS1弾Ex",
+   "シリーズ絞り込みに「S1弾」がある",
+   "レアリティに TSSR / TSR / TR がある"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609160231-grok-59",
+  "event_date": "2026-09-17"
  }
 ]

@@ -47,5 +47,36 @@
   "verify": "unconfirmed",
   "src_candidate_id": "202609140234-grok-24",
   "event_date": "2026-12-02"
+ },
+ {
+  "id": "sched-2026-12-12-sidem-315pronight-public-recording-2026-開始",
+  "dedup_key": "sidem-315pronight-public-recording-2026",
+  "brand": "sidem",
+  "subject": "SideM「315プロNight!」出張版公開録音イベント",
+  "kind": "開始",
+  "note": "アニメイト池袋本店で公開録音開催",
+  "reserved_on": "2026-09-16",
+  "title": "315プロNight!公開録音イベント決定",
+  "url": "https://prtimes.jp/main/html/rd/p/000008975.000016756.html",
+  "source_type": "当事者",
+  "facts": [
+   "2026年12月12日に『THE IDOLM@STER SideM』MフェステーマソングCD発売記念「315プロNight! 出張版 公開録音イベント」を開催する。",
+   "開催場所はanimate hall BLACK（アニメイト池袋本店 北館9F）。",
+   "開催日時：2026年12月12日 ＜1回目＞13:30開演 ＜2回目＞17:00開演。",
+   "出演者は菊池勇成（蒼井悠介役）、山谷祥生（蒼井享介役）、益山武明、伊瀬結陸、宮﨑雅也。",
+   "開催内容は公式WEBラジオ「315プロNight! 出張版」の公開録音。",
+   "全国アニメイト・アニメイト通販で対象商品を予約し、全額内金を支払った人に応募シリアルを配布する。",
+   "応募者の中から抽選でイベントに招待する。",
+   "応募シリアル配布期間: 2026年9月12日～11月17日。",
+   "応募シリアル申込み期間: 2026年9月12日～11月17日 23:59。",
+   "当選通知: 2026年11月下旬頃予定。",
+   "イベント応募対象商品は『THE IDOLM@STER SideM』Mフェス 2026 in Winter Wonderland テーマソング「Season's Greetings Party！」。",
+   "発売日: 2026年12月2日。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609151258-explore-6",
+  "event_date": "2026-12-12",
+  "deadline": "2026-11-17"
  }
 ]

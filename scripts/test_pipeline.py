@@ -665,8 +665,44 @@ def test_oncall_restore_on_exception(tmp: Path):
         oncall.reset_edition, oncall.run_stage, oncall.restore_edition, oncall.notify, oncall.ROOT = saved
 
 
+def test_slugify_format():
+    import re
+    import planlib
+    fullmatch = lambda s: bool(re.fullmatch(r"[a-z0-9]+(-[a-z0-9]+)*", s))
+    # 区切り(空白・記号・既存ハイフン)が入り混じった主題キーでも連続ハイフンにならないこと。
+    # 2026-09-16: 既存ハイフンを残す実装で `joint-...-ex-----------------------28` のような
+    # slug が生成され、compose.validate_plan の英小文字ハイフン検証に落ちて計画不成立になった。
+    cases = [
+        ("joint", "その他 - 10【S1】EX - アイドル - 9/26"),
+        ("shiny", "【MSP】- hopeful feathers"),
+        ("million", "ランキング - 300 - 470"),
+        ("cg", "foo---bar - - -"),
+    ]
+    taken: set[str] = set()
+    for b, k in cases:
+        s = planlib.slugify(b, k, taken)
+        check(fullmatch(s), f"slugify が英小文字ハイフン形式でない slug を出した: {b} / {k!r} → {s!r}")
+    # dedup の番号付与でも(切り詰めが末尾ハイフンに当たっても)連続ハイフンにしないこと
+    t2: set[str] = set()
+    s1 = planlib.slugify("cg", "a b", t2)
+    s2 = planlib.slugify("cg", "a b", t2)
+    check(fullmatch(s1) and fullmatch(s2) and s1 != s2, f"dedup で不正な slug: {s1!r} {s2!r}")
+
+
+def test_escalate_is_module_global():
+    # main() 内で `from pipelib import escalate` すると escalate が関数ローカル扱いになり、
+    # それより前にある escalate(...) 呼び出しが UnboundLocalError で落ちる(2026-09-16 実測:
+    # 計画不成立を当番へ渡す escalate がこれで死に、「想定外のエラー」で停止した)。
+    # escalate はモジュール大域から import し、main の局所変数にしないこと。
+    check(hasattr(compose, "escalate"), "compose.escalate がモジュール大域に無い")
+    check("escalate" not in compose.main.__code__.co_varnames,
+          "main() が escalate を局所変数にしている(UnboundLocalError の再来)")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
+    test_slugify_format()
+    test_escalate_is_module_global()
     test_check_output()
     test_render_and_length()
     test_earliest_date()

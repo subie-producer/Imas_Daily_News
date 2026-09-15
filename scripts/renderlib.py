@@ -183,7 +183,9 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         if u in seen:
             problems.append(f"出典 url が重複: {u[:60]}")
         seen.add(u)
-        if re.search(r"[\[\]*`]", s.get("label") or ""):   # # や _ はハッシュタグ・ID に普通に出る
+        # 落とすのは Markdown として解釈される形(リンク `[x](y)`・コード)だけ。角括弧や # や _ は
+        # 商品名・ハッシュタグ・ID に普通に出る(実測 2026-09-15: 「倉本千奈 [Wonder Scale]」で記事が落ちた)
+        if re.search(r"\]\(|`", s.get("label") or ""):
             problems.append(f"出典 label に Markdown 記号: {s.get('label')!r}")
     # 「使った事実の出典を隠していないか」「素材に無い URL を本当に読んだか」は校閲(モデル)の判断。
     # ここでは見ない(校閲の機械化はしない。編集長の指示)

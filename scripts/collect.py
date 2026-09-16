@@ -936,28 +936,39 @@ def main() -> int:
             # 判定表の更新 → 紙面の種別付け直し → lint を**1つの取引**にする。どれかが失敗したら、
             # この取引が触った判定表と記事を開始時に戻し、commit しない(表だけ進んで次の lint が赤くなる、
             # 部分的な付け直しが混ざる、を防ぐ。監査指摘)
-            r = subprocess.run([sys.executable, str(ROOT / "scripts" / "classify_sources.py"),
-                                "--date", date, "--apply"],
-                               cwd=ROOT, capture_output=True, text=True, timeout=1800)
-            print(r.stdout[-1200:], flush=True)
-            ok = r.returncode == 0
-            if ok:
-                r2 = subprocess.run([sys.executable, str(ROOT / "scripts" / "retag_sources.py"), "--apply"],
-                                    cwd=ROOT, capture_output=True, text=True, timeout=600)
-                tail = (r2.stdout or "").strip().splitlines()[-1:] if r2.stdout else []
-                print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r2.returncode}"), flush=True)
-                ok = r2.returncode == 0
-            if ok:
-                r3 = subprocess.run([sys.executable, str(ROOT / "scripts" / "lint.py"), "--base", "origin/main"],
-                                    cwd=ROOT, capture_output=True, text=True, timeout=600)
-                ok = r3.returncode == 0
-                if not ok:
-                    print((r3.stdout or "")[-800:], flush=True)
+            ok, why = False, ""
+            try:
+                r = subprocess.run([sys.executable, str(ROOT / "scripts" / "classify_sources.py"),
+                                    "--date", date, "--apply"],
+                                   cwd=ROOT, capture_output=True, text=True, timeout=1800)
+                print(r.stdout[-1200:], flush=True)
+                if r.returncode != 0:
+                    why = f"合議 exit {r.returncode}"
+                else:
+                    r2 = subprocess.run([sys.executable, str(ROOT / "scripts" / "retag_sources.py"), "--apply"],
+                                        cwd=ROOT, capture_output=True, text=True, timeout=600)
+                    tail = (r2.stdout or "").strip().splitlines()[-1:] if r2.stdout else []
+                    print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r2.returncode}"), flush=True)
+                    if r2.returncode != 0:
+                        why = f"付け直し exit {r2.returncode}"
+                    else:
+                        r3 = subprocess.run([sys.executable, str(ROOT / "scripts" / "lint.py"), "--base", "origin/main"],
+                                            cwd=ROOT, capture_output=True, text=True, timeout=600)
+                        if r3.returncode != 0:
+                            why = "lint 赤: " + (r3.stdout or "")[-600:]
+                        else:
+                            ok = True
+            except (subprocess.TimeoutExpired, OSError) as e:   # 途中の timeout・起動失敗も取引の失敗(監査指摘)
+                why = f"{type(e).__name__}: {str(e)[:200]}"
             if not ok:
-                # 取引を戻す: 判定表と記事だけ(候補や台帳は触っていない)
-                subprocess.run(["git", "checkout", "-q", "--", "source_types.yml", "docs/_posts"], cwd=ROOT,
-                               capture_output=True, text=True)
-                notify("collect", f"{date}: 判定表の更新〜紙面の付け直し〜lint のどこかで失敗したので、判定表と記事を"
+                # 取引を戻す: 判定表と記事だけ(候補や台帳は触っていない)。戻せなければ commit せず終える
+                rb = subprocess.run(["git", "checkout", "-q", "--", "source_types.yml", "docs/_posts"], cwd=ROOT,
+                                    capture_output=True, text=True)
+                if rb.returncode != 0:
+                    notify("collect", f"{date}: 判定表の取引に失敗({why[:200]})し、判定表と記事を戻すことにも失敗"
+                                      f"({rb.stderr.strip()[:200]})。commit せずに終える。作業ツリーを確かめること", ok=False)
+                    return 1
+                notify("collect", f"{date}: 判定表の更新〜紙面の付け直し〜lint で失敗({why[:200]})。判定表と記事を"
                                   f"戻した(候補は残す)。次回の収集で再試行する", ok=False)
     if not args.no_git:
         if not commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect"):

@@ -63,25 +63,23 @@ def load_scheduled(date: str) -> list[dict]:
     return json.loads(p.read_text(encoding="utf-8"))
 
 
-def next_number(date: str | None = None) -> int:
+def next_number(date: str | None = None, live: bool | None = None) -> int:
     """この号の号数。稼働(PAPER_STAGE=live)なら通し番号。
 
-    **同じ号の再実行では同じ番号を返す**(自分の号スナップショットは数えない)。以前は自分の号も
-    「既存の最大」に入っていたので、--reuse-plan で組み直すたびに番号が1つ進み、lint の連番検査で
-    止まった(実測 2026-09-17: 第3号が第4号になった)。
+    **自分の号スナップショットは数えない**: 号数は「自分より前の号の最大 + 1」で決まり、再実行しても
+    同じ値になる。以前は自分の号も「既存の最大」に入っていたので、--reuse-plan で組み直すたびに番号が
+    1つ進み、lint の連番検査で止まった(実測 2026-09-17: 第3号が第4号になった)。自分の号に書いてある
+    値は信用しない(誤って進んだ値を自己修復できるように。監査指摘)。
     """
-    from pipelib import load_env
-    if load_env().get("PAPER_STAGE", "test") != "live":
+    if live is None:
+        from pipelib import load_env
+        live = load_env().get("PAPER_STAGE", "test") == "live"
+    if not live:
         return 0
     import re
-    own = (ROOT / "docs" / "_editions" / f"{date}.md") if date else None
-    if own and own.exists():
-        m = re.search(r"^number:\s*(\d+)", own.read_text(encoding="utf-8"), re.MULTILINE)
-        if m and int(m.group(1)) >= 1:
-            return int(m.group(1))
     nums = []
     for e in (ROOT / "docs" / "_editions").glob("*.md"):
-        if own and e == own:
+        if date and e.stem >= date:   # 自分と、自分より後の号(過去号の組み直し)は数えない
             continue
         m = re.search(r"^number:\s*(\d+)", e.read_text(encoding="utf-8"), re.MULTILINE)
         if m:

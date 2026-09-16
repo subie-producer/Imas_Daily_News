@@ -274,11 +274,11 @@ def clean_url(raw) -> str | None:
     s = str(raw or "")
     # 探索の出力に固有の末尾ゴミ(URL のあとに改行と「-」)だけを、形を認識して外す。それ以外の
     # 空白・制御文字が混ざっていれば不正として捨てる(黙って切り詰めない。監査指摘)
-    m = re.fullmatch(r"(\S+)\s*\n-\s*", s)
+    m = re.fullmatch(r"(\S+)\n-\n?", s)
     if m:
         print(f"URL の末尾ゴミを外した: {s[:80]!r}", flush=True)
         s = m.group(1)
-    s = s.strip()
+    # 前後の空白・タブ・制御文字も不正(黙って strip しない。監査指摘)
     if not s or len(s) > 2048 or _URL_BAD_CHARS.search(s):
         return None
     s = s.rstrip(">,。、」』")
@@ -395,6 +395,12 @@ def checkout_edition_branch(date: str, job: str) -> bool:
         git("checkout", "-B", branch, "origin/main")
         git_net("push", "-u", "origin", branch)
         notify(job, f"{branch} が無かったため main から作成した(release の作成漏れ?)")
+    # checkout できたことを**現在のブランチで**確かめる(git() は失敗で例外を投げるが、成功の証明は
+    # これ。所有権の境界=STARTED_ON はこの True にだけ依存する。監査指摘)
+    cur = git("branch", "--show-current", check=False).stdout.strip()
+    if cur != branch:
+        notify(job, f"{branch} を checkout できていない(いま {cur or '(detached)'})。中止", ok=False)
+        return False
     # edition ブランチは release が前日に作るため、その後 main に入ったスクリプト修正を
     # 持たない。取り込まないと、直した当日の号が直っていない版で生成される
     # (2026-08-26号がこれで旧ロジックのまま13本で発行された)。
@@ -451,7 +457,11 @@ def commit_and_push(branch: str, message: str, job: str, paths: list[str] | None
                     + "\n- ".join(bad[:8]), ok=False)
         return False
     if paths:
-        git("reset", "-q", check=False)   # 既に stage されていた無関係の変更を commit に混ぜない(監査指摘)
+        # 既に stage されていた無関係の変更を commit に混ぜない。reset できなければ進まない(監査指摘)
+        rs = git("reset", "-q", check=False)
+        if rs.returncode != 0:
+            notify(job, f"git reset 失敗(stage を空にできない): {rs.stderr.strip()[:200]}", ok=False)
+            return False
     r = git("add", "-A", "--", *paths, check=False) if paths else git("add", "-A", check=False)
     if r.returncode != 0:
         notify(job, f"git add 失敗: {r.stderr.strip()[:200]}", ok=False)

@@ -657,6 +657,10 @@ def test_clean_url_and_table():
     check(C("http://user@a.com/") is None and C("ftp://a") is None and C("") is None and C("https://a.com/x\x00y") is None,
           "使えない形を通した")
     check(C("https://a.com/" + "x" * 3000) is None, "長すぎる URL を通した")
+    # 前後の空白・タブ・URL 内の空白は黙って strip せず不正(監査指摘 r35)。既知のゴミ形「URL\n-」だけ外す
+    for raw in (" https://a.com/x", "https://a.com/x ", "\thttps://a.com/x", "https://a.com/x y", "https://a.com/x\nhttps://b.com/"):
+        check(C(raw) is None, f"空白入りの URL を通した: {raw!r}")
+    check(C("https://a.com/x\n-") == "https://a.com/x" and C("https://a.com/x\n-\n") == "https://a.com/x", "既知のゴミ形を外せない")
     # 検算: 出典 URL は clean_url で変わらない形でなければ差し戻し
     _, fb = renderlib.materials_with_ids(MATS)
     bad = dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3\n-", "label": "z"}])
@@ -697,6 +701,23 @@ def test_no_prompt_in_argv():
                 line = src.count("\n", 0, m.start()) + 1
                 bad.append(f"{f.name}:{line}: {m.group(0)}")
     check(not bad, f"プロンプトを引数に直接渡している箇所: {bad[:6]}")
+
+
+def test_next_number(tmp: Path):
+    """号数は「自分より前の号の最大+1」。自分の号に誤った値(進んだ番号)が書いてあっても直る(監査指摘 r35)。"""
+    ed = tmp / "docs" / "_editions"
+    ed.mkdir(parents=True)
+    for d, n in (("2026-09-14", 0), ("2026-09-15", 1), ("2026-09-16", 2), ("2026-09-17", 4), ("2026-09-18", 9)):
+        (ed / f"{d}.md").write_text(f"---\nnumber: {n}\ndate: '{d}'\n---\n", encoding="utf-8")
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        check(compose.next_number("2026-09-17", live=True) == 3, "誤って進んだ自分の号数を直せない")
+        check(compose.next_number("2026-09-17", live=True) == compose.next_number("2026-09-17", live=True), "再実行で号数が変わる")
+        check(compose.next_number("2026-09-19", live=True) == 10, "次号の号数")
+        check(compose.next_number("2026-09-17", live=False) == 0, "試験段階は 0")
+    finally:
+        compose.ROOT = saved
 
 
 def test_tool_path():
@@ -827,6 +848,7 @@ def main() -> int:
     test_time_budget()
     test_clean_url_and_table()
     test_no_prompt_in_argv()
+    test_next_number(tmp / "nn")
     test_tool_path()
     test_oncall_undo_merge()
     test_oncall_rollback_subprocess(tmp / "rs")

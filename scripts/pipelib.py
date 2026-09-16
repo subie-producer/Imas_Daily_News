@@ -602,6 +602,11 @@ def classify_source(url: str) -> str:
     for pre in t.get("party_paths") or []:
         if under(pre):
             return "当事者"
+    # プラットフォーム上のアカウント・チャンネル・作品ページ(tiktok.com/@…, ch.nicovideo.jp/…,
+    # manga.nicovideo.jp/comic/…)は、パス単位で種別が決まる。合議が足す(path_types: パス → 種別)
+    for pre, typ in (t.get("path_types") or {}).items():
+        if under(str(pre)):
+            return str(typ)
 
     # 2. 動画・生放送は**投稿者**で決まる。ドメインでは決まらない。
     #    同じ youtube.com に公式チャンネルの PV とレーベルの試聴動画が混ざる。

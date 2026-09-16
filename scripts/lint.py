@@ -695,6 +695,17 @@ def main() -> int:
                     elif new_fm.get("corrected_count", 0) <= old.get("corrected_count", 0):
                         rep.error(ROOT / p, "append-only 違反: corrected_count が加算されていない")
                 else:  # 記事・社説: 訂正(corrections 追記)を伴う変更のみ許可
+                    # 例外: 出典の**種別だけ**の付け直し(src と sources[].type)。種別は判定表から機械で
+                    # 決まる派生値で、記事の中身ではない(「この表が知っている出典に未確認を残さない」)。
+                    # url・label・本文が同じで type だけ違うなら、訂正ボックス無しで通す
+                    diff_keys = {k for k in set(old) | set(new_fm) if old.get(k) != new_fm.get(k)}
+                    if diff_keys and diff_keys <= {"src", "sources"}:
+                        o_s, n_s = old.get("sources") or [], new_fm.get("sources") or []
+                        if len(o_s) == len(n_s) and all(
+                                isinstance(a, dict) and isinstance(b, dict)
+                                and a.get("url") == b.get("url") and a.get("label") == b.get("label")
+                                for a, b in zip(o_s, n_s)):
+                            continue
                     if len(new_fm.get("corrections", [])) <= len(old.get("corrections", [])):
                         rep.error(ROOT / p, "append-only 違反: 過去紙面の変更には corrections の追記が必要")
                     for k in ("slug", "edition", "brand", "rank"):  # src はソース再分類の訂正を許容

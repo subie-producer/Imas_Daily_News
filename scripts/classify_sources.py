@@ -48,7 +48,25 @@ LIST_OF = {"公式": "official_domains", "準公式": "semi_official_domains",
 # どのページも利用者が書いた二次情報なので、ドメインで決められる(表に載せてある)
 PLATFORMS = ("x.com", "twitter.com", "youtube.com", "youtu.be", "nicovideo.jp",
              "note.com", "docs.google.com", "forms.gle", "hatenablog.com",
-             "ameblo.jp", "fanbox.cc", "booth.pm", "github.com", "rakuten.co.jp")
+             "ameblo.jp", "fanbox.cc", "booth.pm", "github.com", "rakuten.co.jp",
+             "tiktok.com", "instagram.com", "threads.net", "bsky.app", "pixiv.net", "twitch.tv", "lit.link")
+# プラットフォームの中で**パス単位**に主体が決まるもの: 先頭何区切りで主体か。
+# ホスト末尾一致 → (区切り数, 先頭区切りに要る接頭辞)。無いものは合議に掛けない(docs.google 等)
+PATH_KEYS = {"tiktok.com": (1, "@"), "ch.nicovideo.jp": (1, ""), "manga.nicovideo.jp": (2, ""),
+             "seiga.nicovideo.jp": (2, ""), "note.com": (1, ""), "ameblo.jp": (1, ""), "github.com": (2, ""),
+             "instagram.com": (1, ""), "threads.net": (1, "@"), "bsky.app": (2, ""), "pixiv.net": (2, ""),
+             "twitch.tv": (1, ""), "lit.link": (1, ""), "item.rakuten.co.jp": (1, "")}
+
+
+def path_key(url: str) -> str | None:
+    """プラットフォーム上のアカウント・チャンネル・作品ページを表すキー(host/seg…)。対象外なら None。"""
+    u = urllib.parse.urlparse(url)
+    host = (u.hostname or "").removeprefix("www.").removeprefix("m.")
+    seg = [s for s in u.path.split("/") if s]
+    for h, (n, prefix) in PATH_KEYS.items():
+        if host == h and len(seg) >= n and seg[0].startswith(prefix):
+            return host + "/" + "/".join(seg[:n])
+    return None
 UA = "Mozilla/5.0 (compatible; ImasNews/1.0)"
 
 RULES = """種別の定義(この新聞の編集規程2.5)。**この定義だけで判断すること。**
@@ -133,23 +151,12 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     """
     p = ROOT / "candidates" / f"{date}.json"
     rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
-    # 執筆が自分で見つけて記事に載せた出典(候補に無い URL)も合議に掛ける。候補だけ見ていると、
-    # 紙面に載った販売店やイベント特設サイトが未確認のまま残る(実測 2026-09-13: hobbystock.jp, xvorder-runway.com)
-    for post in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md")):
-        m = re.match(r"^---\n(.*?)\n---\n", post.read_text(encoding="utf-8"), re.S)
-        if not m:
-            continue
-        try:
-            fm = yaml.safe_load(m.group(1)) or {}
-        except Exception:
-            continue
-        for s in fm.get("sources") or []:
-            if isinstance(s, dict) and s.get("url"):
-                rows.append({"url": s["url"], "title": f"{fm.get('title') or ''}(記事の出典: {s.get('label') or ''})"})
+    rows += unresolved_post_sources()
     if not rows:
-        return {}, {}
+        return {}, {}, {}
     doms: dict[str, str] = {}
     accts: dict[str, tuple[str, list[str]]] = {}
+    paths: dict[str, str] = {}
     for c in rows:
         # 候補の URL に改行やゴミ(`…\n-`)が付いていると判定表に当たらず、登録済みの公式まで合議に回る
         # (実測 2026-09-15: 公式 X 9件が重複登録され compose が止まった)。空白で切る
@@ -167,10 +174,36 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
             if c.get("title") and len(cur[1]) < 4:
                 cur[1].append(c["title"][:70])
             continue
+        pk = path_key(url)
+        if pk:
+            paths.setdefault(pk, url)
+            continue
         if not host or any(host == q or host.endswith("." + q) for q in PLATFORMS):
             continue
         doms.setdefault(host, url)
-    return doms, accts
+    return doms, accts, paths
+
+
+def unresolved_post_sources() -> list[dict]:
+    """紙面に載っている**未確認**の出典(全号)。執筆が自分で見つけた URL は候補に無いので、
+    候補だけ見ていると紙面の未確認が残る(実測 2026-09-13/16)。号の日付で絞らない:
+    収集は次号の日付で走るので、その号の記事はまだ無い。"""
+    rows = []
+    for post in sorted((ROOT / "docs" / "_posts").glob("*.md")):
+        text = post.read_text(encoding="utf-8")
+        if "未確認" not in text:
+            continue
+        m = re.match(r"^---\n(.*?)\n---\n", text, re.S)
+        if not m:
+            continue
+        try:
+            fm = yaml.safe_load(m.group(1)) or {}
+        except Exception:
+            continue
+        for s in fm.get("sources") or []:
+            if isinstance(s, dict) and s.get("url") and s.get("type") == "未確認":
+                rows.append({"url": s["url"], "title": f"{fm.get('title') or ''}(記事の出典: {s.get('label') or ''})"})
+    return rows
 
 
 def page_meta(url: str) -> tuple[str, str, str]:
@@ -198,13 +231,14 @@ def rendered_excerpt(url: str, chars: int = 1200) -> str:
         return f"(取得できず: {type(e).__name__})"
 
 
-def site_profile(host: str, url: str) -> str:
-    """「このサイトは何の主体か」を掘るための材料: 当該ページ、サイトのトップ、運営者情報(会社概要・
-    About・特定商取引法)のページ。URL の字面だけで判定しない(編集長の指摘)。"""
+def site_profile(host: str, url: str, top: str | None = None) -> str:
+    """「このサイトは何の主体か」を掘るための材料: 当該ページ、サイトのトップ(プラットフォーム上の
+    アカウントならそのアカウントのページ)、運営者情報(会社概要・About・特定商取引法)のページ。
+    URL の字面だけで判定しない(編集長の指摘)。"""
     parts = []
     title, desc, _ = page_meta(url)
     parts.append(f"代表URL: {url}\ntitle: {title or '-'}\ndescription: {desc or '-'}\nページ冒頭: {rendered_excerpt(url)}")
-    top = f"https://{host}/"
+    top = top or f"https://{host}/"
     ttitle, tdesc, thtml = page_meta(top)
     top_text = rendered_excerpt(top, 3000)
     parts.append(f"サイトのトップ {top}\ntitle: {ttitle or '-'}\ndescription: {tdesc or '-'}\n冒頭: {top_text[:800]}")
@@ -395,6 +429,43 @@ def add_domains(agreed: dict) -> None:
     p.write_text(text, encoding="utf-8")
 
 
+def add_paths(agreed: dict) -> None:
+    """プラットフォーム上のアカウント・チャンネル・作品ページを path_types(パス → 種別)へ足す。"""
+    p = ROOT / "source_types.yml"
+    text = p.read_text(encoding="utf-8")
+    m = re.search(r"^path_types:\n", text, re.M)
+    if not m:
+        text = text.rstrip("\n") + ("\n\n# --- プラットフォーム上のアカウント・チャンネル・作品ページ(パス単位で主体が決まる) ---\n"
+                                   "# tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。合議が足す\n"
+                                   "path_types:\n")
+        m = re.search(r"^path_types:\n", text, re.M)
+    for k, (t, why) in agreed.items():
+        if re.search(rf"^\s+{re.escape(k)}:", text[m.end():], re.M):
+            continue
+        text = text[:m.end()] + f"  {k}: {t}{' ' * max(1, 40 - len(k))}# 合議で追加: {why}\n" + text[m.end():]
+    p.write_text(text, encoding="utf-8")
+
+
+def add_video_channels(agreed: dict) -> None:
+    """YouTube のチャンネル(ハンドル)を video_channels の該当種別へ足す。"""
+    p = ROOT / "source_types.yml"
+    text = p.read_text(encoding="utf-8")
+    mx = re.search(r"^video_channels:\n", text, re.M)
+    if not mx:
+        print("  ★video_channels が表に無い")
+        return
+    for h, (t, why) in agreed.items():
+        if re.search(rf"^\s+-\s+{re.escape(h)}\b", text[mx.end():], re.M | re.I):
+            continue
+        m = re.compile(rf"^  {t}:\n", re.M).search(text, mx.end())
+        nxt = re.compile(r"^[a-z_]+:", re.M).search(text, mx.end())
+        if m and (nxt is None or m.start() < nxt.start()):
+            text = text[:m.end()] + f"    - {h}{' ' * max(1, 20 - len(h))}# 合議で追加: {why}\n" + text[m.end():]
+        else:
+            text = text[:mx.end()] + f"  {t}:\n    - {h}{' ' * max(1, 20 - len(h))}# 合議で追加: {why}\n" + text[mx.end():]
+    p.write_text(text, encoding="utf-8")
+
+
 def add_x_accounts(agreed: dict) -> None:
     """x_accounts の該当種別の下へ足す。無ければその種別の節を作る。"""
     p = ROOT / "source_types.yml"
@@ -427,11 +498,11 @@ YT_ID = re.compile(r"(?:[?&]v=|youtu\.be/|/live/|/shorts/|/embed/)([A-Za-z0-9_-]
 def unknown_videos(date: str) -> dict[str, str]:
     """判定表に無い YouTube 動画 ID → 代表 URL。"""
     p = ROOT / "candidates" / f"{date}.json"
-    if not p.exists():
-        return {}
+    rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
+    rows += unresolved_post_sources()   # 紙面に載った未確認の動画も(候補に無いものがある)
     out: dict[str, str] = {}
-    for c in json.loads(p.read_text(encoding="utf-8")):
-        url = c.get("url") or ""
+    for c in rows:
+        url = ((c.get("url") or "").split() or [""])[0]
         host = (urllib.parse.urlparse(url).hostname or "").removeprefix("www.")
         if host not in ("youtube.com", "m.youtube.com", "youtu.be"):
             continue
@@ -499,12 +570,13 @@ def resolve_videos(date: str, apply: bool) -> list[str]:
     """
     vids = unknown_videos(date)
     if not vids:
-        return []
+        return [], {}
     t = source_type_table()
     chans = {h.lower(): typ for typ, hs in (t.get("video_channels") or {}).items() for h in hs or []}
     print(f"\n{date}: 判定表に無い YouTube 動画 {len(vids)}件", flush=True)
     found: dict[str, tuple[str, str]] = {}
     left: list[str] = []
+    unknown_chans: dict[str, tuple[str, str]] = {}   # handle → (動画 ID, 題名)。チャンネルが表に無い
     for vid in sorted(vids):
         handle, title = video_author(vid)
         typ = chans.get(handle.lower()) if handle else None
@@ -513,10 +585,12 @@ def resolve_videos(date: str, apply: bool) -> list[str]:
             print(f"  {typ}\t{vid}\t@{handle} {title[:40]}")
         else:
             left.append(f"youtube:{vid}(@{handle or '?'})")
+            if handle:
+                unknown_chans.setdefault(handle, (vid, title))
     if found and apply:
         add_video_ids(found)
         print(f"  → 動画 ID {len(found)}件を表に追加")
-    return left
+    return left, unknown_chans
 
 
 def main() -> int:
@@ -530,8 +604,8 @@ def main() -> int:
     set_quiet(not args.apply)
     date = args.date or edition_date()
 
-    doms, accts = unknown_targets(date)
-    if not doms and not accts and not unknown_videos(date):
+    doms, accts, paths = unknown_targets(date)
+    if not doms and not accts and not paths and not unknown_videos(date):
         print(f"{date}: 判定表に無い出典はありません")
         return 0
 
@@ -549,6 +623,20 @@ def main() -> int:
             add_domains(agreed)
             print(f"  → ドメイン {len(agreed)}件を表に追加")
 
+    if paths:
+        # プラットフォーム上のアカウント・チャンネル・作品ページ。「トップ」はそのアカウントのページ
+        print(f"\n{date}: 判定表に無いプラットフォーム上の主体 {len(paths)}件 → {', '.join(sorted(paths))}", flush=True)
+        items = [(k, u, site_profile(k, u, top=f"https://{k}/")) for k, u in sorted(paths.items())]
+        agreed, split = consensus(build_prompt(items), sorted(paths))
+        for k, (t, why) in agreed.items():
+            print(f"  一致 {t}\t{k}\t{why}")
+        for s in split:
+            print(f"  不一致・保留\t{s}")
+        split_all += split
+        if agreed and args.apply:
+            add_paths(agreed)
+            print(f"  → パス {len(agreed)}件を表に追加")
+
     if accts:
         # 多いと1回のプロンプトに載らないので、出現数の多い順に区切って掛ける
         order = sorted(accts, key=lambda a: (-len(accts[a][1]), a))[:args.limit]
@@ -565,8 +653,30 @@ def main() -> int:
             add_x_accounts(agreed)
             print(f"  → X アカウント {len(agreed)}件を表に追加")
 
-    # YouTube はチャンネルが表にあれば合議なしで決まる(人が決めた種別を写すだけ)
-    split_all += resolve_videos(date, args.apply)
+    # YouTube はチャンネルが表にあれば合議なしで決まる(人が決めた種別を写すだけ)。
+    # チャンネルが表に無ければ、チャンネルのページ(概要)を材料に合議で種別を決めて表に足し、
+    # そのうえで動画 ID を引き直す
+    left, unknown_chans = resolve_videos(date, args.apply)
+    if unknown_chans:
+        print(f"\n{date}: 判定表に無い YouTube チャンネル {len(unknown_chans)}件 → "
+              + ", ".join(f"@{h}" for h in sorted(unknown_chans)), flush=True)
+        items = [(f"youtube.com/@{h}", f"https://www.youtube.com/@{h}/about",
+                  site_profile(f"youtube.com/@{h}", f"https://www.youtube.com/@{h}/about", top=f"https://www.youtube.com/@{h}")
+                  + f"\n表に載った動画: {vid}「{title[:60]}」")
+                 for h, (vid, title) in sorted(unknown_chans.items())]
+        agreed, split = consensus(build_prompt(items), [f"youtube.com/@{h}" for h in sorted(unknown_chans)])
+        chans = {k.split("@", 1)[1]: v for k, v in agreed.items() if "@" in k}
+        for h, (t, why) in chans.items():
+            print(f"  一致 {t}\t@{h}\t{why}")
+        for s in split:
+            print(f"  不一致・保留\t{s}")
+        if chans and args.apply:
+            add_video_channels(chans)
+            print(f"  → チャンネル {len(chans)}件を表に追加")
+            left, _ = resolve_videos(date, True)
+        else:
+            left = [x for x in left if not any(f"(@{h})" in x for h in chans)] + split
+    split_all += left
 
     # **決まらなかったものを、その場で人へ上げない。**
     #

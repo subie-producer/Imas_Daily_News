@@ -102,7 +102,10 @@ def escalate(stage: str, date: str, reason: str) -> bool:
         r = subprocess.run(["systemd-run", "--user", "--collect", "--unit", unit,
                             f"--working-directory={ROOT}", f"--setenv=PATH={tool_path()}",
                             f"--setenv=HOME={os.environ.get('HOME', '')}",
-                            f"--property=StandardOutput=append:{log}", "--property=StandardError=inherit"] + args,
+                            f"--property=StandardOutput=append:{log}", "--property=StandardError=inherit",
+                            # 当番自身が落ちたら1回だけ起動し直す(2回目は attempt の印と flock が二重起動を防ぐ)
+                            "--property=Restart=on-failure", "--property=RestartSec=60",
+                            "--property=StartLimitBurst=2", "--property=StartLimitIntervalSec=3600"] + args,
                            capture_output=True, text=True, stdin=subprocess.DEVNULL)
         if r.returncode == 0:
             # 起動できたことを確かめる(unit が active か)。確かめずに「起動した」と言わない(監査指摘)
@@ -268,11 +271,19 @@ def clean_url(raw) -> str | None:
     - scheme は http/https、userinfo(`user@host`)・制御文字・全角空白は不可、2048 字まで
     - host は小文字に。それ以外(パス・クエリ)は触らない
     """
-    s = (str(raw or "").split() or [""])[0].rstrip(">,。、」』")
-    if s.endswith(")") and s.count("(") < s.count(")"):   # 閉じ括弧の食い込み(Wikipedia の (…) は残す)
-        s = s[:-1]
+    s = str(raw or "")
+    # 探索の出力に固有の末尾ゴミ(URL のあとに改行と「-」)だけを、形を認識して外す。それ以外の
+    # 空白・制御文字が混ざっていれば不正として捨てる(黙って切り詰めない。監査指摘)
+    m = re.fullmatch(r"(\S+)\s*\n-\s*", s)
+    if m:
+        print(f"URL の末尾ゴミを外した: {s[:80]!r}", flush=True)
+        s = m.group(1)
+    s = s.strip()
     if not s or len(s) > 2048 or _URL_BAD_CHARS.search(s):
         return None
+    s = s.rstrip(">,。、」』")
+    if s.endswith(")") and s.count("(") < s.count(")"):   # 閉じ括弧の食い込み(Wikipedia の (…) は残す)
+        s = s[:-1]
     try:
         u = urllib.parse.urlsplit(s)
     except ValueError:
@@ -439,6 +450,8 @@ def commit_and_push(branch: str, message: str, job: str, paths: list[str] | None
         notify(job, "マージ衝突マーカーが残ったファイルがあるためコミットを中止:\n- "
                     + "\n- ".join(bad[:8]), ok=False)
         return False
+    if paths:
+        git("reset", "-q", check=False)   # 既に stage されていた無関係の変更を commit に混ぜない(監査指摘)
     r = git("add", "-A", "--", *paths, check=False) if paths else git("add", "-A", check=False)
     if r.returncode != 0:
         notify(job, f"git add 失敗: {r.stderr.strip()[:200]}", ok=False)
@@ -634,10 +647,19 @@ def _check_table(t: dict, p) -> None:
         if key in norm:
             raise SystemExit(f"{p} の path_types: {k} が重複している")
         norm[key] = str(v)
-    for a, ta in norm.items():
-        for b, tb in norm.items():
+    # 親子の競合は**全パス分類群を横断して**見る。official_paths → semi_official_paths → party_paths →
+    # path_types の順に判定するので、先行群の親と後続群の子が別種別だと子は永遠に当たらない(監査指摘)
+    families = [("official_paths", "公式"), ("semi_official_paths", "準公式"), ("party_paths", "当事者")]
+    index: list[tuple[str, str, str]] = []   # (正規化キー, 種別, 群)
+    for fam, typ in families:
+        for v in t.get(fam) or []:
+            index.append((str(v).strip().rstrip("/").lower(), typ, fam))
+    index += [(k, v, "path_types") for k, v in norm.items()]
+    for a, ta, fa in index:
+        for b, tb, fb in index:
             if a != b and b.startswith(a + "/") and ta != tb:
-                raise SystemExit(f"{p} の path_types: {a}({ta}) と {b}({tb}) が親子で種別が違う(順序依存になる)")
+                raise SystemExit(f"{p}: {fa} の {a}({ta}) と {fb} の {b}({tb}) が親子で種別が違う"
+                                 "(先に当たる親が勝ち、子の指定は届かない)")
 
 
 def classify_source(url: str) -> str:

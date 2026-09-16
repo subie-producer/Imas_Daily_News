@@ -296,8 +296,8 @@ def explore_workdir(key: str) -> Path:
     return wd
 
 
-def explore_argv(prompt: str) -> list[str]:
-    """探索(Luna / codex)の起動引数。
+def explore_argv(short: str) -> list[str]:
+    """探索(Luna / codex)の起動引数。`short` は prompt_file が返す短い指示(素材はファイル側)。
 
     `-s read-only` では通信も遮断される(実測: 名前解決に失敗し fetch_page.py が
     動かない)。`sandbox_workspace_write.network_access` は名前のとおり
@@ -308,7 +308,7 @@ def explore_argv(prompt: str) -> list[str]:
     return ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "workspace-write",
             # cwd が git リポジトリでないため、codex の作業前確認を外す
             "--skip-git-repo-check",
-            "-c", "sandbox_workspace_write.network_access=true", prompt]
+            "-c", "sandbox_workspace_write.network_access=true", short]
 
 
 def claude_exec(prompt: str, timeout: int = 300):
@@ -464,7 +464,8 @@ def consolidate_grok(outdir: Path) -> list:
         "5. 同じ url の項目は1件に統合し、facts を重複なく合併する\n\n"
         "要素の形:\n" + ITEM_SCHEMA)
     try:
-        subprocess.run(["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write", prompt],
+        subprocess.run(["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
+                        prompt_file(edition_date(), "grok-normalize", prompt)],
                        capture_output=True, text=True, timeout=1200,
                        stdin=subprocess.DEVNULL, cwd=ROOT)
     except Exception as e:
@@ -932,20 +933,37 @@ def main() -> int:
         # 別ベンダーの2モデルが一致したものだけを足し、公式・準公式は自動で足さない
         # (過大表示はこの製品がいちばん避けたい事故なので、機械には名乗らせない)
         if not args.no_git:
+            # 判定表の更新 → 紙面の種別付け直し → lint を**1つの取引**にする。どれかが失敗したら、
+            # この取引が触った判定表と記事を開始時に戻し、commit しない(表だけ進んで次の lint が赤くなる、
+            # 部分的な付け直しが混ざる、を防ぐ。監査指摘)
             r = subprocess.run([sys.executable, str(ROOT / "scripts" / "classify_sources.py"),
                                 "--date", date, "--apply"],
                                cwd=ROOT, capture_output=True, text=True, timeout=1800)
             print(r.stdout[-1200:], flush=True)
-            # 判定表を更新したら、**同じ commit で**紙面の種別も付け直す。表だけ先に進むと、
-            # lint(全記事の種別と表の照合)が次の工程で赤くなる(監査指摘: 表の更新と付け直しは1つの取引)
-            r2 = subprocess.run([sys.executable, str(ROOT / "scripts" / "retag_sources.py"), "--apply"],
-                                cwd=ROOT, capture_output=True, text=True, timeout=600)
-            tail = (r2.stdout or "").strip().splitlines()[-1:] if r2.stdout else []
-            print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r2.returncode}"), flush=True)
-            if r2.returncode != 0:
-                notify("collect", f"判定表を更新したが紙面の種別付け直しに失敗(exit {r2.returncode}): {(r2.stderr or r2.stdout)[-300:]}", ok=False)
+            ok = r.returncode == 0
+            if ok:
+                r2 = subprocess.run([sys.executable, str(ROOT / "scripts" / "retag_sources.py"), "--apply"],
+                                    cwd=ROOT, capture_output=True, text=True, timeout=600)
+                tail = (r2.stdout or "").strip().splitlines()[-1:] if r2.stdout else []
+                print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r2.returncode}"), flush=True)
+                ok = r2.returncode == 0
+            if ok:
+                r3 = subprocess.run([sys.executable, str(ROOT / "scripts" / "lint.py"), "--base", "origin/main"],
+                                    cwd=ROOT, capture_output=True, text=True, timeout=600)
+                ok = r3.returncode == 0
+                if not ok:
+                    print((r3.stdout or "")[-800:], flush=True)
+            if not ok:
+                # 取引を戻す: 判定表と記事だけ(候補や台帳は触っていない)
+                subprocess.run(["git", "checkout", "-q", "--", "source_types.yml", "docs/_posts"], cwd=ROOT,
+                               capture_output=True, text=True)
+                notify("collect", f"{date}: 判定表の更新〜紙面の付け直し〜lint のどこかで失敗したので、判定表と記事を"
+                                  f"戻した(候補は残す)。次回の収集で再試行する", ok=False)
     if not args.no_git:
-        commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect")
+        if not commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect"):
+            # 永続化できなかった収集は「無かった」のと同じ。成功として終わらない(監査指摘: fail-open)
+            notify("collect", f"{date}: 候補を commit/push できなかった。作業ツリーを確かめること", ok=False)
+            return 1
     # 新規0件の警報は「定時実行が空振りした」ことを知らせるためのもの。
     # 収集系統を手で止めた実行(--skip-*)では0件が当たり前なので鳴らさない
     # (鳴らすと本物の空振りと区別がつかず、警報として役に立たなくなる)

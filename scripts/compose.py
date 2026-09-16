@@ -63,13 +63,26 @@ def load_scheduled(date: str) -> list[dict]:
     return json.loads(p.read_text(encoding="utf-8"))
 
 
-def next_number() -> int:
+def next_number(date: str | None = None) -> int:
+    """この号の号数。稼働(PAPER_STAGE=live)なら通し番号。
+
+    **同じ号の再実行では同じ番号を返す**(自分の号スナップショットは数えない)。以前は自分の号も
+    「既存の最大」に入っていたので、--reuse-plan で組み直すたびに番号が1つ進み、lint の連番検査で
+    止まった(実測 2026-09-17: 第3号が第4号になった)。
+    """
     from pipelib import load_env
     if load_env().get("PAPER_STAGE", "test") != "live":
         return 0
+    import re
+    own = (ROOT / "docs" / "_editions" / f"{date}.md") if date else None
+    if own and own.exists():
+        m = re.search(r"^number:\s*(\d+)", own.read_text(encoding="utf-8"), re.MULTILINE)
+        if m and int(m.group(1)) >= 1:
+            return int(m.group(1))
     nums = []
     for e in (ROOT / "docs" / "_editions").glob("*.md"):
-        import re
+        if own and e == own:
+            continue
         m = re.search(r"^number:\s*(\d+)", e.read_text(encoding="utf-8"), re.MULTILINE)
         if m:
             nums.append(int(m.group(1)))
@@ -158,11 +171,12 @@ def time_left(t0: float) -> float:
     return (end - time.time()) / 60
 
 
-def remaining_seconds(cap: int = 900, floor: int = 60) -> int:
-    """子プロセスに待たせてよい秒数。締切を越えて待たない(見積もりが外れても止まれる。監査指摘)。"""
+def remaining_seconds(cap: int = 900) -> int:
+    """子プロセスに待たせてよい秒数。締切を越えて待たない(見積もりが外れても止まれる。監査指摘)。
+    締切を過ぎていれば 1 秒(=起動しても即座に打ち切られる。afford が先に止めるのが本筋)。"""
     if not DEADLINE:
         return cap
-    return int(max(floor, min(cap, DEADLINE - time.time())))
+    return int(max(1, min(cap, DEADLINE - time.time())))
 
 
 def terminal_cost() -> float:
@@ -994,7 +1008,7 @@ def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> st
         ["claude", "-p", prompt_file(edition_date(), "claude-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt),
          "--model", model or CLAUDE_MODEL, "--dangerously-skip-permissions",
          "--max-budget-usd", COMPOSE_WHOLE_MAX_BUDGET_USD],
-        capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
+        capture_output=True, text=True, timeout=remaining_seconds(cap=timeout), stdin=subprocess.DEVNULL, cwd=ROOT)
     # **予算切れは黙って通り過ぎていた。**組版セッションが途中で打ち切られ、
     # digest と台帳が半端なまま lint が16件赤くなった日がある(2026-08-31)。
     # 戻り値を見ないので呼び出し側は気づけない。ここで鳴らす
@@ -1018,7 +1032,7 @@ def codex_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str
              "--output-last-message", str(out_path),
              prompt_file(edition_date(), "codex-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt)],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-            timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
+            timeout=remaining_seconds(cap=timeout), stdin=subprocess.DEVNULL, cwd=ROOT)
     except subprocess.TimeoutExpired:
         pass
     text = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
@@ -1366,10 +1380,10 @@ def pick_lead(date: str, plan: dict) -> None:
                         ensure_ascii=False)
     pick = {}
     try:
-        r = subprocess.run(["claude", "-p", lead_prompt(date, arts), "--model", CLAUDE_MODEL,
+        r = subprocess.run(["claude", "-p", prompt_file(date, "lead", lead_prompt(date, arts)), "--model", CLAUDE_MODEL,
                             "--json-schema", schema, "--dangerously-skip-permissions",
                             "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                           capture_output=True, text=True, timeout=600, stdin=subprocess.DEVNULL, cwd=ROOT)
+                           capture_output=True, text=True, timeout=remaining_seconds(cap=600), stdin=subprocess.DEVNULL, cwd=ROOT)
         text = (r.stdout or "").strip()
         pick = json.loads(text) if text.startswith("{") else json.loads(re.search(r"\{.*\}", text, re.S).group(0))
         (ROOT / "metrics" / f"plan-lead-{date}.json").write_text(json.dumps(pick, ensure_ascii=False), encoding="utf-8")
@@ -1471,7 +1485,7 @@ def replan_missing(date: str, plan: dict, by_brand: dict, cands: dict,
         subprocess.run(["claude", "-p", prompt_file(date, "plan-missing", prompt), "--model", CLAUDE_MODEL,
                         "--dangerously-skip-permissions", "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
-                       stdin=subprocess.DEVNULL, cwd=ROOT, timeout=600)
+                       stdin=subprocess.DEVNULL, cwd=ROOT, timeout=remaining_seconds(cap=600))
     except subprocess.TimeoutExpired:
         pass
     try:
@@ -2569,8 +2583,8 @@ def main() -> int:
             return 1
     if not args.plan and not checkout_edition_branch(date, "compose"):
         return 1
-    global STARTED_ON, DEADLINE
-    STARTED_ON = branch
+    global STARTED_ON, STARTED_DATE, DEADLINE
+    STARTED_ON, STARTED_DATE = branch, date   # checkout に成功したときだけ(--plan では設定しない)
     DEADLINE = hard_deadline(t0, date)
 
     # **殺されたら、その時点までを確定してから死ぬ。**
@@ -2582,17 +2596,15 @@ def main() -> int:
     if not args.plan:
         def _on_term(signum, frame):
             print(f"SIGTERM を受けた。ここまでを確定して終了する", flush=True)
-            try:
-                commit_and_push(branch, f"compose {date}: 途中で打ち切られた(SIGTERM)", "compose")
-            except Exception as e:
-                print(f"打ち切り時のコミットに失敗: {e}", flush=True)
-            notify("compose", f"{date}: 時間切れで打ち切られた。**ここまでの紙面はコミット済み**。"
+            # 途中終了の commit は1経路(_leave_tree_clean: 自分の成果物だけ・開始後だけ)に一本化(監査指摘)
+            _leave_tree_clean("SIGTERM")
+            notify("compose", f"{date}: 時間切れで打ち切られた。ここまでの成果物は commit を試みた。"
                               f"lint と校閲記録を見て、発行できるか判断すること", ok=False)
             os._exit(1)
 
         signal.signal(signal.SIGTERM, _on_term)
     triggers = load_scheduled(date)
-    number = next_number()
+    number = next_number(date)
     if args.plan:
         print(brand_plan_prompt(date, args.plan, 0,
                                 [t for t in triggers if t.get("brand") == args.plan]))
@@ -3159,8 +3171,13 @@ def main() -> int:
     if took_min > COMPOSE_TARGET_MIN:
         detail = " / ".join(f"{k} {v:.0f}分" for k, v in STAGE_MIN.items()) or "(段の実測なし)"
         print(f"目標({COMPOSE_TARGET_MIN}分)を超えた: {took_min:.0f}分 — {detail}", flush=True)
-    commit_and_push(branch, f"compose {date}: 紙面生成(校閲{'approve' if approved else '未approve'}・{rounds}往復"
-                            + (f"・ブロック{len(dropped_by_review)}本を除外" if dropped_by_review else "") + ")", "compose")
+    pushed = commit_and_push(branch, f"compose {date}: 紙面生成(校閲{'approve' if approved else '未approve'}・{rounds}往復"
+                             + (f"・ブロック{len(dropped_by_review)}本を除外" if dropped_by_review else "") + ")", "compose")
+    if not pushed:
+        # 紙面がリモートに載っていないのに「準備完了」と言わない(監査指摘: fail-open)。当番へ
+        notify("compose", f"{date}: 紙面は出来たが commit/push できなかった。発行できない", ok=False)
+        escalate("compose", date, "最終の commit/push に失敗(紙面は作業ツリーにある)")
+        return 1
     if ok:
         extra = (f"。校閲が下ろさなかった {len(dropped_by_review)}本は紙面から外しました"
                  f"({'・'.join(dropped_by_review)})" if dropped_by_review else "")
@@ -3185,7 +3202,8 @@ def main() -> int:
     return 1
 
 
-STARTED_ON: str | None = None   # main が edition ブランチの checkout に成功したらそのブランチ名
+STARTED_ON: str | None = None    # main が edition ブランチの checkout に成功したらそのブランチ名
+STARTED_DATE: str | None = None  # 同じく、その号の日付(--date で過去号を組み直すときも正しい日付を使う)
 
 
 def own_artifacts(date: str) -> list[str]:
@@ -3204,7 +3222,7 @@ def _leave_tree_clean(reason: str) -> None:
     ただし commit するのは、main が edition ブランチを checkout できた後(STARTED_ON)で、いまも
     そのブランチにいて、かつ compose 自身の成果物(own_artifacts)だけ。checkout 前に既にあった
     変更や、別ブランチ・別工程の変更を compose 名義で commit しない(監査指摘)。"""
-    date = edition_date()
+    date = STARTED_DATE or edition_date()
     if not STARTED_ON or git("branch", "--show-current", check=False).stdout.strip() != STARTED_ON:
         print("途中終了: 開始前の状態か別ブランチなので commit しない", flush=True)
         return

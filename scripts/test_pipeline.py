@@ -679,6 +679,26 @@ def test_clean_url_and_table():
             pass
 
 
+def test_no_prompt_in_argv():
+    """モデル(claude / codex)を起動する箇所で、可変のプロンプトを引数に直接渡していない(全経路 prompt_file)。
+    引数は 128KB で落ちる(監査指摘: 経路の取りこぼしを静的に検出する)。"""
+    import re as _re
+    root = Path(__file__).resolve().parent
+    bad = []
+    for f in sorted(root.glob("*.py")):
+        if f.name in ("test_pipeline.py", "pipelib.py"):
+            continue
+        src = f.read_text(encoding="utf-8")
+        for m in _re.finditer(r'"-p",\s*([A-Za-z_][A-Za-z_0-9\.]*)\s*[,\]]|\+\s*\[\s*([A-Za-z_][A-Za-z_0-9]*)\s*\]|,\s*(prompt|cp|text)\s*\]', src):
+            name = m.group(1) or m.group(2) or m.group(3)
+            # モデル起動の文脈(直前5行に claude / codex)だけを見る
+            window = src[max(0, src.rfind("\n", 0, max(0, src.rfind("\n", 0, m.start()) - 240))):m.end()]
+            if name in ("prompt", "cp", "text", "p", "q") and ("claude" in window or "codex" in window):
+                line = src.count("\n", 0, m.start()) + 1
+                bad.append(f"{f.name}:{line}: {m.group(0)}")
+    check(not bad, f"プロンプトを引数に直接渡している箇所: {bad[:6]}")
+
+
 def test_tool_path():
     import os
     p = pipelib.tool_path()
@@ -806,6 +826,7 @@ def main() -> int:
     test_classify_consensus(tmp / "cs")
     test_time_budget()
     test_clean_url_and_table()
+    test_no_prompt_in_argv()
     test_tool_path()
     test_oncall_undo_merge()
     test_oncall_rollback_subprocess(tmp / "rs")

@@ -553,11 +553,11 @@ def main() -> int:
     seen_no = {}
     for d, (p, fm) in dated:
         if fm["number"] >= 1 and fm["number"] in seen_no:
-            rep.error(p, f"号数 {fm['no']} が重複({seen_no[fm['no']]})")
+            rep.error(p, f"号数 {fm['number']} が重複({seen_no[fm['number']]})")
         seen_no.setdefault(fm["number"], d) if fm["number"] >= 1 else None
     for i, (d, fm) in enumerate(numbered):
         if fm["number"] != i + 1:
-            rep.error(editions[d][0], f"号数が連番でない: {d} は {i + 1} 号であるべきところ {fm['no']} 号")
+            rep.error(editions[d][0], f"号数が連番でない: {d} は {i + 1} 号であるべきところ {fm['number']} 号")
     for i, (d, (p, fm)) in enumerate(dated):
         prev_rank = dated[i - 1][1][1]["ranking"] if i > 0 else None
         prev_pos = {r_["name"]: r_["n"] for r_ in prev_rank} if prev_rank else {}

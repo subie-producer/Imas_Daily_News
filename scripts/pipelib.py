@@ -105,9 +105,17 @@ def escalate(stage: str, date: str, reason: str) -> bool:
                             f"--property=StandardOutput=append:{log}", "--property=StandardError=inherit"] + args,
                            capture_output=True, text=True, stdin=subprocess.DEVNULL)
         if r.returncode == 0:
-            print(f"当番(oncall)を起動した: {stage} {date}(unit {unit})", flush=True)
-            return True
-        print(f"systemd-run での当番の起動に失敗({r.stderr.strip()[:200]})。直接起動する", flush=True)
+            # 起動できたことを確かめる(unit が active か)。確かめずに「起動した」と言わない(監査指摘)
+            st = subprocess.run(["systemctl", "--user", "is-active", unit], capture_output=True, text=True)
+            if st.stdout.strip() in ("active", "activating"):
+                print(f"当番(oncall)を起動した: {stage} {date}(unit {unit})", flush=True)
+                return True
+            notify("oncall", f"{date} {stage}: 当番の unit {unit} が動いていない({st.stdout.strip()})。人の判断が要る", ok=False)
+            return False
+        # service の cgroup の中へ Popen で逃がすと、親の service が終わった瞬間に殺される(09-13 と同型)。
+        # systemd の下では代替に走らず、起動できなかったと明示して人へ渡す(監査指摘)
+        notify("oncall", f"{date} {stage}: 当番を systemd-run で起動できない({r.stderr.strip()[:200]})。人の判断が要る", ok=False)
+        return False
     try:
         with log.open("a", encoding="utf-8") as f:
             subprocess.Popen(args, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
@@ -229,22 +237,54 @@ def notify(job: str, msg: str, ok: bool = True, require: bool = False) -> bool:
         return False
 
 
-def prompt_file(date: str, name: str, text: str) -> str:
-    """指示と素材を**ファイルに書き**、短い指示だけを返す。
+def prompt_file(date: str, name: str, text: str, base: Path | None = None) -> str:
+    """指示と素材を**ファイルに書き**、短い指示だけを返す。**モデルを呼ぶ全経路がこれを通る**
+    (引数に可変の素材を渡す経路を残さない。監査指摘)。
 
     claude / codex は単発の API ではなく、このフォルダで自律して動くエージェントである。
     素材をプロンプトに詰め込む必要は無く、ファイルを読ませればよい(編集長の指示)。
     引数に詰めると 128KB(MAX_ARG_STRLEN)を超えたところで
     `OSError: [Errno 7] Argument list too long` で工程ごと落ちる(実測 2026-09-13 04:15)。
-    置き場は metrics/work/<日付>/(Git 管理外)。
+    置き場は <base>/metrics/work/<日付>/(Git 管理外)。base はセッションの cwd(既定はリポジトリ)。
+    リポジトリ外の cwd で動くセッション(探索)には、その cwd を base に渡す
     """
-    d = ROOT / "metrics" / "work" / date
+    root = base or ROOT
+    d = root / "metrics" / "work" / date
     d.mkdir(parents=True, exist_ok=True)
     p = d / f"{name}.md"
     p.write_text(text, encoding="utf-8")
-    rel = p.relative_to(ROOT)
+    rel = p.relative_to(root)
     return (f"指示と素材は `{rel}` に書いてあります。まずそのファイルを全部読み、書かれたとおりに実行して、"
             f"そこで指示された形式で答えてください。")
+
+
+_URL_BAD_CHARS = re.compile(r"[\x00-\x20\x7f　]")
+
+
+def clean_url(raw) -> str | None:
+    """外から来る URL の**唯一の入口**。使える形に正規化し、駄目なら None(黙って切り詰めない。監査指摘)。
+
+    - 最初の空白で切る(探索の出力が末尾に改行と `-` を付ける。実測 2026-09-15: 50件)。末尾の句読点・括弧を落とす
+    - scheme は http/https、userinfo(`user@host`)・制御文字・全角空白は不可、2048 字まで
+    - host は小文字に。それ以外(パス・クエリ)は触らない
+    """
+    s = (str(raw or "").split() or [""])[0].rstrip(">,。、」』")
+    if s.endswith(")") and s.count("(") < s.count(")"):   # 閉じ括弧の食い込み(Wikipedia の (…) は残す)
+        s = s[:-1]
+    if not s or len(s) > 2048 or _URL_BAD_CHARS.search(s):
+        return None
+    try:
+        u = urllib.parse.urlsplit(s)
+    except ValueError:
+        return None
+    if u.scheme not in ("http", "https") or not u.hostname or u.username is not None or u.password is not None:
+        return None
+    try:
+        u.port
+    except ValueError:
+        return None
+    netloc = u.hostname.lower() + (f":{u.port}" if u.port else "")
+    return urllib.parse.urlunsplit((u.scheme, netloc, u.path, u.query, u.fragment))
 
 
 class JobLockTimeout(RuntimeError):
@@ -382,24 +422,50 @@ def conflict_markers() -> list[str]:
     return bad
 
 
-def commit_and_push(branch: str, message: str, job: str) -> None:
+def commit_and_push(branch: str, message: str, job: str, paths: list[str] | None = None) -> bool:
+    """成果物を commit して push する。**戻り値は「リモートに載ったか」**。
+
+    以前は commit / push の失敗を通知するだけで戻り値が無く、呼び出し側は「コミット済み・clean」と
+    して先へ進んでいた(監査指摘: fail-open)。失敗したら False を返し、呼び出し側が判断する。
+    `paths` を渡すとそのパスだけを stage する(渡さなければ全部。工程の途中終了時は必ず渡す)。
+    現在のブランチが `branch` でなければ何もしない(別のブランチに成果物を積まない)。
+    """
+    cur = git("branch", "--show-current", check=False).stdout.strip()
+    if cur != branch:
+        notify(job, f"commit 中止: いるブランチが {cur or '(detached)'} で {branch} ではない", ok=False)
+        return False
     bad = conflict_markers()
     if bad:
         notify(job, "マージ衝突マーカーが残ったファイルがあるためコミットを中止:\n- "
                     + "\n- ".join(bad[:8]), ok=False)
-        return
-    git("add", "-A")
+        return False
+    r = git("add", "-A", "--", *paths, check=False) if paths else git("add", "-A", check=False)
+    if r.returncode != 0:
+        notify(job, f"git add 失敗: {r.stderr.strip()[:200]}", ok=False)
+        return False
     if not git("status", "--porcelain").stdout.strip():
         print("変更なし(コミットせず)", flush=True)
-        return
-    git("commit", "-m", message)
+        return True
+    if git("diff", "--cached", "--quiet", check=False).returncode == 0:
+        print("stage した変更なし(コミットせず)", flush=True)
+        return True
+    r = git("commit", "-m", message, check=False)
+    if r.returncode != 0:
+        notify(job, f"git commit 失敗: {(r.stderr or r.stdout).strip()[:200]}", ok=False)
+        return False
     r = git_net("push", "origin", branch)
     if r.returncode != 0:
         # collect 同士/release との競合: リモートを取り込んで積み直す
-        git_net("pull", "--rebase", "origin", branch)
+        p = git_net("pull", "--rebase", "origin", branch)
+        if p.returncode != 0:
+            git("rebase", "--abort", check=False)
+            notify(job, f"push 失敗(pull --rebase も失敗): {(p.stderr or r.stderr).strip()[:200]}", ok=False)
+            return False
         r2 = git_net("push", "origin", branch)
         if r2.returncode != 0:
             notify(job, f"push 失敗: {r2.stderr.strip()[:200]}", ok=False)
+            return False
+    return True
 
 
 def append_metric(kind: str, data: dict) -> None:
@@ -552,6 +618,26 @@ def _check_table(t: dict, p) -> None:
     if dup:
         raise SystemExit(f"{p} で種別が重複している: "
                          + " / ".join(f"{v}({'・'.join(ks)})" for v, ks in sorted(dup.items())))
+    # path_types(パス → 種別): 値域、正規化後の重複、親子の prefix が別種別で重なる競合を検査する
+    # (記載順で最初に当たる方式なので、競合すると順序依存になる。監査指摘)
+    pt = t.get("path_types") or {}
+    if not isinstance(pt, dict):
+        raise SystemExit(f"{p} の path_types はパス → 種別の対応でなければならない")
+    allowed = {"公式", "準公式", "当事者", "演者", "報道", "ファン", "二次情報"}
+    norm: dict[str, str] = {}
+    for k, v in pt.items():
+        key = str(k).strip().rstrip("/").lower()
+        if str(v) not in allowed:
+            raise SystemExit(f"{p} の path_types: {k} の種別 {v!r} は使えない({'/'.join(sorted(allowed))})")
+        if "/" not in key or key.startswith(("http://", "https://")):
+            raise SystemExit(f"{p} の path_types: {k} は host/path の形で書く(scheme 無し)")
+        if key in norm:
+            raise SystemExit(f"{p} の path_types: {k} が重複している")
+        norm[key] = str(v)
+    for a, ta in norm.items():
+        for b, tb in norm.items():
+            if a != b and b.startswith(a + "/") and ta != tb:
+                raise SystemExit(f"{p} の path_types: {a}({ta}) と {b}({tb}) が親子で種別が違う(順序依存になる)")
 
 
 def classify_source(url: str) -> str:

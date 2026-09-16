@@ -173,9 +173,13 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         if len(used) < 3:
             problems.append(f"{rank} なのに使った素材が {len(used)} 件(3件以上)")
     seen = set()
+    from pipelib import clean_url   # URL の唯一の入口(scheme・userinfo・制御文字・長さを検める)
+    for f in new_facts:
+        if f.get("url") and clean_url(f.get("url")) != f.get("url"):
+            problems.append(f"new_facts の url の形が不正: {str(f.get('url'))[:60]}")
     for s in out.get("sources") or []:
         u = s.get("url") or ""
-        if not re.match(r"^https?://", u):
+        if not re.match(r"^https?://", u) or clean_url(u) != u:
             problems.append(f"出典 url の形が不正: {u[:60]}")
         # 素材に無い URL(執筆が自分で見つけた出典)は許す。実在と一致の確認は校閲(項目3)の仕事。
         # 「new_facts に書いたものだけ」と縛ったら、公式ストアやチケットページを出典にした記事が

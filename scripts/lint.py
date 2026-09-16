@@ -701,9 +701,13 @@ def main() -> int:
                     diff_keys = {k for k in set(old) | set(new_fm) if old.get(k) != new_fm.get(k)}
                     if diff_keys and diff_keys <= {"src", "sources"}:
                         o_s, n_s = old.get("sources") or [], new_fm.get("sources") or []
-                        if len(o_s) == len(n_s) and all(
+                        old_body = (m.group(2) if m else "")
+                        _, new_body = parse_frontmatter(ROOT / p)
+                        # 本文が1バイトも変わっていない・出典は type 以外の全項目が同じ、のときだけ(監査指摘:
+                        # 種別の付け直しに紛れて本文を書き換える抜け道を塞ぐ)
+                        if (old_body or "").strip() == (new_body or "").strip() and len(o_s) == len(n_s) and all(
                                 isinstance(a, dict) and isinstance(b, dict)
-                                and a.get("url") == b.get("url") and a.get("label") == b.get("label")
+                                and {k: v for k, v in a.items() if k != "type"} == {k: v for k, v in b.items() if k != "type"}
                                 for a, b in zip(o_s, n_s)):
                             continue
                     if len(new_fm.get("corrections", [])) <= len(old.get("corrections", [])):

@@ -49,7 +49,9 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import ENV, ROOT, JobLockTimeout, job_lock, notify, tool_path
+import hashlib
+
+from pipelib import ENV, ROOT, JobLockTimeout, job_lock, notify, prompt_file, tool_path
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-5.6-sol")
@@ -251,7 +253,9 @@ def parse_json(text: str) -> dict | None:
 
 
 def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -> dict:
-    r = subprocess.run(["claude", "-p", prompt, "--model", ONCALL_MODEL, "--dangerously-skip-permissions",
+    # 指示は作業ツリー側のファイルで渡す(引数に詰めない。作業ツリーの metrics/work/ は Git 管理外)
+    short = prompt_file("oncall", "fix-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt, base=cwd)
+    r = subprocess.run(["claude", "-p", short, "--model", ONCALL_MODEL, "--dangerously-skip-permissions",
                         "--json-schema", schema_file.read_text(encoding="utf-8"),
                         "--max-budget-usd", ONCALL_MAX_BUDGET_USD],
                        cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
@@ -267,8 +271,9 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
     os.close(fd)
     out_path = Path(out_name)
     try:
+        short = prompt_file("oncall", "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt, base=cwd)
         subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "read-only", "--skip-git-repo-check",
-                        "--output-schema", str(schema_file), "-o", str(out_path), prompt],
+                        "--output-schema", str(schema_file), "-o", str(out_path), short],
                        cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
                        env=session_env())
         text = out_path.read_text(encoding="utf-8") if out_path.exists() else ""

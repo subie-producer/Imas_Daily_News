@@ -37,7 +37,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
-                     EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, append_metric, classify_source,
+                     EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, html_to_text, set_quiet, unbacked_facts,
                      checkout_edition_branch, commit_and_push, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst)
@@ -318,9 +318,11 @@ def claude_exec(prompt: str, timeout: int = 300):
     既読にしない。以前は読めない出力も0件として既読にし、新着が二度と候補に
     ならなかった(監査指摘 P1-5)。
     """
-    from pipelib import extract_json_array_strict
+    from pipelib import extract_json_array_strict, prompt_file
+    import hashlib as _hl
     r = subprocess.run(
-        ["claude", "-p", prompt, "--model", COLLECT_MODEL,
+        ["claude", "-p", prompt_file(edition_date(), "watch-" + _hl.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt),
+         "--model", COLLECT_MODEL,
          "--allowedTools", "WebSearch,WebFetch",
          "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
         capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
@@ -568,7 +570,8 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
             ef = tempfile.NamedTemporaryFile(prefix=f"explore-{q['key']}-", suffix=".err",
                                              delete=False, mode="w+", encoding="utf-8")
             explore_procs.append((q["key"], subprocess.Popen(
-                explore_argv(cp), stdout=of, stderr=ef, text=True,
+                # 指示と素材は隔離ディレクトリ側のファイルで渡す(引数に詰めない。cwd がリポジトリ外なので base=wd)
+                explore_argv(prompt_file(edition_date(), f"explore-{q['key']}", cp, base=wd)), stdout=of, stderr=ef, text=True,
                 # 打ち切り時に子孫ごと落とせるよう、独立したプロセスグループにする
                 # cwd は隔離ディレクトリ。ここが workspace-write の書き込み範囲になる
                 stdin=subprocess.DEVNULL, cwd=wd, start_new_session=True), of, ef, wd))
@@ -687,11 +690,12 @@ def normalize(items: list[dict]) -> list[dict]:
     idols = load_idol_brands()
     for i, it in enumerate(items):
         try:
-            # 探索(Grok/Luna)の出力は URL の後ろに改行やゴミ(`\n-`)を付けてくることがある。
-            # strip() では消えず、判定表に当たらない・出典 URL が壊れる(実測 2026-09-15: 50件)。
-            # 最初の空白で切る
-            url = ((it.get("url") or "").split() or [""])[0].rstrip(")]>,。、")
-            if not url.startswith("http"):
+            # URL は pipelib.clean_url(唯一の入口)で正規化する。探索の出力は末尾に改行やゴミ(`\n-`)を
+            # 付けてくる(実測 2026-09-15: 50件)。使えない形は捨てて理由を残す(黙って切り詰めない)
+            url = clean_url(it.get("url"))
+            if not url:
+                if it.get("url"):
+                    print(f"候補の URL を捨てた(形が不正): {str(it.get('url'))[:80]!r}", flush=True)
                 continue
             valid = {"general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"}
             brand = it.get("brand") if it.get("brand") in valid else "other"
@@ -932,6 +936,14 @@ def main() -> int:
                                 "--date", date, "--apply"],
                                cwd=ROOT, capture_output=True, text=True, timeout=1800)
             print(r.stdout[-1200:], flush=True)
+            # 判定表を更新したら、**同じ commit で**紙面の種別も付け直す。表だけ先に進むと、
+            # lint(全記事の種別と表の照合)が次の工程で赤くなる(監査指摘: 表の更新と付け直しは1つの取引)
+            r2 = subprocess.run([sys.executable, str(ROOT / "scripts" / "retag_sources.py"), "--apply"],
+                                cwd=ROOT, capture_output=True, text=True, timeout=600)
+            tail = (r2.stdout or "").strip().splitlines()[-1:] if r2.stdout else []
+            print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r2.returncode}"), flush=True)
+            if r2.returncode != 0:
+                notify("collect", f"判定表を更新したが紙面の種別付け直しに失敗(exit {r2.returncode}): {(r2.stderr or r2.stdout)[-300:]}", ok=False)
     if not args.no_git:
         commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect")
     # 新規0件の警報は「定時実行が空振りした」ことを知らせるためのもの。

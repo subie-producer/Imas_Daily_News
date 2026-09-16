@@ -278,7 +278,10 @@ def page_excerpt(url: str, chars: int = 1200) -> str:
 
 def ask(cmd: list[str], prompt: str, timeout: int = 900) -> list[dict]:
     try:
-        r = subprocess.run(cmd + [prompt], capture_output=True, text=True,
+        import hashlib
+        from pipelib import prompt_file
+        short = prompt_file(edition_date(), f"classify-{cmd[0]}-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt)
+        r = subprocess.run(cmd + [short], capture_output=True, text=True,
                            timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
         return extract_json_array(r.stdout) or []
     except Exception as e:

@@ -42,7 +42,7 @@ import planlib
 import renderlib
 import tags as tags_lib
 from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, EDITORIAL_MODEL,
-                     COMPOSE_ARTICLE_MAX_BUDGET_USD, JobLockTimeout, job_lock, prompt_file,
+                     COMPOSE_ARTICLE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file,
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, classify_source, commit_and_push,
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
@@ -133,9 +133,36 @@ class stage:
         return False
 
 
+DEADLINE: float | None = None   # 締切の絶対時刻(epoch 秒)。main が決める
+HANDOFF_MIN = 8                 # 発行(06:00)の前に空けておく分(release の起動・ロック待ち・push)
+
+
+def hard_deadline(t0: float, date: str) -> float:
+    """締切の**絶対時刻**。発行日 06:00 の HANDOFF_MIN 前と、起動から COMPOSE_LIMIT_MIN の早いほう。
+
+    起動からの相対時間だけで測ると、遅れて起動した日は発行時刻を越える(監査指摘)。
+    発行時刻を過ぎてからの手動再実行(その日の号をあとから出す)は、相対 120 分だけで測る。
+    """
+    rel = t0 + COMPOSE_LIMIT_MIN * 60
+    try:
+        d = datetime.date.fromisoformat(date)
+        publish = datetime.datetime(d.year, d.month, d.day, 6, 0, tzinfo=JST).timestamp() - HANDOFF_MIN * 60
+    except ValueError:
+        return rel
+    return min(rel, publish) if publish > t0 else rel
+
+
 def time_left(t0: float) -> float:
-    """締切まであと何分。**目標ではなく締切で測る。**"""
-    return COMPOSE_LIMIT_MIN - (time.time() - t0) / 60
+    """締切まであと何分。**目標ではなく締切で測る。**絶対時刻(DEADLINE)があればそれで測る。"""
+    end = DEADLINE if DEADLINE else t0 + COMPOSE_LIMIT_MIN * 60
+    return (end - time.time()) / 60
+
+
+def remaining_seconds(cap: int = 900, floor: int = 60) -> int:
+    """子プロセスに待たせてよい秒数。締切を越えて待たない(見積もりが外れても止まれる。監査指摘)。"""
+    if not DEADLINE:
+        return cap
+    return int(max(floor, min(cap, DEADLINE - time.time())))
 
 
 def terminal_cost() -> float:
@@ -1235,7 +1262,7 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
         for b, out, p in procs:
             try:
-                so, se = p.communicate(timeout=900)
+                so, se = p.communicate(timeout=remaining_seconds())
             except subprocess.TimeoutExpired:
                 p.kill()
                 so, se = "", "時間切れ"
@@ -1911,7 +1938,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
         for art, src, prompt, out_path, fact_by_id, materials, tries, p in procs:
             try:
-                p.communicate(timeout=900)
+                p.communicate(timeout=remaining_seconds())
             except subprocess.TimeoutExpired:
                 p.kill()
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
@@ -2203,7 +2230,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True, stdin=subprocess.DEVNULL, cwd=ROOT)))
         for art, path, fact_by_id, materials, issues, out_path, p in procs:
             try:
-                p.communicate(timeout=900)
+                p.communicate(timeout=remaining_seconds())
             except subprocess.TimeoutExpired:
                 p.kill()
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
@@ -2254,14 +2281,14 @@ def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
         procs = []
         for f, prompt in jobs[i:i + COMPOSE_WAVE]:
             procs.append(subprocess.Popen(
-                ["claude", "-p", prompt, "--model", REVIEW_MODEL,
+                ["claude", "-p", prompt_file(date, "fix-" + Path(f).stem, prompt), "--model", REVIEW_MODEL,
                  "--dangerously-skip-permissions",
                  "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT))
         for p in procs:
             try:
-                p.communicate(timeout=900)
+                p.communicate(timeout=remaining_seconds())
             except subprocess.TimeoutExpired:
                 p.kill()
     # **何も変えなかった修正セッションを見えるようにする。**同じ指摘が次の巡にも
@@ -2362,8 +2389,9 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     QUOTA = ("session limit", "Exceeded USD budget", "rate limit", "usage limit")
 
     def spawn(prompt: str):
+        short = prompt_file(date, "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt)
         return subprocess.Popen(
-            ["claude", "-p", prompt, "--model", REVIEW_MODEL,
+            ["claude", "-p", short, "--model", REVIEW_MODEL,
              "--json-schema", schema, "--dangerously-skip-permissions",
              # 1本ずつなので上限も1本分でよい(紙面まるごとの額を配ると
              # 並列数ぶんの掛け算になる)
@@ -2373,7 +2401,7 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
 
     def collect(p, where):
         try:
-            so, se = p.communicate(timeout=900)
+            so, se = p.communicate(timeout=remaining_seconds())
         except subprocess.TimeoutExpired:
             p.kill()
             so, se = "", "時間切れ"
@@ -2541,6 +2569,9 @@ def main() -> int:
             return 1
     if not args.plan and not checkout_edition_branch(date, "compose"):
         return 1
+    global STARTED_ON, DEADLINE
+    STARTED_ON = branch
+    DEADLINE = hard_deadline(t0, date)
 
     # **殺されたら、その時点までを確定してから死ぬ。**
     # systemd は起動タイムアウトで SIGTERM を送る。以前はここで何も残らず、
@@ -3154,13 +3185,38 @@ def main() -> int:
     return 1
 
 
+STARTED_ON: str | None = None   # main が edition ブランチの checkout に成功したらそのブランチ名
+
+
+def own_artifacts(date: str) -> list[str]:
+    """compose が自分で作る成果物のパス(glob)。途中終了時に stage してよいのはこれだけ。"""
+    return [f"docs/_posts/{date}-*.md", f"docs/_editions/{date}.md", f"docs/_editorials/{date}.md",
+            f"metrics/plan-{date}*.json", f"metrics/plan-lead-{date}.json", f"metrics/review-{date}-*.json",
+            f"metrics/stories-before-{date}.yml", f"metrics/pending-before-{date}.yml", f"metrics/{date}.json",
+            "stock/stories.yml", "stock/pending.yml", "stock/scheduled/*.json", "stock/columnist.md"]
+
+
 def _leave_tree_clean(reason: str) -> None:
-    """途中で落ちても作業ツリーを dirty のまま残さない。残すと release も collect も当番も
+    """途中で落ちても**自分の成果物**を dirty のまま残さない。残すと release も collect も当番も
     「未コミットの変更がある」で拒否し、号が出ない(実測 2026-09-15: 計画ファイルだけ残って
-    06:00 の発行と 07:30 の収集が止まった)。"""
+    06:00 の発行と 07:30 の収集が止まった)。
+
+    ただし commit するのは、main が edition ブランチを checkout できた後(STARTED_ON)で、いまも
+    そのブランチにいて、かつ compose 自身の成果物(own_artifacts)だけ。checkout 前に既にあった
+    変更や、別ブランチ・別工程の変更を compose 名義で commit しない(監査指摘)。"""
+    date = edition_date()
+    if not STARTED_ON or git("branch", "--show-current", check=False).stdout.strip() != STARTED_ON:
+        print("途中終了: 開始前の状態か別ブランチなので commit しない", flush=True)
+        return
     try:
         if git("status", "--porcelain").stdout.strip():
-            commit_and_push(f"edition/{edition_date()}", f"compose {edition_date()}: 途中終了時点の成果物({reason[:60]})", "compose")
+            ok = commit_and_push(STARTED_ON, f"compose {date}: 途中終了時点の成果物({reason[:60]})", "compose",
+                                 paths=own_artifacts(date))
+            if not ok:
+                notify("compose", f"{date}: 途中終了時の成果物を commit/push できなかった。作業ツリーを確かめること", ok=False)
+            rest = git("status", "--porcelain").stdout.strip()
+            if rest:
+                notify("compose", f"{date}: 途中終了。compose の成果物ではない変更が残っている(commit しない):\n{rest[:400]}", ok=False)
     except Exception as e:
         print(f"途中終了時の commit に失敗: {e}", flush=True)
 

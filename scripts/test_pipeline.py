@@ -621,9 +621,62 @@ def test_time_budget():
         # 実測が長ければ長いほうを使う(固定値で見積もらない。監査指摘)
         compose.STAGE_MIN.update({"組版": 15.0, "校閲1波": 5.0})
         check(compose.terminal_cost() >= 15 * 1.2 + 5 * 1.2 + 3, "実測が長いのに反映されない")
+        # 締切は絶対時刻: 04:00 起動なら 06:00 の HANDOFF_MIN 前(遅れて起動しても発行時刻を越えない)。
+        # 発行時刻を過ぎた手動再実行は相対 120 分
+        import datetime as _dt
+        t_0400 = _dt.datetime(2026, 9, 17, 4, 0, tzinfo=pipelib.JST).timestamp()
+        dl = compose.hard_deadline(t_0400, "2026-09-17")
+        check(abs(dl - (_dt.datetime(2026, 9, 17, 6, 0, tzinfo=pipelib.JST).timestamp() - compose.HANDOFF_MIN * 60)) < 1,
+              "04:00 起動の締切が 06:00 前になっていない")
+        t_0430 = t_0400 + 30 * 60
+        check(compose.hard_deadline(t_0430, "2026-09-17") == dl, "遅れて起動しても締切が伸びている")
+        t_1100 = t_0400 + 7 * 3600
+        check(abs(compose.hard_deadline(t_1100, "2026-09-17") - (t_1100 + compose.COMPOSE_LIMIT_MIN * 60)) < 1,
+              "発行後の手動再実行が相対 120 分になっていない")
+        saved_dl = compose.DEADLINE
+        try:
+            compose.DEADLINE = _t.time() + 120
+            check(60 <= compose.remaining_seconds() <= 120, f"子プロセスの待ち時間が締切で切られない: {compose.remaining_seconds()}")
+            compose.DEADLINE = _t.time() + 5000
+            check(compose.remaining_seconds() == 900, "cap を超えた")
+            compose.DEADLINE = None
+            check(compose.remaining_seconds() == 900, "DEADLINE 未設定の既定")
+        finally:
+            compose.DEADLINE = saved_dl
     finally:
         compose.STAGE_MIN.clear()
         compose.STAGE_MIN.update(saved)
+
+
+def test_clean_url_and_table():
+    """URL の唯一の入口(clean_url)と、判定表 path_types の検査(監査指摘)。"""
+    C = pipelib.clean_url
+    check(C("https://x.com/a/status/1\n-") == "https://x.com/a/status/1", "末尾のゴミが落ちない")
+    check(C("https://Example.com/Path?q=1#f") == "https://example.com/Path?q=1#f", "host の小文字化・パスの保持")
+    check(C("https://ja.wikipedia.org/wiki/A_(B)") == "https://ja.wikipedia.org/wiki/A_(B)", "括弧つき URL を壊した")
+    check(C("http://user@a.com/") is None and C("ftp://a") is None and C("") is None and C("https://a.com/x\x00y") is None,
+          "使えない形を通した")
+    check(C("https://a.com/" + "x" * 3000) is None, "長すぎる URL を通した")
+    # 検算: 出典 URL は clean_url で変わらない形でなければ差し戻し
+    _, fb = renderlib.materials_with_ids(MATS)
+    bad = dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3\n-", "label": "z"}])
+    check(any("形が不正" in p for p in renderlib.check_output(bad, fb, MATS)), "汚れた出典 URL が通った")
+    # path_types の検査: 値域・重複・親子競合
+    ok = {"path_types": {"ch.nicovideo.jp/sidem": "公式", "tiktok.com/@x": "当事者"}}
+    try:
+        pipelib._check_table(ok, "t")
+    except SystemExit as e:
+        check(False, f"正しい path_types が落ちた: {e}")
+    for bad_t, why in (({"path_types": {"a.com/x": "公式", "a.com/x/y": "ファン"}}, "親子競合"),
+                       ({"path_types": {"a.com/x": "神"}}, "値域"),
+                       ({"path_types": {"https://a.com/x": "公式"}}, "scheme 付き"),
+                       ({"path_types": {"a.com/x": "公式", "A.com/x/": "公式"}}, "正規化後の重複"),
+                       ({"path_types": ["a.com/x"]}, "形")):
+        try:
+            pipelib._check_table(bad_t, "t")
+            check(False, f"path_types の{why}が通った")
+        except SystemExit:
+            pass
 
 
 def test_tool_path():
@@ -752,6 +805,7 @@ def main() -> int:
     test_oncall_restore_cleans_untracked()
     test_classify_consensus(tmp / "cs")
     test_time_budget()
+    test_clean_url_and_table()
     test_tool_path()
     test_oncall_undo_merge()
     test_oncall_rollback_subprocess(tmp / "rs")

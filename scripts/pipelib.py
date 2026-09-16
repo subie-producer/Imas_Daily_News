@@ -278,8 +278,11 @@ def clean_url(raw) -> str | None:
     if m:
         print(f"URL の末尾ゴミを外した: {s[:80]!r}", flush=True)
         s = m.group(1)
-    # 前後の空白・タブ・制御文字も不正(黙って strip しない。監査指摘)
-    if not s or len(s) > 2048 or _URL_BAD_CHARS.search(s):
+    # 前後の空白・タブ・制御文字も不正(黙って strip しない)。ASCII だけでなく Unicode の空白(NBSP、
+    # U+2028 等)・制御(Cc)・書式(Cf)も全体で検査する(監査指摘)
+    import unicodedata
+    if (not s or len(s) > 2048 or _URL_BAD_CHARS.search(s)
+            or any(ch.isspace() or unicodedata.category(ch) in ("Cc", "Cf", "Zs", "Zl", "Zp") for ch in s)):
         return None
     s = s.rstrip(">,。、」』")
     if s.endswith(")") and s.count("(") < s.count(")"):   # 閉じ括弧の食い込み(Wikipedia の (…) は残す)

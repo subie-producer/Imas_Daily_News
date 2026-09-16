@@ -661,6 +661,10 @@ def test_clean_url_and_table():
     for raw in (" https://a.com/x", "https://a.com/x ", "\thttps://a.com/x", "https://a.com/x y", "https://a.com/x\nhttps://b.com/"):
         check(C(raw) is None, f"空白入りの URL を通した: {raw!r}")
     check(C("https://a.com/x\n-") == "https://a.com/x" and C("https://a.com/x\n-\n") == "https://a.com/x", "既知のゴミ形を外せない")
+    # Unicode の空白・制御・書式文字も不正(監査指摘 r36)
+    for ch in ("", " ", " ", " ", " ", " ", " ", " ", "​", "‎", "﻿"):
+        check(C(f"https://a.com/x{ch}") is None and C(f"{ch}https://a.com/x") is None and C(f"https://a.com/x{ch}y") is None,
+              f"Unicode の空白・制御文字 U+{ord(ch):04X} を通した")
     # 検算: 出典 URL は clean_url で変わらない形でなければ差し戻し
     _, fb = renderlib.materials_with_ids(MATS)
     bad = dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3\n-", "label": "z"}])

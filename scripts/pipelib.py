@@ -74,6 +74,17 @@ def has_editorial(date: str) -> bool:
 # 当番(Opus)が診断・修正し、監査(Sol)の敵対的レビューを通ったものだけを取り込んで再実行する。
 # 呼び出し側は今までどおり通知して終わってよい(当番は別プロセスで動く)。
 # ONCALL=off で止められる。当番自身が再実行する工程には ONCALL=off が付く(無限ループ防止)
+def tool_path() -> str:
+    """claude / codex が見つかる PATH。systemd の service(release 等)の PATH には
+    ~/.local/bin が無く、そこから起動した当番が `FileNotFoundError: 'claude'` で落ちた
+    (実測 2026-09-17 06:14)。呼び出し元の PATH に、利用者の標準の bin を足す。"""
+    import os
+    home = os.path.expanduser("~")
+    extra = [f"{home}/.local/bin", f"{home}/.npm-global/bin", f"{home}/bin", "/usr/local/bin", "/usr/bin", "/bin"]
+    cur = [p for p in os.environ.get("PATH", "").split(":") if p]
+    return ":".join(dict.fromkeys(cur + extra))
+
+
 def escalate(stage: str, date: str, reason: str) -> bool:
     import os
     if ENV.get("ONCALL", "on").lower() == "off" or os.environ.get("ONCALL", "").lower() == "off":
@@ -89,7 +100,7 @@ def escalate(stage: str, date: str, reason: str) -> bool:
     if shutil.which("systemd-run") and os.environ.get("INVOCATION_ID"):
         unit = f"imas-oncall-{date}-{stage}-{int(time.time())}"
         r = subprocess.run(["systemd-run", "--user", "--collect", "--unit", unit,
-                            f"--working-directory={ROOT}", f"--setenv=PATH={os.environ.get('PATH', '')}",
+                            f"--working-directory={ROOT}", f"--setenv=PATH={tool_path()}",
                             f"--setenv=HOME={os.environ.get('HOME', '')}",
                             f"--property=StandardOutput=append:{log}", "--property=StandardError=inherit"] + args,
                            capture_output=True, text=True, stdin=subprocess.DEVNULL)
@@ -100,7 +111,7 @@ def escalate(stage: str, date: str, reason: str) -> bool:
     try:
         with log.open("a", encoding="utf-8") as f:
             subprocess.Popen(args, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
-                             start_new_session=True)
+                             start_new_session=True, env={**os.environ, "PATH": tool_path()})
         print(f"当番(oncall)を起動した: {stage} {date}", flush=True)
         return True
     except Exception as e:

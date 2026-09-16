@@ -138,15 +138,33 @@ def time_left(t0: float) -> float:
     return COMPOSE_LIMIT_MIN - (time.time() - t0) / 60
 
 
-def afford(t0: float, name: str, default: float, what: str, extra: float = 0) -> bool:
-    """`name` の段をもう1回やる時間があるか。後始末の分は必ず残す。
+def terminal_cost() -> float:
+    """**紙面を確定させる最後の1サイクル**にかかる分: ブロック記事を落とす → 社説∥組版のやり直し →
+    lint → 最後の校閲1波 → commit/push。これより短い時間しか残っていない状態で校閲の往復を
+    始めてはいけない(始めると、落とせる記事を落とす時間が無くなり、号ごと人へ回る。
+    実測 2026-09-17: 残り17分で除外を諦め、機械で落とせる2本を残したまま止まった)。
 
-    `extra` はその段に付随して必ず走るもの(社説の書き直し・組版のやり直し)の分。
+    実測があればそれに2割の余白を足して使う(組版は号によって 6〜9分。固定値で見積もると
+    境界で完走できない=監査指摘)。無ければ保守的な既定。commit/push・lint・checkpoint は 3分。
+    """
+    assemble = max(stage_cost("組版", 9) * 1.2, 6)
+    review = max(stage_cost("校閲1波", 4) * 1.2, 2)
+    return max(assemble + review + 3, COMPOSE_RESERVE_MIN)
+
+
+def afford(t0: float, name: str | None, default: float, what: str, extra: float = 0,
+           terminal: bool = True) -> bool:
+    """`name` の段をもう1回やる時間があるか。
+
+    `extra` はその段に付随して必ず走るもの(書き直し・組版のやり直し)の分。
+    `terminal=True` なら、その段のあとに**紙面を確定させる最後の1サイクル**(terminal_cost)が
+    まだ入ることを要求する。最後のサイクルそのものを始めるときは terminal=False で呼ぶ
+    (以前はここにも後始末の分を上乗せしていて、いま落として整える時間があるのに諦めた)。
 
     **見るのは締切(120分)であって目標(60分)ではない。**目標で打ち切ると、
     時間が余っていても往復を止めて、直せたはずの記事を落としたまま毎日出す。
     """
-    need = stage_cost(name, default) + extra + COMPOSE_RESERVE_MIN
+    need = (stage_cost(name, default) if name else 0) + extra + (terminal_cost() if terminal else 0)
     left = time_left(t0)
     if left >= need:
         return True
@@ -2905,8 +2923,11 @@ def main() -> int:
         # 10本を落とした(実測 2026-09-10)。見直すのは指摘の付いた記事+社説+紙面担当だけ
         n_next = len(retarget) + (1 if ed_blockers else 0) + 1
         waves = -(-n_next // COMPOSE_WAVE)
+        # もう1巡の値段 = この巡の校閲(波数ぶん) + 書き直し(4分) + 取り直し(組版のやり直し+校閲1波)。
+        # そのあとに**最後のサイクル(terminal_cost)が丸ごと残る**ことを afford が要求する
+        rework = max(stage_cost("組版", 9) * 1.2, 6) + stage_cost("校閲1波", 4)
         if not afford(t0, "校閲1波", 4, f"校閲の往復({n_next}件・{waves}波)",
-                      extra=(stage_cost("校閲1波", 4) * (waves - 1)) + 9):
+                      extra=(stage_cost("校閲1波", 4) * (waves - 1)) + 4 + rework):
             break
         # 社説の書き直しと記事の修正は互いに触らないので同時に走らせる。
         # 記事の修正も1本1セッションで並列(指摘は記事ごとに独立している)
@@ -3010,7 +3031,8 @@ def main() -> int:
         # 1巡は「落とす+(社説∥組版)+校閲」。社説と組版は同時に走るので長いほうだけ積む
         # 除外後の校閲は社説+紙面担当だけ(1波)。紙面全体の巡の合計で見積もらない。
         # 組版は作り直さず「抜く」だけなので数分(作り直しは抜き損ねたときの保険)
-        if not afford(t0, "校閲1波", 4, f"ブロック記事の除外({_pass + 1}巡目)", extra=6):
+        # ここが最後のサイクルそのもの(落とす → 社説∥組版 → 校閲1波 → commit)。その分だけあればよい
+        if not afford(t0, None, 0, f"ブロック記事の除外({_pass + 1}巡目)", extra=terminal_cost(), terminal=False):
             # ここは**人へ見せる文字列**の一覧。dict を入れると最後の通知組み立てで
             # 落ちる(実測 2026-09-04: 紙面は出来ていたのに compose が例外で終わった)
             unresolved = [f"{b.get('file')}: {(b.get('issue') or '')[:120]}"

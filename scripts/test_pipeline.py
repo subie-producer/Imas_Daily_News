@@ -598,6 +598,40 @@ def test_classify_consensus(tmp: Path):
         cs.ask, cs.ROOT = saved
 
 
+def test_time_budget():
+    """締切の判断: 校閲の往復は「最後のサイクル(落とす→組版→校閲1波→commit)」が丸ごと残るときだけ、
+    最後のサイクル自体はその分だけあれば始める(2026-09-17: 残り17分で除外を諦めて号が止まった)。"""
+    import time as _t
+    saved = dict(compose.STAGE_MIN)
+    try:
+        compose.STAGE_MIN.clear()
+        compose.STAGE_MIN.update({"組版": 9.0, "校閲1波": 2.0})
+        tc = compose.terminal_cost()
+        check(abs(tc - (9.0 * 1.2 + 2.0 * 1.2 + 3)) < 0.01, f"terminal_cost の計算: {tc}")
+        # 残り17分: 最後のサイクル(≈15.8分)は始められる。校閲の往復(その後に最後のサイクルが要る)は始められない
+        t0 = _t.time() - (compose.COMPOSE_LIMIT_MIN - 17) * 60
+        check(compose.afford(t0, None, 0, "除外", extra=compose.terminal_cost(), terminal=False), "残り17分で最後のサイクルを諦めた")
+        check(not compose.afford(t0, "校閲1波", 4, "往復", extra=4), "残り17分で校閲の往復を始めた")
+        # 残り12分: 最後のサイクルも始められない(完走できない)
+        t0 = _t.time() - (compose.COMPOSE_LIMIT_MIN - 12) * 60
+        check(not compose.afford(t0, None, 0, "除外", extra=compose.terminal_cost(), terminal=False), "完走できないのに最後のサイクルを始めた")
+        # 実測が無いときの既定は保守的(組版9分)
+        compose.STAGE_MIN.clear()
+        check(compose.terminal_cost() >= 9 * 1.2 + 2 + 3, f"既定の terminal_cost が小さい: {compose.terminal_cost()}")
+        # 実測が長ければ長いほうを使う(固定値で見積もらない。監査指摘)
+        compose.STAGE_MIN.update({"組版": 15.0, "校閲1波": 5.0})
+        check(compose.terminal_cost() >= 15 * 1.2 + 5 * 1.2 + 3, "実測が長いのに反映されない")
+    finally:
+        compose.STAGE_MIN.clear()
+        compose.STAGE_MIN.update(saved)
+
+
+def test_tool_path():
+    import os
+    p = pipelib.tool_path()
+    check(os.path.expanduser("~/.local/bin") in p.split(":") and "/usr/bin" in p.split(":"), f"tool_path に利用者の bin が無い: {p}")
+
+
 def test_oncall_undo_merge():
     """merge --abort が失敗しても、merge 前のハッシュへ reset --hard する(監査指摘 R13-P0-1)。"""
     import oncall
@@ -717,6 +751,8 @@ def main() -> int:
     test_oncall_state(tmp / "st")
     test_oncall_restore_cleans_untracked()
     test_classify_consensus(tmp / "cs")
+    test_time_budget()
+    test_tool_path()
     test_oncall_undo_merge()
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()

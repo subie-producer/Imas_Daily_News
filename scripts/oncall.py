@@ -49,7 +49,7 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import ENV, ROOT, JobLockTimeout, job_lock, notify
+from pipelib import ENV, ROOT, JobLockTimeout, job_lock, notify, tool_path
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-5.6-sol")
@@ -85,7 +85,9 @@ def undo_merge(before: str, what: str) -> None:
 
 
 def session_env() -> dict:
-    return {k: v for k, v in os.environ.items() if k in ENV_ALLOW}
+    env = {k: v for k, v in os.environ.items() if k in ENV_ALLOW}
+    env["PATH"] = tool_path()   # service 由来の PATH には ~/.local/bin(claude/codex)が無い(実測 2026-09-17)
+    return env
 
 
 def save_state(path: Path, state: dict) -> None:

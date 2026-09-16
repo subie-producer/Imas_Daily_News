@@ -185,6 +185,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - qo-kun.com            # クイックオーダー(TAPIRS Inc. の物販注文サイト。ライブ物販の事前注文=販売元)
   - sej.co.jp             # 合議で追加: ライセンス販売元。マルチコピー機でブロマイドを販売しており、自社サイトで商品告知
   - gashapon.jp           # 合議で追加: アイマス関連グッズをライセンス販売している販売元
   - hobbystock.jp         # ホビーストック(株式会社ホビーストック。ホビー・フィギュアの通販店=販売元)
@@ -501,3 +502,10 @@ x_accounts:
     - mototiru
     - myokoen_758
     - nicogame_PR
+
+# --- プラットフォーム上のアカウント・チャンネル・作品ページ(パス単位で主体が決まる) ---
+# tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
+# 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
+path_types:
+  ch.nicovideo.jp/sidem: 公式                    # アイドルマスター SideM チャンネル(ブランド公式のニコニコチャンネル)
+  manga.nicovideo.jp/comic/31422: 準公式          # 『ぷちます!』のニコニコ漫画連載ページ(連載先)

@@ -2,7 +2,7 @@
   "title": "oncall-review",
   "description": "監査(Sol)の敵対的レビューの判定",
   "type": "object",
-  "required": ["verdict", "must_fix", "notes"],
+  "required": ["verdict", "must_fix", "later", "notes"],
   "additionalProperties": false,
   "properties": {
     "verdict": {"enum": ["approve", "reject"]},
@@ -16,7 +16,21 @@
           "id": {"type": "string"},
           "claim": {"type": "string", "maxLength": 400, "description": "何が問題か(1文)"},
           "evidence": {"type": "string", "maxLength": 600, "description": "根拠(ファイル:行、再現した入力、実測)。推測なら (推測) と書く"},
-          "severity": {"enum": ["blocks_publish", "corrupts_data", "quality", "style"]}
+          "severity": {"enum": ["blocks_publish", "corrupts_data", "stopgap"]}
+        }
+      }
+    },
+    "later": {
+      "type": "array",
+      "description": "発行後に直せばよい指摘(堅牢化・現実にはまだ来ていない入力への備え・設計の改善・テスト・書き方)。must_fix に入れない。別に保管される",
+      "items": {
+        "type": "object",
+        "required": ["id", "claim", "evidence"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {"type": "string"},
+          "claim": {"type": "string", "maxLength": 400, "description": "何を直すとよいか(1文)"},
+          "evidence": {"type": "string", "maxLength": 600, "description": "根拠と直し方の案(ファイル:行)"}
         }
       }
     },

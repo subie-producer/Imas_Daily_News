@@ -92,7 +92,7 @@ Grok に JSON を書かせると調べる能力が整形に食われるため、
 6. **校閲**: Claude(haiku)が**記事1本につき1セッション**(`prompts/review-article.md`)で並列に検査し、
    社説は `prompts/review-editorial.md`、紙面全体(主題の重複・記事の漏れ)は `prompts/review-paper.md`。
    ブロックがあれば**その記事だけ**を直して見直す
-7. **当番**(`scripts/oncall.py`): 工程が止まったら Opus(`ONCALL_MODEL`)が診断・修正し、Sol(`AUDIT_MODEL`)が敵対的に査読し、**指摘されたら当番が直す**を指摘が無くなるまで回す(合意を取る場ではない)。指摘が無くなったものだけ取り込んで再実行する。人へ渡すのは上限(6往復・150分)までに直し切れなかったときだけで、次の試行はその続きから始める
+7. **当番**(`scripts/oncall.py`): 工程が止まったら Opus(`ONCALL_MODEL`)が診断・修正し、Sol(`AUDIT_MODEL`)が敵対的に査読する。範囲は「この号を発行するのに必要な最小限で、今後もちゃんと動く正しい修正」。その範囲の指摘(must_fix)は合意(approve)するまで当番が直し、発行後でよい指摘(later)は `metrics/oncall-backlog.jsonl` に保管して発行してから直す(watch が毎朝未着手を出す)。合意したものだけ取り込んで再実行する。人へ渡すのは上限(6往復・150分)までに直し切れなかったときだけで、次の試行はその続きから始める
 
 ### lint(scripts/lint.py)
 

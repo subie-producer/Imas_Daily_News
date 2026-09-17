@@ -762,6 +762,19 @@ def test_dedupe_source_table(tmp: Path):
     check(stops("path_types:\n  t.com/@y: 公式\npath_types:\n  t.com/@y: 当事者\n"), "path_types の節の二重を止めない")
     check(stops("suffix_types:\n  \".lg.jp\": 当事者\nsuffix_types:\n  \".go.jp\": 当事者\n"), "suffix_types の節の二重を止めない")
     check(stops("party_domains:\n  - a.jp\nparty_domains:\n  - b.jp\n"), "リストの節の二重を止めない")
+    # 行番号は正しく報告される(監査指摘 r42)。エイリアス/アンカーは字句の段階で使用行を示して拒否
+
+    def message(txt: str) -> str:
+        try:
+            pipelib._check_table_text(txt, "t")
+            return ""
+        except SystemExit as e:
+            return str(e)
+    check("1 行目と 3 行目" in message("path_types:\n  t.com/@y: 公式\npath_types:\n  t.com/@y: 当事者\n"), "節の二重の行番号")
+    check("2 行目と 3 行目" in message("path_types:\n  t.com/@y: 公式\n  t.com/@y: 当事者\n"), "キーの二重の行番号")
+    check("3 行目と 4 行目" in message("suffix_types:\n  \".go.jp\": 当事者\n  \".lg.jp\": 当事者\n  \".LG.jp/\": 公式\n"), "正規化後の二重の行番号")
+    m_alias = message("&sec path_types:\n  a/b: 公式\n*sec:\n  c/d: 当事者\n")
+    check("1 行目" in m_alias and "エイリアス" in m_alias, f"アンカー/エイリアスを使用行付きで拒否しない: {m_alias}")
     check(not stops("path_types:\n  t.com/@y: 公式\n  t.com/@z: 当事者\nsuffix_types:\n  \".lg.jp\": 当事者\n"), "正しい対応を止めた")
 
 

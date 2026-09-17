@@ -705,6 +705,12 @@ def test_no_prompt_in_argv():
                 line = src.count("\n", 0, m.start()) + 1
                 bad.append(f"{f.name}:{line}: {m.group(0)}")
     check(not bad, f"プロンプトを引数に直接渡している箇所: {bad[:6]}")
+    # 指示はファイルなので、道具を絞る呼び出し(--allowedTools)には Read が要る(2026-09-17: 無くて 420 秒待って落ちた)
+    for f in sorted(root.glob("*.py")):
+        src = f.read_text(encoding="utf-8")
+        for m in _re.finditer(r'"--allowedTools",\s*"([^"]*)"', src):
+            if "Read" not in m.group(1).split(","):
+                check(False, f"{f.name}: --allowedTools に Read が無い({m.group(1)})")
 
 
 def test_next_number(tmp: Path):

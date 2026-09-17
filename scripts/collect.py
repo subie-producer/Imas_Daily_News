@@ -320,12 +320,19 @@ def claude_exec(prompt: str, timeout: int = 300):
     """
     from pipelib import extract_json_array_strict, prompt_file
     import hashlib as _hl
-    r = subprocess.run(
-        ["claude", "-p", prompt_file(edition_date(), "watch-" + _hl.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt),
-         "--model", COLLECT_MODEL,
-         "--allowedTools", "WebSearch,WebFetch",
-         "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
-        capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
+    try:
+        r = subprocess.run(
+            ["claude", "-p", prompt_file(edition_date(), "watch-" + _hl.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt),
+             "--model", COLLECT_MODEL,
+             # 指示と素材はファイルなので **Read が要る**。WebSearch/WebFetch だけに絞っていたら、ファイルを読めずに
+             # 420 秒待って落ちた(実測 2026-09-17)
+             "--allowedTools", "Read,WebSearch,WebFetch",
+             "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
+            capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
+    except (subprocess.TimeoutExpired, OSError) as e:
+        # 1バッチの失敗で収集全体を落とさない。読めなかった扱い(既読にしない)
+        print(f"定点観測: facts 化のセッションが失敗({type(e).__name__})。このバッチは既読にしない", flush=True)
+        return None
     got = extract_json_array_strict(r.stdout)
     if got is None:
         print(f"定点観測: facts 化の出力が読めない(stderr: {(r.stderr or '')[-160:]})", flush=True)

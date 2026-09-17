@@ -679,8 +679,10 @@ def _check_table_text(text: str, p) -> None:
     # アンカー・エイリアス(&x / *x)は判定表では使わない。compose はエイリアスを元ノードに解決するので
     # 行番号が元の位置になり、二重定義の位置を正しく示せない(監査指摘)。字句の段階で拒否する
     for tok in yaml.scan(text):
-        if isinstance(tok, (yaml.AnchorToken, yaml.AliasToken)):
-            raise SystemExit(f"{p} の {tok.start_mark.line + 1} 行目: 判定表でアンカー/エイリアス(&, *)は使えない")
+        if isinstance(tok, yaml.AnchorToken):
+            raise SystemExit(f"{p} の {tok.start_mark.line + 1} 行目: 判定表でアンカー(&{tok.value})は使えない")
+        if isinstance(tok, yaml.AliasToken):
+            raise SystemExit(f"{p} の {tok.start_mark.line + 1} 行目: 判定表でエイリアス(*{tok.value})は使えない")
     root = yaml.compose(text)
     if not isinstance(root, yaml.MappingNode):
         return

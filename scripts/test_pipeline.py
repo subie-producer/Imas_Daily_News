@@ -773,8 +773,11 @@ def test_dedupe_source_table(tmp: Path):
     check("1 行目と 3 行目" in message("path_types:\n  t.com/@y: 公式\npath_types:\n  t.com/@y: 当事者\n"), "節の二重の行番号")
     check("2 行目と 3 行目" in message("path_types:\n  t.com/@y: 公式\n  t.com/@y: 当事者\n"), "キーの二重の行番号")
     check("3 行目と 4 行目" in message("suffix_types:\n  \".go.jp\": 当事者\n  \".lg.jp\": 当事者\n  \".LG.jp/\": 公式\n"), "正規化後の二重の行番号")
-    m_alias = message("&sec path_types:\n  a/b: 公式\n*sec:\n  c/d: 当事者\n")
-    check("1 行目" in m_alias and "エイリアス" in m_alias, f"アンカー/エイリアスを使用行付きで拒否しない: {m_alias}")
+    # アンカーとエイリアスは別々に(片方だけ残しても通らないように。監査指摘 r43)
+    m_anchor = message("path_types:\n  a/b: 公式\nsuffix_types: &s\n  \".lg.jp\": 当事者\n")
+    check("3 行目" in m_anchor and "アンカー(&s)" in m_anchor, f"アンカーを使用行付きで拒否しない: {m_anchor}")
+    m_alias = message("path_types: *sec\n")
+    check("1 行目" in m_alias and "エイリアス(*sec)" in m_alias, f"エイリアスを使用行付きで拒否しない: {m_alias}")
     check(not stops("path_types:\n  t.com/@y: 公式\n  t.com/@z: 当事者\nsuffix_types:\n  \".lg.jp\": 当事者\n"), "正しい対応を止めた")
 
 

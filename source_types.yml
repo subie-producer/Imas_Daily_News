@@ -286,6 +286,8 @@ party_domains:
 # collect の合議工程が oEmbed で投稿者を確かめ、ID を上の表へ機械で足す。
 # **公式・準公式の判断は人がここで済ませている**ので、ID の追加は合議に掛けない。
 video_channels:
+  ファン:
+    - TogawaNonoha        # 合議で追加: YouTubeの個人チャンネル。個人アカウントに該当
   公式:
     - imas-official        # アイドルマスターチャンネル
     - hatsuboshi_gakuen    # 初星学園(学マス)公式
@@ -297,6 +299,8 @@ video_channels:
     - Lantis           # Lantis Channel
 
 video_ids:
+  ファン:
+    - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
     - SjOP3AmE148         # 機械で追加: @imas-official「【アイマス】THE IDOLM@STER 765PRO AL」
     - GoAtGghnl4E         # 機械で追加: @imas-official「【アイマス】THE IDOLM@STER 765PRO AL」

@@ -202,10 +202,18 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
                 # 本文8,219字のページから facts を359字しか起こせていなかった
                 body = html_to_text(t.encode("utf-8", "replace"))[:WATCH_BODY_CHARS]
             blobs.append({"url": it["url"], "title": it["title"], "brand_hint": it["brand"], "rendered_text": body})
+        # 素材は**人が読める形**(Markdown、1行が長くならない)で渡す。1行 60KB の JSON にすると Read ツールが
+        # 行を切り詰めてモデルが本文を読めず、Bash で開けようとして時間切れになる(実測 2026-09-17: 420 秒)
+        material = "\n\n".join(
+            f"### {i + 1}. {b['url']}\n- title: {b['title'] or '(なし)'}\n- brand_hint: {b['brand_hint']}\n"
+            + ("- 本文(取得済み):\n" + b["rendered_text"].strip() if b["rendered_text"].strip()
+               else "- 本文: (取得できず。URL を WebFetch で読むこと)")
+            for i, b in enumerate(blobs))
         prompt = (
-            "以下はアイドルマスター関連の定点観測で見つかった新着ページです。rendered_text が空のものは URL を WebFetch で読み、"
-            "各ページの内容を事実として抽出してください(まとめサイトの場合はページ内の一次ソースURLを url に採用)。"
-            + ITEM_FORMAT + "\n\n" + json.dumps(blobs, ensure_ascii=False))
+            "以下はアイドルマスター関連の定点観測で見つかった新着ページです(`### 番号. URL` ごとに1件。本文が「取得できず」の"
+            "ものは URL を WebFetch で読む)。各ページの内容を事実として抽出してください"
+            "(まとめサイトの場合はページ内の一次ソースURLを url に採用)。"
+            + ITEM_FORMAT + "\n\n" + material)
         cands = claude_call(prompt, timeout=420)
         bad = state.setdefault("_unreadable", {})   # url → 読めなかった回数
         if cands is None:

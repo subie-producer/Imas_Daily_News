@@ -19,8 +19,13 @@
    (POLICY_EXCLUDED)に当たるときだけ、根拠を示して「当たらない」と答えてよい。
    以前は範囲を決めずに合意を求めたので、監査が「現実には来ない入力での堅牢化」を must_fix に積み、
    当番がそれを追いかけて、発行できる修正が2往復で時間切れになっていた(実測 2026-09-18)
-3b. **発行後でよい指摘(later)は別に保管する**: 堅牢化・現実には来ていない入力への備え・設計の改善・
-   テストの追加・書き方。監査はこれを must_fix に入れず later に書く。当番はこの場では直さない。
+3a. **起きる道筋を言えない指摘は、指摘として扱わない**(編集長 2026-09-18:「起きねーよ。どういうときに起きると
+   言えるんだ、どのくらいの確率で起きる見込みなんだ、で弾いていい」)。監査は指摘ごとに `occurs`=どういうときに
+   起きるか(実データ・ログ・運用から到達する道筋)と、どのくらい起きそうか、を書く。「schema 上は可能」は道筋ではない。
+   書けないものは must_fix にも later にも入れない。当番は道筋の無い指摘を、実データの根拠を示して弾いてよい。
+   occurs が空の later はコードでも保管しない
+3b. **発行後でよい指摘(later)は別に保管する**: いまは止まらないが現実に起きる見込みのあるもの(堅牢化・設計の改善・
+   テストの追加・書き方)。監査はこれを must_fix に入れず later に書く。当番はこの場では直さない。
    取り込みのあと `metrics/oncall-backlog.jsonl` に積み、修正報告に載せ、watch が毎朝「未着手 N件」を出す。
    発行して落ち着いてから直す(`oncall.py --backlog` で一覧、`--backlog-done <id>` で消し込み)。
    保管の失敗は発行を妨げない(報告には必ず載る)
@@ -193,8 +198,13 @@ def fix_prompt(stage: str, date: str, context: str, objections: list[dict] | Non
                "監査の must_fix は「発行に必要で、今後もちゃんと動く正しい修正になっていない」という指摘に限られている。"
                "**監査が approve するまでがあなたの仕事。指摘されたものは直す。**直し方は原因に当てること"
                "(指摘の文面だけを潰す継ぎ当てにしない)。ただし範囲は広げない: 発行後でよい改善は監査が別に保管する。\n"
-               "指摘が事実誤認であるとき、または次の判定対象外に当たるときだけ、根拠を示して「当たらない」と答えてよい:\n"
-               + "\n".join(f"- {x}" for x in POLICY_EXCLUDED) + "\n"
+               "「当たらない」と答えてよいのは次のときだけ(根拠を示すこと):\n"
+               "- 指摘が事実誤認\n"
+               "- **起きる道筋が無い**: 指摘の `occurs`(どういうときに起きるか・どのくらい起きそうか)が、実データ・ログ・"
+               "実際の運用から到達する道筋を示していない(「schema 上は可能」「理論上は」だけ)。実データを数えるなどして"
+               "「その入力・状態は現実に来ない」と示せるなら弾いてよい。追いかけて直さない\n"
+               "- 編集方針で決着済みの事項(判定対象外):\n"
+               + "\n".join(f"  - {x}" for x in POLICY_EXCLUDED) + "\n"
                + json.dumps(objections, ensure_ascii=False, indent=1))
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の**当番エンジニア**です。自動発行の工程 `{stage}` が
 {date}号で止まりました。人が起きるまで待たず、あなたが直します。この作業ツリーは origin/main から切った
@@ -256,9 +266,14 @@ def review_prompt(stage: str, date: str, fix_report: dict, diff: str, integ: dic
 - **must_fix(いま直す。これが空になるまで当番が直し、あなたが見直す)**: 止まった原因に当たっていない /
   現実に来る入力(実データ・ログにある形)でまた止まる / データや他の工程を壊す / その場しのぎ
   (例外を握りつぶす・やり直すだけ・検査を緩めるだけ)/ rerun_mode が直した層を踏まない
-- **later(発行後に直す。別に保管され、発行して落ち着いてから対応される)**: 現実にはまだ来ていない入力への備え
-  (schema 上は可能、という類)・堅牢化・設計の改善・テストの追加・書き方。**これを must_fix に入れない**
+- **later(発行後に直す。別に保管され、発行して落ち着いてから対応される)**: いまは止まらないが、現実に起きる
+  見込みのあるもの(堅牢化・設計の改善・テストの追加・書き方)。**これを must_fix に入れない**
   (入れると、発行できる修正が往復で時間切れになり、号が出ない)
+- **書かないもの(must_fix にも later にも入れない)**: 起きる道筋を言えない指摘。どの指摘にも `occurs` に
+  **「どういうときに起きるか(実データ・ログ・実際の運用のどこから、その入力や状態に到達するか)」と
+  「どのくらい起きそうか」**を書いてください。「schema 上は可能」「理論上はあり得る」は道筋ではありません
+  (例: 「dedup_key に改行が 2100 個入ったら」は、その値を作る経路がどこにも無いので指摘になりません)。
+  道筋を書けないなら、その指摘は捨ててください。当番は、道筋の無い指摘を実データの根拠を示して弾いてよいことになっています
 
 ## 当番の報告
 {json.dumps(fix_report, ensure_ascii=False, indent=1)}
@@ -375,7 +390,9 @@ def collect_later(transcript: list[dict]) -> list[dict]:
     out: list[dict] = []
     for t in transcript:
         for it in (t.get("carried_later") or []) + ((t.get("review") or {}).get("later") or []):
-            if isinstance(it, dict) and it.get("claim") and not any(x.get("claim") == it.get("claim") for x in out):
+            # 起きる道筋(occurs)が書かれていない指摘は、保管と同じく報告にも載せない
+            if (isinstance(it, dict) and it.get("claim") and str(it.get("occurs") or "").strip()
+                    and not any(x.get("claim") == it.get("claim") for x in out)):
                 out.append(it)
     return out
 
@@ -439,12 +456,13 @@ def backlog_add(items: list[dict], date: str, stage: str, head: str) -> list[dic
     new = []
     for it in items:
         key = hashlib.sha256(str(it.get("claim") or "").encode("utf-8")).hexdigest()[:10]
-        if not it.get("claim") or key in have:
+        # 起きる道筋(どういうときに・どのくらい)の無い指摘は積まない(「起きないもの」を後の仕事にしない)
+        if not it.get("claim") or not str(it.get("occurs") or "").strip() or key in have:
             continue
         have.add(key)
         new.append({"key": key, "status": "open", "at": datetime.datetime.now().isoformat(timespec="minutes"),
                     "date": date, "stage": stage, "fix_commit": head[:10], "id": str(it.get("id") or ""),
-                    "claim": str(it["claim"]), "evidence": str(it.get("evidence") or "")})
+                    "claim": str(it["claim"]), "evidence": str(it.get("evidence") or ""), "occurs": str(it["occurs"])})
     if new:
         BACKLOG.parent.mkdir(parents=True, exist_ok=True)
         with open(BACKLOG, "a", encoding="utf-8") as f:
@@ -490,7 +508,9 @@ def later_text(items: list[dict]) -> str:
     if not items:
         return "発行後に直す指摘(later): なし"
     return (f"発行後に直す指摘(later){len(items)}件(metrics/oncall-backlog.jsonl に保管。`python3 scripts/oncall.py --backlog` で一覧):\n"
-            + "\n".join(f"- {it.get('claim', '')[:300]}" + (f"\n  根拠: {it['evidence'][:300]}" if it.get("evidence") else "") for it in items))
+            + "\n".join(f"- {it.get('claim', '')[:300]}"
+                        + (f"\n  起きるとき: {it['occurs'][:300]}" if it.get("occurs") else "")
+                        + (f"\n  根拠: {it['evidence'][:300]}" if it.get("evidence") else "") for it in items))
 
 
 def resume_point(state: dict, base: str) -> dict | None:
@@ -623,8 +643,15 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                             timeout=min(1800, left()))
             transcript.append({"round": rnd, "review": rev})
             for item in rev.get("later") or []:
-                if isinstance(item, dict) and item.get("claim") and not any(x.get("claim") == item.get("claim") for x in later):
-                    later.append({"id": str(item.get("id") or ""), "claim": str(item["claim"]), "evidence": str(item.get("evidence") or "")})
+                if not (isinstance(item, dict) and item.get("claim")):
+                    continue
+                if not str(item.get("occurs") or "").strip():
+                    # 起きる道筋(どういうときに・どのくらい)が書かれていない指摘は保管もしない(形の検査)
+                    print(f"  later を捨てた(起きる道筋が書かれていない): {str(item['claim'])[:80]}", flush=True)
+                    continue
+                if not any(x.get("claim") == item.get("claim") for x in later):
+                    later.append({"id": str(item.get("id") or ""), "claim": str(item["claim"]),
+                                  "evidence": str(item.get("evidence") or ""), "occurs": str(item["occurs"])})
             if rev.get("verdict") == "approve" and not (rev.get("must_fix") or []):
                 res["approved"] = True
                 kept["open"] = []
@@ -822,7 +849,7 @@ def main() -> int:
         print(f"発行後に直す指摘(未着手){len(rows)}件")
         for r in rows:
             print(f"- [{r['key']}] {r.get('at', '')} {r.get('date', '')} {r.get('stage', '')} 修正 {r.get('fix_commit', '')}\n"
-                  f"  {r.get('claim', '')}\n  根拠: {r.get('evidence', '')}")
+                  f"  {r.get('claim', '')}\n  起きるとき: {r.get('occurs', '')}\n  根拠: {r.get('evidence', '')}")
         return 0
     if not a.stage or not a.date:
         ap.error("--stage と --date が要る")

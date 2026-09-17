@@ -329,22 +329,25 @@ def test_oncall_report_text(tmp: Path):
         check(ok2 and "取り込み後に追送" in text2 and "診断: d" in text2 and "検証: t" in text2, f"取り込み前の報告が不完全: {text2[:300]}")
         check("発行後に直す指摘(later): なし" in text2, "later が無いことが報告に出ない")
         # 監査の later(発行後に直す指摘)は、前の試行から引き継いだ分も含めて報告に載る
-        tr = [{"round": 0, "carried_later": [{"id": "l0", "claim": "前の試行の分", "evidence": ""}]},
-              {"round": 1, "review": {"verdict": "approve", "must_fix": [], "later": [{"id": "l1", "claim": "堅牢化A", "evidence": "scripts/x.py:1"}]}}]
+        tr = [{"round": 0, "carried_later": [{"id": "l0", "claim": "前の試行の分", "evidence": "", "occurs": "月初の号で毎回"}]},
+              {"round": 1, "review": {"verdict": "approve", "must_fix": [], "later": [
+                  {"id": "l1", "claim": "堅牢化A", "evidence": "scripts/x.py:1", "occurs": "記事が60本を超えた号(月に1〜2回)"},
+                  {"id": "l9", "claim": "改行が2100個入ったら", "evidence": "schema 上は可能", "occurs": " "}]}}]
         oncall.report_change("compose", "2026-09-12", {"diagnosis": "d"}, tr, "base", "headhash00", "", "repair/x", ["main"], "続き")
-        text3 = (tmp / "metrics" / "oncall-2026-09-12-compose-report.md").read_text(encoding="utf-8")
-        check("発行後に直す指摘(later)2件" in text3 and "前の試行の分" in text3 and "堅牢化A" in text3 and "scripts/x.py:1" in text3,
-              f"later が報告に載らない: {text3[:400]}")
+        text3 = (tmp / "metrics" / "oncall-2026-09-12-compose-report.md").read_text(encoding="utf-8").split("\n## 往復の記録\n")[0]
+        check("発行後に直す指摘(later)2件" in text3 and "前の試行の分" in text3 and "堅牢化A" in text3 and "scripts/x.py:1" in text3
+              and "起きるとき: 記事が60本を超えた号" in text3, f"later が報告に載らない: {text3[:400]}")
+        check("改行が2100個" not in text3, "起きる道筋の無い指摘が報告の later に載った")
         # 保管(keep_later): 成功すれば積んだ件数、失敗しても例外を出さない(保管の失敗で発行を止めない)
         saved_b, saved_add = oncall.BACKLOG, oncall.backlog_add
         try:
             oncall.BACKLOG = tmp / "metrics" / "oncall-backlog.jsonl"
-            check(oncall.keep_later([{"id": "l1", "claim": "堅牢化A", "evidence": ""}], "2026-09-12", "compose", "h" * 40) == 1
+            check(oncall.keep_later([{"id": "l1", "claim": "堅牢化A", "evidence": "", "occurs": "60本を超えた号"}], "2026-09-12", "compose", "h" * 40) == 1
                   and len(oncall.backlog_open()) == 1, "later が保管されない")
             def boom(*a, **k):
                 raise OSError("disk full")
             oncall.backlog_add = boom
-            check(oncall.keep_later([{"id": "l2", "claim": "B", "evidence": ""}], "2026-09-12", "compose", "h" * 40) == 0, "保管の失敗が例外になる(発行が止まる)")
+            check(oncall.keep_later([{"id": "l2", "claim": "B", "evidence": "", "occurs": "毎号"}], "2026-09-12", "compose", "h" * 40) == 0, "保管の失敗が例外になる(発行が止まる)")
         finally:
             oncall.BACKLOG, oncall.backlog_add = saved_b, saved_add
         # main が合意のあと・再実行の判断の前に保管を呼び、差分なしの通知にも later を載せている(呼び出しを消したら落ちる)
@@ -1168,10 +1171,14 @@ def test_oncall_fix_until_clean(tmp: Path):
     check(scope in fp and scope in rp, "当番・監査の依頼文に仕事の範囲が無い")
     check("指摘されたものは直す" in fp and "反論する" not in fp and "commit 済み" in fp and "範囲は広げない" in fp, "当番への依頼が「範囲の中で直す」になっていない")
     check("later" in rp and "これを must_fix に入れない" in rp and "later が残っていても approve" in rp, "監査への依頼が must_fix と later を分けていない")
+    # 起きる道筋(どういうときに・どのくらい)を言えない指摘は、指摘として扱わない(編集長 2026-09-18)
+    check("`occurs`" in rp and "道筋を書けないなら、その指摘は捨ててください" in rp and "schema 上は可能" in rp, "監査への依頼が、起きる道筋の無い指摘を捨てさせていない")
+    check("起きる道筋が無い" in fp and "弾いてよい" in fp, "当番が、起きる道筋の無い指摘を弾けることになっていない")
     check(all(x in rp for x in oncall.POLICY_EXCLUDED) and all(x in fp for x in oncall.POLICY_EXCLUDED), "判定対象外(編集方針)が依頼文に無い")
     rs = json.loads((Path(oncall.__file__).resolve().parent.parent / "schema" / "oncall-review.schema.json").read_text(encoding="utf-8"))
     check("later" in rs["required"] and rs["properties"]["must_fix"]["items"]["properties"]["severity"]["enum"] == ["blocks_publish", "corrupts_data", "stopgap"],
           "監査の schema: later が必須でない、または must_fix に品質・書き方の指摘を入れられる")
+    check(all("occurs" in rs["properties"][k]["items"]["required"] for k in ("must_fix", "later")), "監査の schema: 指摘に occurs(起きる道筋)が必須でない")
     # 続きから始められる条件
     tmp.mkdir(parents=True, exist_ok=True)
     g = lambda *a: subprocess.run(["git", *a], cwd=tmp, capture_output=True, text=True, check=True).stdout.strip()
@@ -1232,13 +1239,17 @@ def test_oncall_fix_until_clean(tmp: Path):
                               {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}]}, "env", [])
         check(r["approved"] and r["kept"]["open"] == [], f"指摘が無くなったのに終わらない: {r}")
         # (3a) 発行後でよい指摘(later)は approve を妨げず、往復と試行をまたいで重複なしで集まる
-        answers = iter([{"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "later": [{"id": "l1", "claim": "堅牢化A", "evidence": "e"}], "notes": ""},
-                        {"verdict": "approve", "must_fix": [], "later": [{"id": "l1", "claim": "堅牢化A", "evidence": "e"}, {"id": "l2", "claim": "テストB", "evidence": ""}], "notes": ""}])
+        #      起きる道筋(occurs)の無い later は集めない(「schema 上は可能」の類を後の仕事にしない)
+        la = {"id": "l1", "claim": "堅牢化A", "evidence": "e", "occurs": "記事が60本を超えた号(月に1〜2回)"}
+        answers = iter([{"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "later": [la], "notes": ""},
+                        {"verdict": "approve", "must_fix": [], "notes": "",
+                         "later": [la, {"id": "l2", "claim": "テストB", "evidence": "", "occurs": "毎号"},
+                                   {"id": "l9", "claim": "改行が2100個入ったら", "evidence": "schema 上は可能", "occurs": ""}]}])
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
         tr = []
         r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
                               {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}],
-                               "later": [{"id": "l0", "claim": "前の試行の分", "evidence": ""}]}, "env", tr)
+                               "later": [{"id": "l0", "claim": "前の試行の分", "evidence": "", "occurs": "月初の号"}]}, "env", tr)
         check(r["approved"] and [x["claim"] for x in r["later"]] == ["前の試行の分", "堅牢化A", "テストB"], f"later の集まり方: {r['later']}")
         check([x["claim"] for x in oncall.collect_later(tr)] == ["前の試行の分", "堅牢化A", "テストB"], "報告に載せる later が往復の記録から集まらない")
         check("堅牢化A" in oncall.later_text(r["later"]) and "なし" in oncall.later_text([]), "later の報告文")
@@ -1273,16 +1284,18 @@ def test_oncall_fix_until_clean(tmp: Path):
     try:
         oncall.BACKLOG = tmp / "metrics" / "oncall-backlog.jsonl"
         check(oncall.backlog_open() == [], "保管が無いときの一覧")
-        items = [{"id": "l1", "claim": "堅牢化A", "evidence": "e"}, {"id": "l2", "claim": "テストB", "evidence": ""}, {"id": "x", "claim": ""}]
+        items = [{"id": "l1", "claim": "堅牢化A", "evidence": "e", "occurs": "60本を超えた号"}, {"id": "l2", "claim": "テストB", "evidence": "", "occurs": "毎号"},
+                 {"id": "x", "claim": "", "occurs": "毎号"}, {"id": "l9", "claim": "改行が2100個入ったら", "evidence": "schema 上は可能", "occurs": ""}]
         new = oncall.backlog_add(items, "2026-09-18", "compose", "a" * 40)
-        check(len(new) == 2 and len(oncall.backlog_add(items, "2026-09-19", "compose", "b" * 40)) == 0, "同じ指摘を二度積んだ、または空の指摘を積んだ")
+        check(len(new) == 2 and len(oncall.backlog_add(items, "2026-09-19", "compose", "b" * 40)) == 0,
+              "同じ指摘を二度積んだ、または空の指摘・起きる道筋の無い指摘を積んだ")
         with open(oncall.BACKLOG, "a", encoding="utf-8") as f:
             f.write("壊れた行\n")
         keys = [r["key"] for r in oncall.backlog_open()]
         check(len(keys) == 2, f"壊れた行で一覧が止まる: {keys}")
         check(oncall.backlog_done([keys[0], "無い"]) == [keys[0]] and [r["key"] for r in oncall.backlog_open()] == [keys[1]], "消し込み")
         left = oncall.backlog_open()[0]
-        check(left["claim"] == "テストB" and left["date"] == "2026-09-18" and left["fix_commit"] == "a" * 10, f"保管の中身: {left}")
+        check(left["claim"] == "テストB" and left["date"] == "2026-09-18" and left["fix_commit"] == "a" * 10 and left["occurs"] == "毎号", f"保管の中身: {left}")
     finally:
         oncall.BACKLOG = saved_b
 

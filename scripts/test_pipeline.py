@@ -598,6 +598,242 @@ def test_classify_consensus(tmp: Path):
         cs.ask, cs.ROOT = saved
 
 
+def test_table_write_and_reload(tmp: Path):
+    """判定表に書き足したら、同じプロセスの次の判定は新しい表で行う。同じものを2回足しても二重にならない。
+    種別の節が無い動画 ID を、後ろの x_accounts の節へ差し込まない(2026-09-18 02:40: 同じ動画 ID が
+    2回足されて表が二重定義になり、付け直しが exit 1 で落ちた)。"""
+    import classify_sources as cs
+    import pipelib
+    import yaml
+    tmp.mkdir(parents=True, exist_ok=True)
+    p = tmp / "source_types.yml"
+    p.write_text("official_domains:\n  - a.example\nparty_domains:\n  - b.example\n"
+                 "video_channels:\n  公式:\n    - imas-official\n"
+                 "video_ids:\n  公式:\n    - AAAAAAAAAAA\n"
+                 "x_accounts:\n  公式:\n    - imas_official\n  ファン:\n    - somebody\n", encoding="utf-8")
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE, pipelib._ST_KEY = None, None
+        url = "https://www.youtube.com/watch?v=BBBBBBBBBB-"
+        check(pipelib.classify_source(url) == "未確認", "表に無い動画が未確認にならない")
+        cs.add_video_ids({"BBBBBBBBBB-": ("公式", "@imas-official「x」")})
+        check(pipelib.classify_source(url) == "公式", "書き足した直後の判定が古い表のまま(キャッシュ)")
+        cs.add_video_ids({"BBBBBBBBBB-": ("公式", "@imas-official「x」")})     # 2回目は足さない
+        cs.add_video_ids({"CCCCCCCCCCC": ("ファン", "@somebody「y」")})        # video_ids に無い種別
+        cs.add_video_channels({"Somebody": ("ファン", "個人")})
+        cs.add_video_channels({"somebody": ("ファン", "個人")})                # 大文字小文字違いは同じ相手
+        cs.add_domains({"c.example": ("当事者", "店")})
+        cs.add_domains({"c.example": ("当事者", "店")})
+        t = yaml.safe_load(p.read_text(encoding="utf-8"))
+        check(t["video_ids"]["公式"].count("BBBBBBBBBB-") == 1, f"同じ動画 ID が二重に入った: {t['video_ids']}")
+        check(t["video_ids"].get("ファン") == ["CCCCCCCCCCC"], f"種別の節が無い動画 ID の行き先: {t['video_ids']}")
+        check(t["x_accounts"] == {"公式": ["imas_official"], "ファン": ["somebody"]}, f"x_accounts に混入した: {t['x_accounts']}")
+        check(t["video_channels"].get("ファン") == ["Somebody"], f"チャンネルの追加: {t['video_channels']}")
+        check(t["party_domains"].count("c.example") == 1, f"ドメインが二重に入った: {t['party_domains']}")
+        check(pipelib.classify_source("https://youtu.be/CCCCCCCCCCC") == "ファン", "足した種別で判定されない")
+        # 検査に通らない表はディスクに届かない
+        before = p.read_text(encoding="utf-8")
+        try:
+            pipelib.write_source_table(before + "party_domains:\n  - z.example\n", p)
+            check(False, "二重定義の表を書けてしまった")
+        except SystemExit:
+            pass
+        check(p.read_text(encoding="utf-8") == before and not list(tmp.glob("source_types.yml.tmp-*")),
+              "検査に落ちた表が書かれた、または一時ファイルが残った")
+        # 置き換えで権限を変えない
+        os.chmod(p, 0o664)
+        old_umask = os.umask(0o027)
+        try:
+            pipelib.write_source_table(before, p)
+        finally:
+            os.umask(old_umask)
+        check((p.stat().st_mode & 0o7777) == 0o664, f"表の権限が変わった: {oct(p.stat().st_mode & 0o7777)}")
+        # 取引失敗の通知に載せる「子プロセスの言い分」: stderr、stdout だけ、lint の ::error、出力なし
+        import collect
+        import types
+        R = lambda out, err: types.SimpleNamespace(stdout=out, stderr=err, returncode=1)
+        check("fatal: 原因" in collect._err_tail(R("", "x\nfatal: 原因\n")), "stderr の最後の行が載らない")
+        check(collect._err_tail(R("a\n最後の行\n", "")) == "最後の行", "stdout だけのときの最後の行")
+        check("posts/x.md: 赤い理由" in collect._err_tail(R("::error::posts/x.md: 赤い理由\nlint: 1 errors\n", "")), "lint の指摘が載らない")
+        check(collect._err_tail(R("", "")) == "(出力なし)", "出力なし")
+        # 外から書き換えられた表(merge・人の編集)も読み直す
+        p.write_text(before.replace("  - a.example\n", "  - a.example\n  - d.example\n"), encoding="utf-8")
+        check(pipelib.classify_source("https://d.example/x") == "公式", "外から変わった表を読み直していない")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY = saved
+
+
+def _assemble_input(n_articles: int, inject: str = "") -> dict:
+    """組版の入力の見本。inject を**全部の文字列値**(識別子も)に混ぜる。"""
+    s = lambda x: f"{x}{inject}"
+    arts = [{"slug": s(f"slug-{i}"), "brand": s("765"), "rank": s("small"), "title": s(f"見出し{i}"), "lede": s(f"リード{i}"),
+             "event_date": s("2026-09-18"), "dedup_key": s(f"key-{i}"), "candidate_ids": [s(f"c{i}a"), s(f"c{i}b")],
+             "existing_story": {"story_id": s(f"key-{i}"), "subject": s("件名"), "known_facts": [s("既報1"), s("既報2"), s("既報3")]},
+             "facts": [{"id": s(f"F{k + 1}"), "text": s("事実" * 60)} for k in range(9)]} for i in range(n_articles)]
+    return {"date": "2026-09-18", "articles": arts,
+            "tomorrow_reservations": [{"subject": s("予約"), "kind": s("開幕"), "brand": s("765")}] * 8,
+            "pending": [{"dedup_key": s(f"p{i}"), "subject": s("未確定"), "watch": s("発表を待つ")} for i in range(40)]}
+
+
+def test_assemble_prompt_shape():
+    """組版の指示ファイル: 指示が入力より先にあり、行数は記事数と facts の件数だけで決まる
+    (値に改行が入っていても増えない。識別子も含めて全部の値で確かめる)。台帳の判断は LEDGER_CHUNK 本ずつ。
+    2026-09-18: json.dumps(indent=1) の入力が 2005 行になり、末尾の指示が Read の1回(2000行)に入らず時間切れ。"""
+    inp = _assemble_input(40)
+    for label, make in (("digest", lambda x: assemble.prompt_digest("2026-09-18", x)),
+                        ("ledger", lambda x: assemble.prompt_ledger("2026-09-18", x, x["articles"][:assemble.LEDGER_CHUNK]))):
+        plain = make(inp)
+        lines = plain.split("\n")
+        check(plain.index("\n## 返すもの\n") < plain.index("\n## 入力\n"), f"{label}: 指示が入力より後ろにある(入力が伸びると指示が切れる)")
+        check(len(lines) < 400, f"{label}: {len(lines)} 行。1記事あたりの行数が増えている")
+        check(max(len(ln) for ln in lines) < pipelib.READ_COLS, f"{label}: Read が切る長さの行がある")
+        check("ファイルは読まず" not in plain, f"{label}: 「ファイルは読むな」と「指示ファイルを読め」が矛盾したまま")
+        for bad in ("\n", "\n" * 300, "\r\n\t x y"):
+            got = make(_assemble_input(40, bad)).split("\n")
+            check(len(got) == len(lines), f"{label}: 値に {bad[:6]!r} が混ざると行数が {len(lines)} → {len(got)} に変わる")
+    dg = assemble.prompt_digest("2026-09-18", inp)
+    check("### digest" in dg and "### stories" not in dg and "  fact F1" not in dg and "slug-39" in dg, "digest に台帳の指示・facts が混ざる、または全記事が無い")
+    lg = assemble.prompt_ledger("2026-09-18", inp, inp["articles"][8:16])
+    check("### stories" in lg and "### digest" not in lg and "slug: slug-8 " in lg and "slug: slug-16 " not in lg and "slug: slug-7 " not in lg
+          and "dedup_key: p39" in lg, "台帳の1組に、その組の記事と pending 全部が入っていない")
+    # 200本の号でも digest の指示ファイルは Read の1回に収まる(台帳は組の大きさが一定)
+    check(len(assemble.prompt_digest("2026-09-18", _assemble_input(200)).split("\n")) < pipelib.READ_LINES, "200本で digest が Read の1回を超える")
+    # 行数が Read の1回に迫る・超えるファイルは、呼び出しの指示文で行数と読み方を伝える
+    tmp = Path(tempfile.mkdtemp(prefix="imas-pf-"))
+    short = pipelib.prompt_file("2026-09-18", "s", "a\nb\n", base=tmp)
+    long_ = pipelib.prompt_file("2026-09-18", "l", "x\n" * 2300, base=tmp)
+    check("offset" not in short and "全 2301 行" in long_ and "offset" in long_, f"行数の案内: {short!r} / {long_[-80:]!r}")
+    # Read は絶対パスしか受けない。相対パスで渡すとモデルが作業フォルダを推測して外し、find / で探し始める
+    check(f"`{(tmp / 'metrics' / 'work' / '2026-09-18' / 's.md').resolve()}`" in short, f"指示ファイルを絶対パスで渡していない: {short!r}")
+
+
+def test_assemble_judge():
+    """判断を分けて取り、従来と同じ形の1つの出力にまとめる。記事の並び順のまま、pending_remove は重複なし。
+    1本でも答えが無ければ全体が上がる(半端な台帳を作らない)。"""
+    inp = _assemble_input(19)
+    seen = []
+    def fake_session(text, date, name, schema, budget=None):
+        seen.append((name, sorted(json.loads(schema)["required"])))
+        if name == "assemble-digest":
+            return {"digest": [{"label": "本日", "rows": []}]}
+        slugs = [ln.split()[2] for ln in text.split("\n") if ln.startswith("- slug: ")]
+        return {"stories": [{"slug": s} for s in slugs] + [{"slug": "slug-0"}, {"slug": "どこにも無い"}],   # 余計な行(他の組の記事)
+                "reservations": [{"slug": slugs[0]}], "pending_add": [{"dedup_key": "よその話題"}], "pending_remove": ["p2", "p1"]}
+    saved = assemble.run_session
+    try:
+        assemble.run_session = fake_session
+        out = assemble.judge("2026-09-18", inp)
+        check(sorted(n for n, _ in seen) == ["assemble-digest", "assemble-ledger-1", "assemble-ledger-2", "assemble-ledger-3"], f"セッションの分け方: {seen}")
+        check(dict(seen)["assemble-digest"] == ["digest"] and dict(seen)["assemble-ledger-1"] == sorted(assemble.LEDGER_KEYS), f"schema の切り分け: {seen}")
+        check([s["slug"] for s in out["stories"]] == [f"slug-{i}" for i in range(19)], "stories が記事の並び順でない・欠けている")
+        check(out["pending_remove"] == ["p1", "p2"] and len(out["reservations"]) == 3 and out["digest"], f"まとめ方: {out['pending_remove']} {len(out['reservations'])}")
+        check(out["pending_add"] == [], f"その組の記事のものでない pending_add を採った: {out['pending_add']}")
+        # モデルが返す順に依存しない: 逆順で返しても、まとめた結果は同じ(監査指摘)
+        def reversed_session(text, date, name, schema, budget=None):
+            o = fake_session(text, date, name, schema)
+            return {k: list(reversed(v)) for k, v in o.items()}
+        assemble.run_session = reversed_session
+        check(assemble.judge("2026-09-18", inp) == out, "返ってきた順で結果が変わる")
+        # まとめの規則(形と順序だけ)
+        arts = [{"slug": "a", "dedup_key": "ka"}, {"slug": "b", "dedup_key": "kb"}, {"slug": "c", "dedup_key": "ka"}]
+        inp2 = {"articles": arts, "pending": [{"dedup_key": "p1"}, {"dedup_key": "p2"}, {"dedup_key": "p3"}]}
+        m = assemble.merge_judgments(inp2, [arts[:2], arts[2:]], {"digest": []}, [
+            {"stories": [{"slug": "b", "n": 1}, {"slug": "a", "n": 1}, {"slug": "a", "n": 2}],
+             "reservations": [{"slug": "b", "date": "2026-10-02"}, {"slug": "a", "date": "2026-10-09"}, {"slug": "a", "date": "2026-10-01"}],
+             "pending_add": [{"dedup_key": "kb", "subject": "x"}, {"dedup_key": "ka", "subject": "先"}, {"dedup_key": "よそ"}],
+             "pending_remove": ["p3", "無い"]},
+            {"stories": [{"slug": "c", "n": 1}], "reservations": [],
+             "pending_add": [{"dedup_key": "ka", "subject": "後"}], "pending_remove": ["p1", "p3"]}])
+        check([(s["slug"], s["n"]) for s in m["stories"]] == [("a", 1), ("b", 1), ("c", 1)], f"stories の順・1件化: {m['stories']}")
+        check([(r["slug"], r["date"]) for r in m["reservations"]] == [("a", "2026-10-01"), ("a", "2026-10-09"), ("b", "2026-10-02")], f"reservations の順: {m['reservations']}")
+        check(m["pending_add"] == [{"dedup_key": "ka", "subject": "先"}, {"dedup_key": "kb", "subject": "x"}], f"pending_add の規則: {m['pending_add']}")
+        check(m["pending_remove"] == ["p1", "p3"], f"pending_remove は入力にあるものを入力の順で: {m['pending_remove']}")
+        # 同じ記事・同じ key に**中身の違う**行が重なっても、返ってきた順で採用が変わらない(監査指摘)
+        rows = [{"stories": [{"slug": "a", "subject": "甲", "published_facts": ["F1"]}, {"slug": "a", "subject": "乙", "published_facts": ["F2"]}],
+                 "pending_add": [{"dedup_key": "ka", "watch": "甲"}, {"dedup_key": "ka", "watch": "乙"}]},
+                {"pending_add": [{"dedup_key": "ka", "watch": "丙"}]}]
+        flip = [{k: list(reversed(v)) for k, v in rows[0].items()}, rows[1]]
+        m1 = assemble.merge_judgments(inp2, [arts[:2], arts[2:]], {"digest": []}, rows)
+        m2 = assemble.merge_judgments(inp2, [arts[:2], arts[2:]], {"digest": []}, flip)
+        check(m1 == m2 and len(m1["stories"]) == 1 and len(m1["pending_add"]) == 1, f"重複行の採用が返却順で変わる: {m1} / {m2}")
+        def broken(text, date, name, schema, budget=None):
+            if name == "assemble-ledger-2":
+                raise RuntimeError("組版セッション(assemble-ledger-2)が答えを返さなかった")
+            return fake_session(text, date, name, schema)
+        assemble.run_session = broken
+        try:
+            assemble.judge("2026-09-18", inp)
+            check(False, "1組の答えが無いのに出力をまとめた")
+        except RuntimeError as e:
+            check("assemble-ledger-2" in str(e), f"どの組が駄目だったか分からない: {e}")
+    finally:
+        assemble.run_session = saved
+
+
+def test_claude_traced(tmp: Path):
+    """経過を残す実行: 成功なら structured_output を返し、時間切れでもそこまでの道具の呼び出しが要約に残る。"""
+    tmp.mkdir(parents=True, exist_ok=True)
+    fake = tmp / "claude"
+    fake.write_text("#!/bin/sh\n"
+                    "echo '{\"type\":\"assistant\",\"message\":{\"content\":[{\"type\":\"tool_use\",\"name\":\"Read\",\"input\":{\"file_path\":\"metrics/work/x/assemble.md\",\"offset\":2000}}]}}'\n"
+                    "case \"$*\" in *SLOW*) sleep 41 & echo $! > grandchild.pid; sleep 30;; esac\n"
+                    "echo '{\"type\":\"result\",\"subtype\":\"success\",\"is_error\":false,\"result\":\"{}\",\"structured_output\":{\"digest\":1},\"total_cost_usd\":0.1}'\n",
+                    encoding="utf-8")
+    fake.chmod(0o755)
+    saved = os.environ.get("PATH", "")
+    try:
+        os.environ["PATH"] = f"{tmp}:{saved}"
+        ok = pipelib.claude_traced(["FAST"], tmp / "t1.jsonl", timeout=20, cwd=tmp)
+        check(ok["ok"] and ok["structured"] == {"digest": 1} and "Read(metrics/work/x/assemble.md+2000)" in ok["summary"], f"成功時: {ok}")
+        slow = pipelib.claude_traced(["SLOW"], tmp / "t2.jsonl", timeout=2, cwd=tmp)
+        check(slow["timed_out"] and not slow["ok"] and slow["structured"] is None
+              and "時間切れ" in slow["summary"] and "Read(" in slow["summary"], f"時間切れ時に経過が残らない: {slow}")
+        # 時間切れでは子孫(道具が起動したプロセス)まで止める。残すと、やり直しのセッションと並走する(監査指摘)
+        gpid = int((tmp / "grandchild.pid").read_text().strip())
+        try:
+            os.kill(gpid, 0)
+            alive = "Z" not in Path(f"/proc/{gpid}/stat").read_text().split(")")[-1].split()[0]   # ゾンビは止まっている
+        except (ProcessLookupError, FileNotFoundError):
+            alive = False
+        check(not alive, f"時間切れのあとに孫プロセス {gpid} が残った")
+        # 正常に終わらなかったセッションの出力は、形が合っていても採らない
+        half = dict(slow, structured={"digest": 9})
+        saved_h = assemble.claude_traced
+        try:
+            assemble.claude_traced = lambda *a, **k: half
+            saved_r, pipelib.ROOT = pipelib.ROOT, tmp
+            try:
+                assemble.run_session("x", "2026-09-18", "assemble-digest", "{}", budget=lambda: 100)
+                check(False, "時間切れのセッションの出力を採った")
+            except RuntimeError:
+                pass
+            finally:
+                pipelib.ROOT = saved_r
+        finally:
+            assemble.claude_traced = saved_h
+        # 組版セッション: 1回目が時間切れでも、時間が残っていれば2回目の答えを採る。残っていなければ経過を付けて上げる
+        calls = []
+        def fake_traced(args, trace, timeout, cwd=None):
+            calls.append(timeout)
+            return slow if len(calls) == 1 else ok
+        saved_t, saved_root = assemble.claude_traced, pipelib.ROOT
+        try:
+            assemble.claude_traced = fake_traced
+            pipelib.ROOT = tmp
+            check(assemble.run_session("x", "2026-09-18", "assemble-digest", "{}", budget=lambda: 700) == {"digest": 1} and calls == [700, 700], f"やり直し: {calls}")
+            calls.clear()
+            try:
+                assemble.run_session("x", "2026-09-18", "assemble-digest", "{}", budget=lambda: 100)
+                check(False, "残り 100 秒でやり直した")
+            except RuntimeError as e:
+                check(len(calls) == 1 and "時間切れ" in str(e) and "Read(" in str(e) and "やり直せない" in str(e), f"上げる文面: {e}")
+        finally:
+            assemble.claude_traced, pipelib.ROOT = saved_t, saved_root
+    finally:
+        os.environ["PATH"] = saved
+
+
 def test_time_budget():
     """締切の判断: 校閲の往復は「最後のサイクル(落とす→組版→校閲1波→commit)」が丸ごと残るときだけ、
     最後のサイクル自体はその分だけあれば始める(2026-09-17: 残り17分で除外を諦めて号が止まった)。"""
@@ -860,6 +1096,103 @@ def test_oncall_restore_on_exception(tmp: Path):
         oncall.reset_edition, oncall.run_stage, oncall.restore_edition, oncall.notify, oncall.ROOT = saved
 
 
+def test_oncall_fix_until_clean(tmp: Path):
+    """当番は監査と「合意」を取るのではなく、指摘されたら直す(編集長の指摘 2026-09-18)。
+    直し切れなかった試行は、修正の commit と残った指摘を残し、次の試行はその続きから始める。"""
+    import oncall
+    check(oncall.MAX_ROUNDS >= 4, f"往復の上限が {oncall.MAX_ROUNDS}。2往復で投げ出していた頃に戻っている")
+    fp = oncall.fix_prompt("compose", "2026-09-18", "ctx", [{"id": "x", "claim": "c"}])
+    rp = oncall.review_prompt("compose", "2026-09-18", {"status": "fixed"}, "diff --git a b", {"accepted": []})
+    check("指摘されたものは直す" in fp and "反論する" not in fp and "commit 済み" in fp, "当番への依頼が「直す」になっていない")
+    check(all(x in rp for x in oncall.POLICY_EXCLUDED) and all(x in fp for x in oncall.POLICY_EXCLUDED), "判定対象外(編集方針)が依頼文に無い")
+    check("合意" not in rp.replace("合意を探る場ではありません", ""), "監査への依頼に合意の語が残っている")
+    # 続きから始められる条件
+    tmp.mkdir(parents=True, exist_ok=True)
+    g = lambda *a: subprocess.run(["git", *a], cwd=tmp, capture_output=True, text=True, check=True).stdout.strip()
+    g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
+    (tmp / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base"); base = g("rev-parse", "HEAD")
+    (tmp / "a").write_text("2"); g("commit", "-q", "-am", "wip"); head = g("rev-parse", "HEAD")
+    g("checkout", "-q", "--orphan", "other"); (tmp / "a").write_text("3"); g("add", "a"); g("commit", "-q", "-m", "other"); other = g("rev-parse", "HEAD")
+    saved = oncall.ROOT
+    try:
+        oncall.ROOT = tmp
+        good = {"base": base, "head": head, "fix": {"status": "fixed"}, "open": [{"id": "x"}]}
+        check(oncall.resume_point({"wip": good}, base) == good, "続きから始められるはずの状態を拒んだ")
+        for label, bad in (("基準が違う", dict(good, base=other)), ("残った指摘が無い", dict(good, open=[])),
+                           ("報告が無い", dict(good, fix={})), ("commit が無い", dict(good, head="0" * 40)),
+                           ("基準の子孫でない", dict(good, head=other)), ("指摘が dict でない", dict(good, open=["x"])),
+                           ("head が hash でない", dict(good, head="main; rm -rf /"))):
+            check(oncall.resume_point({"wip": bad}, base) is None, f"続きにしてはいけない状態を採った: {label}")
+        check(oncall.resume_point({"log": []}, base) is None and oncall.resume_point({"wip": "x"}, base) is None, "wip が無い・壊れている")
+        # 差分の無い診断(no_fix_needed)に指摘が付いたまま終わった試行も、続きから(監査指摘)
+        nodiff = dict(good, head=base, fix={"status": "no_fix_needed"})
+        check(oncall.resume_point({"wip": nodiff}, base) == nodiff, "差分の無い診断の続きを拒んだ")
+    finally:
+        oncall.ROOT = saved
+    # 往復の本体: 例外・時間切れで終わっても、固定できたところまで(kept)が残る。時間の上限は各セッションの timeout に効く
+    names = ("run_claude", "run_codex", "freeze", "root_clean", "remote_main", "env_fingerprint", "sh", "ONCALL_LIMIT_MIN", "MAX_ROUNDS")
+    saved_fns = {n: getattr(oncall, n) for n in names}
+    try:
+        timeouts = []
+        oncall.root_clean = lambda: True
+        oncall.remote_main = lambda: "B" * 40
+        oncall.env_fingerprint = lambda: "env"
+        oncall.freeze = lambda wt, base, rnd: ("H%039d" % rnd, "diff --git a/scripts/x.py b/scripts/x.py", ["scripts/x.py"])
+        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
+        def claude(prompt, schema, cwd, timeout=1800):
+            timeouts.append(timeout)
+            return {"status": "fixed", "diagnosis": "d"} if "oncall-fix" in str(schema) else {"accepted": [], "refuted": [], "status": "fixed"}
+        oncall.run_claude = claude
+        # (1) 監査が例外: 1往復目の修正は固定済みなので kept に残り、「監査が終わっていない」が指摘として付く
+        def codex_boom(prompt, schema, cwd, timeout=1800):
+            raise subprocess.TimeoutExpired("codex", timeout)
+        oncall.run_codex = codex_boom
+        tr = []
+        r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40, None, "env", tr)
+        check(not r["approved"] and "TimeoutExpired" in r["error"] and r["kept"]["head"] == "H%039d" % 1
+              and r["kept"]["fix"].get("status") == "fixed" and [o["id"] for o in r["kept"]["open"]] == ["review-incomplete"],
+              f"監査の例外で途中の修正が残らない: {r['error']} {r['kept']}")
+        # (2) 監査が reject し続ける: 上限まで回り、最後の指摘が残る。2往復目からは指摘を直す依頼になる
+        oncall.MAX_ROUNDS = 3
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: {"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "notes": ""}
+        tr = []
+        r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40, None, "env", tr)
+        check(not r["approved"] and not r["error"] and r["kept"]["head"] == "H%039d" % 3 and [o["id"] for o in r["kept"]["open"]] == ["p1"]
+              and sum(1 for t in tr if "integrate" in t) == 2, f"reject が続いたときの往復: {r['kept']} {[list(t) for t in tr]}")
+        # (3) 指摘が無くなれば終わる(続きから始めた場合も、監査を通るまで approved にならない)
+        answers = iter([{"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "notes": ""}, {"verdict": "approve", "must_fix": [], "notes": ""}])
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
+        r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
+                              {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}]}, "env", [])
+        check(r["approved"] and r["kept"]["open"] == [], f"指摘が無くなったのに終わらない: {r}")
+        # (3b) 続きの checkout が失敗しても、残してあった続きは消えない(監査指摘)
+        old_wip = {"base": "B" * 40, "head": "C" * 40, "fix": {"status": "fixed"}, "open": [{"id": "old"}]}
+        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 1 if "checkout" in args else 0, "", "boom")
+        r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40, old_wip, "env", [])
+        check(r["error"] and r["kept"] == {"head": "C" * 40, "fix": {"status": "fixed"}, "open": [{"id": "old"}]}, f"checkout 失敗で続きが消えた: {r['kept']}")
+        # (3c) 続きの最初の往復で selfcheck が赤でも、前の指摘と「監査が終わっていない」は残る(監査指摘)
+        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 1 if "scripts/selfcheck.py" in args else 0, "赤", "")
+        oncall.MAX_ROUNDS = 1
+        r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40, dict(old_wip, head="B" * 40), "env", [])
+        check(sorted(o["id"] for o in r["kept"]["open"]) == ["old", "review-incomplete", "selfcheck"], f"selfcheck 赤で前の指摘が消えた: {r['kept']['open']}")
+        oncall.MAX_ROUNDS = 3
+        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
+        # (4) 時間の上限: セッションの timeout は残り時間で切られ、残りが足りなければ始めない
+        oncall.ONCALL_LIMIT_MIN = 10
+        timeouts.clear()
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (timeouts.append(timeout), {"verdict": "reject", "must_fix": [{"id": "p"}], "notes": ""})[1]
+        oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40, None, "env", [])
+        check(timeouts and max(timeouts) <= 600, f"セッションの timeout が時間の上限を超える: {timeouts}")
+        oncall.ONCALL_LIMIT_MIN = 1
+        timeouts.clear()
+        tr = []
+        r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40, None, "env", tr)
+        check(not timeouts and any("time_up" in t for t in tr), f"残り時間が足りないのにセッションを始めた: {timeouts} {tr}")
+    finally:
+        for n, v in saved_fns.items():
+            setattr(oncall, n, v)
+
+
 def test_slugify_format():
     import re
     import planlib
@@ -912,6 +1245,10 @@ def main() -> int:
     test_oncall_state(tmp / "st")
     test_oncall_restore_cleans_untracked()
     test_classify_consensus(tmp / "cs")
+    test_table_write_and_reload(tmp / "tw")
+    test_assemble_prompt_shape()
+    test_assemble_judge()
+    test_claude_traced(tmp / "ct")
     test_time_budget()
     test_clean_url_and_table()
     test_no_prompt_in_argv()
@@ -923,6 +1260,7 @@ def main() -> int:
     test_oncall_apply_integrate()
     test_oncall_report_text(tmp / "rp")
     test_oncall_restore_on_exception(tmp / "oc")
+    test_oncall_fix_until_clean(tmp / "of")
     for f in FAILS:
         print(f"  [FAIL] {f}")
     print(f"test_pipeline: {len(FAILS)} failures")

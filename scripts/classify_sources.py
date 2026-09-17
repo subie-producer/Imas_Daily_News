@@ -31,7 +31,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, classify_source,
-                     source_type_table,
+                     source_type_table, write_source_table,
                      edition_date, extract_json_array, html_to_text, notify, set_quiet)
 
 # 合議で足してよい種別。公式・準公式も答えさせる(作品・ブランドの公式アカウントを「不明」で人へ回して
@@ -420,79 +420,95 @@ def consensus(prompt: str, keys: list[str]) -> tuple[dict, list[str]]:
     return agreed, split
 
 
+def _span(text: str, section: str) -> tuple[int, int] | None:
+    """最上位の節 `section:` の中身の範囲(次の最上位キーの手前まで)。無ければ None。"""
+    m = re.search(rf"^{re.escape(section)}:\n", text, re.M)
+    if not m:
+        return None
+    nxt = re.compile(r"^[A-Za-z_]+:", re.M).search(text, m.end())
+    return m.end(), (nxt.start() if nxt else len(text))
+
+
+def _listed(text: str, section: str, item: str, ci: bool) -> bool:
+    """`section` の**中に** `- item` が既にあるか(種別の節は問わない)。"""
+    sp = _span(text, section)
+    return bool(sp and re.search(rf"^\s+-\s+{re.escape(item)}(?=\s|#|$)", text[sp[0]:sp[1]],
+                                 re.M | (re.I if ci else 0)))
+
+
+def insert_labeled(text: str, section: str, label: str, item: str, note: str, ci: bool) -> tuple[str, str]:
+    """種別ごとの節を持つ表(x_accounts / video_channels / video_ids)の `label` の下へ item を足す。
+
+    戻り値は (新しい本文, "added" | "exists" | "nosection")。
+    - **探すのも差し込むのも section の中だけ。**`  公式:` は3つの表のどれにもあるので、範囲を
+      区切らないと隣の表へ差し込む(実測: X アカウントが動画チャンネルの節に入った。動画 ID は
+      video_ids に無い種別だと後ろの x_accounts の節に入る形になっていた)。
+    - 既に載っているものは足さない(二重に載ると表の検査が落ちて、付け直し・組版が止まる)。
+    - その種別の節がまだ無ければ作る。
+    """
+    sp = _span(text, section)
+    if not sp:
+        return text, "nosection"
+    if _listed(text, section, item, ci):
+        return text, "exists"
+    line = f"    - {item}{' ' * max(1, 20 - len(item))}# {note}\n"
+    m = re.compile(rf"^  {re.escape(label)}:\n", re.M).search(text, sp[0], sp[1])
+    if m:
+        return text[:m.end()] + line + text[m.end():], "added"
+    return text[:sp[0]] + f"  {label}:\n" + line + text[sp[0]:], "added"
+
+
+def _add_labeled(section: str, agreed: dict, note: str, ci: bool, show=lambda k: k) -> None:
+    p = ROOT / "source_types.yml"
+    text = p.read_text(encoding="utf-8")
+    for k, (t, why) in agreed.items():
+        text, st = insert_labeled(text, section, t, k, f"{note}: {why}", ci)
+        if st == "nosection":
+            print(f"  ★{section} が表に無いので {show(k)} を足せない")
+        elif st == "exists":
+            print(f"  {show(k)} は既に {section} にある({t} と決まったが足さない)")
+    write_source_table(text, p)
+
+
 def add_domains(agreed: dict) -> None:
     p = ROOT / "source_types.yml"
     text = p.read_text(encoding="utf-8")
     for h, (t, why) in agreed.items():
-        m = re.search(rf"^{LIST_OF[t]}:\n", text, re.M)
-        if not m:
+        sp = _span(text, LIST_OF[t])
+        if not sp:
             print(f"  ★{LIST_OF[t]} が表に無いので {h} を足せない")
             continue
-        text = text[:m.end()] + f"  - {h}{' ' * max(1, 22 - len(h))}# 合議で追加: {why}\n" + text[m.end():]
-    p.write_text(text, encoding="utf-8")
+        if _listed(text, LIST_OF[t], h, ci=True):
+            print(f"  {h} は既に {LIST_OF[t]} にある(足さない)")
+            continue
+        text = text[:sp[0]] + f"  - {h}{' ' * max(1, 22 - len(h))}# 合議で追加: {why}\n" + text[sp[0]:]
+    write_source_table(text, p)
 
 
 def add_paths(agreed: dict) -> None:
     """プラットフォーム上のアカウント・チャンネル・作品ページを path_types(パス → 種別)へ足す。"""
     p = ROOT / "source_types.yml"
     text = p.read_text(encoding="utf-8")
-    m = re.search(r"^path_types:\n", text, re.M)
-    if not m:
+    if not _span(text, "path_types"):
         text = text.rstrip("\n") + ("\n\n# --- プラットフォーム上のアカウント・チャンネル・作品ページ(パス単位で主体が決まる) ---\n"
                                    "# tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。合議が足す\n"
                                    "path_types:\n")
-        m = re.search(r"^path_types:\n", text, re.M)
     for k, (t, why) in agreed.items():
-        if re.search(rf"^\s+{re.escape(k)}:", text[m.end():], re.M):
+        a, b = _span(text, "path_types")
+        if re.search(rf"^\s+{re.escape(k)}:", text[a:b], re.M | re.I):
             continue
-        text = text[:m.end()] + f"  {k}: {t}{' ' * max(1, 40 - len(k))}# 合議で追加: {why}\n" + text[m.end():]
-    p.write_text(text, encoding="utf-8")
+        text = text[:a] + f"  {k}: {t}{' ' * max(1, 40 - len(k))}# 合議で追加: {why}\n" + text[a:]
+    write_source_table(text, p)
 
 
 def add_video_channels(agreed: dict) -> None:
     """YouTube のチャンネル(ハンドル)を video_channels の該当種別へ足す。"""
-    p = ROOT / "source_types.yml"
-    text = p.read_text(encoding="utf-8")
-    mx = re.search(r"^video_channels:\n", text, re.M)
-    if not mx:
-        print("  ★video_channels が表に無い")
-        return
-    for h, (t, why) in agreed.items():
-        if re.search(rf"^\s+-\s+{re.escape(h)}\b", text[mx.end():], re.M | re.I):
-            continue
-        m = re.compile(rf"^  {t}:\n", re.M).search(text, mx.end())
-        nxt = re.compile(r"^[a-z_]+:", re.M).search(text, mx.end())
-        if m and (nxt is None or m.start() < nxt.start()):
-            text = text[:m.end()] + f"    - {h}{' ' * max(1, 20 - len(h))}# 合議で追加: {why}\n" + text[m.end():]
-        else:
-            text = text[:mx.end()] + f"  {t}:\n    - {h}{' ' * max(1, 20 - len(h))}# 合議で追加: {why}\n" + text[mx.end():]
-    p.write_text(text, encoding="utf-8")
+    _add_labeled("video_channels", agreed, "合議で追加", ci=True, show=lambda h: f"@{h}")
 
 
 def add_x_accounts(agreed: dict) -> None:
     """x_accounts の該当種別の下へ足す。無ければその種別の節を作る。"""
-    p = ROOT / "source_types.yml"
-    text = p.read_text(encoding="utf-8")
-    for a, (t, why) in agreed.items():
-        mx = re.search(r"^x_accounts:\n", text, re.M)
-        if not mx:
-            print(f"  ★x_accounts が表に無いので @{a} を足せない")
-            continue
-        # 既に(大文字小文字を問わず)載っているアカウントは足さない(重複すると selfcheck が赤になり
-        # compose が止まる。実測 2026-09-15)
-        if re.search(rf"^\s+-\s+{re.escape(a)}\b", text[mx.end():], re.M | re.I):
-            print(f"  @{a} は既に表にある({t} と合議したが足さない)")
-            continue
-        # 種別の節は **x_accounts の中**で探す(video_channels にも「公式:」があり、そちらに
-        # 差し込むと X アカウントが動画チャンネル扱いになる)
-        m = re.compile(rf"^  {t}:\n", re.M).search(text, mx.end())
-        nxt = re.compile(r"^[a-z_]+:", re.M).search(text, mx.end())
-        if m and (nxt is None or m.start() < nxt.start()):
-            text = text[:m.end()] + f"    - {a}{' ' * max(1, 20 - len(a))}# 合議で追加: {why}\n" + text[m.end():]
-        else:  # その種別の節がまだ無い
-            text = (text[:mx.end()] + f"  {t}:\n"
-                    f"    - {a}{' ' * max(1, 20 - len(a))}# 合議で追加: {why}\n" + text[mx.end():])
-    p.write_text(text, encoding="utf-8")
+    _add_labeled("x_accounts", agreed, "合議で追加", ci=True, show=lambda a: f"@{a}")
 
 
 YT_ID = re.compile(r"(?:[?&]v=|youtu\.be/|/live/|/shorts/|/embed/)([A-Za-z0-9_-]{11})")
@@ -546,23 +562,11 @@ def video_author(vid: str) -> tuple[str, str]:
 
 
 def add_video_ids(found: dict[str, tuple[str, str]]) -> None:
-    p = ROOT / "source_types.yml"
-    text = p.read_text(encoding="utf-8")
-    mv = re.search(r"^video_ids:\n", text, re.M)
-    if not mv:
-        print("  ★video_ids が表に無いので足せない")
-        return
-    for vid, (typ, why) in found.items():
-        # `  公式:` は x_accounts にもあるので、video_ids: より後ろだけを探す
-        m = re.compile(rf"^  {typ}:\n", re.M).search(text, mv.end())
-        if not m:
-            print(f"  ★video_ids に {typ} の節が無いので {vid} を足せない")
-            continue
-        text = text[:m.end()] + f"    - {vid}   # 機械で追加: {why}\n" + text[m.end():]
-    p.write_text(text, encoding="utf-8")
+    """動画 ID を video_ids の該当種別へ足す。ID は大文字小文字を区別する。"""
+    _add_labeled("video_ids", found, "機械で追加", ci=False)
 
 
-def resolve_videos(date: str, apply: bool) -> list[str]:
+def resolve_videos(date: str, apply: bool) -> tuple[list[str], dict]:
     """チャンネルが表(video_channels)にある動画の ID を、video_ids へ機械で足す。
 
     YouTube は投稿者で種別が決まるが、URL には ID しか無い。ヴイアラ(876プロ)は

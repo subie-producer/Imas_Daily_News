@@ -997,7 +997,7 @@ def run_assemble(date: str, number: int) -> None:
     成果物から抜く、という手順はもう要らない。
     """
     import assemble as _assemble
-    code = _assemble.run(date, number)
+    code = _assemble.run(date, number, budget=lambda: remaining_seconds(cap=_assemble.SESSION_CAP))
     if code == 1:
         raise RuntimeError("組版: 記事が無い")
     # 2 = lint が赤い(組版の欠陥として通知済み)。呼び出し側の lint ゲートで扱う

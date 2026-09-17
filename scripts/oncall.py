@@ -11,11 +11,17 @@
    修正を書き、selfcheck と再現テストを通し、報告を JSON で返す(schema/oncall-fix.schema.json)
 2. 変更はその場で **commit して内容を固定**し、**監査(Sol)** がその commit の差分(差分が無ければ
    診断そのもの)を敵対的にレビューし、判定を JSON で返す
-3. 当番が指摘を**敵対的に取り込む**: 受け入れるものは直し、当たらないものは根拠で反論する。
-   監査がもう一度見る。往復は最大2回
-4. 合意(approve で must_fix が空)したものだけ、**監査した commit のハッシュそのもの**を main へ
-   merge し、`edition/<日付>` へ取り込み、止まった工程を再実行する
-5. 合意できなければ、両者の言い分を添えて人へ渡す
+3. **監査に指摘されたら、当番が直す。**監査は当番と合意を取る相手ではなく、その場しのぎの修正を
+   通さないための査読である(編集長の指摘 2026-09-18:「合意を取る話じゃない。指摘されたら直す話」)。
+   直したものを監査がもう一度見る。これを**指摘が無くなるまで**回す(上限は回数 MAX_ROUNDS と
+   時間 ONCALL_LIMIT_MIN。以前は2往復で「合意できなかった」と投げ出していた)。
+   指摘が事実誤認か、編集方針で判定対象外のもの(POLICY_EXCLUDED)に当たるときだけ、根拠を示して
+   「当たらない」と答えてよい
+4. 指摘が無くなったもの(approve で must_fix が空)だけ、**監査した commit のハッシュそのもの**を
+   main へ merge し、`edition/<日付>` へ取り込み、止まった工程を再実行する
+5. 上限までに直し切れなければ、そこまでの修正(commit)と残った指摘を state に残して人へ渡す。
+   次の試行は**その続きから**始める(同じ基準の main なら。以前は毎回ゼロから診断し直し、
+   1回目と2回目で別々の仮説を立てて、どちらも途中で終わっていた。実測 2026-09-18)
 6. **修正を入れたら Discord に報告する(必須)**: 何を・なぜ・どう検証したか・監査の判定・
    差分の要点・戻し方(編集長の指示: 勝手に変な変更が入っていないかを人が見られるように)
 
@@ -57,7 +63,11 @@ ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-5.6-sol")
 ONCALL_MAX_BUDGET_USD = ENV.get("ONCALL_MAX_BUDGET_USD", "15")
 MAX_ATTEMPTS = 2
-MAX_ROUNDS = 2
+MAX_ROUNDS = 6                       # 当番の修正 → 監査、の往復の上限(指摘が無くなれば途中で終わる)
+ONCALL_LIMIT_MIN = int(ENV.get("ONCALL_LIMIT_MIN", "150"))   # 1回の試行で往復に使う時間の上限(分)
+# 編集方針で決着済みの事項。監査がこれを理由に差し戻さないよう、監査の依頼文に明記する
+POLICY_EXCLUDED = ("校閲・内容判断をコードで機械化せよ、という要求(内容の判断はモデルの校閲が行う。コードは形だけを見る)",
+                   "当番・各セッションの HOME や OS レベルの隔離の要求(AI は開発者の一員として扱う。過剰防御はしない)")
 WAIT_IDLE_MIN = 90
 DIFF_LIMIT = 60000
 EDITABLE = ("scripts/", "prompts/", "schema/", "REQUIREMENTS.md", "PIPELINE.md", "AUDIT.md", "README.md")
@@ -171,8 +181,12 @@ def gather_context(stage: str, date: str, reason: str) -> str:
 def fix_prompt(stage: str, date: str, context: str, objections: list[dict] | None) -> str:
     obj = ""
     if objections:
-        obj = ("\n\n## 監査からの指摘(敵対的に取り込む)\n"
-               "受け入れるものは直し、当たらないものは**根拠を示して反論する**。馴れ合わない。\n"
+        obj = ("\n\n## 監査からの指摘(**直す**)\n"
+               "この作業ツリーには、ここまでの当番の修正が commit 済みで入っている(`git log --oneline -5` で見える)。\n"
+               "監査は合意を取る相手ではない。**指摘されたものは直す。**直し方は原因に当てること"
+               "(指摘の文面だけを潰す継ぎ当てにしない。同じ種類の穴が他に無いかも見て、まとめて塞ぐ)。\n"
+               "指摘が事実誤認であるとき、または次の判定対象外に当たるときだけ、根拠を示して「当たらない」と答えてよい:\n"
+               + "\n".join(f"- {x}" for x in POLICY_EXCLUDED) + "\n"
                + json.dumps(objections, ensure_ascii=False, indent=1))
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の**当番エンジニア**です。自動発行の工程 `{stage}` が
 {date}号で止まりました。人が起きるまで待たず、あなたが直します。この作業ツリーは origin/main から切った
@@ -213,9 +227,10 @@ def fix_prompt(stage: str, date: str, context: str, objections: list[dict] | Non
 def review_prompt(stage: str, date: str, fix_report: dict, diff: str, integ: dict | None) -> str:
     extra = ""
     if integ:
-        extra = ("\n\n## 前回の指摘に対する当番の対応(受け入れ/反論)\n"
+        extra = ("\n\n## 前回の指摘に対する当番の対応\n"
                  + json.dumps(integ, ensure_ascii=False, indent=1)
-                 + "\n反論に根拠があれば認め、無ければ却下してください。")
+                 + "\n指摘が直っているかを差分で確かめてください。「当たらない」という答えは、根拠があれば認め、"
+                   "無ければもう一度 must_fix に入れてください。")
     body = (f"## 差分(監査対象の commit そのもの。`git log -1 -p` でも確認できます)\n```diff\n{diff}\n```"
             if diff.strip() else "## 差分\n(変更なし。当番は「コードの欠陥ではない」と判断しました。**その診断と recovery が正しいか**を疑ってください)")
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の監査役です。自動発行の工程 `{stage}` が {date}号で止まり、
@@ -233,7 +248,10 @@ def review_prompt(stage: str, date: str, fix_report: dict, diff: str, integ: dic
   事務処理はコード・冪等・通知して続行で済ませない)に反しない。**approve のとき must_fix は空**
   (残したい指摘があるなら reject にする)
 - reject: must_fix に、根拠付きで問題を列挙する(推測は (推測) と明記)。severity は
-  blocks_publish / corrupts_data / quality / style から
+  blocks_publish / corrupts_data / quality / style から。当番は must_fix を**直します**
+  (合意を探る場ではありません)。直せるように、場所・再現手順・直し方の案を具体的に書いてください
+- 次は編集方針で決着済みです。これを理由に reject しないでください(判定対象外):
+{chr(10).join("  - " + x for x in POLICY_EXCLUDED)}
 {extra}
 判定を JSON で返してください(schema で形が決まっています)。
 """
@@ -361,6 +379,149 @@ def report_change(stage: str, date: str, fix: dict, transcript: list[dict], base
     (ROOT / "metrics" / f"oncall-{date}-{stage}-report.md").write_text(
         report + "\n## 往復の記録\n" + json.dumps(transcript, ensure_ascii=False, indent=1), encoding="utf-8")
     return notify_long("oncall", report)
+
+
+def resume_point(state: dict, base: str) -> dict | None:
+    """前の試行が直し切れずに残した続き(state["wip"])から始められるなら、それを返す。
+
+    続けてよいのは: 基準の main が同じ、残した commit がこのリポジトリにあって基準の子孫、
+    当番の報告と残った指摘が揃っている、のとき。どれかが欠ければ None(ゼロから診断する)。
+    """
+    wip = state.get("wip")
+    if not isinstance(wip, dict) or wip.get("base") != base:
+        return None
+    head, fix, open_ = wip.get("head"), wip.get("fix"), wip.get("open")
+    # head == base(差分の無い診断に指摘が付いたまま終わった)も続きにする。続けたあとも毎往復、基準からの
+    # 差分の全体を freeze → 範囲検査 → selfcheck → 監査に通すので、監査していない内容は入らない(監査指摘)
+    if not (isinstance(head, str) and re.fullmatch(r"[0-9a-f]{40}", head)
+            and isinstance(fix, dict) and fix and isinstance(open_, list) and open_
+            and all(isinstance(o, dict) for o in open_)):
+        return None
+    if sh(["git", "cat-file", "-e", f"{head}^{{commit}}"], cwd=ROOT).returncode != 0:
+        return None
+    if sh(["git", "merge-base", "--is-ancestor", base, head], cwd=ROOT).returncode != 0:
+        return None
+    return wip
+
+
+MIN_STEP_SEC = 120      # これより残りが短ければ、次のセッション(当番・監査)を始めない
+
+
+def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: dict | None,
+               env_before: str, transcript: list[dict]) -> dict:
+    """当番の修正 → 監査、の往復。指摘が無くなる(approve で must_fix が空)まで回す。
+
+    戻り値: {"approved", "fix", "head", "diff", "changed", "kept", "error"}。
+    - 上限は回数(MAX_ROUNDS)と**時間**(ONCALL_LIMIT_MIN)。時間は各セッションの直前に残りを確かめ、
+      セッションの timeout も残り時間で切る(「往復を始めてよいか」だけを見ると、残り1秒から 65 分走れる。監査指摘)
+    - `kept` は**最後に内容を固定できた(freeze して範囲検査を通った)ところ**の {head, fix, open}。
+      例外・時間切れで終わっても、次の試行はここから続けられる(監査指摘)。差分が無い診断も残す
+    - 例外はここで受けて `error` に入れる(呼び出し側の共通の終了処理が state を保存できるように)
+    """
+    schemas = ROOT / "schema"
+    deadline = time.time() + ONCALL_LIMIT_MIN * 60
+    left = lambda: int(deadline - time.time())
+    objections: list[dict] | None = None
+    integ: dict | None = None
+    fix: dict = {}
+    head, diff, changed = base, "", []
+    kept = {"head": base, "fix": {}, "open": []}
+    res = {"approved": False, "error": ""}
+    try:
+        if wip:    # 前の試行の続き: その commit と、残った指摘から始める
+            # kept を**先に**前の続きで満たす(この先の checkout が失敗しても、残してあった続きを消さない。監査指摘)
+            kept = {"head": wip["head"], "fix": json.loads(json.dumps(wip["fix"])), "open": list(wip["open"])}
+            if wip["head"] != base:
+                must(sh(["git", "checkout", "-q", "--detach", wip["head"]], cwd=wt), "前の試行の続きの checkout")
+            fix, objections = dict(wip["fix"]), list(wip["open"])
+            head = wip["head"]
+            transcript.append({"round": 0, "resumed_from": head, "open": objections})
+            print(f"前の試行の続きから({head[:10]}、残った指摘 {len(objections)}件)", flush=True)
+        for rnd in range(1, MAX_ROUNDS + 1):
+            if left() < MIN_STEP_SEC:
+                transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
+                break
+            print(f"当番 {rnd}回目", flush=True)
+            if not fix:
+                fix = run_claude(fix_prompt(stage, date, context, None), schemas / "oncall-fix.schema.json", wt,
+                                 timeout=min(1800, left()))
+                transcript.append({"round": rnd, "fix": fix})
+            else:
+                integ = run_claude(fix_prompt(stage, date, context, objections),
+                                   schemas / "oncall-integrate.schema.json", wt, timeout=min(1800, left()))
+                transcript.append({"round": rnd, "integrate": integ})
+                # 監査の指摘で status(誤診の訂正)や再実行の仕方を改めたなら、それを最終判断にする(監査指摘)
+                apply_integrate(fix, integ)
+            # 作業ツリーの外への副作用は、答えが何であれ**毎回**検める(cannot_fix でも省かない。監査指摘):
+            # 本体が汚れた / origin/main が動いた / 本体の .env(Git 管理外)が変わった
+            if not root_clean():
+                transcript.append({"round": rnd, "root_touched": sh(["git", "status", "--short"], cwd=ROOT).stdout[:500]})
+                fix.update(status="cannot_fix", notes="当番が本体の作業ツリーに触った。取り込まない")
+                break
+            if remote_main() != base:
+                transcript.append({"round": rnd, "remote_moved": True})
+                fix.update(status="cannot_fix", notes="セッション中に origin/main が動いた(当番が push した疑い、または他の工程)。取り込まない")
+                break
+            if env_fingerprint() != env_before:
+                transcript.append({"round": rnd, "env_touched": True})
+                fix.update(status="cannot_fix", notes="当番が本体の .env に触った。取り込まない")
+                break
+            if fix.get("status") == "cannot_fix":
+                break
+            head, diff, changed = freeze(wt, base, rnd)
+            bad = out_of_bounds(changed)
+            if bad:
+                transcript.append({"round": rnd, "out_of_bounds": bad})
+                fix.update(status="cannot_fix", notes=f"触ってはいけないファイルを変えた: {bad}")
+                break
+            if len(diff) > DIFF_LIMIT:
+                transcript.append({"round": rnd, "diff_too_large": len(diff)})
+                fix.update(status="cannot_fix", notes=f"差分が大きすぎて監査できない({len(diff)} 字)")
+                break
+            # 報告と差分の整合(監査指摘): 直したと言うのに差分が無い / 欠陥ではないと言うのに差分がある
+            if not status_consistent(str(fix.get("status") or ""), changed):
+                transcript.append({"round": rnd, "status_mismatch": {"status": fix.get("status"), "diff": bool(diff.strip())}})
+                fix.update(status="cannot_fix", notes="報告の status と差分が食い違う")
+                break
+            # ここまで来た内容は固定できている。監査がまだなので、その旨を残りの指摘に足しておく
+            # (このあと例外・時間切れで終わっても、次の試行が「監査から」続けられる)
+            pending_review = {"id": "review-incomplete", "severity": "quality", "evidence": "",
+                              "claim": f"{rnd}往復目の修正は監査が終わっていない(前の指摘が直ったかは未確認)。直っているか確かめ、足りなければ直す"}
+            objections = [o for o in (objections or []) if o.get("id") != "review-incomplete"]   # 印は毎往復1つだけ
+            kept = {"head": head, "fix": json.loads(json.dumps(fix)), "open": objections + [pending_review]}
+            if left() < 30:
+                transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
+                break
+            sc = sh([sys.executable, "scripts/selfcheck.py"], cwd=wt, timeout=min(300, left()))
+            if sc.returncode != 0:
+                transcript.append({"round": rnd, "selfcheck": sc.stdout[-500:]})
+                # 前の指摘は**まだ監査で確かめられていない**ので捨てない。selfcheck の赤を足す(置き換えない。監査指摘)
+                objections = ([o for o in (objections or []) if o.get("id") != "selfcheck"]
+                              + [{"id": "selfcheck", "claim": "selfcheck が赤", "evidence": sc.stdout[-400:],
+                                  "severity": "blocks_publish"}])
+                kept["open"] = list(objections) + [pending_review]
+                continue
+            if left() < MIN_STEP_SEC:
+                transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
+                break
+            print(f"監査 {rnd}回目", flush=True)
+            # 差分が無くても(no_fix_needed)監査は通す: 誤診を検める機会を残す(監査指摘)
+            rev = run_codex(review_prompt(stage, date, fix, diff, integ), schemas / "oncall-review.schema.json", wt,
+                            timeout=min(1800, left()))
+            transcript.append({"round": rnd, "review": rev})
+            if rev.get("verdict") == "approve" and not (rev.get("must_fix") or []):
+                res["approved"] = True
+                kept["open"] = []
+                break
+            # reject なのに must_fix が空、という答えでも次の往復が「指摘なし」で始まらないようにする
+            objections = rev.get("must_fix") or [{"id": "reject-without-items", "severity": "quality", "evidence": "",
+                                                  "claim": "監査は reject したが must_fix が空だった: " + str(rev.get("notes") or "")[:600]}]
+            kept["open"] = list(objections)
+    except Exception as e:      # noqa: BLE001 — 何で終わっても、固定できたところまでは次へ残す
+        res["error"] = f"{type(e).__name__}: {str(e)[:300]}"
+        transcript.append({"error": res["error"]})
+    res.update(fix=fix, head=head, diff=diff, changed=changed, kept=kept)
+    return res
 
 
 def needs_full_rerun(changed: list[str]) -> bool:
@@ -589,80 +750,45 @@ def main() -> int:
     must(sh(["git", "worktree", "add", "--detach", str(wt), base], cwd=ROOT, timeout=120), "worktree の作成")
     # .env は置かない(資格情報を当番に渡さない。監査指摘)
     try:
-        schemas = ROOT / "schema"
         transcript: list[dict] = []
-        objections: list[dict] | None = None
-        integ: dict | None = None
-        approved = False
-        fix: dict = {}
-        head, diff, changed = base, "", []
-        for rnd in range(1, MAX_ROUNDS + 1):
-            print(f"当番 {rnd}回目", flush=True)
-            if rnd == 1:
-                fix = run_claude(fix_prompt(stage, date, context, None), schemas / "oncall-fix.schema.json", wt)
-                transcript.append({"round": rnd, "fix": fix})
-            else:
-                integ = run_claude(fix_prompt(stage, date, context, objections),
-                                   schemas / "oncall-integrate.schema.json", wt)
-                transcript.append({"round": rnd, "integrate": integ})
-                # 監査の指摘で status(誤診の訂正)や再実行の仕方を改めたなら、それを最終判断にする(監査指摘)
-                apply_integrate(fix, integ)
-            # 作業ツリーの外への副作用は、答えが何であれ**毎回**検める(cannot_fix でも省かない。監査指摘):
-            # 本体が汚れた / origin/main が動いた / 本体の .env(Git 管理外)が変わった
-            if not root_clean():
-                transcript.append({"round": rnd, "root_touched": sh(["git", "status", "--short"], cwd=ROOT).stdout[:500]})
-                fix.update(status="cannot_fix", notes="当番が本体の作業ツリーに触った。取り込まない")
-                break
-            if remote_main() != base:
-                transcript.append({"round": rnd, "remote_moved": True})
-                fix.update(status="cannot_fix", notes="セッション中に origin/main が動いた(当番が push した疑い、または他の工程)。取り込まない")
-                break
-            if env_fingerprint() != env_before:
-                transcript.append({"round": rnd, "env_touched": True})
-                fix.update(status="cannot_fix", notes="当番が本体の .env に触った。取り込まない")
-                break
-            if fix.get("status") == "cannot_fix":
-                break
-            head, diff, changed = freeze(wt, base, rnd)
-            bad = out_of_bounds(changed)
-            if bad:
-                transcript.append({"round": rnd, "out_of_bounds": bad})
-                fix.update(status="cannot_fix", notes=f"触ってはいけないファイルを変えた: {bad}")
-                break
-            if len(diff) > DIFF_LIMIT:
-                transcript.append({"round": rnd, "diff_too_large": len(diff)})
-                fix.update(status="cannot_fix", notes=f"差分が大きすぎて監査できない({len(diff)} 字)")
-                break
-            # 報告と差分の整合(監査指摘): 直したと言うのに差分が無い / 欠陥ではないと言うのに差分がある
-            if not status_consistent(str(fix.get("status") or ""), changed):
-                transcript.append({"round": rnd, "status_mismatch": {"status": fix.get("status"), "diff": bool(diff.strip())}})
-                fix.update(status="cannot_fix", notes="報告の status と差分が食い違う")
-                break
-            sc = sh([sys.executable, "scripts/selfcheck.py"], cwd=wt, timeout=300)
-            if sc.returncode != 0:
-                transcript.append({"round": rnd, "selfcheck": sc.stdout[-500:]})
-                objections = [{"id": "selfcheck", "claim": "selfcheck が赤", "evidence": sc.stdout[-400:],
-                               "severity": "blocks_publish"}]
-                continue
-            print(f"監査 {rnd}回目", flush=True)
-            # 差分が無くても(no_fix_needed)監査は通す: 誤診を検める機会を残す(監査指摘)
-            rev = run_codex(review_prompt(stage, date, fix, diff, integ), schemas / "oncall-review.schema.json", wt)
-            transcript.append({"round": rnd, "review": rev})
-            if rev.get("verdict") == "approve" and not (rev.get("must_fix") or []):
-                approved = True
-                break
-            objections = rev.get("must_fix") or []
+        res = run_rounds(stage, date, context, wt, base, resume_point(state, base), env_before, transcript)
+        approved, fix, head, diff, changed = res["approved"], res["fix"], res["head"], res["diff"], res["changed"]
         (ROOT / "metrics" / f"oncall-{date}-{stage}-transcript.json").write_text(
             json.dumps(transcript, ensure_ascii=False, indent=1), encoding="utf-8")
         state["log"].append({"at": datetime.datetime.now().isoformat(timespec="minutes"), "approved": approved,
                              "status": fix.get("status"), "diagnosis": (fix.get("diagnosis") or "")[:300]})
+        # 直し切れなかったら、**最後に内容を固定できたところまで**の修正と残った指摘を残す(次の試行はこの続きから)。
+        # 例外・時間切れで終わった往復でも残す。差分が無い診断(no_fix_needed)への指摘も残す。直し切れたら消す
+        kept = res["kept"]
+        if not approved and kept["fix"] and kept["open"] and kept["fix"].get("status") != "cannot_fix":
+            state["wip"] = {"base": base, "head": kept["head"], "fix": kept["fix"], "open": kept["open"]}
+        else:
+            state.pop("wip", None)
         save_state(state_p, state)
+        open_left = (state.get("wip") or {}).get("open") or []
 
         if not approved:
-            last = transcript[-1]
-            notify("oncall", f"{date} {stage}: 当番と監査が合意できなかった。人の判断が要る。\n"
-                             f"診断: {(fix.get('diagnosis') or '')[:300]}\n"
-                             f"最後の記録: {json.dumps(last.get('review', last), ensure_ascii=False)[:600]}", ok=False)
+            last = transcript[-1] if transcript else {}
+            wip_branch = ""
+            if state.get("wip") and kept["head"] != base:
+                # 人が続きを見られるように記録ブランチにも置く(置けなくても続きは手元の commit から始められる)
+                wip_branch = f"repair-wip/{date}-{stage}-{attempt_no}-{int(time.time())}"
+                try:
+                    if sh(["git", "push", "-q", "origin", f"{kept['head']}:refs/heads/{wip_branch}"], cwd=wt, timeout=120).returncode != 0:
+                        wip_branch = ""
+                except (subprocess.TimeoutExpired, OSError):
+                    wip_branch = ""
+            if res["error"]:
+                why = (f"当番の往復が例外で終わった: {res['error'][:300]}"
+                       + (f"\nここまでの修正と残った指摘 {len(open_left)}件は残した" if open_left else ""))
+            elif fix.get("status") == "cannot_fix" or not open_left:
+                why = f"当番は直せなかった({fix.get('status')}): {(fix.get('notes') or '')[:300]}"
+            else:
+                why = (f"監査の指摘を上限({MAX_ROUNDS}往復・{ONCALL_LIMIT_MIN}分)までに直し切れなかった。残り {len(open_left)}件:\n"
+                       + "\n".join(f"- {str(o.get('id') or '')}: {str(o.get('claim') or '')[:160]}" for o in open_left[:6]))
+            notify("oncall", f"{date} {stage}: {why}\n診断: {(fix.get('diagnosis') or '')[:300]}\n"
+                             + (f"ここまでの修正: 記録ブランチ {wip_branch}(次の試行はこの続きから始める)\n" if wip_branch else "")
+                             + f"最後の記録: {json.dumps(last.get('review', last), ensure_ascii=False)[:400]}", ok=False)
             return 1
 
         # release 起点でも、生成層を直したなら号を作り直す(生成済みの号をそのまま発行しない。監査指摘)
@@ -735,7 +861,7 @@ def main() -> int:
                                         f"戻し方: ops の main で `git revert -m 1 {merge_commit[:10]}` → push → {edition} に main を merge → push",
                               require=True)
         else:
-            reported = notify("oncall", f"{date} {stage}: 当番と監査の合意: コードの欠陥ではない(no_fix_needed)。\n"
+            reported = notify("oncall", f"{date} {stage}: 当番の診断: コードの欠陥ではない(no_fix_needed)。監査も指摘なし。\n"
                                         f"診断: {(fix.get('diagnosis') or '')[:400]}\n再実行の根拠: {(fix.get('recovery') or '')[:300]}\n"
                                         f"再実行: {rerun_mode}")
         if not reported:

@@ -2,8 +2,10 @@
 import datetime
 import html as html_lib
 import json
+import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import time
@@ -257,8 +259,109 @@ def prompt_file(date: str, name: str, text: str, base: Path | None = None) -> st
     p = d / f"{name}.md"
     p.write_text(text, encoding="utf-8")
     rel = p.relative_to(root)
-    return (f"指示と素材は `{rel}` に書いてあります。まずそのファイルを全部読み、書かれたとおりに実行して、"
-            f"そこで指示された形式で答えてください。")
+    # Read は1回に READ_LINES 行・1行 READ_COLS 字までしか返さない。超える分は**黙って切れる**ので、
+    # 行数を伝えて最後まで読ませる(実測 2026-09-18: 組版の指示ファイルが初めて 2000 行を超えた 2005 行になり、
+    # 末尾に置いていた「返すもの」の指示が1回の Read に入らず、セッションが 900 秒で時間切れになった)。
+    # 長すぎる行は読ませ方では救えないので、書いた側の欠陥としてログに出す
+    lines = text.split("\n")
+    longest = max((len(ln) for ln in lines), default=0)
+    if longest > READ_COLS:
+        print(f"★{rel}: {longest} 字の行がある(Read は1行 {READ_COLS} 字で切る)。素材を改行のある形で書くこと", flush=True)
+    how = (f"このファイルは全 {len(lines)} 行あります。Read は1回に {READ_LINES} 行までしか返さないので、"
+           f"offset を進めて**最後の行まで**読んでから始めてください。" if len(lines) > READ_LINES - 200 else "")
+    # **絶対パスで渡す。**claude の Read は絶対パスしか受けない。相対パスで渡すと、モデルは作業フォルダを
+    # 推測して絶対パスを作り(実測: `/home/akabanep/git/Imas-Daily-News/…` と取り違える)、外れると
+    # `find / -name …` で探し始める。WSL の `/` には Windows 側のドライブが繋がっていて、これが 120 秒の
+    # 道具の時間切れまで返らない(2026-09-18 の経過で判明。6セッション中4つが最初の Read を外していた)
+    return (f"指示と素材は `{p.resolve()}` に書いてあります。まずそのファイルを全部読み、書かれたとおりに実行して、"
+            f"そこで指示された形式で答えてください。" + how)
+
+
+READ_LINES, READ_COLS = 2000, 2000      # claude の Read ツールが1回に返す上限(行数・1行の字数)
+
+
+def trace_summary(trace: Path) -> str:
+    """stream-json の経過ファイルから「何ターン・どの道具を・何に使ったか」を1行にまとめる。"""
+    turns, tools, last = 0, [], ""
+    try:
+        with open(trace, encoding="utf-8", errors="replace") as f:
+            for ln in f:
+                try:
+                    e = json.loads(ln)
+                except ValueError:
+                    continue
+                if e.get("type") != "assistant":
+                    continue
+                turns += 1
+                for c in (e.get("message") or {}).get("content") or []:
+                    if c.get("type") == "tool_use":
+                        arg = c.get("input") or {}
+                        what = arg.get("file_path") or arg.get("command") or arg.get("url") or arg.get("pattern") or ""
+                        extra = f"+{arg['offset']}" if arg.get("offset") else ""
+                        tools.append(f"{c.get('name')}({str(what)[-60:]}{extra})")
+                    elif c.get("type") == "text" and c.get("text"):
+                        last = c["text"].strip().replace("\n", " ")[:120]
+    except OSError as e:
+        return f"経過を読めない({type(e).__name__})"
+    return f"{turns}ターン / 道具 {len(tools)}回: {' → '.join(tools[-12:]) or 'なし'}" + (f" / 最後の発言: {last}" if last else "")
+
+
+def claude_traced(args: list[str], trace: Path, timeout: int, cwd: Path | None = None) -> dict:
+    """`claude -p` を**経過を残しながら**走らせる。戻り値は
+    {"ok", "timed_out", "returncode", "structured", "result", "seconds", "cost", "summary"}。
+
+    素の `-p` は終わるまで何も出さないので、時間切れのとき「何をしていて遅かったのか」が残らず、
+    当番も監査も推測で直すしかなかった(実測 2026-09-18 の組版。監査指摘: 観測が無い)。
+    stream-json を経過ファイルへ直接書かせ、時間切れでもそこまでの道具の呼び出しを読めるようにする。
+    `--json-schema` の答えは最後の result イベントの structured_output に入る。
+    """
+    trace.parent.mkdir(parents=True, exist_ok=True)
+    cmd = ["claude", "-p", *args, "--output-format", "stream-json", "--verbose"]
+    t0, timed_out, rc, err = time.time(), False, None, ""
+    with open(trace, "w", encoding="utf-8") as out:
+        # 自前のプロセスグループで起動し、時間切れには**グループごと**止める。直系の claude だけを殺すと、
+        # それが起動した道具(Bash の find など)が残り、やり直しのセッションと並走する(監査指摘)
+        proc = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE, text=True, stdin=subprocess.DEVNULL,
+                                cwd=cwd or ROOT, start_new_session=True)
+        try:
+            _, err = proc.communicate(timeout=timeout)
+            rc = proc.returncode
+        except subprocess.TimeoutExpired:
+            timed_out = True
+            for sig, grace in ((signal.SIGTERM, 5), (signal.SIGKILL, 5)):
+                try:
+                    os.killpg(proc.pid, sig)
+                except ProcessLookupError:
+                    break
+                try:
+                    proc.wait(timeout=grace)
+                except subprocess.TimeoutExpired:
+                    continue
+                # 親が終わっても、TERM を無視する子孫がグループに残っていれば KILL まで進む
+                try:
+                    os.killpg(proc.pid, 0)
+                except ProcessLookupError:
+                    break
+            try:
+                _, err = proc.communicate(timeout=5)
+            except (subprocess.TimeoutExpired, ValueError, OSError):
+                err = ""
+        err = err or ""
+    final: dict = {}
+    with open(trace, encoding="utf-8", errors="replace") as f:
+        for ln in f:
+            try:
+                e = json.loads(ln)
+            except ValueError:
+                continue
+            if e.get("type") == "result":
+                final = e
+    secs = int(time.time() - t0)
+    summary = (("時間切れ" if timed_out else f"exit {rc}") + f" {secs}秒 / " + trace_summary(trace)
+               + (f" / stderr: {err.strip()[-200:]}" if err.strip() else ""))
+    return {"ok": bool(final) and not final.get("is_error") and rc == 0, "timed_out": timed_out, "returncode": rc,
+            "structured": final.get("structured_output"), "result": final.get("result") or "",
+            "seconds": secs, "cost": final.get("total_cost_usd"), "summary": summary}
 
 
 _URL_BAD_CHARS = re.compile(r"[\x00-\x20\x7f　]")
@@ -608,26 +711,65 @@ def extract_periods(text: str, limit: int = 12) -> list[str]:
 # --- 出典種別の判定(規程2) -------------------------------------------------
 SOURCE_TYPES = ("公式", "準公式", "当事者", "報道", "ファン", "二次情報", "もちより", "未確認")
 _ST_TABLE: dict | None = None
+_ST_KEY: tuple | None = None     # _ST_TABLE を読んだときのファイルの同一性(mtime_ns, size, inode)
+
+
+def parse_source_table(text: str, p) -> dict:
+    """判定表の本文を検査して dict にする。読むときも書くときも**同じ検査**を通す。"""
+    import yaml
+    _check_table_text(text, p)   # YAML が黙って潰す「同じキーの二重定義」は dict になる前に見る
+    t = yaml.safe_load(text) or {}
+    _check_table(t, p)
+    return t
 
 
 def source_type_table() -> dict:
-    """`source_types.yml` を読む(初回だけ)。**無ければ落とす。**
+    """`source_types.yml` を読む(ファイルが変わっていなければ前回の結果を使う)。**無ければ落とす。**
 
     以前は無いとき `{}` を返していたが、それだと表が消えた瞬間に全出典が
     既定へ落ちて素通りする(監査指摘の fail-open)。判定の根拠が無い状態で
     紙面を作らせないため、ここで止める。
+
+    以前は「初回だけ読む」だった。合議(classify_sources)は同じプロセスの中で表へ書き足しては
+    判定し直すので、古い表のまま「まだ表に無い」と判断して同じ動画 ID を2回足し、表が二重定義に
+    なって次の付け直しが落ちた(実測 2026-09-18 02:40)。ファイルの同一性を毎回確かめ、
+    変わっていたら読み直す。
     """
-    global _ST_TABLE
-    if _ST_TABLE is None:
-        import yaml
-        p = ROOT / "source_types.yml"
-        if not p.exists():
-            raise SystemExit(f"出典種別の判定表がない: {p}")
-        text = p.read_text(encoding="utf-8")
-        _check_table_text(text, p)   # YAML が黙って潰す「同じキーの二重定義」は dict になる前に見る
-        _ST_TABLE = yaml.safe_load(text) or {}
-        _check_table(_ST_TABLE, p)
+    global _ST_TABLE, _ST_KEY
+    p = ROOT / "source_types.yml"
+    try:
+        st = p.stat()
+    except FileNotFoundError:
+        raise SystemExit(f"出典種別の判定表がない: {p}")
+    key = (st.st_mtime_ns, st.st_size, st.st_ino)
+    if _ST_TABLE is None or key != _ST_KEY:
+        _ST_TABLE = parse_source_table(p.read_text(encoding="utf-8"), p)
+        _ST_KEY = key
     return _ST_TABLE
+
+
+def write_source_table(text: str, path=None) -> None:
+    """判定表を書く唯一の入口。**検査に通った本文だけ**を、置き換えで書く。
+
+    壊れた表(重複・二重定義・値域外)はディスクに届く前に SystemExit で止まる。表を書いたあとで
+    別プロセス(付け直し・lint)が読んで初めて壊れに気づく、という順番を無くす。
+    書いたら手元の読み込み結果を捨て、次の判定は必ず新しい表で行う。
+    """
+    global _ST_TABLE, _ST_KEY
+    p = Path(path) if path else ROOT / "source_types.yml"
+    parse_source_table(text, p)
+    tmp = p.with_name(p.name + f".tmp-{os.getpid()}")
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            if p.exists():      # 置き換えで権限を変えない(新規ファイルは umask で決まるため。監査指摘)
+                os.fchmod(f.fileno(), p.stat().st_mode & 0o7777)
+            f.write(text)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, p)
+    finally:
+        tmp.unlink(missing_ok=True)
+    _ST_TABLE, _ST_KEY = None, None
 
 
 def dedupe_source_table(path=None) -> list[str]:

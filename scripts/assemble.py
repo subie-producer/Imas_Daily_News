@@ -34,8 +34,8 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import renderlib
-from pipelib import (ROOT, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, classify_source,
-                     extract_json_array, notify, prompt_file)
+from pipelib import (ROOT, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, COMPOSE_WAVE, classify_source,
+                     claude_traced, extract_json_array, notify, prompt_file)
 
 POSTS = ROOT / "docs" / "_posts"
 EDITIONS = ROOT / "docs" / "_editions"
@@ -136,18 +136,60 @@ def build_input(date: str, posts: list[dict], mats: dict, stories: list[dict], p
 
 
 # ---------------------------------------------------------------- 判断
-def prompt(date: str, inp: dict) -> str:
-    weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の組版担当です。{date}({weekday}曜)号の記事一覧を渡します。
-**ファイルは読まず、書かず**、下の入力だけから判断を JSON で返してください。反映はプログラムが行います。
+def _v(x) -> str:
+    """入力に埋める値を**必ず1行**にする(空白・改行の連続 → 空白1個)。識別子も自由文も同じ扱い。
 
-## 入力
-```json
-{json.dumps(inp, ensure_ascii=False, indent=1)}
-```
+    素材の schema は文字列に改行を禁じていない。値をそのまま行へ足すと、1つの値が何十行にも化けて
+    入力の行数が読めなくなる(監査指摘: 自由文だけ畳んで識別子を畳み忘れる、という漏れ方をする)。
+    だから項目ごとに畳むのではなく、**埋める値は全部ここを通す**。
+    """
+    return re.sub(r"\s+", " ", str(x if x is not None else "")).strip()
+
+
+def render_articles(arts: list[dict], full: bool) -> list[str]:
+    """記事の一覧を、1記事 = 見出し行 + 数行(+ facts 1件1行)で並べる。full=False は見出し・リードまで。"""
+    L = [f"### 記事({len(arts)}本)"]
+    for a in arts:
+        L.append(f"- slug: {_v(a.get('slug'))} / brand: {_v(a.get('brand'))} / rank: {_v(a.get('rank'))}"
+                 + (f" / dedup_key: {_v(a.get('dedup_key'))}" if full else ""))
+        L.append(f"  title: {_v(a.get('title'))}")
+        L.append(f"  lede: {_v(a.get('lede'))}")
+        if a.get("event_date"):
+            L.append(f"  event_date: {_v(a.get('event_date'))}")
+        if not full:
+            continue
+        L.append(f"  candidate_ids: {', '.join(_v(i) for i in a.get('candidate_ids') or [])}")
+        ex = a.get("existing_story")
+        if ex:
+            L.append(f"  existing_story: story_id: {_v(ex.get('story_id'))} / subject: {_v(ex.get('subject'))}")
+            L.extend(f"    known_fact: {_v(k)}" for k in ex.get("known_facts") or [])
+        else:
+            L.append("  existing_story: なし")
+        L.extend(f"  fact {_v(f.get('id'))}: {_v(f.get('text'))}" for f in a.get("facts") or [])
+    return L
+
+
+def _head(date: str, what: str) -> str:
+    weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
+    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の組版担当です。{date}({weekday}曜)号の{what}を渡します。
+**このファイルの末尾にある「## 入力」だけ**から判断して、JSON で返してください。反映はプログラムが行います。
+このファイルのほかは読まず、何も書かず、Bash・Web・サブエージェントなどの道具も使わないでください
+(必要なものは全部このファイルにあります)。
 
 ## 返すもの
+"""
 
+
+def prompt_digest(date: str, inp: dict) -> str:
+    """「本日の紙面」の判断。紙面全体を見渡す必要があるので全記事を渡すが、見出しとリードまで(facts は要らない)。
+
+    **指示が先、入力が後。**入力は号によって伸びるので、後ろに置いた指示は読み切れない日が来る(2026-09-18)。
+    """
+    tr = inp.get("tomorrow_reservations") or []
+    L = [f"発行日: {_v(inp.get('date'))}", ""] + render_articles(inp.get("articles") or [], full=False)
+    L += ["", f"### tomorrow_reservations({len(tr)}件)"]
+    L.extend(f"- subject: {_v(t.get('subject'))} / kind: {_v(t.get('kind'))} / brand: {_v(t.get('brand'))}" for t in tr)
+    return _head(date, "記事一覧") + f"""
 ### digest(「本日の紙面」。4群固定・この順・合計12行以内)
 - 本日: 発行日に起きること・発表されたこと / 昨日: 前日に起きて今日伝えること /
   継続中: 開催中・受付中のもの / 明日: 翌日に起きること(記事か tomorrow_reservations から)
@@ -157,6 +199,19 @@ def prompt(date: str, inp: dict) -> str:
 - t は20字以内、d は25字以内。**入力にある事実だけ**を使う。slug は入力の記事のもの(記事が無い行は "")
 - 一面(rank: lead)の記事は必ずどこかの群に入れる
 
+## 入力
+""" + "\n".join(L) + "\n"
+
+
+def prompt_ledger(date: str, inp: dict, arts: list[dict]) -> str:
+    """台帳まわり(既報・続報予約・日付未確定の追跡)の判断。**記事ごとに完結する**ので、記事を LEDGER_CHUNK 本ずつに
+    分けて別々のセッションに渡す(arts がその1組)。pending は決着の判定に要るので毎回全部渡す。"""
+    pend = inp.get("pending") or []
+    L = [f"発行日: {_v(inp.get('date'))}", ""] + render_articles(arts, full=True)
+    L += ["", f"### pending(日付未確定の追跡 {len(pend)}件)"]
+    L.extend(f"- dedup_key: {_v(x.get('dedup_key'))} / subject: {_v(x.get('subject'))} / watch: {_v(x.get('watch'))}"
+             for x in pend)
+    return _head(date, f"記事 {len(arts)}本(この号の一部。ほかの記事は別の担当が見る)") + f"""
 ### stories(既報台帳に残す事実。記事ごとに1件)
 - story_id: existing_story があればその story_id、無ければ dedup_key
 - subject: 話題の件名(60字以内)。既存があれば同じでよい
@@ -174,27 +229,151 @@ def prompt(date: str, inp: dict) -> str:
 
 ### pending(日付未確定の追跡)
 - pending_add: 記事で「後日発表」「詳細は追って」とされた事項(dedup_key・brand・subject・watch)
-- pending_remove: 入力の pending のうち、この号の記事で日付が判明した・決着した dedup_key
-"""
+- pending_remove: 入力の pending のうち、**入力の記事で**日付が判明した・決着した dedup_key
+
+## 入力
+""" + "\n".join(L) + "\n"
 
 
-def run_session(text: str, date: str = "") -> dict:
-    schema = (ROOT / "schema" / "assemble.schema.json").read_text(encoding="utf-8")
-    # 入力(全記事の事実・台帳・予約)はファイルで渡す(引数に詰めると 128KB で落ちる)
-    r = subprocess.run(["claude", "-p", prompt_file(date or "assemble", "assemble", text), "--model", CLAUDE_MODEL, "--json-schema", schema,
-                        "--dangerously-skip-permissions", "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                       capture_output=True, text=True, timeout=900, stdin=subprocess.DEVNULL, cwd=ROOT)
-    out = (r.stdout or "").strip()
-    try:
-        return json.loads(out)
-    except Exception:
-        m = re.search(r"\{.*\}", out, re.S)
-        if m:
+SESSION_CAP = 900        # セッション1回に待つ上限(秒)
+SESSION_TRIES = 2        # 時間切れ・読めない出力のとき、時間が残っていればもう1回だけ
+LEDGER_CHUNK = 8         # 台帳の判断を1セッションに何記事まで渡すか
+LEDGER_KEYS = ("stories", "reservations", "pending_add", "pending_remove")
+
+
+def sub_schema(keys) -> str:
+    """組版の出力 schema から、そのセッションが返す項目だけを抜いた schema。"""
+    s = json.loads((ROOT / "schema" / "assemble.schema.json").read_text(encoding="utf-8"))
+    s["properties"] = {k: s["properties"][k] for k in keys}
+    s["required"] = list(keys)
+    return json.dumps(s, ensure_ascii=False)
+
+
+def run_session(text: str, date: str, name: str, schema: str, budget=None) -> dict:
+    """判断セッション1本。経過を `metrics/work/<日付>/<name>-trace-<n>.jsonl` に残す。
+
+    budget は「いま子プロセスに待たせてよい秒数」を返す関数(compose が締切から計算して渡す)。
+    同じ入力でも稀に時間切れになる。判断は入力の純関数で反映は冪等なので、時間が残っていれば
+    やり直してよい。やり直せないとき・2回とも駄目なときは、**何をしていて駄目だったか**
+    (道具の呼び出しの経過・出力の量)を付けて上げる。
+    """
+    # 入力はファイルで渡す(引数に詰めると 128KB で落ちる)
+    ask = prompt_file(date or "assemble", name, text)
+    fails: list[str] = []
+    for n in range(1, SESSION_TRIES + 1):
+        wait = int(budget()) if budget else SESSION_CAP
+        if n > 1 and wait < 300:
+            fails.append(f"{n}回目: 残り {wait} 秒ではやり直せない")
+            break
+        # 道具は Read だけ。判断に要るものは指示ファイルに全部あり、探し物・検索・下請けに時間を使わせない
+        r = claude_traced([ask, "--model", CLAUDE_MODEL, "--json-schema", schema, "--tools", "Read",
+                           "--dangerously-skip-permissions", "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+                          ROOT / "metrics" / "work" / (date or "assemble") / f"{name}-trace-{n}.jsonl",
+                          timeout=min(SESSION_CAP, wait))
+        print(f"  組版 {name} {n}回目: {r['summary'][:400]}", flush=True)
+        # 答えを採るのは**正常に終わったセッションだけ**。時間切れ・異常終了の間際に出た出力は採らない(監査指摘)
+        out = r["structured"] if r["ok"] else None
+        if r["ok"] and not isinstance(out, dict):
+            m = re.search(r"\{.*\}", r["result"] or "", re.S)
             try:
-                return json.loads(m.group(0))
-            except Exception:
-                pass
-    raise RuntimeError(f"組版セッションの出力が読めない: {(r.stderr or out)[-300:]}")
+                out = json.loads(m.group(0)) if m else None
+            except ValueError:
+                out = None
+        if isinstance(out, dict):
+            return out
+        fails.append(f"{n}回目: {r['summary'][:500]}")
+    raise RuntimeError(f"組版セッション({name})が答えを返さなかった: " + " || ".join(fails))
+
+
+def judge(date: str, inp: dict, budget=None) -> dict:
+    """組版の判断を**小さなセッションに分けて並列に**取り、1つの出力にまとめる。
+
+    以前は全記事の digest・既報・予約・pending を1セッションで判断させていた。実測(2026-09-18・36本):
+    答えの JSON は 1.5 万字なのに出力は 5.4 万トークン(大半が考え込み)で 8 分、1回の出力上限 6.4 万の
+    すぐ手前。考え込みが少し伸びた回が 900 秒で時間切れになった。記事数に比例して伸びる構造なので、
+    - digest: 紙面全体を見る判断。全記事の見出し・リードだけを渡す1セッション
+    - 台帳(stories / reservations / pending): 記事ごとに完結する判断。LEDGER_CHUNK 本ずつのセッション
+    に分ける。1セッションの仕事量が記事数で伸びなくなり、壁時計は並列のぶん短くなる。
+    まとめた出力は従来と同じ形なので、検算(validate)と反映(apply)は変わらない。
+    """
+    import concurrent.futures
+    arts = inp.get("articles") or []
+    jobs = [("assemble-digest", prompt_digest(date, inp), sub_schema(("digest",)))]
+    chunks = [arts[i:i + LEDGER_CHUNK] for i in range(0, len(arts), LEDGER_CHUNK)]
+    jobs += [(f"assemble-ledger-{i + 1}", prompt_ledger(date, inp, ch), sub_schema(LEDGER_KEYS))
+             for i, ch in enumerate(chunks)]
+    with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, min(len(jobs), COMPOSE_WAVE))) as ex:
+        futs = [ex.submit(run_session, text, date, name, schema, budget) for name, text, schema in jobs]
+        outs = [f.result() for f in futs]        # 1本でも答えが無ければ、その経過を付けて上がる
+    return merge_judgments(inp, chunks, outs[0], outs[1:])
+
+
+def merge_judgments(inp: dict, chunks: list[list[dict]], digest_out: dict, ledger_outs: list[dict]) -> dict:
+    """分けて取った判断を、従来と同じ形の1つの出力にまとめる。**並びと採用規則を入力だけで決める**
+    (モデルが返した順に依存すると、同じ答えでも再実行で台帳の中身が変わる。監査指摘)。
+
+    - stories / reservations: その組に渡した記事の行だけを採り、**入力の記事順**に並べる。
+      stories は記事ごとに最初の1件。reservations は記事順 → 日付 → 種別 → 件名。
+    - pending_add: その組の記事の dedup_key のものだけを採る。同じ dedup_key は**記事順で先の組**の1件。
+    - pending_remove: 入力の pending にあるものだけを、**入力の pending の順**に。
+    内容の良し悪しは見ない(それは validate と校閲の仕事)。ここは形と順序だけ。
+    """
+    arts = inp.get("articles") or []
+    order = {a.get("slug"): i for i, a in enumerate(arts)}
+    stories: dict[str, dict] = {}
+    reservations: list[dict] = []
+    pending_add: dict[str, dict] = {}
+    removed: set[str] = set()
+    for ch, o in zip(chunks, ledger_outs):
+        mine = {a.get("slug") for a in ch}
+        keys = {a.get("dedup_key") for a in ch}
+        for row in o.get("stories") or []:
+            slug = row.get("slug") if isinstance(row, dict) else None
+            if slug not in mine:
+                print(f"  組版: 渡していない記事の stories を捨てた({slug!r})", flush=True)
+            else:
+                stories[slug] = _pick(stories.get(slug), row)
+        for row in o.get("reservations") or []:
+            slug = row.get("slug") if isinstance(row, dict) else None
+            if slug not in mine:
+                print(f"  組版: 渡していない記事の reservations を捨てた({slug!r})", flush=True)
+            elif row not in reservations:
+                reservations.append(row)
+        for row in o.get("pending_add") or []:
+            key = row.get("dedup_key") if isinstance(row, dict) else None
+            if key not in keys:
+                print(f"  組版: 渡していない記事の pending_add を捨てた({key!r})", flush=True)
+            else:
+                pending_add[key] = _pick(pending_add.get(key), row)
+        removed |= {str(x) for x in o.get("pending_remove") or []}
+    reservations.sort(key=lambda r: (order[r["slug"]], str(r.get("date") or ""), str(r.get("kind") or ""),
+                                     str(r.get("subject") or ""), str(r.get("candidate_id") or ""), str(r.get("note") or "")))
+    return {"digest": digest_out.get("digest") or [],
+            "stories": [stories[a.get("slug")] for a in arts if a.get("slug") in stories],
+            "reservations": reservations,
+            "pending_add": _in_article_order(arts, pending_add),
+            "pending_remove": [x.get("dedup_key") for x in inp.get("pending") or [] if x.get("dedup_key") in removed]}
+
+
+def _pick(a: dict | None, b: dict) -> dict:
+    """同じ記事(同じ dedup_key)に行が2つ返ってきたとき、どちらを採るか。**返ってきた順では決めない**
+    (順序が変わるだけで台帳の中身が変わる。監査指摘)。キー順を揃えた JSON の辞書順で小さいほうを採る。
+    どちらが「良い」かは見ない。同じ答えの集まりから、いつも同じ1件を選ぶための規則。"""
+    if a is None:
+        return b
+    canon = lambda r: json.dumps(r, ensure_ascii=False, sort_keys=True)
+    return a if canon(a) <= canon(b) else b
+
+
+def _in_article_order(arts: list[dict], by_key: dict[str, dict]) -> list[dict]:
+    """dedup_key → 行 の対応を、その dedup_key を持つ最初の記事の順に並べる(同じ key の記事が複数あっても1件)。"""
+    out, done = [], set()
+    for a in arts:
+        k = a.get("dedup_key")
+        if k in by_key and k not in done:
+            out.append(by_key[k])
+            done.add(k)
+    return out
 
 
 # ---------------------------------------------------------------- 検証
@@ -567,7 +746,7 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
     return log
 
 
-def run(date: str, number: int | None = None, dry: bool = False) -> int:
+def run(date: str, number: int | None = None, dry: bool = False, budget=None) -> int:
     posts = load_posts(date)
     if not posts:
         print(f"{date}: 記事が無い", flush=True)
@@ -577,7 +756,7 @@ def run(date: str, number: int | None = None, dry: bool = False) -> int:
     stories = baseline_stories(date)
     pending = baseline_pending(date, dry)
     inp = build_input(date, posts, mats, stories, pending)
-    out = run_session(prompt(date, inp), date)
+    out = judge(date, inp, budget)
     clean, notes = validate(date, out, posts, mats, inp)
     for n in notes:
         print("  検算:", n, flush=True)

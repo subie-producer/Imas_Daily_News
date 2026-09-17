@@ -65,5 +65,35 @@
   "src_candidate_id": "202609140234-explore-2",
   "event_date": "2026-09-12",
   "deadline": "2026-09-21"
+ },
+ {
+  "id": "sched-2026-09-21-sidem-11th-commentarycasting-締切",
+  "dedup_key": "sidem-11th-commentarycasting",
+  "brand": "sidem",
+  "subject": "SideM11th配信チケット販売終了",
+  "kind": "締切",
+  "note": "配信チケット販売がこの日18:00に締切",
+  "reserved_on": "2026-09-18",
+  "title": "SideM 11th STAGE キャスト生出演オーディオコメンタリー付き同時視聴上映会",
+  "url": "https://idolmaster-official.jp/news/01_19904",
+  "source_type": "公式",
+  "facts": [
+   "「THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～」キャスト生出演オーディオコメンタリー付き同時視聴上映会を開催",
+   "DAY1同時視聴上映会: 2026年9月19日(土) 11:00～（予定）、視聴URL: https://asobistage.asobistore.jp/event/sidem_11th/player/re_day1",
+   "DAY2同時視聴上映会: 2026年9月20日(日) 11:30～（予定）、視聴URL: https://asobistage.asobistore.jp/event/sidem_11th/player/re_day2",
+   "キャスト生出演オーディオコメンタリー付き同時視聴上映会は対応する日程のASOBI STAGE配信視聴チケット購入済み、またはシリアルコード認証済みのアカウントで視聴可能",
+   "配信チケット販売期間: 2026年8月4日(火)12:00 ～ 9月21日(月･祝)18:00 (予定)",
+   "最速版アーカイブ: 各公演イベント本編終了1時間後～2026年9月14日(月)18:00 (予定)",
+   "正式版アーカイブ: 2026年9月14日(月)18:00～9月21日(月・祝)23:59 (予定)",
+   "視聴コメント付きアーカイブ（DAY1/DAY2共通）: 2026年9月21日(月･祝)18:00～2026年9月28日(月)23:59（予定）",
+   "公演オリジナルデジタルチケット画像プレゼント: DAY1またはDAY2配信視聴チケット購入で1枚、DAY1＋DAY2配信視聴チケット購入で2枚",
+   "画像生成可能期間: 2026年8月4日(火)12:00～9月30日(水)23:59（予定）",
+   "アンケート実施日時: 2026年9月14日(月)18:00～9月28日(月)23:59まで",
+   "エンゲージメント: 高"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609171837-watch-1",
+  "event_date": "2026-09-12"
  }
 ]

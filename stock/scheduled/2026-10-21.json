@@ -1,22 +1,51 @@
 [
-  {
-    "id": "sched-2026-10-21-sidem-monthly-theme-song-12-cafe-parade-2026-発売",
-    "dedup_key": "sidem-monthly-theme-song-12-cafe-parade-2026",
-    "brand": "sidem",
-    "subject": "SideM MONTHLY THEME SONG第12弾「Café Parade」",
-    "kind": "発売",
-    "reserved_on": "2026-09-11",
-    "facts": [
-      "MONTHLY THEME SONG 12 Café Paradeは10月21日発売、価格2,310円(税込)/2,100円(税抜)、品番LACM-24792",
-      "歌唱は神谷幸広・東雲荘一郎・アスラン＝ベルゼビュートⅡ世・卯月巻緒・水嶋咲、収録は表題曲「ALLDAY LOVING！」ほか全7トラック",
-      "店舗特典はアソビストア・ゲーマーズ・タワーレコード・とらのあながL判ブロマイド、アニメイトがミニフォト＆ロングフォト、Amazonが缶バッジ、ソフマップ・アニメガがアクリルコースター、TSUTAYA RECORDSがましかくブロマイド、楽天ブックスがトレーディングカード"
-    ],
-    "title": "SideM Café Parade、CD特典決定",
-    "url": "https://www.lantis.jp/sidem/extra/index.html#20260910_1",
-    "source_type": "準公式",
-    "verify": "confirmed",
-    "event_date": "2026-10-21",
-    "deadline": "2026-10-21",
-    "src_candidate_id": "202609101835-explore-12"
-  }
+ {
+  "id": "sched-2026-10-21-sidem-monthly-theme-song-12-cafe-parade-2026-発売",
+  "dedup_key": "sidem-monthly-theme-song-12-cafe-parade-2026",
+  "brand": "sidem",
+  "subject": "SideM MONTHLY THEME SONG第12弾「Café Parade」",
+  "kind": "発売",
+  "reserved_on": "2026-09-11",
+  "facts": [
+   "MONTHLY THEME SONG 12 Café Paradeは10月21日発売、価格2,310円(税込)/2,100円(税抜)、品番LACM-24792",
+   "歌唱は神谷幸広・東雲荘一郎・アスラン＝ベルゼビュートⅡ世・卯月巻緒・水嶋咲、収録は表題曲「ALLDAY LOVING！」ほか全7トラック",
+   "店舗特典はアソビストア・ゲーマーズ・タワーレコード・とらのあながL判ブロマイド、アニメイトがミニフォト＆ロングフォト、Amazonが缶バッジ、ソフマップ・アニメガがアクリルコースター、TSUTAYA RECORDSがましかくブロマイド、楽天ブックスがトレーディングカード"
+  ],
+  "title": "SideM Café Parade、CD特典決定",
+  "url": "https://www.lantis.jp/sidem/extra/index.html#20260910_1",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "event_date": "2026-10-21",
+  "deadline": "2026-10-21",
+  "src_candidate_id": "202609101835-explore-12"
+ },
+ {
+  "id": "sched-2026-10-21-cg-isetan-osechi-2027-開始",
+  "dedup_key": "cg-isetan-osechi-2027",
+  "brand": "cg",
+  "subject": "伊勢丹おせち2027販売開始",
+  "kind": "開始",
+  "note": "三越伊勢丹オンラインストアで販売が10時開始",
+  "reserved_on": "2026-09-18",
+  "title": "伊勢丹コラボおせち2027商品公開",
+  "url": "https://www.mistore.jp/shopping/feature/foods_f2/idolmaster_i_osechi_f.html",
+  "source_type": "当事者",
+  "facts": [
+   "「アイドルマスター シンデレラガールズ」×伊勢丹のおせち2027を展開する",
+   "描き下ろしイラストには振袖姿の鷹富士茄子が登場する",
+   "商品は三越伊勢丹オンラインストアで販売する",
+   "エムアイカード会員さま限定セットを用意する",
+   "エムアイカード会員さま限定特典は缶バッジ",
+   "缶バッジのサイズは直径約5.6cm",
+   "缶バッジの素材はブリキ・紙",
+   "商品Aは「幸」個食おせち二客（冷凍）鷹富士 茄子 限定Ver.",
+   "商品Aの重箱は木製、16.5×16.5×5.4cm×2、2人前",
+   "商品Aは祝箸・取り箸付きではない",
+   "商品Aの価格は24,840円",
+   "商品Bは「祥」洋風おせち二段（冷凍）鷹富士 茄子 限定Ver."
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609170735-explore-11"
+ }
 ]

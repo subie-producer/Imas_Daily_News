@@ -260,5 +260,34 @@
   "via": "explore",
   "verify": "confirmed",
   "src_candidate_id": "202609160734-explore-17"
+ },
+ {
+  "id": "sched-2026-09-26-shiny-solo-live-kitchen-car-2026-開始",
+  "dedup_key": "shiny-solo-live-kitchen-car-2026",
+  "brand": "shiny",
+  "subject": "ソロライブコラボキッチンカー出店開始",
+  "kind": "開始",
+  "note": "京王アリーナ TOKYOでキッチンカーが出店開始",
+  "reserved_on": "2026-09-18",
+  "title": "283 PRODUCTION Solo Live Collection -Master ShowPiece- コラボキッチンカー出店決定",
+  "url": "https://idolmaster-official.jp/news/01_19906",
+  "source_type": "公式",
+  "facts": [
+   "「283 PRODUCTION Solo Live Collection -Master ShowPiece-」へのコラボキッチンカー出店が決定",
+   "営業時間: 2026年9月26日(土)10:00～17:00（予定）、2026年9月27日(日)10:00～17:00（予定）",
+   "実施場所: 京王アリーナ TOKYO 2Fデッキ",
+   "ご提供メニュー: ナポリタン……！パン ￥１,000（税込）、コーヒーの代わりのレモンティー ￥800（税込）、餃子煎餅 ￥１,000（税込）",
+   "購入特典: 283 PRODUCTION Solo Live Collection -Master ShowPiece- ダイカットステッカー（全28種）",
+   "お選びいただいたグループよりランダムでご注文１点毎に１個お渡しします",
+   "ご注文合計数内であればグループは好きな数で割り振りいただけます",
+   "キッチンカーのご利用は現金のみのお取り扱い",
+   "特典につきましては、お引替えの時間帯によってご希望グループの配布が終了している場合があります",
+   "JコミュニケーションX: https://x.com/jcom_planning",
+   "エンゲージメント: 低"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609171837-watch-6",
+  "event_date": "2026-09-26"
  }
 ]

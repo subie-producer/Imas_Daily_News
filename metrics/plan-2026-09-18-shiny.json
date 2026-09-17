@@ -1,0 +1,310 @@
+{
+ "decisions": {
+  "shiny-hopeful-feathers-goods-2026": {
+   "action": "article",
+   "angle": "受付開始済みのCD発売記念グッズ通販に、アニメイト通販の追加受付や配送時期(11月下旬)、個別商品の価格・仕様など新情報が加わったことを伝える",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策のgoods----2026・kogane-keyholder-2026をこの記事に統合"
+  },
+  "shiny-hopeful-feathers-stella-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "8/26号で発売・全曲収録内容を既報済み。今回の追加は品番など台帳的事実のみで新事実なし(規程2)"
+  },
+  "shiny-hopeful-feathers-luna-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "8/26号で発売・全曲収録内容を既報済み。今回の追加は品番など台帳的事実のみで新事実なし(規程2)"
+  },
+  "shiny-hopeful-feathers-sol-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "8/26号で発売・全曲収録内容を既報済み。今回の追加は品番など台帳的事実のみで新事実なし(規程2)"
+  },
+  "shiny-hopeful-feathers-goods----2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hopeful-feathers-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の受注受付キャンペーンの重複素材(準公式サイト版)"
+  },
+  "shiny-official-shop-photo-panel-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-official-shop-photo-panel-2026-09-18",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の新柄フォトパネル取扱開始の9/14付予告版。トリガー日記事に統合"
+  },
+  "refrac7ions-still-blue-2026": {
+   "action": "article",
+   "angle": "「Still blue」公式グッズ事前販売ファイナルの受注内容と10/4締切の受注期間を伝える",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-solo-live-kitchen-car-2026": {
+   "action": "article",
+   "angle": "283プロ ソロライブ公演へのコラボキッチンカー出店決定、日程・場所・メニュー・購入特典を伝える",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-kaho-get-2026": {
+   "action": "roundup",
+   "angle": "SSRプロデュースアイドル小宮果穂の登場動画公開やWeb4コマ最新話など、進行中の運営情報をまとめる",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "報酬アイドル紹介部分はautumn-maple-box-2026と重複するためそちらに寄せる"
+  },
+  "shiny-hopeful-feathers-kogane-keyholder-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hopeful-feathers-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の受注受付キャンペーンの個別商品(月岡恋鐘キーホルダー)ページ"
+  },
+  "shiny-enkan-halo-01-2026": {
+   "action": "article",
+   "angle": "次回ピックアップガシャ『円環-Halo around-』第1弾(アンティーカ×シーズ)の開催を予告",
+   "rank": "small",
+   "lead_score": 12,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-yuika-pickup-2026-09": {
+   "action": "article",
+   "angle": "結華ピックアップガシャが本日11:59に終了することを伝える",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切は規程13で単独記事扱い(roundup対象外)"
+  },
+  "shiny-asahi-sakuya-pickup-2026-09": {
+   "action": "article",
+   "angle": "あさひ・咲耶ピックアップガシャが本日11:59に終了することを伝える",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切は規程13で単独記事扱い(roundup対象外)。別バナーのためyuikaとは別記事"
+  },
+  "shiny-antica-new-song-event-2026": {
+   "action": "article",
+   "angle": "アンティーカ新曲『ブレイク・アウト・セレンディピティ』お披露目イベントの開催を予告",
+   "rank": "small",
+   "lead_score": 12,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-autumn-maple-box-2026": {
+   "action": "roundup",
+   "angle": "「オータム・メイプル・ボックス」報酬アイドル紹介など進行中の運営情報をまとめる",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "kaho-get-2026の同一言及と合わせてroundupを構成(計3項目)"
+  },
+  "shiny-official-shop-photo-panel-2026-09-18": {
+   "action": "article",
+   "angle": "新柄アイドルフォトパネル3種、本日よりオフィシャルショップ5店舗で取り扱い開始",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/15既報の予告内容と同一だが、今日が実際の発売日(トリガー日)のため記事化(規程8)"
+  },
+  "shiny-idol-photo-panel-new-designs-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-official-shop-photo-panel-2026-09-18",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の新柄フォトパネル取扱開始トリガー日記事に統合(未確認ソースの重複素材)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-hopeful-feathers-goods-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "受付開始済みのCD発売記念グッズ通販に、アニメイト通販の追加受付や配送時期(11月下旬)、個別商品の価格・仕様など新情報が加わったことを伝える",
+    "lead_score": 8,
+    "dedup_key": "shiny-hopeful-feathers-goods-2026",
+    "candidate_ids": [
+     "202609170735-watch-4",
+     "202609170735-explore-15",
+     "202609180236-explore-13"
+    ]
+   },
+   {
+    "slug": "shiny-refrac7ions-still-blue-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「Still blue」公式グッズ事前販売ファイナルの受注内容と10/4締切の受注期間を伝える",
+    "lead_score": 15,
+    "dedup_key": "refrac7ions-still-blue-2026",
+    "candidate_ids": [
+     "202609171837-watch-5"
+    ]
+   },
+   {
+    "slug": "shiny-solo-live-kitchen-car-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "283プロ ソロライブ公演へのコラボキッチンカー出店決定、日程・場所・メニュー・購入特典を伝える",
+    "lead_score": 10,
+    "dedup_key": "shiny-solo-live-kitchen-car-2026",
+    "candidate_ids": [
+     "202609171837-watch-6"
+    ]
+   },
+   {
+    "slug": "shiny-enkan-halo-01-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "次回ピックアップガシャ『円環-Halo around-』第1弾(アンティーカ×シーズ)の開催を予告",
+    "lead_score": 12,
+    "dedup_key": "shiny-enkan-halo-01-2026",
+    "candidate_ids": [
+     "202609180236-grok-52"
+    ]
+   },
+   {
+    "slug": "shiny-yuika-pickup-2026-09",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "結華ピックアップガシャが本日11:59に終了することを伝える",
+    "lead_score": 5,
+    "dedup_key": "shiny-yuika-pickup-2026-09",
+    "candidate_ids": [
+     "202609180236-grok-53"
+    ]
+   },
+   {
+    "slug": "shiny-asahi-sakuya-pickup-2026-09",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "あさひ・咲耶ピックアップガシャが本日11:59に終了することを伝える",
+    "lead_score": 5,
+    "dedup_key": "shiny-asahi-sakuya-pickup-2026-09",
+    "candidate_ids": [
+     "202609180236-grok-54"
+    ]
+   },
+   {
+    "slug": "shiny-antica-new-song-event-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "アンティーカ新曲『ブレイク・アウト・セレンディピティ』お披露目イベントの開催を予告",
+    "lead_score": 12,
+    "dedup_key": "shiny-antica-new-song-event-2026",
+    "candidate_ids": [
+     "202609180236-grok-58"
+    ]
+   },
+   {
+    "slug": "shiny-official-shop-photo-panel-2026-09-18",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "新柄アイドルフォトパネル3種、本日よりオフィシャルショップ5店舗で取り扱い開始",
+    "lead_score": 55,
+    "dedup_key": "shiny-official-shop-photo-panel-2026-09-18",
+    "candidate_ids": [
+     "sched-2026-09-18-shiny-official-shop-photo-panel-2026-09-18-発売",
+     "202609170735-explore-34",
+     "sched-2026-09-18-shiny-idol-photo-panel-new-designs-2026-開幕"
+    ]
+   },
+   {
+    "slug": "shiny-kaho-get-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "SSRプロデュースアイドル小宮果穂の登場動画公開やWeb4コマ最新話など、進行中の運営情報をまとめる",
+    "lead_score": 0,
+    "dedup_key": "shiny-kaho-get-2026",
+    "candidate_ids": [
+     "202609180236-explore-7"
+    ]
+   },
+   {
+    "slug": "shiny-autumn-maple-box-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「オータム・メイプル・ボックス」報酬アイドル紹介など進行中の運営情報をまとめる",
+    "lead_score": 0,
+    "dedup_key": "shiny-autumn-maple-box-2026",
+    "candidate_ids": [
+     "202609180236-grok-59"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-hopeful-feathers-stella-2026",
+    "reason": "既報",
+    "note": "8/26号で発売・全曲収録内容を既報済み。今回の追加は品番など台帳的事実のみで新事実なし(規程2)"
+   },
+   {
+    "dedup_key": "shiny-hopeful-feathers-luna-2026",
+    "reason": "既報",
+    "note": "8/26号で発売・全曲収録内容を既報済み。今回の追加は品番など台帳的事実のみで新事実なし(規程2)"
+   },
+   {
+    "dedup_key": "shiny-hopeful-feathers-sol-2026",
+    "reason": "既報",
+    "note": "8/26号で発売・全曲収録内容を既報済み。今回の追加は品番など台帳的事実のみで新事実なし(規程2)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

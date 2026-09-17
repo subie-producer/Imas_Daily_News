@@ -1,0 +1,40 @@
+{
+ "decisions": {
+  "tours-s1-ex-momoko-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "S1弾Ex開始・周防桃子・楽曲・カード28種は9/10,9/16既報(joint-tours-s1-ex-2026等)。開始も9/17 7時で発行日06:00前。新事実なし。"
+  },
+  "imas-20th-orchestra-concert-album-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信開始(9/16)は9/17号で既報(okemas-2025-streaming-post-2026-09)。曲数・PF一覧・商品名は同一告知の詳細で新事実なし。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "tours-s1-ex-momoko-2026",
+    "reason": "既報",
+    "note": "S1弾Ex開始・周防桃子・楽曲・カード28種は9/10,9/16既報(joint-tours-s1-ex-2026等)。開始も9/17 7時で発行日06:00前。新事実なし。"
+   },
+   {
+    "dedup_key": "imas-20th-orchestra-concert-album-2026",
+    "reason": "既報",
+    "note": "配信開始(9/16)は9/17号で既報(okemas-2025-streaming-post-2026-09)。曲数・PF一覧・商品名は同一告知の詳細で新事実なし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -131,10 +131,6 @@
   brand: gaku
   subject: 学マスESPRESTO「Sweet moment」姫崎莉波・十王星南 Another color ver.
   watch: 2027年2月予定の正式発売日(判明次第 triggers へ)
-- dedup_key: shiny-glasses-rerun-gacha-2026
-  brand: shiny
-  subject: シャニマス復刻ピックアップガシャ「眼鏡越しに映るキミは」
-  watch: 開催終了日(判明次第 triggers へ)
 - dedup_key: shiny-lycoris-letter-gacha-2026
   brand: shiny
   subject: シャニマス新ピックアップガシャ「Lycoris Letter」
@@ -155,19 +151,23 @@
   brand: shiny
   subject: シャニマス新ガシャシリーズ予告(★3確率1.5倍/新衣装)
   watch: ガシャ名・開催日時(判明次第 triggers へ)
-- dedup_key: shiny-10------------------9-16--15-00
-  brand: shiny
-  subject: 近日登場予定のアイドルのチラ見せ(9/16 15:00発表予定)
-  watch: 登場アイドル名(9/16 15:00判明次第 triggers へ)
 - dedup_key: sidem-aji-project-2026
   brand: sidem
   subject: SideM「AJIプロジェクト」新ストーリーシリーズ
   watch: 2026年10月開始予定の正式日程・詳細(判明次第 triggers へ)
-- dedup_key: cg-isetan-osechi-2027
-  brand: cg
-  subject: シンデレラガールズ×伊勢丹のおせち2027 販売情報
-  watch: オンラインストア販売開始日・SNSキャンペーン詳細(追って公開予定、判明次第 triggers へ)
 - dedup_key: shiny-higuchi-madoka-effortless-figure-2026
   brand: shiny
   subject: 樋口円香フィギュア「おしごとエフォートレス Ver.」予約開始
   watch: 予約受付開始日(近日開始と発表、判明次第 triggers へ)
+- dedup_key: cg-isetan-osechi-2027
+  brand: cg
+  subject: シンデレラガールズ×伊勢丹のおせち2027 販売情報
+  watch: SNSキャンペーン詳細(販売開始10/21・締切11/17は判明、SNS情報は追って公開予定、判明次第 triggers へ)
+- dedup_key: shiny-antica-new-song-event-2026
+  brand: shiny
+  subject: シャニソン アンティーカ新曲イベント「歯車ほどき穿つ旋律」
+  watch: 開催日時(近日開催予定、判明次第 triggers へ)
+- dedup_key: shiny-enkan-halo-01-2026
+  brand: shiny
+  subject: シャニソン新ガシャ「円環-Halo around-」#01 アンティーカ×シーズ
+  watch: 開催日時(近日開催予定、判明次第 triggers へ)

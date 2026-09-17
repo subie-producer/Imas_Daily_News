@@ -1,0 +1,70 @@
+{
+ "decisions": {
+  "orchestra-2025-music-release": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "joint面 okemas-2025-streaming-post-2026-09(2026-09-17付)が「音源9/16配信開始」を既報済み。新事実なし。"
+  },
+  "agp-store-shanghai-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "joint面 joint-anime-girls-project-store-shanghai-2026(2026-09-06付)が9/22上海開業・南京東路の店舗・3作品参加を既報済み。購入制限や将来展開の追記は新たな読者行動を生む新事実に乏しい。"
+  },
+  "agp-store-shanghai-china-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一開業告知の中国語版。joint-anime-girls-project-store-shanghai-2026で既報済みの内容と同一で、agp-store-shanghai-2026とも重複。"
+  },
+  "tours-suoh-momoko-september-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "million-tours-s1-ex-momoko-rolling-sankaku-2026",
+   "reason": "重複",
+   "note": "周防桃子(ミリオンライブ)発のTOURS施策で、million面が同日付で同一話題を記事化済み。ゲスト出演ではなく主催ブランドはミリオンのため合同ではない。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "orchestra-2025-music-release",
+    "reason": "既報",
+    "note": "joint面 okemas-2025-streaming-post-2026-09(2026-09-17付)が「音源9/16配信開始」を既報済み。新事実なし。"
+   },
+   {
+    "dedup_key": "agp-store-shanghai-2026",
+    "reason": "既報",
+    "note": "joint面 joint-anime-girls-project-store-shanghai-2026(2026-09-06付)が9/22上海開業・南京東路の店舗・3作品参加を既報済み。購入制限や将来展開の追記は新たな読者行動を生む新事実に乏しい。"
+   },
+   {
+    "dedup_key": "agp-store-shanghai-china-2026",
+    "reason": "既報",
+    "note": "同一開業告知の中国語版。joint-anime-girls-project-store-shanghai-2026で既報済みの内容と同一で、agp-store-shanghai-2026とも重複。"
+   },
+   {
+    "dedup_key": "tours-suoh-momoko-september-2026",
+    "reason": "重複",
+    "note": "周防桃子(ミリオンライブ)発のTOURS施策で、million面が同日付で同一話題を記事化済み。ゲスト出演ではなく主催ブランドはミリオンのため合同ではない。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

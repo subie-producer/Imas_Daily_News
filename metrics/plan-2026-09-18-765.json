@@ -1,0 +1,110 @@
+{
+ "decisions": {
+  "million14th-765as-solo-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "会場CD(3,300円/9/19発売)・ポスター特典は既にmillion面のミリオン14th記事のfactsに含まれ新事実なし。物販時間・テント場所・3点上限は枝葉。"
+  },
+  "765pro-allstars-live-bluray": {
+   "action": "article",
+   "angle": "アソビストア受注延長(9/27締切)とDAY1/DAY2ダイジェスト映像公開で『NEVER END IDOL』Blu-rayを訴求",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "店舗詳細ページ・DAY1/DAY2ダイジェスト動画を統合。受注締切の明示(9/27)は新事実、映像公開も新規。"
+  },
+  "puchimas-final-200-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2026-09-16号でgeneral面が記事化済み(story_id: puchimasufinal2026)。最終回・発売日等の核心事実は同一。"
+  },
+  "765-never-end-idol-bd-2026-store": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765pro-allstars-live-bluray",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一Blu-rayの商品詳細(発売日11/25・セット内容・合わせ買い不可)。受注延長記事へ統合。"
+  },
+  "765-never-end-idol-day1-digest-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765pro-allstars-live-bluray",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同Blu-ray販促のDAY1ダイジェスト映像公開。DAY2と合わせ受注延長記事へ統合。"
+  },
+  "765-never-end-idol-day2-digest-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765pro-allstars-live-bluray",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同Blu-ray販促のDAY2ダイジェスト映像公開。DAY1と合わせ受注延長記事へ統合。"
+  },
+  "765-summer-live-stage-kuji-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2026-08-24号で既報(story_id: kotobukiya-kuji-summer-live-stage-2026)。販売期間・賞品構成は同一、配送・確率は枝葉。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-765pro-allstars-live-bluray",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "アソビストア受注延長(9/27締切)とDAY1/DAY2ダイジェスト映像公開で『NEVER END IDOL』Blu-rayを訴求",
+    "lead_score": 50,
+    "dedup_key": "765pro-allstars-live-bluray",
+    "candidate_ids": [
+     "202609171837-watch-0",
+     "202609180236-grok-40",
+     "202609180236-grok-41",
+     "202609180236-grok-42"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million14th-765as-solo-collection-2026",
+    "reason": "既報",
+    "note": "会場CD(3,300円/9/19発売)・ポスター特典は既にmillion面のミリオン14th記事のfactsに含まれ新事実なし。物販時間・テント場所・3点上限は枝葉。"
+   },
+   {
+    "dedup_key": "puchimas-final-200-2026",
+    "reason": "既報",
+    "note": "2026-09-16号でgeneral面が記事化済み(story_id: puchimasufinal2026)。最終回・発売日等の核心事実は同一。"
+   },
+   {
+    "dedup_key": "765-summer-live-stage-kuji-2026",
+    "reason": "既報",
+    "note": "2026-08-24号で既報(story_id: kotobukiya-kuji-summer-live-stage-2026)。販売期間・賞品構成は同一、配送・確率は枝葉。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

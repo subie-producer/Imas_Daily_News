@@ -36,5 +36,36 @@
   "verify": "confirmed",
   "src_candidate_id": "202609022336-watch-3",
   "event_date": "2026-12-20"
+ },
+ {
+  "id": "sched-2026-12-20-refrac7ions-still-blue-2026-千秋楽",
+  "dedup_key": "refrac7ions-still-blue-2026",
+  "brand": "shiny",
+  "subject": "Still blue公演DAY2(千秋楽)",
+  "kind": "千秋楽",
+  "note": "公演DAY2が開演17:00",
+  "reserved_on": "2026-09-18",
+  "title": "shiny, the first REFRAC7IONS \"Still blue\" 公式グッズ事前販売ファイナル",
+  "url": "https://idolmaster-official.jp/news/01_19914",
+  "source_type": "公式",
+  "facts": [
+   "「shiny, the first REFRAC7IONS \" Still blue \"」公式グッズ事前販売ファイナルがスタート",
+   "「PJ: REFRAC7IONS」各ユニットの描きおろしキービジュアルイラストをあしらったグッズや、7ユニットそれぞれをイメージしたグッズが登場",
+   "一部アイテムは数量限定での販売",
+   "カードフォリオ シャイニーカラーズver. vol.3受注中、受注期間: 2026年10月4日(日)まで",
+   "「アイドルマスター カードフォリオ シャイニーカラーズ ver. vol.3」には、「PJ: REFRAC7IONS」のユニット衣装や、「My Songs Collection」「283Birthday Collection」のイラストが収録",
+   "新規描きおろしイラストのMRは「PJ: REFRAC7IONS」衣装での自撮りショット",
+   "協賛社グッズ販売もスタート、受注期間: 2026年10月4日(日)まで",
+   "予定数に達した場合、ご注文の途中終了や発売日の変更を行う場合があります",
+   "プロデュースポーチ各種は数量限定販売（ブラック/グレー各種）",
+   "公演日程: 2026年12月19日(土) 17:00開場／18:00開演、2026年12月20日(日) 16:00開場／17:00開演",
+   "会場: 国立代々木競技場 第一体育館",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609171837-watch-5",
+  "event_date": "2026-12-19",
+  "deadline": "2026-10-04"
  }
 ]

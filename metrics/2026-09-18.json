@@ -1,0 +1,101 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-18T02:36:59+09:00",
+   "edition": "2026-09-18",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 344,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 5,
+    "explore:million": 2,
+    "explore:shiny": 7,
+    "explore:sidem": 1,
+    "explore:gakuen": 5,
+    "explore:dsva": 1,
+    "explore:joint-other": 5,
+    "explore:trend": 6,
+    "grok:765as": 5,
+    "grok:cinderella": 7,
+    "grok:million": 1,
+    "grok:shiny": 5,
+    "grok:sidem": 2,
+    "grok:gakuen": 5,
+    "grok:dsva": 3,
+    "grok:joint-other": 0,
+    "grok:trend": 1
+   },
+   "normalized": 43,
+   "added": 29,
+   "verify": {
+    "confirmed": 30,
+    "unconfirmed": 11,
+    "failed": 2
+   },
+   "duration_s": 2181
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-18T04:25:13+09:00",
+   "edition": "2026-09-18",
+   "rounds": 4,
+   "approved": false,
+   "lint_green": false,
+   "planned": 42,
+   "written": 34,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 92,
+    "covered": 92,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 8.756749486923217,
+    "執筆": 7.767821117242177,
+    "組版": 7.347503717740377,
+    "校閲": 2.3443137367566425,
+    "校閲1波": 2.3443137367566425
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "shiny-yuika-pickup-2026-09",
+    "million-millishita-14thlive-countdown-login-bonus-2026",
+    "million-millishita-song-for-you-gasha-vol78-2026",
+    "gaku-hoshigakuen-radio-105-2026",
+    "dsva-ops-roundup",
+    "gaku-hatsuboshi-store-towel-saki-restock-2026"
+   ],
+   "duration_s": 5075
+  }
+ ]
+}

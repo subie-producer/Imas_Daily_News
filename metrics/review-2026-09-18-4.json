@@ -1,0 +1,204 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-18-million-tours-s1-ex-momoko-rolling-sankaku-2026.md",
+   "issue": "公式ページとの記述不一致：sources に記載された公式ページでは「SSR」と記載されているが、記事では「TSSR」と記載されている",
+   "quote": "周防桃子のTSSRサポートカード「our summer continues」",
+   "rule_id": "R3",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F7"
+   ],
+   "expected": "「周防桃子のSSRサポートカード」に修正され、公式ページ(https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20260910.html)の記述と一致する",
+   "scope": "article:2026-09-18-million-tours-s1-ex-momoko-rolling-sankaku-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-shiny-hopeful-feathers-goods-2026.md",
+   "issue": "frontmatter の sources ラベルに文字化け（アラビア文字）が含まれている",
+   "quote": "【シャニマス】「THE IDOLM@STER SHINY COLORS HOPEFUL FE@THERS」CD発売記念グッズ通販実施決定！ (2026-09-ج",
+   "rule_id": "R8",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "frontmatter の sources の最初の項目のラベルの日付を「(2026-09-16)」に修正する",
+   "scope": "article:2026-09-18-shiny-hopeful-feathers-goods-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "候補に含まれる公式発表の話題がいくつか紙面から漏れている。編集判断と推測されるが、記事化相当のニュースが落ちている可能性あり",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "特に以下3つの話題：①オケマス2025音源配信開始（公開済み）、②学マス×Chugai Grace Caféリバイバル（開催中）、③ミリオン×三越おせち2027（商品詳細発表）。ただし規程では1本ずつ落とされた理由は見えないため、本数制約の可能性",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-anime-onkyo-earphone-2026.md",
+   "issue": "候補ファイルの出典確認状態と記事の sources の記載に不一致がある。候補 202609172335-explore-6 は source_type='未確認' のままですが、その URL（onkyoanime.com）が sources に「当事者」として記載されています。onkyoanime.com はオンキヨーの公式店舗なので、候補ファイルでも 「公式」または「当事者」として分類されるべきです。この不一致は候補の管理上の問題であり、記事の内容には影響していません。",
+   "scope": "article:2026-09-18-million-anime-onkyo-earphone-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-anime-onkyo-earphone-2026.md",
+   "issue": "段落の根拠タグに不適切な fact_id が含まれている。Paragraph 2 の根拠に F30（ドライバー仕様：12mm ダイナミックドライバー）が付いていますが、この情報は段落に書かれていません。Paragraph 4 の根拠に F36（Bluetooth 範囲 10m）、F41（連続再生時間）、F42（連続通話時間）が付いていますが、これらも段落に書かれていません。記事の内容は出典に支援されていますが、根拠タグの管理に誤りがあります。",
+   "scope": "article:2026-09-18-million-anime-onkyo-earphone-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-cg-cinderella-girl-vote2026-schedule.md",
+   "issue": "前回の指摘（R2: 出典隠し）への対応が形式的に不完全。sources に公式サイトURL が記載され、そこから記事のすべての事実（投票期間 8/3 12:00～9/18 23:59、シリアルコード引き換え・投票券受け取り期限 9/18 23:59）が確認できるため、実質的には指摘を満たしています。ただし、verified_facts フィールドを追加して sources の公式 URL での確認を記録することで、形式的な完全性を向上させることを推奨します。",
+   "scope": "article:2026-09-18-cg-cinderella-girl-vote2026-schedule.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-765-765pro-allstars-live-bluray.md",
+   "issue": "分量不足: rank:small は本文250字が目安。現在の本文は約235字で基準に満たない。candidates の fact に「生産予定数を超過した場合、ご注文の途中終了や発売日の変更を行う場合がある」という購入者にとって有用な注意事項があるため、本文に追加を検討してください。",
+   "scope": "article:2026-09-18-765-765pro-allstars-live-bluray.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-cg-election-cheer-contest-2026.md",
+   "issue": "frontmatter の candidate_ids が実在しない。指定 ID: sched-2026-09-18-cg-election-cheer-contest-2026-締切 は candidates/2026-09-18.json に存在しません。記事は verified_facts（一次情報URL付き）と sources に基づいており内容検証は可能ですが、frontmatter のメタデータリンク切れです。修正: candidate_ids を削除するか、実在する候補を作成してください。",
+   "scope": "article:2026-09-18-cg-election-cheer-contest-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-cg-isetan-osechi-2027.md",
+   "issue": "細微な表記の自然性：レード文の「いずれも2人前・価格は2万4840円」において、同じ修飾対象を複数の「いずれも」で修飾しており、わずかに冗長。また段落3の「手ぬぐいは約縦88×横34cm・綿100％、お品書きは約縦15×横15cm・紙」は、「・」で仕様を区切るより「、」で分けた方が読みやすい。ただし明らかなエラーではなく、許容範囲内。",
+   "scope": "article:2026-09-18-cg-isetan-osechi-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-gaku-gakuen-radio-2026-09-23-guests.md",
+   "issue": "分量不足: rank: small は最低250字が目安ですが、本文が約30字です。出典には放送日時・番組詳細情報が記載されているはずなので、拡充を検討してください（一般論での水増しは不要）。",
+   "scope": "article:2026-09-18-gaku-gakuen-radio-2026-09-23-guests.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-gaku-gakumas-official-goods-2026-09-18.md",
+   "issue": "本文が小ランク基準の250字に満たない（約55字）。出典（X投稿）に詳細情報の掲載がないため、現状では追加情報を拾えず、短いままが妥当。",
+   "scope": "article:2026-09-18-gaku-gakumas-official-goods-2026-09-18.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-british-pub-hub-2026.md",
+   "issue": "frontmatter の candidate_ids に指定されている『sched-2026-09-18-million-british-pub-hub-2026-開幕』が candidates/2026-09-18.json に見つかりません。ただし sources に公式ページへのリンクがあり、内容の検証が可能です。",
+   "scope": "article:2026-09-18-million-british-pub-hub-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-british-pub-hub-2026.md",
+   "issue": "分量：rank: small として本文が短い（27字）ですが、短報として許容されます。",
+   "scope": "article:2026-09-18-million-british-pub-hub-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-millishita-access-outage-compensation-memories-of-you-2026-09.md",
+   "issue": "分量不足。rank: smallの最小要件は250字ですが、本文は118字に留まっています。当日の締切リマインダーとしての機能を果たしており、出典の内容も完全に網羅しているため、分量の短さ自体は許容範囲です。",
+   "scope": "article:2026-09-18-million-millishita-access-outage-compensation-memories-of-you-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-official-shop-kuji-panel-2026.md",
+   "issue": "frontmatter の candidate_ids に存在しない候補ID 2件が参照されている（sched-2026-09-18-million-official-shop-lottery-2026-09-発売、sched-2026-09-18-million-lottery-goods-photo-panel-2026-09-発売）。ただし sources に公式・準公式の1次情報が記載されており、本文は出典に基づいている",
+   "scope": "article:2026-09-18-million-official-shop-kuji-panel-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-official-shop-kuji-panel-2026.md",
+   "issue": "frontmatter の lede_fact_ids に F18 が参照されているが、candidates ファイル(202609170735-explore-33)に F18 は存在しない（F1-F13 のみ）。lede 自体は F1・F2 で説明でき、内容は正確",
+   "scope": "article:2026-09-18-million-official-shop-kuji-panel-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-shiny-antica-new-song-event-2026.md",
+   "issue": "分量不足。rank: small の下限 250 字に対して、本文が約 110 字程度に留まっている。出典には詳細な開始日・終了日の記載がないため、これ以上の情報収集が難しい可能性がありますが、現在の情報で記事を成立させるなら、イベントストーリーの有無についても言及する（candidates に「本イベントにイベントストーリーはない」と記載されている）ことで分量を増やせます。",
+   "scope": "article:2026-09-18-shiny-antica-new-song-event-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-shiny-autumn-maple-box-2026.md",
+   "issue": "分量不足：rank:small に対して本文が薄い。small の下限は 250字ですが、本文は約 60字です。出典に書いてあるイベント内容・報酬詳細・ガシャの仕様などを拾えば埋まるはずです。",
+   "scope": "article:2026-09-18-shiny-autumn-maple-box-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-shiny-enkan-halo-01-2026.md",
+   "issue": "分量不足: rank: small のわりに本文が極めて短い（約90字）。candidates には他に有用な情報がないようだが、出典ポストをさらに詳しく読めば追加情報があるかもしれません",
+   "scope": "article:2026-09-18-shiny-enkan-halo-01-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-shiny-official-shop-photo-panel-2026-09-18.md",
+   "issue": "分量不足: rank \"small\" で 250 字以上が基準ですが、記事は lede(61字) + 本文(148字) = 209字です。ただし candidates から補充可能な追加情報がなく、指示では分量不足はブロック理由にならないと明記されているため、指摘に留めます。",
+   "scope": "article:2026-09-18-shiny-official-shop-photo-panel-2026-09-18.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-18-765-765pro-allstars-live-bluray.md",
+  "article:2026-09-18-cg-15th-orchestra-2027.md",
+  "article:2026-09-18-cg-cinderella-15th-anniversary-party-2026.md",
+  "article:2026-09-18-cg-cinderella-girl-vote2026-schedule.md",
+  "article:2026-09-18-cg-dejimas-naha-2026.md",
+  "article:2026-09-18-cg-election-2026.md",
+  "article:2026-09-18-cg-election-cheer-contest-2026.md",
+  "article:2026-09-18-cg-hachimastu-2026.md",
+  "article:2026-09-18-cg-isetan-osechi-2027.md",
+  "article:2026-09-18-dsva-cosmo-birthday-live-report-2026.md",
+  "article:2026-09-18-dsva-valiv-2nd-anniversary-cd-madanumiasu-2026.md",
+  "article:2026-09-18-gaku-gakuen-radio-2026-09-23-guests.md",
+  "article:2026-09-18-gaku-gakumas-official-goods-2026-09-18.md",
+  "article:2026-09-18-gaku-hatsuboshi-store-towel-saki-restock-2026.md",
+  "article:2026-09-18-million-14th-live-2026.md",
+  "article:2026-09-18-million-anime-onkyo-earphone-2026.md",
+  "article:2026-09-18-million-british-pub-hub-2026.md",
+  "article:2026-09-18-million-kotobukiya-kuji-stage04-2026.md",
+  "article:2026-09-18-million-live-9th-anniversary-2026.md",
+  "article:2026-09-18-million-millishita-access-outage-compensation-memories-of-you-2026-09.md",
+  "article:2026-09-18-million-official-shop-kuji-panel-2026.md",
+  "article:2026-09-18-million-tours-s1-ex-momoko-rolling-sankaku-2026.md",
+  "article:2026-09-18-shiny-antica-new-song-event-2026.md",
+  "article:2026-09-18-shiny-asahi-sakuya-pickup-2026-09.md",
+  "article:2026-09-18-shiny-autumn-maple-box-2026.md",
+  "article:2026-09-18-shiny-enkan-halo-01-2026.md",
+  "article:2026-09-18-shiny-hopeful-feathers-goods-2026.md",
+  "article:2026-09-18-shiny-kaho-get-2026.md",
+  "article:2026-09-18-shiny-official-shop-photo-panel-2026-09-18.md",
+  "article:2026-09-18-shiny-refrac7ions-still-blue-2026.md",
+  "article:2026-09-18-shiny-solo-live-kitchen-car-2026.md",
+  "article:2026-09-18-sidem-11th-commentarycasting.md",
+  "article:2026-09-18-sidem-11th-stage-2026.md",
+  "article:2026-09-18-sidem-console-game-2026.md",
+  "article:2026-09-18-sidem-fbfes-movie-2026.md",
+  "article:2026-09-18-sidem-renaissance-2026.md",
+  "article:2026-09-18-sidem-teddys-collection-2-namba-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-18-765-765pro-allstars-live-bluray.md": "94393e095ae3e89b6c84f1f6a124b1255af3c1e0e3228a8770fa251055aa704f",
+  "docs/_posts/2026-09-18-cg-15th-orchestra-2027.md": "ceb4f295befc4399611a6b2bcc922f73aefdc4d4a5f2913c44b7f8bf2f4a9e30",
+  "docs/_posts/2026-09-18-cg-cinderella-15th-anniversary-party-2026.md": "4f403b6d73445cb343f5bd22ab2aa8a78df0b42fca5c249867fa27354ee57c33",
+  "docs/_posts/2026-09-18-cg-cinderella-girl-vote2026-schedule.md": "6c759d45e1a9d2082325f70ead23146e69b525324c369af8e77952c79ab03498",
+  "docs/_posts/2026-09-18-cg-dejimas-naha-2026.md": "ab3013b79beac49acbd9197396392d97bdb25a45060d26c6e93f9737c47f98b5",
+  "docs/_posts/2026-09-18-cg-election-2026.md": "e607f3e43e2fe6a81566dd577f6449fac33093f2710742db47ddba1abafcf7b1",
+  "docs/_posts/2026-09-18-cg-election-cheer-contest-2026.md": "f56db2cd1fc7771ec6cc090988cbc177bf3dae1a9fe870b26a2905e78bf8e245",
+  "docs/_posts/2026-09-18-cg-hachimastu-2026.md": "902db65590eb6a04609d88cda8437b42724d000b5f0a14485fd05c67a4fbf3e3",
+  "docs/_posts/2026-09-18-cg-isetan-osechi-2027.md": "b5c06641dcc01e2b47d84942ba4637277d32be01a0503abae019a929048fa572",
+  "docs/_posts/2026-09-18-dsva-cosmo-birthday-live-report-2026.md": "a67fbba84bc24a3163bd4a1e730fee4393b5a94dd14c1ba6dd686e2c86229079",
+  "docs/_posts/2026-09-18-dsva-valiv-2nd-anniversary-cd-madanumiasu-2026.md": "534d4d804110d7ece968ef1965708055c375cc596296400385b9cfa4cab87ad9",
+  "docs/_posts/2026-09-18-gaku-gakuen-radio-2026-09-23-guests.md": "1f8067b4aa6e44e6e17fa5fe15705e55a6f59c0407b5c5c00888f06d79a5560d",
+  "docs/_posts/2026-09-18-gaku-gakumas-official-goods-2026-09-18.md": "6b7cca09863028e556a6c36d49e45685c18c2dfd3ba5daafee74ae56cd926e87",
+  "docs/_posts/2026-09-18-million-14th-live-2026.md": "b6b43178e7d8cbffcf55e3c6b8d4bc67352366ccf95ea1ee8142961f48256c54",
+  "docs/_posts/2026-09-18-million-anime-onkyo-earphone-2026.md": "76ecc5d443abb0fa733820a4b14399dd34177e84672ea24ab5fee3ff58718020",
+  "docs/_posts/2026-09-18-million-british-pub-hub-2026.md": "2a6c8d6b0876f2096c9d420169625de5d2a75989a9fa4fded34c218a5cc046be",
+  "docs/_posts/2026-09-18-million-kotobukiya-kuji-stage04-2026.md": "6c15f831bea7a0e2c31bceb0af75d5a7c3f21c67f5d308fee7ce9583b3ee1158",
+  "docs/_posts/2026-09-18-million-live-9th-anniversary-2026.md": "59a405c2ed1e0cde74def31041629a3e458997af5a61c0d400ebc4bd080e480c",
+  "docs/_posts/2026-09-18-million-millishita-access-outage-compensation-memories-of-you-2026-09.md": "488c03973b8a80ed7ebd9678fd85cf09150dc381749fadf0689ae241b3233724",
+  "docs/_posts/2026-09-18-million-official-shop-kuji-panel-2026.md": "4c1cab0224b3b602ef460b84b6fffa833886f2d671eb0e4ffd44a17b23ed7e17",
+  "docs/_posts/2026-09-18-million-tours-s1-ex-momoko-rolling-sankaku-2026.md": "795c7850dcf6a3bd90bf94dc09fa6275943eefdd22f7a12cba697949986b2c53",
+  "docs/_posts/2026-09-18-shiny-antica-new-song-event-2026.md": "d684b5bed6af8b119692eb55f89fa2f8c81c00ea4a136bcf0d1faf63601f8c23",
+  "docs/_posts/2026-09-18-shiny-asahi-sakuya-pickup-2026-09.md": "bdcb37767224f2b5c6116cdc73064cf1c7f09941ac59d4bf45e1e76c51eb0cdf",
+  "docs/_posts/2026-09-18-shiny-autumn-maple-box-2026.md": "a5efa6cd057fe3f9ef83d64f9c2f1953fc364edcc4e393d1a08eea8f4e0e370f",
+  "docs/_posts/2026-09-18-shiny-enkan-halo-01-2026.md": "a7b5ad2f316bd30eb6514757c2f7f9898eb0513eb8f2ee76cdedfa5a2128795a",
+  "docs/_posts/2026-09-18-shiny-hopeful-feathers-goods-2026.md": "0cc10126b701b68e45901447af96e87098d0ceaf01ad6cfc651a9cc99f51b1fc",
+  "docs/_posts/2026-09-18-shiny-kaho-get-2026.md": "0672118ca2cea6001da286bff08c8ca42a220488762ad6bda3a029b5e3e3b37b",
+  "docs/_posts/2026-09-18-shiny-official-shop-photo-panel-2026-09-18.md": "1e18d5a2b3aea2fc7b0c5ce3697e0f2d931de6e36a1f54ba5860f22744fbc5df",
+  "docs/_posts/2026-09-18-shiny-refrac7ions-still-blue-2026.md": "fcff4fbd99a07f4f5f83a46e843f2d14bb9c80298356901cb334c7ddf7d3cecb",
+  "docs/_posts/2026-09-18-shiny-solo-live-kitchen-car-2026.md": "8884f8fb5d64fb6ed861fbbbb769958ee18fa7309a172f0cad56886b20aad6ad",
+  "docs/_posts/2026-09-18-sidem-11th-commentarycasting.md": "08b846c8ae1e6e99fddebc100ab77fb57255f0f7b987d428996e1b8c37cd1e30",
+  "docs/_posts/2026-09-18-sidem-11th-stage-2026.md": "dcb7b01d2116f79c511259b29334dfed7b68db99a7915c2c4aed567c47ac9f04",
+  "docs/_posts/2026-09-18-sidem-console-game-2026.md": "3319ecaf5b1ea4a164b3e7db6e442f38235f359db771b82fcd6fdee8a348df3a",
+  "docs/_posts/2026-09-18-sidem-fbfes-movie-2026.md": "06e96f83adda28fa00412d8fdb834aa80b496b986775027118952f02581661ab",
+  "docs/_posts/2026-09-18-sidem-renaissance-2026.md": "a67228dbaffc9722df4cf4f27cb9af0e17b81597f4069300548d39c984012d23",
+  "docs/_posts/2026-09-18-sidem-teddys-collection-2-namba-2026.md": "bdd6e2e3e7be54a75e6819f5501e9b7683f24c1d580faaba67b291455a2a03d8",
+  "docs/_editions/2026-09-18.md": "602bf3bebcc0dcdc7e7e48222781ed8505ac5a1dc46c9a66c0b6cf85911fbfad",
+  "metrics/stories-before-2026-09-18.yml": "bec824c129e79bfa5d0b3396816eaa3e0948a38fb77e464b2dbfe93de3d6565d"
+ }
+}

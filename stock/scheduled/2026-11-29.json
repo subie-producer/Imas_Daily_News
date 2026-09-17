@@ -64,5 +64,36 @@
   "src_candidate_id": "202609170229-grok-46",
   "event_date": "2026-10-22",
   "deadline": "2026-11-29"
+ },
+ {
+  "id": "sched-2026-11-29-sidem-renaissance-2026-終了",
+  "dedup_key": "sidem-renaissance-2026",
+  "brand": "sidem",
+  "subject": "SideM×ルネサンスコラボ終了",
+  "kind": "終了",
+  "note": "コラボ企画がこの日終了",
+  "reserved_on": "2026-09-18",
+  "title": "SideM×スポーツクラブ ルネサンス「315 Fitness Project」開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19822",
+  "source_type": "公式",
+  "facts": [
+   "コラボ企画名: 315 Fitness Project in RENAISSANCE – からだも、こころも、315更新！",
+   "開催期間: 2026年10月22日（木）～2026年11月29日（日）",
+   "開催店舗: 全国49店舗のスポーツクラブ ルネサンス",
+   "アンバサダー5名: 蒼井悠介、蒼井享介、信玄誠司、山下次郎、大河タケル",
+   "映像レッスン出演: 信玄誠司、山下次郎の2名",
+   "実施プログラム: 信玄誠司 presents カーディオエクササイズ、信玄誠司 presents パワーエクササイズ、山下次郎 presents リズムストレッチの3種類",
+   "オリジナル館内ボイス: 信玄誠司と山下次郎による放送",
+   "館内装飾: 等身大スタンディ、のぼり、ミニキャライラストウォールステッカー",
+   "描き下ろしビジュアルスタンディ: アンバサダー5名",
+   "公式ビジュアルスタンディ: THE IDOLM@STER SideM 10th ANNIVERSARY P@SSION TOURの公式ビジュアル使用",
+   "グッズ付きコラボチケット: 限定オリジナルグッズセット販売",
+   "コラボチケットの種類: チケット枚数と付属グッズが異なる4種類を販売"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609170735-watch-2",
+  "event_date": "2026-10-22",
+  "deadline": "2026-11-29"
  }
 ]

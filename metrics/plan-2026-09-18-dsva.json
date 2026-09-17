@@ -1,0 +1,141 @@
+{
+ "decisions": {
+  "cosmo-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/12バースデーライブ本体と9/16コラボ配信(=valiv-tomori-nonoha-asobi-2026)は既に既報。9/15『#宇宙誕生祭2026』部分はファンwiki二次情報で未確認、新事実に乏しい。"
+  },
+  "letora-silent-hill-f-day06-2026": {
+   "action": "roundup",
+   "angle": "vα-liv/876メンバーの直近配信まとめ(レトラSILENT HILL f DAY06、上水流宇宙How to Fish、灯里愛夏×十河ののはコラボ)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "進行中の個別配信で単独記事化するほどの事件性なし。3件そろったのでroundup化。"
+  },
+  "cosmo-how-to-fish-2026": {
+   "action": "roundup",
+   "angle": "vα-liv/876メンバーの直近配信まとめ(レトラSILENT HILL f DAY06、上水流宇宙How to Fish、灯里愛夏×十河ののはコラボ)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/15既報の予告(dsva-how-to-fish-2026)を配信実施・実タイトルで裏付けるのみ。roundupへ。"
+  },
+  "valiv-2nd-anniversary-cd-madanumiasu-2026": {
+   "action": "article",
+   "angle": "vα-liv2周年記念CD『まだ見ぬ明日』の収録曲・封入特典が判明",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売自体は既報(9/17)だが全4曲の収録内容とステッカー・スリーブ特典は新情報。"
+  },
+  "valiv-tomori-nonoha-asobi-2026": {
+   "action": "roundup",
+   "angle": "vα-liv/876メンバーの直近配信まとめ(レトラSILENT HILL f DAY06、上水流宇宙How to Fish、灯里愛夏×十河ののはコラボ)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/17既報の予告を配信実施・実タイトルで裏付けるのみ。cosmo-birthday-live-2026と同一コラボ、素材はこちらに集約。"
+  },
+  "dsva-cosmo-birthday-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注開始(9/12〜)・グッズ5点セット・森倉円描き下ろしは9/14既報。今回は価格や寸法などショップページの詳細description増量で、新たな決定・日付なし。"
+  },
+  "dsva-cosmo-birthday-live-report-2026": {
+   "action": "article",
+   "angle": "ファミ通レポートで9/12バースデーライブのセットリスト・ライブビューイング会場・四条貴音との共演曲が判明",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "報道media(ファミ通)のみが伝えるセットリスト全8曲・お台場LV会場・共演曲『フラワーガール』は既報にない新事実。765プロとの共演が絡む面内最大級のネタ。"
+  },
+  "dsva-06": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "予約は『当落発表(見込み)』だが素材facts はLivePocket販売ページの既知情報のみで、9/18に当落発表があったことを裏付ける事実がない。dsva-05で9/18見込みと既報済み。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-2nd-anniversary-cd-madanumiasu-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "vα-liv2周年記念CD『まだ見ぬ明日』の収録曲・封入特典が判明",
+    "lead_score": 15,
+    "dedup_key": "valiv-2nd-anniversary-cd-madanumiasu-2026",
+    "candidate_ids": [
+     "202609171305-explore-13"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-birthday-live-report-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "ファミ通レポートで9/12バースデーライブのセットリスト・ライブビューイング会場・四条貴音との共演曲が判明",
+    "lead_score": 55,
+    "dedup_key": "dsva-cosmo-birthday-live-report-2026",
+    "candidate_ids": [
+     "202609180236-grok-57"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "vα-liv/876メンバーの直近配信まとめ(レトラSILENT HILL f DAY06、上水流宇宙How to Fish、灯里愛夏×十河ののはコラボ)",
+    "lead_score": 0,
+    "dedup_key": "letora-silent-hill-f-day06-2026",
+    "candidate_ids": [
+     "202609170735-explore-23",
+     "202609170735-explore-25",
+     "202609172335-explore-14"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cosmo-birthday-live-2026",
+    "reason": "既報",
+    "note": "9/12バースデーライブ本体と9/16コラボ配信(=valiv-tomori-nonoha-asobi-2026)は既に既報。9/15『#宇宙誕生祭2026』部分はファンwiki二次情報で未確認、新事実に乏しい。"
+   },
+   {
+    "dedup_key": "dsva-cosmo-birthday-goods-2026",
+    "reason": "既報",
+    "note": "受注開始(9/12〜)・グッズ5点セット・森倉円描き下ろしは9/14既報。今回は価格や寸法などショップページの詳細description増量で、新たな決定・日付なし。"
+   },
+   {
+    "dedup_key": "dsva-06",
+    "reason": "出典不足",
+    "note": "予約は『当落発表(見込み)』だが素材facts はLivePocket販売ページの既知情報のみで、9/18に当落発表があったことを裏付ける事実がない。dsva-05で9/18見込みと既報済み。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

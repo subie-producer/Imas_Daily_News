@@ -114,8 +114,11 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - gamewith.jp           # 合議で追加: 攻略サイトは定義で二次情報の例。著者署名なし、現地取材の明確な証拠なし。公式情報
+  - twiman.net            # 合議で追加: X(旧Twitter)の個人投稿を媒体として収集・表示。媒体として個人の創作を紹
+  - trend-shelf.com       # 合議で追加: ページ内で「公開情報ベース」と明記。取材形跡なく他所の発表を媒体として整理。相手
+  - appmedia.jp           # 合議で追加: 編集部署名、公式発表の言い換え、現地取材形跡なし
   - convenicheck.com      # 合議で追加: セブンネット等の公式情報をそのまま転載・紹介する形式
-  - appmedia.jp           # 合議で追加: 署名が編集部のみで、公式発表の言い換えで現地取材なし
   - www01.hanmoto.com     # 合議で追加: 出版社の出版情報を集約・提供するプラットフォーム。他所の発表を媒体化して伝えてい
   - mantan-web.jp         # 合議で追加: PR TIMES提供表記で公式発表の転載。独自取材・現地取材・関係者聞き取りの形
   - test.o-yake.com       # 合議で追加: ネット話題をまとめて解説。公開情報をもとに記事作成
@@ -189,9 +192,11 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
-  - mistore.jp            # 合議で追加: 三越伊勢丹がミリオンライブ！とのコラボレーション商品(おせち)を販売
+  - s-renaissance.co.jp   # 合議で追加: アイマスコラボイベントを主催するスポーツクラブ。会場・主催
+  - onkyoanime.com        # 合議で追加: アニメコラボグッズを販売する会社が自社商品を告知。販売元
+  - mistore.jp            # 合議で追加: コラボ商品販売企業、ライセンス商品販売
+  - hatsuboshi.store.mynavi.jp # 合議で追加: マイナビはバンダイナムコの子会社ではなく、ドメイン mynavi.jp から明白
   - ip.s-re.jp            # 合議で追加: ルネサンスがアイマス315プロジェクトとのコラボレーション商品(チケット・グッズ
-  - hatsuboshi.store.mynavi.jp # 合議で追加: 学園アイドルマスターのグッズをライセンス受けて販売する商品販売元
   - qo-kun.com            # クイックオーダー(TAPIRS Inc. の物販注文サイト。ライブ物販の事前注文=販売元)
   - sej.co.jp             # 合議で追加: ライセンス販売元。マルチコピー機でブロマイドを販売しており、自社サイトで商品告知
   - gashapon.jp           # 合議で追加: アイマス関連グッズをライセンス販売している販売元
@@ -292,9 +297,11 @@ video_channels:
 
 video_ids:
   公式:
-    - q5Z2xLBWT8Y   # 機械で追加: @imas-official「【学マス】初星学園放送部 #105【アイドルマスター】」
+    - y-4qOn-UQV4   # 機械で追加: @UtagawaLetora「【SILENT HILL f】 DAY06｜500円の呪いは」
     - jFAkRoDeyTQ   # 機械で追加: @imas-official「9/15 秋月 涼さん Happy Birthday‼」
     - bADPhUD27B4   # 機械で追加: @imas-official「【シャニソン】I'm a Cutie Finder「KAWA」
+    - 6GyD6t4isFY   # 機械で追加: @KamizuruCosmo「【How to Fish】スーパー清楚クールアイドルによるス」
+    - q5Z2xLBWT8Y   # 機械で追加: @imas-official「【学マス】初星学園放送部 #105【アイドルマスター】」
     - Yn9cXzpGJIU   # 機械で追加: @imas-official「【ラジオ】新番組「IM＠S RADIO」スタート！【アイドル」
     - bh1-3oPDkXY   # 機械で追加: @KamizuruCosmo「【#宇宙誕生祭2026 冒頭無料配信】上水流宇宙 BIRTH」
     - SKg_lOJcmQw   # 機械で追加: @imas-official「ゲーム【ミリシタ】桜守 歌織 スペシャル動画【アイドルマスタ」

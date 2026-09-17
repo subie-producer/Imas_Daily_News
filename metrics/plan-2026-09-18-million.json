@@ -1,0 +1,292 @@
+{
+ "decisions": {
+  "million-official-shop-kuji-panel-2026": {
+   "action": "article",
+   "angle": "オフィシャルショップの抽選くじ新賞品11種とフォトパネル新柄3種が本日発売、対象4店舗と賞品構成を紹介",
+   "rank": "large",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-official-shop-lottery-2026-09とmillion-lottery-goods-photo-panel-2026-09を統合(同一の抽選くじ・フォトパネル発売)"
+  },
+  "million-live-9th-anniversary-2026": {
+   "action": "article",
+   "angle": "14thLIVE記念のミリシタ9周年ビジュアルを使ったASOBI STOREパーカーの受注が始まった、価格と受注期間を紹介",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-anime-onkyo-earphone-2026": {
+   "action": "article",
+   "angle": "ミリアニOVAコラボのONKYOワイヤレスイヤホンが登場、公式スペックと宮尾・天空橋・徳川の3モデルのボイス仕様を紹介",
+   "rank": "large",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-ova-voice-earphone-2026を統合(同一のONKYOコラボイヤホン)"
+  },
+  "million-14th-kamisabi-game": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "14thLIVE会場企画の一つとして本編に統合。単体では素材が3件と薄い"
+  },
+  "tours-s1-ex-momoko-rolling-sankaku-2026": {
+   "action": "article",
+   "angle": "TOURS Second Stageの新アップデートで周防桃子とソロ曲『ローリング△さんかく』が追加、新規収録カードを紹介",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-ova-voice-earphone-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-anime-onkyo-earphone-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一ONKYOコラボイヤホンのモデル・ボイス詳細として統合(単体出典はverify=unconfirmed)"
+  },
+  "million-14th-live-2026": {
+   "action": "article",
+   "angle": "国立代々木競技場で開催されるミリオン14thLIVE DAY1・DAY2の公演概要とチケット情報、会場企画KAMISABIバトル大会を紹介",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-14th-kamisabi-gameを統合(会場企画)"
+  },
+  "million-kotobukiya-kuji-stage04-2026": {
+   "action": "article",
+   "angle": "コトブキヤくじ ミリオンライブ！stage04が本日発売開始、価格・配送手数料・お届け時期を紹介",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-british-pub-hub-2026": {
+   "action": "article",
+   "angle": "HUB渋谷店とのコラボ「-The TIPSY Hour-」が本日開幕、9/21まで開催",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "millishita-14thlive-countdown-login-bonus-2026": {
+   "action": "article",
+   "angle": "『14thLIVEカウントダウンログインボーナス』が本日最終日、ミリオンジュエル500個受取の締切を案内",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "millishita-access-outage-compensation-memories-of-you-2026-09": {
+   "action": "article",
+   "angle": "アクセス障害補填の衣装[メモリーズ・オブ・ユー]引換券、引換期限が本日14:59に迫る",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "millishita-song-for-you-gasha-vol78-2026": {
+   "action": "article",
+   "angle": "『SONG FOR YOU！ガシャ VOL.78』が本日14:59で終了、亜美・歌織の新SSR獲得のラストチャンスを案内",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "milishita-song-for-you-vol-78-ami-2026を統合(同一ガシャの最終日案内)"
+  },
+  "million-miricore-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ミリコレは9/16終了で既報(million-millicol-2026-09)。9/18終了の予約は誤りで、素材もVOL.78ガシャの亜美・歌織カードと重複"
+  },
+  "milishita-song-for-you-vol-78-ami-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "millishita-song-for-you-gasha-vol78-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一ガシャ(VOL.78)の亜美SSR最終日情報として統合"
+  },
+  "million-official-shop-lottery-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-official-shop-kuji-panel-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の抽選くじ・フォトパネル発売告知として統合"
+  },
+  "million-lottery-goods-photo-panel-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-official-shop-kuji-panel-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の抽選くじ・フォトパネル発売告知として統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-official-shop-kuji-panel-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "オフィシャルショップの抽選くじ新賞品11種とフォトパネル新柄3種が本日発売、対象4店舗と賞品構成を紹介",
+    "lead_score": 20,
+    "dedup_key": "million-official-shop-kuji-panel-2026",
+    "candidate_ids": [
+     "202609170735-explore-33",
+     "sched-2026-09-18-million-official-shop-lottery-2026-09-発売",
+     "sched-2026-09-18-million-lottery-goods-photo-panel-2026-09-発売"
+    ]
+   },
+   {
+    "slug": "million-live-9th-anniversary-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "14thLIVE記念のミリシタ9周年ビジュアルを使ったASOBI STOREパーカーの受注が始まった、価格と受注期間を紹介",
+    "lead_score": 25,
+    "dedup_key": "million-live-9th-anniversary-2026",
+    "candidate_ids": [
+     "202609171837-watch-4"
+    ]
+   },
+   {
+    "slug": "million-anime-onkyo-earphone-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "ミリアニOVAコラボのONKYOワイヤレスイヤホンが登場、公式スペックと宮尾・天空橋・徳川の3モデルのボイス仕様を紹介",
+    "lead_score": 20,
+    "dedup_key": "million-anime-onkyo-earphone-2026",
+    "candidate_ids": [
+     "202609171837-watch-8",
+     "202609172335-explore-6"
+    ]
+   },
+   {
+    "slug": "million-tours-s1-ex-momoko-rolling-sankaku-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "TOURS Second Stageの新アップデートで周防桃子とソロ曲『ローリング△さんかく』が追加、新規収録カードを紹介",
+    "lead_score": 15,
+    "dedup_key": "tours-s1-ex-momoko-rolling-sankaku-2026",
+    "candidate_ids": [
+     "202609171837-explore-15"
+    ]
+   },
+   {
+    "slug": "million-14th-live-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "国立代々木競技場で開催されるミリオン14thLIVE DAY1・DAY2の公演概要とチケット情報、会場企画KAMISABIバトル大会を紹介",
+    "lead_score": 85,
+    "dedup_key": "million-14th-live-2026",
+    "candidate_ids": [
+     "202609180236-explore-5",
+     "202609171837-watch-9"
+    ]
+   },
+   {
+    "slug": "million-kotobukiya-kuji-stage04-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "コトブキヤくじ ミリオンライブ！stage04が本日発売開始、価格・配送手数料・お届け時期を紹介",
+    "lead_score": 15,
+    "dedup_key": "million-kotobukiya-kuji-stage04-2026",
+    "candidate_ids": [
+     "202609180236-explore-6",
+     "sched-2026-09-18-million-kotobukiya-kuji-stage04-2026-発売"
+    ]
+   },
+   {
+    "slug": "million-british-pub-hub-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "HUB渋谷店とのコラボ「-The TIPSY Hour-」が本日開幕、9/21まで開催",
+    "lead_score": 10,
+    "dedup_key": "million-british-pub-hub-2026",
+    "candidate_ids": [
+     "sched-2026-09-18-million-british-pub-hub-2026-開幕"
+    ]
+   },
+   {
+    "slug": "million-millishita-14thlive-countdown-login-bonus-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "『14thLIVEカウントダウンログインボーナス』が本日最終日、ミリオンジュエル500個受取の締切を案内",
+    "lead_score": 10,
+    "dedup_key": "millishita-14thlive-countdown-login-bonus-2026",
+    "candidate_ids": [
+     "sched-2026-09-18-millishita-14thlive-countdown-login-bonus-2026-終了"
+    ]
+   },
+   {
+    "slug": "million-millishita-access-outage-compensation-memories-of-you-2026-09",
+    "brand": "million",
+    "rank": "small",
+    "angle": "アクセス障害補填の衣装[メモリーズ・オブ・ユー]引換券、引換期限が本日14:59に迫る",
+    "lead_score": 5,
+    "dedup_key": "millishita-access-outage-compensation-memories-of-you-2026-09",
+    "candidate_ids": [
+     "sched-2026-09-18-millishita-access-outage-compensation-memories-of-you-2026-09-締切"
+    ]
+   },
+   {
+    "slug": "million-millishita-song-for-you-gasha-vol78-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "『SONG FOR YOU！ガシャ VOL.78』が本日14:59で終了、亜美・歌織の新SSR獲得のラストチャンスを案内",
+    "lead_score": 15,
+    "dedup_key": "millishita-song-for-you-gasha-vol78-2026",
+    "candidate_ids": [
+     "sched-2026-09-18-millishita-song-for-you-gasha-vol78-2026-締切",
+     "sched-2026-09-18-milishita-song-for-you-vol-78-ami-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-miricore-2026-09",
+    "reason": "既報",
+    "note": "ミリコレは9/16終了で既報(million-millicol-2026-09)。9/18終了の予約は誤りで、素材もVOL.78ガシャの亜美・歌織カードと重複"
+   }
+  ],
+  "cross_brand": []
+ }
+}

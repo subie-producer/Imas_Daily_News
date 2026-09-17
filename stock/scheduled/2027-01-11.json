@@ -28,5 +28,36 @@
   "verify": "confirmed",
   "src_candidate_id": "202609161237-watch-2",
   "deadline": "2026-10-12"
+ },
+ {
+  "id": "sched-2027-01-11-cg-15th-orchestra-2027-開幕",
+  "dedup_key": "cg-15th-orchestra-2027",
+  "brand": "cg",
+  "subject": "シンデレラ15周年オケコンDAY1",
+  "kind": "開幕",
+  "note": "パシフィコ横浜でDAY1開演18:00",
+  "reserved_on": "2026-09-18",
+  "title": "シンデレラ15周年記念オーケストラコンサート開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19894",
+  "source_type": "公式",
+  "facts": [
+   "公演タイトル: THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSARY ORCHESTRA CONCERT ～ シンデレラの演奏会 ～",
+   "開催場所: パシフィコ横浜 国立大ホール",
+   "DAY1開催日時: 2027年1月11日(月・祝) 開場 17:00/ 開演 18:00",
+   "DAY2開催日時: 2027年1月12日(火) 開場 18:00 / 開演 19:00",
+   "指揮: 和田一樹",
+   "演奏: ワンダーフィルハーモニックオーケストラ",
+   "コンサートマスター: 﨑谷直人",
+   "DAY1歌唱出演: 藍原ことみ（一ノ瀬志希 役）、原 涼子（望月 聖 役）、花井美春（村上 巴 役）",
+   "DAY1楽器演奏: IMAJO＜ギター＞",
+   "DAY2歌唱出演: 安齋由香里（西園寺琴歌 役）、渕上 舞（北条加蓮 役）、木村珠莉（相葉夕美 役）",
+   "DAY2楽器演奏: 睦月周平＜ギター＞",
+   "S席スペシャルシート料金: 20,000円（税込）、前方席確約、限定お土産グッズ付き（詳細は後日発表予定）"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609170735-watch-5",
+  "event_date": "2027-01-11",
+  "deadline": "2027-01-12"
  }
 ]

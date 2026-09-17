@@ -1,0 +1,226 @@
+{
+ "decisions": {
+  "gaku-michinaru-hirog-aru-300m-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml gaku-michinaru-mv-300man-2026(9/17既報)と同一事実(MV300万再生)。9/18に新トリガーなし"
+  },
+  "gaku-chugai-grace-cafe-revival-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "渋谷Chugaiコラボは9/3・9/4付で開催期間9/3-27等を既報。9/18は開幕日でも終了日でもなく新事実なし"
+  },
+  "gaku-after-school-namco-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml gaku-after-school-namco-2026(9/11既報)と同一内容。開催は9/25でトリガー日に該当せず"
+  },
+  "gaku-tsukimura-temari-1-6-figure-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml gaku-tsukimura-temarite-figure(9/2既報)と価格・発売日(2027年6月)が一致、新事実なし"
+  },
+  "gakuen-radio-2026-09-23-guests": {
+   "action": "article",
+   "angle": "9/23放送のゲスト発表(藤田ことね役・十王星南役、STEP4実装後初出演)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakuen-radio-weekly-2026-09-16": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hoshigakuen-radio-105-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/16放送(#105)直後の御礼・次回予告・アーカイブ告知ツイートで、同一放送回の話題"
+  },
+  "hatsuboshi-store-towel-saki-restock-2026": {
+   "action": "article",
+   "angle": "ハツボシストアで花海咲季タオルが数量限定で再入荷(9/17〜)",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-official-goods-2026-09-18": {
+   "action": "article",
+   "angle": "学マス公式グッズ新商品、本日9/18 16時より受注開始",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-tour-fukuoka-be-proud-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Be proud配信(9/6既報)とアーカイブ視聴チケット販売(9/21まで既報)の紹介で新事実・新トリガーなし"
+  },
+  "gaku-wednesday-jewel-250-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml gaku-jewel-250-2026-09-16(9/17既報)と同一(配布期間9/23まで等)"
+  },
+  "gaku-hoshigakuen-radio-105-2026": {
+   "action": "article",
+   "angle": "初星学園放送部#105、標ツアー福岡公演の裏話と新曲『め』『nazonazo』を語る回",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-be-proud-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「Be proud」配信は9/6付で既報(修学旅行版含む新曲3曲の配信開始と同時)。新事実なし"
+  },
+  "gkmas-ichibankuji-part6-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.yml gaku-ichiban-kuji-part6-2026(8/29既報)と同一。発売日9/19は前日でトリガー日に非該当"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakuen-radio-2026-09-23-guests",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "9/23放送のゲスト発表(藤田ことね役・十王星南役、STEP4実装後初出演)",
+    "lead_score": 10,
+    "dedup_key": "gakuen-radio-2026-09-23-guests",
+    "candidate_ids": [
+     "202609180236-explore-15"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-store-towel-saki-restock-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ハツボシストアで花海咲季タオルが数量限定で再入荷(9/17〜)",
+    "lead_score": 5,
+    "dedup_key": "hatsuboshi-store-towel-saki-restock-2026",
+    "candidate_ids": [
+     "202609180236-explore-17"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-official-goods-2026-09-18",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス公式グッズ新商品、本日9/18 16時より受注開始",
+    "lead_score": 25,
+    "dedup_key": "gakumas-official-goods-2026-09-18",
+    "candidate_ids": [
+     "202609180236-explore-18"
+    ]
+   },
+   {
+    "slug": "gaku-hoshigakuen-radio-105-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部#105、標ツアー福岡公演の裏話と新曲『め』『nazonazo』を語る回",
+    "lead_score": 15,
+    "dedup_key": "gaku-hoshigakuen-radio-105-2026",
+    "candidate_ids": [
+     "202609180236-grok-47",
+     "202609180236-explore-16"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-michinaru-hirog-aru-300m-2026",
+    "reason": "既報",
+    "note": "stories.yml gaku-michinaru-mv-300man-2026(9/17既報)と同一事実(MV300万再生)。9/18に新トリガーなし"
+   },
+   {
+    "dedup_key": "gaku-chugai-grace-cafe-revival-2026",
+    "reason": "既報",
+    "note": "渋谷Chugaiコラボは9/3・9/4付で開催期間9/3-27等を既報。9/18は開幕日でも終了日でもなく新事実なし"
+   },
+   {
+    "dedup_key": "gaku-after-school-namco-2026",
+    "reason": "既報",
+    "note": "stories.yml gaku-after-school-namco-2026(9/11既報)と同一内容。開催は9/25でトリガー日に該当せず"
+   },
+   {
+    "dedup_key": "gaku-tsukimura-temari-1-6-figure-2026",
+    "reason": "既報",
+    "note": "stories.yml gaku-tsukimura-temarite-figure(9/2既報)と価格・発売日(2027年6月)が一致、新事実なし"
+   },
+   {
+    "dedup_key": "gakumas-tour-fukuoka-be-proud-2026",
+    "reason": "既報",
+    "note": "Be proud配信(9/6既報)とアーカイブ視聴チケット販売(9/21まで既報)の紹介で新事実・新トリガーなし"
+   },
+   {
+    "dedup_key": "gaku-wednesday-jewel-250-2026-09",
+    "reason": "既報",
+    "note": "stories.yml gaku-jewel-250-2026-09-16(9/17既報)と同一(配布期間9/23まで等)"
+   },
+   {
+    "dedup_key": "gaku-be-proud-2026",
+    "reason": "既報",
+    "note": "「Be proud」配信は9/6付で既報(修学旅行版含む新曲3曲の配信開始と同時)。新事実なし"
+   },
+   {
+    "dedup_key": "gkmas-ichibankuji-part6-2026-09",
+    "reason": "既報",
+    "note": "stories.yml gaku-ichiban-kuji-part6-2026(8/29既報)と同一。発売日9/19は前日でトリガー日に非該当"
+   }
+  ],
+  "cross_brand": []
+ }
+}

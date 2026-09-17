@@ -1,0 +1,229 @@
+{
+ "decisions": {
+  "sidem-renaissance-2026": {
+   "action": "article",
+   "angle": "315 Fitness Projectのアンバサダー5名・映像レッスン等の詳細が判明(10/22開幕、全国49店舗)",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策を報じる315-fitness-project-2026・315-fitness-renaissance-2026を統合、公式が最も詳細"
+  },
+  "sidem-home-game-project-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-console-game-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発表経緯(11th STAGE DAY2)と残り46人未公開の情報をconsole-game-2026に統合"
+  },
+  "sidem-315-fitness-project-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-renaissance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策の当事者リリース(PR TIMES)、renaissance-2026に統合"
+  },
+  "sidem-console-game-2026": {
+   "action": "article",
+   "angle": "家庭用ゲームの対応機種(Switch2/Switch)とDRAMATIC STARS3名の描き下ろしビジュアルが判明",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SideM初の家庭用ゲーム続報、既報(9/14-16)に無い機種・ビジュアル・発売日未定の新事実あり"
+  },
+  "sidem-fbfes-movie-2026": {
+   "action": "article",
+   "angle": "劇場版F@NTASTIC BATTLE FESのキービジュアル・予告映像とムビチケ価格・特典が公開",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(9/14)の公開日・前売開始日に加え、映像・特典等の新事実"
+  },
+  "sidem-11th-commentarycasting": {
+   "action": "article",
+   "angle": "11th STAGEキャスト生出演オーディオコメンタリー付き同時視聴上映会を9/19・20に実施",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "直近の週末に視聴できる新規プログラム"
+  },
+  "sidem-11th-stage-day1-report-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1朗読劇の内容レポートを振り返り記事に統合(出典未確認のため非断定で扱う)"
+  },
+  "sidem-11th-stage-2026": {
+   "action": "article",
+   "angle": "11th STAGE振り返り: 会場設営タイムラプス・DAY1レポート・主題歌の反響をまとめて紹介",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の事後レポート3件(タイムラプス/DAY1/主題歌反響)を統合、既報の運営情報とは別の新事実"
+  },
+  "sidem-315-fitness-renaissance-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-renaissance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ルネサンス公式サイト発表、renaissance-2026に統合"
+  },
+  "sidem-11th-stage--------2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "主題歌の反響を振り返り記事に統合"
+  },
+  "sidem-2dmv-goods-vol2-kogado-flags": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "対象ユニット・期間・価格は9/4号で既報(sidem-2dmv-transcendent-goods-2026-09)。制作コメントの内容はfactsに記載無し"
+  },
+  "sidem-teddys-collection-2-namba-2026": {
+   "action": "article",
+   "angle": "Teddy's Collection IIなんばマルイ会場が本日開幕、会場装飾と購入特典の詳細",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕当日トリガー)、なんば会場の所在地・特典条件など具体詳細を統合"
+  },
+  "sidem-teddys-collection2-popup-goods": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-teddys-collection-2-namba-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じなんば開幕予約、namba-2026に統合"
+  },
+  "sidem-teddys-collection-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-teddys-collection-2-namba-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じなんば開幕予約、namba-2026に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-renaissance-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "315 Fitness Projectのアンバサダー5名・映像レッスン等の詳細が判明(10/22開幕、全国49店舗)",
+    "lead_score": 15,
+    "dedup_key": "sidem-renaissance-2026",
+    "candidate_ids": [
+     "202609170735-watch-2",
+     "202609171305-explore-10",
+     "202609172335-explore-20"
+    ]
+   },
+   {
+    "slug": "sidem-console-game-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "家庭用ゲームの対応機種(Switch2/Switch)とDRAMATIC STARS3名の描き下ろしビジュアルが判明",
+    "lead_score": 60,
+    "dedup_key": "sidem-console-game-2026",
+    "candidate_ids": [
+     "202609171305-explore-25",
+     "202609170735-explore-17"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-movie-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版F@NTASTIC BATTLE FESのキービジュアル・予告映像とムビチケ価格・特典が公開",
+    "lead_score": 25,
+    "dedup_key": "sidem-fbfes-movie-2026",
+    "candidate_ids": [
+     "202609171305-explore-26"
+    ]
+   },
+   {
+    "slug": "sidem-11th-commentarycasting",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "11th STAGEキャスト生出演オーディオコメンタリー付き同時視聴上映会を9/19・20に実施",
+    "lead_score": 30,
+    "dedup_key": "sidem-11th-commentarycasting",
+    "candidate_ids": [
+     "202609171837-watch-1"
+    ]
+   },
+   {
+    "slug": "sidem-11th-stage-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "11th STAGE振り返り: 会場設営タイムラプス・DAY1レポート・主題歌の反響をまとめて紹介",
+    "lead_score": 15,
+    "dedup_key": "sidem-11th-stage-2026",
+    "candidate_ids": [
+     "202609172335-watch-1",
+     "202609171837-explore-20",
+     "202609172335-explore-26"
+    ]
+   },
+   {
+    "slug": "sidem-teddys-collection-2-namba-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "Teddy's Collection IIなんばマルイ会場が本日開幕、会場装飾と購入特典の詳細",
+    "lead_score": 20,
+    "dedup_key": "sidem-teddys-collection-2-namba-2026",
+    "candidate_ids": [
+     "202609180236-grok-56",
+     "sched-2026-09-18-sidem-teddys-collection2-popup-goods-開幕",
+     "sched-2026-09-18-sidem-teddys-collection-2-2026-開幕"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-2dmv-goods-vol2-kogado-flags",
+    "reason": "既報",
+    "note": "対象ユニット・期間・価格は9/4号で既報(sidem-2dmv-transcendent-goods-2026-09)。制作コメントの内容はfactsに記載無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

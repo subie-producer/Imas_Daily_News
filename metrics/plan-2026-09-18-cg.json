@@ -1,0 +1,212 @@
+{
+ "decisions": {
+  "cg-hachimastu-2026": {
+   "action": "article",
+   "angle": "青森「はちます」×シンデレラガールズコラボ開催決定(10/23〜12/27、描き下ろしイラスト・グッズ・スタンプラリー)",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-dejimas-naha-2026": {
+   "action": "article",
+   "angle": "沖縄「でじます」×シンデレラガールズコラボ決定、2弾構成(11/20〜・1/29〜)で首里城正殿の再建公開と連動",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-orchestra-2027": {
+   "action": "article",
+   "angle": "シンデレラ15周年記念オーケストラコンサート開催決定(2027/1/11-12、パシフィコ横浜、指揮・出演者判明)",
+   "rank": "large",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-isetan-osechi-2027": {
+   "action": "article",
+   "angle": "伊勢丹コラボおせち2027、商品ラインナップとエムアイカード会員限定特典(缶バッジ)を公開",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(9/17付ストック)の続報。会員限定特典・商品詳細が新事実。"
+  },
+  "cinderella-15th-anniversary-party-2026": {
+   "action": "article",
+   "angle": "15周年PARTY、アソビストア一般会員先行受付が9/30開始・席種価格と特典が判明",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一告知を重複収集したcg-15th-anniversary-party-2026の素材を統合。"
+  },
+  "cg-election-2026": {
+   "action": "article",
+   "angle": "シンデレラガール総選挙2026アイドル応援投稿祭、各部門賞15作品を発表",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-anniversary-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-15th-anniversary-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ15周年PARTY一般会員先行の告知(verify=unconfirmed・内容重複)。読者の行動は同じチケット先行申込のため統合。"
+  },
+  "cg-sousenkyo-2026-vote-deadline": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-girl-vote2026-schedule",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本日23:59の投票締切を告げるXポスト。読者の行動(投票)が同一のため統合。"
+  },
+  "cinderella-girl-vote2026-schedule": {
+   "action": "article",
+   "angle": "総選挙2026、投票とシリアルコード引換の最終締切は本日23:59",
+   "rank": "medium",
+   "lead_score": 90,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-sousenkyo-2026-vote-deadline・cinderella-07の素材を統合。"
+  },
+  "cg-election-cheer-contest-2026": {
+   "action": "article",
+   "angle": "総選挙2026 Xアートコンテスト、応募締切は本日23:59",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cinderella-07": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-girl-vote2026-schedule",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "投票券プレゼントの呼びかけ投稿。同じ投票締切がテーマなので統合、facts自体は既報の再掲。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-hachimastu-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "青森「はちます」×シンデレラガールズコラボ開催決定(10/23〜12/27、描き下ろしイラスト・グッズ・スタンプラリー)",
+    "lead_score": 15,
+    "dedup_key": "cg-hachimastu-2026",
+    "candidate_ids": [
+     "202609170735-watch-0"
+    ]
+   },
+   {
+    "slug": "cg-dejimas-naha-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "沖縄「でじます」×シンデレラガールズコラボ決定、2弾構成(11/20〜・1/29〜)で首里城正殿の再建公開と連動",
+    "lead_score": 15,
+    "dedup_key": "cg-dejimas-naha-2026",
+    "candidate_ids": [
+     "202609170735-watch-1"
+    ]
+   },
+   {
+    "slug": "cg-15th-orchestra-2027",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "シンデレラ15周年記念オーケストラコンサート開催決定(2027/1/11-12、パシフィコ横浜、指揮・出演者判明)",
+    "lead_score": 25,
+    "dedup_key": "cg-15th-orchestra-2027",
+    "candidate_ids": [
+     "202609170735-watch-5"
+    ]
+   },
+   {
+    "slug": "cg-isetan-osechi-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "伊勢丹コラボおせち2027、商品ラインナップとエムアイカード会員限定特典(缶バッジ)を公開",
+    "lead_score": 10,
+    "dedup_key": "cg-isetan-osechi-2027",
+    "candidate_ids": [
+     "202609170735-explore-11",
+     "202609170735-explore-31"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-15th-anniversary-party-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年PARTY、アソビストア一般会員先行受付が9/30開始・席種価格と特典が判明",
+    "lead_score": 30,
+    "dedup_key": "cinderella-15th-anniversary-party-2026",
+    "candidate_ids": [
+     "202609171837-watch-10",
+     "202609172335-explore-19"
+    ]
+   },
+   {
+    "slug": "cg-election-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "シンデレラガール総選挙2026アイドル応援投稿祭、各部門賞15作品を発表",
+    "lead_score": 15,
+    "dedup_key": "cg-election-2026",
+    "candidate_ids": [
+     "202609172335-watch-0"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-girl-vote2026-schedule",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "総選挙2026、投票とシリアルコード引換の最終締切は本日23:59",
+    "lead_score": 90,
+    "dedup_key": "cinderella-girl-vote2026-schedule",
+    "candidate_ids": [
+     "sched-2026-09-18-cinderella-girl-vote2026-schedule-締切",
+     "202609180236-grok-33",
+     "sched-2026-09-18-cinderella-07-締切"
+    ]
+   },
+   {
+    "slug": "cg-election-cheer-contest-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "総選挙2026 Xアートコンテスト、応募締切は本日23:59",
+    "lead_score": 10,
+    "dedup_key": "cg-election-cheer-contest-2026",
+    "candidate_ids": [
+     "sched-2026-09-18-cg-election-cheer-contest-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,356 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-18-cg-cinderella-15th-anniversary-party-2026.md",
+   "issue": "The article text includes 53 character role mentions (e.g., \"島村卯月役\") but the cited source facts do not support this level of detail. The article cites F11-F14 (which contain only actor names without character roles) but the text includes character roles from F33-F34 (which do contain this information). The cited facts cannot fully derive the article's content.",
+   "quote": "DAY1はLOVE-Partyに大橋彩香（島村卯月役）、藍原ことみ（一ノ瀬志希役）...が出演。CHILL-Partyには天野聡美（白菊ほたる役）...が出演する。 <!-- F11 F12 -->",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F11",
+    "F12",
+    "F13",
+    "F14",
+    "F33",
+    "F34"
+   ],
+   "expected": "Update fact citations to reference F33-F34 (which contain all character roles) instead of F11-F14 (which contain only actor names)",
+   "scope": "article:2026-09-18-cg-cinderella-15th-anniversary-party-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-cg-cinderella-girl-vote2026-schedule.md",
+   "issue": "candidate_ids で参照する候補ファイルが見つからない。sched-2026-09-18-cinderella-girl-vote2026-schedule-締切 と sched-2026-09-18-cinderella-07-締切 が candidates/ ディレクトリに存在しない",
+   "quote": "candidate_ids:\n- sched-2026-09-18-cinderella-girl-vote2026-schedule-締切\n- 202609180236-grok-33\n- sched-2026-09-18-cinderella-07-締切",
+   "rule_id": "R1",
+   "repair": "none",
+   "fact_ids": [],
+   "expected": "記事が参照する全 candidate_ids が candidates/ ファイルに実装されていること",
+   "scope": "article:2026-09-18-cg-cinderella-girl-vote2026-schedule.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-cg-cinderella-girl-vote2026-schedule.md",
+   "issue": "sources に X(Twitter)のポストが記載されていない。grok-33（x.com/imas_CGofficial/status/2100434574815773139）からの事実が本文に使われているが、sources には公式サイトのみ記載。X のポスト由来の情報は sources に加えるか、sources の URL に記載があるか確認が必要",
+   "quote": "sources:\n- label: 15th Anniversary シンデレラガール総選挙2026 日程確定（2026-08-03）\n  url: https://idolmaster-official.jp/cinderellagirls/vote2026\n  type: 公式",
+   "rule_id": "R2",
+   "repair": "add_source",
+   "fact_ids": [
+    "202609180236-grok-33"
+   ],
+   "expected": "sources に X のポスト https://x.com/imas_CGofficial/status/2100434574815773139 を公式として追加、または sources の公式サイト URL にシリアルコード・投票券受け取り期限が記載されていることを確認",
+   "scope": "article:2026-09-18-cg-cinderella-girl-vote2026-schedule.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-cg-cinderella-girl-vote2026-schedule.md",
+   "issue": "記事の表現「シリアルコードの引き換えおよび投票券の受け取り」が、候補ファイル grok-33 の表現「シリアルコード・あいことば入力期間」と異なる。sources URL に記載内容との照合が必要",
+   "quote": "シリアルコードの引き換えおよび投票券の受け取りも、本日23時59分までとなっている。 <!-- F3 -->",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "202609180236-grok-33"
+   ],
+   "expected": "記述を sources の公式サイト URL で確認された事実に基づいて修正、または「シリアルコード・あいことばの入力」と表現を統一",
+   "scope": "article:2026-09-18-cg-cinderella-girl-vote2026-schedule.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-gaku-hatsuboshi-store-towel-saki-restock-2026.md",
+   "issue": "記事発行日時点で既に終わった販売開始を「販売予定」（未来）として記述。読者が読む時点（06:00以降）では販売は既に開始されており、「これから申し込める」という誤解を招く。",
+   "quote": "9月17日(木)のオープン時から販売予定で、入荷数には限りがある。",
+   "rule_id": "R11",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F2"
+   ],
+   "expected": "発行日時点を基準に「販売開始済み」「是日せっつと開始」など過去形で記述し、読者の実際の行動可能性と一致させる。",
+   "scope": "article:2026-09-18-gaku-hatsuboshi-store-towel-saki-restock-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-gaku-hatsuboshi-store-towel-saki-restock-2026.md",
+   "issue": "当日トリガーのない続報。候補published_dateは2026-09-16、記事発行日は2026-09-18。2日遅れで前日込くの告知を報じており、発行日に新たに発表された事実もトリガーイベントもない。",
+   "quote": "ハツボシストアの店舗再入荷商品として、花海咲季の「共に戦うタオル」が告知された。9月17日(木)のオープン時から販売予定で、入荷数には限りがある。",
+   "rule_id": "R5",
+   "repair": "drop_article",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F3"
+   ],
+   "expected": "発行日に発表・発生した新しい事実を中核とする記事に置き換える。この情報は2026-09-16発表の既報であり、続報上正当な根拠がない。",
+   "scope": "article:2026-09-18-gaku-hatsuboshi-store-towel-saki-restock-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-anime-onkyo-earphone-2026.md",
+   "issue": "Sources の label フィールドが月日の部分で切られて破損している",
+   "quote": "【ミリアニ】OVA「アイドルマスター ミリオンライブ！～いつか、真ん中で～」新規録り下ろしボイス搭載≪イヤーカフ型≫ワイヤレスイヤホン登場！！（2026年9月0",
+   "rule_id": "R8",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "Sources の label フィールドを完全な日付で表記する（例：2026年9月17日）",
+   "scope": "article:2026-09-18-million-anime-onkyo-earphone-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-tours-s1-ex-momoko-rolling-sankaku-2026.md",
+   "rule_id": "R1",
+   "issue": "frontmatter の candidate_ids に指定された ID「202609171837-explore-15」が候補ファイル 2026-09-17.json に存在しない。記事の根拠が追跡不可能。",
+   "quote": "candidate_ids:\n- 202609171837-explore-15",
+   "fact_ids": [],
+   "repair": "drop_article",
+   "expected": "候補ファイルに実在する ID に修正するか、candidate_ids と根拠タグの対応を再検証すること",
+   "scope": "article:2026-09-18-million-tours-s1-ex-momoko-rolling-sankaku-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-shiny-hopeful-feathers-goods-2026.md",
+   "rule_id": "R3",
+   "issue": "記事の段落2で使用されたアニメイト通販の月岡恋鐘商品情報（価格・サイズ・素材）がsourcesに記載されたURLから直接確認できない。段落2のFact ID（F78-F91）は候補3（アニメイト商品ページ）から取得されているが、そのURLがsourcesに記載されていない",
+   "quote": "アニメイト通販では、Stellaの月岡恋鐘カラーアクリルキーホルダーを1,000円（税込）で予約受付中。サイズは約縦60mm×横47mmで、チームごとのカラーアクリルに彫刻でデザインを入れた仕様。素材はアクリル、真鍮、亜鉛合金となっている。",
+   "repair": "add_source",
+   "fact_ids": [
+    "F78",
+    "F79",
+    "F84",
+    "F85",
+    "F87"
+   ],
+   "expected": "sourcesに候補3のアニメイト商品ページURL（https://www.animate-onlineshop.jp/pn/...月岡恋鐘.../pd/3593211/）を当事者ラベルで追加。公式ニュースのリンク先だけでは記事の具体的な商品情報（1000円、サイズ、素材）に直接到達できない",
+   "scope": "article:2026-09-18-shiny-hopeful-feathers-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-sidem-11th-stage-2026.md",
+   "rule_id": "R8",
+   "issue": "明白な誤字・文字化け・機械的な破損テキスト: ソースラベルが2箇所で途中で切れている（機械的な破損テキスト）",
+   "quote": "- label: 【YouTube】【SideM】【TOYOTA ARENA TOKYO】11th STAGEのライブ会場ができるまで 【タイムラプス】 公開のお知らせ【アイドル\n  url: https://idolmaster-official.jp/news/01_19825\n  type: 公式\n- label: SideM 11th STAGE DAY1レポート (2026-09-16)\n  url: https://gamewith.jp/gamedb/18477/articles/63390\n  type: 二次情報\n- label: 【11th STAGE開催記念】アイドルと役、それぞれの物語を楽しむ 『アイドルマスター SideM』PASSIONABLE READING SHOWガイド (",
+   "fact_ids": [],
+   "repair": "rewrite_claim",
+   "expected": "ソースラベルは完全な形で、末尾が切れていない状態。第1ラベルは「【アイドルマスター】」などで適切に終了し、第3ラベルは閉じ括弧を含む完全なタイトルであること。",
+   "scope": "article:2026-09-18-sidem-11th-stage-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-sidem-renaissance-2026.md",
+   "issue": "sources に記載されていない出典から詳細な事実（チケット価格）が記述されている",
+   "quote": "グッズ付きコラボチケットは4種類。ステッカー付が税込2,690円（チケット1枚＋オリジナルステッカー）、ビッグ缶バッジ付が税込10,600円（4枚＋ビッグ缶バッジ）、巾着付が税込21,000円（8枚＋巾着）、フェイスタオル付が税込31,320円（12枚＋フェイスタオル）です。",
+   "rule_id": "R2",
+   "repair": "add_source",
+   "fact_ids": [
+    "F54",
+    "F55",
+    "F56",
+    "F57"
+   ],
+   "expected": "sources に候補2の当事者プレスリリースURL（https://prtimes.jp/main/html/rd/p/000000458.000027019.html）を追加し、記事のチケット詳細が sources からの引用であることを明示する",
+   "scope": "article:2026-09-18-sidem-renaissance-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-18-765-765pro-allstars-live-bluray.md",
+   "issue": "分量不足: rank:small は本文250字が目安。現在の本文は約235字で基準に満たない。candidates の fact に「生産予定数を超過した場合、ご注文の途中終了や発売日の変更を行う場合がある」という購入者にとって有用な注意事項があるため、本文に追加を検討してください。",
+   "scope": "article:2026-09-18-765-765pro-allstars-live-bluray.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-cg-cinderella-15th-anniversary-party-2026.md",
+   "issue": "The article uses two candidate sources (watch-10 and explore-19, both 公式), but only lists one URL in the sources section. However, both candidates point to official sources and the verified_facts (N1-N4) are properly verified from the event page. The article correctly uses both official sources without violating the hidden source rule since both are 公式-grade sources and the verified facts are explicitly declared.",
+   "scope": "article:2026-09-18-cg-cinderella-15th-anniversary-party-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-cg-cinderella-15th-anniversary-party-2026.md",
+   "issue": "The article is a significant update (not a thin continuation) with many new facts: complete cast lists with character roles, detailed ticket pricing (4 price tiers), presale timeline (application period 9/30-10/19, lottery results 10/31, payment deadline 11/4), special guests, DJs, and election announcement. This has clear news value as a presale announcement for a 11月28-29 event.",
+   "scope": "article:2026-09-18-cg-cinderella-15th-anniversary-party-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-cg-cinderella-girl-vote2026-schedule.md",
+   "issue": "既報（2026-07-12 発表）には投票期間 8/3 12:00～9/18 23:59 が既に記載されている。記事も同じ期間を述べているため、記事の主要な記述は既報の繰り返し。新事実は「シリアルコード・投票券の期限が本日」という部分だけだが、これは既報の X では 9/16 時点で既に公開されている（「入力は投票期間と同じく9/18(金)23:59まで有効」）。分量不足（rank: small に対して 2 段落・100 字程度）もあり、これが新しい情報であるか検証が必要",
+   "scope": "article:2026-09-18-cg-cinderella-girl-vote2026-schedule.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-cg-cinderella-girl-vote2026-schedule.md",
+   "issue": "frontmatter に verified_facts がないため、sources の公式サイト URL 内容が本当に「投票期間 8/3 12:00～」を記載しているか、「シリアルコード引き換え・投票券受け取り期限」を記載しているか、執筆による確認記録がない。sources URL の実際の内容確認が必要",
+   "scope": "article:2026-09-18-cg-cinderella-girl-vote2026-schedule.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-cg-election-cheer-contest-2026.md",
+   "issue": "frontmatter の candidate_ids が実在しない。指定 ID: sched-2026-09-18-cg-election-cheer-contest-2026-締切 は candidates/2026-09-18.json に存在しません。記事は verified_facts（一次情報URL付き）と sources に基づいており内容検証は可能ですが、frontmatter のメタデータリンク切れです。修正: candidate_ids を削除するか、実在する候補を作成してください。",
+   "scope": "article:2026-09-18-cg-election-cheer-contest-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-cg-isetan-osechi-2027.md",
+   "issue": "細微な表記の自然性：レード文の「いずれも2人前・価格は2万4840円」において、同じ修飾対象を複数の「いずれも」で修飾しており、わずかに冗長。また段落3の「手ぬぐいは約縦88×横34cm・綿100％、お品書きは約縦15×横15cm・紙」は、「・」で仕様を区切るより「、」で分けた方が読みやすい。ただし明らかなエラーではなく、許容範囲内。",
+   "scope": "article:2026-09-18-cg-isetan-osechi-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-gaku-gakuen-radio-2026-09-23-guests.md",
+   "issue": "分量不足: rank: small は最低250字が目安ですが、本文が約30字です。出典には放送日時・番組詳細情報が記載されているはずなので、拡充を検討してください（一般論での水増しは不要）。",
+   "scope": "article:2026-09-18-gaku-gakuen-radio-2026-09-23-guests.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-gaku-gakumas-official-goods-2026-09-18.md",
+   "issue": "本文が小ランク基準の250字に満たない（約55字）。出典（X投稿）に詳細情報の掲載がないため、現状では追加情報を拾えず、短いままが妥当。",
+   "scope": "article:2026-09-18-gaku-gakumas-official-goods-2026-09-18.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-gaku-hatsuboshi-store-towel-saki-restock-2026.md",
+   "issue": "分量不足。rankが small（下限250字）だが、本文が約80字のみ。出典のハツボシストアXアカウントから価格・在庫情報待を抽出できれば下限到達可能か検討。ただしブロック理由ではなく、記事成立の前提条件次第の課題。",
+   "scope": "article:2026-09-18-gaku-hatsuboshi-store-towel-saki-restock-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-anime-onkyo-earphone-2026.md",
+   "issue": "グッズの価格情報が記載されていない。候補に「A4クリアファイル 500円、アクリルスタンド 1,500円、缶バッジ 500円、イヤホンポーチ 1,500円」という情報があり、rank:medium の分量基準に対して補足可能",
+   "scope": "article:2026-09-18-million-anime-onkyo-earphone-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-british-pub-hub-2026.md",
+   "issue": "frontmatter の candidate_ids に指定されている『sched-2026-09-18-million-british-pub-hub-2026-開幕』が candidates/2026-09-18.json に見つかりません。ただし sources に公式ページへのリンクがあり、内容の検証が可能です。",
+   "scope": "article:2026-09-18-million-british-pub-hub-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-british-pub-hub-2026.md",
+   "issue": "分量：rank: small として本文が短い（27字）ですが、短報として許容されます。",
+   "scope": "article:2026-09-18-million-british-pub-hub-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-millishita-access-outage-compensation-memories-of-you-2026-09.md",
+   "issue": "分量不足。rank: smallの最小要件は250字ですが、本文は118字に留まっています。当日の締切リマインダーとしての機能を果たしており、出典の内容も完全に網羅しているため、分量の短さ自体は許容範囲です。",
+   "scope": "article:2026-09-18-million-millishita-access-outage-compensation-memories-of-you-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-official-shop-kuji-panel-2026.md",
+   "issue": "frontmatter の candidate_ids に存在しない候補ID 2件が参照されている（sched-2026-09-18-million-official-shop-lottery-2026-09-発売、sched-2026-09-18-million-lottery-goods-photo-panel-2026-09-発売）。ただし sources に公式・準公式の1次情報が記載されており、本文は出典に基づいている",
+   "scope": "article:2026-09-18-million-official-shop-kuji-panel-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-official-shop-kuji-panel-2026.md",
+   "issue": "frontmatter の lede_fact_ids に F18 が参照されているが、candidates ファイル(202609170735-explore-33)に F18 は存在しない（F1-F13 のみ）。lede 自体は F1・F2 で説明でき、内容は正確",
+   "scope": "article:2026-09-18-million-official-shop-kuji-panel-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-million-tours-s1-ex-momoko-rolling-sankaku-2026.md",
+   "issue": "根拠タグ（F1～F17）と候補 ID の不一致の可能性。記事本文に付与された「F2 F3」「F4 F7 F8 F9 N1」「F12 F13 F14 F15 F16 F17 N2」が、実在する候補の facts に対応しているか確認が必要。candidates/2026-09-17.json には「202609161237-explore-11」が该当話題だが、frontmatter の candidate_ids には異なるID が記載されている。",
+   "scope": "article:2026-09-18-million-tours-s1-ex-momoko-rolling-sankaku-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-shiny-antica-new-song-event-2026.md",
+   "issue": "分量不足。rank: small の下限 250 字に対して、本文が約 110 字程度に留まっている。出典には詳細な開始日・終了日の記載がないため、これ以上の情報収集が難しい可能性がありますが、現在の情報で記事を成立させるなら、イベントストーリーの有無についても言及する（candidates に「本イベントにイベントストーリーはない」と記載されている）ことで分量を増やせます。",
+   "scope": "article:2026-09-18-shiny-antica-new-song-event-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-shiny-autumn-maple-box-2026.md",
+   "issue": "分量不足：rank:small に対して本文が薄い。small の下限は 250字ですが、本文は約 60字です。出典に書いてあるイベント内容・報酬詳細・ガシャの仕様などを拾えば埋まるはずです。",
+   "scope": "article:2026-09-18-shiny-autumn-maple-box-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-shiny-enkan-halo-01-2026.md",
+   "issue": "分量不足: rank: small のわりに本文が極めて短い（約90字）。candidates には他に有用な情報がないようだが、出典ポストをさらに詳しく読めば追加情報があるかもしれません",
+   "scope": "article:2026-09-18-shiny-enkan-halo-01-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-shiny-hopeful-feathers-goods-2026.md",
+   "issue": "sourcesのlabel末尾が不完全（「2026-09-暗」で途切れている）。正確な日付を記載すること",
+   "scope": "article:2026-09-18-shiny-hopeful-feathers-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-shiny-official-shop-photo-panel-2026-09-18.md",
+   "issue": "分量不足: rank \"small\" で 250 字以上が基準ですが、記事は lede(61字) + 本文(148字) = 209字です。ただし candidates から補充可能な追加情報がなく、指示では分量不足はブロック理由にならないと明記されているため、指摘に留めます。",
+   "scope": "article:2026-09-18-shiny-official-shop-photo-panel-2026-09-18.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-sidem-11th-stage-2026.md",
+   "issue": "candidate 202609171837-explore-20 の source_type は「未確認」だが、sources では「二次情報」と表記されている。sources に含まれているため blocking ではないが、元の candidate 属性との整合性を確認することが望ましい。",
+   "scope": "article:2026-09-18-sidem-11th-stage-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-18-sidem-renaissance-2026.md",
+   "issue": "sources の公式ニュースURL には具体的なチケット価格情報が記載されていない。記事が sources に記載されていない当事者プレスリリースから詳細情報を取得している",
+   "scope": "article:2026-09-18-sidem-renaissance-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "candidates に登録された「ミリオンライブ！×三越のおせち 2027」（公式発表）が紙面に記事化されていない。シンデレラ×伊勢丹のおせちは cg-isetan-osechi-2027 として記事化されており、バランスを欠く。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "candidates に登録された「学園アイドルマスター After School キャンペーン in namco開催」（当事者発表）が紙面に記事化されていない。学マス公式グッズ新商品には記事があるが、このキャンペーンは漏れている。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-18-765-765pro-allstars-live-bluray.md",
+  "article:2026-09-18-cg-15th-orchestra-2027.md",
+  "article:2026-09-18-cg-cinderella-15th-anniversary-party-2026.md",
+  "article:2026-09-18-cg-cinderella-girl-vote2026-schedule.md",
+  "article:2026-09-18-cg-dejimas-naha-2026.md",
+  "article:2026-09-18-cg-election-2026.md",
+  "article:2026-09-18-cg-election-cheer-contest-2026.md",
+  "article:2026-09-18-cg-hachimastu-2026.md",
+  "article:2026-09-18-cg-isetan-osechi-2027.md",
+  "article:2026-09-18-dsva-cosmo-birthday-live-report-2026.md",
+  "article:2026-09-18-dsva-valiv-2nd-anniversary-cd-madanumiasu-2026.md",
+  "article:2026-09-18-gaku-gakuen-radio-2026-09-23-guests.md",
+  "article:2026-09-18-gaku-gakumas-official-goods-2026-09-18.md",
+  "article:2026-09-18-gaku-hatsuboshi-store-towel-saki-restock-2026.md",
+  "article:2026-09-18-million-14th-live-2026.md",
+  "article:2026-09-18-million-anime-onkyo-earphone-2026.md",
+  "article:2026-09-18-million-british-pub-hub-2026.md",
+  "article:2026-09-18-million-kotobukiya-kuji-stage04-2026.md",
+  "article:2026-09-18-million-live-9th-anniversary-2026.md",
+  "article:2026-09-18-million-millishita-access-outage-compensation-memories-of-you-2026-09.md",
+  "article:2026-09-18-million-official-shop-kuji-panel-2026.md",
+  "article:2026-09-18-million-tours-s1-ex-momoko-rolling-sankaku-2026.md",
+  "article:2026-09-18-shiny-antica-new-song-event-2026.md",
+  "article:2026-09-18-shiny-asahi-sakuya-pickup-2026-09.md",
+  "article:2026-09-18-shiny-autumn-maple-box-2026.md",
+  "article:2026-09-18-shiny-enkan-halo-01-2026.md",
+  "article:2026-09-18-shiny-hopeful-feathers-goods-2026.md",
+  "article:2026-09-18-shiny-kaho-get-2026.md",
+  "article:2026-09-18-shiny-official-shop-photo-panel-2026-09-18.md",
+  "article:2026-09-18-shiny-refrac7ions-still-blue-2026.md",
+  "article:2026-09-18-shiny-solo-live-kitchen-car-2026.md",
+  "article:2026-09-18-sidem-11th-commentarycasting.md",
+  "article:2026-09-18-sidem-11th-stage-2026.md",
+  "article:2026-09-18-sidem-console-game-2026.md",
+  "article:2026-09-18-sidem-fbfes-movie-2026.md",
+  "article:2026-09-18-sidem-renaissance-2026.md",
+  "article:2026-09-18-sidem-teddys-collection-2-namba-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-18-765-765pro-allstars-live-bluray.md": "94393e095ae3e89b6c84f1f6a124b1255af3c1e0e3228a8770fa251055aa704f",
+  "docs/_posts/2026-09-18-cg-15th-orchestra-2027.md": "ceb4f295befc4399611a6b2bcc922f73aefdc4d4a5f2913c44b7f8bf2f4a9e30",
+  "docs/_posts/2026-09-18-cg-cinderella-15th-anniversary-party-2026.md": "4f403b6d73445cb343f5bd22ab2aa8a78df0b42fca5c249867fa27354ee57c33",
+  "docs/_posts/2026-09-18-cg-cinderella-girl-vote2026-schedule.md": "6c759d45e1a9d2082325f70ead23146e69b525324c369af8e77952c79ab03498",
+  "docs/_posts/2026-09-18-cg-dejimas-naha-2026.md": "ab3013b79beac49acbd9197396392d97bdb25a45060d26c6e93f9737c47f98b5",
+  "docs/_posts/2026-09-18-cg-election-2026.md": "e607f3e43e2fe6a81566dd577f6449fac33093f2710742db47ddba1abafcf7b1",
+  "docs/_posts/2026-09-18-cg-election-cheer-contest-2026.md": "f56db2cd1fc7771ec6cc090988cbc177bf3dae1a9fe870b26a2905e78bf8e245",
+  "docs/_posts/2026-09-18-cg-hachimastu-2026.md": "902db65590eb6a04609d88cda8437b42724d000b5f0a14485fd05c67a4fbf3e3",
+  "docs/_posts/2026-09-18-cg-isetan-osechi-2027.md": "b5c06641dcc01e2b47d84942ba4637277d32be01a0503abae019a929048fa572",
+  "docs/_posts/2026-09-18-dsva-cosmo-birthday-live-report-2026.md": "a67fbba84bc24a3163bd4a1e730fee4393b5a94dd14c1ba6dd686e2c86229079",
+  "docs/_posts/2026-09-18-dsva-valiv-2nd-anniversary-cd-madanumiasu-2026.md": "534d4d804110d7ece968ef1965708055c375cc596296400385b9cfa4cab87ad9",
+  "docs/_posts/2026-09-18-gaku-gakuen-radio-2026-09-23-guests.md": "1f8067b4aa6e44e6e17fa5fe15705e55a6f59c0407b5c5c00888f06d79a5560d",
+  "docs/_posts/2026-09-18-gaku-gakumas-official-goods-2026-09-18.md": "6b7cca09863028e556a6c36d49e45685c18c2dfd3ba5daafee74ae56cd926e87",
+  "docs/_posts/2026-09-18-gaku-hatsuboshi-store-towel-saki-restock-2026.md": "691b80d24cf19b6d35dc16b717a8fa35609c31ea889294e4d49f77280e295631",
+  "docs/_posts/2026-09-18-million-14th-live-2026.md": "b6b43178e7d8cbffcf55e3c6b8d4bc67352366ccf95ea1ee8142961f48256c54",
+  "docs/_posts/2026-09-18-million-anime-onkyo-earphone-2026.md": "115021db32e3d2adbc5a0785329218e5ddf5c51e6e8c64968edac85e519ada48",
+  "docs/_posts/2026-09-18-million-british-pub-hub-2026.md": "2a6c8d6b0876f2096c9d420169625de5d2a75989a9fa4fded34c218a5cc046be",
+  "docs/_posts/2026-09-18-million-kotobukiya-kuji-stage04-2026.md": "6c15f831bea7a0e2c31bceb0af75d5a7c3f21c67f5d308fee7ce9583b3ee1158",
+  "docs/_posts/2026-09-18-million-live-9th-anniversary-2026.md": "59a405c2ed1e0cde74def31041629a3e458997af5a61c0d400ebc4bd080e480c",
+  "docs/_posts/2026-09-18-million-millishita-access-outage-compensation-memories-of-you-2026-09.md": "488c03973b8a80ed7ebd9678fd85cf09150dc381749fadf0689ae241b3233724",
+  "docs/_posts/2026-09-18-million-official-shop-kuji-panel-2026.md": "4c1cab0224b3b602ef460b84b6fffa833886f2d671eb0e4ffd44a17b23ed7e17",
+  "docs/_posts/2026-09-18-million-tours-s1-ex-momoko-rolling-sankaku-2026.md": "795c7850dcf6a3bd90bf94dc09fa6275943eefdd22f7a12cba697949986b2c53",
+  "docs/_posts/2026-09-18-shiny-antica-new-song-event-2026.md": "d684b5bed6af8b119692eb55f89fa2f8c81c00ea4a136bcf0d1faf63601f8c23",
+  "docs/_posts/2026-09-18-shiny-asahi-sakuya-pickup-2026-09.md": "bdcb37767224f2b5c6116cdc73064cf1c7f09941ac59d4bf45e1e76c51eb0cdf",
+  "docs/_posts/2026-09-18-shiny-autumn-maple-box-2026.md": "a5efa6cd057fe3f9ef83d64f9c2f1953fc364edcc4e393d1a08eea8f4e0e370f",
+  "docs/_posts/2026-09-18-shiny-enkan-halo-01-2026.md": "a7b5ad2f316bd30eb6514757c2f7f9898eb0513eb8f2ee76cdedfa5a2128795a",
+  "docs/_posts/2026-09-18-shiny-hopeful-feathers-goods-2026.md": "fe3bb339477e62cf44c5b577d5aebbb309097da13bf05dd5a85c88d868f2378f",
+  "docs/_posts/2026-09-18-shiny-kaho-get-2026.md": "0672118ca2cea6001da286bff08c8ca42a220488762ad6bda3a029b5e3e3b37b",
+  "docs/_posts/2026-09-18-shiny-official-shop-photo-panel-2026-09-18.md": "1e18d5a2b3aea2fc7b0c5ce3697e0f2d931de6e36a1f54ba5860f22744fbc5df",
+  "docs/_posts/2026-09-18-shiny-refrac7ions-still-blue-2026.md": "fcff4fbd99a07f4f5f83a46e843f2d14bb9c80298356901cb334c7ddf7d3cecb",
+  "docs/_posts/2026-09-18-shiny-solo-live-kitchen-car-2026.md": "8884f8fb5d64fb6ed861fbbbb769958ee18fa7309a172f0cad56886b20aad6ad",
+  "docs/_posts/2026-09-18-sidem-11th-commentarycasting.md": "08b846c8ae1e6e99fddebc100ab77fb57255f0f7b987d428996e1b8c37cd1e30",
+  "docs/_posts/2026-09-18-sidem-11th-stage-2026.md": "dcb7b01d2116f79c511259b29334dfed7b68db99a7915c2c4aed567c47ac9f04",
+  "docs/_posts/2026-09-18-sidem-console-game-2026.md": "3319ecaf5b1ea4a164b3e7db6e442f38235f359db771b82fcd6fdee8a348df3a",
+  "docs/_posts/2026-09-18-sidem-fbfes-movie-2026.md": "06e96f83adda28fa00412d8fdb834aa80b496b986775027118952f02581661ab",
+  "docs/_posts/2026-09-18-sidem-renaissance-2026.md": "decb67c4d061fb0b6c66e74de25cbca05e02b4eb53760d75d8aceff1ec5db97d",
+  "docs/_posts/2026-09-18-sidem-teddys-collection-2-namba-2026.md": "bdd6e2e3e7be54a75e6819f5501e9b7683f24c1d580faaba67b291455a2a03d8",
+  "docs/_editions/2026-09-18.md": "5a16548ebd967f71ef3ad93e06d88c831eaf43838091da711f835dcef8b19d0b",
+  "metrics/stories-before-2026-09-18.yml": "bec824c129e79bfa5d0b3396816eaa3e0948a38fb77e464b2dbfe93de3d6565d"
+ }
+}

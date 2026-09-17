@@ -231,5 +231,34 @@
   "verify": "confirmed",
   "src_candidate_id": "202609160231-grok-62",
   "event_date": "2026-09-26"
+ },
+ {
+  "id": "sched-2026-09-26-producers-station-meeting-matsudo-2026-開幕",
+  "dedup_key": "producers-station-meeting-matsudo-2026",
+  "brand": "joint",
+  "subject": "Pステ大阪日本橋 交流会",
+  "kind": "開幕",
+  "note": "アイドルマスターツアーズ交流会に参加できる",
+  "reserved_on": "2026-09-17",
+  "title": "Pステ松戸でPRODUCERS STATION MEETING開催",
+  "url": "https://bandainamco-am.co.jp/others/idolmaster/producers_station.html",
+  "source_type": "準公式",
+  "facts": [
+   "Producers Stationは、アイドルマスター TOURSを通じてプロデューサー同士がリアルに交流し、つながれる場をコンセプトとしたコーナー。",
+   "ゲームの腕前自慢ではなく、アイマスへの愛を語り合い、プロデューサー同士がつながれるコミュニティ空間を提供している。",
+   "全国10店舗で展開しており、交流会やスコアアタックイベントなどを実施している。",
+   "2026.09.14掲載: 10月17日(土) Pステ松戸にて「PRODUCERS STATION MEETING」を開催！",
+   "Pステ松戸はnamco松戸店内、千葉県松戸市松戸1230-1 ピアザ松戸1Fに所在する。",
+   "Pステ松戸はJR常磐線「松戸駅」より徒歩1分。",
+   "エンゲージメント: 中",
+   "言及アイドル: 伊吹翼、春日未来、如月千早、島村卯月、水瀬伊織、桜庭薫、藤田ことね、櫻木真乃、硲道夫、月村手毬",
+   "2026.09.14掲載: 9月26日(土) Pステ大阪日本橋にて「アイドルマスターツアーズ交流会」を開催！",
+   "Pステ大阪日本橋はnamco大阪日本橋店内、大阪府大阪市浪速区難波中2-1-17 コスモビル1～3Fに所在する。",
+   "Pステ大阪日本橋は南海線「なんば駅」より徒歩5分。",
+   "「10月17日(土)　Pステ松戸にて『PRODUCERS STATION MEETING』を開催！」と掲載されている。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609160734-explore-17"
  }
 ]

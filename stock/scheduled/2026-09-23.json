@@ -228,5 +228,36 @@
   "via": "grok",
   "verify": "unconfirmed",
   "src_candidate_id": "202609120228-grok-95"
+ },
+ {
+  "id": "sched-2026-09-23-gaku-live-tour-shirube-iwate-goods-2026-終了",
+  "dedup_key": "gaku-live-tour-shirube-iwate-goods-2026",
+  "brand": "gaku",
+  "subject": "学マス岩手公演 会場物販最終日",
+  "kind": "終了",
+  "note": "会場物販の最終日",
+  "reserved_on": "2026-09-17",
+  "title": "岩手公演の会場物販・整理券情報",
+  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/goods/iwate.php",
+  "source_type": "公式",
+  "facts": [
+   "学園アイドルマスター LIVE TOUR -標- 岩手公演の事前販売ファイナル（開催直前販売）の予定はない。",
+   "物販日時: 2026年9月22日（火・祝）12:00～18:30",
+   "物販日時: 2026年9月23日（水・祝）11:00～16:30",
+   "物販場所: トーサイクラシックホール岩手（岩手県民会館）内物販会場",
+   "当日物販は公演チケットを持っている人、持っていない人のいずれも利用できる。",
+   "1会計につき各商品3点まで購入できる。",
+   "サイズ別商品はサイズ合計3点まで購入できる。",
+   "トレーディング仕様商品は種類数が購入上限となる。",
+   "例として公式トレーディングアクリルカード全4種は4点まで購入できる。",
+   "販売場所・販売開始時間・販売終了時間は予告なく変更される場合がある。",
+   "混雑緩和のため、一部時間帯は整理券が必要。",
+   "整理券受付URL: https://asobiticket2.asobistore.jp/receptions/236e7383-ccd3-4356-8fd7-ee6568364ad8"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609170229-explore-13",
+  "event_date": "2026-09-22",
+  "deadline": "2026-09-23"
  }
 ]

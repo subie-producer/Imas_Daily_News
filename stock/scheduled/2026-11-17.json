@@ -29,5 +29,36 @@
   "src_candidate_id": "202609151258-explore-6",
   "event_date": "2026-12-12",
   "deadline": "2026-11-17"
+ },
+ {
+  "id": "sched-2026-11-17-million-mitsukoshi-osechi-2027-締切",
+  "dedup_key": "million-mitsukoshi-osechi-2027",
+  "brand": "million",
+  "subject": "ミリオン×三越おせち予約締切",
+  "kind": "締切",
+  "note": "おせち予約受付の最終日",
+  "reserved_on": "2026-09-17",
+  "title": "ミリオンライブ三越おせち2027",
+  "url": "https://www.mistore.jp/shopping/feature/foods_f2/idolmaster_osechi_f.html",
+  "source_type": "当事者",
+  "facts": [
+   "ページ日付: 2026.09.16",
+   "2026年10月21日(水)午前10時～11月17日(火)午後11時59分",
+   "三越伊勢丹オンラインストア",
+   "描き下ろしイラストは白石紬",
+   "【A】「真」個食おせち二客(冷凍) 白石 紬 限定Ver. 24,840円",
+   "【B】「菖」洋風おせち二段(冷凍) 白石 紬 限定Ver. 24,840円",
+   "【C】「真」個食おせち二客(冷凍) 白石 紬 限定Ver. 24,840円",
+   "【D】「菖」洋風おせち二段(冷凍) 白石 紬 限定Ver. 24,840円",
+   "賞味期限は冷凍で2027年1月31日(日)",
+   "お届け日は12月29日(火)・12月30日(水)のいずれか",
+   "数に限りがありなくなり次第終了",
+   "特典: アクリルスタンド、手ぬぐい、お品書き"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609170229-grok-39",
+  "event_date": "2026-10-21",
+  "deadline": "2026-11-17"
  }
 ]

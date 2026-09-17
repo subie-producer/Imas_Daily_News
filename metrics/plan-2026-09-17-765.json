@@ -1,0 +1,84 @@
+{
+ "decisions": {
+  "765as-solo-collection-dresscode-ultimate-2026": {
+   "action": "article",
+   "angle": "MILLION14th会場でのCD物販の日時・場所と購入特典(A3ポスター先着プレゼント)を告知",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売日・品番・価格は既報。新事実は9/20物販時間・原宿口前特設テントの販売場所・購入特典のA3ポスター先着プレゼント"
+  },
+  "imas-radio-2026": {
+   "action": "article",
+   "angle": "IM@S RADIO次回放送(9/29)決定、ゲストは神原大地さん(伊集院北斗役)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "次回放送日(9/29)とゲスト(神原大地さん)が新事実、番組概要・パーソナリティ体制は既報"
+  },
+  "dual-twin-live-namba-archive-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "大阪公演MCの一言をチラ見せする販促投稿。アーカイブ期限(9/27)は既報の内容で新事実なし"
+  },
+  "dual-twin-live-archive-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公演日程・会場一覧は765-dual-twinlive-venue-cdで既報の静的な公式ページ情報、新事実なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-765as-solo-collection-dresscode-ultimate-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "MILLION14th会場でのCD物販の日時・場所と購入特典(A3ポスター先着プレゼント)を告知",
+    "lead_score": 40,
+    "dedup_key": "765as-solo-collection-dresscode-ultimate-2026",
+    "candidate_ids": [
+     "202609161237-explore-6"
+    ]
+   },
+   {
+    "slug": "765-imas-radio-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "IM@S RADIO次回放送(9/29)決定、ゲストは神原大地さん(伊集院北斗役)",
+    "lead_score": 10,
+    "dedup_key": "imas-radio-2026",
+    "candidate_ids": [
+     "202609161237-explore-7",
+     "202609161837-explore-4"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "dual-twin-live-namba-archive-2026",
+    "reason": "既報",
+    "note": "大阪公演MCの一言をチラ見せする販促投稿。アーカイブ期限(9/27)は既報の内容で新事実なし"
+   },
+   {
+    "dedup_key": "dual-twin-live-archive-2026",
+    "reason": "既報",
+    "note": "公演日程・会場一覧は765-dual-twinlive-venue-cdで既報の静的な公式ページ情報、新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

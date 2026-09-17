@@ -2,7 +2,7 @@
 slug: shiny-sfp-kawaii-metamoru-1m-views-2026-09
 edition: "2026-09-15"
 brand: shiny
-src: 未確認
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -21,7 +21,7 @@ sources:
   type: 公式
 - label: 【シャニソン】I'm a Cutie Finder「KAWAII♡めたもる交響曲」2DMV【アイドルマスター】(2026-09-14)
   url: https://www.youtube.com/watch?v=bADPhUD27B4
-  type: 未確認
+  type: 公式
 event_date: "2026-09-14"
 title_fact_ids:
 - F3

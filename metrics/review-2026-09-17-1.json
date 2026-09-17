@@ -1,0 +1,243 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-17-765-765as-solo-collection-dresscode-ultimate-2026.md",
+   "issue": "出典（公式ページ）に「先着」という表現が記載されていない。記事では「先着プレゼント」と表現されているが、公式ページには「ランダムでプレゼント。なくなり次第終了」と記載されている",
+   "quote": "A3ポスター全4種からランダムで1枚を先着プレゼント",
+   "rule_id": "R3",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F8"
+   ],
+   "expected": "「A3ポスター全4種からランダムで1枚をプレゼント。なくなり次第終了」と、出典に正確に対応する記述に改める",
+   "scope": "article:2026-09-17-765-765as-solo-collection-dresscode-ultimate-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-dsva-how-to-fish-2026.md",
+   "issue": "sources に「二次情報」（Yahoo!リアルタイム検索）のみで、配信実施という公式が出して然るべき話題なのに、vα-liv公式サイト・公式Xアカウント等の一次情報・公式出典が1つも無い。また候補ID「sched-2026-09-17-dsva-how-to-fish-2026-開始」が候補ファイルに実在しない。",
+   "quote": "sources:\n- label: 候補 sched-2026-09-17-dsva-how-to-fish-2026-開始「3人合同『How to Fish』配信決定」(2026年9月17日)\n  url: https://search.yahoo.co.jp/realtime/search?ei=UTF-8&md=h&p=%23%E3%83%B4%E3%82%A3%E3%82%A2%E3%83%A9&rkf=1\n  type: 二次情報",
+   "rule_id": "R9",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F3",
+    "F8"
+   ],
+   "expected": "sources にvα-liv公式サイト（official website）または公式Xアカウント（@varia_staff など）の一次情報を追加し、公式・準公式の出典を最低1つ以上含める",
+   "scope": "article:2026-09-17-dsva-how-to-fish-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-dsva-how-to-fish-2026.md",
+   "issue": "候補IDの不在。frontmatterの candidate_ids に「sched-2026-09-17-dsva-how-to-fish-2026-開始」が指定されているが、candidates/2026-09-17.json に存在しない。根拠IDがF1-F8まで指定されているのに、根拠を参照できない状態。",
+   "quote": "candidate_ids:\n- sched-2026-09-17-dsva-how-to-fish-2026-開始",
+   "rule_id": "R1",
+   "repair": "drop_source",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F6",
+    "F8"
+   ],
+   "expected": "candidate_ids を削除するか、実在する候補IDに修正する。または sources に candidates ファイルの検索結果を明記する",
+   "scope": "article:2026-09-17-dsva-how-to-fish-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-dsva-valiv-2nd-anniversary-cd-madamenuashita.md",
+   "rule_id": "R1",
+   "issue": "出典にない事実：記事の frontmatter に指定された candidate_ids（202609160734-explore-15、202609162334-explore-19、202609162334-explore-20、202609162334-explore-21）がすべて候補ファイル（candidates/2026-09-16.json）に存在しません。本文に付けられた多数の F コメント（F3～F153）が根拠となるファイルの事実を指すはずですが、候補ファイルが見つからないため、記事の具体的事実（価格・品番・発売日・ステッカー内容など）が出典から導かれたものかが確認できません。",
+   "quote": "frontmatter: candidate_ids: [202609160734-explore-15, 202609162334-explore-19, 202609162334-explore-20, 202609162334-explore-21] / 本文コメント: <!-- F3 F4 F5 ... F153 -->",
+   "fact_ids": [],
+   "repair": "drop_article",
+   "expected": "候補ファイルが実在するか確認し、frontmatter の candidate_ids を正しく更新するか、sources のURLから内容を検証して frontmatter 全体を修正した上で再提出",
+   "scope": "article:2026-09-17-dsva-valiv-2nd-anniversary-cd-madamenuashita.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-dsva-valiv-2nd-anniversary-cd-madamenuashita.md",
+   "rule_id": "R2",
+   "issue": "出典隠し：記事に frontmatter の verified_facts がなく、sources には ASOBISTORE（準公式）のみです。候補ファイルが見つからないため、執筆がどの出典から記事の事実を取得したかが不明です。sources のURLが有効でこれらの事実が確認できるなら、verified_facts の形式で一次情報の確認を frontmatter に記載する必要があります。",
+   "quote": "frontmatter: verified_facts: [記載なし] / sources: 全て準公式（shop.asobistore.jp）",
+   "fact_ids": [],
+   "repair": "add_source",
+   "expected": "sources のURLから記事の内容を実際に確認し、verified_facts を frontmatter に追加して一次情報のページ確認を明記する",
+   "scope": "article:2026-09-17-dsva-valiv-2nd-anniversary-cd-madamenuashita.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-shiny-8-5th-anniversary-eve-package-2026.md",
+   "issue": "候補ファイル 202609162334-explore-11 が見つからない。frontmatter の candidate_ids に指定されているが、candidates/2026-09-16.json に存在しない。根拠となる candidates がないため、本文の具体的事実(ガシャチケット枚数、ピース数、購入上限)を検証できない",
+   "quote": "candidate_ids:\n- 202609162334-explore-11",
+   "rule_id": "R1",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F7",
+    "F8",
+    "F9",
+    "F10",
+    "F11"
+   ],
+   "expected": "記事の具体的内容（SSR以上確定ガシャチケット1枚、10連ガシャチケット1/1/2枚、ピース10個、一人4回まで購入可能）が、candidates の facts から確認可能であること、または verified_facts で一次情報から確認されていること",
+   "scope": "article:2026-09-17-shiny-8-5th-anniversary-eve-package-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-sidem-315-fitness-renaissance-2026.md",
+   "issue": "出典隠し: 候補3（未確認・特設サイト）由来の事実を sources に載せずに記事本文に書いている。段落4で「チケット1枚で中学生以上1名が施設を1日利用でき、有効期限は2026年12月の各店舗の最終営業日まで」と記述されている事実は、candidate_ids に含まれた候補3（202609170229-grok-46, source_type: 未確認, url: https://ip.s-re.jp/lp/315fitness-project）から由来するが、sources に明示的に記載されていない。PR Times は「詳細は特設サイトで確認」と指示しているが、article は sources に特設サイトを加えず、「verified_facts」での一次情報確認も記録していない。",
+   "quote": "チケット1枚で中学生以上1名が施設を1日利用でき、有効期限は2026年12月の各店舗の最終営業日まで。",
+   "rule_id": "R2",
+   "repair": "add_source",
+   "fact_ids": [
+    "F98",
+    "F99"
+   ],
+   "expected": "sources に特設サイト（https://ip.s-re.jp/lp/315fitness-project）を type: 当事者 で追加するか、またはfrontmatter に verified_facts を追加して一次情報確認を記録する",
+   "scope": "article:2026-09-17-sidem-315-fitness-renaissance-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-17-cg-15th-anniversary-orchestra-2027.md",
+   "issue": "分量不足：rank: lead に対して約770字（基準1000字）。出典に記載されている会場施設、チケット詳細条件、一般販売情報などを補充すれば埋められる可能性がある",
+   "scope": "article:2026-09-17-cg-15th-anniversary-orchestra-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-dsva-how-to-fish-2026.md",
+   "issue": "本文の「視聴先は灯里愛夏、上水流宇宙、レトラの各視点が案内されている」という記述が、sources のYahoo!リアルタイム検索ページに現在含まれていない。候補が存在しないため、この事実が出典から導けるかどうか検証不可。",
+   "scope": "article:2026-09-17-dsva-how-to-fish-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-dsva-how-to-fish-2026.md",
+   "issue": "記事は既報（2026-09-15初出の「dsva-how-to-fish-2026」story）の当日記事。既報では「配信日時: 2026年9月17日(木)20:00〜」が既に知られていたが、記事は新事実（「視聴先」「各視点」）を追加。ただし sources から当該事実が導けるかどうか未確認のため、新事実が有効か判定不能。",
+   "scope": "article:2026-09-17-dsva-how-to-fish-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-dsva-valiv-manaka-asobi-taizen-2026-09-16.md",
+   "issue": "分量不足：rank: small（下限250字）に対して本文が約80字と大幅に不足。出典に記載されている配信内容・ゲーム情報、コラボの背景など追加可能な詳細があるはずです。",
+   "scope": "article:2026-09-17-dsva-valiv-manaka-asobi-taizen-2026-09-16.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-gaku-after-school-namco-2026.md",
+   "issue": "sources[1].label が不完全。「2026年9月○」と記載されているが、PR Times の実際のタイトルは「2026年9月25日(金)より全国の「ナムコ」で開催！」を含む完全なタイトルです。正確なタイトル情報で更新することが望ましい。",
+   "scope": "article:2026-09-17-gaku-after-school-namco-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-gaku-live-tour-shirube-iwate-goods-2026.md",
+   "issue": "見出しが新事実を反映していない。最大の新情報『事前販売ファイナルを実施せず』が見出しに含まれておらず、見出しは既報の日時『9月22・23日に会場物販』に止まっている。冒頭では『事前販売ファイナルを実施せず、9月22日と23日に会場物販を行う』と正しく述べられているため、この重要な新事実を見出しでも強調する余地がある。",
+   "scope": "article:2026-09-17-gaku-live-tour-shirube-iwate-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-gaku-michinaru-mv-300man-2026.md",
+   "issue": "分量不足: rank: small で本文約150字は下限(250字推奨)未満。ただし、短報として許容範囲（規程9）。候補に含まれる「今日は学マ水曜日」「ジュエル配布」などの定常運営情報を補足すれば充実できますが、現在の構成（MV再生数に絞った報道）は有効です。",
+   "scope": "article:2026-09-17-gaku-michinaru-mv-300man-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-gaku-rivalaba-2026.md",
+   "issue": "frontmatter の event_date が発売予定時期と不一致。event_date は 2026-09-07（日曜日）だが、記事では「2026年9月第2週」（9月8-14日）と記載。情報源の最終更新が2026年09月16日18:00なので、event_date は 2026-09-16 または 2026-09-08 が妥当。記事本文の内容は正確です。",
+   "scope": "article:2026-09-17-gaku-rivalaba-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-gaku-rivalaba-2026.md",
+   "issue": "分量が下限に達していない。rank: small の下限は250字なのに対し、本文約224字。ただし出典の gashapon.jp から追加可能な情報は既に収集済み（対象年齢・キャラクター・店舗検索機能など）であり、推測や一般論での水増しは不要。簡潔さは許容範囲内です。",
+   "scope": "article:2026-09-17-gaku-rivalaba-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-joint-okemas-2025-streaming-post-2026-09.md",
+   "issue": "分量不足: rank small（下限250字）に対し本文は約104字。出典に配信形態の詳細や対象条件があれば拡充可能ですが、現状でも必須情報は充足しています。",
+   "scope": "article:2026-09-17-joint-okemas-2025-streaming-post-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-joint-producers-station-meeting-matsudo-2026.md",
+   "issue": "分量不足：rank: small は最少250字以上が必要。現在245字（5字不足）。出典に記載されている会場情報・アクセス・Producers Stationの概要など、既に拾われている内容で対応可能です。",
+   "scope": "article:2026-09-17-joint-producers-station-meeting-matsudo-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-shiny-higuchi-madoka-effortless-figure-2026.md",
+   "issue": "分量が薄い可能性（245字、rank: small の最低250字にやや不足）。ただし frontmatter の情報と合わせると許容範囲。見出し・lede のテンポが良く、必要な事実（立体化・スキン再現・質感・予約時期・公式案内）を網羅しており、分量不足での修正は不要。",
+   "scope": "article:2026-09-17-shiny-higuchi-madoka-effortless-figure-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-17-sidem-producer-meeting-ajewelholic-2027.md",
+   "issue": "分量不足: rank: small の下限 250 字に対して本文が約 125 字。候補に「公演時刻（16:00開場/17:00開演など）」「受付期間の詳細日時」「当落発表日時」が載っており、出典から拾える情報がある",
+   "scope": "article:2026-09-17-sidem-producer-meeting-ajewelholic-2027.md"
+  },
+  {
+   "file": "-",
+   "issue": "candidates に有る公式発表が紙面から漏れている。特に『深海フェス2026「超・深海」出演者追加発表』（DSVA）、『SideM×シャニマス合同ライブ発表』（JOINT）は報道ソースの公式発表に相当する話題で、号スナップショットにも載っていない",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-17-765-765as-solo-collection-dresscode-ultimate-2026.md",
+  "article:2026-09-17-765-imas-radio-2026.md",
+  "article:2026-09-17-cg-15th-anniversary-orchestra-2027.md",
+  "article:2026-09-17-cg-dijimas-cg-2026.md",
+  "article:2026-09-17-cg-hachimas-cg-2026.md",
+  "article:2026-09-17-cg-isetan-osechi-2027.md",
+  "article:2026-09-17-dsva-how-to-fish-2026.md",
+  "article:2026-09-17-dsva-kamizuru-cosmo-birthday-online-live-2026-report.md",
+  "article:2026-09-17-dsva-valiv-2nd-anniversary-cd-madamenuashita.md",
+  "article:2026-09-17-dsva-valiv-manaka-asobi-taizen-2026-09-16.md",
+  "article:2026-09-17-gaku-after-school-namco-2026.md",
+  "article:2026-09-17-gaku-jewel-250-2026-09-16.md",
+  "article:2026-09-17-gaku-live-tour-shirube-iwate-goods-2026.md",
+  "article:2026-09-17-gaku-michinaru-mv-300man-2026.md",
+  "article:2026-09-17-gaku-rivalaba-2026.md",
+  "article:2026-09-17-joint-okemas-2025-streaming-post-2026-09.md",
+  "article:2026-09-17-joint-producers-station-meeting-matsudo-2026.md",
+  "article:2026-09-17-joint-tours-s1-ex-2026.md",
+  "article:2026-09-17-million-14th-ticket-2026.md",
+  "article:2026-09-17-million-mitsukoshi-osechi-2027.md",
+  "article:2026-09-17-million-mltd-jewel-compensation-2026-09-15.md",
+  "article:2026-09-17-million-mltd-werewolf-teaser-2026-09.md",
+  "article:2026-09-17-shiny-8-5th-anniversary-eve-package-2026.md",
+  "article:2026-09-17-shiny-higuchi-madoka-effortless-figure-2026.md",
+  "article:2026-09-17-shiny-hopeful-feathers-goods-2026.md",
+  "article:2026-09-17-shiny-idol-photo-panel-new-designs-2026.md",
+  "article:2026-09-17-sidem-11th-live-performance-goods-2026.md",
+  "article:2026-09-17-sidem-315-fitness-renaissance-2026.md",
+  "article:2026-09-17-sidem-fantastic-battle-fes-movie-2026.md",
+  "article:2026-09-17-sidem-producer-meeting-ajewelholic-2027.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-17-765-765as-solo-collection-dresscode-ultimate-2026.md": "18e8853bbf23fd424b7f269ccd50995ae74716bcb17c71c6a46a5c903b00b0b6",
+  "docs/_posts/2026-09-17-765-imas-radio-2026.md": "0209a945d03cfbbf6ee397257ed0edfe167df9f3bf82ba1f40204cba2df81a85",
+  "docs/_posts/2026-09-17-cg-15th-anniversary-orchestra-2027.md": "a1d20d22ed469ab2d06e85ac638c5b4bef1cc21559869a86206095f21cd3b38a",
+  "docs/_posts/2026-09-17-cg-dijimas-cg-2026.md": "ba28c3f781483c135b897fdfb4618dd75cbcf59d4c519d257e94640666c35828",
+  "docs/_posts/2026-09-17-cg-hachimas-cg-2026.md": "3c43be857fd4f08c3be05fa8a02738430a2155844cc06918eaa88474000f8180",
+  "docs/_posts/2026-09-17-cg-isetan-osechi-2027.md": "8f026caa3eaf2dc8c03e5789dcebd2e7956880decfbf95e0b3bac36791755cac",
+  "docs/_posts/2026-09-17-dsva-how-to-fish-2026.md": "e0f88ba5d580b8ca8075e92801bb8c916558b8fa94839085301b71ccd43f0985",
+  "docs/_posts/2026-09-17-dsva-kamizuru-cosmo-birthday-online-live-2026-report.md": "29046a9018b6334b9f0f9c664c3c4f5e3eb65a8c2937b83b4606394adf4cd7c6",
+  "docs/_posts/2026-09-17-dsva-valiv-2nd-anniversary-cd-madamenuashita.md": "3350a13d158f85199f1657eda1b5008ee4f7b39f94686e8608af0459acc9f3b9",
+  "docs/_posts/2026-09-17-dsva-valiv-manaka-asobi-taizen-2026-09-16.md": "fc5e28a6c09e9dfdb268704fd776ee92c9979e7434ba83d4188c6e627b3bde66",
+  "docs/_posts/2026-09-17-gaku-after-school-namco-2026.md": "d728c66bbac2119d56f6514bcab5eff867cb52f67a0049326bf6e204e3096a5b",
+  "docs/_posts/2026-09-17-gaku-jewel-250-2026-09-16.md": "1b624cadaa91a6ea359916af86b08afd4446ff2638cf93357128076ab96d2767",
+  "docs/_posts/2026-09-17-gaku-live-tour-shirube-iwate-goods-2026.md": "7a9d9bf9c4e34549318ccdec73dc6ee5410f9b78f5de666d9e884c1baa660a79",
+  "docs/_posts/2026-09-17-gaku-michinaru-mv-300man-2026.md": "7bb1594ef706b9cc65d6a6f56a3858b7ed2e82be7d44a117f7f86c274f9eb827",
+  "docs/_posts/2026-09-17-gaku-rivalaba-2026.md": "f26b45336d80066494f89f88e1356969149ef5ca52aa46110b7f0664e95f40c1",
+  "docs/_posts/2026-09-17-joint-okemas-2025-streaming-post-2026-09.md": "8263779731d0ff50c3ed499bb2ffa0eaf94a97c28dcdba7558683e53299136f6",
+  "docs/_posts/2026-09-17-joint-producers-station-meeting-matsudo-2026.md": "0ea994a404b7acbbf150ac512cd9626d2d383bef657fca5e0c33efb7b273fc61",
+  "docs/_posts/2026-09-17-joint-tours-s1-ex-2026.md": "50269ed27b3ac02e6405061f41a54cc5b93fea11bdc8929e0a35a5af4d3dee0b",
+  "docs/_posts/2026-09-17-million-14th-ticket-2026.md": "dd040280e18582e63697300b0ad92dea95447a9c97a34bdb6ac68245fe5cb437",
+  "docs/_posts/2026-09-17-million-mitsukoshi-osechi-2027.md": "122e41e9dd225d5e6319292455f019733ebcb4a7be18826b2409313fd0f75f54",
+  "docs/_posts/2026-09-17-million-mltd-jewel-compensation-2026-09-15.md": "0115afa624ab6ce1c9847b095cc31a5a10edbc6a94b86960c421a74679f4a568",
+  "docs/_posts/2026-09-17-million-mltd-werewolf-teaser-2026-09.md": "ba44145893758ea8ed7561986452ceb0c44937149b3792278e16e63e8c6627dc",
+  "docs/_posts/2026-09-17-shiny-8-5th-anniversary-eve-package-2026.md": "8c3928f115a4a4a3d696e2cbdcbb1df5685cf18fea67c60a965e65c49bfdac24",
+  "docs/_posts/2026-09-17-shiny-higuchi-madoka-effortless-figure-2026.md": "f7097a52e0c31a117c897965960f98a9077fe852e34f550cf0b7f6af4df4300b",
+  "docs/_posts/2026-09-17-shiny-hopeful-feathers-goods-2026.md": "178ad8faa151361b6984dc0bf2bfae4d3705dce0ab927d9eb5744d42fca2975a",
+  "docs/_posts/2026-09-17-shiny-idol-photo-panel-new-designs-2026.md": "5e378eb2523d234db3139ee409e9452e45bceb732eac8ffd0027ac09a3c8e94d",
+  "docs/_posts/2026-09-17-sidem-11th-live-performance-goods-2026.md": "31339f5a307d4e711e43da6d560b0880b9a6ddde2dee0c42fad4026b12879aba",
+  "docs/_posts/2026-09-17-sidem-315-fitness-renaissance-2026.md": "7bbd91c5b4285cd0ab2d11a3e22ca3c131cb6213d395fed7e5c07f14adbd5fea",
+  "docs/_posts/2026-09-17-sidem-fantastic-battle-fes-movie-2026.md": "ce25ec91cd1b6523f655c7ada147bd1ac79a2103f745e71fbbd43ca352491d4c",
+  "docs/_posts/2026-09-17-sidem-producer-meeting-ajewelholic-2027.md": "27001ee1c5d43ed34a400d9649e998ec1bc3b0b3d611d4624ead218621961e15",
+  "docs/_editions/2026-09-17.md": "f973e23e96dbd6174babe5b96c174e2dd6d29e0862a6c229bf42105ff5499391",
+  "metrics/stories-before-2026-09-17.yml": "79c9c4b419281445ec7b59791f76b7b4fe33608c9ccdafa036a7d7b09f911bef"
+ }
+}

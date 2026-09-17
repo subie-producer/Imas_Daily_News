@@ -1,0 +1,193 @@
+{
+ "decisions": {
+  "million-14thlive-ticket-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-ticket-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "一般販売2次更新(9/14)の詳細。当日券・DAY2全指定完売の情報を含むmillion-14th-ticket-2026に統合"
+  },
+  "million-mitsukoshi-osechi-2027": {
+   "action": "article",
+   "angle": "ミリオン×三越『おせち2027』始動、白石紬の振袖姿おせちを発表(発売10/21)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-official-shop-new-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/15号(story: million-official-shop-lottery-2026-09)で新賞品11種・フォトパネル新柄・540円・購入制限まで既報。店舗名等は新事実にならない"
+  },
+  "million-tours-momoko-rolling-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "joint-tours-s1-ex-2026としてjoint面が周防桃子とローリング△さんかく・新カード28種等を統合済み"
+  },
+  "million-mitsuoshi-osechi-2027": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-mitsukoshi-osechi-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の三越おせち2027企画。販売期間10/21〜11/17・販売場所・コンセプトの素材として統合"
+  },
+  "million-14th-ticket-2026": {
+   "action": "article",
+   "angle": "14thLIVE一般販売2次でDAY2全席指定が完売、当日券の発売も決定",
+   "rank": "small",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14th-fan-support-ads-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "原宿駅の応援広告、公式発表なく二次情報(Yahooリアルタイム検索)のみ。ファン主催の祝賀広告とみられ、fan-culture面の対象"
+  },
+  "mltd-werewolf-teaser-2026-09": {
+   "action": "article",
+   "angle": "ミリシタ公式Xが人狼ゲーム風ストーリー投稿の2日目を公開",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "mltd-jewel-compensation-2026-09-15": {
+   "action": "article",
+   "angle": "ミリシタ、アクセス障害の未到達分報酬補填が完了、お詫びに全員へジュエル300個を配布",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14th-live-streaming-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信チケット価格・販売期間・アーカイブ期間はmillion-14th-liveで既報と同内容。プレゼント用チケットは初出日未確認で新規性を主張できない"
+  },
+  "million-14th-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公演名・日時・会場・席種価格はmillion-14th-live/million-14th-2026で既報と同内容。新事実なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-mitsukoshi-osechi-2027",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオン×三越『おせち2027』始動、白石紬の振袖姿おせちを発表(発売10/21)",
+    "lead_score": 10,
+    "dedup_key": "million-mitsukoshi-osechi-2027",
+    "candidate_ids": [
+     "202609161237-watch-3",
+     "202609170229-grok-39",
+     "202609161837-watch-3"
+    ]
+   },
+   {
+    "slug": "million-14th-ticket-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "14thLIVE一般販売2次でDAY2全席指定が完売、当日券の発売も決定",
+    "lead_score": 45,
+    "dedup_key": "million-14th-ticket-2026",
+    "candidate_ids": [
+     "202609161837-explore-7",
+     "202609160734-explore-1"
+    ]
+   },
+   {
+    "slug": "million-mltd-werewolf-teaser-2026-09",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ公式Xが人狼ゲーム風ストーリー投稿の2日目を公開",
+    "lead_score": 5,
+    "dedup_key": "mltd-werewolf-teaser-2026-09",
+    "candidate_ids": [
+     "202609170229-grok-35"
+    ]
+   },
+   {
+    "slug": "million-mltd-jewel-compensation-2026-09-15",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ、アクセス障害の未到達分報酬補填が完了、お詫びに全員へジュエル300個を配布",
+    "lead_score": 20,
+    "dedup_key": "mltd-jewel-compensation-2026-09-15",
+    "candidate_ids": [
+     "202609170229-grok-36"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-official-shop-new-goods-2026",
+    "reason": "既報",
+    "note": "9/15号(story: million-official-shop-lottery-2026-09)で新賞品11種・フォトパネル新柄・540円・購入制限まで既報。店舗名等は新事実にならない"
+   },
+   {
+    "dedup_key": "million-tours-momoko-rolling-2026",
+    "reason": "重複",
+    "note": "joint-tours-s1-ex-2026としてjoint面が周防桃子とローリング△さんかく・新カード28種等を統合済み"
+   },
+   {
+    "dedup_key": "million-14th-fan-support-ads-2026",
+    "reason": "同人・ファン主催",
+    "note": "原宿駅の応援広告、公式発表なく二次情報(Yahooリアルタイム検索)のみ。ファン主催の祝賀広告とみられ、fan-culture面の対象"
+   },
+   {
+    "dedup_key": "million-14th-live-streaming-2026",
+    "reason": "既報",
+    "note": "配信チケット価格・販売期間・アーカイブ期間はmillion-14th-liveで既報と同内容。プレゼント用チケットは初出日未確認で新規性を主張できない"
+   },
+   {
+    "dedup_key": "million-14th-live-2026",
+    "reason": "既報",
+    "note": "公演名・日時・会場・席種価格はmillion-14th-live/million-14th-2026で既報と同内容。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -67,10 +67,6 @@
   brand: million
   subject: ミリシタ「NEXT STAGE」予告
   watch: 予告内容の正式発表日(判明次第 triggers へ)
-- dedup_key: mistore-osechi-2027-cg-ml
-  brand: general
-  subject: シンデレラガールズ×伊勢丹・ミリオンライブ×三越 2027年おせちコラボ
-  watch: 商品情報・特設ページ公開(9月中旬頃予定、判明次第 triggers へ)
 - dedup_key: gaku-bigface-plush-vol3-2026
   brand: gaku
   subject: 学マスBIGフェイスぬいぐるみvol.3
@@ -167,3 +163,11 @@
   brand: sidem
   subject: SideM「AJIプロジェクト」新ストーリーシリーズ
   watch: 2026年10月開始予定の正式日程・詳細(判明次第 triggers へ)
+- dedup_key: cg-isetan-osechi-2027
+  brand: cg
+  subject: シンデレラガールズ×伊勢丹のおせち2027 販売情報
+  watch: オンラインストア販売開始日・SNSキャンペーン詳細(追って公開予定、判明次第 triggers へ)
+- dedup_key: shiny-higuchi-madoka-effortless-figure-2026
+  brand: shiny
+  subject: 樋口円香フィギュア「おしごとエフォートレス Ver.」予約開始
+  watch: 予約受付開始日(近日開始と発表、判明次第 triggers へ)

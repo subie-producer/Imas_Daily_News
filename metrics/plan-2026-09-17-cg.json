@@ -1,0 +1,158 @@
+{
+ "decisions": {
+  "cg-15th-anniversary-info-teaser-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "9/15の「明日12時解禁」予告そのものは9/16に解禁済みで終わっている。解禁内容(オーケストラコンサート・伊勢丹おせち等)は別主題で個別記事化するため、予告単体には9/17時点の新事実がない"
+  },
+  "cg-15th-anniversary-orchestra-2027": {
+   "action": "article",
+   "angle": "シンデレラガールズ15周年記念オーケストラコンサートがパシフィコ横浜で2027年1月11-12日開催決定。指揮・演奏・出演声優の詳細と、アソビストアプレミアム会員先行受付(9/16-9/27)を統合して報じる",
+   "rank": "medium",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-15th-anniversary-orchestra-newsとcg-15th-orchestra-2027をここに統合。同一公演の異なる情報源・先行受付情報であり、分けると3本とも薄くなる"
+  },
+  "cg-isetan-osechi-2027": {
+   "action": "article",
+   "angle": "シンデレラガールズ×伊勢丹のおせち2027、鷹富士茄子(振袖姿)で販売決定。特設サイト開設、販売詳細は追って公開",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "販売情報が「追って公開」のため現時点の事実は少なく小記事"
+  },
+  "cg-15th-anniversary-orchestra-news": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一公演を二次情報サイトが報じたもので内容は公式版と同一"
+  },
+  "hachimas-cg-2026": {
+   "action": "article",
+   "angle": "青森県八戸市で「はちます×シンデレラガールズ」コラボ決定、10/23-12/27にデジタルスタンプラリー・ノベルティ・グッズ・パネル展開",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "全18スポットのスタンプラリーなど事実量が多く medium 相当"
+  },
+  "dijimas-cg-2026": {
+   "action": "article",
+   "angle": "沖縄県那覇市で「でじます×シンデレラガールズ」コラボ決定、11/20-1/17と1/29-2/28の2弾構成で描き下ろしイラスト展開、首里城正殿一般公開再開と合わせて紹介",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dijimas-cinderella-naha-2026をここに統合(同一コラボの二次情報)"
+  },
+  "cg-dominant-gacha-202609": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "出典が攻略Wiki(gamerch)のみでverify=unconfirmed。ガシャの排出率・仕様は公式告知が必須(規程2)だが公式ソースに未到達"
+  },
+  "dijimas-cinderella-naha-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dijimas-cg-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の那覇コラボを二次情報サイトが報じたもの"
+  },
+  "cg-15th-orchestra-2027": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一公演のアソビストアプレミアム会員先行受付情報。単独では薄いため統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-15th-anniversary-orchestra-2027",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "シンデレラガールズ15周年記念オーケストラコンサートがパシフィコ横浜で2027年1月11-12日開催決定。指揮・演奏・出演声優の詳細と、アソビストアプレミアム会員先行受付(9/16-9/27)を統合して報じる",
+    "lead_score": 65,
+    "dedup_key": "cg-15th-anniversary-orchestra-2027",
+    "candidate_ids": [
+     "202609161237-watch-2",
+     "202609161237-watch-5",
+     "202609170229-grok-52"
+    ]
+   },
+   {
+    "slug": "cg-isetan-osechi-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "シンデレラガールズ×伊勢丹のおせち2027、鷹富士茄子(振袖姿)で販売決定。特設サイト開設、販売詳細は追って公開",
+    "lead_score": 10,
+    "dedup_key": "cg-isetan-osechi-2027",
+    "candidate_ids": [
+     "202609161237-watch-4"
+    ]
+   },
+   {
+    "slug": "cg-hachimas-cg-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "青森県八戸市で「はちます×シンデレラガールズ」コラボ決定、10/23-12/27にデジタルスタンプラリー・ノベルティ・グッズ・パネル展開",
+    "lead_score": 20,
+    "dedup_key": "hachimas-cg-2026",
+    "candidate_ids": [
+     "202609161837-watch-0"
+    ]
+   },
+   {
+    "slug": "cg-dijimas-cg-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "沖縄県那覇市で「でじます×シンデレラガールズ」コラボ決定、11/20-1/17と1/29-2/28の2弾構成で描き下ろしイラスト展開、首里城正殿一般公開再開と合わせて紹介",
+    "lead_score": 20,
+    "dedup_key": "dijimas-cg-2026",
+    "candidate_ids": [
+     "202609161837-watch-1",
+     "202609162334-watch-0"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-15th-anniversary-info-teaser-2026",
+    "reason": "その他",
+    "note": "9/15の「明日12時解禁」予告そのものは9/16に解禁済みで終わっている。解禁内容(オーケストラコンサート・伊勢丹おせち等)は別主題で個別記事化するため、予告単体には9/17時点の新事実がない"
+   },
+   {
+    "dedup_key": "cg-dominant-gacha-202609",
+    "reason": "出典不足",
+    "note": "出典が攻略Wiki(gamerch)のみでverify=unconfirmed。ガシャの排出率・仕様は公式告知が必須(規程2)だが公式ソースに未到達"
+   }
+  ],
+  "cross_brand": []
+ }
+}

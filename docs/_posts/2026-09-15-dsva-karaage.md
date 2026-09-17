@@ -2,7 +2,7 @@
 slug: dsva-karaage
 edition: "2026-09-15"
 brand: dsva
-src: 未確認
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -19,7 +19,7 @@ sources:
   type: 公式
 - label: 上水流宇宙 踊ってみた「〜↑↑ -KARAAGE- / 赤城ウェン」(2026-09-13)
   url: https://www.tiktok.com/@valiv_official/video/7684287065034411272
-  type: 未確認
+  type: 公式
 event_date: "2026-09-13"
 title_fact_ids:
 - F4

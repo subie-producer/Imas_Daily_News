@@ -28,5 +28,35 @@
   "verify": "confirmed",
   "src_candidate_id": "202609132336-watch-2",
   "event_date": "2026-11-20"
+ },
+ {
+  "id": "sched-2026-10-16-sidem-fantastic-battle-fes-movie-2026-発売",
+  "dedup_key": "sidem-fantastic-battle-fes-movie-2026",
+  "brand": "sidem",
+  "subject": "SideM劇場版 ムビチケ前売券発売",
+  "kind": "発売",
+  "note": "前売券(カード券・オンライン券)を購入できる",
+  "reserved_on": "2026-09-17",
+  "title": "SideM劇場版ライブ上映決定",
+  "url": "https://www.famitsu.com/article/202609/87805",
+  "source_type": "報道",
+  "facts": [
+   "2026年9月13日のSideM 11th STAGE DAY2で、劇場版「アイドルマスター SideM F＠NTASTIC BATTLE FES ～Who goes first～」の情報が公開された。",
+   "2026年11月20日から全国の劇場で上映する。",
+   "8ユニット・総勢25名のアイドルが出演する。",
+   "通常上映と応援上映の2形態を、公開初週から実施する。",
+   "応援上映では応援グッズの使用、拍手・手拍子、声援が可能。",
+   "実施予定劇場は上映予定の全劇場。開催日時や回数は劇場により異なる。",
+   "2026年10月16日からムビチケ前売券のカード券とオンライン券を発売する。",
+   "ムビチケカード一般券は1,800円（税込）、当日料金は1,900円（税込）均一予定。",
+   "ムビチケカードの特典は証明写真風ブロマイド全8種ランダム。",
+   "カード1枚につき特典1点を付け、特典はなくなり次第終了。",
+   "ムビチケオンライン券は一般1,800円（税込）で、購入者限定鑑賞特典としてムビチケデジタルカードを付ける。",
+   "アソビストア限定ムビチケカード券ユニットセットは、神速一魂6,900円、DRAMATIC STARS・FRAME・彩・THE 虎牙道・F-LAGS・Legenders各7,500円、High×Joker8,700円。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609160734-explore-20",
+  "event_date": "2026-11-20"
  }
 ]

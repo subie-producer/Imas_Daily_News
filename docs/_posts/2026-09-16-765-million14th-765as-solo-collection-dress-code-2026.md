@@ -2,7 +2,7 @@
 slug: 765-million14th-765as-solo-collection-dress-code-2026
 edition: "2026-09-16"
 brand: "765"
-src: 未確認
+src: 当事者
 rank: medium
 corrected: false
 corrections: []
@@ -24,7 +24,7 @@ sources:
   type: 準公式
 - label: THE IDOLM@STER MILLION LIVE! 14thLIVE デジタル注文書 (2026年9月16日)
   url: https://qo-kun.com/millionlive/
-  type: 未確認
+  type: 当事者
 - label: THE IDOLM@STER MILLION LIVE! 14thLIVE 物販整理券受付 (2026年9月16日)
   url: https://asobiticket2.asobistore.jp/receptions/798f65d0-22b6-4033-954a-3b8e852d6f27
   type: 準公式

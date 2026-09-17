@@ -1,0 +1,25 @@
+{
+ "decisions": {
+  "okeumas-2025-audio": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "joint-okemas-2025-streaming-post-2026-09と同一事象(オケマス2025音源、9/16配信開始)。joint面が既に記事化済み。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "okeumas-2025-audio",
+    "reason": "重複",
+    "note": "joint-okemas-2025-streaming-post-2026-09と同一事象(オケマス2025音源、9/16配信開始)。joint面が既に記事化済み。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

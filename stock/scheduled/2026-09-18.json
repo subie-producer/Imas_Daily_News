@@ -426,5 +426,35 @@
   "via": "watch",
   "verify": "confirmed",
   "src_candidate_id": "202609151837-watch-6"
+ },
+ {
+  "id": "sched-2026-09-18-shiny-idol-photo-panel-new-designs-2026-開幕",
+  "dedup_key": "shiny-idol-photo-panel-new-designs-2026",
+  "brand": "shiny",
+  "subject": "アイドルフォトパネル新柄 取り扱い開始",
+  "kind": "開幕",
+  "note": "5店舗で新柄パネルを購入できる",
+  "reserved_on": "2026-09-17",
+  "title": "アイドルフォトパネル新柄3種",
+  "url": "https://bandainamco-am.co.jp/chara_shop/idolmaster/NEWS/all/20260914_2.html",
+  "source_type": "準公式",
+  "facts": [
+   "2026.09.14に掲載された。",
+   "アイドルマスター オフィシャルショップで販売中の「アイドルフォトパネル」に新柄が登場する。",
+   "9月18日(金)より取り扱いを開始する。",
+   "取り扱い店舗: アトレ秋葉原店",
+   "取り扱い店舗: 仙台店",
+   "取り扱い店舗: 名古屋駅前店",
+   "取り扱い店舗: 大阪日本橋店",
+   "取り扱い店舗: 博多バスターミナル店",
+   "商品名: 新柄3種 アイドルマスター シャイニーカラーズ アイドルフォトパネル",
+   "価格: 各5,000円(税込)",
+   "サイズ: W210×H148×D8mm",
+   "アクリル製の脚が付属する。"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609160734-explore-4",
+  "event_date": "2026-09-18"
  }
 ]

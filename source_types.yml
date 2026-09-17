@@ -114,6 +114,10 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - convenicheck.com      # 合議で追加: セブンネット等の公式情報をそのまま転載・紹介する形式
+  - appmedia.jp           # 合議で追加: 署名が編集部のみで、公式発表の言い換えで現地取材なし
+  - www01.hanmoto.com     # 合議で追加: 出版社の出版情報を集約・提供するプラットフォーム。他所の発表を媒体化して伝えてい
+  - mantan-web.jp         # 合議で追加: PR TIMES提供表記で公式発表の転載。独自取材・現地取材・関係者聞き取りの形
   - test.o-yake.com       # 合議で追加: ネット話題をまとめて解説。公開情報をもとに記事作成
   - jpjj.jp               # 合議で追加: 公式ポータル発表を紹介。現地取材・関係者取材の形跡なし
   - imas-db.jp            # 合議で追加: 自称『非公式ファンサイト』。セットリスト・楽曲データなど他所の発表をまとめて提示
@@ -185,6 +189,9 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - mistore.jp            # 合議で追加: 三越伊勢丹がミリオンライブ！とのコラボレーション商品(おせち)を販売
+  - ip.s-re.jp            # 合議で追加: ルネサンスがアイマス315プロジェクトとのコラボレーション商品(チケット・グッズ
+  - hatsuboshi.store.mynavi.jp # 合議で追加: 学園アイドルマスターのグッズをライセンス受けて販売する商品販売元
   - qo-kun.com            # クイックオーダー(TAPIRS Inc. の物販注文サイト。ライブ物販の事前注文=販売元)
   - sej.co.jp             # 合議で追加: ライセンス販売元。マルチコピー機でブロマイドを販売しており、自社サイトで商品告知
   - gashapon.jp           # 合議で追加: アイマス関連グッズをライセンス販売している販売元
@@ -285,6 +292,9 @@ video_channels:
 
 video_ids:
   公式:
+    - q5Z2xLBWT8Y   # 機械で追加: @imas-official「【学マス】初星学園放送部 #105【アイドルマスター】」
+    - jFAkRoDeyTQ   # 機械で追加: @imas-official「9/15 秋月 涼さん Happy Birthday‼」
+    - bADPhUD27B4   # 機械で追加: @imas-official「【シャニソン】I'm a Cutie Finder「KAWA」
     - Yn9cXzpGJIU   # 機械で追加: @imas-official「【ラジオ】新番組「IM＠S RADIO」スタート！【アイドル」
     - bh1-3oPDkXY   # 機械で追加: @KamizuruCosmo「【#宇宙誕生祭2026 冒頭無料配信】上水流宇宙 BIRTH」
     - SKg_lOJcmQw   # 機械で追加: @imas-official「ゲーム【ミリシタ】桜守 歌織 スペシャル動画【アイドルマスタ」
@@ -507,5 +517,6 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  tiktok.com/@valiv_official: 公式              # ヴイアラ(vα-liv)公式の TikTok(X の @valiv_official と同じ主体)
   ch.nicovideo.jp/sidem: 公式                    # アイドルマスター SideM チャンネル(ブランド公式のニコニコチャンネル)
   manga.nicovideo.jp/comic/31422: 準公式          # 『ぷちます!』のニコニコ漫画連載ページ(連載先)

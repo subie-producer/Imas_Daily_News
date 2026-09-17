@@ -2,7 +2,7 @@
 slug: gaku-weekend-citron-hatsuboshi-store-2026
 edition: "2026-09-15"
 brand: gaku
-src: 未確認
+src: 当事者
 rank: small
 corrected: false
 corrections: []
@@ -20,10 +20,10 @@ sources:
   type: 当事者
 - label: ウィークエンドシトロン(掲載日不明)
   url: https://hatsuboshi.store.mynavi.jp/collections/weekendcitron
-  type: 未確認
+  type: 当事者
 - label: アクリルスタンド／ウィークエンドシトロン（全13種）(掲載日不明)
   url: https://hatsuboshi.store.mynavi.jp/products/hatsuboshistore_acrylicstand_weekendcitron
-  type: 未確認
+  type: 当事者
 event_date: "2026-09-25"
 title_fact_ids:
 - F1

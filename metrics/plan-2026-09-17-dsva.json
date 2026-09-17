@@ -1,0 +1,168 @@
+{
+ "decisions": {
+  "kamizuru-cosmo-birthday-online-live-2026-report": {
+   "action": "article",
+   "angle": "パノラ報道で判明したBIRTHDAY ONLINE LIVE 2026本編の内容(トリオダンス・DJプレイ×ライブドローイング同時プレイ・楽曲披露)を伝える",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "事前告知(cosmo-birthday-online-live-2026等)は既報だが本編内容は初出。9/12開催・9/15報道の続報として扱う"
+  },
+  "valiv-2nd-anniversary-cd-madamenuashita": {
+   "action": "article",
+   "angle": "vα-liv2周年記念CD「まだ見ぬ明日」発売。vα-liv盤(3人集合イラスト)と灯里愛夏・上水流宇宙・レトラの各ソロ盤の仕様・特典・収録曲・価格をまとめて伝える",
+   "rank": "large",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dsva-va-liv-2nd-anniversary-cd-2026(ソロ盤3種)を統合。stories.ymlに既報なし、新規のCD発売告知"
+  },
+  "shinkai-fes-2026-valiv": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "深海フェス出演(宇宙・レトラDAY1、愛夏DAY2、宇宙DJset)は9/9付dsva-shinkaifes-2026と同一内容。第4弾発表でも新事実なし"
+  },
+  "valiv-situation-voice-villainess-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "悪役令嬢ボイス(9/15開始・10/4締切・4種)はdsva-voice-15-villainess-2026-09で9/16既報。テーマ・個別価格は新トリガーに当たらない"
+  },
+  "dsva-va-liv-2nd-anniversary-cd-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-2nd-anniversary-cd-madamenuashita",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一2周年記念CDのソロ盤(愛夏・宇宙・レトラ)。vα-liv盤の記事へ版違いとして統合"
+  },
+  "valiv-online-1on1-13-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "抽選申込締切(9/15 23:59)はdsva-valiv-1on1-13th-2026等で既報済み。締切は本日以前に終了、当落発表は9/18で本日トリガーなし"
+  },
+  "valiv-cosmo-birthday-online-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アーカイブ配信チケット・グッズ受注・記念ボイスは全て既報の販売/受注期間の継続案内で新事実なし"
+  },
+  "valiv-manaka-asobi-taizen-2026-09-16": {
+   "action": "article",
+   "angle": "灯里愛夏×十河ののはのコラボ配信「世界のアソビ大全51」を実施、YouTubeアーカイブで視聴可能",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "roundup化には1件のみで規定13の3件未満のため通常small記事扱い"
+  },
+  "dsva-how-to-fish-2026": {
+   "action": "article",
+   "angle": "愛夏・宇宙・レトラ3人合同「How to Fish」配信が本日20:00開始",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "決定告知は9/15既報だが本日が開幕当日トリガーのため続報として記事化"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-kamizuru-cosmo-birthday-online-live-2026-report",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "パノラ報道で判明したBIRTHDAY ONLINE LIVE 2026本編の内容(トリオダンス・DJプレイ×ライブドローイング同時プレイ・楽曲披露)を伝える",
+    "lead_score": 25,
+    "dedup_key": "kamizuru-cosmo-birthday-online-live-2026-report",
+    "candidate_ids": [
+     "202609160734-explore-14"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-2nd-anniversary-cd-madamenuashita",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "vα-liv2周年記念CD「まだ見ぬ明日」発売。vα-liv盤(3人集合イラスト)と灯里愛夏・上水流宇宙・レトラの各ソロ盤の仕様・特典・収録曲・価格をまとめて伝える",
+    "lead_score": 65,
+    "dedup_key": "valiv-2nd-anniversary-cd-madamenuashita",
+    "candidate_ids": [
+     "202609160734-explore-15",
+     "202609162334-explore-19",
+     "202609162334-explore-20",
+     "202609162334-explore-21"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-manaka-asobi-taizen-2026-09-16",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏×十河ののはのコラボ配信「世界のアソビ大全51」を実施、YouTubeアーカイブで視聴可能",
+    "lead_score": 5,
+    "dedup_key": "valiv-manaka-asobi-taizen-2026-09-16",
+    "candidate_ids": [
+     "202609170229-grok-30"
+    ]
+   },
+   {
+    "slug": "dsva-how-to-fish-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "愛夏・宇宙・レトラ3人合同「How to Fish」配信が本日20:00開始",
+    "lead_score": 15,
+    "dedup_key": "dsva-how-to-fish-2026",
+    "candidate_ids": [
+     "sched-2026-09-17-dsva-how-to-fish-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shinkai-fes-2026-valiv",
+    "reason": "既報",
+    "note": "深海フェス出演(宇宙・レトラDAY1、愛夏DAY2、宇宙DJset)は9/9付dsva-shinkaifes-2026と同一内容。第4弾発表でも新事実なし"
+   },
+   {
+    "dedup_key": "valiv-situation-voice-villainess-2026",
+    "reason": "既報",
+    "note": "悪役令嬢ボイス(9/15開始・10/4締切・4種)はdsva-voice-15-villainess-2026-09で9/16既報。テーマ・個別価格は新トリガーに当たらない"
+   },
+   {
+    "dedup_key": "valiv-online-1on1-13-2026",
+    "reason": "既報",
+    "note": "抽選申込締切(9/15 23:59)はdsva-valiv-1on1-13th-2026等で既報済み。締切は本日以前に終了、当落発表は9/18で本日トリガーなし"
+   },
+   {
+    "dedup_key": "valiv-cosmo-birthday-online-live-2026",
+    "reason": "既報",
+    "note": "アーカイブ配信チケット・グッズ受注・記念ボイスは全て既報の販売/受注期間の継続案内で新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -2,7 +2,7 @@
 slug: joint-akizuki-ryo-birthday-2026
 edition: "2026-09-15"
 brand: joint
-src: 未確認
+src: 当事者
 rank: small
 corrected: false
 corrections: []
@@ -19,7 +19,7 @@ tags:
 sources:
 - label: 9/15 秋月涼さんお誕生日お祝いムービー (2026-09-14)
   url: https://www.youtube.com/watch?v=jFAkRoDeyTQ
-  type: 未確認
+  type: 公式
 - label: JR東海「推し旅」公式が秋月涼の誕生日を祝賀（旅マス） (2026-09-14)
   url: https://x.com/oshitabi_update/status/2099513510493663548
   type: 当事者

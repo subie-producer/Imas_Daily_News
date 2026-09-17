@@ -1,0 +1,128 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-17T02:31:06+09:00",
+   "edition": "2026-09-17",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 344,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 4,
+    "explore:million": 2,
+    "explore:shiny": 5,
+    "explore:sidem": 0,
+    "explore:gakuen": 2,
+    "explore:dsva": 1,
+    "explore:joint-other": 4,
+    "explore:trend": 7,
+    "grok:765as": 2,
+    "grok:cinderella": 3,
+    "grok:million": 6,
+    "grok:shiny": 5,
+    "grok:sidem": 5,
+    "grok:gakuen": 5,
+    "grok:dsva": 3,
+    "grok:joint-other": 3,
+    "grok:trend": 0
+   },
+   "normalized": 46,
+   "added": 30,
+   "verify": {
+    "confirmed": 38,
+    "unconfirmed": 8,
+    "failed": 0
+   },
+   "duration_s": 1828
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-17T05:45:35+09:00",
+   "edition": "2026-09-17",
+   "rounds": 4,
+   "approved": false,
+   "lint_green": true,
+   "planned": 31,
+   "written": 29,
+   "roundups": 0,
+   "dropped": 1,
+   "coverage": {
+    "subjects": 89,
+    "covered": 89,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 10.45920406182607,
+    "執筆": 37.195044898986815,
+    "組版": 9.160524181524913,
+    "校閲": 2.3659196933110556,
+    "校閲1波": 2.3659196933110556
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "gaku-radio-105-2026-09",
+    "sidem-315-fitness-renaissance-2026"
+   ],
+   "duration_s": 6297
+  },
+  {
+   "at": "2026-09-17T09:22:47+09:00",
+   "edition": "2026-09-17",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 31,
+   "written": 29,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 89,
+    "covered": 89,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "執筆": 0.5525939504305521,
+    "組版": 7.1988003293673195,
+    "校閲": 2.9619051496187847,
+    "校閲1波": 2.9619051496187847
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-radio-105-2026-09",
+    "dsva-how-to-fish-2026"
+   ],
+   "duration_s": 3084
+  }
+ ]
+}

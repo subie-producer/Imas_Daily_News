@@ -2,7 +2,7 @@
 slug: general-puchimasufinal2026
 edition: "2026-09-16"
 brand: general
-src: 未確認
+src: 報道
 rank: lead
 corrected: false
 corrections: []
@@ -26,7 +26,7 @@ sources:
   type: 報道
 - label: ぷちます！ニコニコ漫画 194話掲載 (2026-09-15)
   url: https://manga.nicovideo.jp/comic/31422
-  type: 未確認
+  type: 準公式
 event_date: "2026-12-25"
 title_fact_ids:
 - F53

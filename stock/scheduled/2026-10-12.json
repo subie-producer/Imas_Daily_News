@@ -176,5 +176,36 @@
   "src_candidate_id": "202609150230-explore-15",
   "event_date": "2027-06-05",
   "deadline": "2026-10-12"
+ },
+ {
+  "id": "sched-2026-10-12-kamizuru-cosmo-birthday-online-live-2026-report-終了",
+  "dedup_key": "kamizuru-cosmo-birthday-online-live-2026-report",
+  "brand": "dsva",
+  "subject": "上水流宇宙誕生日ライブ アーカイブ終了",
+  "kind": "終了",
+  "note": "アーカイブ視聴・チケット購入の最終日",
+  "reserved_on": "2026-09-17",
+  "title": "上水流宇宙 BIRTHDAY ONLINE LIVE 2026レポート",
+  "url": "https://panora.tokyo/archives/156564",
+  "source_type": "報道",
+  "facts": [
+   "2026年9月12日、上水流宇宙の誕生日を祝うオンラインライブイベント「上水流宇宙 BIRTHDAY ONLINE LIVE 2026」が配信された。",
+   "上水流宇宙は876プロダクション所属のPROJECT IM@S vα-livのライバーアイドル。",
+   "灯里愛夏とレトラも出演し、3人でトリオダンスに挑戦した。",
+   "スペシャルゲストとして765プロダクション所属の四条貴音が出演した。",
+   "上水流宇宙は「Star Impression」「公転周期」をダンス中心に披露した。",
+   "月村手毬の楽曲「一体いつから」を手持ちマイクで歌唱した。",
+   "DJプレイとライブドローイングの同時並行プレイに挑戦した。",
+   "DJではヴイアライヴのソロ曲・ユニット曲、カバー曲、電音部の楽曲をつないだ。",
+   "「クライヤ」ではドローイングの合間にクラップやジャンプを促した。",
+   "灯里愛夏が「あっちこっちプリンセス」に登場した。",
+   "レトラはカバー曲「エンジェル ドリーム」で登場した。",
+   "「RELOADING」のRemixバージョンを灯里愛夏、レトラと披露した。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609160734-explore-14",
+  "event_date": "2026-09-12",
+  "deadline": "2026-10-12"
  }
 ]

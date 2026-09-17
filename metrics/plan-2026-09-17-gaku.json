@@ -1,0 +1,210 @@
+{
+ "decisions": {
+  "gaku-after-school-namco-2026": {
+   "action": "article",
+   "angle": "ナムコ限定「After Schoolキャンペーン」9/25-11/1開催、月村手毬フィギュアの入手方法(クレーン500円/オンライン500pt)とTOURSプロモカード特典を告知",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報facts(開始日・景品名のみ)に無い期間終了日・全国開催・価格/獲得方法・TOURSプロモカード特典が新事実"
+  },
+  "gaku-michinaru-hiragaru-mv-300m-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-michinaru-mv-300man-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一事実(『みちなるひろがる』MV300万再生)。出典がYahooリアルタイム検索(二次情報)で弱いため、公式X直接ソースの主記事へ統合"
+  },
+  "gaku-michinaru-mv-300man-2026": {
+   "action": "article",
+   "angle": "学マス公式Xが『みちなるひろがる』MVの300万再生突破を告知",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同投稿内のAtmosphere/ねえ言っちゃうよ100万再生は9/16号で既報のため本文に含めない"
+  },
+  "gaku-sevennet-nightwear-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "出典がconvenicheck.com(二次アグリゲーター)のみでセブンネット公式・学マス公式に未到達(規程2)"
+  },
+  "gaku-rivalaba-2026": {
+   "action": "article",
+   "angle": "ガシャポン「学園アイドルマスター リバラバ!」の価格(400円)・対象年齢・全6種ラインアップ判明",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(9/16、種類数のみ)に無い価格・対象年齢・キャラ内訳が新事実"
+  },
+  "gaku-live-tour-shirube-iwate-goods-2026": {
+   "action": "article",
+   "angle": "岩手公演の会場物販、事前販売ファイナルは実施なしと判明、購入点数ルール(サイズ別・トレーディング仕様)を追加告知",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "日時・会場・1会計3点までは既報(9/5)。新事実は事前販売ファイナル無しの明言とサイズ別/トレーディング仕様の購入上限のみ"
+  },
+  "gaku-mv-nee-icchau-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "『ねえ、言っちゃうよ。』MV100万再生は2026-09-16号で既報、新事実なし"
+  },
+  "gaku-mv-atmosphere-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "『Atmosphere』MV100万再生は2026-09-16号で既報、新事実なし"
+  },
+  "gaku-jewel-250-2026-09-16": {
+   "action": "article",
+   "angle": "学マ水曜日、今週のログインボーナス「ジュエル250個」を9/23 4:59まで配布中と告知",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営roundup対象は本件とラジオ#105の2件のみで規程13の3件未満のため単独small扱い"
+  },
+  "gaku-shirube-fukuoka-streaming-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信チケット販売期間・アーカイブ切替・プレゼント用チケットはいずれも既報。締切9/21の3日前(9/18)にも未到達で本日のトリガーなし"
+  },
+  "gaku-radio-105-2026-09": {
+   "action": "article",
+   "angle": "「初星学園放送部」#105(MC村田綾香、ゲスト長月あおい・川村玲奈)のアーカイブ配信を紹介",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営roundup対象は本件とジュエル250の2件のみで規程13の3件未満のため単独small扱い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-after-school-namco-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "ナムコ限定「After Schoolキャンペーン」9/25-11/1開催、月村手毬フィギュアの入手方法(クレーン500円/オンライン500pt)とTOURSプロモカード特典を告知",
+    "lead_score": 50,
+    "dedup_key": "gaku-after-school-namco-2026",
+    "candidate_ids": [
+     "202609160734-explore-8",
+     "202609161837-explore-17",
+     "202609161837-explore-31"
+    ]
+   },
+   {
+    "slug": "gaku-michinaru-mv-300man-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス公式Xが『みちなるひろがる』MVの300万再生突破を告知",
+    "lead_score": 15,
+    "dedup_key": "gaku-michinaru-mv-300man-2026",
+    "candidate_ids": [
+     "202609161237-explore-17",
+     "202609160734-explore-9"
+    ]
+   },
+   {
+    "slug": "gaku-rivalaba-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ガシャポン「学園アイドルマスター リバラバ!」の価格(400円)・対象年齢・全6種ラインアップ判明",
+    "lead_score": 10,
+    "dedup_key": "gaku-rivalaba-2026",
+    "candidate_ids": [
+     "202609161837-explore-19"
+    ]
+   },
+   {
+    "slug": "gaku-live-tour-shirube-iwate-goods-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "岩手公演の会場物販、事前販売ファイナルは実施なしと判明、購入点数ルール(サイズ別・トレーディング仕様)を追加告知",
+    "lead_score": 15,
+    "dedup_key": "gaku-live-tour-shirube-iwate-goods-2026",
+    "candidate_ids": [
+     "202609170229-explore-13"
+    ]
+   },
+   {
+    "slug": "gaku-jewel-250-2026-09-16",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マ水曜日、今週のログインボーナス「ジュエル250個」を9/23 4:59まで配布中と告知",
+    "lead_score": 5,
+    "dedup_key": "gaku-jewel-250-2026-09-16",
+    "candidate_ids": [
+     "202609170229-grok-33"
+    ]
+   },
+   {
+    "slug": "gaku-radio-105-2026-09",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「初星学園放送部」#105(MC村田綾香、ゲスト長月あおい・川村玲奈)のアーカイブ配信を紹介",
+    "lead_score": 5,
+    "dedup_key": "gaku-radio-105-2026-09",
+    "candidate_ids": [
+     "202609170229-grok-53"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-sevennet-nightwear-goods-2026",
+    "reason": "出典不足",
+    "note": "出典がconvenicheck.com(二次アグリゲーター)のみでセブンネット公式・学マス公式に未到達(規程2)"
+   },
+   {
+    "dedup_key": "gaku-mv-nee-icchau-2026-09",
+    "reason": "既報",
+    "note": "『ねえ、言っちゃうよ。』MV100万再生は2026-09-16号で既報、新事実なし"
+   },
+   {
+    "dedup_key": "gaku-mv-atmosphere-2026-09",
+    "reason": "既報",
+    "note": "『Atmosphere』MV100万再生は2026-09-16号で既報、新事実なし"
+   },
+   {
+    "dedup_key": "gaku-shirube-fukuoka-streaming-2026",
+    "reason": "既報",
+    "note": "配信チケット販売期間・アーカイブ切替・プレゼント用チケットはいずれも既報。締切9/21の3日前(9/18)にも未到達で本日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

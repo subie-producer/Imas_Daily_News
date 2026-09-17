@@ -1,0 +1,310 @@
+{
+ "decisions": {
+  "sidem-gekichu-geki-guide-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/16号「SideM劇中劇＆PRSガイド公開」(Part.1劇中劇編)と同内容、新事実なし"
+  },
+  "sidem-11th-day1-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "オリコンのDAY1レポートに具体的新事実なし。日程・会場・演出は既報のセットリスト記事で報道済み"
+  },
+  "sidem-315shop-kuji-stock-2026-09-15": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/16号で同じ9/15更新の315!!!SHOP抽選くじ在庫を既報、追加分A賞5種以外は同内容"
+  },
+  "sidem-first-home-console-game-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "家庭用ゲーム始動は9/14〜16号で既報。仮題・CERO審査予定・プレイ人数1人は新事実に乏しい"
+  },
+  "sidem-fantastic-battle-fes-movie-2026": {
+   "action": "article",
+   "angle": "劇場版F@NTASTIC BATTLE FESの応援上映実施形態とムビチケ前売価格という新事実を報じる",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "上映決定自体は9/14・15号で既報。新事実は応援上映(2形態)とムビチケ価格のみのため続報として小さく扱う"
+  },
+  "sidem-first-console-game-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "家庭用ゲーム始動・対応機種・リーダーユニット選択制は9/14〜16号で既報と重複、新事実なし"
+  },
+  "sidem-11th-stage-day2-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY2の38曲セットリストは9/15号「SideM 11th STAGE DAY2セットリスト公開」と同一内容"
+  },
+  "sidem-renaissance-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315-fitness-renaissance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ「315 Fitness Project in RENAISSANCE」の公式告知、PRTimes版(より詳細)の記事へ素材統合"
+  },
+  "sidem-console-game-project-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "家庭用ゲーム開発中の発表は9/14〜16号で既報と重複、新事実なし"
+  },
+  "sidem-11th-live-performance-goods-2026": {
+   "action": "article",
+   "angle": "11th STAGE記念グッズの同時視聴上映会DAY1出演キャストと追加グッズ品目・発送時期を統合して報じる",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注開始・上映会日程自体は既報。新事実はDAY1出演キャストと(memorial-goods由来の)追加品目・発送時期"
+  },
+  "sidem-producer-meeting-ajewelholic-2027": {
+   "action": "article",
+   "angle": "プロミ2027の会場(京王アリーナTOKYO)・現地チケット価格・購入枚数制限という新事実を追加報道",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催決定・先行受付日程は9/14号で既報。新事実は会場・価格11,000円・枚数制限のみ"
+  },
+  "sidem-m-fes-winter-wonderland-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/13号で開催決定を既報。「史上最大規模」という宣伝文言以外に新事実なし"
+  },
+  "sidem-315-fitness-renaissance-2026": {
+   "action": "article",
+   "angle": "SideM×スポーツクラブルネサンス「315 Fitness Project」始動、5大使・チケット料金体系・全国49店舗を報じる",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "この面で唯一の完全新規ニュース。sidem-renaissance-2026とsidem-renaissance-315-fitness-2026の素材を統合"
+  },
+  "sidem-first-home-console-game": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "appmedia(未確認)記事も家庭用ゲーム既報と重複。「MMM」等の詳細は未確認情報のみで裏付け不足"
+  },
+  "sidem-passionable-reading-show-guide-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/16号ガイド記事(Part.2 PASSIONABLE READING SHOW編)と同内容、新事実なし"
+  },
+  "sidem-11th-memorial-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-live-performance-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ11th STAGE記念グッズ受注(9/13〜10/11)の追加品目・価格・発送時期という新事実を統合"
+  },
+  "sidem-2dmv-goods-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/4号の2DMV公開記念グッズ受注記事と同一施策(9/3〜9/23)、新事実なし"
+  },
+  "sidem-renaissance-315-fitness-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315-fitness-renaissance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じRENAISSANCE企画のチケット種別・価格情報、PRTimes版の記事へ素材統合"
+  },
+  "sidem-11th-streaming-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信チケット価格・アーカイブ期間はstock記載のsidem-11th-stage-2026(既報)と同一内容"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-fantastic-battle-fes-movie-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版F@NTASTIC BATTLE FESの応援上映実施形態とムビチケ前売価格という新事実を報じる",
+    "lead_score": 20,
+    "dedup_key": "sidem-fantastic-battle-fes-movie-2026",
+    "candidate_ids": [
+     "202609160734-explore-20",
+     "202609161237-explore-26",
+     "202609162334-explore-16"
+    ]
+   },
+   {
+    "slug": "sidem-11th-live-performance-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "11th STAGE記念グッズの同時視聴上映会DAY1出演キャストと追加グッズ品目・発送時期を統合して報じる",
+    "lead_score": 10,
+    "dedup_key": "sidem-11th-live-performance-goods-2026",
+    "candidate_ids": [
+     "202609161837-explore-12",
+     "202609170229-grok-44"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-2027",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "プロミ2027の会場(京王アリーナTOKYO)・現地チケット価格・購入枚数制限という新事実を追加報道",
+    "lead_score": 15,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027",
+    "candidate_ids": [
+     "202609161837-explore-28"
+    ]
+   },
+   {
+    "slug": "sidem-315-fitness-renaissance-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM×スポーツクラブルネサンス「315 Fitness Project」始動、5大使・チケット料金体系・全国49店舗を報じる",
+    "lead_score": 60,
+    "dedup_key": "sidem-315-fitness-renaissance-2026",
+    "candidate_ids": [
+     "202609161837-explore-30",
+     "202609161837-watch-2",
+     "202609170229-grok-46"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-gekichu-geki-guide-2026",
+    "reason": "既報",
+    "note": "9/16号「SideM劇中劇＆PRSガイド公開」(Part.1劇中劇編)と同内容、新事実なし"
+   },
+   {
+    "dedup_key": "sidem-11th-day1-report-2026",
+    "reason": "既報",
+    "note": "オリコンのDAY1レポートに具体的新事実なし。日程・会場・演出は既報のセットリスト記事で報道済み"
+   },
+   {
+    "dedup_key": "sidem-315shop-kuji-stock-2026-09-15",
+    "reason": "既報",
+    "note": "9/16号で同じ9/15更新の315!!!SHOP抽選くじ在庫を既報、追加分A賞5種以外は同内容"
+   },
+   {
+    "dedup_key": "sidem-first-home-console-game-2026",
+    "reason": "既報",
+    "note": "家庭用ゲーム始動は9/14〜16号で既報。仮題・CERO審査予定・プレイ人数1人は新事実に乏しい"
+   },
+   {
+    "dedup_key": "sidem-first-console-game-2026",
+    "reason": "既報",
+    "note": "家庭用ゲーム始動・対応機種・リーダーユニット選択制は9/14〜16号で既報と重複、新事実なし"
+   },
+   {
+    "dedup_key": "sidem-11th-stage-day2-2026",
+    "reason": "既報",
+    "note": "DAY2の38曲セットリストは9/15号「SideM 11th STAGE DAY2セットリスト公開」と同一内容"
+   },
+   {
+    "dedup_key": "sidem-console-game-project-2026",
+    "reason": "既報",
+    "note": "家庭用ゲーム開発中の発表は9/14〜16号で既報と重複、新事実なし"
+   },
+   {
+    "dedup_key": "sidem-m-fes-winter-wonderland-2026",
+    "reason": "既報",
+    "note": "9/13号で開催決定を既報。「史上最大規模」という宣伝文言以外に新事実なし"
+   },
+   {
+    "dedup_key": "sidem-first-home-console-game",
+    "reason": "既報",
+    "note": "appmedia(未確認)記事も家庭用ゲーム既報と重複。「MMM」等の詳細は未確認情報のみで裏付け不足"
+   },
+   {
+    "dedup_key": "sidem-passionable-reading-show-guide-2026",
+    "reason": "既報",
+    "note": "9/16号ガイド記事(Part.2 PASSIONABLE READING SHOW編)と同内容、新事実なし"
+   },
+   {
+    "dedup_key": "sidem-2dmv-goods-2-2026",
+    "reason": "既報",
+    "note": "9/4号の2DMV公開記念グッズ受注記事と同一施策(9/3〜9/23)、新事実なし"
+   },
+   {
+    "dedup_key": "sidem-11th-streaming-2026",
+    "reason": "既報",
+    "note": "配信チケット価格・アーカイブ期間はstock記載のsidem-11th-stage-2026(既報)と同一内容"
+   }
+  ],
+  "cross_brand": []
+ }
+}

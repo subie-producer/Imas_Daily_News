@@ -1,0 +1,137 @@
+{
+ "decisions": {
+  "producers-station-meeting-matsudo-2026": {
+   "action": "article",
+   "angle": "Pステ松戸で10月17日「PRODUCERS STATION MEETING」開催、プロデューサー同士のリアル交流会を告知",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "未報道の新規告知。公式AMサイト掲載、開催は来月だが今回が初報。"
+  },
+  "sidem-shiny-colors-sparkle-showdown-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2027/6/5-6横浜アリーナの合同ライブ発表(9/12発表)。stories.ymlに9/13付で同内容既報(sidem-shiny-sparkle-showdown-2027)。新事実なし。"
+  },
+  "sidem-shiny-sparkle-showdown-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一発表。stories.ymlに9/13・9/15付で既報済み(出演者詳細含む)。今日のトリガーもなし。"
+  },
+  "tours-s1-ex-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "joint-tours-s1-ex-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "S1弾Ex開始(9/17)の同一施策。周防桃子登場・新曲情報を joint-tours-s1-ex-2026 へ統合。"
+  },
+  "tours-s1-ex-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "joint-tours-s1-ex-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策(新衣装・新アクセサリー情報)。joint-tours-s1-ex-2026 へ統合。"
+  },
+  "okemas-2025-streaming-post-2026-09": {
+   "action": "article",
+   "angle": "「オケマス2025」ライブ音源が9月16日より音楽配信開始、公式Xで告知",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "未報道の新規事実。前日発売だが今回が初報で、配信は今も有効。"
+  },
+  "joint-tours-s1-ex-2026": {
+   "action": "article",
+   "angle": "TOURS「S1弾Ex」が本日9/17午前7時開始。周防桃子と新曲「ローリング△さんかく」、新カード28種・新衣装・新アクセサリー・記念ログインボーナス・カードリスト公開を統合して報じる",
+   "rank": "large",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕当日トリガー(規程8)。他3主題の素材を統合、candidate_idsに全ID列挙。面内最大の記事。"
+  },
+  "joint-other-9-s1-----------------s1-ex--9-17": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "joint-tours-s1-ex-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS1弾Ex開幕予約(カードリスト公開)。同一系統としてjoint-tours-s1-ex-2026へ統合。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-producers-station-meeting-matsudo-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "Pステ松戸で10月17日「PRODUCERS STATION MEETING」開催、プロデューサー同士のリアル交流会を告知",
+    "lead_score": 15,
+    "dedup_key": "producers-station-meeting-matsudo-2026",
+    "candidate_ids": [
+     "202609160734-explore-17"
+    ]
+   },
+   {
+    "slug": "joint-okemas-2025-streaming-post-2026-09",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "「オケマス2025」ライブ音源が9月16日より音楽配信開始、公式Xで告知",
+    "lead_score": 10,
+    "dedup_key": "okemas-2025-streaming-post-2026-09",
+    "candidate_ids": [
+     "202609170229-grok-55"
+    ]
+   },
+   {
+    "slug": "joint-tours-s1-ex-2026",
+    "brand": "joint",
+    "rank": "large",
+    "angle": "TOURS「S1弾Ex」が本日9/17午前7時開始。周防桃子と新曲「ローリング△さんかく」、新カード28種・新衣装・新アクセサリー・記念ログインボーナス・カードリスト公開を統合して報じる",
+    "lead_score": 70,
+    "dedup_key": "joint-tours-s1-ex-2026",
+    "candidate_ids": [
+     "sched-2026-09-17-joint-tours-s1-ex-2026-開幕",
+     "202609162334-explore-22",
+     "202609170229-grok-48",
+     "sched-2026-09-17-joint-other-9-s1-----------------s1-ex--9-17-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-shiny-colors-sparkle-showdown-2027",
+    "reason": "既報",
+    "note": "2027/6/5-6横浜アリーナの合同ライブ発表(9/12発表)。stories.ymlに9/13付で同内容既報(sidem-shiny-sparkle-showdown-2027)。新事実なし。"
+   },
+   {
+    "dedup_key": "sidem-shiny-sparkle-showdown-2027",
+    "reason": "既報",
+    "note": "同一発表。stories.ymlに9/13・9/15付で既報済み(出演者詳細含む)。今日のトリガーもなし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -583,6 +583,40 @@ def test_classify_consensus(tmp: Path):
         calls.clear()
         answers = iter([[{"host": "h", "type": "報道"}], [{"host": "h", "type": "報道"}]])
         check(cs.consensus("p", ["h"])[0].get("h", ("",))[0] == "報道" and len(calls) == 2, "一致しているのに2巡目を掛けた")
+        # 答えの対象の書き方が依頼と違っても対応付ける(`youtube.com/@Foo` を頼んで `@foo` や URL で返る。
+        # 2026-09-18: 答えているのに無回答扱いになり、議論しても決まらなかった)
+        calls.clear()
+        forms = iter([[{"host": "@TogawaNonoha", "type": "ファン", "why": "個人"}, {"host": "https://www.Example.com/", "type": "報道"}],
+                      [{"host": "https://www.youtube.com/@togawanonoha/about", "type": "ファン", "why": "個人"}, {"host": "example.com", "type": "報道"},
+                       {"host": "頼んでいない", "type": "報道"}]])
+        cs.ask = lambda cmd, prompt, timeout=900: next(forms)
+        ag, sp = cs.consensus("p", ["youtube.com/@TogawaNonoha", "example.com"])
+        check(ag.get("youtube.com/@TogawaNonoha", ("",))[0] == "ファン" and ag.get("example.com", ("",))[0] == "報道" and not sp,
+              f"書き方の違う答えを対応付けられない: {ag} {sp}")
+        # 末尾が同じ依頼が2つあるときは、末尾だけの答えを当てない(取り違えない)
+        amb = cs._by_host([{"host": "@foo", "type": "ファン"}], ["youtube.com/@foo", "tiktok.com/@foo"])
+        check(amb == {}, f"曖昧な答えをどちらかに当てた: {amb}")
+        # 同じ host の2対象のうち1つだけが2巡目へ進み、両モデルが host だけで答えても決まる。2巡目の依頼文は
+        # 割れた対象だけで作り直す(監査指摘)
+        prompts = []
+        rounds = iter([[{"host": "youtube.com/@bar", "type": "報道"}, {"host": "youtube.com/@foo", "type": "ファン"}],
+                       [{"host": "youtube.com/@bar", "type": "報道"}, {"host": "youtube.com", "type": "ファン"}],
+                       [{"host": "youtube.com", "type": "ファン"}], [{"host": "youtube.com", "type": "ファン"}]])
+        def ask2(cmd, prompt, timeout=900):
+            prompts.append(prompt)
+            return next(rounds)
+        cs.ask = ask2
+        ag, sp = cs.consensus(lambda ks: "対象: " + " ".join(ks), ["youtube.com/@bar", "youtube.com/@foo"])
+        check(ag.get("youtube.com/@foo", ("",))[0] == "ファン" and ag.get("youtube.com/@bar", ("",))[0] == "報道" and not sp,
+              f"同じ host の2対象で、2巡目の host だけの答えを捨てた: {ag} {sp}")
+        check(len(prompts) == 4 and "@bar" not in prompts[2].split("\n")[0] and "@foo" in prompts[2], f"2巡目の依頼文に割れていない対象が残っている: {prompts[2][:80]}")
+        cs.ask = fake_ask
+        # パス付きの対象を host だけで返した答え: その host の依頼が1つだけなら当てる。2つあれば当てない
+        one = cs._by_host([{"host": "youtube.com", "type": "ファン"}], ["youtube.com/@foo", "example.com"])
+        two = cs._by_host([{"host": "youtube.com", "type": "ファン"}], ["youtube.com/@foo", "youtube.com/@bar"])
+        check(list(one) == ["youtube.com/@foo"] and two == {}, f"host だけの答えの対応付け: {one} {two}")
+        check("一字一句そのまま" in cs.build_prompt([("youtube.com/@foo", "https://www.youtube.com/@foo", "x")]), "依頼文が対象の写し方を指示していない")
+        cs.ask = fake_ask
         # x_accounts の節に足す(video_channels の「公式:」に差し込まない)
         tmp.mkdir(parents=True, exist_ok=True)
         (tmp / "source_types.yml").write_text(

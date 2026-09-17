@@ -283,7 +283,11 @@ def ask(cmd: list[str], prompt: str, timeout: int = 900) -> list[dict]:
         short = prompt_file(edition_date(), f"classify-{cmd[0]}-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt)
         r = subprocess.run(cmd + [short], capture_output=True, text=True,
                            timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
-        return extract_json_array(r.stdout) or []
+        rows = extract_json_array(r.stdout) or []
+        if not rows:    # 答えが空のまま「—」で議論が流れると、なぜ決まらなかったのか後から追えない
+            tail = ((r.stdout or "").strip() or (r.stderr or "").strip())[-200:].replace("\n", " ")
+            print(f"  分類の答えが読めない({cmd[0]} exit {r.returncode}): {tail or '(出力なし)'}", flush=True)
+        return rows
     except Exception as e:
         print(f"分類の呼び出しに失敗({cmd[0]}): {e}", flush=True)
         return []
@@ -311,7 +315,10 @@ def build_prompt(items: list[tuple[str, str, str]]) -> str:
 
 ## 出力
 **JSON 配列だけ**を出力してください。ほかの文字は書かないこと。
-[{{"host": "ドメイン", "operator": "運営主体(何の会社・団体・個人か。30字以内)", "type": "公式|準公式|当事者|報道|二次情報|ファン|不明", "why": "40字以内の根拠"}}]
+[{{"host": "対象の見出しの文字列をそのまま(例: `example.com`、`youtube.com/@handle`、X のアカウント名)", "operator": "運営主体(何の会社・団体・個人か。30字以内)", "type": "公式|準公式|当事者|報道|二次情報|ファン|不明", "why": "40字以内の根拠"}}]
+
+- host は**対象ごとの見出しを一字一句そのまま**写す。`youtube.com/@handle` を `youtube.com` に縮めない
+  (縮めると、どの対象への答えか分からなくなる)
 
 - 運営主体が分かれば種別は定義から決まる。**アイマスの作品・ブランド・レーベル・連載先について知っていること**も使う
 - 運営主体がどうしても分からないときだけ `不明`(why に「何を見たが分からなかったか」を書く)
@@ -358,8 +365,42 @@ CMD_A = ["claude", "-p", "--model", COLLECT_MODEL, "--dangerously-skip-permissio
 CMD_B = ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "read-only", "--skip-git-repo-check"]
 
 
-def _by_host(rows: list) -> dict[str, dict]:
-    return {str(d.get("host", "")).lstrip("@"): d for d in rows if isinstance(d, dict)}
+def _key_forms(s: str) -> tuple[str, str]:
+    """対象の書き方の揺れを吸収するための (全体, 末尾) の正規形。
+    `https://www.youtube.com/@Foo/` も `youtube.com/@foo` も `@Foo` も、末尾は `foo`。"""
+    full = re.sub(r"^[a-z]+://", "", str(s or "").strip().lower()).removeprefix("www.").rstrip("/")
+    full = full.split("?")[0].removesuffix("/about")
+    return full.lstrip("@"), full.rsplit("/", 1)[-1].lstrip("@")
+
+
+def _by_host(rows: list, keys: list[str] | None = None) -> dict[str, dict]:
+    """モデルの答えを、**依頼した対象(keys)に対応付けて**返す。
+
+    答えの host は依頼どおりの文字列で返ってくるとは限らない(`youtube.com/@Foo` を頼んで `@Foo` や
+    `https://www.youtube.com/@Foo` で返る)。完全一致だけで引くと、答えているのに「無回答(—)」扱いになり、
+    議論しても決まらない(実測 2026-09-18: @TogawaNonoha)。全体の正規形で当て、無ければ末尾(ハンドル・
+    最後の区切り)で当てる。末尾は、その末尾を持つ依頼が1つだけのときに限る。対応しない答えはログに出す。
+    """
+    rows = [d for d in rows if isinstance(d, dict)]
+    if keys is None:
+        return {str(d.get("host", "")).lstrip("@"): d for d in rows}
+    by_full = {_key_forms(k)[0]: k for k in keys}
+    tails: dict[str, list[str]] = {}
+    heads: dict[str, list[str]] = {}     # `youtube.com/@foo` を `youtube.com` とだけ返す答え(実測 2026-09-18)
+    for k in keys:
+        tails.setdefault(_key_forms(k)[1], []).append(k)
+        if "/" in _key_forms(k)[0]:
+            heads.setdefault(_key_forms(k)[0].split("/", 1)[0], []).append(k)
+    out: dict[str, dict] = {}
+    for d in rows:
+        full, tail = _key_forms(d.get("host", ""))
+        k = (by_full.get(full) or (tails[tail][0] if len(tails.get(tail) or []) == 1 else None)
+             or (heads[full][0] if len(heads.get(full) or []) == 1 else None))
+        if k is None:
+            print(f"  答えの対象が依頼と対応しない: {str(d.get('host'))[:80]!r}", flush=True)
+        elif k not in out:
+            out[k] = d
+    return out
 
 
 def debate_prompt(prompt: str, split_keys: list[str], mine: dict, theirs: dict) -> str:
@@ -389,8 +430,12 @@ def consensus(prompt: str, keys: list[str]) -> tuple[dict, list[str]]:
     (実測 2026-09-08〜12: @yuzu_yng 不明/ファン、@onkyodav 不明/当事者)。多数決や棄権扱いで
     誤魔化さず、答えた側の根拠に向き合わせる。2巡目でも割れたら両方の言い分を付けて人へ。
     """
-    a = _by_host(ask(CMD_A, prompt))
-    b = _by_host(ask(CMD_B, prompt))
+    # prompt は「対象の一覧 → 依頼文」の関数(文字列も受ける)。2巡目は**割れた対象だけ**の依頼文を作り直す。
+    # 全対象の依頼文のまま2巡目を掛けると、割れていない対象への省略形の答えを割れた対象に当てかねず、
+    # 逆に全対象で対応付けると、一意になったはずの省略形の答えをまた捨てる(監査指摘)
+    make = prompt if callable(prompt) else (lambda ks: prompt)
+    a = _by_host(ask(CMD_A, make(keys)), keys)
+    b = _by_host(ask(CMD_B, make(keys)), keys)
 
     def agree(k):
         ta, tb = (a.get(k) or {}).get("type"), (b.get(k) or {}).get("type")
@@ -401,8 +446,8 @@ def consensus(prompt: str, keys: list[str]) -> tuple[dict, list[str]]:
         print(f"  1巡目で割れた {len(split_keys)}件を議論させる: "
               + ", ".join(f"{k}({(a.get(k) or {}).get('type') or '—'}/{(b.get(k) or {}).get('type') or '—'})" for k in split_keys),
               flush=True)
-        a2 = _by_host(ask(CMD_A, debate_prompt(prompt, split_keys, a, b)))
-        b2 = _by_host(ask(CMD_B, debate_prompt(prompt, split_keys, b, a)))
+        a2 = _by_host(ask(CMD_A, debate_prompt(make(split_keys), split_keys, a, b)), split_keys)
+        b2 = _by_host(ask(CMD_B, debate_prompt(make(split_keys), split_keys, b, a)), split_keys)
         for k in split_keys:
             if k in a2:
                 a[k] = a2[k]
@@ -620,7 +665,7 @@ def main() -> int:
     if doms:
         print(f"{date}: 判定表に無いドメイン {len(doms)}件 → {', '.join(sorted(doms))}", flush=True)
         items = [(h, u, site_profile(h, u)) for h, u in sorted(doms.items())]
-        agreed, split = consensus(build_prompt(items), sorted(doms))
+        agreed, split = consensus(lambda ks: build_prompt([it for it in items if it[0] in ks]), sorted(doms))
         for h, (t, why) in agreed.items():
             print(f"  一致 {t}\t{h}\t{why}")
         for s in split:
@@ -634,7 +679,7 @@ def main() -> int:
         # プラットフォーム上のアカウント・チャンネル・作品ページ。「トップ」はそのアカウントのページ
         print(f"\n{date}: 判定表に無いプラットフォーム上の主体 {len(paths)}件 → {', '.join(sorted(paths))}", flush=True)
         items = [(k, u, site_profile(k, u, top=f"https://{k}/")) for k, u in sorted(paths.items())]
-        agreed, split = consensus(build_prompt(items), sorted(paths))
+        agreed, split = consensus(lambda ks: build_prompt([it for it in items if it[0] in ks]), sorted(paths))
         for k, (t, why) in agreed.items():
             print(f"  一致 {t}\t{k}\t{why}")
         for s in split:
@@ -650,7 +695,7 @@ def main() -> int:
         sub = {a: accts[a] for a in order}
         print(f"\n{date}: 判定表に無い X アカウント {len(accts)}件"
               f"(今回 {len(sub)}件を処理)", flush=True)
-        agreed, split = consensus(build_x_prompt(sub), sorted(sub))
+        agreed, split = consensus(lambda ks: build_x_prompt({k: sub[k] for k in ks}), sorted(sub))
         for a, (t, why) in agreed.items():
             print(f"  一致 {t}\t@{a}\t{why}")
         for s in split:
@@ -671,7 +716,8 @@ def main() -> int:
                   site_profile(f"youtube.com/@{h}", f"https://www.youtube.com/@{h}/about", top=f"https://www.youtube.com/@{h}")
                   + f"\n表に載った動画: {vid}「{title[:60]}」")
                  for h, (vid, title) in sorted(unknown_chans.items())]
-        agreed, split = consensus(build_prompt(items), [f"youtube.com/@{h}" for h in sorted(unknown_chans)])
+        agreed, split = consensus(lambda ks: build_prompt([it for it in items if it[0] in ks]),
+                                  [f"youtube.com/@{h}" for h in sorted(unknown_chans)])
         chans = {k.split("@", 1)[1]: v for k, v in agreed.items() if "@" in k}
         for h, (t, why) in chans.items():
             print(f"  一致 {t}\t@{h}\t{why}")

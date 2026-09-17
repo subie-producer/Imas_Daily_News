@@ -13,7 +13,7 @@
 - PC が稼働していない日は収集も発行も止まる=事実上の休刊。異常はブランチ残存監視と Discord 通知で検知する(§7)。
 
 ```
-[cron 07:30/12:30/18:30/23:30 JST]   [cron 03:30]      [cron 04:00]
+[cron 07:30/12:30/18:30/23:30 JST]   [cron 02:00]      [cron 03:00]
 scripts/collect.py                   collect.py        scripts/publish.py
  ├ A-1 定点観測(RSS/HTML差分)       (締切前スイープ)   ├ compose: claude -p(記事・号・社説生成)
  ├ A-2 探索: claude -p(Web検索)                       ├ ローカル lint(赤なら自己修正)
@@ -80,7 +80,7 @@ scripts/collect.py                   collect.py        scripts/publish.py
 1. collect 実行ごとに `candidates/YYYY-MM-DD.json`(**号日付**。その収集が寄与する号=次の06:00の日付)へ追記。1つの号の素材は常に1ファイルで、収集サイクル(07:30〜翌03:30)が暦日をまたいでも分割されない(2026-07-14号から。それ以前は収集日キー)。`dedup_key`(正規化: ブランド+主題+イベント日)で系統間の重複を排除し、同一候補の再検出は `facts` の増分マージにする。
 2. verify: 候補ごとに一次ソース URL をフェッチし、日付・内容の一致を照合 → `verify: confirmed / unconfirmed / failed`。**一次ソースに書かれていない事実は facts に入れない**(絶対規則)。
 3. candidates は**次号のための調査データ**であり、消費されるのは当該号の1ファイルだけ。過去のファイルをパイプラインが読むことはない。未来の予定は §3 の scheduled ストアへ素材ごと写し、既報かどうかの判定は stock/stories.yml(話題単位の圧縮台帳)が担う(過去記事の広範囲検索をしないための装置)。
-4. 締切: **発行日 04:00 時点の candidates**(前日分+当日未明分)。
+4. 締切: **発行日 03:00 時点の candidates**(前日分+当日未明分。02:00 の締切前スイープを含む)。
 
 ## 3. 続報の制度化と鮮度ポリシー
 
@@ -155,7 +155,7 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 ## 6. compose と校閲
 
-- **compose**(04:00): `scripts/compose.py` が四段で実行する(執筆時コンタミの構造的排除):
+- **compose**(03:00。2026-09-18 から。06:00 の発行までに、止まったら当番(Opus 修正 → Sol 監査)が直して再実行できる時間を残す): `scripts/compose.py` が四段で実行する(執筆時コンタミの構造的排除):
   1. **選定**: compose がまず `metrics/plan-index-<date>.json`(**主題インデックス**)を機械生成する。candidates を dedup_key で束ね、verify=failed と blocklist を除外し、facts を先頭3件×90字に切り詰めて**1主題1行**で書く(281KB/5577行 → 120KB/200行)。1行1主題にするのは、整形 JSON だと Read の既定上限 2000行で後半が編集長の視野から落ちるため。
      面ごとの claude セッションは、**主題キーごとに必ず1つの判定**(article / roundup / merge / drop / cross_brand と切り口・rank・lead_score・理由)を返す。この形はその面の主題キーから生成した schema(`scripts/planlib.py`)で求めるので、漏れは構造的に起きない。**候補 id と slug はモデルに書かせない**。candidate_ids は主題の ids からコードが展開し、slug はコードが一意に付け、roundup は面で1本にまとめる(3件未満なら small に戻す)。以前は JSON ファイルを書かせて id を写させ、写し間違いを別セッションで修理し(実測: id 1件の誤記で記事19本と社説が巻き添え)、漏れを別セッションで拾い直していた。compose の機械検証(候補の実在・verify≠failed・blocklist 除外・lead 一意・roundup はブランド1本かつ3件以上)は残す。
      **取りこぼし検査**: 索引の全 dedup_key が `articles` か `dropped` のどちらかに現れることを機械照合する。現れない主題は「判断されずに消えた」ものとして再計画のフィードバックに回し、それでも残れば Discord 通知する(発行は止めない)。2026-08-25号で198主題中88主題が無言で消えていた事故に由来する。計画に**本数の目標値は与えない**(「10〜14本」という目安が上限として働き、素材144主題→24本・198主題→17本と入力非依存になっていた)
@@ -200,7 +200,8 @@ scripts/collect.py                   collect.py        scripts/publish.py
 |------|--------|------|
 | 07:30 / 12:30 / 18:30 / 23:30 | collect | 定点観測+Claude探索+verify → edition ブランチへ push(Grok なし) |
 | **02:00** | collect(締切前スイープ+**Grok 深掘り**) | 上記に加えて Grok を1セッションで全10面。長時間かかるため 04:00 の compose とぶつからないよう前倒しし、service の TimeoutStartSec も 100分にしてある |
-| 04:00 | publish | compose → lint → 校閲 → main へ squash push → 翌日ブランチ作成 |
+| 03:00 | compose | 選定 → 執筆 → 組版 → 校閲(締切は 05:52。止まったら当番が直して再実行) |
+| 06:00 | release | lint → 校閲 approve の確認 → main へ squash push → 配信 → 翌日ブランチ |
 | 09:00 | watch | 発行忘れ・メトリクス閾値の監視 → Discord |
 
 スケジューラは **systemd user timer** を採用する(この WSL2 で systemd 稼働を確認済み)。`Persistent=yes` により PC がスリープしていた場合も復帰後に追い付き実行される。ユニット定義は実装時に `ops/systemd/` に置き、`systemctl --user enable --now` で有効化する(手順は README に記載予定)。Windows 側のスリープ設定によっては深夜帯に PC が起きていない点に注意(その場合 04:00 の発行は復帰後に遅延実行される)。

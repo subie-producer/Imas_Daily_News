@@ -107,7 +107,9 @@ def next_number(date: str | None = None, live: bool | None = None) -> int:
 # **打ち切りには使わない**。目標で打ち切ると、時間が余っていても往復を止めて
 # しまい、直せたはずの記事を落としたまま毎日発行することになる。
 # 超えたら記録と通知に出して、設計を直す材料にする。
-COMPOSE_LIMIT_MIN = int(ENV.get("COMPOSE_LIMIT_MIN", "120"))
+# 2026-09-18 から起動は 03:00(編集長の決定: 止まったら当番が直して再実行する時間を残す)。
+# 相対の上限は 170 分だが、実際に効くのは絶対の締切(発行 06:00 の 8 分前 = hard_deadline)
+COMPOSE_LIMIT_MIN = int(ENV.get("COMPOSE_LIMIT_MIN", "170"))
 COMPOSE_TARGET_MIN = int(ENV.get("COMPOSE_TARGET_MIN", "60"))
 # 打ち切ったあと**必ず踏む**後始末(社説と組版のやり直し=並列+derive+lint+コミット)の見込み。
 #

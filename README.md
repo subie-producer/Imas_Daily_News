@@ -15,7 +15,7 @@
 ## パイプライン
 
 ```
-collect(コード・毎日数回) → verify(コード) → compose(Claude・発行日 04:00)
+collect(コード・毎日数回) → verify(コード) → compose(発行日 03:00)
  → lint(ローカルゲート) → review(校閲=Codex) → main へ squash push → 06:00 JST 発行
 ```
 
@@ -79,7 +79,7 @@ python3 scripts/lint.py --full     # 全記事の URL 監査
 
 ## 定時実行(systemd user timer)
 
-collect(07:30/12:30/18:30/23:30/03:30)→ compose(04:00)→ release(06:00 発行)→ watch(09:00)。
+collect(07:30/12:30/18:30/23:30/02:00)→ compose(03:00)→ release(06:00 発行)→ watch(09:00)。
 **自動ジョブは専用クローン `~/git/imas-ops` で動く**(このリポジトリの作業ツリーには触れない)。導入は:
 
 ```sh

@@ -724,6 +724,20 @@ def test_next_number(tmp: Path):
         compose.ROOT = saved
 
 
+def test_dedupe_source_table(tmp: Path):
+    """union merge で二重になった判定表の行を、節ごとに1つにする(2026-09-17)。"""
+    tmp.mkdir(parents=True, exist_ok=True)
+    p = tmp / "source_types.yml"
+    p.write_text("party_domains:\n  - a.jp   # x\n  - b.jp\n  - A.jp   # dup\nsecondary_domains:\n  - a.jp   # 別の節は別\n"
+                 "video_ids:\n  公式:\n    - v1\n    - v1\n  準公式:\n    - v2\npath_types:\n  t.com/@x: 公式\n  t.com/@x/: 当事者   # dup\n",
+                 encoding="utf-8")
+    removed = pipelib.dedupe_source_table(p)
+    text = p.read_text(encoding="utf-8")
+    check(len(removed) == 3 and text.count("a.jp") == 2 and text.count("- v1") == 1 and text.count("t.com/@x") == 1,
+          f"二重行の除去: {removed} / {text}")
+    check(pipelib.dedupe_source_table(p) == [], "冪等でない")
+
+
 def test_tool_path():
     import os
     p = pipelib.tool_path()
@@ -853,6 +867,7 @@ def main() -> int:
     test_clean_url_and_table()
     test_no_prompt_in_argv()
     test_next_number(tmp / "nn")
+    test_dedupe_source_table(tmp / "dd")
     test_tool_path()
     test_oncall_undo_merge()
     test_oncall_rollback_subprocess(tmp / "rs")

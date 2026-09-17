@@ -183,6 +183,13 @@ def ensure_next_branch(next_name: str, dry: bool) -> None:
                        + ", ".join(others[:8]), ok=False)
                 return
             git("commit", "--no-edit", check=False)
+        # union merge で判定表の行が二重になったら、ここで除いて同じ push に載せる(2026-09-17: 5行が二重)
+        from pipelib import dedupe_source_table
+        removed = dedupe_source_table()
+        if removed:
+            git("add", "--", "source_types.yml", check=False)
+            git("commit", "-q", "-m", f"判定表: merge で二重になった {len(removed)} 行を除く", check=False)
+            print(f"判定表の二重行 {len(removed)} 件を除いた", flush=True)
         git("push", "origin", next_name)
         print(f"翌日ブランチ {next_name} に main を取り込んで push", flush=True)
         return

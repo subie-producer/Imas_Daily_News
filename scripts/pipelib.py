@@ -418,6 +418,12 @@ def checkout_edition_branch(date: str, job: str) -> bool:
         else:
             print(f"{branch}: main を取り込んだ({git('rev-parse', '--short', 'origin/main').stdout.strip()})",
                   flush=True)
+            # union merge で判定表の行が二重になったら、ここで除いて同じ push に載せる
+            removed = dedupe_source_table()
+            if removed:
+                git("add", "--", "source_types.yml", check=False)
+                git("commit", "-q", "-m", f"判定表: merge で二重になった {len(removed)} 行を除く", check=False)
+                print(f"判定表の二重行 {len(removed)} 件を除いた", flush=True)
             git_net("push", "origin", branch)
     return True
 
@@ -616,6 +622,34 @@ def source_type_table() -> dict:
         _ST_TABLE = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
         _check_table(_ST_TABLE, p)
     return _ST_TABLE
+
+
+def dedupe_source_table(path=None) -> list[str]:
+    """判定表の**同じ節の中の二重行**を除く(先に書いてあるほうを残す)。戻り値は除いた行。
+
+    source_types.yml は `merge=union` で結合するので、2つのブランチ(main と次号)がそれぞれ合議で
+    同じ相手を足すと、merge 後に同じ行が2つ並ぶ。_check_table はそれを重複として止める
+    (実測 2026-09-17: 発行後の main 取り込みで 5 行が二重になり selfcheck が赤)。
+    merge の直後に必ずこれを通す。
+    """
+    p = Path(path) if path else ROOT / "source_types.yml"
+    lines = p.read_text(encoding="utf-8").splitlines(keepends=True)
+    out, seen, section, removed = [], set(), None, []
+    for ln in lines:
+        m_top = re.match(r"^([a-z_]+):", ln)
+        if m_top:
+            section = m_top.group(1)
+        m_item = re.match(r"^\s+-\s+(\S+)", ln) or re.match(r"^  (\S+?):\s*\S", ln)   # リスト項目 / path_types のキー
+        if m_item and section:
+            key = (section, m_item.group(1).rstrip("/").lower())
+            if key in seen:
+                removed.append(ln.rstrip("\n"))
+                continue
+            seen.add(key)
+        out.append(ln)
+    if removed:
+        p.write_text("".join(out), encoding="utf-8")
+    return removed
 
 
 def _check_table(t: dict, p) -> None:

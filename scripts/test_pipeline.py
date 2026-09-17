@@ -729,12 +729,21 @@ def test_dedupe_source_table(tmp: Path):
     tmp.mkdir(parents=True, exist_ok=True)
     p = tmp / "source_types.yml"
     p.write_text("party_domains:\n  - a.jp   # x\n  - b.jp\n  - A.jp   # dup\nsecondary_domains:\n  - a.jp   # 別の節は別\n"
-                 "video_ids:\n  公式:\n    - v1\n    - v1\n  準公式:\n    - v2\npath_types:\n  t.com/@x: 公式\n  t.com/@x/: 当事者   # dup\n",
+                 "video_ids:\n  公式:\n    - v1\n    - v1\n    - v3\n  準公式:\n    - v2\n    - v3   # 別の種別は競合(消さない)\n"
+                 "path_types:\n  t.com/@x: 公式\n  t.com/@x/: 公式   # dup\n  t.com/@y: 公式\n  t.com/@y: 当事者   # 値が違う=競合(消さない)\n",
                  encoding="utf-8")
     removed = pipelib.dedupe_source_table(p)
     text = p.read_text(encoding="utf-8")
     check(len(removed) == 3 and text.count("a.jp") == 2 and text.count("- v1") == 1 and text.count("t.com/@x") == 1,
           f"二重行の除去: {removed} / {text}")
+    # 種別・値の違う同一キーは分類の競合として残し、_check_table が止める(監査指摘 R38-1)
+    check(text.count("- v3") == 2 and text.count("t.com/@y") == 2, f"競合を二重として消した: {text}")
+    import yaml
+    try:
+        pipelib._check_table(yaml.safe_load(text), str(p))
+        check(False, "残した競合を _check_table が止めない")
+    except SystemExit:
+        pass
     check(pipelib.dedupe_source_table(p) == [], "冪等でない")
 
 

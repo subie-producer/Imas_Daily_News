@@ -421,8 +421,12 @@ def checkout_edition_branch(date: str, job: str) -> bool:
             # union merge で判定表の行が二重になったら、ここで除いて同じ push に載せる
             removed = dedupe_source_table()
             if removed:
-                git("add", "--", "source_types.yml", check=False)
-                git("commit", "-q", "-m", f"判定表: merge で二重になった {len(removed)} 行を除く", check=False)
+                a = git("add", "--", "source_types.yml", check=False)
+                c = git("commit", "-q", "-m", f"判定表: merge で二重になった {len(removed)} 行を除く", check=False) \
+                    if a.returncode == 0 else a
+                if c.returncode != 0:   # 除去を commit できなければ、二重のまま push しない(監査指摘)
+                    notify(job, f"判定表の二重行を除いたが commit できない: {(c.stderr or c.stdout).strip()[:200]}", ok=False)
+                    return False
                 print(f"判定表の二重行 {len(removed)} 件を除いた", flush=True)
             git_net("push", "origin", branch)
     return True
@@ -634,14 +638,23 @@ def dedupe_source_table(path=None) -> list[str]:
     """
     p = Path(path) if path else ROOT / "source_types.yml"
     lines = p.read_text(encoding="utf-8").splitlines(keepends=True)
-    out, seen, section, removed = [], set(), None, []
+    out, seen, section, label, removed = [], set(), None, None, []
     for ln in lines:
         m_top = re.match(r"^([a-z_]+):", ln)
         if m_top:
-            section = m_top.group(1)
-        m_item = re.match(r"^\s+-\s+(\S+)", ln) or re.match(r"^  (\S+?):\s*\S", ln)   # リスト項目 / path_types のキー
-        if m_item and section:
-            key = (section, m_item.group(1).rstrip("/").lower())
+            section, label = m_top.group(1), None
+        m_label = re.match(r"^  (\S+):\s*$", ln)          # x_accounts / video_ids / video_channels の種別
+        if m_label:
+            label = m_label.group(1)
+        m_item = re.match(r"^\s+-\s+(\S+)", ln)
+        m_kv = re.match(r"^  (\S+?):\s*(\S+)", ln)         # path_types / suffix_types のキー: 値
+        if section and (m_item or m_kv):
+            # 同じ節・**同じ種別**・同じ値のものだけが二重。種別や値が違う同一キーは分類の競合なので
+            # ここでは消さず、_check_table に止めさせる(監査指摘)
+            if m_item:
+                key = (section, label, m_item.group(1).rstrip("/").lower(), None)
+            else:
+                key = (section, None, m_kv.group(1).rstrip("/").lower(), m_kv.group(2))
             if key in seen:
                 removed.append(ln.rstrip("\n"))
                 continue

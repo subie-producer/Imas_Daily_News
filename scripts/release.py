@@ -187,8 +187,13 @@ def ensure_next_branch(next_name: str, dry: bool) -> None:
         from pipelib import dedupe_source_table
         removed = dedupe_source_table()
         if removed:
-            git("add", "--", "source_types.yml", check=False)
-            git("commit", "-q", "-m", f"判定表: merge で二重になった {len(removed)} 行を除く", check=False)
+            a = git("add", "--", "source_types.yml", check=False)
+            c = git("commit", "-q", "-m", f"判定表: merge で二重になった {len(removed)} 行を除く", check=False) \
+                if a.returncode == 0 else a
+            if c.returncode != 0:   # 除去を commit できなければ、二重のまま push せず人へ(監査指摘)
+                notify(f"翌日ブランチ {next_name}: 判定表の二重行を除いたが commit できない(push せず): "
+                       f"{(c.stderr or c.stdout).strip()[:200]}", ok=False)
+                return
             print(f"判定表の二重行 {len(removed)} 件を除いた", flush=True)
         git("push", "origin", next_name)
         print(f"翌日ブランチ {next_name} に main を取り込んで push", flush=True)

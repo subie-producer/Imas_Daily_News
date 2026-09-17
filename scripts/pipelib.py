@@ -623,7 +623,9 @@ def source_type_table() -> dict:
         p = ROOT / "source_types.yml"
         if not p.exists():
             raise SystemExit(f"出典種別の判定表がない: {p}")
-        _ST_TABLE = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+        text = p.read_text(encoding="utf-8")
+        _check_table_text(text, p)   # YAML が黙って潰す「同じキーの二重定義」は dict になる前に見る
+        _ST_TABLE = yaml.safe_load(text) or {}
         _check_table(_ST_TABLE, p)
     return _ST_TABLE
 
@@ -663,6 +665,28 @@ def dedupe_source_table(path=None) -> list[str]:
     if removed:
         p.write_text("".join(out), encoding="utf-8")
     return removed
+
+
+def _check_table_text(text: str, p) -> None:
+    """dict になる前の**字面**の検査: 対応(path_types / suffix_types)の同じキーが2回書かれていないか。
+
+    YAML はマッピングの重複キーを黙って後勝ちにするので、dict を見る _check_table には届かない
+    (監査指摘: 値の違う同一パスが両方残っても検出できずに片方が消える)。正規化(末尾 / と大小)で比べる。
+    """
+    section, seen = None, {}
+    for i, ln in enumerate(text.splitlines(), 1):
+        m_top = re.match(r"^([a-z_]+):", ln)
+        if m_top:
+            section = m_top.group(1)
+            continue
+        if section in ("path_types", "suffix_types"):
+            m = re.match(r"^  (\S+?):\s*(\S+)", ln)
+            if m:
+                key = m.group(1).strip("\"'").rstrip("/").lower()
+                if key in seen:
+                    raise SystemExit(f"{p} の {section}: {m.group(1)} が {seen[key]} 行目と {i} 行目に二重に書かれている"
+                                     "(YAML は黙って後勝ちにする。1つにすること)")
+                seen[key] = i
 
 
 def _check_table(t: dict, p) -> None:

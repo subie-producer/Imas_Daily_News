@@ -736,15 +736,24 @@ def test_dedupe_source_table(tmp: Path):
     text = p.read_text(encoding="utf-8")
     check(len(removed) == 3 and text.count("a.jp") == 2 and text.count("- v1") == 1 and text.count("t.com/@x") == 1,
           f"二重行の除去: {removed} / {text}")
-    # 種別・値の違う同一キーは分類の競合として残し、_check_table が止める(監査指摘 R38-1)
+    # 種別・値の違う同一キーは分類の競合として残す(監査指摘 R38-1)
     check(text.count("- v3") == 2 and text.count("t.com/@y") == 2, f"競合を二重として消した: {text}")
-    import yaml
-    try:
-        pipelib._check_table(yaml.safe_load(text), str(p))
-        check(False, "残した競合を _check_table が止めない")
-    except SystemExit:
-        pass
     check(pipelib.dedupe_source_table(p) == [], "冪等でない")
+    # 残した競合は、種類ごとに**単独で**検査に掛かる(複合テストで片方が隠れないように。監査指摘 r39)
+    import yaml
+
+    def stops(txt: str) -> bool:
+        try:
+            pipelib._check_table_text(txt, "t")
+            pipelib._check_table(yaml.safe_load(txt), "t")
+            return False
+        except SystemExit:
+            return True
+    check(stops("video_ids:\n  公式:\n    - v3\n  準公式:\n    - v3\n"), "video_ids の別種別の同一 ID を止めない")
+    check(stops("path_types:\n  t.com/@y: 公式\n  t.com/@y: 当事者\n"), "path_types の同一キー・異値を止めない(YAML が後勝ちにする)")
+    check(stops("path_types:\n  t.com/@y: 公式\n  T.com/@y/: 公式\n"), "path_types の正規化後に同じキーを止めない")
+    check(stops("suffix_types:\n  \".lg.jp\": 当事者\n  \".lg.jp\": 公式\n"), "suffix_types の同一キー・異値を止めない")
+    check(not stops("path_types:\n  t.com/@y: 公式\n  t.com/@z: 当事者\nsuffix_types:\n  \".lg.jp\": 当事者\n"), "正しい対応を止めた")
 
 
 def test_tool_path():

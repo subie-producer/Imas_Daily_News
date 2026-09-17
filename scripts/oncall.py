@@ -11,15 +11,22 @@
    修正を書き、selfcheck と再現テストを通し、報告を JSON で返す(schema/oncall-fix.schema.json)
 2. 変更はその場で **commit して内容を固定**し、**監査(Sol)** がその commit の差分(差分が無ければ
    診断そのもの)を敵対的にレビューし、判定を JSON で返す
-3. **監査に指摘されたら、当番が直す。**監査は当番と合意を取る相手ではなく、その場しのぎの修正を
-   通さないための査読である(編集長の指摘 2026-09-18:「合意を取る話じゃない。指摘されたら直す話」)。
-   直したものを監査がもう一度見る。これを**指摘が無くなるまで**回す(上限は回数 MAX_ROUNDS と
-   時間 ONCALL_LIMIT_MIN。以前は2往復で「合意できなかった」と投げ出していた)。
-   指摘が事実誤認か、編集方針で判定対象外のもの(POLICY_EXCLUDED)に当たるときだけ、根拠を示して
-   「当たらない」と答えてよい
-4. 指摘が無くなったもの(approve で must_fix が空)だけ、**監査した commit のハッシュそのもの**を
+3. **当番と監査の仕事の範囲は「発行に必要な最小限で、今後もちゃんと動く正しい修正」**(編集長の整理
+   2026-09-18)。監査が must_fix に入れるのはこの範囲の問題だけ: 止まった原因に当たっていない /
+   現実の入力でまた止まる / データや他の工程を壊す / その場しのぎ(握りつぶす・やり直すだけ)。
+   この範囲なら**合意(approve で must_fix が空)するまで**当番が直し、監査が見直す
+   (上限は回数 MAX_ROUNDS と時間 ONCALL_LIMIT_MIN)。指摘が事実誤認か、編集方針で判定対象外のもの
+   (POLICY_EXCLUDED)に当たるときだけ、根拠を示して「当たらない」と答えてよい。
+   以前は範囲を決めずに合意を求めたので、監査が「現実には来ない入力での堅牢化」を must_fix に積み、
+   当番がそれを追いかけて、発行できる修正が2往復で時間切れになっていた(実測 2026-09-18)
+3b. **発行後でよい指摘(later)は別に保管する**: 堅牢化・現実には来ていない入力への備え・設計の改善・
+   テストの追加・書き方。監査はこれを must_fix に入れず later に書く。当番はこの場では直さない。
+   取り込みのあと `metrics/oncall-backlog.jsonl` に積み、修正報告に載せ、watch が毎朝「未着手 N件」を出す。
+   発行して落ち着いてから直す(`oncall.py --backlog` で一覧、`--backlog-done <id>` で消し込み)。
+   保管の失敗は発行を妨げない(報告には必ず載る)
+4. 合意したもの(approve で must_fix が空)だけ、**監査した commit のハッシュそのもの**を
    main へ merge し、`edition/<日付>` へ取り込み、止まった工程を再実行する
-5. 上限までに直し切れなければ、そこまでの修正(commit)と残った指摘を state に残して人へ渡す。
+5. 上限までに合意できなければ、そこまでの修正(commit)と残った指摘を state に残して人へ渡す。
    次の試行は**その続きから**始める(同じ基準の main なら。以前は毎回ゼロから診断し直し、
    1回目と2回目で別々の仮説を立てて、どちらも途中で終わっていた。実測 2026-09-18)
 6. **修正を入れたら Discord に報告する(必須)**: 何を・なぜ・どう検証したか・監査の判定・
@@ -183,14 +190,19 @@ def fix_prompt(stage: str, date: str, context: str, objections: list[dict] | Non
     if objections:
         obj = ("\n\n## 監査からの指摘(**直す**)\n"
                "この作業ツリーには、ここまでの当番の修正が commit 済みで入っている(`git log --oneline -5` で見える)。\n"
-               "監査は合意を取る相手ではない。**指摘されたものは直す。**直し方は原因に当てること"
-               "(指摘の文面だけを潰す継ぎ当てにしない。同じ種類の穴が他に無いかも見て、まとめて塞ぐ)。\n"
+               "監査の must_fix は「発行に必要で、今後もちゃんと動く正しい修正になっていない」という指摘に限られている。"
+               "**監査が approve するまでがあなたの仕事。指摘されたものは直す。**直し方は原因に当てること"
+               "(指摘の文面だけを潰す継ぎ当てにしない)。ただし範囲は広げない: 発行後でよい改善は監査が別に保管する。\n"
                "指摘が事実誤認であるとき、または次の判定対象外に当たるときだけ、根拠を示して「当たらない」と答えてよい:\n"
                + "\n".join(f"- {x}" for x in POLICY_EXCLUDED) + "\n"
                + json.dumps(objections, ensure_ascii=False, indent=1))
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の**当番エンジニア**です。自動発行の工程 `{stage}` が
 {date}号で止まりました。人が起きるまで待たず、あなたが直します。この作業ツリーは origin/main から切った
 使い捨てで、直したものは監査の敵対的レビューを通ってから main に入ります。
+
+**あなたの仕事は「この号を発行するのに必要な最小限で、今後もちゃんと動く正しい修正」です。**
+- 最小限: 止まった原因を直す。ついでの改善・堅牢化・整理はしない(気づいたことは notes に書く。発行後に別途直す)
+- 今後も動く正しい修正: 原因に当てる。例外を握りつぶす・同じことをやり直すだけ・検査を緩めるだけ、は修正ではない
 
 ## 何が起きたか
 {context}
@@ -238,18 +250,28 @@ def review_prompt(stage: str, date: str, fix_report: dict, diff: str, integ: dic
 「本当にそれが原因か」「その直し方で明日また止まらないか」「新しく壊れるものは何か」
 「rerun_mode は妥当か(直した層を再実行が踏むか)」を掘ってください。
 
+## 範囲(大事)
+いまは号が止まっています。当番の仕事は**「この号を発行するのに必要な最小限で、今後もちゃんと動く正しい修正」**で、
+あなたの判定もその範囲で行います。指摘は2つに分けてください。
+- **must_fix(いま直す。これが空になるまで当番が直し、あなたが見直す)**: 止まった原因に当たっていない /
+  現実に来る入力(実データ・ログにある形)でまた止まる / データや他の工程を壊す / その場しのぎ
+  (例外を握りつぶす・やり直すだけ・検査を緩めるだけ)/ rerun_mode が直した層を踏まない
+- **later(発行後に直す。別に保管され、発行して落ち着いてから対応される)**: 現実にはまだ来ていない入力への備え
+  (schema 上は可能、という類)・堅牢化・設計の改善・テストの追加・書き方。**これを must_fix に入れない**
+  (入れると、発行できる修正が往復で時間切れになり、号が出ない)
+
 ## 当番の報告
 {json.dumps(fix_report, ensure_ascii=False, indent=1)}
 
 {body}
 
 ## 判定
-- approve: これで工程が動き、データを壊さず、設計の原則(判断は小さな構造化セッション・
-  事務処理はコード・冪等・通知して続行で済ませない)に反しない。**approve のとき must_fix は空**
-  (残したい指摘があるなら reject にする)
+- approve: これで工程が動き、データを壊さず、その場しのぎでない。**approve のとき must_fix は空**
+  (later が残っていても approve してよい。later は保管される)
 - reject: must_fix に、根拠付きで問題を列挙する(推測は (推測) と明記)。severity は
-  blocks_publish / corrupts_data / quality / style から。当番は must_fix を**直します**
-  (合意を探る場ではありません)。直せるように、場所・再現手順・直し方の案を具体的に書いてください
+  blocks_publish(原因に当たっていない・また止まる)/ corrupts_data / stopgap(その場しのぎ)から。
+  当番は must_fix を**直します**。直せるように、場所・再現手順・直し方の案を具体的に書いてください
+- later は approve でも reject でも書けます(無ければ空配列)
 - 次は編集方針で決着済みです。これを理由に reject しないでください(判定対象外):
 {chr(10).join("  - " + x for x in POLICY_EXCLUDED)}
 {extra}
@@ -348,6 +370,16 @@ def notify_long(job: str, text: str, ok: bool = True, limit: int = 1800) -> bool
     return delivered
 
 
+def collect_later(transcript: list[dict]) -> list[dict]:
+    """往復の記録から、監査の later を重複なしで集める(前の試行から引き継いだ分も含む)。"""
+    out: list[dict] = []
+    for t in transcript:
+        for it in (t.get("carried_later") or []) + ((t.get("review") or {}).get("later") or []):
+            if isinstance(it, dict) and it.get("claim") and not any(x.get("claim") == it.get("claim") for x in out):
+                out.append(it)
+    return out
+
+
 def report_change(stage: str, date: str, fix: dict, transcript: list[dict], base: str, head: str, merge_commit: str,
                   branch: str, targets: list[str], rerun_mode: str) -> bool:
     """当番が入れた修正の報告。**必須**。全文は metrics/oncall-<日付>-<工程>-report.md、要約を Discord へ。
@@ -371,6 +403,7 @@ def report_change(stage: str, date: str, fix: dict, transcript: list[dict], base
               f"原因: {fix.get('root_cause') or ''}\n"
               f"検証: {fix.get('test_evidence') or ''}\n"
               f"監査(Sol): {verdict}\n"
+              f"{later_text(collect_later(transcript))}\n"
               f"リスク: {fix.get('risk') or ''} / 確信度 {fix.get('confidence', '?')}\n"
               f"変更:\n{stat}\n"
               f"再実行: {rerun_mode}\n"
@@ -379,6 +412,85 @@ def report_change(stage: str, date: str, fix: dict, transcript: list[dict], base
     (ROOT / "metrics" / f"oncall-{date}-{stage}-report.md").write_text(
         report + "\n## 往復の記録\n" + json.dumps(transcript, ensure_ascii=False, indent=1), encoding="utf-8")
     return notify_long("oncall", report)
+
+
+BACKLOG = ROOT / "metrics" / "oncall-backlog.jsonl"      # Git 管理外(作業ツリーを汚さない=発行を妨げない)
+
+
+def backlog_rows() -> list[dict]:
+    """保管してある「発行後に直す」指摘。読めない行は飛ばす(保管の壊れで当番を止めない)。"""
+    rows = []
+    try:
+        for ln in BACKLOG.read_text(encoding="utf-8").splitlines():
+            try:
+                d = json.loads(ln)
+            except ValueError:
+                continue
+            if isinstance(d, dict) and d.get("key"):
+                rows.append(d)
+    except OSError:
+        pass
+    return rows
+
+
+def backlog_add(items: list[dict], date: str, stage: str, head: str) -> list[dict]:
+    """監査の later を保管する。key は中身から作る(同じ指摘を二度積まない)。戻り値は今回新しく積んだもの。"""
+    have = {r["key"] for r in backlog_rows()}
+    new = []
+    for it in items:
+        key = hashlib.sha256(str(it.get("claim") or "").encode("utf-8")).hexdigest()[:10]
+        if not it.get("claim") or key in have:
+            continue
+        have.add(key)
+        new.append({"key": key, "status": "open", "at": datetime.datetime.now().isoformat(timespec="minutes"),
+                    "date": date, "stage": stage, "fix_commit": head[:10], "id": str(it.get("id") or ""),
+                    "claim": str(it["claim"]), "evidence": str(it.get("evidence") or "")})
+    if new:
+        BACKLOG.parent.mkdir(parents=True, exist_ok=True)
+        with open(BACKLOG, "a", encoding="utf-8") as f:
+            for r in new:
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
+    return new
+
+
+def backlog_open() -> list[dict]:
+    """未着手のもの(同じ key の最後の行が open)。"""
+    last: dict[str, dict] = {}
+    for r in backlog_rows():
+        last[r["key"]] = {**last.get(r["key"], {}), **r}
+    return [r for r in last.values() if r.get("status") == "open"]
+
+
+def backlog_done(keys: list[str]) -> list[str]:
+    """消し込み。追記だけで行う(行を書き換えない)。戻り値は消し込めた key。"""
+    open_keys = {r["key"] for r in backlog_open()}
+    done = [k for k in keys if k in open_keys]
+    if done:
+        with open(BACKLOG, "a", encoding="utf-8") as f:
+            for k in done:
+                f.write(json.dumps({"key": k, "status": "done",
+                                    "done_at": datetime.datetime.now().isoformat(timespec="minutes")}, ensure_ascii=False) + "\n")
+    return done
+
+
+def keep_later(items: list[dict], date: str, stage: str, head: str) -> int:
+    """later を保管する。**例外を出さない**(保管の失敗で発行を止めない。later は修正報告に必ず載る)。
+    戻り値は新しく積んだ件数。"""
+    try:
+        new = backlog_add(items, date, stage, head)
+        if new:
+            print(f"発行後に直す指摘を {len(new)}件 保管した({BACKLOG.name})", flush=True)
+        return len(new)
+    except Exception as e:      # noqa: BLE001
+        print(f"発行後に直す指摘の保管に失敗({type(e).__name__}: {e})。報告には載せる", flush=True)
+        return 0
+
+
+def later_text(items: list[dict]) -> str:
+    if not items:
+        return "発行後に直す指摘(later): なし"
+    return (f"発行後に直す指摘(later){len(items)}件(metrics/oncall-backlog.jsonl に保管。`python3 scripts/oncall.py --backlog` で一覧):\n"
+            + "\n".join(f"- {it.get('claim', '')[:300]}" + (f"\n  根拠: {it['evidence'][:300]}" if it.get("evidence") else "") for it in items))
 
 
 def resume_point(state: dict, base: str) -> dict | None:
@@ -427,6 +539,7 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
     head, diff, changed = base, "", []
     kept = {"head": base, "fix": {}, "open": []}
     res = {"approved": False, "error": ""}
+    later: list[dict] = list((wip or {}).get("later") or [])     # 発行後でよい指摘(往復・試行をまたいで積む)
     try:
         if wip:    # 前の試行の続き: その commit と、残った指摘から始める
             # kept を**先に**前の続きで満たす(この先の checkout が失敗しても、残してあった続きを消さない。監査指摘)
@@ -435,7 +548,7 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                 must(sh(["git", "checkout", "-q", "--detach", wip["head"]], cwd=wt), "前の試行の続きの checkout")
             fix, objections = dict(wip["fix"]), list(wip["open"])
             head = wip["head"]
-            transcript.append({"round": 0, "resumed_from": head, "open": objections})
+            transcript.append({"round": 0, "resumed_from": head, "open": objections, "carried_later": list(later)})
             print(f"前の試行の続きから({head[:10]}、残った指摘 {len(objections)}件)", flush=True)
         for rnd in range(1, MAX_ROUNDS + 1):
             if left() < MIN_STEP_SEC:
@@ -509,6 +622,9 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
             rev = run_codex(review_prompt(stage, date, fix, diff, integ), schemas / "oncall-review.schema.json", wt,
                             timeout=min(1800, left()))
             transcript.append({"round": rnd, "review": rev})
+            for item in rev.get("later") or []:
+                if isinstance(item, dict) and item.get("claim") and not any(x.get("claim") == item.get("claim") for x in later):
+                    later.append({"id": str(item.get("id") or ""), "claim": str(item["claim"]), "evidence": str(item.get("evidence") or "")})
             if rev.get("verdict") == "approve" and not (rev.get("must_fix") or []):
                 res["approved"] = True
                 kept["open"] = []
@@ -520,7 +636,8 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
     except Exception as e:      # noqa: BLE001 — 何で終わっても、固定できたところまでは次へ残す
         res["error"] = f"{type(e).__name__}: {str(e)[:300]}"
         transcript.append({"error": res["error"]})
-    res.update(fix=fix, head=head, diff=diff, changed=changed, kept=kept)
+    kept["later"] = later
+    res.update(fix=fix, head=head, diff=diff, changed=changed, kept=kept, later=later)
     return res
 
 
@@ -689,11 +806,26 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool) -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", required=True, choices=["compose", "release"])
-    ap.add_argument("--date", required=True)
+    ap.add_argument("--stage", choices=["compose", "release"])
+    ap.add_argument("--date")
     ap.add_argument("--reason", default="")
     ap.add_argument("--no-rerun", action="store_true")
+    ap.add_argument("--backlog", action="store_true", help="発行後に直す指摘(未着手)を一覧する")
+    ap.add_argument("--backlog-done", nargs="+", metavar="KEY", help="直し終えた指摘を消し込む")
     a = ap.parse_args()
+    if a.backlog or a.backlog_done:
+        if a.backlog_done:
+            done = backlog_done(a.backlog_done)
+            print(f"消し込み: {', '.join(done) or 'なし'}"
+                  + (f" / 見つからない: {', '.join(k for k in a.backlog_done if k not in done)}" if len(done) != len(a.backlog_done) else ""))
+        rows = backlog_open()
+        print(f"発行後に直す指摘(未着手){len(rows)}件")
+        for r in rows:
+            print(f"- [{r['key']}] {r.get('at', '')} {r.get('date', '')} {r.get('stage', '')} 修正 {r.get('fix_commit', '')}\n"
+                  f"  {r.get('claim', '')}\n  根拠: {r.get('evidence', '')}")
+        return 0
+    if not a.stage or not a.date:
+        ap.error("--stage と --date が要る")
     date, stage = a.date, a.stage
     edition = f"edition/{date}"
 
@@ -761,7 +893,8 @@ def main() -> int:
         # 例外・時間切れで終わった往復でも残す。差分が無い診断(no_fix_needed)への指摘も残す。直し切れたら消す
         kept = res["kept"]
         if not approved and kept["fix"] and kept["open"] and kept["fix"].get("status") != "cannot_fix":
-            state["wip"] = {"base": base, "head": kept["head"], "fix": kept["fix"], "open": kept["open"]}
+            state["wip"] = {"base": base, "head": kept["head"], "fix": kept["fix"], "open": kept["open"],
+                            "later": kept.get("later") or []}
         else:
             state.pop("wip", None)
         save_state(state_p, state)
@@ -790,6 +923,9 @@ def main() -> int:
                              + (f"ここまでの修正: 記録ブランチ {wip_branch}(次の試行はこの続きから始める)\n" if wip_branch else "")
                              + f"最後の記録: {json.dumps(last.get('review', last), ensure_ascii=False)[:400]}", ok=False)
             return 1
+
+        # 発行後でよい指摘(later)を保管する。**保管の失敗で発行を止めない**(修正報告には必ず載る)
+        keep_later(res["later"], date, stage, head)
 
         # release 起点でも、生成層を直したなら号を作り直す(生成済みの号をそのまま発行しない。監査指摘)
         full, rerun_mode = rerun_policy(stage, changed, str(fix.get("rerun_mode") or ""))
@@ -861,9 +997,9 @@ def main() -> int:
                                         f"戻し方: ops の main で `git revert -m 1 {merge_commit[:10]}` → push → {edition} に main を merge → push",
                               require=True)
         else:
-            reported = notify("oncall", f"{date} {stage}: 当番の診断: コードの欠陥ではない(no_fix_needed)。監査も指摘なし。\n"
+            reported = notify("oncall", f"{date} {stage}: 当番の診断: コードの欠陥ではない(no_fix_needed)。監査も approve。\n"
                                         f"診断: {(fix.get('diagnosis') or '')[:400]}\n再実行の根拠: {(fix.get('recovery') or '')[:300]}\n"
-                                        f"再実行: {rerun_mode}")
+                                        f"再実行: {rerun_mode}\n{later_text(res['later'])[:900]}")
         if not reported:
             # 報告が人に届いていないなら再実行(=発行)へ進まない(監査指摘)。修正は main に入っているので
             # 報告ファイル(metrics/oncall-*-report.md)を人が見て、手で再実行する

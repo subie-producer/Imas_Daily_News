@@ -166,6 +166,18 @@ def main() -> int:
             "(左=判定表に書くベース URL、右=紙面に載った資料と記事。種別を決めれば直る):\n"
             + "\n".join(lines))
 
+    # 8. 当番が「発行後に直す」として保管した指摘が未着手のまま残っていないか(保管して忘れる、を防ぐ)
+    try:
+        import oncall
+        todo = oncall.backlog_open()
+        if todo:
+            problems.append(
+                f"当番の「発行後に直す」指摘が {len(todo)}件 未着手(最古 {min(str(r.get('at') or '') for r in todo)[:10]}。"
+                "`python3 scripts/oncall.py --backlog` で一覧、直したら `--backlog-done <key>`):\n"
+                + "\n".join(f"  [{r['key']}] {str(r.get('claim') or '')[:120]}" for r in todo[:5]))
+    except Exception as e:      # noqa: BLE001 — 保管の読み取りで watch 全体を落とさない
+        problems.append(f"当番の保管(oncall-backlog)を読めない: {type(e).__name__}: {str(e)[:120]}")
+
     if problems:
         notify("watch", "異常検知:\n- " + "\n- ".join(problems), ok=False)
         return 1

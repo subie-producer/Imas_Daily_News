@@ -673,20 +673,24 @@ def _check_table_text(text: str, p) -> None:
     YAML はマッピングの重複キーを黙って後勝ちにするので、dict を見る _check_table には届かない
     (監査指摘: 値の違う同一パスが両方残っても検出できずに片方が消える)。正規化(末尾 / と大小)で比べる。
     """
-    section, seen = None, {}
-    for i, ln in enumerate(text.splitlines(), 1):
-        m_top = re.match(r"^([a-z_]+):", ln)
-        if m_top:
-            section = m_top.group(1)
+    # 行の正規表現ではなく YAML の構文木(compose)で見る。インデント幅・キーとコロンの間の空白・引用符・
+    # flow mapping のどれで書かれても、YAML が解釈したキーそのもので比べる(監査指摘)
+    import yaml
+    root = yaml.compose(text)
+    if not isinstance(root, yaml.MappingNode):
+        return
+    for k_node, v_node in root.value:
+        section = getattr(k_node, "value", None)
+        if section not in ("path_types", "suffix_types") or not isinstance(v_node, yaml.MappingNode):
             continue
-        if section in ("path_types", "suffix_types"):
-            m = re.match(r"^  (\S+?):\s*(\S+)", ln)
-            if m:
-                key = m.group(1).strip("\"'").rstrip("/").lower()
-                if key in seen:
-                    raise SystemExit(f"{p} の {section}: {m.group(1)} が {seen[key]} 行目と {i} 行目に二重に書かれている"
-                                     "(YAML は黙って後勝ちにする。1つにすること)")
-                seen[key] = i
+        seen: dict[str, int] = {}
+        for kk, _vv in v_node.value:
+            key = str(getattr(kk, "value", "")).rstrip("/").lower()
+            line = kk.start_mark.line + 1
+            if key in seen:
+                raise SystemExit(f"{p} の {section}: {kk.value} が {seen[key]} 行目と {line} 行目に二重に書かれている"
+                                 "(YAML は黙って後勝ちにする。1つにすること)")
+            seen[key] = line
 
 
 def _check_table(t: dict, p) -> None:

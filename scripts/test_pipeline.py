@@ -753,6 +753,11 @@ def test_dedupe_source_table(tmp: Path):
     check(stops("path_types:\n  t.com/@y: 公式\n  t.com/@y: 当事者\n"), "path_types の同一キー・異値を止めない(YAML が後勝ちにする)")
     check(stops("path_types:\n  t.com/@y: 公式\n  T.com/@y/: 公式\n"), "path_types の正規化後に同じキーを止めない")
     check(stops("suffix_types:\n  \".lg.jp\": 当事者\n  \".lg.jp\": 公式\n"), "suffix_types の同一キー・異値を止めない")
+    # 書き方が違っても YAML が同じキーと解釈すれば止める(監査指摘 r40): 1空白・キーとコロンの間の空白・引用符・flow mapping
+    check(stops("path_types:\n t.com/@y: 公式\n t.com/@y: 当事者\n"), "1空白インデントの二重キーを止めない")
+    check(stops("path_types:\n  t.com/@y : 公式\n  t.com/@y: 当事者\n"), "キーとコロンの間の空白で二重キーを見逃した")
+    check(stops("path_types:\n  \"t.com/@y\": 公式\n  't.com/@y': 当事者\n"), "引用符違いの二重キーを止めない")
+    check(stops("path_types: {t.com/@y: 公式, t.com/@y: 当事者}\n"), "flow mapping の二重キーを止めない")
     check(not stops("path_types:\n  t.com/@y: 公式\n  t.com/@z: 当事者\nsuffix_types:\n  \".lg.jp\": 当事者\n"), "正しい対応を止めた")
 
 

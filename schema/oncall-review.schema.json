@@ -10,27 +10,29 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "claim", "evidence", "severity"],
+        "required": ["id", "claim", "evidence", "occurs", "severity"],
         "additionalProperties": false,
         "properties": {
           "id": {"type": "string"},
           "claim": {"type": "string", "maxLength": 400, "description": "何が問題か(1文)"},
           "evidence": {"type": "string", "maxLength": 600, "description": "根拠(ファイル:行、再現した入力、実測)。推測なら (推測) と書く"},
+          "occurs": {"type": "string", "maxLength": 400, "description": "どういうときに起きるか(実データ・ログ・実際の運用のどこからその入力や状態に到達するか)と、どのくらい起きそうか。「schema 上は可能」は道筋ではない。書けない指摘は出さない"},
           "severity": {"enum": ["blocks_publish", "corrupts_data", "stopgap"]}
         }
       }
     },
     "later": {
       "type": "array",
-      "description": "発行後に直せばよい指摘(堅牢化・現実にはまだ来ていない入力への備え・設計の改善・テスト・書き方)。must_fix に入れない。別に保管される",
+      "description": "発行後に直せばよい指摘(いまは止まらないが現実に起きる見込みのあるもの: 堅牢化・設計の改善・テスト・書き方)。must_fix に入れない。別に保管される。起きる道筋を言えないものは入れない",
       "items": {
         "type": "object",
-        "required": ["id", "claim", "evidence"],
+        "required": ["id", "claim", "evidence", "occurs"],
         "additionalProperties": false,
         "properties": {
           "id": {"type": "string"},
           "claim": {"type": "string", "maxLength": 400, "description": "何を直すとよいか(1文)"},
-          "evidence": {"type": "string", "maxLength": 600, "description": "根拠と直し方の案(ファイル:行)"}
+          "evidence": {"type": "string", "maxLength": 600, "description": "根拠と直し方の案(ファイル:行)"},
+          "occurs": {"type": "string", "maxLength": 400, "description": "どういうときに起きるか(現実に到達する道筋)と、どのくらい起きそうか。書けない指摘は出さない"}
         }
       }
     },

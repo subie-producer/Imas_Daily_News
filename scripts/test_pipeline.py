@@ -7,6 +7,7 @@
 """
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -58,6 +59,11 @@ def test_check_output():
     check(C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "#タグ_付き ID"}])) == [], "label の # や _ を落とした")
     check(any("Markdown" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "[リンク](x)"}]))),
           "label の Markdown リンクが通った")
+    # 制御文字・不可視文字の混ざった label・本文は壊れたテキスト(形の欠陥。校閲に回す前に差し戻す)
+    check(any("制御文字" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "PARTY ~ for\x044"}]))),
+          "label の制御文字が通った")
+    check(any("制御文字" in p for p in C(dict(OK, title="見出し\x04"))), "見出しの制御文字が通った")
+    check(C(dict(OK, blocks=[{"markdown": "- 1行目\n- 2行目", "fact_ids": ["F1"]}])) == [], "箇条書きの改行を制御文字として落とした")
     check(any("tags" in p for p in C(dict(OK, tags=["a"]))), "tags 1個が通った")
     check(any("見出し" in p for p in C(dict(OK, title_fact_ids=[]))), "見出しの根拠無しが通った")
     check(len(C({"status": "decline", "decline_code": "", "decline_detail": ""})) == 2, "理由の無い decline が通った")
@@ -748,17 +754,18 @@ def test_assemble_prompt_shape():
                         ("ledger", lambda x: assemble.prompt_ledger("2026-09-18", x, x["articles"][:assemble.LEDGER_CHUNK]))):
         plain = make(inp)
         lines = plain.split("\n")
-        check(plain.index("\n## 返すもの\n") < plain.index("\n## 入力\n"), f"{label}: 指示が入力より後ろにある(入力が伸びると指示が切れる)")
+        check(plain.rstrip().endswith(plain.split("\n## 入力\n", 1)[1].rstrip()) and "\n## " not in plain.split("\n## 入力\n", 1)[1],
+              f"{label}: 入力のあとに指示の節がある(入力が伸びると指示が切れる)")
         check(len(lines) < 400, f"{label}: {len(lines)} 行。1記事あたりの行数が増えている")
         check(max(len(ln) for ln in lines) < pipelib.READ_COLS, f"{label}: Read が切る長さの行がある")
-        check("ファイルは読まず" not in plain, f"{label}: 「ファイルは読むな」と「指示ファイルを読め」が矛盾したまま")
+        check(not re.search(r"(?<!ほかの)ファイルは読まず", plain), f"{label}: 「ファイルは読むな」と「指示ファイルを読め」が矛盾したまま")
         for bad in ("\n", "\n" * 300, "\r\n\t x y"):
             got = make(_assemble_input(40, bad)).split("\n")
             check(len(got) == len(lines), f"{label}: 値に {bad[:6]!r} が混ざると行数が {len(lines)} → {len(got)} に変わる")
     dg = assemble.prompt_digest("2026-09-18", inp)
-    check("### digest" in dg and "### stories" not in dg and "  fact F1" not in dg and "slug-39" in dg, "digest に台帳の指示・facts が混ざる、または全記事が無い")
+    check("digest の規則" in dg and "stories(" not in dg and "  fact F1" not in dg and "slug-39" in dg, "digest に台帳の指示・facts が混ざる、または全記事が無い")
     lg = assemble.prompt_ledger("2026-09-18", inp, inp["articles"][8:16])
-    check("### stories" in lg and "### digest" not in lg and "slug: slug-8 " in lg and "slug: slug-16 " not in lg and "slug: slug-7 " not in lg
+    check("stories(" in lg and "digest の規則" not in lg and "slug: slug-8 " in lg and "slug: slug-16 " not in lg and "slug: slug-7 " not in lg
           and "dedup_key: p39" in lg, "台帳の1組に、その組の記事と pending 全部が入っていない")
     # 200本の号でも digest の指示ファイルは Read の1回に収まる(台帳は組の大きさが一定)
     check(len(assemble.prompt_digest("2026-09-18", _assemble_input(200)).split("\n")) < pipelib.READ_LINES, "200本で digest が Read の1回を超える")
@@ -769,6 +776,61 @@ def test_assemble_prompt_shape():
     check("offset" not in short and "全 2301 行" in long_ and "offset" in long_, f"行数の案内: {short!r} / {long_[-80:]!r}")
     # Read は絶対パスしか受けない。相対パスで渡すとモデルが作業フォルダを推測して外し、find / で探し始める
     check(f"`{(tmp / 'metrics' / 'work' / '2026-09-18' / 's.md').resolve()}`" in short, f"指示ファイルを絶対パスで渡していない: {short!r}")
+
+
+ACTIVE_PROMPTS = ("plan-brand", "plan-rules", "plan-lead", "plan-missing", "write-article", "write-article.roundup",
+                  "write-article.culture", "revise-article", "review-article", "review-paper", "assemble-digest", "assemble-ledger",
+                  "collect-rules", "collect-item", "grok-collect", "grok-normalize", "explore", "watch-facts",
+                  "classify-rules", "classify-site", "classify-x", "classify-debate",
+                  "oncall-fix", "oncall-fix.objections", "oncall-review")
+
+
+def test_prompts_are_instructions_only():
+    """依頼文は prompts/ に置き、**指示だけ**を書く(編集長 2026-09-18:「意図みたいなデータはプロンプトじゃない」)。
+    規則の理由・経緯・事故の記録は PROMPTS.md に置く。依頼文の本文をコードに埋め戻さない。"""
+    for name in ACTIVE_PROMPTS:
+        p = pipelib.PROMPTS / f"{name}.md"
+        check(p.exists(), f"prompts/{name}.md が無い")
+        if not p.exists():
+            continue
+        text = p.read_text(encoding="utf-8")
+        for pat, what in ((r"実測[::で]|[((]実測|監査指摘|編集長の|編集長[::]|事故|起きています", "経緯・事故の記録"),
+                          (r"20\d\d-\d\d-\d\d|\(\d{1,2}/\d{1,2}\)", "日付入りの経緯"),
+                          (r"規程\s*\d", "規程番号の参照(根拠の所在はデータ)")):
+            m = re.search(pat, text)
+            check(m is None, f"prompts/{name}.md に{what}が書かれている: {m.group(0) if m else ''}")
+        check(len(text.split("\n")) <= 90, f"prompts/{name}.md が {len(text.split(chr(10)))} 行(90 行を超えたら、分けるか削る)")
+    # 埋め残し・使われない値はエラー(差し込みの取り違えを黙って通さない)
+    for kwargs in ({"DATE": "2026-09-18"}, {"DATE": "d", "WEEKDAY": "金", "ARTICLES": "[]", "EXTRA": "x"}):
+        try:
+            pipelib.render_prompt("plan-lead", **kwargs)
+            check(False, f"render_prompt が取り違えを通した: {sorted(kwargs)}")
+        except ValueError:
+            pass
+    out = pipelib.render_prompt("plan-lead", DATE="2026-09-18", WEEKDAY="金", ARTICLES='[{"slug": "{DATE}"}]')
+    check('"{DATE}"' in out and "2026-09-18(金曜)" in out, "値の中の {…} を埋め直した、または埋まっていない")
+    # 依頼文の本文をコードに埋め戻していない(残っているのは、2026-09-06 号で終了した社説の依頼文だけ)
+    for f in ("compose.py", "assemble.py", "collect.py", "classify_sources.py", "oncall.py"):
+        src = (Path(__file__).resolve().parent / f).read_text(encoding="utf-8")
+        n = src.count("あなたは日刊AI新聞")
+        check(n == (1 if f == "compose.py" else 0), f"{f}: 依頼文の本文がコードに埋まっている({n}か所。prompts/ に置く)")
+    # 各依頼文が、実際の呼び出しで埋まる
+    art = {"slug": "s", "brand": "765", "rank": "roundup", "angle": "a", "candidate_ids": ["c1"]}
+    t = compose.article_prompt("2026-09-18", art, [{"id": "c1"}], [], None)
+    check("rank: roundup" in t and t.rstrip().endswith("]") and t.index("## 1. 手順") < t.index("## 素材"), "執筆の依頼文: rank 別の追加・素材が最後、になっていない")
+    t = compose.brand_plan_prompt("2026-09-18", "general", 3, [], claimed=[{"slug": "x"}])
+    check("rank: culture" in t and "plan-index-2026-09-18-general.json" in t and '"slug": "x"' in t, "選定の依頼文が埋まっていない")
+    # 選定の規則は1か所(plan-rules)。面別の選定と、判定から漏れた主題の拾い直しが同じものを使う(監査指摘 r56)
+    rules = compose.plan_rules()
+    miss = compose.missing_plan_prompt("2026-09-18", [{"dedup_key": "k"}], [])
+    check(rules in t and rules in miss and "同人イベント" in miss and "共同名義" in miss, "拾い直しに選定の規則が渡っていない")
+    # X の調査は対象期間を明示し、角度を変えた検索にも since を付けさせる(監査指摘 r56)
+    import collect
+    gp = collect.write_grok_prompt(Path(tempfile.mkdtemp()), {"key": "k", "brand": "765", "topic": "t", "accounts": ["a"]}).read_text(encoding="utf-8")
+    since = re.search(r"対象期間: (\d{4}-\d{2}-\d{2}) 以降", gp)
+    check(since and f"since:{since.group(1)}" in gp.split("2. 角度を変えて掘る")[1] and "対象期間より前" in gp, "Grok の依頼文に対象期間の規則が無い")
+    check("lead_slug" in compose.lead_prompt("2026-09-18", [{"slug": "s", "rank": "small"}]) and
+          "社説" not in compose.lead_prompt("2026-09-18", []), "一面の依頼文(社説は選ばせない)")
 
 
 def test_assemble_judge():
@@ -1170,10 +1232,10 @@ def test_oncall_fix_until_clean(tmp: Path):
     scope = "発行するのに必要な最小限で、今後もちゃんと動く正しい修正"
     check(scope in fp and scope in rp, "当番・監査の依頼文に仕事の範囲が無い")
     check("指摘されたものは直す" in fp and "反論する" not in fp and "commit 済み" in fp and "範囲は広げない" in fp, "当番への依頼が「範囲の中で直す」になっていない")
-    check("later" in rp and "これを must_fix に入れない" in rp and "later が残っていても approve" in rp, "監査への依頼が must_fix と later を分けていない")
+    check("**must_fix**" in rp and "**later**" in rp and "later が残っていてもよい" in rp, "監査への依頼が must_fix と later を分けていない")
     # 起きる道筋(どういうときに・どのくらい)を言えない指摘は、指摘として扱わない(編集長 2026-09-18)
-    check("`occurs`" in rp and "道筋を書けないなら、その指摘は捨ててください" in rp and "schema 上は可能" in rp, "監査への依頼が、起きる道筋の無い指摘を捨てさせていない")
-    check("起きる道筋が無い" in fp and "弾いてよい" in fp, "当番が、起きる道筋の無い指摘を弾けることになっていない")
+    check("`occurs`" in rp and "**書かない**: 起きる道筋を言えないもの" in rp and "schema 上は可能" in rp, "監査への依頼が、起きる道筋の無い指摘を捨てさせていない")
+    check("起きる道筋が無い" in fp and "追いかけて直さない" in fp, "当番が、起きる道筋の無い指摘を弾けることになっていない")
     check(all(x in rp for x in oncall.POLICY_EXCLUDED) and all(x in fp for x in oncall.POLICY_EXCLUDED), "判定対象外(編集方針)が依頼文に無い")
     rs = json.loads((Path(oncall.__file__).resolve().parent.parent / "schema" / "oncall-review.schema.json").read_text(encoding="utf-8"))
     check("later" in rs["required"] and rs["properties"]["must_fix"]["items"]["properties"]["severity"]["enum"] == ["blocks_publish", "corrupts_data", "stopgap"],
@@ -1354,6 +1416,7 @@ def main() -> int:
     test_classify_consensus(tmp / "cs")
     test_table_write_and_reload(tmp / "tw")
     test_assemble_prompt_shape()
+    test_prompts_are_instructions_only()
     test_assemble_judge()
     test_claude_traced(tmp / "ct")
     test_time_budget()

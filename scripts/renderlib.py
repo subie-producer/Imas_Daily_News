@@ -191,6 +191,12 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         # 商品名・ハッシュタグ・ID に普通に出る(実測 2026-09-15: 「倉本千奈 [Wonder Scale]」で記事が落ちた)
         if re.search(r"\]\(|`", s.get("label") or ""):
             problems.append(f"出典 label に Markdown 記号: {s.get('label')!r}")
+        # 制御文字・不可視文字は壊れたテキスト(実測 2026-09-18: label の途中に U+0004 が入った記事が校閲で
+        # ブロックされて落ちた)。形の欠陥なので、校閲に回す前にここで差し戻す
+        if any(unicodedata.category(ch) == "Cc" or is_ignorable(ch) for ch in str(s.get("label") or "")):
+            problems.append(f"出典 label に制御文字・不可視文字: {s.get('label')!r}")
+    if any(unicodedata.category(ch) == "Cc" and ch not in "\n\t" for x in texts for ch in x):
+        problems.append("本文・見出し・リードに制御文字がある(壊れたテキスト)")
     # 「使った事実の出典を隠していないか」「素材に無い URL を本当に読んだか」は校閲(モデル)の判断。
     # ここでは見ない(校閲の機械化はしない。編集長の指示)
     tags = [str(t).strip() for t in (out.get("tags") or []) if str(t).strip()]

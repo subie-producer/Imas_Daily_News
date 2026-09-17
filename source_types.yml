@@ -48,6 +48,8 @@ official_suffixes:
 
 # --- 準公式: 公式レーベル・公式ストア等のグループ/パートナー企業 ---
 semi_official_domains:
+  - 1kuji.com             # 合議で追加: バンダイナムコグループ企業が一番くじ商品の企画・開発・販売を行い、自社商品を告知
+  - on-line.1kuji.com     # 一番くじONLINE(1kuji.com と同じ BANDAI SPIRITS の運営。p-bandai.jp と同じ扱いに揃えた 2026-09-18)
   - asobiticket2.asobistore.jp # 合議で追加: asobistore.jp配下、登録済み同系列ドメインと同じ公式プラットフォーム
   - gakuen-label.idolmaster-official.jp   # 学マスレーベル(公式レーベル)
   - columbia.jp                           # 日本コロムビア
@@ -237,7 +239,6 @@ party_domains:
   - neonmax.net           # ネオンマックス(フィギュアの発売元)
   - smilebase.shop        # 合議で追加: グッズ販売元として受注情報を発信している
   - scratch.dmm.com       # 合議で追加: DMMスクラッチの販売元として商品情報を発信している
-  - on-line.1kuji.com     # 合議で追加: 一番くじの販売元として商品情報を発信している
   - atfes.com             # 合議で追加: イベント運営者として催しの情報を発信している
   - animate.co.jp         # 合議で追加: オンリーショップの開催店舗として催しの情報を発信している
   - akiba-tolim.com
@@ -297,6 +298,8 @@ video_channels:
 
 video_ids:
   公式:
+    - SjOP3AmE148         # 機械で追加: @imas-official「【アイマス】THE IDOLM@STER 765PRO AL」
+    - GoAtGghnl4E         # 機械で追加: @imas-official「【アイマス】THE IDOLM@STER 765PRO AL」
     - y-4qOn-UQV4   # 機械で追加: @UtagawaLetora「【SILENT HILL f】 DAY06｜500円の呪いは」
     - jFAkRoDeyTQ   # 機械で追加: @imas-official「9/15 秋月 涼さん Happy Birthday‼」
     - bADPhUD27B4   # 機械で追加: @imas-official「【シャニソン】I'm a Cutie Finder「KAWA」

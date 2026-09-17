@@ -758,6 +758,10 @@ def test_dedupe_source_table(tmp: Path):
     check(stops("path_types:\n  t.com/@y : 公式\n  t.com/@y: 当事者\n"), "キーとコロンの間の空白で二重キーを見逃した")
     check(stops("path_types:\n  \"t.com/@y\": 公式\n  't.com/@y': 当事者\n"), "引用符違いの二重キーを止めない")
     check(stops("path_types: {t.com/@y: 公式, t.com/@y: 当事者}\n"), "flow mapping の二重キーを止めない")
+    # 同名の節を2回書く(節をまたぐ重複)も止める(監査指摘 r41)
+    check(stops("path_types:\n  t.com/@y: 公式\npath_types:\n  t.com/@y: 当事者\n"), "path_types の節の二重を止めない")
+    check(stops("suffix_types:\n  \".lg.jp\": 当事者\nsuffix_types:\n  \".go.jp\": 当事者\n"), "suffix_types の節の二重を止めない")
+    check(stops("party_domains:\n  - a.jp\nparty_domains:\n  - b.jp\n"), "リストの節の二重を止めない")
     check(not stops("path_types:\n  t.com/@y: 公式\n  t.com/@z: 当事者\nsuffix_types:\n  \".lg.jp\": 当事者\n"), "正しい対応を止めた")
 
 

@@ -679,6 +679,13 @@ def _check_table_text(text: str, p) -> None:
     root = yaml.compose(text)
     if not isinstance(root, yaml.MappingNode):
         return
+    # 同名の節が2回書かれていたら、それ自体を止める(YAML は後勝ちで前の節ごと消す。監査指摘)
+    tops: dict[str, int] = {}
+    for k_node, _v in root.value:
+        name, line = str(getattr(k_node, "value", "")), k_node.start_mark.line + 1
+        if name in tops:
+            raise SystemExit(f"{p}: 節 {name} が {tops[name]} 行目と {line} 行目に二重に書かれている(YAML は後勝ちで前を消す)")
+        tops[name] = line
     for k_node, v_node in root.value:
         section = getattr(k_node, "value", None)
         if section not in ("path_types", "suffix_types") or not isinstance(v_node, yaml.MappingNode):

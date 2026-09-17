@@ -35,7 +35,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import renderlib
 from pipelib import (ROOT, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, COMPOSE_WAVE, classify_source,
-                     claude_traced, extract_json_array, notify, prompt_file)
+                     claude_traced, extract_json_array, notify, prompt_file, render_prompt)
 
 POSTS = ROOT / "docs" / "_posts"
 EDITIONS = ROOT / "docs" / "_editions"
@@ -169,38 +169,18 @@ def render_articles(arts: list[dict], full: bool) -> list[str]:
     return L
 
 
-def _head(date: str, what: str) -> str:
-    weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の組版担当です。{date}({weekday}曜)号の{what}を渡します。
-**このファイルの末尾にある「## 入力」だけ**から判断して、JSON で返してください。反映はプログラムが行います。
-このファイルのほかは読まず、何も書かず、Bash・Web・サブエージェントなどの道具も使わないでください
-(必要なものは全部このファイルにあります)。
-
-## 返すもの
-"""
+def _weekday(date: str) -> str:
+    return "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
 
 
 def prompt_digest(date: str, inp: dict) -> str:
-    """「本日の紙面」の判断。紙面全体を見渡す必要があるので全記事を渡すが、見出しとリードまで(facts は要らない)。
-
-    **指示が先、入力が後。**入力は号によって伸びるので、後ろに置いた指示は読み切れない日が来る(2026-09-18)。
-    """
+    """「本日の紙面」の判断(本文は prompts/assemble-digest.md)。紙面全体を見渡すので全記事を渡すが、
+    見出しとリードまで(facts は要らない)。指示が先、入力が後(入力は号によって伸びる)。"""
     tr = inp.get("tomorrow_reservations") or []
     L = [f"発行日: {_v(inp.get('date'))}", ""] + render_articles(inp.get("articles") or [], full=False)
     L += ["", f"### tomorrow_reservations({len(tr)}件)"]
     L.extend(f"- subject: {_v(t.get('subject'))} / kind: {_v(t.get('kind'))} / brand: {_v(t.get('brand'))}" for t in tr)
-    return _head(date, "記事一覧") + f"""
-### digest(「本日の紙面」。4群固定・この順・合計12行以内)
-- 本日: 発行日に起きること・発表されたこと / 昨日: 前日に起きて今日伝えること /
-  継続中: 開催中・受付中のもの / 明日: 翌日に起きること(記事か tomorrow_reservations から)
-- 各群3行を目安、最大4行。**記事の本数がいくつでも12行**(スマートフォン1画面の制約)。
-  載せられない記事があるのは正常で、その日いちばん大きい話題から選ぶ
-- k は {K_VOCAB} の1文字(誕=誕生日 開=開幕・開始 終=終了・千秋楽 配=配信 売=発売 受=受注・受付 締=締切 発=発表 演=出演)
-- t は20字以内、d は25字以内。**入力にある事実だけ**を使う。slug は入力の記事のもの(記事が無い行は "")
-- 一面(rank: lead)の記事は必ずどこかの群に入れる
-
-## 入力
-""" + "\n".join(L) + "\n"
+    return render_prompt("assemble-digest", DATE=date, WEEKDAY=_weekday(date), K_VOCAB=K_VOCAB, INPUT="\n".join(L))
 
 
 def prompt_ledger(date: str, inp: dict, arts: list[dict]) -> str:
@@ -211,28 +191,7 @@ def prompt_ledger(date: str, inp: dict, arts: list[dict]) -> str:
     L += ["", f"### pending(日付未確定の追跡 {len(pend)}件)"]
     L.extend(f"- dedup_key: {_v(x.get('dedup_key'))} / subject: {_v(x.get('subject'))} / watch: {_v(x.get('watch'))}"
              for x in pend)
-    return _head(date, f"記事 {len(arts)}本(この号の一部。ほかの記事は別の担当が見る)") + f"""
-### stories(既報台帳に残す事実。記事ごとに1件)
-- story_id: existing_story があればその story_id、無ければ dedup_key
-- subject: 話題の件名(60字以内)。既存があれば同じでよい
-- published_facts: この記事が伝えた事実を1〜4件。**入力の facts の id(例 "F2")をそのまま書く**のが基本。
-  facts に無く title/lede にだけある事実は、その文をほぼそのまま短く書く(140字以内)。
-  既存の known_facts と同じ内容は繰り返さない。推測・言い換えの水増しをしない
-
-### reservations(続報予約。**その日、読者が何かを見に行ける・できる日**だけ)
-- 予約してよい: 締切(その3日前も「締切前」で)・開幕・千秋楽・発売・発表される結果・開始・終了
-- 予約してはいけない: その日に何も起きない名目上の日付(在籍最終日、契約上の区切り)、
-  もう終わっている催しの後日の日付、素材に日付が書かれていないもの
-- **紙面が読者に届くのは 06:00**。締切・終了が当日 06:00 より前(ゲームの締切は 4:59 が定番)なら**前日**に予約する
-- date は {date} より後。candidate_id はその記事の candidate_ids から(素材スナップショットの元になる)
-- 迷ったら「その日、読者は何を見に行けるか・何ができるか」を note に一言で書けるか試す。書けなければ予約しない
-
-### pending(日付未確定の追跡)
-- pending_add: 記事で「後日発表」「詳細は追って」とされた事項(dedup_key・brand・subject・watch)
-- pending_remove: 入力の pending のうち、**入力の記事で**日付が判明した・決着した dedup_key
-
-## 入力
-""" + "\n".join(L) + "\n"
+    return render_prompt("assemble-ledger", DATE=date, WEEKDAY=_weekday(date), N=len(arts), INPUT="\n".join(L))
 
 
 SESSION_CAP = 900        # セッション1回に待つ上限(秒)

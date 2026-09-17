@@ -5,7 +5,7 @@
   "required": ["status", "diagnosis", "root_cause", "changed_files", "test_evidence", "risk", "confidence", "rerun_mode", "recovery", "notes"],
   "additionalProperties": false,
   "properties": {
-    "status": {"enum": ["fixed", "no_fix_needed", "cannot_fix"], "description": "fixed=コードを直した(差分がある) / no_fix_needed=コードの欠陥ではない(データ・環境。差分は無い) / cannot_fix=人が要る"},
+    "status": {"enum": ["fixed", "no_fix_needed", "cannot_fix"], "description": "fixed=コードを直した(差分がある) / no_fix_needed=コードの欠陥ではない(データ・環境。差分は無いか、回帰テスト scripts/test_pipeline.py だけ) / cannot_fix=人が要る"},
     "rerun_mode": {"enum": ["rebuild", "resume", "none"],
                    "description": "止まった工程をどう再実行すべきか。rebuild=その号を作り直す(計画・執筆・組版の層を直した、または同じ入力では同じ結果になる) / resume=続きから(compose は --reuse-plan、release はそのまま) / none=再実行しない(人が要る)。no_fix_needed でも必ず答える"},
     "recovery": {"type": "string", "maxLength": 600,

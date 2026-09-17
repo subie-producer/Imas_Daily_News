@@ -69,7 +69,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hashlib
 
-from pipelib import ENV, ROOT, JobLockTimeout, job_lock, notify, prompt_file, tool_path
+from pipelib import ENV, ROOT, JobLockTimeout, job_lock, notify, prompt_file, render_prompt, tool_path
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-5.6-sol")
@@ -82,7 +82,7 @@ POLICY_EXCLUDED = ("校閲・内容判断をコードで機械化せよ、とい
                    "当番・各セッションの HOME や OS レベルの隔離の要求(AI は開発者の一員として扱う。過剰防御はしない)")
 WAIT_IDLE_MIN = 90
 DIFF_LIMIT = 60000
-EDITABLE = ("scripts/", "prompts/", "schema/", "REQUIREMENTS.md", "PIPELINE.md", "AUDIT.md", "README.md")
+EDITABLE = ("scripts/", "prompts/", "schema/", "REQUIREMENTS.md", "PIPELINE.md", "AUDIT.md", "README.md", "PROMPTS.md")
 # これを直したら、その号は作り直す(--reuse-plan では直した箇所を踏まない。監査指摘)
 FULL_RERUN_IF = ("scripts/compose.py", "scripts/planlib.py", "scripts/renderlib.py", "scripts/assemble.py",
                  "prompts/", "schema/article-out", "schema/assemble")
@@ -191,107 +191,23 @@ def gather_context(stage: str, date: str, reason: str) -> str:
 
 
 def fix_prompt(stage: str, date: str, context: str, objections: list[dict] | None) -> str:
-    obj = ""
-    if objections:
-        obj = ("\n\n## 監査からの指摘(**直す**)\n"
-               "この作業ツリーには、ここまでの当番の修正が commit 済みで入っている(`git log --oneline -5` で見える)。\n"
-               "監査の must_fix は「発行に必要で、今後もちゃんと動く正しい修正になっていない」という指摘に限られている。"
-               "**監査が approve するまでがあなたの仕事。指摘されたものは直す。**直し方は原因に当てること"
-               "(指摘の文面だけを潰す継ぎ当てにしない)。ただし範囲は広げない: 発行後でよい改善は監査が別に保管する。\n"
-               "「当たらない」と答えてよいのは次のときだけ(根拠を示すこと):\n"
-               "- 指摘が事実誤認\n"
-               "- **起きる道筋が無い**: 指摘の `occurs`(どういうときに起きるか・どのくらい起きそうか)が、実データ・ログ・"
-               "実際の運用から到達する道筋を示していない(「schema 上は可能」「理論上は」だけ)。実データを数えるなどして"
-               "「その入力・状態は現実に来ない」と示せるなら弾いてよい。追いかけて直さない\n"
-               "- 編集方針で決着済みの事項(判定対象外):\n"
-               + "\n".join(f"  - {x}" for x in POLICY_EXCLUDED) + "\n"
-               + json.dumps(objections, ensure_ascii=False, indent=1))
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の**当番エンジニア**です。自動発行の工程 `{stage}` が
-{date}号で止まりました。人が起きるまで待たず、あなたが直します。この作業ツリーは origin/main から切った
-使い捨てで、直したものは監査の敵対的レビューを通ってから main に入ります。
+    """当番への依頼文(本文は prompts/oncall-fix.md。監査の指摘があるときは oncall-fix.objections.md を足す)。"""
+    obj = render_prompt("oncall-fix.objections", POLICY=_policy_lines(),
+                        ITEMS=json.dumps(objections, ensure_ascii=False, indent=1)) if objections else ""
+    return render_prompt("oncall-fix", STAGE=stage, DATE=date, OBJECTIONS=obj, CONTEXT=context)
 
-**あなたの仕事は「この号を発行するのに必要な最小限で、今後もちゃんと動く正しい修正」です。**
-- 最小限: 止まった原因を直す。ついでの改善・堅牢化・整理はしない(気づいたことは notes に書く。発行後に別途直す)
-- 今後も動く正しい修正: 原因に当てる。例外を握りつぶす・同じことをやり直すだけ・検査を緩めるだけ、は修正ではない
 
-## 何が起きたか
-{context}
-
-## やること
-1. 診断する。ログと状態から**事実**を押さえる(推測は推測と書く)。再現できるなら再現する
-2. 原因が**コードかプロンプトの欠陥**なら、最小の修正を書く。触ってよいのは
-   scripts/ prompts/ schema/ と設計文書(REQUIREMENTS.md, PIPELINE.md, AUDIT.md, README.md)だけ。
-   **docs/ stock/ candidates/ metrics/ source_types.yml sources.yml .env は触らない。**
-   **この作業ツリーの外(他のディレクトリ、git の設定、リモート)にも触らない。commit も push もしない**
-   (commit はコードが行い、その差分がそのまま監査に掛かる)
-3. `python3 scripts/selfcheck.py` を通し、直した箇所を**実際に踏ませるテスト**を書いて走らせる
-   (壊れた入力を与えて、直す前は落ち、直した後は通ることを見せる)
-4. 原因がデータや環境で、コードを直しても意味が無いなら status=no_fix_needed(診断に根拠を書き、
-   recovery に「同じ入力でもう一度走らせて今度は通る根拠」を書く。同じ入力では同じ結果になるなら
-   rerun_mode=none にして人へ渡す)。直せない・判断が要るなら status=cannot_fix(理由を書く)
-5. rerun_mode を答える: 計画・執筆・組版の層(compose.py / planlib / renderlib / assemble / prompts /
-   出力 schema)を直したなら rebuild(号を作り直す)。それ以外で続きから走れるなら resume。
-   再実行しても意味が無いなら none
-6. status は変更と一致させる: **scripts/test_pipeline.py 以外のファイルを1つでも変えたなら fixed**、
-   変えていない(回帰テストだけ足した場合を含む)なら no_fix_needed。食い違うと取り込まれない。
-   監査の指摘を取り込む2巡目でコードを変えたなら、その答えでも status を fixed に改めること
-
-## 設計の原則(これに反する直し方をしない)
-- 判断は小さな構造化セッション、写す・数える・整える・反映するはコード
-- 「lint に叩かれて直す」「同じプロンプトでやり直す」「別セッションに修理させる」を新しく作らない
-- 成果物は入力の純関数(冪等)。巻き戻しや後始末セッションを増やさない
-- 通知して続行、で済ませない。落ちたものはその場で潰す
-
-最後に、報告を JSON で返してください(schema で形が決まっています)。{obj}
-"""
+def _policy_lines() -> str:
+    return "\n".join(f"    - {x}" for x in POLICY_EXCLUDED)
 
 
 def review_prompt(stage: str, date: str, fix_report: dict, diff: str, integ: dict | None) -> str:
-    extra = ""
-    if integ:
-        extra = ("\n\n## 前回の指摘に対する当番の対応\n"
-                 + json.dumps(integ, ensure_ascii=False, indent=1)
-                 + "\n指摘が直っているかを差分で確かめてください。「当たらない」という答えは、根拠があれば認め、"
-                   "無ければもう一度 must_fix に入れてください。")
-    body = (f"## 差分(監査対象の commit そのもの。`git log -1 -p` でも確認できます)\n```diff\n{diff}\n```"
-            if diff.strip() else "## 差分\n(変更なし。当番は「コードの欠陥ではない」と判断しました。**その診断と recovery が正しいか**を疑ってください)")
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の監査役です。自動発行の工程 `{stage}` が {date}号で止まり、
-当番(別モデル)が対応しました。**敵対的に**レビューしてください。馴れ合いは不要です。
-「本当にそれが原因か」「その直し方で明日また止まらないか」「新しく壊れるものは何か」
-「rerun_mode は妥当か(直した層を再実行が踏むか)」を掘ってください。
-
-## 範囲(大事)
-いまは号が止まっています。当番の仕事は**「この号を発行するのに必要な最小限で、今後もちゃんと動く正しい修正」**で、
-あなたの判定もその範囲で行います。指摘は2つに分けてください。
-- **must_fix(いま直す。これが空になるまで当番が直し、あなたが見直す)**: 止まった原因に当たっていない /
-  現実に来る入力(実データ・ログにある形)でまた止まる / データや他の工程を壊す / その場しのぎ
-  (例外を握りつぶす・やり直すだけ・検査を緩めるだけ)/ rerun_mode が直した層を踏まない
-- **later(発行後に直す。別に保管され、発行して落ち着いてから対応される)**: いまは止まらないが、現実に起きる
-  見込みのあるもの(堅牢化・設計の改善・テストの追加・書き方)。**これを must_fix に入れない**
-  (入れると、発行できる修正が往復で時間切れになり、号が出ない)
-- **書かないもの(must_fix にも later にも入れない)**: 起きる道筋を言えない指摘。どの指摘にも `occurs` に
-  **「どういうときに起きるか(実データ・ログ・実際の運用のどこから、その入力や状態に到達するか)」と
-  「どのくらい起きそうか」**を書いてください。「schema 上は可能」「理論上はあり得る」は道筋ではありません
-  (例: 「dedup_key に改行が 2100 個入ったら」は、その値を作る経路がどこにも無いので指摘になりません)。
-  道筋を書けないなら、その指摘は捨ててください。当番は、道筋の無い指摘を実データの根拠を示して弾いてよいことになっています
-
-## 当番の報告
-{json.dumps(fix_report, ensure_ascii=False, indent=1)}
-
-{body}
-
-## 判定
-- approve: これで工程が動き、データを壊さず、その場しのぎでない。**approve のとき must_fix は空**
-  (later が残っていても approve してよい。later は保管される)
-- reject: must_fix に、根拠付きで問題を列挙する(推測は (推測) と明記)。severity は
-  blocks_publish(原因に当たっていない・また止まる)/ corrupts_data / stopgap(その場しのぎ)から。
-  当番は must_fix を**直します**。直せるように、場所・再現手順・直し方の案を具体的に書いてください
-- later は approve でも reject でも書けます(無ければ空配列)
-- 次は編集方針で決着済みです。これを理由に reject しないでください(判定対象外):
-{chr(10).join("  - " + x for x in POLICY_EXCLUDED)}
-{extra}
-判定を JSON で返してください(schema で形が決まっています)。
-"""
+    """監査への依頼文(本文は prompts/oncall-review.md)。"""
+    return render_prompt(
+        "oncall-review", STAGE=stage, DATE=date, POLICY=_policy_lines(),
+        REPORT=json.dumps(fix_report, ensure_ascii=False, indent=1),
+        PREVIOUS=("\n## 前回の指摘に対する当番の対応\n" + json.dumps(integ, ensure_ascii=False, indent=1) + "\n") if integ else "",
+        DIFF=f"```diff\n{diff}\n```" if diff.strip() else "(変更なし。当番は「コードの欠陥ではない」と判断した)")
 
 
 def parse_json(text: str) -> dict | None:

@@ -280,6 +280,29 @@ def prompt_file(date: str, name: str, text: str, base: Path | None = None) -> st
 READ_LINES, READ_COLS = 2000, 2000      # claude の Read ツールが1回に返す上限(行数・1行の字数)
 
 
+PROMPTS = Path(__file__).resolve().parent.parent / "prompts"     # コードと同じ版の依頼文(作業対象の ROOT とは別に決める)
+
+
+def prompt_part(name: str) -> str:
+    """`prompts/<name>.md` をそのまま返す(複数の依頼文が共有する部品。末尾の改行は落とす)。"""
+    return (PROMPTS / f"{name}.md").read_text(encoding="utf-8").rstrip("\n")
+
+
+def render_prompt(name: str, **values) -> str:
+    """`prompts/<name>.md` の `{大文字の名前}` を埋めて返す。**プロンプトの本文は prompts/ に置く**
+    (コードに埋めない。規則の理由・経緯はプロンプトに書かず PROMPTS.md に置く)。
+
+    埋め残し・使われない値はどちらもエラーにする(差し込みの取り違えを黙って通さない)。
+    値の中に `{大文字}` が現れても埋め直さない(素材の文面を指示として解釈しない)。
+    """
+    text = (PROMPTS / f"{name}.md").read_text(encoding="utf-8")
+    wanted = set(re.findall(r"\{([A-Z][A-Z0-9_]*)\}", text))
+    given = set(values)
+    if wanted != given:
+        raise ValueError(f"prompts/{name}.md: 埋め残し {sorted(wanted - given)} / 使われない値 {sorted(given - wanted)}")
+    return re.sub(r"\{([A-Z][A-Z0-9_]*)\}", lambda m: str(values[m.group(1)]), text)
+
+
 def trace_summary(trace: Path) -> str:
     """stream-json の経過ファイルから「何ターン・どの道具を・何に使ったか」を1行にまとめる。"""
     turns, tools, last = 0, [], ""

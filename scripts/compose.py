@@ -46,11 +46,14 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, classify_source, commit_and_push,
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
-                     notify, notify_crash, now_jst)
+                     notify, notify_crash, now_jst, render_prompt, PROMPTS)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
-# file = 従来どおり執筆セッションが Markdown ファイルを書く。切り替えは .env の WRITE_MODE
-STRUCTURED_WRITE = ENV.get("WRITE_MODE", "file").lower() == "structured"
+# 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
+# 依頼文ごと廃止した。.env に別の値が残っていたら、壊れた組み合わせで走らせずに止める
+if ENV.get("WRITE_MODE", "structured").lower() != "structured":
+    raise SystemExit("WRITE_MODE は structured だけ(file モードは廃止)。.env を直すこと")
+STRUCTURED_WRITE = True
 
 PAPER_STAGE = None  # main() で .env から
 
@@ -319,400 +322,43 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
     見る主題は十数件になり、全主題に判断を下しても時間内に収まる。
     lead はここでは付けない(面をまたぐ比較が要るため後段で決める)。
     """
-    weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    fb = f"\n## 前回の機械検証エラー(必ず解消すること)\n{feedback}\n" if feedback else ""
-    trig = json.dumps([{k: t.get(k) for k in ("id", "dedup_key", "brand", "subject", "kind", "note")}
-                       for t in triggers], ensure_ascii=False, indent=1)
-    cul_rank = "|culture" if brand == "general" else ""
-    cul_rule = ("""
-- **ファン面(規程4の例外・rank: culture)**: ファン創作・コスプレ・聖地巡礼・記念日の盛り上がり・
-  界隈の現象は `rank: culture` で記事にする。**細切れの話題はまとめ記事にする**
-  - 1件ずつが短いものを個別記事に散らさない。**まとめて1本にする**のがこの面の使い方
-  - まとまった量がある系統(特定の作品の記念日など)が別にあるなら、そちらは別の1本にしてよい。
-    号内の本数に制限は設けない(1本でも複数でもよい)。**落とすことだけが禁止**
-  - **誰か1人を主役にしない**(傾向として書く面であり、個人の紹介ではない)
-  - 声優個人のアイマス外活動はこの例外の対象外。批判・嘲笑・炎上も対象外(規程5)""" if brand == "general" else "")
-    done = ""
-    if claimed:
-        done = ("\n## すでに他の面が記事にした話題(この号に載ることが確定しています)\n"
-                + json.dumps(claimed, ensure_ascii=False, indent=1)
-                + "\n**同じ話題をこの面でも記事にしないでください。**dedup_key が違っても、"
-                  "同じ公演・同じ商品・同じ施策を指しているなら同じ話題です"
-                  "(切り口 angle を読んで判断すること)。該当する主題は dropped に "
-                  'reason="重複" で記録します。\n'
-                  "ただし**明らかに別の施策**(同じ公演でも「チケット」と「グッズ受注」は別)は、"
-                  "この面で記事にして構いません。\n\n"
-                  "**この面にも同じくらい属する話題だった場合**(例: デレとミリの合同告知を "
-                  "cg 面が先に取っていた)は、dropped ではなく `cross_brand` に記録してください。"
-                  "その記事は合同(joint)面へ移し、この面の素材も統合します。"
-                  "「先に取った面の話題」として片方に寄せてしまうと、"
-                  "もう一方のファンにとって紙面から消えたのと同じになります。\n"
-                  "**「同じくらい属する」の線引き**: 話題は**主催・発信している作品の面**のものです。"
-                  "他ブランドのアイドルが**ゲスト**として出る、コラボ先として名前が出る、というだけでは"
-                  "その面の話題にはなりません(例: ヴイアラの誕生日ライブに四条貴音がゲスト出演 → dsva 面の"
-                  "話題であって 765 面ではない。実測 2026-09-10: これを 765 面が取り、面が違う記事が出た)。"
-                  "両方が主催・共同名義のときだけ `cross_brand` です。\n")
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集者です。{date}({weekday}曜)号の
-**「{brand}」面だけ**の記事計画を作ってください。記事本文はまだ書きません。他の面は別の担当が見ます。
+    return render_prompt(
+        "plan-brand", DATE=date, WEEKDAY="月火水木金土日"[datetime.date.fromisoformat(date).weekday()],
+        BRAND=brand, N=n_subjects, FACTS_PER=PLAN_FACTS_PER_SUBJECT, RULES=plan_rules(),
+        TRIGGERS=json.dumps([{k: t.get(k) for k in ("id", "dedup_key", "brand", "subject", "kind", "note")}
+                             for t in triggers], ensure_ascii=False, indent=1) if triggers else "(なし)",
+        CLAIMED=json.dumps(claimed, ensure_ascii=False, indent=1) if claimed else "(なし)",
+        FEEDBACK_REF="「前回の機械検証エラー」" if feedback else "",
+        FEEDBACK=f"\n## 前回の機械検証エラー(必ず解消する)\n{feedback}\n" if feedback else "")
 
-## 素材(読むもの)
-- metrics/plan-index-{date}-{brand}.json … **この面の全主題({n_subjects}件)**。
-  verify=failed と blocklist は除外済み、同一話題は dedup_key で束ねてある。
-  `ids` がその主題の候補IDで、計画の candidate_ids にはこれをそのまま使う。
-  **{n_subjects}主題すべてに判断を下すこと**(途中で切り上げない)。
-  facts は先頭{PLAN_FACTS_PER_SUBJECT}件の要約のみ。全文が要るときだけ candidates/{date}.json を引く(通常は不要)
-- stock/stories.yml … 既報台帳(published_facts と同内容=新事実なしの話題は記事化しない。編集規程8)
-- REQUIREMENTS.md 5章(編集規程)
-- この面の続報予約(原則**記事化する**。id は素材スナップショットとして candidate_ids に使える)。
-  ただし**予約そのものが誤っていることがある**。次に当たるものは記事化せず、`dropped` に理由を書く:
-  - **その日に何も起きない**予約(担当者の在籍最終日、契約上の区切りなど。読者が見に行ける催しも、
-    できる手続きも無い)
-  - 催しがもう終わっている話題に、後日の日付で作られた予約
-  - 素材の facts に、その日に起きることが1つも書かれていない予約
-  (実測: 最終配信が8月26日に済んだ話題を8月31日の`終了`として予約していたため、
-  31日に何も起きていないのに記事が1本生まれた)。
-  **「予約があるから書く」ではなく、「その日、読者は何を見に行けるか・何ができるか」で決める**:
-{trig}
-{done}
-## 選定規則
-- **{n_subjects}主題すべてを「記事化」「roundup」「不採用」のいずれかに割り当てる。黙って無視してよい主題は1つもない**(不採用は dropped に理由付きで列挙)
-- **本数の目標値は無い。**記事化基準を満たす話題は全部記事にする(「多いから落とす」は禁止。紙面は無制限。編集規程11)。あふれたら rank を small へ寄せる
-- **「書ける量が少ない」を不採用や統合の理由にしない。**本文に下限は無く、事実が2〜3文しかない話題はそのまま短い記事にする(規程9)。短い記事が並ぶことより、話題が消えることのほうが読者にとって損失である
-- rank は large|medium|small|roundup{cul_rank} から選ぶ。**lead は付けない**(号全体の一面は後段で決める){cul_rule}
-- **同じ系統の話は1記事にまとめる。**同じ公演・同じ施策をめぐる「開幕」「冒頭無料配信の決定」「会場限定CDの販売」は、読者にとって1つの出来事であり、分けると3本とも薄くなる。candidate_ids に素材を全部載せる
-  - 分けるのは**読者が取る行動が別**のとき(例: 「チケットの申込締切」と「グッズの受注締切」は別の締切なので別記事)
-- **束ねたぶんは rank を上げる。**素材が多い記事を small のままにすると、書ける上限に収まらず中身が落ちる。目安として素材5件以上なら medium 以上、10件以上なら large 以上を割り当てる(規程9の上限は rank で決まる)
-- 個人への攻撃・プライバシー侵害になり得る話題、読んだ人が嫌な気分になる炎上・係争は入れない。個人の SNS 投稿は単体で記事化しない(規程4・5。規程11より優先)
-- 声優個人のアイマス外活動・関係者の動向は対象外(規程4)
-- **同人イベント・ファン主催企画(オンリーイベント・即売会・非公式コラボ)は記事化しない**(規程4)
-- **ニュース性(規程12)**: 記事にできるのは発行日時点で「新しく発表された・起きる・起きた」ことだけ。終了済みイベントの紹介・過年度の話題は記事化しない(結果・千秋楽など当日トリガーの続報は可)。published_date・event_date・dedup_key・URL の**年**を確認し、発行年より前の年しか出てこない候補(例: dedup_key 末尾が -2025)は除外する
-- **1記事1主題(規程13)**: 複数の小ネタを「まとめ」「続々判明」として1本に束ねない
-- **定常運営まとめ(規程13の例外・rank: roundup)**: 単体では記事にならない**進行中の運営情報**(開催中のガシャ・ログインボーナス・楽曲追加・月例イベント・配信出演など)は、**この面で1本だけ** `rank: roundup` にまとめる。{ROUNDUP_MIN_ITEMS}件以上まとまるときだけ作り、{ROUNDUP_MIN_ITEMS}件未満なら small の通常記事にする
-  - **roundup に入れてはいけないもの**: 発表・開催決定・販売開始日・受注/申込の開始と締切・中止延期。これらはニュースなので**単独記事**にする。判断に迷ったら単独記事にする
-  - roundup は記事本数の下限に算入しない。「roundup があるから記事は少なくてよい」は誤り
-{fb}
-## 出力
-**ファイルは作りません。**答えを JSON で返してください(スキーマで、この面の{n_subjects}主題
-**それぞれに必ず1つ**の判定が求められます。id や slug は書きません。プログラムが付けます)。
 
-主題キー(dedup_key)ごとの判定 `decisions[<dedup_key>]`:
-- `action`:
-  - `article` … 単独の記事にする。`angle`(切り口1文)・`rank`(large|medium|small)・`lead_score`(0〜100)を付ける
-  - `roundup` … 定常運営まとめに束ねる(規程13の例外)。`angle` に束ねる観点。面で1本にまとまります
-  - `merge` … この面の**別の主題**と同じ出来事なので、そちらの記事へ素材を統合する。`merge_into` に相手の dedup_key
-  - `drop` … 不採用。`reason`(既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|面違い|その他)と必要なら `note`
-  - `cross_brand` … 他の面が既に立てた記事の話題で、この面にも同じくらい属する。`claimed_slug` にその記事の slug
-- 使わない項目は空文字(lead_score は 0)にします
-
-`lead_score` は「この記事が号の一面に値する度合い」です(面内で最も大きなニュース1本にだけ高い値を付け、残りは 0〜30 程度)。
-不採用そのものは正当な判断です。理由を残すことだけが求められます。
-"""
+def plan_rules() -> str:
+    """選定の規則(prompts/plan-rules.md)。面別の選定と、判定から漏れた主題の拾い直しが**同じもの**を使う。"""
+    return render_prompt("plan-rules", ROUNDUP_MIN=ROUNDUP_MIN_ITEMS).rstrip("\n")
 
 
 def lead_prompt(date: str, arts: list[dict]) -> str:
-    """面別計画を束ねたあと、号の一面と社説主題だけを決める短いセッション。"""
-    weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
+    """面別計画を束ねたあと、号の一面だけを決める短いセッション(社説は 2026-09-06 号で終了。起点は選ばせない)。"""
     rows = json.dumps([{k: a.get(k) for k in ("slug", "brand", "rank", "angle", "lead_score")}
                        for a in arts if a.get("rank") != "roundup"], ensure_ascii=False, indent=1)
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集長です。{date}({weekday}曜)号の
-記事計画は各面の担当が作り終えています。あなたの仕事は**一面(lead)を1本選ぶこと**と
-**社説の主題を決めること**の2つだけです。記事本文も他の記事の rank も触りません。
-
-## 本日の記事候補(面別担当の申告。lead_score はその面での自己申告)
-{rows}
-
-## 選ぶ基準
-- その日いちばん「アイマス全体にとって大きい」話題を1本。面の大小や lead_score の高さだけで決めない
-- 新規発表・大型施策・シリーズ横断の動きは強い。定常運営の更新は弱い
-- 社説主題は本日の紙面から1題。一面と同じでなくてよい
-
-## 社説の起点は「記事1本」だけを選ぶ(主題を言葉にしない)
-**何を論じるべきかは書かないこと。**
-「〜の意味を問う」「〜が示すもの」のような1文にまとめると、社説がその抽象語をなぞって、
-どのブランドにも貼れる一般論になる(実測: 主題を「シリーズ長寿化と運営体制刷新の意味を問う」と
-渡した日の社説は、作品名を入れ替えても成立する文章になった)。
-
-またこの時点では**記事本文はまだ書かれていない**。あなたが見ているのは計画だけなので、
-記事にある具体の事実を選ぶこともできない。それは社説の書き手が、書き上がった記事を読んで選ぶ。
-
-あなたの仕事は「この記事から始めるとよい」と1本指すことだけである。
-
-## 出力
-**ファイルは作らず**、次の JSON だけを返してください(slug は上のリストから選びます):
-{{"lead_slug": "一面にする記事の slug",
-  "editorial_slug": "社説が起点にする記事の slug(一面と同じでもよい)"}}
-"""
+    return render_prompt("plan-lead", DATE=date, WEEKDAY="月火水木金土日"[datetime.date.fromisoformat(date).weekday()],
+                         ARTICLES=rows)
 
 
 def article_prompt(date: str, art: dict, materials: list[dict], story_facts: list[str],
-                   trigger: dict | None, src: str, structured: bool = False) -> str:
-    weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    if structured:
-        # **構造は生成時に強制する。**ファイルは作らせず、判断と文章だけを schema で受け、
-        # frontmatter とファイルはコードが作る(renderlib)。以前は Markdown を自由に書かせて
-        # 固定項目・日付の形・出典の種別を事後に直していた(監査の設計レビュー)
-        out_section = f"""**ファイルは作りません。**記事を JSON で返してください(schema で形が決まっています)。
-- title(全角換算〜28字)・lede(1文。記事の中身を1文で言い切る)・blocks(本文の段落。Markdown 可)
-- **1 block = 1 段落**(block の中に空行を入れない。検算で落ちる)。中見出しは `## 見出し` だけの
-  block にする(その block は fact_ids が空でよい)。箇条書きは1行1項目で、1つの block にまとめてよい
-- **段落ごとに、根拠にした素材の事実 id(F1, F2, …)を fact_ids に付ける。**見出し・リードも同じ。
-  素材に無い事実は書けない(id を付けられない文は書かない)
-- 素材に無い事実を、一次情報(公式の告知など)を `fetch_page.py` で**実際に読んで**確かめたなら、
-  `new_facts` に {{id: "N1", text: 確かめた事実, url: 読んだページ}} を書く。段落の fact_ids には
-  その N1 を付けられる。**読んでいないページの事実を new_facts に書かない**
-  (素材の `unbacked_facts` を出典本文で確かめられたときも、ここに書く)
-- sources は url と label だけ(label は 出典元表記「告知タイトル」(日付) の形。Markdown のリンク・強調記号は使わない)。
-  url は素材の出典か、執筆中に読んで確認した一次情報の URL(読んだページの事実は new_facts に書く)。
-  **種別は書かない**(判定表がコードで付ける)
-- tags は2〜4個。下記「タグ語彙」に従う
-- event_date は、記事の出来事が起きる(始まる)日を **1つだけ** YYYY-MM-DD で。範囲や複数なら開始日。無ければ null。
-  素材か new_facts に出てくる日付であること(検算する)
-- 記事として成立しない(出典に到達できない・出典と食い違う・素材不足・ニュースでない)と判断したら
-  **見送り**: status を decline にし、decline_code(NO_PRIMARY_SOURCE / SOURCE_MISMATCH / TOO_FEW_MATERIALS / NOT_NEWS / OTHER)と
-  decline_detail に理由を書く。decline のとき記事の項目は空でよい
-- slug / brand / candidate_ids / rank / src は書きません(計画と判定表からコードが付けます)
-- この指示の他の箇所にある「ファイルを作らず『ABORT: 理由』とだけ出力して終わる」は、
-  **status を decline にして decline_code と decline_detail に理由を書く**、と読み替えてください"""
-    else:
-        out_section = f"""`docs/_posts/{date}-{art['slug']}.md` を Write ツールで作成(これ以外のファイルは作らない・読む必要もない):
-- frontmatter は次の値を**そのまま**使う: slug: {art['slug']} / edition: {date} / brand: {art['brand']} / src: {src} / rank: {art['rank']}(**仮の値**。発行前に機械が付け直します) / corrected: false / corrections: [] / candidate_ids: {json.dumps(art['candidate_ids'])}
-- title(全角換算〜28字)・lede(1文。字数指定なし。記事の中身を1文で言い切る)・tags(2〜4個。下記「タグ語彙」に従う)・sources・event_date(素材にあれば。YYYY-MM-DD を1つだけ)は自分で書く
-- **sources の `type` は自分で判断しない。**次のコマンドで引いた値をそのまま書く:
-
-      python3 scripts/source_type.py <url> [<url> ...]
-
-  種別は `source_types.yml` が決める。素材の `source_type` は収集時点の申告で、
-  古い値が残っていることがある。**自分で見つけて追加した出典も、必ずこのコマンドで引く。**"""
-
-    trig = (f"\n- この記事は続報トリガー({trigger['kind']}: {trigger.get('note') or trigger['subject']})の消化です。"
-            "トリガーの当日性(締切・開幕等)を記事の軸にすること" if trigger else "")
-    prev = ("\n## 既報(この話題で報道済みの事実。同じ事実の繰り返しを記事の軸にしない)\n"
-            + "\n".join(f"- {f}" for f in story_facts)) if story_facts else ""
-    vocab = tags_lib.vocabulary_block()
-    culture = ("""
-
-## この記事は「ファン面」です(rank: culture・編集規程4の例外)
-ファンの営みを、個人の紹介ではなく**その日の傾向**として1本にまとめた記事です。
-素材は細切れです。**箇条や短い段落で並べてよい**ので、1件ずつを無理に膨らませないこと。
-- **誰か1人を主役にしない。**「こういう動きが目立った」という書き方にする
-- **個人アカウント名・ハンドルを本文に書かない。**当人が望まない露出を作らないため
-  (sources の url は残してよい。label も投稿者名ではなく内容が分かる語にする)
-- **批判・嘲笑・優劣の比較を書かない**(規程5はこの面にも適用される)
-- 素材が2件以下しか残らなければ、ファイルを作らず「ABORT: 残件不足」とだけ出力して終了する
-- 見出しは煽らない。数字や断定で盛らない"""
-               if art["rank"] == "culture" else "")
-    roundup = ("""
-
-## この記事は「定常運営まとめ」です(rank: roundup・編集規程13の例外)
-単独では記事にならない進行中の運営情報を、この面ぶんだけ束ねた記事です。
-- **各素材を1項目として箇条書きにする**。項目は「何が・いつまで(いつから)」が1行で分かる形にする
-- 素材どうしを地の文でつなげて1つの話に仕立てない。**束ねただけであることを隠さない**
-- 冒頭に1〜2文の導入(この面で今動いているものの総括)を置き、そのあとに箇条を並べる
-- 事実確認で落ちた素材はその項目ごと落とす。**残りが2項目以下になったら、ファイルを作らず「ABORT: 残件不足」とだけ出力**して終了する(まとめとして成立しないため)
-- 見出しはこの面の運営情報のまとめだと分かるようにする(煽らない。釣らない)
-- sources は残した項目ぶんを全部載せる"""
-               if art["rank"] == "roundup" else "")
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の記者です。{date}({weekday}曜)号の記事を**1本だけ**書いてください。
-
-## 素材(この JSON がこの記事に使ってよい情報の全てです)
-{json.dumps(materials, ensure_ascii=False, indent=2)}
-{prev}
-
-## 執筆前の出典照合(必須)
-**素材の各 url を、次のコマンドで実際に読み直してから書きます。**
-
-    python3 scripts/fetch_page.py <url>
-
-出典ページの本文が**要約なしの原文のまま**出ます。先頭に、機械抽出したラベル付き期間が付きます。
-x.com の url は取得できないので実行不要です(Grok 観測を信頼する既定どおり)。
-ただし x.com だけを根拠に日付・期間・価格を断定しないこと。
-
-- `facts` の各項目が、取得した本文で確認できるか照合する。**確認できない fact は使わない**
-  (素材の facts は収集段階の誤りを含み得る。実際に誤りが出ている)
-- 素材に `unbacked_facts` があれば、そこに挙がった日付・金額は**収集時点で出典本文から
-  見つけられなかった値**である。取得した本文で自分の目で確かめ、見つからなければ書かない。
-  (画像の中や別ページにあるだけのこともあるので、見つかれば使ってよい)
-
-## 公式の告知があるはずの話題は、公式を読んでから書く
-
-ゲーム内の施策(ガシャ・イベント・ミッション・報酬・不具合)、CD や映像の発売、
-ライブ・配信の実施——これらは**必ずブランド公式の告知がある**。
-攻略Wiki・まとめ・個人ブログしか素材が無いのは、公式に到達していないだけである。
-
-**素材に公式・準公式の出典が1つも無いときは、公式の告知を探しに行く。**
-
-- **ファン(個人)の投稿が公式の情報を紹介しているだけなら、その投稿を出典にしない。**紹介先の公式を
-  読んで、公式を出典にする(ファン投稿は「気づいた入口」にすぎない)
-- 二次情報の素材は、たいてい元の公式告知を引用・リンクしている。
-  `python3 scripts/fetch_page.py <二次情報のurl>` で本文を読み、そこに出てくる
-  ブランド公式サイト・公式ストアの URL を**開いて確かめる**
-- 到達できたら、**そちらを出典にして事実を取り直す**。日付・価格・仕様が
-  二次情報と食い違うことがあり、そのときは公式が正しい
-- **どうしても公式に届かないなら、その記事は書かない。**
-  `ABORT: 公式の告知に到達できず` とだけ出力して終わる。
-  攻略Wikiの記載を丸写しした記事は、読者にとって価値が無く、誤りの出所にもなる
-  (実測: ガシャの排出率と報酬を攻略Wikiだけを見て書いた記事が出た)
-
-**リンク集・RSSミラーは出典にできない。**他所の記事の見出しとリンクを並べているだけで、
-開いても事実が何も確認できないサイトがある(`source_types.yml` の `discovery_only_domains`)。
-素材にそれが入っていたら、**リンク先を開いて、そちらを出典にする**。
-ネタを見つけるのには使えるが、出典欄に置くと「確認できない場所」を根拠として示すことになる。
-lint がエラーにする。
-
-**公式が出して然るべきものは、公式が無ければ駄目である。**分量や締切を理由に緩めない。
-
-二次情報やファンの発信だけで成立するのは、**そもそも公式が出すものではない話題**——
-プロデューサーの間で広がったミームのような、ファン発の現象だけ。
-それは `rank: culture` のファン面で扱うものであって、通常の記事では書かない。
-
-## 一文ごとに「読者にとって要るか」を確かめる
-
-書いてよいのは、次のどちらかに当たる事実だけである。
-
-1. **読者が今日できることを増やす**(申し込める、買える、見に行ける、視聴できる)
-2. **今日の出来事を理解するために要る**
-
-**どちらにも当たらない事実は、出典に書いてあっても書かない。**
-とくに次は、そのまま丸ごと落とす。
-
-- **もう終わった受付・販売・抽選の日程。**申し込めない期間をいくら並べても、
-  読者にできることは何も増えない。「現在は受付終了」と書くために、
-  その受付の開始日・締切・当落発表日・支払方法まで並べる必要はない
-  (実測: 8月30日のリリースイベントの記事に、6月24日から7月26日までの受付期間、
-  7月29日の当落発表、8月27日のダウンロード開始日を並べていた。全部終わっている)
-- **済んだ不具合・お詫び・トラブル・炎上。**今日の話題がその不具合そのものでない限り、
-  持ち出す理由が無い。読者には蒸し返しでしかない(編集規程5)
-  (実測: 同じ記事に、7月1日付の応募券の印刷不備に関するお詫びを1段落ぶん書いていた)
-- 商品の品番、過去の発売日、変更前の仕様など、今日の話に効かない台帳的な事実
-
-**まだ有効な期間は書いてよい。**今日申し込めるもの、今日から買えるもの、
-今日の23時59分に締め切られるものは、日付を書くことで読者の行動が変わる。
-落とすのは「終わっているもの」であって「過去の日付」ではない。
-
-## 「無いこと」を報告しない
-
-**出典に何が書かれていなかったかを、紙面に書かない。**
-読者は出典を読んでいない。何が無かったかを知らされても、得るものが一つも無い。
-
-書かない例:
-- 「投稿本文に会場名、開場・開演時刻、出演者全員の一覧はない」
-- 「投稿本文に開始日・終了日の記載はない」
-- 「投稿文では内容の詳細や別ページURLは案内されていない」
-
-素材が薄いなら、**そのまま短く書く**(規程9)。無いことを並べて長さを作らない。
-
-例外は、**未発表であること自体が今日の話題の核心**である場合(予告だけが出た、
-続報待ちであることが発表された等)。そのときも欠けている項目を列挙せず、
-「詳細は未発表」と一言で書く。
-
-なお「公式Xの投稿では〜と告知している」のように**出所を示す書き方は問題ない**。
-落とすのは、出典の中身の欠落についての報告である。
-
-**分量が足りないことは、要らない事実を入れる理由にならない。**
-事実が2〜3文しかない話題は、そのまま短い記事にする(規程9)。水増しより短いほうがよい。
-
-## 出典が二次情報しか無いときは、一次情報を取りに行く
-
-記事のバッジは**引用した出典のうち最も弱い種別**になる。
-まとめサイトや攻略サイト(`type: 二次情報`)しか出典が無い記事は「二次情報」表示になる。
-
-このとき**出典から二次情報を消して強い出典だけ残してはいけない。**
-事実の出所は二次情報のままで、表示だけが良くなる。それは読者を欺くことになる。
-
-正しい手当ては**一次情報を探しに行くこと**である。
-
-- 二次情報の素材は、たいてい元の発表ページを引用・リンクしている。
-  `python3 scripts/fetch_page.py <二次情報のurl>` で本文を読み、
-  そこに出てくる公式サイト・レーベル・ストアの URL を**開いて確かめる**
-- 一次情報に到達できたら、**そちらを出典にして事実を取り直す**。
-  日付や商品名が二次情報と食い違うことがあり、そのときは一次情報が正しい
-  (実測: 公式Xの投稿はリンクの列で、詳細はすべてまとめサイト由来だった記事がある)
-- どうしても一次情報に届かないときは、二次情報のまま書いてよい。
-  バッジが「二次情報」になるのは正しい状態であり、それを隠さない
-- その出典にしか無い事実を書いたなら必ず載せる。チケットの価格や受付時間が
-  販売ページにしか無いなら、それは当事者の出典である。**バッジが下がるのが
-  正しい場合がある**ので、下げないために出典を省くことはしない
-- **先頭の「期間」ブロックは原文のラベルそのままなので、`facts` と食い違ったらそちらが正**。
-  「入金期間」を「販売期間」と書き換えるような取り違えは、ここで必ず正す(規程15)
-- **掲載日(公開日)と話題の年を本文で確認する**。掲載年がイベント年・発行年と食い違う、
-  または話題自体がすでに終了した過去のもの(当日トリガーの続報を除く)なら、その素材は使わない
-- `FETCH_FAILED` が返った url は照合不能として扱う(その url だけを根拠に断定しない)
-**記事の存在理由になる中核の事実が確認できない場合、または話題が過年度・終了済みと判明した場合は、
-ファイルを作らず「ABORT: 理由」とだけ出力して終了すること。**
-
-## 書けないと分かったら、書かずに落としてよい
-
-計画に載っているからといって、無理に記事の形にしない。
-**素材を読んだ結果「これはニュースになっていない」と分かったら、あなたが落とす。**
-選定は素材の要約しか見ておらず、あなたは実物を読んでいる。判断できるのはあなただけである。
-
-次に当たると分かったら、ファイルを作らず `ABORT: 理由` とだけ出力して終わる。
-
-- **今日新しく起きたことも、これから起きることも無い。**
-  終わったイベントの物販ページが「掲載されている」だけ、既報と同じ内容が別の場所にもある、
-  といった話題は記事にならない
-  (実測: 8月13〜16日に終わったイベントのグッズ販売ページが「掲載されている」とだけ書いた
-  記事が出て、校閲に5往復ブロックされ、その日の発行が止まった)
-- **書ける中身が「ページが存在する」だけ。**商品名も価格も期限も無いなら、
-  読者は何も受け取らない
-- 素材が公式の告知に到達しておらず、探しても届かない(前述)
-
-**落とすことは失敗ではない。**紙面の本数は目標ではない(規程11は「基準を満たす話題を
-落とすな」であって「基準を満たさない話題を書け」ではない)。
-中身の無い記事を1本増やすより、落としたほうが紙面はよくなる。
-
-## 出力
-{out_section}
-- 本文の**字数指定はありません。**確認できた事実を、水増しせずに書けるだけ書いてください。紙面のどの枠に入れるかは、書き上がった長さと話題の大きさから機械が決めます。切り口: {art['angle']}{trig}{roundup}{culture}
-
-## タグ語彙(タグは索引・検索に使われる。表記ゆれは索引を壊すため厳守)
-シリーズ名・施策カテゴリは**必ず次の語彙から選ぶ**(同義の別表記を作らない):
-{vocab}
-- アイドル名・会場名・作品固有名など固有名詞は語彙外でよい(正式名称で書く)
-- frontmatter の brand と同じ意味のタグを brand の id(shiny/million/gaku 等)で書かない。上の正式名を使う
-- src の値(公式・報道・ファン・未確認)をタグにしない
-- 毎年ある定例企画は年を含める(例: IWSF2026・総選挙2026・アニサマ2026)
-
-## 分量の作り方(**水増しではなく、具体を書く**)
-短くなるのはたいてい素材不足ではなく、**出典に書いてあることを書いていない**からです。
-`scripts/fetch_page.py` で読んだ本文には、たいてい次が載っています。拾って書いてください。
-
-- 会場名・所在地・開場/開演時刻・座席や配信の別
-- 価格(税込/税抜)・セット内容・特典の中身・数量や期間の限定条件
-- 商品の型番・収録曲・仕様・発送時期
-- 対象者の条件(会員先行か一般か、当選者のみか)、申込方法、支払手段
-- 出演者・楽曲・企画の趣旨として**出典に明記されている**もの
-
-**出典が複数あるときは、全部に `fetch_page.py` を実行してください。**1つ読んで足りたと判断しない。
-実測では、公式4ページ(計25KB超)がある話題を518字で済ませていた例がある。読んでいないだけだった。
-
-**省略しない。**次は「まとめる」のではなく列挙する対象です。
-- 出演者・登壇者(「ら13名」で省かず、名前と役名を挙げる。両日制なら日ごとに)
-- 席種と価格(すべての区分)、公演日ごとの開場・開演時刻、会場名
-- 受付の全日程(先行/一般/当落発表/入金)、枚数制限、対象者の条件
-- 商品なら品目・型番・収録内容・特典・発送時期
-
-**やってはいけない埋め方**: 一般論(「ファンの期待が高まる」)、推測(「〜とみられる」)、
-既知情報の繰り返し、同じ事実の言い換え、感想。**字数のために書くことは一切ありません。**
-出典を**全部**読み切ったうえで3文で終わるなら、3文で出してください。短いこと自体は減点になりません。
-
-## 絶対規則
-- 素材の facts(照合済みのもの)に無い事実を書かない。推測・一般知識での補完は禁止
-- **期間ラベル規程(規程15)**: 期間を書くときは**何の期間かを出典の語で明示**する。チケット・受注では
-  「先行抽選の申込受付」「抽選結果発表」「当選者の入金」「一般先着販売」「一般販売」が別々の期間として併存し、
-  取り違えると誰がいつ買えるのかが逆になる。とくに**入金期間は当選者だけが対象**であり、
-  これを「販売期間」「発売中」「受付中」と書くのは誤報である(実際に起きた事故)。
-  - 出典で確かめずに「販売期間」「発売」「受付」へ**一般化しない**。ラベルが確認できない日付範囲は**書かない**
-  - 先行と一般が両方あるときは、どちらの話かを毎回明示する(読者が申し込めるのはどちらか、が記事の要点になる)
-- **新規性の表現規程(規程12)**: 「発表された」「判明した」「明らかになった」と書けるのは、初出(ページ掲載日・投稿日)が発行日直近であると確認できた場合のみ。初出が過去日なら「(M月D日付で)発表されている」と初出日を明示する。**初出日が確認できない情報には新規性の演出をしない**(サイトの公開時期を推測で書かない)
-- 相対表現(本日/昨日/明日)は発行日 {date} 基準。絶対日付と同一文で相対語を併用しない(時制 lint)
-- **紙面が読者に届くのは {date} の 06:00 である。**号日付でも 06:00 より前に終わることは、
-  読者が読む時点では**すでに終わっている**。「本日未明に終了する」「まだ間に合う」のように
-  これからのこととして書かない。過去として書く(規程12)。
-  ゲームの締切は 4:59 が定番なので頻繁に起きる。行動を促す文言も付けない
-- 内規の文言(「全記事に必須」等)を紙面に書かない
-- 事実の伝聞元がファン発・未確認の場合は断定を避ける文体にする
-"""
+                   trigger: dict | None) -> str:
+    """執筆の依頼文。本文は prompts/write-article.md(rank 別の追加は write-article.<rank>.md)。
+    ファイルは作らせず、判断と文章だけを schema(article-out)で受ける。frontmatter とファイルはコードが作る。"""
+    rank_file = PROMPTS / f"write-article.{art['rank']}.md"
+    return render_prompt(
+        "write-article", DATE=date, WEEKDAY="月火水木金土日"[datetime.date.fromisoformat(date).weekday()],
+        ANGLE=art["angle"],
+        TRIGGER=(f"- 続報トリガー({trigger['kind']}: {trigger.get('note') or trigger['subject']})の消化。"
+                 "トリガーの当日性(締切・開幕など)を記事の軸にする\n" if trigger else ""),
+        RANK_RULES=rank_file.read_text(encoding="utf-8") if rank_file.exists() else "",
+        TAG_VOCAB=tags_lib.vocabulary_block(),
+        STORY_FACTS="\n".join(f"- {f}" for f in story_facts) or "(なし)",
+        MATERIALS=json.dumps(materials, ensure_ascii=False, indent=2))
 
 
 def brand_lens(brand: str) -> str:
@@ -1374,10 +1020,8 @@ def pick_lead(date: str, plan: dict) -> None:
         return
     # 答えは schema で受ける(slug は一覧の中から)。ファイルを書かせない
     slugs = [a["slug"] for a in arts]
-    schema = json.dumps({"type": "object", "required": ["lead_slug", "editorial_slug"],
-                         "additionalProperties": False,
-                         "properties": {"lead_slug": {"enum": slugs}, "editorial_slug": {"enum": slugs}}},
-                        ensure_ascii=False)
+    schema = json.dumps({"type": "object", "required": ["lead_slug"], "additionalProperties": False,
+                         "properties": {"lead_slug": {"enum": slugs}}}, ensure_ascii=False)
     pick = {}
     try:
         r = subprocess.run(["claude", "-p", prompt_file(date, "lead", lead_prompt(date, arts)), "--model", CLAUDE_MODEL,
@@ -1398,13 +1042,9 @@ def pick_lead(date: str, plan: dict) -> None:
         print(f"lead 選定が不成立。lead_score 最大の {lead['slug'] if lead else '-'} を一面にする", flush=True)
     if lead is not None:
         lead["rank"] = "lead"
-    # 社説の起点は**記事1本**だけ。抽象化された1文で渡すと、社説がそれをなぞって
-    # どのブランドにも貼れる一般論になる(実測)。具体は書き手が記事本文から選ぶ
-    # (この時点ではまだ記事が書かれていないので、選びようがない)。
-    # 起点記事を記録するのは、その記事が執筆不成立や校閲で落ちたときに気づくため
-    ed = by_slug.get(pick.get("editorial_slug")) or lead
-    plan["editorial_slug"] = (ed or {}).get("slug", "")
-    plan["editorial_brand"] = (ed or {}).get("brand", "")
+    # 社説は 2026-09-06 号で終了。起点は選ばせない(計画の項目は、残っている社説の経路のために一面で埋めておく)
+    plan["editorial_slug"] = (lead or {}).get("slug", "")
+    plan["editorial_brand"] = (lead or {}).get("brand", "")
 
 
 def missing_plan_prompt(date: str, rows: list[dict], existing: list[dict]) -> str:
@@ -1422,46 +1062,7 @@ def missing_plan_prompt(date: str, rows: list[dict], existing: list[dict]) -> st
     """
     ex = json.dumps([{k: a.get(k) for k in ("brand", "slug", "rank", "angle", "dedup_key")}
                      for a in existing], ensure_ascii=False, indent=1)
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の編集長です。{date}号の面別の選定で、
-**次の{len(rows)}主題が、どの面でも記事化にも roundup にも不採用にも入らず、判断されないまま消えました。**
-面の担当が「自分の面の話ではない」と思って黙って落とした可能性があります。
-
-## 消えた主題(これだけを判断する)
-metrics/plan-index-{date}-missing.json … 1主題1行。`brand` は**収集時の仮の面**で、正しいとは限りません。
-`ids` がその主題の候補ID。
-
-## 号全体で既に決まっている記事(全面)
-{ex}
-
-## やること
-消えた主題**1つずつ**に、**まず「どの面の話か」を決め**、そのうえで次の3つのどれかを必ず答えてください。
-黙って落とすことはできません。面は general|765|cg|million|shiny|sidem|gaku|dsva|joint|other から選びます
-(複数ブランドにまたがる話は joint。どのブランドにも属さないアイマスの話は other)。
-1. **記事化**: 単独で記事になるなら `articles` に新しい記事を足す(brand に決めた面を書く)
-2. **統合**: 既存の記事(上の一覧。**面をまたいでよい**)や roundup と同じ話題なら `merge_into` に書く。
-   その記事の candidate_ids にこの主題の ids が加わります
-3. **不採用**: 理由を付けて `dropped` に書く(既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|アイマス外|その他)
-
-判断の基準は面別の選定と同じです(REQUIREMENTS.md 5章。「多いから落とす」「短いから落とす」は不可)。
-
-## 出力
-`metrics/plan-{date}-missing.json` に次の JSON を書く(Write ツール使用):
-{{
-  "articles": [
-    {{"slug": "英小文字ハイフンの記事ID(面名を含める)", "brand": "決めた面", "rank": "large|medium|small",
-      "angle": "切り口(1文)", "lead_score": 0, "dedup_key": "主題の dedup_key",
-      "candidate_ids": ["この主題の ids をそのまま"]}}
-  ],
-  "merge_into": [
-    {{"slug": "既存記事の slug", "dedup_key": "統合する主題の dedup_key", "candidate_ids": ["その主題の ids"]}}
-  ],
-  "dropped": [
-    {{"dedup_key": "主題の dedup_key", "brand": "本来の面", "reason": "上の語彙から1つ", "note": "一言(任意)"}}
-  ]
-}}
-{len(rows)}主題すべてが、articles / merge_into / dropped のどれかに1回ずつ現れること。
-最後に「拾い直し: 記事N本 / 統合N件 / 不採用N件」の1行で報告してください。
-"""
+    return render_prompt("plan-missing", DATE=date, N=len(rows), RULES=plan_rules(), EXISTING=ex)
 
 
 def replan_missing(date: str, plan: dict, by_brand: dict, cands: dict,
@@ -1918,9 +1519,8 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
         facts = [f for dk in dks if dk in stories for f in stories[dk]]
         # 構造化モード: 素材の事実に id を振り、執筆は JSON を返す(ファイルはコードが作る)
         mats_in, fact_by_id = (renderlib.materials_with_ids(materials) if STRUCTURED_WRITE else (materials, {}))
-        jobs.append((art, src, article_prompt(date, art, mats_in, facts,
-                                              trig_by_key.get(art.get("dedup_key")), src,
-                                              structured=STRUCTURED_WRITE), fact_by_id, materials))
+        jobs.append((art, src, article_prompt(date, art, mats_in, facts, trig_by_key.get(art.get("dedup_key"))),
+                     fact_by_id, materials))
     written, aborted = list(written_before), []
     if written_before:
         print(f"既存の記事 {len(written_before)}本は再執筆しない(--reuse-plan)", flush=True)
@@ -2061,39 +1661,8 @@ def revise_prompt(date: str, art: dict, mats_in: list[dict], current: str, issue
     """校閲の指摘を受けた**執筆側(Codex)**の書き直し。同じ出力契約(article-out)で返す。"""
     iss = json.dumps([{k: b.get(k) for k in ("issue_id", "rule_id", "issue", "quote", "repair", "fact_ids", "expected")}
                       for b in issues], ensure_ascii=False, indent=1)
-    return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の記者です。{date}号のあなたの記事に、別ベンダーの校閲から
-ブロック指摘が付きました。**指摘に対応した稿を JSON で返してください**(schema で形が決まっています。
-ファイルは作りません)。
-
-## 現在の記事
-```
-{current[:12000]}
-```
-
-## 素材(この記事に使ってよい情報の全て。事実には id が付いています)
-{json.dumps(mats_in, ensure_ascii=False, indent=1)}
-
-## 校閲の指摘
-{iss}
-
-## 直し方
-`repair` は校閲の**提案**であって命令ではない。素材と出典に照らして、あなたが正しい直し方を決める
-(校閲が「消せ」と言った事実が出典で確かめられるなら、消さずに根拠を付けて残してよい)。
-指摘の `quote` の記述は、出典どおりに書き直す・消す・記事を落とす、のどれかにする。一次情報で確かめて
-記述が正しいと分かったなら残してよい(そのときは new_facts に読んだ URL と事実を書き、根拠 id を付ける)。
-残した記述が正しいかは、次の巡の校閲が改めて判定する。
-- `rewrite_claim`: その記述を素材の事実どおりに直す。段落の fact_ids に根拠を付ける
-- `drop_claim`: 素材に無い記述を消す。消して段落が空になるなら段落ごと消す
-- `add_source`: 足りない出典を sources に加える(素材にある URL か、`python3 scripts/fetch_page.py <url>` で
-  読んで確認した一次情報の URL。後者は new_facts に「読んだ URL と確かめた事実」を書く)。
-  **指摘に URL が書いてあるならそれを読んで加える**
-- `drop_source`: 食い違う弱い出典を sources から外し、記事は強い出典に合わせる(弱い出典に合わせて書き換えない)
-- `drop_article`: 記事として成立しないなら status を decline にし、decline_code と理由を書く。無理に残さない
-- **指摘に無い箇所は変えない**(見出し・他の段落・出典は原則そのまま)。直したふりをしない
-- 対応した指摘の **issue_id**(I1, I2 …)を addressed_issue_ids に列挙する。対応しなかった指摘は書かない
-- 本文の段落末にある `<!-- F1 F3 -->` は根拠 id の控えなので、markdown には含めない(fact_ids に書く)
-- slug / brand / candidate_ids / rank / src は書かない(コードが付ける)。event_date は YYYY-MM-DD を1つだけか null
-"""
+    return render_prompt("revise-article", DATE=date, ISSUES=iss, CURRENT=current[:12000],
+                         MATERIALS=json.dumps(mats_in, ensure_ascii=False, indent=1))
 
 
 def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: str) -> list[str]:

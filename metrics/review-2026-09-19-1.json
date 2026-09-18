@@ -1,0 +1,254 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-19-cg-15th-anniversary-popup-2026.md",
+   "issue": "sources の label に「Celebration」が誤字で「べーション」となっている",
+   "quote": "「Parfait Coquetteべーション」",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "sources の label 内の「Parfait Coquetteべーション」を「Parfait Coquette Celebration」に修正すること",
+   "scope": "article:2026-09-19-cg-15th-anniversary-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-dsva-nagano-aniera-festa-2026.md",
+   "issue": "候補参照エラー: frontmatter の candidate_ids に記載されている 'sched-2026-09-19-dsva-nagano-aniera-festa-2026-開幕' が candidates フォルダに存在しない。また、sources に記載されている 'https://aniera-festa.com/news/timetable2026/' も candidates に見つからない",
+   "quote": "candidate_ids:\n- sched-2026-09-19-dsva-nagano-aniera-festa-2026-開幕\n- 202609180734-explore-12\n- 202609190226-grok-33\n- 202609190226-grok-34",
+   "rule_id": "R4",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1"
+   ],
+   "expected": "frontmatter の candidate_ids が すべて candidates フォルダに実在し、sources に記載されているすべての URL が candidates に含まれていること",
+   "scope": "article:2026-09-19-dsva-nagano-aniera-festa-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-dsva-nagano-aniera-festa-2026.md",
+   "issue": "出典隠し: candidate_ids に含まれている X.com（twitter.com）の2つの候補（202609190226-grok-33, 202609190226-grok-34）が sources に記載されていない。マニュアル R3 では『出典隠し』として扱われる可能性がある",
+   "quote": "sources:\n- label: ナガノアニエラフェスタ「ナガノアニエラフェスタ2026タイムテーブル公開！公式シャトルバス情報も解禁！」(2026年8月28日)\n  url: https://aniera-festa.com/news/timetable2026/\n- label: ナガノアニエラフェスタ「開催迫る！ナガノアニエラフェスタ2026を楽しむためのFAQや注意事項を確認しよう！」(2026年9月17日)\n  url: https://aniera-festa.com/news/faq2026andmore/",
+   "rule_id": "R3",
+   "repair": "drop_source",
+   "fact_ids": [],
+   "expected": "sources に記載されていない候補の ID は candidate_ids から削除するか、sources に追加する。または、これらの候補が記事に実際に使用されていることを verified_facts で示す",
+   "scope": "article:2026-09-19-dsva-nagano-aniera-festa-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-general-channel-member-broadcast-2026-09-25.md",
+   "issue": "sources のラベル末尾に文字化けがある",
+   "quote": "【アイドルマスターチャン넬",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "sources のラベルが正しい日本語で「【アイドルマスターチャンネル】」などと記載されている",
+   "scope": "article:2026-09-19-general-channel-member-broadcast-2026-09-25.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-14th-live-2026.md",
+   "rule_id": "R3",
+   "issue": "出典隠し：frontmatter の candidate_ids に含まれている5つの sched で始まる候補ID（sched-2026-09-19-million-14th-live-2026-開幕、sched-2026-09-19-grok-077-開幕、sched-2026-09-19-million-14th-streaming-2026-開幕、sched-2026-09-19-million-14th-last-minute-tickets-2026-開幕、sched-2026-09-19-million-14th-ticket-2026-開幕）が候補ファイル（candidates/2026-09-19.json）に存在しない。これらの根拠が sources に記載されていない可能性がある。",
+   "quote": "candidate_ids:\n- 202609190226-explore-12\n- sched-2026-09-19-million-14th-live-2026-開幕\n- 202609190226-grok-51\n- 202609190226-grok-52\n- 202609190226-grok-53\n- sched-2026-09-19-grok-077-開幕\n- sched-2026-09-19-million-14th-streaming-2026-開幕\n- sched-2026-09-19-million-14th-last-minute-tickets-2026-開幕\n- sched-2026-09-19-million-14th-ticket-2026-開幕",
+   "repair": "drop_source",
+   "fact_ids": [],
+   "expected": "候補ファイルに存在する candidate_ids のみを frontmatter に記載するか、存在しない ID に対応する sources を sources に追加する",
+   "scope": "article:2026-09-19-million-14th-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-14th-live-2026.md",
+   "rule_id": "R1",
+   "issue": "出典にない事実：本文で参照されている事実（特に F50-F56 の配信チケット詳細情報、F69-F73 の当日券詳細情報）が、候補ファイルに見つからない。当日券の販売期間「当日0時から各公演の開場3時間前まで」という具体的な情報が候補に存在しない。",
+   "quote": "現地の当日券は先着で、全席指定14,500円、立見指定14,000円、ステージサイド席14,000円。当日0時から各公演の開場3時間前まで受け付ける。",
+   "repair": "add_source",
+   "fact_ids": [],
+   "expected": "sources に当日券に関する公式ページを明確に記載するか、verified_facts として一次情報の確認記録を追加する",
+   "scope": "article:2026-09-19-million-14th-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-cardfolio-vol4-2026.md",
+   "issue": "記事が述べている「ミリオン14thLIVE会場物販では先行販売される」という事実が、sources に記載されているURL(公式ページ)に見当たらない。候補ファイルも見つからず、根拠の検証ができない。",
+   "quote": "ミリオン14thLIVE会場物販では先行販売される",
+   "rule_id": "R1",
+   "repair": "add_source",
+   "fact_ids": [
+    "F2"
+   ],
+   "expected": "14thLIVE会場での先行販売についての信頼できる出典(公式ページ・公式X投稿など)をsourcesに追加し、その出典で事実が確認できる状態",
+   "scope": "article:2026-09-19-million-cardfolio-vol4-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-cardfolio-vol4-2026.md",
+   "issue": "frontmatter の candidate_ids に記載されている『sched-2026-09-19-million-cardfolio-vol4-2026-発売』が候補ファイル(2026-09-19.json)に存在しない。根拠の追跡ができない状態になっている。",
+   "quote": "candidate_ids:\n- sched-2026-09-19-million-cardfolio-vol4-2026-発売",
+   "rule_id": "R3",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F1",
+    "F2"
+   ],
+   "expected": "candidate_ids が実際の候補ファイル内に存在する ID に更新されるか、候補ファイルが生成されてメタデータと同期する状態",
+   "scope": "article:2026-09-19-million-cardfolio-vol4-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-sidem-11th-commentarycasting.md",
+   "issue": "Unsourced cast member names and viewing URLs - facts F17-F18, F39-F41 referenced but candidates containing them don't exist",
+   "quote": "DAY1の出演者は、山谷祥生（蒼井享介役）...DAY2は9月20日11時30分から...が出演する。",
+   "rule_id": "R1",
+   "repair": "add_source",
+   "fact_ids": [
+    "F17",
+    "F18",
+    "F39",
+    "F40",
+    "F41"
+   ],
+   "expected": "Add missing candidates to candidates/2026-09-19.json or provide cast member names and URLs as verified_facts from official sources",
+   "scope": "article:2026-09-19-sidem-11th-commentarycasting.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md",
+   "issue": "sources のラベルの日付表記が不統一。ラベルは「(2026年9月18日)」と GMT 基準だが、記事は「9月19日」と JST で記述。日本時間に統一すべき。",
+   "scope": "article:2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md",
+   "issue": "frontmatter の lede_fact_ids に F8（投稿日時）が含まれているが、lede に投稿日時の記載がない。fact_ids の誤りの可能性。lede_fact_ids から F8 を削除するか、lede に日時情報を追加するべき。",
+   "scope": "article:2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md",
+   "issue": "分量が不足（rank: small で目安 250字だが、記事は約 85字）。sources に詳細情報があれば追加可能。",
+   "scope": "article:2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-15th-anniversary-popup-2026.md",
+   "issue": "分量不足: rank small の目安 250字に対して本文は 142字。sources の公式ページにある商品詳細・価格情報の補足で分量を厚くできるか検討",
+   "scope": "article:2026-09-19-cg-15th-anniversary-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-genkayouenichi-animo-2026.md",
+   "issue": "分量不足。rank: small は 250字目安だが、現在の本文は約100字。sources に記載の公式記事から、受付条件・グッズの特徴・数量限定の詳細、会場での販売との違いなど、さらに詳しい情報を拾うことで500字以上に充実させることが可能。",
+   "scope": "article:2026-09-19-cg-genkayouenichi-animo-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-pop-up-shop-magical-cheers-animo-2026.md",
+   "issue": "rank: small の目安は 250字以上だが、記事本文は 199字で分量が不足している。sources に記載されている実店舗ポップアップショップの開催期間、グッズの詳細（素材、サイズ、価格帯）、配置地図などを追加すれば埋まる。",
+   "scope": "article:2026-09-19-cg-pop-up-shop-magical-cheers-animo-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-x-com-imas-cgofficial-status-2100963067651576145.md",
+   "issue": "rank: small (目安250字以上)に対して本文が約115字で分量が不足。公式サイトに記載されたチケット料金帯(15,500〜81,500円)、開場時間(15:30)、会場のKアリーナ横浜の詳細など、読者の関心を引く情報が活用できていない。",
+   "scope": "article:2026-09-19-cg-x-com-imas-cgofficial-status-2100963067651576145.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-dsva-nagano-aniera-festa-2026.md",
+   "issue": "本文が短い可能性: rank が medium の場合、目安は 450字以上ですが、本文は 491字でギリギリ満たしています。sources に記載されているタイムテーブル記事(2026年8月28日)から会場施設情報(テント、喫煙所、設営状況など)を追加できれば充実します",
+   "scope": "article:2026-09-19-dsva-nagano-aniera-festa-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-gaku-hedgehog-yutanpo-goods-2026.md",
+   "issue": "rank small に対して本文が薄い。目安は250字だが、現在は約184字（本文+リスト）。商品説明・対象条件などを出典から補足すれば充実する。",
+   "scope": "article:2026-09-19-gaku-hedgehog-yutanpo-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-joint-cg-kyomafu-2026-goods.md",
+   "issue": "sources の公式 URL のラベルが不完全。掲載日が「(2026年」で月日まで記載されていない。ザッキャラのラベルは「(2026年9月4日)」と完全であるため、公式も同じ形式に統一するべき",
+   "scope": "article:2026-09-19-joint-cg-kyomafu-2026-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-joint-cg-kyomafu-2026-goods.md",
+   "issue": "キッチンカーの支払い方法について sources で確認したところ、キッチンカーは「完全キャッシュレス」と記載されている。記事では「会場では現金、クレジットカード各種などが利用できる」と述べているが、文脈から主流通販ブースを指していると解釈される。ただし、読者がドリンク購入時にキャッシュレス限定であることは重要情報であり、記事の分量に余裕があれば記載を検討すべき",
+   "scope": "article:2026-09-19-joint-cg-kyomafu-2026-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-joint-idolmaster-tours-w-bn-am-net-news-detail-53.md",
+   "issue": "分量不足: 本文213字。rank: small の目安250字未満",
+   "scope": "article:2026-09-19-joint-idolmaster-tours-w-bn-am-net-news-detail-53.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-14th-live-2026.md",
+   "issue": "時制の確認：見出しで「本日17時30分開幕」と現在形で表現されているが、発行予定時刻が2026-09-19 06:00なので、本記事発行時点では DAY1 開幕はまだ11時間以上先である。「本日夜間に開幕」や「本日17時30分に開演予定」と表現し、開幕済みでない事実を明確にすることが望ましい（R6 時制の判定には影響しないが、読者への正確な伝達のため）",
+   "scope": "article:2026-09-19-million-14th-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-cardfolio-vol4-2026.md",
+   "issue": "分量不足：rank: small だが、公式ページ記載の詳細(レアリティ別種類数 N52/R27/MLR27/MR8 など)が記事に拾えていない。lead約260字で目安(小250字)をわずかに上回っているが、記事化に必要な要素の取りこぼしがある",
+   "scope": "article:2026-09-19-million-cardfolio-vol4-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-shiny-ramen-8-collab-2026.md",
+   "issue": "rank: small の目安(250字)に対し本文が118字で分量が薄い。出典には記載されているコラボ店舗の詳細(金澤醤油豚骨８番らーめんなど)やグッズバリエーション、コンセプトをさらに掘り下げることで充実させられる。",
+   "scope": "article:2026-09-19-shiny-ramen-8-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-shiny-suntory-lemon-squash-2026-09.md",
+   "issue": "分量：small ランク（目安 250 字以上）に対して本文が約 200 字で若干短い。sources の「スタッフの指示に従う」「利用をお断りする場合がある」などの注意事項を追加できれば、内容が充実する。",
+   "scope": "article:2026-09-19-shiny-suntory-lemon-squash-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-sidem-11th-commentarycasting.md",
+   "issue": "Structural issue: candidate_ids references 4 candidates but only 1 (202609181234-explore-11) exists in JSON",
+   "scope": "article:2026-09-19-sidem-11th-commentarycasting.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-19-765-765as-dress-code-solo-collection-2026.md",
+  "article:2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md",
+  "article:2026-09-19-cg-15th-anniversary-popup-2026.md",
+  "article:2026-09-19-cg-cinderella-master-number-one-2026-09.md",
+  "article:2026-09-19-cg-genkayouenichi-animo-2026.md",
+  "article:2026-09-19-cg-national-tower-fukuoka-2026.md",
+  "article:2026-09-19-cg-pop-up-shop-magical-cheers-animo-2026.md",
+  "article:2026-09-19-cg-www-the-chara-com-blog-p-121064.md",
+  "article:2026-09-19-cg-x-com-imas-cgofficial-status-2100963067651576145.md",
+  "article:2026-09-19-dsva-nagano-aniera-festa-2026.md",
+  "article:2026-09-19-dsva-shinkaifes-2026.md",
+  "article:2026-09-19-gaku-hedgehog-yutanpo-goods-2026.md",
+  "article:2026-09-19-gaku-ichiban-kuji-part6-2026.md",
+  "article:2026-09-19-general-channel-member-broadcast-2026-09-25.md",
+  "article:2026-09-19-joint-cg-kyomafu-2026-goods.md",
+  "article:2026-09-19-joint-idolmaster-tours-w-bn-am-net-news-detail-53.md",
+  "article:2026-09-19-million-14th-live-2026.md",
+  "article:2026-09-19-million-battle-of-theater-09-store-bonus-2026.md",
+  "article:2026-09-19-million-cardfolio-vol4-2026.md",
+  "article:2026-09-19-shiny-283-solo-live-bakusute-talk-2026.md",
+  "article:2026-09-19-shiny-hikawaryuu-yuneru-spa-2026.md",
+  "article:2026-09-19-shiny-msp-2026-09-f14b09.md",
+  "article:2026-09-19-shiny-ramen-8-collab-2026.md",
+  "article:2026-09-19-shiny-song-for-prism-event-goods-2026-10.md",
+  "article:2026-09-19-shiny-suntory-lemon-squash-2026-09.md",
+  "article:2026-09-19-sidem-11th-commentarycasting.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-19-765-765as-dress-code-solo-collection-2026.md": "2cd9b5e62c6259828b81dfb2a5145c5bf068da2abe4b8fb0187ba5eddcb72369",
+  "docs/_posts/2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md": "00e6a204770f7fd2009b56b9f23f0202aa1865241cceafea6c9197044f4713dc",
+  "docs/_posts/2026-09-19-cg-15th-anniversary-popup-2026.md": "7cad4f30c3fb0f0e02db47d407e819a14b92c52054ee12c3c4649c008c95e570",
+  "docs/_posts/2026-09-19-cg-cinderella-master-number-one-2026-09.md": "e89c3df3dc2a4083873000ca9cc3cecabc36d0fe5cb1122ed03a0d5176009542",
+  "docs/_posts/2026-09-19-cg-genkayouenichi-animo-2026.md": "831f61954ef8d286a2142b5298e800c742e2ca0ee3e4aaad2a9434671b22309b",
+  "docs/_posts/2026-09-19-cg-national-tower-fukuoka-2026.md": "f632f8574d1455a175a34ead7054dfba53ab535b0a5d1a5c19f8c00ec81e1353",
+  "docs/_posts/2026-09-19-cg-pop-up-shop-magical-cheers-animo-2026.md": "f57b295b9ec63ab8ff95c2c501ca78487326e9689dfdb2f9dfdf1fc52985689c",
+  "docs/_posts/2026-09-19-cg-www-the-chara-com-blog-p-121064.md": "1ffc9445a1555fd295c0f4d4197f673056502db8d5dbfd0c153bff66aadc732f",
+  "docs/_posts/2026-09-19-cg-x-com-imas-cgofficial-status-2100963067651576145.md": "7f44a230d5c36c4504bc1298361b58af16d7590861ba7dd93ef91dceea3f8166",
+  "docs/_posts/2026-09-19-dsva-nagano-aniera-festa-2026.md": "debca719faf54e0e4f7403f41cf3dbba425dd849ba42d2021e5e5e8859fe3c97",
+  "docs/_posts/2026-09-19-dsva-shinkaifes-2026.md": "8f7fe0988b074b5df293dc368ccba26558e174ec3bb3c79dc13afce7c76a2dc1",
+  "docs/_posts/2026-09-19-gaku-hedgehog-yutanpo-goods-2026.md": "1c5e3feca962362b65f381df0987c4a364dc367e6d4c8b44edb1c7eb3f95294b",
+  "docs/_posts/2026-09-19-gaku-ichiban-kuji-part6-2026.md": "f21d2050145a38ef3aaf45121bdc6d16c86bb8df227501b41a0fa27c5e5cfcd4",
+  "docs/_posts/2026-09-19-general-channel-member-broadcast-2026-09-25.md": "1d7ee56f0a13824ef671a495e1f2812c9466bd3ad547aa7391e9fc3e7461820a",
+  "docs/_posts/2026-09-19-joint-cg-kyomafu-2026-goods.md": "ab548bc52992cf9844273206b11727bfe56e030797b6bbd3d4c6425b7948ac8e",
+  "docs/_posts/2026-09-19-joint-idolmaster-tours-w-bn-am-net-news-detail-53.md": "6902753b8916f52001fe8cd38520a75feee37121cd182cd7e86c6168743b58bf",
+  "docs/_posts/2026-09-19-million-14th-live-2026.md": "33dc113fbf6355c2afe400f7a14f970f70f64723da04eb4e0796728e42e84d8d",
+  "docs/_posts/2026-09-19-million-battle-of-theater-09-store-bonus-2026.md": "2ece1a0062016b570b333878c68daf20aff929c0cf8b4f1b48a319e180a05fbc",
+  "docs/_posts/2026-09-19-million-cardfolio-vol4-2026.md": "e8e172b85116760483da3e8cf7b273513c48ab17a97a075bcf3fc4980ae39a0e",
+  "docs/_posts/2026-09-19-shiny-283-solo-live-bakusute-talk-2026.md": "ddf803b123b17671df95e237545ef34eba9ceaf2068e781598260c6d1f61e2d1",
+  "docs/_posts/2026-09-19-shiny-hikawaryuu-yuneru-spa-2026.md": "38369dc917a857d4a7f0602bea858b9fc7ee1c0986c4f35a6735154d742845a9",
+  "docs/_posts/2026-09-19-shiny-msp-2026-09-f14b09.md": "e50471c840a4e5355c01a9a2a5c2c8c1926c8bd583a94c601d55d7867f5866e8",
+  "docs/_posts/2026-09-19-shiny-ramen-8-collab-2026.md": "68b34d38996767036e74f657c607ad9b5f0ba754e01cf4fa8535415c0d04c7d8",
+  "docs/_posts/2026-09-19-shiny-song-for-prism-event-goods-2026-10.md": "b6273dc4a5ad805cc79827458513f148cad2004c8bfd4b1aeed8eac5a983ca13",
+  "docs/_posts/2026-09-19-shiny-suntory-lemon-squash-2026-09.md": "bc729b00a08d2ee9c387e58f8487256903ae91c4e149c08819e41227f0c2c8ea",
+  "docs/_posts/2026-09-19-sidem-11th-commentarycasting.md": "1863e18d72757b68a00c31d49c01bfd0ab65bef609a1004ac45daca2e9cfd929",
+  "docs/_editions/2026-09-19.md": "92bea990f69b519469e39010963d953164e07e3d353e609d91e946872711627b",
+  "metrics/stories-before-2026-09-19.yml": "0a61fd3ebd99c8b9d1af88ced6a5c30910953711ca29c0bd7c3c932f92dc809b"
+ }
+}

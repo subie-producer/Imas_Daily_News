@@ -1,0 +1,235 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-19-cg-15th-anniversary-popup-2026.md",
+   "rule_id": "R4",
+   "issue": "sources に記載された公式ページ URL（https://idolmaster-official.jp/news/01_19948）には、記事で述べられている詳細情報（グッズ内容、購入特典）が記載されていない。WebFetch で確認したところタイトル情報のみで、本文コンテンツは取得できませんでした。",
+   "quote": "sources:\n- label: アイドルマスター ポータル「【シンデレラ】「アイドルマスター シンデレラガールズ」15周年を記念したPOPUP「Parfait Coquetteべーション」詳細\n  url: https://idolmaster-official.jp/news/01_19948\n  type: 公式",
+   "repair": "drop_source",
+   "fact_ids": [
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F6",
+    "F7",
+    "F8",
+    "F9",
+    "F10"
+   ],
+   "expected": "sources として記事の詳細情報を実際に含む出典を指定するか、候補 202609181838-watch-6 を検証して facts が記事をサポートすることを確認する",
+   "scope": "article:2026-09-19-cg-15th-anniversary-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-15th-anniversary-popup-2026.md",
+   "rule_id": "R1",
+   "issue": "以下の詳細情報に対して sources または候補から確認できる出典がない：「想い出のイベントバナーグッズ」「対象商品を税込2,000円購入するごとにランダムでポストカード1枚をプレゼント」「レシートの合算はできず、特典はなくなり次第終了する」。候補 ID 202609181838-watch-6 は候補ファイルに見つかりません。",
+   "quote": "想い出のイベントバナーグッズや、ミニキャラになったアイドルたちのグッズも登場。対象商品を税込2,000円購入するごとに、ランダムでポストカード1枚をプレゼントする。レシートの合算はできず、特典はなくなり次第終了する。 <!-- F6 F7 F8 F9 F10 -->",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F6",
+    "F7",
+    "F8",
+    "F9",
+    "F10"
+   ],
+   "expected": "詳細情報の出典（候補ID 202609181838-watch-6 の存在確認、または新しい候補の追加）を明確にして、全ての詳細情報が sources または candidates から導出可能であることを確認する",
+   "scope": "article:2026-09-19-cg-15th-anniversary-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-15th-anniversary-popup-2026.md",
+   "rule_id": "R16",
+   "issue": "sources のラベルに誤字がある。「Parfait Coquetteべーション」と記載されており、「Celebration」が「べーション」と不完全に表記されています。",
+   "quote": "label: アイドルマスター ポータル「【シンデレラ】「アイドルマスター シンデレラガールズ」15周年を記念したPOPUP「Parfait Coquetteべーション」詳細",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "sources のラベルの誤字が修正され、「Parfait Coquette Celebration」と正しく表記される",
+   "scope": "article:2026-09-19-cg-15th-anniversary-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-sidem-11th-commentarycasting.md",
+   "issue": "出演者情報の出典が sources に見当たらない。記事が出演者の具体的な名前を断定しているが、sources の URL（https://idolmaster-official.jp/news/01_19904 と https://idolmaster-official.jp/news/01_19806.html）から出演者情報を確認できない",
+   "quote": "DAY1の出演者は、山谷祥生（蒼井享介役）、渡辺紘（榊夏来役）、小林大紀（水嶋咲役）、中島ヨシキ（山下次郎役）、汐谷文康（北村想楽役）。DAY2は9月20日11時30分からで、高塚智人（渡辺みのり役）、中田祐矢（清澄九郎役）、児玉卓也（卯月巻緒役）、浦尾岳大（兜大吾役）、比留間俊哉（九十九一希役）、伊瀬結陸（天峰秀役）が出演する。",
+   "rule_id": "R1",
+   "repair": "add_source",
+   "fact_ids": [
+    "F39",
+    "F40",
+    "F41"
+   ],
+   "expected": "出演者情報の出典となるURLを sources に追加するか、sources に記載されているURLから出演者情報が確認できることを検証する必要がある",
+   "scope": "article:2026-09-19-sidem-11th-commentarycasting.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-sidem-11th-commentarycasting.md",
+   "issue": "candidate_ids に指定されている ID のうち3つ（sched-2026-09-19-sidem-11th-commentarycasting-その他、sched-2026-09-19-sidem-11th-stage-archive-2026-開始、sched-2026-09-19-sidem-11th-live-performance-goods-2026-開幕）が候補ファイルに見つからない。記事の根拠コメントで参照される F39, F40, F41 がどの候補から来たのか確認できない",
+   "quote": "candidate_ids: [sched-2026-09-19-sidem-11th-commentarycasting-その他, 202609181234-explore-11, sched-2026-09-19-sidem-11th-stage-archive-2026-開始, sched-2026-09-19-sidem-11th-live-performance-goods-2026-開幕]",
+   "rule_id": "R3",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "F39",
+    "F40",
+    "F41"
+   ],
+   "expected": "出演者情報の出典が sources に明示されるか、候補ファイルから確認できるようにする必要がある",
+   "scope": "article:2026-09-19-sidem-11th-commentarycasting.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-19-cg-15th-anniversary-popup-2026.md",
+   "issue": "分量不足：rank が「small」（目安 250字）に対して本文が約150字と非常に短い。出典から会場詳細（営業時間、購入制限など）や入場方法（整理券など）を拾えば埋まる可能性がある。ただし、sources の信頼性が確認できるまでは分量拡張は推奨しません。",
+   "scope": "article:2026-09-19-cg-15th-anniversary-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-15th-anniversary-popup-2026.md",
+   "issue": "候補 ID 202609181838-watch-6 が候補ファイル（2026-09-18.json）に見つかりません。候補 ID の検証と更新が必要です。",
+   "scope": "article:2026-09-19-cg-15th-anniversary-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-14th-live-2026.md",
+   "issue": "分量不足: rank lead で目安 1000字に対して 472字。sources にある会場・支払い方法の詳細・対象条件などを追加すれば埋まる可能性がある",
+   "scope": "article:2026-09-19-million-14th-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-cardfolio-vol4-2026.md",
+   "issue": "分量不足。rank:small の目安は250字以上ですが、本文は約100字のみです。既報に記載されている商品仕様（13thLIVEやミリシタ9周年衣装のイラスト収録、新規描き下ろし8種）を出典で確認の上、加えることで分量を補充できます。",
+   "scope": "article:2026-09-19-million-cardfolio-vol4-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "候補に存在する高エンゲージメント記事が紙面に未掲載。SideM劇場版公開決定、シンデレラ15周年オーケストラコンサート開催など高エンゲージメント候補22本が落とされている。今号の最大トピック（ミリオン14th、アニエラ、京まふの開幕）に加え、これらの重要な発表も掲載検討の余地あり。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "紙面のブランドバランス：シンデレラガールズ7本、シャニマス6本で計13本（全26本の50%）を占める。他ブランド（765、DSVA、学マス、joint など）は各1～3本。CGとシャニマスへの偏りが顕著。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "digestには本日の主要イベント（ミリオン14th、アニエラ、京まふの開幕3件）が適切に掲載され、本日最大の話題が反映されている。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md",
+   "issue": "sources のラベルの日付表記が不統一。ラベルは「(2026年9月18日)」と GMT 基準だが、記事は「9月19日」と JST で記述。日本時間に統一すべき。",
+   "scope": "article:2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md",
+   "issue": "frontmatter の lede_fact_ids に F8（投稿日時）が含まれているが、lede に投稿日時の記載がない。fact_ids の誤りの可能性。lede_fact_ids から F8 を削除するか、lede に日時情報を追加するべき。",
+   "scope": "article:2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md",
+   "issue": "分量が不足（rank: small で目安 250字だが、記事は約 85字）。sources に詳細情報があれば追加可能。",
+   "scope": "article:2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-genkayouenichi-animo-2026.md",
+   "issue": "分量不足。rank: small は 250字目安だが、現在の本文は約100字。sources に記載の公式記事から、受付条件・グッズの特徴・数量限定の詳細、会場での販売との違いなど、さらに詳しい情報を拾うことで500字以上に充実させることが可能。",
+   "scope": "article:2026-09-19-cg-genkayouenichi-animo-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-pop-up-shop-magical-cheers-animo-2026.md",
+   "issue": "rank: small の目安は 250字以上だが、記事本文は 199字で分量が不足している。sources に記載されている実店舗ポップアップショップの開催期間、グッズの詳細（素材、サイズ、価格帯）、配置地図などを追加すれば埋まる。",
+   "scope": "article:2026-09-19-cg-pop-up-shop-magical-cheers-animo-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-x-com-imas-cgofficial-status-2100963067651576145.md",
+   "issue": "rank: small (目安250字以上)に対して本文が約115字で分量が不足。公式サイトに記載されたチケット料金帯(15,500〜81,500円)、開場時間(15:30)、会場のKアリーナ横浜の詳細など、読者の関心を引く情報が活用できていない。",
+   "scope": "article:2026-09-19-cg-x-com-imas-cgofficial-status-2100963067651576145.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-gaku-hedgehog-yutanpo-goods-2026.md",
+   "issue": "rank small に対して本文が薄い。目安は250字だが、現在は約184字（本文+リスト）。商品説明・対象条件などを出典から補足すれば充実する。",
+   "scope": "article:2026-09-19-gaku-hedgehog-yutanpo-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-joint-cg-kyomafu-2026-goods.md",
+   "issue": "sources の公式 URL のラベルが不完全。掲載日が「(2026年」で月日まで記載されていない。ザッキャラのラベルは「(2026年9月4日)」と完全であるため、公式も同じ形式に統一するべき",
+   "scope": "article:2026-09-19-joint-cg-kyomafu-2026-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-joint-cg-kyomafu-2026-goods.md",
+   "issue": "キッチンカーの支払い方法について sources で確認したところ、キッチンカーは「完全キャッシュレス」と記載されている。記事では「会場では現金、クレジットカード各種などが利用できる」と述べているが、文脈から主流通販ブースを指していると解釈される。ただし、読者がドリンク購入時にキャッシュレス限定であることは重要情報であり、記事の分量に余裕があれば記載を検討すべき",
+   "scope": "article:2026-09-19-joint-cg-kyomafu-2026-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-joint-idolmaster-tours-w-bn-am-net-news-detail-53.md",
+   "issue": "分量不足: 本文213字。rank: small の目安250字未満",
+   "scope": "article:2026-09-19-joint-idolmaster-tours-w-bn-am-net-news-detail-53.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-shiny-ramen-8-collab-2026.md",
+   "issue": "rank: small の目安(250字)に対し本文が118字で分量が薄い。出典には記載されているコラボ店舗の詳細(金澤醤油豚骨８番らーめんなど)やグッズバリエーション、コンセプトをさらに掘り下げることで充実させられる。",
+   "scope": "article:2026-09-19-shiny-ramen-8-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-shiny-suntory-lemon-squash-2026-09.md",
+   "issue": "分量：small ランク（目安 250 字以上）に対して本文が約 200 字で若干短い。sources の「スタッフの指示に従う」「利用をお断りする場合がある」などの注意事項を追加できれば、内容が充実する。",
+   "scope": "article:2026-09-19-shiny-suntory-lemon-squash-2026-09.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-19-765-765as-dress-code-solo-collection-2026.md",
+  "article:2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md",
+  "article:2026-09-19-cg-15th-anniversary-popup-2026.md",
+  "article:2026-09-19-cg-cinderella-master-number-one-2026-09.md",
+  "article:2026-09-19-cg-genkayouenichi-animo-2026.md",
+  "article:2026-09-19-cg-national-tower-fukuoka-2026.md",
+  "article:2026-09-19-cg-pop-up-shop-magical-cheers-animo-2026.md",
+  "article:2026-09-19-cg-www-the-chara-com-blog-p-121064.md",
+  "article:2026-09-19-cg-x-com-imas-cgofficial-status-2100963067651576145.md",
+  "article:2026-09-19-dsva-nagano-aniera-festa-2026.md",
+  "article:2026-09-19-dsva-shinkaifes-2026.md",
+  "article:2026-09-19-gaku-hedgehog-yutanpo-goods-2026.md",
+  "article:2026-09-19-gaku-ichiban-kuji-part6-2026.md",
+  "article:2026-09-19-general-channel-member-broadcast-2026-09-25.md",
+  "article:2026-09-19-joint-cg-kyomafu-2026-goods.md",
+  "article:2026-09-19-joint-idolmaster-tours-w-bn-am-net-news-detail-53.md",
+  "article:2026-09-19-million-14th-live-2026.md",
+  "article:2026-09-19-million-battle-of-theater-09-store-bonus-2026.md",
+  "article:2026-09-19-million-cardfolio-vol4-2026.md",
+  "article:2026-09-19-shiny-283-solo-live-bakusute-talk-2026.md",
+  "article:2026-09-19-shiny-hikawaryuu-yuneru-spa-2026.md",
+  "article:2026-09-19-shiny-msp-2026-09-f14b09.md",
+  "article:2026-09-19-shiny-ramen-8-collab-2026.md",
+  "article:2026-09-19-shiny-song-for-prism-event-goods-2026-10.md",
+  "article:2026-09-19-shiny-suntory-lemon-squash-2026-09.md",
+  "article:2026-09-19-sidem-11th-commentarycasting.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-19-765-765as-dress-code-solo-collection-2026.md": "2cd9b5e62c6259828b81dfb2a5145c5bf068da2abe4b8fb0187ba5eddcb72369",
+  "docs/_posts/2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md": "00e6a204770f7fd2009b56b9f23f0202aa1865241cceafea6c9197044f4713dc",
+  "docs/_posts/2026-09-19-cg-15th-anniversary-popup-2026.md": "7cad4f30c3fb0f0e02db47d407e819a14b92c52054ee12c3c4649c008c95e570",
+  "docs/_posts/2026-09-19-cg-cinderella-master-number-one-2026-09.md": "e89c3df3dc2a4083873000ca9cc3cecabc36d0fe5cb1122ed03a0d5176009542",
+  "docs/_posts/2026-09-19-cg-genkayouenichi-animo-2026.md": "831f61954ef8d286a2142b5298e800c742e2ca0ee3e4aaad2a9434671b22309b",
+  "docs/_posts/2026-09-19-cg-national-tower-fukuoka-2026.md": "f632f8574d1455a175a34ead7054dfba53ab535b0a5d1a5c19f8c00ec81e1353",
+  "docs/_posts/2026-09-19-cg-pop-up-shop-magical-cheers-animo-2026.md": "f57b295b9ec63ab8ff95c2c501ca78487326e9689dfdb2f9dfdf1fc52985689c",
+  "docs/_posts/2026-09-19-cg-www-the-chara-com-blog-p-121064.md": "1ffc9445a1555fd295c0f4d4197f673056502db8d5dbfd0c153bff66aadc732f",
+  "docs/_posts/2026-09-19-cg-x-com-imas-cgofficial-status-2100963067651576145.md": "7f44a230d5c36c4504bc1298361b58af16d7590861ba7dd93ef91dceea3f8166",
+  "docs/_posts/2026-09-19-dsva-nagano-aniera-festa-2026.md": "debca719faf54e0e4f7403f41cf3dbba425dd849ba42d2021e5e5e8859fe3c97",
+  "docs/_posts/2026-09-19-dsva-shinkaifes-2026.md": "8f7fe0988b074b5df293dc368ccba26558e174ec3bb3c79dc13afce7c76a2dc1",
+  "docs/_posts/2026-09-19-gaku-hedgehog-yutanpo-goods-2026.md": "1c5e3feca962362b65f381df0987c4a364dc367e6d4c8b44edb1c7eb3f95294b",
+  "docs/_posts/2026-09-19-gaku-ichiban-kuji-part6-2026.md": "f21d2050145a38ef3aaf45121bdc6d16c86bb8df227501b41a0fa27c5e5cfcd4",
+  "docs/_posts/2026-09-19-general-channel-member-broadcast-2026-09-25.md": "5d15774339e6ab429304d9ddbf576196d8a2c91b99ec04008b8bdb17f3dbbf20",
+  "docs/_posts/2026-09-19-joint-cg-kyomafu-2026-goods.md": "ab548bc52992cf9844273206b11727bfe56e030797b6bbd3d4c6425b7948ac8e",
+  "docs/_posts/2026-09-19-joint-idolmaster-tours-w-bn-am-net-news-detail-53.md": "6902753b8916f52001fe8cd38520a75feee37121cd182cd7e86c6168743b58bf",
+  "docs/_posts/2026-09-19-million-14th-live-2026.md": "33dc113fbf6355c2afe400f7a14f970f70f64723da04eb4e0796728e42e84d8d",
+  "docs/_posts/2026-09-19-million-battle-of-theater-09-store-bonus-2026.md": "2ece1a0062016b570b333878c68daf20aff929c0cf8b4f1b48a319e180a05fbc",
+  "docs/_posts/2026-09-19-million-cardfolio-vol4-2026.md": "10ca6863e7e30de57ca19620070c4efaf1368a65e77eb36571e948c1c6d1b837",
+  "docs/_posts/2026-09-19-shiny-283-solo-live-bakusute-talk-2026.md": "ddf803b123b17671df95e237545ef34eba9ceaf2068e781598260c6d1f61e2d1",
+  "docs/_posts/2026-09-19-shiny-hikawaryuu-yuneru-spa-2026.md": "38369dc917a857d4a7f0602bea858b9fc7ee1c0986c4f35a6735154d742845a9",
+  "docs/_posts/2026-09-19-shiny-msp-2026-09-f14b09.md": "e50471c840a4e5355c01a9a2a5c2c8c1926c8bd583a94c601d55d7867f5866e8",
+  "docs/_posts/2026-09-19-shiny-ramen-8-collab-2026.md": "68b34d38996767036e74f657c607ad9b5f0ba754e01cf4fa8535415c0d04c7d8",
+  "docs/_posts/2026-09-19-shiny-song-for-prism-event-goods-2026-10.md": "b6273dc4a5ad805cc79827458513f148cad2004c8bfd4b1aeed8eac5a983ca13",
+  "docs/_posts/2026-09-19-shiny-suntory-lemon-squash-2026-09.md": "bc729b00a08d2ee9c387e58f8487256903ae91c4e149c08819e41227f0c2c8ea",
+  "docs/_posts/2026-09-19-sidem-11th-commentarycasting.md": "1863e18d72757b68a00c31d49c01bfd0ab65bef609a1004ac45daca2e9cfd929",
+  "docs/_editions/2026-09-19.md": "92bea990f69b519469e39010963d953164e07e3d353e609d91e946872711627b",
+  "metrics/stories-before-2026-09-19.yml": "0a61fd3ebd99c8b9d1af88ced6a5c30910953711ca29c0bd7c3c932f92dc809b"
+ }
+}

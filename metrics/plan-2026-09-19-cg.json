@@ -1,0 +1,396 @@
+{
+ "decisions": {
+  "cg-hachimas-season2-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "はちます(八戸市)は9/17・9/18号で既報。開催は10/23からで本日のトリガーなし"
+  },
+  "cg-dejimas-naha-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "でじます那覇コラボは9/17号で既報。開催は11/20からで本日のトリガーなし"
+  },
+  "cg-15th-orchestra-concert-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "オーケストラコンサートは9/17・9/18号で既報(先行抽選受付中も既報済み)。本日のトリガーなし"
+  },
+  "cg-isetan-osechi-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "伊勢丹おせちコラボは9/17・9/18号で既報。缶バッジ等の追加詳細はあるが販売期間など骨子は同一で本日のトリガーなし"
+  },
+  "cg-15th-anniversary-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "15周年PARTYチケット情報(価格・日程)は9/18号で既報と同一内容"
+  },
+  "cg-election-2026-ouen-post-festival-awards": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "応援投稿祭受賞作品発表は9/18号で既報と同一内容"
+  },
+  "cg-15th-anniversary-party-for-your-one-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "未確認の個人アカウント経由だが内容は同一話題。9/18号で既報済み"
+  },
+  "cg-pop-up-shop-magical-cheers-animo-2026": {
+   "action": "article",
+   "angle": "終了した『POP UP SHOP A MAGICAL CHEERS』グッズがAnimoで事後通販、9/18受付開始・10/16締切",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-genkayouenichi-animo-2026": {
+   "action": "article",
+   "angle": "終了済み『幻夏妖宴市』グッズがAnimoで事後通販開始、9/18受付・10/16締切",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-anniversary-popup-2026": {
+   "action": "article",
+   "angle": "15周年POPUP『Parfait Coquette Celebration』詳細解禁、秋葉原で10/2開催・衣装とグッズ・購入特典も判明",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "x-com-animo-official-status-2100857365515915271を同一内容として統合"
+  },
+  "cg-cinderella-master-number-one-2026-09": {
+   "action": "article",
+   "angle": "『クロス×オーバー！』CD化、発売日9/30決定・試聴開始・コロムビア/アソビストア限定販売",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-national-tower-fukuoka-2026": {
+   "action": "article",
+   "angle": "福岡・門司港レトロで本日開幕、シンデレラガールズ×全国タワーツアー最新弾(現地限定販売)",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-imas-cgofficial-status-2100963067651576145": {
+   "action": "article",
+   "angle": "総選挙2026投票が終了、結果発表は11/29開催の15周年PARTY公演内で",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-tenlock-status-2100966979142369368": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人ファンアカウントによる未確認・低エンゲージメントの単発投稿。単体では記事化しない"
+  },
+  "x-com-imas-cgofficial-status-2100895104986726849": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アートコンテスト9/18締切はcg-election-cheer-contest-2026で既報と同一"
+  },
+  "x-com-imas-cgofficial-status-2100872472430018754": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "オーケストラ最速先行抽選(受付9/16-9/27)はcg-15th-orchestra-2027で既報と同一"
+  },
+  "x-com-imas-cgofficial-status-2100534883378766129": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "応援投稿祭受賞発表はcg-election-2026で既報と同一内容"
+  },
+  "idolmaster-official-jp-cinderellagirls-vote2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "投票期間は9/18に終了済みで既報内容の再掲。本日の新しいトリガーなし"
+  },
+  "x-com-thechara-2014-status-2100872465073516942": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "www-the-chara-com-blog-p-121064",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "有楽町マルイの京まふ事後物販POP UP SHOPと同一施策の追加商品告知"
+  },
+  "www-the-chara-com-blog-p-121064": {
+   "action": "article",
+   "angle": "有楽町マルイに京まふ事後物販POP UP SHOP、9/26開催決定・描き下ろし新商品も追加",
+   "rank": "large",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-animo-official-status-2100857365515915271": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一のParfait Coquette Celebration詳細解禁をAnimo公式が再掲"
+  },
+  "x-com-medicos-et-02-status-2100805640084246538": {
+   "action": "article",
+   "angle": "メディコスPOP UP、人気の等身大タペストリー等を本日9/19再入荷",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "www-lisani-jp-0000318296": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "オーケストラコンサート発表はcg-15th-anniversary-orchestra-2027等で既報と同一内容(報道記事による後追い)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-pop-up-shop-magical-cheers-animo-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "終了した『POP UP SHOP A MAGICAL CHEERS』グッズがAnimoで事後通販、9/18受付開始・10/16締切",
+    "lead_score": 10,
+    "dedup_key": "cg-pop-up-shop-magical-cheers-animo-2026",
+    "candidate_ids": [
+     "202609181838-watch-4"
+    ]
+   },
+   {
+    "slug": "cg-genkayouenichi-animo-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "終了済み『幻夏妖宴市』グッズがAnimoで事後通販開始、9/18受付・10/16締切",
+    "lead_score": 5,
+    "dedup_key": "cg-genkayouenichi-animo-2026",
+    "candidate_ids": [
+     "202609181838-watch-5"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-popup-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年POPUP『Parfait Coquette Celebration』詳細解禁、秋葉原で10/2開催・衣装とグッズ・購入特典も判明",
+    "lead_score": 55,
+    "dedup_key": "cg-15th-anniversary-popup-2026",
+    "candidate_ids": [
+     "202609181838-watch-6",
+     "202609190226-grok-89"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-master-number-one-2026-09",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "『クロス×オーバー！』CD化、発売日9/30決定・試聴開始・コロムビア/アソビストア限定販売",
+    "lead_score": 20,
+    "dedup_key": "cg-cinderella-master-number-one-2026-09",
+    "candidate_ids": [
+     "202609182335-watch-2"
+    ]
+   },
+   {
+    "slug": "cg-national-tower-fukuoka-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "福岡・門司港レトロで本日開幕、シンデレラガールズ×全国タワーツアー最新弾(現地限定販売)",
+    "lead_score": 30,
+    "dedup_key": "cg-national-tower-fukuoka-2026",
+    "candidate_ids": [
+     "202609190226-explore-1"
+    ]
+   },
+   {
+    "slug": "cg-x-com-imas-cgofficial-status-2100963067651576145",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "総選挙2026投票が終了、結果発表は11/29開催の15周年PARTY公演内で",
+    "lead_score": 15,
+    "dedup_key": "x-com-imas-cgofficial-status-2100963067651576145",
+    "candidate_ids": [
+     "202609190226-grok-78"
+    ]
+   },
+   {
+    "slug": "cg-www-the-chara-com-blog-p-121064",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "有楽町マルイに京まふ事後物販POP UP SHOP、9/26開催決定・描き下ろし新商品も追加",
+    "lead_score": 25,
+    "dedup_key": "www-the-chara-com-blog-p-121064",
+    "candidate_ids": [
+     "202609190226-grok-88",
+     "202609190226-grok-87"
+    ]
+   },
+   {
+    "slug": "cg-x-com-medicos-et-02-status-2100805640084246538",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "メディコスPOP UP、人気の等身大タペストリー等を本日9/19再入荷",
+    "lead_score": 5,
+    "dedup_key": "x-com-medicos-et-02-status-2100805640084246538",
+    "candidate_ids": [
+     "202609190226-grok-91"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-hachimas-season2-2026",
+    "reason": "既報",
+    "note": "はちます(八戸市)は9/17・9/18号で既報。開催は10/23からで本日のトリガーなし"
+   },
+   {
+    "dedup_key": "cg-dejimas-naha-2026",
+    "reason": "既報",
+    "note": "でじます那覇コラボは9/17号で既報。開催は11/20からで本日のトリガーなし"
+   },
+   {
+    "dedup_key": "cg-15th-orchestra-concert-2027",
+    "reason": "既報",
+    "note": "オーケストラコンサートは9/17・9/18号で既報(先行抽選受付中も既報済み)。本日のトリガーなし"
+   },
+   {
+    "dedup_key": "cg-isetan-osechi-2027",
+    "reason": "既報",
+    "note": "伊勢丹おせちコラボは9/17・9/18号で既報。缶バッジ等の追加詳細はあるが販売期間など骨子は同一で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-party-2026",
+    "reason": "既報",
+    "note": "15周年PARTYチケット情報(価格・日程)は9/18号で既報と同一内容"
+   },
+   {
+    "dedup_key": "cg-election-2026-ouen-post-festival-awards",
+    "reason": "既報",
+    "note": "応援投稿祭受賞作品発表は9/18号で既報と同一内容"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-party-for-your-one-2026",
+    "reason": "既報",
+    "note": "未確認の個人アカウント経由だが内容は同一話題。9/18号で既報済み"
+   },
+   {
+    "dedup_key": "x-com-tenlock-status-2100966979142369368",
+    "reason": "出典不足",
+    "note": "個人ファンアカウントによる未確認・低エンゲージメントの単発投稿。単体では記事化しない"
+   },
+   {
+    "dedup_key": "x-com-imas-cgofficial-status-2100895104986726849",
+    "reason": "既報",
+    "note": "アートコンテスト9/18締切はcg-election-cheer-contest-2026で既報と同一"
+   },
+   {
+    "dedup_key": "x-com-imas-cgofficial-status-2100872472430018754",
+    "reason": "既報",
+    "note": "オーケストラ最速先行抽選(受付9/16-9/27)はcg-15th-orchestra-2027で既報と同一"
+   },
+   {
+    "dedup_key": "x-com-imas-cgofficial-status-2100534883378766129",
+    "reason": "既報",
+    "note": "応援投稿祭受賞発表はcg-election-2026で既報と同一内容"
+   },
+   {
+    "dedup_key": "idolmaster-official-jp-cinderellagirls-vote2026",
+    "reason": "既報",
+    "note": "投票期間は9/18に終了済みで既報内容の再掲。本日の新しいトリガーなし"
+   },
+   {
+    "dedup_key": "www-lisani-jp-0000318296",
+    "reason": "既報",
+    "note": "オーケストラコンサート発表はcg-15th-anniversary-orchestra-2027等で既報と同一内容(報道記事による後追い)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

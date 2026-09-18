@@ -1,0 +1,287 @@
+{
+ "decisions": {
+  "nagano-aniera-festa-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-nagano-aniera-festa-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場アクセス・駐車場・シャトルバスFAQを開幕記事に統合"
+  },
+  "valiv-latest-info-special-2026-09-24": {
+   "action": "article",
+   "angle": "9/24(木)20時からヴイアラ公式chで最新情報特番を配信、勝股Pが出演",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-how-to-fish-2026-09-17": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/15号で既報、9/17開催済みで当日のトリガーなし"
+  },
+  "cosmo-how-to-fish-2026-09-17": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/15号で既報、9/17開催済みで当日のトリガーなし"
+  },
+  "letora-how-to-fish-2026-09-17": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/15号で既報、9/17開催済みで当日のトリガーなし"
+  },
+  "cosmo-big-walk-2026-09-18": {
+   "action": "roundup",
+   "angle": "vα-liv直近配信・SNS活動まとめ(9/17〜18)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-valiv-official-status-2100427022841377241": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/17 How to Fish配信の当日告知、既報内容と同一で新情報なし"
+  },
+  "x-com-valiv-official-status-2100510076863709686": {
+   "action": "roundup",
+   "angle": "vα-liv直近配信・SNS活動まとめ(9/17〜18)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-valiv-official-status-2100543541734977996": {
+   "action": "roundup",
+   "angle": "vα-liv直近配信・SNS活動まとめ(9/17〜18)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-valiv-official-status-2100579274394612058": {
+   "action": "roundup",
+   "angle": "vα-liv直近配信・SNS活動まとめ(9/17〜18)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-valiv-official-status-2100781868727898257": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-latest-info-special-2026-09-24",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/24特番の同一告知、記事に統合"
+  },
+  "x-com-valiv-official-status-2100789408802767356": {
+   "action": "roundup",
+   "angle": "vα-liv直近配信・SNS活動まとめ(9/17〜18)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-valiv-official-status-2100911698521796709": {
+   "action": "roundup",
+   "angle": "vα-liv直近配信・SNS活動まとめ(9/17〜18)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-kamizurucosmo-status-2100523641024958908": {
+   "action": "roundup",
+   "angle": "vα-liv直近配信・SNS活動まとめ(9/17〜18)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-kamizurucosmo-status-2100819137698426982": {
+   "action": "roundup",
+   "angle": "vα-liv直近配信・SNS活動まとめ(9/17〜18)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-tomorimanaka-status-2100981898067788242": {
+   "action": "roundup",
+   "angle": "vα-liv直近配信・SNS活動まとめ(9/17〜18)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-utagawaletora-status-2100870982961618945": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-nagano-aniera-festa-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アニエラフェスタ現地入りコメント、開幕記事に統合"
+  },
+  "x-com-utagawaletora-status-2100933726045905077": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-nagano-aniera-festa-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アニエラフェスタ開幕前コメント、開幕記事に統合"
+  },
+  "dsva-nagano-aniera-festa-2026": {
+   "action": "article",
+   "angle": "ナガノアニエラフェスタ2026が本日DAY1開幕、タイムテーブル・シャトルバス・来場注意点まとめ",
+   "rank": "large",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-shinkaifes-2026": {
+   "action": "article",
+   "angle": "深海フェス2026「超・深海」第二次(先着)販売が本日23:59で締切",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-latest-info-special-2026-09-24",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "9/24(木)20時からヴイアラ公式chで最新情報特番を配信、勝股Pが出演",
+    "lead_score": 20,
+    "dedup_key": "valiv-latest-info-special-2026-09-24",
+    "candidate_ids": [
+     "202609182335-explore-15",
+     "202609190226-grok-27"
+    ]
+   },
+   {
+    "slug": "dsva-nagano-aniera-festa-2026",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "ナガノアニエラフェスタ2026が本日DAY1開幕、タイムテーブル・シャトルバス・来場注意点まとめ",
+    "lead_score": 60,
+    "dedup_key": "dsva-nagano-aniera-festa-2026",
+    "candidate_ids": [
+     "sched-2026-09-19-dsva-nagano-aniera-festa-2026-開幕",
+     "202609180734-explore-12",
+     "202609190226-grok-33",
+     "202609190226-grok-34"
+    ]
+   },
+   {
+    "slug": "dsva-shinkaifes-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "深海フェス2026「超・深海」第二次(先着)販売が本日23:59で締切",
+    "lead_score": 5,
+    "dedup_key": "dsva-shinkaifes-2026",
+    "candidate_ids": [
+     "sched-2026-09-19-dsva-shinkaifes-2026-締切"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "vα-liv直近配信・SNS活動まとめ(9/17〜18)",
+    "lead_score": 0,
+    "dedup_key": "cosmo-big-walk-2026-09-18",
+    "candidate_ids": [
+     "202609182335-explore-19",
+     "202609190226-grok-24",
+     "202609190226-grok-25",
+     "202609190226-grok-26",
+     "202609190226-grok-28",
+     "202609190226-grok-29",
+     "202609190226-grok-30",
+     "202609190226-grok-31",
+     "202609190226-grok-32"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "manaka-how-to-fish-2026-09-17",
+    "reason": "既報",
+    "note": "9/15号で既報、9/17開催済みで当日のトリガーなし"
+   },
+   {
+    "dedup_key": "cosmo-how-to-fish-2026-09-17",
+    "reason": "既報",
+    "note": "9/15号で既報、9/17開催済みで当日のトリガーなし"
+   },
+   {
+    "dedup_key": "letora-how-to-fish-2026-09-17",
+    "reason": "既報",
+    "note": "9/15号で既報、9/17開催済みで当日のトリガーなし"
+   },
+   {
+    "dedup_key": "x-com-valiv-official-status-2100427022841377241",
+    "reason": "既報",
+    "note": "9/17 How to Fish配信の当日告知、既報内容と同一で新情報なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

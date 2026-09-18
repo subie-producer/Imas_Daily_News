@@ -285,5 +285,35 @@
   "src_candidate_id": "202609171837-watch-10",
   "event_date": "2026-11-28",
   "deadline": "2026-10-19"
+ },
+ {
+  "id": "sched-2026-09-30-million-battle-of-theater-09-store-bonus-2026-発売",
+  "dedup_key": "million-battle-of-theater-09-store-bonus-2026",
+  "brand": "million",
+  "subject": "「MILLION BATTLE OF THE＠TER 09」店舗特典",
+  "kind": "発売",
+  "note": "CDが発売され、対象9店舗で購入特典を受け取れる",
+  "reserved_on": "2026-09-19",
+  "title": "MILLION BATTLE OF THE＠TER 09 店舗特典決定",
+  "url": "https://www.lantis.jp/imas/extra.html",
+  "source_type": "準公式",
+  "facts": [
+   "発売日: 2026年9月30日（水）",
+   "タイトル: THE IDOLM@STER MILLION BATTLE OF THE＠TER 09 100てん☆ナンバーワン！",
+   "アーティスト: 中谷 育（CV.原嶋あかり）、水瀬伊織（CV.釘宮理恵）、我那覇 響（CV.沼倉愛美）、高槻やよい（CV.仁後真耶子）、大神 環（CV.稲川英里）、周防桃子（CV.渡部恵子）",
+   "品番: LACA-25289",
+   "価格: 1,870円（10％税込）/ 1,700円（税抜）",
+   "アソビストア購入特典: L判ブロマイド",
+   "アニメイト購入特典: ミニフォト（54mm×86mm）＆メタリックシール",
+   "Amazon.co.jp購入特典: メガジャケ",
+   "あみあみ購入特典: L判ブロマイド",
+   "ゲーマーズ購入特典: L判ブロマイド",
+   "ソフマップ・アニメガ購入特典: アクリルコースター（76mm）",
+   "タワーレコード（一部店舗を除く）購入特典: L判ブロマイド"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609181234-explore-4",
+  "event_date": "2026-09-30"
  }
 ]

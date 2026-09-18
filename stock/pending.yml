@@ -19,10 +19,6 @@
   brand: joint
   subject: シリーズ20周年ライブ IWSF2026(京王アリーナ TOKYO)
   watch: 各DAYのセットリスト・発表事項(結果として翌号で回収)
-- dedup_key: cinderella-girl-vote2026-schedule
-  brand: cg
-  subject: 15th Anniversary シンデレラガール総選挙2026
-  watch: 投票結果・上位5名発表(判明次第 triggers へ)
 - dedup_key: manaka-birthday-live-2026-postponed
   brand: dsva
   subject: 灯里愛夏バースデーオンラインライブ 延期分
@@ -147,10 +143,6 @@
   brand: sidem
   subject: SideM初の家庭用ゲームプロジェクト
   watch: 正式タイトル・発売時期などの詳細(判明次第 triggers へ)
-- dedup_key: shiny-9
-  brand: shiny
-  subject: シャニマス新ガシャシリーズ予告(★3確率1.5倍/新衣装)
-  watch: ガシャ名・開催日時(判明次第 triggers へ)
 - dedup_key: sidem-aji-project-2026
   brand: sidem
   subject: SideM「AJIプロジェクト」新ストーリーシリーズ

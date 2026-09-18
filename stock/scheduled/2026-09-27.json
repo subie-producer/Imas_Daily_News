@@ -646,5 +646,63 @@
   "src_candidate_id": "202609180236-grok-56",
   "event_date": "2026-09-18",
   "deadline": "2026-09-27"
+ },
+ {
+  "id": "sched-2026-09-27-shiny-283-solo-live-bakusute-talk-2026-開始",
+  "dedup_key": "shiny-283-solo-live-bakusute-talk-2026",
+  "brand": "shiny",
+  "subject": "MSP DAY2後「ばくすて！とーく」配信",
+  "kind": "開始",
+  "note": "生配信「ばくすて！とーく」を視聴できる",
+  "reserved_on": "2026-09-19",
+  "title": "YouTube『283 PRODUCTION Solo Live Collection』ばくすて！とーく配信決定",
+  "url": "https://idolmaster-official.jp/news/01_19796",
+  "source_type": "公式",
+  "facts": [
+   "9月27日(日) 『283 PRODUCTION Solo Live Collection -Master ShowPiece-』DAY2公演終了後に振り返りの生配信『ばくすて！とーく』を実施",
+   "配信日時：2026年9月27日(日) 公演終了後～",
+   "出演者：",
+   "  - 夏目響平（アニメ『アイドルマスター シャイニーカラーズ』プロデューサー役）",
+   "  - 益山武明（『アイドルマスター SideM』紅井朱雀役）",
+   "『ばくすて！とーく』はキャストと一緒にライブの感想を語り合う生ラジオ番組",
+   "楽曲を振り返って盛り上がる",
+   "当日はみなさんもチャット欄などでご参加ください",
+   "配信URL：https://www.youtube.com/live/FkOu8y9GV0g",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609181838-watch-7",
+  "event_date": "2026-09-27"
+ },
+ {
+  "id": "sched-2026-09-27-shiny-suntory-lemon-squash-2026-09-終了",
+  "dedup_key": "shiny-suntory-lemon-squash-2026-09",
+  "brand": "shiny",
+  "subject": "シャニマス自販機にレモンスカッシュ",
+  "kind": "終了",
+  "note": "京王アリーナTOKYOの専用自販機、最終日(17:00まで)",
+  "reserved_on": "2026-09-19",
+  "title": "シャニマス × サントリー自販機でレモンスカッシュ発売",
+  "url": "https://idolmaster-official.jp/news/01_19924",
+  "source_type": "公式",
+  "facts": [
+   "全国のサントリー自販機600台以上で9月28日より発売",
+   "オリジナルラベルのレモンスカッシュ",
+   "ラベルは全28種でStella、Luna、Sol の3チームごとで販売",
+   "オリジナルラベルをはがしてステッカーとして利用可能",
+   "数量限定オリジナルアクキーが当たるかも",
+   "京王アリーナTOKYO で 2026年9月26日(土)・27日(日) 11:00～17:00 に専用自販機が登場",
+   "専用自販機は1F駐車場エリアに設置",
+   "エンゲージメント: 中",
+   "9月28日(月)より、全国のサントリー自販機600台以上で「アイドルマスター シャイニーカラーズ」オリジナルラベルのレモンスカッシュを発売",
+   "ラベルは全28種",
+   "Stella、Luna、Solの3チームごとで販売",
+   "オリジナルラベルははがしてステッカーとしても楽しめる"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609181838-watch-0",
+  "event_date": "2026-09-28"
  }
 ]

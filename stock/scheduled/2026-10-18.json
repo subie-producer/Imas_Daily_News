@@ -64,5 +64,61 @@
   "src_candidate_id": "202609180236-explore-6",
   "event_date": "2026-09-18",
   "deadline": "2026-10-18"
+ },
+ {
+  "id": "sched-2026-10-18-x-com-animo-official-status-2100857365515915271-千秋楽",
+  "dedup_key": "x-com-animo-official-status-2100857365515915271",
+  "brand": "cg",
+  "subject": "シンデレラ15周年POPUP「Parfait Coquette Celebration」",
+  "kind": "千秋楽",
+  "note": "秋葉原POPUP最終日",
+  "reserved_on": "2026-09-19",
+  "title": "「Parfait Coquette Celebration」詳細解禁",
+  "url": "https://x.com/Animo_official_/status/2100857365515915271",
+  "source_type": "当事者",
+  "facts": [
+   "「Parfait Coquette Celebration」詳細解禁",
+   "ミニキャラ・グッズラインナップを大公開",
+   "あまあまガーリーなアイドルたちのグッズが盛りだくさん",
+   "🗓️2026年10月2日（金）~10月18日（日)",
+   "🛒コトブキヤ秋葉原館5F",
+   "詳細はこちら: https://www.kotobukiya.co.jp/event/detail/1356/",
+   "#imas_cg",
+   "#デレマス",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609190226-grok-89",
+  "event_date": "2026-10-02"
+ },
+ {
+  "id": "sched-2026-10-18-x-com-imassc-prism-status-2100782865265086577-締切前",
+  "dedup_key": "x-com-imassc-prism-status-2100782865265086577",
+  "brand": "shiny",
+  "subject": "シャニソン新ピックアップガシャ(★3確率1.5倍)",
+  "kind": "締切前",
+  "note": "新ピックアップガシャ終了まであと3日(10/21 11:59まで)",
+  "reserved_on": "2026-09-19",
+  "title": "デュアラブルインパクトリリース記念 1回限定！ジュエルセール",
+  "url": "https://x.com/imassc_prism/status/2100782865265086577",
+  "source_type": "公式",
+  "facts": [
+   "投稿日時: 2026-09-18 03:04:00 GMT",
+   "見出し: デュアラブルインパクトリリース記念 1回限定！ジュエルセール開催中！",
+   "販売場所: ASOBI STORE限定",
+   "内容: お得なジュエルが販売中",
+   "開催期間: 10/21 11:59まで",
+   "アソビストア: https://webstore.asobistore.jp/shinycolors-song-for-prism",
+   "商品名: 円環 #01 アンティーカ×シーズ 1回限定！プリズムジュエル10,000個",
+   "価格: ¥10,000",
+   "購入回数: 1回のみ購入可能",
+   "内容: 有償ジュエル10,000個",
+   "期限表記: 2026/10/21 11:59:59(UTC+09:00)まで",
+   "注意: WEB STOREで購入した有償ジュエルは、DMM GAMESを除く全てのプラットフォームで利用可"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609190226-grok-69"
  }
 ]

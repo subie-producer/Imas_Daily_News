@@ -1,0 +1,462 @@
+{
+ "decisions": {
+  "million-battle-of-theater-09-100ten-number-one": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-battle-of-theater-09-store-bonus-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一CD(LACA-25289)の店舗特典、詳細版に統合"
+  },
+  "million-ova-earphone-cp-ows01a-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18既報のオンキヨーコラボイヤホン受注開始と同一内容、本日の新規トリガーなし"
+  },
+  "million-kotobukiya-kuji-stage04-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18既報のstage04販売開始情報と同一、本日新規事実なし"
+  },
+  "million-battle-of-theater-09-store-bonus-2026": {
+   "action": "article",
+   "angle": "9/30発売『MILLION BATTLE OF THE@TER 09 100てん☆ナンバーワン』の全店舗特典をまとめて紹介",
+   "rank": "large",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アソビストア/アニメイト/Amazon/Tawareco/虎の穴/ゲーマーズの特典を統合、素材10件以上"
+  },
+  "million-x-stream-theater-cd-2026": {
+   "action": "article",
+   "angle": "新シリーズ『X-STREAM THEATER』記念CD発売決定、ラジオ番組お便り募集(〆切9/24)を告知",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-seasonal-snapshot-december-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18既報の受注情報(締切9/20)と同一、本日のトリガーなし"
+  },
+  "million-platinum-star-tour-bingo-event-2026": {
+   "action": "roundup",
+   "angle": "進行中の運営まとめ:プラチナスターツアービンゴ／マンスリー・オルタナティブガシャ／関連動画・4コマ",
+   "rank": "",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-platinum-star-tour-bingo-ittan-aishite-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-star-tour-bingo-event-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一イベントの重複収集"
+  },
+  "million-battle-of-the-ter-09-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-battle-of-theater-09-store-bonus-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "店舗特典の追加分(Tawareco/虎の穴/ゲーマーズ)を統合"
+  },
+  "million-14th-live-2026": {
+   "action": "article",
+   "angle": "ミリオン14thLIVE DAY1「夢咲くワンダーミラージュ」、本日17:30に代々木第一体育館で開幕",
+   "rank": "large",
+   "lead_score": 90,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式SNS告知・当日券・配信チケット・記念コスチューム等の周辺主題を統合"
+  },
+  "x-com-imasml-765pro-status-2100562916517032433": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1出演者メッセージ、開幕記事に統合"
+  },
+  "x-com-imasml-765pro-status-2100872454843531384": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2出演者メッセージ、開幕記事に統合"
+  },
+  "x-com-imasml-theater-status-2100880004603326675": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "応援パネル展示・混雑案内、開幕記事に統合"
+  },
+  "x-com-imasml-theater-status-2100827163134239002": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-x-stream-theater-cd-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "X-STREAM THEATER開幕告知、CD記事の背景情報として統合"
+  },
+  "x-com-imasml-theater-status-2100830931279827419": {
+   "action": "roundup",
+   "angle": "プラチナスターツアービンゴ記念、音源付き動画フレーム配布",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-imasml-theater-status-2100887561891615020": {
+   "action": "roundup",
+   "angle": "プラチナスターツアービンゴ関連、南早紀さん(白石紬役)の踊ってみた動画公開",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-imasml-theater-status-2100828917951263083": {
+   "action": "roundup",
+   "angle": "マンスリー・オルタナティブ[EVOLVE]ガシャ、限定SSR七尾百合子・篠宮可憐ら登場",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-imasml-theater-status-2100872476662091924": {
+   "action": "roundup",
+   "angle": "ガシャ登場キャラ(百合子・可憐)の4コマまんが公開",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "kuji-kotobukiya-co-jp-lp-the-idolmaster-million-live04-index-html": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "kotobukiya-kuji-stage04-2026と同一販売情報の重複収集"
+  },
+  "x-com-choucho0115-status-2100945580747006445": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "演者個人のSNS投稿、単体記事化しない"
+  },
+  "x-com-7330615nayg-status-2100939157833208111": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "未確認個人アカウントの応援投稿"
+  },
+  "x-com-us-of-aberika-status-2100954917884281335": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "未確認個人アカウントの応援投稿"
+  },
+  "x-com-yamaguchirikako-status-2100958266033672204": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "未確認個人アカウントの応援広告視察投稿"
+  },
+  "x-com-hiromi-ig-status-2100979802031436036": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ゲームショウ会場での個人的なやり取り、ニュース性なし"
+  },
+  "million-14th-live": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "7月の先行受付告知で、本日新たに起きることの記載なし"
+  },
+  "million-cardfolio-vol4-2026": {
+   "action": "article",
+   "angle": "カードフォリオ ミリオンライブ！ver.vol.4が本日発売、14thLIVE会場でも先行販売",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14thlive-general-sale-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/12締切の一般販売告知で日付が異なる旧情報"
+  },
+  "grok-077": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "14thLIVE記念レッスンウェア追加、開幕記事に統合"
+  },
+  "million-14th-streaming-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信チケット情報は開幕記事にまとめる"
+  },
+  "million-14th-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "一般販売2次の告知は9/15付で既報、本日新規トリガーなし"
+  },
+  "million-14th-live-last-minute-tickets-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日券・一般2次情報は開幕記事にまとめる"
+  },
+  "million-14th-ticket-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "一般2次・当日券の重複情報、開幕記事に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-battle-of-theater-09-store-bonus-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "9/30発売『MILLION BATTLE OF THE@TER 09 100てん☆ナンバーワン』の全店舗特典をまとめて紹介",
+    "lead_score": 10,
+    "dedup_key": "million-battle-of-theater-09-store-bonus-2026",
+    "candidate_ids": [
+     "202609181234-explore-4",
+     "202609180734-explore-4",
+     "202609182335-watch-3"
+    ]
+   },
+   {
+    "slug": "million-x-stream-theater-cd-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "新シリーズ『X-STREAM THEATER』記念CD発売決定、ラジオ番組お便り募集(〆切9/24)を告知",
+    "lead_score": 15,
+    "dedup_key": "million-x-stream-theater-cd-2026",
+    "candidate_ids": [
+     "202609181838-watch-2",
+     "202609190226-grok-54"
+    ]
+   },
+   {
+    "slug": "million-14th-live-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "ミリオン14thLIVE DAY1「夢咲くワンダーミラージュ」、本日17:30に代々木第一体育館で開幕",
+    "lead_score": 90,
+    "dedup_key": "million-14th-live-2026",
+    "candidate_ids": [
+     "202609190226-explore-12",
+     "sched-2026-09-19-million-14th-live-2026-開幕",
+     "202609190226-grok-51",
+     "202609190226-grok-52",
+     "202609190226-grok-53",
+     "sched-2026-09-19-grok-077-開幕",
+     "sched-2026-09-19-million-14th-streaming-2026-開幕",
+     "sched-2026-09-19-million-14th-live-last-minute-tickets-2026-開幕",
+     "sched-2026-09-19-million-14th-ticket-2026-開幕"
+    ]
+   },
+   {
+    "slug": "million-cardfolio-vol4-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "カードフォリオ ミリオンライブ！ver.vol.4が本日発売、14thLIVE会場でも先行販売",
+    "lead_score": 5,
+    "dedup_key": "million-cardfolio-vol4-2026",
+    "candidate_ids": [
+     "sched-2026-09-19-million-cardfolio-vol4-2026-発売"
+    ]
+   },
+   {
+    "slug": "million-ops-roundup",
+    "brand": "million",
+    "rank": "roundup",
+    "angle": "進行中の運営まとめ:プラチナスターツアービンゴ／マンスリー・オルタナティブガシャ／関連動画・4コマ",
+    "lead_score": 0,
+    "dedup_key": "million-platinum-star-tour-bingo-event-2026",
+    "candidate_ids": [
+     "202609181838-watch-11",
+     "202609190226-grok-55",
+     "202609190226-grok-56",
+     "202609190226-grok-57",
+     "202609190226-grok-58",
+     "202609181838-explore-20"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-ova-earphone-cp-ows01a-2026",
+    "reason": "既報",
+    "note": "9/18既報のオンキヨーコラボイヤホン受注開始と同一内容、本日の新規トリガーなし"
+   },
+   {
+    "dedup_key": "million-kotobukiya-kuji-stage04-2026",
+    "reason": "既報",
+    "note": "9/18既報のstage04販売開始情報と同一、本日新規事実なし"
+   },
+   {
+    "dedup_key": "million-seasonal-snapshot-december-2026",
+    "reason": "既報",
+    "note": "9/18既報の受注情報(締切9/20)と同一、本日のトリガーなし"
+   },
+   {
+    "dedup_key": "kuji-kotobukiya-co-jp-lp-the-idolmaster-million-live04-index-html",
+    "reason": "既報",
+    "note": "kotobukiya-kuji-stage04-2026と同一販売情報の重複収集"
+   },
+   {
+    "dedup_key": "x-com-choucho0115-status-2100945580747006445",
+    "reason": "個人の話題",
+    "note": "演者個人のSNS投稿、単体記事化しない"
+   },
+   {
+    "dedup_key": "x-com-7330615nayg-status-2100939157833208111",
+    "reason": "個人の話題",
+    "note": "未確認個人アカウントの応援投稿"
+   },
+   {
+    "dedup_key": "x-com-us-of-aberika-status-2100954917884281335",
+    "reason": "個人の話題",
+    "note": "未確認個人アカウントの応援投稿"
+   },
+   {
+    "dedup_key": "x-com-yamaguchirikako-status-2100958266033672204",
+    "reason": "個人の話題",
+    "note": "未確認個人アカウントの応援広告視察投稿"
+   },
+   {
+    "dedup_key": "x-com-hiromi-ig-status-2100979802031436036",
+    "reason": "個人の話題",
+    "note": "ゲームショウ会場での個人的なやり取り、ニュース性なし"
+   },
+   {
+    "dedup_key": "million-14th-live",
+    "reason": "既報",
+    "note": "7月の先行受付告知で、本日新たに起きることの記載なし"
+   },
+   {
+    "dedup_key": "million-14thlive-general-sale-2026",
+    "reason": "既報",
+    "note": "9/12締切の一般販売告知で日付が異なる旧情報"
+   },
+   {
+    "dedup_key": "million-14th-2026",
+    "reason": "既報",
+    "note": "一般販売2次の告知は9/15付で既報、本日新規トリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

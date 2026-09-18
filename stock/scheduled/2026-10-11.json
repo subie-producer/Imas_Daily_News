@@ -179,5 +179,35 @@
   "verify": "confirmed",
   "src_candidate_id": "202609161837-explore-12",
   "deadline": "2026-10-11"
+ },
+ {
+  "id": "sched-2026-10-11-shiny-song-for-prism-event-goods-2026-10-開始",
+  "dedup_key": "shiny-song-for-prism-event-goods-2026-10",
+  "brand": "shiny",
+  "subject": "シャニマス発売記念イベント会場物販",
+  "kind": "開始",
+  "note": "会場物販スペースでグッズ購入が可能に(12:30~終演後30分程度)",
+  "reserved_on": "2026-09-19",
+  "title": "シャニマス『Song for Prism』発売記念イベント会場物販",
+  "url": "https://idolmaster-official.jp/news/01_19891",
+  "source_type": "公式",
+  "facts": [
+   "2026年10月11日(日)の発売記念イベントで会場物販実施",
+   "発売記念グッズの会場販売",
+   "KAMISABIゲームの販売も実施",
+   "イベント会場での体験会は実施しない",
+   "購入制限：お一人様1アイテムにつき3点まで",
+   "ランダム缶バッジは8点まで",
+   "KAMISABI アルバムセット『THE IDOLM@STER SHINY COLORS』に購入制限なし",
+   "販売日時：2026年10月11日(日) 12:30～終演後30分程度",
+   "販売場所：イベント会場内物販スペース",
+   "支払い方法：現金、クレジットカード、電子マネー、バーコード決済等利用可",
+   "事後通販は未定",
+   "商品によって予告なく個数制限を変更する場合あり"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609181838-watch-1",
+  "event_date": "2026-10-11"
  }
 ]

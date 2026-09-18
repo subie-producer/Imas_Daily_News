@@ -108,8 +108,8 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
     """出力の**形**の検算(schema は型しか見ない)。通らない理由を返す(空なら合格)。
 
     見るのは形だけ: 見出し・リード・段落に根拠 id が付いていて実在する / 出典 URL は素材か new_facts の
-    もの / tags は2〜4 / event_date は日付の形 / 見送りは理由付き / roundup・culture は3件以上の素材を
-    使っている / 1 block = 1 段落 / HTML・参照リンク・不可視文字を書いていない。
+    もの / tags は2〜4 / event_date は日付の形 / 見送りは理由付き / roundup は3件以上の素材を
+    使っている(culture は1件でも載せる) / 1 block = 1 段落 / HTML・参照リンク・不可視文字を書いていない。
     **中身の判断(出典を隠していないか、日付が素材と合うか、new_facts を本当に読んだか)は校閲(モデル)の
     仕事で、ここではしない**(校閲の機械化はしない。編集長の指示)
     """
@@ -167,8 +167,8 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
     if unsupported:
         problems.append(f"根拠の事実 id が無い段落: {unsupported[:6]}")
     cand_of = fact_index(materials)
-    if rank in ("roundup", "culture"):
-        # 束ねの記事は3件以上の素材から書けていること
+    if rank == "roundup":
+        # 定常運営まとめは3件以上の素材から書けていること(ファン面 culture は素材が1件でも載せる。編集長の決定 2026-09-18)
         used = {cand_of[i] for b in (out.get("blocks") or []) for i in (b.get("fact_ids") or []) if i in cand_of}
         if len(used) < 3:
             problems.append(f"{rank} なのに使った素材が {len(used)} 件(3件以上)")

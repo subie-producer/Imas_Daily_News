@@ -182,6 +182,7 @@ secondary_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - v12.battlepage.com    # 合議で追加: 個人の投稿。指示では『個人を二次情報にしない』と明記
   - ckworks.jp            # 合議で追加: 個人ブログ・サービス。アニメレポート・VTuber情報
   - motoraji.jugem.jp     # もとラジ!(ファン番組の自己発信)
 
@@ -305,6 +306,10 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - mMVL0_U3Tjk         # 機械で追加: @TomoriManaka「【How to Fish】なかよく魚釣り？いいえ、たたかいで」
+    - hZUB5aiesTg         # 機械で追加: @project_imas_va-liv「【新情報あり】最新情報をお知らせする特番【 #ヴイアラ 】」
+    - ATRiaZHUSlM         # 機械で追加: @UtagawaLetora「【How to Fish】大人気カオスゲー！！！釣れ！！！！」
+    - 0qFmuM6MbuM         # 機械で追加: @KamizuruCosmo「【Big Walk】広大な世界を自由に探索＆協力＆謎解きゲー」
     - SjOP3AmE148         # 機械で追加: @imas-official「【アイマス】THE IDOLM@STER 765PRO AL」
     - GoAtGghnl4E         # 機械で追加: @imas-official「【アイマス】THE IDOLM@STER 765PRO AL」
     - y-4qOn-UQV4   # 機械で追加: @UtagawaLetora「【SILENT HILL f】 DAY06｜500円の呪いは」

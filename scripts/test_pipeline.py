@@ -42,10 +42,10 @@ def test_check_output():
     _, fb = renderlib.materials_with_ids(MATS)
     C = lambda o, **k: renderlib.check_output(o, fb, MATS, **k)
     check(C(OK) == [], f"合格するはずの出力が落ちた: {C(OK)}")
-    for rank in ("roundup", "culture"):
-        check(C(OK, rank=rank) == [], f"{rank} 合格が落ちた: {C(OK, rank=rank)}")
-        bad = dict(OK, blocks=[{"markdown": "x", "fact_ids": ["F1"]}], sources=OK["sources"][:1])
-        check(any(rank in p for p in C(bad, rank=rank)), f"{rank} の素材不足が通った")
+    one = dict(OK, blocks=[{"markdown": "x", "fact_ids": ["F1"]}], sources=OK["sources"][:1])
+    check(C(OK, rank="roundup") == [] and any("roundup" in p for p in C(one, rank="roundup")), "roundup の素材の下限(3件)")
+    # ファン面(culture)は素材が1件でも載せる(編集長の決定 2026-09-18)
+    check(C(one, rank="culture") == [], f"素材1件の culture を落とした: {C(one, rank='culture')}")
     # 出典を隠していないか・日付が素材と合うかは校閲(モデル)の判断。機械は形しか見ない
     check(C(dict(OK, sources=OK["sources"][:1])) == [], "出典の取捨(校閲の判断)を機械が落とした")
     check(C(dict(OK, event_date="2026-10-01")) == [], "日付の整合(校閲の判断)を機械が落とした")

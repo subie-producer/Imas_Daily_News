@@ -58,7 +58,7 @@
 - NO_PRIMARY_SOURCE: 公式が告知するはずの話題で、公式・準公式の出典に届かない
 - SOURCE_MISMATCH: 記事の中核になる事実が、出典で確認できない・出典と食い違う
 - NOT_NEWS: 今日新しく起きたことも、これから起きることも無い(過年度・終了済み・既報と同じ内容・書ける中身が「ページが存在する」だけ)
-- TOO_FEW_MATERIALS: rank が roundup / culture で、確かめて残った項目が2件以下
+- TOO_FEW_MATERIALS: rank が roundup で、確かめて残った項目が2件以下(culture は素材が1件でも書く)
 - OTHER: 上のどれでもない理由
 
 ## 7. 出力(JSON。形は schema が決める)

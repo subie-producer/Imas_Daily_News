@@ -64,5 +64,32 @@
   "src_candidate_id": "202609180236-explore-6",
   "event_date": "2026-09-18",
   "deadline": "2026-10-18"
+ },
+ {
+  "id": "sched-2026-10-18-x-com-animo-official-status-2100857365515915271-終了",
+  "dedup_key": "x-com-animo-official-status-2100857365515915271",
+  "brand": "cg",
+  "subject": "シンデレラ15周年POPUP",
+  "kind": "終了",
+  "note": "POPUPの最終日、グッズ購入・特典入手ができる最後のチャンス",
+  "reserved_on": "2026-09-19",
+  "title": "「Parfait Coquette Celebration」詳細解禁",
+  "url": "https://x.com/Animo_official_/status/2100857365515915271",
+  "source_type": "当事者",
+  "facts": [
+   "「Parfait Coquette Celebration」詳細解禁",
+   "ミニキャラ・グッズラインナップを大公開",
+   "あまあまガーリーなアイドルたちのグッズが盛りだくさん",
+   "🗓️2026年10月2日（金）~10月18日（日)",
+   "🛒コトブキヤ秋葉原館5F",
+   "詳細はこちら: https://www.kotobukiya.co.jp/event/detail/1356/",
+   "#imas_cg",
+   "#デレマス",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609190226-grok-89",
+  "event_date": "2026-10-02"
  }
 ]

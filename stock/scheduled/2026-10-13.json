@@ -18,5 +18,58 @@
   "src_candidate_id": "202608241248-watch-0",
   "event_date": "2026-08-28",
   "deadline": "2026-10-13"
+ },
+ {
+  "id": "sched-2026-10-13-cg-genkayouenichi-animo-2026-締切前",
+  "dedup_key": "cg-genkayouenichi-animo-2026",
+  "brand": "cg",
+  "subject": "『幻夏妖宴市』グッズAnimo事後通販",
+  "kind": "締切前",
+  "note": "受付終了まであと3日、注文を急ぎたいタイミング",
+  "reserved_on": "2026-09-19",
+  "title": "シンデレラ『幻夏妖宴市』グッズAnimo販売開始",
+  "url": "https://idolmaster-official.jp/news/01_19949",
+  "source_type": "公式",
+  "facts": [
+   "『幻夏妖宴市』で展開していたグッズがAnimoにて販売決定",
+   "2026年9月18日(金) 17:00より予約受付開始",
+   "受付期間：2026年9月18日(金) 17:00～10月16日(金)17:00",
+   "妖怪に身を扮したアイドルたちのグッズが盛りだくさん",
+   "一部商品は数量限定",
+   "事後通販には特典は付属しない",
+   "事後通販には投票券と引き換え可能なシリアルコードは付属しない",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609181838-watch-5",
+  "deadline": "2026-10-16"
+ },
+ {
+  "id": "sched-2026-10-13-cg-pop-up-shop-magical-cheers-animo-2026-締切前",
+  "dedup_key": "cg-pop-up-shop-magical-cheers-animo-2026",
+  "brand": "cg",
+  "subject": "A MAGICAL CHEERSグッズAnimo事後通販",
+  "kind": "締切前",
+  "note": "受付終了まであと3日、注文を急ぎたいタイミング",
+  "reserved_on": "2026-09-19",
+  "title": "シンデレラ『POP UP SHOP A MAGICAL CHEERS』グッズAnimo販売開始",
+  "url": "https://idolmaster-official.jp/news/01_19951",
+  "source_type": "公式",
+  "facts": [
+   "POP UP SHOP A MAGICAL CHEERSで展開していた一部グッズがAnimoにて販売決定",
+   "2026年9月18日(金) 17:00より予約受付開始",
+   "受付期間：2026年9月18日(金) 17:00～10月16日(金)17:00",
+   "特別ビジュアルの11人のアイドル達の一部商品がEC販売に登場",
+   "思い出のあのシーンもグッズになって登場",
+   "一部商品は数量限定",
+   "事後通販には特典は付属しない",
+   "事後通販には投票券と引き換え可能なシリアルコードは付属しない",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609181838-watch-4",
+  "deadline": "2026-10-16"
  }
 ]

@@ -1,0 +1,268 @@
+{
+ "decisions": {
+  "gaku-after-school-namco-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/11既報(story: gaku-after-school-namco-2026)と同内容、新事実・当日トリガー無し"
+  },
+  "gaku-temari-1-6-figure-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/2既報(story: gaku-tsukimura-temarite-figure)と価格・発売時期など同内容"
+  },
+  "gaku-ichiban-kuji-part6-2026": {
+   "action": "article",
+   "angle": "一番くじ学マスPart6が本日9/19より店舗で順次発売開始、A〜C賞は有村麻央・倉本千奈・篠澤広の1/7フィギュア",
+   "rank": "medium",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-new-product-teaser-2026-09-17": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hedgehog-yutanpo-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/17の予告は9/18受注開始したハリネズミゆたんぽの前振り"
+  },
+  "gaku-hedgehog-yutanpo-goods-2026": {
+   "action": "article",
+   "angle": "秦谷美鈴の新作・月村手毬の再登場ハリネズミゆたんぽとアクリルスタンドがアソビストア限定で受注開始(10/25締切)",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "misuzu-temari-hedgehog-hot-water-bottle-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hedgehog-yutanpo-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の受注開始告知(公式X)。標ツアー配信チケット言及部分はroundup側で扱う"
+  },
+  "gaku-after-school-campaign-namco-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "電撃記事も9/11既報と同内容で重複"
+  },
+  "fan-chinatsu-commu-video-2026-09-18": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の個人ブログ発ファン動画紹介、公式発表なくエンゲージメントも低い"
+  },
+  "x-com-gkmas-official-status-2100510080877973836": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hedgehog-yutanpo-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新商品予告ツイート、ハリネズミゆたんぽ受注開始の前振り"
+  },
+  "x-com-gkmas-official-status-2100525168175251856": {
+   "action": "roundup",
+   "angle": "標ツアー福岡公演の配信チケット販売中・岩手公演接近など継続告知まとめ",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-gkmas-official-status-2100846030795243790": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hedgehog-yutanpo-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ハリネズミゆたんぽ新登場・再登場を告知する公式Xの一次情報"
+  },
+  "x-com-gkmas-official-status-2100887556812660948": {
+   "action": "roundup",
+   "angle": "標ツアー福岡公演の配信チケット販売中・岩手公演接近など継続告知まとめ",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-gkmas-official-status-2100902677181809128": {
+   "action": "roundup",
+   "angle": "標ツアー福岡公演の配信チケット販売中・岩手公演接近など継続告知まとめ",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shop-asobistore-jp-products-detail-249640-00-00-00": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hedgehog-yutanpo-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "秦谷美鈴のハリネズミゆたんぽ商品ページ"
+  },
+  "shop-asobistore-jp-products-detail-249642-00-00-00": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hedgehog-yutanpo-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "秦谷美鈴とハリネズミゆたんぽアクリルスタンド商品ページ"
+  },
+  "shop-asobistore-jp-products-detail-249641-00-00-00": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hedgehog-yutanpo-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "月村手毬とハリネズミゆたんぽアクリルスタンド商品ページ"
+  },
+  "shop-asobistore-jp-products-detail-213475-00-00-00": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hedgehog-yutanpo-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "月村手毬のハリネズミゆたんぽ(再登場)商品ページ"
+  },
+  "x-com-megaoouchi-status-2100963058353086891": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-ichiban-kuji-part6-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本日10時発売開始を裏付ける個人アカウント投稿"
+  },
+  "x-com-reina-kawamura6-status-2100954603160539579": {
+   "action": "roundup",
+   "angle": "標ツアー福岡公演の配信チケット販売中・岩手公演接近など継続告知まとめ",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-ichiban-kuji-part6-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "一番くじ学マスPart6が本日9/19より店舗で順次発売開始、A〜C賞は有村麻央・倉本千奈・篠澤広の1/7フィギュア",
+    "lead_score": 65,
+    "dedup_key": "gaku-ichiban-kuji-part6-2026",
+    "candidate_ids": [
+     "202609180734-explore-11",
+     "202609190226-explore-16",
+     "sched-2026-09-19-gaku-ichiban-kuji-part6-2026-発売",
+     "202609190226-grok-44"
+    ]
+   },
+   {
+    "slug": "gaku-hedgehog-yutanpo-goods-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "秦谷美鈴の新作・月村手毬の再登場ハリネズミゆたんぽとアクリルスタンドがアソビストア限定で受注開始(10/25締切)",
+    "lead_score": 25,
+    "dedup_key": "gaku-hedgehog-yutanpo-goods-2026",
+    "candidate_ids": [
+     "202609181838-watch-8",
+     "202609181234-explore-7",
+     "202609181838-explore-26",
+     "202609190226-grok-35",
+     "202609190226-grok-37",
+     "202609190226-grok-40",
+     "202609190226-grok-41",
+     "202609190226-grok-42",
+     "202609190226-grok-43"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "標ツアー福岡公演の配信チケット販売中・岩手公演接近など継続告知まとめ",
+    "lead_score": 0,
+    "dedup_key": "x-com-gkmas-official-status-2100525168175251856",
+    "candidate_ids": [
+     "202609190226-grok-36",
+     "202609190226-grok-38",
+     "202609190226-grok-39",
+     "202609190226-grok-45"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-after-school-namco-2026",
+    "reason": "既報",
+    "note": "9/11既報(story: gaku-after-school-namco-2026)と同内容、新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "gaku-temari-1-6-figure-2026",
+    "reason": "既報",
+    "note": "9/2既報(story: gaku-tsukimura-temarite-figure)と価格・発売時期など同内容"
+   },
+   {
+    "dedup_key": "gaku-after-school-campaign-namco-2026",
+    "reason": "既報",
+    "note": "電撃記事も9/11既報と同内容で重複"
+   },
+   {
+    "dedup_key": "fan-chinatsu-commu-video-2026-09-18",
+    "reason": "出典不足",
+    "note": "未確認の個人ブログ発ファン動画紹介、公式発表なくエンゲージメントも低い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

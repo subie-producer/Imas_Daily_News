@@ -95,5 +95,34 @@
   "src_candidate_id": "202609170735-watch-2",
   "event_date": "2026-10-22",
   "deadline": "2026-11-29"
+ },
+ {
+  "id": "sched-2026-11-29-x-com-imas-cgofficial-status-2100963067651576145-結果",
+  "dedup_key": "x-com-imas-cgofficial-status-2100963067651576145",
+  "brand": "cg",
+  "subject": "シンデレラガール総選挙2026 結果発表",
+  "kind": "結果",
+  "note": "総選挙2026の結果が「シンデレラ15thPARTY」公演内で最速発表される",
+  "reserved_on": "2026-09-19",
+  "title": "#シンデレラガール総選挙2026 投票への御礼と最速結果発表",
+  "url": "https://x.com/imas_CGofficial/status/2100963067651576145",
+  "source_type": "公式",
+  "facts": [
+   "#シンデレラガール総選挙2026",
+   "たくさんのご投票ありがとうございました",
+   "結果は、11/29(日)開催予定の #シンデレラ15thPARTY 公演内にて最速発表予定",
+   "イベント公式サイト: https://idolmaster-official.jp/live_event/cg_15th_for_your_one/",
+   "総選挙特設サイト: https://idolmaster-official.jp/cinderellagirls/vote2026",
+   "ハッシュタグ: #デレマス",
+   "#シンデレラガール総選挙2026 本日投票受付最終日",
+   "投票終了まであと２時間",
+   "投票券はすべて使い切ってください",
+   "投票期間: ～2026/9/18(金)23:59",
+   "投票ページ: https://idolmaster-official.jp/cinderellagirls/vote2026/vote/idol",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609190226-grok-78"
  }
 ]

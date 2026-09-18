@@ -1,21 +1,51 @@
 [
-  {
-    "id": "sched-2026-10-25-shiny-chikusei-collab-2026-終了",
-    "dedup_key": "shiny-chikusei-collab-2026",
-    "brand": "shiny",
-    "subject": "筑西市×アイドルマスター シャイニーカラーズ コラボ",
-    "kind": "終了",
-    "note": "コラボ期間終了",
-    "reserved_on": "2026-09-01",
-    "title": "筑西市×シャニマス、花火と街歩きのコラボ詳細",
-    "url": "https://www.city.chikusei.lg.jp/kankou/kankou-news/page013798.html",
-    "source_type": "未確認",
-    "verify": "unconfirmed",
-    "src_candidate_id": "202608311835-explore-13",
-    "event_date": "2026-10-25",
-    "facts": [
-      "コラボ期間は2026年10月10日(土)〜10月25日(日)で終了",
-      "音声スタンプラリーの引換場所は道の駅グランテラス筑西・カフェブリーズ"
-    ]
-  }
+ {
+  "id": "sched-2026-10-25-shiny-chikusei-collab-2026-終了",
+  "dedup_key": "shiny-chikusei-collab-2026",
+  "brand": "shiny",
+  "subject": "筑西市×アイドルマスター シャイニーカラーズ コラボ",
+  "kind": "終了",
+  "note": "コラボ期間終了",
+  "reserved_on": "2026-09-01",
+  "title": "筑西市×シャニマス、花火と街歩きのコラボ詳細",
+  "url": "https://www.city.chikusei.lg.jp/kankou/kankou-news/page013798.html",
+  "source_type": "未確認",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202608311835-explore-13",
+  "event_date": "2026-10-25",
+  "facts": [
+   "コラボ期間は2026年10月10日(土)〜10月25日(日)で終了",
+   "音声スタンプラリーの引換場所は道の駅グランテラス筑西・カフェブリーズ"
+  ]
+ },
+ {
+  "id": "sched-2026-10-25-gaku-hedgehog-yutanpo-goods-2026-締切",
+  "dedup_key": "gaku-hedgehog-yutanpo-goods-2026",
+  "brand": "gaku",
+  "subject": "学マス秦谷美鈴・月村手毬ゆたんぽグッズ",
+  "kind": "締切",
+  "note": "ハリネズミゆたんぽ・アクスタ受注の締切",
+  "reserved_on": "2026-09-19",
+  "title": "学マス『秦谷美鈴・月村手毬のハリネズミゆたんぽグッズ』受注受付開始",
+  "url": "https://idolmaster-official.jp/news/01_19939",
+  "source_type": "公式",
+  "facts": [
+   "秦谷美鈴・月村手毬のハリネズミゆたんぽグッズ受注受付開始",
+   "新登場『秦谷美鈴のハリネズミゆたんぽ』",
+   "美鈴のハリネズミゆたんぽを再現したかわいい商品",
+   "新規描きおろしイラストを使用したアクリルスタンド",
+   "美鈴と手毬がハリネズミゆたんぽをかわいがっているシチュエーションの描きおろしイラスト",
+   "『月村手毬のハリネズミゆたんぽ』も再登場",
+   "受注期間：10月25日(日)まで",
+   "アソビストア限定",
+   "学園アイドルマスター 秦谷美鈴のハリネズミゆたんぽ：7,800円(税込)",
+   "学園アイドルマスター 秦谷美鈴とハリネズミゆたんぽアクリルスタンド：1,900円(税込)",
+   "学園アイドルマスター 月村手毬とハリネズミゆたんぽアクリルスタンド：1,900円(税込)",
+   "月村手毬のハリネズミゆたんぽ：7,800円(税込)"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609181838-watch-8",
+  "deadline": "2026-10-25"
+ }
 ]

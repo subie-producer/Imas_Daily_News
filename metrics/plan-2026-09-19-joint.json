@@ -1,0 +1,158 @@
+{
+ "decisions": {
+  "tours-s1ex-momoko-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "S1弾Ex開始・周防桃子登場はjoint-tours-s1-ex-2026で既報。新事実も本日のトリガーもなし"
+  },
+  "tours-s1-ex-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一事実の別ソース(公式スケジュールページ)重複。joint-tours-s1-ex-2026で既報済み"
+  },
+  "anime-girls-project-store-shanghai-idolmaster-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "上海AGP Store開店(9/22)はjoint-anime-girls-project-store-shanghai-2026で既報。開催日も本日でなく新事実なし"
+  },
+  "idolmaster-tours-w-bn-am-net-news-detail-53": {
+   "action": "article",
+   "angle": "S1弾Exで発覚したTSSR「サマーティースタイル」着こなしLv最大時の報酬不具合を公式が告知",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/18付の新規告知で、既報にない情報"
+  },
+  "x-com-imas-ch-status-2100873251199267258": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/25メンバー限定配信(MC原由実・ゲスト香里有佐)はimas-ch-member-stream-2026-09で既報。配信日は本日でない"
+  },
+  "x-com-imas-ch-status-2100873868969927051": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "お便り・ファンアート募集は同一配信の既報内容と同じ"
+  },
+  "docs-google-com-forms-d-e-1faipqlsfzvnohphpthv8acfboekdlxhdagtnuuytkujn7gzzd1cjfwg-viewform": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報の配信告知に付随するフォームURLのみで新事実なし。出典も未確認"
+  },
+  "x-com-p-w-strawberry-status-2100926940488339769": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のプレイ報告SNS投稿。単体記事化の対象外、エンゲージメントも低く未確認"
+  },
+  "cg-kyomafu-2026-goods": {
+   "action": "article",
+   "angle": "京まふ2026が本日開幕、会場でデレマス・ミリオンの新作グッズと記念ドリンクを展開",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の開幕日。詳細はkyomafu-2026-cg-million-goodsで既報だが本日が開催トリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-idolmaster-tours-w-bn-am-net-news-detail-53",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "S1弾Exで発覚したTSSR「サマーティースタイル」着こなしLv最大時の報酬不具合を公式が告知",
+    "lead_score": 5,
+    "dedup_key": "idolmaster-tours-w-bn-am-net-news-detail-53",
+    "candidate_ids": [
+     "202609190226-grok-46"
+    ]
+   },
+   {
+    "slug": "joint-cg-kyomafu-2026-goods",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "京まふ2026が本日開幕、会場でデレマス・ミリオンの新作グッズと記念ドリンクを展開",
+    "lead_score": 20,
+    "dedup_key": "cg-kyomafu-2026-goods",
+    "candidate_ids": [
+     "sched-2026-09-19-cg-kyomafu-2026-goods-開幕"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-s1ex-momoko-2026",
+    "reason": "既報",
+    "note": "S1弾Ex開始・周防桃子登場はjoint-tours-s1-ex-2026で既報。新事実も本日のトリガーもなし"
+   },
+   {
+    "dedup_key": "tours-s1-ex-2026",
+    "reason": "既報",
+    "note": "同一事実の別ソース(公式スケジュールページ)重複。joint-tours-s1-ex-2026で既報済み"
+   },
+   {
+    "dedup_key": "anime-girls-project-store-shanghai-idolmaster-2026",
+    "reason": "既報",
+    "note": "上海AGP Store開店(9/22)はjoint-anime-girls-project-store-shanghai-2026で既報。開催日も本日でなく新事実なし"
+   },
+   {
+    "dedup_key": "x-com-imas-ch-status-2100873251199267258",
+    "reason": "既報",
+    "note": "9/25メンバー限定配信(MC原由実・ゲスト香里有佐)はimas-ch-member-stream-2026-09で既報。配信日は本日でない"
+   },
+   {
+    "dedup_key": "x-com-imas-ch-status-2100873868969927051",
+    "reason": "既報",
+    "note": "お便り・ファンアート募集は同一配信の既報内容と同じ"
+   },
+   {
+    "dedup_key": "docs-google-com-forms-d-e-1faipqlsfzvnohphpthv8acfboekdlxhdagtnuuytkujn7gzzd1cjfwg-viewform",
+    "reason": "既報",
+    "note": "既報の配信告知に付随するフォームURLのみで新事実なし。出典も未確認"
+   },
+   {
+    "dedup_key": "x-com-p-w-strawberry-status-2100926940488339769",
+    "reason": "個人の話題",
+    "note": "個人のプレイ報告SNS投稿。単体記事化の対象外、エンゲージメントも低く未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

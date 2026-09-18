@@ -42,10 +42,10 @@ def test_check_output():
     _, fb = renderlib.materials_with_ids(MATS)
     C = lambda o, **k: renderlib.check_output(o, fb, MATS, **k)
     check(C(OK) == [], f"合格するはずの出力が落ちた: {C(OK)}")
+    # roundup・culture は、確かめて残った素材が1件でも載せる(編集長の決定 2026-09-18〜19。件数の下限は計画が持つ)
     one = dict(OK, blocks=[{"markdown": "x", "fact_ids": ["F1"]}], sources=OK["sources"][:1])
-    check(C(OK, rank="roundup") == [] and any("roundup" in p for p in C(one, rank="roundup")), "roundup の素材の下限(3件)")
-    # ファン面(culture)は素材が1件でも載せる(編集長の決定 2026-09-18)
-    check(C(one, rank="culture") == [], f"素材1件の culture を落とした: {C(one, rank='culture')}")
+    for rank in ("roundup", "culture"):
+        check(C(one, rank=rank) == [], f"素材1件の {rank} を落とした: {C(one, rank=rank)}")
     # 出典を隠していないか・日付が素材と合うかは校閲(モデル)の判断。機械は形しか見ない
     check(C(dict(OK, sources=OK["sources"][:1])) == [], "出典の取捨(校閲の判断)を機械が落とした")
     check(C(dict(OK, event_date="2026-10-01")) == [], "日付の整合(校閲の判断)を機械が落とした")
@@ -59,9 +59,13 @@ def test_check_output():
     check(C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "#タグ_付き ID"}])) == [], "label の # や _ を落とした")
     check(any("Markdown" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "[リンク](x)"}]))),
           "label の Markdown リンクが通った")
-    # 制御文字・不可視文字の混ざった label・本文は壊れたテキスト(形の欠陥。校閲に回す前に差し戻す)
-    check(any("制御文字" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "PARTY ~ for\x044"}]))),
-          "label の制御文字が通った")
+    # label の制御文字・不可視文字は差し戻さず、書き出しで取り除く(出典ページの題名のゼロ幅空白を執筆が写す。2026-09-19)
+    check(C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "お​知らせ ~ for\x044"}])) == [], "label の不可視文字で差し戻した")
+    check(renderlib.clean_label("お​知らせ\n ~  for\x044  ") == "お知らせ ~ for4", f"clean_label: {renderlib.clean_label('お​知らせ ~ for\x044')!r}")
+    # 検査は取り除いたあとの値で(不可視文字で割った Markdown 記号・空になる label を通さない。監査指摘)
+    check(any("Markdown" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "[公式]​(https://evil)"}]))),
+          "不可視文字で割った Markdown リンクの label が通った")
+    check(any("空" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "​\x04"}]))), "空になる label が通った")
     check(any("制御文字" in p for p in C(dict(OK, title="見出し\x04"))), "見出しの制御文字が通った")
     check(C(dict(OK, blocks=[{"markdown": "- 1行目\n- 2行目", "fact_ids": ["F1"]}])) == [], "箇条書きの改行を制御文字として落とした")
     check(any("tags" in p for p in C(dict(OK, tags=["a"]))), "tags 1個が通った")
@@ -74,12 +78,14 @@ def test_check_output():
 def test_render_and_length():
     _, fb = renderlib.materials_with_ids(MATS)
     good = dict(OK, new_facts=[{"id": "N1", "text": "9月25日発売", "url": "https://a.example/1"}],
-                blocks=[{"markdown": "本文", "fact_ids": ["F1", "N1"]}])
+                blocks=[{"markdown": "本文", "fact_ids": ["F1", "N1"]}],
+                sources=[{"url": "https://a.example/1", "label": "ポータル「お​知らせ」"}])
     p = Path(tempfile.mkdtemp()) / "2026-09-12-x.md"
     renderlib.render_article(p, "2026-09-12", {"slug": "x", "brand": "765", "candidate_ids": ["c1"], "rank": "small"},
                              good, lambda u: "公式", lambda ts: "公式", compose.yaml_dump_keeping_strings)
     t = p.read_text(encoding="utf-8")
     check("<!-- F1 N1 -->" in t and "verified_facts" in t and "title_fact_ids" in t, "根拠が記事に残らない")
+    check("​" not in t and "ポータル「お知らせ」" in t, "label の不可視文字が書き出しで残った")
     check(compose.body_length(p) == 2, f"根拠コメントが字数に入っている: {compose.body_length(p)}")
 
 

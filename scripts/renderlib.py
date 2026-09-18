@@ -108,8 +108,9 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
     """出力の**形**の検算(schema は型しか見ない)。通らない理由を返す(空なら合格)。
 
     見るのは形だけ: 見出し・リード・段落に根拠 id が付いていて実在する / 出典 URL は素材か new_facts の
-    もの / tags は2〜4 / event_date は日付の形 / 見送りは理由付き / roundup は3件以上の素材を
-    使っている(culture は1件でも載せる) / 1 block = 1 段落 / HTML・参照リンク・不可視文字を書いていない。
+    もの / tags は2〜4 / event_date は日付の形 / 見送りは理由付き / 1 block = 1 段落 /
+    HTML・参照リンク・不可視文字・制御文字を書いていない / label は不可視文字を除いた値が空でなく Markdown 記号を含まない
+    (roundup・culture の素材の件数は検めない。残った項目が1件でも載せる)。
     **中身の判断(出典を隠していないか、日付が素材と合うか、new_facts を本当に読んだか)は校閲(モデル)の
     仕事で、ここではしない**(校閲の機械化はしない。編集長の指示)
     """
@@ -166,12 +167,9 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
                    if not (b.get("fact_ids") or []) and not heading_only(b.get("markdown"))]
     if unsupported:
         problems.append(f"根拠の事実 id が無い段落: {unsupported[:6]}")
-    cand_of = fact_index(materials)
-    if rank == "roundup":
-        # 定常運営まとめは3件以上の素材から書けていること(ファン面 culture は素材が1件でも載せる。編集長の決定 2026-09-18)
-        used = {cand_of[i] for b in (out.get("blocks") or []) for i in (b.get("fact_ids") or []) if i in cand_of}
-        if len(used) < 3:
-            problems.append(f"{rank} なのに使った素材が {len(used)} 件(3件以上)")
+    # roundup・culture の素材の件数は検めない。まとめる件数の下限は計画(validate_plan の ROUNDUP_MIN_ITEMS)が持ち、
+    # 執筆で確かめて残った項目が1件でもあれば載せる(編集長の決定 2026-09-18〜19: 残った素材が2件の roundup を
+    # 「3件以上」で落として号から消えた)
     seen = set()
     from pipelib import clean_url   # URL の唯一の入口(scheme・userinfo・制御文字・長さを検める)
     for f in new_facts:
@@ -189,12 +187,16 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         seen.add(u)
         # 落とすのは Markdown として解釈される形(リンク `[x](y)`・コード)だけ。角括弧や # や _ は
         # 商品名・ハッシュタグ・ID に普通に出る(実測 2026-09-15: 「倉本千奈 [Wonder Scale]」で記事が落ちた)
-        if re.search(r"\]\(|`", s.get("label") or ""):
+        # label の制御文字・不可視文字は差し戻さず、書き出すときに機械で取り除く(clean_label)。
+        # 出典ページの題名そのものにゼロ幅空白が入っていることがあり、差し戻しても執筆は同じ題名を写す
+        # (実測 2026-09-19: 公式ポータルの題名の U+200B で差し戻し2回、記事が落ちた)。
+        # 検査は**取り除いたあとの値**で行う(不可視文字で Markdown 記号を割った label が、書き出しで
+        # リンクに化けるのを通さない。監査指摘)。取り除いて空になる label も通さない
+        label = clean_label(s.get("label"))
+        if not label:
+            problems.append(f"出典 label が空: {s.get('label')!r}")
+        if re.search(r"\]\(|`", label):
             problems.append(f"出典 label に Markdown 記号: {s.get('label')!r}")
-        # 制御文字・不可視文字は壊れたテキスト(実測 2026-09-18: label の途中に U+0004 が入った記事が校閲で
-        # ブロックされて落ちた)。形の欠陥なので、校閲に回す前にここで差し戻す
-        if any(unicodedata.category(ch) == "Cc" or is_ignorable(ch) for ch in str(s.get("label") or "")):
-            problems.append(f"出典 label に制御文字・不可視文字: {s.get('label')!r}")
     if any(unicodedata.category(ch) == "Cc" and ch not in "\n\t" for x in texts for ch in x):
         problems.append("本文・見出し・リードに制御文字がある(壊れたテキスト)")
     # 「使った事実の出典を隠していないか」「素材に無い URL を本当に読んだか」は校閲(モデル)の判断。
@@ -224,6 +226,14 @@ def is_ignorable(ch: str) -> bool:
             or 0x180B <= o <= 0x180F or 0x200B <= o <= 0x200F
             or o in (0x2028, 0x2029, 0x2060, 0x2061, 0x2062, 0x2063, 0x2064, 0xFEFF,
                      0x115F, 0x1160, 0x3164, 0xFFA0))   # ハングルの filler(見えない字。監査指摘)
+
+
+def clean_label(s) -> str:
+    """出典 label を書き出す形に整える: 制御文字(改行・タブを含む)と不可視文字を取り除き、空白を1つに畳み、80 字まで。
+    出典ページの題名に紛れたゼロ幅空白などを、執筆に差し戻さず機械で落とす。"""
+    import unicodedata
+    t = "".join(ch for ch in str(s or "") if unicodedata.category(ch) != "Cc" and not is_ignorable(ch))
+    return re.sub(r"\s+", " ", t).strip()[:80]
 
 
 def visible_text(s) -> str:
@@ -256,7 +266,7 @@ def render_article(path: Path, date: str, art: dict, out: dict, source_type_of, 
     """検算済みの出力から記事ファイルを作る。段落の根拠 id は HTML コメントで残す。"""
     sources = []
     for s in out.get("sources") or []:
-        sources.append({"label": str(s.get("label") or "")[:80], "url": s["url"], "type": source_type_of(s["url"])})
+        sources.append({"label": clean_label(s.get("label")), "url": s["url"], "type": source_type_of(s["url"])})
     fm = {
         "slug": art["slug"], "edition": date, "brand": art["brand"],
         "src": weakest_src(s["type"] for s in sources) if sources else "未確認",

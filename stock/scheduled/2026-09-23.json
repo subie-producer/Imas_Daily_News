@@ -315,12 +315,12 @@
   "deadline": "2026-10-12"
  },
  {
-  "id": "sched-2026-09-23-cg-national-tower-fukuoka-2026-終了",
+  "id": "sched-2026-09-23-cg-national-tower-fukuoka-2026-千秋楽",
   "dedup_key": "cg-national-tower-fukuoka-2026",
   "brand": "cg",
-  "subject": "シンデレラガールズ全国タワー(門司港)",
-  "kind": "終了",
-  "note": "門司港レトロでのコラボ最終日、現地でチケット・グッズ購入ができる最後のチャンス",
+  "subject": "シンデレラガールズ全国タワー福岡会場",
+  "kind": "千秋楽",
+  "note": "福岡会場最終日、コラボグッズ購入・特典受け取りができる最後の日",
   "reserved_on": "2026-09-19",
   "title": "福岡でシンデレラガールズ×全国タワー開催",
   "url": "https://colabtokyo.hp.peraichi.com/cinderellagirls2026_fukuoka",

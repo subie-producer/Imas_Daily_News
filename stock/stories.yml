@@ -6942,7 +6942,7 @@
     - 税込2,000円購入ごとにオリジナルポストカード（全9種）を1枚プレゼント。絵柄は選べない。対象商品は第二弾商品のみ。
 - story_id: 765as-dress-code-solo-collection-2026
   brand: '765'
-  subject: 765AS新作CD購入でA3ポスター
+  subject: 765AS新作ソロコレクションCD発売、購入特典にA3ポスター
   status: active
   first_published: '2026-09-19'
   published_facts:
@@ -6958,21 +6958,19 @@
     - 12,000円以上(税込)購入した場合はA3ポスター全種フルセットをプレゼント
 - story_id: x-com-imas-ch-status-2100963054892548524
   brand: '765'
-  subject: 公式X、誕生日ムービーを2本公開
+  subject: 公式X、誕生日ムービー2本を公開
   status: active
   first_published: '2026-09-19'
   published_facts:
-  - '見出し: 9/19 アナスタシアさん キャシー・グラハムさん お誕生日おめでとうございます'
-  - お祝いムービーはこちら
-  - 'アナスタシアさん: https://www.youtube.com/shorts/rTpvcI1wr_U'
+  - アナスタシアさん お誕生日おめでとうございます
+  - キャシー・グラハムさん お誕生日おめでとうございます
   edition_facts:
     '2026-09-19':
-    - '見出し: 9/19 アナスタシアさん キャシー・グラハムさん お誕生日おめでとうございます'
-    - お祝いムービーはこちら
-    - 'アナスタシアさん: https://www.youtube.com/shorts/rTpvcI1wr_U'
+    - アナスタシアさん お誕生日おめでとうございます
+    - キャシー・グラハムさん お誕生日おめでとうございます
 - story_id: cg-15th-anniversary-popup-2026
   brand: cg
-  subject: シンデレラ15周年POPUP、10月2日秋葉原で開催
+  subject: シンデレラ15周年POPUP「Parfait Coquette Celebration」秋葉原開催
   status: active
   first_published: '2026-09-19'
   published_facts:
@@ -6993,80 +6991,82 @@
   first_published: '2026-09-19'
   published_facts:
   - '発売日: 2026年9月30日'
+  - '商品名: THE IDOLM@STER CINDERELLA MASTER NUMBER ONE! クロス×オーバー！'
+  - '歌手: 島村卯月、辻野あかり、渋谷凛、砂塚あきら、本田未央、夢見りあむ'
   - '販売先限定: コロムビアミュージックショップ、アソビストア2社限定販売。一般CDショップでの販売なし'
-  - 'アソビストア予約受付: 終了（コロムビアミュージックショップのみでの販売）'
   edition_facts:
     '2026-09-19':
     - '発売日: 2026年9月30日'
+    - '商品名: THE IDOLM@STER CINDERELLA MASTER NUMBER ONE! クロス×オーバー！'
+    - '歌手: 島村卯月、辻野あかり、渋谷凛、砂塚あきら、本田未央、夢見りあむ'
     - '販売先限定: コロムビアミュージックショップ、アソビストア2社限定販売。一般CDショップでの販売なし'
-    - 'アソビストア予約受付: 終了（コロムビアミュージックショップのみでの販売）'
 - story_id: cg-genkayouenichi-animo-2026
   brand: cg
-  subject: 『幻夏妖宴市』グッズ、Animoで事後通販
+  subject: 『幻夏妖宴市』グッズ、Animoで事後通販開始
   status: active
   first_published: '2026-09-19'
   published_facts:
   - 受付期間：2026年9月18日(金) 17:00～10月16日(金)17:00
+  - 『幻夏妖宴市』で展開していたグッズがAnimoにて販売決定
+  - 妖怪に身を扮したアイドルたちのグッズが盛りだくさん
   - 一部商品は数量限定
-  - 事後通販には特典は付属しない
-  - 事後通販には投票券と引き換え可能なシリアルコードは付属しない
   edition_facts:
     '2026-09-19':
     - 受付期間：2026年9月18日(金) 17:00～10月16日(金)17:00
+    - 『幻夏妖宴市』で展開していたグッズがAnimoにて販売決定
+    - 妖怪に身を扮したアイドルたちのグッズが盛りだくさん
     - 一部商品は数量限定
-    - 事後通販には特典は付属しない
-    - 事後通販には投票券と引き換え可能なシリアルコードは付属しない
 - story_id: cg-national-tower-fukuoka-2026
   brand: cg
-  subject: 福岡・門司港でシンデレラガールズ全国タワー開幕
+  subject: シンデレラガールズ全国タワー、福岡・門司港で開幕
   status: active
   first_published: '2026-09-19'
   published_facts:
   - '開催期間: 2026年9月19日(土)〜9月23日(水祝)'
   - '開催場所: 門司港レトロ 関門海峡ミュージアム1階ホール特設会場'
-  - 販売時間は10:00〜17:00
-  - 特典はなくなり次第終了する
+  - コラボグッズを特設会場で販売する
+  - コラボグッズ購入で特典を配布する
   edition_facts:
     '2026-09-19':
     - '開催期間: 2026年9月19日(土)〜9月23日(水祝)'
     - '開催場所: 門司港レトロ 関門海峡ミュージアム1階ホール特設会場'
-    - 販売時間は10:00〜17:00
-    - 特典はなくなり次第終了する
+    - コラボグッズを特設会場で販売する
+    - コラボグッズ購入で特典を配布する
 - story_id: cg-pop-up-shop-magical-cheers-animo-2026
   brand: cg
-  subject: A MAGICAL CHEERSグッズ、Animoで事後通販
+  subject: 『A MAGICAL CHEERS』グッズ、Animoで事後通販開始
   status: active
   first_published: '2026-09-19'
   published_facts:
   - 受付期間：2026年9月18日(金) 17:00～10月16日(金)17:00
+  - POP UP SHOP A MAGICAL CHEERSで展開していた一部グッズがAnimoにて販売決定
   - 特別ビジュアルの11人のアイドル達の一部商品がEC販売に登場
   - 一部商品は数量限定
-  - 事後通販には特典は付属しない
   edition_facts:
     '2026-09-19':
     - 受付期間：2026年9月18日(金) 17:00～10月16日(金)17:00
+    - POP UP SHOP A MAGICAL CHEERSで展開していた一部グッズがAnimoにて販売決定
     - 特別ビジュアルの11人のアイドル達の一部商品がEC販売に登場
     - 一部商品は数量限定
-    - 事後通販には特典は付属しない
 - story_id: www-the-chara-com-blog-p-121064
   brand: cg
-  subject: 有楽町マルイでデレマスPOP UP
+  subject: シンデレラガールズPOP UP SHOP、有楽町マルイで開催
   status: active
   first_published: '2026-09-19'
   published_facts:
   - '開催期間: 2026年9月26日(土)~10月14日(水)'
-  - '【整理券配布対象日程】: 2026年9月26日(土)'
+  - 9月26日(土)は、混雑が予想されるため、整理券配布による入店制限を実施
   - '【整理券取得開始時間】: 2026年9月25日(金)18:00～'
-  - '営業時間: 施設営業時間に準ずる(最終日18:00)'
+  - '開催場所: 有楽町マルイ 7F'
   edition_facts:
     '2026-09-19':
     - '開催期間: 2026年9月26日(土)~10月14日(水)'
-    - '【整理券配布対象日程】: 2026年9月26日(土)'
+    - 9月26日(土)は、混雑が予想されるため、整理券配布による入店制限を実施
     - '【整理券取得開始時間】: 2026年9月25日(金)18:00～'
-    - '営業時間: 施設営業時間に準ずる(最終日18:00)'
+    - '開催場所: 有楽町マルイ 7F'
 - story_id: x-com-imas-cgofficial-status-2100963067651576145
   brand: cg
-  subject: シンデレラガール総選挙2026 結果発表
+  subject: シンデレラガール総選挙2026
   status: active
   first_published: '2026-09-19'
   published_facts:
@@ -7078,23 +7078,23 @@
     - '投票期間: ～2026/9/18(金)23:59'
 - story_id: gaku-hedgehog-yutanpo-goods-2026
   brand: gaku
-  subject: 学マス秦谷美鈴・月村手毬 ハリネズミゆたんぽグッズ
+  subject: 学マス秦谷美鈴ハリネズミゆたんぽ新登場・手毬ゆたんぽ再登場
   status: active
   first_published: '2026-09-19'
   published_facts:
   - 受注期間：10月25日(日)まで
-  - 詳細および受注開始は9月18日(金)16時よりと告知された。
-  - '開催期間: 9/24(木)10:59まで（予定）'
-  - '開催期間: 10/1(木)4:59まで（予定）'
+  - 秦谷美鈴・月村手毬のハリネズミゆたんぽグッズ受注受付開始
+  - 新登場『秦谷美鈴のハリネズミゆたんぽ』
+  - 新規描きおろしイラストを使用したアクリルスタンド
   edition_facts:
     '2026-09-19':
     - 受注期間：10月25日(日)まで
-    - 詳細および受注開始は9月18日(金)16時よりと告知された。
-    - '開催期間: 9/24(木)10:59まで（予定）'
-    - '開催期間: 10/1(木)4:59まで（予定）'
+    - 秦谷美鈴・月村手毬のハリネズミゆたんぽグッズ受注受付開始
+    - 新登場『秦谷美鈴のハリネズミゆたんぽ』
+    - 新規描きおろしイラストを使用したアクリルスタンド
 - story_id: general-channel-member-broadcast-2026-09-25
   brand: general
-  subject: アイマスチャンネル9月メンバー限定配信
+  subject: アイマスch メンバー限定配信(9/25)
   status: active
   first_published: '2026-09-19'
   published_facts:
@@ -7110,7 +7110,7 @@
     - ゲスト：香里有佐（『アイドルマスター ミリオンライブ！』桜守歌織役）
 - story_id: cg-kyomafu-2026-goods
   brand: joint
-  subject: 京まふ2026 アイマス新作グッズ
+  subject: 京まふ2026 アイマス新作グッズ展開
   status: active
   first_published: '2026-09-19'
   published_facts:
@@ -7128,15 +7128,17 @@
   status: active
   first_published: '2026-09-19'
   published_facts:
+  - '投稿日時: 2026-09-18 09:08:08 GMT（2026-09-18 18:08 JST）'
   - TSSR「サマーティースタイル」の着こなしLvを最大にした場合に報酬が入手できない
   - 今後のアップデートにて報酬を受け取れるよう修正を予定している
   edition_facts:
     '2026-09-19':
+    - '投稿日時: 2026-09-18 09:08:08 GMT（2026-09-18 18:08 JST）'
     - TSSR「サマーティースタイル」の着こなしLvを最大にした場合に報酬が入手できない
     - 今後のアップデートにて報酬を受け取れるよう修正を予定している
 - story_id: million-battle-of-theater-09-store-bonus-2026
   brand: million
-  subject: MILLION BATTLE OF THE＠TER 09 100てん☆ナンバーワン！
+  subject: ミリオンBATTLE OF THE＠TER 09 店舗特典
   status: active
   first_published: '2026-09-19'
   published_facts:
@@ -7152,23 +7154,23 @@
     - '品番: LACA-25289'
 - story_id: shiny-283-solo-live-bakusute-talk-2026
   brand: shiny
-  subject: 283 PRODUCTION Solo Live Collection ばくすて！とーく
+  subject: MSP DAY2後「ばくすて！とーく」配信
   status: active
   first_published: '2026-09-19'
   published_facts:
   - 9月27日(日) 『283 PRODUCTION Solo Live Collection -Master ShowPiece-』DAY2公演終了後に振り返りの生配信『ばくすて！とーく』を実施
   - '  - 夏目響平（アニメ『アイドルマスター シャイニーカラーズ』プロデューサー役）'
   - '  - 益山武明（『アイドルマスター SideM』紅井朱雀役）'
-  - 配信URL：https://www.youtube.com/live/FkOu8y9GV0g
+  - 『ばくすて！とーく』はキャストと一緒にライブの感想を語り合う生ラジオ番組
   edition_facts:
     '2026-09-19':
     - 9月27日(日) 『283 PRODUCTION Solo Live Collection -Master ShowPiece-』DAY2公演終了後に振り返りの生配信『ばくすて！とーく』を実施
     - '  - 夏目響平（アニメ『アイドルマスター シャイニーカラーズ』プロデューサー役）'
     - '  - 益山武明（『アイドルマスター SideM』紅井朱雀役）'
-    - 配信URL：https://www.youtube.com/live/FkOu8y9GV0g
+    - 『ばくすて！とーく』はキャストと一緒にライブの感想を語り合う生ラジオ番組
 - story_id: shiny-hikawaryuu-yuneru-spa-2026
   brand: shiny
-  subject: 彼岸流×湯~ねる ジャパニーズ・オリエンタル・スパ
+  subject: 彼岸流×湯~ねる コラボ「ジャパニーズ・オリエンタル・スパ」
   status: active
   first_published: '2026-09-19'
   published_facts:
@@ -7184,7 +7186,7 @@
     - オリジナルグッズ（サウナハット、タオル等）を販売
 - story_id: shiny-msp-2026-09
   brand: shiny
-  subject: 283 PRODUCTION Solo Live Collection 同時視聴会
+  subject: MSP キャスト生オーコメ同時視聴会(10月開催)
   status: active
   first_published: '2026-09-19'
   published_facts:
@@ -7216,23 +7218,23 @@
     - 開催場所：富山県・岡山県の８番らーめん、金澤醤油豚骨８番らーめん
 - story_id: shiny-song-for-prism-event-goods-2026-10
   brand: shiny
-  subject: 「Song for Prism」発売記念イベント会場物販
+  subject: シャニマス「Song for Prism」発売記念イベント会場物販
   status: active
   first_published: '2026-09-19'
   published_facts:
   - 販売日時：2026年10月11日(日) 12:30～終演後30分程度
   - KAMISABIゲームの販売も実施
+  - イベント会場での体験会は実施しない
   - 購入制限：お一人様1アイテムにつき3点まで
-  - 販売場所：イベント会場内物販スペース
   edition_facts:
     '2026-09-19':
     - 販売日時：2026年10月11日(日) 12:30～終演後30分程度
     - KAMISABIゲームの販売も実施
+    - イベント会場での体験会は実施しない
     - 購入制限：お一人様1アイテムにつき3点まで
-    - 販売場所：イベント会場内物販スペース
 - story_id: shiny-suntory-lemon-squash-2026-09
   brand: shiny
-  subject: シャニマス自販機にレモンスカッシュ
+  subject: シャニマス×サントリー オリジナルラベルレモンスカッシュ発売
   status: active
   first_published: '2026-09-19'
   published_facts:

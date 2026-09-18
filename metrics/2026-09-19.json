@@ -59,5 +59,46 @@
    },
    "duration_s": 1541
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-19T03:50:13+09:00",
+   "edition": "2026-09-19",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 35,
+   "written": 26,
+   "roundups": 3,
+   "dropped": 2,
+   "coverage": {
+    "subjects": 143,
+    "covered": 143,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 10.148813573519389,
+    "執筆": 6.588813598950704,
+    "組版": 2.894165786107381,
+    "校閲": 2.331724750995636,
+    "校閲1波": 2.331724750995636
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "cg-x-com-medicos-et-02-status-2100805640084246538",
+    "shiny-x-com-shinyc-official-status-2100887554216353877",
+    "shiny-x-com-imassc-prism-status-2100782362141524169",
+    "shiny-x-com-imassc-official-status-2100963303921217871",
+    "dsva-valiv-latest-info-special-2026-09-24",
+    "dsva-ops-roundup",
+    "million-x-stream-theater-cd-2026",
+    "million-ops-roundup",
+    "gaku-ops-roundup"
+   ],
+   "duration_s": 2976
+  }
  ]
 }

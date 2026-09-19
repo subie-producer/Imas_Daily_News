@@ -1,0 +1,52 @@
+{
+ "decisions": {
+  "fan-gal-imaginary-saki-2026-09-19": {
+   "action": "article",
+   "angle": "学マスファンの間で「イマジナリー咲季お姉ちゃん」「ことすみは実在する」などのイラスト・まとめ発の話題が相次いで拡散、キャラクター解釈を巡るファン創作の盛り上がりを紹介",
+   "rank": "culture",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "細切れの複数のファン発の話題(イラスト・カップリング考察・まとめ記事の反応)を1本のculture記事にまとめる。単体の個人SNS投稿ではなく、複数の界隈現象の集合として扱う"
+  },
+  "music765plus-x-hack-2026": {
+   "action": "article",
+   "angle": "音楽情報アカウント「@music765plus」が不正アクセスを受けログイン不能に、DM・投稿のリンクや金銭・認証情報依頼に注意喚起。新アカウント「@music765plus_jp」で情報発信を継続",
+   "rank": "medium",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式アカウントの乗っ取りに関する読者への注意喚起。個人攻撃ではなく公式情報発信元のセキュリティ告知として扱う"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-fan-gal-imaginary-saki-2026-09-19",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "学マスファンの間で「イマジナリー咲季お姉ちゃん」「ことすみは実在する」などのイラスト・まとめ発の話題が相次いで拡散、キャラクター解釈を巡るファン創作の盛り上がりを紹介",
+    "lead_score": 8,
+    "dedup_key": "fan-gal-imaginary-saki-2026-09-19",
+    "candidate_ids": [
+     "202609191233-explore-10"
+    ]
+   },
+   {
+    "slug": "general-music765plus-x-hack-2026",
+    "brand": "general",
+    "rank": "medium",
+    "angle": "音楽情報アカウント「@music765plus」が不正アクセスを受けログイン不能に、DM・投稿のリンクや金銭・認証情報依頼に注意喚起。新アカウント「@music765plus_jp」で情報発信を継続",
+    "lead_score": 35,
+    "dedup_key": "music765plus-x-hack-2026",
+    "candidate_ids": [
+     "202609200223-explore-0"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,105 @@
+{
+ "decisions": {
+  "tours-s1-ex-2026": {
+   "action": "article",
+   "angle": "TOURS新アップデート「S1弾Ex」が9/17に稼働開始、周防桃子登場・ツアーズレアカード・新楽曲を追加(10/28まで)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "8/22告知済みのアップデートが実際に稼働開始した事実。既報は告知段階のみで稼働開始は未報告"
+  },
+  "shizuka-mogami-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "最上静香の誕生日(9/14)はミリシタ企画として9/15号で既報。TOURSバースデーページ公開(9/18)は同一誕生日の別チャネル告知で、本日のトリガーとなる新事実なし"
+  },
+  "idol-birthday-tamami-subaru-2026": {
+   "action": "article",
+   "angle": "9/20は脇山珠美さん(デレマス)・永吉昴さん(SideM)のお誕生日、公式アカウントがお祝い",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日の誕生日告知、複数ブランドのアイドルをまとめて祝う投稿なのでjoint面"
+  },
+  "sidem-shiny-sparkle-showdown-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/13・9/15号で公演日程/会場/出演者/先行受付期間を既報。受付は9/12開始で継続中だが本日固有のトリガーなし"
+  },
+  "cg-kyomafu-2026-goods": {
+   "action": "article",
+   "angle": "京まふ2026が本日最終日、THEキャラブースでデレマス・ミリオンの新作グッズと記念ドリンクを購入できる最後のチャンス",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(千秋楽)に対応。既報(8/24号)の内容だが、最終日という当日トリガーがあるため記事化"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-s1-ex-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "TOURS新アップデート「S1弾Ex」が9/17に稼働開始、周防桃子登場・ツアーズレアカード・新楽曲を追加(10/28まで)",
+    "lead_score": 10,
+    "dedup_key": "tours-s1-ex-2026",
+    "candidate_ids": [
+     "202609190733-explore-11"
+    ]
+   },
+   {
+    "slug": "joint-idol-birthday-tamami-subaru-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "9/20は脇山珠美さん(デレマス)・永吉昴さん(SideM)のお誕生日、公式アカウントがお祝い",
+    "lead_score": 20,
+    "dedup_key": "idol-birthday-tamami-subaru-2026",
+    "candidate_ids": [
+     "202609200223-grok-25"
+    ]
+   },
+   {
+    "slug": "joint-cg-kyomafu-2026-goods",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "京まふ2026が本日最終日、THEキャラブースでデレマス・ミリオンの新作グッズと記念ドリンクを購入できる最後のチャンス",
+    "lead_score": 30,
+    "dedup_key": "cg-kyomafu-2026-goods",
+    "candidate_ids": [
+     "sched-2026-09-20-cg-kyomafu-2026-goods-終了",
+     "sched-2026-09-20-cg-kyomafu-2026-goods-千秋楽"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shizuka-mogami-birthday-2026",
+    "reason": "既報",
+    "note": "最上静香の誕生日(9/14)はミリシタ企画として9/15号で既報。TOURSバースデーページ公開(9/18)は同一誕生日の別チャネル告知で、本日のトリガーとなる新事実なし"
+   },
+   {
+    "dedup_key": "sidem-shiny-sparkle-showdown-2027",
+    "reason": "既報",
+    "note": "9/13・9/15号で公演日程/会場/出演者/先行受付期間を既報。受付は9/12開始で継続中だが本日固有のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

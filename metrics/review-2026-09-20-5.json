@@ -1,0 +1,147 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "候補に「永吉昴Birthdayガシャ」「永吉昴Birthdayセット2026」がありますが、紙面には birthday タグで永吉昴は登場していますが、ガシャやセットの記事は見えません。これらは落とされました",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "候補に「アイドルマスター シャイニーカラーズ POP UP SHOP パラレル回廊」がありますが、紙面に見えません。これも落とされた話題です",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "本日の記事数は21本で、号スナップショットの article_count: 21 と一致しています",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-765-tgs2026-xr-live-session.md",
+   "issue": "sources の label が「【Tメ」で途中で切れており、完全なタイトルに修正すべき。ファミ通記事のタイトルを完全形に直すことで、記事の出典情報が明確になります。",
+   "scope": "article:2026-09-20-765-tgs2026-xr-live-session.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-joint-cg-kyomafu-2026-goods.md",
+   "issue": "リードでは「シンデレラガールズとミリオンライブの新規描き下ろしグッズ」と両方を言及しているが、本文ではミリオンライブの描き下ろし対象8名のみ記載され、シンデレラガールズの描き下ろし対象が明記されていない。sources の公式URL(idolmaster-official.jp)にはシンデレラガールズのグッズ情報も記載されているはずなので、記事内容の完全性を高めるため、シンデレラガールズの描き下ろし対象者の情報を本文に加えることを検討してください（rank: small でも収納可能な内容）。",
+   "scope": "article:2026-09-20-joint-cg-kyomafu-2026-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-hikawaryuu-yuneru-spa-2026.md",
+   "issue": "分量不足：rank:small の目安250字以上に対し、本文約150字。候補の情報から拾える詳細（宿泊プラン料金、日帰り岩盤浴プラン料金・特典など）があれば補足可能",
+   "scope": "article:2026-09-20-shiny-hikawaryuu-yuneru-spa-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-765-chibi-mako-yukiho-2026.md",
+   "issue": "分量不足：rank: small の目安 250字に対して、本文が約 120字 と短い。候補から拾える詳細（例：ポーチの用途『カバンなどに付けられる』、販売元『株式会社BANDAI SPIRITS』など）がすべて反映されていない",
+   "scope": "article:2026-09-20-765-chibi-mako-yukiho-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-765-kotobukiya-kuji-summer-live-stage-2026.md",
+   "issue": "分量不足：rank small で目安250字に対し本文が約100字。出典にある賞品内容（S賞特大アクリルスタンド、A賞A2タペストリー等）、セット購入の特典（10連・30連セット）、Xフォロー&リポストキャンペーンなどを追加すれば埋まる",
+   "scope": "article:2026-09-20-765-kotobukiya-kuji-summer-live-stage-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-765-million-14th-bakust-talk-2026.md",
+   "issue": "rank: small の目安(250字以上)に対して本文が薄い(現在115字)。出典に記載されている「ばくすて！とーく」の内容説明や配信時刻の詳細があれば、記事に追加して充実させることを検討してください。",
+   "scope": "article:2026-09-20-765-million-14th-bakust-talk-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-dsva-nagano-aniera-festa-2026.md",
+   "issue": "分量不足。rank:small の目安は250字だが、本文は約130字。出典にある会場への公共交通、駐車場、当日の時間帯（開場時刻など）、観覧無料のLIGHTNING STAGEの情報など、読者が必要な詳細を拾えば埋まる。",
+   "scope": "article:2026-09-20-dsva-nagano-aniera-festa-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-dsva-valiv-special-stream-2026-09-24.md",
+   "issue": "分量不足: rank:small(目安250字)に対して本文が約90字。出典のGoogleフォームに「プロデューサー名必須」「メッセージ内容の形式」「結果は配信内で発表」などの詳細情報がある",
+   "scope": "article:2026-09-20-dsva-valiv-special-stream-2026-09-24.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-gaku-nemurase-tai-gashapon-2026.md",
+   "issue": "small ランク目安は 250 字だが、本文は約 100 字で分量不足。出典に記載の会場・価格・サイズなどを詳述すれば埋められる",
+   "scope": "article:2026-09-20-gaku-nemurase-tai-gashapon-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-million-14th-day1-2026.md",
+   "issue": "分量不足：rank small では目安 250字に対し、現在は本文約 60字。候補の情報に含まれる新曲の詳細（配信期間、購入可能な配信サイト名など）を加えると分量が埋まります",
+   "scope": "article:2026-09-20-million-14th-day1-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026.md",
+   "issue": "分量不足：rank 'small' の目安 250字に対し、記事本体は約240字。出典にある★3の衣装効果やゲーム内での位置付けなど詳細情報を加えれば埋まります。",
+   "scope": "article:2026-09-20-shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026.md",
+   "issue": "リード文の時制：「開催され、...登場している」と時制が混在しており、進行中のガシャを示す場合は「開催中で、限定★3...が登場している」の方が明確です。",
+   "scope": "article:2026-09-20-shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-silver-week-cas-colle-gasha-2026.md",
+   "issue": "分量不足: rank:small の目安 250字に対して本文が薄い（約100字）。出典に詳細情報（価格、具体的な開始・終了時刻など）があれば充実させられる",
+   "scope": "article:2026-09-20-shiny-silver-week-cas-colle-gasha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-sidem-mfes2026-ornament-acrylic-keyholder.md",
+   "issue": "分量が小さい。rank: small の目安は250字ですが、本文は約234字（注記を除外した実質的な文字数）となっています。sources に記載されたムービック公式通販のページには、1BOX12パック構成、各パックのラインアップ（A-BOX, B-BOX, C-BOX, D-BOX）などの詳細が掲載されており、取材を深掘りすれば埋めることができます。",
+   "scope": "article:2026-09-20-sidem-mfes2026-ornament-acrylic-keyholder.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-20-765-765as-solo-collection-dress-code-2026.md",
+  "article:2026-09-20-765-chibi-mako-yukiho-2026.md",
+  "article:2026-09-20-765-kotobukiya-kuji-summer-live-stage-2026.md",
+  "article:2026-09-20-765-million-14th-bakust-talk-2026.md",
+  "article:2026-09-20-765-tgs2026-xr-live-session.md",
+  "article:2026-09-20-cg-number-one-cross-over-eiam-2026.md",
+  "article:2026-09-20-dsva-nagano-aniera-festa-2026.md",
+  "article:2026-09-20-dsva-valiv-special-stream-2026-09-24.md",
+  "article:2026-09-20-gaku-live-tour-single-shugakuryoko-2026.md",
+  "article:2026-09-20-gaku-megasha-shinosawa-hiro-2026-09.md",
+  "article:2026-09-20-gaku-nemurase-tai-gashapon-2026.md",
+  "article:2026-09-20-general-fan-gal-imaginary-saki-2026-09-19.md",
+  "article:2026-09-20-general-music765plus-x-hack-2026.md",
+  "article:2026-09-20-joint-cg-kyomafu-2026-goods.md",
+  "article:2026-09-20-joint-idol-birthday-tamami-subaru-2026.md",
+  "article:2026-09-20-joint-tours-s1-ex-2026.md",
+  "article:2026-09-20-million-14th-day1-2026.md",
+  "article:2026-09-20-million-ops-roundup.md",
+  "article:2026-09-20-million-seasonal-snapshot-2026-12.md",
+  "article:2026-09-20-million-subaru-birthday-gasha-2026.md",
+  "article:2026-09-20-shiny-hikawaryuu-yuneru-spa-2026.md",
+  "article:2026-09-20-shiny-parallel-collection-popup-2026.md",
+  "article:2026-09-20-shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026.md",
+  "article:2026-09-20-shiny-silver-week-cas-colle-gasha-2026.md",
+  "article:2026-09-20-sidem-11th-commentarycasting.md",
+  "article:2026-09-20-sidem-divercity-tokyo-plaza-2026.md",
+  "article:2026-09-20-sidem-m-fes-seasons-greetings-party-2026.md",
+  "article:2026-09-20-sidem-mfes2026-ornament-acrylic-keyholder.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-20-765-765as-solo-collection-dress-code-2026.md": "b5972dede07d2a695ad31b3e8a61948d89bdca55108e2342e37e45702491f633",
+  "docs/_posts/2026-09-20-765-chibi-mako-yukiho-2026.md": "bb13caec64c8d1aa9941f2f75736bce419f8510a183af1a19c8f0035c31ea121",
+  "docs/_posts/2026-09-20-765-kotobukiya-kuji-summer-live-stage-2026.md": "ef025666acbf1d98298652d285cd51d0e140f96b2bf408a1c82e7fcb74c069ab",
+  "docs/_posts/2026-09-20-765-million-14th-bakust-talk-2026.md": "4821817c6f6b2e0b8e063088227a62070bd4457754d0c74964d4dd1f0a3fe8b1",
+  "docs/_posts/2026-09-20-765-tgs2026-xr-live-session.md": "1b4f37606b42240c32f79b3b3c9ae013109ee6d3d0cdbe615d59e6d1e159a3cc",
+  "docs/_posts/2026-09-20-cg-number-one-cross-over-eiam-2026.md": "50f10993220e666a12547329ca6aa79e0ce39305625f652017104d378cfb9fda",
+  "docs/_posts/2026-09-20-dsva-nagano-aniera-festa-2026.md": "afcfe1b72cbf459052d435d8ad85a95de8d08165c574586bf0e2ba611d7fb4bd",
+  "docs/_posts/2026-09-20-dsva-valiv-special-stream-2026-09-24.md": "03b7d90a3e4e310b384a71004243b0eb45ddc940ede4b3075b4a7b46e65d6f36",
+  "docs/_posts/2026-09-20-gaku-megasha-shinosawa-hiro-2026-09.md": "6145ce10bd0f115975b4d115c8e86191d5523ec39f9ff7d4eb92ea9a92e2d242",
+  "docs/_posts/2026-09-20-gaku-nemurase-tai-gashapon-2026.md": "cb4fdb6cb3e4706c249b040e5ce6df60fbb51ed3b9fe1c9ad0d8fb8501a744d0",
+  "docs/_posts/2026-09-20-general-music765plus-x-hack-2026.md": "cbc758f7d0c96362598523baa5ec27f1720822e23ca5f990f4d73e42911033ca",
+  "docs/_posts/2026-09-20-joint-cg-kyomafu-2026-goods.md": "db16dfd9cd67256699ecb0fd01a54fef915c2712e5d85e905a231f8cf94aa07a",
+  "docs/_posts/2026-09-20-joint-idol-birthday-tamami-subaru-2026.md": "2ce831bc2cb122e7ca0dcfdf99ba2af282ede6639c3cf214fd56bdf7bef8fb12",
+  "docs/_posts/2026-09-20-million-14th-day1-2026.md": "122ed40ced4127081c881a8adb82334d3d5fe4d256ec7bfeb5ae832b1984db5a",
+  "docs/_posts/2026-09-20-million-ops-roundup.md": "c2f93f64458a0777b7bfb02feb2cd47a1a202980c8824c52404888ceab122907",
+  "docs/_posts/2026-09-20-million-seasonal-snapshot-2026-12.md": "45a9adbce53d6c74b1538833d54c4db2aebda782eb59df63241b795bb6aa4530",
+  "docs/_posts/2026-09-20-shiny-hikawaryuu-yuneru-spa-2026.md": "03627b597d04a7cd7c0bb8f19845b5fa5839a973a81b8fe1e715d8f0aa5d64f2",
+  "docs/_posts/2026-09-20-shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026.md": "60e4facb13a8fcd343aac0f19b83ed0e6069da8f6daeb81ee99b1d6c8779bd9d",
+  "docs/_posts/2026-09-20-shiny-silver-week-cas-colle-gasha-2026.md": "3ee3ea1eddb2685c04768de2d4cde0a64585edfdca6bd7c02fc810d4737c9705",
+  "docs/_posts/2026-09-20-sidem-m-fes-seasons-greetings-party-2026.md": "14bfc3c1f08a833ff793c471e45a0b500762f8a65dc4c334cf8018296d45d882",
+  "docs/_posts/2026-09-20-sidem-mfes2026-ornament-acrylic-keyholder.md": "f53059b1d3f51db6589ce3cfb1771fa717ac151a5f3c19c5b3ab11bd3f66d560",
+  "docs/_editions/2026-09-20.md": "6cccf747d5b74cd113444cef096a49fadc827dc3a434f4982f843a0de17fba48",
+  "metrics/stories-before-2026-09-20.yml": "eeaf520b0e263ac36fe771d68594a7093208576a48f6c62feedd0afa63f7cf65"
+ }
+}

@@ -1,0 +1,243 @@
+{
+ "decisions": {
+  "shiny-cardfolio-vol3-preorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "story_id refrac7ions-still-blue-2026(9/18初出)で「カードフォリオvol.3受注中、受注期限10/4」を既報済み、新事実・当日トリガーなし"
+  },
+  "shiny-8-5th-anniversary-pre-festival-free-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/19付ストーリー(前夜祭3施策)で無料スタンプガシャの内容を既報済み、新事実・当日トリガーなし"
+  },
+  "shinyson-gear-unwinding-melody-2026": {
+   "action": "article",
+   "angle": "アンティーカ新曲イベント「歯車ほどき穿つ旋律」の遊び方、メダルガシャ・新曲ハイスコアランキングの報酬を紹介(9/24まで)",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/18は「近日開催予定」の予告のみ既報。期間・メダルガシャ・報酬詳細は新事実"
+  },
+  "shinyson-enkan-halo-around-01-antica-shhis-gacha-2026": {
+   "action": "article",
+   "angle": "新ガシャ「円環-Halo around-#01 アンティーカ×シーズ」に白瀬咲耶・幽谷霧子・緋田美琴の限定★3が登場(10/21まで)",
+   "rank": "medium",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "予告(9/18)・咲耶ピックアップの一部(9/19)は既報だが、3体の限定★3全容とガシャ名は新事実。shiny-prism-sakuya-pickup-2026を統合"
+  },
+  "shiny-first-refrac7ions-still-blue-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "refrac7ions-still-blue-2026(9/18初出)にGoodsページ更新の内容を包含済み"
+  },
+  "shiny-super-duper-dreamer-beast-mode-event-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "shiny-song-for-prism-event-goods-2026-10(9/19)で10/11会場物販の内容を既報済み"
+  },
+  "shiny-autumn-seven-herbs-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/19付ストーリー(前夜祭3施策)で秋の七草パッケージを既報済み"
+  },
+  "shiny-silver-week-cas-colle-gasha-2026": {
+   "action": "article",
+   "angle": "シルバーウィーク記念、有償限定72時間限定のキャスコレ確定ステップアップガシャが登場",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新規ガシャの開催開始、既報なし"
+  },
+  "shiny-prism-sakuya-pickup-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shinyson-enkan-halo-around-01-antica-shhis-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ「円環-Halo around-#01」の咲耶ピックアップ告知。9/19付で一部既報だが同ガシャ記事に統合"
+  },
+  "shiny-refrac7ions-still-blue-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "refrac7ions-still-blue-2026(9/18初出)の「事前販売ファイナルがスタート」で既報済み"
+  },
+  "shiny-style-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "shiny-style-collection-vol1-2026(9/11初出)で受注中・9/27締切を既報済み、当日トリガーなし"
+  },
+  "shiny-parallel-corridor-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-parallel-collection-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ「パラレル回廊」の通販受付情報。開幕記事に統合"
+  },
+  "shiny-parallel-collection-popup-2026": {
+   "action": "article",
+   "angle": "シャニマス「パラレルコレクション」POP UP SHOP「パラレル回廊」が秋葉原UDXで本日開幕、通販受付も同時スタート(会場~9/27・通販~10/12)",
+   "rank": "medium",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本面の一面候補。既報の予約詳細に加え、開幕・通販開始という当日トリガーが確定"
+  },
+  "shiny-hikawaryuu-yuneru-spa-2026": {
+   "action": "article",
+   "angle": "彼岸流×湯~ねるコラボ「ジャパニーズ・オリエンタル・スパ」、宿泊プランの予約が本日正午スタート(開催は11/21~)",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/19既報の続報予約。予約開始という当日トリガーがあり単独記事に"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-shinyson-gear-unwinding-melody-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "アンティーカ新曲イベント「歯車ほどき穿つ旋律」の遊び方、メダルガシャ・新曲ハイスコアランキングの報酬を紹介(9/24まで)",
+    "lead_score": 15,
+    "dedup_key": "shinyson-gear-unwinding-melody-2026",
+    "candidate_ids": [
+     "202609192336-explore-26"
+    ]
+   },
+   {
+    "slug": "shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "新ガシャ「円環-Halo around-#01 アンティーカ×シーズ」に白瀬咲耶・幽谷霧子・緋田美琴の限定★3が登場(10/21まで)",
+    "lead_score": 10,
+    "dedup_key": "shinyson-enkan-halo-around-01-antica-shhis-gacha-2026",
+    "candidate_ids": [
+     "202609192336-explore-27",
+     "202609200223-grok-34"
+    ]
+   },
+   {
+    "slug": "shiny-silver-week-cas-colle-gasha-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シルバーウィーク記念、有償限定72時間限定のキャスコレ確定ステップアップガシャが登場",
+    "lead_score": 5,
+    "dedup_key": "shiny-silver-week-cas-colle-gasha-2026",
+    "candidate_ids": [
+     "202609200223-grok-33"
+    ]
+   },
+   {
+    "slug": "shiny-parallel-collection-popup-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニマス「パラレルコレクション」POP UP SHOP「パラレル回廊」が秋葉原UDXで本日開幕、通販受付も同時スタート(会場~9/27・通販~10/12)",
+    "lead_score": 75,
+    "dedup_key": "shiny-parallel-collection-popup-2026",
+    "candidate_ids": [
+     "sched-2026-09-20-shiny-parallel-collection-popup-2026-開幕",
+     "202609200223-grok-37"
+    ]
+   },
+   {
+    "slug": "shiny-hikawaryuu-yuneru-spa-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "彼岸流×湯~ねるコラボ「ジャパニーズ・オリエンタル・スパ」、宿泊プランの予約が本日正午スタート(開催は11/21~)",
+    "lead_score": 20,
+    "dedup_key": "shiny-hikawaryuu-yuneru-spa-2026",
+    "candidate_ids": [
+     "sched-2026-09-20-shiny-hikawaryuu-yuneru-spa-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-cardfolio-vol3-preorder-2026",
+    "reason": "既報",
+    "note": "story_id refrac7ions-still-blue-2026(9/18初出)で「カードフォリオvol.3受注中、受注期限10/4」を既報済み、新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "shiny-8-5th-anniversary-pre-festival-free-gacha-2026",
+    "reason": "既報",
+    "note": "9/19付ストーリー(前夜祭3施策)で無料スタンプガシャの内容を既報済み、新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "shiny-first-refrac7ions-still-blue-goods-2026",
+    "reason": "既報",
+    "note": "refrac7ions-still-blue-2026(9/18初出)にGoodsページ更新の内容を包含済み"
+   },
+   {
+    "dedup_key": "shiny-super-duper-dreamer-beast-mode-event-goods-2026",
+    "reason": "既報",
+    "note": "shiny-song-for-prism-event-goods-2026-10(9/19)で10/11会場物販の内容を既報済み"
+   },
+   {
+    "dedup_key": "shiny-autumn-seven-herbs-2026",
+    "reason": "既報",
+    "note": "9/19付ストーリー(前夜祭3施策)で秋の七草パッケージを既報済み"
+   },
+   {
+    "dedup_key": "shiny-refrac7ions-still-blue-goods-2026",
+    "reason": "既報",
+    "note": "refrac7ions-still-blue-2026(9/18初出)の「事前販売ファイナルがスタート」で既報済み"
+   },
+   {
+    "dedup_key": "shiny-style-collection-2026",
+    "reason": "既報",
+    "note": "shiny-style-collection-vol1-2026(9/11初出)で受注中・9/27締切を既報済み、当日トリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,133 @@
+{
+ "decisions": {
+  "sidem-m-fes-seasons-greetings-party-2026": {
+   "action": "article",
+   "angle": "Mフェス初のテーマソングCD「Season's Greetings Party!」の参加ユニット(W・神速一魂・C.FIRST)・価格・封入特典など商品詳細が判明、12/2発売",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/14既報(開催決定)から一歩進んだ商品仕様(価格・品番・特典)の新情報"
+  },
+  "sidem-mfes2026-ornament-acrylic-keyholder": {
+   "action": "article",
+   "angle": "Mフェス2026新作グッズ「オーナメント風アクリルキーホルダー」「グリッターキャラバッジ」が12月発売決定(ムービック)",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "glitter-character-badgeを統合。未確認・低engagementの通販サイト情報"
+  },
+  "sidem-mfes2026-glitter-character-badge": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-mfes2026-ornament-acrylic-keyholder",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じMフェス2026グッズシリーズ、同発売日(12/1)・同メーカーのためキーホルダー記事へ統合"
+  },
+  "sidem-11th-archive-watch-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-commentarycasting",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1実施・DAY2(本日11:30)予告のツイートで、commentarycastingと同一の副音声同時視聴上映会"
+  },
+  "sidem-connect-with-music-goods-4-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/11既報(sidem-tales-goods-wave4-2026)と同内容。受注締切は9/27で本日のトリガーなし"
+  },
+  "sidem-divercity-tokyo-plaza-2026": {
+   "action": "article",
+   "angle": "SideM×ダイバーシティ東京プラザのコラボが本日最終日、来場はラストチャンス",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "8/24既報の続報。終了日という当日トリガーで単独記事"
+  },
+  "sidem-11th-commentarycasting": {
+   "action": "article",
+   "angle": "SideM11th STAGE DAY2副音声付き同時視聴上映会が本日11:30から視聴可能に、DAY1に続き実施",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "archive-watch-2026のDAY1実施報告/DAY2予告ツイートを統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-m-fes-seasons-greetings-party-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "Mフェス初のテーマソングCD「Season's Greetings Party!」の参加ユニット(W・神速一魂・C.FIRST)・価格・封入特典など商品詳細が判明、12/2発売",
+    "lead_score": 25,
+    "dedup_key": "sidem-m-fes-seasons-greetings-party-2026",
+    "candidate_ids": [
+     "202609191834-explore-9"
+    ]
+   },
+   {
+    "slug": "sidem-mfes2026-ornament-acrylic-keyholder",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェス2026新作グッズ「オーナメント風アクリルキーホルダー」「グリッターキャラバッジ」が12月発売決定(ムービック)",
+    "lead_score": 8,
+    "dedup_key": "sidem-mfes2026-ornament-acrylic-keyholder",
+    "candidate_ids": [
+     "202609192336-explore-28",
+     "202609192336-explore-29"
+    ]
+   },
+   {
+    "slug": "sidem-divercity-tokyo-plaza-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×ダイバーシティ東京プラザのコラボが本日最終日、来場はラストチャンス",
+    "lead_score": 5,
+    "dedup_key": "sidem-divercity-tokyo-plaza-2026",
+    "candidate_ids": [
+     "sched-2026-09-20-sidem-divercity-tokyo-plaza-2026-終了"
+    ]
+   },
+   {
+    "slug": "sidem-11th-commentarycasting",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM11th STAGE DAY2副音声付き同時視聴上映会が本日11:30から視聴可能に、DAY1に続き実施",
+    "lead_score": 15,
+    "dedup_key": "sidem-11th-commentarycasting",
+    "candidate_ids": [
+     "sched-2026-09-20-sidem-11th-commentarycasting-その他",
+     "sched-2026-09-20-sidem-11th-commentarycasting-開始",
+     "202609200223-grok-29"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-connect-with-music-goods-4-2026",
+    "reason": "既報",
+    "note": "9/11既報(sidem-tales-goods-wave4-2026)と同内容。受注締切は9/27で本日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

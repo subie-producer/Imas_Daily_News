@@ -1,4 +1,3 @@
-# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。
 - dedup_key: gaku-hif-15m-milestone-campaign-2026
   brand: gaku
   subject: 学マスH.I.F挑戦回数1,500万回突破記念キャンペーン
@@ -95,10 +94,18 @@
   brand: million
   subject: ミリシタ「X-STREAM THEATER」VOL.2以降の更新
   watch: VOL.1パスは9/1開始・数か月に1回の更新予定と告知済み。次回更新時期(判明次第 triggers へ)
+- dedup_key: tgs2026-hatano-session
+  brand: general
+  subject: 東京ゲームショウ2026 波多野公士氏登壇セッション
+  watch: 「バーチャルを“リアル化”する条件とは」セッションの具体的な開催日程(判明次第 triggers へ)
 - dedup_key: million-chibigurumi-spade-of-q-2026
   brand: million
   subject: ミリオン「スペードのQ」ちびぐるみ(BANDAI SPIRITS)
   watch: 2027年1月内の正式な店舗展開開始日(判明次第 triggers へ)
+- dedup_key: gaku-fukuoka-live-memorial-gacha-2026-09
+  brand: gaku
+  subject: 学マス「標」福岡公演記念ガシャ
+  watch: 開催終了日(判明次第 triggers へ)
 - dedup_key: dsva-cosmo-ace-combat8-tgs-2026
   brand: dsva
   subject: 上水流宇宙 ACE COMBAT 8試遊配信
@@ -151,7 +158,7 @@
   brand: shiny
   subject: シャニソン アンティーカ新曲イベント「歯車ほどき穿つ旋律」
   watch: 開催日時(近日開催予定、判明次第 triggers へ)
-- dedup_key: shiny-silver-week-cas-colle-gasha-2026
+- dedup_key: shiny-enkan-halo-01-2026
   brand: shiny
-  subject: シルバーウィーク記念 キャスコレ確定ステップアップガシャ
-  watch: 72時間限定の終了日時(判明次第 triggers へ)
+  subject: シャニソン新ガシャ「円環-Halo around-」#01 アンティーカ×シーズ
+  watch: 開催日時(近日開催予定、判明次第 triggers へ)

@@ -117,6 +117,9 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - j-hobby.net           # 合議で追加: 複数のオンラインストアの予約情報を集約掲載し、アフィリエイト報酬を得ている
+  - atpress.ne.jp         # 合議で追加: プレスリリース配信サービス。企業の発表を配信する媒体
+  - idolmaster.gamers-labo.com # 合議で追加: 5chで話題になった内容をまとめるサイト。他所の投稿を媒体として伝えている
   - dreamnews.jp          # 合議で追加: プレスリリース配信代行。企業発表を掲載する媒体
   - gamewith.jp           # 合議で追加: 攻略サイトは定義で二次情報の例。著者署名なし、現地取材の明確な証拠なし。公式情報
   - twiman.net            # 合議で追加: X(旧Twitter)の個人投稿を媒体として収集・表示。媒体として個人の創作を紹
@@ -182,6 +185,7 @@ secondary_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - music765plus.com      # 合議で追加: 個人Xアカウント連動、会社概要なし。個人運営なら内容問わずファン
   - v12.battlepage.com    # 合議で追加: 個人の投稿。指示では『個人を二次情報にしない』と明記
   - ckworks.jp            # 合議で追加: 個人ブログ・サービス。アニメレポート・VTuber情報
   - motoraji.jugem.jp     # もとラジ!(ファン番組の自己発信)
@@ -197,6 +201,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - promo.whomor.com      # 合議で追加: 問い合わせ先shop@whomor.comでイベント企画・運営を担当
+  - movic.jp              # 合議で追加: ライセンス商品のグッズを企画・制作・販売
   - lawson-faq.lawson.co.jp # 合議で追加: 販売元。一番くじをローソン店舗で取り扱う
   - s-renaissance.co.jp   # 合議で追加: アイマスコラボイベントを主催するスポーツクラブ。会場・主催
   - onkyoanime.com        # 合議で追加: アニメコラボグッズを販売する会社が自社商品を告知。販売元
@@ -306,6 +312,9 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - xuHvR2rRRTM         # 機械で追加: @imas-official「9/19 キャシー・グラハムさん Happy Birthda」
+    - rTpvcI1wr_U         # 機械で追加: @imas-official「9/19 アナスタシアさん Happy Birthday‼」
+    - ML1kChLMhsU         # 機械で追加: @imas-official「【シャニソン】アンティーカ「ブレイク・アウト・セレンディピテ」
     - mMVL0_U3Tjk         # 機械で追加: @TomoriManaka「【How to Fish】なかよく魚釣り？いいえ、たたかいで」
     - hZUB5aiesTg         # 機械で追加: @project_imas_va-liv「【新情報あり】最新情報をお知らせする特番【 #ヴイアラ 】」
     - ATRiaZHUSlM         # 機械で追加: @UtagawaLetora「【How to Fish】大人気カオスゲー！！！釣れ！！！！」

@@ -1,0 +1,390 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-20-765-tgs2026-xr-live-session.md",
+   "issue": "出典に記載されていない「千葉県・幕張メッセ」という具体的な地名が本文に含まれている",
+   "quote": "2026年9月18日、千葉県・幕張メッセでTGSフォーラム「バーチャルを\"リアル化\"する条件とは――ライブ事例で読み解く次世代ゲーム展開」が開催された。",
+   "rule_id": "R1",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "F1"
+   ],
+   "expected": "sources の記事に「幕張メッセ」が記載されているか確認し、記載されていなければ本文から削除するか sources に公式情報を追加",
+   "scope": "article:2026-09-20-765-tgs2026-xr-live-session.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-765-tgs2026-xr-live-session.md",
+   "issue": "バンダイナムコが関わるゲーム内イベント・セッション開催の報道なのに、sources に公式・準公式が一つも含まれていない",
+   "quote": "sources に記載: ファミ通.com（報道）のみ。公式サイトなし",
+   "rule_id": "R5",
+   "repair": "add_source",
+   "fact_ids": [
+    "F0",
+    "F1",
+    "F2",
+    "F3"
+   ],
+   "expected": "sources に東京ゲームショウ公式サイト、またはバンダイナムコ公式の情報源を追加",
+   "scope": "article:2026-09-20-765-tgs2026-xr-live-session.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-gaku-live-tour-single-shugakuryoko-2026.md",
+   "issue": "既報と同内容で新事実がなく、当日のトリガーもない",
+   "quote": "初星学園 LIVE TOUR Single「修楽旅行」は11月4日発売、価格は2,500円（税込）。アソビストアの予約特典はジャケットイラストステッカーで、特典はなくなり次第終了する。",
+   "rule_id": "R10",
+   "repair": "drop_article",
+   "fact_ids": [],
+   "expected": "新しい事実または当日のトリガーがある場合のみ記事化する",
+   "scope": "article:2026-09-20-gaku-live-tour-single-shugakuryoko-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-general-fan-gal-imaginary-saki-2026-09-19.md",
+   "issue": "出典の不一致: 根拠F5が「藤田清夏」を述べているが、記事は「紫雲清夏」と述べている",
+   "quote": "カップリングを巡っては、花海佑芽・秦谷美鈴と紫雲清夏に関するイラストの話題や、「ことすみは\"実在\"する」と題した話題が並んだ。",
+   "rule_id": "R4",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F5"
+   ],
+   "expected": "根拠F5の不正確さ（存在しないアイドル名の記載）を確認し、出典を正確に記述した上で記事を修正する、または出典そのものに問題がないか検証する必要がある",
+   "scope": "article:2026-09-20-general-fan-gal-imaginary-saki-2026-09-19.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-joint-cg-kyomafu-2026-goods.md",
+   "rule_id": "R8",
+   "issue": "event_date が 2026-09-19 であるのに対し、記事では「本日9月20日が最終日」と述べられており、イベント日付の年ズレ・新規性が矛盾している。",
+   "quote": "京まふ2026は本日9月20日が最終日で",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F1",
+    "F3"
+   ],
+   "expected": "event_date を 2026-09-20 に修正するか、記事の表現を「昨日開幕の京まふ」など一貫させる",
+   "scope": "article:2026-09-20-joint-cg-kyomafu-2026-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-joint-cg-kyomafu-2026-goods.md",
+   "rule_id": "R4",
+   "issue": "sources の1つ目の label が不完全。末尾が「(8」で切れており、記事が参照した公式告知の掲載日が不明確である。",
+   "quote": "label: 【公式】アイドルマスター ポータル「【シンデレラ】「京都国際マンガ・アニメフェア（京まふ）2026」でのグッズ情報を公開♪会場での記念ドリンクも販売予定！」(8",
+   "repair": "add_source",
+   "fact_ids": [],
+   "expected": "sources 1 の label に完全な掲載日（例：「2026年9月」など）を記載し、出典の完全性を確保する",
+   "scope": "article:2026-09-20-joint-cg-kyomafu-2026-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-joint-tours-s1-ex-2026.md",
+   "rule_id": "R10",
+   "issue": "既報(joint-tours-s1-ex-2026、2026-09-10発行)と同じ内容を繰り返しており、新しい事実も当日のトリガーも無い。既報には周防桃子の追加、新衣装『サマーティースタイル』などの詳細が記載されている一方、本記事は基本的な開始日・終了日のみ",
+   "quote": "『アイドルマスター TOURS』の「S1弾Ex」が9月17日に始まり、ツアーズレアが10月28日まで展開される。",
+   "repair": "drop_article",
+   "fact_ids": [
+    "F1",
+    "F2"
+   ],
+   "expected": "既報と異なる新規情報がない場合、記事を削除するか、既報の補足・詳細情報を加えて独立した価値を持たせる",
+   "scope": "article:2026-09-20-joint-tours-s1-ex-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-million-seasonal-snapshot-2026-12.md",
+   "rule_id": "R3",
+   "issue": "候補IDが指す候補が存在しない。frontmatterのcandidate_idsが stock/scheduled/ のIDを使用しており、candidates/*.json の実エントリを参照していない。そのため、本文のF1-F11の事実参照が検証不可能",
+   "quote": "candidate_ids:\n- sched-2026-09-20-million-seasonal-snapshot-2026-12-締切\n- sched-2026-09-20-million-seasonal-snapshot-christmas-2026-締切",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F3",
+    "F5",
+    "F10",
+    "F11"
+   ],
+   "expected": "candidate_idsが candidates/*.json の実在するエントリ(例: 202609121836-watch-2)を指し、F参照が有効な候補の事実にマッピングされること",
+   "scope": "article:2026-09-20-million-seasonal-snapshot-2026-12.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-hikawaryuu-yuneru-spa-2026.md",
+   "issue": "記事で参照するべき候補がcandidates ファイルに存在しない。candidate_ids で指定された 'sched-2026-09-20-shiny-hikawaryuu-yuneru-spa-2026-開始' が候補ファイルに見当たらない",
+   "quote": "candidate_ids:\n- sched-2026-09-20-shiny-hikawaryuu-yuneru-spa-2026-開始",
+   "rule_id": "R1",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F6",
+    "F8",
+    "F12"
+   ],
+   "expected": "候補ファイルに存在する有効な候補IDを指定するか、sources の URL から一次情報を確認して verified_facts を追加する",
+   "scope": "article:2026-09-20-shiny-hikawaryuu-yuneru-spa-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-parallel-collection-popup-2026.md",
+   "issue": "候補ID「sched-2026-09-20-shiny-parallel-collection-popup-2026-開幕」が candidates/2026-09-20.json に存在しない。frontmatter に列挙されているが、実体がなく、記事が参照している fact_ids (F4, F5, F8) の根拠が不明確。",
+   "quote": "candidate_ids:\n- sched-2026-09-20-shiny-parallel-collection-popup-2026-開幕\n- 202609200223-grok-37",
+   "rule_id": "R1",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "sched-2026-09-20-shiny-parallel-collection-popup-2026-開幕"
+   ],
+   "expected": "記事の fact_ids が参照するすべての候補が candidates ファイルに存在すること。見つからない候補に根拠する記述を削除するか、根拠を verified_facts (N) のみに統一する。",
+   "scope": "article:2026-09-20-shiny-parallel-collection-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-parallel-collection-popup-2026.md",
+   "issue": "verified_facts の根拠URL (https://special.amiami.jp/shinycolors_amiami_2026/) が HTTP 403 Forbidden で確認できない。記事の具体的な事実（営業時間、入場料、全商品取り扱い）が sources で実際に記載されているか検証不可。",
+   "quote": "verified_facts:\n- id: N1\n  text: 会場の営業時間は10時から20時までで、休業日はなく、入場料は無料。\n  url: https://special.amiami.jp/shinycolors_amiami_2026/\n- id: N2\n  text: 通販では全商品を取り扱い、全商品が受注生産。2027年1月頃の発送を予定している。\n  url: https://special.amiami.jp/shinycolors_amiami_2026/",
+   "rule_id": "R2",
+   "repair": "add_source",
+   "fact_ids": [
+    "N1",
+    "N2"
+   ],
+   "expected": "verified_facts の URL が公開アクセス可能であるか、または candidates の内容から事実が確認できることを示す追加の出典（公式ニュースなど）を sources に加えること。",
+   "scope": "article:2026-09-20-shiny-parallel-collection-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-sidem-11th-commentarycasting.md",
+   "rule_id": "R1",
+   "issue": "本文に「キャスト出演は声のみ」「映像は基本的に公開済みのアーカイブ映像だが、一部編集で変更される可能性がある」と記載されているが、frontmatter の candidate_ids で指す write ファイルの素材(F16)には視聴条件のみ記載され、これらの事実が無い",
+   "quote": "同時視聴会のキャスト出演は声のみ。配信されるライブ本編映像は基本的に公開済みのアーカイブ映像だが、一部編集で変更される可能性がある。 <!-- F16 -->",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F16"
+   ],
+   "expected": "sources の公式ページで確認した「声のみ」「アーカイブ映像」の事実を new_facts として frontmatter に追加し、本文の fact_ids コメントを修正する",
+   "scope": "article:2026-09-20-sidem-11th-commentarycasting.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-sidem-11th-commentarycasting.md",
+   "rule_id": "R4",
+   "issue": "sources の label が実際のページタイトルと一致していない。記事では「今週9/19(土)、」で途切れているが、実際のページタイトルは「今週9/19(土)、20(日)開催！」と記載されている",
+   "quote": "- label: アイドルマスター公式ポータル「【SideM11th】配信視聴チケットご購入者限定！キャスト生出演オーディオコメンタリー付き同時視聴上映会は今週9/19(土)、",
+   "repair": "add_source",
+   "fact_ids": [],
+   "expected": "sources の label を完全なページタイトルまたは記事内容の要約に修正: 「アイドルマスター公式ポータル『【SideM11th】配信視聴チケットご購入者限定！キャスト生出演オーディオコメンタリー付き同時視聴上映会は今週9/19(土)、20(日)開催！』」",
+   "scope": "article:2026-09-20-sidem-11th-commentarycasting.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-sidem-divercity-tokyo-plaza-2026.md",
+   "issue": "verified_facts N1 の根拠となる公式 URL にアクセスしても、記載された詳細情報（開催期間、会場、事前予約対象日の詳細、スタンプラリー参加費）を確認できない",
+   "quote": "公式特設ページでは、イベント「アイドルマスター SideM in ダイバーシティ東京 プラザ」の開催期間を2026年9月4日(金)から9月20日(日)、会場をダイバーシティ東京 プラザ2F DiverCity＋、営業時間を施設営業時間に準ずるとしている。9月4日・5日・6日・12日・13日はPOP UP STOREの事前予約制による入場制限日で、その他の日程はフリー入場を予定しているが、混雑時は整理券配布などの入店制限を行う場合がある。スタンプラリーの参加費は800円（税込）で、台紙販売場所と特典引換場所は2F DiverCity＋。",
+   "rule_id": "R2",
+   "repair": "add_source",
+   "fact_ids": [
+    "N1"
+   ],
+   "expected": "sources に記載された二次情報の URL で N1 の事実が確認できることを確認するか、公式情報が確認できる別の出典を sources に追加して、N1 の根拠を補強する",
+   "scope": "article:2026-09-20-sidem-divercity-tokyo-plaza-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-sidem-m-fes-seasons-greetings-party-2026.md",
+   "issue": "frontmatterのsourcesラベルが不完全で、文字化けのように見える状態になっている",
+   "quote": "label: Lantis公式「THE IDOLM@STER SideM Mフェス 2026 in Winter Wonderland テーマソング『Season's G",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "ラベルが完全に表示され『Season's Greetings Party！』まで記載されるべき",
+   "scope": "article:2026-09-20-sidem-m-fes-seasons-greetings-party-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-million-subaru-birthday-gasha-2026.md",
+   "issue": "同じ主題の記事が2本：誕生日情報の重複",
+   "quote": "永吉昴の誕生日に合わせ、公式Xが「永吉昴Birthdayガシャ」の開催と「永吉昴Birthdayセット2026」の登場を告知した。",
+   "rule_id": "P1",
+   "repair": "drop_article",
+   "fact_ids": [
+    "F1",
+    "F4"
+   ],
+   "expected": "joint-idol-birthday-tamami-subaru-2026に統合するか、落とすほう（million-subaru-birthday-gasha-2026）を削除",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-20-765-chibi-mako-yukiho-2026.md",
+   "issue": "分量不足：rank: small の目安 250字に対して、本文が約 120字 と短い。候補から拾える詳細（例：ポーチの用途『カバンなどに付けられる』、販売元『株式会社BANDAI SPIRITS』など）がすべて反映されていない",
+   "scope": "article:2026-09-20-765-chibi-mako-yukiho-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-765-kotobukiya-kuji-summer-live-stage-2026.md",
+   "issue": "分量不足：rank small で目安250字に対し本文が約100字。出典にある賞品内容（S賞特大アクリルスタンド、A賞A2タペストリー等）、セット購入の特典（10連・30連セット）、Xフォロー&リポストキャンペーンなどを追加すれば埋まる",
+   "scope": "article:2026-09-20-765-kotobukiya-kuji-summer-live-stage-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-765-million-14th-bakust-talk-2026.md",
+   "issue": "rank: small の目安(250字以上)に対して本文が薄い(現在115字)。出典に記載されている「ばくすて！とーく」の内容説明や配信時刻の詳細があれば、記事に追加して充実させることを検討してください。",
+   "scope": "article:2026-09-20-765-million-14th-bakust-talk-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-765-tgs2026-xr-live-session.md",
+   "issue": "候補の facts では「千葉県・幕張メッセ」の記載が確認できないため、sources となるファミ通記事で実際に確認が必要",
+   "scope": "article:2026-09-20-765-tgs2026-xr-live-session.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-dsva-nagano-aniera-festa-2026.md",
+   "issue": "分量不足。rank:small の目安は250字だが、本文は約130字。出典にある会場への公共交通、駐車場、当日の時間帯（開場時刻など）、観覧無料のLIGHTNING STAGEの情報など、読者が必要な詳細を拾えば埋まる。",
+   "scope": "article:2026-09-20-dsva-nagano-aniera-festa-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-dsva-valiv-special-stream-2026-09-24.md",
+   "issue": "分量不足: rank:small(目安250字)に対して本文が約90字。出典のGoogleフォームに「プロデューサー名必須」「メッセージ内容の形式」「結果は配信内で発表」などの詳細情報がある",
+   "scope": "article:2026-09-20-dsva-valiv-special-stream-2026-09-24.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-gaku-live-tour-single-shugakuryoko-2026.md",
+   "issue": "分量不足：rank small の目安は 250字だが本文は約100字。候補ファイル ID が見つからず根拠が確認不可能",
+   "scope": "article:2026-09-20-gaku-live-tour-single-shugakuryoko-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-gaku-nemurase-tai-gashapon-2026.md",
+   "issue": "small ランク目安は 250 字だが、本文は約 100 字で分量不足。出典に記載の会場・価格・サイズなどを詳述すれば埋められる",
+   "scope": "article:2026-09-20-gaku-nemurase-tai-gashapon-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-general-fan-gal-imaginary-saki-2026-09-19.md",
+   "issue": "出典の確実性: 候補202609191233-explore-10のsource_typeが「未確認」でverifyが「unconfirmed」となっており、一次情報で確認されていない。URLも学マスまとめ速報のトップページのため、記事の具体的な事実を確認できない",
+   "scope": "article:2026-09-20-general-fan-gal-imaginary-saki-2026-09-19.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-joint-cg-kyomafu-2026-goods.md",
+   "issue": "分量が短い（rank:small の目安は250字以上）。本文が2段落92字程度で、THEキャラブースの来場情報（場所、営業時間）と販売対象キャラ、記念ドリンク以外に、会場内施設情報・支払方法・入場料金など出典に記載があれば補足すると充実する。",
+   "scope": "article:2026-09-20-joint-cg-kyomafu-2026-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-million-14th-day1-2026.md",
+   "issue": "分量不足：rank small では目安 250字に対し、現在は本文約 60字。候補の情報に含まれる新曲の詳細（配信期間、購入可能な配信サイト名など）を加えると分量が埋まります",
+   "scope": "article:2026-09-20-million-14th-day1-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-million-seasonal-snapshot-2026-12.md",
+   "issue": "分量不足: smallランクの目安250字に対し、本文が238字。出典にある価格情報（公式シーズナルBOX 5,500円など）を追加すれば解決可能",
+   "scope": "article:2026-09-20-million-seasonal-snapshot-2026-12.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-hikawaryuu-yuneru-spa-2026.md",
+   "issue": "分量不足。rank: small では 250字以上が目安だが、本文は約150字程度で不足",
+   "scope": "article:2026-09-20-shiny-hikawaryuu-yuneru-spa-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-parallel-collection-popup-2026.md",
+   "issue": "sources の公式ニュース URL (https://idolmaster-official.jp/news/01_19700) からは見出しのみ確認でき、記事に書かれた詳細（営業時間、入場料、会場階数など）の記載が不明。あみあみの特設ページ（candidates/.grok/shiny.md では内容が確認可能）が sources に実装された情報源であることを明確にすることで、出典の信頼性を向上させることを検討。",
+   "scope": "article:2026-09-20-shiny-parallel-collection-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-parallel-collection-popup-2026.md",
+   "issue": "記事の内容は候補データ（candidates/.grok/shiny.md のあみあみ特設ページ情報）と整合しているが、候補ID の参照が不完全なため、根拠の追跡可能性が低い。特に F4, F5, F8 というインデックスが見つからない最初の候補に由来していると思われるため、frontmatter の candidate_ids を検証して正確な候補IDに修正することを推奨。",
+   "scope": "article:2026-09-20-shiny-parallel-collection-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026.md",
+   "issue": "分量不足：rank 'small' の目安 250字に対し、記事本体は約240字。出典にある★3の衣装効果やゲーム内での位置付けなど詳細情報を加えれば埋まります。",
+   "scope": "article:2026-09-20-shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026.md",
+   "issue": "リード文の時制：「開催され、...登場している」と時制が混在しており、進行中のガシャを示す場合は「開催中で、限定★3...が登場している」の方が明確です。",
+   "scope": "article:2026-09-20-shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-shiny-silver-week-cas-colle-gasha-2026.md",
+   "issue": "分量不足: rank:small の目安 250字に対して本文が薄い（約100字）。出典に詳細情報（価格、具体的な開始・終了時刻など）があれば充実させられる",
+   "scope": "article:2026-09-20-shiny-silver-week-cas-colle-gasha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-sidem-11th-commentarycasting.md",
+   "issue": "分量: rank が small(250字目安)に対して本文が約150字。sources に記載された視聴条件(チケット販売終了日、アーカイブ視聴期間、チケット画像プレゼント条件など)は既報に含まれるが、sources から新たに確認できる「声のみ出演」「映像編集の可能性」の詳細を加えれば自然に分量が増える",
+   "scope": "article:2026-09-20-sidem-11th-commentarycasting.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-sidem-divercity-tokyo-plaza-2026.md",
+   "issue": "本文分量が指標より少ない。rank: small の目安は 250字だが、本文は約 210字。sources に記載されたコラボカフェ.com では会場の詳細情報（スタンプラリー 5か所、施設内対象店舗のコラボメニュー詳細など）が記載されているため、拾えば埋まる可能性あり",
+   "scope": "article:2026-09-20-sidem-divercity-tokyo-plaza-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-sidem-m-fes-seasons-greetings-party-2026.md",
+   "issue": "verified_facts N2に出演者の役柄情報がないが、記事本文には役柄が含まれている。Lantis公式ページで確認したところ役柄情報は実在し記事の記述は正確だが、verified_factsの記述を充実させることが望ましい",
+   "scope": "article:2026-09-20-sidem-m-fes-seasons-greetings-party-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-20-sidem-mfes2026-ornament-acrylic-keyholder.md",
+   "issue": "分量が小さい。rank: small の目安は250字ですが、本文は約234字（注記を除外した実質的な文字数）となっています。sources に記載されたムービック公式通販のページには、1BOX12パック構成、各パックのラインアップ（A-BOX, B-BOX, C-BOX, D-BOX）などの詳細が掲載されており、取材を深掘りすれば埋めることができます。",
+   "scope": "article:2026-09-20-sidem-mfes2026-ornament-acrylic-keyholder.md"
+  },
+  {
+   "file": "-",
+   "issue": "digestに本日最大の話題が十分反映されているか確認：本日はミリオン14thDAY2公演日で、DAY1の新曲披露は昨日の記事。本日の主要話題は「ばくすて！とーく」「パラレル回廊開幕」「脇山珠美・永吉昴誕生日」で、digestに反映されている。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "紙面のバランス：765AS関連が5本（ソロコレ、ちびぐるみ、くじ、ばくすて、XR）と多く、他ブランドに比べてボリュームが大きい。ただしミリオン14thLIVE関連は複数記事で補完されており、整合性は取れている。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-20-765-765as-solo-collection-dress-code-2026.md",
+  "article:2026-09-20-765-chibi-mako-yukiho-2026.md",
+  "article:2026-09-20-765-kotobukiya-kuji-summer-live-stage-2026.md",
+  "article:2026-09-20-765-million-14th-bakust-talk-2026.md",
+  "article:2026-09-20-765-tgs2026-xr-live-session.md",
+  "article:2026-09-20-cg-number-one-cross-over-eiam-2026.md",
+  "article:2026-09-20-dsva-nagano-aniera-festa-2026.md",
+  "article:2026-09-20-dsva-valiv-special-stream-2026-09-24.md",
+  "article:2026-09-20-gaku-live-tour-single-shugakuryoko-2026.md",
+  "article:2026-09-20-gaku-megasha-shinosawa-hiro-2026-09.md",
+  "article:2026-09-20-gaku-nemurase-tai-gashapon-2026.md",
+  "article:2026-09-20-general-fan-gal-imaginary-saki-2026-09-19.md",
+  "article:2026-09-20-general-music765plus-x-hack-2026.md",
+  "article:2026-09-20-joint-cg-kyomafu-2026-goods.md",
+  "article:2026-09-20-joint-idol-birthday-tamami-subaru-2026.md",
+  "article:2026-09-20-joint-tours-s1-ex-2026.md",
+  "article:2026-09-20-million-14th-day1-2026.md",
+  "article:2026-09-20-million-ops-roundup.md",
+  "article:2026-09-20-million-seasonal-snapshot-2026-12.md",
+  "article:2026-09-20-million-subaru-birthday-gasha-2026.md",
+  "article:2026-09-20-shiny-hikawaryuu-yuneru-spa-2026.md",
+  "article:2026-09-20-shiny-parallel-collection-popup-2026.md",
+  "article:2026-09-20-shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026.md",
+  "article:2026-09-20-shiny-silver-week-cas-colle-gasha-2026.md",
+  "article:2026-09-20-sidem-11th-commentarycasting.md",
+  "article:2026-09-20-sidem-divercity-tokyo-plaza-2026.md",
+  "article:2026-09-20-sidem-m-fes-seasons-greetings-party-2026.md",
+  "article:2026-09-20-sidem-mfes2026-ornament-acrylic-keyholder.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-20-765-765as-solo-collection-dress-code-2026.md": "b5972dede07d2a695ad31b3e8a61948d89bdca55108e2342e37e45702491f633",
+  "docs/_posts/2026-09-20-765-chibi-mako-yukiho-2026.md": "bb13caec64c8d1aa9941f2f75736bce419f8510a183af1a19c8f0035c31ea121",
+  "docs/_posts/2026-09-20-765-kotobukiya-kuji-summer-live-stage-2026.md": "ef025666acbf1d98298652d285cd51d0e140f96b2bf408a1c82e7fcb74c069ab",
+  "docs/_posts/2026-09-20-765-million-14th-bakust-talk-2026.md": "4821817c6f6b2e0b8e063088227a62070bd4457754d0c74964d4dd1f0a3fe8b1",
+  "docs/_posts/2026-09-20-765-tgs2026-xr-live-session.md": "1b4f37606b42240c32f79b3b3c9ae013109ee6d3d0cdbe615d59e6d1e159a3cc",
+  "docs/_posts/2026-09-20-cg-number-one-cross-over-eiam-2026.md": "50f10993220e666a12547329ca6aa79e0ce39305625f652017104d378cfb9fda",
+  "docs/_posts/2026-09-20-dsva-nagano-aniera-festa-2026.md": "afcfe1b72cbf459052d435d8ad85a95de8d08165c574586bf0e2ba611d7fb4bd",
+  "docs/_posts/2026-09-20-dsva-valiv-special-stream-2026-09-24.md": "03b7d90a3e4e310b384a71004243b0eb45ddc940ede4b3075b4a7b46e65d6f36",
+  "docs/_posts/2026-09-20-gaku-live-tour-single-shugakuryoko-2026.md": "5d31b7f8ced8e7655b5c9ebf5e44ca6f8464b3351cccaa0c8fd6fb23af93fa70",
+  "docs/_posts/2026-09-20-gaku-megasha-shinosawa-hiro-2026-09.md": "6145ce10bd0f115975b4d115c8e86191d5523ec39f9ff7d4eb92ea9a92e2d242",
+  "docs/_posts/2026-09-20-gaku-nemurase-tai-gashapon-2026.md": "cb4fdb6cb3e4706c249b040e5ce6df60fbb51ed3b9fe1c9ad0d8fb8501a744d0",
+  "docs/_posts/2026-09-20-general-fan-gal-imaginary-saki-2026-09-19.md": "658df8fd374a9230bc987f259128762dfc6f2bdbd7266fb6ecf4aae76ed5cdc2",
+  "docs/_posts/2026-09-20-general-music765plus-x-hack-2026.md": "cbc758f7d0c96362598523baa5ec27f1720822e23ca5f990f4d73e42911033ca",
+  "docs/_posts/2026-09-20-joint-cg-kyomafu-2026-goods.md": "db16dfd9cd67256699ecb0fd01a54fef915c2712e5d85e905a231f8cf94aa07a",
+  "docs/_posts/2026-09-20-joint-idol-birthday-tamami-subaru-2026.md": "2ce831bc2cb122e7ca0dcfdf99ba2af282ede6639c3cf214fd56bdf7bef8fb12",
+  "docs/_posts/2026-09-20-joint-tours-s1-ex-2026.md": "edba77e8f8dae5187a7586aedb2df111e924669e13dbceed14d8d74b87562307",
+  "docs/_posts/2026-09-20-million-14th-day1-2026.md": "122ed40ced4127081c881a8adb82334d3d5fe4d256ec7bfeb5ae832b1984db5a",
+  "docs/_posts/2026-09-20-million-ops-roundup.md": "c2f93f64458a0777b7bfb02feb2cd47a1a202980c8824c52404888ceab122907",
+  "docs/_posts/2026-09-20-million-seasonal-snapshot-2026-12.md": "45a9adbce53d6c74b1538833d54c4db2aebda782eb59df63241b795bb6aa4530",
+  "docs/_posts/2026-09-20-million-subaru-birthday-gasha-2026.md": "62c35a57467cc9f3be50beb2dcbea895edb9fffa6582449a18ef8b47adc9e56f",
+  "docs/_posts/2026-09-20-shiny-hikawaryuu-yuneru-spa-2026.md": "03627b597d04a7cd7c0bb8f19845b5fa5839a973a81b8fe1e715d8f0aa5d64f2",
+  "docs/_posts/2026-09-20-shiny-parallel-collection-popup-2026.md": "3bc462b41bc561b7a8782d3e35a3e4f8987cee8c26c172e7d46020ee845b9a40",
+  "docs/_posts/2026-09-20-shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026.md": "60e4facb13a8fcd343aac0f19b83ed0e6069da8f6daeb81ee99b1d6c8779bd9d",
+  "docs/_posts/2026-09-20-shiny-silver-week-cas-colle-gasha-2026.md": "3ee3ea1eddb2685c04768de2d4cde0a64585edfdca6bd7c02fc810d4737c9705",
+  "docs/_posts/2026-09-20-sidem-11th-commentarycasting.md": "f345a780f21febcdac1cf8ea79dce14822e625dbb31a144f1b6decd761e985ce",
+  "docs/_posts/2026-09-20-sidem-divercity-tokyo-plaza-2026.md": "13b337bc0160d10b6fc24d657e47d8e4353df871194d8e1bcf44ac59428533c9",
+  "docs/_posts/2026-09-20-sidem-m-fes-seasons-greetings-party-2026.md": "14bfc3c1f08a833ff793c471e45a0b500762f8a65dc4c334cf8018296d45d882",
+  "docs/_posts/2026-09-20-sidem-mfes2026-ornament-acrylic-keyholder.md": "f53059b1d3f51db6589ce3cfb1771fa717ac151a5f3c19c5b3ab11bd3f66d560",
+  "docs/_editions/2026-09-20.md": "6cce56f424c9985db46954e7ca7e4fa7151a5e7355dd88386e5f2a311985c9fd",
+  "metrics/stories-before-2026-09-20.yml": "eeaf520b0e263ac36fe771d68594a7093208576a48f6c62feedd0afa63f7cf65"
+ }
+}

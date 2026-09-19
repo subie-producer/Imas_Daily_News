@@ -1,0 +1,177 @@
+{
+ "decisions": {
+  "gaku-kotone-kankiku-figure-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "発売時期(2027年9月)・価格(29,480円)は9/12付story(gaku-fujita-kotone-figurine-2027)で既報、9/11付ALTER受注開始も既報。新事実なし"
+  },
+  "megasha-shinosawa-hiro-2026-09": {
+   "action": "article",
+   "angle": "「め」ガシャが本日開催、新pSSR篠澤広・sSSR「わたしに、まかせて」登場(9/30まで、ピース50個ボーナス付き)",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gakuen-song-me-2026とgakumas-shirube-fukuoka-day2-2026(同一ガシャの続報予約)をこの記事に統合"
+  },
+  "gakuen-kuji-part6-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "一番くじPart6のラインナップ・9/19発売は8/29付story(gaku-ichiban-kuji-part6-2026)で既報。event_dateは昨日9/19で当日トリガーなし"
+  },
+  "gakuen-kuji-part6-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "上のgakuen-kuji-part6-2026と同一の9/19発売の話題。既に9/19付edition_factsに記録済み"
+  },
+  "gakuen-song-me-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "megasha-shinosawa-hiro-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "「新曲『め』」「ガシャ開催予定」のみで新事実なし。本日開催の「め」ガシャ記事に統合"
+  },
+  "gakuen-hatsu-boshi-fes-garakuta-road-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「終了間近」のみで具体的な締切日が無く、9/6付story(gaku-hatsuhoshi-fes-garakuta-road-vol5-2026)のガシャ内容と同一"
+  },
+  "gaku-live-tour-single-shugakuryoko-2026": {
+   "action": "article",
+   "angle": "「修楽旅行」アソビストア予約特典、9月23日締切まであと3日(特典はなくなり次第終了)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-nemurase-tai-gashapon-2026": {
+   "action": "article",
+   "angle": "「ねむらせ隊」ガシャポン、オンライン受注が9月23日23:59締切まであと3日",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-shirube-fukuoka-day2-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "megasha-shinosawa-hiro-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "福岡公演記念ガシャの一環として告知されていた篠澤広「め」ガシャの本日開催そのもの。megasha-shinosawa-hiro-2026-09と同一施策"
+  },
+  "gaku-shinozawa-me-mv-2026": {
+   "action": "article",
+   "angle": "篠澤広 新曲「め」MVが本日22時、初星学園チャンネルで公開",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "読者の行動(視聴)がガシャ記事とは別のため独立記事に"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-megasha-shinosawa-hiro-2026-09",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「め」ガシャが本日開催、新pSSR篠澤広・sSSR「わたしに、まかせて」登場(9/30まで、ピース50個ボーナス付き)",
+    "lead_score": 60,
+    "dedup_key": "megasha-shinosawa-hiro-2026-09",
+    "candidate_ids": [
+     "202609192336-explore-30",
+     "202609200223-grok-22",
+     "sched-2026-09-20-gaku-live-tour-shirube-fukuoka-me-gasha-2026-開始"
+    ]
+   },
+   {
+    "slug": "gaku-live-tour-single-shugakuryoko-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「修楽旅行」アソビストア予約特典、9月23日締切まであと3日(特典はなくなり次第終了)",
+    "lead_score": 10,
+    "dedup_key": "gaku-live-tour-single-shugakuryoko-2026",
+    "candidate_ids": [
+     "sched-2026-09-20-gaku-live-tour-single-shugakuryoko-2026-締切前"
+    ]
+   },
+   {
+    "slug": "gaku-nemurase-tai-gashapon-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「ねむらせ隊」ガシャポン、オンライン受注が9月23日23:59締切まであと3日",
+    "lead_score": 8,
+    "dedup_key": "gaku-nemurase-tai-gashapon-2026",
+    "candidate_ids": [
+     "sched-2026-09-20-gaku-nemurase-tai-gashapon-2026-締切前"
+    ]
+   },
+   {
+    "slug": "gaku-shinozawa-me-mv-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "篠澤広 新曲「め」MVが本日22時、初星学園チャンネルで公開",
+    "lead_score": 20,
+    "dedup_key": "gaku-shinozawa-me-mv-2026",
+    "candidate_ids": [
+     "sched-2026-09-20-gaku-shinozawa-me-mv-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-kotone-kankiku-figure-2027",
+    "reason": "既報",
+    "note": "発売時期(2027年9月)・価格(29,480円)は9/12付story(gaku-fujita-kotone-figurine-2027)で既報、9/11付ALTER受注開始も既報。新事実なし"
+   },
+   {
+    "dedup_key": "gakuen-kuji-part6-2026",
+    "reason": "既報",
+    "note": "一番くじPart6のラインナップ・9/19発売は8/29付story(gaku-ichiban-kuji-part6-2026)で既報。event_dateは昨日9/19で当日トリガーなし"
+   },
+   {
+    "dedup_key": "gakuen-kuji-part6-release-2026",
+    "reason": "既報",
+    "note": "上のgakuen-kuji-part6-2026と同一の9/19発売の話題。既に9/19付edition_factsに記録済み"
+   },
+   {
+    "dedup_key": "gakuen-hatsu-boshi-fes-garakuta-road-2026",
+    "reason": "既報",
+    "note": "「終了間近」のみで具体的な締切日が無く、9/6付story(gaku-hatsuhoshi-fes-garakuta-road-vol5-2026)のガシャ内容と同一"
+   }
+  ],
+  "cross_brand": []
+ }
+}

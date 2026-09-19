@@ -1,0 +1,110 @@
+{
+ "decisions": {
+  "sidem-fantastic-battle-fes-movie-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/15付で劇場版11/20公開・8ユニット25名出演を既報。ムビチケ発売は10/16で本日のトリガーなし"
+  },
+  "sidem-teddys-collection-ii-namba-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "なんばマルイPOP UP STOREは9/18開催開始・同日付で既報。本日は新しい発表や締切なし"
+  },
+  "sidem-11th-live-audio-commentary-viewing-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-commentarycasting",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1副音声付き同時視聴上映会と同一の本日開幕ニュース。同dedup_keyへ統合"
+  },
+  "sidem-315-fitness-project-renaissance-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "315 Fitness Projectは9/17・18付で既報。開催は10/22からで本日のトリガーなし"
+  },
+  "sidem-11th-stage-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-commentarycasting",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じDAY1同時視聴上映会が本日11時開幕する話題。統合先の記事に含める"
+  },
+  "sidem-11th-live-performance-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-commentarycasting",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約分の同時視聴上映会DAY1開幕情報を統合。グッズ受注は9/17既報で本日トリガーなし"
+  },
+  "sidem-11th-commentarycasting": {
+   "action": "article",
+   "angle": "SideM11th STAGEキャスト生出演オーディオコメンタリー付き同時視聴上映会がDAY1本日11時開幕、DAY2は20日11:30",
+   "rank": "large",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アーカイブ配信・グッズ受注の続報予約3件を統合した本日開幕ニュース"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-11th-commentarycasting",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "SideM11th STAGEキャスト生出演オーディオコメンタリー付き同時視聴上映会がDAY1本日11時開幕、DAY2は20日11:30",
+    "lead_score": 45,
+    "dedup_key": "sidem-11th-commentarycasting",
+    "candidate_ids": [
+     "sched-2026-09-19-sidem-11th-commentarycasting-その他",
+     "202609181234-explore-11",
+     "sched-2026-09-19-sidem-11th-stage-archive-2026-開始",
+     "sched-2026-09-19-sidem-11th-live-performance-goods-2026-開幕"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-fantastic-battle-fes-movie-2026",
+    "reason": "既報",
+    "note": "9/15付で劇場版11/20公開・8ユニット25名出演を既報。ムビチケ発売は10/16で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "sidem-teddys-collection-ii-namba-2026",
+    "reason": "既報",
+    "note": "なんばマルイPOP UP STOREは9/18開催開始・同日付で既報。本日は新しい発表や締切なし"
+   },
+   {
+    "dedup_key": "sidem-315-fitness-project-renaissance-2026",
+    "reason": "既報",
+    "note": "315 Fitness Projectは9/17・18付で既報。開催は10/22からで本日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

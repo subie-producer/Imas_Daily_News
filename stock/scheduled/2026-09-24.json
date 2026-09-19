@@ -126,5 +126,29 @@
   "src_candidate_id": "202609161837-explore-17",
   "event_date": "2026-09-25",
   "deadline": "2026-09-24"
+ },
+ {
+  "id": "sched-2026-09-24-x-com-valiv-official-status-2100781868727898257-開始",
+  "dedup_key": "x-com-valiv-official-status-2100781868727898257",
+  "brand": "dsva",
+  "subject": "ヴイアラ公式ch、9/24夜に最新情報特番",
+  "kind": "開始",
+  "note": "ヴイアラ公式chで最新情報特番が20時から配信開始、視聴できる",
+  "reserved_on": "2026-09-19",
+  "title": "9月24日(木)20:00- ヴイアラ公式ch 特別配信",
+  "url": "https://x.com/valiv_official/status/2100781868727898257",
+  "source_type": "公式",
+  "facts": [
+   "見出し: 配信告知!!!",
+   "最新情報もお届け",
+   "9月24日(木)20:00-",
+   "#ヴイアラ 公式chにて特別配信を実施",
+   "配信のご視聴: https://www.youtube.com/live/hZUB5aiesTg",
+   "配信へのお便り募集: https://docs.google.com/forms/d/e/1FAIpQLSdyUPmVP5FEpa-g80fdmZpBfyyynct6fHia4POevGc9mqJfuQ/viewform?usp=send_form",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609190226-grok-27"
  }
 ]

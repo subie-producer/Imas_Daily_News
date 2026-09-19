@@ -289,5 +289,61 @@
   "verify": "confirmed",
   "src_candidate_id": "202609171837-watch-6",
   "event_date": "2026-09-26"
+ },
+ {
+  "id": "sched-2026-09-26-x-com-thechara-2014-status-2100872465073516942-開幕",
+  "dedup_key": "x-com-thechara-2014-status-2100872465073516942",
+  "brand": "cg",
+  "subject": "有楽町マルイ デレマスPOP UP SHOP",
+  "kind": "開幕",
+  "note": "有楽町マルイ7FでPOP UP開幕(混雑時は整理券制)",
+  "reserved_on": "2026-09-19",
+  "title": "アイドルマスター シンデレラガールズ 京まふ事後物販POP UP SHOP 追加商品",
+  "url": "https://x.com/thechara_2014/status/2100872465073516942",
+  "source_type": "当事者",
+  "facts": [
+   "追加情報",
+   "アイドルマスター シンデレラガールズ の京まふ事後物販POP UP SHOPに追加商品のご紹介",
+   "描き下ろし新規商品を追加いたしました",
+   "📅2026年9月26日(土)〜10月14日(水)",
+   "詳しくは https://www.the-chara.com/blog/?p=121064",
+   "#デレマス",
+   "#idolmaster",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609190226-grok-87",
+  "event_date": "2026-09-26"
+ },
+ {
+  "id": "sched-2026-09-26-shiny-suntory-lemon-squash-2026-09-開始",
+  "dedup_key": "shiny-suntory-lemon-squash-2026-09",
+  "brand": "shiny",
+  "subject": "シャニマス自販機にレモンスカッシュ",
+  "kind": "開始",
+  "note": "京王アリーナTOKYOで専用自販機の利用開始(11:00~17:00)",
+  "reserved_on": "2026-09-19",
+  "title": "シャニマス × サントリー自販機でレモンスカッシュ発売",
+  "url": "https://idolmaster-official.jp/news/01_19924",
+  "source_type": "公式",
+  "facts": [
+   "全国のサントリー自販機600台以上で9月28日より発売",
+   "オリジナルラベルのレモンスカッシュ",
+   "ラベルは全28種でStella、Luna、Sol の3チームごとで販売",
+   "オリジナルラベルをはがしてステッカーとして利用可能",
+   "数量限定オリジナルアクキーが当たるかも",
+   "京王アリーナTOKYO で 2026年9月26日(土)・27日(日) 11:00～17:00 に専用自販機が登場",
+   "専用自販機は1F駐車場エリアに設置",
+   "エンゲージメント: 中",
+   "9月28日(月)より、全国のサントリー自販機600台以上で「アイドルマスター シャイニーカラーズ」オリジナルラベルのレモンスカッシュを発売",
+   "ラベルは全28種",
+   "Stella、Luna、Solの3チームごとで販売",
+   "オリジナルラベルははがしてステッカーとしても楽しめる"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609181838-watch-0",
+  "event_date": "2026-09-28"
  }
 ]

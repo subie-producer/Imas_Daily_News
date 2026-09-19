@@ -1,0 +1,161 @@
+{
+ "decisions": {
+  "765-never-end-idol-bluray-order-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注締切9/27の情報は9/18付で既報(765pro-allstars-live-bluray)。新事実も当日のトリガーもなし"
+  },
+  "never-end-idol-fan-digest-2026-09-17": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "未確認の個人ファン投稿(エンゲージメント低)、単体記事化しない"
+  },
+  "765-dual-twin-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "オーコメ配信日時・出演者・アーカイブ期間は既報(765-dual-twinlive-venue-cd)。配信は9/23で本日のトリガーなし"
+  },
+  "765as-dress-code-solo-collection-2026": {
+   "action": "article",
+   "angle": "ミリオン14thLIVE会場物販で765PRO ALLSTARS新作ソロコレクションCD『ドレスコード：最上級』が本日発売、購入特典のA3ポスターも展開",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一CD・同一物販を報じる3件の続報予約を統合"
+  },
+  "x-com-imas-ch-status-2100963054892548524": {
+   "action": "article",
+   "angle": "公式Xがアナスタシア・キャシー・グラハムの誕生日を祝う記念ムービーを公開",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "単発の公式誕生日告知。同種の他ネタが無いためroundupにはせず単独small扱い"
+  },
+  "x-com-0shun-status-2100802932107284647": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "未確認の個人ファン投稿(コラボカード収集の感想)、単体記事化しない"
+  },
+  "x-com-peperooon-ocean-status-2100976846192144551": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "未確認の個人ファン投稿(ダイジェスト視聴の感想)、単体記事化しない"
+  },
+  "million14th-765as-solo-collection-10359": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-dress-code-solo-collection-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一CD『ドレスコード：最上級』765PRO ALLSTARS盤の同一物販情報"
+  },
+  "million14th-765as-solo-collection-dress-code-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-dress-code-solo-collection-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一CD『ドレスコード：最上級』765PRO ALLSTARS盤の同一物販情報"
+  },
+  "765as-solo-collection-dresscode-ultimate-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765as-dress-code-solo-collection-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一CD『ドレスコード：最上級』765PRO ALLSTARS盤の同一物販情報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-765as-dress-code-solo-collection-2026",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "ミリオン14thLIVE会場物販で765PRO ALLSTARS新作ソロコレクションCD『ドレスコード：最上級』が本日発売、購入特典のA3ポスターも展開",
+    "lead_score": 50,
+    "dedup_key": "765as-dress-code-solo-collection-2026",
+    "candidate_ids": [
+     "202609190226-explore-0",
+     "sched-2026-09-19-million14th-765as-solo-collection-10359-発売",
+     "sched-2026-09-19-million14th-765as-solo-collection-dress-code-2026-発売",
+     "sched-2026-09-19-765as-solo-collection-dresscode-ultimate-2026-発売"
+    ]
+   },
+   {
+    "slug": "765-x-com-imas-ch-status-2100963054892548524",
+    "brand": "765",
+    "rank": "small",
+    "angle": "公式Xがアナスタシア・キャシー・グラハムの誕生日を祝う記念ムービーを公開",
+    "lead_score": 10,
+    "dedup_key": "x-com-imas-ch-status-2100963054892548524",
+    "candidate_ids": [
+     "202609190226-grok-20"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765-never-end-idol-bluray-order-2026",
+    "reason": "既報",
+    "note": "受注締切9/27の情報は9/18付で既報(765pro-allstars-live-bluray)。新事実も当日のトリガーもなし"
+   },
+   {
+    "dedup_key": "never-end-idol-fan-digest-2026-09-17",
+    "reason": "個人の話題",
+    "note": "未確認の個人ファン投稿(エンゲージメント低)、単体記事化しない"
+   },
+   {
+    "dedup_key": "765-dual-twin-live-2026",
+    "reason": "既報",
+    "note": "オーコメ配信日時・出演者・アーカイブ期間は既報(765-dual-twinlive-venue-cd)。配信は9/23で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "x-com-0shun-status-2100802932107284647",
+    "reason": "個人の話題",
+    "note": "未確認の個人ファン投稿(コラボカード収集の感想)、単体記事化しない"
+   },
+   {
+    "dedup_key": "x-com-peperooon-ocean-status-2100976846192144551",
+    "reason": "個人の話題",
+    "note": "未確認の個人ファン投稿(ダイジェスト視聴の感想)、単体記事化しない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

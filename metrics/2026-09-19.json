@@ -1,0 +1,139 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-19T02:26:18+09:00",
+   "edition": "2026-09-19",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 345,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 3,
+    "explore:million": 5,
+    "explore:shiny": 0,
+    "explore:sidem": 0,
+    "explore:gakuen": 2,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 5,
+    "grok:765as": 6,
+    "grok:cinderella": 11,
+    "grok:million": 13,
+    "grok:shiny": 12,
+    "grok:sidem": 0,
+    "grok:gakuen": 11,
+    "grok:dsva": 12,
+    "grok:joint-other": 5,
+    "grok:trend": 6
+   },
+   "normalized": 84,
+   "added": 74,
+   "verify": {
+    "confirmed": 64,
+    "unconfirmed": 19,
+    "failed": 1
+   },
+   "duration_s": 1541
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-19T03:50:13+09:00",
+   "edition": "2026-09-19",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 35,
+   "written": 26,
+   "roundups": 3,
+   "dropped": 2,
+   "coverage": {
+    "subjects": 143,
+    "covered": 143,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 10.148813573519389,
+    "執筆": 6.588813598950704,
+    "組版": 2.894165786107381,
+    "校閲": 2.331724750995636,
+    "校閲1波": 2.331724750995636
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "cg-x-com-medicos-et-02-status-2100805640084246538",
+    "shiny-x-com-shinyc-official-status-2100887554216353877",
+    "shiny-x-com-imassc-prism-status-2100782362141524169",
+    "shiny-x-com-imassc-official-status-2100963303921217871",
+    "dsva-valiv-latest-info-special-2026-09-24",
+    "dsva-ops-roundup",
+    "million-x-stream-theater-cd-2026",
+    "million-ops-roundup",
+    "gaku-ops-roundup"
+   ],
+   "duration_s": 2976
+  },
+  {
+   "at": "2026-09-19T04:54:06+09:00",
+   "edition": "2026-09-19",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 35,
+   "written": 30,
+   "roundups": 3,
+   "dropped": 1,
+   "coverage": {
+    "subjects": 143,
+    "covered": 143,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "cg-cinderella-master-number-one-2026-09",
+    "general-channel-member-broadcast-2026-09-25",
+    "million-cardfolio-vol4-2026"
+   ],
+   "stages_min": {
+    "執筆": 16.467337652047476,
+    "組版": 4.534356816609701,
+    "校閲": 1.605840524037679,
+    "校閲1波": 1.605840524037679
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "gaku-ops-roundup",
+    "million-x-stream-theater-cd-2026"
+   ],
+   "duration_s": 3778
+  }
+ ]
+}

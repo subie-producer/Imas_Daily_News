@@ -1,0 +1,360 @@
+{
+ "decisions": {
+  "shiny-idol-photo-panel-new-3-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/15付でオフィシャルショップ新柄フォトパネルとして既報(shiny-official-shop-photo-panel-2026-09-18)。価格・柄・店舗・サイズとも既出、当日の新規トリガー無し。"
+  },
+  "shiny-hikawaryuu-yuneru-spa-2026": {
+   "action": "article",
+   "angle": "彼岸流×湯~ねる「ジャパニーズ・オリエンタル・スパ」開催決定。コラボ風呂・岩盤浴ライブロウリュ・宿泊プランなど詳細発表",
+   "rank": "medium",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11/21〜1/20開催の新規コラボ発表、既報なし。"
+  },
+  "shiny-cardfolio-vol3-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「Still blue」公式グッズ事前販売ファイナルの一部として9/18付で既報(refrac7ions-still-blue-2026)。受注期間(10/4まで)も同一。"
+  },
+  "shiny-hopeful-feathers-goods---2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/17付で既報(shiny-hopeful-feathers-goods-2026)。受付開始日・期間・商品とも同一で当日の新規トリガー無し。"
+  },
+  "shiny-hopeful-feathers-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "CD3作は9/16発売済みで8/26付から既報(shiny-hopeful-feathers-cd-2026)。発売から3日経過し当日のトリガー無し。"
+  },
+  "shiny-suntory-lemon-squash-2026-09": {
+   "action": "article",
+   "angle": "シャニマス×サントリー自販機で新作レモンスカッシュ9/28発売、京王アリーナには公演期間限定の記念自販機も設置",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-event-goods-2026-10": {
+   "action": "article",
+   "angle": "『Song for Prism』発売記念イベント(10/11)の会場物販詳細発表、購入制限やKAMISABI販売など",
+   "rank": "medium",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-283-solo-live-bakusute-talk-2026": {
+   "action": "article",
+   "angle": "MSP DAY2公演後にキャスト出演の振り返り生配信『ばくすて！とーく』実施決定(9/27)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-ramen-8-collab-2026": {
+   "action": "article",
+   "angle": "大崎姉妹の地元・北陸の人気チェーン『８番らーめん』とコラボ開催決定、描き下ろしグッズ・限定セット展開",
+   "rank": "medium",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-msp-2026-09": {
+   "action": "article",
+   "angle": "MSPソロライブ、キャスト生オーディオコメンタリー付きアーカイブ同時視聴会をDAY1・DAY2それぞれ10月に開催",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "idolmaster-official-jp-news-01-19906": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18付で既報(shiny-solo-live-kitchen-car-2026)。営業時間・メニュー・特典とも同一で当日の新規トリガー無し。"
+  },
+  "x-com-shinyc-official-status-2100887554216353877": {
+   "action": "article",
+   "angle": "シャニラジ「まったりHBTK」の名場面切り抜きを公開",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営まとめ候補だが同種の話題が2件のみで3件未満のためroundup化せず単独small扱い。"
+  },
+  "x-com-imassc-prism-status-2100782362141524169": {
+   "action": "article",
+   "angle": "『Song for Prism』新章コンテンツ一挙解禁。新曲2DMV公開、新ピックアップガシャ『円環-Halo around-』#01(通常+ステップアップ)開催、記念ジュエルセールも同時展開",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同時公開のステップアップガシャ・ジュエルセール・2DMVをまとめて1記事に統合。"
+  },
+  "x-com-imassc-prism-status-2100782613619163253": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-imassc-prism-status-2100782362141524169",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同ガシャ『円環-Halo around-』#01のステップアップ版、同一施策として統合。"
+  },
+  "x-com-imassc-prism-status-2100782865265086577": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-imassc-prism-status-2100782362141524169",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同リリース記念の限定ジュエルセール、同一施策として統合。"
+  },
+  "x-com-imassc-prism-status-2100789409767711008": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-imassc-prism-status-2100782362141524169",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同時期公開の新曲2DMV、同じコンテンツ解禁の一環として統合。"
+  },
+  "x-com-imassc-official-status-2100963303921217871": {
+   "action": "article",
+   "angle": "「8.5th Anniversary」前夜祭が本日スタート。無料スタンプガシャ・秋の七草パッケージ・シルバーウィーク限定ステップアップガシャを一挙展開",
+   "rank": "medium",
+   "lead_score": 78,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同時発表の秋の七草パッケージ・シルバーウィーク限定ガシャを統合。面内で最大級のニュースとしてlead候補。"
+  },
+  "x-com-imassc-official-status-2100963556124754036": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-imassc-official-status-2100963303921217871",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日発表の8.5th Anniversary前夜祭施策の一部として統合。"
+  },
+  "x-com-imassc-official-status-2100963807325774329": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-imassc-official-status-2100963303921217871",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日発表の8.5th Anniversary前夜祭施策の一部として統合。"
+  },
+  "x-com-marui-uekt-a-status-2100873400025805167": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "マルイ店舗アカウント単独の未確認情報で公式発表による裏付けが無い。上野マルイPOP UP自体の一次情報が確認できず見送り。"
+  },
+  "x-com-thechara-2014-status-2100872468684570941": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "有楽町マルイの「百鬼夜行 POP UP SHOP」(放課後クライマックスガールズ)として8/29付で既報。会場・日程が完全一致、混雑案内は当日のトリガーに当たらない。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-hikawaryuu-yuneru-spa-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "彼岸流×湯~ねる「ジャパニーズ・オリエンタル・スパ」開催決定。コラボ風呂・岩盤浴ライブロウリュ・宿泊プランなど詳細発表",
+    "lead_score": 45,
+    "dedup_key": "shiny-hikawaryuu-yuneru-spa-2026",
+    "candidate_ids": [
+     "202609181234-watch-0"
+    ]
+   },
+   {
+    "slug": "shiny-suntory-lemon-squash-2026-09",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニマス×サントリー自販機で新作レモンスカッシュ9/28発売、京王アリーナには公演期間限定の記念自販機も設置",
+    "lead_score": 20,
+    "dedup_key": "shiny-suntory-lemon-squash-2026-09",
+    "candidate_ids": [
+     "202609181838-watch-0"
+    ]
+   },
+   {
+    "slug": "shiny-song-for-prism-event-goods-2026-10",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "『Song for Prism』発売記念イベント(10/11)の会場物販詳細発表、購入制限やKAMISABI販売など",
+    "lead_score": 10,
+    "dedup_key": "shiny-song-for-prism-event-goods-2026-10",
+    "candidate_ids": [
+     "202609181838-watch-1"
+    ]
+   },
+   {
+    "slug": "shiny-283-solo-live-bakusute-talk-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "MSP DAY2公演後にキャスト出演の振り返り生配信『ばくすて！とーく』実施決定(9/27)",
+    "lead_score": 10,
+    "dedup_key": "shiny-283-solo-live-bakusute-talk-2026",
+    "candidate_ids": [
+     "202609181838-watch-7"
+    ]
+   },
+   {
+    "slug": "shiny-ramen-8-collab-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "大崎姉妹の地元・北陸の人気チェーン『８番らーめん』とコラボ開催決定、描き下ろしグッズ・限定セット展開",
+    "lead_score": 35,
+    "dedup_key": "shiny-ramen-8-collab-2026",
+    "candidate_ids": [
+     "202609181838-watch-9"
+    ]
+   },
+   {
+    "slug": "shiny-msp-2026-09-f14b09",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "MSPソロライブ、キャスト生オーディオコメンタリー付きアーカイブ同時視聴会をDAY1・DAY2それぞれ10月に開催",
+    "lead_score": 15,
+    "dedup_key": "shiny-msp-2026-09",
+    "candidate_ids": [
+     "202609182335-watch-1"
+    ]
+   },
+   {
+    "slug": "shiny-x-com-shinyc-official-status-2100887554216353877",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニラジ「まったりHBTK」の名場面切り抜きを公開",
+    "lead_score": 5,
+    "dedup_key": "x-com-shinyc-official-status-2100887554216353877",
+    "candidate_ids": [
+     "202609190226-grok-66"
+    ]
+   },
+   {
+    "slug": "shiny-x-com-imassc-prism-status-2100782362141524169",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "『Song for Prism』新章コンテンツ一挙解禁。新曲2DMV公開、新ピックアップガシャ『円環-Halo around-』#01(通常+ステップアップ)開催、記念ジュエルセールも同時展開",
+    "lead_score": 20,
+    "dedup_key": "x-com-imassc-prism-status-2100782362141524169",
+    "candidate_ids": [
+     "202609190226-grok-67",
+     "202609190226-grok-68",
+     "202609190226-grok-69",
+     "202609190226-grok-70"
+    ]
+   },
+   {
+    "slug": "shiny-x-com-imassc-official-status-2100963303921217871",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「8.5th Anniversary」前夜祭が本日スタート。無料スタンプガシャ・秋の七草パッケージ・シルバーウィーク限定ステップアップガシャを一挙展開",
+    "lead_score": 78,
+    "dedup_key": "x-com-imassc-official-status-2100963303921217871",
+    "candidate_ids": [
+     "202609190226-grok-71",
+     "202609190226-grok-72",
+     "202609190226-grok-73"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-idol-photo-panel-new-3-2026",
+    "reason": "既報",
+    "note": "9/15付でオフィシャルショップ新柄フォトパネルとして既報(shiny-official-shop-photo-panel-2026-09-18)。価格・柄・店舗・サイズとも既出、当日の新規トリガー無し。"
+   },
+   {
+    "dedup_key": "shiny-cardfolio-vol3-2026",
+    "reason": "既報",
+    "note": "「Still blue」公式グッズ事前販売ファイナルの一部として9/18付で既報(refrac7ions-still-blue-2026)。受注期間(10/4まで)も同一。"
+   },
+   {
+    "dedup_key": "shiny-hopeful-feathers-goods---2026",
+    "reason": "既報",
+    "note": "9/17付で既報(shiny-hopeful-feathers-goods-2026)。受付開始日・期間・商品とも同一で当日の新規トリガー無し。"
+   },
+   {
+    "dedup_key": "shiny-hopeful-feathers-release-2026",
+    "reason": "既報",
+    "note": "CD3作は9/16発売済みで8/26付から既報(shiny-hopeful-feathers-cd-2026)。発売から3日経過し当日のトリガー無し。"
+   },
+   {
+    "dedup_key": "idolmaster-official-jp-news-01-19906",
+    "reason": "既報",
+    "note": "9/18付で既報(shiny-solo-live-kitchen-car-2026)。営業時間・メニュー・特典とも同一で当日の新規トリガー無し。"
+   },
+   {
+    "dedup_key": "x-com-marui-uekt-a-status-2100873400025805167",
+    "reason": "出典不足",
+    "note": "マルイ店舗アカウント単独の未確認情報で公式発表による裏付けが無い。上野マルイPOP UP自体の一次情報が確認できず見送り。"
+   },
+   {
+    "dedup_key": "x-com-thechara-2014-status-2100872468684570941",
+    "reason": "既報",
+    "note": "有楽町マルイの「百鬼夜行 POP UP SHOP」(放課後クライマックスガールズ)として8/29付で既報。会場・日程が完全一致、混雑案内は当日のトリガーに当たらない。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

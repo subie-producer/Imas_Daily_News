@@ -35,6 +35,7 @@ official_paths:
   - bilibili.com/opus/1244186744338776068
 
 official_domains:
+  - t.co                  # 合議で追加: ページに『公式サイトオープン』と明記。シンデレラガールズは公式作品
   - idolmaster-tours-w.bn-am.net # 合議で追加: TOURS公式マイページ、バンダイナムコアミューズメント直営の一次発信
   - idolmaster-official.jp                          # 公式ポータル
   - cinderellagirls.idolmaster-official.jp          # シンデレラガールズ公式
@@ -48,6 +49,8 @@ official_suffixes:
 
 # --- 準公式: 公式レーベル・公式ストア等のグループ/パートナー企業 ---
 semi_official_domains:
+  - 1kuji.com             # 合議で追加: バンダイナムコグループ企業が一番くじ商品の企画・開発・販売を行い、自社商品を告知
+  - on-line.1kuji.com     # 一番くじONLINE(1kuji.com と同じ BANDAI SPIRITS の運営。p-bandai.jp と同じ扱いに揃えた 2026-09-18)
   - asobiticket2.asobistore.jp # 合議で追加: asobistore.jp配下、登録済み同系列ドメインと同じ公式プラットフォーム
   - gakuen-label.idolmaster-official.jp   # 学マスレーベル(公式レーベル)
   - columbia.jp                           # 日本コロムビア
@@ -114,6 +117,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - dreamnews.jp          # 合議で追加: プレスリリース配信代行。企業発表を掲載する媒体
   - gamewith.jp           # 合議で追加: 攻略サイトは定義で二次情報の例。著者署名なし、現地取材の明確な証拠なし。公式情報
   - twiman.net            # 合議で追加: X(旧Twitter)の個人投稿を媒体として収集・表示。媒体として個人の創作を紹
   - trend-shelf.com       # 合議で追加: ページ内で「公開情報ベース」と明記。取材形跡なく他所の発表を媒体として整理。相手
@@ -178,6 +182,7 @@ secondary_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - v12.battlepage.com    # 合議で追加: 個人の投稿。指示では『個人を二次情報にしない』と明記
   - ckworks.jp            # 合議で追加: 個人ブログ・サービス。アニメレポート・VTuber情報
   - motoraji.jugem.jp     # もとラジ!(ファン番組の自己発信)
 
@@ -192,6 +197,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - lawson-faq.lawson.co.jp # 合議で追加: 販売元。一番くじをローソン店舗で取り扱う
   - s-renaissance.co.jp   # 合議で追加: アイマスコラボイベントを主催するスポーツクラブ。会場・主催
   - onkyoanime.com        # 合議で追加: アニメコラボグッズを販売する会社が自社商品を告知。販売元
   - mistore.jp            # 合議で追加: コラボ商品販売企業、ライセンス商品販売
@@ -237,7 +243,6 @@ party_domains:
   - neonmax.net           # ネオンマックス(フィギュアの発売元)
   - smilebase.shop        # 合議で追加: グッズ販売元として受注情報を発信している
   - scratch.dmm.com       # 合議で追加: DMMスクラッチの販売元として商品情報を発信している
-  - on-line.1kuji.com     # 合議で追加: 一番くじの販売元として商品情報を発信している
   - atfes.com             # 合議で追加: イベント運営者として催しの情報を発信している
   - animate.co.jp         # 合議で追加: オンリーショップの開催店舗として催しの情報を発信している
   - akiba-tolim.com
@@ -285,6 +290,8 @@ party_domains:
 # collect の合議工程が oEmbed で投稿者を確かめ、ID を上の表へ機械で足す。
 # **公式・準公式の判断は人がここで済ませている**ので、ID の追加は合議に掛けない。
 video_channels:
+  ファン:
+    - TogawaNonoha        # 合議で追加: YouTubeの個人チャンネル。個人アカウントに該当
   公式:
     - imas-official        # アイドルマスターチャンネル
     - hatsuboshi_gakuen    # 初星学園(学マス)公式
@@ -296,7 +303,15 @@ video_channels:
     - Lantis           # Lantis Channel
 
 video_ids:
+  ファン:
+    - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - mMVL0_U3Tjk         # 機械で追加: @TomoriManaka「【How to Fish】なかよく魚釣り？いいえ、たたかいで」
+    - hZUB5aiesTg         # 機械で追加: @project_imas_va-liv「【新情報あり】最新情報をお知らせする特番【 #ヴイアラ 】」
+    - ATRiaZHUSlM         # 機械で追加: @UtagawaLetora「【How to Fish】大人気カオスゲー！！！釣れ！！！！」
+    - 0qFmuM6MbuM         # 機械で追加: @KamizuruCosmo「【Big Walk】広大な世界を自由に探索＆協力＆謎解きゲー」
+    - SjOP3AmE148         # 機械で追加: @imas-official「【アイマス】THE IDOLM@STER 765PRO AL」
+    - GoAtGghnl4E         # 機械で追加: @imas-official「【アイマス】THE IDOLM@STER 765PRO AL」
     - y-4qOn-UQV4   # 機械で追加: @UtagawaLetora「【SILENT HILL f】 DAY06｜500円の呪いは」
     - jFAkRoDeyTQ   # 機械で追加: @imas-official「9/15 秋月 涼さん Happy Birthday‼」
     - bADPhUD27B4   # 機械で追加: @imas-official「【シャニソン】I'm a Cutie Finder「KAWA」
@@ -398,6 +413,14 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - tenlock             # 合議で追加: キャラ誕生日を祝う投稿
+    - reina_kawamura6     # 合議で追加: イベント情報の個人的共有
+    - peperooon_ocean     # 合議で追加: 映像視聴の個人的感想
+    - p_w_strawberry      # 合議で追加: ゲーム内プレイ報告
+    - US_of_Aberika       # 合議で追加: イベント出演情報の言及
+    - HiRoMi_ig           # 合議で追加: 会場での目撃・参加体験の共有
+    - 7330615nayg         # 合議で追加: イベント出演情報の個人的な言及
+    - 0shun               # 合議で追加: ゲーム内プレイ状況の個人的な共有
     - yunonhbk1618        # 合議で追加: 個人によるプラモ・コスプレ創作。ファン創作は個人
     - hoshi_ringo24       # 合議で追加: 人狼投稿への個人の反応。個人の発信はファン
     - dasiderp            # 合議で追加: 放送への個人による視聴反応。個人の発信はファン
@@ -462,6 +485,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - thechara_2014       # 合議で追加: マルイと京まふ会場のショップ運営
+    - marui_uekt_a        # 合議で追加: マルイがショップ開催・販売
+    - MegaOouchi          # 合議で追加: 一番くじ販売店の販売開始告知。販売側一次発信
     - Atfes_portal        # 合議で追加: イベント主催者の公式アカウント（会場・イベント主催は当事者）
     - oshitabi_update     # 合議で追加: JR東海推し旅キャンペーン公式
     - ichibanKUJI         # 合議で追加: くじ運営者。ライセンス商品販売告知

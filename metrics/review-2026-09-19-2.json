@@ -1,0 +1,228 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-19-765-765as-dress-code-solo-collection-2026.md",
+   "issue": "frontmatterの候補IDが見つからず、記事の根拠F22とF25が出典に存在しない",
+   "quote": "会場物販はライブチケットの有無にかかわらず利用でき、対象CDは1会計につき各3点まで購入できる。 <!-- F1 F2 F22 F25 -->",
+   "rule_id": "R1",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "F22",
+    "F25"
+   ],
+   "expected": "出典に無い「会場物販はライブチケットの有無にかかわらず利用でき」の記述を削除するか、正しい候補IDをfrontmatterに指定する",
+   "scope": "article:2026-09-19-765-765as-dress-code-solo-collection-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-765-765as-dress-code-solo-collection-2026.md",
+   "issue": "frontmatterのcandidate_idsに候補ファイルに存在しない3つのIDが指定されている",
+   "quote": "candidate_ids:\n- 202609190226-explore-0\n- sched-2026-09-19-million14th-765as-solo-collection-10359-発売\n- sched-2026-09-19-million14th-765as-solo-collection-dress-code-2026-発売\n- sched-2026-09-19-765as-solo-collection-dresscode-ultimate-2026-発売",
+   "rule_id": "R3",
+   "repair": "drop_source",
+   "fact_ids": [],
+   "expected": "候補ファイルに存在しない3つのcandidate_idを削除し、実在する候補のみをfrontmatterに指定する",
+   "scope": "article:2026-09-19-765-765as-dress-code-solo-collection-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-cinderella-master-number-one-2026-09.md",
+   "issue": "リードの時制が不正確。9月30日はまだ来ていないのに過去形『発売され』で述べている",
+   "quote": "「THE IDOLM@STER CINDERELLA MASTER NUMBER ONE! クロス×オーバー！」が9月30日に発売され、",
+   "rule_id": "R6",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F1"
+   ],
+   "expected": "発売日を未来形『発売される』または『発売予定で』に修正し、本文の時制『販売される』と統一する",
+   "scope": "article:2026-09-19-cg-cinderella-master-number-one-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-general-channel-member-broadcast-2026-09-25.md",
+   "issue": "frontmatter の sources ラベルに文字化けと思われるハングル文字が含まれている",
+   "quote": "アイドルマスター公式「【YouTube】「【ラジオ】冒頭15分は誰でも聞ける！2026年9月メンバー限定配信」配信ページ公開のお知らせ【アイドルマスターチャン널",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "ラベル末尾を「アイドルマスターチャンネル」に修正して、ラベルを完成させる",
+   "scope": "article:2026-09-19-general-channel-member-broadcast-2026-09-25.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-cardfolio-vol4-2026.md",
+   "issue": "リード冒頭の時制が修正されていない。「発売され」は過去形だが、発行時点（06:00）では商品販売はこれからの事象。修正指摘が反映されていない。",
+   "quote": "「アイドルマスター カードフォリオ ミリオンライブ！ver. vol.4」が本日発売され、ミリオン14thLIVE会場物販では先行販売される。",
+   "rule_id": "R7",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F1",
+    "F2"
+   ],
+   "expected": "「が本日発売される、ミリオン14thLIVE会場物販では先行販売される」など、未来形で統一し、発行時点での時制を正しく記述すること。前回の修正指摘を確認のうえ対応すること。",
+   "scope": "article:2026-09-19-million-cardfolio-vol4-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-19-765-765as-dress-code-solo-collection-2026.md",
+   "issue": "frontmatterの根拠IDの指定が誤っている可能性。記事で「対象CDは1会計につき各3点まで購入できる」と書かれているが、これはF25ではなく候補のF11に対応している。frontmatterのcandidate_idsが正しくない場合、根拠ID全体を再度確認する必要がある。",
+   "scope": "article:2026-09-19-765-765as-dress-code-solo-collection-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-general-channel-member-broadcast-2026-09-25.md",
+   "issue": "前回指摘の修正が反映されていない。再校閲では前回指摘への対応確認が必要です",
+   "scope": "article:2026-09-19-general-channel-member-broadcast-2026-09-25.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-cardfolio-vol4-2026.md",
+   "issue": "frontmatter に verified_facts が記載されていないが、修正記録では N1 が定義されている。frontmatter と修正指示の不整合を確認し、修正記録に基づいて verified_facts を追加すること。",
+   "scope": "article:2026-09-19-million-cardfolio-vol4-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "記事にすべき話題が候補にあるのに紙面に無い: 765PRO ALLSTARS LIVE Blu-ray受注は9月27日23時59分が締切（公式発表）だが、本日号に記事が無い",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-genkayouenichi-animo-2026.md",
+   "issue": "分量不足: rank=small の目安は250字以上ですが、本文が約69字に留まっています。出典にある商品ラインアップ・グッズの特徴・販売方法の詳細・対象条件など、拾える情報があれば追加して埋めることが可能です。",
+   "scope": "article:2026-09-19-cg-genkayouenichi-animo-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-cg-x-com-imas-cgofficial-status-2100963067651576145.md",
+   "issue": "分量: small ランク向けとしては本文がやや短い（目安 250 字程度、記事は約 200 字）。ただし core message は明確で、sources の情報を適切に網羅している",
+   "scope": "article:2026-09-19-cg-x-com-imas-cgofficial-status-2100963067651576145.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-dsva-valiv-latest-info-special-2026-09-24.md",
+   "issue": "rank: small に対して本文が約80字で薄い。sources には配信の背景（「最新情報をお知らせする特番」）が含まれているので、説明を加えられれば読み応えが出る。",
+   "scope": "article:2026-09-19-dsva-valiv-latest-info-special-2026-09-24.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-joint-cg-kyomafu-2026-goods.md",
+   "issue": "frontmatter の sources ラベルが不完全。sources 1 のラベル末尾が「(2026年」で月日がない。公式ニュースの発表日は 2026年8月21日のはず",
+   "scope": "article:2026-09-19-joint-cg-kyomafu-2026-goods.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-joint-idolmaster-tours-w-bn-am-net-news-detail-53.md",
+   "issue": "分量不足：本文が約203字で、rank: small の目安250字に達していない。候補の facts に含まれているお詫びやマイページお知らせへの参照を記事に組み込むことで、情報量と分量を増やせます。",
+   "scope": "article:2026-09-19-joint-idolmaster-tours-w-bn-am-net-news-detail-53.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-14th-live-2026.md",
+   "issue": "sources のURLに「日付不明」と表記されており、公式サイトの最終更新日が確認できません。sources が記事の事実発行日時点での状態であることを確認してください。",
+   "scope": "article:2026-09-19-million-14th-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-14th-live-2026.md",
+   "issue": "candidate_ids に指定された 9 個の候補のうち、4 個のみ候補ファイル（2026-09-19.json）に見つかりました。見つからない candidates：sched-2026-09-19-million-14th-live-2026-開幕、sched-2026-09-19-grok-077-開幕、sched-2026-09-19-million-14th-streaming-2026-開幕、sched-2026-09-19-million-14th-last-minute-tickets-2026-開幕、sched-2026-09-19-million-14th-ticket-2026-開幕。候補ファイルが不完全である可能性があります。",
+   "scope": "article:2026-09-19-million-14th-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-14th-live-2026.md",
+   "issue": "sources に列挙された URL のうち、ticket/（当日券）と streaming/（配信チケット）ページに対応する candidates が見つかりません。本文の当日券情報（F69-F73）と配信チケット情報（F50-F56）の根拠が候補ファイルで検証できません。",
+   "scope": "article:2026-09-19-million-14th-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-battle-of-theater-09-store-bonus-2026.md",
+   "issue": "見出しの「9種」表現が曖昧。実際の特典の種類は5種類（L判ブロマイド、ミニフォト＆メタリックシール、メガジャケ、アクリルコースター、スマホサイズブロマイド）で、「9店舗」の特典を指している。見出しを「ミリオン09の9店舗購入特典を公開」など、より明確に修正することで、読者の誤解を避けられる。",
+   "scope": "article:2026-09-19-million-battle-of-theater-09-store-bonus-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-million-ops-roundup.md",
+   "issue": "candidate_ids に記載された grok-57（https://x.com/imasml_theater/status/2100828917951263083）が sources に記載されていません。ただし、記事本文では grok-57 の facts は実際には使用されていないため、frontmatter のクリーンアップ時に削除するか、実際に使用する場合は sources に追加してください。",
+   "scope": "article:2026-09-19-million-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-shiny-ramen-8-collab-2026.md",
+   "issue": "分量不足。rank: small（目安250字）に対して、見出し・リード・本文合計で約163字。出典にある会場・営業時間・対象条件などを拾えば埋まる可能性がある",
+   "scope": "article:2026-09-19-shiny-ramen-8-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-shiny-suntory-lemon-squash-2026-09.md",
+   "issue": "分量不足: rank: small の目安は 250 字以上とのことですが、本文は約 180 字で下回っています。candidates の facts には、チーム別の Web 案内 URL (F14-F16)、ライブイベントの詳細情報 (F20-F21)、注意事項の詳細化 (F24-F27) など、まだ組み込まれていない情報が複数あります。これらを活用して本文を充実させることで、読者向けの情報価値を高められます",
+   "scope": "article:2026-09-19-shiny-suntory-lemon-squash-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-shiny-x-com-imassc-official-status-2100963303921217871.md",
+   "issue": "source date labels use 2026年9月18日 but posts were at 2026-09-18 15:01-15:03 GMT (= 2026-09-19 00:01-00:03 JST); labels should say 2026年9月19日",
+   "scope": "article:2026-09-19-shiny-x-com-imassc-official-status-2100963303921217871.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-19-sidem-11th-commentarycasting.md",
+   "issue": "記事の内容はすべて sources および candidates で根拠が確認できます。sources のURLは実在し、公式出典により記事の事実がサポートされています。本日（2026-09-19）の開幕は、既報（2026-09-18）の「9月19日11時予定」を実施確認するものであり、R10のルール（本日の開幕は除外）により新事実なしの続報に該当しません。DAY2の視聴URLなど必要な情報も sources に基づいており、ニュース価値があります。",
+   "scope": "article:2026-09-19-sidem-11th-commentarycasting.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-19-765-765as-dress-code-solo-collection-2026.md",
+  "article:2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md",
+  "article:2026-09-19-cg-15th-anniversary-popup-2026.md",
+  "article:2026-09-19-cg-cinderella-master-number-one-2026-09.md",
+  "article:2026-09-19-cg-genkayouenichi-animo-2026.md",
+  "article:2026-09-19-cg-national-tower-fukuoka-2026.md",
+  "article:2026-09-19-cg-pop-up-shop-magical-cheers-animo-2026.md",
+  "article:2026-09-19-cg-www-the-chara-com-blog-p-121064.md",
+  "article:2026-09-19-cg-x-com-imas-cgofficial-status-2100963067651576145.md",
+  "article:2026-09-19-cg-x-com-medicos-et-02-status-2100805640084246538.md",
+  "article:2026-09-19-dsva-nagano-aniera-festa-2026.md",
+  "article:2026-09-19-dsva-ops-roundup.md",
+  "article:2026-09-19-dsva-shinkaifes-2026.md",
+  "article:2026-09-19-dsva-valiv-latest-info-special-2026-09-24.md",
+  "article:2026-09-19-gaku-hedgehog-yutanpo-goods-2026.md",
+  "article:2026-09-19-gaku-ichiban-kuji-part6-2026.md",
+  "article:2026-09-19-general-channel-member-broadcast-2026-09-25.md",
+  "article:2026-09-19-joint-cg-kyomafu-2026-goods.md",
+  "article:2026-09-19-joint-idolmaster-tours-w-bn-am-net-news-detail-53.md",
+  "article:2026-09-19-million-14th-live-2026.md",
+  "article:2026-09-19-million-battle-of-theater-09-store-bonus-2026.md",
+  "article:2026-09-19-million-cardfolio-vol4-2026.md",
+  "article:2026-09-19-million-ops-roundup.md",
+  "article:2026-09-19-shiny-283-solo-live-bakusute-talk-2026.md",
+  "article:2026-09-19-shiny-hikawaryuu-yuneru-spa-2026.md",
+  "article:2026-09-19-shiny-msp-2026-09-f14b09.md",
+  "article:2026-09-19-shiny-ramen-8-collab-2026.md",
+  "article:2026-09-19-shiny-song-for-prism-event-goods-2026-10.md",
+  "article:2026-09-19-shiny-suntory-lemon-squash-2026-09.md",
+  "article:2026-09-19-shiny-x-com-imassc-official-status-2100963303921217871.md",
+  "article:2026-09-19-shiny-x-com-imassc-prism-status-2100782362141524169.md",
+  "article:2026-09-19-shiny-x-com-shinyc-official-status-2100887554216353877.md",
+  "article:2026-09-19-sidem-11th-commentarycasting.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-19-765-765as-dress-code-solo-collection-2026.md": "6450256090a20c975d7c53f8bfdd7f12e2cab7264d0571581e7c8b492afde540",
+  "docs/_posts/2026-09-19-765-x-com-imas-ch-status-2100963054892548524.md": "00e6a204770f7fd2009b56b9f23f0202aa1865241cceafea6c9197044f4713dc",
+  "docs/_posts/2026-09-19-cg-15th-anniversary-popup-2026.md": "21810177a34261c67ffa2ddb1c11e66140b52ce1d1204fe4547517bca5c12af1",
+  "docs/_posts/2026-09-19-cg-cinderella-master-number-one-2026-09.md": "e89c3df3dc2a4083873000ca9cc3cecabc36d0fe5cb1122ed03a0d5176009542",
+  "docs/_posts/2026-09-19-cg-genkayouenichi-animo-2026.md": "831f61954ef8d286a2142b5298e800c742e2ca0ee3e4aaad2a9434671b22309b",
+  "docs/_posts/2026-09-19-cg-national-tower-fukuoka-2026.md": "f632f8574d1455a175a34ead7054dfba53ab535b0a5d1a5c19f8c00ec81e1353",
+  "docs/_posts/2026-09-19-cg-pop-up-shop-magical-cheers-animo-2026.md": "f57b295b9ec63ab8ff95c2c501ca78487326e9689dfdb2f9dfdf1fc52985689c",
+  "docs/_posts/2026-09-19-cg-www-the-chara-com-blog-p-121064.md": "5e8455ed16c65be9c1f24b563ef851b1ecdfde212a4a516380199209090bad68",
+  "docs/_posts/2026-09-19-cg-x-com-imas-cgofficial-status-2100963067651576145.md": "7f44a230d5c36c4504bc1298361b58af16d7590861ba7dd93ef91dceea3f8166",
+  "docs/_posts/2026-09-19-cg-x-com-medicos-et-02-status-2100805640084246538.md": "8053d27f47035b16e9cdf569c7648b44fc57365d0656529dcdac5c6c21161320",
+  "docs/_posts/2026-09-19-dsva-nagano-aniera-festa-2026.md": "debca719faf54e0e4f7403f41cf3dbba425dd849ba42d2021e5e5e8859fe3c97",
+  "docs/_posts/2026-09-19-dsva-ops-roundup.md": "eba7e4a275fee9f440ebd139126fe49c4918615e7cef82ee93f107f606f9698d",
+  "docs/_posts/2026-09-19-dsva-shinkaifes-2026.md": "8f7fe0988b074b5df293dc368ccba26558e174ec3bb3c79dc13afce7c76a2dc1",
+  "docs/_posts/2026-09-19-dsva-valiv-latest-info-special-2026-09-24.md": "8bcaa383a1ba7cf918a2852723dc73ff99dd1727f337bf936134e740c5a709e0",
+  "docs/_posts/2026-09-19-gaku-hedgehog-yutanpo-goods-2026.md": "1c5e3feca962362b65f381df0987c4a364dc367e6d4c8b44edb1c7eb3f95294b",
+  "docs/_posts/2026-09-19-gaku-ichiban-kuji-part6-2026.md": "f21d2050145a38ef3aaf45121bdc6d16c86bb8df227501b41a0fa27c5e5cfcd4",
+  "docs/_posts/2026-09-19-general-channel-member-broadcast-2026-09-25.md": "5d15774339e6ab429304d9ddbf576196d8a2c91b99ec04008b8bdb17f3dbbf20",
+  "docs/_posts/2026-09-19-joint-cg-kyomafu-2026-goods.md": "ab548bc52992cf9844273206b11727bfe56e030797b6bbd3d4c6425b7948ac8e",
+  "docs/_posts/2026-09-19-joint-idolmaster-tours-w-bn-am-net-news-detail-53.md": "6902753b8916f52001fe8cd38520a75feee37121cd182cd7e86c6168743b58bf",
+  "docs/_posts/2026-09-19-million-14th-live-2026.md": "33dc113fbf6355c2afe400f7a14f970f70f64723da04eb4e0796728e42e84d8d",
+  "docs/_posts/2026-09-19-million-battle-of-theater-09-store-bonus-2026.md": "2ece1a0062016b570b333878c68daf20aff929c0cf8b4f1b48a319e180a05fbc",
+  "docs/_posts/2026-09-19-million-cardfolio-vol4-2026.md": "cc7591c873269556104f11d779d2bcfcabadf3ca3aab956c1d4227c00c69ed55",
+  "docs/_posts/2026-09-19-million-ops-roundup.md": "db931f96d17bb76dfdd803f431f49fc7bf6e9ee6e407be7f01ed26eb72559b8b",
+  "docs/_posts/2026-09-19-shiny-283-solo-live-bakusute-talk-2026.md": "ddf803b123b17671df95e237545ef34eba9ceaf2068e781598260c6d1f61e2d1",
+  "docs/_posts/2026-09-19-shiny-hikawaryuu-yuneru-spa-2026.md": "38369dc917a857d4a7f0602bea858b9fc7ee1c0986c4f35a6735154d742845a9",
+  "docs/_posts/2026-09-19-shiny-msp-2026-09-f14b09.md": "e50471c840a4e5355c01a9a2a5c2c8c1926c8bd583a94c601d55d7867f5866e8",
+  "docs/_posts/2026-09-19-shiny-ramen-8-collab-2026.md": "68b34d38996767036e74f657c607ad9b5f0ba754e01cf4fa8535415c0d04c7d8",
+  "docs/_posts/2026-09-19-shiny-song-for-prism-event-goods-2026-10.md": "b6273dc4a5ad805cc79827458513f148cad2004c8bfd4b1aeed8eac5a983ca13",
+  "docs/_posts/2026-09-19-shiny-suntory-lemon-squash-2026-09.md": "bc729b00a08d2ee9c387e58f8487256903ae91c4e149c08819e41227f0c2c8ea",
+  "docs/_posts/2026-09-19-shiny-x-com-imassc-official-status-2100963303921217871.md": "bce9b74fd3be92f4906e86f7a576a604b6d97ef9d0b0d71c4729a635b91b75ea",
+  "docs/_posts/2026-09-19-shiny-x-com-imassc-prism-status-2100782362141524169.md": "9bb88e76b28ee62f70077ec2e621fc37391e2020afa432dc6061250b5c37a588",
+  "docs/_posts/2026-09-19-shiny-x-com-shinyc-official-status-2100887554216353877.md": "8e527603b5124266208ee98201b19ed20822af569c0022e07552c3811e550a03",
+  "docs/_posts/2026-09-19-sidem-11th-commentarycasting.md": "d82bfedaa5b12bce25d1fbe3e024f5a8f0e8eedaee8feb1f99ff5094a1a1fc72",
+  "docs/_editions/2026-09-19.md": "ce82e1abb559754f04ae935a9cb26906efd8b7e0bf9c122f906d5609bbc5e738",
+  "metrics/stories-before-2026-09-19.yml": "0a61fd3ebd99c8b9d1af88ced6a5c30910953711ca29c0bd7c3c932f92dc809b"
+ }
+}

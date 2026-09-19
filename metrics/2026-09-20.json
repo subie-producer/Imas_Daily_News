@@ -101,6 +101,46 @@
     "million-subaru-birthday-gasha-2026"
    ],
    "duration_s": 4066
+  },
+  {
+   "at": "2026-09-20T05:07:16+09:00",
+   "edition": "2026-09-20",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 30,
+   "written": 21,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 81,
+    "covered": 81,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "shiny-parallel-collection-popup-2026",
+    "sidem-11th-commentarycasting",
+    "sidem-divercity-tokyo-plaza-2026"
+   ],
+   "stages_min": {
+    "執筆": 2.8449968298276267,
+    "出典の判定": 0.03140472173690796,
+    "組版": 3.385901892185211,
+    "校閲": 2.7654711961746217,
+    "校閲1波": 2.7654711961746217
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-shinyson-gear-unwinding-melody-2026",
+    "gaku-shinozawa-me-mv-2026",
+    "gaku-live-tour-single-shugakuryoko-2026",
+    "joint-tours-s1-ex-2026",
+    "million-subaru-birthday-gasha-2026",
+    "general-fan-gal-imaginary-saki-2026-09-19"
+   ],
+   "duration_s": 2992
   }
  ]
 }

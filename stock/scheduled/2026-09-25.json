@@ -197,26 +197,5 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609190226-grok-55"
- },
- {
-  "id": "sched-2026-09-25-million-14th-day1-afterparty-gasha-2026-終了",
-  "dedup_key": "million-14th-day1-afterparty-gasha-2026",
-  "brand": "million",
-  "subject": "プラチナスターツアービンゴ~一旦愛して♡~",
-  "kind": "終了",
-  "note": "ビンゴイベント・期間限定ショップを利用できる最終日",
-  "reserved_on": "2026-09-20",
-  "title": "夢咲くワンダーミラージュ 打ち上げセレクションガシャ",
-  "url": "https://x.com/imasml_theater/status/2101310348343333074",
-  "source_type": "公式",
-  "facts": [
-   "夢咲くワンダーミラージュ 打ち上げセレクションガシャ開催中",
-   "9/26（土）23:59まで（予定）",
-   "エンゲージメント: 高"
-  ],
-  "via": "grok",
-  "verify": "confirmed",
-  "src_candidate_id": "202609200223-grok-28",
-  "deadline": "2026-09-26"
  }
 ]

@@ -99,6 +99,10 @@
   brand: million
   subject: ミリオン「スペードのQ」ちびぐるみ(BANDAI SPIRITS)
   watch: 2027年1月内の正式な店舗展開開始日(判明次第 triggers へ)
+- dedup_key: gaku-fukuoka-live-memorial-gacha-2026-09
+  brand: gaku
+  subject: 学マス「標」福岡公演記念ガシャ
+  watch: 開催終了日(判明次第 triggers へ)
 - dedup_key: dsva-cosmo-ace-combat8-tgs-2026
   brand: dsva
   subject: 上水流宇宙 ACE COMBAT 8試遊配信
@@ -151,7 +155,11 @@
   brand: shiny
   subject: シャニソン アンティーカ新曲イベント「歯車ほどき穿つ旋律」
   watch: 開催日時(近日開催予定、判明次第 triggers へ)
+- dedup_key: shiny-enkan-halo-01-2026
+  brand: shiny
+  subject: シャニソン新ガシャ「円環-Halo around-」#01 アンティーカ×シーズ
+  watch: 開催日時(近日開催予定、判明次第 triggers へ)
 - dedup_key: shiny-silver-week-cas-colle-gasha-2026
   brand: shiny
-  subject: シルバーウィーク記念 キャスコレ確定ステップアップガシャ
-  watch: 終了日時(投稿に記載なし、72時間限定とのみ。判明次第 triggers へ)
+  subject: シャニマス「シルバーウィーク記念 キャスコレ確定ステップアップガシャ」
+  watch: 終了日時(投稿に数値なし、72時間限定とのみ。判明次第 triggers へ)

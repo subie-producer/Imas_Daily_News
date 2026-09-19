@@ -59,5 +59,48 @@
    },
    "duration_s": 1383
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-20T04:08:24+09:00",
+   "edition": "2026-09-20",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": false,
+   "planned": 30,
+   "written": 21,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 81,
+    "covered": 81,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "gaku-megasha-shinosawa-hiro-2026-09",
+    "joint-cg-kyomafu-2026-goods",
+    "sidem-divercity-tokyo-plaza-2026",
+    "shiny-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026"
+   ],
+   "stages_min": {
+    "選定": 8.617298209667206,
+    "執筆": 8.315955964724223,
+    "出典の判定": 1.9226842006047566,
+    "組版": 3.5263153235117595,
+    "校閲": 1.6547365585962932,
+    "校閲1波": 1.6547365585962932
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "shiny-shinyson-gear-unwinding-melody-2026",
+    "gaku-shinozawa-me-mv-2026",
+    "gaku-live-tour-single-shugakuryoko-2026",
+    "sidem-m-fes-seasons-greetings-party-2026",
+    "million-subaru-birthday-gasha-2026"
+   ],
+   "duration_s": 4066
+  }
  ]
 }

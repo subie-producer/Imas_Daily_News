@@ -268,12 +268,12 @@
   "deadline": "2026-10-12"
  },
  {
-  "id": "sched-2026-10-12-shiny-parallel-corridor-2026-終了",
+  "id": "sched-2026-10-12-shiny-parallel-corridor-2026-締切",
   "dedup_key": "shiny-parallel-corridor-2026",
   "brand": "shiny",
   "subject": "シャニマス「パラレルコレクション」POP UP SHOP",
-  "kind": "終了",
-  "note": "通販受付終了(23:59まで)",
+  "kind": "締切",
+  "note": "全商品通販受付の最終日(23:59まで)",
   "reserved_on": "2026-09-20",
   "title": "アイドルマスター シャイニーカラーズ POP UP SHOP パラレル回廊",
   "url": "https://special.amiami.jp/shinycolors_amiami_2026/",

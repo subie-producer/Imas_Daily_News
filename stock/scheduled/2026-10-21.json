@@ -47,32 +47,5 @@
   "via": "explore",
   "verify": "unconfirmed",
   "src_candidate_id": "202609170735-explore-11"
- },
- {
-  "id": "sched-2026-10-21-shinyson-enkan-halo-around-01-antica-shhis-gacha-2026-終了",
-  "dedup_key": "shinyson-enkan-halo-around-01-antica-shhis-gacha-2026",
-  "brand": "shiny",
-  "subject": "シャニソン「円環-Halo around-」#01 アンティーカ×シーズ",
-  "kind": "終了",
-  "note": "ガシャ終了、限定★3入手期限",
-  "reserved_on": "2026-09-20",
-  "title": "シャニソン「円環 -Halo around-」#01 アンティーカ×シーズガシャ",
-  "url": "https://wikiwiki.jp/songforprism/%E3%82%AC%E3%82%B7%E3%83%A3",
-  "source_type": "二次情報",
-  "facts": [
-   "期間: 2026/09/18 ～ 2026/10/21",
-   "ガシャ名は「“円環 -Halo around-” #01 アンティーカ×シーズ」",
-   "限定★3「黒と金に縁取られし薔薇の肖像」白瀬咲耶が登場",
-   "限定★3「宵闇に、生くるものたちの宴」幽谷霧子が登場",
-   "限定★3「ENIGMA NOIR」緋田美琴が登場",
-   "★3登場率は7.5%",
-   "エンゲージメント: 高",
-   "言及アイドル: 白瀬咲耶、幽谷霧子、緋田美琴"
-  ],
-  "via": "explore",
-  "verify": "unconfirmed",
-  "src_candidate_id": "202609192336-explore-27",
-  "event_date": "2026-09-18",
-  "deadline": "2026-10-21"
  }
 ]

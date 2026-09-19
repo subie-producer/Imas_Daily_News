@@ -22,9 +22,9 @@
   "id": "sched-2026-12-01-sidem-mfes2026-ornament-acrylic-keyholder-発売",
   "dedup_key": "sidem-mfes2026-ornament-acrylic-keyholder",
   "brand": "sidem",
-  "subject": "SideM Mフェス2026 オーナメント風アクリルキーホルダー",
+  "subject": "SideM Mフェス2026 オーナメント風アクリルキーホルダー/グリッターバッジ",
   "kind": "発売",
-  "note": "オーナメント風アクリルキーホルダーコレクションが発売される(予定)",
+  "note": "新作グッズ発売日",
   "reserved_on": "2026-09-20",
   "title": "Mフェス2026オーナメント風アクリルキーホルダー",
   "url": "https://j-hobby.net/mate/1676156.html",
@@ -41,29 +41,5 @@
   "via": "explore",
   "verify": "unconfirmed",
   "src_candidate_id": "202609192336-explore-28"
- },
- {
-  "id": "sched-2026-12-01-sidem-mfes2026-glitter-character-badge-発売",
-  "dedup_key": "sidem-mfes2026-glitter-character-badge",
-  "brand": "sidem",
-  "subject": "SideM Mフェス2026 グリッターキャラバッジ",
-  "kind": "発売",
-  "note": "グリッターキャラバッジコレクションが発売される(予定)",
-  "reserved_on": "2026-09-20",
-  "title": "Mフェス2026グリッターキャラバッジ",
-  "url": "https://j-hobby.net/mate/1676174.html",
-  "source_type": "二次情報",
-  "facts": [
-   "商品名は「アイドルマスター SideM グリッターキャラバッジコレクション／Mフェス2026」です。",
-   "A-BOX、B-BOX、C-BOX、D-BOXが掲載されています。",
-   "メーカーはムービックです。",
-   "発売時期: 2026年12月1日",
-   "参考価格: 770円(税込)",
-   "JANコード/予約コード: 4550621739569",
-   "エンゲージメント: 低"
-  ],
-  "via": "explore",
-  "verify": "unconfirmed",
-  "src_candidate_id": "202609192336-explore-29"
  }
 ]

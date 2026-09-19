@@ -117,6 +117,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - idolmaster.gamers-labo.com # 合議で追加: 5chで話題になった内容をまとめるサイト。他所の投稿を媒体として伝えている
   - dreamnews.jp          # 合議で追加: プレスリリース配信代行。企業発表を掲載する媒体
   - gamewith.jp           # 合議で追加: 攻略サイトは定義で二次情報の例。著者署名なし、現地取材の明確な証拠なし。公式情報
   - twiman.net            # 合議で追加: X(旧Twitter)の個人投稿を媒体として収集・表示。媒体として個人の創作を紹
@@ -306,6 +307,9 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - xuHvR2rRRTM         # 機械で追加: @imas-official「9/19 キャシー・グラハムさん Happy Birthda」
+    - rTpvcI1wr_U         # 機械で追加: @imas-official「9/19 アナスタシアさん Happy Birthday‼」
+    - ML1kChLMhsU         # 機械で追加: @imas-official「【シャニソン】アンティーカ「ブレイク・アウト・セレンディピテ」
     - mMVL0_U3Tjk         # 機械で追加: @TomoriManaka「【How to Fish】なかよく魚釣り？いいえ、たたかいで」
     - hZUB5aiesTg         # 機械で追加: @project_imas_va-liv「【新情報あり】最新情報をお知らせする特番【 #ヴイアラ 】」
     - ATRiaZHUSlM         # 機械で追加: @UtagawaLetora「【How to Fish】大人気カオスゲー！！！釣れ！！！！」

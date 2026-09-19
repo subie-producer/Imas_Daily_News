@@ -16,6 +16,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import assemble
 import compose
+import lint
 import pipelib
 import renderlib
 
@@ -1464,10 +1465,47 @@ def test_escalate_is_module_global():
           "main() が escalate を局所変数にしている(UnboundLocalError の再来)")
 
 
+def test_url_alive_verdict():
+    """出典 URL の死活確認: サーバがページ不在を明言した 404/410 だけを発行停止の error とし、
+    403 の WAF・bot 遮断、401、429、5xx やネットワーク層の失敗は「死活未確認」の警告どまりに
+    する(2026-09-20号: amiami の実在ページが 403 を返して発行が止まった)。"""
+    import urllib.error
+    orig_urlopen, orig_sleep = lint.urllib.request.urlopen, lint.time.sleep
+    lint.time.sleep = lambda *a, **k: None  # 再試行の待ちで遅くしない
+    try:
+        def raising(code):
+            def _open(req, timeout=None):
+                raise urllib.error.HTTPError(req.full_url, code, f"HTTP {code}", {}, None)
+            return _open
+        for code in (404, 410):
+            lint.urllib.request.urlopen = raising(code)
+            res = lint.url_alive("https://x.example/gone")
+            check(res == (False, f"HTTP {code}", "dead"), f"HTTP {code} を dead(発行停止)と判定しない: {res}")
+        for code in (403, 401, 429, 500, 503):
+            lint.urllib.request.urlopen = raising(code)
+            res = lint.url_alive("https://x.example/blocked")
+            check(res == (False, f"HTTP {code}", "blocked"), f"HTTP {code} を blocked(警告)と判定しない: {res}")
+        def netfail(req, timeout=None):
+            raise OSError("dns")
+        lint.urllib.request.urlopen = netfail
+        _ok, _d, verdict = lint.url_alive("https://no.such.host/")
+        check(not _ok and verdict == "unreachable", f"ネットワーク層の失敗を unreachable としない: {verdict}")
+
+        class Res:
+            status = 200
+            def __enter__(self): return self
+            def __exit__(self, *a): return False
+        lint.urllib.request.urlopen = lambda req, timeout=None: Res()
+        check(lint.url_alive("https://ok.example/") == (True, "HTTP 200", "alive"), "生存を alive としない")
+    finally:
+        lint.urllib.request.urlopen, lint.time.sleep = orig_urlopen, orig_sleep
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_slugify_format()
     test_escalate_is_module_global()
+    test_url_alive_verdict()
     test_check_output()
     test_render_and_length()
     test_earliest_date()

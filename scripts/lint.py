@@ -276,25 +276,35 @@ def check_tense(rep, path, text, edition_date, where):
 # ---- URL 生存確認 -------------------------------------------------------------
 
 def url_alive(url):
-    """(ok, detail, transient) を返す。
+    """(ok, detail, verdict) を返す。verdict は結果の種類:
+      "alive"       生きている(ok=True)
+      "dead"        サーバがページの不在を明言した(HTTP 404/410)。リンク切れ・捏造の signal
+      "unreachable" ネットワーク層の失敗(DNS 解決不能・接続不能・タイムアウト等)
+      "blocked"     サーバは応答したが機械での死活確認を拒んだ/確定できない
+                    (HTTP 403 の WAF・bot 遮断、401 認証要求、429 レート制限、5xx 等)
 
-    transient=True はネットワーク層の失敗(DNS 解決不能・接続不能・タイムアウト等)。
-    サーバが返した HTTP 4xx/5xx(=ページの死)とは区別し、呼び出し側は警告に
-    格下げする(一過性の回線事故が発行中止に直結しないため。捏造 URL の検査は
-    collect の verify と candidates 系譜検査が担っており、ここが最後の砦ではない)。
+    ページの不在を明言する 404/410 だけを "dead"(発行を止める error)とし、それ以外の
+    HTTP 応答は "blocked" として警告に格下げする。403 等はサーバがアクセスを拒んだだけで
+    ページが死んでいる/URL が捏造された証拠ではない(amiami 等の実在ページが WAF で
+    ブラウザ以外を弾く)。x.com のようなログイン必須ホスト(URL_CHECK_SKIP_HOSTS)を
+    機械確認から外しているのと同じ理由で、機械で死活を確かめられないだけである。
+    一過性の回線事故(unreachable)も同様に警告どまり。実物を開いて内容が記事と一致するかは
+    校閲(ブロック項目2)が確かめ、捏造 URL の検査は collect の verify と candidates 系譜検査も
+    担っており、ここが最後の砦ではない。
     """
     req = urllib.request.Request(url, headers={"User-Agent": URL_UA})
-    last = (False, "unreachable", True)
+    last = (False, "unreachable", "unreachable")
     for attempt in (1, 2, 3):
         if attempt > 1:
             time.sleep(5 * (attempt - 1))  # 5秒 → 10秒
         try:
             with urllib.request.urlopen(req, timeout=URL_TIMEOUT) as res:
-                return res.status < 400, f"HTTP {res.status}", False
+                return res.status < 400, f"HTTP {res.status}", "alive"
         except urllib.error.HTTPError as e:
-            last = (False, f"HTTP {e.code}", False)
+            verdict = "dead" if e.code in (404, 410) else "blocked"
+            last = (False, f"HTTP {e.code}", verdict)
         except Exception as e:  # DNS・接続・タイムアウト等のネットワーク層
-            last = (False, str(e), True)
+            last = (False, str(e), "unreachable")
     return last
 
 
@@ -654,13 +664,16 @@ def main() -> int:
                 host = urllib.parse.urlparse(s["url"]).hostname or ""
                 if host in URL_CHECK_SKIP_HOSTS:
                     continue
-                ok, detail, transient = url_alive(s["url"])
+                ok, detail, verdict = url_alive(s["url"])
                 if not ok:
-                    if transient:
+                    if verdict == "dead":
+                        rep.error(path, f"出典 URL 生存確認に失敗({detail}): {s['url']}")
+                    elif verdict == "blocked":
+                        rep.warn(path, f"出典 URL の死活を機械確認できない(アクセス拒否・レート制限等: "
+                                       f"{detail})。死活未確認のまま通過: {s['url']}")
+                    else:  # unreachable(ネットワーク層)
                         rep.warn(path, f"出典 URL に到達できない(ネットワーク層の失敗: {detail})。"
                                        f"死活未確認のまま通過: {s['url']}")
-                    else:
-                        rep.error(path, f"出典 URL 生存確認に失敗({detail}): {s['url']}")
     if not candidate_files and net_targets:
         rep.notice("candidates が空のため出典照合(candidates 突合)はスキップ(collect 稼働後に有効化)")
 

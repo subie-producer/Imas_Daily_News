@@ -39,7 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, html_to_text, set_quiet, unbacked_facts,
-                     checkout_edition_branch, commit_and_push, edition_date,
+                     checkout_edition_branch, classify_retag_lint, commit_and_push, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt)
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
@@ -789,19 +789,6 @@ def merge_into_day_file(cands: list[dict]) -> int:
     return added
 
 
-def _err_tail(r) -> str:
-    """失敗した子プロセスの言い分(stderr の最後の行。無ければ stdout の最後の行)。
-
-    「exit 1」だけでは原因が分からず、取引は表を戻すので後から再現もできない(実測 2026-09-18)。
-    """
-    err = [ln.strip() for ln in (r.stderr or "").splitlines() if ln.strip()]
-    out = [ln.strip() for ln in (r.stdout or "").splitlines() if ln.strip()]
-    # lint は指摘を stdout の `::error` 行に出す。最後の集計行だけでは何が赤いか分からないので先に並べる
-    marks = [ln.split("::", 2)[-1] for ln in out if ln.startswith("::error")][:3]
-    parts = marks + ([err[-1]] if err else []) + ([out[-1]] if out and not err else [])
-    return " / ".join(p[:160] for p in parts) if parts else "(出力なし)"
-
-
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-git", action="store_true", help="ブランチ操作・push をしない(テスト用)")
@@ -867,37 +854,10 @@ def main() -> int:
             # 判定表の更新 → 紙面の種別付け直し → lint を**1つの取引**にする。どれかが失敗したら、
             # この取引が触った判定表と記事を開始時に戻し、commit しない(表だけ進んで次の lint が赤くなる、
             # 部分的な付け直しが混ざる、を防ぐ。監査指摘)
-            ok, why = False, ""
-            try:
-                r = subprocess.run([sys.executable, str(ROOT / "scripts" / "classify_sources.py"),
-                                    "--date", date, "--apply"],
-                                   cwd=ROOT, capture_output=True, text=True, timeout=1800)
-                print(r.stdout[-1200:], flush=True)
-                if r.returncode != 0:
-                    why = f"合議 exit {r.returncode}: {_err_tail(r)}"
-                else:
-                    r2 = subprocess.run([sys.executable, str(ROOT / "scripts" / "retag_sources.py"), "--apply"],
-                                        cwd=ROOT, capture_output=True, text=True, timeout=600)
-                    tail = (r2.stdout or "").strip().splitlines()[-1:] if r2.stdout else []
-                    print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r2.returncode}"), flush=True)
-                    if r2.returncode != 0:
-                        why = f"付け直し exit {r2.returncode}: {_err_tail(r2)}"
-                    else:
-                        r3 = subprocess.run([sys.executable, str(ROOT / "scripts" / "lint.py"), "--base", "origin/main"],
-                                            cwd=ROOT, capture_output=True, text=True, timeout=600)
-                        if r3.returncode != 0:
-                            why = f"lint exit {r3.returncode}: {_err_tail(r3)}"
-                        else:
-                            ok = True
-            except (subprocess.TimeoutExpired, OSError) as e:   # 途中の timeout・起動失敗も取引の失敗(監査指摘)
-                why = f"{type(e).__name__}: {str(e)[:200]}"
+            ok, why = classify_retag_lint(date)
             if not ok:
-                # 取引を戻す: 判定表と記事だけ(候補や台帳は触っていない)。戻せなければ commit せず終える
-                rb = subprocess.run(["git", "checkout", "-q", "--", "source_types.yml", "docs/_posts"], cwd=ROOT,
-                                    capture_output=True, text=True)
-                if rb.returncode != 0:
-                    notify("collect", f"{date}: 判定表の取引に失敗({why[:400]})し、判定表と記事を戻すことにも失敗"
-                                      f"({rb.stderr.strip()[:200]})。commit せずに終える。作業ツリーを確かめること", ok=False)
+                if "戻せない" in why:
+                    notify("collect", f"{date}: 判定表の取引に失敗({why[:400]})。commit せずに終える。作業ツリーを確かめること", ok=False)
                     return 1
                 notify("collect", f"{date}: 判定表の更新〜紙面の付け直し〜lint で失敗({why[:400]})。判定表と記事を"
                                   f"戻した(候補は残す)。次回の収集で再試行する", ok=False)

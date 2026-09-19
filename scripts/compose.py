@@ -44,7 +44,7 @@ import tags as tags_lib
 from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, EDITORIAL_MODEL,
                      COMPOSE_ARTICLE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file,
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
-                     checkout_edition_branch, classify_source, commit_and_push,
+                     checkout_edition_branch, classify_retag_lint, classify_source, commit_and_push,
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS)
 
@@ -2308,6 +2308,20 @@ def main() -> int:
         # 人が見られるように、理由ごと知らせる(黙って落とさない)
         notify("compose", f"{date}: 差し戻しても通らず落とした記事 {n_drop}本:\n"
                           + "\n".join(f"- {s}: {w[:200]}" for s, w in outcomes.items() if not w.startswith("見送り")), ok=False)
+    # 1b'. 紙面の出典で判定表に無いもの(執筆が自分で見つけた URL)を、**発行前に**決める。
+    #      登録済みチャンネルの動画 ID は機械で、それ以外は合議で判定表に足し、記事の種別を付け直す。
+    #      収集の取引と同じ(判定表 → 付け直し。失敗したら開始時の中身へ戻す)。lint は号スナップショットが
+    #      まだ無いのでここでは掛けず、直後の組版の lint に任せる。以前は翌朝の watch が
+    #      「未確認の出典」を鳴らし、昼の収集で直っていた(実測 2026-09-19: 公式チャンネルの動画3件)
+    if written and afford(t0, "出典の判定", 5.0, "出典の判定", extra=stage_cost("校閲", 25.0)):
+        with stage("出典の判定"):
+            ok_cls, why_cls = classify_retag_lint(date, posts_only=True, timeout=remaining_seconds(cap=1200), lint=False)
+        if not ok_cls:
+            if "戻せない" in why_cls:
+                commit_and_push(branch, f"compose {date}: 出典の判定に失敗(当番へ)", "compose")
+                escalate("compose", date, f"紙面の出典の判定で判定表と記事を戻せなかった: {why_cls[:300]}")
+                return 1
+            notify("compose", f"{date}: 紙面の出典の判定で失敗({why_cls[:300]})。判定表と記事は戻した。未確認のまま先へ進む(翌朝の watch に出る)", ok=False)
     # **書き上がりから枠を当てる**(字数を枠に合わせさせない。規程9)。
     # 組版より前に確定させる: 号スナップショットの lead_slug が一面に依存するため
     assign_ranks(date, plan, written)

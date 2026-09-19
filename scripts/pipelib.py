@@ -795,6 +795,92 @@ def write_source_table(text: str, path=None) -> None:
     _ST_TABLE, _ST_KEY = None, None
 
 
+def err_tail(r) -> str:
+    """失敗した子プロセスの言い分(stdout の `::error` 行、stderr の最後の行、無ければ stdout の最後の行)。"""
+    err = [ln.strip() for ln in (r.stderr or "").splitlines() if ln.strip()]
+    out = [ln.strip() for ln in (r.stdout or "").splitlines() if ln.strip()]
+    marks = [ln.split("::", 2)[-1] for ln in out if ln.startswith("::error")][:3]
+    parts = marks + ([err[-1]] if err else []) + ([out[-1]] if out and not err else [])
+    return " / ".join(p[:160] for p in parts) if parts else "(出力なし)"
+
+
+def _snapshot(paths) -> dict[str, bytes | None]:
+    """取引の開始時の中身を控える(無いファイルは None)。git の HEAD ではなく**開始時**へ戻すため:
+    組版前の記事はまだ未追跡で、`git checkout` では戻らない(監査指摘)。"""
+    out: dict[str, bytes | None] = {}
+    for p in paths:
+        out[str(p)] = p.read_bytes() if p.is_file() else None
+    return out
+
+
+def _restore(snap: dict[str, bytes | None], new_under: Path | None = None) -> str:
+    """控えへ戻す。new_under を渡すと、その下で控えに無いファイル(取引の途中で増えたもの)も消す。
+    戻せなかったファイルの名前を返す(空なら成功)。"""
+    failed = []
+    if new_under is not None:
+        for p in sorted(new_under.glob("*.md")):
+            if str(p) not in snap:
+                try:
+                    p.unlink()
+                except OSError as e:
+                    failed.append(f"{p.name}: {e}")
+    for name, data in snap.items():
+        try:
+            p = Path(name)
+            if data is None:
+                p.unlink(missing_ok=True)
+            else:
+                p.write_bytes(data)
+        except OSError as e:
+            failed.append(f"{Path(name).name}: {e}")
+    return " / ".join(failed)
+
+
+def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "origin/main",
+                        timeout: int = 1800, lint: bool = True) -> tuple[bool, str]:
+    """判定表の更新(合議)→ 紙面の種別付け直し(→ lint)を**1つの取引**にする。
+
+    どれかが失敗したら、この取引が触った判定表と記事を**開始時の中身**に戻す(表だけ進んで次の lint が
+    赤くなる、部分的な付け直しが混ざる、を防ぐ)。戻り値は (成功したか, 失敗の理由)。戻すことにも
+    失敗したら理由に「戻せない」を含める(呼び出し側は commit せずに終えること)。
+    収集(候補 + 紙面の未確認。lint あり)と組版前(その号の記事の未確認だけ。posts_only。号スナップショットが
+    まだ無いので lint は直後の組版に任せる: lint=False)が同じ取引を使う。
+    """
+    scripts = ROOT / "scripts"
+    snap = _snapshot([ROOT / "source_types.yml"] + sorted((ROOT / "docs" / "_posts").glob("*.md")))
+    ok, why = False, ""
+    try:
+        cmd = [sys.executable, str(scripts / "classify_sources.py"), "--date", date, "--apply"] + (["--posts-only"] if posts_only else [])
+        r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout)
+        print(r.stdout[-1200:], flush=True)
+        if r.returncode != 0:
+            why = f"合議 exit {r.returncode}: {err_tail(r)}"
+        else:
+            r2 = subprocess.run([sys.executable, str(scripts / "retag_sources.py"), "--apply"],
+                                cwd=ROOT, capture_output=True, text=True, timeout=600)
+            tail = (r2.stdout or "").strip().splitlines()[-1:] if r2.stdout else []
+            print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r2.returncode}"), flush=True)
+            if r2.returncode != 0:
+                why = f"付け直し exit {r2.returncode}: {err_tail(r2)}"
+            elif not lint:
+                ok = True
+            else:
+                r3 = subprocess.run([sys.executable, str(scripts / "lint.py"), "--base", lint_base],
+                                    cwd=ROOT, capture_output=True, text=True, timeout=600)
+                if r3.returncode != 0:
+                    why = f"lint exit {r3.returncode}: {err_tail(r3)}"
+                else:
+                    ok = True
+    except (subprocess.TimeoutExpired, OSError) as e:   # 途中の timeout・起動失敗も取引の失敗
+        why = f"{type(e).__name__}: {str(e)[:200]}"
+    if ok:
+        return True, ""
+    failed = _restore(snap, ROOT / "docs" / "_posts")
+    if failed:
+        return False, f"{why}。判定表と記事を戻せない({failed[:200]})"
+    return False, why
+
+
 def dedupe_source_table(path=None) -> list[str]:
     """判定表の**同じ節の中の二重行**を除く(先に書いてあるほうを残す)。戻り値は除いた行。
 

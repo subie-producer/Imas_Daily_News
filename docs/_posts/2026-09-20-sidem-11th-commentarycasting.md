@@ -27,7 +27,14 @@ title_fact_ids:
 lede_fact_ids:
 - F15
 - F16
+verified_facts:
+- id: N1
+  text: 同時視聴会について、キャストは声のみの出演となる
+  url: https://idolmaster-official.jp/news/01_19904
+- id: N2
+  text: 同時視聴会で配信されるライブ本編映像は基本的にアーカイブで公開済みの映像だが、一部編集で変更となる可能性がある
+  url: https://idolmaster-official.jp/news/01_19904
 ---
 前日のDAY1に続く開催で、視聴URLは https://asobistage.asobistore.jp/event/sidem_11th/player/re_day2。対応する日程のASOBI STAGE配信視聴チケットを購入済み、またはシリアルコードを認証済みのアカウントで視聴できる。 <!-- F15 F16 F25 -->
 
-同時視聴会のキャスト出演は声のみ。配信されるライブ本編映像は基本的に公開済みのアーカイブ映像だが、一部編集で変更される可能性がある。 <!-- F16 -->
+同時視聴会のキャスト出演は声のみ。配信されるライブ本編映像は基本的に公開済みのアーカイブ映像だが、一部編集で変更される可能性がある。 <!-- N1 N2 -->

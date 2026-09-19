@@ -19,9 +19,6 @@ sources:
 - label: シャニソン攻略 Wiki*「ガシャ」(2026年9月18日)
   url: https://wikiwiki.jp/songforprism/%E3%82%AC%E3%82%B7%E3%83%A3
   type: 二次情報
-- label: アイドルマスター シャイニーカラーズ【公式】「新ピックアップガシャ 限定★3 白瀬咲耶」(2026年9月19日)
-  url: https://x.com/imassc_prism/status/2101249948226334806
-  type: 公式
 event_date: "2026-09-18"
 title_fact_ids:
 - F2

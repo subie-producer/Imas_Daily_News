@@ -104,9 +104,7 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     大半はファンの投稿(イラスト・コスプレ・感想)で、1つずつ人が見るには多すぎる
     (実測: 178件が未分類のまま溜まっていた)。ここも合議に掛ける。
     """
-    p = ROOT / "candidates" / f"{date}.json"
-    rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
-    rows += unresolved_post_sources()
+    rows = target_rows(date)
     if not rows:
         return {}, {}, {}
     doms: dict[str, str] = {}
@@ -139,12 +137,23 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     return doms, accts, paths
 
 
-def unresolved_post_sources() -> list[dict]:
-    """紙面に載っている**未確認**の出典(全号)。執筆が自分で見つけた URL は候補に無いので、
-    候補だけ見ていると紙面の未確認が残る(実測 2026-09-13/16)。号の日付で絞らない:
-    収集は次号の日付で走るので、その号の記事はまだ無い。"""
+POSTS_ONLY: str | None = None    # 号の日付。組版前の判定では、その号の記事の出典だけを対象にする(候補は見ない)
+
+
+def target_rows(date: str) -> list[dict]:
+    """判定の対象: その号の候補 + 紙面に載った未確認の出典。組版前(POSTS_ONLY)は、その号の記事の出典だけ。"""
+    if POSTS_ONLY:
+        return unresolved_post_sources(POSTS_ONLY)
+    p = ROOT / "candidates" / f"{date}.json"
+    rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
+    return rows + unresolved_post_sources()
+
+
+def unresolved_post_sources(date: str | None = None) -> list[dict]:
+    """紙面に載っている**未確認**の出典(全号。date を渡すとその号だけ)。執筆が自分で見つけた URL は
+    候補に無いので、候補だけ見ていると紙面の未確認が残る。収集は次号の日付で走るので、既定では号で絞らない。"""
     rows = []
-    for post in sorted((ROOT / "docs" / "_posts").glob("*.md")):
+    for post in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md" if date else "*.md")):
         text = post.read_text(encoding="utf-8")
         if "未確認" not in text:
             continue
@@ -451,11 +460,8 @@ YT_ID = re.compile(r"(?:[?&]v=|youtu\.be/|/live/|/shorts/|/embed/)([A-Za-z0-9_-]
 
 def unknown_videos(date: str) -> dict[str, str]:
     """判定表に無い YouTube 動画 ID → 代表 URL。"""
-    p = ROOT / "candidates" / f"{date}.json"
-    rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
-    rows += unresolved_post_sources()   # 紙面に載った未確認の動画も(候補に無いものがある)
     out: dict[str, str] = {}
-    for c in rows:
+    for c in target_rows(date):
         url = ((c.get("url") or "").split() or [""])[0]
         host = (urllib.parse.urlparse(url).hostname or "").removeprefix("www.")
         if host not in ("youtube.com", "m.youtube.com", "youtu.be"):
@@ -541,10 +547,15 @@ def main() -> int:
     ap.add_argument("--apply", action="store_true", help="一致したものを source_types.yml に足す")
     ap.add_argument("--limit", type=int, default=60,
                     help="1回に掛ける X アカウントの数(多いと1回のプロンプトに載らない)")
+    ap.add_argument("--posts-only", action="store_true",
+                    help="その号の記事に載った未確認の出典だけを対象にする(組版前。候補は見ない)")
     args = ap.parse_args()
     # 下見(--apply なし)では通知しない。試験実行が本物の警報と混ざる
     set_quiet(not args.apply)
     date = args.date or edition_date()
+    if args.posts_only:
+        global POSTS_ONLY
+        POSTS_ONLY = date
 
     doms, accts, paths = unknown_targets(date)
     if not doms and not accts and not paths and not unknown_videos(date):

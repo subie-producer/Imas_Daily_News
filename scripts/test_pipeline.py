@@ -673,6 +673,69 @@ def test_classify_consensus(tmp: Path):
         cs.ask, cs.ROOT = saved
 
 
+def test_classify_posts_only(tmp: Path):
+    """組版前の判定は、その号の記事に載った未確認の出典だけを対象にする(候補は見ない)。
+    取引(判定表 → 付け直し → lint)は、失敗したら判定表と記事を戻す。"""
+    import classify_sources as cs
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True)
+    (tmp / "candidates").mkdir()
+    post = lambda d, u, t: f"---\nslug: s\nsources:\n- label: l\n  url: {u}\n  type: {t}\n---\n本文\n"
+    (tmp / "docs" / "_posts" / "2026-09-19-a.md").write_text(post("2026-09-19", "https://www.youtube.com/watch?v=AAAAAAAAAAA", "未確認"), encoding="utf-8")
+    (tmp / "docs" / "_posts" / "2026-09-18-b.md").write_text(post("2026-09-18", "https://www.youtube.com/watch?v=BBBBBBBBBBB", "未確認"), encoding="utf-8")
+    (tmp / "candidates" / "2026-09-19.json").write_text(json.dumps([{"url": "https://www.youtube.com/watch?v=CCCCCCCCCCC"}]), encoding="utf-8")
+    saved = (cs.ROOT, cs.POSTS_ONLY)
+    try:
+        cs.ROOT = tmp
+        cs.POSTS_ONLY = None
+        urls = {r["url"] for r in cs.target_rows("2026-09-19")}
+        check(urls == {"https://www.youtube.com/watch?v=AAAAAAAAAAA", "https://www.youtube.com/watch?v=BBBBBBBBBBB",
+                       "https://www.youtube.com/watch?v=CCCCCCCCCCC"}, f"収集の対象(候補+全号の未確認): {urls}")
+        cs.POSTS_ONLY = "2026-09-19"
+        urls = {r["url"] for r in cs.target_rows("2026-09-19")}
+        check(urls == {"https://www.youtube.com/watch?v=AAAAAAAAAAA"}, f"組版前の対象(その号の記事だけ): {urls}")
+    finally:
+        cs.ROOT, cs.POSTS_ONLY = saved
+    # 取引: 失敗したら判定表と記事を**開始時の中身**へ戻す(未追跡の記事も。git の HEAD ではない。監査指摘)。
+    # 組版前(lint=False)は lint を掛けない。戻せなければ理由に「戻せない」
+    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+    post_a = tmp / "docs" / "_posts" / "2026-09-19-a.md"
+    before = post_a.read_bytes()
+    calls = []
+    def fake_run(cmd, **kw):
+        calls.append(cmd)
+        if any("classify_sources.py" in str(c) for c in cmd):    # 合議が表と記事を書き換えたあと失敗
+            (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n  - b.example\n", encoding="utf-8")
+            post_a.write_text(post_a.read_text(encoding="utf-8").replace("未確認", "公式"), encoding="utf-8")
+            (tmp / "docs" / "_posts" / "2026-09-19-new.md").write_text("x", encoding="utf-8")
+            return subprocess.CompletedProcess(cmd, 1, "", "boom")
+        return subprocess.CompletedProcess(cmd, 0, "", "")
+    saved_run, saved_root = pipelib.subprocess.run, pipelib.ROOT
+    try:
+        pipelib.subprocess.run, pipelib.ROOT = fake_run, tmp
+        ok, why = pipelib.classify_retag_lint("2026-09-19", posts_only=True, lint=False)
+        check(not ok and "合議 exit 1" in why and "boom" in why and "戻せない" not in why, f"取引の失敗の扱い: {ok} {why}")
+        check("--posts-only" in calls[0] and not any("lint.py" in str(c) for cmd in calls for c in cmd), f"組版前の旗と lint 無し: {calls}")
+        check(post_a.read_bytes() == before and "b.example" not in (tmp / "source_types.yml").read_text(encoding="utf-8")
+              and not (tmp / "docs" / "_posts" / "2026-09-19-new.md").exists(), "失敗した取引が開始時の中身へ戻っていない")
+        # 成功の経路(組版前): 合議 → 付け直し で終わり、lint は掛けない
+        calls.clear()
+        pipelib.subprocess.run = lambda cmd, **kw: (calls.append(cmd), subprocess.CompletedProcess(cmd, 0, "", ""))[1]
+        ok, why = pipelib.classify_retag_lint("2026-09-19", posts_only=True, lint=False)
+        check(ok and len(calls) == 2, f"組版前の成功の経路: {ok} {len(calls)}")
+        ok, why = pipelib.classify_retag_lint("2026-09-19")
+        check(ok and any("lint.py" in str(c) for c in calls[-1]), "収集の取引で lint が掛からない")
+        # 戻せないとき
+        saved_restore = pipelib._restore
+        pipelib._restore = lambda snap, new_under=None: "a.md: Permission denied"
+        pipelib.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 1, "", "cannot")
+        ok, why = pipelib.classify_retag_lint("2026-09-19")
+        check(not ok and "戻せない" in why, f"戻せないときの理由: {why}")
+        pipelib._restore = saved_restore
+    finally:
+        pipelib.subprocess.run, pipelib.ROOT = saved_run, saved_root
+
+
 def test_table_write_and_reload(tmp: Path):
     """判定表に書き足したら、同じプロセスの次の判定は新しい表で行う。同じものを2回足しても二重にならない。
     種別の節が無い動画 ID を、後ろの x_accounts の節へ差し込まない(2026-09-18 02:40: 同じ動画 ID が
@@ -725,13 +788,12 @@ def test_table_write_and_reload(tmp: Path):
             os.umask(old_umask)
         check((p.stat().st_mode & 0o7777) == 0o664, f"表の権限が変わった: {oct(p.stat().st_mode & 0o7777)}")
         # 取引失敗の通知に載せる「子プロセスの言い分」: stderr、stdout だけ、lint の ::error、出力なし
-        import collect
         import types
         R = lambda out, err: types.SimpleNamespace(stdout=out, stderr=err, returncode=1)
-        check("fatal: 原因" in collect._err_tail(R("", "x\nfatal: 原因\n")), "stderr の最後の行が載らない")
-        check(collect._err_tail(R("a\n最後の行\n", "")) == "最後の行", "stdout だけのときの最後の行")
-        check("posts/x.md: 赤い理由" in collect._err_tail(R("::error::posts/x.md: 赤い理由\nlint: 1 errors\n", "")), "lint の指摘が載らない")
-        check(collect._err_tail(R("", "")) == "(出力なし)", "出力なし")
+        check("fatal: 原因" in pipelib.err_tail(R("", "x\nfatal: 原因\n")), "stderr の最後の行が載らない")
+        check(pipelib.err_tail(R("a\n最後の行\n", "")) == "最後の行", "stdout だけのときの最後の行")
+        check("posts/x.md: 赤い理由" in pipelib.err_tail(R("::error::posts/x.md: 赤い理由\nlint: 1 errors\n", "")), "lint の指摘が載らない")
+        check(pipelib.err_tail(R("", "")) == "(出力なし)", "出力なし")
         # 外から書き換えられた表(merge・人の編集)も読み直す
         p.write_text(before.replace("  - a.example\n", "  - a.example\n  - d.example\n"), encoding="utf-8")
         check(pipelib.classify_source("https://d.example/x") == "公式", "外から変わった表を読み直していない")
@@ -1421,6 +1483,7 @@ def main() -> int:
     test_oncall_restore_cleans_untracked()
     test_classify_consensus(tmp / "cs")
     test_table_write_and_reload(tmp / "tw")
+    test_classify_posts_only(tmp / "cp")
     test_assemble_prompt_shape()
     test_prompts_are_instructions_only()
     test_assemble_judge()

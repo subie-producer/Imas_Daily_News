@@ -315,5 +315,25 @@
   "verify": "confirmed",
   "src_candidate_id": "202609181234-explore-4",
   "event_date": "2026-09-30"
+ },
+ {
+  "id": "sched-2026-09-30-cg-number-one-cross-over-eiam-2026-発売",
+  "dedup_key": "cg-number-one-cross-over-eiam-2026",
+  "brand": "cg",
+  "subject": "NUMBER ONE! クロス×オーバー!",
+  "kind": "発売",
+  "note": "CD発売、収録曲「エイエム×アイアム」を購入できる",
+  "reserved_on": "2026-09-20",
+  "title": "「エイエム×アイアム」試聴開始",
+  "url": "https://columbia.jp/idolmaster/",
+  "source_type": "準公式",
+  "facts": [
+   "9月30日発売の「THE IDOLM@STER CINDERELLA MASTER NUMBER ONE! クロス×オーバー！」より、＃UNICUSが歌う「エイエム×アイアム」の試聴を開始した",
+   "「NUMBER ONE!」シリーズ第3弾「THE IDOLM@STER CINDERELLA MASTER NUMBER ONE! クロス×オーバー！」は9月30日に発売される",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609191233-explore-3"
  }
 ]

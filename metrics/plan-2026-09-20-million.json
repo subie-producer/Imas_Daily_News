@@ -1,0 +1,257 @@
+{
+ "decisions": {
+  "million-14th-live-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day1-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "日程・会場・料金は既報かつ内容重複。本日千秋楽の文脈はday1-2026記事に統合する"
+  },
+  "million-platinum-tour-bingo-ittan-aishite-2026": {
+   "action": "roundup",
+   "angle": "ミリシタ運営まとめ:「一旦愛して♡」ビンゴイベント(報酬SRカード・限定コミュ、〜9/25開催中)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-kotobukiya-kuji-stage04-2026": {
+   "action": "roundup",
+   "angle": "ミリシタ運営まとめ:コトブキヤくじstage04の景品詳細(S〜D賞、10連/30連特典)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "販売開始(9/18)自体は既報。本日は賞品内訳という追加ディテールのみのため単独記事でなく運営まとめへ"
+  },
+  "million-14th-day1-2026": {
+   "action": "article",
+   "angle": "14thLIVE DAY1『夢咲くワンダーミラージュ』レポート、新ソロ曲2曲・新デュエット曲1曲を初披露。本日はDAY2『Blooming Sign』千秋楽",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-14th-live-2026(基本情報)を統合。新曲3曲初披露は未既報の新事実"
+  },
+  "million-14th-day1-setlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "セットリスト36曲・出演声優リストは二次情報(ファンサイト)のみでunconfirmed。主要新曲情報はday1-2026(公式)側で扱う"
+  },
+  "million-battle-of-theater-09-100ten-number-one-store-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/17発表の店舗特典決定情報。stories.ymlで9/19付すでに既報、本日の新トリガー無し(発売日も9/30で本日ではない)"
+  },
+  "million-battle-of-theater-09-100ten-number-one-store-benefits-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "上と同一CD(9/30発売)の店舗特典詳細。核心は9/19付で既報済み、本日のトリガーではない"
+  },
+  "subaru-birthday-gasha-2026": {
+   "action": "article",
+   "angle": "永吉昴の誕生日(9/20)記念でBirthdayガシャとBirthdayセット2026が登場",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "永吉昴はコトブキヤくじstage04・ちびぐるみ等でミリオン表記実績あり(stories.yml)。他面はSideM表記だが誤りの可能性、要確認"
+  },
+  "subaru-birthday-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "subaru-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一誕生日施策の別商品。読者の行動差が小さいため統合"
+  },
+  "million-14th-day1-afterparty-gasha-2026": {
+   "action": "roundup",
+   "angle": "ミリシタ運営まとめ:DAY1公演記念「打ち上げセレクションガシャ」開催中(〜9/26)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14th-live": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "内容は7月のアソビストア先行受付情報のみ。本日(千秋楽)に起きることの記載が無い"
+  },
+  "million-seasonal-snapshot-christmas-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-seasonal-snapshot-2026-12",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策(高槻やよい・伊吹翼クリスマスグッズ、9/20受注締切)。価格詳細のある12月版に統合"
+  },
+  "grok-077": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "14th-MaKERレッスンウェア追加は既にmillion-14th-live-2026ストーリーに記載済み"
+  },
+  "million-seasonal-snapshot-2026-12": {
+   "action": "article",
+   "angle": "ミリシタSEASONAL SNAPSHOT 12月クリスマス(高槻やよい・伊吹翼)、本日9/20が受注最終日",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-seasonal-snapshot-christmas-2026を統合。締切当日のため単独記事とする"
+  },
+  "million-14th-live-general-sale-second-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "一般販売2次(先着)の内容は9/14-15付で既報(million-14th-2026)。本日は締切でも開始日でもない"
+  },
+  "million-14thlive-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "million-14th-live-general-sale-second-2026と同内容の重複情報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-14th-day1-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "14thLIVE DAY1『夢咲くワンダーミラージュ』レポート、新ソロ曲2曲・新デュエット曲1曲を初披露。本日はDAY2『Blooming Sign』千秋楽",
+    "lead_score": 85,
+    "dedup_key": "million-14th-day1-2026",
+    "candidate_ids": [
+     "202609192336-watch-0",
+     "202609190733-explore-1",
+     "202609200223-grok-39",
+     "sched-2026-09-20-million-14th-live-2026-千秋楽"
+    ]
+   },
+   {
+    "slug": "million-subaru-birthday-gasha-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "永吉昴の誕生日(9/20)記念でBirthdayガシャとBirthdayセット2026が登場",
+    "lead_score": 15,
+    "dedup_key": "subaru-birthday-gasha-2026",
+    "candidate_ids": [
+     "202609200223-grok-26",
+     "202609200223-grok-27"
+    ]
+   },
+   {
+    "slug": "million-seasonal-snapshot-2026-12",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタSEASONAL SNAPSHOT 12月クリスマス(高槻やよい・伊吹翼)、本日9/20が受注最終日",
+    "lead_score": 10,
+    "dedup_key": "million-seasonal-snapshot-2026-12",
+    "candidate_ids": [
+     "sched-2026-09-20-million-seasonal-snapshot-2026-12-締切",
+     "sched-2026-09-20-million-seasonal-snapshot-christmas-2026-締切"
+    ]
+   },
+   {
+    "slug": "million-ops-roundup",
+    "brand": "million",
+    "rank": "roundup",
+    "angle": "ミリシタ運営まとめ:「一旦愛して♡」ビンゴイベント(報酬SRカード・限定コミュ、〜9/25開催中)",
+    "lead_score": 0,
+    "dedup_key": "million-platinum-tour-bingo-ittan-aishite-2026",
+    "candidate_ids": [
+     "202609190733-explore-2",
+     "202609191233-explore-7",
+     "202609200223-grok-28"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-14th-day1-setlist-2026",
+    "reason": "出典不足",
+    "note": "セットリスト36曲・出演声優リストは二次情報(ファンサイト)のみでunconfirmed。主要新曲情報はday1-2026(公式)側で扱う"
+   },
+   {
+    "dedup_key": "million-battle-of-theater-09-100ten-number-one-store-bonus-2026",
+    "reason": "既報",
+    "note": "9/17発表の店舗特典決定情報。stories.ymlで9/19付すでに既報、本日の新トリガー無し(発売日も9/30で本日ではない)"
+   },
+   {
+    "dedup_key": "million-battle-of-theater-09-100ten-number-one-store-benefits-2026",
+    "reason": "既報",
+    "note": "上と同一CD(9/30発売)の店舗特典詳細。核心は9/19付で既報済み、本日のトリガーではない"
+   },
+   {
+    "dedup_key": "million-14th-live",
+    "reason": "既報",
+    "note": "内容は7月のアソビストア先行受付情報のみ。本日(千秋楽)に起きることの記載が無い"
+   },
+   {
+    "dedup_key": "grok-077",
+    "reason": "既報",
+    "note": "14th-MaKERレッスンウェア追加は既にmillion-14th-live-2026ストーリーに記載済み"
+   },
+   {
+    "dedup_key": "million-14th-live-general-sale-second-2026",
+    "reason": "既報",
+    "note": "一般販売2次(先着)の内容は9/14-15付で既報(million-14th-2026)。本日は締切でも開始日でもない"
+   },
+   {
+    "dedup_key": "million-14thlive-ticket-2026",
+    "reason": "重複",
+    "note": "million-14th-live-general-sale-second-2026と同内容の重複情報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -201,6 +201,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - promo.whomor.com      # 合議で追加: 問い合わせ先shop@whomor.comでイベント企画・運営を担当
+  - movic.jp              # 合議で追加: ライセンス商品のグッズを企画・制作・販売
   - lawson-faq.lawson.co.jp # 合議で追加: 販売元。一番くじをローソン店舗で取り扱う
   - s-renaissance.co.jp   # 合議で追加: アイマスコラボイベントを主催するスポーツクラブ。会場・主催
   - onkyoanime.com        # 合議で追加: アニメコラボグッズを販売する会社が自社商品を告知。販売元

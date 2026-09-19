@@ -1,21 +1,45 @@
 [
-  {
-    "id": "sched-2026-12-01-sidem-super-retrose-party-2026-終了",
-    "dedup_key": "sidem-super-retrose-party-2026",
-    "brand": "sidem",
-    "subject": "西武園ゆうえんち×SideM「超!!レトローズパーティ」第2弾",
-    "kind": "終了",
-    "reserved_on": "2026-09-02",
-    "title": "西武園ゆうえんち×SideM「超!!レトローズパーティ」開催決定",
-    "url": "https://prtimes.jp/main/html/rd/p/000000975.000011571.html",
-    "source_type": "当事者",
-    "facts": [
-      "西武園ゆうえんちと「アイドルマスター SideM」のコラボイベントは2026年10月30日(金)～12月1日(火)開催",
-      "スタンプラリーカード・特典の受け取り場所は順次公開"
-    ],
-    "via": "explore",
-    "verify": "confirmed",
-    "event_date": "2026-12-01",
-    "src_candidate_id": "202609012336-explore-13"
-  }
+ {
+  "id": "sched-2026-12-01-sidem-super-retrose-party-2026-終了",
+  "dedup_key": "sidem-super-retrose-party-2026",
+  "brand": "sidem",
+  "subject": "西武園ゆうえんち×SideM「超!!レトローズパーティ」第2弾",
+  "kind": "終了",
+  "reserved_on": "2026-09-02",
+  "title": "西武園ゆうえんち×SideM「超!!レトローズパーティ」開催決定",
+  "url": "https://prtimes.jp/main/html/rd/p/000000975.000011571.html",
+  "source_type": "当事者",
+  "facts": [
+   "西武園ゆうえんちと「アイドルマスター SideM」のコラボイベントは2026年10月30日(金)～12月1日(火)開催",
+   "スタンプラリーカード・特典の受け取り場所は順次公開"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "event_date": "2026-12-01",
+  "src_candidate_id": "202609012336-explore-13"
+ },
+ {
+  "id": "sched-2026-12-01-sidem-mfes2026-ornament-acrylic-keyholder-発売",
+  "dedup_key": "sidem-mfes2026-ornament-acrylic-keyholder",
+  "brand": "sidem",
+  "subject": "Mフェス2026 オーナメント風アクリルキーホルダー等",
+  "kind": "発売",
+  "note": "オーナメント風アクリルキーホルダー・グリッターキャラバッジが発売予定",
+  "reserved_on": "2026-09-20",
+  "title": "Mフェス2026オーナメント風アクリルキーホルダー",
+  "url": "https://j-hobby.net/mate/1676156.html",
+  "source_type": "二次情報",
+  "facts": [
+   "商品名は「アイドルマスター SideM オーナメント風アクリルキーホルダーコレクション／Mフェス2026」です。",
+   "A-BOX、B-BOX、C-BOX、D-BOXが掲載されています。",
+   "メーカーはムービックです。",
+   "発売時期: 2026年12月1日",
+   "参考価格: 880円(税込)",
+   "JANコード/予約コード: 4550621739606",
+   "エンゲージメント: 低"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609192336-explore-28"
+ }
 ]

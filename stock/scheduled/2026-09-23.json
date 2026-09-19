@@ -344,5 +344,34 @@
   "src_candidate_id": "202609190226-explore-1",
   "event_date": "2026-09-19",
   "deadline": "2026-09-23"
+ },
+ {
+  "id": "sched-2026-09-23-valiv-special-letter-form-2026-09-24-締切",
+  "dedup_key": "valiv-special-letter-form-2026-09-24",
+  "brand": "dsva",
+  "subject": "ヴイアラ特別配信ふつおた募集",
+  "kind": "締切",
+  "note": "特別配信へのふつおた・質問募集が23:59で締切",
+  "reserved_on": "2026-09-20",
+  "title": "特別番組向け お便り&質問募集フォーム",
+  "url": "https://docs.google.com/forms/d/e/1FAIpQLSdyUPmVP5FEpa-g80fdmZpBfyyynct6fHia4POevGc9mqJfuQ/viewform?usp=send_form",
+  "source_type": "未確認",
+  "facts": [
+   "9月24日に実施される特別番組にむけてヴイアライヴに関するお便り(ふつおた)と質問を募集",
+   "常識の範囲であれば内容はなんでもOK",
+   "実施期間：2026年9月23日(水)23:59まで",
+   "ご記載頂いた内容は、今後「PROJECT IM@S vα-liv」の配信やイベント等で紹介させていただく場合がある",
+   "紹介の際はプロデューサー名と一緒に紹介",
+   "いただいた内容が必ずしも採用されるわけではない",
+   "企画・選定内容・順位等に関する問い合わせは受け付けない",
+   "必須 Q1. プロデューサー名をお答えください。",
+   "必須 Q2. メッセージやご質問をご記載ください。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609200223-grok-18",
+  "event_date": "2026-09-24",
+  "deadline": "2026-09-23"
  }
 ]

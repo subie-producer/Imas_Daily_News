@@ -86,5 +86,27 @@
   "src_candidate_id": "202609170229-grok-48",
   "event_date": "2026-09-17",
   "deadline": "2026-10-28"
+ },
+ {
+  "id": "sched-2026-10-28-tours-s1-ex-2026-終了",
+  "dedup_key": "tours-s1-ex-2026",
+  "brand": "joint",
+  "subject": "『アイドルマスター TOURS』「S1弾Ex」ツアーズレア",
+  "kind": "終了",
+  "note": "S1弾Exツアーズレアを入手できる最終日",
+  "reserved_on": "2026-09-20",
+  "title": "アイドルマスター TOURS S1弾Ex開始",
+  "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/schedule/",
+  "source_type": "公式",
+  "facts": [
+   "S1弾Exツアーズレア: 9/17(木)～10/28(水)",
+   "「S1弾Ex」が2026年9月17日より開始",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609190733-explore-11",
+  "event_date": "2026-09-17",
+  "deadline": "2026-10-28"
  }
 ]

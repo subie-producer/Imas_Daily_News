@@ -1,0 +1,148 @@
+{
+ "decisions": {
+  "765-chibi-mako-yukiho-2026": {
+   "action": "article",
+   "angle": "菊地真・萩原雪歩『はんげつであえたら』衣装のちびぐるみ＆ポーチセットがプレミアムバンダイで受注開始(9/19〜10/18、2027年3月お届け)",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一商品を報じるmakoto-yuki-twin-live-chibigurumi-2026を統合。既報の双海姉妹等ちびぐるみとは別商品で新規"
+  },
+  "765as-solo-collection-dress-code-2026": {
+   "action": "article",
+   "angle": "MILLION LIVE!14thLIVE会場、765PRO ALLSTARSソロコレクションCD物販が本日(9/20)最終日。原宿口前特設テントでA3ポスター特典も",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売・ポスター特典・購入上限は既報(million-14th-live)。新規は物販場所(特設テント)と本日が最終物販日という当日トリガー"
+  },
+  "million-14th-bakust-talk-2026": {
+   "action": "article",
+   "angle": "MILLION LIVE!14thLIVE DAY2(本日)公演終了後、中村源太・今井麻美出演の『ばくすて!とーく』をYouTube配信、URL確定",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出演者・両日実施は既報だが、本日DAY2配信という当日トリガーと確定URLが新規情報"
+  },
+  "makoto-yuki-twin-live-chibigurumi-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-chibi-mako-yukiho-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一商品(菊地真・萩原雪歩ちびぐるみ＆ポーチセット)の別ソース。765-chibi-mako-yukiho-2026に統合し価格・サイズ等を補完"
+  },
+  "765-oathone-xrlive-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tgs2026-xr-live-session",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "famitsu記事(tgs2026-xr-live-session/chihaya-oathone-xr-live-2026)と同一タイトル・同一内容の二次情報。統合先に一本化"
+  },
+  "tgs2026-xr-live-session": {
+   "action": "article",
+   "angle": "TGS2026フォーラムで如月千早『OathONE』を題材にXRライブの舞台裏を解説。2年半で23タイトル・76公演に拡大した実績とgroovots等の技術を紹介",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "chihaya-oathone-xr-live-2026・765-oathone-xrlive-2026を統合。素材10件超で本日面の一面級ニュース"
+  },
+  "chihaya-oathone-xr-live-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tgs2026-xr-live-session",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "famitsu記事(URL末尾?page=1違いのみ)で同一記事。tgs2026-xr-live-sessionに統合し人間ドラマ的な引用部分を補完"
+  },
+  "kotobukiya-kuji-summer-live-stage-2026": {
+   "action": "article",
+   "angle": "コトブキヤくじ『Summer Live st@ge』販売終了(9/23 23:59)まで残り3日、購入呼びかけ",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。既報だが本日は締切3日前の実行可能なリマインドで読者が取れる行動(購入)がある"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-chibi-mako-yukiho-2026",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "菊地真・萩原雪歩『はんげつであえたら』衣装のちびぐるみ＆ポーチセットがプレミアムバンダイで受注開始(9/19〜10/18、2027年3月お届け)",
+    "lead_score": 15,
+    "dedup_key": "765-chibi-mako-yukiho-2026",
+    "candidate_ids": [
+     "202609191233-watch-0",
+     "202609191834-explore-13"
+    ]
+   },
+   {
+    "slug": "765-765as-solo-collection-dress-code-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "MILLION LIVE!14thLIVE会場、765PRO ALLSTARSソロコレクションCD物販が本日(9/20)最終日。原宿口前特設テントでA3ポスター特典も",
+    "lead_score": 5,
+    "dedup_key": "765as-solo-collection-dress-code-2026",
+    "candidate_ids": [
+     "202609191233-explore-1"
+    ]
+   },
+   {
+    "slug": "765-million-14th-bakust-talk-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "MILLION LIVE!14thLIVE DAY2(本日)公演終了後、中村源太・今井麻美出演の『ばくすて!とーく』をYouTube配信、URL確定",
+    "lead_score": 5,
+    "dedup_key": "million-14th-bakust-talk-2026",
+    "candidate_ids": [
+     "202609191834-explore-1"
+    ]
+   },
+   {
+    "slug": "765-tgs2026-xr-live-session",
+    "brand": "765",
+    "rank": "large",
+    "angle": "TGS2026フォーラムで如月千早『OathONE』を題材にXRライブの舞台裏を解説。2年半で23タイトル・76公演に拡大した実績とgroovots等の技術を紹介",
+    "lead_score": 80,
+    "dedup_key": "tgs2026-xr-live-session",
+    "candidate_ids": [
+     "202609200223-explore-9",
+     "202609192336-watch-13",
+     "202609200223-grok-38"
+    ]
+   },
+   {
+    "slug": "765-kotobukiya-kuji-summer-live-stage-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "コトブキヤくじ『Summer Live st@ge』販売終了(9/23 23:59)まで残り3日、購入呼びかけ",
+    "lead_score": 0,
+    "dedup_key": "kotobukiya-kuji-summer-live-stage-2026",
+    "candidate_ids": [
+     "sched-2026-09-20-kotobukiya-kuji-summer-live-stage-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

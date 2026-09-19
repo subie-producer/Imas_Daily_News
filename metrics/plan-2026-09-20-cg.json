@@ -1,0 +1,107 @@
+{
+ "decisions": {
+  "cg-15th-anniversary-party-for-your-one-ticket-update-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "チケット価格(SPラウンジ81,500/バルコニー18,500/全席指定15,500)は cinderella-15th-anniversary-party-2026(2026-09-18既報)と一致。当日の新トリガー無し"
+  },
+  "cg-election-idol-support-post-festival-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受賞発表の文言は cg-election-2026(2026-09-18既報)と同一。新事実・当日のトリガー無し"
+  },
+  "cg-yurakucho-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一URL(the-chara.com/?p=121064)の www-the-chara-com-blog-p-121064(2026-09-19既報)で開催期間・整理券情報とも既報。当日は9/26開幕でも9/25整理券配布でもない"
+  },
+  "cg-number-one-cross-over-eiam-2026": {
+   "action": "article",
+   "angle": "9/30発売「NUMBER ONE! クロス×オーバー！」から#UNICUSの新曲「エイエム×アイアム」試聴がコロムビア公式サイトで開始",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(cinderella-master-number-one-2026等)はCD発売日・型番のみ。個別曲の試聴開始は新事実"
+  },
+  "cinderella-election-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一ツイートの内容は x-com-imas-cgofficial-status-2100963067651576145(2026-09-19既報)と重複。投票終了以外に新情報無し"
+  },
+  "cinderella-orchestra-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "素材に「同一内容の受付案内は2026-09-18の投稿にもあり」と明記。出演者名等の新情報も無く、受付期限(9/27)も cg-15th-orchestra-2027(2026-09-18既報)と同一"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-number-one-cross-over-eiam-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "9/30発売「NUMBER ONE! クロス×オーバー！」から#UNICUSの新曲「エイエム×アイアム」試聴がコロムビア公式サイトで開始",
+    "lead_score": 15,
+    "dedup_key": "cg-number-one-cross-over-eiam-2026",
+    "candidate_ids": [
+     "202609191233-explore-3"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-15th-anniversary-party-for-your-one-ticket-update-2026",
+    "reason": "既報",
+    "note": "チケット価格(SPラウンジ81,500/バルコニー18,500/全席指定15,500)は cinderella-15th-anniversary-party-2026(2026-09-18既報)と一致。当日の新トリガー無し"
+   },
+   {
+    "dedup_key": "cg-election-idol-support-post-festival-2026",
+    "reason": "既報",
+    "note": "受賞発表の文言は cg-election-2026(2026-09-18既報)と同一。新事実・当日のトリガー無し"
+   },
+   {
+    "dedup_key": "cg-yurakucho-popup-2026",
+    "reason": "既報",
+    "note": "同一URL(the-chara.com/?p=121064)の www-the-chara-com-blog-p-121064(2026-09-19既報)で開催期間・整理券情報とも既報。当日は9/26開幕でも9/25整理券配布でもない"
+   },
+   {
+    "dedup_key": "cinderella-election-2026",
+    "reason": "既報",
+    "note": "同一ツイートの内容は x-com-imas-cgofficial-status-2100963067651576145(2026-09-19既報)と重複。投票終了以外に新情報無し"
+   },
+   {
+    "dedup_key": "cinderella-orchestra-2027",
+    "reason": "既報",
+    "note": "素材に「同一内容の受付案内は2026-09-18の投稿にもあり」と明記。出演者名等の新情報も無く、受付期限(9/27)も cg-15th-orchestra-2027(2026-09-18既報)と同一"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -28,5 +28,33 @@
   "verify": "unconfirmed",
   "src_candidate_id": "202609140234-grok-24",
   "event_date": "2026-12-02"
+ },
+ {
+  "id": "sched-2026-12-02-sidem-m-fes-seasons-greetings-party-2026-発売",
+  "dedup_key": "sidem-m-fes-seasons-greetings-party-2026",
+  "brand": "sidem",
+  "subject": "Mフェス テーマソングCD「Season's Greetings Party！」",
+  "kind": "発売",
+  "note": "テーマソングCDが発売される",
+  "reserved_on": "2026-09-20",
+  "title": "Mフェス初テーマソングCD発売決定",
+  "url": "https://pylonport.bandainamcomusiclive.co.jp/more/859",
+  "source_type": "準公式",
+  "facts": [
+   "『アイドルマスター SideM』の特別企画「Mフェス」初のテーマソングCD発売が決定した。",
+   "CDにはW、神速一魂、C.FIRSTが参加する。",
+   "テーマソングに加えて各ソロVer.とOff Vocalを収録する。",
+   "初回生産分にはブロマイド（全7種のうちランダム2種）を封入する。",
+   "テーマソングCD発売記念『315プロNight出張版』公開録音イベントの開催が決定した。",
+   "発売日は2026年12月2日。",
+   "価格は2,750円（10%税込）／2,500円（税抜）。",
+   "品番はLACA-25317。",
+   "収録内容は「Season's Greetings Party！」、各ソロVer.、Off Vocal。",
+   "エンゲージメント: 高"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609191834-explore-9",
+  "event_date": "2026-12-02"
  }
 ]

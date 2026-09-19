@@ -1,0 +1,210 @@
+{
+ "decisions": {
+  "nagano-aniera-festa-2026-preparation": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "無料駐車場7:30開場・入場待機列8:00開始等のDAY1向けアクセス案内は、dsva-nagano-aniera-festa-2026として9/19号で既報"
+  },
+  "nagano-aniera-festa-2026-spiraspica-cancellation": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "DAY1(9/19)出演辞退の告知。20日号時点ではDAY1は終了済みで当日の行動喚起にならない"
+  },
+  "nagano-aniera-festa-2026-ayumi-hihara-cancellation": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "DAY1(9/19)出演辞退の告知。20日号時点ではDAY1は終了済みで当日の行動喚起にならない"
+  },
+  "valiv-how-to-fish-manaka-2026-09-17": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/17実施「How to Fish」配信の告知はdsva-how-to-fish-2026として9/15号で既報。実施報告も3日前の内容で当日トリガー無し"
+  },
+  "valiv-how-to-fish-cosmo-2026-09-17": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同上、9/17実施「How to Fish」配信は既報・当日トリガー無し"
+  },
+  "valiv-how-to-fish-letora-2026-09-17": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同上、9/17実施「How to Fish」配信は既報・当日トリガー無し"
+  },
+  "valiv-nagano-aniera-festa-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "nagano-aniera-festa-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "レトラ(19日)・上水流宇宙(20日DJset)の出演情報が重複。verify未確認のためconfirmed済みのnagano-aniera-festa-2026側へ統合"
+  },
+  "nagano-aniera-festa-2026-timetable-update": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "nano.RIPE追加出演はDAY1(9/19)16:30-16:50限定の情報。20日号時点ではDAY1は終了済み"
+  },
+  "nagano-aniera-festa-2026-sameday-ticket": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "当日券販売はDAY1(9/19)向けの告知。DAY2(20日)分の当日券情報は素材に記載無し"
+  },
+  "valiv-special-stream-2026-09-24": {
+   "action": "article",
+   "angle": "9/24(木)20時からヴイアラ公式chで特別配信、視聴リンクと最新情報を告知。お便り・質問は9/23締切で募集",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-special-letter-form-2026-09-24": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-special-stream-2026-09-24",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/24特別配信向けのお便り・質問募集フォームで、配信告知(valiv-special-stream-2026-09-24)と同一施策のため統合"
+  },
+  "nagano-aniera-festa-2026": {
+   "action": "article",
+   "angle": "ナガノアニエラフェスタ2026DAY2(本日千秋楽)、上水流宇宙がPHANTOM STAGEでDJセット出演。前日19日はレトラが出演、チケットは一般発売中",
+   "rank": "medium",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-nagano-aniera-festa-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "千秋楽向け続報予約だが、素材は「2日通し券SOLD OUT・駐車場満車予想」等9/19号で既報の内容の繰り返しで、DAY2固有の新情報が無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-special-stream-2026-09-24",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "9/24(木)20時からヴイアラ公式chで特別配信、視聴リンクと最新情報を告知。お便り・質問は9/23締切で募集",
+    "lead_score": 15,
+    "dedup_key": "valiv-special-stream-2026-09-24",
+    "candidate_ids": [
+     "202609200223-grok-17",
+     "202609200223-grok-18"
+    ]
+   },
+   {
+    "slug": "dsva-nagano-aniera-festa-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "ナガノアニエラフェスタ2026DAY2(本日千秋楽)、上水流宇宙がPHANTOM STAGEでDJセット出演。前日19日はレトラが出演、チケットは一般発売中",
+    "lead_score": 80,
+    "dedup_key": "nagano-aniera-festa-2026",
+    "candidate_ids": [
+     "202609200223-grok-19",
+     "202609191233-explore-16"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "nagano-aniera-festa-2026-preparation",
+    "reason": "既報",
+    "note": "無料駐車場7:30開場・入場待機列8:00開始等のDAY1向けアクセス案内は、dsva-nagano-aniera-festa-2026として9/19号で既報"
+   },
+   {
+    "dedup_key": "nagano-aniera-festa-2026-spiraspica-cancellation",
+    "reason": "その他",
+    "note": "DAY1(9/19)出演辞退の告知。20日号時点ではDAY1は終了済みで当日の行動喚起にならない"
+   },
+   {
+    "dedup_key": "nagano-aniera-festa-2026-ayumi-hihara-cancellation",
+    "reason": "その他",
+    "note": "DAY1(9/19)出演辞退の告知。20日号時点ではDAY1は終了済みで当日の行動喚起にならない"
+   },
+   {
+    "dedup_key": "valiv-how-to-fish-manaka-2026-09-17",
+    "reason": "既報",
+    "note": "9/17実施「How to Fish」配信の告知はdsva-how-to-fish-2026として9/15号で既報。実施報告も3日前の内容で当日トリガー無し"
+   },
+   {
+    "dedup_key": "valiv-how-to-fish-cosmo-2026-09-17",
+    "reason": "既報",
+    "note": "同上、9/17実施「How to Fish」配信は既報・当日トリガー無し"
+   },
+   {
+    "dedup_key": "valiv-how-to-fish-letora-2026-09-17",
+    "reason": "既報",
+    "note": "同上、9/17実施「How to Fish」配信は既報・当日トリガー無し"
+   },
+   {
+    "dedup_key": "nagano-aniera-festa-2026-timetable-update",
+    "reason": "その他",
+    "note": "nano.RIPE追加出演はDAY1(9/19)16:30-16:50限定の情報。20日号時点ではDAY1は終了済み"
+   },
+   {
+    "dedup_key": "nagano-aniera-festa-2026-sameday-ticket",
+    "reason": "その他",
+    "note": "当日券販売はDAY1(9/19)向けの告知。DAY2(20日)分の当日券情報は素材に記載無し"
+   },
+   {
+    "dedup_key": "dsva-nagano-aniera-festa-2026",
+    "reason": "既報",
+    "note": "千秋楽向け続報予約だが、素材は「2日通し券SOLD OUT・駐車場満車予想」等9/19号で既報の内容の繰り返しで、DAY2固有の新情報が無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

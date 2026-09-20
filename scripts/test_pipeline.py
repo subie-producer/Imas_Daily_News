@@ -736,6 +736,40 @@ def test_classify_posts_only(tmp: Path):
         check("特別配信のおたより募集" in cs.used_in(list(paths)[0]) and "おたよりフォーム" in cs.used_in(list(paths)[0]), f"使われ方が材料に付かない: {cs.used_in(list(paths)[0])}")
     finally:
         cs.ROOT, cs.POSTS_ONLY, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY = saved
+    # 文書の種別は**リンク元**で決める(編集長 2026-09-20)。公式の投稿の facts にフォームの URL があれば公式。合議に掛けない
+    fid = "1FAIpQLSdyUPmVP5FEpa-g80fdmZpBfyyynct6fHia4POevGc9mqJfuQ"
+    fkey = f"docs.google.com/forms/d/e/{fid}"
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE, pipelib._ST_KEY = None, None
+        (tmp / "source_types.yml").write_text("x_accounts:\n  公式:\n    - valiv_official\n  当事者:\n    - some_shop\n  ファン:\n    - fan1\n"
+                                              "press_domains:\n  - news.example\n", encoding="utf-8")
+        def cands(rows):
+            (tmp / "candidates" / "2026-09-19.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+        off = {"url": "https://x.com/valiv_official/status/1", "facts": [f"配信へのお便り募集: {form}"]}
+        cands([off, {"url": form, "facts": []}])
+        check(cs.is_document(fkey) and not cs.is_document("tiktok.com/@a"), "文書の単位の見分け")
+        check(cs.link_sources(fkey) == [("https://x.com/valiv_official/status/1", "公式")], f"リンク元: {cs.link_sources(fkey)}")
+        # 一次発信が張っている文書は機械では決めない(公式が第三者の受付を紹介しているだけのことがある。監査指摘 r69)。
+        # リンク元を材料に付けて、合議に確かめさせる
+        check(cs.by_link_source(fkey) is None, "公式が張っているだけで、機械的に公式と決めた(紹介かもしれない)")
+        check("https://x.com/valiv_official/status/1(公式)" in cs.link_hint(fkey), f"合議の材料にリンク元が付かない: {cs.link_hint(fkey)}")
+        rule = (pipelib.PROMPTS / "classify-site.md").read_text(encoding="utf-8")
+        check("リンク元と同じ種別" in rule and "紹介しているだけ" in rule, "依頼文に、リンク元での決め方(自身の文書か紹介か)が無い")
+        cands([{"url": "https://x.com/fan1/status/3", "facts": [form]}])
+        check(cs.by_link_source(fkey)[0] == "ファン", "ファンだけが張っている文書がファンにならない")
+        cands([{"url": "https://news.example/a", "facts": [form]}, {"url": "https://x.com/fan1/status/3", "facts": [form]}])
+        check(cs.by_link_source(fkey) is None, "報道が紹介しただけの文書を機械で決めた(合議へ回すべき)")
+        cands([{"url": form, "facts": []}])
+        check(cs.by_link_source(fkey) is None, "リンク元が無いのに決めた")
+        # 判定表には**どうやって決めたか**を偽らずに残す(合議に掛けていないものを「合議で追加」と書かない)
+        cs.add_paths({fkey: ("公式", "リンク元 https://x.com/valiv_official/status/1(公式)が張っている")}, how="機械で追加")
+        row = next(ln for ln in (tmp / "source_types.yml").read_text(encoding="utf-8").splitlines() if fid in ln)
+        check("機械で追加" in row and "合議" not in row, f"決め方の記録: {row}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY = saved
+    (tmp / "candidates" / "2026-09-19.json").write_text(json.dumps([{"url": "https://www.youtube.com/watch?v=CCCCCCCCCCC"}]), encoding="utf-8")
     (tmp / "docs" / "_posts" / "2026-09-19-c.md").unlink()
     (tmp / "docs" / "_posts" / "2026-09-19-a.md").write_text(post("2026-09-19", "https://www.youtube.com/watch?v=AAAAAAAAAAA", "未確認"), encoding="utf-8")
     # 取引: 失敗したら判定表と記事を**開始時の中身**へ戻す(未追跡の記事も。git の HEAD ではない。監査指摘)。

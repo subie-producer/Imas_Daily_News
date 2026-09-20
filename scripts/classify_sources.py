@@ -176,6 +176,62 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     return doms, accts, paths
 
 
+PRIMARY = ("公式", "準公式", "当事者", "演者")    # 自分の告知として文書を張る側(一次発信)。並びは強い順
+
+
+def is_document(key: str) -> bool:
+    """フォーム・文書など、**それ自身は身元を持たない**単位か(持ち主は、それを張った告知で決まる)。"""
+    return key.split("/")[0] in DOC_HOSTS + ("forms.gle",)
+
+
+def link_sources(key: str, days: int = 7) -> list[tuple[str, str]]:
+    """その文書を**張っている**候補(リンク元)の (URL, 種別)。直近 days 号ぶんの候補から、url や facts に
+    文書 ID が現れるものを探す。リンク元が分かれば、モデルに推測させるまでもない(編集長の指摘 2026-09-20:
+    「どこに書いてあって、どこにリンクされているかで決まる」。実測: 公式 X の投稿の facts に
+    「配信へのお便り募集: https://docs.google.com/forms/…」とあるのに、フォームを未確認のまま合議に回していた)。"""
+    doc_id = key.rsplit("/", 1)[-1]
+    out: list[tuple[str, str]] = []
+    for p in sorted((ROOT / "candidates").glob("????-??-??.json"))[-days:]:
+        text = p.read_text(encoding="utf-8", errors="replace")
+        if doc_id not in text:
+            continue
+        try:
+            rows = json.loads(text)
+        except ValueError:
+            continue
+        for c in rows:
+            url = ((c.get("url") or "").split() or [""])[0]
+            if not url or doc_id in url:          # 文書そのものの候補はリンク元ではない
+                continue
+            if doc_id in json.dumps(c, ensure_ascii=False) and (url, classify_source(url)) not in out:
+                out.append((url, classify_source(url)))
+    return out
+
+
+def by_link_source(key: str) -> tuple[str, str] | None:
+    """リンク元だけで機械的に決められる文書の (種別, 根拠)。決められなければ None(リンク元を材料に付けて合議へ)。
+
+    - リンク元が全部ファンなら、ファン(個人の文書。過大表示にならない)
+    - 一次発信(公式・準公式・当事者・演者)が張っている文書は、**機械では決めない**。リンク元の主体自身の文書か、
+      コラボ先・主催者の受付を紹介しているだけかは、リンク元だけでは分からない(実データ: 公式ページが LivePocket や
+      アニメイトの受付を張っている。それがフォームなら「公式」で恒久登録される。監査指摘 r69)。
+      リンク元を決め手の材料として渡し、その一点だけを合議に確かめさせる(`link_hint`)
+    - リンク元が無い・報道や二次情報だけ、も合議へ。報道が紹介したフォームは報道のものではない
+    """
+    srcs = link_sources(key)
+    if srcs and all(t == "ファン" for _, t in srcs):
+        return "ファン", f"リンク元 {srcs[0][0]}(ファン)が張っている"
+    return None
+
+
+def link_hint(key: str) -> str:
+    """合議に渡す材料: この文書を張っている候補(リンク元)と、その種別。どう使うかの規則は依頼文(classify-site)にある。"""
+    srcs = link_sources(key)
+    if not srcs:
+        return "\nリンク元: 手元の候補には、この文書を張っているものが無い"
+    return "\nリンク元(この文書を張っている候補): " + " / ".join(f"{u}({t})" for u, t in srcs[:4])
+
+
 SKIPPED: dict[str, str] = {}          # 判定の単位を決められなかった URL → 理由(unknown_targets が埋める)
 USED_IN: dict[str, list[str]] = {}    # 判定のキー → 紙面・候補での使われ方(題名と出典の label)
 
@@ -476,8 +532,9 @@ def add_domains(agreed: dict) -> None:
     write_source_table(text, p)
 
 
-def add_paths(agreed: dict) -> None:
-    """プラットフォーム上のアカウント・チャンネル・作品ページを path_types(パス → 種別)へ足す。"""
+def add_paths(agreed: dict, how: str = "合議で追加") -> None:
+    """プラットフォーム上のアカウント・チャンネル・作品ページ・文書を path_types(パス → 種別)へ足す。
+    how は**どうやって決めたか**(合議で追加 / 機械で追加)。決め方を偽って記録しない。"""
     p = ROOT / "source_types.yml"
     text = p.read_text(encoding="utf-8")
     if not _span(text, "path_types"):
@@ -488,7 +545,7 @@ def add_paths(agreed: dict) -> None:
         a, b = _span(text, "path_types")
         if re.search(rf"^\s+{re.escape(k)}:", text[a:b], re.M | re.I):
             continue
-        text = text[:a] + f"  {k}: {t}{' ' * max(1, 40 - len(k))}# 合議で追加: {why}\n" + text[a:]
+        text = text[:a] + f"  {k}: {t}{' ' * max(1, 40 - len(k))}# {how}: {why}\n" + text[a:]
     write_source_table(text, p)
 
 
@@ -627,11 +684,27 @@ def main() -> int:
             add_domains(agreed)
             print(f"  → ドメイン {len(agreed)}件を表に追加")
 
+    # 文書(フォーム・ドキュメント)は、**リンク元**で決める。リンク元が手元のデータで分かるものは合議に掛けない
+    decided = {}
+    for k in sorted(paths):
+        if is_document(k):
+            got = by_link_source(k)
+            if got:
+                decided[k] = got
+                print(f"  リンク元で決定 {got[0]}\t{k}\t{got[1]}", flush=True)
+    if decided:
+        if args.apply:
+            add_paths(decided, how="機械で追加")
+            print(f"  → パス {len(decided)}件を表に追加(リンク元で決定。合議には掛けていない)")
+        paths = {k: u for k, u in paths.items() if k not in decided}
+
     if paths:
         # プラットフォーム上のアカウント・チャンネル・作品ページ。「トップ」はそのアカウントのページ
         print(f"\n{date}: 判定表に無いプラットフォーム上の主体 {len(paths)}件 → {', '.join(sorted(paths))}", flush=True)
-        # 「トップ」はそのアカウントのページ。文書(フォーム等)にはトップが無いので、文書そのものを見せる
-        items = [(k, u, site_profile(k, u, top=(u if k.split("/")[0] in DOC_HOSTS + ("forms.gle",) else f"https://{k}/")) + used_in(k))
+        # 「トップ」はそのアカウントのページ。文書(フォーム等)にはトップが無いので、文書そのものを見せる。
+        # 合議に回る文書(リンク元で決められなかったもの)には、分かっているリンク元を材料として付ける
+        items = [(k, u, site_profile(k, u, top=(u if is_document(k) else f"https://{k}/")) + used_in(k)
+                  + (link_hint(k) if is_document(k) else ""))
                  for k, u in sorted(paths.items())]
         agreed, split = consensus(lambda ks: build_prompt([it for it in items if it[0] in ks]), sorted(paths))
         for k, (t, why) in agreed.items():

@@ -1,0 +1,148 @@
+{
+ "decisions": {
+  "sidem-11th-stage-live-bluray": {
+   "action": "article",
+   "angle": "SideM 11th STAGE LIVE Blu-ray通常版(5枚組)の価格・受注期間・収録ディスク構成が判明",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の発売決定(2027/7/14)・特装版価格に加え、通常版価格26,400円・受注期間(〜2027/5/10)・ディスク構成が新たに判明"
+  },
+  "the-idolm-ster-sidem-11th-stage-day2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day1-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2同時視聴上映会「本日開催」告知。既報スケジュールの確認ツイートで、同一施策のためday1-setlist-2026に統合"
+  },
+  "the-idolm-ster-sidem-11th-stage-day2-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day1-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2上映会終了・アーカイブ視聴は9/21までの告知。配信/アーカイブ区切りと同一施策のため統合"
+  },
+  "the-idolm-ster-sidem-11th-stage-day2-3": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day1-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2上映会アーカイブ公開(視聴URL判明)。同一施策のためday1-setlist-2026に統合"
+  },
+  "connect-with-music-transcendent-t-les-4": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報(9/11、第4弾・受注9/27まで)と同一。今回はミニブック型キーホルダーのサンプル紹介のみで新事実なし"
+  },
+  "the-idolm-ster-sidem-11th-stage-ever-ever-fter": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報(9/14、記念グッズ・受注9/13〜10/11)と完全に同一内容の「販売中」告知"
+  },
+  "sidem-2027": {
+   "action": "article",
+   "angle": "「SideMプロミ2027」(2027年3月13-14日開催)のプレミアム会員先行受付が進行中、10月4日まで",
+   "rank": "large",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新規大型ライブの先行受付告知(発表自体は9/12だが未既報、受付は10/4まで進行中で本日時点で有効な行動あり)"
+  },
+  "sidem-11th-stage-day1-setlist-2026": {
+   "action": "article",
+   "angle": "SideM 11th STAGE、配信チケット販売とアーカイブ視聴が本日で区切り。視聴コメント付きアーカイブを18時から9/28まで新規公開",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(配信チケット締切・アーカイブ終了)。sidem-11th-commentarycastingとDAY2上映会関連3件を統合"
+  },
+  "sidem-11th-commentarycasting": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-stage-day1-setlist-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信チケット販売締切(本日18:00)は同一施策のためday1-setlist-2026の続報記事に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-11th-stage-live-bluray",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM 11th STAGE LIVE Blu-ray通常版(5枚組)の価格・受注期間・収録ディスク構成が判明",
+    "lead_score": 25,
+    "dedup_key": "sidem-11th-stage-live-bluray",
+    "candidate_ids": [
+     "202609200734-explore-11"
+    ]
+   },
+   {
+    "slug": "sidem-2027-ccdb57",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "「SideMプロミ2027」(2027年3月13-14日開催)のプレミアム会員先行受付が進行中、10月4日まで",
+    "lead_score": 75,
+    "dedup_key": "sidem-2027",
+    "candidate_ids": [
+     "202609210225-grok-66"
+    ]
+   },
+   {
+    "slug": "sidem-11th-stage-day1-setlist-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM 11th STAGE、配信チケット販売とアーカイブ視聴が本日で区切り。視聴コメント付きアーカイブを18時から9/28まで新規公開",
+    "lead_score": 15,
+    "dedup_key": "sidem-11th-stage-day1-setlist-2026",
+    "candidate_ids": [
+     "sched-2026-09-21-sidem-11th-stage-day1-setlist-2026-終了",
+     "202609210225-grok-61",
+     "202609210225-grok-62",
+     "202609210225-grok-63",
+     "sched-2026-09-21-sidem-11th-commentarycasting-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "connect-with-music-transcendent-t-les-4",
+    "reason": "既報",
+    "note": "既報(9/11、第4弾・受注9/27まで)と同一。今回はミニブック型キーホルダーのサンプル紹介のみで新事実なし"
+   },
+   {
+    "dedup_key": "the-idolm-ster-sidem-11th-stage-ever-ever-fter",
+    "reason": "既報",
+    "note": "既報(9/14、記念グッズ・受注9/13〜10/11)と完全に同一内容の「販売中」告知"
+   }
+  ],
+  "cross_brand": []
+ }
+}

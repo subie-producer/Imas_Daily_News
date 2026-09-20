@@ -1,0 +1,25 @@
+{
+ "decisions": {
+  "official-shop-sendai-kuji-inventory-2026-09-20": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/3公開のshiny-official-shop-lottery-stock-2026-09-01と同一店舗・同一くじの在庫更新。A/B賞とも全種在庫ありで変化なく、締切や完売など新事実も無い定例更新"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "official-shop-sendai-kuji-inventory-2026-09-20",
+    "reason": "既報",
+    "note": "9/3公開のshiny-official-shop-lottery-stock-2026-09-01と同一店舗・同一くじの在庫更新。A/B賞とも全種在庫ありで変化なく、締切や完売など新事実も無い定例更新"
+   }
+  ],
+  "cross_brand": []
+ }
+}

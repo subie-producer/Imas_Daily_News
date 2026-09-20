@@ -1,0 +1,272 @@
+{
+ "decisions": {
+  "3": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/20の円環-Halo around-#01記事に白瀬咲耶★3として既報"
+  },
+  "shiny-song-event-gear-melody-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18『歯車ほどき穿つ旋律』予告と同内容(shiny-antica-new-song-event-2026)。開催中で本日のトリガーなし"
+  },
+  "shiny-gacha-halo-around-01-anteica-shhis-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/20にPU3体まで既報(shinyson-enkan-halo-around-01-antica-shhis-gacha-2026)。期間中で本日のトリガーなし"
+  },
+  "shiny-stepup-gacha-halo-around-01-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報の円環-Halo around-#01の派生ガシャ。締切9/24で本日のトリガーなし"
+  },
+  "shiny-8-5th-anniversary-eve-free-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/19に8.5周年前夜祭施策として既報。締切9/29で本日のトリガーなし"
+  },
+  "shiny-song-for-prism-super-duper-dreamer-beast-mode-venue-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/19に会場物販決定として既報(shiny-song-for-prism-event-goods-2026-10)、内容同一"
+  },
+  "shiny-8-5th-anniversary-free-stamp-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "shiny-8-5th-anniversary-eve-free-gacha-2026と同一施策の別ソース。9/19既報"
+  },
+  "shiny-autumn-seven-herbs-package-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/19の8.5周年前夜祭記事(秋の七草パッケージ含む)で既報"
+  },
+  "shiny-madoka-higuchi-effortless-figure-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/17に予約開始予告として既報。実際の受付開始日は未発表で本日のトリガーなし"
+  },
+  "shiny-higanryu-yuneru-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/19に彼岸流×湯～ねるコラボとして既報、内容同一"
+  },
+  "shiny-songforprism-super-duper-dreamer-event-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一の会場物販施策が別ソースで重複。9/19既報"
+  },
+  "pop-up-shop": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「パラレル回廊」は8/26付で開催期間・内容とも既報。開幕は前日9/20で本日のトリガーなし"
+  },
+  "shiny-style-collection-1": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/11にSHINY Style COLLECTION第1弾として既報。受注締切9/27で本日のトリガーなし"
+  },
+  "shiny-the-first-refrac7ions-still-blue": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18に既報。受注締切10/4で本日のトリガーなし"
+  },
+  "sidem": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "SideM×シャニマス共同主催。先行受付は9/13・9/15に共同面で既報、本日のトリガーもなし"
+  },
+  "another-ver": {
+   "action": "article",
+   "angle": "空の日にちなみ、公式が既存曲『星の声(Another ver.)』でのMV撮影を呼びかけ",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "3-2": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/20の円環-Halo around-#01記事に幽谷霧子★3として既報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-another-ver",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "空の日にちなみ、公式が既存曲『星の声(Another ver.)』でのMV撮影を呼びかけ",
+    "lead_score": 0,
+    "dedup_key": "another-ver",
+    "candidate_ids": [
+     "202609210225-grok-71"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-song-event-gear-melody-2026",
+    "reason": "既報",
+    "note": "9/18『歯車ほどき穿つ旋律』予告と同内容(shiny-antica-new-song-event-2026)。開催中で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-gacha-halo-around-01-anteica-shhis-2026",
+    "reason": "既報",
+    "note": "9/20にPU3体まで既報(shinyson-enkan-halo-around-01-antica-shhis-gacha-2026)。期間中で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-stepup-gacha-halo-around-01-2026",
+    "reason": "既報",
+    "note": "既報の円環-Halo around-#01の派生ガシャ。締切9/24で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-8-5th-anniversary-eve-free-gacha-2026",
+    "reason": "既報",
+    "note": "9/19に8.5周年前夜祭施策として既報。締切9/29で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-super-duper-dreamer-beast-mode-venue-goods-2026",
+    "reason": "既報",
+    "note": "9/19に会場物販決定として既報(shiny-song-for-prism-event-goods-2026-10)、内容同一"
+   },
+   {
+    "dedup_key": "shiny-8-5th-anniversary-free-stamp-gasha-2026",
+    "reason": "既報",
+    "note": "shiny-8-5th-anniversary-eve-free-gacha-2026と同一施策の別ソース。9/19既報"
+   },
+   {
+    "dedup_key": "shiny-autumn-seven-herbs-package-2026",
+    "reason": "既報",
+    "note": "9/19の8.5周年前夜祭記事(秋の七草パッケージ含む)で既報"
+   },
+   {
+    "dedup_key": "shiny-madoka-higuchi-effortless-figure-2026",
+    "reason": "既報",
+    "note": "9/17に予約開始予告として既報。実際の受付開始日は未発表で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-higanryu-yuneru-2026",
+    "reason": "既報",
+    "note": "9/19に彼岸流×湯～ねるコラボとして既報、内容同一"
+   },
+   {
+    "dedup_key": "shiny-songforprism-super-duper-dreamer-event-goods-2026",
+    "reason": "既報",
+    "note": "同一の会場物販施策が別ソースで重複。9/19既報"
+   },
+   {
+    "dedup_key": "pop-up-shop",
+    "reason": "既報",
+    "note": "「パラレル回廊」は8/26付で開催期間・内容とも既報。開幕は前日9/20で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-style-collection-1",
+    "reason": "既報",
+    "note": "9/11にSHINY Style COLLECTION第1弾として既報。受注締切9/27で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-the-first-refrac7ions-still-blue",
+    "reason": "既報",
+    "note": "9/18に既報。受注締切10/4で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "sidem",
+    "reason": "既報",
+    "note": "SideM×シャニマス共同主催。先行受付は9/13・9/15に共同面で既報、本日のトリガーもなし"
+   },
+   {
+    "dedup_key": "3",
+    "reason": "既報",
+    "note": "9/20の円環-Halo around-#01記事に白瀬咲耶★3として既報"
+   },
+   {
+    "dedup_key": "3-2",
+    "reason": "既報",
+    "note": "9/20の円環-Halo around-#01記事に幽谷霧子★3として既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

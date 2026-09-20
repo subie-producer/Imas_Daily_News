@@ -2,7 +2,7 @@
 slug: dsva-valiv-special-stream-2026-09-24
 edition: "2026-09-20"
 brand: dsva
-src: 未確認
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -21,7 +21,7 @@ sources:
   type: 公式
 - label: Googleフォーム「特別番組向け お便り&質問募集フォーム」(日付不明)
   url: https://docs.google.com/forms/d/e/1FAIpQLSdyUPmVP5FEpa-g80fdmZpBfyyynct6fHia4POevGc9mqJfuQ/viewform?usp=send_form
-  type: 未確認
+  type: 公式
 event_date: "2026-09-24"
 title_fact_ids:
 - F1

@@ -1,0 +1,137 @@
+{
+ "decisions": {
+  "765": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "765合同ライブを望む個人の感想ツイート。新事実や催し・締切の記載なし"
+  },
+  "tours-ranking-2026-09-19": {
+   "action": "article",
+   "angle": "9/19時点のツアマス公式ランキングを速報。スコア上位3位の編成アイドルを紹介",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/2・9/3・9/10・9/11既報の同シリーズ最新回。データが新しいため記事化"
+  },
+  "joint-2101495956797882488": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の未確認・低エンゲージメントのSNS投稿。特定店舗の在庫情報で、公式発表や当日の締切等のトリガーが無い"
+  },
+  "joint-2101674825571832260": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "来年の合同ライブが多いという個人の感想ツイート。新事実や催し・締切の記載なし"
+  },
+  "joint-2101683370233344503": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "言及される来年1月デレオケ・6月Mシャニ合同(横浜アリーナ)・ミリシタ10周年(Kアリーナ)は既に個別発表済み。宿案内の再掲のみで新事実なし"
+  },
+  "joint-2101688261089566803": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人間のツアーズレア交換募集ツイート。当日の締切等の情報なし"
+  },
+  "14th": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ミリオン14thの意義についての個人の感想ツイート。新事実や当日の催し・締切の記載なし"
+  },
+  "m": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "SideM×シャニマス合同ライブSPARKLE SHOWDOWNの出演配置(DAY1ラインナップ)は既報。本投稿は個人の感想で新事実なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-ranking-2026-09-19",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "9/19時点のツアマス公式ランキングを速報。スコア上位3位の編成アイドルを紹介",
+    "lead_score": 10,
+    "dedup_key": "tours-ranking-2026-09-19",
+    "candidate_ids": [
+     "202609202336-explore-30"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "joint-2101495956797882488",
+    "reason": "個人の話題",
+    "note": "個人の未確認・低エンゲージメントのSNS投稿。特定店舗の在庫情報で、公式発表や当日の締切等のトリガーが無い"
+   },
+   {
+    "dedup_key": "joint-2101674825571832260",
+    "reason": "個人の話題",
+    "note": "来年の合同ライブが多いという個人の感想ツイート。新事実や催し・締切の記載なし"
+   },
+   {
+    "dedup_key": "765",
+    "reason": "個人の話題",
+    "note": "765合同ライブを望む個人の感想ツイート。新事実や催し・締切の記載なし"
+   },
+   {
+    "dedup_key": "joint-2101683370233344503",
+    "reason": "既報",
+    "note": "言及される来年1月デレオケ・6月Mシャニ合同(横浜アリーナ)・ミリシタ10周年(Kアリーナ)は既に個別発表済み。宿案内の再掲のみで新事実なし"
+   },
+   {
+    "dedup_key": "joint-2101688261089566803",
+    "reason": "個人の話題",
+    "note": "個人間のツアーズレア交換募集ツイート。当日の締切等の情報なし"
+   },
+   {
+    "dedup_key": "14th",
+    "reason": "個人の話題",
+    "note": "ミリオン14thの意義についての個人の感想ツイート。新事実や当日の催し・締切の記載なし"
+   },
+   {
+    "dedup_key": "m",
+    "reason": "既報",
+    "note": "SideM×シャニマス合同ライブSPARKLE SHOWDOWNの出演配置(DAY1ラインナップ)は既報。本投稿は個人の感想で新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

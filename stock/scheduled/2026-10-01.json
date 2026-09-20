@@ -1,74 +1,74 @@
 [
-  {
-    "id": "sched-2026-10-01-cg-million-coming-soon-2026-08-26-締切前",
-    "dedup_key": "cg-million-coming-soon-2026-08-26",
-    "brand": "joint",
-    "subject": "THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!",
-    "kind": "締切前",
-    "note": "当選者入金期限3日前",
-    "reserved_on": "2026-08-27",
-    "title": "THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!",
-    "url": "https://idolmaster-official.jp/news/01_19720",
-    "source_type": "公式",
-    "facts": [
-      "2027年2月27日(土)・28日(日)に愛知県IGアリーナで開催、開場15:30・開演17:00(各日)",
-      "アソビストアプレミアム会員最速先行(抽選)の申し込み期間：2026年8月26日(水)12:00〜2026年9月13日(日)23:59",
-      "当落発表：2026年9月30日(水)13:00〜、入金期間：2026年9月30日(水)13:00〜2026年10月4日(日)23:59",
-      "チケット料金（各日）：アリーナ前方席30,000円、プレミアムラウンジ付指定席20,000円、一般指定席15,000円（税込）"
-    ],
-    "via": "claude",
-    "verify": "confirmed",
-    "src_candidate_id": "202608261235-watch-0",
-    "deadline": "2026-10-04"
-  },
-  {
-    "id": "sched-2026-10-01-cg-gacha-festival-2026-08-終了",
-    "dedup_key": "cg-gacha-festival-2026-08",
-    "brand": "cg",
-    "subject": "シンデレラガールズ文化祭テーマ オンラインくじ(くじ引き堂)",
-    "kind": "終了",
-    "reserved_on": "2026-08-28",
-    "title": "『アイドルマスター シンデレラガールズ』新作オンラインくじ 文化祭テーマ",
-    "url": "https://www.inside-games.jp/article/2026/08/27/186848.html",
-    "source_type": "公式",
-    "facts": [
-      "販売期間: 2026年9月3日12:00〜10月1日11:59"
-    ],
-    "event_date": "2026-10-01",
-    "src_candidate_id": "202608280232-claude-97"
-  },
-  {
-    "id": "sched-2026-10-01-cg-rose-tea-parlor-2026-nagoya-開幕",
-    "dedup_key": "cg-rose-tea-parlor-2026-nagoya",
-    "brand": "cg",
-    "subject": "Rose Tea Parlorコラボカフェ 名古屋栄店",
-    "kind": "開幕",
-    "reserved_on": "2026-09-05",
-    "facts": [
-      "名古屋栄店は10月01日から10月05日まで開催、テーマは「Rose Tea Parlor」「Crescent Princess」"
-    ],
-    "title": "シンデレラガールズ、Rose Tea Parlorコラボカフェ開催決定",
-    "url": "https://idolmaster-official.jp/news/01_19811",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202609050237-grok-28"
-  },
-  {
-    "id": "sched-2026-10-01-gaku-gold-rush-ch69-44go-2026-発売",
-    "dedup_key": "gaku-gold-rush-ch69-44go-2026",
-    "brand": "gaku",
-    "subject": "学マス漫画『GOLD RUSH』第69話(週刊少年チャンピオン44号)",
-    "kind": "発売",
-    "note": "41号休載分の69話を44号に掲載",
-    "reserved_on": "2026-09-10",
-    "title": "2026-09-09　週刊少年チャンピオン41号は休載、69話は44号へ",
-    "url": "https://x.com/gkmas_GR/status/2097701773771419900",
-    "source_type": "二次情報",
-    "facts": [
-      "『学園アイドルマスター GOLD RUSH』第69話は、9月10日発売の週刊少年チャンピオン41号を休載",
-      "第69話は10月1日発売の週刊少年チャンピオン44号に掲載"
-    ],
-    "src_candidate_id": "202609100228-grok-64",
-    "event_date": "2026-10-01"
-  }
+ {
+  "id": "sched-2026-10-01-cg-million-coming-soon-2026-08-26-締切前",
+  "dedup_key": "cg-million-coming-soon-2026-08-26",
+  "brand": "joint",
+  "subject": "THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!",
+  "kind": "締切前",
+  "note": "当選者入金期限3日前",
+  "reserved_on": "2026-08-27",
+  "title": "THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!!",
+  "url": "https://idolmaster-official.jp/news/01_19720",
+  "source_type": "公式",
+  "facts": [
+   "2027年2月27日(土)・28日(日)に愛知県IGアリーナで開催、開場15:30・開演17:00(各日)",
+   "アソビストアプレミアム会員最速先行(抽選)の申し込み期間：2026年8月26日(水)12:00〜2026年9月13日(日)23:59",
+   "当落発表：2026年9月30日(水)13:00〜、入金期間：2026年9月30日(水)13:00〜2026年10月4日(日)23:59",
+   "チケット料金（各日）：アリーナ前方席30,000円、プレミアムラウンジ付指定席20,000円、一般指定席15,000円（税込）"
+  ],
+  "via": "claude",
+  "verify": "confirmed",
+  "src_candidate_id": "202608261235-watch-0",
+  "deadline": "2026-10-04"
+ },
+ {
+  "id": "sched-2026-10-01-cg-gacha-festival-2026-08-終了",
+  "dedup_key": "cg-gacha-festival-2026-08",
+  "brand": "cg",
+  "subject": "シンデレラガールズ文化祭テーマ オンラインくじ(くじ引き堂)",
+  "kind": "終了",
+  "reserved_on": "2026-08-28",
+  "title": "『アイドルマスター シンデレラガールズ』新作オンラインくじ 文化祭テーマ",
+  "url": "https://www.inside-games.jp/article/2026/08/27/186848.html",
+  "source_type": "公式",
+  "facts": [
+   "販売期間: 2026年9月3日12:00〜10月1日11:59"
+  ],
+  "event_date": "2026-10-01",
+  "src_candidate_id": "202608280232-claude-97"
+ },
+ {
+  "id": "sched-2026-10-01-cg-rose-tea-parlor-2026-nagoya-開幕",
+  "dedup_key": "cg-rose-tea-parlor-2026-nagoya",
+  "brand": "cg",
+  "subject": "Rose Tea Parlorコラボカフェ 名古屋栄店",
+  "kind": "開幕",
+  "reserved_on": "2026-09-05",
+  "facts": [
+   "名古屋栄店は10月01日から10月05日まで開催、テーマは「Rose Tea Parlor」「Crescent Princess」"
+  ],
+  "title": "シンデレラガールズ、Rose Tea Parlorコラボカフェ開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19811",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609050237-grok-28"
+ },
+ {
+  "id": "sched-2026-10-01-gaku-gold-rush-ch69-44go-2026-発売",
+  "dedup_key": "gaku-gold-rush-ch69-44go-2026",
+  "brand": "gaku",
+  "subject": "学マス漫画『GOLD RUSH』第69話(週刊少年チャンピオン44号)",
+  "kind": "発売",
+  "note": "41号休載分の69話を44号に掲載",
+  "reserved_on": "2026-09-10",
+  "title": "2026-09-09　週刊少年チャンピオン41号は休載、69話は44号へ",
+  "url": "https://x.com/gkmas_GR/status/2097701773771419900",
+  "source_type": "二次情報",
+  "facts": [
+   "『学園アイドルマスター GOLD RUSH』第69話は、9月10日発売の週刊少年チャンピオン41号を休載",
+   "第69話は10月1日発売の週刊少年チャンピオン44号に掲載"
+  ],
+  "src_candidate_id": "202609100228-grok-64",
+  "event_date": "2026-10-01"
+ }
 ]

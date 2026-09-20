@@ -704,5 +704,60 @@
   "verify": "confirmed",
   "src_candidate_id": "202609181838-watch-0",
   "event_date": "2026-09-28"
+ },
+ {
+  "id": "sched-2026-09-27-the-idolm-ster-cinderella-girls-15th-anniversary-orchestra-concert-締切",
+  "dedup_key": "the-idolm-ster-cinderella-girls-15th-anniversary-orchestra-concert",
+  "brand": "cg",
+  "subject": "シンデレラ15周年記念オーケストラコンサート最速先行抽選",
+  "kind": "締切",
+  "note": "現地チケット最速先行抽選の受付が締切",
+  "reserved_on": "2026-09-21",
+  "title": "THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSARY ORCHESTRA CONCERT ～ シンデレラの演奏会 ～（キャスト再紹介・現地チケット先行案内）",
+  "url": "https://x.com/imas_CGofficial/status/2101234849323368759",
+  "source_type": "公式",
+  "facts": [
+   "掲載日: 2026年9月19日 09:00:01 GMT（日本時間 18:00:01）",
+   "催しの日: 2027年1月11日(月・祝)・12日(火)",
+   "締切: 現地チケット アソビストアプレミアム会員最速先行(抽選) 9/27(日)まで受付中",
+   "ハッシュタグ: #デレマスオーケストラ",
+   "会場: パシフィコ横浜 国立大ホール",
+   "本投稿は、同アカウントの 2026年9月16日 03:00:03 GMT の公演告知投稿を引用している",
+   "引用先に記された公演名: THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSARY ORCHESTRA CONCERT ～ シンデレラの演奏会 ～",
+   "本文: 本公演にご出演いただくキャストの皆様を改めてご紹介",
+   "本文: 公式サイトはこちら（リンク先URLは本投稿の文面には記載なし）",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609210225-grok-40",
+  "event_date": "2027-01-11"
+ },
+ {
+  "id": "sched-2026-09-27-14thlive-締切",
+  "dedup_key": "14thlive",
+  "brand": "million",
+  "subject": "14thLIVEありがとうログインボーナス",
+  "kind": "締切",
+  "note": "ログインボーナス受け取りの最終日(計500ジュエル)",
+  "reserved_on": "2026-09-21",
+  "title": "『14thLIVE ありがとうログインボーナス』開催",
+  "url": "https://x.com/imasml_theater/status/2101687832297508909",
+  "source_type": "公式",
+  "facts": [
+   "掲載日: 2026-09-21 00:00:01 JST（Sun, 20 Sep 2026 15:00:01 GMT）",
+   "催しの日: 2026/09/21（月） ～ 2026/09/27（日）",
+   "締切: 2026/09/27（日）まで（投稿本文の開催期間）",
+   "開催期間: 2026/09/21（月） ～ 2026/09/27（日）",
+   "『14thLIVE ありがとうログインボーナス』を開催中",
+   "全部で500個のミリオンジュエルを受け取ることができる",
+   "ハッシュタグ: #ミリシタ",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609210225-grok-74",
+  "event_date": "2026-09-21",
+  "deadline": "2026-09-27"
  }
 ]

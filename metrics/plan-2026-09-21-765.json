@@ -1,0 +1,109 @@
+{
+ "decisions": {
+  "million14th-765as-solo-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "会場限定CD『ドレスコード:最上級』765PRO ALLSTARS盤(9/19発売)はmillion-14th-live等で既に複数回既報、当日の新トリガー無し"
+  },
+  "tgs2026-oathone-xr-report": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "TGS2026『OathONE』XRセッション(9/18開催)はtgs2026-xr-live-sessionとして9/20付で既報、新事実・当日のトリガー無し"
+  },
+  "765-bilibili-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-bilibili-digital-card-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策(bilibili公式デジタルカードコレクション)の重複主題、765-bilibili-digital-card-2026に統合"
+  },
+  "765-bilibili-digital-card-2026": {
+   "action": "article",
+   "angle": "bilibili公式で765PRO ALLSTARS描き下ろしデジタルカード・スタンプ・スキンの予約開始(9/20)と発売開始(9/22、中国時間)を伝える",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "makoto-yukiho-hangetsu-chibiguru-mi-2026": {
+   "action": "article",
+   "angle": "菊地真・萩原雪歩『はんげつであえたら』衣装のちびぐるみ&ポーチセット予約開始(9/19〜)を紹介",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "chihaya-oathone-xr-tgs2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じTGS2026『OathONE』XRセッションの後追い記事(famitsu)。tgs2026-xr-live-sessionで既報済み、当日のトリガー無し"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-bilibili-digital-card-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "bilibili公式で765PRO ALLSTARS描き下ろしデジタルカード・スタンプ・スキンの予約開始(9/20)と発売開始(9/22、中国時間)を伝える",
+    "lead_score": 15,
+    "dedup_key": "765-bilibili-digital-card-2026",
+    "candidate_ids": [
+     "202609202336-watch-14",
+     "202609202336-watch-13"
+    ]
+   },
+   {
+    "slug": "765-makoto-yukiho-hangetsu-chibiguru-mi-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "菊地真・萩原雪歩『はんげつであえたら』衣装のちびぐるみ&ポーチセット予約開始(9/19〜)を紹介",
+    "lead_score": 10,
+    "dedup_key": "makoto-yukiho-hangetsu-chibiguru-mi-2026",
+    "candidate_ids": [
+     "202609202336-explore-16"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million14th-765as-solo-collection-2026",
+    "reason": "既報",
+    "note": "会場限定CD『ドレスコード:最上級』765PRO ALLSTARS盤(9/19発売)はmillion-14th-live等で既に複数回既報、当日の新トリガー無し"
+   },
+   {
+    "dedup_key": "tgs2026-oathone-xr-report",
+    "reason": "既報",
+    "note": "TGS2026『OathONE』XRセッション(9/18開催)はtgs2026-xr-live-sessionとして9/20付で既報、新事実・当日のトリガー無し"
+   },
+   {
+    "dedup_key": "chihaya-oathone-xr-tgs2026",
+    "reason": "既報",
+    "note": "同じTGS2026『OathONE』XRセッションの後追い記事(famitsu)。tgs2026-xr-live-sessionで既報済み、当日のトリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

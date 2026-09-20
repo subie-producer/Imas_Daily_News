@@ -1,0 +1,237 @@
+{
+ "decisions": {
+  "gaku-me-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「め」ガシャ開催は9/20付記事(megasha-shinosawa-hiro-2026-09)で既報。新トリガーなし"
+  },
+  "gaku-me-hirogasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一のガシャ開催情報。10連無料ガシャ等の付随情報も9/20時点で終了済みで新規性なし"
+  },
+  "gaku-me-official-music-video-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "official-music-video",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "『め』MV公開の重複主題。official-music-videoに統合(あさり先生ゼミ・思い出衣装の付随facticsは別主題で処理)"
+  },
+  "gaku-asari-produce-seminar-2026": {
+   "action": "article",
+   "angle": "第8回あさり先生のプロデュースゼミが開幕。9月のプランはアノマリー、HIF専用アビリティやメモリーアビリティの再抽選要素を紹介",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gaku-2101510156869677498(公式)を統合"
+  },
+  "me-gasha-shinosawa-hiro-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一のガシャ開催情報。9/20付で既報済み"
+  },
+  "shinosawa-hiro-me-official-music-video-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "official-music-video",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MV公開の重複主題。『Wildest Flower』300万再生の話題はこの主題の対象外(別事実)"
+  },
+  "official-music-video": {
+   "action": "article",
+   "angle": "篠澤広の新曲『め』Official Music Videoが初星学園チャンネルで公開。ティザーから実際の公開へ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gaku-me-official-music-video-2026・shinosawa-hiro-me-official-music-video-2026を統合。面の一番の話題"
+  },
+  "ver-2": {
+   "action": "article",
+   "angle": "岩手公演まであと2日、修楽旅行ショート動画の美鈴verを公開",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "day2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-shirube-livetour-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "福岡公演配信視聴締切(9/21まで)と同一施策。DAY2『め』クリップの案内は締切記事に含める"
+  },
+  "4-172": {
+   "action": "article",
+   "angle": "学マス4コマ漫画第172話『ライブのゆくえ』を紹介",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-2101510156869677498": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-asari-produce-seminar-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第8回あさり先生のプロデュースゼミの公式告知。同一主題に統合"
+  },
+  "gaku-2101509653578518704": {
+   "action": "article",
+   "angle": "新イベント『篠澤広の思い出衣装』開催、『手毬と広の日常』で登場した私服が入手可能に",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-shirube-livetour-2026": {
+   "action": "article",
+   "angle": "学マス標ツアー福岡公演の配信チケット販売が本日18時に終了、コメント付きアーカイブ視聴も23時59分まで",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gaku-shirube-livetour-fukuoka-2026・dayを統合"
+  },
+  "gaku-shirube-livetour-fukuoka-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-shirube-livetour-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "福岡公演配信チケット・アーカイブ締切、同一施策のため統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-asari-produce-seminar-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "第8回あさり先生のプロデュースゼミが開幕。9月のプランはアノマリー、HIF専用アビリティやメモリーアビリティの再抽選要素を紹介",
+    "lead_score": 20,
+    "dedup_key": "gaku-asari-produce-seminar-2026",
+    "candidate_ids": [
+     "202609201835-explore-16",
+     "202609210225-grok-59"
+    ]
+   },
+   {
+    "slug": "gaku-official-music-video",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "篠澤広の新曲『め』Official Music Videoが初星学園チャンネルで公開。ティザーから実際の公開へ",
+    "lead_score": 70,
+    "dedup_key": "official-music-video",
+    "candidate_ids": [
+     "202609210225-grok-55",
+     "202609201233-explore-10",
+     "202609210225-explore-12"
+    ]
+   },
+   {
+    "slug": "gaku-ver-2-95ce0c",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "岩手公演まであと2日、修楽旅行ショート動画の美鈴verを公開",
+    "lead_score": 10,
+    "dedup_key": "ver-2",
+    "candidate_ids": [
+     "202609210225-grok-56"
+    ]
+   },
+   {
+    "slug": "gaku-4-172-7ec56d",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス4コマ漫画第172話『ライブのゆくえ』を紹介",
+    "lead_score": 5,
+    "dedup_key": "4-172",
+    "candidate_ids": [
+     "202609210225-grok-58"
+    ]
+   },
+   {
+    "slug": "gaku-2101509653578518704-e1bf3d",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "新イベント『篠澤広の思い出衣装』開催、『手毬と広の日常』で登場した私服が入手可能に",
+    "lead_score": 15,
+    "dedup_key": "gaku-2101509653578518704",
+    "candidate_ids": [
+     "202609210225-grok-60"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-shirube-livetour-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス標ツアー福岡公演の配信チケット販売が本日18時に終了、コメント付きアーカイブ視聴も23時59分まで",
+    "lead_score": 25,
+    "dedup_key": "gakumas-shirube-livetour-2026",
+    "candidate_ids": [
+     "sched-2026-09-21-gakumas-shirube-livetour-2026-福岡配信-締切",
+     "202609210225-grok-57",
+     "sched-2026-09-21-gaku-shirube-livetour-fukuoka-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-me-gasha-2026",
+    "reason": "既報",
+    "note": "「め」ガシャ開催は9/20付記事(megasha-shinosawa-hiro-2026-09)で既報。新トリガーなし"
+   },
+   {
+    "dedup_key": "gaku-me-hirogasha-2026",
+    "reason": "既報",
+    "note": "同一のガシャ開催情報。10連無料ガシャ等の付随情報も9/20時点で終了済みで新規性なし"
+   },
+   {
+    "dedup_key": "me-gasha-shinosawa-hiro-2026",
+    "reason": "既報",
+    "note": "同一のガシャ開催情報。9/20付で既報済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

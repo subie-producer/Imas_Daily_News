@@ -28,5 +28,36 @@
   "src_candidate_id": "202609161837-explore-28",
   "event_date": "2027-03-13",
   "deadline": "2026-10-21"
+ },
+ {
+  "id": "sched-2027-03-14-sidem-2027-千秋楽",
+  "dedup_key": "sidem-2027",
+  "brand": "sidem",
+  "subject": "SideMプロミ2027 ～AJewelholIc!!!～",
+  "kind": "千秋楽",
+  "note": "公演2日目・千秋楽(15:30開場/16:30開演予定)を迎える",
+  "reserved_on": "2026-09-21",
+  "title": "#SideMプロミ2027 アソビストアプレミアム会員先行 お申込み受付中",
+  "url": "https://x.com/SideM_official/status/2101642545428107641",
+  "source_type": "公式",
+  "facts": [
+   "イベント情報（投稿から）: https://idolmaster-official.jp/live_event/sidem_pm2027/",
+   "チケット情報: https://idolmaster-official.jp/live_event/sidem_pm2027/ticket/",
+   "掲載日: 2026-09-20 21:00 JST（投稿日時 Sun, 20 Sep 2026 12:00:04 GMT）",
+   "催しの日: 公式サイト画像alt「2027.3.13 Sat. 3.14 Sun.」／チケット情報ページには公演日時の本文なし。ポータルニュース（掲載 2026.09.12）本文の★公演日時は次のとおり",
+   "★公演日時: 2027年3月13日（土）16:00開場/17:00開演（予定）",
+   "★公演日時: 2027年3月14日（日）15:30開場/16:30開演（予定）",
+   "締切: 受付期間 2026年9月12日(土)21：00～10月4日(日)23：59",
+   "【イベント情報】",
+   "#SideMプロミ2027",
+   "アソビストアプレミアム会員先行",
+   "お申込み受付中",
+   "公式サイトタイトル: THE IDOLM@STER SideM PRODUCER MEETING ～AJewelholIc!!!～"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609210225-grok-66",
+  "event_date": "2026-09-12",
+  "deadline": "2026-09-12"
  }
 ]

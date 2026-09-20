@@ -91,5 +91,35 @@
   "verify": "confirmed",
   "src_candidate_id": "202609190226-grok-88",
   "event_date": "2026-09-26"
+ },
+ {
+  "id": "sched-2026-10-14-cinderella-pop-up-yurakucho-marui-2026-終了",
+  "dedup_key": "cinderella-pop-up-yurakucho-marui-2026",
+  "brand": "cg",
+  "subject": "シンデレラガールズPOP UP SHOP(有楽町マルイ)",
+  "kind": "終了",
+  "note": "POP UP SHOP最終日(営業は18時まで)",
+  "reserved_on": "2026-09-21",
+  "title": "アイドルマスター シンデレラガールズ POP UP SHOP 有楽町マルイ開催決定",
+  "url": "https://www.the-chara.com/blog/?p=121064",
+  "source_type": "当事者",
+  "facts": [
+   "開催場所は有楽町マルイ7F。",
+   "開催期間は2026年9月26日から10月14日まで。",
+   "営業時間は施設営業時間に準じ、最終日は18:00まで。",
+   "主催は株式会社コンテンツシード。",
+   "2026年9月26日はLINEアプリ「mogily」によるデジタル整理券で入店制限を実施する。",
+   "整理券取得開始時間は2026年9月25日18:00から。",
+   "整理券は先着順で、1枚につき1名のみ入場できる。",
+   "購入者特典は全8種のブロマイド。",
+   "抽選会景品は全8種の特大アクリルフィギュア。",
+   "3,000円税込の購入ごとに特典1枚の配布と抽選会1回の参加がある。",
+   "ワイヤーキーホルダー陰陽師 ver.は全8種で各1,375円税込。",
+   "特大ダイカットアクリルボード陰陽師 ver.は全8種で各6,600円税込。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609201233-explore-3",
+  "event_date": "2026-09-26"
  }
 ]

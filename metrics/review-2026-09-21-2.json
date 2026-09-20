@@ -1,0 +1,156 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-21-million-14th-day2-live-report-2026.md",
+   "issue": "sources に記事と無関係な話題（ミリシタ10周年ライブ）を参照する URL が含まれている",
+   "quote": "- label: ファミ通「『ミリシタ』10thLIVEが2027年6月26日、27日にKアリーナ横浜で開催決定。出演者は\"765 MILLIONSTARS\"【『アイマス ミリ\n  url: https://www.famitsu.com/article/202609/88752?page=1\n  type: 報道",
+   "rule_id": "R4",
+   "repair": "drop_source",
+   "fact_ids": [],
+   "expected": "sources に記事で言及されている出典のみが含まれること",
+   "scope": "article:2026-09-21-million-14th-day2-live-report-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-21-sidem-11th-stage-day1-setlist-2026.md",
+   "rule_id": "R4",
+   "issue": "sources の公式ページでは『実施日時：2026年9月14日(月)18:00～9月28日(月)23:59まで』と記載されているが、記事では『視聴コメント付きアーカイブは本日18時から9月28日23時59分まで』と書かれており、『本日18時から』という表現は誤り。本日は2026-09-21で、実際には9月14日から既に公開されている。",
+   "quote": "視聴コメント付きアーカイブは本日18時から9月28日23時59分まで、DAY1・DAY2共通で公開される予定。",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "sources に合わせて『視聴コメント付きアーカイブは9月14日18時から9月28日23時59分までの予定で、DAY1・DAY2共通で公開される』などと正確な日時に修正する",
+   "scope": "article:2026-09-21-sidem-11th-stage-day1-setlist-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-21-million-14th-day2-live-report-2026.md",
+   "issue": "表記ゆれ：同一人物について「高橋ミナミ」と「髙橋ミナミ」の表記が混在。第1節では「高橋ミナミ」、第4節では「髙橋ミナミ」と記載されている。candidates では「髙橋ミナミ」に統一されているため、全体を「髙橋ミナミ」に統一することを推奨",
+   "scope": "article:2026-09-21-million-14th-day2-live-report-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-21-million-14thlive-day1-report-2026.md",
+   "issue": "分量不足: 散文部分が620字で、rank: large（目安700字以上）に達していない。ファミ通のレポートに多数の詳細が含まれており、公演中のパフォーマンス描写や出演者ごとの見どころなどを追加すれば読み応えが増す。",
+   "scope": "article:2026-09-21-million-14thlive-day1-report-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-21-sidem-11th-stage-day1-setlist-2026.md",
+   "issue": "M23 の表記が verified_facts では『仍?』と記載されているが、実際のセットリストは『Stillness≒Movement』である。PYLON PORT のレポートで確認可能。",
+   "scope": "article:2026-09-21-sidem-11th-stage-day1-setlist-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-21-sidem-11th-stage-day1-setlist-2026.md",
+   "issue": "candidate_ids に『sched-2026-09-21-sidem-11th-stage-day1-setlist-2026-終了』と『sched-2026-09-21-sidem-11th-commentarycasting-締切』が記載されているが、candidates/2026-09-21.json に存在しない。",
+   "scope": "article:2026-09-21-sidem-11th-stage-day1-setlist-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "digestの「明日」セクションに「デレステ11周年10連締切」が記載されているが、紙面に該当記事がない（落とされた記事の理由は非表示）",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "digestの「明日」セクションの「修楽旅行、3rd ver配信開始」と、紙面のgaku-ver-2-95ce0c「修楽旅行の美鈴ver.を公開」のバージョン情報が異なる",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-21-cg-cinderella-pop-up-yurakucho-marui-2026.md",
+   "issue": "分量不足: rank small 向けで目安 250 字に達していません。出典に豊富な商品情報（グッズの種類・価格・購入制限など）があり、拾えば分量が埋まります。",
+   "scope": "article:2026-09-21-cg-cinderella-pop-up-yurakucho-marui-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-21-dsva-nagano-aniera-festa-2026-dsva.md",
+   "issue": "frontmatter の candidate_ids に、sources に記載されている「aniera-festa.com/news/day-ticket26/」に対応する候補（202609192336-explore-33）が含まれていない。sources と candidate_ids の対応を確認してください。",
+   "scope": "article:2026-09-21-dsva-nagano-aniera-festa-2026-dsva.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-21-gaku-2101509653578518704-e1bf3d.md",
+   "issue": "rank: small の目安は 250字ですが、本文が 27字で分量が極めて薄い。出典のX投稿に記載されているキャンペーン期間・対象キャラクター・入手方法・ガシャ情報などの詳細を拾えば埋まります。",
+   "scope": "article:2026-09-21-gaku-2101509653578518704-e1bf3d.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-21-gaku-4-172-7ec56d.md",
+   "issue": "分量不足。rank: small の目安は250字だが、本文は約30字。出典にある投稿日時の詳細や関連情報を拡充で改善可能。",
+   "scope": "article:2026-09-21-gaku-4-172-7ec56d.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-21-gaku-official-music-video.md",
+   "issue": "分量不足: 本文が215字で、rank: small の目安250字に対して充足率86%。候補の facts に含まれる詳細情報（例：楽曲の背景、スタッフの経歴など）を追加することで分量を増やせる。",
+   "scope": "article:2026-09-21-gaku-official-music-video.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-21-gaku-ver-2-95ce0c.md",
+   "issue": "分量不足：rank: small の目安は約250字だが、本文は約65字",
+   "scope": "article:2026-09-21-gaku-ver-2-95ce0c.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-21-million-14thlive.md",
+   "issue": "分量が薄い。rank: small の目安（250字以上）に対して本文が約60字。出典（X投稿）に追加情報（1日あたりの配布個数など詳細）がないかどうか再確認し、あれば拾う。",
+   "scope": "article:2026-09-21-million-14thlive.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-21-million-9th-anniversary-goods-2026.md",
+   "issue": "分量不足：rank small で目安 250 字に対し、本文が 153 字と薄い。候補に 11 種類のグッズの価格情報（B2ポスター 2,000 円、アクリルパネル 6,000 円、キャラファイングラフ 16,000 円など）や詳細な販売条件が記載されているが、記事に反映されていない。グッズラインナップや金額帯を追加することで情報量を増やせる。",
+   "scope": "article:2026-09-21-million-9th-anniversary-goods-2026.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-21-765-bilibili-digital-card-2026.md",
+  "article:2026-09-21-765-makoto-yukiho-hangetsu-chibiguru-mi-2026.md",
+  "article:2026-09-21-cg-15th-orchestra-concert-2027.md",
+  "article:2026-09-21-cg-cinderella-pop-up-yurakucho-marui-2026.md",
+  "article:2026-09-21-cg-pop-up-shop-big.md",
+  "article:2026-09-21-dsva-243706-00-00-00-42d431.md",
+  "article:2026-09-21-dsva-cosmo-birthday-digest-2026.md",
+  "article:2026-09-21-dsva-nagano-aniera-festa-2026-dsva.md",
+  "article:2026-09-21-dsva-ops-roundup.md",
+  "article:2026-09-21-gaku-2101509653578518704-e1bf3d.md",
+  "article:2026-09-21-gaku-4-172-7ec56d.md",
+  "article:2026-09-21-gaku-asari-produce-seminar-2026.md",
+  "article:2026-09-21-gaku-gakumas-shirube-livetour-2026.md",
+  "article:2026-09-21-gaku-official-music-video.md",
+  "article:2026-09-21-gaku-ver-2-95ce0c.md",
+  "article:2026-09-21-joint-tours-ranking-2026-09-19.md",
+  "article:2026-09-21-million-10th-anniversary-live-2027.md",
+  "article:2026-09-21-million-14th-day2-live-report-2026.md",
+  "article:2026-09-21-million-14thlive-day1-report-2026.md",
+  "article:2026-09-21-million-14thlive.md",
+  "article:2026-09-21-million-2101618465937428547-835cd5.md",
+  "article:2026-09-21-million-9th-anniversary-goods-2026.md",
+  "article:2026-09-21-shiny-another-ver.md",
+  "article:2026-09-21-sidem-11th-stage-day1-setlist-2026.md",
+  "article:2026-09-21-sidem-11th-stage-live-bluray.md",
+  "article:2026-09-21-sidem-2027-ccdb57.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-21-765-bilibili-digital-card-2026.md": "32cd3da813dad4d6e031311c58f419c3cc44f58bae2303c31874d8d8870cce95",
+  "docs/_posts/2026-09-21-765-makoto-yukiho-hangetsu-chibiguru-mi-2026.md": "4c3caaadcd424d9995bcde2329094cf3965a57e1305e9ada1ce0b21081491ea6",
+  "docs/_posts/2026-09-21-cg-15th-orchestra-concert-2027.md": "659d57900c9b6187a0c73ba0de340875b751ad70484541ad3a3cc7a84a921cbf",
+  "docs/_posts/2026-09-21-cg-cinderella-pop-up-yurakucho-marui-2026.md": "0326db58aed6096b9fbea8dbe96fdf710e9905f3ac3a239eb1da2a1f6b50951f",
+  "docs/_posts/2026-09-21-cg-pop-up-shop-big.md": "f2c2c016316e124c288d3352eca7442aa20f3eaa207d4be7ed63004a87b61f42",
+  "docs/_posts/2026-09-21-dsva-243706-00-00-00-42d431.md": "fd21cfaad13e9b6fdd9ea7ae13ccc32af6b57049276f92a7157ec2b090d8392a",
+  "docs/_posts/2026-09-21-dsva-cosmo-birthday-digest-2026.md": "597076a56788c194238576ab5abd153f6650c2b5ecb8b948080f8f24d3c21c23",
+  "docs/_posts/2026-09-21-dsva-nagano-aniera-festa-2026-dsva.md": "7845c8c2f9c40685a5069e03afa9cf37022dd88503c66d3f3e060adab73b482e",
+  "docs/_posts/2026-09-21-dsva-ops-roundup.md": "bd798337184084bc3e7b352abee6d21256f10ed4072dbb3af481f36c17b8f93c",
+  "docs/_posts/2026-09-21-gaku-2101509653578518704-e1bf3d.md": "42c7438473825a8bdccaf053acfd740e65f02fb4275f47a8ef171255dc69991a",
+  "docs/_posts/2026-09-21-gaku-4-172-7ec56d.md": "307e015257ff68f4e9e4e8178d1f0af4bbc41fe5732a048422a4cc5731d12b13",
+  "docs/_posts/2026-09-21-gaku-asari-produce-seminar-2026.md": "c240feb45bbc20602a3ac18d0c356c8ed6c7f6f894397569b9fd59a17bfb8f04",
+  "docs/_posts/2026-09-21-gaku-gakumas-shirube-livetour-2026.md": "0121a2e8c6051640c8ca5afc6e33590ca844b0f37f694d90c9524863c6571729",
+  "docs/_posts/2026-09-21-gaku-official-music-video.md": "de812b4f357f05fcaa4cc304bf10c32eb965806638360eef3f7b9a4723f380ef",
+  "docs/_posts/2026-09-21-gaku-ver-2-95ce0c.md": "87aea90605cfb2be699e2c8919593ba8d3f9f0c5ab6100619799c8847d1f526e",
+  "docs/_posts/2026-09-21-joint-tours-ranking-2026-09-19.md": "0e876054ddb73ba40e368927f2e481d9053c7bdbb336252362c98b639a17c180",
+  "docs/_posts/2026-09-21-million-10th-anniversary-live-2027.md": "84edcd641c3e52c829036d922b555f1f833d668aa870aae1b6269806ad803088",
+  "docs/_posts/2026-09-21-million-14th-day2-live-report-2026.md": "d11736eecd392d8a941bcfe60331681aa285cfe1a36d0959585ff42e69a6441b",
+  "docs/_posts/2026-09-21-million-14thlive-day1-report-2026.md": "ddb54e9924f6bc77d3a64117c896b430f5995a41c7ddab74d7761e881faa0d35",
+  "docs/_posts/2026-09-21-million-14thlive.md": "0a5c2e2e0d663d61ebaded849f0b800a41eb4c98e5687962f0797630078c89cf",
+  "docs/_posts/2026-09-21-million-2101618465937428547-835cd5.md": "591c108d62a747ddf7be4234017d6039717d68427fd074f1c23aa73e22a0354b",
+  "docs/_posts/2026-09-21-million-9th-anniversary-goods-2026.md": "06ceb19e0fe69725001367d48cd5fa2dcb132ce2cf9b6680f94aa3327da4850c",
+  "docs/_posts/2026-09-21-shiny-another-ver.md": "cc1a819888680e843ecd8e571838077379b914baf489c640de3ff0d2b443d88d",
+  "docs/_posts/2026-09-21-sidem-11th-stage-day1-setlist-2026.md": "11bc88cd2c2ddf1bab69aa9419330f995049c6285e1d5959e0b339dc34d981cf",
+  "docs/_posts/2026-09-21-sidem-11th-stage-live-bluray.md": "546753dd82fba4259b567bac700286b6409d12236e225c8a1ae47a4d21924683",
+  "docs/_posts/2026-09-21-sidem-2027-ccdb57.md": "c27468795beaee77e314bd6a61f69050718ec9b17da8d26c41ef994590fb6387",
+  "docs/_editions/2026-09-21.md": "196127898f31eaf82881fc9eff64fd226c558bd9e6fb7b3e7a185d3363b6ff71",
+  "metrics/stories-before-2026-09-21.yml": "9a5ecd319adba04d4660509e75995f28bc68b786c469769002d7e602225c90ab"
+ }
+}

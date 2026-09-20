@@ -1,0 +1,246 @@
+{
+ "decisions": {
+  "2": {
+   "action": "roundup",
+   "angle": "9/19-20週末の灯里愛夏・レトラの雑談/コラボ配信ラインナップ",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "nagano-aniera-festa-2026-dsva": {
+   "action": "article",
+   "angle": "レトラが9/19、上水流宇宙が9/20にDJ setでナガノアニエラフェスタ2026へ出演し2日間を完走。当日券やお礼投稿まで含め総括",
+   "rank": "large",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "mananono-2026-09-20": {
+   "action": "roundup",
+   "angle": "9/19-20週末の灯里愛夏・レトラの雑談/コラボ配信ラインナップ(まなのの・飲酒雑談・朝まなラジオほか)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "nagano-aniera-festa-2026-nanoripe-addition": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "nano.RIPEはvα-liv非所属アーティスト。NAF26タイムテーブルへの追加出演自体はdsva面の話題ではない"
+  },
+  "nagano-aniera-festa-2026-sameday-tickets": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "nagano-aniera-festa-2026-dsva",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催済みのNAF26当日券情報として本編に統合"
+  },
+  "cosmo-birthday-digest-2026": {
+   "action": "article",
+   "angle": "宇宙誕生祭2026のショートダイジェスト公開を機に、バースデーライブのDJ&ライブドローイングWプレイやアーカイブ販売を紹介",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cosmo-aniera-festa-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "nagano-aniera-festa-2026-dsva",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/20 14:55の上水流宇宙DJ set出演時刻の詳細として本編に統合"
+  },
+  "letora-drinking-chat-2026-09-20": {
+   "action": "roundup",
+   "angle": "9/19-20週末の灯里愛夏・レトラの雑談/コラボ配信ラインナップ",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-morning-stream-2026-09-20": {
+   "action": "roundup",
+   "angle": "9/19-20週末の灯里愛夏・レトラの雑談/コラボ配信ラインナップ",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "9-19": {
+   "action": "roundup",
+   "angle": "9/19-20週末の灯里愛夏・レトラの雑談/コラボ配信ラインナップ",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "2026-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "nagano-aniera-festa-2026-dsva",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "NAF26出演お礼の公式投稿として本編に統合"
+  },
+  "dsva-2101631242471112836": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cosmo-birthday-digest-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アニエラ来場者向けバースデーライブ告知として同記事に統合"
+  },
+  "dsva-243706-00-00-00": {
+   "action": "article",
+   "angle": "上水流宇宙のバースデー記念グッズセット(森倉円描き下ろし5点、11,000円)がアソビストアで受注発売中と紹介",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "booth": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "バースデー記念ボイス2026(3,300円)は9/6付既報(valiv-birthday-voice-kamimizu-2026)と同一商品で新情報なし"
+  },
+  "dsva-2101630209288282267": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "nagano-aniera-festa-2026-dsva",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "NAF26終演後の個人投稿として本編の締めに統合"
+  },
+  "dj-dj": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "nagano-aniera-festa-2026-dsva",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "NAF26後のファン向け挨拶投稿として本編に統合。来月のDJ言及は既報の深海フェスと同一"
+  },
+  "dsva-2101620428301287452": {
+   "action": "roundup",
+   "angle": "9/19-20週末の灯里愛夏・レトラの雑談/コラボ配信ラインナップ",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-nagano-aniera-festa-2026-dsva",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "レトラが9/19、上水流宇宙が9/20にDJ setでナガノアニエラフェスタ2026へ出演し2日間を完走。当日券やお礼投稿まで含め総括",
+    "lead_score": 55,
+    "dedup_key": "nagano-aniera-festa-2026-dsva",
+    "candidate_ids": [
+     "202609200734-explore-13",
+     "202609201233-explore-16",
+     "202609201835-explore-21",
+     "202609210225-grok-21",
+     "202609210225-grok-25",
+     "202609210225-grok-26"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-birthday-digest-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "宇宙誕生祭2026のショートダイジェスト公開を機に、バースデーライブのDJ&ライブドローイングWプレイやアーカイブ販売を紹介",
+    "lead_score": 10,
+    "dedup_key": "cosmo-birthday-digest-2026",
+    "candidate_ids": [
+     "202609201835-explore-17",
+     "202609210225-grok-22"
+    ]
+   },
+   {
+    "slug": "dsva-243706-00-00-00-42d431",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙のバースデー記念グッズセット(森倉円描き下ろし5点、11,000円)がアソビストアで受注発売中と紹介",
+    "lead_score": 5,
+    "dedup_key": "dsva-243706-00-00-00",
+    "candidate_ids": [
+     "202609210225-grok-23"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "9/19-20週末の灯里愛夏・レトラの雑談/コラボ配信ラインナップ(まなのの・飲酒雑談・朝まなラジオほか)",
+    "lead_score": 0,
+    "dedup_key": "mananono-2026-09-20",
+    "candidate_ids": [
+     "202609200734-explore-14",
+     "202609201835-explore-22",
+     "202609201835-explore-24",
+     "202609210225-grok-18",
+     "202609210225-grok-27",
+     "202609210225-grok-28"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "nagano-aniera-festa-2026-nanoripe-addition",
+    "reason": "面違い",
+    "note": "nano.RIPEはvα-liv非所属アーティスト。NAF26タイムテーブルへの追加出演自体はdsva面の話題ではない"
+   },
+   {
+    "dedup_key": "booth",
+    "reason": "既報",
+    "note": "バースデー記念ボイス2026(3,300円)は9/6付既報(valiv-birthday-voice-kamimizu-2026)と同一商品で新情報なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

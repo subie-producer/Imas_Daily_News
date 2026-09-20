@@ -1,0 +1,197 @@
+{
+ "decisions": {
+  "cinderella-master-number-one-cross-over-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "発売日9/30・品番SACX-1151・商品名は9/12,9/13付で既報。アソビストア予約終了も9/18時点の状態で当日の新トリガーなし"
+  },
+  "cinderella-election-2026-support-post-awards": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "各部門受賞15作品の発表は9/18付で既報(cg-election-2026)。新事実・当日トリガーなし"
+  },
+  "cinderella-pop-up-yurakucho-marui-2026": {
+   "action": "article",
+   "angle": "有楽町マルイでPOP UP SHOP開催決定、初日はLINEアプリ「mogily」のデジタル整理券制・購入特典は全8種ブロマイド",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会期自体は8/28付で軽く既報だが、会場・整理券制度・特典など具体情報が新規"
+  },
+  "cg-15th-orchestra-concert-2027": {
+   "action": "article",
+   "angle": "15周年記念オーケストラコンサートの出演キャスト(指揮・演奏団体・コンマス・歌唱3名)を発表、現地チケット最速先行抽選は9/27締切",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "面で最大のニュース。the-idolm-ster-...-concert(-2)を統合"
+  },
+  "the-idolm-ster-cinderella-girls-15th-anniversary-orchestra-concert": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-orchestra-concert-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同公演のキャスト再紹介・チケット先行告知、cg-15th-orchestra-concert-2027に統合"
+  },
+  "the-idolm-ster-cinderella-girls-15th-anniversary-orchestra-concert-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-orchestra-concert-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "前日投稿の再案内で新情報なし、cg-15th-orchestra-concert-2027に統合"
+  },
+  "pop-up-shop-big": {
+   "action": "article",
+   "angle": "POP UP SHOP会場限定BIGアクリルキーホルダーが相次ぎ完売、大阪会場・事後通販の案内",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "pop-up-shop-big-2を統合。roundup要件(3件以上)未達のためsmall記事に"
+  },
+  "pop-up-shop-big-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pop-up-shop-big",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ完売シリーズの別アイドル分、pop-up-shop-bigに統合"
+  },
+  "11-1-1-10-trend": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/3開始・9/22締切のプラチナオーディションガシャ無料10連キャンペーンは既報(9/2,9/4付)。ファンの結果投稿テンプレのみで新情報なし"
+  },
+  "pop-up-shop-sweet-melty-whip-fan": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人間のグッズ交換希望投稿"
+  },
+  "fan": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "低エンゲージメントの個人ファンイラスト1件のみ。cg面にculture枠なし"
+  },
+  "fan-2": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "低エンゲージメントの個人ファンイラスト1件のみ。cg面にculture枠なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-pop-up-yurakucho-marui-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "有楽町マルイでPOP UP SHOP開催決定、初日はLINEアプリ「mogily」のデジタル整理券制・購入特典は全8種ブロマイド",
+    "lead_score": 25,
+    "dedup_key": "cinderella-pop-up-yurakucho-marui-2026",
+    "candidate_ids": [
+     "202609201233-explore-3"
+    ]
+   },
+   {
+    "slug": "cg-15th-orchestra-concert-2027",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年記念オーケストラコンサートの出演キャスト(指揮・演奏団体・コンマス・歌唱3名)を発表、現地チケット最速先行抽選は9/27締切",
+    "lead_score": 55,
+    "dedup_key": "cg-15th-orchestra-concert-2027",
+    "candidate_ids": [
+     "202609201835-explore-2",
+     "202609210225-grok-40",
+     "202609210225-grok-41"
+    ]
+   },
+   {
+    "slug": "cg-pop-up-shop-big",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "POP UP SHOP会場限定BIGアクリルキーホルダーが相次ぎ完売、大阪会場・事後通販の案内",
+    "lead_score": 10,
+    "dedup_key": "pop-up-shop-big",
+    "candidate_ids": [
+     "202609210225-grok-42",
+     "202609210225-grok-43"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-master-number-one-cross-over-2026",
+    "reason": "既報",
+    "note": "発売日9/30・品番SACX-1151・商品名は9/12,9/13付で既報。アソビストア予約終了も9/18時点の状態で当日の新トリガーなし"
+   },
+   {
+    "dedup_key": "cinderella-election-2026-support-post-awards",
+    "reason": "既報",
+    "note": "各部門受賞15作品の発表は9/18付で既報(cg-election-2026)。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "11-1-1-10-trend",
+    "reason": "既報",
+    "note": "9/3開始・9/22締切のプラチナオーディションガシャ無料10連キャンペーンは既報(9/2,9/4付)。ファンの結果投稿テンプレのみで新情報なし"
+   },
+   {
+    "dedup_key": "pop-up-shop-sweet-melty-whip-fan",
+    "reason": "個人の話題",
+    "note": "個人間のグッズ交換希望投稿"
+   },
+   {
+    "dedup_key": "fan",
+    "reason": "個人の話題",
+    "note": "低エンゲージメントの個人ファンイラスト1件のみ。cg面にculture枠なし"
+   },
+   {
+    "dedup_key": "fan-2",
+    "reason": "個人の話題",
+    "note": "低エンゲージメントの個人ファンイラスト1件のみ。cg面にculture枠なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,591 @@
+{
+ "decisions": {
+  "9": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-9th-anniversary-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式Xの同一告知（重複）"
+  },
+  "10": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-10th-anniversary-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式Xの同一発表内容（重複）"
+  },
+  "million-platinum-star-tour-bingo-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18既報の開催中イベントと同内容。本日のトリガー無し"
+  },
+  "million-14th-live-day1-setlist-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14thlive-day1-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1公演の一部、リポート記事に統合"
+  },
+  "million-14thlive-day1-report-2026": {
+   "action": "article",
+   "angle": "代々木で開幕したミリオン14thLIVE DAY1「夢咲くワンダーミラージュ」の公演リポート、セットリスト、新曲配信をまとめて紹介",
+   "rank": "large",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14thlive-day1-new-songs-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14thlive-day1-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1新曲配信、同公演の一施策"
+  },
+  "million-cardfolio-vol4-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/4既報の会場先行販売決定と同内容"
+  },
+  "million-seasonal-snapshot-2026-12": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/13既報。受注締切は前日9/20で発行日には何も起きない"
+  },
+  "million-14th-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18既報の公演概要（日時・会場・料金）と同内容"
+  },
+  "million-14th-live-day2-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2公式セットリスト・告知、同公演"
+  },
+  "million-9th-anniversary-goods-2026": {
+   "action": "article",
+   "angle": "ミリシタ9周年記念描き下ろしイラストの受注グッズ販売開始。ポスターやアクリルパネルなど",
+   "rank": "medium",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-10th-anniversary-live-2027": {
+   "action": "article",
+   "angle": "ミリシタ10周年記念ライブが2027年6月26・27日にKアリーナ横浜で開催決定。765 MILLIONSTARSが出演",
+   "rank": "medium",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14th-live-day2-setlist-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2セットリスト、同公演"
+  },
+  "million-14th-day1-new-songs-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14thlive-day1-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1新曲配信の重複情報"
+  },
+  "million-14th-day2-new-songs-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2新曲配信、同公演の一施策"
+  },
+  "million-14th-day2-live-report-2026": {
+   "action": "article",
+   "angle": "千秋楽を迎えたミリオン14thLIVE DAY2「Blooming Sign」の公演リポート、セットリスト、新曲配信をまとめて紹介",
+   "rank": "large",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14th-live-day1-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14thlive-day1-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式のDAY1開催報告、同公演"
+  },
+  "14th-the-idolm-ster-million-live-14thlive-day2-blooming-sign": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式Xの同一告知（重複）"
+  },
+  "10-2027-6-k": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-10th-anniversary-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報だが同一発表内容"
+  },
+  "ch": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "765面既報の「ばくすて！とーく」配信と同一番組"
+  },
+  "14th-day2-p": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "765面既報の「ばくすて！とーく」告知と同一番組"
+  },
+  "14th-day2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2プレイリスト公開、同公演"
+  },
+  "14th-day2-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "famitsuリポートの予告投稿（重複）"
+  },
+  "10thlive-2027-6-26-27-k-765-millionstars-14th-day2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-10th-anniversary-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "famitsu記事の同一発表内容"
+  },
+  "10th-765-52": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "非公式ファンアカウントによる自主応援広告企画の告知"
+  },
+  "14thlive": {
+   "action": "article",
+   "angle": "ミリシタで「14thLIVEありがとうログインボーナス」開催。最大500個のミリオンジュエルを配布",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "blooming-sign": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2打ち上げガシャ、同公演の一施策"
+  },
+  "million-2101642781412225375": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "サンクスロール公開、同公演の付随情報"
+  },
+  "14thlive-day2-blooming-sign": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2打ち上げガシャ開催告知、同施策の重複"
+  },
+  "million-2101618465937428547": {
+   "action": "article",
+   "angle": "「iDOL GRAND-PRIX」新規アイドルグラフィック、莉緒を制作中と公式が予告",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-2101664800225071293": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "765面既報の「ばくすて！とーく」視聴御礼、新情報無し"
+  },
+  "youtube-ch-day2": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "765面既報の「ばくすて！とーく」と同一番組の告知"
+  },
+  "day2-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2最速アーカイブ公開、同公演の付随情報"
+  },
+  "14th-day2-blooming-sign": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2公演終了の御礼投稿、新情報無し"
+  },
+  "14th-day1": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14thlive-day1-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1公演終了の御礼投稿、新情報無し"
+  },
+  "14th-day2-3": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-10th-anniversary-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "famitsu記事(88752)の同一発表内容"
+  },
+  "the-idolm-ster-million-live-14thlive": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "応援プロデューサーサンクスロール動画、公演の付随情報"
+  },
+  "10-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-10th-anniversary-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "動画での同一発表内容（重複）"
+  },
+  "day2-blooming-sign": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出演者個人のDAY2への御礼投稿、新情報無し"
+  },
+  "day2-3": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出演者個人のDAY2への御礼投稿、新情報無し"
+  },
+  "day2-live": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出演者個人のDAY2・誕生日への言及、新情報無し"
+  },
+  "day2-4": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-live-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出演者個人のDAY2への御礼投稿、新情報無し"
+  },
+  "day1": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14thlive-day1-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出演者個人のDAY1への言及、新情報無し"
+  },
+  "day1-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14thlive-day1-report-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出演者個人のDAY1への御礼投稿、新情報無し"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-14thlive-day1-report-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "代々木で開幕したミリオン14thLIVE DAY1「夢咲くワンダーミラージュ」の公演リポート、セットリスト、新曲配信をまとめて紹介",
+    "lead_score": 15,
+    "dedup_key": "million-14thlive-day1-report-2026",
+    "candidate_ids": [
+     "202609201233-explore-19",
+     "202609200734-explore-4",
+     "202609201233-explore-20",
+     "202609210225-explore-1",
+     "202609210225-explore-15",
+     "202609210225-grok-84",
+     "202609210225-grok-94",
+     "202609210225-grok-95"
+    ]
+   },
+   {
+    "slug": "million-9th-anniversary-goods-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリシタ9周年記念描き下ろしイラストの受注グッズ販売開始。ポスターやアクリルパネルなど",
+    "lead_score": 5,
+    "dedup_key": "million-9th-anniversary-goods-2026",
+    "candidate_ids": [
+     "202609202336-watch-1",
+     "202609210225-grok-30"
+    ]
+   },
+   {
+    "slug": "million-10th-anniversary-live-2027",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリシタ10周年記念ライブが2027年6月26・27日にKアリーナ横浜で開催決定。765 MILLIONSTARSが出演",
+    "lead_score": 85,
+    "dedup_key": "million-10th-anniversary-live-2027",
+    "candidate_ids": [
+     "202609202336-watch-15",
+     "202609210225-grok-31",
+     "202609210225-grok-36",
+     "202609210225-grok-82",
+     "202609210225-grok-87",
+     "202609210225-grok-89"
+    ]
+   },
+   {
+    "slug": "million-14th-day2-live-report-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "千秋楽を迎えたミリオン14thLIVE DAY2「Blooming Sign」の公演リポート、セットリスト、新曲配信をまとめて紹介",
+    "lead_score": 20,
+    "dedup_key": "million-14th-day2-live-report-2026",
+    "candidate_ids": [
+     "202609210225-explore-8",
+     "202609202336-watch-0",
+     "202609202336-explore-20",
+     "202609210225-explore-4",
+     "202609210225-grok-29",
+     "202609210225-grok-34",
+     "202609210225-grok-35",
+     "202609210225-grok-75",
+     "202609210225-grok-76",
+     "202609210225-grok-77",
+     "202609210225-grok-81",
+     "202609210225-grok-83",
+     "202609210225-grok-88",
+     "202609210225-grok-90",
+     "202609210225-grok-91",
+     "202609210225-grok-92",
+     "202609210225-grok-93"
+    ]
+   },
+   {
+    "slug": "million-14thlive",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタで「14thLIVEありがとうログインボーナス」開催。最大500個のミリオンジュエルを配布",
+    "lead_score": 0,
+    "dedup_key": "14thlive",
+    "candidate_ids": [
+     "202609210225-grok-74"
+    ]
+   },
+   {
+    "slug": "million-2101618465937428547-835cd5",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「iDOL GRAND-PRIX」新規アイドルグラフィック、莉緒を制作中と公式が予告",
+    "lead_score": 0,
+    "dedup_key": "million-2101618465937428547",
+    "candidate_ids": [
+     "202609210225-grok-78"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-platinum-star-tour-bingo-2026",
+    "reason": "既報",
+    "note": "9/18既報の開催中イベントと同内容。本日のトリガー無し"
+   },
+   {
+    "dedup_key": "million-cardfolio-vol4-2026",
+    "reason": "既報",
+    "note": "9/4既報の会場先行販売決定と同内容"
+   },
+   {
+    "dedup_key": "million-seasonal-snapshot-2026-12",
+    "reason": "既報",
+    "note": "9/13既報。受注締切は前日9/20で発行日には何も起きない"
+   },
+   {
+    "dedup_key": "million-14th-live-2026",
+    "reason": "既報",
+    "note": "9/18既報の公演概要（日時・会場・料金）と同内容"
+   },
+   {
+    "dedup_key": "ch",
+    "reason": "既報",
+    "note": "765面既報の「ばくすて！とーく」配信と同一番組"
+   },
+   {
+    "dedup_key": "14th-day2-p",
+    "reason": "既報",
+    "note": "765面既報の「ばくすて！とーく」告知と同一番組"
+   },
+   {
+    "dedup_key": "10th-765-52",
+    "reason": "同人・ファン主催",
+    "note": "非公式ファンアカウントによる自主応援広告企画の告知"
+   },
+   {
+    "dedup_key": "million-2101664800225071293",
+    "reason": "既報",
+    "note": "765面既報の「ばくすて！とーく」視聴御礼、新情報無し"
+   },
+   {
+    "dedup_key": "youtube-ch-day2",
+    "reason": "既報",
+    "note": "765面既報の「ばくすて！とーく」と同一番組の告知"
+   }
+  ],
+  "cross_brand": []
+ }
+}

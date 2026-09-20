@@ -301,8 +301,9 @@ def url_alive(url):
             with urllib.request.urlopen(req, timeout=URL_TIMEOUT) as res:
                 return res.status < 400, f"HTTP {res.status}", "alive"
         except urllib.error.HTTPError as e:
-            verdict = "dead" if e.code in (404, 410) else "blocked"
-            last = (False, f"HTTP {e.code}", verdict)
+            if e.code in (404, 410):
+                return False, f"HTTP {e.code}", "dead"   # 不在の明言は待っても変わらない。やり直さない(当番の保管 58a4884df9)
+            last = (False, f"HTTP {e.code}", "blocked")    # 403 等は間欠的なことがあるので、やり直す
         except Exception as e:  # DNS・接続・タイムアウト等のネットワーク層
             last = (False, str(e), "unreachable")
     return last

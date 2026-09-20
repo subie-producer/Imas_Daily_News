@@ -47,26 +47,64 @@ LIST_OF = {"公式": "official_domains", "準公式": "semi_official_domains",
 # wiki ホスティング(atwiki 等)は外さない。公式がそこに告知を出すことはなく、
 # どのページも利用者が書いた二次情報なので、ドメインで決められる(表に載せてある)
 PLATFORMS = ("x.com", "twitter.com", "youtube.com", "youtu.be", "nicovideo.jp",
-             "note.com", "docs.google.com", "forms.gle", "hatenablog.com",
+             "note.com", "docs.google.com", "drive.google.com", "forms.gle", "hatenablog.com",
              "ameblo.jp", "fanbox.cc", "booth.pm", "github.com", "rakuten.co.jp",
              "tiktok.com", "instagram.com", "threads.net", "bsky.app", "pixiv.net", "twitch.tv", "lit.link")
-# プラットフォームの中で**パス単位**に主体が決まるもの: 先頭何区切りで主体か。
-# ホスト末尾一致 → (区切り数, 先頭区切りに要る接頭辞)。無いものは合議に掛けない(docs.google 等)
+# 多数の主体が同居するプラットフォームでは、**持ち主が決まる単位**が3通りある。どれにも当たらない URL は
+# 判定の単位を決められないので、黙って飛ばさず理由付きで記録する(unknown_targets の skipped)。
+# 1. パス単位(アカウント・チャンネル・作品ページ): 先頭何区切りで主体か。ホスト → (区切り数, 先頭区切りに要る接頭辞)
 PATH_KEYS = {"tiktok.com": (1, "@"), "ch.nicovideo.jp": (1, ""), "manga.nicovideo.jp": (2, ""),
              "seiga.nicovideo.jp": (2, ""), "note.com": (1, ""), "ameblo.jp": (1, ""), "github.com": (2, ""),
              "instagram.com": (1, ""), "threads.net": (1, "@"), "bsky.app": (2, ""), "pixiv.net": (2, ""),
-             "twitch.tv": (1, ""), "lit.link": (1, ""), "item.rakuten.co.jp": (1, "")}
+             "twitch.tv": (1, ""), "lit.link": (1, ""), "item.rakuten.co.jp": (1, ""),
+             "fanbox.cc": (1, "@"), "forms.gle": (1, "")}
+# 2. 文書単位(フォーム・文書・表計算): 1つの文書が1つの主体のもの。告知から張られる応募フォームなどで紙面に出る
+#    (実測 2026-09-20: 公式の特別配信のおたよりフォーム docs.google.com/forms/d/e/<id> が未確認のまま載った)。
+#    キーは文書 ID まで(`/viewform` や `?usp=` は含めない)
+DOC_HOSTS = ("docs.google.com", "drive.google.com")
+# 3. サブドメイン単位(ブログ・ショップ): `<名前>.hatenablog.com` のようにホストがそのまま主体。ドメインとして判定する
+SUBDOMAIN_PLATFORMS = ("hatenablog.com", "fanbox.cc", "booth.pm")
 
 
 def path_key(url: str) -> str | None:
-    """プラットフォーム上のアカウント・チャンネル・作品ページを表すキー(host/seg…)。対象外なら None。"""
+    """プラットフォーム上の主体(アカウント・チャンネル・作品ページ・1つの文書)を表すキー(host/seg…)。対象外なら None。"""
     u = urllib.parse.urlparse(url)
     host = (u.hostname or "").removeprefix("www.").removeprefix("m.")
     seg = [s for s in u.path.split("/") if s]
+    if host in DOC_HOSTS:
+        # /forms/d/e/<id>/viewform, /document/d/<id>/edit, /file/d/<id>/view, /drive/folders/<id> …
+        # ID は `d`・`e`・`folders` の次の区切り。取れなければ None(ホスト全体を1つの主体にしない)
+        for i, s in enumerate(seg):
+            if i >= 1 and seg[i - 1] in ("d", "e", "folders") and len(s) >= 20:
+                return host + "/" + "/".join(seg[:i + 1])
+        return None
     for h, (n, prefix) in PATH_KEYS.items():
         if host == h and len(seg) >= n and seg[0].startswith(prefix):
             return host + "/" + "/".join(seg[:n])
     return None
+
+
+def platform_unit(url: str) -> tuple[str, str]:
+    """未知の URL を、何の単位で判定するか。("domain" | "path" | "skip", キーか理由)。"""
+    u = urllib.parse.urlparse(url)
+    host = (u.hostname or "").removeprefix("www.")
+    if not host:
+        return "skip", "ホストが読めない"
+    if host in ("x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com"):    # classify_source と同じ集合
+        seg = [s for s in u.path.split("/") if s]
+        if seg and seg[0].lower() not in ("i", "search", "hashtag", "home", "explore"):
+            return "x", seg[0]
+        return "skip", "X のアカウントに紐づかない URL(トレンド・検索など)。出典にするなら個別の投稿の URL が要る"
+    pk = path_key(url)
+    if pk:
+        return "path", pk
+    for q in SUBDOMAIN_PLATFORMS:
+        if host.endswith("." + q):
+            return "domain", host
+    for q in PLATFORMS:
+        if host == q or host.endswith("." + q):
+            return "skip", f"{q} の上で、持ち主が決まる単位(アカウント・文書 ID)を URL から取れない"
+    return "domain", host
 UA = "Mozilla/5.0 (compatible; ImasNews/1.0)"
 
 # 種別の定義(編集規程2.5)。本文は prompts/classify-rules.md。サイト・X アカウントの依頼文が共通で使う
@@ -104,6 +142,8 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     大半はファンの投稿(イラスト・コスプレ・感想)で、1つずつ人が見るには多すぎる
     (実測: 178件が未分類のまま溜まっていた)。ここも合議に掛ける。
     """
+    SKIPPED.clear()
+    USED_IN.clear()
     rows = target_rows(date)
     if not rows:
         return {}, {}, {}
@@ -118,23 +158,30 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
             continue
         u = urllib.parse.urlparse(url)
         host = (u.hostname or "").removeprefix("www.")
-        if host in ("x.com", "twitter.com"):
-            seg = [s for s in u.path.split("/") if s]
-            if not seg or seg[0].lower() == "i":
-                continue
-            a = seg[0]
-            cur = accts.setdefault(a, (url, []))
+        if YT_ID.search(url) and host.removeprefix("m.") in ("youtube.com", "youtu.be"):
+            continue                       # 動画は投稿者で決まる(resolve_videos が扱い、決まらなければそちらが報告する)
+        unit, key = platform_unit(url)
+        if unit == "skip":
+            SKIPPED.setdefault(url, key)   # 黙って飛ばさない。main が理由ごと報告する
+            continue
+        if unit == "x":
+            cur = accts.setdefault(key, (url, []))
             if c.get("title") and len(cur[1]) < 4:
                 cur[1].append(c["title"][:70])
             continue
-        pk = path_key(url)
-        if pk:
-            paths.setdefault(pk, url)
-            continue
-        if not host or any(host == q or host.endswith("." + q) for q in PLATFORMS):
-            continue
-        doms.setdefault(host, url)
+        (paths if unit == "path" else doms).setdefault(key, url)
+        # どの記事・候補で、何として使われているか(判定の材料。フォームや文書は、張った側の文脈が主体の手掛かりになる)
+        if c.get("title") and len(USED_IN.setdefault(key, [])) < 3:
+            USED_IN[key].append(str(c["title"])[:120])
     return doms, accts, paths
+
+
+SKIPPED: dict[str, str] = {}          # 判定の単位を決められなかった URL → 理由(unknown_targets が埋める)
+USED_IN: dict[str, list[str]] = {}    # 判定のキー → 紙面・候補での使われ方(題名と出典の label)
+
+
+def used_in(key: str) -> str:
+    return ("\n紙面・候補での使われ方: " + " / ".join(USED_IN[key])) if USED_IN.get(key) else ""
 
 
 POSTS_ONLY: str | None = None    # 号の日付。組版前の判定では、その号の記事の出典だけを対象にする(候補は見ない)
@@ -558,14 +605,18 @@ def main() -> int:
         POSTS_ONLY = date
 
     doms, accts, paths = unknown_targets(date)
+    # 判定の単位を決められなかった URL は、黙って飛ばさず理由ごと残す(決まらなかったものとして下でまとめて出る)
+    split_all = [f"{u}: 判定できない({why})" for u, why in sorted(SKIPPED.items())]
+    for s in split_all:
+        print(f"  判定の対象にできない\t{s}", flush=True)
     if not doms and not accts and not paths and not unknown_videos(date):
-        print(f"{date}: 判定表に無い出典はありません")
-        return 0
+        if not split_all:
+            print(f"{date}: 判定表に無い出典はありません")
+            return 0
 
-    split_all = []
     if doms:
         print(f"{date}: 判定表に無いドメイン {len(doms)}件 → {', '.join(sorted(doms))}", flush=True)
-        items = [(h, u, site_profile(h, u)) for h, u in sorted(doms.items())]
+        items = [(h, u, site_profile(h, u) + used_in(h)) for h, u in sorted(doms.items())]
         agreed, split = consensus(lambda ks: build_prompt([it for it in items if it[0] in ks]), sorted(doms))
         for h, (t, why) in agreed.items():
             print(f"  一致 {t}\t{h}\t{why}")
@@ -579,7 +630,9 @@ def main() -> int:
     if paths:
         # プラットフォーム上のアカウント・チャンネル・作品ページ。「トップ」はそのアカウントのページ
         print(f"\n{date}: 判定表に無いプラットフォーム上の主体 {len(paths)}件 → {', '.join(sorted(paths))}", flush=True)
-        items = [(k, u, site_profile(k, u, top=f"https://{k}/")) for k, u in sorted(paths.items())]
+        # 「トップ」はそのアカウントのページ。文書(フォーム等)にはトップが無いので、文書そのものを見せる
+        items = [(k, u, site_profile(k, u, top=(u if k.split("/")[0] in DOC_HOSTS + ("forms.gle",) else f"https://{k}/")) + used_in(k))
+                 for k, u in sorted(paths.items())]
         agreed, split = consensus(lambda ks: build_prompt([it for it in items if it[0] in ks]), sorted(paths))
         for k, (t, why) in agreed.items():
             print(f"  一致 {t}\t{k}\t{why}")

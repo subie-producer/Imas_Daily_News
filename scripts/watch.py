@@ -147,12 +147,16 @@ def main() -> int:
             u = urllib.parse.urlparse(url)
             host = (u.hostname or "").removeprefix("www.")
             seg = [x for x in u.path.split("/") if x]
-            if host in ("x.com", "twitter.com") and seg:
-                base = f"https://x.com/{seg[0]}"
-            elif host in ("youtube.com", "m.youtube.com") and seg and seg[0].startswith("@"):
+            if host in ("youtube.com", "m.youtube.com") and seg and seg[0].startswith("@"):
                 base = f"https://www.youtube.com/{seg[0]}"
             else:
-                base = f"https://{host}/"
+                # 判定表に書く単位は合議と同じ規則で決める(X はアカウント、フォームや文書は文書 ID まで、
+                # アカウントのページはパスまで)。単位を決められないものは、その理由を出す
+                # (「docs.google.com/」「x.com/i」とだけ出ても人は決められない)
+                import classify_sources as _cs
+                unit, key = _cs.platform_unit(url)
+                base = (f"https://x.com/{key}" if unit == "x" else f"https://{key}" if unit in ("path", "domain")
+                        else f"(判定の単位なし: {key})")
             unknown.setdefault(base, []).append((url, p.stem))
     if unknown:
         lines = []

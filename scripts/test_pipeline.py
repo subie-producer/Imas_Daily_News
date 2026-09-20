@@ -697,6 +697,47 @@ def test_classify_posts_only(tmp: Path):
         check(urls == {"https://www.youtube.com/watch?v=AAAAAAAAAAA"}, f"組版前の対象(その号の記事だけ): {urls}")
     finally:
         cs.ROOT, cs.POSTS_ONLY = saved
+    # 判定の単位: フォーム・文書は文書 ID まで、ブログ・ショップはサブドメイン、取れないものは理由付きで飛ばす
+    # (2026-09-20: 公式のおたよりフォーム docs.google.com/forms/… を黙って飛ばし、未確認のまま載った)
+    form = "https://docs.google.com/forms/d/e/1FAIpQLSdyUPmVP5FEpa-g80fdmZpBfyyynct6fHia4POevGc9mqJfuQ/viewform?usp=send_form"
+    check(cs.platform_unit(form) == ("path", "docs.google.com/forms/d/e/1FAIpQLSdyUPmVP5FEpa-g80fdmZpBfyyynct6fHia4POevGc9mqJfuQ"), f"フォームの単位: {cs.platform_unit(form)}")
+    check(cs.platform_unit("https://docs.google.com/document/d/1AbCdEfGhIjKlMnOpQrStUvWxYz012345/edit")[1].endswith("/d/1AbCdEfGhIjKlMnOpQrStUvWxYz012345"), "文書の単位")
+    check(cs.platform_unit("https://forms.gle/AbCdEf123") == ("path", "forms.gle/AbCdEf123"), "短縮フォームの単位")
+    check(cs.platform_unit("https://someone.hatenablog.com/entry/2026/09/20/1") == ("domain", "someone.hatenablog.com"), "ブログはサブドメインが主体")
+    check(cs.platform_unit("https://docs.google.com/")[0] == "skip" and "単位" in cs.platform_unit("https://docs.google.com/")[1], "単位を取れない URL の理由")
+    check(cs.platform_unit("https://shop.example.jp/item/1") == ("domain", "shop.example.jp"), "ふつうのサイトはドメイン")
+    # Drive はフォルダ・ファイルの ID まで。ID を取れない Drive の URL をホスト全体の主体にしない(監査指摘)
+    check(cs.platform_unit("https://drive.google.com/drive/folders/19gSAbCdEfGhIjKlMnOpQrStUv") == ("path", "drive.google.com/drive/folders/19gSAbCdEfGhIjKlMnOpQrStUv"), "Drive のフォルダの単位")
+    check(cs.platform_unit("https://drive.google.com/")[0] == "skip", "ID の無い Drive の URL をドメインとして判定対象にした")
+    # X: アカウントに紐づく URL はアカウント単位、トレンドや検索は理由付きで飛ばす(黙って捨てない。監査指摘)
+    check(cs.platform_unit("https://x.com/imas_official/status/1") == ("x", "imas_official"), "X のアカウントの単位")
+    check(cs.platform_unit("https://x.com/i/trending/2091443421450039546")[0] == "skip", "X のトレンドの URL をアカウント扱いした")
+    (tmp / "source_types.yml").write_text("path_types:\n  docs.google.com/forms/d/e/1FAIpQLSdyUPmVP5FEpa-g80fdmZpBfyyynct6fHia4POevGc9mqJfuQ: 公式\n", encoding="utf-8")
+    saved_p = (pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY)
+    try:
+        pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY = tmp, None, None
+        check(pipelib.classify_source(form) == "公式", "判定表に足したフォームのキーで、紙面の URL(/viewform?usp=…)が判定されない")
+        check(pipelib.classify_source(form.replace("1FAIpQLS", "2XXXXXXX")) == "未確認", "別のフォームまで同じ種別になった")
+    finally:
+        pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY = saved_p
+    # 飛ばした URL は SKIPPED に理由付きで残り、使われ方(記事の題名)は判定の材料に付く
+    (tmp / "docs" / "_posts" / "2026-09-19-a.md").write_text(post("2026-09-19", "https://docs.google.com/", "未確認"), encoding="utf-8")
+    (tmp / "docs" / "_posts" / "2026-09-19-c.md").write_text(
+        "---\nslug: c\ntitle: 特別配信のおたより募集\nsources:\n- label: おたよりフォーム\n  url: " + form + "\n  type: 未確認\n---\n本文\n", encoding="utf-8")
+    saved = (cs.ROOT, cs.POSTS_ONLY, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE, pipelib._ST_KEY = None, None
+        (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+        cs.POSTS_ONLY = "2026-09-19"
+        doms, accts, paths = cs.unknown_targets("2026-09-19")
+        check(list(paths) == ["docs.google.com/forms/d/e/1FAIpQLSdyUPmVP5FEpa-g80fdmZpBfyyynct6fHia4POevGc9mqJfuQ"] and not doms, f"フォームが合議の対象にならない: {paths} {doms}")
+        check(list(cs.SKIPPED) == ["https://docs.google.com/"], f"飛ばした URL が記録されない: {cs.SKIPPED}")
+        check("特別配信のおたより募集" in cs.used_in(list(paths)[0]) and "おたよりフォーム" in cs.used_in(list(paths)[0]), f"使われ方が材料に付かない: {cs.used_in(list(paths)[0])}")
+    finally:
+        cs.ROOT, cs.POSTS_ONLY, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY = saved
+    (tmp / "docs" / "_posts" / "2026-09-19-c.md").unlink()
+    (tmp / "docs" / "_posts" / "2026-09-19-a.md").write_text(post("2026-09-19", "https://www.youtube.com/watch?v=AAAAAAAAAAA", "未確認"), encoding="utf-8")
     # 取引: 失敗したら判定表と記事を**開始時の中身**へ戻す(未追跡の記事も。git の HEAD ではない。監査指摘)。
     # 組版前(lint=False)は lint を掛けない。戻せなければ理由に「戻せない」
     (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
@@ -1471,7 +1512,8 @@ def test_url_alive_verdict():
     する(2026-09-20号: amiami の実在ページが 403 を返して発行が止まった)。"""
     import urllib.error
     orig_urlopen, orig_sleep = lint.urllib.request.urlopen, lint.time.sleep
-    lint.time.sleep = lambda *a, **k: None  # 再試行の待ちで遅くしない
+    slept = []
+    lint.time.sleep = lambda *a, **k: slept.append(a)  # 再試行の待ちで遅くしない(回数だけ数える)
     try:
         def raising(code):
             def _open(req, timeout=None):
@@ -1479,12 +1521,16 @@ def test_url_alive_verdict():
             return _open
         for code in (404, 410):
             lint.urllib.request.urlopen = raising(code)
+            slept.clear()
             res = lint.url_alive("https://x.example/gone")
             check(res == (False, f"HTTP {code}", "dead"), f"HTTP {code} を dead(発行停止)と判定しない: {res}")
+            check(not slept, f"HTTP {code}(不在の明言)でやり直しの待ちが入った: {len(slept)}回")
         for code in (403, 401, 429, 500, 503):
             lint.urllib.request.urlopen = raising(code)
+            slept.clear()
             res = lint.url_alive("https://x.example/blocked")
             check(res == (False, f"HTTP {code}", "blocked"), f"HTTP {code} を blocked(警告)と判定しない: {res}")
+            check(len(slept) == 2, f"HTTP {code}(間欠的なことがある)をやり直していない: {len(slept)}回")
         def netfail(req, timeout=None):
             raise OSError("dns")
         lint.urllib.request.urlopen = netfail

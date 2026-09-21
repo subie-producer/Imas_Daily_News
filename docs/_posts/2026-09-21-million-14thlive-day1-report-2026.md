@@ -4,8 +4,13 @@ edition: "2026-09-21"
 brand: million
 src: 報道
 rank: large
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-09-21T13:27:26+09:00"
+  by: 編集部(機械の書き出しの欠陥の修正)
+  initial: 公開されたセットリストは次の通り。\n- 織々の花だより\n- わんだほー！まつり姫の☆プリンセスフェスタなのです♪\n…
+  corrected_to: 同じ内容を箇条書きで表示
+  note: 箇条書きの改行が文字「\n」のまま1段落で表示されていた。文言は変えていない
 candidate_ids:
 - 202609201233-explore-19
 - 202609200734-explore-4
@@ -47,7 +52,45 @@ lede_fact_ids:
 
 ## セットリスト
 
-公開されたセットリストは次の通り。\n- 織々の花だより\n- わんだほー！まつり姫の☆プリンセスフェスタなのです♪\n- M1 絵羽模様\n- M2 little trip around the world\n- M3 初恋 ～一章 片想いの桜～\n- M4 Hug a nice day!\n- M5 微笑み日和\n- M6 オレンジノキオク\n- M7 風花\n- M8 鉄の羽のエクソダス\n- M9 君だけの欠片\n- M10 百花は月下に散りぬるを\n- M11 アマテラス\n- M12 オレンジ・エピソード\n- M13 はなしらべ\n- M14 ひととせ結び\n- M15 ミラージュ・ミラー\n- M16 フェスタ・イルミネーション\n- M17 GO MY WAY!!\n- M18 プリンセス・アラモード\n- M19 Girl meets Wonder\n- M20 PRETTY DREAMER\n- M21 瞳の中のシリウス\n- M22 Stellar Light\n- M23 シャル・ウィー・ダンス？\n- M24 Episode. Tiara\n- M25 魔法をかけて！\n- M26 メメント？モメント♪ルルルルル☆\n- M27 DIAMOND JOKER\n- M28 カーニヴァル・ジャパネスク\n- M29 ネバーエンド・ワンダーランド\n- M30 だってあなたはプリンセス\n- M31 わたしは花、あなたは太陽\n- M32 パルティシオン\n- M33 Prima Princess!!\n- EN1 ドレスコード：最上級\n- EN2 Eternal Harmony <!-- F280 F281 -->
+公開されたセットリストは次の通り。 <!-- F280 F281 -->
+
+- 織々の花だより
+- わんだほー！まつり姫の☆プリンセスフェスタなのです♪
+- M1 絵羽模様
+- M2 little trip around the world
+- M3 初恋 ～一章 片想いの桜～
+- M4 Hug a nice day!
+- M5 微笑み日和
+- M6 オレンジノキオク
+- M7 風花
+- M8 鉄の羽のエクソダス
+- M9 君だけの欠片
+- M10 百花は月下に散りぬるを
+- M11 アマテラス
+- M12 オレンジ・エピソード
+- M13 はなしらべ
+- M14 ひととせ結び
+- M15 ミラージュ・ミラー
+- M16 フェスタ・イルミネーション
+- M17 GO MY WAY!!
+- M18 プリンセス・アラモード
+- M19 Girl meets Wonder
+- M20 PRETTY DREAMER
+- M21 瞳の中のシリウス
+- M22 Stellar Light
+- M23 シャル・ウィー・ダンス？
+- M24 Episode. Tiara
+- M25 魔法をかけて！
+- M26 メメント？モメント♪ルルルルル☆
+- M27 DIAMOND JOKER
+- M28 カーニヴァル・ジャパネスク
+- M29 ネバーエンド・ワンダーランド
+- M30 だってあなたはプリンセス
+- M31 わたしは花、あなたは太陽
+- M32 パルティシオン
+- M33 Prima Princess!!
+- EN1 ドレスコード：最上級
+- EN2 Eternal Harmony <!-- F280 F281 -->
 
 ## 新曲配信・視聴案内
 

@@ -4,8 +4,13 @@ edition: "2026-09-15"
 brand: shiny
 src: 準公式
 rank: medium
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-09-21T13:27:26+09:00"
+  by: 編集部(機械の書き出しの欠陥の修正)
+  initial: 収録曲は以下の9曲。\n- クローバー（杜野凛世Ver.）\n- クローバー（大崎甘奈Ver.）\n- クローバー（市川…
+  corrected_to: 同じ内容を箇条書きで表示
+  note: 箇条書きの改行が文字「\n」のまま1段落で表示されていた。文言は変えていない
 candidate_ids:
 - 202609142335-explore-8
 - 202609150230-explore-4
@@ -38,7 +43,17 @@ lede_fact_ids:
 ---
 9月14日付で発売が告知された商品は、シャイニーカラーズ名義の「THE IDOLM@STER SHINY COLORS SOLO COLLECTION 283 PRODUCTION Solo Live Collection -Master ShowPiece-」。価格は2,640円（税込）で、品番はLACZ-10374。 <!-- F19 F3 F4 F5 F6 -->
 
-収録曲は以下の9曲。\n- クローバー（杜野凛世Ver.）\n- クローバー（大崎甘奈Ver.）\n- クローバー（市川雛菜Ver.）\n- クローバー（七草にちかVer.）\n- プラニスフィア ～planisphere～（緋田美琴Ver.）\n- プラニスフィア ～planisphere～（鈴木羽那Ver.）\n- リフレクトサイン（斑鳩ルカVer.）\n- SOLAR WAY（七草にちかVer.）\n- SOLAR WAY（郁田はるきVer.） <!-- F7 F8 F9 F10 F11 F12 F13 F14 F15 -->
+収録曲は以下の9曲。 <!-- F7 F8 F9 F10 F11 F12 F13 F14 F15 -->
+
+- クローバー（杜野凛世Ver.）
+- クローバー（大崎甘奈Ver.）
+- クローバー（市川雛菜Ver.）
+- クローバー（七草にちかVer.）
+- プラニスフィア ～planisphere～（緋田美琴Ver.）
+- プラニスフィア ～planisphere～（鈴木羽那Ver.）
+- リフレクトサイン（斑鳩ルカVer.）
+- SOLAR WAY（七草にちかVer.）
+- SOLAR WAY（郁田はるきVer.） <!-- F7 F8 F9 F10 F11 F12 F13 F14 F15 -->
 
 CDは9月26日、27日に京王アリーナTOKYOで開催される公演の会場で販売される。会場物販は両日11時開場予定で、整理券を持っていない来場者は整理券所持者の案内終了後に案内予定。整理券の受付期間は9月15日23時59分までで、CLUB animateへの会員登録・ログインが必要となる。受付URLは https://www.club-animate.jp/entries/fair_entry/8269。 <!-- F1 F2 F20 F21 F22 F23 F24 F25 F26 F27 F29 -->
 

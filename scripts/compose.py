@@ -1714,8 +1714,17 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
                 m = renderlib.FACT_NOTE.search(text or "")
                 ids = ids if ids is not None else (m.group(1).split() if m else [])
                 return norm(renderlib.strip_fact_notes(text)), tuple(sorted(str(i) for i in ids))
-            old_paras = [para(p) for p in re.split(r"\n\s*\n", old_body or "") if p.strip()]
-            new_paras = [para(b.get("markdown"), b.get("fact_ids") or []) for b in blocks]
+            # 旧稿も新稿も、**同じ正規化と同じ単位**で比べる(文字として残った `\n` を改行に戻し、
+            # 地の文と箇条書きの境目で分ける = 書き出しと同じ renderlib の規則)。揃えないと、壊れた改行を
+            # 直しただけの稿が「指摘に無い段落を足した」で落ちる(監査指摘 r71)。
+            # 旧稿は段落ごとに根拠の控えが付いているので、空行で分けてから、その控えを分けた各単位に引き継ぐ
+            def units(text, ids=None):
+                m = renderlib.FACT_NOTE.search(text or "")
+                ids = ids if ids is not None else (m.group(1).split() if m else [])
+                fixed = renderlib.unescape_text(renderlib.strip_fact_notes(text or ""))
+                return [para(md, ids) for md in renderlib.split_list_blocks(fixed)]
+            old_paras = [u for p in re.split(r"\n\s*\n", old_body or "") if p.strip() for u in units(p)]
+            new_paras = [u for b in blocks for u in units(b.get("markdown"), b.get("fact_ids") or [])]
             # 一対一の対応: 未指摘の旧段落を順に、新しい段落から**1つずつ消費**して探す
             # (同じ段落が2つあれば2つ要る。集合の membership では複製・片方の削除を見逃す。監査指摘)
             consumed = [False] * len(new_paras)

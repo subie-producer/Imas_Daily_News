@@ -69,6 +69,16 @@ def test_check_output():
     check(any("空" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "​\x04"}]))), "空になる label が通った")
     check(any("制御文字" in p for p in C(dict(OK, title="見出し\x04"))), "見出しの制御文字が通った")
     check(C(dict(OK, blocks=[{"markdown": "- 1行目\n- 2行目", "fact_ids": ["F1"]}])) == [], "箇条書きの改行を制御文字として落とした")
+    # 文字として残った `\n`(二重エスケープ)は、検算の前に本物の改行へ戻す(2026-09-21: セットリスト37曲が1段落で出た)
+    esc = dict(OK, title="見出し\\nです", blocks=[{"markdown": "次の通り。\\n- A\\n- B", "fact_ids": ["F1"]}],
+               sources=OK["sources"][:1] + [{"url": "https://b.example/2", "label": "題名\\n続き"}])
+    check(C(esc) == [] and esc["blocks"][0]["markdown"] == "次の通り。\n- A\n- B" and esc["title"] == "見出し です"
+          and esc["sources"][1]["label"] == "題名 続き", f"\\n の戻し方: {esc['blocks'][0]['markdown']!r} {esc['title']!r}")
+    # 地の文の直後の箇条書きは、書き出すときに空行で分ける(kramdown は空行が無いと段落に吸収する)
+    S = renderlib.split_list_blocks
+    check(S("次の通り。\n- A\n- B") == ["次の通り。", "- A\n- B"], f"地の文と箇条書きの境目: {S('次の通り。\n- A\n- B')}")
+    check(S("- A\n  続き\n- B\n以上。") == ["- A\n  続き\n- B", "以上。"], f"箇条書きの続きの行と、後ろの地の文: {S('- A\n  続き\n- B\n以上。')}")
+    check(S("1行目\n2行目") == ["1行目\n2行目"] and S("## 見出し") == ["## 見出し"] and S("a\n\nb") == ["a", "b"], "ふつうの段落を分けてしまう")
     check(any("tags" in p for p in C(dict(OK, tags=["a"]))), "tags 1個が通った")
     check(any("見出し" in p for p in C(dict(OK, title_fact_ids=[]))), "見出しの根拠無しが通った")
     check(len(C({"status": "decline", "decline_code": "", "decline_detail": ""})) == 2, "理由の無い decline が通った")
@@ -88,6 +98,13 @@ def test_render_and_length():
     check("<!-- F1 N1 -->" in t and "verified_facts" in t and "title_fact_ids" in t, "根拠が記事に残らない")
     check("​" not in t and "ポータル「お知らせ」" in t, "label の不可視文字が書き出しで残った")
     check(compose.body_length(p) == 2, f"根拠コメントが字数に入っている: {compose.body_length(p)}")
+    # 地の文 + 箇条書きの block は、空行で分かれた2段落で書き出され、どちらにも根拠の控えが付く
+    lst = dict(good, blocks=[{"markdown": "次の通り。\n- A\n- B", "fact_ids": ["F1"]}])
+    p2 = p.with_name("2026-09-12-y.md")
+    renderlib.render_article(p2, "2026-09-12", {"slug": "y", "brand": "765", "candidate_ids": ["c1"], "rank": "small"},
+                             lst, lambda u: "公式", lambda ts: "公式", compose.yaml_dump_keeping_strings)
+    body = p2.read_text(encoding="utf-8").split("\n---\n", 1)[1]
+    check(body.strip() == "次の通り。 <!-- F1 -->\n\n- A\n- B <!-- F1 -->", f"箇条書きの書き出し: {body!r}")
 
 
 def test_schema_hash_dates():
@@ -201,6 +218,14 @@ def test_revise_check():
     check(any("足した" in p for p in R(a6)), "指摘に無い段落の追加が通った")
     a7 = dict(a3, blocks=[a3["blocks"][0], {"markdown": "別の段落。", "fact_ids": ["F1"]}])
     check(any("根拠 id" in p for p in R(a7)), "未指摘段落の根拠 id 改変が通った")
+    # 壊れた改行(文字としての `\n`)だけを直した稿は通る(2026-09-21 のセットリスト。旧稿も新稿も同じ単位で比べる。監査指摘 r71)
+    broken = "前の段落。 <!-- F3 -->\n\n公開されたセットリストは次の通り。\\n- 曲A\\n- 曲B <!-- F1 -->"
+    iss_nl = [{"issue_id": "I1", "rule_id": "R16", "repair": "rewrite_claim", "quote": "公開されたセットリストは次の通り。\\n- 曲A"}]
+    fix_nl = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "前の段落。", "fact_ids": ["F3"]},
+                                                          {"markdown": "公開されたセットリストは次の通り。\n- 曲A\n- 曲B", "fact_ids": ["F1"]}])
+    check(compose.revise_check(fix_nl, iss_nl, old_fm, broken) == [], f"改行だけ直した稿が落ちた: {compose.revise_check(fix_nl, iss_nl, old_fm, broken)}")
+    # コードの中の `\n` は触らない
+    check(renderlib.unescape_text("改行は `\\n` と書く。\\n- A") == "改行は `\\n` と書く。\n- A", f"コード内の \\n: {renderlib.unescape_text('改行は `\\n` と書く。\\n- A')!r}")
     old_body3 = old_body + "\n\n三つ目。 <!-- F4 -->"
     a8 = dict(a3, blocks=[a3["blocks"][0], {"markdown": "三つ目。", "fact_ids": ["F4"]}, {"markdown": "別の段落。", "fact_ids": ["F3"]}])
     check(any("順序" in p for p in R(a8, b=old_body3)), "段落の並べ替えが通った")

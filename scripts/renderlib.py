@@ -103,6 +103,87 @@ def heading_only(markdown) -> bool:
     return bool(re.fullmatch(r"#{2,3} [^\n]+", str(markdown or "").strip()))
 
 
+_LIST_ITEM = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s+\S")
+
+
+def split_list_blocks(markdown: str) -> list[str]:
+    """段落の Markdown を、書き出す単位に分ける: 空行で分け、さらに**地の文と箇条書きの境目**でも分ける。
+
+    kramdown は、地の文の直後(空行なし)に続く `- 項目` を箇条書きにせず、同じ段落に吸収する
+    (「次の通り。 - A - B」と1行で出る)。執筆の契約は「1 block の中に空行を入れない」なので、
+    境目の空行はここで機械が入れる(執筆に空行を書かせない・差し戻さない)。
+    """
+    out: list[str] = []
+    for chunk in re.split(r"\n\s*\n", markdown or ""):
+        cur: list[str] = []
+        cur_is_list: bool | None = None
+        for ln in chunk.split("\n"):
+            if not ln.strip():
+                continue
+            is_item = bool(_LIST_ITEM.match(ln))
+            # 箇条書きの続きの行(字下げされた行)は、その箇条書きに付ける
+            if cur and cur_is_list and not is_item and ln.startswith((" ", "\t")):
+                cur.append(ln)
+                continue
+            if cur and is_item != cur_is_list:
+                out.append("\n".join(cur).strip())
+                cur = []
+            cur.append(ln)
+            cur_is_list = is_item
+        if cur:
+            out.append("\n".join(cur).strip())
+    return [x for x in out if x]
+
+
+_ESC_NL = re.compile(r"\\r\\n|\\n|\\r")      # 文字としての「\n」(バックスラッシュ + n)
+
+
+_CODE = re.compile(r"```.*?```|`[^`\n]*`", re.S)
+
+
+def unescape_text(markdown: str) -> str:
+    """本文の Markdown に文字として残った `\\n` を本物の改行に戻す。コード(`…` と ```…```)の中は触らない
+    (`\\n` という字面が正当に要るのはコードの中だけ。監査指摘)。"""
+    text = markdown or ""
+    out, pos = [], 0
+    for m in _CODE.finditer(text):
+        out.append(_ESC_NL.sub("\n", text[pos:m.start()]))
+        out.append(m.group(0))
+        pos = m.end()
+    out.append(_ESC_NL.sub("\n", text[pos:]))
+    return "".join(out)
+
+
+def unescape_newlines(out: dict) -> int:
+    """執筆の出力に**文字として**残った `\\n` を、本物の改行に戻す(その場で書き換える)。直した箇所の数を返す。
+
+    モデルが JSON の中で改行を二重にエスケープすると、本文に「\\n- 項目\\n- 項目」がそのまま残り、箇条書きが
+    1行に潰れて紙面に出る(実測 2026-09-21: セットリスト 37 曲が1段落になった。09-15 にも1件)。
+    文章に `\\n` という字面が要ることは無いので、形の欠陥として機械で直す(差し戻さない)。
+    1行しか許さない項目(見出し・リード・label・tags)では空白にする。
+    """
+    n = 0
+    for b in out.get("blocks") or []:
+        if isinstance(b, dict) and isinstance(b.get("markdown"), str):
+            fixed = unescape_text(b["markdown"])
+            if fixed != b["markdown"]:
+                b["markdown"] = fixed
+                n += 1
+    for key in ("title", "lede"):
+        if isinstance(out.get(key), str) and _ESC_NL.search(out[key]):
+            out[key] = _ESC_NL.sub(" ", out[key]).strip()
+            n += 1
+    for s in out.get("sources") or []:
+        if isinstance(s, dict) and isinstance(s.get("label"), str) and _ESC_NL.search(s["label"]):
+            s["label"] = _ESC_NL.sub(" ", s["label"]).strip()
+            n += 1
+    if isinstance(out.get("tags"), list):
+        fixed = [_ESC_NL.sub(" ", t).strip() if isinstance(t, str) else t for t in out["tags"]]
+        n += sum(1 for a, b in zip(out["tags"], fixed) if a != b)
+        out["tags"] = fixed
+    return n
+
+
 def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], rank: str = "",
                  edition: str = "") -> list[str]:
     """出力の**形**の検算(schema は型しか見ない)。通らない理由を返す(空なら合格)。
@@ -113,7 +194,11 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
     (roundup・culture の素材の件数は検めない。残った項目が1件でも載せる)。
     **中身の判断(出典を隠していないか、日付が素材と合うか、new_facts を本当に読んだか)は校閲(モデル)の
     仕事で、ここではしない**(校閲の機械化はしない。編集長の指示)
+    検算の前に、文字として残った `\\n` を本物の改行に戻す(unescape_newlines。out をその場で直す)。
     """
+    fixed = unescape_newlines(out)
+    if fixed:
+        print(f"  文字として残った \\n を改行に戻した({fixed} か所)", flush=True)
     problems = []
     if out.get("status") == "decline":
         if out.get("decline_code") not in DECLINE_CODES:
@@ -288,10 +373,7 @@ def render_article(path: Path, date: str, art: dict, out: dict, source_type_of, 
     for b in out.get("blocks") or []:
         ids = " ".join(dict.fromkeys(str(i) for i in (b.get("fact_ids") or [])))
         # 1 block に空行区切りの複数段落が入っていても、段落ごとに根拠を付ける(監査指摘)
-        for md in re.split(r"\n\s*\n", strip_fact_notes(b.get("markdown", ""))):
-            md = md.strip()
-            if not md:
-                continue
+        for md in split_list_blocks(strip_fact_notes(b.get("markdown", ""))):
             paras.append(f"{md} <!-- {ids} -->" if ids else md)
     body = "\n\n".join(paras)
     path.write_text("---\n" + dump_yaml(fm) + "---\n" + body + "\n", encoding="utf-8")

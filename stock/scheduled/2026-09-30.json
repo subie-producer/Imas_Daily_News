@@ -362,5 +362,35 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609210225-grok-59"
+ },
+ {
+  "id": "sched-2026-09-30-topic-005-2026-開始",
+  "dedup_key": "topic-005-2026",
+  "brand": "cg",
+  "subject": "「クロス×オーバー」Premiere MV公開",
+  "kind": "開始",
+  "note": "21:00から「クロス×オーバー」Premiere MVが公開される",
+  "reserved_on": "2026-09-22",
+  "title": "「クロス×オーバー」Premiere MV公開決定",
+  "url": "https://x.com/imas_CGofficial/status/2101967168527016217",
+  "source_type": "公式",
+  "facts": [
+   "掲載日: 2026-09-21 09:30:00 GMT（2026-09-21 18:30 JST）",
+   "催しの日: 9/30(水)21:00～",
+   "締切: なし",
+   "告知:",
+   "クロス×オーバー",
+   "9/30(水)21:00～",
+   "Premiere MV公開決定",
+   "作詞：八城雄太、アオワイファイ",
+   "作曲・編曲：井上馨太(MONACA)",
+   "歌唱：島村卯月、辻野あかり、渋谷凛、砂塚あきら、本田未央、夢見りあむ",
+   "ハッシュタグ： #デレマス",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609220229-grok-22",
+  "event_date": "2026-09-30"
  }
 ]

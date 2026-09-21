@@ -1,4 +1,3 @@
-# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。
 - dedup_key: gaku-hif-15m-milestone-campaign-2026
   brand: gaku
   subject: 学マスH.I.F挑戦回数1,500万回突破記念キャンペーン
@@ -19,6 +18,10 @@
   brand: joint
   subject: シリーズ20周年ライブ IWSF2026(京王アリーナ TOKYO)
   watch: 各DAYのセットリスト・発表事項(結果として翌号で回収)
+- dedup_key: manaka-birthday-live-2026-postponed
+  brand: dsva
+  subject: 灯里愛夏バースデーオンラインライブ 延期分
+  watch: 延期後の新日程が判明次第 triggers へ
 - dedup_key: million-special-solo-records-52weeks-finale-2026
   brand: million
   subject: 「SPECIAL SOLO RECORDS」52週連続リリース ギネス世界記録挑戦
@@ -151,7 +154,3 @@
   brand: shiny
   subject: シルバーウィーク記念 キャスコレ確定ステップアップガシャ
   watch: 72時間限定の終了日時(判明次第 triggers へ)
-- dedup_key: mirishita-tokugawa-matsuri-idol-grand-prix-2026
-  brand: million
-  subject: ミリシタ 徳川まつりiDOL GRAND-PRIX(10月実装予定)
-  watch: 10月内の正式実装日(判明次第 triggers へ)

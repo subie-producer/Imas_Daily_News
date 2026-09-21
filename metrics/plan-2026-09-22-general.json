@@ -1,0 +1,40 @@
+{
+ "decisions": {
+  "topic-067-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "図書館で本を見つけたという個人の未確認ポスト1件のみ。事象性・裏付けが薄く単独記事にしない"
+  },
+  "topic-073-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ミリオン14thLIVE DAY2公演レポート(ファミ通)。ミリオン面の話題で一般面の対象外"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "topic-067-2026",
+    "reason": "個人の話題",
+    "note": "図書館で本を見つけたという個人の未確認ポスト1件のみ。事象性・裏付けが薄く単独記事にしない"
+   },
+   {
+    "dedup_key": "topic-073-2026",
+    "reason": "面違い",
+    "note": "ミリオン14thLIVE DAY2公演レポート(ファミ通)。ミリオン面の話題で一般面の対象外"
+   }
+  ],
+  "cross_brand": []
+ }
+}

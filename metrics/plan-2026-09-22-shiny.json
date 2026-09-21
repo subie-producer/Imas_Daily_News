@@ -1,0 +1,247 @@
+{
+ "decisions": {
+  "shiny-official-shop-kuji-sendai-inventory-2026-09-20": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "shiny-official-shop-lottery-stock-2026-09-01と同一内容(A/B/C賞ラインナップ・在庫〇のまま変化なし)"
+  },
+  "shiny-parallel-corridor-full-graphic-tshirt-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "パラレル回廊POP UP通販受注(9/20-10/12)は8/26付で既報。個別商品の価格詳細のみで新トリガーなし"
+  },
+  "shiny-style-collection-dolce-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "shiny-style-collection-vol1-2026(9/11付)と価格・受注期間9/27までが完全一致"
+  },
+  "shiny-madoka-effortless-figure-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "shiny-higuchi-madoka-effortless-figure-2026(9/17付)と同じ「予約近日開始」段階、具体的開始日なし"
+  },
+  "topic-052-2026": {
+   "action": "article",
+   "angle": "公式Xが海老の日にエビさんフレームを配布し、引用リポストでの作品投稿を呼びかけていることを伝える",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-053-2026": {
+   "action": "article",
+   "angle": "有償限定72時間のシルバーウィーク記念ステップアップガシャが開始、SSR以上確定枠とパラコレ確定チケットの内容を伝える",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-054-2026": {
+   "action": "article",
+   "angle": "新ピックアップガシャで幽谷霧子の限定★3が登場、月末の3DMV編成で特別演出が発生することを伝える",
+   "rank": "small",
+   "lead_score": 12,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-055-2026": {
+   "action": "article",
+   "angle": "新ピックアップガシャで緋田美琴の限定★3が登場、月末の3DMV編成で特別演出が発生することを伝える",
+   "rank": "small",
+   "lead_score": 12,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-056-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "SideM×シャニマス合同ライブの会員先行(9/12-10/12)は9/13付で既報。joint面の継続主題であり新トリガーなし"
+  },
+  "topic-057-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "refrac7ions-still-blue-2026(9/18付)と同一内容(受注10/4まで・全品目)。新トリガーなし"
+  },
+  "topic-058-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "shiny-style-collection-vol1-2026(9/11付)と価格・受注期間9/27までが完全一致"
+  },
+  "topic-059-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "店舗予選(参加9名)の個人優勝結果、未確認・個人アカウント発信、非公式カードゲーム大会"
+  },
+  "shiny-master-showpiece-cd-bluray-benefits-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-goods-voucher-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場物販整理券と同時刻(13:00)の当落発表で、同一公演の同じ読者行動(結果確認)のため1記事に統合"
+  },
+  "shiny-msp-goods-voucher-2026": {
+   "action": "article",
+   "angle": "Master ShowPiece会場物販整理券とCD/Blu-ray購入特典整理券、両方の当落発表が9月22日13:00に行われることを伝える",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-topic-052-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "公式Xが海老の日にエビさんフレームを配布し、引用リポストでの作品投稿を呼びかけていることを伝える",
+    "lead_score": 5,
+    "dedup_key": "topic-052-2026",
+    "candidate_ids": [
+     "202609220229-grok-69"
+    ]
+   },
+   {
+    "slug": "shiny-topic-053-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "有償限定72時間のシルバーウィーク記念ステップアップガシャが開始、SSR以上確定枠とパラコレ確定チケットの内容を伝える",
+    "lead_score": 20,
+    "dedup_key": "topic-053-2026",
+    "candidate_ids": [
+     "202609220229-grok-70"
+    ]
+   },
+   {
+    "slug": "shiny-topic-054-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "新ピックアップガシャで幽谷霧子の限定★3が登場、月末の3DMV編成で特別演出が発生することを伝える",
+    "lead_score": 12,
+    "dedup_key": "topic-054-2026",
+    "candidate_ids": [
+     "202609220229-grok-71"
+    ]
+   },
+   {
+    "slug": "shiny-topic-055-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "新ピックアップガシャで緋田美琴の限定★3が登場、月末の3DMV編成で特別演出が発生することを伝える",
+    "lead_score": 12,
+    "dedup_key": "topic-055-2026",
+    "candidate_ids": [
+     "202609220229-grok-72"
+    ]
+   },
+   {
+    "slug": "shiny-msp-goods-voucher-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "Master ShowPiece会場物販整理券とCD/Blu-ray購入特典整理券、両方の当落発表が9月22日13:00に行われることを伝える",
+    "lead_score": 55,
+    "dedup_key": "shiny-msp-goods-voucher-2026",
+    "candidate_ids": [
+     "sched-2026-09-22-shiny-msp-goods-voucher-2026-結果",
+     "sched-2026-09-22-shiny-master-showpiece-cd-bluray-benefits-2026-結果"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-official-shop-kuji-sendai-inventory-2026-09-20",
+    "reason": "既報",
+    "note": "shiny-official-shop-lottery-stock-2026-09-01と同一内容(A/B/C賞ラインナップ・在庫〇のまま変化なし)"
+   },
+   {
+    "dedup_key": "shiny-parallel-corridor-full-graphic-tshirt-2026",
+    "reason": "既報",
+    "note": "パラレル回廊POP UP通販受注(9/20-10/12)は8/26付で既報。個別商品の価格詳細のみで新トリガーなし"
+   },
+   {
+    "dedup_key": "shiny-style-collection-dolce-2026",
+    "reason": "既報",
+    "note": "shiny-style-collection-vol1-2026(9/11付)と価格・受注期間9/27までが完全一致"
+   },
+   {
+    "dedup_key": "shiny-madoka-effortless-figure-2026",
+    "reason": "既報",
+    "note": "shiny-higuchi-madoka-effortless-figure-2026(9/17付)と同じ「予約近日開始」段階、具体的開始日なし"
+   },
+   {
+    "dedup_key": "topic-056-2026",
+    "reason": "既報",
+    "note": "SideM×シャニマス合同ライブの会員先行(9/12-10/12)は9/13付で既報。joint面の継続主題であり新トリガーなし"
+   },
+   {
+    "dedup_key": "topic-057-2026",
+    "reason": "既報",
+    "note": "refrac7ions-still-blue-2026(9/18付)と同一内容(受注10/4まで・全品目)。新トリガーなし"
+   },
+   {
+    "dedup_key": "topic-058-2026",
+    "reason": "既報",
+    "note": "shiny-style-collection-vol1-2026(9/11付)と価格・受注期間9/27までが完全一致"
+   },
+   {
+    "dedup_key": "topic-059-2026",
+    "reason": "同人・ファン主催",
+    "note": "店舗予選(参加9名)の個人優勝結果、未確認・個人アカウント発信、非公式カードゲーム大会"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,168 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "ミリシタ10周年記念ライブ開催決定が candidates に複数あるのに紙面に掲載されていない",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "一番くじ 学園アイドルマスター Part6発売が candidates にあるのに紙面に掲載されていない",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "掲載数の偏り：cg 5本、million 6本に対して gaku 2本、sidem 2本",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-shiny-msp-goods-voucher-2026.md",
+   "issue": "分量不足：rank small の目安は 250字以上ですが、本文は約90字で基準以下。sources に記載されている受付媒体（グッズ整理券：ASOBI TICKET、CD・映像整理券：CLUB animate）の詳細が記事に記載されておらず、読者が実際に申し込む際に必要な情報が不足しています。sources の情報を活用して、受付媒体や具体的な手続きについて補足できます。",
+   "scope": "article:2026-09-22-shiny-msp-goods-voucher-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-cg-deresute-11th-anniversary-campaign-2026.md",
+   "issue": "分量不足。rank: small（目安250字）に対してリード+本文が約75字と著しく短い。sources に記載されるプラチナスペシャルガシャセットの内容（有償ジュエル2500個、セット詳細）、スタージュエル5000個の販売枚数・購入上限、アイドル所属上限変更、マニーショップキャンペーンなど、締切日の読者利益に関連する情報を追加できる。ただし、記事は本日の締切というトリガーを有するため必須ではない。",
+   "scope": "article:2026-09-22-cg-deresute-11th-anniversary-campaign-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-dsva-topic-016-2026.md",
+   "issue": "本文の分量が rank: small の目安(250字)に対して著しく不足している。候補の facts に「【踊ってみた】『きゃわぽっぴんどぅー / iLiFE!』」「ハッシュタグ #宇宙星人 #ヴイアラ」などの詳細情報が記載されており、sources に記載された X 投稿および動画のURLから補強可能",
+   "scope": "article:2026-09-22-dsva-topic-016-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-dsva-topic-021-2026.md",
+   "issue": "本文が rank: small の目安 250字より短い（約100字）。候補に記載された詳細情報（配信前投稿、本人コメント、ハッシュタグなど）から内容を充実させられないか確認できるとよい。",
+   "scope": "article:2026-09-22-dsva-topic-021-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-sidem-315shop-lottery-stock-2026-09-21.md",
+   "issue": "リード文の『B賞は花園百々人』の表現が曖昧。本文では『花園百々人のみ在庫なし』と明確ですが、リード文では『品切れ』の意図が明示されていません。『B賞は花園百々人のみ品切れ』と修正することで読者の誤解を防げます。",
+   "scope": "article:2026-09-22-sidem-315shop-lottery-stock-2026-09-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-cg-topic-008-2026.md",
+   "issue": "分量不足: 記事全体が152字で、rank: smallの目安250字に対して大きく不足。候補の事実に終了日情報がないため（「締切: なし」）追加は難しいが、イベント詳細（例：獲得報酬、階級条件など）をゲーム内情報から補足できれば100字程度の上乗せが可能。",
+   "scope": "article:2026-09-22-cg-topic-008-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-cg-topic-012-2026.md",
+   "issue": "本文が約80字で、rank: small の目安250字より大幅に短い。sources に記載されたAMNIBUS公式通販から、販売開始日、在庫・数量制限などの詳細を拾えば、読者に有用な情報として埋まる可能性がある。",
+   "scope": "article:2026-09-22-cg-topic-012-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-dsva-topic-023-2026.md",
+   "issue": "表記ゆれ：sources では「えるすりー１２」（数字は漢数字）、本文では「えるすりー12」（数字は算用数字）と統一されていない",
+   "scope": "article:2026-09-22-dsva-topic-023-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-gaku-jewel-250-2026-09-16.md",
+   "issue": "candidate_ids に指定された 'sched-2026-09-22-gaku-jewel-250-2026-09-16-締切' が candidates/2026-09-22.json に見つからない。frontmatter に verified_facts も記載されていないため、根拠の整合性が確認できない。sources には X投稿が記載されており出典は隠れていないが、マシンから開く不可のため照合できない。ただし、既報台帳（metrics/stories-before-2026-09-22.yml）に同内容が 2026-09-17 に記載されており、事実そのものは確認済み。frontmatter の根拠構造を整える必要あり。",
+   "scope": "article:2026-09-22-gaku-jewel-250-2026-09-16.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-gaku-jewel-250-2026-09-16.md",
+   "issue": "既報内容（配布期間 9/23 4:59、ジュエル250個）と同一だが、『本日の締切（明朝）』という明示的なトリガーが存在するため、rank: small の続報として成立。ただし本文がやや短い（200字程度）。rank 小は目安250字のため、締切時刻の意義や受取方法など、出典に記載されている情報の追加で充実させることが検討できる。",
+   "scope": "article:2026-09-22-gaku-jewel-250-2026-09-16.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-joint-topic-032-2026.md",
+   "issue": "記事の分量が rank: small(目安250字) に対して極めて短い。見出しと本文の合計が約120字。出典のX投稿に記載されるカード一覧や店舗の営業詳細など、追加できる情報がある場合は検討を推奨",
+   "scope": "article:2026-09-22-joint-topic-032-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-joint-topic-033-2026.md",
+   "issue": "分量不足: 本文78字で rank:small の目安250字に大きく不足。候補の X投稿に詳細情報がないため追加困難だが、必要に応じて店舗への取材で催し日時・申込方法・定員などを補充できれば充実します。",
+   "scope": "article:2026-09-22-joint-topic-033-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-million-14thlive-2026.md",
+   "issue": "lede の表記ゆれ。「DAY1は9月22日11時30分、DAY2は9月23日12時から配信される」で「から」が DAY2 だけに見える。統一のため「DAY1は9月22日11時30分から、DAY2は9月23日12時から配信される」と両方に「から」を付けるか、「DAY1は9月22日11時30分配信開始、DAY2は9月23日12時配信開始」と「から」を省略する方が明確。本文第1段落では両方に「から」が付いており、lede と表記を統一すべき。",
+   "scope": "article:2026-09-22-million-14thlive-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-million-topic-035-2026.md",
+   "issue": "分量不足：rank small の目安250字に対し本文が74字。ただし出典に掲載日以外の補充情報が限定的であり、指示で「一般論・推測・言い換えでの水増しは勧めない」とされているため、現在の簡潔な構成は許容可能",
+   "scope": "article:2026-09-22-million-topic-035-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-million-topic-039-2026.md",
+   "issue": "分量不足: rank:small の目安 250字に対し、見出し(25字)＋リード(70字)＋本文(110字)≒205字。出典にある踊ってみた動画公開の背景・楽曲情報・投稿のエンゲージメント・視聴者への呼びかけなどの詳細を加えれば埋まる",
+   "scope": "article:2026-09-22-million-topic-039-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-shiny-topic-052-2026.md",
+   "issue": "候補で募集期間が不明と指摘されており、記事にも期間記述がない。ただし rank: small での分量では許容範囲。",
+   "scope": "article:2026-09-22-shiny-topic-052-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-22-shiny-topic-053-2026.md",
+   "issue": "本文が短い。rank:small(目安250字)に対し、段落が2つ合計100字程度。候補のfactsから「出現率・ジュエル数・ステップごとの価格は投稿本文に記載なし」とあるため、出典に情報がない場合は仕方ないが、sources のX投稿を直接確認し、他に拾える詳細があれば追加を検討",
+   "scope": "article:2026-09-22-shiny-topic-053-2026.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-22-765-solo-collection-dress-code-saijo-2026.md",
+  "article:2026-09-22-cg-deresute-11th-anniversary-campaign-2026.md",
+  "article:2026-09-22-cg-fumocolle-tgs2026.md",
+  "article:2026-09-22-cg-ops-roundup.md",
+  "article:2026-09-22-cg-topic-005-2026.md",
+  "article:2026-09-22-cg-topic-008-2026.md",
+  "article:2026-09-22-cg-topic-012-2026.md",
+  "article:2026-09-22-dsva-topic-016-2026.md",
+  "article:2026-09-22-dsva-topic-021-2026.md",
+  "article:2026-09-22-dsva-topic-023-2026.md",
+  "article:2026-09-22-dsva-valiv-manaka-bd-2026.md",
+  "article:2026-09-22-gaku-gakuma-live-tour-shirube-iwate-2026.md",
+  "article:2026-09-22-gaku-gakumas-shugakuryoko-single-2026.md",
+  "article:2026-09-22-gaku-jewel-250-2026-09-16.md",
+  "article:2026-09-22-joint-topic-032-2026.md",
+  "article:2026-09-22-joint-topic-033-2026.md",
+  "article:2026-09-22-million-14thlive-2026.md",
+  "article:2026-09-22-million-mirishita-tokugawa-matsuri-idol-grand-prix-2026.md",
+  "article:2026-09-22-million-topic-035-2026.md",
+  "article:2026-09-22-million-topic-036-2026.md",
+  "article:2026-09-22-million-topic-039-2026.md",
+  "article:2026-09-22-million-topic-049-2026.md",
+  "article:2026-09-22-shiny-msp-goods-voucher-2026.md",
+  "article:2026-09-22-shiny-topic-052-2026.md",
+  "article:2026-09-22-shiny-topic-053-2026.md",
+  "article:2026-09-22-shiny-topic-054-2026.md",
+  "article:2026-09-22-shiny-topic-055-2026.md",
+  "article:2026-09-22-sidem-315shop-lottery-stock-2026-09-21.md",
+  "article:2026-09-22-sidem-topic-065-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-22-765-solo-collection-dress-code-saijo-2026.md": "9caf308ca865a487990cb47c71ba6991e67bb68cbfc7a92e87a0e3c8f66402b2",
+  "docs/_posts/2026-09-22-cg-deresute-11th-anniversary-campaign-2026.md": "bb88ea947160face7f6722be93239e44445082cdf250b39ec2e8b621ca1fde9e",
+  "docs/_posts/2026-09-22-cg-fumocolle-tgs2026.md": "2fb6c6d65ae4e3f24d09d2bf225f6403b3c924d43721636c474a80ae698dd631",
+  "docs/_posts/2026-09-22-cg-topic-005-2026.md": "aae6c42b9e1bf919bb492deede7a20a5cdc3236455ce9b3b15c25f95478afd31",
+  "docs/_posts/2026-09-22-cg-topic-008-2026.md": "f87777ad99ee858f5b3da4e9d285027e051d08f55f30002b9df78149ae7f907b",
+  "docs/_posts/2026-09-22-cg-topic-012-2026.md": "8e38992fc70c857904f2d7432e90db463077f4babec6c825de9b9f563e4632a8",
+  "docs/_posts/2026-09-22-dsva-topic-016-2026.md": "f4d48adbe8ea5b2b5aa424eb62052127885b1149e87a0a879f7e9cf8ef69b935",
+  "docs/_posts/2026-09-22-dsva-topic-021-2026.md": "68dacb629487f05631cf1bdec59d14f001dd09e2dffb20aee90db9ccff408bf9",
+  "docs/_posts/2026-09-22-dsva-topic-023-2026.md": "8912701996a78dccb6a795e07a54203471eba12e9fbee5115c82688c6cbcb8a6",
+  "docs/_posts/2026-09-22-dsva-valiv-manaka-bd-2026.md": "f8f83fe5c9c312481cb589ff8846d7a6eafca05555747974bdd28a8c3b928533",
+  "docs/_posts/2026-09-22-gaku-gakuma-live-tour-shirube-iwate-2026.md": "583ed15cfdaf99ba48de0fef912a4a27e066099c923ca400a630f5b0636c3b57",
+  "docs/_posts/2026-09-22-gaku-jewel-250-2026-09-16.md": "4db7fe3ed03711bfb42a52e2c10149c35dab71c20a6da198ce10c610fca7d22d",
+  "docs/_posts/2026-09-22-joint-topic-032-2026.md": "76107f1ecbdede1d478664cbdcbcf7963cd9f2aa2b44d226b712c05dea7b7ab0",
+  "docs/_posts/2026-09-22-joint-topic-033-2026.md": "70ebfaa76e49c775ba0f77145c9cfa3ee576fb78524c6492b29da52c9aca2ab6",
+  "docs/_posts/2026-09-22-million-14thlive-2026.md": "1e44cd1469d33037690403f11678736cffef158ab345ae67bf7ccdb1dbe5ba31",
+  "docs/_posts/2026-09-22-million-mirishita-tokugawa-matsuri-idol-grand-prix-2026.md": "539214fb666b93ba9875fb858beae1d47dcd321be90ee8ab23eabac92cfe8292",
+  "docs/_posts/2026-09-22-million-topic-035-2026.md": "ddc0583834d63b0f0e84dd85de6c02e3be4b2e6e74f546997fb3c78f8608e8f9",
+  "docs/_posts/2026-09-22-million-topic-036-2026.md": "84b9a080257e8d7164b51bf390f96861eaf8a96c311dda164ebadac7d60be8a2",
+  "docs/_posts/2026-09-22-million-topic-039-2026.md": "ef81c5da16f57e38c41a8bf20666b817e65fd4176d1525afe0dc4e24cf1795fc",
+  "docs/_posts/2026-09-22-million-topic-049-2026.md": "9cf9e7ce873000b0186bba3931db6d606a5edb328efed1104ceddf134d0730ae",
+  "docs/_posts/2026-09-22-shiny-msp-goods-voucher-2026.md": "2df81f1f70bc5dce739d1b4eb170a61fd3e41804165a6d11645cba49b00fc151",
+  "docs/_posts/2026-09-22-shiny-topic-052-2026.md": "8d519469709d9daff92f0c61eacfb0a74c2f7e971ce5b1543239edcbc05e9f14",
+  "docs/_posts/2026-09-22-shiny-topic-053-2026.md": "9ea7471ff02ad1cdba4b863d0e4aae60deccfbdb49b491b6a21da8af2a7c67d4",
+  "docs/_posts/2026-09-22-shiny-topic-054-2026.md": "3cc73d2550d5e3cf29d7017a52ccfd7c8b4183fb1c50b049cac2a1f25328fb0f",
+  "docs/_posts/2026-09-22-sidem-315shop-lottery-stock-2026-09-21.md": "64c309f63fd956b62e26d287a84bd9777c92df3e673aec018d8da925680344f6",
+  "docs/_posts/2026-09-22-sidem-topic-065-2026.md": "eb9ffbc9c84e756e57cbd7768282471e59d68a927b8710f436d3a3afc18d6984",
+  "docs/_editions/2026-09-22.md": "47949aa482f0a9a941b4ace890a600c6745bcbc3ad1dca612374dbb84da94f7f",
+  "metrics/stories-before-2026-09-22.yml": "300068cd3d33f895837d1e6dca70b718cc8ce85a03e487b3a52fd79b4a8e9a57"
+ }
+}

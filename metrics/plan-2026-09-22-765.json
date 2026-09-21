@@ -1,0 +1,88 @@
+{
+ "decisions": {
+  "765-solo-collection-dress-code-saijo-2026": {
+   "action": "article",
+   "angle": "会場限定CDだった「ドレスコード:最上級」765PRO ALLSTARSがA-on STORE/アソビストア/アニメイトオンラインで通信販売(9/21〜10/4受付・受注生産・11月中旬発送)を開始したことを伝える",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-001-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/23 19時からのオーコメ生配信・9/27までのアーカイブは既報(765-dual-twinlive-venue-cd)と同一内容。発行日(9/22)時点で新しい事実・当日のトリガーなし"
+  },
+  "topic-002-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-solo-collection-dress-code-saijo-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ソロコレ通販開始に気づいた個人投稿。同一施策のため本編記事に統合し単独記事にはしない"
+  },
+  "topic-003-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "終了済み公演のアーカイブを見た個人の感想投稿で、新事実・当日のトリガーなし"
+  },
+  "topic-004-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "FC大阪サポーターの個人投稿による選手チャント紹介。765プロ公式の発表ではなく単体記事化の対象外"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-solo-collection-dress-code-saijo-2026",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "会場限定CDだった「ドレスコード:最上級」765PRO ALLSTARSがA-on STORE/アソビストア/アニメイトオンラインで通信販売(9/21〜10/4受付・受注生産・11月中旬発送)を開始したことを伝える",
+    "lead_score": 25,
+    "dedup_key": "765-solo-collection-dress-code-saijo-2026",
+    "candidate_ids": [
+     "202609210733-explore-0",
+     "202609220229-grok-19"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "topic-001-2026",
+    "reason": "既報",
+    "note": "9/23 19時からのオーコメ生配信・9/27までのアーカイブは既報(765-dual-twinlive-venue-cd)と同一内容。発行日(9/22)時点で新しい事実・当日のトリガーなし"
+   },
+   {
+    "dedup_key": "topic-003-2026",
+    "reason": "個人の話題",
+    "note": "終了済み公演のアーカイブを見た個人の感想投稿で、新事実・当日のトリガーなし"
+   },
+   {
+    "dedup_key": "topic-004-2026",
+    "reason": "個人の話題",
+    "note": "FC大阪サポーターの個人投稿による選手チャント紹介。765プロ公式の発表ではなく単体記事化の対象外"
+   }
+  ],
+  "cross_brand": []
+ }
+}

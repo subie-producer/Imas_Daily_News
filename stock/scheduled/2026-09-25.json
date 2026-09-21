@@ -257,5 +257,35 @@
   "verify": "unconfirmed",
   "src_candidate_id": "202609202336-watch-0",
   "event_date": "2026-09-20"
+ },
+ {
+  "id": "sched-2026-09-25-topic-039-2026-締切",
+  "dedup_key": "topic-039-2026",
+  "brand": "million",
+  "subject": "ミリシタ「X-STREAM THEATER」視聴期限",
+  "kind": "締切",
+  "note": "配信視聴期限(20:59まで)",
+  "reserved_on": "2026-09-22",
+  "title": "X-STREAM THEATER「一旦愛して♡」渡部恵子さんが踊ってみた",
+  "url": "https://x.com/imasml_theater/status/2101914325787304152",
+  "source_type": "公式",
+  "facts": [
+   "掲載日（投稿日時）: 2026-09-21 15:00 JST（Mon, 21 Sep 2026 06:00:01 GMT）",
+   "催しの日: 本文にイベント開始日はなし",
+   "締切: イベント開催は9月25日（金）20:59まで",
+   "告知の中身:",
+   "≪≪≪･X-STREAM THEATER･≫≫≫",
+   "一旦愛して♡",
+   "周防 桃子役、渡部恵子さんが踊ってみた",
+   "#一旦愛して 音源付き動画フレーム: https://idolmaster-official.jp/lp/x-stream-flame",
+   "イベント開催は9月25日（金）20:59まで",
+   "#ミリシタ",
+   "## @imasml_765PRO（アイドルマスター ミリオンライブ！【公式】）",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609220229-grok-56",
+  "deadline": "2026-09-25"
  }
 ]

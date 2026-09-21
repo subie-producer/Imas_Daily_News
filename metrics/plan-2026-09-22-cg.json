@@ -1,0 +1,234 @@
+{
+ "decisions": {
+  "official-shop-lottery-stock-osaka-2026-09-20": {
+   "action": "roundup",
+   "angle": "大阪日本橋店の抽選くじ在庫更新とPOP UP SHOPの完売情報をまとめて伝える",
+   "rank": "",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/20付の在庫更新。単体では記事化しにくい定常情報のため完売情報2件とまとめる"
+  },
+  "cg-fumocolle-tgs2026": {
+   "action": "article",
+   "angle": "東京ゲームショウ2026でふもコレとのコラボゲーミングギア(マウスパッド・キーボード)が展示されたことを伝える",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。価格・発送時期など新規事実あり。出典は未確認だが具体的"
+  },
+  "topic-005-2026": {
+   "action": "article",
+   "angle": "「クロス×オーバー」のPremiere MVが9/30(水)21時に公開決定したことを伝える",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD発売(9/30)は既報だが、MVプレミア公開という新しい当日行動(視聴)のトリガーがある"
+  },
+  "topic-006-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受付期間・指揮者(和田一樹)は9/21付で既報(cg-15th-orchestra-concert-2027)。新事実・当日トリガー無し"
+  },
+  "topic-007-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "topic-006と同内容の9/20付投稿。既報と重複、新事実無し"
+  },
+  "topic-008-2026": {
+   "action": "article",
+   "angle": "デレステで期間限定イベント「LIVE Carnival〜2026 Autumn〜」が開始したことを伝える",
+   "rank": "small",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催決定・開始のためroundup対象外。当日開始の新規イベントで面内最大ニュースと判断"
+  },
+  "topic-009-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人のイラスト投稿。cg面にculture rankは無く、単体のSNS投稿は記事化しない"
+  },
+  "topic-010-2026": {
+   "action": "roundup",
+   "angle": "大阪日本橋店の抽選くじ在庫更新とPOP UP SHOPの完売情報をまとめて伝える",
+   "rank": "",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "BIGアクリルネームプレートキーホルダー(卯月・かな子)完売。単体では小さいため roundup"
+  },
+  "topic-011-2026": {
+   "action": "roundup",
+   "angle": "大阪日本橋店の抽選くじ在庫更新とPOP UP SHOPの完売情報をまとめて伝える",
+   "rank": "",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "描き下ろしイラストカードセット完売(会場再入荷なし)。roundupにまとめる"
+  },
+  "topic-012-2026": {
+   "action": "article",
+   "angle": "レース着物ver.マルチデスクマット全10種の再販開始と10/25受注締切を伝える",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注開始・締切のためroundup対象外、単独記事。既報なし"
+  },
+  "topic-013-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の来訪報告投稿。対象POP UP(TOPPA!!!BASE)は9/16に終了済みで当日行動も無い"
+  },
+  "topic-014-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のくじ結果報告投稿。単体記事化しない"
+  },
+  "cg-deresute-11th-anniversary-campaign-2026": {
+   "action": "article",
+   "angle": "デレステ11周年記念の無料10連ガチャキャンペーンが本日23:59で終了することを知らせる",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。キャンペーン自体は既報だが、本日が締切という当日トリガーがあるため記事化"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-fumocolle-tgs2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "東京ゲームショウ2026でふもコレとのコラボゲーミングギア(マウスパッド・キーボード)が展示されたことを伝える",
+    "lead_score": 20,
+    "dedup_key": "cg-fumocolle-tgs2026",
+    "candidate_ids": [
+     "202609220229-explore-17"
+    ]
+   },
+   {
+    "slug": "cg-topic-005-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「クロス×オーバー」のPremiere MVが9/30(水)21時に公開決定したことを伝える",
+    "lead_score": 15,
+    "dedup_key": "topic-005-2026",
+    "candidate_ids": [
+     "202609220229-grok-22"
+    ]
+   },
+   {
+    "slug": "cg-topic-008-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレステで期間限定イベント「LIVE Carnival〜2026 Autumn〜」が開始したことを伝える",
+    "lead_score": 55,
+    "dedup_key": "topic-008-2026",
+    "candidate_ids": [
+     "202609220229-grok-25"
+    ]
+   },
+   {
+    "slug": "cg-topic-012-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "レース着物ver.マルチデスクマット全10種の再販開始と10/25受注締切を伝える",
+    "lead_score": 10,
+    "dedup_key": "topic-012-2026",
+    "candidate_ids": [
+     "202609220229-grok-29"
+    ]
+   },
+   {
+    "slug": "cg-deresute-11th-anniversary-campaign-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレステ11周年記念の無料10連ガチャキャンペーンが本日23:59で終了することを知らせる",
+    "lead_score": 30,
+    "dedup_key": "cg-deresute-11th-anniversary-campaign-2026",
+    "candidate_ids": [
+     "sched-2026-09-22-cg-deresute-11th-anniversary-campaign-2026-締切"
+    ]
+   },
+   {
+    "slug": "cg-ops-roundup",
+    "brand": "cg",
+    "rank": "roundup",
+    "angle": "大阪日本橋店の抽選くじ在庫更新とPOP UP SHOPの完売情報をまとめて伝える",
+    "lead_score": 0,
+    "dedup_key": "official-shop-lottery-stock-osaka-2026-09-20",
+    "candidate_ids": [
+     "202609220229-explore-1",
+     "202609220229-grok-27",
+     "202609220229-grok-28"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "topic-006-2026",
+    "reason": "既報",
+    "note": "受付期間・指揮者(和田一樹)は9/21付で既報(cg-15th-orchestra-concert-2027)。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "topic-007-2026",
+    "reason": "既報",
+    "note": "topic-006と同内容の9/20付投稿。既報と重複、新事実無し"
+   },
+   {
+    "dedup_key": "topic-009-2026",
+    "reason": "個人の話題",
+    "note": "ファン個人のイラスト投稿。cg面にculture rankは無く、単体のSNS投稿は記事化しない"
+   },
+   {
+    "dedup_key": "topic-013-2026",
+    "reason": "個人の話題",
+    "note": "個人の来訪報告投稿。対象POP UP(TOPPA!!!BASE)は9/16に終了済みで当日行動も無い"
+   },
+   {
+    "dedup_key": "topic-014-2026",
+    "reason": "個人の話題",
+    "note": "個人のくじ結果報告投稿。単体記事化しない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

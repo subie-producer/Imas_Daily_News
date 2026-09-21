@@ -1,0 +1,222 @@
+{
+ "decisions": {
+  "nagano-aniera-festa-2026-dsva": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報(story_id: nagano-aniera-festa-2026-dsva, 9/21付)と同一内容。開演12:00終演20:00まで一致し新事実・当日トリガー無し"
+  },
+  "valiv-manaka-bd-2026": {
+   "action": "article",
+   "angle": "灯里愛夏BIRTHDAY ONLINE LIVE延期公演が10/28開催決定。配信とLV(ユナイテッド・シネマお台場)の2会場、ゲストに上水流宇宙・レトラが決定したことを伝える",
+   "rank": "large",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "未掲載の新規発表。facts8件、面内で最大級のニュース"
+  },
+  "valiv-latest-information-special-2026-09-24": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報(story_id: valiv-latest-info-special-2026-09-24, 9/19付)と同一内容。出演:勝股Pも既出で新事実なし"
+  },
+  "topic-016-2026": {
+   "action": "article",
+   "angle": "上水流宇宙の新作ショート動画「きゃわぽっぴんどぅー(iLiFE!)」公開を伝える",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-022(本人投稿の同一動画)をmerge。roundup化には素材2件で不足のためsmall記事とする"
+  },
+  "topic-017-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ナガノアニエラフェスタ出演は既報。御礼投稿に新事実・当日トリガー無し"
+  },
+  "topic-018-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報(story_id: cosmo-birthday-digest-2026, 9/21付)と同一内容"
+  },
+  "topic-019-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報(story_id: mananono-2026-09-20, 9/21付)に十河ののは出演を含め掲載済み"
+  },
+  "topic-020-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-manaka-bd-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "延期公演(10/28)の日時決定という同一発表を伝える本人投稿。公式発表の記事にまとめる"
+  },
+  "topic-021-2026": {
+   "action": "article",
+   "angle": "灯里愛夏がチャンネル登録者5万人達成を記念した3D配信を実施したことを伝える",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "未掲載の新規実施報告。facts少なめでsmall"
+  },
+  "topic-022-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-016-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-016と同一動画の本人アカウント投稿"
+  },
+  "topic-023-2026": {
+   "action": "article",
+   "angle": "上水流宇宙の今週の運営・出演予定(TGS2026試遊データプレイ、えるすりー12出演、バースデーボイス締切)をまとめた本人投稿を紹介",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "roundup化には素材不足(3件未満)のためsmall記事とする"
+  },
+  "topic-024-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "フラスタ御礼と休養宣言のみで、催し名・日付・新事実いずれも無い"
+  },
+  "topic-025-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "深海フェス10/17出演等は既報(dsva-shinkaifes-2026)。残る2/27 MIXTOKYO NEOはリンクのみで出演の詳細記載なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-manaka-bd-2026",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "灯里愛夏BIRTHDAY ONLINE LIVE延期公演が10/28開催決定。配信とLV(ユナイテッド・シネマお台場)の2会場、ゲストに上水流宇宙・レトラが決定したことを伝える",
+    "lead_score": 70,
+    "dedup_key": "valiv-manaka-bd-2026",
+    "candidate_ids": [
+     "202609212335-watch-0",
+     "202609220229-grok-37"
+    ]
+   },
+   {
+    "slug": "dsva-topic-016-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙の新作ショート動画「きゃわぽっぴんどぅー(iLiFE!)」公開を伝える",
+    "lead_score": 5,
+    "dedup_key": "topic-016-2026",
+    "candidate_ids": [
+     "202609220229-grok-33",
+     "202609220229-grok-39"
+    ]
+   },
+   {
+    "slug": "dsva-topic-021-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏がチャンネル登録者5万人達成を記念した3D配信を実施したことを伝える",
+    "lead_score": 15,
+    "dedup_key": "topic-021-2026",
+    "candidate_ids": [
+     "202609220229-grok-38"
+    ]
+   },
+   {
+    "slug": "dsva-topic-023-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙の今週の運営・出演予定(TGS2026試遊データプレイ、えるすりー12出演、バースデーボイス締切)をまとめた本人投稿を紹介",
+    "lead_score": 5,
+    "dedup_key": "topic-023-2026",
+    "candidate_ids": [
+     "202609220229-grok-40"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "nagano-aniera-festa-2026-dsva",
+    "reason": "既報",
+    "note": "既報(story_id: nagano-aniera-festa-2026-dsva, 9/21付)と同一内容。開演12:00終演20:00まで一致し新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "valiv-latest-information-special-2026-09-24",
+    "reason": "既報",
+    "note": "既報(story_id: valiv-latest-info-special-2026-09-24, 9/19付)と同一内容。出演:勝股Pも既出で新事実なし"
+   },
+   {
+    "dedup_key": "topic-017-2026",
+    "reason": "既報",
+    "note": "ナガノアニエラフェスタ出演は既報。御礼投稿に新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "topic-018-2026",
+    "reason": "既報",
+    "note": "既報(story_id: cosmo-birthday-digest-2026, 9/21付)と同一内容"
+   },
+   {
+    "dedup_key": "topic-019-2026",
+    "reason": "既報",
+    "note": "既報(story_id: mananono-2026-09-20, 9/21付)に十河ののは出演を含め掲載済み"
+   },
+   {
+    "dedup_key": "topic-024-2026",
+    "reason": "その他",
+    "note": "フラスタ御礼と休養宣言のみで、催し名・日付・新事実いずれも無い"
+   },
+   {
+    "dedup_key": "topic-025-2026",
+    "reason": "出典不足",
+    "note": "深海フェス10/17出演等は既報(dsva-shinkaifes-2026)。残る2/27 MIXTOKYO NEOはリンクのみで出演の詳細記載なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

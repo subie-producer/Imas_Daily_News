@@ -1,0 +1,173 @@
+{
+ "decisions": {
+  "sidem-game-announcement-fan-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ゲーム発表自体は sidem-home-game-2026(9/15既報)で記事化済み。本主題は未確認の個人ファン投稿の感想のみで新情報なし"
+  },
+  "sidem-315shop-lottery-stock-2026-09-21": {
+   "action": "article",
+   "angle": "315!!!SHOP抽選くじの最新在庫状況(A〜D賞、品切れ品目を含む)を伝える",
+   "rank": "medium",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "5周年展開自体は9/3既報だが、在庫状況の更新(9/21付)は新規の生活情報として案内"
+  },
+  "topic-060-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注締切9/27・グッズ内容とも9/11既報(sidem-tales-goods-wave4-2026)と同一、新事実なし"
+  },
+  "topic-061-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注期間・トランセンデントリヴェイルLIVEver.グッズとも9/17既報(sidem-11th-live-performance-goods-2026)と同一"
+  },
+  "topic-062-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公演日程・プレミアム会員先行の受付期間(〜10/4)・当落発表日とも9/14・9/21既報と同一、新情報なし"
+  },
+  "topic-063-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY2同時視聴上映会(9/20 11:30〜)の日程・URLは9/16・9/18既報と同一で、当日は既に終了済み"
+  },
+  "topic-064-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注締切9/23は9/4既報(sidem-2dmv-transcendent-goods-2026-09)と同一、新事実なし"
+  },
+  "topic-065-2026": {
+   "action": "article",
+   "angle": "『SideM 10th ANNIVERSARY P@SSION SOLO COLLECTION 04』のオンライン受注が開始(アニメイト・アソビストア、10/4締切)したことを伝える",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "商品自体は11th STAGE会場先行として9/8既報だが、通販詳細は「後日案内」とされており、今回のオンライン受注開始・締切は新トリガー"
+  },
+  "topic-066-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "未確認の個人感想投稿のみで、新しい公式発表や催しの情報を含まない"
+  },
+  "topic-071-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人によるファンアート再掲投稿1件のみ。culture(ファン面)は general 面限定のためsidem面では対象外"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-315shop-lottery-stock-2026-09-21",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "315!!!SHOP抽選くじの最新在庫状況(A〜D賞、品切れ品目を含む)を伝える",
+    "lead_score": 5,
+    "dedup_key": "sidem-315shop-lottery-stock-2026-09-21",
+    "candidate_ids": [
+     "202609211833-explore-7"
+    ]
+   },
+   {
+    "slug": "sidem-topic-065-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "『SideM 10th ANNIVERSARY P@SSION SOLO COLLECTION 04』のオンライン受注が開始(アニメイト・アソビストア、10/4締切)したことを伝える",
+    "lead_score": 30,
+    "dedup_key": "topic-065-2026",
+    "candidate_ids": [
+     "202609220229-grok-82"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-game-announcement-fan-report-2026",
+    "reason": "個人の話題",
+    "note": "ゲーム発表自体は sidem-home-game-2026(9/15既報)で記事化済み。本主題は未確認の個人ファン投稿の感想のみで新情報なし"
+   },
+   {
+    "dedup_key": "topic-060-2026",
+    "reason": "既報",
+    "note": "受注締切9/27・グッズ内容とも9/11既報(sidem-tales-goods-wave4-2026)と同一、新事実なし"
+   },
+   {
+    "dedup_key": "topic-061-2026",
+    "reason": "既報",
+    "note": "受注期間・トランセンデントリヴェイルLIVEver.グッズとも9/17既報(sidem-11th-live-performance-goods-2026)と同一"
+   },
+   {
+    "dedup_key": "topic-062-2026",
+    "reason": "既報",
+    "note": "公演日程・プレミアム会員先行の受付期間(〜10/4)・当落発表日とも9/14・9/21既報と同一、新情報なし"
+   },
+   {
+    "dedup_key": "topic-063-2026",
+    "reason": "既報",
+    "note": "DAY2同時視聴上映会(9/20 11:30〜)の日程・URLは9/16・9/18既報と同一で、当日は既に終了済み"
+   },
+   {
+    "dedup_key": "topic-064-2026",
+    "reason": "既報",
+    "note": "受注締切9/23は9/4既報(sidem-2dmv-transcendent-goods-2026-09)と同一、新事実なし"
+   },
+   {
+    "dedup_key": "topic-066-2026",
+    "reason": "個人の話題",
+    "note": "未確認の個人感想投稿のみで、新しい公式発表や催しの情報を含まない"
+   },
+   {
+    "dedup_key": "topic-071-2026",
+    "reason": "個人の話題",
+    "note": "個人によるファンアート再掲投稿1件のみ。culture(ファン面)は general 面限定のためsidem面では対象外"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -50,6 +50,7 @@ official_suffixes:
 
 # --- 準公式: 公式レーベル・公式ストア等のグループ/パートナー企業 ---
 semi_official_domains:
+  - a-onstore.jp          # 合議で追加: バンダイナムコグループの公式ショップ。公式レーベル・公式ストアの定義に該当
   - 1kuji.com             # 合議で追加: バンダイナムコグループ企業が一番くじ商品の企画・開発・販売を行い、自社商品を告知
   - on-line.1kuji.com     # 一番くじONLINE(1kuji.com と同じ BANDAI SPIRITS の運営。p-bandai.jp と同じ扱いに揃えた 2026-09-18)
   - asobiticket2.asobistore.jp # 合議で追加: asobistore.jp配下、登録済み同系列ドメインと同じ公式プラットフォーム
@@ -82,6 +83,7 @@ suffix_types:
 
 # --- 報道: 独立した報道メディア ---
 press_domains:
+  - leveluplogy.jp        # 合議で追加: TGS2026会場で自ら取材したゲーム系報道メディア
   - gamebusiness.jp       # 合議で追加: 独立したゲーム業界メディアがTGS2026での取材を基に報道
   - ibatoco.jp            # いばとーこ(茨城の地域ニュースメディア)
   - panora.tokyo          # 合議で追加: XR/VTuber専門のニュースサイト。現地会場でのライブレポートを取材して掲載
@@ -119,6 +121,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - twittrend.jp          # 合議で追加: 地域別Xトレンドを集計して伝える媒体
   - j-hobby.net           # 合議で追加: 複数のオンラインストアの予約情報を集約掲載し、アフィリエイト報酬を得ている
   - atpress.ne.jp         # 合議で追加: プレスリリース配信サービス。企業の発表を配信する媒体
   - idolmaster.gamers-labo.com # 合議で追加: 5chで話題になった内容をまとめるサイト。他所の投稿を媒体として伝えている
@@ -203,6 +206,10 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - fumo-collection.com   # 合議で追加: ゲーミング機器ブランド運営。複数作品とのコラボ商品製造販売
+  - fullcomp.jp           # 合議で追加: トレーディングカード販売チェーン。アイマス関連商品の販売点
+  - amnibus.com           # 合議で追加: ライセンスグッズ製造・販売会社。複数タイトルの正規品を扱う
+  - terracemall.com       # 合議で追加: 会場としてキャンペーン開催を一次発信。定義の当事者に会場を含む
   - promo.whomor.com      # 合議で追加: 問い合わせ先shop@whomor.comでイベント企画・運営を担当
   - movic.jp              # 合議で追加: ライセンス商品のグッズを企画・制作・販売
   - lawson-faq.lawson.co.jp # 合議で追加: 販売元。一番くじをローソン店舗で取り扱う
@@ -399,6 +406,7 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - keeeko_watanabe     # 合議で追加: 渡部恵子本人アカウント推測（姓表記・内容から）
     - zekieri818          # 合議で追加: 声優大関英里本人のアカウント
     - yuka_s1113          # 合議で追加: 声優斉藤佑圭本人のアカウント
     - yamazaki_haruka     # 合議で追加: 声優山崎はるか本人のアカウント
@@ -427,10 +435,20 @@ x_accounts:
     - famitsu
     - GamerNeJp
   二次情報:
+    - TCGsupplyNavi       # 合議で追加: TCG情報サイト。商品情報を集約・発信
     - gkmas_GR            # 合議で追加: 雑誌情報を伝達、独自取材なし
     - imasnews765
     - zutapoke
   ファン:
+    - sakumasanosuke      # 合議で追加: 個人アカウント。ファンアート再掲
+    - musuko_p            # 合議で追加: 個人ハンドルネーム。ライブ視聴・物販体験
+    - imas_handai         # 合議で追加: 個人アカウント。次のライブ情報に反応
+    - e_santo310          # 合議で追加: 個人サポーター。チャント制作・共有
+    - UT20A               # 合議で追加: 個人アカウント。POPUP SHOP訪問体験
+    - Ninonimol           # 合議で追加: 個人アカウント。二次的な情報の紹介
+    - BMkanazawa          # 合議で追加: 個人ハンドルネーム推測。店舗予選参加者
+    - 5x7x2               # 合議で追加: 個人アカウント。グッズ通販情報に気づく
+    - 0_hiyamugi_0        # 合議で追加: 個人ハンドルネーム。くじの情報発信者
     - rakugan666          # 合議で追加: ライブ遠征の宿案内を共有するファン
     - neokopan            # 合議で追加: ツアマスカード店舗在庫をファンが共有
     - moko_exe            # 合議で追加: デレステガシャ結果の個人投稿
@@ -515,6 +533,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - fc_machida          # 合議で追加: オリパを販売する小売店で、商品販売元からの一次発信
+    - wanwangomigomi      # 合議で追加: 制作担当イラストレーター。本人が担当明示
+    - Nankai_san          # 合議で追加: 制作担当イラストレーター。本人が担当明示
     - thechara_2014       # 合議で追加: マルイと京まふ会場のショップ運営
     - marui_uekt_a        # 合議で追加: マルイがショップ開催・販売
     - MegaOouchi          # 合議で追加: 一番くじ販売店の販売開始告知。販売側一次発信
@@ -580,6 +601,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  note.com/regal_broom2474: ファン                # 合議で追加: 個人ブログ。ライブ参加の目撃と感想。個人は常にファン
   docs.google.com/forms/d/e/1FAIpQLSdyUPmVP5FEpa-g80fdmZpBfyyynct6fHia4POevGc9mqJfuQ: 公式 # 合議で追加: PROJECT IM@S vα-livの公式特別番組向け募集フォーム
   tiktok.com/@valiv_official: 公式              # ヴイアラ(vα-liv)公式の TikTok(X の @valiv_official と同じ主体)
   ch.nicovideo.jp/sidem: 公式                    # アイドルマスター SideM チャンネル(ブランド公式のニコニコチャンネル)

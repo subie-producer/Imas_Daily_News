@@ -221,5 +221,36 @@
   "src_candidate_id": "202609210225-grok-66",
   "event_date": "2026-09-12",
   "deadline": "2026-09-12"
+ },
+ {
+  "id": "sched-2026-10-04-topic-065-2026-締切",
+  "dedup_key": "topic-065-2026",
+  "brand": "sidem",
+  "subject": "SideM SOLO COLLECTION 04",
+  "kind": "締切",
+  "note": "オンライン受注最終日(23:59まで)",
+  "reserved_on": "2026-09-22",
+  "title": "『THE IDOLM@STER SideM 10th ANNIVERSARY P@SSION SOLO COLLECTION 04』オンライン受注",
+  "url": "https://x.com/SideM_lantis/status/2101938274126450843",
+  "source_type": "準公式",
+  "facts": [
+   "掲載日: 2026-09-21 16:35 JST（Mon, 21 Sep 2026 07:35:11 GMT）",
+   "催しの日: 発売日として投稿に書かれた日は 2026年9月12日。会場先行発売は 9/12（土）・9/13（日）の「THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～」会場",
+   "締切: 受注期間 2026年10月4日（日）23：59まで",
+   "9/12（土）・9/13（日）に開催された「THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～」会場にて先行発売した本商品が、オンラインショップにて受注販売中",
+   "予約（アニメイト）: https://www.animate-onlineshop.jp/pn/pd/3579061/",
+   "予約（アソビストア）: https://shop.asobistore.jp/products/detail/248500-00-00-00",
+   "価格: 2,750円(10%税込)",
+   "価格: 2,500円(税抜)",
+   "発売日: 2026年9月12日",
+   "収録 01: SUPERNOVA (大河タケル ソロVer.)",
+   "収録 02: SUPERNOVA (円城寺道流 ソロVer.)",
+   "収録 03: SUPERNOVA (牙崎 漣 ソロVer.)"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609220229-grok-82",
+  "event_date": "2026-09-12",
+  "deadline": "2026-10-04"
  }
 ]

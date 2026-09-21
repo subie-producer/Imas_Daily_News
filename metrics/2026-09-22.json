@@ -1,0 +1,100 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-22T02:29:41+09:00",
+   "edition": "2026-09-22",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 345,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 1,
+    "explore:million": 6,
+    "explore:shiny": 3,
+    "explore:sidem": 0,
+    "explore:gakuen": 2,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 4,
+    "grok:765as": 4,
+    "grok:cinderella": 10,
+    "grok:million": 17,
+    "grok:shiny": 8,
+    "grok:sidem": 7,
+    "grok:gakuen": 6,
+    "grok:dsva": 11,
+    "grok:joint-other": 3,
+    "grok:trend": 7
+   },
+   "normalized": 84,
+   "added": 76,
+   "verify": {
+    "confirmed": 55,
+    "unconfirmed": 29,
+    "failed": 0
+   },
+   "duration_s": 1744
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-22T04:09:32+09:00",
+   "edition": "2026-09-22",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 29,
+   "written": 26,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 107,
+    "covered": 107,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "gaku-gakumas-shugakuryoko-single-2026",
+    "cg-ops-roundup"
+   ],
+   "stages_min": {
+    "選定": 7.869878137111664,
+    "執筆": 22.615188944339753,
+    "出典の判定": 2.010324168205261,
+    "組版": 3.032087763150533,
+    "校閲": 2.132204874356588,
+    "校閲1波": 2.132204874356588
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "shiny-topic-055-2026"
+   ],
+   "duration_s": 4134
+  }
+ ]
+}

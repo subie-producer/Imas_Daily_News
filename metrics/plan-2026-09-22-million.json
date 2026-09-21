@@ -1,0 +1,398 @@
+{
+ "decisions": {
+  "million-theater-days-10th-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ミリシタ10周年ライブ(2027/6/26-27 Kアリーナ横浜)は9/21付「million-10th-anniversary-live-2027」で既報。新情報なし"
+  },
+  "million-million-live-10th-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10周年ライブ告知は既報。付随するDAY2新曲配信情報もDAY2公演レポートで既報"
+  },
+  "million-14th-live-day1-setlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY1全33曲セットリストは9/21付「ミリオン14th DAY1、ツイン主演で新曲3曲」に掲載済み"
+  },
+  "million-14th-live-day2-setlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY2全39曲セットリストは9/21付「ミリオン14th DAY2、39曲で公演」に掲載済み"
+  },
+  "million-14th-day1-twin-lead-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "徳川まつり＆エミリーのツイン主演は9/21付DAY1公演レポートに既報(同記事内)"
+  },
+  "million-14th-day2-blooming-sign-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "馬場このみ＆百瀬莉緒のツイン主演は9/21付DAY2公演レポートに既報(同記事内)"
+  },
+  "mirishita-10th-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10周年ライブ告知・DAY2新曲(If I.../Waking Up My Heart)配信も既報(DAY2公演レポート)"
+  },
+  "mirishita-tokugawa-matsuri-idol-grand-prix-2026": {
+   "action": "article",
+   "angle": "ミリシタに徳川まつりの「アイドルグランプリ」が10月に実装されると発表されたことを伝える",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新規実装告知。素材は少ないが未報の新情報"
+  },
+  "million-14thlive-2026": {
+   "action": "article",
+   "angle": "14thLIVEの同時視聴上映会(視聴ページ公開・アーカイブ視聴期間)など、配信・視聴の最新案内をまとめる",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-041/042/043(同時視聴上映会の開催・時間変更・視聴ページ公開)を統合。主要日程は既報だが視聴ページURLとアーカイブ期間(9/24-28)が新情報"
+  },
+  "topic-035-2026": {
+   "action": "article",
+   "angle": "DAY2「Blooming Sign」打ち上げセレクションガシャの開催(締切9/27)を伝える",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-037(開催中・締切情報)を統合"
+  },
+  "topic-036-2026": {
+   "action": "article",
+   "angle": "14thLIVE参加への感謝を込めたサンクスロール動画の公開を伝える",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-050(YouTube本編投稿)を統合"
+  },
+  "topic-037-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-035-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-035と同一のDAY2打ち上げガシャ"
+  },
+  "topic-038-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "『14thLIVEありがとうログインボーナス』は9/21付既報(story: 14thlive)"
+  },
+  "topic-039-2026": {
+   "action": "article",
+   "angle": "周防桃子役・渡部恵子さんによる「一旦愛して♡」踊ってみた動画の公開(挑戦は9/25まで)を伝える",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-051(本人の言及ポスト)を統合"
+  },
+  "topic-040-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アーカイブ期間・配信チケット販売は既報。御礼投稿のみで新情報なし"
+  },
+  "topic-041-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14thlive-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同時視聴上映会の開催告知。million-14thlive-2026にまとめる"
+  },
+  "topic-042-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14thlive-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "時間変更(12:00→11:30)は既にDAY1レポートに反映済み。million-14thlive-2026にまとめる"
+  },
+  "topic-043-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14thlive-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "視聴ページ公開(新情報)。million-14thlive-2026にまとめる"
+  },
+  "topic-044-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ミリシタ9周年グッズ販売開始は9/21付既報(story: million-9th-anniversary-goods-2026)"
+  },
+  "topic-045-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "内容は10周年ライブ告知・DAY2レポートで既報。新事実なし"
+  },
+  "topic-046-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アーカイブ配信開始(9/21 18:00)は既報。アンケート実施は詳細不明で単独記事化できず"
+  },
+  "topic-049-2026": {
+   "action": "article",
+   "angle": "14thLIVE開催記念のオンライン限定グッズ(キャラファイングラフ等)受注販売開始(締切10/11)を伝える",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場物販整理券(既報のmillion-14th-live-goods-2026)とは別施策"
+  },
+  "topic-050-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-036-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-036と同一のサンクスロール動画"
+  },
+  "topic-051-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-039-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-039と同一の踊ってみた企画への本人言及"
+  },
+  "million-live-9th-anniversary-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9周年衣装パーカー受注は9/18付既報。本日の同時視聴上映会DAY1はmillion-14thlive-2026で扱う"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-mirishita-tokugawa-matsuri-idol-grand-prix-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタに徳川まつりの「アイドルグランプリ」が10月に実装されると発表されたことを伝える",
+    "lead_score": 40,
+    "dedup_key": "mirishita-tokugawa-matsuri-idol-grand-prix-2026",
+    "candidate_ids": [
+     "202609211833-explore-14"
+    ]
+   },
+   {
+    "slug": "million-14thlive-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "14thLIVEの同時視聴上映会(視聴ページ公開・アーカイブ視聴期間)など、配信・視聴の最新案内をまとめる",
+    "lead_score": 20,
+    "dedup_key": "million-14thlive-2026",
+    "candidate_ids": [
+     "202609212335-watch-2",
+     "202609220229-grok-58",
+     "202609220229-grok-59",
+     "202609220229-grok-60"
+    ]
+   },
+   {
+    "slug": "million-topic-035-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "DAY2「Blooming Sign」打ち上げセレクションガシャの開催(締切9/27)を伝える",
+    "lead_score": 15,
+    "dedup_key": "topic-035-2026",
+    "candidate_ids": [
+     "202609220229-grok-52",
+     "202609220229-grok-54"
+    ]
+   },
+   {
+    "slug": "million-topic-036-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "14thLIVE参加への感謝を込めたサンクスロール動画の公開を伝える",
+    "lead_score": 10,
+    "dedup_key": "topic-036-2026",
+    "candidate_ids": [
+     "202609220229-grok-53",
+     "202609220229-grok-67"
+    ]
+   },
+   {
+    "slug": "million-topic-039-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "周防桃子役・渡部恵子さんによる「一旦愛して♡」踊ってみた動画の公開(挑戦は9/25まで)を伝える",
+    "lead_score": 15,
+    "dedup_key": "topic-039-2026",
+    "candidate_ids": [
+     "202609220229-grok-56",
+     "202609220229-grok-68"
+    ]
+   },
+   {
+    "slug": "million-topic-049-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "14thLIVE開催記念のオンライン限定グッズ(キャラファイングラフ等)受注販売開始(締切10/11)を伝える",
+    "lead_score": 20,
+    "dedup_key": "topic-049-2026",
+    "candidate_ids": [
+     "202609220229-grok-66"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-theater-days-10th-live-2027",
+    "reason": "既報",
+    "note": "ミリシタ10周年ライブ(2027/6/26-27 Kアリーナ横浜)は9/21付「million-10th-anniversary-live-2027」で既報。新情報なし"
+   },
+   {
+    "dedup_key": "million-million-live-10th-2027",
+    "reason": "既報",
+    "note": "10周年ライブ告知は既報。付随するDAY2新曲配信情報もDAY2公演レポートで既報"
+   },
+   {
+    "dedup_key": "million-14th-live-day1-setlist-2026",
+    "reason": "既報",
+    "note": "DAY1全33曲セットリストは9/21付「ミリオン14th DAY1、ツイン主演で新曲3曲」に掲載済み"
+   },
+   {
+    "dedup_key": "million-14th-live-day2-setlist-2026",
+    "reason": "既報",
+    "note": "DAY2全39曲セットリストは9/21付「ミリオン14th DAY2、39曲で公演」に掲載済み"
+   },
+   {
+    "dedup_key": "million-14th-day1-twin-lead-2026",
+    "reason": "既報",
+    "note": "徳川まつり＆エミリーのツイン主演は9/21付DAY1公演レポートに既報(同記事内)"
+   },
+   {
+    "dedup_key": "million-14th-day2-blooming-sign-2026",
+    "reason": "既報",
+    "note": "馬場このみ＆百瀬莉緒のツイン主演は9/21付DAY2公演レポートに既報(同記事内)"
+   },
+   {
+    "dedup_key": "mirishita-10th-live-2027",
+    "reason": "既報",
+    "note": "10周年ライブ告知・DAY2新曲(If I.../Waking Up My Heart)配信も既報(DAY2公演レポート)"
+   },
+   {
+    "dedup_key": "topic-038-2026",
+    "reason": "既報",
+    "note": "『14thLIVEありがとうログインボーナス』は9/21付既報(story: 14thlive)"
+   },
+   {
+    "dedup_key": "topic-040-2026",
+    "reason": "既報",
+    "note": "アーカイブ期間・配信チケット販売は既報。御礼投稿のみで新情報なし"
+   },
+   {
+    "dedup_key": "topic-044-2026",
+    "reason": "既報",
+    "note": "ミリシタ9周年グッズ販売開始は9/21付既報(story: million-9th-anniversary-goods-2026)"
+   },
+   {
+    "dedup_key": "topic-045-2026",
+    "reason": "既報",
+    "note": "内容は10周年ライブ告知・DAY2レポートで既報。新事実なし"
+   },
+   {
+    "dedup_key": "topic-046-2026",
+    "reason": "既報",
+    "note": "アーカイブ配信開始(9/21 18:00)は既報。アンケート実施は詳細不明で単独記事化できず"
+   },
+   {
+    "dedup_key": "million-live-9th-anniversary-2026",
+    "reason": "既報",
+    "note": "9周年衣装パーカー受注は9/18付既報。本日の同時視聴上映会DAY1はmillion-14thlive-2026で扱う"
+   }
+  ],
+  "cross_brand": []
+ }
+}

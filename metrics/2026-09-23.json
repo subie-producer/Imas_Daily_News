@@ -1,0 +1,102 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-23T02:29:15+09:00",
+   "edition": "2026-09-23",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 345,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 0,
+    "explore:million": 3,
+    "explore:shiny": 0,
+    "explore:sidem": 1,
+    "explore:gakuen": 2,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 3,
+    "grok:765as": 3,
+    "grok:cinderella": 9,
+    "grok:million": 10,
+    "grok:shiny": 11,
+    "grok:sidem": 4,
+    "grok:gakuen": 16,
+    "grok:dsva": 9,
+    "grok:joint-other": 0,
+    "grok:trend": 0
+   },
+   "normalized": 67,
+   "added": 63,
+   "verify": {
+    "confirmed": 46,
+    "unconfirmed": 21,
+    "failed": 0
+   },
+   "duration_s": 1717
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-23T04:04:33+09:00",
+   "edition": "2026-09-23",
+   "rounds": 6,
+   "approved": true,
+   "lint_green": true,
+   "planned": 30,
+   "written": 25,
+   "roundups": 3,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 115,
+    "covered": 115,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "shiny-ops-roundup",
+    "sidem-06-02056a",
+    "gaku-topic-jahhjfbhde"
+   ],
+   "stages_min": {
+    "選定": 7.498923178513845,
+    "執筆": 11.957956111431121,
+    "出典の判定": 2.1812240997950236,
+    "組版": 2.4529601335525513,
+    "校閲": 1.929207690556844,
+    "校閲1波": 1.929207690556844
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "cg-national-tower-fukuoka-2026",
+    "gaku-gakuen-radio-2026-09-23-guests"
+   ],
+   "duration_s": 3835
+  }
+ ]
+}

@@ -19,5 +19,33 @@
   "verify": "confirmed",
   "src_candidate_id": "202608270220-claude-147",
   "deadline": "2026-10-12"
+ },
+ {
+  "id": "sched-2026-10-09-topic-bdbfeeichf-終了",
+  "dedup_key": "topic-bdbfeeichf",
+  "brand": "gaku",
+  "subject": "LIVE TOUR -標- 岩手公演記念ガシャ",
+  "kind": "終了",
+  "note": "ガシャ開催終了日(10:59まで)",
+  "reserved_on": "2026-09-23",
+  "title": "LIVE TOUR -標- 岩手公演記念ガシャ",
+  "url": "https://x.com/gkmas_official/status/2102357812575928420",
+  "source_type": "公式",
+  "facts": [
+   "掲載日: 2026-09-22 20:22:17 JST（取得時刻 2026-09-22 11:22:17 GMT）",
+   "催しの日: 本文は開催の告知。開始日時の表記は本文に無い",
+   "締切: 開催期間: 10/9(金)10:59まで（予定）（投稿文のまま。年の表記は本文に無い）",
+   "ガシャ名: LIVE TOUR -標- 岩手公演記念ガシャ",
+   "有償10連で SSR プロデュースアイドル確定",
+   "岩手公演出演アイドルのみ登場",
+   "名刺背景のおまけ付き",
+   "開催期間: 10/9(金)10:59まで（予定）",
+   "出現率の個別数値、必要ジュエル数は投稿本文に無い",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609230228-grok-35",
+  "deadline": "2026-10-09"
  }
 ]

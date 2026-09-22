@@ -1,0 +1,197 @@
+{
+ "decisions": {
+  "cinderella-anime-viewing-order-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "過年度",
+   "note": "2015年/2023年放送アニメの視聴順・配信サービス紹介ガイドで、本日時点の新規性・トリガーなし"
+  },
+  "topic-fcacdcdgef": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "クロス×オーバーPremiere MV公開決定は9/22付で既報(stories.yml topic-005-2026)。新事実なし、本日のトリガーもなし(公開は9/30)"
+  },
+  "topic-adgbbaddch": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "デレマスオーケストラのチケット最速先行・指揮者情報は9/17〜9/21付で既報。締切は9/27で本日のトリガーなし"
+  },
+  "topic-ffefhfeada": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同上の既報内容の「今週末締切」リマインド投稿。新事実なし、締切は9/27で本日ではない"
+  },
+  "topic-aefaeacejh": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "デレステ「LIVE Carnival~2026 Autumn~」開始は9/22付で既報(stories.yml topic-008-2026)。新事実なし"
+  },
+  "topic-fdcbaabfgb": {
+   "action": "article",
+   "angle": "東京・MEDICOS SHOP渋谷のPOP UP SHOP『Sweet Melty Whip』で会場限定グッズが相次ぎ完売・再入荷なしに、東京会場は本日9/23が最終日",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cbbegfbjfi・hcdihaegcjの完売情報を統合。同じ施策(同一POP UP SHOP)で読者の行動も同じ(現地在庫なし)ため1記事に"
+  },
+  "topic-cbbegfbjfi": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-fdcbaabfgb",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じMEDICOS POP UP SHOPの完売情報"
+  },
+  "topic-hcdihaegcj": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-fdcbaabfgb",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じMEDICOS POP UP SHOPの完売情報"
+  },
+  "topic-diiddbebfg": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "総選挙を労う個人アカウントの投稿。公式発表や新事実を含まず、個人SNS投稿単体では記事化しない"
+  },
+  "topic-checbdgjfe": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-star-village-achi-summer-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "阿智コラボが明日(=9/23)までという案内で、続報予約の千秋楽記事と同一事象"
+  },
+  "cg-star-village-achi-summer-2026": {
+   "action": "article",
+   "angle": "阿智村×シンデレラガールズ 星空コラボが本日9/23で千秋楽、アナスタシアの星座解説・コラボカフェ&グッズ販売が最終日を迎える",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "7/18開始・約2カ月間の長期コラボの最終日。続報予約どおり記事化"
+  },
+  "cg-national-tower-fukuoka-2026": {
+   "action": "article",
+   "angle": "シンデレラガールズ×全国タワーツアー福岡・門司港コラボが本日17時で閉幕、現地限定チケット・グッズ販売の最終受付日",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/19開始の門司港レトロ特設会場コラボ、本日17時まで現地限定販売という明確な当日行動あり。ツアマスランキング記事(joint)とは別施策で重複せず"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-topic-fdcbaabfgb",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "東京・MEDICOS SHOP渋谷のPOP UP SHOP『Sweet Melty Whip』で会場限定グッズが相次ぎ完売・再入荷なしに、東京会場は本日9/23が最終日",
+    "lead_score": 10,
+    "dedup_key": "topic-fdcbaabfgb",
+    "candidate_ids": [
+     "202609230228-grok-17",
+     "202609230228-grok-18",
+     "202609230228-grok-19"
+    ]
+   },
+   {
+    "slug": "cg-star-village-achi-summer-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "阿智村×シンデレラガールズ 星空コラボが本日9/23で千秋楽、アナスタシアの星座解説・コラボカフェ&グッズ販売が最終日を迎える",
+    "lead_score": 25,
+    "dedup_key": "cg-star-village-achi-summer-2026",
+    "candidate_ids": [
+     "sched-2026-09-23-cg-star-village-achi-summer-2026-千秋楽",
+     "202609230228-grok-21"
+    ]
+   },
+   {
+    "slug": "cg-national-tower-fukuoka-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "シンデレラガールズ×全国タワーツアー福岡・門司港コラボが本日17時で閉幕、現地限定チケット・グッズ販売の最終受付日",
+    "lead_score": 55,
+    "dedup_key": "cg-national-tower-fukuoka-2026",
+    "candidate_ids": [
+     "sched-2026-09-23-cg-national-tower-fukuoka-2026-千秋楽"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-anime-viewing-order-2026",
+    "reason": "過年度",
+    "note": "2015年/2023年放送アニメの視聴順・配信サービス紹介ガイドで、本日時点の新規性・トリガーなし"
+   },
+   {
+    "dedup_key": "topic-fcacdcdgef",
+    "reason": "既報",
+    "note": "クロス×オーバーPremiere MV公開決定は9/22付で既報(stories.yml topic-005-2026)。新事実なし、本日のトリガーもなし(公開は9/30)"
+   },
+   {
+    "dedup_key": "topic-adgbbaddch",
+    "reason": "既報",
+    "note": "デレマスオーケストラのチケット最速先行・指揮者情報は9/17〜9/21付で既報。締切は9/27で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "topic-ffefhfeada",
+    "reason": "既報",
+    "note": "同上の既報内容の「今週末締切」リマインド投稿。新事実なし、締切は9/27で本日ではない"
+   },
+   {
+    "dedup_key": "topic-aefaeacejh",
+    "reason": "既報",
+    "note": "デレステ「LIVE Carnival~2026 Autumn~」開始は9/22付で既報(stories.yml topic-008-2026)。新事実なし"
+   },
+   {
+    "dedup_key": "topic-diiddbebfg",
+    "reason": "個人の話題",
+    "note": "総選挙を労う個人アカウントの投稿。公式発表や新事実を含まず、個人SNS投稿単体では記事化しない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

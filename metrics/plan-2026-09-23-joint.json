@@ -1,0 +1,31 @@
+{
+ "decisions": {
+  "tours-ranking-2026-09-21": {
+   "action": "article",
+   "angle": "ツアマス公式が9/21時点のスコア・楽曲別ランキングを更新、スコア上位3位の数値と収録楽曲ラインナップを伝える",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(9/19時点等)とは異なる新しい数値・日付のランキング更新。過去の類似トピックは連日記事化されている定型枠"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-ranking-2026-09-21",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ツアマス公式が9/21時点のスコア・楽曲別ランキングを更新、スコア上位3位の数値と収録楽曲ラインナップを伝える",
+    "lead_score": 20,
+    "dedup_key": "tours-ranking-2026-09-21",
+    "candidate_ids": [
+     "202609222336-explore-24"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

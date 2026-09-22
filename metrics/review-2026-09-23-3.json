@@ -1,0 +1,187 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-23-shiny-ops-roundup.md",
+   "issue": "記事本文に言及されていない出典がsourcesに含まれている",
+   "quote": "sources の4番目: パラレル回廊記念4コマ「昔のまま」公開(2026年9月21日) https://gameo.jp/imassc/category/4%E3%82%B3%E3%83%9E",
+   "rule_id": "R4",
+   "repair": "drop_source",
+   "fact_ids": [],
+   "expected": "sourcesから「パラレル回廊記念4コマ『昔のまま』公開」の出典を削除し、記事本文で言及する出典のみをsourcesに含める",
+   "scope": "article:2026-09-23-shiny-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-sidem-06-02056a.md",
+   "issue": "候補IDの参照不正：frontmatterのcandidate_idsに、candidates/2026-09-23.jsonに実在しない候補ID（sched-2026-09-23-sidem-06-開始）が指定されている。この候補IDは候補ファイルにも、sourcesリストにも存在しない。前回の校閲（review-1）で指摘されたままの状態である。",
+   "quote": "candidate_ids:\n- sched-2026-09-23-sidem-06-開始\n- 202609230228-grok-63",
+   "rule_id": "R3",
+   "repair": "drop_source",
+   "fact_ids": [],
+   "expected": "frontmatterのcandidate_idsから、実在しない候補ID（sched-2026-09-23-sidem-06-開始）を削除し、実在する候補のみを記載する（202609230228-grok-63）。",
+   "scope": "article:2026-09-23-sidem-06-02056a.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-23-cg-star-village-achi-summer-2026.md",
+   "issue": "分量が不足。rank: small の目安は約 250字に対して、本文は約 130字。既報や sources に記載されている営業時間の詳細（フードラストオーダー 22:30、ドリンクラストオーダー 22:45）、対象アイドル、料金情報（グッズ 350円～1,980円、カフェ 650円～1,500円）等を追加することで充実させられます。",
+   "scope": "article:2026-09-23-cg-star-village-achi-summer-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-sidem-06-02056a.md",
+   "issue": "分量不足：rank: smallの目安250字に対して、リード＋本文は約60字（充足率24%）。候補のfactsに含まれるYouTubeプレミア公開の形式、配信時間の詳細、視聴方法などの情報を追加すれば、読みやすさと充実度が向上する。",
+   "scope": "article:2026-09-23-sidem-06-02056a.md"
+  },
+  {
+   "file": "-",
+   "issue": "記事にすべき話題（公式発表・新規情報・締切・開幕など）が candidates にあるのに紙面に無い。特に million の新曲受注販売（「If I...」など）、cg の期間限定イベント「LIVE Carnival」開始、gaku の『め』Official Music Video公開などが掲載されていない。（注：落とされた記事とその理由は見えないため、編集部の意図的な判断と考えられる）",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-dsva-ops-roundup.md",
+   "issue": "candidates の F18 と F19（ラーメン館の情報詳細とプレイリスト URL）が sources にあるが記事に反映されていない。出典にある会場・対象条件を拾えば本文が充実する",
+   "scope": "article:2026-09-23-dsva-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-dsva-ops-roundup.md",
+   "issue": "本文の「#まなのので話した」は、ハッシュタグ「#まなのの」と助詞「で」が結合されている。markdown では「#まなのの で」と分けるのが形式的には正確",
+   "scope": "article:2026-09-23-dsva-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-gaku-live-tour-shirube-iwate-streaming-2026.md",
+   "issue": "分量不足: rank が small であり本文が薄い。出典(E5)に記載されている9月22日の開場17:30・開演18:30を追記することで、読者が両日の時間差を理解しやすくなる",
+   "scope": "article:2026-09-23-gaku-live-tour-shirube-iwate-streaming-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-gaku-live-tour-shirube-iwate-streaming-2026.md",
+   "issue": "画像生成期間の記述が不完全: 「生成期間は10月8日23時59分まで」は終了日のみ記載。出典(E6)では開始日が9月21日19時と記載されているため、正確には「9月21日19時から10月8日23時59分まで」と補うべき",
+   "scope": "article:2026-09-23-gaku-live-tour-shirube-iwate-streaming-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-765-topic-fdidcfadbf.md",
+   "issue": "分量不足：small rankの目安250字に対して、リード＋本文は約151字（充足率60%）。候補のfactsに出演者の詳細背景、ライブの特別な展開、チケット情報などの詳細があれば、分量を増やすことで内容を充実させることを検討してください。",
+   "scope": "article:2026-09-23-765-topic-fdidcfadbf.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-dsva-manaka-nonoha-chat-2026.md",
+   "issue": "分量不足。rank: small で目安250字に対し本文は約80字。出典（VTuberNews）の記事には配信内容のタイムスタンプが詳細に記載されており、代表的なトークテーマや時間を追加することで記事が充実する可能性がある",
+   "scope": "article:2026-09-23-dsva-manaka-nonoha-chat-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-dsva-shinkaifes-2026.md",
+   "issue": "分量不足: 本文が34文字で、rank: small の目安250文字に対して大幅に下回っている。既報にある会場（渋谷ストリームホール）、チケット価格（VIP各日19,800円、1DAY各日9,800円）、開場・開演時刻予定、VVIPの特典内容など、読者が購入判断に必要な詳細情報を追加すれば充実する",
+   "scope": "article:2026-09-23-dsva-shinkaifes-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-dsva-topic-ghfbbbcede.md",
+   "issue": "分量が目安より短い（目安: 450字、実績: 約260字）。配信チケット情報に焦点を絞った記事で内容は適切だが、候補にある価格・日時・対象条件の詳細（アーカイブ視聴期限、アフタートーク時間）をさらに加えることで充実度が上がる可能性がある",
+   "scope": "article:2026-09-23-dsva-topic-ghfbbbcede.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-dsva-valiv-special-stream-2026-09-24.md",
+   "issue": "rank: small に対して本文が薄い（約60字、目安250字）。候補から「見出しは『お便り募集中！』」「9月18日の配信告知投稿を引用している」「最新情報もお届けする」といった情報を活かして、配信の背景や見どころを拡張できる",
+   "scope": "article:2026-09-23-dsva-valiv-special-stream-2026-09-24.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-gaku-live-tour-shirube-iwate-goods-2026.md",
+   "issue": "candidate_ids の1番目「sched-2026-09-23-gaku-live-tour-shirube-iwate-goods-2026-終了」が候補ファイルに見つかりません。入力ミスまたは候補ファイル生成漏れの可能性があります。ただし、記事のすべての事実は sources（公式ページ）と verified_facts で検証済みなため、出典の信頼性に問題はありません。",
+   "scope": "article:2026-09-23-gaku-live-tour-shirube-iwate-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-gaku-topic-bdbfeeichf.md",
+   "issue": "本文が薄い（約70字）。rank: small の目安250字未満。候補に記載されている掲載時刻（20:22:17）などの詳細を加えれば充実する可能性がある。ただし当該出典（X投稿）本体には時刻以外の詳細情報が無く、投稿本文に限定すればこの長さは妥当かもしれない。",
+   "scope": "article:2026-09-23-gaku-topic-bdbfeeichf.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-gaku-topic-ddcigbejbc.md",
+   "issue": "分量不足: rank が small ですが、リード＋本文で計171字で目安の250字に達していません。出典にある詳細情報を追加することで改善できます",
+   "scope": "article:2026-09-23-gaku-topic-ddcigbejbc.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-general-imas-mor-415-personalities-2026.md",
+   "issue": "分量不足：rank: small の目安 250字に対して本体約50字。リード込みでも約90字",
+   "scope": "article:2026-09-23-general-imas-mor-415-personalities-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-general-imas-mor-415-personalities-2026.md",
+   "issue": "詳細の欠落：放送開始時刻、視聴方法（radiko等）など読者向けの実用情報がない",
+   "scope": "article:2026-09-23-general-imas-mor-415-personalities-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-joint-tours-ranking-2026-09-21.md",
+   "issue": "small ランクの目安（250字以上）に対して本文が約200字で下限に近い。出典にある会場・時間・その他の詳細情報を追加して充実させると読了感が向上する可能性",
+   "scope": "article:2026-09-23-joint-tours-ranking-2026-09-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-23-sidem-2dmv-transcendent-goods-2026-09.md",
+   "issue": "分量不足：rank small に対し本文が目安 250 字に達していない。既報の詳細（価格、商品の種類・サイズ、対象ユニット等）を出典より補充できる余地あり",
+   "scope": "article:2026-09-23-sidem-2dmv-transcendent-goods-2026-09.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-23-765-kotobukiya-kuji-summer-live-stage-2026.md",
+  "article:2026-09-23-765-topic-fdidcfadbf.md",
+  "article:2026-09-23-cg-national-tower-fukuoka-2026.md",
+  "article:2026-09-23-cg-star-village-achi-summer-2026.md",
+  "article:2026-09-23-cg-topic-fdcbaabfgb.md",
+  "article:2026-09-23-dsva-kamizuru-cosmo-tgs2026-ace-combat-8.md",
+  "article:2026-09-23-dsva-manaka-nonoha-chat-2026.md",
+  "article:2026-09-23-dsva-ops-roundup.md",
+  "article:2026-09-23-dsva-shinkaifes-2026.md",
+  "article:2026-09-23-dsva-topic-ghfbbbcede.md",
+  "article:2026-09-23-dsva-valiv-special-stream-2026-09-24.md",
+  "article:2026-09-23-gaku-gakuen-radio-2026-09-23-guests.md",
+  "article:2026-09-23-gaku-live-tour-shirube-iwate-goods-2026.md",
+  "article:2026-09-23-gaku-live-tour-shirube-iwate-streaming-2026.md",
+  "article:2026-09-23-gaku-live-tour-single-shugakuryoko-2026.md",
+  "article:2026-09-23-gaku-nemurase-tai-gashapon-2026.md",
+  "article:2026-09-23-gaku-topic-bdbfeeichf.md",
+  "article:2026-09-23-gaku-topic-ddcigbejbc.md",
+  "article:2026-09-23-gaku-topic-jahhjfbhde.md",
+  "article:2026-09-23-gaku-tour-iwate-day1-2026-setlist.md",
+  "article:2026-09-23-general-imas-mor-415-personalities-2026.md",
+  "article:2026-09-23-joint-tours-ranking-2026-09-21.md",
+  "article:2026-09-23-million-14th-day2-singles-order-2026.md",
+  "article:2026-09-23-million-ops-roundup.md",
+  "article:2026-09-23-million-topic-aefffffadj.md",
+  "article:2026-09-23-shiny-ops-roundup.md",
+  "article:2026-09-23-shiny-stillblue-asobipremium-lottery.md",
+  "article:2026-09-23-shiny-topic-iaggdfgdja.md",
+  "article:2026-09-23-sidem-06-02056a.md",
+  "article:2026-09-23-sidem-2dmv-transcendent-goods-2026-09.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-23-765-kotobukiya-kuji-summer-live-stage-2026.md": "271c755408ad918a6129e9c1d5057be5abe8c01eafb0ee17f9d39d5d01e2979a",
+  "docs/_posts/2026-09-23-765-topic-fdidcfadbf.md": "d5f5c034c4540ab60bb09c8c4331031f8e6383f103b011985e997d3529865675",
+  "docs/_posts/2026-09-23-cg-star-village-achi-summer-2026.md": "c89f717e0b9960c13f945e22ca7418fe8807b3611163b013ced97ae96a4a7a2b",
+  "docs/_posts/2026-09-23-cg-topic-fdcbaabfgb.md": "049bf12e6c0e9ceb93af536dbb707538fc8c7bec1b4553fa1e31def11ade3f49",
+  "docs/_posts/2026-09-23-dsva-kamizuru-cosmo-tgs2026-ace-combat-8.md": "d3c293921af4d6bddd4f70ad1842a656d63f66d896f30c0dd639bdc2e168ea89",
+  "docs/_posts/2026-09-23-dsva-manaka-nonoha-chat-2026.md": "3d629d58141959ed8fd0313b31aa2f9a4af733ba7c01957d5b85c69a7b92236d",
+  "docs/_posts/2026-09-23-dsva-ops-roundup.md": "cbb5f20f2b9fc2344550f8ff3a118df42b1bb1dd793b81295b792c0993160331",
+  "docs/_posts/2026-09-23-dsva-shinkaifes-2026.md": "ea9894197c86c3698cc8ea1caea3fe9383fcf64069b7dbfaf5980ae113d737b0",
+  "docs/_posts/2026-09-23-dsva-topic-ghfbbbcede.md": "7064168f84ff3bdd662e228eaa354e807c452f3e9418897b23c7e31f232ff6fe",
+  "docs/_posts/2026-09-23-dsva-valiv-special-stream-2026-09-24.md": "d44fed4154d9a6150e701024f54cfbddafed1f80d7365f5545d79c9a2298f8ee",
+  "docs/_posts/2026-09-23-gaku-live-tour-shirube-iwate-goods-2026.md": "452652acecd396059ef16687482188f82f603899cd709ea5891d08399f57f69e",
+  "docs/_posts/2026-09-23-gaku-live-tour-shirube-iwate-streaming-2026.md": "867bbfcb1fd4befdc71d28c82bdc20f5b53507d3fb63f124f0cf4bae57bb6443",
+  "docs/_posts/2026-09-23-gaku-live-tour-single-shugakuryoko-2026.md": "3d2fe80d12d2b07d0a151c15586b2a02063e2a5dbfb6ce1f91e9b4a7bff9c60e",
+  "docs/_posts/2026-09-23-gaku-nemurase-tai-gashapon-2026.md": "3d918e88229249ccc57a4c487a5de70b3980cb5eed555be5129ffdffc7ca8c9f",
+  "docs/_posts/2026-09-23-gaku-topic-bdbfeeichf.md": "f34f26c6658830a4635702842400eb62178519e6d0de3bb464e2114d0e1b6d1d",
+  "docs/_posts/2026-09-23-gaku-topic-ddcigbejbc.md": "9e095283b728a8d96a078f32e4ea00f7f1fe9c794dedc876400965f60520b65c",
+  "docs/_posts/2026-09-23-gaku-topic-jahhjfbhde.md": "2a19451cc4688076db64ec06a42401155e42a2d9fc9366bb2cb58aca75df7397",
+  "docs/_posts/2026-09-23-gaku-tour-iwate-day1-2026-setlist.md": "bbaf4ff52f4499db71613e591c42b462fdaae1414bb071f445ecf581a169829e",
+  "docs/_posts/2026-09-23-general-imas-mor-415-personalities-2026.md": "91797f70c41611f47369d59c47b1c1611146ebf98038ff4987b363219b3cd67f",
+  "docs/_posts/2026-09-23-joint-tours-ranking-2026-09-21.md": "86234c4e947028908b0dd3a0152f1305523b2e304c77b47a93faa02e7db32f32",
+  "docs/_posts/2026-09-23-million-14th-day2-singles-order-2026.md": "62912df332e5633e0246cd24257180808a9b0590cd21a7a024c287cf3e7d3a97",
+  "docs/_posts/2026-09-23-million-ops-roundup.md": "375cdf20c96cc715c3196a65df6348248eb88b97d08e1e4fc31decc4035da470",
+  "docs/_posts/2026-09-23-million-topic-aefffffadj.md": "1355724b481bd84545f74f32f09b9882d57748186077d5dac6ba3e8e488d6588",
+  "docs/_posts/2026-09-23-shiny-ops-roundup.md": "cabbc291d46a53107a7601144959d1fd7099a59fcfebf01218a18726aba22ba6",
+  "docs/_posts/2026-09-23-shiny-stillblue-asobipremium-lottery.md": "81aaaa3cb59ba32d2f1e72a207211a56f19e592930301eb47f126d88e3974d26",
+  "docs/_posts/2026-09-23-shiny-topic-iaggdfgdja.md": "d359cb638d2ba48e316dc6d331128e59f521c0c365248cecb0828163c3ce64af",
+  "docs/_posts/2026-09-23-sidem-06-02056a.md": "3458e2c416695e7758fc5942db274dfa04449f8cb42657512ab87c4301945c7b",
+  "docs/_posts/2026-09-23-sidem-2dmv-transcendent-goods-2026-09.md": "f350963f170b5c157eefb0b88e8e1015cb21e3c59277fd8c97811ae54e6f78fd",
+  "docs/_editions/2026-09-23.md": "4a8f302e50887b148682c64a23b057ba8ba1f7a01f6a2096180c689159632ae0",
+  "metrics/stories-before-2026-09-23.yml": "19614d8141d1b250f390ee086280a709f89f30c01aaf8def7707bf93f1da72ae"
+ }
+}

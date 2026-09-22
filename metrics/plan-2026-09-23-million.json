@@ -1,0 +1,226 @@
+{
+ "decisions": {
+  "million-14th-day2-singles-order-2026": {
+   "action": "article",
+   "angle": "14thLIVE DAY2新曲3曲「If I.../Waking Up My Heart/Present」受注販売の詳細(価格・購入方法・お届け時期)とドレスコード：最上級事後物販決定もあわせて紹介",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-14th-live-day2-song-order-sales-2026の情報を統合"
+  },
+  "million-theater-days-10thlive-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/21号で既報(10周年ライブ2027/6/26-27 Kアリーナ横浜、765 MILLIONSTARS出演)、新事実なし"
+  },
+  "million-live-10th-anniversary-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "million-theater-days-10thlive-2027と同一告知の重複。新曲配信情報(9/20)も既報の範囲で材料薄"
+  },
+  "million-14th-live-day2-song-order-sales-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-day2-singles-order-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注販売決定の告知が同一内容、ドレスコード：最上級事後物販の一文のみ追加情報"
+  },
+  "topic-aefffffadj": {
+   "action": "article",
+   "angle": "14thLIVE同時視聴上映会、DAY1終了・最速アーカイブ公開とDAY2本日12時からの配信、視聴チケット・コメント付きアーカイブ日程を案内",
+   "rank": "large",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-hdhaafbcfh/fddedeeabh/agcjbgjeab/ccbijejahjを統合"
+  },
+  "topic-jhbcgfhegf": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/22号で既報(同一の開催記念グッズ受注、締切10/11)、新事実なし"
+  },
+  "topic-hdhaafbcfh": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-aefffffadj",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同時視聴上映会開催の公式X告知、公式ニュースと同一施策"
+  },
+  "topic-fddedeeabh": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-aefffffadj",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1開始の実況、同施策の経過報告"
+  },
+  "topic-agcjbgjeab": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-aefffffadj",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1終了・最速版アーカイブ公開の続報"
+  },
+  "topic-ccbijejahj": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-aefffffadj",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2本日配信の予告、本日のトリガーとして統合記事に反映"
+  },
+  "topic-fadbbeiagg": {
+   "action": "roundup",
+   "angle": "プラチナスターツアービンゴ～一旦愛して♡～ 進行中の話題まとめ(公演折り返し・踊ってみた動画・ショートMV公開)",
+   "rank": "",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-dcdeedcbjc": {
+   "action": "roundup",
+   "angle": "プラチナスターツアービンゴ～一旦愛して♡～ 進行中の話題まとめ(公演折り返し・踊ってみた動画・ショートMV公開)",
+   "rank": "",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-eegaahefcd": {
+   "action": "roundup",
+   "angle": "プラチナスターツアービンゴ～一旦愛して♡～ 進行中の話題まとめ(公演折り返し・踊ってみた動画・ショートMV公開)",
+   "rank": "",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-bdbfbfigai": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "ファンの反応投稿の集約で公式発表ではない、verify未確認・エンゲージメント低"
+  },
+  "million-live-9th-anniversary-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18号で既報(9周年ONLY MAKERパーカー受注)。続報予約の対象DAY2同時視聴はtopic-ccbijejahj等で対応済み"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-14th-day2-singles-order-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "14thLIVE DAY2新曲3曲「If I.../Waking Up My Heart/Present」受注販売の詳細(価格・購入方法・お届け時期)とドレスコード：最上級事後物販決定もあわせて紹介",
+    "lead_score": 25,
+    "dedup_key": "million-14th-day2-singles-order-2026",
+    "candidate_ids": [
+     "202609220733-explore-3",
+     "202609220733-explore-22"
+    ]
+   },
+   {
+    "slug": "million-topic-aefffffadj",
+    "brand": "million",
+    "rank": "large",
+    "angle": "14thLIVE同時視聴上映会、DAY1終了・最速アーカイブ公開とDAY2本日12時からの配信、視聴チケット・コメント付きアーカイブ日程を案内",
+    "lead_score": 55,
+    "dedup_key": "topic-aefffffadj",
+    "candidate_ids": [
+     "202609230228-grok-40",
+     "202609230228-grok-42",
+     "202609230228-grok-43",
+     "202609230228-grok-44",
+     "202609230228-grok-45"
+    ]
+   },
+   {
+    "slug": "million-ops-roundup",
+    "brand": "million",
+    "rank": "roundup",
+    "angle": "プラチナスターツアービンゴ～一旦愛して♡～ 進行中の話題まとめ(公演折り返し・踊ってみた動画・ショートMV公開)",
+    "lead_score": 0,
+    "dedup_key": "topic-fadbbeiagg",
+    "candidate_ids": [
+     "202609230228-grok-46",
+     "202609230228-grok-47",
+     "202609230228-grok-48"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-theater-days-10thlive-2027",
+    "reason": "既報",
+    "note": "9/21号で既報(10周年ライブ2027/6/26-27 Kアリーナ横浜、765 MILLIONSTARS出演)、新事実なし"
+   },
+   {
+    "dedup_key": "million-live-10th-anniversary-live-2027",
+    "reason": "既報",
+    "note": "million-theater-days-10thlive-2027と同一告知の重複。新曲配信情報(9/20)も既報の範囲で材料薄"
+   },
+   {
+    "dedup_key": "topic-jhbcgfhegf",
+    "reason": "既報",
+    "note": "9/22号で既報(同一の開催記念グッズ受注、締切10/11)、新事実なし"
+   },
+   {
+    "dedup_key": "topic-bdbfbfigai",
+    "reason": "出典不足",
+    "note": "ファンの反応投稿の集約で公式発表ではない、verify未確認・エンゲージメント低"
+   },
+   {
+    "dedup_key": "million-live-9th-anniversary-2026",
+    "reason": "既報",
+    "note": "9/18号で既報(9周年ONLY MAKERパーカー受注)。続報予約の対象DAY2同時視聴はtopic-ccbijejahj等で対応済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

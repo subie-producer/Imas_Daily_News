@@ -1,0 +1,31 @@
+{
+ "decisions": {
+  "imas-mor-415-personalities-2026": {
+   "action": "article",
+   "angle": "新パーソナリティ・汐谷文康さん(SideM北村想楽役)と角元明日香さん(ミリオン島原エレナ役)による「アイマスMOR415」が本日9/23放送分から交代、既報の起用決定を受けた初回放送日であることを伝える",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/3付既報(起用決定)の続報。本日が実際の初回放送日という当日のトリガーがあるため記事化"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-imas-mor-415-personalities-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "新パーソナリティ・汐谷文康さん(SideM北村想楽役)と角元明日香さん(ミリオン島原エレナ役)による「アイマスMOR415」が本日9/23放送分から交代、既報の起用決定を受けた初回放送日であることを伝える",
+    "lead_score": 10,
+    "dedup_key": "imas-mor-415-personalities-2026",
+    "candidate_ids": [
+     "sched-2026-09-23-imas-mor-415-personalities-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

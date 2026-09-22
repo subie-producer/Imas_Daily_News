@@ -1,0 +1,489 @@
+{
+ "decisions": {
+  "megasha-shinosawa-hiro-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/20発「めガシャ」開催告知は既報(megasha-shinosawa-hiro-2026-09)と同内容。新規事実・当日トリガー無し"
+  },
+  "asari-produce-seminar-8-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "第8回ゼミ(9/20〜30・アノマリー対象)は9/21付既報と同内容。新規事実無し"
+  },
+  "asari-seminar-reaction-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "ゼミ開催前夜の反応集動画の再生数・高評価数のみを伝える二次コンテンツで、ゲーム内新情報が無い"
+  },
+  "gaku-shirube-iwate-day1-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-live-tour-shirube-iwate-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1開演時刻等は既報。チョコ南部PREMIUM Star Peanutコラボ商品の新情報は物販最終日記事へ統合"
+  },
+  "gaku-me-official-music-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "『め』MVは9/20 22時プレミア公開の告知が9/21付既報。公開自体は予定どおりで新規トリガー無し"
+  },
+  "gaku-tour-iwate-day1-2026-setlist": {
+   "action": "article",
+   "angle": "岩手公演DAY1が開幕、セットリスト公開・最速アーカイブ配信・ファミ通リポートで新曲『海奏ララバイ』『ワタシカワイイアヒルノコ』と全体曲『Agitato』の初披露を伝える",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-season-solo-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Season Solo Collectionの岩手先行販売は9/5・9/10付で既報、収録曲・価格とも同一"
+  },
+  "gaku-shirube-hedgehog-hottie": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "受注締切を9/23とするが既報(9/19)は10/25までと案内し矛盾。無関係商品のDisc1事実も混在し出典不確か"
+  },
+  "gaku-live-tour-shirube-iwate-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-live-tour-shirube-iwate-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公演概要(会場・料金)は既報と重複。千秋楽記事に統合"
+  },
+  "gaku-live-tour-shirube-iwate-streaming-2026": {
+   "action": "article",
+   "angle": "標ツアー岩手公演が本日23日に千秋楽、配信視聴チケット・最速アーカイブ視聴の案内を伝える",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-jedfdhcdhd": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Gravure Solo Collection Vol.1予約(締切9/27)は8/26付で既報、内容も同一。9/23当日の新規トリガー無し"
+  },
+  "topic-jahhjfbhde": {
+   "action": "article",
+   "angle": "秦谷美鈴『海奏ララバイ』・倉本千奈『ワタシカワイイアヒルノコ』の2新曲が本日0時よりサブスク配信・DL販売開始、制作陣や出演者の反応もあわせて伝える",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-adcejeahcb": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-jahhjfbhde",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "倉本千奈新曲の配信告知。海奏ララバイと合わせ新曲配信記事に統合"
+  },
+  "topic-fddfihdaca": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「篠澤広『め』」ガシャ開催中の再掲。megasha-shinosawa-hiro-2026-09で既報、新規事実無し"
+  },
+  "topic-bdbfeeichf": {
+   "action": "article",
+   "angle": "岩手公演記念ガシャを開催、有償10連でSSR確定・岩手公演出演アイドルのみ登場",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-geghdaddif": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-tour-iwate-day1-2026-setlist",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1終了の御礼投稿。DAY1リポート記事に統合"
+  },
+  "topic-cabbbfbcbc": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-tour-iwate-day1-2026-setlist",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "セットリスト公開の公式告知。DAY1リポート記事に統合"
+  },
+  "topic-decbeeeahf": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-tour-iwate-day1-2026-setlist",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "最速版アーカイブ公開の告知。DAY1リポート記事に統合"
+  },
+  "topic-ddcigbejbc": {
+   "action": "article",
+   "angle": "グラビアシリーズ第2弾『Agitato』と連動する『小悪魔ガシャ』を予告、詳細は生配信で発表",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-dgafgfdaab": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "一般ユーザーによるAgitatoの語義解説投稿。公式発表・作品情報ではない個人の考察"
+  },
+  "topic-gjhjgdejab": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-jahhjfbhde",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "作詞担当者の個人投稿。単体記事にせず新曲配信記事に統合"
+  },
+  "topic-bbchgecaca": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-jahhjfbhde",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "作曲編曲担当者の個人投稿(ライブ感想含む)。新曲配信記事に統合"
+  },
+  "topic-daceedhdaa": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-tour-iwate-day1-2026-setlist",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファミ通のDAY1リポート。新曲・Agitato初披露の詳細としてDAY1記事に統合"
+  },
+  "topic-fhiffccafj": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-jahhjfbhde",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "倉本千奈役の新曲披露後コメント投稿。個人SNSのため新曲配信記事に統合"
+  },
+  "topic-bbachcdbea": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-jahhjfbhde",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ASOBI NOTESによる同曲のリリース告知再掲。新曲配信記事に統合"
+  },
+  "gaku-live-tour-single-shugakuryoko-2026": {
+   "action": "article",
+   "angle": "初星学園LIVE TOUR Single『修楽旅行』、アソビストア予約特典ステッカーの受付が本日23日まで(なくなり次第終了)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-nemurase-tai-gashapon-2026": {
+   "action": "article",
+   "angle": "学マス『ねむらせ隊』ガシャポン、オンライン受注が本日23日23:59で締切",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-shirube-iwate-streaming-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-live-tour-shirube-iwate-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公演名・開催日の再掲。千秋楽記事に統合"
+  },
+  "gaku-live-tour-shirube-iwate-general-sale-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-live-tour-shirube-iwate-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "岩手公演2日目(本日)の情報。千秋楽記事に統合"
+  },
+  "gakumas-shugakuryoko-single-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-live-tour-single-shugakuryoko-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "予約特典ステッカー締切の重複告知。修楽旅行記事に統合"
+  },
+  "gaku-live-tour-shirube-iwate-goods-2026": {
+   "action": "article",
+   "angle": "岩手公演の会場物販が本日23日11:00〜16:30で最終日、地元コラボ商品『チョコ南部』も販売",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakuen-radio-2026-09-23-guests": {
+   "action": "article",
+   "angle": "『初星学園放送部』本日9/23放送回に藤田ことね役・十王星南役がゲスト出演、STEP4実装の2人が登場",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-tour-iwate-day1-2026-setlist",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "岩手公演DAY1が開幕、セットリスト公開・最速アーカイブ配信・ファミ通リポートで新曲『海奏ララバイ』『ワタシカワイイアヒルノコ』と全体曲『Agitato』の初披露を伝える",
+    "lead_score": 80,
+    "dedup_key": "gaku-tour-iwate-day1-2026-setlist",
+    "candidate_ids": [
+     "202609222336-watch-0",
+     "202609230228-grok-36",
+     "202609230228-grok-37",
+     "202609230228-grok-38",
+     "202609230228-grok-69"
+    ]
+   },
+   {
+    "slug": "gaku-live-tour-shirube-iwate-streaming-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "標ツアー岩手公演が本日23日に千秋楽、配信視聴チケット・最速アーカイブ視聴の案内を伝える",
+    "lead_score": 25,
+    "dedup_key": "gaku-live-tour-shirube-iwate-streaming-2026",
+    "candidate_ids": [
+     "202609230228-explore-6",
+     "202609230228-explore-5",
+     "sched-2026-09-23-gaku-shirube-iwate-streaming-2026-千秋楽",
+     "sched-2026-09-23-gaku-live-tour-shirube-iwate-general-sale-2026-千秋楽"
+    ]
+   },
+   {
+    "slug": "gaku-topic-jahhjfbhde",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "秦谷美鈴『海奏ララバイ』・倉本千奈『ワタシカワイイアヒルノコ』の2新曲が本日0時よりサブスク配信・DL販売開始、制作陣や出演者の反応もあわせて伝える",
+    "lead_score": 30,
+    "dedup_key": "topic-jahhjfbhde",
+    "candidate_ids": [
+     "202609230228-grok-32",
+     "202609230228-grok-33",
+     "202609230228-grok-67",
+     "202609230228-grok-68",
+     "202609230228-grok-70",
+     "202609230228-grok-71"
+    ]
+   },
+   {
+    "slug": "gaku-topic-bdbfeeichf",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "岩手公演記念ガシャを開催、有償10連でSSR確定・岩手公演出演アイドルのみ登場",
+    "lead_score": 20,
+    "dedup_key": "topic-bdbfeeichf",
+    "candidate_ids": [
+     "202609230228-grok-35"
+    ]
+   },
+   {
+    "slug": "gaku-topic-ddcigbejbc",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "グラビアシリーズ第2弾『Agitato』と連動する『小悪魔ガシャ』を予告、詳細は生配信で発表",
+    "lead_score": 20,
+    "dedup_key": "topic-ddcigbejbc",
+    "candidate_ids": [
+     "202609230228-grok-65"
+    ]
+   },
+   {
+    "slug": "gaku-live-tour-single-shugakuryoko-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園LIVE TOUR Single『修楽旅行』、アソビストア予約特典ステッカーの受付が本日23日まで(なくなり次第終了)",
+    "lead_score": 10,
+    "dedup_key": "gaku-live-tour-single-shugakuryoko-2026",
+    "candidate_ids": [
+     "sched-2026-09-23-gaku-live-tour-single-shugakuryoko-2026-締切",
+     "sched-2026-09-23-gakumas-shugakuryoko-single-2026-締切"
+    ]
+   },
+   {
+    "slug": "gaku-nemurase-tai-gashapon-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス『ねむらせ隊』ガシャポン、オンライン受注が本日23日23:59で締切",
+    "lead_score": 10,
+    "dedup_key": "gaku-nemurase-tai-gashapon-2026",
+    "candidate_ids": [
+     "sched-2026-09-23-gaku-nemurase-tai-gashapon-2026-締切"
+    ]
+   },
+   {
+    "slug": "gaku-live-tour-shirube-iwate-goods-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "岩手公演の会場物販が本日23日11:00〜16:30で最終日、地元コラボ商品『チョコ南部』も販売",
+    "lead_score": 15,
+    "dedup_key": "gaku-live-tour-shirube-iwate-goods-2026",
+    "candidate_ids": [
+     "sched-2026-09-23-gaku-live-tour-shirube-iwate-goods-2026-終了",
+     "202609221834-explore-5"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-radio-2026-09-23-guests",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "『初星学園放送部』本日9/23放送回に藤田ことね役・十王星南役がゲスト出演、STEP4実装の2人が登場",
+    "lead_score": 15,
+    "dedup_key": "gakuen-radio-2026-09-23-guests",
+    "candidate_ids": [
+     "sched-2026-09-23-gakuen-radio-2026-09-23-guests-その他"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "megasha-shinosawa-hiro-2026",
+    "reason": "既報",
+    "note": "9/20発「めガシャ」開催告知は既報(megasha-shinosawa-hiro-2026-09)と同内容。新規事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "asari-produce-seminar-8-2026",
+    "reason": "既報",
+    "note": "第8回ゼミ(9/20〜30・アノマリー対象)は9/21付既報と同内容。新規事実無し"
+   },
+   {
+    "dedup_key": "asari-seminar-reaction-video-2026",
+    "reason": "その他",
+    "note": "ゼミ開催前夜の反応集動画の再生数・高評価数のみを伝える二次コンテンツで、ゲーム内新情報が無い"
+   },
+   {
+    "dedup_key": "gaku-me-official-music-video-2026",
+    "reason": "既報",
+    "note": "『め』MVは9/20 22時プレミア公開の告知が9/21付既報。公開自体は予定どおりで新規トリガー無し"
+   },
+   {
+    "dedup_key": "gaku-season-solo-collection-2026",
+    "reason": "既報",
+    "note": "Season Solo Collectionの岩手先行販売は9/5・9/10付で既報、収録曲・価格とも同一"
+   },
+   {
+    "dedup_key": "gaku-shirube-hedgehog-hottie",
+    "reason": "出典不足",
+    "note": "受注締切を9/23とするが既報(9/19)は10/25までと案内し矛盾。無関係商品のDisc1事実も混在し出典不確か"
+   },
+   {
+    "dedup_key": "topic-jedfdhcdhd",
+    "reason": "既報",
+    "note": "Gravure Solo Collection Vol.1予約(締切9/27)は8/26付で既報、内容も同一。9/23当日の新規トリガー無し"
+   },
+   {
+    "dedup_key": "topic-fddfihdaca",
+    "reason": "既報",
+    "note": "「篠澤広『め』」ガシャ開催中の再掲。megasha-shinosawa-hiro-2026-09で既報、新規事実無し"
+   },
+   {
+    "dedup_key": "topic-dgafgfdaab",
+    "reason": "その他",
+    "note": "一般ユーザーによるAgitatoの語義解説投稿。公式発表・作品情報ではない個人の考察"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,4 +1,3 @@
-# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。
 - dedup_key: gaku-hif-15m-milestone-campaign-2026
   brand: gaku
   subject: 学マスH.I.F挑戦回数1,500万回突破記念キャンペーン
@@ -95,6 +94,10 @@
   brand: million
   subject: ミリオン「スペードのQ」ちびぐるみ(BANDAI SPIRITS)
   watch: 2027年1月内の正式な店舗展開開始日(判明次第 triggers へ)
+- dedup_key: dsva-cosmo-ace-combat8-tgs-2026
+  brand: dsva
+  subject: 上水流宇宙 ACE COMBAT 8試遊配信
+  watch: 配信の具体的な日時(判明次第 triggers へ)
 - dedup_key: dsva-manaka-biohazard-postponed-2026
   brand: dsva
   subject: 灯里愛夏『BIOHAZARD RE:2』初見配信(見送り分)

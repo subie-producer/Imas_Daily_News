@@ -121,6 +121,8 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - vtubernews.jp         # 合議で追加: 5ちゃんねるとTwitterからまとめており、独自取材がなく他所の発表を転載して
+  - vod.pricey.jp         # 合議で追加: 各VODサービスの配信情報を比較紹介するメディア。自ら取材ではなく既存情報をまと
   - twittrend.jp          # 合議で追加: 地域別Xトレンドを集計して伝える媒体
   - j-hobby.net           # 合議で追加: 複数のオンラインストアの予約情報を集約掲載し、アフィリエイト報酬を得ている
   - atpress.ne.jp         # 合議で追加: プレスリリース配信サービス。企業の発表を配信する媒体
@@ -190,6 +192,7 @@ secondary_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - canonsnk.blog69.fc2.com # 合議で追加: 個人ブログでアイマスグッズの購入・感想を記述している
   - music765plus.com      # 合議で追加: 個人Xアカウント連動、会社概要なし。個人運営なら内容問わずファン
   - v12.battlepage.com    # 合議で追加: 個人の投稿。指示では『個人を二次情報にしない』と明記
   - ckworks.jp            # 合議で追加: 個人ブログ・サービス。アニメレポート・VTuber情報
@@ -206,6 +209,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - iwate-kenmin.jp       # 合議で追加: イベント会場が自身のサイトで公演情報を掲載
   - fumo-collection.com   # 合議で追加: ゲーミング機器ブランド運営。複数作品とのコラボ商品製造販売
   - fullcomp.jp           # 合議で追加: トレーディングカード販売チェーン。アイマス関連商品の販売点
   - amnibus.com           # 合議で追加: ライセンスグッズ製造・販売会社。複数タイトルの正規品を扱う
@@ -321,6 +325,13 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - Q_GfY_kC0to         # 機械で追加: @imas-official「【ミリシタ】ゲーム内楽曲『一旦愛して♡ 』MV【アイドルマス」
+    - lYafXo-rjU8         # 機械で追加: @hatsuboshi_gakuen「初星学園 「め」Official Music Video (」
+    - 6LQXs0zFeKE         # 機械で追加: @TomoriManaka「【 #まなのの 】ののちゃんと、初めてのふたり雑談☆⋆  w」
+    - rSKtYE3bjog         # 機械で追加: @KamizuruCosmo「【#ACE8】シリーズ最新作！『ACE COMBAT 8: 」
+    - q2hEdRkVADQ         # 機械で追加: @KamizuruCosmo「【踊ってみた】「きゃわぽっぴんどぅー / iLiFE!」 #」
+    - mvWkQr9CmAo         # 機械で追加: @TomoriManaka「【#灯里愛夏祝5万人】Ch登録者数5万人突破！愛夏は「最強」」
+    - Y9DH0wGpObs         # 機械で追加: @KamizuruCosmo「【朝活】初見さん大歓迎！高評価数でお昼ご飯の値段が決まる朝の」
     - vZrpnqsQ4v8         # 機械で追加: @imas-official「【アイマス】アイドルマスター ミリオンライブ！シアターテ」
     - 70sWuhWF5bU         # 機械で追加: @imas-official「【ミリシタ】『THE IDOLM@STER MILLION 」
     - xuHvR2rRRTM         # 機械で追加: @imas-official「9/19 キャシー・グラハムさん Happy Birthda」
@@ -352,6 +363,7 @@ video_ids:
     - Y3n-42r-m0A   # 上水流宇宙(ヴイアラ)配信「朝活」
     - wgCWiC2SQPw   # アイドルマスターチャンネル(@imas-official)「CLASH M@TCH!!」開催決定PV
   準公式:
+    - tic6VTNYQ5Y         # 機械で追加: @Lantis「【SideM】Altessimo「Panorama's Fa」
     - jnsINjCz6P4   # 機械で追加: @Lantis「【試聴動画】THE IDOLM@STER SHINY COL」
     - fUaUvVZE9jU   # 機械で追加: @Lantis「【試聴動画】THE IDOLM@STER SHINY COL」
     - L5fny8h7Ts0   # 機械で追加: @Lantis「【試聴動画】THE IDOLM@STER SHINY COL」
@@ -406,6 +418,7 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - shimoda_asami       # 合議で追加: 出演者による生配信出演報告
     - keeeko_watanabe     # 合議で追加: 渡部恵子本人アカウント推測（姓表記・内容から）
     - zekieri818          # 合議で追加: 声優大関英里本人のアカウント
     - yuka_s1113          # 合議で追加: 声優斉藤佑圭本人のアカウント
@@ -440,6 +453,9 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - astorea_p           # 合議で追加: 個人による総選挙投票の感想・労い
+    - Ouya72              # 合議で追加: 個人による来訪の目撃報告
+    - CinderellaAge19     # 合議で追加: 個人アカウント。公式イベント情報の紹介
     - sakumasanosuke      # 合議で追加: 個人アカウント。ファンアート再掲
     - musuko_p            # 合議で追加: 個人ハンドルネーム。ライブ視聴・物販体験
     - imas_handai         # 合議で追加: 個人アカウント。次のライブ情報に反応
@@ -533,6 +549,8 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - yassy846            # 合議で追加: 楽曲作詞の制作に関わった人。演者は演じている人であり、作詞者ではない
+    - hinako_tsubaki      # 合議で追加: 楽曲作曲・編曲の制作に関わった人。演者は演じている人であり、制作者ではない
     - fc_machida          # 合議で追加: オリパを販売する小売店で、商品販売元からの一次発信
     - wanwangomigomi      # 合議で追加: 制作担当イラストレーター。本人が担当明示
     - Nankai_san          # 合議で追加: 制作担当イラストレーター。本人が担当明示
@@ -601,6 +619,9 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  note.com/kaaiiiiiiii_trip: ファン               # 合議で追加: 個人ブログ。アイマスSideMの個人的な目撃・体験レポート
+  note.com/mitsuru_43: ファン                     # 合議で追加: 個人ファンの参戦記録
+  note.com/fuyukimiori: ファン                    # 合議で追加: 個人ユーザーの感想ブログ
   note.com/regal_broom2474: ファン                # 合議で追加: 個人ブログ。ライブ参加の目撃と感想。個人は常にファン
   docs.google.com/forms/d/e/1FAIpQLSdyUPmVP5FEpa-g80fdmZpBfyyynct6fHia4POevGc9mqJfuQ: 公式 # 合議で追加: PROJECT IM@S vα-livの公式特別番組向け募集フォーム
   tiktok.com/@valiv_official: 公式              # ヴイアラ(vα-liv)公式の TikTok(X の @valiv_official と同じ主体)

@@ -252,5 +252,35 @@
   "src_candidate_id": "202609220229-grok-82",
   "event_date": "2026-09-12",
   "deadline": "2026-10-04"
+ },
+ {
+  "id": "sched-2026-10-04-million-14th-day2-singles-order-2026-締切",
+  "dedup_key": "million-14th-day2-singles-order-2026",
+  "brand": "million",
+  "subject": "ミリオン新曲3作を受注販売、事後物販も",
+  "kind": "締切",
+  "note": "受注販売の最終締切日(23:59まで)",
+  "reserved_on": "2026-09-23",
+  "title": "「If I...／Waking Up My Heart／Present」受注販売",
+  "url": "https://www.lantis.jp/imas/extra.html",
+  "source_type": "準公式",
+  "facts": [
+   "受注期間: 2026年9月21日（月）0：00～2026年10月4日（日）23：59",
+   "販売店舗はA-on STORE、アソビストア、アニメイトオンライン",
+   "2026年11月11日(水)より順次届けられる",
+   "各商品は一人各3枚まで購入できる",
+   "各商品は販売店舗の上限数に達し次第販売終了となる",
+   "THE IDOLM@STER MILLION LIVE! If I...の品番はLACZ-10382、価格は1,430円(10%税込)/1,300円(税抜)",
+   "If I...のアーティストは馬場このみ (CV.髙橋ミナミ)",
+   "If I...の収録内容はOverture、If I...、If I... (Off Vocal)",
+   "THE IDOLM@STER MILLION LIVE! Waking Up My Heartの品番はLACZ-10383、価格は1,430円(10%税込)/1,300円(税抜)",
+   "Waking Up My Heartのアーティストは百瀬莉緒 (CV.山口立花子)",
+   "Waking Up My Heartの収録内容はOverture、Waking Up My Heart、Waking Up My Heart (Off Vocal)",
+   "THE IDOLM@STER MILLION LIVE! Presentの品番はLACZ-10384、価格は1,430円(10%税込)/1,300円(税抜)"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609220733-explore-3",
+  "deadline": "2026-10-04"
  }
 ]

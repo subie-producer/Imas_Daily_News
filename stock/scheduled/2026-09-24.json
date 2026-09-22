@@ -234,5 +234,63 @@
   "src_candidate_id": "202609210225-grok-74",
   "event_date": "2026-09-21",
   "deadline": "2026-09-27"
+ },
+ {
+  "id": "sched-2026-09-24-topic-ebcaccgcab-開始",
+  "dedup_key": "topic-ebcaccgcab",
+  "brand": "dsva",
+  "subject": "ヴイアラ 9/24特別配信",
+  "kind": "開始",
+  "note": "公式chの特別配信(20:00-)を視聴できる",
+  "reserved_on": "2026-09-23",
+  "title": "9月24日 特別配信のお便り募集",
+  "url": "https://x.com/valiv_official/status/2102257927491097026",
+  "source_type": "公式",
+  "facts": [
+   "掲載日: 2026-09-22 13:45 JST（タイムスタンプ 2026-09-22 04:45:22 GMT）",
+   "催しの日: 9月24日(木) 20:00-",
+   "締切: 9月23日(水) 23:59まで（お便り）",
+   "見出しは「お便り募集中！」",
+   "「特別配信実施決定！！」としている",
+   "9月24日(木)20:00- 、#ヴイアラ 公式chにて特別配信を実施",
+   "視聴URL: https://www.youtube.com/live/hZUB5aiesTg",
+   "お便りフォーム: https://docs.google.com/forms/d/e/1FAIpQLSdyUPmVP5FEpa-g80fdmZpBfyyynct6fHia4POevGc9mqJfuQ/viewform?usp=send_form",
+   "締切：9月23日(水)23:59まで",
+   "この投稿は、9月18日の配信告知投稿を引用している",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609230228-grok-25",
+  "event_date": "2026-09-24",
+  "deadline": "2026-09-23"
+ },
+ {
+  "id": "sched-2026-09-24-gaku-live-tour-shirube-iwate-streaming-2026-開始",
+  "dedup_key": "gaku-live-tour-shirube-iwate-streaming-2026",
+  "brand": "gaku",
+  "subject": "学マス「LIVE TOUR -標- 岩手公演」配信チケット",
+  "kind": "開始",
+  "note": "視聴コメント付きアーカイブの視聴が始まる(18:00-)",
+  "reserved_on": "2026-09-23",
+  "title": "岩手公演 配信視聴チケット",
+  "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/streaming/iwate.php",
+  "source_type": "公式",
+  "facts": [
+   "販売期間: 2026年8月27日(木)18:00～2026年10月8日(木)18:00（予定）。",
+   "両日視聴チケットは11,000円（税込・機能利用料込）。",
+   "DAY1/DAY2チケットは各5,500円（税込・機能利用料込）。",
+   "最速版アーカイブ視聴期間: 各公演ライブ本編終了1時間後～2026年9月24日(木)18:00（予定）。",
+   "視聴コメント付きアーカイブ視聴期間: 2026年9月24日(木)18:00～2026年10月8日(木)23:59（予定）。",
+   "画像生成期間: 2026年9月21日(月)19:00～2026年10月8日(月)23:59。",
+   "DAY1またはDAY2配信視聴チケットでは公演オリジナルデジタルチケット画像を1枚生成できる。",
+   "DAY1＋DAY2配信視聴チケットでは公演オリジナルデジタルチケット画像を2枚生成できる。",
+   "エンゲージメント: 高"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609230228-explore-6",
+  "event_date": "2026-09-22",
+  "deadline": "2026-10-08"
  }
 ]

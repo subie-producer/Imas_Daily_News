@@ -1,0 +1,105 @@
+{
+ "decisions": {
+  "765-bilibili-digital-card-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "予約開始(9/20)・販売開始(9/22)の事実は9/21付で既報(story: 765-bilibili-digital-card-2026)。本日新事実・当日トリガーなし"
+  },
+  "765-solo-collection-dress-code-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注期間9/21-10/4・受注生産の事実は9/22付で既報(story: 765-solo-collection-dress-code-saijo-2026)。本日新事実なし"
+  },
+  "topic-fdidcfadbf": {
+   "action": "article",
+   "angle": "dual twin live tour 千秋楽・東京公演(双海亜美・双海真美)のキャスト生オーディオコメンタリーが本日19時からASOBI STAGEで配信、アーカイブは9/27まで視聴可能",
+   "rank": "small",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信予定自体は既報(765-dual-twinlive-venue-cd)だが、本日が実際の配信当日という当日トリガーがあるため単独記事化"
+  },
+  "topic-aacbgfabce": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-fdidcfadbf",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出演者(下田麻美)本人による同オーコメ配信の告知投稿。個人SNS単体では記事化せず配信本編の記事に統合"
+  },
+  "topic-cjjbfbbfbf": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "kotobukiya-kuji-summer-live-stage-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じくじの「販売終了まであと2日」告知。本日23:59の販売終了を報じる記事に統合"
+  },
+  "kotobukiya-kuji-summer-live-stage-2026": {
+   "action": "article",
+   "angle": "コトブキヤくじ「アイドルマスター Summer Live st@ge」の販売と、公式Xフォロー＆リポストキャンペーンが本日23:59に終了",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約どおり、本日の販売終了という締切トリガーで単独記事化"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-topic-fdidcfadbf",
+    "brand": "765",
+    "rank": "small",
+    "angle": "dual twin live tour 千秋楽・東京公演(双海亜美・双海真美)のキャスト生オーディオコメンタリーが本日19時からASOBI STAGEで配信、アーカイブは9/27まで視聴可能",
+    "lead_score": 70,
+    "dedup_key": "topic-fdidcfadbf",
+    "candidate_ids": [
+     "202609230228-grok-10",
+     "202609230228-grok-11"
+    ]
+   },
+   {
+    "slug": "765-kotobukiya-kuji-summer-live-stage-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "コトブキヤくじ「アイドルマスター Summer Live st@ge」の販売と、公式Xフォロー＆リポストキャンペーンが本日23:59に終了",
+    "lead_score": 15,
+    "dedup_key": "kotobukiya-kuji-summer-live-stage-2026",
+    "candidate_ids": [
+     "sched-2026-09-23-kotobukiya-kuji-summer-live-stage-2026-締切",
+     "202609230228-grok-12"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765-bilibili-digital-card-collection-2026",
+    "reason": "既報",
+    "note": "予約開始(9/20)・販売開始(9/22)の事実は9/21付で既報(story: 765-bilibili-digital-card-2026)。本日新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "765-solo-collection-dress-code-2026",
+    "reason": "既報",
+    "note": "受注期間9/21-10/4・受注生産の事実は9/22付で既報(story: 765-solo-collection-dress-code-saijo-2026)。本日新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

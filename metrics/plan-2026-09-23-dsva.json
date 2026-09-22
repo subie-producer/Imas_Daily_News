@@ -1,0 +1,293 @@
+{
+ "decisions": {
+  "tomori-manaka-50000-subscribers-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/22号「灯里愛夏 5万人記念3D配信」で既報。新事実・当日トリガー無し"
+  },
+  "kamizuru-cosmo-tgs2026-ace-combat-8": {
+   "action": "article",
+   "angle": "上水流宇宙がTGS2026出展版『ACE COMBAT 8』の試遊版プレイ配信を実施、発売直前のミッションクリア報告と手応えを伝える",
+   "rank": "large",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一配信の告知(topic-dgffbgicec)とプレイ後報告(topic-cjddffjbfd)を統合"
+  },
+  "kamizuru-cosmo-morning-stream-2026-09-23": {
+   "action": "roundup",
+   "angle": "上水流宇宙の朝活配信・vα-liv第13回1on1のアンケート送付・灯里愛夏の配信クリップ紹介など、定常運営・配信近況まとめ",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-nonoha-chat-2026": {
+   "action": "article",
+   "angle": "灯里愛夏と十河ののは(にじさんじ)が「#まなのの」第2弾となる初のふたり雑談コラボを配信",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一配信を報じるmananono-chat-collab-2026-09-20を統合"
+  },
+  "mananono-chat-collab-2026-09-20": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "manaka-nonoha-chat-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "manaka-nonoha-chat-2026と同一配信"
+  },
+  "kamizuru-cosmo-aniera-festa-dj-2026-09-20": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/21号「ナガノアニエラフェスタ2026完走」で出演済み。セトリ詳細のみで当日トリガー無し、出典も二次情報(wikiwiki)"
+  },
+  "valiv-nagano-aniera-festa-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "レトラ・上水流宇宙の出演は9/21号で既報、催しも9/20に終了済み"
+  },
+  "topic-gajidejffb": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/22号「上水流宇宙『きゃわぽっぴんどぅー』踊ってみた公開」で既報"
+  },
+  "topic-aiachadhbh": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/22号「灯里愛夏5万人記念3D配信」で既報の配信告知。新事実無し"
+  },
+  "topic-dgffbgicec": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "kamizuru-cosmo-tgs2026-ace-combat-8",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一配信の告知"
+  },
+  "topic-ebcaccgcab": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-special-stream-2026-09-24",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "valiv-special-stream-2026-09-24と同一告知(9/24特別配信・お便り締切)"
+  },
+  "topic-haecajhcbc": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/21号「宇宙誕生祭2026ショートダイジェスト公開」で既報の定常シリーズ。当日分の内容のみで新トリガー無し"
+  },
+  "topic-eeegbbgebh": {
+   "action": "roundup",
+   "angle": "上水流宇宙の朝活配信・vα-liv第13回1on1のアンケート送付・灯里愛夏の配信クリップ紹介など、定常運営・配信近況まとめ",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-ghfbbbcede": {
+   "action": "article",
+   "angle": "灯里愛夏BIRTHDAY ONLINE LIVE 2026延期公演(10/28)、7/1公演の既存配信チケット保有者向けに視聴継続・希望者払戻の対応を告知",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催決定自体は9/22号で既報。既存チケット保有者向け対応が新事実"
+  },
+  "topic-cjddffjbfd": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "kamizuru-cosmo-tgs2026-ace-combat-8",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一配信のプレイ後報告"
+  },
+  "topic-bfbdgacfcb": {
+   "action": "roundup",
+   "angle": "上水流宇宙の朝活配信・vα-liv第13回1on1のアンケート送付・灯里愛夏の配信クリップ紹介など、定常運営・配信近況まとめ",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-shinkaifes-2026": {
+   "action": "article",
+   "angle": "深海フェス2026「超・深海」第三次販売(先着)が22:00開始、10/15 23:59まで受付",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-special-stream-2026-09-24": {
+   "action": "article",
+   "angle": "9/24ヴイアラ公式ch特別配信を控え、お便り・質問の募集締切が本日23:59に迫る",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一告知のtopic-ebcaccgcabを統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-kamizuru-cosmo-tgs2026-ace-combat-8",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "上水流宇宙がTGS2026出展版『ACE COMBAT 8』の試遊版プレイ配信を実施、発売直前のミッションクリア報告と手応えを伝える",
+    "lead_score": 45,
+    "dedup_key": "kamizuru-cosmo-tgs2026-ace-combat-8",
+    "candidate_ids": [
+     "202609220733-explore-17",
+     "202609230228-grok-24",
+     "202609230228-grok-29"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-nonoha-chat-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "灯里愛夏と十河ののは(にじさんじ)が「#まなのの」第2弾となる初のふたり雑談コラボを配信",
+    "lead_score": 15,
+    "dedup_key": "manaka-nonoha-chat-2026",
+    "candidate_ids": [
+     "202609221233-explore-9",
+     "202609221834-explore-10"
+    ]
+   },
+   {
+    "slug": "dsva-topic-ghfbbbcede",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏BIRTHDAY ONLINE LIVE 2026延期公演(10/28)、7/1公演の既存配信チケット保有者向けに視聴継続・希望者払戻の対応を告知",
+    "lead_score": 25,
+    "dedup_key": "topic-ghfbbbcede",
+    "candidate_ids": [
+     "202609230228-grok-28"
+    ]
+   },
+   {
+    "slug": "dsva-shinkaifes-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "深海フェス2026「超・深海」第三次販売(先着)が22:00開始、10/15 23:59まで受付",
+    "lead_score": 10,
+    "dedup_key": "dsva-shinkaifes-2026",
+    "candidate_ids": [
+     "sched-2026-09-23-dsva-shinkaifes-2026-開始"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-special-stream-2026-09-24",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "9/24ヴイアラ公式ch特別配信を控え、お便り・質問の募集締切が本日23:59に迫る",
+    "lead_score": 10,
+    "dedup_key": "valiv-special-stream-2026-09-24",
+    "candidate_ids": [
+     "sched-2026-09-23-valiv-special-stream-2026-09-24-締切",
+     "202609230228-grok-25"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "上水流宇宙の朝活配信・vα-liv第13回1on1のアンケート送付・灯里愛夏の配信クリップ紹介など、定常運営・配信近況まとめ",
+    "lead_score": 0,
+    "dedup_key": "kamizuru-cosmo-morning-stream-2026-09-23",
+    "candidate_ids": [
+     "202609220733-explore-18",
+     "202609230228-grok-27",
+     "202609230228-grok-30"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tomori-manaka-50000-subscribers-2026",
+    "reason": "既報",
+    "note": "9/22号「灯里愛夏 5万人記念3D配信」で既報。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "kamizuru-cosmo-aniera-festa-dj-2026-09-20",
+    "reason": "既報",
+    "note": "9/21号「ナガノアニエラフェスタ2026完走」で出演済み。セトリ詳細のみで当日トリガー無し、出典も二次情報(wikiwiki)"
+   },
+   {
+    "dedup_key": "valiv-nagano-aniera-festa-2026",
+    "reason": "既報",
+    "note": "レトラ・上水流宇宙の出演は9/21号で既報、催しも9/20に終了済み"
+   },
+   {
+    "dedup_key": "topic-gajidejffb",
+    "reason": "既報",
+    "note": "9/22号「上水流宇宙『きゃわぽっぴんどぅー』踊ってみた公開」で既報"
+   },
+   {
+    "dedup_key": "topic-aiachadhbh",
+    "reason": "既報",
+    "note": "9/22号「灯里愛夏5万人記念3D配信」で既報の配信告知。新事実無し"
+   },
+   {
+    "dedup_key": "topic-haecajhcbc",
+    "reason": "既報",
+    "note": "9/21号「宇宙誕生祭2026ショートダイジェスト公開」で既報の定常シリーズ。当日分の内容のみで新トリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

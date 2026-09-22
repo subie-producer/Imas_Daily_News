@@ -1,0 +1,281 @@
+{
+ "decisions": {
+  "shiny-lottery-inventory-nagoya-2026-09-21": {
+   "action": "roundup",
+   "angle": "抽選くじ在庫更新(名古屋駅前店・大阪日本橋店)、パラレル回廊記念4コマ2本、ラジオ視聴御礼など進行中の運営情報をまとめる",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-lottery-inventory-osaka-2026-09-21": {
+   "action": "roundup",
+   "angle": "抽選くじ在庫更新(名古屋駅前店・大阪日本橋店)、パラレル回廊記念4コマ2本、ラジオ視聴御礼など進行中の運営情報をまとめる",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-parallel-kairo-yonkoma-mukashi-no-mama-2026": {
+   "action": "roundup",
+   "angle": "抽選くじ在庫更新(名古屋駅前店・大阪日本橋店)、パラレル回廊記念4コマ2本、ラジオ視聴御礼など進行中の運営情報をまとめる",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-master-showpiece-fan-goods-arrival-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人ブログでの事前通販グッズ到着報告。公式の新情報なし"
+  },
+  "shiny-parallel-kairo-4koma-kanzen-shoku-2026": {
+   "action": "roundup",
+   "angle": "抽選くじ在庫更新(名古屋駅前店・大阪日本橋店)、パラレル回廊記念4コマ2本、ラジオ視聴御礼など進行中の運営情報をまとめる",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-ebisan-frame-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/22付で既に同内容を配信済み(topic-052-2026)"
+  },
+  "shiny-illumination-picnic-fan-talk-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "匿名ファン掲示板の反響投稿の紹介。新事実なし、shiny面にculture枠は無い"
+  },
+  "shiny-jantama-madoka-figure-fan-talk-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "フィギュア自体は9/17に既報。本件は反響投稿の紹介のみで新事実なし"
+  },
+  "topic-iaggdfgdja": {
+   "action": "article",
+   "angle": "幽谷霧子の誕生日を記念し、誕生日ストーリー・無償ジュエル配布・限定/復刻ガシャ2種・フェザージュエルセール・記念商品パック各種など施策一式を伝える",
+   "rank": "large",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日の霧子誕生日関連8主題を統合"
+  },
+  "topic-cefdbcfeeh": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-iaggdfgdja",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-chebgdheib": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-iaggdfgdja",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-checdcgajf": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-iaggdfgdja",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-dafeaebgaa": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-iaggdfgdja",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-fdhddffegf": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-iaggdfgdja",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-ihafeaaeea": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-iaggdfgdja",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-eeafihejfa": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-iaggdfgdja",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-ahghdffcic": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-iaggdfgdja",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-bffahaffcg": {
+   "action": "roundup",
+   "angle": "抽選くじ在庫更新(名古屋駅前店・大阪日本橋店)、パラレル回廊記念4コマ2本、ラジオ視聴御礼など進行中の運営情報をまとめる",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-deddcjcage": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の来場報告。開催時間・場所等の新情報なし"
+  },
+  "shiny-stillblue-asobipremium-lottery": {
+   "action": "article",
+   "angle": "『Still blue』アソビストア一般会員先行の申込締切が本日9/23 23:59に迫っていることを伝える",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-topic-iaggdfgdja",
+    "brand": "shiny",
+    "rank": "large",
+    "angle": "幽谷霧子の誕生日を記念し、誕生日ストーリー・無償ジュエル配布・限定/復刻ガシャ2種・フェザージュエルセール・記念商品パック各種など施策一式を伝える",
+    "lead_score": 70,
+    "dedup_key": "topic-iaggdfgdja",
+    "candidate_ids": [
+     "202609230228-grok-50",
+     "202609230228-grok-51",
+     "202609230228-grok-52",
+     "202609230228-grok-53",
+     "202609230228-grok-54",
+     "202609230228-grok-55",
+     "202609230228-grok-56",
+     "202609230228-grok-57",
+     "202609230228-grok-58"
+    ]
+   },
+   {
+    "slug": "shiny-stillblue-asobipremium-lottery",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『Still blue』アソビストア一般会員先行の申込締切が本日9/23 23:59に迫っていることを伝える",
+    "lead_score": 15,
+    "dedup_key": "shiny-stillblue-asobipremium-lottery",
+    "candidate_ids": [
+     "sched-2026-09-23-shiny-stillblue-asobipremium-lottery-締切"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "抽選くじ在庫更新(名古屋駅前店・大阪日本橋店)、パラレル回廊記念4コマ2本、ラジオ視聴御礼など進行中の運営情報をまとめる",
+    "lead_score": 0,
+    "dedup_key": "shiny-lottery-inventory-nagoya-2026-09-21",
+    "candidate_ids": [
+     "202609220733-explore-9",
+     "202609220733-explore-10",
+     "202609221233-explore-4",
+     "202609221834-explore-3",
+     "202609230228-grok-59"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-master-showpiece-fan-goods-arrival-2026",
+    "reason": "個人の話題",
+    "note": "個人ブログでの事前通販グッズ到着報告。公式の新情報なし"
+   },
+   {
+    "dedup_key": "shiny-ebisan-frame-2026",
+    "reason": "既報",
+    "note": "9/22付で既に同内容を配信済み(topic-052-2026)"
+   },
+   {
+    "dedup_key": "shiny-illumination-picnic-fan-talk-2026",
+    "reason": "個人の話題",
+    "note": "匿名ファン掲示板の反響投稿の紹介。新事実なし、shiny面にculture枠は無い"
+   },
+   {
+    "dedup_key": "shiny-jantama-madoka-figure-fan-talk-2026",
+    "reason": "既報",
+    "note": "フィギュア自体は9/17に既報。本件は反響投稿の紹介のみで新事実なし"
+   },
+   {
+    "dedup_key": "topic-deddcjcage",
+    "reason": "個人の話題",
+    "note": "個人の来場報告。開催時間・場所等の新情報なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

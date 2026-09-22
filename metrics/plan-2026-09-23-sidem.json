@@ -1,0 +1,165 @@
+{
+ "decisions": {
+  "sidem-11th-fan-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "note.comの個人ファンによる参戦レポート・フラワースタンド主催記録。単体の個人SNS/ブログ投稿のため不採用"
+  },
+  "sidem-11th-first-viewer-reaction-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "note.comの個人ファンによるDAY2感想記事。単体の個人SNS/ブログ投稿のため不採用"
+  },
+  "315shop-kuji-inventory-2026-09-21": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じ9/21付在庫状況はsidem-315shop-lottery-stock-2026-09-21として9/22号で既報"
+  },
+  "fan-deramasu-sidem-nagoya-stamp-rally-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "8月開催の名古屋企画を訪れた個人ファンのnote投稿。イベントも終了済みで当日のトリガーなし"
+  },
+  "topic-giggjaffcb": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "SOLO COLLECTION 04は発売日9/12・価格・収録曲まで既報(topic-065-2026等)。9/21投稿は受注中の再掲のみ"
+  },
+  "topic-dcbigdadgb": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-2dmv-transcendent-goods-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2DMV公開記念グッズ第2弾の同じ受注締切(9/23 23:59)。続報予約の本体記事に統合"
+  },
+  "topic-afgedhheeh": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-06",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Altessimo2DMV本日21:00公開の同一事象。YouTubeプレミアURL・動画タイトルを本体記事に統合"
+  },
+  "topic-ieecffhdej": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "T@LESグッズ第4弾(締切9/27)は9/11付で既報。9/21-22投稿は商品サンプル画像の逐次公開のみで本日のトリガーなし"
+  },
+  "sidem-2dmv-transcendent-goods-2026-09": {
+   "action": "article",
+   "angle": "2DMV公開記念グッズ第2弾・T@LESリリース記念グッズ第3弾の受注が本日23:59に締切、対象ユニットと発送時期を伝える",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-dcbigdadgbを統合。両施策とも同じ受注締切なので1記事にまとめる"
+  },
+  "sidem-06": {
+   "action": "article",
+   "angle": "Altessimo「Panorama's Fanfare」2DMVが本日21:00にプレミア公開、YouTubeで視聴可能に",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-afgedhheehを統合。公開日決定の続報予約が実際の公開日を迎えるのでsidem面の中心記事とする"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-2dmv-transcendent-goods-2026-09",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "2DMV公開記念グッズ第2弾・T@LESリリース記念グッズ第3弾の受注が本日23:59に締切、対象ユニットと発送時期を伝える",
+    "lead_score": 15,
+    "dedup_key": "sidem-2dmv-transcendent-goods-2026-09",
+    "candidate_ids": [
+     "sched-2026-09-23-sidem-2dmv-transcendent-goods-2026-09-締切",
+     "202609230228-grok-62"
+    ]
+   },
+   {
+    "slug": "sidem-06-02056a",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "Altessimo「Panorama's Fanfare」2DMVが本日21:00にプレミア公開、YouTubeで視聴可能に",
+    "lead_score": 60,
+    "dedup_key": "sidem-06",
+    "candidate_ids": [
+     "sched-2026-09-23-sidem-06-開始",
+     "202609230228-grok-63"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-11th-fan-report-2026",
+    "reason": "個人の話題",
+    "note": "note.comの個人ファンによる参戦レポート・フラワースタンド主催記録。単体の個人SNS/ブログ投稿のため不採用"
+   },
+   {
+    "dedup_key": "sidem-11th-first-viewer-reaction-2026",
+    "reason": "個人の話題",
+    "note": "note.comの個人ファンによるDAY2感想記事。単体の個人SNS/ブログ投稿のため不採用"
+   },
+   {
+    "dedup_key": "315shop-kuji-inventory-2026-09-21",
+    "reason": "既報",
+    "note": "同じ9/21付在庫状況はsidem-315shop-lottery-stock-2026-09-21として9/22号で既報"
+   },
+   {
+    "dedup_key": "fan-deramasu-sidem-nagoya-stamp-rally-2026",
+    "reason": "個人の話題",
+    "note": "8月開催の名古屋企画を訪れた個人ファンのnote投稿。イベントも終了済みで当日のトリガーなし"
+   },
+   {
+    "dedup_key": "topic-giggjaffcb",
+    "reason": "既報",
+    "note": "SOLO COLLECTION 04は発売日9/12・価格・収録曲まで既報(topic-065-2026等)。9/21投稿は受注中の再掲のみ"
+   },
+   {
+    "dedup_key": "topic-ieecffhdej",
+    "reason": "既報",
+    "note": "T@LESグッズ第4弾(締切9/27)は9/11付で既報。9/21-22投稿は商品サンプル画像の逐次公開のみで本日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

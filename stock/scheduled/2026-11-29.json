@@ -124,5 +124,35 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609190226-grok-78"
+ },
+ {
+  "id": "sched-2026-11-29-topic-ghfbbbcede-終了",
+  "dedup_key": "topic-ghfbbbcede",
+  "brand": "dsva",
+  "subject": "灯里愛夏 BIRTHDAY ONLINE LIVE 2026 延期公演",
+  "kind": "終了",
+  "note": "アーカイブ配信視聴の最終日(23:59まで視聴可能)",
+  "reserved_on": "2026-09-23",
+  "title": "灯里愛夏 BIRTHDAY ONLINE LIVE 2026 延期公演（2026年10月28日）",
+  "url": "https://idolmaster-official.jp/news/01_19896",
+  "source_type": "公式",
+  "facts": [
+   "掲載日: 2026.09.21（ページ表記。時刻の記載なし）",
+   "催しの日: 2026年10月28日(水)",
+   "締切: 下記のとおり（受付期間・入金期間・販売期間・配信期間は別ラベル）",
+   "公演名は「PROJECT IM@S vα-liv 灯里愛夏 BIRTHDAY ONLINE LIVE 2026」の延期公演",
+   "2026年7月1日(水)に開催予定だった公演を、2026年10月28日(水)に延期して開催する",
+   "2026年6月5日(金)～2026年6月24日(水)に、配信チケット「灯里愛夏 Birthday ONLINE LIVE 2026（7/1(水)公演）」または「【プレゼント】灯里愛夏 BIRTHDAY ONLINE LIVE 2026 視聴チケット(7/1(水))」を購入した人は、手持ちの配信チケットで延期公演を視聴できる",
+   "同じ期間に上記2種を購入した人を対象に、希望者払戻を実施する",
+   "払戻の案内は、対象者へASOBISTOREから個別に連絡する",
+   "「mk.asobistore.jp」からのメールを受け取れるよう設定し、案内を待つよう書いている",
+   "現地ライブビューイングは2026年10月28日(水)、ユナイテッド・シネマ アクアシティお台場［3番スクリーン］で開催する",
+   "現地ライブビューイングは、再度、抽選販売で実施する",
+   "イベント公式サイト: https://idolmaster-official.jp/live_events/va-liv_manaka_bd2026"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609230228-grok-28",
+  "event_date": "2026-10-28"
  }
 ]

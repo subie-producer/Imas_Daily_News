@@ -152,5 +152,32 @@
   "verify": "confirmed",
   "src_candidate_id": "202609161237-explore-7",
   "event_date": "2026-09-29"
+ },
+ {
+  "id": "sched-2026-09-29-kamizuru-cosmo-tgs2026-ace-combat-8-開始",
+  "dedup_key": "kamizuru-cosmo-tgs2026-ace-combat-8",
+  "brand": "dsva",
+  "subject": "『ACE COMBAT 8: WINGS OF THEVE』アーリーアクセス",
+  "kind": "開始",
+  "note": "アーリーアクセスが始まり先行プレイができる",
+  "reserved_on": "2026-09-23",
+  "title": "上水流宇宙がTGS2026で『ACE COMBAT 8』試遊版を配信",
+  "url": "https://www.youtube.com/watch?v=rSKtYE3bjog",
+  "source_type": "公式",
+  "facts": [
+   "上水流宇宙が『ACE COMBAT 8: WINGS OF THEVE』のTGS2026試遊版をプレイする配信を行った。",
+   "『ACE COMBAT 8: WINGS OF THEVE』の発売日は2026年10月2日。",
+   "アーリーアクセスは2026年9月29日から開始される。",
+   "エンゲージメント: 中",
+   "言及アイドル: 上水流宇宙",
+   "2026年9月22日16:00から配信された。",
+   "上水流宇宙が『ACE COMBAT 8: WINGS OF THEVE』のTGS2026試遊版をプレイした。",
+   "同作のアーリーアクセスは2026年9月29日開始。",
+   "対応プラットフォームはPlayStation 5、Xbox Series X|S、STEAM。"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609220733-explore-17",
+  "event_date": "2026-09-22"
  }
 ]

@@ -24,10 +24,10 @@ sources:
   type: 二次情報
 - url: https://x.com/nakano_arcade/status/2095799035378483230
   label: namco中野店 ゲーム情報 X
-  type: 準公式
+  type: 当事者
 - url: https://x.com/namco_hakata/status/2095799043939094589
   label: namco博多バスターミナル店 X
-  type: 準公式
+  type: 当事者
 - url: https://news.denfaminicogamer.jp/news/2609042y
   label: 電ファミニコゲーマー
   type: 報道

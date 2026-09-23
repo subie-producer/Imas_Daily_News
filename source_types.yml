@@ -30,6 +30,8 @@
 official_paths:
   # バンナムAM配下のツアマス公式サイト(規程2.5に例として明記されている)
   - bandainamco-am.co.jp/am/vg/idolmaster-tours/
+  - bandainamco-am.co.jp/ko/am/vg/idolmaster-tours/   # 同・韓国語版
+  - bandainamco-am.co.jp/en/am/vg/idolmaster-tours/   # 同・英語版
   # bilibili は多数の利用者が同居する場で、投稿 URL にアカウントが出ない。
   # 投稿者「偶像大师官方」(アイドルマスター中国公式)を確認した投稿だけを個別に載せる
   - bilibili.com/opus/1244186744338776068
@@ -64,15 +66,15 @@ semi_official_domains:
   - webstore.asobistore.jp                # アソビストア(別ドメイン)
   - asobistory.asobistore.jp
   - asobistage.asobistore.jp            # アソビステージ(公式配信プラットフォーム)
-  - gamemusic.bn-ent.net                  # バンダイナムコのゲームミュージックレーベル
-  - bandainamcomusiclive.co.jp            # バンダイナムコミュージックライブ(グループの音楽会社)
-  - bandainamco-am.co.jp                  # バンナムAM(上の official_paths 以外)
-  - parks2.bandainamco-am.co.jp
-  - p-bandai.jp                           # プレミアムバンダイ
+  - gamemusic.bn-ent.net                  # バンダイナムコのゲームミュージックレーベル(アイマスの音源を出す本体)
+  - bandainamcomusiclive.co.jp            # バンダイナムコミュージックライブ(アイマスの音源・配信を出す本体)
+  - p-bandai.jp                           # プレミアムバンダイ(公式ストア)
 # 多数のレーベルが同居する配信リンク(Linkfire 等)は、ドメインでは決まらない。
 # パスのレーベル記号(品番の頭)で決める(区切りを見ない素の前方一致)
 semi_official_paths:
   - lnk.to/LZC-                           # ランティスの品番(LZC-xxxx)の配信リンク
+  - bandainamco-am.co.jp/chara_shop/idolmaster    # アイドルマスター オフィシャルショップ(公式ストア)
+  - bandainamco-am.co.jp/others/idolmaster        # バンナムAM のアイマス専用ページ(プロデューサーズステーション等)
 
 # --- 種類でまとめて決まるもの(末尾一致。個別指定と特設サイトの後に見る) ---
 # 自治体や政府機関は、どこであってもコラボ・寄贈・観光施策の**当事者**である。
@@ -209,6 +211,11 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  # バンダイナムコのグループ会社でも、アイマス以外のタイトル・事業はコラボ先・販売元=当事者
+  # (編集長 2026-09-23:「あくまでもアイマスニュースの公式とは、を考えろ」)
+  - bandainamco-am.co.jp  # バンナムAM(ゲームセンター・イベント。アイマス専用のパスは semi_official_paths / official_paths)
+  - parks2.bandainamco-am.co.jp  # バンナムAM のグッズ受注
+  - enso-order.acecombat.jp  # ACE COMBAT 8 の受注サイト(BNE の他タイトル。コラボ先)
   - iwate-kenmin.jp       # 合議で追加: イベント会場が自身のサイトで公演情報を掲載
   - fumo-collection.com   # 合議で追加: ゲーミング機器ブランド運営。複数作品とのコラボ商品製造販売
   - fullcomp.jp           # 合議で追加: トレーディングカード販売チェーン。アイマス関連商品の販売点
@@ -407,8 +414,6 @@ x_accounts:
     # bandainamco-am.co.jp と同じく準公式(会場としての当事者ではなく、運営主体で決める)
     - ImasShop_bnam       # アイドルマスター オフィシャルショップ(公式ストア)
     - ASOBINOTES876       # アソビノート(規程2.5に準公式の例として明記)
-    - nakano_arcade       # namco中野店(バンダイナムコアミューズメント)
-    - namco_hakata        # namco博多バスターミナル店(バンダイナムコアミューズメント)
     - imas_lantis         # ランティスのアイマス公式BOT
     - imas_columbia                   # 日本コロムビア アイマス
     - NipponColumbia
@@ -549,6 +554,8 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - nakano_arcade       # namco中野店(ゲームセンター。バンナムAM でもアイマス以外の事業=当事者。編集長 2026-09-23)
+    - namco_hakata        # namco博多バスターミナル店(同上)
     - yassy846            # 合議で追加: 楽曲作詞の制作に関わった人。演者は演じている人であり、作詞者ではない
     - hinako_tsubaki      # 合議で追加: 楽曲作曲・編曲の制作に関わった人。演者は演じている人であり、制作者ではない
     - fc_machida          # 合議で追加: オリパを販売する小売店で、商品販売元からの一次発信

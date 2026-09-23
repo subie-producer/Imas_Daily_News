@@ -2,7 +2,7 @@
 slug: dsva-kamizuru-cosmo-tgs2026-ace-combat-8
 edition: "2026-09-23"
 brand: dsva
-src: 未確認
+src: 当事者
 rank: small
 corrected: false
 corrections: []
@@ -25,7 +25,7 @@ sources:
   type: 公式
 - label: "バンダイナムコエンターテインメント「ACE COMBAT 8: WINGS OF THEVE」(掲載日不明)"
   url: https://enso-order.acecombat.jp/
-  type: 未確認
+  type: 当事者
 event_date: "2026-09-22"
 title_fact_ids:
 - F25

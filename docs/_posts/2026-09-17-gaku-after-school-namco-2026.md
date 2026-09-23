@@ -20,7 +20,7 @@ tags:
 sources:
 - label: 学園アイドルマスター After School キャンペーン in namco (2026年9月15日)
   url: https://bandainamco-am.co.jp/event/game_center/gkmas2026/
-  type: 準公式
+  type: 当事者
 - label: ナムコ限定景品と、新規イラスト使用のナムコ限定特典が登場！ 「学園アイドルマスター After School キャンペーン in namco」 2026年9月○
   url: https://prtimes.jp/main/html/rd/p/000000490.000159118.html
   type: 当事者

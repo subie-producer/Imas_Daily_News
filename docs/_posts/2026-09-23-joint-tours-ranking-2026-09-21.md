@@ -2,7 +2,7 @@
 slug: joint-tours-ranking-2026-09-21
 edition: "2026-09-23"
 brand: joint
-src: 準公式
+src: 公式
 rank: small
 corrected: false
 corrections: []
@@ -16,7 +16,7 @@ tags:
 sources:
 - label: ツアマス公式サイト「RANKING」(2026年9月21日)
   url: https://bandainamco-am.co.jp/ko/am/vg/idolmaster-tours/ranking/
-  type: 準公式
+  type: 公式
 event_date: "2026-09-21"
 title_fact_ids:
 - F1

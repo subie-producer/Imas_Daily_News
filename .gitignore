@@ -26,3 +26,5 @@ metrics/oncall-*
 metrics/*.lock
 # モデルに渡す指示・素材ファイル(prompt_file)。号ごとの作業物
 metrics/work/
+# 出典の判定で決まらなかったものと両モデルの言い分(watch が翌朝の通知に併記する)。次の判定で上書き
+metrics/classify-unresolved.json

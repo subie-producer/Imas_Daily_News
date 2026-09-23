@@ -1399,6 +1399,8 @@ def drop_blocked_articles(date: str, review: dict, written: list[dict]) -> tuple
             continue
         slug = name[len(date) + 1:].removesuffix(".md")
         p = ROOT / "docs" / "_posts" / name
+        if slug not in dropped:
+            log_drop(date, slug, "校閲ブロック", f"{b.get('rule_id') or ''} {issue}".strip(), p)
         if p.exists():
             p.unlink()
         if slug not in dropped:
@@ -1483,6 +1485,28 @@ def assign_ranks(date: str, plan: dict, written: list[dict], keep_lead: bool = F
 
 
 WRITE_OUTCOMES: dict[str, dict[str, str]] = {}   # 日付 → {slug: 書けなかった理由(見送り/落とした)}
+# 日付 → {slug: (見出し, どの段で, なぜ)}。紙面から外れた記事の**概略**。slug だけ並べても人には何の記事か
+# 分からない(編集長の指摘 2026-09-23)。落とす前に見出しを控え、完了通知に載せる
+DROP_LOG: dict[str, dict[str, tuple[str, str, str]]] = {}
+
+
+def log_drop(date: str, slug: str, stage: str, why: str, path: Path | None = None) -> None:
+    """紙面から外す記事の概略を控える。**ファイルを消す前に**呼ぶ(見出しはファイルから取る)。"""
+    title = ""
+    p = path or (ROOT / "docs" / "_posts" / f"{date}-{slug}.md")
+    fm = parse_front_matter(p) if p.exists() else None
+    if fm:
+        title = str(fm.get("title") or "")
+    DROP_LOG.setdefault(date, {})[slug] = (title, stage, why[:160])
+
+
+def drop_summary(date: str) -> str:
+    """完了通知に載せる、外れた記事の一覧(見出し・段・理由)。"""
+    rows = DROP_LOG.get(date) or {}
+    if not rows:
+        return ""
+    return "\n紙面から外れた記事 " + f"{len(rows)}本:\n" + "\n".join(
+        f"- {t or slug}({stage}): {why}" for slug, (t, stage, why) in rows.items())
 
 
 def returned_note(problems: list[str]) -> str:
@@ -1526,6 +1550,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
         print(f"既存の記事 {len(written_before)}本は再執筆しない(--reuse-plan)", flush=True)
     schema_out = ROOT / "schema" / "article-out.schema.json"
     WRITE_OUTCOMES[date] = outcomes = {}
+    DROP_LOG.setdefault(date, {})
     # 執筆の結果は3種類で、名前を分ける(「不成立」で一括りにしない。編集長の指摘):
     #   見送り   = 執筆側の判断(記事として成立しない。理由コード付き)。落ちるのが正しい
     #   差し戻し = 機械検算の不合格。**その点だけを示して1回やり直させる**(例外で終わらせない)
@@ -1576,6 +1601,8 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                     outcomes[art["slug"]] = f"見送り: {ans.get('decline_code')} {str(ans.get('decline_detail') or '')[:120]}"
                     print(f"記事 {art['slug']} は{outcomes[art['slug']]}", flush=True)
                     aborted.append(art["slug"])
+                    # 記事は無いので、見出しの代わりに計画の切り口を残す
+                    DROP_LOG.setdefault(date, {})[art["slug"]] = (str(art.get("angle") or ""), "執筆で見送り", outcomes[art["slug"]][4:].strip()[:160])
                     continue
                 if problems:
                     if tries == 0:
@@ -1586,6 +1613,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                         outcomes[art["slug"]] = "落とした(差し戻しても検算不合格): " + " / ".join(problems[:4])
                         print(f"記事 {art['slug']} を{outcomes[art['slug']]}", flush=True)
                         aborted.append(art["slug"])
+                        DROP_LOG.setdefault(date, {})[art["slug"]] = (str(art.get("angle") or ""), "執筆で落とした", " / ".join(problems[:3])[:160])
                     continue
                 renderlib.render_article(target, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
                 if tries:
@@ -1605,6 +1633,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                 print(f"記事 {art['slug']} 検収不合格: {errs}", flush=True)
                 aborted.append(art["slug"])
                 bad = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
+                log_drop(date, art["slug"], "検収不合格", " / ".join(str(e) for e in errs[:3]), bad)
                 if bad.exists():
                     bad.unlink()
             else:
@@ -1770,6 +1799,7 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     if ans.get("status") == "decline":
         if problems:
             return "kept", "理由の無い decline(" + " / ".join(problems[:2]) + ")。元の稿のまま"
+        log_drop(date, art["slug"], "書き直しで見送り", f"{ans.get('decline_code')} {str(ans.get('decline_detail') or '')}".strip(), path)
         path.unlink(missing_ok=True)
         return "dropped", f"執筆側が不成立と判断({ans.get('decline_code')})。落とす"
     old_text = path.read_text(encoding="utf-8") if path.exists() else ""
@@ -2477,6 +2507,9 @@ def main() -> int:
                 names = [Path(f).name for f in still]
                 print(f"直らなかった {len(still)}本を落とす: {names}", flush=True)
                 for f in still:
+                    log_drop(date, Path(f).name[len(date) + 1:].removesuffix(".md"), "lint 赤",
+                             " / ".join(l.split("::", 2)[-1][:100] for l in (lint_out or "").splitlines()
+                                        if l.startswith("::error") and f in l)[:160] or "lint の指摘が直らなかった", ROOT / f)
                     (ROOT / f).unlink(missing_ok=True)
                 gone = {n[len(date) + 1:].removesuffix(".md") for n in names}
                 written[:] = [a for a in written if a["slug"] not in gone]
@@ -2771,9 +2804,8 @@ def main() -> int:
         escalate("compose", date, "最終の commit/push に失敗(紙面は作業ツリーにある)")
         return 1
     if ok:
-        extra = (f"。校閲が下ろさなかった {len(dropped_by_review)}本は紙面から外しました"
-                 f"({'・'.join(dropped_by_review)})" if dropped_by_review else "")
-        notify("compose", f"{date}号 準備完了(校閲{rounds}往復で approve){extra}。06:00 に発行されます")
+        # 外れた記事は slug ではなく概略(見出し・段・理由)で知らせる(編集長の指摘 2026-09-23)
+        notify("compose", f"{date}号 準備完了(校閲{rounds}往復で approve)。06:00 に発行されます" + drop_summary(date))
         return 0
     reasons = []
     if not approved:

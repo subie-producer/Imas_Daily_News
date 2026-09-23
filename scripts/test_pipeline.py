@@ -22,6 +22,19 @@ import renderlib
 
 FAILS: list[str] = []
 
+# **テストは本物の Discord に絶対に送らない。**通知の経路を差し替え忘れたテストが本物の webhook に届いた
+# (実測 2026-09-23: 当番の修正報告の見本 3 通が編集長の Discord に出た)。webhook の URL を最初に消し、
+# さらに urlopen を塞ぐ(通知を検めるテストは、自分で偽の urlopen を差し込む)
+pipelib.ENV.pop("DISCORD_WEBHOOK_URL", None)
+os.environ.pop("DISCORD_WEBHOOK_URL", None)
+
+
+def _no_network(*a, **k):
+    raise AssertionError("テストから本物の通信を試みた(urlopen)。偽物に差し替えること")
+
+
+pipelib.urllib.request.urlopen = _no_network
+
 
 def check(cond, msg):
     if not cond:
@@ -358,7 +371,7 @@ def test_oncall_report_text(tmp: Path):
         import re as _re
         joined = "".join(_re.sub(r"^\(\d+/\d+\) ", "", m) for m, _ in sent)
         check(joined == text.split("\n## 往復の記録\n")[0], "Discord に送った本文が記録と一致しない(切り詰めている)")
-        check(all(len(m) <= 1900 for m, _ in sent), "Discord の上限を超える塊がある")
+        # 2000 字への分割は pipelib.notify の中で行う(test_notify_long が検める)
         # 取り込み前の全文報告(merge commit はまだ無い)は「追送」と明示し、診断・検証を含む
         sent.clear()
         ok2 = oncall.report_change("compose", "2026-09-12", {"diagnosis": "d", "test_evidence": "t"}, [], "base", "headhash00", "",
@@ -547,19 +560,33 @@ def test_oncall_state(tmp: Path):
 
 def test_notify_long():
     """分割はつなぐと元に戻る(長い1行も)。途中の塊が落ちたら False(監査指摘 R23-P1-2)。"""
-    import oncall
     text = "短い行\n" + "x" * 5000 + "\n最後\n"
-    chunks = oncall.split_chunks(text, 1800)
+    chunks = pipelib.split_chunks(text, 1800)
     check("".join(chunks) == text and all(len(c) <= 1800 for c in chunks) and len(chunks) >= 3, "split_chunks が元に戻らない")
-    saved = oncall.notify
+    # 長い通知は notify 自身が分割して全部送る(watch・compose の長い通知が webhook の上限で落ちない。監査指摘 r73)。
+    # 途中の塊が落ちたら False
+    sent = []
+    class FakeResp:
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    def fake_open(req, timeout=None):
+        body = json.loads(req.data.decode())["content"]
+        sent.append(body)
+        if len(sent) == 2:
+            raise OSError("boom")
+        return FakeResp()
+    saved = (pipelib.urllib.request.urlopen, pipelib._QUIET, dict(pipelib.ENV))
     try:
-        results = iter([True, False, True])
-        oncall.notify = lambda job, msg, ok=True, require=False: next(results, True)
-        check(oncall.notify_long("t", text) is False, "途中の塊が落ちたのに True")
-        oncall.notify = lambda job, msg, ok=True, require=False: True
-        check(oncall.notify_long("t", text) is True, "全部届いたのに False")
+        pipelib._QUIET = False
+        pipelib.ENV["DISCORD_WEBHOOK_URL"] = "https://discord.example/hook"
+        pipelib.urllib.request.urlopen = fake_open
+        ok = pipelib.notify("t", text, require=True)
+        check(not ok and len(sent) >= 3 and all(len(c) <= 1800 + 12 for c in sent) and sent[0].startswith("(1/"), f"長い通知の分割: {ok} {len(sent)}")
+        sent.clear()
+        check(pipelib.notify("t", "短い") is True and len(sent) == 1 and not sent[0].startswith("(1/"), "短い通知に番号が付いた")
     finally:
-        oncall.notify = saved
+        pipelib.urllib.request.urlopen, pipelib._QUIET = saved[0], saved[1]
+        pipelib.ENV.clear(); pipelib.ENV.update(saved[2])
 
 
 def test_oncall_restore_cleans_untracked():
@@ -797,6 +824,26 @@ def test_classify_posts_only(tmp: Path):
     (tmp / "candidates" / "2026-09-19.json").write_text(json.dumps([{"url": "https://www.youtube.com/watch?v=CCCCCCCCCCC"}]), encoding="utf-8")
     (tmp / "docs" / "_posts" / "2026-09-19-c.md").unlink()
     (tmp / "docs" / "_posts" / "2026-09-19-a.md").write_text(post("2026-09-19", "https://www.youtube.com/watch?v=AAAAAAAAAAA", "未確認"), encoding="utf-8")
+    # 「決まらなかった」記録のキーと、watch が表示に使うキーは同じ表記(display_base)。動画は投稿者のチャンネルに寄せる(監査指摘 r73/r74)
+    saved_va, saved_unres = cs.video_author, cs.UNRESOLVED
+    try:
+        cs.video_author = lambda vid: ("imas-official", "題名") if vid == "AAAAAAAAAAA" else ("", "")
+        cs.UNRESOLVED = tmp / "metrics" / "classify-unresolved.json"
+        cs.save_unresolved(["enso-order.acecombat.jp: 当事者「a」 / 準公式「b」", "youtube.com/@Foo: ファン「c」 / —「」",
+                            "somehandle: 演者「d」 / ファン「e」", "youtube:AAAAAAAAAAA(@imas-official)", "youtube:ZZZZZZZZZZZ(@?)",
+                            f"{fkey}: 公式「f」 / 当事者「g」"])
+        rec = cs.load_unresolved()
+        pairs = [("https://enso-order.acecombat.jp/", "https://enso-order.acecombat.jp"),
+                 ("https://www.youtube.com/@Foo/videos", "https://youtube.com/@Foo"),
+                 ("https://x.com/somehandle/status/1", "https://x.com/somehandle"),
+                 ("https://www.youtube.com/watch?v=AAAAAAAAAAA", "https://youtube.com/@imas-official"),
+                 ("https://youtu.be/ZZZZZZZZZZZ", "https://youtube.com/watch?v=ZZZZZZZZZZZ"),
+                 (form, f"https://{fkey}")]
+        for url, want in pairs:
+            got = cs.display_base(url)
+            check(got == want and got in rec, f"表示キーと記録キーが合わない: {url} → {got}(記録: {sorted(rec)[:3]}…)")
+    finally:
+        cs.video_author, cs.UNRESOLVED = saved_va, saved_unres
     # 取引: 失敗したら判定表と記事を**開始時の中身**へ戻す(未追跡の記事も。git の HEAD ではない。監査指摘)。
     # 組版前(lint=False)は lint を掛けない。戻せなければ理由に「戻せない」
     (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")

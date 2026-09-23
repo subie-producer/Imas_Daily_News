@@ -231,15 +231,48 @@ def notify(job: str, msg: str, ok: bool = True, require: bool = False) -> bool:
     url = ENV.get("DISCORD_WEBHOOK_URL")
     if not url:
         return not require
-    try:
-        req = urllib.request.Request(
-            url, data=json.dumps({"content": text}).encode(),
-            headers={"Content-Type": "application/json", "User-Agent": "ImasNewsBot/1.0"})
-        urllib.request.urlopen(req, timeout=15)
-        return True
-    except Exception as e:
-        print(f"(Discord 通知失敗: {e})", flush=True)
-        return False
+    # Discord は1件 2000 字まで。長い通知は分割して**全部**送る(超えると webhook が落ちて通知ごと届かない。監査指摘)
+    chunks = split_chunks(text, DISCORD_LIMIT)
+    delivered = True
+    for i, c in enumerate(chunks):
+        body = (f"({i + 1}/{len(chunks)}) " if len(chunks) > 1 else "") + c
+        try:
+            req = urllib.request.Request(
+                url, data=json.dumps({"content": body}).encode(),
+                headers={"Content-Type": "application/json", "User-Agent": "ImasNewsBot/1.0"})
+            urllib.request.urlopen(req, timeout=15)
+        except Exception as e:
+            print(f"(Discord 通知失敗: {e})", flush=True)
+            delivered = False
+    return delivered
+
+
+DISCORD_LIMIT = 1800
+
+
+def split_chunks(text: str, limit: int) -> list[str]:
+    """Discord の 2000 字上限に合わせて分割する。行単位で詰め、1行が上限を超えるなら文字で割る
+    (つないだ結果が元の文字列と一致する)。"""
+    chunks, cur = [], ""
+    for line in text.splitlines(keepends=True):
+        while len(line) > limit:
+            if cur:
+                chunks.append(cur)
+                cur = ""
+            chunks.append(line[:limit])
+            line = line[limit:]
+        if len(cur) + len(line) > limit and cur:
+            chunks.append(cur)
+            cur = ""
+        cur += line
+    if cur:
+        chunks.append(cur)
+    return chunks
+
+
+def notify_long(job: str, text: str, ok: bool = True, limit: int = DISCORD_LIMIT) -> bool:
+    """必須の長い通知(当番の修正報告)。notify が分割するので、require=True で送るだけ。"""
+    return notify(job, text, ok=ok, require=True)
 
 
 def prompt_file(date: str, name: str, text: str, base: Path | None = None) -> str:

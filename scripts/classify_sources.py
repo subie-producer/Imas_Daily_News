@@ -84,6 +84,33 @@ def path_key(url: str) -> str | None:
     return None
 
 
+def display_base(url_or_key: str) -> str:
+    """人に見せる・記録に使う「判定表に書く単位」の表記。URL でも判定のキー(`youtube.com/@h`、X のハンドル、
+    ドメイン)でも、同じ表記に揃える。watch の表示と、決まらなかった記録の照合キーを一致させる(監査指摘)。"""
+    s = str(url_or_key or "").strip()
+    if "://" not in s and "/" not in s and "." not in s:      # X のハンドル
+        return f"https://x.com/{s.lstrip('@')}"
+    if "://" not in s:                                          # 判定のキー(host/path か host)
+        return "https://" + s.rstrip("/")
+    u = urllib.parse.urlparse(s)
+    host = (u.hostname or "").removeprefix("www.").removeprefix("m.")
+    seg = [x for x in u.path.split("/") if x]
+    if host in ("youtube.com", "youtu.be") and seg and seg[0].startswith("@"):
+        return f"https://youtube.com/{seg[0]}"
+    m = YT_ID.search(s)
+    if m and host in ("youtube.com", "youtu.be"):
+        # 動画は投稿者(チャンネル)で決まる。判定表に書く単位はチャンネルなので、投稿者を引いて出す。
+        # 引けなければ動画の URL(決まらなかった記録も動画 ID で引ける)
+        handle, _ = video_author(m.group(1))
+        return f"https://youtube.com/@{handle}" if handle else f"https://youtube.com/watch?v={m.group(1)}"
+    unit, key = platform_unit(s)
+    if unit == "x":
+        return f"https://x.com/{key}"
+    if unit in ("path", "domain"):
+        return f"https://{key}"
+    return f"(判定の単位なし: {key})"
+
+
 def platform_unit(url: str) -> tuple[str, str]:
     """未知の URL を、何の単位で判定するか。("domain" | "path" | "skip", キーか理由)。"""
     u = urllib.parse.urlparse(url)
@@ -768,7 +795,43 @@ def main() -> int:
         print(f"\n決まらなかったもの({len(split_all)}件・未確認のまま): "
               + " / ".join(split_all), flush=True)
         print("(紙面に載ったものだけ watch が毎朝まとめて報告する)", flush=True)
+    if args.apply:
+        save_unresolved(split_all)
     return 0
+
+
+UNRESOLVED = ROOT / "metrics" / "classify-unresolved.json"    # Git 管理外。watch が「なぜ決まらなかったか」を引く
+
+
+def save_unresolved(rows: list[str]) -> None:
+    """決まらなかった対象と、両モデルの言い分を残す(キー → 説明)。次の判定で上書き。
+    翌朝の watch が「未確認の出典」を出すとき、どこで割れたかを併記する(編集長: 何の記事のためのリンクか、
+    なぜ決まらないのかが無いと人は判断できない)。"""
+    out = {}
+    for s in rows:
+        key, _, rest = s.partition(": ")
+        key = key.strip()
+        m = re.fullmatch(r"youtube:([A-Za-z0-9_-]{11})\(@([^)]*)\)", key)
+        if m:      # 動画: チャンネルが表に無くて決まらなかった。表に書く単位はチャンネル。動画 ID でも引けるように両方残す
+            rest = rest or "投稿者のチャンネルが判定表に無い(チャンネルの合議でも決まらなかった)"
+            out[f"https://youtube.com/watch?v={m.group(1)}"] = rest.strip()[:400]
+            if m.group(2) != "?":
+                out[f"https://youtube.com/@{m.group(2)}"] = rest.strip()[:400]
+            continue
+        out[display_base(key)] = rest.strip()[:400]
+    try:
+        UNRESOLVED.parent.mkdir(parents=True, exist_ok=True)
+        UNRESOLVED.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
+    except OSError as e:
+        print(f"  決まらなかった理由を保存できない({e})", flush=True)
+
+
+def load_unresolved() -> dict[str, str]:
+    try:
+        d = json.loads(UNRESOLVED.read_text(encoding="utf-8"))
+        return d if isinstance(d, dict) else {}
+    except (OSError, ValueError):
+        return {}
 
 
 if __name__ == "__main__":

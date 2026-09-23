@@ -131,7 +131,9 @@ def main() -> int:
     # 人が見て決められるように、**判定表に書く単位(ベース URL)と、実際に載った資料の URL を併記**する
     # (「x.com/@handle(1)」だけでは開けず、判断するのに手間が掛かる。編集長の指摘)。
     # Discord は <url> で囲むと埋め込みを出さない
-    unknown: dict[str, list[tuple[str, str]]] = {}
+    import classify_sources as _cs
+    why_unresolved = _cs.load_unresolved()          # 直近の判定で「決まらなかった」ものと、両モデルの言い分
+    unknown: dict[str, list[tuple[str, str, str, str]]] = {}    # base → [(url, 記事の見出し, 出典 label, slug)]
     for p in sorted((ROOT / "docs" / "_posts").glob("*.md")):
         m = re.match(r"^---\n(.*?)\n---\n", p.read_text(encoding="utf-8"), re.S)
         if not m:
@@ -144,31 +146,26 @@ def main() -> int:
             if s.get("type") != "未確認":
                 continue
             url = s.get("url") or ""
-            u = urllib.parse.urlparse(url)
-            host = (u.hostname or "").removeprefix("www.")
-            seg = [x for x in u.path.split("/") if x]
-            if host in ("youtube.com", "m.youtube.com") and seg and seg[0].startswith("@"):
-                base = f"https://www.youtube.com/{seg[0]}"
-            else:
-                # 判定表に書く単位は合議と同じ規則で決める(X はアカウント、フォームや文書は文書 ID まで、
-                # アカウントのページはパスまで)。単位を決められないものは、その理由を出す
-                # (「docs.google.com/」「x.com/i」とだけ出ても人は決められない)
-                import classify_sources as _cs
-                unit, key = _cs.platform_unit(url)
-                base = (f"https://x.com/{key}" if unit == "x" else f"https://{key}" if unit in ("path", "domain")
-                        else f"(判定の単位なし: {key})")
-            unknown.setdefault(base, []).append((url, p.stem))
+            # 判定表に書く単位は合議と同じ規則で決める(X はアカウント、YouTube はチャンネル、フォームや文書は
+            # 文書 ID まで、アカウントのページはパスまで)。単位を決められないものは、その理由を出す
+            base = _cs.display_base(url)
+            unknown.setdefault(base, []).append((url, str(fm.get("title") or ""), str(s.get("label") or ""), p.stem))
     if unknown:
+        # 人が決められるように**全部**出す: 判定表に書く単位、何の記事が・何として使った出典か、なぜ決まらなかったか
+        # (編集長の指摘 2026-09-23: 「何の記事のためのリンク」が無いと判断できない)。長ければ notify が分割する
         lines = []
-        for base, items in sorted(unknown.items(), key=lambda kv: -len(kv[1]))[:12]:
-            for url, slug in items[:3]:
-                lines.append(f"  {base} ← <{url}>({slug})")
-            if len(items) > 3:
-                lines.append(f"  {base} … 他 {len(items) - 3} 件")
+        for base, items in sorted(unknown.items(), key=lambda kv: -len(kv[1])):
+            lines.append(f"  {base}")
+            for url, title, label, slug in items:
+                lines.append(f"    記事「{title}」({slug})が「{label}」として引用: <{url}>")
+            # 記録はベース URL(チャンネル等)で引く。動画は動画 ID の記録でも引ける(投稿者を引けなかったとき)
+            reason = why_unresolved.get(base, "") or next(
+                (r for url, *_ in items for m in [_cs.YT_ID.search(url)] if m
+                 for r in [why_unresolved.get(f"https://youtube.com/watch?v={m.group(1)}", "")] if r), "")
+            lines.append("    判定: " + (reason if reason else "合議に掛かっていない(判定の記録なし)"))
         problems.append(
             f"紙面に未確認の出典が {sum(len(v) for v in unknown.values())}件 / {len(unknown)}種 残っている"
-            "(左=判定表に書くベース URL、右=紙面に載った資料と記事。種別を決めれば直る):\n"
-            + "\n".join(lines))
+            "(種別を決めて判定表に書けば直る):\n" + "\n".join(lines))
 
     # 8. 当番が「発行後に直す」として保管した指摘が未着手のまま残っていないか(保管して忘れる、を防ぐ)
     try:

@@ -272,33 +272,12 @@ def out_of_bounds(paths: list[str]) -> list[str]:
     return [p for p in paths if not any(p.startswith(e) or p == e for e in EDITABLE)]
 
 
-def split_chunks(text: str, limit: int) -> list[str]:
-    """Discord の 2000 字上限に合わせて分割する。行単位で詰め、1行が上限を超えるなら文字で割る
-    (つないだ結果が元の文字列と一致する。監査指摘)。"""
-    chunks, cur = [], ""
-    for line in text.splitlines(keepends=True):
-        while len(line) > limit:
-            if cur:
-                chunks.append(cur)
-                cur = ""
-            chunks.append(line[:limit])
-            line = line[limit:]
-        if len(cur) + len(line) > limit and cur:
-            chunks.append(cur)
-            cur = ""
-        cur += line
-    if cur:
-        chunks.append(cur)
-    return chunks
+from pipelib import split_chunks   # noqa: E402  分割の本体は pipelib(notify 自身が分割する)
 
 
 def notify_long(job: str, text: str, ok: bool = True, limit: int = 1800) -> bool:
-    """分割して**全部**送る。戻り値は全部届いたか(1つでも落ちれば False)。"""
-    chunks = split_chunks(text, limit)
-    delivered = True
-    for i, c in enumerate(chunks):
-        delivered &= notify(job, (f"({i + 1}/{len(chunks)}) " if len(chunks) > 1 else "") + c, ok=ok, require=True)
-    return delivered
+    """必須の長い通知(修正報告)。notify が分割して全部送る。戻り値は全部届いたか。"""
+    return notify(job, text, ok=ok, require=True)
 
 
 def collect_later(transcript: list[dict]) -> list[dict]:

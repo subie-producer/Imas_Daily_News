@@ -1,0 +1,83 @@
+{
+ "decisions": {
+  "tours-score-ranking-2026-09-22": {
+   "action": "article",
+   "angle": "9/22時点のツアマス公式スコアランキング上位5編成とスコアを紹介",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報シリーズ(9/2,9/3,9/10,9/11,9/21)と同型の定期更新。前回踏襲でrank small"
+  },
+  "joint-other-topic-031": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "アイマスch全体の個別誕生日ムービー(伊集院惠・桜庭薫)。TOURS共同主催ではなくgeneral面の話題(9/12りあむ・宇宙誕生日ムービーと同型)"
+  },
+  "joint-other-topic-032": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "S1弾Exキャンペーンは8/22〜9/17で既報済み。紹介③は継続告知で新事実・当日トリガーなし"
+  },
+  "joint-other-topic-033": {
+   "action": "article",
+   "angle": "『ツアマス』桜庭薫の誕生日、本日限定の誕生日コミュとログイン案内、バースデーライブを予告",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本日公開の誕生日コミュ(9/24 7:00〜25:59)・ログインボーナス・バースデーライブ予告と、読者が今日取れる行動がある"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-score-ranking-2026-09-22",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "9/22時点のツアマス公式スコアランキング上位5編成とスコアを紹介",
+    "lead_score": 10,
+    "dedup_key": "tours-score-ranking-2026-09-22",
+    "candidate_ids": [
+     "202609232336-explore-35"
+    ]
+   },
+   {
+    "slug": "joint-other-topic-033",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "『ツアマス』桜庭薫の誕生日、本日限定の誕生日コミュとログイン案内、バースデーライブを予告",
+    "lead_score": 30,
+    "dedup_key": "joint-other-topic-033",
+    "candidate_ids": [
+     "202609240226-grok-42"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "joint-other-topic-031",
+    "reason": "面違い",
+    "note": "アイマスch全体の個別誕生日ムービー(伊集院惠・桜庭薫)。TOURS共同主催ではなくgeneral面の話題(9/12りあむ・宇宙誕生日ムービーと同型)"
+   },
+   {
+    "dedup_key": "joint-other-topic-032",
+    "reason": "既報",
+    "note": "S1弾Exキャンペーンは8/22〜9/17で既報済み。紹介③は継続告知で新事実・当日トリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

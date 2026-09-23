@@ -1,0 +1,225 @@
+{
+ "decisions": {
+  "sidem-315-episode-natsu-no-owarini-2026": {
+   "action": "article",
+   "angle": "CD封入特典ストーリー『夏の終わりに』公開、視聴方法とSNS投稿NGルールを紹介",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "sidem-topic-049・sidem-topic-050の同一発表を統合"
+  },
+  "sidem-315-shop-lottery-stock-2026-09-22": {
+   "action": "article",
+   "angle": "315!!!SHOPの抽選くじ在庫状況を9/22付で更新",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "単発のため roundup 化せず small 記事に"
+  },
+  "sidem-fan-deramas-trip-report-2026-09-22": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人のnote旅行記、単体記事にしない"
+  },
+  "sidem-topic-046": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "CD発売9/30・価格・特典は8/24付で既報。試聴動画公開のみで新事実なし"
+  },
+  "sidem-topic-047": {
+   "action": "article",
+   "angle": "Altessimo『Panorama's Fanfare』2DMVを公開、連動ストーリーも紹介",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-topic-048": {
+   "action": "article",
+   "angle": "彩『らんまん開花!』2DMVが10月2日22:00に公開決定",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-topic-049": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315-episode-natsu-no-owarini-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD特典ストーリー『夏の終わりに』公開の同一発表"
+  },
+  "sidem-topic-050": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315-episode-natsu-no-owarini-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同ストーリー公開に付随するSNS投稿ルール注記"
+  },
+  "sidem-topic-051": {
+   "action": "article",
+   "angle": "『315 MODE vol.1 SPRING』受注販売、9/30締切・12月中旬発送",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-topic-052": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注期間9/13-10/11は9/17付で既報、当日の新トリガーなし"
+  },
+  "sidem-topic-053": {
+   "action": "article",
+   "angle": "桜庭薫、誕生日に公式から記念メッセージ(#桜庭薫BD2026)",
+   "rank": "small",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "エンゲージメント高。ツアマス面の誕生日企画とは別施策のため両立"
+  },
+  "sidem-royal-chess-lounge-2026": {
+   "action": "article",
+   "angle": "Royal Chess Loungeコラボカフェ心斎橋店、本日9/24で開催終了",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約どおり、終了日当日のトリガーとして記事化"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-315-episode-natsu-no-owarini-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "CD封入特典ストーリー『夏の終わりに』公開、視聴方法とSNS投稿NGルールを紹介",
+    "lead_score": 20,
+    "dedup_key": "sidem-315-episode-natsu-no-owarini-2026",
+    "candidate_ids": [
+     "202609232336-explore-23",
+     "202609240226-grok-58",
+     "202609240226-grok-59"
+    ]
+   },
+   {
+    "slug": "sidem-315-shop-lottery-stock-2026-09-22",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315!!!SHOPの抽選くじ在庫状況を9/22付で更新",
+    "lead_score": 5,
+    "dedup_key": "sidem-315-shop-lottery-stock-2026-09-22",
+    "candidate_ids": [
+     "202609240226-explore-0"
+    ]
+   },
+   {
+    "slug": "sidem-topic-047",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Altessimo『Panorama's Fanfare』2DMVを公開、連動ストーリーも紹介",
+    "lead_score": 10,
+    "dedup_key": "sidem-topic-047",
+    "candidate_ids": [
+     "202609240226-grok-56"
+    ]
+   },
+   {
+    "slug": "sidem-topic-048",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "彩『らんまん開花!』2DMVが10月2日22:00に公開決定",
+    "lead_score": 10,
+    "dedup_key": "sidem-topic-048",
+    "candidate_ids": [
+     "202609240226-grok-57"
+    ]
+   },
+   {
+    "slug": "sidem-topic-051",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "『315 MODE vol.1 SPRING』受注販売、9/30締切・12月中旬発送",
+    "lead_score": 25,
+    "dedup_key": "sidem-topic-051",
+    "candidate_ids": [
+     "202609240226-grok-60"
+    ]
+   },
+   {
+    "slug": "sidem-topic-053",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "桜庭薫、誕生日に公式から記念メッセージ(#桜庭薫BD2026)",
+    "lead_score": 55,
+    "dedup_key": "sidem-topic-053",
+    "candidate_ids": [
+     "202609240226-grok-62"
+    ]
+   },
+   {
+    "slug": "sidem-royal-chess-lounge-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Royal Chess Loungeコラボカフェ心斎橋店、本日9/24で開催終了",
+    "lead_score": 15,
+    "dedup_key": "sidem-royal-chess-lounge-2026",
+    "candidate_ids": [
+     "sched-2026-09-24-sidem-royal-chess-lounge-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-fan-deramas-trip-report-2026-09-22",
+    "reason": "個人の話題",
+    "note": "ファン個人のnote旅行記、単体記事にしない"
+   },
+   {
+    "dedup_key": "sidem-topic-046",
+    "reason": "既報",
+    "note": "CD発売9/30・価格・特典は8/24付で既報。試聴動画公開のみで新事実なし"
+   },
+   {
+    "dedup_key": "sidem-topic-052",
+    "reason": "既報",
+    "note": "受注期間9/13-10/11は9/17付で既報、当日の新トリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,31 @@
+{
+ "decisions": {
+  "music765plus-x-account-recovery-2026": {
+   "action": "article",
+   "angle": "第三者の不正アクセスで一時ログイン不能になっていた公式X「@music765plus」がセキュリティ対策の上で復旧、管理を取り戻したことを報告。予備アカウント「@music765plus_jp」は緊急連絡用として存続",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/20発生のハッキングの続報(復旧)。既報部分の再掲ではなく新事実(復旧)のため採用。他面の既報リストに同一主題なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-music765plus-x-account-recovery-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "第三者の不正アクセスで一時ログイン不能になっていた公式X「@music765plus」がセキュリティ対策の上で復旧、管理を取り戻したことを報告。予備アカウント「@music765plus_jp」は緊急連絡用として存続",
+    "lead_score": 10,
+    "dedup_key": "music765plus-x-account-recovery-2026",
+    "candidate_ids": [
+     "202609231233-explore-14"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

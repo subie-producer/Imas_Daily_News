@@ -1,0 +1,237 @@
+{
+ "decisions": {
+  "shinycolors-union-arena-stock-2026-09-23": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "二次情報サイトの在庫状況まとめで、当日の新発表・再販日など具体的トリガーが無い定期的な巡回記事"
+  },
+  "shiny-fan-merch-and-commu-2026-09-22": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人noteの物販到着・コミュ感想投稿。単体で記事化しない個人SNS投稿にあたる"
+  },
+  "shiny-nagoya-kuji-inventory-2026-09-21": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/9更新分(既報)と同内容の名古屋駅前店くじ在庫定期更新。新事実・当日トリガー無し"
+  },
+  "shiny-kiriko-birthday-login-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-topic-034",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "幽谷霧子誕生日ログイン/コミュ/スタンプガシャ。同施策の公式一次情報(shiny-topic-034ほか)に統合"
+  },
+  "shiny-topic-034": {
+   "action": "article",
+   "angle": "幽谷霧子の誕生日を記念し、ミニコミュ・ログインボーナスから記念ガシャ複数種(新規・復刻)、フェザージュエルセール、グッズパッケージ受注までを一挙紹介",
+   "rank": "large",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日発表の霧子生誕祭関連9主題を統合。素材量が最多で本日のshiny面トップ候補"
+  },
+  "shiny-topic-035": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-topic-034",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "霧子誕生日スタンプガシャの詳細。生誕祭まとめ記事に統合"
+  },
+  "shiny-topic-036": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-topic-034",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "BD記念フェザージュエルセール。生誕祭まとめ記事に統合"
+  },
+  "shiny-topic-037": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-topic-034",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "【まきまき】霧子ささやきボイス付き復刻ガシャ。生誕祭まとめ記事に統合"
+  },
+  "shiny-topic-038": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-topic-034",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "【まきまき】霧子ピース付きパッケージ。生誕祭まとめ記事に統合"
+  },
+  "shiny-topic-039": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-topic-034",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "霧子誕生日記念ガシャ(9/29まで)。生誕祭まとめ記事に統合"
+  },
+  "shiny-topic-040": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-topic-034",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "霧子誕生日記念パック/特訓パック。生誕祭まとめ記事に統合"
+  },
+  "shiny-topic-041": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-topic-034",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2025年誕生日衣装Pアイドル復刻パック。生誕祭まとめ記事に統合"
+  },
+  "shiny-topic-042": {
+   "action": "article",
+   "angle": "「シャイニーコンペティション」近日開催を予告、無償プリズムジュエルやマスターバッジ、ドレスオーダーチケットなどの獲得報酬を紹介",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "詳細日程未定だが新規開催予告のため単独記事。素材が薄くsmall"
+  },
+  "shiny-topic-043": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/11既報のSHINY Style COLLECTION第1弾(9/27まで受注)と同内容。新事実・当日トリガー無し"
+  },
+  "shiny-topic-044": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18既報のREFRAC7IONS「Still blue」グッズ事前販売ファイナル(10/4まで)の追加商品告知。新規受注開始・締切等の当日トリガー無し"
+  },
+  "shiny-topic-045": {
+   "action": "article",
+   "angle": "ストレイライト新映像『Wish your birth - THE MAKING OF ALEV-1』の10月10日公開を予告",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "メイキング映像公開の新規決定告知。既報無く単独small記事"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-topic-034",
+    "brand": "shiny",
+    "rank": "large",
+    "angle": "幽谷霧子の誕生日を記念し、ミニコミュ・ログインボーナスから記念ガシャ複数種(新規・復刻)、フェザージュエルセール、グッズパッケージ受注までを一挙紹介",
+    "lead_score": 75,
+    "dedup_key": "shiny-topic-034",
+    "candidate_ids": [
+     "202609240226-grok-43",
+     "202609232336-explore-18",
+     "202609240226-grok-44",
+     "202609240226-grok-45",
+     "202609240226-grok-46",
+     "202609240226-grok-47",
+     "202609240226-grok-48",
+     "202609240226-grok-49",
+     "202609240226-grok-50"
+    ]
+   },
+   {
+    "slug": "shiny-topic-042",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「シャイニーコンペティション」近日開催を予告、無償プリズムジュエルやマスターバッジ、ドレスオーダーチケットなどの獲得報酬を紹介",
+    "lead_score": 10,
+    "dedup_key": "shiny-topic-042",
+    "candidate_ids": [
+     "202609240226-grok-51"
+    ]
+   },
+   {
+    "slug": "shiny-topic-045",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ストレイライト新映像『Wish your birth - THE MAKING OF ALEV-1』の10月10日公開を予告",
+    "lead_score": 15,
+    "dedup_key": "shiny-topic-045",
+    "candidate_ids": [
+     "202609240226-grok-54"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shinycolors-union-arena-stock-2026-09-23",
+    "reason": "出典不足",
+    "note": "二次情報サイトの在庫状況まとめで、当日の新発表・再販日など具体的トリガーが無い定期的な巡回記事"
+   },
+   {
+    "dedup_key": "shiny-fan-merch-and-commu-2026-09-22",
+    "reason": "個人の話題",
+    "note": "個人noteの物販到着・コミュ感想投稿。単体で記事化しない個人SNS投稿にあたる"
+   },
+   {
+    "dedup_key": "shiny-nagoya-kuji-inventory-2026-09-21",
+    "reason": "既報",
+    "note": "9/9更新分(既報)と同内容の名古屋駅前店くじ在庫定期更新。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "shiny-topic-043",
+    "reason": "既報",
+    "note": "9/11既報のSHINY Style COLLECTION第1弾(9/27まで受注)と同内容。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "shiny-topic-044",
+    "reason": "既報",
+    "note": "9/18既報のREFRAC7IONS「Still blue」グッズ事前販売ファイナル(10/4まで)の追加商品告知。新規受注開始・締切等の当日トリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

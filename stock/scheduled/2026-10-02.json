@@ -94,5 +94,29 @@
   "src_candidate_id": "202609181838-watch-6",
   "event_date": "2026-10-02",
   "deadline": "2026-10-18"
+ },
+ {
+  "id": "sched-2026-10-02-sidem-topic-048-開始",
+  "dedup_key": "sidem-topic-048",
+  "brand": "sidem",
+  "subject": "彩「らんまん開花!」2DMV公開",
+  "kind": "開始",
+  "note": "22時に2DMVが公開され視聴できる",
+  "reserved_on": "2026-09-24",
+  "title": "彩「らんまん開花!」2DMV 公開日決定",
+  "url": "https://x.com/SideM_lantis/status/2102732209417289953",
+  "source_type": "準公式",
+  "facts": [
+   "公開日: 10月2日(金)22:00（予定）",
+   "【2DMV】#SideM #315ソング",
+   "ユニット: 彩",
+   "楽曲: 「らんまん開花!」",
+   "2DMVの公開日が決定",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609240226-grok-57",
+  "event_date": "2026-10-02"
  }
 ]

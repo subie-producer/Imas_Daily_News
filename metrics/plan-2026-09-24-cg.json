@@ -1,0 +1,202 @@
+{
+ "decisions": {
+  "deresute-live-carnival-2026-autumn": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2026-09-22付でLIVE Carnival開始を既に記事化済み(stories.yml topic-008-2026)、新事実・当日トリガー無し"
+  },
+  "cross-over-premiere-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2026-09-22付でPremiere MV公開(9/30)を既に記事化済み(stories.yml topic-005-2026)"
+  },
+  "live-carnival-autumn-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "LIVE Carnival開始は既報。ガシャ仕様やスタミナ消費など運営詳細のみで当日の新トリガー無し"
+  },
+  "cinderella-topic-001": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アソビストアプレミアム会員最速先行(抽選)9/27締切の案内。同内容のtopic-002と共に本体記事へ統合"
+  },
+  "cinderella-topic-002": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "topic-001と同一内容の重複投稿。本体記事へ統合"
+  },
+  "cinderella-topic-003": {
+   "action": "article",
+   "angle": "メディコスPOP UP SHOP「シンデレラガールズ」東京会場、BIGアクリルスタンド橘ありすが完売・再入荷なし。大阪会場と事後通販へ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策のtopic-004(アクリルジオラマ完売)を統合"
+  },
+  "cinderella-topic-004": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-topic-003",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP SHOPでのアクリルジオラマ完売。topic-003と同一施策のため統合"
+  },
+  "cinderella-topic-005": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人がオーケストラ先行抽選に応募したと報告する投稿。単体記事化しない"
+  },
+  "cinderella-topic-006": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人が渋谷MAGNETのPOP UP SHOPに来場したと報告する投稿。未確認・低エンゲージメント"
+  },
+  "cinderella-topic-007": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の個人投稿。同文面の投稿が同時間帯に複数見られ、コピペ・宣伝の疑いがあり採用しない"
+  },
+  "cinderella-topic-008": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "非公式のボーダー集計アカウントによる速報で公式情報ではない。roundup化するには定常運営系主題が2件のみで3件に届かず不成立"
+  },
+  "cg-15th-anniversary-orchestra-2027": {
+   "action": "article",
+   "angle": "シンデレラ15周年記念オーケストラコンサート、現地チケット最速先行抽選(アソビストアプレミアム会員)の受付締切が9/27に迫る。出演キャストも改めて紹介",
+   "rank": "large",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策のthe-idolm-ster-cinderella-girls-15th-anniversary-orchestra-concert・topic-001・002を統合。面で最大のニュース"
+  },
+  "the-idolm-ster-cinderella-girls-15th-anniversary-orchestra-concert": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一公演・同一施策(先行抽選締切案内、キャスト再紹介)。本体記事へ統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-topic-003",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "メディコスPOP UP SHOP「シンデレラガールズ」東京会場、BIGアクリルスタンド橘ありすが完売・再入荷なし。大阪会場と事後通販へ",
+    "lead_score": 10,
+    "dedup_key": "cinderella-topic-003",
+    "candidate_ids": [
+     "202609240226-grok-12",
+     "202609240226-grok-13"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-orchestra-2027",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "シンデレラ15周年記念オーケストラコンサート、現地チケット最速先行抽選(アソビストアプレミアム会員)の受付締切が9/27に迫る。出演キャストも改めて紹介",
+    "lead_score": 60,
+    "dedup_key": "cg-15th-anniversary-orchestra-2027",
+    "candidate_ids": [
+     "sched-2026-09-24-cg-15th-anniversary-orchestra-2027-締切前",
+     "202609240226-grok-10",
+     "202609240226-grok-11",
+     "sched-2026-09-24-the-idolm-ster-cinderella-girls-15th-anniversary-orchestra-concert-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "deresute-live-carnival-2026-autumn",
+    "reason": "既報",
+    "note": "2026-09-22付でLIVE Carnival開始を既に記事化済み(stories.yml topic-008-2026)、新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "cross-over-premiere-mv-2026",
+    "reason": "既報",
+    "note": "2026-09-22付でPremiere MV公開(9/30)を既に記事化済み(stories.yml topic-005-2026)"
+   },
+   {
+    "dedup_key": "live-carnival-autumn-2026",
+    "reason": "既報",
+    "note": "LIVE Carnival開始は既報。ガシャ仕様やスタミナ消費など運営詳細のみで当日の新トリガー無し"
+   },
+   {
+    "dedup_key": "cinderella-topic-005",
+    "reason": "個人の話題",
+    "note": "個人がオーケストラ先行抽選に応募したと報告する投稿。単体記事化しない"
+   },
+   {
+    "dedup_key": "cinderella-topic-006",
+    "reason": "個人の話題",
+    "note": "個人が渋谷MAGNETのPOP UP SHOPに来場したと報告する投稿。未確認・低エンゲージメント"
+   },
+   {
+    "dedup_key": "cinderella-topic-007",
+    "reason": "出典不足",
+    "note": "未確認の個人投稿。同文面の投稿が同時間帯に複数見られ、コピペ・宣伝の疑いがあり採用しない"
+   },
+   {
+    "dedup_key": "cinderella-topic-008",
+    "reason": "出典不足",
+    "note": "非公式のボーダー集計アカウントによる速報で公式情報ではない。roundup化するには定常運営系主題が2件のみで3件に届かず不成立"
+   }
+  ],
+  "cross_brand": []
+ }
+}

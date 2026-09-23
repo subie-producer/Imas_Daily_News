@@ -123,6 +123,8 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - news.saku-chan.com    # 合議で追加: SNS・Xのトレンドとファン投稿のまとめ
+  - zawatto.com           # 合議で追加: Xで話題のものをキュレートして伝えるまとめサイト。自ら取材した形跡がない
   - vtubernews.jp         # 合議で追加: 5ちゃんねるとTwitterからまとめており、独自取材がなく他所の発表を転載して
   - vod.pricey.jp         # 合議で追加: 各VODサービスの配信情報を比較紹介するメディア。自ら取材ではなく既存情報をまと
   - twittrend.jp          # 合議で追加: 地域別Xトレンドを集計して伝える媒体
@@ -211,6 +213,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - bnfaq.channel.or.jp   # 合議で追加: 複数ゲームシリーズ対応のバンダイナムコFAQサイト。アイマス以外も扱う
   # バンダイナムコのグループ会社でも、アイマス以外のタイトル・事業はコラボ先・販売元=当事者
   # (編集長 2026-09-23:「あくまでもアイマスニュースの公式とは、を考えろ」)
   - bandainamco-am.co.jp  # バンナムAM(ゲームセンター・イベント。アイマス専用のパスは semi_official_paths / official_paths)
@@ -332,6 +335,7 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - 9mQ2ioeay4I         # 機械で追加: @UtagawaLetora「【SILENT HILL f】 DAY07｜最終回！世界戦ど」
     - Q_GfY_kC0to         # 機械で追加: @imas-official「【ミリシタ】ゲーム内楽曲『一旦愛して♡ 』MV【アイドルマス」
     - lYafXo-rjU8         # 機械で追加: @hatsuboshi_gakuen「初星学園 「め」Official Music Video (」
     - 6LQXs0zFeKE         # 機械で追加: @TomoriManaka「【 #まなのの 】ののちゃんと、初めてのふたり雑談☆⋆  w」
@@ -458,6 +462,10 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - deresuteborder      # 合議で追加: 個人のボーダー観察報告
+    - alva_tork           # 合議で追加: 個人のゲーム結果共有
+    - YG4Gf7dSnAjLcdA     # 合議で追加: 個人による来場報告
+    - Dionaea20           # 合議で追加: 個人アカウントの応募参加報告
     - astorea_p           # 合議で追加: 個人による総選挙投票の感想・労い
     - Ouya72              # 合議で追加: 個人による来訪の目撃報告
     - CinderellaAge19     # 合議で追加: 個人アカウント。公式イベント情報の紹介
@@ -626,6 +634,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  note.com/hokuhokuawaawa: ファン                 # 合議で追加: 個人のnoteユーザーアカウント。シャニマスの感想・物販紹介
   note.com/kaaiiiiiiii_trip: ファン               # 合議で追加: 個人ブログ。アイマスSideMの個人的な目撃・体験レポート
   note.com/mitsuru_43: ファン                     # 合議で追加: 個人ファンの参戦記録
   note.com/fuyukimiori: ファン                    # 合議で追加: 個人ユーザーの感想ブログ

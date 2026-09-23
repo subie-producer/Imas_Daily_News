@@ -1,4 +1,3 @@
-# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。
 - dedup_key: gaku-hif-15m-milestone-campaign-2026
   brand: gaku
   subject: 学マスH.I.F挑戦回数1,500万回突破記念キャンペーン
@@ -151,7 +150,3 @@
   brand: million
   subject: ミリシタ 徳川まつりiDOL GRAND-PRIX(10月実装予定)
   watch: 10月内の正式実装日(判明次第 triggers へ)
-- dedup_key: shiny-topic-042
-  brand: shiny
-  subject: シャイニーコンペティション
-  watch: 開催日程・報酬の数量詳細(近日開催予定、判明次第 triggers へ)

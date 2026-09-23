@@ -1,0 +1,292 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-24-gaku-conceptual-single-collection-2027.md",
+   "issue": "Vol.3に属するアイドル名の誤字",
+   "quote": "Vol.3に倉本千奈、紫雲清夏、秦谷美鈴、十王星星南の4名の新曲を収録する。",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F14"
+   ],
+   "expected": "十王星星南を十王星南に修正し、候補ファイルおよび公式サイトの記述と一致させる",
+   "scope": "article:2026-09-24-gaku-conceptual-single-collection-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-gaku-hif-15m-produce-campaign-2026.md",
+   "rule_id": "R1",
+   "issue": "見出しとリードに「9月24日10:59まで」という具体的な日時が記載されているが、candidate_ids で指定されている候補（sched-2026-09-24-gaku-hif-15m-produce-campaign-2026-終了）が候補ファイルに見つからず、verified_facts も指定されていない。出典がない。",
+   "quote": "学マス公式X、応援キャンペーンは24日10:59まで",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1",
+    "F3"
+   ],
+   "expected": "指定されたcandidate_idが候補ファイルに存在することを確認するか、あるいは公式情報源（URL）をverified_factsとして追加して根拠を明確にする。",
+   "scope": "article:2026-09-24-gaku-hif-15m-produce-campaign-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-gaku-hif-15m-produce-campaign-2026.md",
+   "rule_id": "R4",
+   "issue": "sourcesに記載されているURL（https://x.com/gkmas_official）が、X公式アカウントのプロフィールページであり、具体的な投稿ページではない。記事の内容と一致する投稿を指していない。",
+   "quote": "url: https://x.com/gkmas_official",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F3"
+   ],
+   "expected": "実際の投稿URLまたは公式告知ページへのURLに修正する。",
+   "scope": "article:2026-09-24-gaku-hif-15m-produce-campaign-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-gaku-live-tour-shirube-iwate-day2-2026.md",
+   "issue": "候補202609232336-watch-12（imasnews765.com）の情報が記事で使用されているが、sourcesに出典が明記されていない。記事57行のセットリスト「17曲」という情報がこの候補に由来しているにもかかわらず、sources に https://imasnews765.com/?p=32495 が含まれていない。",
+   "quote": "セットリストは次の17曲。 <!-- F117 -->",
+   "rule_id": "R3",
+   "repair": "add_source",
+   "fact_ids": [
+    "F117"
+   ],
+   "expected": "sources配列に { label: '...', url: 'https://imasnews765.com/?p=32495', type: '...' } を追加",
+   "scope": "article:2026-09-24-gaku-live-tour-shirube-iwate-day2-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-general-music765plus-x-account-recovery-2026.md",
+   "issue": "公式が告知するべき内容（Xアカウント復旧）なのに、sources に公式・準公式の出典が1つも無く、ファン発の出典のみです。Xアカウントの重要な状態変化は、公式の直接的な告知を出典とする必要があります。",
+   "quote": "sources に記載されている出典：\nlabel: アイドルマスター楽曲メモ「【お知らせ】Xアカウント復旧について」(2026年9月21日)\nurl: https://music765plus.com/\ntype: ファン",
+   "rule_id": "R5",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F3",
+    "F4"
+   ],
+   "expected": "公式Xアカウント（@music765plus）の投稿、または公式の別のメディア（公式サイトのお知らせ等）を出典として追加し、sources に公式・準公式が1つ以上含まれること",
+   "scope": "article:2026-09-24-general-music765plus-x-account-recovery-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-million-14thlive.md",
+   "issue": "R10 新事実なしの続報。既報（2026-09-21『ミリシタ14thLIVE記念ログインボーナス』）と同じ内容で、新しい事実も当日のトリガーも無い。",
+   "quote": "『14thLIVE ありがとうログインボーナス』は9月27日まで開催中で、全部で500個のミリオンジュエルを受け取れる。",
+   "rule_id": "R10",
+   "repair": "drop_article",
+   "fact_ids": [
+    "F3",
+    "F5",
+    "F6"
+   ],
+   "expected": "既報と同じ内容のため記事は不要。新たなトリガーが無い限り掲載を見送る。",
+   "scope": "article:2026-09-24-million-14thlive.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-sidem-315-shop-lottery-stock-2026-09-22.md",
+   "issue": "sources の URL の日付が記事の claim と一致しない。URL 末尾の 20241002 は 2024年10月2日を示すが、記事は 2026年9月22日の更新と記載している。",
+   "quote": "url: https://bandainamco-am.co.jp/chara_shop/idolmaster/NEWS/315shop/20241002.html",
+   "rule_id": "R4",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "N1",
+    "N2",
+    "N3",
+    "N4",
+    "N5"
+   ],
+   "expected": "verified_facts の URL が 2026年9月22日の内容を指すように修正される。もしくは URL が正しい場合は、記事の日付や出典ラベルを修正する。",
+   "scope": "article:2026-09-24-sidem-315-shop-lottery-stock-2026-09-22.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-sidem-topic-053.md",
+   "issue": "joint-other-topic-033",
+   "quote": "桜庭薫の誕生日に関する記事が2本存在（sidem-topic-053 と joint-other-topic-033）",
+   "rule_id": "P1",
+   "repair": "drop_article",
+   "fact_ids": [],
+   "expected": "同じ主題の記事は1本に統一",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-gaku-after-school-namco-2026.md",
+   "issue": "記事が根拠として引用するF4・F5に対応するcandidate_ids「sched-2026-09-24-gaku-after-school-namco-2026-締切」が候補ファイルに見つからない。景品の詳細情報が出典から確認不可。",
+   "quote": "抽選でプレゼントされるのは、ナムコ限定景品「学園アイドルマスター ESPRESTO-Stylish pose-月村手毬 ゴールドの輝きver.」と、ナムコ限定特典「『アイドルマスター TOURS』プロモーションカード」のセット。景品は全1種、サイズ約22cm。<!-- F4 F5 N3 -->",
+   "rule_id": "R1",
+   "repair": "add_source",
+   "fact_ids": [
+    "F4",
+    "F5"
+   ],
+   "expected": "F4・F5が指す候補を確認し、景品情報が出典から確認できる状態にする。または出典に無い記述なら削除する。",
+   "scope": "article:2026-09-24-gaku-after-school-namco-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-gaku-after-school-namco-2026.md",
+   "issue": "記事の内容（締切日時）が既報台帳では2026-09-17にすでに報道済み。当日の本日が来たことのみがトリガーだが、記事に本日の新事実・新しい角度がない。",
+   "quote": "title: 学マス×ナムコ応募、きょう23:59締切\nlede: 「学園アイドルマスター After School キャンペーン in namco」のSNSプレゼント応募は、本日9月24日23時59分で締め切られる。",
+   "rule_id": "R10",
+   "repair": "drop_article",
+   "fact_ids": [
+    "N1"
+   ],
+   "expected": "既報との区別のため、本日の新しい事実（最終確認の呼びかけ、応募状況など）を加えるか、記事を削除する。",
+   "scope": "article:2026-09-24-gaku-after-school-namco-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-24-dsva-cosmo-morning-stream-2026-09-23.md",
+   "issue": "分量不足: rank: smallの目安は250字だが、本文は約40字。LINEスタンプについて、販売価格・配信プラットフォーム・販売期間などが出典にあれば、記事を充実させられます。",
+   "scope": "article:2026-09-24-dsva-cosmo-morning-stream-2026-09-23.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-dsva-letora-silent-hill-f-day07-2026-09-23.md",
+   "issue": "分量不足: rank:small の目安 250字に対し、現在は約160字。本文が薄く、出典から拾える「配信時間」「タイトル」「視聴URL」は記載されているが、より詳細な配信の反応・ゲーム内容についての言及を加えることで分量を増やせる",
+   "scope": "article:2026-09-24-dsva-letora-silent-hill-f-day07-2026-09-23.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-dsva-topic-014.md",
+   "issue": "rank: small の目安（250字以上）に対して、本文が約90字と大幅に不足。出典の候補データに他にもハッシュタグ、宇宙のXアカウント、動画の詳細リンクなど補填可能な情報がある",
+   "scope": "article:2026-09-24-dsva-topic-014.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-gaku-gakuen-topic-027.md",
+   "issue": "分量不足：rank small（目安250字）に対して本文が約120字と大幅に不足。sources に記載の放送時間（毎週21時）や前回放送のアーカイブ URL など追加可能な情報がある",
+   "scope": "article:2026-09-24-gaku-gakuen-topic-027.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-gaku-hif-15m-produce-campaign-2026.md",
+   "issue": "記事は短いが（本文1文のみ），既報（gaku-hif-15m-produce-campaign-2026、初出9月15日）の続報。本日の締切（24日10:59）が来たことが理由のため，R10での新事実なしはブロックしない。ただし根拠不備が先行する問題。",
+   "scope": "article:2026-09-24-gaku-hif-15m-produce-campaign-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-gaku-live-tour-shirube-iwate-streaming-2026.md",
+   "issue": "分量不足: rank: small で目安250字に対し、本文は約90字と薄い。出典にある販売開始日（8月27日）、最速版アーカイブ期間（各公演本編終了1時間後～9月24日18:00）など、読者が知るべき情報が拾えば埋まる可能性がある",
+   "scope": "article:2026-09-24-gaku-live-tour-shirube-iwate-streaming-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-gaku-shirube-iwate-day1-2026.md",
+   "issue": "candidate_ids が候補ファイルに見当たらない（202609230739-explore-8等が存在しない）が、sources と verified_facts が記事の内容と一致しているため、出典の問題ではない。ただし、根拠記録の ID が実際のものと異なる可能性がある。",
+   "scope": "article:2026-09-24-gaku-shirube-iwate-day1-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-general-music765plus-x-account-recovery-2026.md",
+   "issue": "分量不足：rank: small に対して本文が 183字で、目安 250字より 67字不足しています。出典にある詳細な対応内容（具体的なセキュリティ対策、今後の連絡体制など）を補足することで埋められます。",
+   "scope": "article:2026-09-24-general-music765plus-x-account-recovery-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-general-music765plus-x-account-recovery-2026.md",
+   "issue": "出典URLの具体性：sources の URL が domain のみ（https://music765plus.com/）で、具体的なお知らせページの URL が記載されていません。label に「【お知らせ】Xアカウント復旧について」と指定されているのであれば、該当ページの直接 URL を sources に記載することで出典の精度が向上します。",
+   "scope": "article:2026-09-24-general-music765plus-x-account-recovery-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-joint-tours-score-ranking-2026-09-22.md",
+   "issue": "分量不足：rank small（目安250字）に対して、本文がランキング5編成のスコア記載のみで背景情報がない。出典サイトのURL、ツアマスのゲーム仕様（編成ランキングの対象楽曲数など）、当週のランキング動向などを加えると読者の理解が深まる。",
+   "scope": "article:2026-09-24-joint-tours-score-ranking-2026-09-22.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-million-14thlive.md",
+   "issue": "記事が既報と完全に重複。既報は2026-09-21に『14thLIVE ありがとうログインボーナス』（開催期間：2026/09/21～2026/09/27、報酬：500個のミリオンジュエル）として掲載済み。本記事は同じ出典（ミリシタ公式X、2026-09-21）から同じ情報を引用しており、新しい情報なし。「9月27日の締切が迫るなか」という表現は時間経過による状況報告に過ぎず、新規に発表された・起きた・起きるという事実がない。",
+   "scope": "article:2026-09-24-million-14thlive.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-shiny-topic-034.md",
+   "issue": "分量不足: rank: lead に対して本文が約430字と薄い（目安 1000字以上）。sources に記載されている特別ミッション情報、セール対象商品の具体例などを補充すれば改善可能",
+   "scope": "article:2026-09-24-shiny-topic-034.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-shiny-topic-042.md",
+   "issue": "分量不足：rank が small で目安は 250字ですが、本文が1文で非常に短い。出典にある具体的な開催時期や参加方法などの詳細があれば補足可能。",
+   "scope": "article:2026-09-24-shiny-topic-042.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-sidem-315-episode-natsu-no-owarini-2026.md",
+   "issue": "分量不足：rank:medium に対して本文が薄く（目安 700字 に対し実装は約 310字）。出典にある詳細条件（各SNS投稿ルールのより具体的な記述、ゲーム実況ポリシーのリンク詳細など）を拾えば埋まる。",
+   "scope": "article:2026-09-24-sidem-315-episode-natsu-no-owarini-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-sidem-royal-chess-lounge-2026.md",
+   "issue": "本文の分量がrank:smallの目安(250字)に対して不足。出典にある店舗・営業時刻・混雑情報などを拾うことで充実可能",
+   "scope": "article:2026-09-24-sidem-royal-chess-lounge-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-sidem-topic-047.md",
+   "issue": "分量不足: rank: small で目安 250 字に対し、本文は約 49 字（2 段落）。出典に YouTube での視聴方法、楽曲配信サービス、Marching Band Symphony の詳細（公開時期、遊び方など）が含まれる場合、記事に盛り込むことで分量を改善できます。",
+   "scope": "article:2026-09-24-sidem-topic-047.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-sidem-topic-048.md",
+   "issue": "本文の字数が目安（rank: small で250字）より短い（約50字）。公式発表や出典に記載された追加情報（対象ユーザー、配信形式の詳細など）があれば拡充可能",
+   "scope": "article:2026-09-24-sidem-topic-048.md"
+  },
+  {
+   "file": "-",
+   "issue": "digest に最大の話題が網羅されているか。本日の最大ニュース（学マス岩手公演など）が適切に反映されている。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-24-gaku-after-school-namco-2026.md",
+   "issue": "sourcesのurl（バンダイナムコ公式・Gamer記事）に対して、記事の景品製品名「ESPRESTO-Stylish pose」が既報の「ゴールドの輝き衣装」と具体的に一致するか、sources確認による検証が必要。",
+   "scope": "article:2026-09-24-gaku-after-school-namco-2026.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-24-cg-15th-anniversary-orchestra-2027.md",
+  "article:2026-09-24-cg-cinderella-topic-003.md",
+  "article:2026-09-24-dsva-cosmo-morning-stream-2026-09-23.md",
+  "article:2026-09-24-dsva-letora-silent-hill-f-day07-2026-09-23.md",
+  "article:2026-09-24-dsva-topic-014.md",
+  "article:2026-09-24-gaku-after-school-namco-2026.md",
+  "article:2026-09-24-gaku-conceptual-single-collection-2027.md",
+  "article:2026-09-24-gaku-gakuen-topic-027.md",
+  "article:2026-09-24-gaku-hif-15m-produce-campaign-2026.md",
+  "article:2026-09-24-gaku-live-tour-shirube-iwate-day2-2026.md",
+  "article:2026-09-24-gaku-live-tour-shirube-iwate-streaming-2026.md",
+  "article:2026-09-24-gaku-shirube-iwate-day1-2026.md",
+  "article:2026-09-24-general-music765plus-x-account-recovery-2026.md",
+  "article:2026-09-24-joint-other-topic-033.md",
+  "article:2026-09-24-joint-tours-score-ranking-2026-09-22.md",
+  "article:2026-09-24-million-14thlive.md",
+  "article:2026-09-24-shiny-topic-034.md",
+  "article:2026-09-24-shiny-topic-042.md",
+  "article:2026-09-24-shiny-topic-045.md",
+  "article:2026-09-24-sidem-315-episode-natsu-no-owarini-2026.md",
+  "article:2026-09-24-sidem-315-shop-lottery-stock-2026-09-22.md",
+  "article:2026-09-24-sidem-royal-chess-lounge-2026.md",
+  "article:2026-09-24-sidem-topic-047.md",
+  "article:2026-09-24-sidem-topic-048.md",
+  "article:2026-09-24-sidem-topic-051.md",
+  "article:2026-09-24-sidem-topic-053.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-24-cg-15th-anniversary-orchestra-2027.md": "846816e648918ebd50b795f26ee2d669faa19ebbe40bcc7ac9357c6126d2027f",
+  "docs/_posts/2026-09-24-cg-cinderella-topic-003.md": "dd3f85b0d81f90631a6a4cb502f8ddd275825d6d66a6caef817d5adf6afdc3ca",
+  "docs/_posts/2026-09-24-dsva-cosmo-morning-stream-2026-09-23.md": "8be1bee779400a9f34e69c4be144662d3745f677f08fded96f6c993979674bbb",
+  "docs/_posts/2026-09-24-dsva-letora-silent-hill-f-day07-2026-09-23.md": "3a5c7e65806f121eda8d3f48acd6bfb854711a020621149801a7a31431f9cbe2",
+  "docs/_posts/2026-09-24-dsva-topic-014.md": "301470f3b4508ff35af6aa621d739d483346e5876a50733df6e518b9c450ddc8",
+  "docs/_posts/2026-09-24-gaku-after-school-namco-2026.md": "2fe22b1880b662489abe4210592597dfbae1870ca35eb69449a5d32585ece21b",
+  "docs/_posts/2026-09-24-gaku-conceptual-single-collection-2027.md": "2a8cc95129ee8489aef7dd7deed135c981f53aeed916759fb2691322bd078dcb",
+  "docs/_posts/2026-09-24-gaku-gakuen-topic-027.md": "933ca4b6938c4ed1e7b2e12e8bee4eee4227cae00a2ebf07c202318992330d1b",
+  "docs/_posts/2026-09-24-gaku-hif-15m-produce-campaign-2026.md": "30e24f542142fb04a2e3f7043bf6e50ad85892e7d43748eedb1173796cbe834a",
+  "docs/_posts/2026-09-24-gaku-live-tour-shirube-iwate-day2-2026.md": "42bcea0e3a44ff9035b24897bebf68594c8d833b770bf69750d5654ffb07355d",
+  "docs/_posts/2026-09-24-gaku-live-tour-shirube-iwate-streaming-2026.md": "3b053b8e12a7b3c048c49a1b6c9987ba6e4c5e1d21072267cee2d98536068bc9",
+  "docs/_posts/2026-09-24-gaku-shirube-iwate-day1-2026.md": "e56cbbb0ef95dcba63dd36e71550dd82501a83e4385599b952987f75bdba9356",
+  "docs/_posts/2026-09-24-general-music765plus-x-account-recovery-2026.md": "218110f0ff7c3316239933b7ab02f9837cd4589a43bb1a1757e962c04057957c",
+  "docs/_posts/2026-09-24-joint-other-topic-033.md": "9c3269f4f7d6e985b7538d212a4cc4fdd0c89ff1967ecc56f66d10003a575818",
+  "docs/_posts/2026-09-24-joint-tours-score-ranking-2026-09-22.md": "33691b936fa63842f134b1165e5c2fac46d84e046d1d55f08361dd24e6524bff",
+  "docs/_posts/2026-09-24-million-14thlive.md": "43469d0dc17284fe9c14bdc995dad9e83e319785f10654312e65a27ce06a0030",
+  "docs/_posts/2026-09-24-shiny-topic-034.md": "e884f77a8254f87e694db7ac68ae45a6736cb1edb571a5c5dc5941e3f7de5a09",
+  "docs/_posts/2026-09-24-shiny-topic-042.md": "baa91ca2327004c72d53e4c91e277f19ceff644a37124820df2ff3e168bb558b",
+  "docs/_posts/2026-09-24-shiny-topic-045.md": "51af1b291e33f61e1aabd70133e7df4555ecc9342621104389c41e631d41b81a",
+  "docs/_posts/2026-09-24-sidem-315-episode-natsu-no-owarini-2026.md": "ebadf32f07d672ab3f795f7e82339c6a18ab8056077e19e4d370c00a43c855b1",
+  "docs/_posts/2026-09-24-sidem-315-shop-lottery-stock-2026-09-22.md": "fb9945992e92faa662df20ac45882da6cea11776d5013c3d8390758fc671ea8c",
+  "docs/_posts/2026-09-24-sidem-royal-chess-lounge-2026.md": "9654256d5eec2e2806603ce20b3a920dd9771c28a36eb2b5ca71b10ed5fac564",
+  "docs/_posts/2026-09-24-sidem-topic-047.md": "8d67444dbf4479fa67018fde42042a197a60b03f161db5712b3a8bf3cd9042fa",
+  "docs/_posts/2026-09-24-sidem-topic-048.md": "be3206c0cfdbbda9beb9271516f5a3383d7ba921de0fb1eae05e6d870f58f052",
+  "docs/_posts/2026-09-24-sidem-topic-051.md": "1fb14e761c287b6ad02cf7e68403d99f5d5b9ce4875e273356ecbd7fcd5dd81f",
+  "docs/_posts/2026-09-24-sidem-topic-053.md": "33789bb60968cfa7982925e937409bc0111af9dedb8e3469f2ed186149b9fe4c",
+  "docs/_editions/2026-09-24.md": "975ef27baf8ce6d3302632c4f309ad8ab766d70eefac6d7fb383146e116965be",
+  "metrics/stories-before-2026-09-24.yml": "1fb5a22885b72d78aba953abf60620abcaca1b2edcb2c2aad1db1416118a94d3"
+ }
+}

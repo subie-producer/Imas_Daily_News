@@ -1,0 +1,102 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-24T02:26:51+09:00",
+   "edition": "2026-09-24",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 345,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 0,
+    "explore:sidem": 2,
+    "explore:gakuen": 5,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 2,
+    "grok:765as": 0,
+    "grok:cinderella": 8,
+    "grok:million": 0,
+    "grok:shiny": 12,
+    "grok:sidem": 8,
+    "grok:gakuen": 10,
+    "grok:dsva": 12,
+    "grok:joint-other": 3,
+    "grok:trend": 0
+   },
+   "normalized": 58,
+   "added": 54,
+   "verify": {
+    "confirmed": 48,
+    "unconfirmed": 10,
+    "failed": 0
+   },
+   "duration_s": 1574
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-24T04:05:41+09:00",
+   "edition": "2026-09-24",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 28,
+   "written": 22,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 100,
+    "covered": 100,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 8.708559215068817,
+    "執筆": 19.20879370768865,
+    "出典の判定": 1.59088188012441,
+    "組版": 5.678298481305441,
+    "校閲": 2.0675544063250224,
+    "校閲1波": 2.0675544063250224
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "dsva-valiv-latest-information-special-2026-09-24",
+    "765-never-end-idol-bluray-2026",
+    "million-14thlive",
+    "gaku-after-school-namco-2026",
+    "sidem-topic-053",
+    "general-music765plus-x-account-recovery-2026"
+   ],
+   "duration_s": 3903
+  }
+ ]
+}

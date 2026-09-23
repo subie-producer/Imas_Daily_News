@@ -1,0 +1,329 @@
+{
+ "decisions": {
+  "gaku-shirube-iwate-day1-2026": {
+   "action": "article",
+   "angle": "岩手公演DAY1で新曲『海奏ララバイ』『ワタシカワイイアヒルノコ』が初披露され、アンコールで4人が全体曲『Agitato』を披露、SNSでも反響が広がった",
+   "rank": "large",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "関連、4主題を統合。9/23既報のDAY1速報より曲名・クレジット・トレンド化の詳細を追加"
+  },
+  "gaku-misuzu-kaisou-lullaby-first-performance-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-iwate-day1-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "海奏ララバイ初披露の詳細をDAY1記事に統合"
+  },
+  "misuzu-hedgehog-hot-water-bottle-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/19付gaku-hedgehog-yutanpo-goods-2026で受注開始済み。本日の締切・発表等のトリガーなし"
+  },
+  "gaku-kuramoto-china-watashi-kawaii-ahiru-no-ko": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-iwate-day1-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ワタシカワイイアヒルノコの作詞・作曲クレジット等をDAY1記事に統合"
+  },
+  "gaku-live-tour-iwate-day2-setlist": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-live-tour-shirube-iwate-day2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2セットリスト公開の事実をDAY2記事に統合。付随 CD情報は既報の修楽旅行シングルと重複"
+  },
+  "gaku-live-tour-iwate-day2-setlist-detailed": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-live-tour-shirube-iwate-day2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "17曲構成の詳細をDAY2記事に統合"
+  },
+  "gaku-conceptual-single-collection-2027": {
+   "action": "article",
+   "angle": "初星学園『Conceptual Single Collection』が2027年1月27日発売、コンプリートスペシャルセット(11,000円)含め予約受付が始まった",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-live-tour-shirube-iwate-day2-2026": {
+   "action": "article",
+   "angle": "岩手公演DAY2で紫雲清夏『Private Glitter』・十王星南『Roar』を初披露、全16曲セットリストと公式配信・アーカイブ情報を掲載、残すはKアリーナ横浜ファイナルのみ",
+   "rank": "large",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "関連、5主題(setlist・detailed・topic-022、023、025)を統合"
+  },
+  "gaku-agitato-trend-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-iwate-day1-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "AgitatoのXトレンド入りをDAY1記事に統合"
+  },
+  "gaku-kaiso-lullaby-trend-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-iwate-day1-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "海奏ララバイのトレンド入り・配信予定情報をDAY1記事に統合"
+  },
+  "gakuen-topic-021": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/23付topic-bdbfeeichfと同一内容(開催期間・SSR確定・出演アイドル限定・おまけ)で新事実なし"
+  },
+  "gakuen-topic-022": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-live-tour-shirube-iwate-day2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式のDAY2セットリスト公開ポスト・配信チケットリンクをDAY2記事に統合"
+  },
+  "gakuen-topic-023": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-live-tour-shirube-iwate-day2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了の挨拶とファイナル公演(11/7-8、既報)への言及をDAY2記事の締めに統合"
+  },
+  "gakuen-topic-024": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "misuzu-hedgehog-hot-water-bottle-2026と同一商品。9/19に受注開始済みで新事実は価格程度、本日のトリガーなし"
+  },
+  "gakuen-topic-025": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-live-tour-shirube-iwate-day2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2最速版アーカイブ公開の事実をDAY2記事に統合"
+  },
+  "gakuen-topic-026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18付gakuen-radio-2026-09-23-guestsでゲスト(陽高真白・飯田ヒカル)を予告済み。放送は前日で本日のトリガーなし"
+  },
+  "gakuen-topic-027": {
+   "action": "article",
+   "angle": "初星学園放送部9/30放送回、岩手公演に出演した湊みや・伊藤舞音がゲスト出演",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakuen-topic-028": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-topic-027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "視聴御礼と次回放送(来週21時)の案内を9/30ゲスト予告記事に統合"
+  },
+  "gaku-hif-15m-produce-campaign-2026": {
+   "action": "article",
+   "angle": "H.I.F挑戦1,500万回突破記念プロデュース応援キャンペーンが本日10:59で終了",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-after-school-namco-2026": {
+   "action": "article",
+   "angle": "学マス×ナムコ『After Schoolキャンペーン』のSNSプレゼント応募が本日23:59で締切",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-live-tour-shirube-iwate-streaming-2026": {
+   "action": "article",
+   "angle": "岩手公演の視聴コメント付きアーカイブが本日18時から視聴開始",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-shirube-iwate-day1-2026",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "岩手公演DAY1で新曲『海奏ララバイ』『ワタシカワイイアヒルノコ』が初披露され、アンコールで4人が全体曲『Agitato』を披露、SNSでも反響が広がった",
+    "lead_score": 20,
+    "dedup_key": "gaku-shirube-iwate-day1-2026",
+    "candidate_ids": [
+     "202609230739-explore-8",
+     "202609231833-explore-5",
+     "202609230739-explore-13",
+     "202609231833-explore-12",
+     "202609232336-explore-36",
+     "202609232336-explore-38"
+    ]
+   },
+   {
+    "slug": "gaku-conceptual-single-collection-2027",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "初星学園『Conceptual Single Collection』が2027年1月27日発売、コンプリートスペシャルセット(11,000円)含め予約受付が始まった",
+    "lead_score": 25,
+    "dedup_key": "gaku-conceptual-single-collection-2027",
+    "candidate_ids": [
+     "202609232336-explore-24"
+    ]
+   },
+   {
+    "slug": "gaku-live-tour-shirube-iwate-day2-2026",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "岩手公演DAY2で紫雲清夏『Private Glitter』・十王星南『Roar』を初披露、全16曲セットリストと公式配信・アーカイブ情報を掲載、残すはKアリーナ横浜ファイナルのみ",
+    "lead_score": 75,
+    "dedup_key": "gaku-live-tour-shirube-iwate-day2-2026",
+    "candidate_ids": [
+     "202609232336-explore-27",
+     "202609232336-watch-0",
+     "202609232336-watch-12",
+     "202609240226-grok-31",
+     "202609240226-grok-32",
+     "202609240226-grok-34"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-topic-027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部9/30放送回、岩手公演に出演した湊みや・伊藤舞音がゲスト出演",
+    "lead_score": 5,
+    "dedup_key": "gakuen-topic-027",
+    "candidate_ids": [
+     "202609240226-grok-36",
+     "202609240226-grok-37"
+    ]
+   },
+   {
+    "slug": "gaku-hif-15m-produce-campaign-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "H.I.F挑戦1,500万回突破記念プロデュース応援キャンペーンが本日10:59で終了",
+    "lead_score": 10,
+    "dedup_key": "gaku-hif-15m-produce-campaign-2026",
+    "candidate_ids": [
+     "sched-2026-09-24-gaku-hif-15m-produce-campaign-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-after-school-namco-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス×ナムコ『After Schoolキャンペーン』のSNSプレゼント応募が本日23:59で締切",
+    "lead_score": 10,
+    "dedup_key": "gaku-after-school-namco-2026",
+    "candidate_ids": [
+     "sched-2026-09-24-gaku-after-school-namco-2026-締切"
+    ]
+   },
+   {
+    "slug": "gaku-live-tour-shirube-iwate-streaming-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "岩手公演の視聴コメント付きアーカイブが本日18時から視聴開始",
+    "lead_score": 15,
+    "dedup_key": "gaku-live-tour-shirube-iwate-streaming-2026",
+    "candidate_ids": [
+     "sched-2026-09-24-gaku-live-tour-shirube-iwate-streaming-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "misuzu-hedgehog-hot-water-bottle-2026",
+    "reason": "既報",
+    "note": "9/19付gaku-hedgehog-yutanpo-goods-2026で受注開始済み。本日の締切・発表等のトリガーなし"
+   },
+   {
+    "dedup_key": "gakuen-topic-021",
+    "reason": "既報",
+    "note": "9/23付topic-bdbfeeichfと同一内容(開催期間・SSR確定・出演アイドル限定・おまけ)で新事実なし"
+   },
+   {
+    "dedup_key": "gakuen-topic-024",
+    "reason": "既報",
+    "note": "misuzu-hedgehog-hot-water-bottle-2026と同一商品。9/19に受注開始済みで新事実は価格程度、本日のトリガーなし"
+   },
+   {
+    "dedup_key": "gakuen-topic-026",
+    "reason": "既報",
+    "note": "9/18付gakuen-radio-2026-09-23-guestsでゲスト(陽高真白・飯田ヒカル)を予告済み。放送は前日で本日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

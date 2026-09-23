@@ -38,5 +38,33 @@
    "10月17日のちくせい花火大会2026でスペシャルコラボミュージックスターマインを実施、打ち揚げ前に黛冬優子が場内アナウンス",
    "専用アプリ「Auris」を使う黛冬優子の音声街歩きスタンプラリーも実施"
   ]
+ },
+ {
+  "id": "sched-2026-10-10-shiny-topic-045-開始",
+  "dedup_key": "shiny-topic-045",
+  "brand": "shiny",
+  "subject": "ストレイライト新映像ALEV-1メイキング",
+  "kind": "開始",
+  "note": "新映像「Wish your birth - THE MAKING OF ALEV-1」の公開が始まる",
+  "reserved_on": "2026-09-24",
+  "title": "Wish your birth - THE MAKING OF ALEV-1",
+  "url": "https://x.com/shinyc_official/status/2102714602232701260",
+  "source_type": "公式",
+  "facts": [
+   "283 Production XXXX Performance",
+   "XXX= S/N-GUL4R1TY",
+   "ALEV-1 メイキング動画の公開が決定",
+   "タイトル: Wish your birth - THE MAKING OF ALEV-1",
+   "日付表記: 2026.10.10",
+   "投稿本文のリード: 記録されていたのは、「熱狂」を学んだ軌跡と、「愛」にたどり着いた奇跡",
+   "ハッシュタグ: #ストレイ_XXX",
+   "ハッシュタグ: #ストレイ_LOVE",
+   "公開時刻・視聴URL・会場は投稿本文に無し",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609240226-grok-54",
+  "event_date": "2026-10-10"
  }
 ]

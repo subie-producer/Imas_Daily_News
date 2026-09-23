@@ -1,0 +1,397 @@
+{
+ "decisions": {
+  "kamizuru-ace-combat-8-stream-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ACE COMBAT8試遊配信・朝活配信は9/23付stories.ymlで既報(kamizuru-cosmo-tgs2026-ace-combat-8等)"
+  },
+  "cosmo-ace-combat-8-tgs2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "発売日10/2・アーリーアクセス9/29は既報(kamizuru-cosmo-tgs2026-ace-combat-8)と同一情報"
+  },
+  "cosmo-morning-talk-2026-09-23": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/23朝活配信は既報(kamizuru-cosmo-morning-stream-2026-09-23)と同内容"
+  },
+  "valiv-latest-information-special-2026-09-24": {
+   "action": "article",
+   "angle": "vα-liv公式chが9/24 20時から勝股P(バンダイナムコ)出演の緊急特番を配信、最新情報を予告",
+   "rank": "medium",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策の主題(valiv-latest-info-special-2026-09-24/dsva-topic-017/x-com-valiv-official.../valiv-special-letter-form.../topic-ebcaccgcab)を統合"
+  },
+  "valiv-situation-voice-15-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "悪役令嬢ボイス(9月テーマ)は9/16付で既報(dsva-voice-15-villainess-2026-09)、新トリガー無し"
+  },
+  "letora-silent-hill-f-day07-2026-09-23": {
+   "action": "article",
+   "angle": "レトラが『SILENT HILL f』DAY07(最終回)を配信、シリーズ完走を報告",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dsva-topic-016(予告)・dsva-topic-019(配信後投稿)を統合"
+  },
+  "cosmo-birthday-live-digest-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "宇宙誕生祭ダイジェスト公開は9/21付で既報(cosmo-birthday-digest-2026)、四条貴音回の曲名は追加説明のみ"
+  },
+  "manaka-youtube-50000-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "登録者5万人記念配信は9/22付で既報(topic-021-2026)"
+  },
+  "cosmo-morning-stream-2026-09-23": {
+   "action": "article",
+   "angle": "ヴイアラ公式LINEスタンプ第2弾(全16種、イラスト:きあと)が販売開始",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同キーの朝活配信部分は既報のため除外、LINEスタンプ販売開始のみを新規記事化"
+  },
+  "manaka-birthday-live-postponed-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "延期公演10/28開催・受付期間等は9/22付で既報(valiv-manaka-bd-2026)、会場名等は追加詳細のみ"
+  },
+  "valiv-latest-info-special-2026-09-24": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-latest-information-special-2026-09-24",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/24特番と同一施策"
+  },
+  "dsva-topic-009": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/22 ACE COMBAT8試遊配信は既報と同一"
+  },
+  "dsva-topic-010": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "宇宙誕生祭ダイジェストは既報、フラワーガール等は追加説明のみで新トリガー無し"
+  },
+  "dsva-topic-011": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "第13回1on1支払済アンケート案内は9/23付既報の一部と同一"
+  },
+  "dsva-topic-012": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "灯里愛夏BD延期公演スケジュール再掲、新情報無し"
+  },
+  "dsva-topic-013": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/23朝活配信予告は既報と同一"
+  },
+  "dsva-topic-014": {
+   "action": "article",
+   "angle": "上水流宇宙がMichael Jackson「Beat It」の踊ってみたショート動画を公開",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "roundup化には素材1件のみで不足のため単独small記事"
+  },
+  "dsva-topic-015": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "シチュエーションボイス第15弾(悪役令嬢)は9/16付既報と同一商品・同一期間"
+  },
+  "dsva-topic-016": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-silent-hill-f-day07-2026-09-23",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SILENT HILL f DAY07配信予告"
+  },
+  "dsva-topic-017": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-latest-information-special-2026-09-24",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/24特番と同一施策(お便り募集は締切済み)"
+  },
+  "dsva-topic-018": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "バースデー記念グッズセットは9/21付で既報(商品名・価格・仕様とも同一)"
+  },
+  "dsva-topic-019": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "letora-silent-hill-f-day07-2026-09-23",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SILENT HILL f DAY07配信終了後の投稿"
+  },
+  "dsva-topic-020": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "朝活配信の結果報告、既報イベントの追加詳細で新トリガー無し"
+  },
+  "x-com-valiv-official-status-2100781868727898257": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-latest-information-special-2026-09-24",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/24特番の告知(続報予約)"
+  },
+  "valiv-special-letter-form-2026-09-24": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-latest-information-special-2026-09-24",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/24特番向けお便り募集(締切9/23 23:59で終了済み、本体施策に統合)"
+  },
+  "topic-ebcaccgcab": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-latest-information-special-2026-09-24",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/24特番のお便り募集案内(続報予約)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-latest-information-special-2026-09-24",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "vα-liv公式chが9/24 20時から勝股P(バンダイナムコ)出演の緊急特番を配信、最新情報を予告",
+    "lead_score": 65,
+    "dedup_key": "valiv-latest-information-special-2026-09-24",
+    "candidate_ids": [
+     "202609231233-explore-13",
+     "202609240226-explore-7",
+     "202609240226-grok-26",
+     "sched-2026-09-24-x-com-valiv-official-status-2100781868727898257-開始",
+     "sched-2026-09-24-valiv-special-letter-form-2026-09-24-開始",
+     "sched-2026-09-24-topic-ebcaccgcab-開始"
+    ]
+   },
+   {
+    "slug": "dsva-letora-silent-hill-f-day07-2026-09-23",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "レトラが『SILENT HILL f』DAY07(最終回)を配信、シリーズ完走を報告",
+    "lead_score": 15,
+    "dedup_key": "letora-silent-hill-f-day07-2026-09-23",
+    "candidate_ids": [
+     "202609231833-explore-9",
+     "202609240226-grok-25",
+     "202609240226-grok-28"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-morning-stream-2026-09-23",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ヴイアラ公式LINEスタンプ第2弾(全16種、イラスト:きあと)が販売開始",
+    "lead_score": 10,
+    "dedup_key": "cosmo-morning-stream-2026-09-23",
+    "candidate_ids": [
+     "202609232336-explore-32"
+    ]
+   },
+   {
+    "slug": "dsva-topic-014",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙がMichael Jackson「Beat It」の踊ってみたショート動画を公開",
+    "lead_score": 5,
+    "dedup_key": "dsva-topic-014",
+    "candidate_ids": [
+     "202609240226-grok-23"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "kamizuru-ace-combat-8-stream-2026",
+    "reason": "既報",
+    "note": "ACE COMBAT8試遊配信・朝活配信は9/23付stories.ymlで既報(kamizuru-cosmo-tgs2026-ace-combat-8等)"
+   },
+   {
+    "dedup_key": "cosmo-ace-combat-8-tgs2026",
+    "reason": "既報",
+    "note": "発売日10/2・アーリーアクセス9/29は既報(kamizuru-cosmo-tgs2026-ace-combat-8)と同一情報"
+   },
+   {
+    "dedup_key": "cosmo-morning-talk-2026-09-23",
+    "reason": "既報",
+    "note": "9/23朝活配信は既報(kamizuru-cosmo-morning-stream-2026-09-23)と同内容"
+   },
+   {
+    "dedup_key": "valiv-situation-voice-15-2026",
+    "reason": "既報",
+    "note": "悪役令嬢ボイス(9月テーマ)は9/16付で既報(dsva-voice-15-villainess-2026-09)、新トリガー無し"
+   },
+   {
+    "dedup_key": "cosmo-birthday-live-digest-2026",
+    "reason": "既報",
+    "note": "宇宙誕生祭ダイジェスト公開は9/21付で既報(cosmo-birthday-digest-2026)、四条貴音回の曲名は追加説明のみ"
+   },
+   {
+    "dedup_key": "manaka-youtube-50000-2026",
+    "reason": "既報",
+    "note": "登録者5万人記念配信は9/22付で既報(topic-021-2026)"
+   },
+   {
+    "dedup_key": "manaka-birthday-live-postponed-2026",
+    "reason": "既報",
+    "note": "延期公演10/28開催・受付期間等は9/22付で既報(valiv-manaka-bd-2026)、会場名等は追加詳細のみ"
+   },
+   {
+    "dedup_key": "dsva-topic-009",
+    "reason": "既報",
+    "note": "9/22 ACE COMBAT8試遊配信は既報と同一"
+   },
+   {
+    "dedup_key": "dsva-topic-010",
+    "reason": "既報",
+    "note": "宇宙誕生祭ダイジェストは既報、フラワーガール等は追加説明のみで新トリガー無し"
+   },
+   {
+    "dedup_key": "dsva-topic-011",
+    "reason": "既報",
+    "note": "第13回1on1支払済アンケート案内は9/23付既報の一部と同一"
+   },
+   {
+    "dedup_key": "dsva-topic-012",
+    "reason": "既報",
+    "note": "灯里愛夏BD延期公演スケジュール再掲、新情報無し"
+   },
+   {
+    "dedup_key": "dsva-topic-013",
+    "reason": "既報",
+    "note": "9/23朝活配信予告は既報と同一"
+   },
+   {
+    "dedup_key": "dsva-topic-015",
+    "reason": "既報",
+    "note": "シチュエーションボイス第15弾(悪役令嬢)は9/16付既報と同一商品・同一期間"
+   },
+   {
+    "dedup_key": "dsva-topic-018",
+    "reason": "既報",
+    "note": "バースデー記念グッズセットは9/21付で既報(商品名・価格・仕様とも同一)"
+   },
+   {
+    "dedup_key": "dsva-topic-020",
+    "reason": "既報",
+    "note": "朝活配信の結果報告、既報イベントの追加詳細で新トリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

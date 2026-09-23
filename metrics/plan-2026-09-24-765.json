@@ -1,0 +1,77 @@
+{
+ "decisions": {
+  "765as-dresscode-saijo-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注期間9/21-10/4・A-on STORE等3店舗・3枚まで・発送11月は765as-solo-collection-dress-code-2026と同一施策で、stock story 765-solo-collection-dress-code-saijo-2026(9/22既報)と重複。当日の新トリガー無し"
+  },
+  "765as-solo-collection-dress-code-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stock story 765-solo-collection-dress-code-saijo-2026(2026-09-22公開)と同一の受注期間・店舗・条件。価格や品番も既に別記事で既報。当日の新発表・締切無し"
+  },
+  "765as-bilibili-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stock story 765-bilibili-digital-card-2026(2026-09-21公開)と同一内容(予約9/20・販売開始9/22 18:00)。販売開始は既に過去、当日の新トリガー無し。出典も未確認(sina.cn)"
+  },
+  "765-never-end-idol-bluray-2026": {
+   "action": "article",
+   "angle": "アソビストア特装版Blu-ray「NEVER END IDOL!!!!!!!!!!!!!」の予約受付締切が9/27に迫ると案内し、価格・発売日を再掲して申込を呼びかける",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前3日)。予約は9/27まで継続受付中で読者が取れる手続きがあるため記事化"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-never-end-idol-bluray-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "アソビストア特装版Blu-ray「NEVER END IDOL!!!!!!!!!!!!!」の予約受付締切が9/27に迫ると案内し、価格・発売日を再掲して申込を呼びかける",
+    "lead_score": 20,
+    "dedup_key": "765-never-end-idol-bluray-2026",
+    "candidate_ids": [
+     "sched-2026-09-24-765-never-end-idol-bluray-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765as-dresscode-saijo-2026",
+    "reason": "既報",
+    "note": "受注期間9/21-10/4・A-on STORE等3店舗・3枚まで・発送11月は765as-solo-collection-dress-code-2026と同一施策で、stock story 765-solo-collection-dress-code-saijo-2026(9/22既報)と重複。当日の新トリガー無し"
+   },
+   {
+    "dedup_key": "765as-solo-collection-dress-code-2026",
+    "reason": "既報",
+    "note": "stock story 765-solo-collection-dress-code-saijo-2026(2026-09-22公開)と同一の受注期間・店舗・条件。価格や品番も既に別記事で既報。当日の新発表・締切無し"
+   },
+   {
+    "dedup_key": "765as-bilibili-collection-2026",
+    "reason": "既報",
+    "note": "stock story 765-bilibili-digital-card-2026(2026-09-21公開)と同一内容(予約9/20・販売開始9/22 18:00)。販売開始は既に過去、当日の新トリガー無し。出典も未確認(sina.cn)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

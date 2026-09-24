@@ -14,6 +14,8 @@
 
 ## 2. 出力の注意
 - 現在の記事の段落末にある `<!-- F1 F3 -->` は根拠 id の控え。markdown には含めず、fact_ids に書く
+- 現在の記事の frontmatter にある `verified_facts`(N1, N2 …)は、この稿でも根拠に使うなら **new_facts に同じ id・text・url で書き写す**
+  (書き写さずに fact_ids で N1 を指すと、無い id として検算で戻される)。使わなくなったものは書かなくてよい
 - event_date は YYYY-MM-DD を1つだけか null
 - slug・brand・candidate_ids・rank・src・出典の種別は書かない(コードが付ける)
 

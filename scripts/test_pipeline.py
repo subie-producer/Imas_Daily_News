@@ -500,6 +500,70 @@ def test_revise_apply_decline(tmp: Path):
     ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円である。", "fact_ids": ["F1"]}])
     outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
     check(outcome == "fixed", f"記述を残す判断を機械が落とした: {outcome} {msg}")
+    # 前の稿の verified_facts(N1)を new_facts に写さずに指した稿は戻し、**原因を書いた**理由を返す(2026-09-25 に2回戻されて落ちた)
+    p.write_text(old, encoding="utf-8")
+    ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円である。", "fact_ids": ["F1", "N1"]}], new_facts=[])
+    outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
+    check(outcome == "kept" and "new_facts に" in msg and "書き写す" in msg, f"N の id の戻し方に原因が無い: {outcome} {msg}")
+    check("verified_facts" in (pipelib.PROMPTS / "revise-article.md").read_text(encoding="utf-8"), "書き直しの依頼文が verified_facts の写し方を言っていない")
+    # 機械の検査が戻したときは、次の巡の校閲にそう伝える(校閲が「執筆が無視した」と読んで同じ指摘を繰り返さない)
+    compose.REVISE_NOTES["2026-09-12"] = {"x": msg}
+    try:
+        h = compose.review_hint("2026-09-12", "2026-09-12-x.md", {})
+        check("執筆が指摘を無視したのではない" in h and "N1" in h, f"戻した書き直しが校閲の依頼文に載らない: {h!r}")
+        check(compose.review_hint("2026-09-12", "2026-09-12-y.md", {}) == "", "戻していない記事に注記が付いた")
+    finally:
+        compose.REVISE_NOTES.clear()
+    # 注記は**その巡の結果**だけ: 巡の開始で消え、出力が読めなかった巡はその理由に更新される(古い巡の理由を引きずらない。監査指摘 r77)
+    saved_rp, saved_popen, saved_root, saved_proot = compose.revise_prompt, compose.subprocess.Popen, compose.ROOT, pipelib.ROOT
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        (tmp / "schema").mkdir(exist_ok=True)
+        (tmp / "schema" / "article-out.schema.json").write_text("{}", encoding="utf-8")
+        (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+        post = tmp / "docs" / "_posts" / "2026-09-12-x.md"
+        post.write_text(old, encoding="utf-8")
+        compose.revise_prompt = lambda *a, **k: "p"
+        class P:
+            def __init__(self, out_path): self.out_path = out_path
+            def communicate(self, timeout=None): Path(self.out_path).write_text("これは JSON ではない", encoding="utf-8")
+            def kill(self): pass
+        def fake_popen(cmd, **kw):
+            return P(cmd[cmd.index("--output-last-message") + 1])
+        compose.subprocess.Popen = fake_popen
+        compose.REVISE_NOTES["2026-09-12"] = {"x": "前々巡の古い理由"}
+        plan = {"articles": [{"slug": "x", "brand": "765", "candidate_ids": ["c1"], "rank": "small"}]}
+        compose.revise_articles("2026-09-12", {"docs/_posts/2026-09-12-x.md": [{"rule_id": "R1", "quote": "価格は三千円である", "repair": "drop_claim"}]},
+                                plan, {"c1": MATS[0]}, None)
+        note = compose.REVISE_NOTES["2026-09-12"].get("x", "")
+        check("読めず" in note and "前々巡" not in note, f"出力が読めなかった巡の注記が更新されない: {note!r}")
+    finally:
+        compose.revise_prompt, compose.subprocess.Popen, compose.ROOT, pipelib.ROOT = saved_rp, saved_popen, saved_root, saved_proot
+        compose.REVISE_NOTES.clear()
+    # 書き直しを適用できなかった記事は、持ち越した指摘も含めてブロックを1件に絞る(監査指摘 r78)
+    saved_root2, saved_proot2 = compose.ROOT, pipelib.ROOT
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+        (tmp / "docs" / "_posts" / "2026-09-12-x.md").write_text(old, encoding="utf-8")
+        (tmp / "docs" / "_posts" / "2026-09-12-y.md").write_text(old, encoding="utf-8")
+        compose.REVISE_NOTES["2026-09-12"] = {"x": "読めず"}
+        pipelib.set_quiet(True)
+        carry = {"verdict": "block", "reviewed": ["article:2026-09-12-x.md", "article:2026-09-12-y.md"], "comments": [],
+                 "blockers": [{"scope": "article:2026-09-12-x.md", "file": "docs/_posts/2026-09-12-x.md", "issue": "a", "quote": "q", "rule_id": "R1", "repair": "drop_claim", "fact_ids": [], "expected": ""},
+                              {"scope": "article:2026-09-12-x.md", "file": "docs/_posts/2026-09-12-x.md", "issue": "b", "quote": "q", "rule_id": "R2", "repair": "drop_claim", "fact_ids": [], "expected": ""},
+                              {"scope": "article:2026-09-12-y.md", "file": "docs/_posts/2026-09-12-y.md", "issue": "c", "quote": "q", "rule_id": "R1", "repair": "drop_claim", "fact_ids": [], "expected": ""},
+                              {"scope": "article:2026-09-12-y.md", "file": "docs/_posts/2026-09-12-y.md", "issue": "d", "quote": "q", "rule_id": "R2", "repair": "drop_claim", "fact_ids": [], "expected": ""}]}
+        r = compose.claude_review("2026-09-12", 2, targets=[], editorial=False, paper=False, carry=carry)
+        got = [(b["scope"][-4:-3], b["issue"]) for b in r["blockers"]]
+        check(got == [("x", "a"), ("y", "c"), ("y", "d")], f"持ち越した指摘の絞り込み: {got}")
+    finally:
+        compose.ROOT, pipelib.ROOT = saved_root2, saved_proot2
+        pipelib.set_quiet(False)
+        compose.REVISE_NOTES.clear()
+    # 校閲の依頼文: 続報予約の素材の在りか、「X の投稿 URL を特定しろ」と言わせない(2026-09-25: 執筆に直せない指摘で3本落ちた)
+    rp = (pipelib.PROMPTS / "review-article.md").read_text(encoding="utf-8")
+    check("stock/scheduled/{DATE}.json" in rp and "執筆には直せない" in rp and "執筆も X を開けない" in rp, "校閲の依頼文に、執筆に直せない指摘を避ける規則が無い")
     check(any("HTML コメント" in p_ for p_ in renderlib.check_output(dict(OK, blocks=[{"markdown": "x<!-- F1 -->", "fact_ids": ["F1", "F3", "F4"]}]), fb, MATS)),
           "本文の HTML コメントが通った")
 

@@ -228,7 +228,12 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
     bad_ids = [i for key in ("title_fact_ids", "lede_fact_ids") for i in (out.get(key) or []) if i not in known_ids]
     bad_ids += [i for b in (out.get("blocks") or []) for i in (b.get("fact_ids") or []) if i not in known_ids]
     if bad_ids:
-        problems.append(f"無い事実 id: {sorted(set(bad_ids))[:6]}")
+        bad = sorted(set(bad_ids))[:6]
+        # 執筆が直せるように、原因まで書く(実測 2026-09-25: 書き直しで verified_facts の N1 を new_facts に写さず、
+        # 「無い事実 id: ['N1']」で2回戻されて記事が落ちた)
+        problems.append(f"無い事実 id: {bad}"
+                        + ("(N の id は new_facts に id・text・url を書いたものだけ使える。前の稿の verified_facts を使うなら書き写す)"
+                           if any(str(i).startswith("N") for i in bad) else ""))
     # 1 block = 1 段落。空行で複数段落を1つの根拠で束ねさせない(根拠の水増しになる。監査指摘)。
     # 中見出しだけの block(`## …` 1行)は根拠が要らない
     multi = [i for i, b in enumerate(out.get("blocks") or []) if re.search(r"\n\s*\n", str(b.get("markdown") or "").strip())]

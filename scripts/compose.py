@@ -396,7 +396,7 @@ def brand_lens(brand: str) -> str:
 
 def editorial_prompt(date: str, number: int, editorial_topic: str, brand: str = "") -> str:
     weekday = "月火水木金土日"[datetime.date.fromisoformat(date).weekday()]
-    core = (ROOT / "prompts" / "columnist-core.md").read_text(encoding="utf-8")
+    core = (PROMPTS / "columnist-core.md").read_text(encoding="utf-8")
     lens = brand_lens(brand)
     return f"""あなたは日刊AI新聞「アイマスNEWS(α)」の社説面を一人で任されているコラムニストです。{date}({weekday}曜)号の社説を1本書いてください。
 
@@ -1500,6 +1500,10 @@ def log_drop(date: str, slug: str, stage: str, why: str, path: Path | None = Non
     DROP_LOG.setdefault(date, {})[slug] = (title, stage, why[:160])
 
 
+# 日付 → {slug: 直前の書き直しを機械の検査が戻した理由("" なら戻していない)}。校閲の依頼文に載せる
+REVISE_NOTES: dict[str, dict[str, str]] = {}
+
+
 def drop_summary(date: str) -> str:
     """完了通知に載せる、外れた記事の一覧(見出し・段・理由)。"""
     rows = DROP_LOG.get(date) or {}
@@ -1831,6 +1835,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
             continue
         materials = [cands[c] for c in art["candidate_ids"] if c in cands]
         mats_in, fact_by_id = renderlib.materials_with_ids(materials)
+        REVISE_NOTES.setdefault(date, {}).pop(slug, None)    # この巡の書き直しの結果だけを校閲に伝える(古い巡を引きずらない)
         # 指摘に機械の id を振る(rule_id は同じ規則で複数付くので、対応の照合に使えない。監査指摘)
         issues = [{**b, "issue_id": f"I{k + 1}"} for k, b in enumerate(issues)]
         jobs.append((art, path, fact_by_id, materials, issues,
@@ -1861,9 +1866,15 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                 ans = json.loads(out.strip())
             except Exception:
                 print(f"書き直し {art['slug']}: 出力が読めない(そのまま次の巡へ)", flush=True)
+                # 注記は**この巡の結果**に更新する(古い巡の検算理由を引きずらない。監査指摘)
+                REVISE_NOTES.setdefault(date, {})[art["slug"]] = "書き直しの出力が読めず(空・時間切れ・JSON でない)、稿を適用できなかった"
                 continue
             outcome, msg = revise_apply(date, art, path, ans, fact_by_id, materials, issues)
             print(f"書き直し {art['slug']}: {msg}", flush=True)
+            # 書き直しの稿を**機械の形の検査**が戻したときは、次の巡の校閲にそう伝える。伝えないと校閲は
+            # 「執筆が指摘を無視した」と読んで同じ指摘を繰り返し、記事が落ちる(実測 2026-09-25: 誤字の指摘を
+            # 3巡繰り返して落とした。執筆は毎回直していたが、検査が「指摘に無い段落を変えた」で戻していた)
+            REVISE_NOTES.setdefault(date, {})[art["slug"]] = "" if outcome != "kept" else msg[:300]
             if outcome == "dropped":
                 if aborted is not None:
                     aborted.append(art["slug"])
@@ -1942,6 +1953,21 @@ def _parse_review(text: str, err: str, where: str) -> dict:
             "blockers": [], "comments": []}
 
 
+def review_hint(date: str, name: str, notes_by_file: dict[str, list[str]]) -> str:
+    """記事1本の校閲の依頼文に足す注記: lint の機械所見と、前回の書き直しを機械の検査が戻したこと。"""
+    hint = ""
+    if notes_by_file.get(f"docs/_posts/{name}"):
+        hint = ("\n\n## 機械の所見(語の近接で見た仮説。文脈を確かめ、当たっていればブロック、外れていれば無視)\n- "
+                + "\n- ".join(notes_by_file[f"docs/_posts/{name}"]))
+    kept_why = (REVISE_NOTES.get(date) or {}).get(name[len(date) + 1:].removesuffix(".md"), "")
+    if kept_why:
+        hint += ("\n\n## 前回の書き直しについて\n執筆は前回の指摘に対して稿を書き直したが、それを適用できず、"
+                 f"記事は**前回のまま**になっている(理由: {kept_why})。執筆が指摘を無視したのではない。"
+                 "この記事の blockers は**最優先の1件だけ**にし、quote は短く(1文以内)、repair は1つにすること"
+                 "(執筆が1か所だけ直せば次の巡で通るように)")
+    return hint
+
+
 def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                   editorial: bool = True, paper: bool = True,
                   carry: dict | None = None, findings: str = "") -> dict:
@@ -1963,7 +1989,7 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     付いていた指摘を引き継ぐ。**引き継がないと、直していない記事のブロックが
     消えて approve になる。
     """
-    schema = (ROOT / "prompts" / "review-schema.json").read_text(encoding="utf-8")
+    schema = (PROMPTS / "review-schema.json").read_text(encoding="utf-8")
     names = targets if targets is not None else sorted(
         p.name for p in (ROOT / "docs" / "_posts").glob(f"{date}-*.md"))
     again = (f"\n\nこれは再校閲({round_no}回目)です。前回の指摘への修正が反映されています。"
@@ -1976,7 +2002,7 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     # file=記事A で返したとき、記事Aを直して見直しただけで紙面担当の指摘が
     # 消える(監査指摘)。担当が走り直すまで、その担当の指摘は残す
     jobs = []
-    art_ck = (ROOT / "prompts" / "review-article.md").read_text(encoding="utf-8")
+    art_ck = (PROMPTS / "review-article.md").read_text(encoding="utf-8")
     # lint の機械所見(時制・発行前の時刻など、語の近接で見るヒューリスティック)は赤にせず、
     # その記事の校閲へ渡す。校閲が文脈を確かめ、当たっていればブロックにする(監査指摘)
     notes_by_file: dict[str, list[str]] = {}
@@ -1985,15 +2011,12 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
         if m3:
             notes_by_file.setdefault(m3.group(1), []).append(m3.group(2))
     for n in names:
-        hint = ""
-        if notes_by_file.get(f"docs/_posts/{n}"):
-            hint = ("\n\n## 機械の所見(語の近接で見た仮説。文脈を確かめ、当たっていればブロック、外れていれば無視)\n- "
-                    + "\n- ".join(notes_by_file[f"docs/_posts/{n}"]))
+        hint = review_hint(date, n, notes_by_file)
         jobs.append((n, art_ck.replace("{DATE}", date).replace("{FILE}", n) + hint + again,
                      f"docs/_posts/{n}", f"article:{n}"))
     if editorial and (ROOT / "docs" / "_editorials" / f"{date}.md").exists():
         jobs.append(("社説",
-                     (ROOT / "prompts" / "review-editorial.md").read_text(encoding="utf-8")
+                     (PROMPTS / "review-editorial.md").read_text(encoding="utf-8")
                      .replace("{DATE}", date) + again, f"docs/_editorials/{date}.md", "editorial"))
     if paper:
         # 号スナップショット(digest)への lint 所見は紙面担当に渡す(記事担当には見えない。監査指摘)
@@ -2002,7 +2025,7 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
         hint = (("\n\n## 機械の所見(号スナップショットについて。当たっていればブロック、外れていれば無視)\n- "
                  + "\n- ".join(paper_notes)) if paper_notes else "")
         jobs.append(("紙面全体",
-                     (ROOT / "prompts" / "review-paper.md").read_text(encoding="utf-8")
+                     (PROMPTS / "review-paper.md").read_text(encoding="utf-8")
                      .replace("{DATE}", date) + hint + again, "-", "paper"))
 
     t_review = time.time()
@@ -2093,6 +2116,23 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                             and (not str(x.get("scope") or "").startswith("article:")
                                  or (ROOT / "docs" / "_posts"
                                      / str(x["scope"]).split(":", 1)[1]).exists())]
+    # 前回の書き直しを適用できなかった記事は、ブロックを**最優先の1件**に絞る(形の処理。校閲にもそう頼んでいる)。
+    # 執筆が1か所だけ直せば次の巡で通るように。今回の応答だけでなく、持ち越した指摘にも掛ける(監査指摘 r77/r78)
+    notes = REVISE_NOTES.get(date) or {}
+    if notes:
+        kept_once: set[str] = set()
+        trimmed = []
+        for x in merged["blockers"]:
+            sc = str(x.get("scope") or "")
+            slug = sc.split(":", 1)[1][len(date) + 1:].removesuffix(".md") if sc.startswith("article:") else ""
+            if slug and notes.get(slug):
+                if sc in kept_once:
+                    continue
+                kept_once.add(sc)
+            trimmed.append(x)
+        if len(trimmed) != len(merged["blockers"]):
+            print(f"校閲: 書き直しを適用できなかった記事のブロックを1件ずつに絞った({len(merged['blockers'])} → {len(trimmed)}件)", flush=True)
+        merged["blockers"] = trimmed
     # これまでに一度でも校閲できた担当。動かなかった担当の扱いを決めるのに使う
     reviewed_before = set((carry or {}).get("reviewed") or [])
     merged["reviewed"] = sorted(reviewed_before | seen)

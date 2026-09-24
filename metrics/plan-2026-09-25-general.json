@@ -1,0 +1,40 @@
+{
+ "decisions": {
+  "general-69": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "765面『765-chihaya-mcdonalds-tsukimi-webcm-2026』が同CM出演と反応(話題に)を既にカバー。個人のX投稿単体でもあり不採用"
+  },
+  "general-71": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "同上。マクドナルドCMが千早本人起用と気づいた反応の個人投稿で、765面記事の話題と重複"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "general-69",
+    "reason": "重複",
+    "note": "765面『765-chihaya-mcdonalds-tsukimi-webcm-2026』が同CM出演と反応(話題に)を既にカバー。個人のX投稿単体でもあり不採用"
+   },
+   {
+    "dedup_key": "general-71",
+    "reason": "重複",
+    "note": "同上。マクドナルドCMが千早本人起用と気づいた反応の個人投稿で、765面記事の話題と重複"
+   }
+  ],
+  "cross_brand": []
+ }
+}

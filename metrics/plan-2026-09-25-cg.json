@@ -1,0 +1,215 @@
+{
+ "decisions": {
+  "pazudora-cinderella-collab-2026": {
+   "action": "article",
+   "angle": "『パズドラ』×『シンデレラガールズ』コラボが本日10時に開幕、コラボダンジョン・ガチャ・セット商品・記念キャンペーンが一斉スタート",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "pad-cinderella-collab-2026-09/feat-ryugakushi-gacha-2026/ability-adjustment-2026-09/collaboration-set-sales-2026/cinderella-14を統合"
+  },
+  "pad-cinderella-collab-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pazudora-cinderella-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボダンジョン・称号チャレンジの詳細を同コラボ総合記事に統合"
+  },
+  "pad-cinderella-feat-ryugakushi-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pazudora-cinderella-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ガチャのラインナップ詳細を同コラボ総合記事に統合"
+  },
+  "pad-cinderella-collab-ability-adjustment-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pazudora-cinderella-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボ開幕前日9/24実施の能力調整を同コラボ総合記事内で補足"
+  },
+  "cinderella-fes-noir-2026-09": {
+   "action": "article",
+   "angle": "スターライトステージで「シンデレラフェス ノワール」開催中、セレクトピックアップでSSRアイドルの排出率が2倍に",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/24 0:00開始、9/30まで。PADコラボとは別のガシャ施策"
+  },
+  "pad-cinderella-collaboration-set-sales-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pazudora-cinderella-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "魔法石セット販売の価格・内容を同コラボ総合記事に統合"
+  },
+  "cinderella-8": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "オーケストラ現地チケット9/27締切と指揮者情報は9/24付編集で既に既報済み、当日の新事実なし"
+  },
+  "cinderella-9": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "渋谷MEDICOS会場は9/23で閉幕済み、完売告知の繰り返しパターンで新規性なし"
+  },
+  "cinderella-11": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の個人アカウント投稿、名称も「スペシャルレッスン/ステージ」で不整合、公式情報で足りる"
+  },
+  "cinderella-14": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pazudora-cinderella-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボ記念キャンペーンの応募方法を同コラボ総合記事に統合"
+  },
+  "cinderella-16": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のオーケストラ最速先行申込完了報告、単体記事化対象外"
+  },
+  "cinderella-17": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のコラボ発表への感想投稿、単体記事化対象外"
+  },
+  "www-the-chara-com-blog-p-121064": {
+   "action": "article",
+   "angle": "有楽町マルイ デレマスPOP UP SHOP、26日分の入店整理券配布が本日18時から開始",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "重複するcinderella-pop-up-yurakucho-marui-2026を統合"
+  },
+  "cinderella-pop-up-yurakucho-marui-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "www-the-chara-com-blog-p-121064",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策(有楽町マルイPOP UP SHOP)、LINE「mogily」整理券や特典詳細を提供元として統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-pazudora-cinderella-collab-2026",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "『パズドラ』×『シンデレラガールズ』コラボが本日10時に開幕、コラボダンジョン・ガチャ・セット商品・記念キャンペーンが一斉スタート",
+    "lead_score": 85,
+    "dedup_key": "pazudora-cinderella-collab-2026",
+    "candidate_ids": [
+     "202609241833-explore-3",
+     "202609242336-explore-6",
+     "202609242336-explore-7",
+     "202609242336-explore-8",
+     "202609250223-explore-3",
+     "202609250223-grok-30"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-fes-noir-2026-09",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "スターライトステージで「シンデレラフェス ノワール」開催中、セレクトピックアップでSSRアイドルの排出率が2倍に",
+    "lead_score": 15,
+    "dedup_key": "cinderella-fes-noir-2026-09",
+    "candidate_ids": [
+     "202609242336-explore-9"
+    ]
+   },
+   {
+    "slug": "cg-www-the-chara-com-blog-p-121064",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "有楽町マルイ デレマスPOP UP SHOP、26日分の入店整理券配布が本日18時から開始",
+    "lead_score": 20,
+    "dedup_key": "www-the-chara-com-blog-p-121064",
+    "candidate_ids": [
+     "sched-2026-09-25-www-the-chara-com-blog-p-121064-開始",
+     "sched-2026-09-25-cinderella-pop-up-yurakucho-marui-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-8",
+    "reason": "既報",
+    "note": "オーケストラ現地チケット9/27締切と指揮者情報は9/24付編集で既に既報済み、当日の新事実なし"
+   },
+   {
+    "dedup_key": "cinderella-9",
+    "reason": "既報",
+    "note": "渋谷MEDICOS会場は9/23で閉幕済み、完売告知の繰り返しパターンで新規性なし"
+   },
+   {
+    "dedup_key": "cinderella-11",
+    "reason": "出典不足",
+    "note": "未確認の個人アカウント投稿、名称も「スペシャルレッスン/ステージ」で不整合、公式情報で足りる"
+   },
+   {
+    "dedup_key": "cinderella-16",
+    "reason": "個人の話題",
+    "note": "個人のオーケストラ最速先行申込完了報告、単体記事化対象外"
+   },
+   {
+    "dedup_key": "cinderella-17",
+    "reason": "個人の話題",
+    "note": "個人のコラボ発表への感想投稿、単体記事化対象外"
+   }
+  ],
+  "cross_brand": []
+ }
+}

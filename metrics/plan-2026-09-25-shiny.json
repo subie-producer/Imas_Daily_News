@@ -1,0 +1,224 @@
+{
+ "decisions": {
+  "shiny-songforprism-kiriko-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/23公開済みの霧子生誕記念施策(シャニソン=Song for Prism)と同内容。当日の新規事実・トリガーなし"
+  },
+  "shiny-kiriko-birthday-fan-trend-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン投稿の盛り上がりはrank:cultureの対象だがgeneral面限定のため、shiny面では不採用"
+  },
+  "shiny-msp-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "会場・日程・配信方法などは9/4以降に既出。開催は9/26で本日のトリガーなし、'開催直前'は新事実を含まない"
+  },
+  "shiny-silver-week-paracolle-step-up-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/22開始時に既報(topic-053-2026)。期間も9/24 23:59で終了済み"
+  },
+  "shiny-hopeful-feathers-download-chart-2026": {
+   "action": "article",
+   "angle": "HOPEFUL FE@THERSのStella/Sol/Luna 3作がBillboard JAPAN DLアルバムチャートに同時初登場3〜5位",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "チャート結果は既報の店舗特典・発売情報にない新事実"
+  },
+  "shiny-union-arena-restock-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "恒常的な入荷・再販の一般情報で、当日の新展開・発表なし"
+  },
+  "shiny-50": {
+   "action": "article",
+   "angle": "283 Production新曲『Wish your birth』のメイキング映像『ALEV-1』を10/10公開と予告",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式告知、facts少なめのため小記事"
+  },
+  "shiny-51": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18既報(refrac7ions-still-blue-2026)のグッズ事前販売(受注〜10/4)と同内容"
+  },
+  "shiny-52": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/11既報(shiny-style-collection-vol1-2026)の受注情報(〜9/27)と同内容、本日のトリガーなし"
+  },
+  "shiny-53": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/23既報の霧子誕生日ガシャと同事案(shiny-songforprism-kiriko-birthday-2026と重複)"
+  },
+  "shiny-54": {
+   "action": "article",
+   "angle": "プロデュースミニイベント『シャイニーコンペティション』開催中、応募締切は9/28 20:59",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/24の'近日開催予定'から開催決定・締切確定に進展"
+  },
+  "shiny-55": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "既存AR撮影機能の販促投稿で新規性なし、roundup化するには他に対象が足りない"
+  },
+  "shiny-56": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "非公式まとめサイト経由で、公式アカウントの新規告知を確認できていない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-hopeful-feathers-download-chart-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "HOPEFUL FE@THERSのStella/Sol/Luna 3作がBillboard JAPAN DLアルバムチャートに同時初登場3〜5位",
+    "lead_score": 55,
+    "dedup_key": "shiny-hopeful-feathers-download-chart-2026",
+    "candidate_ids": [
+     "202609242336-explore-11"
+    ]
+   },
+   {
+    "slug": "shiny-50-006310",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "283 Production新曲『Wish your birth』のメイキング映像『ALEV-1』を10/10公開と予告",
+    "lead_score": 15,
+    "dedup_key": "shiny-50",
+    "candidate_ids": [
+     "202609250223-grok-66"
+    ]
+   },
+   {
+    "slug": "shiny-54-31a825",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "プロデュースミニイベント『シャイニーコンペティション』開催中、応募締切は9/28 20:59",
+    "lead_score": 10,
+    "dedup_key": "shiny-54",
+    "candidate_ids": [
+     "202609250223-grok-70"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-songforprism-kiriko-birthday-2026",
+    "reason": "既報",
+    "note": "9/23公開済みの霧子生誕記念施策(シャニソン=Song for Prism)と同内容。当日の新規事実・トリガーなし"
+   },
+   {
+    "dedup_key": "shiny-kiriko-birthday-fan-trend-2026",
+    "reason": "面違い",
+    "note": "ファン投稿の盛り上がりはrank:cultureの対象だがgeneral面限定のため、shiny面では不採用"
+   },
+   {
+    "dedup_key": "shiny-msp-2026",
+    "reason": "既報",
+    "note": "会場・日程・配信方法などは9/4以降に既出。開催は9/26で本日のトリガーなし、'開催直前'は新事実を含まない"
+   },
+   {
+    "dedup_key": "shiny-silver-week-paracolle-step-up-2026",
+    "reason": "既報",
+    "note": "9/22開始時に既報(topic-053-2026)。期間も9/24 23:59で終了済み"
+   },
+   {
+    "dedup_key": "shiny-union-arena-restock-2026",
+    "reason": "その他",
+    "note": "恒常的な入荷・再販の一般情報で、当日の新展開・発表なし"
+   },
+   {
+    "dedup_key": "shiny-51",
+    "reason": "既報",
+    "note": "9/18既報(refrac7ions-still-blue-2026)のグッズ事前販売(受注〜10/4)と同内容"
+   },
+   {
+    "dedup_key": "shiny-52",
+    "reason": "既報",
+    "note": "9/11既報(shiny-style-collection-vol1-2026)の受注情報(〜9/27)と同内容、本日のトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-53",
+    "reason": "既報",
+    "note": "9/23既報の霧子誕生日ガシャと同事案(shiny-songforprism-kiriko-birthday-2026と重複)"
+   },
+   {
+    "dedup_key": "shiny-55",
+    "reason": "その他",
+    "note": "既存AR撮影機能の販促投稿で新規性なし、roundup化するには他に対象が足りない"
+   },
+   {
+    "dedup_key": "shiny-56",
+    "reason": "出典不足",
+    "note": "非公式まとめサイト経由で、公式アカウントの新規告知を確認できていない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

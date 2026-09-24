@@ -85,6 +85,7 @@ suffix_types:
 
 # --- 報道: 独立した報道メディア ---
 press_domains:
+  - billboard-japan.com   # 合議で追加: 独立した音楽メディア企業のチャート集計・発表
   - leveluplogy.jp        # 合議で追加: TGS2026会場で自ら取材したゲーム系報道メディア
   - gamebusiness.jp       # 合議で追加: 独立したゲーム業界メディアがTGS2026での取材を基に報道
   - ibatoco.jp            # いばとーこ(茨城の地域ニュースメディア)
@@ -123,6 +124,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - tvfan.kyodo.co.jp     # 合議で追加: Billboard JAPANチャート情報を報道。シャニマスは一言のみで取材なし
   - news.saku-chan.com    # 合議で追加: SNS・Xのトレンドとファン投稿のまとめ
   - zawatto.com           # 合議で追加: Xで話題のものをキュレートして伝えるまとめサイト。自ら取材した形跡がない
   - vtubernews.jp         # 合議で追加: 5ちゃんねるとTwitterからまとめており、独自取材がなく他所の発表を転載して
@@ -196,6 +198,7 @@ secondary_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - app-tatsujin.com      # 合議で追加: 個人のブログで公式発表をまとめている。個人サイトは内容を問わずファン
   - canonsnk.blog69.fc2.com # 合議で追加: 個人ブログでアイマスグッズの購入・感想を記述している
   - music765plus.com      # 合議で追加: 個人Xアカウント連動、会社概要なし。個人運営なら内容問わずファン
   - v12.battlepage.com    # 合議で追加: 個人の投稿。指示では『個人を二次情報にしない』と明記
@@ -213,6 +216,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - megashakicp7.com      # 合議で追加: メガシャキのメーカーで、アイマスのライセンスを受けてコラボキャンペーンを運営して
+  - pad.gungho.jp         # 合議で追加: ライセンス下でコラボを実施し、ガチャなど商品を動かしている一次発信
   - bnfaq.channel.or.jp   # 合議で追加: 複数ゲームシリーズ対応のバンダイナムコFAQサイト。アイマス以外も扱う
   # バンダイナムコのグループ会社でも、アイマス以外のタイトル・事業はコラボ先・販売元=当事者
   # (編集長 2026-09-23:「あくまでもアイマスニュースの公式とは、を考えろ」)
@@ -319,6 +324,8 @@ party_domains:
 # collect の合議工程が oEmbed で投稿者を確かめ、ID を上の表へ機械で足す。
 # **公式・準公式の判断は人がここで済ませている**ので、ID の追加は合議に掛けない。
 video_channels:
+  当事者:
+    - whatsupmcdonalds    # 合議で追加: アイマスコラボの販売元・主催者として公式YouTubeで直接発信
   ファン:
     - TogawaNonoha        # 合議で追加: YouTubeの個人チャンネル。個人アカウントに該当
   公式:
@@ -332,6 +339,8 @@ video_channels:
     - Lantis           # Lantis Channel
 
 video_ids:
+  当事者:
+    - YUWiY_qt3jM         # 機械で追加: @whatsupmcdonalds「今度いつきみに会えるのかな covered by 如月千早」
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
@@ -462,6 +471,11 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - showseven           # 合議で追加: 個人アカウント
+    - masuwohold          # 合議で追加: 個人アカウント
+    - Yuuko00111          # 合議で追加: 個人アカウント
+    - UdYUmu05eZ48830     # 合議で追加: 個人アカウント
+    - Sio0612             # 合議で追加: 個人アカウント
     - deresuteborder      # 合議で追加: 個人のボーダー観察報告
     - alva_tork           # 合議で追加: 個人のゲーム結果共有
     - YG4Gf7dSnAjLcdA     # 合議で追加: 個人による来場報告
@@ -562,6 +576,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - McDonaldsJapan      # 合議で追加: コラボ先マクドナルドの公式アカウント
     - nakano_arcade       # namco中野店(ゲームセンター。バンナムAM でもアイマス以外の事業=当事者。編集長 2026-09-23)
     - namco_hakata        # namco博多バスターミナル店(同上)
     - yassy846            # 合議で追加: 楽曲作詞の制作に関わった人。演者は演じている人であり、作詞者ではない
@@ -634,6 +649,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  note.com/sammy_sammy: ファン                    # 合議で追加: 個人のnoteアカウント。アイマスLIVE観賞レポート等、個人のファン発信。
   note.com/hokuhokuawaawa: ファン                 # 合議で追加: 個人のnoteユーザーアカウント。シャニマスの感想・物販紹介
   note.com/kaaiiiiiiii_trip: ファン               # 合議で追加: 個人ブログ。アイマスSideMの個人的な目撃・体験レポート
   note.com/mitsuru_43: ファン                     # 合議で追加: 個人ファンの参戦記録

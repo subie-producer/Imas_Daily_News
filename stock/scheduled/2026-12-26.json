@@ -1,23 +1,53 @@
 [
-  {
-    "id": "sched-2026-12-26-sidem-fantastic-battle-fes-2026-開幕",
-    "dedup_key": "sidem-fantastic-battle-fes-2026",
-    "brand": "sidem",
-    "subject": "F@NTASTIC BATTLE FES ～Wanna step in～ 長野公演",
-    "kind": "開幕",
-    "reserved_on": "2026-09-02",
-    "title": "【SideMF@NFES】～Wanna step in～ 詳細発表！アイドル達の新ビジュアルも公開",
-    "url": "https://idolmaster-official.jp/news/01_19739",
-    "source_type": "公式",
-    "facts": [
-      "長野公演日時: 2026年12月26日(土)昼公演11:00開場/12:00開演、夜公演16:00開場/17:00開演",
-      "長野公演日時: 2026年12月27日(日)昼公演11:00開場/12:00開演、夜公演16:00開場/17:00開演",
-      "会場(長野): ホクト文化ホール",
-      "出演ユニットはJupiter・Altessimo・Beit・W・Café Parade・もふもふえん・S.E.M・C.FIRSTの8ユニット"
-    ],
-    "via": "watch",
-    "verify": "confirmed",
-    "event_date": "2026-12-26",
-    "src_candidate_id": "202609012336-watch-1"
-  }
+ {
+  "id": "sched-2026-12-26-sidem-fantastic-battle-fes-2026-開幕",
+  "dedup_key": "sidem-fantastic-battle-fes-2026",
+  "brand": "sidem",
+  "subject": "F@NTASTIC BATTLE FES ～Wanna step in～ 長野公演",
+  "kind": "開幕",
+  "reserved_on": "2026-09-02",
+  "title": "【SideMF@NFES】～Wanna step in～ 詳細発表！アイドル達の新ビジュアルも公開",
+  "url": "https://idolmaster-official.jp/news/01_19739",
+  "source_type": "公式",
+  "facts": [
+   "長野公演日時: 2026年12月26日(土)昼公演11:00開場/12:00開演、夜公演16:00開場/17:00開演",
+   "長野公演日時: 2026年12月27日(日)昼公演11:00開場/12:00開演、夜公演16:00開場/17:00開演",
+   "会場(長野): ホクト文化ホール",
+   "出演ユニットはJupiter・Altessimo・Beit・W・Café Parade・もふもふえん・S.E.M・C.FIRSTの8ユニット"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "event_date": "2026-12-26",
+  "src_candidate_id": "202609012336-watch-1"
+ },
+ {
+  "id": "sched-2026-12-26-sidem-61-開幕",
+  "dedup_key": "sidem-61",
+  "brand": "sidem",
+  "subject": "F@NTASTIC BATTLE FES ～Wanna step in～(長野公演)",
+  "kind": "開幕",
+  "note": "長野公演開幕、現地会場物販が始まる日",
+  "reserved_on": "2026-09-25",
+  "title": "F＠NTASTIC BATTLE FES ～Wanna step in～ イベント公式グッズ事前販売",
+  "url": "https://x.com/SideM_official/status/2103085080625455241",
+  "source_type": "公式",
+  "facts": [
+   "掲載日: 2026-09-24 11:32:11 GMT（日本時間 2026-09-24 20:32:11）",
+   "特設ページの掲載日: ページ上で確認できない",
+   "催しの日: 長野公演の開催日時は2026年12月26日(土)・27日(日)。幕張公演の開催日時は2027年1月23日(土)・24日(日)",
+   "締切: イベント公式グッズ事前販売は9月27日(日)まで（この文に年の記載はない）",
+   "見出しは【グッズ情報】",
+   "#SideMFANFES_WSI",
+   "イベント公式グッズ販売中",
+   "アイドルたちのビジュアルを使用したアイテムや、ユニットカラーを使ったアイテムを多数ラインナップ",
+   "グッズを身につけて応援するよう書いている",
+   "特設サイトへ誘導",
+   "#SideM",
+   "正式名称の表記: 「315 Production presents F＠NTASTIC BATTLE FES ～Wanna step in～」"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609250223-grok-77",
+  "event_date": "2026-12-26"
+ }
 ]

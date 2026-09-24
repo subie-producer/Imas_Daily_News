@@ -1,0 +1,248 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-25-dsva-valiv-life-like-a-live-12-2026.md",
+   "issue": "frontmatter の candidate_ids に指定された候補が候補ファイルに存在しない、かつ verified_facts も指定されていない。記事の具体的な事実（イベント名、開催日程、出演者、出演内容）が candidates にも verified_facts にも根拠を持たない。",
+   "quote": "candidate_ids:\n- sched-2026-09-25-valiv-life-like-a-live-12-2026-開幕\n\n（該当する候補ID が候補ファイルに存在せず）",
+   "rule_id": "R1",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1",
+    "F2"
+   ],
+   "expected": "候補ファイルに該当の候補ID を追加して候補データを登録するか、frontmatter に verified_facts を追加して一次情報確認を示す",
+   "scope": "article:2026-09-25-dsva-valiv-life-like-a-live-12-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-dsva-valiv-life-like-a-live-12-2026.md",
+   "issue": "候補ファイルに根拠がないため、記事の事実が sources の公式 X ポストに基づいていることを確認できない。公式情報が sources に含まれていることは確認できるが、その内容を検証できない。",
+   "quote": "sources:\n- label: 公式X「えるすりー12にヴイアラ3名出演決定」(2026年9月25日)\n  url: https://x.com/valiv_official/status/2091146328801943948\n  type: 公式",
+   "rule_id": "R4",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1",
+    "F2"
+   ],
+   "expected": "candidates にこの X ポストの内容を facts として登録し、F1・F2 と対応させる",
+   "scope": "article:2026-09-25-dsva-valiv-life-like-a-live-12-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-gaku-after-school-namco-2026.md",
+   "rule_id": "R3",
+   "issue": "frontmatter の candidate_ids で指定された2つの候補（『sched-2026-09-25-gaku-after-school-namco-2026-開始』『sched-2026-09-25-gaku-after-school-namco-2026-開幕』）がどの候補ファイルにも存在しない。根拠（F）の検証ができない。前回の指摘と同じく未解決。",
+   "quote": "candidate_ids:\n- sched-2026-09-25-gaku-after-school-namco-2026-開始\n- sched-2026-09-25-gaku-after-school-namco-2026-開幕",
+   "repair": "add_source",
+   "fact_ids": [],
+   "expected": "候補ファイルが実在するか確認し、存在しない場合は候補生成プロセスを見直すか、sources に基づいた verified_facts を追加して根拠を明確にする必要がある。現在、候補ID 202609180734-explore-9(PRタイムス)および202609181838-explore-35(電撃オンライン)に同様の内容が存在するため、candidate_ids を修正するか、これらの候補に統一する。",
+   "scope": "article:2026-09-25-gaku-after-school-namco-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-gaku-after-school-namco-2026.md",
+   "rule_id": "R2",
+   "issue": "verified_facts N1 で『バンダイナムコ公式サイトの特典画像に全7種・ランダム配布と記載されている』とあるが、sources の URL(https://bandainamco-am.co.jp/event/game_center/gkmas2026/) を確認してもプロモーションカード『全7種』という記載が確認不可能。前回の指摘（R4）『sources の記事内容と一致しない』が反映されていない。",
+   "quote": "対象クレーンゲーム機に500円を投入すると、ナムコ限定特典として「アイドルマスター TOURS」プロモーションカード全7種からランダムで1枚がもらえる。<!-- F9 N1 F10 N2 F15 -->",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "N1"
+   ],
+   "expected": "sources の URL を開いてプロモーションカードの種類数を確認し、記事の『全7種』という記述が sources から検証可能な内容に修正するか、sources に掲載されていない場合は『種類数』を削除または『複数種』など曖昧な表現に修正する。",
+   "scope": "article:2026-09-25-gaku-after-school-namco-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-gaku-weekend-citron-hatsuboshi-store-2026.md",
+   "issue": "前回の校閲指摘（sources に具体的なポストURLを追加する）への対応が不完全。sources の第1エントリが依然として投稿IDなしの汎用URLのままで、「3日間入店制限」の根拠となる具体的な投稿を特定できない",
+   "quote": "sources:\n- label: ハツボシストア公式X「ハツボシストア新テーマ『ウィークエンドシトロン』」(2026年9月25日)\n  url: https://x.com/hatsuboshistore\n  type: 当事者",
+   "rule_id": "R4",
+   "repair": "drop_source",
+   "fact_ids": [
+    "F1",
+    "F4",
+    "F7"
+   ],
+   "expected": "sources の第1エントリ（汎用URL）を削除し、sources の第2エントリ（具体的なポストURL）のみを保持する",
+   "scope": "article:2026-09-25-gaku-weekend-citron-hatsuboshi-store-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-million-x-com-imasml-theater-status-2100830931279827419.md",
+   "issue": "記事本文に誤字「プラチナスターツービンゴ」があり、前回（2回目）の指摘が反映されていません。正しい表記は sources のラベルとアイドルマスター ポータル公式サイトに記載の「プラチナスターツアービンゴ」です。",
+   "quote": "公式告知によると、X-STREAM THEATERのイベント「プラチナスターツービンゴ～一旦愛して♡～」は本日20:59に終了します。",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F3",
+    "F6"
+   ],
+   "expected": "「プラチナスターツアービンゴ」に訂正され、sources のラベルならびにアイドルマスター ポータル公式サイトの表記と統一される。",
+   "scope": "article:2026-09-25-million-x-com-imasml-theater-status-2100830931279827419.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-25-dsva-code-vein-7.md",
+   "issue": "frontmatter の candidate_ids が指す候補が 2026-09-25.json に見つかりません。candidate_ids: 'sched-2026-09-25-code-vein-7-開始' はスケジュール形式の ID であり、候補ファイルのエントリ（timestamp-type-N 形式）と異なります。ただし sources に公式X が明記されているため出典は充足されており、ブロック対象ではありません。",
+   "scope": "article:2026-09-25-dsva-code-vein-7.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-dsva-valiv-life-like-a-live-12-2026.md",
+   "issue": "既報との関係性: 既報台帳では 2026-08-24 に『valiv-life-like-a-live-12-2026』として「Life Like a Live!12〜ドラマチックアワー〜」に上水流宇宙・灯里愛夏・レトラが出演することが既知。本記事は同じ内容を「開幕」という当日のトリガーに基づいて報道しており、R10 としてはブロック対象にはならない（当日の開幕がニュース性のトリガー）。ただし出典根拠がないという R1 の問題は別。",
+   "scope": "article:2026-09-25-dsva-valiv-life-like-a-live-12-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-dsva-valiv-life-like-a-live-12-2026.md",
+   "issue": "記事の分量: rank: small で本文は 1 段落約 60 字の非常に短い記事。指標では小記事は最低 250 字程度が目安だが、本記事は大幅に下回っている。ただし R12 の対象外（コメント項目）。",
+   "scope": "article:2026-09-25-dsva-valiv-life-like-a-live-12-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-gaku-after-school-namco-2026.md",
+   "issue": "分量不足: rank=small（目安250字以上）に対して現在の本文は約200字。sources にはSNS応募期間、グッズ詳細など追加情報があり、補足可能。",
+   "scope": "article:2026-09-25-gaku-after-school-namco-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-gaku-weekend-citron-hatsuboshi-store-2026.md",
+   "issue": "記事の本文量が small ランク向けとしては充分（約340字）。新規情報（3日間入店制限、A5クリアボード追加）により R10（新事実なしの続報）には該当しない",
+   "scope": "article:2026-09-25-gaku-weekend-citron-hatsuboshi-store-2026.md"
+  },
+  {
+   "file": "docs/_editions/2026-09-25.md",
+   "issue": "(対象の記事を指していないためコメント扱い) digestが削除された記事を参照している。昨日セクションで `million-46-c8ab39` を参照しているが、該当する記事 `docs/_posts/2026-09-25-million-46-c8ab39.md` が存在しない（削除済み）",
+   "quote": "- k: 配\n    t: ミリオン14th同時視聴公開\n    d: DAY1・DAY2アーカイブ\n    brand: million\n    slug: million-46-c8ab39",
+   "rule_id": "R3",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "million-46-deleted",
+    "digest-broken-ref"
+   ],
+   "expected": "digestの昨日セクションから該当する行を削除するか、別の記事で置き換える",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "候補にある重要な話題が紙面に無い：幽谷霧子誕生日キャンペーン(shiny-songforprism-kiriko-birthday-2026)。2026-09-23開始、9/29まで開催の公式企画だが、記事化されていない",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "候補にある記事が削除されている：学園アイドルマスター LIVE TOUR -標- 岩手公演 視聴コメント付きアーカイブ配信開始（gaku-iwate-live-tour-2026-archive）。削除理由は不明",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-765-chihaya-mcdonalds-tsukimi-webcm-2026.md",
+   "issue": "分量不足: rank: lead のわりに本文が薄い（本文218字、目安1000字以上）。sources にある出典から、WEBCMの公開先（マクドナルド公式X、Instagram、TikTok、YouTube）や編曲・楽曲制作の詳細を拾えば分量は埋まる",
+   "scope": "article:2026-09-25-765-chihaya-mcdonalds-tsukimi-webcm-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-cg-www-the-chara-com-blog-p-121064.md",
+   "issue": "候補ファイルの検証ができていません。frontmatter の candidate_ids が 2026-09-25.json に存在しないため、fact_ids（F1～F19）の根拠を確認できませんでした。ただし sources の URL から既報台帳で出典内容を確認でき、記事の主要事実はすべて sources に根拠があります。",
+   "scope": "article:2026-09-25-cg-www-the-chara-com-blog-p-121064.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-gaku-gakuen-38.md",
+   "issue": "分量不足：rank small で目安 250字に対し、本文は 55字。出典の X 投稿にある情報（9月23日の放送時刻、放送内容、セットリスト等）を拾えば増やせる可能性がある。",
+   "scope": "article:2026-09-25-gaku-gakuen-38.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-gaku-sena-roar-gasha-2026.md",
+   "issue": "記事本文が212字で、rank=small の目安(250字)より38字不足しています。ファミ通記事から会場名、出演者、セットリスト等の詳細を補えば、もっと充実した記事になります。",
+   "scope": "article:2026-09-25-gaku-sena-roar-gasha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-joint-41-dda543.md",
+   "issue": "分量不足: rank: small（目安250字以上）に対して本文が約85字。出典にある配信プラットフォーム、出演者予定など追記できる情報の補足で分量を増やすことを検討してください",
+   "scope": "article:2026-09-25-joint-41-dda543.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-joint-tours-ranking-2026-09-23.md",
+   "issue": "分量不足：small ランク記事として本文が薄い（現在 110字、目安 250字）。候補に含まれる『ランク「F」はランキングに掲載されない』などの仕様情報を加えると埋まります。",
+   "scope": "article:2026-09-25-joint-tours-ranking-2026-09-23.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-million-42-cb6d98.md",
+   "issue": "分量不足: rank が small（目安 250字）に対して、本文が 84 字で極めて短い。ただし、ゲーム内キャンペーン情報であり、詳細はアプリ内表示が前提と考えられるため、紙面には最小限の情報のみ記載という判断は妥当。",
+   "scope": "article:2026-09-25-million-42-cb6d98.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-shiny-54-31a825.md",
+   "issue": "分量不足: rank: small に対して本文が薄い（目安: 250字以上）。出典にある対象アイドル、報酬、出現率などを拾えば埋まる。",
+   "scope": "article:2026-09-25-shiny-54-31a825.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-sidem-60-f0e370.md",
+   "issue": "分量不足: rank: small の目安(250字以上)に対して、本文が約30字と大きく不足しています。候補に記載されている追加の引用または詳細な記述を加えることで充実させることができます。",
+   "scope": "article:2026-09-25-sidem-60-f0e370.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-25-sidem-61-a5a94a.md",
+   "issue": "sources の label が不完全。「(2026年9」で切れており、投稿日付（例：2026年9月24日）で完結すべき",
+   "scope": "article:2026-09-25-sidem-61-a5a94a.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-25-765-2-bd0a8b.md",
+  "article:2026-09-25-765-765pro-solo-collection-dresscode-2026.md",
+  "article:2026-09-25-765-chihaya-mcdonalds-tsukimi-webcm-2026.md",
+  "article:2026-09-25-cg-cinderella-fes-noir-2026-09.md",
+  "article:2026-09-25-cg-pazudora-cinderella-collab-2026.md",
+  "article:2026-09-25-cg-www-the-chara-com-blog-p-121064.md",
+  "article:2026-09-25-dsva-19-83970b.md",
+  "article:2026-09-25-dsva-29-6bb1ee.md",
+  "article:2026-09-25-dsva-code-vein-7.md",
+  "article:2026-09-25-dsva-va-liv-3rd-live-2027.md",
+  "article:2026-09-25-dsva-valiv-life-like-a-live-12-2026.md",
+  "article:2026-09-25-gaku-after-school-namco-2026.md",
+  "article:2026-09-25-gaku-gakuen-38.md",
+  "article:2026-09-25-gaku-hatsuboshi-conceptual-single-collection-2026.md",
+  "article:2026-09-25-gaku-hr-12-2026-09-28-313857.md",
+  "article:2026-09-25-gaku-iwate-live-tour-2026-archive.md",
+  "article:2026-09-25-gaku-sena-roar-gasha-2026.md",
+  "article:2026-09-25-gaku-weekend-citron-hatsuboshi-store-2026.md",
+  "article:2026-09-25-joint-41-dda543.md",
+  "article:2026-09-25-joint-imas-ch-member-stream-2026-09.md",
+  "article:2026-09-25-joint-tours-ranking-2026-09-23.md",
+  "article:2026-09-25-million-42-cb6d98.md",
+  "article:2026-09-25-million-46-c8ab39.md",
+  "article:2026-09-25-million-x-com-imasml-theater-status-2100830931279827419.md",
+  "article:2026-09-25-shiny-50-006310.md",
+  "article:2026-09-25-shiny-54-31a825.md",
+  "article:2026-09-25-shiny-hopeful-feathers-download-chart-2026.md",
+  "article:2026-09-25-sidem-60-f0e370.md",
+  "article:2026-09-25-sidem-61-a5a94a.md",
+  "article:2026-09-25-sidem-64-cd5fee.md",
+  "article:2026-09-25-sidem-karatetsu-yokai-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-25-765-2-bd0a8b.md": "02dfd608b1fa34311fa92f8da25fc0280fefbb20efcb74a4dabf0c9762ef7541",
+  "docs/_posts/2026-09-25-765-765pro-solo-collection-dresscode-2026.md": "c0f4041fcf7dec174046c1be6ec28bc868bb15e6095c5811a3eed728ab0f8a10",
+  "docs/_posts/2026-09-25-765-chihaya-mcdonalds-tsukimi-webcm-2026.md": "22fd4e2621d9c742955d15f5f8d8a59668e2c45959095b0b5ee7decbb73303e4",
+  "docs/_posts/2026-09-25-cg-cinderella-fes-noir-2026-09.md": "4ea7c21a7fb9a616832a1dc54875b8c62946783b73147bcf60f6c14bb47faccd",
+  "docs/_posts/2026-09-25-cg-pazudora-cinderella-collab-2026.md": "17c8040d1921e5b61b5b0643442477cea63308b09c0a2f9b7798c7e7abdaa4e5",
+  "docs/_posts/2026-09-25-cg-www-the-chara-com-blog-p-121064.md": "3d2ceb23579994373c4a73f7064f6111abf31fe4c6f86bea6f767b9c3339e824",
+  "docs/_posts/2026-09-25-dsva-19-83970b.md": "36c26654fd3dc3dc5ae9f2b95c495fb3f299df2fd98d06126cdf01a914e427a8",
+  "docs/_posts/2026-09-25-dsva-29-6bb1ee.md": "e814ca16e0fed5172f687a5c8587d4dc64140225941cbd7329c963cbf78376d7",
+  "docs/_posts/2026-09-25-dsva-code-vein-7.md": "ee25b0065dfee0934b060c3bdc262aeec43242232ae8ebbcad1974f153c04670",
+  "docs/_posts/2026-09-25-dsva-va-liv-3rd-live-2027.md": "d89183fff01bee83e987b257285d999768b2b8a71f86f13e92185625031ccb70",
+  "docs/_posts/2026-09-25-dsva-valiv-life-like-a-live-12-2026.md": "a2a839c391c0ac2d16f234d9813c4a3d3a0cfa579275a493a71feeaad7547e7a",
+  "docs/_posts/2026-09-25-gaku-after-school-namco-2026.md": "80e48e79d856ba96da019bb0e8dd7d620d9cdb73870c3d043692f2183ba05db4",
+  "docs/_posts/2026-09-25-gaku-gakuen-38.md": "aae138e3d080638269e054724f9c4644863536aa699c70c782e3c84cc775b964",
+  "docs/_posts/2026-09-25-gaku-hatsuboshi-conceptual-single-collection-2026.md": "3c9716904fab0f1a0597fedf6a6f3958895630c49eabf729f48efe0ab20b2605",
+  "docs/_posts/2026-09-25-gaku-hr-12-2026-09-28-313857.md": "879158bbe55b8f6121c4a1811b4bd8e61b36f10d4c150bee4af1a7c96421b036",
+  "docs/_posts/2026-09-25-gaku-sena-roar-gasha-2026.md": "93f9441218d57c813592fd4bf4797cf3e5bafdbea6348f36f92fc1c995472ac1",
+  "docs/_posts/2026-09-25-gaku-weekend-citron-hatsuboshi-store-2026.md": "15ac1e1cc25fd684006b4deb61efe0b3df08d6016b272a3de44f59faf65faa18",
+  "docs/_posts/2026-09-25-joint-41-dda543.md": "cc3cc4ada606f9af5db94bf5a00b5f72753ad1f4ff8391506e299bedd1465e9a",
+  "docs/_posts/2026-09-25-joint-imas-ch-member-stream-2026-09.md": "72fa20f87188f8f615ce6abb7c808b71be6222e2e8a430757230906fe06d4cf7",
+  "docs/_posts/2026-09-25-joint-tours-ranking-2026-09-23.md": "a80f851059dd6dff9ed0d6bf74ffc8cf49530bceb2470a052c57835f3c1221b5",
+  "docs/_posts/2026-09-25-million-42-cb6d98.md": "948db668209ee9cabd9fc4c41382b634baad7ceef5fa4f5db821b84102340b45",
+  "docs/_posts/2026-09-25-million-x-com-imasml-theater-status-2100830931279827419.md": "327427765f2d3eebab9b4cc4eb86494e39c3dfa06a55816b394a54371a4e5686",
+  "docs/_posts/2026-09-25-shiny-54-31a825.md": "5aee5786c41ace3d8ea749c69d1d5568c938027206e609a5c3c88138bd7f2e6d",
+  "docs/_posts/2026-09-25-shiny-hopeful-feathers-download-chart-2026.md": "0fc30b061dcb96f7726e487ec04c86cb847e2ce67da6e18b9cef1a4ae6a297a3",
+  "docs/_posts/2026-09-25-sidem-60-f0e370.md": "0a078c8edd101c8aea1d3bb158786eadca294601e18c59a1273ea5b8ddb2b08e",
+  "docs/_posts/2026-09-25-sidem-61-a5a94a.md": "a030fdf28aad77ebdfb2adde12648e905f46fc99135a66958b4cd1eb7b7aaccd",
+  "docs/_posts/2026-09-25-sidem-64-cd5fee.md": "0368f87f6e2063969f93e31261643c186dd8fd955e8da78ec6f5dcc482b55f4b",
+  "docs/_posts/2026-09-25-sidem-karatetsu-yokai-2026.md": "09df024453b805db48b0d1ffbf86d7faa1abfc57fdc7411f59a8b62591224842",
+  "docs/_editions/2026-09-25.md": "6a3b1c633ec46db4ab130fd49595ec134524916daca2277070d086d0faa095a4",
+  "metrics/stories-before-2026-09-25.yml": "6b48e50ec79a81ebfe1b3dd95d51358903ba98c85f37a93fe67bafda6e6a20de"
+ }
+}

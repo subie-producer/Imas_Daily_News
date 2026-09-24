@@ -1,0 +1,29 @@
+[
+ {
+  "id": "sched-2027-03-22-va-liv-3rd-live-2027-千秋楽",
+  "dedup_key": "va-liv-3rd-live-2027",
+  "brand": "dsva",
+  "subject": "vα-liv 3rdLIVE&MEETING 東京公演",
+  "kind": "千秋楽",
+  "note": "東京公演千秋楽、3rdLIVE&MEETING最終日を観に行ける",
+  "reserved_on": "2026-09-25",
+  "title": "vα-liv 3rdLIVE&MEETING開催決定",
+  "url": "https://idolmaster-official.jp/va-liv/event/3rd_live",
+  "source_type": "公式",
+  "facts": [
+   "3rdLIVE&MEETING開催決定",
+   "初の二都市開催",
+   "愛知公演：2027年1月30日（土）、1月31日（日）",
+   "開催場所（愛知）：愛知県芸術劇場 大ホール（愛知県名古屋市）",
+   "東京公演：2027年3月21日（日）、3月22日（月・祝）",
+   "開催場所（東京）：日本工学院アリーナ（東京都大田区）",
+   "チケット情報などの詳細は後日発表予定",
+   "エンゲージメント: 高",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "watch",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609242336-watch-0",
+  "event_date": "2027-01-30"
+ }
+]

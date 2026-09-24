@@ -1,0 +1,73 @@
+{
+ "decisions": {
+  "tours-ranking-2026-09-23": {
+   "action": "article",
+   "angle": "ツアマス公式サイトが9/23時点のスコアランキングを更新、上位3編成の点数を伝える",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定例のランキング更新。9/21時点分は既報のため9/23時点の新データのみを書く"
+  },
+  "joint-41": {
+   "action": "article",
+   "angle": "『TOURS』がS2弾の情報解禁を10/15の生配信で行うと予告",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新規予告。詳細(時刻・出演・内容)は本文に無く未発表として扱う"
+  },
+  "imas-ch-member-stream-2026-09": {
+   "action": "article",
+   "angle": "アイマスch9月度メンバー限定配信が本日放送、MC原由実・ゲスト香里有佐、お便り募集は継続中",
+   "rank": "small",
+   "lead_score": 6,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約どおり本日が放送日。既報(9/3)の募集告知に加え本日開始という当日トリガーがある"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-ranking-2026-09-23",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマス公式サイトが9/23時点のスコアランキングを更新、上位3編成の点数を伝える",
+    "lead_score": 8,
+    "dedup_key": "tours-ranking-2026-09-23",
+    "candidate_ids": [
+     "202609240734-explore-9"
+    ]
+   },
+   {
+    "slug": "joint-41-dda543",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "『TOURS』がS2弾の情報解禁を10/15の生配信で行うと予告",
+    "lead_score": 20,
+    "dedup_key": "joint-41",
+    "candidate_ids": [
+     "202609250223-grok-57"
+    ]
+   },
+   {
+    "slug": "joint-imas-ch-member-stream-2026-09",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "アイマスch9月度メンバー限定配信が本日放送、MC原由実・ゲスト香里有佐、お便り募集は継続中",
+    "lead_score": 6,
+    "dedup_key": "imas-ch-member-stream-2026-09",
+    "candidate_ids": [
+     "sched-2026-09-25-imas-ch-member-stream-2026-09-開始"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,342 @@
+{
+ "decisions": {
+  "hatsuboshi-conceptual-single-collection-2026": {
+   "action": "article",
+   "angle": "全13人の新ソロ曲を収録した記念CD『Conceptual Single Collection』2027/1/27発売決定、予約は11/15締切と特典を紹介",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新規の大型商品発表。既報なし。13人全員の新曲収録という規模から本日の面トップ候補"
+  },
+  "sena-roar-gasha-2026": {
+   "action": "article",
+   "angle": "岩手DAY2で初披露した十王星南の新曲『Roar』、10月にガシャ開催予定と発表",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公演本体(セットリスト・披露曲)は9/24付記事で既報。新規トリガーはガシャ開催予告のみのため小さく単独記事に"
+  },
+  "gaku-hr-12-2026-09-28": {
+   "action": "article",
+   "angle": "9/28生配信『初星学園HR #12』で新曲『Agitato』の情報公開へ、出演者・配信媒体を案内",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gaku-hatsuboshi-hr-12-2026・gakuen-35と同一の配信告知のためここに統合"
+  },
+  "ichiban-kuji-gakuen-idolmaster-part6-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "オンライン販売9/24 17時開始を含め全情報が8/29付記事(gaku-ichiban-kuji-part6-2026)で既出。本日新しい事実なし"
+  },
+  "gaku-iwate-live-tour-2026-archive": {
+   "action": "article",
+   "angle": "岩手公演DAY1・DAY2の視聴コメント付きアーカイブを公開、10/8まで視聴可・公演アンケートも実施中",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/24 18時台の告知で9/24付朝刊(公演本体の記事)には未反映の新情報。gakuen-33を統合"
+  },
+  "gaku-shirube-iwate-day2-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/24付記事(gaku-live-tour-shirube-iwate-day2-2026)で新曲初披露・17曲セットリストとも既報。新トリガーなし"
+  },
+  "gaku-shirube-iwate-day2-setlist-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "17曲のセットリストは9/24付記事で全曲既報。同一内容"
+  },
+  "gaku-hatsuboshi-hr-12-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hr-12-2026-09-28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ9/28『初星学園HR #12』生配信の告知。二次情報で内容は公式発表と同一"
+  },
+  "gakuen-30": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "岩手DAY2終了の御礼とファイナル公演(11/7・8)言及は9/24付記事末尾で既報"
+  },
+  "gakuen-31": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "セットリスト公開の告知。本文は画像のみで曲名なし、実際の17曲は9/24付記事で既報済み"
+  },
+  "gakuen-32": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "最速版アーカイブ公開は9/24付記事内で既に言及済み"
+  },
+  "gakuen-33": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-iwate-live-tour-2026-archive",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "視聴コメント付きアーカイブ公開の同一告知。gaku-iwate-live-tour-2026-archiveに統合(アンケート情報を追加)"
+  },
+  "gakuen-34": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "秦谷美鈴のハリネズミゆたんぽアクリルスタンド(1,900円)は9/19付記事で既に受注告知済み、受注期間は10/25までで本日新トリガーなし"
+  },
+  "gakuen-35": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hr-12-2026-09-28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ9/28『初星学園HR #12』生配信の公式告知"
+  },
+  "gakuen-36": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "『め』MV本編は9/21付記事で既報。ショート動画は同MVの販促切り抜きで新情報なし"
+  },
+  "gakuen-37": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30放送回に湊みや・伊藤舞音がゲストという内容は9/24付記事(gaku-gakuen-topic-027)で既報"
+  },
+  "gakuen-38": {
+   "action": "article",
+   "angle": "初星学園放送部9/23回の視聴アーカイブを公開、来週も21時から配信",
+   "rank": "small",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/23回のゲスト予告は既報だが、放送後のアーカイブ公開自体は新規情報のため小さく単独記事に"
+  },
+  "gakuen-39": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "新曲『Roar』『Private Glitter』のサプライズ披露と9/24配信開始は9/24付記事で既報"
+  },
+  "gaku-after-school-namco-2026": {
+   "action": "article",
+   "angle": "学マス×ナムコキャンペーン、本日開幕。月村手毬の限定フィギュアが全国アミューズメント施設の景品に登場",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "前日は『明日開幕』の予告のみ。本日が実際の開幕日で、期間(〜11/1)や景品詳細など新規事実を含む"
+  },
+  "gaku-weekend-citron-hatsuboshi-store-2026": {
+   "action": "article",
+   "angle": "ハツボシストア新テーマ『ウィークエンドシトロン』、本日から店舗・通販で販売開始(藤田ことね担当)",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本日発売開始の新テーマグッズ。9/25〜27は終日入店制限ありと読者への実用情報も含む"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-hatsuboshi-conceptual-single-collection-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "全13人の新ソロ曲を収録した記念CD『Conceptual Single Collection』2027/1/27発売決定、予約は11/15締切と特典を紹介",
+    "lead_score": 70,
+    "dedup_key": "hatsuboshi-conceptual-single-collection-2026",
+    "candidate_ids": [
+     "202609240734-explore-6"
+    ]
+   },
+   {
+    "slug": "gaku-sena-roar-gasha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "岩手DAY2で初披露した十王星南の新曲『Roar』、10月にガシャ開催予定と発表",
+    "lead_score": 15,
+    "dedup_key": "sena-roar-gasha-2026",
+    "candidate_ids": [
+     "202609240734-explore-7"
+    ]
+   },
+   {
+    "slug": "gaku-hr-12-2026-09-28-313857",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "9/28生配信『初星学園HR #12』で新曲『Agitato』の情報公開へ、出演者・配信媒体を案内",
+    "lead_score": 20,
+    "dedup_key": "gaku-hr-12-2026-09-28",
+    "candidate_ids": [
+     "202609241234-watch-0",
+     "202609250223-explore-11",
+     "202609250223-grok-51"
+    ]
+   },
+   {
+    "slug": "gaku-iwate-live-tour-2026-archive",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "岩手公演DAY1・DAY2の視聴コメント付きアーカイブを公開、10/8まで視聴可・公演アンケートも実施中",
+    "lead_score": 20,
+    "dedup_key": "gaku-iwate-live-tour-2026-archive",
+    "candidate_ids": [
+     "202609241833-watch-0",
+     "202609250223-grok-49"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-38",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部9/23回の視聴アーカイブを公開、来週も21時から配信",
+    "lead_score": 0,
+    "dedup_key": "gakuen-38",
+    "candidate_ids": [
+     "202609250223-grok-54"
+    ]
+   },
+   {
+    "slug": "gaku-after-school-namco-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "学マス×ナムコキャンペーン、本日開幕。月村手毬の限定フィギュアが全国アミューズメント施設の景品に登場",
+    "lead_score": 25,
+    "dedup_key": "gaku-after-school-namco-2026",
+    "candidate_ids": [
+     "sched-2026-09-25-gaku-after-school-namco-2026-開始",
+     "sched-2026-09-25-gaku-after-school-namco-2026-開幕"
+    ]
+   },
+   {
+    "slug": "gaku-weekend-citron-hatsuboshi-store-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "ハツボシストア新テーマ『ウィークエンドシトロン』、本日から店舗・通販で販売開始(藤田ことね担当)",
+    "lead_score": 20,
+    "dedup_key": "gaku-weekend-citron-hatsuboshi-store-2026",
+    "candidate_ids": [
+     "sched-2026-09-25-gaku-weekend-citron-hatsuboshi-store-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "ichiban-kuji-gakuen-idolmaster-part6-2026",
+    "reason": "既報",
+    "note": "オンライン販売9/24 17時開始を含め全情報が8/29付記事(gaku-ichiban-kuji-part6-2026)で既出。本日新しい事実なし"
+   },
+   {
+    "dedup_key": "gaku-shirube-iwate-day2-2026",
+    "reason": "既報",
+    "note": "9/24付記事(gaku-live-tour-shirube-iwate-day2-2026)で新曲初披露・17曲セットリストとも既報。新トリガーなし"
+   },
+   {
+    "dedup_key": "gaku-shirube-iwate-day2-setlist-2026",
+    "reason": "既報",
+    "note": "17曲のセットリストは9/24付記事で全曲既報。同一内容"
+   },
+   {
+    "dedup_key": "gakuen-30",
+    "reason": "既報",
+    "note": "岩手DAY2終了の御礼とファイナル公演(11/7・8)言及は9/24付記事末尾で既報"
+   },
+   {
+    "dedup_key": "gakuen-31",
+    "reason": "既報",
+    "note": "セットリスト公開の告知。本文は画像のみで曲名なし、実際の17曲は9/24付記事で既報済み"
+   },
+   {
+    "dedup_key": "gakuen-32",
+    "reason": "既報",
+    "note": "最速版アーカイブ公開は9/24付記事内で既に言及済み"
+   },
+   {
+    "dedup_key": "gakuen-34",
+    "reason": "既報",
+    "note": "秦谷美鈴のハリネズミゆたんぽアクリルスタンド(1,900円)は9/19付記事で既に受注告知済み、受注期間は10/25までで本日新トリガーなし"
+   },
+   {
+    "dedup_key": "gakuen-36",
+    "reason": "既報",
+    "note": "『め』MV本編は9/21付記事で既報。ショート動画は同MVの販促切り抜きで新情報なし"
+   },
+   {
+    "dedup_key": "gakuen-37",
+    "reason": "既報",
+    "note": "9/30放送回に湊みや・伊藤舞音がゲストという内容は9/24付記事(gaku-gakuen-topic-027)で既報"
+   },
+   {
+    "dedup_key": "gakuen-39",
+    "reason": "既報",
+    "note": "新曲『Roar』『Private Glitter』のサプライズ披露と9/24配信開始は9/24付記事で既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

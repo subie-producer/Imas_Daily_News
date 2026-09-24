@@ -1,0 +1,104 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-25T02:24:19+09:00",
+   "edition": "2026-09-25",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 345,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 4,
+    "explore:million": 1,
+    "explore:shiny": 2,
+    "explore:sidem": 1,
+    "explore:gakuen": 3,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 4,
+    "grok:765as": 5,
+    "grok:cinderella": 10,
+    "grok:million": 8,
+    "grok:shiny": 7,
+    "grok:sidem": 8,
+    "grok:gakuen": 11,
+    "grok:dsva": 12,
+    "grok:joint-other": 1,
+    "grok:trend": 9
+   },
+   "normalized": 81,
+   "added": 70,
+   "verify": {
+    "confirmed": 61,
+    "unconfirmed": 20,
+    "failed": 0
+   },
+   "duration_s": 1421
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-25T04:00:11+09:00",
+   "edition": "2026-09-25",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 31,
+   "written": 24,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 111,
+    "covered": 111,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "dsva-valiv-life-like-a-live-12-2026",
+    "gaku-after-school-namco-2026",
+    "gaku-weekend-citron-hatsuboshi-store-2026",
+    "million-x-com-imasml-theater-status-2100830931279827419"
+   ],
+   "stages_min": {
+    "選定": 8.274506100018819,
+    "執筆": 5.439102160930633,
+    "出典の判定": 1.1856549779574077,
+    "組版": 3.238001799583435,
+    "校閲": 2.3308423280715944,
+    "校閲1波": 2.3308423280715944
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-iwate-live-tour-2026-archive",
+    "million-46-c8ab39",
+    "shiny-50-006310"
+   ],
+   "duration_s": 3574
+  }
+ ]
+}

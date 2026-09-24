@@ -1,0 +1,194 @@
+{
+ "decisions": {
+  "765pro-solo-collection-dresscode-2026": {
+   "action": "article",
+   "angle": "『ドレスコード:最上級』765PRO ALLSTARSソロコレCDのA-on STORE等限定通販予約が受付中(受注生産、締切10/4・11月中旬発送)",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場版CD(9/19発売)は既報。通販限定チャネルの受注開始は新情報"
+  },
+  "765-koizumi-chihaya-mcd-campaign-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chihaya-mcdonalds-tsukimi-webcm-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一WEBCM施策の重複情報"
+  },
+  "chihaya-mcdonalds-tsukimi-webcm-2026": {
+   "action": "article",
+   "angle": "如月千早がマクドナルド月見バーガーWEBCMに出演、新商品『北海道産じゃがペッパー月見』発売に合わせカバー曲を披露、天海春香らしき姿も話題に",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式・ファミ通・電撃オンラインが揃って報じる本面最大の新規ニュース"
+  },
+  "765-2": {
+   "action": "article",
+   "angle": "『dual twin live tour』東京公演アーカイブ、あずさ・律子『KisS』の特別映像とオーコメを公開、視聴期限9/27が目前に",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アーカイブ配信自体は既報だが、ハイライト映像公開とオーコメ公開は新事実"
+  },
+  "765-3": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "亜美・真美公演オーコメ配信アーカイブの公開"
+  },
+  "general-4": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chihaya-mcdonalds-tsukimi-webcm-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "マクドナルド公式アカウントによる出演クレジット投稿"
+  },
+  "765-5": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chihaya-mcdonalds-tsukimi-webcm-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "カバー楽曲のYouTube動画そのもの、出典として利用"
+  },
+  "765-6": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出演者による視聴呼びかけ投稿"
+  },
+  "765-7": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chihaya-mcdonalds-tsukimi-webcm-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "WEBCM公開を受けたファン・SNS反応のまとめ、色付け素材"
+  },
+  "general-65": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chihaya-mcdonalds-tsukimi-webcm-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファミ通記事、天海春香らしき姿など追加ディテール"
+  },
+  "general-66": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chihaya-mcdonalds-tsukimi-webcm-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "電撃オンライン記事、蒼い鳥や販売期間の追加ディテール"
+  },
+  "general-67": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chihaya-mcdonalds-tsukimi-webcm-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人による企画・監督の裏話投稿、参考情報として統合"
+  },
+  "general-68": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chihaya-mcdonalds-tsukimi-webcm-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人による視聴呼びかけのみ、追加情報なし"
+  },
+  "general-70": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chihaya-mcdonalds-tsukimi-webcm-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "映像中の演技への個人の感想投稿"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-765pro-solo-collection-dresscode-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "『ドレスコード:最上級』765PRO ALLSTARSソロコレCDのA-on STORE等限定通販予約が受付中(受注生産、締切10/4・11月中旬発送)",
+    "lead_score": 5,
+    "dedup_key": "765pro-solo-collection-dresscode-2026",
+    "candidate_ids": [
+     "202609241234-explore-2"
+    ]
+   },
+   {
+    "slug": "765-chihaya-mcdonalds-tsukimi-webcm-2026",
+    "brand": "765",
+    "rank": "large",
+    "angle": "如月千早がマクドナルド月見バーガーWEBCMに出演、新商品『北海道産じゃがペッパー月見』発売に合わせカバー曲を披露、天海春香らしき姿も話題に",
+    "lead_score": 85,
+    "dedup_key": "chihaya-mcdonalds-tsukimi-webcm-2026",
+    "candidate_ids": [
+     "202609242336-explore-16",
+     "202609241833-watch-1",
+     "202609250223-grok-20",
+     "202609250223-grok-21",
+     "202609250223-grok-23",
+     "202609250223-grok-81",
+     "202609250223-grok-82",
+     "202609250223-grok-83",
+     "202609250223-grok-84",
+     "202609250223-grok-86"
+    ]
+   },
+   {
+    "slug": "765-2-bd0a8b",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "『dual twin live tour』東京公演アーカイブ、あずさ・律子『KisS』の特別映像とオーコメを公開、視聴期限9/27が目前に",
+    "lead_score": 15,
+    "dedup_key": "765-2",
+    "candidate_ids": [
+     "202609250223-grok-18",
+     "202609250223-grok-19",
+     "202609250223-grok-22"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,170 @@
+{
+ "decisions": {
+  "sidem-karatetsu-yokai-2026": {
+   "action": "article",
+   "angle": "『SideM×カラオケの鉄人』第3弾の通販サイト受付が本日9/25 11:00開始、10/11締切、カラオケ利用なしでもグッズ購入可",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受付開始が発行日当日のトリガーで、面内では素材も比較的多い"
+  },
+  "sidem-57": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報のCD特典ストーリー『夏の終わりに』(9/24既報)のSNS投稿ルール告知で、新事実・当日トリガーなし"
+  },
+  "sidem-58": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報の「315 MODE vol.1 受注販売」(9/24既報、9/30締切)と同一内容"
+  },
+  "sidem-59": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報の「11th STAGE 同時視聴上映会・開催記念グッズ」(9/17既報、受注9/13-10/11)と同一"
+  },
+  "sidem-60": {
+   "action": "article",
+   "angle": "SideM公式Xが桜庭薫の誕生日を祝うメッセージを投稿(#桜庭薫BD2026)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-61": {
+   "action": "article",
+   "angle": "「F@NTASTIC BATTLE FES～Wanna step in～」公式グッズの事前販売が9/27締切と判明、長野・幕張公演(12/26・27、27年1/23・24)向け",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "販売開始自体は9/5既報だが、締切という新トリガーが判明したため単独記事に"
+  },
+  "sidem-62": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報のAltessimo「Panorama's Fanfare」2DMV公開(9/24既報)と同一"
+  },
+  "sidem-63": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報の彩「らんまん開花!」2DMV公開日決定(9/24既報、10/2公開)と同一"
+  },
+  "sidem-64": {
+   "action": "article",
+   "angle": "「315プロNight!」9/18放送回の「チラ見せ聞かせ」動画を公開、パーソナリティは仲村宗悟さん",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信出演の単発ネタで、roundup化できる同種素材が3件未満のためsmall単独に"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-karatetsu-yokai-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "『SideM×カラオケの鉄人』第3弾の通販サイト受付が本日9/25 11:00開始、10/11締切、カラオケ利用なしでもグッズ購入可",
+    "lead_score": 50,
+    "dedup_key": "sidem-karatetsu-yokai-2026",
+    "candidate_ids": [
+     "202609250223-explore-8"
+    ]
+   },
+   {
+    "slug": "sidem-60-f0e370",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM公式Xが桜庭薫の誕生日を祝うメッセージを投稿(#桜庭薫BD2026)",
+    "lead_score": 10,
+    "dedup_key": "sidem-60",
+    "candidate_ids": [
+     "202609250223-grok-76"
+    ]
+   },
+   {
+    "slug": "sidem-61-a5a94a",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「F@NTASTIC BATTLE FES～Wanna step in～」公式グッズの事前販売が9/27締切と判明、長野・幕張公演(12/26・27、27年1/23・24)向け",
+    "lead_score": 15,
+    "dedup_key": "sidem-61",
+    "candidate_ids": [
+     "202609250223-grok-77"
+    ]
+   },
+   {
+    "slug": "sidem-64-cd5fee",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「315プロNight!」9/18放送回の「チラ見せ聞かせ」動画を公開、パーソナリティは仲村宗悟さん",
+    "lead_score": 5,
+    "dedup_key": "sidem-64",
+    "candidate_ids": [
+     "202609250223-grok-80"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-57",
+    "reason": "既報",
+    "note": "既報のCD特典ストーリー『夏の終わりに』(9/24既報)のSNS投稿ルール告知で、新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "sidem-58",
+    "reason": "既報",
+    "note": "既報の「315 MODE vol.1 受注販売」(9/24既報、9/30締切)と同一内容"
+   },
+   {
+    "dedup_key": "sidem-59",
+    "reason": "既報",
+    "note": "既報の「11th STAGE 同時視聴上映会・開催記念グッズ」(9/17既報、受注9/13-10/11)と同一"
+   },
+   {
+    "dedup_key": "sidem-62",
+    "reason": "既報",
+    "note": "既報のAltessimo「Panorama's Fanfare」2DMV公開(9/24既報)と同一"
+   },
+   {
+    "dedup_key": "sidem-63",
+    "reason": "既報",
+    "note": "既報の彩「らんまん開花!」2DMV公開日決定(9/24既報、10/2公開)と同一"
+   }
+  ],
+  "cross_brand": []
+ }
+}

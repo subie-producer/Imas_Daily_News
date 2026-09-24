@@ -1,0 +1,230 @@
+{
+ "decisions": {
+  "million-cyber-planet-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2026-09-03既報(medicos-cyberplanet-popup-2026)。東京10/8-20・大阪11/7-15の日程含め新事実なし"
+  },
+  "million-14th-live-day1-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY1公演レポートは2026-09-21に既報(million-14thlive-day1-report-2026)。追加はキャスト詳細のみで本日のトリガーなし"
+  },
+  "million-14th-day2-fan-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY2公演内容・10周年ライブ発表とも既報済み。出典は個人note投稿(未確認・低エンゲージ)で新事実なし"
+  },
+  "million-42": {
+   "action": "article",
+   "angle": "中秋の名月スペシャルログインボーナスが本日開始、10/1までログインでミリオンジュエル計500個を配布",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-43": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-imasml-theater-status-2100830931279827419",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "プラチナスターツアービンゴ～一旦愛して♡～の本日終了記事に統合(キャラ台詞は色付け素材)"
+  },
+  "million-44": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "打ち上げセレクションガシャは2026-09-22に既報(topic-035-2026)。締切9/27で本日のトリガーなし"
+  },
+  "million-45": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-imasml-theater-status-2100830931279827419",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同キャンペーンの踊ってみた企画の一つとして本日終了記事に統合"
+  },
+  "million-46": {
+   "action": "article",
+   "angle": "14thLIVE DAY1・DAY2の視聴コメント付き同時視聴アーカイブが公開、9/28まで視聴可能",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信チケット締切・アーカイブ期間の既報予定を実際の公開・URL確定として更新"
+  },
+  "million-47": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-46",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2最速版アーカイブ公開として同一施策の記事に統合"
+  },
+  "million-48": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9周年公式グッズ受注は2026-09-21に既報(million-9th-anniversary-goods-2026)。締切10/11で新事実なし"
+  },
+  "million-49": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "14thLIVE記念グッズ受注は2026-09-22に既報(topic-049-2026)。価格・締切とも同一で新事実なし"
+  },
+  "x-com-imasml-theater-status-2100830931279827419": {
+   "action": "article",
+   "angle": "X-STREAM THEATER『一旦愛して♡』、本日20:59でイベント・ショップ交換・踊ってみた企画がまとめて終了",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策の終了関連主題(million-43/45, topic-039-2026, topic-dcdeedcbjc)を統合"
+  },
+  "million-14th-live-day2-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-46",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2公演内容・配信チケット締切は既報箇所と重複。アーカイブ公開記事に統合し新事実のみ反映"
+  },
+  "topic-039-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-imasml-theater-status-2100830931279827419",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "渡部恵子さん踊ってみたは既報。本日の視聴期限記事に一項目として統合"
+  },
+  "topic-dcdeedcbjc": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-imasml-theater-status-2100830931279827419",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "みんなで踊ってみたは既報。本日の視聴期限記事に一項目として統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-42-cb6d98",
+    "brand": "million",
+    "rank": "small",
+    "angle": "中秋の名月スペシャルログインボーナスが本日開始、10/1までログインでミリオンジュエル計500個を配布",
+    "lead_score": 15,
+    "dedup_key": "million-42",
+    "candidate_ids": [
+     "202609250223-grok-58"
+    ]
+   },
+   {
+    "slug": "million-46-c8ab39",
+    "brand": "million",
+    "rank": "small",
+    "angle": "14thLIVE DAY1・DAY2の視聴コメント付き同時視聴アーカイブが公開、9/28まで視聴可能",
+    "lead_score": 40,
+    "dedup_key": "million-46",
+    "candidate_ids": [
+     "202609250223-grok-62",
+     "202609250223-grok-63",
+     "sched-2026-09-25-million-14th-live-day2-2026-締切前"
+    ]
+   },
+   {
+    "slug": "million-x-com-imasml-theater-status-2100830931279827419",
+    "brand": "million",
+    "rank": "small",
+    "angle": "X-STREAM THEATER『一旦愛して♡』、本日20:59でイベント・ショップ交換・踊ってみた企画がまとめて終了",
+    "lead_score": 20,
+    "dedup_key": "x-com-imasml-theater-status-2100830931279827419",
+    "candidate_ids": [
+     "sched-2026-09-25-x-com-imasml-theater-status-2100830931279827419-終了",
+     "202609250223-grok-59",
+     "202609250223-grok-61",
+     "sched-2026-09-25-topic-039-2026-締切",
+     "sched-2026-09-25-topic-dcdeedcbjc-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-cyber-planet-popup-2026",
+    "reason": "既報",
+    "note": "2026-09-03既報(medicos-cyberplanet-popup-2026)。東京10/8-20・大阪11/7-15の日程含め新事実なし"
+   },
+   {
+    "dedup_key": "million-14th-live-day1-report-2026",
+    "reason": "既報",
+    "note": "DAY1公演レポートは2026-09-21に既報(million-14thlive-day1-report-2026)。追加はキャスト詳細のみで本日のトリガーなし"
+   },
+   {
+    "dedup_key": "million-14th-day2-fan-report-2026",
+    "reason": "既報",
+    "note": "DAY2公演内容・10周年ライブ発表とも既報済み。出典は個人note投稿(未確認・低エンゲージ)で新事実なし"
+   },
+   {
+    "dedup_key": "million-44",
+    "reason": "既報",
+    "note": "打ち上げセレクションガシャは2026-09-22に既報(topic-035-2026)。締切9/27で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "million-48",
+    "reason": "既報",
+    "note": "9周年公式グッズ受注は2026-09-21に既報(million-9th-anniversary-goods-2026)。締切10/11で新事実なし"
+   },
+   {
+    "dedup_key": "million-49",
+    "reason": "既報",
+    "note": "14thLIVE記念グッズ受注は2026-09-22に既報(topic-049-2026)。価格・締切とも同一で新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,310 @@
+{
+ "decisions": {
+  "valiv-latest-info-special-2026-09-24": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rd-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/24 20:00特番(勝股P出演)は3rdLIVE発表の場とみられ、放送実施の事実として統合"
+  },
+  "kamizuru-cosmo-morning-stream-2026-09-23": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一dedup_keyで9/24付編集済み(1on1アンケート締切の話題含む)、本日の新トリガーなし"
+  },
+  "va-liv-3rd-live-2027": {
+   "action": "article",
+   "angle": "vα-liv初の2都市開催『3rdLIVE&MEETING』開催決定、9/24特番で発表。愛知(2027/1/30-31)・東京(2027/3/21-22)、メンバーの反応も",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dsva-24/21/23(前半)/25/27/28・va-liv-special-program-2026-09-24・valiv-latest-info-special-2026-09-24を統合"
+  },
+  "cosmo-birthday-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/21付で既報(受注期間9/12-10/4)、本日新トリガーなし"
+  },
+  "cosmo-birthday-voice-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/6付で既報(販売期間9/4-9/27)、本日締切等のトリガーなし"
+  },
+  "va-liv-special-program-2026-09-24": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rd-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同特番の事前告知、既報内容と重複のため統合"
+  },
+  "dsva-18": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/24付で既報(踊ってみた「Beat It」公開)"
+  },
+  "dsva-19": {
+   "action": "article",
+   "angle": "「シチュエーションボイス2026」第十五弾が発売中、9月テーマは悪役令嬢×新米執事、販売は10/4まで",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第十四弾は既報だが第十五弾は未報道の新シリーズ"
+  },
+  "dsva-20": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "letora-silent-hill-f-day07として9/24付で既報(1周目完走)"
+  },
+  "dsva-21": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rd-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同特番へのお便り締切再案内、統合"
+  },
+  "dsva-22": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "kamizuru-cosmo-morning-streamで既報、締切は9/24で経過済み"
+  },
+  "dsva-23": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-29",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "20時枠(特番)は3rd live記事へ集約対象と同根、21時のレトラ配信はdsva-29に統合"
+  },
+  "dsva-24": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rd-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一発表の重複(愛知/東京日程・会場)、統合"
+  },
+  "dsva-25": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rd-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発表への灯里愛夏の反応、引用素材として統合"
+  },
+  "dsva-26": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "valiv-manaka-bd-2026(9/22付、チケット販売期間9/21〜)で既報、新事実なし"
+  },
+  "dsva-27": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rd-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発表への上水流宇宙の反応(初の2都市開催)、引用素材として統合"
+  },
+  "dsva-28": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rd-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "告知映像への上水流宇宙の反応、引用素材として統合"
+  },
+  "dsva-29": {
+   "action": "article",
+   "angle": "レトラが「SILENT HILL f」を9/23-24の二夜連続で配信、1周目完走から新エリアの探索編へ",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dsva-23(21時枠)を統合"
+  },
+  "valiv-life-like-a-live-12-2026": {
+   "action": "article",
+   "angle": "「Life Like a Live!12〜ドラマチックアワー〜」開幕、上水流宇宙・灯里愛夏・レトラが出演(初日は第一公演オープニングのみ)",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約、開幕当日のトリガーあり"
+  },
+  "code-vein-7": {
+   "action": "article",
+   "angle": "本日放送の「CODE VEIN」シリーズ7周年特番に灯里愛夏がゲスト出演、拡張DLC紹介とプレイを披露",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約、9/15既報の出演決定が本日放送日を迎える"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-va-liv-3rd-live-2027",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "vα-liv初の2都市開催『3rdLIVE&MEETING』開催決定、9/24特番で発表。愛知(2027/1/30-31)・東京(2027/3/21-22)、メンバーの反応も",
+    "lead_score": 85,
+    "dedup_key": "va-liv-3rd-live-2027",
+    "candidate_ids": [
+     "202609242336-watch-0",
+     "202609240734-explore-8",
+     "202609250223-explore-12",
+     "202609242336-explore-15",
+     "202609250223-grok-37",
+     "202609250223-grok-40",
+     "202609250223-grok-41",
+     "202609250223-grok-43",
+     "202609250223-grok-44"
+    ]
+   },
+   {
+    "slug": "dsva-19-83970b",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "「シチュエーションボイス2026」第十五弾が発売中、9月テーマは悪役令嬢×新米執事、販売は10/4まで",
+    "lead_score": 5,
+    "dedup_key": "dsva-19",
+    "candidate_ids": [
+     "202609250223-grok-35"
+    ]
+   },
+   {
+    "slug": "dsva-29-6bb1ee",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラが「SILENT HILL f」を9/23-24の二夜連続で配信、1周目完走から新エリアの探索編へ",
+    "lead_score": 5,
+    "dedup_key": "dsva-29",
+    "candidate_ids": [
+     "202609250223-grok-45",
+     "202609250223-grok-39"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-life-like-a-live-12-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "「Life Like a Live!12〜ドラマチックアワー〜」開幕、上水流宇宙・灯里愛夏・レトラが出演(初日は第一公演オープニングのみ)",
+    "lead_score": 20,
+    "dedup_key": "valiv-life-like-a-live-12-2026",
+    "candidate_ids": [
+     "sched-2026-09-25-valiv-life-like-a-live-12-2026-開幕"
+    ]
+   },
+   {
+    "slug": "dsva-code-vein-7",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "本日放送の「CODE VEIN」シリーズ7周年特番に灯里愛夏がゲスト出演、拡張DLC紹介とプレイを披露",
+    "lead_score": 10,
+    "dedup_key": "code-vein-7",
+    "candidate_ids": [
+     "sched-2026-09-25-code-vein-7-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "kamizuru-cosmo-morning-stream-2026-09-23",
+    "reason": "既報",
+    "note": "同一dedup_keyで9/24付編集済み(1on1アンケート締切の話題含む)、本日の新トリガーなし"
+   },
+   {
+    "dedup_key": "cosmo-birthday-goods-2026",
+    "reason": "既報",
+    "note": "9/21付で既報(受注期間9/12-10/4)、本日新トリガーなし"
+   },
+   {
+    "dedup_key": "cosmo-birthday-voice-2026",
+    "reason": "既報",
+    "note": "9/6付で既報(販売期間9/4-9/27)、本日締切等のトリガーなし"
+   },
+   {
+    "dedup_key": "dsva-18",
+    "reason": "既報",
+    "note": "9/24付で既報(踊ってみた「Beat It」公開)"
+   },
+   {
+    "dedup_key": "dsva-20",
+    "reason": "既報",
+    "note": "letora-silent-hill-f-day07として9/24付で既報(1周目完走)"
+   },
+   {
+    "dedup_key": "dsva-22",
+    "reason": "既報",
+    "note": "kamizuru-cosmo-morning-streamで既報、締切は9/24で経過済み"
+   },
+   {
+    "dedup_key": "dsva-26",
+    "reason": "既報",
+    "note": "valiv-manaka-bd-2026(9/22付、チケット販売期間9/21〜)で既報、新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

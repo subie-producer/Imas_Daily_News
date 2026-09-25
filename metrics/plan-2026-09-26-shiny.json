@@ -1,0 +1,329 @@
+{
+ "decisions": {
+  "shiny-shiny-competition-19-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "第19回シャイニーコンペティション(9/24開始・9/28 20:59終了)は既報、本日新しい動きなし"
+  },
+  "shiny-283-production-solo-live-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MSP会場物販・グッズ内訳、同一公演の情報としてメイン記事にまとめる"
+  },
+  "shiny-msp-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MSP会場物販の運用詳細(整理券・一部販売中止)、同一公演の情報としてまとめる"
+  },
+  "shiny-msp-live-tickets-2026": {
+   "action": "article",
+   "angle": "283 PRODUCTION Solo Live Collection -Master ShowPiece-が京王アリーナTOKYOで本日開幕、会場物販・キッチンカー・限定自販機・配信も稼働",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hyakki-popup-2026": {
+   "action": "article",
+   "angle": "「百鬼夜行 POP UP SHOP」が有楽町マルイで本日開幕、放課後クライマックスガールズの新規描き起こし商品を販売",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-283-solo-live-msp-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MSP本編の開幕情報、同一公演としてメイン記事にまとめる"
+  },
+  "shiny-solo-live-collection-cd-2026": {
+   "action": "article",
+   "angle": "ソロコレMSPの会場限定CDが本日発売、収録曲は「クローバー」2バージョン",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-solo-live-kitchen-car-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MSP会場のコラボキッチンカー出店、同一公演の会場情報としてまとめる"
+  },
+  "shiny-suntory-lemon-squash-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MSP会場の専用自販機が本日稼働開始(全国発売は9/28)、同一公演の会場情報としてまとめる"
+  },
+  "shiny": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "チケット受付状況(大半は締切済み)、同一公演の背景情報としてメイン記事にまとめる"
+  },
+  "shiny-kiriko-birthday-fan-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "幽谷霧子誕生日(9/23)の記念施策は既報。ファンの記念投稿は単体記事にせず、shiny面にculture枠もない"
+  },
+  "shinyson-shiny-competition-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "シャニソン版シャイニーコンペティションも同一イベントで既報、本日新しいトリガーなし"
+  },
+  "shiny-sweets-paradise-cafe-2026": {
+   "action": "article",
+   "angle": "I'm a Cutie Finder×スイーツパラダイスの新コラボカフェが10/30開催決定、予約方法も判明",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-merch-2026": {
+   "action": "article",
+   "angle": "Song for Prism 散花/紅花発売記念イベント(10/17)の会場物販詳細・購入制限が決定",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-sanka-benibana-event-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-for-prism-merch-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "散花/紅花イベント物販と同一情報、公式発表の記事にまとめる"
+  },
+  "shiny-master-showpiece-day1-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MSP DAY1公演詳細・チケット価格、同一公演の情報としてメイン記事にまとめる"
+  },
+  "shiny-topic-49": {
+   "action": "roundup",
+   "angle": "運営トピックまとめ(再生数の節目・既存ガシャの衣装紹介・配信切り抜き)",
+   "rank": "",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-topic-50": {
+   "action": "roundup",
+   "angle": "運営トピックまとめ(再生数の節目・既存ガシャの衣装紹介・配信切り抜き)",
+   "rank": "",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-topic-51": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MSP開催記念の無料ガシャ、同一公演の記念施策としてメイン記事にまとめる"
+  },
+  "shiny-topic-53": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MSP配信チケットのASOBI STAGEエントランス公開、同一公演の情報としてまとめる"
+  },
+  "shiny-topic-54": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "REFRAC7IONS \"Still blue\"公式グッズ事前販売は既報(9/18ファイナル開始と同内容)"
+  },
+  "shiny-topic-55": {
+   "action": "roundup",
+   "angle": "運営トピックまとめ(再生数の節目・既存ガシャの衣装紹介・配信切り抜き)",
+   "rank": "",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-sweets-paradise-cafe-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "I'm a Cutie Finder×スイーツパラダイスの新コラボカフェが10/30開催決定、予約方法も判明",
+    "lead_score": 20,
+    "dedup_key": "shiny-sweets-paradise-cafe-2026",
+    "candidate_ids": [
+     "202609251835-watch-0"
+    ]
+   },
+   {
+    "slug": "shiny-song-for-prism-merch-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "Song for Prism 散花/紅花発売記念イベント(10/17)の会場物販詳細・購入制限が決定",
+    "lead_score": 15,
+    "dedup_key": "shiny-song-for-prism-merch-2026",
+    "candidate_ids": [
+     "202609251835-watch-2",
+     "202609251835-explore-11"
+    ]
+   },
+   {
+    "slug": "shiny-msp-live-tickets-2026",
+    "brand": "shiny",
+    "rank": "large",
+    "angle": "283 PRODUCTION Solo Live Collection -Master ShowPiece-が京王アリーナTOKYOで本日開幕、会場物販・キッチンカー・限定自販機・配信も稼働",
+    "lead_score": 85,
+    "dedup_key": "shiny-msp-live-tickets-2026",
+    "candidate_ids": [
+     "sched-2026-09-26-shiny-msp-live-tickets-2026-開幕",
+     "202609251835-watch-5",
+     "202609260237-explore-10",
+     "202609260237-grok-62",
+     "202609260237-grok-64",
+     "sched-2026-09-26-shiny-283-production-solo-live-2026-開幕",
+     "sched-2026-09-26-shiny-msp-goods-2026-開幕",
+     "sched-2026-09-26-shiny-開幕",
+     "sched-2026-09-26-shiny-solo-live-kitchen-car-2026-開始",
+     "sched-2026-09-26-shiny-suntory-lemon-squash-2026-09-開始"
+    ]
+   },
+   {
+    "slug": "shiny-hyakki-popup-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「百鬼夜行 POP UP SHOP」が有楽町マルイで本日開幕、放課後クライマックスガールズの新規描き起こし商品を販売",
+    "lead_score": 30,
+    "dedup_key": "shiny-hyakki-popup-2026",
+    "candidate_ids": [
+     "sched-2026-09-26-shiny-hyakki-popup-2026-開幕"
+    ]
+   },
+   {
+    "slug": "shiny-solo-live-collection-cd-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ソロコレMSPの会場限定CDが本日発売、収録曲は「クローバー」2バージョン",
+    "lead_score": 10,
+    "dedup_key": "shiny-solo-live-collection-cd-2026",
+    "candidate_ids": [
+     "sched-2026-09-26-shiny-solo-live-collection-cd-2026-発売"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "運営トピックまとめ(再生数の節目・既存ガシャの衣装紹介・配信切り抜き)",
+    "lead_score": 0,
+    "dedup_key": "shiny-topic-49",
+    "candidate_ids": [
+     "202609260237-grok-60",
+     "202609260237-grok-61",
+     "202609260237-grok-66"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-shiny-competition-19-2026",
+    "reason": "既報",
+    "note": "第19回シャイニーコンペティション(9/24開始・9/28 20:59終了)は既報、本日新しい動きなし"
+   },
+   {
+    "dedup_key": "shiny-kiriko-birthday-fan-2026",
+    "reason": "既報",
+    "note": "幽谷霧子誕生日(9/23)の記念施策は既報。ファンの記念投稿は単体記事にせず、shiny面にculture枠もない"
+   },
+   {
+    "dedup_key": "shinyson-shiny-competition-2026-09",
+    "reason": "既報",
+    "note": "シャニソン版シャイニーコンペティションも同一イベントで既報、本日新しいトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-topic-54",
+    "reason": "既報",
+    "note": "REFRAC7IONS \"Still blue\"公式グッズ事前販売は既報(9/18ファイナル開始と同内容)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,178 @@
+{
+ "decisions": {
+  "million-mid-autumn-login-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.ymlのmillion-42(2026-09-25初出)と同一内容。期間・付与数とも新事実なし、当日のトリガーもなし。"
+  },
+  "million-14th-live-day1-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY1公演レポートはmillion-14thlive-day1-report-2026(2026-09-21初出)で既報。追加は個別公演タイトルと新曲2曲程度で独立記事に値する新事実性は薄い。"
+  },
+  "fan-review-million-14th-day1-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人ブログの感想記事(未確認ソース)。個人のSNS・ブログ投稿は単体で記事化しない規則に該当。"
+  },
+  "million-topic-40": {
+   "action": "article",
+   "angle": "ミリオン14thLIVE DAY1・DAY2のオーコメ付き同時視聴アーカイブを公開、視聴期限は9/28(月)23:59・配信チケット購入も案内",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策のmillion-topic-42(視聴期限リマインドと購入URL)を統合。"
+  },
+  "million-topic-41": {
+   "action": "article",
+   "angle": "#ミリオン14th 百瀬莉緒の新曲『Waking Up My Heart』配信開始、山口立花子さんからのメッセージも公開",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新曲配信+キャストメッセージという新規性あり、既報なし。"
+  },
+  "million-topic-42": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-topic-40",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策(オーコメ付きアーカイブの視聴期限9/28と購入案内)のためtopic-40に統合。"
+  },
+  "million-topic-44": {
+   "action": "article",
+   "angle": "本日9/26はジュリアちゃん誕生日、劇場を特別デコレーション、ホワイトボードメッセージやミリシタでのBirthdayガシャ・セット、アプリ内お祝い企画を実施",
+   "rank": "large",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-topic-45(Birthdayセット)・46(Birthdayガシャ)・47(#ジュリア誕生祭2026)を統合。先例(篠宮可憐誕生日企画2026-08-27)と同じ束ね方。この面の一面候補。"
+  },
+  "million-topic-45": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-topic-44",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ジュリア誕生日企画の一部としてtopic-44に統合。"
+  },
+  "million-topic-46": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-topic-44",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ジュリア誕生日企画の一部としてtopic-44に統合。"
+  },
+  "million-topic-47": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-topic-44",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ジュリア誕生日企画の一部としてtopic-44に統合。"
+  },
+  "million-topic-48": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "会場・期間・出演5名はmedicos-cyberplanet-popup-2026(2026-09-03初出)で既報。追加は等身大パネル応募期間のみで独立記事化には薄い。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-topic-40",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリオン14thLIVE DAY1・DAY2のオーコメ付き同時視聴アーカイブを公開、視聴期限は9/28(月)23:59・配信チケット購入も案内",
+    "lead_score": 15,
+    "dedup_key": "million-topic-40",
+    "candidate_ids": [
+     "202609260237-grok-51",
+     "202609260237-grok-53"
+    ]
+   },
+   {
+    "slug": "million-topic-41",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "#ミリオン14th 百瀬莉緒の新曲『Waking Up My Heart』配信開始、山口立花子さんからのメッセージも公開",
+    "lead_score": 20,
+    "dedup_key": "million-topic-41",
+    "candidate_ids": [
+     "202609260237-grok-52"
+    ]
+   },
+   {
+    "slug": "million-topic-44",
+    "brand": "million",
+    "rank": "large",
+    "angle": "本日9/26はジュリアちゃん誕生日、劇場を特別デコレーション、ホワイトボードメッセージやミリシタでのBirthdayガシャ・セット、アプリ内お祝い企画を実施",
+    "lead_score": 75,
+    "dedup_key": "million-topic-44",
+    "candidate_ids": [
+     "202609260237-grok-55",
+     "202609260237-grok-56",
+     "202609260237-grok-57",
+     "202609260237-grok-58"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-mid-autumn-login-bonus-2026",
+    "reason": "既報",
+    "note": "stories.ymlのmillion-42(2026-09-25初出)と同一内容。期間・付与数とも新事実なし、当日のトリガーもなし。"
+   },
+   {
+    "dedup_key": "million-14th-live-day1-report-2026",
+    "reason": "既報",
+    "note": "DAY1公演レポートはmillion-14thlive-day1-report-2026(2026-09-21初出)で既報。追加は個別公演タイトルと新曲2曲程度で独立記事に値する新事実性は薄い。"
+   },
+   {
+    "dedup_key": "fan-review-million-14th-day1-2026",
+    "reason": "個人の話題",
+    "note": "個人ブログの感想記事(未確認ソース)。個人のSNS・ブログ投稿は単体で記事化しない規則に該当。"
+   },
+   {
+    "dedup_key": "million-topic-48",
+    "reason": "既報",
+    "note": "会場・期間・出演5名はmedicos-cyberplanet-popup-2026(2026-09-03初出)で既報。追加は等身大パネル応募期間のみで独立記事化には薄い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

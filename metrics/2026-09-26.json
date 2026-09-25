@@ -1,0 +1,100 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-26T02:37:54+09:00",
+   "edition": "2026-09-26",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 346,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 3,
+    "explore:million": 1,
+    "explore:shiny": 1,
+    "explore:sidem": 1,
+    "explore:gakuen": 1,
+    "explore:dsva": 2,
+    "explore:joint-other": 0,
+    "explore:trend": 3,
+    "grok:765as": 7,
+    "grok:cinderella": 10,
+    "grok:million": 9,
+    "grok:shiny": 8,
+    "grok:sidem": 7,
+    "grok:gakuen": 6,
+    "grok:dsva": 12,
+    "grok:joint-other": 3,
+    "grok:trend": 4
+   },
+   "normalized": 75,
+   "added": 61,
+   "verify": {
+    "confirmed": 58,
+    "unconfirmed": 16,
+    "failed": 1
+   },
+   "duration_s": 2236
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-26T04:00:53+09:00",
+   "edition": "2026-09-26",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 32,
+   "written": 29,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 117,
+    "covered": 117,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "general-topic-39",
+    "cg-15th-anniversary-orchestra-2027"
+   ],
+   "stages_min": {
+    "選定": 9.84767519235611,
+    "執筆": 4.851479721069336,
+    "出典の判定": 1.7157946626345317,
+    "組版": 3.519216732184092,
+    "校閲": 2.4233792543411257,
+    "校閲1波": 2.4233792543411257
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "shiny-solo-live-collection-cd-2026"
+   ],
+   "duration_s": 3615
+  }
+ ]
+}

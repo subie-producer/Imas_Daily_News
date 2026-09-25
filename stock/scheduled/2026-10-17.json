@@ -157,5 +157,31 @@
   "src_candidate_id": "202609210225-grok-66",
   "event_date": "2026-09-12",
   "deadline": "2026-09-12"
+ },
+ {
+  "id": "sched-2026-10-17-shiny-song-for-prism-merch-2026-開始",
+  "dedup_key": "shiny-song-for-prism-merch-2026",
+  "brand": "shiny",
+  "subject": "散花／紅花発売記念グッズ会場物販開始",
+  "kind": "開始",
+  "note": "会場で発売記念グッズやKAMISABIを購入できる",
+  "reserved_on": "2026-09-26",
+  "title": "Song for Prism発売記念イベント会場物販",
+  "url": "https://idolmaster-official.jp/news/01_19892",
+  "source_type": "公式",
+  "facts": [
+   "イベント名: THE IDOLM@STER SHINY COLORS Song for Prism 散花-sanka- / 紅花-benibana-発売記念イベント",
+   "会場物販日時: 2026年10月17日(土) 12:30～終演後30分程度",
+   "購入制限(通常アイテム): 1アイテムにつき3点まで",
+   "購入制限(ランダム缶バッジ): 7点まで",
+   "購入制限(KAMISABIアルバムセット): 制限なし",
+   "支払い方法: 現金・クレジットカード・電子マネー・バーコード決済対応",
+   "エンゲージメント: 低"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609251835-watch-2",
+  "event_date": "2026-10-17",
+  "deadline": "2026-10-17"
  }
 ]

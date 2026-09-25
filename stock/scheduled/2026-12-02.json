@@ -56,5 +56,34 @@
   "verify": "unconfirmed",
   "src_candidate_id": "202609191834-explore-9",
   "event_date": "2026-12-02"
+ },
+ {
+  "id": "sched-2026-12-02-sidem-topic-60-発売",
+  "dedup_key": "sidem-topic-60",
+  "brand": "sidem",
+  "subject": "SideM「かざして聴ける！プロデューサーカード」第3弾",
+  "kind": "発売",
+  "note": "プロデューサーカード第3弾が発売、視聴期限もこの日0時に開始",
+  "reserved_on": "2026-09-26",
+  "title": "かざして聴ける！プロデューサーカード 第3弾の発売決定・受注開始",
+  "url": "https://x.com/i/article/2100861114871599104",
+  "source_type": "未確認",
+  "facts": [
+   "受注販売期間: 2026年9月25日（金）18：00～2026年10月12日（月・祝）23：59",
+   "発売予定日: 12月2日（水）",
+   "視聴期限: 2026年12月2日（水）0：00～2027年12月2日（木）23：59",
+   "NFC（Near Field Communication：近距離無線通信）技術を搭載したアクリルカードにスマホをかざすと、各アイドルのユニット曲ソロVer.が聴ける",
+   "第3弾は、FRAME・神速一魂・F-LAGS・Legendersの4ユニット",
+   "第3弾 各収録楽曲はフルサイズ収録",
+   "FRAME: 「スターチスを束にして」各ソロVer.",
+   "神速一魂: 「Godspeed IGNITION!!」各ソロVer.",
+   "F-LAGS: 「Casually!」各ソロVer.",
+   "Legenders: 「Eclipse of the Heart」各ソロVer.",
+   "予約先: A-on STORE Powered by A!SMART（https://www.asmart.jp/sidem）",
+   "予約先: アソビストア（https://shop.asobistore.jp/）"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609260237-grok-71"
  }
 ]

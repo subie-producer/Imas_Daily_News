@@ -1,0 +1,190 @@
+{
+ "decisions": {
+  "765pro-allstars-live-bluray-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注期限9/27・価格・構成とも765pro-allstars-live-bluray(9/18)等で既報。本日の新トリガー無し"
+  },
+  "chibi-plushie-pouch-set-2026": {
+   "action": "article",
+   "angle": "ちびぐるみ&ポーチセット5種の受注状況。やよい・伊織「いつまでもなかよし」は9/27締切、他4種は10/18締切",
+   "rank": "medium",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Re:FLAME・はんげつは既報分だが、やよい・伊織セットは新規かつ締切間近のため単独記事"
+  },
+  "chihaya-mcdonalds-tsukimi-webcm-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同名story_idで9/25付published_factsと完全一致、既報"
+  },
+  "765-topic-1": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Blu-ray受注リマインド投稿。内容は既報と同一で本日の新トリガー無し"
+  },
+  "765-topic-2": {
+   "action": "article",
+   "angle": "dual twin liveアーカイブ終了まで2日、東京公演からあずさのステージ映像「ラ❤ブ❤リ❤」を特別公開",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報のアーカイブ終了予告に加え、本日新たに特別映像を公開した点が新規"
+  },
+  "765-topic-3": {
+   "action": "article",
+   "angle": "アイマスch9月メンバー限定ラジオ配信、MC原由実×ゲスト香里有佐で開始・当日中にアーカイブも公開",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "765-topic-4(アーカイブ公開)を統合。配信開始が当日トリガー"
+  },
+  "765-topic-4": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-topic-3",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の9月メン限ラジオ配信のアーカイブ公開。配信開始の記事に統合"
+  },
+  "765-topic-5": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優本人(原由実)の個人アカウントでの自作イラスト紹介投稿。単体記事化しない"
+  },
+  "765-topic-6": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファンの個人感想ポスト(未確認ソース)。単体記事化しない"
+  },
+  "765-topic-7": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファンの個人感想ポスト(未確認ソース)。単体記事化しない"
+  },
+  "general-topic-57": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "chihaya-mcdonalds-tsukimi-webcm-2026と同一内容の重複トピック、かつ既報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-chibi-plushie-pouch-set-2026",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "ちびぐるみ&ポーチセット5種の受注状況。やよい・伊織「いつまでもなかよし」は9/27締切、他4種は10/18締切",
+    "lead_score": 45,
+    "dedup_key": "chibi-plushie-pouch-set-2026",
+    "candidate_ids": [
+     "202609251835-watch-4"
+    ]
+   },
+   {
+    "slug": "765-topic-2",
+    "brand": "765",
+    "rank": "small",
+    "angle": "dual twin liveアーカイブ終了まで2日、東京公演からあずさのステージ映像「ラ❤ブ❤リ❤」を特別公開",
+    "lead_score": 15,
+    "dedup_key": "765-topic-2",
+    "candidate_ids": [
+     "202609260237-grok-13"
+    ]
+   },
+   {
+    "slug": "765-topic-3",
+    "brand": "765",
+    "rank": "small",
+    "angle": "アイマスch9月メンバー限定ラジオ配信、MC原由実×ゲスト香里有佐で開始・当日中にアーカイブも公開",
+    "lead_score": 10,
+    "dedup_key": "765-topic-3",
+    "candidate_ids": [
+     "202609260237-grok-14",
+     "202609260237-grok-15"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765pro-allstars-live-bluray-2026",
+    "reason": "既報",
+    "note": "受注期限9/27・価格・構成とも765pro-allstars-live-bluray(9/18)等で既報。本日の新トリガー無し"
+   },
+   {
+    "dedup_key": "chihaya-mcdonalds-tsukimi-webcm-2026",
+    "reason": "既報",
+    "note": "同名story_idで9/25付published_factsと完全一致、既報"
+   },
+   {
+    "dedup_key": "765-topic-1",
+    "reason": "既報",
+    "note": "Blu-ray受注リマインド投稿。内容は既報と同一で本日の新トリガー無し"
+   },
+   {
+    "dedup_key": "765-topic-5",
+    "reason": "個人の話題",
+    "note": "声優本人(原由実)の個人アカウントでの自作イラスト紹介投稿。単体記事化しない"
+   },
+   {
+    "dedup_key": "765-topic-6",
+    "reason": "個人の話題",
+    "note": "ファンの個人感想ポスト(未確認ソース)。単体記事化しない"
+   },
+   {
+    "dedup_key": "765-topic-7",
+    "reason": "個人の話題",
+    "note": "ファンの個人感想ポスト(未確認ソース)。単体記事化しない"
+   },
+   {
+    "dedup_key": "general-topic-57",
+    "reason": "既報",
+    "note": "chihaya-mcdonalds-tsukimi-webcm-2026と同一内容の重複トピック、かつ既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,239 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-26-cg-15th-anniversary-orchestra-2027.md",
+   "issue": "sources[1] のラベルが不完全で、文字が切れている。『THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSY』と記載されているが、正しくは『ANNIVERSARY ORCHESTRA CONCERT ～ シンデレラの演奏会 ～』まで含まれるべき",
+   "quote": "label: 【公式】アイドルマスター ポータル「【シンデレラ】＼今週末まで！／『THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSY",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "sources[1] のラベルが完全で正しくエスケープされたテキストで記載されること。末尾を『ANNIVERSARY ORCHESTRA CONCERT ～ シンデレラの演奏会 ～』まで含めて完成させる",
+   "scope": "article:2026-09-26-cg-15th-anniversary-orchestra-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-gaku-after-school-namco-2026.md",
+   "issue": "sources[1]のlabelが不完全。末尾が「(1」で切れており、sources[0]のフォーマット（「(YYYY年M月D日)」）に合わせるべき",
+   "quote": "アイドルマスター ポータル「【学マス】Re;IRISとBegraziaのユニット衣装を着た\"ちびぐるみ\"が9月25日より全国のクレーンゲームに順次登場中！」(1",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "202609251835-watch-6"
+   ],
+   "expected": "sources[1]のlabelの末尾を「(2026年9月25日)」に修正し、sources[0]と同じフォーマットに統一する",
+   "scope": "article:2026-09-26-gaku-after-school-namco-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-shiny-msp-live-tickets-2026.md",
+   "issue": "sourcesのlabelが複数個所で不完全に途切れており、明白な誤字・機械的に壊れたテキスト",
+   "quote": "line 28: 【公式】アイドルマスター ポータル「【シャニマスソロライブMSP】配信チケットの販売がスタート！！現地チケット一般発売（先着）／公式リセールの情報も公開！」(8\nline 31: 【公式】アイドルマスター ポータル「【シャニマスソロライブMSP】いよいよ明日から！配信チケットも販売中！一部イベントグッズの追加販売もスタート！！」(9\nline 37-38: 【公式】アイドルマスター ポータル「【シャニマスソロライブMSP】283 PRODUCTION Solo Live Collection -MasterShow",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "sourcesのすべてのlabelが完全な形で記載され、末尾の括弧や記事タイトルが正確に閉じられていること",
+   "scope": "article:2026-09-26-shiny-msp-live-tickets-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-shiny-song-for-prism-merch-2026.md",
+   "issue": "sources のラベルが実際のページタイトルと一致していない",
+   "quote": "sources: - label: アイドルマスター ポータル「【シャニマス】「THE IDOLM@STER SHINY COLORS Song for Prism 散花-sanka- / 紅花相",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "sources のラベル 1 が実際のページタイトル「THE IDOLM@STER SHINY COLORS Song for Prism 散花-sanka- / 紅花-benibana-」を正確に反映する",
+   "scope": "article:2026-09-26-shiny-song-for-prism-merch-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-26-gaku-after-school-namco-2026.md",
+   "issue": "分量不足。rank: small（目安250字以上）に対して本文が約160字程度と短く、出典に記載されている詳細情報（ゲーム機での販売方法、vol.3・vol.4の詳細スケジュール等）が拾えれば埋められる",
+   "scope": "article:2026-09-26-gaku-after-school-namco-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-shiny-solo-live-collection-cd-2026.md",
+   "issue": "rank: small の目安(250字以上)に対して本文が約150字で薄い。出典に会場(京王アリーナTOKYO)・開幕時刻(16:00開場/17:00開演)・販売期間(11:00～17:00)などがあり、詳細を追加できる",
+   "scope": "article:2026-09-26-shiny-solo-live-collection-cd-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-shiny-song-for-prism-merch-2026.md",
+   "issue": "sources のラベル 1 の修正例：アイドルマスター ポータル「【シャニマス】「THE IDOLM@STER SHINY COLORS Song for Prism 散花-sanka- / 紅花-benibana-」発売記念イベント 会場物販のお知らせ」",
+   "scope": "article:2026-09-26-shiny-song-for-prism-merch-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-sidem-asobistore-mfes-2026-goods.md",
+   "issue": "分量不足：候補にある他商品の情報を拾えば埋まる。アソビストアでは9月25日18時にぱしゃこれ・ミニアクリルスタンド・グリッターキャラバッジ以外にも、オーナメント風アクリルキーホルダーコレクション（4種）、ホロステッカー、プレゼント袋風リボン巾着、クリアファイル、アクリルブロック、かざして聴ける！プロデューサーカード（複数キャラ）の受注が開始されており、実際には14種である。タイトルの「グッズ7種」は記事の内容（ぱしゃこれ・ミニアクリルスタンド・グリッターキャラバッジ）と一貫しているが、出典の全情報を反映していない。rank: smallの割に本文が薄く、出典に記載の価格情報を活用して充実させることが望ましい",
+   "scope": "article:2026-09-26-sidem-asobistore-mfes-2026-goods.md"
+  },
+  {
+   "file": "-",
+   "issue": "削除されたシャニーカラーズ記事「シャニマスMSP会場限定CD、本日発売」が候補に存在（dedup_key: shiny-283-solo-live-msp-2026、エンゲージメント：高、source: 公式）。落とされた理由は表示されていません。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "本日のシャイニー関連は5記事（MSPライブ、百鬼夜行POP UP、散花/紅花物販、スイパラカフェ、運営ラウンドアップ）に集中。シャイニーブランドの記事数が全ブランド中で最多。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "digestのlead記事はシンデレラの新コラボ発表（cg-cinderella-marine-symphony-2027）で妥当。本日の主要話題をカバーしています。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-765-topic-3.md",
+   "issue": "本文が lede の内容と重複しており、分量が不足しています。rank: small の目安は 250字ですが、本文は約 150字です。MC・ゲスト情報は lede で既に述べられているため、本文では sources の詳細情報（配信時刻、トークテーマ、メッセージの内容など）を拾って充実させることが考えられます。",
+   "scope": "article:2026-09-26-765-topic-3.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-765-topic-3.md",
+   "issue": "見出し『アイマスch9月ラジオ』と本文『アイマスch2026年9月メンバー限定ラジオ』で企画名の表記に不整合があります。見出しでは『2026年9月』が省略されており、『メンバー限定ラジオ』という企画の正式な要素が欠落しています。",
+   "scope": "article:2026-09-26-765-topic-3.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-cg-cinderella-pop-up-yurakucho-marui-2026.md",
+   "issue": "分量が短い。本文が約224字で、rank: small の目安（250字）より短い。出典の the-chara.com/blog/?p=121064 には「開店時間前の待機は固くお断り」「期間中の情報は @thechara_yrkc より発信」といった補足情報がありますが、見出しと内容が単純なため出典を拾い上げる余地があります。",
+   "scope": "article:2026-09-26-cg-cinderella-pop-up-yurakucho-marui-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-dsva-topic-19.md",
+   "issue": "分量不足: rank=small（目安250字）に対して本文＋リード計約90字。素材に詳細情報がないため、YouTube/TikTok の動画ページから再生数・評価・説明文などの追加情報を拾えば埋まる可能性がある",
+   "scope": "article:2026-09-26-dsva-topic-19.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-gaku-jinro-bunka-festival-goods-mail-order-2026.md",
+   "issue": "表記ゆれ：リードで『全12種』と述べているが、本文ではアクリルスタンド・キーホルダー・カラビナ・缶バッジ・カードなど複数の商品で『全13種』と記載されている。グッズカテゴリ数（12種）と各グッズの絵柄バリエーション数（13種）の区別が読者にとって不明確",
+   "scope": "article:2026-09-26-gaku-jinro-bunka-festival-goods-mail-order-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-general-topic-39.md",
+   "issue": "見出しで「清美」となっているが、本文（lede）では「冴島清美」とフルネームで記載されており、統一されていない。指示では見出しに『どの作品・ブランド・アイドル・催しの話かを名前で入れる』となっているため、見出しも「冴島清美」とするべき",
+   "scope": "article:2026-09-26-general-topic-39.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-general-topic-39.md",
+   "issue": "分量が不足しており、rank: small の目安250字に対し本文は67字のみ。素材にはYouTube Shortsのリンク2つが記載されており、紹介文を追加してボリュームを増やせば、読者にとってより有用な記事になる",
+   "scope": "article:2026-09-26-general-topic-39.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-joint-other-12-p-tours-9-26.md",
+   "issue": "rank: small ですが、本文がたった 1 文で、見出しと実質同じ内容です。目安 250 字に対して本文は 38 字。素材には店舗位置（なんば駅より徒歩 5 分、南海線）や「現地でファン交流会開催」などの詳細がありますが、記事に反映されていません。",
+   "scope": "article:2026-09-26-joint-other-12-p-tours-9-26.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-million-topic-40.md",
+   "issue": "記事本文が目安250字に満たない（rank: small）。現在は見出し+リード+本文で約185字。出典にある視聴方法の詳細やアーカイブへのリンク、チケット購入の詳細などを加えれば拡張可能",
+   "scope": "article:2026-09-26-million-topic-40.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-million-topic-40.md",
+   "issue": "リード「オーディオコメンタリー付き同時視聴アーカイブ」と本文「視聴コメント付きアーカイブ」の表記ゆれ。出典でも両表記が混在しているが、記事内では一貫性を保つため、最初の出現時に「オーディオコメンタリー（以下、視聴コメント）付きアーカイブ」と説明するか、どちらかに統一することを推奨",
+   "scope": "article:2026-09-26-million-topic-40.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-million-topic-41.md",
+   "issue": "見出しに作品名がなく、何の話かが分かりにくい。見出し「百瀬莉緒「Waking Up My Heart」配信開始」に対して、本文では「『THE IDOLM@STER MILLION LIVE! Waking Up My Heart』」と正式名称を使っている。見出しを「ミリオンライブ」を含める形で修正することで、読者に話題をより明確に伝えられる。",
+   "scope": "article:2026-09-26-million-topic-41.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-shiny-hyakki-popup-2026.md",
+   "issue": "既報の published_facts に「ノベルティプレゼント、抽選会も実施」という購入特典情報があるが、記事に記載されていない。rank: small で分量の少なさは許容されるが、読者が本日できることを増やす情報として、購入ごとの特典内容を1文追加できれば価値が高まる",
+   "scope": "article:2026-09-26-shiny-hyakki-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-sidem-fantastic-battle-fes-2026.md",
+   "issue": "見出しと本文の不整合：タイトルは「SideMバトルフェス」だが、リード・本文は「F@NTASTIC BATTLE FES第2弾」。素材では「F@NTASTIC BATTLE FES」が正式名称として統一されているため、タイトルも統一すべき",
+   "scope": "article:2026-09-26-sidem-fantastic-battle-fes-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-sidem-topic-61.md",
+   "issue": "分量不足: rank: small で目安は 250字以上ですが、本文が約95字です。素材に会場・スケジュール・募集期間などの詳細情報があれば、本文を補足することで目安に近づけられます。",
+   "scope": "article:2026-09-26-sidem-topic-61.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-sidem-topic-63.md",
+   "issue": "sources[1] のラベルに開き括弧のみで対応する閉じ括弧がない。「バンダイナムコエンターテインメント公式サイト「THE IDOLM@STER SideM PRODUCER MEETING ～AJewelholIc!!!～」」が正しい形式か、『』で括る形式に統一すべき",
+   "scope": "article:2026-09-26-sidem-topic-63.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-sidem-topic-63.md",
+   "issue": "分量が短い（本文1文、約60字）。rank: small の目安 250字に対して大幅に不足。ただし candidates にはチケット詳細情報（席種・価格・受付日程）がなく「記載がなかった」と明記されているため、出典を補充するのは困難",
+   "scope": "article:2026-09-26-sidem-topic-63.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-26-sidem-topic-64.md",
+   "issue": "分量不足: rank:small の記事として本文が薄い（目安250字に対し188字）。出典の素材には「ストーリー閲覧にあたっては必ず推奨環境を確認すること」が記載されており、この情報を追加すれば読者に有用な詳細情報になる。",
+   "scope": "article:2026-09-26-sidem-topic-64.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-26-765-chibi-plushie-pouch-set-2026.md",
+  "article:2026-09-26-765-topic-2.md",
+  "article:2026-09-26-765-topic-3.md",
+  "article:2026-09-26-cg-15th-anniversary-orchestra-2027.md",
+  "article:2026-09-26-cg-cinderella-marine-symphony-2027.md",
+  "article:2026-09-26-cg-cinderella-master-number-one-cross-over-2026.md",
+  "article:2026-09-26-cg-cinderella-pop-up-yurakucho-marui-2026.md",
+  "article:2026-09-26-cg-puzzle-dragons-collab-2026.md",
+  "article:2026-09-26-dsva-topic-19.md",
+  "article:2026-09-26-dsva-va-liv-morning-radio-2026-09-26.md",
+  "article:2026-09-26-gaku-after-school-namco-2026.md",
+  "article:2026-09-26-gaku-gakumasu-chugai-cafe-revival-shibuya-2026.md",
+  "article:2026-09-26-gaku-jinro-bunka-festival-goods-mail-order-2026.md",
+  "article:2026-09-26-gaku-mirror-policy-hr12-2026.md",
+  "article:2026-09-26-general-topic-39.md",
+  "article:2026-09-26-joint-other-12-p-tours-9-26.md",
+  "article:2026-09-26-joint-topic-37.md",
+  "article:2026-09-26-million-topic-40.md",
+  "article:2026-09-26-million-topic-41.md",
+  "article:2026-09-26-million-topic-44.md",
+  "article:2026-09-26-shiny-hyakki-popup-2026.md",
+  "article:2026-09-26-shiny-msp-live-tickets-2026.md",
+  "article:2026-09-26-shiny-ops-roundup.md",
+  "article:2026-09-26-shiny-solo-live-collection-cd-2026.md",
+  "article:2026-09-26-shiny-song-for-prism-merch-2026.md",
+  "article:2026-09-26-shiny-sweets-paradise-cafe-2026.md",
+  "article:2026-09-26-sidem-asobistore-mfes-2026-goods.md",
+  "article:2026-09-26-sidem-fantastic-battle-fes-2026.md",
+  "article:2026-09-26-sidem-producer-card-wave3-2026.md",
+  "article:2026-09-26-sidem-topic-61.md",
+  "article:2026-09-26-sidem-topic-63.md",
+  "article:2026-09-26-sidem-topic-64.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-26-765-chibi-plushie-pouch-set-2026.md": "db3f2fe4f82538edcd7344ae15bdbe7c084df7e5da944f2bdc70beaaacbd408a",
+  "docs/_posts/2026-09-26-765-topic-2.md": "4ee458baf8e0d03a00ae856818bcd9e632a291e936fe294a8534fa825de9668e",
+  "docs/_posts/2026-09-26-765-topic-3.md": "d40cfad4b4052b398131e47ad32aef08d49746ed9faf72776498efa641468a33",
+  "docs/_posts/2026-09-26-cg-15th-anniversary-orchestra-2027.md": "fcca7ffb32ed0b9be2a9b04bcd31a5b9f747a7ff17edb86ade11023c7ffa04d5",
+  "docs/_posts/2026-09-26-cg-cinderella-marine-symphony-2027.md": "60eedae733a99d0286f5d7d00d3aa357e4c1e7d583a735f6182d506bfaea56fd",
+  "docs/_posts/2026-09-26-cg-cinderella-master-number-one-cross-over-2026.md": "72809edb1e70044ac297d23da41cb4567958f66fe2220c91ff77421b0dd22f54",
+  "docs/_posts/2026-09-26-cg-cinderella-pop-up-yurakucho-marui-2026.md": "92084b7b876de235784d306dd514f6e9fd48013b26dce41c998fc7a24d41a55d",
+  "docs/_posts/2026-09-26-cg-puzzle-dragons-collab-2026.md": "94199bcadeceed8310b6c2ae1f325f8dfc2d08cb48752682d241cdc62449e56a",
+  "docs/_posts/2026-09-26-dsva-topic-19.md": "84cf5de6ee9e098ca890c3d2edf3454ac0e1ddbe4ea43cd6866c1e8cdeeda528",
+  "docs/_posts/2026-09-26-dsva-va-liv-morning-radio-2026-09-26.md": "cf20aa634ef050341a529165895704d74c41d4e1a2068ca4b350614f947467d2",
+  "docs/_posts/2026-09-26-gaku-after-school-namco-2026.md": "51dcec24fd82d4f1415916a2bb79010d3caa54a1efe0db1cb23d754ffabd92ae",
+  "docs/_posts/2026-09-26-gaku-gakumasu-chugai-cafe-revival-shibuya-2026.md": "7c77cfe285c091a17e61b0e92b82e70baed776dabb9bb9380612fe439acf297a",
+  "docs/_posts/2026-09-26-gaku-jinro-bunka-festival-goods-mail-order-2026.md": "dd07299760fc71976e7fe3bd9fe019e9f8c318f56c53dcf7d21736e42e5d1551",
+  "docs/_posts/2026-09-26-gaku-mirror-policy-hr12-2026.md": "f9837a09a23a4f0ca035a4c4dc306fbdd78ac4dde74dc932b02a6c667a3b0da7",
+  "docs/_posts/2026-09-26-general-topic-39.md": "ec14a47b916835ef33a2d556ffae0f2666aa95d0e7868c4bf34c8144616b0e2f",
+  "docs/_posts/2026-09-26-joint-other-12-p-tours-9-26.md": "78d4b96b4e20ae61ca8a01f24f4c666cf9201614bf5f3f00ec034184d8e1e937",
+  "docs/_posts/2026-09-26-joint-topic-37.md": "2bdc3798d7d372fb340a43326e0f02a99fe781a0b567b51400a466ac3a6b7008",
+  "docs/_posts/2026-09-26-million-topic-40.md": "9f4a9bdd244c52100640ebdae9eb3d3b12ac0ab19001fc62959d33df8ae013cf",
+  "docs/_posts/2026-09-26-million-topic-41.md": "4529367d3ce869a8ae89e458ceb293152036359e7e4a5c4d8722b34290836422",
+  "docs/_posts/2026-09-26-million-topic-44.md": "7093051fce315a69fe39be47fad77c9ce196c3884c69cbaeab4dfab47a6e332e",
+  "docs/_posts/2026-09-26-shiny-hyakki-popup-2026.md": "b59dd4a99a2e87d311e420dd9696142ff71f5b0022f120a7a43d42beb8003f86",
+  "docs/_posts/2026-09-26-shiny-msp-live-tickets-2026.md": "f4408dc8439821f2cb91de85de64972abfee03f232b40536e8566e88cdb8a260",
+  "docs/_posts/2026-09-26-shiny-ops-roundup.md": "e6a923c73c236b37ac38f483a027669ebb545c5fa962a9a971ddaf01edd019fa",
+  "docs/_posts/2026-09-26-shiny-song-for-prism-merch-2026.md": "39f3e443440cfb6eee9bf1f8b646bcc7f127820193044d7bf502e37a48e6c315",
+  "docs/_posts/2026-09-26-shiny-sweets-paradise-cafe-2026.md": "c0bc6fc3474b39cc1d9ee57a15df0d69bd86cc471fa082a4d7365fac2457e6c3",
+  "docs/_posts/2026-09-26-sidem-asobistore-mfes-2026-goods.md": "00fc5e151f58bab01fb516fc45bede584319b01df06bc2838f1284d7a1154e2b",
+  "docs/_posts/2026-09-26-sidem-fantastic-battle-fes-2026.md": "46f09bef841b7ee22da7edb5b04271d2fb27e9f36dac990144cc7e754e1e4f3b",
+  "docs/_posts/2026-09-26-sidem-producer-card-wave3-2026.md": "692f7b62e95e72b4a004ff3a82c0fa08b3331825219d125481a0daccd5519a27",
+  "docs/_posts/2026-09-26-sidem-topic-61.md": "9db86fc996856c99574302d5c906da8f49251547fac12b58368692ecd125819c",
+  "docs/_posts/2026-09-26-sidem-topic-63.md": "4556a3ca10ef8305fef1df8a23e3fe2c72ad0717081b5639dc07567fedcff6d1",
+  "docs/_posts/2026-09-26-sidem-topic-64.md": "166fb23144b1382ad7220e7d9db2391cbc75fd20ad03213312e8086d4690dafc",
+  "docs/_editions/2026-09-26.md": "1cb30da3023276cba747649001d724812501653d322e65f9e1ad13e3f13e8def",
+  "metrics/stories-before-2026-09-26.yml": "7d3f0458b1272ca6b0694948d7a16cff2770cd2c2ccc66438271e1a55ad6c7f3"
+ }
+}

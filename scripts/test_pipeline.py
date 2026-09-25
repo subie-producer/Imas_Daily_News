@@ -1100,7 +1100,7 @@ def test_prompts_are_instructions_only():
     check("rank: roundup" in t and t.rstrip().endswith("]") and t.index("## 1. 手順") < t.index("## 素材"), "執筆の依頼文: rank 別の追加・素材が最後、になっていない")
     # 見出しは主体と出来事で作り、出所(公式X告知)を入れない(編集長 2026-09-25「どれだよ」)。公式の投稿は発表そのもので、
     # 本文でも「〜と告知している」と断らず事実として書く(編集長「逆だろ」)。断定を避けるのはファン発・未確認だけ
-    check("出所の語を入れない" in t and "事実として地の文で書く" in t and "断りは要らない" in t and "伝聞元がファン発・未確認のときだけ" in t,
+    check("どの作品・ブランド・アイドル・催しの話か" in t and "事実として地の文で書く" in t and "断りは要らない" in t and "伝聞元がファン発・未確認のときだけ" in t,
           "執筆の依頼文: 公式の投稿を事実として書く規則、見出しに出所を入れない規則が無い")
     check("出所を示して書き" not in t and "投稿かが分かる出所を示して" not in t, "「公式 X の投稿では〜と告知している」と書かせる規則が残っている")
     t = compose.brand_plan_prompt("2026-09-18", "general", 3, [], claimed=[{"slug": "x"}])

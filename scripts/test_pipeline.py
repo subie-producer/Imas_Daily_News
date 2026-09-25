@@ -1098,6 +1098,8 @@ def test_prompts_are_instructions_only():
     art = {"slug": "s", "brand": "765", "rank": "roundup", "angle": "a", "candidate_ids": ["c1"]}
     t = compose.article_prompt("2026-09-18", art, [{"id": "c1"}], [], None)
     check("rank: roundup" in t and t.rstrip().endswith("]") and t.index("## 1. 手順") < t.index("## 素材"), "執筆の依頼文: rank 別の追加・素材が最後、になっていない")
+    # 見出しは主体と出来事で作り、出所(公式X告知)で始めない。X の出所の断りは本文だけ(編集長 2026-09-25「タイトルに公式X告知、どれだよ」)
+    check("出所の語で始めない" in t and "見出しとリードには書かない" in t and "誰の**投稿か" in t, "執筆の依頼文に見出しの主体の規則が無い")
     t = compose.brand_plan_prompt("2026-09-18", "general", 3, [], claimed=[{"slug": "x"}])
     check("rank: culture" in t and "plan-index-2026-09-18-general.json" in t and '"slug": "x"' in t, "選定の依頼文が埋まっていない")
     # 選定の規則は1か所(plan-rules)。面別の選定と、判定から漏れた主題の拾い直しが同じものを使う(監査指摘 r56)

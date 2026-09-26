@@ -44,6 +44,9 @@ def check(path: Path) -> list[str]:
     src = path.read_text(encoding="utf-8")
     try:
         tree = ast.parse(src)
+        # ast.parse は通るのに実行時に SyntaxError になるものがある(内包表記の反復対象に := を書いた等。
+        # 検査は compile のシンボル解決で行われる。実測 2026-09-26: watch.py がそれで落ちた)。compile まで通す
+        compile(src, str(path), "exec")
     except SyntaxError as e:
         return [f"構文エラー: {e.lineno}行目 {e.msg}"]
 

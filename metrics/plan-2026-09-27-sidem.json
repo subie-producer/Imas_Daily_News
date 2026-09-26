@@ -1,0 +1,275 @@
+{
+ "decisions": {
+  "sidem-karatetsu-vol3-online-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "通販サイト受付開始(9/25)は既報(sidem-karatetsu-yokai-2026)。当日固有のトリガーなし"
+  },
+  "sidem-producer-card-series-3": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "第3弾発売決定は既報(sidem-producer-card-wave3-2026、9/26)。本日新事実なし"
+  },
+  "sidem-connect-with-music-transcendent-tales-goods-wave4": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-tales-goods-wave4-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズ第4弾(受注締切9/27)。tales-goods-wave4-2026に統合"
+  },
+  "sidem-producer-card-nfc-vol3-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "producer-card-series-3と同一ニュースの重複検出。既報済み"
+  },
+  "sidem-producer-card-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "producer-card-series-3と同一ニュースの重複検出。既報済み"
+  },
+  "sidem-fantastic-battle-fes-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-61",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "FBFESグッズ事前販売(締切9/27)はsidem-61と同一施策"
+  },
+  "sidem-producer-meeting-ajewelholic-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報(9/14〜)。受付期間は10/4までで本日固有の動きなし"
+  },
+  "sidem-315-mode-vol1-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-topic-051",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一商品315 MODE vol.1受注(締切9/30)。topic-051に統合"
+  },
+  "sidem-315-idol-one-frame-update-2026": {
+   "action": "article",
+   "angle": "『315プロダクション エピソード』アイドルたちの1コマが本日更新",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常更新だが同種素材が他になくroundup化せず単独smallに"
+  },
+  "sidem-teddys-collection2-popup-goods": {
+   "action": "article",
+   "angle": "Teddy's Collection IIなんば会場が本日閉幕、通販予約『くりすと！』も23:59締切",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "teddys-collection-2-namba-2026を統合。会場詳細・グッズ価格情報あり"
+  },
+  "sidem-transcendent-tales-only-shop-2026": {
+   "action": "article",
+   "angle": "完結記念オンリーショップ(アニメイト池袋本店)が本日最終日",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-fantastic-battle-fes-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "当選者入金期間(9/26〜9/30)の途中日で本日固有のトリガーなし"
+  },
+  "sidem-tales-goods-wave4-2026": {
+   "action": "article",
+   "angle": "『CONNECT WITH MUSIC!TRANSCENDENT T@LES』公式グッズ第4弾、本日23:59受注締切",
+   "rank": "medium",
+   "lead_score": 12,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "connect-with-music-transcendent-tales-goods-wave4を統合、価格情報あり"
+  },
+  "sidem-teddys-collection-2-namba-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-teddys-collection2-popup-goods",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策(なんば閉幕・通販締切)"
+  },
+  "sidem-topic-051": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "315 MODE vol.1受注(締切9/30)は9/24既報。本日固有のトリガーなし"
+  },
+  "sidem-61": {
+   "action": "article",
+   "angle": "F@NTASTIC BATTLE FESイベント公式グッズ事前販売、本日が最終日",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "fantastic-battle-fes-goods-2026を統合、パンフレット等の価格情報あり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-315-idol-one-frame-update-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "『315プロダクション エピソード』アイドルたちの1コマが本日更新",
+    "lead_score": 5,
+    "dedup_key": "sidem-315-idol-one-frame-update-2026",
+    "candidate_ids": [
+     "202609270227-grok-46"
+    ]
+   },
+   {
+    "slug": "sidem-teddys-collection2-popup-goods",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "Teddy's Collection IIなんば会場が本日閉幕、通販予約『くりすと！』も23:59締切",
+    "lead_score": 25,
+    "dedup_key": "sidem-teddys-collection2-popup-goods",
+    "candidate_ids": [
+     "sched-2026-09-27-sidem-teddys-collection2-popup-goods-千秋楽",
+     "sched-2026-09-27-sidem-teddys-collection-2-namba-2026-終了"
+    ]
+   },
+   {
+    "slug": "sidem-transcendent-tales-only-shop-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "完結記念オンリーショップ(アニメイト池袋本店)が本日最終日",
+    "lead_score": 8,
+    "dedup_key": "sidem-transcendent-tales-only-shop-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-sidem-transcendent-tales-only-shop-2026-千秋楽"
+    ]
+   },
+   {
+    "slug": "sidem-tales-goods-wave4-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "『CONNECT WITH MUSIC!TRANSCENDENT T@LES』公式グッズ第4弾、本日23:59受注締切",
+    "lead_score": 12,
+    "dedup_key": "sidem-tales-goods-wave4-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-sidem-tales-goods-wave4-2026-締切",
+     "202609261834-watch-0"
+    ]
+   },
+   {
+    "slug": "sidem-61-a5a94a",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "F@NTASTIC BATTLE FESイベント公式グッズ事前販売、本日が最終日",
+    "lead_score": 15,
+    "dedup_key": "sidem-61",
+    "candidate_ids": [
+     "sched-2026-09-27-sidem-61-締切",
+     "202609270227-grok-43"
+    ]
+   },
+   {
+    "slug": "sidem-315-mode-vol1-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM 315 MODE vol.1受注",
+    "lead_score": 0,
+    "dedup_key": "sidem-315-mode-vol1-2026",
+    "candidate_ids": [
+     "202609270227-grok-45"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-karatetsu-vol3-online-goods-2026",
+    "reason": "既報",
+    "note": "通販サイト受付開始(9/25)は既報(sidem-karatetsu-yokai-2026)。当日固有のトリガーなし"
+   },
+   {
+    "dedup_key": "sidem-producer-card-series-3",
+    "reason": "既報",
+    "note": "第3弾発売決定は既報(sidem-producer-card-wave3-2026、9/26)。本日新事実なし"
+   },
+   {
+    "dedup_key": "sidem-producer-card-nfc-vol3-2026",
+    "reason": "既報",
+    "note": "producer-card-series-3と同一ニュースの重複検出。既報済み"
+   },
+   {
+    "dedup_key": "sidem-producer-card-2026",
+    "reason": "既報",
+    "note": "producer-card-series-3と同一ニュースの重複検出。既報済み"
+   },
+   {
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027",
+    "reason": "既報",
+    "note": "既報(9/14〜)。受付期間は10/4までで本日固有の動きなし"
+   },
+   {
+    "dedup_key": "sidem-fantastic-battle-fes-2026",
+    "reason": "既報",
+    "note": "当選者入金期間(9/26〜9/30)の途中日で本日固有のトリガーなし"
+   },
+   {
+    "dedup_key": "sidem-topic-051",
+    "reason": "既報",
+    "note": "315 MODE vol.1受注(締切9/30)は9/24既報。本日固有のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

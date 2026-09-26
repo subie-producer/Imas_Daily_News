@@ -1,0 +1,40 @@
+{
+ "decisions": {
+  "dual-twin-live-archive-fan-reaction-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "未確認の個人アカウント1件によるX投稿(配信視聴を呼びかける内容)のみが根拠で、公式発表や出典確認もなくエンゲージメントも中程度。界隈全体の現象と呼べる広がりの材料がない単体のSNS投稿"
+  },
+  "million-14th-afterglow-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "未確認の個人アカウント1件によるX投稿(公演後の余韻・アーカイブ視聴の感想)のみが根拠で、公式発表や出典確認もなくエンゲージメントも中程度。単体の個人投稿であり記事化する材料に乏しい"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "dual-twin-live-archive-fan-reaction-2026",
+    "reason": "個人の話題",
+    "note": "未確認の個人アカウント1件によるX投稿(配信視聴を呼びかける内容)のみが根拠で、公式発表や出典確認もなくエンゲージメントも中程度。界隈全体の現象と呼べる広がりの材料がない単体のSNS投稿"
+   },
+   {
+    "dedup_key": "million-14th-afterglow-2026",
+    "reason": "個人の話題",
+    "note": "未確認の個人アカウント1件によるX投稿(公演後の余韻・アーカイブ視聴の感想)のみが根拠で、公式発表や出典確認もなくエンゲージメントも中程度。単体の個人投稿であり記事化する材料に乏しい"
+   }
+  ],
+  "cross_brand": []
+ }
+}

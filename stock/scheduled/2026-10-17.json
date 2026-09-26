@@ -183,5 +183,35 @@
   "src_candidate_id": "202609251835-watch-2",
   "event_date": "2026-10-17",
   "deadline": "2026-10-17"
+ },
+ {
+  "id": "sched-2026-10-17-shiny-sanka-benibana-release-event-goods-2026-開始",
+  "dedup_key": "shiny-sanka-benibana-release-event-goods-2026",
+  "brand": "shiny",
+  "subject": "「散花／紅花」発売記念イベント会場物販",
+  "kind": "開始",
+  "note": "会場物販が12:30から開始(購入は一人1アイテム3点まで)",
+  "reserved_on": "2026-09-27",
+  "title": "『散花-sanka- / 紅花-benibana-』発売記念イベント会場物販",
+  "url": "https://shinycolors.lantis.jp/goods/",
+  "source_type": "準公式",
+  "facts": [
+   "2026年10月17日（土）開催の発売記念イベントで会場物販を実施する。",
+   "音楽ゲーム「KAMISABI」も販売する。",
+   "本イベント会場でのKAMISABI体験会は実施しない。",
+   "購入制限は一人1アイテムにつき3点まで。",
+   "ランダム缶バッジは7点まで購入できる。",
+   "KAMISABI アルバムセット「THE IDOLM@STER SHINY COLORS」に購入制限はない。",
+   "場所：イベント会場内物販スペース。",
+   "日時：2026年10月17日（土）12:30～終演後30分程度。",
+   "事後通販は未定。",
+   "支払いは現金、クレジットカード、電子マネー、バーコード決済などを利用できる。",
+   "商品数には限りがあり、売り切れる可能性がある。",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609260732-explore-2",
+  "event_date": "2026-10-17"
  }
 ]

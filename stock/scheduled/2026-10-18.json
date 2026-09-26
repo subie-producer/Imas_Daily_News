@@ -175,5 +175,35 @@
   "verify": "confirmed",
   "src_candidate_id": "202609251835-watch-4",
   "deadline": "2026-10-18"
+ },
+ {
+  "id": "sched-2026-10-18-shiny-orchestra-concert-2027-締切",
+  "dedup_key": "shiny-orchestra-concert-2027",
+  "brand": "shiny",
+  "subject": "シャニマス「Radiant Chord」",
+  "kind": "締切",
+  "note": "アソビストアプレミアム会員最速先行受付の申込締切(23:59)",
+  "reserved_on": "2026-09-27",
+  "title": "THE IDOLM@STER SHINY COLORS ORCHESTRA CONCERT -Radiant Chord- 開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19982",
+  "source_type": "公式",
+  "facts": [
+   "公演タイトル: THE IDOLM@STER SHINY COLORS ORCHESTRA CONCERT -Radiant Chord-",
+   "日程: 2027年3月22日(月･祝)",
+   "会場: パシフィコ横浜 国立大ホール",
+   "昼公演: 12:00開場／13:00開演",
+   "夜公演: 17:00開場／18:00開演",
+   "指揮: 栗田 博文",
+   "管弦楽: 東京フィルハーモニー交響楽団",
+   "演奏: 283 バンド（清水\"カルロス\"宥人 ギター、目黒郁也 ベース、裕木レオン ドラム、柴﨑洋輔 キーボード）",
+   "昼公演歌唱: 礒部 花凜（月岡 恋鐘役）、幸村 恵理（黛 冬優子役）、和久井 優（浅倉 透役）、山根 綺（緋田 美琴役）",
+   "夜公演歌唱: 関根 瞳（櫻木 真乃役）、涼本 あきほ（有栖川 夏葉役）、前川 涼子（大崎 甜花役）、川口 莉奈（斑鳩 ルカ役）",
+   "アソビストアプレミアム会員最速先行受付期間: 2026年9月26日(土) 20:00～10月18日(日) 23:59",
+   "受付URL: https://asobiticket2.asobistore.jp/receptions/8abc291c-dae2-4684-99e2-de68149135de"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609262335-watch-1",
+  "event_date": "2027-03-22"
  }
 ]

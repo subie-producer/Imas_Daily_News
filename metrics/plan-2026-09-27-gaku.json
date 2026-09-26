@@ -1,0 +1,365 @@
+{
+ "decisions": {
+  "gkmas-jinro-goods-mailorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一の事後通販情報が9/26付ですでに報道済み(jinro-bunka-festival-goods-mail-order-2026)。新事実・当日トリガー無し。"
+  },
+  "gkmas-shirube-iwate-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "岩手DAY2の新曲初披露・17曲披露は9/24-25に既報(gaku-shirube-iwate-day2-2026等)。出演声優の補足のみで当日トリガー無し。"
+  },
+  "gaku-conceptual-single-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "発売決定・予約締切・セット内容は9/24-25に既報。Vol.1収録アイドルの詳細は補足止まりで当日トリガー無し。"
+  },
+  "gaku-chibigurumi-unit-collection-vol1-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ナムコAfter Schoolキャンペーンの一部としてvol.1〜4登場は9/26付で既報(gaku-after-school-namco-2026)。"
+  },
+  "gkmas-jinro-bunkasai-goods-afterorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一内容が9/26付ですでに報道済み(jinro-bunka-festival-goods-mail-order-2026)。"
+  },
+  "gaku-tsukimura-temari-figure-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "予約開始・価格・発売日(2027年6月)は9/2に既報。新事実・当日トリガー無し。"
+  },
+  "gaku-temari-gold-shine-prize-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ナムコ限定景品としての月村手毬フィギュア登場はAfter Schoolキャンペーン既報(9/26更新)に含まれる。"
+  },
+  "me-official-music-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「め」MVプレミア公開(9/20)は9/21付で既報。当日トリガー無し。"
+  },
+  "gaku-amane-yukari-af-recitation-open-campus-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人のアイマス外活動(専門学校の入学説明会ゲスト出演)。申込受付も終了済みで読者が取れる行動が無い。"
+  },
+  "gakumas-after-school-namco-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "開催期間9/25〜11/1は9/11に既報、9/26付で内容も更新済み。新事実無し。"
+  },
+  "gakumas-ichiban-kuji-part6-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ラインナップ・価格・発売日・オンライン販売開始は8/29に既報。ダブルチャンス情報は補足止まり。"
+  },
+  "valiv-letora-valorant-2026-09-25": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "レトラのVALORANT配信。vα-liv(876)はdsva面の話題で学マス面ではない。"
+  },
+  "valiv-manaka-code-vein-7th-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "灯里愛夏のCODE VEIN特番出演。vα-liv(876)はdsva面の話題で学マス面ではない。"
+  },
+  "valiv-cosmo-vogue-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "上水流宇宙の踊ってみた動画。vα-liv(876)はdsva面の話題で学マス面ではない。"
+  },
+  "valiv-night-streams-2026-09-25": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "灯里愛夏・上水流宇宙の配信予定。vα-liv(876)はdsva面の話題で学マス面ではない。"
+  },
+  "valiv-situation-voice-15-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "vα-livシチュエーションボイス第15弾。876はdsva面の話題で学マス面ではない。"
+  },
+  "valiv-manaka-code-vein-2-dlc-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "灯里愛夏のCODE VEIN2 DLC配信感想。vα-liv(876)はdsva面の話題で学マス面ではない。"
+  },
+  "hatsuboshi-hr-12-mirror-policy-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信日・ミラー配信歓迎方針は9/26付で既報(gaku-mirror-policy-hr12-2026)。法人不可等の詳細は補足止まり。"
+  },
+  "hatsuboshi-me-official-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「め」MVのショート版も既報のMV公開の一部の派生素材で、当日トリガー無し。"
+  },
+  "gakumasu-chugai-cafe-revival-shibuya-2026": {
+   "action": "article",
+   "angle": "渋谷モディのリバイバルコラボカフェが本日9/27で千秋楽、先着予約は前日終了も当日空席なら予約なしで利用可",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-chugai-grace-cafe-revival-shibuya-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumasu-chugai-cafe-revival-shibuya-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の渋谷Chugai Grace Caféリバイバルコラボの千秋楽情報。同主題に統合。"
+  },
+  "gakumas-gravure-solo-collection-vol1-2026": {
+   "action": "article",
+   "angle": "新CDシリーズ「Gravure Solo Collection」Vol.1、店舗別特典つき予約受付が本日9/27で締切",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-live-tour-iwate-day2-setlist": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "続報予約は9/27締切としているが実際のASOBI STORE予約締切は9/23で既に終了・既報。素材にも9/27の動き無し。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakumasu-chugai-cafe-revival-shibuya-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "渋谷モディのリバイバルコラボカフェが本日9/27で千秋楽、先着予約は前日終了も当日空席なら予約なしで利用可",
+    "lead_score": 25,
+    "dedup_key": "gakumasu-chugai-cafe-revival-shibuya-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-gakumasu-chugai-cafe-revival-shibuya-2026-終了",
+     "sched-2026-09-27-gakumasu-chugai-cafe-revival-shibuya-2026-千秋楽",
+     "sched-2026-09-27-gaku-chugai-grace-cafe-revival-shibuya-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-gravure-solo-collection-vol1-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "新CDシリーズ「Gravure Solo Collection」Vol.1、店舗別特典つき予約受付が本日9/27で締切",
+    "lead_score": 10,
+    "dedup_key": "gakumas-gravure-solo-collection-vol1-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-gakumas-gravure-solo-collection-vol1-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gkmas-jinro-goods-mailorder-2026",
+    "reason": "既報",
+    "note": "同一の事後通販情報が9/26付ですでに報道済み(jinro-bunka-festival-goods-mail-order-2026)。新事実・当日トリガー無し。"
+   },
+   {
+    "dedup_key": "gkmas-shirube-iwate-report-2026",
+    "reason": "既報",
+    "note": "岩手DAY2の新曲初披露・17曲披露は9/24-25に既報(gaku-shirube-iwate-day2-2026等)。出演声優の補足のみで当日トリガー無し。"
+   },
+   {
+    "dedup_key": "gaku-conceptual-single-collection-2026",
+    "reason": "既報",
+    "note": "発売決定・予約締切・セット内容は9/24-25に既報。Vol.1収録アイドルの詳細は補足止まりで当日トリガー無し。"
+   },
+   {
+    "dedup_key": "gaku-chibigurumi-unit-collection-vol1-2026",
+    "reason": "既報",
+    "note": "ナムコAfter Schoolキャンペーンの一部としてvol.1〜4登場は9/26付で既報(gaku-after-school-namco-2026)。"
+   },
+   {
+    "dedup_key": "gkmas-jinro-bunkasai-goods-afterorder-2026",
+    "reason": "既報",
+    "note": "同一内容が9/26付ですでに報道済み(jinro-bunka-festival-goods-mail-order-2026)。"
+   },
+   {
+    "dedup_key": "gaku-tsukimura-temari-figure-2026",
+    "reason": "既報",
+    "note": "予約開始・価格・発売日(2027年6月)は9/2に既報。新事実・当日トリガー無し。"
+   },
+   {
+    "dedup_key": "gaku-temari-gold-shine-prize-2026",
+    "reason": "既報",
+    "note": "ナムコ限定景品としての月村手毬フィギュア登場はAfter Schoolキャンペーン既報(9/26更新)に含まれる。"
+   },
+   {
+    "dedup_key": "me-official-music-video-2026",
+    "reason": "既報",
+    "note": "「め」MVプレミア公開(9/20)は9/21付で既報。当日トリガー無し。"
+   },
+   {
+    "dedup_key": "gaku-amane-yukari-af-recitation-open-campus-2026",
+    "reason": "個人の話題",
+    "note": "声優個人のアイマス外活動(専門学校の入学説明会ゲスト出演)。申込受付も終了済みで読者が取れる行動が無い。"
+   },
+   {
+    "dedup_key": "gakumas-after-school-namco-2026",
+    "reason": "既報",
+    "note": "開催期間9/25〜11/1は9/11に既報、9/26付で内容も更新済み。新事実無し。"
+   },
+   {
+    "dedup_key": "gakumas-ichiban-kuji-part6-2026",
+    "reason": "既報",
+    "note": "ラインナップ・価格・発売日・オンライン販売開始は8/29に既報。ダブルチャンス情報は補足止まり。"
+   },
+   {
+    "dedup_key": "valiv-letora-valorant-2026-09-25",
+    "reason": "面違い",
+    "note": "レトラのVALORANT配信。vα-liv(876)はdsva面の話題で学マス面ではない。"
+   },
+   {
+    "dedup_key": "valiv-manaka-code-vein-7th-2026",
+    "reason": "面違い",
+    "note": "灯里愛夏のCODE VEIN特番出演。vα-liv(876)はdsva面の話題で学マス面ではない。"
+   },
+   {
+    "dedup_key": "valiv-cosmo-vogue-short-2026",
+    "reason": "面違い",
+    "note": "上水流宇宙の踊ってみた動画。vα-liv(876)はdsva面の話題で学マス面ではない。"
+   },
+   {
+    "dedup_key": "valiv-night-streams-2026-09-25",
+    "reason": "面違い",
+    "note": "灯里愛夏・上水流宇宙の配信予定。vα-liv(876)はdsva面の話題で学マス面ではない。"
+   },
+   {
+    "dedup_key": "valiv-situation-voice-15-2026",
+    "reason": "面違い",
+    "note": "vα-livシチュエーションボイス第15弾。876はdsva面の話題で学マス面ではない。"
+   },
+   {
+    "dedup_key": "valiv-manaka-code-vein-2-dlc-2026",
+    "reason": "面違い",
+    "note": "灯里愛夏のCODE VEIN2 DLC配信感想。vα-liv(876)はdsva面の話題で学マス面ではない。"
+   },
+   {
+    "dedup_key": "hatsuboshi-hr-12-mirror-policy-2026",
+    "reason": "既報",
+    "note": "配信日・ミラー配信歓迎方針は9/26付で既報(gaku-mirror-policy-hr12-2026)。法人不可等の詳細は補足止まり。"
+   },
+   {
+    "dedup_key": "hatsuboshi-me-official-mv-2026",
+    "reason": "既報",
+    "note": "「め」MVのショート版も既報のMV公開の一部の派生素材で、当日トリガー無し。"
+   },
+   {
+    "dedup_key": "gaku-live-tour-iwate-day2-setlist",
+    "reason": "既報",
+    "note": "続報予約は9/27締切としているが実際のASOBI STORE予約締切は9/23で既に終了・既報。素材にも9/27の動き無し。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

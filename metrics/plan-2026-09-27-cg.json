@@ -1,0 +1,286 @@
+{
+ "decisions": {
+  "pad-cinderella-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-puzzle-and-dragons-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一のパズドラ×シンデレラガールズコラボ発表(既報分)。詳細記事に統合"
+  },
+  "cinderella-puzzle-and-dragons-collab-2026": {
+   "action": "article",
+   "angle": "パズドラ×シンデレラガールズコラボ、魔法石セット・サイン色紙キャンペーン・コラボダンジョン・能力調整など詳細が判明",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボ開催自体は既報(9/25・9/26)。セット販売やキャンペーン等の新情報をまとめて追記"
+  },
+  "cg-cinderella-orchestra-concert-2027": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同オケコンのキャスト再紹介情報。チケット締切記事に統合"
+  },
+  "cg-puzzle-and-dragons-collab-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-puzzle-and-dragons-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同コラボの概要情報(既報分)。詳細記事に統合"
+  },
+  "cg-feat-ryugakushi-gacha-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-puzzle-and-dragons-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボガチャの内容詳細。詳細記事に統合"
+  },
+  "cg-puzzle-and-dragons-set-sales-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-puzzle-and-dragons-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボの魔法石セット販売情報。詳細記事に統合"
+  },
+  "cg-puzzle-and-dragons-campaign-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-puzzle-and-dragons-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボ記念のサイン色紙プレゼント企画。詳細記事に統合"
+  },
+  "cg-puzzle-and-dragons-ability-adjustment-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-puzzle-and-dragons-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボキャラの能力調整情報。詳細記事に統合"
+  },
+  "cg-number-one-cross-over-2026": {
+   "action": "article",
+   "angle": "「クロス×オーバー！」発売直前、c/w「オーバークロック！」試聴開始とコロムビア限定販売の詳細",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売日・MV公開は9/26既報。オーバークロック試聴開始と限定販売形態が新情報"
+  },
+  "cinderella-special-stage-atfes-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "八景島Marine-Symphony特別ステージ(cg-cinderella-marine-symphony-2027、9/26既報)とDay1/2日程が同一"
+  },
+  "cinderella-number-one-cross-over-overclock-preview-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-number-one-cross-over-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "オーバークロック試聴開始の重複情報。CD記事に統合"
+  },
+  "pazudora-idolmaster-collaboration-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-puzzle-and-dragons-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ガチャ排出率の二次情報(unconfirmed)。詳細記事に統合"
+  },
+  "cross-over-premiere-mv-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-number-one-cross-over-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式XのPremiere MV告知。CD記事に統合"
+  },
+  "cg-15th-orchestra-concert-2027": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "現地チケットのS席/A席価格情報。締切記事に統合"
+  },
+  "cg-pop-up-yurakucho-2026": {
+   "action": "article",
+   "angle": "有楽町マルイPOP UP SHOP開催中、人気アクリルキーホルダーなど完売相次ぐ",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催概要は既報。完売続報とあわせて1本にまとめる(いずれもunconfirmed情報源)"
+  },
+  "cg-pop-up-face-towel-soldout-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-pop-up-yurakucho-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同POP UPの完売情報。まとめ記事に統合"
+  },
+  "cg-yukimi-onmyoji-goods-soldout-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-pop-up-yurakucho-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同POP UPの完売情報。まとめ記事に統合"
+  },
+  "cg-kanako-onmyoji-goods-soldout-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-pop-up-yurakucho-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同POP UPの完売情報。まとめ記事に統合"
+  },
+  "cg-15th-anniversary-orchestra-2027": {
+   "action": "article",
+   "angle": "シンデレラ15周年記念オーケストラコンサート、現地チケット最速先行抽選が本日23:59締切。キャストや客席価格も判明",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "複数の続報予約・関連主題を統合。締切という当日トリガーが明確な面の最重要ニュース"
+  },
+  "cg-15th-orchestra-2027": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同オケコンの申込締切(受付期間9/16-9/27)。同一施策のため統合"
+  },
+  "the-idolm-ster-cinderella-girls-15th-anniversary-orchestra-concert": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同オケコンの現地チケット最速先行抽選締切。同一施策のため統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-puzzle-and-dragons-collab-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "パズドラ×シンデレラガールズコラボ、魔法石セット・サイン色紙キャンペーン・コラボダンジョン・能力調整など詳細が判明",
+    "lead_score": 15,
+    "dedup_key": "cinderella-puzzle-and-dragons-collab-2026",
+    "candidate_ids": [
+     "202609260732-explore-15",
+     "202609260732-explore-1",
+     "202609261234-explore-16",
+     "202609261234-explore-17",
+     "202609261234-explore-18",
+     "202609261234-explore-19",
+     "202609261234-explore-20",
+     "202609262335-explore-7"
+    ]
+   },
+   {
+    "slug": "cg-number-one-cross-over-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「クロス×オーバー！」発売直前、c/w「オーバークロック！」試聴開始とコロムビア限定販売の詳細",
+    "lead_score": 10,
+    "dedup_key": "cg-number-one-cross-over-2026",
+    "candidate_ids": [
+     "202609261234-explore-25",
+     "202609262335-explore-6",
+     "202609270227-grok-22"
+    ]
+   },
+   {
+    "slug": "cg-pop-up-yurakucho-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "有楽町マルイPOP UP SHOP開催中、人気アクリルキーホルダーなど完売相次ぐ",
+    "lead_score": 20,
+    "dedup_key": "cg-pop-up-yurakucho-2026",
+    "candidate_ids": [
+     "202609270227-grok-24",
+     "202609270227-grok-25",
+     "202609270227-grok-26",
+     "202609270227-grok-27"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-orchestra-2027",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "シンデレラ15周年記念オーケストラコンサート、現地チケット最速先行抽選が本日23:59締切。キャストや客席価格も判明",
+    "lead_score": 80,
+    "dedup_key": "cg-15th-anniversary-orchestra-2027",
+    "candidate_ids": [
+     "sched-2026-09-27-cg-15th-anniversary-orchestra-2027-締切",
+     "202609261234-watch-1",
+     "202609270227-grok-23",
+     "sched-2026-09-27-cg-15th-orchestra-2027-締切",
+     "sched-2026-09-27-the-idolm-ster-cinderella-girls-15th-anniversary-orchestra-concert-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-special-stage-atfes-2027",
+    "reason": "既報",
+    "note": "八景島Marine-Symphony特別ステージ(cg-cinderella-marine-symphony-2027、9/26既報)とDay1/2日程が同一"
+   }
+  ],
+  "cross_brand": []
+ }
+}

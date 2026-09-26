@@ -25,5 +25,36 @@
   "verify": "unconfirmed",
   "src_candidate_id": "202609242336-watch-0",
   "event_date": "2027-01-30"
+ },
+ {
+  "id": "sched-2027-03-22-shiny-orchestra-radiant-chord-2027-開幕",
+  "dedup_key": "shiny-orchestra-radiant-chord-2027",
+  "brand": "shiny",
+  "subject": "シャニマス「Radiant Chord」",
+  "kind": "開幕",
+  "note": "オーケストラコンサート開催、昼公演12:00開場/13:00開演",
+  "reserved_on": "2026-09-27",
+  "title": "シャニマス初の単独オーケストラコンサート",
+  "url": "https://idolmaster-official.jp/live_event/shinycolors_orchestra_RC/",
+  "source_type": "公式",
+  "facts": [
+   "公演タイトル: THE IDOLM@STER SHINY COLORS ORCHESTRA CONCERT -Radiant Chord-",
+   "シャニマス初の単独オーケストラコンサート",
+   "会場: パシフィコ横浜 国立大ホール",
+   "日程: 2027年3月22日(月・祝)",
+   "昼公演12:00開場／13:00開演、夜公演17:00開場／18:00開演",
+   "指揮: 栗田博文",
+   "管弦楽: 東京フィルハーモニー交響楽団",
+   "演奏: 283バンド（清水\"カルロス\"宥人、目黒郁也、裕木レオン、柴﨑洋輔）",
+   "昼公演歌唱: 礒部花凜（月岡恋鐘役）、幸村恵理（黛冬優子役）、和久井優（浅倉透役）、山根綺（緋田美琴役）",
+   "夜公演歌唱: 関根瞳（櫻木真乃役）、涼本あきほ（有栖川夏葉役）、前川涼子（大崎甜花役）、川口莉奈（斑鳩ルカ役）",
+   "各公演スペシャルシート18,000円(税込)、全席指定14,000円(税込)",
+   "スペシャルシートは前方席確約・限定お土産グッズ付き"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609270227-grok-47",
+  "event_date": "2027-03-22",
+  "deadline": "2026-10-18"
  }
 ]

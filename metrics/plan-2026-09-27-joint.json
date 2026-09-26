@@ -1,0 +1,40 @@
+{
+ "decisions": {
+  "tours-summer-teeth-style-tips-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "衣装『サマーティースタイル』はjoint-tours-s1-ex-2026(9/10)で既報、着こなしTIPSは同衣装の紹介ツイートで新事実・当日のトリガーなし"
+  },
+  "sidem-shiny-sparkle-showdown-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アソビストアプレミアム会員先行(受付期間2026-09-12〜10-12)はjoint-sidem-shiny-sparkle-showdown-2027(9/13〜)で既報、当日の新規手続き開始・締切なし"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "tours-summer-teeth-style-tips-2026",
+    "reason": "既報",
+    "note": "衣装『サマーティースタイル』はjoint-tours-s1-ex-2026(9/10)で既報、着こなしTIPSは同衣装の紹介ツイートで新事実・当日のトリガーなし"
+   },
+   {
+    "dedup_key": "sidem-shiny-sparkle-showdown-2026",
+    "reason": "既報",
+    "note": "アソビストアプレミアム会員先行(受付期間2026-09-12〜10-12)はjoint-sidem-shiny-sparkle-showdown-2027(9/13〜)で既報、当日の新規手続き開始・締切なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

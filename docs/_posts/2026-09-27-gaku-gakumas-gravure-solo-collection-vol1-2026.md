@@ -26,6 +26,17 @@ title_fact_ids:
 lede_fact_ids:
 - F1
 - F3
+verified_facts:
+- id: N1
+  text: Vol.1『ねえ、言っちゃうよ。』の予約受付は9月27日まで、価格3,500円(税込)、発売日は11月18日予定
+  url: https://gakuen-label.idolmaster-official.jp/news/gravure1
+- id: N2
+  text: 月村手毬・秦谷美鈴・十王星南の3人歌唱版に加え、13名のソロ歌唱Full ver.とInstrumentalを含む全15曲を収録
+  url: https://gakuen-label.idolmaster-official.jp/news/gravure1
+- id: N3
+  text: "店舗別予約特典: アニメイトはロングフォト3枚セット、Amazon.co.jpはトレーディングカード3枚セット、あみあみはましかくブロマイド、ゲーマーズは56mm缶バッジ3種セット、ソフマップ・アニメガはアクリルコースター、タワーレコードはホログラムカード3枚セット、diskunionは両面キーホルダー、とらのあなは月村手毬・十王星南・秦谷美鈴のL判ブロマイドセット、メロンブックスはスクエア缶バッジ、楽天ブックスはA4クリアポスター(ASOBI\
+    \ STORE特典は特典ステッカー)"
+  url: https://gakuen-label.idolmaster-official.jp/news/gravure1
 ---
 Vol.1「ねえ、言っちゃうよ。」は3,500円（税込）で、11月18日発売予定。 <!-- F1 -->
 

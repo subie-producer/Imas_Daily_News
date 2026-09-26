@@ -27,12 +27,12 @@
   "event_date": "2027-01-30"
  },
  {
-  "id": "sched-2027-03-22-shiny-orchestra-radiant-chord-2027-開幕",
+  "id": "sched-2027-03-22-shiny-orchestra-radiant-chord-2027-開始",
   "dedup_key": "shiny-orchestra-radiant-chord-2027",
   "brand": "shiny",
-  "subject": "「Radiant Chord」公演本番",
-  "kind": "開幕",
-  "note": "「Radiant Chord」昼夜2公演を観に行ける",
+  "subject": "シャニマス「Radiant Chord」オーケストラコンサート",
+  "kind": "開始",
+  "note": "パシフィコ横浜でオーケストラコンサート昼夜2公演を鑑賞できる",
   "reserved_on": "2026-09-27",
   "title": "シャニマス初の単独オーケストラコンサート",
   "url": "https://idolmaster-official.jp/live_event/shinycolors_orchestra_RC/",

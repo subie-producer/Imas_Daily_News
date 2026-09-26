@@ -1,0 +1,167 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "vα-liv 3rd LIVE & MEETING announcement (202609260732-explore-6) is not represented in articles. This is a high-engagement official announcement about a future LIVE event that might warrant coverage.",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "Million 10th anniversary commemoration LIVE announcement (202609262335-explore-8) is not represented in articles. This is a high-engagement official announcement about a future LIVE event that might warrant coverage.",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-765-dual-twin-live-tour-goods-2026.md",
+   "issue": "分量不足: rank: small(目安250字)に対して本文が64字と大幅に短い。公式ページに掲載されているグッズの具体的な種類や詳細、注意事項などを拾って拡充できます。",
+   "scope": "article:2026-09-27-765-dual-twin-live-tour-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-765-x-vorder-runway-goods-onsite-2026.md",
+   "issue": "分量不足: rank:small の目安 250 字に対して本文が約 40 字。素材に価格・対象条件は記載されていないが、営業時間の詳細表現や完売商品の在庫確保の詳細など、出典を再確認して補足できる情報がないか検討推奨",
+   "scope": "article:2026-09-27-765-x-vorder-runway-goods-onsite-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-cg-15th-anniversary-orchestra-2027.md",
+   "issue": "候補202609270227-grok-23がverify: \"unconfirmed\"であるため、該当URLの内容確認が望ましい（本文内容はwatch-1から導き出せるため致命的ではない）",
+   "scope": "article:2026-09-27-cg-15th-anniversary-orchestra-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-cg-cinderella-puzzle-and-dragons-collab-2026.md",
+   "issue": "魔法石30個セット（3,600円）の販売期間が記事に明記されていない。セット1の販売期間①②の記載の直後にセット2の価格と対象キャラが記載されるため、セット2がいつまで販売されるのか読者が判断しづらい。出典では「09/25(金)10:00～10/05(月)09:59」と記載されているので、記事にも販売期間を追加することで読者の理解を助けることができる。",
+   "scope": "article:2026-09-27-cg-cinderella-puzzle-and-dragons-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-cg-cinderella-puzzle-and-dragons-collab-2026.md",
+   "issue": "本文が約450字で、rank: large（目安700字）に及ばない。出典にある詳細情報（おまけガチャの内容、ダンジョンの詳細、キャンペーンの応募方法や景品受け取りのタイミングなど）をさらに記載することで、読者への情報提供を充実させることができる。",
+   "scope": "article:2026-09-27-cg-cinderella-puzzle-and-dragons-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-cg-number-one-cross-over-2026.md",
+   "issue": "lede の『発売され、c/w曲...』は日本語が不自然。『発売される』に修正推奨",
+   "scope": "article:2026-09-27-cg-number-one-cross-over-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-cg-number-one-cross-over-2026.md",
+   "issue": "分量が約400字でrank=medium の目安450字より若干少ない。候補のfacts に詳細情報(仕様・対象条件など)があれば追加して埋める検討を",
+   "scope": "article:2026-09-27-cg-number-one-cross-over-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-dsva-valiv-life-like-a-live-12-2026.md",
+   "issue": "本文1段落での表現の曖昧さ：『ヴイアラは第四公演と第五公演のエンディングライブに出演する』とあるが、リードの『第四公演に出演し、第五公演はエンディングライブに登場する』ほど明確ではない。『第四公演に出演し、第五公演はエンディングライブに出演する』のほうがより読みやすい。",
+   "scope": "article:2026-09-27-dsva-valiv-life-like-a-live-12-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-million-mltd-extreme-livestream-2026.md",
+   "issue": "分量不足: rank: small の目安は250字ですが、本文が約33字と大幅に不足しています。出典にあるイベント説明、イベント期間、SSR のステータス傾向、楽曲の時間追加など、詳細を追加することで充実させることができます。",
+   "scope": "article:2026-09-27-million-mltd-extreme-livestream-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-million-theater-talk-party-vol-67-2026.md",
+   "issue": "分量不足: rank:small (目安250字以上) に対して、本文が31字のみ。sources に開催時間・開催形式・対象ユニットなど詳細があれば記述を充実させることを検討。素材に詳細情報がないため、現状の「詳細はイベント開催後に案内される」という記述維持でも可。",
+   "scope": "article:2026-09-27-million-theater-talk-party-vol-67-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-shiny-parallel-collection-popup-2026.md",
+   "issue": "分量不足: rank small(250字目安)に対して本文が約100字で、出典にある会場設置・特典・その他の詳細を拾えば埋まる可能性あり",
+   "scope": "article:2026-09-27-shiny-parallel-collection-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-shiny-sanka-benibana-release-event-goods-2026.md",
+   "issue": "分量不足の可能性。rank: small の目安は 250 字ですが、本文は約 220 字です。出典にある詳細情報（会場での食事・充電の可否、レジ袋の用意がない、など）を追加すれば充実します。",
+   "scope": "article:2026-09-27-shiny-sanka-benibana-release-event-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-shiny-style-collection-vol1-2026.md",
+   "issue": "rank: small（目安250字）に対して本文が66字のみ。出典に記載されている追加の詳細情報（グッズの仕様・セット内容など）があれば拾って埋めることを検討してください。",
+   "scope": "article:2026-09-27-shiny-style-collection-vol1-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-shiny-style-collection-vol1-2026.md",
+   "issue": "見出しの「きょう」は標準的でない表記。「本日」や「09月27日」など別の表現の使用を検討してください。",
+   "scope": "article:2026-09-27-shiny-style-collection-vol1-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-sidem-315-idol-one-frame-update-2026.md",
+   "issue": "分量不足：rank: small の目安（250字）に対して本文は約50字。候補の facts には「案内先: https://idolmaster-official.jp/sidem」があり、SideMの315プロダクション エピソードページへの案内を本文に追加すれば分量が増え、読者の行動選択肢が広がります",
+   "scope": "article:2026-09-27-sidem-315-idol-one-frame-update-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-27-sidem-transcendent-tales-only-shop-2026.md",
+   "issue": "分量不足。本文が約20字で rank:small の目安(250字)に遠く及ばない。出典には開催期間（9月5日～27日）や9月5-6日の入場整理券配布などの情報が記載されており、これらを加えることで充実できる。",
+   "scope": "article:2026-09-27-sidem-transcendent-tales-only-shop-2026.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-27-765-chibi-plushie-pouch-set-2026.md",
+  "article:2026-09-27-765-dual-twin-live-2026.md",
+  "article:2026-09-27-765-dual-twin-live-tour-goods-2026.md",
+  "article:2026-09-27-765-never-end-idol-bluray-2026.md",
+  "article:2026-09-27-765-x-vorder-runway-goods-onsite-2026.md",
+  "article:2026-09-27-cg-15th-anniversary-orchestra-2027.md",
+  "article:2026-09-27-cg-cinderella-puzzle-and-dragons-collab-2026.md",
+  "article:2026-09-27-cg-number-one-cross-over-2026.md",
+  "article:2026-09-27-cg-pop-up-yurakucho-2026.md",
+  "article:2026-09-27-dsva-va-liv-3rd-live-meeting-2027.md",
+  "article:2026-09-27-dsva-valiv-birthday-voice-kamimizu-2026.md",
+  "article:2026-09-27-dsva-valiv-life-like-a-live-12-2026.md",
+  "article:2026-09-27-gaku-gakumas-gravure-solo-collection-vol1-2026.md",
+  "article:2026-09-27-gaku-gakumasu-chugai-cafe-revival-shibuya-2026.md",
+  "article:2026-09-27-million-14thlive.md",
+  "article:2026-09-27-million-julia-birthday-set-2026.md",
+  "article:2026-09-27-million-millishita-14thlive-memorial-jewels-2026.md",
+  "article:2026-09-27-million-mltd-extreme-livestream-2026.md",
+  "article:2026-09-27-million-opera-seria-2026.md",
+  "article:2026-09-27-million-theater-talk-party-vol-67-2026.md",
+  "article:2026-09-27-shiny-283-production-solo-live-2026.md",
+  "article:2026-09-27-shiny-orchestra-concert-2027.md",
+  "article:2026-09-27-shiny-parallel-collection-popup-2026.md",
+  "article:2026-09-27-shiny-runway-2026-master-showpiece-photo-contest.md",
+  "article:2026-09-27-shiny-sanka-benibana-release-event-goods-2026.md",
+  "article:2026-09-27-shiny-style-collection-vol1-2026.md",
+  "article:2026-09-27-shiny-suntory-lemon-squash-2026-09.md",
+  "article:2026-09-27-sidem-315-idol-one-frame-update-2026.md",
+  "article:2026-09-27-sidem-315-mode-vol1-2026.md",
+  "article:2026-09-27-sidem-61-a5a94a.md",
+  "article:2026-09-27-sidem-tales-goods-wave4-2026.md",
+  "article:2026-09-27-sidem-teddys-collection2-popup-goods.md",
+  "article:2026-09-27-sidem-transcendent-tales-only-shop-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-27-765-chibi-plushie-pouch-set-2026.md": "0250105cd45121ebcb14d145f48292ac84b1fd52d35efbae51c89320b817e2ad",
+  "docs/_posts/2026-09-27-765-dual-twin-live-2026.md": "dbc3ef398a11ddd2ec6aed6222ec8ac358268249cb8f6a6aad8d546348151144",
+  "docs/_posts/2026-09-27-765-dual-twin-live-tour-goods-2026.md": "a64b2296083722072a60276b33d1674d0885648fc26ed6357149f28ca060edd4",
+  "docs/_posts/2026-09-27-765-never-end-idol-bluray-2026.md": "8eeaf06e7485e19e12a882cb939775f3c3f5c59fc5f59fff616bf22d3b81aa34",
+  "docs/_posts/2026-09-27-765-x-vorder-runway-goods-onsite-2026.md": "54a3e4f7494253e18ef6e39be434422bda51228dff26517b02077cefd20ecad3",
+  "docs/_posts/2026-09-27-cg-15th-anniversary-orchestra-2027.md": "e377026fe6c8bde3e0687f06b0927aae2924bba3bb6e8cf3140192dd20cfa34a",
+  "docs/_posts/2026-09-27-cg-cinderella-puzzle-and-dragons-collab-2026.md": "f9dbf83aec3fb37c9aec3261dc735349c04b4a5af675f56c714e02556bad73c2",
+  "docs/_posts/2026-09-27-cg-number-one-cross-over-2026.md": "33753bca4e7b94f1ae0f9f1231e2c2adcbcc7f7055d5fd9e2a61f092d821482c",
+  "docs/_posts/2026-09-27-cg-pop-up-yurakucho-2026.md": "9be4c5e216f50496f4bbb08852aa38d62718c5397dff482a5c34f32991abe0d5",
+  "docs/_posts/2026-09-27-dsva-valiv-birthday-voice-kamimizu-2026.md": "4d05ad5e8988dc86d48b302c819b8269f40bdb2d9c68d8ad2646d3750c18b08e",
+  "docs/_posts/2026-09-27-dsva-valiv-life-like-a-live-12-2026.md": "f94c039e3f3d693ead510e8b0df745a1dc64abe6b2532c2d4ea71b04e6e5f70a",
+  "docs/_posts/2026-09-27-gaku-gakumas-gravure-solo-collection-vol1-2026.md": "a8e6197f8c7de83126d89e04f8df42d0639f0c5d2beae46da9265f9935ed4022",
+  "docs/_posts/2026-09-27-gaku-gakumasu-chugai-cafe-revival-shibuya-2026.md": "d4330be7e9fffdee2fcdf1689c44c177b83555f365aa75fb134ffbf5e3597a05",
+  "docs/_posts/2026-09-27-million-14thlive.md": "804b145083e3f0ee7e6a200144af2bfc4278a3e3f90daada84f1e1dedfcdebda",
+  "docs/_posts/2026-09-27-million-julia-birthday-set-2026.md": "cf7460f6a55727292c2d488cf237c0045c0522a1c361aa42275ac632f13af18a",
+  "docs/_posts/2026-09-27-million-millishita-14thlive-memorial-jewels-2026.md": "9051404bde5b0b839eb4aadaa6df734da2f4144be1377d96ac765830ef2363d3",
+  "docs/_posts/2026-09-27-million-mltd-extreme-livestream-2026.md": "3696b687f7feb84f295c95f6781f04557637120bb641864809536556f6436b72",
+  "docs/_posts/2026-09-27-million-opera-seria-2026.md": "d3af9138e9c87a48d98249d974597ce917ec40988debdcbf14972c19fa632e7e",
+  "docs/_posts/2026-09-27-million-theater-talk-party-vol-67-2026.md": "b5e48ba16d5a1d015f975e37728e767dadce48738726bbd721502a55e06e2e63",
+  "docs/_posts/2026-09-27-shiny-283-production-solo-live-2026.md": "1c2e656c669be395e5afba50ff35731adb1987f4525541ca42e66e9a71168575",
+  "docs/_posts/2026-09-27-shiny-orchestra-concert-2027.md": "1838a0d71a44919a9ac3981eeb51e75c6b673ea09a431bbc4822773c8448b2ab",
+  "docs/_posts/2026-09-27-shiny-parallel-collection-popup-2026.md": "f1c8ab4719b0fad086eebdd1ee8305ffa62c2d97bc46eee00d6dc2bf110670dc",
+  "docs/_posts/2026-09-27-shiny-runway-2026-master-showpiece-photo-contest.md": "9b8a02c0a77a6d3788244b976a612ddbb28318be8080d1ca42d6d2abf6559bd3",
+  "docs/_posts/2026-09-27-shiny-sanka-benibana-release-event-goods-2026.md": "815d92772c1bca8aab433b6f21076ca2dea6d3579fa732c32dd0b25afd2a7e0a",
+  "docs/_posts/2026-09-27-shiny-style-collection-vol1-2026.md": "db2434f2a8925e719cc13397b20e512c31690a562f9cbae4d5eb0c21b841e48e",
+  "docs/_posts/2026-09-27-shiny-suntory-lemon-squash-2026-09.md": "25b32b09c0d5c9e9a69dbd8508575133f515f62d482b45504cc667945c2e54e8",
+  "docs/_posts/2026-09-27-sidem-315-idol-one-frame-update-2026.md": "5152c8d7c688f9384bd5d9d6789e97bb89c31cfdc075fe13d78ba79cf17f295d",
+  "docs/_posts/2026-09-27-sidem-315-mode-vol1-2026.md": "14f0c3422bf67bd1cc6079bc56671b78c4f175a95426069dfef951270dc9b18a",
+  "docs/_posts/2026-09-27-sidem-61-a5a94a.md": "4631ac19391a99dd2d945c7bbb3a292682a18feee8b1f8a88668550aa1880d78",
+  "docs/_posts/2026-09-27-sidem-tales-goods-wave4-2026.md": "c9c4889a229727f7a62e363af55066558eec1cb8496a5caa69b5a24954ffb5a9",
+  "docs/_posts/2026-09-27-sidem-transcendent-tales-only-shop-2026.md": "40d370a3608d301adc3540defd282180b09f80b9e52d639c86a76475744e545a",
+  "docs/_editions/2026-09-27.md": "8d3b2f0d85e7b348a4e82d566c8bb58dcfdfd6dab27f925f844cac64f9abf4f2",
+  "metrics/stories-before-2026-09-27.yml": "60de229e247514dd613e2e57c66e8d273f3ec15d089918d0230963b2aa5a63b0"
+ }
+}

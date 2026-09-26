@@ -59,5 +59,41 @@
    },
    "duration_s": 1640
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-27T03:52:26+09:00",
+   "edition": "2026-09-27",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 33,
+   "written": 31,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 124,
+    "covered": 124,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "sidem-teddys-collection2-popup-goods"
+   ],
+   "stages_min": {
+    "選定": 8.737052408854167,
+    "執筆": 6.18083336353302,
+    "出典の判定": 0.040259083112080894,
+    "組版": 3.1166313529014587,
+    "校閲": 3.079653481642405,
+    "校閲1波": 3.079653481642405
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "dsva-va-liv-3rd-live-meeting-2027"
+   ],
+   "duration_s": 3108
+  }
  ]
 }

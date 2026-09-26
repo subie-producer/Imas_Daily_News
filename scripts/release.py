@@ -42,6 +42,7 @@ ENV = load_env()
 # 実測: 発行前の点検で --dry-run を回したら、号スナップショットがまだ無いのは当然なのに
 # 「発行中止」の警報が Discord に飛び、発行不良と見分けが付かなくなった(2026-08-31 20:49)。
 DRY_RUN = False
+RELEASE_DATE = ""
 
 
 def notify(msg: str, ok: bool = True) -> None:
@@ -50,6 +51,9 @@ def notify(msg: str, ok: bool = True) -> None:
     if DRY_RUN:
         print(f"[dry-run・通知しない] {text}", flush=True)
         return
+    if not ok:
+        from pipelib import anomaly
+        anomaly("release", msg)      # 人に見せる異常は当番のなぜなぜの対象(main の終わりで渡す)
     print(text, flush=True)
     url = ENV.get("DISCORD_WEBHOOK_URL")
     if url:
@@ -214,6 +218,8 @@ def main() -> int:
     date = args.date or datetime.datetime.now(JST).strftime("%Y-%m-%d")
     nxt = "edition/" + (datetime.date.fromisoformat(date) + datetime.timedelta(days=1)).isoformat()
     branch = f"edition/{date}"
+    global RELEASE_DATE
+    RELEASE_DATE = date          # 終了時のなぜなぜに「異常の発生日」として渡す
     dry = args.dry_run
     # 通知の抑止は**最初の判定より前**に立てる。作業ツリーや号スナップショットの
     # 検査は dry でも走るので、ここが遅れると点検で警報が飛ぶ
@@ -338,11 +344,20 @@ def main() -> int:
 
 if __name__ == "__main__":
     try:
-        sys.exit(main())
+        code = main()
     except Exception as e:
         import traceback
         tb = traceback.format_exc()
         print(tb, file=sys.stderr, flush=True)
         tail = "\n".join(tb.strip().splitlines()[-6:])
         notify(f"想定外のエラーで停止: {e}\n```\n{tail}\n```\n(全文: journalctl --user -u imas-release)", ok=False)
-        sys.exit(1)
+        code = 1
+    if not DRY_RUN:
+        # 人に「異常」として通知したものは、申告で終えずに当番がなぜなぜする(止まった理由で既に当番を呼んでいれば重ねて呼ばない)。
+        # 異常の発生日は発行日(journal をその日から読む)。修正の取り込み先は生きている号(発行済みなら今日の branch は無い)
+        from pipelib import diagnose_anomalies, edition_date
+        day = RELEASE_DATE or datetime.datetime.now(JST).strftime("%Y-%m-%d")
+        # 発行できずに号の branch が残っているか(ローカルか origin のどちらか。監査指摘 r87: 新しい clone では origin にしか無い)
+        still = branch_exists(f"edition/{day}") or branch_exists(f"edition/{day}", remote=True)
+        diagnose_anomalies("release", day, rerun=False, edition=(day if still else edition_date()))
+    sys.exit(code)

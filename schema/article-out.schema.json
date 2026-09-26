@@ -44,7 +44,7 @@
         "type": "object", "required": ["url", "label"], "additionalProperties": false,
         "properties": {
           "url": {"type": "string", "minLength": 8},
-          "label": {"type": "string", "minLength": 1, "maxLength": 80, "description": "出典元表記「告知タイトル」(日付)。Markdown 禁止"}
+          "label": {"type": "string", "minLength": 1, "maxLength": 200, "description": "出典元表記「告知タイトル」(日付)。告知タイトルは切らずに全部書く。Markdown 禁止"}
         }
       }
     },

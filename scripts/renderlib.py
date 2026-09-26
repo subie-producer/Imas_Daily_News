@@ -18,6 +18,8 @@ import re
 from pathlib import Path
 
 DECLINE_CODES = ("NO_PRIMARY_SOURCE", "SOURCE_MISMATCH", "TOO_FEW_MATERIALS", "NOT_NEWS", "OTHER")
+# 出典 label の上限(字)。執筆 schema(schema/article-out.schema.json の sources[].label maxLength)と同じ値
+LABEL_MAX = 200
 FACT_NOTE = re.compile(r"\s*<!--\s*((?:[FN]\d+\s*)+)-->\s*$")
 _ZEN = str.maketrans("０１２３４５６７８９／．－", "0123456789/.-")
 
@@ -319,11 +321,13 @@ def is_ignorable(ch: str) -> bool:
 
 
 def clean_label(s) -> str:
-    """出典 label を書き出す形に整える: 制御文字(改行・タブを含む)と不可視文字を取り除き、空白を1つに畳み、80 字まで。
-    出典ページの題名に紛れたゼロ幅空白などを、執筆に差し戻さず機械で落とす。"""
+    """出典 label を書き出す形に整える: 制御文字(改行・タブを含む)と不可視文字を取り除き、空白を1つに畳み、LABEL_MAX 字まで。
+    出典ページの題名に紛れたゼロ幅空白などを、執筆に差し戻さず機械で落とす。
+    上限は執筆 schema(article-out の label maxLength)と同じにする。80 字だった頃、告知タイトルが途中で切れて校閲 R16 が
+    何巡もブロックし、記事が落ちた(2026-09-26 号: 316 label 中 73 が丁度 80 字)。"""
     import unicodedata
     t = "".join(ch for ch in str(s or "") if unicodedata.category(ch) != "Cc" and not is_ignorable(ch))
-    return re.sub(r"\s+", " ", t).strip()[:80]
+    return re.sub(r"\s+", " ", t).strip()[:LABEL_MAX]
 
 
 def visible_text(s) -> str:

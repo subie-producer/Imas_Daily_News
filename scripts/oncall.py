@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """oncall: 実装の欠陥で工程が止まったとき、人へ投げる前に**当番が直す**。
 
-  python3 scripts/oncall.py --stage compose|release --date YYYY-MM-DD --reason "…"
+  python3 scripts/oncall.py --stage compose|release|classify --date YYYY-MM-DD --reason "…"
+
+呼ばれ方は2つ: 工程が止まった(compose / release)と、**コードの不足が分かった**(classify: 出典の持ち主を取る
+パーサが無い種類の URL が来た。人に「決まらない」と申告する前に当番がパーサを書く。編集長 2026-09-26
+「申告前に診断しろ」)。どちらも当番が直し、監査が査読し、合意した commit だけを取り込む
 
 パイプラインが「人間判断が必要」で止まるのは、ほぼ毎回コードかプロンプトの欠陥である
 (実測: 2026-09-06〜12、7日連続で毎朝止まった。原因は全部こちらの実装)。人が起きて
@@ -174,14 +178,40 @@ def root_clean() -> bool:
     return not must(sh(["git", "status", "--porcelain"], cwd=ROOT), "git status").stdout.strip()
 
 
+def ensure_edition(edition: str, cwd: Path) -> str:
+    """取り込み先の号の branch を origin と揃える。戻り値は問題の説明("" なら揃った)。fetch の通信失敗は RuntimeError。
+    origin にだけある(新しい clone・ローカルの branch を消したあと)なら、fetch した参照からローカルを作る(監査指摘 r88)。"""
+    try:
+        fetched = sh(["git", "fetch", "-q", "origin", edition], cwd=cwd, timeout=120)
+        if fetched.returncode != 0:
+            if sh(["git", "ls-remote", "--exit-code", "--heads", "origin", edition], cwd=cwd, timeout=120).returncode == 2:
+                return f"{edition} が origin に無い"
+            raise RuntimeError(f"{edition} の fetch に失敗: {(fetched.stderr or '')[-200:]}")
+    except subprocess.TimeoutExpired as e:       # 通信の停滞(WSL の DNS は断続的に失敗する)も「前提の確認に失敗」として通知する
+        raise RuntimeError(f"{edition} の origin との通信が {e.timeout:.0f} 秒で応答しない") from e
+    if sh(["git", "rev-parse", "--verify", "-q", edition], cwd=cwd).returncode != 0:
+        must(sh(["git", "branch", edition, f"origin/{edition}"], cwd=cwd), f"{edition} のローカル作成")
+    if sh(["git", "rev-parse", edition], cwd=cwd).stdout.strip() != sh(["git", "rev-parse", f"origin/{edition}"], cwd=cwd).stdout.strip():
+        return f"{edition} がリモートと食い違う"
+    return ""
+
+
 def remote_main() -> str:
     must(sh(["git", "fetch", "-q", "origin", "main"], cwd=ROOT, timeout=120), "fetch")
     return sh(["git", "rev-parse", "origin/main"], cwd=ROOT).stdout.strip()
 
 
+STAGES = ("compose", "release", "classify", "collect", "watch")
+# 工程 → journal の unit。出典の判定(classify)は収集(collect)と組版(compose)の中で走る。当番に見せるのは収集のログ
+UNIT_OF = {"classify": "collect"}
+# 当番を呼んだ理由の言い方(止まったときと、止まらずに異常があった=なぜなぜ、とがある)
+CALLED_BECAUSE = {"classify": "に持ち主を取るパーサの無い出典があった", "collect": "に異常があった(なぜなぜ)",
+                  "watch": "が異常を検知した(なぜなぜ)"}
+
+
 def gather_context(stage: str, date: str, reason: str) -> str:
-    parts = [f"# 止まった工程: {stage} / 号: {date}\n\n## 呼び出し側の理由\n{reason}\n"]
-    r = sh(["journalctl", "--user", "-u", f"imas-{stage}", "--since", f"{date} 00:00", "--no-pager", "-n", "250"],
+    parts = [f"# 当番を呼んだ工程: {stage} / 号: {date}\n\n## 呼び出し側の理由\n{reason}\n"]
+    r = sh(["journalctl", "--user", "-u", f"imas-{UNIT_OF.get(stage, stage)}", "--since", f"{date} 00:00", "--no-pager", "-n", "250"],
            cwd=ROOT, timeout=60)
     if r.returncode == 0 and r.stdout.strip():
         lines = [re.sub(r"^.*?python3\[\d+\]: ", "", l) for l in r.stdout.splitlines()]
@@ -610,6 +640,10 @@ def rerun_policy(stage: str, changed: list[str], rerun_mode: str) -> tuple[bool,
     """
     if rerun_mode == "none":
         return False, "none"
+    if stage == "classify":
+        # 出典の判定は号を作らない。パーサを足したら、その号の判定(合議 → 付け直し → lint)をやり直すだけ
+        # (prompts/ を触っても組版はやり直さない。組版はまだ走っていないか、走るなら 03:00 に新しいコードで走る)
+        return False, "出典の判定のやり直し(classify_retag_lint)"
     full = needs_full_rerun(changed) or rerun_mode == "rebuild"
     return full, ("作り直し(compose 全工程" + (" → release" if stage == "release" else "") + ")") if full \
         else ("続き(--reuse-plan)" if stage == "compose" else "続き(release)")
@@ -680,6 +714,10 @@ def reset_edition(date: str, edition: str) -> str:
     return backup
 
 
+CLASSIFY_RERUN = ("import sys; sys.path.insert(0, 'scripts'); import pipelib; "
+                  "ok, why = pipelib.classify_retag_lint(sys.argv[1], require_parsers=True); print(why); sys.exit(0 if ok else 1)")
+
+
 def run_stage(cmd: list[str], log: Path, timeout: int) -> int:
     with log.open("a", encoding="utf-8") as f:
         try:
@@ -709,6 +747,12 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool) -> int:
                 p.unlink()   # 古い校閲記録が残ると release が最大巡数の古い判定を読む(監査指摘)
             commit_paths(["metrics"], f"oncall: {date} の古い校閲記録を外す", edition)
             code = run_stage([sys.executable, compose_py, "--date", date, "--reuse-plan"], log, 7200)
+        elif stage == "classify":
+            # 取り込んだあとのコードで、その号の出典の判定(合議 → 紙面の付け直し → lint)をやり直し、結果を commit する。
+            # 取引が失敗すれば判定表と記事は開始時の中身に戻る(classify_retag_lint)
+            code = run_stage([sys.executable, "-c", CLASSIFY_RERUN, date], log, 3600)
+            if code == 0:
+                commit_paths(["source_types.yml", "docs/_posts"], f"oncall: {date} 出典の判定をやり直す(パーサ追加後)", edition)
         else:
             code = 0
         if code == 0 and stage == "release":
@@ -728,10 +772,12 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool) -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--stage", choices=["compose", "release"])
+    ap.add_argument("--stage", choices=list(STAGES))
     ap.add_argument("--date")
     ap.add_argument("--reason", default="")
     ap.add_argument("--no-rerun", action="store_true")
+    ap.add_argument("--edition", default="", metavar="YYYY-MM-DD",
+                    help="修正を取り込む号の日付(既定は --date)。発行後の release・watch は異常の発生日と取り込み先の号が違う")
     ap.add_argument("--backlog", action="store_true", help="発行後に直す指摘(未着手)を一覧する")
     ap.add_argument("--backlog-done", nargs="+", metavar="KEY", help="直し終えた指摘を消し込む")
     a = ap.parse_args()
@@ -749,7 +795,7 @@ def main() -> int:
     if not a.stage or not a.date:
         ap.error("--stage と --date が要る")
     date, stage = a.date, a.stage
-    edition = f"edition/{date}"
+    edition = f"edition/{a.edition or date}"
 
     # 工程の排他(collect/compose/release/当番で共通の flock)。起動直後は親の compose がまだ持って
     # いるので、ここで終わるまで待つ。以後、再実行が終わるまで持ち続ける(pgrep の隙間を作らない。監査指摘)
@@ -776,12 +822,9 @@ def main() -> int:
             notify("oncall", f"{date} {stage}: 本体の作業ツリーが clean でない。当番は何もしない:\n"
                              + sh(["git", "status", "--short"], cwd=ROOT).stdout[:500], ok=False)
             return 1
-        if sh(["git", "rev-parse", "--verify", "-q", edition], cwd=ROOT).returncode != 0:
-            notify("oncall", f"{date} {stage}: {edition} が無い。当番は何もしない", ok=False)
-            return 1
-        must(sh(["git", "fetch", "-q", "origin", edition], cwd=ROOT, timeout=120), f"{edition} の fetch")
-        if sh(["git", "rev-parse", edition], cwd=ROOT).stdout.strip() != sh(["git", "rev-parse", f"origin/{edition}"], cwd=ROOT).stdout.strip():
-            notify("oncall", f"{date} {stage}: {edition} がリモートと食い違う。当番は何もしない", ok=False)
+        problem = ensure_edition(edition, ROOT)
+        if problem:
+            notify("oncall", f"{date} {stage}: {problem}。当番は何もしない", ok=False)
             return 1
     except RuntimeError as e:
         notify("oncall", f"{date} {stage}: 前提の確認に失敗: {e}", ok=False)
@@ -792,7 +835,7 @@ def main() -> int:
         notify("oncall", f"{date} {stage}: 試行の印が競合した(同時起動)。当番は起動しない", ok=False)
         return 1
     save_state(state_p, state)
-    notify("oncall", f"{date} {stage} が止まった。当番({ONCALL_MODEL})が診断・修正に入る({attempt_no}回目)")
+    notify("oncall", f"{date} {stage} {CALLED_BECAUSE.get(stage, 'が止まった')}。当番({ONCALL_MODEL})が診断・修正に入る({attempt_no}回目)")
 
     context = gather_context(stage, date, a.reason)
     (ROOT / "metrics" / f"oncall-{date}-{stage}-context.txt").write_text(context, encoding="utf-8")
@@ -851,6 +894,8 @@ def main() -> int:
 
         # release 起点でも、生成層を直したなら号を作り直す(生成済みの号をそのまま発行しない。監査指摘)
         full, rerun_mode = rerun_policy(stage, changed, str(fix.get("rerun_mode") or ""))
+        if a.no_rerun:
+            full, rerun_mode = False, "再実行なし(呼び出し側の指定: 工程は終わっている。次の実行から効く)"
         targets: list[str] = []
         branch = ""
         reported = True
@@ -927,11 +972,12 @@ def main() -> int:
             # 報告ファイル(metrics/oncall-*-report.md)を人が見て、手で再実行する
             notify("oncall", f"{date} {stage}: 修正報告が Discord に届かないので再実行しない。metrics/oncall-{date}-{stage}-report.md を見て手で再実行すること", ok=False)
             return 1
+        if a.no_rerun:
+            # 呼び出し側が「再実行しない」(工程は終わっている・号は確定している。なぜなぜと修正だけ)。次の実行から効く
+            return 0
         if rerun_mode == "none":
             notify("oncall", f"{date} {stage}: 再実行しても通らない、と当番が判断。人の判断が要る", ok=False)
             return 1
-        if a.no_rerun:
-            return 0
         if not root_clean():
             notify("oncall", f"{date} {stage}: 再実行前に本体の作業ツリーが汚れた。再実行しない", ok=False)
             return 1

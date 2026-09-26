@@ -28,3 +28,5 @@ metrics/*.lock
 metrics/work/
 # 出典の判定で決まらなかったものと両モデルの言い分(watch が翌朝の通知に併記する)。次の判定で上書き
 metrics/classify-unresolved.json
+# 持ち主を取るパーサが無い URL の種類について、当番に依頼した日(同じ依頼を出し直さないための記録)
+metrics/parser-requests.json

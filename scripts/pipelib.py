@@ -87,15 +87,57 @@ def tool_path() -> str:
     return ":".join(dict.fromkeys(cur + extra))
 
 
-def escalate(stage: str, date: str, reason: str) -> bool:
+# この process が人に「異常」として通知した内容の台帳(notify(ok=False) と anomaly() が積む)。
+# **人に申告する前に、当番がなぜなぜ(原因まで遡る診断)をする**(編集長 2026-09-26「すべてのエラーがなぜ起きたかなぜなぜしろ」
+# 「申告前に診断しろ」)。工程の終わりに diagnose_anomalies が当番へ渡し、escalate は毎回この台帳を依頼文に付ける
+ANOMALIES: list[str] = []
+_ESCALATED = False
+
+
+def anomaly(job: str, text: str) -> None:
+    """人に「異常」として見せる事柄を台帳に積む(通知の成否とは独立)。空文字は積まない。"""
+    if text and text.strip():
+        ANOMALIES.append(f"[{job}] {text.strip()}")
+
+
+def diagnose_anomalies(stage: str, date: str, rerun: bool = False, reason: str = "", edition: str = "") -> bool:
+    """工程の終わりに、台帳の異常を当番へ渡す(この process でまだ当番を呼んでいなければ)。
+    既定は「工程は終わった(止まっていない)」ので再実行しない。止まったときは reason と rerun=True で呼ぶ。
+    date は異常の発生日(当番はその日の journal を読む)。修正の取り込み先の号がそれと違うとき(発行後の release・watch)は
+    edition に生きている号の日付を渡す。戻り値は当番を呼んだか。"""
+    if not ANOMALIES or _ESCALATED:
+        return False
+    return escalate(stage, date, reason or "工程は終わった(止まっていない)が、人に異常として通知した事柄がある。下の一覧をなぜなぜすること",
+                    rerun=rerun, edition=edition)
+
+
+def escalate_reason(reason: str) -> str:
+    """当番に渡す理由 = 呼び出し側の理由 + 異常の台帳(なぜなぜの依頼文 prompts/oncall-whywhy)。台帳が空なら理由だけ。"""
+    if not ANOMALIES:
+        return reason[:4000]
+    # 引数1つの上限(128KB)に収める: 30件 × 1200 字まで
+    return reason[:4000] + "\n\n" + render_prompt("oncall-whywhy", ITEMS="\n".join(f"- {a[:1200]}" for a in ANOMALIES[:30]))
+
+
+def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: str = "") -> bool:
+    """当番(oncall)を起動する。依頼の理由に、この process の異常の台帳(なぜなぜの対象)を必ず付ける。
+    rerun=False は「止まった工程を再実行しない」(号が確定している・工程が終わっている)。
+    edition は修正を取り込む号の日付(既定は date。発行後の工程では生きている次の号を渡す)。"""
     import os
+    global _ESCALATED
+    if _QUIET:                 # 試験実行(通知しない)では当番も呼ばない
+        print(f"[試験実行・当番を呼ばない] {stage} {date}: {reason[:200]}", flush=True)
+        return False
     if ENV.get("ONCALL", "on").lower() == "off" or os.environ.get("ONCALL", "").lower() == "off":
         return False
     script = ROOT / "scripts" / "oncall.py"
     if not script.exists():
         return False
+    # _ESCALATED は**起動を確かめてから**立てる(起動に失敗したのに立てると、工程末尾の diagnose が二度目を抑止して、
+    # 当番が誰も呼ばれないまま終わる。監査指摘 r87)
     log = ROOT / "metrics" / f"oncall-{date}-{stage}.log"
-    args = [sys.executable, str(script), "--stage", stage, "--date", date, "--reason", reason[:4000]]
+    args = ([sys.executable, str(script), "--stage", stage, "--date", date, "--reason", escalate_reason(reason)]
+            + (["--no-rerun"] if not rerun else []) + (["--edition", edition] if edition and edition != date else []))
     # **systemd の service から呼ばれたときは、別の transient unit として起動する。**
     # Popen(start_new_session=True) で子を切り離しても cgroup は同じなので、compose の service が
     # 終わった瞬間に systemd が当番ごと殺す(実測 2026-09-13 04:15: 当番のログが空のまま消えた)
@@ -114,6 +156,7 @@ def escalate(stage: str, date: str, reason: str) -> bool:
             st = subprocess.run(["systemctl", "--user", "is-active", unit], capture_output=True, text=True)
             if st.stdout.strip() in ("active", "activating"):
                 print(f"当番(oncall)を起動した: {stage} {date}(unit {unit})", flush=True)
+                _ESCALATED = True
                 return True
             notify("oncall", f"{date} {stage}: 当番の unit {unit} が動いていない({st.stdout.strip()})。人の判断が要る", ok=False)
             return False
@@ -126,6 +169,7 @@ def escalate(stage: str, date: str, reason: str) -> bool:
             subprocess.Popen(args, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
                              start_new_session=True, env={**os.environ, "PATH": tool_path()})
         print(f"当番(oncall)を起動した: {stage} {date}", flush=True)
+        _ESCALATED = True
         return True
     except Exception as e:
         print(f"当番の起動に失敗: {e}", flush=True)
@@ -224,6 +268,8 @@ def notify(job: str, msg: str, ok: bool = True, require: bool = False) -> bool:
     試験実行も**届いていない**として False を返す(監査指摘)。通常の通知は未設定なら True(黙認)。"""
     prefix = "✅" if ok else "🚨"
     text = f"{prefix} アイマスNEWS {job}: {msg}"
+    if not ok and job != "oncall":     # 人に見せる異常は当番のなぜなぜの対象(当番自身の通知は除く)
+        anomaly(job, msg)
     if _QUIET:
         print(f"[試験実行・通知しない] {text}", flush=True)
         return not require
@@ -870,7 +916,7 @@ def _restore(snap: dict[str, bytes | None], new_under: Path | None = None) -> st
 
 
 def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "origin/main",
-                        timeout: int = 1800, lint: bool = True) -> tuple[bool, str]:
+                        timeout: int = 1800, lint: bool = True, require_parsers: bool = False) -> tuple[bool, str]:
     """判定表の更新(合議)→ 紙面の種別付け直し(→ lint)を**1つの取引**にする。
 
     どれかが失敗したら、この取引が触った判定表と記事を**開始時の中身**に戻す(表だけ進んで次の lint が
@@ -884,6 +930,8 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
     ok, why = False, ""
     try:
         cmd = [sys.executable, str(scripts / "classify_sources.py"), "--date", date, "--apply"] + (["--posts-only"] if posts_only else [])
+        if require_parsers:      # 当番の再実行: パーサの無い URL が残っていたら失敗(成功扱いにしない。監査指摘 r85)
+            cmd.append("--require-parsers")
         r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout)
         print(r.stdout[-1200:], flush=True)
         if r.returncode != 0:

@@ -25,35 +25,5 @@
   "verify": "unconfirmed",
   "src_candidate_id": "202609242336-watch-0",
   "event_date": "2027-01-30"
- },
- {
-  "id": "sched-2027-01-30-va-liv-3rd-live-meeting-2027-開幕",
-  "dedup_key": "va-liv-3rd-live-meeting-2027",
-  "brand": "dsva",
-  "subject": "vα-liv 3rdLIVE&MEETING(愛知)",
-  "kind": "開幕",
-  "note": "愛知公演が開幕、PRODUCER MEETINGとLIVEに参加できる",
-  "reserved_on": "2026-09-27",
-  "title": "vα-liv 3rdLIVE＆MEETING開催決定",
-  "url": "https://idolmaster-official.jp/news/01_19972",
-  "source_type": "公式",
-  "facts": [
-   "『3rdLIVE＆MEETING』の開催が決定した。",
-   "vα-liv初となる愛知県・東京都の2都市開催。",
-   "各会場でPRODUCER MEETINGとLIVEイベントを実施予定。",
-   "愛知公演は2027年1月30日(土)・1月31日(日)。",
-   "愛知公演の会場は愛知県芸術劇場 大ホール（愛知県名古屋市）。",
-   "東京公演は2027年3月21日(日)・3月22日(月・祝)。",
-   "東京公演の会場は日本工学院アリーナ（東京都大田区）。",
-   "チケット情報などの詳細は後日発表予定。",
-   "エンゲージメント: 高",
-   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ",
-   "2026年9月12日に開催された『上水流宇宙BIRTHDAY ONLINE LIVE2026』のアーカイブを販売中。",
-   "DJパートを収録している。"
-  ],
-  "via": "explore",
-  "verify": "confirmed",
-  "src_candidate_id": "202609261234-explore-10",
-  "event_date": "2027-01-30"
  }
 ]

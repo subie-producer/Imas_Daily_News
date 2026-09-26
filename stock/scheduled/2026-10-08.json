@@ -193,5 +193,36 @@
   "src_candidate_id": "202609250223-explore-8",
   "event_date": "2026-09-25",
   "deadline": "2026-10-11"
+ },
+ {
+  "id": "sched-2026-10-08-cg-15th-orchestra-concert-2027-結果",
+  "dedup_key": "cg-15th-orchestra-concert-2027",
+  "brand": "cg",
+  "subject": "シンデレラ15周年記念オーケストラコンサート 現地先行",
+  "kind": "結果",
+  "note": "現地チケット最速先行抽選の当落結果が発表される",
+  "reserved_on": "2026-09-27",
+  "title": "シンデレラ15周年オーケストラ現地チケット最速先行",
+  "url": "https://idolmaster-official.jp/live_event/cg_15th_orchestra/ticket/",
+  "source_type": "公式",
+  "facts": [
+   "公演名: THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSARY ORCHESTRA CONCERT ～ シンデレラの演奏会 ～",
+   "2027年1月11日(月・祝)・12日(火)",
+   "会場: パシフィコ横浜 国立大ホール",
+   "S席スペシャルシート 20,000円(税込)",
+   "S席は前方席確約・限定お土産グッズ付き",
+   "A席全席指定 12,000円(税込)",
+   "限定お土産グッズは当日会場にて渡し、後日発送等は対応しない",
+   "受付対象席種: S席スペシャルシート / A席全席指定",
+   "受付期間: 2026年9月16日(水)12:00～2026年9月27日(日)23:59",
+   "当落発表: 2026年10月8日(木)13:00～",
+   "入金期間: 2026年10月8日(木)13:00～2026年10月12日(月･祝)23:59",
+   "枚数制限: お一人様1公演につき2枚まで（複数公演申込可）"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609270227-grok-23",
+  "event_date": "2027-01-11",
+  "deadline": "2026-09-27"
  }
 ]

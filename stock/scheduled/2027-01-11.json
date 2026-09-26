@@ -90,36 +90,5 @@
   "src_candidate_id": "202609201835-explore-2",
   "event_date": "2027-01-11",
   "deadline": "2026-09-27"
- },
- {
-  "id": "sched-2027-01-11-cg-cinderella-orchestra-concert-2027-開幕",
-  "dedup_key": "cg-cinderella-orchestra-concert-2027",
-  "brand": "cg",
-  "subject": "シンデレラ15周年記念オーケストラコンサート",
-  "kind": "開幕",
-  "note": "DAY1開場17:00・開演18:00でコンサートが開幕",
-  "reserved_on": "2026-09-27",
-  "title": "シンデレラガールズ 15th ANNIVERSARY ORCHESTRA CONCERT",
-  "url": "https://idolmaster-official.jp/news/01_20002",
-  "source_type": "公式",
-  "facts": [
-   "公演タイトル: THE IDOLM@STER CINDERELLA GIRLS 15th ANNIVERSARY ORCHESTRA CONCERT ～ シンデレラの演奏会 ～",
-   "開催場所: パシフィコ横浜 国立大ホール",
-   "開催日時【DAY1】: 2027年1月11日(月･祝) 開場17:00 / 開演18:00",
-   "開催日時【DAY2】: 2027年1月12日(火) 開場18:00 / 開演19:00",
-   "指揮: 和田一樹",
-   "演奏: ワンダーフィルハーモニックオーケストラ",
-   "コンサートマスター: 﨑谷直人",
-   "【DAY1】歌唱: 藍原ことみ(一ノ瀬志希 役)",
-   "【DAY1】歌唱: 原 涼子(望月 聖 役)",
-   "【DAY1】歌唱: 花井美春(村上 巴 役)",
-   "【DAY1】演奏: IMAJO＜ギター＞",
-   "【DAY2】歌唱: 安齋由香里(西園寺琴歌 役)"
-  ],
-  "via": "watch",
-  "verify": "confirmed",
-  "src_candidate_id": "202609261234-watch-1",
-  "event_date": "2027-01-11",
-  "deadline": "2026-09-27"
  }
 ]

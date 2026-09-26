@@ -124,6 +124,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - nicolog.jp            # 合議で追加: ニコニコ動画のタグ・統計データを収集・公開する二次サイト
   - lnk.to                # 合議で追加: 複数のアーティスト・レーベルに利用される汎用プラットフォーム。配信プラットフォー
   - tvfan.kyodo.co.jp     # 合議で追加: Billboard JAPANチャート情報を報道。シャニマスは一言のみで取材なし
   - news.saku-chan.com    # 合議で追加: SNS・Xのトレンドとファン投稿のまとめ
@@ -199,6 +200,7 @@ secondary_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - hrurukku.hatenablog.com # 合議で追加: 個人のはてなブログ。ライブ観賞の個人感想
   - tokifuji.hatenablog.com # 合議で追加: Hatena Blog の個人ブログ。ライブ感想を投稿
   - app-tatsujin.com      # 合議で追加: 個人のブログで公式発表をまとめている。個人サイトは内容を問わずファン
   - canonsnk.blog69.fc2.com # 合議で追加: 個人ブログでアイマスグッズの購入・感想を記述している
@@ -218,6 +220,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - taito.co.jp           # 合議で追加: 学園マス グッズを置くゲームセンター・プライズ販売事業者
   - zan-live.com          # 合議で追加: ライブ配信プラットフォーム。チケット販売・配信の主体。
   - megashakicp7.com      # 合議で追加: メガシャキのメーカーで、アイマスのライセンスを受けてコラボキャンペーンを運営して
   - pad.gungho.jp         # 合議で追加: ライセンス下でコラボを実施し、ガチャなど商品を動かしている一次発信

@@ -1,0 +1,282 @@
+{
+ "decisions": {
+  "gaku-ichiban-kuji-part6-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "8/29付で全ラインナップ・発売日・価格等を既報(stock: gaku-ichiban-kuji-part6-2026)。新規事実・当日のトリガーなし"
+  },
+  "gaku-conceptual-single-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/24-25付で既報(gaku-conceptual-single-collection-2027, hatsuboshi-conceptual-single-collection-2026)。同一内容"
+  },
+  "gaku-hatsuboshi-hr-12-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/25付gaku-hr-12-2026-09-28で既報(配信日時・出演)。配信本番は9/28で本日のトリガーなし"
+  },
+  "gaku-mirror-policy-hr12-2026": {
+   "action": "article",
+   "angle": "初星学園HR#12(9/28配信)、個人限定・非営利に限りミラー配信を公式が歓迎すると告知",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式ミラー配信ポリシーは未既報の新規事項。gaku-topic-33(同内容Xポスト)を統合"
+  },
+  "gaku-after-school-namco-2026": {
+   "action": "article",
+   "angle": "「After Schoolキャンペーン in namco」開始、月村手毬・十王星南・雨夜燕・秦谷美鈴の限定プライズとちびぐるみ新作が景品に",
+   "rank": "medium",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/11既報分は手毬のみだったが、本日実開催で対象4人・ちびぐるみ連動が判明。chibi-unit-collectionを統合"
+  },
+  "gaku-shirube-iwate-day2-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/24付gaku-live-tour-shirube-iwate-day2-2026等で既報。公演は9/23終了済み、本日のトリガーなし"
+  },
+  "gaku-chibi-unit-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-after-school-namco-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日9/25開始・同じナムコ景品展開の同一施策としてAfter Schoolキャンペーン記事に統合"
+  },
+  "gaku-live-tour-shirube-iwate-day2-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同一famitsu記事の重複収集。9/24付で既報(stock: gaku-live-tour-shirube-iwate-day2-2026)"
+  },
+  "jinro-bunka-festival-goods-mail-order-2026": {
+   "action": "article",
+   "angle": "リアル脱出ゲーム×学マス「人狼潜む文化祭からの脱出」、全12種オリジナルグッズの事後通販を9/29正午開始",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "未既報の新規施策。ステッカー・クリアファイル・アクリルスタンド等価格・仕様の素材あり"
+  },
+  "hatsuboshi-hr-12-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "HR#12生配信告知の重複。gaku-hr-12-2026-09-28で既報"
+  },
+  "ichiban-kuji-gakuen-idolmaster-part6-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "一番くじPart6の重複収集。既報事項と同一"
+  },
+  "gaku-topic-30": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "HR#12出演告知Xポストの重複。gaku-hr-12-2026-09-28で既報"
+  },
+  "gaku-topic-31": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "『め』MV本編は9/20既報。ショート動画の再掲のみで新情報なし"
+  },
+  "gaku-topic-32": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "岩手公演アーカイブ視聴期間は9/22既報。公演終了済みで本日のトリガーなし"
+  },
+  "gaku-topic-33": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-mirror-policy-hr12-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式ミラー配信ポリシー告知と同一内容のXポスト"
+  },
+  "gaku-topic-34": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "gaku-topic-31と同一内容の再掲ポスト。新情報なし"
+  },
+  "gakumasu-chugai-cafe-revival-shibuya-2026": {
+   "action": "article",
+   "angle": "学マス×Chugai Grace Café渋谷リバイバル、先着予約受付が本日23:59で締切",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "内容自体は既報(9/3-9/4)だが、予約締切という当日のトリガーがあるため単独記事にする"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-mirror-policy-hr12-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園HR#12(9/28配信)、個人限定・非営利に限りミラー配信を公式が歓迎すると告知",
+    "lead_score": 10,
+    "dedup_key": "gaku-mirror-policy-hr12-2026",
+    "candidate_ids": [
+     "202609251235-watch-2",
+     "202609260237-grok-44"
+    ]
+   },
+   {
+    "slug": "gaku-after-school-namco-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「After Schoolキャンペーン in namco」開始、月村手毬・十王星南・雨夜燕・秦谷美鈴の限定プライズとちびぐるみ新作が景品に",
+    "lead_score": 35,
+    "dedup_key": "gaku-after-school-namco-2026",
+    "candidate_ids": [
+     "202609251235-explore-19",
+     "202609251835-watch-6"
+    ]
+   },
+   {
+    "slug": "gaku-jinro-bunka-festival-goods-mail-order-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "リアル脱出ゲーム×学マス「人狼潜む文化祭からの脱出」、全12種オリジナルグッズの事後通販を9/29正午開始",
+    "lead_score": 15,
+    "dedup_key": "jinro-bunka-festival-goods-mail-order-2026",
+    "candidate_ids": [
+     "202609252333-explore-8"
+    ]
+   },
+   {
+    "slug": "gaku-gakumasu-chugai-cafe-revival-shibuya-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス×Chugai Grace Café渋谷リバイバル、先着予約受付が本日23:59で締切",
+    "lead_score": 5,
+    "dedup_key": "gakumasu-chugai-cafe-revival-shibuya-2026",
+    "candidate_ids": [
+     "sched-2026-09-26-gakumasu-chugai-cafe-revival-shibuya-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-ichiban-kuji-part6-2026",
+    "reason": "既報",
+    "note": "8/29付で全ラインナップ・発売日・価格等を既報(stock: gaku-ichiban-kuji-part6-2026)。新規事実・当日のトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-conceptual-single-collection-2026",
+    "reason": "既報",
+    "note": "9/24-25付で既報(gaku-conceptual-single-collection-2027, hatsuboshi-conceptual-single-collection-2026)。同一内容"
+   },
+   {
+    "dedup_key": "gaku-hatsuboshi-hr-12-2026",
+    "reason": "既報",
+    "note": "9/25付gaku-hr-12-2026-09-28で既報(配信日時・出演)。配信本番は9/28で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-shirube-iwate-day2-report-2026",
+    "reason": "既報",
+    "note": "9/24付gaku-live-tour-shirube-iwate-day2-2026等で既報。公演は9/23終了済み、本日のトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-live-tour-shirube-iwate-day2-2026",
+    "reason": "既報",
+    "note": "同一famitsu記事の重複収集。9/24付で既報(stock: gaku-live-tour-shirube-iwate-day2-2026)"
+   },
+   {
+    "dedup_key": "hatsuboshi-hr-12-2026",
+    "reason": "既報",
+    "note": "HR#12生配信告知の重複。gaku-hr-12-2026-09-28で既報"
+   },
+   {
+    "dedup_key": "ichiban-kuji-gakuen-idolmaster-part6-2026",
+    "reason": "既報",
+    "note": "一番くじPart6の重複収集。既報事項と同一"
+   },
+   {
+    "dedup_key": "gaku-topic-30",
+    "reason": "既報",
+    "note": "HR#12出演告知Xポストの重複。gaku-hr-12-2026-09-28で既報"
+   },
+   {
+    "dedup_key": "gaku-topic-31",
+    "reason": "既報",
+    "note": "『め』MV本編は9/20既報。ショート動画の再掲のみで新情報なし"
+   },
+   {
+    "dedup_key": "gaku-topic-32",
+    "reason": "既報",
+    "note": "岩手公演アーカイブ視聴期間は9/22既報。公演終了済みで本日のトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-topic-34",
+    "reason": "既報",
+    "note": "gaku-topic-31と同一内容の再掲ポスト。新情報なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

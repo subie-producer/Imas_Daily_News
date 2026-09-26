@@ -1,0 +1,304 @@
+{
+ "decisions": {
+  "pazudora-cinderella-feat-ryugakushi-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-puzzle-dragons-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ガチャの詳細(おまけガチャ・動画視聴ガチャ・モンスター交換所)を統合"
+  },
+  "pazudora-cinderella-ability-adjustment-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-puzzle-dragons-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "能力調整の実装日(9/24メンテ後)を統合"
+  },
+  "pazudora-cinderella-set-sale-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-puzzle-dragons-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "魔法石セット販売の価格・期間を統合"
+  },
+  "cg-cinderella-marine-symphony-2027": {
+   "action": "article",
+   "angle": "来年1〜3月に横浜・八景島シーパラダイスで新コラボ企画「Cinderella Marine-Symphony」開催決定、スペシャルステージも予定",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新規発表の大型企画で本日付facts、既報なし"
+  },
+  "cg-15th-anniversary-orchestra-2027": {
+   "action": "article",
+   "angle": "15周年記念オーケストラコンサートのチケット価格が判明(S席2万円・A席1.2万円)、現地最速先行抽選は9/27締切",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-topic-9/10/11を統合。開催概要は既報だが価格は新事実"
+  },
+  "cg-puzzle-dragons-collab-2026": {
+   "action": "article",
+   "angle": "パズドラ×シンデレラガールズコラボ開催中、feat.龍楽士ガチャ・能力調整・魔法石セット・記念キャンペーンの詳細",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一コラボの複数主題を統合。ガチャ概要は既報だが能力調整・セット・キャンペーンは新事実"
+  },
+  "pazudora-cinderella-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-puzzle-dragons-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "BGM解放・スペシャルステージ・称号チャレンジ・スペシャルレッスンの新事実を統合"
+  },
+  "cg-cinderella-master-number-one-cross-over-2026": {
+   "action": "article",
+   "angle": "「クロス×オーバー！」9/30発売、価格・型番・収録3曲判明、同日21時にPremiere MV公開",
+   "rank": "medium",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-topic-8を統合。発売日は既報だが価格・型番・全曲目・MV公開時刻は新事実"
+  },
+  "cg-cross-over-preview-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "本文が取得できず内容確認不能"
+  },
+  "puzzle-and-dragons-cinderella-campaign-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-puzzle-dragons-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "サイン入り色紙が当たる記念抽選キャンペーンの詳細を統合"
+  },
+  "cinderella-fes-noir-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/25付で既に記事化済み、本日新しい事実や締切等のトリガーなし"
+  },
+  "cg-topic-8": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-cinderella-master-number-one-cross-over-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Premiere MV公開(9/30 21時)の公式告知を統合"
+  },
+  "cg-topic-9": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "現地チケット最速先行抽選、9/27締切のリマインドを統合"
+  },
+  "cg-topic-10": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式サイトTicketページ更新の告知を統合"
+  },
+  "cg-topic-11": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "S席2万円・A席1.2万円のチケット価格詳細を統合"
+  },
+  "cg-topic-12": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-pop-up-yurakucho-marui-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "前日告知の9/26入場案内を統合"
+  },
+  "cg-topic-17": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿(UNICUS入手報告)の寄せ集めで単体記事化しない"
+  },
+  "cg-kyoto-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-pop-up-yurakucho-marui-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "京まふ事後物販POP UPシンデレラ分、同じ有楽町マルイ7Fの開幕情報を統合"
+  },
+  "x-com-thechara-2014-status-2100872465073516942": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-pop-up-yurakucho-marui-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "追加の描き下ろし新規商品情報を統合"
+  },
+  "cinderella-pop-up-yurakucho-marui-2026": {
+   "action": "article",
+   "angle": "シンデレラガールズPOP UP SHOPが有楽町マルイ7Fで本日開幕、初日はデジタル整理券制・購入特典ブロマイド全8種",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催概要は既報だが本日が開幕日というトリガーがあり記事化"
+  },
+  "www-the-chara-com-blog-p-121064": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-pop-up-yurakucho-marui-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催概要・営業時間・支払い方法の詳細を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-marine-symphony-2027",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "来年1〜3月に横浜・八景島シーパラダイスで新コラボ企画「Cinderella Marine-Symphony」開催決定、スペシャルステージも予定",
+    "lead_score": 85,
+    "dedup_key": "cg-cinderella-marine-symphony-2027",
+    "candidate_ids": [
+     "202609251235-watch-0"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-orchestra-2027",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年記念オーケストラコンサートのチケット価格が判明(S席2万円・A席1.2万円)、現地最速先行抽選は9/27締切",
+    "lead_score": 25,
+    "dedup_key": "cg-15th-anniversary-orchestra-2027",
+    "candidate_ids": [
+     "202609251235-watch-1",
+     "202609260237-grok-20",
+     "202609260237-grok-21",
+     "202609260237-grok-22"
+    ]
+   },
+   {
+    "slug": "cg-puzzle-dragons-collab-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "パズドラ×シンデレラガールズコラボ開催中、feat.龍楽士ガチャ・能力調整・魔法石セット・記念キャンペーンの詳細",
+    "lead_score": 15,
+    "dedup_key": "cg-puzzle-dragons-collab-2026",
+    "candidate_ids": [
+     "202609251235-watch-3",
+     "202609250733-explore-0",
+     "202609250733-explore-1",
+     "202609250733-explore-2",
+     "202609251235-explore-4",
+     "202609251835-explore-9"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-master-number-one-cross-over-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "「クロス×オーバー！」9/30発売、価格・型番・収録3曲判明、同日21時にPremiere MV公開",
+    "lead_score": 10,
+    "dedup_key": "cg-cinderella-master-number-one-cross-over-2026",
+    "candidate_ids": [
+     "202609251835-watch-7",
+     "202609260237-grok-19"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-pop-up-yurakucho-marui-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "シンデレラガールズPOP UP SHOPが有楽町マルイ7Fで本日開幕、初日はデジタル整理券制・購入特典ブロマイド全8種",
+    "lead_score": 20,
+    "dedup_key": "cinderella-pop-up-yurakucho-marui-2026",
+    "candidate_ids": [
+     "sched-2026-09-26-cinderella-pop-up-yurakucho-marui-2026-開幕",
+     "202609260237-grok-23",
+     "sched-2026-09-26-cg-kyoto-popup-2026-開幕",
+     "sched-2026-09-26-x-com-thechara-2014-status-2100872465073516942-開幕",
+     "sched-2026-09-26-www-the-chara-com-blog-p-121064-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-cross-over-preview-2026",
+    "reason": "出典不足",
+    "note": "本文が取得できず内容確認不能"
+   },
+   {
+    "dedup_key": "cinderella-fes-noir-2026-09",
+    "reason": "既報",
+    "note": "9/25付で既に記事化済み、本日新しい事実や締切等のトリガーなし"
+   },
+   {
+    "dedup_key": "cg-topic-17",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿(UNICUS入手報告)の寄せ集めで単体記事化しない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

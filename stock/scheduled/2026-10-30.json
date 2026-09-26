@@ -1,44 +1,75 @@
 [
-  {
-    "id": "sched-2026-10-30-sidem-super-retrose-party-2026-開幕",
-    "dedup_key": "sidem-super-retrose-party-2026",
-    "brand": "sidem",
-    "subject": "西武園ゆうえんち×SideM「超!!レトローズパーティ」第2弾",
-    "kind": "開幕",
-    "reserved_on": "2026-09-02",
-    "title": "西武園ゆうえんち×SideM「超!!レトローズパーティ」開催決定",
-    "url": "https://prtimes.jp/main/html/rd/p/000000975.000011571.html",
-    "source_type": "当事者",
-    "facts": [
-      "西武園ゆうえんちと「アイドルマスター SideM」のコラボイベントを2026年10月30日(金)～12月1日(火)に実施",
-      "開催場所は西武園ゆうえんち(埼玉県所沢市)",
-      "10月30日・31日の営業時間は10:00～17:00",
-      "西武園ゆうえんちと東京ジョイポリスを巡る「お仕事してマス！スタンプラリー」を実施、両施設のスタンプを揃えるとA5サイズのオリジナルイラストカードを進呈"
-    ],
-    "via": "explore",
-    "verify": "confirmed",
-    "event_date": "2026-10-30",
-    "src_candidate_id": "202609012336-explore-13"
-  },
-  {
-    "id": "sched-2026-10-30-gaku-tsukimura-temarite-figure-締切",
-    "dedup_key": "gaku-tsukimura-temarite-figure",
-    "brand": "gaku",
-    "subject": "ユニオンクリエイティブ 月村手毬1/6スケールフィギュア 予約",
-    "kind": "締切",
-    "reserved_on": "2026-09-02",
-    "title": "月村手毬 1/6スケール完成品フィギュア予約開始",
-    "url": "https://idolmaster-official.jp/news/01_19683",
-    "source_type": "公式",
-    "facts": [
-      "予約締切は2026年10月30日(金)",
-      "価格19,800円(税別)/21,780円(税込)",
-      "発売予定は2027年6月"
-    ],
-    "via": "watch",
-    "verify": "confirmed",
-    "event_date": "2027-06",
-    "deadline": "2026-10-30",
-    "src_candidate_id": "202609011234-watch-0"
-  }
+ {
+  "id": "sched-2026-10-30-sidem-super-retrose-party-2026-開幕",
+  "dedup_key": "sidem-super-retrose-party-2026",
+  "brand": "sidem",
+  "subject": "西武園ゆうえんち×SideM「超!!レトローズパーティ」第2弾",
+  "kind": "開幕",
+  "reserved_on": "2026-09-02",
+  "title": "西武園ゆうえんち×SideM「超!!レトローズパーティ」開催決定",
+  "url": "https://prtimes.jp/main/html/rd/p/000000975.000011571.html",
+  "source_type": "当事者",
+  "facts": [
+   "西武園ゆうえんちと「アイドルマスター SideM」のコラボイベントを2026年10月30日(金)～12月1日(火)に実施",
+   "開催場所は西武園ゆうえんち(埼玉県所沢市)",
+   "10月30日・31日の営業時間は10:00～17:00",
+   "西武園ゆうえんちと東京ジョイポリスを巡る「お仕事してマス！スタンプラリー」を実施、両施設のスタンプを揃えるとA5サイズのオリジナルイラストカードを進呈"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "event_date": "2026-10-30",
+  "src_candidate_id": "202609012336-explore-13"
+ },
+ {
+  "id": "sched-2026-10-30-gaku-tsukimura-temarite-figure-締切",
+  "dedup_key": "gaku-tsukimura-temarite-figure",
+  "brand": "gaku",
+  "subject": "ユニオンクリエイティブ 月村手毬1/6スケールフィギュア 予約",
+  "kind": "締切",
+  "reserved_on": "2026-09-02",
+  "title": "月村手毬 1/6スケール完成品フィギュア予約開始",
+  "url": "https://idolmaster-official.jp/news/01_19683",
+  "source_type": "公式",
+  "facts": [
+   "予約締切は2026年10月30日(金)",
+   "価格19,800円(税別)/21,780円(税込)",
+   "発売予定は2027年6月"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "event_date": "2027-06",
+  "deadline": "2026-10-30",
+  "src_candidate_id": "202609011234-watch-0"
+ },
+ {
+  "id": "sched-2026-10-30-shiny-sweets-paradise-cafe-2026-開幕",
+  "dedup_key": "shiny-sweets-paradise-cafe-2026",
+  "brand": "shiny",
+  "subject": "シャニマス×スイパラコラボカフェ開幕",
+  "kind": "開幕",
+  "note": "3店舗でコラボカフェの利用・限定メニューを楽しめる",
+  "reserved_on": "2026-09-26",
+  "title": "I'm a Cutie Finder × スイーツパラダイスコラボカフェ",
+  "url": "https://idolmaster-official.jp/news/01_19890",
+  "source_type": "公式",
+  "facts": [
+   "開催期間(東京・大阪): 2026年10月30日(金)～11月24日(火)",
+   "開催期間(愛知): 2026年10月30日(金)～11月15日(日)",
+   "開催店舗: COLLABO PARADISE新宿マルイアネックス店、あべのハルカス店、名古屋栄店",
+   "予約: スイーツパラダイスアプリより5週間前から前日20時まで",
+   "利用時間: 80分制",
+   "コラボメニュー・ノベルティの詳細は後日発表",
+   "エンゲージメント: 中",
+   "詳細ページ: https://www.sweets-paradise.jp/collaboration/shinycolors",
+   "スイーツパラダイスコラボ公式の投稿: https://x.com/SP_collabo/status/2103409170066104582",
+   "アイドルマスター公式の投稿: https://x.com/imas_official/status/2103416731029151924",
+   "投稿日時（スイーツパラダイスコラボ公式）: 2026-09-25 09:00:00 GMT（日本時間 2026-09-25 18:00:00）",
+   "投稿日時（アイドルマスター公式）: 2026-09-25 09:30:02 GMT（日本時間 2026-09-25 18:30:02）"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609251835-watch-0",
+  "event_date": "2026-10-30",
+  "deadline": "2026-11-24"
+ }
 ]

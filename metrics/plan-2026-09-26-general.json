@@ -1,0 +1,47 @@
+{
+ "decisions": {
+  "general-topic-39": {
+   "action": "article",
+   "angle": "アイマスchが本日9/26誕生日の冴島清美(シンデレラ)・ジュリア(ミリオン)を祝うお祝いムービーを公開",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ジュリアの誕生日そのものはmillion-topic-44(劇場デコレーション・ガシャ等)と同日だが、これはアイマスch名義の合同祝賀動画という別施策であり重複ではない"
+  },
+  "general-topic-59": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "未確認の個人(イラストレーター)によるSNS上の仕事報告。単体の個人投稿であり、公式発表でも出典確認済みでもない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-topic-39",
+    "brand": "general",
+    "rank": "small",
+    "angle": "アイマスchが本日9/26誕生日の冴島清美(シンデレラ)・ジュリア(ミリオン)を祝うお祝いムービーを公開",
+    "lead_score": 10,
+    "dedup_key": "general-topic-39",
+    "candidate_ids": [
+     "202609260237-grok-50"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "general-topic-59",
+    "reason": "個人の話題",
+    "note": "未確認の個人(イラストレーター)によるSNS上の仕事報告。単体の個人投稿であり、公式発表でも出典確認済みでもない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

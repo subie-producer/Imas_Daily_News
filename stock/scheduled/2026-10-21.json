@@ -47,5 +47,35 @@
   "via": "explore",
   "verify": "unconfirmed",
   "src_candidate_id": "202609170735-explore-11"
+ },
+ {
+  "id": "sched-2026-10-21-joint-topic-37-開始",
+  "dedup_key": "joint-topic-37",
+  "brand": "joint",
+  "subject": "アイマスch、10月メン限のMC・ゲスト決定",
+  "kind": "開始",
+  "note": "アイマスchメンバー限定配信、MC香里有佐・ゲスト南早紀",
+  "reserved_on": "2026-09-26",
+  "title": "2026年10月メンバー限定配信（ゲスト決定・お便り募集）",
+  "url": "https://x.com/imas_ch/status/2103468242568417348",
+  "source_type": "公式",
+  "facts": [
+   "リンク先（お便りフォーム）: https://docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg/viewform?usp=send_form",
+   "#アイマスch メンバー限定配信",
+   "10月ゲスト決定",
+   "お便り募集中",
+   "出演",
+   "MC: 香里有佐",
+   "ゲスト: 南早紀",
+   "お便りフォーム: https://docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg/viewform?usp=send_form",
+   "投稿は誰でも可能",
+   "メンバー加入: https://www.youtube.com/@imas-official/join",
+   "「アイドルマスターチャンネル」のメンバー限定配信宛のメッセージフォーム",
+   "お便りで送るものとして挙げられているもの"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609260237-grok-48",
+  "event_date": "2026-10-21"
  }
 ]

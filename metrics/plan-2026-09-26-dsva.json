@@ -1,0 +1,240 @@
+{
+ "decisions": {
+  "valiv-3rd-live-meeting-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/24発表・9/25号(valiv-latest-info-special-2026-09-24)で既報。当日(9/26)の新事実・締切等のトリガー無し"
+  },
+  "life-like-a-live-12-valiv-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "8/24付story(valiv-life-like-a-live-12-2026)で既報。ヴイアラ出演は9/25第一部と9/27第四・五部のみで、9/26当日の出演facts無し"
+  },
+  "va-liv-morning-radio-2026-09-26": {
+   "action": "article",
+   "angle": "本日(9/26)の灯里愛夏配信予定、朝9:30の「朝まなラジオ」と夜21:00のCODE VEINⅡ拡張DLC「Mask of Idris」初見プレイ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dsva-topic-22・dsva-topic-23の素材を統合"
+  },
+  "dsva-topic-18": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "valiv-3rd-live-meeting-2027と同一発表。9/25号で既報、当日トリガー無し"
+  },
+  "dsva-topic-19": {
+   "action": "article",
+   "angle": "上水流宇宙が新作「踊ってみた」動画『Vogue / Madonna』をYouTube・TikTokで公開",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-topic-20": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/15付story(code-vein-7)で予告済み、出演は9/25に開催済みで前日の出来事。9/26当日のトリガー無し"
+  },
+  "dsva-topic-21": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "3rdLIVE&MEETING発表(既報)への個人の反応ツイート。単体記事化しない"
+  },
+  "dsva-topic-22": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-morning-radio-2026-09-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日(9/26)の灯里愛夏配信予定として統合"
+  },
+  "dsva-topic-23": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-morning-radio-2026-09-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日(9/26)の灯里愛夏配信予定として統合"
+  },
+  "dsva-topic-24": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "3rdLIVE&MEETING発表(既報)への個人の反応ツイート"
+  },
+  "dsva-topic-25": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "3rdLIVE&MEETING発表(既報)への個人の反応ツイート(告知映像への感想)"
+  },
+  "dsva-topic-26": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "dsva-topic-28(深海フェス客席ジャンプ規制変更告知)への個人の引用リポスト"
+  },
+  "dsva-topic-27": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "3rdLIVE&MEETING発表(既報)への個人の反応ツイート"
+  },
+  "dsva-topic-28": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "主催は第三者(ProjectBLUE)の深海フェス自体の客席ルール変更告知で、ヴイアラ自身の施策ではない。開催は10/17-18で本日のトリガーも無い"
+  },
+  "dsva-topic-29": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "3rdLIVE&MEETING名古屋公演発表(既報)を受けた名古屋グルメの雑談リプライ。個人の話題"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-va-liv-morning-radio-2026-09-26",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "本日(9/26)の灯里愛夏配信予定、朝9:30の「朝まなラジオ」と夜21:00のCODE VEINⅡ拡張DLC「Mask of Idris」初見プレイ",
+    "lead_score": 10,
+    "dedup_key": "va-liv-morning-radio-2026-09-26",
+    "candidate_ids": [
+     "202609260237-explore-7",
+     "202609260237-grok-33",
+     "202609260237-grok-34"
+    ]
+   },
+   {
+    "slug": "dsva-topic-19",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙が新作「踊ってみた」動画『Vogue / Madonna』をYouTube・TikTokで公開",
+    "lead_score": 20,
+    "dedup_key": "dsva-topic-19",
+    "candidate_ids": [
+     "202609260237-grok-30"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-3rd-live-meeting-2027",
+    "reason": "既報",
+    "note": "9/24発表・9/25号(valiv-latest-info-special-2026-09-24)で既報。当日(9/26)の新事実・締切等のトリガー無し"
+   },
+   {
+    "dedup_key": "life-like-a-live-12-valiv-2026",
+    "reason": "既報",
+    "note": "8/24付story(valiv-life-like-a-live-12-2026)で既報。ヴイアラ出演は9/25第一部と9/27第四・五部のみで、9/26当日の出演facts無し"
+   },
+   {
+    "dedup_key": "dsva-topic-18",
+    "reason": "既報",
+    "note": "valiv-3rd-live-meeting-2027と同一発表。9/25号で既報、当日トリガー無し"
+   },
+   {
+    "dedup_key": "dsva-topic-20",
+    "reason": "既報",
+    "note": "9/15付story(code-vein-7)で予告済み、出演は9/25に開催済みで前日の出来事。9/26当日のトリガー無し"
+   },
+   {
+    "dedup_key": "dsva-topic-21",
+    "reason": "既報",
+    "note": "3rdLIVE&MEETING発表(既報)への個人の反応ツイート。単体記事化しない"
+   },
+   {
+    "dedup_key": "dsva-topic-24",
+    "reason": "既報",
+    "note": "3rdLIVE&MEETING発表(既報)への個人の反応ツイート"
+   },
+   {
+    "dedup_key": "dsva-topic-25",
+    "reason": "既報",
+    "note": "3rdLIVE&MEETING発表(既報)への個人の反応ツイート(告知映像への感想)"
+   },
+   {
+    "dedup_key": "dsva-topic-26",
+    "reason": "重複",
+    "note": "dsva-topic-28(深海フェス客席ジャンプ規制変更告知)への個人の引用リポスト"
+   },
+   {
+    "dedup_key": "dsva-topic-27",
+    "reason": "既報",
+    "note": "3rdLIVE&MEETING発表(既報)への個人の反応ツイート"
+   },
+   {
+    "dedup_key": "dsva-topic-28",
+    "reason": "面違い",
+    "note": "主催は第三者(ProjectBLUE)の深海フェス自体の客席ルール変更告知で、ヴイアラ自身の施策ではない。開催は10/17-18で本日のトリガーも無い"
+   },
+   {
+    "dedup_key": "dsva-topic-29",
+    "reason": "既報",
+    "note": "3rdLIVE&MEETING名古屋公演発表(既報)を受けた名古屋グルメの雑談リプライ。個人の話題"
+   }
+  ],
+  "cross_brand": []
+ }
+}

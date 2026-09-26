@@ -221,5 +221,62 @@
   "verify": "confirmed",
   "src_candidate_id": "202609250223-grok-70",
   "deadline": "2026-09-28"
+ },
+ {
+  "id": "sched-2026-09-28-gaku-mirror-policy-hr12-2026-開始",
+  "dedup_key": "gaku-mirror-policy-hr12-2026",
+  "brand": "gaku",
+  "subject": "学マス「初星学園HR#12」個人ミラー配信を歓迎",
+  "kind": "開始",
+  "note": "初星学園HR#12本放送19:00〜、個人ミラー配信も歓迎",
+  "reserved_on": "2026-09-26",
+  "title": "学マス「初星学園HR #12」ミラー配信実施ポリシー公開",
+  "url": "https://idolmaster-official.jp/news/01_19974",
+  "source_type": "公式",
+  "facts": [
+   "配信日：2026年9月28日(月)19:00～（予定）",
+   "配信タイトル：学園アイドルマスター「初星学園HR #12」",
+   "ミラー配信大歓迎",
+   "対象配信日：2026年9月28日",
+   "対象配信タイトル：学園アイドルマスター「初星学園HR #12」",
+   "ミラー配信対象プラットフォーム：YouTube、ニコニコ動画、Mirrativ、Twitch等",
+   "ミラー配信実施主体：個人に限る（法人は認められない）",
+   "営利を目的としたミラー配信は禁止（デジタルプラットフォーム提供の広告機能は除く）",
+   "単なる本配信の転載は禁止",
+   "当社やその関係者からの協賛や提携を示唆することは禁止",
+   "公序良俗に反する内容での配信は禁止",
+   "政治的信条・宗教的信条・ヘイトスピーチ目的での配信は禁止"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609251235-watch-2",
+  "event_date": "2026-09-28"
+ },
+ {
+  "id": "sched-2026-09-28-million-topic-40-終了",
+  "dedup_key": "million-topic-40",
+  "brand": "million",
+  "subject": "ミリオン14th、オーコメ付きアーカイブ公開",
+  "kind": "終了",
+  "note": "オーコメ付き同時視聴アーカイブ(DAY1/DAY2)の視聴期限23:59",
+  "reserved_on": "2026-09-26",
+  "title": "オーディオコメンタリー付き同時視聴上映会：視聴コメント付きアーカイブ公開",
+  "url": "https://x.com/imasml_765PRO/status/2103060218150347102",
+  "source_type": "公式",
+  "facts": [
+   "掲載日（投稿日時）: 2026年9月24日 18:53 JST（Thu, 24 Sep 2026 09:53:23 GMT）",
+   "告知の中身:",
+   "見出し相当: オーティオコメンタリー付き同時視聴上映会（投稿本文の表記）",
+   "視聴コメント付きアーカイブを公開した",
+   "#ミリオン14th_day1 のアーカイブ: https://asobistage.asobistore.jp/event/million_14th/archive/re_day1",
+   "#ミリオン14th_day2 のアーカイブ: https://asobistage.asobistore.jp/event/million_14th/archive/re_day2",
+   "視聴期間：2026年9月28日(月)23:59まで",
+   "コメントと一緒に再度楽しむ案内",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609260237-grok-51",
+  "deadline": "2026-09-28"
  }
 ]

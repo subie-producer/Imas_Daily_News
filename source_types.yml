@@ -124,6 +124,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - lnk.to                # 合議で追加: 複数のアーティスト・レーベルに利用される汎用プラットフォーム。配信プラットフォー
   - tvfan.kyodo.co.jp     # 合議で追加: Billboard JAPANチャート情報を報道。シャニマスは一言のみで取材なし
   - news.saku-chan.com    # 合議で追加: SNS・Xのトレンドとファン投稿のまとめ
   - zawatto.com           # 合議で追加: Xで話題のものをキュレートして伝えるまとめサイト。自ら取材した形跡がない
@@ -198,6 +199,7 @@ secondary_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - tokifuji.hatenablog.com # 合議で追加: Hatena Blog の個人ブログ。ライブ感想を投稿
   - app-tatsujin.com      # 合議で追加: 個人のブログで公式発表をまとめている。個人サイトは内容を問わずファン
   - canonsnk.blog69.fc2.com # 合議で追加: 個人ブログでアイマスグッズの購入・感想を記述している
   - music765plus.com      # 合議で追加: 個人Xアカウント連動、会社概要なし。個人運営なら内容問わずファン
@@ -216,6 +218,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - zan-live.com          # 合議で追加: ライブ配信プラットフォーム。チケット販売・配信の主体。
   - megashakicp7.com      # 合議で追加: メガシャキのメーカーで、アイマスのライセンスを受けてコラボキャンペーンを運営して
   - pad.gungho.jp         # 合議で追加: ライセンス下でコラボを実施し、ガチャなど商品を動かしている一次発信
   - bnfaq.channel.or.jp   # 合議で追加: 複数ゲームシリーズ対応のバンダイナムコFAQサイト。アイマス以外も扱う
@@ -344,6 +347,7 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - vdBaeagRs1g         # 機械で追加: @KamizuruCosmo「【踊ってみた】「Vogue / Madonna」 #shor」
     - 9mQ2ioeay4I         # 機械で追加: @UtagawaLetora「【SILENT HILL f】 DAY07｜最終回！世界戦ど」
     - Q_GfY_kC0to         # 機械で追加: @imas-official「【ミリシタ】ゲーム内楽曲『一旦愛して♡ 』MV【アイドルマス」
     - lYafXo-rjU8         # 機械で追加: @hatsuboshi_gakuen「初星学園 「め」Official Music Video (」
@@ -436,6 +440,7 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - hara_yumi_0121      # 合議で追加: 原由実CVのメン限配信による発信
     - shimoda_asami       # 合議で追加: 出演者による生配信出演報告
     - keeeko_watanabe     # 合議で追加: 渡部恵子本人アカウント推測（姓表記・内容から）
     - zekieri818          # 合議で追加: 声優大関英里本人のアカウント
@@ -471,6 +476,10 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - sak1010p            # 合議で追加: コラボグッズ入手報告、個人のファン活動
+    - nasunasu_1230       # 合議で追加: 個人によるイラスト採用への感想反応
+    - milko67868985       # 合議で追加: 個人的なアーカイブ視聴の感想報告
+    - Reset0083           # 合議で追加: 個人的なアーカイブ視聴の感想報告
     - showseven           # 合議で追加: 個人アカウント
     - masuwohold          # 合議で追加: 個人アカウント
     - Yuuko00111          # 合議で追加: 個人アカウント
@@ -576,6 +585,8 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - homa_corn           # 合議で追加: コラボ商品のイラスト担当、制作者として発表
+    - SHINKAIFES          # 合議で追加: フェス運営のアカウント、規制変更の公式発表
     - McDonaldsJapan      # 合議で追加: コラボ先マクドナルドの公式アカウント
     - nakano_arcade       # namco中野店(ゲームセンター。バンナムAM でもアイマス以外の事業=当事者。編集長 2026-09-23)
     - namco_hakata        # namco博多バスターミナル店(同上)

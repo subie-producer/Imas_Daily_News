@@ -1,0 +1,219 @@
+{
+ "decisions": {
+  "sidem-karatetsu-yokai-online-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "通販受付(9/25 11:00〜10/11 23:59)は昨日9/25付で既報。店舗一覧・数量制限は補足情報で、当日の新トリガーなし"
+  },
+  "sidem-producer-card-wave3-2026": {
+   "action": "article",
+   "angle": "プロデューサーカード第3弾(FRAME/神速一魂/F-LAGS/Legenders)発売決定・受注開始、受注期間9/25 18:00〜10/12 23:59、12/2発売",
+   "rank": "large",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "wave3(公式ニュース)を主に、vol3・topic-60の価格・受注期間・視聴期限を統合"
+  },
+  "sidem-producer-card-vol3-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-card-wave3-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一発表(プロデューサーカード第3弾)。NFC説明・全11種の情報をwave3記事へ"
+  },
+  "asobistore-mfes-2026-goods": {
+   "action": "article",
+   "angle": "アソビストアでMフェス2026グッズ(ぱしゃこれBOX2種・ミニアクスタ・グリッターキャラバッジBOX)受注開始(9/25 18:00〜)",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の単品告知(9/20)とは別商品・BOX。受注開始という当日トリガーあり"
+  },
+  "sidem-topic-60": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-card-wave3-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一発表の受注期間・発売日・視聴期限の詳細をwave3記事へ統合"
+  },
+  "sidem-topic-61": {
+   "action": "article",
+   "angle": "315プロNight!、10月はSideM11th感想月間。10/9放送のパーソナリティ発表と感想・お便り募集",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-topic-62": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Mフェス2026テーマソングCDと315プロNight出張版公録(12/12)は9/13・9/16・9/20に既報、今日の新事実なし"
+  },
+  "sidem-topic-63": {
+   "action": "article",
+   "angle": "SideMプロミ2027、アソビストアプレミアム会員先行の申込受付中",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "席種・価格・受付期限は本文取得できず不明。受付中という事実のみで小さく"
+  },
+  "sidem-topic-64": {
+   "action": "article",
+   "angle": "「アイドルたちの1コマ」新エピソード「心揺さぶる自信作」追加(天峰秀・花園百々人・眉見鋭心が登場)",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-topic-65": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "F@NTASTIC BATTLE FESグッズ事前販売(9/27締切)・長野幕張の日程・パンフ価格は9/25に既報、同一内容"
+  },
+  "sidem-topic-66": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人ファンの感謝投稿1件のみで、単体では記事にしない基準に該当"
+  },
+  "sidem-fantastic-battle-fes-2026": {
+   "action": "article",
+   "angle": "F@NTASTIC BATTLE FES第2弾(長野・幕張)、現地チケット当落発表。入金期間は9/26 13:00〜9/30 23:59",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約どおり。素材は当落発表と入金期間のみで薄いが、面内で最も読者行動を伴う話題"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-producer-card-wave3-2026",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "プロデューサーカード第3弾(FRAME/神速一魂/F-LAGS/Legenders)発売決定・受注開始、受注期間9/25 18:00〜10/12 23:59、12/2発売",
+    "lead_score": 25,
+    "dedup_key": "sidem-producer-card-wave3-2026",
+    "candidate_ids": [
+     "202609251835-watch-1",
+     "202609251835-explore-12",
+     "202609260237-grok-71"
+    ]
+   },
+   {
+    "slug": "sidem-asobistore-mfes-2026-goods",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "アソビストアでMフェス2026グッズ(ぱしゃこれBOX2種・ミニアクスタ・グリッターキャラバッジBOX)受注開始(9/25 18:00〜)",
+    "lead_score": 15,
+    "dedup_key": "asobistore-mfes-2026-goods",
+    "candidate_ids": [
+     "202609260237-explore-5"
+    ]
+   },
+   {
+    "slug": "sidem-topic-61",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315プロNight!、10月はSideM11th感想月間。10/9放送のパーソナリティ発表と感想・お便り募集",
+    "lead_score": 5,
+    "dedup_key": "sidem-topic-61",
+    "candidate_ids": [
+     "202609260237-grok-72"
+    ]
+   },
+   {
+    "slug": "sidem-topic-63",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMプロミ2027、アソビストアプレミアム会員先行の申込受付中",
+    "lead_score": 10,
+    "dedup_key": "sidem-topic-63",
+    "candidate_ids": [
+     "202609260237-grok-74"
+    ]
+   },
+   {
+    "slug": "sidem-topic-64",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「アイドルたちの1コマ」新エピソード「心揺さぶる自信作」追加(天峰秀・花園百々人・眉見鋭心が登場)",
+    "lead_score": 5,
+    "dedup_key": "sidem-topic-64",
+    "candidate_ids": [
+     "202609260237-grok-75"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "F@NTASTIC BATTLE FES第2弾(長野・幕張)、現地チケット当落発表。入金期間は9/26 13:00〜9/30 23:59",
+    "lead_score": 60,
+    "dedup_key": "sidem-fantastic-battle-fes-2026",
+    "candidate_ids": [
+     "sched-2026-09-26-sidem-fantastic-battle-fes-2026-結果"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-karatetsu-yokai-online-2026",
+    "reason": "既報",
+    "note": "通販受付(9/25 11:00〜10/11 23:59)は昨日9/25付で既報。店舗一覧・数量制限は補足情報で、当日の新トリガーなし"
+   },
+   {
+    "dedup_key": "sidem-topic-62",
+    "reason": "既報",
+    "note": "Mフェス2026テーマソングCDと315プロNight出張版公録(12/12)は9/13・9/16・9/20に既報、今日の新事実なし"
+   },
+   {
+    "dedup_key": "sidem-topic-65",
+    "reason": "既報",
+    "note": "F@NTASTIC BATTLE FESグッズ事前販売(9/27締切)・長野幕張の日程・パンフ価格は9/25に既報、同一内容"
+   },
+   {
+    "dedup_key": "sidem-topic-66",
+    "reason": "個人の話題",
+    "note": "個人ファンの感謝投稿1件のみで、単体では記事にしない基準に該当"
+   }
+  ],
+  "cross_brand": []
+ }
+}

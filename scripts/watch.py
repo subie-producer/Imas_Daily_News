@@ -160,8 +160,10 @@ def main() -> int:
                 lines.append(f"    記事「{title}」({slug})が「{label}」として引用: <{url}>")
             # 記録はベース URL(チャンネル等)で引く。動画は動画 ID の記録でも引ける(投稿者を引けなかったとき)
             reason = why_unresolved.get(base, "") or next(
-                (r for url, *_ in items for m in [_cs.YT_ID.search(url)] if m
-                 for r in [why_unresolved.get(f"https://youtube.com/watch?v={m.group(1)}", "")] if r), "")
+                (r for url, *_ in items
+                 for k in [f"https://youtube.com/watch?v={m.group(1)}" if (m := _cs.YT_ID.search(url)) else
+                           _cs.nico_watch_url(n.group(1)) if (n := _cs.NICO_ID.search(url)) else ""] if k
+                 for r in [why_unresolved.get(k, "")] if r), "")
             lines.append("    判定: " + (reason if reason else "合議に掛かっていない(判定の記録なし)"))
         problems.append(
             f"紙面に未確認の出典が {sum(len(v) for v in unknown.values())}件 / {len(unknown)}種 残っている"

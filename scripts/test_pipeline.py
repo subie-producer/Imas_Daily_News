@@ -888,6 +888,57 @@ def test_classify_posts_only(tmp: Path):
     (tmp / "candidates" / "2026-09-19.json").write_text(json.dumps([{"url": "https://www.youtube.com/watch?v=CCCCCCCCCCC"}]), encoding="utf-8")
     (tmp / "docs" / "_posts" / "2026-09-19-c.md").unlink()
     (tmp / "docs" / "_posts" / "2026-09-19-a.md").write_text(post("2026-09-19", "https://www.youtube.com/watch?v=AAAAAAAAAAA", "未確認"), encoding="utf-8")
+    # ニコニコの番組 URL は、ホストと /watch/<ID> の形を検めて拾う(部分一致で拾わない。監査指摘 r82)
+    ok_urls = ("https://live.nicovideo.jp/watch/lv351245267", "https://www.nicovideo.jp/watch/sm9", "https://nico.ms/sm9", "https://sp.live.nicovideo.jp/watch/lv1",
+               "https://embed.nicovideo.jp/watch/sm9")
+    ng_urls = ("https://notnicovideo.jp/watch/sm9", "https://example.test/?next=https://www.nicovideo.jp/watch/sm9", "https://ch.nicovideo.jp/sidem",
+               "https://www.nicovideo.jp/user/1/watch/sm9", "https://live.nicovideo.jp/watch/xx1")
+    check(all(cs.NICO_ID.search(u) for u in ok_urls) and not any(cs.NICO_ID.search(u) for u in ng_urls), "ニコニコの ID の拾い方")
+    check(cs.NICO_ID.search("https://nico.ms/sm9").group(1) == "sm9", "ID の取り出し")
+    # チャンネルは投稿主体の構造化フィールドからだけ取る。説明文に貼られた別チャンネルのリンクを拾わない(監査指摘 r82)
+    import html as _html
+    props_live = {"socialGroup": {"type": "channel", "id": "ch2606757", "socialGroupPageUrl": "https://ch.nicovideo.jp/channel/ch2606757"}}
+    page_live = f'<title>315プロNight! - ニコニコ生放送</title><script id="embedded-data" data-props="{_html.escape(json.dumps(props_live))}"></script>'
+    check(cs.nico_channel_fetch("lv1", page=page_live, fetch_alias=False) == ("ch.nicovideo.jp/channel/ch2606757", "ch2606757", "315プロNight!"),
+          f"生放送のチャンネル: {cs.nico_channel_fetch('lv1', page=page_live, fetch_alias=False)}")
+    props_user = {"socialGroup": {"type": "community", "id": "co1"}}
+    page_user = (f'<title>ユーザー生放送</title><script id="embedded-data" data-props="{_html.escape(json.dumps(props_user))}"></script>'
+                 '<p>関連: <a href="https://ch.nicovideo.jp/channel/ch2606757">公式チャンネル</a></p>')
+    check(cs.nico_channel_fetch("lv2", page=page_user, fetch_alias=False) == ("", "", "ユーザー生放送"), "コミュニティ放送に、説明文のチャンネルを付けた")
+    page_video = '<title>動画</title><div data-api-data="' + _html.escape(json.dumps({"channel": None, "owner": {"id": 5}})) + '"></div><a href="https://ch.nicovideo.jp/channel/ch2606757">x</a>'
+    check(cs.nico_channel_fetch("sm3", page=page_video, fetch_alias=False)[0] == "", "ユーザー投稿の動画に、ページ内のチャンネルを付けた")
+    page_video2 = '<title>動画</title><div data-api-data="' + _html.escape(json.dumps({"channel": {"id": "2606757", "url": "https://ch.nicovideo.jp/ch2606757"}})) + '"></div>'
+    check(cs.nico_channel_fetch("sm4", page=page_video2, fetch_alias=False)[1] == "ch2606757", "チャンネル動画の channel フィールドを読めない")
+    # 同じ番組 ID は1回しか取りに行かない(watch が出典行ごとに引く)
+    calls = []
+    saved_fetch = cs.nico_channel_fetch
+    try:
+        cs.nico_channel_fetch = lambda vid, page=None, fetch_alias=True: (calls.append(vid), ("ch.nicovideo.jp/x", "ch1", "t"))[1]
+        cs._NICO_CACHE.clear()
+        cs.nico_channel("lv9"); cs.nico_channel("lv9")
+        check(calls == ["lv9"], f"番組ページを2回取りに行った: {calls}")
+    finally:
+        cs.nico_channel_fetch = saved_fetch
+        cs._NICO_CACHE.clear()
+    # ニコニコの生放送・動画も投稿者(チャンネル)で決まる(編集長 2026-09-26「これくらい curl して取れよ」)。
+    # 表にあるチャンネル(ch.nicovideo.jp/sidem)の番組 lv… は機械で video_ids へ
+    saved_nc, saved_root3, saved_st = cs.nico_channel, (cs.ROOT, pipelib.ROOT), (pipelib._ST_TABLE, pipelib._ST_KEY)
+    try:
+        cs.nico_channel = lambda vid: ("ch.nicovideo.jp/sidem", "ch2606757", "315プロNight!") if vid == "lv351245267" else ("", "", "")
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE, pipelib._ST_KEY = None, None
+        (tmp / "source_types.yml").write_text("path_types:\n  ch.nicovideo.jp/sidem: 公式\nvideo_ids:\n  公式:\n    - AAAAAAAAAAA\n", encoding="utf-8")
+        (tmp / "candidates" / "2026-09-19.json").write_text(json.dumps([{"url": "https://live.nicovideo.jp/watch/lv351245267"}, {"url": "https://www.nicovideo.jp/watch/sm999"}]), encoding="utf-8")
+        cs.POSTS_ONLY = None
+        check(list(cs.unknown_nico("2026-09-19")) == ["lv351245267", "sm999"], f"ニコニコの ID を拾わない: {cs.unknown_nico('2026-09-19')}")
+        left, unk = cs.resolve_nico("2026-09-19", apply=True)
+        check(pipelib.classify_source("https://live.nicovideo.jp/watch/lv351245267") == "公式", "チャンネルが表にある番組が公式にならない")
+        check(left == ["nicovideo:sm999(?)"] and unk == {}, f"チャンネルを引けない動画の扱い: {left} {unk}")
+        d, a, p = cs.unknown_targets("2026-09-19")
+        check(not d and not p and "https://www.nicovideo.jp/watch/sm999" not in cs.SKIPPED, "ニコニコの動画をドメインや skip に回した")
+    finally:
+        cs.nico_channel, (cs.ROOT, pipelib.ROOT), (pipelib._ST_TABLE, pipelib._ST_KEY) = saved_nc, saved_root3, saved_st
+        (tmp / "candidates" / "2026-09-19.json").write_text(json.dumps([{"url": "https://www.youtube.com/watch?v=CCCCCCCCCCC"}]), encoding="utf-8")
     # 「決まらなかった」記録のキーと、watch が表示に使うキーは同じ表記(display_base)。動画は投稿者のチャンネルに寄せる(監査指摘 r73/r74)
     saved_va, saved_unres = cs.video_author, cs.UNRESOLVED
     try:

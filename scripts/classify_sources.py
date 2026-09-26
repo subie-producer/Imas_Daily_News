@@ -97,6 +97,11 @@ def display_base(url_or_key: str) -> str:
     seg = [x for x in u.path.split("/") if x]
     if host in ("youtube.com", "youtu.be") and seg and seg[0].startswith("@"):
         return f"https://youtube.com/{seg[0]}"
+    m = NICO_ID.search(s)
+    if m:
+        # ニコニコの生放送・動画もチャンネルで決まる。チャンネルを引けなければ番組の URL
+        key, _ch, _t = nico_channel(m.group(1))
+        return f"https://{key}" if key else nico_watch_url(m.group(1))
     m = YT_ID.search(s)
     if m and host in ("youtube.com", "youtu.be"):
         # 動画は投稿者(チャンネル)で決まる。判定表に書く単位はチャンネルなので、投稿者を引いて出す。
@@ -185,8 +190,8 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
             continue
         u = urllib.parse.urlparse(url)
         host = (u.hostname or "").removeprefix("www.")
-        if YT_ID.search(url) and host.removeprefix("m.") in ("youtube.com", "youtu.be"):
-            continue                       # 動画は投稿者で決まる(resolve_videos が扱い、決まらなければそちらが報告する)
+        if (YT_ID.search(url) and host.removeprefix("m.") in ("youtube.com", "youtu.be")) or NICO_ID.search(url):
+            continue                       # 動画は投稿者で決まる(resolve_videos / resolve_nico が扱い、決まらなければそちらが報告する)
         unit, key = platform_unit(url)
         if unit == "skip":
             SKIPPED.setdefault(url, key)   # 黙って飛ばさない。main が理由ごと報告する
@@ -603,6 +608,145 @@ def unknown_videos(date: str) -> dict[str, str]:
     return out
 
 
+_NICO_HOSTS = ("nicovideo.jp", "www.nicovideo.jp", "live.nicovideo.jp", "live2.nicovideo.jp", "sp.nicovideo.jp", "sp.live.nicovideo.jp",
+               "embed.nicovideo.jp", "nico.ms")
+
+
+class _NicoId:
+    """ニコニコの番組・動画 URL の ID。ホストとパスの形を検める(部分一致で拾わない。監査指摘 r82)。
+    `NICO_ID.search(url)` で YT_ID と同じ使い方ができる(group(1) が ID)。"""
+
+    def search(self, url: str):
+        u = urllib.parse.urlparse(str(url or "").split()[0] if url else "")
+        host = (u.hostname or "").lower()
+        if u.scheme not in ("http", "https", "") or host not in _NICO_HOSTS:
+            return None
+        seg = [s for s in u.path.split("/") if s]
+        if host == "nico.ms":
+            vid = seg[0] if len(seg) == 1 else ""
+        else:
+            vid = seg[1] if len(seg) == 2 and seg[0] == "watch" else ""
+        m = re.fullmatch(r"(lv|sm|so|nm)\d+", vid)
+        return re.match(r"(.*)", vid) if m else None
+
+
+NICO_ID = _NicoId()
+
+
+def nico_watch_url(vid: str) -> str:
+    return f"https://live.nicovideo.jp/watch/{vid}" if vid.startswith("lv") else f"https://www.nicovideo.jp/watch/{vid}"
+
+
+def unknown_nico(date: str) -> dict[str, str]:
+    """判定表に無いニコニコの生放送・動画 ID(lv…/sm…/so…)→ 代表 URL。"""
+    out: dict[str, str] = {}
+    for c in target_rows(date):
+        url = ((c.get("url") or "").split() or [""])[0]
+        m = NICO_ID.search(url)
+        if m and classify_source(url) == "未確認":
+            out.setdefault(m.group(1), url)
+    return out
+
+
+_NICO_CACHE: dict[str, tuple[str, str, str]] = {}
+
+
+def nico_channel(vid: str) -> tuple[str, str, str]:
+    """`nico_channel_fetch` を番組 ID ごとに1回だけ呼ぶ(watch は同じ URL を出典行ごとに引く。監査指摘 r82)。"""
+    if vid not in _NICO_CACHE:
+        _NICO_CACHE[vid] = nico_channel_fetch(vid)
+    return _NICO_CACHE[vid]
+
+
+def nico_channel_alias(ch_id: str, ch_url: str = "") -> str:
+    """チャンネルの別名(ch.nicovideo.jp/sidem のような)を、チャンネルページの canonical から取る。取れなければ ""。"""
+    try:
+        import urllib.request
+        req = urllib.request.Request(ch_url or f"https://ch.nicovideo.jp/channel/{ch_id}", headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            final = r.geturl()
+            cpage = r.read(200_000).decode("utf-8", "replace")
+        c = re.search(r'<link rel="canonical" href="https://ch\.nicovideo\.jp/([^"/?#]+)', cpage)
+        seg = (c.group(1) if c else urllib.parse.urlparse(final).path.strip("/").split("/")[0])
+        return seg if seg and seg != "channel" else ""
+    except Exception:
+        return ""
+
+
+def nico_channel_fetch(vid: str, page: str | None = None, fetch_alias: bool = True) -> tuple[str, str, str]:
+    """ニコニコの生放送・動画ページから、チャンネル(ch.nicovideo.jp の ID と別名)と題名を取る。page を渡せば取得しない(テスト用)。
+    (channel_key, channel_id, title)。channel_key は判定表の path_types に書く単位(`ch.nicovideo.jp/<別名>` か
+    `ch.nicovideo.jp/channel/<ch id>`)。ユーザー投稿(チャンネルでない)や取れないときは ("", "", title)。
+    実測 2026-09-26: live.nicovideo.jp/watch/lv… の埋め込みデータに socialGroup {type: channel, id: ch2606757,
+    socialGroupPageUrl: https://ch.nicovideo.jp/channel/ch2606757} がある。"""
+    import html as _html
+    if page is None:
+        try:
+            import urllib.request
+            req = urllib.request.Request(nico_watch_url(vid), headers={"User-Agent": "Mozilla/5.0", "Accept-Language": "ja"})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                page = r.read(600_000).decode("utf-8", "replace")
+        except Exception as e:
+            print(f"  ニコニコのページを取得できず {vid}: {type(e).__name__}", flush=True)
+            return "", "", ""
+    t = re.search(r"<title>([^<]*)</title>", page)
+    title = _html.unescape(t.group(1)).replace(" - ニコニコ生放送", "").replace(" - ニコニコ動画", "").strip() if t else ""
+    props = None
+    m = re.search(r'id="embedded-data"[^>]*data-props="([^"]*)"', page) or re.search(r'data-api-data="([^"]*)"', page)
+    if m:
+        try:
+            props = json.loads(_html.unescape(m.group(1)))
+        except ValueError:
+            props = None
+    # 投稿主体を示す構造化フィールドだけを見る(生放送: socialGroup{type: channel} / 動画: channel)。HTML 全体から
+    # `ch.nicovideo.jp/channel/ch…` を拾うと、説明文に貼られた別チャンネルのリンクを投稿主体と取り違える(監査指摘 r82)
+    ch_id = ch_url = ""
+    if isinstance(props, dict):
+        sg = props.get("socialGroup") if isinstance(props.get("socialGroup"), dict) else None
+        if sg is not None:
+            if sg.get("type") == "channel" and re.fullmatch(r"ch\d+", str(sg.get("id") or "")):
+                ch_id, ch_url = str(sg["id"]), str(sg.get("socialGroupPageUrl") or "")
+        elif isinstance(props.get("channel"), dict):
+            ch = props["channel"]
+            cid = str(ch.get("id") or "")
+            if cid.isdigit():
+                cid = "ch" + cid
+            if re.fullmatch(r"ch\d+", cid):
+                ch_id, ch_url = cid, str(ch.get("url") or "")
+    if not ch_id:
+        return "", "", title
+    alias = nico_channel_alias(ch_id, ch_url) if fetch_alias else ""
+    key = f"ch.nicovideo.jp/{alias}" if alias else f"ch.nicovideo.jp/channel/{ch_id}"
+    return key, ch_id, title
+
+
+def resolve_nico(date: str, apply: bool) -> tuple[list[str], dict[str, tuple[str, str, str]]]:
+    """チャンネルが判定表(path_types の ch.nicovideo.jp/…)にあるニコニコの生放送・動画の ID を、video_ids へ機械で足す。
+    YouTube(resolve_videos)と同じ: 投稿者で種別が決まり、URL には ID しか無い。
+    戻り値は (決まらなかったものの説明, チャンネルが表に無いもの: key → (ID, 題名, 代表 URL))。"""
+    vids = unknown_nico(date)
+    if not vids:
+        return [], {}
+    print(f"\n{date}: 判定表に無いニコニコの生放送・動画 {len(vids)}件", flush=True)
+    found: dict[str, tuple[str, str]] = {}
+    left: list[str] = []
+    unknown_chans: dict[str, tuple[str, str, str]] = {}
+    for vid, url in sorted(vids.items()):
+        key, ch_id, title = nico_channel(vid)
+        typ = classify_source(f"https://{key}/") if key else "未確認"
+        if key and typ != "未確認":
+            found[vid] = (typ, f"{key}「{title[:30]}」")
+            print(f"  {typ}\t{vid}\t{key} {title[:40]}")
+        else:
+            left.append(f"nicovideo:{vid}({key or '?'})")
+            if key:
+                unknown_chans.setdefault(key, (vid, title, url))
+    if found and apply:
+        add_video_ids(found)
+        print(f"  → 動画 ID {len(found)}件を表に追加")
+    return left, unknown_chans
+
+
 def video_author(vid: str) -> tuple[str, str]:
     """oEmbed で投稿者のハンドルと題名を取る。(handle, title)。取れなければ ("", "")。"""
     try:
@@ -693,7 +837,7 @@ def main() -> int:
     split_all = [f"{u}: 判定できない({why})" for u, why in sorted(SKIPPED.items())]
     for s in split_all:
         print(f"  判定の対象にできない\t{s}", flush=True)
-    if not doms and not accts and not paths and not unknown_videos(date):
+    if not doms and not accts and not paths and not unknown_videos(date) and not unknown_nico(date):
         if not split_all:
             print(f"{date}: 判定表に無い出典はありません")
             return 0
@@ -785,6 +929,26 @@ def main() -> int:
             left = [x for x in left if not any(f"(@{h})" in x for h in chans)] + split
     split_all += left
 
+    # ニコニコの生放送・動画も投稿者(チャンネル)で決まる。チャンネルが表に無ければ、そのチャンネルのページを材料に
+    # 合議で決めて path_types に足し、動画 ID を引き直す(編集長 2026-09-26「これくらい curl して取れよ」)
+    left, unknown_nico_chans = resolve_nico(date, args.apply)
+    if unknown_nico_chans:
+        print(f"\n{date}: 判定表に無いニコニコのチャンネル {len(unknown_nico_chans)}件 → {', '.join(sorted(unknown_nico_chans))}", flush=True)
+        items = [(k, f"https://{k}/", site_profile(k, f"https://{k}/", top=f"https://{k}/") + f"\n表に載った番組: {vid}「{title[:60]}」")
+                 for k, (vid, title, _u) in sorted(unknown_nico_chans.items())]
+        agreed, split = consensus(lambda ks: build_prompt([it for it in items if it[0] in ks]), sorted(unknown_nico_chans))
+        for k, (t, why) in agreed.items():
+            print(f"  一致 {t}\t{k}\t{why}")
+        for s in split:
+            print(f"  不一致・保留\t{s}")
+        if agreed and args.apply:
+            add_paths(agreed)
+            print(f"  → チャンネル {len(agreed)}件を表に追加")
+            left, _ = resolve_nico(date, True)
+        else:
+            left = [x for x in left if not any(f"({k})" in x for k in agreed)] + split
+    split_all += left
+
     # **決まらなかったものを、その場で人へ上げない。**
     #
     # 候補の大半は記事にならずに消える。決まらなかった1件ずつを毎回通知すると、
@@ -817,6 +981,13 @@ def save_unresolved(rows: list[str]) -> None:
             out[f"https://youtube.com/watch?v={m.group(1)}"] = rest.strip()[:400]
             if m.group(2) != "?":
                 out[f"https://youtube.com/@{m.group(2)}"] = rest.strip()[:400]
+            continue
+        m = re.fullmatch(r"nicovideo:((?:lv|sm|so|nm)\d+)\(([^)]*)\)", key)
+        if m:      # ニコニコも同じ: 番組 ID とチャンネルの両方で引ける
+            rest = rest or "投稿者のチャンネルが判定表に無い(チャンネルの合議でも決まらなかった)"
+            out[nico_watch_url(m.group(1))] = rest.strip()[:400]
+            if m.group(2) != "?":
+                out[f"https://{m.group(2)}"] = rest.strip()[:400]
             continue
         out[display_base(key)] = rest.strip()[:400]
     try:

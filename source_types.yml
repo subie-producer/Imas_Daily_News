@@ -124,6 +124,8 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - best-shingaku.net     # 合議で追加: 東京アミューズメントメディア専門学校のイベント情報を掲載する進学情報ポータルサイ
+  - nicolog.jp            # 合議で追加: ニコニコ動画のタグ・統計データを収集・公開する二次サイト
   - lnk.to                # 合議で追加: 複数のアーティスト・レーベルに利用される汎用プラットフォーム。配信プラットフォー
   - tvfan.kyodo.co.jp     # 合議で追加: Billboard JAPANチャート情報を報道。シャニマスは一言のみで取材なし
   - news.saku-chan.com    # 合議で追加: SNS・Xのトレンドとファン投稿のまとめ
@@ -199,6 +201,7 @@ secondary_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - hrurukku.hatenablog.com # 合議で追加: 個人のはてなブログ。ライブ観賞の個人感想
   - tokifuji.hatenablog.com # 合議で追加: Hatena Blog の個人ブログ。ライブ感想を投稿
   - app-tatsujin.com      # 合議で追加: 個人のブログで公式発表をまとめている。個人サイトは内容を問わずファン
   - canonsnk.blog69.fc2.com # 合議で追加: 個人ブログでアイマスグッズの購入・感想を記述している
@@ -218,6 +221,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - taito.co.jp           # 合議で追加: 学園マス グッズを置くゲームセンター・プライズ販売事業者
   - zan-live.com          # 合議で追加: ライブ配信プラットフォーム。チケット販売・配信の主体。
   - megashakicp7.com      # 合議で追加: メガシャキのメーカーで、アイマスのライセンスを受けてコラボキャンペーンを運営して
   - pad.gungho.jp         # 合議で追加: ライセンス下でコラボを実施し、ガチャなど商品を動かしている一次発信
@@ -347,6 +351,7 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - lv351245267         # 機械で追加: ch.nicovideo.jp/sidem「アイドルマスター SideM ラジオ 315プロNight!」
     - vdBaeagRs1g         # 機械で追加: @KamizuruCosmo「【踊ってみた】「Vogue / Madonna」 #shor」
     - 9mQ2ioeay4I         # 機械で追加: @UtagawaLetora「【SILENT HILL f】 DAY07｜最終回！世界戦ど」
     - Q_GfY_kC0to         # 機械で追加: @imas-official「【ミリシタ】ゲーム内楽曲『一旦愛して♡ 』MV【アイドルマス」
@@ -476,6 +481,8 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - takonorio           # 合議で追加: 個人による公演視聴と感想投稿
+    - pseudr              # 合議で追加: 個人による公式配信のアーカイブ視聴投稿
     - sak1010p            # 合議で追加: コラボグッズ入手報告、個人のファン活動
     - nasunasu_1230       # 合議で追加: 個人によるイラスト採用への感想反応
     - milko67868985       # 合議で追加: 個人的なアーカイブ視聴の感想報告
@@ -585,6 +592,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - animatejoji         # 合議で追加: アイマス関連商品を販売している販売チェーン
     - homa_corn           # 合議で追加: コラボ商品のイラスト担当、制作者として発表
     - SHINKAIFES          # 合議で追加: フェス運営のアカウント、規制変更の公式発表
     - McDonaldsJapan      # 合議で追加: コラボ先マクドナルドの公式アカウント

@@ -1,0 +1,225 @@
+{
+ "decisions": {
+  "765pro-never-end-idol-bluray-order-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-never-end-idol-bluray-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アソビストア特装版受注中の告知。締切当日の765-never-end-idol-bluray-2026に統合"
+  },
+  "general-765pro-allstars-live-bluray-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-never-end-idol-bluray-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一Blu-ray受注告知の重複素材。締切記事に統合"
+  },
+  "pro-live-never-end-idol-bluray-year": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-never-end-idol-bluray-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ダイジェスト映像公開の話題も同じBlu-ray受注施策として統合"
+  },
+  "dual-twin-live-tour-goods-2026": {
+   "action": "article",
+   "angle": "dual twin live tour開催記念グッズ(ブロマイド・ステッカー)の受注が本日23:59で締切",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アーカイブ視聴の話題群とは読者の行動(グッズ購入)が別なので分離"
+  },
+  "dual-twin-live-tokyo-archive-destiny-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-dual-twin-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "東京公演アーカイブ(亜美・真美「Destiny」)。配信終了記事に統合"
+  },
+  "dual-twin-live-produce-shot-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-dual-twin-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "プロデュースショット企画もアーカイブ終了と同じ締切日の付随施策として統合"
+  },
+  "765pro-live-never-end-idol-bluray-standard-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-never-end-idol-bluray-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アニメイト通常版予約も同一Blu-ray商品の話題として統合(未確認情報として注記)"
+  },
+  "765-dual-twin-live-2026": {
+   "action": "article",
+   "angle": "dual twin live tourの配信アーカイブが本日23:59で公開終了。大阪・名古屋公演のコメント付き上映、東京公演千秋楽のオーコメ、あずさ・律子「KisS」やソロ映像特別公開、プロデュースショット企画も同時締切",
+   "rank": "large",
+   "lead_score": 28,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "6主題の素材を統合した見納め特集"
+  },
+  "765-never-end-idol-bluray-2026": {
+   "action": "article",
+   "angle": "『NEVER END IDOL!!!!!!!!!!!!!』Blu-ray、アソビストア特装版の受注が本日23:59に締切。ダイジェスト映像公開中、アニメイト通常版も予約受付中",
+   "rank": "large",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "5主題を統合。面内でもっとも素材が厚い話題"
+  },
+  "x-vorder-runway-goods-onsite-2026": {
+   "action": "article",
+   "angle": "『X VORDER RUNWAY』開催当日、幕張メッセホール4で現地グッズ販売が10時に開始。オンライン完売品も店頭在庫あり",
+   "rank": "small",
+   "lead_score": 12,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "765pro-allstars-live-bluray": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-never-end-idol-bluray-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注期間延長の告知も同一Blu-ray締切記事に統合"
+  },
+  "topic-fdidcfadbf": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-dual-twin-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "東京公演千秋楽オーコメ配信アーカイブも同じ配信終了記事に統合"
+  },
+  "765-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-dual-twin-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "あずさ・律子「KisS」特別映像も配信終了記事に統合"
+  },
+  "chibi-plushie-pouch-set-2026": {
+   "action": "article",
+   "angle": "ちびぐるみ&ポーチセット、やよい・伊織ペアの受注が本日締切。他4セット(亜美・真美/あずさ・律子/美希・響・貴音/真・雪歩)は10/18まで受付中",
+   "rank": "medium",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "765-topic-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-dual-twin-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "あずさソロ映像「ラ❤ブ❤リ❤」も配信終了記事に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-dual-twin-live-tour-goods-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "dual twin live tour開催記念グッズ(ブロマイド・ステッカー)の受注が本日23:59で締切",
+    "lead_score": 5,
+    "dedup_key": "dual-twin-live-tour-goods-2026",
+    "candidate_ids": [
+     "202609270227-grok-18"
+    ]
+   },
+   {
+    "slug": "765-dual-twin-live-2026",
+    "brand": "765",
+    "rank": "large",
+    "angle": "dual twin live tourの配信アーカイブが本日23:59で公開終了。大阪・名古屋公演のコメント付き上映、東京公演千秋楽のオーコメ、あずさ・律子「KisS」やソロ映像特別公開、プロデュースショット企画も同時締切",
+    "lead_score": 28,
+    "dedup_key": "765-dual-twin-live-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-765-dual-twin-live-2026-終了",
+     "202609270227-grok-19",
+     "202609270227-grok-20",
+     "sched-2026-09-27-topic-fdidcfadbf-終了",
+     "sched-2026-09-27-765-2-終了",
+     "sched-2026-09-27-765-topic-2-終了"
+    ]
+   },
+   {
+    "slug": "765-never-end-idol-bluray-2026",
+    "brand": "765",
+    "rank": "large",
+    "angle": "『NEVER END IDOL!!!!!!!!!!!!!』Blu-ray、アソビストア特装版の受注が本日23:59に締切。ダイジェスト映像公開中、アニメイト通常版も予約受付中",
+    "lead_score": 40,
+    "dedup_key": "765-never-end-idol-bluray-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-765-never-end-idol-bluray-2026-締切",
+     "202609260732-explore-0",
+     "202609261234-watch-0",
+     "202609270227-grok-17",
+     "202609270227-grok-21",
+     "sched-2026-09-27-765pro-allstars-live-bluray-締切"
+    ]
+   },
+   {
+    "slug": "765-x-vorder-runway-goods-onsite-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "『X VORDER RUNWAY』開催当日、幕張メッセホール4で現地グッズ販売が10時に開始。オンライン完売品も店頭在庫あり",
+    "lead_score": 12,
+    "dedup_key": "x-vorder-runway-goods-onsite-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-x-vorder-runway-goods-onsite-2026-開始"
+    ]
+   },
+   {
+    "slug": "765-chibi-plushie-pouch-set-2026",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "ちびぐるみ&ポーチセット、やよい・伊織ペアの受注が本日締切。他4セット(亜美・真美/あずさ・律子/美希・響・貴音/真・雪歩)は10/18まで受付中",
+    "lead_score": 10,
+    "dedup_key": "chibi-plushie-pouch-set-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-chibi-plushie-pouch-set-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

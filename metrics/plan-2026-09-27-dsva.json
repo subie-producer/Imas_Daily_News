@@ -1,0 +1,115 @@
+{
+ "decisions": {
+  "valiv-3rd-live-meeting-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2026-09-25号(valiv-latest-info-special-2026-09-24)で二都市開催・日程・会場を既報。チケット詳細は後日発表で本日のトリガー無し"
+  },
+  "va-liv-3rd-live-meeting-2027": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-3rd-live-meeting-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一発表の重複エントリ(表記ゆれ「va-liv」/「valiv」)"
+  },
+  "life-like-a-live-12-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-life-like-a-live-12-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "えるすりー12本体の情報。dsva面としてはヴイアラ出演視点の記事に統合"
+  },
+  "valiv-life-like-a-live-12-2026": {
+   "action": "article",
+   "angle": "えるすりー12千秋楽、ヴイアラ(上水流宇宙・灯里愛夏・レトラ)が最終公演に出演。第四公演出演、第五公演はエンディングのみ登場",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "life-like-a-live-12-2026の素材を統合(開催概要・全公演スケジュール)"
+  },
+  "valiv-birthday-voice-kamimizu-2026": {
+   "action": "article",
+   "angle": "上水流宇宙のバースデー記念ボイス、本日23:59で販売終了",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-cosmo-birthday-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "本日発生する唯一のトリガー(ボイス販売終了)はvaliv-birthday-voice-kamimizu-2026と同一事象。グッズ受注締切は10/4で本日は動きなし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-life-like-a-live-12-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "えるすりー12千秋楽、ヴイアラ(上水流宇宙・灯里愛夏・レトラ)が最終公演に出演。第四公演出演、第五公演はエンディングのみ登場",
+    "lead_score": 30,
+    "dedup_key": "valiv-life-like-a-live-12-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-valiv-life-like-a-live-12-2026-千秋楽",
+     "202609262335-explore-23"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-birthday-voice-kamimizu-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙のバースデー記念ボイス、本日23:59で販売終了",
+    "lead_score": 10,
+    "dedup_key": "valiv-birthday-voice-kamimizu-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-valiv-birthday-voice-kamimizu-2026-終了"
+    ]
+   },
+   {
+    "slug": "dsva-va-liv-3rd-live-meeting-2027",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "vα-liv 3rdLIVE＆MEETING開催決定",
+    "lead_score": 0,
+    "dedup_key": "va-liv-3rd-live-meeting-2027",
+    "candidate_ids": [
+     "202609261234-explore-10"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-3rd-live-meeting-2027",
+    "reason": "既報",
+    "note": "2026-09-25号(valiv-latest-info-special-2026-09-24)で二都市開催・日程・会場を既報。チケット詳細は後日発表で本日のトリガー無し"
+   },
+   {
+    "dedup_key": "valiv-cosmo-birthday-goods-2026",
+    "reason": "重複",
+    "note": "本日発生する唯一のトリガー(ボイス販売終了)はvaliv-birthday-voice-kamimizu-2026と同一事象。グッズ受注締切は10/4で本日は動きなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

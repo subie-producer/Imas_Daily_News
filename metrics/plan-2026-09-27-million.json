@@ -1,0 +1,301 @@
+{
+ "decisions": {
+  "million-ittan-aishite-event-costume-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "終了済み「一旦愛して♡」イベントの衣装MVを未確認の転載サイト(nicolog)で確認、エンゲージメント低で本日のトリガー無し"
+  },
+  "million-14th-day2-fan-review-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人ブロガーによる14thLIVE DAY2感想記事、単体のブログ投稿"
+  },
+  "theater-talk-party-offshot-vol67-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "theater-talk-party-vol-67-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一イベント(Vol.67)の重複主題。ジュリア誕生日情報の混入は julia-birthday-set-2026 側で扱う"
+  },
+  "million-theater-days-10th-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/21に開催決定を既報済み(詳細は後日発表のまま)。本日新展開・トリガー無し"
+  },
+  "million-if-i-waking-up-my-heart-present-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/23既報の受注情報(受注期間9/21-10/4)と同一。締切は10/4で本日のトリガー無し"
+  },
+  "million-radio-playlist-mail-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "お便り募集締切は9/25で発行日(9/27)には既に終了、本日起きることが無い"
+  },
+  "julia-birthday-set-2026": {
+   "action": "article",
+   "angle": "ジュリアの誕生日を記念した『Birthdayセット2026』と専用ガシャの登場を紹介",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "julia-birthday-gacha-2026と統合。他アイドルの誕生日施策と同様の恒例パターン"
+  },
+  "julia-birthday-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "julia-birthday-set-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Birthdayセットと同一施策(誕生日記念)のため1記事に統合"
+  },
+  "theater-talk-party-vol-67-2026": {
+   "action": "article",
+   "angle": "『THEATER TALK PARTY☆～ユニットオフショット Vol.67～』が本日開幕、詳細は開催後に案内",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "theater-talk-party-offshot-vol67-2026を統合"
+  },
+  "million-14th-stream-archive-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/26既報のオーコメ付きアーカイブ公開・配信チケット販売情報と同一"
+  },
+  "million-pop-up-yurakucho-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "8月に既報の京まふ2026事後物販POP UP(有楽町マルイ、10/10-10/22、同8名)と同一施策"
+  },
+  "million-kotobukiya-kuji-stage04-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9月に既報のコトブキヤくじstage04(販売期間・価格等)と同一内容、本日のトリガー無し"
+  },
+  "million-opera-seria-2026": {
+   "action": "article",
+   "angle": "秋葉原コトブキヤ「オペラセリア」POP UP SHOPが本日最終日",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-opera-seria-2026-09、million-opera-seria-popup-2026を統合(同一POP UP SHOP)"
+  },
+  "mltd-extreme-livestream-2026": {
+   "action": "article",
+   "angle": "ミリシタ新イベント「ミリオンリンケージ～やっぱり教え子たちが俺争奪戦中な件について。編～」が本日開幕、新SSR2種と新曲追加",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催予定は既報だが本日開幕という当日トリガーあり"
+  },
+  "millishita-14thlive-memorial-jewels-2026": {
+   "action": "article",
+   "angle": "14thLIVE記念の主演モチーフ宝石、本日で登場期間終了",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-opera-seria-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-opera-seria-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一POP UP SHOPの重複主題"
+  },
+  "million-opera-seria-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-opera-seria-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一POP UP SHOPの重複主題"
+  },
+  "14thlive": {
+   "action": "article",
+   "angle": "『14thLIVEありがとうログインボーナス』、ミリオンジュエル500個受け取りが本日最終日",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-julia-birthday-set-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ジュリアの誕生日を記念した『Birthdayセット2026』と専用ガシャの登場を紹介",
+    "lead_score": 10,
+    "dedup_key": "julia-birthday-set-2026",
+    "candidate_ids": [
+     "202609270227-grok-36",
+     "202609270227-grok-37"
+    ]
+   },
+   {
+    "slug": "million-theater-talk-party-vol-67-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "『THEATER TALK PARTY☆～ユニットオフショット Vol.67～』が本日開幕、詳細は開催後に案内",
+    "lead_score": 5,
+    "dedup_key": "theater-talk-party-vol-67-2026",
+    "candidate_ids": [
+     "202609270227-grok-38",
+     "202609261834-explore-4"
+    ]
+   },
+   {
+    "slug": "million-opera-seria-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "秋葉原コトブキヤ「オペラセリア」POP UP SHOPが本日最終日",
+    "lead_score": 10,
+    "dedup_key": "million-opera-seria-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-million-opera-seria-2026-終了",
+     "sched-2026-09-27-million-opera-seria-2026-09-終了",
+     "sched-2026-09-27-million-opera-seria-popup-2026-終了"
+    ]
+   },
+   {
+    "slug": "million-mltd-extreme-livestream-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ新イベント「ミリオンリンケージ～やっぱり教え子たちが俺争奪戦中な件について。編～」が本日開幕、新SSR2種と新曲追加",
+    "lead_score": 20,
+    "dedup_key": "mltd-extreme-livestream-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-mltd-extreme-livestream-2026-開幕"
+    ]
+   },
+   {
+    "slug": "million-millishita-14thlive-memorial-jewels-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "14thLIVE記念の主演モチーフ宝石、本日で登場期間終了",
+    "lead_score": 8,
+    "dedup_key": "millishita-14thlive-memorial-jewels-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-millishita-14thlive-memorial-jewels-2026-終了"
+    ]
+   },
+   {
+    "slug": "million-14thlive",
+    "brand": "million",
+    "rank": "small",
+    "angle": "『14thLIVEありがとうログインボーナス』、ミリオンジュエル500個受け取りが本日最終日",
+    "lead_score": 8,
+    "dedup_key": "14thlive",
+    "candidate_ids": [
+     "sched-2026-09-27-14thlive-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-ittan-aishite-event-costume-mv-2026",
+    "reason": "出典不足",
+    "note": "終了済み「一旦愛して♡」イベントの衣装MVを未確認の転載サイト(nicolog)で確認、エンゲージメント低で本日のトリガー無し"
+   },
+   {
+    "dedup_key": "million-14th-day2-fan-review-2026",
+    "reason": "個人の話題",
+    "note": "個人ブロガーによる14thLIVE DAY2感想記事、単体のブログ投稿"
+   },
+   {
+    "dedup_key": "million-theater-days-10th-live-2027",
+    "reason": "既報",
+    "note": "9/21に開催決定を既報済み(詳細は後日発表のまま)。本日新展開・トリガー無し"
+   },
+   {
+    "dedup_key": "million-if-i-waking-up-my-heart-present-2026",
+    "reason": "既報",
+    "note": "9/23既報の受注情報(受注期間9/21-10/4)と同一。締切は10/4で本日のトリガー無し"
+   },
+   {
+    "dedup_key": "million-radio-playlist-mail-2026-09",
+    "reason": "その他",
+    "note": "お便り募集締切は9/25で発行日(9/27)には既に終了、本日起きることが無い"
+   },
+   {
+    "dedup_key": "million-14th-stream-archive-2026",
+    "reason": "既報",
+    "note": "9/26既報のオーコメ付きアーカイブ公開・配信チケット販売情報と同一"
+   },
+   {
+    "dedup_key": "million-pop-up-yurakucho-2026",
+    "reason": "既報",
+    "note": "8月に既報の京まふ2026事後物販POP UP(有楽町マルイ、10/10-10/22、同8名)と同一施策"
+   },
+   {
+    "dedup_key": "million-kotobukiya-kuji-stage04-2026",
+    "reason": "既報",
+    "note": "9月に既報のコトブキヤくじstage04(販売期間・価格等)と同一内容、本日のトリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

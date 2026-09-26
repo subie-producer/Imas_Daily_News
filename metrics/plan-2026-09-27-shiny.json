@@ -1,0 +1,322 @@
+{
+ "decisions": {
+  "shiny-sanka-benibana-release-event-goods-2026": {
+   "action": "article",
+   "angle": "散花-sanka-／紅花-benibana- 発売記念イベント(10/17)の会場物販詳細、購入点数上限や取扱商品を告知",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策の重複ソース(event-goods/venue-goods)をこの記事に統合"
+  },
+  "shiny-solo-collection-master-showpiece-cd-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-283-production-solo-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場限定CDは9/26発売済み。DAY2千秋楽特集内の既報背景情報として統合"
+  },
+  "shiny-283-solo-live-master-showpiece-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-283-production-solo-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公演概要・チケット価格情報はDAY2千秋楽特集に統合"
+  },
+  "shiny-im-a-cutie-finder-sweets-paradise-cafe-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同内容が9/26付でshiny-sweets-paradise-cafe-2026として既に掲載済み"
+  },
+  "shiny-song-for-prism-sanka-benibana-event-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-sanka-benibana-release-event-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の10/17会場物販情報、内容重複"
+  },
+  "shiny-283-production-solo-live-collection-master-showpiece-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-283-production-solo-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "追加物販受注・配信アーカイブ情報(既報含む)はDAY2千秋楽特集に統合"
+  },
+  "shiny-runway-2026-master-showpiece-photo-contest": {
+   "action": "article",
+   "angle": "「Shiny Runway 2026 Master ShowPiece」フォトコンテスト、9/26夜から応募受付開始",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-orchestra-concert-2027": {
+   "action": "article",
+   "angle": "シャニマス初の単独オーケストラコンサート「Radiant Chord」2027年3月開催決定、パシフィコ横浜で昼夜2公演",
+   "rank": "large",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "重複ソース(shiny-orchestra-radiant-chord-2027)を統合"
+  },
+  "shiny-solo-live-msp-day1-2026-09-26": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-283-production-solo-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1セットリスト・告知まとめ。オーケストラ発表部分は別記事へ、setlist部分はDAY2特集に統合"
+  },
+  "shiny-song-for-prism-sanka-benibana-venue-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-sanka-benibana-release-event-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の10/17会場物販情報、内容重複"
+  },
+  "shiny-sweets-paradise-cafe-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/26付で既に掲載済みの内容と同一"
+  },
+  "shiny-orchestra-radiant-chord-2027": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-orchestra-concert-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一発表の重複ソース"
+  },
+  "shiny-parallel-collection-popup-2026": {
+   "action": "article",
+   "angle": "パラレルコレクションPOP UP SHOP「パラレル回廊」、本日9/27で会期終了",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場での最終来場日という当日トリガーのみで単独小記事"
+  },
+  "shiny-msp-live-tickets-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-283-production-solo-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "チケット情報(既報)はDAY2千秋楽特集に統合"
+  },
+  "shiny-283-production-solo-live-2026": {
+   "action": "article",
+   "angle": "283 PRODUCTION Solo Live Collection -Master ShowPiece- DAY2、本日千秋楽。会場物販・キッチンカー最終日・自販機・配信トークまで総括",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同公演をめぐる関連主題(チケット・物販・CD・キッチンカー・自販機・配信トーク・DAY1告知)を統合"
+  },
+  "shiny-style-collection-vol1-2026": {
+   "action": "article",
+   "angle": "シャニマス新グッズ「SHINY Style COLLECTION」第1弾、ASOBI STOREで本日9/27受注締切",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-msp-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-283-production-solo-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場物販の更新・一部販売中止情報はDAY2千秋楽特集に統合"
+  },
+  "shiny-solo-live-kitchen-car-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-283-production-solo-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボキッチンカーは本日が最終出店日、DAY2特集に統合"
+  },
+  "shiny-283-solo-live-bakusute-talk-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-283-production-solo-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2公演後の生配信『ばくすて！とーく』はDAY2特集内で告知"
+  },
+  "shiny-suntory-lemon-squash-2026-09": {
+   "action": "article",
+   "angle": "シャニマス×サントリー自販機レモンスカッシュ、京王アリーナ限定機は本日終了・全国600台超は明日9/28発売開始",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "会場限定終了と全国発売開始という読者の行動が異なる2つの当日トリガーを持つため単独記事"
+  },
+  "shiny-master-showpiece-day1-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-283-production-solo-live-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1千秋楽表記の重複データ、DAY2特集に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-sanka-benibana-release-event-goods-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "散花-sanka-／紅花-benibana- 発売記念イベント(10/17)の会場物販詳細、購入点数上限や取扱商品を告知",
+    "lead_score": 15,
+    "dedup_key": "shiny-sanka-benibana-release-event-goods-2026",
+    "candidate_ids": [
+     "202609260732-explore-2",
+     "202609261834-explore-10",
+     "202609262335-explore-13"
+    ]
+   },
+   {
+    "slug": "shiny-runway-2026-master-showpiece-photo-contest",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「Shiny Runway 2026 Master ShowPiece」フォトコンテスト、9/26夜から応募受付開始",
+    "lead_score": 15,
+    "dedup_key": "shiny-runway-2026-master-showpiece-photo-contest",
+    "candidate_ids": [
+     "202609262335-watch-0"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-concert-2027",
+    "brand": "shiny",
+    "rank": "large",
+    "angle": "シャニマス初の単独オーケストラコンサート「Radiant Chord」2027年3月開催決定、パシフィコ横浜で昼夜2公演",
+    "lead_score": 30,
+    "dedup_key": "shiny-orchestra-concert-2027",
+    "candidate_ids": [
+     "202609262335-watch-1",
+     "202609262335-watch-3",
+     "202609270227-grok-47"
+    ]
+   },
+   {
+    "slug": "shiny-parallel-collection-popup-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "パラレルコレクションPOP UP SHOP「パラレル回廊」、本日9/27で会期終了",
+    "lead_score": 10,
+    "dedup_key": "shiny-parallel-collection-popup-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-shiny-parallel-collection-popup-2026-千秋楽"
+    ]
+   },
+   {
+    "slug": "shiny-283-production-solo-live-2026",
+    "brand": "shiny",
+    "rank": "large",
+    "angle": "283 PRODUCTION Solo Live Collection -Master ShowPiece- DAY2、本日千秋楽。会場物販・キッチンカー最終日・自販機・配信トークまで総括",
+    "lead_score": 85,
+    "dedup_key": "shiny-283-production-solo-live-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-shiny-283-production-solo-live-2026-千秋楽",
+     "202609261234-explore-6",
+     "202609261234-explore-24",
+     "202609261834-explore-11",
+     "202609262335-watch-2",
+     "202609262335-watch-4",
+     "sched-2026-09-27-shiny-msp-live-tickets-2026-千秋楽",
+     "sched-2026-09-27-shiny-msp-goods-2026-千秋楽",
+     "sched-2026-09-27-shiny-solo-live-kitchen-car-2026-終了",
+     "sched-2026-09-27-shiny-283-solo-live-bakusute-talk-2026-開始",
+     "sched-2026-09-27-shiny-master-showpiece-day1-2026-千秋楽"
+    ]
+   },
+   {
+    "slug": "shiny-style-collection-vol1-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス新グッズ「SHINY Style COLLECTION」第1弾、ASOBI STOREで本日9/27受注締切",
+    "lead_score": 15,
+    "dedup_key": "shiny-style-collection-vol1-2026",
+    "candidate_ids": [
+     "sched-2026-09-27-shiny-style-collection-vol1-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-suntory-lemon-squash-2026-09",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス×サントリー自販機レモンスカッシュ、京王アリーナ限定機は本日終了・全国600台超は明日9/28発売開始",
+    "lead_score": 15,
+    "dedup_key": "shiny-suntory-lemon-squash-2026-09",
+    "candidate_ids": [
+     "sched-2026-09-27-shiny-suntory-lemon-squash-2026-09-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-im-a-cutie-finder-sweets-paradise-cafe-2026",
+    "reason": "既報",
+    "note": "同内容が9/26付でshiny-sweets-paradise-cafe-2026として既に掲載済み"
+   },
+   {
+    "dedup_key": "shiny-sweets-paradise-cafe-2026",
+    "reason": "既報",
+    "note": "9/26付で既に掲載済みの内容と同一"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -39,7 +39,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, html_to_text, set_quiet, unbacked_facts,
-                     checkout_edition_branch, classify_retag_lint, commit_and_push, edition_date,
+                     checkout_edition_branch, classify_retag_lint, commit_and_push, diagnose_anomalies, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt)
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
@@ -880,7 +880,10 @@ def main() -> int:
 
 if __name__ == "__main__":
     try:
-        sys.exit(main())
+        code = main()
     except Exception as e:
         notify_crash("collect", e)
-        sys.exit(1)
+        code = 1
+    # 人に「異常」として通知したものは、申告で終えずに当番がなぜなぜする(収集は終わっているので再実行しない)
+    diagnose_anomalies("collect", edition_date(), rerun=False)
+    sys.exit(code)

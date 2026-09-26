@@ -113,11 +113,19 @@ def display_base(url_or_key: str) -> str:
         return f"https://x.com/{key}"
     if unit in ("path", "domain"):
         return f"https://{key}"
+    if unit == "parser":
+        return f"(持ち主を取るパーサが無い: {key})"
     return f"(判定の単位なし: {key})"
 
 
 def platform_unit(url: str) -> tuple[str, str]:
-    """未知の URL を、何の単位で判定するか。("domain" | "path" | "skip", キーか理由)。"""
+    """未知の URL を、何の単位で判定するか。("domain" | "path" | "x" | "skip" | "parser", キーか理由)。
+
+    skip は「持ち主が無いと分かっている URL」(検索・トレンド・ID の無い文書ホスト)。
+    parser は「持ち主はいるはずだが、取る手段(パーサ)をこのコードが持っていない」。後者は人に「決まらない」と
+    申告する事象ではなく、パーサを書かせる依頼を当番に出す(`request_parsers`。編集長 2026-09-26:
+    「この手のやつが来たら『パースしろ』という判定をしろ」「申告前に診断しろ」)。
+    """
     u = urllib.parse.urlparse(url)
     host = (u.hostname or "").removeprefix("www.")
     if not host:
@@ -130,12 +138,14 @@ def platform_unit(url: str) -> tuple[str, str]:
     pk = path_key(url)
     if pk:
         return "path", pk
+    if host in DOC_HOSTS:
+        return "skip", f"{host} の文書 ID の無い URL(文書でなければ持ち主は無い)"
     for q in SUBDOMAIN_PLATFORMS:
         if host.endswith("." + q):
             return "domain", host
     for q in PLATFORMS:
         if host == q or host.endswith("." + q):
-            return "skip", f"{q} の上で、持ち主が決まる単位(アカウント・文書 ID)を URL から取れない"
+            return "parser", host
     return "domain", host
 UA = "Mozilla/5.0 (compatible; ImasNews/1.0)"
 
@@ -175,6 +185,7 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     (実測: 178件が未分類のまま溜まっていた)。ここも合議に掛ける。
     """
     SKIPPED.clear()
+    NEED_PARSER.clear()
     USED_IN.clear()
     rows = target_rows(date)
     if not rows:
@@ -195,6 +206,11 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
         unit, key = platform_unit(url)
         if unit == "skip":
             SKIPPED.setdefault(url, key)   # 黙って飛ばさない。main が理由ごと報告する
+            continue
+        if unit == "parser":
+            NEED_PARSER.setdefault(url, key)   # パーサが無い種類。main が当番に書かせる依頼を出す(人には申告しない)
+            if c.get("title") and len(USED_IN.setdefault(url, [])) < 3:
+                USED_IN[url].append(str(c["title"])[:120])
             continue
         if unit == "x":
             cur = accts.setdefault(key, (url, []))
@@ -264,8 +280,84 @@ def link_hint(key: str) -> str:
     return "\nリンク元(この文書を張っている候補): " + " / ".join(f"{u}({t})" for u, t in srcs[:4])
 
 
-SKIPPED: dict[str, str] = {}          # 判定の単位を決められなかった URL → 理由(unknown_targets が埋める)
+SKIPPED: dict[str, str] = {}          # 持ち主の無い URL → 理由(unknown_targets が埋める)
+NEED_PARSER: dict[str, str] = {}      # 持ち主を取るパーサが無い URL → ホスト(unknown_targets が埋める)
 USED_IN: dict[str, list[str]] = {}    # 判定のキー → 紙面・候補での使われ方(題名と出典の label)
+PARSER_REQUESTS = ROOT / "metrics" / "parser-requests.json"   # Git 管理外。ホスト → 当番に依頼した日(同じ依頼を1日5回出さない)
+PARSER_RETRY_DAYS = 3                 # 依頼してもパーサが入らないまま(当番が直せなかった等)なら、この日数のあとにもう一度出す
+
+
+def request_parsers(date: str, need: dict[str, str], escalate_fn=None) -> list[str]:
+    """パーサの無い URL について、**人に「決まらない」と言う前に、当番(Opus 修正 → Sol 査読)にパーサを書かせる依頼を出す**。
+
+    編集長 2026-09-26:「この手のやつが来たら『パースしろ』という判定をしろ」「なんでその設計判断なしにこっちに
+    決まりませんなんて言ってんだ」「大体のエラー、申告前に診断しろ」。判定の単位を URL から取れないのは
+    このコードの欠陥(パーサの不足)で、欠陥は当番が直す。依頼はホストごとに1つ、同じホストは PARSER_RETRY_DAYS の
+    あいだ出し直さない(収集は1日5回走る)。戻り値は決まらなかった記録の行(URL: 理由)。
+    """
+    from pipelib import escalate
+    escalate_fn = escalate_fn or escalate
+    record = _load_parser_requests()
+    by_host: dict[str, list[str]] = {}
+    for url, host in sorted(need.items()):
+        by_host.setdefault(host, []).append(url)
+    fresh = {h: urls for h, urls in by_host.items()
+             if not (record.get(h) or {}).get("date") or (record[h]["date"] < _days_before(date, PARSER_RETRY_DAYS))}
+    status: dict[str, str] = {}
+    if fresh:
+        hosts_text = "\n".join(
+            f"- {h}\n" + "\n".join(f"  - {u}" + (f"(使われ方: {' / '.join(USED_IN.get(u) or [])})" if USED_IN.get(u) else "")
+                                   for u in urls)
+            for h, urls in sorted(fresh.items()))
+        reason = render_prompt("oncall-parser", HOSTS=hosts_text)
+        sent = escalate_fn("classify", date, reason)
+        for h in fresh:
+            if sent:
+                record[h] = {"date": date, "urls": fresh[h][:10]}
+                status[h] = f"持ち主を取るパーサが無い。当番(Opus 修正 → Sol 査読)にパーサを書かせる依頼を {date} に出した"
+            else:
+                status[h] = "持ち主を取るパーサが無い。当番を呼べなかった(ONCALL=off か当番が無い)。人がパーサを書くこと"
+        _save_parser_requests(record)
+    for h in by_host:
+        if h not in status:      # 依頼済み(PARSER_RETRY_DAYS 以内)
+            status[h] = f"持ち主を取るパーサが無い。当番に依頼済み({record[h]['date']})。直らなければ {PARSER_RETRY_DAYS} 日後に出し直す"
+    return [f"{u}: {status[h]}" for u, h in sorted(need.items())]
+
+
+def _load_parser_requests() -> dict:
+    try:
+        record = json.loads(PARSER_REQUESTS.read_text(encoding="utf-8"))
+        return record if isinstance(record, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def _save_parser_requests(record: dict) -> None:
+    """原子的に書く(一時ファイル → fsync → replace)。途中で死んで記録を失うと、次の収集が全ホストを出し直す(監査指摘 r85)。"""
+    import os
+    try:
+        PARSER_REQUESTS.parent.mkdir(parents=True, exist_ok=True)
+        tmp = PARSER_REQUESTS.with_name(PARSER_REQUESTS.name + ".tmp")
+        with tmp.open("w", encoding="utf-8") as f:
+            f.write(json.dumps(record, ensure_ascii=False, indent=1))
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, PARSER_REQUESTS)
+    except OSError as e:
+        print(f"  パーサの依頼の記録を保存できない({e})", flush=True)
+
+
+def forget_parser_requests(hosts: set[str]) -> None:
+    """依頼の記録から、そのホストを消す(当番の修正で直らなかったとき。次の収集が出し直す)。"""
+    record = _load_parser_requests()
+    left = {h: v for h, v in record.items() if h not in hosts}
+    if left != record:
+        _save_parser_requests(left)
+
+
+def _days_before(date: str, days: int) -> str:
+    import datetime
+    return (datetime.date.fromisoformat(date) - datetime.timedelta(days=days)).isoformat()
 
 
 def used_in(key: str) -> str:
@@ -824,6 +916,8 @@ def main() -> int:
                     help="1回に掛ける X アカウントの数(多いと1回のプロンプトに載らない)")
     ap.add_argument("--posts-only", action="store_true",
                     help="その号の記事に載った未確認の出典だけを対象にする(組版前。候補は見ない)")
+    ap.add_argument("--require-parsers", action="store_true",
+                    help="当番がパーサを足したあとの再実行用。パーサの無い URL が残っていたら exit 2(成功扱いにしない)")
     args = ap.parse_args()
     # 下見(--apply なし)では通知しない。試験実行が本物の警報と混ざる
     set_quiet(not args.apply)
@@ -833,10 +927,26 @@ def main() -> int:
         POSTS_ONLY = date
 
     doms, accts, paths = unknown_targets(date)
-    # 判定の単位を決められなかった URL は、黙って飛ばさず理由ごと残す(決まらなかったものとして下でまとめて出る)
+    # 持ち主の無い URL は、黙って飛ばさず理由ごと残す(決まらなかったものとして下でまとめて出る)
     split_all = [f"{u}: 判定できない({why})" for u, why in sorted(SKIPPED.items())]
     for s in split_all:
         print(f"  判定の対象にできない\t{s}", flush=True)
+    # 持ち主を取るパーサが無い URL は、人に「決まらない」と申告する前に、当番にパーサを書かせる(下見では依頼しない)
+    if NEED_PARSER and args.require_parsers:
+        # 当番の再実行: パーサを足したのに同じ種類が残っている(ホスト内の別の形の URL を取り漏らした等)なら失敗にする
+        # (成功扱いにすると当番が「再実行成功」と報告し、依頼の記録が残るあいだ自動修正が止まる。監査指摘 r85)。
+        # 残ったホストの依頼の記録を消して、次の収集が出し直せるようにする(回数の上限は当番側の attempt)
+        forget_parser_requests(set(NEED_PARSER.values()))
+        for u, h in sorted(NEED_PARSER.items()):
+            print(f"  パーサがまだ無い\t{u}({h})", flush=True)
+        print(f"パーサの無い URL が {len(NEED_PARSER)}件 残っている。再実行は失敗", flush=True)
+        return 2
+    if NEED_PARSER:
+        rows = request_parsers(date, NEED_PARSER) if args.apply else \
+            [f"{u}: 持ち主を取るパーサが無い({h})。下見なので当番は呼ばない" for u, h in sorted(NEED_PARSER.items())]
+        for s in rows:
+            print(f"  パーサが無い\t{s}", flush=True)
+        split_all += rows
     if not doms and not accts and not paths and not unknown_videos(date) and not unknown_nico(date):
         if not split_all:
             print(f"{date}: 判定表に無い出典はありません")

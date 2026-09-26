@@ -27,6 +27,8 @@
 | watch-facts | 定点観測の新着の facts 化(`collect.run_watch`) | Claude haiku | 候補 JSON |
 | classify-rules / classify-site / classify-x / classify-debate | 出典種別の合議(`classify_sources`) | Claude haiku + Codex luna | 種別 JSON |
 | oncall-fix(+ .objections)/ oncall-review | 当番の修正と監査(`oncall`) | Claude opus / Codex sol | 報告・判定(schema) |
+| oncall-parser | 持ち主を取るパーサが無い URL の種類について、当番へのパーサの依頼(`classify_sources.request_parsers` → oncall-fix の「何が起きたか」) | Claude opus(当番) | 修正(oncall-fix と同じ) |
+| oncall-whywhy | 工程が人に「異常」として通知した事柄の一覧と、なぜなぜ(原因まで遡る)の依頼。`pipelib.escalate` が異常の台帳(`ANOMALIES`)を毎回これで付ける | Claude opus(当番) | 診断・修正(oncall-fix と同じ) |
 
 使っていないもの(社説は 2026-09-06 号で終了): columnist-core.md、review-editorial.md、brand-lenses.yml、Kassy_Prompt.md、AI_kassy_prompt_package_v1.md、`compose.editorial_prompt`。
 
@@ -105,3 +107,13 @@
 - 範囲は「発行に必要な最小限で、今後もちゃんと動く正しい修正」。範囲内(must_fix)は合意まで、発行後でよいもの(later)は保管、起きる道筋を言えないものは書かない(編集長 2026-09-18)。
   範囲を決めずに合意を求めたら、監査が「dedup_key に改行 2100 個」の類を積み、当番が追いかけて2往復で時間切れになり、号が止まった
 - 編集方針で決着済みの事項(`oncall.POLICY_EXCLUDED`): 内容判断の機械化の要求、HOME / OS 隔離の要求
+- oncall-parser(2026-09-26): ニコニコ生放送の URL を「判定の単位を取れない」として人に回した → 編集長「これくらい curl して取れよ」
+  「この手のやつが来たら『パースしろ』という判定をしろ」「なんでその設計判断なしにこっちに決まりませんなんて言ってんだ」「申告前に診断しろ」。
+  持ち主を URL から取れないのはコードの不足(パーサが無い)で、人に申告する事象ではない。当番がパーサを書き監査が査読する(`classify` 工程)。
+  「投稿主体の構造化フィールドだけ」は、説明文のリンクを拾って別チャンネルに誤帰属した監査指摘(r82)から。
+  「判定表に触らない」は、種別の決定は合議の仕事で、当番のパーサは単位を取るだけ、の分担
+- oncall-whywhy(2026-09-26): 校閲が R16(出典 label が途中で切れている)を3巡ブロックし、記事を落として「校閲ブロックで落とした」とだけ人に届いた。
+  原因は執筆 schema の label 上限 80 字(書き手には直しようがない)。編集長「すべてのエラーがなぜ起きたかなぜなぜしろ」「それを Opus/Sol 系に
+  落とせない設計がカス。個別の修正の前の話だ」。人に「異常」として通知するもの(`notify(ok=False)`・落とした記事・直らなかった指摘)は
+  全部 process の台帳に積み、工程の終わりに当番へ渡す(`diagnose_anomalies`)。止まって当番を呼ぶときも同じ台帳が付く。
+  「契約の欠陥を疑う」の例示は、この事故そのもの。「落とした記事・確定した号は戻さない」は、号が確定したあとの当番は再実行しない(--no-rerun)から

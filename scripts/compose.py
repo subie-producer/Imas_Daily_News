@@ -46,7 +46,7 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, classify_retag_lint, classify_source, commit_and_push,
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
-                     notify, notify_crash, now_jst, render_prompt, PROMPTS)
+                     notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
 # 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
@@ -1503,6 +1503,34 @@ def log_drop(date: str, slug: str, stage: str, why: str, path: Path | None = Non
 # 日付 → {slug: 直前の書き直しを機械の検査が戻した理由("" なら戻していない)}。校閲の依頼文に載せる
 REVISE_NOTES: dict[str, dict[str, str]] = {}
 
+# 日付 → **書き手が直せなかった**指摘の記録。書き直しをはさんでも同じ記事に同じ規則の指摘が残った / 機械検算を
+# 差し戻しても通らなかった。書き手が直せないのは、たいてい書き手ではなく契約(執筆 schema・依頼文・検算・校閲規則)の欠陥
+# (実測 2026-09-26: 出典 label の schema 上限 80 字で告知タイトルが切れ、校閲 R16 が3巡ブロックして記事を落とした。
+# 人には「校閲ブロックで落とした」とだけ届いた)。人に「落とした」と申告する前に当番(Opus 修正 → Sol 査読)が診断する
+# (編集長:「なんでできねーんだ、とキレろ」「申告前に診断しろ」「Opus/Sol 系に落とせない設計がカス」)
+STUCK: dict[str, list[dict]] = {}
+
+
+def note_stuck(date: str, kind: str, file: str, rule_id: str, issue: str, rounds: int) -> None:
+    STUCK.setdefault(date, []).append({"kind": kind, "file": file, "rule_id": rule_id, "issue": (issue or "")[:300], "rounds": rounds})
+
+
+def stuck_summary(date: str) -> str:
+    """通知と当番の台帳に載せる「書き直しても直らなかった指摘」の一覧。無ければ空。"""
+    rows = STUCK.get(date) or []
+    if not rows:
+        return ""
+    return (f"\n書き直しても直らなかった指摘 {len(rows)}件(書き手ではなく契約=schema・依頼文・検算の欠陥の疑い):\n"
+            + "\n".join(f"- [{r['kind']}] {Path(r['file']).name} {r['rule_id']}({r['rounds']}巡目まで残った): {r['issue'][:200]}" for r in rows))
+
+
+def hand_over_anomalies(date: str, rerun: bool, reason: str = "") -> None:
+    """号の終わりに、外れた記事と直らなかった指摘を異常の台帳に積み、台帳ごと当番へ渡す(なぜなぜ)。
+    人に「落とした」「決まらない」と申告するだけで終えない(編集長 2026-09-26「すべてのエラーがなぜ起きたかなぜなぜしろ」)。"""
+    anomaly("compose", drop_summary(date))
+    anomaly("compose", stuck_summary(date))
+    diagnose_anomalies("compose", date, rerun=rerun, reason=reason)
+
 
 def drop_summary(date: str) -> str:
     """完了通知に載せる、外れた記事の一覧(見出し・段・理由)。"""
@@ -1618,6 +1646,8 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                         print(f"記事 {art['slug']} を{outcomes[art['slug']]}", flush=True)
                         aborted.append(art["slug"])
                         DROP_LOG.setdefault(date, {})[art["slug"]] = (str(art.get("angle") or ""), "執筆で落とした", " / ".join(problems[:3])[:160])
+                        # 差し戻しても同じ契約を通せない = 契約(schema・依頼文・検算)の欠陥の疑い。当番が診断する
+                        note_stuck(date, "機械検算", f"docs/_posts/{date}-{art['slug']}.md", "", " / ".join(problems[:4]), 2)
                     continue
                 renderlib.render_article(target, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
                 if tries:
@@ -1816,11 +1846,13 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
 
 
 def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands: dict,
-                    aborted: list[str] | None = None) -> None:
+                    aborted: list[str] | None = None) -> dict[str, str]:
     """校閲の指摘を**執筆側(Codex)**に構造化で直させる。校閲側(Claude)には編集させない(監査の設計レビュー)。
 
     直した稿は初稿と同じ検算(事実 id・出典・タグ・日付)を通してからファイルにする。
     decline(見送り)が返れば記事を落とす。何も直せないままなら次の巡でまたブロックが付き、上限で落ちる。
+    戻り値は {slug: 結果}(fixed / kept / dropped / unreadable)。呼び出し側は「書き手が書き直した(fixed / kept)」記事に
+    同じ指摘が残ったときだけ「直せなかった」と記録する(実行の失敗を契約の欠陥と取り違えない。監査指摘 r86)。
     """
     by_slug_plan = {a["slug"]: a for a in plan.get("articles") or []}
     jobs = []
@@ -1840,8 +1872,9 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
         issues = [{**b, "issue_id": f"I{k + 1}"} for k, b in enumerate(issues)]
         jobs.append((art, path, fact_by_id, materials, issues,
                      revise_prompt(date, art, mats_in, path.read_text(encoding="utf-8"), issues)))
+    results: dict[str, str] = {}
     if not jobs:
-        return
+        return results
     schema_out = ROOT / "schema" / "article-out.schema.json"
     n_fixed = n_dropped = 0
     for i in range(0, len(jobs), COMPOSE_WAVE):
@@ -1868,8 +1901,12 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                 print(f"書き直し {art['slug']}: 出力が読めない(そのまま次の巡へ)", flush=True)
                 # 注記は**この巡の結果**に更新する(古い巡の検算理由を引きずらない。監査指摘)
                 REVISE_NOTES.setdefault(date, {})[art["slug"]] = "書き直しの出力が読めず(空・時間切れ・JSON でない)、稿を適用できなかった"
+                results[art["slug"]] = "unreadable"
+                # 実行の失敗も申告で終えない(なぜ出力が空・時間切れになったか)
+                anomaly("compose", f"書き直し {art['slug']}: 出力が読めない(空・時間切れ・JSON でない。exit {getattr(p, 'returncode', '?')})")
                 continue
             outcome, msg = revise_apply(date, art, path, ans, fact_by_id, materials, issues)
+            results[art["slug"]] = outcome
             print(f"書き直し {art['slug']}: {msg}", flush=True)
             # 書き直しの稿を**機械の形の検査**が戻したときは、次の巡の校閲にそう伝える。伝えないと校閲は
             # 「執筆が指摘を無視した」と読んで同じ指摘を繰り返し、記事が落ちる(実測 2026-09-25: 誤字の指摘を
@@ -1882,6 +1919,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
             elif outcome == "fixed":
                 n_fixed += 1
     print(f"校閲の指摘で執筆側が {n_fixed}本を書き直し、{n_dropped}本を落とした", flush=True)
+    return results
 
 
 def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
@@ -2248,6 +2286,10 @@ def main() -> int:
             _leave_tree_clean("SIGTERM")
             notify("compose", f"{date}: 時間切れで打ち切られた。ここまでの成果物は commit を試みた。"
                               f"lint と校閲記録を見て、発行できるか判断すること", ok=False)
+            try:
+                diagnose_anomalies("compose", date, rerun=False)   # 打ち切りも申告で終えない(なぜ時間切れになったか)
+            except Exception as e:      # noqa: BLE001
+                print(f"当番(なぜなぜ)の起動に失敗: {e}", flush=True)
             os._exit(1)
 
         signal.signal(signal.SIGTERM, _on_term)
@@ -2589,6 +2631,7 @@ def main() -> int:
     # 有効である。だから合議の verdict は、絞って見直しても紙面全体の答えになる
     retarget: list[str] | None = None
     retarget_ed = with_editorial
+    revised_keys: set[tuple[str, str]] = set()   # 直前の巡で書き直しに回した (file, rule_id)。次の巡にも残れば「直せなかった」
     for rounds in range(1, args.max_rounds + 2):
         # 紙面担当(主題の重複・記事の漏れ)は、**記事を直したら走らせる**。
         # 見出しや主題が変われば、別の記事との重複が新しく生まれうる(監査指摘)。
@@ -2616,6 +2659,12 @@ def main() -> int:
         art_blockers = [b for b in blockers if str(b.get("scope") or "").startswith("article:")]
         paper_blockers = [b for b in blockers if b.get("scope") == "paper"]
         retarget_ed = bool(ed_blockers)
+        # 書き直しをはさんでも、同じ記事に同じ規則の指摘が残った = 書き手が直せない。人に「落とした」と言う前に当番が診断する
+        for b in art_blockers + paper_blockers:
+            key = (str(b.get("file") or ""), str(b.get("rule_id") or ""))
+            if key in revised_keys:
+                note_stuck(date, "校閲", key[0], key[1], str(b.get("issue") or ""), rounds)
+        revised_keys = set()
 
         by_file: dict[str, list[dict]] = {}
         for b in art_blockers + paper_blockers:
@@ -2644,14 +2693,20 @@ def main() -> int:
             jobs.append(("社説", lambda: rewrite_editorial(
                 date, number, plan.get("editorial_slug", ""),
                 plan.get("editorial_brand", ""), ed_blockers)))
+        revised: dict[str, str] = {}     # slug → 書き直しの結果(revise_articles)
         if by_file:
             if STRUCTURED_WRITE:
                 # 中身の修正は**執筆側(Codex)**が構造化で書き直す。校閲側(Claude)に記事を編集させない
-                jobs.append(("記事の書き直し", lambda: revise_articles(date, by_file, plan, cands, aborted)))
+                jobs.append(("記事の書き直し", lambda: revised.update(revise_articles(date, by_file, plan, cands, aborted))))
             else:
                 jobs.append(("記事の修正", lambda: fix_articles(date, by_file)))
         for e in run_parallel(jobs):
             print(f"同時実行のうち失敗: {e}", flush=True)
+            anomaly("compose", f"校閲の往復({rounds}巡目)の同時実行のうち失敗: {e}")
+        # 「書き手が書き直した(稿を出した)」記事だけを次の巡の照合の対象にする。出力が読めなかった・ジョブが失敗した記事に
+        # 同じ指摘が残るのは実行の失敗であって、契約の欠陥ではない(監査指摘 r86)
+        revised_keys = {(f, str(b.get("rule_id") or "")) for f, bs in by_file.items() for b in bs
+                        if revised.get(Path(f).name[len(date) + 1:].removesuffix(".md")) in ("fixed", "kept")}
         # 書き直しで落ちた記事(見送り)を written から外す
         written[:] = [a for a in written if (ROOT / "docs" / "_posts" / f"{date}-{a['slug']}.md").exists()]
         subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
@@ -2845,7 +2900,10 @@ def main() -> int:
         return 1
     if ok:
         # 外れた記事は slug ではなく概略(見出し・段・理由)で知らせる(編集長の指摘 2026-09-23)
-        notify("compose", f"{date}号 準備完了(校閲{rounds}往復で approve)。06:00 に発行されます" + drop_summary(date))
+        notify("compose", f"{date}号 準備完了(校閲{rounds}往復で approve)。06:00 に発行されます" + drop_summary(date) + stuck_summary(date)
+               + ("\n(異常は当番がなぜなぜして報告する)" if ANOMALIES or DROP_LOG.get(date) or STUCK.get(date) else ""))
+        # 号は確定している(作り直さない)。外れた記事・直らなかった指摘・途中の異常の原因を当番に診断させ、欠陥なら直す(次の号から効く)
+        hand_over_anomalies(date, rerun=False)
         return 0
     reasons = []
     if not approved:
@@ -2861,8 +2919,9 @@ def main() -> int:
             e.split("::", 2)[-1] for e in errs[:5]))
     notify("compose", f"{date}号: 発行前に人間判断が必要。当番に渡す。" + "\n".join(reasons), ok=False)
     # 校閲が下ろさなかった指摘や lint 赤で止まった号は、実装の欠陥であることが多い。
-    # 人が起きるまで待たず、当番(Opus)が診断・修正し、監査(Sol)を通して回し直す
-    escalate("compose", date, "発行前に人間判断が必要:\n" + "\n".join(reasons)[:3000])
+    # 人が起きるまで待たず、当番(Opus)が診断・修正し、監査(Sol)を通して回し直す。
+    # 外れた記事・直らなかった指摘・途中の異常も同じ当番がなぜなぜする(当番は1日2回までなので分けて呼ばない)
+    hand_over_anomalies(date, rerun=True, reason="発行前に人間判断が必要(校閲未 approve か lint 赤)。原因を直して回し直すこと:\n" + "\n".join(reasons)[:3000])
     return 1
 
 
@@ -2915,7 +2974,7 @@ if __name__ == "__main__":
             _leave_tree_clean(str(e.code))
             try:
                 from pipelib import escalate
-                escalate("compose", edition_date(), f"SystemExit で停止: {e.code}")
+                escalate("compose", STARTED_DATE or edition_date(), f"SystemExit で停止: {e.code}")
             except Exception:
                 pass
     except Exception as e:
@@ -2924,11 +2983,17 @@ if __name__ == "__main__":
         # 例外で落ちたら実装の欠陥。当番へ(人が起きるまで待たない)
         try:
             from pipelib import escalate
-            escalate("compose", edition_date(), f"例外で停止: {type(e).__name__}: {e}\n{traceback.format_exc()[-2500:]}")
+            escalate("compose", STARTED_DATE or edition_date(), f"例外で停止: {type(e).__name__}: {e}\n{traceback.format_exc()[-2500:]}")
         except Exception:
             pass
         code = 1
     else:
         if code:
             _leave_tree_clean(f"exit {code}")
+    # どの終わり方でも、人に「異常」として通知したものは当番がなぜなぜする(既に当番を呼んだ process では重ねて呼ばない。
+    # 途中で止まった号の作り直しは当番の判断に任せず、ここでは再実行しない: 止まった理由で呼ぶ経路は上にある)
+    try:
+        diagnose_anomalies("compose", STARTED_DATE or edition_date(), rerun=False)
+    except Exception as e:      # noqa: BLE001 — 診断の起動で終了処理を落とさない
+        print(f"当番(なぜなぜ)の起動に失敗: {e}", flush=True)
     sys.exit(code)

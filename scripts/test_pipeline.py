@@ -76,6 +76,10 @@ def test_check_output():
     # label の制御文字・不可視文字は差し戻さず、書き出しで取り除く(出典ページの題名のゼロ幅空白を執筆が写す。2026-09-19)
     check(C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "お​知らせ ~ for\x044"}])) == [], "label の不可視文字で差し戻した")
     check(renderlib.clean_label("お​知らせ\n ~  for\x044  ") == "お知らせ ~ for4", f"clean_label: {renderlib.clean_label('お​知らせ ~ for\x044')!r}")
+    # label の上限は執筆 schema と書き出しで同じ値(80 字だった頃、告知タイトルが切れて校閲 R16 が何巡もブロックし記事が落ちた。2026-09-26)
+    schema_label = json.loads((pipelib.ROOT / "schema" / "article-out.schema.json").read_text(encoding="utf-8"))["properties"]["sources"]["items"]["properties"]["label"]
+    check(schema_label.get("maxLength") == renderlib.LABEL_MAX >= 200, f"label の上限: schema {schema_label.get('maxLength')} / 書き出し {renderlib.LABEL_MAX}")
+    check(len(renderlib.clean_label("あ" * 300)) == renderlib.LABEL_MAX, "clean_label の上限が LABEL_MAX でない")
     # 検査は取り除いたあとの値で(不可視文字で割った Markdown 記号・空になる label を通さない。監査指摘)
     check(any("Markdown" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "[公式]​(https://evil)"}]))),
           "不可視文字で割った Markdown リンクの label が通った")
@@ -533,10 +537,14 @@ def test_revise_apply_decline(tmp: Path):
         compose.subprocess.Popen = fake_popen
         compose.REVISE_NOTES["2026-09-12"] = {"x": "前々巡の古い理由"}
         plan = {"articles": [{"slug": "x", "brand": "765", "candidate_ids": ["c1"], "rank": "small"}]}
-        compose.revise_articles("2026-09-12", {"docs/_posts/2026-09-12-x.md": [{"rule_id": "R1", "quote": "価格は三千円である", "repair": "drop_claim"}]},
-                                plan, {"c1": MATS[0]}, None)
+        n_before = len(pipelib.ANOMALIES)
+        res = compose.revise_articles("2026-09-12", {"docs/_posts/2026-09-12-x.md": [{"rule_id": "R1", "quote": "価格は三千円である", "repair": "drop_claim"}]},
+                                      plan, {"c1": MATS[0]}, None)
         note = compose.REVISE_NOTES["2026-09-12"].get("x", "")
         check("読めず" in note and "前々巡" not in note, f"出力が読めなかった巡の注記が更新されない: {note!r}")
+        # 読めなかった書き直しは「書き手が書き直した」に数えない(次の巡に同じ指摘が残っても契約の欠陥と記録しない)。実行の失敗は異常の台帳へ
+        check(res == {"x": "unreadable"}, f"書き直しの結果: {res}")
+        check(len(pipelib.ANOMALIES) == n_before + 1 and "出力が読めない" in pipelib.ANOMALIES[-1], "読めなかった書き直しが台帳に無い")
     finally:
         compose.revise_prompt, compose.subprocess.Popen, compose.ROOT, pipelib.ROOT = saved_rp, saved_popen, saved_root, saved_proot
         compose.REVISE_NOTES.clear()
@@ -790,6 +798,67 @@ def test_classify_consensus(tmp: Path):
         cs.ask, cs.ROOT = saved
 
 
+def test_request_parsers(tmp: Path):
+    """パーサの無い URL は人に「決まらない」と言う前に当番へ回す(編集長 2026-09-26「申告前に診断しろ」)。
+    依頼はホストごとに1つ、同じホストは PARSER_RETRY_DAYS のあいだ出し直さない。依頼の文は prompts/oncall-parser。"""
+    import classify_sources as cs
+    tmp.mkdir(parents=True, exist_ok=True)
+    calls: list[tuple[str, str, str]] = []
+    saved = (cs.PARSER_REQUESTS, dict(cs.USED_IN))
+    try:
+        cs.PARSER_REQUESTS = tmp / "parser-requests.json"
+        cs.USED_IN.clear()
+        cs.USED_IN["https://www.nicovideo.jp/user/1"] = ["記事A"]
+        need = {"https://www.nicovideo.jp/user/1": "nicovideo.jp", "https://www.nicovideo.jp/user/2": "nicovideo.jp",
+                "https://www.tiktok.com/tag/imas": "tiktok.com"}
+        rows = cs.request_parsers("2026-09-26", need, escalate_fn=lambda s, d, r: calls.append((s, d, r)) or True)
+        check(len(calls) == 1 and calls[0][0] == "classify" and calls[0][1] == "2026-09-26", f"当番の呼び出し: {[(c[0], c[1]) for c in calls]}")
+        reason = calls[0][2]
+        check("パーサ" in reason and "- nicovideo.jp" in reason and "- tiktok.com" in reason and "https://www.nicovideo.jp/user/2" in reason
+              and "記事A" in reason, "依頼文に対象のホスト・URL・使われ方が無い")
+        check(len(rows) == 3 and all("当番" in r and "依頼を 2026-09-26 に出した" in r for r in rows), f"記録の行: {rows}")
+        rec = json.loads(cs.PARSER_REQUESTS.read_text(encoding="utf-8"))
+        check(set(rec) == {"nicovideo.jp", "tiktok.com"} and rec["nicovideo.jp"]["date"] == "2026-09-26", f"依頼の記録: {rec}")
+        # 同じ日・翌日の収集では出し直さない
+        rows = cs.request_parsers("2026-09-27", need, escalate_fn=lambda s, d, r: calls.append((s, d, r)) or True)
+        check(len(calls) == 1 and all("依頼済み(2026-09-26)" in r for r in rows), f"出し直し: {len(calls)}回 / {rows[:1]}")
+        # 直らないまま PARSER_RETRY_DAYS を過ぎたら出し直す
+        rows = cs.request_parsers("2026-09-30", need, escalate_fn=lambda s, d, r: calls.append((s, d, r)) or True)
+        check(len(calls) == 2, f"{cs.PARSER_RETRY_DAYS} 日後の出し直し: {len(calls)}回")
+        # 当番を呼べなかった(ONCALL=off)ときは、記録に残さず「人がパーサを書くこと」
+        cs.PARSER_REQUESTS.unlink()
+        rows = cs.request_parsers("2026-09-26", {"https://www.tiktok.com/tag/x": "tiktok.com"}, escalate_fn=lambda s, d, r: False)
+        check(rows and "人がパーサを書くこと" in rows[0] and not json.loads(cs.PARSER_REQUESTS.read_text(encoding="utf-8")), f"呼べなかったとき: {rows}")
+        # 当番の再実行(--require-parsers): パーサの無い URL が残っていたら exit 2 で、依頼の記録を消す(次の収集が出し直す)。
+        # 残っていなければ通る(監査指摘 r85: 一部の形だけ直った再実行を成功扱いにしない)
+        (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+        (tmp / "candidates").mkdir(exist_ok=True)
+        (tmp / "candidates" / "2026-09-26.json").write_text(json.dumps([{"url": "https://www.nicovideo.jp/user/9", "title": "t"}]), encoding="utf-8")
+        cs.PARSER_REQUESTS.write_text(json.dumps({"nicovideo.jp": {"date": "2026-09-26"}, "tiktok.com": {"date": "2026-09-26"}}), encoding="utf-8")
+        saved_root = (cs.ROOT, cs.POSTS_ONLY, sys.argv, cs.UNRESOLVED)
+        try:
+            cs.ROOT, cs.POSTS_ONLY, cs.UNRESOLVED = tmp, None, tmp / "classify-unresolved.json"
+            sys.argv = ["classify_sources.py", "--date", "2026-09-26", "--apply", "--require-parsers"]
+            code = cs.main()
+            check(code == 2, f"パーサが残る再実行の exit: {code}")
+            check(set(json.loads(cs.PARSER_REQUESTS.read_text(encoding="utf-8"))) == {"tiktok.com"}, "残ったホストの依頼の記録が消えていない")
+            (tmp / "candidates" / "2026-09-26.json").write_text(json.dumps([{"url": "https://x.com/i/trending/1", "title": "t"}]), encoding="utf-8")
+            code = cs.main()
+            check(code == 0, f"パーサの残らない再実行の exit: {code}")
+        finally:
+            cs.ROOT, cs.POSTS_ONLY, sys.argv, cs.UNRESOLVED = saved_root
+    finally:
+        cs.PARSER_REQUESTS, used = saved
+        cs.USED_IN.clear()
+        cs.USED_IN.update(used)
+    # 当番の再実行の決め方: classify は号を作り直さない(prompts/ を触っても)
+    import oncall
+    check(oncall.rerun_policy("classify", ["scripts/classify_sources.py", "prompts/classify-site.md"], "resume") == (False, "出典の判定のやり直し(classify_retag_lint)"),
+          "classify の再実行が組版の作り直しになる")
+    check(oncall.rerun_policy("classify", ["scripts/classify_sources.py"], "none") == (False, "none"), "classify の none")
+    check("classify" in oncall.STAGES and oncall.UNIT_OF["classify"] == "collect", "oncall に classify 工程が無い")
+
+
 def test_classify_posts_only(tmp: Path):
     """組版前の判定は、その号の記事に載った未確認の出典だけを対象にする(候補は見ない)。
     取引(判定表 → 付け直し → lint)は、失敗したら判定表と記事を戻す。"""
@@ -820,7 +889,10 @@ def test_classify_posts_only(tmp: Path):
     check(cs.platform_unit("https://docs.google.com/document/d/1AbCdEfGhIjKlMnOpQrStUvWxYz012345/edit")[1].endswith("/d/1AbCdEfGhIjKlMnOpQrStUvWxYz012345"), "文書の単位")
     check(cs.platform_unit("https://forms.gle/AbCdEf123") == ("path", "forms.gle/AbCdEf123"), "短縮フォームの単位")
     check(cs.platform_unit("https://someone.hatenablog.com/entry/2026/09/20/1") == ("domain", "someone.hatenablog.com"), "ブログはサブドメインが主体")
-    check(cs.platform_unit("https://docs.google.com/")[0] == "skip" and "単位" in cs.platform_unit("https://docs.google.com/")[1], "単位を取れない URL の理由")
+    check(cs.platform_unit("https://docs.google.com/")[0] == "skip" and "文書 ID" in cs.platform_unit("https://docs.google.com/")[1], "文書 ID の無い URL の理由")
+    # 持ち主はいるはずだが取る手段が無い URL は skip ではなく parser(当番にパーサを書かせる。編集長 2026-09-26「パースしろという判定をしろ」)
+    check(cs.platform_unit("https://www.nicovideo.jp/user/12345678") == ("parser", "nicovideo.jp"), f"パーサの無い URL: {cs.platform_unit('https://www.nicovideo.jp/user/12345678')}")
+    check(cs.display_base("https://www.nicovideo.jp/user/12345678").startswith("(持ち主を取るパーサが無い: nicovideo.jp"), "パーサの無い URL の表示")
     check(cs.platform_unit("https://shop.example.jp/item/1") == ("domain", "shop.example.jp"), "ふつうのサイトはドメイン")
     # Drive はフォルダ・ファイルの ID まで。ID を取れない Drive の URL をホスト全体の主体にしない(監査指摘)
     check(cs.platform_unit("https://drive.google.com/drive/folders/19gSAbCdEfGhIjKlMnOpQrStUv") == ("path", "drive.google.com/drive/folders/19gSAbCdEfGhIjKlMnOpQrStUv"), "Drive のフォルダの単位")
@@ -1113,7 +1185,7 @@ ACTIVE_PROMPTS = ("plan-brand", "plan-rules", "plan-lead", "plan-missing", "writ
                   "write-article.culture", "revise-article", "review-article", "review-paper", "assemble-digest", "assemble-ledger",
                   "collect-rules", "collect-item", "grok-collect", "grok-normalize", "explore", "watch-facts",
                   "classify-rules", "classify-site", "classify-x", "classify-debate",
-                  "oncall-fix", "oncall-fix.objections", "oncall-review")
+                  "oncall-fix", "oncall-fix.objections", "oncall-review", "oncall-parser", "oncall-whywhy")
 
 
 def test_prompts_are_instructions_only():
@@ -1490,6 +1562,39 @@ def test_tool_path():
     check(os.path.expanduser("~/.local/bin") in p.split(":") and "/usr/bin" in p.split(":"), f"tool_path に利用者の bin が無い: {p}")
 
 
+def test_oncall_ensure_edition(tmp: Path):
+    """取り込み先の号が origin にだけある(新しい clone・ローカル branch を消したあと)なら、ローカルを作って揃える(監査指摘 r88)。
+    origin に無ければ問題を返し、ローカルが origin と食い違えば問題を返す。"""
+    import oncall
+    tmp.mkdir(parents=True, exist_ok=True)
+    remote, work = tmp / "remote.git", tmp / "work"
+    g = lambda *a, cwd=work: subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True, check=True)
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(work)], check=True, capture_output=True)
+    g("config", "user.email", "t@example"); g("config", "user.name", "t")
+    (work / "a").write_text("1", encoding="utf-8"); g("add", "a"); g("commit", "-q", "-m", "1")
+    g("remote", "add", "origin", str(remote)); g("push", "-q", "origin", "main")
+    g("branch", "edition/2026-09-27"); g("push", "-q", "origin", "edition/2026-09-27"); g("branch", "-D", "edition/2026-09-27")
+    check(oncall.ensure_edition("edition/2026-09-27", work) == "", "origin にだけある号の branch を揃えられない")
+    check(g("rev-parse", "edition/2026-09-27").stdout == g("rev-parse", "origin/edition/2026-09-27").stdout, "作ったローカルが origin と違う")
+    check("origin に無い" in oncall.ensure_edition("edition/2026-09-28", work), "無い号を問題として返さない")
+    (work / "a").write_text("2", encoding="utf-8"); g("checkout", "-q", "edition/2026-09-27"); g("commit", "-q", "-am", "2")
+    check("食い違う" in oncall.ensure_edition("edition/2026-09-27", work), "ローカルが進んでいるのに揃ったことにした")
+    # 通信の停滞(timeout)は traceback で落とさず「前提の確認に失敗」(RuntimeError)にする(監査指摘 r89)
+    saved_sh = oncall.sh
+    try:
+        def slow(args, cwd, timeout=600):
+            raise subprocess.TimeoutExpired(args, timeout)
+        oncall.sh = slow
+        try:
+            oncall.ensure_edition("edition/2026-09-27", work)
+            check(False, "通信の timeout が RuntimeError にならない")
+        except RuntimeError as e:
+            check("応答しない" in str(e), f"timeout の説明: {e}")
+    finally:
+        oncall.sh = saved_sh
+
+
 def test_oncall_undo_merge():
     """merge --abort が失敗しても、merge 前のハッシュへ reset --hard する(監査指摘 R13-P0-1)。"""
     import oncall
@@ -1732,6 +1837,86 @@ def test_escalate_is_module_global():
           "main() が escalate を局所変数にしている(UnboundLocalError の再来)")
 
 
+def test_anomaly_ledger_and_whywhy(tmp: Path):
+    """人に「異常」として通知したものは台帳に積み、当番への依頼文に「なぜなぜ」として必ず付く
+    (編集長 2026-09-26「すべてのエラーがなぜ起きたかなぜなぜしろ」「申告前に診断しろ」)。
+    試験実行(quiet)では当番を呼ばない。同じ process で二度は呼ばない。"""
+    saved = list(pipelib.ANOMALIES)
+    saved_flag, saved_quiet = pipelib._ESCALATED, pipelib._QUIET
+    try:
+        pipelib.ANOMALIES.clear()
+        pipelib._ESCALATED = False
+        pipelib.set_quiet(False)
+        check(pipelib.escalate_reason("理由") == "理由", "台帳が空なら理由だけ")
+        pipelib.notify("compose", "記事Xを落とした: 校閲ブロック", ok=False)
+        pipelib.notify("compose", "順調", ok=True)
+        pipelib.notify("oncall", "当番の通知は台帳に積まない", ok=False)
+        pipelib.anomaly("compose", "  ")
+        pipelib.anomaly("watch", "未確認の出典 3件")
+        check(pipelib.ANOMALIES == ["[compose] 記事Xを落とした: 校閲ブロック", "[watch] 未確認の出典 3件"], f"台帳: {pipelib.ANOMALIES}")
+        r = pipelib.escalate_reason("止まった")
+        check(r.startswith("止まった") and "なぜなぜ" in r and "- [compose] 記事Xを落とした" in r and "- [watch] 未確認の出典 3件" in r,
+              "依頼文に台帳となぜなぜの指示が無い")
+        # 試験実行では当番を呼ばない(呼ぶと本物の当番が起動する)
+        pipelib.set_quiet(True)
+        check(pipelib.escalate("compose", "2026-09-26", "x") is False and pipelib._ESCALATED is False, "quiet で当番を呼んだ")
+        check(pipelib.diagnose_anomalies("compose", "2026-09-26") is False, "quiet で diagnose が当番を呼んだ")
+        # 当番を起動できなかった(systemd-run 失敗・Popen 失敗)ときは _ESCALATED を立てない(工程末尾の diagnose が二度目を試せる。監査指摘 r87)
+        pipelib.set_quiet(False)
+        (tmp / "scripts").mkdir(parents=True, exist_ok=True)
+        (tmp / "metrics").mkdir(exist_ok=True)
+        (tmp / "scripts" / "oncall.py").write_text("", encoding="utf-8")
+        saved_popen, saved_inv, saved_proot, saved_oncall = pipelib.subprocess.Popen, os.environ.get("INVOCATION_ID"), pipelib.ROOT, pipelib.ENV.get("ONCALL")
+        try:
+            os.environ.pop("INVOCATION_ID", None)      # systemd の外の経路(Popen)
+            pipelib.ROOT = tmp                          # 本物の metrics/ に当番のログを作らない
+            pipelib.ENV["ONCALL"] = "on"
+            def boom(*a, **k):
+                raise OSError("起動できない")
+            pipelib.subprocess.Popen = boom
+            check(pipelib.escalate("compose", "2026-09-26", "x") is False and pipelib._ESCALATED is False, "起動に失敗したのに _ESCALATED が立った")
+        finally:
+            pipelib.subprocess.Popen, pipelib.ROOT = saved_popen, saved_proot
+            if saved_inv is not None:
+                os.environ["INVOCATION_ID"] = saved_inv
+            if saved_oncall is None:
+                pipelib.ENV.pop("ONCALL", None)
+            else:
+                pipelib.ENV["ONCALL"] = saved_oncall
+        # 既に当番を呼んだ process では、終わりの diagnose は重ねて呼ばない(当番は1日2回まで)
+        pipelib._ESCALATED = True
+        pipelib.set_quiet(False)
+        check(pipelib.diagnose_anomalies("compose", "2026-09-26") is False, "二度目の当番を呼んだ")
+        pipelib.ANOMALIES.clear()
+        pipelib._ESCALATED = False
+        check(pipelib.diagnose_anomalies("compose", "2026-09-26") is False, "台帳が空なのに当番を呼んだ")
+    finally:
+        pipelib.ANOMALIES.clear()
+        pipelib.ANOMALIES.extend(saved)
+        pipelib._ESCALATED = saved_flag
+        pipelib.set_quiet(saved_quiet)
+    # compose: 書き直しをはさんでも同じ記事に同じ規則の指摘が残った、を記録し、通知と台帳に載せる
+    saved_stuck = dict(compose.STUCK)
+    try:
+        compose.STUCK.clear()
+        check(compose.stuck_summary("2026-09-26") == "", "記録が無いのに要約が出る")
+        compose.note_stuck("2026-09-26", "校閲", "docs/_posts/2026-09-26-a.md", "R16", "sources[0] のラベルが切れている", 3)
+        s = compose.stuck_summary("2026-09-26")
+        check("2026-09-26-a.md R16(3巡目まで残った)" in s and "契約" in s, f"要約: {s}")
+    finally:
+        compose.STUCK.clear()
+        compose.STUCK.update(saved_stuck)
+    # oncall: --no-rerun は「再実行しても通らない(none)」より先に見る(号が確定した工程の当番は再実行せず 0 で終わる)
+    import oncall
+    src = (pipelib.ROOT / "scripts" / "oncall.py").read_text(encoding="utf-8")
+    check(src.index("if a.no_rerun:") < src.index('if rerun_mode == "none":\n            notify'), "no_rerun の判定が none の後にある")
+    check(set(oncall.STAGES) >= {"compose", "release", "classify", "collect", "watch"}, f"oncall の工程: {oncall.STAGES}")
+    # compose の例外・SystemExit・終了時の当番は、対象の号(STARTED_DATE。--date で過去号を組み直したとき)を渡す(監査指摘 r87)
+    csrc = (pipelib.ROOT / "scripts" / "compose.py").read_text(encoding="utf-8")
+    check('escalate("compose", edition_date()' not in csrc and csrc.count("STARTED_DATE or edition_date()") >= 3,
+          "compose の終了経路の当番が対象の号ではなく edition_date() を渡している")
+
+
 def test_url_alive_verdict():
     """出典 URL の死活確認: サーバがページ不在を明言した 404/410 だけを発行停止の error とし、
     403 の WAF・bot 遮断、401、429、5xx やネットワーク層の失敗は「死活未確認」の警告どまりに
@@ -1777,6 +1962,7 @@ def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_slugify_format()
     test_escalate_is_module_global()
+    test_anomaly_ledger_and_whywhy(tmp / "al")
     test_url_alive_verdict()
     test_check_output()
     test_render_and_length()
@@ -1794,6 +1980,7 @@ def main() -> int:
     test_classify_consensus(tmp / "cs")
     test_table_write_and_reload(tmp / "tw")
     test_classify_posts_only(tmp / "cp")
+    test_request_parsers(tmp / "rq")
     test_assemble_prompt_shape()
     test_prompts_are_instructions_only()
     test_assemble_judge()
@@ -1805,6 +1992,7 @@ def main() -> int:
     test_dedupe_source_table(tmp / "dd")
     test_tool_path()
     test_oncall_undo_merge()
+    test_oncall_ensure_edition(tmp / "ee")
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()
     test_oncall_report_text(tmp / "rp")

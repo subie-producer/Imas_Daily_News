@@ -124,6 +124,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - chiba-tv.com          # 合議で追加: ページ冒頭に『Gamer』というクレジット表記があり、外部メディアの記事を転載。
   - best-shingaku.net     # 合議で追加: 東京アミューズメントメディア専門学校のイベント情報を掲載する進学情報ポータルサイ
   - nicolog.jp            # 合議で追加: ニコニコ動画のタグ・統計データを収集・公開する二次サイト
   - lnk.to                # 合議で追加: 複数のアーティスト・レーベルに利用される汎用プラットフォーム。配信プラットフォー
@@ -221,6 +222,10 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - scrapmagazine.com     # 合議で追加: リアル脱出ゲーム主催。学マスとのコラボイベント企画運営
+  - gigo.co.jp            # 合議で追加: ゲームセンターチェーン。アイマス商品の景品設置・販売
+  - tixplus.jp            # 合議で追加: X VORDER RUNWAY のチケット販売プラットフォーム。催しを動かすチケ
+  - gamers.co.jp          # 合議で追加: ライセンス受領の販売元。アイマス商品の予約・販売
   - taito.co.jp           # 合議で追加: 学園マス グッズを置くゲームセンター・プライズ販売事業者
   - zan-live.com          # 合議で追加: ライブ配信プラットフォーム。チケット販売・配信の主体。
   - megashakicp7.com      # 合議で追加: メガシャキのメーカーで、アイマスのライセンスを受けてコラボキャンペーンを運営して
@@ -481,6 +486,11 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - kkkn_ev_727         # 合議で追加: 個人アカウント、交換募集
+    - jurygema            # 合議で追加: 個人アカウント、公式コンテンツの観察
+    - hkn96_mk            # 合議で追加: 個人アカウント、視聴感想
+    - fuchisei            # 合議で追加: 個人アカウント、現地反応
+    - anime_game_ch       # 合議で追加: 報道メディアには機関性・独立性が必要。アカウント名から見てファンコミュニティ、登
     - takonorio           # 合議で追加: 個人による公演視聴と感想投稿
     - pseudr              # 合議で追加: 個人による公式配信のアーカイブ視聴投稿
     - sak1010p            # 合議で追加: コラボグッズ入手報告、個人のファン活動
@@ -668,6 +678,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  instagram.com/p: ファン                         # 合議で追加: 個人アカウント@flowers_room_fによる終演後の投稿
   note.com/sammy_sammy: ファン                    # 合議で追加: 個人のnoteアカウント。アイマスLIVE観賞レポート等、個人のファン発信。
   note.com/hokuhokuawaawa: ファン                 # 合議で追加: 個人のnoteユーザーアカウント。シャニマスの感想・物販紹介
   note.com/kaaiiiiiiii_trip: ファン               # 合議で追加: 個人ブログ。アイマスSideMの個人的な目撃・体験レポート

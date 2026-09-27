@@ -1,0 +1,133 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-28-dsva-ops-roundup.md",
+   "issue": "販売期間が2026年9月27日23時59分で終了した商品を「発売中」と記述している",
+   "quote": "「バースデー記念ボイスはBOOTHで発売中」",
+   "rule_id": "R12",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "202609280226-grok-18"
+   ],
+   "expected": "記事発行時点で販売期間が終了している商品について記述しないこと",
+   "scope": "article:2026-09-28-dsva-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-solo-live-master-showpiece-streaming-goods-2026.md",
+   "issue": "sources 1 のラベルが記事に書かれた「28名のアイドルの新ソロ曲をイメージしたデザイン」という具体的な情報を反映していない",
+   "quote": "開催記念グッズは、28名のアイドルの新ソロ曲をイメージしたデザインや公演キービジュアルをあしらった商品を受注中。",
+   "rule_id": "R4",
+   "repair": "add_source",
+   "fact_ids": [
+    "202609270733-explore-7"
+   ],
+   "expected": "sources 1 のラベルを修正して、28名アイドルの新ソロ曲イメージグッズについて明記すること",
+   "scope": "article:2026-09-28-shiny-solo-live-master-showpiece-streaming-goods-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-28-shiny-solo-live-msp-goods-2026.md",
+   "issue": "分量不足: rank:small で目安 250字に対して本文が 80字程度。出典にあるグッズの種類（アクリルスタンド、缶バッジ、アクリルパネル等）と価格を追加すれば充実する",
+   "scope": "article:2026-09-28-shiny-solo-live-msp-goods-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "高engagement公式発表「Radiant Chord」(2027/3/22)と「I'm a Cutie Finder×スイーツパラダイス」(2026/10/30)がcandidatesに存在するが紙面に無い。意図的な除外の可能性あり。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-cg-puzzle-and-dragons-collab-2026.md",
+   "issue": "本文が rank (small, 目安 250字以上) に対して分量不足 (約120字)。出典の既報情報 (新規登場ユニット: LOVE LAIKA、#UNICUS) やコラボの詳細内容を追加することで充実させられる可能性がある。",
+   "scope": "article:2026-09-28-cg-puzzle-and-dragons-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-gaku-hr-12-2026-09-28-313857.md",
+   "issue": "本文が rank:small の目安(250字)より短い(235字)。出典にある配信プラットフォーム別の視聴方法やミラー配信の細則を拾えば分量を埋められる。",
+   "scope": "article:2026-09-28-gaku-hr-12-2026-09-28-313857.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-gaku-hr-12-2026-09-28-313857.md",
+   "issue": "見出しと本文で『HR#12』『HR #12』の表記が混在している。統一が必要。",
+   "scope": "article:2026-09-28-gaku-hr-12-2026-09-28-313857.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-million-topic-40.md",
+   "issue": "見出し・リードで『オーディオコメンタリー付き』と述べ、本文では『視聴コメント付き』と異なる表現が使われている。素材には両方の用語が含まれるが、読者の混乱を避けるため用語の統一を推奨。",
+   "scope": "article:2026-09-28-million-topic-40.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-54-31a825.md",
+   "issue": "分量不足：rank: small で目安250字以上だが、リード+本文は約100字。出典のX投稿に詳細情報がないため、既報で掲載された報酬情報（無償プリズムジュエル、マスターバッジ、ドレスオーダーチケット）などを補足することで埋まる可能性がある。",
+   "scope": "article:2026-09-28-shiny-54-31a825.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-765-5-p-43466d.md",
+   "issue": "本文が小ランク記事の目安（250字）に対し約50字と非常に短い。見出しに「ガシャ」と記事対象が明確に示されているため支障はないが、シャニソン×765コラボの背景や受け取り方のような補足情報があれば読みやすくなる可能性",
+   "scope": "article:2026-09-28-shiny-765-5-p-43466d.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-parallel-collection-popup-2026.md",
+   "issue": "rank: small の目安(250字以上)に対して本文が著しく短い。出典にある店舗別商品情報(超デカアクリルスタンド、フルグラフィックTシャツなど、各商品の取扱店)を加えて内容を充実させることで読者価値が高まる",
+   "scope": "article:2026-09-28-shiny-parallel-collection-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-song-for-prism-season-35-pass-2026.md",
+   "issue": "small ランク（目安 250字）に対し分量が薄い。候補に価格（1,960円）やプラットフォーム情報（DMM GAMES版含む全プラットフォーム）があり、拾えば埋まる",
+   "scope": "article:2026-09-28-shiny-song-for-prism-season-35-pass-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-suntory-lemon-squash-2026-09.md",
+   "issue": "本文最後の段落「数量限定のオリジナルアクキーが当たる企画も用意されている。」に根拠の控え（<!-- F5 -->など）が記載されていない。形式上は根拠タグが必要です。",
+   "scope": "article:2026-09-28-shiny-suntory-lemon-squash-2026-09.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-28-765-x-vorder-runway-765-2026.md",
+  "article:2026-09-28-cg-puzzle-and-dragons-collab-2026.md",
+  "article:2026-09-28-dsva-ops-roundup.md",
+  "article:2026-09-28-gaku-hr-12-2026-09-28-313857.md",
+  "article:2026-09-28-gaku-topic-ea52c6518c.md",
+  "article:2026-09-28-million-14th-live-day1-setlist-2026.md",
+  "article:2026-09-28-million-14th-live.md",
+  "article:2026-09-28-million-42-cb6d98.md",
+  "article:2026-09-28-million-linkage-kyoushi-2026-09.md",
+  "article:2026-09-28-million-topic-40.md",
+  "article:2026-09-28-shiny-54-31a825.md",
+  "article:2026-09-28-shiny-765-5-p-43466d.md",
+  "article:2026-09-28-shiny-7th-live-tour-blu-ray-2027.md",
+  "article:2026-09-28-shiny-noctchill-live-2027.md",
+  "article:2026-09-28-shiny-ops-roundup.md",
+  "article:2026-09-28-shiny-parallel-collection-popup-2026.md",
+  "article:2026-09-28-shiny-solo-live-master-showpiece-streaming-goods-2026.md",
+  "article:2026-09-28-shiny-solo-live-msp-goods-2026.md",
+  "article:2026-09-28-shiny-song-for-prism-season-35-pass-2026.md",
+  "article:2026-09-28-shiny-suntory-lemon-squash-2026-09.md",
+  "article:2026-09-28-sidem-315shop-5th-anniversary-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-28-765-x-vorder-runway-765-2026.md": "3d0db1bd06d7870e79878c974948ec644dde50043fb6b8a207c32e736f569bf1",
+  "docs/_posts/2026-09-28-cg-puzzle-and-dragons-collab-2026.md": "5a189b07a98c15f3bcfe380758cd8085f1a001ed5bedbc21503c1830e43b8b72",
+  "docs/_posts/2026-09-28-dsva-ops-roundup.md": "cfe564f644c2931cfa794d97a60f65503098aef0ebacc527868ef0a280c78f93",
+  "docs/_posts/2026-09-28-gaku-hr-12-2026-09-28-313857.md": "efee33bf6c89f6c5d8fa67e7f1a3df174f615609156d5e1237dbcaac4877b0fd",
+  "docs/_posts/2026-09-28-gaku-topic-ea52c6518c.md": "e9c8264ee00907d99dcadacdd070a6ef3b7b34346a7518ada9b751753bf13955",
+  "docs/_posts/2026-09-28-million-14th-live.md": "90e58ff0ff5389a58abbe2024da8dcbdae2381ef9235814857cd44bf4983d1f3",
+  "docs/_posts/2026-09-28-million-42-cb6d98.md": "7a3ca66a5a06718269f4d7b570866980d3e9043a20092bbb9506e0774b68fe82",
+  "docs/_posts/2026-09-28-million-linkage-kyoushi-2026-09.md": "3220955555f8b42d5b00befa8f96be31bf6adf8ae0be9e184d21dd95b818b7ef",
+  "docs/_posts/2026-09-28-million-topic-40.md": "e7b808da10c091e6230dca84db30fac63179c9bfbbe3b1f9a19518d2c4663200",
+  "docs/_posts/2026-09-28-shiny-54-31a825.md": "29788c6847c15c5d7c68455098f53b576c693aa383db3982b20a5c6e39eeaada",
+  "docs/_posts/2026-09-28-shiny-765-5-p-43466d.md": "98d464985e848b0d8223b662cd109a48676d3d157204a550e3c37a2e6936d5bf",
+  "docs/_posts/2026-09-28-shiny-7th-live-tour-blu-ray-2027.md": "9f7ba0ca3a8f896258349a2309e6c9af37c675eaccf4acc39532441887497543",
+  "docs/_posts/2026-09-28-shiny-noctchill-live-2027.md": "a8c6208774834560e242f93c41fef903320270f3f75f89670c99baabb93745bf",
+  "docs/_posts/2026-09-28-shiny-ops-roundup.md": "3e2675bf7eef822eea8108b121678de36dabbb520a8f5e06a259951c7500baa0",
+  "docs/_posts/2026-09-28-shiny-parallel-collection-popup-2026.md": "016bf9ce89fb358bf7a3ba4f826892ec4e579cca16e25cd936902b0200b06aa1",
+  "docs/_posts/2026-09-28-shiny-solo-live-master-showpiece-streaming-goods-2026.md": "bc241bacc5c2b440d9a540fbe96f1791caf1534a2488ba8e4161f0ad054dff65",
+  "docs/_posts/2026-09-28-shiny-song-for-prism-season-35-pass-2026.md": "25a25358a58ec8c877f9be36644956c3677bf297bdf05837f564f317df7d3fd0",
+  "docs/_posts/2026-09-28-shiny-suntory-lemon-squash-2026-09.md": "0528197ef422c3b07ff817ff44c48509ab9e7e9323950ef3e29fedfc454deab0",
+  "docs/_posts/2026-09-28-sidem-315shop-5th-anniversary-2026.md": "3d371975fe85a62f1c8d2e1286961594a5aaf09101188cd8060f5d52123b8ea5",
+  "docs/_editions/2026-09-28.md": "5770ba4f7561a4fc0b934045200f055816e56ab79dc66daaafc167a196b4b35c",
+  "metrics/stories-before-2026-09-28.yml": "0dcc5a70e4c6edb92b5624840524c2b46382854e0800bb77c6a1f539c931522e"
+ }
+}

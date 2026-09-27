@@ -1,0 +1,187 @@
+{
+ "decisions": {
+  "gaku-hr-12-2026-09-28": {
+   "action": "article",
+   "angle": "初星学園HR#12、本日19時配信で新曲「Agitato」情報公開。ミラー配信も個人に限り歓迎、事前告知投稿も含め特集",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一配信を巡るgaku-hoshigakuen-hr12-2026/gaku-hr-12-9-26/gaku-hr-12-9-27/gaku-mirror-policy-hr12-2026を統合した本体記事"
+  },
+  "gaku-hoshigakuen-hr12-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hr-12-2026-09-28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じHR#12配信の告知(二次情報)。公式発表と同一施策なので本体記事に統合"
+  },
+  "gaku-hr-12-9-26": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hr-12-2026-09-28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じHR#12配信に向けた事前告知投稿。読者の行動は同じ(本日19時視聴)なので統合"
+  },
+  "gaku-hr-12-9-27": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hr-12-2026-09-28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じHR#12配信に向けた事前告知投稿。読者の行動は同じ(本日19時視聴)なので統合"
+  },
+  "gaku-mirror-policy-hr12-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hr-12-2026-09-28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じHR#12配信についての付随情報(ミラー配信可否)。読者の行動(本日19時視聴)は同じなので統合"
+  },
+  "gaku-gravure-solo-collection-vol1": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "予約締切は9/27で本日は既に終了、8/26既報の焼き直しで当日の新トリガーなし"
+  },
+  "gaku-gravure-solo-collection-vol-1": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "上記と同一商品・同一締切(9/27)の重複情報。締切は本日より前で新トリガーなし"
+  },
+  "gaku-chibigurumi-unit-collection-vol1-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "After Schoolキャンペーン in namcoの一部として9/26に既報。展開日も9/25で本日のトリガーなし"
+  },
+  "gaku-chibigurumi-unit-collection-vol2-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "vol.1と同じキャンペーンで既報。展開日も9/25で本日のトリガーなし"
+  },
+  "gaku-jinro-bunkasai-goods-mailorder-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/26に既報済み。通販開始は9/29で本日は何も起きない"
+  },
+  "gaku-live-tour-shirube-iwate-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "岩手公演(9/22-23)DAY1/DAY2・セットリストは既に個別記事化済みの内容で、二次情報レポートに新事実なし"
+  },
+  "gaku-topic-ea52c6518c": {
+   "action": "article",
+   "angle": "ハツボシストア「ウィークエンドシトロン」藤田ことねの立体アクリルスタンドが店舗で完売",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式ストア自身の投稿による完売報告。単発の商業情報で短い記事向き"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-topic-ea52c6518c",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ハツボシストア「ウィークエンドシトロン」藤田ことねの立体アクリルスタンドが店舗で完売",
+    "lead_score": 10,
+    "dedup_key": "gaku-topic-ea52c6518c",
+    "candidate_ids": [
+     "202609280226-grok-46"
+    ]
+   },
+   {
+    "slug": "gaku-hr-12-2026-09-28-313857",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "初星学園HR#12、本日19時配信で新曲「Agitato」情報公開。ミラー配信も個人に限り歓迎、事前告知投稿も含め特集",
+    "lead_score": 85,
+    "dedup_key": "gaku-hr-12-2026-09-28",
+    "candidate_ids": [
+     "sched-2026-09-28-gaku-hr-12-2026-09-28-開始",
+     "202609271234-explore-9",
+     "202609280226-grok-43",
+     "202609280226-grok-44",
+     "sched-2026-09-28-gaku-mirror-policy-hr12-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-gravure-solo-collection-vol1",
+    "reason": "既報",
+    "note": "予約締切は9/27で本日は既に終了、8/26既報の焼き直しで当日の新トリガーなし"
+   },
+   {
+    "dedup_key": "gaku-chibigurumi-unit-collection-vol1-2026",
+    "reason": "既報",
+    "note": "After Schoolキャンペーン in namcoの一部として9/26に既報。展開日も9/25で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-chibigurumi-unit-collection-vol2-2026",
+    "reason": "既報",
+    "note": "vol.1と同じキャンペーンで既報。展開日も9/25で本日のトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-jinro-bunkasai-goods-mailorder-2026",
+    "reason": "既報",
+    "note": "9/26に既報済み。通販開始は9/29で本日は何も起きない"
+   },
+   {
+    "dedup_key": "gaku-live-tour-shirube-iwate-report-2026",
+    "reason": "既報",
+    "note": "岩手公演(9/22-23)DAY1/DAY2・セットリストは既に個別記事化済みの内容で、二次情報レポートに新事実なし"
+   },
+   {
+    "dedup_key": "gaku-gravure-solo-collection-vol-1",
+    "reason": "既報",
+    "note": "上記と同一商品・同一締切(9/27)の重複情報。締切は本日より前で新トリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

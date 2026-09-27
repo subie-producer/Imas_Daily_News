@@ -90,5 +90,36 @@
   "src_candidate_id": "202609201835-explore-2",
   "event_date": "2027-01-11",
   "deadline": "2026-09-27"
+ },
+ {
+  "id": "sched-2027-01-11-shiny-7th-live-tour-blu-ray-2027-締切",
+  "dedup_key": "shiny-7th-live-tour-blu-ray-2027",
+  "brand": "shiny",
+  "subject": "シャニマス7thライブBlu-ray",
+  "kind": "締切",
+  "note": "アソビストア特装版の受注最終日",
+  "reserved_on": "2026-09-28",
+  "title": "シャニマス7th LIVE TOURのBlu-ray受注開始",
+  "url": "https://idolmaster-official.jp/news/01_20018",
+  "source_type": "公式",
+  "facts": [
+   "「THE IDOLM@STER SHINY COLORS 7th LIVE TOUR 螺旋 -Halo around- \"The origin on the axes\"」のBlu-rayを受注中",
+   "発売日:2027年3月17日(水)",
+   "アソビストア特装版の価格:77,000円(税込)",
+   "アソビストア特装版特典:ライブ音源CD、THE IDOLM@STER SHINY COLORS -Shiny Party- in Shanghai 2025 ステージ映像",
+   "アソビストア店舗特典:ブロマイド5枚セット W127×89mm",
+   "特装版・初回生産限定版の映像:7th LIVE TOUR DAY1＋DAY2ライブ本編、メイキング、オーディオコメンタリー",
+   "7th UNITLIVE TOUR 円環 -Halo around- first quadrant DAY2本編、オーディオコメンタリー＋DAY1「Migratory Echoes (アンティーカVer.)」本編",
+   "7th UNITLIVE TOUR 円環 -Halo around- second quadrant DAY2本編、オーディオコメンタリー＋DAY1「Migratory Echoes (ストレイライトVer.)」",
+   "7th UNITLIVE TOUR 円環 -Halo around- third quadrant DAY2本編、オーディオコメンタリー＋DAY1「Migratory Echoes (アルストロメリアVer.)」",
+   "7th UNITLIVE TOUR 円環 -Halo around- fourth quadrant DAY2本編、オーディオコメンタリー＋DAY1「Migratory Echoes (ノクチルVer.)」",
+   "7th UNITLIVE TOUR 円環 -Halo around-メイキング",
+   "螺旋フォトカード:ソロ28種＋ユニット8種＋全体1種"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609271834-watch-0",
+  "event_date": "2027-03-17",
+  "deadline": "2027-01-11"
  }
 ]

@@ -1,0 +1,439 @@
+{
+ "decisions": {
+  "shiny-radiant-chord-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/27付shiny-orchestra-concert-2027で会場・日程・先行受付を既報済み。本日の新事実・トリガーなし"
+  },
+  "shiny-solo-live-collection-master-showpiece-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/26発売のCDはshiny-solo-live-collection-cd-2026等で既報。本日のトリガーなし"
+  },
+  "shiny-im-a-cutie-finder-sweets-paradise-cafe-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/26付shiny-sweets-paradise-cafe-2026で同内容既報。10/30開催までは新事実なし"
+  },
+  "shiny-sanka-benibana-release-event-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/26・27付で散花/紅花会場物販の詳細を既報済み。本日のトリガーなし"
+  },
+  "shiny-solo-live-master-showpiece-streaming-goods-2026": {
+   "action": "article",
+   "angle": "MSPアーカイブ配信が本日18時に視聴開始、追加グッズ受注は10/12まで",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "msp-2026/msp-2/msp-day2の材料を統合"
+  },
+  "shiny-solo-collection-master-showpiece-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "CD/コレクション発売(9/26)の重複主題。既報のため統合不要でdrop"
+  },
+  "shiny-7th-live-tour-blu-ray-2027": {
+   "action": "article",
+   "angle": "「7th LIVE TOUR 螺旋-Halo around-」Blu-ray受注開始、特装版特典と収録内容が判明",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "stock未掲載の新規受注開始情報"
+  },
+  "shiny-sweets-paradise-collab-cafe-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "im-a-cutie-finder版と同一のスイパラコラボ。9/26付で既報済み"
+  },
+  "shiny-solo-live-msp-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-solo-live-master-showpiece-streaming-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公演概要は既報の再掲、新事実なし。配信視聴記事に統合"
+  },
+  "shiny-noctchill-live-2027": {
+   "action": "article",
+   "angle": "283プロ新ライブ「noctchill」が仙台で2027年3月開催決定、ノクチル4人が出演",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式サイト公開・先行受付情報(283-production-live-performance-noctchill)を統合"
+  },
+  "shiny-solo-live-msp-goods-2026": {
+   "action": "article",
+   "angle": "MSP開催記念グッズにアクリルスタンド・パネルなど新ラインナップが登場",
+   "rank": "medium",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報の会場物販リストとは別品目、価格入りの新規情報"
+  },
+  "shiny-master-showpiece-day1-media-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の地方局サイト経由、内容も既報のMSP DAY1情報と重複"
+  },
+  "shiny-283-production-live-performance-noctchill": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-noctchill-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一noctchill公演の公式サイト公開・先行受付情報"
+  },
+  "shiny-msp-day2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-solo-live-master-showpiece-streaming-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2最速アーカイブ公開はMSP配信記事に統合"
+  },
+  "shiny-msp-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-solo-live-master-showpiece-streaming-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "御礼投稿で新事実なし、配信視聴記事に統合"
+  },
+  "shiny-topic-fedf84b2e2": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/3-4同時視聴会は9/19付shiny-msp-2026-09で既報。本文は新事実のない再掲"
+  },
+  "shiny-master-showpiece": {
+   "action": "roundup",
+   "angle": "定常運営まとめ: 新曲実装予告・新ガシャ予告・記念グッズ販売など",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "西城樹里ピース付きパッケージ販売中"
+  },
+  "shiny-pioneer-impact": {
+   "action": "roundup",
+   "angle": "定常運営まとめ: 新曲実装予告・新ガシャ予告・記念グッズ販売など",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "『Pioneer Impact』近日実装予定(アンティーカ×シーズ)"
+  },
+  "shiny-3-4": {
+   "action": "roundup",
+   "angle": "定常運営まとめ: 新曲実装予告・新ガシャ予告・記念グッズ販売など",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新ピックアップガシャ開催予定(限定★3が4種)"
+  },
+  "shiny-shiny-runway-2026-master-showpiece": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/27付フォトコンテスト記事と同一施策の再掲、新事実なし"
+  },
+  "shiny-765-5-p": {
+   "action": "article",
+   "angle": "765プロコラボ第5弾ピックアップガシャが本日23:59で終了",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了という当日トリガーがあるため単独記事"
+  },
+  "shiny-topic-ea5e62aee6": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人の投稿(楽屋花・Instagram)が中心、単体記事化は不可"
+  },
+  "shiny-song-for-prism-season-35-pass-2026": {
+   "action": "article",
+   "angle": "シーズン35「月の和」シーズンパスが本日23:59:59で販売終了",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約、締切トリガーあり"
+  },
+  "shiny-parallel-collection-popup-2026": {
+   "action": "article",
+   "angle": "「パラレル回廊」グッズがオフィシャルショップ5店舗で本日販売開始",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約、開始トリガーあり"
+  },
+  "shiny-suntory-lemon-squash-2026-09": {
+   "action": "article",
+   "angle": "サントリー自販機のシャニマスラベル・レモンスカッシュが本日発売開始",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約、発売開始トリガーあり"
+  },
+  "shiny-54": {
+   "action": "article",
+   "angle": "「シャイニーコンペティション」が本日20:59で最終日",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約、締切トリガーあり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-solo-live-master-showpiece-streaming-goods-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "MSPアーカイブ配信が本日18時に視聴開始、追加グッズ受注は10/12まで",
+    "lead_score": 15,
+    "dedup_key": "shiny-solo-live-master-showpiece-streaming-goods-2026",
+    "candidate_ids": [
+     "202609270733-explore-7",
+     "202609272335-watch-0",
+     "202609280226-grok-48",
+     "202609280226-grok-56",
+     "202609280226-grok-49"
+    ]
+   },
+   {
+    "slug": "shiny-7th-live-tour-blu-ray-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「7th LIVE TOUR 螺旋-Halo around-」Blu-ray受注開始、特装版特典と収録内容が判明",
+    "lead_score": 25,
+    "dedup_key": "shiny-7th-live-tour-blu-ray-2027",
+    "candidate_ids": [
+     "202609271834-watch-0"
+    ]
+   },
+   {
+    "slug": "shiny-noctchill-live-2027",
+    "brand": "shiny",
+    "rank": "large",
+    "angle": "283プロ新ライブ「noctchill」が仙台で2027年3月開催決定、ノクチル4人が出演",
+    "lead_score": 85,
+    "dedup_key": "shiny-noctchill-live-2027",
+    "candidate_ids": [
+     "202609272335-watch-1",
+     "202609280226-explore-1",
+     "202609280226-grok-47"
+    ]
+   },
+   {
+    "slug": "shiny-solo-live-msp-goods-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "MSP開催記念グッズにアクリルスタンド・パネルなど新ラインナップが登場",
+    "lead_score": 10,
+    "dedup_key": "shiny-solo-live-msp-goods-2026",
+    "candidate_ids": [
+     "202609272335-watch-2"
+    ]
+   },
+   {
+    "slug": "shiny-765-5-p-43466d",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "765プロコラボ第5弾ピックアップガシャが本日23:59で終了",
+    "lead_score": 5,
+    "dedup_key": "shiny-765-5-p",
+    "candidate_ids": [
+     "202609280226-grok-55"
+    ]
+   },
+   {
+    "slug": "shiny-song-for-prism-season-35-pass-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シーズン35「月の和」シーズンパスが本日23:59:59で販売終了",
+    "lead_score": 5,
+    "dedup_key": "shiny-song-for-prism-season-35-pass-2026",
+    "candidate_ids": [
+     "sched-2026-09-28-shiny-song-for-prism-season-35-pass-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-parallel-collection-popup-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「パラレル回廊」グッズがオフィシャルショップ5店舗で本日販売開始",
+    "lead_score": 5,
+    "dedup_key": "shiny-parallel-collection-popup-2026",
+    "candidate_ids": [
+     "sched-2026-09-28-shiny-parallel-collection-popup-2026-開始"
+    ]
+   },
+   {
+    "slug": "shiny-suntory-lemon-squash-2026-09",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "サントリー自販機のシャニマスラベル・レモンスカッシュが本日発売開始",
+    "lead_score": 8,
+    "dedup_key": "shiny-suntory-lemon-squash-2026-09",
+    "candidate_ids": [
+     "sched-2026-09-28-shiny-suntory-lemon-squash-2026-09-発売"
+    ]
+   },
+   {
+    "slug": "shiny-54-31a825",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「シャイニーコンペティション」が本日20:59で最終日",
+    "lead_score": 5,
+    "dedup_key": "shiny-54",
+    "candidate_ids": [
+     "sched-2026-09-28-shiny-54-締切"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "定常運営まとめ: 新曲実装予告・新ガシャ予告・記念グッズ販売など",
+    "lead_score": 0,
+    "dedup_key": "shiny-master-showpiece",
+    "candidate_ids": [
+     "202609280226-grok-51",
+     "202609280226-grok-52",
+     "202609280226-grok-53"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-radiant-chord-2027",
+    "reason": "既報",
+    "note": "9/27付shiny-orchestra-concert-2027で会場・日程・先行受付を既報済み。本日の新事実・トリガーなし"
+   },
+   {
+    "dedup_key": "shiny-solo-live-collection-master-showpiece-cd-2026",
+    "reason": "既報",
+    "note": "9/26発売のCDはshiny-solo-live-collection-cd-2026等で既報。本日のトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-im-a-cutie-finder-sweets-paradise-cafe-2026",
+    "reason": "既報",
+    "note": "9/26付shiny-sweets-paradise-cafe-2026で同内容既報。10/30開催までは新事実なし"
+   },
+   {
+    "dedup_key": "shiny-sanka-benibana-release-event-goods-2026",
+    "reason": "既報",
+    "note": "9/26・27付で散花/紅花会場物販の詳細を既報済み。本日のトリガーなし"
+   },
+   {
+    "dedup_key": "shiny-solo-collection-master-showpiece-2026",
+    "reason": "既報",
+    "note": "CD/コレクション発売(9/26)の重複主題。既報のため統合不要でdrop"
+   },
+   {
+    "dedup_key": "shiny-sweets-paradise-collab-cafe-2026",
+    "reason": "既報",
+    "note": "im-a-cutie-finder版と同一のスイパラコラボ。9/26付で既報済み"
+   },
+   {
+    "dedup_key": "shiny-master-showpiece-day1-media-report-2026",
+    "reason": "出典不足",
+    "note": "未確認の地方局サイト経由、内容も既報のMSP DAY1情報と重複"
+   },
+   {
+    "dedup_key": "shiny-topic-fedf84b2e2",
+    "reason": "既報",
+    "note": "10/3-4同時視聴会は9/19付shiny-msp-2026-09で既報。本文は新事実のない再掲"
+   },
+   {
+    "dedup_key": "shiny-shiny-runway-2026-master-showpiece",
+    "reason": "既報",
+    "note": "9/27付フォトコンテスト記事と同一施策の再掲、新事実なし"
+   },
+   {
+    "dedup_key": "shiny-topic-ea5e62aee6",
+    "reason": "個人の話題",
+    "note": "ファン個人の投稿(楽屋花・Instagram)が中心、単体記事化は不可"
+   }
+  ],
+  "cross_brand": []
+ }
+}

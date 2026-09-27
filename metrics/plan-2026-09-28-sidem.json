@@ -1,0 +1,92 @@
+{
+ "decisions": {
+  "sidem-producer-card-series3-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "内容はsidem-producer-card-wave3-2026(9/26既報、対象4ユニット・受注期間・発売日まで一致)と同一。新事実・当日トリガー無し"
+  },
+  "producer-card-nfc-vol3-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "sidem-producer-card-series3-2026と同一情報源(lantis.jp)・同一内容。sidem-producer-card-wave3-2026で既報済み"
+  },
+  "sidem-fantastic-battle-fes-2026-goods": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "グッズ事前販売の締切は9/27(日)23:59で発行日(9/28)には既に終了。当日読者が取れる行動が無い"
+  },
+  "sidem-fan-live-shop-reports-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "verify:unconfirmed。SNS検索(二次情報)のみで、ファンの個人投稿。単体記事化の対象外"
+  },
+  "sidem-315shop-5th-anniversary-2026": {
+   "action": "article",
+   "angle": "315!!!SHOP5周年「いらっしゃいませ！315にゃお店屋さん」フルグラフィックTシャツ、先行受注が本日23:59締切",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約どおり。stock記載の受注期間(9/11〜9/28)最終日に一致"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-315shop-5th-anniversary-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315!!!SHOP5周年「いらっしゃいませ！315にゃお店屋さん」フルグラフィックTシャツ、先行受注が本日23:59締切",
+    "lead_score": 10,
+    "dedup_key": "sidem-315shop-5th-anniversary-2026",
+    "candidate_ids": [
+     "sched-2026-09-28-sidem-315shop-5th-anniversary-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-producer-card-series3-2026",
+    "reason": "既報",
+    "note": "内容はsidem-producer-card-wave3-2026(9/26既報、対象4ユニット・受注期間・発売日まで一致)と同一。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "producer-card-nfc-vol3-2026",
+    "reason": "既報",
+    "note": "sidem-producer-card-series3-2026と同一情報源(lantis.jp)・同一内容。sidem-producer-card-wave3-2026で既報済み"
+   },
+   {
+    "dedup_key": "sidem-fantastic-battle-fes-2026-goods",
+    "reason": "その他",
+    "note": "グッズ事前販売の締切は9/27(日)23:59で発行日(9/28)には既に終了。当日読者が取れる行動が無い"
+   },
+   {
+    "dedup_key": "sidem-fan-live-shop-reports-2026",
+    "reason": "出典不足",
+    "note": "verify:unconfirmed。SNS検索(二次情報)のみで、ファンの個人投稿。単体記事化の対象外"
+   }
+  ],
+  "cross_brand": []
+ }
+}

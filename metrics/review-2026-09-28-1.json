@@ -1,0 +1,191 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-28-dsva-ops-roundup.md",
+   "issue": "記事発行時点で販売が終了している商品を「発売中」と表記",
+   "quote": "バースデー記念ボイスはBOOTHで発売中。",
+   "rule_id": "R7",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "grok-20"
+   ],
+   "expected": "販売期限が2026年9月27日(日)23:59で終了するバースデー記念ボイスについて、記事発行日(2026-09-28 06:00)より前に終わる内容は削除するか、過去形で記述する",
+   "scope": "article:2026-09-28-dsva-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-solo-live-master-showpiece-streaming-goods-2026.md",
+   "rule_id": "R1",
+   "issue": "出典に記載されていない「数量限定」という事実が記事で断定されている",
+   "quote": "パンフレット、ふわぇいすぬいぐるみ、プロデュースアパレルは数量限定で販売される。",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F2"
+   ],
+   "expected": "202609270733-explore-7のF2では「一部イベントグッズを追加販売」とのみ記載されており「数量限定」の記述がないため、sources で「数量限定」を確認して事実を追加するか、表現を修正する必要がある。",
+   "scope": "article:2026-09-28-shiny-solo-live-master-showpiece-streaming-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-solo-live-master-showpiece-streaming-goods-2026.md",
+   "rule_id": "R16",
+   "issue": "誤字：「ふわぇいす」が候補では「ふわふぇいす」と記載されている",
+   "quote": "ふわぇいすぬいぐるみ",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F2"
+   ],
+   "expected": "「ふわぇいす」を「ふわふぇいす」に修正する。",
+   "scope": "article:2026-09-28-shiny-solo-live-master-showpiece-streaming-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-million-14th-live-day1-setlist-2026.md",
+   "issue": "Million Live 14thLIVEについて、本記事（セットリスト公開）のほか、million-14th-live（配信チケット本日18時終了）および million-topic-40（同時視聴アーカイブ本日23時59分終了）が同じ主題で計3本掲載されている。セットリスト公開は情報提供だが、締切情報2件のほうが緊急性が高い",
+   "quote": "title: ミリオン14thLIVE、DAY1・DAY2のセットリスト公開\nlede: 「THE IDOLM@STER MILLION LIVE! 14thLIVE」のDAY1とDAY2のセットリスト・プレイリストが公開された。",
+   "rule_id": "P1",
+   "repair": "drop_article",
+   "fact_ids": [
+    "related_to_million_14th_live"
+   ],
+   "expected": "million-14th-live と million-topic-40 のいずれかを残す（本記事は削除）",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-solo-live-msp-goods-2026.md",
+   "issue": "Shiny Colors Master ShowPieceについて、本記事（グッズ受注詳細）のほか、shiny-solo-live-master-showpiece-streaming-goods-2026（アーカイブ視聴開始＋グッズ受注）が同じ主題で計2本掲載されている。後者は本日のアーカイブ開始という時事性を含む",
+   "quote": "title: シャニマスMSP記念グッズ受注、28名の新ソロ曲デザイン\nlede: シャニマスの「283 PRODUCTION Solo Live Collection -Master ShowPiece-」開催記念グッズで、28名のアイドルの新ソロ曲をイメージしたデザインや公演キービジュアルをあしらった商品の受注が行われている。",
+   "rule_id": "P1",
+   "repair": "drop_article",
+   "fact_ids": [
+    "related_to_shiny_msp"
+   ],
+   "expected": "shiny-solo-live-master-showpiece-streaming-goods-2026 を残す（本記事は削除）",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-28-cg-puzzle-and-dragons-collab-2026.md",
+   "issue": "本文が rank (small, 目安 250字以上) に対して分量不足 (約120字)。出典の既報情報 (新規登場ユニット: LOVE LAIKA、#UNICUS) やコラボの詳細内容を追加することで充実させられる可能性がある。",
+   "scope": "article:2026-09-28-cg-puzzle-and-dragons-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-dsva-ops-roundup.md",
+   "issue": "候補ID grok-16 が candidate_ids に列挙されているが記事本文に使用されていない。ただし、指示書では candidate_ids 自体は指摘対象外のため、参考情報として記載",
+   "scope": "article:2026-09-28-dsva-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-dsva-ops-roundup.md",
+   "issue": "バースデー記念グッズについても受注期限が記事発行後に到来する可能性があるため、期限が近い販売情報の記載時は発行日時を慎重に確認することを推奨",
+   "scope": "article:2026-09-28-dsva-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-gaku-hr-12-2026-09-28-313857.md",
+   "issue": "本文が rank:small の目安(250字)より短い(235字)。出典にある配信プラットフォーム別の視聴方法やミラー配信の細則を拾えば分量を埋められる。",
+   "scope": "article:2026-09-28-gaku-hr-12-2026-09-28-313857.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-gaku-hr-12-2026-09-28-313857.md",
+   "issue": "見出しと本文で『HR#12』『HR #12』の表記が混在している。統一が必要。",
+   "scope": "article:2026-09-28-gaku-hr-12-2026-09-28-313857.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-million-topic-40.md",
+   "issue": "見出し・リードで『オーディオコメンタリー付き』と述べ、本文では『視聴コメント付き』と異なる表現が使われている。素材には両方の用語が含まれるが、読者の混乱を避けるため用語の統一を推奨。",
+   "scope": "article:2026-09-28-million-topic-40.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-54-31a825.md",
+   "issue": "分量不足：rank: small で目安250字以上だが、リード+本文は約100字。出典のX投稿に詳細情報がないため、既報で掲載された報酬情報（無償プリズムジュエル、マスターバッジ、ドレスオーダーチケット）などを補足することで埋まる可能性がある。",
+   "scope": "article:2026-09-28-shiny-54-31a825.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-765-5-p-43466d.md",
+   "issue": "本文が小ランク記事の目安（250字）に対し約50字と非常に短い。見出しに「ガシャ」と記事対象が明確に示されているため支障はないが、シャニソン×765コラボの背景や受け取り方のような補足情報があれば読みやすくなる可能性",
+   "scope": "article:2026-09-28-shiny-765-5-p-43466d.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-parallel-collection-popup-2026.md",
+   "issue": "rank: small の目安(250字以上)に対して本文が著しく短い。出典にある店舗別商品情報(超デカアクリルスタンド、フルグラフィックTシャツなど、各商品の取扱店)を加えて内容を充実させることで読者価値が高まる",
+   "scope": "article:2026-09-28-shiny-parallel-collection-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-solo-live-master-showpiece-streaming-goods-2026.md",
+   "issue": "根拠タグの不完全さ：本文最終段落のグッズ名情報は202609270733-explore-7のF2に由来するが、根拠タグは202609272335-watch-0のF15-F37のみを記載している。グッズ具体名を含むF2をタグに追加することが推奨される。",
+   "scope": "article:2026-09-28-shiny-solo-live-master-showpiece-streaming-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-solo-live-msp-goods-2026.md",
+   "issue": "分量不足：rank: small の目安は250字だが、本文が約50字と著しく短い。出典に記載されている商品詳細（価格・サイズ・キャラクター別対応など）を拾えば分量を埋められる",
+   "scope": "article:2026-09-28-shiny-solo-live-msp-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-song-for-prism-season-35-pass-2026.md",
+   "issue": "small ランク（目安 250字）に対し分量が薄い。候補に価格（1,960円）やプラットフォーム情報（DMM GAMES版含む全プラットフォーム）があり、拾えば埋まる",
+   "scope": "article:2026-09-28-shiny-song-for-prism-season-35-pass-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-28-shiny-suntory-lemon-squash-2026-09.md",
+   "issue": "本文最後の段落「数量限定のオリジナルアクキーが当たる企画も用意されている。」に根拠の控え（<!-- F5 -->など）が記載されていない。形式上は根拠タグが必要です。",
+   "scope": "article:2026-09-28-shiny-suntory-lemon-squash-2026-09.md"
+  },
+  {
+   "file": "-",
+   "issue": "Radiant Chord 公式サイトオープン（高エンゲージメント）など、候補で confirmed された重要な話題が複数、紙面に落とされている（落とされた理由は見えない）",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "Digest に本日のいちばん大きい話題の反映が不十分。本日は Million Live 14thLIVE の配信チケット・アーカイブ視聴の各締切（18時・23時59分）が最大級の緊急性を持つが、digest では「継続中」扱い",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-28-765-x-vorder-runway-765-2026.md",
+  "article:2026-09-28-cg-puzzle-and-dragons-collab-2026.md",
+  "article:2026-09-28-dsva-ops-roundup.md",
+  "article:2026-09-28-gaku-hr-12-2026-09-28-313857.md",
+  "article:2026-09-28-gaku-topic-ea52c6518c.md",
+  "article:2026-09-28-million-14th-live-day1-setlist-2026.md",
+  "article:2026-09-28-million-14th-live.md",
+  "article:2026-09-28-million-42-cb6d98.md",
+  "article:2026-09-28-million-linkage-kyoushi-2026-09.md",
+  "article:2026-09-28-million-topic-40.md",
+  "article:2026-09-28-shiny-54-31a825.md",
+  "article:2026-09-28-shiny-765-5-p-43466d.md",
+  "article:2026-09-28-shiny-7th-live-tour-blu-ray-2027.md",
+  "article:2026-09-28-shiny-noctchill-live-2027.md",
+  "article:2026-09-28-shiny-ops-roundup.md",
+  "article:2026-09-28-shiny-parallel-collection-popup-2026.md",
+  "article:2026-09-28-shiny-solo-live-master-showpiece-streaming-goods-2026.md",
+  "article:2026-09-28-shiny-solo-live-msp-goods-2026.md",
+  "article:2026-09-28-shiny-song-for-prism-season-35-pass-2026.md",
+  "article:2026-09-28-shiny-suntory-lemon-squash-2026-09.md",
+  "article:2026-09-28-sidem-315shop-5th-anniversary-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-28-765-x-vorder-runway-765-2026.md": "3d0db1bd06d7870e79878c974948ec644dde50043fb6b8a207c32e736f569bf1",
+  "docs/_posts/2026-09-28-cg-puzzle-and-dragons-collab-2026.md": "5a189b07a98c15f3bcfe380758cd8085f1a001ed5bedbc21503c1830e43b8b72",
+  "docs/_posts/2026-09-28-dsva-ops-roundup.md": "cfe564f644c2931cfa794d97a60f65503098aef0ebacc527868ef0a280c78f93",
+  "docs/_posts/2026-09-28-gaku-hr-12-2026-09-28-313857.md": "efee33bf6c89f6c5d8fa67e7f1a3df174f615609156d5e1237dbcaac4877b0fd",
+  "docs/_posts/2026-09-28-gaku-topic-ea52c6518c.md": "e9c8264ee00907d99dcadacdd070a6ef3b7b34346a7518ada9b751753bf13955",
+  "docs/_posts/2026-09-28-million-14th-live-day1-setlist-2026.md": "215b9cd3d3b7efe628400faa55a6261ecf747cf3e1309c9b366f026078326f40",
+  "docs/_posts/2026-09-28-million-14th-live.md": "90e58ff0ff5389a58abbe2024da8dcbdae2381ef9235814857cd44bf4983d1f3",
+  "docs/_posts/2026-09-28-million-42-cb6d98.md": "7a3ca66a5a06718269f4d7b570866980d3e9043a20092bbb9506e0774b68fe82",
+  "docs/_posts/2026-09-28-million-linkage-kyoushi-2026-09.md": "3220955555f8b42d5b00befa8f96be31bf6adf8ae0be9e184d21dd95b818b7ef",
+  "docs/_posts/2026-09-28-million-topic-40.md": "e7b808da10c091e6230dca84db30fac63179c9bfbbe3b1f9a19518d2c4663200",
+  "docs/_posts/2026-09-28-shiny-54-31a825.md": "29788c6847c15c5d7c68455098f53b576c693aa383db3982b20a5c6e39eeaada",
+  "docs/_posts/2026-09-28-shiny-765-5-p-43466d.md": "98d464985e848b0d8223b662cd109a48676d3d157204a550e3c37a2e6936d5bf",
+  "docs/_posts/2026-09-28-shiny-7th-live-tour-blu-ray-2027.md": "9f7ba0ca3a8f896258349a2309e6c9af37c675eaccf4acc39532441887497543",
+  "docs/_posts/2026-09-28-shiny-noctchill-live-2027.md": "a8c6208774834560e242f93c41fef903320270f3f75f89670c99baabb93745bf",
+  "docs/_posts/2026-09-28-shiny-ops-roundup.md": "3e2675bf7eef822eea8108b121678de36dabbb520a8f5e06a259951c7500baa0",
+  "docs/_posts/2026-09-28-shiny-parallel-collection-popup-2026.md": "016bf9ce89fb358bf7a3ba4f826892ec4e579cca16e25cd936902b0200b06aa1",
+  "docs/_posts/2026-09-28-shiny-solo-live-master-showpiece-streaming-goods-2026.md": "bc241bacc5c2b440d9a540fbe96f1791caf1534a2488ba8e4161f0ad054dff65",
+  "docs/_posts/2026-09-28-shiny-solo-live-msp-goods-2026.md": "44ea18bb81ec452b703dc0f888cc765d7403a3735079370bab6827e841de4c44",
+  "docs/_posts/2026-09-28-shiny-song-for-prism-season-35-pass-2026.md": "25a25358a58ec8c877f9be36644956c3677bf297bdf05837f564f317df7d3fd0",
+  "docs/_posts/2026-09-28-shiny-suntory-lemon-squash-2026-09.md": "0528197ef422c3b07ff817ff44c48509ab9e7e9323950ef3e29fedfc454deab0",
+  "docs/_posts/2026-09-28-sidem-315shop-5th-anniversary-2026.md": "3d371975fe85a62f1c8d2e1286961594a5aaf09101188cd8060f5d52123b8ea5",
+  "docs/_editions/2026-09-28.md": "5770ba4f7561a4fc0b934045200f055816e56ab79dc66daaafc167a196b4b35c",
+  "metrics/stories-before-2026-09-28.yml": "0dcc5a70e4c6edb92b5624840524c2b46382854e0800bb77c6a1f539c931522e"
+ }
+}

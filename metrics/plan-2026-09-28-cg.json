@@ -1,0 +1,122 @@
+{
+ "decisions": {
+  "cinderella-number-one-cross-over-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "クロス×オーバー！発売(9/30)・Premiere MV公開・試聴等は9/20〜9/27に複数回既報済み。本日時点で新しい事実や当日トリガーなし"
+  },
+  "cg-overclock-listen-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「オーバークロック！」試聴開始(9/25)はクロス×オーバー！関連の既報情報の一部で新規性なし"
+  },
+  "cg-15th-anniversary-orchestra-concert-2027-01": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "現地チケット最速先行は9/27 23:59で締切済み。受付期間・当落発表日(10/8)・入金期間は9/17〜27付で既報。本日新たに起きることなし"
+  },
+  "cg-puzzle-and-dragons-collab-2026": {
+   "action": "article",
+   "angle": "デレマスコラボ実施中のパズドラが週末App Store売上ランキング首位を獲得、コラボ効果を伝える",
+   "rank": "small",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボ開催自体は既報だが、週末の売上ランキング首位獲得は新しい結果。素材は少ないため小記事"
+  },
+  "cg-the-idolm-ster-cinderella-girls-15th-anniversary-orchestra-concert": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "cg-15th-anniversary-orchestra-concert-2027-01と同一の現地チケット最速先行締切の話題。締切はすでに終了し本日のトリガーなし"
+  },
+  "cg-topic-669036affb": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じ現地チケット最速先行締切(9/27)の重複話題。既報かつ締切終了済みで本日起きることなし"
+  },
+  "cg-pop-up-shop-ver": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "有楽町マルイPOP UP SHOPの個別グッズ完売情報は9/27付で既報(佐城雪美・鷹富士茄子等)。堀裕子アクスタ品切れも同種の継続情報で新規トリガーなし。出典もファンアカウントの未確認情報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-puzzle-and-dragons-collab-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレマスコラボ実施中のパズドラが週末App Store売上ランキング首位を獲得、コラボ効果を伝える",
+    "lead_score": 35,
+    "dedup_key": "cg-puzzle-and-dragons-collab-2026",
+    "candidate_ids": [
+     "202609280226-explore-10"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-number-one-cross-over-2026",
+    "reason": "既報",
+    "note": "クロス×オーバー！発売(9/30)・Premiere MV公開・試聴等は9/20〜9/27に複数回既報済み。本日時点で新しい事実や当日トリガーなし"
+   },
+   {
+    "dedup_key": "cg-overclock-listen-2026",
+    "reason": "既報",
+    "note": "「オーバークロック！」試聴開始(9/25)はクロス×オーバー！関連の既報情報の一部で新規性なし"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-orchestra-concert-2027-01",
+    "reason": "既報",
+    "note": "現地チケット最速先行は9/27 23:59で締切済み。受付期間・当落発表日(10/8)・入金期間は9/17〜27付で既報。本日新たに起きることなし"
+   },
+   {
+    "dedup_key": "cg-the-idolm-ster-cinderella-girls-15th-anniversary-orchestra-concert",
+    "reason": "既報",
+    "note": "cg-15th-anniversary-orchestra-concert-2027-01と同一の現地チケット最速先行締切の話題。締切はすでに終了し本日のトリガーなし"
+   },
+   {
+    "dedup_key": "cg-topic-669036affb",
+    "reason": "既報",
+    "note": "同じ現地チケット最速先行締切(9/27)の重複話題。既報かつ締切終了済みで本日起きることなし"
+   },
+   {
+    "dedup_key": "cg-pop-up-shop-ver",
+    "reason": "既報",
+    "note": "有楽町マルイPOP UP SHOPの個別グッズ完売情報は9/27付で既報(佐城雪美・鷹富士茄子等)。堀裕子アクスタ品切れも同種の継続情報で新規トリガーなし。出典もファンアカウントの未確認情報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

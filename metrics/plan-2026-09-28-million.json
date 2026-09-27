@@ -1,0 +1,298 @@
+{
+ "decisions": {
+  "julia-birthday-fan-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "生誕祭ハッシュタグの個別イラスト投稿、エンゲージメント低・未確認"
+  },
+  "million-linkage-kyoushi-2026-09": {
+   "action": "article",
+   "angle": "「ミリオンリンケージ やっぱり教え子たちが俺争奪戦中な件について。編」開催、新SSR「星井美希」「百瀬莉緒」登場と無料10連・限定セット・新曲追加など関連施策まとめ",
+   "rank": "large",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日announcementスレッドの関連9主題を統合"
+  },
+  "million-linkage-four-panel-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-kyoushi-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "リンケージ開催記念の4コマ・無料10連告知、同一施策"
+  },
+  "million-14th-live-day1-setlist-2026": {
+   "action": "article",
+   "angle": "14thLIVE DAY1/DAY2のセットリスト・プレイリストが公開、公演振り返り",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fan-million-itain-aishite-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファンによる個人制作MV投稿、エンゲージメント低・未確認"
+  },
+  "million-topic-50bc357af1": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-kyoushi-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "リンケージ記念のおまけ付きガシャ、同一施策"
+  },
+  "million-topic-a107b7d933": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-kyoushi-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "リンケージ記念のスペシャルコミュ公開、同一施策"
+  },
+  "million-ver": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-kyoushi-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "リンケージ記念の楽曲追加、同一施策"
+  },
+  "million-topic-2f4e3fa59f": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-kyoushi-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "リンケージ記念のMVアップデート、同一施策"
+  },
+  "million-topic-77d6ffcd1b": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-kyoushi-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日告知スレッドの一部、衣装購入追加"
+  },
+  "million-topic-02d8e05f05": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-kyoushi-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日告知スレッドの一部、マスターランク5追加"
+  },
+  "million-topic-5c89c430fc": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-kyoushi-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "リンケージ限定マスターピースセット販売、同一施策"
+  },
+  "million-10-1-1": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-kyoushi-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "リンケージ記念の無料ガシャキャンペーン、同一施策"
+  },
+  "million-topic-a6ec7f1712": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-kyoushi-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "four-panel-2026-09と同内容の4コマ公開告知"
+  },
+  "million-cyber-planet-pop-up-shop": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人による交換募集ポスト、未確認・新事実なし"
+  },
+  "million-mv-40": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人ファンによる再生数言及ポスト、未確認"
+  },
+  "million-14th-live": {
+   "action": "article",
+   "angle": "14thLIVE配信チケット、本日18時販売終了・アーカイブは23時59分まで視聴可能",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-14th-streaming-2026と統合"
+  },
+  "million-14th-streaming-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の配信チケット販売・アーカイブ終了案内"
+  },
+  "million-42": {
+   "action": "article",
+   "angle": "中秋の名月スペシャルログインボーナス、ジュエル受け取り締切まで残り3日",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-topic-40": {
+   "action": "article",
+   "angle": "14thLIVEオーコメ付き同時視聴アーカイブ、本日23時59分で視聴終了",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-linkage-kyoushi-2026-09",
+    "brand": "million",
+    "rank": "large",
+    "angle": "「ミリオンリンケージ やっぱり教え子たちが俺争奪戦中な件について。編」開催、新SSR「星井美希」「百瀬莉緒」登場と無料10連・限定セット・新曲追加など関連施策まとめ",
+    "lead_score": 75,
+    "dedup_key": "million-linkage-kyoushi-2026-09",
+    "candidate_ids": [
+     "202609271834-watch-1",
+     "202609271834-explore-6",
+     "202609280226-grok-58",
+     "202609280226-grok-59",
+     "202609280226-grok-60",
+     "202609280226-grok-61",
+     "202609280226-grok-62",
+     "202609280226-grok-63",
+     "202609280226-grok-64",
+     "202609280226-grok-65",
+     "202609280226-grok-66",
+     "202609280226-grok-67"
+    ]
+   },
+   {
+    "slug": "million-14th-live-day1-setlist-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "14thLIVE DAY1/DAY2のセットリスト・プレイリストが公開、公演振り返り",
+    "lead_score": 15,
+    "dedup_key": "million-14th-live-day1-setlist-2026",
+    "candidate_ids": [
+     "202609272335-explore-4"
+    ]
+   },
+   {
+    "slug": "million-14th-live",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "14thLIVE配信チケット、本日18時販売終了・アーカイブは23時59分まで視聴可能",
+    "lead_score": 20,
+    "dedup_key": "million-14th-live",
+    "candidate_ids": [
+     "sched-2026-09-28-million-14th-live-終了",
+     "sched-2026-09-28-million-14th-streaming-2026-締切"
+    ]
+   },
+   {
+    "slug": "million-42-cb6d98",
+    "brand": "million",
+    "rank": "small",
+    "angle": "中秋の名月スペシャルログインボーナス、ジュエル受け取り締切まで残り3日",
+    "lead_score": 10,
+    "dedup_key": "million-42",
+    "candidate_ids": [
+     "sched-2026-09-28-million-42-締切前"
+    ]
+   },
+   {
+    "slug": "million-topic-40",
+    "brand": "million",
+    "rank": "small",
+    "angle": "14thLIVEオーコメ付き同時視聴アーカイブ、本日23時59分で視聴終了",
+    "lead_score": 10,
+    "dedup_key": "million-topic-40",
+    "candidate_ids": [
+     "sched-2026-09-28-million-topic-40-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "julia-birthday-fan-art-2026",
+    "reason": "同人・ファン主催",
+    "note": "生誕祭ハッシュタグの個別イラスト投稿、エンゲージメント低・未確認"
+   },
+   {
+    "dedup_key": "fan-million-itain-aishite-mv-2026",
+    "reason": "個人の話題",
+    "note": "ファンによる個人制作MV投稿、エンゲージメント低・未確認"
+   },
+   {
+    "dedup_key": "million-cyber-planet-pop-up-shop",
+    "reason": "個人の話題",
+    "note": "個人による交換募集ポスト、未確認・新事実なし"
+   },
+   {
+    "dedup_key": "million-mv-40",
+    "reason": "個人の話題",
+    "note": "個人ファンによる再生数言及ポスト、未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

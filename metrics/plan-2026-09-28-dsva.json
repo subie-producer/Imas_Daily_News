@@ -1,0 +1,181 @@
+{
+ "decisions": {
+  "valiv-life-like-a-live-12-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "えるすりー12出演は8/24付で既報。公演は9/25〜27で終了済み、9/28に起きることも締切も無い"
+  },
+  "valiv-3rd-live-meeting-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "3rdLIVE&MEETING開催決定(愛知/東京の日程・会場)は9/24-25付で既報と同内容、新事実無し"
+  },
+  "life-like-a-live-12-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "valiv-life-like-a-live-12-2026と同一事象。公演は終了済みで新事実無し"
+  },
+  "dsva-code-vein-2-dlc": {
+   "action": "roundup",
+   "angle": "vα-liv定常運営まとめ: 灯里愛夏「CODE VEIN 2」DLCプレイ配信",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-3rdlive-meeting": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ティザーサイトの日程・会場は9/24-25付既報と同一。「詳細後日」のみで新事実無し"
+  },
+  "dsva-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "上水流宇宙バースデーボイス(既報)は9/27締切で発行日前に終了済み。悪役令嬢ボイス(既報)は締切10/4で本日は何も起きない"
+  },
+  "dsva-2026-beat-the-world": {
+   "action": "roundup",
+   "angle": "vα-liv定常運営まとめ: 宇宙誕生祭2026ライブパートのショートダイジェスト公開",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-part2": {
+   "action": "roundup",
+   "angle": "vα-liv定常運営まとめ: 上水流宇宙の踊ってみたショート動画公開(Part2)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-13-1on1": {
+   "action": "roundup",
+   "angle": "vα-liv定常運営まとめ: 第13回オンライン1on1、当選者への案内メール送付完了",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-10-2-ace8": {
+   "action": "roundup",
+   "angle": "vα-liv定常運営まとめ: 上水流宇宙の来週配信予定(10/2からACE8)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-topic-b221b5aecd": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "終了した公演を振り返る本人の感想ポスト。行動を促す新情報が無く単体記事にしない"
+  },
+  "dsva-topic-0cb2c491f7": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "終了した公演を振り返る本人の感想ポスト。行動を促す新情報が無く単体記事にしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "vα-liv定常運営まとめ: 灯里愛夏「CODE VEIN 2」DLCプレイ配信",
+    "lead_score": 0,
+    "dedup_key": "dsva-code-vein-2-dlc",
+    "candidate_ids": [
+     "202609280226-grok-16",
+     "202609280226-grok-20",
+     "202609280226-grok-21",
+     "202609280226-grok-22",
+     "202609280226-grok-23"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-life-like-a-live-12-2026",
+    "reason": "既報",
+    "note": "えるすりー12出演は8/24付で既報。公演は9/25〜27で終了済み、9/28に起きることも締切も無い"
+   },
+   {
+    "dedup_key": "valiv-3rd-live-meeting-2027",
+    "reason": "既報",
+    "note": "3rdLIVE&MEETING開催決定(愛知/東京の日程・会場)は9/24-25付で既報と同内容、新事実無し"
+   },
+   {
+    "dedup_key": "life-like-a-live-12-2026",
+    "reason": "既報",
+    "note": "valiv-life-like-a-live-12-2026と同一事象。公演は終了済みで新事実無し"
+   },
+   {
+    "dedup_key": "dsva-3rdlive-meeting",
+    "reason": "既報",
+    "note": "ティザーサイトの日程・会場は9/24-25付既報と同一。「詳細後日」のみで新事実無し"
+   },
+   {
+    "dedup_key": "dsva-2026",
+    "reason": "既報",
+    "note": "上水流宇宙バースデーボイス(既報)は9/27締切で発行日前に終了済み。悪役令嬢ボイス(既報)は締切10/4で本日は何も起きない"
+   },
+   {
+    "dedup_key": "dsva-topic-b221b5aecd",
+    "reason": "個人の話題",
+    "note": "終了した公演を振り返る本人の感想ポスト。行動を促す新情報が無く単体記事にしない"
+   },
+   {
+    "dedup_key": "dsva-topic-0cb2c491f7",
+    "reason": "個人の話題",
+    "note": "終了した公演を振り返る本人の感想ポスト。行動を促す新情報が無く単体記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

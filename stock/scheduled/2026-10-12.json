@@ -327,5 +327,36 @@
   "verify": "confirmed",
   "src_candidate_id": "202609251835-explore-12",
   "deadline": "2026-10-12"
+ },
+ {
+  "id": "sched-2026-10-12-shiny-283-production-live-performance-noctchill-締切",
+  "dedup_key": "shiny-283-production-live-performance-noctchill",
+  "brand": "shiny",
+  "subject": "283プロ新ライブ「noctchill」",
+  "kind": "締切",
+  "note": "先行抽選受付の最終日",
+  "reserved_on": "2026-09-28",
+  "title": "283 Production LIVE Performance noctchill 公式サイト公開・アソビストアプレミアム会員先行",
+  "url": "https://idolmaster-official.jp/live_event/283_noctchill/",
+  "source_type": "公式",
+  "facts": [
+   "url: https://idolmaster-official.jp/live_event/283_noctchill/",
+   "関連投稿: https://x.com/shinyc_official/status/2104171697452490837",
+   "ティーザー投稿: https://x.com/shinyc_official/status/2104174234696302938",
+   "掲載日: 2026.09.27（公式サイトのNews「283 Production LIVE Performance noctchill 公式サイトを公開しました」）",
+   "告知投稿日時: 2026-09-27 20:30（日本時間）。プラットフォーム上のタイムスタンプは 2026-09-27 11:30 GMT",
+   "ティーザー投稿日時: 2026-09-27 20:40（日本時間）。プラットフォーム上のタイムスタンプは 2026-09-27 11:40 GMT",
+   "催しの日: 2027年3月27日(土)・2027年3月28日(日)（公演ごとの開場・開演は下記）",
+   "締切: アソビストアプレミアム会員先行の受付期間は 2026年9月27日（日）19:00～10月12日（月・祝）23:59",
+   "告知の中身（公式サイト本文）:",
+   "公演名: 283 Production LIVE Performance noctchill",
+   "開催場所: ゼビオアリーナ仙台",
+   "告知投稿の表記: 2027.03.27-03.28 at XEBIO ARENA SENDAI"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609280226-grok-47",
+  "event_date": "2027-03-27",
+  "deadline": "2026-09-27"
  }
 ]

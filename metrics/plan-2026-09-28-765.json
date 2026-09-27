@@ -1,0 +1,148 @@
+{
+ "decisions": {
+  "765-never-end-idol-bluray-day2-ranking-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "ゲーマーズ予約ランキング41位掲載のみ(未確認・低エンゲージ)。商品自体のBlu-rayは既報で新たな発表・締切等のトリガーなし。"
+  },
+  "765-never-end-idol-bluray-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アソビストア特装版の受注締切9/27は発行日(9/28)には終了済み。既報(765-never-end-idol-bluray-2026等)と同内容で新事実なし。"
+  },
+  "765-allstars-live-bluray-2025-08": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注締切9/27は発行日には終了済み。既報の同Blu-ray情報の再掲で新規性なし。"
+  },
+  "765-solo-collection-dress-code-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「ドレスコード:最上級」765PRO ALLSTARS盤は発売・予約とも既報多数。9/21〜10/4の販売期間継続のみで当日の新トリガーなし。"
+  },
+  "765as-never-end-idol-bluray-order-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同Blu-rayの受注締切9/27の再掲。発行日には締切済みで、既報(765pro-allstars-live-bluray等)と重複。"
+  },
+  "x-vorder-runway-765-2026": {
+   "action": "article",
+   "angle": "リアルとバーチャルが融合する異次元ライブ「X VORDER RUNWAY」に天海春香・如月千早・星井美希が出演し、Mika Pikazoデザインの衣装でVTuberやアーティストと共演した模様を伝える",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/27開催、confirmed(Impress)、高エンゲージ。765面のうち当日新規に「起きた」実績のある唯一の話題。"
+  },
+  "765-dual-twin-live-tour": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アーカイブ視聴期限9/27(日)23:59は発行日には終了済み。既報(765-dual-twin-live-2026)と同内容。"
+  },
+  "765-the-idolm-ster-765pro-allstars-live-never-end-idol-blu-ray-x": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公式Xの「本日9/27まで」受注告知。発行日には締切済みで既報のBlu-ray受注情報と重複。"
+  },
+  "765-x-vorder-runway-765": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-vorder-runway-765-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人SNSの現地反応(単体記事化しない)。同イベントの記事に現地の目撃談として統合。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-x-vorder-runway-765-2026",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "リアルとバーチャルが融合する異次元ライブ「X VORDER RUNWAY」に天海春香・如月千早・星井美希が出演し、Mika Pikazoデザインの衣装でVTuberやアーティストと共演した模様を伝える",
+    "lead_score": 60,
+    "dedup_key": "x-vorder-runway-765-2026",
+    "candidate_ids": [
+     "202609272335-explore-22",
+     "202609280226-grok-32"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765-never-end-idol-bluray-day2-ranking-2026",
+    "reason": "出典不足",
+    "note": "ゲーマーズ予約ランキング41位掲載のみ(未確認・低エンゲージ)。商品自体のBlu-rayは既報で新たな発表・締切等のトリガーなし。"
+   },
+   {
+    "dedup_key": "765-never-end-idol-bluray-2026",
+    "reason": "既報",
+    "note": "アソビストア特装版の受注締切9/27は発行日(9/28)には終了済み。既報(765-never-end-idol-bluray-2026等)と同内容で新事実なし。"
+   },
+   {
+    "dedup_key": "765-allstars-live-bluray-2025-08",
+    "reason": "既報",
+    "note": "受注締切9/27は発行日には終了済み。既報の同Blu-ray情報の再掲で新規性なし。"
+   },
+   {
+    "dedup_key": "765-solo-collection-dress-code-2026",
+    "reason": "既報",
+    "note": "「ドレスコード:最上級」765PRO ALLSTARS盤は発売・予約とも既報多数。9/21〜10/4の販売期間継続のみで当日の新トリガーなし。"
+   },
+   {
+    "dedup_key": "765as-never-end-idol-bluray-order-2026",
+    "reason": "既報",
+    "note": "同Blu-rayの受注締切9/27の再掲。発行日には締切済みで、既報(765pro-allstars-live-bluray等)と重複。"
+   },
+   {
+    "dedup_key": "765-dual-twin-live-tour",
+    "reason": "既報",
+    "note": "アーカイブ視聴期限9/27(日)23:59は発行日には終了済み。既報(765-dual-twin-live-2026)と同内容。"
+   },
+   {
+    "dedup_key": "765-the-idolm-ster-765pro-allstars-live-never-end-idol-blu-ray-x",
+    "reason": "既報",
+    "note": "公式Xの「本日9/27まで」受注告知。発行日には締切済みで既報のBlu-ray受注情報と重複。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,40 @@
+{
+ "decisions": {
+  "x-vorder-runway-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "出演は天海春香・如月千早・星井美希の765勢のみ。VTuber等が集う外部主催の複合イベントへのゲスト出演で、複数imasブランドの共同主催ではないため765面の話題。"
+  },
+  "x-vorder-runway-imas-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "同上。ゲスト出演の言及のみでjoint(複数ブランド共同主催)の条件を満たさず、765面の話題(既に同面でグッズ販売の記事あり)。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "x-vorder-runway-2026",
+    "reason": "面違い",
+    "note": "出演は天海春香・如月千早・星井美希の765勢のみ。VTuber等が集う外部主催の複合イベントへのゲスト出演で、複数imasブランドの共同主催ではないため765面の話題。"
+   },
+   {
+    "dedup_key": "x-vorder-runway-imas-2026",
+    "reason": "面違い",
+    "note": "同上。ゲスト出演の言及のみでjoint(複数ブランド共同主催)の条件を満たさず、765面の話題(既に同面でグッズ販売の記事あり)。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -137,6 +137,28 @@ def split_list_blocks(markdown: str) -> list[str]:
     return [x for x in out if x]
 
 
+def split_list_items(block: str) -> list[str]:
+    """箇条書きの block を**1項目ずつ**に分ける(地の文の block はそのまま返す)。
+
+    書き直しの照合用。執筆の契約は「箇条書きを1 block にまとめてよい」だが強制はしないので、同じ4項目を
+    1 block で返す稿も、項目ごとに別 block で返す稿もあり得る。照合を項目単位に揃えないと、分け方が違うだけの
+    正しい局所修正が「指摘に無い段落を足した」で落ちる(監査指摘)。地の文と箇条書きの境目は split_list_blocks
+    が既に分けているので、ここは1 block 内の項目だけを分ける。続きの字下げ行はその項目に付ける。"""
+    lines = (block or "").split("\n")
+    if not any(_LIST_ITEM.match(ln) for ln in lines):
+        return [block]
+    items: list[str] = []
+    cur: list[str] = []
+    for ln in lines:
+        if _LIST_ITEM.match(ln) and cur:
+            items.append("\n".join(cur))
+            cur = []
+        cur.append(ln)
+    if cur:
+        items.append("\n".join(cur))
+    return [x for x in items if x.strip()]
+
+
 _ESC_NL = re.compile(r"\\r\\n|\\n|\\r")      # 文字としての「\n」(バックスラッシュ + n)
 
 

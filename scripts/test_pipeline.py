@@ -267,6 +267,28 @@ def test_revise_check():
           "add_source で出典を外したのが通った")
     iss_lint = [{"issue_id": "I1", "rule_id": "LINT", "repair": "rewrite_claim", "quote": ""}]
     check(R(dict(a4, addressed_issue_ids=["I1"], title="x"), iss_lint) == [], "LINT 修正に外の検査が掛かった")
+    # 箇条書きを1 block にまとめた旧稿を、項目ごとに別 block で返し、指摘の項目だけ落とす(監査指摘)
+    old_list = "見出し段落。 <!-- F1 -->\n\n- 項目アルファ千円\n- 項目ベータ二千円\n- 項目ガンマ三千円 <!-- F2 -->"
+    iss_li = [{"issue_id": "I1", "rule_id": "R7", "repair": "drop_claim", "quote": "項目ベータ二千円"}]
+    keep = ["- 項目アルファ千円", "- 項目ガンマ三千円"]
+    li_ok = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "見出し段落。", "fact_ids": ["F1"]}]
+                 + [{"markdown": m, "fact_ids": ["F2"]} for m in keep])
+    check(compose.revise_check(li_ok, iss_li, old_fm, old_list) == [],
+          f"項目ごとに割って対象だけ消した稿が落ちた: {compose.revise_check(li_ok, iss_li, old_fm, old_list)}")
+    li_bad = dict(li_ok, blocks=[{"markdown": "見出し段落。", "fact_ids": ["F1"]}, {"markdown": "- 項目ガンマ三千円", "fact_ids": ["F2"]}])
+    check(any("消した" in p for p in compose.revise_check(li_bad, iss_li, old_fm, old_list)),
+          "未指摘の箇条書き項目の削除が通った")
+    # 校閲 quote が本文に無い外側の鉤括弧「…」で囲まれていても、指摘段落は「触った」と認めて局所修正を通す(監査指摘)
+    old_q = "開催記念グッズは新ソロ曲デザインで受注する。 <!-- F1 -->\n\n配信は10月に始まる。 <!-- F3 -->"
+    iss_q = [{"issue_id": "I1", "rule_id": "R7", "repair": "rewrite_claim", "quote": "「開催記念グッズは新ソロ曲デザインで受注する。」"}]
+    q_ok = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "開催記念グッズは11月に受注する。", "fact_ids": ["F1"]},
+                                                        {"markdown": "配信は10月に始まる。", "fact_ids": ["F3"]}])
+    check(compose.revise_check(q_ok, iss_q, old_fm, old_q) == [],
+          f"鉤括弧付き quote で指摘段落だけ直した稿が落ちた: {compose.revise_check(q_ok, iss_q, old_fm, old_q)}")
+    q_bad = dict(q_ok, blocks=[{"markdown": "開催記念グッズは11月に受注する。", "fact_ids": ["F1"]},
+                               {"markdown": "配信は11月に始まる。", "fact_ids": ["F3"]}])
+    check(any("段落" in p for p in compose.revise_check(q_bad, iss_q, old_fm, old_q)),
+          "鉤括弧付き quote でも未指摘段落の改変は落ちない")
 
 
 def test_rollback(tmp: Path):

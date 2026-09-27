@@ -1750,10 +1750,19 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
         problems.append(f"対応していない指摘がある: {left[:4]}")
     # 「指摘の外」の照合は読者に見える字面で行う(renderlib.visible_text)
     norm = renderlib.visible_text
+
+    def qnorm(b):
+        # 校閲が引用の外側に付けた鉤括弧・引用符は本文に無いことがあるので外してから照合する。
+        # 外さないと `q in 本文` が成り立たず、直した段落を「触っていない」と誤認して局所修正まで落ちる(監査指摘)。
+        q = norm(b.get("quote"))
+        pairs = {"「": "」", "『": "』", "“": "”", "‘": "’", '"': '"', "'": "'"}
+        while len(q) >= 2 and q[0] in pairs and q[-1] == pairs[q[0]]:
+            q = q[1:-1]
+        return q
     blocks = ans.get("blocks") or []
     # lint の指摘(構造の赤)は直し方を限定できないので、指摘の外の検査は掛けない
     if old_fm and not any(b.get("rule_id") == "LINT" for b in issues):
-        quotes = [norm(b.get("quote")) for b in issues if len(norm(b.get("quote"))) >= 8]
+        quotes = [qnorm(b) for b in issues if len(qnorm(b)) >= 8]
         touched = lambda s: any(q in s for q in quotes)
         old_title = norm(old_fm.get("title"))
         if norm(ans.get("title")) != old_title and not touched(old_title):
@@ -1772,7 +1781,7 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
         # 本文: 指摘の quote を含む段落だけ変えてよい。他の段落は**字面も根拠 id も**そのまま、順序も
         # 保つ。指摘の段落1つにつき新しい段落は1つまで(勝手な追加を許さない)(監査指摘)。
         # quote の無い指摘(場所を特定できない)が混ざっているときは段落の検査を掛けない
-        if all(len(norm(b.get("quote"))) >= 8 for b in issues):
+        if all(len(qnorm(b)) >= 8 for b in issues):
             def para(text, ids=None):
                 m = renderlib.FACT_NOTE.search(text or "")
                 ids = ids if ids is not None else (m.group(1).split() if m else [])
@@ -1785,7 +1794,10 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
                 m = renderlib.FACT_NOTE.search(text or "")
                 ids = ids if ids is not None else (m.group(1).split() if m else [])
                 fixed = renderlib.unescape_text(renderlib.strip_fact_notes(text or ""))
-                return [para(md, ids) for md in renderlib.split_list_blocks(fixed)]
+                # 箇条書きは項目単位まで割ってから照合する。1 block にまとめた稿も項目ごとに分けた稿も
+                # 同じ単位に揃え、分け方の違いだけで落とさない(監査指摘)
+                return [para(md, ids) for blk in renderlib.split_list_blocks(fixed)
+                        for md in renderlib.split_list_items(blk)]
             old_paras = [u for p in re.split(r"\n\s*\n", old_body or "") if p.strip() for u in units(p)]
             new_paras = [u for b in blocks for u in units(b.get("markdown"), b.get("fact_ids") or [])]
             # 一対一の対応: 未指摘の旧段落を順に、新しい段落から**1つずつ消費**して探す

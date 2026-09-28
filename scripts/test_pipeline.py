@@ -97,6 +97,11 @@ def test_check_output():
     check(S("- A\n  続き\n- B\n以上。") == ["- A\n  続き\n- B", "以上。"], f"箇条書きの続きの行と、後ろの地の文: {S('- A\n  続き\n- B\n以上。')}")
     check(S("1行目\n2行目") == ["1行目\n2行目"] and S("## 見出し") == ["## 見出し"] and S("a\n\nb") == ["a", "b"], "ふつうの段落を分けてしまう")
     check(any("tags" in p for p in C(dict(OK, tags=["a"]))), "tags 1個が通った")
+    # tags の上限は作品の正式名称が丸ごと入る長さ(24字だった頃、28字の作品名『ACE COMBAT 8: WINGS OF THEVE』が
+    # タグに入らず、書き手が24字で切って壊れたタグ(…WINGS OFゆ?)を作り、校閲 R16 が何巡もブロックして落ちた。2026-09-29)
+    schema_tags = json.loads((pipelib.ROOT / "schema" / "article-out.schema.json").read_text(encoding="utf-8"))["properties"]["tags"]["items"]
+    check(len("ACE COMBAT 8: WINGS OF THEVE") <= schema_tags.get("maxLength", 0),
+          f"作品の正式名称(28字)が tags 上限 {schema_tags.get('maxLength')} 字に入らない")
     check(any("見出し" in p for p in C(dict(OK, title_fact_ids=[]))), "見出しの根拠無しが通った")
     check(len(C({"status": "decline", "decline_code": "", "decline_detail": ""})) == 2, "理由の無い decline が通った")
     check(C({"status": "decline", "decline_code": "NOT_NEWS", "decline_detail": "x"}) == [], "正当な decline が落ちた")

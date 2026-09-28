@@ -1,0 +1,185 @@
+{
+ "decisions": {
+  "sidem-producer-card-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注期間9/25-10/12・発売日12/2・対象4ユニット(FRAME/神速一魂/F-LAGS/Legenders)とも既報(sidem-producer-card-wave3-2026, 9/26)と同一で新事実なし"
+  },
+  "315-shop-lottery-stock-2026-09-27": {
+   "action": "article",
+   "angle": "315!!!SHOPの抽選くじ在庫状況が9/27付で更新",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "面内の定常運営ネタが他に2件以下でroundup不成立のためsmall単独記事に"
+  },
+  "315mode-vol-1-spring": {
+   "action": "article",
+   "angle": "#315MODE vol.1 SPRINGの受注グッズ4種(缶バッジコレクションブック/ホログラム缶バッジ/アクリルミラーボード/キーホルダー)のサンプルが公開、受注は9/30締切",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策(受注締切9/30共通)のため315mode-vol-1-spring-2/-3/-4を統合"
+  },
+  "315mode-vol-1-spring-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "315mode-vol-1-spring",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ホログラム缶バッジのサンプル紹介。同一施策のため315mode-vol-1-springへ統合"
+  },
+  "315mode-vol-1-spring-3": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "315mode-vol-1-spring",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アクリルミラーボードのサンプル紹介。同一施策のため315mode-vol-1-springへ統合"
+  },
+  "315mode-vol-1-spring-4": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "315mode-vol-1-spring",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "キーホルダーのサンプル紹介。同一施策のため315mode-vol-1-springへ統合"
+  },
+  "the-idolm-ster-sidem-11th-stage": {
+   "action": "article",
+   "angle": "SideM 11th STAGE LIVE Blu-rayのアニメイト予約特典(アクリルキーホルダー3種+ミニフォト11種セット)が判明",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売日・本体価格は既報(sidem-11th-live-bluray-store-benefits-2026)だが、アニメイト限定特典は新事実"
+  },
+  "sidem-4": {
+   "action": "article",
+   "angle": "SideMリメンバーショットフェア第4弾が10/3スタート、開催5日前カウントダウンで発表",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第2弾までは既報だが第4弾・開始日10/3は新規"
+  },
+  "cd-the-idolm-ster-sidem-m": {
+   "action": "article",
+   "angle": "Mフェス2026テーマソングCDのアニメイト予約特典(ミニフォト&ロングフォト)が判明、315プロNight!出張版公開録音応募シリアルも配布中",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD名・発売日・公録イベントは既報(sidem『Mフェス2026』CD/公録)だが、アニメイト特典とシリアル配布中の情報は新規"
+  },
+  "sidem-8": {
+   "action": "article",
+   "angle": "朗読劇『魂環の人形〜マリオネット〜』主題歌発売記念缶バッジがK-BOOKSに入荷(天道輝・信玄誠司・紅井朱雀)",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "主題歌配信自体は既報だが、記念缶バッジの店舗入荷は新規の動き"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-315-shop-lottery-stock-2026-09-27",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315!!!SHOPの抽選くじ在庫状況が9/27付で更新",
+    "lead_score": 5,
+    "dedup_key": "315-shop-lottery-stock-2026-09-27",
+    "candidate_ids": [
+     "202609281834-explore-12"
+    ]
+   },
+   {
+    "slug": "sidem-315mode-vol-1-spring",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "#315MODE vol.1 SPRINGの受注グッズ4種(缶バッジコレクションブック/ホログラム缶バッジ/アクリルミラーボード/キーホルダー)のサンプルが公開、受注は9/30締切",
+    "lead_score": 25,
+    "dedup_key": "315mode-vol-1-spring",
+    "candidate_ids": [
+     "202609290228-grok-59",
+     "202609290228-grok-60",
+     "202609290228-grok-61",
+     "202609290228-grok-62"
+    ]
+   },
+   {
+    "slug": "sidem-the-idolm-ster-sidem-11th-stage",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM 11th STAGE LIVE Blu-rayのアニメイト予約特典(アクリルキーホルダー3種+ミニフォト11種セット)が判明",
+    "lead_score": 10,
+    "dedup_key": "the-idolm-ster-sidem-11th-stage",
+    "candidate_ids": [
+     "202609290228-grok-63"
+    ]
+   },
+   {
+    "slug": "sidem-4-77f830",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMリメンバーショットフェア第4弾が10/3スタート、開催5日前カウントダウンで発表",
+    "lead_score": 10,
+    "dedup_key": "sidem-4",
+    "candidate_ids": [
+     "202609290228-grok-64"
+    ]
+   },
+   {
+    "slug": "sidem-cd-the-idolm-ster-sidem-m",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェス2026テーマソングCDのアニメイト予約特典(ミニフォト&ロングフォト)が判明、315プロNight!出張版公開録音応募シリアルも配布中",
+    "lead_score": 8,
+    "dedup_key": "cd-the-idolm-ster-sidem-m",
+    "candidate_ids": [
+     "202609290228-grok-65"
+    ]
+   },
+   {
+    "slug": "sidem-8-41a15d",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "朗読劇『魂環の人形〜マリオネット〜』主題歌発売記念缶バッジがK-BOOKSに入荷(天道輝・信玄誠司・紅井朱雀)",
+    "lead_score": 5,
+    "dedup_key": "sidem-8",
+    "candidate_ids": [
+     "202609290228-grok-66"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-producer-card-2026-09",
+    "reason": "既報",
+    "note": "受注期間9/25-10/12・発売日12/2・対象4ユニット(FRAME/神速一魂/F-LAGS/Legenders)とも既報(sidem-producer-card-wave3-2026, 9/26)と同一で新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

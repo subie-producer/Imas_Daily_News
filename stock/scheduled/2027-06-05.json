@@ -59,5 +59,35 @@
   "src_candidate_id": "202609140234-grok-19",
   "event_date": "2027-06-05",
   "deadline": "2026-10-12"
+ },
+ {
+  "id": "sched-2027-06-05-shiny-msp-afterparty-gasha-day2-2026-開幕",
+  "dedup_key": "shiny-msp-afterparty-gasha-day2-2026",
+  "brand": "shiny",
+  "subject": "SideM×シャニカラ SPARKLE SHOWDOWN",
+  "kind": "開幕",
+  "note": "横浜アリーナで合同ライブ初日",
+  "reserved_on": "2026-09-29",
+  "title": "Master ShowPiece打ち上げガシャDAY2",
+  "url": "https://idolmaster-official.jp/news/01_19898.html",
+  "source_type": "公式",
+  "facts": [
+   "「有償限定 283 PRODUCTION Solo Live Collection -Master ShowPiece- 打ち上げガシャDAY2」が開催中。",
+   "STEP4で特別S-SSR「Master ShowPiece」西城樹里を獲得できる。",
+   "STEP6に「Master ShowPiece」西城樹里のアイドルピース×10が付く。",
+   "STEP1～4はトワコレと期間限定アイドル入りでSSR2倍。",
+   "STEP5～6はパラコレと期間限定アイドル入り。",
+   "STEP5は無料でSSR以上が確定。",
+   "STEP1～4、6の最後の1枚はSSR以上確定。",
+   "開催期間: 開催中～2026年10月2日(金) 23:59まで(予定)。",
+   "エンゲージメント: 高",
+   "言及アイドル: 西城樹里",
+   "「キャスティングコレクション～甘えん坊な妹編～」を開催予定。",
+   "白瀬咲耶、樋口円香が登場する。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609280733-explore-2",
+  "deadline": "2026-10-02"
  }
 ]

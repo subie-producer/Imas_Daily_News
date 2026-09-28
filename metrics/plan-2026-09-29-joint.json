@@ -1,0 +1,62 @@
+{
+ "decisions": {
+  "1500": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の私設ショップ(専門店)によるくじ販売告知で、公式情報ではない。9/27販売開始・残り19口で当日時点の情報も古い。"
+  },
+  "x-vorder-runway-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "765プロ3名がゲスト出演した外部主催イベント。共同主催ではなく765面の話題(x-vorder-runway-765-2026等で既報)。"
+  },
+  "joint-1": {
+   "action": "article",
+   "angle": "桜庭薫バースデーページが公開、記念称号は9/30以降ログインで獲得可能に",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/24の誕生日コミュ既報(joint-other-topic-033)の続報。お祝いフォトページが実際に公開され、称号獲得開始日(9/30)が確定した点が新規事実。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-1-d41ed2",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "桜庭薫バースデーページが公開、記念称号は9/30以降ログインで獲得可能に",
+    "lead_score": 10,
+    "dedup_key": "joint-1",
+    "candidate_ids": [
+     "202609290228-grok-46"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "x-vorder-runway-2026",
+    "reason": "面違い",
+    "note": "765プロ3名がゲスト出演した外部主催イベント。共同主催ではなく765面の話題(x-vorder-runway-765-2026等で既報)。"
+   },
+   {
+    "dedup_key": "1500",
+    "reason": "出典不足",
+    "note": "未確認の私設ショップ(専門店)によるくじ販売告知で、公式情報ではない。9/27販売開始・残り19口で当日時点の情報も古い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

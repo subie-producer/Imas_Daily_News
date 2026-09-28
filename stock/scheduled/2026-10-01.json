@@ -247,5 +247,83 @@
   "src_candidate_id": "202609271834-watch-1",
   "event_date": "2026-10-01",
   "deadline": "2026-10-01"
+ },
+ {
+  "id": "sched-2026-10-01-9-締切前",
+  "dedup_key": "9",
+  "brand": "dsva",
+  "subject": "vα-liv 9月度活動アンケート",
+  "kind": "締切前",
+  "note": "9月度活動アンケートの回答締切まであと3日",
+  "reserved_on": "2026-09-29",
+  "title": "9月度の活動に関するアンケート",
+  "url": "https://x.com/valiv_official/status/2104512691964424455",
+  "source_type": "公式",
+  "facts": [
+   "9月度の活動に関するアンケート、とある",
+   "プロデューサーの皆様に、今月度の活動に関するアンケートを実施する、とある",
+   "プロジェクトとライバーアイドルたちの更なる発展のために協力を求めている",
+   "回答期限の表記は【～10月4日(日)23:59まで】",
+   "回答先: https://docs.google.com/forms/d/e/1FAIpQLSewzEGUu-wlZ66kIHFIdR6ucKHMFo2syzmW9Oeq7lzKCSsSWQ/viewform?usp=send_form",
+   "ハッシュタグ #ヴイアラ",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609290228-grok-23"
+ },
+ {
+  "id": "sched-2026-10-01-gaku-kaisou-hr-12-2026-09-28-発売",
+  "dedup_key": "gaku-kaisou-hr-12-2026-09-28",
+  "brand": "gaku",
+  "subject": "「Agitato」配信開始",
+  "kind": "発売",
+  "note": "新曲「Agitato」がサブスク配信で聴ける",
+  "reserved_on": "2026-09-29",
+  "title": "学園アイドルマスター「初星学園HR #12」生配信お知らせまとめ",
+  "url": "https://idolmaster-official.jp/news/01_19871",
+  "source_type": "公式",
+  "facts": [
+   "配信タイトル: 初星学園HR #12",
+   "配信日時: 2026年9月28日(月) 19:00～",
+   "新曲: 「Agitato」作詞・作曲・編曲：Ryo'LEFTY'Miyata",
+   "新曲配信開始: 2026年10月1日(木)よりサブスク&Download配信",
+   "Music Video: 9月30日(水)22:00よりプレミア公開予定",
+   "「Agitato」リーリヤガシャ 開催予定: 9/30(水) 11:00より",
+   "SSR Pアイドル『「Agitato」葛城 リーリヤ』",
+   "サポートSSR『小悪魔になっちゃえ♪』",
+   "「Agitato」咲季ガシャ 開催予定: 10/9(金) 11:00より",
+   "SSR Pアイドル『「Agitato」花海 咲季』",
+   "サポートSSR『これがあのかぼちゃ……』",
+   "ストーリーイベント「ワタシ、小悪魔♡」開催予定: 9/30(水)11:00より開始"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202609282336-watch-1",
+  "event_date": "2026-09-28"
+ },
+ {
+  "id": "sched-2026-10-01-10-ssr-2-終了",
+  "dedup_key": "10-ssr-2",
+  "brand": "million",
+  "subject": "ミリシタ 無料10連プラチナガシャキャンペーン",
+  "kind": "終了",
+  "note": "無料10連プラチナガシャが引ける最終日(14:59まで)",
+  "reserved_on": "2026-09-29",
+  "title": "#ミリオンリンケージ 限定カード（美希）紹介／毎日無料10連ガシャ・SSR出現率2倍",
+  "url": "https://x.com/imasml_theater/status/2104420838367740299",
+  "source_type": "公式",
+  "facts": [
+   "投稿本文で確認できたこと:",
+   "毎日 無料10連ガシャ",
+   "SSR 出現率2倍",
+   "2026/10/01（木）14:59まで",
+   "#ミリオンリンケージ 限定カードをご紹介",
+   "美希『バニーの研究によるとね…遺伝子的に、バニーと先生は最高の相性みたいなの。だから…本当かどうか、確かめさせて♪』",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609290228-grok-49"
  }
 ]

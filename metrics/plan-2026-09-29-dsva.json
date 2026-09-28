@@ -1,0 +1,269 @@
+{
+ "decisions": {
+  "9": {
+   "action": "article",
+   "angle": "vα-liv公式が9月度の活動アンケートを実施、回答期限は10/4(8月度も同様に単独記事化した前例あり)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "12": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "3rdLIVE告知・宇宙誕生祭アーカイブ・愛夏誕生祭延期公演LV・悪役令嬢ボイス、いずれも既報事項の案内まとめ投稿"
+  },
+  "2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ショートダイジェスト公開・アーカイブ/グッズ/ボイス販売中は9/21付で既報と同一内容"
+  },
+  "life-like-a-live-12-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "出演公演・スケジュールは8/24付で既報。9/27に終演済みで新たなトリガー無し"
+  },
+  "valiv-3rd-live-meeting-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "3rdLIVE&MEETING開催・二都市開催は既報(9/25付特番記事)と同一事実、詳細未確定のみ"
+  },
+  "valiv-3rd-live-meeting-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "愛知1/30-31・東京3/21-22の日程/会場は9/25付で既報と完全一致、新事実無し"
+  },
+  "2026-2": {
+   "action": "article",
+   "angle": "2026年度第2回中間能力評価が始動、プロデューサーの投票がアイドルの公式能力値になる新企画(〜10/12)",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "9-28": {
+   "action": "roundup",
+   "angle": "レトラの夜配信ラインナップ(メンバーシップ限定枠、SILENT HILL fプレイ配信)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "13-1on1": {
+   "action": "roundup",
+   "angle": "第13回オンライン1on1、当選者への詳細案内メールを送付完了",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "part2": {
+   "action": "roundup",
+   "angle": "上水流宇宙の新作ショート動画『踊ってみた』Part2を公開",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-8": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "上記案内(dedup_key: 12)のリンク集リプライ。内容はすべて既報と同一"
+  },
+  "project-im-s-v-liv-3rdlive": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "3rdLIVE&MEETINGティザーサイト。日程・会場は9/25付既報と同一、詳細は後日発表のまま"
+  },
+  "2026-10": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "シチュエーションボイス第15弾(悪役令嬢ボイス)は9/25付で既報、販売期間(〜10/4)も同一"
+  },
+  "cm": {
+   "action": "article",
+   "angle": "国際交流歌合戦のCMが本日からABEMAで放映開始、10/11まで",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-12": {
+   "action": "roundup",
+   "angle": "灯里愛夏 今週のスケジュール(CODE VEIN2 DLC最終回、ののちゃんとのデュエプレコラボ、1on1本番、朝まな休止など)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "kamizuru-cosmo-tgs2026-ace-combat-8": {
+   "action": "article",
+   "angle": "上水流宇宙がTGS2026で試遊した『ACE COMBAT 8: WINGS OF THEVE』のアーリーアクセスが本日開始、先行プレイが可能に",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "試遊配信自体は9/23付で既報だが、9/29のアーリーアクセス開始という当日のトリガーがあるため続報予約どおり記事化"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-2026-2-416afd",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "2026年度第2回中間能力評価が始動、プロデューサーの投票がアイドルの公式能力値になる新企画(〜10/12)",
+    "lead_score": 20,
+    "dedup_key": "2026-2",
+    "candidate_ids": [
+     "202609290228-grok-22"
+    ]
+   },
+   {
+    "slug": "dsva-9-0ade7c",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "vα-liv公式が9月度の活動アンケートを実施、回答期限は10/4(8月度も同様に単独記事化した前例あり)",
+    "lead_score": 10,
+    "dedup_key": "9",
+    "candidate_ids": [
+     "202609290228-grok-23"
+    ]
+   },
+   {
+    "slug": "dsva-cm-e283e1",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "国際交流歌合戦のCMが本日からABEMAで放映開始、10/11まで",
+    "lead_score": 15,
+    "dedup_key": "cm",
+    "candidate_ids": [
+     "202609290228-grok-32"
+    ]
+   },
+   {
+    "slug": "dsva-kamizuru-cosmo-tgs2026-ace-combat-8",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙がTGS2026で試遊した『ACE COMBAT 8: WINGS OF THEVE』のアーリーアクセスが本日開始、先行プレイが可能に",
+    "lead_score": 30,
+    "dedup_key": "kamizuru-cosmo-tgs2026-ace-combat-8",
+    "candidate_ids": [
+     "sched-2026-09-29-kamizuru-cosmo-tgs2026-ace-combat-8-開始"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "レトラの夜配信ラインナップ(メンバーシップ限定枠、SILENT HILL fプレイ配信)",
+    "lead_score": 0,
+    "dedup_key": "9-28",
+    "candidate_ids": [
+     "202609290228-grok-24",
+     "202609290228-grok-25",
+     "202609290228-grok-26",
+     "202609290228-grok-33"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "life-like-a-live-12-2026",
+    "reason": "既報",
+    "note": "出演公演・スケジュールは8/24付で既報。9/27に終演済みで新たなトリガー無し"
+   },
+   {
+    "dedup_key": "valiv-3rd-live-meeting-2026",
+    "reason": "既報",
+    "note": "3rdLIVE&MEETING開催・二都市開催は既報(9/25付特番記事)と同一事実、詳細未確定のみ"
+   },
+   {
+    "dedup_key": "valiv-3rd-live-meeting-2027",
+    "reason": "既報",
+    "note": "愛知1/30-31・東京3/21-22の日程/会場は9/25付で既報と完全一致、新事実無し"
+   },
+   {
+    "dedup_key": "2026",
+    "reason": "既報",
+    "note": "ショートダイジェスト公開・アーカイブ/グッズ/ボイス販売中は9/21付で既報と同一内容"
+   },
+   {
+    "dedup_key": "12",
+    "reason": "既報",
+    "note": "3rdLIVE告知・宇宙誕生祭アーカイブ・愛夏誕生祭延期公演LV・悪役令嬢ボイス、いずれも既報事項の案内まとめ投稿"
+   },
+   {
+    "dedup_key": "dsva-8",
+    "reason": "既報",
+    "note": "上記案内(dedup_key: 12)のリンク集リプライ。内容はすべて既報と同一"
+   },
+   {
+    "dedup_key": "project-im-s-v-liv-3rdlive",
+    "reason": "既報",
+    "note": "3rdLIVE&MEETINGティザーサイト。日程・会場は9/25付既報と同一、詳細は後日発表のまま"
+   },
+   {
+    "dedup_key": "2026-10",
+    "reason": "既報",
+    "note": "シチュエーションボイス第15弾(悪役令嬢ボイス)は9/25付で既報、販売期間(〜10/4)も同一"
+   }
+  ],
+  "cross_brand": []
+ }
+}

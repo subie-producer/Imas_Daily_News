@@ -1,0 +1,130 @@
+{
+ "decisions": {
+  "pazudora-cinderella-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/25開催告知は既にstoriesで記事化済み。サイン色紙企画の追記のみで当日のトリガーなし"
+  },
+  "cg-xr-live-apple-of-my-ai-2027": {
+   "action": "article",
+   "angle": "山形・やまぎん県民ホールでATHOME xRライブ「Apple of my アイ」開催決定、出演・日程・チケット種別を発表",
+   "rank": "large",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-athome-xr-live-apple-of-my-ai-2027と同一施策のため統合、facts合計10件以上でlarge"
+  },
+  "puzzle-and-dragons-cinderella-girls-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "二次情報による9/25公式発表の後追いで新規事実・当日トリガーなし"
+  },
+  "cg-parfait-coquette-celebration-2026": {
+   "action": "article",
+   "angle": "15周年POPUP「Parfait Coquette Celebration」の記念衣装・ミニキャラ登場・購入特典条件など詳細を解禁",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "8/29・9/19既報分に衣装テーマ・ミニキャラ・特典終了条件の新事実あり"
+  },
+  "cg-athome-xr-live-apple-of-my-ai-2027": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-xr-live-apple-of-my-ai-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一公演の公式イベントページ情報、記事はcg-xr-live-apple-of-my-ai-2027に統合"
+  },
+  "cg-15th-orchestra-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/27締切の最速先行情報は9/16告知時から既報、当日(9/29)のトリガーなし"
+  },
+  "cinderella-pop-up-shop-2026": {
+   "action": "article",
+   "angle": "POP UP SHOPで陰陽師verグッズが相次ぎ完売、購入特典・抽選会情報も案内",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "陰陽師verは既報になし、過去の完売報告と同様に単独小記事扱い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-xr-live-apple-of-my-ai-2027",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "山形・やまぎん県民ホールでATHOME xRライブ「Apple of my アイ」開催決定、出演・日程・チケット種別を発表",
+    "lead_score": 55,
+    "dedup_key": "cg-xr-live-apple-of-my-ai-2027",
+    "candidate_ids": [
+     "202609282336-watch-0",
+     "202609290228-explore-0"
+    ]
+   },
+   {
+    "slug": "cg-parfait-coquette-celebration-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年POPUP「Parfait Coquette Celebration」の記念衣装・ミニキャラ登場・購入特典条件など詳細を解禁",
+    "lead_score": 15,
+    "dedup_key": "cg-parfait-coquette-celebration-2026",
+    "candidate_ids": [
+     "202609282336-explore-35"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-pop-up-shop-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "POP UP SHOPで陰陽師verグッズが相次ぎ完売、購入特典・抽選会情報も案内",
+    "lead_score": 5,
+    "dedup_key": "cinderella-pop-up-shop-2026",
+    "candidate_ids": [
+     "202609290228-grok-72"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "pazudora-cinderella-collab-2026",
+    "reason": "既報",
+    "note": "9/25開催告知は既にstoriesで記事化済み。サイン色紙企画の追記のみで当日のトリガーなし"
+   },
+   {
+    "dedup_key": "puzzle-and-dragons-cinderella-girls-collab-2026",
+    "reason": "既報",
+    "note": "二次情報による9/25公式発表の後追いで新規事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "cg-15th-orchestra-2027",
+    "reason": "既報",
+    "note": "9/27締切の最速先行情報は9/16告知時から既報、当日(9/29)のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

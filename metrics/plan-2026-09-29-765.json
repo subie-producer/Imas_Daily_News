@@ -1,0 +1,92 @@
+{
+ "decisions": {
+  "765-never-end-idol-bluray-order-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "BD受注は9/27締切で終了済み。同内容は8/29・9/18号で既報、当日のトリガーなし。"
+  },
+  "the-idolm-ster-765pro-allstars-live": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じBD受注(9/27締切)の話題。既報済みで、9/29時点では受注も終了している。"
+  },
+  "765-2": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ライブ映像視聴に感情を動かされたとする未確認の個人投稿1件のみ。単体記事化の対象外。"
+  },
+  "key-art-collection-vol-04-765allstars": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "既存書籍のスキャンを共有する未確認の個人投稿。エンゲージメント低く新規性なし。"
+  },
+  "imas-radio-2026": {
+   "action": "article",
+   "angle": "神原大地ゲストのIM＠S RADIO次回放送(9/29 20時から、本編は誰でも視聴可)を告知",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-imas-radio-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "神原大地ゲストのIM＠S RADIO次回放送(9/29 20時から、本編は誰でも視聴可)を告知",
+    "lead_score": 25,
+    "dedup_key": "imas-radio-2026",
+    "candidate_ids": [
+     "sched-2026-09-29-imas-radio-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765-never-end-idol-bluray-order-2026",
+    "reason": "既報",
+    "note": "BD受注は9/27締切で終了済み。同内容は8/29・9/18号で既報、当日のトリガーなし。"
+   },
+   {
+    "dedup_key": "the-idolm-ster-765pro-allstars-live",
+    "reason": "既報",
+    "note": "同じBD受注(9/27締切)の話題。既報済みで、9/29時点では受注も終了している。"
+   },
+   {
+    "dedup_key": "765-2",
+    "reason": "個人の話題",
+    "note": "ライブ映像視聴に感情を動かされたとする未確認の個人投稿1件のみ。単体記事化の対象外。"
+   },
+   {
+    "dedup_key": "key-art-collection-vol-04-765allstars",
+    "reason": "個人の話題",
+    "note": "既存書籍のスキャンを共有する未確認の個人投稿。エンゲージメント低く新規性なし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

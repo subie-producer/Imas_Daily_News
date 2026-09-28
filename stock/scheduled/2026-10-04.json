@@ -370,5 +370,29 @@
   "verify": "confirmed",
   "src_candidate_id": "202609262335-watch-0",
   "deadline": "2026-10-04"
+ },
+ {
+  "id": "sched-2026-10-04-9-締切",
+  "dedup_key": "9",
+  "brand": "dsva",
+  "subject": "vα-liv 9月度活動アンケート",
+  "kind": "締切",
+  "note": "9月度活動アンケートの回答締切日",
+  "reserved_on": "2026-09-29",
+  "title": "9月度の活動に関するアンケート",
+  "url": "https://x.com/valiv_official/status/2104512691964424455",
+  "source_type": "公式",
+  "facts": [
+   "9月度の活動に関するアンケート、とある",
+   "プロデューサーの皆様に、今月度の活動に関するアンケートを実施する、とある",
+   "プロジェクトとライバーアイドルたちの更なる発展のために協力を求めている",
+   "回答期限の表記は【～10月4日(日)23:59まで】",
+   "回答先: https://docs.google.com/forms/d/e/1FAIpQLSewzEGUu-wlZ66kIHFIdR6ucKHMFo2syzmW9Oeq7lzKCSsSWQ/viewform?usp=send_form",
+   "ハッシュタグ #ヴイアラ",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609290228-grok-23"
  }
 ]

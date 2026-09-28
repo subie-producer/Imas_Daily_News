@@ -80,5 +80,36 @@
   "src_candidate_id": "202609181838-watch-9",
   "event_date": "2026-10-07",
   "deadline": "2026-11-08"
+ },
+ {
+  "id": "sched-2026-11-08-gravure-solo-collection-vol-2-agitato-締切",
+  "dedup_key": "gravure-solo-collection-vol-2-agitato",
+  "brand": "gaku",
+  "subject": "「Agitato」CD第2弾 予約",
+  "kind": "締切",
+  "note": "CD予約の締切日",
+  "reserved_on": "2026-09-29",
+  "title": "Gravure Solo Collection Vol.2「Agitato」",
+  "url": "https://gakuen-label.idolmaster-official.jp/news/gravure2",
+  "source_type": "準公式",
+  "facts": [
+   "「学園アイドルマスター」CD新シリーズ第2弾",
+   "ゲーム内「グラビアイベント」に登場する『小悪魔』をイメージした楽曲のCD化",
+   "収録トラック数は全15曲",
+   "シナリオのメインとなる「花海咲季」「葛城リーリヤ」「花海佑芽」の3人歌唱版を収録",
+   "本CD限定となる13名のキャラクターのソロ歌唱 Full ver. を収録",
+   "ショップによってオープン時間が異なる",
+   "販売価格: 3,500円（税込）",
+   "販売日: 2027年1月20日（水）予定",
+   "ご予約は 2026年11月8日（日）まで",
+   "予約特典・アソビストア: 「Agitato」特典ステッカー",
+   "ステッカー サイズ: 約W115mm×H210mm",
+   "ステッカー 素材: 紙・PP"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609290228-grok-43",
+  "event_date": "2027-01-20",
+  "deadline": "2026-11-08"
  }
 ]

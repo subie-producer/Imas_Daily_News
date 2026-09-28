@@ -1,0 +1,104 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-29T02:28:21+09:00",
+   "edition": "2026-09-29",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 346,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 0,
+    "explore:shiny": 8,
+    "explore:sidem": 0,
+    "explore:gakuen": 6,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 3,
+    "grok:765as": 1,
+    "grok:cinderella": 2,
+    "grok:million": 10,
+    "grok:shiny": 0,
+    "grok:sidem": 8,
+    "grok:gakuen": 12,
+    "grok:dsva": 12,
+    "grok:joint-other": 2,
+    "grok:trend": 8
+   },
+   "normalized": 54,
+   "added": 47,
+   "verify": {
+    "confirmed": 38,
+    "unconfirmed": 16,
+    "failed": 0
+   },
+   "duration_s": 1663
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-29T03:48:36+09:00",
+   "edition": "2026-09-29",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 36,
+   "written": 29,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 85,
+    "covered": 85,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "million-linkage-masterpiece-set-2026",
+    "sidem-315-shop-lottery-stock-2026-09-27",
+    "sidem-the-idolm-ster-sidem-11th-stage"
+   ],
+   "stages_min": {
+    "選定": 5.422491923967997,
+    "執筆": 7.114246503512065,
+    "出典の判定": 0.5501719752947489,
+    "組版": 2.8496161858240763,
+    "校閲": 1.8452199776967366,
+    "校閲1波": 1.8452199776967366
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "million-theater-talk-party-offshot-67",
+    "shiny-aki-idol-kyoka-2026",
+    "shiny-axe8-2026-adde12",
+    "shiny-prelude-collection-mei-izumi-2026"
+   ],
+   "duration_s": 2878
+  }
+ ]
+}

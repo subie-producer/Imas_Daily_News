@@ -1,0 +1,223 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-29-dsva-kamizuru-cosmo-tgs2026-ace-combat-8.md",
+   "issue": "タグの文字化け・機械的エラー",
+   "quote": "tags:\n- イベント\n- \"ACE COMBAT 8: WINGS OFゆ?\"",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [],
+   "expected": "タグが正しく「ACE COMBAT 8: WINGS OF THEVE」と表記されること",
+   "scope": "article:2026-09-29-dsva-kamizuru-cosmo-tgs2026-ace-combat-8.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-gaku-jinro-bunka-festival-goods-mail-order-2026.md",
+   "issue": "sources に指定されているAppBank出典では「全13種発売」と述べられているのに対して、リード文では「全12種」と記述されている矛盾",
+   "quote": "学園アイドルマスターのリアル脱出ゲーム「人狼潜む文化祭からの脱出」オリジナルグッズ全12種が、本日正午からSCRAP GOODS SHOPで事後通販される。",
+   "rule_id": "R4",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F3"
+   ],
+   "expected": "リード文の「全12種」を「全13種」に修正し、sources のAppBankの記述と一致させること。",
+   "scope": "article:2026-09-29-gaku-jinro-bunka-festival-goods-mail-order-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-million-linkage-masterpiece-set-2026.md",
+   "issue": "sources の最初のURL が記事の主題と異なる話題のページである。",
+   "quote": "sources: - label: アイドルマスター ポータル「【ミリシタ】SSR出現率2倍！「ミリオンリンケージ やっぱり教え子たちが俺争奪戦中な件について。編」開催中！」(2026年9月27日) url: https://idolmaster-official.jp/news/01_20004",
+   "rule_id": "R4",
+   "repair": "drop_source",
+   "fact_ids": [],
+   "expected": "sources から記事と直接関係のない URL（リンケージガシャイベントについての記事）を削除し、記事の主題である「リンケージ限定マスターピースセット」に直接対応した出典のみを sources に記載する",
+   "scope": "article:2026-09-29-million-linkage-masterpiece-set-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-sidem-315-shop-lottery-stock-2026-09-27.md",
+   "issue": "出典の URL に含まれる日付（2024年10月2日）が記事で扱う日付（2026年9月27日）と矛盾している",
+   "quote": "sources に記載: https://bandainamco-am.co.jp/chara_shop/idolmaster/NEWS/315shop/20241002.html（2024年10月2日を指す）、但し event_date: 2026-09-27、記事本文: 「9月27日付で抽選くじの在庫状況を更新」",
+   "rule_id": "R4",
+   "repair": "drop_source",
+   "fact_ids": [
+    "N1",
+    "N2",
+    "N3"
+   ],
+   "expected": "sources の URL を削除し、公式サイトの正しい 2026年9月27日更新分のページ URL に置き換えるか、出典を明確にする",
+   "scope": "article:2026-09-29-sidem-315-shop-lottery-stock-2026-09-27.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-sidem-the-idolm-ster-sidem-11th-stage.md",
+   "issue": "衣装名の誤字：本文で「トランセンデントリルード」と記載されていますが、正しくは「トランセンデントリヴェイル」です。既報台帳や公式情報で一貫して「トランセンデントリヴェイル」と表記されています。",
+   "quote": "11th STAGE衣装「トランセンデントリルード」を着用したアイドルの等身イラストを使用し",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "N1"
+   ],
+   "expected": "本文第2段落の衣装名を「トランセンデントリヴェイル」に修正すること",
+   "scope": "article:2026-09-29-sidem-the-idolm-ster-sidem-11th-stage.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-29-765-imas-radio-2026.md",
+   "issue": "本文分量不足。rank: small の目安は250字だが、現在約120字。公式告知のURL先では配信ページへのリンク先や、番組の基本情報（放送頻度「隔週火曜」など）の補足が可能。ただし、本日の配信情報が中核のため、背景情報による水増しは不要",
+   "scope": "article:2026-09-29-765-imas-radio-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-cg-parfait-coquette-celebration-2026.md",
+   "issue": "分量：rank small(目安250字以上)に対して本文が58字。出典にPOP UP STOREの営業時間・会場アクセスなど追加可能な詳細があれば記事充実の検討余地あり",
+   "scope": "article:2026-09-29-cg-parfait-coquette-celebration-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-dsva-cm-e283e1.md",
+   "issue": "rank: small に対し本文が薄い（約29字、目安250字）。出典に詳細情報がないため記事の性質上追加が限定的だが、配信日時・媒体選定の背景など拾える情報があれば充実可能。",
+   "scope": "article:2026-09-29-dsva-cm-e283e1.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-dsva-kamizuru-cosmo-tgs2026-ace-combat-8.md",
+   "issue": "アーリーアクセスの終了日が未記載。記事は「9月29日から始まる」と開始日のみで、いつまで続くのかが不明。verified_factsにも終了日がないため加筆できないが、読者の「今日からいつまでプレイできるのか」という基本的な疑問が残る",
+   "scope": "article:2026-09-29-dsva-kamizuru-cosmo-tgs2026-ace-combat-8.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-gaku-jinro-bunka-festival-goods-mail-order-2026.md",
+   "issue": "既報確認: 本記事は2026-09-26に初出している既報の続報だが、本日の販売開始がトリガーとなっているため、新事実なしの続報(R10)には該当しない",
+   "scope": "article:2026-09-29-gaku-jinro-bunka-festival-goods-mail-order-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-gaku-kaisou-hr-12-2026-09-28.md",
+   "issue": "分量が目安より短い。rank: lead の目安は1000字ですが、現在は約180字。出典の公式ニュースに他のアナウンス（CD発売、ラジオ出演情報など）も含まれており、詳細を追加することで分量を補強できる可能性があります。",
+   "scope": "article:2026-09-29-gaku-kaisou-hr-12-2026-09-28.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-joint-1-d41ed2.md",
+   "issue": "分量不足：rank: small の目安は450字以上だが、本文は約150字。候補の facts には「内容がそぐわないと判断したライブフォトについては掲載されないことがある」という掲載の条件があり、これを追記することで埋まる可能性あり。",
+   "scope": "article:2026-09-29-joint-1-d41ed2.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-million-linkage-free-gacha-2026.md",
+   "issue": "分量不足：記事本文が約235字で、small rank の目安（250字）をわずかに下回っています。ただし、シンプルなキャンペーン紹介であり、記事の内容は完全です。追加するとすれば、限定カード（星井美希・百瀬莉緒）の情報をリード後段に加えることで自然に分量を増やせますが、必須ではありません。",
+   "scope": "article:2026-09-29-million-linkage-free-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-shiny-kutsurogi-climax-girls-2026.md",
+   "issue": "本文が約60字で、rank: small の目安（250字）より短い。素材の facts 「以前開催した…の物語」「開催期間」「言及アイドル」などを詳述すれば200字程度まで埋まる可能性あり",
+   "scope": "article:2026-09-29-shiny-kutsurogi-climax-girls-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-shiny-msp-afterparty-gasha-day2-2026.md",
+   "issue": "分量不足：rank: small の目安は250字ですが、本文が約75字です。出典に記載されているSTEP詳細（各ステップの確定内容、SSR率など）を拾い足すと分量が埋まります。",
+   "scope": "article:2026-09-29-shiny-msp-afterparty-gasha-day2-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-shiny-noctchill-live-2027.md",
+   "issue": "ニュース性がやや低い。既報（2026-09-28発行）に対する続報であり、プレミアム先行受付開始は2026-09-27（発行日より2日前）。本日のトリガーではなく、進行中のプログラム情報として機能している。ただし、読者が「本日から応募できる」という実行可能な情報を提供しており、続報として許容範囲。",
+   "scope": "article:2026-09-29-shiny-noctchill-live-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-sidem-315-shop-lottery-stock-2026-09-27.md",
+   "issue": "リード不完全: B賞の在庫情報がリードに記載されていないが、本文では詳しく説明されている。「A賞とD賞は在庫あり、C賞は全種在庫なし」だけでなく「B賞は49種中42種が在庫あり」という情報もリードに含めるべき",
+   "scope": "article:2026-09-29-sidem-315-shop-lottery-stock-2026-09-27.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-sidem-315mode-vol-1-spring.md",
+   "issue": "分量不足：約200字で、small 記事の目安 250字より 50字短い。素材には各グッズの詳細（価格、サイズ、素材、セット内訳、発送時期）の情報があり、追加することで読者に有用な記事になる。",
+   "scope": "article:2026-09-29-sidem-315mode-vol-1-spring.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-sidem-4-77f830.md",
+   "issue": "本文が極めて短い（約50字）。rank:small の目安250字に対して大幅に不足。ただし候補では「会場・対象店舗・開催時刻・特典・価格は記載なし」と明記されており、根拠から追加できる情報がない。フェア詳細URLの開示を通じて詳細情報を取得できれば改善の余地あり。",
+   "scope": "article:2026-09-29-sidem-4-77f830.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-29-sidem-8-41a15d.md",
+   "issue": "記事の分量が目安より大幅に不足しています。rank: small の目安は250字ですが、本文は約60字です。出典に会場（K-BOOKSライブ館）、入荷商品の詳細、または『大変人気なシリーズ』といった背景情報を加えることで、充実させることができます。",
+   "scope": "article:2026-09-29-sidem-8-41a15d.md"
+  },
+  {
+   "file": "-",
+   "issue": "パズドラ×シンデレラガールズコラボ（公式、エンゲージメント高）が候補に在るが紙面に無い。deadline は2026-10-05で、本号での言及が期待される主題。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "ミリオン THEATER TALK PARTY Vol.67（deadline: 2026-09-30）が候補に在るが紙面に無い。明日が期限のイベント。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-29-765-imas-radio-2026.md",
+  "article:2026-09-29-cg-cinderella-pop-up-shop-2026.md",
+  "article:2026-09-29-cg-parfait-coquette-celebration-2026.md",
+  "article:2026-09-29-cg-xr-live-apple-of-my-ai-2027.md",
+  "article:2026-09-29-dsva-2026-2-416afd.md",
+  "article:2026-09-29-dsva-9-0ade7c.md",
+  "article:2026-09-29-dsva-cm-e283e1.md",
+  "article:2026-09-29-dsva-kamizuru-cosmo-tgs2026-ace-combat-8.md",
+  "article:2026-09-29-dsva-ops-roundup.md",
+  "article:2026-09-29-gaku-11-bcaf8c.md",
+  "article:2026-09-29-gaku-12-61acd2.md",
+  "article:2026-09-29-gaku-battle-spirits-collab-2027.md",
+  "article:2026-09-29-gaku-gravure-solo-collection-vol-2-agitato.md",
+  "article:2026-09-29-gaku-jinro-bunka-festival-goods-mail-order-2026.md",
+  "article:2026-09-29-gaku-kaisou-hr-12-2026-09-28.md",
+  "article:2026-09-29-general-creators-edge-xr-seminar-2026.md",
+  "article:2026-09-29-joint-1-d41ed2.md",
+  "article:2026-09-29-million-14th-if-i.md",
+  "article:2026-09-29-million-9-gp-266b86.md",
+  "article:2026-09-29-million-linkage-free-gacha-2026.md",
+  "article:2026-09-29-million-linkage-masterpiece-set-2026.md",
+  "article:2026-09-29-shiny-kutsurogi-climax-girls-2026.md",
+  "article:2026-09-29-shiny-msp-afterparty-gasha-day2-2026.md",
+  "article:2026-09-29-shiny-msp-setlist-2026.md",
+  "article:2026-09-29-shiny-msp-solo-collection-after-sale-2026.md",
+  "article:2026-09-29-shiny-noctchill-live-2027.md",
+  "article:2026-09-29-sidem-315-shop-lottery-stock-2026-09-27.md",
+  "article:2026-09-29-sidem-315mode-vol-1-spring.md",
+  "article:2026-09-29-sidem-4-77f830.md",
+  "article:2026-09-29-sidem-8-41a15d.md",
+  "article:2026-09-29-sidem-cd-the-idolm-ster-sidem-m.md",
+  "article:2026-09-29-sidem-the-idolm-ster-sidem-11th-stage.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-29-765-imas-radio-2026.md": "8c00f627778a6e8b874fa371342db5feb0d5683612a560a96cf887e178f31b8c",
+  "docs/_posts/2026-09-29-cg-cinderella-pop-up-shop-2026.md": "cf3851a57752a2bc52e99df2c68bf587d432f14dc8e2334746b362631ff98c81",
+  "docs/_posts/2026-09-29-cg-parfait-coquette-celebration-2026.md": "fadc6d72156acf411d2915cf4b2b40a9ad79e21fe57498e4bb9c2224f7e0fb8a",
+  "docs/_posts/2026-09-29-cg-xr-live-apple-of-my-ai-2027.md": "a61b2997b1ddd77084190168b8003b2b087c9fed52da1d7df92f9908c355085e",
+  "docs/_posts/2026-09-29-dsva-2026-2-416afd.md": "4e92e5fbfac7cdacd328d3d218618ed1ec0419318e222e57460fbe5905b2a171",
+  "docs/_posts/2026-09-29-dsva-9-0ade7c.md": "d3419cc5c1722a051a8f2e5780b716556279d641c45eaa4784ef76b3ee27134d",
+  "docs/_posts/2026-09-29-dsva-cm-e283e1.md": "3766c58ef3daf04c51d21428f3437b3d0b474320f4595f66509a74a2e5b555f7",
+  "docs/_posts/2026-09-29-dsva-kamizuru-cosmo-tgs2026-ace-combat-8.md": "694d5b20b61151a55d9fb2925967b67e5901a210adcb12e81a1d915f0c670565",
+  "docs/_posts/2026-09-29-dsva-ops-roundup.md": "689e1a60710d708de927f85e850ac0519e1c9de04a1794a6c6365cadc2f239b4",
+  "docs/_posts/2026-09-29-gaku-11-bcaf8c.md": "f0c69681b5f4f7ae456a7c3e6a716a6f531dd6f886f79adfc994fb0a6b9fa95b",
+  "docs/_posts/2026-09-29-gaku-12-61acd2.md": "7cfd250d4c57a1d7adb430de7c785cfdbeb2b69220f711d37456e1c3cf0fa90e",
+  "docs/_posts/2026-09-29-gaku-battle-spirits-collab-2027.md": "5ec2fe8d02796cfc81005bd3cae93ec377bfc31596af6c9bee9b1ea22cf8684d",
+  "docs/_posts/2026-09-29-gaku-gravure-solo-collection-vol-2-agitato.md": "06ca5dba7a1bfd887b3de4ef447e5b5a8a02d1d2ef19c5c349e2efedcfec876f",
+  "docs/_posts/2026-09-29-gaku-jinro-bunka-festival-goods-mail-order-2026.md": "f742257078d8ba6f5166de4db4c0e84dfd282108c44bceb778455db815859be0",
+  "docs/_posts/2026-09-29-gaku-kaisou-hr-12-2026-09-28.md": "0b688c62c5eb23b7197015e33e35ae7be2962442ad8f2c3bc52c5f20de47e998",
+  "docs/_posts/2026-09-29-general-creators-edge-xr-seminar-2026.md": "d628f03276874c780f97e6c3c5484be5316fe5385c356fafc0fdb90f6c18ef41",
+  "docs/_posts/2026-09-29-joint-1-d41ed2.md": "e489779efeae227d6cbe82bebe8f9212679c45b21a8230b2ff6f7827675e5fed",
+  "docs/_posts/2026-09-29-million-14th-if-i.md": "9213d38939c0c48d28b6f5b39d3fae0b34fddbc59832540e033faa32e9431942",
+  "docs/_posts/2026-09-29-million-9-gp-266b86.md": "a8226426e1d89fd5bb426085bbba5ba1b095e6234c761616ca8d6330d7ad2214",
+  "docs/_posts/2026-09-29-million-linkage-free-gacha-2026.md": "a0ba120554be4cc2915622a8b9ebdb0070c12261498854d19146ef2e359a977e",
+  "docs/_posts/2026-09-29-million-linkage-masterpiece-set-2026.md": "f27c4b5215d80f4af4f664f804074f51e920f7742686907d51587a05614492eb",
+  "docs/_posts/2026-09-29-shiny-kutsurogi-climax-girls-2026.md": "6c294c2e6e954f89d2bc02b6efe6704fdc06e49484e091e94e3d873c33d80c45",
+  "docs/_posts/2026-09-29-shiny-msp-afterparty-gasha-day2-2026.md": "21a551fc324130d28f0a862179a1e8c3b0290558bb412bc9918afc928b61599e",
+  "docs/_posts/2026-09-29-shiny-msp-setlist-2026.md": "90d59b96e2141363616aa5bcdaa67a82879871de22e336cfcae8dc63f5f8b5b6",
+  "docs/_posts/2026-09-29-shiny-msp-solo-collection-after-sale-2026.md": "dca3f5e9ad0fd1b9dfc59f01d4a05be5de644905c488b5c8dbade39615fe6e80",
+  "docs/_posts/2026-09-29-shiny-noctchill-live-2027.md": "53406532ebffe75647c60fa522271e4aca659d81f3e85f36c3bc40b77bbaac7d",
+  "docs/_posts/2026-09-29-sidem-315-shop-lottery-stock-2026-09-27.md": "fe83e6a5b47e8b1914eaba5c1cfc27d13609d991d9e24d64a3a19ee84fd73f0c",
+  "docs/_posts/2026-09-29-sidem-315mode-vol-1-spring.md": "e2528081c0ac9935e4ce13aa6fdbf06b73e4dc641cb995ca9163dc3fce1f7695",
+  "docs/_posts/2026-09-29-sidem-4-77f830.md": "35b109cf1d76fc5f0769218e9c4917107fef765355e99a1e0d47812c8298e681",
+  "docs/_posts/2026-09-29-sidem-8-41a15d.md": "2c25eda292648423a95e2b5fa28b378f2bfdee5ae93cd575c08356130137019a",
+  "docs/_posts/2026-09-29-sidem-cd-the-idolm-ster-sidem-m.md": "4a2ad6b0d185fac7dbf73f1648ed1810309c7a00b4c5a58096a96452641fb718",
+  "docs/_posts/2026-09-29-sidem-the-idolm-ster-sidem-11th-stage.md": "de25b7c82c1b3a06054f3a6d812f096983b1c61f0e0a11917854775d6e4cc28b",
+  "docs/_editions/2026-09-29.md": "1149410088e5fcca2e170a52df6f72831906ea2278053c38ee3dcd65a71e7c8b",
+  "metrics/stories-before-2026-09-29.yml": "0e2667e3efb20318febaa8a917141e252beefc46d343f828881c8fff720446a5"
+ }
+}

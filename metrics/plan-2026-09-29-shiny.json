@@ -1,0 +1,267 @@
+{
+ "decisions": {
+  "shiny-noctchill-live-2027": {
+   "action": "article",
+   "angle": "ノクチル単独ライブ「noctchill」、アソビストアプレミアム先行受付が開始。全4公演の開場・開演時間が判明",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催決定自体は9/28既報。先行受付期間(9/27 19:00〜10/12)と第二〜第四公演の時間が新規"
+  },
+  "shiny-msp-afterparty-gasha-day2-2026": {
+   "action": "article",
+   "angle": "MSP打ち上げガシャDAY2開催、西城樹里S-SSR「Master ShowPiece」が獲得可能に",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-msp-setlist-2026": {
+   "action": "article",
+   "angle": "283 PRODUCTION Solo Live Collection、全日程のセットリスト・プレイリストを公開",
+   "rank": "large",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "面のリード。京王アリーナ公演終了後の全曲リスト初公開で素材量も多い"
+  },
+  "shiny-msp-after-sales-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-solo-collection-after-sale-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一CD(品番LACZ-10374)の事後物販決定告知。詳細情報を持つ主題へ統合"
+  },
+  "shiny-orchestra-radiant-chord-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/27既報(shiny-orchestra-concert-2027)と同一施策。座席価格の詳細のみ新規で単独記事化するほどではない"
+  },
+  "shiny-solo-live-msp-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "視聴期間・受注期間とも9/28既報(shiny-msp-day2)と同一"
+  },
+  "shiny-hachiban-ramen-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/19既報(shiny-ramen-8-collab-2026)と同一のコラボ開催決定・期間"
+  },
+  "shiny-orchestra-concert-radiant-chord-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/27既報(shiny-orchestra-concert-2027)と同一の開催決定・先行受付告知"
+  },
+  "shiny-hachiban-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/19既報(shiny-ramen-8-collab-2026)と同一コラボの当事者リリース重複"
+  },
+  "shiny-msp-solo-collection-after-sale-2026": {
+   "action": "article",
+   "angle": "『Master ShowPiece』オリジナルCDの事後受注販売が開始、通販3店舗で10/18まで",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-aki-idol-kyoka-2026": {
+   "action": "article",
+   "angle": "「秋のアイドル強化週間」第16回、本日11:59に開催終了",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-axe8-2026": {
+   "action": "article",
+   "angle": "AXE8「Grow to Glow」桑山千雪の特別ガシャ、本日で開催終了",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-prelude-collection-mei-izumi-2026": {
+   "action": "article",
+   "angle": "プレリュードコレクション和泉愛依、特別ミッションが本日で終了",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-kutsurogi-climax-girls-2026": {
+   "action": "article",
+   "angle": "「くつろぎクライマックスガールズ」復刻、本日11:59に千秋楽",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-noctchill-live-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ノクチル単独ライブ「noctchill」、アソビストアプレミアム先行受付が開始。全4公演の開場・開演時間が判明",
+    "lead_score": 20,
+    "dedup_key": "shiny-noctchill-live-2027",
+    "candidate_ids": [
+     "202609280733-explore-1",
+     "202609290228-explore-1"
+    ]
+   },
+   {
+    "slug": "shiny-msp-afterparty-gasha-day2-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "MSP打ち上げガシャDAY2開催、西城樹里S-SSR「Master ShowPiece」が獲得可能に",
+    "lead_score": 15,
+    "dedup_key": "shiny-msp-afterparty-gasha-day2-2026",
+    "candidate_ids": [
+     "202609280733-explore-2"
+    ]
+   },
+   {
+    "slug": "shiny-msp-setlist-2026",
+    "brand": "shiny",
+    "rank": "large",
+    "angle": "283 PRODUCTION Solo Live Collection、全日程のセットリスト・プレイリストを公開",
+    "lead_score": 65,
+    "dedup_key": "shiny-msp-setlist-2026",
+    "candidate_ids": [
+     "202609280733-explore-7"
+    ]
+   },
+   {
+    "slug": "shiny-msp-solo-collection-after-sale-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "『Master ShowPiece』オリジナルCDの事後受注販売が開始、通販3店舗で10/18まで",
+    "lead_score": 25,
+    "dedup_key": "shiny-msp-solo-collection-after-sale-2026",
+    "candidate_ids": [
+     "202609290228-explore-5",
+     "202609280733-explore-8"
+    ]
+   },
+   {
+    "slug": "shiny-aki-idol-kyoka-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「秋のアイドル強化週間」第16回、本日11:59に開催終了",
+    "lead_score": 5,
+    "dedup_key": "shiny-aki-idol-kyoka-2026",
+    "candidate_ids": [
+     "sched-2026-09-29-shiny-aki-idol-kyoka-2026-終了"
+    ]
+   },
+   {
+    "slug": "shiny-axe8-2026-adde12",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "AXE8「Grow to Glow」桑山千雪の特別ガシャ、本日で開催終了",
+    "lead_score": 5,
+    "dedup_key": "shiny-axe8-2026",
+    "candidate_ids": [
+     "sched-2026-09-29-shiny-axe8-2026-終了"
+    ]
+   },
+   {
+    "slug": "shiny-prelude-collection-mei-izumi-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "プレリュードコレクション和泉愛依、特別ミッションが本日で終了",
+    "lead_score": 5,
+    "dedup_key": "shiny-prelude-collection-mei-izumi-2026",
+    "candidate_ids": [
+     "sched-2026-09-29-shiny-prelude-collection-mei-izumi-2026-終了"
+    ]
+   },
+   {
+    "slug": "shiny-kutsurogi-climax-girls-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「くつろぎクライマックスガールズ」復刻、本日11:59に千秋楽",
+    "lead_score": 10,
+    "dedup_key": "shiny-kutsurogi-climax-girls-2026",
+    "candidate_ids": [
+     "sched-2026-09-29-shiny-kutsurogi-climax-girls-2026-終了",
+     "sched-2026-09-29-shiny-kutsurogi-climax-girls-2026-千秋楽"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-orchestra-radiant-chord-2026",
+    "reason": "既報",
+    "note": "9/27既報(shiny-orchestra-concert-2027)と同一施策。座席価格の詳細のみ新規で単独記事化するほどではない"
+   },
+   {
+    "dedup_key": "shiny-solo-live-msp-2026",
+    "reason": "既報",
+    "note": "視聴期間・受注期間とも9/28既報(shiny-msp-day2)と同一"
+   },
+   {
+    "dedup_key": "shiny-hachiban-ramen-2026",
+    "reason": "既報",
+    "note": "9/19既報(shiny-ramen-8-collab-2026)と同一のコラボ開催決定・期間"
+   },
+   {
+    "dedup_key": "shiny-orchestra-concert-radiant-chord-2026",
+    "reason": "既報",
+    "note": "9/27既報(shiny-orchestra-concert-2027)と同一の開催決定・先行受付告知"
+   },
+   {
+    "dedup_key": "shiny-hachiban-collab-2026",
+    "reason": "既報",
+    "note": "9/19既報(shiny-ramen-8-collab-2026)と同一コラボの当事者リリース重複"
+   }
+  ],
+  "cross_brand": []
+ }
+}

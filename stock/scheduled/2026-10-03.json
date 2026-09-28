@@ -29,5 +29,31 @@
   "src_candidate_id": "202609182335-watch-1",
   "event_date": "2026-10-03",
   "deadline": "2026-10-05"
+ },
+ {
+  "id": "sched-2026-10-03-sidem-4-開始",
+  "dedup_key": "sidem-4",
+  "brand": "sidem",
+  "subject": "SideM リメンバーショットフェア第4弾",
+  "kind": "開始",
+  "note": "この日からリメンバーショットフェア第4弾が始まる",
+  "reserved_on": "2026-09-29",
+  "title": "アイドルマスター SideM リメンバーショットフェア第4弾 カウントダウン",
+  "url": "https://x.com/animateinfo/status/2104406319851549076",
+  "source_type": "当事者",
+  "facts": [
+   "フェア詳細（投稿本文）: https://www.animate-onlineshop.jp/contents/fair_event/detail.php?id=116010&utm_source=twitter&utm_medium=social&utm_campaign=animate_evcp_fair_event116010_20260928",
+   "開催まであと5日",
+   "フェア名: アイドルマスター SideM リメンバーショットフェア第4弾",
+   "10/3（土）からスタート",
+   "本日のカウントダウン担当: 「あの頃」の榊夏来さん",
+   "ハッシュタグ: #SideM",
+   "会場・対象店舗・開催時刻・特典・価格は、この投稿の本文には記載なし",
+   "エンゲージメント: 高",
+   "言及アイドル: 榊夏来"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609290228-grok-64"
  }
 ]

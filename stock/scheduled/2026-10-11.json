@@ -297,5 +297,28 @@
   "src_candidate_id": "202609250223-explore-8",
   "event_date": "2026-09-25",
   "deadline": "2026-10-11"
+ },
+ {
+  "id": "sched-2026-10-11-cm-終了",
+  "dedup_key": "cm",
+  "brand": "dsva",
+  "subject": "国際交流歌合戦CM(ABEMA限定)",
+  "kind": "終了",
+  "note": "ABEMA限定CMの放映最終日",
+  "reserved_on": "2026-09-29",
+  "title": "国際交流歌合戦のCM",
+  "url": "https://x.com/UtagawaLetora/status/2104451072828055818",
+  "source_type": "公式",
+  "facts": [
+   "今日から、とある",
+   "国際交流歌合戦のCMを放映中、とある",
+   "放映は ABEMAのみ、とある",
+   "10/11まで、とある",
+   "ハッシュタグ #ヴイアラ",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609290228-grok-32"
  }
 ]

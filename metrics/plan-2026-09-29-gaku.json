@@ -1,0 +1,211 @@
+{
+ "decisions": {
+  "2027": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-battle-spirits-collab-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一のバトルスピリッツコラボ発表。複数公式アカウントの表記を統合"
+  },
+  "hatsuboshi-gakuen-hr-12": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-kaisou-hr-12-2026-09-28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じHR#12配信の告知。新曲・MV・ガシャ情報を含む詳細主題に統合"
+  },
+  "gaku-live-tour-shirube-iwate-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "岩手公演DAY1/DAY2の新曲初披露は9/24付で既報。追加はセットリスト詳細のみで当日のトリガーなし"
+  },
+  "gaku-kaisou-hr-12-2026-09-28": {
+   "action": "article",
+   "angle": "初星学園HR#12で新曲「Agitato」配信開始日・MVプレミア・リーリヤガシャ開催日を発表",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "HR#12配信主題とAgitatoリーリヤガシャ詳細を統合した本日の目玉ニュース"
+  },
+  "gaku-cast-autograph-campaign-2026-09-28": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "応募締切が9/28 23:59までで、号の発行日(9/29)には既に終了し読者が取れる行動がない"
+  },
+  "gaku-battle-spirits-collab-2027": {
+   "action": "article",
+   "angle": "「バトルスピリッツ」×学マスコラボが2027年春発売決定、コラボスターター/ブースターの2商品展開",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "複数公式アカウントの表記ゆれをまとめた「2027」主題と統合"
+  },
+  "gaku-agitato-lilja-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-kaisou-hr-12-2026-09-28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "HR#12で発表された同一施策の詳細（開催期間・固有スキル）。告知記事に統合"
+  },
+  "gkmas-jinro-bunkasai-goods-mailorder": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "jinro-bunka-festival-goods-mail-order-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の脱出グッズ事後通販。続報予約の主題に統合"
+  },
+  "gravure-solo-collection-vol-2-agitato": {
+   "action": "article",
+   "angle": "学マスCD新シリーズ「Gravure Solo Collection」第2弾、2027年1月20日発売決定",
+   "rank": "medium",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-11": {
+   "action": "article",
+   "angle": "学マス×西武秩父駅前温泉「祭の湯」コラボ、10/16から手ぬぐい付き入館プラン開催",
+   "rank": "medium",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ西武コラボの記念乗車券(gaku-12)は購入場所・枚数限定が別施策のため別記事"
+  },
+  "gaku-12": {
+   "action": "article",
+   "angle": "西武秩父コラボ記念、花海咲季ら描き下ろしの西武線1日フリーきっぷを5,000枚限定発売",
+   "rank": "medium",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ西武コラボの温泉プラン(gaku-11)とは購入方法・枚数限定が異なるため別記事"
+  },
+  "jinro-bunka-festival-goods-mail-order-2026": {
+   "action": "article",
+   "angle": "学マス脱出グッズ、本日正午からSCRAP GOODS SHOPで事後通販開始（全12種、来年1月末まで）",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約どおり本日が発売開始日のため単独記事"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-kaisou-hr-12-2026-09-28",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "初星学園HR#12で新曲「Agitato」配信開始日・MVプレミア・リーリヤガシャ開催日を発表",
+    "lead_score": 80,
+    "dedup_key": "gaku-kaisou-hr-12-2026-09-28",
+    "candidate_ids": [
+     "202609282336-watch-1",
+     "202609280733-explore-9",
+     "202609282336-explore-21"
+    ]
+   },
+   {
+    "slug": "gaku-battle-spirits-collab-2027",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「バトルスピリッツ」×学マスコラボが2027年春発売決定、コラボスターター/ブースターの2商品展開",
+    "lead_score": 25,
+    "dedup_key": "gaku-battle-spirits-collab-2027",
+    "candidate_ids": [
+     "202609282336-watch-3",
+     "202609290228-grok-68"
+    ]
+   },
+   {
+    "slug": "gaku-gravure-solo-collection-vol-2-agitato",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "学マスCD新シリーズ「Gravure Solo Collection」第2弾、2027年1月20日発売決定",
+    "lead_score": 10,
+    "dedup_key": "gravure-solo-collection-vol-2-agitato",
+    "candidate_ids": [
+     "202609290228-grok-43"
+    ]
+   },
+   {
+    "slug": "gaku-11-bcaf8c",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "学マス×西武秩父駅前温泉「祭の湯」コラボ、10/16から手ぬぐい付き入館プラン開催",
+    "lead_score": 10,
+    "dedup_key": "gaku-11",
+    "candidate_ids": [
+     "202609290228-grok-44"
+    ]
+   },
+   {
+    "slug": "gaku-12-61acd2",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "西武秩父コラボ記念、花海咲季ら描き下ろしの西武線1日フリーきっぷを5,000枚限定発売",
+    "lead_score": 10,
+    "dedup_key": "gaku-12",
+    "candidate_ids": [
+     "202609290228-grok-45"
+    ]
+   },
+   {
+    "slug": "gaku-jinro-bunka-festival-goods-mail-order-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス脱出グッズ、本日正午からSCRAP GOODS SHOPで事後通販開始（全12種、来年1月末まで）",
+    "lead_score": 15,
+    "dedup_key": "jinro-bunka-festival-goods-mail-order-2026",
+    "candidate_ids": [
+     "sched-2026-09-29-jinro-bunka-festival-goods-mail-order-2026-発売",
+     "202609290228-explore-13"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-live-tour-shirube-iwate-report-2026",
+    "reason": "既報",
+    "note": "岩手公演DAY1/DAY2の新曲初披露は9/24付で既報。追加はセットリスト詳細のみで当日のトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-cast-autograph-campaign-2026-09-28",
+    "reason": "その他",
+    "note": "応募締切が9/28 23:59までで、号の発行日(9/29)には既に終了し読者が取れる行動がない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

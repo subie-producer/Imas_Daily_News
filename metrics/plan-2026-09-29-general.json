@@ -1,0 +1,47 @@
+{
+ "decisions": {
+  "14th-11": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "未確認の個人X投稿1件のみ、エンゲージメント低。アーカイブ視聴感想の域で新事実なし、単体記事化・cultureまとめとも材料不足"
+  },
+  "creators-edge-xr-seminar-2026": {
+   "action": "article",
+   "angle": "CREATORS EDGE 2026特別セミナー「xRライブの作り方」が本日11時開催、会場にはアイマスxRライブ使用セットも展示",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約どおり本日開催。定員30名・有料セミナーで素材は少なめのためsmall"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-creators-edge-xr-seminar-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "CREATORS EDGE 2026特別セミナー「xRライブの作り方」が本日11時開催、会場にはアイマスxRライブ使用セットも展示",
+    "lead_score": 15,
+    "dedup_key": "creators-edge-xr-seminar-2026",
+    "candidate_ids": [
+     "sched-2026-09-29-creators-edge-xr-seminar-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "14th-11",
+    "reason": "個人の話題",
+    "note": "未確認の個人X投稿1件のみ、エンゲージメント低。アーカイブ視聴感想の域で新事実なし、単体記事化・cultureまとめとも材料不足"
+   }
+  ],
+  "cross_brand": []
+ }
+}

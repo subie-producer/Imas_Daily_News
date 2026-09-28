@@ -1,0 +1,261 @@
+{
+ "decisions": {
+  "million-linkage-oshikyo-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/28付stories.ymlで開催・期間・SSR美希追加・出現率2倍を既報(story_id: million-ver)"
+  },
+  "million-linkage-free-gacha-2026": {
+   "action": "article",
+   "angle": "ミリオンリンケージ開催記念、10回プラチナガシャが1日1回無料に(〜10/1 14:59)、未ログイン分も繰り越しで引ける",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-linkage-masterpiece-set-2026": {
+   "action": "article",
+   "angle": "リンケージ限定マスターピースセット(プラチナガシャ10回券2枚+限定マスターピース)を有償ジュエル5000個で7回まで購入可能(〜10/1 14:59)",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-refrain-kiss-ai-no-soudatsusen-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/27に15時追加として8/25発の速報記事で開催決定と併せ既報済み(story_id: mltd-extreme-livestream-2026)"
+  },
+  "million-theater-talk-party-offshot-67": {
+   "action": "article",
+   "angle": "「THEATER TALK PARTY☆ユニットオフショットVol.67」開催中、ライブクリアでイベントpt・ユニットコイン獲得、ショップ交換あり(〜9/30)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-linkage-student-battle-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "oshikyo-2026と同一事象。9/28付で既報済み(story_id: million-ver)"
+  },
+  "ssr": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "美希SSRカード獲得可能・出現率UPは既報内容の繰り返しで新事実なし"
+  },
+  "10-ssr-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-free-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "毎日無料10連ガシャの告知。無料ガシャ記事に統合し美希カードの台詞を素材に追加"
+  },
+  "10-ssr-2-3": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-free-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同上。莉緒カードの台詞を追加素材として統合"
+  },
+  "9-gp": {
+   "action": "article",
+   "angle": "「アイドルグランプリ」9月特別プレゼント・フラッシュGPメダルの受取/使用期限が9/30(水)23:59に迫る、アイグラ画面から一括受取案内",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-5": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-free-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "無料10連ガシャの概要告知。既出情報の繰り返しにつき統合"
+  },
+  "14th-if-i": {
+   "action": "article",
+   "angle": "ミリオン14th記念、馬場このみ『If I...』・エミリー スチュアート『ひととせ結び』・徳川まつり『ネバーエンド・ワンダーランド』の新曲3曲を順次配信、各キャストからのメッセージも公開",
+   "rank": "large",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "9-only-maker-by-asobistore": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9周年衣装パーカー受注(モルフォ・パレシア/全8種/8,500円/〜10/12)は9/18付で既報済み(story_id: million-live-9th-anniversary-2026)"
+  },
+  "14th": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "14th-if-i",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ14th新曲配信シリーズのため統合"
+  },
+  "14th-9": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "14th-if-i",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同上。徳川まつり分を統合"
+  },
+  "million-10": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "何を訂正したかが投稿本文に書かれておらず記事化不能"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-linkage-free-gacha-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリオンリンケージ開催記念、10回プラチナガシャが1日1回無料に(〜10/1 14:59)、未ログイン分も繰り越しで引ける",
+    "lead_score": 15,
+    "dedup_key": "million-linkage-free-gacha-2026",
+    "candidate_ids": [
+     "202609281233-explore-2",
+     "202609290228-grok-49",
+     "202609290228-grok-50",
+     "202609290228-grok-52"
+    ]
+   },
+   {
+    "slug": "million-linkage-masterpiece-set-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "リンケージ限定マスターピースセット(プラチナガシャ10回券2枚+限定マスターピース)を有償ジュエル5000個で7回まで購入可能(〜10/1 14:59)",
+    "lead_score": 15,
+    "dedup_key": "million-linkage-masterpiece-set-2026",
+    "candidate_ids": [
+     "202609281233-explore-3"
+    ]
+   },
+   {
+    "slug": "million-theater-talk-party-offshot-67",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「THEATER TALK PARTY☆ユニットオフショットVol.67」開催中、ライブクリアでイベントpt・ユニットコイン獲得、ショップ交換あり(〜9/30)",
+    "lead_score": 10,
+    "dedup_key": "million-theater-talk-party-offshot-67",
+    "candidate_ids": [
+     "202609281233-explore-5"
+    ]
+   },
+   {
+    "slug": "million-9-gp-266b86",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「アイドルグランプリ」9月特別プレゼント・フラッシュGPメダルの受取/使用期限が9/30(水)23:59に迫る、アイグラ画面から一括受取案内",
+    "lead_score": 10,
+    "dedup_key": "9-gp",
+    "candidate_ids": [
+     "202609290228-grok-51"
+    ]
+   },
+   {
+    "slug": "million-14th-if-i",
+    "brand": "million",
+    "rank": "large",
+    "angle": "ミリオン14th記念、馬場このみ『If I...』・エミリー スチュアート『ひととせ結び』・徳川まつり『ネバーエンド・ワンダーランド』の新曲3曲を順次配信、各キャストからのメッセージも公開",
+    "lead_score": 65,
+    "dedup_key": "14th-if-i",
+    "candidate_ids": [
+     "202609290228-grok-53",
+     "202609290228-grok-55",
+     "202609290228-grok-56"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-linkage-oshikyo-2026",
+    "reason": "既報",
+    "note": "9/28付stories.ymlで開催・期間・SSR美希追加・出現率2倍を既報(story_id: million-ver)"
+   },
+   {
+    "dedup_key": "million-refrain-kiss-ai-no-soudatsusen-2026",
+    "reason": "既報",
+    "note": "9/27に15時追加として8/25発の速報記事で開催決定と併せ既報済み(story_id: mltd-extreme-livestream-2026)"
+   },
+   {
+    "dedup_key": "million-linkage-student-battle-2026",
+    "reason": "既報",
+    "note": "oshikyo-2026と同一事象。9/28付で既報済み(story_id: million-ver)"
+   },
+   {
+    "dedup_key": "ssr",
+    "reason": "既報",
+    "note": "美希SSRカード獲得可能・出現率UPは既報内容の繰り返しで新事実なし"
+   },
+   {
+    "dedup_key": "9-only-maker-by-asobistore",
+    "reason": "既報",
+    "note": "9周年衣装パーカー受注(モルフォ・パレシア/全8種/8,500円/〜10/12)は9/18付で既報済み(story_id: million-live-9th-anniversary-2026)"
+   },
+   {
+    "dedup_key": "million-10",
+    "reason": "出典不足",
+    "note": "何を訂正したかが投稿本文に書かれておらず記事化不能"
+   }
+  ],
+  "cross_brand": []
+ }
+}

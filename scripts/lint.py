@@ -147,6 +147,48 @@ def schema_check(rep, path, validator, data):
     return ok
 
 
+WITHDRAWN = ROOT / "withdrawn.yml"
+
+
+def _is_date(s: str) -> bool:
+    """YYYY-MM-DD の実在する日付か(打ち間違いの 2026-02-30 を通さない。監査指摘 r96)。"""
+    try:
+        return bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", s)) and bool(datetime.date.fromisoformat(s))
+    except ValueError:
+        return False
+
+
+def load_withdrawn(text: str | None = None) -> tuple[list[dict], list[str]]:
+    """取り下げた記事の記録(編集長の判断で紙面から外した記事)。戻りは (記録の並び, 形式の誤り)。
+    append-only の例外はこれだけ: 記録のある記事の削除と、**同じ差分で**その号の機械算出値(記事数・面数)の更新を通す。
+    1行 = post(docs/_posts のファイル名。拡張子なし)・at(取り下げた日)・by(判断した人)・reason(理由)。どれも空でない文字列。
+    記録は末尾への追記しかできない(黙って消したことにしない)。text を渡せばそれを読む(基準コミットの版との照合用)。"""
+    if text is None:
+        if not WITHDRAWN.exists():
+            return [], []
+        text = WITHDRAWN.read_text(encoding="utf-8")
+    try:
+        rows = yaml.safe_load(text)
+    except yaml.YAMLError as e:
+        return [], [f"YAML として読めない: {e}"]
+    rows = [] if rows is None else rows
+    if not isinstance(rows, list):
+        return [], ["先頭が配列でない"]
+    errs, seen = [], set()
+    for i, r in enumerate(rows):
+        ok = (isinstance(r, dict) and set(r) == {"post", "at", "by", "reason"}
+              and all(isinstance(r[k], str) and r[k].strip() for k in r)
+              and re.fullmatch(r"\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]*", r["post"])
+              and _is_date(r["at"]))
+        if not ok:
+            errs.append(f"{i + 1}件目の形式が違う(post・at・by・reason の4項目、どれも空でない文字列。at は YYYY-MM-DD)")
+        elif r["post"] in seen:
+            errs.append(f"{r['post']} が二重に記録されている")
+        else:
+            seen.add(r["post"])
+    return rows, errs
+
+
 def git(*args):
     return subprocess.run(
         ["git", *args], cwd=ROOT, capture_output=True, text=True
@@ -678,11 +720,33 @@ def main() -> int:
     if not candidate_files and net_targets:
         rep.notice("candidates が空のため出典照合(candidates 突合)はスキップ(collect 稼働後に有効化)")
 
+    # -- 取り下げの記録の形式(基準の有無に関係なく検める。監査指摘 r93) --
+    rows, errs = load_withdrawn()
+    for e in errs:
+        rep.error(WITHDRAWN, f"取り下げの記録: {e}")
+
     # -- append-only(基準コミットとの diff) --
     if base:
         watched = ("docs/_posts/", "docs/_editions/", "docs/_editorials/")
         # 試験発行(number: 0)の号は検証用のため append-only 検査の対象外(REQUIREMENTS 2.1)
         test_dates = {d for d, (_p, efm) in editions.items() if efm.get("number") == 0}
+        # 取り下げ(withdrawn.yml に記録のある記事)だけは削除を通し、その号の記事数・面数の更新も通す
+        withdrawn = {r["post"] for r in rows if not errs}      # 形式に誤りがあれば、どの削除も通さない
+        deleted_now = {Path(e[1]).stem for e in diff_entries if e[0] == "D" and e[1].startswith("docs/_posts/")}
+        # 号の機械算出値の更新を通すのは、**この差分で**記録のある記事を消した号だけ(記録を恒久的な許可証にしない。監査指摘 r91)
+        withdrawn_dates = {k[:10] for k in deleted_now & withdrawn}
+        for k in withdrawn:
+            if (POSTS / f"{k}.md").exists():
+                rep.error(POSTS / f"{k}.md", "withdrawn.yml で取り下げた記事が残っている")
+        # 記録は末尾への追記だけ(消す・書き換える・並べ替えると、記事が消えた理由が失われる。監査指摘 r91・r92)。
+        # 追記した記録は、この差分で実際に消した記事のものに限る(存在しない記事の記録を固定しない。監査指摘 r92)
+        r_old = git("show", f"{base}:withdrawn.yml")
+        old_rows = load_withdrawn(r_old.stdout)[0] if r_old.returncode == 0 else []
+        if rows[:len(old_rows)] != old_rows:
+            rep.error(WITHDRAWN, "取り下げの記録が消された・書き換えられた・並べ替えられた(記録は末尾への追記だけ)")
+        for r in rows[len(old_rows):]:
+            if isinstance(r, dict) and r.get("post") not in deleted_now:
+                rep.error(WITHDRAWN, f"取り下げの記録 {r.get('post')} に対応する記事の削除が、この差分に無い")
         for entry in diff_entries:
             status, p = entry[0], entry[1]
             if not p.startswith(watched):
@@ -690,8 +754,11 @@ def main() -> int:
             dm = re.search(r"(\d{4}-\d{2}-\d{2})", p)
             if dm and dm.group(1) in test_dates:
                 continue
+            if status == "D" and p.startswith("docs/_posts/") and Path(p).stem in withdrawn:
+                continue
             if status == "D":
-                rep.error(ROOT / p, "append-only 違反: 紙面ファイルの削除は禁止")
+                rep.error(ROOT / p, "append-only 違反: 紙面ファイルの削除は禁止"
+                          "(取り下げるなら withdrawn.yml に post・at・by・reason を記録する)")
             elif status == "M":
                 r = git("show", f"{base}:{p}")
                 if r.returncode != 0:
@@ -704,6 +771,9 @@ def main() -> int:
                     continue
                 if p.startswith("docs/_editions/"):
                     diff_keys = {k for k in set(old) | set(new_fm) if old.get(k) != new_fm.get(k)}
+                    if (dm and dm.group(1) in withdrawn_dates and diff_keys <= {"article_count", "pages", "corrected_count"}
+                            and r.stdout.partition("\n---")[2] == (ROOT / p).read_text(encoding="utf-8").partition("\n---")[2]):
+                        continue   # 取り下げに伴う機械算出値の更新だけ(本文は1字も変えない。値は上の照合で実記事数と一致を確かめている)
                     if diff_keys - {"corrected_count"}:
                         rep.error(ROOT / p, f"append-only 違反: 過去号の変更は corrected_count 加算のみ許可(変更: {sorted(diff_keys)})")
                     elif new_fm.get("corrected_count", 0) <= old.get("corrected_count", 0):

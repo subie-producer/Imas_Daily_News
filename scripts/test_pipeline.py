@@ -1589,6 +1589,115 @@ def test_tool_path():
     check(os.path.expanduser("~/.local/bin") in p.split(":") and "/usr/bin" in p.split(":"), f"tool_path に利用者の bin が無い: {p}")
 
 
+def test_withdrawal(tmp: Path):
+    """取り下げ(編集長 2026-09-29「記事ごと削除でいいのでは」): 道具(withdraw.py)が記事・記録・目次・一面・号の数・未来の予約を
+    1回で直し、lint の判定(edition_withdrawal_ok / promotion_ok / withdrawal_record_errors / load_withdrawn)がそれを認め、
+    取り下げに紛れた別の変更は認めない。一面の取り下げでは lead_score 最大(roundup を除く)を一面に立て直す。"""
+    import withdraw
+    d = "2026-09-29"
+    posts, eds = tmp / "docs" / "_posts", tmp / "docs" / "_editions"
+    for p in (posts, eds, tmp / "metrics", tmp / "stock" / "scheduled"):
+        p.mkdir(parents=True, exist_ok=True)
+    post = lambda slug, rank, brand, cid: (f"---\nslug: {slug}\nedition: \"{d}\"\nbrand: {brand}\nrank: {rank}\ncorrected: false\n"
+                                         f"candidate_ids:\n- {cid}\ntitle: {slug}\n---\n{slug} の本文。\n\n二段落目。\n")
+    (posts / f"{d}-a.md").write_text(post("a", "lead", "x", "c-a"), encoding="utf-8")
+    (posts / f"{d}-b.md").write_text(post("b", "large", "y", "c-b"), encoding="utf-8")
+    (posts / f"{d}-c.md").write_text(post("c", "roundup", "y", "c-c"), encoding="utf-8")
+    ed_text = (f"---\nnumber: 15\ndate: '{d}'\npages: 2\narticle_count: 3\ncorrected_count: 0\nlead_slug: a\ndigest:\n"
+               "- label: 本日\n  rows:\n  - k: 発\n    t: A\n    slug: a\n  - k: 発\n    t: B\n    slug: b\n- label: 昨日\n  rows: []\n"
+               "---\n号の本文(そのまま残ること)\n")
+    (eds / f"{d}.md").write_text(ed_text, encoding="utf-8")
+    (tmp / "metrics" / f"plan-{d}.json").write_text(json.dumps({"articles": [
+        {"slug": "a", "lead_score": 50}, {"slug": "b", "lead_score": 40}, {"slug": "c", "lead_score": 90}]}), encoding="utf-8")
+    sched = [{"id": "s-a", "reserved_on": d, "src_candidate_id": "c-a"}, {"id": "s-b", "reserved_on": d, "src_candidate_id": "c-b"}]
+    (tmp / "stock" / "scheduled" / "2026-10-02.json").write_text(json.dumps(sched, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    (tmp / "stock" / "scheduled" / "2026-09-20.json").write_text(json.dumps(sched[:1], indent=1) + "\n", encoding="utf-8")
+    b_before = (posts / f"{d}-b.md").read_text(encoding="utf-8")
+
+    # 断る入力では何も変えない(記事だけ消えて号が古いまま、を残さない。監査指摘 r98)
+    snapshot = lambda: {p: p.read_bytes() for p in sorted(tmp.rglob("*")) if p.is_file()}
+    before = snapshot()
+    for kw, what in (({"lead": "zz"}, "号に無い --lead"), ({"lead": "c"}, "roundup を --lead")):
+        try:
+            withdraw.withdraw(f"{d}-a", "編集長", "理由", d, root=tmp, **kw)
+            check(False, f"{what} を断らない")
+        except SystemExit:
+            pass
+        check(snapshot() == before, f"{what} で断ったのに作業ツリーが変わった")
+    try:
+        withdraw.withdraw(f"{d}-b", "編集長", "理由", d, lead="c", root=tmp)
+        check(False, "一面でない記事の取り下げで --lead を断らない")
+    except SystemExit:
+        pass
+    check(snapshot() == before, "一面でない取り下げの --lead で断ったのに作業ツリーが変わった")
+    (tmp / "stock" / "scheduled" / "2026-10-05.json").write_text("{壊れた", encoding="utf-8")
+    before = snapshot()
+    try:
+        withdraw.withdraw(f"{d}-a", "編集長", "理由", d, root=tmp)
+        check(False, "読めない予約ファイルで止まらない")
+    except ValueError:
+        pass
+    check(snapshot() == before, "読めない予約ファイルで止まったのに作業ツリーが変わった")
+    (tmp / "stock" / "scheduled" / "2026-10-05.json").unlink()
+    # 足せない形の記録(空配列・文書終端つき・壊れた記録)では何も変えない(監査指摘 r100)
+    for text in ("[]\n", "- post: 2026-09-01-x\n  at: '2026-09-01'\n  by: a\n  reason: b\n...\n", "post: x\n"):
+        (tmp / "withdrawn.yml").write_text(text, encoding="utf-8")
+        before = snapshot()
+        try:
+            withdraw.withdraw(f"{d}-a", "編集長", "理由", d, root=tmp)
+            check(False, f"足せない記録 {text!r} で止まらない")
+        except SystemExit:
+            pass
+        check(snapshot() == before, f"足せない記録 {text!r} で止まったのに作業ツリーが変わった")
+    (tmp / "withdrawn.yml").unlink()
+
+    withdraw.withdraw(f"{d}-a", "編集長", "アイマスと関係しない情報だけの記事", d, root=tmp)
+    check(not (posts / f"{d}-a.md").exists(), "取り下げた記事が残っている")
+    b_after = (posts / f"{d}-b.md").read_text(encoding="utf-8")
+    check(b_after == b_before.replace("rank: large", "rank: lead"), "一面の立て直しで rank 以外が変わった(roundup の c を立てた?)")
+    new_ed_text = (eds / f"{d}.md").read_text(encoding="utf-8")
+    old_ed, new_ed = withdraw.split_doc(ed_text)[0], withdraw.split_doc(new_ed_text)[0]
+    check(new_ed["lead_slug"] == "b" and new_ed["article_count"] == 2 and new_ed["pages"] == 1, f"号の数・一面(残りは y 面だけ): {new_ed}")
+    check([r["slug"] for g in new_ed["digest"] for r in g["rows"]] == ["b"], f"目次: {new_ed['digest']}")
+    check(new_ed_text.partition("\n---")[2] == ed_text.partition("\n---")[2], "号の本文が変わった")
+    check([r["id"] for r in json.loads((tmp / "stock" / "scheduled" / "2026-10-02.json").read_text(encoding="utf-8"))] == ["s-b"],
+          "その記事が作った未来の予約が消えていない(か、別の予約まで消した)")
+    check(len(json.loads((tmp / "stock" / "scheduled" / "2026-09-20.json").read_text(encoding="utf-8"))) == 1, "過去の予約ファイルを触った")
+    # 一面に立てられる記事(roundup・culture 以外)が残らない取り下げは断る
+    try:
+        withdraw.withdraw(f"{d}-b", "編集長", "理由", d, root=tmp)
+        check(False, "roundup しか残らない一面の取り下げを断らない")
+    except SystemExit:
+        pass
+    check((posts / f"{d}-b.md").exists(), "断ったのに記事を消した")
+    rows, errs = lint.load_withdrawn((tmp / "withdrawn.yml").read_text(encoding="utf-8"))
+    check(not errs and [r["post"] for r in rows] == [f"{d}-a"], f"記録: {rows} {errs}")
+
+    # lint の判定: 道具の結果は認める
+    gone = {"a"}
+    check(lint.edition_withdrawal_ok(old_ed, new_ed, ed_text, new_ed_text, gone) == "", lint.edition_withdrawal_ok(old_ed, new_ed, ed_text, new_ed_text, gone))
+    ob, nb = withdraw.split_doc(b_before), withdraw.split_doc(b_after)
+    check(lint.promotion_ok(ob[0], nb[0], ob[1], nb[1]), "一面の立て直しを認めない")
+    check(lint.withdrawal_record_errors([], rows, {f"{d}-a"}) == [], "正しい追記を止めた")
+    # 取り下げに紛れた別の変更は認めない
+    bad = lambda **kw: lint.edition_withdrawal_ok(old_ed, {**new_ed, **kw}, ed_text, new_ed_text, gone)
+    check(bad(digest=[{**g, "rows": []} for g in new_ed["digest"]]) != "", "取り下げていない記事の目次の行まで消せた")
+    check(bad(ranking=[{"n": 1}]) != "", "取り下げで変えてよい項目の外(ranking)を変えられた")
+    check(lint.edition_withdrawal_ok(old_ed, {**new_ed, "lead_slug": "b"}, ed_text, new_ed_text, {"c"}) != "", "一面でない記事の取り下げで一面を差し替えられた")
+    check(lint.edition_withdrawal_ok(old_ed, new_ed, ed_text, new_ed_text + "\n", gone) != "", "号の本文(末尾の空行)を変えられた")
+    check(not lint.promotion_ok(ob[0], {**nb[0], "title": "別"}, ob[1], nb[1]), "立て直しに紛れて見出しを変えられた")
+    for r in ("roundup", "culture"):
+        check(not lint.promotion_ok({**ob[0], "rank": r}, nb[0], ob[1], nb[1]), f"{r} を一面に立てられた")
+    check(not lint.promotion_ok(ob[0], nb[0], ob[1], nb[1] + "追記"), "立て直しに紛れて本文を変えられた")
+    check(lint.withdrawal_record_errors(rows, [{**rows[0], "reason": "書き換え"}], set()) != [], "記録の書き換えを止めない")
+    check(lint.withdrawal_record_errors([], rows, set()) != [], "削除を伴わない記録の追記を止めない")
+    for text, what in (("- post: 2026-09-29-a\n  at: true\n  by: a\n  reason: b\n", "型"),
+                       ("- post: 2026-09-29-a\n  at: '2026-02-30'\n  by: a\n  reason: b\n", "実在しない日付"),
+                       ("- post: 2026-09-29-a\n  at: '2026-09-29'\n  by: a\n  reason: b\n" * 2, "二重記録"),
+                       ("post: x\n", "配列でない")):
+        check(lint.load_withdrawn(text)[1] != [], f"取り下げの記録の形式の誤り({what})を通した")
+
+
 def test_oncall_ensure_edition(tmp: Path):
     """取り込み先の号が origin にだけある(新しい clone・ローカル branch を消したあと)なら、ローカルを作って揃える(監査指摘 r88)。
     origin に無ければ問題を返し、ローカルが origin と食い違えば問題を返す。"""
@@ -2020,6 +2129,7 @@ def main() -> int:
     test_tool_path()
     test_oncall_undo_merge()
     test_oncall_ensure_edition(tmp / "ee")
+    test_withdrawal(tmp / "wd")
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()
     test_oncall_report_text(tmp / "rp")

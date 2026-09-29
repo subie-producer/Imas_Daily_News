@@ -189,6 +189,49 @@ def load_withdrawn(text: str | None = None) -> tuple[list[dict], list[str]]:
     return rows, errs
 
 
+def withdrawal_record_errors(old_rows: list, rows: list, deleted_now: set[str]) -> list[str]:
+    """取り下げの記録の差分の検査(基準版の並び → 現行の並び)。記録は末尾への追記だけで(消す・書き換える・並べ替えると、
+    記事が消えた理由が失われる)、追記した記録はこの差分で実際に消した記事のものに限る(監査指摘 r91・r92)。"""
+    errs = []
+    if rows[:len(old_rows)] != old_rows:
+        errs.append("取り下げの記録が消された・書き換えられた・並べ替えられた(記録は末尾への追記だけ)")
+    for r in rows[len(old_rows):]:
+        if isinstance(r, dict) and r.get("post") not in deleted_now:
+            errs.append(f"取り下げの記録 {r.get('post')} に対応する記事の削除が、この差分に無い")
+    return errs
+
+
+# 取り下げに伴って号スナップショットで変わってよい項目(本文は1字も変えない)
+WITHDRAWAL_EDITION_KEYS = {"article_count", "pages", "corrected_count", "digest", "lead_slug"}
+
+
+def edition_withdrawal_ok(old: dict, new: dict, old_raw: str, new_raw: str, gone: set[str]) -> str:
+    """取り下げ(gone = この差分でこの号から消した記事の slug)に伴う号スナップショットの変更か。"" なら認める、でなければ理由。
+    - 変わってよいのは WITHDRAWAL_EDITION_KEYS だけ。本文(frontmatter の後ろ)は生の文字列で完全一致
+    - 目次(digest)は、消した記事を指す行を除いただけ(ほかの行・群・並びは変えない)
+    - 一面(lead_slug)は、一面を消したときだけ変えてよい(立て直した記事の検査は promotion_ok)
+    記事数・面数の値そのものは、号の照合(実記事数・ブランド数)で確かめる。"""
+    diff_keys = {k for k in set(old) | set(new) if old.get(k) != new.get(k)}
+    if diff_keys - WITHDRAWAL_EDITION_KEYS:
+        return f"取り下げで変えてよい項目の外を変えている: {sorted(diff_keys - WITHDRAWAL_EDITION_KEYS)}"
+    if old_raw.partition("\n---")[2] != new_raw.partition("\n---")[2]:
+        return "取り下げで号の本文を変えている"
+    want = [{**g, "rows": [r for r in (g.get("rows") or []) if r.get("slug") not in gone]} for g in (old.get("digest") or [])]
+    if (new.get("digest") or []) != want:
+        return "目次(digest)の変更が、取り下げた記事の行を除くことだけになっていない"
+    if new.get("lead_slug") != old.get("lead_slug") and old.get("lead_slug") not in gone:
+        return "取り下げていない一面(lead_slug)を差し替えている"
+    return ""
+
+
+def promotion_ok(old: dict, new: dict, old_body: str, new_body: str) -> bool:
+    """一面を取り下げた号で、残りの記事を一面へ立て直す変更か: frontmatter で変わったのは rank だけで lead になり、本文は同じ。"""
+    diff_keys = {k for k in set(old) | set(new) if old.get(k) != new.get(k)}
+    # roundup・culture は一面に立てない(段を上書きすると、まとめ・ファン面だったことが失われる。監査指摘 r99)
+    return (diff_keys == {"rank"} and new.get("rank") == "lead" and old.get("rank") not in ("lead", "roundup", "culture")
+            and old_body == new_body)
+
+
 def git(*args):
     return subprocess.run(
         ["git", *args], cwd=ROOT, capture_output=True, text=True
@@ -738,15 +781,21 @@ def main() -> int:
         for k in withdrawn:
             if (POSTS / f"{k}.md").exists():
                 rep.error(POSTS / f"{k}.md", "withdrawn.yml で取り下げた記事が残っている")
-        # 記録は末尾への追記だけ(消す・書き換える・並べ替えると、記事が消えた理由が失われる。監査指摘 r91・r92)。
-        # 追記した記録は、この差分で実際に消した記事のものに限る(存在しない記事の記録を固定しない。監査指摘 r92)
         r_old = git("show", f"{base}:withdrawn.yml")
         old_rows = load_withdrawn(r_old.stdout)[0] if r_old.returncode == 0 else []
-        if rows[:len(old_rows)] != old_rows:
-            rep.error(WITHDRAWN, "取り下げの記録が消された・書き換えられた・並べ替えられた(記録は末尾への追記だけ)")
-        for r in rows[len(old_rows):]:
-            if isinstance(r, dict) and r.get("post") not in deleted_now:
-                rep.error(WITHDRAWN, f"取り下げの記録 {r.get('post')} に対応する記事の削除が、この差分に無い")
+        for e in withdrawal_record_errors(old_rows, rows, deleted_now):
+            rep.error(WITHDRAWN, e)
+        # 号ごとの「この差分で取り下げた記事の slug」と、一面を取り下げた号で立て直した記事の slug
+        gone_by_date: dict[str, set[str]] = collections.defaultdict(set)
+        for k in deleted_now & withdrawn:
+            gone_by_date[k[:10]].add(k[11:])
+        promoted: dict[str, str] = {}
+        for d, gone in gone_by_date.items():
+            r_ed = git("show", f"{base}:docs/_editions/{d}.md")
+            m_ed = re.match(r"\A---\s*\n(.*?)\n---", r_ed.stdout, re.DOTALL) if r_ed.returncode == 0 else None
+            old_lead = (yaml.safe_load(m_ed.group(1)) or {}).get("lead_slug") if m_ed else None
+            if old_lead in gone and d in editions:
+                promoted[d] = editions[d][1].get("lead_slug")
         for entry in diff_entries:
             status, p = entry[0], entry[1]
             if not p.startswith(watched):
@@ -771,14 +820,23 @@ def main() -> int:
                     continue
                 if p.startswith("docs/_editions/"):
                     diff_keys = {k for k in set(old) | set(new_fm) if old.get(k) != new_fm.get(k)}
-                    if (dm and dm.group(1) in withdrawn_dates and diff_keys <= {"article_count", "pages", "corrected_count"}
-                            and r.stdout.partition("\n---")[2] == (ROOT / p).read_text(encoding="utf-8").partition("\n---")[2]):
-                        continue   # 取り下げに伴う機械算出値の更新だけ(本文は1字も変えない。値は上の照合で実記事数と一致を確かめている)
+                    if dm and dm.group(1) in withdrawn_dates:
+                        # 取り下げに伴う変更(記事数・面数・目次の行・一面)。値は上の照合(実記事数・lead 記事との一致)で確かめている
+                        why = edition_withdrawal_ok(old, new_fm, r.stdout, (ROOT / p).read_text(encoding="utf-8"),
+                                                    gone_by_date[dm.group(1)])
+                        if why:
+                            rep.error(ROOT / p, f"append-only 違反: {why}")
+                        continue
                     if diff_keys - {"corrected_count"}:
                         rep.error(ROOT / p, f"append-only 違反: 過去号の変更は corrected_count 加算のみ許可(変更: {sorted(diff_keys)})")
                     elif new_fm.get("corrected_count", 0) <= old.get("corrected_count", 0):
                         rep.error(ROOT / p, "append-only 違反: corrected_count が加算されていない")
                 else:  # 記事・社説: 訂正(corrections 追記)を伴う変更のみ許可
+                    # 例外: 一面を取り下げた号で、残りの記事1本を一面へ立て直す(rank だけ lead に。本文は同じ)
+                    if (p.startswith("docs/_posts/") and dm and promoted.get(dm.group(1))
+                            and Path(p).stem == f"{dm.group(1)}-{promoted[dm.group(1)]}"
+                            and promotion_ok(old, new_fm, m.group(2) if m else "", parse_frontmatter(ROOT / p)[1] or "")):
+                        continue
                     # 例外: 出典の**種別だけ**の付け直し(src と sources[].type)。種別は判定表から機械で
                     # 決まる派生値で、記事の中身ではない(「この表が知っている出典に未確認を残さない」)。
                     # url・label・本文が同じで type だけ違うなら、訂正ボックス無しで通す

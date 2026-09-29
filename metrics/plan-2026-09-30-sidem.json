@@ -1,0 +1,133 @@
+{
+ "decisions": {
+  "sidem-producer-card-nfc-vol3-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "stories.ymlのsidem-producer-card-wave3-2026(9/26公開)と同一内容。受注開始は9/25、締切は10/12で本日のトリガーなし"
+  },
+  "monthly-theme-song-11-f--flags": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-monthly-theme-song-11-flags-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じCD本日発売の情報(Lantisリリース情報ページ)。公式ニュース記事に統合"
+  },
+  "sidem-monthly-theme-song-11-flags-2026": {
+   "action": "article",
+   "angle": "CD『MONTHLY THEME SONG 11 F-LAGS』本日発売、初回特典ブロマイドと店舗特典、CD封入コードで読める特典ストーリー解放も紹介",
+   "rank": "large",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "monthly-theme-song-11-f--flagsとsidem-topic-049を統合。発売日当日のトリガーあり"
+  },
+  "sidem-fantastic-battle-fes-2026": {
+   "action": "article",
+   "angle": "F@NTASTIC BATTLE FES第2弾(長野・幕張)、当選者入金は本日23:59が締切",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "入金期間自体は9/3付ストーリーで既報だが、本日が締切当日のため記事化"
+  },
+  "sidem-topic-049": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-monthly-theme-song-11-flags-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じCDの封入特典(シリアルコードで読める特典ストーリー)。CD発売記事に統合。ストーリー自体の公開は9/23既報"
+  },
+  "sidem-topic-051": {
+   "action": "article",
+   "angle": "SideM雑誌モデル企画「315 MODE」vol.1受注販売、本日23:59が最終締切",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "sidem-315-mode-vol1-2026と315mode-vol-1-springを統合。締切は9/24等で既報だが本日が締切当日"
+  },
+  "sidem-315-mode-vol1-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-topic-051",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ315 MODE vol.1受注締切。パンフレット等の価格情報を統合"
+  },
+  "315mode-vol-1-spring": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-topic-051",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ315 MODE vol.1受注締切。缶バッジコレクションブック等サンプル情報を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-monthly-theme-song-11-flags-2026",
+    "brand": "sidem",
+    "rank": "large",
+    "angle": "CD『MONTHLY THEME SONG 11 F-LAGS』本日発売、初回特典ブロマイドと店舗特典、CD封入コードで読める特典ストーリー解放も紹介",
+    "lead_score": 65,
+    "dedup_key": "sidem-monthly-theme-song-11-flags-2026",
+    "candidate_ids": [
+     "sched-2026-09-30-sidem-monthly-theme-song-11-flags-2026-発売",
+     "202609300231-explore-5",
+     "sched-2026-09-30-sidem-topic-049-発売"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "F@NTASTIC BATTLE FES第2弾(長野・幕張)、当選者入金は本日23:59が締切",
+    "lead_score": 15,
+    "dedup_key": "sidem-fantastic-battle-fes-2026",
+    "candidate_ids": [
+     "sched-2026-09-30-sidem-fantastic-battle-fes-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-topic-051",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM雑誌モデル企画「315 MODE」vol.1受注販売、本日23:59が最終締切",
+    "lead_score": 20,
+    "dedup_key": "sidem-topic-051",
+    "candidate_ids": [
+     "sched-2026-09-30-sidem-topic-051-締切",
+     "sched-2026-09-30-sidem-315-mode-vol1-2026-締切",
+     "sched-2026-09-30-315mode-vol-1-spring-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-producer-card-nfc-vol3-2026",
+    "reason": "既報",
+    "note": "stories.ymlのsidem-producer-card-wave3-2026(9/26公開)と同一内容。受注開始は9/25、締切は10/12で本日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

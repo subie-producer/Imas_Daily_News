@@ -1,0 +1,340 @@
+{
+ "decisions": {
+  "ittan-aishite-release-2026": {
+   "action": "article",
+   "angle": "「一旦愛して♡」配信開始、白石紬・望月杏奈・春日未来・矢吹可奈4人の新曲がミリオンライブ楽曲として配信",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "theater-talk-party-offshot-vol67-2026": {
+   "action": "article",
+   "angle": "THEATER TALK PARTY☆ Vol.67、本日23:59で開催終了。新規カード3種追加とミッション報酬(ガシャチケット)の期限を案内",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催開始自体は9/27付で既報。本日は終了日のトリガーと新規カード情報を追加"
+  },
+  "million-linkage-kyoshikoso-mv-update-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-refrain-kiss-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "リフレインキスMVアップデートと同一事象"
+  },
+  "million-linkage-free-ten-pull-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29付「ミリシタ 無料10連プラチナガシャキャンペーン」記事と同一内容、当日の新トリガー無し"
+  },
+  "linkage-masterpiece-set-2026": {
+   "action": "roundup",
+   "angle": "ミリオンリンケージ進行中の運営情報(限定カード・MV公開・限定マスターピースセット販売)まとめ",
+   "rank": "",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-sobetsu-ring-fest-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/3・9/16付既報と同内容。開催は10/2で当日のトリガー無し"
+  },
+  "imas-radio-starlit-season-5th-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-imas-radio-stamas-5th-2026",
+   "reason": "",
+   "note": "IM@S RADIO次回放送(スタマス5周年特番)は合同面で既に立項"
+  },
+  "million-14th-emily-hitotose-musubi-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29付「ミリオン14th記念新曲3曲配信」記事で既報"
+  },
+  "million-14th-matsuri-never-end-wonderland-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29付「ミリオン14th記念新曲3曲配信」記事で既報(3曲目)"
+  },
+  "million-linkage-2026": {
+   "action": "roundup",
+   "angle": "ミリオンリンケージ進行中の運営情報(限定カード・MV公開・限定マスターピースセット販売)まとめ",
+   "rank": "",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "星井美希・百瀬莉緒の限定カード紹介、無料10連は9/29既報のため除く"
+  },
+  "million-only-maker-parker-2026": {
+   "action": "article",
+   "angle": "ミリシタ9周年 ONLY MAKERパーカー受注開始、受注は10/12まで",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14th-emily-lapel-pin-2026": {
+   "action": "article",
+   "angle": "ミリオン14th記念グッズ エミリー公式ラペルピン受注開始、受注は10/11まで",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-linkage-refrain-kiss-2026": {
+   "action": "roundup",
+   "angle": "ミリオンリンケージ進行中の運営情報(限定カード・MV公開・限定マスターピースセット販売)まとめ",
+   "rank": "",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "「リフレインキス(愛の争奪戦ver.)」ショートMVとフルバージョンYouTube公開"
+  },
+  "million-14th-present-2026": {
+   "action": "article",
+   "angle": "ミリオン14th記念 馬場このみ・百瀬莉緒デュエット新曲『Present』配信開始",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-linkage-rio-ssr-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "百瀬莉緒SSRカード紹介、同一施策の重複告知"
+  },
+  "million-linkage-rio-card-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "百瀬莉緒限定カード紹介、同一施策の重複告知"
+  },
+  "million-14th-luvliminal-fan-reaction-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人ファンの単発感想ポスト、未確認情報"
+  },
+  "million-14th-correction-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "訂正の具体的内容が投稿文からは不明で記事化不可"
+  },
+  "million-battle-of-theater-09-store-bonus-2026": {
+   "action": "article",
+   "angle": "「MILLION BATTLE OF THE＠TER 09」本日発売、アソビストア・アニメイト・Amazonの店舗別購入特典",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "9-gp": {
+   "action": "article",
+   "angle": "アイドルグランプリ「フラッシュGPメダル」、本日23:59が受け取り・使用期限",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-ittan-aishite-release-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「一旦愛して♡」配信開始、白石紬・望月杏奈・春日未来・矢吹可奈4人の新曲がミリオンライブ楽曲として配信",
+    "lead_score": 10,
+    "dedup_key": "ittan-aishite-release-2026",
+    "candidate_ids": [
+     "202609291235-explore-2"
+    ]
+   },
+   {
+    "slug": "million-theater-talk-party-offshot-vol67-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "THEATER TALK PARTY☆ Vol.67、本日23:59で開催終了。新規カード3種追加とミッション報酬(ガシャチケット)の期限を案内",
+    "lead_score": 5,
+    "dedup_key": "theater-talk-party-offshot-vol67-2026",
+    "candidate_ids": [
+     "202609291235-explore-3"
+    ]
+   },
+   {
+    "slug": "million-only-maker-parker-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ9周年 ONLY MAKERパーカー受注開始、受注は10/12まで",
+    "lead_score": 5,
+    "dedup_key": "million-only-maker-parker-2026",
+    "candidate_ids": [
+     "202609300231-grok-46"
+    ]
+   },
+   {
+    "slug": "million-14th-emily-lapel-pin-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオン14th記念グッズ エミリー公式ラペルピン受注開始、受注は10/11まで",
+    "lead_score": 5,
+    "dedup_key": "million-14th-emily-lapel-pin-2026",
+    "candidate_ids": [
+     "202609300231-grok-47"
+    ]
+   },
+   {
+    "slug": "million-14th-present-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオン14th記念 馬場このみ・百瀬莉緒デュエット新曲『Present』配信開始",
+    "lead_score": 15,
+    "dedup_key": "million-14th-present-2026",
+    "candidate_ids": [
+     "202609300231-grok-68"
+    ]
+   },
+   {
+    "slug": "million-battle-of-theater-09-store-bonus-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "「MILLION BATTLE OF THE＠TER 09」本日発売、アソビストア・アニメイト・Amazonの店舗別購入特典",
+    "lead_score": 60,
+    "dedup_key": "million-battle-of-theater-09-store-bonus-2026",
+    "candidate_ids": [
+     "sched-2026-09-30-million-battle-of-theater-09-store-bonus-2026-発売"
+    ]
+   },
+   {
+    "slug": "million-9-gp-266b86",
+    "brand": "million",
+    "rank": "small",
+    "angle": "アイドルグランプリ「フラッシュGPメダル」、本日23:59が受け取り・使用期限",
+    "lead_score": 10,
+    "dedup_key": "9-gp",
+    "candidate_ids": [
+     "sched-2026-09-30-9-gp-締切"
+    ]
+   },
+   {
+    "slug": "million-ops-roundup",
+    "brand": "million",
+    "rank": "roundup",
+    "angle": "ミリオンリンケージ進行中の運営情報(限定カード・MV公開・限定マスターピースセット販売)まとめ",
+    "lead_score": 0,
+    "dedup_key": "linkage-masterpiece-set-2026",
+    "candidate_ids": [
+     "202609291235-explore-6",
+     "202609300231-grok-28",
+     "202609300231-grok-48",
+     "202609291235-explore-4",
+     "202609300231-grok-69",
+     "202609300231-grok-70"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-linkage-free-ten-pull-2026",
+    "reason": "既報",
+    "note": "9/29付「ミリシタ 無料10連プラチナガシャキャンペーン」記事と同一内容、当日の新トリガー無し"
+   },
+   {
+    "dedup_key": "million-sobetsu-ring-fest-2026",
+    "reason": "既報",
+    "note": "9/3・9/16付既報と同内容。開催は10/2で当日のトリガー無し"
+   },
+   {
+    "dedup_key": "million-14th-emily-hitotose-musubi-2026",
+    "reason": "既報",
+    "note": "9/29付「ミリオン14th記念新曲3曲配信」記事で既報"
+   },
+   {
+    "dedup_key": "million-14th-matsuri-never-end-wonderland-2026",
+    "reason": "既報",
+    "note": "9/29付「ミリオン14th記念新曲3曲配信」記事で既報(3曲目)"
+   },
+   {
+    "dedup_key": "million-14th-luvliminal-fan-reaction-2026",
+    "reason": "個人の話題",
+    "note": "個人ファンの単発感想ポスト、未確認情報"
+   },
+   {
+    "dedup_key": "million-14th-correction-2026",
+    "reason": "出典不足",
+    "note": "訂正の具体的内容が投稿文からは不明で記事化不可"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-imas-radio-stamas-5th-2026",
+    "dedup_key": "imas-radio-starlit-season-5th-2026",
+    "note": "IM@S RADIO次回放送(スタマス5周年特番)は合同面で既に立項"
+   }
+  ]
+ }
+}

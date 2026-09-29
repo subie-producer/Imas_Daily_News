@@ -1,0 +1,77 @@
+{
+ "decisions": {
+  "idolmaster-tours-score-ranking-2026-09-28": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "9/28時点のランキング表に載った楽曲名の羅列のみで、順位・変動など具体的な新事実がない。発行日(9/30)当日のトリガーもなく採用基準を満たさない。"
+  },
+  "cg-cross-over-subscription-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の個人X投稿1件のみでサブスク配信開始を裏付ける公式発表なし。同じ『クロス×オーバー！』はcg-topic-005-2026(MV公開)・joint-imas-cross-over-cd-2026(CD発売)で既に扱われている。"
+  },
+  "sweet-soar-anniversary-2026": {
+   "action": "article",
+   "angle": "スウィート・ソアー(佐久間まゆ・橘ありす)登場8周年、来年2月の山形XRライブ開催にも言及するファンの盛り上がりを伝える",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本日が記念日という当日トリガーがあり、ファン面(culture)として採用。単体だが他に束ねる同種の細切れ話題がないため単独記事。"
+  },
+  "opera-seria-popup-fan-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "POP UP SHOP「オペラセリア」は9/27に終了済み(stock/stories.ymlのmillion-opera-seria-popup-2026で既報)。低エンゲージメントの個人の感想投稿のみで新事実・当日のトリガーもない。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-sweet-soar-anniversary-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "スウィート・ソアー(佐久間まゆ・橘ありす)登場8周年、来年2月の山形XRライブ開催にも言及するファンの盛り上がりを伝える",
+    "lead_score": 10,
+    "dedup_key": "sweet-soar-anniversary-2026",
+    "candidate_ids": [
+     "202609300231-grok-81"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "idolmaster-tours-score-ranking-2026-09-28",
+    "reason": "出典不足",
+    "note": "9/28時点のランキング表に載った楽曲名の羅列のみで、順位・変動など具体的な新事実がない。発行日(9/30)当日のトリガーもなく採用基準を満たさない。"
+   },
+   {
+    "dedup_key": "cg-cross-over-subscription-2026",
+    "reason": "出典不足",
+    "note": "未確認の個人X投稿1件のみでサブスク配信開始を裏付ける公式発表なし。同じ『クロス×オーバー！』はcg-topic-005-2026(MV公開)・joint-imas-cross-over-cd-2026(CD発売)で既に扱われている。"
+   },
+   {
+    "dedup_key": "opera-seria-popup-fan-2026",
+    "reason": "既報",
+    "note": "POP UP SHOP「オペラセリア」は9/27に終了済み(stock/stories.ymlのmillion-opera-seria-popup-2026で既報)。低エンゲージメントの個人の感想投稿のみで新事実・当日のトリガーもない。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

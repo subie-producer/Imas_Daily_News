@@ -124,6 +124,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - coki.jp               # 合議で追加: 企業運営のステークホルダー情報プラットフォーム。タイトルから既に拡散している海外
   - appbank.net           # 合議で追加: メディアサイトが公式発表を言い換えて伝えている
   - chiba-tv.com          # 合議で追加: ページ冒頭に『Gamer』というクレジット表記があり、外部メディアの記事を転載。
   - best-shingaku.net     # 合議で追加: 東京アミューズメントメディア専門学校のイベント情報を掲載する進学情報ポータルサイ
@@ -224,6 +225,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - hachiban.co.jp        # 合議で追加: コラボキャンペーン実施元・販売元。ライセンスを受けてコラボ展開
   - en.bandainamcoent.eu  # 合議で追加: ACE COMBAT 8の公式サイト。グループ会社がアイドルマスター以外のタイト
   - seiburailway.jp       # 合議で追加: 開催記念乗車券の販売元
   - seibu-leisure.co.jp   # 合議で追加: コラボイベント開催会場・施設事業者
@@ -361,6 +363,8 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - nbl9UkcQ4fQ         # 機械で追加: @imas-official「【生配信】学園アイドルマスター 「初星学園HR #12」【ア」
+    - xKJzPfGjALs         # 機械で追加: @imas-official「【ラジオ】「IM＠S RADIO」#2 ゲスト：神原 大地さ」
     - lv351245267         # 機械で追加: ch.nicovideo.jp/sidem「アイドルマスター SideM ラジオ 315プロNight!」
     - vdBaeagRs1g         # 機械で追加: @KamizuruCosmo「【踊ってみた】「Vogue / Madonna」 #shor」
     - 9mQ2ioeay4I         # 機械で追加: @UtagawaLetora「【SILENT HILL f】 DAY07｜最終回！世界戦ど」
@@ -441,6 +445,7 @@ x_accounts:
     - TomoriManaka
     - UtagawaLetora
   準公式:
+    - onsenradio          # 合議で追加: 公式配信プラットフォーム。アイマス音源配信を出している本体
     - dengeki_maoh        # 合議で追加: 『ぷちます！』連載誌。連載サイト・連載誌は準公式
     # ㈱バンダイナムコアミューズメントの店舗・ショップ。グループ会社なので
     # bandainamco-am.co.jp と同じく準公式(会場としての当事者ではなく、運営主体で決める)
@@ -455,6 +460,8 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - s_schisa            # 合議で追加: シャニマス放送後の出演者投稿
+    - kisui_shio          # 合議で追加: シャニマス放送後の出演者投稿
     - hara_yumi_0121      # 合議で追加: 原由実CVのメン限配信による発信
     - shimoda_asami       # 合議で追加: 出演者による生配信出演報告
     - keeeko_watanabe     # 合議で追加: 渡部恵子本人アカウント推測（姓表記・内容から）
@@ -491,6 +498,9 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - sweet_soar_         # 合議で追加: 個人アカウントでキャラ8周年を投稿
+    - hassen8888          # 合議で追加: 個人アカウントで配信への言及を投稿
+    - hanamaruiyokann     # 合議で追加: ミリオン14th現地ファンの個人投稿
     - icarusparchive      # 合議で追加: 個人アカウント、公式資料の共有
     - 6u6_whonya          # 合議で追加: 個人アカウント、ライブ映像についての感想・情報共有
     - 1mozi               # 合議で追加: 個人アカウント、公式コンテンツについての感想・情報共有
@@ -689,6 +699,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  docs.google.com/forms/d/e/1FAIpQLSf3XywxIR7Ud5lymd-PnVk2ESVRCaO58ZrdVgITrHiZZlrc8g: 公式 # 合議で追加: リンク元が公式X account @imas_ch。IM@S RADIO番組の受
   instagram.com/p: ファン                         # 合議で追加: 個人アカウント@flowers_room_fによる終演後の投稿
   note.com/sammy_sammy: ファン                    # 合議で追加: 個人のnoteアカウント。アイマスLIVE観賞レポート等、個人のファン発信。
   note.com/hokuhokuawaawa: ファン                 # 合議で追加: 個人のnoteユーザーアカウント。シャニマスの感想・物販紹介

@@ -15,5 +15,36 @@
   "verify": "confirmed",
   "src_candidate_id": "202609022336-watch-3",
   "event_date": "2026-11-23"
+ },
+ {
+  "id": "sched-2026-11-23-765-961-xr-live-2027-締切",
+  "dedup_key": "765-961-xr-live-2027",
+  "brand": "joint",
+  "subject": "765×961 xRライブ最速先行 入金",
+  "kind": "締切",
+  "note": "入金締切",
+  "reserved_on": "2026-09-30",
+  "title": "765×961 xRライブ IDOL ULTIMATE ONCE AND FOR ALL",
+  "url": "https://idolmaster-official.jp/live_event/IUOAFA/",
+  "source_type": "公式",
+  "facts": [
+   "公演名: 765 PRODUCTION × 961 PRODUCTION IDOL ULTIMATE ONCE AND FOR ALL",
+   "開催場所: 京王アリーナ TOKYO",
+   "第一公演 TO:STARLIT OF PROMISE: 2027年7月24日(土) 開場17:00 / 開演18:00",
+   "第二公演 BE:STELLA OF ABSOLUTE: 2027年7月25日(日) 開場11:00 / 開演12:00",
+   "第三公演 IF:THE DAY OF JUDGMENT: 2027年7月25日(日) 開場17:00 / 開演18:00",
+   "公演時間等は予告なく変更になる場合がある",
+   "公演内容の都合上、公演終了時間が大きくずれる可能性があるため、公演時間の明確なお時間は伝えていない",
+   "第一公演 SIDE：765 PRODUCTION: 星井 美希、四条 貴音、我那覇 響、奥空 心白",
+   "第一公演 SIDE：961 PRODUCTION: 玲音、詩花、亜夜、and more",
+   "第二公演 SIDE：765 PRODUCTION: 如月 千早、高槻 やよい、秋月 律子、三浦 あずさ、水瀬 伊織、菊地 真、双海 亜美、双海 真美",
+   "第二公演 SIDE：961 PRODUCTION: 玲音、詩花",
+   "第三公演 SIDE：765 PRODUCTION: 天海 春香、如月 千早、萩原 雪歩"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609300231-grok-17",
+  "event_date": "2027-07-24",
+  "deadline": "2026-10-28"
  }
 ]

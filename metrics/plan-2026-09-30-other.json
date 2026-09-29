@@ -1,0 +1,40 @@
+{
+ "decisions": {
+  "765-961-ultimate-live-2027": {
+   "action": "cross_brand",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-765-961-xr-live-2027",
+   "reason": "",
+   "note": "同一公演の出演アイドル所属発表。stories.yml765-961-idol-ultimate-once-and-for-all-2027で公演別出演者は既報だが、joint面が本日この題材で記事化済みのため合同面へ"
+  },
+  "765-961-xr-live-report-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-765-961-xr-live-2027",
+   "reason": "",
+   "note": "同一のxRライブ(2027年7月開催)を二次情報源が報道。joint面の記事と同一施策のためcross_brand"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [],
+  "cross_brand": [
+   {
+    "slug": "joint-765-961-xr-live-2027",
+    "dedup_key": "765-961-ultimate-live-2027",
+    "note": "同一公演の出演アイドル所属発表。stories.yml765-961-idol-ultimate-once-and-for-all-2027で公演別出演者は既報だが、joint面が本日この題材で記事化済みのため合同面へ"
+   },
+   {
+    "slug": "joint-765-961-xr-live-2027",
+    "dedup_key": "765-961-xr-live-report-2026",
+    "note": "同一のxRライブ(2027年7月開催)を二次情報源が報道。joint面の記事と同一施策のためcross_brand"
+   }
+  ]
+ }
+}

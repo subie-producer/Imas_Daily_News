@@ -1,0 +1,220 @@
+{
+ "decisions": {
+  "idolmaster-tours-like-ranking-2026-09-28": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "facts はランキング画面のシーズン選択肢のみで、実際の順位・数値データが無い"
+  },
+  "765-961-xr-live-2027": {
+   "action": "article",
+   "angle": "765×961合同のクロスオーバーxRライブ2027年7月開催決定、京王アリーナTOKYOで3公演・出演構成とチケット先行を発表(出演アイドル所属発表ポストを統合)",
+   "rank": "large",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "facts51件、既報なし。765-961-xr-live-announcement-post-2026を統合"
+  },
+  "imas-radio-stamas-5th-2026": {
+   "action": "article",
+   "angle": "IM@S RADIO次回放送(10/13)はスタマス5周年特番、ゲスト発表とお便り募集を統合",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "imas-radio-stamas-5th-post-2026・imas-radio-letter-call-2026・imas-radio-message-form-2026を統合"
+  },
+  "imas-radio-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29放送は同日付765面記事(765-imas-radio-2026)で既報。当日の新トリガー無し"
+  },
+  "imas-radio-message-form-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-radio-stamas-5th-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "次回(10/13)ゲスト・テーマの案内が主旨で内容が重複、未確認ソース分は確認済みのletter-call側に寄せる"
+  },
+  "765-961-xr-live-announcement-post-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "765-961-xr-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ発表の出演アイドル所属告知ポスト"
+  },
+  "imas-radio-2-youtube-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29放送の動画ページ情報。同日765面記事で既報"
+  },
+  "imas-radio-2-archive-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29放送終了後のアーカイブ公開で、既に終わった前日の出来事。当日のトリガー無し"
+  },
+  "imas-radio-stamas-5th-post-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-radio-stamas-5th-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ次回放送(10/13)スタマス5周年特番の告知ポスト"
+  },
+  "imas-radio-letter-call-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-radio-stamas-5th-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "次回放送に向けたお便り募集で同一施策"
+  },
+  "cg-million-coming-soon-2026-08-26": {
+   "action": "article",
+   "angle": "CG×ミリオン合同ライブ「CLASH M@TCH!!」最速先行抽選、本日13時から当落発表・入金受付開始",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(結果)。当日13時という具体的トリガーあり"
+  },
+  "imas-cross-over-cd-2026": {
+   "action": "article",
+   "angle": "「CINDERELLA MASTER NUMBER ONE!」第3弾『クロス×オーバー！』が本日発売、会場限定CD事後通販は終了間近",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(発売)。本日発売という当日トリガーあり"
+  },
+  "joint-1": {
+   "action": "article",
+   "angle": "ツアーズ、桜庭薫バースデーライブ称号を9/30以降のログインで獲得可能に",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。素材は少ないが当日から獲得可能という具体的トリガーあり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-765-961-xr-live-2027",
+    "brand": "joint",
+    "rank": "large",
+    "angle": "765×961合同のクロスオーバーxRライブ2027年7月開催決定、京王アリーナTOKYOで3公演・出演構成とチケット先行を発表(出演アイドル所属発表ポストを統合)",
+    "lead_score": 75,
+    "dedup_key": "765-961-xr-live-2027",
+    "candidate_ids": [
+     "202609300231-grok-17",
+     "202609300231-grok-50"
+    ]
+   },
+   {
+    "slug": "joint-imas-radio-stamas-5th-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "IM@S RADIO次回放送(10/13)はスタマス5周年特番、ゲスト発表とお便り募集を統合",
+    "lead_score": 20,
+    "dedup_key": "imas-radio-stamas-5th-2026",
+    "candidate_ids": [
+     "202609300231-grok-31",
+     "202609300231-grok-33",
+     "202609300231-grok-54",
+     "202609300231-grok-55"
+    ]
+   },
+   {
+    "slug": "joint-cg-million-coming-soon-2026-08-26",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "CG×ミリオン合同ライブ「CLASH M@TCH!!」最速先行抽選、本日13時から当落発表・入金受付開始",
+    "lead_score": 15,
+    "dedup_key": "cg-million-coming-soon-2026-08-26",
+    "candidate_ids": [
+     "sched-2026-09-30-cg-million-coming-soon-2026-08-26-結果"
+    ]
+   },
+   {
+    "slug": "joint-imas-cross-over-cd-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "「CINDERELLA MASTER NUMBER ONE!」第3弾『クロス×オーバー！』が本日発売、会場限定CD事後通販は終了間近",
+    "lead_score": 10,
+    "dedup_key": "imas-cross-over-cd-2026",
+    "candidate_ids": [
+     "sched-2026-09-30-imas-cross-over-cd-2026-発売"
+    ]
+   },
+   {
+    "slug": "joint-1-d41ed2",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアーズ、桜庭薫バースデーライブ称号を9/30以降のログインで獲得可能に",
+    "lead_score": 10,
+    "dedup_key": "joint-1",
+    "candidate_ids": [
+     "sched-2026-09-30-joint-1-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "idolmaster-tours-like-ranking-2026-09-28",
+    "reason": "出典不足",
+    "note": "facts はランキング画面のシーズン選択肢のみで、実際の順位・数値データが無い"
+   },
+   {
+    "dedup_key": "imas-radio-2-2026",
+    "reason": "既報",
+    "note": "9/29放送は同日付765面記事(765-imas-radio-2026)で既報。当日の新トリガー無し"
+   },
+   {
+    "dedup_key": "imas-radio-2-youtube-2026",
+    "reason": "既報",
+    "note": "9/29放送の動画ページ情報。同日765面記事で既報"
+   },
+   {
+    "dedup_key": "imas-radio-2-archive-2026",
+    "reason": "既報",
+    "note": "9/29放送終了後のアーカイブ公開で、既に終わった前日の出来事。当日のトリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

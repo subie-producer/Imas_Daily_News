@@ -1,0 +1,25 @@
+{
+ "decisions": {
+  "x-vorder-runway-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "story_id: x-vorder-runway-765-2026(2026-09-28既報)と同一事象。衣装・歌唱曲・配信チケット販売期間は補足情報で、当日(9/30)の締切・開幕・結果トリガーなし"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "x-vorder-runway-2026",
+    "reason": "既報",
+    "note": "story_id: x-vorder-runway-765-2026(2026-09-28既報)と同一事象。衣装・歌唱曲・配信チケット販売期間は補足情報で、当日(9/30)の締切・開幕・結果トリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

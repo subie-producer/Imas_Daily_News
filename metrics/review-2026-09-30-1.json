@@ -1,0 +1,332 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-09-30-cg-pazudora-cinderella-collab-appstore-ranking-2026.md",
+   "issue": "出典の ranking 情報が記事の記述と矛盾している。sources の gamebiz 記事タイトルは『デレマス』コラボの『パズドラ』が「一時首位に」達したと明記しているのに対し、記事は「5位」のみを報じている。既報(2026-09-28)でも「首位を獲得した」と報告されており、ニュース性としても首位が最重要情報である。",
+   "quote": "『パズル＆ドラゴンズ』が9月28日のApp Storeゲームカテゴリー売上ランキングで前日の47位から5位へ急上昇した。",
+   "rule_id": "R4",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F1"
+   ],
+   "expected": "記事が sources の gamebiz 記事と合致する内容を報じること。gamebiz が「一時首位に」と報じた情報を記事に反映するか、sources の記述が 5位のみであることを確認した上で記事を修正すること。",
+   "scope": "article:2026-09-30-cg-pazudora-cinderella-collab-appstore-ranking-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-gaku-hatsuboshi-hr-12-trend-2026.md",
+   "issue": "記事で「1時30分時点で再生回数12万3418回・高評価2112件」と記述されているが、該当する根拠が候補に存在しない",
+   "quote": "その後、9月29日0時30分時点で33位・再生回数11万1820回・高評価2087件、1時30分時点で再生回数12万3418回・高評価2112件、2時30分時点で45位・再生回数12万9231回・高評価2133件となった。",
+   "rule_id": "R1",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "F4",
+    "F5"
+   ],
+   "expected": "記事で引用する時系列データは、候補に存在する0:30（F4）と2:30（F5）のみに限定し、根拠のない1:30のデータは削除する",
+   "scope": "article:2026-09-30-gaku-hatsuboshi-hr-12-trend-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-joint-cg-million-coming-soon-2026-08-26.md",
+   "issue": "R3 出典隠し：candidate_ids に指定された素材の URL が sources に記載されていない",
+   "quote": "candidate_ids:\\n- sched-2026-09-30-cg-million-coming-soon-2026-08-26-結果\\n- sched-2026-09-30-cinderella-06-結果\\n\\nsources:\\n- url: https://idolmaster-official.jp/news/01_19720",
+   "rule_id": "R3",
+   "repair": "add_source",
+   "fact_ids": [
+    "sched-2026-09-30-cinderella-06-結果"
+   ],
+   "expected": "sources に sched-2026-09-30-cinderella-06-結果 の URL https://x.com/imas_CGofficial/status/2098335754036363324 を追加するか、または title_fact_ids から F8 を削除して candidate_ids と sources を一致させる",
+   "scope": "article:2026-09-30-joint-cg-million-coming-soon-2026-08-26.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-joint-imas-cross-over-cd-2026.md",
+   "issue": "出演キャラクター名に誤りがある。記事では「辻野あきら」と表記されているが、出典（候補 ID: sched-2026-09-30-cg-cinderella-master-number-one-cross-over-2026-発売）では「辻野あかり」と記載されている",
+   "quote": "島村卯月、渋谷凛、本田未央、辻野あきら、砂塚あきら、夢見りあむが歌う。",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F34"
+   ],
+   "expected": "出演者名を「辻野あかり」に訂正し、出典と一致させる",
+   "scope": "article:2026-09-30-joint-imas-cross-over-cd-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-shiny-hachiban-collab-2026.md",
+   "rule_id": "R3",
+   "issue": "記事の根拠となる複数の事実（F42, F75-F109）が PR Times の URL から引用されているにもかかわらず、sources に記載されていない。記事本文の第2・第3段落で使用されているメニュー価格、グッズ販売店舗などの詳細情報が sources に記載されていない PR Times URL に依存している。",
+   "quote": "第2段落「Aセットは、8番らーめんが税込2310円、金澤醤油豚骨8番らーめんが税込2200円。Bセットはそれぞれ税込1760円、税込1650円。」（F75-F78による）\n第3段落「描き下ろしグッズは富山駅店、魚津店、下庄店、砺波店、小矢部店、連島店、金澤醤油豚骨8番らーめん姫路市川橋通店、イオンタウン湖南店、AKIHABARAゲーマーズ本店で販売する。」（F81-F83による）",
+   "repair": "add_source",
+   "fact_ids": [
+    "F42",
+    "F75",
+    "F76",
+    "F77",
+    "F78",
+    "F79",
+    "F80",
+    "F81",
+    "F82",
+    "F83",
+    "F84",
+    "F85",
+    "F86",
+    "F98",
+    "F99",
+    "F109"
+   ],
+   "expected": "sources に https://prtimes.jp/main/html/rd/p/000000062.000161698.html を「8番らーめん×シャニマスコラボ開催決定」「当事者」として追加すること",
+   "scope": "article:2026-09-30-shiny-hachiban-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-sidem-fantastic-battle-fes-2026.md",
+   "issue": "記事本文が候補の facts に根拠のない事実を含んでいる",
+   "quote": "長野・幕張公演のチケット当選者は、締切までに入金する必要がある。",
+   "rule_id": "R1",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "F1"
+   ],
+   "expected": "記事が候補 facts から直接導ける情報（入金期間 9/26-9/30）のみを述べている状態",
+   "scope": "article:2026-09-30-sidem-fantastic-battle-fes-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-gaku-little-devil-campaign-apology-2-2026.md",
+   "issue": "同じ主題の記事が2本掲載されている。本記事と gaku-little-devil-campaign-apology-1-2026 は両方とも『初星小悪魔』キャンペーンのサイト接続不具合についての報告で、実質的に重複している。",
+   "quote": "特設サイトにアクセスしづらい状況が続いています。サイトにつながりにくい場合は、時間をおいて再度アクセスするよう案内されています。",
+   "rule_id": "P1",
+   "repair": "drop_article",
+   "fact_ids": [],
+   "expected": "gaku-little-devil-campaign-apology-1-2026 のみを掲載し、本記事は紙面から削除すること。（号スナップショット digest にも apology-1 が掲載済みのため）",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-09-30-cg-deresute-11th-anniversary-campaign-2026.md",
+   "issue": "分量不足: rank=small で目安 250字に対し、本文は約 200字。出典の sources にある https://apis.game.starlight-stage.jp/information/detail/7864/1/10/1 では、販売価格や購入方法など詳細が記載されているはずで、それを補足すれば満ち足りる",
+   "scope": "article:2026-09-30-cg-deresute-11th-anniversary-campaign-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-cg-imas-mor-416-honda-mio-2026.md",
+   "issue": "分量不足: rank: small の目安は250字以上だが、現在リード・本文合わせて約85字。素材に放送時刻・放送局などの詳細がないため、記事で追加情報を挿入できない場合は問題なし",
+   "scope": "article:2026-09-30-cg-imas-mor-416-honda-mio-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-cg-memory-pict-7th.md",
+   "issue": "分量不足: rank: small の目安は250字ですが、本文は143字（見出し21字+リード24字+本文98字）です。sources にある会場・価格・詳細な商品仕様などを拾えば充実します。",
+   "scope": "article:2026-09-30-cg-memory-pict-7th.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-cg-pazudora-cinderella-collab-appstore-ranking-2026.md",
+   "issue": "ニュース性: 同じ事象(9月28日の App Store ランキング)が既報(2026-09-28「デレマスコラボのパズドラ、週末App Store首位」)で既に報じられている。新記事は数値として「5位」を示しており、既報の「首位」より劣る情報価値となっており、新事実として適切な続報か検討が必要。rank が small であることは適切だが、当日の新しい事実や当日のトリガーがあるか確認すること。",
+   "scope": "article:2026-09-30-cg-pazudora-cinderella-collab-appstore-ranking-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-dsva-valiv-official-radio-2026.md",
+   "issue": "分量不足: rank: small に対して本文が約120字で、目安250字に満たない。リードと本文で情報が重複しており、詳細な放送情報がない。出典に記載されたパーソナリティの詳細コメント、放送形式、配信予定などを拾えば埋まる。",
+   "scope": "article:2026-09-30-dsva-valiv-official-radio-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-gaku-asari-produce-seminar-end-2026.md",
+   "issue": "本文が約60字で、rank small の目安（250字）に対して分量が不足しているが、出典の X 投稿には詳細情報が含まれないため、追加可能な情報がない。イベント終了という当日のニュース性トリガーがあるため許容される。",
+   "scope": "article:2026-09-30-gaku-asari-produce-seminar-end-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-gaku-hif-15m-produce-campaign-2026.md",
+   "issue": "タイトルの「早朝」表現が曖昧。lede・本文では「10月1日4時59分」と正確な時刻を記載しているのに対し、タイトルのみ「10/1早朝」と曖昧な表記。統一性の観点から「10/1 4:59まで」と具体的に記載することを検討（ただし文字数制限がある場合は現在の表現も許容可）",
+   "scope": "article:2026-09-30-gaku-hif-15m-produce-campaign-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-gaku-little-devil-campaign-announcement-2026.md",
+   "issue": "分量不足。rank small 目安 250字に対し現在約50字。特設サイトが画像中心で期間・賞・応募条件の文字列を確認できない（候補に記録）場合、別ソースから詳細を補足するか、読者が判断できる形の情報を追加すべき",
+   "scope": "article:2026-09-30-gaku-little-devil-campaign-announcement-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-gaku-little-devil-campaign-apology-1-2026.md",
+   "issue": "分量不足: rank: small の目安は 250 字だが、本文は約 85 字で著しく薄い。素材に会場・価格・日時・仕様はないが、トラブルの詳細（発生時刻・影響範囲・復旧予定など）を公式が提供していれば補充が可能",
+   "scope": "article:2026-09-30-gaku-little-devil-campaign-apology-1-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-gaku-little-devil-campaign-apology-2-2026.md",
+   "issue": "分量不足: rank small の目安は 250字以上ですが、本文は約50字です。素材に記載されている情報は限定的ですが、キャンペーン概要・アクセス困難の時間帯・復旧見通しなど、出典から拾える詳細があれば補足の検討を推奨",
+   "scope": "article:2026-09-30-gaku-little-devil-campaign-apology-2-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-gaku-shinozawa-hiro-me-gacha-end-2026.md",
+   "issue": "見出しが「10時59分終了」と断定的なのに対し、リード・本文では「9月30日10時59分までの予定」と条件付きで書かれている。出典も「予定」という条件を含んでいるため、見出しも「までの予定」を入れたほうが正確",
+   "scope": "article:2026-09-30-gaku-shinozawa-hiro-me-gacha-end-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-gaku-shinozawa-hiro-me-gacha-end-2026.md",
+   "issue": "rank: small（目安250字以上）に対し、本文が実質170字程度で不足。ガシャの詳細（価格、排出率、対象サポートカード説明など）を出典から拾えば分量が埋まる",
+   "scope": "article:2026-09-30-gaku-shinozawa-hiro-me-gacha-end-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-gaku-shinozawa-hiro-me-gacha-end-2026.md",
+   "issue": "リードと本文がほぼ同じ内容で重複している。本文で異なる視点から詳細を補足するか、いずれか一方を削除して簡潔にする方が良い",
+   "scope": "article:2026-09-30-gaku-shinozawa-hiro-me-gacha-end-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-joint-1-d41ed2.md",
+   "issue": "分量不足: 本文が約50字で、rank:small の目安250字に対して大幅に不足。scheduled material の事実「プロデューサーのみなさんのライブフォトで作ったバースデーページを公開した」「ライブフォトは毎回ランダムに表示される」などを活用すれば、バースデーページの内容紹介を加えて充実できる",
+   "scope": "article:2026-09-30-joint-1-d41ed2.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-joint-cg-million-coming-soon-2026-08-26.md",
+   "issue": "title_fact_ids で F8 を参照（見出しの『デレミリ合同ライブ』に対応）しているが、その根拠となる candidate_ids:sched-2026-09-30-cinderella-06-結果 が sources に入っていない。公式ポータル (sources に記載) から確認済みなら sources に X.com の出典を追加するか、candidate から外すことで解決",
+   "scope": "article:2026-09-30-joint-cg-million-coming-soon-2026-08-26.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-joint-imas-cross-over-cd-2026.md",
+   "issue": "記事内のファクト参照に不一致がある。本文末の <!-- F32 F33 F34 F36 --> では F36 を参照しているが、記事の候補 ID 4 つから導出される facts は F1～F35 までであり、F36 は存在しない。「各ゲームバージョンを含む」という記述の根拠が候補から明確に導出されない",
+   "scope": "article:2026-09-30-joint-imas-cross-over-cd-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-joint-imas-cross-over-cd-2026.md",
+   "issue": "分量不足の傾向。rank: small だが、出典（コロムビア公式ページ）に記載されている可能性のある詳細情報（発売元特典、他バージョン価格、その他詳細仕様など）をさらに拾うことで充実させられる可能性がある",
+   "scope": "article:2026-09-30-joint-imas-cross-over-cd-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-million-14th-emily-lapel-pin-2026.md",
+   "issue": "分量不足：rank が small で、本文が約50字（目安250字以上）。出典にある商品の素材（価格・サイズ・入荷日程など）を拾えば埋まる可能性がある",
+   "scope": "article:2026-09-30-million-14th-emily-lapel-pin-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-million-14th-present-2026.md",
+   "issue": "タイトルと本文の表現の同期。タイトルは「配信開始」だが、本文では「2026年9月21日発売」と明記されている。デジタル楽曲の文脈では「配信」と「発売」はほぼ同義だが、「配信開始」は当日の新規イベント開始を示唆しやすく、実際には9日前の発売済みなので「配信中」の方が読者に誤解を招かない。",
+   "scope": "article:2026-09-30-million-14th-present-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-million-14th-present-2026.md",
+   "issue": "ニュース性。記事は rank: small（目安250字以上）に対して本文約150字と分量が少なく、発売日が9日前で新規性が弱い。ただし、公式X投稿（2026-09-29）が前日のトリガーになっており、分量の少なさは rank に適切なので問題なし。",
+   "scope": "article:2026-09-30-million-14th-present-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-million-ittan-aishite-release-2026.md",
+   "issue": "記事が短く、ダウンロード先が「案内されている」と書きながら実際のリンクやプラットフォーム情報を提供していない。読者が今日実際にダウンロードするための具体的な情報（例：Spotify、Apple Music、LINE MUSICなど）を加えるか、候補に含まれるhttps://lnk.to/LZC-3684PR を記事内で明記すると、読者の利便性が向上する",
+   "scope": "article:2026-09-30-million-ittan-aishite-release-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-million-ittan-aishite-release-2026.md",
+   "issue": "見出しが「配信開始」とあるが、実際には9月27日の話題で、記事発行時点で既に3日経過している。一次速報の価値は限定的。ただし『ミリシタ』の楽曲配信はrank:smallでは許容範囲",
+   "scope": "article:2026-09-30-million-ittan-aishite-release-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-shiny-hachiban-collab-2026.md",
+   "issue": "見出しにシャニマスの作品・ブランド名は入っているが、8番らーめん（提携先）の主体性が「8番らーめん」という固有名詞で明確。見出しの簡潔性とのバランスは取れている",
+   "scope": "article:2026-09-30-shiny-hachiban-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-09-30-sidem-fantastic-battle-fes-2026.md",
+   "issue": "記事本文が small rank の目安（250字）より大幅に短い（本文約60字）。出典にある会場詳細・イベント説明など追加できるデータがあれば、分量を増やせる可能性あり",
+   "scope": "article:2026-09-30-sidem-fantastic-battle-fes-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "候補に掲載されていながら紙面に落とされた話題：ノクチル単独ライブ『noctchill』（2027年3月27-28日、仙台開催）。シャニマスの主要アイドル4名の単独ライブで、チケット受付中（アソビストア先行 9/27-10/12）。大型ニュースだが編集上の判断で落とされたものと思われる。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "候補に掲載されていながら紙面に落とされた話題：パズドラ×デレマスコラボ Google Play 売上ランキング（9位）。App Store 版（5位）のみ掲載され、Google Play 版は落とされている。同じコラボの別プラットフォームランキングのため落下の判断は妥当と考えられる。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "面のバランス：学マス（gaku）の記事が 11 件と他ブランドに比べて多く、特に『Agitato』『初星小悪魔』キャンペーン関連で集中している。ミリオン 7 件、その他ブランドは 4-6 件。バランス自体は、キャンペーン規模を反映しているため問題なし。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "digest における本日最大話題：765×961 xRライブ 7 月開催（京王アリーナ 7/24-25）を1面ニュースとしているが、本日の「発売」「当選発表」「ガシャ開幕」などの即座のニュースと比較すると、開幕日を優先する判断と評価される。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-09-30-cg-cinderella-15th-anniversary-party-2026.md",
+  "article:2026-09-30-cg-deresute-11th-anniversary-campaign-2026.md",
+  "article:2026-09-30-cg-imas-mor-416-honda-mio-2026.md",
+  "article:2026-09-30-cg-memory-pict-7th.md",
+  "article:2026-09-30-cg-pazudora-cinderella-collab-appstore-ranking-2026.md",
+  "article:2026-09-30-cg-topic-005-2026.md",
+  "article:2026-09-30-dsva-ops-roundup.md",
+  "article:2026-09-30-dsva-valiv-cosmo-ace-combat-8-2026.md",
+  "article:2026-09-30-dsva-valiv-official-radio-2026.md",
+  "article:2026-09-30-gaku-agitato-lilja-gasha-2026.md",
+  "article:2026-09-30-gaku-asari-produce-seminar-end-2026.md",
+  "article:2026-09-30-gaku-gakuen-topic-027.md",
+  "article:2026-09-30-gaku-hatsuboshi-hr-12-trend-2026.md",
+  "article:2026-09-30-gaku-hif-15m-produce-campaign-2026.md",
+  "article:2026-09-30-gaku-jio-seina-little-devil-gacha-2026.md",
+  "article:2026-09-30-gaku-little-devil-campaign-announcement-2026.md",
+  "article:2026-09-30-gaku-little-devil-campaign-apology-1-2026.md",
+  "article:2026-09-30-gaku-little-devil-campaign-apology-2-2026.md",
+  "article:2026-09-30-gaku-mission-pass-2026-09.md",
+  "article:2026-09-30-gaku-shinozawa-hiro-me-gacha-end-2026.md",
+  "article:2026-09-30-general-sweet-soar-anniversary-2026.md",
+  "article:2026-09-30-joint-1-d41ed2.md",
+  "article:2026-09-30-joint-765-961-xr-live-2027.md",
+  "article:2026-09-30-joint-cg-million-coming-soon-2026-08-26.md",
+  "article:2026-09-30-joint-imas-cross-over-cd-2026.md",
+  "article:2026-09-30-joint-imas-radio-stamas-5th-2026.md",
+  "article:2026-09-30-million-14th-emily-lapel-pin-2026.md",
+  "article:2026-09-30-million-14th-present-2026.md",
+  "article:2026-09-30-million-9-gp-266b86.md",
+  "article:2026-09-30-million-battle-of-theater-09-store-bonus-2026.md",
+  "article:2026-09-30-million-ittan-aishite-release-2026.md",
+  "article:2026-09-30-million-only-maker-parker-2026.md",
+  "article:2026-09-30-million-ops-roundup.md",
+  "article:2026-09-30-shiny-hachiban-collab-2026.md",
+  "article:2026-09-30-shiny-hbt-k-2026-10.md",
+  "article:2026-09-30-shiny-hopeful-feathers-goods-2026.md",
+  "article:2026-09-30-shiny-ops-roundup.md",
+  "article:2026-09-30-sidem-fantastic-battle-fes-2026.md",
+  "article:2026-09-30-sidem-monthly-theme-song-11-flags-2026.md",
+  "article:2026-09-30-sidem-topic-051.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-09-30-cg-cinderella-15th-anniversary-party-2026.md": "93648c52c53b76b58e19873a747e67bae99b0b4d58e4355d0af06c394f76e336",
+  "docs/_posts/2026-09-30-cg-deresute-11th-anniversary-campaign-2026.md": "9c4464d3603c9b0764414a53d27e217616e3724377d80de8e42449a02f3a2ce7",
+  "docs/_posts/2026-09-30-cg-imas-mor-416-honda-mio-2026.md": "6b67263b2b8154c37fd1763e0530335029d23ee547b7b00518a3b150fa9c51f6",
+  "docs/_posts/2026-09-30-cg-memory-pict-7th.md": "f97d044c25bec39939cbe294ccf9899d05fc472613ad19a0f95b2a36a6a75707",
+  "docs/_posts/2026-09-30-cg-pazudora-cinderella-collab-appstore-ranking-2026.md": "7909a8dbb0a92c3c544913e68b022626bd6431363c87e9feb8bf3cbb5da77f74",
+  "docs/_posts/2026-09-30-cg-topic-005-2026.md": "0b5f721c32db7ca3e0b7de04a0076b57d60e2b02c8386e7ff8d7fd82d7adbb5f",
+  "docs/_posts/2026-09-30-dsva-ops-roundup.md": "1bb0480aad753ef63d8f6b0b7091cf648c2f5bd12e0c490e29622d677187eac8",
+  "docs/_posts/2026-09-30-dsva-valiv-cosmo-ace-combat-8-2026.md": "f067d839ff4d71512f09ec465e8e7fc7ea7d42ac8d36716ed2f231fcca49cfd4",
+  "docs/_posts/2026-09-30-dsva-valiv-official-radio-2026.md": "826626528fb3d6f5e3c44a769c58e6852c0b56e2def4c2dc49e375193c087b5c",
+  "docs/_posts/2026-09-30-gaku-agitato-lilja-gasha-2026.md": "8548294fd1fac06c0dab8537153e982d842b19394879602476f7c3dfe8739912",
+  "docs/_posts/2026-09-30-gaku-asari-produce-seminar-end-2026.md": "7a5f155bd6e669118ce5ea841c8c1e221948553958d5a12eb41b5b04302db771",
+  "docs/_posts/2026-09-30-gaku-gakuen-topic-027.md": "539402372b0591471c07e140410c29d71704de4f77c270cd8961bed3883a68e2",
+  "docs/_posts/2026-09-30-gaku-hatsuboshi-hr-12-trend-2026.md": "4cc6dc10eb3141113f9b6246b1721977bf209d179f4abb68810e034503d80183",
+  "docs/_posts/2026-09-30-gaku-hif-15m-produce-campaign-2026.md": "7f2b8bb7ab46801f88064012ed2a754873202b90bd5263eeacdabdc4fe9277da",
+  "docs/_posts/2026-09-30-gaku-jio-seina-little-devil-gacha-2026.md": "98cff4f65676aa0bfdd58fbe3390a2e7c9432b0a72db42fb36fa6af8340b1029",
+  "docs/_posts/2026-09-30-gaku-little-devil-campaign-announcement-2026.md": "764e2b011ad650aaacce27594b4119143c859c1bf7ed86d6b391633757feadc3",
+  "docs/_posts/2026-09-30-gaku-little-devil-campaign-apology-1-2026.md": "2709354fd6bf9d2dd37ffe7984ddd73db411be58ba9c07a591324ad1624b5bc2",
+  "docs/_posts/2026-09-30-gaku-little-devil-campaign-apology-2-2026.md": "af8bb0db059b2f0aee75b5ef7354e13f2450884314596633a5127a5d529426a9",
+  "docs/_posts/2026-09-30-gaku-mission-pass-2026-09.md": "840bb26466d5e1528a737b627d4fe330cf0f4c65a526f266fc70b90c410511a6",
+  "docs/_posts/2026-09-30-gaku-shinozawa-hiro-me-gacha-end-2026.md": "a11c09caa8a424b1113e2cc6755b22e4def0f62cec2478111964609cdf9a16a4",
+  "docs/_posts/2026-09-30-general-sweet-soar-anniversary-2026.md": "cfd567c4ecf44e4773a1623b242346eeba4dbc27ced761d8f0661e8844416ba7",
+  "docs/_posts/2026-09-30-joint-1-d41ed2.md": "da8b6720c27c4896040baa6e1df8c024365934872752564342aab71ad5ae0ed1",
+  "docs/_posts/2026-09-30-joint-765-961-xr-live-2027.md": "f7a5191e30c9e7a509984ea49a0f678c6e17cd9daf204e902a1995309c06eee1",
+  "docs/_posts/2026-09-30-joint-cg-million-coming-soon-2026-08-26.md": "311aaa7808d6b4ffd084b6cdf7b2db3841e112f88d375c60f97ba74114447b12",
+  "docs/_posts/2026-09-30-joint-imas-cross-over-cd-2026.md": "1e6356de84a55f52e73140aebc5cdd406dba35dbf7a1758e374932e7d02ab958",
+  "docs/_posts/2026-09-30-joint-imas-radio-stamas-5th-2026.md": "98f53e3f9a485021637ea8d32a75370cf731ec259328d92a2192570ceb1088f6",
+  "docs/_posts/2026-09-30-million-14th-emily-lapel-pin-2026.md": "0797c67798f1afb85127702e10b719f492612cb547e3c6ed843eb3820497d932",
+  "docs/_posts/2026-09-30-million-14th-present-2026.md": "352fa3e327f0fb1660f45037c1e459a523734fdefdce214b3c58613c374bbeca",
+  "docs/_posts/2026-09-30-million-9-gp-266b86.md": "26fbaadd754c2c9de5c76b909aa4581c7d9a942da2b84133701f53712288c4c3",
+  "docs/_posts/2026-09-30-million-battle-of-theater-09-store-bonus-2026.md": "3f32b6198b405b012b7f974291f2dff2028b2021750350e284b6743a691da431",
+  "docs/_posts/2026-09-30-million-ittan-aishite-release-2026.md": "baac149db8700c1e15114d6526f64bcda7f614beff4724a92a09872b8c63c016",
+  "docs/_posts/2026-09-30-million-only-maker-parker-2026.md": "dd74f8a18de0899cc87d34df69d0836f3bb65752502a3de816e7dd0da26146ef",
+  "docs/_posts/2026-09-30-million-ops-roundup.md": "d4e0bddb3a696abdf4c3ea8c0f4a5983b4892983446e05389acabf4e539626c6",
+  "docs/_posts/2026-09-30-shiny-hachiban-collab-2026.md": "0774a2d8f2088b2eda58594c9b45c7d2f39ce6d9c761a34b54a7d507191148ef",
+  "docs/_posts/2026-09-30-shiny-hbt-k-2026-10.md": "eb67a2a8799eaf9c1b8ca49c79b75bdf9d2205e49544771e2b642cf3cde5b1fd",
+  "docs/_posts/2026-09-30-shiny-hopeful-feathers-goods-2026.md": "b555d215a3af6fbd45f7daec1be9633b990c0376957140e225bcb418339a0dba",
+  "docs/_posts/2026-09-30-shiny-ops-roundup.md": "0edaf20073215c1635192befab42defbf360fc0eff70362b3e56c5b6ddf49682",
+  "docs/_posts/2026-09-30-sidem-fantastic-battle-fes-2026.md": "e78e95cb50deab80e9b41c452ea6c6c6fbdef0cde2045dcf51df45bba100a37a",
+  "docs/_posts/2026-09-30-sidem-monthly-theme-song-11-flags-2026.md": "c822ab1764b0500cc20f126525b1d728b6af000c9036eebb3824d685be38be46",
+  "docs/_posts/2026-09-30-sidem-topic-051.md": "f3d32b19c893baf24ad74d72c97f3e7aedaeecc9ae47c6a4980e9d6f661fba80",
+  "docs/_editions/2026-09-30.md": "407c8cb823c95210cddbe0e5cfbb934e27f9bff88c818dc88a17b0df81b0e8f8",
+  "metrics/stories-before-2026-09-30.yml": "183bfb710ec0143f66240ac157236093121a7fba5c43a6cadf962c32788e6422"
+ }
+}

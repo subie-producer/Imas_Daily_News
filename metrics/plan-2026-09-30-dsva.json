@@ -1,0 +1,185 @@
+{
+ "decisions": {
+  "valiv-midterm-ability-evaluation-2026-2": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29号story '2026-2'で既報(期間・投票が能力値になる旨・審査内容)。追加分(投票先URL等)は新トリガーでない"
+  },
+  "valiv-official-radio-2026": {
+   "action": "article",
+   "angle": "ヴイアラ初の公式ラジオが音泉で放送決定(音泉祭り2027東京生配信特番で発表)、灯里愛夏・上水流宇宙・レトラの喜びの声を統合",
+   "rank": "large",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "音泉側発表・両声優の反応(cosmo/letora)を統合"
+  },
+  "valiv-september-survey-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29号story '9'で既報(回答期限10/4・実施告知)、新事実なし"
+  },
+  "valiv-letora-silent-hill-f-2026-09-28": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29号story '9-28'で既報(21時限定配信・22時SILENT HILL f)、催しも終了済み"
+  },
+  "valiv-hot-limit-short-2026": {
+   "action": "roundup",
+   "angle": "9/28週の配信・動画公開まとめ(CODE VEIN 2最終回、HOT LIMIT踊ってみた、週間スケジュール告知)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-manaka-code-vein-2-dlc-2026-09-29": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-manaka-code-vein-2-final-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の9/29 20:00配信予告、finalの方が詳細(最終回・初見対象)"
+  },
+  "valiv-cosmo-ace-combat-8-2026": {
+   "action": "article",
+   "angle": "上水流宇宙『ACE COMBAT 8』プレイ配信を10月2日21:00に開始決定、本日よりアーリーアクセスも開始",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売日・早期アクセス開始日自体は既報、配信開始の日時決定が新規"
+  },
+  "valiv-manaka-code-vein-2-final-2026": {
+   "action": "roundup",
+   "angle": "9/28週の配信・動画公開まとめ(CODE VEIN 2最終回、HOT LIMIT踊ってみた、週間スケジュール告知)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "灯里愛夏CODE VEIN2 DLC 2回目/最終回、9/29 20:00配信"
+  },
+  "valiv-onsen-radio-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-official-radio-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "音泉祭り2027特番での発表側の情報、未確認ソースだが確認済み情報と同一事象"
+  },
+  "valiv-letora-radio-reaction-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-official-radio-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式ラジオ発表へのレトラの反応"
+  },
+  "valiv-cosmo-radio-reaction-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-official-radio-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式ラジオ発表への上水流宇宙の反応"
+  },
+  "valiv-schedule-week-2026-09-28": {
+   "action": "roundup",
+   "angle": "9/28週の配信・動画公開まとめ(CODE VEIN 2最終回、HOT LIMIT踊ってみた、週間スケジュール告知)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "BDライブ配信券・グッズ受注中・ボイス販売中など運営告知を含む"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-official-radio-2026",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "ヴイアラ初の公式ラジオが音泉で放送決定(音泉祭り2027東京生配信特番で発表)、灯里愛夏・上水流宇宙・レトラの喜びの声を統合",
+    "lead_score": 45,
+    "dedup_key": "valiv-official-radio-2026",
+    "candidate_ids": [
+     "202609300231-grok-30",
+     "202609300231-grok-75",
+     "202609300231-grok-77",
+     "202609300231-grok-78"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-cosmo-ace-combat-8-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙『ACE COMBAT 8』プレイ配信を10月2日21:00に開始決定、本日よりアーリーアクセスも開始",
+    "lead_score": 15,
+    "dedup_key": "valiv-cosmo-ace-combat-8-2026",
+    "candidate_ids": [
+     "202609300231-grok-74"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "9/28週の配信・動画公開まとめ(CODE VEIN 2最終回、HOT LIMIT踊ってみた、週間スケジュール告知)",
+    "lead_score": 0,
+    "dedup_key": "valiv-hot-limit-short-2026",
+    "candidate_ids": [
+     "202609300231-grok-38",
+     "202609300231-grok-76",
+     "202609300231-grok-86",
+     "202609300231-grok-39"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-midterm-ability-evaluation-2026-2",
+    "reason": "既報",
+    "note": "9/29号story '2026-2'で既報(期間・投票が能力値になる旨・審査内容)。追加分(投票先URL等)は新トリガーでない"
+   },
+   {
+    "dedup_key": "valiv-september-survey-2026",
+    "reason": "既報",
+    "note": "9/29号story '9'で既報(回答期限10/4・実施告知)、新事実なし"
+   },
+   {
+    "dedup_key": "valiv-letora-silent-hill-f-2026-09-28",
+    "reason": "既報",
+    "note": "9/29号story '9-28'で既報(21時限定配信・22時SILENT HILL f)、催しも終了済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

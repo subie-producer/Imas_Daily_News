@@ -1,0 +1,386 @@
+{
+ "decisions": {
+  "pazudora-cinderella-collab-appstore-ranking-2026": {
+   "action": "article",
+   "angle": "パズドラ×デレマスコラボが好調、App Store売上ランキングが47位から5位に急浮上(コラボ内容も紹介)",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "pazudora-cinderella-collab-googleplay-ranking-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pazudora-cinderella-collab-appstore-ranking-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボ好調の話題。Google Play9位の数字として統合"
+  },
+  "cg-apple-of-my-ai-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29に cg-xr-live-apple-of-my-ai-2027 として既報。先行受付は継続中で本日の締切・開幕なし"
+  },
+  "cg-memory-pict-7th": {
+   "action": "article",
+   "angle": "Memory Pict.第7弾(佐藤心・白菊ほたる)の受注が開始、クリスマスコフレテーマで12月お届け",
+   "rank": "medium",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "pazudora-cinderella-girls-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pazudora-cinderella-collab-appstore-ranking-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同コラボの内容紹介(ガチャ・魔法石セット等)。ランキング記事に統合"
+  },
+  "cg-athome-xr-apple-of-my-ai-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29に既報の開催決定情報と同一、本日のトリガーなし"
+  },
+  "cg-cross-over-mv-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-005-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPremiere MV公開の告知(前日投稿)"
+  },
+  "cg-memory-pict-december-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-memory-pict-7th",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ第7弾商品の販売ページ情報(発送時期・価格)"
+  },
+  "cg-popup-shop-shuko-sticker-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "単一の非公式投稿(完売情報のみ)、読者が取れる行動もない"
+  },
+  "cg-athome-xr-live-post-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29既報の内容と同一のX投稿"
+  },
+  "cg-athome-xr-live-cast-post-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報イベントの出演・開場情報。本日の締切・開幕なし"
+  },
+  "cg-athome-xr-live-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "先行受付は9/28開始済みで既報。本日の締切・開始なし"
+  },
+  "cg-memory-pict-7th-post-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-memory-pict-7th",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ第7弾受注開始の告知投稿"
+  },
+  "imas-mor-416-honda-mio-2026": {
+   "action": "article",
+   "angle": "本田未央役・原紗友里さんが本日放送のアイマスMOR416にゲスト出演",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "deresute-11th-anniversary-campaign-2026": {
+   "action": "article",
+   "angle": "デレステ11周年記念キャンペーン(ガシャセット・育成強化等)が本日23:59で終了",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cinderella-06": {
+   "action": "cross_brand",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-cg-million-coming-soon-2026-08-26",
+   "reason": "",
+   "note": "CG×ミリオン合同ライブCLASH M@TCH!!現地チケット最速先行の当落発表と同一施策"
+  },
+  "cinderella-master-number-one-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-imas-cross-over-cd-2026",
+   "reason": "",
+   "note": "「クロス×オーバー！」CD発売と同一商品(new generations×UNICUS共同名義)"
+  },
+  "cinderella-15th-anniversary-party-2026": {
+   "action": "article",
+   "angle": "CG15th ANNIVERSARY PARTY、現地チケットのアソビストア一般会員先行受付が本日12時開始",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-number-one-cross-over-eiam-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-imas-cross-over-cd-2026",
+   "reason": "",
+   "note": "本日発売の同CD収録曲の試聴開始。CD発売と同一商品"
+  },
+  "topic-005-2026": {
+   "action": "article",
+   "angle": "「クロス×オーバー！」Premiere MVが本日21時に公開、new generations×UNICUS6人が歌唱",
+   "rank": "large",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cinderella-fes-noir-2026-09": {
+   "action": "article",
+   "angle": "デレステ「シンデレラフェス ノワール」(SSレア提供割合2倍)が本日23:59で終了",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-cinderella-master-number-one-cross-over-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-imas-cross-over-cd-2026",
+   "reason": "",
+   "note": "「クロス×オーバー！」CD発売(収録トラック情報)と同一商品"
+  },
+  "cg-topic-8": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-005-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPremiere MV公開の告知投稿"
+  },
+  "cross-over-premiere-mv-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-005-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPremiere MV公開、出演者6名の情報が詳しい版"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-pazudora-cinderella-collab-appstore-ranking-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "パズドラ×デレマスコラボが好調、App Store売上ランキングが47位から5位に急浮上(コラボ内容も紹介)",
+    "lead_score": 20,
+    "dedup_key": "pazudora-cinderella-collab-appstore-ranking-2026",
+    "candidate_ids": [
+     "202609290733-explore-0",
+     "202609290733-explore-1",
+     "202609291835-explore-2"
+    ]
+   },
+   {
+    "slug": "cg-memory-pict-7th",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "Memory Pict.第7弾(佐藤心・白菊ほたる)の受注が開始、クリスマスコフレテーマで12月お届け",
+    "lead_score": 10,
+    "dedup_key": "cg-memory-pict-7th",
+    "candidate_ids": [
+     "202609291235-watch-0",
+     "202609300231-grok-34",
+     "202609300231-grok-59"
+    ]
+   },
+   {
+    "slug": "cg-imas-mor-416-honda-mio-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "本田未央役・原紗友里さんが本日放送のアイマスMOR416にゲスト出演",
+    "lead_score": 5,
+    "dedup_key": "imas-mor-416-honda-mio-2026",
+    "candidate_ids": [
+     "sched-2026-09-30-imas-mor-416-honda-mio-2026-開始"
+    ]
+   },
+   {
+    "slug": "cg-deresute-11th-anniversary-campaign-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレステ11周年記念キャンペーン(ガシャセット・育成強化等)が本日23:59で終了",
+    "lead_score": 10,
+    "dedup_key": "deresute-11th-anniversary-campaign-2026",
+    "candidate_ids": [
+     "sched-2026-09-30-deresute-11th-anniversary-campaign-2026-終了"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-15th-anniversary-party-2026",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "CG15th ANNIVERSARY PARTY、現地チケットのアソビストア一般会員先行受付が本日12時開始",
+    "lead_score": 80,
+    "dedup_key": "cinderella-15th-anniversary-party-2026",
+    "candidate_ids": [
+     "sched-2026-09-30-cinderella-15th-anniversary-party-2026-開始"
+    ]
+   },
+   {
+    "slug": "cg-topic-005-2026",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "「クロス×オーバー！」Premiere MVが本日21時に公開、new generations×UNICUS6人が歌唱",
+    "lead_score": 45,
+    "dedup_key": "topic-005-2026",
+    "candidate_ids": [
+     "sched-2026-09-30-topic-005-2026-開始",
+     "202609300231-grok-20",
+     "sched-2026-09-30-cg-topic-8-開始",
+     "sched-2026-09-30-cross-over-premiere-mv-2026-発売"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-fes-noir-2026-09",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレステ「シンデレラフェス ノワール」(SSレア提供割合2倍)が本日23:59で終了",
+    "lead_score": 5,
+    "dedup_key": "cinderella-fes-noir-2026-09",
+    "candidate_ids": [
+     "sched-2026-09-30-cinderella-fes-noir-2026-09-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-apple-of-my-ai-2027",
+    "reason": "既報",
+    "note": "9/29に cg-xr-live-apple-of-my-ai-2027 として既報。先行受付は継続中で本日の締切・開幕なし"
+   },
+   {
+    "dedup_key": "cg-athome-xr-apple-of-my-ai-2027",
+    "reason": "既報",
+    "note": "9/29に既報の開催決定情報と同一、本日のトリガーなし"
+   },
+   {
+    "dedup_key": "cg-popup-shop-shuko-sticker-2026",
+    "reason": "出典不足",
+    "note": "単一の非公式投稿(完売情報のみ)、読者が取れる行動もない"
+   },
+   {
+    "dedup_key": "cg-athome-xr-live-post-2026",
+    "reason": "既報",
+    "note": "9/29既報の内容と同一のX投稿"
+   },
+   {
+    "dedup_key": "cg-athome-xr-live-cast-post-2026",
+    "reason": "既報",
+    "note": "既報イベントの出演・開場情報。本日の締切・開幕なし"
+   },
+   {
+    "dedup_key": "cg-athome-xr-live-ticket-2026",
+    "reason": "既報",
+    "note": "先行受付は9/28開始済みで既報。本日の締切・開始なし"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-cg-million-coming-soon-2026-08-26",
+    "dedup_key": "cinderella-06",
+    "note": "CG×ミリオン合同ライブCLASH M@TCH!!現地チケット最速先行の当落発表と同一施策"
+   },
+   {
+    "slug": "joint-imas-cross-over-cd-2026",
+    "dedup_key": "cinderella-master-number-one-2026",
+    "note": "「クロス×オーバー！」CD発売と同一商品(new generations×UNICUS共同名義)"
+   },
+   {
+    "slug": "joint-imas-cross-over-cd-2026",
+    "dedup_key": "cg-number-one-cross-over-eiam-2026",
+    "note": "本日発売の同CD収録曲の試聴開始。CD発売と同一商品"
+   },
+   {
+    "slug": "joint-imas-cross-over-cd-2026",
+    "dedup_key": "cg-cinderella-master-number-one-cross-over-2026",
+    "note": "「クロス×オーバー！」CD発売(収録トラック情報)と同一商品"
+   }
+  ]
+ }
+}

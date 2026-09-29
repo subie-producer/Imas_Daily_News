@@ -1,0 +1,104 @@
+{
+ "collect": [
+  {
+   "at": "2026-09-30T02:32:03+09:00",
+   "edition": "2026-09-30",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 346,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 2,
+    "explore:million": 1,
+    "explore:shiny": 2,
+    "explore:sidem": 1,
+    "explore:gakuen": 6,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 4,
+    "grok:765as": 0,
+    "grok:cinderella": 8,
+    "grok:million": 10,
+    "grok:shiny": 12,
+    "grok:sidem": 0,
+    "grok:gakuen": 12,
+    "grok:dsva": 12,
+    "grok:joint-other": 10,
+    "grok:trend": 4
+   },
+   "normalized": 80,
+   "added": 70,
+   "verify": {
+    "confirmed": 65,
+    "unconfirmed": 15,
+    "failed": 0
+   },
+   "duration_s": 1885
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-09-30T04:07:52+09:00",
+   "edition": "2026-09-30",
+   "rounds": 6,
+   "approved": true,
+   "lint_green": true,
+   "planned": 43,
+   "written": 36,
+   "roundups": 3,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 126,
+    "covered": 126,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "cg-pazudora-cinderella-collab-appstore-ranking-2026",
+    "joint-imas-cross-over-cd-2026",
+    "gaku-little-devil-campaign-announcement-2026"
+   ],
+   "stages_min": {
+    "選定": 11.003617469469706,
+    "執筆": 8.97734953959783,
+    "出典の判定": 0.04672007560729981,
+    "組版": 2.8013591329256693,
+    "校閲": 3.138636871178945,
+    "校閲1波": 3.138636871178945
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "cg-cinderella-fes-noir-2026-09",
+    "gaku-hr12-cast-sign-campaign-2026",
+    "million-theater-talk-party-offshot-vol67-2026",
+    "gaku-little-devil-campaign-apology-2-2026"
+   ],
+   "duration_s": 4035
+  }
+ ]
+}

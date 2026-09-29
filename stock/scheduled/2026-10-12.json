@@ -419,5 +419,28 @@
   "src_candidate_id": "202609290228-explore-1",
   "event_date": "2027-03-27",
   "deadline": "2026-10-12"
+ },
+ {
+  "id": "sched-2026-10-12-million-only-maker-parker-2026-締切",
+  "dedup_key": "million-only-maker-parker-2026",
+  "brand": "million",
+  "subject": "ミリシタ9周年パーカー受注(ONLY MAKER)",
+  "kind": "締切",
+  "note": "パーカー受注の最終日",
+  "reserved_on": "2026-09-30",
+  "title": "ミリシタ9周年 ONLY MAKER パーカー",
+  "url": "https://x.com/imasml_765PRO/status/2104843634768019601",
+  "source_type": "公式",
+  "facts": [
+   "#ミリシタ 9周年",
+   "ONLY MAKER By ASOBISTORE公式オリジナルパーカー",
+   "『モルフォ・パレシア』を身に纏ったアイドル達の描きおろしビジュアルを自由に配置してオリジナルグッズをプロデュース",
+   "受注は10/12(月･祝)まで",
+   "https://shop.asobistore.jp/s/feature/onlymaker#product10",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609300231-grok-46"
  }
 ]

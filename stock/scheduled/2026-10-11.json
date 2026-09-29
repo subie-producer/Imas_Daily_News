@@ -320,5 +320,29 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609290228-grok-32"
+ },
+ {
+  "id": "sched-2026-10-11-million-14th-emily-lapel-pin-2026-締切",
+  "dedup_key": "million-14th-emily-lapel-pin-2026",
+  "brand": "million",
+  "subject": "エミリー公式ラペルピン受注",
+  "kind": "締切",
+  "note": "受注締切",
+  "reserved_on": "2026-09-30",
+  "title": "ミリオン14th エミリー公式ラペルピン",
+  "url": "https://x.com/imasml_765PRO/status/2104873932553891878",
+  "source_type": "公式",
+  "facts": [
+   "#ミリオン14th開催記念グッズ受注中",
+   "エミリーをイメージした公式ラペルピン",
+   "和傘と四季折々の花のチャームが襟元を彩る",
+   "受注は10/11(日)まで",
+   "https://shop.asobistore.jp/feature/ml14th_memorial",
+   "エンゲージメント: 中",
+   "言及アイドル: エミリー スチュアート"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609300231-grok-47"
  }
 ]

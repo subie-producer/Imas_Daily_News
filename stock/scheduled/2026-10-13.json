@@ -49,5 +49,30 @@
   "src_candidate_id": "202609290228-grok-44",
   "event_date": "2026-10-16",
   "deadline": "2026-10-16"
+ },
+ {
+  "id": "sched-2026-10-13-imas-radio-stamas-5th-2026-開始",
+  "dedup_key": "imas-radio-stamas-5th-2026",
+  "brand": "joint",
+  "subject": "IM＠S RADIO スタマス5周年特番",
+  "kind": "開始",
+  "note": "配信開始(YouTube Live 20時〜)",
+  "reserved_on": "2026-09-30",
+  "title": "IM＠S RADIO スタマス5周年特番",
+  "url": "https://x.com/imas_ch/status/2104917948465021229",
+  "source_type": "公式",
+  "facts": [
+   "次回放送は10月13日(火)20時～",
+   "スタマス5周年特集回",
+   "映像配信で届ける",
+   "ゲスト: 田中あいみさん、山崎はるかさん",
+   "パーソナリティ: 平田宏美さん、若林直美さん",
+   "配信: https://www.youtube.com/live/Qqbq1eR1GWE",
+   "エンゲージメント: 高",
+   "言及アイドル: 奥空心白"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202609300231-grok-31"
  }
 ]

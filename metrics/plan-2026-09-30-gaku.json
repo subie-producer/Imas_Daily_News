@@ -1,0 +1,375 @@
+{
+ "decisions": {
+  "agitato-liiriya-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-agitato-lilja-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の「Agitato」リーリヤガシャ開幕情報。続報予約側の同一主題に統合"
+  },
+  "gaku-agitato-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "CD第2弾「Agitato」発売決定(発売日2027/1/20・予約締切11/8)は9/29に既報。収録曲数・価格等は補足情報のみで当日のトリガーなし"
+  },
+  "gaku-hr12-cast-sign-campaign-2026": {
+   "action": "article",
+   "angle": "初星学園HR#12配信を記念した出演キャストのサイン色紙プレゼントキャンペーンが開催中であることを伝える",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-hatsuboshi-hr-12-trend-2026": {
+   "action": "article",
+   "angle": "公式配信「初星学園HR#12」がYouTube急上昇入りし、再生数・高評価が急伸していることを伝える",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-jio-seina-little-devil-gacha-2026": {
+   "action": "article",
+   "angle": "「Agitato」第2弾・小悪魔ガシャとして十王星南と雨夜燕のガシャが本日開幕したことを伝える",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "雨夜燕分の重複予告2件を統合"
+  },
+  "gaku-amayo-tsubame-little-devil-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-jio-seina-little-devil-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "十王星南分と同時開幕の小悪魔ガシャ予告、1記事に統合"
+  },
+  "gaku-hatsu-boshi-little-devil-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "応募締切が9/29(火)23:59で、9/30発行時点では既に終了。関連の案内・お詫び投稿もここに統合したうえで不採用"
+  },
+  "gaku-amayo-tsubame-2nd-single-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "雨夜燕2nd Single「三分半の創世」の発売日・予約特典は9/6に既報。価格や品番等は補足情報で当日のトリガーなし"
+  },
+  "gaku-amayo-tsubame-little-devil-gacha-post-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-jio-seina-little-devil-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "雨夜燕小悪魔ガシャ予告の重複ポスト"
+  },
+  "gaku-little-devil-campaign-announcement-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hatsu-boshi-little-devil-campaign-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一の小悪魔キャンペーン案内、締切済みのためまとめて不採用"
+  },
+  "gaku-little-devil-campaign-apology-1-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hatsu-boshi-little-devil-campaign-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同キャンペーンのサイト混雑お詫び、締切済みのためまとめて不採用"
+  },
+  "gaku-little-devil-campaign-apology-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hatsu-boshi-little-devil-campaign-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同キャンペーンのサイト混雑お詫び、締切済みのためまとめて不採用"
+  },
+  "gaku-shinozawa-hiro-me-gacha-end-2026": {
+   "action": "article",
+   "angle": "篠澤広「め」ガシャ・SSRサポカ・SRサポカ『激辛!初星カレー!!』の3ガシャが本日10:59で終了することを伝える",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同時刻終了の3ガシャ予告を1記事に統合"
+  },
+  "gaku-shinozawa-support-gacha-end-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shinozawa-hiro-me-gacha-end-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同時刻(9/30 10:59)終了の篠澤広関連ガシャ、1記事に統合"
+  },
+  "gaku-hatsu-boshi-curry-gacha-end-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shinozawa-hiro-me-gacha-end-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同時刻(9/30 10:59)終了の篠澤広関連ガシャ、1記事に統合"
+  },
+  "gaku-asari-produce-seminar-end-2026": {
+   "action": "article",
+   "angle": "第8回あさり先生のプロデュースゼミ(対象プラン:アノマリー)が本日10:59に終了することを伝える",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一終了情報の重複主題(gaku-2101510156869677498)を統合"
+  },
+  "gaku-mission-pass-2026-09": {
+   "action": "article",
+   "angle": "9月ミッションパスが本日で終了、無償ジュエル最大5,000個・新髪型「おしのび用メガネ」の受取期限が10/1 4:59に迫ることを伝える",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-2101510156869677498": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-asari-produce-seminar-end-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "あさり先生のプロデュースゼミ終了予告の重複主題"
+  },
+  "gakuen-topic-027": {
+   "action": "article",
+   "angle": "「初星学園放送部」9/30放送回に岩手公演出演の湊みや(紫雲清夏役)・伊藤舞音(倉本千奈役)がゲスト出演することを伝える",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-hif-15m-produce-campaign-2026": {
+   "action": "article",
+   "angle": "H.I.F挑戦1,500万回突破記念のジュエル2,500個プレゼントキャンペーンが本日(10/1 4:59)終了することを伝える",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-agitato-lilja-gasha-2026": {
+   "action": "article",
+   "angle": "新曲「Agitato」グラビアシリーズ第2弾、SSR【Agitato】葛城リーリヤが登場する「Agitatoリーリヤガシャ」が本日11時に開幕したことを、固有スキル・Pアイテムの詳細とあわせて伝える",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一開幕情報の重複主題(agitato-liiriya-gasha-2026)を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-hr12-cast-sign-campaign-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園HR#12配信を記念した出演キャストのサイン色紙プレゼントキャンペーンが開催中であることを伝える",
+    "lead_score": 10,
+    "dedup_key": "gaku-hr12-cast-sign-campaign-2026",
+    "candidate_ids": [
+     "202609291235-explore-16"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-hr-12-trend-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "公式配信「初星学園HR#12」がYouTube急上昇入りし、再生数・高評価が急伸していることを伝える",
+    "lead_score": 5,
+    "dedup_key": "gaku-hatsuboshi-hr-12-trend-2026",
+    "candidate_ids": [
+     "202609300231-explore-14"
+    ]
+   },
+   {
+    "slug": "gaku-jio-seina-little-devil-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Agitato」第2弾・小悪魔ガシャとして十王星南と雨夜燕のガシャが本日開幕したことを伝える",
+    "lead_score": 15,
+    "dedup_key": "gaku-jio-seina-little-devil-gacha-2026",
+    "candidate_ids": [
+     "202609300231-grok-22",
+     "202609300231-grok-23",
+     "202609300231-grok-60"
+    ]
+   },
+   {
+    "slug": "gaku-shinozawa-hiro-me-gacha-end-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "篠澤広「め」ガシャ・SSRサポカ・SRサポカ『激辛!初星カレー!!』の3ガシャが本日10:59で終了することを伝える",
+    "lead_score": 10,
+    "dedup_key": "gaku-shinozawa-hiro-me-gacha-end-2026",
+    "candidate_ids": [
+     "202609300231-grok-64",
+     "202609300231-grok-65",
+     "202609300231-grok-66"
+    ]
+   },
+   {
+    "slug": "gaku-asari-produce-seminar-end-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "第8回あさり先生のプロデュースゼミ(対象プラン:アノマリー)が本日10:59に終了することを伝える",
+    "lead_score": 5,
+    "dedup_key": "gaku-asari-produce-seminar-end-2026",
+    "candidate_ids": [
+     "202609300231-grok-67",
+     "sched-2026-09-30-gaku-2101510156869677498-終了"
+    ]
+   },
+   {
+    "slug": "gaku-mission-pass-2026-09",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "9月ミッションパスが本日で終了、無償ジュエル最大5,000個・新髪型「おしのび用メガネ」の受取期限が10/1 4:59に迫ることを伝える",
+    "lead_score": 10,
+    "dedup_key": "gaku-mission-pass-2026-09",
+    "candidate_ids": [
+     "sched-2026-09-30-gaku-mission-pass-2026-09-終了",
+     "sched-2026-09-30-gaku-mission-pass-2026-09-締切"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-topic-027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「初星学園放送部」9/30放送回に岩手公演出演の湊みや(紫雲清夏役)・伊藤舞音(倉本千奈役)がゲスト出演することを伝える",
+    "lead_score": 10,
+    "dedup_key": "gakuen-topic-027",
+    "candidate_ids": [
+     "sched-2026-09-30-gakuen-topic-027-開始"
+    ]
+   },
+   {
+    "slug": "gaku-hif-15m-produce-campaign-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "H.I.F挑戦1,500万回突破記念のジュエル2,500個プレゼントキャンペーンが本日(10/1 4:59)終了することを伝える",
+    "lead_score": 10,
+    "dedup_key": "gaku-hif-15m-produce-campaign-2026",
+    "candidate_ids": [
+     "sched-2026-09-30-gaku-hif-15m-produce-campaign-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-agitato-lilja-gasha-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "新曲「Agitato」グラビアシリーズ第2弾、SSR【Agitato】葛城リーリヤが登場する「Agitatoリーリヤガシャ」が本日11時に開幕したことを、固有スキル・Pアイテムの詳細とあわせて伝える",
+    "lead_score": 70,
+    "dedup_key": "gaku-agitato-lilja-gasha-2026",
+    "candidate_ids": [
+     "sched-2026-09-30-gaku-agitato-lilja-gasha-2026-開幕",
+     "202609290733-explore-10"
+    ]
+   },
+   {
+    "slug": "gaku-little-devil-campaign-announcement-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星小悪魔の宴キャンペーン案内",
+    "lead_score": 0,
+    "dedup_key": "gaku-little-devil-campaign-announcement-2026",
+    "candidate_ids": [
+     "202609300231-grok-61"
+    ]
+   },
+   {
+    "slug": "gaku-little-devil-campaign-apology-1-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星小悪魔キャンペーン お詫び",
+    "lead_score": 0,
+    "dedup_key": "gaku-little-devil-campaign-apology-1-2026",
+    "candidate_ids": [
+     "202609300231-grok-62"
+    ]
+   },
+   {
+    "slug": "gaku-little-devil-campaign-apology-2-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星小悪魔抽選キャンペーン お詫び",
+    "lead_score": 0,
+    "dedup_key": "gaku-little-devil-campaign-apology-2-2026",
+    "candidate_ids": [
+     "202609300231-grok-63"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-agitato-2027",
+    "reason": "既報",
+    "note": "CD第2弾「Agitato」発売決定(発売日2027/1/20・予約締切11/8)は9/29に既報。収録曲数・価格等は補足情報のみで当日のトリガーなし"
+   },
+   {
+    "dedup_key": "gaku-hatsu-boshi-little-devil-campaign-2026",
+    "reason": "その他",
+    "note": "応募締切が9/29(火)23:59で、9/30発行時点では既に終了。関連の案内・お詫び投稿もここに統合したうえで不採用"
+   },
+   {
+    "dedup_key": "gaku-amayo-tsubame-2nd-single-2026",
+    "reason": "既報",
+    "note": "雨夜燕2nd Single「三分半の創世」の発売日・予約特典は9/6に既報。価格や品番等は補足情報で当日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

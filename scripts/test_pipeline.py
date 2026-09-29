@@ -266,7 +266,14 @@ def test_revise_check():
     check(any("tags" in p for p in R(dict(a3, tags=["a", "c"]))), "tags の改変が通った")
     check(any("対応していない" in p for p in R(dict(a3, addressed_issue_ids=[]))), "未対応が通った")
     check(any("知らない" in p for p in R(dict(a3, addressed_issue_ids=["I9"]))), "知らない id が通った")
-    check(any("出典を変えた" in p for p in R(dict(a3, sources=OK["sources"][:2]))), "出典の無断変更が通った")
+    check(any("出典を外した" in p for p in R(dict(a3, sources=OK["sources"][:2]))), "出典を黙って外したのが通った")
+    # add_source の提案が無くても、既存の出典を全て残して素材裏付けの出典を「足す」のは通る(出典隠し R3 を執筆の
+    # 判断で直せる。決めるのは執筆=revise-article.md。実在・一致は次の巡の校閲。実測 2026-09-30 joint-cg-million)
+    added = dict(a3, sources=OK["sources"] + [{"url": "https://d.example/4", "label": "追加した一次情報"}])
+    check(R(added) == [], f"出典を足しただけの稿が落ちた: {R(added)}")
+    # ただし「差し替え」(1つ外して1つ足す)は、drop_source の指摘が無いかぎり止める(黙って弱い出典に付け替える手)
+    swapped = dict(a3, sources=OK["sources"][:2] + [{"url": "https://d.example/4", "label": "差し替え"}])
+    check(any("出典を外した" in p for p in R(swapped)), "出典の無断差し替えが通った")
     iss_add = [{"issue_id": "I1", "rule_id": "R2", "repair": "add_source", "quote": ""}]
     check(any("add_source" in p for p in R(dict(a3, addressed_issue_ids=["I1"], sources=OK["sources"][:2]), iss_add)),
           "add_source で出典を外したのが通った")

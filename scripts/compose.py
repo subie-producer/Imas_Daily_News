@@ -1825,8 +1825,13 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
         new_urls = {s.get("url") for s in (ans.get("sources") or [])}
         repairs = {b.get("repair") for b in issues}
         add, drop = "add_source" in repairs, "drop_source" in repairs
-        if not add and not drop and new_urls != old_urls:
-            problems.append(f"出典の指摘が無いのに出典を変えた: {sorted(new_urls ^ old_urls)[:2]}")
+        # 出典を「足す」のは、出典にない事実・出典隠し・公式が無い(R1/R3/R5)を直す正規の手で、決めるのは
+        # 執筆(revise-article.md「repair は校閲の提案で、決めるのはあなた」)。校閲が add_source を提案して
+        # いなくても、既存の出典を1つも外さずに素材裏付けの出典を足すのは冪等に安全で(実在・一致の照合は次の巡の
+        # 校閲=R3/R4 がやる)、機械が止めるのは黙って出典を「外す/差し替える」ほう。add_source の提案待ちで足せず、
+        # 出典隠しの指摘が下りなかった(実測 2026-09-30 joint-cg-million: 検算が add をはねて元の稿のまま何巡も残った)
+        if not add and not drop and not new_urls >= old_urls:
+            problems.append(f"出典の指摘が無いのに出典を外した: {sorted(old_urls - new_urls)[:2]}")
         elif add and not drop and not new_urls >= old_urls:
             problems.append(f"add_source の指摘なのに出典を外した: {sorted(old_urls - new_urls)[:2]}")
         elif drop and not add and not new_urls <= old_urls:

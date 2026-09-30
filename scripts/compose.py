@@ -40,6 +40,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import planlib
 import renderlib
+import storylink
 import tags as tags_lib
 from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, EDITORIAL_MODEL,
                      COMPOSE_ARTICLE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file,
@@ -296,8 +297,17 @@ def write_plan_index(date: str, cands: dict, blocklist: dict) -> tuple[Path, int
             f = f[:PLAN_FACT_CHARS]
             if f not in s["facts"]:
                 s["facts"].append(f)
+    # 既報の照合はコードがする(選定のモデルに約1万行の台帳を読ませない。読み切れず、同じ知らせを新規として通していた)。
+    # 候補の dedup_key は storylink.link で、同じ一次情報の過去の記事の話題につなぎ直してある
+    known, prior = storylink.known_facts(ROOT), storylink.prior_by_key(date, ROOT)
     for s in subjects.values():
         s["facts"] = s["facts"][:PLAN_FACTS_PER_SUBJECT]
+        k = known.get(s["dedup_key"])
+        if k and k["facts"]:
+            s["known"] = {"first_published": k["first_published"],
+                          "facts": [str(f)[:PLAN_FACT_CHARS] for f in k["facts"][:PLAN_FACTS_PER_SUBJECT]]}
+        if prior.get(s["dedup_key"]):
+            s["prior"] = prior[s["dedup_key"]][:3]
     # 1主題1行で書く(整形すると数千行になり、Read の既定上限 2000行で頭から切れて
     # 後半の主題が編集長の視野に入らなくなる。行数=主題数なら一度で読み切れる)
     def dump(rows: list[dict], path: Path) -> None:
@@ -328,6 +338,7 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
         TRIGGERS=json.dumps([{k: t.get(k) for k in ("id", "dedup_key", "brand", "subject", "kind", "note")}
                              for t in triggers], ensure_ascii=False, indent=1) if triggers else "(なし)",
         CLAIMED=json.dumps(claimed, ensure_ascii=False, indent=1) if claimed else "(なし)",
+        RECENT="\n".join(f"- {t}" for t in storylink.recent_titles(date, ROOT).get(brand, [])) or "(なし)",
         FEEDBACK_REF="「前回の機械検証エラー」" if feedback else "",
         FEEDBACK=f"\n## 前回の機械検証エラー(必ず解消する)\n{feedback}\n" if feedback else "")
 
@@ -2344,6 +2355,13 @@ def main() -> int:
         notify("compose", f"{date}: 発行日±1日の candidates が空。compose 続行不能", ok=False)
         return 1
     plan_path = ROOT / "metrics" / f"plan-{date}.json"
+    # 同じ一次情報の候補を、過去の記事・今日の他の候補と同じ話題(dedup_key)につなぎ直す。以後の選定・執筆の既報・台帳は
+    # この話題で動く(二度載せを防ぐ。実測 2026-09-15〜30: 遅れて載った記事 97本のうち 42本が前の号の再報道)
+    relinked = storylink.link(cands, date, ROOT)
+    if relinked:
+        print(f"既報の話題につなぎ直した候補 {len(relinked)}件:", flush=True)
+        for cid, old, new, why in relinked[:40]:
+            print(f"  {cid}: {old} → {new}({why})", flush=True)
     by_brand, n_subjects = write_plan_index(date, cands, blocklist)
     print(f"選定インデックス: {n_subjects}主題 / {len(by_brand)}面 "
           f"({', '.join(f'{b}:{len(v)}' for b, v in sorted(by_brand.items()))})", flush=True)

@@ -45,6 +45,8 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
 WATCH_BATCH = int(ENV.get("WATCH_BATCH", "12"))
+# 1回の実行で facts 化するバッチ数の上限(12件×4=48件)。実測の新着は1回あたり最大9件なので、超えるのは異常(当番へ)
+WATCH_MAX_BATCHES = int(ENV.get("WATCH_MAX_BATCHES", "4"))
 # 定点観測で facts 化のために渡すページ本文の量。切り詰めるとそのぶん facts が痩せる
 WATCH_BODY_CHARS = int(ENV.get("WATCH_BODY_CHARS", "20000"))
 # 探索(Luna)1クエリの打ち切り。codex には --max-budget-usd 相当が無いので、
@@ -125,6 +127,41 @@ def fetch_rendered(url: str, timeout: int = 30) -> str:
 
 # ---- A-1 定点観測 --------------------------------------------------------------
 
+def list_source(s: dict, known: set[str], fetch=None) -> tuple[list[tuple[str, str]], int, bool]:
+    """観測先の一覧から (URL, 見出し) を集める。戻りは (一覧の並び, 読んだページ数, 上限で打ち切ったか)。
+
+    **件数で打ち切らない。**一覧の先頭ページだけを見ていたとき、公式ニュースは毎回 12 件しか見えず、実行と実行の
+    あいだに 12 件を超えて更新されると、押し出された記事を定点観測が一度も見ない(編集長 2026-09-30「公式のニュース
+    12件しか見ないとか設計不備過ぎる」)。`page_url`(`{n}` がページ番号)を持つ観測先は、**既に見た記事だけの
+    ページに行き当たるまで**遡る。`max_pages` まで読んでもまだ新着が続くなら、打ち切ったことを返す(呼び出し側が異常として上げる)。
+    """
+    fetch = fetch or (fetch_rendered if s["type"] == "portal" else http_get)
+    found: list[tuple[str, str]] = []
+    max_pages = int(s.get("max_pages") or 1) if s.get("page_url") else 1
+    pages = 0
+    for n in range(1, max_pages + 1):
+        url = s["url"] if n == 1 else s["page_url"].format(n=n)
+        html = fetch(url)
+        if not (html or "").strip():
+            # 取得の失敗(fetch_rendered は失敗を空で返す)を一覧の終わりと取り違えない。手前のページだけ既読にすると、
+            # 次回は手前で止まって奥の新着を見ない(監査指摘 r102)。この観測先は今回まるごと失敗にし、次回同じ境界からやり直す
+            raise RuntimeError(f"{url} の取得に失敗(空の応答)")
+        pages = n
+        on_page = []
+        for m in re.finditer(s["list_regex"], html, re.DOTALL):
+            u = m.group(1)
+            if not u.startswith("http"):
+                u = s["base"].rstrip("/") + "/" + u.lstrip("/")
+            title = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", m.group(2) if m.lastindex >= 2 else "")).strip()
+            if u not in {x for x, _ in found} and u not in {x for x, _ in on_page}:
+                on_page.append((u, title))
+        found += on_page
+        # 既に見た記事だけのページ(か、空のページ=一覧の終わり)に来たら止める
+        if not on_page or all(u in known for u, _ in on_page):
+            return found, pages, False
+    return found, pages, bool(s.get("page_url"))
+
+
 def run_watch(claude_call) -> tuple[list[dict], dict]:
     sources = yaml.safe_load((ROOT / "sources.yml").read_text(encoding="utf-8"))
     state = json.loads(STATE_PATH.read_text(encoding="utf-8")) if STATE_PATH.exists() else {}
@@ -135,28 +172,57 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
         if not s.get("enabled"):
             continue
         try:
-            html = fetch_rendered(s["url"]) if s["type"] == "portal" else http_get(s["url"])
+            listed, pages, cut = list_source(s, set(state.get(s["id"], [])))
+            if s["id"] not in state:
+                # 初めて見る観測先: いまの一覧は「既に見た」として記録するだけ(過去の記事を新着として候補に流さない。
+                # 流すと、古い知らせが今日の記事として載る)。次の実行から、これより新しいものが新着になる
+                found_by_source[s["id"]] = [u for u, _ in listed]
+                stats[s["id"]] = {"found": len(listed), "pages": pages, "new": 0, "baseline": True}
+                continue
             found = []
-            for m in re.finditer(s["list_regex"], html, re.DOTALL):
-                u = m.group(1)
-                if not u.startswith("http"):
-                    u = s["base"].rstrip("/") + "/" + u.lstrip("/")
-                title = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", m.group(2) if m.lastindex >= 2 else "")).strip()
-                if u not in found:
-                    found.append(u)
-                    if u not in state.get(s["id"], []):
-                        new_items.append({"source_id": s["id"], "brand": s["brand"], "url": u,
-                                          "title": title, "source_type": s.get("source_type", "公式"),
-                                          "csr": s["type"] == "portal"})
+            for u, title in listed:
+                found.append(u)
+                if u not in state.get(s["id"], []):
+                    new_items.append({"source_id": s["id"], "brand": s["brand"], "url": u,
+                                      "title": title, "source_type": s.get("source_type", "公式"),
+                                      "csr": s["type"] == "portal"})
             found_by_source[s["id"]] = found
-            stats[s["id"]] = {"found": len(found), "new": len([n for n in new_items if n["source_id"] == s["id"]])}
+            stats[s["id"]] = {"found": len(found), "pages": pages,
+                              "new": len([n for n in new_items if n["source_id"] == s["id"]])}
+            if cut:
+                # 上限のページまで読んでも新着が続いた = それより古い新着を見落としている可能性。申告で終えずに当番がなぜなぜする
+                notify("collect", f"定点観測 {s['id']}: {pages}ページ読んでも既に見た記事に行き当たらない(新着が上限を超えた"
+                                  f"か、一覧の形が変わった)。これより古い新着を見落としている可能性がある", ok=False)
         except Exception as e:
+            # 既読は更新しない(found_by_source に入れない)ので、次回同じ境界からやり直す。見えない失敗にしない(当番のなぜなぜへ)
             stats[s["id"]] = {"error": str(e)[:120]}
+            notify("collect", f"定点観測 {s['id']}: 一覧を読めなかった({str(e)[:160]})。既読は更新せず、次回やり直す", ok=False)
 
-    # 新着を facts 化。1回のプロンプトに詰め込める量に上限があるため件数で切るが、
-    # **切った分は落とさず次回へ繰り越す**(下の状態保存を参照)。
+    # 前回までに上限を超えて繰り越した新着(未処理の列)を**先に**処理する。繰り越した記事は既読にしていないが、一覧の上では
+    # 既読のページの奥に隠れるので、一覧を遡っても二度と見えない(監査指摘 r102)
+    pending = [it for it in state.get("_pending", []) if isinstance(it, dict) and it.get("url")]
+    pending_urls = {it["url"] for it in pending}
+    # 一覧にもまだ出ている繰り越し記事も、未処理の列の位置(先頭)で処理する(一覧の位置だと、また上限の外に回る。監査指摘 r103)
+    new_items = pending + [n for n in new_items if n["url"] not in pending_urls]
+
+    # 新着を facts 化。1回のプロンプトに載る量で WATCH_BATCH 件ずつに区切り、**全部を処理する**
+    # (12 件で打ち切って残りを次の実行(5〜6時間後)へ繰り越すと、その分だけ紙面が1日遅れる)。
+    # WATCH_MAX_BATCHES を超える分だけは次回へ繰り越し、異常として上げる
+    cands, attempted = [], set()
+    batches = [new_items[i:i + WATCH_BATCH] for i in range(0, len(new_items), WATCH_BATCH)]
+    for batch in batches[:WATCH_MAX_BATCHES]:
+        got, tried = facts_batch(batch, claude_call, state)
+        cands += got
+        attempted |= tried
+    if len(batches) > WATCH_MAX_BATCHES:
+        notify("collect", f"定点観測: 新着 {len(new_items)}件が1回で処理できる量({WATCH_BATCH}件×{WATCH_MAX_BATCHES})を超えた。"
+                          f"{len(new_items) - WATCH_BATCH * WATCH_MAX_BATCHES}件を次回へ繰り越す", ok=False)
+    return finish_watch(new_items, attempted, found_by_source, stats, state, cands)
+
+
+def facts_batch(batch: list[dict], claude_call, state: dict) -> tuple[list[dict], set[str]]:
+    """新着1バッチを facts 化する。戻りは (候補, 処理を試みた URL)。読めなかったバッチは、2回目で諦めたもの以外は試みたことにしない。"""
     cands = []
-    batch = new_items[:WATCH_BATCH]
     if batch and claude_call:
         blobs = []
         for it in batch:
@@ -195,7 +261,11 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
                 bad.pop(it["url"], None)
         for c in cands:
             c["_via"] = "watch"
+    return cands, {it["url"] for it in batch}
 
+
+def finish_watch(new_items: list[dict], attempted: set[str], found_by_source: dict, stats: dict, state: dict,
+                 cands: list[dict]) -> tuple[list[dict], dict]:
     # 状態の保存は facts 化の**後**。既知にするのは「今回処理を試みた URL」だけで、
     # 上限を超えて手つかずのまま残った新着は未読のままにする。
     #   - 巡回直後に全件を既知にすると、上限超過分は次回 new と判定されず、
@@ -203,7 +273,6 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
     #   - 処理を試みた URL は、結果が0件でも既知にする(毎回同じページを
     #     読み直して上限枠を食い潰さないため)
     # 途中で落ちた場合も未保存なので、次回の実行がそのまま拾い直す。
-    attempted = {it["url"] for it in batch}
     deferred = [n for n in new_items if n["url"] not in attempted]
     deferred_urls = {n["url"] for n in deferred}
     for sid, found in found_by_source.items():
@@ -212,13 +281,19 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
         state[sid] = (keep + [u for u in seen if u not in keep])[:500]
         if sid in stats:
             stats[sid]["deferred"] = len([n for n in deferred if n["source_id"] == sid])
+    # 未処理の列から処理したもの(もう一覧に出ていないことがある)も既読にする
+    for it in new_items:
+        if it["url"] in attempted and it["url"] not in state.get(it["source_id"], []):
+            state[it["source_id"]] = ([it["url"]] + state.get(it["source_id"], []))[:500]
+    # 繰り越した新着は未処理の列に残し、次回は一覧より先に処理する(一覧の上では既読のページの奥に隠れるため)
+    state["_pending"] = deferred
     # **ここでは保存しない。**既読の確定は candidates への書き込みと同じ成功境界にする。
     # 先に既読にすると、後段(正規化・verify・保存)が例外で落ちたとき、新着は既読なのに
     # candidates に無い、という取りこぼしになる(監査指摘)。main が保存後に書く
     stats["_state"] = state
 
     if deferred:
-        print(f"定点観測: 新着 {len(new_items)}件のうち {len(batch)}件を処理、"
+        print(f"定点観測: 新着 {len(new_items)}件のうち {len(attempted)}件を処理、"
               f"{len(deferred)}件を次回へ繰り越し", flush=True)
     return cands, {"stats": stats, "new": len(new_items), "facted": len(cands),
                    "deferred": len(deferred)}

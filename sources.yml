@@ -1,11 +1,66 @@
 # 定点観測先(collect.py A-1)。type: portal=Selenium レンダリング / html=正規表現リスト / rss
-# list_regex は (url, title) の2グループを持つこと。url は base で絶対化される。
+# list_regex は (url, title) の2グループを持つこと(title は無くてもよい)。url は base で絶対化される。
+# page_url({n} がページ番号)と max_pages があれば、既に見た記事だけのページに行き当たるまで遡る(collect.list_source)。
+# 一覧の先頭だけを見ると、実行の間に先頭ページの件数を超えて更新されたとき、押し出された記事を見落とす
 - id: imas-portal
   brand: general
   type: portal
   url: https://idolmaster-official.jp/news
+  page_url: https://idolmaster-official.jp/news?page_index={n}
+  max_pages: 10
   base: https://idolmaster-official.jp
   list_regex: '<a[^>]+href="(/news/[0-9_]+)"[^>]*>(?:.*?)</a>'
+  enabled: true
+# 音楽の公式メディア(バンダイナムコミュージックライブ)。ライブレポート・インタビュー・楽曲紹介。
+# 探索(検索エンジン経由)で拾っていたときは 5本中5本が発表から2日以上遅れた(2026-09-15〜30)。ブランドのタグページを見る。
+# 項目はページに埋め込まれた構造化データ(ItemList)から取る(HTML のリンクを拾うと、サイドバーの人気記事=他作品まで拾う)。
+# 範囲外のページは1ページ目と同じ中身を返すので、既に集めた項目だけのページとして止まる
+- id: pylonport-sidem
+  brand: sidem
+  source_type: 準公式
+  type: html
+  url: https://pylonport.bandainamcomusiclive.co.jp/tags/172
+  page_url: https://pylonport.bandainamcomusiclive.co.jp/tags/172/pages/{n}
+  max_pages: 5
+  base: https://pylonport.bandainamcomusiclive.co.jp
+  list_regex: '"@type":\s*"ListItem",\s*"position":\s*\d+,\s*"url":\s*"https://pylonport\.bandainamcomusiclive\.co\.jp/((?:more|report|interview|recommendmusic)/\d+)"\s*,\s*"item":\s*\{[^{}]*?"headline":\s*"([^"]{0,160})"'
+  enabled: true
+- id: pylonport-shiny
+  brand: shiny
+  source_type: 準公式
+  type: html
+  url: https://pylonport.bandainamcomusiclive.co.jp/tags/139
+  page_url: https://pylonport.bandainamcomusiclive.co.jp/tags/139/pages/{n}
+  max_pages: 5
+  base: https://pylonport.bandainamcomusiclive.co.jp
+  list_regex: '"@type":\s*"ListItem",\s*"position":\s*\d+,\s*"url":\s*"https://pylonport\.bandainamcomusiclive\.co\.jp/((?:more|report|interview|recommendmusic)/\d+)"\s*,\s*"item":\s*\{[^{}]*?"headline":\s*"([^"]{0,160})"'
+  enabled: true
+- id: pylonport-million
+  brand: million
+  source_type: 準公式
+  type: html
+  url: https://pylonport.bandainamcomusiclive.co.jp/tags/173
+  page_url: https://pylonport.bandainamcomusiclive.co.jp/tags/173/pages/{n}
+  max_pages: 5
+  base: https://pylonport.bandainamcomusiclive.co.jp
+  list_regex: '"@type":\s*"ListItem",\s*"position":\s*\d+,\s*"url":\s*"https://pylonport\.bandainamcomusiclive\.co\.jp/((?:more|report|interview|recommendmusic)/\d+)"\s*,\s*"item":\s*\{[^{}]*?"headline":\s*"([^"]{0,160})"'
+  enabled: true
+# レーベル(ランティス)の SideM・シャニマスのお知らせ(イベント・特典)。探索では 3本中3本が遅れた
+- id: lantis-shiny
+  brand: shiny
+  source_type: 準公式
+  type: html
+  url: https://shinycolors.lantis.jp/
+  base: https://shinycolors.lantis.jp
+  list_regex: 'href="https://shinycolors\.lantis\.jp/((?:event|extra)/\d+_\d+/)"'
+  enabled: true
+- id: lantis-sidem
+  brand: sidem
+  source_type: 準公式
+  type: html
+  url: https://lantis.jp/sidem/
+  base: https://lantis.jp/sidem
+  list_regex: 'href="((?:event|extra)/index\.html#\d+(?:_\d+)?)"'
   enabled: true
 - id: columbia-imas
   brand: general

@@ -1596,6 +1596,167 @@ def test_tool_path():
     check(os.path.expanduser("~/.local/bin") in p.split(":") and "/usr/bin" in p.split(":"), f"tool_path に利用者の bin が無い: {p}")
 
 
+def test_watch_pagination_and_batches(tmp: Path):
+    """定点観測(編集長 2026-09-30「公式のニュース12件しか見ないとか設計不備過ぎる」):
+    一覧は既に見た記事だけのページに行き当たるまで遡る。上限まで読んでも新着が続けば打ち切りを返す。
+    初めて見る観測先は、いまの一覧を既読にするだけ(古い記事を新着として流さない)。facts 化は WATCH_BATCH 件ずつ全部を処理する。"""
+    import collect
+    import yaml
+    pages = {1: ["/news/01_9", "/news/01_8", "/news/01_7"], 2: ["/news/01_6", "/news/01_5", "/news/01_4"],
+             3: ["/news/01_3", "/news/01_2", "/news/01_1"], 4: []}
+    fetched = []
+    def fake_fetch(url):
+        n = 1 if url.endswith("/news") else int(url.rsplit("=", 1)[1])
+        fetched.append(n)
+        return "<html>" + "".join(f'<a href="{p}">x</a>' for p in pages.get(n, [])) + "</html>"   # 項目の無いページ=一覧の終わり
+    s = {"id": "p", "type": "portal", "url": "https://o.jp/news", "page_url": "https://o.jp/news?page_index={n}", "max_pages": 10,
+         "base": "https://o.jp", "list_regex": '<a[^>]+href="(/news/[0-9_]+)"[^>]*>(?:.*?)</a>'}
+    known = {f"https://o.jp/news/01_{i}" for i in (1, 2, 3, 4, 5, 6)}
+    found, n, cut = collect.list_source(s, known, fetch=fake_fetch)
+    check(fetched == [1, 2] and n == 2 and not cut and len(found) == 6, f"既読だけのページで止まらない: {fetched} {n} {cut}")
+    fetched.clear()
+    found, n, cut = collect.list_source(s, set(), fetch=fake_fetch)
+    check(fetched == [1, 2, 3, 4] and not cut and len(found) == 9, f"空のページ(一覧の終わり)で止まらない: {fetched}")
+    fetched.clear()
+    found, n, cut = collect.list_source({**s, "max_pages": 2}, set(), fetch=fake_fetch)
+    check(n == 2 and cut, "上限まで読んでも新着が続いたのに打ち切りを返さない")
+    found, n, cut = collect.list_source({k: v for k, v in s.items() if k != "page_url"}, set(), fetch=fake_fetch)
+    check(n == 1 and not cut and len(found) == 3, "page_url の無い観測先を遡った")
+    # 範囲外のページが1ページ目と同じ中身を返すサイト(Pylon Port)では、既に集めた項目だけのページとして止まる(監査指摘 r104)
+    fetched.clear()
+    found, n, cut = collect.list_source(s, set(), fetch=lambda url: fake_fetch(url if not url.endswith("=4") else "https://o.jp/news"))
+    check(n == 4 and not cut and len(found) == 9, f"1ページ目と同じ中身の範囲外ページで止まらない: {n} {cut} {len(found)}")
+    # 取得の失敗(空の応答)を一覧の終わりと取り違えない(監査指摘 r102)
+    try:
+        collect.list_source(s, set(), fetch=lambda url: fake_fetch(url) if url.endswith("/news") else "")
+        check(False, "2ページ目の取得失敗を一覧の終わりとして扱った")
+    except RuntimeError:
+        pass
+
+    # run_watch: 初めて見る観測先は既読にするだけ。新着は WATCH_BATCH 件ずつ全部を facts 化。上限を超えた分だけ繰り越して異常を上げる
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "sources.yml").write_text(yaml.safe_dump([
+        {"id": "old", "brand": "general", "type": "html", "url": "https://a.jp/", "base": "https://a.jp", "list_regex": "x", "enabled": True},
+        {"id": "fresh", "brand": "sidem", "type": "html", "url": "https://b.jp/", "base": "https://b.jp", "list_regex": "x", "enabled": True}]),
+        encoding="utf-8")
+    old_known = [f"https://a.jp/k{i}" for i in range(3)]
+    (tmp / "watch-state.json").write_text(json.dumps({"old": old_known}), encoding="utf-8")
+    listings = {"old": [(f"https://a.jp/n{i}", "") for i in range(30)] + [(u, "") for u in old_known],
+                "fresh": [(f"https://b.jp/f{i}", "") for i in range(20)]}
+    calls, notes = [], []
+    saved = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.WATCH_MAX_BATCHES, collect.render_prompt)
+    try:
+        collect.ROOT, collect.STATE_PATH = tmp, tmp / "watch-state.json"
+        collect.list_source = lambda s, known, fetch=None: (listings[s["id"]], 1, False)
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+        collect.WATCH_BATCH, collect.WATCH_MAX_BATCHES = 12, 4
+        cands, info = collect.run_watch(lambda prompt, timeout=0: calls.append(prompt.count("### ")) or [])
+        check(calls == [12, 12, 6], f"facts 化のバッチ: {calls}(30件は 12・12・6 の3回で全部)")
+        check(info["new"] == 30 and info["deferred"] == 0, f"新着・繰り越し: {info['new']} {info['deferred']}")
+        check(info["stats"]["fresh"].get("baseline") and info["stats"]["fresh"]["new"] == 0, f"初めて見る観測先を新着にした: {info['stats']['fresh']}")
+        st = info["stats"]["_state"]
+        check(len(st["fresh"]) == 20 and all(f"https://a.jp/n{i}" in st["old"] for i in range(30)), "既読の記録が足りない")
+        calls.clear()
+        collect.WATCH_MAX_BATCHES = 2
+        (tmp / "watch-state.json").write_text(json.dumps({"old": old_known, "fresh": []}), encoding="utf-8")
+        cands, info = collect.run_watch(lambda prompt, timeout=0: calls.append(prompt.count("### ")) or [])
+        check(calls == [12, 12], f"上限(2バッチ)を超えて処理した: {calls}")
+        check(info["deferred"] == 50 - 24 and any(not ok and "繰り越す" in m for m, ok in notes), f"上限を超えた分の繰り越しと異常: {info['deferred']} {notes[-1:]}")
+        # 次の実行: 一覧には既に見た記事しか出ない(繰り越した記事は既読のページの奥)。それでも未処理の列から全部を処理する(監査指摘 r102)
+        st = info["stats"]["_state"]
+        check(len(st.get("_pending") or []) == 26, f"繰り越しが未処理の列に残っていない: {len(st.get('_pending') or [])}")
+        (tmp / "watch-state.json").write_text(json.dumps(st), encoding="utf-8")
+        listings = {"old": [(u, "") for u in old_known], "fresh": []}
+        calls.clear()
+        collect.WATCH_MAX_BATCHES = 4
+        cands, info = collect.run_watch(lambda prompt, timeout=0: calls.append(prompt.count("### ")) or [])
+        st = info["stats"]["_state"]
+        check(calls == [12, 12, 2] and not st.get("_pending"), f"繰り越した新着を次の実行で処理しない: {calls} 残り {len(st.get('_pending') or [])}")
+        check(all(f"https://a.jp/n{i}" in st["old"] for i in range(30)) and all(f"https://b.jp/f{i}" in st["fresh"] for i in range(20)),
+              "未処理の列から処理した記事を既読にしていない")
+        # 繰り越した記事が一覧にもまだ出ていて、一覧の新着が上限を超えるときも、繰り越しを先に処理する(監査指摘 r103)
+        st["_pending"] = [{"source_id": "old", "brand": "general", "url": "https://a.jp/P", "title": "", "source_type": "公式", "csr": False}]
+        (tmp / "watch-state.json").write_text(json.dumps(st), encoding="utf-8")
+        listings = {"old": [(f"https://a.jp/m{i}", "") for i in range(48)] + [("https://a.jp/P", "")], "fresh": []}
+        seen_first = []
+        collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+        cands, info = collect.run_watch(lambda prompt, timeout=0: seen_first.append(prompt.split("\n", 1)[0]) or [])
+        check(seen_first and "https://a.jp/P" in seen_first[0] and "https://a.jp/P" not in [it["url"] for it in info["stats"]["_state"]["_pending"]],
+              f"一覧にも出ている繰り越しを先に処理しない: {seen_first[:1]}")
+    finally:
+        (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.WATCH_MAX_BATCHES,
+         collect.render_prompt) = saved
+
+
+def test_storylink(tmp: Path):
+    """既報の照合(二度載せの防止): 同じ一次情報の候補を、過去の記事の話題へ**話題ごと**つなぎ直し、今日の候補どうしもまとめる。
+    一覧・特設ページのように多くの記事に出る URL は照合に使わない。続報予約は触らない。選定の索引に既報と過去の記事が付く。"""
+    import storylink as sl
+    import yaml
+    check(sl.url_key("https://x.com/a/status/123?s=20") == "x:123" and sl.url_key("https://x.com/a") == "", "X の URL キー")
+    check(sl.url_key("https://www.youtube.com/watch?v=AAAAAAAAAAA&t=1") == "yt:AAAAAAAAAAA", "YouTube の URL キー")
+    check(sl.url_key("https://idolmaster-official.jp/news/01_19948.html") == sl.url_key("https://idolmaster-official.jp/news/01_19948/")
+          == "idolmaster-official.jp/news/01_19948", "記事ページの URL キー(.html・末尾の / を揃える)")
+    check(sl.url_key("https://idolmaster-official.jp/news") == "" and sl.url_key("https://a.jp/") == "", "一覧・トップを記事扱いした")
+    # 一覧の URL で別の知らせを同じ記事とみなさない。項目を見分ける見出し(#)・問い合わせ(?id=)は残す(監査指摘 r102)
+    check(sl.url_key("https://lantis.jp/sidem/releaseinfo/index.html") == "", "発売情報の一覧を記事扱いした")
+    check(sl.url_key("https://lantis.jp/sidem/event/index.html#20260912") != sl.url_key("https://lantis.jp/sidem/event/index.html#20260611") != "",
+          "一覧の別の項目(#)を同じ記事とみなした")
+    check(sl.url_key("https://a.jp/detail.php?id=1") != sl.url_key("https://a.jp/detail.php?id=2"), "?id= の違う記事を同じとみなした")
+    check(sl.url_key("https://www.famitsu.com/article/202609/88518?page=1&utm_source=x") == sl.url_key("https://www.famitsu.com/article/202609/88518"),
+          "ページ送り・追跡の問い合わせで同じ記事を別とみなした")
+    check(sl.url_key("https://idolmaster-official.jp/news/01_1#sec2") == sl.url_key("https://idolmaster-official.jp/news/01_1"), "記事の節(#)で同じ記事を別とみなした")
+    d = "2026-09-18"
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "metrics").mkdir(exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "stock").mkdir(exist_ok=True)
+    post = lambda ed, slug, title, urls: (tmp / "docs" / "_posts" / f"{ed}-{slug}.md").write_text(
+        "---\n" + yaml.safe_dump({"slug": slug, "brand": "cg", "title": title, "candidate_ids": [],
+                                  "sources": [{"url": u, "label": "l"} for u in urls]}, allow_unicode=True) + "---\n本文\n", encoding="utf-8")
+    post("2026-09-17", "dijimas", "那覇市でじますコラボ決定", ["https://idolmaster-official.jp/news/01_19889"])
+    for i in range(5):     # 5本の記事に出る特設ページ(hub)
+        post("2026-09-1" + str(i), f"live{i}", f"ライブ{i}", ["https://idolmaster-official.jp/live_event/x/"])
+    (tmp / "metrics" / "plan-2026-09-17.json").write_text(json.dumps({"articles": [{"slug": "dijimas", "dedup_key": "dijimas-cg-2026"}]}), encoding="utf-8")
+    for i in range(5):
+        (tmp / "metrics" / f"plan-2026-09-1{i}.json").write_text(json.dumps({"articles": [{"slug": f"live{i}", "dedup_key": f"live-{i}"}]}), encoding="utf-8")
+    (tmp / "stock" / "stories.yml").write_text(yaml.safe_dump([{"story_id": "dijimas-cg-2026", "first_published": "2026-09-17",
+                                                                 "published_facts": ["開催地: 沖縄県那覇市"]}], allow_unicode=True), encoding="utf-8")
+    cands = {
+        "c1": {"id": "c1", "dedup_key": "cg-dejimas-naha-2026", "url": "https://idolmaster-official.jp/news/01_19889.html", "found_at": "2026-09-17T07:00"},
+        "c2": {"id": "c2", "dedup_key": "cg-dejimas-naha-2026", "url": "https://www.famitsu.com/article/1", "found_at": "2026-09-17T08:00"},
+        "c3": {"id": "c3", "dedup_key": "b-watch", "url": "https://x.com/imas/status/77", "found_at": "2026-09-17T07:00"},
+        "c4": {"id": "c4", "dedup_key": "b-explore", "url": "https://twitter.com/imas/status/77", "found_at": "2026-09-17T09:00"},
+        "c5": {"id": "c5", "dedup_key": "hub-topic", "url": "https://idolmaster-official.jp/live_event/x/", "found_at": "2026-09-17T07:00"},
+        "sched-1": {"id": "sched-1", "dedup_key": "keep-me", "url": "https://idolmaster-official.jp/news/01_19889", "origin": "scheduled"},
+    }
+    changed = sl.link(cands, d, tmp)
+    check(cands["c1"]["dedup_key"] == cands["c2"]["dedup_key"] == "dijimas-cg-2026", f"話題ごとつなぎ直していない: {cands['c1']['dedup_key']} {cands['c2']['dedup_key']}")
+    check(cands["c3"]["dedup_key"] == cands["c4"]["dedup_key"] == "b-watch", f"同じ日の同じ一次情報をまとめない: {cands['c3']['dedup_key']} {cands['c4']['dedup_key']}")
+    check(cands["c5"]["dedup_key"] == "hub-topic", "多くの記事に出る特設ページで話題をつないだ")
+    check(cands["sched-1"]["dedup_key"] == "keep-me", "続報予約の話題を変えた")
+    check(any(c[0] == "c2" and "那覇市でじますコラボ決定" in c[3] for c in changed), f"つなぎ直しの理由: {changed}")
+    # 3つ以上の別の話題に使われたシリーズのページ(Memory Pict. の特設 cg_mp)ではつながない。2つまでならつなぐ(二度載せの典型)(監査指摘 r104)
+    for i, k in enumerate(("mp-5th", "mp-6th", "mp-6th-b")):
+        post(f"2026-09-0{i + 1}", f"mp{i}", f"Memory Pict.第{i + 5}弾", ["https://shop.asobistore.jp/feature/cg_mp"])
+        (tmp / "metrics" / f"plan-2026-09-0{i + 1}.json").write_text(json.dumps({"articles": [{"slug": f"mp{i}", "dedup_key": k}]}), encoding="utf-8")
+    c7 = {"c7": {"id": "c7", "dedup_key": "mp-7th", "url": "https://shop.asobistore.jp/feature/cg_mp", "found_at": "2026-09-17T07:00"}}
+    sl.link(c7, d, tmp)
+    check(c7["c7"]["dedup_key"] == "mp-7th", "3つの話題に使われたシリーズのページで、第7弾を過去の回につないだ")
+    # 選定の索引に既報(known)と過去の記事(prior)が付く。直近の見出しは面ごと
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        by_brand, _ = compose.write_plan_index(d, {k: {**v, "brand": "cg", "facts": ["f"]} for k, v in cands.items() if k != "sched-1"}, {})
+    finally:
+        compose.ROOT = saved
+    row = next(r for rs in by_brand.values() for r in rs if r["dedup_key"] == "dijimas-cg-2026")
+    check(row.get("known", {}).get("facts") == ["開催地: 沖縄県那覇市"] and row.get("prior", [{}])[0].get("edition") == "2026-09-17",
+          f"索引の既報・過去の記事: {row.get('known')} {row.get('prior')}")
+    check("2026-09-17 那覇市でじますコラボ決定" in sl.recent_titles(d, tmp).get("cg", []), "直近の見出しが面ごとに出ない")
+
+
 def test_withdrawal(tmp: Path):
     """取り下げ(編集長 2026-09-29「記事ごと削除でいいのでは」): 道具(withdraw.py)が記事・記録・目次・一面・号の数・未来の予約を
     1回で直し、lint の判定(edition_withdrawal_ok / promotion_ok / withdrawal_record_errors / load_withdrawn)がそれを認め、
@@ -2137,6 +2298,8 @@ def main() -> int:
     test_oncall_undo_merge()
     test_oncall_ensure_edition(tmp / "ee")
     test_withdrawal(tmp / "wd")
+    test_watch_pagination_and_batches(tmp / "wp")
+    test_storylink(tmp / "sl")
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()
     test_oncall_report_text(tmp / "rp")

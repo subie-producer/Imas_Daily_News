@@ -45,8 +45,9 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
 WATCH_BATCH = int(ENV.get("WATCH_BATCH", "12"))
-# 1回の実行で facts 化するバッチ数の上限(12件×4=48件)。実測の新着は1回あたり最大9件なので、超えるのは異常(当番へ)
-WATCH_MAX_BATCHES = int(ENV.get("WATCH_MAX_BATCHES", "4"))
+# facts 化のバッチを同時に走らせる数。新着は件数にかかわらず全部を処理する(上限で打ち切らない。編集長 2026-09-30
+# 「全部処理してねーじゃん」)。件数が増えても時間が線形に伸びないよう、バッチは並列に走らせる
+WATCH_PARALLEL = int(ENV.get("WATCH_PARALLEL", "3"))
 # 定点観測で facts 化のために渡すページ本文の量。切り詰めるとそのぶん facts が痩せる
 WATCH_BODY_CHARS = int(ENV.get("WATCH_BODY_CHARS", "20000"))
 # 探索(Luna)1クエリの打ち切り。codex には --max-budget-usd 相当が無いので、
@@ -198,25 +199,23 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
             stats[s["id"]] = {"error": str(e)[:120]}
             notify("collect", f"定点観測 {s['id']}: 一覧を読めなかった({str(e)[:160]})。既読は更新せず、次回やり直す", ok=False)
 
-    # 前回までに上限を超えて繰り越した新着(未処理の列)を**先に**処理する。繰り越した記事は既読にしていないが、一覧の上では
+    # 前回 facts 化の出力が読めずにやり直しになった新着(未処理の列)を**先に**処理する。それらは既読にしていないが、一覧の上では
     # 既読のページの奥に隠れるので、一覧を遡っても二度と見えない(監査指摘 r102)
     pending = [it for it in state.get("_pending", []) if isinstance(it, dict) and it.get("url")]
     pending_urls = {it["url"] for it in pending}
     # 一覧にもまだ出ている繰り越し記事も、未処理の列の位置(先頭)で処理する(一覧の位置だと、また上限の外に回る。監査指摘 r103)
     new_items = pending + [n for n in new_items if n["url"] not in pending_urls]
 
-    # 新着を facts 化。1回のプロンプトに載る量で WATCH_BATCH 件ずつに区切り、**全部を処理する**
-    # (12 件で打ち切って残りを次の実行(5〜6時間後)へ繰り越すと、その分だけ紙面が1日遅れる)。
-    # WATCH_MAX_BATCHES を超える分だけは次回へ繰り越し、異常として上げる
-    cands, attempted = [], set()
+    # 新着を facts 化。1回のプロンプトに載る量で WATCH_BATCH 件ずつに区切り、**件数にかかわらず全部を処理する**
+    # (打ち切って残りを次の実行(5〜6時間後)へ回すと、その分だけ紙面が1日遅れる)。バッチは WATCH_PARALLEL 本ずつ同時に走らせる。
+    # 次回へ回るのは、出力が読めなかったバッチ(やり直し)だけ
+    from concurrent.futures import ThreadPoolExecutor
     batches = [new_items[i:i + WATCH_BATCH] for i in range(0, len(new_items), WATCH_BATCH)]
-    for batch in batches[:WATCH_MAX_BATCHES]:
-        got, tried = facts_batch(batch, claude_call, state)
-        cands += got
-        attempted |= tried
-    if len(batches) > WATCH_MAX_BATCHES:
-        notify("collect", f"定点観測: 新着 {len(new_items)}件が1回で処理できる量({WATCH_BATCH}件×{WATCH_MAX_BATCHES})を超えた。"
-                          f"{len(new_items) - WATCH_BATCH * WATCH_MAX_BATCHES}件を次回へ繰り越す", ok=False)
+    cands, attempted = [], set()
+    with ThreadPoolExecutor(max_workers=max(1, WATCH_PARALLEL)) as ex:
+        for got, tried in ex.map(lambda b: facts_batch(b, claude_call, state), batches):
+            cands += got
+            attempted |= tried
     return finish_watch(new_items, attempted, found_by_source, stats, state, cands)
 
 
@@ -285,7 +284,7 @@ def finish_watch(new_items: list[dict], attempted: set[str], found_by_source: di
     for it in new_items:
         if it["url"] in attempted and it["url"] not in state.get(it["source_id"], []):
             state[it["source_id"]] = ([it["url"]] + state.get(it["source_id"], []))[:500]
-    # 繰り越した新着は未処理の列に残し、次回は一覧より先に処理する(一覧の上では既読のページの奥に隠れるため)
+    # やり直しになった新着(出力が読めなかったバッチ)は未処理の列に残し、次回は一覧より先に処理する(一覧の上では既読のページの奥に隠れるため)
     state["_pending"] = deferred
     # **ここでは保存しない。**既読の確定は candidates への書き込みと同じ成功境界にする。
     # 先に既読にすると、後段(正規化・verify・保存)が例外で落ちたとき、新着は既読なのに

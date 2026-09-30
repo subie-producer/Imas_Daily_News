@@ -1644,49 +1644,43 @@ def test_watch_pagination_and_batches(tmp: Path):
     listings = {"old": [(f"https://a.jp/n{i}", "") for i in range(30)] + [(u, "") for u in old_known],
                 "fresh": [(f"https://b.jp/f{i}", "") for i in range(20)]}
     calls, notes = [], []
-    saved = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.WATCH_MAX_BATCHES, collect.render_prompt)
+    saved = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt)
     try:
         collect.ROOT, collect.STATE_PATH = tmp, tmp / "watch-state.json"
         collect.list_source = lambda s, known, fetch=None: (listings[s["id"]], 1, False)
         collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
         collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
-        collect.WATCH_BATCH, collect.WATCH_MAX_BATCHES = 12, 4
+        collect.WATCH_BATCH = 12
         cands, info = collect.run_watch(lambda prompt, timeout=0: calls.append(prompt.count("### ")) or [])
-        check(calls == [12, 12, 6], f"facts 化のバッチ: {calls}(30件は 12・12・6 の3回で全部)")
+        check(sorted(calls) == [6, 12, 12], f"facts 化のバッチ: {calls}(30件は 12・12・6 の3回で全部)")
         check(info["new"] == 30 and info["deferred"] == 0, f"新着・繰り越し: {info['new']} {info['deferred']}")
         check(info["stats"]["fresh"].get("baseline") and info["stats"]["fresh"]["new"] == 0, f"初めて見る観測先を新着にした: {info['stats']['fresh']}")
         st = info["stats"]["_state"]
         check(len(st["fresh"]) == 20 and all(f"https://a.jp/n{i}" in st["old"] for i in range(30)), "既読の記録が足りない")
+        # 件数に上限は無い: 110件でも全部を処理して、何も繰り越さない(編集長 2026-09-30「全部処理してねーじゃん」)
         calls.clear()
-        collect.WATCH_MAX_BATCHES = 2
+        listings = {"old": [(f"https://a.jp/z{i}", "") for i in range(90)] + [(u, "") for u in old_known],
+                    "fresh": [(f"https://b.jp/z{i}", "") for i in range(20)]}
         (tmp / "watch-state.json").write_text(json.dumps({"old": old_known, "fresh": []}), encoding="utf-8")
         cands, info = collect.run_watch(lambda prompt, timeout=0: calls.append(prompt.count("### ")) or [])
-        check(calls == [12, 12], f"上限(2バッチ)を超えて処理した: {calls}")
-        check(info["deferred"] == 50 - 24 and any(not ok and "繰り越す" in m for m, ok in notes), f"上限を超えた分の繰り越しと異常: {info['deferred']} {notes[-1:]}")
-        # 次の実行: 一覧には既に見た記事しか出ない(繰り越した記事は既読のページの奥)。それでも未処理の列から全部を処理する(監査指摘 r102)
+        check(sum(calls) == 110 and len(calls) == 10 and info["deferred"] == 0 and not info["stats"]["_state"].get("_pending"),
+              f"新着を全部処理していない: {sum(calls)}件 / {len(calls)}回 / 繰り越し {info['deferred']}")
+        # 出力が読めなかったバッチだけが未処理の列に残り、次の実行では一覧に既に見た記事しか出なくても、列から先に処理する(監査指摘 r102・r103)
         st = info["stats"]["_state"]
-        check(len(st.get("_pending") or []) == 26, f"繰り越しが未処理の列に残っていない: {len(st.get('_pending') or [])}")
         (tmp / "watch-state.json").write_text(json.dumps(st), encoding="utf-8")
-        listings = {"old": [(u, "") for u in old_known], "fresh": []}
-        calls.clear()
-        collect.WATCH_MAX_BATCHES = 4
-        cands, info = collect.run_watch(lambda prompt, timeout=0: calls.append(prompt.count("### ")) or [])
+        listings = {"old": [("https://a.jp/P", "")] + [(u, "") for u in old_known], "fresh": []}
+        cands, info = collect.run_watch(lambda prompt, timeout=0: None)          # 読めない出力
         st = info["stats"]["_state"]
-        check(calls == [12, 12, 2] and not st.get("_pending"), f"繰り越した新着を次の実行で処理しない: {calls} 残り {len(st.get('_pending') or [])}")
-        check(all(f"https://a.jp/n{i}" in st["old"] for i in range(30)) and all(f"https://b.jp/f{i}" in st["fresh"] for i in range(20)),
-              "未処理の列から処理した記事を既読にしていない")
-        # 繰り越した記事が一覧にもまだ出ていて、一覧の新着が上限を超えるときも、繰り越しを先に処理する(監査指摘 r103)
-        st["_pending"] = [{"source_id": "old", "brand": "general", "url": "https://a.jp/P", "title": "", "source_type": "公式", "csr": False}]
+        check([it["url"] for it in st.get("_pending") or []] == ["https://a.jp/P"], f"読めなかった新着が未処理の列に残らない: {st.get('_pending')}")
         (tmp / "watch-state.json").write_text(json.dumps(st), encoding="utf-8")
-        listings = {"old": [(f"https://a.jp/m{i}", "") for i in range(48)] + [("https://a.jp/P", "")], "fresh": []}
-        seen_first = []
-        collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
-        cands, info = collect.run_watch(lambda prompt, timeout=0: seen_first.append(prompt.split("\n", 1)[0]) or [])
-        check(seen_first and "https://a.jp/P" in seen_first[0] and "https://a.jp/P" not in [it["url"] for it in info["stats"]["_state"]["_pending"]],
-              f"一覧にも出ている繰り越しを先に処理しない: {seen_first[:1]}")
+        listings = {"old": [(f"https://a.jp/m{i}", "") for i in range(30)] + [("https://a.jp/P", "")], "fresh": []}
+        firsts = []
+        cands, info = collect.run_watch(lambda prompt, timeout=0: firsts.append(prompt.split("\n", 1)[0]) or [])
+        st = info["stats"]["_state"]
+        check(any(f.startswith("### 1. https://a.jp/P") for f in firsts) and not st.get("_pending") and "https://a.jp/P" in st["old"],
+              f"未処理の列の新着を先に処理して既読にしない: {firsts[:3]} / 残り {st.get('_pending')}")
     finally:
-        (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.WATCH_MAX_BATCHES,
-         collect.render_prompt) = saved
+        (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt) = saved
 
 
 def test_storylink(tmp: Path):

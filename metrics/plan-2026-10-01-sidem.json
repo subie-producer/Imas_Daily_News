@@ -1,0 +1,31 @@
+{
+ "decisions": {
+  "topic-065-2026": {
+   "action": "article",
+   "angle": "オンライン受注締切(10/4 23:59)まであと3日、受注を呼びかけ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(9/22)と同一商品。新事実は乏しいが締切3日前のリマインドがトリガー。受注締切は roundup 対象外のため単独記事"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-topic-065-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "オンライン受注締切(10/4 23:59)まであと3日、受注を呼びかけ",
+    "lead_score": 10,
+    "dedup_key": "topic-065-2026",
+    "candidate_ids": [
+     "sched-2026-10-01-topic-065-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,95 @@
+{
+ "decisions": {
+  "765-961-xr-live-2027": {
+   "action": "article",
+   "angle": "公演ごとの演目タイトルと開場・開演時刻が判明(第二公演BE:STELLA OF ABSOLUTE、第三公演IF:THE DAY OF JUDGMENT)",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(9/30)の3公演発表に対し、第二・第三公演の個別演目名と開場/開演時刻が新規判明"
+  },
+  "producers-station-meeting-matsudo-2026": {
+   "action": "article",
+   "angle": "Pステ名古屋(10/18)・中野(10/3)で新たな交流会の開催が決定",
+   "rank": "small",
+   "lead_score": 8,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(9/17、松戸10/17)とは別会場・別日の新規開催決定"
+  },
+  "bandainamco-am-co-jp-32": {
+   "action": "article",
+   "angle": "TOURS公式大会「RHYTHM LIVE FESTIVAL 2027」始動、予選11/12〜12/3・決勝2027/1/16",
+   "rank": "medium",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新規発表。ティザーサイト公開、第2回公式大会の開催決定と日程判明"
+  },
+  "cg-million-coming-soon-2026-08-26": {
+   "action": "article",
+   "angle": "当選者の入金期限(10/4)まであと3日、入金を呼びかけ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。入金受付は9/30開始済みで読者が取れる手続きがあるため記事化"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-765-961-xr-live-2027",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "公演ごとの演目タイトルと開場・開演時刻が判明(第二公演BE:STELLA OF ABSOLUTE、第三公演IF:THE DAY OF JUDGMENT)",
+    "lead_score": 10,
+    "dedup_key": "765-961-xr-live-2027",
+    "candidate_ids": [
+     "202609300733-explore-0",
+     "202610010223-grok-19"
+    ]
+   },
+   {
+    "slug": "joint-producers-station-meeting-matsudo-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "Pステ名古屋(10/18)・中野(10/3)で新たな交流会の開催が決定",
+    "lead_score": 8,
+    "dedup_key": "producers-station-meeting-matsudo-2026",
+    "candidate_ids": [
+     "202609300733-explore-18"
+    ]
+   },
+   {
+    "slug": "joint-bandainamco-am-co-jp-32",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "TOURS公式大会「RHYTHM LIVE FESTIVAL 2027」始動、予選11/12〜12/3・決勝2027/1/16",
+    "lead_score": 65,
+    "dedup_key": "bandainamco-am-co-jp-32",
+    "candidate_ids": [
+     "202610010223-grok-51"
+    ]
+   },
+   {
+    "slug": "joint-cg-million-coming-soon-2026-08-26",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "当選者の入金期限(10/4)まであと3日、入金を呼びかけ",
+    "lead_score": 15,
+    "dedup_key": "cg-million-coming-soon-2026-08-26",
+    "candidate_ids": [
+     "sched-2026-10-01-cg-million-coming-soon-2026-08-26-締切前"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,98 @@
+{
+ "decisions": {
+  "x-com-1": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29号「IM＠S RADIO、神原大地ゲスト回を本日20時配信」で既報。当日(10/1)の新事実・トリガー無し"
+  },
+  "x-com-2": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じ放送回(9/29)の終了・アーカイブ公開。9/29号で報じた配信告知と同一施策で、10/1号向けの新トリガー無し"
+  },
+  "imas-radio-stamas-5th-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30号「スタマス5周年のIM＠S RADIO、10月13日特番」と同一内容。known 超の新事実・当日トリガー無し"
+  },
+  "x-com-5": {
+   "action": "article",
+   "angle": "アイマスMOR419(10/21放送)から765・秋月律子役の若林直美が新パーソナリティに就任、応援メール受付は10/8締切",
+   "rank": "small",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SideM側の新パーソナリティも同時発表だが主催・発信は765/SideM合同番組ではなく個別番組内の交代告知のため765面の単独記事として扱う。source準公式・unconfirmedの点は記事内で留保"
+  },
+  "765pro-solo-collection-dresscode-2026": {
+   "action": "article",
+   "angle": "765ASソロコレ「ドレスコード：最上級」予約締切(10/4)まであと3日、A-on STOREなどで受付中と案内",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/25既報の続報予約。締切前の案内トリガーがあり、読者が取れる手続き(予約)が現に継続中のため記事化"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-x-com-5",
+    "brand": "765",
+    "rank": "small",
+    "angle": "アイマスMOR419(10/21放送)から765・秋月律子役の若林直美が新パーソナリティに就任、応援メール受付は10/8締切",
+    "lead_score": 35,
+    "dedup_key": "x-com-5",
+    "candidate_ids": [
+     "202610010223-grok-24"
+    ]
+   },
+   {
+    "slug": "765-765pro-solo-collection-dresscode-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "765ASソロコレ「ドレスコード：最上級」予約締切(10/4)まであと3日、A-on STOREなどで受付中と案内",
+    "lead_score": 10,
+    "dedup_key": "765pro-solo-collection-dresscode-2026",
+    "candidate_ids": [
+     "sched-2026-10-01-765pro-solo-collection-dresscode-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "x-com-1",
+    "reason": "既報",
+    "note": "9/29号「IM＠S RADIO、神原大地ゲスト回を本日20時配信」で既報。当日(10/1)の新事実・トリガー無し"
+   },
+   {
+    "dedup_key": "x-com-2",
+    "reason": "既報",
+    "note": "同じ放送回(9/29)の終了・アーカイブ公開。9/29号で報じた配信告知と同一施策で、10/1号向けの新トリガー無し"
+   },
+   {
+    "dedup_key": "imas-radio-stamas-5th-2026",
+    "reason": "既報",
+    "note": "9/30号「スタマス5周年のIM＠S RADIO、10月13日特番」と同一内容。known 超の新事実・当日トリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

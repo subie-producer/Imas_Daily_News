@@ -1,0 +1,134 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-01T02:24:22+09:00",
+   "edition": "2026-10-01",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 346,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 67,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 1,
+    "explore:million": 0,
+    "explore:shiny": 5,
+    "explore:sidem": 0,
+    "explore:gakuen": 8,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 3,
+    "grok:765as": 6,
+    "grok:cinderella": 11,
+    "grok:million": 12,
+    "grok:shiny": 10,
+    "grok:sidem": 0,
+    "grok:gakuen": 8,
+    "grok:dsva": 7,
+    "grok:joint-other": 1,
+    "grok:trend": 5
+   },
+   "normalized": 70,
+   "added": 65,
+   "verify": {
+    "confirmed": 51,
+    "unconfirmed": 19,
+    "failed": 0
+   },
+   "duration_s": 1425
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-01T04:03:25+09:00",
+   "edition": "2026-10-01",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 41,
+   "written": 38,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 103,
+    "covered": 103,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "shiny-noctchill-live-2027"
+   ],
+   "stages_min": {
+    "選定": 6.455177466074626,
+    "執筆": 6.952752482891083,
+    "出典の判定": 0.9844231367111206,
+    "組版": 3.570581388473511,
+    "校閲": 2.8307815114657084,
+    "校閲1波": 2.8307815114657084
+   },
+   "target_min": 60,
+   "over_target": true,
+   "aborted": [
+    "joint-765-961-xr-live-2027",
+    "joint-cg-million-coming-soon-2026-08-26"
+   ],
+   "duration_s": 3767
+  }
+ ]
+}

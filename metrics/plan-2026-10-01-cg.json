@@ -1,0 +1,373 @@
+{
+ "decisions": {
+  "pazudora-cinderella-special-stage-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "パズドラコラボ攻略ガイド(game8)の更新のみ。新発表・締切等の当日トリガーなし"
+  },
+  "pazudora-cinderella-special-stage-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同上コラボのスペシャルステージ2攻略ガイド更新のみ。トリガーなし"
+  },
+  "pazudora-cinderella-collaboration-app-store-ranking-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "『週末App Store首位』は9/28号で既報済み。新情報なし"
+  },
+  "official-shop-kuji-stock-2026-08-30": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "8/31号既報の在庫確認記事の定期更新。販売開始・終了等のトリガーなし"
+  },
+  "cg-cinderella-15th-anniversary-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "一般会員先行受付開始(9/30 12:00)は9/30号で既報。本日は新事実・締切等のトリガーなし"
+  },
+  "cg-memory-pict-7th": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注開始(9/29)は9/30号で既報。グッズ内容の補足のみで新トリガーなし"
+  },
+  "cg-puzzle-and-dragons-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "キャラ・ガチャ詳細は9/26・27号の『コラボ詳細』記事で既報"
+  },
+  "cg-xr-live-apple-of-my-ai-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "開催決定・最速先行受付は9/29号で既報。出演者・券種の補足のみ"
+  },
+  "puzzle-dragons-idolmaster-colosseum1-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "既報コラボ(アイマスコロシアム1)の攻略ガイド更新のみ"
+  },
+  "sweet-soar-anniversary-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "cg-xr-live-apple-of-my-ai-2027と同一の山形XRライブ。8周年に絡めた言及のみで新トリガーなし"
+  },
+  "shop-asobistore-jp-6": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "cg-memory-pict-7thと同一商品の受注開始告知(ソース違いのみ)"
+  },
+  "idolmaster-official-jp-8": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "cg-cinderella-15th-anniversary-party-2026と同一の一般会員先行受付開始"
+  },
+  "youtube-com-9": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「クロス×オーバー！」MV公開(9/30 21時)は9/30号で既報"
+  },
+  "members-k-arena-club-com-10": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "cg-cinderella-15th-anniversary-party-2026と同一公演のチケット窓口追加(Kアリーナクラブ会員抽選)。同時開始で既報扱い"
+  },
+  "shop-columbia-jp-11": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "「クロス×オーバー！」9/30発売は9/26・27号で既報。発売日は前日で当日トリガーなし"
+  },
+  "x-com-12": {
+   "action": "article",
+   "angle": "新曲「Neon Sphere」の配信が開始",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-13": {
+   "action": "article",
+   "angle": "10月のガシャ(スカウト)開催スケジュールを公開",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-14": {
+   "action": "article",
+   "angle": "10月の「SSレアアイドル勧誘チャレンジ」開始、期間中はプラチナチャレンジパスも登場",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "x-com-15のプラチナチャレンジパス情報を統合"
+  },
+  "x-com-15": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-14",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SSレア勧誘チャレンジ開始と同じ施策の補足情報"
+  },
+  "x-com-16": {
+   "action": "article",
+   "angle": "10月のスペシャルガシャセット販売を開始",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-gacha-festival-2026-08": {
+   "action": "article",
+   "angle": "文化祭テーマのオンラインくじ、本日11:59で販売終了",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-rose-tea-parlor-2026-nagoya": {
+   "action": "article",
+   "angle": "Rose Tea Parlorコラボカフェ、名古屋栄店が本日開幕(〜10/5)",
+   "rank": "small",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-x-com-12",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "新曲「Neon Sphere」の配信が開始",
+    "lead_score": 10,
+    "dedup_key": "x-com-12",
+    "candidate_ids": [
+     "202610010223-grok-31"
+    ]
+   },
+   {
+    "slug": "cg-x-com-13",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "10月のガシャ(スカウト)開催スケジュールを公開",
+    "lead_score": 5,
+    "dedup_key": "x-com-13",
+    "candidate_ids": [
+     "202610010223-grok-32"
+    ]
+   },
+   {
+    "slug": "cg-x-com-14",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "10月の「SSレアアイドル勧誘チャレンジ」開始、期間中はプラチナチャレンジパスも登場",
+    "lead_score": 10,
+    "dedup_key": "x-com-14",
+    "candidate_ids": [
+     "202610010223-grok-33",
+     "202610010223-grok-34"
+    ]
+   },
+   {
+    "slug": "cg-x-com-16",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "10月のスペシャルガシャセット販売を開始",
+    "lead_score": 5,
+    "dedup_key": "x-com-16",
+    "candidate_ids": [
+     "202610010223-grok-35"
+    ]
+   },
+   {
+    "slug": "cg-gacha-festival-2026-08",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "文化祭テーマのオンラインくじ、本日11:59で販売終了",
+    "lead_score": 15,
+    "dedup_key": "cg-gacha-festival-2026-08",
+    "candidate_ids": [
+     "sched-2026-10-01-cg-gacha-festival-2026-08-終了"
+    ]
+   },
+   {
+    "slug": "cg-rose-tea-parlor-2026-nagoya",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Rose Tea Parlorコラボカフェ、名古屋栄店が本日開幕(〜10/5)",
+    "lead_score": 35,
+    "dedup_key": "cg-rose-tea-parlor-2026-nagoya",
+    "candidate_ids": [
+     "sched-2026-10-01-cg-rose-tea-parlor-2026-nagoya-開幕"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "pazudora-cinderella-special-stage-2026",
+    "reason": "既報",
+    "note": "パズドラコラボ攻略ガイド(game8)の更新のみ。新発表・締切等の当日トリガーなし"
+   },
+   {
+    "dedup_key": "pazudora-cinderella-special-stage-2-2026",
+    "reason": "既報",
+    "note": "同上コラボのスペシャルステージ2攻略ガイド更新のみ。トリガーなし"
+   },
+   {
+    "dedup_key": "pazudora-cinderella-collaboration-app-store-ranking-2026",
+    "reason": "既報",
+    "note": "『週末App Store首位』は9/28号で既報済み。新情報なし"
+   },
+   {
+    "dedup_key": "official-shop-kuji-stock-2026-08-30",
+    "reason": "既報",
+    "note": "8/31号既報の在庫確認記事の定期更新。販売開始・終了等のトリガーなし"
+   },
+   {
+    "dedup_key": "cg-cinderella-15th-anniversary-party-2026",
+    "reason": "既報",
+    "note": "一般会員先行受付開始(9/30 12:00)は9/30号で既報。本日は新事実・締切等のトリガーなし"
+   },
+   {
+    "dedup_key": "cg-memory-pict-7th",
+    "reason": "既報",
+    "note": "受注開始(9/29)は9/30号で既報。グッズ内容の補足のみで新トリガーなし"
+   },
+   {
+    "dedup_key": "cg-puzzle-and-dragons-collab-2026",
+    "reason": "既報",
+    "note": "キャラ・ガチャ詳細は9/26・27号の『コラボ詳細』記事で既報"
+   },
+   {
+    "dedup_key": "cg-xr-live-apple-of-my-ai-2027",
+    "reason": "既報",
+    "note": "開催決定・最速先行受付は9/29号で既報。出演者・券種の補足のみ"
+   },
+   {
+    "dedup_key": "puzzle-dragons-idolmaster-colosseum1-2026",
+    "reason": "既報",
+    "note": "既報コラボ(アイマスコロシアム1)の攻略ガイド更新のみ"
+   },
+   {
+    "dedup_key": "sweet-soar-anniversary-2026",
+    "reason": "重複",
+    "note": "cg-xr-live-apple-of-my-ai-2027と同一の山形XRライブ。8周年に絡めた言及のみで新トリガーなし"
+   },
+   {
+    "dedup_key": "shop-asobistore-jp-6",
+    "reason": "重複",
+    "note": "cg-memory-pict-7thと同一商品の受注開始告知(ソース違いのみ)"
+   },
+   {
+    "dedup_key": "idolmaster-official-jp-8",
+    "reason": "重複",
+    "note": "cg-cinderella-15th-anniversary-party-2026と同一の一般会員先行受付開始"
+   },
+   {
+    "dedup_key": "youtube-com-9",
+    "reason": "既報",
+    "note": "「クロス×オーバー！」MV公開(9/30 21時)は9/30号で既報"
+   },
+   {
+    "dedup_key": "members-k-arena-club-com-10",
+    "reason": "重複",
+    "note": "cg-cinderella-15th-anniversary-party-2026と同一公演のチケット窓口追加(Kアリーナクラブ会員抽選)。同時開始で既報扱い"
+   },
+   {
+    "dedup_key": "shop-columbia-jp-11",
+    "reason": "既報",
+    "note": "「クロス×オーバー！」9/30発売は9/26・27号で既報。発売日は前日で当日トリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

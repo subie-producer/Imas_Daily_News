@@ -55,5 +55,33 @@
   "via": "grok",
   "verify": "unconfirmed",
   "src_candidate_id": "202609290228-grok-64"
+ },
+ {
+  "id": "sched-2026-10-03-producers-station-nagoya-producer-meeting-2026-開始",
+  "dedup_key": "producers-station-nagoya-producer-meeting-2026",
+  "brand": "joint",
+  "subject": "Pステ中野ツアマス交流会",
+  "kind": "開始",
+  "note": "Pステ中野でツアマス交流会に参加できる",
+  "reserved_on": "2026-10-01",
+  "title": "Pステ名古屋でプロデューサー交流会",
+  "url": "https://bandainamco-am.co.jp/others/idolmaster/producers_station.html",
+  "source_type": "準公式",
+  "facts": [
+   "10月18日(日)にPステ名古屋で「プロデューサー交流会」を開催する",
+   "エンゲージメント: 中",
+   "10月3日(土)にPステ中野で「Pステ中野ツアマス交流会」を開催する",
+   "2026年10月18日(日)、Pステ名古屋で「プロデューサー交流会」を開催する。",
+   "2026年10月3日(土)、Pステ中野で「Pステ中野ツアマス交流会」を開催する。",
+   "10月18日(日)にPステ名古屋で「プロデューサー交流会」を開催する。",
+   "会場はnamco名古屋駅前店内（愛知県名古屋市中村区椿町6-6 ニッセイ名古屋駅西ビル別館B1F）。",
+   "エンゲージメント: 低",
+   "10月3日(土)にPステ中野で「Pステ中野ツアマス交流会」を開催する。",
+   "会場はnamco中野店内（東京都中野区中野5-52-15 中野ブロードウェイ別館）。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609300733-explore-18",
+  "event_date": "2026-10-18"
  }
 ]

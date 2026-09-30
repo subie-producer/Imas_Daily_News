@@ -394,5 +394,63 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609290228-grok-23"
+ },
+ {
+  "id": "sched-2026-10-04-x-com-20-締切",
+  "dedup_key": "x-com-20",
+  "brand": "dsva",
+  "subject": "灯里愛夏 BIRTHDAY ONLINE LIVE 延期公演",
+  "kind": "締切",
+  "note": "現地LV先行抽選の申込締切",
+  "reserved_on": "2026-10-01",
+  "title": "灯里愛夏 BIRTHDAY ONLINE LIVE 2026 延期公演（現地ライブビューイング先行抽選の受付案内）",
+  "url": "https://x.com/valiv_official/status/2105221124875534549",
+  "source_type": "公式",
+  "facts": [
+   "掲載日: 2026-09-30 09:00:03 GMT（日本時間 2026-09-30 18:00:03）",
+   "催しの日: 投稿本文には公演日の記載なし。投稿が「イベント詳細」として示すページに、公演日時の記載あり（下記）",
+   "締切: 投稿本文は「先行抽選受付は10/4(日)まで」",
+   "投稿の見出し: 現地LV抽選申込受付中",
+   "対象: 灯里愛夏 BIRTHDAY ONLINE LIVE 2026 延期公演",
+   "限定グッズ「ネオ・ハラジュクTシャツ」とお見送り会付きライブビューイング",
+   "現地LVチケット先行抽選: https://livepocket.jp/e/va-liv_manaka_bd2026_re",
+   "配信チケット: https://asobistage.asobistore.jp/event/valiv_bd2026_manaka/ticket",
+   "イベント詳細: https://idolmaster-official.jp/news/01_19896",
+   "#ヴイアラ",
+   "#愛夏誕生祭2026",
+   "告知ページ https://idolmaster-official.jp/news/01_19896 の掲載表記は 2026.09.21。ページ本文で確認した内容は次のとおり。"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610010223-grok-39",
+  "event_date": "2026-10-28",
+  "deadline": "2026-09-21"
+ },
+ {
+  "id": "sched-2026-10-04-x-com-26-締切",
+  "dedup_key": "x-com-26",
+  "brand": "gaku",
+  "subject": "雨夜燕3rdシングル予約締切",
+  "kind": "締切",
+  "note": "ASOBI STOREでの雨夜燕3rdシングル予約受付が終了する",
+  "reserved_on": "2026-10-01",
+  "title": "雨夜 燕 3rd Single 試聴動画",
+  "url": "https://x.com/gkmas_official/status/2105228662136283353",
+  "source_type": "公式",
+  "facts": [
+   "投稿日時: 2026-09-30 18:30 JST（Wed, 30 Sep 2026 09:30:00 GMT）",
+   "催しの日: 投稿本文に発売日・試聴公開日の日付記載なし（この投稿が試聴動画公開の告知）",
+   "締切: ASOBI STOREでのご予約は10/4（日）まで",
+   "雨夜 燕 3rd Single の試聴動画を公開した告知",
+   "ジャケットは完全新規描き下ろし",
+   "CD限定でソロ歌唱音源を収録",
+   "ASOBI STOREでのご予約は10/4（日）まで",
+   "予約ページとして本文に記載された url: https://shop.asobistore.jp/product/catalog/n/30/t/category/ca/gkms_tbm_cd/s/older#a1",
+   "ハッシュタグ: #学マス",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610010223-grok-45"
  }
 ]

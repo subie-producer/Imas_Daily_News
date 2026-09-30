@@ -344,5 +344,33 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609300231-grok-47"
+ },
+ {
+  "id": "sched-2026-10-11-x-com-42-締切",
+  "dedup_key": "x-com-42",
+  "brand": "million",
+  "subject": "9周年アクリルパネル受注",
+  "kind": "締切",
+  "note": "アクリルパネル受注の最終日",
+  "reserved_on": "2026-10-01",
+  "title": "ミリシタ9周年イラスト公式グッズ アクリルパネル",
+  "url": "https://x.com/imasml_765PRO/status/2105236221676990677",
+  "source_type": "公式",
+  "facts": [
+   "掲載日: 2026-09-30",
+   "投稿日時: 2026-09-30 10:00:03 GMT",
+   "締切: 受注は10/11(日)まで",
+   "内容:",
+   "#ミリシタ 9周年イラスト 公式グッズ受注中",
+   "9周年キービジュアルをあしらったアクリルパネルが新登場",
+   "どこに飾っても華やかな存在感抜群のアイテム",
+   "🛒受注は10/11(日)まで",
+   "告知リンク: https://shop.asobistore.jp/product/catalog/s/older/t/category/ca/mltd9th_goods/n/120#a1",
+   "# @medicos_et_02",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610010223-grok-61"
  }
 ]

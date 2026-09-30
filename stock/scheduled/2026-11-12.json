@@ -59,5 +59,35 @@
   "src_candidate_id": "202609240734-explore-6",
   "event_date": "2027-01-27",
   "deadline": "2026-11-15"
+ },
+ {
+  "id": "sched-2026-11-12-bandainamco-am-co-jp-32-開始",
+  "dedup_key": "bandainamco-am-co-jp-32",
+  "brand": "joint",
+  "subject": "RHYTHM LIVE FESTIVAL 2027予選",
+  "kind": "開始",
+  "note": "ツアマス公式大会の予選エントリーが始まる",
+  "reserved_on": "2026-10-01",
+  "title": "『アイドルマスター TOURS』RHYTHM LIVE FESTIVAL 2027 開催決定",
+  "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/rhythmlivefestival2027/",
+  "source_type": "公式",
+  "facts": [
+   "公式投稿: https://x.com/TOURS_imas/status/2105221770676756521",
+   "掲載日: ティザーサイト内に独立した掲載日の表記は確認できない。公式投稿のタイムスタンプは 2026-09-30 09:02:37 GMT（日本時間 2026-09-30 18:02:37）。投稿文は「大会のティザーサイト公開中」「詳細は後日お知らせいたします」",
+   "催しの日: 予選会期 2026年11月12日～12月3日。決勝大会 2027年1月16日(土)",
+   "締切: ページに「締切」というラベルの日付はない。予選会期の終わりは 12月3日",
+   "告知の中身（ティザーサイトの本文）:",
+   "『アイドルマスター TOURS』の第2回リズムライブの公式大会",
+   "大会名称: 『アイドルマスター TOURS』RHYTHM LIVE FESTIVAL 2027",
+   "予選を勝ち抜いたプロデューサーは、決勝大会に進み腕前を競う",
+   "予選会期: 2026年11月12日～12月3日",
+   "部門: マスター部門（難易度：MASTER）",
+   "部門: チャレンジ部門（難易度：VETERAN）",
+   "2部門で開催"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610010223-grok-51",
+  "event_date": "2026-11-12"
  }
 ]

@@ -163,3 +163,11 @@
   brand: sidem
   subject: SideM Mフェス2026テーマソングCD予約・公開録音
   watch: CD発売日の年・価格・収録曲・応募シリアルの応募期間(判明次第 triggers へ)
+- dedup_key: gaku-bigface-plush-vol4-2026
+  brand: gaku
+  subject: 学マスBIGフェイスぬいぐるみvol.4
+  watch: 2027年2月内の正式発売日(判明次第 triggers へ)
+- dedup_key: tsukimura-temari-ameagari-iris-figure
+  brand: gaku
+  subject: 月村手毬「雨上がりのアイリス」フィギュア
+  watch: 2027年6月内の正式発売日(判明次第 triggers へ)

@@ -291,5 +291,58 @@
   "verify": "confirmed",
   "src_candidate_id": "202609290228-explore-5",
   "deadline": "2026-10-18"
+ },
+ {
+  "id": "sched-2026-10-18-producers-station-nagoya-producer-meeting-2026-開始",
+  "dedup_key": "producers-station-nagoya-producer-meeting-2026",
+  "brand": "joint",
+  "subject": "Pステ名古屋プロデューサー交流会",
+  "kind": "開始",
+  "note": "Pステ名古屋でプロデューサー交流会に参加できる",
+  "reserved_on": "2026-10-01",
+  "title": "Pステ名古屋でプロデューサー交流会",
+  "url": "https://bandainamco-am.co.jp/others/idolmaster/producers_station.html",
+  "source_type": "準公式",
+  "facts": [
+   "10月18日(日)にPステ名古屋で「プロデューサー交流会」を開催する",
+   "エンゲージメント: 中",
+   "10月3日(土)にPステ中野で「Pステ中野ツアマス交流会」を開催する",
+   "2026年10月18日(日)、Pステ名古屋で「プロデューサー交流会」を開催する。",
+   "2026年10月3日(土)、Pステ中野で「Pステ中野ツアマス交流会」を開催する。",
+   "10月18日(日)にPステ名古屋で「プロデューサー交流会」を開催する。",
+   "会場はnamco名古屋駅前店内（愛知県名古屋市中村区椿町6-6 ニッセイ名古屋駅西ビル別館B1F）。",
+   "エンゲージメント: 低",
+   "10月3日(土)にPステ中野で「Pステ中野ツアマス交流会」を開催する。",
+   "会場はnamco中野店内（東京都中野区中野5-52-15 中野ブロードウェイ別館）。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609300733-explore-18",
+  "event_date": "2026-10-18"
+ },
+ {
+  "id": "sched-2026-10-18-shiny-pioneer-impact-3dmv-2026-締切前",
+  "dedup_key": "shiny-pioneer-impact-3dmv-2026",
+  "brand": "shiny",
+  "subject": "「Pioneer Impact」関連キャンペーン",
+  "kind": "締切前",
+  "note": "ジュエルセール第2弾など関連キャンペーン終了まであと3日",
+  "reserved_on": "2026-10-01",
+  "title": "「Pioneer Impact」3DMV公開",
+  "url": "https://x.com/imassc_prism",
+  "source_type": "公式",
+  "facts": [
+   "『Pioneer Impact』の3DMVが公開された。",
+   "出演ユニットはアンティーカ×シーズ。",
+   "エンゲージメント: 中",
+   "新発光システムに対応した楽曲が追加された。",
+   "対応衣装を着用し、MV編成画面で「描画設定」を「HDR」にすると衣装が発光する。",
+   "デュアラブルインパクトリリース記念の「1回限定！ジュエルセール第2弾」が開催中。",
+   "ASOBI STORE限定で販売されている。",
+   "開催期間: 10/21 11:59まで"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609301834-explore-3"
  }
 ]

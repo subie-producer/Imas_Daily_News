@@ -1,0 +1,295 @@
+{
+ "decisions": {
+  "ittan-aishite-release-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30既報と同内容(一旦愛して♡9/27配信ほか)。新事実・当日トリガー無し"
+  },
+  "linkage-masterpiece-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-kyoushi-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じリンケージ施策、本日14:59終了で統合"
+  },
+  "x-com-34": {
+   "action": "article",
+   "angle": "新イベント『プラチナスターチューン~ライラックにつつまれて~』が本日15時開幕(詳細は後日告知)",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-35": {
+   "action": "roundup",
+   "angle": "交換所に過去イベント『Arrive You』の衣装を追加",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-36": {
+   "action": "roundup",
+   "angle": "交換所キャンペーンで衣装交換に必要なプラチナスターピースを15個→10個に緩和",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-37": {
+   "action": "article",
+   "angle": "プレミアムパスDX/DX+の有効期限は本日23:59、継続利用は再購入が必要と案内",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-38": {
+   "action": "roundup",
+   "angle": "プレミアムメダルショップに琴葉・響・千鶴・エレナのノーツ&ボイスを追加",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14th-emily-lapel-pin-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30既報と同内容(受注10/11まで)。新事実・当日トリガー無し"
+  },
+  "x-com-40": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "使用期限は9/30で発行日10/1より前に終了済み、当日のトリガー無し"
+  },
+  "x-com-41": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "直近記事(9/30)と同一施策(9周年パーカー受注、10/12締切)。新事実・当日トリガー無し"
+  },
+  "x-com-42": {
+   "action": "article",
+   "angle": "ミリシタ9周年イラストのアクリルパネル受注開始、10/11締切",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-43": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "medicos-e-net-44",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一POP UP SHOPの二次情報、公式サイト記事に統合"
+  },
+  "medicos-e-net-44": {
+   "action": "article",
+   "angle": "『Cyber Planet POP UP SHOP』開催決定、東京10/8-20・大阪11/7-15、等身大パネル応募キャンペーンも",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14th-day2-singles-order-2026": {
+   "action": "article",
+   "angle": "14th新曲3作の受注締切まであと3日(10/4まで)、各商品の品番・価格・収録内容と購入上限3枚を案内",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-42": {
+   "action": "article",
+   "angle": "中秋の名月スペシャルログインボーナス、本日がジュエル受け取りの最終日",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-linkage-kyoushi-2026-09": {
+   "action": "article",
+   "angle": "リンケージ『やっぱり教え子たちが俺争奪戦中な件について。編』、本日14:59で限定ガシャ・毎日無料10連・限定マスターピースセットが一斉終了",
+   "rank": "large",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "10-ssr-2": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-linkage-kyoushi-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一リンケージ施策の毎日無料10連ガシャ情報、本体記事に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-x-com-34",
+    "brand": "million",
+    "rank": "small",
+    "angle": "新イベント『プラチナスターチューン~ライラックにつつまれて~』が本日15時開幕(詳細は後日告知)",
+    "lead_score": 20,
+    "dedup_key": "x-com-34",
+    "candidate_ids": [
+     "202610010223-grok-53"
+    ]
+   },
+   {
+    "slug": "million-x-com-37",
+    "brand": "million",
+    "rank": "small",
+    "angle": "プレミアムパスDX/DX+の有効期限は本日23:59、継続利用は再購入が必要と案内",
+    "lead_score": 10,
+    "dedup_key": "x-com-37",
+    "candidate_ids": [
+     "202610010223-grok-56"
+    ]
+   },
+   {
+    "slug": "million-x-com-42",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ9周年イラストのアクリルパネル受注開始、10/11締切",
+    "lead_score": 10,
+    "dedup_key": "x-com-42",
+    "candidate_ids": [
+     "202610010223-grok-61"
+    ]
+   },
+   {
+    "slug": "million-medicos-e-net-44",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "『Cyber Planet POP UP SHOP』開催決定、東京10/8-20・大阪11/7-15、等身大パネル応募キャンペーンも",
+    "lead_score": 25,
+    "dedup_key": "medicos-e-net-44",
+    "candidate_ids": [
+     "202610010223-grok-63",
+     "202610010223-grok-62"
+    ]
+   },
+   {
+    "slug": "million-14th-day2-singles-order-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "14th新曲3作の受注締切まであと3日(10/4まで)、各商品の品番・価格・収録内容と購入上限3枚を案内",
+    "lead_score": 15,
+    "dedup_key": "million-14th-day2-singles-order-2026",
+    "candidate_ids": [
+     "sched-2026-10-01-million-14th-day2-singles-order-2026-締切前"
+    ]
+   },
+   {
+    "slug": "million-42-cb6d98",
+    "brand": "million",
+    "rank": "small",
+    "angle": "中秋の名月スペシャルログインボーナス、本日がジュエル受け取りの最終日",
+    "lead_score": 10,
+    "dedup_key": "million-42",
+    "candidate_ids": [
+     "sched-2026-10-01-million-42-締切"
+    ]
+   },
+   {
+    "slug": "million-linkage-kyoushi-2026-09",
+    "brand": "million",
+    "rank": "large",
+    "angle": "リンケージ『やっぱり教え子たちが俺争奪戦中な件について。編』、本日14:59で限定ガシャ・毎日無料10連・限定マスターピースセットが一斉終了",
+    "lead_score": 75,
+    "dedup_key": "million-linkage-kyoushi-2026-09",
+    "candidate_ids": [
+     "sched-2026-10-01-million-linkage-kyoushi-2026-09-終了",
+     "202610010223-grok-52",
+     "sched-2026-10-01-linkage-masterpiece-set-2026-終了",
+     "sched-2026-10-01-10-ssr-2-終了"
+    ]
+   },
+   {
+    "slug": "million-ops-roundup",
+    "brand": "million",
+    "rank": "roundup",
+    "angle": "交換所に過去イベント『Arrive You』の衣装を追加",
+    "lead_score": 0,
+    "dedup_key": "x-com-35",
+    "candidate_ids": [
+     "202610010223-grok-54",
+     "202610010223-grok-55",
+     "202610010223-grok-57"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "ittan-aishite-release-2026",
+    "reason": "既報",
+    "note": "9/30既報と同内容(一旦愛して♡9/27配信ほか)。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "million-14th-emily-lapel-pin-2026",
+    "reason": "既報",
+    "note": "9/30既報と同内容(受注10/11まで)。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "x-com-40",
+    "reason": "その他",
+    "note": "使用期限は9/30で発行日10/1より前に終了済み、当日のトリガー無し"
+   },
+   {
+    "dedup_key": "x-com-41",
+    "reason": "既報",
+    "note": "直近記事(9/30)と同一施策(9周年パーカー受注、10/12締切)。新事実・当日トリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

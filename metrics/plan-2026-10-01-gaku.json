@@ -1,0 +1,363 @@
+{
+ "decisions": {
+  "gaku-jio-seina-little-devil-gacha-2026": {
+   "action": "article",
+   "angle": "CD第2弾の予約締切(11/8)・価格(3,500円)・収録曲(全15曲、ソロフルver.13名分)など詳細判明",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/29既報のCD発売決定に続く詳細情報"
+  },
+  "tsukimura-temari-ameagari-iris-figure": {
+   "action": "article",
+   "angle": "月村手毬「雨上がりのアイリス」フィギュア、予約受付開始(2027年6月発売・22,000円)",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-agitato-lilja-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30既報(リーリヤガシャ開幕)と同一、新事実・当日トリガーなし"
+  },
+  "gaku-hatsuboshi-hr-12-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30既報(HR#12急上昇入り)と同一事象、新事実なし"
+  },
+  "gaku-bigface-plush-vol4-2026": {
+   "action": "article",
+   "angle": "BIGフェイスぬいぐるみvol.4、予約受付中(2027年2月発売・4,620円)",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-hatsuboshi-hr-12-trend-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30既報のHR#12急上昇と同一、knownを超える新事実なし"
+  },
+  "gaku-kaisou-hr-12-2026-09-28": {
+   "action": "article",
+   "angle": "新曲「Agitato」、本日10/1よりサブスク配信・DL販売開始。前夜MV公開、リーリヤガシャも開催中",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-24": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30既報のH.I.F記念ジュエル配布(10/1 4:59締切)と同一"
+  },
+  "x-com-25": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30既報の9月ミッションパス期限(10/1 4:59)と同一"
+  },
+  "x-com-26": {
+   "action": "article",
+   "angle": "雨夜燕3rdシングル試聴動画を公開、ASOBI STORE予約は10/4まで",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-27": {
+   "action": "article",
+   "angle": "初星学園放送部、本日21時から放送(村田綾香出演)・放送後アーカイブも公開",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-28": {
+   "action": "article",
+   "angle": "初星学園放送部、10/7放送回のゲストに春咲暖(秦谷美鈴役)",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-29": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-27",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日の初星学園放送部アーカイブ公開、放送開始の記事に統合"
+  },
+  "x-com-30": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-kaisou-hr-12-2026-09-28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Agitato MV公式公開は配信開始記事に統合"
+  },
+  "x-com-31": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファンによる3D MV動画の個人投稿、単体記事にしない"
+  },
+  "x-com-56": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "恋愛描写をめぐる論争的投稿、炎上的話題のため不採用"
+  },
+  "x-com-57": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "MV制作担当者個人の投稿、関係者の動向"
+  },
+  "x-com-58": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "MV参加者個人の投稿"
+  },
+  "x-com-59": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "MV制作担当者個人の投稿"
+  },
+  "gaku-gold-rush-ch69-44go-2026": {
+   "action": "article",
+   "angle": "休載していたGOLD RUSH第69話、本日発売の週刊少年チャンピオン44号に掲載",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "agitato-liiriya-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-kaisou-hr-12-2026-09-28",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "リーリヤガシャ継続中の詳細、Agitato配信開始記事に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-jio-seina-little-devil-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "CD第2弾の予約締切(11/8)・価格(3,500円)・収録曲(全15曲、ソロフルver.13名分)など詳細判明",
+    "lead_score": 10,
+    "dedup_key": "gaku-jio-seina-little-devil-gacha-2026",
+    "candidate_ids": [
+     "202609300733-explore-10"
+    ]
+   },
+   {
+    "slug": "gaku-tsukimura-temari-ameagari-iris-figure",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "月村手毬「雨上がりのアイリス」フィギュア、予約受付開始(2027年6月発売・22,000円)",
+    "lead_score": 15,
+    "dedup_key": "tsukimura-temari-ameagari-iris-figure",
+    "candidate_ids": [
+     "202609300733-explore-11"
+    ]
+   },
+   {
+    "slug": "gaku-bigface-plush-vol4-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "BIGフェイスぬいぐるみvol.4、予約受付中(2027年2月発売・4,620円)",
+    "lead_score": 15,
+    "dedup_key": "gaku-bigface-plush-vol4-2026",
+    "candidate_ids": [
+     "202609301235-watch-1"
+    ]
+   },
+   {
+    "slug": "gaku-kaisou-hr-12-2026-09-28",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "新曲「Agitato」、本日10/1よりサブスク配信・DL販売開始。前夜MV公開、リーリヤガシャも開催中",
+    "lead_score": 85,
+    "dedup_key": "gaku-kaisou-hr-12-2026-09-28",
+    "candidate_ids": [
+     "202609301834-explore-7",
+     "sched-2026-10-01-gaku-kaisou-hr-12-2026-09-28-発売",
+     "202610010223-grok-49",
+     "sched-2026-10-01-agitato-liiriya-gasha-2026-発売"
+    ]
+   },
+   {
+    "slug": "gaku-x-com-26",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "雨夜燕3rdシングル試聴動画を公開、ASOBI STORE予約は10/4まで",
+    "lead_score": 10,
+    "dedup_key": "x-com-26",
+    "candidate_ids": [
+     "202610010223-grok-45"
+    ]
+   },
+   {
+    "slug": "gaku-x-com-27",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部、本日21時から放送(村田綾香出演)・放送後アーカイブも公開",
+    "lead_score": 5,
+    "dedup_key": "x-com-27",
+    "candidate_ids": [
+     "202610010223-grok-46",
+     "202610010223-grok-48"
+    ]
+   },
+   {
+    "slug": "gaku-x-com-28",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部、10/7放送回のゲストに春咲暖(秦谷美鈴役)",
+    "lead_score": 5,
+    "dedup_key": "x-com-28",
+    "candidate_ids": [
+     "202610010223-grok-47"
+    ]
+   },
+   {
+    "slug": "gaku-gold-rush-ch69-44go-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "休載していたGOLD RUSH第69話、本日発売の週刊少年チャンピオン44号に掲載",
+    "lead_score": 10,
+    "dedup_key": "gaku-gold-rush-ch69-44go-2026",
+    "candidate_ids": [
+     "sched-2026-10-01-gaku-gold-rush-ch69-44go-2026-発売"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-agitato-lilja-gasha-2026",
+    "reason": "既報",
+    "note": "9/30既報(リーリヤガシャ開幕)と同一、新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "gaku-hatsuboshi-hr-12-2026",
+    "reason": "既報",
+    "note": "9/30既報(HR#12急上昇入り)と同一事象、新事実なし"
+   },
+   {
+    "dedup_key": "gaku-hatsuboshi-hr-12-trend-2026",
+    "reason": "既報",
+    "note": "9/30既報のHR#12急上昇と同一、knownを超える新事実なし"
+   },
+   {
+    "dedup_key": "x-com-24",
+    "reason": "既報",
+    "note": "9/30既報のH.I.F記念ジュエル配布(10/1 4:59締切)と同一"
+   },
+   {
+    "dedup_key": "x-com-25",
+    "reason": "既報",
+    "note": "9/30既報の9月ミッションパス期限(10/1 4:59)と同一"
+   },
+   {
+    "dedup_key": "x-com-31",
+    "reason": "個人の話題",
+    "note": "ファンによる3D MV動画の個人投稿、単体記事にしない"
+   },
+   {
+    "dedup_key": "x-com-56",
+    "reason": "その他",
+    "note": "恋愛描写をめぐる論争的投稿、炎上的話題のため不採用"
+   },
+   {
+    "dedup_key": "x-com-57",
+    "reason": "個人の話題",
+    "note": "MV制作担当者個人の投稿、関係者の動向"
+   },
+   {
+    "dedup_key": "x-com-58",
+    "reason": "個人の話題",
+    "note": "MV参加者個人の投稿"
+   },
+   {
+    "dedup_key": "x-com-59",
+    "reason": "個人の話題",
+    "note": "MV制作担当者個人の投稿"
+   }
+  ],
+  "cross_brand": []
+ }
+}

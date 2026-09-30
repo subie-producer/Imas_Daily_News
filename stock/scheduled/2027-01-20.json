@@ -60,5 +60,36 @@
   "src_candidate_id": "202609290228-grok-43",
   "event_date": "2027-01-20",
   "deadline": "2026-11-08"
+ },
+ {
+  "id": "sched-2027-01-20-gravure-solo-collection-agitato-vol2-発売",
+  "dedup_key": "gravure-solo-collection-agitato-vol2",
+  "brand": "gaku",
+  "subject": "学マスCD第2弾「Agitato」",
+  "kind": "発売",
+  "note": "CD発売日、購入できる",
+  "reserved_on": "2026-10-01",
+  "title": "Gravure Solo Collection Vol.2「Agitato」発売決定",
+  "url": "https://gakuen-label.idolmaster-official.jp/news/gravure2",
+  "source_type": "準公式",
+  "facts": [
+   "ゲーム内グラビアイベントの『小悪魔』をイメージした楽曲をCD化する。",
+   "収録トラック数は全15曲。",
+   "花海咲季・葛城リーリヤ・花海佑芽の3人歌唱版を収録する。",
+   "13名のキャラクターのソロ歌唱Full ver.をCD限定で収録する。",
+   "予約締切は2026年11月8日（日）まで。",
+   "販売価格は3,500円（税込）。",
+   "販売日は2027年1月20日（水）予定。",
+   "アソビストア特典は「Agitato」特典ステッカー。",
+   "アニメイト特典はロングフォト3枚セット。",
+   "Amazon.co.jp特典はトレーディングカード3枚セット。",
+   "あみあみ特典はましかくブロマイド。",
+   "ゲーマーズ特典は56mm缶バッジ3種セット。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202609300733-explore-10",
+  "event_date": "2027-01-20",
+  "deadline": "2026-11-08"
  }
 ]

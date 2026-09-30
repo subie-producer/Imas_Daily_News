@@ -1,0 +1,164 @@
+{
+ "decisions": {
+  "9": {
+   "action": "article",
+   "angle": "9月度活動アンケート、回答締切(10/4)まで残り3日のリマインド",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-monthly-theme-song-11-f-lags-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "SideM(F-LAGS)の商品情報で、dsva(vα-liv)面の話題ではない"
+  },
+  "dsva-duelmasters-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "source_types未確認・verify unconfirmed。本日21時配信だが公式裏付けなし"
+  },
+  "valiv-official-radio-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30既報(ヴイアラ初の公式ラジオ、音泉で放送決定)と同内容。新事実・当日トリガーなし"
+  },
+  "valiv-hot-limit-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30の配信・動画公開まとめで既出のHOT LIMIT踊ってみた動画。新事実なし"
+  },
+  "x-com-20": {
+   "action": "article",
+   "angle": "灯里愛夏BIRTHDAY ONLINE LIVE2026延期公演、現地ライブビューイング先行抽選の申込締切が10/4に迫る。限定グッズ・お見送り会付き",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-21": {
+   "action": "article",
+   "angle": "第13回オンライン1on1、事前アンケート未回収でURL未発行の対象者に確認と問い合わせ先を案内",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-22": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/25既報(シチュエーションボイス第十五弾、10月4日まで販売)と同内容"
+  },
+  "x-com-23": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29既報(第2回中間能力評価を開催)と同施策の呼びかけ。新事実・当日トリガーなし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-x-com-20",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "灯里愛夏BIRTHDAY ONLINE LIVE2026延期公演、現地ライブビューイング先行抽選の申込締切が10/4に迫る。限定グッズ・お見送り会付き",
+    "lead_score": 40,
+    "dedup_key": "x-com-20",
+    "candidate_ids": [
+     "202610010223-grok-39"
+    ]
+   },
+   {
+    "slug": "dsva-x-com-21",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "第13回オンライン1on1、事前アンケート未回収でURL未発行の対象者に確認と問い合わせ先を案内",
+    "lead_score": 10,
+    "dedup_key": "x-com-21",
+    "candidate_ids": [
+     "202610010223-grok-40"
+    ]
+   },
+   {
+    "slug": "dsva-9-0ade7c",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "9月度活動アンケート、回答締切(10/4)まで残り3日のリマインド",
+    "lead_score": 5,
+    "dedup_key": "9",
+    "candidate_ids": [
+     "sched-2026-10-01-9-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-monthly-theme-song-11-f-lags-2026",
+    "reason": "面違い",
+    "note": "SideM(F-LAGS)の商品情報で、dsva(vα-liv)面の話題ではない"
+   },
+   {
+    "dedup_key": "dsva-duelmasters-collab-2026",
+    "reason": "出典不足",
+    "note": "source_types未確認・verify unconfirmed。本日21時配信だが公式裏付けなし"
+   },
+   {
+    "dedup_key": "valiv-official-radio-2026",
+    "reason": "既報",
+    "note": "9/30既報(ヴイアラ初の公式ラジオ、音泉で放送決定)と同内容。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "valiv-hot-limit-short-2026",
+    "reason": "既報",
+    "note": "9/30の配信・動画公開まとめで既出のHOT LIMIT踊ってみた動画。新事実なし"
+   },
+   {
+    "dedup_key": "x-com-22",
+    "reason": "既報",
+    "note": "9/25既報(シチュエーションボイス第十五弾、10月4日まで販売)と同内容"
+   },
+   {
+    "dedup_key": "x-com-23",
+    "reason": "既報",
+    "note": "9/29既報(第2回中間能力評価を開催)と同施策の呼びかけ。新事実・当日トリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

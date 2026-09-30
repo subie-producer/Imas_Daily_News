@@ -1,0 +1,318 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-10-01-cg-gacha-festival-2026-08.md",
+   "issue": "記事では「10月1日11時59分までの購入分の絵柄は前川みくで」と書いているが、根拠N2では「2026年9月24日12時から10月1日11時59分までの購入分」と期間が限定されている。販売開始（9月3日12時）から前川みく期間開始（9月24日12時）までの間に購入した者は異なる絵柄になるため、期間の開始日時が記事に記載されないと読者が誤解する。",
+   "quote": "10連セット購入者にはミニブロマイドを1点プレゼント。10月1日11時59分までの購入分の絵柄は前川みくで、個別くじを10個以上購入した場合は対象外となる。",
+   "rule_id": "R9",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "N2"
+   ],
+   "expected": "記事に「2026年9月24日12時から10月1日11時59分までの購入分の絵柄は前川みく」と期間の開始日時が明記される",
+   "scope": "article:2026-10-01-cg-gacha-festival-2026-08.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-cg-x-com-12.md",
+   "issue": "見出しに「新曲」という修飾語があるが、候補の facts に該当する情報がない",
+   "quote": "デレマス新曲「Neon Sphere」配信開始",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F3",
+    "F7"
+   ],
+   "expected": "見出しから根拠のない「新曲」を削除し、「デレマス「Neon Sphere」配信開始」とする",
+   "scope": "article:2026-10-01-cg-x-com-12.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-dsva-x-com-21.md",
+   "issue": "見出しが出典から正確に導かれていない。見出しは「未回答者」と一面的に表現しているが、素材では「受け取れていない場合」と「回答済みなのに届いていない場合」の両方が対象であり、本文でもその両方を扱っている。見出しが一部の対象者に限定される表現になっている。",
+   "quote": "ヴイアラ、第13回1on1未回答者に確認案内",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F5",
+    "F6",
+    "F7",
+    "F8"
+   ],
+   "expected": "見出しが「URLが届いていない人」「アンケート未受信・未回答者」など、本文で述べられている両方のケースを正確に反映した表現になること。",
+   "scope": "article:2026-10-01-dsva-x-com-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-joint-765-961-xr-live-2027.md",
+   "issue": "既報台帳に記載された 2026-09-04 時点での情報と、記事の内容が同一である。時刻（第二公演 7/25 11:00 開場・12:00 開演、第三公演 7/25 17:00 開場・18:00 開演）、出演アイドル、チケット価格（限定グッズ付き全公演通し券 54,000 円、限定グッズ付き各公演チケット 18,000 円、通常チケット 12,000 円）、受付期限（10 月 28 日 23:59）は、既報で確認済みの事実である。本日のトリガー（期限の到来、演出の変更、新しい企画など）がない。",
+   "quote": "第二公演「BE:STELLA OF ABSOLUTE」は2027年7月25日（日）11時開場・12時開演、第三公演「IF:THE DAY OF JUDGMENT」は同日17時開場・18時開演。（本文）/ アソビストアプレミアム12か月会員向け先行抽選は10月28日23時59分まで。765・961各プロダクションシートの限定グッズ付き現地チケットは各公演18,000円、現地通常チケットは各公演12,000円で、全3公演の限定グッズ付き現地通し券は各54,000円。（第3段落）",
+   "rule_id": "R10",
+   "repair": "drop_article",
+   "fact_ids": [],
+   "expected": "既報で同じ内容が報道された記事なので、本日のニュース性がない場合は配信を見送る、または本日のトリガーとなる新しい情報（追加の出演アイドル発表、チケット受付の変更、特典情報の追加など）を含める必要がある。",
+   "scope": "article:2026-10-01-joint-765-961-xr-live-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-joint-cg-million-coming-soon-2026-08-26.md",
+   "issue": "既報（2026-09-13版）と同じ内容で、新しい事実も当日のトリガーも無い",
+   "quote": "入金期間は2026年9月30日13時から10月4日23時59分まで。当落発表も9月30日13時から始まっている。",
+   "rule_id": "R10",
+   "repair": "drop_article",
+   "fact_ids": [
+    "sched-2026-10-01-cg-million-coming-soon-2026-08-26-締切前"
+   ],
+   "expected": "新規性のある事実（例：当選者数、入金状況など）を追加するか、記事全体を削除する",
+   "scope": "article:2026-10-01-joint-cg-million-coming-soon-2026-08-26.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-joint-producers-station-meeting-matsudo-2026.md",
+   "issue": "リードで「プロデューサー交流会が開催される」と述べているが、10月3日のイベント名は「Pステ中野ツアマス交流会」であり異なる。出典（F3）から導けない表現。",
+   "quote": "「Pステ中野で10月3日、Pステ名古屋で10月18日に、プロデューサー交流会が開催される。」",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F1",
+    "F3"
+   ],
+   "expected": "リードで両イベントのイベント名を正確に記述した状態。例：「Pステ中野で10月3日にツアマス交流会、Pステ名古屋で10月18日にプロデューサー交流会が開催される。」",
+   "scope": "article:2026-10-01-joint-producers-station-meeting-matsudo-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-million-linkage-kyoushi-2026-09.md",
+   "issue": "sources に無いURL（Gamerch）の根拠を使用している",
+   "quote": "「リンケージ限定マスターピースセット」は、有償ミリオンジュエル5000個でプラチナガシャ10回チケット2枚とリンケージ限定マスターピース1個を入手でき、7回まで利用可能。利用期間は本日14時59分までで、チケットの使用期限はセット利用から99日間。<!-- F27 F28 F29 F30 F31 F32 -->",
+   "rule_id": "R3",
+   "repair": "add_source",
+   "fact_ids": [
+    "29",
+    "30",
+    "31",
+    "32"
+   ],
+   "expected": "sourcesに候補3（https://gamerch.com/imasml-theater/1017523）を追加し、sources に複数のURLが含まれる状態になる",
+   "scope": "article:2026-10-01-million-linkage-kyoushi-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-shiny-noctchill-live-2027.md",
+   "issue": "sources に記載された URL (news/01_19969) の出典には「現地チケット全席指定 9,800円」が記載されていないため、記事の記述と出典が一致しない",
+   "quote": "チケットは、メモリアル特典付き現地+xRライブストリーミングセットの4公演通し券が80,000円（税込）、現地チケット全席指定の4公演通し券が39,200円（税込）。各公演のセットチケットは20,000円（税込）、現地チケットは9,800円（税込）、ティーン割チケットは4,120円（税込）。",
+   "rule_id": "R4",
+   "repair": "add_source",
+   "fact_ids": [
+    "202609300733-explore-6"
+   ],
+   "expected": "sources に https://idolmaster-official.jp/live_event/283_noctchill/ を追加し、現地チケット 9,800円の情報源を明示する",
+   "scope": "article:2026-10-01-shiny-noctchill-live-2027.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-10-01-765-765pro-solo-collection-dresscode-2026.md",
+   "issue": "分量不足。small ランク (目安 250字) に対して本文が 110字程度。出典にある価格 (3,300円) や発送予定時期の詳細があれば本文で触れて分量を増やせます。",
+   "scope": "article:2026-10-01-765-765pro-solo-collection-dresscode-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-765-x-com-5.md",
+   "issue": "分量不足：rank:small(目安250字)に対して本文が約90字。出典のメールフォーム詳細や番組説明など拾える情報がある",
+   "scope": "article:2026-10-01-765-x-com-5.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-cg-gacha-festival-2026-08.md",
+   "issue": "分量不足：rank:small の目安は約250字だが、本文は約70字に留まっている。根拠に記載されている配送手数料（660円）、発送予定時期（12月上旬〜下旬）など、既に確認された詳細情報を記事に追加すれば分量を補える。",
+   "scope": "article:2026-10-01-cg-gacha-festival-2026-08.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-cg-x-com-13.md",
+   "issue": "分量不足。rank small の目安は250字程度に対し、本文は約60字。画像付き投稿の詳細（スケジュール、対象ガシャの種類など）をテキストで補足できれば改善",
+   "scope": "article:2026-10-01-cg-x-com-13.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-dsva-x-com-21.md",
+   "issue": "分量不足：rank: small の目安は250字以上ですが、本文は150字程度です。出典に「受信フォルダと迷惑メールフォルダの確認」のほかに、問い合わせ時に必要な情報（会場、受付期間などの詳細）があれば補充を検討してください。",
+   "scope": "article:2026-10-01-dsva-x-com-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-dsva-x-com-21.md",
+   "issue": "見出しと本文の対象が異なります。見出しは「未回答者」に限定していますが、本文は「未受信者」「未回答者」の両方を対象としています。",
+   "scope": "article:2026-10-01-dsva-x-com-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-gaku-bigface-plush-vol4-2026.md",
+   "issue": "分量不足: rank small の目安は 250字以上ですが、本文は約 110字です。素材に会場・価格・仕様の詳細がある場合、本文に追加して埋められます",
+   "scope": "article:2026-10-01-gaku-bigface-plush-vol4-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-gaku-bigface-plush-vol4-2026.md",
+   "issue": "本文の冗長性: リードで「プレミアムバンダイで予約を受け付けている」と述べられているのに、本文で再度「予約受付ショップはプレミアムバンダイ」と繰り返されています。本文では別の新しい情報（キャラクターラインアップなど）で埋めることを検討してください",
+   "scope": "article:2026-10-01-gaku-bigface-plush-vol4-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-gaku-kaisou-hr-12-2026-09-28.md",
+   "issue": "本文が薄い。rank: small（目安250字）に対して約100字。出典の「一部配信サービスでは配信に先駆けてPRE-ADD/PRE-SAVEも実施」「ストーリーイベント『ワタシ、小悪魔♡』」など詳細を補えば充実する。",
+   "scope": "article:2026-10-01-gaku-kaisou-hr-12-2026-09-28.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-gaku-tsukimura-temari-ameagari-iris-figure.md",
+   "issue": "既報との発売予定月の相違。既報（gaku-tezuki-temari-figure-2026、2026-09-16付）では公開情報がなかったと思われるが、候補では発売月が2027年5月予定から2027年6月予定に変更されている。記事が候補（2026-09-28出版）の最新情報を反映していることは確認されたため、問題なし。",
+   "scope": "article:2026-10-01-gaku-tsukimura-temari-ameagari-iris-figure.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-gaku-x-com-26.md",
+   "issue": "分量不足: rank: small の目安250字に対して本文+リード約170字。出典の予約ページに記載される会場・対象条件などの詳細を補足すれば十分な分量に達します",
+   "scope": "article:2026-10-01-gaku-x-com-26.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-gaku-x-com-28.md",
+   "issue": "分量が非常に短く（約66字）、rank:small の目安250字に達していない。候補には投稿フォームURLなどの詳細情報が含まれているため、補充で本文を厚くできる",
+   "scope": "article:2026-10-01-gaku-x-com-28.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-joint-cg-million-coming-soon-2026-08-26.md",
+   "issue": "見出しに「デレミリ合同ライブ」という企画名が無く、何の話か分かりづらい。「THE IDOLM@STER CINDERELLA GIRLS × MILLION LIVE! CLASH M@TCH!! 当選者入金は10月4日まで」などの見出しが望ましい",
+   "scope": "article:2026-10-01-joint-cg-million-coming-soon-2026-08-26.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-million-x-com-34.md",
+   "issue": "分量不足：rank small の目安 250字に対し、全体が約 80 字（見出し + リード + 本文）。イベント詳細が未発表のため現在の簡潔な記述は妥当ですが、必要に応じて開始時刻の背景や対象キャラなど既報から補足できる要素があれば参考に。",
+   "scope": "article:2026-10-01-million-x-com-34.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-million-x-com-42.md",
+   "issue": "分量不足：rank small の目安は250字だが、本文は約150字。候補の facts に「どこに飾っても華やかな存在感抜群のアイテム」などの商品説明があり、追加すれば埋められる。",
+   "scope": "article:2026-10-01-million-x-com-42.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-shiny-casting-collection-amaboy-2026-09.md",
+   "issue": "本文の「【これも可能性】白瀬咲耶、【Hug？】樋口円香」は読者に意味不明な表記。括弧内の注釈は削除し、「SSRプロデュースアイドルとして白瀬咲耶と樋口円香が登場する」と簡潔に統一すべき。",
+   "scope": "article:2026-10-01-shiny-casting-collection-amaboy-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-shiny-hachiban-collab-2026.md",
+   "issue": "見出しが2つのAセット価格（税込2,310円 vs 2,200円）のうち1つだけを示しており、不完全。ただしリードでは「税込2200～2310円」と範囲で正確に記載されているため、見出しの正確性向上の観点から検討可",
+   "scope": "article:2026-10-01-shiny-hachiban-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-shiny-hachiban-collab-2026.md",
+   "issue": "表記ゆれ：記事内で「8番らーめん」（半角数字）を使用している箇所がある一方、候補では「８番らーめん」（全角数字）を使用。統一を検討",
+   "scope": "article:2026-10-01-shiny-hachiban-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-shiny-noctchill-live-2027.md",
+   "issue": "本文で記載されているチケット情報「現地チケット全席指定 各公演9,800円」は根拠表記に F10 が含まれていないが、候補 202609300733-explore-6 に記載されている。根拠表記の過程で漏れているか、sources に複数の URL が必要か確認が必要",
+   "scope": "article:2026-10-01-shiny-noctchill-live-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-shiny-runway-2026-master-showpiece-photo-contest.md",
+   "issue": "見出しに作品・企画名が不足。『シャニソン写真コンテスト』だけでは『Shiny Runway 2026 Master ShowPiece』の企画であることが不明確（見出しのどの作品・ブランド・アイドル・催しの話かが入っていない）。",
+   "scope": "article:2026-10-01-shiny-runway-2026-master-showpiece-photo-contest.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-shiny-runway-2026-master-showpiece-photo-contest.md",
+   "issue": "分量不足。rank: small の目安は250字に対して、現在は本文220字程度。候補の facts に『入選称号：Shiny Runway 2026 Summer Master ShowPiece 各部門』『受賞発表：2026年10月以降予定』などの詳細があり、追記することで埋められる。",
+   "scope": "article:2026-10-01-shiny-runway-2026-master-showpiece-photo-contest.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-shiny-union-arena-shiny-black-comet-limit-2026.md",
+   "issue": "本文が約170字で、rank: small の目安(250字)より短い。出典にある効果の詳細、複数カードの同時指定、ユーザーへの具体的な影響などを拾えば埋まる可能性あり",
+   "scope": "article:2026-10-01-shiny-union-arena-shiny-black-comet-limit-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-shiny-x-com-46.md",
+   "issue": "見出しに「など」を付与するとより包括的になる。現在の見出し「ガシャ・パッケージ開始」は主要な2種類のみを示すが、本文に感謝パッケージや特訓はづきさんパッケージも含まれている",
+   "scope": "article:2026-10-01-shiny-x-com-46.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-01-shiny-x-com-46.md",
+   "issue": "段落構成：段落2（パラコレセレチケ）と段落3（キャスコレセレチケ）は類似構造なため、1つにまとめるとより読みやすくなる可能性あり",
+   "scope": "article:2026-10-01-shiny-x-com-46.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-01-765-765pro-solo-collection-dresscode-2026.md",
+  "article:2026-10-01-765-x-com-5.md",
+  "article:2026-10-01-cg-gacha-festival-2026-08.md",
+  "article:2026-10-01-cg-rose-tea-parlor-2026-nagoya.md",
+  "article:2026-10-01-cg-x-com-12.md",
+  "article:2026-10-01-cg-x-com-13.md",
+  "article:2026-10-01-cg-x-com-14.md",
+  "article:2026-10-01-cg-x-com-16.md",
+  "article:2026-10-01-dsva-9-0ade7c.md",
+  "article:2026-10-01-dsva-x-com-20.md",
+  "article:2026-10-01-dsva-x-com-21.md",
+  "article:2026-10-01-gaku-bigface-plush-vol4-2026.md",
+  "article:2026-10-01-gaku-gold-rush-ch69-44go-2026.md",
+  "article:2026-10-01-gaku-jio-seina-little-devil-gacha-2026.md",
+  "article:2026-10-01-gaku-kaisou-hr-12-2026-09-28.md",
+  "article:2026-10-01-gaku-tsukimura-temari-ameagari-iris-figure.md",
+  "article:2026-10-01-gaku-x-com-26.md",
+  "article:2026-10-01-gaku-x-com-27.md",
+  "article:2026-10-01-gaku-x-com-28.md",
+  "article:2026-10-01-joint-765-961-xr-live-2027.md",
+  "article:2026-10-01-joint-bandainamco-am-co-jp-32.md",
+  "article:2026-10-01-joint-cg-million-coming-soon-2026-08-26.md",
+  "article:2026-10-01-joint-producers-station-meeting-matsudo-2026.md",
+  "article:2026-10-01-million-14th-day2-singles-order-2026.md",
+  "article:2026-10-01-million-42-cb6d98.md",
+  "article:2026-10-01-million-linkage-kyoushi-2026-09.md",
+  "article:2026-10-01-million-medicos-e-net-44.md",
+  "article:2026-10-01-million-ops-roundup.md",
+  "article:2026-10-01-million-x-com-34.md",
+  "article:2026-10-01-million-x-com-37.md",
+  "article:2026-10-01-million-x-com-42.md",
+  "article:2026-10-01-shiny-casting-collection-amaboy-2026-09.md",
+  "article:2026-10-01-shiny-hachiban-collab-2026.md",
+  "article:2026-10-01-shiny-hbt-k-2026-10.md",
+  "article:2026-10-01-shiny-noctchill-live-2027.md",
+  "article:2026-10-01-shiny-ops-roundup.md",
+  "article:2026-10-01-shiny-pioneer-impact-3dmv-2026.md",
+  "article:2026-10-01-shiny-runway-2026-master-showpiece-photo-contest.md",
+  "article:2026-10-01-shiny-union-arena-shiny-black-comet-limit-2026.md",
+  "article:2026-10-01-shiny-x-com-46.md",
+  "article:2026-10-01-sidem-topic-065-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-10-01-765-765pro-solo-collection-dresscode-2026.md": "6dc210a1473f94af66c7524254ea748468b1b3ca89c56bb94175a92af1add9fa",
+  "docs/_posts/2026-10-01-765-x-com-5.md": "0caab02017434c3a9b2bdc1ed6a62c8d34484dd1a210b71a0a79d1f46458a6e1",
+  "docs/_posts/2026-10-01-cg-gacha-festival-2026-08.md": "029c1e331a84efe1517fb5deb8b36e5fc2ad18466d78dd7ed0881043eb1fd664",
+  "docs/_posts/2026-10-01-cg-rose-tea-parlor-2026-nagoya.md": "a132e5d24f87e80d93e0bf681f8048593ba5c70a3480761cc95d6b984b7a0fd3",
+  "docs/_posts/2026-10-01-cg-x-com-12.md": "528d50b059152caf6955979ce7bc69a26c719af90cffb48b7cc49e154bf0dcba",
+  "docs/_posts/2026-10-01-cg-x-com-13.md": "57823a5c403a45643e0f562125de2c18bad5da752dcbd7463be9a85d3bf786cb",
+  "docs/_posts/2026-10-01-cg-x-com-14.md": "e2bd9568c8a912083c48bb47c9a3d0e235c4fa9e071cf96b435593fd6a5adf63",
+  "docs/_posts/2026-10-01-cg-x-com-16.md": "426d4e9befd3749bac8753bb76691e8910b2b8aba91e9cdd7aa8e2fb2735ddcf",
+  "docs/_posts/2026-10-01-dsva-9-0ade7c.md": "f1c5e6718b29e66a071ca96f69529cc7a5e8a535e607fb61ef53271258daa7ba",
+  "docs/_posts/2026-10-01-dsva-x-com-20.md": "46f81ba4bae523eccda35ea6cb1340e8fe3f2cf32628669f78a37c961856f12d",
+  "docs/_posts/2026-10-01-dsva-x-com-21.md": "ae1beb5adc16086dbca9a1037a45a2873ca627eda5fb0f54fa683013730ecdde",
+  "docs/_posts/2026-10-01-gaku-bigface-plush-vol4-2026.md": "68ef9dccbf3017d4f06b86073ac998e68e0d7e357d1de7ccc21b128fbea9806b",
+  "docs/_posts/2026-10-01-gaku-gold-rush-ch69-44go-2026.md": "463f574efa79d60da3a21e8d52fc770560ca2f3b3c5c694e365328d6c80ce34f",
+  "docs/_posts/2026-10-01-gaku-jio-seina-little-devil-gacha-2026.md": "7a28f5d77a2d6f9ba40263e2062c3d65a516978e51778a1089bb02ad798b2b2b",
+  "docs/_posts/2026-10-01-gaku-kaisou-hr-12-2026-09-28.md": "f5446a3e08ceb30d3c0181c32dcdc91e7f7497696b9f9b308f2572aa4d8fc60b",
+  "docs/_posts/2026-10-01-gaku-tsukimura-temari-ameagari-iris-figure.md": "b73c6a540c90795d68d657494a7d9a5aa16bf6fd500b5b2f708fc050941e9d51",
+  "docs/_posts/2026-10-01-gaku-x-com-26.md": "42b110e966d022d96a45c902326d9eb362cf97a8f865febff921d31930b29767",
+  "docs/_posts/2026-10-01-gaku-x-com-27.md": "f76a4fb17514d2a7b87f06f20eeacb4769f867900ac5845423fc57a52e92196c",
+  "docs/_posts/2026-10-01-gaku-x-com-28.md": "238068e7bd107416ad2c8108047f22370f73c0ec962b2bb6f35a5bb9fd36e367",
+  "docs/_posts/2026-10-01-joint-765-961-xr-live-2027.md": "c32ba639e53ecfa8dd0d9105cf03319e04a49d2e48f6151582d6173de591e4ab",
+  "docs/_posts/2026-10-01-joint-bandainamco-am-co-jp-32.md": "0eae530c60bc2476a7791ee692080814d9d4cc65c417bb267e4dd8e2a042686c",
+  "docs/_posts/2026-10-01-joint-cg-million-coming-soon-2026-08-26.md": "b74648259f1479b0e999fb0ca910c96fc2b1331e415abaad1976f15995d09dfa",
+  "docs/_posts/2026-10-01-joint-producers-station-meeting-matsudo-2026.md": "083de054bd63097f6d64bd9497bb5d4243e794e441fa5cd88a72cd0fe2a02fa2",
+  "docs/_posts/2026-10-01-million-14th-day2-singles-order-2026.md": "72f15c94c85286c4efe84b1ceef9dc7ee917fd35b4b9f1237f104b87ffbdff8d",
+  "docs/_posts/2026-10-01-million-42-cb6d98.md": "2ab9271994282325da3f14d20a29f9eefdaae2512cba7be335ab504bacd6c9d8",
+  "docs/_posts/2026-10-01-million-linkage-kyoushi-2026-09.md": "bcdda470599c05260f9f0e76cde3692dace531128e7fd514b5d3f339333aa2e5",
+  "docs/_posts/2026-10-01-million-medicos-e-net-44.md": "1b6b6aaa6ca47c324f0af4ade847788ca705cd287633719ba44079efef784466",
+  "docs/_posts/2026-10-01-million-ops-roundup.md": "a9f9dd3bd84e9d5ffc2d2baae162621c2310162fe938cd926274e6fabd02a1e1",
+  "docs/_posts/2026-10-01-million-x-com-34.md": "2ac5306d8d57023c91e4a2e3032d811042874558cc00d5131d81adb5a1aeec5c",
+  "docs/_posts/2026-10-01-million-x-com-37.md": "0b078a44e92b678347c20feda6e5534fbfba17ac96640eab6425bb464180d103",
+  "docs/_posts/2026-10-01-million-x-com-42.md": "a33cd37ef50439ee2fee73083116d1d4ef51acb47b0a60dde00301b9badb3e3d",
+  "docs/_posts/2026-10-01-shiny-casting-collection-amaboy-2026-09.md": "a4ff606af1a45622dd12ac91492626759e105323fb85be26571bac69d674d6a8",
+  "docs/_posts/2026-10-01-shiny-hachiban-collab-2026.md": "140ed0159a00b99ed7568cb75c492849b8b9d791c2287a08f41f59539459c158",
+  "docs/_posts/2026-10-01-shiny-hbt-k-2026-10.md": "3ce317b8ab6f05b4e507f9a6683fa5e4bd42d4c3024facc3dd331ee1f6a31e16",
+  "docs/_posts/2026-10-01-shiny-noctchill-live-2027.md": "38ddc73a187e394ba1d63fa448bf0374dbbc7b7566891095a0e6b6cab0727823",
+  "docs/_posts/2026-10-01-shiny-ops-roundup.md": "6bad1609d09909f2cebd2689e7db719f4b95e36705415f78025ac321355f2d79",
+  "docs/_posts/2026-10-01-shiny-pioneer-impact-3dmv-2026.md": "7d8a8c825bc515979aa4f1960f4427cb6e416803247787ba4039b8413646cc56",
+  "docs/_posts/2026-10-01-shiny-runway-2026-master-showpiece-photo-contest.md": "e3497cb7554ac1b7ef8ad54fc79e454cb9eff17ca0aef732587df30a2a8a6e0a",
+  "docs/_posts/2026-10-01-shiny-union-arena-shiny-black-comet-limit-2026.md": "1494aa957eb0b600a8ec0be652e54ab51f6e70629e3714370986eb2d477e380c",
+  "docs/_posts/2026-10-01-shiny-x-com-46.md": "c5fe8e3a7513bd8206e706e5d06e7b0a5cac5a3e72a5dd8efef1bcb875e634d5",
+  "docs/_posts/2026-10-01-sidem-topic-065-2026.md": "93d377a2879cd473563461e6f92807d8703ae5f7dd9c11515d9e33b4d036e9f2",
+  "docs/_editions/2026-10-01.md": "f70734b57ba4c30e31fc321476356e71fbdbc0dd01f68bd1307286773b9638ee",
+  "metrics/stories-before-2026-10-01.yml": "77f6dd2087167ff361b555151c0a7fd806ac0c306a91c57ae24c63a42c3904c5"
+ }
+}

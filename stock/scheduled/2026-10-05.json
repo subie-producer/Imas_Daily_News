@@ -234,5 +234,23 @@
   "src_candidate_id": "202609260732-explore-15",
   "event_date": "2026-09-25",
   "deadline": "2026-10-05"
+ },
+ {
+  "id": "sched-2026-10-05-cg-rose-tea-parlor-2026-nagoya-千秋楽",
+  "dedup_key": "cg-rose-tea-parlor-2026-nagoya",
+  "brand": "cg",
+  "subject": "シンデレラガールズ Rose Tea Parlor(名古屋栄店)",
+  "kind": "千秋楽",
+  "note": "名古屋栄店の開催最終日、来店できる",
+  "reserved_on": "2026-10-01",
+  "title": "シンデレラガールズ、Rose Tea Parlorコラボカフェ開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19811",
+  "source_type": "公式",
+  "facts": [
+   "名古屋栄店は10月01日から10月05日まで開催、テーマは「Rose Tea Parlor」「Crescent Princess」"
+  ],
+  "via": "",
+  "verify": "confirmed",
+  "src_candidate_id": "sched-2026-10-01-cg-rose-tea-parlor-2026-nagoya-開幕"
  }
 ]

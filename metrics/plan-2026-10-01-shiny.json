@@ -1,0 +1,376 @@
+{
+ "decisions": {
+  "shiny-noctchill-live-2027": {
+   "action": "article",
+   "angle": "全4公演の開場・開演時刻が判明、xR付き4公演通し券は税込8万円",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hachiban-collab-2026": {
+   "action": "article",
+   "angle": "実施店舗の内訳・メニュー価格・描き下ろしコラボ衣装など詳細が判明",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-master-showpiece-archive-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/28既報のMSPアーカイブ配信開始と同内容。新事実も本日のトリガーも無し"
+  },
+  "shiny-noctchill-ai-controversy-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "AI生成疑惑を巡る炎上・係争であり規則により対象外。裏付けも未確認"
+  },
+  "shiny-msp-solo-collection-after-sale-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29既報の事後物販と同内容。新事実・本日のトリガー無し(受注締切は10/18)"
+  },
+  "shiny-coherent-light-update-2026-09-29": {
+   "action": "roundup",
+   "angle": "シャニマス運営まとめ(コミカライズ更新・Web4コマ・イベント報酬紹介)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-pioneer-impact-3dmv-2026": {
+   "action": "article",
+   "angle": "新曲「Pioneer Impact」3DMV公開、新発光システム対応衣装と記念ジュエルセールも",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-if-not-anteika-reward-2026": {
+   "action": "roundup",
+   "angle": "シャニマス運営まとめ(コミカライズ更新・Web4コマ・イベント報酬紹介)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-casting-collection-amaboy-2026-09": {
+   "action": "article",
+   "angle": "新企画「キャスティングコレクション～甘えん坊な妹編～」開催、白瀬咲耶・樋口円香が登場",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "union-arena-shiny-black-comet-limit-2026": {
+   "action": "article",
+   "angle": "UNION ARENA、本日10/1施行の改定で「黒色彗星」(IMS-3-040)を1枚制限に指定",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "情報源は未確認の二次情報サイト1件のみ"
+  },
+  "shiny-web4koma-654-2026": {
+   "action": "roundup",
+   "angle": "シャニマス運営まとめ(コミカライズ更新・Web4コマ・イベント報酬紹介)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-45": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/28既報のMSPアーカイブ配信の再周知。新事実・本日のトリガー無し"
+  },
+  "x-com-46": {
+   "action": "article",
+   "angle": "8.5周年記念、スタンプガシャ・グレード別パッケージなど多数の商品を一挙販売開始",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-47": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-46",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "8.5周年記念パラコレセレチケ付きスタンプガシャ、x-com-46の施策の一部"
+  },
+  "x-com-48": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-46",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "8.5周年記念キャスコレセレチケ付きスタンプガシャ、x-com-46の施策の一部"
+  },
+  "x-com-49": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-46",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "8.5周年記念Vo編成級フェスアイドル付きパッケージ、x-com-46の施策の一部"
+  },
+  "x-com-50": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-46",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "8.5周年記念Da編成級フェスアイドル付きパッケージ、x-com-46の施策の一部"
+  },
+  "x-com-51": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-46",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "8.5周年記念Vi編成級フェスアイドル付きパッケージ、x-com-46の施策の一部"
+  },
+  "x-com-52": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-46",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "8.5周年感謝パッケージ、x-com-46の施策の一部"
+  },
+  "x-com-53": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-46",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "8.5周年パラコレ特訓はづきさんパッケージ、x-com-46の施策の一部"
+  },
+  "x-com-54": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-46",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "8.5周年キャスコレ特訓はづきさんパッケージ、x-com-46の施策の一部"
+  },
+  "shiny-runway-2026-master-showpiece-photo-contest": {
+   "action": "article",
+   "angle": "フォトコンテスト応募締切まであと3日(10/4 23:59まで)、まだ投稿可能",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hbt-k-2026-10": {
+   "action": "article",
+   "angle": "10/6放送回向けおたより、本日10/1が送付の目安締切",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-noctchill-live-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "全4公演の開場・開演時刻が判明、xR付き4公演通し券は税込8万円",
+    "lead_score": 30,
+    "dedup_key": "shiny-noctchill-live-2027",
+    "candidate_ids": [
+     "202609300733-explore-6",
+     "202609300733-explore-20",
+     "202609301834-explore-18"
+    ]
+   },
+   {
+    "slug": "shiny-hachiban-collab-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "実施店舗の内訳・メニュー価格・描き下ろしコラボ衣装など詳細が判明",
+    "lead_score": 15,
+    "dedup_key": "shiny-hachiban-collab-2026",
+    "candidate_ids": [
+     "202609300733-explore-7",
+     "202609300733-explore-22",
+     "202609301235-explore-9",
+     "202609301235-explore-24",
+     "202610010223-explore-3"
+    ]
+   },
+   {
+    "slug": "shiny-pioneer-impact-3dmv-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "新曲「Pioneer Impact」3DMV公開、新発光システム対応衣装と記念ジュエルセールも",
+    "lead_score": 20,
+    "dedup_key": "shiny-pioneer-impact-3dmv-2026",
+    "candidate_ids": [
+     "202609301834-explore-3"
+    ]
+   },
+   {
+    "slug": "shiny-casting-collection-amaboy-2026-09",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "新企画「キャスティングコレクション～甘えん坊な妹編～」開催、白瀬咲耶・樋口円香が登場",
+    "lead_score": 15,
+    "dedup_key": "shiny-casting-collection-amaboy-2026-09",
+    "candidate_ids": [
+     "202610010223-explore-2"
+    ]
+   },
+   {
+    "slug": "shiny-union-arena-shiny-black-comet-limit-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "UNION ARENA、本日10/1施行の改定で「黒色彗星」(IMS-3-040)を1枚制限に指定",
+    "lead_score": 10,
+    "dedup_key": "union-arena-shiny-black-comet-limit-2026",
+    "candidate_ids": [
+     "202610010223-explore-4"
+    ]
+   },
+   {
+    "slug": "shiny-x-com-46",
+    "brand": "shiny",
+    "rank": "large",
+    "angle": "8.5周年記念、スタンプガシャ・グレード別パッケージなど多数の商品を一挙販売開始",
+    "lead_score": 85,
+    "dedup_key": "x-com-46",
+    "candidate_ids": [
+     "202610010223-grok-65",
+     "202610010223-grok-66",
+     "202610010223-grok-67",
+     "202610010223-grok-68",
+     "202610010223-grok-69",
+     "202610010223-grok-70",
+     "202610010223-grok-71",
+     "202610010223-grok-72",
+     "202610010223-grok-73"
+    ]
+   },
+   {
+    "slug": "shiny-runway-2026-master-showpiece-photo-contest",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "フォトコンテスト応募締切まであと3日(10/4 23:59まで)、まだ投稿可能",
+    "lead_score": 5,
+    "dedup_key": "shiny-runway-2026-master-showpiece-photo-contest",
+    "candidate_ids": [
+     "sched-2026-10-01-shiny-runway-2026-master-showpiece-photo-contest-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-hbt-k-2026-10",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "10/6放送回向けおたより、本日10/1が送付の目安締切",
+    "lead_score": 5,
+    "dedup_key": "shiny-hbt-k-2026-10",
+    "candidate_ids": [
+     "sched-2026-10-01-shiny-hbt-k-2026-10-締切"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニマス運営まとめ(コミカライズ更新・Web4コマ・イベント報酬紹介)",
+    "lead_score": 0,
+    "dedup_key": "shiny-coherent-light-update-2026-09-29",
+    "candidate_ids": [
+     "202609301235-explore-10",
+     "202609301834-explore-6",
+     "202610010223-explore-5"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-master-showpiece-archive-2026",
+    "reason": "既報",
+    "note": "9/28既報のMSPアーカイブ配信開始と同内容。新事実も本日のトリガーも無し"
+   },
+   {
+    "dedup_key": "shiny-noctchill-ai-controversy-2026",
+    "reason": "その他",
+    "note": "AI生成疑惑を巡る炎上・係争であり規則により対象外。裏付けも未確認"
+   },
+   {
+    "dedup_key": "shiny-msp-solo-collection-after-sale-2026",
+    "reason": "既報",
+    "note": "9/29既報の事後物販と同内容。新事実・本日のトリガー無し(受注締切は10/18)"
+   },
+   {
+    "dedup_key": "x-com-45",
+    "reason": "既報",
+    "note": "9/28既報のMSPアーカイブ配信の再周知。新事実・本日のトリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -15,5 +15,30 @@
   ],
   "src_candidate_id": "202609080735-explore-7",
   "deadline": "2026-10-06"
+ },
+ {
+  "id": "sched-2026-10-06-shiny-hbt-k-2026-10-開始",
+  "dedup_key": "shiny-hbt-k-2026-10",
+  "brand": "shiny",
+  "subject": "「まったりHBTK」10月度放送",
+  "kind": "開始",
+  "note": "10/6放送回が配信(MCは永井真里子さん・丸岡和佳奈さん)",
+  "reserved_on": "2026-10-01",
+  "title": "#まったりHBTK 10月度MC",
+  "url": "https://x.com/shinyc_official/status/2104949066987708438",
+  "source_type": "公式",
+  "facts": [
+   "10/6(火)放送回",
+   "10月度MCは西城樹里役 永井真里子さん、杜野凛世役 丸岡和佳奈さん",
+   "おたよりは10/1(木)頃までに送る",
+   "おたよりフォーム: https://idolmaster-official.jp/shinycolors/shinyradio/",
+   "放送開始時刻・配信URLは本文に記載なし",
+   "エンゲージメント: 中",
+   "言及アイドル: 西城樹里、杜野凛世"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "sched-2026-10-01-shiny-hbt-k-2026-10-締切",
+  "event_date": "2026-10-06"
  }
 ]

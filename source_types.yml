@@ -124,6 +124,8 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - torecamap.co.jp       # 合議で追加: TCGポータルサイトが他所の公式発表を整理して伝える
+  - tubetre.com           # 合議で追加: YouTube動画の公開ランキング情報を集約・表示するメディア。独自取材でなく公
   - coki.jp               # 合議で追加: 企業運営のステークホルダー情報プラットフォーム。タイトルから既に拡散している海外
   - appbank.net           # 合議で追加: メディアサイトが公式発表を言い換えて伝えている
   - chiba-tv.com          # 合議で追加: ページ冒頭に『Gamer』というクレジット表記があり、外部メディアの記事を転載。
@@ -225,6 +227,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - members.k-arena-club.com # 合議で追加: 会場運営・チケット販売事業者が催しの受付を行っている
   - hachiban.co.jp        # 合議で追加: コラボキャンペーン実施元・販売元。ライセンスを受けてコラボ展開
   - en.bandainamcoent.eu  # 合議で追加: ACE COMBAT 8の公式サイト。グループ会社がアイドルマスター以外のタイト
   - seiburailway.jp       # 合議で追加: 開催記念乗車券の販売元
@@ -363,6 +366,8 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - Vp_yS3E3d7A         # 機械で追加: @imas-official「【シンデレラガールズ】「クロス×オーバー！」Official」
+    - CU19CtxiW6c         # 機械で追加: @TomoriManaka「【デュエプレ】新弾「虹帝∞命動」100連開封バトル！！vs 」
     - nbl9UkcQ4fQ         # 機械で追加: @imas-official「【生配信】学園アイドルマスター 「初星学園HR #12」【ア」
     - xKJzPfGjALs         # 機械で追加: @imas-official「【ラジオ】「IM＠S RADIO」#2 ゲスト：神原 大地さ」
     - lv351245267         # 機械で追加: ch.nicovideo.jp/sidem「アイドルマスター SideM ラジオ 315プロNight!」
@@ -498,6 +503,7 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - ChocoBallCwHW       # 合議で追加: 個人のファンアカウント
     - sweet_soar_         # 合議で追加: 個人アカウントでキャラ8周年を投稿
     - hassen8888          # 合議で追加: 個人アカウントで配信への言及を投稿
     - hanamaruiyokann     # 合議で追加: ミリオン14th現地ファンの個人投稿
@@ -620,6 +626,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - popico_pi           # 合議で追加: MVの制作に参加
+    - miwasiba            # 合議で追加: MVの制作に参加
+    - IKAIHCIKOT          # 合議で追加: MVの制作に参加
     - kb_live_annex       # 合議で追加: グッズ販売店による入荷情報発信
     - animateokayama      # 合議で追加: 公式ライセンス商品の販売店による予約情報発信
     - animateifnbs        # 合議で追加: 公式ライセンス商品の販売店による予約情報発信
@@ -699,6 +708,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  docs.google.com/forms/d/e/1FAIpQLSewzEGUu-wlZ66kIHFIdR6ucKHMFo2syzmW9Oeq7lzKCSsSWQ: 公式 # 合議で追加: リンク元@valiv_officialは登録済み公式。VA-LIVブランド公式
   docs.google.com/forms/d/e/1FAIpQLSf3XywxIR7Ud5lymd-PnVk2ESVRCaO58ZrdVgITrHiZZlrc8g: 公式 # 合議で追加: リンク元が公式X account @imas_ch。IM@S RADIO番組の受
   instagram.com/p: ファン                         # 合議で追加: 個人アカウント@flowers_room_fによる終演後の投稿
   note.com/sammy_sammy: ファン                    # 合議で追加: 個人のnoteアカウント。アイマスLIVE観賞レポート等、個人のファン発信。

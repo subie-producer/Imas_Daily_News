@@ -1,0 +1,702 @@
+{
+ "articles": [
+  {
+   "slug": "joint-765-961-xr-live-2027",
+   "brand": "joint",
+   "rank": "medium",
+   "angle": "公演ごとの演目タイトルと開場・開演時刻が判明(第二公演BE:STELLA OF ABSOLUTE、第三公演IF:THE DAY OF JUDGMENT)",
+   "lead_score": 10,
+   "dedup_key": "765-961-xr-live-2027",
+   "candidate_ids": [
+    "202609300733-explore-0",
+    "202610010223-grok-19"
+   ]
+  },
+  {
+   "slug": "joint-producers-station-meeting-matsudo-2026",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "Pステ名古屋(10/18)・中野(10/3)で新たな交流会の開催が決定",
+   "lead_score": 8,
+   "dedup_key": "producers-station-meeting-matsudo-2026",
+   "candidate_ids": [
+    "202609300733-explore-18"
+   ]
+  },
+  {
+   "slug": "joint-bandainamco-am-co-jp-32",
+   "brand": "joint",
+   "rank": "lead",
+   "angle": "TOURS公式大会「RHYTHM LIVE FESTIVAL 2027」始動、予選11/12〜12/3・決勝2027/1/16",
+   "lead_score": 65,
+   "dedup_key": "bandainamco-am-co-jp-32",
+   "candidate_ids": [
+    "202610010223-grok-51"
+   ]
+  },
+  {
+   "slug": "joint-cg-million-coming-soon-2026-08-26",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "当選者の入金期限(10/4)まであと3日、入金を呼びかけ",
+   "lead_score": 15,
+   "dedup_key": "cg-million-coming-soon-2026-08-26",
+   "candidate_ids": [
+    "sched-2026-10-01-cg-million-coming-soon-2026-08-26-締切前"
+   ]
+  },
+  {
+   "slug": "shiny-noctchill-live-2027",
+   "brand": "shiny",
+   "rank": "medium",
+   "angle": "全4公演の開場・開演時刻が判明、xR付き4公演通し券は税込8万円",
+   "lead_score": 30,
+   "dedup_key": "shiny-noctchill-live-2027",
+   "candidate_ids": [
+    "202609300733-explore-6",
+    "202609300733-explore-20",
+    "202609301834-explore-18"
+   ]
+  },
+  {
+   "slug": "shiny-hachiban-collab-2026",
+   "brand": "shiny",
+   "rank": "medium",
+   "angle": "実施店舗の内訳・メニュー価格・描き下ろしコラボ衣装など詳細が判明",
+   "lead_score": 15,
+   "dedup_key": "shiny-hachiban-collab-2026",
+   "candidate_ids": [
+    "202609300733-explore-7",
+    "202609300733-explore-22",
+    "202609301235-explore-9",
+    "202609301235-explore-24",
+    "202610010223-explore-3"
+   ]
+  },
+  {
+   "slug": "shiny-pioneer-impact-3dmv-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "新曲「Pioneer Impact」3DMV公開、新発光システム対応衣装と記念ジュエルセールも",
+   "lead_score": 20,
+   "dedup_key": "shiny-pioneer-impact-3dmv-2026",
+   "candidate_ids": [
+    "202609301834-explore-3"
+   ]
+  },
+  {
+   "slug": "shiny-casting-collection-amaboy-2026-09",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "新企画「キャスティングコレクション～甘えん坊な妹編～」開催、白瀬咲耶・樋口円香が登場",
+   "lead_score": 15,
+   "dedup_key": "shiny-casting-collection-amaboy-2026-09",
+   "candidate_ids": [
+    "202610010223-explore-2"
+   ]
+  },
+  {
+   "slug": "shiny-union-arena-shiny-black-comet-limit-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "UNION ARENA、本日10/1施行の改定で「黒色彗星」(IMS-3-040)を1枚制限に指定",
+   "lead_score": 10,
+   "dedup_key": "union-arena-shiny-black-comet-limit-2026",
+   "candidate_ids": [
+    "202610010223-explore-4"
+   ]
+  },
+  {
+   "slug": "shiny-x-com-46",
+   "brand": "shiny",
+   "rank": "large",
+   "angle": "8.5周年記念、スタンプガシャ・グレード別パッケージなど多数の商品を一挙販売開始",
+   "lead_score": 85,
+   "dedup_key": "x-com-46",
+   "candidate_ids": [
+    "202610010223-grok-65",
+    "202610010223-grok-66",
+    "202610010223-grok-67",
+    "202610010223-grok-68",
+    "202610010223-grok-69",
+    "202610010223-grok-70",
+    "202610010223-grok-71",
+    "202610010223-grok-72",
+    "202610010223-grok-73"
+   ]
+  },
+  {
+   "slug": "shiny-runway-2026-master-showpiece-photo-contest",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "フォトコンテスト応募締切まであと3日(10/4 23:59まで)、まだ投稿可能",
+   "lead_score": 5,
+   "dedup_key": "shiny-runway-2026-master-showpiece-photo-contest",
+   "candidate_ids": [
+    "sched-2026-10-01-shiny-runway-2026-master-showpiece-photo-contest-締切前"
+   ]
+  },
+  {
+   "slug": "shiny-hbt-k-2026-10",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "10/6放送回向けおたより、本日10/1が送付の目安締切",
+   "lead_score": 5,
+   "dedup_key": "shiny-hbt-k-2026-10",
+   "candidate_ids": [
+    "sched-2026-10-01-shiny-hbt-k-2026-10-締切"
+   ]
+  },
+  {
+   "slug": "shiny-ops-roundup",
+   "brand": "shiny",
+   "rank": "roundup",
+   "angle": "シャニマス運営まとめ(コミカライズ更新・Web4コマ・イベント報酬紹介)",
+   "lead_score": 0,
+   "dedup_key": "shiny-coherent-light-update-2026-09-29",
+   "candidate_ids": [
+    "202609301235-explore-10",
+    "202609301834-explore-6",
+    "202610010223-explore-5"
+   ]
+  },
+  {
+   "slug": "cg-x-com-12",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "新曲「Neon Sphere」の配信が開始",
+   "lead_score": 10,
+   "dedup_key": "x-com-12",
+   "candidate_ids": [
+    "202610010223-grok-31"
+   ]
+  },
+  {
+   "slug": "cg-x-com-13",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "10月のガシャ(スカウト)開催スケジュールを公開",
+   "lead_score": 5,
+   "dedup_key": "x-com-13",
+   "candidate_ids": [
+    "202610010223-grok-32"
+   ]
+  },
+  {
+   "slug": "cg-x-com-14",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "10月の「SSレアアイドル勧誘チャレンジ」開始、期間中はプラチナチャレンジパスも登場",
+   "lead_score": 10,
+   "dedup_key": "x-com-14",
+   "candidate_ids": [
+    "202610010223-grok-33",
+    "202610010223-grok-34"
+   ]
+  },
+  {
+   "slug": "cg-x-com-16",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "10月のスペシャルガシャセット販売を開始",
+   "lead_score": 5,
+   "dedup_key": "x-com-16",
+   "candidate_ids": [
+    "202610010223-grok-35"
+   ]
+  },
+  {
+   "slug": "cg-gacha-festival-2026-08",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "文化祭テーマのオンラインくじ、本日11:59で販売終了",
+   "lead_score": 15,
+   "dedup_key": "cg-gacha-festival-2026-08",
+   "candidate_ids": [
+    "sched-2026-10-01-cg-gacha-festival-2026-08-終了"
+   ]
+  },
+  {
+   "slug": "cg-rose-tea-parlor-2026-nagoya",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "Rose Tea Parlorコラボカフェ、名古屋栄店が本日開幕(〜10/5)",
+   "lead_score": 35,
+   "dedup_key": "cg-rose-tea-parlor-2026-nagoya",
+   "candidate_ids": [
+    "sched-2026-10-01-cg-rose-tea-parlor-2026-nagoya-開幕"
+   ]
+  },
+  {
+   "slug": "gaku-jio-seina-little-devil-gacha-2026",
+   "brand": "gaku",
+   "rank": "medium",
+   "angle": "CD第2弾の予約締切(11/8)・価格(3,500円)・収録曲(全15曲、ソロフルver.13名分)など詳細判明",
+   "lead_score": 10,
+   "dedup_key": "gaku-jio-seina-little-devil-gacha-2026",
+   "candidate_ids": [
+    "202609300733-explore-10"
+   ]
+  },
+  {
+   "slug": "gaku-tsukimura-temari-ameagari-iris-figure",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "月村手毬「雨上がりのアイリス」フィギュア、予約受付開始(2027年6月発売・22,000円)",
+   "lead_score": 15,
+   "dedup_key": "tsukimura-temari-ameagari-iris-figure",
+   "candidate_ids": [
+    "202609300733-explore-11"
+   ]
+  },
+  {
+   "slug": "gaku-bigface-plush-vol4-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "BIGフェイスぬいぐるみvol.4、予約受付中(2027年2月発売・4,620円)",
+   "lead_score": 15,
+   "dedup_key": "gaku-bigface-plush-vol4-2026",
+   "candidate_ids": [
+    "202609301235-watch-1"
+   ]
+  },
+  {
+   "slug": "gaku-kaisou-hr-12-2026-09-28",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "新曲「Agitato」、本日10/1よりサブスク配信・DL販売開始。前夜MV公開、リーリヤガシャも開催中",
+   "lead_score": 85,
+   "dedup_key": "gaku-kaisou-hr-12-2026-09-28",
+   "candidate_ids": [
+    "202609301834-explore-7",
+    "sched-2026-10-01-gaku-kaisou-hr-12-2026-09-28-発売",
+    "202610010223-grok-49",
+    "sched-2026-10-01-agitato-liiriya-gasha-2026-発売"
+   ]
+  },
+  {
+   "slug": "gaku-x-com-26",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "雨夜燕3rdシングル試聴動画を公開、ASOBI STORE予約は10/4まで",
+   "lead_score": 10,
+   "dedup_key": "x-com-26",
+   "candidate_ids": [
+    "202610010223-grok-45"
+   ]
+  },
+  {
+   "slug": "gaku-x-com-27",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "初星学園放送部、本日21時から放送(村田綾香出演)・放送後アーカイブも公開",
+   "lead_score": 5,
+   "dedup_key": "x-com-27",
+   "candidate_ids": [
+    "202610010223-grok-46",
+    "202610010223-grok-48"
+   ]
+  },
+  {
+   "slug": "gaku-x-com-28",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "初星学園放送部、10/7放送回のゲストに春咲暖(秦谷美鈴役)",
+   "lead_score": 5,
+   "dedup_key": "x-com-28",
+   "candidate_ids": [
+    "202610010223-grok-47"
+   ]
+  },
+  {
+   "slug": "gaku-gold-rush-ch69-44go-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "休載していたGOLD RUSH第69話、本日発売の週刊少年チャンピオン44号に掲載",
+   "lead_score": 10,
+   "dedup_key": "gaku-gold-rush-ch69-44go-2026",
+   "candidate_ids": [
+    "sched-2026-10-01-gaku-gold-rush-ch69-44go-2026-発売"
+   ]
+  },
+  {
+   "slug": "million-x-com-34",
+   "brand": "million",
+   "rank": "small",
+   "angle": "新イベント『プラチナスターチューン~ライラックにつつまれて~』が本日15時開幕(詳細は後日告知)",
+   "lead_score": 20,
+   "dedup_key": "x-com-34",
+   "candidate_ids": [
+    "202610010223-grok-53"
+   ]
+  },
+  {
+   "slug": "million-x-com-37",
+   "brand": "million",
+   "rank": "small",
+   "angle": "プレミアムパスDX/DX+の有効期限は本日23:59、継続利用は再購入が必要と案内",
+   "lead_score": 10,
+   "dedup_key": "x-com-37",
+   "candidate_ids": [
+    "202610010223-grok-56"
+   ]
+  },
+  {
+   "slug": "million-x-com-42",
+   "brand": "million",
+   "rank": "small",
+   "angle": "ミリシタ9周年イラストのアクリルパネル受注開始、10/11締切",
+   "lead_score": 10,
+   "dedup_key": "x-com-42",
+   "candidate_ids": [
+    "202610010223-grok-61"
+   ]
+  },
+  {
+   "slug": "million-medicos-e-net-44",
+   "brand": "million",
+   "rank": "medium",
+   "angle": "『Cyber Planet POP UP SHOP』開催決定、東京10/8-20・大阪11/7-15、等身大パネル応募キャンペーンも",
+   "lead_score": 25,
+   "dedup_key": "medicos-e-net-44",
+   "candidate_ids": [
+    "202610010223-grok-63",
+    "202610010223-grok-62"
+   ]
+  },
+  {
+   "slug": "million-14th-day2-singles-order-2026",
+   "brand": "million",
+   "rank": "medium",
+   "angle": "14th新曲3作の受注締切まであと3日(10/4まで)、各商品の品番・価格・収録内容と購入上限3枚を案内",
+   "lead_score": 15,
+   "dedup_key": "million-14th-day2-singles-order-2026",
+   "candidate_ids": [
+    "sched-2026-10-01-million-14th-day2-singles-order-2026-締切前"
+   ]
+  },
+  {
+   "slug": "million-42-cb6d98",
+   "brand": "million",
+   "rank": "small",
+   "angle": "中秋の名月スペシャルログインボーナス、本日がジュエル受け取りの最終日",
+   "lead_score": 10,
+   "dedup_key": "million-42",
+   "candidate_ids": [
+    "sched-2026-10-01-million-42-締切"
+   ]
+  },
+  {
+   "slug": "million-linkage-kyoushi-2026-09",
+   "brand": "million",
+   "rank": "small",
+   "angle": "リンケージ『やっぱり教え子たちが俺争奪戦中な件について。編』、本日14:59で限定ガシャ・毎日無料10連・限定マスターピースセットが一斉終了",
+   "lead_score": 75,
+   "dedup_key": "million-linkage-kyoushi-2026-09",
+   "candidate_ids": [
+    "sched-2026-10-01-million-linkage-kyoushi-2026-09-終了",
+    "202610010223-grok-52",
+    "sched-2026-10-01-linkage-masterpiece-set-2026-終了",
+    "sched-2026-10-01-10-ssr-2-終了"
+   ]
+  },
+  {
+   "slug": "million-ops-roundup",
+   "brand": "million",
+   "rank": "roundup",
+   "angle": "交換所に過去イベント『Arrive You』の衣装を追加",
+   "lead_score": 0,
+   "dedup_key": "x-com-35",
+   "candidate_ids": [
+    "202610010223-grok-54",
+    "202610010223-grok-55",
+    "202610010223-grok-57"
+   ]
+  },
+  {
+   "slug": "dsva-x-com-20",
+   "brand": "dsva",
+   "rank": "small",
+   "angle": "灯里愛夏BIRTHDAY ONLINE LIVE2026延期公演、現地ライブビューイング先行抽選の申込締切が10/4に迫る。限定グッズ・お見送り会付き",
+   "lead_score": 40,
+   "dedup_key": "x-com-20",
+   "candidate_ids": [
+    "202610010223-grok-39"
+   ]
+  },
+  {
+   "slug": "dsva-x-com-21",
+   "brand": "dsva",
+   "rank": "small",
+   "angle": "第13回オンライン1on1、事前アンケート未回収でURL未発行の対象者に確認と問い合わせ先を案内",
+   "lead_score": 10,
+   "dedup_key": "x-com-21",
+   "candidate_ids": [
+    "202610010223-grok-40"
+   ]
+  },
+  {
+   "slug": "dsva-9-0ade7c",
+   "brand": "dsva",
+   "rank": "small",
+   "angle": "9月度活動アンケート、回答締切(10/4)まで残り3日のリマインド",
+   "lead_score": 5,
+   "dedup_key": "9",
+   "candidate_ids": [
+    "sched-2026-10-01-9-締切前"
+   ]
+  },
+  {
+   "slug": "765-x-com-5",
+   "brand": "765",
+   "rank": "small",
+   "angle": "アイマスMOR419(10/21放送)から765・秋月律子役の若林直美が新パーソナリティに就任、応援メール受付は10/8締切",
+   "lead_score": 35,
+   "dedup_key": "x-com-5",
+   "candidate_ids": [
+    "202610010223-grok-24"
+   ]
+  },
+  {
+   "slug": "765-765pro-solo-collection-dresscode-2026",
+   "brand": "765",
+   "rank": "small",
+   "angle": "765ASソロコレ「ドレスコード：最上級」予約締切(10/4)まであと3日、A-on STOREなどで受付中と案内",
+   "lead_score": 10,
+   "dedup_key": "765pro-solo-collection-dresscode-2026",
+   "candidate_ids": [
+    "sched-2026-10-01-765pro-solo-collection-dresscode-2026-締切前"
+   ]
+  },
+  {
+   "slug": "sidem-topic-065-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "オンライン受注締切(10/4 23:59)まであと3日、受注を呼びかけ",
+   "lead_score": 10,
+   "dedup_key": "topic-065-2026",
+   "candidate_ids": [
+    "sched-2026-10-01-topic-065-2026-締切前"
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "dedup_key": "shiny-master-showpiece-archive-2026",
+   "reason": "既報",
+   "note": "9/28既報のMSPアーカイブ配信開始と同内容。新事実も本日のトリガーも無し"
+  },
+  {
+   "dedup_key": "shiny-noctchill-ai-controversy-2026",
+   "reason": "その他",
+   "note": "AI生成疑惑を巡る炎上・係争であり規則により対象外。裏付けも未確認"
+  },
+  {
+   "dedup_key": "shiny-msp-solo-collection-after-sale-2026",
+   "reason": "既報",
+   "note": "9/29既報の事後物販と同内容。新事実・本日のトリガー無し(受注締切は10/18)"
+  },
+  {
+   "dedup_key": "x-com-45",
+   "reason": "既報",
+   "note": "9/28既報のMSPアーカイブ配信の再周知。新事実・本日のトリガー無し"
+  },
+  {
+   "dedup_key": "pazudora-cinderella-special-stage-2026",
+   "reason": "既報",
+   "note": "パズドラコラボ攻略ガイド(game8)の更新のみ。新発表・締切等の当日トリガーなし"
+  },
+  {
+   "dedup_key": "pazudora-cinderella-special-stage-2-2026",
+   "reason": "既報",
+   "note": "同上コラボのスペシャルステージ2攻略ガイド更新のみ。トリガーなし"
+  },
+  {
+   "dedup_key": "pazudora-cinderella-collaboration-app-store-ranking-2026",
+   "reason": "既報",
+   "note": "『週末App Store首位』は9/28号で既報済み。新情報なし"
+  },
+  {
+   "dedup_key": "official-shop-kuji-stock-2026-08-30",
+   "reason": "既報",
+   "note": "8/31号既報の在庫確認記事の定期更新。販売開始・終了等のトリガーなし"
+  },
+  {
+   "dedup_key": "cg-cinderella-15th-anniversary-party-2026",
+   "reason": "既報",
+   "note": "一般会員先行受付開始(9/30 12:00)は9/30号で既報。本日は新事実・締切等のトリガーなし"
+  },
+  {
+   "dedup_key": "cg-memory-pict-7th",
+   "reason": "既報",
+   "note": "受注開始(9/29)は9/30号で既報。グッズ内容の補足のみで新トリガーなし"
+  },
+  {
+   "dedup_key": "cg-puzzle-and-dragons-collab-2026",
+   "reason": "既報",
+   "note": "キャラ・ガチャ詳細は9/26・27号の『コラボ詳細』記事で既報"
+  },
+  {
+   "dedup_key": "cg-xr-live-apple-of-my-ai-2027",
+   "reason": "既報",
+   "note": "開催決定・最速先行受付は9/29号で既報。出演者・券種の補足のみ"
+  },
+  {
+   "dedup_key": "puzzle-dragons-idolmaster-colosseum1-2026",
+   "reason": "既報",
+   "note": "既報コラボ(アイマスコロシアム1)の攻略ガイド更新のみ"
+  },
+  {
+   "dedup_key": "sweet-soar-anniversary-2026",
+   "reason": "重複",
+   "note": "cg-xr-live-apple-of-my-ai-2027と同一の山形XRライブ。8周年に絡めた言及のみで新トリガーなし"
+  },
+  {
+   "dedup_key": "shop-asobistore-jp-6",
+   "reason": "重複",
+   "note": "cg-memory-pict-7thと同一商品の受注開始告知(ソース違いのみ)"
+  },
+  {
+   "dedup_key": "idolmaster-official-jp-8",
+   "reason": "重複",
+   "note": "cg-cinderella-15th-anniversary-party-2026と同一の一般会員先行受付開始"
+  },
+  {
+   "dedup_key": "youtube-com-9",
+   "reason": "既報",
+   "note": "「クロス×オーバー！」MV公開(9/30 21時)は9/30号で既報"
+  },
+  {
+   "dedup_key": "members-k-arena-club-com-10",
+   "reason": "重複",
+   "note": "cg-cinderella-15th-anniversary-party-2026と同一公演のチケット窓口追加(Kアリーナクラブ会員抽選)。同時開始で既報扱い"
+  },
+  {
+   "dedup_key": "shop-columbia-jp-11",
+   "reason": "既報",
+   "note": "「クロス×オーバー！」9/30発売は9/26・27号で既報。発売日は前日で当日トリガーなし"
+  },
+  {
+   "dedup_key": "gaku-agitato-lilja-gasha-2026",
+   "reason": "既報",
+   "note": "9/30既報(リーリヤガシャ開幕)と同一、新事実・当日トリガーなし"
+  },
+  {
+   "dedup_key": "gaku-hatsuboshi-hr-12-2026",
+   "reason": "既報",
+   "note": "9/30既報(HR#12急上昇入り)と同一事象、新事実なし"
+  },
+  {
+   "dedup_key": "gaku-hatsuboshi-hr-12-trend-2026",
+   "reason": "既報",
+   "note": "9/30既報のHR#12急上昇と同一、knownを超える新事実なし"
+  },
+  {
+   "dedup_key": "x-com-24",
+   "reason": "既報",
+   "note": "9/30既報のH.I.F記念ジュエル配布(10/1 4:59締切)と同一"
+  },
+  {
+   "dedup_key": "x-com-25",
+   "reason": "既報",
+   "note": "9/30既報の9月ミッションパス期限(10/1 4:59)と同一"
+  },
+  {
+   "dedup_key": "x-com-31",
+   "reason": "個人の話題",
+   "note": "ファンによる3D MV動画の個人投稿、単体記事にしない"
+  },
+  {
+   "dedup_key": "x-com-56",
+   "reason": "その他",
+   "note": "恋愛描写をめぐる論争的投稿、炎上的話題のため不採用"
+  },
+  {
+   "dedup_key": "x-com-57",
+   "reason": "個人の話題",
+   "note": "MV制作担当者個人の投稿、関係者の動向"
+  },
+  {
+   "dedup_key": "x-com-58",
+   "reason": "個人の話題",
+   "note": "MV参加者個人の投稿"
+  },
+  {
+   "dedup_key": "x-com-59",
+   "reason": "個人の話題",
+   "note": "MV制作担当者個人の投稿"
+  },
+  {
+   "dedup_key": "ittan-aishite-release-2026",
+   "reason": "既報",
+   "note": "9/30既報と同内容(一旦愛して♡9/27配信ほか)。新事実・当日トリガー無し"
+  },
+  {
+   "dedup_key": "million-14th-emily-lapel-pin-2026",
+   "reason": "既報",
+   "note": "9/30既報と同内容(受注10/11まで)。新事実・当日トリガー無し"
+  },
+  {
+   "dedup_key": "x-com-40",
+   "reason": "その他",
+   "note": "使用期限は9/30で発行日10/1より前に終了済み、当日のトリガー無し"
+  },
+  {
+   "dedup_key": "x-com-41",
+   "reason": "既報",
+   "note": "直近記事(9/30)と同一施策(9周年パーカー受注、10/12締切)。新事実・当日トリガー無し"
+  },
+  {
+   "dedup_key": "sidem-monthly-theme-song-11-f-lags-2026",
+   "reason": "面違い",
+   "note": "SideM(F-LAGS)の商品情報で、dsva(vα-liv)面の話題ではない"
+  },
+  {
+   "dedup_key": "dsva-duelmasters-collab-2026",
+   "reason": "出典不足",
+   "note": "source_types未確認・verify unconfirmed。本日21時配信だが公式裏付けなし"
+  },
+  {
+   "dedup_key": "valiv-official-radio-2026",
+   "reason": "既報",
+   "note": "9/30既報(ヴイアラ初の公式ラジオ、音泉で放送決定)と同内容。新事実・当日トリガーなし"
+  },
+  {
+   "dedup_key": "valiv-hot-limit-short-2026",
+   "reason": "既報",
+   "note": "9/30の配信・動画公開まとめで既出のHOT LIMIT踊ってみた動画。新事実なし"
+  },
+  {
+   "dedup_key": "x-com-22",
+   "reason": "既報",
+   "note": "9/25既報(シチュエーションボイス第十五弾、10月4日まで販売)と同内容"
+  },
+  {
+   "dedup_key": "x-com-23",
+   "reason": "既報",
+   "note": "9/29既報(第2回中間能力評価を開催)と同施策の呼びかけ。新事実・当日トリガーなし"
+  },
+  {
+   "dedup_key": "x-com-1",
+   "reason": "既報",
+   "note": "9/29号「IM＠S RADIO、神原大地ゲスト回を本日20時配信」で既報。当日(10/1)の新事実・トリガー無し"
+  },
+  {
+   "dedup_key": "x-com-2",
+   "reason": "既報",
+   "note": "同じ放送回(9/29)の終了・アーカイブ公開。9/29号で報じた配信告知と同一施策で、10/1号向けの新トリガー無し"
+  },
+  {
+   "dedup_key": "imas-radio-stamas-5th-2026",
+   "reason": "既報",
+   "note": "9/30号「スタマス5周年のIM＠S RADIO、10月13日特番」と同一内容。known 超の新事実・当日トリガー無し"
+  },
+  {
+   "dedup_key": "x-com-55",
+   "reason": "その他",
+   "note": "ミリオンライブ/シャニマスのファン間の作品理解をめぐる論争。Xトレンドまとめ（未確認・Grok要約）で個人投稿の引用のみ、公式の発表・開催・結果ではない。炎上・係争的な話題かつ個人SNS投稿単体のため不採用。ファン面(culture)も批判・炎上は対象外で該当せず"
+  }
+ ],
+ "editorial_slug": "joint-bandainamco-am-co-jp-32",
+ "editorial_brand": "joint"
+}

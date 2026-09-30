@@ -31,5 +31,34 @@
   "verify": "confirmed",
   "src_candidate_id": "202609022336-watch-4",
   "event_date": "2026-11-07"
+ },
+ {
+  "id": "sched-2026-11-07-x-com-43-開幕",
+  "dedup_key": "x-com-43",
+  "brand": "million",
+  "subject": "ミリオンライブPOP UP SHOP(大阪)",
+  "kind": "開幕",
+  "note": "大阪会場のPOP UP SHOPが開幕",
+  "reserved_on": "2026-10-01",
+  "title": "「アイドルマスター ミリオンライブ！」Cyber Planet POP UP SHOP",
+  "url": "https://x.com/medicos_et_02/status/2105218593013354646",
+  "source_type": "当事者",
+  "facts": [
+   "掲載日: 2026-09-30",
+   "投稿日時: 2026-09-30 08:50:00 GMT",
+   "催しの日:",
+   "【東京】26/10/8(木)～26/10/20(火)",
+   "【大阪】26/11/7(土)～26/11/15(日)",
+   "内容:",
+   "「アイドルマスター ミリオンライブ！」Cyber Planet POP UP SHOP",
+   "お部屋を彩るアイテムからお出かけに連れていけるアイテムまで",
+   "会場では実物サンプルも展示予定",
+   "【東京】📅26/10/8(木)～26/10/20(火) 📍MEDICOS SHOP 渋谷",
+   "【大阪】📅26/11/7(土)～26/11/15(日) 📍アベノラクバス",
+   "リンク: https://t.co/VuddOGS7g5"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610010223-grok-62"
  }
 ]

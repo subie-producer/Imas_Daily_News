@@ -77,5 +77,59 @@
   "verify": "confirmed",
   "src_candidate_id": "202609260237-grok-48",
   "event_date": "2026-10-21"
+ },
+ {
+  "id": "sched-2026-10-21-x-com-5-開始",
+  "dedup_key": "x-com-5",
+  "brand": "765",
+  "subject": "アイマスMOR419 若林直美・汐谷文康が新パーソナリティに",
+  "kind": "開始",
+  "note": "アイマスMOR419が放送され、新パーソナリティの初回を聴ける",
+  "reserved_on": "2026-10-01",
+  "title": "アイマスMOR419からパーソナリティに若林直美（秋月律子役）",
+  "url": "https://x.com/imas_musicradio/status/2105297115635171821",
+  "source_type": "準公式",
+  "facts": [
+   "投稿日時: 2026-09-30 14:02:01 GMT",
+   "催しの日: アイマスMOR419（10月21日放送）から",
+   "締切: お二人宛のメールは 10月8日まで",
+   "アイマスMOR419（10月21日放送）からは、",
+   "765・秋月律子役の若林直美さん",
+   "SideM・北村想楽役の汐谷文康さん",
+   "をパーソナリティにお迎えします",
+   "お二人宛のメールは https://krs.bz/columbia/m/morform へ",
+   "10月8日まで",
+   "#アイマスMOR #imas_MOR",
+   "--",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610010223-grok-24"
+ },
+ {
+  "id": "sched-2026-10-21-shiny-pioneer-impact-3dmv-2026-締切",
+  "dedup_key": "shiny-pioneer-impact-3dmv-2026",
+  "brand": "shiny",
+  "subject": "「Pioneer Impact」関連キャンペーン",
+  "kind": "締切",
+  "note": "ジュエルセール第2弾など関連キャンペーンが終了",
+  "reserved_on": "2026-10-01",
+  "title": "「Pioneer Impact」3DMV公開",
+  "url": "https://x.com/imassc_prism",
+  "source_type": "公式",
+  "facts": [
+   "『Pioneer Impact』の3DMVが公開された。",
+   "出演ユニットはアンティーカ×シーズ。",
+   "エンゲージメント: 中",
+   "新発光システムに対応した楽曲が追加された。",
+   "対応衣装を着用し、MV編成画面で「描画設定」を「HDR」にすると衣装が発光する。",
+   "デュアラブルインパクトリリース記念の「1回限定！ジュエルセール第2弾」が開催中。",
+   "ASOBI STORE限定で販売されている。",
+   "開催期間: 10/21 11:59まで"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202609301834-explore-3"
  }
 ]

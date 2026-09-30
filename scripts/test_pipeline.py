@@ -275,7 +275,7 @@ def test_revise_check():
     swapped = dict(a3, sources=OK["sources"][:2] + [{"url": "https://d.example/4", "label": "差し替え"}])
     check(any("出典を外した" in p for p in R(swapped)), "出典の無断差し替えが通った")
     iss_add = [{"issue_id": "I1", "rule_id": "R2", "repair": "add_source", "quote": ""}]
-    check(any("add_source" in p for p in R(dict(a3, addressed_issue_ids=["I1"], sources=OK["sources"][:2]), iss_add)),
+    check(any("出典を外した" in p for p in R(dict(a3, addressed_issue_ids=["I1"], sources=OK["sources"][:2]), iss_add)),
           "add_source で出典を外したのが通った")
     iss_lint = [{"issue_id": "I1", "rule_id": "LINT", "repair": "rewrite_claim", "quote": ""}]
     check(R(dict(a4, addressed_issue_ids=["I1"], title="x"), iss_lint) == [], "LINT 修正に外の検査が掛かった")
@@ -301,6 +301,34 @@ def test_revise_check():
                                {"markdown": "配信は11月に始まる。", "fact_ids": ["F3"]}])
     check(any("段落" in p for p in compose.revise_check(q_bad, iss_q, old_fm, old_q)),
           "鉤括弧付き quote でも未指摘段落の改変は落ちない")
+    # R4(出典の不一致): 誤 URL を外し、正しい一次情報に付け替える。quote は frontmatter の URL(本文段落を
+    # 触らない)なので、根拠段落の fact_ids を正しい候補の facts に付け替えても、字面が同じなら通す。
+    # 以前は差し替えを「出典を足した」で、fact_ids の変更を「未指摘段落を変えた」で二重に弾き、誤 URL の R4 が
+    # 何巡もブロックして有効な記事が校閲上限後に脱落した(監査指摘 MF-1)
+    wrong_url = "https://idolmaster-official.jp/news/01_19898.html"
+    right_url = "https://idolmaster-official.jp/live_event/283_noctchill/"
+    fm_r4 = dict(old_fm, sources=[{"url": wrong_url}, {"url": "https://b.example/2"}])
+    old_r4 = "4公演の時刻と通し券8万円が発表された。 <!-- F19 -->\n\n仙台で3月に開催される。 <!-- F20 -->"
+    iss_r4 = [{"issue_id": "I1", "rule_id": "R4", "repair": "drop_source", "quote": wrong_url}]
+    ans_r4 = dict(OK, addressed_issue_ids=["I1"],
+                  sources=[{"url": right_url, "label": "283 PRODUCTION noctchill"}, {"url": "https://b.example/2", "label": "y"}],
+                  new_facts=[{"id": "N1", "text": "4公演の時刻と通し券8万円", "url": right_url},
+                             {"id": "N2", "text": "仙台で3月に開催", "url": right_url}],
+                  blocks=[{"markdown": "4公演の時刻と通し券8万円が発表された。", "fact_ids": ["N1"]},
+                          {"markdown": "仙台で3月に開催される。", "fact_ids": ["N2"]}])
+    check(compose.revise_check(ans_r4, iss_r4, fm_r4, old_r4) == [],
+          f"R4 の出典付け替え(誤 URL→正しい一次情報)が落ちた: {compose.revise_check(ans_r4, iss_r4, fm_r4, old_r4)}")
+    # 付け替え中でも、未指摘段落の**字面**の無断改変は止める(根拠 id だけを外し、字面の検査は残す)
+    ans_r4_bad = dict(ans_r4, blocks=[{"markdown": "4公演の時刻と通し券8万円が発表された。", "fact_ids": ["N1"]},
+                                      {"markdown": "仙台ではなく東京で開催される。", "fact_ids": ["N2"]}])
+    check(any("段落" in p for p in compose.revise_check(ans_r4_bad, iss_r4, fm_r4, old_r4)),
+          "出典付け替えでも未指摘段落の字面改変を通した")
+    # drop_source が無ければ、差し替え(外す+足す)は従来どおり止める(黙って弱い出典に付け替える手)
+    iss_r4_noflag = [{"issue_id": "I1", "rule_id": "R1", "repair": "drop_claim", "quote": wrong_url}]
+    check(any("出典を外した" in p for p in compose.revise_check(dict(ans_r4, blocks=[{"markdown": "4公演の時刻と通し券8万円が発表された。", "fact_ids": ["F19"]},
+                                                                                    {"markdown": "仙台で3月に開催される。", "fact_ids": ["F20"]}]),
+                                                                iss_r4_noflag, fm_r4, old_r4)),
+          "drop_source の指摘が無いのに出典の差し替えが通った")
 
 
 def test_rollback(tmp: Path):

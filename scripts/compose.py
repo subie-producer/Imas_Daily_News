@@ -1771,6 +1771,11 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
             q = q[1:-1]
         return q
     blocks = ans.get("blocks") or []
+    repairs = {b.get("repair") for b in issues}
+    # 出典を付け替える指摘(add_source / drop_source = R3/R4)のとき、根拠段落は「どの出典に紐づくか」が
+    # 正当に変わる(誤出典 F を正しい候補の F/N に差し替える。R4「記事は強い出典に合わせる」)。
+    # その巡では字面だけを見て根拠 id の変化は通し、根拠の正しさは次の巡の校閲(R1/R3/R4)が見る(監査指摘 MF-1)
+    source_repair = "add_source" in repairs or "drop_source" in repairs
     # lint の指摘(構造の赤)は直し方を限定できないので、指摘の外の検査は掛けない
     if old_fm and not any(b.get("rule_id") == "LINT" for b in issues):
         quotes = [qnorm(b) for b in issues if len(qnorm(b)) >= 8]
@@ -1796,7 +1801,10 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
             def para(text, ids=None):
                 m = renderlib.FACT_NOTE.search(text or "")
                 ids = ids if ids is not None else (m.group(1).split() if m else [])
-                return norm(renderlib.strip_fact_notes(text)), tuple(sorted(str(i) for i in ids))
+                # 出典の付け替え中は根拠 id の変化を段落の同一性から外す(字面が同じなら未指摘段落として通す)。
+                # 字面の無断改変は従来どおり止まる(監査指摘 MF-1)
+                key_ids = () if source_repair else tuple(sorted(str(i) for i in ids))
+                return norm(renderlib.strip_fact_notes(text)), key_ids
             # 旧稿も新稿も、**同じ正規化と同じ単位**で比べる(文字として残った `\n` を改行に戻し、
             # 地の文と箇条書きの境目で分ける = 書き出しと同じ renderlib の規則)。揃えないと、壊れた改行を
             # 直しただけの稿が「指摘に無い段落を足した」で落ちる(監査指摘 r71)。
@@ -1834,19 +1842,15 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
                 problems.append(f"指摘に無い段落を足した(新しい段落 {n_new} / 指摘の段落 {n_allowed})")
         old_urls = {s.get("url") for s in (old_fm.get("sources") or []) if isinstance(s, dict)}
         new_urls = {s.get("url") for s in (ans.get("sources") or [])}
-        repairs = {b.get("repair") for b in issues}
-        add, drop = "add_source" in repairs, "drop_source" in repairs
         # 出典を「足す」のは、出典にない事実・出典隠し・公式が無い(R1/R3/R5)を直す正規の手で、決めるのは
-        # 執筆(revise-article.md「repair は校閲の提案で、決めるのはあなた」)。校閲が add_source を提案して
-        # いなくても、既存の出典を1つも外さずに素材裏付けの出典を足すのは冪等に安全で(実在・一致の照合は次の巡の
-        # 校閲=R3/R4 がやる)、機械が止めるのは黙って出典を「外す/差し替える」ほう。add_source の提案待ちで足せず、
-        # 出典隠しの指摘が下りなかった(実測 2026-09-30 joint-cg-million: 検算が add をはねて元の稿のまま何巡も残った)
-        if not add and not drop and not new_urls >= old_urls:
-            problems.append(f"出典の指摘が無いのに出典を外した: {sorted(old_urls - new_urls)[:2]}")
-        elif add and not drop and not new_urls >= old_urls:
-            problems.append(f"add_source の指摘なのに出典を外した: {sorted(old_urls - new_urls)[:2]}")
-        elif drop and not add and not new_urls <= old_urls:
-            problems.append(f"drop_source の指摘なのに出典を足した: {sorted(new_urls - old_urls)[:2]}")
+        # 執筆(revise-article.md「repair は校閲の提案で、決めるのはあなた」)。素材裏付けの出典を足すのは
+        # 冪等に安全で(実在・一致の照合は次の巡の校閲=R3/R4 がやる)、add_source の提案が無くても常に通す。
+        # 機械が止めるのは黙って出典を「外す」ほう。ただし drop_source(R4「記事は強い出典に合わせる」)の指摘が
+        # あれば外せる — 誤出典を外して正しい一次情報に付け替える差し替え(外す+足す)も、drop_source があれば通る。
+        # 以前は drop_source があっても「足した」で差し替えを弾き、誤 URL の R4 が何巡もブロックして記事が落ちた(監査指摘 MF-1)
+        removed = old_urls - new_urls
+        if removed and "drop_source" not in repairs:
+            problems.append(f"drop_source の指摘が無いのに出典を外した: {sorted(removed)[:2]}")
     return problems
 
 

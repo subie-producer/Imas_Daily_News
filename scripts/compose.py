@@ -299,15 +299,13 @@ def write_plan_index(date: str, cands: dict, blocklist: dict) -> tuple[Path, int
                 s["facts"].append(f)
     # 既報の照合はコードがする(選定のモデルに約1万行の台帳を読ませない。読み切れず、同じ知らせを新規として通していた)。
     # 候補の dedup_key は storylink.link で、同じ一次情報の過去の記事の話題につなぎ直してある
-    known, prior = storylink.known_facts(ROOT), storylink.prior_by_key(date, ROOT)
+    # 既報は台帳の要約(1記事1〜4件)ではなく、過去の記事が**読者に出した本文**で渡す(要約で渡したら、価格・店舗を「新しい事実」と
+    # 判断して同じ記事をもう一度載せた。実測 2026-10-01 の8番らーめん)
+    prior = storylink.prior_by_key(date, ROOT)
     for s in subjects.values():
         s["facts"] = s["facts"][:PLAN_FACTS_PER_SUBJECT]
-        k = known.get(s["dedup_key"])
-        if k and k["facts"]:
-            s["known"] = {"first_published": k["first_published"],
-                          "facts": [str(f)[:PLAN_FACT_CHARS] for f in k["facts"][:PLAN_FACTS_PER_SUBJECT]]}
         if prior.get(s["dedup_key"]):
-            s["prior"] = prior[s["dedup_key"]][:3]
+            s["prior"] = prior[s["dedup_key"]]
     # 1主題1行で書く(整形すると数千行になり、Read の既定上限 2000行で頭から切れて
     # 後半の主題が編集長の視野に入らなくなる。行数=主題数なら一度で読み切れる)
     def dump(rows: list[dict], path: Path) -> None:
@@ -1573,6 +1571,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
     """
     wave = wave or COMPOSE_WAVE
     trig_by_key = {t["dedup_key"]: t for t in triggers}
+    prior = storylink.prior_by_key(date, ROOT)
     jobs, written_before = [], []
     for art in plan["articles"]:
         if reuse and (ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md").exists():
@@ -1584,6 +1583,8 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
         src = weakest_src(classify_source(c.get("url", "") or "") for c in materials)
         dks = {c.get("dedup_key") for c in materials} | {art.get("dedup_key")}
         facts = [f for dk in dks if dk in stories for f in stories[dk]]
+        # 既報には、この話題の過去の記事が**読者に出した本文**も渡す(台帳の要約だけだと、書いた価格・店舗をまた書く。2026-10-01)
+        facts += [f"{p['edition']}号「{p['title']}」の本文: {p['text']}" for dk in sorted(dks - {None}) for p in prior.get(dk, [])]
         # 構造化モード: 素材の事実に id を振り、執筆は JSON を返す(ファイルはコードが作る)
         mats_in, fact_by_id = (renderlib.materials_with_ids(materials) if STRUCTURED_WRITE else (materials, {}))
         jobs.append((art, src, article_prompt(date, art, mats_in, facts, trig_by_key.get(art.get("dedup_key"))),

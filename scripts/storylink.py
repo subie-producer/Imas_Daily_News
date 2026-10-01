@@ -11,7 +11,7 @@
    多くの記事に出てくる URL(一覧ページ・ライブの特設ページなど。HUB_POSTS 本を超えるもの)は照合に使わない
 2. 今日の候補の URL が過去の記事と一致すれば、その記事の dedup_key へつなぎ直す(台帳の同じ話題に積まれ、執筆は既報を受け取る)
 3. 今日の候補どうしで URL が一致すれば、1つの dedup_key にまとめる(同じ日に定点観測と探索が拾った同じ知らせ)
-選定には、主題ごとの既報(known)と過去の記事(prior)、面ごとの直近の見出し(recent_titles)を渡す。記事にするか
+選定と執筆には、主題ごとの過去の記事(prior: 号・見出し・読者に出した本文)、選定には面ごとの直近の見出し(recent_titles)を渡す。記事にするか
 (新しい事実・当日のトリガーがあるか)の判断はモデルがする(内容の判断はモデル。コードは照合だけ)。
 """
 import collections
@@ -28,6 +28,8 @@ LINK_DAYS = 45          # 照合に使う過去の記事の日数
 HUB_POSTS = 3           # これを超える本数の記事に出てくる URL は、一覧・特設ページとみなして照合に使わない
 HUB_TOPICS = 3          # この数以上の別の話題(dedup_key)に使われた URL は、シリーズのページとみなして照合に使わない
 RECENT_DAYS = 7         # 選定に渡す、面ごとの直近の見出しの日数
+PRIOR_ARTICLES = 2      # 既報として渡す過去の記事の本数(新しい順)
+PRIOR_DAYS = 36500      # 既報として渡す過去の記事の期間(=全期間)
 LIST_TAILS = {"", "news", "information", "topics", "top", "index", "info", "blog", "list", "article", "articles"}
 # 記事を見分けない問い合わせ(追跡・共有・ページ送り)。これ以外の問い合わせ(?id= など)は記事を見分けるので残す
 NOISE_QUERY = re.compile(r"^(utm_.*|s|t|ref|ref_src|fbclid|gclid|usp|si|feature|page|from|share|via)$")
@@ -69,6 +71,17 @@ def split_front(text: str) -> dict:
         return {}
 
 
+def published_text(text: str, fm: dict) -> str:
+    """記事が**実際に読者へ出した内容**(リード+本文。事実 id の注記と空白を畳む)。
+    既報台帳の published_facts は記事1本につき1〜4件の要約で、記事が書いた価格・店舗・特典の多くが抜ける。それを既報として
+    渡したら、選定が「価格が新しい事実」と判断して同じ記事をもう一度載せた(実測 2026-10-01: 8番らーめんのコラボ。9/30 の記事は
+    価格も店舗も書いていた)。既報の判断は、出した本文そのものと突き合わせる。"""
+    body = re.sub(r"\A---\n.*?\n---\n", "", text, flags=re.S)
+    body = re.sub(r"<!--.*?-->", "", body, flags=re.S)
+    # 切り詰めない(後ろの段落に価格・特典・収録内容があり、切ると「新しい事実」に見える。監査指摘 r108)
+    return re.sub(r"\s+", " ", f"{fm.get('lede') or ''} {body}").strip()
+
+
 def past_articles(date: str, root: Path = ROOT, days: int = LINK_DAYS) -> list[dict]:
     """date より前の LINK_DAYS 日の記事: slug・号・見出し・面・dedup_key・URL キー。dedup_key はその号の計画から引く。"""
     d0 = datetime.date.fromisoformat(date)
@@ -80,7 +93,8 @@ def past_articles(date: str, root: Path = ROOT, days: int = LINK_DAYS) -> list[d
         ed = p.name[:10]
         if not (lo <= ed < date):
             continue
-        fm = split_front(p.read_text(encoding="utf-8"))
+        raw = p.read_text(encoding="utf-8")
+        fm = split_front(raw)
         slug = str(fm.get("slug") or p.stem[11:])
         if ed not in plans:
             try:
@@ -91,6 +105,7 @@ def past_articles(date: str, root: Path = ROOT, days: int = LINK_DAYS) -> list[d
         dk = plans[ed].get(slug)
         ids = [str(i) for i in fm.get("candidate_ids") or []]
         urls = {url_key(s.get("url")) for s in fm.get("sources") or [] if isinstance(s, dict)}
+        keys = {dk} if dk else set()
         if ids:
             if ed not in cand_keys:
                 cand_keys[ed] = {}
@@ -102,10 +117,14 @@ def past_articles(date: str, root: Path = ROOT, days: int = LINK_DAYS) -> list[d
             for i in ids:
                 k, u = cand_keys[ed].get(i, (None, ""))
                 urls.add(u)
+                if k:
+                    keys.add(k)
                 dk = dk or k
         urls.discard("")
+        # keys = 計画の話題キーと、記事の候補が持っていた話題キー(別名)。既報はどのキーからも引ける(監査指摘 r108:
+        # 計画が別の主題に統合した記事は、候補側のキーで再収集されると計画のキーだけでは既報が見えない)
         out.append({"slug": slug, "edition": ed, "title": str(fm.get("title") or ""), "brand": fm.get("brand"),
-                    "dedup_key": dk, "urls": urls})
+                    "dedup_key": dk, "keys": keys, "urls": urls, "text": published_text(raw, fm)})
     return out
 
 
@@ -169,21 +188,14 @@ def link(cands: dict, date: str, root: Path = ROOT) -> list[tuple[str, str, str,
 
 
 def prior_by_key(date: str, root: Path = ROOT) -> dict[str, list[dict]]:
-    """dedup_key → この話題の過去の記事(号・見出し)。新しい順。"""
+    """dedup_key → この話題の過去の記事(号・見出し・**読者に出した本文**)。新しい順に PRIOR_ARTICLES 本まで。
+    **全期間**から取る(URL の照合は LINK_DAYS 日だが、既報は古くても既報。監査指摘 r107)。"""
     out: dict[str, list[dict]] = collections.defaultdict(list)
-    for a in sorted(past_articles(date, root), key=lambda a: a["edition"], reverse=True):
-        if a["dedup_key"]:
-            out[a["dedup_key"]].append({"edition": a["edition"], "title": a["title"]})
+    for a in sorted(past_articles(date, root, days=PRIOR_DAYS), key=lambda a: a["edition"], reverse=True):
+        for k in sorted(a["keys"]):          # 計画のキーと、候補が持っていたキー(別名)のどちらからも引ける
+            if len(out[k]) < PRIOR_ARTICLES:
+                out[k].append({"edition": a["edition"], "title": a["title"], "text": a["text"]})
     return out
-
-
-def known_facts(root: Path = ROOT) -> dict[str, dict]:
-    """既報台帳の story_id → {first_published, facts}。"""
-    p = root / "stock" / "stories.yml"
-    if not p.exists():
-        return {}
-    return {e.get("story_id"): {"first_published": str(e.get("first_published") or ""), "facts": e.get("published_facts") or []}
-            for e in yaml.safe_load(p.read_text(encoding="utf-8")) or []}
 
 
 def recent_titles(date: str, root: Path = ROOT, days: int = RECENT_DAYS) -> dict[str, list[str]]:

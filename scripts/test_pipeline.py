@@ -1774,8 +1774,31 @@ def test_storylink(tmp: Path):
     finally:
         compose.ROOT = saved
     row = next(r for rs in by_brand.values() for r in rs if r["dedup_key"] == "dijimas-cg-2026")
-    check(row.get("known", {}).get("facts") == ["開催地: 沖縄県那覇市"] and row.get("prior", [{}])[0].get("edition") == "2026-09-17",
-          f"索引の既報・過去の記事: {row.get('known')} {row.get('prior')}")
+    # 既報は台帳の要約ではなく、過去の記事が読者に出した本文で渡す(2026-10-01: 要約に無い価格を「新しい事実」として8番らーめんを再掲した)
+    pr = (row.get("prior") or [{}])[0]
+    check("known" not in row and pr.get("edition") == "2026-09-17" and pr.get("text") == "本文",
+          f"索引の過去の記事(本文つき): {row.get('prior')}")
+    (tmp / "docs" / "_posts" / "2026-09-17-dijimas.md").write_text(
+        "---\nslug: dijimas\nbrand: cg\ntitle: 那覇市でじますコラボ決定\nlede: 第1弾は11月20日から。\ncandidate_ids: []\nsources:\n"
+        "- url: https://idolmaster-official.jp/news/01_19889\n  label: l\n---\nAセットは税込2310円。 <!-- F1 F2 -->\n\n店舗は31店舗。 <!-- F3 -->\n",
+        encoding="utf-8")
+    pr = sl.prior_by_key(d, tmp)["dijimas-cg-2026"][0]
+    check(pr["text"] == "第1弾は11月20日から。 Aセットは税込2310円。 店舗は31店舗。", f"読者に出した本文(リード+本文、注記なし): {pr['text']!r}")
+    # 既報は照合の期間(45日)より古くても既報として渡す(監査指摘 r107)
+    post("2026-06-01", "old-news", "6月の記事", ["https://a.jp/old/1"])
+    (tmp / "metrics" / "plan-2026-06-01.json").write_text(json.dumps({"articles": [{"slug": "old-news", "dedup_key": "old-key"}]}), encoding="utf-8")
+    check(sl.prior_by_key(d, tmp).get("old-key", [{}])[0].get("edition") == "2026-06-01", "45日より古い既報が渡らない")
+    # 計画が別の主題に統合した記事は、候補が持っていた話題キー(別名)でも既報が引ける。本文は切り詰めない(監査指摘 r108)
+    long_tail = "末尾の事実: 発送は2027年2月、シリアル500枚。"
+    (tmp / "docs" / "_posts" / "2026-09-05-alias.md").write_text(
+        "---\nslug: alias\nbrand: joint\ntitle: Pステ松戸の交流会\ncandidate_ids:\n- c-al\nsources: []\n---\n" + "前段。" * 1200 + long_tail + "\n",
+        encoding="utf-8")
+    (tmp / "candidates" / "2026-09-05.json").write_text(json.dumps([{"id": "c-al", "dedup_key": "nagoya-meeting", "url": "https://z.jp/a/1"}]), encoding="utf-8")
+    (tmp / "metrics" / "plan-2026-09-05.json").write_text(json.dumps({"articles": [{"slug": "alias", "dedup_key": "matsudo-meeting"}]}), encoding="utf-8")
+    pb = sl.prior_by_key(d, tmp)
+    check(pb.get("nagoya-meeting", [{}])[0].get("edition") == "2026-09-05" and pb.get("matsudo-meeting", [{}])[0].get("edition") == "2026-09-05",
+          "候補側の話題キー(別名)で既報が引けない")
+    check(pb["matsudo-meeting"][0]["text"].endswith(long_tail), "長い記事の本文を切り詰めた(末尾の既報が渡らない)")
     check("2026-09-17 那覇市でじますコラボ決定" in sl.recent_titles(d, tmp).get("cg", []), "直近の見出しが面ごとに出ない")
 
 

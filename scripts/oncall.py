@@ -763,9 +763,13 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool) -> int:
             # _pending)を**実際に拾い直す**。resume を no-op にすると、直した効きは次の定時収集まで
             # 来ず、この号の収集に間に合わない(当番 2026-10-02 の未処理6件)。探索(Luna)・Grok は
             # 今回の収集で済んでおり(Grok は週次セッション上限を食う)、やり直すのは定点観測だけでよい。
-            # collect.py が edition を checkout し、候補を verify して commit・push する(成功境界は collect 側)
+            #   - --date は取り込み先の号(edition)を渡す。渡さないと collect が壁時計から号を取り、
+            #     06:00 境界をまたいだ往復や発行後 watch で別号を checkout してしまう(監査指摘)
+            #   - --oncall-rerun は、直しが効かず再び読めなかったバッチを諦めさせない。既読にせず繰り越し、
+            #     残れば collect が非0で返す(原因未確定のまま新着を失わない。監査指摘)
+            target = edition.removeprefix("edition/")
             code = run_stage([sys.executable, str(ROOT / "scripts" / "collect.py"),
-                              "--skip-explore", "--skip-grok"], log, 3600)
+                              "--skip-explore", "--skip-grok", "--oncall-rerun", "--date", target], log, 3600)
         else:
             code = 0
         if code == 0 and stage == "release":

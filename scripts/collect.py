@@ -163,7 +163,7 @@ def list_source(s: dict, known: set[str], fetch=None) -> tuple[list[tuple[str, s
     return found, pages, bool(s.get("page_url"))
 
 
-def run_watch(claude_call) -> tuple[list[dict], dict]:
+def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict]:
     sources = yaml.safe_load((ROOT / "sources.yml").read_text(encoding="utf-8"))
     state = json.loads(STATE_PATH.read_text(encoding="utf-8")) if STATE_PATH.exists() else {}
     new_items = []  # {source_id, brand, url, title, source_type}
@@ -213,13 +213,13 @@ def run_watch(claude_call) -> tuple[list[dict], dict]:
     batches = [new_items[i:i + WATCH_BATCH] for i in range(0, len(new_items), WATCH_BATCH)]
     cands, attempted = [], set()
     with ThreadPoolExecutor(max_workers=max(1, WATCH_PARALLEL)) as ex:
-        for got, tried in ex.map(lambda b: facts_batch(b, claude_call, state), batches):
+        for got, tried in ex.map(lambda b: facts_batch(b, claude_call, state, oncall_rerun), batches):
             cands += got
             attempted |= tried
     return finish_watch(new_items, attempted, found_by_source, stats, state, cands)
 
 
-def facts_batch(batch: list[dict], claude_call, state: dict) -> tuple[list[dict], set[str]]:
+def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool = False) -> tuple[list[dict], set[str]]:
     """新着1バッチを facts 化する。戻りは (候補, 処理を試みた URL)。読めなかったバッチは、2回目で諦めたもの以外は試みたことにしない。"""
     cands = []
     if batch and claude_call:
@@ -246,11 +246,18 @@ def facts_batch(batch: list[dict], claude_call, state: dict) -> tuple[list[dict]
             # 読めなかったバッチは既読にしない(次回そのまま拾い直す)。0件とは別。
             # ただし同じ URL が2回読めなければ諦めて既読にする。毎回同じ先頭バッチを
             # やり直すと、上限の外の新着が永久に後回しになる(監査指摘)
-            for it in batch:
-                bad[it["url"]] = bad.get(it["url"], 0) + 1
-            give_up = [it for it in batch if bad[it["url"]] >= 2]
-            for it in give_up:
-                bad.pop(it["url"], None)   # 諦めたら回数も消す。残すと再登場時に1回で即既読になる(監査指摘)
+            if oncall_rerun:
+                # 当番の拾い直し(直後に同じバッチを再実行)では諦めない。原因が途中切れ等で
+                # 直しが効いていなければここでも読めないが、既読にすると**原因未確定のまま
+                # 新着を失う**(監査指摘 rerun-second-unreadable-drops-pending)。回数も進めず
+                # 全件を未処理の列に残し、残れば main が非0で「まだ直っていない」と申告する。
+                give_up = []
+            else:
+                for it in batch:
+                    bad[it["url"]] = bad.get(it["url"], 0) + 1
+                give_up = [it for it in batch if bad[it["url"]] >= 2]
+                for it in give_up:
+                    bad.pop(it["url"], None)   # 諦めたら回数も消す。残すと再登場時に1回で即既読になる(監査指摘)
             notify("collect", f"定点観測: facts 化の出力が読めなかった({len(batch)}件)。"
                               f"次回に持ち越す(諦めて既読にしたもの {len(give_up)}件)", ok=False)
             batch = give_up
@@ -826,11 +833,12 @@ def verify(cands: list[dict]) -> dict:
     return counts
 
 
-def merge_into_day_file(cands: list[dict]) -> int:
+def merge_into_day_file(cands: list[dict], day: str) -> int:
     """candidates は号(edition)日付でキーする。1つの号の素材=1ファイルで、収集サイクル
     (07:30〜翌03:30)が暦日をまたいでも分割されない。パイプラインが前日以前の
-    ファイルを読む必要は無い(未来日程は stock/scheduled、既報判定は stock/stories.yml)。"""
-    day = edition_date()
+    ファイルを読む必要は無い(未来日程は stock/scheduled、既報判定は stock/stories.yml)。
+    day は対象号(main で決めた date)を使う。壁時計から取り直すと、06:00 をまたいだ
+    当番の拾い直しで checkout した号と別日のファイルへ書く(監査指摘 rerun-collect-ignores-target-edition)。"""
     p = ROOT / "candidates" / f"{day}.json"
     existing = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
     by_url = {c["url"]: c for c in existing}
@@ -872,6 +880,11 @@ def main() -> int:
     ap.add_argument("--skip-grok", action="store_true")
     ap.add_argument("--force-grok", action="store_true",
                     help="GROK_HOURS の時刻判定を無視して Grok を回す(手動の再収集用)")
+    ap.add_argument("--date", metavar="YYYY-MM-DD", default=None,
+                    help="対象号の発行日(既定は壁時計から算出)。当番の拾い直しは 06:00 の号境界や"
+                         "発行後 watch で異常発生日と取り込み先の号がずれるため、取り込み先の号を明示する")
+    ap.add_argument("--oncall-rerun", action="store_true",
+                    help="当番が繰り越し(_pending)を拾い直す再実行。読めないバッチを諦めず未処理のまま残し、残れば非0で終える")
     args = ap.parse_args()
     # 試験実行(--no-git)では Discord へ通知しない。本物の警報と見分けが付かなくなる
     set_quiet(args.no_git)
@@ -883,7 +896,7 @@ def main() -> int:
         notify("collect", str(e), ok=False)
         return 1
     t0 = time.time()
-    date = edition_date()
+    date = args.date or edition_date()
     branch = f"edition/{date}"
 
     if not args.no_git and not checkout_edition_branch(date, "collect"):
@@ -896,11 +909,11 @@ def main() -> int:
     if skip_grok and not args.skip_grok:
         print(f"Grok は今回スキップ(GROK_HOURS={GROK_HOURS or '毎回'} の対象時刻ではない)", flush=True)
 
-    watch_cands, watch_info = ([], {"skipped": True}) if args.skip_watch else run_watch(claude_exec)
+    watch_cands, watch_info = ([], {"skipped": True}) if args.skip_watch else run_watch(claude_exec, args.oncall_rerun)
     explore_items, per_query = run_explores(args.skip_explore, skip_grok)
     cands = normalize(watch_cands + explore_items)
     vcounts = verify(cands)
-    added = merge_into_day_file(cands)
+    added = merge_into_day_file(cands, date)
     # candidates が保存できてから、定点観測の既読を確定する(同じ成功境界。監査指摘)
     watch_state = (watch_info.get("stats") or {}).pop("_state", None) if isinstance(watch_info, dict) else None
     if watch_state is not None:
@@ -949,6 +962,12 @@ def main() -> int:
         notify("collect", f"{summary} — 新規0件", ok=False)
     elif added == 0:
         print(f"新規0件({'/'.join(skipped)} を手動でスキップ中のため通知しない)", flush=True)
+    # 当番の拾い直しで、読めないバッチが残った(=諦めずに繰り越した)場合は、直しが効いていない。
+    # 読めた分と繰り越しは保存済み(既読にしていない)。成功として終えず、当番へ非0で返す(監査指摘)
+    if args.oncall_rerun and (watch_info.get("deferred", 0) if isinstance(watch_info, dict) else 0) > 0:
+        notify("collect", f"{date}: 当番の拾い直しでも facts 化できないバッチが {watch_info['deferred']}件 残った。"
+                          f"繰り越しは既読にせず保持した。直しが効いていない(原因が未確定の可能性)", ok=False)
+        return 1
     return 0
 
 

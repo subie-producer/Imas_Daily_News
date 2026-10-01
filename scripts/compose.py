@@ -1780,16 +1780,32 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
     # lint の指摘(構造の赤)は直し方を限定できないので、指摘の外の検査は掛けない
     if old_fm and not any(b.get("rule_id") == "LINT" for b in issues):
         quotes = [qnorm(b) for b in issues if len(qnorm(b)) >= 8]
-        # 束ねた quote(校閲は該当箇所が複数あるとき、見出し・リード・本文をそれぞれ「…」で囲み、直後に
-        # (見出し)などの欄名を付け、読点でつないだ1つの quote にまとめて返す。実測 2026-10-02 R1
-        # 「日々、発見的ステップ！」)から、指定した欄名の「…」区画の中身を取り出す。欄名の直前の」に対応する
-        # 「を、入れ子の鉤括弧を数えて探す(欄の中身にも「」が入る)。その欄名が無ければ None
-        def labeled_seg(q, label):
-            # quotes は qnorm→visible_text 済みで、全角（）は半角()に畳まれている(本文側と同じ正規化)
-            marker = f"({label})"
-            i = q.find(marker)
-            if i < 0:
+        # 束ねた quote(校閲は該当箇所が複数あるとき、見出し・リード・本文を1つの quote にまとめて返す)から、
+        # 指定した欄の区画の中身を取り出す。実測した束ね方は3通り(欄名の表記も「見出し」「タイトル」で揺れる):
+        #   A 「…」(見出し)   閉じ鉤の直後に(欄名)          実測 2026-10-02 R1「日々、発見的ステップ！」
+        #   B 見出し「…」      欄名の直後に「…」(後ろに根拠注記)  実測 metrics/review-2026-09-21-1.json
+        #   C 見出し：…        欄名：本文(次の欄名まで)       実測 metrics/review-2026-09-25-1.json
+        # quotes は qnorm→visible_text 済みで、NFKC により全角（）：は半角()に畳まれ、改行は落ちる(C の
+        # 「…\nリード：…」は欄名で連結された1文字列になる)ので、C は次の欄名ラベルまでで区切る。「」『』は残る。
+        # 欄 ⊂ quote の逆向き一致を1表記(A)だけで見ると、B/C の束ね方では該当欄も「指摘の外」と誤認し、
+        # 正しく直した稿を検算が戻す(同じ指摘が次の巡に残り当番に上がる。監査指摘 MF-1)。
+        field_labels = {"見出し": ("見出し", "タイトル"), "リード": ("リード",), "本文": ("本文",)}
+        all_labels = [l for ls in field_labels.values() for l in ls]
+
+        def bracket_after(q, i):  # q[i] が「のとき、入れ子を数えて対応する」までの中身。無ければ None
+            if i >= len(q) or q[i] != "「":
                 return None
+            depth = 0
+            for k in range(i, len(q)):
+                if q[k] == "「":
+                    depth += 1
+                elif q[k] == "」":
+                    depth -= 1
+                    if depth == 0:
+                        return q[i + 1:k]
+            return None
+
+        def bracket_before(q, i):  # 位置 i の直前で閉じる「…」の中身。入れ子を数える。無ければ None
             j = q.rfind("」", 0, i)
             if j < 0:
                 return None
@@ -1802,19 +1818,44 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
                     if depth == 0:
                         return q[k + 1:j]
             return None
+
+        def field_segments(q, field):
+            segs = []
+            for L in field_labels.get(field, (field,)):
+                s = 0  # A: 「…」(L)
+                while (i := q.find(f"({L})", s)) >= 0:
+                    seg = bracket_before(q, i)
+                    if seg is not None:
+                        segs.append(seg)
+                    s = i + 1
+                s = 0  # B: L「…」
+                while (i := q.find(L + "「", s)) >= 0:
+                    seg = bracket_after(q, i + len(L))
+                    if seg is not None:
+                        segs.append(seg)
+                    s = i + len(L)
+                s = 0  # C: L：…(改行は消えているので次の欄名ラベルまでで切る)
+                while (i := q.find(L + ":", s)) >= 0:
+                    start = i + len(L) + 1
+                    end = len(q)
+                    for L2 in all_labels:
+                        for mk in (L2 + ":", L2 + "「"):
+                            p = q.find(mk, start)
+                            if 0 <= p < end:
+                                end = p
+                    segs.append(q[start:end])
+                    s = start
+            return segs
         # 「触った」= quote ⊂ 欄(校閲がその欄の一部を literal に引用した = その欄は指摘の対象)。これは常に見る。
-        # 逆向き(欄 ⊂ quote)は、束ねた quote の **その欄のラベル区画** に欄が丸ごと収まるときだけ認める。
-        # 逆向きを全欄共通で認めると、本文だけの長い quote がリード等の全文を偶然含む記事で、指摘外の欄の改変まで
-        # 検算を通してしまう(既存 docs/_posts で20/1301件がこの形。監査指摘 MF-1)。欄名で区画を分け、該当欄だけ照合する。
-        # 束ねた quote はどの一つの欄にも丸ごとは収まらないので、区画ごとに逆向き一致させないと、該当する全ての欄を
-        # 「指摘の外」と誤認し、束ねた該当箇所を正しく直した稿を検算が戻す(同じ指摘が次の巡に残り当番に上がった)。
+        # 逆向き(欄 ⊂ quote)は、束ねた quote の **その欄の区画** に欄が丸ごと収まるときだけ認める。全欄共通で
+        # 認めると、本文だけの長い quote がリード等の全文を偶然含む記事で指摘外の欄の改変まで通してしまう
+        # (既存 docs/_posts で20/1301件がこの形。監査指摘 MF-1)。欄ごとに区画を分け、該当欄だけ照合する。
         def touched(s, label=None):
             for q in quotes:
                 if q in s:
                     return True
                 if label and len(s) >= 8:
-                    seg = labeled_seg(q, label)
-                    if seg is not None and s in seg:
+                    if any(s in seg for seg in field_segments(q, label)):
                         return True
             return False
         old_title = norm(old_fm.get("title"))

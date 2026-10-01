@@ -1,0 +1,91 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "edition digest の「継続中」に記載されている記事 dsva-hot-limit-dance-2026 が紙面から削除されており、号スナップショットとファイルの整合性がとれていません。digest から削除するか、記事を復活させるか、いずれかの対応が必要です。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-10-02-cg-15th-anniversary-popup-2026.md",
+   "issue": "分量不足：rank: small に対して本文が約130字で目安の250字に達していない。sources の URL にある情報（グッズの具体的な種類、ノベルティの入手条件の詳細など）をさらに拾えば、記事に厚みが出る。",
+   "scope": "article:2026-10-02-cg-15th-anniversary-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-02-gaku-agitato-instrumental-2026.md",
+   "issue": "分量不足：本文は約133字で、rank: small の目安250字より短い。出典から拾える詳細情報（利用条件の詳細、配信サービス情報など）があれば追加できるかを検討",
+   "scope": "article:2026-10-02-gaku-agitato-instrumental-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-02-gaku-wafers-4-2026.md",
+   "issue": "rank: small（250字以上推奨）に対して本文が分量不足。現在約215字で50字程度足りません。候補に記載されている『表面・裏面でそれぞれアイドル達の魅力を楽しめる』などの情報を加えることで埋められます。",
+   "scope": "article:2026-10-02-gaku-wafers-4-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-02-joint-arcade-tours-s2-live-2026.md",
+   "issue": "分量不足。rank: lead の目安は1000字程度だが、本文が約200字と大幅に不足。出典に記載されているアーカイブ期間（11月11日～12月13日）や、素材に記載されている詳細情報（例：配信内容の詳説、会場詳細情報など）を追加することで分量を増加できる。",
+   "scope": "article:2026-10-02-joint-arcade-tours-s2-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-02-million-birthday-series-2026.md",
+   "issue": "見出しに商品の重要な情報「シリーズ最終弾」が含まれていない。frontmatter の title_fact_ids に F8 が指定されているが、実際のタイトルに反映されていない。見出しだけからは「バースデーシリーズの定期企画」と区別がつきにくく、「第10弾で終了する」という注目性が伝わらない。lead文には「第10弾がシリーズ最終弾となる」と記載されているが、見出しにも加えるとニュース性が高まる",
+   "scope": "article:2026-10-02-million-birthday-series-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-02-million-millionlive-hinata-apple-ambassador-2026.md",
+   "issue": "タイトルと本文で「りんごまつり」の表記が異なっている（タイトル：「壮瞥」の漢字、本文：「そうべつ」のひらがな）。公式表記に統一されたい。また、small ランク向けの本文（約470字）は下限近く、スタンプ獲得時のポイント数など sources 記事の詳細情報が簡潔すぎる印象がある。",
+   "scope": "article:2026-10-02-million-millionlive-hinata-apple-ambassador-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-02-million-seasonal-snapshot-jan-2027.md",
+   "issue": "分量が薄い。rank:small の目安は 250 字以上だが、本文は約 80 字。素材の facts に商品価格・内容（公式シーズナルBOX 5,500円、内容:アクリルスタンド・アクリルパネル・ブロマイドなど）が記載されており、これらを補足すれば本文が充実する。",
+   "scope": "article:2026-10-02-million-seasonal-snapshot-jan-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-02-shiny-msp-afterparty-gasha-day2-2026.md",
+   "issue": "表記ゆれ: リード冒頭の「シャニソン」をタイトル・既報と同じ「シャニマス」に統一すべき",
+   "scope": "article:2026-10-02-shiny-msp-afterparty-gasha-day2-2026.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-02-cg-15th-anniversary-popup-2026.md",
+  "article:2026-10-02-cg-sweet-soar-anniversary-2026.md",
+  "article:2026-10-02-dsva-hot-limit-dance-2026.md",
+  "article:2026-10-02-dsva-manaka-duelmasters-rainbow-2026-10-01.md",
+  "article:2026-10-02-dsva-va-liv-letora-birthday-2026.md",
+  "article:2026-10-02-gaku-agitado-mv-trending-2026.md",
+  "article:2026-10-02-gaku-agitato-instrumental-2026.md",
+  "article:2026-10-02-gaku-eclipse-light-animate-fair-2026.md",
+  "article:2026-10-02-gaku-kuramoto-chisana-figure.md",
+  "article:2026-10-02-gaku-wafers-4-2026.md",
+  "article:2026-10-02-joint-arcade-tours-s2-live-2026.md",
+  "article:2026-10-02-million-birthday-series-2026.md",
+  "article:2026-10-02-million-millionlive-hinata-apple-ambassador-2026.md",
+  "article:2026-10-02-million-seasonal-snapshot-jan-2027.md",
+  "article:2026-10-02-shiny-msp-afterparty-gasha-day2-2026.md",
+  "article:2026-10-02-sidem-agatsuma-collab-2026.md",
+  "article:2026-10-02-sidem-topic-048.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-10-02-cg-15th-anniversary-popup-2026.md": "bbcd64c5cfc24e5ebb6805f50b8413f81adda4a5cd87e81adb3497062b4d0c9f",
+  "docs/_posts/2026-10-02-cg-sweet-soar-anniversary-2026.md": "c94ca71cf13a3dc66999254005e944d1612a2c0c1c5a1b9aec389d97827363e3",
+  "docs/_posts/2026-10-02-dsva-manaka-duelmasters-rainbow-2026-10-01.md": "9f5d20fb2a628230715161d577364d42d80bf9db45042fae1fbf8bb35ad80c1e",
+  "docs/_posts/2026-10-02-dsva-va-liv-letora-birthday-2026.md": "0df759548c0ee1b0bb7f4dbc58bd2b90d2202d9df893ff9f1029233330611186",
+  "docs/_posts/2026-10-02-gaku-agitado-mv-trending-2026.md": "87666fd0d2a4a6d171f854170c887d62b11aaed85f4229f17d5d80a2aea8128e",
+  "docs/_posts/2026-10-02-gaku-agitato-instrumental-2026.md": "211b6ff8c740b8d7a7ad714768d0143585da092ad5c9e8985edfaa900ff64e9e",
+  "docs/_posts/2026-10-02-gaku-eclipse-light-animate-fair-2026.md": "a2fd83a583a5681887b3f07c576ab046b5590d7e14b8dbb76a01d42073acbb05",
+  "docs/_posts/2026-10-02-gaku-kuramoto-chisana-figure.md": "c7d73aea4fc205a329b09c206bf1039d7530d433943c8229a4e2ab545f366eac",
+  "docs/_posts/2026-10-02-gaku-wafers-4-2026.md": "cf77cd7367507259c590ccb6bd6bd63dd6ff102f7ff3c2adda7109011da9265b",
+  "docs/_posts/2026-10-02-joint-arcade-tours-s2-live-2026.md": "43b03cccb3314e82e7f56d2d421ffbdfa23b3c36f98c6779a2949fd939987aa5",
+  "docs/_posts/2026-10-02-million-birthday-series-2026.md": "ae3942d911ae5d16d77abf9f0f32f4fb7abca283044b67f69db30a0a679201b7",
+  "docs/_posts/2026-10-02-million-millionlive-hinata-apple-ambassador-2026.md": "4014ec627c65e991da1faccb58d766705c97649496c207420d799d32847d49b5",
+  "docs/_posts/2026-10-02-million-seasonal-snapshot-jan-2027.md": "de65f86e524ae54d6e95905ec13f42f5cc7f8d28c0b726182b61e080a8533528",
+  "docs/_posts/2026-10-02-shiny-msp-afterparty-gasha-day2-2026.md": "c0dda513aa0abf9918044ae275f2e6755a539ca5e6dc2db3e2d5dd9ab41b6473",
+  "docs/_posts/2026-10-02-sidem-agatsuma-collab-2026.md": "c1c6167003ee0c920e3603f6a05ebd5b771fd572bbf2b6b5b411f492c0d592b7",
+  "docs/_posts/2026-10-02-sidem-topic-048.md": "a5b0171ea6ece6b9f6e062dbd131485c8ce4befecdeedbaa813ed7f3099229a9",
+  "docs/_editions/2026-10-02.md": "d1592445508a443312937c670625b7c7b7ae9db07dfec728fcbe1f5e24b1d718",
+  "metrics/stories-before-2026-10-02.yml": "f8b5f02cafbd85f362668c4075e4a801c2d79d280785c50f4920949c50aefff9"
+ }
+}

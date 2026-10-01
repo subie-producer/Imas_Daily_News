@@ -1,0 +1,130 @@
+{
+ "decisions": {
+  "shiny-casting-collection-amembonon-na-imouto-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/1付記事『甘えん坊な妹編に咲耶・円香』で既出。開催中(9/29〜10/20)で本日のトリガーなし、新事実もなし"
+  },
+  "shiny-pioneer-impact-fan-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファンが投稿したニコニコ動画(個人投稿・エンゲージメント低)。公式発表ではなく単体記事化しない"
+  },
+  "noctchill-live-ai-image-controversy-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "告知画像の生成AI疑惑による炎上・係争のため不採用。ライブ自体(27年3月仙台)は9/28付で既報"
+  },
+  "shiny-song-event-unyielding-will-2026": {
+   "action": "article",
+   "angle": "新曲『Pioneer Impact』実装に合わせメダルガシャイベント『Unyielding Will』と記念ガシャ『円環-Halo around-#02』が同時開催中、報酬・有償パック内容",
+   "rank": "large",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ新曲実装に伴う施策(メダルイベント+記念ガシャ)のため1記事に統合"
+  },
+  "shiny-song-gacha-halo-around-02-antica-shise-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-event-unyielding-will-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新曲『Pioneer Impact』実装に伴う同時施策としてイベント記事に統合"
+  },
+  "shiny-famkuji-vol2-2026": {
+   "action": "article",
+   "angle": "FAMくじ『シャイニーカラーズ』vol.2が本日時点で販売中、ロリータテーマの新規描き下ろしと価格・購入方法",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/1販売開始の新商品。これまでの号で未報告のため新規記事"
+  },
+  "shiny-msp-afterparty-gasha-day2-2026": {
+   "action": "article",
+   "angle": "『Master ShowPiece』打ち上げガシャDAY2が本日23:59終了、STEP報酬入手のラストチャンス",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約どおり、本日終了という当日トリガーのため既報(9/29)でも記事化"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-song-event-unyielding-will-2026",
+    "brand": "shiny",
+    "rank": "large",
+    "angle": "新曲『Pioneer Impact』実装に合わせメダルガシャイベント『Unyielding Will』と記念ガシャ『円環-Halo around-#02』が同時開催中、報酬・有償パック内容",
+    "lead_score": 30,
+    "dedup_key": "shiny-song-event-unyielding-will-2026",
+    "candidate_ids": [
+     "202610011835-explore-7",
+     "202610011835-explore-8"
+    ]
+   },
+   {
+    "slug": "shiny-famkuji-vol2-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "FAMくじ『シャイニーカラーズ』vol.2が本日時点で販売中、ロリータテーマの新規描き下ろしと価格・購入方法",
+    "lead_score": 15,
+    "dedup_key": "shiny-famkuji-vol2-2026",
+    "candidate_ids": [
+     "202610012336-watch-2"
+    ]
+   },
+   {
+    "slug": "shiny-msp-afterparty-gasha-day2-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『Master ShowPiece』打ち上げガシャDAY2が本日23:59終了、STEP報酬入手のラストチャンス",
+    "lead_score": 10,
+    "dedup_key": "shiny-msp-afterparty-gasha-day2-2026",
+    "candidate_ids": [
+     "sched-2026-10-02-shiny-msp-afterparty-gasha-day2-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-casting-collection-amembonon-na-imouto-2026",
+    "reason": "既報",
+    "note": "10/1付記事『甘えん坊な妹編に咲耶・円香』で既出。開催中(9/29〜10/20)で本日のトリガーなし、新事実もなし"
+   },
+   {
+    "dedup_key": "shiny-pioneer-impact-fan-mv-2026",
+    "reason": "個人の話題",
+    "note": "ファンが投稿したニコニコ動画(個人投稿・エンゲージメント低)。公式発表ではなく単体記事化しない"
+   },
+   {
+    "dedup_key": "noctchill-live-ai-image-controversy-2026",
+    "reason": "その他",
+    "note": "告知画像の生成AI疑惑による炎上・係争のため不採用。ライブ自体(27年3月仙台)は9/28付で既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

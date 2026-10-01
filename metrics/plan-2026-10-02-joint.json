@@ -1,0 +1,47 @@
+{
+ "decisions": {
+  "producers-station-meeting-matsudo-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "Pステ中野10/3・名古屋10/18の日時・会場は2026-10-01記事で既出。新事実も当日のトリガーも無い。"
+  },
+  "arcade-tours-s2-live-2026": {
+   "action": "article",
+   "angle": "S2弾生配信(10/15)の出演者・現地会場(namco TOKYO)・無料視聴条件・先行抽選申込(10/7締切)が判明",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/25既報は「10/15に情報解禁へ」のみ。出演者・会場・申込締切など具体情報は新規。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-arcade-tours-s2-live-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "S2弾生配信(10/15)の出演者・現地会場(namco TOKYO)・無料視聴条件・先行抽選申込(10/7締切)が判明",
+    "lead_score": 60,
+    "dedup_key": "arcade-tours-s2-live-2026",
+    "candidate_ids": [
+     "202610012336-watch-4"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "producers-station-meeting-matsudo-2026",
+    "reason": "既報",
+    "note": "Pステ中野10/3・名古屋10/18の日時・会場は2026-10-01記事で既出。新事実も当日のトリガーも無い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

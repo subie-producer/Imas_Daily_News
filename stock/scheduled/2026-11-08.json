@@ -204,5 +204,25 @@
   "src_candidate_id": "202610010223-explore-3",
   "event_date": "2026-10-07",
   "deadline": "2026-11-08"
+ },
+ {
+  "id": "sched-2026-11-08-millionlive-hinata-apple-ambassador-2026-千秋楽",
+  "dedup_key": "millionlive-hinata-apple-ambassador-2026",
+  "brand": "million",
+  "subject": "木下ひなた「壮瞥町りんご大使」4年目就任",
+  "kind": "千秋楽",
+  "note": "第50回そうべつりんごまつりの最終日",
+  "reserved_on": "2026-10-02",
+  "title": "木下ひなた、壮瞥町りんご大使に4年目就任",
+  "url": "https://idolmaster-official.jp/news/01_19747",
+  "source_type": "公式",
+  "facts": [
+   "第50回そうべつりんごまつりは2026年10月2日(金)〜11月8日(日)開催",
+   "初日10月2日には木下ひなたのオリジナルメッセージが読み上げられる"
+  ],
+  "via": "",
+  "verify": "confirmed",
+  "src_candidate_id": "sched-2026-10-02-millionlive-hinata-apple-ambassador-2026-開幕",
+  "event_date": "2026-10-02"
  }
 ]

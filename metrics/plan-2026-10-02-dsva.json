@@ -1,0 +1,104 @@
+{
+ "decisions": {
+  "hot-limit-dance-2026": {
+   "action": "article",
+   "angle": "宇宙・愛夏・レトラ3人そろっての「HOT LIMIT」踊ってみた動画を公開、反響大",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-ace-combat7-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/5号既報と同タイトルの朝活配信。新しい事実なし"
+  },
+  "va-liv-letora-birthday-2026": {
+   "action": "article",
+   "angle": "「レトラ BIRTHDAY ONLINE LIVE 2026」11月11日開催決定、配信・LV会場・特典を発表",
+   "rank": "large",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "va-liv-regular-radio-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30号「ヴイアラ初の公式ラジオ、音泉で放送決定」と同じ知らせ"
+  },
+  "manaka-duelmasters-rainbow-2026-10-01": {
+   "action": "roundup",
+   "angle": "9/30〜10/1の配信まとめ(愛夏のデュエプレ新弾100連開封、レトラの歌枠、宇宙の推理ゲーム配信)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-hot-limit-dance-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "宇宙・愛夏・レトラ3人そろっての「HOT LIMIT」踊ってみた動画を公開、反響大",
+    "lead_score": 15,
+    "dedup_key": "hot-limit-dance-2026",
+    "candidate_ids": [
+     "202610010734-explore-13"
+    ]
+   },
+   {
+    "slug": "dsva-va-liv-letora-birthday-2026",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "「レトラ BIRTHDAY ONLINE LIVE 2026」11月11日開催決定、配信・LV会場・特典を発表",
+    "lead_score": 75,
+    "dedup_key": "va-liv-letora-birthday-2026",
+    "candidate_ids": [
+     "202610012336-watch-6"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-duelmasters-rainbow-2026-10-01",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "9/30〜10/1の配信まとめ(愛夏のデュエプレ新弾100連開封、レトラの歌枠、宇宙の推理ゲーム配信)",
+    "lead_score": 0,
+    "dedup_key": "manaka-duelmasters-rainbow-2026-10-01",
+    "candidate_ids": [
+     "202610020209-explore-18"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-ace-combat7-2026-09",
+    "reason": "既報",
+    "note": "9/5号既報と同タイトルの朝活配信。新しい事実なし"
+   },
+   {
+    "dedup_key": "va-liv-regular-radio-2026",
+    "reason": "既報",
+    "note": "9/30号「ヴイアラ初の公式ラジオ、音泉で放送決定」と同じ知らせ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

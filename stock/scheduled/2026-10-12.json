@@ -442,5 +442,36 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609300231-grok-46"
+ },
+ {
+  "id": "sched-2026-10-12-va-liv-letora-birthday-2026-発売",
+  "dedup_key": "va-liv-letora-birthday-2026",
+  "brand": "dsva",
+  "subject": "レトラ BIRTHDAY ONLINE LIVE 2026",
+  "kind": "発売",
+  "note": "通常配信チケットの販売開始(12:00)",
+  "reserved_on": "2026-10-02",
+  "title": "ヴイアライヴ「レトラ BIRTHDAY ONLINE LIVE 2026」開催決定",
+  "url": "https://idolmaster-official.jp/news/01_20045",
+  "source_type": "公式",
+  "facts": [
+   "公演日: 2026年11月11日(水)",
+   "公演名: レトラ BIRTHDAY ONLINE LIVE 2026",
+   "形式: 3Dオンラインライブ",
+   "配信プラットフォーム: ASOBI STAGE(通常配信チケット対象)",
+   "現地ライブビューイング: ユナイテッド・シネマ アクアシティお台場 [3番スクリーン]",
+   "ライブビューイング開場: 18:00、開演: 19:00(予定)",
+   "本編: 19:00～20:30(予定)",
+   "配信チケット特典: 終演後のアフタートーク配信21:30～(予定)",
+   "出演: 主演レトラ、ゲスト灯里愛夏・上水流宇宙、スペシャルゲストcoming soon…",
+   "限定グッズ付きライブビューイングチケット先行抽選受付: 2026年10月1日(木)～2026年10月11日(日)23:59",
+   "当落発表: 2026年10月13日(火)(予定)",
+   "入金期間: 2026年10月13日(火)～2026年10月18日(日)23:59"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202610012336-watch-6",
+  "event_date": "2026-11-11",
+  "deadline": "2026-10-11"
  }
 ]

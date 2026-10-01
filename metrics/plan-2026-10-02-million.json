@@ -1,0 +1,115 @@
+{
+ "decisions": {
+  "million-birthday-series-2026": {
+   "action": "article",
+   "angle": "バースデーシリーズ第10弾、12月分予約受付開始。全52名から選べるキーホルダーで、シリーズ最終弾であることも判明",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "mirishita-platinum-star-tune-lilac-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "event_date/published_dateが10/1で、直近記事『ミリシタ新イベント、本日15時開幕』と同一イベント。本日の新トリガーなし"
+  },
+  "mirishita-tintme-another-costume-exchange-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30開始の施策で、直近記事『ミリシタの交換所など運営情報まとめ』(10/1)と同一施策。本日のトリガーなし"
+  },
+  "million-seasonal-snapshot-jan-2027": {
+   "action": "article",
+   "angle": "《SEASONAL SNAPSHOT》1月分(初日の出)グッズの受注開始。舞浜歩・百瀬莉緒の新規ビジュアル、受注は10/18まで",
+   "rank": "medium",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "millionlive-hinata-apple-ambassador-2026": {
+   "action": "article",
+   "angle": "第50回そうべつりんごまつりが本日開幕(〜11/8)。木下ひなたのオープニングセレモニー(9:30-10:00)と就任記念メッセージ披露",
+   "rank": "large",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "million-hinata-apple-ambassador-2026の主題を統合"
+  },
+  "million-hinata-apple-ambassador-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "millionlive-hinata-apple-ambassador-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じそうべつりんごまつり開幕日の出来事。セレモニー詳細は読者の行動(現地訪問・配信視聴)が開幕記事と同一のため統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-birthday-series-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "バースデーシリーズ第10弾、12月分予約受付開始。全52名から選べるキーホルダーで、シリーズ最終弾であることも判明",
+    "lead_score": 20,
+    "dedup_key": "million-birthday-series-2026",
+    "candidate_ids": [
+     "202610011234-watch-1"
+    ]
+   },
+   {
+    "slug": "million-seasonal-snapshot-jan-2027",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "《SEASONAL SNAPSHOT》1月分(初日の出)グッズの受注開始。舞浜歩・百瀬莉緒の新規ビジュアル、受注は10/18まで",
+    "lead_score": 15,
+    "dedup_key": "million-seasonal-snapshot-jan-2027",
+    "candidate_ids": [
+     "202610012336-watch-7"
+    ]
+   },
+   {
+    "slug": "million-millionlive-hinata-apple-ambassador-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "第50回そうべつりんごまつりが本日開幕(〜11/8)。木下ひなたのオープニングセレモニー(9:30-10:00)と就任記念メッセージ披露",
+    "lead_score": 75,
+    "dedup_key": "millionlive-hinata-apple-ambassador-2026",
+    "candidate_ids": [
+     "sched-2026-10-02-millionlive-hinata-apple-ambassador-2026-開幕",
+     "sched-2026-10-02-million-hinata-apple-ambassador-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "mirishita-platinum-star-tune-lilac-2026",
+    "reason": "既報",
+    "note": "event_date/published_dateが10/1で、直近記事『ミリシタ新イベント、本日15時開幕』と同一イベント。本日の新トリガーなし"
+   },
+   {
+    "dedup_key": "mirishita-tintme-another-costume-exchange-2026",
+    "reason": "既報",
+    "note": "9/30開始の施策で、直近記事『ミリシタの交換所など運営情報まとめ』(10/1)と同一施策。本日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

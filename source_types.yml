@@ -52,6 +52,7 @@ official_suffixes:
 
 # --- 準公式: 公式レーベル・公式ストア等のグループ/パートナー企業 ---
 semi_official_domains:
+  - onsen.ag              # 合議で追加: 公式ラジオ配信プラットフォーム、公式登録済み
   - a-onstore.jp          # 合議で追加: バンダイナムコグループの公式ショップ。公式レーベル・公式ストアの定義に該当
   - 1kuji.com             # 合議で追加: バンダイナムコグループ企業が一番くじ商品の企画・開発・販売を行い、自社商品を告知
   - on-line.1kuji.com     # 一番くじONLINE(1kuji.com と同じ BANDAI SPIRITS の運営。p-bandai.jp と同じ扱いに揃えた 2026-09-18)
@@ -124,6 +125,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - sina.cn               # 合議で追加: 公式発表をそのまま掲載。独自取材の形跡なし
   - torecamap.co.jp       # 合議で追加: TCGポータルサイトが他所の公式発表を整理して伝える
   - tubetre.com           # 合議で追加: YouTube動画の公開ランキング情報を集約・表示するメディア。独自取材でなく公
   - coki.jp               # 合議で追加: 企業運営のステークホルダー情報プラットフォーム。タイトルから既に拡散している海外
@@ -227,6 +229,9 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - flowerstand.jp        # 合議で追加: アイマス関連イベントのフラワースタンド受付・販売を行う独立企業
+  - famkuji.jp            # 合議で追加: グッズくじ販売、ライセンス商品
+  - amiami.jp             # 合議で追加: ライセンス商品販売、フィギュア予約受付
   - members.k-arena-club.com # 合議で追加: 会場運営・チケット販売事業者が催しの受付を行っている
   - hachiban.co.jp        # 合議で追加: コラボキャンペーン実施元・販売元。ライセンスを受けてコラボ展開
   - en.bandainamcoent.eu  # 合議で追加: ACE COMBAT 8の公式サイト。グループ会社がアイドルマスター以外のタイト
@@ -366,6 +371,10 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - i15TxRQAxYE         # 機械で追加: @KamizuruCosmo「【デスゲームの報告書】推理ゲーム！頭の中のひらめきを言語化す」
+    - hiG-15PMSlY         # 機械で追加: @UtagawaLetora「【歌枠】初見大歓迎！告知あり！まったり聴いてって～！【#ヴイ」
+    - hSg9Yb28vZA         # 機械で追加: @hatsuboshi_gakuen「初星学園 「Agitato」Official Music V」
+    - N9bqu92JP3E         # 機械で追加: @KamizuruCosmo「HOT LIMIT 踊ってみた with 愛夏とレトラ #s」
     - Vp_yS3E3d7A         # 機械で追加: @imas-official「【シンデレラガールズ】「クロス×オーバー！」Official」
     - CU19CtxiW6c         # 機械で追加: @TomoriManaka「【デュエプレ】新弾「虹帝∞命動」100連開封バトル！！vs 」
     - nbl9UkcQ4fQ         # 機械で追加: @imas-official「【生配信】学園アイドルマスター 「初星学園HR #12」【ア」

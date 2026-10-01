@@ -1,0 +1,25 @@
+{
+ "decisions": {
+  "765-961-xr-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "facts(9/29更新のINFORMATION/Q&A、第一公演出演者)はいずれも9/30既報の本文に含まれ、新事実なし。当日(10/2)のトリガー(抽選締切10/28、当落発表11/16等)もなし。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "765-961-xr-live-2027",
+    "reason": "既報",
+    "note": "facts(9/29更新のINFORMATION/Q&A、第一公演出演者)はいずれも9/30既報の本文に含まれ、新事実なし。当日(10/2)のトリガー(抽選締切10/28、当落発表11/16等)もなし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

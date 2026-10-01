@@ -1,0 +1,187 @@
+{
+ "decisions": {
+  "gaku-agitato-lilja-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30開幕記事で衣装・髪型・スキルカード詳細まで既報済み。新事実・本日のトリガーなし。"
+  },
+  "gaku-kuramoto-chisana-figure": {
+   "action": "article",
+   "angle": "倉本千奈のスケールフィギュア化が決定、製造元EUSUN・仕様と価格は後日発表",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "素材4件、詳細未定のため小記事。"
+  },
+  "gaku-wafers-4-2026": {
+   "action": "article",
+   "angle": "学園アイドルマスターウエハース4が11月2日発売決定、メタリック札全29種・収録アイドル内容",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gaku-wafers-4-2026-11の素材を統合。"
+  },
+  "gaku-jio-seina-little-devil-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/1記事で全15曲収録内容・価格・各店特典まで既報済み。新事実・本日のトリガーなし。"
+  },
+  "agitato-ri-riya-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "gaku-agitato-lilja-gasha-2026と同一のリーリヤガシャ。交換ポイント共通化の情報も本日のトリガーにならず既報扱い。"
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "article",
+   "angle": "アニメイトでECLIPSE LIGHTフェア、購入特典ポストカード全13種を前後半(10/10開幕・10/31切替)で配布",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "全13人対象・前後半2期構成で素材8件、面内では最も規模の大きい新規告知。"
+  },
+  "agitado-mv-trending-2026": {
+   "action": "article",
+   "angle": "「Agitato」MVが公開翌日にYouTube急上昇4位入り、再生17万・高評価1万超",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公開済みMVの新たな成果データ、既報の配信開始告知とは別事実。"
+  },
+  "gaku-wafers-4-2026-11": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-wafers-4-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一商品(ウエハース4)の別ソース記事、同一施策のため統合。"
+  },
+  "agitato-instrumental-2026": {
+   "action": "article",
+   "angle": "「Agitato」のインストゥルメンタル音源データを公開",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "素材は薄いが既報の配信開始/MV公開とは別の新規告知。"
+  },
+  "agitato-streaming-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/1「本日配信、前夜MV公開」記事で既報済み。作詞・作曲編曲者名のみの差分で本日のトリガーなし。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-kuramoto-chisana-figure",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "倉本千奈のスケールフィギュア化が決定、製造元EUSUN・仕様と価格は後日発表",
+    "lead_score": 10,
+    "dedup_key": "gaku-kuramoto-chisana-figure",
+    "candidate_ids": [
+     "202610011234-watch-0"
+    ]
+   },
+   {
+    "slug": "gaku-wafers-4-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "学園アイドルマスターウエハース4が11月2日発売決定、メタリック札全29種・収録アイドル内容",
+    "lead_score": 20,
+    "dedup_key": "gaku-wafers-4-2026",
+    "candidate_ids": [
+     "202610011234-watch-2",
+     "202610012336-watch-5"
+    ]
+   },
+   {
+    "slug": "gaku-eclipse-light-animate-fair-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "アニメイトでECLIPSE LIGHTフェア、購入特典ポストカード全13種を前後半(10/10開幕・10/31切替)で配布",
+    "lead_score": 40,
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "candidate_ids": [
+     "202610011835-explore-16"
+    ]
+   },
+   {
+    "slug": "gaku-agitado-mv-trending-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Agitato」MVが公開翌日にYouTube急上昇4位入り、再生17万・高評価1万超",
+    "lead_score": 15,
+    "dedup_key": "agitado-mv-trending-2026",
+    "candidate_ids": [
+     "202610011835-explore-19"
+    ]
+   },
+   {
+    "slug": "gaku-agitato-instrumental-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Agitato」のインストゥルメンタル音源データを公開",
+    "lead_score": 5,
+    "dedup_key": "agitato-instrumental-2026",
+    "candidate_ids": [
+     "202610012336-explore-15"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-agitato-lilja-gasha-2026",
+    "reason": "既報",
+    "note": "9/30開幕記事で衣装・髪型・スキルカード詳細まで既報済み。新事実・本日のトリガーなし。"
+   },
+   {
+    "dedup_key": "gaku-jio-seina-little-devil-gacha-2026",
+    "reason": "既報",
+    "note": "10/1記事で全15曲収録内容・価格・各店特典まで既報済み。新事実・本日のトリガーなし。"
+   },
+   {
+    "dedup_key": "agitato-ri-riya-gasha-2026",
+    "reason": "重複",
+    "note": "gaku-agitato-lilja-gasha-2026と同一のリーリヤガシャ。交換ポイント共通化の情報も本日のトリガーにならず既報扱い。"
+   },
+   {
+    "dedup_key": "agitato-streaming-2026",
+    "reason": "既報",
+    "note": "10/1「本日配信、前夜MV公開」記事で既報済み。作詞・作曲編曲者名のみの差分で本日のトリガーなし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

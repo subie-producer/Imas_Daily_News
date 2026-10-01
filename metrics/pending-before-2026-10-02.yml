@@ -1,4 +1,3 @@
-# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。
 - dedup_key: gaku-hif-15m-milestone-campaign-2026
   brand: gaku
   subject: 学マスH.I.F挑戦回数1,500万回突破記念キャンペーン
@@ -171,7 +170,3 @@
   brand: gaku
   subject: 月村手毬「雨上がりのアイリス」フィギュア
   watch: 2027年6月内の正式発売日(判明次第 triggers へ)
-- dedup_key: gaku-kuramoto-chisana-figure
-  brand: gaku
-  subject: 倉本千奈 スケールフィギュア化(EUSUN)
-  watch: 製品仕様・予約期間・価格等の発表(判明次第 triggers へ)

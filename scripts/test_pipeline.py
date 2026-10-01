@@ -1624,6 +1624,27 @@ def test_tool_path():
     check(os.path.expanduser("~/.local/bin") in p.split(":") and "/usr/bin" in p.split(":"), f"tool_path に利用者の bin が無い: {p}")
 
 
+def test_extract_json_array_strict():
+    """定点観測 facts 化の読み取り(当番 2026-10-02「facts 化の出力が読めなかった(6件)」):
+    モデルが配列のあとに `]` を含む地の文を添えても、正しく出ていた配列を落とさない。
+    途中切れ・壊れ・配列無しのときだけ None(=読めなかった。0件の [] とは別)を返す。"""
+    E = pipelib.extract_json_array_strict
+    check(E('[{"a":1}]') == [{"a": 1}], "配列だけの出力が読めない")
+    check(E('はい:\n[{"a":1}]') == [{"a": 1}], "前置きのある出力が読めない")
+    # 後置き(配列のあとの注記)に `]` があっても、greedy に末尾まで取って壊さない ← 直した欠陥
+    check(E('[{"a":1}]\n\n注: 2件は取得できず[次回WebFetchで再取得]。') == [{"a": 1}],
+          "配列のあとに ] を含む注記があると読めなくなる(greedy 取り)")
+    check(E('```json\n[{"a":1},{"b":2}]\n```\n以上[6件中4件]。') == [{"a": 1}, {"b": 2}], "コードフェンス+後置きが読めない")
+    # 文字列リテラルの中の括弧・エスケープした引用符は配列の切れ目と取り違えない
+    check(E('[{"facts":["受付[先行] 8/8〜8/24"]}]\n完了。') == [{"facts": ["受付[先行] 8/8〜8/24"]}], "本文中の [ ] で切れ目を誤る")
+    check(E('[{"t":"ガシャ\\"SP\\"開催"}] 済') == [{"t": 'ガシャ"SP"開催'}], "エスケープした引用符で切れ目を誤る")
+    # 「読めなかった」(None)と「0件だった」([])を取り違えない
+    check(E('[{"a":1},{"b":2') is None, "途中切れ(閉じ ] が無い)を読めたことにした")
+    check(E('[{"a": }]') is None, "壊れた JSON を読めたことにした")
+    check(E("配列はありません") is None, "配列の無い出力を読めたことにした")
+    check(E("[]") == [], "空配列(0件)を読めなかった(None)に落とした")
+
+
 def test_watch_pagination_and_batches(tmp: Path):
     """定点観測(編集長 2026-09-30「公式のニュース12件しか見ないとか設計不備過ぎる」):
     一覧は既に見た記事だけのページに行き当たるまで遡る。上限まで読んでも新着が続けば打ち切りを返す。
@@ -2343,6 +2364,7 @@ def main() -> int:
     test_oncall_undo_merge()
     test_oncall_ensure_edition(tmp / "ee")
     test_withdrawal(tmp / "wd")
+    test_extract_json_array_strict()
     test_watch_pagination_and_batches(tmp / "wp")
     test_storylink(tmp / "sl")
     test_oncall_rollback_subprocess(tmp / "rs")

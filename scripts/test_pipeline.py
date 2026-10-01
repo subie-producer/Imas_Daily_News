@@ -394,6 +394,11 @@ def test_oncall_rerun_policy():
         check(oncall.rerun_policy(stage, ["scripts/collect.py"], "rebuild")[0], f"{stage}: rebuild 指定で作り直しにならない")
         check(not oncall.rerun_policy(stage, ["scripts/collect.py"], "resume")[0], f"{stage}: 続きのはずが作り直し")
         check(oncall.rerun_policy(stage, ["scripts/assemble.py"], "none") == (False, "none"), f"{stage}: none が効かない")
+    # 収集(collect/watch)の resume は「続き」として扱い、release の続きと取り違えない(当番 2026-10-02)
+    for stage in ("collect", "watch"):
+        check(oncall.rerun_policy(stage, ["scripts/pipelib.py"], "resume") == (False, "続き(定点観測の繰り越しを拾い直す)"),
+              f"{stage}: resume の表示名が collect 用でない")
+        check(oncall.rerun_policy(stage, ["scripts/pipelib.py"], "none") == (False, "none"), f"{stage}: none が効かない")
     # release 起点の作り直しは compose 先頭 → release の順に走る
     calls = []
     saved = (oncall.reset_edition, oncall.run_stage, oncall.commit_paths, oncall.ROOT)
@@ -411,6 +416,12 @@ def test_oncall_rerun_policy():
         calls.clear()
         oncall.rerun_stage("release", "2026-09-12", "edition/2026-09-12", full=False)
         check(calls == ["release.py"], f"release 続きの順序: {calls}")
+        # 収集の resume は no-op にせず、繰り越しを拾い直すため collect を実際に起動する(当番 2026-10-02:
+        # 直す前は else 枝で code=0 を返すだけで collect.py を呼ばず、未処理6件が次の定時まで残った)
+        for stage in ("collect", "watch"):
+            calls.clear()
+            code = oncall.rerun_stage(stage, "2026-09-12", "edition/2026-09-12", full=False)
+            check(code == 0 and calls == ["collect.py"], f"{stage} 続きが collect を起動しない: {calls}")
     finally:
         oncall.reset_edition, oncall.run_stage, oncall.commit_paths, oncall.ROOT = saved
 

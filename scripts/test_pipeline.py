@@ -301,6 +301,28 @@ def test_revise_check():
                                {"markdown": "配信は11月に始まる。", "fact_ids": ["F3"]}])
     check(any("段落" in p for p in compose.revise_check(q_bad, iss_q, old_fm, old_q)),
           "鉤括弧付き quote でも未指摘段落の改変は落ちない")
+    # 校閲が該当箇所を複数まとめ、見出し・リード・本文を「…」で囲み（見出し）等の但し書きと読点でつないだ1つの
+    # quote で返したとき、その該当箇所を全部直した稿を通す(実測 2026-10-02 gaku-kuramoto R1「日々、発見的ステップ！」。
+    # 束ねた quote はどの一つの欄にも丸ごと収まらず、quote ⊂ 欄 だけ見ると見出し・リード・本文を全部「指摘の外」と
+    # 誤認して、正しい書き直しを検算が戻し、同じ R1 が次の巡に残って契約の欠陥として当番に上がった)
+    fm_multi = dict(old_fm, title="倉本千奈「日々、発見的ステップ！」フィギュア化",
+                    lede="学マスの倉本千奈「日々、発見的ステップ！」が、EUSUN製のスケールフィギュアとして立体化される。")
+    body_multi = "学マスの倉本千奈「日々、発見的ステップ！」のスケールフィギュア化が決定した。 <!-- F1 -->\n\n製品の仕様、予約期間、価格などは後日発表される。 <!-- F3 -->"
+    iss_multi = [{"issue_id": "I1", "rule_id": "R1", "repair": "drop_claim",
+                  "quote": "「倉本千奈「日々、発見的ステップ！」フィギュア化」（見出し）、"
+                           "「学マスの倉本千奈「日々、発見的ステップ！」が、EUSUN製のスケールフィギュアとして立体化される。」（リード）、"
+                           "「学マスの倉本千奈「日々、発見的ステップ！」のスケールフィギュア化が決定した。」（本文）"}]
+    multi_ok = dict(OK, addressed_issue_ids=["I1"], title="倉本千奈のスケールフィギュア化",
+                    lede="倉本千奈が、EUSUN製のスケールフィギュアとして立体化される。",
+                    blocks=[{"markdown": "倉本千奈のスケールフィギュア化が決定した。", "fact_ids": ["F1"]},
+                            {"markdown": "製品の仕様、予約期間、価格などは後日発表される。", "fact_ids": ["F3"]}])
+    check(compose.revise_check(multi_ok, iss_multi, fm_multi, body_multi) == [],
+          f"束ねた quote の該当箇所(見出し・リード・本文)を全部直した稿が落ちた: {compose.revise_check(multi_ok, iss_multi, fm_multi, body_multi)}")
+    # 束ねた quote でも、該当箇所に無い段落の無断改変は従来どおり止める
+    multi_bad = dict(multi_ok, blocks=[{"markdown": "倉本千奈のスケールフィギュア化が決定した。", "fact_ids": ["F1"]},
+                                       {"markdown": "製品は限定生産で即日完売した。", "fact_ids": ["F3"]}])
+    check(any("段落" in p for p in compose.revise_check(multi_bad, iss_multi, fm_multi, body_multi)),
+          "束ねた quote で該当外段落の改変が通った")
     # R4(出典の不一致): 誤 URL を外し、正しい一次情報に付け替える。quote は frontmatter の URL(本文段落を
     # 触らない)なので、根拠段落の fact_ids を正しい候補の facts に付け替えても、字面が同じなら通す。
     # 以前は差し替えを「出典を足した」で、fact_ids の変更を「未指摘段落を変えた」で二重に弾き、誤 URL の R4 が

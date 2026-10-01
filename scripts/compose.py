@@ -1780,7 +1780,14 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
     # lint の指摘(構造の赤)は直し方を限定できないので、指摘の外の検査は掛けない
     if old_fm and not any(b.get("rule_id") == "LINT" for b in issues):
         quotes = [qnorm(b) for b in issues if len(qnorm(b)) >= 8]
-        touched = lambda s: any(q in s for q in quotes)
+        # 「触った」= quote ⊂ 欄 だけでなく 欄 ⊂ quote も認める。校閲は該当箇所が複数あるとき、
+        # 見出し・リード・本文をそれぞれ「…」で囲み(見出し)などの但し書きと読点でつないだ1つの quote に
+        # まとめて返すことがある(実測 2026-10-02 R1「日々、発見的ステップ！」)。この束ねた quote は
+        # どの一つの欄にも丸ごとは収まらないので quote ⊂ 欄 だけを見ると、該当する全ての欄を「指摘の外」と
+        # 誤認し、束ねた該当箇所を正しく直した稿(3か所から同じ未裏付けの語を消す。校閲 expected の指示どおり)を
+        # 検算が戻す。戻されると稿は適用されず同じ指摘が次の巡に残り、契約の欠陥として当番に上がった。
+        # quote が欄の字面を内包する向きも通す(校閲が literal にその欄を引用した = その欄は指摘の対象)。
+        touched = lambda s: any(q in s or (len(s) >= 8 and s in q) for q in quotes)
         old_title = norm(old_fm.get("title"))
         if norm(ans.get("title")) != old_title and not touched(old_title):
             problems.append("指摘に無い見出しを変えた")

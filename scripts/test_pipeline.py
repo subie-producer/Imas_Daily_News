@@ -394,14 +394,19 @@ def test_oncall_rerun_policy():
         check(oncall.rerun_policy(stage, ["scripts/collect.py"], "rebuild")[0], f"{stage}: rebuild 指定で作り直しにならない")
         check(not oncall.rerun_policy(stage, ["scripts/collect.py"], "resume")[0], f"{stage}: 続きのはずが作り直し")
         check(oncall.rerun_policy(stage, ["scripts/assemble.py"], "none") == (False, "none"), f"{stage}: none が効かない")
+    # 収集(collect/watch)の resume は「続き」として扱い、release の続きと取り違えない(当番 2026-10-02)
+    for stage in ("collect", "watch"):
+        check(oncall.rerun_policy(stage, ["scripts/pipelib.py"], "resume") == (False, "続き(定点観測の繰り越しを拾い直す)"),
+              f"{stage}: resume の表示名が collect 用でない")
+        check(oncall.rerun_policy(stage, ["scripts/pipelib.py"], "none") == (False, "none"), f"{stage}: none が効かない")
     # release 起点の作り直しは compose 先頭 → release の順に走る
-    calls = []
+    calls, cmds = [], []
     saved = (oncall.reset_edition, oncall.run_stage, oncall.commit_paths, oncall.ROOT)
     tmp = Path(tempfile.mkdtemp()); (tmp / "metrics").mkdir()
     try:
         oncall.ROOT = tmp
         oncall.reset_edition = lambda d, e: calls.append("reset") or "backup/x"
-        oncall.run_stage = lambda cmd, log, t: calls.append(Path(cmd[1]).name + ("(reuse)" if "--reuse-plan" in cmd else "")) or 0
+        oncall.run_stage = lambda cmd, log, t: cmds.append(cmd) or calls.append(Path(cmd[1]).name + ("(reuse)" if "--reuse-plan" in cmd else "")) or 0
         oncall.commit_paths = lambda *a, **k: calls.append("commit")
         code = oncall.rerun_stage("release", "2026-09-12", "edition/2026-09-12", full=True)
         check(code == 0 and calls == ["reset", "compose.py", "release.py"], f"release 起点 full の順序: {calls}")
@@ -411,6 +416,20 @@ def test_oncall_rerun_policy():
         calls.clear()
         oncall.rerun_stage("release", "2026-09-12", "edition/2026-09-12", full=False)
         check(calls == ["release.py"], f"release 続きの順序: {calls}")
+        # 収集の resume は no-op にせず、繰り越しを拾い直すため collect を実際に起動する(当番 2026-10-02:
+        # 直す前は else 枝で code=0 を返すだけで collect.py を呼ばず、未処理6件が次の定時まで残った)
+        for stage in ("collect", "watch"):
+            calls.clear(); cmds.clear()
+            code = oncall.rerun_stage(stage, "2026-09-12", "edition/2026-09-12", full=False)
+            check(code == 0 and calls == ["collect.py"], f"{stage} 続きが collect を起動しない: {calls}")
+            # 拾い直しは諦めずに繰り越す(--oncall-rerun)。原因未確定のまま再び読めなくても新着を失わない(監査指摘)
+            check("--oncall-rerun" in cmds[0], f"{stage} 拾い直しに --oncall-rerun が無い: {cmds[0]}")
+        # collect は壁時計でなく**取り込み先の号(edition)**を処理する。発行後 watch 等で異常発生日と
+        # 取り込み先がずれても、--date で edition の号を渡す(渡さないと別号を checkout する。監査指摘)
+        calls.clear(); cmds.clear()
+        oncall.rerun_stage("watch", "2026-09-12", "edition/2026-09-13", full=False)
+        i = cmds[0].index("--date")
+        check(cmds[0][i + 1] == "2026-09-13", f"collect に取り込み先の号を渡していない: {cmds[0]}")
     finally:
         oncall.reset_edition, oncall.run_stage, oncall.commit_paths, oncall.ROOT = saved
 
@@ -1624,6 +1643,27 @@ def test_tool_path():
     check(os.path.expanduser("~/.local/bin") in p.split(":") and "/usr/bin" in p.split(":"), f"tool_path に利用者の bin が無い: {p}")
 
 
+def test_extract_json_array_strict():
+    """定点観測 facts 化の読み取り(当番 2026-10-02「facts 化の出力が読めなかった(6件)」):
+    モデルが配列のあとに `]` を含む地の文を添えても、正しく出ていた配列を落とさない。
+    途中切れ・壊れ・配列無しのときだけ None(=読めなかった。0件の [] とは別)を返す。"""
+    E = pipelib.extract_json_array_strict
+    check(E('[{"a":1}]') == [{"a": 1}], "配列だけの出力が読めない")
+    check(E('はい:\n[{"a":1}]') == [{"a": 1}], "前置きのある出力が読めない")
+    # 後置き(配列のあとの注記)に `]` があっても、greedy に末尾まで取って壊さない ← 直した欠陥
+    check(E('[{"a":1}]\n\n注: 2件は取得できず[次回WebFetchで再取得]。') == [{"a": 1}],
+          "配列のあとに ] を含む注記があると読めなくなる(greedy 取り)")
+    check(E('```json\n[{"a":1},{"b":2}]\n```\n以上[6件中4件]。') == [{"a": 1}, {"b": 2}], "コードフェンス+後置きが読めない")
+    # 文字列リテラルの中の括弧・エスケープした引用符は配列の切れ目と取り違えない
+    check(E('[{"facts":["受付[先行] 8/8〜8/24"]}]\n完了。') == [{"facts": ["受付[先行] 8/8〜8/24"]}], "本文中の [ ] で切れ目を誤る")
+    check(E('[{"t":"ガシャ\\"SP\\"開催"}] 済') == [{"t": 'ガシャ"SP"開催'}], "エスケープした引用符で切れ目を誤る")
+    # 「読めなかった」(None)と「0件だった」([])を取り違えない
+    check(E('[{"a":1},{"b":2') is None, "途中切れ(閉じ ] が無い)を読めたことにした")
+    check(E('[{"a": }]') is None, "壊れた JSON を読めたことにした")
+    check(E("配列はありません") is None, "配列の無い出力を読めたことにした")
+    check(E("[]") == [], "空配列(0件)を読めなかった(None)に落とした")
+
+
 def test_watch_pagination_and_batches(tmp: Path):
     """定点観測(編集長 2026-09-30「公式のニュース12件しか見ないとか設計不備過ぎる」):
     一覧は既に見た記事だけのページに行き当たるまで遡る。上限まで読んでも新着が続けば打ち切りを返す。
@@ -1707,8 +1747,54 @@ def test_watch_pagination_and_batches(tmp: Path):
         st = info["stats"]["_state"]
         check(any(f.startswith("### 1. https://a.jp/P") for f in firsts) and not st.get("_pending") and "https://a.jp/P" in st["old"],
               f"未処理の列の新着を先に処理して既読にしない: {firsts[:3]} / 残り {st.get('_pending')}")
+        # 当番の拾い直し(oncall_rerun): 1度読めず _unreadable=1 で繰り越した新着を、同じバッチの再実行でまた
+        # 読めなかったとき、通常は2度目で諦めて既読にする(原因未確定のまま新着を失う。監査指摘)。
+        # oncall_rerun ではそれを諦めず、全件を未処理の列に残し、回数も進めない(rerun-second-unreadable-drops-pending)
+        base = {"old": ["https://a.jp/seen"],
+                "_pending": [{"source_id": "old", "brand": "general", "url": "https://a.jp/1", "title": "t", "source_type": "公式", "csr": False}],
+                "_unreadable": {"https://a.jp/1": 1}}
+        listings = {"old": [("https://a.jp/seen", "")], "fresh": []}
+        (tmp / "watch-state.json").write_text(json.dumps(base), encoding="utf-8")
+        cands, info = collect.run_watch(lambda prompt, timeout=0: None)                 # 通常(2度目)= 諦めて既読
+        st = info["stats"]["_state"]
+        check(info["deferred"] == 0 and not st.get("_pending") and "https://a.jp/1" in st["old"],
+              f"通常の2度目で既読にならない(=この経路で新着を失う): deferred={info['deferred']} pending={st.get('_pending')} old={st['old']}")
+        (tmp / "watch-state.json").write_text(json.dumps(base), encoding="utf-8")
+        cands, info = collect.run_watch(lambda prompt, timeout=0: None, oncall_rerun=True)  # 当番の拾い直し = 諦めない
+        st = info["stats"]["_state"]
+        check(info["deferred"] == 1 and [it["url"] for it in st.get("_pending") or []] == ["https://a.jp/1"]
+              and "https://a.jp/1" not in st.get("old", []) and st.get("_unreadable", {}).get("https://a.jp/1") == 1,
+              f"拾い直しで諦めず繰り越さない(=失う): deferred={info['deferred']} pending={st.get('_pending')} unreadable={st.get('_unreadable')}")
     finally:
         (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt) = saved
+
+
+def test_collect_oncall_rerun_exit(tmp: Path):
+    """当番の拾い直し(--oncall-rerun)で読めないバッチが残ったら、collect は成功で終えず非0を返す
+    (繰り越しは既読にせず保持済み。直しが効いていないことを当番へ申告する。監査指摘)。
+    候補は壁時計でなく --date で渡した取り込み先の号へ書く(発行後 watch 等で号がずれても別号を汚さない)。"""
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    saved = (collect.ROOT, collect.job_lock, collect.run_watch, collect.run_explores,
+             collect.append_metric, collect.notify, sys.argv)
+    try:
+        collect.ROOT = tmp
+        collect.job_lock = lambda *a, **k: None
+        collect.run_explores = lambda *a, **k: ([], {})
+        collect.append_metric = lambda *a, **k: None
+        collect.notify = lambda *a, **k: True
+        argv = ["collect", "--no-git", "--oncall-rerun", "--skip-explore", "--skip-grok", "--date", "2026-09-13"]
+        collect.run_watch = lambda call, oncall_rerun=False: ([], {"deferred": 2, "new": 2, "facted": 0})
+        sys.argv = list(argv)
+        check(collect.main() == 1, "拾い直しで読めないバッチが残ったのに成功(0)で終えた")
+        check((tmp / "candidates" / "2026-09-13.json").exists(), "候補を --date の号(取り込み先)へ書いていない")
+        collect.run_watch = lambda call, oncall_rerun=False: ([], {"deferred": 0, "new": 2, "facted": 2})
+        sys.argv = list(argv)
+        check(collect.main() == 0, "拾い直しで全部読めたのに非0で終えた")
+    finally:
+        (collect.ROOT, collect.job_lock, collect.run_watch, collect.run_explores,
+         collect.append_metric, collect.notify, sys.argv) = saved
 
 
 def test_storylink(tmp: Path):
@@ -2343,7 +2429,9 @@ def main() -> int:
     test_oncall_undo_merge()
     test_oncall_ensure_edition(tmp / "ee")
     test_withdrawal(tmp / "wd")
+    test_extract_json_array_strict()
     test_watch_pagination_and_batches(tmp / "wp")
+    test_collect_oncall_rerun_exit(tmp / "cre")
     test_storylink(tmp / "sl")
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()

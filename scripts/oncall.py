@@ -645,8 +645,13 @@ def rerun_policy(stage: str, changed: list[str], rerun_mode: str) -> tuple[bool,
         # (prompts/ を触っても組版はやり直さない。組版はまだ走っていないか、走るなら 03:00 に新しいコードで走る)
         return False, "出典の判定のやり直し(classify_retag_lint)"
     full = needs_full_rerun(changed) or rerun_mode == "rebuild"
-    return full, ("作り直し(compose 全工程" + (" → release" if stage == "release" else "") + ")") if full \
-        else ("続き(--reuse-plan)" if stage == "compose" else "続き(release)")
+    if full:
+        return True, "作り直し(compose 全工程" + (" → release" if stage == "release" else "") + ")"
+    if stage == "compose":
+        return False, "続き(--reuse-plan)"
+    if stage in ("collect", "watch"):
+        return False, "続き(定点観測の繰り越しを拾い直す)"
+    return False, "続き(release)"
 
 
 def commit_paths(paths: list[str], msg: str, branch: str) -> None:
@@ -753,6 +758,18 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool) -> int:
             code = run_stage([sys.executable, "-c", CLASSIFY_RERUN, date], log, 3600)
             if code == 0:
                 commit_paths(["source_types.yml", "docs/_posts"], f"oncall: {date} 出典の判定をやり直す(パーサ追加後)", edition)
+        elif stage in ("collect", "watch"):
+            # 収集の異常(定点観測の facts 化が読めなかった等)を直したら、繰り越し(watch-state の
+            # _pending)を**実際に拾い直す**。resume を no-op にすると、直した効きは次の定時収集まで
+            # 来ず、この号の収集に間に合わない(当番 2026-10-02 の未処理6件)。探索(Luna)・Grok は
+            # 今回の収集で済んでおり(Grok は週次セッション上限を食う)、やり直すのは定点観測だけでよい。
+            #   - --date は取り込み先の号(edition)を渡す。渡さないと collect が壁時計から号を取り、
+            #     06:00 境界をまたいだ往復や発行後 watch で別号を checkout してしまう(監査指摘)
+            #   - --oncall-rerun は、直しが効かず再び読めなかったバッチを諦めさせない。既読にせず繰り越し、
+            #     残れば collect が非0で返す(原因未確定のまま新着を失わない。監査指摘)
+            target = edition.removeprefix("edition/")
+            code = run_stage([sys.executable, str(ROOT / "scripts" / "collect.py"),
+                              "--skip-explore", "--skip-grok", "--oncall-rerun", "--date", target], log, 3600)
         else:
             code = 0
         if code == 0 and stage == "release":

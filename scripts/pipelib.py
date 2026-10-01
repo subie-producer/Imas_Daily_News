@@ -729,17 +729,61 @@ def extract_json_array(text: str):
 def extract_json_array_strict(text: str):
     """LLM 出力から最初の JSON 配列を取り出す。**読めなければ None**(0件とは別)。
 
+    「配列だけ出せ」と指示しても、安いモデル(定点観測の COLLECT_MODEL など)は前後に
+    地の文を添える。最初の `[` から**末尾の** `]` までをまとめて取ると、配列のあとに
+    `]` を含む注記が1つあるだけで json.loads が壊れ、正しく出ていた配列を丸ごと
+    「読めなかった」として落とす(当番 2026-10-02: 定点観測 facts 化 6件。実測で
+    「…6件中4件[次回WebFetchで再取得]」のような後置きで再現)。そこで最初の `[` から
+    **括弧の釣り合う位置**までを取り出す(文字列リテラル内の括弧は数えない)。
+    釣り合う `]` が無い(途中切れ)・中身が壊れている・配列が無いときだけ None を返す。
+
     定点観測は「処理を試みた URL」を既読にするので、出力が読めなかっただけの
     バッチを 0 件として既読にすると、その新着は二度と候補にならない(監査指摘 P1-5)。
     """
-    m = re.search(r"\[.*\]", text or "", re.DOTALL)
-    if not m:
-        return None
-    try:
-        v = json.loads(m.group(0))
-        return v if isinstance(v, list) else None
-    except json.JSONDecodeError:
-        return None
+    s = text or ""
+    i = 0
+    while True:
+        start = s.find("[", i)
+        if start < 0:
+            return None
+        end = _match_json_bracket(s, start)
+        if end is not None:
+            try:
+                v = json.loads(s[start:end + 1])
+                if isinstance(v, list):
+                    return v
+            except json.JSONDecodeError:
+                pass
+        i = start + 1
+
+
+def _match_json_bracket(s: str, start: int) -> int | None:
+    """`s[start]` の開き括弧に対応する閉じ括弧の位置を返す。釣り合わなければ None。
+
+    JSON の文字列リテラル("…" の中)にある括弧・引用符は数えない(本文に `]` や
+    エスケープした `"` が入っていても配列の切れ目を見失わない)。
+    """
+    depth = 0
+    in_str = False
+    esc = False
+    for j in range(start, len(s)):
+        c = s[j]
+        if in_str:
+            if esc:
+                esc = False
+            elif c == "\\":
+                esc = True
+            elif c == '"':
+                in_str = False
+        elif c == '"':
+            in_str = True
+        elif c in "[{":
+            depth += 1
+        elif c in "]}":
+            depth -= 1
+            if depth == 0:
+                return j
+    return None
 
 
 # 期間ラベル(編集規程15)。誰がいつ買えるのかが変わる語だけを列挙する。

@@ -1780,12 +1780,89 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
     # lint の指摘(構造の赤)は直し方を限定できないので、指摘の外の検査は掛けない
     if old_fm and not any(b.get("rule_id") == "LINT" for b in issues):
         quotes = [qnorm(b) for b in issues if len(qnorm(b)) >= 8]
-        touched = lambda s: any(q in s for q in quotes)
+        # 束ねた quote(校閲は該当箇所が複数あるとき、見出し・リード・本文を1つの quote にまとめて返す)から、
+        # 指定した欄の区画の中身を取り出す。実測した束ね方は3通り(欄名の表記も「見出し」「タイトル」で揺れる):
+        #   A 「…」(見出し)   閉じ鉤の直後に(欄名)          実測 2026-10-02 R1「日々、発見的ステップ！」
+        #   B 見出し「…」      欄名の直後に「…」(後ろに根拠注記)  実測 metrics/review-2026-09-21-1.json
+        #   C 見出し：…        欄名：本文(次の欄名まで)       実測 metrics/review-2026-09-25-1.json
+        # quotes は qnorm→visible_text 済みで、NFKC により全角（）：は半角()に畳まれ、改行は落ちる(C の
+        # 「…\nリード：…」は欄名で連結された1文字列になる)ので、C は次の欄名ラベルまでで区切る。「」『』は残る。
+        # 欄 ⊂ quote の逆向き一致を1表記(A)だけで見ると、B/C の束ね方では該当欄も「指摘の外」と誤認し、
+        # 正しく直した稿を検算が戻す(同じ指摘が次の巡に残り当番に上がる。監査指摘 MF-1)。
+        field_labels = {"見出し": ("見出し", "タイトル"), "リード": ("リード",), "本文": ("本文",)}
+        all_labels = [l for ls in field_labels.values() for l in ls]
+
+        def bracket_after(q, i):  # q[i] が「のとき、入れ子を数えて対応する」までの中身。無ければ None
+            if i >= len(q) or q[i] != "「":
+                return None
+            depth = 0
+            for k in range(i, len(q)):
+                if q[k] == "「":
+                    depth += 1
+                elif q[k] == "」":
+                    depth -= 1
+                    if depth == 0:
+                        return q[i + 1:k]
+            return None
+
+        def bracket_before(q, i):  # 位置 i の直前で閉じる「…」の中身。入れ子を数える。無ければ None
+            j = q.rfind("」", 0, i)
+            if j < 0:
+                return None
+            depth = 0
+            for k in range(j, -1, -1):
+                if q[k] == "」":
+                    depth += 1
+                elif q[k] == "「":
+                    depth -= 1
+                    if depth == 0:
+                        return q[k + 1:j]
+            return None
+
+        def field_segments(q, field):
+            segs = []
+            for L in field_labels.get(field, (field,)):
+                s = 0  # A: 「…」(L)
+                while (i := q.find(f"({L})", s)) >= 0:
+                    seg = bracket_before(q, i)
+                    if seg is not None:
+                        segs.append(seg)
+                    s = i + 1
+                s = 0  # B: L「…」
+                while (i := q.find(L + "「", s)) >= 0:
+                    seg = bracket_after(q, i + len(L))
+                    if seg is not None:
+                        segs.append(seg)
+                    s = i + len(L)
+                s = 0  # C: L：…(改行は消えているので次の欄名ラベルまでで切る)
+                while (i := q.find(L + ":", s)) >= 0:
+                    start = i + len(L) + 1
+                    end = len(q)
+                    for L2 in all_labels:
+                        for mk in (L2 + ":", L2 + "「"):
+                            p = q.find(mk, start)
+                            if 0 <= p < end:
+                                end = p
+                    segs.append(q[start:end])
+                    s = start
+            return segs
+        # 「触った」= quote ⊂ 欄(校閲がその欄の一部を literal に引用した = その欄は指摘の対象)。これは常に見る。
+        # 逆向き(欄 ⊂ quote)は、束ねた quote の **その欄の区画** に欄が丸ごと収まるときだけ認める。全欄共通で
+        # 認めると、本文だけの長い quote がリード等の全文を偶然含む記事で指摘外の欄の改変まで通してしまう
+        # (既存 docs/_posts で20/1301件がこの形。監査指摘 MF-1)。欄ごとに区画を分け、該当欄だけ照合する。
+        def touched(s, label=None):
+            for q in quotes:
+                if q in s:
+                    return True
+                if label and len(s) >= 8:
+                    if any(s in seg for seg in field_segments(q, label)):
+                        return True
+            return False
         old_title = norm(old_fm.get("title"))
-        if norm(ans.get("title")) != old_title and not touched(old_title):
+        if norm(ans.get("title")) != old_title and not touched(old_title, "見出し"):
             problems.append("指摘に無い見出しを変えた")
         old_lede = norm(old_fm.get("lede"))
-        if norm(ans.get("lede")) != old_lede and not touched(old_lede):
+        if norm(ans.get("lede")) != old_lede and not touched(old_lede, "リード"):
             problems.append("指摘に無いリードを変えた")
         old_tags = [str(t) for t in (old_fm.get("tags") or [])]
         tags_targeted = any(touched(norm(t)) for t in old_tags) or any(
@@ -1825,7 +1902,7 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
             consumed = [False] * len(new_paras)
             cursor = 0
             for p in old_paras:
-                if touched(p[0]):
+                if touched(p[0], "本文"):
                     continue
                 try:
                     j = next(k for k in range(cursor, len(new_paras)) if new_paras[k] == p and not consumed[k])
@@ -1837,7 +1914,7 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
                     continue
                 consumed[j] = True
                 cursor = j + 1
-            n_allowed = sum(1 for p in old_paras if touched(p[0]))
+            n_allowed = sum(1 for p in old_paras if touched(p[0], "本文"))
             n_new = sum(1 for c in consumed if not c)
             if n_new > n_allowed:
                 problems.append(f"指摘に無い段落を足した(新しい段落 {n_new} / 指摘の段落 {n_allowed})")

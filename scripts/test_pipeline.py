@@ -301,6 +301,75 @@ def test_revise_check():
                                {"markdown": "配信は11月に始まる。", "fact_ids": ["F3"]}])
     check(any("段落" in p for p in compose.revise_check(q_bad, iss_q, old_fm, old_q)),
           "鉤括弧付き quote でも未指摘段落の改変は落ちない")
+    # 校閲が該当箇所を複数まとめ、見出し・リード・本文を「…」で囲み（見出し）等の但し書きと読点でつないだ1つの
+    # quote で返したとき、その該当箇所を全部直した稿を通す(実測 2026-10-02 gaku-kuramoto R1「日々、発見的ステップ！」。
+    # 束ねた quote はどの一つの欄にも丸ごと収まらず、quote ⊂ 欄 だけ見ると見出し・リード・本文を全部「指摘の外」と
+    # 誤認して、正しい書き直しを検算が戻し、同じ R1 が次の巡に残って契約の欠陥として当番に上がった)
+    fm_multi = dict(old_fm, title="倉本千奈「日々、発見的ステップ！」フィギュア化",
+                    lede="学マスの倉本千奈「日々、発見的ステップ！」が、EUSUN製のスケールフィギュアとして立体化される。")
+    body_multi = "学マスの倉本千奈「日々、発見的ステップ！」のスケールフィギュア化が決定した。 <!-- F1 -->\n\n製品の仕様、予約期間、価格などは後日発表される。 <!-- F3 -->"
+    iss_multi = [{"issue_id": "I1", "rule_id": "R1", "repair": "drop_claim",
+                  "quote": "「倉本千奈「日々、発見的ステップ！」フィギュア化」（見出し）、"
+                           "「学マスの倉本千奈「日々、発見的ステップ！」が、EUSUN製のスケールフィギュアとして立体化される。」（リード）、"
+                           "「学マスの倉本千奈「日々、発見的ステップ！」のスケールフィギュア化が決定した。」（本文）"}]
+    multi_ok = dict(OK, addressed_issue_ids=["I1"], title="倉本千奈のスケールフィギュア化",
+                    lede="倉本千奈が、EUSUN製のスケールフィギュアとして立体化される。",
+                    blocks=[{"markdown": "倉本千奈のスケールフィギュア化が決定した。", "fact_ids": ["F1"]},
+                            {"markdown": "製品の仕様、予約期間、価格などは後日発表される。", "fact_ids": ["F3"]}])
+    check(compose.revise_check(multi_ok, iss_multi, fm_multi, body_multi) == [],
+          f"束ねた quote の該当箇所(見出し・リード・本文)を全部直した稿が落ちた: {compose.revise_check(multi_ok, iss_multi, fm_multi, body_multi)}")
+    # 束ねた quote でも、該当箇所に無い段落の無断改変は従来どおり止める
+    multi_bad = dict(multi_ok, blocks=[{"markdown": "倉本千奈のスケールフィギュア化が決定した。", "fact_ids": ["F1"]},
+                                       {"markdown": "製品は限定生産で即日完売した。", "fact_ids": ["F3"]}])
+    check(any("段落" in p for p in compose.revise_check(multi_bad, iss_multi, fm_multi, body_multi)),
+          "束ねた quote で該当外段落の改変が通った")
+    # 束ねた quote の表記は A「…」(欄) だけでなく、B 欄「…」(実測 review-2026-09-21)・C 欄：…(実測
+    # review-2026-09-25。欄名も「見出し/タイトル」で揺れる)がある。どの表記でも該当3欄を直した稿を通す(監査指摘 MF-1)
+    fm_b = dict(old_fm, title="SideMプロミ2027、会員先行は10月4日まで", lede="10月4日23時59分まで申し込める")
+    body_b = "受付期間は2026年9月12日21時から10月4日23時59分まで。 <!-- F22 -->\n\n別の段落はそのまま。 <!-- F3 -->"
+    iss_b = [{"issue_id": "I1", "rule_id": "R1", "repair": "rewrite_claim",
+              "quote": "見出し「SideMプロミ2027、会員先行は10月4日まで」(根拠: F9, F10)、"
+                       "リード「10月4日23時59分まで申し込める」(根拠: F42)、"
+                       "本文「受付期間は2026年9月12日21時から10月4日23時59分まで。」(根拠: F22)"}]
+    b_ok = dict(OK, addressed_issue_ids=["I1"], title="SideMプロミ2027の会員先行受付", lede="申込は10月4日まで受け付ける",
+                blocks=[{"markdown": "受付は10月4日で締め切られる。", "fact_ids": ["F22"]},
+                        {"markdown": "別の段落はそのまま。", "fact_ids": ["F3"]}])
+    check(compose.revise_check(b_ok, iss_b, fm_b, body_b) == [],
+          f"B 表記(欄「…」)の束ね quote の3欄を直した稿が落ちた: {compose.revise_check(b_ok, iss_b, fm_b, body_b)}")
+    b_bad = dict(b_ok, blocks=[{"markdown": "受付は10月4日で締め切られる。", "fact_ids": ["F22"]},
+                              {"markdown": "別の段落を無断で書き換えた。", "fact_ids": ["F3"]}])
+    check(any("段落" in p for p in compose.revise_check(b_bad, iss_b, fm_b, body_b)),
+          "B 表記の束ね quote で該当外段落の改変が通った")
+    fm_c = dict(old_fm, title="ウィークエンドシトロン、3日間入店制限", lede="店舗では9月25日から27日まで終日入店制限を実施する")
+    body_c = "店舗では9月25日から27日までの3日間、終日入店制限を実施する。 <!-- F1 -->\n\n別段落はそのまま。 <!-- F3 -->"
+    iss_c = [{"issue_id": "I1", "rule_id": "R1", "repair": "rewrite_claim",
+              "quote": "タイトル：ウィークエンドシトロン、3日間入店制限\n"
+                       "リード：店舗では9月25日から27日まで終日入店制限を実施する\n"
+                       "本文：店舗では9月25日から27日までの3日間、終日入店制限を実施する。"}]
+    c_ok = dict(OK, addressed_issue_ids=["I1"], title="シトロン店舗、3日間の入店制限", lede="9月25日から27日まで入店を制限する",
+                blocks=[{"markdown": "25日から27日まで終日の入店制限を実施する。", "fact_ids": ["F1"]},
+                        {"markdown": "別段落はそのまま。", "fact_ids": ["F3"]}])
+    check(compose.revise_check(c_ok, iss_c, fm_c, body_c) == [],
+          f"C 表記(タイトル：…)の束ね quote の3欄を直した稿が落ちた: {compose.revise_check(c_ok, iss_c, fm_c, body_c)}")
+    c_bad = dict(c_ok, blocks=[{"markdown": "25日から27日まで終日の入店制限を実施する。", "fact_ids": ["F1"]},
+                              {"markdown": "別段落を無断で書き換えた。", "fact_ids": ["F3"]}])
+    check(any("段落" in p for p in compose.revise_check(c_bad, iss_c, fm_c, body_c)),
+          "C 表記の束ね quote で該当外段落の改変が通った")
+    # 本文だけの長い quote が、リード全文を偶然内包していても、逆向き一致は欄名ラベルの区画に限る。
+    # ラベルの無い本文 quote でリード(欄外)の改変を通してはいけない(監査指摘 MF-1。既存 docs/_posts で
+    # リード全文が本文に含まれる記事を20/1301件実測。欄共通の逆向き包含だと指摘外のリード改変が検算を抜ける)
+    fm_incl = dict(old_fm, lede="新商品の予約受付が始まった。")
+    body_incl = "新商品の予約受付が始まった。価格は3000円。 <!-- F1 -->\n\n別の段落。 <!-- F3 -->"
+    iss_incl = [{"issue_id": "I1", "rule_id": "R1", "repair": "drop_claim", "quote": "新商品の予約受付が始まった。価格は3000円。"}]
+    incl_bad = dict(OK, addressed_issue_ids=["I1"], lede="全く無関係なリードへ改変した。",
+                    blocks=[{"markdown": "価格は改めて3000円と告知された。", "fact_ids": ["F1"]},
+                            {"markdown": "別の段落。", "fact_ids": ["F3"]}])
+    check(any("リード" in p for p in compose.revise_check(incl_bad, iss_incl, fm_incl, body_incl)),
+          "本文 quote がリード全文を含むとき、指摘外のリード改変が通った")
+    # 同じ入力で、本文(指摘欄)だけ直した稿はそのまま通る(逆向きを欄名で絞っても局所修正は落とさない)
+    incl_ok = dict(incl_bad, lede="新商品の予約受付が始まった。")
+    check(compose.revise_check(incl_ok, iss_incl, fm_incl, body_incl) == [],
+          f"本文 quote で本文だけ直した稿が落ちた: {compose.revise_check(incl_ok, iss_incl, fm_incl, body_incl)}")
     # R4(出典の不一致): 誤 URL を外し、正しい一次情報に付け替える。quote は frontmatter の URL(本文段落を
     # 触らない)なので、根拠段落の fact_ids を正しい候補の facts に付け替えても、字面が同じなら通す。
     # 以前は差し替えを「出典を足した」で、fact_ids の変更を「未指摘段落を変えた」で二重に弾き、誤 URL の R4 が

@@ -1780,19 +1780,48 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
     # lint の指摘(構造の赤)は直し方を限定できないので、指摘の外の検査は掛けない
     if old_fm and not any(b.get("rule_id") == "LINT" for b in issues):
         quotes = [qnorm(b) for b in issues if len(qnorm(b)) >= 8]
-        # 「触った」= quote ⊂ 欄 だけでなく 欄 ⊂ quote も認める。校閲は該当箇所が複数あるとき、
-        # 見出し・リード・本文をそれぞれ「…」で囲み(見出し)などの但し書きと読点でつないだ1つの quote に
-        # まとめて返すことがある(実測 2026-10-02 R1「日々、発見的ステップ！」)。この束ねた quote は
-        # どの一つの欄にも丸ごとは収まらないので quote ⊂ 欄 だけを見ると、該当する全ての欄を「指摘の外」と
-        # 誤認し、束ねた該当箇所を正しく直した稿(3か所から同じ未裏付けの語を消す。校閲 expected の指示どおり)を
-        # 検算が戻す。戻されると稿は適用されず同じ指摘が次の巡に残り、契約の欠陥として当番に上がった。
-        # quote が欄の字面を内包する向きも通す(校閲が literal にその欄を引用した = その欄は指摘の対象)。
-        touched = lambda s: any(q in s or (len(s) >= 8 and s in q) for q in quotes)
+        # 束ねた quote(校閲は該当箇所が複数あるとき、見出し・リード・本文をそれぞれ「…」で囲み、直後に
+        # (見出し)などの欄名を付け、読点でつないだ1つの quote にまとめて返す。実測 2026-10-02 R1
+        # 「日々、発見的ステップ！」)から、指定した欄名の「…」区画の中身を取り出す。欄名の直前の」に対応する
+        # 「を、入れ子の鉤括弧を数えて探す(欄の中身にも「」が入る)。その欄名が無ければ None
+        def labeled_seg(q, label):
+            # quotes は qnorm→visible_text 済みで、全角（）は半角()に畳まれている(本文側と同じ正規化)
+            marker = f"({label})"
+            i = q.find(marker)
+            if i < 0:
+                return None
+            j = q.rfind("」", 0, i)
+            if j < 0:
+                return None
+            depth = 0
+            for k in range(j, -1, -1):
+                if q[k] == "」":
+                    depth += 1
+                elif q[k] == "「":
+                    depth -= 1
+                    if depth == 0:
+                        return q[k + 1:j]
+            return None
+        # 「触った」= quote ⊂ 欄(校閲がその欄の一部を literal に引用した = その欄は指摘の対象)。これは常に見る。
+        # 逆向き(欄 ⊂ quote)は、束ねた quote の **その欄のラベル区画** に欄が丸ごと収まるときだけ認める。
+        # 逆向きを全欄共通で認めると、本文だけの長い quote がリード等の全文を偶然含む記事で、指摘外の欄の改変まで
+        # 検算を通してしまう(既存 docs/_posts で20/1301件がこの形。監査指摘 MF-1)。欄名で区画を分け、該当欄だけ照合する。
+        # 束ねた quote はどの一つの欄にも丸ごとは収まらないので、区画ごとに逆向き一致させないと、該当する全ての欄を
+        # 「指摘の外」と誤認し、束ねた該当箇所を正しく直した稿を検算が戻す(同じ指摘が次の巡に残り当番に上がった)。
+        def touched(s, label=None):
+            for q in quotes:
+                if q in s:
+                    return True
+                if label and len(s) >= 8:
+                    seg = labeled_seg(q, label)
+                    if seg is not None and s in seg:
+                        return True
+            return False
         old_title = norm(old_fm.get("title"))
-        if norm(ans.get("title")) != old_title and not touched(old_title):
+        if norm(ans.get("title")) != old_title and not touched(old_title, "見出し"):
             problems.append("指摘に無い見出しを変えた")
         old_lede = norm(old_fm.get("lede"))
-        if norm(ans.get("lede")) != old_lede and not touched(old_lede):
+        if norm(ans.get("lede")) != old_lede and not touched(old_lede, "リード"):
             problems.append("指摘に無いリードを変えた")
         old_tags = [str(t) for t in (old_fm.get("tags") or [])]
         tags_targeted = any(touched(norm(t)) for t in old_tags) or any(
@@ -1832,7 +1861,7 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
             consumed = [False] * len(new_paras)
             cursor = 0
             for p in old_paras:
-                if touched(p[0]):
+                if touched(p[0], "本文"):
                     continue
                 try:
                     j = next(k for k in range(cursor, len(new_paras)) if new_paras[k] == p and not consumed[k])
@@ -1844,7 +1873,7 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
                     continue
                 consumed[j] = True
                 cursor = j + 1
-            n_allowed = sum(1 for p in old_paras if touched(p[0]))
+            n_allowed = sum(1 for p in old_paras if touched(p[0], "本文"))
             n_new = sum(1 for c in consumed if not c)
             if n_new > n_allowed:
                 problems.append(f"指摘に無い段落を足した(新しい段落 {n_new} / 指摘の段落 {n_allowed})")

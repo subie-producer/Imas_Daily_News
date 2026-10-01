@@ -323,6 +323,21 @@ def test_revise_check():
                                        {"markdown": "製品は限定生産で即日完売した。", "fact_ids": ["F3"]}])
     check(any("段落" in p for p in compose.revise_check(multi_bad, iss_multi, fm_multi, body_multi)),
           "束ねた quote で該当外段落の改変が通った")
+    # 本文だけの長い quote が、リード全文を偶然内包していても、逆向き一致は欄名ラベルの区画に限る。
+    # ラベルの無い本文 quote でリード(欄外)の改変を通してはいけない(監査指摘 MF-1。既存 docs/_posts で
+    # リード全文が本文に含まれる記事を20/1301件実測。欄共通の逆向き包含だと指摘外のリード改変が検算を抜ける)
+    fm_incl = dict(old_fm, lede="新商品の予約受付が始まった。")
+    body_incl = "新商品の予約受付が始まった。価格は3000円。 <!-- F1 -->\n\n別の段落。 <!-- F3 -->"
+    iss_incl = [{"issue_id": "I1", "rule_id": "R1", "repair": "drop_claim", "quote": "新商品の予約受付が始まった。価格は3000円。"}]
+    incl_bad = dict(OK, addressed_issue_ids=["I1"], lede="全く無関係なリードへ改変した。",
+                    blocks=[{"markdown": "価格は改めて3000円と告知された。", "fact_ids": ["F1"]},
+                            {"markdown": "別の段落。", "fact_ids": ["F3"]}])
+    check(any("リード" in p for p in compose.revise_check(incl_bad, iss_incl, fm_incl, body_incl)),
+          "本文 quote がリード全文を含むとき、指摘外のリード改変が通った")
+    # 同じ入力で、本文(指摘欄)だけ直した稿はそのまま通る(逆向きを欄名で絞っても局所修正は落とさない)
+    incl_ok = dict(incl_bad, lede="新商品の予約受付が始まった。")
+    check(compose.revise_check(incl_ok, iss_incl, fm_incl, body_incl) == [],
+          f"本文 quote で本文だけ直した稿が落ちた: {compose.revise_check(incl_ok, iss_incl, fm_incl, body_incl)}")
     # R4(出典の不一致): 誤 URL を外し、正しい一次情報に付け替える。quote は frontmatter の URL(本文段落を
     # 触らない)なので、根拠段落の fact_ids を正しい候補の facts に付け替えても、字面が同じなら通す。
     # 以前は差し替えを「出典を足した」で、fact_ids の変更を「未指摘段落を変えた」で二重に弾き、誤 URL の R4 が

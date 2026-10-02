@@ -234,5 +234,52 @@
   "src_candidate_id": "sched-2026-09-30-cinderella-15th-anniversary-party-2026-開始",
   "event_date": "2026-11-28",
   "deadline": "2026-10-19"
+ },
+ {
+  "id": "sched-2026-10-16-sidem-315pronight-11th-feedback-october-2026-開始",
+  "dedup_key": "sidem-315pronight-11th-feedback-october-2026",
+  "brand": "sidem",
+  "subject": "「315プロNight!」10月16日放送回",
+  "kind": "開始",
+  "note": "21:00からニコニコ生放送で、高塚智人さん・矢野奨吾さん・榎木淳弥さん・駒田航さん回を視聴できる",
+  "reserved_on": "2026-10-03",
+  "title": "315プロNight 10月16日放送回",
+  "url": "https://x.com/SideM_lantis/status/2105998230005911747",
+  "source_type": "準公式",
+  "facts": [
+   "10月はSideM11th感想月間。10月16日(金)放送回のパーソナリティは高塚智人、矢野奨吾、榎木淳弥、駒田航。",
+   "イラストやお便りを募集し、投稿文では今週末中に送るよう案内。",
+   "投稿先はhttps://lantis.jp/sidem/radio/。番組は毎週金曜日21:00よりニコニコ公式生放送にて配信中。",
+   "チャンネル会員限定のおまけ放送、番組制作レポート、放送では聞けない番組の裏側がある。公式チャンネルはhttps://ch.nicovideo.jp/sidem、ハッシュタグは#315ナイト。",
+   "10月16日の年、開演時刻、メールの宛先文字列は投稿本文に記載されていない。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610030230-grok-43",
+  "event_date": "2026-10-16",
+  "deadline": "2026-10-04"
+ },
+ {
+  "id": "sched-2026-10-16-sidem-fanfes-wgf-movie-movie-ticket-2026-発売",
+  "dedup_key": "sidem-fanfes-wgf-movie-movie-ticket-2026",
+  "brand": "sidem",
+  "subject": "劇場版SideM WGF ムビチケ発売",
+  "kind": "発売",
+  "note": "ムビチケの販売が始まり、購入できる",
+  "reserved_on": "2026-10-03",
+  "title": "劇場版SideMチラシ・ポスター掲出とムビチケ",
+  "url": "https://x.com/SideM_official/status/2105976085511106694",
+  "source_type": "公式",
+  "facts": [
+   "全国の映画館で劇場版SideMFANFES_WGFのチラシとポスターを順次設置・掲出中。",
+   "ムビチケ販売は2026年10月16日(金)より開始予定。",
+   "公式サイトはhttps://idolmaster-official.jp/live_event/sidem_fbfes_wgf/movie/。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610030230-grok-46",
+  "event_date": "2026-10-16"
  }
 ]

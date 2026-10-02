@@ -1,0 +1,254 @@
+{
+ "decisions": {
+  "shiny-song-event-unyielding-will-2026": {
+   "action": "roundup",
+   "angle": "開催中のシャニソン新曲メダルガシャイベント「Unyielding Will」(10/6 20:59まで)と、開催中のガシャ群",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fan-shinycolors-msp-archive-2026-10-01": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の視聴感想投稿(note)。単体では記事にしない"
+  },
+  "shiny-noctchill-ai-image-controversy-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "生成AI疑惑の炎上・係争系で断定の裏づけなし。ライブ告知自体は9/28に既報"
+  },
+  "shiny-pioneer-impact-mvgiveaway-2026": {
+   "action": "article",
+   "angle": "『Pioneer Impact』3DMV実装記念のXプレゼントキャンペーンが10/12まで、QUOカード5,000円分が20名に当たる",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "応募開始の発表で単独記事"
+  },
+  "shiny-marui-figurine-2027-06": {
+   "action": "article",
+   "angle": "樋口円香「おしごとエフォートレス Ver.」1/7フィギュアの予約開始。19,800円、2027年6月発売、アクリル麻雀牌特典",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "SSR FIGURE系2主題を統合。浅倉透の三次受注、円香の11/8予約確約期限も盛る"
+  },
+  "shiny-midnight-monster-package-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30号と同内容で新事実・期限なし"
+  },
+  "shiny-85th-p-ur-step-up-2026": {
+   "action": "roundup",
+   "angle": "8.5th Anniversary 72時間限定P-UR確定ステップアップガシャ開催中",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-85th-s-ur-step-up-2026": {
+   "action": "roundup",
+   "angle": "8.5th Anniversary 72時間限定S-UR確定ステップアップガシャ開催中",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hana-birthday-gacha-2026": {
+   "action": "roundup",
+   "angle": "鈴木羽那の誕生日記念ガシャ開催中(アナザー衣装)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-antica-shhis-new-outfit-pickup-2026": {
+   "action": "roundup",
+   "angle": "アンティーカ&シーズ新衣装ピックアップガシャ第1弾・第2弾(★3確率1.5倍)開催中",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-refrac7ions-still-blue-goods-2026": {
+   "action": "article",
+   "angle": "REFRAC7IONS「Still blue」公式グッズ事前販売ファイナルの受注が10/4(日)まで、描きおろしアクリルパネル",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注締切が翌日のためトリガーあり"
+  },
+  "shiny-art-et-couleurs-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じMSP公演の配信視聴(ASOBI STAGE)。同時視聴会記事に統合"
+  },
+  "shiny-madoka-higuchi-ssr-figure-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-marui-figurine-2027-06",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ円香フィギュア(Amazon予約)"
+  },
+  "shiny-ssr-figure-higuchi-asakura-orders-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-marui-figurine-2027-06",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ円香フィギュアの予約、浅倉透三次受注の情報を統合"
+  },
+  "shiny-8ban-tsurajima-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30・10/1号で既報。店舗の再告知のみで新事実なし"
+  },
+  "shiny-msp-2026-09": {
+   "action": "article",
+   "angle": "MSPキャスト生オーコメ付きDAY1同時視聴会が本日17時から配信(峯田茉優・田嶌紗蘭・三川華月)。DAY2は10/4、アーカイブ視聴は10/5まで",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。Art & Couleursのアーカイブ・チケット情報を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-pioneer-impact-mvgiveaway-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『Pioneer Impact』3DMV実装記念のXプレゼントキャンペーンが10/12まで、QUOカード5,000円分が20名に当たる",
+    "lead_score": 15,
+    "dedup_key": "shiny-pioneer-impact-mvgiveaway-2026",
+    "candidate_ids": [
+     "202610021833-watch-0",
+     "202610022334-explore-10"
+    ]
+   },
+   {
+    "slug": "shiny-marui-figurine-2027-06",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "樋口円香「おしごとエフォートレス Ver.」1/7フィギュアの予約開始。19,800円、2027年6月発売、アクリル麻雀牌特典",
+    "lead_score": 30,
+    "dedup_key": "shiny-marui-figurine-2027-06",
+    "candidate_ids": [
+     "202610021833-watch-2",
+     "202610030230-grok-37",
+     "202610030230-grok-38"
+    ]
+   },
+   {
+    "slug": "shiny-refrac7ions-still-blue-goods-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "REFRAC7IONS「Still blue」公式グッズ事前販売ファイナルの受注が10/4(日)まで、描きおろしアクリルパネル",
+    "lead_score": 20,
+    "dedup_key": "shiny-refrac7ions-still-blue-goods-2026",
+    "candidate_ids": [
+     "202610030230-grok-35"
+    ]
+   },
+   {
+    "slug": "shiny-msp-2026-09-f14b09",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "MSPキャスト生オーコメ付きDAY1同時視聴会が本日17時から配信(峯田茉優・田嶌紗蘭・三川華月)。DAY2は10/4、アーカイブ視聴は10/5まで",
+    "lead_score": 60,
+    "dedup_key": "shiny-msp-2026-09",
+    "candidate_ids": [
+     "sched-2026-10-03-shiny-msp-2026-09-開始",
+     "202610030230-grok-36"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "開催中のシャニソン新曲メダルガシャイベント「Unyielding Will」(10/6 20:59まで)と、開催中のガシャ群",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-event-unyielding-will-2026",
+    "candidate_ids": [
+     "202610020733-explore-8",
+     "202610030230-grok-30",
+     "202610030230-grok-31",
+     "202610030230-grok-33",
+     "202610030230-grok-34"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fan-shinycolors-msp-archive-2026-10-01",
+    "reason": "個人の話題",
+    "note": "個人の視聴感想投稿(note)。単体では記事にしない"
+   },
+   {
+    "dedup_key": "shiny-noctchill-ai-image-controversy-2026",
+    "reason": "その他",
+    "note": "生成AI疑惑の炎上・係争系で断定の裏づけなし。ライブ告知自体は9/28に既報"
+   },
+   {
+    "dedup_key": "shiny-midnight-monster-package-2026",
+    "reason": "既報",
+    "note": "9/30号と同内容で新事実・期限なし"
+   },
+   {
+    "dedup_key": "shiny-8ban-tsurajima-collab-2026",
+    "reason": "既報",
+    "note": "9/30・10/1号で既報。店舗の再告知のみで新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

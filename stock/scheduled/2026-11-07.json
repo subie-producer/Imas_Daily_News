@@ -60,5 +60,36 @@
   "via": "grok",
   "verify": "unconfirmed",
   "src_candidate_id": "202610010223-grok-62"
+ },
+ {
+  "id": "sched-2026-11-07-gakumas-live-tour-shirube-live-viewing-2026-開幕",
+  "dedup_key": "gakumas-live-tour-shirube-live-viewing-2026",
+  "brand": "gaku",
+  "subject": "学マス -標- Final LIVE VIEWING 台湾上映初日",
+  "kind": "開幕",
+  "note": "台湾の映画館で16:00開始のライブビューイングを観られる",
+  "reserved_on": "2026-10-03",
+  "title": "學園偶像大師 LIVE TOUR -標- Final公演 LIVE VIEWING",
+  "url": "https://idolmaster-official.jp/news/01_20064",
+  "source_type": "公式",
+  "facts": [
+   "台灣直播日期: 11/7（六）、11/8（日）",
+   "台灣預售開放: 10/3 (六) 中午12點起",
+   "台灣入場時間 11/7: 15:40入場｜16:00開始",
+   "台灣入場時間 11/8: 15:40入場｜16:00開始",
+   "台灣票價: NT$1,280",
+   "台灣直播影城: 台北大巨蛋秀泰影城",
+   "台灣直播影城: 台北欣欣秀泰影城",
+   "台灣直播影城: 台中文心秀泰影城",
+   "台灣直播影城: 高雄夢時代秀泰影城",
+   "台灣購票通路: 秀泰影城現場",
+   "台灣購票通路: 秀泰影城官網及APP",
+   "台灣購票通路: 影城自購機"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202610022334-watch-0",
+  "event_date": "2026-11-07",
+  "deadline": "2026-10-03"
  }
 ]

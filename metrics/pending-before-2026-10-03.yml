@@ -1,4 +1,3 @@
-# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。
 - dedup_key: gaku-hif-15m-milestone-campaign-2026
   brand: gaku
   subject: 学マスH.I.F挑戦回数1,500万回突破記念キャンペーン
@@ -131,10 +130,18 @@
   brand: sidem
   subject: SideM「AJIプロジェクト」新ストーリーシリーズ
   watch: 2026年10月開始予定の正式日程・詳細(判明次第 triggers へ)
+- dedup_key: shiny-higuchi-madoka-effortless-figure-2026
+  brand: shiny
+  subject: 樋口円香フィギュア「おしごとエフォートレス Ver.」予約開始
+  watch: 予約受付開始日(近日開始と発表、判明次第 triggers へ)
 - dedup_key: cg-isetan-osechi-2027
   brand: cg
   subject: シンデレラガールズ×伊勢丹のおせち2027 販売情報
   watch: SNSキャンペーン詳細(販売開始10/21・締切11/17は判明、SNS情報は追って公開予定、判明次第 triggers へ)
+- dedup_key: shiny-antica-new-song-event-2026
+  brand: shiny
+  subject: シャニソン アンティーカ新曲イベント「歯車ほどき穿つ旋律」
+  watch: 開催日時(近日開催予定、判明次第 triggers へ)
 - dedup_key: shiny-silver-week-cas-colle-gasha-2026
   brand: shiny
   subject: シルバーウィーク記念 キャスコレ確定ステップアップガシャ

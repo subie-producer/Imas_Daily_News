@@ -1,0 +1,83 @@
+{
+ "decisions": {
+  "arcade-tours-s2-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/2号の prior に出演・会場・観覧応募(10/7締切)・特典まで全て記載済み。新事実も当日のトリガーも無い"
+  },
+  "tourmas-s2-update-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じ生配信の二次情報(未確認)。facts は全て10/2号の prior に既出で、新事実なし"
+  },
+  "tours-witch-night-party-outfit-2026": {
+   "action": "article",
+   "angle": "ツアマスS2弾のSSR新衣装「ウィッチナイトパーティー」が公式Xで解禁された",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式X発信・10/2発表の新情報。素材は短いので短い記事にする"
+  },
+  "producers-station-nagoya-producer-meeting-2026": {
+   "action": "article",
+   "angle": "Pステ中野で「ツアマス交流会」が本日10月3日に開催(名古屋の10/18交流会も併記)",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。本日開催が当日トリガー。名古屋10/18の情報は同一施策として1記事にまとめる"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-witch-night-party-outfit-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスS2弾のSSR新衣装「ウィッチナイトパーティー」が公式Xで解禁された",
+    "lead_score": 25,
+    "dedup_key": "tours-witch-night-party-outfit-2026",
+    "candidate_ids": [
+     "202610030230-grok-18"
+    ]
+   },
+   {
+    "slug": "joint-producers-station-nagoya-producer-meeting-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "Pステ中野で「ツアマス交流会」が本日10月3日に開催(名古屋の10/18交流会も併記)",
+    "lead_score": 30,
+    "dedup_key": "producers-station-nagoya-producer-meeting-2026",
+    "candidate_ids": [
+     "sched-2026-10-03-producers-station-nagoya-producer-meeting-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "arcade-tours-s2-live-2026",
+    "reason": "既報",
+    "note": "10/2号の prior に出演・会場・観覧応募(10/7締切)・特典まで全て記載済み。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "tourmas-s2-update-2026-10",
+    "reason": "既報",
+    "note": "同じ生配信の二次情報(未確認)。facts は全て10/2号の prior に既出で、新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

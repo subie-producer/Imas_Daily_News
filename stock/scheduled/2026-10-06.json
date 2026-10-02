@@ -40,5 +40,63 @@
   "verify": "confirmed",
   "src_candidate_id": "sched-2026-10-01-shiny-hbt-k-2026-10-締切",
   "event_date": "2026-10-06"
+ },
+ {
+  "id": "sched-2026-10-06-gaku-chibi-furumi-unit-collection-2026-開始",
+  "dedup_key": "gaku-chibi-furumi-unit-collection-2026",
+  "brand": "gaku",
+  "subject": "学マス ちびぐるみ vol.3 登場開始",
+  "kind": "開始",
+  "note": "全国のクレーンゲームで順次登場し、ゆめぱしーのちびぐるみを狙える",
+  "reserved_on": "2026-10-03",
+  "title": "学園アイドルマスター ちびぐるみ～ユニットコレクション～vol.3・vol.4 クレーンゲーム登場",
+  "url": "https://idolmaster-official.jp/news/01_20006",
+  "source_type": "公式",
+  "facts": [
+   "商品名: 学園アイドルマスター ちびぐるみ～ユニットコレクション～vol.3",
+   "商品名: 学園アイドルマスター ちびぐるみ～ユニットコレクション～vol.4",
+   "vol.3登場日時: 2026年10月6日(火)から全国のクレーンゲームに順次登場予定",
+   "vol.4登場日時: 2026年10月8日(木)から全国のクレーンゲームに順次登場予定",
+   "vol.3内容: 有村麻央・葛城リーリヤ・倉本千奈（ゆめぱしーのユニット衣装）",
+   "vol.4内容: 紫雲清夏・篠澤 広・姫崎莉波（REVERSIのユニット衣装）",
+   "サイズ: 約11cm",
+   "種類: 各3種",
+   "エンゲージメント: 低",
+   "言及アイドル: 有村麻央、葛城リーリヤ、倉本千奈、紫雲清夏、篠澤 広、姫崎莉波"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202610021235-watch-3"
+ },
+ {
+  "id": "sched-2026-10-06-shiny-song-event-unyielding-will-2026-終了",
+  "dedup_key": "shiny-song-event-unyielding-will-2026",
+  "brand": "shiny",
+  "subject": "シャニソン 新曲メダルガシャイベント",
+  "kind": "終了",
+  "note": "20:59にイベント開催期間が終了。メダルガシャを回せる最終日",
+  "reserved_on": "2026-10-03",
+  "title": "シャニソン新曲イベント「Unyielding Will」開催",
+  "url": "https://melonpapapapa-n.com/sc-prism_ev120/",
+  "source_type": "二次情報",
+  "facts": [
+   "開催期間: 2026年9月30日(水)12:00～2026年10月6日(火)20:59",
+   "ランキング集計期間: 2026年10月6日(火)21:00～10月7日(水)11:59",
+   "結果発表期間: 2026年10月7日(水)12:00～10月9日(金)11:59",
+   "新曲: 『Pioneer Impact』",
+   "『Pioneer Impact』の歌唱ユニットはアンティーカ×シーズ",
+   "『Pioneer Impact』の楽曲レベルは6・11・16・23・28",
+   "イベント形式はメダルガシャイベント",
+   "イベントストーリーはなし",
+   "LBを消費してライブを行い、イベントptメダルとメダルを集めてメダルガシャを回す",
+   "イベント報酬アイドルはSSR『浪漫機関のアナムネシス』七草にちか",
+   "イベントパックは有償プリズムジュエル×500で、購入上限は2回",
+   "イベントパックの内容はLB回復薬1×240、共通覚醒ブック(小)×80、共通覚醒ブック(中)×30、共通覚醒ブック(大)×10"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610020733-explore-8",
+  "event_date": "2026-09-30",
+  "deadline": "2026-10-09"
  }
 ]

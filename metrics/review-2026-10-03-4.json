@@ -1,0 +1,162 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-10-03-gaku-agitado-mv-trending-2026.md",
+   "issue": "リードが出典にない日付と再生数を記述している。素材の記録は10月2日1時30分・587,415回だが、記事は10月3日1時30分・600,532回と異なる。",
+   "quote": "10月3日1時30分時点で再生回数が600,532回",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "202610030230-explore-5"
+   ],
+   "expected": "リードの日付と再生数を出典の日付時刻（10月2日1時30分）と再生数（587,415回）に統一する",
+   "scope": "article:2026-10-03-gaku-agitado-mv-trending-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "紙面落ちした重要な話題：ミリオン14thプラチナスターチューン～ライラックにつつまれて～。candidates に『期間限定イベント「プラチナスターチューン～ライラックにつつまれて～」』（公式、エンゲージメント:高）が存在するが、記事には掲載されず。2つのエントリが重複していた。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "ranking 1位のレトラに関連する話題が掲載されていない。candidates に『レトラ BIRTHDAY ONLINE LIVE 2026』（公式、エンゲージメント:高、2026年11月11日開催、当日の大型ライブ）が存在するが、記事には掲載されず。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-gaku-chibi-furumi-unit-collection-2026.md",
+   "issue": "本文が rank:small の目安より大幅に不足。ユニット衣装情報（vol.3: ゆめぱしー、vol.4: REVERSI）を加えて 200+ 字に埋めることで、より正確で読みやすい記事になる。現在は情報不足で改善の余地あり。",
+   "scope": "article:2026-10-03-gaku-chibi-furumi-unit-collection-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-joint-tours-witch-night-party-outfit-2026.md",
+   "issue": "分量不足の可能性：rank: small（目安250字以上）に対し、本文が非常に短い。リード＋本文で補足情報（新衣装の概要説明、登場アイドルの属性、イベント期間など）を加えることで厚みが出る",
+   "scope": "article:2026-10-03-joint-tours-witch-night-party-outfit-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-million-14th-commemorative-goods-2026.md",
+   "issue": "本文に「<!-- N2 F2 -->」という注釈がありますが、candidate_ids に指定されているのは「202610030230-grok-20」(F1)だけで、F2は存在しません。frontmatterの lede_fact_ids では正確に F1 と N2 のみが指定されているため、本文コメントのメタデータが不一致です。公開には影響しませんが、編集時に修正すると混乱が減ります。",
+   "scope": "article:2026-10-03-million-14th-commemorative-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-million-14th-commemorative-goods-2026.md",
+   "issue": "分量不足の傾向: rank が small の目安は 250字以上ですが、本文は約 120字で簡潔です。リード含めても 180字程度。ただし素材にはロゼットバッジ以外の詳細仕様（サイズ、数量限定の有無、付属品詳細等）が記載されていないため、拡充が困難です。sources の ASOBI STORE 特集ページに詳細情報がある場合は追記を検討してください。",
+   "scope": "article:2026-10-03-million-14th-commemorative-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-million-14th-partition-song-2026.md",
+   "issue": "分量不足：rank:small に対して本文が大きく不足しています。素材の sources にある X 公式投稿から、楽曲の詳細情報(CD化・配信開始日時など)や、徳川まつり・エミリー スチュアートの参加理由や所属ユニット情報を拾えば、250字程度まで本文を埋められます",
+   "scope": "article:2026-10-03-million-14th-partition-song-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-million-theater-9th-illustration-goods-2026.md",
+   "issue": "分量不足：リード+本文で約195字で、rank: small の目安（250字以上）を下回っています。出典のアソビストア商品ページ・カテゴリページから、掲載キャラクター数、販売期間（いつまで注文受け付けるか）などの情報を拾えば埋まる可能性があります。",
+   "scope": "article:2026-10-03-million-theater-9th-illustration-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-shiny-marui-figurine-2027-06.md",
+   "issue": "分量不足：rank: small の目安 250字に対し、記事は約220字です。出典にある販売元（GSC、SSR FIGURE）、販売渠（Amazon.co.jp）、購入数制限、発送予定時期などの詳細情報を加えることで充実させることができます。",
+   "scope": "article:2026-10-03-shiny-marui-figurine-2027-06.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-shiny-marui-figurine-2027-06.md",
+   "issue": "見出しの明確性：「シャニマス樋口円香フィギュア予約開始」は、「公式がシャニマス樋口円香フィギュア予約開始」のように主体を明確にすると、何の話題かより直ちに判明します。",
+   "scope": "article:2026-10-03-shiny-marui-figurine-2027-06.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-shiny-ops-roundup.md",
+   "issue": "sources のラベルが sources の url（X投稿）の内容を完全に反映していない。記事本文では「72時間限定」と記載されているが、sources のラベルには「72時間限定」が含まれていない。sources のラベルを修正して url の内容と完全に一致させるべき",
+   "scope": "article:2026-10-03-shiny-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-shiny-refrac7ions-still-blue-goods-2026.md",
+   "issue": "見出しに商品（アクリルパネル）が明記されていないため、記事が何の話か一読では分からない。『シャニマス「Still blue」アクリルパネル受注は10月4日まで』のように、見出しに商品名を入れると読者に対して情報が明確になる。",
+   "scope": "article:2026-10-03-shiny-refrac7ions-still-blue-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-shiny-refrac7ions-still-blue-goods-2026.md",
+   "issue": "本文が rank: small の目安（250字）より大幅に短い（70字程度）。出典となる X投稿に『価格・品目の全一覧・発送時期は投稿本文に記載されていない』との注記があるため、記事の情報が限定的。公式発表の詳細が追加されれば、記事を充実させられる可能性がある。",
+   "scope": "article:2026-10-03-shiny-refrac7ions-still-blue-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-sidem-315pronight-11th-feedback-october-2026.md",
+   "issue": "分量不足：rank: small の目安 250字に対し本文が1文のみ。sourceに記載の投稿フォーム、毎週金曜21:00配信、チャンネル特典など読者が知るべき詳細情報を本文に追加すれば充実する",
+   "scope": "article:2026-10-03-sidem-315pronight-11th-feedback-october-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-sidem-4-77f830.md",
+   "issue": "分量不足：rank:small の目安(250字以上)に対し、本文は約157字。出典の sources に「開催場所は全国アニメイト・アニメイト通販」「対象外：オンラインくじ、カプセル筐体商品、くまめいと関連商品、一部TCGなど」といった詳細があり、拾えば充実可能。",
+   "scope": "article:2026-10-03-sidem-4-77f830.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-sidem-fantastic-battle-fes-2026.md",
+   "issue": "分量不足：rank: small の目安250字に対して本文が約124字です。素材に出演者詳細（8ユニットのメンバー）や公演会場の追加情報があります。当落発表までの流れや、プレミアム会員向け抽選という読者向けの案内を補足すれば、容易に分量を増やせます。",
+   "scope": "article:2026-10-03-sidem-fantastic-battle-fes-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-03-sidem-sem-lifes-side-menu-2dmv-2026.md",
+   "issue": "分量不足：rank:small の目安は250字ですが、本記事は本文と lead 合わせて50字未満です。ただし、素材の投稿本文に公開日以外の詳細情報（MVのURL、配信リンク、ストーリー名など）が記載されていないため、記事から埋める情報がありません。素材段階での情報不足が原因。",
+   "scope": "article:2026-10-03-sidem-sem-lifes-side-menu-2dmv-2026.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-03-765-never-end-idol-bluray-correction-2026.md",
+  "article:2026-10-03-dsva-valiv-situation-voice-villainess-2026.md",
+  "article:2026-10-03-gaku-agitado-mv-trending-2026.md",
+  "article:2026-10-03-gaku-chibi-furumi-unit-collection-2026.md",
+  "article:2026-10-03-gaku-gakumas-live-tour-shirube-live-viewing-2026.md",
+  "article:2026-10-03-general-kiramekirari-viral-video-2026-10.md",
+  "article:2026-10-03-general-starlit-season-steam-5th-2026.md",
+  "article:2026-10-03-joint-tours-witch-night-party-outfit-2026.md",
+  "article:2026-10-03-million-14th-commemorative-goods-2026.md",
+  "article:2026-10-03-million-14th-partition-song-2026.md",
+  "article:2026-10-03-million-ops-roundup.md",
+  "article:2026-10-03-million-theater-9th-illustration-goods-2026.md",
+  "article:2026-10-03-other-starlit-season-5th-anniversary-initiatives-2026.md",
+  "article:2026-10-03-shiny-marui-figurine-2027-06.md",
+  "article:2026-10-03-shiny-msp-2026-09-f14b09.md",
+  "article:2026-10-03-shiny-ops-roundup.md",
+  "article:2026-10-03-shiny-pioneer-impact-mvgiveaway-2026.md",
+  "article:2026-10-03-shiny-refrac7ions-still-blue-goods-2026.md",
+  "article:2026-10-03-sidem-315pronight-11th-feedback-october-2026.md",
+  "article:2026-10-03-sidem-4-77f830.md",
+  "article:2026-10-03-sidem-fanfes-wgf-movie-movie-ticket-2026.md",
+  "article:2026-10-03-sidem-fantastic-battle-fes-2026.md",
+  "article:2026-10-03-sidem-ops-roundup.md",
+  "article:2026-10-03-sidem-popup-werewolf-2026-10.md",
+  "article:2026-10-03-sidem-promi-2027-premium-presale.md",
+  "article:2026-10-03-sidem-sem-lifes-side-menu-2dmv-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-10-03-765-never-end-idol-bluray-correction-2026.md": "a0c20ce2919115ccf4d75ab89285c5441056864c9777acd0408275e1948c914b",
+  "docs/_posts/2026-10-03-dsva-valiv-situation-voice-villainess-2026.md": "a9b530685d8d52ab109a80c941695cc7bac8eb97c2c51ad60c1ff7c740a8be22",
+  "docs/_posts/2026-10-03-gaku-agitado-mv-trending-2026.md": "fff1fe6eede4e29d33ca0bc96d821d5d7d63df1b4f2eea559c0ed867fb3c5e11",
+  "docs/_posts/2026-10-03-gaku-chibi-furumi-unit-collection-2026.md": "acd80feb8e6587d3fce7f4bc3ae7b440de53fcffcf14766e0afda1c2b7764288",
+  "docs/_posts/2026-10-03-gaku-gakumas-live-tour-shirube-live-viewing-2026.md": "b032256a516391f4d6e9a9b74ae3dd31c2ba63a5e8b612a7ad251ca7e656ea9e",
+  "docs/_posts/2026-10-03-general-kiramekirari-viral-video-2026-10.md": "34da2b62a37cc7569f117b10278871fd49eab85ca7d00a47b9f3a865792278f1",
+  "docs/_posts/2026-10-03-joint-tours-witch-night-party-outfit-2026.md": "f5c5244a52008fd66ae5fe84c621bdd2ed2e0ad67de2eedec51c4af00b7c2499",
+  "docs/_posts/2026-10-03-million-14th-commemorative-goods-2026.md": "7af87ecdcbe35052a14d138b991f8b5cb7330e6333fcfdd0a4d412417dc862a6",
+  "docs/_posts/2026-10-03-million-14th-partition-song-2026.md": "5181140ba1f02c7a8155f88db9daeb5e2b00fd2563035f716ae5b44c1315436b",
+  "docs/_posts/2026-10-03-million-ops-roundup.md": "8308708240a5182197739a38ff68b49d5426096256ea2229ffa7b62e56936d12",
+  "docs/_posts/2026-10-03-million-theater-9th-illustration-goods-2026.md": "9c5564a37ff8d91c585410ce6be34db664e02e8dca9f8e1b9c31d78d71e95cf9",
+  "docs/_posts/2026-10-03-other-starlit-season-5th-anniversary-initiatives-2026.md": "62678726710b7a50eda687040ee9ad41d7339d9960aeb5513d13511d4c4c4578",
+  "docs/_posts/2026-10-03-shiny-marui-figurine-2027-06.md": "1a32032bcd10e048a368ea8a6e9d1e3691309a1ff079ce4d349698f0b7ca505d",
+  "docs/_posts/2026-10-03-shiny-msp-2026-09-f14b09.md": "d6faa9487d3442ec5c0f5f45a81b736727dcc008da1289c3d8ec87b09c09634f",
+  "docs/_posts/2026-10-03-shiny-ops-roundup.md": "8c0784c21feda8b591a0f56e86f954b5b6dc84bd4c1a2c007e2e9108f75040b9",
+  "docs/_posts/2026-10-03-shiny-pioneer-impact-mvgiveaway-2026.md": "4c9aef65eec5e24bdef21796e12a78ff928cd80718b176c1f8b5f201f8ede84f",
+  "docs/_posts/2026-10-03-shiny-refrac7ions-still-blue-goods-2026.md": "3edf366575b09fc1dedfdf6e605a1fc4a437052458a9d0f9e888e081358c5c76",
+  "docs/_posts/2026-10-03-sidem-315pronight-11th-feedback-october-2026.md": "ad3d122fde0037c92c014f89abfc49935c735ffa8deac3f260ff47c0f0675b8f",
+  "docs/_posts/2026-10-03-sidem-4-77f830.md": "a45b24ab60653563332b7fd431d36330f4ff555b3c646095c904ec05b720f22c",
+  "docs/_posts/2026-10-03-sidem-fanfes-wgf-movie-movie-ticket-2026.md": "af30577e37141590c32bac2f3c29ac9dd6ab11c6df7041bccb4b51fdad507709",
+  "docs/_posts/2026-10-03-sidem-fantastic-battle-fes-2026.md": "9b7c200a9e7fcb75393de80bc31f4c296832bc21e36937187d1dfdac90fe6d83",
+  "docs/_posts/2026-10-03-sidem-ops-roundup.md": "8535ffcb3b4560e48c6d1d40cf05c660d1feb8754fd3b16dac370e69faa797f4",
+  "docs/_posts/2026-10-03-sidem-popup-werewolf-2026-10.md": "6b50f29f47a2f3a4b7ff9c9fcc5568b7535e1b30d7d6a0efa44a6756fe47a42d",
+  "docs/_posts/2026-10-03-sidem-promi-2027-premium-presale.md": "c28227b32978d3d0ceb17e01cb306f4dda25791a53aa3c8a5dedba1f41742bfc",
+  "docs/_posts/2026-10-03-sidem-sem-lifes-side-menu-2dmv-2026.md": "31554d935b4d49d1292bff5c3f75c16b94b165b1c68cf351d7f1fc0c9ef98fb9",
+  "docs/_editions/2026-10-03.md": "5c5ef9855793fa163ba6b4ef423688daed1ec8142575a9b649e6a7175f042995",
+  "metrics/stories-before-2026-10-03.yml": "92bdfb879c07eb568bf1a67dea866975533041db04dbd27f79c595e34b8a761f"
+ }
+}

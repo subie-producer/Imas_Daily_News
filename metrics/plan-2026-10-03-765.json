@@ -1,0 +1,52 @@
+{
+ "decisions": {
+  "765pro-solo-collection-dresscode-2026": {
+   "action": "article",
+   "angle": "ソロコレ「ドレスコード：最上級」の予約締切が明日10月4日23時59分に迫っている",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "facts は prior と同内容。新事実は無く、トリガーは締切前日であること。"
+  },
+  "765-never-end-idol-bluray-correction-2026": {
+   "action": "article",
+   "angle": "「NEVER END IDOL」LIVE Blu-ray通常版 DAY1の商品情報が訂正され、2枚組・17,600円・11月25日発売と案内された",
+   "rank": "small",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/2 付の Lantis 告知で、prior も他面の記事も無い新規の知らせ。9/27 の受注締切記事とは別件。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-765pro-solo-collection-dresscode-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "ソロコレ「ドレスコード：最上級」の予約締切が明日10月4日23時59分に迫っている",
+    "lead_score": 20,
+    "dedup_key": "765pro-solo-collection-dresscode-2026",
+    "candidate_ids": [
+     "202610021235-explore-5"
+    ]
+   },
+   {
+    "slug": "765-never-end-idol-bluray-correction-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "「NEVER END IDOL」LIVE Blu-ray通常版 DAY1の商品情報が訂正され、2枚組・17,600円・11月25日発売と案内された",
+    "lead_score": 50,
+    "dedup_key": "765-never-end-idol-bluray-correction-2026",
+    "candidate_ids": [
+     "202610022334-explore-1"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

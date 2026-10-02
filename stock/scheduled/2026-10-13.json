@@ -105,5 +105,35 @@
   "src_candidate_id": "202610012336-watch-6",
   "event_date": "2026-11-11",
   "deadline": "2026-10-11"
+ },
+ {
+  "id": "sched-2026-10-13-starlit-season-5th-anniversary-initiatives-2026-開始",
+  "dedup_key": "starlit-season-5th-anniversary-initiatives-2026",
+  "brand": "other",
+  "subject": "IM@S RADIO スタマス5周年特番",
+  "kind": "開始",
+  "note": "20時からYouTube「アイドルマスターチャンネル」で特番を視聴できる",
+  "reserved_on": "2026-10-03",
+  "title": "スタマス5周年記念 5つの特別施策が本日より順次スタート",
+  "url": "https://idolmaster-official.jp/news/01_20036",
+  "source_type": "公式",
+  "facts": [
+   "アイドルマスター スターリットシーズン 5周年記念日: 10月14日",
+   "施策①: 「IM＠S RADIO」スタマス5周年特番",
+   "「IM＠S RADIO」スタマス5周年特番 配信: YouTube「アイドルマスターチャンネル」にて10月13日(火)20時より開始予定",
+   "「IM＠S RADIO」スタマス5周年特番 パーソナリティ: 平田 宏美さん（「アイドルマスター」菊地 真役）",
+   "「IM＠S RADIO」スタマス5周年特番 パーソナリティ: 若林 直美さん（「アイドルマスター」秋月 律子役）",
+   "「IM＠S RADIO」スタマス5周年特番 ゲスト: 山崎 はるかさん（「アイドルマスター ミリオンライブ！」春日 未来役）",
+   "「IM＠S RADIO」スタマス5周年特番 ゲスト: 田中 あいみさん（「アイドルマスター スターリットシーズン」奥空 心白役）",
+   "施策②: 心白・亜夜へのメッセージ大募集！",
+   "施策③: ゲーム内越境コミュを紹介",
+   "施策④: 765×961盛り上げ！ xRライブ「765 PRODUCTION × 961 PRODUCTION IDOL ULTIMATE ONCE AND FOR ALL」盛り上げ施策として5周年当日の10月14日（水）より、アイドル紹介動画を公開予定",
+   "施策⑤: ？？？ 続報をお待ちください",
+   "エンゲージメント: 高"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202610021235-watch-2",
+  "event_date": "2026-10-14"
  }
 ]

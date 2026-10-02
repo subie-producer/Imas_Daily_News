@@ -92,6 +92,342 @@
     "failed": 0
    },
    "duration_s": 518
+  },
+  {
+   "at": "2026-10-02T07:33:13+09:00",
+   "edition": "2026-10-03",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 346,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 8,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 1,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 2
+   },
+   "normalized": 5,
+   "added": 5,
+   "verify": {
+    "confirmed": 3,
+    "unconfirmed": 2,
+    "failed": 0
+   },
+   "duration_s": 155
+  },
+  {
+   "at": "2026-10-02T12:35:55+09:00",
+   "edition": "2026-10-03",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 24,
+      "pages": 2,
+      "new": 5,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 346,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 5,
+    "facted": 5,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 0,
+    "explore:million": 5,
+    "explore:shiny": 1,
+    "explore:sidem": 2,
+    "explore:gakuen": 1,
+    "explore:dsva": 1,
+    "explore:joint-other": 1,
+    "explore:trend": 1
+   },
+   "normalized": 14,
+   "added": 12,
+   "verify": {
+    "confirmed": 11,
+    "unconfirmed": 3,
+    "failed": 0
+   },
+   "duration_s": 317
+  },
+  {
+   "at": "2026-10-02T18:33:12+09:00",
+   "edition": "2026-10-03",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 24,
+      "pages": 2,
+      "new": 3,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 347,
+      "pages": 1,
+      "new": 1,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 1,
+      "deferred": 0
+     }
+    },
+    "new": 5,
+    "facted": 5,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 1,
+    "explore:shiny": 0,
+    "explore:sidem": 0,
+    "explore:gakuen": 1,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 0
+   },
+   "normalized": 8,
+   "added": 5,
+   "verify": {
+    "confirmed": 7,
+    "unconfirmed": 1,
+    "failed": 0
+   },
+   "duration_s": 154
+  },
+  {
+   "at": "2026-10-02T23:34:10+09:00",
+   "edition": "2026-10-03",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 24,
+      "pages": 2,
+      "new": 1,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 347,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 1,
+    "facted": 1,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 0,
+    "explore:million": 8,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 1,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 2
+   },
+   "normalized": 8,
+   "added": 3,
+   "verify": {
+    "confirmed": 8,
+    "unconfirmed": 0,
+    "failed": 0
+   },
+   "duration_s": 212
   }
  ],
  "compose": [

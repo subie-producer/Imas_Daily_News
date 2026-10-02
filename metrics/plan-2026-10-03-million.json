@@ -1,0 +1,188 @@
+{
+ "decisions": {
+  "million-platinum-star-tune-lilac-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/1「新イベント本日15時開幕」と同じイベント。新事実・当日のトリガー無し"
+  },
+  "million-battle-of-theater-09-100ten-number-one-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30「BATTLE 09本日発売」と同じ商品。新事実無し"
+  },
+  "million-14th-partition-song-2026": {
+   "action": "article",
+   "angle": "ミリオン14thの新曲「パルティシオン」(徳川まつり・エミリー)が公開され、視聴先も案内された",
+   "rank": "small",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14th-commemorative-goods-2026": {
+   "action": "article",
+   "angle": "ミリオン14th開催記念の公式ロゼットバッジがASOBI STOREで受注中",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "エミリーのラペルピン(9/30)とは別商品"
+  },
+  "million-theater-9th-onlymaker-parka-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30「9周年パーカー受注、10月12日まで」と同じ商品"
+  },
+  "million-theater-9th-illustration-goods-2026": {
+   "action": "article",
+   "angle": "ミリシタ9周年イラスト公式グッズのBIGアクリルスタンドが商品ページ公開",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/1のアクリルパネルとは別商品"
+  },
+  "sobetsu-apple-festival-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/2「壮瞥りんごまつり本日開幕」と同じ施策。期間などの新事実無し"
+  },
+  "million-second-hairstyle-arisa-rate-up-2026": {
+   "action": "roundup",
+   "angle": "セカンドヘアスタイルガシャ(亜利沙SSR出現率UP・with glasses)とアイドルグランプリのメンテなど、ミリシタ運営情報",
+   "rank": "",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-idol-grand-prix-maintenance-2026-10": {
+   "action": "roundup",
+   "angle": "10/9 10:00〜10/10 14:59のアイドルグランプリメンテ予定",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-second-hairstyle-with-glasses-arisa-2026": {
+   "action": "roundup",
+   "angle": "with glasses 松田亜利沙ガシャ、10/10 14:59まで",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-second-hairstyle-with-glasses-subaru-2026": {
+   "action": "roundup",
+   "angle": "with glasses 永吉昴ガシャ、10/10 14:59まで",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-14th-partition-song-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオン14thの新曲「パルティシオン」(徳川まつり・エミリー)が公開され、視聴先も案内された",
+    "lead_score": 55,
+    "dedup_key": "million-14th-partition-song-2026",
+    "candidate_ids": [
+     "202610030230-grok-19"
+    ]
+   },
+   {
+    "slug": "million-14th-commemorative-goods-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオン14th開催記念の公式ロゼットバッジがASOBI STOREで受注中",
+    "lead_score": 25,
+    "dedup_key": "million-14th-commemorative-goods-2026",
+    "candidate_ids": [
+     "202610030230-grok-20"
+    ]
+   },
+   {
+    "slug": "million-theater-9th-illustration-goods-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ9周年イラスト公式グッズのBIGアクリルスタンドが商品ページ公開",
+    "lead_score": 20,
+    "dedup_key": "million-theater-9th-illustration-goods-2026",
+    "candidate_ids": [
+     "202610030230-grok-22"
+    ]
+   },
+   {
+    "slug": "million-ops-roundup",
+    "brand": "million",
+    "rank": "roundup",
+    "angle": "セカンドヘアスタイルガシャ(亜利沙SSR出現率UP・with glasses)とアイドルグランプリのメンテなど、ミリシタ運営情報",
+    "lead_score": 0,
+    "dedup_key": "million-second-hairstyle-arisa-rate-up-2026",
+    "candidate_ids": [
+     "202610030230-grok-25",
+     "202610030230-grok-26",
+     "202610030230-grok-27",
+     "202610030230-grok-28"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-platinum-star-tune-lilac-2026",
+    "reason": "既報",
+    "note": "10/1「新イベント本日15時開幕」と同じイベント。新事実・当日のトリガー無し"
+   },
+   {
+    "dedup_key": "million-battle-of-theater-09-100ten-number-one-2026",
+    "reason": "既報",
+    "note": "9/30「BATTLE 09本日発売」と同じ商品。新事実無し"
+   },
+   {
+    "dedup_key": "million-theater-9th-onlymaker-parka-2026",
+    "reason": "既報",
+    "note": "9/30「9周年パーカー受注、10月12日まで」と同じ商品"
+   },
+   {
+    "dedup_key": "sobetsu-apple-festival-campaign-2026",
+    "reason": "既報",
+    "note": "10/2「壮瞥りんごまつり本日開幕」と同じ施策。期間などの新事実無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

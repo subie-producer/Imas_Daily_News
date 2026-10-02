@@ -60,5 +60,63 @@
   "src_candidate_id": "202609170735-watch-0",
   "event_date": "2026-10-23",
   "deadline": "2026-12-27"
+ },
+ {
+  "id": "sched-2026-10-23-sidem-fantastic-battle-fes-2026-結果",
+  "dedup_key": "sidem-fantastic-battle-fes-2026",
+  "brand": "sidem",
+  "subject": "F@NTASTIC BATTLE FES 第2弾 2次先行の当落発表",
+  "kind": "結果",
+  "note": "13:00から当落を確認でき、当選者は入金手続き(〜10/27 23:59)に進める",
+  "reserved_on": "2026-10-03",
+  "title": "315 Production presents F@NTASTIC BATTLE FES ～Wanna step in～ アソビストアプレミアム会員2次先行受付開始",
+  "url": "https://idolmaster-official.jp/news/01_20039",
+  "source_type": "公式",
+  "facts": [
+   "アソビストアプレミアム会員2次先行 受付期間: 2026年10月2日（金）12：00 ～ 10月12日（月・祝）23：59",
+   "当落発表: 2026年10月23日（金）13：00 ～",
+   "入金期間: 2026年10月23日（金）13：00 ～ 10月27日（火）23：59",
+   "長野公演: 2026年12月26日(土)・27日(日) ホクト文化ホール",
+   "長野公演 12月26日(土): 昼公演 11:00開場/12:00開演（予定）、夜公演 16:00開場/17:00開演（予定）",
+   "長野公演 12月27日(日): 昼公演 11:00開場/12:00開演（予定）、夜公演 16:00開場/17:00開演（予定）",
+   "幕張公演: 2027年1月23日(土)・24日(日) 幕張イベントホール",
+   "幕張公演 1月23日(土): 昼公演 10:30開場/11:30開演（予定）、夜公演 16:00開場/17:00開演（予定）",
+   "幕張公演 1月24日(日): 昼公演 10:30開場/11:30開演（予定）、夜公演 16:00開場/17:00開演（予定）",
+   "SP席 枚数制限: お一人様１公演につき2枚（複数公演申込可）",
+   "S席・A席 枚数制限: お一人様1公演につき4枚（複数公演申込可）",
+   "出演者 Jupiter: 天ヶ瀬 冬馬/御手洗 翔太/伊集院 北斗"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202610021235-watch-0",
+  "event_date": "2026-12-26",
+  "deadline": "2026-10-27"
+ },
+ {
+  "id": "sched-2026-10-23-sidem-popup-werewolf-2026-10-開幕",
+  "dedup_key": "sidem-popup-werewolf-2026-10",
+  "brand": "sidem",
+  "subject": "SideM POP UP SHOP「～Who howls at night?～ marche」",
+  "kind": "開幕",
+  "note": "渋谷MODI 1Fで人狼モチーフのグッズを購入できる",
+  "reserved_on": "2026-10-03",
+  "title": "SideM POP UP SHOP『～Who howls at night?～ marche』詳細情報解禁",
+  "url": "https://idolmaster-official.jp/news/01_20053",
+  "source_type": "公式",
+  "facts": [
+   "開催期間：10月23日(金)～11月1日(日)",
+   "開催場所：渋谷MODI 1F",
+   "テーマ：人狼をモチーフとしたグッズが登場",
+   "購入特典：対象商品を税込2,000円お買い上げごとにオリジナル人狼役職カードをプレゼント",
+   "特典配布方法：ランダムでのお渡しで絵柄は選べない",
+   "特典配布終了：なくなり次第終了",
+   "お問い合わせ：株式会社ルフェイス support@luface.jp",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202610021833-watch-1",
+  "event_date": "2026-10-23",
+  "deadline": "2026-11-01"
  }
 ]

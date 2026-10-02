@@ -1,0 +1,63 @@
+{
+ "decisions": {
+  "general-starlit-season-steam-5th-2026": {
+   "action": "article",
+   "angle": "STARLIT SEASON Steam版が発売5周年を記念し、Standard・Digital Deluxe・各DLCが過去最大の70%OFF。セールは10/23 2:00まで",
+   "rank": "small",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は二次情報。10/14が5周年当日"
+  },
+  "idolmaster-title-explanation-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "kiramekirari-viral-video-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人の投稿単体では記事にせず、界隈の話題として culture 記事に束ねる"
+  },
+  "kiramekirari-viral-video-2026-10": {
+   "action": "article",
+   "angle": "「キラメキラリ」の動画が拡散し、「アイマスは称号」と語る投稿とともに、界隈の継承をめぐる話題が広がった(投稿者個人は主役にしない)",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "未確認の X 投稿。数値は取得時点。title-explanation を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-starlit-season-steam-5th-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "STARLIT SEASON Steam版が発売5周年を記念し、Standard・Digital Deluxe・各DLCが過去最大の70%OFF。セールは10/23 2:00まで",
+    "lead_score": 50,
+    "dedup_key": "general-starlit-season-steam-5th-2026",
+    "candidate_ids": [
+     "202610021833-watch-4"
+    ]
+   },
+   {
+    "slug": "general-kiramekirari-viral-video-2026-10",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "「キラメキラリ」の動画が拡散し、「アイマスは称号」と語る投稿とともに、界隈の継承をめぐる話題が広がった(投稿者個人は主役にしない)",
+    "lead_score": 10,
+    "dedup_key": "kiramekirari-viral-video-2026-10",
+    "candidate_ids": [
+     "202610030230-grok-52",
+     "202610030230-grok-50"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

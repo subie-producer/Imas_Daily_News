@@ -66,5 +66,32 @@
   "src_candidate_id": "202609161837-explore-31",
   "event_date": "2026-09-25",
   "deadline": "2026-11-01"
+ },
+ {
+  "id": "sched-2026-11-01-sidem-popup-werewolf-2026-10-終了",
+  "dedup_key": "sidem-popup-werewolf-2026-10",
+  "brand": "sidem",
+  "subject": "SideM POP UP SHOP「～Who howls at night?～ marche」",
+  "kind": "終了",
+  "note": "最終日。渋谷MODI 1Fでグッズを購入できる最後の日",
+  "reserved_on": "2026-10-03",
+  "title": "SideM POP UP SHOP『～Who howls at night?～ marche』詳細情報解禁",
+  "url": "https://idolmaster-official.jp/news/01_20053",
+  "source_type": "公式",
+  "facts": [
+   "開催期間：10月23日(金)～11月1日(日)",
+   "開催場所：渋谷MODI 1F",
+   "テーマ：人狼をモチーフとしたグッズが登場",
+   "購入特典：対象商品を税込2,000円お買い上げごとにオリジナル人狼役職カードをプレゼント",
+   "特典配布方法：ランダムでのお渡しで絵柄は選べない",
+   "特典配布終了：なくなり次第終了",
+   "お問い合わせ：株式会社ルフェイス support@luface.jp",
+   "エンゲージメント: 中"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202610021833-watch-1",
+  "event_date": "2026-10-23",
+  "deadline": "2026-11-01"
  }
 ]

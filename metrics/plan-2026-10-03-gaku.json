@@ -1,0 +1,155 @@
+{
+ "decisions": {
+  "agitato-instrumental-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/2号の本文と同内容(公開・利用規約の確認)。新事実なし"
+  },
+  "gaku-agitato-mv-2026": {
+   "action": "article",
+   "angle": "「Agitato」MVの1カットをVTuberのしてはるが映像作家として担当した",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報のみ。出典は断定を避けて書く"
+  },
+  "gaku-chibi-furumi-unit-collection-2026": {
+   "action": "article",
+   "angle": "ちびぐるみ ユニットコレクションvol.3が10/6、vol.4が10/8からクレーンゲームに順次登場",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新商品2弾。ユニット衣装と各3種を記載"
+  },
+  "gaku-agitato-streaming-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/1号『Agitato 本日配信』で既報。新事実は作詞作曲クレジットのみ"
+  },
+  "gakumas-live-tour-shirube-live-viewing-2026": {
+   "action": "article",
+   "angle": "学マス LIVE TOUR -標- Final公演の台湾ライブビューイング、前売が本日10/3正午に開始(11/7・11/8、NT$1,280)",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日のトリガー(前売開始)あり"
+  },
+  "agitado-mv-trending-2026": {
+   "action": "article",
+   "angle": "「Agitato」MVの再生が10/2 1:30時点で58万回超、急上昇27位に(10/1 5:30は17万回・4位)",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior本文にない10/2時点の再生・高評価・順位が新事実"
+  },
+  "gakuen-idolmaster-romance-discussion-2026-09": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿が出典で、批判的な論争になり得る"
+  },
+  "gakumasu-music-reception-discussion-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿の意見で、単体では記事にしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-agitato-mv-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Agitato」MVの1カットをVTuberのしてはるが映像作家として担当した",
+    "lead_score": 10,
+    "dedup_key": "gaku-agitato-mv-2026",
+    "candidate_ids": [
+     "202610020733-explore-11"
+    ]
+   },
+   {
+    "slug": "gaku-chibi-furumi-unit-collection-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ちびぐるみ ユニットコレクションvol.3が10/6、vol.4が10/8からクレーンゲームに順次登場",
+    "lead_score": 20,
+    "dedup_key": "gaku-chibi-furumi-unit-collection-2026",
+    "candidate_ids": [
+     "202610021235-watch-3"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-live-tour-shirube-live-viewing-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "学マス LIVE TOUR -標- Final公演の台湾ライブビューイング、前売が本日10/3正午に開始(11/7・11/8、NT$1,280)",
+    "lead_score": 60,
+    "dedup_key": "gakumas-live-tour-shirube-live-viewing-2026",
+    "candidate_ids": [
+     "202610022334-watch-0"
+    ]
+   },
+   {
+    "slug": "gaku-agitado-mv-trending-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Agitato」MVの再生が10/2 1:30時点で58万回超、急上昇27位に(10/1 5:30は17万回・4位)",
+    "lead_score": 15,
+    "dedup_key": "agitado-mv-trending-2026",
+    "candidate_ids": [
+     "202610030230-explore-5"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "agitato-instrumental-2026",
+    "reason": "既報",
+    "note": "10/2号の本文と同内容(公開・利用規約の確認)。新事実なし"
+   },
+   {
+    "dedup_key": "gaku-agitato-streaming-2026",
+    "reason": "既報",
+    "note": "10/1号『Agitato 本日配信』で既報。新事実は作詞作曲クレジットのみ"
+   },
+   {
+    "dedup_key": "gakuen-idolmaster-romance-discussion-2026-09",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿が出典で、批判的な論争になり得る"
+   },
+   {
+    "dedup_key": "gakumasu-music-reception-discussion-2026-10",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿の意見で、単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -483,5 +483,76 @@
   "src_candidate_id": "202610012336-watch-4",
   "event_date": "2026-10-15",
   "deadline": "2026-10-07"
+ },
+ {
+  "id": "sched-2026-10-04-valiv-situation-voice-villainess-2026-締切",
+  "dedup_key": "valiv-situation-voice-villainess-2026",
+  "brand": "dsva",
+  "subject": "vα-liv 悪役令嬢ボイス 販売期間最終日",
+  "kind": "締切",
+  "note": "23:59の販売終了前に購入できる最後の日",
+  "reserved_on": "2026-10-03",
+  "title": "シチュエーションボイス第十五弾 悪役令嬢ボイス",
+  "url": "https://x.com/valiv_official/status/2105968538305417295",
+  "source_type": "公式",
+  "facts": [
+   "シチュエーションボイス第十五弾のサンプルボイスを公開。9月のテーマは「\"いじわるな令嬢に罵られ...？\"」。",
+   "商品名はvα-liv シチュエーションボイス2026 悪役令嬢ボイス。ライバーアイドル3名が共通のお題にそって様々なコンセプトのIFシチュエーションを届けるボイスドラマコンテンツ。",
+   "悪評が絶えない貴族に仕える新米執事のあなたが、罵倒されながら懸命に仕える悪役令嬢たちとの１コマ。全員集合ボイスでは華やかな舞踏会で事件が起こる。",
+   "販売期間は2026年9月15日(火)18:00～2026年10月4日(日)23:59。",
+   "灯里愛夏、上水流宇宙、レトラそれぞれの悪役令嬢ボイスは各3,300 JPY。全員集合ボイスは3,300 JPY。形態はDigital。",
+   "Illustratorはきりさき。ページに税込・税抜の別はない。",
+   "エンゲージメント: 中",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610030230-grok-15",
+  "deadline": "2026-10-04"
+ },
+ {
+  "id": "sched-2026-10-04-shiny-refrac7ions-still-blue-goods-2026-締切",
+  "dedup_key": "shiny-refrac7ions-still-blue-goods-2026",
+  "brand": "shiny",
+  "subject": "REFRAC7IONS「Still blue」グッズ事前販売ファイナル",
+  "kind": "締切",
+  "note": "受注最終日。公式グッズを注文できる最後の日",
+  "reserved_on": "2026-10-03",
+  "title": "REFRAC7IONS Still blue公式グッズ事前販売",
+  "url": "https://x.com/shinyc_official/status/2105960999509451132",
+  "source_type": "公式",
+  "facts": [
+   "shiny, the first REFRAC7IONS \" Still blue \"公式グッズ事前販売ファイナル。",
+   "受注は10月4日(日)まで。",
+   "各ユニットのキービジュアルをあしらった描きおろしイラストのアクリルパネル。",
+   "価格・品目の全一覧・発送時期は投稿本文に記載されていない。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610030230-grok-35",
+  "deadline": "2026-10-04"
+ },
+ {
+  "id": "sched-2026-10-04-sidem-promi-2027-premium-presale-締切",
+  "dedup_key": "sidem-promi-2027-premium-presale",
+  "brand": "sidem",
+  "subject": "SideMプロミ2027 アソビストアプレミアム会員先行",
+  "kind": "締切",
+  "note": "23:59までチケットに申し込める",
+  "reserved_on": "2026-10-03",
+  "title": "SideMプロミ2027アソビストアプレミアム会員先行",
+  "url": "https://x.com/SideM_official/status/2105991189354737816",
+  "source_type": "公式",
+  "facts": [
+   "#SideMプロミ2027のアソビストアプレミアム会員先行申込受付中。",
+   "チケット申込は2026年10月4日(日)23:59まで。",
+   "詳細URLはhttps://asobiticket2.asobistore.jp/receptions/24aba7f8-77de-43d3-8af4-2f2fdf5d082a。投稿本文に公演日、会場、価格は記載されていない。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610030230-grok-47",
+  "deadline": "2026-10-04"
  }
 ]

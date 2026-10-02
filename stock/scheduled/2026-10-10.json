@@ -97,5 +97,26 @@
   "src_candidate_id": "202610011835-explore-16",
   "event_date": "2026-10-10",
   "deadline": "2026-11-23"
+ },
+ {
+  "id": "sched-2026-10-10-million-idol-grand-prix-maintenance-2026-10-終了",
+  "dedup_key": "million-idol-grand-prix-maintenance-2026-10",
+  "brand": "million",
+  "subject": "ミリシタ アイドルグランプリ メンテナンス",
+  "kind": "終了",
+  "note": "14:59にメンテ終了予定。アイドルグランプリが再開できる",
+  "reserved_on": "2026-10-03",
+  "title": "アイドルグランプリメンテナンス",
+  "url": "https://x.com/imasml_theater/status/2105855540609855628",
+  "source_type": "公式",
+  "facts": [
+   "アイドルグランプリのメンテナンス実施予定日時は2026年10月9日（金）10:00～10月10日（土）14:59。",
+   "エンゲージメント: 低"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610030230-grok-26",
+  "event_date": "2026-10-09",
+  "deadline": "2026-10-10"
  }
 ]

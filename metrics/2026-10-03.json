@@ -1,0 +1,137 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-03T02:30:20+09:00",
+   "edition": "2026-10-03",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 347,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 1,
+      "deferred": 0
+     }
+    },
+    "new": 1,
+    "facted": 1,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 1,
+    "explore:gakuen": 1,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 1,
+    "grok:765as": 1,
+    "grok:cinderella": 4,
+    "grok:million": 10,
+    "grok:shiny": 11,
+    "grok:sidem": 9,
+    "grok:gakuen": 0,
+    "grok:dsva": 6,
+    "grok:joint-other": 2,
+    "grok:trend": 4
+   },
+   "normalized": 52,
+   "added": 46,
+   "verify": {
+    "confirmed": 35,
+    "unconfirmed": 17,
+    "failed": 0
+   },
+   "duration_s": 1782
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-03T03:31:24+09:00",
+   "edition": "2026-10-03",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 30,
+   "written": 24,
+   "roundups": 4,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 71,
+    "covered": 71,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "gaku-agitado-mv-trending-2026"
+   ],
+   "stages_min": {
+    "選定": 1.3031935572624207,
+    "執筆": 4.459504946072896,
+    "出典の判定": 0.041805827617645265,
+    "組版": 0.8014758586883545,
+    "校閲": 2.4551141619682313,
+    "校閲1波": 2.4551141619682313
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "joint-producers-station-nagoya-producer-meeting-2026",
+    "gaku-agitato-mv-2026",
+    "dsva-ops-roundup",
+    "765-765pro-solo-collection-dresscode-2026",
+    "general-starlit-season-steam-5th-2026"
+   ],
+   "duration_s": 1846
+  }
+ ]
+}

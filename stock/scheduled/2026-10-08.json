@@ -396,5 +396,32 @@
   "src_candidate_id": "202610012336-watch-4",
   "event_date": "2026-10-15",
   "deadline": "2026-10-07"
+ },
+ {
+  "id": "sched-2026-10-08-gaku-chibi-furumi-unit-collection-2026-開始",
+  "dedup_key": "gaku-chibi-furumi-unit-collection-2026",
+  "brand": "gaku",
+  "subject": "学マス ちびぐるみ vol.4 登場開始",
+  "kind": "開始",
+  "note": "全国のクレーンゲームで順次登場し、REVERSIのちびぐるみを狙える",
+  "reserved_on": "2026-10-03",
+  "title": "学園アイドルマスター ちびぐるみ～ユニットコレクション～vol.3・vol.4 クレーンゲーム登場",
+  "url": "https://idolmaster-official.jp/news/01_20006",
+  "source_type": "公式",
+  "facts": [
+   "商品名: 学園アイドルマスター ちびぐるみ～ユニットコレクション～vol.3",
+   "商品名: 学園アイドルマスター ちびぐるみ～ユニットコレクション～vol.4",
+   "vol.3登場日時: 2026年10月6日(火)から全国のクレーンゲームに順次登場予定",
+   "vol.4登場日時: 2026年10月8日(木)から全国のクレーンゲームに順次登場予定",
+   "vol.3内容: 有村麻央・葛城リーリヤ・倉本千奈（ゆめぱしーのユニット衣装）",
+   "vol.4内容: 紫雲清夏・篠澤 広・姫崎莉波（REVERSIのユニット衣装）",
+   "サイズ: 約11cm",
+   "種類: 各3種",
+   "エンゲージメント: 低",
+   "言及アイドル: 有村麻央、葛城リーリヤ、倉本千奈、紫雲清夏、篠澤 広、姫崎莉波"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202610021235-watch-3"
  }
 ]

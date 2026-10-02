@@ -1,0 +1,58 @@
+{
+ "decisions": {
+  "starlit-season-5th-anniversary-message-2026": {
+   "action": "merge",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "starlit-season-5th-anniversary-initiatives-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "5周年施策②と同じ施策。応募方法・期限10/7 23:59を統合"
+  },
+  "starlit-season-5th-anniversary-initiatives-2026": {
+   "action": "article",
+   "angle": "スタマス5周年(10/14)に向け5つの特別施策が始動。10/13のIM@S RADIO特番と、10/7締切の心白・亜夜へのメッセージ募集を案内",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "starlit-season-steam-sale-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "general面が general-starlit-season-steam-5th-2026 で同じセールを記事化済み。otherは共同面ではないためcross_brandにしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "other-starlit-season-5th-anniversary-initiatives-2026",
+    "brand": "other",
+    "rank": "medium",
+    "angle": "スタマス5周年(10/14)に向け5つの特別施策が始動。10/13のIM@S RADIO特番と、10/7締切の心白・亜夜へのメッセージ募集を案内",
+    "lead_score": 60,
+    "dedup_key": "starlit-season-5th-anniversary-initiatives-2026",
+    "candidate_ids": [
+     "202610021235-watch-2",
+     "202610021235-watch-1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "starlit-season-steam-sale-2026",
+    "reason": "重複",
+    "note": "general面が general-starlit-season-steam-5th-2026 で同じセールを記事化済み。otherは共同面ではないためcross_brandにしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

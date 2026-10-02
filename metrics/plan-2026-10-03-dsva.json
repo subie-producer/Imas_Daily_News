@@ -1,0 +1,101 @@
+{
+ "decisions": {
+  "va-liv-letora-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/2号の記事に日時・出演・チケット・アーカイブまで既出。新事実も当日トリガーも無い"
+  },
+  "valiv-night-stream-2026-10-01": {
+   "action": "roundup",
+   "angle": "ヴイアラ配信出演まとめ(10/1夜のレトラ歌枠・灯里愛夏の配信、10/2の上水流宇宙配信)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "tomori-manaka-duel-masters-play-collab-2026": {
+   "action": "roundup",
+   "angle": "配信出演まとめ: 灯里愛夏×十河ののはのデュエプレ新弾パック開封バトル",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-stage-outfit-short-2026": {
+   "action": "roundup",
+   "angle": "動画公開まとめ: 上水流宇宙のショート動画「vα-liv stage outfit」を公開",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "kamizuru-cosmo-ace-combat-8-stream-2026-10-02": {
+   "action": "roundup",
+   "angle": "配信出演まとめ: 上水流宇宙のACE COMBAT 8プレイ配信(10/2 21:00)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/30号で予告済みの配信。単独記事にせずまとめで扱う"
+  },
+  "valiv-situation-voice-villainess-2026": {
+   "action": "article",
+   "angle": "シチュエーションボイス第十五弾「悪役令嬢ボイス」のサンプルが公開され、販売は10月4日23:59まで",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-situation-voice-villainess-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "シチュエーションボイス第十五弾「悪役令嬢ボイス」のサンプルが公開され、販売は10月4日23:59まで",
+    "lead_score": 30,
+    "dedup_key": "valiv-situation-voice-villainess-2026",
+    "candidate_ids": [
+     "202610030230-grok-15"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "ヴイアラ配信出演まとめ(10/1夜のレトラ歌枠・灯里愛夏の配信、10/2の上水流宇宙配信)",
+    "lead_score": 0,
+    "dedup_key": "valiv-night-stream-2026-10-01",
+    "candidate_ids": [
+     "202610030230-grok-11",
+     "202610030230-grok-12",
+     "202610030230-grok-13",
+     "202610030230-grok-14"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "va-liv-letora-birthday-2026",
+    "reason": "既報",
+    "note": "10/2号の記事に日時・出演・チケット・アーカイブまで既出。新事実も当日トリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

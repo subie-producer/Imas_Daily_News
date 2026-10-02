@@ -1,0 +1,243 @@
+{
+ "decisions": {
+  "sidem-fantastic-battle-fes-2026": {
+   "action": "article",
+   "angle": "F@NTASTIC BATTLE FESの長野・幕張公演、アソビストアプレミアム会員2次先行が10月2日〜12日23:59に受付中",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior は第2弾の当落・入金。2次先行の受付は新しい事実"
+  },
+  "sidem-agatsuma-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/2号の記事に期間・スタンプラリー・特典・場所の全事実が既出。新事実も当日のトリガーも無い"
+  },
+  "sidem-popup-werewolf-2026-10": {
+   "action": "article",
+   "angle": "SideM POP UP SHOP『Who howls at night? marche』が10月23日〜11月1日に渋谷MODIで開催、2,000円ごとに人狼役職カードを配布",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-sai-ranman-kaika-2dmv-2026": {
+   "action": "roundup",
+   "angle": "楽曲・映像の公開と配信(彩「らんまん開花!」2DMV公開、TRANSCENDENT T@LESサブスク配信、THE 虎牙道10万回再生)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2DMVは10/2 22時公開済み。連動ストーリーは『理想の更にその先へ』"
+  },
+  "sidem-transcendent-tales-streaming-2026": {
+   "action": "roundup",
+   "angle": "楽曲・映像の公開と配信(TRANSCENDENT T@LES 01〜12がサブスク配信中)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-kogado-yoiyami-100k-2026": {
+   "action": "roundup",
+   "angle": "楽曲・映像の公開と配信(THE 虎牙道「宵闇のイリュージョン」MVが10万回再生突破)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-315pronight-2026-10-02": {
+   "action": "drop",
+   "angle": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/2 21:00の放送は終了済み。10/16回は別主題で扱う"
+  },
+  "sidem-315pronight-11th-feedback-october-2026": {
+   "action": "article",
+   "angle": "315プロNight 10月16日放送回のパーソナリティは高塚智人・矢野奨吾・榎木淳弥・駒田航、イラストとお便りは今週末中に投稿",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9日担当の既報とは別の放送回"
+  },
+  "sidem-sem-lifes-side-menu-2dmv-2026": {
+   "action": "article",
+   "angle": "S.E.M「Life's Side Menu!」の2DMVが10月14日21:00に公開予定と決定",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公開日の決定は発表なので単独記事"
+  },
+  "sidem-fanfes-wgf-movie-movie-ticket-2026": {
+   "action": "article",
+   "angle": "劇場版SideM FANFES_WGFのムビチケ販売が10月16日に開始、全国の映画館でチラシ・ポスターを掲出中",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-promi-2027-premium-presale": {
+   "action": "article",
+   "angle": "SideMプロミ2027のアソビストアプレミアム会員先行は10月4日23:59が申込締切",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/26号は受付中の紹介。締切が当日のトリガー"
+  },
+  "sidem-315-episode-one-scene-update-2026-10": {
+   "action": "roundup",
+   "angle": "定常運営(『315プロダクション エピソード』「アイドルたちの1コマ」更新、315 PASSION CONTENTSで公開中)",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "話のタイトルと担当アイドルは不明"
+  },
+  "sidem-4": {
+   "action": "article",
+   "angle": "アニメイトのSideM リメンバーショットフェア第4弾が本日10月3日に開始",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。会場・特典・価格は素材に無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-fantastic-battle-fes-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "F@NTASTIC BATTLE FESの長野・幕張公演、アソビストアプレミアム会員2次先行が10月2日〜12日23:59に受付中",
+    "lead_score": 70,
+    "dedup_key": "sidem-fantastic-battle-fes-2026",
+    "candidate_ids": [
+     "202610021235-watch-0"
+    ]
+   },
+   {
+    "slug": "sidem-popup-werewolf-2026-10",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM POP UP SHOP『Who howls at night? marche』が10月23日〜11月1日に渋谷MODIで開催、2,000円ごとに人狼役職カードを配布",
+    "lead_score": 25,
+    "dedup_key": "sidem-popup-werewolf-2026-10",
+    "candidate_ids": [
+     "202610021833-watch-1"
+    ]
+   },
+   {
+    "slug": "sidem-315pronight-11th-feedback-october-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315プロNight 10月16日放送回のパーソナリティは高塚智人・矢野奨吾・榎木淳弥・駒田航、イラストとお便りは今週末中に投稿",
+    "lead_score": 20,
+    "dedup_key": "sidem-315pronight-11th-feedback-october-2026",
+    "candidate_ids": [
+     "202610030230-grok-43"
+    ]
+   },
+   {
+    "slug": "sidem-sem-lifes-side-menu-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "S.E.M「Life's Side Menu!」の2DMVが10月14日21:00に公開予定と決定",
+    "lead_score": 25,
+    "dedup_key": "sidem-sem-lifes-side-menu-2dmv-2026",
+    "candidate_ids": [
+     "202610030230-grok-45"
+    ]
+   },
+   {
+    "slug": "sidem-fanfes-wgf-movie-movie-ticket-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "劇場版SideM FANFES_WGFのムビチケ販売が10月16日に開始、全国の映画館でチラシ・ポスターを掲出中",
+    "lead_score": 30,
+    "dedup_key": "sidem-fanfes-wgf-movie-movie-ticket-2026",
+    "candidate_ids": [
+     "202610030230-grok-46"
+    ]
+   },
+   {
+    "slug": "sidem-promi-2027-premium-presale",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMプロミ2027のアソビストアプレミアム会員先行は10月4日23:59が申込締切",
+    "lead_score": 30,
+    "dedup_key": "sidem-promi-2027-premium-presale",
+    "candidate_ids": [
+     "202610030230-grok-47"
+    ]
+   },
+   {
+    "slug": "sidem-4-77f830",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "アニメイトのSideM リメンバーショットフェア第4弾が本日10月3日に開始",
+    "lead_score": 30,
+    "dedup_key": "sidem-4",
+    "candidate_ids": [
+     "sched-2026-10-03-sidem-4-開始"
+    ]
+   },
+   {
+    "slug": "sidem-ops-roundup",
+    "brand": "sidem",
+    "rank": "roundup",
+    "angle": "楽曲・映像の公開と配信(彩「らんまん開花!」2DMV公開、TRANSCENDENT T@LESサブスク配信、THE 虎牙道10万回再生)",
+    "lead_score": 0,
+    "dedup_key": "sidem-sai-ranman-kaika-2dmv-2026",
+    "candidate_ids": [
+     "202610030230-explore-2",
+     "202610030230-grok-44",
+     "202610030230-grok-40",
+     "202610030230-grok-41",
+     "202610030230-grok-48"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-agatsuma-collab-2026",
+    "reason": "既報",
+    "note": "10/2号の記事に期間・スタンプラリー・特典・場所の全事実が既出。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-315pronight-2026-10-02",
+    "reason": "その他",
+    "note": "10/2 21:00の放送は終了済み。10/16回は別主題で扱う"
+   }
+  ],
+  "cross_brand": []
+ }
+}

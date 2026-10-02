@@ -420,6 +420,7 @@ video_ids:
     - Y3n-42r-m0A   # 上水流宇宙(ヴイアラ)配信「朝活」
     - wgCWiC2SQPw   # アイドルマスターチャンネル(@imas-official)「CLASH M@TCH!!」開催決定PV
   準公式:
+    - 15tTRtSiJoY         # 機械で追加: @Lantis「【SideM】彩「らんまん開花!」2DMV【アイドルマスター」
     - tic6VTNYQ5Y         # 機械で追加: @Lantis「【SideM】Altessimo「Panorama's Fa」
     - jnsINjCz6P4   # 機械で追加: @Lantis「【試聴動画】THE IDOLM@STER SHINY COL」
     - fUaUvVZE9jU   # 機械で追加: @Lantis「【試聴動画】THE IDOLM@STER SHINY COL」
@@ -635,6 +636,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - 8ban_tsurajima      # 合議で追加: コラボ飲食店による一次発信。販売元
     - popico_pi           # 合議で追加: MVの制作に参加
     - miwasiba            # 合議で追加: MVの制作に参加
     - IKAIHCIKOT          # 合議で追加: MVの制作に参加
@@ -717,6 +719,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  note.com/jangajanganikki: ファン                # 合議で追加: 個人のnoteアカウント。シャニマスソロライブの感想・日記を発信
   docs.google.com/forms/d/e/1FAIpQLSewzEGUu-wlZ66kIHFIdR6ucKHMFo2syzmW9Oeq7lzKCSsSWQ: 公式 # 合議で追加: リンク元@valiv_officialは登録済み公式。VA-LIVブランド公式
   docs.google.com/forms/d/e/1FAIpQLSf3XywxIR7Ud5lymd-PnVk2ESVRCaO58ZrdVgITrHiZZlrc8g: 公式 # 合議で追加: リンク元が公式X account @imas_ch。IM@S RADIO番組の受
   instagram.com/p: ファン                         # 合議で追加: 個人アカウント@flowers_room_fによる終演後の投稿

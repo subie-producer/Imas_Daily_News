@@ -3,7 +3,7 @@
 
   python3 scripts/compose.py [--plan] [--max-rounds 2]
 
-役割分担: 記事執筆=Codex(gpt-5.6-luna)/ 社説執筆=Codex(gpt-5.6-terra)/
+役割分担: 記事執筆=Codex(gpt-6-luna)/ 社説執筆=Codex(gpt-6.1-sol)/
           記事計画・組版=Claude / 機械算出=derive.py / 校閲=Claude(haiku)。
 紙面に載る文章はすべて Codex が書き、Claude が校閲する。執筆と校閲が別ベンダー
 (OpenAI/Anthropic)になる(要件4.5)。社説だけ Claude で書くと自己校閲になるため

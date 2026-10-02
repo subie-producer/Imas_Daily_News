@@ -65,26 +65,29 @@ def main() -> int:
         problems.append("直近2日間 collect の実行記録が無い(timer 停止?)")
 
     # 4. 探索エンジンの静かな全滅検知: 直近の collect で claude/grok の取得数合計が 0
-    latest = None
+    # 系統ごとに「その系統を回した最新の回」を見る。Grok は 02:00 の回でしか回らないので、単に最新の回(07:30)を見ると
+    # Grok のキーが無く、全滅しても素通りする(実測 2026-10-02: CLI が古く 9面すべて0件だったのに警報が出なかった)
+    runs = []
     for d in ((now_jst() - datetime.timedelta(days=1)).strftime("%Y-%m-%d"), today):
         p = ROOT / "metrics" / f"{d}.json"
         if p.exists():
             try:
-                for run in json.loads(p.read_text(encoding="utf-8")).get("collect", []):
-                    if latest is None or run["at"] > latest["at"]:
-                        latest = run
+                runs += json.loads(p.read_text(encoding="utf-8")).get("collect", [])
             except Exception:
                 pass
-    if latest:
-        # per_query のキーは収集系統ごとの接頭辞。探索役を Luna へ移した際に
-        # collect 側が "claude:" → "explore:" へ変わったため、旧キーも見ておく
-        # (片方だけ直すと、全滅しても警報が鳴らなくなる)
-        for engine in ("explore", "claude", "grok"):
-            keys = [k for k in latest.get("per_query", {}) if k.startswith(engine + ":")]
-            if keys and sum(latest["per_query"][k] for k in keys) == 0:
-                problems.append(
-                    f"直近の collect({latest['at'][11:16]})で {engine} の取得が全クエリ0件"
-                    "(認証切れ・CLI仕様変更・引数エラーの疑い)")
+    # per_query のキーは収集系統ごとの接頭辞。探索役を Luna へ移した際に
+    # collect 側が "claude:" → "explore:" へ変わったため、旧キーも見ておく
+    # (片方だけ直すと、全滅しても警報が鳴らなくなる)
+    for engine in ("explore", "claude", "grok"):
+        ran = [r for r in runs if any(k.startswith(engine + ":") for k in r.get("per_query", {}))]
+        if not ran:
+            continue
+        last = max(ran, key=lambda r: r.get("at", ""))
+        keys = [k for k in last["per_query"] if k.startswith(engine + ":")]
+        if sum(last["per_query"][k] for k in keys) == 0:
+            problems.append(
+                f"{engine} を回した直近の collect({last['at'][5:16]})で取得が全クエリ0件"
+                "(認証切れ・CLI の版切れ・仕様変更・引数エラーの疑い)")
 
     # 4b. ビルド劣化の先行監視: 記事総数が閾値超過(PIPELINE §9.5 の改修トリガー)
     POSTS_THRESHOLD = 2500

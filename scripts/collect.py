@@ -312,6 +312,26 @@ def build_prompts() -> list[dict]:
     return queries
 
 
+def grok_session_error(since_s: int = 7200) -> str:
+    """直近 since_s 秒に、このリポジトリで開いた Grok セッションの失敗理由(Grok は API に拒まれても終了コード 0 で、
+    理由はセッション記録 updates.jsonl にしか残らない)。見つからなければ「記録なし」。"""
+    import urllib.parse as _up
+    base = Path.home() / ".grok" / "sessions" / _up.quote(str(ROOT), safe="")
+    reasons: list[str] = []
+    try:
+        for d in sorted(base.iterdir(), key=lambda p: p.stat().st_mtime, reverse=True):
+            if time.time() - d.stat().st_mtime > since_s:
+                break
+            u = d / "updates.jsonl"
+            if u.exists():
+                for m in re.finditer(r'"agent_result":"([^"]{0,300})"', u.read_text(encoding="utf-8", errors="replace")):
+                    if "error" in m.group(1).lower() and m.group(1) not in reasons:
+                        reasons.append(m.group(1))
+    except OSError:
+        pass
+    return " / ".join(reasons[:3]) or "記録なし"
+
+
 def parse_grok(out: str) -> list:
     """grok --output-format json はエンベロープ {"text": <本文>} で返す。素の JSON にも対応。"""
     try:
@@ -600,6 +620,7 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         outdir = ROOT / "candidates" / ".grok"
         shutil.rmtree(outdir, ignore_errors=True)
         outdir.mkdir(parents=True, exist_ok=True)
+        grok_errs: dict[str, str] = {}
         for i in range(0, len(queries), GROK_WAVE):
             procs = []
             for q in queries[i:i + GROK_WAVE]:
@@ -612,13 +633,20 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                     stdin=subprocess.DEVNULL, cwd=ROOT)))
             for q, pr in procs:
                 try:
-                    pr.communicate(timeout=GROK_TIMEOUT)
+                    _, err = pr.communicate(timeout=GROK_TIMEOUT)
+                    if pr.returncode or (err or "").strip():
+                        grok_errs[q["key"]] = f"exit {pr.returncode}: {(err or '').strip()[-300:]}"
                 except subprocess.TimeoutExpired:
                     pr.kill()
                     print(f"grok: {q['key']} 面がタイムアウト(そこまでの記録は残る)", flush=True)
         got = consolidate_grok(outdir)
         if not got:
             print("grok 0件", flush=True)
+            # 全面0件を黙って流さない(2026-10-02: CLI が古く API に 426 で拒まれ、9面すべて0件。記録は「grok 0件」だけで、
+            # 候補が半分以下になり号が16本に落ちたのに誰も気づかなかった)。面ごとのエラーと、Grok のセッション記録の失敗理由を添える
+            notify("collect", f"Grok(X 調査)が {len(queries)}面すべてで0件。候補の約半分を失う:\n"
+                              + ("\n".join(f"- {k}: {v}" for k, v in grok_errs.items()) or "- 面ごとのエラー出力なし")
+                              + "\n- セッション記録の失敗理由: " + grok_session_error(), ok=False)
         for it in got:
             it["_via"] = "grok"
         items += got

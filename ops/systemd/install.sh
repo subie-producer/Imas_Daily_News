@@ -6,7 +6,7 @@ UNIT_DIR="$HOME/.config/systemd/user"
 mkdir -p "$UNIT_DIR"
 cp imas-*.service imas-*.timer "$UNIT_DIR/"
 systemctl --user daemon-reload
-for t in imas-collect imas-compose imas-release imas-watch; do
+for t in imas-update imas-collect imas-compose imas-release imas-watch; do
   systemctl --user enable --now "$t.timer"
 done
 # セッションを閉じても user systemd(timer)が生き続けるようにする

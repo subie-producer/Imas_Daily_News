@@ -8,4 +8,4 @@ Type=oneshot
 WorkingDirectory=%h/git/imas-ops
 Environment=PATH=%h/.local/bin:%h/.grok/bin:/usr/local/bin:/usr/bin:/bin
 ExecStart=/usr/bin/python3 %h/git/imas-ops/scripts/collect.py
-TimeoutStartSec=30min
+TimeoutStartSec=100min

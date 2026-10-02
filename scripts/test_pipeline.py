@@ -1957,6 +1957,93 @@ def test_storylink(tmp: Path):
     check("2026-09-17 那覇市でじますコラボ決定" in sl.recent_titles(d, tmp).get("cg", []), "直近の見出しが面ごとに出ない")
 
 
+def test_update_clis(tmp: Path):
+    """道具の CLI の更新(編集長 2026-10-02「定期的に Codex/Grok/Claude のアップデートを仕掛けるようにしないと駄目だ」):
+    版が変われば知らせ、更新後に答えが返らなければ(Grok は API に拒まれても終了コード 0)異常として上げる。
+    収集は Grok が全面0件のとき、セッション記録の失敗理由を添えて異常を上げる。"""
+    import subprocess as sp
+    import urllib.parse
+    import collect
+    import update_clis as uc
+    tmp.mkdir(parents=True, exist_ok=True)
+    ver = {"claude": ["2.1.210", "2.1.220"], "codex": ["0.160.0", "0.160.0"], "grok": ["1.0.5", "1.0.5"]}
+    def fake_run(args, timeout=600, cwd=None):
+        tool = args[0]
+        if args[1:] == ["--version"]:
+            v = ver[tool].pop(0) if len(ver[tool]) > 1 else ver[tool][0]
+            return sp.CompletedProcess(args, 0, f"{tool} {v}\n", "")
+        if args[1:] == ["update"]:
+            return sp.CompletedProcess(args, 0, "ok", "")
+        if tool == "grok":   # 古い版: 答えずに終了コード 0
+            return sp.CompletedProcess(args, 0, "", "")
+        return sp.CompletedProcess(args, 0, "2\n", "")
+    notes = []
+    saved = (uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies)
+    try:
+        uc.run, uc.RECORD = fake_run, tmp / "cli-versions.json"
+        uc.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        uc.job_lock = lambda job, wait_min=0: None
+        uc.diagnose_anomalies = lambda *a, **k: False
+        saved_argv, sys.argv = sys.argv, ["update_clis.py"]
+        try:
+            code = uc.main()
+        finally:
+            sys.argv = saved_argv
+        rec = json.loads(uc.RECORD.read_text(encoding="utf-8"))["tools"]
+        check(code == 1 and rec["grok"]["works"] is False and rec["claude"]["works"] and rec["claude"]["after"] == "2.1.220",
+              f"更新と動作確認の記録: {rec}")
+        check(any(ok and "claude 2.1.210 → 2.1.220" in m for m, ok in notes), f"版の変化を知らせない: {notes}")
+        check(any(not ok and "grok" in m and "答えを返さない" in m for m, ok in notes), f"答えを返さない Grok を異常にしない: {notes}")
+        # 期限(02:00 の収集の前)までに終えられないなら、更新せずロックを手放し、未更新を異常にする(監査指摘 r110)
+        import time as _t
+        saved_sd = uc.set_deadline
+        notes.clear()
+        calls_after = []
+        uc.set_deadline = lambda: setattr(uc, "_deadline", uc.now_jst().timestamp() + 30)
+        uc.run = lambda args, timeout=600, cwd=None: calls_after.append(args) or sp.CompletedProcess(args, 0, "2\n", "")
+        sys.argv = ["update_clis.py"]
+        try:
+            code = uc.main()
+        finally:
+            sys.argv, uc.set_deadline = saved_argv, saved_sd
+        check(code == 1 and not calls_after and any(not ok and "期限" in m for m, ok in notes), f"期限切れで更新を止めない: {calls_after[:2]} {notes}")
+        # 定時の起動が遅れて 01:55 を過ぎていたら、期限を延ばさず何もしない(ロックも取らない。監査指摘 r111)
+        import datetime as _dt
+        notes.clear()
+        locks = []
+        saved_now, saved_lock2, saved_inv = uc.now_jst, uc.job_lock, os.environ.get("INVOCATION_ID")
+        uc.now_jst = lambda: _dt.datetime(2026, 10, 3, 2, 14, tzinfo=pipelib.JST)
+        uc.job_lock = lambda job, wait_min=0: locks.append(wait_min)
+        os.environ["INVOCATION_ID"] = "test"
+        sys.argv = ["update_clis.py"]
+        try:
+            code = uc.main()
+        finally:
+            sys.argv, uc.now_jst, uc.job_lock = saved_argv, saved_now, saved_lock2
+            if saved_inv is None:
+                os.environ.pop("INVOCATION_ID", None)
+            else:
+                os.environ["INVOCATION_ID"] = saved_inv
+        check(code == 1 and not locks and not calls_after and any(not ok and "期限" in m for m, ok in notes),
+              f"遅れた定時起動で期限を延ばした: ロック {locks} / 呼び出し {calls_after[:2]} / {notes}")
+    finally:
+        uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies = saved
+    # Grok のセッション記録から失敗理由を読む(終了コードもエラー出力も空だった 2026-10-02 の形)
+    home = tmp / "home"
+    sess = home / ".grok" / "sessions" / urllib.parse.quote(str(tmp / "repo"), safe="") / "s1"
+    sess.mkdir(parents=True)
+    (sess / "updates.jsonl").write_text('{"params":{"update":{"stop_reason":"error","agent_result":"API error (status 426 Upgrade Required): outdated"}}}\n',
+                                        encoding="utf-8")
+    saved_root, saved_home = collect.ROOT, os.environ.get("HOME")
+    try:
+        collect.ROOT, os.environ["HOME"] = tmp / "repo", str(home)
+        check("426 Upgrade Required" in collect.grok_session_error(), f"Grok の失敗理由を読めない: {collect.grok_session_error()}")
+    finally:
+        collect.ROOT = saved_root
+        if saved_home is not None:
+            os.environ["HOME"] = saved_home
+
+
 def test_withdrawal(tmp: Path):
     """取り下げ(編集長 2026-09-29「記事ごと削除でいいのでは」): 道具(withdraw.py)が記事・記録・目次・一面・号の数・未来の予約を
     1回で直し、lint の判定(edition_withdrawal_ok / promotion_ok / withdrawal_record_errors / load_withdrawn)がそれを認め、
@@ -2414,7 +2501,7 @@ def test_anomaly_ledger_and_whywhy(tmp: Path):
     import oncall
     src = (pipelib.ROOT / "scripts" / "oncall.py").read_text(encoding="utf-8")
     check(src.index("if a.no_rerun:") < src.index('if rerun_mode == "none":\n            notify'), "no_rerun の判定が none の後にある")
-    check(set(oncall.STAGES) >= {"compose", "release", "classify", "collect", "watch"}, f"oncall の工程: {oncall.STAGES}")
+    check(set(oncall.STAGES) >= {"compose", "release", "classify", "collect", "watch", "update"}, f"oncall の工程: {oncall.STAGES}")
     # compose の例外・SystemExit・終了時の当番は、対象の号(STARTED_DATE。--date で過去号を組み直したとき)を渡す(監査指摘 r87)
     csrc = (pipelib.ROOT / "scripts" / "compose.py").read_text(encoding="utf-8")
     check('escalate("compose", edition_date()' not in csrc and csrc.count("STARTED_DATE or edition_date()") >= 3,
@@ -2499,6 +2586,7 @@ def main() -> int:
     test_oncall_ensure_edition(tmp / "ee")
     test_withdrawal(tmp / "wd")
     test_extract_json_array_strict()
+    test_update_clis(tmp / "uc")
     test_watch_pagination_and_batches(tmp / "wp")
     test_collect_oncall_rerun_exit(tmp / "cre")
     test_storylink(tmp / "sl")

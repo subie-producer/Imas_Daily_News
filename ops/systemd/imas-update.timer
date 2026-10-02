@@ -1,0 +1,9 @@
+[Unit]
+Description=毎日 01:30 JST に道具の CLI を更新(02:00 の収集より前。古い版は API に拒まれて全滅する)
+
+[Timer]
+OnCalendar=*-*-* 01:30:00 Asia/Tokyo
+Persistent=true
+
+[Install]
+WantedBy=timers.target

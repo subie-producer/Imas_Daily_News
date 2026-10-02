@@ -76,7 +76,7 @@ import hashlib
 from pipelib import ENV, ROOT, JobLockTimeout, job_lock, notify, prompt_file, render_prompt, tool_path
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
-AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-5.6-sol")
+AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")
 ONCALL_MAX_BUDGET_USD = ENV.get("ONCALL_MAX_BUDGET_USD", "15")
 MAX_ATTEMPTS = 2
 MAX_ROUNDS = 6                       # 当番の修正 → 監査、の往復の上限(指摘が無くなれば途中で終わる)
@@ -201,12 +201,12 @@ def remote_main() -> str:
     return sh(["git", "rev-parse", "origin/main"], cwd=ROOT).stdout.strip()
 
 
-STAGES = ("compose", "release", "classify", "collect", "watch")
+STAGES = ("compose", "release", "classify", "collect", "watch", "update")
 # 工程 → journal の unit。出典の判定(classify)は収集(collect)と組版(compose)の中で走る。当番に見せるのは収集のログ
 UNIT_OF = {"classify": "collect"}
 # 当番を呼んだ理由の言い方(止まったときと、止まらずに異常があった=なぜなぜ、とがある)
 CALLED_BECAUSE = {"classify": "に持ち主を取るパーサの無い出典があった", "collect": "に異常があった(なぜなぜ)",
-                  "watch": "が異常を検知した(なぜなぜ)"}
+                  "watch": "が異常を検知した(なぜなぜ)", "update": "で道具の CLI の更新・動作確認に失敗した(なぜなぜ)"}
 
 
 def gather_context(stage: str, date: str, reason: str) -> str:

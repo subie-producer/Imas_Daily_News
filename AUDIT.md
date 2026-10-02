@@ -48,7 +48,7 @@ collect(1日5回) → verify → compose(04:00) → lint → 校閲 → release(
 | 系統 | 実装 | 役割 |
 |---|---|---|
 | 定点観測 | `sources.yml` の巡回 + Claude(haiku) | 公式サイトの新着差分を facts 化する(渡された本文を読むだけ) |
-| 探索 | **Luna(codex / gpt-5.6-luna)× 9クエリ並列** | Web を検索してネタを見つける |
+| 探索 | **Luna(codex / gpt-6-luna)× 9クエリ並列** | Web を検索してネタを見つける |
 | X動向 | Grok × 9面(面ごとに独立セッション) | X の公式アカウント告知 |
 
 探索役は 2026-08-29 に Claude(haiku)から Luna へ切り替えた。codex に WebSearch
@@ -69,12 +69,12 @@ Grok に JSON を書かせると調べる能力が整形に食われるため、
 
 | 工程 | モデル | 定数 |
 |---|---|---|
-| 探索(Web検索) | gpt-5.6-luna | `EXPLORE_MODEL` |
+| 探索(Web検索) | gpt-6-luna | `EXPLORE_MODEL` |
 | 定点観測の facts 化 | haiku | `COLLECT_MODEL` |
 | X動向 | grok-4.6(reasoning-effort=medium) | — |
 | 選定・組版 | sonnet | `CLAUDE_MODEL` |
-| 記事執筆 | gpt-5.6-luna | `CODEX_WRITE_MODEL` |
-| 社説 | gpt-5.6-terra | `EDITORIAL_MODEL` |
+| 記事執筆 | gpt-6-luna | `CODEX_WRITE_MODEL` |
+| 社説 | gpt-6.1-sol | `EDITORIAL_MODEL` |
 | 校閲・検収修正 | haiku | `REVIEW_MODEL` |
 
 執筆(OpenAI)と校閲(Anthropic)を別ベンダーにするのが要件4.5。

@@ -43,19 +43,20 @@ def load_env() -> dict:
 
 
 ENV = load_env()
-CLAUDE_MODEL = ENV.get("CLAUDE_MODEL", "sonnet")
+# 計画・組版などに使う Claude モデル。短縮名 "sonnet" は Sonnet 5 を指したままなので、版を明示する(編集長 2026-10-02)
+CLAUDE_MODEL = ENV.get("CLAUDE_MODEL", "claude-sonnet-5-5")
 # **探索役**(Web 検索でネタを見つける工程)。codex exec -m に渡す。
 # codex には WebSearch 専用ツールが無いが、sandbox の通信を開けばシェルから
 # 検索も本文取得もできる(実測で確認済み)。
-EXPLORE_MODEL = ENV.get("EXPLORE_MODEL", "gpt-5.6-luna")
+EXPLORE_MODEL = ENV.get("EXPLORE_MODEL", "gpt-6-luna")
 # 定点観測(sources.yml の巡回結果を facts 化する)に使う Claude モデル。
 # 探索とは別役で、こちらは渡されたページ本文を読むだけなので安いモデルでよい
 COLLECT_MODEL = ENV.get("COLLECT_MODEL", "haiku")
 # 記事本文の執筆に使う Codex モデル(codex exec -m に渡す)。校閲とベンダーを分離するため執筆側に配置
-CODEX_WRITE_MODEL = ENV.get("CODEX_WRITE_MODEL", "gpt-5.6-luna")
+CODEX_WRITE_MODEL = ENV.get("CODEX_WRITE_MODEL", "gpt-6-luna")
 # 社説の執筆に使う Codex モデル。記事とは求めるものが違う(事実の要約ではなく人格と文章)ため
-# 別枠にしてある。既定は terra
-EDITORIAL_MODEL = ENV.get("EDITORIAL_MODEL", "gpt-5.6-terra")
+# 別枠にしてある。GPT-6 では terra に当たる枠が sol(編集長 2026-10-02: GPT-5.6-Terra → GPT-6.1-Sol)
+EDITORIAL_MODEL = ENV.get("EDITORIAL_MODEL", "gpt-6.1-sol")
 # 校閲・機械検収エラーの修正に使う Claude モデル(claude -p --model に渡す)。
 # 執筆(Codex)と別ベンダーにするため Claude 側。既定は haiku(検品はコスト重視)
 REVIEW_MODEL = ENV.get("REVIEW_MODEL", "haiku")

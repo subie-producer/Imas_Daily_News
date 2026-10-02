@@ -1,0 +1,11 @@
+[Unit]
+Description=アイマスNEWS 道具の更新(Claude Code / Codex / Grok の CLI を更新し、動作を確かめる)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/git/imas-ops
+Environment=PATH=%h/.local/bin:%h/.grok/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/python3 %h/git/imas-ops/scripts/update_clis.py
+TimeoutStartSec=60min

@@ -2001,6 +2001,9 @@ def test_update_clis(tmp: Path):
         return sp.CompletedProcess(args, 0, "2\n", "")
     notes = []
     saved = (uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies)
+    # 期限は INVOCATION_ID(systemd からの起動か)で変わる。当番の selfcheck は systemd の下で走るので、手で回した形に固定する
+    # (2026-10-03: 当番の selfcheck だけ、期限 01:55 切れで記録を書かずに戻り、このテストが赤になった)
+    saved_inv = os.environ.pop("INVOCATION_ID", None)
     try:
         uc.run, uc.RECORD = fake_run, tmp / "cli-versions.json"
         uc.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
@@ -2033,7 +2036,7 @@ def test_update_clis(tmp: Path):
         import datetime as _dt
         notes.clear()
         locks = []
-        saved_now, saved_lock2, saved_inv = uc.now_jst, uc.job_lock, os.environ.get("INVOCATION_ID")
+        saved_now, saved_lock2 = uc.now_jst, uc.job_lock
         uc.now_jst = lambda: _dt.datetime(2026, 10, 3, 2, 14, tzinfo=pipelib.JST)
         uc.job_lock = lambda job, wait_min=0: locks.append(wait_min)
         os.environ["INVOCATION_ID"] = "test"
@@ -2042,14 +2045,13 @@ def test_update_clis(tmp: Path):
             code = uc.main()
         finally:
             sys.argv, uc.now_jst, uc.job_lock = saved_argv, saved_now, saved_lock2
-            if saved_inv is None:
-                os.environ.pop("INVOCATION_ID", None)
-            else:
-                os.environ["INVOCATION_ID"] = saved_inv
+            os.environ.pop("INVOCATION_ID", None)
         check(code == 1 and not locks and not calls_after and any(not ok and "期限" in m for m, ok in notes),
               f"遅れた定時起動で期限を延ばした: ロック {locks} / 呼び出し {calls_after[:2]} / {notes}")
     finally:
         uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies = saved
+        if saved_inv is not None:
+            os.environ["INVOCATION_ID"] = saved_inv
     # Grok のセッション記録から失敗理由を読む(終了コードもエラー出力も空だった 2026-10-02 の形)
     home = tmp / "home"
     sess = home / ".grok" / "sessions" / urllib.parse.quote(str(tmp / "repo"), safe="") / "s1"

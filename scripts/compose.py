@@ -1869,8 +1869,7 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
             re.search(r"tag|タグ", str(b.get("issue") or ""), re.I) for b in issues)
         if sorted(str(t) for t in (ans.get("tags") or [])) != sorted(old_tags) and not tags_targeted:
             problems.append("指摘に無い tags を変えた")
-        if str(ans.get("event_date") or "") != str(old_fm.get("event_date") or "") and not any(
-                q in norm(str(old_fm.get("event_date") or "")) for q in quotes):
+        if str(ans.get("event_date") or "") != str(old_fm.get("event_date") or "") and not event_date_targeted(issues, old_fm):
             problems.append("指摘に無い event_date を変えた")
         # 本文: 指摘の quote を含む段落だけ変えてよい。他の段落は**字面も根拠 id も**そのまま、順序も
         # 保つ。指摘の段落1つにつき新しい段落は1つまで(勝手な追加を許さない)(監査指摘)。
@@ -1932,6 +1931,19 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
     return problems
 
 
+def event_date_targeted(issues: list[dict], old_fm: dict) -> bool:
+    """指摘が event_date に掛かっているか(quote が元の稿の event_date を含む、または issue・quote・expected が
+    event_date を名指す)。LINT の指摘は直し方を限定できないので掛かっている扱い。"""
+    ev = str(old_fm.get("event_date") or "")
+    for b in issues:
+        if b.get("rule_id") == "LINT":
+            return True
+        text = " ".join(str(b.get(k) or "") for k in ("issue", "quote", "expected"))
+        if "event_date" in text or (ev and ev in str(b.get("quote") or "")):
+            return True
+    return False
+
+
 def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, materials: list[dict],
                  issues: list[dict]) -> tuple[str, str]:
     """書き直しの答えを記事に反映する。戻りは ("fixed"|"dropped"|"kept", 説明)。
@@ -1939,6 +1951,13 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     検算(check_output)を status の分岐より**先に**掛ける。理由(decline_code/decline_detail)の無い decline は
     不合格で、既存の記事は残す(理由なしで記事を消させない。監査指摘)。
     """
+    # event_date は指摘が掛かっていなければ元の稿の値を写す(写すのはコード)。依頼文の「現在の記事」には
+    # null の event_date が出ないので、書き手は値が無かったことを知らずに日付を埋める(2026-10-03 に
+    # 「指摘に無い event_date を変えた」で2巡とも戻され、R1 が直らずブロックで落ちた)
+    old_fm = parse_front_matter(path) if path.exists() else None
+    if ans.get("status") != "decline" and old_fm and not event_date_targeted(issues, old_fm):
+        ev = old_fm.get("event_date")
+        ans = dict(ans, event_date=ev.isoformat() if hasattr(ev, "isoformat") else (str(ev) if ev else None))
     problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date)
     if ans.get("status") == "decline":
         if problems:
@@ -1947,7 +1966,7 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
         path.unlink(missing_ok=True)
         return "dropped", f"執筆側が不成立と判断({ans.get('decline_code')})。落とす"
     old_text = path.read_text(encoding="utf-8") if path.exists() else ""
-    problems += revise_check(ans, issues, parse_front_matter(path) if path.exists() else None,
+    problems += revise_check(ans, issues, old_fm,
                              re.split(r"\n---\n", old_text, maxsplit=1)[-1])
     if problems:
         return "kept", "検算不合格 " + " / ".join(problems[:3]) + "(元の稿のまま)"

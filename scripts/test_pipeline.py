@@ -654,6 +654,28 @@ def test_revise_apply_decline(tmp: Path):
     ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円である。", "fact_ids": ["F1"]}])
     outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
     check(outcome == "fixed", f"記述を残す判断を機械が落とした: {outcome} {msg}")
+    # event_date の無い稿(null)を書き直して日付を埋めても、指摘が event_date に掛かっていなければ元の値(無し)を写して通す
+    # (2026-10-03: 「指摘に無い event_date を変えた」で2巡戻され、R1 が直らずブロックで落ちた)
+    old_noev = ("---\n" + compose.yaml_dump_keeping_strings({"title": "t", "lede": "l", "tags": ["a", "b"],
+                                                              "sources": [{"url": u["url"], "label": "x", "type": "公式"} for u in OK["sources"]]})
+                + "---\n価格は三千円である。 <!-- F1 -->\n")
+    p.write_text(old_noev, encoding="utf-8")
+    ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円。", "fact_ids": ["F1"]}], event_date="2026-09-13")
+    outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
+    check(outcome == "fixed" and "event_date" not in (compose.parse_front_matter(p) or {}),
+          f"指摘外で埋めた event_date で書き直しが戻された/残った: {outcome} {msg}")
+    # 元の稿の日付を書き手が変えても、指摘外なら元の値のまま
+    p.write_text(old, encoding="utf-8")
+    ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円。", "fact_ids": ["F1"]}], event_date="2026-09-20")
+    outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
+    check(outcome == "fixed" and str((compose.parse_front_matter(p) or {}).get("event_date")) == "2026-09-13",
+          f"指摘外の event_date が元の値に戻らない: {outcome} {msg}")
+    # 指摘が event_date を名指すなら書き手の値を使う
+    p.write_text(old, encoding="utf-8")
+    iss_ev = [dict(iss[0], issue="event_date 2026-09-13 は出典の開催日と違う")]
+    outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss_ev)
+    check(outcome == "fixed" and str((compose.parse_front_matter(p) or {}).get("event_date")) == "2026-09-20",
+          f"event_date の指摘で直した日付が反映されない: {outcome} {msg}")
     # 前の稿の verified_facts(N1)を new_facts に写さずに指した稿は戻し、**原因を書いた**理由を返す(2026-09-25 に2回戻されて落ちた)
     p.write_text(old, encoding="utf-8")
     ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円である。", "fact_ids": ["F1", "N1"]}], new_facts=[])

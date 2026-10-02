@@ -654,6 +654,28 @@ def test_revise_apply_decline(tmp: Path):
     ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円である。", "fact_ids": ["F1"]}])
     outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
     check(outcome == "fixed", f"記述を残す判断を機械が落とした: {outcome} {msg}")
+    # event_date の無い稿(null)を書き直して日付を埋めても、指摘が event_date に掛かっていなければ元の値(無し)を写して通す
+    # (2026-10-03: 「指摘に無い event_date を変えた」で2巡戻され、R1 が直らずブロックで落ちた)
+    old_noev = ("---\n" + compose.yaml_dump_keeping_strings({"title": "t", "lede": "l", "tags": ["a", "b"],
+                                                              "sources": [{"url": u["url"], "label": "x", "type": "公式"} for u in OK["sources"]]})
+                + "---\n価格は三千円である。 <!-- F1 -->\n")
+    p.write_text(old_noev, encoding="utf-8")
+    ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円。", "fact_ids": ["F1"]}], event_date="2026-09-13")
+    outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
+    check(outcome == "fixed" and "event_date" not in (compose.parse_front_matter(p) or {}),
+          f"指摘外で埋めた event_date で書き直しが戻された/残った: {outcome} {msg}")
+    # 元の稿の日付を書き手が変えても、指摘外なら元の値のまま
+    p.write_text(old, encoding="utf-8")
+    ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円。", "fact_ids": ["F1"]}], event_date="2026-09-20")
+    outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
+    check(outcome == "fixed" and str((compose.parse_front_matter(p) or {}).get("event_date")) == "2026-09-13",
+          f"指摘外の event_date が元の値に戻らない: {outcome} {msg}")
+    # 指摘が event_date を名指すなら書き手の値を使う
+    p.write_text(old, encoding="utf-8")
+    iss_ev = [dict(iss[0], issue="event_date 2026-09-13 は出典の開催日と違う")]
+    outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss_ev)
+    check(outcome == "fixed" and str((compose.parse_front_matter(p) or {}).get("event_date")) == "2026-09-20",
+          f"event_date の指摘で直した日付が反映されない: {outcome} {msg}")
     # 前の稿の verified_facts(N1)を new_facts に写さずに指した稿は戻し、**原因を書いた**理由を返す(2026-09-25 に2回戻されて落ちた)
     p.write_text(old, encoding="utf-8")
     ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円である。", "fact_ids": ["F1", "N1"]}], new_facts=[])
@@ -1979,6 +2001,9 @@ def test_update_clis(tmp: Path):
         return sp.CompletedProcess(args, 0, "2\n", "")
     notes = []
     saved = (uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies)
+    # 期限は INVOCATION_ID(systemd からの起動か)で変わる。当番の selfcheck は systemd の下で走るので、手で回した形に固定する
+    # (2026-10-03: 当番の selfcheck だけ、期限 01:55 切れで記録を書かずに戻り、このテストが赤になった)
+    saved_inv = os.environ.pop("INVOCATION_ID", None)
     try:
         uc.run, uc.RECORD = fake_run, tmp / "cli-versions.json"
         uc.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
@@ -2011,7 +2036,7 @@ def test_update_clis(tmp: Path):
         import datetime as _dt
         notes.clear()
         locks = []
-        saved_now, saved_lock2, saved_inv = uc.now_jst, uc.job_lock, os.environ.get("INVOCATION_ID")
+        saved_now, saved_lock2 = uc.now_jst, uc.job_lock
         uc.now_jst = lambda: _dt.datetime(2026, 10, 3, 2, 14, tzinfo=pipelib.JST)
         uc.job_lock = lambda job, wait_min=0: locks.append(wait_min)
         os.environ["INVOCATION_ID"] = "test"
@@ -2020,14 +2045,13 @@ def test_update_clis(tmp: Path):
             code = uc.main()
         finally:
             sys.argv, uc.now_jst, uc.job_lock = saved_argv, saved_now, saved_lock2
-            if saved_inv is None:
-                os.environ.pop("INVOCATION_ID", None)
-            else:
-                os.environ["INVOCATION_ID"] = saved_inv
+            os.environ.pop("INVOCATION_ID", None)
         check(code == 1 and not locks and not calls_after and any(not ok and "期限" in m for m, ok in notes),
               f"遅れた定時起動で期限を延ばした: ロック {locks} / 呼び出し {calls_after[:2]} / {notes}")
     finally:
         uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies = saved
+        if saved_inv is not None:
+            os.environ["INVOCATION_ID"] = saved_inv
     # Grok のセッション記録から失敗理由を読む(終了コードもエラー出力も空だった 2026-10-02 の形)
     home = tmp / "home"
     sess = home / ".grok" / "sessions" / urllib.parse.quote(str(tmp / "repo"), safe="") / "s1"

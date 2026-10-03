@@ -58,16 +58,12 @@ EXPLORE_TIMEOUT = int(ENV.get("EXPLORE_TIMEOUT", "900"))
 # SuperGrok は週次のセッション上限があり、1回の収集で10セッション消費するため、
 # 収集の頻度とは別に絞る必要がある。ブランド10面は減らさない(絞るのは回数だけ)。
 GROK_HOURS = ENV.get("GROK_HOURS", "").strip()
-# 1面あたりの推論回数の上限。**打ち切りの安全弁であって検索予算の制御ではない。**
-# 週次上限の実体は X 検索の回数で、1検索あたり約0.065%(実測: リセット以降697検索で45%)。
-# 週の予算はおよそ1550検索。ターン上限で検索を絞ろうとすると成果ごと失う:
-#   3 → 9面すべて0件(書き出しに到達しない。検索65回が丸損)
-#   8 → 9面中5面が0件。25回検索した million 面が「告知ページを開いて事実を拾います」
-#        の直前で切られた。検索の53%が無駄になった
-# 逐次書き込み(1件確認したらその場で追記)を指示したうえで 12 を置く。
-# 打ち切られてもそこまでの成果が残るなら、上限は余裕を持たせるほうが得である。
-# 検索の絞り込みは掘り方の指示(prompts/grok-collect.md)で行う。
-GROK_MAX_TURNS = int(ENV.get("GROK_MAX_TURNS", "12"))
+# **手数(--max-turns)では制限しない。**週次上限の実体は X 検索の回数だけで、ページを開く・コマンドを実行する・書く手数は
+# 枠を消費しない。手数で縛ると、検索を終えたあとの確認や書き出しの途中で切られて成果ごと失う
+# (実測: 3 → 9面すべて0件、8 → 9面中5面0件、12 → 9/15〜10/3 の171セッション中20本が打ち切り・7本は面ごと0件。
+#  編集長 2026-10-04「手数の概念が悪い。Web Search だけをカウントしないと意味がない」)。
+# 検索の回数は依頼文で指示し(GROK_MAX_SEARCHES)、実際の回数をセッション記録から数えて記録・超過を異常にする(grok_search_counts)。
+# 暴走は1面あたりの時間(GROK_TIMEOUT)で止める
 # 1面あたりの X 検索回数。**週次上限の実体はこれ**(実測 0.087%/検索 = 週およそ1150検索)。
 # まとめ方式にしてから 9面23検索で 2% しか使わなかったので、予算に余裕がある。
 #   4回/面 → 36検索/回 = 3.1%/日(週22%)
@@ -319,16 +315,15 @@ def grok_wrote(outdir: Path, q: dict) -> bool:
     return p.exists() and bool(p.read_text(encoding="utf-8", errors="replace").strip())
 
 
-def run_grok_faces(queries: list[dict], outdir: Path, max_turns: int, errs: dict, retry: bool = False) -> None:
-    """面ごとに Grok のセッションを GROK_WAVE 本ずつ走らせる。エラー出力は errs に残す(黙って捨てない)。"""
+def run_grok_faces(queries: list[dict], outdir: Path, errs: dict, retry: bool = False) -> None:
+    """面ごとに Grok のセッションを GROK_WAVE 本ずつ走らせる。手数では縛らない(時間 GROK_TIMEOUT だけ)。エラー出力は errs に残す。"""
     for i in range(0, len(queries), GROK_WAVE):
         procs = []
         for q in queries[i:i + GROK_WAVE]:
             pp = write_grok_prompt(outdir, q, retry=retry)
             procs.append((q, subprocess.Popen(
                 ["grok", "--prompt-file", str(pp), "--always-approve",
-                 "--cwd", str(ROOT), "--max-turns", str(max_turns),
-                 "--reasoning-effort", GROK_EFFORT],
+                 "--cwd", str(ROOT), "--reasoning-effort", GROK_EFFORT],
                 stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT)))
         for q, pr in procs:
@@ -339,6 +334,28 @@ def run_grok_faces(queries: list[dict], outdir: Path, max_turns: int, errs: dict
             except subprocess.TimeoutExpired:
                 pr.kill()
                 print(f"grok: {q['key']} 面がタイムアウト(そこまでの記録は残る)", flush=True)
+
+
+def grok_search_counts(since_ts: float) -> dict[str, int]:
+    """since_ts 以降に始まった、このリポジトリの Grok セッションの面(brand)ごとの X 検索の回数(週次上限を消費するのはこれだけ)。
+    回数は Grok のセッション記録(updates.jsonl の XSearch の呼び出し)から数える。"""
+    import urllib.parse as _up
+    base = Path.home() / ".grok" / "sessions" / _up.quote(str(ROOT), safe="")
+    out: dict[str, int] = {}
+    try:
+        dirs = [d for d in base.iterdir() if d.is_dir() and d.stat().st_mtime >= since_ts]
+    except OSError:
+        return out
+    for d in dirs:
+        try:
+            ch = (d / "chat_history.jsonl").read_text(encoding="utf-8", errors="replace")
+            up = (d / "updates.jsonl").read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        m = re.search(r'brand=\\"([a-z0-9-]+)', ch)
+        if m:
+            out[m.group(1)] = out.get(m.group(1), 0) + len(re.findall(r'"variant":\s*"XSearch"', up))
+    return out
 
 
 def grok_session_error(since_s: int = 7200) -> str:
@@ -459,7 +476,7 @@ def write_grok_prompt(outdir: Path, q: dict, retry: bool = False) -> Path:
     prompt = render_prompt("grok-collect", BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
                            SINCE=since, OUT=out, MAX_SEARCHES=GROK_MAX_SEARCHES, MAX_ITEMS=GROK_ITEMS, STEP1=step1,
                            RULES=COLLECT_RULES,
-                           RETRY=("- **やり直し**: 前回は手数を使い切って何も書けなかった。1 の結果をまず書き、そのあとで 2・3 に進む\n"
+                           RETRY=("- **やり直し**: 前回はまとめを書く前に終わった。1 の結果をまず書き、そのあとで 2・3 に進む\n"
                                   if retry else ""))
     pp = outdir / f"prompt-{q['key']}.md"
     pp.write_text(prompt, encoding="utf-8")
@@ -652,13 +669,14 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         shutil.rmtree(outdir, ignore_errors=True)
         outdir.mkdir(parents=True, exist_ok=True)
         grok_errs: dict[str, str] = {}
-        run_grok_faces(queries, outdir, GROK_MAX_TURNS, grok_errs)
-        # まとめのファイルを残せなかった面は、手数を倍にして「先に書く」順で1回だけやり直す
-        # (実測 2026-10-03: 学マスの面が手数の上限 12 で打ち切られてファイルを書けず0件。公式Xの4コマ第174話を1日遅れで載せた)
+        grok_started = time.time()
+        run_grok_faces(queries, outdir, grok_errs)
+        # まとめのファイルを残せなかった面(異常終了・時間切れ)は、「先に書く」順で1回だけやり直す
+        # (実測 2026-10-03: 学マスの面が打ち切られてファイルを書けず0件。公式Xの4コマ第174話を1日遅れで載せた)
         missing = [q for q in queries if not grok_wrote(outdir, q)]
         if missing:
             print(f"grok: まとめを残せなかった面 {', '.join(q['key'] for q in missing)} をやり直す", flush=True)
-            run_grok_faces(missing, outdir, GROK_MAX_TURNS * 2, grok_errs, retry=True)
+            run_grok_faces(missing, outdir, grok_errs, retry=True)
             still = [q["key"] for q in missing if not grok_wrote(outdir, q)]
             if still and len(still) < len(queries):     # 全面0件は下でまとめて上げる
                 notify("collect", f"Grok(X 調査)の {', '.join(still)} 面が、やり直してもまとめを残せなかった(その面の X の動きを丸ごと失う):\n"
@@ -684,6 +702,14 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         for q in queries:
             per[f"grok:{q['key']}"] = by_brand.get(q["brand"], 0)
         print(f"grok: {len(queries)}面を面別セッションで {len(got)}件(面別 {by_brand})", flush=True)
+        # 週次上限を消費するのは X 検索の回数だけ。面ごとに実数を記録し、指示の2倍を超えた面は異常にする(依頼文の数字は厳密には守られない)
+        searches = grok_search_counts(grok_started)
+        for b, n in searches.items():
+            per[f"grok_searches:{b}"] = n
+        over = {b: n for b, n in searches.items() if n > GROK_MAX_SEARCHES * 2}
+        print(f"grok: X 検索 {sum(searches.values())}回(面別 {searches})", flush=True)
+        if over:
+            notify("collect", f"Grok(X 調査)の検索が指示({GROK_MAX_SEARCHES}回/面)の2倍を超えた面: {over}。週次の利用枠を余分に消費している", ok=False)
 
     return items, per
 

@@ -2100,17 +2100,19 @@ def test_storylink(tmp: Path):
 
 
 def test_grok_face_retry(tmp: Path):
-    """Grok の面がまとめを残せなかったら(手数の上限で打ち切り)、その面だけ手数を倍にして1回やり直し、
-    それでも残らなければ異常を上げる(実測 2026-10-03: 学マスの面が12手で打ち切られて0件、公式Xの4コマを1日遅れで載せた)。"""
+    """Grok の面がまとめを残せなかったら、その面だけ「先に書く」順で1回やり直し、それでも残らなければ異常を上げる
+    (実測 2026-10-03: 学マスの面が打ち切られて0件、公式Xの4コマを1日遅れで載せた)。手数(--max-turns)では縛らず、
+    週次上限を消費する X 検索の回数だけを数える(編集長 2026-10-04「手数の概念が悪い」)。"""
     import collect
+    import urllib.parse
     tmp.mkdir(parents=True, exist_ok=True)
     out = tmp / "g"
     out.mkdir()
     qs = [{"key": "gakuen", "brand": "gaku", "topic": "t"}, {"key": "shiny", "brand": "shiny", "topic": "t"},
           {"key": "dsva", "brand": "dsva", "topic": "t"}]
     runs, notes = [], []
-    def fake_run(queries, outdir, max_turns, errs, retry=False):
-        runs.append(([q["key"] for q in queries], max_turns, retry))
+    def fake_run(queries, outdir, errs, retry=False):
+        runs.append(([q["key"] for q in queries], retry))
         for q in queries:
             if q["key"] == "shiny" or (q["key"] == "gakuen" and retry):   # 学マスはやり直しで書ける、dsva は書けない
                 (outdir / f"{q['key']}.md").write_text("まとめ", encoding="utf-8")
@@ -2122,19 +2124,47 @@ def test_grok_face_retry(tmp: Path):
         collect.grok_session_error = lambda since_s=7200: "max_turns_reached"
         # 収集の Grok 部分の流れ(run_grok_faces → grok_wrote → やり直し)を再現する
         errs = {}
-        collect.run_grok_faces(qs, out, collect.GROK_MAX_TURNS, errs)
+        collect.run_grok_faces(qs, out, errs)
         missing = [q for q in qs if not collect.grok_wrote(out, q)]
-        collect.run_grok_faces(missing, out, collect.GROK_MAX_TURNS * 2, errs, retry=True)
+        collect.run_grok_faces(missing, out, errs, retry=True)
         still = [q["key"] for q in missing if not collect.grok_wrote(out, q)]
-        check(runs[1] == (["gakuen", "dsva"], collect.GROK_MAX_TURNS * 2, True) and still == ["dsva"], f"やり直しの対象と結果: {runs} {still}")
+        check(runs[1] == (["gakuen", "dsva"], True) and still == ["dsva"], f"やり直しの対象と結果: {runs} {still}")
     finally:
         collect.run_grok_faces, collect.consolidate_grok, collect.notify, collect.grok_session_error = saved
-    # 依頼文: やり直しのときだけ「先に書く」行が入り、手数の上限の注意は常に入る
+    # 依頼文: やり直しのときだけ「先に書く」行。数えるのは検索だけ、と常に書く
     p1 = collect.write_grok_prompt(out, {"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": ["gkmas_official"]}).read_text(encoding="utf-8")
     p2 = collect.write_grok_prompt(out, {"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": ["gkmas_official"]}, retry=True).read_text(encoding="utf-8")
-    check("必ず一度ファイルに書く" in p1 and "やり直し" not in p1 and "やり直し" in p2, "Grok の依頼文の手数・やり直しの指示")
+    check("検索の回数だけ" in p1 and "必ず一度ファイルに書く" in p1 and "やり直し" not in p1 and "やり直し" in p2, "Grok の依頼文の数え方・やり直しの指示")
     src = (pipelib.ROOT / "scripts" / "collect.py").read_text(encoding="utf-8")
-    check("run_grok_faces(missing, outdir, GROK_MAX_TURNS * 2, grok_errs, retry=True)" in src, "収集が書けなかった面をやり直していない")
+    check("run_grok_faces(missing, outdir, grok_errs, retry=True)" in src, "書けなかった面をやり直していない")
+    # 起動引数に手数の上限を付けない
+    argv = []
+    saved_popen = collect.subprocess.Popen
+    class P:
+        returncode = 0
+        def communicate(self, timeout=None): return "", ""
+    try:
+        collect.subprocess.Popen = lambda args, **kw: argv.append(args) or P()
+        collect.run_grok_faces(qs[:1], out, {})
+    finally:
+        collect.subprocess.Popen = saved_popen
+    check(argv and "--max-turns" not in argv[0], f"Grok を手数で縛っている: {argv[:1]}")
+    # 面ごとの X 検索の回数をセッション記録から数える
+    home = tmp / "home"
+    for name, brand, n in (("s1", "gaku", 3), ("s2", "sidem", 7)):
+        sd = home / ".grok" / "sessions" / urllib.parse.quote(str(tmp / "repo"), safe="") / name
+        sd.mkdir(parents=True)
+        (sd / "chat_history.jsonl").write_text('{"content":"担当する面: brand=\\"' + brand + '\\" …"}\n', encoding="utf-8")
+        (sd / "updates.jsonl").write_text('{"rawInput": {"variant": "XSearch", "backend": true}}\n' * n + '{"rawInput": {"url": "x"}}\n', encoding="utf-8")
+    saved_root, saved_home = collect.ROOT, os.environ.get("HOME")
+    try:
+        collect.ROOT, os.environ["HOME"] = tmp / "repo", str(home)
+        got = collect.grok_search_counts(0)
+        check(got == {"gaku": 3, "sidem": 7}, f"面ごとの X 検索の回数: {got}")
+    finally:
+        collect.ROOT = saved_root
+        if saved_home is not None:
+            os.environ["HOME"] = saved_home
 
 
 def test_update_clis(tmp: Path):

@@ -362,8 +362,9 @@ def article_prompt(date: str, art: dict, materials: list[dict], story_facts: lis
     return render_prompt(
         "write-article", DATE=date, WEEKDAY="月火水木金土日"[datetime.date.fromisoformat(date).weekday()],
         ANGLE=art["angle"],
-        TRIGGER=(f"- 続報トリガー({trigger['kind']}: {trigger.get('note') or trigger['subject']})の消化。"
-                 "トリガーの当日性(締切・開幕など)を記事の軸にする\n" if trigger else ""),
+        # 目的: 続報予約の消化と、選定が「期日の知らせ」とした記事は、期日を伝え直すこと自体が目的(新しい事実は要らない)
+        PURPOSE=("期日の知らせ" if trigger or art.get("purpose") == "期日の知らせ" else "新情報"),
+        TRIGGER=(f"- 続報予約: {trigger['kind']}(読者がその日にできること: {trigger.get('note') or trigger['subject']})\n" if trigger else ""),
         RANK_RULES=rank_file.read_text(encoding="utf-8") if rank_file.exists() else "",
         TAG_VOCAB=tags_lib.vocabulary_block(),
         STORY_FACTS="\n".join(f"- {f}" for f in story_facts) or "(なし)",

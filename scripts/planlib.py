@@ -19,6 +19,9 @@ ROUNDUP_MIN_ITEMS = 3
 ACTIONS = ("article", "roundup", "merge", "drop", "cross_brand")
 RANKS = ("large", "medium", "small")
 REASONS = ("既報", "過年度", "同人・ファン主催", "個人の話題", "重複", "出典不足", "面違い", "その他")
+# 記事の目的。「期日の知らせ」は締切・開始・終了・発売の日が近い(当日を含む)ことを読者に思い出させる記事で、新しい事実は要らない
+# (編集長 2026-10-03: 予約締切の前日の記事を、執筆が「既報と同じで新しい事実が無い」と見送った。「目的の間違い」)
+PURPOSES = ("新情報", "期日の知らせ")
 
 
 def plan_schema(keys: list[str], brand: str = "", claimed_slugs: list[str] | None = None) -> dict:
@@ -32,12 +35,13 @@ def plan_schema(keys: list[str], brand: str = "", claimed_slugs: list[str] | Non
     claimed = sorted({s for s in (claimed_slugs or []) if s}) + [""]
     decision = {
         "type": "object",
-        "required": ["action", "angle", "rank", "lead_score", "merge_into", "claimed_slug", "reason", "note"],
+        "required": ["action", "angle", "purpose", "rank", "lead_score", "merge_into", "claimed_slug", "reason", "note"],
         "additionalProperties": False,
         "properties": {
             "action": {"enum": list(ACTIONS)},
             "angle": {"type": "string", "maxLength": 120,
                       "description": "記事の切り口(article/roundup のとき。roundup なら束ねる観点)"},
+            "purpose": {"enum": list(PURPOSES) + [""], "description": "article のとき: 記事の目的。他は空"},
             "rank": {"enum": ranks, "description": "article のとき。他は空"},
             "lead_score": {"type": "integer", "minimum": 0, "maximum": 100,
                            "description": "号の一面に値する度合い。面で最大の1本にだけ高く、他は0〜30"},
@@ -100,6 +104,7 @@ def decisions_to_plan(brand: str, rows: list[dict], decisions: dict, taken: set[
             arts[key] = {"slug": slugify(brand, key, taken), "brand": brand,
                          "rank": d.get("rank") if d.get("rank") in ok_ranks else "small",
                          "angle": d.get("angle") or r.get("title") or key,
+                         "purpose": d.get("purpose") if d.get("purpose") in PURPOSES else "新情報",
                          "lead_score": int(d.get("lead_score") or 0), "dedup_key": key,
                          "candidate_ids": list(r.get("ids") or [])}
         elif act == "roundup":

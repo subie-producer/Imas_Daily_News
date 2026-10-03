@@ -132,9 +132,11 @@ def decisions_to_plan(brand: str, rows: list[dict], decisions: dict, taken: set[
                        "angle": decisions.get(k, {}).get("angle") or r.get("title") or k,
                        "lead_score": 0, "dedup_key": k, "candidate_ids": list(r.get("ids") or [])}
 
-    # merge: 素材を相手の記事へ。相手がさらに merge なら辿る(連鎖)。循環したり、
-    # 相手が記事でなければ自分の記事にする(黙って消さない)
+    # merge: 素材を相手の記事へ。相手がさらに merge なら辿る(連鎖)。相手が不採用(drop)なら、同じ話題として
+    # 相手の理由で不採用に並べる(2026-10-04: drop した主題へ merge した主題が単独の記事になり、執筆が
+    # 「終了済み」で見送った)。循環したり、相手が記事でも不採用でもなければ自分の記事にする(黙って消さない)
     merge_map = dict(merges)
+    dropped_by_key = {d["dedup_key"]: d for d in dropped}
 
     def resolve(target: str) -> dict | None:
         seen: set[str] = set()
@@ -144,11 +146,17 @@ def decisions_to_plan(brand: str, rows: list[dict], decisions: dict, taken: set[
                 return arts[target]
             if target in roundup_keys and "__roundup__" in arts:
                 return arts["__roundup__"]
+            if target in dropped_by_key:
+                return dropped_by_key[target]
             target = merge_map.get(target, "")
         return None
 
     for key, target in merges:
         tgt = resolve(target)
+        if tgt is not None and "candidate_ids" not in tgt:
+            dropped.append({"dedup_key": key, "reason": tgt.get("reason") or "その他",
+                            "note": f"不採用の主題 {tgt['dedup_key']} へ統合" + (f": {tgt['note']}" if tgt.get("note") else "")})
+            continue
         if tgt is None:
             r = by_key[key]
             arts[key] = {"slug": slugify(brand, key, taken), "brand": brand, "rank": "small",

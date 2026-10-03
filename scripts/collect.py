@@ -313,6 +313,34 @@ def build_prompts() -> list[dict]:
     return queries
 
 
+def grok_wrote(outdir: Path, q: dict) -> bool:
+    """その面の Grok がまとめのファイルを残したか(「なし」と書いた面も残したことになる)。"""
+    p = outdir / f"{q['key']}.md"
+    return p.exists() and bool(p.read_text(encoding="utf-8", errors="replace").strip())
+
+
+def run_grok_faces(queries: list[dict], outdir: Path, max_turns: int, errs: dict, retry: bool = False) -> None:
+    """面ごとに Grok のセッションを GROK_WAVE 本ずつ走らせる。エラー出力は errs に残す(黙って捨てない)。"""
+    for i in range(0, len(queries), GROK_WAVE):
+        procs = []
+        for q in queries[i:i + GROK_WAVE]:
+            pp = write_grok_prompt(outdir, q, retry=retry)
+            procs.append((q, subprocess.Popen(
+                ["grok", "--prompt-file", str(pp), "--always-approve",
+                 "--cwd", str(ROOT), "--max-turns", str(max_turns),
+                 "--reasoning-effort", GROK_EFFORT],
+                stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
+                stdin=subprocess.DEVNULL, cwd=ROOT)))
+        for q, pr in procs:
+            try:
+                _, err = pr.communicate(timeout=GROK_TIMEOUT)
+                if pr.returncode or (err or "").strip():
+                    errs[q["key"]] = f"exit {pr.returncode}: {(err or '').strip()[-300:]}"
+            except subprocess.TimeoutExpired:
+                pr.kill()
+                print(f"grok: {q['key']} 面がタイムアウト(そこまでの記録は残る)", flush=True)
+
+
 def grok_session_error(since_s: int = 7200) -> str:
     """直近 since_s 秒に、このリポジトリで開いた Grok セッションの失敗理由(Grok は API に拒まれても終了コード 0 で、
     理由はセッション記録 updates.jsonl にしか残らない)。見つからなければ「記録なし」。"""
@@ -410,7 +438,7 @@ def claude_exec(prompt: str, timeout: int = 300):
     return got
 
 
-def write_grok_prompt(outdir: Path, q: dict) -> Path:
+def write_grok_prompt(outdir: Path, q: dict, retry: bool = False) -> Path:
     """1面ぶんの指示を書き出す(面ごとに1セッション)。
 
     **Grok には日本語の「まとめ」を書かせる。**候補を1件ずつ JSON にさせると、
@@ -430,7 +458,9 @@ def write_grok_prompt(outdir: Path, q: dict) -> Path:
              else "1. (この面には公式アカウントの指定が無い。2 の角度から始める)")
     prompt = render_prompt("grok-collect", BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
                            SINCE=since, OUT=out, MAX_SEARCHES=GROK_MAX_SEARCHES, MAX_ITEMS=GROK_ITEMS, STEP1=step1,
-                           RULES=COLLECT_RULES)
+                           RULES=COLLECT_RULES,
+                           RETRY=("- **やり直し**: 前回は手数を使い切って何も書けなかった。1 の結果をまず書き、そのあとで 2・3 に進む\n"
+                                  if retry else ""))
     pp = outdir / f"prompt-{q['key']}.md"
     pp.write_text(prompt, encoding="utf-8")
     return pp
@@ -622,24 +652,18 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         shutil.rmtree(outdir, ignore_errors=True)
         outdir.mkdir(parents=True, exist_ok=True)
         grok_errs: dict[str, str] = {}
-        for i in range(0, len(queries), GROK_WAVE):
-            procs = []
-            for q in queries[i:i + GROK_WAVE]:
-                pp = write_grok_prompt(outdir, q)
-                procs.append((q, subprocess.Popen(
-                    ["grok", "--prompt-file", str(pp), "--always-approve",
-                     "--cwd", str(ROOT), "--max-turns", str(GROK_MAX_TURNS),
-                     "--reasoning-effort", GROK_EFFORT],
-                    stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
-                    stdin=subprocess.DEVNULL, cwd=ROOT)))
-            for q, pr in procs:
-                try:
-                    _, err = pr.communicate(timeout=GROK_TIMEOUT)
-                    if pr.returncode or (err or "").strip():
-                        grok_errs[q["key"]] = f"exit {pr.returncode}: {(err or '').strip()[-300:]}"
-                except subprocess.TimeoutExpired:
-                    pr.kill()
-                    print(f"grok: {q['key']} 面がタイムアウト(そこまでの記録は残る)", flush=True)
+        run_grok_faces(queries, outdir, GROK_MAX_TURNS, grok_errs)
+        # まとめのファイルを残せなかった面は、手数を倍にして「先に書く」順で1回だけやり直す
+        # (実測 2026-10-03: 学マスの面が手数の上限 12 で打ち切られてファイルを書けず0件。公式Xの4コマ第174話を1日遅れで載せた)
+        missing = [q for q in queries if not grok_wrote(outdir, q)]
+        if missing:
+            print(f"grok: まとめを残せなかった面 {', '.join(q['key'] for q in missing)} をやり直す", flush=True)
+            run_grok_faces(missing, outdir, GROK_MAX_TURNS * 2, grok_errs, retry=True)
+            still = [q["key"] for q in missing if not grok_wrote(outdir, q)]
+            if still and len(still) < len(queries):     # 全面0件は下でまとめて上げる
+                notify("collect", f"Grok(X 調査)の {', '.join(still)} 面が、やり直してもまとめを残せなかった(その面の X の動きを丸ごと失う):\n"
+                                  + "\n".join(f"- {k}: {grok_errs.get(k, 'エラー出力なし')}" for k in still)
+                                  + "\n- セッション記録の失敗理由: " + grok_session_error(), ok=False)
         got = consolidate_grok(outdir)
         if not got:
             print("grok 0件", flush=True)

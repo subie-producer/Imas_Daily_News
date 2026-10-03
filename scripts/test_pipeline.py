@@ -2099,6 +2099,44 @@ def test_storylink(tmp: Path):
     check("2026-09-17 那覇市でじますコラボ決定" in sl.recent_titles(d, tmp).get("cg", []), "直近の見出しが面ごとに出ない")
 
 
+def test_grok_face_retry(tmp: Path):
+    """Grok の面がまとめを残せなかったら(手数の上限で打ち切り)、その面だけ手数を倍にして1回やり直し、
+    それでも残らなければ異常を上げる(実測 2026-10-03: 学マスの面が12手で打ち切られて0件、公式Xの4コマを1日遅れで載せた)。"""
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    out = tmp / "g"
+    out.mkdir()
+    qs = [{"key": "gakuen", "brand": "gaku", "topic": "t"}, {"key": "shiny", "brand": "shiny", "topic": "t"},
+          {"key": "dsva", "brand": "dsva", "topic": "t"}]
+    runs, notes = [], []
+    def fake_run(queries, outdir, max_turns, errs, retry=False):
+        runs.append(([q["key"] for q in queries], max_turns, retry))
+        for q in queries:
+            if q["key"] == "shiny" or (q["key"] == "gakuen" and retry):   # 学マスはやり直しで書ける、dsva は書けない
+                (outdir / f"{q['key']}.md").write_text("まとめ", encoding="utf-8")
+    saved = (collect.run_grok_faces, collect.consolidate_grok, collect.notify, collect.grok_session_error)
+    try:
+        collect.run_grok_faces = fake_run
+        collect.consolidate_grok = lambda outdir: []
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        collect.grok_session_error = lambda since_s=7200: "max_turns_reached"
+        # 収集の Grok 部分の流れ(run_grok_faces → grok_wrote → やり直し)を再現する
+        errs = {}
+        collect.run_grok_faces(qs, out, collect.GROK_MAX_TURNS, errs)
+        missing = [q for q in qs if not collect.grok_wrote(out, q)]
+        collect.run_grok_faces(missing, out, collect.GROK_MAX_TURNS * 2, errs, retry=True)
+        still = [q["key"] for q in missing if not collect.grok_wrote(out, q)]
+        check(runs[1] == (["gakuen", "dsva"], collect.GROK_MAX_TURNS * 2, True) and still == ["dsva"], f"やり直しの対象と結果: {runs} {still}")
+    finally:
+        collect.run_grok_faces, collect.consolidate_grok, collect.notify, collect.grok_session_error = saved
+    # 依頼文: やり直しのときだけ「先に書く」行が入り、手数の上限の注意は常に入る
+    p1 = collect.write_grok_prompt(out, {"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": ["gkmas_official"]}).read_text(encoding="utf-8")
+    p2 = collect.write_grok_prompt(out, {"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": ["gkmas_official"]}, retry=True).read_text(encoding="utf-8")
+    check("必ず一度ファイルに書く" in p1 and "やり直し" not in p1 and "やり直し" in p2, "Grok の依頼文の手数・やり直しの指示")
+    src = (pipelib.ROOT / "scripts" / "collect.py").read_text(encoding="utf-8")
+    check("run_grok_faces(missing, outdir, GROK_MAX_TURNS * 2, grok_errs, retry=True)" in src, "収集が書けなかった面をやり直していない")
+
+
 def test_update_clis(tmp: Path):
     """道具の CLI の更新(編集長 2026-10-02「定期的に Codex/Grok/Claude のアップデートを仕掛けるようにしないと駄目だ」):
     版が変われば知らせ、更新後に答えが返らなければ(Grok は API に拒まれても終了コード 0)異常として上げる。
@@ -2754,6 +2792,7 @@ def main() -> int:
     test_article_purpose()
     test_extract_json_array_strict()
     test_update_clis(tmp / "uc")
+    test_grok_face_retry(tmp / "gr")
     test_watch_pagination_and_batches(tmp / "wp")
     test_collect_oncall_rerun_exit(tmp / "cre")
     test_storylink(tmp / "sl")

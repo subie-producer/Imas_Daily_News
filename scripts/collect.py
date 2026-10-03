@@ -40,7 +40,8 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, html_to_text, set_quiet, unbacked_facts,
                      checkout_edition_branch, classify_retag_lint, commit_and_push, diagnose_anomalies, edition_date,
-                     extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt)
+                     extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
+                     X_ANON_POST, x_post_author)
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
@@ -674,32 +675,18 @@ def is_x(url: str) -> bool:
     return any(h in url for h in X_HOSTS)
 
 
-X_ANON_POST = re.compile(r"https://(?:(?:www|mobile)\.)?(?:x|twitter)\.com/i/(?:web/)?status/(\d+)(?:[/?#].*)?")
-X_HANDLE = re.compile(r"[A-Za-z0-9_]{1,15}")
-
-
 def x_post_url(url: str, fetch=None) -> str:
     """`x.com/i/status/<ID>`(投稿者の無い投稿 URL)を `x.com/<投稿者>/status/<ID>` に直す。
 
     種別は X のアカウント単位で決まるので、投稿者の無い形は判定できず、紙面に未確認の出典として残る
     (2026-10-03: Grok の trend 面が 16件すべてこの形で書いた)。投稿者は X の oEmbed が返す。
-    引けなければ元のまま返す(watch が未確認の出典として知らせる)
+    引けなければ元のまま返す(合議が投稿者を引き直し、決まらなければ watch が未確認の出典として知らせる)
     """
     m = X_ANON_POST.fullmatch(url)
     if not m:
         return url
-    try:
-        q = urllib.parse.urlencode({"url": f"https://x.com/i/status/{m.group(1)}", "omit_script": "1"})
-        meta = json.loads((fetch or http_get)(f"https://publish.twitter.com/oembed?{q}"))
-        au = urllib.parse.urlparse(str(meta.get("author_url") or ""))
-        handle = au.path.strip("/") if (au.hostname or "").removeprefix("www.") in X_HOSTS else ""
-    except Exception as e:
-        print(f"X の投稿者を引けない(元の URL のまま): {url} {e}", flush=True)
-        return url
-    if not X_HANDLE.fullmatch(handle):
-        print(f"X の投稿者を引けない(元の URL のまま): {url} author_url={meta.get('author_url')!r}", flush=True)
-        return url
-    return f"https://x.com/{handle}/status/{m.group(1)}"
+    handle = x_post_author(m.group(1), fetch or http_get)
+    return f"https://x.com/{handle}/status/{m.group(1)}" if handle else url
 
 
 # 面が判別できる語 → ブランド。名鑑(アイドル名)で拾えない作品名・ブランド呼称を補う。

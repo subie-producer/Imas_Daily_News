@@ -1098,9 +1098,10 @@ def _check_table(t: dict, p) -> None:
                 "official_paths", "semi_official_paths", "party_paths"):
         for v in t.get(key) or []:
             seen[v].append(key)
-    for group in ("x_accounts", "video_ids", "video_channels"):
+    for group in ("x_accounts", "x_posts", "video_ids", "video_channels"):
         for label, names in (t.get(group) or {}).items():
             for v in names or []:
+                v = str(v)
                 # 判定器は X アカウントを小文字化して比べるので、検査側も揃える。
                 # 揃えないと `imas_official` と `IMAS_OFFICIAL` を別種別に登録できてしまい、
                 # 検査を通ったうえで先に載っているほうが勝つ(監査指摘)
@@ -1139,6 +1140,37 @@ def _check_table(t: dict, p) -> None:
             if a != b and b.startswith(a + "/") and ta != tb:
                 raise SystemExit(f"{p}: {fa} の {a}({ta}) と {fb} の {b}({tb}) が親子で種別が違う"
                                  "(先に当たる親が勝ち、子の指定は届かない)")
+
+
+# 投稿者の無い X の投稿 URL(`x.com/i/status/<ID>`・`i/web/status/<ID>`)。種別はアカウントで決まるので、
+# 投稿者を引かないと判定できない(2026-10-03: Grok の trend 面がこの形で書き、紙面に未確認として残った)
+X_ANON_PATH = re.compile(r"i/(?:web/)?status/(\d+)(?:/.*)?", re.I)
+X_ANON_POST = re.compile(r"https?://(?:(?:www|mobile)\.)?(?:x|twitter)\.com/i/(?:web/)?status/(\d+)(?:[/?#].*)?", re.I)
+X_HANDLE = re.compile(r"[A-Za-z0-9_]{1,15}")
+
+
+def x_post_author(post_id: str, fetch=None) -> str:
+    """X の投稿 ID から投稿者のハンドルを引く(X の oEmbed)。引けなければ ""。"""
+    import urllib.parse
+    import urllib.request
+
+    def get(url: str) -> str:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; ImasNews/1.0)"})
+        with urllib.request.urlopen(req, timeout=20) as r:
+            return r.read().decode("utf-8", errors="replace")
+    meta = {}
+    try:
+        q = urllib.parse.urlencode({"url": f"https://x.com/i/status/{post_id}", "omit_script": "1"})
+        meta = json.loads((fetch or get)(f"https://publish.twitter.com/oembed?{q}"))
+        au = urllib.parse.urlparse(str(meta.get("author_url") or ""))
+        handle = au.path.strip("/") if (au.hostname or "").removeprefix("www.") in ("x.com", "twitter.com") else ""
+    except Exception as e:
+        print(f"X の投稿者を引けない: {post_id} {type(e).__name__}: {str(e)[:120]}", flush=True)
+        return ""
+    if not X_HANDLE.fullmatch(handle):
+        print(f"X の投稿者を引けない: {post_id} author_url={meta.get('author_url')!r}", flush=True)
+        return ""
+    return handle
 
 
 def classify_source(url: str) -> str:
@@ -1251,6 +1283,13 @@ def classify_source(url: str) -> str:
               or (len(seg) >= 3 and seg[1] in ("status", "article") and seg[2].isdigit()))
         # `x.com/i/...` はアカウント名ではなく X 自身の機能への入口
         acct = seg[0].lower() if ok and seg[0].lower() != "i" else ""
+        # `i/status/<ID>` は投稿者の無い投稿 URL。アカウントでは引けないので、投稿者を引いて種別が決まった
+        # 投稿 ID の表(x_posts。classify_sources が機械で足す)で引く
+        m = X_ANON_PATH.fullmatch("/".join(seg))
+        if m:
+            for label, ids in (t.get("x_posts") or {}).items():
+                if m.group(1) in {str(i) for i in ids or []}:
+                    return label
         for label, accounts in (t.get("x_accounts") or {}).items():
             if acct and acct in {a.lower() for a in accounts}:
                 return label

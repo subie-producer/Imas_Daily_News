@@ -403,5 +403,34 @@
   "src_candidate_id": "202610012336-watch-6",
   "event_date": "2026-11-11",
   "deadline": "2026-10-11"
+ },
+ {
+  "id": "sched-2026-10-11-14th-2026-締切",
+  "dedup_key": "14th-2026",
+  "brand": "million",
+  "subject": "ミリオン14th開催記念グッズ受注販売",
+  "kind": "締切",
+  "note": "受注最終日。グッズを注文できる最後の日",
+  "reserved_on": "2026-10-04",
+  "title": "ミリオン14th 開催記念グッズ（投稿は日本酒グラスセット）",
+  "url": "https://x.com/imasml_765PRO/status/2106323374163304810",
+  "source_type": "公式",
+  "facts": [
+   "告知ページ: https://shop.asobistore.jp/feature/ml14th_memorial",
+   "投稿本文:",
+   "このみをイメージした公式日本酒グラスセット",
+   "このグラスで晩酌の時間を楽しむ、という案内",
+   "リンク先は上記の開催記念グッズ特集",
+   "投稿本文に価格・セット内容・容量の記載はない",
+   "特集ページの本文には「日本酒」「グラス」の品名は出てこなかった。以下は特集ページ本文にある別商品",
+   "告知ページの共通注意:",
+   "特集名: THE IDOLM@STER MILLION LIVE! 14thLIVE 開催記念グッズ販売",
+   "「THE IDOLM@STER MILLION LIVE! 14thLIVE開催記念グッズ販売」は、“受注販売”で2026年10月11日（日）まで販売",
+   "「THE IDOLM@STER MILLION LIVE! 14thLIVE開催記念グッズ販売」は、2027年2月上旬より順次お届け予定",
+   "他のアイテムとあわせて注文した場合は、全アイテムが揃ってからの発送になるため、各アイテムのお届け予定日を確認する、とページにある"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610040227-grok-77"
  }
 ]

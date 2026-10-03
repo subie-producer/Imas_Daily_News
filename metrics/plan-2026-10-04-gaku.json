@@ -1,0 +1,157 @@
+{
+ "decisions": {
+  "agitato-instrumental-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/2号で同内容を掲載済み。新事実も当日のトリガーも無い"
+  },
+  "gashapon-ribaraba-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "7/15号で商品内容・価格・10月発送予定まで掲載済み。10月発売予定以外に新事実なし"
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/2号に期間・特典13種・通販条件まで掲載済み。開始10/10は3日以内でない"
+  },
+  "gaku-tsukimura-temari-iris-figure-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/1号『月村手毬「雨上がりのアイリス」フィギュア予約』と同じ商品。予約開始は9/28で新事実なし"
+  },
+  "4-174-2026": {
+   "action": "article",
+   "angle": "公式Xの学マス4コマ漫画、第174話「香りのまとい方」が公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "素材は題名のみ。短い記事にする"
+  },
+  "live-tour-2026": {
+   "action": "article",
+   "angle": "LIVE TOUR -標- 岩手公演の配信視聴チケットが販売中で、DAY1の秦谷美鈴の新曲「海奏ララバイ」の様子が公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信の視聴期限は素材に無いので日付は書かない"
+  },
+  "2nd-single-3rd-single-asobi-store-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-26",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ雨夜燕CDのASOBI STORE予約。3rd Singleは本日締切、2,500円の情報を締切記事へ統合"
+  },
+  "x-com-26": {
+   "action": "article",
+   "angle": "雨夜燕3rd Single「クライアイ」のASOBI STORE予約が本日10月4日で締切(2,500円・ソロ歌唱音源はCD限定)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。商品ページに「本日締切!!」の表示あり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-4-174-2026-d1663e",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "公式Xの学マス4コマ漫画、第174話「香りのまとい方」が公開された",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "4-174-2026",
+    "candidate_ids": [
+     "202610040227-grok-46"
+    ]
+   },
+   {
+    "slug": "gaku-live-tour-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "LIVE TOUR -標- 岩手公演の配信視聴チケットが販売中で、DAY1の秦谷美鈴の新曲「海奏ララバイ」の様子が公開された",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "live-tour-2026",
+    "candidate_ids": [
+     "202610040227-grok-47",
+     "202610040227-grok-49"
+    ]
+   },
+   {
+    "slug": "gaku-x-com-26",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "雨夜燕3rd Single「クライアイ」のASOBI STORE予約が本日10月4日で締切(2,500円・ソロ歌唱音源はCD限定)",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "x-com-26",
+    "candidate_ids": [
+     "sched-2026-10-04-x-com-26-締切",
+     "202610040227-grok-48"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "agitato-instrumental-2026",
+    "reason": "既報",
+    "note": "10/2号で同内容を掲載済み。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "gashapon-ribaraba-2-2026",
+    "reason": "既報",
+    "note": "7/15号で商品内容・価格・10月発送予定まで掲載済み。10月発売予定以外に新事実なし"
+   },
+   {
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "reason": "既報",
+    "note": "10/2号に期間・特典13種・通販条件まで掲載済み。開始10/10は3日以内でない"
+   },
+   {
+    "dedup_key": "gaku-tsukimura-temari-iris-figure-2027",
+    "reason": "既報",
+    "note": "10/1号『月村手毬「雨上がりのアイリス」フィギュア予約』と同じ商品。予約開始は9/28で新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

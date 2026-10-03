@@ -1,0 +1,121 @@
+{
+ "decisions": {
+  "number-one-cross-over-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/27記事に品番・価格・2社限定・アソビ受付終了・収録曲・歌唱がすべて既出。新事実も当日のトリガーも無い"
+  },
+  "15thparty-love-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30記事で一般会員先行(〜10/19)は既出。古賀小春の紹介投稿のみで新事実無し、締切も3日以内でない"
+  },
+  "athome-xr-live-apple-of-my-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29記事に日程・会場・先行受付(〜10/18)が既出。新事実無し、締切は3日以内でない"
+  },
+  "7th-pict-december-box-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30記事に第7弾の佐藤心・受注〜10/18が既出。締切まで14日でトリガー無し"
+  },
+  "concept-xr-live-pop-n-toybox-2026": {
+   "action": "article",
+   "angle": "CONCEPT xR LIVE「Pop'n ToyBox!! もういっかい！」が12月13日に大阪・オリックス劇場で開催、アソビストア一般会員先行を受付中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cgの過去記事に無い新公演。特設サイトに詳細無く、事実は日時・会場・先行受付中のみの短い記事"
+  },
+  "pop-up-shop-2026": {
+   "action": "article",
+   "angle": "POP UP SHOPで「ダイカットステッカー 堀裕子 陰陽師 ミニキャラ ver.」が完売、再入荷は10月9日の予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/29記事の3種とは別商品で、再入荷日も新事実。出典は当事者投稿(未確認)なので断定を避ける"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-concept-xr-live-pop-n-toybox-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "CONCEPT xR LIVE「Pop'n ToyBox!! もういっかい！」が12月13日に大阪・オリックス劇場で開催、アソビストア一般会員先行を受付中",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "concept-xr-live-pop-n-toybox-2026",
+    "candidate_ids": [
+     "202610040227-grok-36"
+    ]
+   },
+   {
+    "slug": "cg-pop-up-shop-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "POP UP SHOPで「ダイカットステッカー 堀裕子 陰陽師 ミニキャラ ver.」が完売、再入荷は10月9日の予定",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "pop-up-shop-2026",
+    "candidate_ids": [
+     "202610040227-grok-39"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "number-one-cross-over-cd-2026",
+    "reason": "既報",
+    "note": "9/27記事に品番・価格・2社限定・アソビ受付終了・収録曲・歌唱がすべて既出。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "15thparty-love-party-2026",
+    "reason": "既報",
+    "note": "9/30記事で一般会員先行(〜10/19)は既出。古賀小春の紹介投稿のみで新事実無し、締切も3日以内でない"
+   },
+   {
+    "dedup_key": "athome-xr-live-apple-of-my-2026",
+    "reason": "既報",
+    "note": "9/29記事に日程・会場・先行受付(〜10/18)が既出。新事実無し、締切は3日以内でない"
+   },
+   {
+    "dedup_key": "7th-pict-december-box-2026",
+    "reason": "既報",
+    "note": "9/30記事に第7弾の佐藤心・受注〜10/18が既出。締切まで14日でトリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,66 @@
+{
+ "decisions": {
+  "xr-live-revival-twin-2026": {
+   "action": "article",
+   "angle": "xR LIVE REVIVAL「菊地 真・萩原 雪歩 twin live はんげつであえたら」が12月12日に大阪・オリックス劇場で3公演開催、早期限定グッズ付き3公演通し券は33,000円",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発表。cgの12/13公演とは別公演"
+  },
+  "general-topic-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/3の「キラメキラリ動画から継承の話題に」と同じ話題。新事実・当日トリガー無し。未確認の返信のみ"
+  },
+  "ever-ever-fter-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "発表者個人のSNS投稿1件のみで、単体では記事にしない。未確認"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-xr-live-revival-twin-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "xR LIVE REVIVAL「菊地 真・萩原 雪歩 twin live はんげつであえたら」が12月12日に大阪・オリックス劇場で3公演開催、早期限定グッズ付き3公演通し券は33,000円",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "xr-live-revival-twin-2026",
+    "candidate_ids": [
+     "202610032335-watch-0"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "general-topic-2026",
+    "reason": "既報",
+    "note": "10/3の「キラメキラリ動画から継承の話題に」と同じ話題。新事実・当日トリガー無し。未確認の返信のみ"
+   },
+   {
+    "dedup_key": "ever-ever-fter-2026",
+    "reason": "個人の話題",
+    "note": "発表者個人のSNS投稿1件のみで、単体では記事にしない。未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

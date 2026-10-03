@@ -1,0 +1,175 @@
+{
+ "decisions": {
+  "million-seasonal-snapshot-january-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/2「ミリシタ、1月『初日の出』グッズ受注」と同じ施策。新事実・当日トリガーなし"
+  },
+  "million-platinum-star-tune-lilac-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/1「ミリシタ新イベント、本日15時開幕」で報じ済み。終了10/8 20:59は3日超先でトリガーなし"
+  },
+  "9-only-maker-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30「ミリシタ9周年パーカー受注、10月12日まで」と同じ施策の再投稿。新事実なし"
+  },
+  "million-theater-9th-illustration-goods-2026": {
+   "action": "article",
+   "angle": "9周年イラストの公式グッズ、BIGアクスタ以外のカタログ11品(B2ポスター2,000円など)が判明",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior(春香BIGアクスタ)に無い他商品・価格が新事実。アクスタ春香の内容は繰り返さない"
+  },
+  "14th-2026": {
+   "action": "article",
+   "angle": "ミリオン14th開催記念グッズに、馬場このみをイメージした公式日本酒グラスセットが登場",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式投稿を根拠にする。価格・容量は不明と明記。未確認ソースは使わない"
+  },
+  "my-with-glasses-2026": {
+   "action": "article",
+   "angle": "「セカンドヘアスタイルガシャ～myブランド編 with glasses～」開催中、昴のSSRが出現率UP",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出現率の数値・ジュエル数は不明。roundup は3件に満たず単独の small"
+  },
+  "stage04-2026": {
+   "action": "article",
+   "angle": "コトブキヤくじ ミリオンライブ！ stage04、B賞タペストリー・C賞アクリルブロックを公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コトブキヤ公式(当事者)の投稿。verify は unconfirmed のため、販売条件は告知ページ確認分のみ書く"
+  },
+  "million-14th-day2-singles-order-2026": {
+   "action": "article",
+   "angle": "「If I...」「Waking Up My Heart」「Present」の受注販売が本日10月4日23:59で最終締切",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日トリガー(締切)。1人3枚まで・3店舗・11/11より順次お届け。事後物販4商品も同期限"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-theater-9th-illustration-goods-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "9周年イラストの公式グッズ、BIGアクスタ以外のカタログ11品(B2ポスター2,000円など)が判明",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-theater-9th-illustration-goods-2026",
+    "candidate_ids": [
+     "202610040227-grok-76"
+    ]
+   },
+   {
+    "slug": "million-14th-2026-eba525",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオン14th開催記念グッズに、馬場このみをイメージした公式日本酒グラスセットが登場",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "14th-2026",
+    "candidate_ids": [
+     "202610040227-grok-77",
+     "202610040227-grok-80"
+    ]
+   },
+   {
+    "slug": "million-my-with-glasses-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「セカンドヘアスタイルガシャ～myブランド編 with glasses～」開催中、昴のSSRが出現率UP",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "my-with-glasses-2026",
+    "candidate_ids": [
+     "202610040227-grok-78"
+    ]
+   },
+   {
+    "slug": "million-stage04-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "コトブキヤくじ ミリオンライブ！ stage04、B賞タペストリー・C賞アクリルブロックを公開",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "stage04-2026",
+    "candidate_ids": [
+     "202610040227-grok-79"
+    ]
+   },
+   {
+    "slug": "million-14th-day2-singles-order-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "「If I...」「Waking Up My Heart」「Present」の受注販売が本日10月4日23:59で最終締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "million-14th-day2-singles-order-2026",
+    "candidate_ids": [
+     "sched-2026-10-04-million-14th-day2-singles-order-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-seasonal-snapshot-january-2027",
+    "reason": "既報",
+    "note": "10/2「ミリシタ、1月『初日の出』グッズ受注」と同じ施策。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "million-platinum-star-tune-lilac-2026",
+    "reason": "既報",
+    "note": "10/1「ミリシタ新イベント、本日15時開幕」で報じ済み。終了10/8 20:59は3日超先でトリガーなし"
+   },
+   {
+    "dedup_key": "9-only-maker-2026",
+    "reason": "既報",
+    "note": "9/30「ミリシタ9周年パーカー受注、10月12日まで」と同じ施策の再投稿。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,4 +1,3 @@
-# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。
 - dedup_key: gaku-hif-15m-milestone-campaign-2026
   brand: gaku
   subject: 学マスH.I.F挑戦回数1,500万回突破記念キャンペーン
@@ -103,6 +102,10 @@
   brand: million
   subject: ミリシタ アクセス障害(9月8日発生)
   watch: 原因判明・復旧報告(判明次第 triggers へ)
+- dedup_key: dsva-shinkaifes-2026
+  brand: dsva
+  subject: 深海フェス2026「超・深海」
+  watch: 開場・開演時刻の正式発表(判明次第 triggers へ)
 - dedup_key: gaku-espresto-sweet-moment-another-color-2027
   brand: gaku
   subject: 学マスESPRESTO「Sweet moment」姫崎莉波・十王星南 Another color ver.

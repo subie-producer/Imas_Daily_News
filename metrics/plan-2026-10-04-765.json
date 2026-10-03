@@ -1,0 +1,56 @@
+{
+ "decisions": {
+  "765-never-end-idol-bluray-correction-2026": {
+   "action": "article",
+   "angle": "10月3日付の記事はDAY1のみだった訂正が通常版 DAY2(LABX-8919~20、17,600円、DAY2本編とアンコールの2枚組、メイキング映像なし)にも及ぶと伝える",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY2の訂正内容がprior本文に無い。価格・発売日・DAY1の内容は既報なので触れすぎない"
+  },
+  "765pro-solo-collection-dresscode-2026": {
+   "action": "article",
+   "angle": "ソロコレ「ドレスコード：最上級」の予約が本日10月4日23時59分で締切(3,300円、受注生産、1会員3枚まで、A-on STORE・アソビストア・アニメイトオンライン限定)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切が当日。最終日に見に行って手続きできる"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-never-end-idol-bluray-correction-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "10月3日付の記事はDAY1のみだった訂正が通常版 DAY2(LABX-8919~20、17,600円、DAY2本編とアンコールの2枚組、メイキング映像なし)にも及ぶと伝える",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "765-never-end-idol-bluray-correction-2026",
+    "candidate_ids": [
+     "202610031232-explore-0"
+    ]
+   },
+   {
+    "slug": "765-765pro-solo-collection-dresscode-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "ソロコレ「ドレスコード：最上級」の予約が本日10月4日23時59分で締切(3,300円、受注生産、1会員3枚まで、A-on STORE・アソビストア・アニメイトオンライン限定)",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "765pro-solo-collection-dresscode-2026",
+    "candidate_ids": [
+     "sched-2026-10-04-765pro-solo-collection-dresscode-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

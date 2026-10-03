@@ -404,5 +404,34 @@
   "verify": "confirmed",
   "src_candidate_id": "202610012336-watch-7",
   "deadline": "2026-10-18"
+ },
+ {
+  "id": "sched-2026-10-18-stage04-2026-締切",
+  "dedup_key": "stage04-2026",
+  "brand": "million",
+  "subject": "コトブキヤくじ ミリオンライブ！ stage04",
+  "kind": "締切",
+  "note": "23:59までのくじ販売最終日",
+  "reserved_on": "2026-10-04",
+  "title": "コトブキヤくじ アイドルマスター ミリオンライブ！ stage04",
+  "url": "https://x.com/kotobukiya_kuji/status/2106232790522188171",
+  "source_type": "当事者",
+  "facts": [
+   "告知ページ: https://kuji.kotobukiya.co.jp/lp/the-idolmaster-million-live04/",
+   "投稿本文:",
+   "B賞とC賞は、ゲーム内ビジュアルを使用したタペストリーとアクリルブロック",
+   "テーマに合わせてピックアップしている、という案内",
+   "購入リンクは上記LP（投稿には utm_source=twitter、utm_medium=social、utm_campaign=261003 が付く）",
+   "告知ページの販売条件:",
+   "企画名: コトブキヤくじ アイドルマスター ミリオンライブ！ stage04",
+   "『アイドルマスター ミリオンライブ！』のコトブキヤくじ第四弾",
+   "今回のテーマは「○○の秋！」",
+   "最上静香、永吉 昴、七尾百合子の新規描き下ろしイラストを含む",
+   "販売期間: 2026年9月18日（金）10:00～ 2026年10月18日（日）23:59",
+   "販売価格: 1回 850円（税込）"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610040227-grok-79"
  }
 ]

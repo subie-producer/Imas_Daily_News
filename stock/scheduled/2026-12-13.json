@@ -60,5 +60,34 @@
   "src_candidate_id": "202610012336-watch-0",
   "event_date": "2026-10-28",
   "deadline": "2026-12-13"
+ },
+ {
+  "id": "sched-2026-12-13-concept-xr-live-pop-n-toybox-2026-開幕",
+  "dedup_key": "concept-xr-live-pop-n-toybox-2026",
+  "brand": "cg",
+  "subject": "CONCEPT xR LIVE「Pop'n ToyBox!! もういっかい！」大阪公演",
+  "kind": "開幕",
+  "note": "大阪・オリックス劇場で公演が開催される日",
+  "reserved_on": "2026-10-04",
+  "title": "CONCEPT xR LIVE Pop'n ToyBox!! もういっかい！",
+  "url": "https://x.com/imas_CGofficial/status/2106323372619841997",
+  "source_type": "公式",
+  "facts": [
+   "CONCEPT xR LIVE",
+   "Pop'n ToyBox!! もういっかい！",
+   "2026.12.13 Sun",
+   "大阪・オリックス劇場",
+   "もういっかい、みんなで一緒にあそびましょう",
+   "特設サイト: https://t.co/nnmEEekT6u （開くと https://idolmaster-official.jp/live_events/xr_revival2026 ）",
+   "特設サイトを開いた時点の本文は、ポータルの共通メニューと著作権表示以外の公演詳細を返さなかった",
+   "アソビストア一般会員先行受付中",
+   "チケット: https://t.co/9Lg9jKMa66 （開くと https://asobiticket2.asobistore.jp/receptions/d0d5822a-deb6-46fa-b2ab-19b2fedb592c ）",
+   "チケットページを開いた時点では本文を取得できず、席種・価格・受付期間・入金期間は確認できなかった",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610040227-grok-36",
+  "event_date": "2026-12-13"
  }
 ]

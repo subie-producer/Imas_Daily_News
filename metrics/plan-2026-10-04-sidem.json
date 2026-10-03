@@ -1,0 +1,275 @@
+{
+ "decisions": {
+  "sidem-popup-werewolf-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/3号の本文に全事実が既出。開催は10/23で当日トリガーなし"
+  },
+  "sidem-promi-2027-premium-presale": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-meeting-ajewelholic-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じプロミ2027会員先行の申込締切"
+  },
+  "sidem-2026": {
+   "action": "article",
+   "angle": "SideM×シャニマス対バンライブのアソビストアプレミアム会員先行が受付中で、315プロ・283プロで座席エリアが分かれるSPプロデューサーシート/プロデューサーシートが登場",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior無し。他面の記事も無いのでこの面で記事化(共同の可能性あり)"
+  },
+  "315-1-10-4-0-00-2026": {
+   "action": "article",
+   "angle": "「315プロダクション エピソード」の「アイドルたちの1コマ」が10月4日0:00に更新、315 PASSION CONTENTSで公開中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "sidem-topic-2026 を統合。無償で読める"
+  },
+  "sidem-topic-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "315-1-10-4-0-00-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ「アイドルたちの1コマ」更新"
+  },
+  "315-night-10-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/2放送済みで終了。準公式・未確認"
+  },
+  "sidem-315pronight-11th-feedback-october-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/3号に既出。facts に当日の締切記載なし"
+  },
+  "sidem-sai-ranman-kaika-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/3号の配信まとめで既報、公開済み"
+  },
+  "sidem-sem-lifes-side-menu-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/3号に既出。公開は10/14で当日トリガーなし"
+  },
+  "10-16-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "演者個人の投稿のみ。10/16回は既報"
+  },
+  "sidem-4-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "リメンバーショット第4弾は9/29・10/3号で既報。新事実なし"
+  },
+  "sidem-11th-stage-sponsor-goods-2026": {
+   "action": "article",
+   "angle": "11th STAGE協賛社グッズのASOBI STORE WEB販売が本日10月4日で終了予定",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。販売期間9/11 17:00〜10/4(予定)"
+  },
+  "sidem-producer-meeting-ajewelholic-2027": {
+   "action": "article",
+   "angle": "プロミ2027「AJewelholIc!!!」(3/13・14 京王アリーナTOKYO)のアソビストアプレミアム会員先行申込が本日10月4日23:59締切",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "sidem-2027・sidem-promi-2027-premium-presale を統合。当落発表10/17"
+  },
+  "sidem-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-meeting-ajewelholic-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ会員先行の申込締切"
+  },
+  "topic-065-2026": {
+   "action": "article",
+   "angle": "SideM SOLO COLLECTION 04のオンライン受注(アニメイト・アソビストア)が本日10月4日23:59で最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。チケット申込とは別行動のため別記事"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-2026-f9e64d",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×シャニマス対バンライブのアソビストアプレミアム会員先行が受付中で、315プロ・283プロで座席エリアが分かれるSPプロデューサーシート/プロデューサーシートが登場",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-2026",
+    "candidate_ids": [
+     "202610040227-grok-51"
+    ]
+   },
+   {
+    "slug": "sidem-315-1-10-4-0-00-2026-77814b",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「315プロダクション エピソード」の「アイドルたちの1コマ」が10月4日0:00に更新、315 PASSION CONTENTSで公開中",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "315-1-10-4-0-00-2026",
+    "candidate_ids": [
+     "202610040227-grok-52",
+     "202610040227-grok-53"
+    ]
+   },
+   {
+    "slug": "sidem-11th-stage-sponsor-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "11th STAGE協賛社グッズのASOBI STORE WEB販売が本日10月4日で終了予定",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-11th-stage-sponsor-goods-2026",
+    "candidate_ids": [
+     "sched-2026-10-04-sidem-11th-stage-sponsor-goods-2026-終了"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-2027",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "プロミ2027「AJewelholIc!!!」(3/13・14 京王アリーナTOKYO)のアソビストアプレミアム会員先行申込が本日10月4日23:59締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027",
+    "candidate_ids": [
+     "sched-2026-10-04-sidem-producer-meeting-ajewelholic-2027-締切",
+     "202610040227-grok-50",
+     "sched-2026-10-04-sidem-promi-2027-premium-presale-締切",
+     "sched-2026-10-04-sidem-2027-締切"
+    ]
+   },
+   {
+    "slug": "sidem-topic-065-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM SOLO COLLECTION 04のオンライン受注(アニメイト・アソビストア)が本日10月4日23:59で最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "topic-065-2026",
+    "candidate_ids": [
+     "sched-2026-10-04-topic-065-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-popup-werewolf-2026-10",
+    "reason": "既報",
+    "note": "10/3号の本文に全事実が既出。開催は10/23で当日トリガーなし"
+   },
+   {
+    "dedup_key": "315-night-10-2-2026",
+    "reason": "その他",
+    "note": "10/2放送済みで終了。準公式・未確認"
+   },
+   {
+    "dedup_key": "sidem-315pronight-11th-feedback-october-2026",
+    "reason": "既報",
+    "note": "10/3号に既出。facts に当日の締切記載なし"
+   },
+   {
+    "dedup_key": "sidem-sai-ranman-kaika-2dmv-2026",
+    "reason": "既報",
+    "note": "10/3号の配信まとめで既報、公開済み"
+   },
+   {
+    "dedup_key": "sidem-sem-lifes-side-menu-2dmv-2026",
+    "reason": "既報",
+    "note": "10/3号に既出。公開は10/14で当日トリガーなし"
+   },
+   {
+    "dedup_key": "10-16-2026",
+    "reason": "個人の話題",
+    "note": "演者個人の投稿のみ。10/16回は既報"
+   },
+   {
+    "dedup_key": "sidem-4-2026",
+    "reason": "既報",
+    "note": "リメンバーショット第4弾は9/29・10/3号で既報。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

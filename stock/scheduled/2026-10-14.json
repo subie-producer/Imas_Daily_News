@@ -165,5 +165,34 @@
   "verify": "unconfirmed",
   "src_candidate_id": "202610030230-grok-45",
   "event_date": "2026-10-14"
+ },
+ {
+  "id": "sched-2026-10-14-pop-up-shop-2026-終了",
+  "dedup_key": "pop-up-shop-2026",
+  "brand": "cg",
+  "subject": "アイマス シンデレラガールズ POP UP SHOP 有楽町マルイ",
+  "kind": "終了",
+  "note": "開催最終日。滑り込みで店頭に行ける",
+  "reserved_on": "2026-10-04",
+  "title": "シンデレラガールズ POP UP SHOP ダイカットステッカー完売",
+  "url": "https://x.com/thechara_yrkc/status/2106331572974895427",
+  "source_type": "当事者",
+  "facts": [
+   "投稿本文: アイドルマスター シンデレラガールズ POP UP SHOP",
+   "投稿の見出し: お品切れ情報",
+   "ご好評につき「ダイカットステッカー　堀裕子　陰陽師 ミニキャラ ver.」は完売",
+   "再入荷は10/9を予定",
+   "イベント詳細: https://the-chara.com/blog/?p=121064",
+   "投稿のハッシュタグ: #京まふ #京まふ2026 #デレマス #idolmaster",
+   "リンク先ページの掲載日: 2026年09月18日",
+   "ページのイベント名: アイドルマスター シンデレラガールズ　POP UP SHOP",
+   "ページの開催場所: 有楽町マルイ 7F",
+   "ページの見出し: 開催期間",
+   "開催期間: 2026年9月26日(土)~10月14日(水)",
+   "営業時間: 施設営業時間に準ずる(最終日18:00)"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610040227-grok-39"
  }
 ]

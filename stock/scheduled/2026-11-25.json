@@ -86,5 +86,34 @@
   "verify": "confirmed",
   "src_candidate_id": "202610022334-explore-1",
   "event_date": "2026-11-25"
+ },
+ {
+  "id": "sched-2026-11-25-765-never-end-idol-blu-ray-correction-2026-発売",
+  "dedup_key": "765-never-end-idol-blu-ray-correction-2026",
+  "brand": "765",
+  "subject": "765PRO ALLSTARS NEVER END IDOL LIVE Blu-ray通常版 DAY1/DAY2",
+  "kind": "発売",
+  "note": "Blu-ray通常版 DAY1・DAY2の発売日。訂正後の商品内容で購入できる",
+  "reserved_on": "2026-10-04",
+  "title": "765PRO ALLSTARS LIVE Blu-rayの商品情報を訂正",
+  "url": "https://lantis.jp/topics/news/6194/",
+  "source_type": "準公式",
+  "facts": [
+   "発売日: 2026年11月25日(水)",
+   "【通常版 DAY1】のタイトルは「THE IDOLM@STER 765PRO ALLSTARS LIVE ～NEVER END IDOL!!!!!!!!!!!!!～ LIVE Blu-ray【通常版 DAY1】」、アーティストは765PRO ALLSTARS、品番はLABX-8917~8、価格は¥17,600（税込）、Disc2枚組。",
+   "【通常版 DAY2】のタイトルは「THE IDOLM@STER 765PRO ALLSTARS LIVE ～NEVER END IDOL!!!!!!!!!!!!!～ LIVE Blu-ray【通常版 DAY2】」、アーティストは765PRO ALLSTARS、品番はLABX-8919~20、価格は¥17,600（税込）、Disc2枚組。",
+   "商品にはメイキング映像の収録がない。メイキング映像が収録されるとしていた案内は誤りとして訂正された。",
+   "【通常版 DAY1】の正しい収録内容は、Disc1がDAY1本編、Disc2がDAY1アンコール。",
+   "【通常版 DAY2】の正しい収録内容は、Disc1がDAY2本編、Disc2がDAY2アンコール。",
+   "発売元は株式会社バンダイナムコエンターテインメント、販売元は株式会社バンダイナムコミュージックライブ、販売協力は株式会社バンダイナムコフィルムワークス。",
+   "問い合わせ先はバンダイナムコミュージックライブお客様センター。営業時間は月～金曜日 10:00～17:00（祝日、夏季・年末年始休業日を除く）。",
+   "エンゲージメント: 低",
+   "対象商品は2026年11月25日(水)発売予定の「THE IDOLM@STER 765PRO ALLSTARS LIVE ～NEVER END IDOL!!!!!!!!!!!!!～ LIVE Blu-ray【通常版 DAY1】」と「【通常版 DAY2】」。",
+   "【通常版 DAY1】のアーティストは765PRO ALLSTARS、品番はLABX-8917~8、価格は¥17,600（税込）、Disc2枚組。",
+   "【通常版 DAY1】の正しい収録内容はDisc1がDAY1本編、Disc2がDAY1アンコール。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202610031232-explore-0"
  }
 ]

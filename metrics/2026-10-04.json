@@ -1,0 +1,136 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-04T02:27:09+09:00",
+   "edition": "2026-10-04",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 347,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 1,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 1,
+    "explore:dsva": 0,
+    "explore:joint-other": 4,
+    "explore:trend": 0,
+    "grok:765as": 2,
+    "grok:cinderella": 8,
+    "grok:million": 5,
+    "grok:shiny": 11,
+    "grok:sidem": 12,
+    "grok:gakuen": 4,
+    "grok:dsva": 10,
+    "grok:joint-other": 6,
+    "grok:trend": 17
+   },
+   "normalized": 78,
+   "added": 75,
+   "verify": {
+    "confirmed": 50,
+    "unconfirmed": 28,
+    "failed": 0
+   },
+   "duration_s": 1591
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-04T03:29:16+09:00",
+   "edition": "2026-10-04",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 33,
+   "written": 28,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 77,
+    "covered": 77,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "million-14th-2026-eba525"
+   ],
+   "stages_min": {
+    "選定": 1.240570569038391,
+    "執筆": 5.003738478819529,
+    "出典の判定": 0.04442285299301148,
+    "組版": 0.8466974020004272,
+    "校閲": 1.2981893261273703,
+    "校閲1波": 1.2981893261273703
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "joint-topic-2026",
+    "dsva-1on1-10-3-10-2026-5be539",
+    "gaku-4-174-2026-d1663e",
+    "dsva-valiv-cosmo-birthday-goods-2026"
+   ],
+   "duration_s": 1718
+  }
+ ]
+}

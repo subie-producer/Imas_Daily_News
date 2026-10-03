@@ -513,6 +513,24 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - znd_milktea         # 合議で追加: 個人によるイベントボーダー集計。定義『個人を二次情報にしない』に従い
+    - watanuki_3330       # 合議で追加: 個人の感想反応
+    - tnmt0803            # 合議で追加: 個人の価格についての質問
+    - tanu_imas           # 合議で追加: 個人の配信視聴感想
+    - t3m8ypgByI30906     # 合議で追加: 個人のファン活動報告
+    - shirou1083          # 合議で追加: 個人の情報への反応
+    - miyako_nmm          # 合議で追加: 個人のファンイベント参加報告
+    - komaDwataru         # 合議で追加: 個人のコンテンツへの反応
+    - kana_1286           # 合議で追加: 個人のファン活動報告
+    - hoseimaster         # 合議で追加: 大学サークルのファン活動
+    - hiyori_23929        # 合議で追加: 個人のファンアート
+    - cai_f00             # 合議で追加: 個人の発見と反応
+    - Space_imas          # 合議で追加: 個人アカウントの感想・発表投稿。個人に紐づくため
+    - Lunar_wot           # 合議で追加: 個人の使用経験の共有
+    - Kumanomispis        # 合議で追加: 個人アカウントの発表投稿。個人に紐づくため
+    - Haruka2007Toshi     # 合議で追加: 個人アカウントのスレッド返信
+    - mkzk_CRESCENT       # 合議で追加: 個人アカウント。ファンが話題について投稿
+    - ChuLo5738           # 合議で追加: 個人アカウント。ファンが話題について投稿
     - ChocoBallCwHW       # 合議で追加: 個人のファンアカウント
     - sweet_soar_         # 合議で追加: 個人アカウントでキャラ8周年を投稿
     - hassen8888          # 合議で追加: 個人アカウントで配信への言及を投稿
@@ -636,6 +654,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - animateakiba        # 合議で追加: ライセンス販売元（アニメイト秋葉原）
     - 8ban_tsurajima      # 合議で追加: コラボ飲食店による一次発信。販売元
     - popico_pi           # 合議で追加: MVの制作に参加
     - miwasiba            # 合議で追加: MVの制作に参加
@@ -733,3 +752,9 @@ path_types:
   tiktok.com/@valiv_official: 公式              # ヴイアラ(vα-liv)公式の TikTok(X の @valiv_official と同じ主体)
   ch.nicovideo.jp/sidem: 公式                    # アイドルマスター SideM チャンネル(ブランド公式のニコニコチャンネル)
   manga.nicovideo.jp/comic/31422: 準公式          # 『ぷちます!』のニコニコ漫画連載ページ(連載先)
+
+# --- 投稿者の無い X の投稿(x.com/i/status/<ID>)。投稿者のアカウントの種別を機械で写す ---
+x_posts:
+  ファン:
+    - 2105957772651385193 # 機械で追加: @ChuLo5738
+    - 2105254556238291021 # 機械で追加: @mkzk_CRESCENT

@@ -1,0 +1,139 @@
+{
+ "decisions": {
+  "arcade-tours-s2-live-2026": {
+   "action": "article",
+   "angle": "ツアマスS2弾生配信の現地観覧25名の先行抽選応募(公式Xのフォローと固定投稿のリポスト)が10月7日23:59に締切、当選連絡は8日ごろ",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内。続報予約「締切前」。prior の内容は期日の伝え直しとして書く"
+  },
+  "starlit-season-5th-anniversary-initiatives-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/3号の本文に配信日時・出演者・メンバー限定・メッセージ募集まで全て既出。新事実も当日トリガーも無い(配信は10/13)"
+  },
+  "after-school-in-namco-2026": {
+   "action": "article",
+   "angle": "学マス After School キャンペーン in namco のナムコ限定プロモーションカードが公開、使うとクレーンゲーム演出のSPアピールが出る",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "価格・店舗・受付期間は本文に無いので書かない"
+  },
+  "tours-witch-night-party-outfit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/3号に解禁・5名・如月千早が次と既出。新しい事実は joint-topic-2026 側の記事で扱う"
+  },
+  "joint-topic-2026": {
+   "action": "article",
+   "angle": "ツアマスS2弾SSR衣装「ウィッチナイトパーティー」の如月千早のパラレルカードイラストが初公開、次は島村卯月",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "実装日時・出現率・価格は本文に無い。素材4件"
+  },
+  "cg-million-coming-soon-2026-08-26": {
+   "action": "article",
+   "angle": "デレミリ合同ライブ「CLASH M@TCH!!」最速先行の当選者の入金期限が本日10月4日23:59",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日が締切。続報予約「締切」。公演日・会場・料金は既出を伝え直す"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-arcade-tours-s2-live-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスS2弾生配信の現地観覧25名の先行抽選応募(公式Xのフォローと固定投稿のリポスト)が10月7日23:59に締切、当選連絡は8日ごろ",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "arcade-tours-s2-live-2026",
+    "candidate_ids": [
+     "202610030732-explore-0",
+     "sched-2026-10-04-arcade-tours-s2-live-2026-締切前"
+    ]
+   },
+   {
+    "slug": "joint-after-school-in-namco-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "学マス After School キャンペーン in namco のナムコ限定プロモーションカードが公開、使うとクレーンゲーム演出のSPアピールが出る",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "after-school-in-namco-2026",
+    "candidate_ids": [
+     "202610040227-grok-40"
+    ]
+   },
+   {
+    "slug": "joint-topic-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスS2弾SSR衣装「ウィッチナイトパーティー」の如月千早のパラレルカードイラストが初公開、次は島村卯月",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "joint-topic-2026",
+    "candidate_ids": [
+     "202610040227-grok-42",
+     "202610040227-grok-43",
+     "202610040227-grok-44",
+     "202610040227-grok-45"
+    ]
+   },
+   {
+    "slug": "joint-cg-million-coming-soon-2026-08-26",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "デレミリ合同ライブ「CLASH M@TCH!!」最速先行の当選者の入金期限が本日10月4日23:59",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "cg-million-coming-soon-2026-08-26",
+    "candidate_ids": [
+     "sched-2026-10-04-cg-million-coming-soon-2026-08-26-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "starlit-season-5th-anniversary-initiatives-2026",
+    "reason": "既報",
+    "note": "10/3号の本文に配信日時・出演者・メンバー限定・メッセージ募集まで全て既出。新事実も当日トリガーも無い(配信は10/13)"
+   },
+   {
+    "dedup_key": "tours-witch-night-party-outfit-2026",
+    "reason": "既報",
+    "note": "10/3号に解禁・5名・如月千早が次と既出。新しい事実は joint-topic-2026 側の記事で扱う"
+   }
+  ],
+  "cross_brand": []
+ }
+}

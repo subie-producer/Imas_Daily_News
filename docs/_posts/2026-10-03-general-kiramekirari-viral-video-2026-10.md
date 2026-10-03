@@ -2,7 +2,7 @@
 slug: general-kiramekirari-viral-video-2026-10
 edition: "2026-10-03"
 brand: general
-src: 未確認
+src: ファン
 rank: culture
 corrected: false
 corrections: []
@@ -18,10 +18,10 @@ tags:
 sources:
 - label: X「キラメキラリ動画投稿の拡散」(2026-10-02)
   url: https://x.com/i/status/2105957772651385193
-  type: 未確認
+  type: ファン
 - label: X「アイドルマスターを称号と説明する投稿」(2026-09-30)
   url: https://x.com/i/status/2105254556238291021
-  type: 未確認
+  type: ファン
 event_date: "2026-10-02"
 title_fact_ids:
 - F1

@@ -118,5 +118,34 @@
   "src_candidate_id": "202610030230-grok-26",
   "event_date": "2026-10-09",
   "deadline": "2026-10-10"
+ },
+ {
+  "id": "sched-2026-10-10-my-with-glasses-2026-締切",
+  "dedup_key": "my-with-glasses-2026",
+  "brand": "million",
+  "subject": "ミリシタ セカンドヘアスタイルガシャ with glasses",
+  "kind": "締切",
+  "note": "本日14:59までガシャを引ける最終日",
+  "reserved_on": "2026-10-04",
+  "title": "セカンドヘアスタイルガシャ ～myブランド編 with glasses～",
+  "url": "https://x.com/imasml_theater/status/2106217679333867548",
+  "source_type": "公式",
+  "facts": [
+   "関連投稿: https://x.com/imasml_theater/status/2105870388563689834",
+   "関連投稿: https://x.com/imasml_theater/status/2105870639269855481",
+   "関連投稿: https://x.com/imasml_theater/status/2106232776009625827",
+   "関連投稿: https://x.com/imasml_theater/status/2106233027345154452",
+   "出現率の投稿（2026-10-03 12:00:01 JST）:",
+   "昴ちゃんのSSRカードが、開催中の『セカンドヘアスタイルガシャ～myブランド編 with glasses～』で獲得できる",
+   "今なら出現率UP中",
+   "出現率の数値、ジュエル数、SSR以外のカード名は本文にない",
+   "亜利沙の投稿（2026-10-02 13:00:00 JST、2026-10-02 04:00:00 GMT）:",
+   "https://x.com/imasml_theater/status/2105870388563689834",
+   "セリフ: 研究と分析を重ねて、たどり着いた……今のありさにできる魅力的なポーズです。……フッ、どうですか。",
+   "ガシャ名: セカンドヘアスタイルガシャ ～myブランド編 with glasses～"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610040227-grok-78"
  }
 ]

@@ -98,5 +98,34 @@
   "src_candidate_id": "202610020733-explore-8",
   "event_date": "2026-09-30",
   "deadline": "2026-10-09"
+ },
+ {
+  "id": "sched-2026-10-06-birthday-online-live-2026-lv-2026-結果",
+  "dedup_key": "birthday-online-live-2026-lv-2026",
+  "brand": "dsva",
+  "subject": "灯里愛夏延期公演 現地LV先行の当落発表",
+  "kind": "結果",
+  "note": "現地LV先行抽選の当落をLivePocketで確認できる(予定)",
+  "reserved_on": "2026-10-04",
+  "title": "灯里愛夏 BIRTHDAY ONLINE LIVE 2026 延期公演の現地LV抽選",
+  "url": "https://x.com/valiv_official/status/2106217676318089448",
+  "source_type": "公式",
+  "facts": [
+   "投稿のイベント名: 灯里愛夏 BIRTHDAY ONLINE LIVE 2026 延期公演",
+   "現地LVチケット先行抽選: https://livepocket.jp/e/va-liv_manaka_bd2026_re",
+   "配信チケット: https://asobistage.asobistore.jp/event/valiv_bd2026_manaka/ticket",
+   "イベント詳細: https://idolmaster-official.jp/news/01_19896 （ページ上の日付は 2026.09.21。対象期間より前の掲載。以下はそのページと、投稿が直接示しているLivePocketで確認した内容）",
+   "詳細ページの公演名: 灯里愛夏 BIRTHDAY ONLINE LIVE 2026 延期公演",
+   "元の開催予定は 2026年7月1日(水)。延期後は 2026年10月28日(水)",
+   "アーカイブ期間: 2026年10月28日(水)～2026年11月29日(日)23:59",
+   "開催場所①: ASOBI STAGE（配信チケット対象）",
+   "開催場所②: ユナイテッド・シネマ アクアシティお台場［3番スクリーン］（限定グッズ付きライブビューイングチケット対象）",
+   "LivePocketの住所: 〒135-0091 東京都港区台場1-7-1 アクアシティお台場",
+   "会場案内: https://www.unitedcinemas.jp/odaiba/about-theater.html",
+   "ライブビューイング会場: 開場18:00／開演19:00（予定）。終演後お見送り会"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610040227-grok-10"
  }
 ]

@@ -1,0 +1,272 @@
+{
+ "decisions": {
+  "9": {
+   "action": "article",
+   "angle": "vα-livの9月度活動アンケートの回答締切が本日10月4日23:59",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shinkai-fes-2026-timetable": {
+   "action": "article",
+   "angle": "深海フェス2026のタイムテーブルが公開、10月17日のDAY1に上水流宇宙とレトラ、18日のDAY2に灯里愛夏が出演",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "渋谷ストリーム ホール、第三次販売は10/15まで"
+  },
+  "valiv-kamizuru-cosmo-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-cosmo-birthday-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズセット(公式news 01_20069)"
+  },
+  "dsva-topic-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-voice-15-villainess-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ悪役令嬢ボイスの販売期限告知"
+  },
+  "10-2-ace-combat-8-wings-of-theve-2026": {
+   "action": "roundup",
+   "angle": "ヴイアラ公式の配信・動画・アーカイブ情報(10/2 ACE COMBAT 8配信)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "1on1-10-3-10-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "1on1-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ1on1"
+  },
+  "birthday-online-live-2026-lv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-20",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ延期公演の現地LV先行抽選"
+  },
+  "2026-2026": {
+   "action": "roundup",
+   "angle": "宇宙誕生祭2026のショートダイジェスト公開と配信アーカイブ販売中",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "diamond-joker-2026": {
+   "action": "roundup",
+   "angle": "上水流宇宙×四条貴音「DIAMOND JOKER」踊ってみたコラボショート公開",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "1on1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/3開催済みで、礼の投稿のみ。新しい事実も当日のトリガーも無い"
+  },
+  "valiv-cosmo-birthday-goods-2026": {
+   "action": "article",
+   "angle": "上水流宇宙バースデー記念グッズ5点セットの受注が本日10月4日で最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "価格11,000円は既報。期日の伝え直し"
+  },
+  "dsva-voice-15-villainess-2026-09": {
+   "action": "article",
+   "angle": "シチュエーションボイス第十五弾「悪役令嬢ボイス」の販売が本日10月4日23:59で終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "dsva-topic-2026、dsva-19、valiv-situation-voice-villainess-2026を統合"
+  },
+  "dsva-19": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-voice-15-villainess-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ悪役令嬢ボイスの販売終了"
+  },
+  "x-com-20": {
+   "action": "article",
+   "angle": "灯里愛夏の延期公演(10/28)、限定グッズ付き現地LV先行抽選の申込が本日10月4日23:59で締切",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "birthday-online-live-2026-lv-2026を統合。当落発表は10/6"
+  },
+  "valiv-situation-voice-villainess-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-voice-15-villainess-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ悪役令嬢ボイスの販売最終日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-shinkai-fes-2026-timetable",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "深海フェス2026のタイムテーブルが公開、10月17日のDAY1に上水流宇宙とレトラ、18日のDAY2に灯里愛夏が出演",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "shinkai-fes-2026-timetable",
+    "candidate_ids": [
+     "202610031232-explore-6"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-cosmo-birthday-goods-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙バースデー記念グッズ5点セットの受注が本日10月4日で最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "valiv-cosmo-birthday-goods-2026",
+    "candidate_ids": [
+     "sched-2026-10-04-valiv-cosmo-birthday-goods-2026-締切",
+     "202610031834-watch-0"
+    ]
+   },
+   {
+    "slug": "dsva-voice-15-villainess-2026-09",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "シチュエーションボイス第十五弾「悪役令嬢ボイス」の販売が本日10月4日23:59で終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "dsva-voice-15-villainess-2026-09",
+    "candidate_ids": [
+     "sched-2026-10-04-dsva-voice-15-villainess-2026-09-終了",
+     "202610040227-grok-7",
+     "sched-2026-10-04-dsva-19-終了",
+     "sched-2026-10-04-valiv-situation-voice-villainess-2026-締切"
+    ]
+   },
+   {
+    "slug": "dsva-9-0ade7c",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "vα-livの9月度活動アンケートの回答締切が本日10月4日23:59",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "9",
+    "candidate_ids": [
+     "sched-2026-10-04-9-締切"
+    ]
+   },
+   {
+    "slug": "dsva-x-com-20",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏の延期公演(10/28)、限定グッズ付き現地LV先行抽選の申込が本日10月4日23:59で締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "x-com-20",
+    "candidate_ids": [
+     "sched-2026-10-04-x-com-20-締切",
+     "202610040227-grok-10",
+     "202610040227-grok-11"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "ヴイアラ公式の配信・動画・アーカイブ情報(10/2 ACE COMBAT 8配信)",
+    "lead_score": 0,
+    "dedup_key": "10-2-ace-combat-8-wings-of-theve-2026",
+    "candidate_ids": [
+     "202610040227-grok-8",
+     "202610040227-grok-12",
+     "202610040227-grok-13",
+     "202610040227-grok-15"
+    ]
+   },
+   {
+    "slug": "dsva-1on1-10-3-10-2026-5be539",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "オンライン1on1（10/3は愛夏、10時から）",
+    "lead_score": 0,
+    "dedup_key": "1on1-10-3-10-2026",
+    "candidate_ids": [
+     "202610040227-grok-9"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "1on1-2026",
+    "reason": "その他",
+    "note": "10/3開催済みで、礼の投稿のみ。新しい事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

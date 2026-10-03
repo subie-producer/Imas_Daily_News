@@ -85,5 +85,34 @@
   "via": "grok",
   "verify": "unconfirmed",
   "src_candidate_id": "202609260237-grok-71"
+ },
+ {
+  "id": "sched-2026-12-02-2nd-single-3rd-single-asobi-store-2026-発売",
+  "dedup_key": "2nd-single-3rd-single-asobi-store-2026",
+  "brand": "gaku",
+  "subject": "雨夜燕 3rd Single「クライアイ」発売",
+  "kind": "発売",
+  "note": "CDの発売日(予定)。予約した人は受け取れる",
+  "reserved_on": "2026-10-04",
+  "title": "雨夜燕 2nd Single ＆ 3rd Single 予約（ASOBI STORE）",
+  "url": "https://x.com/gkmas_official/status/2106293175530995734",
+  "source_type": "公式",
+  "facts": [
+   "告知ページ（投稿のリンク）: https://shop.asobistore.jp/product/catalog/n/30/t/category/ca/gkms_tbm_cd/s/older#a1",
+   "商品ページ: https://shop.asobistore.jp/products/detail/245053-00-00-00",
+   "商品ページ: https://shop.asobistore.jp/products/detail/245054-00-00-00",
+   "投稿文: 予約終了まであとわずか",
+   "投稿文: 雨夜燕2nd ＆ 3rd Single 予約受付中",
+   "投稿文: ハッシュタグ #学マス",
+   "カテゴリページの表示: 雨夜 燕 2nd & 3rd Single（2件）",
+   "カテゴリページの表示: 雨夜 燕 3rd Single「クライアイ」に「本日締切!!」、2,500円(税込)",
+   "カテゴリページの表示: 雨夜 燕 2nd Single「三分半の創世」に「本日締切!!」、2,500円(税込)",
+   "カテゴリページのアイコン表示: 発送条件あり",
+   "カテゴリページのアイコン表示: 代引き不可",
+   "販売価格: 2,500円（税込）"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610040227-grok-48"
  }
 ]

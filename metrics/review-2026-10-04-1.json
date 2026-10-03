@@ -1,0 +1,255 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-10-04-cg-concept-xr-live-pop-n-toybox-2026.md",
+   "issue": "時制の誤り：未来のイベント（12月13日開催）を過去形で記述",
+   "quote": "CONCEPT xR LIVE「Pop'n ToyBox!! もういっかい！」が12月13日に大阪・オリックス劇場で開催され",
+   "rule_id": "R6",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "F3",
+    "F4"
+   ],
+   "expected": "リードで「開催される」（未来形）に修正し、発行日時点での未来のイベントとして正しく表現されること",
+   "scope": "article:2026-10-04-cg-concept-xr-live-pop-n-toybox-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-dsva-ops-roundup.md",
+   "issue": "sources に YouTube・TikTok・ASOBI STAGE の URL が記載されていない",
+   "quote": "上水流宇宙と四条貴音が「DIAMOND JOKER」を踊るコラボショートを公開。YouTubeとTikTokで視聴できる。",
+   "rule_id": "R3",
+   "repair": "add_source",
+   "fact_ids": [
+    "F9",
+    "F16"
+   ],
+   "expected": "sources に YouTube Shorts、TikTok、配信アーカイブチケット販売ページの URL を記載する",
+   "scope": "article:2026-10-04-dsva-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-gaku-live-tour-2026.md",
+   "issue": "タイトルの人名が誤字。「秦谷美鸜」は「秦谷美鈴」が正しい。候補の facts にも sources のラベルにも「秦谷美鈴」と記載されている",
+   "quote": "学マス岩手公演、秦谷美鸜の新曲公開",
+   "rule_id": "R16",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F4"
+   ],
+   "expected": "「秦谷美鸜」を「秦谷美鈴」に修正する",
+   "scope": "article:2026-10-04-gaku-live-tour-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-million-14th-2026-eba525.md",
+   "issue": "見出しと lede で「馬場このみ」という人名を使用しているが、根拠の F3 には「このみをイメージした」とのみ記載されており、「このみ」が「馬場このみ」を指すという確定が根拠から導き出せない。根拠の F3（候補-grok-77 の facts[2]）は「このみをイメージした公式日本酒グラスセット」と記載。「馬場このみ」という人名はグラスセット関連の素材には含まれておらず、DAY2出演者リスト(F35)にのみ含まれている。記事が「馬場このみ」と特定した根拠が素材に明示されていない。",
+   "quote": "ミリオン14th、馬場このみの日本酒グラスセット",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F3"
+   ],
+   "expected": "見出しを「ミリオン14th、このみをイメージした日本酒グラスセット」に修正、または lede の「馬場このみを」を「このみを」に修正し、根拠から直接導き出せる表現に統一する",
+   "scope": "article:2026-10-04-million-14th-2026-eba525.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-million-14th-day2-singles-order-2026.md",
+   "issue": "Present のアーティスト情報が出典（素材の facts）に記載されていない",
+   "quote": "「Present」は馬場このみと百瀬莉緒が歌うLACZ-10384",
+   "rule_id": "R1",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "sched-2026-10-04-million-14th-day2-singles-order-2026-締切"
+   ],
+   "expected": "Present についてはアーティスト情報を削除し、品番と価格のみを記述する、または出典に未記載のため sources に新しい出典を追加する",
+   "scope": "article:2026-10-04-million-14th-day2-singles-order-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-sidem-315-1-10-4-0-00-2026-77814b.md",
+   "issue": "記事の lede の根拠として指定されている素材 F3 が sources に記載されていない",
+   "quote": "lede_fact_ids に F2, F3 が指定されているが、sources に は F2 の URL のみで、F3 の URL（https://idolmaster-official.jp/sidem）が記載されていない",
+   "rule_id": "R3",
+   "repair": "add_source",
+   "fact_ids": [
+    "202610040227-grok-53"
+   ],
+   "expected": "F3 の URL を sources に追加して、根拠を明示する",
+   "scope": "article:2026-10-04-sidem-315-1-10-4-0-00-2026-77814b.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-10-04-765-765pro-solo-collection-dresscode-2026.md",
+   "issue": "分量不足: rank: small（目安250字）に対して本文が約60字で、出典にある受注開始日（9月21日）や発送予定時期（11月中旬）、対象者（全員）などを追加すれば体裁が整います",
+   "scope": "article:2026-10-04-765-765pro-solo-collection-dresscode-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-765-never-end-idol-bluray-correction-2026.md",
+   "issue": "分量不足: rank: small の目安は 250 字ですが、本文が約 30 字と極めて短いです。出典に記載されている DAY1 との訂正内容の比較、問い合わせ先などの詳細情報を追加して分量を埋めることができます。",
+   "scope": "article:2026-10-04-765-never-end-idol-bluray-correction-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-cg-concept-xr-live-pop-n-toybox-2026.md",
+   "issue": "出典補足：素材に公式サイトURL(https://idolmaster-official.jp/live_events/xr_revival2026)が確認できるため、sources にこちらを追加すると信頼性が向上する可能性",
+   "scope": "article:2026-10-04-cg-concept-xr-live-pop-n-toybox-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-dsva-9-0ade7c.md",
+   "issue": "分量不足: rank: small に対して本文が薄い（目安 250字に対して約75字）。出典にあるフォーム内容の詳細や、回答の意義などで埋め合わせが検討できます",
+   "scope": "article:2026-10-04-dsva-9-0ade7c.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-dsva-ops-roundup.md",
+   "issue": "見出しに作品名またはイベント名が無い。何のニュースかが一目では分からない",
+   "scope": "article:2026-10-04-dsva-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-dsva-ops-roundup.md",
+   "issue": "本文が短い。候補の出典に会場・グッズ内容・配信期間など詳細情報があるため、追記すれば充実する",
+   "scope": "article:2026-10-04-dsva-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-dsva-voice-15-villainess-2026-09.md",
+   "issue": "分量不足: 本文143字で、rank: small の目安250字に対して107字不足。出典にある「9月のお題」「ストーリーの概要」「イラストレーター」などを加えて充実させることが可能。",
+   "scope": "article:2026-10-04-dsva-voice-15-villainess-2026-09.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-dsva-x-com-20.md",
+   "issue": "sources のラベルが「販売開始（2026.09.21）」となっており、記事の主題である「締切」と一致していない。ラベルを「先行抽選申込受付締切」など「締切」を示す内容に更新することを推奨",
+   "scope": "article:2026-10-04-dsva-x-com-20.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-gaku-live-tour-2026.md",
+   "issue": "本文が薄い：rank: small に対して約20字のみ。タイトル・リードで言及した秦谷美鈴の新曲公開について、本文に詳細が記載されていない。候補の facts から新曲名や詳細を追加すれば充実する",
+   "scope": "article:2026-10-04-gaku-live-tour-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-gaku-x-com-26.md",
+   "issue": "分量不足。rank: small に対して本文が薄い（目安250字）。出典(202610040227-grok-48)に記載されているジャケットデザイン、特典、3rd Single の製品詳細などを拾えば充実する可能性がある。",
+   "scope": "article:2026-10-04-gaku-x-com-26.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-general-xr-live-revival-twin-2026.md",
+   "issue": "見出しに企画名がない。「xR LIVE REVIVAL」や「ライブ」など、イベント形式が明示されていないため、見出しだけでは内容が理解しやすさにやや欠ける。「はんげつ」は過去の同名公演を指すため、リバイバル公演であることが見出しから読み取りにくい。",
+   "scope": "article:2026-10-04-general-xr-live-revival-twin-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-joint-after-school-in-namco-2026.md",
+   "issue": "本文が薄い：rankがsmall（目安250字以上）のところ、本文は69字。出典にあるキャンペーン情報（開催期間・ナムコ店舗での配置など）を拾えば埋まる。",
+   "scope": "article:2026-10-04-joint-after-school-in-namco-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-shiny-ops-roundup.md",
+   "issue": "sources[2]（シーズン36紹介告知）のラベルが「甘奈の衣装セット紹介」であるのに、記事本文にはシーズンパス情報のみで、衣装セット「スウィーティーブラックナース」の具体名が記載されていない。candidates grok-70 fact 3 で紹介されている仕様情報が活用できていない。",
+   "scope": "article:2026-10-04-shiny-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-shiny-ops-roundup.md",
+   "issue": "記事本文の字数（lede 含めて約 338字）が rank: roundup の目安 450字 より著しく短い。sources に記載されている詳細な仕様（衣装セット名、対象条件等）を追加すれば補充できる可能性がある。",
+   "scope": "article:2026-10-04-shiny-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-shiny-runway-2026-master-showpiece-photo-contest.md",
+   "issue": "表記の一貫性: タイトルは「23:59」、リードは「23時59分」と、時間表記が統一されていない。出典（sources）とも合わせて確認し、統一を推奨",
+   "scope": "article:2026-10-04-shiny-runway-2026-master-showpiece-photo-contest.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-shiny-runway-2026-master-showpiece-photo-contest.md",
+   "issue": "分量不足: rank=small の目安は250字だが、本文は約160字。sources に記載されている応募条件や賞品詳細（受賞発表予定日など）を補足すれば嵩増しできる",
+   "scope": "article:2026-10-04-shiny-runway-2026-master-showpiece-photo-contest.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-sidem-11th-stage-sponsor-goods-2026.md",
+   "issue": "本文が54文字で、rank:smallの目安（250字）に達していない。出典に会場・価格・購入条件など追加情報があれば活用してください",
+   "scope": "article:2026-10-04-sidem-11th-stage-sponsor-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-sidem-2026-f9e64d.md",
+   "issue": "見出しに「対バンライブ」というイベント形式が明記されていない。見出しだけでは『何のチケット先行か』が分かりにくい。『SideM×シャニマス対バンライブ先行、10月12日締切』など、イベント名を入れることで読者の理解が進む。",
+   "scope": "article:2026-10-04-sidem-2026-f9e64d.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-sidem-315-1-10-4-0-00-2026-77814b.md",
+   "issue": "本文が極めて短い。rank が small の目安 250 字に対し、現在は約 45 字。lede の詳細、URL、コンテンツのタイトル（F3 の「いちおう全部、積んどくっしょ」）、アクセス条件（「無償」）などの情報を本文に加えて充実させられる",
+   "scope": "article:2026-10-04-sidem-315-1-10-4-0-00-2026-77814b.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-04-sidem-topic-065-2026.md",
+   "issue": "分量不足: rank: small の目安 250字に対して本文が約45字で大幅に短い。sources に記載された価格・販売店・受注期間などの情報をさらに拾うことで充実が可能",
+   "scope": "article:2026-10-04-sidem-topic-065-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "候補に存在するが記事化されていない話題がある。特に202610031834-explore-6『プラチナスターチューン～ライラックにつつまれて～開催』（confirmed、deadline: 2026-10-08）はミリシタのイベント進行中情報で記者価値があるが、紙面に無い。落とされた理由は見えないが、同等以上の重要度の情報は記事に含まれている。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-04-765-765pro-solo-collection-dresscode-2026.md",
+  "article:2026-10-04-765-never-end-idol-bluray-correction-2026.md",
+  "article:2026-10-04-cg-concept-xr-live-pop-n-toybox-2026.md",
+  "article:2026-10-04-cg-pop-up-shop-2026.md",
+  "article:2026-10-04-dsva-9-0ade7c.md",
+  "article:2026-10-04-dsva-ops-roundup.md",
+  "article:2026-10-04-dsva-shinkai-fes-2026-timetable.md",
+  "article:2026-10-04-dsva-valiv-cosmo-birthday-goods-2026.md",
+  "article:2026-10-04-dsva-voice-15-villainess-2026-09.md",
+  "article:2026-10-04-dsva-x-com-20.md",
+  "article:2026-10-04-gaku-live-tour-2026.md",
+  "article:2026-10-04-gaku-x-com-26.md",
+  "article:2026-10-04-general-xr-live-revival-twin-2026.md",
+  "article:2026-10-04-joint-after-school-in-namco-2026.md",
+  "article:2026-10-04-joint-arcade-tours-s2-live-2026.md",
+  "article:2026-10-04-joint-cg-million-coming-soon-2026-08-26.md",
+  "article:2026-10-04-million-14th-2026-eba525.md",
+  "article:2026-10-04-million-14th-day2-singles-order-2026.md",
+  "article:2026-10-04-million-my-with-glasses-2026.md",
+  "article:2026-10-04-million-stage04-2026.md",
+  "article:2026-10-04-million-theater-9th-illustration-goods-2026.md",
+  "article:2026-10-04-shiny-msp-2026-09-f14b09.md",
+  "article:2026-10-04-shiny-ops-roundup.md",
+  "article:2026-10-04-shiny-refrac7ions-still-blue-2026.md",
+  "article:2026-10-04-shiny-runway-2026-master-showpiece-photo-contest.md",
+  "article:2026-10-04-sidem-11th-stage-sponsor-goods-2026.md",
+  "article:2026-10-04-sidem-2026-f9e64d.md",
+  "article:2026-10-04-sidem-315-1-10-4-0-00-2026-77814b.md",
+  "article:2026-10-04-sidem-producer-meeting-ajewelholic-2027.md",
+  "article:2026-10-04-sidem-topic-065-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-10-04-765-765pro-solo-collection-dresscode-2026.md": "73493717dbd577f9b8c45cc77b99a5ea173dd7dae0898e002d430b5dc7d38c15",
+  "docs/_posts/2026-10-04-765-never-end-idol-bluray-correction-2026.md": "4d7c1f571f265a7ccd78f25c4b1462213836192766b58b3eff5ebf667141a61b",
+  "docs/_posts/2026-10-04-cg-concept-xr-live-pop-n-toybox-2026.md": "0174ab84d80182b582c2d1cbd6e38a36c7b3860de8cddecf8cefae3061cb2b42",
+  "docs/_posts/2026-10-04-cg-pop-up-shop-2026.md": "78f72d8570c74a402db7ee924613525fa50c26d2f181482518fde0b94ea09a91",
+  "docs/_posts/2026-10-04-dsva-9-0ade7c.md": "d224d514da5c05c78168f071a341e47a5d0cc5162f572dfa6e0e7f1aef2c61ac",
+  "docs/_posts/2026-10-04-dsva-ops-roundup.md": "d1e8b0a6cc0962a9c62ff1be282e989d4c18f1292359d64b1279cb114dfaa535",
+  "docs/_posts/2026-10-04-dsva-shinkai-fes-2026-timetable.md": "d45fb3aad562353893d16a37d97d3d32ee501d92706312f929207836d9d8374b",
+  "docs/_posts/2026-10-04-dsva-valiv-cosmo-birthday-goods-2026.md": "74709a9370852c0d0b78cf4175f78982b9a97f2f04c4f33d8ce339579c5ea36f",
+  "docs/_posts/2026-10-04-dsva-voice-15-villainess-2026-09.md": "a10057412e5c75ce2d25087a9703009ff070da6f4f12850302b96d9dc254911c",
+  "docs/_posts/2026-10-04-dsva-x-com-20.md": "4d40c919de9afc9d62550d45a2ca8e5b4721b956dc5525ce3bb69156d324a494",
+  "docs/_posts/2026-10-04-gaku-live-tour-2026.md": "17306f74a3787bbd3c1471fd0f0ee0beb191b55e134e96ada9ddaba546591ea2",
+  "docs/_posts/2026-10-04-gaku-x-com-26.md": "4427dde3ca3d56b81adbc52ed6f656b052809ba2487aea291745a87b97d32864",
+  "docs/_posts/2026-10-04-general-xr-live-revival-twin-2026.md": "c4f4d80fec8330aaf8f7c707bdad9b764257f8d45d70865ecb348daa165b22a6",
+  "docs/_posts/2026-10-04-joint-after-school-in-namco-2026.md": "61289cf3426558868d217c83b7c654423854501730126803264f25a9e0f23a95",
+  "docs/_posts/2026-10-04-joint-arcade-tours-s2-live-2026.md": "1eb92b4595350517a2c3d8288850fba0679f472b60d3d15add32562bd119cd38",
+  "docs/_posts/2026-10-04-joint-cg-million-coming-soon-2026-08-26.md": "ca6e570588d2f2b6083c2a1f8acf921a8bd80de75810190445b9bbfaf09d4e16",
+  "docs/_posts/2026-10-04-million-14th-2026-eba525.md": "be13ef053a17aa6c801fba288cba4a5dd955ec74940064c631c7e9ed1dcf04df",
+  "docs/_posts/2026-10-04-million-14th-day2-singles-order-2026.md": "e969bf1af0b4ad02becbdd70f824af070051ae4982d7edb619c8efd439abe40b",
+  "docs/_posts/2026-10-04-million-my-with-glasses-2026.md": "eea6cf1bd59a90a553bb6136cdc4c221ad5e66879055a2f982b2075520a9938b",
+  "docs/_posts/2026-10-04-million-stage04-2026.md": "569a278a34776415eddf5c3d8c72dea982ec401234af8b8bb8e24aa45a5fcdd1",
+  "docs/_posts/2026-10-04-million-theater-9th-illustration-goods-2026.md": "02dc5c3278a0e4f660afa460e97627d44622c83cedc6ff174b62e869e4c7aa1d",
+  "docs/_posts/2026-10-04-shiny-msp-2026-09-f14b09.md": "16f52c4dd0e115474daf26c798769ffdb9c839e48d636d689cf054a0be586a27",
+  "docs/_posts/2026-10-04-shiny-ops-roundup.md": "1785c469944088ad15d5633dd8009e3a14e93cbd939b5bfe207378ffbe6aafda",
+  "docs/_posts/2026-10-04-shiny-refrac7ions-still-blue-2026.md": "a6295e0ecdebd279b7a383d9883c8451bdfe9c17b60e6cfe11be96a5014b63a8",
+  "docs/_posts/2026-10-04-shiny-runway-2026-master-showpiece-photo-contest.md": "505890f25af26ab6f20beeb4db7b69b6fa4812daf35044c9a1b119148f4a085c",
+  "docs/_posts/2026-10-04-sidem-11th-stage-sponsor-goods-2026.md": "4b9fa1183e046386bbedc966e250233760a7f97e46914251ac4af522626e4c80",
+  "docs/_posts/2026-10-04-sidem-2026-f9e64d.md": "9b10592234d2a19d3f7070a8f872fc966514f29833158d56973142da7120be97",
+  "docs/_posts/2026-10-04-sidem-315-1-10-4-0-00-2026-77814b.md": "dd25f34df8663aed260188e9459943746fe296cdefbca440629a58c5887c203e",
+  "docs/_posts/2026-10-04-sidem-producer-meeting-ajewelholic-2027.md": "441d88a1dcbe4482a281ec15ebc5da356451e53e2ab838454c121dc180788559",
+  "docs/_posts/2026-10-04-sidem-topic-065-2026.md": "8768b9a990ae83f393b22aa822dea2b2d0858870913a668880fb22dd5712d111",
+  "docs/_editions/2026-10-04.md": "709c50255b7fca2ddbeb395e7911422d737b6d69537ac63aac481494db61bef8",
+  "metrics/stories-before-2026-10-04.yml": "70f07e9bbab37a598e63035c96fcd6d8a1ba67173ab53770271f84e1aba0398d"
+ }
+}

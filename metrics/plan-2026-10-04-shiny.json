@@ -1,0 +1,233 @@
+{
+ "decisions": {
+  "shiny-pioneer-impact-mvgiveaway-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/3号の本文と同内容。締切は10/12でまだ3日以内ではない"
+  },
+  "17-00-day1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "DAY1同時視聴会の「このあと17:00」告知。10/3に終了済み"
+  },
+  "msp-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アーカイブ公開中・配信チケット販売中を同時視聴会の記事に統合"
+  },
+  "day1-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1同時視聴会は終了、アーカイブ公開の事実のみ統合"
+  },
+  "hbtk-2026": {
+   "action": "roundup",
+   "angle": "配信出演・動画公開の定常運営(まったりHBTK朗読コーナー切り抜き)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "day1-day2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-2026-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "DAY1御礼とDAY2予告。DAY2同時視聴会の記事に統合"
+  },
+  "1-2-2026": {
+   "action": "roundup",
+   "angle": "開催中のジュエルセール第1弾・第2弾(10/21 11:59まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "36-2026": {
+   "action": "roundup",
+   "angle": "シーズン36「ブー！ティフルナイト！」シーズンパス販売中、甘奈の衣装セット",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-topic-2026": {
+   "action": "roundup",
+   "angle": "鈴木羽那の誕生日記念ガシャ開催中",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-season-35-pass-2026": {
+   "action": "roundup",
+   "angle": "アンティーカ×シーズ「円環」1回限定プリズムジュエル(10/21まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "priorは別商品(シーズン35パス)"
+  },
+  "refrac7ions-still-blue-2026": {
+   "action": "article",
+   "angle": "「Still blue」公式グッズ事前販売ファイナルとカードフォリオ・協賛社グッズ、アクリルパネルの受注が本日10月4日で締切",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-msp-2026-09": {
+   "action": "article",
+   "angle": "MSP DAY2同時視聴会(キャスト生オーコメ)が本日17時開始、アーカイブは10/5 23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-runway-2026-master-showpiece-photo-contest": {
+   "action": "article",
+   "angle": "「Shiny Runway 2026 Master ShowPiece」フォトコンテストの応募が本日23:59で締切",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-refrac7ions-still-blue-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "refrac7ions-still-blue-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズ事前販売ファイナルの受注締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-refrac7ions-still-blue-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「Still blue」公式グッズ事前販売ファイナルとカードフォリオ・協賛社グッズ、アクリルパネルの受注が本日10月4日で締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "refrac7ions-still-blue-2026",
+    "candidate_ids": [
+     "sched-2026-10-04-refrac7ions-still-blue-2026-締切",
+     "sched-2026-10-04-shiny-refrac7ions-still-blue-goods-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-msp-2026-09-f14b09",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "MSP DAY2同時視聴会(キャスト生オーコメ)が本日17時開始、アーカイブは10/5 23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "shiny-msp-2026-09",
+    "candidate_ids": [
+     "sched-2026-10-04-shiny-msp-2026-09-開始",
+     "202610040227-grok-63",
+     "202610040227-grok-67",
+     "202610040227-grok-74",
+     "202610040227-grok-64",
+     "202610040227-grok-68",
+     "202610040227-grok-66"
+    ]
+   },
+   {
+    "slug": "shiny-runway-2026-master-showpiece-photo-contest",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「Shiny Runway 2026 Master ShowPiece」フォトコンテストの応募が本日23:59で締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-runway-2026-master-showpiece-photo-contest",
+    "candidate_ids": [
+     "sched-2026-10-04-shiny-runway-2026-master-showpiece-photo-contest-締切"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "配信出演・動画公開の定常運営(まったりHBTK朗読コーナー切り抜き)",
+    "lead_score": 0,
+    "dedup_key": "hbtk-2026",
+    "candidate_ids": [
+     "202610040227-grok-65",
+     "202610040227-grok-69",
+     "202610040227-grok-70",
+     "202610040227-grok-71",
+     "202610040227-grok-72"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-pioneer-impact-mvgiveaway-2026",
+    "reason": "既報",
+    "note": "10/3号の本文と同内容。締切は10/12でまだ3日以内ではない"
+   },
+   {
+    "dedup_key": "17-00-day1-2026",
+    "reason": "その他",
+    "note": "DAY1同時視聴会の「このあと17:00」告知。10/3に終了済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

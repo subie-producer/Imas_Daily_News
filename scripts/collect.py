@@ -11,9 +11,12 @@ edition ブランチへ push する。(PIPELINE §1〜2)
   codex に WebSearch 専用ツールは無いが、sandbox の通信を開けばシェルから検索・取得ができる。
   **読み取り専用**で起動する(取得したページの指示でリポジトリを書き換えられないように)。
   codex には --max-budget-usd 相当が無いため、暴走を止めるのは EXPLORE_TIMEOUT だけ
-- X 動向(B): grok(エージェント実行)を**面ごとに独立セッション**で回し、
-  prompts/grok-collect.md の手順書に従って**日本語のまとめ**を書かせる。
-  その .md を Luna が候補 JSON へ写し替える(consolidate_grok)
+- X 動向(B): 役割を分ける(編集長 2026-10-04)。
+  1. Grok が**面ごとに独立セッション**で X の検索だけをし、見つけた投稿を全文のまま書き出す(prompts/grok-collect.md)
+  2. Luna が面ごとにその投稿を読み、リンク先を開いて確かめて候補にする(verify_grok_faces / prompts/grok-verify.md)。
+     X の原本でしか確かめられない問いも挙げる
+  3. 問いがあれば、週の検索予算(セッション記録から数えた直近7日の実使用)を確かめて、Grok に原本を調べさせ(deep_dive_grok /
+     prompts/grok-deep.md)、もう一度 Luna が確かめる
 - 正規化・URL 重複マージ → candidates へ追記 → 簡易 verify → commit & push
 """
 import argparse
@@ -79,13 +82,13 @@ GROK_SWEEP_LIMIT = int(ENV.get("GROK_SWEEP_LIMIT", "40"))
 # 10面を1セッションで回すぶん長い。途中で切れても面ごとにファイルへ書かせているので
 # そこまでの成果は残る
 GROK_TIMEOUT = int(ENV.get("GROK_TIMEOUT", "3000"))
-# 1面あたりに集めさせる件数の目安。
-# 調査の窓が「直近48時間」なので、収集を1日に何度回しても同じ48時間を見直すだけで
-# 大半が重複になる(実測: 12:48 の実行は正規化70件のうち新規22件=69%が重複)。
-# したがって回数を増やすのではなく、**1日1回の深掘りで量を確保する**方針を取る。
-# ただし件数を上げすぎると週次上限に当たる(20件設定の 2026-08-27 は1回で上限の14%を消費)。
-# 記事に使われるのは候補の6割程度なので、目標を12件に下げても紙面の厚みは保てる見込み。
-GROK_ITEMS = int(ENV.get("GROK_ITEMS", "12"))
+# 週次上限の X 検索回数(実測 0.065〜0.087%/検索 → 週およそ1150〜1550回。少ないほうに合わせる)と、深掘りに使ってよい割合。
+# 深掘り(deep_dive_grok)は、直近7日の実使用(セッション記録から数える)を差し引いた残りの範囲でだけ回す。
+# 基本の調べ(1日1回・9面×6回=54回、週378回)を必ず残すため、深掘りは週の上限の DEEP_SHARE までに抑える
+GROK_WEEKLY_SEARCHES = int(ENV.get("GROK_WEEKLY_SEARCHES", "1100"))
+GROK_DEEP_SHARE = float(ENV.get("GROK_DEEP_SHARE", "0.8"))
+# 1回の収集で深掘りに使う検索の上限(問い1つにつき2回まで)
+GROK_DEEP_MAX = int(ENV.get("GROK_DEEP_MAX", "24"))
 # 面別セッションの同時実行数。多すぎると X 側で絞られるおそれがあるので控えめに置く
 GROK_WAVE = int(ENV.get("GROK_WAVE", "3"))
 # 推論の深さ。既定は high で走っており、消費の最大費目が reasoning だった
@@ -316,11 +319,15 @@ def grok_wrote(outdir: Path, q: dict) -> bool:
 
 
 def run_grok_faces(queries: list[dict], outdir: Path, errs: dict, retry: bool = False) -> None:
-    """面ごとに Grok のセッションを GROK_WAVE 本ずつ走らせる。手数では縛らない(時間 GROK_TIMEOUT だけ)。エラー出力は errs に残す。"""
-    for i in range(0, len(queries), GROK_WAVE):
+    """面ごとに Grok の基本の調べ(X の検索だけ)を走らせる。"""
+    run_grok_prompts([(q, write_grok_prompt(outdir, q, retry=retry)) for q in queries], errs)
+
+
+def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> None:
+    """Grok のセッションを GROK_WAVE 本ずつ走らせる。手数では縛らない(時間 GROK_TIMEOUT だけ)。エラー出力は errs に残す。"""
+    for i in range(0, len(targets), GROK_WAVE):
         procs = []
-        for q in queries[i:i + GROK_WAVE]:
-            pp = write_grok_prompt(outdir, q, retry=retry)
+        for q, pp in targets[i:i + GROK_WAVE]:
             procs.append((q, subprocess.Popen(
                 ["grok", "--prompt-file", str(pp), "--always-approve",
                  "--cwd", str(ROOT), "--reasoning-effort", GROK_EFFORT],
@@ -456,13 +463,12 @@ def claude_exec(prompt: str, timeout: int = 300):
 
 
 def write_grok_prompt(outdir: Path, q: dict, retry: bool = False) -> Path:
-    """1面ぶんの指示を書き出す(面ごとに1セッション)。
+    """1面ぶんの基本の調べ(X の検索だけ)の指示を書き出す(面ごとに1セッション)。
 
-    **Grok には日本語の「まとめ」を書かせる。**候補を1件ずつ JSON にさせると、
-    調べる能力が整形作業に食われる(実測: 本文8,219字のページから facts 359字、
-    25回検索して0件)。同じ Grok にブラウザで「これらのアカウントが投稿した内容を
-    詳細にまとめて」と頼むと、ガシャ名・ジュエル数・時刻・出現率まで並んだ
-    密度の高い要約が返る。その能力をそのまま使い、JSON 化は Luna に任せる。
+    **役割分担(編集長 2026-10-04)**: Grok は X の検索だけをして、見つけた投稿を全文のまま書き出す。リンク先を開いて確かめ、
+    候補にするのは Luna(verify_grok_faces)。X の原本でしか分からない問いだけ、予算を確かめて Grok に深掘りさせる(deep_dive_grok)。
+    以前は Grok に「リンク先を開いて確かめ、まとめる」まで頼み、JavaScript で描画されるページの解析に手数を使い切って
+    面ごと0件になっていた(9/15〜10/3 の171セッション中20本が打ち切り・7本が0件)。
     """
     out = outdir / f"{q['key']}.md"
     days = 3 if q["key"] in ("trend", "fan-culture") else 2
@@ -474,86 +480,124 @@ def write_grok_prompt(outdir: Path, q: dict, retry: bool = False) -> Path:
              f"({at} の投稿がまとめて取れる。1アカウントずつ引き直さない)" if froms
              else "1. (この面には公式アカウントの指定が無い。2 の角度から始める)")
     prompt = render_prompt("grok-collect", BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
-                           SINCE=since, OUT=out, MAX_SEARCHES=GROK_MAX_SEARCHES, MAX_ITEMS=GROK_ITEMS, STEP1=step1,
-                           RULES=COLLECT_RULES,
-                           RETRY=("- **やり直し**: 前回はまとめを書く前に終わった。1 の結果をまず書き、そのあとで 2・3 に進む\n"
+                           SINCE=since, OUT=out, MAX_SEARCHES=GROK_MAX_SEARCHES, STEP1=step1,
+                           RETRY=("- **やり直し**: 前回は書き出す前に終わった。1 の結果をまず書き、そのあとで 3 に進む\n"
                                   if retry else ""))
     pp = outdir / f"prompt-{q['key']}.md"
     pp.write_text(prompt, encoding="utf-8")
     return pp
 
 
-def read_grok_files(outdir: Path) -> list:
-    """grok が面ごとに書き捨てた JSONL を全部読む。壊れた行は捨てる。
-
-    整形の厳密さを Grok に求めない代わりに、ここは寛容に読む。
-    """
-    items, broken = [], []
-    for p in sorted(outdir.glob("*.jsonl")):
-        for line in p.read_text(encoding="utf-8", errors="replace").splitlines():
-            line = line.strip().rstrip(",")
-            if not line.startswith("{"):
-                continue
-            try:
-                v = json.loads(line)
-            except json.JSONDecodeError:
-                broken.append(line[:600])
-                continue
-            if isinstance(v, dict) and v.get("url"):
-                items.append(v)
-            else:
-                broken.append(line[:600])
-    # 面ごとの .json(配列で書かれた場合)も拾う。調停結果は対象外
-    for p in sorted(outdir.glob("*.json")):
-        if p.name == "normalized.json":
-            continue
-        try:
-            v = json.loads(p.read_text(encoding="utf-8", errors="replace"))
-        except json.JSONDecodeError:
-            continue
-        if isinstance(v, list):
-            items += [x for x in v if isinstance(x, dict) and x.get("url")]
-    if broken:
-        print(f"grok: JSON として読めない行 {len(broken)}件を無視", flush=True)
-    return items
-
-
-def consolidate_grok(outdir: Path) -> list:
-    """Grok が書いた日本語のまとめを、Luna(codex)が候補 JSON へ写し替える。
-
-    Grok に JSON を書かせると調べる能力が整形に食われる(実測: 本文8,219字の
-    ページから facts 359字、25回検索して0件)。ブラウザで「詳細にまとめて」と
-    頼んだときの密度がそのまま欲しいので、Grok は日本語で書き、機械可読化はこちらでやる。
-
-    変換は**写し替えであって書き換えではない**(事実の追加・要約・言い換えを禁じる)。
-    Luna が失敗しても収集は落とさず、機械読み(read_grok_files)に落とす。
-    """
-    docs = [d for d in sorted(list(outdir.glob("*.md")) + list(outdir.glob("*.jsonl")))
-            if not d.name.startswith("prompt-")]
-    if not docs:
-        return []
-    out = outdir / "normalized.json"
-    out.unlink(missing_ok=True)
-    prompt = render_prompt("grok-normalize", DIR=outdir, OUT=out, ITEM=COLLECT_ITEM)
+def wait_session(proc, deadline: float) -> bool:
+    """codex のセッションを締切まで待つ。超えたらプロセスグループごと落とす。戻り値は締切内に終わったか。"""
     try:
-        subprocess.run(["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
-                        prompt_file(edition_date(), "grok-normalize", prompt)],
-                       capture_output=True, text=True, timeout=1200,
-                       stdin=subprocess.DEVNULL, cwd=ROOT)
-    except Exception as e:
-        print(f"grok: 変換(codex)に失敗 {e}", flush=True)
-    if out.exists():
+        proc.wait(timeout=max(0, deadline - time.time()))
+        return True
+    except subprocess.TimeoutExpired:
         try:
-            v = json.loads(out.read_text(encoding="utf-8", errors="replace"))
-            got = [x for x in v if isinstance(x, dict) and x.get("url")] if isinstance(v, list) else []
-            if got:
-                n = sum(len(d.read_text(encoding="utf-8", errors="replace")) for d in docs)
-                print(f"grok: まとめ {len(docs)}面 {n:,}字 → 候補 {len(got)}件", flush=True)
-                return got
-        except json.JSONDecodeError:
-            pass
-    print("grok: 変換結果を読めず、機械読みに切り替える", flush=True)
-    return read_grok_files(outdir)
+            os.killpg(proc.pid, signal.SIGKILL)
+        except (ProcessLookupError, PermissionError, OSError):
+            proc.kill()
+        proc.wait()
+        return False
+
+
+def read_json_list(p: Path) -> list | None:
+    """セッションが書いた JSON 配列を読む。無い・読めない・配列でないなら None。"""
+    try:
+        v = json.loads(p.read_text(encoding="utf-8", errors="replace"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return v if isinstance(v, list) else None
+
+
+def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "") -> tuple[list[dict], dict[str, list[dict]]]:
+    """Grok が書き出した X の投稿(<key><suffix>.md)を、面ごとに Luna が読み、リンク先を開いて確かめて候補にする(並列)。
+    戻りは (候補, 面 → X の原本でしか確かめられない問い)。「なし」だけの面・ファイルの無い面は飛ばす。
+    Luna は探索と同じくリポジトリ外の作業ディレクトリで走る(ページの中身に指示が仕込まれていても、リポジトリに手が届かない)。"""
+    deadline = time.time() + EXPLORE_TIMEOUT
+    jobs = []
+    for q in queries:
+        src = outdir / f"{q['key']}{suffix}.md"
+        text = src.read_text(encoding="utf-8", errors="replace").strip() if src.exists() else ""
+        if not text or re.fullmatch(r"(なし|見つからない)[。\s]*", text):
+            continue
+        wd = explore_workdir(f"verify-{q['key']}{suffix}")
+        (wd / "x-posts.md").write_text(text + "\n", encoding="utf-8")
+        prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json",
+                               BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
+                               RULES=COLLECT_RULES, ITEM=COLLECT_ITEM)
+        jobs.append((q, wd, subprocess.Popen(explore_argv(prompt_file(edition_date(), f"grok-verify-{q['key']}{suffix}", prompt, base=wd)),
+                                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
+                                             stdin=subprocess.DEVNULL, cwd=wd, start_new_session=True)))
+    items, deep = [], {}
+    for q, wd, p in jobs:
+        in_time = wait_session(p, deadline)
+        got = read_json_list(wd / "items.json")
+        if got is None:
+            # 読めなかった面は申告で終えない(当番のなぜなぜへ)
+            notify("collect", f"Grok の {q['key']} 面: X の投稿を確かめる段(Luna)の結果が読めない"
+                              f"({'締切内に終わった' if in_time else '時間切れ'})。その面の X の動きを失う", ok=False)
+            got = []
+        items += [x for x in got if isinstance(x, dict) and x.get("url")]
+        raw_asks = read_json_list(wd / "deep.json")
+        if raw_asks is None:
+            # 「問いなし([])」と「書けなかった」を分ける。原本の確かめを黙って失わない(監査指摘 r116)
+            notify("collect", f"Grok の {q['key']} 面: X の原本でしか確かめられない問い(deep.json)が読めない"
+                              f"({'締切内に終わった' if in_time else '時間切れ'})。深掘りの機会を失う", ok=False)
+        asks = [a for a in (raw_asks or []) if isinstance(a, dict) and a.get("question")]
+        if asks:
+            deep[q["key"]] = asks
+        shutil.rmtree(wd, ignore_errors=True)
+    print(f"grok: 確かめ{suffix or ''} {len(jobs)}面 → 候補 {len(items)}件、原本の問い {sum(len(v) for v in deep.values())}件", flush=True)
+    return items, deep
+
+
+def grok_week_usage(now_ts: float | None = None) -> int:
+    """直近7日に、この利用者の**すべての** Grok セッションが使った X 検索の回数(週次上限の消費の実数)。
+    利用枠は利用者で共有なので、本番のクローン以外(dev クローン・手での利用)の検索も差し引く(監査指摘 r116)。"""
+    since = (now_ts or time.time()) - 7 * 86400
+    n = 0
+    for u in (Path.home() / ".grok" / "sessions").glob("*/*/updates.jsonl"):
+        try:
+            if u.stat().st_mtime >= since:
+                n += len(re.findall(r'"variant":\s*"XSearch"', u.read_text(encoding="utf-8", errors="replace")))
+        except OSError:
+            continue
+    return n
+
+
+def deep_budget(used_7d: int) -> int:
+    """この回の深掘りに使ってよい X 検索の回数。週の上限の GROK_DEEP_SHARE までの残りと、1回の上限 GROK_DEEP_MAX の小さいほう。"""
+    return max(0, min(GROK_DEEP_MAX, int(GROK_WEEKLY_SEARCHES * GROK_DEEP_SHARE) - used_7d))
+
+
+def plan_deep_dive(deep: dict[str, list[dict]], budget: int) -> dict[str, list[dict]]:
+    """予算の範囲で、深掘りする問いを面ごとに選ぶ(問い1つに検索2回。面を順に1問ずつ配って偏らせない。1面3問まで)。"""
+    chosen: dict[str, list[dict]] = {}
+    left = budget
+    for i in range(3):
+        for key, asks in sorted(deep.items()):
+            if i < len(asks) and left >= 2:
+                chosen.setdefault(key, []).append(asks[i])
+                left -= 2
+    return chosen
+
+
+def deep_dive_grok(queries: list[dict], outdir: Path, chosen: dict[str, list[dict]], errs: dict) -> None:
+    """選んだ問いだけを、Grok に X の原本で調べさせる(<key>-deep.md に書き出す)。"""
+    by_key = {q["key"]: q for q in queries}
+    targets = []
+    for key, asks in chosen.items():
+        q = by_key[key]
+        pp = outdir / f"prompt-{key}-deep.md"
+        pp.write_text(render_prompt(
+            "grok-deep", BRAND=q["brand"], TODAY=now_jst().strftime("%Y-%m-%d"), OUT=outdir / f"{key}-deep.md",
+            MAX_SEARCHES=2 * len(asks),
+            QUESTIONS="\n".join(f"{i + 1}. {a['question']}(なぜ X の原本が要るか: {a.get('why') or '記載なし'})" for i, a in enumerate(asks))),
+            encoding="utf-8")
+        targets.append((q, pp))
+    run_grok_prompts(targets, errs)
 
 
 def grok_scheduled_now(now=None) -> bool:
@@ -682,7 +726,19 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                 notify("collect", f"Grok(X 調査)の {', '.join(still)} 面が、やり直してもまとめを残せなかった(その面の X の動きを丸ごと失う):\n"
                                   + "\n".join(f"- {k}: {grok_errs.get(k, 'エラー出力なし')}" for k in still)
                                   + "\n- セッション記録の失敗理由: " + grok_session_error(), ok=False)
-        got = consolidate_grok(outdir)
+        # Luna が面ごとに確かめて候補にする。X の原本でしか確かめられない問いは、予算を確かめて Grok に深掘りさせ、もう一度 Luna が確かめる
+        got, deep = verify_grok_faces(queries, outdir)
+        if deep:
+            used = grok_week_usage()
+            budget = deep_budget(used)
+            chosen = plan_deep_dive(deep, budget)
+            print(f"grok: 深掘りの予算 {budget}回(直近7日の使用 {used}/{GROK_WEEKLY_SEARCHES}回)。"
+                  f"問い {sum(len(v) for v in deep.values())}件のうち {sum(len(v) for v in chosen.values())}件を調べる", flush=True)
+            per["grok_week_searches"] = used
+            if chosen:
+                deep_dive_grok(queries, outdir, chosen, grok_errs)
+                more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen], outdir, suffix="-deep")
+                got += more
         if not got:
             print("grok 0件", flush=True)
             # 全面0件を黙って流さない(2026-10-02: CLI が古く API に 426 で拒まれ、9面すべて0件。記録は「grok 0件」だけで、

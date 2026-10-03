@@ -1355,7 +1355,7 @@ def test_assemble_prompt_shape():
 
 ACTIVE_PROMPTS = ("plan-brand", "plan-rules", "plan-lead", "plan-missing", "write-article", "write-article.roundup",
                   "write-article.culture", "revise-article", "review-article", "review-paper", "assemble-digest", "assemble-ledger",
-                  "collect-rules", "collect-item", "grok-collect", "grok-normalize", "explore", "watch-facts",
+                  "collect-rules", "collect-item", "grok-collect", "grok-verify", "grok-deep", "explore", "watch-facts",
                   "classify-rules", "classify-site", "classify-x", "classify-debate",
                   "oncall-fix", "oncall-fix.objections", "oncall-review", "oncall-parser", "oncall-whywhy")
 
@@ -1408,7 +1408,7 @@ def test_prompts_are_instructions_only():
     import collect
     gp = collect.write_grok_prompt(Path(tempfile.mkdtemp()), {"key": "k", "brand": "765", "topic": "t", "accounts": ["a"]}).read_text(encoding="utf-8")
     since = re.search(r"対象期間: (\d{4}-\d{2}-\d{2}) 以降", gp)
-    check(since and f"since:{since.group(1)}" in gp.split("2. 角度を変えて掘る")[1] and "対象期間より前" in gp, "Grok の依頼文に対象期間の規則が無い")
+    check(since and f"since:{since.group(1)}" in gp.split("3. 角度を変えて検索する")[1] and "対象期間より前" in gp, "Grok の依頼文に対象期間の規則が無い")
     check("lead_slug" in compose.lead_prompt("2026-09-18", [{"slug": "s", "rank": "small"}]) and
           "社説" not in compose.lead_prompt("2026-09-18", []), "一面の依頼文(社説は選ばせない)")
 
@@ -2099,6 +2099,72 @@ def test_storylink(tmp: Path):
     check("2026-09-17 那覇市でじますコラボ決定" in sl.recent_titles(d, tmp).get("cg", []), "直近の見出しが面ごとに出ない")
 
 
+def test_grok_roles(tmp: Path):
+    """X 調査の役割分担(編集長 2026-10-04): Grok は X の検索だけ → Luna が確かめて候補と「X の原本でしか確かめられない問い」を出す →
+    週の検索予算の残りの範囲でだけ Grok が原本を深掘り → もう一度 Luna。"""
+    import collect
+    # 予算: 週の上限 × 深掘りの割合 − 直近7日の実使用。1回の上限も効く
+    saved = (collect.GROK_WEEKLY_SEARCHES, collect.GROK_DEEP_SHARE, collect.GROK_DEEP_MAX)
+    try:
+        collect.GROK_WEEKLY_SEARCHES, collect.GROK_DEEP_SHARE, collect.GROK_DEEP_MAX = 1000, 0.8, 24
+        check(collect.deep_budget(300) == 24 and collect.deep_budget(790) == 10 and collect.deep_budget(900) == 0,
+              f"深掘りの予算: {collect.deep_budget(300)} {collect.deep_budget(790)} {collect.deep_budget(900)}")
+    finally:
+        collect.GROK_WEEKLY_SEARCHES, collect.GROK_DEEP_SHARE, collect.GROK_DEEP_MAX = saved
+    # 問いの配分: 面を順に1問ずつ、問い1つに検索2回、1面3問まで
+    deep = {"sidem": [{"question": f"s{i}"} for i in range(5)], "gakuen": [{"question": "g0"}]}
+    ch = collect.plan_deep_dive(deep, 6)
+    check({k: [a["question"] for a in v] for k, v in ch.items()} == {"gakuen": ["g0"], "sidem": ["s0", "s1"]}, f"問いの配分(予算6): {ch}")
+    ch = collect.plan_deep_dive(deep, 100)
+    check(len(ch["sidem"]) == 3, f"1面3問まで: {ch}")
+    check(collect.plan_deep_dive(deep, 1) == {}, "予算が足りないのに深掘りする")
+    # 確かめる段: 投稿の無い面・「なし」の面は Luna を起動しない。Luna が書いた候補と問いを読み、読めない面は異常にする
+    tmp.mkdir(parents=True, exist_ok=True)
+    out = tmp / "g"
+    out.mkdir()
+    (out / "sidem.md").write_text("- https://x.com/a/status/1 本文", encoding="utf-8")
+    (out / "gakuen.md").write_text("なし", encoding="utf-8")
+    (out / "shiny.md").write_text("- https://x.com/b/status/2 本文", encoding="utf-8")
+    qs = [{"key": k, "brand": k, "topic": "t"} for k in ("sidem", "gakuen", "shiny", "dsva")]
+    started, notes = [], []
+    class P:
+        pid = 0
+        def wait(self, timeout=None): return 0
+    def fake_popen(args, cwd=None, **kw):
+        started.append(Path(cwd).name)
+        if "sidem" in Path(cwd).name:
+            (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "sidem", "facts": ["f"]}]), encoding="utf-8")
+            (Path(cwd) / "deep.json").write_text(json.dumps([{"question": "元の告知", "why": "引用だけ"}]), encoding="utf-8")
+        return P()
+    saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file)
+    try:
+        collect.subprocess.Popen = fake_popen
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        collect.prompt_file = lambda date, name, prompt, base=None: "p"
+        items, deep = collect.verify_grok_faces(qs, out)
+    finally:
+        collect.subprocess.Popen, collect.notify, collect.prompt_file = saved
+    check(len(started) == 2 and all("gakuen" not in s and "dsva" not in s for s in started), f"確かめる段を起動した面: {started}")
+    check([x["url"] for x in items] == ["https://x.com/a/status/1"] and deep == {"sidem": [{"question": "元の告知", "why": "引用だけ"}]},
+          f"候補と問い: {items} {deep}")
+    check(any(not ok and "shiny" in m and "items" not in m for m, ok in notes), f"結果の読めない面を異常にしない: {notes}")
+    check(any(not ok and "shiny" in m and "deep.json" in m for m, ok in notes) and not any("sidem" in m for m, ok in notes),
+          f"問いの書き出しが読めない面を異常にしない(読めた面は異常にしない): {notes}")
+    # 週の使用は、利用者のすべての Grok セッション(別のクローン・手での利用を含む)から数える(監査指摘 r116)
+    home = tmp / "home2"
+    for repo, n in (("a", 3), ("b", 5)):
+        sd = home / ".grok" / "sessions" / repo / "s"
+        sd.mkdir(parents=True)
+        (sd / "updates.jsonl").write_text('{"rawInput": {"variant": "XSearch"}}\n' * n, encoding="utf-8")
+    saved_home = os.environ.get("HOME")
+    try:
+        os.environ["HOME"] = str(home)
+        check(collect.grok_week_usage() == 8, f"週の使用を全セッションから数えない: {collect.grok_week_usage()}")
+    finally:
+        if saved_home is not None:
+            os.environ["HOME"] = saved_home
+
+
 def test_grok_face_retry(tmp: Path):
     """Grok の面がまとめを残せなかったら、その面だけ「先に書く」順で1回やり直し、それでも残らなければ異常を上げる
     (実測 2026-10-03: 学マスの面が打ち切られて0件、公式Xの4コマを1日遅れで載せた)。手数(--max-turns)では縛らず、
@@ -2116,10 +2182,9 @@ def test_grok_face_retry(tmp: Path):
         for q in queries:
             if q["key"] == "shiny" or (q["key"] == "gakuen" and retry):   # 学マスはやり直しで書ける、dsva は書けない
                 (outdir / f"{q['key']}.md").write_text("まとめ", encoding="utf-8")
-    saved = (collect.run_grok_faces, collect.consolidate_grok, collect.notify, collect.grok_session_error)
+    saved = (collect.run_grok_faces, collect.notify, collect.grok_session_error)
     try:
         collect.run_grok_faces = fake_run
-        collect.consolidate_grok = lambda outdir: []
         collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
         collect.grok_session_error = lambda since_s=7200: "max_turns_reached"
         # 収集の Grok 部分の流れ(run_grok_faces → grok_wrote → やり直し)を再現する
@@ -2130,11 +2195,12 @@ def test_grok_face_retry(tmp: Path):
         still = [q["key"] for q in missing if not collect.grok_wrote(out, q)]
         check(runs[1] == (["gakuen", "dsva"], True) and still == ["dsva"], f"やり直しの対象と結果: {runs} {still}")
     finally:
-        collect.run_grok_faces, collect.consolidate_grok, collect.notify, collect.grok_session_error = saved
+        collect.run_grok_faces, collect.notify, collect.grok_session_error = saved
     # 依頼文: やり直しのときだけ「先に書く」行。数えるのは検索だけ、と常に書く
     p1 = collect.write_grok_prompt(out, {"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": ["gkmas_official"]}).read_text(encoding="utf-8")
     p2 = collect.write_grok_prompt(out, {"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": ["gkmas_official"]}, retry=True).read_text(encoding="utf-8")
-    check("検索の回数だけ" in p1 and "必ず一度ファイルに書く" in p1 and "やり直し" not in p1 and "やり直し" in p2, "Grok の依頼文の数え方・やり直しの指示")
+    check("数えるのは X の検索だけ" in p1 and "1 の結果を、まずファイルに書く" in p1 and "リンク先のページを開かない" in p1
+          and "やり直し" not in p1 and "やり直し" in p2, "Grok の依頼文の数え方・役割・やり直しの指示")
     src = (pipelib.ROOT / "scripts" / "collect.py").read_text(encoding="utf-8")
     check("run_grok_faces(missing, outdir, grok_errs, retry=True)" in src, "書けなかった面をやり直していない")
     # 起動引数に手数の上限を付けない
@@ -2851,6 +2917,7 @@ def main() -> int:
     test_extract_json_array_strict()
     test_update_clis(tmp / "uc")
     test_grok_face_retry(tmp / "gr")
+    test_grok_roles(tmp / "gro")
     test_watch_pagination_and_batches(tmp / "wp")
     test_collect_oncall_rerun_exit(tmp / "cre")
     test_storylink(tmp / "sl")

@@ -21,8 +21,9 @@
 | review-article / review-paper | 校閲(`compose.claude_review`) | Claude haiku | 判定(prompts/review-schema.json) |
 | assemble-digest / assemble-ledger | 組版の判断(`assemble.prompt_digest` / `prompt_ledger`) | Claude sonnet | digest / 既報・予約・pending |
 | collect-rules / collect-item | 収集の共通部品(何を書いてよいか / 候補1件の形) | — | — |
-| grok-collect | X の調査・面ごと(`collect.write_grok_prompt`) | Grok | 日本語のまとめ(ファイル) |
-| grok-normalize | まとめ → 候補 JSON の写し替え(`collect.consolidate_grok`) | Codex luna | normalized.json |
+| grok-collect | X の検索だけ・面ごと(`collect.write_grok_prompt`) | Grok | 見つけた投稿の全文(ファイル) |
+| grok-verify | 投稿を読みリンク先を開いて確かめ、候補と「X の原本でしか分からない問い」にする(`collect.verify_grok_faces`) | Codex luna | items.json / deep.json |
+| grok-deep | X の原本の深掘り。予算の範囲の問いだけ(`collect.deep_dive_grok`) | Grok | 見つけた原本の投稿(ファイル) |
 | explore | Web の探索・面ごと(`collect.run_explores`) | Codex luna | 候補 JSON |
 | watch-facts | 定点観測の新着の facts 化(`collect.run_watch`) | Claude haiku | 候補 JSON |
 | classify-rules / classify-site / classify-x / classify-debate | 出典種別の合議(`classify_sources`) | Claude haiku + Codex luna | 種別 JSON |

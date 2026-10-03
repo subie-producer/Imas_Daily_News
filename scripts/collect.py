@@ -674,6 +674,34 @@ def is_x(url: str) -> bool:
     return any(h in url for h in X_HOSTS)
 
 
+X_ANON_POST = re.compile(r"https://(?:(?:www|mobile)\.)?(?:x|twitter)\.com/i/(?:web/)?status/(\d+)(?:[/?#].*)?")
+X_HANDLE = re.compile(r"[A-Za-z0-9_]{1,15}")
+
+
+def x_post_url(url: str, fetch=None) -> str:
+    """`x.com/i/status/<ID>`(投稿者の無い投稿 URL)を `x.com/<投稿者>/status/<ID>` に直す。
+
+    種別は X のアカウント単位で決まるので、投稿者の無い形は判定できず、紙面に未確認の出典として残る
+    (2026-10-03: Grok の trend 面が 16件すべてこの形で書いた)。投稿者は X の oEmbed が返す。
+    引けなければ元のまま返す(watch が未確認の出典として知らせる)
+    """
+    m = X_ANON_POST.fullmatch(url)
+    if not m:
+        return url
+    try:
+        q = urllib.parse.urlencode({"url": f"https://x.com/i/status/{m.group(1)}", "omit_script": "1"})
+        meta = json.loads((fetch or http_get)(f"https://publish.twitter.com/oembed?{q}"))
+        au = urllib.parse.urlparse(str(meta.get("author_url") or ""))
+        handle = au.path.strip("/") if (au.hostname or "").removeprefix("www.") in X_HOSTS else ""
+    except Exception as e:
+        print(f"X の投稿者を引けない(元の URL のまま): {url} {e}", flush=True)
+        return url
+    if not X_HANDLE.fullmatch(handle):
+        print(f"X の投稿者を引けない(元の URL のまま): {url} author_url={meta.get('author_url')!r}", flush=True)
+        return url
+    return f"https://x.com/{handle}/status/{m.group(1)}"
+
+
 # 面が判別できる語 → ブランド。名鑑(アイドル名)で拾えない作品名・ブランド呼称を補う。
 BRAND_WORDS = {
     "dsva": ("vα-liv", "ヴイアラ", "va-liv", "valiv", "876プロ", "ディアリースターズ"),
@@ -725,6 +753,7 @@ def normalize(items: list[dict]) -> list[dict]:
                 if it.get("url"):
                     print(f"候補の URL を捨てた(形が不正): {str(it.get('url'))[:80]!r}", flush=True)
                 continue
+            url = x_post_url(url)
             valid = {"general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"}
             brand = it.get("brand") if it.get("brand") in valid else "other"
             if brand in ("general", "other"):

@@ -1589,6 +1589,40 @@ def test_time_budget():
         compose.STAGE_MIN.update(saved)
 
 
+def test_x_anonymous_post_url():
+    """`x.com/i/status/<ID>` は投稿者を引いて `x.com/<投稿者>/status/<ID>` に直す。直さないと種別を判定する単位
+    (X のアカウント)が無く、紙面に未確認の出典が残る(2026-10-03: trend 面の 16件)。引けなければ元のまま"""
+    import collect
+    asked = []
+    def fake(url):
+        asked.append(url)
+        return json.dumps({"author_url": "https://x.com/ChuLo5738", "url": "https://x.com/ChuLo5738/status/2105957772651385193"})
+    check(collect.x_post_url("https://x.com/i/status/2105957772651385193", fetch=fake)
+          == "https://x.com/ChuLo5738/status/2105957772651385193", "i/status の投稿者を引いていない")
+    check(asked and asked[0].startswith("https://publish.twitter.com/oembed?") and "2105957772651385193" in asked[0], f"oEmbed の問い合わせ: {asked}")
+    check(collect.x_post_url("https://twitter.com/i/web/status/5?s=20", fetch=fake) == "https://x.com/ChuLo5738/status/5", "i/web/status の形")
+    asked.clear()
+    check(collect.x_post_url("https://x.com/imas_official/status/1", fetch=fake) == "https://x.com/imas_official/status/1" and not asked,
+          "投稿者のある URL まで問い合わせた")
+    check(collect.x_post_url("https://x.com/i/trending/123", fetch=fake) == "https://x.com/i/trending/123", "トレンドは投稿ではない")
+    def broken(url):
+        raise OSError("404")
+    check(collect.x_post_url("https://x.com/i/status/7", fetch=broken) == "https://x.com/i/status/7", "引けないときは元のまま")
+    check(collect.x_post_url("https://x.com/i/status/7", fetch=lambda u: json.dumps({"author_url": "https://evil.example/a"}))
+          == "https://x.com/i/status/7", "ハンドルでない author_url を採った")
+    # 収集の正規化を通すと、種別を判定できる形で候補に載る
+    saved = collect.http_get
+    try:
+        collect.http_get = fake
+        got = collect.normalize([{"url": "https://x.com/i/status/2105957772651385193", "title": "t", "brand": "general",
+                                  "dedup_key": "k", "facts": ["f"], "_via": "grok"}])
+    finally:
+        collect.http_get = saved
+    check([c["url"] for c in got] == ["https://x.com/ChuLo5738/status/2105957772651385193"], f"収集の正規化で直らない: {got}")
+    import classify_sources as cs
+    check(cs.platform_unit(got[0]["url"]) == ("x", "ChuLo5738"), "判定の単位が付かない")
+
+
 def test_clean_url_and_table():
     """URL の唯一の入口(clean_url)と、判定表 path_types の検査(監査指摘)。"""
     C = pipelib.clean_url
@@ -2602,6 +2636,7 @@ def main() -> int:
     test_claude_traced(tmp / "ct")
     test_time_budget()
     test_clean_url_and_table()
+    test_x_anonymous_post_url()
     test_no_prompt_in_argv()
     test_next_number(tmp / "nn")
     test_dedupe_source_table(tmp / "dd")

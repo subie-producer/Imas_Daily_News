@@ -32,7 +32,8 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, classify_source,
                      source_type_table, write_source_table, prompt_part, render_prompt,
-                     edition_date, extract_json_array, html_to_text, notify, set_quiet)
+                     edition_date, extract_json_array, html_to_text, notify, set_quiet,
+                     X_ANON_POST, x_post_author)
 
 # 合議で足してよい種別。公式・準公式も答えさせる(作品・ブランドの公式アカウントを「不明」で人へ回して
 # いたら、@idolmaster_en もジムシャニ公式も未確認のまま紙面に載った。編集長の指摘)。
@@ -108,6 +109,10 @@ def display_base(url_or_key: str) -> str:
         # 引けなければ動画の URL(決まらなかった記録も動画 ID で引ける)
         handle, _ = video_author(m.group(1))
         return f"https://youtube.com/@{handle}" if handle else f"https://youtube.com/watch?v={m.group(1)}"
+    pid, handle = anon_x_author(s)
+    if handle:
+        # 投稿者の無い X の投稿も、判定表に書く単位は投稿者のアカウント
+        return f"https://x.com/{handle}"
     unit, key = platform_unit(s)
     if unit == "x":
         return f"https://x.com/{key}"
@@ -187,6 +192,7 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     SKIPPED.clear()
     NEED_PARSER.clear()
     USED_IN.clear()
+    X_POSTS.clear()
     rows = target_rows(date)
     if not rows:
         return {}, {}, {}
@@ -203,6 +209,20 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
         host = (u.hostname or "").removeprefix("www.")
         if (YT_ID.search(url) and host.removeprefix("m.") in ("youtube.com", "youtu.be")) or NICO_ID.search(url):
             continue                       # 動画は投稿者で決まる(resolve_videos / resolve_nico が扱い、決まらなければそちらが報告する)
+        pid, handle = anon_x_author(url)
+        if pid:
+            # 投稿者の無い X の投稿(`x.com/i/status/<ID>`)。URL は記事に載ったまま変えられないので、
+            # 投稿者を引いてアカウントを判定し、決まった種別を投稿 ID で表に残す(resolve_x_posts)
+            if not handle:
+                SKIPPED.setdefault(url, "X の投稿者を引けない(oEmbed が返さない。削除・非公開の投稿か)")
+                continue
+            X_POSTS.setdefault(pid, handle)
+            if classify_source(f"https://x.com/{handle}") != "未確認":
+                continue                   # アカウントは表にある。投稿 ID を足すだけ
+            cur = accts.setdefault(handle, (f"https://x.com/{handle}/status/{pid}", []))
+            if c.get("title") and len(cur[1]) < 4:
+                cur[1].append(c["title"][:70])
+            continue
         unit, key = platform_unit(url)
         if unit == "skip":
             SKIPPED.setdefault(url, key)   # 黙って飛ばさない。main が理由ごと報告する
@@ -283,6 +303,19 @@ def link_hint(key: str) -> str:
 SKIPPED: dict[str, str] = {}          # 持ち主の無い URL → 理由(unknown_targets が埋める)
 NEED_PARSER: dict[str, str] = {}      # 持ち主を取るパーサが無い URL → ホスト(unknown_targets が埋める)
 USED_IN: dict[str, list[str]] = {}    # 判定のキー → 紙面・候補での使われ方(題名と出典の label)
+X_POSTS: dict[str, str] = {}          # 投稿者の無い X の投稿 ID → 投稿者(unknown_targets が埋める。resolve_x_posts が表へ)
+_X_AUTHOR: dict[str, str] = {}        # 投稿 ID → 投稿者(引けなければ "")。同じ実行で何度も問い合わせない
+
+
+def anon_x_author(url: str) -> tuple[str, str]:
+    """投稿者の無い X の投稿 URL なら (投稿 ID, 投稿者)。投稿者を引けなければ投稿者は ""。それ以外は ("", "")。"""
+    m = X_ANON_POST.fullmatch(url)
+    if not m:
+        return "", ""
+    pid = m.group(1)
+    if pid not in _X_AUTHOR:
+        _X_AUTHOR[pid] = x_post_author(pid)
+    return pid, _X_AUTHOR[pid]
 PARSER_REQUESTS = ROOT / "metrics" / "parser-requests.json"   # Git 管理外。ホスト → 当番に依頼した日(同じ依頼を1日5回出さない)
 PARSER_RETRY_DAYS = 3                 # 依頼してもパーサが入らないまま(当番が直せなかった等)なら、この日数のあとにもう一度出す
 
@@ -683,6 +716,28 @@ def add_x_accounts(agreed: dict) -> None:
     _add_labeled("x_accounts", agreed, "合議で追加", ci=True, show=lambda a: f"@{a}")
 
 
+def resolve_x_posts(apply: bool) -> None:
+    """投稿者の無い X の投稿 ID を、投稿者のアカウントの種別で x_posts へ機械で足す(合議には掛けない)。
+
+    記事に載った `x.com/i/status/<ID>` は URL を書き換えられない(過去紙面は種別しか変えられない)ので、
+    投稿 ID で引ける表に写す。アカウントが表に無い(合議で決まらなかった)ものは足さない。
+    その理由はアカウントの合議の記録に残り、watch はアカウントの単位で引く。
+    """
+    found = {}
+    for pid, handle in sorted(X_POSTS.items()):
+        typ = classify_source(f"https://x.com/{handle}")
+        if typ != "未確認" and classify_source(f"https://x.com/i/status/{pid}") == "未確認":
+            found[pid] = (typ, f"@{handle}")
+            print(f"  {typ}\tx.com/i/status/{pid}\t@{handle}", flush=True)
+    if found and apply:
+        p = ROOT / "source_types.yml"
+        text = p.read_text(encoding="utf-8")
+        if not _span(text, "x_posts"):
+            write_source_table(text.rstrip("\n") + "\n\n# --- 投稿者の無い X の投稿(x.com/i/status/<ID>)。投稿者のアカウントの種別を機械で写す ---\nx_posts:\n", p)
+        _add_labeled("x_posts", found, "機械で追加", ci=False)
+        print(f"  → X の投稿 ID {len(found)}件を表に追加", flush=True)
+
+
 YT_ID = re.compile(r"(?:[?&]v=|youtu\.be/|/live/|/shorts/|/embed/)([A-Za-z0-9_-]{11})")
 
 
@@ -947,7 +1002,7 @@ def main() -> int:
         for s in rows:
             print(f"  パーサが無い\t{s}", flush=True)
         split_all += rows
-    if not doms and not accts and not paths and not unknown_videos(date) and not unknown_nico(date):
+    if not doms and not accts and not paths and not X_POSTS and not unknown_videos(date) and not unknown_nico(date):
         if not split_all:
             print(f"{date}: 判定表に無い出典はありません")
             return 0
@@ -1012,6 +1067,8 @@ def main() -> int:
         if agreed and args.apply:
             add_x_accounts(agreed)
             print(f"  → X アカウント {len(agreed)}件を表に追加")
+    # 投稿者の無い X の投稿は、投稿者のアカウントの種別を投稿 ID へ写す(アカウントの合議の後)
+    resolve_x_posts(args.apply)
 
     # YouTube はチャンネルが表にあれば合議なしで決まる(人が決めた種別を写すだけ)。
     # チャンネルが表に無ければ、チャンネルのページ(概要)を材料に合議で種別を決めて表に足し、

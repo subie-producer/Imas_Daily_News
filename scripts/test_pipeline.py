@@ -2207,6 +2207,31 @@ def test_article_purpose():
     check("- 目的: 期日の知らせ" in p1 and "- 目的: 期日の知らせ" in p2 and "- 目的: 新情報" in p3, "執筆の依頼文に目的が出ない(続報予約は期日の知らせ)")
 
 
+def test_plan_merge_into_drop():
+    """不採用(drop)の主題へ merge した主題は、単独の記事にせず相手の理由で不採用に並べる(2026-10-04: dsva 面で
+    「1on1(10/3)」を drop した「1on1」へ merge し、それが単独の記事になって執筆が終了済みで見送った)。
+    記事へ・連鎖・循環の扱いは変えない。校閲は名鑑で補った姓名を R1 にしない(同日: 「馬場このみ」が4巡ブロックされ落ちた)"""
+    import planlib
+    rows = [{"dedup_key": k, "ids": [f"c-{k}"], "title": k} for k in ("a", "b", "c", "d", "e", "f", "g")]
+    dec = {"a": {"action": "drop", "reason": "既報", "note": "終了済み"},
+           "b": {"action": "merge", "merge_into": "a"},
+           "c": {"action": "merge", "merge_into": "b"},
+           "d": {"action": "article", "angle": "x", "purpose": "新情報", "rank": "small", "lead_score": 0},
+           "e": {"action": "merge", "merge_into": "d"},
+           "f": {"action": "merge", "merge_into": "g"},
+           "g": {"action": "merge", "merge_into": "f"}}
+    plan = planlib.decisions_to_plan("dsva", rows, dec, set())
+    arts = {a["dedup_key"]: a for a in plan["articles"]}
+    drops = {d["dedup_key"]: d for d in plan["dropped"]}
+    check(set(arts) == {"d", "f"} and arts["f"]["candidate_ids"] == ["c-f", "c-g"], f"drop へ merge した主題が記事になった: {sorted(arts)}")
+    check(drops.get("b", {}).get("reason") == "既報" and drops.get("c", {}).get("reason") == "既報" and "a" in drops.get("b", {}).get("note", ""),
+          f"drop へ merge した主題が相手の理由で不採用にならない: {drops}")
+    check(arts["d"]["candidate_ids"] == ["c-d", "c-e"], f"記事への merge: {arts['d']['candidate_ids']}")
+    rp = (pipelib.PROMPTS / "review-article.md").read_text(encoding="utf-8")
+    r1 = rp[rp.index("- R1 "):rp.index("- R2 ")]
+    check("docs/_data/idols.json" in r1 and "R1 にしない" in r1, "校閲の R1 に、名鑑で補った姓名の扱いが無い")
+
+
 def test_withdrawal(tmp: Path):
     """取り下げ(編集長 2026-09-29「記事ごと削除でいいのでは」): 道具(withdraw.py)が記事・記録・目次・一面・号の数・未来の予約を
     1回で直し、lint の判定(edition_withdrawal_ok / promotion_ok / withdrawal_record_errors / load_withdrawn)がそれを認め、
@@ -2752,6 +2777,7 @@ def main() -> int:
     test_oncall_ensure_edition(tmp / "ee")
     test_withdrawal(tmp / "wd")
     test_article_purpose()
+    test_plan_merge_into_drop()
     test_extract_json_array_strict()
     test_update_clis(tmp / "uc")
     test_watch_pagination_and_batches(tmp / "wp")

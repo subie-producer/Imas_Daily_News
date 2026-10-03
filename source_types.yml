@@ -513,6 +513,8 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - mkzk_CRESCENT       # 合議で追加: 個人アカウント。ファンが話題について投稿
+    - ChuLo5738           # 合議で追加: 個人アカウント。ファンが話題について投稿
     - ChocoBallCwHW       # 合議で追加: 個人のファンアカウント
     - sweet_soar_         # 合議で追加: 個人アカウントでキャラ8周年を投稿
     - hassen8888          # 合議で追加: 個人アカウントで配信への言及を投稿
@@ -733,3 +735,9 @@ path_types:
   tiktok.com/@valiv_official: 公式              # ヴイアラ(vα-liv)公式の TikTok(X の @valiv_official と同じ主体)
   ch.nicovideo.jp/sidem: 公式                    # アイドルマスター SideM チャンネル(ブランド公式のニコニコチャンネル)
   manga.nicovideo.jp/comic/31422: 準公式          # 『ぷちます!』のニコニコ漫画連載ページ(連載先)
+
+# --- 投稿者の無い X の投稿(x.com/i/status/<ID>)。投稿者のアカウントの種別を機械で写す ---
+x_posts:
+  ファン:
+    - 2105957772651385193 # 機械で追加: @ChuLo5738
+    - 2105254556238291021 # 機械で追加: @mkzk_CRESCENT

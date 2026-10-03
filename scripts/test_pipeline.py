@@ -1687,6 +1687,28 @@ def test_x_anonymous_post_in_posts(tmp: Path):
         cs._X_AUTHOR.clear()
 
 
+def test_collect_classify_gate(tmp: Path):
+    """収集が空振り(候補0件)でも、判定済みの候補ばかりでも、紙面に未確認の出典が残っていれば合議〜付け直しへ
+    進む。候補の未確認だけで入口を閉じると、紙面の未確認が次の collect でも処理されない(監査指摘 2026-10-03)"""
+    import collect
+    import classify_sources as cs
+    (tmp / "docs" / "_posts").mkdir(parents=True)
+    post = tmp / "docs" / "_posts" / "2026-10-03-k.md"
+    saved = cs.ROOT
+    try:
+        cs.ROOT = tmp
+        post.write_text("---\ntitle: t\nsources:\n- label: l\n  url: https://x.com/i/status/1\n  type: ファン\n---\n本文\n",
+                        encoding="utf-8")
+        check(not collect.needs_classify([]), "紙面にも候補にも未確認が無いのに合議へ進む")
+        check(collect.needs_classify([{"url": "https://a.example/", "source_type": "未確認"}]), "候補の未確認で進まない")
+        post.write_text(post.read_text(encoding="utf-8").replace("type: ファン", "type: 未確認"), encoding="utf-8")
+        check(collect.needs_classify([]), "空の収集で紙面の未確認を合議へ回さない")
+        check(collect.needs_classify([{"url": "https://a.example/", "source_type": "公式"}]),
+              "判定済みの候補ばかりの収集で紙面の未確認を合議へ回さない")
+    finally:
+        cs.ROOT = saved
+
+
 def test_clean_url_and_table():
     """URL の唯一の入口(clean_url)と、判定表 path_types の検査(監査指摘)。"""
     C = pipelib.clean_url
@@ -2702,6 +2724,7 @@ def main() -> int:
     test_clean_url_and_table()
     test_x_anonymous_post_url()
     test_x_anonymous_post_in_posts(tmp / "xap")
+    test_collect_classify_gate(tmp / "ccg")
     test_no_prompt_in_argv()
     test_next_number(tmp / "nn")
     test_dedupe_source_table(tmp / "dd")

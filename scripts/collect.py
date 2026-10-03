@@ -675,6 +675,15 @@ def is_x(url: str) -> bool:
     return any(h in url for h in X_HOSTS)
 
 
+def needs_classify(cands: list[dict]) -> bool:
+    """判定表の更新(合議)→ 紙面の付け直しを走らせるか。今回の候補に未確認があるか、**紙面に未確認の出典が
+    残っている**とき。候補だけで決めると、空振りや判定済みの候補ばかりの収集では紙面の未確認が残り続ける
+    (合議の対象は紙面の未確認も含むのに、入口が候補だけで閉じていた。監査指摘 2026-10-03)"""
+    import classify_sources
+    return any(c.get("source_type") == "未確認" and c.get("url") for c in cands) \
+        or bool(classify_sources.unresolved_post_sources())
+
+
 def x_post_url(url: str, fetch=None) -> str:
     """`x.com/i/status/<ID>`(投稿者の無い投稿 URL)を `x.com/<投稿者>/status/<ID>` に直す。
 
@@ -977,6 +986,7 @@ def main() -> int:
     if unknown:
         print(f"source_types.yml に無い出典 {sum(unknown.values())}件 / {len(unknown)}ドメイン: "
               + ", ".join(f"{h}({n})" for h, n in unknown.most_common(12)), flush=True)
+    if needs_classify(cands):
         # **未知のドメインは合議で振り分ける。**表を人が育てるまで待つと、
         # 会場・チケット販売・自治体が未確認のまま紙面に載る。
         # 別ベンダーの2モデルが一致したものだけを足し、公式・準公式は自動で足さない

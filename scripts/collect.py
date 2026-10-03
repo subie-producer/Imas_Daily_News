@@ -40,7 +40,8 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, html_to_text, set_quiet, unbacked_facts,
                      checkout_edition_branch, classify_retag_lint, commit_and_push, diagnose_anomalies, edition_date,
-                     extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt)
+                     extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
+                     X_ANON_POST, x_post_author)
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
@@ -674,6 +675,29 @@ def is_x(url: str) -> bool:
     return any(h in url for h in X_HOSTS)
 
 
+def needs_classify(cands: list[dict]) -> bool:
+    """判定表の更新(合議)→ 紙面の付け直しを走らせるか。今回の候補に未確認があるか、**紙面に未確認の出典が
+    残っている**とき。候補だけで決めると、空振りや判定済みの候補ばかりの収集では紙面の未確認が残り続ける
+    (合議の対象は紙面の未確認も含むのに、入口が候補だけで閉じていた。監査指摘 2026-10-03)"""
+    import classify_sources
+    return any(c.get("source_type") == "未確認" and c.get("url") for c in cands) \
+        or bool(classify_sources.unresolved_post_sources())
+
+
+def x_post_url(url: str, fetch=None) -> str:
+    """`x.com/i/status/<ID>`(投稿者の無い投稿 URL)を `x.com/<投稿者>/status/<ID>` に直す。
+
+    種別は X のアカウント単位で決まるので、投稿者の無い形は判定できず、紙面に未確認の出典として残る
+    (2026-10-03: Grok の trend 面が 16件すべてこの形で書いた)。投稿者は X の oEmbed が返す。
+    引けなければ元のまま返す(合議が投稿者を引き直し、決まらなければ watch が未確認の出典として知らせる)
+    """
+    m = X_ANON_POST.fullmatch(url)
+    if not m:
+        return url
+    handle = x_post_author(m.group(1), fetch or http_get)
+    return f"https://x.com/{handle}/status/{m.group(1)}" if handle else url
+
+
 # 面が判別できる語 → ブランド。名鑑(アイドル名)で拾えない作品名・ブランド呼称を補う。
 BRAND_WORDS = {
     "dsva": ("vα-liv", "ヴイアラ", "va-liv", "valiv", "876プロ", "ディアリースターズ"),
@@ -725,6 +749,7 @@ def normalize(items: list[dict]) -> list[dict]:
                 if it.get("url"):
                     print(f"候補の URL を捨てた(形が不正): {str(it.get('url'))[:80]!r}", flush=True)
                 continue
+            url = x_post_url(url)
             valid = {"general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"}
             brand = it.get("brand") if it.get("brand") in valid else "other"
             if brand in ("general", "other"):
@@ -961,6 +986,7 @@ def main() -> int:
     if unknown:
         print(f"source_types.yml に無い出典 {sum(unknown.values())}件 / {len(unknown)}ドメイン: "
               + ", ".join(f"{h}({n})" for h, n in unknown.most_common(12)), flush=True)
+    if needs_classify(cands):
         # **未知のドメインは合議で振り分ける。**表を人が育てるまで待つと、
         # 会場・チケット販売・自治体が未確認のまま紙面に載る。
         # 別ベンダーの2モデルが一致したものだけを足し、公式・準公式は自動で足さない

@@ -1589,6 +1589,126 @@ def test_time_budget():
         compose.STAGE_MIN.update(saved)
 
 
+def test_x_anonymous_post_url():
+    """`x.com/i/status/<ID>` は投稿者を引いて `x.com/<投稿者>/status/<ID>` に直す。直さないと種別を判定する単位
+    (X のアカウント)が無く、紙面に未確認の出典が残る(2026-10-03: trend 面の 16件)。引けなければ元のまま"""
+    import collect
+    asked = []
+    def fake(url):
+        asked.append(url)
+        return json.dumps({"author_url": "https://x.com/ChuLo5738", "url": "https://x.com/ChuLo5738/status/2105957772651385193"})
+    check(collect.x_post_url("https://x.com/i/status/2105957772651385193", fetch=fake)
+          == "https://x.com/ChuLo5738/status/2105957772651385193", "i/status の投稿者を引いていない")
+    check(asked and asked[0].startswith("https://publish.twitter.com/oembed?") and "2105957772651385193" in asked[0], f"oEmbed の問い合わせ: {asked}")
+    check(collect.x_post_url("https://twitter.com/i/web/status/5?s=20", fetch=fake) == "https://x.com/ChuLo5738/status/5", "i/web/status の形")
+    asked.clear()
+    check(collect.x_post_url("https://x.com/imas_official/status/1", fetch=fake) == "https://x.com/imas_official/status/1" and not asked,
+          "投稿者のある URL まで問い合わせた")
+    check(collect.x_post_url("https://x.com/i/trending/123", fetch=fake) == "https://x.com/i/trending/123", "トレンドは投稿ではない")
+    def broken(url):
+        raise OSError("404")
+    check(collect.x_post_url("https://x.com/i/status/7", fetch=broken) == "https://x.com/i/status/7", "引けないときは元のまま")
+    check(collect.x_post_url("https://x.com/i/status/7", fetch=lambda u: json.dumps({"author_url": "https://evil.example/a"}))
+          == "https://x.com/i/status/7", "ハンドルでない author_url を採った")
+    # 収集の正規化を通すと、種別を判定できる形で候補に載る
+    saved = collect.http_get
+    try:
+        collect.http_get = fake
+        got = collect.normalize([{"url": "https://x.com/i/status/2105957772651385193", "title": "t", "brand": "general",
+                                  "dedup_key": "k", "facts": ["f"], "_via": "grok"}])
+    finally:
+        collect.http_get = saved
+    check([c["url"] for c in got] == ["https://x.com/ChuLo5738/status/2105957772651385193"], f"収集の正規化で直らない: {got}")
+    import classify_sources as cs
+    check(cs.platform_unit(got[0]["url"]) == ("x", "ChuLo5738"), "判定の単位が付かない")
+
+
+def test_x_anonymous_post_in_posts(tmp: Path):
+    """紙面に**既に載った** `x.com/i/status/<ID>` も、投稿者を引いてアカウントを合議に掛け、決まった種別を
+    投稿 ID で表(x_posts)に写し、付け直しで記事の種別まで届く。過去紙面の URL は書き換えない
+    (2026-10-03: 記事2件の出典が判定の単位なしで未確認のまま残り、毎朝の watch が同じ異常を出す。監査指摘)。"""
+    import yaml
+    import classify_sources as cs
+    import retag_sources as rt
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True)
+    (tmp / "candidates").mkdir()
+    a, b = "https://x.com/i/status/2105957772651385193", "https://x.com/i/status/2105254556238291021"
+    post = tmp / "docs" / "_posts" / "2026-10-03-k.md"
+    post.write_text(f"---\ntitle: t\nsrc: 未確認\nsources:\n- label: l1\n  url: {a}\n  type: 未確認\n"
+                    f"- label: l2\n  url: {b}\n  type: 未確認\n---\n本文\n", encoding="utf-8")
+    (tmp / "source_types.yml").write_text("x_accounts:\n  ファン:\n    - somebody\n", encoding="utf-8")
+    authors = {"2105957772651385193": "ChuLo5738", "2105254556238291021": "mkzk_CRESCENT"}
+    asked = []
+    def fake_consensus(prompt, keys):
+        asked.append(sorted(keys))
+        return ({"ChuLo5738": ("ファン", "個人")} if "ChuLo5738" in keys else {}), \
+               [f"{k}: ファン「個人」 / 当事者「店」" for k in keys if k == "mkzk_CRESCENT"]
+    saved = (cs.ROOT, cs.POSTS_ONLY, cs.UNRESOLVED, cs.consensus, cs.x_post_author, rt.POSTS,
+             pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, sys.argv)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        cs.POSTS_ONLY = None
+        cs.UNRESOLVED = tmp / "metrics" / "classify-unresolved.json"
+        cs.consensus = fake_consensus
+        cs.x_post_author = lambda pid, fetch=None: authors.get(pid, "")
+        cs._X_AUTHOR.clear()
+        rt.POSTS = tmp / "docs" / "_posts"
+        pipelib._ST_TABLE, pipelib._ST_KEY = None, None
+        sys.argv = ["classify_sources.py", "--date", "2026-10-04", "--apply"]
+        check(cs.main() == 0, "合議が落ちた")
+        check(asked == [["ChuLo5738", "mkzk_CRESCENT"]], f"投稿者のアカウントが合議に掛からない: {asked}")
+        t = pipelib.source_type_table()
+        check(t["x_accounts"].get("ファン") and "ChuLo5738" in t["x_accounts"]["ファン"], f"アカウントが表に入らない: {t['x_accounts']}")
+        check({str(i) for i in (t.get("x_posts") or {}).get("ファン") or []} == {"2105957772651385193"},
+              f"決まった投稿 ID が x_posts に入らない(決まらなかったものは入れない): {t.get('x_posts')}")
+        check(pipelib.classify_source(a) == "ファン" and pipelib.classify_source(b) == "未確認", "投稿 ID で種別を引けない")
+        check(pipelib.classify_source("https://x.com/i/web/status/2105957772651385193") == "ファン", "i/web/status の形")
+        # 付け直しで記事の種別が更新される。URL はそのまま(過去紙面は種別しか変えられない)
+        sys.argv = ["retag_sources.py", "--apply"]
+        rt.main()
+        fm = yaml.safe_load(post.read_text(encoding="utf-8").split("---\n")[1])
+        check([(x["url"], x["type"]) for x in fm["sources"]] == [(a, "ファン"), (b, "未確認")], f"記事の種別: {fm['sources']}")
+        # 決まらなかったものは、watch がアカウントの単位で引ける(なぜ決まらなかったかが付く)
+        check(cs.display_base(b) == "https://x.com/mkzk_CRESCENT", f"watch に出す単位: {cs.display_base(b)}")
+        check("当事者" in cs.load_unresolved().get(cs.display_base(b), ""), f"決まらなかった理由を引けない: {cs.load_unresolved()}")
+        # 2回目: アカウントが表にあれば合議に掛けず、投稿 ID を足すだけ(二重に足さない)
+        asked.clear()
+        sys.argv = ["classify_sources.py", "--date", "2026-10-04", "--apply"]
+        check(cs.main() == 0 and asked == [["mkzk_CRESCENT"]], f"表にあるアカウントを合議に掛けた: {asked}")
+        # 投稿者を引けない投稿は、理由付きで飛ばす
+        cs._X_AUTHOR.clear()
+        cs.x_post_author = lambda pid, fetch=None: ""
+        cs.unknown_targets("2026-10-04")
+        check(b in cs.SKIPPED and "投稿者を引けない" in cs.SKIPPED[b], f"投稿者を引けない投稿: {cs.SKIPPED}")
+    finally:
+        (cs.ROOT, cs.POSTS_ONLY, cs.UNRESOLVED, cs.consensus, cs.x_post_author, rt.POSTS,
+         pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, sys.argv) = saved
+        cs._X_AUTHOR.clear()
+
+
+def test_collect_classify_gate(tmp: Path):
+    """収集が空振り(候補0件)でも、判定済みの候補ばかりでも、紙面に未確認の出典が残っていれば合議〜付け直しへ
+    進む。候補の未確認だけで入口を閉じると、紙面の未確認が次の collect でも処理されない(監査指摘 2026-10-03)"""
+    import collect
+    import classify_sources as cs
+    (tmp / "docs" / "_posts").mkdir(parents=True)
+    post = tmp / "docs" / "_posts" / "2026-10-03-k.md"
+    saved = cs.ROOT
+    try:
+        cs.ROOT = tmp
+        post.write_text("---\ntitle: t\nsources:\n- label: l\n  url: https://x.com/i/status/1\n  type: ファン\n---\n本文\n",
+                        encoding="utf-8")
+        check(not collect.needs_classify([]), "紙面にも候補にも未確認が無いのに合議へ進む")
+        check(collect.needs_classify([{"url": "https://a.example/", "source_type": "未確認"}]), "候補の未確認で進まない")
+        post.write_text(post.read_text(encoding="utf-8").replace("type: ファン", "type: 未確認"), encoding="utf-8")
+        check(collect.needs_classify([]), "空の収集で紙面の未確認を合議へ回さない")
+        check(collect.needs_classify([{"url": "https://a.example/", "source_type": "公式"}]),
+              "判定済みの候補ばかりの収集で紙面の未確認を合議へ回さない")
+    finally:
+        cs.ROOT = saved
+
+
 def test_clean_url_and_table():
     """URL の唯一の入口(clean_url)と、判定表 path_types の検査(監査指摘)。"""
     C = pipelib.clean_url
@@ -2602,6 +2722,9 @@ def main() -> int:
     test_claude_traced(tmp / "ct")
     test_time_budget()
     test_clean_url_and_table()
+    test_x_anonymous_post_url()
+    test_x_anonymous_post_in_posts(tmp / "xap")
+    test_collect_classify_gate(tmp / "ccg")
     test_no_prompt_in_argv()
     test_next_number(tmp / "nn")
     test_dedupe_source_table(tmp / "dd")

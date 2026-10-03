@@ -2188,6 +2188,25 @@ def test_update_clis(tmp: Path):
             os.environ["HOME"] = saved_home
 
 
+def test_article_purpose():
+    """記事の目的(編集長 2026-10-03「目的の間違い」: 予約締切の前日の記事を、執筆が新しい事実が無いと見送った)。
+    選定が purpose を返し、計画に載り、執筆の依頼文に出る。続報予約の消化は目的が期日の知らせ。"""
+    import planlib
+    sch = planlib.plan_schema(["k1"], "765")
+    dec = sch["properties"]["decisions"]["properties"]["k1"]
+    check("purpose" in dec["required"] and "期日の知らせ" in dec["properties"]["purpose"]["enum"], "選定の schema に目的が無い")
+    plan = planlib.decisions_to_plan("765", [{"dedup_key": "k1", "ids": ["c1"], "title": "t"}, {"dedup_key": "k2", "ids": ["c2"], "title": "t2"}],
+                                     {"k1": {"action": "article", "angle": "締切が明日", "purpose": "期日の知らせ", "rank": "small", "lead_score": 0},
+                                      "k2": {"action": "article", "angle": "新発表", "purpose": "?", "rank": "small", "lead_score": 0}}, set())
+    arts = {a["dedup_key"]: a for a in plan["articles"]}
+    check(arts["k1"]["purpose"] == "期日の知らせ" and arts["k2"]["purpose"] == "新情報", f"計画の目的: {[(k, a.get('purpose')) for k, a in arts.items()]}")
+    art = {"slug": "x", "rank": "small", "angle": "締切が明日"}
+    p1 = compose.article_prompt("2026-10-03", {**art, "purpose": "期日の知らせ"}, [], [], None)
+    p2 = compose.article_prompt("2026-10-03", {**art, "purpose": "新情報"}, [], [], {"kind": "締切", "note": "予約できる", "subject": "s"})
+    p3 = compose.article_prompt("2026-10-03", {**art, "purpose": "新情報"}, [], [], None)
+    check("- 目的: 期日の知らせ" in p1 and "- 目的: 期日の知らせ" in p2 and "- 目的: 新情報" in p3, "執筆の依頼文に目的が出ない(続報予約は期日の知らせ)")
+
+
 def test_withdrawal(tmp: Path):
     """取り下げ(編集長 2026-09-29「記事ごと削除でいいのでは」): 道具(withdraw.py)が記事・記録・目次・一面・号の数・未来の予約を
     1回で直し、lint の判定(edition_withdrawal_ok / promotion_ok / withdrawal_record_errors / load_withdrawn)がそれを認め、
@@ -2732,6 +2751,7 @@ def main() -> int:
     test_oncall_undo_merge()
     test_oncall_ensure_edition(tmp / "ee")
     test_withdrawal(tmp / "wd")
+    test_article_purpose()
     test_extract_json_array_strict()
     test_update_clis(tmp / "uc")
     test_watch_pagination_and_batches(tmp / "wp")

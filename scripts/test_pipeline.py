@@ -1923,6 +1923,8 @@ def test_watch_pagination_and_batches(tmp: Path):
     listings = {"old": [(f"https://a.jp/n{i}", "") for i in range(30)] + [(u, "") for u in old_known],
                 "fresh": [(f"https://b.jp/f{i}", "") for i in range(20)]}
     calls, notes = [], []
+    # facts 化の出力は新着ページごとの結果(全ページ「読んだが事実なし」)
+    none_all = lambda prompt: [{"page": i + 1, "status": "none", "items": []} for i in range(prompt.count("### "))]
     saved = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt)
     try:
         collect.ROOT, collect.STATE_PATH = tmp, tmp / "watch-state.json"
@@ -1930,7 +1932,7 @@ def test_watch_pagination_and_batches(tmp: Path):
         collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
         collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
         collect.WATCH_BATCH = 12
-        cands, info = collect.run_watch(lambda prompt, timeout=0: calls.append(prompt.count("### ")) or [])
+        cands, info = collect.run_watch(lambda prompt, timeout=0: calls.append(prompt.count("### ")) or none_all(prompt))
         check(sorted(calls) == [6, 12, 12], f"facts 化のバッチ: {calls}(30件は 12・12・6 の3回で全部)")
         check(info["new"] == 30 and info["deferred"] == 0, f"新着・繰り越し: {info['new']} {info['deferred']}")
         check(info["stats"]["fresh"].get("baseline") and info["stats"]["fresh"]["new"] == 0, f"初めて見る観測先を新着にした: {info['stats']['fresh']}")
@@ -1941,7 +1943,7 @@ def test_watch_pagination_and_batches(tmp: Path):
         listings = {"old": [(f"https://a.jp/z{i}", "") for i in range(90)] + [(u, "") for u in old_known],
                     "fresh": [(f"https://b.jp/z{i}", "") for i in range(20)]}
         (tmp / "watch-state.json").write_text(json.dumps({"old": old_known, "fresh": []}), encoding="utf-8")
-        cands, info = collect.run_watch(lambda prompt, timeout=0: calls.append(prompt.count("### ")) or [])
+        cands, info = collect.run_watch(lambda prompt, timeout=0: calls.append(prompt.count("### ")) or none_all(prompt))
         check(sum(calls) == 110 and len(calls) == 10 and info["deferred"] == 0 and not info["stats"]["_state"].get("_pending"),
               f"新着を全部処理していない: {sum(calls)}件 / {len(calls)}回 / 繰り越し {info['deferred']}")
         # 出力が読めなかったバッチだけが未処理の列に残り、次の実行では一覧に既に見た記事しか出なくても、列から先に処理する(監査指摘 r102・r103)
@@ -1954,7 +1956,7 @@ def test_watch_pagination_and_batches(tmp: Path):
         (tmp / "watch-state.json").write_text(json.dumps(st), encoding="utf-8")
         listings = {"old": [(f"https://a.jp/m{i}", "") for i in range(30)] + [("https://a.jp/P", "")], "fresh": []}
         firsts = []
-        cands, info = collect.run_watch(lambda prompt, timeout=0: firsts.append(prompt.split("\n", 1)[0]) or [])
+        cands, info = collect.run_watch(lambda prompt, timeout=0: firsts.append(prompt.split("\n", 1)[0]) or none_all(prompt))
         st = info["stats"]["_state"]
         check(any(f.startswith("### 1. https://a.jp/P") for f in firsts) and not st.get("_pending") and "https://a.jp/P" in st["old"],
               f"未処理の列の新着を先に処理して既読にしない: {firsts[:3]} / 残り {st.get('_pending')}")
@@ -1976,6 +1978,25 @@ def test_watch_pagination_and_batches(tmp: Path):
         check(info["deferred"] == 1 and [it["url"] for it in st.get("_pending") or []] == ["https://a.jp/1"]
               and "https://a.jp/1" not in st.get("old", []) and st.get("_unreadable", {}).get("https://a.jp/1") == 1,
               f"拾い直しで諦めず繰り越さない(=失う): deferred={info['deferred']} pending={st.get('_pending')} unreadable={st.get('_unreadable')}")
+        # ページごとの結果(監査指摘 watch-read-status-contract): 本文を読めなかったページ・応答に無いページ・形の崩れた
+        # ページは既読にせず未処理の列に残す。旧い契約の [](候補なし)で全件を既読にしない(2026-10-04: ?p=32544 を失った)
+        listings = {"old": [(f"https://a.jp/q{i}", "") for i in range(5)] + [("https://a.jp/seen", "")], "fresh": []}
+        item = {"title": "t", "url": "https://src.jp/1", "facts": ["f"]}
+        replies = {"[]": lambda prompt: [],
+                   "pages": lambda prompt: [{"page": 1, "status": "extracted", "items": [item]},
+                                            {"page": 2, "status": "none", "items": []},
+                                            {"page": 3, "status": "unreadable", "items": []},
+                                            {"page": 5, "status": "none", "items": [item]}]}   # 4 は応答に無い・5 は status と items が食い違う
+        for name, reply in replies.items():
+            (tmp / "watch-state.json").write_text(json.dumps({"old": ["https://a.jp/seen"]}), encoding="utf-8")
+            cands, info = collect.run_watch(lambda prompt, timeout=0: reply(prompt))
+            st = info["stats"]["_state"]
+            pend = [it["url"] for it in st.get("_pending") or []]
+            want = [f"https://a.jp/q{i}" for i in range(5)] if name == "[]" else ["https://a.jp/q2", "https://a.jp/q3", "https://a.jp/q4"]
+            check(pend == want and not any(u in st["old"] for u in want) and all(st["_unreadable"].get(u) == 1 for u in want),
+                  f"{name}: 読めなかった・欠けたページを既読にした(=新着を失う): pending={pend} old={st['old']}")
+            check(len(cands) == (0 if name == "[]" else 1) and (name == "[]" or {"https://a.jp/q0", "https://a.jp/q1"} <= set(st["old"])),
+                  f"{name}: 抽出済み・対象外のページの扱い: cands={cands} old={st['old']}")
     finally:
         (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt) = saved
 

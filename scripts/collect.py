@@ -220,7 +220,7 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
 
 
 def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool = False) -> tuple[list[dict], set[str]]:
-    """新着1バッチを facts 化する。戻りは (候補, 処理を試みた URL)。読めなかったバッチは、2回目で諦めたもの以外は試みたことにしない。"""
+    """新着1バッチを facts 化する。戻りは (候補, 処理を試みた URL)。読めなかったページは、2回目で諦めたもの以外は試みたことにしない。"""
     cands = []
     if batch and claude_call:
         blobs = []
@@ -240,34 +240,62 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
                else "- 本文: (取得できず。URL を WebFetch で読むこと)")
             for i, b in enumerate(blobs))
         prompt = render_prompt("watch-facts", RULES=COLLECT_RULES, ITEM=COLLECT_ITEM, MATERIAL=material)
-        cands = claude_call(prompt, timeout=420)
+        got = claude_call(prompt, timeout=420)
+        # 出力は新着ページごとの結果(抽出済み/対象外/読めなかった)。処理済みにするのは、結果が契約どおりに返った
+        # extracted・none のページだけ。読めなかった・応答に無い・形が崩れたページは未処理(0件の [] とは別)。
+        # 以前は候補の配列だけを受け、[] をバッチ全件の「候補なし」として既読にしていたので、WebFetch で
+        # 本文を読めなかったページも黙って既読になり、新着を失った(監査指摘 watch-read-status-contract)
+        done = watch_page_results(got, len(batch))
+        failed = [it for i, it in enumerate(batch) if i + 1 not in done]
         bad = state.setdefault("_unreadable", {})   # url → 読めなかった回数
-        if cands is None:
-            # 読めなかったバッチは既読にしない(次回そのまま拾い直す)。0件とは別。
-            # ただし同じ URL が2回読めなければ諦めて既読にする。毎回同じ先頭バッチを
-            # やり直すと、上限の外の新着が永久に後回しになる(監査指摘)
-            if oncall_rerun:
-                # 当番の拾い直し(直後に同じバッチを再実行)では諦めない。原因が途中切れ等で
-                # 直しが効いていなければここでも読めないが、既読にすると**原因未確定のまま
-                # 新着を失う**(監査指摘 rerun-second-unreadable-drops-pending)。回数も進めず
-                # 全件を未処理の列に残し、残れば main が非0で「まだ直っていない」と申告する。
-                give_up = []
-            else:
-                for it in batch:
-                    bad[it["url"]] = bad.get(it["url"], 0) + 1
-                give_up = [it for it in batch if bad[it["url"]] >= 2]
-                for it in give_up:
-                    bad.pop(it["url"], None)   # 諦めたら回数も消す。残すと再登場時に1回で即既読になる(監査指摘)
-            notify("collect", f"定点観測: facts 化の出力が読めなかった({len(batch)}件)。"
-                              f"次回に持ち越す(諦めて既読にしたもの {len(give_up)}件)", ok=False)
-            batch = give_up
-            cands = []
-        else:
-            for it in batch:
+        give_up = []
+        if failed and not oncall_rerun:
+            # 読めなかったページは既読にしない(次回そのまま拾い直す)。ただし同じ URL が2回読めなければ諦めて既読にする。
+            # 毎回同じ先頭バッチをやり直すと、上限の外の新着が永久に後回しになる(監査指摘)
+            # 当番の拾い直し(直後に同じバッチを再実行)では諦めない。原因が途中切れ等で直しが効いていなければここでも
+            # 読めないが、既読にすると**原因未確定のまま新着を失う**(監査指摘 rerun-second-unreadable-drops-pending)。
+            # 回数も進めず未処理の列に残し、残れば main が非0で「まだ直っていない」と申告する。
+            for it in failed:
+                bad[it["url"]] = bad.get(it["url"], 0) + 1
+            give_up = [it for it in failed if bad[it["url"]] >= 2]
+            for it in give_up:
+                bad.pop(it["url"], None)   # 諦めたら回数も消す。残すと再登場時に1回で即既読になる(監査指摘)
+        if failed:
+            notify("collect", f"定点観測: facts 化で読めなかった新着 {len(failed)}/{len(batch)}件"
+                              f"({'出力が読めない' if got is None else 'ページの結果が読めなかった・欠けた'})。次回に持ち越す"
+                              f"(2度読めず諦めて既読にしたもの {len(give_up)}件"
+                              + "".join(f"\n  - {it['url']}" for it in give_up) + ")", ok=False)
+        for i, it in enumerate(batch):
+            if i + 1 in done:
                 bad.pop(it["url"], None)
+        cands = [c for i in sorted(done) for c in done[i]]
         for c in cands:
             c["_via"] = "watch"
+        batch = [it for i, it in enumerate(batch) if i + 1 in done] + give_up
     return cands, {it["url"] for it in batch}
+
+
+def watch_page_results(got, n: int) -> dict[int, list[dict]]:
+    """facts 化の出力(新着ページごとの結果)から、処理済みのページ番号 → 候補 を返す。
+
+    処理済みは status が extracted(候補1件以上)か none(候補0件)で、番号が 1〜n に1度だけ現れるページ。
+    unreadable・番号の重複・形の崩れ(status と items が食い違う等)・応答に無いページは含めない(未処理として残す)。"""
+    if not isinstance(got, list):
+        return {}
+    seen: dict[int, int] = {}
+    for r in got:
+        if isinstance(r, dict) and isinstance(r.get("page"), int):
+            seen[r["page"]] = seen.get(r["page"], 0) + 1
+    done = {}
+    for r in got:
+        if not isinstance(r, dict) or not isinstance(r.get("page"), int) or not 1 <= r["page"] <= n or seen[r["page"]] != 1:
+            continue
+        items = r.get("items")
+        if not isinstance(items, list) or not all(isinstance(c, dict) for c in items):
+            continue
+        if (r.get("status") == "extracted" and items) or (r.get("status") == "none" and not items):
+            done[r["page"]] = items
+    return done
 
 
 def finish_watch(new_items: list[dict], attempted: set[str], found_by_source: dict, stats: dict, state: dict,

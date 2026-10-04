@@ -1,0 +1,141 @@
+{
+ "decisions": {
+  "tanaka-kotoha-birthday-gasha-2026": {
+   "action": "article",
+   "angle": "田中琴葉の誕生日の本日、ミリシタで専用ガシャとBirthdayセットが登場し、劇場も特別仕様に。公式のお祝いムービーも公開",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "琴葉誕生日の4主題(ガシャ・セット・劇場装飾・お祝い動画)を1本に統合"
+  },
+  "tanaka-kotoha-birthday-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tanaka-kotoha-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "tanaka-kotoha-birthday-theater-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tanaka-kotoha-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "million-theater-9th-illustration-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/4号の9周年グッズ記事に同コースター・価格が既出。締切10/11は3日以内でなく、同キャンペーンは10/1号でも既報"
+  },
+  "million-only-maker-parker-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30号に受注期間・価格・色まで既出。締切10/12は3日以内でなく新事実なし"
+  },
+  "million-14th-konomi-sake-glass-2026": {
+   "action": "article",
+   "angle": "ミリオン14th開催記念のこのみイメージ公式日本酒グラスセットが10月11日まで受注中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報・直近記事に無い14th記念グッズ"
+  },
+  "kotobukiya-million-kuji-stage04-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/4号「ミリオンライブくじ、B賞タペストリーとC賞公開」と同じ商品。当日トリガーなし(販売終了10/18)、出典も未確認"
+  },
+  "tanaka-kotoha-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tanaka-kotoha-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "お祝いムービーも同じ誕生日の記事に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-tanaka-kotoha-birthday-gasha-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "田中琴葉の誕生日の本日、ミリシタで専用ガシャとBirthdayセットが登場し、劇場も特別仕様に。公式のお祝いムービーも公開",
+    "purpose": "新情報",
+    "lead_score": 55,
+    "dedup_key": "tanaka-kotoha-birthday-gasha-2026",
+    "candidate_ids": [
+     "202610050222-grok-8",
+     "202610050222-grok-9",
+     "202610050222-grok-10",
+     "202610050222-grok-31"
+    ]
+   },
+   {
+    "slug": "million-14th-konomi-sake-glass-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオン14th開催記念のこのみイメージ公式日本酒グラスセットが10月11日まで受注中",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-14th-konomi-sake-glass-2026",
+    "candidate_ids": [
+     "202610050222-grok-13"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-theater-9th-illustration-goods-2026",
+    "reason": "既報",
+    "note": "10/4号の9周年グッズ記事に同コースター・価格が既出。締切10/11は3日以内でなく、同キャンペーンは10/1号でも既報"
+   },
+   {
+    "dedup_key": "million-only-maker-parker-2026",
+    "reason": "既報",
+    "note": "9/30号に受注期間・価格・色まで既出。締切10/12は3日以内でなく新事実なし"
+   },
+   {
+    "dedup_key": "kotobukiya-million-kuji-stage04-2026",
+    "reason": "既報",
+    "note": "10/4号「ミリオンライブくじ、B賞タペストリーとC賞公開」と同じ商品。当日トリガーなし(販売終了10/18)、出典も未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,192 @@
+{
+ "decisions": {
+  "cg-number-one-cross-over-cd-2026": {
+   "action": "article",
+   "angle": "「クロス×オーバー！」CDが発売、コロムビアミュージックショップ限定で2,000円、Another ver.2曲など全5曲",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MV公開記事(9/30)とは別商品。アソビストアは受付終了済みの点を明記"
+  },
+  "cg-15th-anniversary-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "facts は9/18の prior 本文と同内容。一般会員先行の締切10/19は3日以内でない"
+  },
+  "cg-athome-apple-of-my-ai-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29記事に日程・会場・出演・料金・プレミアム会員先行(10/18まで)が既出。締切10/18は3日以内でない"
+  },
+  "cg-yurakucho-popup-2026": {
+   "action": "article",
+   "angle": "有楽町POP UPで鷺沢文香のステッカーとデカアクスタが完売、10月9日に再入荷予定(相馬夏美キーホルダーは未定)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/4記事は堀裕子ステッカーのみ。別商品の再入荷情報が新しい事実"
+  },
+  "concept-xr-live-pop-n-toybox-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/4記事と同内容で新事実・当日トリガーなし"
+  },
+  "cg-memory-pict-december-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30記事に受注期間(〜10/18)・4点・白菊ほたる既出。締切10/18は3日以内でない"
+  },
+  "cg-rose-tea-parlor-2026-nagoya": {
+   "action": "article",
+   "angle": "Rose Tea Parlorコラボカフェ名古屋栄店が本日5日で千秋楽、来店できる最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了・千秋楽の続報予約2件を1記事に統合"
+  },
+  "pazudora-cinderella-collab-2026": {
+   "action": "article",
+   "angle": "パズドラ×デレマスコラボが本日9時59分で終了、コラボガチャ・ダンジョン・魔法石セット・サイン色紙応募の最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策の3主題(終了の続報予約3件)をここに統合"
+  },
+  "cg-puzzle-dragons-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pazudora-cinderella-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じパズドラコラボの終了"
+  },
+  "cinderella-puzzle-and-dragons-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pazudora-cinderella-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じパズドラコラボの終了"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-number-one-cross-over-cd-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「クロス×オーバー！」CDが発売、コロムビアミュージックショップ限定で2,000円、Another ver.2曲など全5曲",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cg-number-one-cross-over-cd-2026",
+    "candidate_ids": [
+     "202610040733-explore-3"
+    ]
+   },
+   {
+    "slug": "cg-yurakucho-popup-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "有楽町POP UPで鷺沢文香のステッカーとデカアクスタが完売、10月9日に再入荷予定(相馬夏美キーホルダーは未定)",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cg-yurakucho-popup-2026",
+    "candidate_ids": [
+     "202610050222-grok-5"
+    ]
+   },
+   {
+    "slug": "cg-rose-tea-parlor-2026-nagoya",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Rose Tea Parlorコラボカフェ名古屋栄店が本日5日で千秋楽、来店できる最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cg-rose-tea-parlor-2026-nagoya",
+    "candidate_ids": [
+     "sched-2026-10-05-cg-rose-tea-parlor-2026-nagoya-終了",
+     "sched-2026-10-05-cg-rose-tea-parlor-2026-nagoya-千秋楽"
+    ]
+   },
+   {
+    "slug": "cg-pazudora-cinderella-collab-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "パズドラ×デレマスコラボが本日9時59分で終了、コラボガチャ・ダンジョン・魔法石セット・サイン色紙応募の最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "pazudora-cinderella-collab-2026",
+    "candidate_ids": [
+     "sched-2026-10-05-pazudora-cinderella-collab-2026-終了",
+     "sched-2026-10-05-cg-puzzle-dragons-collab-2026-終了",
+     "sched-2026-10-05-cinderella-puzzle-and-dragons-collab-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-15th-anniversary-party-2026",
+    "reason": "既報",
+    "note": "facts は9/18の prior 本文と同内容。一般会員先行の締切10/19は3日以内でない"
+   },
+   {
+    "dedup_key": "cg-athome-apple-of-my-ai-2027",
+    "reason": "既報",
+    "note": "9/29記事に日程・会場・出演・料金・プレミアム会員先行(10/18まで)が既出。締切10/18は3日以内でない"
+   },
+   {
+    "dedup_key": "concept-xr-live-pop-n-toybox-2026",
+    "reason": "既報",
+    "note": "10/4記事と同内容で新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "cg-memory-pict-december-2026",
+    "reason": "既報",
+    "note": "9/30記事に受注期間(〜10/18)・4点・白菊ほたる既出。締切10/18は3日以内でない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,105 @@
+{
+ "decisions": {
+  "315-1-10-4-0-00-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/4号で同じ更新を報道済み。新しい事実も当日のトリガーも無い"
+  },
+  "deramas-sidem-2026-kagura-rei-acrylic-sold-out": {
+   "action": "article",
+   "angle": "でらます×SideM2026ポップアップで神楽麗の2WAYアクリルスタンドが完売、再入荷は未定でマンガ展のXで告知",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "主催側の告知。verifyは未確認なので出典を明記して短く"
+  },
+  "sidem-fan-art-hotw-satan-2026-10-04": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。ファン面(culture)はgeneral面のみ"
+  },
+  "sidem-fan-visit-yamamotoya-okute-2026-10-04": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。ファン面(culture)はgeneral面のみ"
+  },
+  "sidem-karatetsu-yokai-2026": {
+   "action": "article",
+   "angle": "SideM×カラオケの鉄人コラボ第3弾、10店舗での展開は本日10/5で終了。通販は10/11 23:59まで受付",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)に該当。店舗は本日まで、通販は10/11までと区別して書く"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-deramas-sidem-2026-kagura-rei-acrylic-sold-out",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "でらます×SideM2026ポップアップで神楽麗の2WAYアクリルスタンドが完売、再入荷は未定でマンガ展のXで告知",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "deramas-sidem-2026-kagura-rei-acrylic-sold-out",
+    "candidate_ids": [
+     "202610050222-grok-19"
+    ]
+   },
+   {
+    "slug": "sidem-karatetsu-yokai-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×カラオケの鉄人コラボ第3弾、10店舗での展開は本日10/5で終了。通販は10/11 23:59まで受付",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "sidem-karatetsu-yokai-2026",
+    "candidate_ids": [
+     "sched-2026-10-05-sidem-karatetsu-yokai-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "315-1-10-4-0-00-2026",
+    "reason": "既報",
+    "note": "10/4号で同じ更新を報道済み。新しい事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-fan-art-hotw-satan-2026-10-04",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。ファン面(culture)はgeneral面のみ"
+   },
+   {
+    "dedup_key": "sidem-fan-visit-yamamotoya-okute-2026-10-04",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。ファン面(culture)はgeneral面のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

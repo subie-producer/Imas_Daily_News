@@ -1,0 +1,146 @@
+{
+ "decisions": {
+  "shiny-pioneer-impact-mvgiveaway-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/3号の本文に全事実あり。締切10/12は3日以内でなく新事実も無い"
+  },
+  "shiny-refrac7ions-still-blue-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は10/4に終了済み。10/3・10/4号で既報"
+  },
+  "shiny-hachiban-ramen-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/1号の本文に価格・期間・特典すべてあり。開始は10/7で今日でなく、新事実も無い。二次情報"
+  },
+  "shiny-msp-day2-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じMSPの配信チケット締切・アーカイブ視聴の話。DAY2アーカイブ公開を統合"
+  },
+  "shiny-song-antieka-shhis-new-costume-gacha-2026": {
+   "action": "article",
+   "angle": "シャニソンでアンティーカ＆シーズの新衣装ガシャ第1弾・第2弾が開催中、★3確率1.5倍",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営は1件のみで roundup 条件(3件以上)に満たないため small 記事"
+  },
+  "shiny-orchestra-radiant-chord-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/27号で日程・出演者(涼本あきほ含む)とも既報。個人SNS投稿の告知で未確認"
+  },
+  "shiny-msp-live-tickets-2026": {
+   "action": "article",
+   "angle": "MSPの配信チケット販売は本日18時終了、アーカイブ視聴は23:59まで(DAY2同時視聴会アーカイブも公開中)",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の終了・締切3件を1記事に。msp-2026-09 と day2-archive を統合"
+  },
+  "shiny-msp-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-live-tickets-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同時視聴会アーカイブ最終日・チケット締切は同じ期日の知らせに統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-song-antieka-shhis-new-costume-gacha-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンでアンティーカ＆シーズの新衣装ガシャ第1弾・第2弾が開催中、★3確率1.5倍",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-song-antieka-shhis-new-costume-gacha-2026",
+    "candidate_ids": [
+     "202610050222-grok-16"
+    ]
+   },
+   {
+    "slug": "shiny-msp-live-tickets-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "MSPの配信チケット販売は本日18時終了、アーカイブ視聴は23:59まで(DAY2同時視聴会アーカイブも公開中)",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "shiny-msp-live-tickets-2026",
+    "candidate_ids": [
+     "sched-2026-10-05-shiny-msp-live-tickets-2026-終了",
+     "202610050222-grok-15",
+     "sched-2026-10-05-shiny-msp-2026-09-終了",
+     "sched-2026-10-05-shiny-msp-2026-09-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-pioneer-impact-mvgiveaway-2026",
+    "reason": "既報",
+    "note": "10/3号の本文に全事実あり。締切10/12は3日以内でなく新事実も無い"
+   },
+   {
+    "dedup_key": "shiny-refrac7ions-still-blue-goods-2026",
+    "reason": "既報",
+    "note": "受注は10/4に終了済み。10/3・10/4号で既報"
+   },
+   {
+    "dedup_key": "shiny-hachiban-ramen-collab-2026",
+    "reason": "既報",
+    "note": "10/1号の本文に価格・期間・特典すべてあり。開始は10/7で今日でなく、新事実も無い。二次情報"
+   },
+   {
+    "dedup_key": "shiny-orchestra-radiant-chord-2027",
+    "reason": "既報",
+    "note": "9/27号で日程・出演者(涼本あきほ含む)とも既報。個人SNS投稿の告知で未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

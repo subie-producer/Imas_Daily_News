@@ -1,0 +1,103 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-10-05-765-xr-live-revival-twin-2026.md",
+   "issue": "分量不足: rank: lead の目安は本文1000字だが、実際は約100字。出典に掲載されている3公演の詳細(開場・開演時間、チケット価格、特典内容など)を追加することで、記事の充実度を高められる",
+   "scope": "article:2026-10-05-765-xr-live-revival-twin-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-05-cg-number-one-cross-over-cd-2026.md",
+   "issue": "rank: medium に対して分量が不足。出典に記載されている配信開始曲情報（「もしも『カワイイ』が世界からなくなっても」「恒久のユニバース」「Neon Sphere」）や、ソロ・リミックスの作詞・作曲者情報などを加えれば450字程度に補充できる。",
+   "scope": "article:2026-10-05-cg-number-one-cross-over-cd-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-05-cg-pazudora-cinderella-collab-2026.md",
+   "issue": "分量不足: 本文が約160字で rank:small の目安250字に対して不足。出典にある新規登場ユニット（LOVE LAIKA、#UNICUS）や新キャラ、BGM設定機能、チビキャラアバター、ドロップ率アップなどの仕様情報で埋められる",
+   "scope": "article:2026-10-05-cg-pazudora-cinderella-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-05-cg-yurakucho-popup-2026.md",
+   "issue": "small rank の目安（250字）より記事が短い（約150字）。出典のX投稿には、この他の完売商品や価格、在庫情報など詳細が含まれている可能性があり、拾えば分量が改善される",
+   "scope": "article:2026-10-05-cg-yurakucho-popup-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-05-gaku-taiko-dondaful-song-project-ume-2026.md",
+   "issue": "rank: small（目安250字）に対して本文が142字と薄い。候補の『どんちゃんのドンダフルソング大作戦』は4曲プロジェクト、プレミア公開URL、関連情報などを拾って拡充できる",
+   "scope": "article:2026-10-05-gaku-taiko-dondaful-song-project-ume-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-05-joint-arcade-tours-s2-live-2026.md",
+   "issue": "rank: small に対して本文が薄く、出典にある配信時間・出演者・ビューイング情報などを拾えば分量が埋まる（目安250字に対して現在約208字）",
+   "scope": "article:2026-10-05-joint-arcade-tours-s2-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-05-million-14th-konomi-sake-glass-2026.md",
+   "issue": "見出しに「ミリオンライブ」ブランド名が入っておらず、何の話か分かりにくい。「このみイメージの日本酒グラス」だけでは、ゲーム・グッズ・配信など複数の可能性が考えられる",
+   "scope": "article:2026-10-05-million-14th-konomi-sake-glass-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-05-million-14th-konomi-sake-glass-2026.md",
+   "issue": "分量が薄い。rank: small で目安 250字に対し、本文が約50字。出典に会場・価格・仕様・セット内容など詳細情報があれば記事を充実させられる",
+   "scope": "article:2026-10-05-million-14th-konomi-sake-glass-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-05-shiny-msp-live-tickets-2026.md",
+   "issue": "rank: small に対して本文が約150字と薄く、指定の250字目安を満たしていません。素材の sources に記載がある場合は、ライブ本公演の日程（9月26日・27日）、会場（京王アリーナTOKYO）など、配信視聴の文脈を理解するのに要る事実を拾えば分量が埋まります。",
+   "scope": "article:2026-10-05-shiny-msp-live-tickets-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-05-sidem-karatetsu-yokai-2026.md",
+   "issue": "本文が約150字で、rank: small の目安250字より短い。ただし、記事内容が簡潔で必要な情報を網羅しており、見出し・リードが十分に説明的なため、重大な不足ではない",
+   "scope": "article:2026-10-05-sidem-karatetsu-yokai-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "シャニマス「REFRACTIONs Still blue」公式グッズ受注が2026-10-04(昨日)に終了。高エンゲージメント案件だが紙面に掲載なし。落とされた理由は不明。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "ページ数8で記事15本は適切なバランス。本日の主要話題（765 xR LIVE、ミリオン誕生日、学マス太鼓25周年、シャニマス配信券）が digest に掲載されており、紙面戦略に問題なし。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-05-765-xr-live-revival-twin-2026.md",
+  "article:2026-10-05-cg-number-one-cross-over-cd-2026.md",
+  "article:2026-10-05-cg-pazudora-cinderella-collab-2026.md",
+  "article:2026-10-05-cg-rose-tea-parlor-2026-nagoya.md",
+  "article:2026-10-05-cg-yurakucho-popup-2026.md",
+  "article:2026-10-05-gaku-shirube-iwate-streaming-2026.md",
+  "article:2026-10-05-gaku-taiko-dondaful-song-project-ume-2026.md",
+  "article:2026-10-05-general-starlit-season-5th-steam-sale-2026.md",
+  "article:2026-10-05-joint-arcade-tours-s2-live-2026.md",
+  "article:2026-10-05-million-14th-konomi-sake-glass-2026.md",
+  "article:2026-10-05-million-tanaka-kotoha-birthday-gasha-2026.md",
+  "article:2026-10-05-shiny-msp-live-tickets-2026.md",
+  "article:2026-10-05-shiny-song-antieka-shhis-new-costume-gacha-2026.md",
+  "article:2026-10-05-sidem-deramas-sidem-2026-kagura-rei-acrylic-sold-out.md",
+  "article:2026-10-05-sidem-karatetsu-yokai-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-10-05-765-xr-live-revival-twin-2026.md": "e080e0144f63ba8c36b2b5bf43e60b0c566a39fe5637a6e93b32b6ba31e66592",
+  "docs/_posts/2026-10-05-cg-number-one-cross-over-cd-2026.md": "9809b8fd251409982cf15eb09d69b07299409373efb8c28edf7f9bb5d8f747c5",
+  "docs/_posts/2026-10-05-cg-pazudora-cinderella-collab-2026.md": "b3bb3b0abd3c6f426918101294df403a24daa6fb4b02903a6ee7e87a4a260fad",
+  "docs/_posts/2026-10-05-cg-rose-tea-parlor-2026-nagoya.md": "09f6da96576e037ee268c390b93b43875984e15a8330e885967c9291b9e75757",
+  "docs/_posts/2026-10-05-cg-yurakucho-popup-2026.md": "01284c25c188556f710620aa7d75b6862d9496ae1d3cf652c1d36218fe7ab8d0",
+  "docs/_posts/2026-10-05-gaku-shirube-iwate-streaming-2026.md": "59b982ea1645e179e68cc9cf3c087faed9fed4d5be6e8967ed2b283645111db4",
+  "docs/_posts/2026-10-05-gaku-taiko-dondaful-song-project-ume-2026.md": "17a7f2ffd066296709fb196b3f755f7a3273470f37436469e45dc547dbd916f7",
+  "docs/_posts/2026-10-05-general-starlit-season-5th-steam-sale-2026.md": "58c2a20ff10176bf09c558603af665ea0247de65174a7b4784b9100040922d71",
+  "docs/_posts/2026-10-05-joint-arcade-tours-s2-live-2026.md": "7f3c32f5833d972c38baca378332043fee929a88423dc3d7132b783700fc3817",
+  "docs/_posts/2026-10-05-million-14th-konomi-sake-glass-2026.md": "93a45e93052a74caf4ca6ade7652ac9497158eee4b2d21a22a45144427977b67",
+  "docs/_posts/2026-10-05-million-tanaka-kotoha-birthday-gasha-2026.md": "5c0190e9a2b7377a23b5928da7ca34caf6bad768ff82df4696dc23e4e737e4a5",
+  "docs/_posts/2026-10-05-shiny-msp-live-tickets-2026.md": "149824abc23406db368942fc2b9581e0340500ef8980f9a7f7f21c6469e2a2d6",
+  "docs/_posts/2026-10-05-shiny-song-antieka-shhis-new-costume-gacha-2026.md": "de6baeee2a83ae03ea6bbea59f2e1ea68617764ce95b7d06e8f9ea137a33ec27",
+  "docs/_posts/2026-10-05-sidem-deramas-sidem-2026-kagura-rei-acrylic-sold-out.md": "7e3cebc3632a0564cbf4164976ea4e43688f67a63ebcddb7e37c7b844f371097",
+  "docs/_posts/2026-10-05-sidem-karatetsu-yokai-2026.md": "89f4e1de29738f25497d98f09928f26f6b95c334c5c8bab95b7cebb3dcab119d",
+  "docs/_editions/2026-10-05.md": "e83ddcac60ee08b1414ed052d79cdc5a4b9dc5c38c4ed10d6c403eb3ad26a60c",
+  "metrics/stories-before-2026-10-05.yml": "f444560a1552ccf3ec30c90618b8167e3234bedfd65f7a95b6d7a9c661999d66"
+ }
+}

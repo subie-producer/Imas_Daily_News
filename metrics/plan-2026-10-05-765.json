@@ -1,0 +1,50 @@
+{
+ "decisions": {
+  "765-never-end-idol-bluray-correction-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "DAY1・DAY2とも訂正内容(品番・価格・2枚組・メイキング非収録)は10/3・10/4号で掲載済み。新事実も当日トリガーも無い。"
+  },
+  "xr-live-revival-twin-2026": {
+   "action": "article",
+   "angle": "2024年3月の同名公演と同一構成でビジュアルを刷新しステージセットも一部変更、お見送り会は実施しない",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "日時・料金・申込日程は10/4号に掲載済み。公演内容(再演の構成・演出変更)とお見送り会なしが新しい事実。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-xr-live-revival-twin-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "2024年3月の同名公演と同一構成でビジュアルを刷新しステージセットも一部変更、お見送り会は実施しない",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "xr-live-revival-twin-2026",
+    "candidate_ids": [
+     "202610050222-grok-1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765-never-end-idol-bluray-correction-2026",
+    "reason": "既報",
+    "note": "DAY1・DAY2とも訂正内容(品番・価格・2枚組・メイキング非収録)は10/3・10/4号で掲載済み。新事実も当日トリガーも無い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

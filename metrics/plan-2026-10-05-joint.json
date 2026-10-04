@@ -1,0 +1,33 @@
+{
+ "decisions": {
+  "arcade-tours-s2-live-2026": {
+   "action": "article",
+   "angle": "ツアマスS2弾生配信の現地観覧25人招待、応募締切は10月7日23:59(あと2日)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "facts は prior と同内容で新事実なし。締切が3日以内のため期日の知らせとして記事化"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-arcade-tours-s2-live-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスS2弾生配信の現地観覧25人招待、応募締切は10月7日23:59(あと2日)",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "arcade-tours-s2-live-2026",
+    "candidate_ids": [
+     "202610050222-grok-28"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

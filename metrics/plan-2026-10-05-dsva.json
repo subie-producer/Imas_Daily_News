@@ -1,0 +1,82 @@
+{
+ "decisions": {
+  "ameyoru-tsubame-single-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "予約受付は10/4で終了済み。今日のトリガーも新事実も無く、読者が取れる手続きが無い"
+  },
+  "kamizuru-cosmo-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "受注は10/4で終了済み。今日のトリガーも新事実も無く、読者が取れる手続きが無い"
+  },
+  "valiv-manaka-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "現地LV先行は10/4 23:59で終了。10/1と10/4に記事済みで、新事実も今日のトリガーも無い(公演は10/28)"
+  },
+  "cosmo-takane-cliyar-collab-short-2026": {
+   "action": "article",
+   "angle": "vα-liv公式が上水流宇宙と四条貴音による「クライヤ」踊ってみたコラボショート動画をYouTubeとTikTokで公開した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式アカウントの公開告知。出典は未確認区分なので本文は公式投稿の範囲に限る。765側は共同主催ではなく出演のみで、joint にしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-cosmo-takane-cliyar-collab-short-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "vα-liv公式が上水流宇宙と四条貴音による「クライヤ」踊ってみたコラボショート動画をYouTubeとTikTokで公開した。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "cosmo-takane-cliyar-collab-short-2026",
+    "candidate_ids": [
+     "202610050222-grok-26"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "ameyoru-tsubame-single-2026",
+    "reason": "その他",
+    "note": "予約受付は10/4で終了済み。今日のトリガーも新事実も無く、読者が取れる手続きが無い"
+   },
+   {
+    "dedup_key": "kamizuru-cosmo-birthday-2026",
+    "reason": "その他",
+    "note": "受注は10/4で終了済み。今日のトリガーも新事実も無く、読者が取れる手続きが無い"
+   },
+   {
+    "dedup_key": "valiv-manaka-birthday-2026",
+    "reason": "既報",
+    "note": "現地LV先行は10/4 23:59で終了。10/1と10/4に記事済みで、新事実も今日のトリガーも無い(公演は10/28)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

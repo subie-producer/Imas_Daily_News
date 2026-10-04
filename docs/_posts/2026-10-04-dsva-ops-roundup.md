@@ -2,7 +2,7 @@
 slug: dsva-ops-roundup
 edition: "2026-10-04"
 brand: dsva
-src: 未確認
+src: 準公式
 rank: roundup
 corrected: false
 corrections: []
@@ -27,7 +27,7 @@ sources:
   type: 公式
 - label: DIAMOND JOKER 踊ってみた with 四条貴音さん (2026-10-03)
   url: https://www.youtube.com/shorts/sl_TslKVAlQ
-  type: 未確認
+  type: 公式
 - label: DIAMOND JOKER 踊ってみた with 四条貴音さん (2026-10-03)
   url: https://www.tiktok.com/@valiv_official/video/7692091316271877383
   type: 公式

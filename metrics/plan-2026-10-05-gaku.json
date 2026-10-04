@@ -1,0 +1,113 @@
+{
+ "decisions": {
+  "gaku-temari-iris-figure-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/1に同フィギュア予約の記事あり。2027年6月発売で当日のトリガーも新事実も無い"
+  },
+  "taiko-dondaful-song-project-ume-2026": {
+   "action": "article",
+   "angle": "太鼓の達人25周年曲の第3弾を花海佑芽が歌唱、本日18時にYouTubeでプレミア公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "報道(電撃オンライン)あり。公式X告知の同内容(dondafuru)をここへ統合"
+  },
+  "live-tour-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-iwate-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ岩手公演の配信券。倉本千奈の新曲「ワタシカワイイアヒルノコ」(DAY1)は10/4号に無い新事実として統合記事で触れる"
+  },
+  "taiko-dondafuru-song-ume-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "taiko-dondaful-song-project-ume-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ太鼓の達人第3弾の告知(公式X)。dedup_keyの表記ゆれ"
+  },
+  "kotone-fan-line-art-2026-10-03": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件のみ。gaku面にファン面(culture)は無い"
+  },
+  "gaku-shirube-iwate-streaming-2026": {
+   "action": "article",
+   "angle": "標ツアー岩手公演の配信視聴チケット、販売は10月8日18時まで(両日1万1000円、各日5,500円)。DAY1の倉本千奈の新曲も配信",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。締切まで3日。live-tour-2026を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-taiko-dondaful-song-project-ume-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "太鼓の達人25周年曲の第3弾を花海佑芽が歌唱、本日18時にYouTubeでプレミア公開",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "taiko-dondaful-song-project-ume-2026",
+    "candidate_ids": [
+     "202610050222-explore-0",
+     "202610050222-grok-23"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-iwate-streaming-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "標ツアー岩手公演の配信視聴チケット、販売は10月8日18時まで(両日1万1000円、各日5,500円)。DAY1の倉本千奈の新曲も配信",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-shirube-iwate-streaming-2026",
+    "candidate_ids": [
+     "sched-2026-10-05-gaku-shirube-iwate-streaming-2026-締切前",
+     "202610050222-grok-22"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-temari-iris-figure-2026",
+    "reason": "既報",
+    "note": "10/1に同フィギュア予約の記事あり。2027年6月発売で当日のトリガーも新事実も無い"
+   },
+   {
+    "dedup_key": "kotone-fan-line-art-2026-10-03",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿1件のみ。gaku面にファン面(culture)は無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

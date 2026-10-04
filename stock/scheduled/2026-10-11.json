@@ -403,5 +403,28 @@
   "src_candidate_id": "202610012336-watch-6",
   "event_date": "2026-11-11",
   "deadline": "2026-10-11"
+ },
+ {
+  "id": "sched-2026-10-11-million-14th-konomi-sake-glass-2026-締切",
+  "dedup_key": "million-14th-konomi-sake-glass-2026",
+  "brand": "million",
+  "subject": "このみイメージ日本酒グラスセットの受注締切",
+  "kind": "締切",
+  "note": "受注最終日。グラスセットを注文できる",
+  "reserved_on": "2026-10-05",
+  "title": "ミリオン14th開催記念このみイメージ日本酒グラスセット",
+  "url": "https://x.com/imasml_765PRO/status/2106323374163304810",
+  "source_type": "公式",
+  "facts": [
+   "ミリオン14th開催記念グッズとして、このみをイメージした公式日本酒グラスセットが受注中。",
+   "受注は10/11(日)まで。",
+   "投稿は、このグラスで晩酌の時間を楽しむよう案内している。",
+   "エンゲージメント: 中",
+   "言及アイドル: 馬場このみ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610050222-grok-13",
+  "deadline": "2026-10-11"
  }
 ]

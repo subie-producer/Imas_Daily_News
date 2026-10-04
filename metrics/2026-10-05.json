@@ -1,0 +1,141 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-05T02:23:04+09:00",
+   "edition": "2026-10-05",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 347,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 0,
+    "explore:sidem": 0,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 1,
+    "grok_week_searches": 283,
+    "grok:765as": 1,
+    "grok:cinderella": 6,
+    "grok:million": 6,
+    "grok:shiny": 3,
+    "grok:sidem": 1,
+    "grok:gakuen": 3,
+    "grok:dsva": 2,
+    "grok:joint-other": 3,
+    "grok:trend": 7,
+    "grok_searches:million": 5,
+    "grok_searches:cg": 6,
+    "grok_searches:gaku": 9,
+    "grok_searches:shiny": 5,
+    "grok_searches:sidem": 5,
+    "grok_searches:general": 5,
+    "grok_searches:765": 5,
+    "grok_searches:dsva": 6,
+    "grok_searches:joint": 5
+   },
+   "normalized": 29,
+   "added": 28,
+   "verify": {
+    "confirmed": 17,
+    "unconfirmed": 12,
+    "failed": 0
+   },
+   "duration_s": 1346
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-05T03:09:34+09:00",
+   "edition": "2026-10-05",
+   "rounds": 1,
+   "approved": true,
+   "lint_green": true,
+   "planned": 16,
+   "written": 15,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 46,
+    "covered": 46,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 0.9667807618776957,
+    "執筆": 1.89237802028656,
+    "出典の判定": 0.04203063249588013,
+    "組版": 0.5993102153142293,
+    "校閲": 4.893344561258952,
+    "校閲1波": 2.446672280629476
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "dsva-cosmo-takane-cliyar-collab-short-2026"
+   ],
+   "duration_s": 536
+  }
+ ]
+}

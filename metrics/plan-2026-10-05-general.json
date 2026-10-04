@@ -1,0 +1,50 @@
+{
+ "decisions": {
+  "starlit-season-5th-steam-sale-2026": {
+   "action": "article",
+   "angle": "スターリットシーズン5周年(10月14日)を記念し、Steam版が本編・デラックス70%OFF、STORY各セットのDLCが25%OFFになる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発表(idolmaster-official.jp)で確認済み。prior・他面の重複なし。"
+  },
+  "iomako-day-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "X の個人投稿1件のみで未確認・エンゲージメント低。単体では記事にせず、他に束ねるファン面の素材も無い。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-starlit-season-5th-steam-sale-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "スターリットシーズン5周年(10月14日)を記念し、Steam版が本編・デラックス70%OFF、STORY各セットのDLCが25%OFFになる",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "starlit-season-5th-steam-sale-2026",
+    "candidate_ids": [
+     "202610041235-explore-5"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "iomako-day-2026",
+    "reason": "出典不足",
+    "note": "X の個人投稿1件のみで未確認・エンゲージメント低。単体では記事にせず、他に束ねるファン面の素材も無い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

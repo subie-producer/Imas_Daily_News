@@ -1,0 +1,316 @@
+{
+ "articles": [
+  {
+   "slug": "joint-arcade-tours-s2-live-2026",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "ツアマスS2弾生配信の現地観覧25人招待、応募締切は10月7日23:59(あと2日)",
+   "purpose": "期日の知らせ",
+   "lead_score": 10,
+   "dedup_key": "arcade-tours-s2-live-2026",
+   "candidate_ids": [
+    "202610050222-grok-28"
+   ]
+  },
+  {
+   "slug": "cg-number-one-cross-over-cd-2026",
+   "brand": "cg",
+   "rank": "medium",
+   "angle": "「クロス×オーバー！」CDが発売、コロムビアミュージックショップ限定で2,000円、Another ver.2曲など全5曲",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "cg-number-one-cross-over-cd-2026",
+   "candidate_ids": [
+    "202610040733-explore-3"
+   ]
+  },
+  {
+   "slug": "cg-yurakucho-popup-2026",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "有楽町POP UPで鷺沢文香のステッカーとデカアクスタが完売、10月9日に再入荷予定(相馬夏美キーホルダーは未定)",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "cg-yurakucho-popup-2026",
+   "candidate_ids": [
+    "202610050222-grok-5"
+   ]
+  },
+  {
+   "slug": "cg-rose-tea-parlor-2026-nagoya",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "Rose Tea Parlorコラボカフェ名古屋栄店が本日5日で千秋楽、来店できる最終日",
+   "purpose": "期日の知らせ",
+   "lead_score": 15,
+   "dedup_key": "cg-rose-tea-parlor-2026-nagoya",
+   "candidate_ids": [
+    "sched-2026-10-05-cg-rose-tea-parlor-2026-nagoya-終了",
+    "sched-2026-10-05-cg-rose-tea-parlor-2026-nagoya-千秋楽"
+   ]
+  },
+  {
+   "slug": "cg-pazudora-cinderella-collab-2026",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "パズドラ×デレマスコラボが本日9時59分で終了、コラボガチャ・ダンジョン・魔法石セット・サイン色紙応募の最終日",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "pazudora-cinderella-collab-2026",
+   "candidate_ids": [
+    "sched-2026-10-05-pazudora-cinderella-collab-2026-終了",
+    "sched-2026-10-05-cg-puzzle-dragons-collab-2026-終了",
+    "sched-2026-10-05-cinderella-puzzle-and-dragons-collab-2026-終了"
+   ]
+  },
+  {
+   "slug": "shiny-song-antieka-shhis-new-costume-gacha-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニソンでアンティーカ＆シーズの新衣装ガシャ第1弾・第2弾が開催中、★3確率1.5倍",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "shiny-song-antieka-shhis-new-costume-gacha-2026",
+   "candidate_ids": [
+    "202610050222-grok-16"
+   ]
+  },
+  {
+   "slug": "shiny-msp-live-tickets-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "MSPの配信チケット販売は本日18時終了、アーカイブ視聴は23:59まで(DAY2同時視聴会アーカイブも公開中)",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "shiny-msp-live-tickets-2026",
+   "candidate_ids": [
+    "sched-2026-10-05-shiny-msp-live-tickets-2026-終了",
+    "202610050222-grok-15",
+    "sched-2026-10-05-shiny-msp-2026-09-終了",
+    "sched-2026-10-05-shiny-msp-2026-09-締切"
+   ]
+  },
+  {
+   "slug": "million-tanaka-kotoha-birthday-gasha-2026",
+   "brand": "million",
+   "rank": "small",
+   "angle": "田中琴葉の誕生日の本日、ミリシタで専用ガシャとBirthdayセットが登場し、劇場も特別仕様に。公式のお祝いムービーも公開",
+   "purpose": "新情報",
+   "lead_score": 55,
+   "dedup_key": "tanaka-kotoha-birthday-gasha-2026",
+   "candidate_ids": [
+    "202610050222-grok-8",
+    "202610050222-grok-9",
+    "202610050222-grok-10",
+    "202610050222-grok-31"
+   ]
+  },
+  {
+   "slug": "million-14th-konomi-sake-glass-2026",
+   "brand": "million",
+   "rank": "small",
+   "angle": "ミリオン14th開催記念のこのみイメージ公式日本酒グラスセットが10月11日まで受注中",
+   "purpose": "新情報",
+   "lead_score": 15,
+   "dedup_key": "million-14th-konomi-sake-glass-2026",
+   "candidate_ids": [
+    "202610050222-grok-13"
+   ]
+  },
+  {
+   "slug": "gaku-taiko-dondaful-song-project-ume-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "太鼓の達人25周年曲の第3弾を花海佑芽が歌唱、本日18時にYouTubeでプレミア公開",
+   "purpose": "新情報",
+   "lead_score": 60,
+   "dedup_key": "taiko-dondaful-song-project-ume-2026",
+   "candidate_ids": [
+    "202610050222-explore-0",
+    "202610050222-grok-23"
+   ]
+  },
+  {
+   "slug": "gaku-shirube-iwate-streaming-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "標ツアー岩手公演の配信視聴チケット、販売は10月8日18時まで(両日1万1000円、各日5,500円)。DAY1の倉本千奈の新曲も配信",
+   "purpose": "期日の知らせ",
+   "lead_score": 25,
+   "dedup_key": "gaku-shirube-iwate-streaming-2026",
+   "candidate_ids": [
+    "sched-2026-10-05-gaku-shirube-iwate-streaming-2026-締切前",
+    "202610050222-grok-22"
+   ]
+  },
+  {
+   "slug": "sidem-deramas-sidem-2026-kagura-rei-acrylic-sold-out",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "でらます×SideM2026ポップアップで神楽麗の2WAYアクリルスタンドが完売、再入荷は未定でマンガ展のXで告知",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "deramas-sidem-2026-kagura-rei-acrylic-sold-out",
+   "candidate_ids": [
+    "202610050222-grok-19"
+   ]
+  },
+  {
+   "slug": "sidem-karatetsu-yokai-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "SideM×カラオケの鉄人コラボ第3弾、10店舗での展開は本日10/5で終了。通販は10/11 23:59まで受付",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "sidem-karatetsu-yokai-2026",
+   "candidate_ids": [
+    "sched-2026-10-05-sidem-karatetsu-yokai-2026-終了"
+   ]
+  },
+  {
+   "slug": "dsva-cosmo-takane-cliyar-collab-short-2026",
+   "brand": "dsva",
+   "rank": "small",
+   "angle": "vα-liv公式が上水流宇宙と四条貴音による「クライヤ」踊ってみたコラボショート動画をYouTubeとTikTokで公開した。",
+   "purpose": "新情報",
+   "lead_score": 25,
+   "dedup_key": "cosmo-takane-cliyar-collab-short-2026",
+   "candidate_ids": [
+    "202610050222-grok-26"
+   ]
+  },
+  {
+   "slug": "765-xr-live-revival-twin-2026",
+   "brand": "765",
+   "rank": "lead",
+   "angle": "2024年3月の同名公演と同一構成でビジュアルを刷新しステージセットも一部変更、お見送り会は実施しない",
+   "purpose": "新情報",
+   "lead_score": 30,
+   "dedup_key": "xr-live-revival-twin-2026",
+   "candidate_ids": [
+    "202610050222-grok-1"
+   ]
+  },
+  {
+   "slug": "general-starlit-season-5th-steam-sale-2026",
+   "brand": "general",
+   "rank": "small",
+   "angle": "スターリットシーズン5周年(10月14日)を記念し、Steam版が本編・デラックス70%OFF、STORY各セットのDLCが25%OFFになる",
+   "purpose": "新情報",
+   "lead_score": 30,
+   "dedup_key": "starlit-season-5th-steam-sale-2026",
+   "candidate_ids": [
+    "202610041235-explore-5"
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "dedup_key": "cg-15th-anniversary-party-2026",
+   "reason": "既報",
+   "note": "facts は9/18の prior 本文と同内容。一般会員先行の締切10/19は3日以内でない"
+  },
+  {
+   "dedup_key": "cg-athome-apple-of-my-ai-2027",
+   "reason": "既報",
+   "note": "9/29記事に日程・会場・出演・料金・プレミアム会員先行(10/18まで)が既出。締切10/18は3日以内でない"
+  },
+  {
+   "dedup_key": "concept-xr-live-pop-n-toybox-2026",
+   "reason": "既報",
+   "note": "10/4記事と同内容で新事実・当日トリガーなし"
+  },
+  {
+   "dedup_key": "cg-memory-pict-december-2026",
+   "reason": "既報",
+   "note": "9/30記事に受注期間(〜10/18)・4点・白菊ほたる既出。締切10/18は3日以内でない"
+  },
+  {
+   "dedup_key": "shiny-pioneer-impact-mvgiveaway-2026",
+   "reason": "既報",
+   "note": "10/3号の本文に全事実あり。締切10/12は3日以内でなく新事実も無い"
+  },
+  {
+   "dedup_key": "shiny-refrac7ions-still-blue-goods-2026",
+   "reason": "既報",
+   "note": "受注は10/4に終了済み。10/3・10/4号で既報"
+  },
+  {
+   "dedup_key": "shiny-hachiban-ramen-collab-2026",
+   "reason": "既報",
+   "note": "10/1号の本文に価格・期間・特典すべてあり。開始は10/7で今日でなく、新事実も無い。二次情報"
+  },
+  {
+   "dedup_key": "shiny-orchestra-radiant-chord-2027",
+   "reason": "既報",
+   "note": "9/27号で日程・出演者(涼本あきほ含む)とも既報。個人SNS投稿の告知で未確認"
+  },
+  {
+   "dedup_key": "million-theater-9th-illustration-goods-2026",
+   "reason": "既報",
+   "note": "10/4号の9周年グッズ記事に同コースター・価格が既出。締切10/11は3日以内でなく、同キャンペーンは10/1号でも既報"
+  },
+  {
+   "dedup_key": "million-only-maker-parker-2026",
+   "reason": "既報",
+   "note": "9/30号に受注期間・価格・色まで既出。締切10/12は3日以内でなく新事実なし"
+  },
+  {
+   "dedup_key": "kotobukiya-million-kuji-stage04-2026",
+   "reason": "既報",
+   "note": "10/4号「ミリオンライブくじ、B賞タペストリーとC賞公開」と同じ商品。当日トリガーなし(販売終了10/18)、出典も未確認"
+  },
+  {
+   "dedup_key": "gaku-temari-iris-figure-2026",
+   "reason": "既報",
+   "note": "10/1に同フィギュア予約の記事あり。2027年6月発売で当日のトリガーも新事実も無い"
+  },
+  {
+   "dedup_key": "kotone-fan-line-art-2026-10-03",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件のみ。gaku面にファン面(culture)は無い"
+  },
+  {
+   "dedup_key": "315-1-10-4-0-00-2026",
+   "reason": "既報",
+   "note": "10/4号で同じ更新を報道済み。新しい事実も当日のトリガーも無い"
+  },
+  {
+   "dedup_key": "sidem-fan-art-hotw-satan-2026-10-04",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。ファン面(culture)はgeneral面のみ"
+  },
+  {
+   "dedup_key": "sidem-fan-visit-yamamotoya-okute-2026-10-04",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。ファン面(culture)はgeneral面のみ"
+  },
+  {
+   "dedup_key": "ameyoru-tsubame-single-2026",
+   "reason": "その他",
+   "note": "予約受付は10/4で終了済み。今日のトリガーも新事実も無く、読者が取れる手続きが無い"
+  },
+  {
+   "dedup_key": "kamizuru-cosmo-birthday-2026",
+   "reason": "その他",
+   "note": "受注は10/4で終了済み。今日のトリガーも新事実も無く、読者が取れる手続きが無い"
+  },
+  {
+   "dedup_key": "valiv-manaka-birthday-2026",
+   "reason": "既報",
+   "note": "現地LV先行は10/4 23:59で終了。10/1と10/4に記事済みで、新事実も今日のトリガーも無い(公演は10/28)"
+  },
+  {
+   "dedup_key": "765-never-end-idol-bluray-correction-2026",
+   "reason": "既報",
+   "note": "DAY1・DAY2とも訂正内容(品番・価格・2枚組・メイキング非収録)は10/3・10/4号で掲載済み。新事実も当日トリガーも無い。"
+  },
+  {
+   "dedup_key": "iomako-day-2026",
+   "reason": "出典不足",
+   "note": "X の個人投稿1件のみで未確認・エンゲージメント低。単体では記事にせず、他に束ねるファン面の素材も無い。"
+  }
+ ],
+ "editorial_slug": "765-xr-live-revival-twin-2026",
+ "editorial_brand": "765"
+}

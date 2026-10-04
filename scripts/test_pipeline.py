@@ -2205,6 +2205,80 @@ def test_grok_roles(tmp: Path):
             os.environ["HOME"] = saved_home
 
 
+def test_grok_item_url_repointed_to_post():
+    """X の投稿に貼られた動画の url が候補の url になっていたら、貼った投稿(公式を先)の url に付け直す
+    (2026-10-05: 公式 X のコラボ動画告知が YouTube の url で未確認の候補になり、執筆が出典不一致で見送った)。"""
+    import collect
+    posts = """## 16
+- url: https://x.com/KamizuruCosmo/status/2106670674232123736
+- 本文:
+「クライヤ」コラボ
+- リンク:
+  - https://www.youtube.com/shorts/YvB9Lkq5aOs
+
+## 5
+- url: https://x.com/valiv_official/status/2106670673922064689
+- 本文:
+クライヤ 踊ってみた with 四条貴音さん
+- リンク:
+  - https://www.youtube.com/shorts/YvB9Lkq5aOs
+  - https://www.tiktok.com/@valiv_official/video/7692091940719906055
+"""
+    saved = collect.classify_source
+    try:
+        # 本人のアカウントは公式でない扱いにして、公式の投稿が選ばれることを確かめる
+        collect.classify_source = lambda u: ("当事者" if "KamizuruCosmo" in u else saved(u))
+        items = collect.repoint_to_post([
+            {"url": "https://www.youtube.com/shorts/YvB9Lkq5aOs", "facts": ["クライヤ"]},
+            {"url": "https://www.youtube.com/shorts/other", "facts": []},
+            {"url": "https://x.com/a/status/1", "facts": []},
+        ], posts)
+    finally:
+        collect.classify_source = saved
+    check(items[0]["url"] == "https://x.com/valiv_official/status/2106670673922064689"
+          and items[0]["facts"] == ["クライヤ", "リンク: https://www.youtube.com/shorts/YvB9Lkq5aOs"],
+          f"動画の url を貼った公式の投稿に付け直さない: {items[0]}")
+    check(items[1]["url"] == "https://www.youtube.com/shorts/other" and items[2]["url"] == "https://x.com/a/status/1",
+          f"投稿に無い url・X の url を書き換えた: {items[1:]}")
+
+
+def test_grok_repoint_uses_each_face_posts(tmp: Path):
+    """付け直しには、その面の投稿を渡す(最後の面の投稿を全部の面に渡していた。監査指摘: 末尾に「なし」の面があると補正されない)。"""
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    out = tmp / "g"
+    out.mkdir()
+    (out / "dsva.md").write_text("""## 5
+- url: https://x.com/valiv_official/status/2106670673922064689
+- 本文:
+クライヤ 踊ってみた with 四条貴音さん
+- リンク:
+  - https://www.youtube.com/shorts/YvB9Lkq5aOs
+""", encoding="utf-8")
+    (out / "joint.md").write_text("## 1\n- url: https://x.com/imas_official/status/1\n- 本文:\n告知\n", encoding="utf-8")
+    (out / "trend.md").write_text("なし", encoding="utf-8")
+    qs = [{"key": k, "brand": k, "topic": "t"} for k in ("dsva", "joint", "trend")]
+    class P:
+        pid = 0
+        def wait(self, timeout=None): return 0
+    def fake_popen(args, cwd=None, **kw):
+        items = ([{"url": "https://www.youtube.com/shorts/YvB9Lkq5aOs", "brand": "dsva", "facts": ["クライヤ"]}]
+                 if "dsva" in Path(cwd).name else [])
+        (Path(cwd) / "items.json").write_text(json.dumps(items), encoding="utf-8")
+        (Path(cwd) / "deep.json").write_text("[]", encoding="utf-8")
+        return P()
+    saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file)
+    try:
+        collect.subprocess.Popen = fake_popen
+        collect.notify = lambda job, msg, ok=True, require=False: True
+        collect.prompt_file = lambda date, name, prompt, base=None: "p"
+        items, _ = collect.verify_grok_faces(qs, out)
+    finally:
+        collect.subprocess.Popen, collect.notify, collect.prompt_file = saved
+    check([x["url"] for x in items] == ["https://x.com/valiv_official/status/2106670673922064689"],
+          f"末尾以外の面の動画 url を、その面の投稿に付け直さない: {items}")
+
+
 def test_grok_face_retry(tmp: Path):
     """Grok の面がまとめを残せなかったら、その面だけ「先に書く」順で1回やり直し、それでも残らなければ異常を上げる
     (実測 2026-10-03: 学マスの面が打ち切られて0件、公式Xの4コマを1日遅れで載せた)。手数(--max-turns)では縛らず、
@@ -2958,6 +3032,8 @@ def main() -> int:
     test_update_clis(tmp / "uc")
     test_grok_face_retry(tmp / "gr")
     test_grok_roles(tmp / "gro")
+    test_grok_item_url_repointed_to_post()
+    test_grok_repoint_uses_each_face_posts(tmp / "grp")
     test_watch_pagination_and_batches(tmp / "wp")
     test_collect_oncall_rerun_exit(tmp / "cre")
     test_storylink(tmp / "sl")

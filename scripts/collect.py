@@ -539,6 +539,39 @@ def read_json_list(p: Path) -> list | None:
     return v if isinstance(v, list) else None
 
 
+GOOD_SOURCE_TYPES = ("公式", "準公式", "当事者", "報道")
+
+
+def repoint_to_post(items: list[dict], posts_md: str) -> list[dict]:
+    """候補の url が、X の投稿に貼られたリンク(動画など)で、種別が公式・準公式・当事者・報道でないなら、
+    そのリンクを貼った投稿(公式の投稿を先)の url に付け直し、元の url は facts に残す。
+    事実は投稿の本文から読んだもので、リンク先は出典として確かめられない(2026-10-05: 公式 X の
+    コラボ動画告知が YouTube の url で候補になり、未確認の出典として執筆に見送られた)。"""
+    posts: list[tuple[str, list[str]]] = []
+    in_links = False
+    for line in posts_md.splitlines():
+        m = re.match(r"- url:\s*(\S+)", line)
+        if m:
+            posts.append((m.group(1), []))
+            in_links = False
+        elif line.startswith("- リンク:"):
+            in_links = True
+        elif in_links and posts and (m := re.match(r"\s+-\s*(https?://\S+)", line)):
+            posts[-1][1].append(m.group(1))
+        elif not line.startswith(" "):
+            in_links = False
+    posts.sort(key=lambda p: classify_source(p[0]) != "公式")
+    for it in items:
+        url = it["url"]
+        if is_x(url) or classify_source(url) in GOOD_SOURCE_TYPES:
+            continue
+        post = next((p for p, links in posts if url in links), None)
+        if post:
+            it["url"] = post
+            it["facts"] = [*(it.get("facts") or []), f"リンク: {url}"]
+    return items
+
+
 def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "") -> tuple[list[dict], dict[str, list[dict]]]:
     """Grok が書き出した X の投稿(<key><suffix>.md)を、面ごとに Luna が読み、リンク先を開いて確かめて候補にする(並列)。
     戻りは (候補, 面 → X の原本でしか確かめられない問い)。「なし」だけの面・ファイルの無い面は飛ばす。
@@ -555,11 +588,11 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "") -> tu
         prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json",
                                BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
                                RULES=COLLECT_RULES, ITEM=COLLECT_ITEM)
-        jobs.append((q, wd, subprocess.Popen(explore_argv(prompt_file(edition_date(), f"grok-verify-{q['key']}{suffix}", prompt, base=wd)),
-                                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
-                                             stdin=subprocess.DEVNULL, cwd=wd, start_new_session=True)))
+        jobs.append((q, wd, text, subprocess.Popen(explore_argv(prompt_file(edition_date(), f"grok-verify-{q['key']}{suffix}", prompt, base=wd)),
+                                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
+                                                   stdin=subprocess.DEVNULL, cwd=wd, start_new_session=True)))
     items, deep = [], {}
-    for q, wd, p in jobs:
+    for q, wd, text, p in jobs:
         in_time = wait_session(p, deadline)
         got = read_json_list(wd / "items.json")
         if got is None:
@@ -567,7 +600,7 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "") -> tu
             notify("collect", f"Grok の {q['key']} 面: X の投稿を確かめる段(Luna)の結果が読めない"
                               f"({'締切内に終わった' if in_time else '時間切れ'})。その面の X の動きを失う", ok=False)
             got = []
-        items += [x for x in got if isinstance(x, dict) and x.get("url")]
+        items += repoint_to_post([x for x in got if isinstance(x, dict) and x.get("url")], text)
         raw_asks = read_json_list(wd / "deep.json")
         if raw_asks is None:
             # 「問いなし([])」と「書けなかった」を分ける。原本の確かめを黙って失わない(監査指摘 r116)
@@ -1011,7 +1044,7 @@ def verify(cands: list[dict]) -> dict:
                                                       html_to_text(rendered.encode("utf-8", "replace")))
                     if unbacked:
                         c["unbacked_facts"] = unbacked[:12]
-                good_type = c["source_type"] in ("公式", "準公式", "当事者", "報道")
+                good_type = c["source_type"] in GOOD_SOURCE_TYPES
                 c["verify"] = ("confirmed" if ok and good_type and not c.get("unbacked_facts")
                                else ("unconfirmed" if ok else "failed"))
         except Exception:

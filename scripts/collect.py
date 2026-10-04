@@ -588,11 +588,11 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "") -> tu
         prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json",
                                BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
                                RULES=COLLECT_RULES, ITEM=COLLECT_ITEM)
-        jobs.append((q, wd, subprocess.Popen(explore_argv(prompt_file(edition_date(), f"grok-verify-{q['key']}{suffix}", prompt, base=wd)),
-                                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
-                                             stdin=subprocess.DEVNULL, cwd=wd, start_new_session=True)))
+        jobs.append((q, wd, text, subprocess.Popen(explore_argv(prompt_file(edition_date(), f"grok-verify-{q['key']}{suffix}", prompt, base=wd)),
+                                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
+                                                   stdin=subprocess.DEVNULL, cwd=wd, start_new_session=True)))
     items, deep = [], {}
-    for q, wd, p in jobs:
+    for q, wd, text, p in jobs:
         in_time = wait_session(p, deadline)
         got = read_json_list(wd / "items.json")
         if got is None:

@@ -25,7 +25,7 @@
 | grok-verify | 投稿を読みリンク先を開いて確かめ、候補と「X の原本でしか分からない問い」にする(`collect.verify_grok_faces`) | Codex luna | items.json / deep.json |
 | grok-deep | X の原本の深掘り。予算の範囲の問いだけ(`collect.deep_dive_grok`) | Grok | 見つけた原本の投稿(ファイル) |
 | explore | Web の探索・面ごと(`collect.run_explores`) | Codex luna | 候補 JSON |
-| watch-facts | 定点観測の新着の facts 化(`collect.run_watch`) | Claude haiku | 候補 JSON |
+| watch-facts | 定点観測の新着の facts 化(`collect.run_watch`) | Claude haiku | 新着ページごとの結果(extracted / none / unreadable)と候補 JSON |
 | classify-rules / classify-site / classify-x / classify-debate | 出典種別の合議(`classify_sources`) | Claude haiku + Codex luna | 種別 JSON |
 | oncall-fix(+ .objections)/ oncall-review | 当番の修正と監査(`oncall`) | Claude opus / Codex sol | 報告・判定(schema) |
 | oncall-parser | 持ち主を取るパーサが無い URL の種類について、当番へのパーサの依頼(`classify_sources.request_parsers` → oncall-fix の「何が起きたか」) | Claude opus(当番) | 修正(oncall-fix と同じ) |

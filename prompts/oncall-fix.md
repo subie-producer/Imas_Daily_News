@@ -30,6 +30,9 @@
   直せない・人の判断が要るなら `cannot_fix`(理由を書く)
 - rerun_mode: 計画・執筆・組版の層(compose.py / planlib / renderlib / assemble / prompts / 出力 schema)を直したなら `rebuild`(号を作り直す)。
   それ以外で続きから走れるなら `resume`。再実行しても同じ結果になるなら `none`
+- editor_summary: 編集長に届く報告そのもの。編集長はコードを読まない。日本語だけで、ファイル名・関数名・英語・番号の羅列を使わず、
+  何が起きたか・どう直したか・紙面への影響を、それぞれ1〜2文で書く(例: 「まとめサイトの新着1件を、本文を読めないまま既読にして失っていた」)。
+  ほかの欄(diagnosis・root_cause・test_evidence)は記録用で、編集長には届かない
 {OBJECTIONS}
 ## 何が起きたか
 {CONTEXT}

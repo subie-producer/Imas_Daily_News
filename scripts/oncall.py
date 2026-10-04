@@ -336,8 +336,8 @@ def report_change(stage: str, date: str, fix: dict, transcript: list[dict], base
         verdict += (f" / 当番が受け入れた指摘 {sum(len(x.get('accepted') or []) for x in integ)}件"
                     f"・反論 {sum(len(x.get('refuted') or []) for x in integ)}件")
     mc = merge_commit[:10] if merge_commit else "(取り込み後に追送)"
-    # 人に送る本文と、記録に残す本文は**同じもの**(切り詰めた要約を送らない。監査指摘)。
-    # 往復の記録(JSON)だけはファイルに添える
+    # 記録(全文・差分・往復)はファイルに残す。Discord には編集長が読める1通だけを送る(編集長 2026-10-04: 診断・検証・
+    # 差分の全文を10通に割って送り、英語やファイル名が混ざっていた。「本当にユーザーにとって分かりやすいと思ってんのか」)
     report = (f"🛠 当番の修正報告: {stage} {date}\n"
               f"修正 commit: {head[:10]} / main の merge commit: {mc}"
               f"(取り込み先: {', '.join(targets)})/ 記録ブランチ: {branch}\n"
@@ -351,9 +351,27 @@ def report_change(stage: str, date: str, fix: dict, transcript: list[dict], base
               f"再実行: {rerun_mode}\n"
               f"戻し方: ops の main で `git revert -m 1 {mc}` → push → edition/{date} に main を merge → push\n"
               f"\n## 差分\n{diff}\n")
-    (ROOT / "metrics" / f"oncall-{date}-{stage}-report.md").write_text(
-        report + "\n## 往復の記録\n" + json.dumps(transcript, ensure_ascii=False, indent=1), encoding="utf-8")
-    return notify_long("oncall", report)
+    path = ROOT / "metrics" / f"oncall-{date}-{stage}-report.md"
+    path.write_text(report + "\n## 往復の記録\n" + json.dumps(transcript, ensure_ascii=False, indent=1), encoding="utf-8")
+    return notify("oncall", editor_report(stage, date, fix, last.get("verdict"), len(reviews), len(collect_later(transcript)),
+                                          path.relative_to(ROOT), branch), require=True)
+
+
+STAGE_JA = {"compose": "組版", "release": "発行", "collect": "収集", "classify": "出典の判定", "watch": "監視", "update": "道具の更新"}
+
+
+def editor_report(stage: str, date: str, fix: dict, verdict: str | None, rounds: int, n_later: int, path, branch: str) -> str:
+    """編集長に届く1通(Discord の1通に収まる長さ)。中身は当番が編集長向けに書いた要約(editor_summary)で、
+    ファイル名や差分は載せず、記録の場所だけを示す。"""
+    from pipelib import editor_notice
+    s = fix.get("editor_summary") if isinstance(fix.get("editor_summary"), dict) else {}
+    head = {"fixed": "🛠 当番が直しました", "no_fix_needed": "🛠 当番が調べました(直す箇所なし)"}.get(fix.get("status"), "🛠 当番が調べました")
+    md = f"{int(date[5:7])}/{int(date[8:10])}" if re.fullmatch(r"\d{4}-\d{2}-\d{2}", date) else date
+    footer = (f"記録: {path} / 監査: {'承認' if verdict == 'approve' else (verdict or '不明')}({rounds}往復)"
+              + (f" / 後で直す指摘 {n_later}件" if n_later else ""))
+    return editor_notice(f"{head}: {md}号の{STAGE_JA.get(stage, stage)}", s.get("paper_impact") or "",
+                         [(s.get("what_happened") or "(要約なし。記録を参照)", s.get("what_changed") or "(要約なし。記録を参照)")],
+                         footer=footer)
 
 
 BACKLOG = ROOT / "metrics" / "oncall-backlog.jsonl"      # Git 管理外(作業ツリーを汚さない=発行を妨げない)
@@ -615,6 +633,10 @@ def apply_integrate(fix: dict, integ: dict) -> dict:
     for k in ("diagnosis", "root_cause", "recovery"):
         if str(integ.get(k) or "").strip():
             fix[k] = integ[k]
+    # 編集長向けの要約は、この巡の最終の内容で置き換える(訂正したのに初回の要約が届く、を防ぐ。監査指摘 r118)
+    s = integ.get("editor_summary")
+    if isinstance(s, dict) and all(str(s.get(k) or "").strip() for k in ("what_happened", "what_changed", "paper_impact")):
+        fix["editor_summary"] = s
     # 2巡目の変更・検証・リスクも最終報告に**累積**する(初稿の分を消さない。監査指摘)
     if integ.get("changed_files"):
         fix["changed_files"] = list(dict.fromkeys(list(fix.get("changed_files") or []) + list(integ["changed_files"])))
@@ -893,17 +915,26 @@ def main() -> int:
                         wip_branch = ""
                 except (subprocess.TimeoutExpired, OSError):
                     wip_branch = ""
+            # 編集長に届くのは、なぜ取り込めなかったかの1文と、当番が書いた編集長向けの要約だけ(診断の全文・記録の JSON は記録ファイル)
             if res["error"]:
-                why = (f"当番の往復が例外で終わった: {res['error'][:300]}"
-                       + (f"\nここまでの修正と残った指摘 {len(open_left)}件は残した" if open_left else ""))
+                why = "当番の作業が途中で止まった"
+            elif last.get("remote_moved"):
+                why = "作業中に main が別の変更で動いたので、取り込まなかった"
             elif fix.get("status") == "cannot_fix" or not open_left:
-                why = f"当番は直せなかった({fix.get('status')}): {(fix.get('notes') or '')[:300]}"
+                why = "当番は直せないと判断した(人の判断が要る)"
             else:
-                why = (f"監査の指摘を上限({MAX_ROUNDS}往復・{ONCALL_LIMIT_MIN}分)までに直し切れなかった。残り {len(open_left)}件:\n"
-                       + "\n".join(f"- {str(o.get('id') or '')}: {str(o.get('claim') or '')[:160]}" for o in open_left[:6]))
-            notify("oncall", f"{date} {stage}: {why}\n診断: {(fix.get('diagnosis') or '')[:300]}\n"
-                             + (f"ここまでの修正: 記録ブランチ {wip_branch}(次の試行はこの続きから始める)\n" if wip_branch else "")
-                             + f"最後の記録: {json.dumps(last.get('review', last), ensure_ascii=False)[:400]}", ok=False)
+                why = f"監査の指摘を上限({MAX_ROUNDS}往復)までに直し切れなかった(残り {len(open_left)}件)"
+            rec = ROOT / "metrics" / f"oncall-{date}-{stage}-failed.md"
+            rec.write_text(f"理由: {why}\n例外: {res['error'] or ''}\n状態: {fix.get('status')}\n診断: {fix.get('diagnosis') or ''}\n"
+                           f"メモ: {fix.get('notes') or ''}\n残った指摘:\n" + json.dumps(open_left, ensure_ascii=False, indent=1)
+                           + "\n最後の記録:\n" + json.dumps(last, ensure_ascii=False, indent=1), encoding="utf-8")
+            s = fix.get("editor_summary") if isinstance(fix.get("editor_summary"), dict) else {}
+            md = f"{int(date[5:7])}/{int(date[8:10])}"
+            notify("oncall", f"🚧 当番は取り込めませんでした({md}号の{STAGE_JA.get(stage, stage)}): {why}\n"
+                             + (f"・起きたこと: {s['what_happened']}\n" if s.get("what_happened") else "")
+                             + (f"・直しかけたこと: {s['what_changed']}\n" if s.get("what_changed") else "")
+                             + ("・次の試行はここまでの修正の続きから始める\n" if wip_branch else "")
+                             + f"記録: {rec.relative_to(ROOT)}" + (f"(記録ブランチ {wip_branch})" if wip_branch else ""), ok=False)
             return 1
 
         # 発行後でよい指摘(later)を保管する。**保管の失敗で発行を止めない**(修正報告には必ず載る)
@@ -976,14 +1007,16 @@ def main() -> int:
             # 追送: 取り込んだ merge commit と戻し方(全文は取り込み前に届いている)
             (ROOT / "metrics" / f"oncall-{date}-{stage}-report.md").open("a", encoding="utf-8").write(
                 f"\n\n## 取り込み結果\nmain の merge commit: {merge_commit}\n戻し方: git revert -m 1 {merge_commit}\n")
-            reported = notify("oncall", f"{date} {stage}: 取り込み完了。main の merge commit {merge_commit[:10]}"
-                                        f"(取り込み先: {', '.join(targets)})\n"
-                                        f"戻し方: ops の main で `git revert -m 1 {merge_commit[:10]}` → push → {edition} に main を merge → push",
+            reported = notify("oncall", f"✅ 当番の修正を取り込みました。戻すときは ops の main で `git revert -m 1 {merge_commit[:10]}`",
                               require=True)
         else:
-            reported = notify("oncall", f"{date} {stage}: 当番の診断: コードの欠陥ではない(no_fix_needed)。監査も approve。\n"
-                                        f"診断: {(fix.get('diagnosis') or '')[:400]}\n再実行の根拠: {(fix.get('recovery') or '')[:300]}\n"
-                                        f"再実行: {rerun_mode}\n{later_text(res['later'])[:900]}")
+            # 直す箇所が無かったときも、編集長向けの1通(記録の全文はファイル)
+            path = ROOT / "metrics" / f"oncall-{date}-{stage}-report.md"
+            path.write_text(f"診断: {fix.get('diagnosis') or ''}\n再実行の根拠: {fix.get('recovery') or ''}\n再実行: {rerun_mode}\n"
+                            f"{later_text(res['later'])}\n\n## 往復の記録\n" + json.dumps(transcript, ensure_ascii=False, indent=1), encoding="utf-8")
+            reviews = [t.get("review") for t in transcript if t.get("review")]
+            reported = notify("oncall", editor_report(stage, date, fix, (reviews[-1] or {}).get("verdict") if reviews else None,
+                                                      len(reviews), len(res["later"]), path.relative_to(ROOT), ""))
         if not reported:
             # 報告が人に届いていないなら再実行(=発行)へ進まない(監査指摘)。修正は main に入っているので
             # 報告ファイル(metrics/oncall-*-report.md)を人が見て、手で再実行する

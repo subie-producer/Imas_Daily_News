@@ -521,11 +521,25 @@ def test_oncall_report_text(tmp: Path):
         text = (tmp / "metrics" / "oncall-2026-09-12-compose-report.md").read_text(encoding="utf-8")
         check(ok and "git revert -m 1 mergehash0" in text and "headhash00"[:10] in text, f"報告の戻し方が merge commit を指さない: {text[:300]}")
         check(sent and all(req for _, req in sent), "修正報告が必須通知(require)で送られていない")
-        # Discord へ送った本文をつなぐと、記録した本文(往復の記録を除く)と一致する(切り詰めない。監査指摘 R23-P1-2)
-        import re as _re
-        joined = "".join(_re.sub(r"^\(\d+/\d+\) ", "", m) for m, _ in sent)
-        check(joined == text.split("\n## 往復の記録\n")[0], "Discord に送った本文が記録と一致しない(切り詰めている)")
-        # 2000 字への分割は pipelib.notify の中で行う(test_notify_long が検める)
+        # Discord には編集長向けの1通だけ(全文・差分は記録ファイル。編集長 2026-10-04「本当にユーザーにとって分かりやすいと思ってんのか」)。
+        # 要約が無い報告でも1通で、記録の場所を示す
+        check(len(sent) == 1 and len(sent[0][0]) <= 900 and "記録: metrics/oncall-2026-09-12-compose-report.md" in sent[0][0]
+              and "diff" not in sent[0][0] and "ddd" not in sent[0][0], f"編集長への報告が1通・短文・記録の場所つきでない: {sent[:1]}")
+        sent.clear()
+        summ = {"what_happened": "まとめサイトの新着1件を、本文を読めないまま既読にして失っていた",
+                "what_changed": "読めなかったページは既読にせず、次の収集でやり直すようにした", "paper_impact": "失った1件は戻らない。10/6号から効く"}
+        oncall.report_change("collect", "2026-10-05", {"status": "fixed", "editor_summary": summ, "diagnosis": "x" * 3000}, [{"review": {"verdict": "approve"}}],
+                             "base", "headhash00", "", "repair/y", ["main"], "なし")
+        m = sent[0][0]
+        check(m.startswith("🛠 当番が直しました: 10/5号の収集") and all(v in m for v in summ.values()) and "承認(1往復)" in m and "xxx" not in m
+              and f"・{summ['what_happened']} → {summ['what_changed']}" in m, f"編集長への報告の中身: {m}")
+        # 型: 1行目に何が・いつ、本文は「困っていたこと → 変化」、内部の名前は形で検出できる
+        n = pipelib.editor_notice("🔧 校閲が直せない指摘で記事を落とさなくなる", "10/5号から",
+                                  [("直せない指摘で4本が落ちた", "直せる指摘だけを出す")], ask="", footer="記録: x / 監査: 承認")
+        check(n.splitlines()[0] == "🔧 校閲が直せない指摘で記事を落とさなくなる(10/5号から)" and "・直せない指摘で4本が落ちた → 直せる指摘だけを出す" in n,
+              f"報告の型: {n}")
+        check(pipelib.internal_names("candidate_ids が無い。verified_facts を new_facts に。R1 と r77 と collect.py") ==
+              ["R1", "candidate_ids", "collect.py", "new_facts", "r77", "verified_facts"], f"内部の名前の検出: {pipelib.internal_names('candidate_ids R1 r77 collect.py verified_facts new_facts')}")
         # 取り込み前の全文報告(merge commit はまだ無い)は「追送」と明示し、診断・検証を含む
         sent.clear()
         ok2 = oncall.report_change("compose", "2026-09-12", {"diagnosis": "d", "test_evidence": "t"}, [], "base", "headhash00", "",
@@ -591,6 +605,11 @@ def test_oncall_apply_integrate():
     fix = {"status": "no_fix_needed", "rerun_mode": "resume", "diagnosis": "d0"}
     oncall.apply_integrate(fix, {"status": "fixed", "rerun_mode": "rebuild", "diagnosis": "d1", "root_cause": "", "recovery": ""})
     check(fix["status"] == "fixed" and fix["rerun_mode"] == "rebuild" and fix["diagnosis"] == "d1", f"no_fix_needed→fixed: {fix}")
+    # 編集長向けの要約は最終の内容で置き換わる(訂正したのに初回の要約が届く、を防ぐ。監査指摘 r118)
+    fix["editor_summary"] = {"what_happened": "a", "what_changed": "直さずにもう一度実行する", "paper_impact": "c"}
+    oncall.apply_integrate(fix, {"status": "fixed", "rerun_mode": "unchanged", "diagnosis": "", "root_cause": "", "recovery": "",
+                                 "editor_summary": {"what_happened": "a2", "what_changed": "読めなかった新着を既読にしないよう直した", "paper_impact": "c2"}})
+    check(fix["editor_summary"]["what_changed"] == "読めなかった新着を既読にしないよう直した", f"要約が最終の内容にならない: {fix['editor_summary']}")
     oncall.apply_integrate(fix, {"status": "no_fix_needed", "rerun_mode": "unchanged", "diagnosis": "", "root_cause": "", "recovery": "枠が戻った"})
     check(fix["status"] == "no_fix_needed" and fix["rerun_mode"] == "rebuild" and fix["recovery"] == "枠が戻った", f"fixed→no_fix_needed: {fix}")
     oncall.apply_integrate(fix, {"status": "unchanged", "rerun_mode": "unchanged"})

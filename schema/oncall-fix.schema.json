@@ -2,9 +2,18 @@
   "title": "oncall-fix",
   "description": "当番(Opus)の修正報告。判断はここに、変更は作業ツリーに",
   "type": "object",
-  "required": ["status", "diagnosis", "root_cause", "changed_files", "test_evidence", "risk", "confidence", "rerun_mode", "recovery", "notes"],
+  "required": ["status", "editor_summary", "diagnosis", "root_cause", "changed_files", "test_evidence", "risk", "confidence", "rerun_mode", "recovery", "notes"],
   "additionalProperties": false,
   "properties": {
+    "editor_summary": {
+      "type": "object", "required": ["what_happened", "what_changed", "paper_impact"], "additionalProperties": false,
+      "description": "編集長(コードを読まない人)に Discord で届ける要約。日本語だけで、ファイル名・関数名・英語・記号の羅列を使わない",
+      "properties": {
+        "what_happened": {"type": "string", "minLength": 1, "maxLength": 160, "description": "何が起きたか。読者や紙面の側から見た事実を1〜2文"},
+        "what_changed": {"type": "string", "minLength": 1, "maxLength": 160, "description": "どう直したか(直さなかったなら、なぜか)を1〜2文"},
+        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 120, "description": "紙面への影響(失った記事・遅れた記事があるか、いつの号から効くか)を1文"}
+      }
+    },
     "status": {"enum": ["fixed", "no_fix_needed", "cannot_fix"], "description": "fixed=コードを直した(差分がある) / no_fix_needed=コードの欠陥ではない(データ・環境。差分は無いか、回帰テスト scripts/test_pipeline.py だけ) / cannot_fix=人が要る"},
     "rerun_mode": {"enum": ["rebuild", "resume", "none"],
                    "description": "止まった工程をどう再実行すべきか。rebuild=その号を作り直す(計画・執筆・組版の層を直した、または同じ入力では同じ結果になる) / resume=続きから(compose は --reuse-plan、release はそのまま) / none=再実行しない(人が要る)。no_fix_needed でも必ず答える"},

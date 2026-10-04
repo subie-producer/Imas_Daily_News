@@ -317,6 +317,29 @@ def split_chunks(text: str, limit: int) -> list[str]:
     return chunks
 
 
+# 編集長への報告の型(編集長 2026-10-04「本当にユーザーにとって分かりやすいと思ってんのか」「情報の出し方をもっと検討しろ」)。
+# 読み手はコードを読まない。何が良くなるかを先に、紙面で困っていたことと変化を1行ずつ対にし、内部の名前は書かない。
+# 経緯・仕組み・差分・検証の詳細は記録ファイルに置き、ここでは場所だけを示す
+INTERNAL_NAME = re.compile(r"[A-Za-z0-9_\-/]+\.(py|md|json|jsonl|yml)\b|\b[a-z]+_[a-z_]+\b|\b[A-Z]{2,}_[A-Z_]+\b|\br\d{2,3}\b|\bR\d{1,2}\b")
+
+
+def editor_notice(title: str, when: str, pairs: list[tuple[str, str]], ask: str = "", footer: str = "") -> str:
+    """編集長に届く1通を組み立てる。title = 何が良くなるか(1行)、when = いつから効くか、
+    pairs = (紙面で困っていたこと, どう変わるか) を最大3つ、ask = 判断がほしいこと(あれば1文)、footer = 記録の場所・監査・戻し方(1行)。"""
+    lines = [title + (f"({when})" if when else "")]
+    lines += [f"・{a} → {b}" for a, b in pairs[:3]]
+    if ask:
+        lines += ["", f"判断がほしいこと: {ask}"]
+    if footer:
+        lines += ["", footer]
+    return "\n".join(lines)
+
+
+def internal_names(text: str) -> list[str]:
+    """報告の本文に混ざった内部の名前(ファイル名・項目名・定数名・監査の番号)。形だけを見る(書き直すのは書き手)。"""
+    return sorted({m.group(0) for m in INTERNAL_NAME.finditer(text)})
+
+
 def notify_long(job: str, text: str, ok: bool = True, limit: int = DISCORD_LIMIT) -> bool:
     """必須の長い通知(当番の修正報告)。notify が分割するので、require=True で送るだけ。"""
     return notify(job, text, ok=ok, require=True)

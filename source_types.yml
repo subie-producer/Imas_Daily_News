@@ -86,6 +86,7 @@ suffix_types:
 
 # --- 報道: 独立した報道メディア ---
 press_domains:
+  - toyamamikke.com       # 合議で追加: 富山の独立した地域メディア。自ら取材して記事を執筆
   - billboard-japan.com   # 合議で追加: 独立した音楽メディア企業のチャート集計・発表
   - leveluplogy.jp        # 合議で追加: TGS2026会場で自ら取材したゲーム系報道メディア
   - gamebusiness.jp       # 合議で追加: 独立したゲーム業界メディアがTGS2026での取材を基に報道
@@ -371,6 +372,7 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - trJ1Aog8L7w         # 機械で追加: @imas-official「【スタマス】5周年記念！越境コミュ公開「アイドルモノマネチャ」
     - YvB9Lkq5aOs         # 機械で追加: @KamizuruCosmo「クライヤ 踊ってみた with 四条貴音さん #shorts」
     - sl_TslKVAlQ         # 機械で追加: @KamizuruCosmo「DIAMOND JOKER 踊ってみた with 四条貴音さ」
     - i15TxRQAxYE         # 機械で追加: @KamizuruCosmo「【デスゲームの報告書】推理ゲーム！頭の中のひらめきを言語化す」
@@ -516,6 +518,9 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - rascal_19_rmy       # 合議で追加: 個人による聖地巡礼投稿
+    - daburuha_77         # 合議で追加: 個人による視聴感想
+    - GUND_ARM_0808       # 合議で追加: 個人ハンドルによるファン作品投稿
     - sIro_v3             # 合議で追加: 個人によるファン創作投稿
     - ramuneneko0722      # 合議で追加: 個人による二次創作投稿
     - nangoku_tamami0     # 合議で追加: 個人のファンによる聖地訪問投稿
@@ -661,6 +666,8 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - sirasawasnbei       # 合議で追加: コラボ実施している店舗アカウント
+    - WILLER_TRAVEL       # 合議で追加: ツアー企画・販売会社のコラボ募集
     - taiko_All           # 合議で追加: 太鼓の達人の公式アカウント（コラボ先）
     - animateakiba        # 合議で追加: ライセンス販売元（アニメイト秋葉原）
     - 8ban_tsurajima      # 合議で追加: コラボ飲食店による一次発信。販売元
@@ -746,6 +753,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  note.com/kanokka: ファン                        # 合議で追加: 個人のnoteアカウント。シャニマスのソロライブ現地参加レポート
   note.com/jangajanganikki: ファン                # 合議で追加: 個人のnoteアカウント。シャニマスソロライブの感想・日記を発信
   docs.google.com/forms/d/e/1FAIpQLSewzEGUu-wlZ66kIHFIdR6ucKHMFo2syzmW9Oeq7lzKCSsSWQ: 公式 # 合議で追加: リンク元@valiv_officialは登録済み公式。VA-LIVブランド公式
   docs.google.com/forms/d/e/1FAIpQLSf3XywxIR7Ud5lymd-PnVk2ESVRCaO58ZrdVgITrHiZZlrc8g: 公式 # 合議で追加: リンク元が公式X account @imas_ch。IM@S RADIO番組の受

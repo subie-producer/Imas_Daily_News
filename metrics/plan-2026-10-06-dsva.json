@@ -1,0 +1,94 @@
+{
+ "decisions": {
+  "cosmo-birthday-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は10/4で終了済み。10/4号のdsva-ops-roundupで既報。"
+  },
+  "valiv-stream-schedule-2026-10-05": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cosmo-birthday-online-live-archive-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アーカイブ販売期限の事実は同じ主題。10/5の配信予定は終了済みで単独記事にしない。"
+  },
+  "cosmo-birthday-online-live-archive-2026": {
+   "action": "article",
+   "angle": "上水流宇宙バースデーONLINE LIVE 2026のアーカイブは、チケット販売が10月12日18時まで、視聴は同日23時59分まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/4号は販売中とだけ伝え、期限は未掲載のため新しい事実。"
+  },
+  "cosmo-takane-collab-short-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "上水流宇宙×四条貴音のコラボショートは10/4号で既報。URLが違う同じ知らせで、新しい事実も当日のトリガーも無い。"
+  },
+  "birthday-online-live-2026-lv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "続報予約だが、facts に当落発表が今日起きるとの記載が無い。先行は10/4に締切済みで既報。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-cosmo-birthday-online-live-archive-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙バースデーONLINE LIVE 2026のアーカイブは、チケット販売が10月12日18時まで、視聴は同日23時59分まで",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "cosmo-birthday-online-live-archive-2026",
+    "candidate_ids": [
+     "202610060218-grok-26",
+     "202610060218-explore-2"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cosmo-birthday-goods-2026",
+    "reason": "既報",
+    "note": "受注は10/4で終了済み。10/4号のdsva-ops-roundupで既報。"
+   },
+   {
+    "dedup_key": "cosmo-takane-collab-short-2026-10",
+    "reason": "既報",
+    "note": "上水流宇宙×四条貴音のコラボショートは10/4号で既報。URLが違う同じ知らせで、新しい事実も当日のトリガーも無い。"
+   },
+   {
+    "dedup_key": "birthday-online-live-2026-lv-2026",
+    "reason": "出典不足",
+    "note": "続報予約だが、facts に当落発表が今日起きるとの記載が無い。先行は10/4に締切済みで既報。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

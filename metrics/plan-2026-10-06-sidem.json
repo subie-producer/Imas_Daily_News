@@ -1,0 +1,89 @@
+{
+ "decisions": {
+  "sidem-fanfes-wsi-asobistore-advance-2-2026": {
+   "action": "article",
+   "angle": "SideM FANFES(WSI)のアソビストアプレミアム会員2次先行が受付中。SP席とS席・A席で申込先が分かれる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切の記載が素材に無いので、日付は書かない"
+  },
+  "sidem-producer-card-3-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/26号の記事と同じ商品。受注期間10/12 23:59は既報で、締切まで6日あり当日のトリガーにも当たらない"
+  },
+  "sidem-mfes-christmas-cruise-2026": {
+   "action": "article",
+   "angle": "WILLER ACROSSとのコラボ「Mフェス2026・クリスマスクルーズ」の申込が10/12 23:59まで。F-LAGSがPを招待し、神戸(12/12)と横浜(12/20・25)で開催",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は主催側の旅行会社の告知で未確認扱い。当選発表は10/16 17:00予定と書く"
+  },
+  "sidem-producer-card-vol3-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/26号の本文に収録曲・受注期間・発売予定日がすべてあり、新しい事実が無い。締切10/12まで6日で当日のトリガーも無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-fanfes-wsi-asobistore-advance-2-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM FANFES(WSI)のアソビストアプレミアム会員2次先行が受付中。SP席とS席・A席で申込先が分かれる",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-fanfes-wsi-asobistore-advance-2-2026",
+    "candidate_ids": [
+     "202610060218-grok-22"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-christmas-cruise-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "WILLER ACROSSとのコラボ「Mフェス2026・クリスマスクルーズ」の申込が10/12 23:59まで。F-LAGSがPを招待し、神戸(12/12)と横浜(12/20・25)で開催",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "sidem-mfes-christmas-cruise-2026",
+    "candidate_ids": [
+     "202610060218-grok-37"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-producer-card-3-2026",
+    "reason": "既報",
+    "note": "9/26号の記事と同じ商品。受注期間10/12 23:59は既報で、締切まで6日あり当日のトリガーにも当たらない"
+   },
+   {
+    "dedup_key": "sidem-producer-card-vol3-2026",
+    "reason": "既報",
+    "note": "9/26号の本文に収録曲・受注期間・発売予定日がすべてあり、新しい事実が無い。締切10/12まで6日で当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

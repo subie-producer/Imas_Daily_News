@@ -1,0 +1,135 @@
+{
+ "decisions": {
+  "tsubame-2nd-3rd-single-asobi-reservation-deadline-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "予約締切は10月4日で終了済み。10/1と10/4に既報"
+  },
+  "gaku-haratani-misuz-espresto-prize-2026-10": {
+   "action": "article",
+   "angle": "秦谷美鈴のプライズフィギュア「ESPRESTO-Fan out-」が10月8日から全国のクレーンゲームに順次登場する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-hobbyochaton-shinozawa-fujita-2026": {
+   "action": "article",
+   "angle": "HobbyChatonが篠澤広(仮装狂騒曲ver.)と藤田ことね(枝毛をくるりver.)のフィギュア化を決定した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-shirube-iwate-stream-2026": {
+   "action": "article",
+   "angle": "標ツアー岩手公演の配信視聴チケットは8日18時の販売終了まであと2日で、河童のぬいぐるみで披露した「古今東西ちょちょいのちょい」の様子も届く",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内。公式の告知に既報本文にない新要素あり"
+  },
+  "gaku-iwate-producer-business-card-display-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "店舗の個人SNS投稿のみで未確認。単体では記事にしない"
+  },
+  "gaku-chibi-furumi-unit-collection-2026": {
+   "action": "article",
+   "angle": "ちびぐるみvol.3(ゆめぱしーの)が本日から全国のクレーンゲームに順次登場、vol.4は8日から",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。本日vol.3が登場開始。10/3の既報に新事実なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-haratani-misuz-espresto-prize-2026-10",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "秦谷美鈴のプライズフィギュア「ESPRESTO-Fan out-」が10月8日から全国のクレーンゲームに順次登場する",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-haratani-misuz-espresto-prize-2026-10",
+    "candidate_ids": [
+     "202610051233-watch-0"
+    ]
+   },
+   {
+    "slug": "gaku-hobbyochaton-shinozawa-fujita-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "HobbyChatonが篠澤広(仮装狂騒曲ver.)と藤田ことね(枝毛をくるりver.)のフィギュア化を決定した",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-hobbyochaton-shinozawa-fujita-2026",
+    "candidate_ids": [
+     "202610051233-watch-2"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-iwate-stream-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "標ツアー岩手公演の配信視聴チケットは8日18時の販売終了まであと2日で、河童のぬいぐるみで披露した「古今東西ちょちょいのちょい」の様子も届く",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-shirube-iwate-stream-2026",
+    "candidate_ids": [
+     "202610060218-grok-24"
+    ]
+   },
+   {
+    "slug": "gaku-chibi-furumi-unit-collection-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ちびぐるみvol.3(ゆめぱしーの)が本日から全国のクレーンゲームに順次登場、vol.4は8日から",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gaku-chibi-furumi-unit-collection-2026",
+    "candidate_ids": [
+     "sched-2026-10-06-gaku-chibi-furumi-unit-collection-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tsubame-2nd-3rd-single-asobi-reservation-deadline-2026",
+    "reason": "その他",
+    "note": "予約締切は10月4日で終了済み。10/1と10/4に既報"
+   },
+   {
+    "dedup_key": "gaku-iwate-producer-business-card-display-2026",
+    "reason": "出典不足",
+    "note": "店舗の個人SNS投稿のみで未確認。単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

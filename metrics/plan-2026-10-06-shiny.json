@@ -1,0 +1,226 @@
+{
+ "decisions": {
+  "shiny-hachiban-collab-2026": {
+   "action": "article",
+   "angle": "8番らーめんコラボは明日開幕、富山の等身大パネルは22店設置、コラボ箸袋付きなど新たに判明",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "価格・特典・店舗は既報。22店・箸袋・注文書が新事実。ramen-collab を統合"
+  },
+  "shiny-hachiban-ramen-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hachiban-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボ。注文書でグッズを購入できる点のみ新しい"
+  },
+  "shiny-kamera-dunedun-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "かめりあ feat. 花海佑芽は学園アイドルマスターの楽曲でシャニマスの話題ではない"
+  },
+  "shiny-msp-fan-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人noteの参加レポート。エンゲージメント低"
+  },
+  "shiny-msp-archive-ticket-close-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信券は10/5 18時、アーカイブは10/5 23:59で終了済み。10/5号で報じ済み"
+  },
+  "shiny-collab-fes-2026-oct": {
+   "action": "article",
+   "angle": "コラボフェスが10月8日から20日11:59まで開催予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-maintenance-2026-10-08": {
+   "action": "article",
+   "angle": "10月8日12時〜15時にメンテナンス、10連無料ガシャはメンテ前まで、千雪の専用心得を回収予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "読者の行動(無料ガシャ)が別なのでコラボフェスとは別記事"
+  },
+  "shiny-song-antica-shhis-new-costume-pickup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/3・10/5号で同ガシャを記事化済み。新事実も当日のトリガーも無い"
+  },
+  "shiny-aki-idol-kyoka-2026": {
+   "action": "article",
+   "angle": "「秋のアイドル強化週間」第16回の報酬受け取りは本日11:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。今日が期限"
+  },
+  "shiny-hbt-k-2026-10": {
+   "action": "article",
+   "angle": "「まったりHBTK」10月度が本日23時から放送、MCは永井真里子さんと丸岡和佳奈さん",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。放送時刻は既報の23時"
+  },
+  "shiny-song-event-unyielding-will-2026": {
+   "action": "article",
+   "angle": "シャニソン「Unyielding Will」のメダルガシャは本日20:59まで、ランキング集計と結果発表の日程も案内",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。新曲Pioneer Impactの楽曲レベル、集計・結果発表期間は新事実"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-hachiban-collab-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "8番らーめんコラボは明日開幕、富山の等身大パネルは22店設置、コラボ箸袋付きなど新たに判明",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "shiny-hachiban-collab-2026",
+    "candidate_ids": [
+     "202610050733-explore-0",
+     "202610051233-explore-5",
+     "202610052333-explore-4"
+    ]
+   },
+   {
+    "slug": "shiny-collab-fes-2026-oct",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "コラボフェスが10月8日から20日11:59まで開催予定",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shiny-collab-fes-2026-oct",
+    "candidate_ids": [
+     "202610060218-grok-19"
+    ]
+   },
+   {
+    "slug": "shiny-maintenance-2026-10-08",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "10月8日12時〜15時にメンテナンス、10連無料ガシャはメンテ前まで、千雪の専用心得を回収予定",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-maintenance-2026-10-08",
+    "candidate_ids": [
+     "202610060218-grok-20"
+    ]
+   },
+   {
+    "slug": "shiny-aki-idol-kyoka-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「秋のアイドル強化週間」第16回の報酬受け取りは本日11:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-aki-idol-kyoka-2026",
+    "candidate_ids": [
+     "sched-2026-10-06-shiny-aki-idol-kyoka-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-hbt-k-2026-10",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「まったりHBTK」10月度が本日23時から放送、MCは永井真里子さんと丸岡和佳奈さん",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-hbt-k-2026-10",
+    "candidate_ids": [
+     "sched-2026-10-06-shiny-hbt-k-2026-10-開始"
+    ]
+   },
+   {
+    "slug": "shiny-song-event-unyielding-will-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニソン「Unyielding Will」のメダルガシャは本日20:59まで、ランキング集計と結果発表の日程も案内",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-song-event-unyielding-will-2026",
+    "candidate_ids": [
+     "sched-2026-10-06-shiny-song-event-unyielding-will-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-kamera-dunedun-2026",
+    "reason": "面違い",
+    "note": "かめりあ feat. 花海佑芽は学園アイドルマスターの楽曲でシャニマスの話題ではない"
+   },
+   {
+    "dedup_key": "shiny-msp-fan-report-2026",
+    "reason": "個人の話題",
+    "note": "個人noteの参加レポート。エンゲージメント低"
+   },
+   {
+    "dedup_key": "shiny-msp-archive-ticket-close-2026",
+    "reason": "既報",
+    "note": "配信券は10/5 18時、アーカイブは10/5 23:59で終了済み。10/5号で報じ済み"
+   },
+   {
+    "dedup_key": "shiny-song-antica-shhis-new-costume-pickup-2026",
+    "reason": "既報",
+    "note": "10/3・10/5号で同ガシャを記事化済み。新事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

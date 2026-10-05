@@ -1,0 +1,128 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-10-06-joint-starlit-season-5th-cross-comm-2026-10-05.md",
+   "issue": "本文で「公開されたコミュでは」と述べているが、根拠ファクト(F2)は「公開されるコミュでは」（未来形）と述べられている。「公開された」という過去形は、根拠から導けない具体的な事実である。素材には実際の公開を確認する記述が無く、告知（F1）のみである。",
+   "quote": "公開されたコミュでは、アイドルたちが他のメンバーのモノマネに挑戦する。 <!-- F2 -->",
+   "rule_id": "R1",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F2"
+   ],
+   "expected": "本文がF2に合わせて「公開されるコミュでは」と修正される。または一次情報で実際の10月5日の公開を確認し、new_factsに記述されたうえで「公開されたコミュ」を正当化する。",
+   "scope": "article:2026-10-06-joint-starlit-season-5th-cross-comm-2026-10-05.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "digest の『継続中』セクションに記載されている『上水流宇宙BDライブ配信』（slug: dsva-cosmo-birthday-online-live-archive-2026）が紙面に無い。記事ファイルが削除されているのに対し、号スナップショットの digest には記載されたままの状態が不整合。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-10-06-gaku-chibi-furumi-unit-collection-2026.md",
+   "issue": "分量不足：rank: small に対して本文が約120字と目安（250字）より短い。出典にあるサイズ・種類などの仕様情報を拾えば埋まる。",
+   "scope": "article:2026-10-06-gaku-chibi-furumi-unit-collection-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-06-gaku-haratani-misuz-espresto-prize-2026-10.md",
+   "issue": "本文が極度に短い。rank: small（目安250字）に対して、タイトル+リード+本文で約85字。素材には『[ゆっくり、一歩ずつ]のイラストをもとに』『BANDAI SPIRITSのバンプレストブランド』などの情報があり、拾えば埋まる。",
+   "scope": "article:2026-10-06-gaku-haratani-misuz-espresto-prize-2026-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-06-joint-arcade-tours-s2-live-2026.md",
+   "issue": "分量不足: 本文が90字で、rank: small の目安250字に大幅に不足。素材に記載されている出演者(千春、青木たつや、箕浦)、現地観覧場所(東京都新宿区)、当選連絡方法(10月8日頃DMで詳細連絡)、namcoTOKYOでのライブビューイング、プロモーションカード特典などの詳細を拾うことで、記事を充実させることができます。",
+   "scope": "article:2026-10-06-joint-arcade-tours-s2-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-06-joint-starlit-season-5th-anniversary-initiatives-2026.md",
+   "issue": "rank:small の目安（250字）に対して本文が薄い（現在約120字）。出典には未成年者の法定代理人同意、通信料負担、抽選対象外条件などの詳細が記載されており、必要に応じて記事に追加可能。",
+   "scope": "article:2026-10-06-joint-starlit-season-5th-anniversary-initiatives-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-06-joint-xr-live-revival-twin-2026.md",
+   "issue": "分量不足：rank: lead（目安 1000字）に対し、現記事は約 50字。候補から追加できるチケット情報（価格・申し込み期間・当落発表）、グッズ情報、過去公演との比較などを拾えば埋まる",
+   "scope": "article:2026-10-06-joint-xr-live-revival-twin-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-06-joint-xr-live-revival-twin-2026.md",
+   "issue": "見出しが曖昧：「デレマス『ToyBox』フロント12人判明」だけでは「Pop'n ToyBox!! もういっかい！」という新規・復活公演であることが分からない。見出しに「Pop'n ToyBox!! もういっかい！」の名称または「復活公演」などの説明の追加を検討",
+   "scope": "article:2026-10-06-joint-xr-live-revival-twin-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-06-million-general-futamasu-20th-machida-furusato-tax-2026.md",
+   "issue": "分量不足：rank small の目安250字に対して本文が約80字と短い。sources にあるセット内容の詳細や提供ポータルなどの情報をさらに拾うことで充実させられる",
+   "scope": "article:2026-10-06-million-general-futamasu-20th-machida-furusato-tax-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-06-million-platinum-star-tune-lilac-2026.md",
+   "issue": "見出しが「ライラック」のみでイベント名が抽象的。リードでは「プラチナスターチューン～ライラックにつつまれて～」と具体的なため、見出しでも「プラチナスターチューン」など内容を示す語を入れるとより読者にわかりやすくなる可能性",
+   "scope": "article:2026-10-06-million-platinum-star-tune-lilac-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-06-shiny-collab-fes-2026-oct.md",
+   "issue": "分量不足: rank「small」に対して本文が薄い（目安250字、現在~52字）。出典に会場・価格・詳細条件など追加情報が無ければ、現状で問題ない",
+   "scope": "article:2026-10-06-shiny-collab-fes-2026-oct.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-06-shiny-hachiban-collab-2026.md",
+   "issue": "分量不足。rank: small の目安は250字だが、本文は約80語。出典に記載された価格帯（Aセット2,310円/Bセット1,760円）や販売期間、設置方法などを加えて埋めることで、記事の説得力が増す可能性",
+   "scope": "article:2026-10-06-shiny-hachiban-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-06-shiny-hbt-k-2026-10.md",
+   "issue": "分量不足: small ランク目安 250 字に対して本文が 28 字。素材の facts にあるおたより送付期限やフォーム案内など、読者が今日できることを追加すれば記事が充実します。",
+   "scope": "article:2026-10-06-shiny-hbt-k-2026-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-06-sidem-fanfes-wsi-asobistore-advance-2-2026.md",
+   "issue": "分量不足：rank: small（目安250字）に対し、本文がURLのみで実質50字未満。出典に「受付期間」「当選発表」「入金期間」などのスケジュール情報がある場合は、それらを本文に追加することで分量を補える可能性あり。",
+   "scope": "article:2026-10-06-sidem-fanfes-wsi-asobistore-advance-2-2026.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-06-cg-yuki-otokura-birthday-2026.md",
+  "article:2026-10-06-dsva-cosmo-birthday-online-live-archive-2026.md",
+  "article:2026-10-06-gaku-chibi-furumi-unit-collection-2026.md",
+  "article:2026-10-06-gaku-haratani-misuz-espresto-prize-2026-10.md",
+  "article:2026-10-06-gaku-hobbyochaton-shinozawa-fujita-2026.md",
+  "article:2026-10-06-joint-arcade-tours-s2-live-2026.md",
+  "article:2026-10-06-joint-starlit-season-5th-anniversary-initiatives-2026.md",
+  "article:2026-10-06-joint-starlit-season-5th-cross-comm-2026-10-05.md",
+  "article:2026-10-06-joint-xr-live-revival-twin-2026.md",
+  "article:2026-10-06-million-14th-memorial-goods-2026.md",
+  "article:2026-10-06-million-general-futamasu-20th-machida-furusato-tax-2026.md",
+  "article:2026-10-06-million-platinum-star-tune-lilac-2026.md",
+  "article:2026-10-06-million-premium-pickup-sr-gasha-2026-10.md",
+  "article:2026-10-06-shiny-collab-fes-2026-oct.md",
+  "article:2026-10-06-shiny-hachiban-collab-2026.md",
+  "article:2026-10-06-shiny-hbt-k-2026-10.md",
+  "article:2026-10-06-shiny-maintenance-2026-10-08.md",
+  "article:2026-10-06-sidem-fanfes-wsi-asobistore-advance-2-2026.md",
+  "article:2026-10-06-sidem-mfes-christmas-cruise-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-10-06-cg-yuki-otokura-birthday-2026.md": "5d64df786954377292b3d3349ec5970c52676579affa49d2f96305e2205ba4f0",
+  "docs/_posts/2026-10-06-gaku-chibi-furumi-unit-collection-2026.md": "3ab26d85b0e7bce12a1b40ee11cb1f08bbf16b8800fde4057bbf0b14c77cdd33",
+  "docs/_posts/2026-10-06-gaku-haratani-misuz-espresto-prize-2026-10.md": "01584377615dbb0673d05c1cf29ae86afee0bf9cdf421ef851fe9174bef56905",
+  "docs/_posts/2026-10-06-gaku-hobbyochaton-shinozawa-fujita-2026.md": "59da81ad86c75e4d7967fd87b942c5ffdc35bf07d2523b794d6d87c93e7e25cf",
+  "docs/_posts/2026-10-06-joint-arcade-tours-s2-live-2026.md": "75e6fa18855bb9dfbaf76dd708fdf13c722f7011ea917b678e9cf2af3db72f79",
+  "docs/_posts/2026-10-06-joint-starlit-season-5th-anniversary-initiatives-2026.md": "822e7dc812088b79deadf603b401e14384a2b3383f523a2d8c3c6cb36089426a",
+  "docs/_posts/2026-10-06-joint-starlit-season-5th-cross-comm-2026-10-05.md": "3ea6fa7793b9c36a64fdad54156452e0191dc3732c13204cac1d5b0189c87d64",
+  "docs/_posts/2026-10-06-joint-xr-live-revival-twin-2026.md": "520b5965d1614421e092a4dd1d8e98fec121747d9dfc773643667f40c84e9ab3",
+  "docs/_posts/2026-10-06-million-14th-memorial-goods-2026.md": "a7ce550eb8295e5c3583c2a978b0a639d6dd301c63f06570820446f3ab6b4639",
+  "docs/_posts/2026-10-06-million-general-futamasu-20th-machida-furusato-tax-2026.md": "4044ed210e98558b1a467a4c59c5f8915ab08228979e8735f055c40e74cc7632",
+  "docs/_posts/2026-10-06-million-platinum-star-tune-lilac-2026.md": "e620fdf349607f46b1106d55e73d5b10c8f2409fac16b2b1ab519ec5ea2fffcf",
+  "docs/_posts/2026-10-06-million-premium-pickup-sr-gasha-2026-10.md": "99f1e6c2e16450a5eb0edf0a3ec1f81186d8574fbfff73bb12103224866d73fc",
+  "docs/_posts/2026-10-06-shiny-collab-fes-2026-oct.md": "6cfc51ef0e50feddbd7fba3ec7415d8631ac9184e2ec874c231511801aac46c8",
+  "docs/_posts/2026-10-06-shiny-hachiban-collab-2026.md": "aee51fdbeb9c7fe09713ddeace96317186525fbbda366b157516cf7a128f1eaf",
+  "docs/_posts/2026-10-06-shiny-hbt-k-2026-10.md": "cb51e5cdd61f82c4a1044b7062231484315c4f855b972f68e27ef2fe747800f6",
+  "docs/_posts/2026-10-06-shiny-maintenance-2026-10-08.md": "2199700f1876b146c7328d05a0ecc2e889819013a04b5e9e09f0fd6333687360",
+  "docs/_posts/2026-10-06-sidem-fanfes-wsi-asobistore-advance-2-2026.md": "7d8250b9105467646eb6548958680139b30243a93f00d5e832ad4ee0762c966d",
+  "docs/_posts/2026-10-06-sidem-mfes-christmas-cruise-2026.md": "17df2c9816079d4d55cedd18ba3f7e1b76fced4f008f7e3248329d5c494cdbf7",
+  "docs/_editions/2026-10-06.md": "cb7c3776e8f48ffbbfb6b172832ee725864b194b8fccebf4dd6275f359311060",
+  "metrics/stories-before-2026-10-06.yml": "7e33f421ac088f8423bd4c2eb5c44e5704beac779ea713c7e58aad70030bc985"
+ }
+}

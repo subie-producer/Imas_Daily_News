@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "hangetsu-revival-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "二次情報(Yahooリアルタイム検索)のファン反応のみで新事実なし。同じ「はんげつ」公演は10/05に765面が記事化済み、xR LIVE REVIVAL自体も合同面が記事化済み。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "hangetsu-revival-2026",
+    "reason": "重複",
+    "note": "二次情報(Yahooリアルタイム検索)のファン反応のみで新事実なし。同じ「はんげつ」公演は10/05に765面が記事化済み、xR LIVE REVIVAL自体も合同面が記事化済み。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

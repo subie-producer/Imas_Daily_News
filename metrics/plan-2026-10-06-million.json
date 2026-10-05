@@ -1,0 +1,195 @@
+{
+ "decisions": {
+  "general-futamasu-20th-machida-furusato-tax-2026": {
+   "action": "article",
+   "angle": "町田市のふるさと納税返礼品として、ロコの「ふたマス!!!!!!」グッズセット(寄付額12,000円)の受付が始まった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "shiny-futamasu-manhole-machida-2026 を統合。公式の出典を主にする。"
+  },
+  "shiny-futamasu-manhole-machida-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "general-futamasu-20th-machida-furusato-tax-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ返礼品の二次情報。セット内容にポストカードが載る点は公式と食い違うので、公式に合わせる。"
+  },
+  "million-platinum-star-tune-lilac-2026": {
+   "action": "article",
+   "angle": "ミリシタのイベント「プラチナスターチューン～ライラックにつつまれて～」は10月8日20:59まで。TIntMe!のショートMVも公開された",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/1 に開幕済みの同じイベント。終了が3日以内に迫っていることと、ショートMVの公開が今回の材料。"
+  },
+  "million-premium-pickup-sr-gasha-2026-10": {
+   "action": "article",
+   "angle": "ミリシタのプレミアムピックアップSRガシャが開催中。亜美・海美・のり子・可憐の限定SR4枚が出現率アップ",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営まとめに入る件数(3件以上)に届かないので、small の通常記事にする。"
+  },
+  "million-14th-memorial-goods-2026": {
+   "action": "article",
+   "angle": "14thLIVE開催記念グッズがASOBI STOREで10月11日まで受注中。DAY1出演アイドルの描き下ろしを使ったグッズが並ぶ",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/3 のロゼットとは別の商品群。受注締切は5日後なので、期日の知らせにはしない。"
+  },
+  "million-only-maker-parker-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30 の記事と同じ内容(受注期間・価格・仕様)。締切10/12は6日後で、当日のトリガーに当たらない。"
+  },
+  "million-theater-9th-illustration-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/4 の記事に同じ商品と価格(クリアカード500円)が載っている。「あと6日」は締切が3日以内ではない。"
+  },
+  "million-tanaka-kotoha-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/5 の琴葉誕生日ガシャの記事と同じ話題。誕生日は10/5で終わっている。"
+  },
+  "million-anime-location-visit-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の SNS 投稿のみで、出典が未確認。聖地巡礼は culture の対象だが、culture は general 面だけ。"
+  },
+  "tanaka-kotoha-birthday-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/5 の記事に、お祝いムービーの案内まで書かれている。新しい事実は無い。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-general-futamasu-20th-machida-furusato-tax-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "町田市のふるさと納税返礼品として、ロコの「ふたマス!!!!!!」グッズセット(寄付額12,000円)の受付が始まった",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "general-futamasu-20th-machida-furusato-tax-2026",
+    "candidate_ids": [
+     "202610051233-watch-1",
+     "202610052333-watch-0"
+    ]
+   },
+   {
+    "slug": "million-platinum-star-tune-lilac-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタのイベント「プラチナスターチューン～ライラックにつつまれて～」は10月8日20:59まで。TIntMe!のショートMVも公開された",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-platinum-star-tune-lilac-2026",
+    "candidate_ids": [
+     "202610060218-grok-9"
+    ]
+   },
+   {
+    "slug": "million-premium-pickup-sr-gasha-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタのプレミアムピックアップSRガシャが開催中。亜美・海美・のり子・可憐の限定SR4枚が出現率アップ",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-premium-pickup-sr-gasha-2026-10",
+    "candidate_ids": [
+     "202610060218-grok-10"
+    ]
+   },
+   {
+    "slug": "million-14th-memorial-goods-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "14thLIVE開催記念グッズがASOBI STOREで10月11日まで受注中。DAY1出演アイドルの描き下ろしを使ったグッズが並ぶ",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-14th-memorial-goods-2026",
+    "candidate_ids": [
+     "202610060218-grok-11"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-only-maker-parker-2026",
+    "reason": "既報",
+    "note": "9/30 の記事と同じ内容(受注期間・価格・仕様)。締切10/12は6日後で、当日のトリガーに当たらない。"
+   },
+   {
+    "dedup_key": "million-theater-9th-illustration-goods-2026",
+    "reason": "既報",
+    "note": "10/4 の記事に同じ商品と価格(クリアカード500円)が載っている。「あと6日」は締切が3日以内ではない。"
+   },
+   {
+    "dedup_key": "million-tanaka-kotoha-birthday-2026",
+    "reason": "既報",
+    "note": "10/5 の琴葉誕生日ガシャの記事と同じ話題。誕生日は10/5で終わっている。"
+   },
+   {
+    "dedup_key": "million-anime-location-visit-2026-10",
+    "reason": "個人の話題",
+    "note": "個人の SNS 投稿のみで、出典が未確認。聖地巡礼は culture の対象だが、culture は general 面だけ。"
+   },
+   {
+    "dedup_key": "tanaka-kotoha-birthday-gasha-2026",
+    "reason": "既報",
+    "note": "10/5 の記事に、お祝いムービーの案内まで書かれている。新しい事実は無い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

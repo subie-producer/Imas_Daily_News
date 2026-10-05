@@ -1,0 +1,102 @@
+{
+ "decisions": {
+  "xr-live-revival-twin-2026": {
+   "action": "article",
+   "angle": "12月13日に第四公演「Pop’n ToyBox!! もういっかい！」を夕方に開催、フロントメンバー12人が判明",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior本文に無い新事実は13日公演の日時とフロント12人"
+  },
+  "arcade-tours-s2-live-2026": {
+   "action": "article",
+   "angle": "S2弾生配信の現地観覧の応募は明日10月7日23時59分まで、配信は10月15日19時",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が翌日に迫る当日のトリガー"
+  },
+  "starlit-season-5th-anniversary-initiatives-2026": {
+   "action": "article",
+   "angle": "スタマス5周年の心白・亜夜へのメッセージ募集は明日10月7日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が翌日に迫る当日のトリガー。10月14日の5周年当日も添える"
+  },
+  "starlit-season-5th-cross-comm-2026-10-05": {
+   "action": "article",
+   "angle": "スタマス5周年記念の越境コミュが公開、アイドルたちが他メンバーのモノマネに挑戦",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報に無い別施策。メッセージ募集とは読者の行動が別なので分ける"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-xr-live-revival-twin-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "12月13日に第四公演「Pop’n ToyBox!! もういっかい！」を夕方に開催、フロントメンバー12人が判明",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "xr-live-revival-twin-2026",
+    "candidate_ids": [
+     "202610050733-explore-3"
+    ]
+   },
+   {
+    "slug": "joint-arcade-tours-s2-live-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "S2弾生配信の現地観覧の応募は明日10月7日23時59分まで、配信は10月15日19時",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "arcade-tours-s2-live-2026",
+    "candidate_ids": [
+     "202610060218-grok-29"
+    ]
+   },
+   {
+    "slug": "joint-starlit-season-5th-anniversary-initiatives-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "スタマス5周年の心白・亜夜へのメッセージ募集は明日10月7日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "starlit-season-5th-anniversary-initiatives-2026",
+    "candidate_ids": [
+     "202610060218-grok-30"
+    ]
+   },
+   {
+    "slug": "joint-starlit-season-5th-cross-comm-2026-10-05",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "スタマス5周年記念の越境コミュが公開、アイドルたちが他メンバーのモノマネに挑戦",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "starlit-season-5th-cross-comm-2026-10-05",
+    "candidate_ids": [
+     "202610060218-grok-31"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

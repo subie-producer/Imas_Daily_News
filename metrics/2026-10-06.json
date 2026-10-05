@@ -1,0 +1,146 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-06T02:18:09+09:00",
+   "edition": "2026-10-06",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 347,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 0,
+    "explore:dsva": 2,
+    "explore:joint-other": 0,
+    "explore:trend": 1,
+    "grok_week_searches": 295,
+    "grok:765as": 0,
+    "grok:cinderella": 4,
+    "grok:million": 9,
+    "grok:shiny": 4,
+    "grok:sidem": 4,
+    "grok:gakuen": 3,
+    "grok:dsva": 2,
+    "grok:joint-other": 4,
+    "grok:trend": 5,
+    "grok_searches:dsva": 8,
+    "grok_searches:million": 5,
+    "grok_searches:sidem": 8,
+    "grok_searches:general": 3,
+    "grok_searches:joint": 7,
+    "grok_searches:765": 2,
+    "grok_searches:gaku": 5,
+    "grok_searches:shiny": 6,
+    "grok_searches:cg": 6
+   },
+   "normalized": 37,
+   "added": 33,
+   "verify": {
+    "confirmed": 26,
+    "unconfirmed": 10,
+    "failed": 1
+   },
+   "duration_s": 1051
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-06T03:24:44+09:00",
+   "edition": "2026-10-06",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 22,
+   "written": 17,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 48,
+    "covered": 48,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "joint-starlit-season-5th-cross-comm-2026-10-05"
+   ],
+   "stages_min": {
+    "選定": 1.0078333536783854,
+    "執筆": 3.331466722488403,
+    "出典の判定": 0.047113088766733806,
+    "組版": 0.6292079965273539,
+    "校閲": 3.1244167566299437,
+    "校閲1波": 3.1244167566299437
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-aki-idol-kyoka-2026",
+    "shiny-song-event-unyielding-will-2026",
+    "gaku-shirube-iwate-stream-2026",
+    "dsva-cosmo-birthday-online-live-archive-2026"
+   ],
+   "duration_s": 1446
+  }
+ ]
+}

@@ -1,0 +1,98 @@
+{
+ "decisions": {
+  "cg-15th-party-love-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30に現地先行受付開始を記事化済み。日時・受付期間・当落日は既出で、締切10/19は3日以内でない。新規は相葉夕美の紹介のみ"
+  },
+  "athome-apple-of-my-ai-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29に開催、10/2に出演5名と体制を記事化済み。会場・日時・出演者は既出で、先行締切10/18は3日以内でない"
+  },
+  "cg-memory-pict-7th-december-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30に第7弾の受注開始を記事化済み。新しい事実なし、受注締切10/18は3日以内でない"
+  },
+  "fan-otakura-yuki-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "未確認の個人投稿によるファン作品。cg面にculture枠は無く、単体で記事にしない"
+  },
+  "yuki-otokura-birthday-2026": {
+   "action": "article",
+   "angle": "アイマスchが乙倉悠貴の誕生日(10月6日)に合わせてお祝いムービーを公開した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発信で当日の出来事。事実が少ないため短い記事"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-yuki-otokura-birthday-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "アイマスchが乙倉悠貴の誕生日(10月6日)に合わせてお祝いムービーを公開した",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "yuki-otokura-birthday-2026",
+    "candidate_ids": [
+     "202610060218-grok-32"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-15th-party-love-party-2026",
+    "reason": "既報",
+    "note": "9/30に現地先行受付開始を記事化済み。日時・受付期間・当落日は既出で、締切10/19は3日以内でない。新規は相葉夕美の紹介のみ"
+   },
+   {
+    "dedup_key": "athome-apple-of-my-ai-2027",
+    "reason": "既報",
+    "note": "9/29に開催、10/2に出演5名と体制を記事化済み。会場・日時・出演者は既出で、先行締切10/18は3日以内でない"
+   },
+   {
+    "dedup_key": "cg-memory-pict-7th-december-2026",
+    "reason": "既報",
+    "note": "9/30に第7弾の受注開始を記事化済み。新しい事実なし、受注締切10/18は3日以内でない"
+   },
+   {
+    "dedup_key": "fan-otakura-yuki-birthday-2026",
+    "reason": "同人・ファン主催",
+    "note": "未確認の個人投稿によるファン作品。cg面にculture枠は無く、単体で記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

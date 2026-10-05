@@ -120,5 +120,26 @@
   "src_candidate_id": "202610010223-explore-2",
   "event_date": "2026-09-29",
   "deadline": "2026-10-20"
+ },
+ {
+  "id": "sched-2026-10-20-shiny-collab-fes-2026-oct-終了",
+  "dedup_key": "shiny-collab-fes-2026-oct",
+  "brand": "shiny",
+  "subject": "シャニマス コラボフェス",
+  "kind": "終了",
+  "note": "11:59(予定)までの最終日。最後に引ける",
+  "reserved_on": "2026-10-06",
+  "title": "シャニマス コラボフェス開催告知",
+  "url": "https://x.com/imassc_official/status/2106988002081693909",
+  "source_type": "公式",
+  "facts": [
+   "開催期間: 2026年10月8日～2026年10月20日11:59（予定）",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610060218-grok-19",
+  "event_date": "2026-10-08",
+  "deadline": "2026-10-20"
  }
 ]

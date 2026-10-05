@@ -1,0 +1,42 @@
+{
+ "decisions": {
+  "million-anime-new-viewer-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件のみ(未確認・エンゲージメント低)。単体では記事にしない"
+  },
+  "university-joint-imas-research-presentation-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "大学のアイマス研究会によるファン主催の発表会で、10月3日に終了済み。出典もファンの投稿のみ"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "million-anime-new-viewer-2026-10",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿1件のみ(未確認・エンゲージメント低)。単体では記事にしない"
+   },
+   {
+    "dedup_key": "university-joint-imas-research-presentation-2026",
+    "reason": "同人・ファン主催",
+    "note": "大学のアイマス研究会によるファン主催の発表会で、10月3日に終了済み。出典もファンの投稿のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

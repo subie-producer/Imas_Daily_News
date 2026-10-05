@@ -2484,6 +2484,9 @@ def test_plan_merge_into_drop():
     check("docs/_data/idols.json" in r1 and "R1 にしない" in r1, "校閲の R1 に、名鑑で補った姓名の扱いが無い")
     check("敬称" in r1 and "765" in r1 and "根拠(F・N)で確かめる" in r1 and "0件なら R1" not in r1,
           "校閲の R1 の名鑑規則が、敬称・765 の出演・一人に決まらないときの通常確認を扱っていない")
+    # 2026-10-06: 告知日時を過ぎたことを過去形で書くと R1、未来形に戻すと R7 で、どちらに書いても落ちた
+    check("{DATE} 06:00 より前" in r1 and "過去として書いた" in r1 and "R7" in r1 and "延期・中止" in r1,
+          "校閲の R1 が、告知の日時を過ぎたことを過去として書いた記述を R1 から外していない(R7 と矛盾する)")
 
 
 def test_withdrawal(tmp: Path):

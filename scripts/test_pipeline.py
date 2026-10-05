@@ -2226,8 +2226,10 @@ def test_grok_item_url_repointed_to_post():
 """
     saved = collect.classify_source
     try:
-        # 本人のアカウントは公式でない扱いにして、公式の投稿が選ばれることを確かめる
-        collect.classify_source = lambda u: ("当事者" if "KamizuruCosmo" in u else saved(u))
+        # 本人のアカウントは公式でない扱いにして、公式の投稿が選ばれることを確かめる。
+        # 動画の種別は表に載ると変わる(2026-10-05 の発行でこの動画が公式に載り赤になった)ので、未確認に固定する
+        collect.classify_source = lambda u: ("当事者" if "KamizuruCosmo" in u
+                                             else "未確認" if "youtube.com" in u else saved(u))
         items = collect.repoint_to_post([
             {"url": "https://www.youtube.com/shorts/YvB9Lkq5aOs", "facts": ["クライヤ"]},
             {"url": "https://www.youtube.com/shorts/other", "facts": []},
@@ -2267,14 +2269,16 @@ def test_grok_repoint_uses_each_face_posts(tmp: Path):
         (Path(cwd) / "items.json").write_text(json.dumps(items), encoding="utf-8")
         (Path(cwd) / "deep.json").write_text("[]", encoding="utf-8")
         return P()
-    saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file)
+    saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.classify_source)
     try:
         collect.subprocess.Popen = fake_popen
         collect.notify = lambda job, msg, ok=True, require=False: True
         collect.prompt_file = lambda date, name, prompt, base=None: "p"
+        # 動画の種別は表に載ると変わるので、未確認に固定する
+        collect.classify_source = lambda u, c=collect.classify_source: "未確認" if "youtube.com" in u else c(u)
         items, _ = collect.verify_grok_faces(qs, out)
     finally:
-        collect.subprocess.Popen, collect.notify, collect.prompt_file = saved
+        collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.classify_source = saved
     check([x["url"] for x in items] == ["https://x.com/valiv_official/status/2106670673922064689"],
           f"末尾以外の面の動画 url を、その面の投稿に付け直さない: {items}")
 

@@ -397,7 +397,11 @@ def test_revise_check():
     check(any("出典を外した" in p for p in compose.revise_check(dict(ans_r4, blocks=[{"markdown": "4公演の時刻と通し券8万円が発表された。", "fact_ids": ["F19"]},
                                                                                     {"markdown": "仙台で3月に開催される。", "fact_ids": ["F20"]}]),
                                                                 iss_r4_noflag, fm_r4, old_r4)),
-          "drop_source の指摘が無いのに出典の差し替えが通った")
+          "出典についての指摘が無いのに出典の差し替えが通った")
+    # R4(誤出典)の指摘なら、repair が rewrite_claim でも差し替えは通る(repair は提案。監査指摘)
+    iss_r4_rw = [{"issue_id": "I1", "rule_id": "R4", "repair": "rewrite_claim", "quote": "4公演の時刻と通し券8万円が発表された。"}]
+    check(compose.revise_check(ans_r4, iss_r4_rw, fm_r4, old_r4) == [],
+          f"R4 の差し替えが repair の種類で弾かれた: {compose.revise_check(ans_r4, iss_r4_rw, fm_r4, old_r4)}")
 
 
 def test_rollback(tmp: Path):
@@ -521,23 +525,22 @@ def test_oncall_report_text(tmp: Path):
         text = (tmp / "metrics" / "oncall-2026-09-12-compose-report.md").read_text(encoding="utf-8")
         check(ok and "git revert -m 1 mergehash0" in text and "headhash00"[:10] in text, f"報告の戻し方が merge commit を指さない: {text[:300]}")
         check(sent and all(req for _, req in sent), "修正報告が必須通知(require)で送られていない")
-        # Discord には編集長向けの1通だけ(全文・差分は記録ファイル。編集長 2026-10-04「本当にユーザーにとって分かりやすいと思ってんのか」)。
-        # 要約が無い報告でも1通で、記録の場所を示す
-        check(len(sent) == 1 and len(sent[0][0]) <= 900 and "記録: metrics/oncall-2026-09-12-compose-report.md" in sent[0][0]
-              and "diff" not in sent[0][0] and "ddd" not in sent[0][0], f"編集長への報告が1通・短文・記録の場所つきでない: {sent[:1]}")
+        # Discord には編集長向けの報告(差分・記録用の診断全文は記録ファイル)。項目は 起きたこと・なぜ・どう直したか・同じ型の箇所・紙面への影響。
+        # 長さは制限しない(編集長 2026-10-04「短くして情報が0になったらゴミだ」「コード差分はゴミ」)
+        check(len(sent) == 1 and "metrics/oncall-2026-09-12-compose-report.md" in sent[0][0]
+              and "diff" not in sent[0][0] and "ddd" not in sent[0][0], f"編集長への報告が記録の場所つきでない・差分や診断全文を含む: {sent[:1]}")
         sent.clear()
-        summ = {"what_happened": "まとめサイトの新着1件を、本文を読めないまま既読にして失っていた",
-                "what_changed": "読めなかったページは既読にせず、次の収集でやり直すようにした", "paper_impact": "失った1件は戻らない。10/6号から効く"}
+        summ = {"what_happened": "まとめサイトの新着1件を、本文を読めないまま既読にして失っていた。" * 3,
+                "why": "モデルの空の出力を『読んで何も無かった』と解釈して既読にしていた。" * 4,
+                "what_changed": "新着ページごとに読めた・事実なし・読めなかったを返させ、読めなかったページは既読にしない。" * 3,
+                "similar": "モデルの出力で状態を変える箇所を全部調べた。" * 4, "paper_impact": "失った1件は戻らない。10/6号から効く"}
         oncall.report_change("collect", "2026-10-05", {"status": "fixed", "editor_summary": summ, "diagnosis": "x" * 3000}, [{"review": {"verdict": "approve"}}],
                              "base", "headhash00", "", "repair/y", ["main"], "なし")
         m = sent[0][0]
         check(m.startswith("🛠 当番が直しました: 10/5号の収集") and all(v in m for v in summ.values()) and "承認(1往復)" in m and "xxx" not in m
-              and f"・{summ['what_happened']} → {summ['what_changed']}" in m, f"編集長への報告の中身: {m}")
-        # 型: 1行目に何が・いつ、本文は「困っていたこと → 変化」、内部の名前は形で検出できる
-        n = pipelib.editor_notice("🔧 校閲が直せない指摘で記事を落とさなくなる", "10/5号から",
-                                  [("直せない指摘で4本が落ちた", "直せる指摘だけを出す")], ask="", footer="記録: x / 監査: 承認")
-        check(n.splitlines()[0] == "🔧 校閲が直せない指摘で記事を落とさなくなる(10/5号から)" and "・直せない指摘で4本が落ちた → 直せる指摘だけを出す" in n,
-              f"報告の型: {n}")
+              and all(f"■ {l}" in m for l in pipelib.INCIDENT_LABELS), f"編集長への報告の中身(5項目・切り詰めない): {m[:400]}")
+        n = pipelib.editor_notice("🔧 題", [("なぜ起きたか", "長い説明" * 200)], footer="記録: x")
+        check("長い説明" * 200 in n and n.startswith("🔧 題\n\n■ なぜ起きたか"), "報告の本文を切り詰めた・見出しの形でない")
         check(pipelib.internal_names("candidate_ids が無い。verified_facts を new_facts に。R1 と r77 と collect.py") ==
               ["R1", "candidate_ids", "collect.py", "new_facts", "r77", "verified_facts"], f"内部の名前の検出: {pipelib.internal_names('candidate_ids R1 r77 collect.py verified_facts new_facts')}")
         # 取り込み前の全文報告(merge commit はまだ無い)は「追送」と明示し、診断・検証を含む
@@ -606,9 +609,10 @@ def test_oncall_apply_integrate():
     oncall.apply_integrate(fix, {"status": "fixed", "rerun_mode": "rebuild", "diagnosis": "d1", "root_cause": "", "recovery": ""})
     check(fix["status"] == "fixed" and fix["rerun_mode"] == "rebuild" and fix["diagnosis"] == "d1", f"no_fix_needed→fixed: {fix}")
     # 編集長向けの要約は最終の内容で置き換わる(訂正したのに初回の要約が届く、を防ぐ。監査指摘 r118)
-    fix["editor_summary"] = {"what_happened": "a", "what_changed": "直さずにもう一度実行する", "paper_impact": "c"}
+    fix["editor_summary"] = {"what_happened": "a", "why": "w", "what_changed": "直さずにもう一度実行する", "similar": "s", "paper_impact": "c"}
     oncall.apply_integrate(fix, {"status": "fixed", "rerun_mode": "unchanged", "diagnosis": "", "root_cause": "", "recovery": "",
-                                 "editor_summary": {"what_happened": "a2", "what_changed": "読めなかった新着を既読にしないよう直した", "paper_impact": "c2"}})
+                                 "editor_summary": {"what_happened": "a2", "why": "w2", "what_changed": "読めなかった新着を既読にしないよう直した",
+                                                    "similar": "s2", "paper_impact": "c2"}})
     check(fix["editor_summary"]["what_changed"] == "読めなかった新着を既読にしないよう直した", f"要約が最終の内容にならない: {fix['editor_summary']}")
     oncall.apply_integrate(fix, {"status": "no_fix_needed", "rerun_mode": "unchanged", "diagnosis": "", "root_cause": "", "recovery": "枠が戻った"})
     check(fix["status"] == "no_fix_needed" and fix["rerun_mode"] == "rebuild" and fix["recovery"] == "枠が戻った", f"fixed→no_fix_needed: {fix}")
@@ -720,6 +724,7 @@ def test_revise_apply_decline(tmp: Path):
         post.write_text(old, encoding="utf-8")
         compose.revise_prompt = lambda *a, **k: "p"
         class P:
+            returncode = 0
             def __init__(self, out_path): self.out_path = out_path
             def communicate(self, timeout=None): Path(self.out_path).write_text("これは JSON ではない", encoding="utf-8")
             def kill(self): pass
@@ -924,9 +929,11 @@ def test_classify_consensus(tmp: Path):
     def fake_ask(cmd, prompt):
         calls.append((cmd[0], prompt))
         return next(answers)
+    # 以下は対応付けと議論の規則を見る(答えの欄の検査は最後に別に見る)ので、host と type だけを必須にする
+    HT = ("host", "type")
     try:
         cs.ask = fake_ask
-        agreed, split = cs.consensus("p", ["yuzu_yng", "onkyodav", "idolmaster_en", "jimushiny_oa", "x1", "x2"])
+        agreed, split = cs.consensus("p", ["yuzu_yng", "onkyodav", "idolmaster_en", "jimushiny_oa", "x1", "x2"], need=HT)
         check(len(calls) == 4 and calls[2][0] == "claude" and calls[3][0] == "codex", f"2巡目が両モデルに掛かっていない: {[c[0] for c in calls]}")
         check("相手=ファン(目撃投稿)" in calls[2][1] and "あなた=不明" in calls[2][1], "2巡目の prompt に相手の答えと根拠が無い")
         check("x2" not in calls[2][1].split("2巡目")[1], "一致した対象まで議論させている")
@@ -939,7 +946,7 @@ def test_classify_consensus(tmp: Path):
         # 1巡目で全部一致なら2巡目は掛からない
         calls.clear()
         answers = iter([[{"host": "h", "type": "報道"}], [{"host": "h", "type": "報道"}]])
-        check(cs.consensus("p", ["h"])[0].get("h", ("",))[0] == "報道" and len(calls) == 2, "一致しているのに2巡目を掛けた")
+        check(cs.consensus("p", ["h"], need=HT)[0].get("h", ("",))[0] == "報道" and len(calls) == 2, "一致しているのに2巡目を掛けた")
         # 答えの対象の書き方が依頼と違っても対応付ける(`youtube.com/@Foo` を頼んで `@foo` や URL で返る。
         # 2026-09-18: 答えているのに無回答扱いになり、議論しても決まらなかった)
         calls.clear()
@@ -947,11 +954,11 @@ def test_classify_consensus(tmp: Path):
                       [{"host": "https://www.youtube.com/@togawanonoha/about", "type": "ファン", "why": "個人"}, {"host": "example.com", "type": "報道"},
                        {"host": "頼んでいない", "type": "報道"}]])
         cs.ask = lambda cmd, prompt, timeout=900: next(forms)
-        ag, sp = cs.consensus("p", ["youtube.com/@TogawaNonoha", "example.com"])
+        ag, sp = cs.consensus("p", ["youtube.com/@TogawaNonoha", "example.com"], need=HT)
         check(ag.get("youtube.com/@TogawaNonoha", ("",))[0] == "ファン" and ag.get("example.com", ("",))[0] == "報道" and not sp,
               f"書き方の違う答えを対応付けられない: {ag} {sp}")
         # 末尾が同じ依頼が2つあるときは、末尾だけの答えを当てない(取り違えない)
-        amb = cs._by_host([{"host": "@foo", "type": "ファン"}], ["youtube.com/@foo", "tiktok.com/@foo"])
+        amb = cs._by_host([{"host": "@foo", "type": "ファン"}], ["youtube.com/@foo", "tiktok.com/@foo"], HT)
         check(amb == {}, f"曖昧な答えをどちらかに当てた: {amb}")
         # 同じ host の2対象のうち1つだけが2巡目へ進み、両モデルが host だけで答えても決まる。2巡目の依頼文は
         # 割れた対象だけで作り直す(監査指摘)
@@ -963,15 +970,21 @@ def test_classify_consensus(tmp: Path):
             prompts.append(prompt)
             return next(rounds)
         cs.ask = ask2
-        ag, sp = cs.consensus(lambda ks: "対象: " + " ".join(ks), ["youtube.com/@bar", "youtube.com/@foo"])
+        ag, sp = cs.consensus(lambda ks: "対象: " + " ".join(ks), ["youtube.com/@bar", "youtube.com/@foo"], need=HT)
         check(ag.get("youtube.com/@foo", ("",))[0] == "ファン" and ag.get("youtube.com/@bar", ("",))[0] == "報道" and not sp,
               f"同じ host の2対象で、2巡目の host だけの答えを捨てた: {ag} {sp}")
         check(len(prompts) == 4 and "@bar" not in prompts[2].split("\n")[0] and "@foo" in prompts[2], f"2巡目の依頼文に割れていない対象が残っている: {prompts[2][:80]}")
         cs.ask = fake_ask
         # パス付きの対象を host だけで返した答え: その host の依頼が1つだけなら当てる。2つあれば当てない
-        one = cs._by_host([{"host": "youtube.com", "type": "ファン"}], ["youtube.com/@foo", "example.com"])
-        two = cs._by_host([{"host": "youtube.com", "type": "ファン"}], ["youtube.com/@foo", "youtube.com/@bar"])
+        one = cs._by_host([{"host": "youtube.com", "type": "ファン"}], ["youtube.com/@foo", "example.com"], HT)
+        two = cs._by_host([{"host": "youtube.com", "type": "ファン"}], ["youtube.com/@foo", "youtube.com/@bar"], HT)
         check(list(one) == ["youtube.com/@foo"] and two == {}, f"host だけの答えの対応付け: {one} {two}")
+        # 答えの欄: サイトは運営主体と根拠が必須。欠けた答え・同じ対象への2つの答えは無回答(議論へ)
+        site = {"host": "example.com", "operator": "出版社", "type": "報道", "why": "会社概要"}
+        check(list(cs._by_host([site], ["example.com"], cs.ANSWER_SITE)) == ["example.com"]
+              and cs._by_host([dict(site, operator="")], ["example.com"], cs.ANSWER_SITE) == {}
+              and cs._by_host([site, dict(site, type="ファン")], ["example.com"], cs.ANSWER_SITE) == {},
+              "運営主体の無い答え・矛盾する2つの答えを確定させた")
         check("一字一句そのまま" in cs.build_prompt([("youtube.com/@foo", "https://www.youtube.com/@foo", "x")]), "依頼文が対象の写し方を指示していない")
         cs.ask = fake_ask
         # x_accounts の節に足す(video_channels の「公式:」に差し込まない)
@@ -1437,13 +1450,18 @@ def test_assemble_judge():
     1本でも答えが無ければ全体が上がる(半端な台帳を作らない)。"""
     inp = _assemble_input(19)
     seen = []
+    # 模擬の答えも出力 schema の形にする(崩れた答えはまとめに使わない)
+    srow = lambda s, subject=None: {"slug": s, "story_id": s, "subject": subject or s, "published_facts": ["F1"]}
+    rres = lambda s, d: {"slug": s, "candidate_id": "c1", "date": d, "kind": "締切", "subject": "x", "note": ""}
+    padd = lambda k, subject="s", watch="w": {"dedup_key": k, "brand": "cg", "subject": subject, "watch": watch}
     def fake_session(text, date, name, schema, budget=None):
         seen.append((name, sorted(json.loads(schema)["required"])))
         if name == "assemble-digest":
             return {"digest": [{"label": "本日", "rows": []}]}
         slugs = [ln.split()[2] for ln in text.split("\n") if ln.startswith("- slug: ")]
-        return {"stories": [{"slug": s} for s in slugs] + [{"slug": "slug-0"}, {"slug": "どこにも無い"}],   # 余計な行(他の組の記事)
-                "reservations": [{"slug": slugs[0]}], "pending_add": [{"dedup_key": "よその話題"}], "pending_remove": ["p2", "p1"]}
+        extra = [srow("どこにも無い")] + ([srow("slug-0")] if "slug-0" not in slugs else [])   # 余計な行(他の組の記事)
+        return {"stories": [srow(s) for s in slugs] + extra,
+                "reservations": [rres(slugs[0], "2026-10-01")], "pending_add": [padd("よその話題")], "pending_remove": ["p2", "p1"]}
     saved = assemble.run_session
     try:
         assemble.run_session = fake_session
@@ -1463,24 +1481,27 @@ def test_assemble_judge():
         arts = [{"slug": "a", "dedup_key": "ka"}, {"slug": "b", "dedup_key": "kb"}, {"slug": "c", "dedup_key": "ka"}]
         inp2 = {"articles": arts, "pending": [{"dedup_key": "p1"}, {"dedup_key": "p2"}, {"dedup_key": "p3"}]}
         m = assemble.merge_judgments(inp2, [arts[:2], arts[2:]], {"digest": []}, [
-            {"stories": [{"slug": "b", "n": 1}, {"slug": "a", "n": 1}, {"slug": "a", "n": 2}],
-             "reservations": [{"slug": "b", "date": "2026-10-02"}, {"slug": "a", "date": "2026-10-09"}, {"slug": "a", "date": "2026-10-01"}],
-             "pending_add": [{"dedup_key": "kb", "subject": "x"}, {"dedup_key": "ka", "subject": "先"}, {"dedup_key": "よそ"}],
+            {"stories": [srow("b", "b1"), srow("a", "a1"), srow("a", "a2")],
+             "reservations": [rres("b", "2026-10-02"), rres("a", "2026-10-09"), rres("a", "2026-10-01")],
+             "pending_add": [padd("kb", "x"), padd("ka", "先"), padd("よそ")],
              "pending_remove": ["p3", "無い"]},
-            {"stories": [{"slug": "c", "n": 1}], "reservations": [],
-             "pending_add": [{"dedup_key": "ka", "subject": "後"}], "pending_remove": ["p1", "p3"]}])
-        check([(s["slug"], s["n"]) for s in m["stories"]] == [("a", 1), ("b", 1), ("c", 1)], f"stories の順・1件化: {m['stories']}")
+            {"stories": [srow("c", "c1")], "reservations": [],
+             "pending_add": [padd("ka", "後")], "pending_remove": ["p1", "p3"]}])
+        # 同じ組で同じ記事に2行(a1・a2)は契約違反で採らない(validate が見出しで補う)。他は記事の並び順
+        check([s["subject"] for s in m["stories"]] == ["b1", "c1"], f"stories の順・同じ記事への2行: {m['stories']}")
         check([(r["slug"], r["date"]) for r in m["reservations"]] == [("a", "2026-10-01"), ("a", "2026-10-09"), ("b", "2026-10-02")], f"reservations の順: {m['reservations']}")
-        check(m["pending_add"] == [{"dedup_key": "ka", "subject": "先"}, {"dedup_key": "kb", "subject": "x"}], f"pending_add の規則: {m['pending_add']}")
+        check(m["pending_add"] == [padd("ka", "先"), padd("kb", "x")], f"pending_add の規則: {m['pending_add']}")
         check(m["pending_remove"] == ["p1", "p3"], f"pending_remove は入力にあるものを入力の順で: {m['pending_remove']}")
         # 同じ記事・同じ key に**中身の違う**行が重なっても、返ってきた順で採用が変わらない(監査指摘)
-        rows = [{"stories": [{"slug": "a", "subject": "甲", "published_facts": ["F1"]}, {"slug": "a", "subject": "乙", "published_facts": ["F2"]}],
-                 "pending_add": [{"dedup_key": "ka", "watch": "甲"}, {"dedup_key": "ka", "watch": "乙"}]},
-                {"pending_add": [{"dedup_key": "ka", "watch": "丙"}]}]
+        rows = [{"stories": [{"slug": "a", "story_id": "ka", "subject": "甲", "published_facts": ["F1"]},
+                             {"slug": "a", "story_id": "ka", "subject": "乙", "published_facts": ["F2"]}],
+                 "pending_add": [padd("ka", watch="甲"), padd("ka", watch="乙")],
+                 "reservations": [], "pending_remove": []},
+                {"stories": [], "reservations": [], "pending_remove": [], "pending_add": [padd("ka", watch="丙")]}]
         flip = [{k: list(reversed(v)) for k, v in rows[0].items()}, rows[1]]
         m1 = assemble.merge_judgments(inp2, [arts[:2], arts[2:]], {"digest": []}, rows)
         m2 = assemble.merge_judgments(inp2, [arts[:2], arts[2:]], {"digest": []}, flip)
-        check(m1 == m2 and len(m1["stories"]) == 1 and len(m1["pending_add"]) == 1, f"重複行の採用が返却順で変わる: {m1} / {m2}")
+        check(m1 == m2 and len(m1["stories"]) == 0 and len(m1["pending_add"]) == 1, f"重複行の採用が返却順で変わる: {m1} / {m2}")
         def broken(text, date, name, schema, budget=None):
             if name == "assemble-ledger-2":
                 raise RuntimeError("組版セッション(assemble-ledger-2)が答えを返さなかった")
@@ -1659,7 +1680,7 @@ def test_x_anonymous_post_in_posts(tmp: Path):
     (tmp / "source_types.yml").write_text("x_accounts:\n  ファン:\n    - somebody\n", encoding="utf-8")
     authors = {"2105957772651385193": "ChuLo5738", "2105254556238291021": "mkzk_CRESCENT"}
     asked = []
-    def fake_consensus(prompt, keys):
+    def fake_consensus(prompt, keys, need=None):
         asked.append(sorted(keys))
         return ({"ChuLo5738": ("ファン", "個人")} if "ChuLo5738" in keys else {}), \
                [f"{k}: ファン「個人」 / 当事者「店」" for k in keys if k == "mkzk_CRESCENT"]
@@ -2162,18 +2183,21 @@ def test_grok_roles(tmp: Path):
     tmp.mkdir(parents=True, exist_ok=True)
     out = tmp / "g"
     out.mkdir()
-    (out / "sidem.md").write_text("- https://x.com/a/status/1 本文", encoding="utf-8")
+    (out / "sidem.md").write_text("### 1\n- url: https://x.com/a/status/1\n- 本文: 本文", encoding="utf-8")
     (out / "gakuen.md").write_text("なし", encoding="utf-8")
-    (out / "shiny.md").write_text("- https://x.com/b/status/2 本文", encoding="utf-8")
+    (out / "shiny.md").write_text("### 1\n- url: https://x.com/b/status/2\n- 本文: 本文", encoding="utf-8")
     qs = [{"key": k, "brand": k, "topic": "t"} for k in ("sidem", "gakuen", "shiny", "dsva")]
     started, notes = [], []
     class P:
         pid = 0
+        returncode = 0
         def wait(self, timeout=None): return 0
     def fake_popen(args, cwd=None, **kw):
         started.append(Path(cwd).name)
         if "sidem" in Path(cwd).name:
             (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "sidem", "facts": ["f"]}]), encoding="utf-8")
+            (Path(cwd) / "posts.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted",
+                                                              "item": "https://x.com/a/status/1"}]), encoding="utf-8")
             (Path(cwd) / "deep.json").write_text(json.dumps([{"question": "元の告知", "why": "引用だけ"}]), encoding="utf-8")
         return P()
     saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file)
@@ -2184,7 +2208,9 @@ def test_grok_roles(tmp: Path):
         items, deep = collect.verify_grok_faces(qs, out)
     finally:
         collect.subprocess.Popen, collect.notify, collect.prompt_file = saved
-    check(len(started) == 2 and all("gakuen" not in s and "dsva" not in s for s in started), f"確かめる段を起動した面: {started}")
+    # 候補の読めない shiny だけ、もう1回確かめる
+    check(sorted(re.sub(r"^explore-|-[^-]+$", "", s) for s in started) == ["verify-shiny", "verify-shiny-again", "verify-sidem"],
+          f"確かめる段を起動した面: {started}")
     check([x["url"] for x in items] == ["https://x.com/a/status/1"] and deep == {"sidem": [{"question": "元の告知", "why": "引用だけ"}]},
           f"候補と問い: {items} {deep}")
     check(any(not ok and "shiny" in m and "items" not in m for m, ok in notes), f"結果の読めない面を異常にしない: {notes}")
@@ -2203,6 +2229,527 @@ def test_grok_roles(tmp: Path):
     finally:
         if saved_home is not None:
             os.environ["HOME"] = saved_home
+
+
+def test_empty_answer_is_not_done(tmp: Path):
+    """空・部分的なモデルの答えを『処理した・何も無い』と解釈しない(2026-10-06 の洗い出し)。
+    入力1件ごとの答えをコードが入力と突き合わせ、答えの無いものだけやり直し、それでも無ければ名指しで異常にする。"""
+    import collect, compose, planlib, assemble
+    tmp.mkdir(parents=True, exist_ok=True)
+    # 1. Grok の投稿: Luna が投稿ごとの結果を1件しか返さない → 残った1件だけで1回やり直し、それでも無ければ URL を名指し
+    out = tmp / "g"
+    out.mkdir()
+    (out / "cg.md").write_text("### 1\n- url: https://x.com/a/status/1\n- 本文: 告知\n\n### 2\n- url: https://x.com/b/status/2\n- 本文: 続報\n",
+                               encoding="utf-8")
+    inputs, notes, raws = {}, [], []
+    class P:
+        pid = 0
+        returncode = 0
+        def wait(self, timeout=None): return 0
+    def fake_popen(args, cwd=None, **kw):
+        inputs[re.sub(r"^explore-|-[^-]+$", "", Path(cwd).name)] = (Path(cwd) / "x-posts.md").read_text(encoding="utf-8")
+        (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "cg", "facts": ["f"]}]), encoding="utf-8")
+        (Path(cwd) / "posts.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted", "item": "https://x.com/a/status/1"},
+                                                          {"url": "https://x.com/b/status/2", "status": "unreadable", "item": ""}]), encoding="utf-8")
+        (Path(cwd) / "deep.json").write_text("[]", encoding="utf-8")
+        return P()
+    saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw)
+    try:
+        collect.subprocess.Popen = fake_popen
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        collect.prompt_file = lambda date, name, prompt, base=None: "p"
+        collect.save_raw = lambda date, name, *a, **kw: raws.append((name, sorted((kw.get("files") or {}))))
+        items, _ = collect.verify_grok_faces([{"key": "cg", "brand": "cg", "topic": "t"}], out)
+    finally:
+        collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw = saved
+    check(sorted(inputs) == ["verify-cg", "verify-cg-again"] and "status/2" in inputs["verify-cg-again"]
+          and "status/1" not in inputs["verify-cg-again"], f"結果の無い投稿だけでやり直さない: {inputs}")
+    check(any(not ok and "https://x.com/b/status/2" in m and "1件" in m for m, ok in notes), f"2回とも残った投稿を名指ししない: {notes}")
+    check([n for n, _ in raws] == ["grok-verify-cg", "grok-verify-cg-again"] and "posts.json" in raws[0][1],
+          f"作業ディレクトリを消す前に生の出力を残さない: {raws}")
+    one = "- url: https://x.com/a/status/1\n"
+    check(collect.unaccounted_posts(one, None, []) == ["- url: https://x.com/a/status/1"],
+          "投稿ごとの結果が読めないのに、全部処理したことにした")
+    check(collect.unaccounted_posts(one, [{"url": "https://x.com/a/status/1", "status": "extracted", "item": "https://x.com/a/status/1"}], []) != [],
+          "「候補にした」と言って候補を書いていない投稿を済みにした")
+    check(collect.unaccounted_posts(one, [{"url": "https://x.com/a/status/1", "status": "none", "item": ""}], []) == [], "事実なしの投稿を残した")
+    check(collect.unaccounted_posts("告知 https://x.com/a/status/1 です", [], []) == ["告知 https://x.com/a/status/1 です"],
+          "投稿に分けられない書き出しを0件にした")
+    # 書式の崩れた投稿と正しい投稿が混ざっても、崩れた投稿を捨てない(監査指摘 r2)
+    mixed = "### 1\nurl: https://x.com/a/status/1\n本文: A\n\n### 2\n- url: https://x.com/b/status/2\n- 本文: B\n"
+    check([collect.post_url(b) for b in collect.unaccounted_posts(mixed, [{"url": "https://x.com/b/status/2", "status": "none", "item": ""}], [])]
+          == ["https://x.com/a/status/1"], f"書式の崩れた投稿が消えた: {collect.post_blocks(mixed)}")
+    mid = ("### 1\n- url: https://x.com/a/status/1\n- 本文: A\n\n### 2\n- 本文: B(url の行が抜けた)\n\n"
+           "### 3\n- url: https://x.com/c/status/3\n- 本文: C https://x.com/q/status/9 を引用\n")
+    none_ac = [{"url": "https://x.com/a/status/1", "status": "none", "item": ""}, {"url": "https://x.com/c/status/3", "status": "none", "item": ""}]
+    left_mid = collect.unaccounted_posts(mid, none_ac, [])
+    check(len(left_mid) == 1 and "本文: B" in left_mid[0] and "本文: A" not in left_mid[0],
+          f"途中の url の抜けた投稿が前の投稿に吸われて消えた(引用投稿の URL は区切りの漏れにしない): {left_mid}")
+    tail = "### 1\n- url: https://x.com/a/status/1\n- 本文: A\n\n### 2\n- 本文: B(末尾で url の行が抜けた)\n"
+    check(len(collect.unaccounted_posts(tail, [{"url": "https://x.com/a/status/1", "status": "none", "item": ""}], [])) == 1,
+          "末尾の url の抜けた投稿が消えた")
+    check(len(collect.unaccounted_posts(tail, [{"url": "https://x.com/a/status/1", "status": "none", "item": ""}, {"url": "", "status": "none", "item": ""}], [])) == 1,
+          "空の url の結果で url の無い投稿を済みにした")
+    mixed2 = "https://x.com/a/status/1 の告知\n\n- url: https://x.com/b/status/2\n- 本文: B\n"
+    check(len(collect.unaccounted_posts(mixed2, [{"url": "https://x.com/b/status/2", "status": "none", "item": ""}], [])) == 1,
+          "区切りより前の投稿が消えた")
+    # 後段で捨てられる url の候補を指す extracted は済みにしない
+    check(collect.unaccounted_posts(one, [{"url": "https://x.com/a/status/1", "status": "extracted", "item": "not-a-url"}], ["not-a-url"]) != [],
+          "形の不正な url の候補を指す投稿を済みにした")
+    # 2. 校閲: 判定の形をしていない答え({}・verdict なし)を「指摘なし」にしない
+    check(compose._parse_review("{}", "", "t").get("verdict") not in ("approve", "block"), "空の校閲の答えを判定にした")
+    check(compose._parse_review('{"verdict":"approve","blockers":[],"comments":[]}', "", "t")["verdict"] == "approve", "形の正しい判定を読めない")
+    check(compose._parse_review('{"verdict":"block","blockers":[],"comments":[]}', "", "t")["verdict"] == "error",
+          "理由の無い block を判定にした(まとめると承認に化ける)")
+    for bad in ('{"verdict":"block","blockers":[null],"comments":[]}', '{"verdict":"approve","blockers":[],"comments":["x"]}',
+                '{"verdict":"block","blockers":[{"file":"a","issue":"i"}],"comments":[]}'):
+        check(compose._parse_review(bad, "", "t")["verdict"] == "error", f"崩れた指摘の要素を判定にした: {bad}")
+    # 生の出力は上書きしない(やり直しが成功しても1回目が残る)
+    saved_root = pipelib.ROOT
+    try:
+        pipelib.ROOT = tmp / "repo"
+        a, b = pipelib.save_raw("d", "watch-x", "1回目"), pipelib.save_raw("d", "watch-x", "2回目")
+    finally:
+        pipelib.ROOT = saved_root
+    check(a != b and "1回目" in a.read_text(encoding="utf-8") and "2回目" in b.read_text(encoding="utf-8"), f"生の出力を上書きした: {a} {b}")
+    # 時間切れの回も、それまでの出力を残す(判定には使わない)
+    saved_rs = (compose.subprocess.run, compose.save_raw, compose.prompt_file)
+    kept = []
+    def timeout_run(cmd, **kw):
+        raise subprocess.TimeoutExpired(cmd, 1, output=b'{"partial', stderr=b"working")
+    try:
+        compose.subprocess.run, compose.prompt_file = timeout_run, (lambda d, n, p, base=None: "p")
+        compose.save_raw = lambda date, name, out="", err="", code=None, files=None: kept.append((name, out, err))
+        try:
+            compose.claude_run("x", timeout=5)
+        except subprocess.TimeoutExpired:
+            pass
+        compose.codex_run("x", timeout=5)
+    finally:
+        compose.subprocess.run, compose.save_raw, compose.prompt_file = saved_rs
+    check(len(kept) == 2 and all('{"partial' in o and "working" in e for _, o, e in kept), f"時間切れの回の出力を残さない: {kept}")
+    # 3. 面別選定: 判定の無い主題を「不採用」にしない(取りこぼしとして拾い直しに回る)
+    rows = [{"dedup_key": "a", "ids": ["1"]}, {"dedup_key": "b", "ids": ["2"]}]
+    p = planlib.decisions_to_plan("cg", rows, {"a": {"action": "drop", "reason": "既報"}}, set())
+    check([d["dedup_key"] for d in p["dropped"]] == ["a"] and not p["articles"], f"判定の無い主題を不採用にした: {p}")
+    p = planlib.decisions_to_plan("cg", rows, {"a": {"action": "defer"}, "b": {"action": "drop", "reason": "既報"}}, set())
+    check([d["dedup_key"] for d in p["dropped"]] == ["b"], f"知らない判定の主題を不採用にした: {p}")
+    p = planlib.decisions_to_plan("cg", rows, {"a": {"action": "drop"}, "b": {"action": "drop", "reason": " "}}, set())
+    check(p["dropped"] == [], f"理由の無い不採用で主題を消した: {p}")
+    # 探索の答えの崩れた要素([null] など)で収集を止めない。読めない出力として記録する
+    of, ef = tempfile.NamedTemporaryFile("w", delete=False), tempfile.NamedTemporaryFile("w", delete=False)
+    of.write('[null, {"url": "https://example.com/a", "facts": ["f"]}]')
+    class EP:
+        pid, returncode, args = 0, 0, []
+        def wait(self, timeout=None): return 0
+    saved_sr = collect.save_raw
+    try:
+        collect.save_raw = lambda *a, **kw: None
+        got_e, err_e = collect.collect_explore("k", EP(), of, ef, 10 ** 12)
+    finally:
+        collect.save_raw = saved_sr
+    check([g["url"] for g in got_e] == ["https://example.com/a"] and "[出力が読めない]" in err_e, f"探索の崩れた要素: {got_e} {err_e!r}")
+    # 正規化で捨てられる形の候補を、処理済みの根拠にしない(Grok の投稿・定点観測のページ)
+    check(collect.normalize([{"url": "https://example.com/a", "title": "t", "facts": ["f"], "event_date": 20261006}])[0]["url"]
+          == "https://example.com/a", "日付が数値の候補を捨てた")
+    check(collect.unaccounted_posts(one, [{"url": "https://x.com/a/status/1", "status": "extracted", "item": "https://x.com/a/status/1"}],
+                                    [{"url": "https://x.com/a/status/1", "facts": ["f"]}]) == [], "書かれた候補を指す投稿を残した")
+    check(collect.watch_page_results([{"page": 1, "status": "extracted", "items": [{"url": "not-a-url"}]}], 1) == {},
+          "正規化で捨てられる候補だけのページを既読にした")
+    check(collect.watch_page_results([{"page": 1, "status": "extracted", "items": [{"url": "https://example.com/n"}]}], 1) == {},
+          "事実の無い候補だけのページを既読にした")
+    check(collect.unaccounted_posts(one, [{"url": "https://x.com/a/status/1", "status": "extracted", "item": "https://x.com/a/status/1"}],
+                                    [{"url": "https://x.com/a/status/1"}]) != [], "事実の無い候補を指す投稿を済みにした")
+    # 崩れた候補(url が配列・facts が数値)で付け直しが止まらない
+    check(collect.repoint_to_post([s for s in (collect.shape_item(x) for x in [{"url": ["a"]}, {"url": "https://youtube.com/watch?v=x", "facts": 7}]) if s], one)
+          [0]["facts"] == [], "崩れた候補で付け直しが止まる")
+    # 候補ID修復: [null] は「直すものなし」ではなく読めない答え(2回聞いて異常)
+    calls = []
+    saved = (compose.claude_run, list(pipelib.ANOMALIES))
+    try:
+        compose.claude_run = lambda prompt, timeout=600, model=None: calls.append(1) or "[null]"
+        pipelib.ANOMALIES.clear()
+        compose.repair_invalid_ids("2026-10-06", {"articles": [{"slug": "s", "candidate_ids": ["bad"]}]}, {"good": {"id": "good"}})
+        anomalies = list(pipelib.ANOMALIES)
+    finally:
+        compose.claude_run = saved[0]
+        pipelib.ANOMALIES[:] = saved[1]
+    check(len(calls) == 2 and anomalies and "s" in anomalies[0], f"崩れた修復の答えを「直すものなし」にした: {calls} {anomalies}")
+    # 空の修復先・実在しない修復先も読めない答え。正しい答えは反映する
+    for ans, want_calls in (('[{"slug": "s", "old": "bad", "new": ""}]', 2), ('[{"slug": "s", "old": "bad", "new": "good"}]', 1)):
+        calls.clear()
+        plan_r = {"articles": [{"slug": "s", "candidate_ids": ["bad"]}]}
+        saved = (compose.claude_run, list(pipelib.ANOMALIES))
+        try:
+            compose.claude_run = lambda prompt, timeout=600, model=None, a=ans: calls.append(1) or a
+            fixed = compose.repair_invalid_ids("2026-10-06", plan_r, {"good": {"id": "good"}})
+        finally:
+            compose.claude_run = saved[0]
+            pipelib.ANOMALIES[:] = saved[1]
+        check(len(calls) == want_calls and (want_calls == 2 or plan_r["articles"][0]["candidate_ids"] == ["good"]),
+              f"候補ID修復の答えの検査: {ans} {calls} {plan_r}")
+    # 時間切れの回収は子が出力のパイプを持っていても待ち続けない
+    import time as _t
+    pr = subprocess.Popen(["bash", "-c", "sleep 30 & echo partial; wait"], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                          text=True, start_new_session=True)
+    t0 = _t.time()
+    try:
+        pr.communicate(timeout=0.5)
+    except subprocess.TimeoutExpired:
+        so, se = pipelib.reap(pr, grace=3)
+    check(_t.time() - t0 < 10 and "partial" in so and "時間切れ" in se, f"時間切れの回収が子を待ち続けた: {_t.time() - t0:.1f}s {so!r}")
+    # 4. 組版の台帳: stories の無い記事だけで1回やり直し、それでも無ければ記事を名指しで異常にする
+    arts = [{"slug": f"s{i}", "dedup_key": f"k{i}", "title": f"t{i}"} for i in range(3)]
+    asked = []
+    def fake_session(text, date, name, schema, budget=None):
+        asked.append(name)
+        if name == "assemble-digest":
+            return {"digest": []}
+        if name == "assemble-ledger-again":
+            return {"stories": [{"slug": "s1", "story_id": "k1", "subject": "x", "published_facts": ["t1"]}],
+                    "reservations": [], "pending_add": [], "pending_remove": []}
+        return {"stories": [{"slug": "s0", "story_id": "k0", "subject": "x", "published_facts": ["t0"]}],
+                "reservations": [], "pending_add": [], "pending_remove": []}
+    saved = (assemble.run_session, assemble.prompt_ledger, assemble.prompt_digest, list(pipelib.ANOMALIES))
+    try:
+        assemble.run_session = fake_session
+        assemble.prompt_ledger = lambda date, inp, ch: ",".join(a["slug"] for a in ch)
+        assemble.prompt_digest = lambda date, inp: ""
+        pipelib.ANOMALIES.clear()
+        merged = assemble.judge("2026-10-06", {"articles": arts, "pending": []})
+        anomalies = list(pipelib.ANOMALIES)
+    finally:
+        assemble.run_session, assemble.prompt_ledger, assemble.prompt_digest = saved[:3]
+        pipelib.ANOMALIES[:] = saved[3]
+    check("assemble-ledger-again" in asked and [s["slug"] for s in merged["stories"]] == ["s0", "s1"],
+          f"台帳の答えの無い記事をやり直さない: {asked} {merged['stories']}")
+    check(len(anomalies) == 1 and "s2" in anomalies[0] and "s1" not in anomalies[0], f"やり直しても無い記事を名指ししない: {anomalies}")
+    check(assemble.uncovered_articles([arts[:1]], [{"stories": [{"slug": "s0"}]}]) == arts[:1], "slug だけの stories を判断済みにした")
+    ok_row = {"slug": "s0", "story_id": "k0", "subject": "x", "published_facts": ["F1"]}
+    check(assemble.uncovered_articles([arts[:1]], [{"stories": [ok_row]}]) == arts[:1], "予約・追跡の項目が欠けた答えを判断済みにした")
+    check(assemble.uncovered_articles([arts[:1]], [{"stories": [ok_row], "reservations": [], "pending_add": [], "pending_remove": []}]) == [],
+          "明示の [] を欠けと取り違えた")
+    bad_row = {"slug": "s0", "story_id": "k0", "subject": "x", "published_facts": 1}
+    good_row = {"slug": "s0", "story_id": "k0", "subject": "x", "published_facts": ["F1"]}
+    empty = {"reservations": [], "pending_add": [], "pending_remove": []}
+    m = assemble.merge_judgments({"articles": arts[:1], "pending": []}, [arts[:1], arts[:1]], {"digest": []},
+                                 [dict(empty, stories=[bad_row]), dict(empty, stories=[good_row])])
+    check(m["stories"] == [good_row], f"やり直しの正しい行より崩れた行を採った: {m['stories']}")
+    # 形の崩れた台帳の答え(reservations が数値・pending_remove が辞書)は、まとめに使わない
+    m = assemble.merge_judgments({"articles": arts[:1], "pending": [{"dedup_key": "gaku-event-2026"}]}, [arts[:1], arts[:1]], {"digest": []},
+                                 [{"stories": [good_row], "reservations": 1, "pending_add": [], "pending_remove": {"gaku-event-2026": "x"}},
+                                  dict(empty, stories=[good_row])])
+    check(m["pending_remove"] == [] and m["stories"] == [good_row], f"崩れた台帳の答えをまとめに使った: {m}")
+    check(collect.unaccounted_posts("### 1\n- url:\n- 投稿者: a\n- 本文: 告知\n", [{"url": "-", "status": "none"}], []) != [],
+          "空の url の行の次の行を url と読んで済みにした")
+    nohdr = "- url: https://x.com/a/status/1\n- 本文: A\n\n- url:\n- 投稿者: b\n- 本文: Bの告知\n"
+    left_nh = collect.unaccounted_posts(nohdr, [{"url": "https://x.com/a/status/1", "status": "none", "item": ""}], [])
+    check(len(left_nh) == 1 and "Bの告知" in left_nh[0], f"空の url の行の投稿が前の投稿に吸われた: {left_nh}")
+    # 付け直しも同じ区切り: url の無い投稿のリンクを前の投稿へ帰属させない
+    vid = "- url: https://x.com/a/status/1\n- 本文: A\n\n- url:\n- 本文: B\n- リンク:\n  - https://www.youtube.com/watch?v=b\n"
+    saved_cs = collect.classify_source
+    try:
+        collect.classify_source = lambda u: "未確認" if "youtube" in u else saved_cs(u)
+        rp = collect.repoint_to_post([{"url": "https://www.youtube.com/watch?v=b", "facts": []}], vid)
+    finally:
+        collect.classify_source = saved_cs
+    check(rp[0]["url"] == "https://www.youtube.com/watch?v=b", f"url の無い投稿のリンクを前の投稿へ付け直した: {rp}")
+    # 拾い直しの答えが null・崩れた要素でも号を止めない(取りこぼしのまま残す)
+    # (テスト用のディレクトリで動かす。本体の metrics に書かない)
+    saved_rp = (compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.missing_plan_prompt, compose.ROOT)
+    def replan_with(ans: str, keys: list[str]) -> tuple[list, dict]:
+        try:
+            compose.ROOT = tmp / "rp"
+            (compose.ROOT / "metrics").mkdir(parents=True, exist_ok=True)
+            def fake_run(cmd, **kw):
+                (compose.ROOT / "metrics" / "plan-2099-01-01-missing.json").write_text(ans, encoding="utf-8")
+                return subprocess.CompletedProcess(cmd, 0, "", "")
+            compose.subprocess.run, compose.prompt_file = fake_run, (lambda d, n, p, base=None: "p")
+            compose.save_raw, compose.missing_plan_prompt = (lambda *a, **kw: None), (lambda *a, **kw: "")
+            pl = {"articles": [{"slug": "cg-old", "brand": "cg", "candidate_ids": ["c0"]}]}
+            cands_t = {f"c-{k}": {"id": f"c-{k}"} for k in keys} | {"c0": {"id": "c0"}}
+            return compose.replan_missing("2099-01-01", pl, {"cg": [{"dedup_key": k, "ids": [f"c-{k}"]} for k in keys]}, cands_t, keys), pl
+        finally:
+            compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.missing_plan_prompt, compose.ROOT = saved_rp
+    art = lambda k, **kw: dict({"slug": "cg_new", "brand": "cg", "dedup_key": k, "candidate_ids": ["c"], "rank": "small", "angle": "", "lead_score": 0}, **kw)
+    for ans in ("null", '{"articles": [null], "dropped": [{"dedup_key": ["x"]}]}', '{"dropped": [{"dedup_key": "k"}]}',
+                '{"dropped": [{"dedup_key": "k", "brand": "cg", "reason": " "}]}', json.dumps({"articles": [art("k", rank=["small"])]})):
+        res, pl = replan_with(ans, ["k"])
+        check(isinstance(res, list) and len(pl["articles"]) == 1 and not pl.get("dropped"),
+              f"拾い直しの崩れた答えで止まった・崩れた要素を反映した(主題は取りこぼしのまま残すべき): {ans} {pl}")
+    # 同じ主題に崩れた記事化と正しい不採用 → 矛盾した答えとして反映しない
+    for ans in (json.dumps({"articles": [art("k", rank=["small"])], "dropped": [{"dedup_key": "k", "brand": "cg", "reason": "既報"}]}),):
+        res, pl = replan_with(ans, ["k"])
+        check(len(pl["articles"]) == 1 and not pl.get("dropped"),
+              f"拾い直しの崩れた答えで止まった・崩れた要素を反映した(主題は取りこぼしのまま残すべき): {ans} {pl}")
+    # 見本どおりの要素は反映し、slug と candidate_ids はコードが付ける(モデルの写した id・崩れた slug は使わない)。
+    # 崩れた要素・答えが2つある主題だけ反映しない
+    res, pl = replan_with(json.dumps({"articles": [art("k", candidate_ids=["c-k3"]), art("k2", rank=["small"]), art("k4"), art("k4")],
+                                      "merge_into": [{"slug": "cg-old", "dedup_key": "k5"}],
+                                      "dropped": [{"dedup_key": "k3", "brand": "cg", "reason": "既報", "note": ""},
+                                                  {"dedup_key": "k5", "brand": "cg", "reason": "既報"}]}), ["k", "k2", "k3", "k4", "k5"])
+    new = [a for a in pl["articles"] if a["slug"] != "cg-old"]
+    check([(a["dedup_key"], a["candidate_ids"]) for a in new] == [("k", ["c-k"])] and re.fullmatch(r"[a-z0-9-]+", new[0]["slug"])
+          and [d["dedup_key"] for d in pl.get("dropped") or []] == ["k3"] and pl["articles"][0]["candidate_ids"] == ["c0"],
+          f"拾い直しの反映(id はコードが展開・答えが2つの主題は反映しない): {pl}")
+    # 台帳の答えは出力 schema で検める(要素の欄の型・日付の形が崩れていれば使わない)
+    bad_res = dict(empty, stories=[good_row], reservations=[{"slug": "s0", "candidate_id": "c1", "date": 20261010,
+                                                             "kind": "締切", "subject": "x", "note": ""}])
+    check(not assemble.ledger_out_ok(bad_res) and assemble.ledger_out_ok(dict(empty, stories=[good_row])),
+          "要素の崩れた台帳の答えを通した・正しい答えを落とした")
+    # 書き直しの答えの欄の形が崩れていても(addressed_issue_ids が数値)、号を止めずに元の稿のまま
+    saved = (renderlib.check_output, compose.parse_front_matter)
+    try:
+        renderlib.check_output = lambda *a, **kw: []
+        compose.parse_front_matter = lambda p: {"sources": []}
+        pth = tmp / "x.md"
+        pth.write_text("---\nslug: s\n---\n本文\n", encoding="utf-8")
+        res = compose.revise_apply("2026-10-06", {"slug": "s"}, pth, {"status": "ok", "addressed_issue_ids": 1, "blocks": [], "sources": []},
+                                   {}, [], [{"issue_id": "I1", "rule_id": "R1", "repair": "rewrite_claim", "quote": "本文"}])
+    finally:
+        renderlib.check_output, compose.parse_front_matter = saved
+    check(res[0] == "kept", f"欄の形が崩れた書き直しの答えで止まった・適用した: {res}")
+    # 5. 探索の写し: 出典の本文に無ければ URL の取り違え(形の照合。言い換え・空白・全角半角は許す)
+    page = "シャイニーカラーズ Master ShowPiece の公演グッズの事後通販が10月10日から始まります。"
+    check(pipelib.quote_on_page("Master ShowPiece の公演グッズの事後通販が、10月10日から始まります", page) is True, "写しの揺れを許さない")
+    check(pipelib.quote_on_page("ノクチル の新曲「いかないで」が配信開始されました", page) is False, "取り違えた URL の写しを通した")
+    check(pipelib.quote_on_page("短い", page) is None, "短すぎる写しで判定した")
+    # 共通の前置きで断片が一致しても、写し全体が無ければ「ある」にしない(confirmed にしない)
+    pg2 = "アイドルマスターシャイニーカラーズのイベント開催情報について、Master ShowPieceの開催をお知らせします。"
+    check(pipelib.quote_on_page("アイドルマスターシャイニーカラーズのイベント開催情報について、ノクチルの単独公演をお知らせします。", pg2) is not True,
+          "共通の前置きだけの一致を「写しがある」とした")
+    # 同じ URL に正しい候補と取り違えた候補が来ても、正しい候補は failed にならない(照合の前に混ぜない・日別ファイルで混ぜない)
+    u = "https://idolmaster-official.jp/news/01_19898.html"
+    got = collect.normalize([{"url": u, "title": "グッズ", "facts": ["事後通販"], "quote": "公演グッズの事後通販が10月10日から始まります", "_via": "explore"},
+                             {"url": u, "title": "新曲", "facts": ["配信"], "quote": "ノクチル の新曲「いかないで」が配信開始されました", "_via": "explore"}])
+    check(len(got) == 2 and [c.get("quotes") for c in got] == [["公演グッズの事後通販が10月10日から始まります"],
+                                                               ["ノクチル の新曲「いかないで」が配信開始されました"]],
+          f"写しのある同じ URL の候補を照合の前に混ぜた: {got}")
+    saved = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.ROOT)
+    class R:
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
+        def read(self, n=None): return ("<p>" + page + "</p>" + "あ" * 500).encode("utf-8")
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=15: R()
+        collect.fetch_rendered = lambda url: None
+        collect.ROOT = tmp / "repo"
+        (tmp / "repo" / "candidates").mkdir(parents=True, exist_ok=True)
+        collect.verify(got)
+        collect.merge_into_day_file(list(reversed(got)), "2026-10-06")
+        day = json.loads((tmp / "repo" / "candidates" / "2026-10-06.json").read_text(encoding="utf-8"))
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.ROOT = saved
+    check([c["verify"] for c in got] != ["failed", "failed"] and got[1]["verify"] == "failed" and "取り違え" in got[1]["verify_note"],
+          f"写しの照合: {[(c['verify'], c.get('verify_note')) for c in got]}")
+    check(len(day) == 1 and day[0]["title"] == "グッズ" and day[0]["verify"] != "failed", f"取り違えた候補が正しい候補を潰した: {day}")
+
+
+def test_accept_only_normal_and_schema(tmp: Path):
+    """モデルの答えは、正常に終わったセッションのものを、渡した schema で検めてから使う(2026-10-06 の洗い出し 15巡目)。"""
+    import collect, compose, assemble, oncall
+    tmp.mkdir(parents=True, exist_ok=True)
+    # 重複キー・schema
+    try:
+        pipelib.loads_strict('{"a": 1, "a": 2}')
+        check(False, "重複キーの JSON を読んだ")
+    except ValueError:
+        pass
+    # 途中切れの外側配列から内側の配列を拾わない
+    check(pipelib.extract_json_array_strict('[{"url":"https://example.com/a","facts":[],"title":') is None, "途中切れの内側の [] を0件と読んだ")
+    check(pipelib.extract_json_array_strict('前置き [{"a": 1}] 後置き') == [{"a": 1}], "前後に地の文のある配列を読めない")
+    # 投稿ごとの結果の重複・矛盾は済みにしない / 見出しの番号が崩れた投稿・題だけの見出し
+    one = "### 1\n- url: https://x.com/a/status/1\n- 本文: A\n"
+    check(collect.unaccounted_posts(one, [{"url": "https://x.com/a/status/1", "status": "none", "item": ""},
+                                          {"url": "https://x.com/a/status/1", "status": "unreadable"}], []) != [], "矛盾した結果で済みにした")
+    odd = "# 765 面のまとめ\n\n" + one + "\n### 投稿2\n- 投稿者: b\n- 本文: B\n"
+    left = collect.unaccounted_posts(odd, [{"url": "https://x.com/a/status/1", "status": "none", "item": ""}], [])
+    check(len(left) == 1 and "本文: B" in left[0], f"番号で始まらない見出しの投稿が消えた・題の見出しを投稿にした: {left}")
+    # 候補の要素が崩れていれば処理済みの根拠にしない(facts の要素が1つ崩れた)
+    check(not collect.candidate_usable({"url": "https://example.com/a", "facts": ["残る", {"text": "失う"}]}), "崩れた facts の候補で処理済みにした")
+    check(collect.candidate_usable({"url": "https://example.com/a", "facts": ["f"], "event_date": None}), "null の日付を崩れとみなした")
+    # 写しの無い探索の候補は confirmed にしない
+    page = "<p>" + "シャイニーカラーズの公演グッズの事後通販が10月10日から始まります。" + "あ" * 500 + "</p>"
+    class R:
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
+        def read(self, n=None): return page.encode("utf-8")
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    saved = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=15: R()
+        collect.fetch_rendered = lambda url: None
+        collect.classify_source = lambda u: "公式"
+        cs = collect.normalize([{"url": "https://idolmaster-official.jp/news/a", "title": "t", "facts": ["f"], "_via": "explore"},
+                                {"url": "https://idolmaster-official.jp/news/b", "title": "t", "facts": ["f"], "_via": "explore",
+                                 "quote": "公演グッズの事後通販が10月10日から始まります"}])
+        collect.verify(cs)
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved
+    check([c["verify"] for c in cs] == ["unconfirmed", "confirmed"], f"写しの無い候補を confirmed にした: {[(c['verify'], c.get('verify_note')) for c in cs]}")
+    # 一面選定: schema どおりでない答えはフォールバックへ
+    saved = (compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.ROOT)
+    try:
+        compose.ROOT = tmp / "lead"
+        (compose.ROOT / "metrics").mkdir(parents=True, exist_ok=True)
+        compose.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 0, '{"lead_slug": []}', "")
+        compose.prompt_file, compose.save_raw = (lambda d, n, p, base=None: "p"), (lambda *a, **kw: None)
+        pl = {"articles": [{"slug": "a", "rank": "small", "lead_score": 5}, {"slug": "b", "rank": "small", "lead_score": 9}]}
+        compose.pick_lead("2026-10-06", pl)
+    finally:
+        compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.ROOT = saved
+    check([a["slug"] for a in pl["articles"] if a["rank"] == "lead"] == ["b"], f"崩れた一面の答えで止まった・フォールバックしない: {pl}")
+    # 当番・監査: schema どおりでない答えは使わない
+    sf = tmp / "s.json"
+    sf.write_text(json.dumps({"type": "object", "required": ["status", "editor_summary"]}), encoding="utf-8")
+    saved = (oncall.subprocess.run, oncall.prompt_file, oncall.save_raw)
+    try:
+        oncall.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 0, '{"status": "no_fix_needed"}', "")
+        oncall.prompt_file, oncall.save_raw = (lambda d, n, p, base=None: "p"), (lambda *a, **kw: None)
+        try:
+            oncall.run_claude("x", sf, tmp)
+            check(False, "schema の欠けた当番の答えを使った")
+        except RuntimeError:
+            pass
+    finally:
+        oncall.subprocess.run, oncall.prompt_file, oncall.save_raw = saved
+    # 16巡目: 重複キーは入口ごとに読めない答え / 真偽値の番号 / 日付の形 / item の契約 / 前置きの投稿 / Grok の書きかけ
+    (tmp / "dup.json").write_text('[{"url": "u", "status": "unreadable", "status": "none", "item": ""}]', encoding="utf-8")
+    check(collect.read_json_list(tmp / "dup.json") is None, "重複キーのファイルを読んだ")
+    check(oncall.parse_json('{"verdict": "reject", "verdict": "approve"}') is None, "重複キーの監査の答えを読んだ")
+    check(collect.watch_page_results([{"page": True, "status": "none", "items": []}], 1) == {}, "真偽値の番号でページを既読にした")
+    check(collect.watch_page_results(pipelib.extract_json_array_strict('[{"page":1,"status":"unreadable","status":"none","items":[]}]'), 1) == {},
+          "重複キーのページ結果で既読にした")
+    check(not collect.candidate_usable({"url": "https://example.com/a", "facts": ["申込"], "deadline": "2026/10/10"}), "形の崩れた締切で処理済みにした")
+    check(collect.unaccounted_posts(one, [{"url": "https://x.com/a/status/1", "status": "none", "item": ["x"]}], []) != [], "item の崩れた結果で済みにした")
+    pre = "- 投稿者: a\n- 本文: A(見出しも url の行も無い)\n\n- url: https://x.com/b/status/2\n- 本文: B\n"
+    lp = collect.unaccounted_posts(pre, [{"url": "https://x.com/b/status/2", "status": "none", "item": ""}], [])
+    check(len(lp) == 1 and "本文: A" in lp[0], f"前置きの投稿が次の投稿に吸われた: {lp}")
+    gd = tmp / "g"
+    gd.mkdir(exist_ok=True)
+    (gd / "prompt-cg.md").write_text("p", encoding="utf-8")
+    class GP:
+        pid, returncode = 0, 1
+        def communicate(self, timeout=None):
+            (gd / "cg.md").write_text("### 1\n- url: https://x.com/a/status/1\n", encoding="utf-8")
+            return "", "boom"
+    saved = (collect.subprocess.Popen, collect.save_raw)
+    try:
+        collect.subprocess.Popen, collect.save_raw = (lambda *a, **kw: GP()), (lambda *a, **kw: None)
+        errs = {}
+        collect.run_grok_prompts([({"key": "cg"}, gd / "prompt-cg.md")], errs)
+    finally:
+        collect.subprocess.Popen, collect.save_raw = saved
+    check(not (gd / "cg.md").exists() and (gd / "cg.partial-1.md").exists() and "cg" in errs, "異常終了した Grok の書きかけを答えにした")
+    # やり直しも異常終了: 初回の途中出力を上書きしない(試みごとに退ける)
+    saved = (collect.subprocess.Popen, collect.save_raw)
+    try:
+        collect.subprocess.Popen, collect.save_raw = (lambda *a, **kw: GP()), (lambda *a, **kw: None)
+        collect.run_grok_prompts([({"key": "cg"}, gd / "prompt-cg.md")], errs)
+    finally:
+        collect.subprocess.Popen, collect.save_raw = saved
+    check((gd / "cg.partial-1.md").exists() and (gd / "cg.partial-2.md").exists(), "やり直しが初回の途中出力を上書きした")
+    # 17巡目: 空白だけの事実 / 分類の崩れた2つ目の答え / 同じ追跡事項に2行 / ディレクトリになった出力 / 書き出す前の失敗
+    check(not collect.candidate_usable({"url": "https://example.com/a", "facts": [" \t"]}), "空白だけの事実で処理済みにした")
+    import classify_sources as csrc
+    site = {"host": "example.com", "operator": "公式", "type": "公式", "why": "w"}
+    check(csrc._by_host([site, {"host": "example.com", "type": "ファン", "why": "w"}], ["example.com"], csrc.ANSWER_SITE) == {},
+          "崩れた2つ目の答えを捨てて矛盾を見逃した")
+    art_p = [{"slug": "s0", "dedup_key": "k0", "title": "t"}]
+    two_p = {"stories": [{"slug": "s0", "story_id": "k0", "subject": "x", "published_facts": ["F1"]}], "reservations": [], "pending_remove": [],
+             "pending_add": [{"dedup_key": "k0", "brand": "cg", "subject": "s", "watch": "Aの日程"},
+                             {"dedup_key": "k0", "brand": "cg", "subject": "s", "watch": "Bの日程"}]}
+    check(assemble.uncovered_articles([art_p], [two_p]) == art_p
+          and assemble.merge_judgments({"articles": art_p, "pending": []}, [art_p], {"digest": []}, [two_p])["pending_add"] == [],
+          "同じ追跡事項の2行の片方を黙って採った")
+    (tmp / "dirout").mkdir(exist_ok=True)
+    check((pipelib.read_for_raw(tmp / "dirout") or "").startswith("(読めない"), "ディレクトリの出力で止まる")
+    class GQ:
+        pid, returncode = 0, 1
+        def communicate(self, timeout=None): return "", "auth error"
+    saved = (collect.subprocess.Popen, collect.save_raw)
+    try:
+        collect.subprocess.Popen, collect.save_raw = (lambda *a, **kw: GQ()), (lambda *a, **kw: None)
+        (gd / "prompt-cg-deep.md").write_text("p", encoding="utf-8")
+        failed = collect.run_grok_prompts([({"key": "cg"}, gd / "prompt-cg-deep.md")], {})
+    finally:
+        collect.subprocess.Popen, collect.save_raw = saved
+    check(failed == {"cg"}, f"書き出す前に落ちた深掘りを失敗にしない: {failed}")
+    # 18巡目: 議論の2巡目の無回答は1巡目の答えを残さない / 無効な追加の key の削除は採らない / ディレクトリの書き出し
+    rounds = iter([[site], [dict(site, type="ファン")], [site, {"host": "example.com", "type": "ファン", "why": "w"}], [site]])
+    saved_ask = csrc.ask
+    try:
+        csrc.ask = lambda cmd, prompt, timeout=900: next(rounds)
+        ag, sp = csrc.consensus("p", ["example.com"])
+    finally:
+        csrc.ask = saved_ask
+    check("example.com" not in ag, f"2巡目に崩れた答えを出した側の1巡目の答えで一致にした: {ag}")
+    two_r = dict(two_p, pending_remove=["k0"])
+    check(assemble.merge_judgments({"articles": art_p, "pending": [{"dedup_key": "k0"}]}, [art_p], {"digest": []}, [two_r])["pending_remove"] == [],
+          "追加を捨てた追跡事項の削除だけを採った")
+    (gd / "dirface.md").mkdir(exist_ok=True)
+    check(not collect.grok_wrote(gd, {"key": "dirface"}), "ディレクトリの書き出しで止まる・書いたことにした")
+    # 20巡目: 書きかけを退けられずに残った面(非空の <key>.md・異常終了)を完了とみなさない。やり直し、名指しで異常にする
+    bd = tmp / "gb"
+    bd.mkdir(exist_ok=True)
+    calls_b, notes_b = [], []
+    def fake_faces(queries, outdir, errs, retry=False):
+        calls_b.append(([q["key"] for q in queries], retry))
+        for q in queries:
+            (outdir / f"{q['key']}.md").write_text("### 1\n- url: https://x.com/a/status/1\n", encoding="utf-8")
+            errs[q["key"]] = "書きかけを退けられない(PermissionError)"
+        return {q["key"] for q in queries}
+    saved = (collect.run_grok_faces, collect.notify, collect.grok_session_error)
+    try:
+        collect.run_grok_faces = fake_faces
+        collect.notify = lambda job, msg, ok=True, require=False: notes_b.append((msg, ok)) or True
+        collect.grok_session_error = lambda since_s=7200: ""
+        still_b = collect.grok_basic([{"key": "cg"}], bd, {})
+    finally:
+        collect.run_grok_faces, collect.notify, collect.grok_session_error = saved
+    check(calls_b == [(["cg"], False), (["cg"], True)] and still_b == ["cg"]
+          and any(not ok and "cg" in m and "退けられなかった書きかけ" in m for m, ok in notes_b),
+          f"退けられなかった書きかけの面を完了とみなした: {calls_b} {still_b} {notes_b}")
+    # 21巡目: 退けられなかった書きかけは、次の試みが新しく書かずに正常終了しても完了にしない。新しく書けば完了
+    sd = tmp / "stuck"
+    sd.mkdir(exist_ok=True)
+    (sd / "prompt-cg.md").write_text("p", encoding="utf-8")
+    seq = iter([(1, "書きかけ"), (0, None), (0, "### 1\n- url: https://x.com/b/status/2\n")])
+    class SP:
+        pid = 0
+        def __init__(self):
+            self.returncode, text = next(seq)
+            if text is not None:
+                (sd / "cg.md").write_text(text, encoding="utf-8")
+        def communicate(self, timeout=None): return "", ""
+    saved = (collect.subprocess.Popen, collect.save_raw, Path.replace)
+    try:
+        collect.subprocess.Popen, collect.save_raw = (lambda *a, **kw: SP()), (lambda *a, **kw: None)
+        def deny(self, target):
+            raise PermissionError("denied")
+        Path.replace = deny
+        collect.run_grok_prompts([({"key": "cg"}, sd / "prompt-cg.md")], {})       # 異常終了・退けられない
+        Path.replace = saved[2]
+        collect.run_grok_prompts([({"key": "cg"}, sd / "prompt-cg.md")], {})       # 正常終了・新しく書かない
+        mid = collect.grok_wrote(sd, {"key": "cg"})
+        collect.run_grok_prompts([({"key": "cg"}, sd / "prompt-cg.md")], {})       # 正常終了・新しく書いた
+        after = collect.grok_wrote(sd, {"key": "cg"})
+    finally:
+        collect.subprocess.Popen, collect.save_raw, Path.replace = saved
+        collect.STUCK_OUTPUTS.clear()
+    check(mid is False and after is True, f"退けられなかった書きかけの扱い: 書かずに正常終了={mid} 新しく書いた={after}")
+    # 台帳ファイル: 空のファイルは0件にしない
+    (tmp / "empty.yml").write_text("", encoding="utf-8")
+    try:
+        assemble.load_yaml_list(tmp / "empty.yml")
+        check(False, "空の台帳ファイルを0件として読んだ")
+    except ValueError:
+        pass
+    assemble.dump_yaml(tmp / "zero.yml", [])
+    check(assemble.load_yaml_list(tmp / "zero.yml") == [], "0件の台帳を書いて読めない")
 
 
 def test_grok_item_url_repointed_to_post():
@@ -2262,12 +2809,16 @@ def test_grok_repoint_uses_each_face_posts(tmp: Path):
     qs = [{"key": k, "brand": k, "topic": "t"} for k in ("dsva", "joint", "trend")]
     class P:
         pid = 0
+        returncode = 0
         def wait(self, timeout=None): return 0
     def fake_popen(args, cwd=None, **kw):
         items = ([{"url": "https://www.youtube.com/shorts/YvB9Lkq5aOs", "brand": "dsva", "facts": ["クライヤ"]}]
                  if "dsva" in Path(cwd).name else [])
         (Path(cwd) / "items.json").write_text(json.dumps(items), encoding="utf-8")
         (Path(cwd) / "deep.json").write_text("[]", encoding="utf-8")
+        urls = re.findall(r"(?m)^- url:\s*(\S+)", (Path(cwd) / "x-posts.md").read_text(encoding="utf-8"))
+        (Path(cwd) / "posts.json").write_text(json.dumps([{"url": u, "status": "extracted" if items else "none",
+                                                          "item": items[0]["url"] if items else ""} for u in urls]), encoding="utf-8")
         return P()
     saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.classify_source)
     try:
@@ -2281,6 +2832,27 @@ def test_grok_repoint_uses_each_face_posts(tmp: Path):
         collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.classify_source = saved
     check([x["url"] for x in items] == ["https://x.com/valiv_official/status/2106670673922064689"],
           f"末尾以外の面の動画 url を、その面の投稿に付け直さない: {items}")
+
+
+def test_collect_health():
+    """新規0件のとき、全系統の取得が正常なら異常にしない。取得に失敗した系統があれば内訳を返す(当番の指摘 3e0904d4fe)。"""
+    import collect
+    ok_info = {"stats": {"imas-portal": {"found": 12, "new": 0}}, "deferred": 0}
+    check(collect.collect_health(ok_info, {"explore:765as": 0, "grok:765as": 0}) == [], "正常な空振りを異常にした")
+    bad = collect.collect_health({"stats": {"imas-portal": {"error": "timeout"}}, "deferred": 2}, {"explore_failed:sidem": 1, "explore:sidem": 0})
+    check(len(bad) == 3 and any("imas-portal" in b for b in bad) and any("2件" in b for b in bad) and any("sidem" in b for b in bad),
+          f"取得の失敗の内訳: {bad}")
+
+
+def test_grok_format_matches_parser():
+    """Grok に指示する書き出しの形を、収集のコード(投稿への付け直し)がそのまま読めること。依頼文と読み取りがずれると、
+    動画などのリンクで候補になったものを公式の投稿へ付け直せなくなる(当番の指摘 2b3c2a884e)。"""
+    import collect
+    p = collect.write_grok_prompt(Path(tempfile.mkdtemp()), {"key": "k", "brand": "765", "topic": "t", "accounts": ["a"]}).read_text(encoding="utf-8")
+    sample = p.split("```")[1].replace("<アカウント>/status/<ID>", "a/status/1").replace(
+        "  - 投稿に付いたリンクの url(1行に1つ。無ければ「- リンク: なし」)", "  - https://youtube.com/watch?v=x")
+    got = collect.repoint_to_post([{"url": "https://youtube.com/watch?v=x", "facts": []}], sample)
+    check(got[0]["url"] == "https://x.com/a/status/1", f"依頼文の見本の形を付け直しが読めない: {got}")
 
 
 def test_grok_face_retry(tmp: Path):
@@ -3038,8 +3610,12 @@ def main() -> int:
     test_extract_json_array_strict()
     test_update_clis(tmp / "uc")
     test_grok_face_retry(tmp / "gr")
+    test_grok_format_matches_parser()
+    test_collect_health()
     test_grok_roles(tmp / "gro")
     test_grok_item_url_repointed_to_post()
+    test_empty_answer_is_not_done(tmp / "ea")
+    test_accept_only_normal_and_schema(tmp / "an")
     test_grok_repoint_uses_each_face_posts(tmp / "grp")
     test_watch_pagination_and_batches(tmp / "wp")
     test_collect_oncall_rerun_exit(tmp / "cre")

@@ -60,7 +60,9 @@
 
 ## 5. 出力(JSON。形は schema が決める)
 - 問題が無ければ verdict は approve
-- blockers・comments の `file` は `docs/_posts/{FILE}`。blockers には該当箇所の引用 `quote` を付ける
+- blockers・comments の `file` は `docs/_posts/{FILE}`。blockers には該当箇所の引用 `quote` を付ける。
+  同じ誤りが見出し・リード・本文の複数の欄にあるなら、該当する欄を全部、欄名を付けて1つの quote に入れる(例: `見出し「…」 リード「…」`)。
+  執筆は quote に入っていない欄を直せない
 - blockers には、執筆が直せるように次を付ける
   - `rule_id`: 上の項目番号(例: R1)
   - `repair`: `rewrite_claim`(出典どおりに直す)/ `drop_claim`(出典に無い記述を消す)/ `add_source`(足りない出典を加える)/

@@ -6,12 +6,14 @@
   "additionalProperties": false,
   "properties": {
     "editor_summary": {
-      "type": "object", "required": ["what_happened", "what_changed", "paper_impact"], "additionalProperties": false,
-      "description": "この巡を終えた時点の**最終の内容**で、編集長に届く要約を毎回書き直す(初回と同じ書き方。日本語だけ、ファイル名・関数名・英語を使わない)",
+      "type": "object", "required": ["what_happened", "why", "what_changed", "similar", "paper_impact"], "additionalProperties": false,
+      "description": "この巡を終えた時点の**最終の内容**で、編集長に届く報告を毎回書き直す(初回と同じ書き方)",
       "properties": {
-        "what_happened": {"type": "string", "minLength": 1, "maxLength": 160},
-        "what_changed": {"type": "string", "minLength": 1, "maxLength": 160},
-        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 120}
+        "what_happened": {"type": "string", "minLength": 1, "maxLength": 1200},
+        "why": {"type": "string", "minLength": 1, "maxLength": 1500},
+        "what_changed": {"type": "string", "minLength": 1, "maxLength": 1500},
+        "similar": {"type": "string", "minLength": 1, "maxLength": 1500},
+        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 600}
       }
     },
     "status": {"enum": ["unchanged", "fixed", "no_fix_needed", "cannot_fix"],

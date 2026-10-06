@@ -503,11 +503,19 @@ def page_excerpt(url: str, chars: int = 1200) -> str:
 def ask(cmd: list[str], prompt: str, timeout: int = 900) -> list[dict]:
     try:
         import hashlib
-        from pipelib import prompt_file
-        short = prompt_file(edition_date(), f"classify-{cmd[0]}-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt)
-        r = subprocess.run(cmd + [short], capture_output=True, text=True,
-                           timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
-        rows = extract_json_array(r.stdout) or []
+        from pipelib import partial_output, prompt_file, save_raw
+        name = f"classify-{cmd[0]}-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
+        short = prompt_file(edition_date(), name, prompt)
+        try:
+            r = subprocess.run(cmd + [short], capture_output=True, text=True,
+                               timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
+        except subprocess.TimeoutExpired as e:
+            save_raw(edition_date(), name, *partial_output(e))     # 時間切れの回も、それまでの出力を残す
+            raise
+        # 答えが読めた・読めないに関係なく生の出力を残す(決まらなかった分類の理由を後から確かめるため)
+        save_raw(edition_date(), name, r.stdout, r.stderr, r.returncode)
+        # 異常終了の間際の出力は答えにしない(無回答として議論・人へ。監査指摘)
+        rows = (extract_json_array(r.stdout) or []) if r.returncode == 0 else []
         if not rows:    # 答えが空のまま「—」で議論が流れると、なぜ決まらなかったのか後から追えない
             tail = ((r.stdout or "").strip() or (r.stderr or "").strip())[-200:].replace("\n", " ")
             print(f"  分類の答えが読めない({cmd[0]} exit {r.returncode}): {tail or '(出力なし)'}", flush=True)
@@ -540,7 +548,11 @@ def _key_forms(s: str) -> tuple[str, str]:
     return full.lstrip("@"), full.rsplit("/", 1)[-1].lstrip("@")
 
 
-def _by_host(rows: list, keys: list[str] | None = None) -> dict[str, dict]:
+ANSWER_X = ("host", "type", "why")                 # prompts/classify-x.md の答えの欄
+ANSWER_SITE = ("host", "operator", "type", "why")  # prompts/classify-site.md の答えの欄
+
+
+def _by_host(rows: list, keys: list[str] | None = None, need: tuple = ANSWER_X) -> dict[str, dict]:
     """モデルの答えを、**依頼した対象(keys)に対応付けて**返す。
 
     答えの host は依頼どおりの文字列で返ってくるとは限らない(`youtube.com/@Foo` を頼んで `@Foo` や
@@ -548,9 +560,13 @@ def _by_host(rows: list, keys: list[str] | None = None) -> dict[str, dict]:
     議論しても決まらない(実測 2026-09-18: @TogawaNonoha)。全体の正規形で当て、無ければ末尾(ハンドル・
     最後の区切り)で当てる。末尾は、その末尾を持つ依頼が1つだけのときに限る。対応しない答えはログに出す。
     """
-    rows = [d for d in rows if isinstance(d, dict)]
+    # 依頼した形(need の欄が空でない文字列。サイトは運営主体 operator も)の答えだけを答えとする。運営主体や根拠の無い
+    # 答えを一致として判定表へ確定させない(形が崩れた答えは無回答。議論へ回る。監査指摘)。
+    # ただし**形の検査は、対象へ対応付けて数えた後**(崩れた2つ目の答えを先に捨てると、矛盾が見えなくなる。監査指摘)
+    shaped = lambda d: all(isinstance(d.get(k), str) and d[k].strip() for k in need)
+    rows = [d for d in rows if isinstance(d, dict) and isinstance(d.get("host"), str)]
     if keys is None:
-        return {str(d.get("host", "")).lstrip("@"): d for d in rows}
+        return {d["host"].lstrip("@"): d for d in rows if shaped(d)}
     by_full = {_key_forms(k)[0]: k for k in keys}
     tails: dict[str, list[str]] = {}
     heads: dict[str, list[str]] = {}     # `youtube.com/@foo` を `youtube.com` とだけ返す答え(実測 2026-09-18)
@@ -559,15 +575,22 @@ def _by_host(rows: list, keys: list[str] | None = None) -> dict[str, dict]:
         if "/" in _key_forms(k)[0]:
             heads.setdefault(_key_forms(k)[0].split("/", 1)[0], []).append(k)
     out: dict[str, dict] = {}
+    twice: set[str] = set()
     for d in rows:
         full, tail = _key_forms(d.get("host", ""))
         k = (by_full.get(full) or (tails[tail][0] if len(tails.get(tail) or []) == 1 else None)
              or (heads[full][0] if len(heads.get(full) or []) == 1 else None))
         if k is None:
             print(f"  答えの対象が依頼と対応しない: {str(d.get('host'))[:80]!r}", flush=True)
-        elif k not in out:
+        elif k in out:
+            twice.add(k)
+        else:
             out[k] = d
-    return out
+    # 同じ対象に2つの答え(矛盾しうる)があれば、先頭を採らず無回答にする(議論へ回る。監査指摘)
+    for k in twice:
+        print(f"  同じ対象に答えが2つある(無回答として議論へ): {k}", flush=True)
+        out.pop(k, None)
+    return {k: d for k, d in out.items() if shaped(d)}
 
 
 def debate_prompt(prompt: str, split_keys: list[str], mine: dict, theirs: dict) -> str:
@@ -580,7 +603,7 @@ def debate_prompt(prompt: str, split_keys: list[str], mine: dict, theirs: dict) 
     return render_prompt("classify-debate", FIRST=prompt.rstrip("\n"), ROWS="\n".join(rows))
 
 
-def consensus(prompt: str, keys: list[str]) -> tuple[dict, list[str]]:
+def consensus(prompt: str, keys: list[str], need: tuple = ANSWER_SITE) -> tuple[dict, list[str]]:
     """別ベンダーの2モデルの合議。1巡目は独立に答え、割れたものは**議論**する(2巡目)。
 
     同じベンダーだと同じ誤りを共有するので、Claude と Codex に分ける。
@@ -593,8 +616,8 @@ def consensus(prompt: str, keys: list[str]) -> tuple[dict, list[str]]:
     # 全対象の依頼文のまま2巡目を掛けると、割れていない対象への省略形の答えを割れた対象に当てかねず、
     # 逆に全対象で対応付けると、一意になったはずの省略形の答えをまた捨てる(監査指摘)
     make = prompt if callable(prompt) else (lambda ks: prompt)
-    a = _by_host(ask(CMD_A, make(keys)), keys)
-    b = _by_host(ask(CMD_B, make(keys)), keys)
+    a = _by_host(ask(CMD_A, make(keys)), keys, need)
+    b = _by_host(ask(CMD_B, make(keys)), keys, need)
 
     def agree(k):
         ta, tb = (a.get(k) or {}).get("type"), (b.get(k) or {}).get("type")
@@ -605,13 +628,13 @@ def consensus(prompt: str, keys: list[str]) -> tuple[dict, list[str]]:
         print(f"  1巡目で割れた {len(split_keys)}件を議論させる: "
               + ", ".join(f"{k}({(a.get(k) or {}).get('type') or '—'}/{(b.get(k) or {}).get('type') or '—'})" for k in split_keys),
               flush=True)
-        a2 = _by_host(ask(CMD_A, debate_prompt(make(split_keys), split_keys, a, b)), split_keys)
-        b2 = _by_host(ask(CMD_B, debate_prompt(make(split_keys), split_keys, b, a)), split_keys)
+        a2 = _by_host(ask(CMD_A, debate_prompt(make(split_keys), split_keys, a, b)), split_keys, need)
+        b2 = _by_host(ask(CMD_B, debate_prompt(make(split_keys), split_keys, b, a)), split_keys, need)
+        # 議論した対象は2巡目の答えで置き換える。2巡目に形の揃った答えが無ければ無回答にする(1巡目の答えを残すと、
+        # 崩れた・矛盾した2巡目を出した側の古い答えで一致が成立してしまう。監査指摘)
         for k in split_keys:
-            if k in a2:
-                a[k] = a2[k]
-            if k in b2:
-                b[k] = b2[k]
+            a[k] = a2.get(k) or {}
+            b[k] = b2.get(k) or {}
     agreed, split = {}, []
     for k in keys:
         t = agree(k)
@@ -1058,7 +1081,7 @@ def main() -> int:
         sub = {a: accts[a] for a in order}
         print(f"\n{date}: 判定表に無い X アカウント {len(accts)}件"
               f"(今回 {len(sub)}件を処理)", flush=True)
-        agreed, split = consensus(lambda ks: build_x_prompt({k: sub[k] for k in ks}), sorted(sub))
+        agreed, split = consensus(lambda ks: build_x_prompt({k: sub[k] for k in ks}), sorted(sub), need=ANSWER_X)
         for a, (t, why) in agreed.items():
             print(f"  一致 {t}\t@{a}\t{why}")
         for s in split:

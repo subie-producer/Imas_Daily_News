@@ -41,8 +41,9 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
-                     extract_periods, html_to_text, set_quiet, unbacked_facts,
-                     checkout_edition_branch, classify_retag_lint, commit_and_push, diagnose_anomalies, edition_date,
+                     extract_periods, html_to_text, loads_strict, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
+                     set_quiet, unbacked_facts,
+                     anomaly, checkout_edition_branch, classify_retag_lint, commit_and_push, diagnose_anomalies, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author)
 
@@ -282,16 +283,19 @@ def watch_page_results(got, n: int) -> dict[int, list[dict]]:
     unreadable・番号の重複・形の崩れ(status と items が食い違う等)・応答に無いページは含めない(未処理として残す)。"""
     if not isinstance(got, list):
         return {}
+    # 番号は真偽値を除いた整数だけ(Python では True が 1 として数えられ、ページ1が既読になる。監査指摘)
+    page_no = lambda r: r["page"] if isinstance(r, dict) and type(r.get("page")) is int else None
     seen: dict[int, int] = {}
     for r in got:
-        if isinstance(r, dict) and isinstance(r.get("page"), int):
+        if page_no(r) is not None:
             seen[r["page"]] = seen.get(r["page"], 0) + 1
     done = {}
     for r in got:
-        if not isinstance(r, dict) or not isinstance(r.get("page"), int) or not 1 <= r["page"] <= n or seen[r["page"]] != 1:
+        if not schema_ok(r, WATCH_PAGE_SCHEMA) or page_no(r) is None or not 1 <= r["page"] <= n or seen[r["page"]] != 1:
             continue
         items = r.get("items")
-        if not isinstance(items, list) or not all(isinstance(c, dict) for c in items):
+        # 候補は正規化で捨てられない形で事実のあるものだけ(1件でも崩れていれば、そのページは未処理。candidate_usable を共有。監査指摘)
+        if not isinstance(items, list) or not all(candidate_usable(c) for c in items):
             continue
         if (r.get("status") == "extracted" and items) or (r.get("status") == "none" and not items):
             done[r["page"]] = items
@@ -340,19 +344,71 @@ def build_prompts() -> list[dict]:
     return queries
 
 
+def read_written(p: Path) -> str:
+    """セッションが書き出したファイルの中身。無い・読めない(ファイルでなくディレクトリが作られた など)は空として扱う
+    (書き出しが無い面として、やり直し・異常へ回る。読み取りの例外で収集全体を止めない。監査指摘)。"""
+    try:
+        return p.read_text(encoding="utf-8", errors="replace") if p.is_file() else ""
+    except OSError:
+        return ""
+
+
+# 時間切れ・異常終了の書きかけを退けられなかった書き出し → その時の中身。正常に終わった試みが中身を書き換えるまで、
+# この収集の間は「完了した書き出し」と読まない
+STUCK_OUTPUTS: dict[Path, str] = {}
+
+
 def grok_wrote(outdir: Path, q: dict) -> bool:
-    """その面の Grok がまとめのファイルを残したか(「なし」と書いた面も残したことになる)。"""
+    """その面の Grok がまとめのファイルを残したか(「なし」と書いた面も残したことになる)。
+    退けられなかった書きかけ(STUCK_OUTPUTS)は、その後の試みが正常に終わっても完了と読まない(監査指摘)。"""
     p = outdir / f"{q['key']}.md"
-    return p.exists() and bool(p.read_text(encoding="utf-8", errors="replace").strip())
+    return p not in STUCK_OUTPUTS and bool(read_written(p).strip())
 
 
-def run_grok_faces(queries: list[dict], outdir: Path, errs: dict, retry: bool = False) -> None:
-    """面ごとに Grok の基本の調べ(X の検索だけ)を走らせる。"""
-    run_grok_prompts([(q, write_grok_prompt(outdir, q, retry=retry)) for q in queries], errs)
+def run_grok_faces(queries: list[dict], outdir: Path, errs: dict, retry: bool = False) -> set[str]:
+    """面ごとに Grok の基本の調べ(X の検索だけ)を走らせる。戻りは正常に終わらなかった面。"""
+    return run_grok_prompts([(q, write_grok_prompt(outdir, q, retry=retry)) for q in queries], errs)
 
 
-def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> None:
-    """Grok のセッションを GROK_WAVE 本ずつ走らせる。手数では縛らない(時間 GROK_TIMEOUT だけ)。エラー出力は errs に残す。"""
+def grok_basic(queries: list[dict], outdir: Path, grok_errs: dict) -> list[str]:
+    """Grok の基本の調べを全面で走らせ、終わらなかった面だけ1回やり直す。戻りはやり直しても終わらなかった面(名指しで異常にした)。
+
+    まとめのファイルを残せなかった面・正常に終わらなかった面は、「先に書く」順で1回だけやり直す
+    (実測 2026-10-03: 学マスの面が打ち切られてファイルを書けず0件。公式Xの4コマ第174話を1日遅れで載せた)。
+    未完了は終了状態と書き出しの両方で決める(書きかけを退けられずに残った面を完了とみなさない。監査指摘)。"""
+    failed = run_grok_faces(queries, outdir, grok_errs)
+    missing = [q for q in queries if not grok_wrote(outdir, q) or q["key"] in failed]
+    if not missing:
+        return []
+    print(f"grok: まとめを残せなかった面 {', '.join(q['key'] for q in missing)} をやり直す", flush=True)
+    failed = run_grok_faces(missing, outdir, grok_errs, retry=True)
+    still = [q["key"] for q in missing if not grok_wrote(outdir, q) or q["key"] in failed]
+    # やり直しも時間切れ・異常終了した面は、途中までの書き出しがあればそれを使う(全部は失わない)。未完了は下で名指しする
+    for k in still:
+        if read_written(outdir / f"{k}.md").strip():
+            # 書きかけを退けられずに残った面: それを途中までの書き出しとして使い、そう名指しする
+            grok_errs[k] = "退けられなかった書きかけを使う(調べが終わっていない): " + grok_errs.get(k, "")
+            continue
+        # 試みごとの途中までの書き出し(.partial-<n>.md)を全部つなぐ(初回と、やり直しで書けた投稿が違うことがある。監査指摘)
+        part = "\n\n".join(t for t in (read_written(p).strip() for p in sorted(outdir.glob(f"{k}.partial-*.md"))) if t)
+        if part.strip():
+            try:
+                (outdir / f"{k}.md").write_text(part, encoding="utf-8")
+                grok_errs[k] = "途中までの書き出しを使う(調べが終わっていない): " + grok_errs.get(k, "")
+            except OSError as e:      # 書き出し先がディレクトリになっている等。その面は失う(下で名指し)
+                grok_errs[k] = f"途中までの書き出しも戻せない({type(e).__name__}): " + grok_errs.get(k, "")
+    if still:     # 候補の数に関係なく名指しする(全面が未完了でも、途中までの書き出しから候補が出ると全面0件にならない。監査指摘)
+        notify("collect", f"Grok(X 調査)の {', '.join(still)} 面が、やり直しても調べを終えられなかった"
+                          "(途中までの書き出しがあればそれだけを使い、無ければその面の X の動きを丸ごと失う):\n"
+                          + "\n".join(f"- {k}: {grok_errs.get(k, 'エラー出力なし')}" for k in still)
+                          + "\n- セッション記録の失敗理由: " + grok_session_error(), ok=False)
+    return still
+
+
+def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> set[str]:
+    """Grok のセッションを GROK_WAVE 本ずつ走らせる。手数では縛らない(時間 GROK_TIMEOUT だけ)。エラー出力は errs に残す。
+    戻りは、正常に終わらなかった(時間切れ・非0終了)面のキー(書き出しの有無では判定しない。監査指摘)。"""
+    failed: set[str] = set()
     for i in range(0, len(targets), GROK_WAVE):
         procs = []
         for q, pp in targets[i:i + GROK_WAVE]:
@@ -360,15 +416,44 @@ def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> None:
                 ["grok", "--prompt-file", str(pp), "--always-approve",
                  "--cwd", str(ROOT), "--reasoning-effort", GROK_EFFORT],
                 stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
-                stdin=subprocess.DEVNULL, cwd=ROOT)))
-        for q, pr in procs:
+                stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True), pp))
+        for q, pr, pp in procs:
+            timed_out = False
             try:
                 _, err = pr.communicate(timeout=GROK_TIMEOUT)
                 if pr.returncode or (err or "").strip():
                     errs[q["key"]] = f"exit {pr.returncode}: {(err or '').strip()[-300:]}"
+                else:
+                    errs.pop(q["key"], None)     # errs は最後の試みの状態(やり直しで直った面の古いエラーを残さない。監査指摘)
             except subprocess.TimeoutExpired:
-                pr.kill()
+                _, err = reap(pr)     # 子も落とし、それまでのエラー出力を上限つきで回収する
+                timed_out = True
+                errs[q["key"]] = f"時間切れ: {(err or '').strip()[-300:]}"
                 print(f"grok: {q['key']} 面がタイムアウト(そこまでの記録は残る)", flush=True)
+            out = pp.with_name(pp.name.removeprefix("prompt-"))
+            # エラー出力の全文と、この試みの書き出しを、基本の調べ・やり直し・深掘りの別に残す(要約は末尾 300 字だけ。
+            # 書き出しは次の試み・次の収集で消える。監査指摘)。経過は Grok のセッション記録に残る
+            save_raw(edition_date(), f"grok-{pp.stem}", "", err or "", pr.returncode, files={out.name: read_for_raw(out)})
+            if timed_out or pr.returncode != 0:
+                failed.add(q["key"])
+                # 時間切れ・異常終了の回が書いた書き出し(一部の投稿だけ・途中の「なし」)は答えにしない。試みごとに別の
+                # <名前>.partial-<n>.md に退けて、面の書き出しが無い状態にする(基本の調べは「書けなかった面」としてやり直し・異常へ、
+                # 深掘りは下で異常へ。非空のファイルを完了とみなして残りの検索を黙って失わない。やり直しが初回の途中出力を
+                # 上書きしない。監査指摘)。退けられなければ、その面の異常として残して他の面を続ける
+                if out.exists():
+                    n = 1
+                    while out.with_suffix(f".partial-{n}.md").exists():
+                        n += 1
+                    try:
+                        out.replace(out.with_suffix(f".partial-{n}.md"))
+                    except OSError as e:
+                        # 退けられなければ、この収集の間はその書きかけを「完了」と読まない(STUCK_OUTPUTS に中身を控える。
+                        # やり直しが新しく書かずに正常終了しても、古い書きかけで完了にしない。監査指摘)
+                        STUCK_OUTPUTS[out] = read_written(out)
+                        errs[q["key"]] = f"書きかけを退けられない({type(e).__name__}): " + errs.get(q["key"], "")
+            elif out in STUCK_OUTPUTS and read_written(out) != STUCK_OUTPUTS[out]:
+                STUCK_OUTPUTS.pop(out)      # 正常に終わった試みが新しく書いた: 完了した書き出し
+    return failed
 
 
 def grok_search_counts(since_ts: float) -> dict[str, int]:
@@ -471,9 +556,10 @@ def claude_exec(prompt: str, timeout: int = 300):
     """
     from pipelib import extract_json_array_strict, prompt_file
     import hashlib as _hl
+    name = "watch-" + _hl.sha256(prompt.encode("utf-8")).hexdigest()[:8]
     try:
         r = subprocess.run(
-            ["claude", "-p", prompt_file(edition_date(), "watch-" + _hl.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt),
+            ["claude", "-p", prompt_file(edition_date(), name, prompt),
              "--model", COLLECT_MODEL,
              # 指示と素材はファイルなので **Read が要る**。WebSearch/WebFetch だけに絞っていたら、ファイルを読めずに
              # 420 秒待って落ちた(実測 2026-09-17)
@@ -483,6 +569,14 @@ def claude_exec(prompt: str, timeout: int = 300):
     except (subprocess.TimeoutExpired, OSError) as e:
         # 1バッチの失敗で収集全体を落とさない。読めなかった扱い(既読にしない)
         print(f"定点観測: facts 化のセッションが失敗({type(e).__name__})。このバッチは既読にしない", flush=True)
+        save_raw(edition_date(), name, *partial_output(e))     # 時間切れまでの出力も残す
+        return None
+    # 生の出力を必ず残す(依頼文 metrics/work/<日付>/<name>.md と同じ名前。候補が出なかった理由を後から確かめるため。
+    # 2026-10-04: まとめサイトの新着1件を失ったが出力が残っておらず、当番も原因を確定できなかった。当番の指摘 b39801ce34・8bdc37f36c)
+    save_raw(edition_date(), name, r.stdout, r.stderr, r.returncode)
+    if r.returncode != 0:
+        # 異常終了の間際の出力は答えにしない(読めなかった扱い。既読にしない。監査指摘)
+        print(f"定点観測: facts 化のセッションが異常終了(exit {r.returncode})。このバッチは既読にしない", flush=True)
         return None
     got = extract_json_array_strict(r.stdout)
     if got is None:
@@ -516,6 +610,20 @@ def write_grok_prompt(outdir: Path, q: dict, retry: bool = False) -> Path:
     return pp
 
 
+def collect_health(watch_info, per_query: dict) -> list[str]:
+    """収集の各系統で、取得に失敗したもの(人が読める説明)。空なら全系統の取得は正常。
+    定点観測は観測先ごとの取得の誤りと未処理の繰り越し、探索は出力が読めない・打ち切られた面(per_query の explore_failed:<面>)。"""
+    out = []
+    stats = (watch_info or {}).get("stats") or {} if isinstance(watch_info, dict) else {}
+    for sid, st in stats.items():
+        if isinstance(st, dict) and st.get("error"):
+            out.append(f"定点観測 {sid}: 一覧を読めなかった({st['error'][:80]})")
+    if isinstance(watch_info, dict) and watch_info.get("deferred"):
+        out.append(f"定点観測: 事実に起こせず次回へ回した新着 {watch_info['deferred']}件")
+    out += [f"探索 {k.split(':', 1)[1]}: 出力が読めない・打ち切られた" for k, v in per_query.items() if k.startswith("explore_failed:") and v]
+    return out
+
+
 def wait_session(proc, deadline: float) -> bool:
     """codex のセッションを締切まで待つ。超えたらプロセスグループごと落とす。戻り値は締切内に終わったか。"""
     try:
@@ -531,10 +639,10 @@ def wait_session(proc, deadline: float) -> bool:
 
 
 def read_json_list(p: Path) -> list | None:
-    """セッションが書いた JSON 配列を読む。無い・読めない・配列でないなら None。"""
+    """セッションが書いた JSON 配列を読む。無い・読めない・配列でない・同じキーが2回ある(後の値で黙って上書きされる)なら None。"""
     try:
-        v = json.loads(p.read_text(encoding="utf-8", errors="replace"))
-    except (OSError, json.JSONDecodeError):
+        v = loads_strict(p.read_text(encoding="utf-8", errors="replace"))
+    except (OSError, ValueError):
         return None
     return v if isinstance(v, list) else None
 
@@ -547,19 +655,23 @@ def repoint_to_post(items: list[dict], posts_md: str) -> list[dict]:
     そのリンクを貼った投稿(公式の投稿を先)の url に付け直し、元の url は facts に残す。
     事実は投稿の本文から読んだもので、リンク先は出典として確かめられない(2026-10-05: 公式 X の
     コラボ動画告知が YouTube の url で候補になり、未確認の出典として執筆に見送られた)。"""
+    # 投稿の区切りは突き合わせ(post_blocks / post_url)と共有する。url の無い塊(url の行が空・崩れた投稿)のリンクは
+    # どの投稿にも帰属させない(前の投稿へ付け直して、誤った出典にしない。監査指摘)
     posts: list[tuple[str, list[str]]] = []
-    in_links = False
-    for line in posts_md.splitlines():
-        m = re.match(r"- url:\s*(\S+)", line)
-        if m:
-            posts.append((m.group(1), []))
-            in_links = False
-        elif line.startswith("- リンク:"):
-            in_links = True
-        elif in_links and posts and (m := re.match(r"\s+-\s*(https?://\S+)", line)):
-            posts[-1][1].append(m.group(1))
-        elif not line.startswith(" "):
-            in_links = False
+    for block in post_blocks(posts_md):
+        url = post_url(block)
+        if not url:
+            continue
+        links: list[str] = []
+        in_links = False
+        for line in block.splitlines():
+            if line.startswith("- リンク:"):
+                in_links = True
+            elif in_links and (m := re.match(r"\s+-\s*(https?://\S+)", line)):
+                links.append(m.group(1))
+            elif not line.startswith(" "):
+                in_links = False
+        posts.append((url, links))
     posts.sort(key=lambda p: classify_source(p[0]) != "公式")
     for it in items:
         url = it["url"]
@@ -575,43 +687,145 @@ def repoint_to_post(items: list[dict], posts_md: str) -> list[dict]:
 def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "") -> tuple[list[dict], dict[str, list[dict]]]:
     """Grok が書き出した X の投稿(<key><suffix>.md)を、面ごとに Luna が読み、リンク先を開いて確かめて候補にする(並列)。
     戻りは (候補, 面 → X の原本でしか確かめられない問い)。「なし」だけの面・ファイルの無い面は飛ばす。
+    投稿ごとの結果(posts.json)と入力の投稿を突き合わせ、結果の無い投稿だけで1回やり直す(suffix に -again)。
     Luna は探索と同じくリポジトリ外の作業ディレクトリで走る(ページの中身に指示が仕込まれていても、リポジトリに手が届かない)。"""
     deadline = time.time() + EXPLORE_TIMEOUT
     jobs = []
     for q in queries:
-        src = outdir / f"{q['key']}{suffix}.md"
-        text = src.read_text(encoding="utf-8", errors="replace").strip() if src.exists() else ""
+        text = read_written(outdir / f"{q['key']}{suffix}.md").strip()
         if not text or re.fullmatch(r"(なし|見つからない)[。\s]*", text):
             continue
         wd = explore_workdir(f"verify-{q['key']}{suffix}")
         (wd / "x-posts.md").write_text(text + "\n", encoding="utf-8")
-        prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json",
+        prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json", POSTS=wd / "posts.json",
                                BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
                                RULES=COLLECT_RULES, ITEM=COLLECT_ITEM)
-        jobs.append((q, wd, text, subprocess.Popen(explore_argv(prompt_file(edition_date(), f"grok-verify-{q['key']}{suffix}", prompt, base=wd)),
-                                                   stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
-                                                   stdin=subprocess.DEVNULL, cwd=wd, start_new_session=True)))
+        # 進行ログ(標準出力・エラー)は作業ディレクトリのファイルで受け、生の出力に残す(ファイルを書かずに終わった回の原因を追うため)
+        with open(wd / "session.log", "w", encoding="utf-8") as lf:
+            jobs.append((q, wd, text, subprocess.Popen(explore_argv(prompt_file(edition_date(), f"grok-verify-{q['key']}{suffix}", prompt, base=wd)),
+                                                       stdout=lf, stderr=subprocess.STDOUT, text=True,
+                                                       stdin=subprocess.DEVNULL, cwd=wd, start_new_session=True)))
     items, deep = [], {}
+    final = suffix.endswith("-again")
+    again: list[dict] = []
     for q, wd, text, p in jobs:
         in_time = wait_session(p, deadline)
-        got = read_json_list(wd / "items.json")
-        if got is None:
-            # 読めなかった面は申告で終えない(当番のなぜなぜへ)
-            notify("collect", f"Grok の {q['key']} 面: X の投稿を確かめる段(Luna)の結果が読めない"
-                              f"({'締切内に終わった' if in_time else '時間切れ'})。その面の X の動きを失う", ok=False)
-            got = []
-        items += repoint_to_post([x for x in got if isinstance(x, dict) and x.get("url")], text)
-        raw_asks = read_json_list(wd / "deep.json")
+        # 何より先に、Luna が書いたものを生の出力として残す(このあとの処理で止まっても原因を追えるように)
+        save_raw(edition_date(), f"grok-verify-{q['key']}{suffix}", "", "", p.returncode,
+                 files={n: read_for_raw(wd / n) for n in ("x-posts.md", "items.json", "posts.json", "deep.json", "session.log")})
+        # 時間切れ・異常終了のセッションが書いたファイルは答えにしない(全投稿を未処理としてやり直し・異常へ。監査指摘)
+        got = read_json_list(wd / "items.json") if in_time and p.returncode == 0 else None
+        # 投稿1件ずつの結果を、入力の投稿と突き合わせる。結果の無い・読めなかった投稿を黙って捨てない
+        # (2026-10-06 の洗い出しで判明: 候補の配列だけを受けていたので、Luna が開けなかった・飛ばした投稿が記録なしに消えた。
+        #  定点観測で新着を失ったのと同じ型)。候補そのものが読めなければ「候補にした」の申告も当てにならないので、全投稿が残り
+        left = (post_blocks(text) or [text]) if got is None else unaccounted_posts(text, read_json_list(wd / "posts.json"), got)
+        # 付け直し・正規化へ渡すのは、形を揃えた候補だけ(崩れた要素で収集全体を止めない。監査指摘)
+        items += repoint_to_post([s for s in (shape_item(x) for x in got or []) if s], text)
+        if left and not final:
+            # 残った投稿だけを <key><suffix>-again.md に書き出し、もう1回だけ確かめさせる(下でまとめて)
+            (outdir / f"{q['key']}{suffix}-again.md").write_text("\n\n".join(left) + "\n", encoding="utf-8")
+            again.append(q)
+        elif left:
+            # 2回目でも残った投稿は、申告で終えない(当番のなぜなぜへ)。どの投稿を失うかを名指しする
+            notify("collect", f"Grok の {q['key']} 面: X の投稿 {len(left)}件を、2回確かめても候補にも「事実なし」にもできなかった"
+                              f"({'候補の一覧が読めない' if got is None else '投稿ごとの結果に無い・読めなかった'}、"
+                              f"{'締切内に終わった' if in_time else '時間切れ'})。この投稿の X の動きを失う:\n"
+                              + "\n".join(f"- {post_url(b) or '(投稿に分けられない書き出し) ' + b[:80]}" for b in left[:10])
+                              + (f"\n- ほか {len(left) - 10}件" if len(left) > 10 else ""), ok=False)
+        raw_asks = read_json_list(wd / "deep.json") if in_time and p.returncode == 0 else None
         if raw_asks is None:
             # 「問いなし([])」と「書けなかった」を分ける。原本の確かめを黙って失わない(監査指摘 r116)
             notify("collect", f"Grok の {q['key']} 面: X の原本でしか確かめられない問い(deep.json)が読めない"
                               f"({'締切内に終わった' if in_time else '時間切れ'})。深掘りの機会を失う", ok=False)
-        asks = [a for a in (raw_asks or []) if isinstance(a, dict) and a.get("question")]
+        asks = [a for a in (raw_asks or []) if schema_ok(a, DEEP_ASK_SCHEMA) and a["question"].strip()]
+        if raw_asks is not None and len(asks) < len(raw_asks):
+            # 崩れた問いを「問いなし」にしない(深掘りの機会を黙って失わない。監査指摘)。正しい問いは使う
+            notify("collect", f"Grok の {q['key']} 面: X の原本でしか確かめられない問いのうち {len(raw_asks) - len(asks)}件の形が崩れていて使えない"
+                              "(深掘りの機会を失う)", ok=False)
         if asks:
             deep[q["key"]] = asks
         shutil.rmtree(wd, ignore_errors=True)
     print(f"grok: 確かめ{suffix or ''} {len(jobs)}面 → 候補 {len(items)}件、原本の問い {sum(len(v) for v in deep.values())}件", flush=True)
+    if again:
+        print(f"grok: 結果の無い投稿が残った面 {', '.join(q['key'] for q in again)} を、残った投稿だけでもう1回確かめる", flush=True)
+        more, more_deep = verify_grok_faces(again, outdir, suffix=suffix + "-again")
+        items += more
+        for k, v in more_deep.items():
+            deep.setdefault(k, []).extend(v)
     return items, deep
+
+
+# 投稿の url の行。見本は `- url: …` だが、行頭の記号が抜けた・全角のコロンなどの崩れも投稿の区切りとして拾う
+# (区切りを取りこぼすと、その投稿は前の塊に吸われるか捨てられ、突き合わせから消える。監査指摘)。
+# 字下げした行(投稿に付いたリンクの一覧)は区切りにしない
+# 区切り(url の行があること)と値(その行の URL)は分けて読む: 値が空・不正でも url の行は投稿の区切り
+# (区切りにしないと、その投稿が前の投稿の塊に吸われ、前の投稿の結果で済みにされて消える。監査指摘)。
+# 値は同じ行の http(s) の URL だけ(空の url の行で次の行の文字を URL と読まない。監査指摘)
+POST_SPLIT_LINE = re.compile(r"(?m)^(?:[-*・][ \t]*)?url[ \t]*[:：]", re.I)
+POST_URL_LINE = re.compile(r"(?m)^(?:[-*・][ \t]*)?url[ \t]*[:：][ \t]*(https?://\S+)", re.I)
+X_STATUS = re.compile(r"https?://(?:www\.)?(?:x|twitter)\.com/\w+/status/\d+")
+
+
+def post_blocks(text: str) -> list[str]:
+    """Grok の書き出しを投稿ごとの塊に分ける。まず見出し(`### 番号`)で区切り、1つの区間に url の行が2つ以上あれば
+    url の行でさらに区切る(見出しの抜けた投稿)。url の行が無い区間は、番号の見出しで始まるか X の投稿の URL を含めば
+    url の無い塊として残す(url の行の抜けた投稿。突き合わせで必ず未処理になる)。位置(途中・末尾・先頭)に関係なく
+    同じ規則で拾う(前の投稿の塊に吸われて、その投稿の結果で済みにされて消えるのを防ぐ。監査指摘)。"""
+    # 投稿の中身(X の投稿 URL・投稿の欄)があるか。見出しは含めない(見出しだけの前置きを投稿にしない)
+    has_post = lambda s: bool(X_STATUS.search(s) or re.search(r"(?m)^\s*[-*・]?\s*(本文|投稿者|投稿日時)\s*[:：]", s))
+    out: list[str] = []
+    for seg in re.split(r"(?m)^(?=#{1,6}\s)", text):
+        seg = seg.strip()
+        if not seg:
+            continue
+        starts = [m.start() for m in POST_SPLIT_LINE.finditer(seg)]
+        if not starts:
+            # url の行の無い区間でも、投稿の中身・番号だけの見出しがあれば投稿として残す
+            # (見出しが「### 投稿2」のように番号で始まらない崩れも拾う。監査指摘)。題だけの見出し(# 765 面のまとめ)は投稿にしない
+            if re.match(r"#{1,6}[ \t]*\d+[.．)]?[ \t]*(\n|$)", seg) or has_post(seg):
+                out.append(seg)
+            continue
+        # 先頭の url の行より前は、見出しだけなら最初の塊に含め、投稿の中身があれば(見出しも url の行も無い投稿)別の塊にする
+        if has_post(seg[:starts[0]]):
+            out.append(seg[:starts[0]].strip())
+            cuts = starts
+        else:
+            cuts = [0] + starts[1:]
+        out += [seg[a:b].strip() for a, b in zip(cuts, cuts[1:] + [len(seg)])]
+    return out
+
+
+def post_url(block: str) -> str:
+    m = POST_URL_LINE.search(block)
+    return m.group(1) if m else ""
+
+
+def unaccounted_posts(text: str, results, written: list) -> list[str]:
+    """投稿の塊のうち、Luna の結果が済んでいないもの(読めなかった・結果に無い・形が崩れた)。
+    済んだとみなすのは none と、**実際に書かれた候補**(written = items.json の中身)を指す extracted だけ(「候補にした」と
+    言って候補を書いていない投稿を済みにしない。監査指摘)。結果の一覧そのものが読めなければ、全部の投稿が未処理。
+    書き出しが投稿に分けられない(形が崩れた)なら、書き出し全体を1つの未処理にする(黙って0件にしない。監査指摘)。"""
+    # 後段(normalize)で捨てられる形・事実の無い候補は「書かれた候補」に数えない(判定は candidate_usable で共有。監査指摘)
+    items = {x["url"].strip() for x in written or [] if candidate_usable(x)}
+    # 投稿1件ごとに結果を数え、**契約どおりの結果がちょうど1つ**ある投稿だけを済みにする
+    # (同じ投稿に none と unreadable が返る矛盾を、none で済みにしない。監査指摘)
+    # 形の検査(POST_RESULT_SCHEMA)より前に数える(崩れた結果も「同じ投稿への2つ目の結果」として矛盾に数える)
+    per_url: dict[str, list[dict]] = {}
+    for r in results if isinstance(results, list) else []:
+        if not (isinstance(r, dict) and isinstance(r.get("url"), str) and r["url"].strip()):
+            continue    # 空の url の結果は、どの投稿の結果にも数えない(url の無い塊を済みにしてしまう。監査指摘)
+        per_url.setdefault(r["url"].strip(), []).append(r)
+
+    def settled(r) -> bool:
+        # none は item が空、extracted は item が実際に書かれた候補の url(契約。依頼文 grok-verify 3b)
+        if not schema_ok(r, POST_RESULT_SCHEMA):
+            return False
+        return (r["status"] == "none" and not r["item"].strip()) or (r["status"] == "extracted" and r["item"].strip() in items)
+    done = {u for u, rs in per_url.items() if len(rs) == 1 and settled(rs[0])}
+    blocks = post_blocks(text)
+    if not blocks:
+        return [text] if text.strip() else []
+    return [b for b in blocks if not post_url(b) or post_url(b) not in done]     # url の無い塊は必ず未処理
 
 
 def grok_week_usage(now_ts: float | None = None) -> int:
@@ -645,8 +859,8 @@ def plan_deep_dive(deep: dict[str, list[dict]], budget: int) -> dict[str, list[d
     return chosen
 
 
-def deep_dive_grok(queries: list[dict], outdir: Path, chosen: dict[str, list[dict]], errs: dict) -> None:
-    """選んだ問いだけを、Grok に X の原本で調べさせる(<key>-deep.md に書き出す)。"""
+def deep_dive_grok(queries: list[dict], outdir: Path, chosen: dict[str, list[dict]], errs: dict) -> set[str]:
+    """選んだ問いだけを、Grok に X の原本で調べさせる(<key>-deep.md に書き出す)。戻りは正常に終わらなかった面。"""
     by_key = {q["key"]: q for q in queries}
     targets = []
     for key, asks in chosen.items():
@@ -658,7 +872,7 @@ def deep_dive_grok(queries: list[dict], outdir: Path, chosen: dict[str, list[dic
             QUESTIONS="\n".join(f"{i + 1}. {a['question']}(なぜ X の原本が要るか: {a.get('why') or '記載なし'})" for i, a in enumerate(asks))),
             encoding="utf-8")
         targets.append((q, pp))
-    run_grok_prompts(targets, errs)
+    return run_grok_prompts(targets, errs)
 
 
 def grok_scheduled_now(now=None) -> bool:
@@ -706,8 +920,10 @@ def collect_explore(key: str, proc, out_f, err_f, deadline: float) -> tuple[list
         else:
             err = text
     err = (err or "") + cut
+    save_raw(edition_date(), f"explore-{key}-{time.time_ns() % 10**6}", out, err, proc.returncode)   # 生の出力を必ず残す
     from pipelib import extract_json_array_strict
-    got = extract_json_array_strict(out)
+    # 打ち切り・異常終了の間際の出力は答えにしない(途中までの候補を「全部」と読まない。監査指摘)
+    got = extract_json_array_strict(out) if not cut and proc.returncode == 0 else None
     if got is None:
         # 「読めなかった」は「0件」と別の失敗。前置き・途中切れ・JSON 破損で調査結果が丸ごと
         # 消える経路なので、そう分かる形で残す(監査指摘 P1-5)
@@ -717,6 +933,15 @@ def collect_explore(key: str, proc, out_f, err_f, deadline: float) -> tuple[list
     elif not got:
         # 失敗の原因を捨てない(全滅したときに理由が分からなくなる)
         print(f"探索: {key} が0件 stderr: {err.strip()[-200:]}", flush=True)
+    else:
+        # 要素の形を揃える(null・崩れた要素で収集全体を止めない)。崩れた要素があれば「読めない出力」として記録する
+        # (面の取得の失敗として collect_health に上がる。監査指摘)
+        shaped = [s for s in (shape_item(x) for x in got) if s]
+        broken = sum(1 for x in got if not item_intact(x))     # 捨てた候補と、欄・要素を落として揃えた候補
+        if broken:
+            print(f"探索: {key} の候補 {broken}/{len(got)}件の形が崩れていた(捨てた・欄を落とした)", flush=True)
+            err = (err or "") + f"\n[出力が読めない] 形の崩れた候補 {broken}件"
+        got = shaped
     return got, err
 
 
@@ -752,11 +977,13 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
     # **探索は Grok より先に回収する。**後回しにすると、Grok が長引くあいだ
     # 探索プロセスが締切を超えて走り続けてしまう(監査指摘)
     for key, p, of, ef, wd in explore_procs:
-        got, _ = collect_explore(key, p, of, ef, explore_deadline)
+        got, err = collect_explore(key, p, of, ef, explore_deadline)
         for it in got:
             it["_via"] = "explore"
         items += got
         per[f"explore:{key}"] = len(got)
+        if "[出力が読めない]" in err or "[打ち切り]" in err:
+            per[f"explore_failed:{key}"] = 1     # 0件(正常な空振り)と取得の失敗を分ける(collect_health)
         shutil.rmtree(wd, ignore_errors=True)
 
     # -- Grok(X 動向) --
@@ -775,18 +1002,7 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         outdir.mkdir(parents=True, exist_ok=True)
         grok_errs: dict[str, str] = {}
         grok_started = time.time()
-        run_grok_faces(queries, outdir, grok_errs)
-        # まとめのファイルを残せなかった面(異常終了・時間切れ)は、「先に書く」順で1回だけやり直す
-        # (実測 2026-10-03: 学マスの面が打ち切られてファイルを書けず0件。公式Xの4コマ第174話を1日遅れで載せた)
-        missing = [q for q in queries if not grok_wrote(outdir, q)]
-        if missing:
-            print(f"grok: まとめを残せなかった面 {', '.join(q['key'] for q in missing)} をやり直す", flush=True)
-            run_grok_faces(missing, outdir, grok_errs, retry=True)
-            still = [q["key"] for q in missing if not grok_wrote(outdir, q)]
-            if still and len(still) < len(queries):     # 全面0件は下でまとめて上げる
-                notify("collect", f"Grok(X 調査)の {', '.join(still)} 面が、やり直してもまとめを残せなかった(その面の X の動きを丸ごと失う):\n"
-                                  + "\n".join(f"- {k}: {grok_errs.get(k, 'エラー出力なし')}" for k in still)
-                                  + "\n- セッション記録の失敗理由: " + grok_session_error(), ok=False)
+        grok_basic(queries, outdir, grok_errs)
         # Luna が面ごとに確かめて候補にする。X の原本でしか確かめられない問いは、予算を確かめて Grok に深掘りさせ、もう一度 Luna が確かめる
         got, deep = verify_grok_faces(queries, outdir)
         if deep:
@@ -797,10 +1013,21 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                   f"問い {sum(len(v) for v in deep.values())}件のうち {sum(len(v) for v in chosen.values())}件を調べる", flush=True)
             per["grok_week_searches"] = used
             if chosen:
-                deep_dive_grok(queries, outdir, chosen, grok_errs)
+                # 深掘りが時間切れ・異常終了した面(書き出しは退けてある)と、正常に終わったのに書き出しが無い・空の面は、
+                # 選んだ問いの確かめを失う。名指しで異常にする(判定は終了状態と書き出しの両方。監査指摘)
+                failed = deep_dive_grok(queries, outdir, chosen, grok_errs)
+                lost = sorted(failed | {k for k in chosen if not read_written(outdir / f"{k}-deep.md").strip()})
+                if lost:
+                    notify("collect", "Grok の深掘りが時間切れ・異常終了し、X の原本の確かめを失った面: "
+                                      + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost), ok=False)
                 more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen], outdir, suffix="-deep")
                 got += more
-        if not got:
+        # 全面が正常に終わって明示的に「なし」と書いた(エラー出力も無い)なら、正常な空振りで異常ではない(監査指摘)
+        explicit_none = not grok_errs and all(
+            re.fullmatch(r"(なし|見つからない)[。\s]*", read_written(outdir / f"{q['key']}.md").strip()) for q in queries)
+        if not got and explicit_none:
+            print("grok 0件(全面が正常に終わり「なし」)", flush=True)
+        elif not got:
             print("grok 0件", flush=True)
             # 全面0件を黙って流さない(2026-10-02: CLI が古く API に 426 で拒まれ、9面すべて0件。記録は「grok 0件」だけで、
             # 候補が半分以下になり号が16本に落ちたのに誰も気づかなかった)。面ごとのエラーと、Grok のセッション記録の失敗理由を添える
@@ -903,11 +1130,69 @@ def load_idol_brands() -> dict:
         return {}
 
 
+ITEM_STR_KEYS = ("title", "brand", "kind", "url", "event_date", "published_date", "deadline", "dedup_key", "engagement", "quote", "_via")
+
+
+def shape_item(it) -> dict | None:
+    """候補1件の形を揃える(文字列の欄は文字列に、facts・mentioned_idols は文字列の配列に)。使えない(dict でない・
+    url が不正)なら None。**正規化と、投稿・ページの突き合わせが同じ判定を使う**: 突き合わせで「候補を書いた」と
+    数えたのに正規化で捨てる、という食い違いを作らない(監査指摘 r3: 日付が数値の候補が例外で黙って消え、元の投稿は処理済みになった)。"""
+    if not isinstance(it, dict) or not clean_url(it.get("url") if isinstance(it.get("url"), str) else ""):
+        return None
+    s = {k: it[k] for k in ITEM_STR_KEYS if isinstance(it.get(k), str)}     # 文字列でない欄は無かったことにする(既定値が効く)
+    s["facts"] = [f for f in (it.get("facts") if isinstance(it.get("facts"), list) else []) if isinstance(f, str) and f.strip()]
+    s["mentioned_idols"] = [x for x in (it.get("mentioned_idols") if isinstance(it.get("mentioned_idols"), list) else [])
+                            if isinstance(x, str) and x.strip()]
+    return s
+
+
+# モデルの出力の契約(prompts/collect-item.md ほか)の形。**処理済みにしてよいかの判定は、この schema で検める**
+# (手で欄を1つずつ足すと、日付の形・真偽値の番号・重複など崩れ方が尽きなかった。2026-10-06 の監査)。
+# 文字列の欄の null は「空」で何も失わないので許す。日付は YYYY-MM-DD か空
+_S = {"type": ["string", "null"]}
+_DATE = {"anyOf": [{"type": "null"}, {"type": "string", "pattern": r"^(\d{4}-\d{2}-\d{2})?$"}]}
+ITEM_SCHEMA = {"type": "object", "required": ["url", "facts"],
+               "properties": {"url": {"type": "string", "minLength": 1}, "title": _S, "brand": _S, "kind": _S,
+                              "event_date": _DATE, "published_date": _DATE, "deadline": _DATE,
+                              # 空白だけの事実は正規化で消える(事実なしで処理済みにしない。監査指摘)
+                              "facts": {"type": "array", "items": {"type": "string", "pattern": r"\S"}, "minItems": 1},
+                              "quote": _S, "dedup_key": _S, "engagement": _S,
+                              "mentioned_idols": {"type": "array", "items": {"type": "string"}}}}
+WATCH_PAGE_SCHEMA = {"type": "object", "required": ["page", "status", "items"],
+                     "properties": {"page": {"type": "integer"}, "status": {"enum": ["extracted", "none", "unreadable"]},
+                                    "items": {"type": "array"}}}
+POST_RESULT_SCHEMA = {"type": "object", "required": ["url", "status", "item"],
+                      "properties": {"url": {"type": "string", "minLength": 1},
+                                     "status": {"enum": ["extracted", "none", "unreadable"]}, "item": {"type": "string"}}}
+DEEP_ASK_SCHEMA = {"type": "object", "required": ["question"],
+                   "properties": {"question": {"type": "string", "minLength": 1}, "why": _S}}
+
+
+def item_intact(it) -> bool:
+    """候補1件が依頼した形のまま(正規化で何も落とさない)か。ITEM_SCHEMA で検め、url は正規化できること。
+    shape_item は崩れた欄・要素を落として使える形に揃えるが、**落としたことは「処理済み」の根拠にしない**
+    (facts の要素が1つ崩れていても残りで「抽出した」となる・締切の形が崩れて正規化で消える、のまま既読・処理済みに
+    なる。監査指摘)。"""
+    return schema_ok(it, ITEM_SCHEMA) and shape_item(it) is not None
+
+
+def candidate_usable(it) -> bool:
+    """「候補を書いた」と数えてよいか: 依頼した形のまま(item_intact。事実 facts が1件以上ある)。
+    url だけの候補を指して「抽出した」とされたページ・投稿を処理済みにしない(事実を抽出していないのに既読になる。監査指摘)。
+    形の検査であって、事実の中身は見ない。"""
+    return item_intact(it)
+
+
 def normalize(items: list[dict]) -> list[dict]:
     out, seen_url = [], {}
     ts = now_jst().isoformat(timespec="seconds")
     idols = load_idol_brands()
-    for i, it in enumerate(items):
+    for i, raw in enumerate(items):
+        it = shape_item(raw)
+        if it is None:
+            if isinstance(raw, dict) and raw.get("url"):
+                print(f"候補の URL を捨てた(形が不正): {str(raw.get('url'))[:80]!r}", flush=True)
+            continue
         try:
             # URL は pipelib.clean_url(唯一の入口)で正規化する。探索の出力は末尾に改行やゴミ(`\n-`)を
             # 付けてくる(実測 2026-09-15: 50件)。使えない形は捨てて理由を残す(黙って切り詰めない)
@@ -952,13 +1237,24 @@ def normalize(items: list[dict]) -> list[dict]:
                 v = (it.get(k) or "").strip()
                 if re.match(r"^\d{4}-\d{2}-\d{2}$", v):
                     c[k] = v
-            if url in seen_url:  # URL 重複は facts をマージ
+            # 出典ページからの写し(verify が本文と照らして URL の取り違えを捕まえる)
+            if isinstance(it.get("quote"), str) and it["quote"].strip():
+                c["quotes"] = [it["quote"].strip()[:200]]
+            if url in seen_url and not c.get("quotes") and not seen_url[url].get("quotes"):  # URL 重複は facts をマージ
                 tgt = seen_url[url]
                 tgt["facts"] = list(dict.fromkeys(tgt["facts"] + c["facts"]))
                 continue
+            if url in seen_url:
+                # 写しのある候補は、裏取り(写しの照合)の**前に**混ぜない。取り違えた候補の事実と写しを混ぜると、
+                # このページの正しい候補まで failed になる(監査指摘)。別の候補として裏取りし、日別ファイルへ入れるときに結合する
+                out.append(c)
+                continue
             seen_url[url] = c
             out.append(c)
-        except Exception:
+        except Exception as e:
+            # 形は shape_item で揃えてあるので、ここに来るのはコードの欠陥。黙って捨てない
+            print(f"候補を正規化できずに捨てた({type(e).__name__}: {e}): {it.get('url')[:80]!r}", flush=True)
+            anomaly("collect", f"候補を正規化できずに捨てた({type(e).__name__}: {e}): {it.get('url')}")
             continue
     return out
 
@@ -1044,8 +1340,32 @@ def verify(cands: list[dict]) -> dict:
                                                       html_to_text(rendered.encode("utf-8", "replace")))
                     if unbacked:
                         c["unbacked_facts"] = unbacked[:12]
+                    # **写しがそのページに無ければ、URL の取り違え。**事実は別のページのもので、この候補には出典が無い。
+                    # 使わせない(failed)。日付・金額の粒は近い記事どうしで重なるので、粒の照合だけでは通ってしまう
+                    # (2026-09-28〜10-01 の noctchill / Master ShowPiece)。描画しないと本文が出ないページがあるので、
+                    # 無かったときだけ描画して確かめ直す
+                    quotes = c.get("quotes") or []
+                    missing = [q for q in quotes if quote_on_page(q, text) is False]
+                    matched = any(quote_on_page(q, text) for q in quotes)
+                    if missing:
+                        rendered = fetch_rendered(c["url"])
+                        if rendered:
+                            rtext = html_to_text(rendered.encode("utf-8", "replace"))
+                            missing = [q for q in missing if quote_on_page(q, rtext) is False]
+                            matched = matched or any(quote_on_page(q, rtext) for q in quotes)
+                    if missing:
+                        c["verify"] = "failed"
+                        c["verify_note"] = f"写しが出典の本文に無い(URL の取り違えの疑い): {missing[0][:60]}"
+                        counts["failed"] += 1
+                        print(f"  裏取り: {c['url']} に写しが無い → 使わない({c.get('title')})", flush=True)
+                        continue
+                    # URL をモデルが選んだ候補(探索・Grok の確かめ)で、照合できる写しが無ければ、URL の取り違えを確かめられて
+                    # いない。confirmed を名乗らせない(未確認として記録する。採否は選定・校閲のモデル。監査指摘)。
+                    # 定点観測の候補は URL を巡回先からコードが決めるので要らない
+                    if c.get("via") != "watch" and not matched:
+                        c["verify_note"] = "出典ページからの写しが無い・短すぎて、URL の取り違えを確かめられない"
                 good_type = c["source_type"] in GOOD_SOURCE_TYPES
-                c["verify"] = ("confirmed" if ok and good_type and not c.get("unbacked_facts")
+                c["verify"] = ("confirmed" if ok and good_type and not c.get("unbacked_facts") and not c.get("verify_note")
                                else ("unconfirmed" if ok else "failed"))
         except Exception:
             c["verify"] = "failed"
@@ -1063,9 +1383,19 @@ def merge_into_day_file(cands: list[dict], day: str) -> int:
     existing = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
     by_url = {c["url"]: c for c in existing}
     added = 0
-    for c in cands:
+    # 写しの照合で落ちた候補(URL の取り違え)は、事実がこのページのものではない。このページの候補へ混ぜない
+    # (混ぜると「弱いほうを採る」でこのページの正しい候補まで failed になる。監査指摘)。正しい候補を先に入れ、
+    # 落ちた候補は同じ URL の候補が無いときだけ記録として残す。既にあるのが落ちた候補なら、正しい候補で置き換える
+    misplaced = lambda x: bool(x.get("quotes")) and str(x.get("verify_note") or "").startswith("写しが出典の本文に無い")
+    for c in sorted(cands, key=misplaced):
         if c["url"] in by_url:
             tgt = by_url[c["url"]]
+            if misplaced(c):
+                continue
+            if misplaced(tgt):
+                existing[existing.index(tgt)] = c
+                by_url[c["url"]] = c
+                continue
             merged = list(dict.fromkeys(tgt.get("facts", []) + c["facts"]))
             if len(merged) > len(tgt.get("facts", [])):
                 tgt["facts"] = merged
@@ -1180,7 +1510,14 @@ def main() -> int:
     skipped = [n for n, on in (("watch", args.skip_watch), ("explore", args.skip_explore),
                                ("grok", args.skip_grok)) if on]
     if added == 0 and not skipped:
-        notify("collect", f"{summary} — 新規0件", ok=False)
+        # 0件そのものは異常ではない(全系統が正常に動き、拾ったものが既知だった回もある。当番の指摘 3e0904d4fe:
+        # 2026-10-05 18:33 は全9系統が取得に成功し、探索の結果も既存の候補だけだったのに異常として当番まで起動した)。
+        # 取得に失敗した系統があるときだけ、その内訳を添えて異常にする
+        failed = collect_health(watch_info, per_query)
+        if failed:
+            notify("collect", f"{summary} — 新規0件。取得に失敗した系統がある:\n- " + "\n- ".join(failed), ok=False)
+        else:
+            print(f"新規0件(全系統の取得は正常。拾ったもの {len(cands)}件はすべて既知だった)", flush=True)
     elif added == 0:
         print(f"新規0件({'/'.join(skipped)} を手動でスキップ中のため通知しない)", flush=True)
     # 当番の拾い直しで、読めないバッチが残った(=諦めずに繰り越した)場合は、直しが効いていない。

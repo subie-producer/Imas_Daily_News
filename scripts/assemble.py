@@ -35,7 +35,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import renderlib
 from pipelib import (ROOT, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, COMPOSE_WAVE, classify_source,
-                     claude_traced, extract_json_array, notify, prompt_file, render_prompt)
+                     anomaly, claude_traced, extract_json_array, loads_strict, notify, prompt_file, render_prompt, schema_ok)
 
 POSTS = ROOT / "docs" / "_posts"
 EDITIONS = ROOT / "docs" / "_editions"
@@ -77,14 +77,22 @@ def load_materials(date: str) -> dict[str, dict]:
 
 
 def load_yaml_list(p: Path) -> list:
+    """台帳・控えを読む。無いファイルは0件。**有るのに空・配列でないファイルは0件にしない**(書き込みの途中で
+    止まって空になった控えを「追跡事項0件」と読み、台帳を空で上書きする。監査指摘)。0件は dump_yaml が `[]` と書く。"""
     if not p.exists():
         return []
-    return yaml.safe_load(p.read_text(encoding="utf-8")) or []
+    v = yaml.safe_load(p.read_text(encoding="utf-8"))
+    if not isinstance(v, list):
+        raise ValueError(f"{p} が読めない(空・配列でない)。書き込みの途中で止まった可能性がある")
+    return v
 
 
 def dump_yaml(p: Path, data, header: str = "") -> None:
+    """一時ファイルに書いてから置き換える(途中で止まっても、空や半端なファイルを残さない)。"""
     text = yaml.safe_dump(data, allow_unicode=True, sort_keys=False, width=200)
-    p.write_text((header + "\n" if header else "") + text, encoding="utf-8")
+    tmp = p.with_name(p.name + ".tmp")
+    tmp.write_text((header + "\n" if header else "") + text, encoding="utf-8")
+    tmp.replace(p)
 
 
 def primary_key(fm: dict, mats: dict) -> str:
@@ -224,23 +232,30 @@ def run_session(text: str, date: str, name: str, schema: str, budget=None) -> di
         if n > 1 and wait < 300:
             fails.append(f"{n}回目: 残り {wait} 秒ではやり直せない")
             break
+        # 経過の記録は上書きしない(同じ号の組み直しで前の回の記録が消えると、失敗の原因を追えない。監査指摘)
+        trace = ROOT / "metrics" / "work" / (date or "assemble") / f"{name}-trace-{n}.jsonl"
+        k = 2
+        while trace.exists():
+            trace = trace.with_name(f"{name}-trace-{n}-{k}.jsonl")
+            k += 1
         # 道具は Read だけ。判断に要るものは指示ファイルに全部あり、探し物・検索・下請けに時間を使わせない
         r = claude_traced([ask, "--model", CLAUDE_MODEL, "--json-schema", schema, "--tools", "Read",
                            "--dangerously-skip-permissions", "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                          ROOT / "metrics" / "work" / (date or "assemble") / f"{name}-trace-{n}.jsonl",
-                          timeout=min(SESSION_CAP, wait))
+                          trace, timeout=min(SESSION_CAP, wait))
         print(f"  組版 {name} {n}回目: {r['summary'][:400]}", flush=True)
         # 答えを採るのは**正常に終わったセッションだけ**。時間切れ・異常終了の間際に出た出力は採らない(監査指摘)
         out = r["structured"] if r["ok"] else None
         if r["ok"] and not isinstance(out, dict):
             m = re.search(r"\{.*\}", r["result"] or "", re.S)
             try:
-                out = json.loads(m.group(0)) if m else None
+                out = loads_strict(m.group(0)) if m else None
             except ValueError:
                 out = None
-        if isinstance(out, dict):
+        # 採るのは、渡した schema どおりの答えだけ(本文の JSON を拾う経路では形が守られない。{"digest":[null]} で
+        # 検算が止まる・{} が空の digest として補われる、を防ぐ。崩れた答えは答えなしとしてやり直す。監査指摘)
+        if isinstance(out, dict) and schema_ok(out, schema):
             return out
-        fails.append(f"{n}回目: {r['summary'][:500]}")
+        fails.append(f"{n}回目: {r['summary'][:500]}" + ("" if out is None else "(答えが schema のとおりでない)"))
     raise RuntimeError(f"組版セッション({name})が答えを返さなかった: " + " || ".join(fails))
 
 
@@ -264,7 +279,87 @@ def judge(date: str, inp: dict, budget=None) -> dict:
     with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, min(len(jobs), COMPOSE_WAVE))) as ex:
         futs = [ex.submit(run_session, text, date, name, schema, budget) for name, text, schema in jobs]
         outs = [f.result() for f in futs]        # 1本でも答えが無ければ、その経過を付けて上がる
-    return merge_judgments(inp, chunks, outs[0], outs[1:])
+    ledger_outs = outs[1:]
+    # **記事ごとの答えを入力と突き合わせる。**stories は記事ごとに必ず1件の契約なので、stories の無い記事は
+    # その組の答えが途中で切れている。そのまま採ると、その記事の続報予約・日付未確定の追跡が「無し」と区別できずに消える
+    # (2026-10-06 の洗い出しで判明: 空の答えを『判断した・何も無い』と解釈する型。予約が消えると期日の知らせの記事が出ない)。
+    # 答えの無い記事だけで1回やり直し、それでも無ければ記事を名指しして異常に上げる(stories は validate が見出しで補う)
+    left = uncovered_articles(chunks, ledger_outs)
+    if left:
+        print(f"  組版: 台帳の答えが無い記事 {len(left)}本をやり直す: {', '.join(a.get('slug') or '' for a in left)}", flush=True)
+        try:
+            again = run_session(prompt_ledger(date, inp, left), date, "assemble-ledger-again", sub_schema(LEDGER_KEYS), budget)
+            chunks, ledger_outs = chunks + [left], ledger_outs + [again]
+        except RuntimeError as e:
+            print(f"  組版: やり直しも答えなし: {e}", flush=True)
+        still = uncovered_articles(chunks, ledger_outs)
+        if still:
+            anomaly("compose", f"組版: 台帳の判断(既報・続報予約・日付未確定の追跡)が、やり直しても返らなかった記事 {len(still)}本。"
+                               "既報は見出しで補うが、続報予約と追跡はこの記事の分が無い:\n"
+                               + "\n".join(f"- {a.get('slug')}: {a.get('title')}" for a in still))
+    return merge_judgments(inp, chunks, outs[0], ledger_outs)
+
+
+def _ledger_validator():
+    from jsonschema import Draft202012Validator
+    return Draft202012Validator(json.loads(sub_schema(LEDGER_KEYS)))
+
+
+def story_row_ok(r) -> bool:
+    """stories の1行が出力 schema(schema/assemble.schema.json)の形をしているか。形だけを見る。
+    slug だけの行を「この記事は判断済み」の根拠にしない(監査指摘)。"""
+    v = _ledger_validator()
+    return v.evolve(schema=v.schema["properties"]["stories"]["items"]).is_valid(r)
+
+
+def ledger_out_ok(o) -> bool:
+    """台帳の答えが出力 schema のとおりか(4項目・各要素の欄と型・日付の形・列挙)。セッションは --json-schema で
+    答えるが、構造化出力が無いときは本文の JSON を拾う経路があり、そこでは形が守られない。手で欄を1つずつ足して
+    検めると漏れが残る(監査で配列そのもの→要素→要素の欄と、崩れ方が尽きなかった)ので、schema そのもので検める。
+    崩れた答えは判断済みの根拠にも、まとめ(merge_judgments)にも使わない(崩れた欄で検算が止まる・辞書のキーを
+    削除の指示と読む。監査指摘)。"""
+    return _ledger_validator().is_valid(o)
+
+
+def single_story_rows(o: dict, mine: set) -> dict[str, dict]:
+    """1つの答えの stories から、渡した記事(mine)ごとに**ちょうど1行**の、形の揃った行を返す。
+    同じ記事に2行(published_facts が F1 と F2 など)は契約違反(記事ごとに1件)で、どちらかを黙って捨てずに答えなしにする
+    (やり直し・異常へ。数えるのは形の検査より前。監査指摘)。"""
+    rows = [r for r in (o.get("stories") or []) if isinstance(r, dict)]
+    count: dict = {}
+    for r in rows:
+        count[r.get("slug")] = count.get(r.get("slug"), 0) + 1
+    return {r["slug"]: r for r in rows if story_row_ok(r) and r["slug"] in mine and count[r["slug"]] == 1}
+
+
+def twice_pending_keys(o: dict) -> set:
+    """1つの答えの pending_add で、同じ dedup_key に2行以上ある key。どちらかを黙って選ぶと、もう片方の追跡事項が
+    消える(watch が「Aの日程」「Bの日程」など)。その記事は答えなしとしてやり直し、残れば異常にする(監査指摘)。"""
+    count: dict = {}
+    for r in o.get("pending_add") or []:
+        if isinstance(r, dict):
+            count[r.get("dedup_key")] = count.get(r.get("dedup_key"), 0) + 1
+    return {k for k, n in count.items() if n > 1}
+
+
+def uncovered_articles(chunks: list[list[dict]], ledger_outs: list[dict]) -> list[dict]:
+    """どの組の答えにも形の揃った stories の行が無い記事(その組に渡した記事に限って数える)。
+    台帳の4項目(stories・reservations・pending_add・pending_remove)が配列で揃っていない答えは、その組の記事を
+    どれも判断済みにしない(予約・追跡に答えていないのに「無し」として進めない。明示の [] とは区別する。監査指摘)。"""
+    covered = set()
+    for ch, o in zip(chunks, ledger_outs):
+        if not ledger_out_ok(o):
+            continue
+        twice = twice_pending_keys(o)
+        covered |= {s for s in single_story_rows(o, {a.get("slug") for a in ch})
+                    if not any(a.get("slug") == s and a.get("dedup_key") in twice for a in ch)}
+    seen, out = set(), []
+    for ch in chunks:
+        for a in ch:
+            if a.get("slug") not in covered and a.get("slug") not in seen:
+                seen.add(a.get("slug"))
+                out.append(a)
+    return out
 
 
 def merge_judgments(inp: dict, chunks: list[list[dict]], digest_out: dict, ledger_outs: list[dict]) -> dict:
@@ -284,27 +379,39 @@ def merge_judgments(inp: dict, chunks: list[list[dict]], digest_out: dict, ledge
     pending_add: dict[str, dict] = {}
     removed: set[str] = set()
     for ch, o in zip(chunks, ledger_outs):
+        if not ledger_out_ok(o):
+            print(f"  組版: 形の崩れた台帳の答えをまとめに使わない(記事 {', '.join(str(a.get('slug')) for a in ch)})", flush=True)
+            continue
         mine = {a.get("slug") for a in ch}
         keys = {a.get("dedup_key") for a in ch}
-        for row in o.get("stories") or []:
-            slug = row.get("slug") if isinstance(row, dict) else None
-            if slug not in mine:
-                print(f"  組版: 渡していない記事の stories を捨てた({slug!r})", flush=True)
-            else:
-                stories[slug] = _pick(stories.get(slug), row)
+        # 採るのは、その組に渡した記事ごとにちょうど1行の、形の揃った行だけ(single_story_rows)。形の崩れた行・同じ記事への
+        # 2行・渡していない記事の行は採らない(崩れた行が辞書順で勝って検算が止まる・事実の片方を黙って捨てる。監査指摘)。
+        # 1行も残らなければ validate が見出しで補う。別の組(やり直し)の行どうしは _pick で決める
+        single = single_story_rows(o, mine)
+        dropped_rows = len([r for r in (o.get("stories") or []) if not (isinstance(r, dict) and single.get(r.get("slug")) is r)])
+        if dropped_rows:
+            print(f"  組版: stories の行 {dropped_rows}件を採らなかった(形の崩れ・同じ記事に2行・渡していない記事)", flush=True)
+        for slug, row in single.items():
+            stories[slug] = _pick(stories.get(slug), row)
         for row in o.get("reservations") or []:
             slug = row.get("slug") if isinstance(row, dict) else None
             if slug not in mine:
                 print(f"  組版: 渡していない記事の reservations を捨てた({slug!r})", flush=True)
             elif row not in reservations:
                 reservations.append(row)
+        twice = twice_pending_keys(o)
         for row in o.get("pending_add") or []:
             key = row.get("dedup_key") if isinstance(row, dict) else None
             if key not in keys:
                 print(f"  組版: 渡していない記事の pending_add を捨てた({key!r})", flush=True)
+            elif key in twice:
+                # 同じ答えに同じ key の行が2つ: どちらかを黙って選ばない(その記事はやり直し・異常へ。twice_pending_keys)
+                print(f"  組版: 同じ追跡事項に2行ある pending_add を採らなかった({key!r})", flush=True)
             else:
                 pending_add[key] = _pick(pending_add.get(key), row)
-        removed |= {str(x) for x in o.get("pending_remove") or []}
+        # 同じ答えで追跡事項の追加が2行に割れて無効になった key は、その答えの削除も採らない(追加を捨てて削除だけ残すと、
+        # 既存の追跡事項が消えて代わりも残らない。監査指摘)
+        removed |= {str(x) for x in o.get("pending_remove") or [] if x not in twice}
     reservations.sort(key=lambda r: (order[r["slug"]], str(r.get("date") or ""), str(r.get("kind") or ""),
                                      str(r.get("subject") or ""), str(r.get("candidate_id") or ""), str(r.get("note") or "")))
     return {"digest": digest_out.get("digest") or [],

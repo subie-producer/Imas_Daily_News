@@ -8,6 +8,7 @@
  "published_date": "情報の初出日(ページの掲載日・投稿日)YYYY-MM-DD か空文字",
  "deadline": "締切・終了日 YYYY-MM-DD か空文字",
  "facts": ["確認できた事実(1事実1要素)"],
+ "quote": "url のページ本文から、この話題を示す1文をそのまま写す(30〜120字。言い換えない)",
  "dedup_key": "英小文字とハイフンの話題 ID(毎年ある定例企画は年を含める。例: shiny-summer-pair-2026)",
  "engagement": "高|中|低",
  "mentioned_idols": ["言及されたアイドル名"]}

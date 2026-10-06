@@ -47,7 +47,8 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, classify_retag_lint, classify_source, commit_and_push,
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
-                     notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies)
+                     notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
+                     partial_output, reap, loads_strict, schema_ok, read_for_raw)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
 # 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
@@ -660,20 +661,40 @@ def run_assemble(date: str, number: int) -> None:
 
 
 def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str:
-    r = subprocess.run(
-        ["claude", "-p", prompt_file(edition_date(), "claude-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt),
-         "--model", model or CLAUDE_MODEL, "--dangerously-skip-permissions",
-         "--max-budget-usd", COMPOSE_WHOLE_MAX_BUDGET_USD],
-        capture_output=True, text=True, timeout=remaining_seconds(cap=timeout), stdin=subprocess.DEVNULL, cwd=ROOT)
+    try:
+        r = subprocess.run(
+            ["claude", "-p", prompt_file(edition_date(), "claude-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt),
+             "--model", model or CLAUDE_MODEL, "--dangerously-skip-permissions",
+             "--max-budget-usd", COMPOSE_WHOLE_MAX_BUDGET_USD],
+            capture_output=True, text=True, timeout=remaining_seconds(cap=timeout), stdin=subprocess.DEVNULL, cwd=ROOT)
+    except subprocess.TimeoutExpired as e:
+        save_raw(edition_date(), f"claude-run-{time.time_ns() % 10**9}", *partial_output(e))   # 時間切れの回の出力も残す
+        raise
     # **予算切れは黙って通り過ぎていた。**組版セッションが途中で打ち切られ、
     # digest と台帳が半端なまま lint が16件赤くなった日がある(2026-08-31)。
     # 戻り値を見ないので呼び出し側は気づけない。ここで鳴らす
+    save_raw(edition_date(), f"claude-run-{time.time_ns() % 10**9}", r.stdout, r.stderr, r.returncode)
     out = (r.stdout or "") + (r.stderr or "")
     if "Exceeded USD budget" in out or r.returncode != 0:
+        # 途中で終わったセッションの出力は答えにしない(異常終了の間際の出力を「直すものなし」などと読まない。監査指摘)。
+        # 呼び出し側が「答えが無い」として扱う(やり直し・異常)
         why = "予算上限に到達" if "Exceeded USD budget" in out else f"exit {r.returncode}"
-        notify("compose", f"Claude セッションが途中で終了({why})。"
-                          f"この工程の成果物は不完全な可能性がある:\n{out.strip()[-300:]}", ok=False)
+        raise RuntimeError(f"Claude セッションが途中で終了({why}): {out.strip()[-300:]}")
     return r.stdout
+
+
+def log_of(out_path: Path) -> Path:
+    """Codex の最終メッセージの一時ファイルに対応する、進行ログの一時ファイル。"""
+    return Path(str(out_path) + ".log")
+
+
+def take_log(out_path: Path) -> str:
+    """進行ログを読んで消す(無ければ空)。"""
+    lp = log_of(out_path)
+    try:
+        return lp.read_text(encoding="utf-8", errors="replace") if lp.exists() else ""
+    finally:
+        lp.unlink(missing_ok=True)
 
 
 def codex_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str:
@@ -682,17 +703,21 @@ def codex_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str
     fd, out_name = tempfile.mkstemp(prefix="codexrun-", suffix=".txt")
     os.close(fd)
     out_path = Path(out_name)
+    so, se, code = "", "", None
     try:
-        subprocess.run(
+        r = subprocess.run(
             ["codex", "exec", "-m", model or CODEX_WRITE_MODEL, "-s", "workspace-write",
              "--output-last-message", str(out_path),
              prompt_file(edition_date(), "codex-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt)],
-            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            capture_output=True, text=True,
             timeout=remaining_seconds(cap=timeout), stdin=subprocess.DEVNULL, cwd=ROOT)
-    except subprocess.TimeoutExpired:
-        pass
+        so, se, code = r.stdout, r.stderr, r.returncode
+    except subprocess.TimeoutExpired as e:
+        so, se = partial_output(e)
     text = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
     out_path.unlink(missing_ok=True)
+    # 最終メッセージに加え、進行ログ(標準出力・エラー)と終了状態も残す(時間切れの回も)
+    save_raw(edition_date(), f"codex-run-{time.time_ns() % 10**9}", so, se, code, files={"last-message": text})
     return text
 
 
@@ -726,10 +751,36 @@ def repair_invalid_ids(date: str, plan: dict, cands: dict) -> list[str]:
         "- **見出しと面が明らかに同じ素材を指しているものだけ**直すこと。\n"
         "- 対応する素材が見当たらないものは、その要素を出力しない(推測で埋めない)。\n"
         "- 直すものが1つも無ければ `[]` とだけ出力する。")
-    try:
-        got = extract_json_array(claude_run(prompt, timeout=600, model=REVIEW_MODEL)) or []
-    except Exception as e:
-        print(f"候補IDの修復に失敗(そのまま外す): {e}", flush=True)
+    # 読めない答えを「直すものなし([])」と取り違えない(読めないのに記事を外していた。2026-10-06 の洗い出しで判明)。
+    # 読めなければもう1回だけ聞き、それでも読めなければ、外される記事を異常として上げる
+    from pipelib import extract_json_array_strict
+    # 要素の形と対応も見る(null・欄の欠け・空の修復先・依頼していない (slug, old)・実在しない修復先・同じ対象への2つの
+    # 答えは読めない答え。明示の [] だけが「直すものなし」。監査指摘)
+    def shaped(v) -> bool:
+        if v is None:
+            return False
+        seen = set()
+        for r in v:
+            if not (isinstance(r, dict) and all(isinstance(r.get(k), str) and r[k] for k in ("slug", "old", "new"))):
+                return False
+            if r["old"] not in bad.get(r["slug"], []) or r["new"] not in cands or (r["slug"], r["old"]) in seen:
+                return False
+            seen.add((r["slug"], r["old"]))
+        return True
+    got = None
+    for _ in range(2):
+        try:
+            got = extract_json_array_strict(claude_run(prompt, timeout=600, model=REVIEW_MODEL))
+        except Exception as e:
+            print(f"候補IDの修復のセッションが失敗: {e}", flush=True)
+            got = None
+        if not shaped(got):
+            got = None
+        if got is not None:
+            break
+    if got is None:
+        anomaly("compose", "実在しない候補 ID の修復の答えが2回とも読めなかった。次の記事は修復されないまま外される: "
+                           + ", ".join(bad))
         return []
     by_slug = {a["slug"]: a for a in plan.get("articles") or []}
     fixed = []
@@ -907,6 +958,7 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
     results: dict[str, dict] = {}
     claimed: list[dict] = []
     taken: set[str] = set()   # slug は号内で一意。面をまたいでコードが付ける
+    plan_schemas: dict[str, dict] = {}
     groups = []
     for stage in order:
         present = [b for b in stage if b in by_brand]
@@ -924,25 +976,42 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
             # 漏れを別セッションで拾い直していた(監査指摘 P1-1/P1-2)
             keys = [s["dedup_key"] for s in by_brand[b]]
             schema = planlib.plan_schema(keys, b, [c.get("slug") for c in claimed])
+            plan_schemas[b] = schema          # 答えを検めるときに、その面に渡した schema を使う
             procs.append((b, out, subprocess.Popen(
                 ["claude", "-p", prompt_file(date, f"plan-{b}", prompt), "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
                  "--json-schema", json.dumps(schema, ensure_ascii=False),
                  "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-                stdin=subprocess.DEVNULL, cwd=ROOT)))
+                stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True)))
         for b, out, p in procs:
+            timed_out = False
             try:
                 so, se = p.communicate(timeout=remaining_seconds())
             except subprocess.TimeoutExpired:
-                p.kill()
-                so, se = "", "時間切れ"
+                # 子も含めて落とし、時間切れまでに出ていた出力を上限つきで回収する(原因を追えるように)
+                (so, se), timed_out = reap(p), True
+            save_raw(date, f"plan-{b}", so, se, p.returncode)
             try:
+                if timed_out or p.returncode != 0:
+                    # 途中までの出力・異常終了の間際の出力は判定に使わない(その面の主題は取りこぼしとして拾い直す)
+                    raise TimeoutError("時間切れ" if timed_out else f"exit {p.returncode}")
                 text = (so or "").strip()
+                # 同じ主題のキーが2回ある答えは読めない(後の判定で黙って上書きされる。loads_strict。監査指摘)
                 try:
-                    ans = json.loads(text)
-                except Exception:
-                    ans = json.loads(re.search(r"\{.*\}", text, re.S).group(0))
-                results[b] = planlib.decisions_to_plan(b, by_brand[b], ans.get("decisions") or {}, taken)
+                    ans = loads_strict(text)
+                except json.JSONDecodeError:
+                    ans = loads_strict(re.search(r"\{.*\}", text, re.S).group(0))
+                if not isinstance(ans, dict):
+                    raise ValueError("答えが JSON の object でない")
+                if not isinstance(ans.get("decisions"), dict):
+                    raise ValueError("判定(decisions)が無い")   # 空の判定を「全部不採用」にしない(下で取りこぼしとして拾い直す)
+                # 判定は1主題ずつ schema(planlib.plan_schema)で検め、形の崩れた判定は「判定なし」にする(その主題だけ
+                # 取りこぼしとして拾い直す。崩れた1件で面全体を落とさない・崩れた値で計画を作らない。監査指摘)
+                from jsonschema import Draft202012Validator
+                per_key = plan_schemas[b]["properties"]["decisions"]["properties"]
+                ans["decisions"] = {k: d for k, d in ans["decisions"].items()
+                                    if k in per_key and Draft202012Validator(per_key[k]).is_valid(d)}
+                results[b] = planlib.decisions_to_plan(b, by_brand[b], ans["decisions"], taken)
                 out.write_text(json.dumps({"decisions": ans.get("decisions"), "plan": results[b]},
                                           ensure_ascii=False, indent=1), encoding="utf-8")
             except Exception as e:
@@ -1034,15 +1103,26 @@ def pick_lead(date: str, plan: dict) -> None:
                          "properties": {"lead_slug": {"enum": slugs}}}, ensure_ascii=False)
     pick = {}
     try:
-        r = subprocess.run(["claude", "-p", prompt_file(date, "lead", lead_prompt(date, arts)), "--model", CLAUDE_MODEL,
-                            "--json-schema", schema, "--dangerously-skip-permissions",
-                            "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                           capture_output=True, text=True, timeout=remaining_seconds(cap=600), stdin=subprocess.DEVNULL, cwd=ROOT)
+        try:
+            r = subprocess.run(["claude", "-p", prompt_file(date, "lead", lead_prompt(date, arts)), "--model", CLAUDE_MODEL,
+                                "--json-schema", schema, "--dangerously-skip-permissions",
+                                "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+                               capture_output=True, text=True, timeout=remaining_seconds(cap=600), stdin=subprocess.DEVNULL, cwd=ROOT)
+        except subprocess.TimeoutExpired as e:
+            save_raw(date, "lead", *partial_output(e))     # 時間切れの回も、それまでの出力を残す
+            raise
+        save_raw(date, "lead", r.stdout, r.stderr, r.returncode)
+        if r.returncode != 0:
+            raise RuntimeError(f"exit {r.returncode}")
         text = (r.stdout or "").strip()
-        pick = json.loads(text) if text.startswith("{") else json.loads(re.search(r"\{.*\}", text, re.S).group(0))
+        pick = loads_strict(text) if text.startswith("{") else loads_strict(re.search(r"\{.*\}", text, re.S).group(0))
+        # 渡した schema どおりでない答え({"lead_slug": []} など)は使わず、下の機械のフォールバックへ(監査指摘)
+        if not schema_ok(pick, schema):
+            raise ValueError("答えが schema のとおりでない")
         (ROOT / "metrics" / f"plan-lead-{date}.json").write_text(json.dumps(pick, ensure_ascii=False), encoding="utf-8")
     except Exception as e:
-        print(f"一面の選定セッションが答えを返さなかった({type(e).__name__})", flush=True)
+        pick = {}
+        print(f"一面の選定セッションが答えを返さなかった({type(e).__name__}: {str(e)[:80]})", flush=True)
     by_slug = {a["slug"]: a for a in arts}
     lead = by_slug.get(pick.get("lead_slug"))
     if lead is None or lead.get("rank") == "roundup":
@@ -1075,6 +1155,23 @@ def missing_plan_prompt(date: str, rows: list[dict], existing: list[dict]) -> st
     return render_prompt("plan-missing", DATE=date, N=len(rows), RULES=plan_rules(), EXISTING=ex)
 
 
+# 拾い直し(prompts/plan-missing.md「4. 出力」)の1要素の形。形だけを見る(どれを選ぶかの判断はモデル)
+# 記事の slug と candidate_ids はコードが付ける(下の replan_missing)ので、答えには求めない
+_STR = {"type": "string", "minLength": 1}
+MISSING_ROW_SCHEMA = {
+    "articles": {"type": "object", "required": ["brand", "rank", "angle", "lead_score", "dedup_key"],
+                 "properties": {"brand": {"enum": sorted(BRANDS)}, "rank": {"enum": ["large", "medium", "small"]},
+                                "angle": {"type": "string"}, "lead_score": {"type": "integer", "minimum": 0, "maximum": 100},
+                                "dedup_key": _STR}},
+    "merge_into": {"type": "object", "required": ["slug", "dedup_key"],
+                   "properties": {"slug": _STR, "dedup_key": _STR}},
+    "dropped": {"type": "object", "required": ["dedup_key", "brand", "reason"],
+                "properties": {"dedup_key": _STR, "brand": {"enum": sorted(BRANDS)}, "note": {"type": "string"},
+                               # 依頼文の理由の列挙のとおり(空白・未知の理由の不採用で主題を消さない。監査指摘)
+                               "reason": {"enum": ["既報", "過年度", "同人・ファン主催", "個人の話題", "重複", "出典不足", "アイマス外", "その他"]}}},
+}
+
+
 def replan_missing(date: str, plan: dict, by_brand: dict, cands: dict,
                    missing: list[str], wave: int = 0) -> list[str]:
     """取りこぼした主題を**面を決めるところから**問い直し、答えを計画へ機械で反映する。
@@ -1083,56 +1180,87 @@ def replan_missing(date: str, plan: dict, by_brand: dict, cands: dict,
     戻り値はログ行。
     """
     miss = set(missing)
-    rows = [r for rs in by_brand.values() for r in rs if r.get("dedup_key") in miss]
-    if not rows:
+    subjects = [r for rs in by_brand.values() for r in rs if r.get("dedup_key") in miss]
+    if not subjects:
         return []
     idx = ROOT / "metrics" / f"plan-index-{date}-missing.json"
     idx.write_text("[\n" + ",\n".join(json.dumps(r, ensure_ascii=False, separators=(",", ":"))
-                                         for r in rows) + "\n]\n", encoding="utf-8")
+                                         for r in subjects) + "\n]\n", encoding="utf-8")
     out = ROOT / "metrics" / f"plan-{date}-missing.json"
     out.unlink(missing_ok=True)
-    prompt = missing_plan_prompt(date, rows, plan.get("articles", []))
+    prompt = missing_plan_prompt(date, subjects, plan.get("articles", []))
     try:
-        subprocess.run(["claude", "-p", prompt_file(date, "plan-missing", prompt), "--model", CLAUDE_MODEL,
-                        "--dangerously-skip-permissions", "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
-                       stdin=subprocess.DEVNULL, cwd=ROOT, timeout=remaining_seconds(cap=600))
-    except subprocess.TimeoutExpired:
-        pass
+        pr = subprocess.run(["claude", "-p", prompt_file(date, "plan-missing", prompt), "--model", CLAUDE_MODEL,
+                             "--dangerously-skip-permissions", "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+                            capture_output=True, text=True,
+                            stdin=subprocess.DEVNULL, cwd=ROOT, timeout=remaining_seconds(cap=600))
+        so, se, code = pr.stdout, pr.stderr, pr.returncode
+    except subprocess.TimeoutExpired as e:
+        (so, se), code = partial_output(e), None
+    # 答えのファイルを書かずに終わったときに理由を追えるよう、標準出力・エラー・答えのファイルを残す
+    save_raw(date, "plan-missing", so, se, code,
+             files={"answer": read_for_raw(out)})
     try:
-        r = json.loads(out.read_text(encoding="utf-8"))
+        # 採るのは正常に終わったセッションの答えだけ(時間切れの間際に書かれた不採用で主題を消さない)。
+        # 3つの欄は、あれば配列(単一の object などは読めない答え。矛盾の検査ができない)。重複キーも読めない(監査指摘)
+        if code != 0:
+            raise ValueError("正常に終わっていない")
+        r = loads_strict(out.read_text(encoding="utf-8"))
+        if not isinstance(r, dict) or any(k in r and not isinstance(r[k], list) for k in ("articles", "merge_into", "dropped")):
+            raise ValueError("答えの形が崩れている")
     except Exception:
         return ["拾い直しの答えが読めない(取りこぼしは残る)"]
+
+    # 面別選定(planlib)と同じ設計で反映する: モデルの答えは判断だけ。
+    # - 要素の形は依頼文(plan-missing)の出力の形の schema で1件ずつ検める(null・欄の欠け・型の崩れた要素で号全体を止めない・
+    #   理由の無い不採用で主題を消さない)
+    # - candidate_ids は主題の ids からコードが展開する(モデルの写した id は使わない。別の主題の id で記事化して、
+    #   この主題を判断済みに見せるのを防ぐ)。slug もコードが付ける(planlib.slugify)
+    # - 主題ごとに答えは1つ。2つ以上(同じ主題の記事が2本・記事と不採用の両方など)は反映しない
+    # 反映しなかった主題は取りこぼしのまま残り、呼び出し側で異常になる(監査指摘)
+    from jsonschema import Draft202012Validator
+    # 答えは形を検める**前に**主題キーで数える(崩れた記事化と正しい不採用が同じ主題に来たら、矛盾した答えとして反映しない)
+    answers: dict[str, list[tuple[str, dict | None]]] = {}
+    for kind in ("articles", "merge_into", "dropped"):
+        v = Draft202012Validator(MISSING_ROW_SCHEMA[kind])
+        got = r.get(kind)
+        for x in (got if isinstance(got, list) else []):
+            key = x.get("dedup_key") if isinstance(x, dict) else None
+            if isinstance(key, str) and key in miss:
+                answers.setdefault(key, []).append((kind, x if v.is_valid(x) else None))
+    ids_of = {s["dedup_key"]: [i for i in (s.get("ids") or []) if i in cands] for s in subjects}
 
     log: list[str] = []
     slugs = {a.get("slug") for a in plan.get("articles", [])}
     by_slug = {a.get("slug"): a for a in plan.get("articles", [])}
-    for a in r.get("articles") or []:
-        ids = [i for i in (a.get("candidate_ids") or []) if i in cands]
-        b = a.get("brand")
-        if not ids or a.get("dedup_key") not in miss or b not in BRANDS:
+    for key, got in answers.items():
+        if len(got) != 1:
+            log.append(f"{key} → 答えが {len(got)}つあり反映しない(取りこぼしのまま)")
             continue
-        a["candidate_ids"] = ids
-        a.setdefault("rank", "small")
-        a.setdefault("lead_score", 0)
-        while a.get("slug") in slugs or not a.get("slug"):
-            a["slug"] = f"{b}-{a.get('slug') or a['dedup_key'][:40]}-2"[:80]
-        slugs.add(a["slug"])
-        plan["articles"].append(a)
-        log.append(f"{a['dedup_key']} → {b} 面で記事化({a['slug']})")
-    for m in r.get("merge_into") or []:
-        tgt = by_slug.get(m.get("slug"))
-        ids = [i for i in (m.get("candidate_ids") or []) if i in cands]
-        if not tgt or not ids or m.get("dedup_key") not in miss:
+        kind, x = got[0]
+        if x is None:
+            log.append(f"{key} → 答えの形が崩れていて反映しない(取りこぼしのまま)")
             continue
-        for i in ids:
-            if i not in tgt["candidate_ids"]:
-                tgt["candidate_ids"].append(i)
-        log.append(f"{m['dedup_key']} → {tgt.get('brand')} 面の {tgt['slug']} へ統合")
-    for d in r.get("dropped") or []:
-        if d.get("dedup_key") in miss:
-            plan.setdefault("dropped", []).append(d)
-            log.append(f"{d['dedup_key']} → 不採用({d.get('brand', '?')} 面 / {d.get('reason', '?')})")
+        ids = ids_of.get(key) or []
+        if kind == "articles":
+            if not ids:
+                continue
+            b = x["brand"]
+            a = {"slug": planlib.slugify(b, key, slugs), "brand": b, "rank": x["rank"], "angle": x["angle"],
+                 "lead_score": x["lead_score"], "dedup_key": key, "candidate_ids": ids}
+            plan["articles"].append(a)
+            log.append(f"{key} → {b} 面で記事化({a['slug']})")
+        elif kind == "merge_into":
+            tgt = by_slug.get(x["slug"])
+            if not tgt or not ids:
+                continue
+            for i in ids:
+                if i not in tgt["candidate_ids"]:
+                    tgt["candidate_ids"].append(i)
+            log.append(f"{key} → {tgt.get('brand')} 面の {tgt['slug']} へ統合")
+        else:
+            plan.setdefault("dropped", []).append(x)
+            log.append(f"{key} → 不採用({x['brand']} 面 / {x['reason']})")
     return log
 
 
@@ -1601,6 +1729,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
     #   差し戻し = 機械検算の不合格。**その点だけを示して1回やり直させる**(例外で終わらせない)
     #   落とした = 差し戻しても通らなかった・出力が読めなかった。理由を記録して紙面から外す
     queue = [(art, src, prompt, fact_by_id, materials, 0) for art, src, prompt, fact_by_id, materials in jobs]
+    unreadable: set[str] = set()   # 出力が読めず、同じ依頼でもう1回書かせた記事(実行の失敗のやり直しは1回だけ)
     while queue:
         batch, queue = queue[:wave], queue[wave:]
         procs = []
@@ -1615,33 +1744,62 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                    "--output-last-message", str(out_path)]
             if STRUCTURED_WRITE:
                 cmd += ["--output-schema", str(schema_out)]
-            # 素材と指示はファイルで渡す(引数に詰めると 128KB で落ちる。エージェントは自分で読める)
-            procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, subprocess.Popen(
-                cmd + [prompt_file(date, f"write-{art['slug']}-{tries}", prompt)],
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
-                stdin=subprocess.DEVNULL, cwd=ROOT)))
+            # 素材と指示はファイルで渡す(引数に詰めると 128KB で落ちる。エージェントは自分で読める)。
+            # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(最終メッセージを残さず終わった回の原因を追うため)
+            with open(log_of(out_path), "w", encoding="utf-8") as lf:
+                procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, subprocess.Popen(
+                    cmd + [prompt_file(date, f"write-{art['slug']}-{tries}", prompt)],
+                    stdout=lf, stderr=subprocess.STDOUT, text=True,
+                    stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True)))
         for art, src, prompt, out_path, fact_by_id, materials, tries, p in procs:
+            timed_out = False
             try:
                 p.communicate(timeout=remaining_seconds())
             except subprocess.TimeoutExpired:
-                p.kill()
+                reap(p)              # 子(道具の実行)も落としてから答えのファイルを読む
+                timed_out = True
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             out_path.unlink(missing_ok=True)
+            save_raw(date, f"write-{art['slug']}-{tries}", "", take_log(out_path), p.returncode, files={"last-message": out})
             target = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
             if STRUCTURED_WRITE:
                 # 判断と文章を JSON で受け、検算して、コードがファイルを作る(renderlib)。
                 # 形は schema、中身(事実 id・出典・タグ・日付)はここで検める
                 target.unlink(missing_ok=True)   # モデルが勝手に書いたファイルは使わない
                 try:
-                    ans = json.loads(out.strip())
+                    # 採るのは**正常に終わったセッションの、渡した schema どおりの答えだけ**(時間切れ・異常終了の間際に
+                    # 書かれた答え、欄の型の崩れた答えは読めない出力。崩れた欄で書き出しが止まる・{} の理由で見送りになる。監査指摘)
+                    if timed_out or p.returncode != 0:
+                        raise ValueError(f"正常に終わっていない({'時間切れ' if timed_out else f'exit {p.returncode}'})")
+                    ans = loads_strict(out.strip())
+                    if not schema_ok(ans, json.loads(schema_out.read_text(encoding="utf-8"))):
+                        raise ValueError("答えが出力 schema のとおりでない")
                     problems = None
                 except Exception:
-                    ans = {}
-                    problems = [f"出力が JSON として読めない(exit {p.returncode})"]
+                    # **出力が読めないのは実行の失敗で、検算の不合格(書いた中身の問題)とは別。**差し戻しの1回を使わず、
+                    # 同じ依頼でもう1回だけ書かせる。2回とも読めなければ落とし、実行の失敗として上げる(書き手の契約の欠陥として
+                    # 記録しない)。以前は検算の不合格と同じに扱い、空の出力や時間切れで差し戻しを使い切って記事を落としていた
+                    # (2026-10-06 の洗い出しで判明)
+                    if art["slug"] not in unreadable:
+                        unreadable.add(art["slug"])
+                        print(f"記事 {art['slug']}: 出力が読めない(exit {p.returncode})。同じ依頼でもう1回書かせる", flush=True)
+                        queue.append((art, src, prompt, fact_by_id, materials, tries))
+                        continue
+                    outcomes[art["slug"]] = f"落とした(執筆の出力が2回とも読めない。exit {p.returncode})"
+                    print(f"記事 {art['slug']} を{outcomes[art['slug']]}", flush=True)
+                    aborted.append(art["slug"])
+                    DROP_LOG.setdefault(date, {})[art["slug"]] = (str(art.get("angle") or ""), "執筆の実行の失敗", outcomes[art["slug"]][4:])
+                    anomaly("compose", f"記事 {art['slug']}: 執筆の出力が2回とも読めなかった(空・時間切れ・JSON でない)")
+                    continue
                 if problems is None:
                     # 検算を status の分岐より**先に**掛ける(理由の無い見送りを素通りさせない。監査指摘)
-                    problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "",
-                                                      edition=date)
+                    try:
+                        problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "",
+                                                          edition=date)
+                    except Exception as e:
+                        # 中の要素の形が崩れた答え(null の段落など)で検算が例外になっても、号全体を止めない。
+                        # 検算の不合格として差し戻しへ回す(監査指摘)
+                        problems = [f"答えの形が崩れていて検算できない({type(e).__name__}: {str(e)[:80]})"]
                 if not problems and ans.get("status") == "decline":
                     outcomes[art["slug"]] = f"見送り: {ans.get('decline_code')} {str(ans.get('decline_detail') or '')[:120]}"
                     print(f"記事 {art['slug']} は{outcomes[art['slug']]}", flush=True)
@@ -1748,8 +1906,10 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
       確かめた上で記述を残す判断も含む。**残した記述が正しいかは次の巡の校閲(モデル)が判定する**
       (引用が残っているかを機械で見るのは校閲の機械化になるのでしない。編集長の指示)
     - 見出し・リード・tags・event_date は、指摘の quote が掛かっていない限り変えない
-    - 出典は、add_source の指摘があれば増える方向だけ、drop_source があれば減る方向だけ、
-      どちらも無ければ変えない
+    - 出典の増減は、校閲の repair の種類で縛らない(repair は提案で、直し方を決めるのは執筆側。依頼文 revise-article)。
+      足すのはいつでもよい。根拠 id の付け替えは出典についての指摘(R3/R4 か add_source / drop_source)があるとき、
+      外すのは出典の誤りの指摘(R3/R4 か drop_source)があるときだけ。
+      足した・外した出典が正しいかは、次の巡の校閲(R3/R4)が判定する
     - 本文は、指摘の quote を含む段落だけ変えてよい(他の段落は字面も根拠 id も順序もそのまま)
     """
     ids = [b["issue_id"] for b in issues]
@@ -1774,10 +1934,11 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
         return q
     blocks = ans.get("blocks") or []
     repairs = {b.get("repair") for b in issues}
-    # 出典を付け替える指摘(add_source / drop_source = R3/R4)のとき、根拠段落は「どの出典に紐づくか」が
-    # 正当に変わる(誤出典 F を正しい候補の F/N に差し替える。R4「記事は強い出典に合わせる」)。
-    # その巡では字面だけを見て根拠 id の変化は通し、根拠の正しさは次の巡の校閲(R1/R3/R4)が見る(監査指摘 MF-1)
-    source_repair = "add_source" in repairs or "drop_source" in repairs
+    # 出典についての指摘(出典の規則 R3 出典隠し / R4 出典の不一致、または add_source / drop_source の提案)のとき、
+    # 根拠段落は「どの出典に紐づくか」が正当に変わる(誤出典 F を正しい候補の F/N に差し替える。R4「記事は強い出典に合わせる」)。
+    # その巡では字面だけを見て根拠 id の変化は通し、根拠の正しさは次の巡の校閲(R1/R3/R4)が見る(監査指摘 MF-1)。
+    # repair の種類だけでは決めない(R4 の誤出典に rewrite_claim が付くと差し替えが弾かれて記事が落ちる。監査指摘)
+    source_repair = bool(repairs & {"add_source", "drop_source"}) or any(b.get("rule_id") in ("R3", "R4") for b in issues)
     # lint の指摘(構造の赤)は直し方を限定できないので、指摘の外の検査は掛けない
     if old_fm and not any(b.get("rule_id") == "LINT" for b in issues):
         quotes = [qnorm(b) for b in issues if len(qnorm(b)) >= 8]
@@ -1923,12 +2084,14 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
         # 出典を「足す」のは、出典にない事実・出典隠し・公式が無い(R1/R3/R5)を直す正規の手で、決めるのは
         # 執筆(revise-article.md「repair は校閲の提案で、決めるのはあなた」)。素材裏付けの出典を足すのは
         # 冪等に安全で(実在・一致の照合は次の巡の校閲=R3/R4 がやる)、add_source の提案が無くても常に通す。
-        # 機械が止めるのは黙って出典を「外す」ほう。ただし drop_source(R4「記事は強い出典に合わせる」)の指摘が
-        # あれば外せる — 誤出典を外して正しい一次情報に付け替える差し替え(外す+足す)も、drop_source があれば通る。
-        # 以前は drop_source があっても「足した」で差し替えを弾き、誤 URL の R4 が何巡もブロックして記事が落ちた(監査指摘 MF-1)
+        # 機械が止めるのは、黙って出典を「外す」ほう。外せるのは出典の誤りについての指摘(R3/R4 か drop_source)があるとき
+        # — 誤出典を外して正しい一次情報に付け替える差し替え(外す+足す)も通る(add_source は「足せ」なので外す根拠にしない)。
+        # 外した判断が正しいかは次の巡の校閲。以前は drop_source があっても「足した」で差し替えを弾き、
+        # 誤 URL の R4 が何巡もブロックして記事が落ちた(監査指摘 MF-1)
         removed = old_urls - new_urls
-        if removed and "drop_source" not in repairs:
-            problems.append(f"drop_source の指摘が無いのに出典を外した: {sorted(removed)[:2]}")
+        may_remove = "drop_source" in repairs or any(b.get("rule_id") in ("R3", "R4") for b in issues)
+        if removed and not may_remove:
+            problems.append(f"出典についての指摘が無いのに出典を外した: {sorted(removed)[:2]}")
     return problems
 
 
@@ -1959,7 +2122,11 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     if ans.get("status") != "decline" and old_fm and not event_date_targeted(issues, old_fm):
         ev = old_fm.get("event_date")
         ans = dict(ans, event_date=ev.isoformat() if hasattr(ev, "isoformat") else (str(ev) if ev else None))
-    problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date)
+    try:
+        problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date)
+    except Exception as e:
+        # 中の要素の形が崩れた答えで検算が例外になっても号全体を止めない。元の稿のまま(監査指摘)
+        return "kept", f"答えの形が崩れていて検算できない({type(e).__name__}: {str(e)[:80]})。元の稿のまま"
     if ans.get("status") == "decline":
         if problems:
             return "kept", "理由の無い decline(" + " / ".join(problems[:2]) + ")。元の稿のまま"
@@ -1967,8 +2134,12 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
         path.unlink(missing_ok=True)
         return "dropped", f"執筆側が不成立と判断({ans.get('decline_code')})。落とす"
     old_text = path.read_text(encoding="utf-8") if path.exists() else ""
-    problems += revise_check(ans, issues, old_fm,
-                             re.split(r"\n---\n", old_text, maxsplit=1)[-1])
+    try:
+        problems += revise_check(ans, issues, old_fm,
+                                 re.split(r"\n---\n", old_text, maxsplit=1)[-1])
+    except Exception as e:
+        # 欄の形が崩れた答え(addressed_issue_ids が数値など)で号全体を止めない。元の稿のまま(監査指摘)
+        return "kept", f"答えの形が崩れていて照合できない({type(e).__name__}: {str(e)[:80]})。元の稿のまま"
     if problems:
         return "kept", "検算不合格 " + " / ".join(problems[:3]) + "(元の稿のまま)"
     renderlib.render_article(path, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
@@ -2012,21 +2183,33 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
         for art, path, fact_by_id, materials, issues, prompt in jobs[i:i + COMPOSE_WAVE]:
             fd, out_name = tempfile.mkstemp(prefix=f"codexrevise-{art['slug']}-", suffix=".txt")
             os.close(fd)
-            procs.append((art, path, fact_by_id, materials, issues, Path(out_name), subprocess.Popen(
-                ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
-                 "-c", "sandbox_workspace_write.network_access=true",
-                 "--output-last-message", out_name, "--output-schema", str(schema_out),
-                 prompt_file(date, f"revise-{art['slug']}", prompt)],
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True, stdin=subprocess.DEVNULL, cwd=ROOT)))
+            # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(執筆と同じ)
+            with open(log_of(Path(out_name)), "w", encoding="utf-8") as lf:
+                procs.append((art, path, fact_by_id, materials, issues, Path(out_name), subprocess.Popen(
+                    ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
+                     "-c", "sandbox_workspace_write.network_access=true",
+                     "--output-last-message", out_name, "--output-schema", str(schema_out),
+                     prompt_file(date, f"revise-{art['slug']}", prompt)],
+                    stdout=lf, stderr=subprocess.STDOUT, text=True, stdin=subprocess.DEVNULL, cwd=ROOT,
+                    start_new_session=True)))
         for art, path, fact_by_id, materials, issues, out_path, p in procs:
+            timed_out = False
             try:
                 p.communicate(timeout=remaining_seconds())
             except subprocess.TimeoutExpired:
-                p.kill()
+                reap(p)              # 子(道具の実行)も落としてから答えのファイルを読む
+                timed_out = True
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             out_path.unlink(missing_ok=True)
+            save_raw(date, f"revise-{art['slug']}", "", take_log(out_path), p.returncode, files={"last-message": out})
             try:
-                ans = json.loads(out.strip())
+                # 採るのは正常に終わったセッションの、schema どおりの答えだけ(時間切れの間際に書かれた見送りで
+                # 既存の記事を消さない・{} の理由を理由と認めない。執筆と同じ。監査指摘)
+                if timed_out or p.returncode != 0:
+                    raise ValueError(f"正常に終わっていない({'時間切れ' if timed_out else f'exit {p.returncode}'})")
+                ans = loads_strict(out.strip())
+                if not schema_ok(ans, json.loads(schema_out.read_text(encoding="utf-8"))):
+                    raise ValueError("答えが出力 schema のとおりでない")
             except Exception:
                 print(f"書き直し {art['slug']}: 出力が読めない(そのまま次の巡へ)", flush=True)
                 # 注記は**この巡の結果**に更新する(古い巡の検算理由を引きずらない。監査指摘)
@@ -2101,16 +2284,34 @@ def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
 
 
 def _parse_review(text: str, err: str, where: str) -> dict:
-    """校閲セッションの出力を JSON にする。読めなければブロック扱いにする。"""
+    """校閲セッションの出力を JSON にする。読めない・判定の形をしていないなら、判定なし(error)にする。
+
+    **判定の形をしていない答えを、判定にしない。**以前は JSON でさえあれば受け取っていたので、`{}` や
+    verdict の無い答えが「指摘なし」として取り込まれ、その記事は校閲済みとみなされた(校閲を通っていない記事が
+    発行されうる。2026-10-06 の洗い出しで判明。モデルの空の出力を『処理した・何も無い』と解釈する型の欠陥)"""
+    # block なのに理由(blockers)が無い答えも判定にしない。まとめる側は blockers だけを拾うので、理由の無い block は
+    # 承認に化ける(監査指摘)
+    # 形は出力 schema(prompts/review-schema.json)そのもので検める。指摘の1件ずつの欄まで(null・文字列の要素は、
+    # まとめる側で例外になり工程が止まる。監査指摘)。手で欄を足して検めると漏れが残るので schema に寄せる
+    from jsonschema import Draft202012Validator
+    validator = Draft202012Validator(json.loads((PROMPTS / "review-schema.json").read_text(encoding="utf-8")))   # 校閲セッションに渡すのと同じ schema
+
+    def shaped(v):
+        return validator.is_valid(v) and (v["verdict"] == "approve" or len(v["blockers"]) > 0)
+    # 重複キーの答えは読めない答え(後の値で黙って上書きされる。loads_strict)
     for cand in (text.strip(), ):
         try:
-            return json.loads(cand)
+            v = loads_strict(cand)
+            if shaped(v):
+                return v
         except Exception:
             pass
     m = re.search(r"\{.*\}", text, re.DOTALL)
     if m:
         try:
-            return json.loads(m.group(0))
+            v = loads_strict(m.group(0))
+            if shaped(v):
+                return v
         except Exception:
             pass
     # **実行できなかったことを、判定にしない。**以前はここで「校閲実行失敗」という
@@ -2131,7 +2332,8 @@ def review_hint(date: str, name: str, notes_by_file: dict[str, list[str]]) -> st
     if kept_why:
         hint += ("\n\n## 前回の書き直しについて\n執筆は前回の指摘に対して稿を書き直したが、それを適用できず、"
                  f"記事は**前回のまま**になっている(理由: {kept_why})。執筆が指摘を無視したのではない。"
-                 "この記事の blockers は**最優先の1件だけ**にし、quote は短く(1文以内)、repair は1つにすること"
+                 "この記事の blockers は**最優先の1件だけ**にし、quote はその1つの誤りに絞り(同じ誤りが見出し・リード・本文の"
+                 "複数の欄にあれば、その欄は欄名を付けて全部入れる)、repair は1つにすること"
                  "(執筆が1か所だけ直せば次の巡で通るように)")
     return hint
 
@@ -2210,14 +2412,19 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
              # 並列数ぶんの掛け算になる)
              "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-            stdin=subprocess.DEVNULL, cwd=ROOT)
+            stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True)
 
     def collect(p, where):
+        timed_out = False
         try:
             so, se = p.communicate(timeout=remaining_seconds())
         except subprocess.TimeoutExpired:
-            p.kill()
-            so, se = "", "時間切れ"
+            (so, se), timed_out = reap(p), True      # 時間切れまでの出力も残す(判定には使わない)
+        save_raw(date, f"review-r{round_no}-{where}", so, se, p.returncode)
+        # 採るのは正常に終わったセッションの答えだけ(異常終了の間際に出た approve で校閲済みにしない。監査指摘)
+        if timed_out or p.returncode != 0:
+            why = "時間切れ" if timed_out else f"exit {p.returncode}: {(se or so or '')[-200:].strip()}"
+            return {"verdict": "error", "error": why, "blockers": [], "comments": []}
         return _parse_review(so or "", se or "", where)
 
     def actionable(x) -> bool:
@@ -2517,8 +2724,12 @@ def main() -> int:
             plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
             errors = validate_plan(plan, cands, blocklist)
             gaps, cov = coverage_gaps(plan, cands, blocklist)
-            if gaps:
-                print(f"拾い直しても残った取りこぼし: {gaps[0][:120]}", flush=True)
+        if gaps:
+            # 残った主題は、この号では判断されないまま消える。print で終えず、主題を名指しして異常にする(当番のなぜなぜへ)。
+            # 面別選定の判定の欠け・知らない判定もここへ来る(planlib.decisions_to_plan。2026-10-06 の洗い出し)
+            print(f"拾い直しても残った取りこぼし: {gaps[0][:120]}", flush=True)
+            anomaly("compose", "選定で判断されないまま残った主題(拾い直しても答えが無い)。この号では扱われない:\n"
+                               + "\n".join(f"- {k}" for k in (cov.get("missing_keys") or [])[:20]))
     # 素材に対して rank が小さい記事の可視化(規程9)。発行は止めない。
     # 束ねること自体は正しい(同じ系統の話を分けると全部が薄くなる)。問題は
     # 束ねたまま rank を上げないことで、書ける上限に収まらず中身が落ちる

@@ -2,7 +2,7 @@
 その主題だけを判定し、`metrics/plan-{DATE}-missing.json` に JSON で書きます(Write ツール)。
 
 ## 1. 読むもの
-- `metrics/plan-index-{DATE}-missing.json`: 残った主題(1主題1行)。`brand` は収集時の仮の面で、正しいとは限らない。`ids` がその主題の候補 ID
+- `metrics/plan-index-{DATE}-missing.json`: 残った主題(1主題1行)。`brand` は収集時の仮の面で、正しいとは限らない
   既報がある主題には `prior`(この話題の過去の記事の号・見出し・読者に出した本文)が付いている。prior の本文に無い新しい事実も当日のトリガーも無ければ既報
 - 末尾の「号全体で決まっている記事」
 
@@ -18,9 +18,9 @@
 
 ## 4. 出力
 ```
-{"articles": [{"slug": "英小文字ハイフンの記事ID(面名を含める)", "brand": "決めた面", "rank": "large|medium|small",
-               "angle": "切り口(1文)", "lead_score": 0, "dedup_key": "主題の dedup_key", "candidate_ids": ["その主題の ids をそのまま"]}],
- "merge_into": [{"slug": "既存記事の slug", "dedup_key": "統合する主題の dedup_key", "candidate_ids": ["その主題の ids"]}],
+{"articles": [{"brand": "決めた面", "rank": "large|medium|small",
+               "angle": "切り口(1文)", "lead_score": 0, "dedup_key": "主題の dedup_key"}],
+ "merge_into": [{"slug": "既存記事の slug", "dedup_key": "統合する主題の dedup_key"}],
  "dropped": [{"dedup_key": "主題の dedup_key", "brand": "本来の面",
               "reason": "既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|アイマス外|その他", "note": "一言(任意)"}]}
 ```

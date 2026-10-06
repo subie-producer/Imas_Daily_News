@@ -317,19 +317,22 @@ def split_chunks(text: str, limit: int) -> list[str]:
     return chunks
 
 
-# 編集長への報告の型(編集長 2026-10-04「本当にユーザーにとって分かりやすいと思ってんのか」「情報の出し方をもっと検討しろ」)。
-# 読み手はコードを読まない。何が良くなるかを先に、紙面で困っていたことと変化を1行ずつ対にし、内部の名前は書かない。
-# 経緯・仕組み・差分・検証の詳細は記録ファイルに置き、ここでは場所だけを示す
+# 編集長への報告の型(編集長 2026-10-04)。「本当にユーザーにとって分かりやすいと思ってんのか」「何故こういう事が起きたか、どう修正したか、
+# 他に当該事象の類似が起きないことは説明できるのか」「コード差分はゴミだが、説明のために長くなる分には致し方ない。短くして情報が0になったらゴミだ」。
+# 項目の見出しを立て、各項目は必要な長さで書く。コードの差分は載せず、記録の場所だけを示す。内部の名前は避ける(混入は internal_names で検出)
 INTERNAL_NAME = re.compile(r"[A-Za-z0-9_\-/]+\.(py|md|json|jsonl|yml)\b|\b[a-z]+_[a-z_]+\b|\b[A-Z]{2,}_[A-Z_]+\b|\br\d{2,3}\b|\bR\d{1,2}\b")
+# 障害・修正の報告の項目
+INCIDENT_LABELS = ("起きたこと", "なぜ起きたか", "どう直したか", "同じ型の箇所", "紙面への影響")
 
 
-def editor_notice(title: str, when: str, pairs: list[tuple[str, str]], ask: str = "", footer: str = "") -> str:
-    """編集長に届く1通を組み立てる。title = 何が良くなるか(1行)、when = いつから効くか、
-    pairs = (紙面で困っていたこと, どう変わるか) を最大3つ、ask = 判断がほしいこと(あれば1文)、footer = 記録の場所・監査・戻し方(1行)。"""
-    lines = [title + (f"({when})" if when else "")]
-    lines += [f"・{a} → {b}" for a, b in pairs[:3]]
+def editor_notice(title: str, sections: list[tuple[str, str]], ask: str = "", footer: str = "") -> str:
+    """編集長に届く報告を組み立てる。title = 何の報告か(1行)、sections = (見出し, 本文) の並び(本文の長さは制限しない)、
+    ask = 判断がほしいこと、footer = 記録の場所・監査・戻し方(1行)。"""
+    lines = [title]
+    for label, body in sections:
+        lines += ["", f"■ {label}", str(body).strip()]
     if ask:
-        lines += ["", f"判断がほしいこと: {ask}"]
+        lines += ["", "■ 判断がほしいこと", ask.strip()]
     if footer:
         lines += ["", footer]
     return "\n".join(lines)
@@ -343,6 +346,69 @@ def internal_names(text: str) -> list[str]:
 def notify_long(job: str, text: str, ok: bool = True, limit: int = DISCORD_LIMIT) -> bool:
     """必須の長い通知(当番の修正報告)。notify が分割するので、require=True で送るだけ。"""
     return notify(job, text, ok=ok, require=True)
+
+
+def partial_output(e: BaseException) -> tuple[str, str]:
+    """subprocess の時間切れ(TimeoutExpired)が持っている、それまでの標準出力・エラー(bytes のこともある)を文字列で返す。
+    時間切れの回こそ、どこまで進んで何を言っていたかを残す(save_raw へ渡す)。"""
+    txt = lambda v: v.decode("utf-8", "replace") if isinstance(v, bytes) else (v or "")
+    return txt(getattr(e, "stdout", None) or getattr(e, "output", None)), txt(getattr(e, "stderr", None)) + f"\n({type(e).__name__}: {e})"
+
+
+def reap(p, grace: int = 10) -> tuple[str, str]:
+    """時間切れのセッションを落とし、それまでの出力を回収する。**回収にも上限を付ける。**
+    claude / codex が起動した子(道具の実行)が出力のパイプを持ったまま残ると、親だけを kill しても
+    上限なしの communicate() が子の終了まで待ち、締切を越えて工程が止まる(監査指摘)。
+    start_new_session=True で起動したものはプロセスグループごと落とす。"""
+    try:
+        os.killpg(p.pid, signal.SIGKILL)
+    except (ProcessLookupError, PermissionError, OSError):
+        p.kill()
+    try:
+        so, se = p.communicate(timeout=grace)
+    except subprocess.TimeoutExpired as e:
+        so, se = partial_output(e)
+        se += "\n(出力を回収しきれなかった)"
+    except ValueError:      # すでに回収済み・パイプが閉じている
+        so, se = "", ""
+    return so or "", (se or "") + "\n(時間切れ)"
+
+
+def read_for_raw(p: Path) -> str | None:
+    """生の出力に添えるため、セッションが書いたファイルを読む。無ければ None、読めなければ理由(例外で工程を止めない。
+    ファイルの代わりにディレクトリが作られていた、など。監査指摘)。"""
+    try:
+        return p.read_text(encoding="utf-8", errors="replace") if p.exists() else None
+    except OSError as e:
+        return f"(読めない: {type(e).__name__}: {e})"
+
+
+def save_raw(date: str, name: str, out: str = "", err: str = "", code=None, files: dict | None = None) -> Path | None:
+    """モデルのセッションの**生の出力**を残す(metrics/work/<日付>/raw/<name>.txt。Git 管理外)。
+    読めた・読めなかったに関係なく必ず残す。解釈した結果だけを残すと、「なぜ候補が0件だったか」「なぜ判定が空だったか」を
+    後から確かめられない(2026-10-04: まとめサイトの新着1件を失ったが、出力が残っておらず、当番も原因を確定できなかった)。
+    files は、セッションが書いたファイル(名前 → 中身)。作業ディレクトリごと消す前に残す。残せなくても工程は止めない。
+    **上書きしない。**同じ名前(同じ依頼のやり直し・同じ日の別の収集回)は <name>-2.txt, -3.txt … と別に残す
+    (やり直しが成功すると、失敗した1回目の出力が消えて原因を追えない。監査指摘)。"""
+    try:
+        d = ROOT / "metrics" / "work" / date / "raw"
+        d.mkdir(parents=True, exist_ok=True)
+        base = re.sub(r'[^A-Za-z0-9_.-]', '_', name)
+        parts = [f"# at: {now_jst().isoformat(timespec='seconds')}", f"# exit: {code}", "# stdout", str(out or ""), "# stderr", str(err or "")]
+        for k, v in (files or {}).items():
+            parts += [f"# file: {k}", str(v if v is not None else "(無い)")]
+        n = 1
+        while True:
+            p = d / (f"{base}.txt" if n == 1 else f"{base}-{n}.txt")
+            try:
+                with open(p, "x", encoding="utf-8") as f:     # 排他作成: 並列の呼び出しどうしでも上書きしない
+                    f.write("\n".join(parts) + "\n")
+                return p
+            except FileExistsError:
+                n += 1
+    except OSError as e:
+        print(f"生の出力を残せない({name}: {e})", flush=True)
+        return None
 
 
 def prompt_file(date: str, name: str, text: str, base: Path | None = None) -> str:
@@ -473,6 +539,12 @@ def claude_traced(args: list[str], trace: Path, timeout: int, cwd: Path | None =
             except (subprocess.TimeoutExpired, ValueError, OSError):
                 err = ""
         err = err or ""
+    if err.strip():
+        # 標準エラーは全文を経過の記録の隣に残す(要約は末尾 200 字だけで、先頭の原因が消える。監査指摘)
+        try:
+            Path(str(trace) + ".stderr.txt").write_text(err, encoding="utf-8")
+        except OSError:
+            pass
     final: dict = {}
     with open(trace, encoding="utf-8", errors="replace") as f:
         for ln in f:
@@ -741,6 +813,31 @@ def append_metric(kind: str, data: dict) -> None:
     p.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
 
 
+def _no_duplicate_keys(pairs):
+    d = {}
+    for k, v in pairs:
+        if k in d:
+            raise ValueError(f"JSON のキーが重複している: {k!r}")
+        d[k] = v
+    return d
+
+
+def loads_strict(text: str):
+    """JSON を読む。**同じキーが2回ある object は読めない答えにする**(json.loads は後の値で黙って上書きし、
+    崩れた判定と正しい判定が同じ主題に並ぶと、前者が消えて後者だけが採られる。監査指摘)。"""
+    return json.loads(text, object_pairs_hook=_no_duplicate_keys)
+
+
+def schema_ok(value, schema) -> bool:
+    """モデルの答えが、そのセッションに渡した出力 schema のとおりか(形だけを見る)。schema は dict か JSON 文字列。
+    **モデルの答えは、正常に終わったセッションのものを、渡した schema で検めてから使う**(2026-10-06 の洗い出し:
+    --json-schema / --output-schema を渡していても、構造化出力の無い回は本文の JSON を拾う経路があり、そこでは形が
+    守られない。崩れた欄で検算・組版が止まる、欠けた答えが「承認」「判断済み」になる、が各所で起きうる)。"""
+    from jsonschema import Draft202012Validator
+    s = json.loads(schema) if isinstance(schema, str) else schema
+    return Draft202012Validator(s).is_valid(value)
+
+
 def extract_json_array(text: str):
     """LLM 出力から最初の JSON 配列を寛容に取り出す。読めなければ空配列。
 
@@ -771,14 +868,17 @@ def extract_json_array_strict(text: str):
         if start < 0:
             return None
         end = _match_json_bracket(s, start)
-        if end is not None:
-            try:
-                v = json.loads(s[start:end + 1])
-                if isinstance(v, list):
-                    return v
-            except json.JSONDecodeError:
-                pass
-        i = start + 1
+        if end is None:
+            # 釣り合わない(途中切れ)。**内側の配列を別の答えとして拾わない**(切れた候補一覧の中の `[]` を
+            # 「0件」と読み、取得の失敗を記録しなかった。監査指摘)
+            return None
+        try:
+            v = loads_strict(s[start:end + 1])      # 同じキーが2回ある要素は読めない(後の値で黙って上書きされる)
+            if isinstance(v, list):
+                return v
+        except ValueError:
+            pass
+        i = end + 1          # 壊れた塊の内側も拾わない(次の塊から探す)
 
 
 def _match_json_bracket(s: str, start: int) -> int | None:
@@ -1433,3 +1533,29 @@ def unbacked_facts(facts: list[str], page_text: str) -> list[str]:
         if others and y not in others:
             out.append(name)
     return out
+
+
+QUOTE_CHUNK = 10    # 写しを何字ずつに切って本文と照らすか
+
+
+def quote_on_page(quote: str, page_text: str) -> bool | None:
+    """収集役が「url のページから写した」とする1文が、そのページの本文にあるか。写しが無ければ None(判定しない)。
+
+    日付・金額の粒(unbacked_facts)だけでは、隣の記事の URL を付けた取り違えを捕まえられない
+    (2026-09-28〜10-01: noctchill の事実に Master ShowPiece の記事の URL が付いていた。同じ公式サイトの近い記事は
+    日付が重なり、粒は一致してしまう)。写しは**形の照合**で、内容の良し悪しは見ない。
+    - 空白・句読点・全角半角の違いをならした上で、写し**全体**が本文に連続してあれば True(ある)
+    - 全体は無いが、QUOTE_CHUNK 字ずつの断片の半分以上が本文にあれば None(確かめられない): 写し損ないかもしれないが、
+      同じサイトの記事は前置き(「〜についてお知らせします」)が共通で、断片の一致だけでは取り違えを見分けられない(監査指摘)。
+      使わせはしないが confirmed にもしない
+    - それ未満なら False(無い = URL の取り違え)。取り違えたページには、その話題の文はほぼ1片も無い"""
+    import unicodedata
+    norm = lambda s: re.sub(r"[\s、。,.・「」『』()()!！?？:：]", "", unicodedata.normalize("NFKC", s or ""))
+    q = norm(quote)
+    if len(q) < QUOTE_CHUNK:
+        return None
+    t = norm(page_text)
+    if q in t:
+        return True
+    chunks = [q[i:i + QUOTE_CHUNK] for i in range(0, len(q) - QUOTE_CHUNK + 1, QUOTE_CHUNK)]
+    return None if sum(c in t for c in chunks) * 2 >= len(chunks) else False

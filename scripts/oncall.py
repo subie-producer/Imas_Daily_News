@@ -73,7 +73,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hashlib
 
-from pipelib import ENV, ROOT, JobLockTimeout, job_lock, notify, prompt_file, render_prompt, tool_path
+from pipelib import (ENV, ROOT, JobLockTimeout, job_lock, loads_strict, notify, partial_output, prompt_file, render_prompt,
+                     save_raw, schema_ok, tool_path)
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")
@@ -241,13 +242,14 @@ def review_prompt(stage: str, date: str, fix_report: dict, diff: str, integ: dic
 
 
 def parse_json(text: str) -> dict | None:
+    """同じキーが2回ある答えは読めない(後の値で黙って上書きされ、reject と approve が並ぶと承認になる。loads_strict。監査指摘)。"""
     try:
-        return json.loads(text.strip())
+        return loads_strict(text.strip())
     except Exception:
         m = re.search(r"\{.*\}", text, re.S)
         if m:
             try:
-                return json.loads(m.group(0))
+                return loads_strict(m.group(0))
             except Exception:
                 return None
     return None
@@ -255,15 +257,24 @@ def parse_json(text: str) -> dict | None:
 
 def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -> dict:
     # 指示は作業ツリー側のファイルで渡す(引数に詰めない。作業ツリーの metrics/work/ は Git 管理外)
-    short = prompt_file("oncall", "fix-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt, base=cwd)
-    r = subprocess.run(["claude", "-p", short, "--model", ONCALL_MODEL, "--dangerously-skip-permissions",
-                        "--json-schema", schema_file.read_text(encoding="utf-8"),
-                        "--max-budget-usd", ONCALL_MAX_BUDGET_USD],
-                       cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
-                       env=session_env())
-    ans = parse_json(r.stdout or "")
-    if ans is None:
-        raise RuntimeError(f"当番セッションの出力が読めない(exit {r.returncode}): {(r.stderr or r.stdout or '')[-300:]}")
+    name = "fix-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
+    short = prompt_file("oncall", name, prompt, base=cwd)
+    try:
+        r = subprocess.run(["claude", "-p", short, "--model", ONCALL_MODEL, "--dangerously-skip-permissions",
+                            "--json-schema", schema_file.read_text(encoding="utf-8"),
+                            "--max-budget-usd", ONCALL_MAX_BUDGET_USD],
+                           cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
+                           env=session_env())
+    except subprocess.TimeoutExpired as e:
+        save_raw("oncall", name, *partial_output(e))      # 時間切れの回も、それまでの出力を残す
+        raise
+    # 作業ツリーは取り込み後に消えるので、生の出力は本体側(metrics/work/oncall/raw/)に残す
+    save_raw("oncall", name, r.stdout, r.stderr, r.returncode)
+    # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ。{"status":"no_fix_needed"} だけの答えを
+    # 診断も報告も無いまま「修正不要」にしない(監査指摘)
+    ans = parse_json(r.stdout or "") if r.returncode == 0 else None
+    if ans is None or not schema_ok(ans, schema_file.read_text(encoding="utf-8")):
+        raise RuntimeError(f"当番セッションの出力が読めない・schema のとおりでない(exit {r.returncode}): {(r.stderr or r.stdout or '')[-300:]}")
     return ans
 
 
@@ -272,17 +283,28 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
     os.close(fd)
     out_path = Path(out_name)
     try:
-        short = prompt_file("oncall", "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt, base=cwd)
-        subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "read-only", "--skip-git-repo-check",
-                        "--output-schema", str(schema_file), "-o", str(out_path), short],
-                       cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
-                       env=session_env())
+        name = "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
+        short = prompt_file("oncall", name, prompt, base=cwd)
+        try:
+            r = subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "read-only", "--skip-git-repo-check",
+                                "--output-schema", str(schema_file), "-o", str(out_path), short],
+                               cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
+                               env=session_env())
+            so, se, code = r.stdout, r.stderr, r.returncode
+        except subprocess.TimeoutExpired as e:
+            (so, se), code = partial_output(e), None
+            # 時間切れの回も、それまでの出力と答えのファイルを残してから上げる(finally で答えのファイルは消える)
+            save_raw("oncall", name, so, se, code,
+                     files={"answer": out_path.read_text(encoding="utf-8") if out_path.exists() else None})
+            raise
         text = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
+        save_raw("oncall", name, so, se, code, files={"answer": text})
     finally:
         out_path.unlink(missing_ok=True)
-    ans = parse_json(text)
-    if ans is None:
-        raise RuntimeError(f"監査セッションの出力が読めない: {text[-300:]}")
+    # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ({"verdict":"approve"} だけの答えで承認にしない。監査指摘)
+    ans = parse_json(text) if code == 0 else None
+    if ans is None or not schema_ok(ans, schema_file.read_text(encoding="utf-8")):
+        raise RuntimeError(f"監査セッションの出力が読めない・schema のとおりでない(exit {code}): {text[-300:]}")
     return ans
 
 
@@ -367,11 +389,16 @@ def editor_report(stage: str, date: str, fix: dict, verdict: str | None, rounds:
     s = fix.get("editor_summary") if isinstance(fix.get("editor_summary"), dict) else {}
     head = {"fixed": "🛠 当番が直しました", "no_fix_needed": "🛠 当番が調べました(直す箇所なし)"}.get(fix.get("status"), "🛠 当番が調べました")
     md = f"{int(date[5:7])}/{int(date[8:10])}" if re.fullmatch(r"\d{4}-\d{2}-\d{2}", date) else date
-    footer = (f"記録: {path} / 監査: {'承認' if verdict == 'approve' else (verdict or '不明')}({rounds}往復)"
+    footer = (f"記録(差分・検証の全文): {path} / 監査: {'承認' if verdict == 'approve' else (verdict or '不明')}({rounds}往復)"
               + (f" / 後で直す指摘 {n_later}件" if n_later else ""))
-    return editor_notice(f"{head}: {md}号の{STAGE_JA.get(stage, stage)}", s.get("paper_impact") or "",
-                         [(s.get("what_happened") or "(要約なし。記録を参照)", s.get("what_changed") or "(要約なし。記録を参照)")],
-                         footer=footer)
+    return editor_notice(f"{head}: {md}号の{STAGE_JA.get(stage, stage)}",
+                         [(label, s.get(k) or "(書かれていない。記録を参照)") for k, label in SUMMARY_LABELS], footer=footer)
+
+
+# 編集長への報告の項目(編集長 2026-10-04「何故こういう事が起きたか、どう修正したか、他に当該事象の類似が起きないことは説明できるのか」)
+SUMMARY_LABELS = (("what_happened", "起きたこと"), ("why", "なぜ起きたか"), ("what_changed", "どう直したか"),
+                  ("similar", "同じ型の箇所"), ("paper_impact", "紙面への影響"))
+SUMMARY_KEYS = tuple(k for k, _ in SUMMARY_LABELS)
 
 
 BACKLOG = ROOT / "metrics" / "oncall-backlog.jsonl"      # Git 管理外(作業ツリーを汚さない=発行を妨げない)
@@ -635,7 +662,7 @@ def apply_integrate(fix: dict, integ: dict) -> dict:
             fix[k] = integ[k]
     # 編集長向けの要約は、この巡の最終の内容で置き換える(訂正したのに初回の要約が届く、を防ぐ。監査指摘 r118)
     s = integ.get("editor_summary")
-    if isinstance(s, dict) and all(str(s.get(k) or "").strip() for k in ("what_happened", "what_changed", "paper_impact")):
+    if isinstance(s, dict) and all(str(s.get(k) or "").strip() for k in SUMMARY_KEYS):
         fix["editor_summary"] = s
     # 2巡目の変更・検証・リスクも最終報告に**累積**する(初稿の分を消さない。監査指摘)
     if integ.get("changed_files"):
@@ -928,13 +955,14 @@ def main() -> int:
             rec.write_text(f"理由: {why}\n例外: {res['error'] or ''}\n状態: {fix.get('status')}\n診断: {fix.get('diagnosis') or ''}\n"
                            f"メモ: {fix.get('notes') or ''}\n残った指摘:\n" + json.dumps(open_left, ensure_ascii=False, indent=1)
                            + "\n最後の記録:\n" + json.dumps(last, ensure_ascii=False, indent=1), encoding="utf-8")
+            from pipelib import editor_notice
             s = fix.get("editor_summary") if isinstance(fix.get("editor_summary"), dict) else {}
             md = f"{int(date[5:7])}/{int(date[8:10])}"
-            notify("oncall", f"🚧 当番は取り込めませんでした({md}号の{STAGE_JA.get(stage, stage)}): {why}\n"
-                             + (f"・起きたこと: {s['what_happened']}\n" if s.get("what_happened") else "")
-                             + (f"・直しかけたこと: {s['what_changed']}\n" if s.get("what_changed") else "")
-                             + ("・次の試行はここまでの修正の続きから始める\n" if wip_branch else "")
-                             + f"記録: {rec.relative_to(ROOT)}" + (f"(記録ブランチ {wip_branch})" if wip_branch else ""), ok=False)
+            notify("oncall", editor_notice(
+                f"🚧 当番は修正を取り込めませんでした: {md}号の{STAGE_JA.get(stage, stage)}",
+                [("取り込めなかった理由", why + ("。次の試行は、ここまでの修正の続きから始める" if wip_branch else ""))]
+                + [(label, s[k]) for k, label in SUMMARY_LABELS if s.get(k)],
+                footer=f"記録(差分・検証の全文): {rec.relative_to(ROOT)}" + (f"(記録ブランチ {wip_branch})" if wip_branch else "")), ok=False)
             return 1
 
         # 発行後でよい指摘(later)を保管する。**保管の失敗で発行を止めない**(修正報告には必ず載る)

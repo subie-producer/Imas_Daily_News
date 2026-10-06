@@ -97,7 +97,15 @@ def decisions_to_plan(brand: str, rows: list[dict], decisions: dict, taken: set[
     roundup_keys: list[str] = []
     merges: list[tuple[str, str]] = []
     for key, r in by_key.items():
-        d = decisions.get(key) or {"action": "drop", "reason": "その他", "note": "判定なし"}
+        d = decisions.get(key)
+        if (not isinstance(d, dict) or d.get("action") not in ACTIONS
+                or (d.get("action") == "drop" and d.get("reason") not in REASONS)):
+            # **判定の無い主題・知らない判定の主題を「不採用」にしない。**黙って dropped に入れると、取りこぼし検査
+            # (compose.coverage_gaps)が「判断済み」とみなし、拾い直し(replan_missing)にも回らず、主題が消える
+            # (2026-10-06 の洗い出しで判明。空の答えを『処理した・何も無い』と解釈する型の欠陥。未知の action は監査指摘)。
+            # 計画に載せず、取りこぼしとして拾い直させる。不採用にするのは、列挙の理由が付いた明示の drop だけ
+            # (理由の無い不採用を「その他」で補って主題を消さない。拾い直しと同じ契約。監査指摘)
+            continue
         act = d.get("action")
         if act == "article":
             ok_ranks = set(RANKS) | ({"culture"} if brand == "general" else set())
@@ -113,8 +121,8 @@ def decisions_to_plan(brand: str, rows: list[dict], decisions: dict, taken: set[
             merges.append((key, d.get("merge_into") or ""))
         elif act == "cross_brand":
             cross.append({"slug": d.get("claimed_slug") or "", "dedup_key": key, "note": d.get("note") or ""})
-        else:
-            dropped.append({"dedup_key": key, "reason": d.get("reason") or "その他", "note": d.get("note") or ""})
+        else:   # drop(ACTIONS の残り1つ。上で未知の action は除いてある)
+            dropped.append({"dedup_key": key, "reason": d["reason"], "note": d.get("note") or ""})
 
     # roundup: 面で1本。素材が足りなければ small の通常記事に戻す(規程13)
     if len(roundup_keys) >= ROUNDUP_MIN_ITEMS:

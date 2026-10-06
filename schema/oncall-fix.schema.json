@@ -6,12 +6,14 @@
   "additionalProperties": false,
   "properties": {
     "editor_summary": {
-      "type": "object", "required": ["what_happened", "what_changed", "paper_impact"], "additionalProperties": false,
-      "description": "編集長(コードを読まない人)に Discord で届ける要約。日本語だけで、ファイル名・関数名・英語・記号の羅列を使わない",
+      "type": "object", "required": ["what_happened", "why", "what_changed", "similar", "paper_impact"], "additionalProperties": false,
+      "description": "編集長(コードを読まない人)に Discord で届ける報告。日本語。コードの差分を書かない。内部の名前は避け、使うなら何を指すかを添える。短くするために情報を落とさない",
       "properties": {
-        "what_happened": {"type": "string", "minLength": 1, "maxLength": 160, "description": "何が起きたか。読者や紙面の側から見た事実を1〜2文"},
-        "what_changed": {"type": "string", "minLength": 1, "maxLength": 160, "description": "どう直したか(直さなかったなら、なぜか)を1〜2文"},
-        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 120, "description": "紙面への影響(失った記事・遅れた記事があるか、いつの号から効くか)を1文"}
+        "what_happened": {"type": "string", "minLength": 1, "maxLength": 1200, "description": "起きたこと。紙面で何が失われた・遅れたか"},
+        "why": {"type": "string", "minLength": 1, "maxLength": 1500, "description": "なぜ起きたか。原因の型まで遡る。確定できないなら、なぜ確定できないか"},
+        "what_changed": {"type": "string", "minLength": 1, "maxLength": 1500, "description": "どう直したか(直さなかったなら、なぜか)"},
+        "similar": {"type": "string", "minLength": 1, "maxLength": 1500, "description": "同じ型の箇所: どこを探し、どれを直し、どれがなぜ起きないと言えるか"},
+        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 600, "description": "紙面への影響(失った・遅れた記事、戻せるか)と、いつの号から効くか"}
       }
     },
     "status": {"enum": ["fixed", "no_fix_needed", "cannot_fix"], "description": "fixed=コードを直した(差分がある) / no_fix_needed=コードの欠陥ではない(データ・環境。差分は無いか、回帰テスト scripts/test_pipeline.py だけ) / cannot_fix=人が要る"},

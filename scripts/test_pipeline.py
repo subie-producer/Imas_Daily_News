@@ -429,6 +429,34 @@ def test_rollback(tmp: Path):
         assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING = saved
 
 
+def test_reservation_keeps_all_facts(tmp: Path):
+    """続報予約は素材の facts を全部写す。予約の根拠の日付が13件目にあっても落ちない(2026-10-07 with glasses)。"""
+    st = tmp / "stock"; (st / "scheduled").mkdir(parents=True)
+    (tmp / "metrics").mkdir(); (tmp / "docs" / "_editions").mkdir(parents=True)
+    assemble.dump_yaml(st / "stories.yml", [])
+    assemble.dump_yaml(st / "pending.yml", [])
+    facts = [f"関連投稿 {i}" for i in range(12)] + ["10/10（土）14:59まで"]
+    mats = {"c1": {"id": "c1", "dedup_key": "glasses", "title": "ガシャ", "url": "https://x.com/imasml_theater/status/1", "facts": facts}}
+    out = {"stories": [], "pending_add": [], "pending_remove": [], "digest": [],
+           "reservations": [{"candidate_id": "c1", "date": "2026-10-07", "kind": "締切前", "slug": "x", "subject": "s", "note": "n"}]}
+    saved = (assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS)
+    try:
+        assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = \
+            tmp, st / "stories.yml", st / "scheduled", st / "pending.yml", tmp / "docs" / "_editions"
+        assemble.apply("2026-10-04", 1, out, [{"slug": "x", "brand": "million"}], mats, False, stories=[])
+        rows = json.loads((st / "scheduled" / "2026-10-07.json").read_text(encoding="utf-8"))
+        check(rows and rows[0]["facts"] == facts, f"予約が素材の facts を切り詰めた: {rows and rows[0]['facts'][-1:]}")
+    finally:
+        assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = saved
+
+
+def test_review_paper_defines_same_subject():
+    """紙面担当の P1 は「同じ知らせ」だけ。同じ催しの別の知らせを重複にしない(2026-10-07 MSP アンケート)。"""
+    text = (pipelib.ROOT / "prompts" / "review-paper.md").read_text(encoding="utf-8")
+    p1 = next((l for l in text.splitlines() if l.startswith("- P1 ")), "")
+    check("同じ知らせ" in p1 and "別の主題" in p1, f"P1 に「同じ主題」の定義が無い: {p1}")
+
+
 def test_job_lock():
     code = ("import sys; sys.path.insert(0, %r)\nimport pipelib\n"
             "try:\n    pipelib.job_lock('t', wait_min=0); print('GOT')\n"
@@ -3678,6 +3706,8 @@ def main() -> int:
     test_schema_hash_dates()
     test_revise_check()
     test_rollback(tmp / "rb")
+    test_reservation_keeps_all_facts(tmp / "rkf")
+    test_review_paper_defines_same_subject()
     test_job_lock()
     test_notify_require()
     test_oncall_rerun_policy()

@@ -760,10 +760,12 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
         rid = f"sched-{r['date']}-{dk}-{r['kind']}"
         if any(x.get("id") == rid for x in rows):
             continue
+        # facts は全部写す(予約はその日の唯一の素材。過去の candidates は読まないので、切り詰めると
+        # 予約の根拠の日付ごと落ちる。実測 2026-10-07: 13件目の「10/10 14:59まで」が落ち、締切前の記事を見送った)
         entry = {"id": rid, "dedup_key": dk, "brand": brand_of.get(r["slug"]) or c.get("brand") or "other",
                  "subject": r["subject"] or c.get("title") or dk, "kind": r["kind"], "note": r["note"],
                  "reserved_on": date, "title": c.get("title") or "", "url": c.get("url") or "",
-                 "source_type": classify_source(c.get("url") or ""), "facts": list(c.get("facts") or [])[:12],
+                 "source_type": classify_source(c.get("url") or ""), "facts": list(c.get("facts") or []),
                  "via": c.get("via") or "", "verify": c.get("verify") or "unconfirmed",
                  "src_candidate_id": r["candidate_id"]}
         if entry["source_type"] not in ("公式", "準公式", "当事者", "演者", "報道", "ファン", "二次情報", "もちより", "未確認"):

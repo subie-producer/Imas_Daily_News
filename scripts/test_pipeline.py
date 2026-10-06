@@ -450,6 +450,42 @@ def test_reservation_keeps_all_facts(tmp: Path):
         assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = saved
 
 
+def test_restore_reservation_facts(tmp: Path):
+    """保存済みの予約で先頭12件に切れた facts を元素材から復元する(2026-10-10 with glasses の締切予約)。
+    元と食い違う・元が無い・過去日の予約は触らない。2回目は何も変えない。"""
+    st = tmp / "stock" / "scheduled"; st.mkdir(parents=True); (tmp / "candidates").mkdir()
+    facts = [f"関連投稿 {i}" for i in range(12)] + ["10/10（土）14:59まで"]
+    cand = {"id": "202610040227-grok-78", "facts": facts}
+    real_s, real_c = pipelib.ROOT / "stock" / "scheduled" / "2026-10-10.json", pipelib.ROOT / "candidates" / "2026-10-04.json"
+    if real_s.exists() and real_c.exists():   # 実データがあればその予約と元素材を使う
+        rr = next((r for r in json.loads(real_s.read_text(encoding="utf-8")) if "with-glasses" in r.get("id", "")), None)
+        rc = rr and next((c for c in json.loads(real_c.read_text(encoding="utf-8")) if c.get("id") == rr.get("src_candidate_id")), None)
+        if rr and rc and len(rc.get("facts") or []) > len(rr.get("facts") or []):
+            cand, facts = rc, rc["facts"]
+    row = {"id": "sched-2026-10-10-glasses-締切", "reserved_on": "2026-10-04", "src_candidate_id": cand["id"], "facts": facts[:12]}
+    other = {"id": "o", "reserved_on": "2026-10-04", "src_candidate_id": cand["id"], "facts": ["別の事実"]}
+    gone = {"id": "g", "reserved_on": "2026-10-04", "src_candidate_id": "missing", "facts": ["x"]}
+    (st / "2026-10-10.json").write_text(json.dumps([row, other, gone], ensure_ascii=False), encoding="utf-8")
+    (st / "2026-10-06.json").write_text(json.dumps([dict(row, id="past")], ensure_ascii=False), encoding="utf-8")
+    (tmp / "candidates" / "2026-10-04.json").write_text(json.dumps([cand], ensure_ascii=False), encoding="utf-8")
+    saved = (assemble.ROOT, assemble.SCHEDULED)
+    try:
+        assemble.ROOT, assemble.SCHEDULED = tmp, st
+        log = assemble.restore_reservation_facts("2026-10-07")
+        rows = {r["id"]: r for r in json.loads((st / "2026-10-10.json").read_text(encoding="utf-8"))}
+        check(rows[row["id"]]["facts"] == facts, f"切れた予約が復元されない: {rows[row['id']]['facts'][-1:]}")
+        check(rows["o"]["facts"] == ["別の事実"] and rows["g"]["facts"] == ["x"], "元と食い違う/元が無い予約を書き換えた")
+        check(len(json.loads((st / "2026-10-06.json").read_text(encoding="utf-8"))[0]["facts"]) == 12, "過去日の予約を書き換えた")
+        check(len(log) == 1 and assemble.restore_reservation_facts("2026-10-07") == [], f"冪等でない: {log}")
+        compose_root, compose.ROOT = compose.ROOT, tmp   # 復元後の予約が素材として読まれる
+        try:
+            check(any(facts[-1] in s.get("facts", []) for s in compose.load_scheduled("2026-10-10")), "復元した facts が素材に載らない")
+        finally:
+            compose.ROOT = compose_root
+    finally:
+        assemble.ROOT, assemble.SCHEDULED = saved
+
+
 def test_review_paper_defines_same_subject():
     """紙面担当の P1 は「同じ知らせ」だけ。同じ催しの別の知らせを重複にしない(2026-10-07 MSP アンケート)。"""
     text = (pipelib.ROOT / "prompts" / "review-paper.md").read_text(encoding="utf-8")
@@ -3707,6 +3743,7 @@ def main() -> int:
     test_revise_check()
     test_rollback(tmp / "rb")
     test_reservation_keeps_all_facts(tmp / "rkf")
+    test_restore_reservation_facts(tmp / "rrf")
     test_review_paper_defines_same_subject()
     test_job_lock()
     test_notify_require()

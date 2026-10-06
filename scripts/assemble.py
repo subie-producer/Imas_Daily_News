@@ -76,6 +76,36 @@ def load_materials(date: str) -> dict[str, dict]:
     return mats
 
 
+def restore_reservation_facts(date: str) -> list[str]:
+    """発行日以降の続報予約のうち、facts が元素材の facts の途中で切れているものを元素材から全部写し直す。
+
+    以前の組版は予約に facts を先頭12件しか写さなかった(実測 2026-10-07: 13件目の締切日時が落ち、締切前の
+    記事を見送った)。元素材は予約を付けた号の candidates/<reserved_on>.json にある。保存済みの facts が元の
+    facts の真の先頭部分であるときだけ直す(別物にすり替えない)。元が無ければそのまま。冪等。
+    """
+    log, cands = [], {}
+    for p in sorted(SCHEDULED.glob("*.json")):
+        if p.stem < date:
+            continue
+        rows = json.loads(p.read_text(encoding="utf-8"))
+        n = 0
+        for r in rows:
+            on, cid, have = r.get("reserved_on"), r.get("src_candidate_id"), list(r.get("facts") or [])
+            if not on or not cid:
+                continue
+            if on not in cands:
+                q = ROOT / "candidates" / f"{on}.json"
+                cands[on] = ({c["id"]: c for c in json.loads(q.read_text(encoding="utf-8")) if c.get("id")}
+                             if q.exists() else {})
+            full = list((cands[on].get(cid) or {}).get("facts") or [])
+            if len(full) > len(have) and full[:len(have)] == have:
+                r["facts"] = full; n += 1
+        if n:
+            p.write_text(json.dumps(rows, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+            log.append(f"予約 {p.name}: 切れていた facts を元素材から {n} 件復元")
+    return log
+
+
 def load_yaml_list(p: Path) -> list:
     """台帳・控えを読む。無いファイルは0件。**有るのに空・配列でないファイルは0件にしない**(書き込みの途中で
     止まって空になった控えを「追跡事項0件」と読み、台帳を空で上書きする。監査指摘)。0件は dump_yaml が `[]` と書く。"""
@@ -760,10 +790,12 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
         rid = f"sched-{r['date']}-{dk}-{r['kind']}"
         if any(x.get("id") == rid for x in rows):
             continue
+        # facts は全部写す(予約はその日の唯一の素材。過去の candidates は読まないので、切り詰めると
+        # 予約の根拠の日付ごと落ちる。実測 2026-10-07: 13件目の「10/10 14:59まで」が落ち、締切前の記事を見送った)
         entry = {"id": rid, "dedup_key": dk, "brand": brand_of.get(r["slug"]) or c.get("brand") or "other",
                  "subject": r["subject"] or c.get("title") or dk, "kind": r["kind"], "note": r["note"],
                  "reserved_on": date, "title": c.get("title") or "", "url": c.get("url") or "",
-                 "source_type": classify_source(c.get("url") or ""), "facts": list(c.get("facts") or [])[:12],
+                 "source_type": classify_source(c.get("url") or ""), "facts": list(c.get("facts") or []),
                  "via": c.get("via") or "", "verify": c.get("verify") or "unconfirmed",
                  "src_candidate_id": r["candidate_id"]}
         if entry["source_type"] not in ("公式", "準公式", "当事者", "演者", "報道", "ファン", "二次情報", "もちより", "未確認"):

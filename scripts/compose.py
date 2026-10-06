@@ -2658,6 +2658,10 @@ def main() -> int:
         notify("compose", f"{date}: 直近2時間の collect 実行記録が無い(締切前スイープ未実施?)。手持ちの candidates で続行", ok=False)
 
     # 1a. 選定: 記事計画の生成と機械検証(1回だけ再計画を許す)
+    # 旧い組版が先頭12件で切った予約の facts を、素材として読む前に元素材から復元する(実測 2026-10-07)
+    import assemble as _assemble
+    for line in _assemble.restore_reservation_facts(date):
+        print(line, flush=True)
     cands = load_window_candidates(date)
     blocklist = load_blocklist()
     if not cands:

@@ -2545,6 +2545,11 @@ def test_empty_answer_is_not_done(tmp: Path):
     check([c["verify"] for c in got] != ["failed", "failed"] and got[1]["verify"] == "failed" and "取り違え" in got[1]["verify_note"],
           f"写しの照合: {[(c['verify'], c.get('verify_note')) for c in got]}")
     check(len(day) == 1 and day[0]["title"] == "グッズ" and day[0]["verify"] != "failed", f"取り違えた候補が正しい候補を潰した: {day}")
+    # 写しを付けた候補が日別ファイルの schema を通る(欄を足して schema を直さず、lint で収集が止まった。2026-10-07)
+    from jsonschema import Draft202012Validator
+    cv = Draft202012Validator(json.loads((Path(__file__).resolve().parent.parent / "schema" / "candidates.schema.json").read_text(encoding="utf-8")))
+    errs = [e.message for e in cv.iter_errors(day + got)]
+    check(errs == [], f"収集した候補が candidates.schema.json に通らない: {errs[:3]}")
 
 
 def test_accept_only_normal_and_schema(tmp: Path):

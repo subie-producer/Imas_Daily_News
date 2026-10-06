@@ -3364,6 +3364,101 @@ def test_oncall_fix_until_clean(tmp: Path):
         check(r["approved"] and [x["claim"] for x in r["later"]] == ["前の試行の分", "堅牢化A", "テストB"], f"later の集まり方: {r['later']}")
         check([x["claim"] for x in oncall.collect_later(tr)] == ["前の試行の分", "堅牢化A", "テストB"], "報告に載せる later が往復の記録から集まらない")
         check("堅牢化A" in oncall.later_text(r["later"]) and "なし" in oncall.later_text([]), "later の報告文")
+        # (3c) 保管していた指摘を直す昼の仕事(backlog)では、later も must_fix として直すまで approve にならず、保管にも積まない
+        answers = iter([{"verdict": "approve", "must_fix": [], "notes": "", "later": [la]},
+                        {"verdict": "approve", "must_fix": [], "notes": "", "later": []}])
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
+        tr = []
+        r = oncall.run_rounds(oncall.BACKLOG_STAGE, "2026-10-07", "ctx", tmp, "B" * 40, None, "env", tr)
+        check(r["approved"] and r["later"] == [] and sum(1 for t in tr if "integrate" in t) == 1,
+              f"backlog で later を後回しにした: {r['later']} {[list(t) for t in tr]}")
+        row1 = {"key": "k1", "claim": "c", "occurs": "o", "evidence": "e", "at": "2026-10-01T04:25", "stage": "compose"}
+        rb = oncall.backlog_reason([row1])
+        fpb = oncall.fix_prompt(oncall.BACKLOG_STAGE, "2026-10-07", rb, None)
+        saved_rows = list(oncall.BACKLOG_ROWS)
+        oncall.BACKLOG_ROWS[:] = [row1]
+        rpb = oncall.review_prompt(oncall.BACKLOG_STAGE, "2026-10-07", {"status": "fixed"}, "diff", None)
+        oncall.BACKLOG_ROWS[:] = saved_rows
+        check("[k1]" in rb and "発行に必要な最小限に絞らない" in fpb and "欠陥の型" in fpb and "全件" in fpb
+              and "[k1]" in rpb and "全件" in rpb and "発行するのに必要な最小限" not in fpb + rpb,
+              "保管の指摘を直す依頼文(当番・監査の範囲が backlog 用になっていない)")
+        check("この号を発行するのに必要な最小限" in oncall.fix_prompt("compose", "2026-10-07", "ctx", None), "通常の当番の範囲が変わった")
+        # 消し込むのは、最終報告が1件ずつ扱った指摘だけ(扱っていない・2回書いた・知らない扱いは残す)
+        fixb = {"backlog_items": [{"key": "k1", "result": "fixed", "why": "w"}, {"key": "k2", "result": "fixed", "why": "w"},
+                                  {"key": "k2", "result": "invalid", "why": "w"}, {"key": "k4", "result": "later", "why": "w"}]}
+        check(oncall.settled_backlog_keys(fixb, ["k1", "k2", "k3", "k4"]) == ["k1"], "扱っていない指摘まで消し込む")
+        # 時間の枠: 次の定時工程の15分前まで。発行の時間帯・短い枠では始めない
+        import datetime as _dtb
+        J = lambda h, m: _dtb.datetime(2026, 10, 7, h, m, tzinfo=pipelib.JST)
+        check(oncall.backlog_deadline(J(9, 0)) == J(12, 15).timestamp(), "09:00 の枠が 12:15 まででない")
+        check(oncall.backlog_deadline(J(4, 0)) is None and oncall.backlog_deadline(J(12, 0)) is None, "発行の時間帯・短い枠で始める")
+        check(oncall.backlog_deadline(J(0, 40)) is None and oncall.backlog_deadline(J(0, 0)) == J(1, 15).timestamp(),
+              "深夜の枠が 01:30 の道具の更新を待たせる")
+        # 終わりに、残った指摘を名指しで知らせる(全経路。atexit)/ 保管を読めないのは「残件なし」にしない
+        notes_l = []
+        saved_l = (oncall.notify, oncall.backlog_open)
+        try:
+            oncall.notify = lambda job, msg, ok=True, require=False: notes_l.append((msg, ok)) or True
+            oncall.backlog_open = lambda: [{"key": "k2", "claim": "残った"}]
+            oncall.report_left_backlog(["k1", "k2"], "2026-10-07")
+        finally:
+            oncall.notify, oncall.backlog_open = saved_l
+        check(len(notes_l) == 1 and not notes_l[0][1] and "k2" in notes_l[0][0] and "k1" not in notes_l[0][0], f"残った指摘を名指ししない: {notes_l}")
+        # unit の停止(SIGTERM)でも残件の報告が走る(atexit は既定の SIGTERM では走らない)
+        mark = tmp / "left-reported"
+        code = ("import sys, time; sys.path.insert(0, %r); import oncall\n"
+                "oncall.report_left_backlog = lambda keys, date: open(%r, 'w').write(','.join(keys))\n"
+                "oncall.arm_backlog_exit(['k1'], '2026-10-07'); print('armed', flush=True); time.sleep(30)\n") % (
+            str(Path(oncall.__file__).resolve().parent), str(mark))
+        pr = subprocess.Popen([sys.executable, "-c", code], stdout=subprocess.PIPE, text=True)
+        pr.stdout.readline()
+        pr.terminate()
+        pr.wait(timeout=20)
+        check(mark.exists() and mark.read_text() == "k1", "SIGTERM で終わったときに残った指摘を知らせない")
+        # 最終巡の空の扱いは初稿の扱いを置き換える(扱っていない指摘を消し込まない)
+        fx = {"backlog_items": [{"key": "k1", "result": "fixed", "why": "w"}]}
+        oncall.apply_integrate(fx, {"backlog_items": []})
+        check(oncall.settled_backlog_keys(fx, ["k1"]) == [], "最終巡で扱っていない指摘を、初稿の扱いで消し込む")
+        # 保管を読めない(権限)ときは「残件なし」にしない
+        saved_bk2 = oncall.BACKLOG
+        locked = tmp / "locked"
+        locked.mkdir(exist_ok=True)
+        (locked / "b.jsonl").write_text("", encoding="utf-8")
+        try:
+            oncall.BACKLOG = locked / "b.jsonl"
+            os.chmod(locked, 0)
+            try:
+                oncall.backlog_rows()
+                check(os.geteuid() == 0, "権限エラーで保管を読めないのに残件なしにした")
+            except PermissionError:
+                pass
+        finally:
+            os.chmod(locked, 0o755)
+            oncall.BACKLOG = saved_bk2
+        import watch
+        saved_bk = oncall.BACKLOG
+        try:
+            oncall.BACKLOG = tmp / "bkdir"
+            oncall.BACKLOG.mkdir(exist_ok=True)       # 読めない(ディレクトリ)
+            check(any("読めない" in p for p in watch.hand_backlog("2026-10-07")), "保管を読めないのに残件なしにした")
+        finally:
+            oncall.BACKLOG = saved_bk
+        # 監視は、保管の指摘を当番に渡す(覚え書きの通知で終わらせない)。台帳は付けず、指摘の key を渡す。渡せなければ異常
+        import watch
+        calls_w = []
+        saved_w = (watch.escalate, oncall.backlog_open)
+        try:
+            oncall.backlog_open = lambda: [{"key": "k1", "claim": "c"}, {"key": "k2", "claim": "d"}]
+            watch.escalate = lambda *a, **kw: calls_w.append((a, kw)) or True
+            ok_w = watch.hand_backlog("2026-10-07")
+            watch.escalate = lambda *a, **kw: False
+            ng_w = watch.hand_backlog("2026-10-07")
+        finally:
+            watch.escalate, oncall.backlog_open = saved_w
+        check(ok_w == [] and calls_w and calls_w[0][0][0] == "backlog" and calls_w[0][1]["ledger"] is False
+              and calls_w[0][1]["extra_args"] == ["--backlog-keys", "k1", "k2"] and calls_w[0][1]["rerun"] is False,
+              f"監視が保管の指摘を当番に渡さない: {calls_w}")
+        check(len(ng_w) == 1 and "k1" in ng_w[0] and "k2" in ng_w[0], f"当番に渡せなかったのに異常にしない: {ng_w}")
         # (3b) 続きの checkout が失敗しても、残してあった続きは消えない(監査指摘)
         old_wip = {"base": "B" * 40, "head": "C" * 40, "fix": {"status": "fixed"}, "open": [{"id": "old"}]}
         oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 1 if "checkout" in args else 0, "", "boom")
@@ -3403,7 +3498,7 @@ def test_oncall_fix_until_clean(tmp: Path):
         with open(oncall.BACKLOG, "a", encoding="utf-8") as f:
             f.write("壊れた行\n")
         keys = [r["key"] for r in oncall.backlog_open()]
-        check(len(keys) == 2, f"壊れた行で一覧が止まる: {keys}")
+        check(len(keys) == 2 and oncall.BACKLOG_BROKEN == [3], f"壊れた行で一覧が止まる・壊れた行を記録しない: {keys} {oncall.BACKLOG_BROKEN}")
         check(oncall.backlog_done([keys[0], "無い"]) == [keys[0]] and [r["key"] for r in oncall.backlog_open()] == [keys[1]], "消し込み")
         left = oncall.backlog_open()[0]
         check(left["claim"] == "テストB" and left["date"] == "2026-09-18" and left["fix_commit"] == "a" * 10 and left["occurs"] == "毎号", f"保管の中身: {left}")

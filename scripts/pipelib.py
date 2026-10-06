@@ -120,10 +120,13 @@ def escalate_reason(reason: str) -> str:
     return reason[:4000] + "\n\n" + render_prompt("oncall-whywhy", ITEMS="\n".join(f"- {a[:1200]}" for a in ANOMALIES[:30]))
 
 
-def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: str = "") -> bool:
+def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: str = "",
+             extra_args: list[str] | None = None, ledger: bool = True, restart: bool = True) -> bool:
     """当番(oncall)を起動する。依頼の理由に、この process の異常の台帳(なぜなぜの対象)を必ず付ける。
     rerun=False は「止まった工程を再実行しない」(号が確定している・工程が終わっている)。
-    edition は修正を取り込む号の日付(既定は date。発行後の工程では生きている次の号を渡す)。"""
+    edition は修正を取り込む号の日付(既定は date。発行後の工程では生きている次の号を渡す)。
+    ledger=False は台帳を付けない(保管していた指摘を直す依頼 backlog は、その指摘だけを渡す)。extra_args は当番への追加の引数。
+    restart=False は当番が失敗しても起動し直さない(backlog: やり直しは翌朝。起動し直すと次の定時工程の排他を奪う)。"""
     import os
     global _ESCALATED
     if _QUIET:                 # 試験実行(通知しない)では当番も呼ばない
@@ -137,8 +140,10 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
     # _ESCALATED は**起動を確かめてから**立てる(起動に失敗したのに立てると、工程末尾の diagnose が二度目を抑止して、
     # 当番が誰も呼ばれないまま終わる。監査指摘 r87)
     log = ROOT / "metrics" / f"oncall-{date}-{stage}.log"
-    args = ([sys.executable, str(script), "--stage", stage, "--date", date, "--reason", escalate_reason(reason)]
-            + (["--no-rerun"] if not rerun else []) + (["--edition", edition] if edition and edition != date else []))
+    args = ([sys.executable, str(script), "--stage", stage, "--date", date,
+             "--reason", escalate_reason(reason) if ledger else reason[:100_000]]
+            + (["--no-rerun"] if not rerun else []) + (["--edition", edition] if edition and edition != date else [])
+            + list(extra_args or []))
     # **systemd の service から呼ばれたときは、別の transient unit として起動する。**
     # Popen(start_new_session=True) で子を切り離しても cgroup は同じなので、compose の service が
     # 終わった瞬間に systemd が当番ごと殺す(実測 2026-09-13 04:15: 当番のログが空のまま消えた)
@@ -149,15 +154,17 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
                             f"--setenv=HOME={os.environ.get('HOME', '')}",
                             f"--property=StandardOutput=append:{log}", "--property=StandardError=inherit",
                             # 当番自身が落ちたら1回だけ起動し直す(2回目は attempt の印と flock が二重起動を防ぐ)
-                            "--property=Restart=on-failure", "--property=RestartSec=60",
-                            "--property=StartLimitBurst=2", "--property=StartLimitIntervalSec=3600"] + args,
+                            *(["--property=Restart=on-failure", "--property=RestartSec=60",
+                               "--property=StartLimitBurst=2", "--property=StartLimitIntervalSec=3600"] if restart else [])] + args,
                            capture_output=True, text=True, stdin=subprocess.DEVNULL)
         if r.returncode == 0:
             # 起動できたことを確かめる(unit が active か)。確かめずに「起動した」と言わない(監査指摘)
             st = subprocess.run(["systemctl", "--user", "is-active", unit], capture_output=True, text=True)
             if st.stdout.strip() in ("active", "activating"):
                 print(f"当番(oncall)を起動した: {stage} {date}(unit {unit})", flush=True)
-                _ESCALATED = True
+                # 台帳を渡した起動だけを「この process の異常は当番に渡した」とする(保管していた指摘の依頼で、
+                # 同じ process のあとの異常のなぜなぜを止めない)
+                _ESCALATED = _ESCALATED or ledger
                 return True
             notify("oncall", f"{date} {stage}: 当番の unit {unit} が動いていない({st.stdout.strip()})。人の判断が要る", ok=False)
             return False
@@ -170,7 +177,7 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
             subprocess.Popen(args, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
                              start_new_session=True, env={**os.environ, "PATH": tool_path()})
         print(f"当番(oncall)を起動した: {stage} {date}", flush=True)
-        _ESCALATED = True
+        _ESCALATED = _ESCALATED or ledger
         return True
     except Exception as e:
         print(f"当番の起動に失敗: {e}", flush=True)

@@ -20,7 +20,7 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import ENV, ROOT, diagnose_anomalies, edition_date, git, notify, notify_crash, now_jst
+from pipelib import ENV, ROOT, diagnose_anomalies, edition_date, escalate, git, notify, notify_crash, now_jst
 
 def main() -> int:
     today = now_jst().strftime("%Y-%m-%d")
@@ -175,21 +175,9 @@ def main() -> int:
             f"紙面に未確認の出典が {sum(len(v) for v in unknown.values())}件 / {len(unknown)}種 残っている"
             "(種別を決めて判定表に書けば直る):\n" + "\n".join(lines))
 
-    # 8. 当番が「発行後に直す」として保管した指摘が未着手のまま残っていないか(保管して忘れる、を防ぐ)。
-    #    これは異常ではなく人への覚え書きなので、異常(なぜなぜの対象)とは分けて知らせる
-    reminder = ""
-    try:
-        import oncall
-        todo = oncall.backlog_open()
-        if todo:
-            reminder = (f"当番の「発行後に直す」指摘が {len(todo)}件 未着手(最古 {min(str(r.get('at') or '') for r in todo)[:10]}。"
-                        "`python3 scripts/oncall.py --backlog` で一覧、直したら `--backlog-done <key>`):\n"
-                        + "\n".join(f"  [{r['key']}] {str(r.get('claim') or '')[:120]}" for r in todo[:5]))
-    except Exception as e:      # noqa: BLE001 — 保管の読み取りで watch 全体を落とさない
-        problems.append(f"当番の保管(oncall-backlog)を読めない: {type(e).__name__}: {str(e)[:120]}")
+    # 8. 当番が「発行後に直す」として保管した指摘が残っていれば、当番に直させる
+    problems += hand_backlog(today)
 
-    if reminder:
-        notify("watch", reminder)
     if problems:
         notify("watch", "異常検知(当番がなぜなぜして報告する):\n- " + "\n- ".join(problems), ok=False)
         # 申告で終えない。原因まで遡り、コードや契約の欠陥なら当番が直す(監視は終わっているので再実行しない)。
@@ -198,6 +186,29 @@ def main() -> int:
         return 1
     print(f"watch OK: {today} 号発行済み・残存ブランチなし・collect {runs}回・.env 整合", flush=True)
     return 0
+
+
+def hand_backlog(today: str) -> list[str]:
+    """当番が「発行後に直す」として保管した指摘が残っていれば、**当番に直させる**(発行は終わっている昼の仕事)。
+    戻りは異常(渡せなかった・読めなかった)。
+    以前は人への覚え書きとして通知するだけで、直す担当がいなかった(2026-10-06: 9/30 からの7件が1週間手つかず。
+    編集長「なんで直すリストを直せてなかった?」)。渡せなければ異常にする(通知で終わらせない)。
+    取り込めたら当番が消し込み、取り込めなければ残って翌朝また渡る。"""
+    try:
+        import oncall
+        todo = oncall.backlog_open()
+        out = ([f"当番の保管(oncall-backlog)に壊れた行がある(行 {oncall.BACKLOG_BROKEN[:5]})。その指摘は誰にも渡らない"]
+               if oncall.BACKLOG_BROKEN else [])
+        if not todo:
+            return out
+        handed = escalate(oncall.BACKLOG_STAGE, today, oncall.backlog_reason(todo), rerun=False, edition=edition_date(),
+                          extra_args=["--backlog-keys", *[r["key"] for r in todo]], ledger=False, restart=False)
+        if handed:
+            print(f"保管していた指摘 {len(todo)}件を当番に渡した", flush=True)
+            return out
+        return out + [f"保管していた指摘 {len(todo)}件を当番に渡せなかった(直す担当がいない): " + ", ".join(r["key"] for r in todo)]
+    except Exception as e:      # noqa: BLE001 — 保管の読み取りで watch 全体を落とさない
+        return [f"当番の保管(oncall-backlog)を読めない・当番に渡せない: {type(e).__name__}: {str(e)[:120]}"]
 
 
 if __name__ == "__main__":

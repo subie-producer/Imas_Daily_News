@@ -30,8 +30,9 @@
    occurs が空の later はコードでも保管しない
 3b. **発行後でよい指摘(later)は別に保管する**: いまは止まらないが現実に起きる見込みのあるもの(堅牢化・設計の改善・
    テストの追加・書き方)。監査はこれを must_fix に入れず later に書く。当番はこの場では直さない。
-   取り込みのあと `metrics/oncall-backlog.jsonl` に積み、修正報告に載せ、watch が毎朝「未着手 N件」を出す。
-   発行して落ち着いてから直す(`oncall.py --backlog` で一覧、`--backlog-done <id>` で消し込み)。
+   取り込みのあと `metrics/oncall-backlog.jsonl` に積み、修正報告に載せる。watch(09:00)が残っている指摘を
+   当番に渡し(--stage backlog --backlog-keys …)、当番が直して取り込めたら消し込む(この工程では later も直す)。
+   手で直したときは `oncall.py --backlog-done <id>` で消し込み(`--backlog` で一覧)。
    保管の失敗は発行を妨げない(報告には必ず載る)
 4. 合意したもの(approve で must_fix が空)だけ、**監査した commit のハッシュそのもの**を
    main へ merge し、`edition/<日付>` へ取り込み、止まった工程を再実行する
@@ -73,8 +74,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hashlib
 
-from pipelib import (ENV, ROOT, JobLockTimeout, job_lock, loads_strict, notify, partial_output, prompt_file, render_prompt,
-                     save_raw, schema_ok, tool_path)
+from pipelib import (ENV, ROOT, JobLockTimeout, job_lock, loads_strict, notify, now_jst, partial_output, prompt_file,
+                     render_prompt, save_raw, schema_ok, tool_path)
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")
@@ -202,12 +203,16 @@ def remote_main() -> str:
     return sh(["git", "rev-parse", "origin/main"], cwd=ROOT).stdout.strip()
 
 
-STAGES = ("compose", "release", "classify", "collect", "watch", "update")
+STAGES = ("compose", "release", "classify", "collect", "watch", "update", "backlog")
+# backlog = 当番が「発行後に直す」として保管した指摘を、発行後の昼に直す依頼(watch が渡す)。保管して誰も直さない、を防ぐ
+# (2026-10-06: 9/30 からの7件が、毎朝の覚え書きの通知だけで1週間手つかずだった。編集長「なんで直すリストを直せてなかった?」)
+BACKLOG_STAGE = "backlog"
 # 工程 → journal の unit。出典の判定(classify)は収集(collect)と組版(compose)の中で走る。当番に見せるのは収集のログ
 UNIT_OF = {"classify": "collect"}
 # 当番を呼んだ理由の言い方(止まったときと、止まらずに異常があった=なぜなぜ、とがある)
 CALLED_BECAUSE = {"classify": "に持ち主を取るパーサの無い出典があった", "collect": "に異常があった(なぜなぜ)",
-                  "watch": "が異常を検知した(なぜなぜ)", "update": "で道具の CLI の更新・動作確認に失敗した(なぜなぜ)"}
+                  "watch": "が異常を検知した(なぜなぜ)", "update": "で道具の CLI の更新・動作確認に失敗した(なぜなぜ)",
+                  "backlog": "の時点で、後で直すとして保管した指摘が残っていた"}
 
 
 def gather_context(stage: str, date: str, reason: str) -> str:
@@ -221,11 +226,59 @@ def gather_context(stage: str, date: str, reason: str) -> str:
     return "\n\n".join(parts)
 
 
+# --stage backlog で渡された保管の指摘(main が設定する)。監査の依頼文に元の指摘を全件載せ、1件ずつの扱いを確かめさせる
+BACKLOG_ROWS: list[dict] = []
+# 往復を終える時刻の上限(None なら ONCALL_LIMIT_MIN だけ)。backlog は次の定時工程の前に終える(backlog_deadline)
+DEADLINE_AT: float | None = None
+# 定時工程の開始(時, 分)。backlog はこの前に終え、発行の時間帯(02:00 の収集から 06:00 の発行の後片付けまで)には始めない
+# (01:30 は道具の CLI の更新。同じ工程の排他を使い、02:00 の収集の前に終える必要がある。監査指摘)
+SCHEDULED = ((1, 30), (2, 0), (3, 0), (6, 0), (7, 30), (12, 30), (18, 30), (23, 30))
+BACKLOG_MARGIN_MIN = 15      # 次の定時工程の何分前に終えるか
+BACKLOG_MIN_WINDOW_MIN = 60  # これより短い枠なら始めない(取り込みの分を残して1往復も回らない)
+BACKLOG_MERGE_RESERVE_MIN = 15   # 往復を終えてから、取り込み・後始末に残す時間
+
+
+def backlog_deadline(now: datetime.datetime) -> float | None:
+    """保管の指摘を直す当番が使ってよい時刻の上限(epoch 秒)。次の定時工程の BACKLOG_MARGIN_MIN 分前。
+    道具の更新から発行まで(01:15〜06:30)・枠が BACKLOG_MIN_WINDOW_MIN 分未満なら None(始めない。指摘は残り、翌朝また渡る)。
+    12:30 の収集や 03:00 の組版・01:30 の道具の更新が、当番の持つ工程の排他で待たされて止まるのを防ぐ(監査指摘)。"""
+    if datetime.time(1, 15) <= now.time() <= datetime.time(6, 30):
+        return None
+    cands = []
+    for d in (0, 1):
+        for h, m in SCHEDULED:
+            t = (now + datetime.timedelta(days=d)).replace(hour=h, minute=m, second=0, microsecond=0)
+            if t > now:
+                cands.append(t)
+    end = min(cands) - datetime.timedelta(minutes=BACKLOG_MARGIN_MIN)
+    if (end - now).total_seconds() < BACKLOG_MIN_WINDOW_MIN * 60:
+        return None
+    return end.timestamp()
+
+
 def fix_prompt(stage: str, date: str, context: str, objections: list[dict] | None) -> str:
-    """当番への依頼文(本文は prompts/oncall-fix.md。監査の指摘があるときは oncall-fix.objections.md を足す)。"""
+    """当番への依頼文(本文は prompts/oncall-fix.md。監査の指摘があるときは oncall-fix.objections.md を足す)。
+    仕事の範囲は、工程が止まった依頼は oncall-scope、保管していた指摘を直す依頼(backlog)は oncall-scope.backlog。"""
     obj = render_prompt("oncall-fix.objections", POLICY=_policy_lines(),
                         ITEMS=json.dumps(objections, ensure_ascii=False, indent=1)) if objections else ""
-    return render_prompt("oncall-fix", STAGE=stage, DATE=date, OBJECTIONS=obj, CONTEXT=context)
+    scope = render_prompt("oncall-scope.backlog" if stage == BACKLOG_STAGE else "oncall-scope")
+    return render_prompt("oncall-fix", STAGE=stage, DATE=date, SCOPE=scope, OBJECTIONS=obj, CONTEXT=context)
+
+
+def backlog_items_text(rows: list[dict]) -> str:
+    return "\n".join(f"- [{r['key']}] {r.get('claim', '')}\n  起きるとき: {r.get('occurs', '')}\n  根拠: {r.get('evidence', '')}"
+                     f"\n  (保管: {str(r.get('at') or '')[:16]} {r.get('stage', '')} の当番)" for r in rows)
+
+
+def settled_backlog_keys(fix: dict, keys: list[str]) -> list[str]:
+    """当番の最終報告が、渡した保管の指摘のうちどれを扱ったか(扱いが契約の値で、key がちょうど1回)。
+    消し込むのはこれだけ(監査が承認したときに限る。扱っていない指摘は残り、翌朝また渡る。監査指摘)。"""
+    rows = [x for x in (fix.get("backlog_items") or []) if isinstance(x, dict)]
+    count: dict = {}
+    for x in rows:
+        count[x.get("key")] = count.get(x.get("key"), 0) + 1
+    return [k for k in keys if count.get(k) == 1
+            and next(x for x in rows if x.get("key") == k).get("result") in ("fixed", "already_fixed", "invalid")]
 
 
 def _policy_lines() -> str:
@@ -234,8 +287,10 @@ def _policy_lines() -> str:
 
 def review_prompt(stage: str, date: str, fix_report: dict, diff: str, integ: dict | None) -> str:
     """監査への依頼文(本文は prompts/oncall-review.md)。"""
+    scope = (render_prompt("oncall-review.scope.backlog", N=len(BACKLOG_ROWS), ITEMS=backlog_items_text(BACKLOG_ROWS))
+             if stage == BACKLOG_STAGE else render_prompt("oncall-review.scope"))
     return render_prompt(
-        "oncall-review", STAGE=stage, DATE=date, POLICY=_policy_lines(),
+        "oncall-review", STAGE=stage, DATE=date, SCOPE=scope, POLICY=_policy_lines(),
         REPORT=json.dumps(fix_report, ensure_ascii=False, indent=1),
         PREVIOUS=("\n## 前回の指摘に対する当番の対応\n" + json.dumps(integ, ensure_ascii=False, indent=1) + "\n") if integ else "",
         DIFF=f"```diff\n{diff}\n```" if diff.strip() else "(変更なし。当番は「コードの欠陥ではない」と判断した)")
@@ -379,7 +434,8 @@ def report_change(stage: str, date: str, fix: dict, transcript: list[dict], base
                                           path.relative_to(ROOT), branch), require=True)
 
 
-STAGE_JA = {"compose": "組版", "release": "発行", "collect": "収集", "classify": "出典の判定", "watch": "監視", "update": "道具の更新"}
+STAGE_JA = {"compose": "組版", "release": "発行", "collect": "収集", "classify": "出典の判定", "watch": "監視", "update": "道具の更新",
+            "backlog": "保管していた指摘"}
 
 
 def editor_report(stage: str, date: str, fix: dict, verdict: str | None, rounds: int, n_later: int, path, branch: str) -> str:
@@ -405,19 +461,30 @@ BACKLOG = ROOT / "metrics" / "oncall-backlog.jsonl"      # Git 管理外(作業�
 
 
 def backlog_rows() -> list[dict]:
-    """保管してある「発行後に直す」指摘。読めない行は飛ばす(保管の壊れで当番を止めない)。"""
-    rows = []
+    """保管してある「発行後に直す」指摘。まだ何も保管していない(ファイルが無い)なら []。
+    **ファイルを読めない(権限・I/O)ときは例外**: 「残件なし」と読むと、指摘が誰にも直されないまま消える(監査指摘)。
+    壊れた行は飛ばして、その行番号を BACKLOG_BROKEN に残す(1行の壊れで他の指摘まで止めない。watch が異常として名指しする)。"""
+    BACKLOG_BROKEN.clear()
     try:
-        for ln in BACKLOG.read_text(encoding="utf-8").splitlines():
-            try:
-                d = json.loads(ln)
-            except ValueError:
-                continue
-            if isinstance(d, dict) and d.get("key"):
-                rows.append(d)
-    except OSError:
-        pass
+        text = BACKLOG.read_text(encoding="utf-8")
+    except FileNotFoundError:     # 不在とみなすのはこれだけ(exists() は権限エラーでも False を返す。監査指摘)
+        return []
+    rows = []
+    for i, ln in enumerate(text.splitlines(), 1):
+        if not ln.strip():
+            continue
+        try:
+            d = json.loads(ln)
+        except ValueError:
+            d = None
+        if isinstance(d, dict) and d.get("key"):
+            rows.append(d)
+        else:
+            BACKLOG_BROKEN.append(i)
     return rows
+
+
+BACKLOG_BROKEN: list[int] = []      # 直前に読んだ保管の、壊れた行の行番号
 
 
 def backlog_add(items: list[dict], date: str, stage: str, head: str) -> list[dict]:
@@ -474,6 +541,34 @@ def keep_later(items: list[dict], date: str, stage: str, head: str) -> int:
         return 0
 
 
+def arm_backlog_exit(keys: list[str], date: str) -> None:
+    """どの経路で終わっても(前提の失敗・取り込みの失敗・例外・unit の停止 SIGTERM)、残った指摘を名指しで知らせる。
+    既定の SIGTERM では atexit が走らないので、通常の終了(SystemExit)に変える(監査指摘)。
+    SIGKILL などで報告できなくても、指摘は保管に残り翌朝また渡る。"""
+    import atexit
+    import signal as _signal
+    atexit.register(lambda: report_left_backlog(keys, date))
+    _signal.signal(_signal.SIGTERM, lambda *_: sys.exit(143))
+
+
+def report_left_backlog(keys: list[str], date: str) -> None:
+    """--stage backlog の終わりに、渡した指摘のうちまだ残っているものを名指しで知らせる(全経路で。atexit)。
+    残った指摘は保管に残り、翌朝の監視がまた当番に渡す。"""
+    try:
+        left = [r for r in backlog_open() if r["key"] in set(keys)]
+    except (OSError, ValueError) as e:
+        notify("oncall", f"{date} 保管していた指摘が残ったか確かめられない({type(e).__name__}: {e})", ok=False)
+        return
+    if left:
+        notify("oncall", f"保管していた指摘のうち {len(left)}件は直っていないので残す(翌朝の監視がまた当番に渡す):\n"
+                         + "\n".join(f"- [{r['key']}] {str(r.get('claim') or '')[:120]}" for r in left), ok=False)
+
+
+def backlog_reason(rows: list[dict]) -> str:
+    """保管していた指摘を当番に直させる依頼の理由(本文は prompts/oncall-backlog.md)。"""
+    return render_prompt("oncall-backlog", N=len(rows), ITEMS=backlog_items_text(rows))
+
+
 def later_text(items: list[dict]) -> str:
     if not items:
         return "発行後に直す指摘(later): なし"
@@ -521,7 +616,7 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
     - 例外はここで受けて `error` に入れる(呼び出し側の共通の終了処理が state を保存できるように)
     """
     schemas = ROOT / "schema"
-    deadline = time.time() + ONCALL_LIMIT_MIN * 60
+    deadline = min(time.time() + ONCALL_LIMIT_MIN * 60, DEADLINE_AT or float("inf"))
     left = lambda: int(deadline - time.time())
     objections: list[dict] | None = None
     integ: dict | None = None
@@ -612,6 +707,7 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
             rev = run_codex(review_prompt(stage, date, fix, diff, integ), schemas / "oncall-review.schema.json", wt,
                             timeout=min(1800, left()))
             transcript.append({"round": rnd, "review": rev})
+            round_later = []
             for item in rev.get("later") or []:
                 if not (isinstance(item, dict) and item.get("claim")):
                     continue
@@ -619,15 +715,22 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                     # 起きる道筋(どういうときに・どのくらい)が書かれていない指摘は保管もしない(形の検査)
                     print(f"  later を捨てた(起きる道筋が書かれていない): {str(item['claim'])[:80]}", flush=True)
                     continue
-                if not any(x.get("claim") == item.get("claim") for x in later):
-                    later.append({"id": str(item.get("id") or ""), "claim": str(item["claim"]),
-                                  "evidence": str(item.get("evidence") or ""), "occurs": str(item["occurs"])})
-            if rev.get("verdict") == "approve" and not (rev.get("must_fix") or []):
+                round_later.append({"id": str(item.get("id") or ""), "claim": str(item["claim"]),
+                                    "evidence": str(item.get("evidence") or ""), "occurs": str(item["occurs"])})
+            must_fix = list(rev.get("must_fix") or [])
+            if stage == BACKLOG_STAGE:
+                # 保管していた指摘を直す昼の仕事では、「後でよい」指摘もその場で直す(また保管に積むと、直すリストが減らない)
+                must_fix += [dict(x, severity="quality") for x in round_later]
+            else:
+                for item in round_later:
+                    if not any(x.get("claim") == item.get("claim") for x in later):
+                        later.append(item)
+            if rev.get("verdict") == "approve" and not must_fix:
                 res["approved"] = True
                 kept["open"] = []
                 break
             # reject なのに must_fix が空、という答えでも次の往復が「指摘なし」で始まらないようにする
-            objections = rev.get("must_fix") or [{"id": "reject-without-items", "severity": "quality", "evidence": "",
+            objections = must_fix or [{"id": "reject-without-items", "severity": "quality", "evidence": "",
                                                   "claim": "監査は reject したが must_fix が空だった: " + str(rev.get("notes") or "")[:600]}]
             kept["open"] = list(objections)
     except Exception as e:      # noqa: BLE001 — 何で終わっても、固定できたところまでは次へ残す
@@ -664,6 +767,10 @@ def apply_integrate(fix: dict, integ: dict) -> dict:
     s = integ.get("editor_summary")
     if isinstance(s, dict) and all(str(s.get(k) or "").strip() for k in SUMMARY_KEYS):
         fix["editor_summary"] = s
+    # 保管していた指摘の1件ずつの扱いも、この巡の最終の内容で置き換える(全件を書き直す契約)
+    # (空の配列も最終報告として置き換える。初稿の扱いを残すと、最終巡で扱っていない指摘まで消し込む。監査指摘)
+    if isinstance(integ.get("backlog_items"), list):
+        fix["backlog_items"] = integ["backlog_items"]
     # 2巡目の変更・検証・リスクも最終報告に**累積**する(初稿の分を消さない。監査指摘)
     if integ.get("changed_files"):
         fix["changed_files"] = list(dict.fromkeys(list(fix.get("changed_files") or []) + list(integ["changed_files"])))
@@ -846,6 +953,8 @@ def main() -> int:
                     help="修正を取り込む号の日付(既定は --date)。発行後の release・watch は異常の発生日と取り込み先の号が違う")
     ap.add_argument("--backlog", action="store_true", help="発行後に直す指摘(未着手)を一覧する")
     ap.add_argument("--backlog-done", nargs="+", metavar="KEY", help="直し終えた指摘を消し込む")
+    ap.add_argument("--backlog-keys", nargs="+", default=[], metavar="KEY",
+                    help="--stage backlog で渡した保管の指摘。取り込めたら(直す箇所なしの承認も)消し込む")
     a = ap.parse_args()
     if a.backlog or a.backlog_done:
         if a.backlog_done:
@@ -862,14 +971,42 @@ def main() -> int:
         ap.error("--stage と --date が要る")
     date, stage = a.date, a.stage
     edition = f"edition/{a.edition or date}"
+    if stage == BACKLOG_STAGE:
+        global DEADLINE_AT
+        # どの経路で終わっても(前提の失敗・取り込みの失敗・例外・扱わなかった指摘)、残った指摘を名指しで知らせる
+        arm_backlog_exit(list(a.backlog_keys), date)
+        try:
+            BACKLOG_ROWS[:] = [r for r in backlog_open() if r["key"] in set(a.backlog_keys)]
+        except (OSError, ValueError) as e:
+            notify("oncall", f"{date} 保管していた指摘を読めない({type(e).__name__}: {e})。当番は何もしない", ok=False)
+            return 1
+        if not BACKLOG_ROWS:
+            print("渡された保管の指摘は、もう残っていない", flush=True)
+            return 0
+        end = backlog_deadline(now_jst())
+        if end is None:
+            print("いまは定時工程・発行の時間帯に近いので、保管の指摘は直さない(翌朝また渡る)", flush=True)
+            return 0
+        # 往復はさらに取り込み・後始末の分(BACKLOG_MERGE_RESERVE_MIN)を残して終える
+        DEADLINE_AT = end - BACKLOG_MERGE_RESERVE_MIN * 60
 
     # 工程の排他(collect/compose/release/当番で共通の flock)。起動直後は親の compose がまだ持って
-    # いるので、ここで終わるまで待つ。以後、再実行が終わるまで持ち続ける(pgrep の隙間を作らない。監査指摘)
+    # いるので、ここで終わるまで待つ。以後、再実行が終わるまで持ち続ける(pgrep の隙間を作らない。監査指摘)。
+    # backlog は待つのも往復の期限まで(期限を過ぎてロックを取ると、次の定時工程を待たせる。監査指摘)
+    wait_min = WAIT_IDLE_MIN if DEADLINE_AT is None else max(0, min(WAIT_IDLE_MIN, int((DEADLINE_AT - time.time()) // 60) - 30))
     try:
-        lock_fd = job_lock("oncall", wait_min=WAIT_IDLE_MIN)
+        lock_fd = job_lock("oncall", wait_min=wait_min)
     except JobLockTimeout as e:
+        if stage == BACKLOG_STAGE:
+            print(f"工程の排他を時間内に取れない({e})。保管の指摘は翌朝また渡る", flush=True)
+            return 0
         notify("oncall", f"{date} {stage}: {e}。当番は諦める", ok=False)
         return 1
+    if DEADLINE_AT is not None and DEADLINE_AT - time.time() < 30 * 60:
+        # ロックを取れた時点で、1往復(当番・監査)と取り込みの時間が残っていなければ始めない
+        os.close(lock_fd)
+        print("ロックを取れたが、期限までに1往復できない。保管の指摘は翌朝また渡る", flush=True)
+        return 0
     # 試行回数はロックの中で数える・判定する・増やす(同時起動で上限をすり抜けない。監査指摘)。
     # 回数は印ファイルの個数(JSON の壊れ・書き換えで緩まない)、記録(log)は JSON
     state_p = ROOT / "metrics" / f"oncall-{date}-{stage}.json"
@@ -1045,6 +1182,12 @@ def main() -> int:
             reviews = [t.get("review") for t in transcript if t.get("review")]
             reported = notify("oncall", editor_report(stage, date, fix, (reviews[-1] or {}).get("verdict") if reviews else None,
                                                       len(reviews), len(res["later"]), path.relative_to(ROOT), ""))
+        if stage == BACKLOG_STAGE and a.backlog_keys:
+            # 監査が承認して取り込めた(直す箇所なしの承認を含む)。消し込むのは、当番の最終報告が1件ずつ扱った指摘だけ
+            # (監査はその扱いを元の指摘と突き合わせて確かめている)。扱わなかった指摘・取り込めなかったときは残り、
+            # 終わりに名指しで知らせる(report_left_backlog)。翌朝の監視がまた渡す
+            done = backlog_done(settled_backlog_keys(fix, list(a.backlog_keys)))
+            print(f"保管していた指摘を消し込んだ: {', '.join(done) or 'なし'}", flush=True)
         if not reported:
             # 報告が人に届いていないなら再実行(=発行)へ進まない(監査指摘)。修正は main に入っているので
             # 報告ファイル(metrics/oncall-*-report.md)を人が見て、手で再実行する

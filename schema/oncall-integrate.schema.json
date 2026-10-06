@@ -2,7 +2,7 @@
   "title": "oncall-integrate",
   "description": "当番(Opus)が監査の指摘を敵対的に取り込んだ結果。受け入れたものは直し、反論するものは根拠を示す",
   "type": "object",
-  "required": ["accepted", "refuted", "changed_files", "test_evidence", "status", "rerun_mode", "editor_summary", "diagnosis", "root_cause", "recovery", "risk", "notes"],
+  "required": ["accepted", "refuted", "changed_files", "test_evidence", "status", "rerun_mode", "editor_summary", "diagnosis", "root_cause", "recovery", "risk", "notes", "backlog_items"],
   "additionalProperties": false,
   "properties": {
     "editor_summary": {
@@ -36,6 +36,13 @@
     },
     "changed_files": {"type": "array", "items": {"type": "string"}},
     "test_evidence": {"type": "string", "maxLength": 1200},
-    "notes": {"type": "string", "maxLength": 600}
+    "notes": {"type": "string", "maxLength": 600},
+    "backlog_items": {
+      "type": "array", "description": "保管していた指摘を渡されたとき: この巡を終えた時点の、1件ずつの扱い(全件を毎回書き直す)。渡されていなければ []",
+      "items": {"type": "object", "required": ["key", "result", "why"], "additionalProperties": false,
+                "properties": {"key": {"type": "string", "minLength": 1},
+                               "result": {"enum": ["fixed", "already_fixed", "invalid"]},
+                               "why": {"type": "string", "minLength": 1, "maxLength": 600}}}
+    }
   }
 }

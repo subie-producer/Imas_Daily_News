@@ -28,6 +28,8 @@
 | watch-facts | 定点観測の新着の facts 化(`collect.run_watch`) | Claude haiku | 新着ページごとの結果(extracted / none / unreadable)と候補 JSON |
 | classify-rules / classify-site / classify-x / classify-debate | 出典種別の合議(`classify_sources`) | Claude haiku + Codex luna | 種別 JSON |
 | oncall-fix(+ .objections)/ oncall-review | 当番の修正と監査(`oncall`) | Claude opus / Codex sol | 報告・判定(schema) |
+| oncall-backlog | 当番が保管した「発行後に直す」指摘を、発行後の昼に直す依頼(`watch.hand_backlog` → `oncall.backlog_reason`、工程名 backlog) | Claude opus(当番) | 修正(oncall-fix と同じ) |
+| oncall-scope(.backlog)/ oncall-review.scope(.backlog) | 当番・監査の仕事の範囲。工程が止まった依頼と、保管の指摘を直す依頼(backlog)で切り替える(`oncall.fix_prompt` / `review_prompt`) | — | — |
 | oncall-parser | 持ち主を取るパーサが無い URL の種類について、当番へのパーサの依頼(`classify_sources.request_parsers` → oncall-fix の「何が起きたか」) | Claude opus(当番) | 修正(oncall-fix と同じ) |
 | oncall-whywhy | 工程が人に「異常」として通知した事柄の一覧と、なぜなぜ(原因まで遡る)の依頼。`pipelib.escalate` が異常の台帳(`ANOMALIES`)を毎回これで付ける | Claude opus(当番) | 診断・修正(oncall-fix と同じ) |
 
@@ -132,6 +134,10 @@
 ### 当番(oncall-*)
 - 範囲は「発行に必要な最小限で、今後もちゃんと動く正しい修正」。範囲内(must_fix)は合意まで、発行後でよいもの(later)は保管、起きる道筋を言えないものは書かない(編集長 2026-09-18)。
   範囲を決めずに合意を求めたら、監査が「dedup_key に改行 2100 個」の類を積み、当番が追いかけて2往復で時間切れになり、号が止まった
+- oncall-backlog(2026-10-06): 保管した later は、毎朝の監視が「未着手 N件」と覚え書きを流すだけで、直す担当がいなかった。
+  9/30 からの7件が1週間手つかずで、編集長「なんで直すリストを直せてなかった?」「こっちが本筋」。監視が当番に渡し、取り込めたら消し込む。
+  範囲を「発行に必要な最小限に絞らない」のは、発行の時間帯ではなく、絞ると同じ指摘がまた later に戻るから。同じ理由で、
+  この工程では監査の later も must_fix として扱い、保管に積まない
 - 編集方針で決着済みの事項(`oncall.POLICY_EXCLUDED`): 内容判断の機械化の要求、HOME / OS 隔離の要求
 - oncall-parser(2026-09-26): ニコニコ生放送の URL を「判定の単位を取れない」として人に回した → 編集長「これくらい curl して取れよ」
   「この手のやつが来たら『パースしろ』という判定をしろ」「なんでその設計判断なしにこっちに決まりませんなんて言ってんだ」「申告前に診断しろ」。

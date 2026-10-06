@@ -230,6 +230,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - bit.ly                # 合議で追加: リンク先はローソンプリント。ライセンスを受けてアイマス商品を販売する当事者
   - flowerstand.jp        # 合議で追加: アイマス関連イベントのフラワースタンド受付・販売を行う独立企業
   - famkuji.jp            # 合議で追加: グッズくじ販売、ライセンス商品
   - amiami.jp             # 合議で追加: ライセンス商品販売、フィギュア予約受付
@@ -666,6 +667,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - lawsonmulticopy     # 合議で追加: ローソンはライセンス商品（ブロマイド）の販売元・会場。ライセンス商品販売会社は当
     - sirasawasnbei       # 合議で追加: コラボ実施している店舗アカウント
     - WILLER_TRAVEL       # 合議で追加: ツアー企画・販売会社のコラボ募集
     - taiko_All           # 合議で追加: 太鼓の達人の公式アカウント（コラボ先）

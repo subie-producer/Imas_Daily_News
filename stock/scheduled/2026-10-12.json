@@ -595,5 +595,29 @@
   "src_candidate_id": "202610060218-grok-37",
   "event_date": "2026-12-12",
   "deadline": "2026-10-12"
+ },
+ {
+  "id": "sched-2026-10-12-shiny-msp-memorial-goods-2026-締切",
+  "dedup_key": "shiny-msp-memorial-goods-2026",
+  "brand": "shiny",
+  "subject": "シャニマスMSP記念グッズ受注",
+  "kind": "締切",
+  "note": "受注販売の最終日。商品ページで注文できる",
+  "reserved_on": "2026-10-07",
+  "title": "283 PRODUCTION Solo Live Collection開催記念グッズ受注",
+  "url": "https://x.com/shinyc_official/status/2107410539353924012",
+  "source_type": "公式",
+  "facts": [
+   "『シャニマスソロライブMSP』開催記念グッズを受注中。",
+   "キービジュアルグッズがある。",
+   "アイドル28名の新ソロ曲をイメージしたデザインのグッズがある。",
+   "受注期間: 10/12(月・祝)まで。",
+   "商品ページ: https://shop.asobistore.jp/feature/283pro_sololive_msp_memorial",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610070225-grok-19",
+  "deadline": "2026-10-12"
  }
 ]

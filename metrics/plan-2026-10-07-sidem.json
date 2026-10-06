@@ -1,0 +1,90 @@
+{
+ "decisions": {
+  "sidem-asobi-store-maintenance-completed-2026-10-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "メンテ完了の報告のみ。読者の行動も新情報も無い"
+  },
+  "sidem-fanfes-wsi-asobistore-advance-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/6号の記事と同内容(席種別の申込先)。新事実も当日の締切も facts に無い"
+  },
+  "sidem-11th-fan-flower-stand-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の個人投稿のみ。公式の発表ではない"
+  },
+  "sidem-deramasu-mangaten-hero-card-case-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のファン制作の投稿。ファン面は general 面のみ"
+  },
+  "sidem-fan-yamanashi-trip-2026-10-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の観光の感想投稿"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "sidem-asobi-store-maintenance-completed-2026-10-06",
+    "reason": "その他",
+    "note": "メンテ完了の報告のみ。読者の行動も新情報も無い"
+   },
+   {
+    "dedup_key": "sidem-fanfes-wsi-asobistore-advance-2-2026",
+    "reason": "既報",
+    "note": "10/6号の記事と同内容(席種別の申込先)。新事実も当日の締切も facts に無い"
+   },
+   {
+    "dedup_key": "sidem-11th-fan-flower-stand-2026",
+    "reason": "出典不足",
+    "note": "未確認の個人投稿のみ。公式の発表ではない"
+   },
+   {
+    "dedup_key": "sidem-deramasu-mangaten-hero-card-case-2026",
+    "reason": "個人の話題",
+    "note": "個人のファン制作の投稿。ファン面は general 面のみ"
+   },
+   {
+    "dedup_key": "sidem-fan-yamanashi-trip-2026-10-06",
+    "reason": "個人の話題",
+    "note": "個人の観光の感想投稿"
+   }
+  ],
+  "cross_brand": []
+ }
+}

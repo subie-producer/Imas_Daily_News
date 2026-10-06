@@ -1,0 +1,127 @@
+{
+ "decisions": {
+  "xr-live-revival-asobistore-general-advance-2026": {
+   "action": "article",
+   "angle": "「xR LIVE REVIVAL」大阪公演のアソビストア一般会員先行は11月1日14時59分まで受付、同行者登録が必要で、12月12日の3公演と13日の公演の開演時間・公演名も判明",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の開催決定(xr-live-revival-twin-2026)をここへ統合。12/12三公演の開場・開演時刻と副題は既報本文に無い新事実"
+  },
+  "xr-live-revival-twin-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "xr-live-revival-asobistore-general-advance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演。読者の行動(先行申込)は先行受付の記事に集約"
+  },
+  "arcade-tours-s2-live-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-s2-live-stream-viewing-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ生配信・同じ7日23:59締切。ただし本件は日付の曜日・配信終了時刻・namco TOKYO会場が他3件と食い違い verify=unconfirmed。会場・20:30終了などは採用せず確認できた事実のみ使う"
+  },
+  "tours-s2-livestream-campaign-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-s2-live-stream-viewing-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策(25名招待・本日締切)"
+  },
+  "tours-s2-live-stream-viewing-2026": {
+   "action": "article",
+   "angle": "ツアマスS2弾生配信の現地観覧25名招待、公式Xの固定投稿リポストでの応募は本日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策の4主題+未確認の1主題を統合した代表記事。新規事実は少なく、当日締切のトリガーで記事化。当選者へのDMは8日ごろ、提示は画面表示のみで印刷不可"
+  },
+  "tours-s2-stream-viewing-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-s2-live-stream-viewing-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策(現地観覧応募の本日締切)"
+  },
+  "starlit-season-5th-message-campaign-2026": {
+   "action": "article",
+   "angle": "スタマス5周年記念の心白・亜夜へのメッセージ募集は本日23:59が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日締切のトリガーあり。brand は索引上 joint(公式アカウント主催)。前日号と同様に扱った"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "「xR LIVE REVIVAL」大阪公演のアソビストア一般会員先行は11月1日14時59分まで受付、同行者登録が必要で、12月12日の3公演と13日の公演の開演時間・公演名も判明",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+    "candidate_ids": [
+     "202610060732-explore-1",
+     "202610060732-explore-2"
+    ]
+   },
+   {
+    "slug": "joint-tours-s2-live-stream-viewing-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ツアマスS2弾生配信の現地観覧25名招待、公式Xの固定投稿リポストでの応募は本日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "tours-s2-live-stream-viewing-2026",
+    "candidate_ids": [
+     "sched-2026-10-07-tours-s2-live-stream-viewing-2026-締切",
+     "sched-2026-10-07-arcade-tours-s2-live-2026-締切",
+     "sched-2026-10-07-tours-s2-livestream-campaign-2026-締切",
+     "sched-2026-10-07-tours-s2-stream-viewing-2026-締切"
+    ]
+   },
+   {
+    "slug": "joint-starlit-season-5th-message-campaign-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "スタマス5周年記念の心白・亜夜へのメッセージ募集は本日23:59が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "starlit-season-5th-message-campaign-2026",
+    "candidate_ids": [
+     "sched-2026-10-07-starlit-season-5th-message-campaign-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

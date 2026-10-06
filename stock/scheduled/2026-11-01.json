@@ -155,5 +155,29 @@
   "src_candidate_id": "202610050222-grok-1",
   "event_date": "2026-12-12",
   "deadline": "2026-11-01"
+ },
+ {
+  "id": "sched-2026-11-01-xr-live-revival-asobistore-general-advance-2026-締切",
+  "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+  "brand": "joint",
+  "subject": "xR LIVE REVIVAL アソビストア一般会員先行 締切",
+  "kind": "締切",
+  "note": "先行抽選の受付最終日、申し込める",
+  "reserved_on": "2026-10-07",
+  "title": "xR LIVE REVIVAL アソビストア一般会員先行",
+  "url": "https://asobiticket2.asobistore.jp/receptions/d0d5822a-deb6-46fa-b2ab-19b2fedb592c",
+  "source_type": "準公式",
+  "facts": [
+   "受付期間: 2026年10月3日(土) 10:00 〜 2026年11月1日(日) 14:59",
+   "結果発表: 2026年11月14日(土) 4:00",
+   "入金期間: 2026年11月14日(土) 4:00 〜 2026年11月18日(水) 14:59",
+   "本受付は申し込み時に同行者の登録が必要。",
+   "申し込みから当落発表までの間にアソビストア会員を退会すると、抽選対象外となる。",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202610060732-explore-1",
+  "deadline": "2026-11-01"
  }
 ]

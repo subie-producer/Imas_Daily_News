@@ -1,0 +1,170 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-10-07-shiny-msp-survey-2026.md",
+   "issue": "同じ主題（MSP）の記事が2本以上ある",
+   "quote": "シャニマスMSP公演アンケートは12日まで",
+   "rule_id": "P1",
+   "repair": "drop_article",
+   "fact_ids": [],
+   "expected": "MSP関連は1本のみを残す。より重要度の高いグッズ販売情報を優先",
+   "scope": "paper"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-10-07-cg-election-2026-shop-stock-atre-akihabara.md",
+   "issue": "分量が不足。rank: small の目安は 250字ですが、リード・本文の合計が約90字です。出典に店舗情報や商品詳細があれば記事に加えて充実させてください",
+   "scope": "article:2026-10-07-cg-election-2026-shop-stock-atre-akihabara.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-cg-overclock-digital-single-2026.md",
+   "issue": "分量不足。rank:small の目安250字に対して、リード+本文が約185字。出典にある作曲者、作詞者の情報を活かして本文を厚くできる可能性あり",
+   "scope": "article:2026-10-07-cg-overclock-digital-single-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-cg-yurakucho-popup-inventory-2026.md",
+   "issue": "分量不足：rank: small の目安 250字に対して本文が約 130字。候補に抽選会参加・特典ブロマイド配布などの詳細があり、補足可能です。",
+   "scope": "article:2026-10-07-cg-yurakucho-popup-inventory-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-dsva-valiv-study-equal-magic-dance-2026-10-06.md",
+   "issue": "本文が1文のみで極めて短い。ランクが small(目安250字)だが、実質的にはリードを補完する記述のみ。出典に追加情報がない場合は仕方ないが、URL 以外の情報（撮影内容、ダンスの説明など）があれば、読み応えが増す",
+   "scope": "article:2026-10-07-dsva-valiv-study-equal-magic-dance-2026-10-06.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-gaku-gold-rush-vol7-2026.md",
+   "issue": "分量不足: rank: small の目安は 250字以上ですが、本文は 49字です。素材に記載されている価格情報（通常版880円・特装版2,970円）を追加すれば分量が埋まります。",
+   "scope": "article:2026-10-07-gaku-gold-rush-vol7-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-gaku-shirube-iwate-stream-ticket-2026.md",
+   "issue": "本文が短め。rank: small の目安 250字に対して本文は約110字。出典の購入方法、視聴方法の詳細、対象条件などを追加できれば充実する。",
+   "scope": "article:2026-10-07-gaku-shirube-iwate-stream-ticket-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-gaku-taiko-25th-ume-song-2026.md",
+   "issue": "分量不足：rank: small の記事だが、約 110 字で目安 250 字に及ばない。sources に記載された配信サイト情報や楽曲背景を拡充すれば改善可能。",
+   "scope": "article:2026-10-07-gaku-taiko-25th-ume-song-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-gaku-taiko-25th-ume-song-2026.md",
+   "issue": "見出しと本文の不整合：リードに「YouTubeで公開された」と記載されているが、本文にはストリーミング配信情報のみで YouTube への言及がない。リードと本文の記述を揃えるか、本文で YouTube 公開を明示すること。",
+   "scope": "article:2026-10-07-gaku-taiko-25th-ume-song-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-gaku-x-com-28.md",
+   "issue": "分量不足: rank:small の目安は 250字だが、見出し＋リード＋本文合計で約 120字。出典にある番組名、ゲスト、日時以上に、視聴可能な形式（ライブ配信/アーカイブ）やアクセス方法など、詳細を拾えば埋まる可能性あり",
+   "scope": "article:2026-10-07-gaku-x-com-28.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-general-imas-ch-october-member-stream-2026.md",
+   "issue": "分量不足：rank small の目安は 250 字だが、本文は約 70 字。素材に募集期間・配信予定日時の記載がないため、出典にない情報での水増しは不可だが、既存の記述を素材内で拡張（例：ファンアートの投稿方法をより詳述、YouTubeメンバーシップについての説明を補強）することで改善余地あり。",
+   "scope": "article:2026-10-07-general-imas-ch-october-member-stream-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-joint-tours-s2-live-stream-viewing-2026.md",
+   "issue": "分量不足：rank: small で目安 250 字以上に対し、本文は約 190 字。sources に記載の会場（namco TOKYO）、抽選対象数（25名）、応募方法の詳細、配信内容などを拾うことで埋まる可能性がある。",
+   "scope": "article:2026-10-07-joint-tours-s2-live-stream-viewing-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-joint-xr-live-revival-asobistore-general-advance-2026.md",
+   "issue": "本文が薄い。見出し・リードから判断すると、rank: lead の想定本文量(目安1000字)に対して現在は約350字。出典(202610060732-explore-2)には、開催詳細(会場アクセス)、出演・サポートメンバー、グッズ仕様、変更対応、注意喚起など拾える情報が多く残されている。チケット購入者向けの実用情報を増やせば、読者に今日できることを増やす内容になる。一般論・推測での水増しは勧めない。",
+   "scope": "article:2026-10-07-joint-xr-live-revival-asobistore-general-advance-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-million-theater-tune-lilac-2026.md",
+   "issue": "small ランクの目安字数（250字）に対して本文が不足している（約80字）。素材には会場・価格・日時・仕様情報が含まれていないため、追加情報による補足は難しいが、ショートMVの内容やイベントストーリーの概要など出典にある情報での拡充を検討可能",
+   "scope": "article:2026-10-07-million-theater-tune-lilac-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-shiny-hachiban-collab-2026.md",
+   "issue": "本文が薄い。rank: small の目安は250字以上だが、現在は約150字。根拠にある開催期間、メニュー内容（セット名・価格）、グッズの種類・価格、配送・購入方法などを拾えば埋まる",
+   "scope": "article:2026-10-07-shiny-hachiban-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-shiny-hachiban-collab-2026.md",
+   "issue": "段落1の表記が曖昧。「Aセットは会員証カードとポストカード、Bセットはポストカードが、それぞれ全6種からランダムで1枚もらえる」は、「全6種」が会員証カード全6種を指すのか、ポストカード全6種を指すのか、あるいは両者を合わせて全6種を指すのかが不明確。根拠に「Aセットは特典会員証カード全6種と特典ポストカード全6種」と明記されているので、「Aセットは会員証カード全6種とポストカード全6種から」と記載してより明確に",
+   "scope": "article:2026-10-07-shiny-hachiban-collab-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-shiny-mattari-hbtk-october-2026.md",
+   "issue": "分量不足。rank:small の目安は250字ですが、本文は約60字で著しく短い。出典に「毎週火曜23:00より放送」の情報があれば、放送時間を追加することで内容を充実させられます。",
+   "scope": "article:2026-10-07-shiny-mattari-hbtk-october-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-07-shiny-msp-survey-2026.md",
+   "issue": "分量不足：small ランクの目安は 250 字以上だが、現在は見出し・リード・リンク 1 行のみで著しく短い。出典に記載される実施形式や詳細を本文に拾って充実させるよう推奨",
+   "scope": "article:2026-10-07-shiny-msp-survey-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "ミリオンライブの重要な話題が複数落とされている。9周年グッズ（candidates id: 202610070225-grok-11）、Cyber Planet POP UP SHOP（同-12）、14thLIVE記念グッズ（同-8）など、公式グッズ・イベント情報が紙面に無い",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "シャニマスオーケストラ公演プレミアム会員先行（candidates id: 202610070225-grok-20、エンゲージメント:高、deadline 2026-10-18）が記事にされていない",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "面全体で落とされた重要な公式発表が多数ある。特にミリオンライブ関連の情報集中が目立つ",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-07-cg-akira-birthday-2026.md",
+  "article:2026-10-07-cg-election-2026-shop-stock-atre-akihabara.md",
+  "article:2026-10-07-cg-overclock-digital-single-2026.md",
+  "article:2026-10-07-cg-yurakucho-popup-inventory-2026.md",
+  "article:2026-10-07-dsva-valiv-study-equal-magic-dance-2026-10-06.md",
+  "article:2026-10-07-gaku-agitato-mv-million-views-2026.md",
+  "article:2026-10-07-gaku-gold-rush-vol7-2026.md",
+  "article:2026-10-07-gaku-lawson-print-15-bromides-2026-10.md",
+  "article:2026-10-07-gaku-osaka-nipponbashi-kuji-inventory-2026-10-05.md",
+  "article:2026-10-07-gaku-shirube-iwate-stream-ticket-2026.md",
+  "article:2026-10-07-gaku-taiko-25th-ume-song-2026.md",
+  "article:2026-10-07-gaku-x-com-28.md",
+  "article:2026-10-07-general-imas-ch-october-member-stream-2026.md",
+  "article:2026-10-07-joint-starlit-season-5th-message-campaign-2026.md",
+  "article:2026-10-07-joint-tours-s2-live-stream-viewing-2026.md",
+  "article:2026-10-07-joint-xr-live-revival-asobistore-general-advance-2026.md",
+  "article:2026-10-07-million-theater-tune-lilac-2026.md",
+  "article:2026-10-07-shiny-chikusei-shinycolors-collab-2026.md",
+  "article:2026-10-07-shiny-fumage-cruise-2026.md",
+  "article:2026-10-07-shiny-hachiban-collab-2026.md",
+  "article:2026-10-07-shiny-mattari-hbtk-october-2026.md",
+  "article:2026-10-07-shiny-msp-memorial-goods-2026.md",
+  "article:2026-10-07-shiny-msp-survey-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-10-07-cg-akira-birthday-2026.md": "d273fcae5059b91881d861c20243a7ec51a42eedbefdad3085fdb841a86d865e",
+  "docs/_posts/2026-10-07-cg-election-2026-shop-stock-atre-akihabara.md": "6e58961b42f9e83e3db1ba79f3d207b7ff02bc1f13dad1c14b446ac820797619",
+  "docs/_posts/2026-10-07-cg-overclock-digital-single-2026.md": "e7e6df496c242fe3d46af4b252c20f12597d9b2b0691b9fa0e81eff8a18b02ba",
+  "docs/_posts/2026-10-07-cg-yurakucho-popup-inventory-2026.md": "2aad776361eb6ca887a850b14d52e83e0daa632fed5f18733e2beabdf6e7d6d0",
+  "docs/_posts/2026-10-07-dsva-valiv-study-equal-magic-dance-2026-10-06.md": "8c6b999e2014cecb00390e4fc3e5eebb65511d9d936fbd19da7b92b5ccdfee4a",
+  "docs/_posts/2026-10-07-gaku-agitato-mv-million-views-2026.md": "da459ee1c662fe057602cbf5bb1b1da0e6ca3ef7f401930772977cc32d0df821",
+  "docs/_posts/2026-10-07-gaku-gold-rush-vol7-2026.md": "c34326feba553abd1ff7e98f7228c25436dd8fbe7693507c006555ff41c21555",
+  "docs/_posts/2026-10-07-gaku-lawson-print-15-bromides-2026-10.md": "d79ff823a29b40e78986cc4cf0430a42d76287c8061ee36dfe141cf368427be1",
+  "docs/_posts/2026-10-07-gaku-osaka-nipponbashi-kuji-inventory-2026-10-05.md": "2a388c93fcd1b41a3e34ed5aa03a477d909e8f5b3eb576d9a6beaa7194fa3e1d",
+  "docs/_posts/2026-10-07-gaku-shirube-iwate-stream-ticket-2026.md": "d64b5ba13517f5bfca04f2c76ce2201ab768d06c6e6c8775f8bada85a4ca9cfc",
+  "docs/_posts/2026-10-07-gaku-taiko-25th-ume-song-2026.md": "b29dbe37dd15675ffbb805f4ce1910419a57c314eb4d80b3365f0081fa7e73ae",
+  "docs/_posts/2026-10-07-gaku-x-com-28.md": "05fe0ddeee0ad0a776a484fcd592c66bec6be5aa1d400ad9bc355286615abdd7",
+  "docs/_posts/2026-10-07-general-imas-ch-october-member-stream-2026.md": "47995dbfd878eaed20640ec4b7012efef9009be6097553ccfbac90bc3bd4ea4f",
+  "docs/_posts/2026-10-07-joint-starlit-season-5th-message-campaign-2026.md": "23686a130f560fcbd4341dd4f11ddceaade53440191a9b8164a4b1b8b30fed2e",
+  "docs/_posts/2026-10-07-joint-tours-s2-live-stream-viewing-2026.md": "ea3b6fdd64f8ba9512c6afd391e8b0b00dccf130327d49d224c309d947b699b4",
+  "docs/_posts/2026-10-07-joint-xr-live-revival-asobistore-general-advance-2026.md": "855f38a6c045a04342b93d10d644c1a1e2ca1b38c791ede1dc9a0b1fa22eaf2b",
+  "docs/_posts/2026-10-07-million-theater-tune-lilac-2026.md": "a22f843dc04a633985be4bc46c75c7373b9f995b1cd55d54f9ded5a297728106",
+  "docs/_posts/2026-10-07-shiny-chikusei-shinycolors-collab-2026.md": "1be671784243d5bcecb396094a137a6e808b9990d316056ce85df2bb6c850e4f",
+  "docs/_posts/2026-10-07-shiny-fumage-cruise-2026.md": "3148043716901bd9746abb23f494a7775302e985343711dcd5ad8226e11f7c30",
+  "docs/_posts/2026-10-07-shiny-hachiban-collab-2026.md": "6f62062b3d77c425569324d4012eedad4b6841bf58151d66ac59223ceb67c07d",
+  "docs/_posts/2026-10-07-shiny-mattari-hbtk-october-2026.md": "8a0da14f1547d9473558c7ded363fa60a18560c9bde746fc662c07054306d17f",
+  "docs/_posts/2026-10-07-shiny-msp-memorial-goods-2026.md": "36f50dcc4727aca2e19e0c6fee8e536b1f46923ed2cd3374af8733a8942ed954",
+  "docs/_posts/2026-10-07-shiny-msp-survey-2026.md": "46d08f9617a7fd319c81ff4ca05b5f1691906c4f538bcbe49e9c6b554d54f61c",
+  "docs/_editions/2026-10-07.md": "52cc8d1bf6b0cd98ba903ea6be06920b7e89758e202bd248771eff00fcd2b137",
+  "metrics/stories-before-2026-10-07.yml": "0ebebf1b010914f5d49f99e4d7955c9bb67526f92af01345b41de32b92fb42ad"
+ }
+}

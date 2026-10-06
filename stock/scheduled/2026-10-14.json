@@ -217,5 +217,31 @@
   "via": "grok",
   "verify": "unconfirmed",
   "src_candidate_id": "202610050222-grok-5"
+ },
+ {
+  "id": "sched-2026-10-14-cg-yurakucho-popup-inventory-2026-終了",
+  "dedup_key": "cg-yurakucho-popup-inventory-2026",
+  "brand": "cg",
+  "subject": "有楽町マルイ デレマスPOP UP SHOP 最終日",
+  "kind": "終了",
+  "note": "POP UP SHOPの開催最終日。特典ブロマイドや抽選会に参加できる",
+  "reserved_on": "2026-10-07",
+  "title": "有楽町マルイのデレマスPOP UP SHOP商品再入荷・完売情報",
+  "url": "https://x.com/thechara_yrkc/status/2107398737547215067",
+  "source_type": "当事者",
+  "facts": [
+   "POP UP SHOPの開催場所は有楽町マルイ 7F。",
+   "開催期間: 2026年9月26日(土)~10月14日(水)。",
+   "掲載日2026年10月6日の告知で、「硬質カードケースセット 鷺沢文香 陰陽師 ver.」は完売と発表。",
+   "同商品の再入荷は10月9日、店頭入荷次第を予定。",
+   "別の10月6日告知で、「フルカラーTシャツ 佐城雪美 陰陽師 ver.」は10月9日(金)再販予定と発表。",
+   "10月6日現在の完売商品情報および、マイクロファイバー陰陽師 ver.各種販売中との告知あり。",
+   "税込3,000円以上の購入ごとに特典ブロマイドを配布し、特大アクリルフィギュアが当たる抽選会に参加できる。",
+   "エンゲージメント: 中",
+   "言及アイドル: 鷺沢文香、佐城雪美"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610070225-grok-4"
  }
 ]

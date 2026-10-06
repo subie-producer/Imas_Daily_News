@@ -1,0 +1,131 @@
+{
+ "decisions": {
+  "cg-yurakucho-popup-inventory-2026": {
+   "action": "article",
+   "angle": "有楽町マルイPOP UP(〜10/14)で鷺沢文香の硬質カードケースが完売、佐城雪美の陰陽師verフルカラーTシャツとともに10月9日に再入荷・再販予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/5の文香2商品再入荷記事に無い雪美Tシャツ再販が新事実。文香の再入荷日は既報なので重ねすぎない"
+  },
+  "cg-election-2026-shop-stock-atre-akihabara": {
+   "action": "article",
+   "angle": "アイドルマスターオフィシャルショップ アトレ秋葉原店に、シンデレラガール総選挙2026のバースデープレート・アクリルキーホルダー(各全11種)とメモリアルステッカーセットが入荷",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "準公式アカウントの告知。価格など未記載の点は書かない"
+  },
+  "cg-dereraji-2026-10-12": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "出典が出演者個人のSNS投稿のみ(未確認・エンゲージメント低)。公式の告知が出たら再検討"
+  },
+  "cg-am-iam-digital-single-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-overclock-digital-single-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同日に同じアカウントが告知した2曲のデジタルシングル配信開始。1記事にまとめる"
+  },
+  "cg-overclock-digital-single-2026": {
+   "action": "article",
+   "angle": "デジタルシングル「オーバークロック！」(島村卯月・渋谷凛・本田未央)と「エイエム×アイアム」(辻野あかり・砂塚あきら・夢見りあむ)が配信開始、両曲とも作編曲は井上馨太(MONACA)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "エイエム×アイアムを統合。素材は2件なので small"
+  },
+  "cg-akira-birthday-2026": {
+   "action": "article",
+   "angle": "10月7日の砂塚あきらの誕生日に合わせ、アイマスchがお祝いムービー(YouTube Shorts)を公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式・確認済み。当日が誕生日。10/6の乙倉悠貴の記事と同じ形式"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-yurakucho-popup-inventory-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "有楽町マルイPOP UP(〜10/14)で鷺沢文香の硬質カードケースが完売、佐城雪美の陰陽師verフルカラーTシャツとともに10月9日に再入荷・再販予定",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cg-yurakucho-popup-inventory-2026",
+    "candidate_ids": [
+     "202610070225-grok-4"
+    ]
+   },
+   {
+    "slug": "cg-election-2026-shop-stock-atre-akihabara",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "アイドルマスターオフィシャルショップ アトレ秋葉原店に、シンデレラガール総選挙2026のバースデープレート・アクリルキーホルダー(各全11種)とメモリアルステッカーセットが入荷",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "cg-election-2026-shop-stock-atre-akihabara",
+    "candidate_ids": [
+     "202610070225-grok-5"
+    ]
+   },
+   {
+    "slug": "cg-overclock-digital-single-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デジタルシングル「オーバークロック！」(島村卯月・渋谷凛・本田未央)と「エイエム×アイアム」(辻野あかり・砂塚あきら・夢見りあむ)が配信開始、両曲とも作編曲は井上馨太(MONACA)",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "cg-overclock-digital-single-2026",
+    "candidate_ids": [
+     "202610070225-grok-41",
+     "202610070225-grok-40"
+    ]
+   },
+   {
+    "slug": "cg-akira-birthday-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "10月7日の砂塚あきらの誕生日に合わせ、アイマスchがお祝いムービー(YouTube Shorts)を公開",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cg-akira-birthday-2026",
+    "candidate_ids": [
+     "202610070225-grok-42"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-dereraji-2026-10-12",
+    "reason": "出典不足",
+    "note": "出典が出演者個人のSNS投稿のみ(未確認・エンゲージメント低)。公式の告知が出たら再検討"
+   }
+  ],
+  "cross_brand": []
+ }
+}

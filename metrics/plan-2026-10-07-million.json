@@ -1,0 +1,153 @@
+{
+ "decisions": {
+  "million-kyoto-anime-fair-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "8/29「京まふ事後物販、東京でPOP UP」で会場・10/10〜22・対象8名を既報。新事実なし、開始は明後日で当日トリガーなし"
+  },
+  "million-theater-tune-lilac-2026": {
+   "action": "article",
+   "angle": "「ライラックにつつまれて」イベントは明日10月8日20:59で終了、ショートMVも視聴できる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/6に既報だが終了まで3日以内のため期日の知らせ"
+  },
+  "million-theaterdays-9th-goods-umbrella-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/4「9周年グッズ、BIGアクスタ以外に10品」にアンブレラマーカー800円を掲載済み。受注締切10/11は4日先でトリガーなし"
+  },
+  "million-cyber-planet-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/1「ミリオンライブPOP UP、東京10/8から」で東京・大阪の日程・特典・OSMO等を既報。新事実なし、開始は明日で当日トリガーなし"
+  },
+  "million-bot10-invisible-light-cd": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "Amazon商品ページのみ、source_types未確認・verify unconfirmed。公式の裏付けが無い"
+  },
+  "fan-arisa-pancake-ai-art-2026-10-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンのAIイラスト投稿。million面にculture枠は無い"
+  },
+  "fan-kotoh-birthday-post-2026-10-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。単体では記事にしない。公式の琴葉誕生日施策は10/5に既報"
+  },
+  "my-with-glasses-2026": {
+   "action": "article",
+   "angle": "セカンドヘアスタイルガシャ with glasses は10月10日14:59まで、あと3日。昴SSRの出現率アップ中",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。10/4に既報だが終了3日前のトリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-theater-tune-lilac-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「ライラックにつつまれて」イベントは明日10月8日20:59で終了、ショートMVも視聴できる",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-theater-tune-lilac-2026",
+    "candidate_ids": [
+     "202610070225-grok-7"
+    ]
+   },
+   {
+    "slug": "million-my-with-glasses-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "セカンドヘアスタイルガシャ with glasses は10月10日14:59まで、あと3日。昴SSRの出現率アップ中",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "my-with-glasses-2026",
+    "candidate_ids": [
+     "sched-2026-10-07-my-with-glasses-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-kyoto-anime-fair-popup-2026",
+    "reason": "既報",
+    "note": "8/29「京まふ事後物販、東京でPOP UP」で会場・10/10〜22・対象8名を既報。新事実なし、開始は明後日で当日トリガーなし"
+   },
+   {
+    "dedup_key": "million-theaterdays-9th-goods-umbrella-2026",
+    "reason": "既報",
+    "note": "10/4「9周年グッズ、BIGアクスタ以外に10品」にアンブレラマーカー800円を掲載済み。受注締切10/11は4日先でトリガーなし"
+   },
+   {
+    "dedup_key": "million-cyber-planet-popup-2026",
+    "reason": "既報",
+    "note": "10/1「ミリオンライブPOP UP、東京10/8から」で東京・大阪の日程・特典・OSMO等を既報。新事実なし、開始は明日で当日トリガーなし"
+   },
+   {
+    "dedup_key": "million-bot10-invisible-light-cd",
+    "reason": "出典不足",
+    "note": "Amazon商品ページのみ、source_types未確認・verify unconfirmed。公式の裏付けが無い"
+   },
+   {
+    "dedup_key": "fan-arisa-pancake-ai-art-2026-10-06",
+    "reason": "同人・ファン主催",
+    "note": "ファンのAIイラスト投稿。million面にculture枠は無い"
+   },
+   {
+    "dedup_key": "fan-kotoh-birthday-post-2026-10-06",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。単体では記事にしない。公式の琴葉誕生日施策は10/5に既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

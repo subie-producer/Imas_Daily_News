@@ -1,0 +1,242 @@
+{
+ "decisions": {
+  "shiny-hachiban-collab-2026": {
+   "action": "article",
+   "angle": "シャニマス×8番らーめんコラボが本日10月7日に開始、対象店舗でコラボメニュー・グッズ販売・パネル展示が始まる",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開始日トリガー。他の8番らーめん3主題をここへ統合"
+  },
+  "shiny-fumage-cruise-2026": {
+   "action": "article",
+   "angle": "『Fumage』コラボクルーズ「船の上の撮影会」12月19・20日開催、抽選申込は10月11日23:59まで、通常プラン15,600円",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-refrac7ions-still-blue-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は10/4で終了済み。10/3・10/4に既報"
+  },
+  "chikusei-shinycolors-collab-2026": {
+   "action": "article",
+   "angle": "筑西市コラボは10月10日開始、花火大会当日のグッズ販売特設会場・ポストカード配布・クリアボトル引換場所が判明",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior に無い新事実(特設会場・引換場所)あり。開始3日前"
+  },
+  "shinycolors-hachiban-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hachiban-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボ。未確認の報道素材"
+  },
+  "shiny-mattari-hbtk-october-2026": {
+   "action": "article",
+   "angle": "「まったりHBTK」10月度のおたより募集は10月8日頃まで、ゲストに関根瞳・幸村恵理",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "おたより締切が3日以内"
+  },
+  "shiny-msp-memorial-goods-2026": {
+   "action": "article",
+   "angle": "シャニマスソロライブMSP開催記念グッズ(キービジュアル・新ソロ曲イメージ)の受注は10月12日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-orchestra-radiant-chord-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/27の記事に日時・会場・価格すべて既出。新事実・当日トリガー無し"
+  },
+  "shiny-msp-survey-2026": {
+   "action": "article",
+   "angle": "シャニマスソロライブMSP公演アンケートの回答は10月12日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-ramen-8-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hachiban-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕)。同じコラボ"
+  },
+  "shiny-hachiban-ramen-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hachiban-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕)。同じコラボ"
+  },
+  "shiny-song-event-unyielding-will-2026": {
+   "action": "article",
+   "angle": "シャニソン新曲イベント「Unyielding Will」の結果発表期間が本日12:00から10月9日11:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "結果発表が当日12:00開始"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-hachiban-collab-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニマス×8番らーめんコラボが本日10月7日に開始、対象店舗でコラボメニュー・グッズ販売・パネル展示が始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "shiny-hachiban-collab-2026",
+    "candidate_ids": [
+     "202610061232-explore-2",
+     "202610070225-grok-22",
+     "sched-2026-10-07-shiny-hachiban-collab-2026-開始",
+     "202610070225-explore-1",
+     "sched-2026-10-07-shiny-ramen-8-collab-2026-開幕",
+     "sched-2026-10-07-shiny-hachiban-ramen-collab-2026-開幕"
+    ]
+   },
+   {
+    "slug": "shiny-fumage-cruise-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『Fumage』コラボクルーズ「船の上の撮影会」12月19・20日開催、抽選申込は10月11日23:59まで、通常プラン15,600円",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-fumage-cruise-2026",
+    "candidate_ids": [
+     "202610061840-watch-0"
+    ]
+   },
+   {
+    "slug": "shiny-chikusei-shinycolors-collab-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "筑西市コラボは10月10日開始、花火大会当日のグッズ販売特設会場・ポストカード配布・クリアボトル引換場所が判明",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "chikusei-shinycolors-collab-2026",
+    "candidate_ids": [
+     "202610070225-explore-0"
+    ]
+   },
+   {
+    "slug": "shiny-mattari-hbtk-october-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「まったりHBTK」10月度のおたより募集は10月8日頃まで、ゲストに関根瞳・幸村恵理",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-mattari-hbtk-october-2026",
+    "candidate_ids": [
+     "202610070225-grok-18"
+    ]
+   },
+   {
+    "slug": "shiny-msp-memorial-goods-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマスソロライブMSP開催記念グッズ(キービジュアル・新ソロ曲イメージ)の受注は10月12日まで",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-msp-memorial-goods-2026",
+    "candidate_ids": [
+     "202610070225-grok-19"
+    ]
+   },
+   {
+    "slug": "shiny-msp-survey-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマスソロライブMSP公演アンケートの回答は10月12日まで",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-msp-survey-2026",
+    "candidate_ids": [
+     "202610070225-grok-21"
+    ]
+   },
+   {
+    "slug": "shiny-song-event-unyielding-will-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン新曲イベント「Unyielding Will」の結果発表期間が本日12:00から10月9日11:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-song-event-unyielding-will-2026",
+    "candidate_ids": [
+     "sched-2026-10-07-shiny-song-event-unyielding-will-2026-結果"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-refrac7ions-still-blue-goods-2026",
+    "reason": "既報",
+    "note": "受注は10/4で終了済み。10/3・10/4に既報"
+   },
+   {
+    "dedup_key": "shiny-orchestra-radiant-chord-2027",
+    "reason": "既報",
+    "note": "9/27の記事に日時・会場・価格すべて既出。新事実・当日トリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

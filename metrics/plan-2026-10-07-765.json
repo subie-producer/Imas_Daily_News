@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "momozawa-momo-masterpiece-cover-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のX投稿のみで出典は未確認。公式発表ではなく、投稿者個人のカバー動画の話題。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "momozawa-momo-masterpiece-cover-2026",
+    "reason": "個人の話題",
+    "note": "個人のX投稿のみで出典は未確認。公式発表ではなく、投稿者個人のカバー動画の話題。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

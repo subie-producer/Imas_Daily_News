@@ -1,0 +1,130 @@
+{
+ "decisions": {
+  "valiv-cosmo-ace-combat-8-replay-2026-10-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "再プレイ配信は10/6 20:00に終了済み。発行日(10/7)時点で見に行ける催しが無い"
+  },
+  "valiv-study-equal-magic-dance-2026-10-06": {
+   "action": "article",
+   "angle": "上水流宇宙がショート動画『Study Equal Magic! 踊ってみた with 愛夏とレトラ』をYouTubeとTikTokで公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発信。事実は短いので短い記事"
+  },
+  "valiv-cosmo-birthday-online-live-archive-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/4『配信アーカイブと記念グッズ受注』と同じ施策。販売締切10/12 18:00は3日以内でなく、当日トリガーも無い。10/10以降に期日の知らせ候補"
+  },
+  "valiv-manaka-streams-2026-10-05": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/5夜の配信予定で終了済み。roundup は3件未満のため作らない"
+  },
+  "fan-reaction-valiv-study-equal-magic-2026-10-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件で未確認。動画自体は別主題で記事化"
+  },
+  "fan-valiv-manaka-online-1on1-report-13": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人のnoteレポート。未確認で、単体記事にしない(dsva面はculture対象外)"
+  },
+  "fan-dearly-stars-cd-arrival-2026-10-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "ファン個人の到着報告のみ。dsva面の話題でもなく事実も無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-study-equal-magic-dance-2026-10-06",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙がショート動画『Study Equal Magic! 踊ってみた with 愛夏とレトラ』をYouTubeとTikTokで公開",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "valiv-study-equal-magic-dance-2026-10-06",
+    "candidate_ids": [
+     "202610070225-grok-34"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-cosmo-ace-combat-8-replay-2026-10-06",
+    "reason": "その他",
+    "note": "再プレイ配信は10/6 20:00に終了済み。発行日(10/7)時点で見に行ける催しが無い"
+   },
+   {
+    "dedup_key": "valiv-cosmo-birthday-online-live-archive-2026",
+    "reason": "既報",
+    "note": "10/4『配信アーカイブと記念グッズ受注』と同じ施策。販売締切10/12 18:00は3日以内でなく、当日トリガーも無い。10/10以降に期日の知らせ候補"
+   },
+   {
+    "dedup_key": "valiv-manaka-streams-2026-10-05",
+    "reason": "その他",
+    "note": "10/5夜の配信予定で終了済み。roundup は3件未満のため作らない"
+   },
+   {
+    "dedup_key": "fan-reaction-valiv-study-equal-magic-2026-10-06",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿1件で未確認。動画自体は別主題で記事化"
+   },
+   {
+    "dedup_key": "fan-valiv-manaka-online-1on1-report-13",
+    "reason": "個人の話題",
+    "note": "ファン個人のnoteレポート。未確認で、単体記事にしない(dsva面はculture対象外)"
+   },
+   {
+    "dedup_key": "fan-dearly-stars-cd-arrival-2026-10-06",
+    "reason": "出典不足",
+    "note": "ファン個人の到着報告のみ。dsva面の話題でもなく事実も無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,50 @@
+{
+ "decisions": {
+  "fan-lilac-gameplay-video-2026-10-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人のX投稿1件のみで未確認。単体記事にせず、culture にまとまる素材も他に無い"
+  },
+  "imas-ch-october-member-stream-2026": {
+   "action": "article",
+   "angle": "アイマスchの10月メンバー限定配信(MC香里有佐、ゲスト南早紀)がお便りとファンアート(#アイマスch_FA)を募集している",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発信で確認済み。募集の締切は素材に無いので書かない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-imas-ch-october-member-stream-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "アイマスchの10月メンバー限定配信(MC香里有佐、ゲスト南早紀)がお便りとファンアート(#アイマスch_FA)を募集している",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "imas-ch-october-member-stream-2026",
+    "candidate_ids": [
+     "202610070225-grok-43"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fan-lilac-gameplay-video-2026-10-06",
+    "reason": "出典不足",
+    "note": "個人のX投稿1件のみで未確認。単体記事にせず、culture にまとまる素材も他に無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

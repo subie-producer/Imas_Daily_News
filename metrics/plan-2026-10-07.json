@@ -1,0 +1,433 @@
+{
+ "articles": [
+  {
+   "slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+   "brand": "joint",
+   "rank": "lead",
+   "angle": "「xR LIVE REVIVAL」大阪公演のアソビストア一般会員先行は11月1日14時59分まで受付、同行者登録が必要で、12月12日の3公演と13日の公演の開演時間・公演名も判明",
+   "purpose": "新情報",
+   "lead_score": 60,
+   "dedup_key": "xr-live-revival-asobistore-general-advance-2026",
+   "candidate_ids": [
+    "202610060732-explore-1",
+    "202610060732-explore-2"
+   ]
+  },
+  {
+   "slug": "joint-tours-s2-live-stream-viewing-2026",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "ツアマスS2弾生配信の現地観覧25名招待、公式Xの固定投稿リポストでの応募は本日23:59まで",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "tours-s2-live-stream-viewing-2026",
+   "candidate_ids": [
+    "sched-2026-10-07-tours-s2-live-stream-viewing-2026-締切",
+    "sched-2026-10-07-arcade-tours-s2-live-2026-締切",
+    "sched-2026-10-07-tours-s2-livestream-campaign-2026-締切",
+    "sched-2026-10-07-tours-s2-stream-viewing-2026-締切"
+   ]
+  },
+  {
+   "slug": "joint-starlit-season-5th-message-campaign-2026",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "スタマス5周年記念の心白・亜夜へのメッセージ募集は本日23:59が最終日",
+   "purpose": "期日の知らせ",
+   "lead_score": 20,
+   "dedup_key": "starlit-season-5th-message-campaign-2026",
+   "candidate_ids": [
+    "sched-2026-10-07-starlit-season-5th-message-campaign-2026-締切"
+   ]
+  },
+  {
+   "slug": "shiny-hachiban-collab-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニマス×8番らーめんコラボが本日10月7日に開始、対象店舗でコラボメニュー・グッズ販売・パネル展示が始まる",
+   "purpose": "期日の知らせ",
+   "lead_score": 70,
+   "dedup_key": "shiny-hachiban-collab-2026",
+   "candidate_ids": [
+    "202610061232-explore-2",
+    "202610070225-grok-22",
+    "sched-2026-10-07-shiny-hachiban-collab-2026-開始",
+    "202610070225-explore-1",
+    "sched-2026-10-07-shiny-ramen-8-collab-2026-開幕",
+    "sched-2026-10-07-shiny-hachiban-ramen-collab-2026-開幕"
+   ]
+  },
+  {
+   "slug": "shiny-fumage-cruise-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "『Fumage』コラボクルーズ「船の上の撮影会」12月19・20日開催、抽選申込は10月11日23:59まで、通常プラン15,600円",
+   "purpose": "新情報",
+   "lead_score": 25,
+   "dedup_key": "shiny-fumage-cruise-2026",
+   "candidate_ids": [
+    "202610061840-watch-0"
+   ]
+  },
+  {
+   "slug": "shiny-chikusei-shinycolors-collab-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "筑西市コラボは10月10日開始、花火大会当日のグッズ販売特設会場・ポストカード配布・クリアボトル引換場所が判明",
+   "purpose": "新情報",
+   "lead_score": 30,
+   "dedup_key": "chikusei-shinycolors-collab-2026",
+   "candidate_ids": [
+    "202610070225-explore-0"
+   ]
+  },
+  {
+   "slug": "shiny-mattari-hbtk-october-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "「まったりHBTK」10月度のおたより募集は10月8日頃まで、ゲストに関根瞳・幸村恵理",
+   "purpose": "期日の知らせ",
+   "lead_score": 15,
+   "dedup_key": "shiny-mattari-hbtk-october-2026",
+   "candidate_ids": [
+    "202610070225-grok-18"
+   ]
+  },
+  {
+   "slug": "shiny-msp-memorial-goods-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニマスソロライブMSP開催記念グッズ(キービジュアル・新ソロ曲イメージ)の受注は10月12日まで",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "shiny-msp-memorial-goods-2026",
+   "candidate_ids": [
+    "202610070225-grok-19"
+   ]
+  },
+  {
+   "slug": "shiny-msp-survey-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニマスソロライブMSP公演アンケートの回答は10月12日まで",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "shiny-msp-survey-2026",
+   "candidate_ids": [
+    "202610070225-grok-21"
+   ]
+  },
+  {
+   "slug": "shiny-song-event-unyielding-will-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニソン新曲イベント「Unyielding Will」の結果発表期間が本日12:00から10月9日11:59まで",
+   "purpose": "期日の知らせ",
+   "lead_score": 20,
+   "dedup_key": "shiny-song-event-unyielding-will-2026",
+   "candidate_ids": [
+    "sched-2026-10-07-shiny-song-event-unyielding-will-2026-結果"
+   ]
+  },
+  {
+   "slug": "gaku-osaka-nipponbashi-kuji-inventory-2026-10-05",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "大阪日本橋店の学マス抽選くじは10/5更新時点でA賞アクリルボード8種・B賞アクリルキーホルダー12種とも在庫あり",
+   "purpose": "新情報",
+   "lead_score": 5,
+   "dedup_key": "gaku-osaka-nipponbashi-kuji-inventory-2026-10-05",
+   "candidate_ids": [
+    "202610060732-explore-0"
+   ]
+  },
+  {
+   "slug": "gaku-taiko-25th-ume-song-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "『太鼓の達人』25周年企画の第3弾楽曲を花海佑芽が歌唱、かめりあ制作でYouTube公開",
+   "purpose": "新情報",
+   "lead_score": 25,
+   "dedup_key": "taiko-25th-ume-song-2026",
+   "candidate_ids": [
+    "202610062333-explore-2"
+   ]
+  },
+  {
+   "slug": "gaku-agitato-mv-million-views-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "学マス公式が『Agitato』MVの100万再生突破を発表",
+   "purpose": "新情報",
+   "lead_score": 30,
+   "dedup_key": "gaku-agitato-mv-million-views-2026",
+   "candidate_ids": [
+    "202610070225-grok-29"
+   ]
+  },
+  {
+   "slug": "gaku-shirube-iwate-stream-ticket-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "標ツアー岩手公演の配信視聴チケットは配信終了(10/8 18時)まで残り2日、DAY2の十王星南新曲「Roar」を紹介",
+   "purpose": "期日の知らせ",
+   "lead_score": 20,
+   "dedup_key": "gaku-shirube-iwate-stream-ticket-2026",
+   "candidate_ids": [
+    "202610070225-grok-30"
+   ]
+  },
+  {
+   "slug": "gaku-lawson-print-15-bromides-2026-10",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "ローソンプリントの学マスブロマイドに15種が追加、サイン入り絵柄の出現率は30%",
+   "purpose": "新情報",
+   "lead_score": 5,
+   "dedup_key": "gaku-lawson-print-15-bromides-2026-10",
+   "candidate_ids": [
+    "202610070225-grok-31"
+   ]
+  },
+  {
+   "slug": "gaku-gold-rush-vol7-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "『GOLD RUSH』第7巻が本日発売、特装版CDには有村麻央の新曲「とめどなく」",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "gaku-gold-rush-vol7-2026",
+   "candidate_ids": [
+    "sched-2026-10-07-gaku-gold-rush-vol7-2026-発売"
+   ]
+  },
+  {
+   "slug": "gaku-x-com-28",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "初星学園放送部の本日10/7回に春咲暖さん(秦谷美鈴役)がゲスト出演",
+   "purpose": "期日の知らせ",
+   "lead_score": 10,
+   "dedup_key": "x-com-28",
+   "candidate_ids": [
+    "sched-2026-10-07-x-com-28-開始"
+   ]
+  },
+  {
+   "slug": "million-theater-tune-lilac-2026",
+   "brand": "million",
+   "rank": "small",
+   "angle": "「ライラックにつつまれて」イベントは明日10月8日20:59で終了、ショートMVも視聴できる",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "million-theater-tune-lilac-2026",
+   "candidate_ids": [
+    "202610070225-grok-7"
+   ]
+  },
+  {
+   "slug": "million-my-with-glasses-2026",
+   "brand": "million",
+   "rank": "small",
+   "angle": "セカンドヘアスタイルガシャ with glasses は10月10日14:59まで、あと3日。昴SSRの出現率アップ中",
+   "purpose": "期日の知らせ",
+   "lead_score": 20,
+   "dedup_key": "my-with-glasses-2026",
+   "candidate_ids": [
+    "sched-2026-10-07-my-with-glasses-2026-締切前"
+   ]
+  },
+  {
+   "slug": "dsva-valiv-study-equal-magic-dance-2026-10-06",
+   "brand": "dsva",
+   "rank": "small",
+   "angle": "上水流宇宙がショート動画『Study Equal Magic! 踊ってみた with 愛夏とレトラ』をYouTubeとTikTokで公開",
+   "purpose": "新情報",
+   "lead_score": 30,
+   "dedup_key": "valiv-study-equal-magic-dance-2026-10-06",
+   "candidate_ids": [
+    "202610070225-grok-34"
+   ]
+  },
+  {
+   "slug": "cg-yurakucho-popup-inventory-2026",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "有楽町マルイPOP UP(〜10/14)で鷺沢文香の硬質カードケースが完売、佐城雪美の陰陽師verフルカラーTシャツとともに10月9日に再入荷・再販予定",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "cg-yurakucho-popup-inventory-2026",
+   "candidate_ids": [
+    "202610070225-grok-4"
+   ]
+  },
+  {
+   "slug": "cg-election-2026-shop-stock-atre-akihabara",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "アイドルマスターオフィシャルショップ アトレ秋葉原店に、シンデレラガール総選挙2026のバースデープレート・アクリルキーホルダー(各全11種)とメモリアルステッカーセットが入荷",
+   "purpose": "新情報",
+   "lead_score": 25,
+   "dedup_key": "cg-election-2026-shop-stock-atre-akihabara",
+   "candidate_ids": [
+    "202610070225-grok-5"
+   ]
+  },
+  {
+   "slug": "cg-overclock-digital-single-2026",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "デジタルシングル「オーバークロック！」(島村卯月・渋谷凛・本田未央)と「エイエム×アイアム」(辻野あかり・砂塚あきら・夢見りあむ)が配信開始、両曲とも作編曲は井上馨太(MONACA)",
+   "purpose": "新情報",
+   "lead_score": 30,
+   "dedup_key": "cg-overclock-digital-single-2026",
+   "candidate_ids": [
+    "202610070225-grok-41",
+    "202610070225-grok-40"
+   ]
+  },
+  {
+   "slug": "cg-akira-birthday-2026",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "10月7日の砂塚あきらの誕生日に合わせ、アイマスchがお祝いムービー(YouTube Shorts)を公開",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "cg-akira-birthday-2026",
+   "candidate_ids": [
+    "202610070225-grok-42"
+   ]
+  },
+  {
+   "slug": "general-imas-ch-october-member-stream-2026",
+   "brand": "general",
+   "rank": "small",
+   "angle": "アイマスchの10月メンバー限定配信(MC香里有佐、ゲスト南早紀)がお便りとファンアート(#アイマスch_FA)を募集している",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "imas-ch-october-member-stream-2026",
+   "candidate_ids": [
+    "202610070225-grok-43"
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "dedup_key": "shiny-refrac7ions-still-blue-goods-2026",
+   "reason": "既報",
+   "note": "受注は10/4で終了済み。10/3・10/4に既報"
+  },
+  {
+   "dedup_key": "shiny-orchestra-radiant-chord-2027",
+   "reason": "既報",
+   "note": "9/27の記事に日時・会場・価格すべて既出。新事実・当日トリガー無し"
+  },
+  {
+   "dedup_key": "fan-gaku-mao-figure-doodle-2026-10",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿(らくがき)で、単体では記事にしない。gaku面にculture枠は無い"
+  },
+  {
+   "dedup_key": "million-kyoto-anime-fair-popup-2026",
+   "reason": "既報",
+   "note": "8/29「京まふ事後物販、東京でPOP UP」で会場・10/10〜22・対象8名を既報。新事実なし、開始は明後日で当日トリガーなし"
+  },
+  {
+   "dedup_key": "million-theaterdays-9th-goods-umbrella-2026",
+   "reason": "既報",
+   "note": "10/4「9周年グッズ、BIGアクスタ以外に10品」にアンブレラマーカー800円を掲載済み。受注締切10/11は4日先でトリガーなし"
+  },
+  {
+   "dedup_key": "million-cyber-planet-popup-2026",
+   "reason": "既報",
+   "note": "10/1「ミリオンライブPOP UP、東京10/8から」で東京・大阪の日程・特典・OSMO等を既報。新事実なし、開始は明日で当日トリガーなし"
+  },
+  {
+   "dedup_key": "million-bot10-invisible-light-cd",
+   "reason": "出典不足",
+   "note": "Amazon商品ページのみ、source_types未確認・verify unconfirmed。公式の裏付けが無い"
+  },
+  {
+   "dedup_key": "fan-arisa-pancake-ai-art-2026-10-06",
+   "reason": "同人・ファン主催",
+   "note": "ファンのAIイラスト投稿。million面にculture枠は無い"
+  },
+  {
+   "dedup_key": "fan-kotoh-birthday-post-2026-10-06",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。単体では記事にしない。公式の琴葉誕生日施策は10/5に既報"
+  },
+  {
+   "dedup_key": "valiv-cosmo-ace-combat-8-replay-2026-10-06",
+   "reason": "その他",
+   "note": "再プレイ配信は10/6 20:00に終了済み。発行日(10/7)時点で見に行ける催しが無い"
+  },
+  {
+   "dedup_key": "valiv-cosmo-birthday-online-live-archive-2026",
+   "reason": "既報",
+   "note": "10/4『配信アーカイブと記念グッズ受注』と同じ施策。販売締切10/12 18:00は3日以内でなく、当日トリガーも無い。10/10以降に期日の知らせ候補"
+  },
+  {
+   "dedup_key": "valiv-manaka-streams-2026-10-05",
+   "reason": "その他",
+   "note": "10/5夜の配信予定で終了済み。roundup は3件未満のため作らない"
+  },
+  {
+   "dedup_key": "fan-reaction-valiv-study-equal-magic-2026-10-06",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件で未確認。動画自体は別主題で記事化"
+  },
+  {
+   "dedup_key": "fan-valiv-manaka-online-1on1-report-13",
+   "reason": "個人の話題",
+   "note": "ファン個人のnoteレポート。未確認で、単体記事にしない(dsva面はculture対象外)"
+  },
+  {
+   "dedup_key": "fan-dearly-stars-cd-arrival-2026-10-06",
+   "reason": "出典不足",
+   "note": "ファン個人の到着報告のみ。dsva面の話題でもなく事実も無い"
+  },
+  {
+   "dedup_key": "cg-dereraji-2026-10-12",
+   "reason": "出典不足",
+   "note": "出典が出演者個人のSNS投稿のみ(未確認・エンゲージメント低)。公式の告知が出たら再検討"
+  },
+  {
+   "dedup_key": "sidem-asobi-store-maintenance-completed-2026-10-06",
+   "reason": "その他",
+   "note": "メンテ完了の報告のみ。読者の行動も新情報も無い"
+  },
+  {
+   "dedup_key": "sidem-fanfes-wsi-asobistore-advance-2-2026",
+   "reason": "既報",
+   "note": "10/6号の記事と同内容(席種別の申込先)。新事実も当日の締切も facts に無い"
+  },
+  {
+   "dedup_key": "sidem-11th-fan-flower-stand-2026",
+   "reason": "出典不足",
+   "note": "未確認の個人投稿のみ。公式の発表ではない"
+  },
+  {
+   "dedup_key": "sidem-deramasu-mangaten-hero-card-case-2026",
+   "reason": "個人の話題",
+   "note": "個人のファン制作の投稿。ファン面は general 面のみ"
+  },
+  {
+   "dedup_key": "sidem-fan-yamanashi-trip-2026-10-06",
+   "reason": "個人の話題",
+   "note": "個人の観光の感想投稿"
+  },
+  {
+   "dedup_key": "momozawa-momo-masterpiece-cover-2026",
+   "reason": "個人の話題",
+   "note": "個人のX投稿のみで出典は未確認。公式発表ではなく、投稿者個人のカバー動画の話題。"
+  },
+  {
+   "dedup_key": "fan-lilac-gameplay-video-2026-10-06",
+   "reason": "出典不足",
+   "note": "個人のX投稿1件のみで未確認。単体記事にせず、culture にまとまる素材も他に無い"
+  }
+ ],
+ "editorial_slug": "joint-xr-live-revival-asobistore-general-advance-2026",
+ "editorial_brand": "joint"
+}

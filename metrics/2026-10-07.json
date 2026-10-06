@@ -1,0 +1,143 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-07T02:26:01+09:00",
+   "edition": "2026-10-07",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 347,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 1,
+    "grok_week_searches": 301,
+    "grok:765as": 0,
+    "grok:cinderella": 7,
+    "grok:million": 9,
+    "grok:shiny": 7,
+    "grok:sidem": 3,
+    "grok:gakuen": 5,
+    "grok:dsva": 4,
+    "grok:joint-other": 0,
+    "grok:trend": 12,
+    "grok_searches:gaku": 10,
+    "grok_searches:cg": 6,
+    "grok_searches:sidem": 5,
+    "grok_searches:765": 6,
+    "grok_searches:shiny": 6,
+    "grok_searches:million": 5,
+    "grok_searches:general": 6,
+    "grok_searches:dsva": 5,
+    "grok_searches:joint": 2
+   },
+   "normalized": 49,
+   "added": 44,
+   "verify": {
+    "confirmed": 23,
+    "unconfirmed": 20,
+    "failed": 6
+   },
+   "duration_s": 1523
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-07T03:20:24+09:00",
+   "edition": "2026-10-07",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 25,
+   "written": 22,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 56,
+    "covered": 56,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.4644886175791423,
+    "執筆": 3.26358661254247,
+    "出典の判定": 2.026684308052063,
+    "組版": 0.6635149439175924,
+    "校閲": 2.0929882844289143,
+    "校閲1波": 2.0929882844289143
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-song-event-unyielding-will-2026",
+    "million-my-with-glasses-2026",
+    "shiny-msp-survey-2026"
+   ],
+   "duration_s": 1186
+  }
+ ]
+}

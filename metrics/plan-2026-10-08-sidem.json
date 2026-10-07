@@ -1,0 +1,183 @@
+{
+ "decisions": {
+  "sidem-daimaru-matsuzakaya-2026": {
+   "action": "article",
+   "angle": "SideMの大丸ポップアップが東京店(10/28〜11/10)と梅田店(11/18〜11/24)で開催され、事前整理券とオンライン受注(11/27〜)も用意される。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発表・既報なし。整理券とオンライン受注も1記事にまとめる"
+  },
+  "fuburaji-sidem-retrospective-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人のラジオでの振り返り談。出典も未確認"
+  },
+  "sidem-11th-fan-report-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のnote投稿。単体では記事にしない"
+  },
+  "sidem-315-night-20261002-preview-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/2放送済み回の紹介で、新しい事実も当日のトリガーも無い。10/16回は10/3に記事化済み"
+  },
+  "sidem-11th-live-performance-goods-2026": {
+   "action": "article",
+   "angle": "11th STAGE開催記念グッズの受注が10月11日(日)で締切、残り3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "価格・商品は既報(9/17)。新事実は無く、締切3日前のトリガーで記事化"
+  },
+  "deramas-sidem-mangaten-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "8月開始の企画で、ポップアップストアの日程・場所などの事実が無く、10/31終了まで3日以内でもない"
+  },
+  "sidem-11th-flower-stands-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン・外部事業者による祝い花の投稿で、10/6のライブは終了済み"
+  },
+  "sidem-royal-chess-lounge-2026": {
+   "action": "article",
+   "angle": "Royal Chess Loungeコラボカフェ池袋店(SMILE BASE CAFE)が本日10月8日に開幕し、20日まで開催される。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕)。心斎橋店は9/24に終了済みで、池袋店は新たな開催"
+  },
+  "sidem-karatetsu-yokai-2026": {
+   "action": "article",
+   "angle": "SideM×カラ鉄第3弾の通販受付は10月11日23時59分まで、残り3日。カラオケを利用しなくても購入できる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。店舗展開は10/5に終了済みで、通販のみが対象"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-daimaru-matsuzakaya-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideMの大丸ポップアップが東京店(10/28〜11/10)と梅田店(11/18〜11/24)で開催され、事前整理券とオンライン受注(11/27〜)も用意される。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "sidem-daimaru-matsuzakaya-2026",
+    "candidate_ids": [
+     "202610071833-watch-0"
+    ]
+   },
+   {
+    "slug": "sidem-11th-live-performance-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "11th STAGE開催記念グッズの受注が10月11日(日)で締切、残り3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-11th-live-performance-goods-2026",
+    "candidate_ids": [
+     "202610080222-grok-29"
+    ]
+   },
+   {
+    "slug": "sidem-royal-chess-lounge-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Royal Chess Loungeコラボカフェ池袋店(SMILE BASE CAFE)が本日10月8日に開幕し、20日まで開催される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-royal-chess-lounge-2026",
+    "candidate_ids": [
+     "sched-2026-10-08-sidem-royal-chess-lounge-2026-開幕"
+    ]
+   },
+   {
+    "slug": "sidem-karatetsu-yokai-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×カラ鉄第3弾の通販受付は10月11日23時59分まで、残り3日。カラオケを利用しなくても購入できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-karatetsu-yokai-2026",
+    "candidate_ids": [
+     "sched-2026-10-08-sidem-karatetsu-yokai-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fuburaji-sidem-retrospective-2026",
+    "reason": "個人の話題",
+    "note": "声優個人のラジオでの振り返り談。出典も未確認"
+   },
+   {
+    "dedup_key": "sidem-11th-fan-report-2026",
+    "reason": "個人の話題",
+    "note": "個人のnote投稿。単体では記事にしない"
+   },
+   {
+    "dedup_key": "sidem-315-night-20261002-preview-2026",
+    "reason": "その他",
+    "note": "10/2放送済み回の紹介で、新しい事実も当日のトリガーも無い。10/16回は10/3に記事化済み"
+   },
+   {
+    "dedup_key": "deramas-sidem-mangaten-2026",
+    "reason": "出典不足",
+    "note": "8月開始の企画で、ポップアップストアの日程・場所などの事実が無く、10/31終了まで3日以内でもない"
+   },
+   {
+    "dedup_key": "sidem-11th-flower-stands-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン・外部事業者による祝い花の投稿で、10/6のライブは終了済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

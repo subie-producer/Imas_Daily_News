@@ -1,0 +1,179 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-10-08-million-gaku-osaka-nipponbashi-kuji-inventory-2026-10-05.md",
+   "issue": "sources の博多バスターミナル店の URL が日付と一致しない。ラベルに「2026.10.05」と記されているが、URL に含まれる日付が「20241101」になっている",
+   "quote": "sources 2 番目のエントリ：label: 「【博多バスターミナル店】抽選くじの在庫状況（10月5日更新）(2026.10.05)」、url: 「https://bandainamco-am.co.jp/chara_shop/idolmaster/NEWS/hakata/20241101.html」",
+   "rule_id": "R4",
+   "repair": "add_source",
+   "fact_ids": [
+    "F9",
+    "F10",
+    "F11"
+   ],
+   "expected": "sources の博多バスターミナル店の URL を正しい日付（20261005）に修正して、記事の出典表記と一致させる",
+   "scope": "article:2026-10-08-million-gaku-osaka-nipponbashi-kuji-inventory-2026-10-05.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-10-08-gaku-shirube-iwate-streaming-2026.md",
+   "issue": "分量が rank: small の目安（250字以上）より不足している可能性がある。出典に会場・販売形式などの詳細情報があれば加えられる",
+   "scope": "article:2026-10-08-gaku-shirube-iwate-streaming-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-million-gaku-osaka-nipponbashi-kuji-inventory-2026-10-05.md",
+   "issue": "記事本文の分量は rank: small（目安250字）に対して充分だが、見出しに「大阪で篠宮可憐のA賞品切れ」とあり、博多バスターミナル店の情報は見出しには反映されていない。本文に両店の詳細があれば見出しにも両店を明記するか、大阪に絞るかの判断が必要",
+   "scope": "article:2026-10-08-million-gaku-osaka-nipponbashi-kuji-inventory-2026-10-05.md"
+  },
+  {
+   "file": "-",
+   "issue": "digestに掲載される「明日」の項目（Still blueアソビストア先行、標ツアー岩手公演記念ガシャ、「Agitato」咲季ガシャ）が、記事のslugフィールドに対応していません。digestに手動入力された項目のようですが、実際の記事の存在確認を推奨します。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "エンゲージメント高の候補のうち、cg-15th-party-2026（シンデレラガールズ15周年記念公演）が掲載されていません。本紙面に大きな話題として掲載することも検討可能です。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "x-vorder-runway-2026（X VORDER RUNWAYで765プロのアイドルらが出演）がエンゲージメント高として登録されていますが、掲載されていません。報道のため、編集方針による判断と推定されます。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-cg-cinderella-party-10th-cd-2026.md",
+   "issue": "分量不足。rank: medium の目安は700字以上だが、実際は約370字。候補に収録曲一覧（DISC1トラック11曲、DISC2トラック30曲分）が豊富に記載されており、詳細な収録内容リストを追加することで分量を補えます。",
+   "scope": "article:2026-10-08-cg-cinderella-party-10th-cd-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-cg-derepa-oishi-izumi-guest-2026.md",
+   "issue": "本文が極めて短く、rank: small（目安250字以上）の要件を大きく下回る（全体で約60字）。見出し・リード・本文あわせても素材にある会場・日時・メール募集期限など詳細情報を拾えば分量を増やせる",
+   "scope": "article:2026-10-08-cg-derepa-oishi-izumi-guest-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-cg-derepa-oishi-izumi-guest-2026.md",
+   "issue": "本文で「大木」という敬称なし短縮呼び名を使用。見出し・リードで「大木咲絵子」と記述されているため意図は明確だが、表記の統一性を高めるため本文でも「大木咲絵子」と記述するか、見出しも「大木」に統一することを検討",
+   "scope": "article:2026-10-08-cg-derepa-oishi-izumi-guest-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-dsva-valiv-cosmo-birthday-2026-screening.md",
+   "issue": "分量不足：rank medium の目安は700字以上だが、記事本文は約550字。候補に含まれるアンケート情報（F12「アンケート実施期間: 2026/9/12(土) 18:00～2026/10/12(月) 23:59」）などを追加で埋めることで字数を確保できます。",
+   "scope": "article:2026-10-08-dsva-valiv-cosmo-birthday-2026-screening.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-gaku-chibi-furumi-unit-collection-2026.md",
+   "issue": "分量不足: rank=smallの目安250字に対し、本文は約64字。出典に会場別の特典や価格、入手方法の詳細があれば、記事に盛り込みやすい",
+   "scope": "article:2026-10-08-gaku-chibi-furumi-unit-collection-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-gaku-gakumas-fujita-kotone-prize-fig-2027.md",
+   "issue": "分量不足: rank: small の目安 250字に対して本文 116字。出典の商品情報詳細URL(bsp-prize.jp)に仕様・画像など詳細があれば、活用して本文を充実させることで読者に価値を提供できます",
+   "scope": "article:2026-10-08-gaku-gakumas-fujita-kotone-prize-fig-2027.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-gaku-haratani-misuz-espresto-prize-2026-10.md",
+   "issue": "rank: small（目安250字以上）に対して本文が55字と簡潔。出典に記載されている商品の仕様（全1種、約22cm）が活かされており、本日の開幕・発売として記者に有用な情報ですが、さらに読者体験を充実させるために紙面に配置する前後で拡張の余地を検討してください。",
+   "scope": "article:2026-10-08-gaku-haratani-misuz-espresto-prize-2026-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-gaku-radio-2026-10-14.md",
+   "issue": "本文が短い。rank: small（目安250字）に対して、実質120字程度。出典には会場・時間帯・配信情報などの詳細がないため、記事として成立しているが、削減の余地がないか確認してもよい。",
+   "scope": "article:2026-10-08-gaku-radio-2026-10-14.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-million-platinum-star-tune-lilac-2026.md",
+   "issue": "分量不足: rank:small（目安250字）に対して本文が約100字。出典にある詳細情報（イベント期間、ルール、対象条件など）の追記で埋まる可能性。",
+   "scope": "article:2026-10-08-million-platinum-star-tune-lilac-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-shiny-hana-birthday-gacha-2026.md",
+   "issue": "分量不足。small ランクの目安は250字だが、本文は36字。終了告知というニュースの性質上、さらに詳しく書く素材は出典に無い。",
+   "scope": "article:2026-10-08-shiny-hana-birthday-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-shiny-mattari-hbtk-october-2026.md",
+   "issue": "分量不足：本文約116字（rank: small 目安250字）。出典に「毎週火曜23:00より放送」の情報があるため、放送時間などを補足すれば埋まる可能性がある。",
+   "scope": "article:2026-10-08-shiny-mattari-hbtk-october-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-08-shiny-stillblue-asobipremium-lottery.md",
+   "issue": "sourcesのラベル日付が古い。「バンダイナムコエンターテインメント公式サイト…(2026年8月25日更新)」と記載されているが、記事では2026年10月8日の当落発表情報を記載している。実際のページ最終更新日時を確認して、ラベルを現在の日付に更新することを推奨する。",
+   "scope": "article:2026-10-08-shiny-stillblue-asobipremium-lottery.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-08-765-x-com-5.md",
+  "article:2026-10-08-cg-15th-orchestra-2027.md",
+  "article:2026-10-08-cg-cinderella-party-10th-cd-2026.md",
+  "article:2026-10-08-cg-derepa-oishi-izumi-guest-2026.md",
+  "article:2026-10-08-dsva-va-liv-letora-birthday-2026.md",
+  "article:2026-10-08-dsva-valiv-cosmo-birthday-2026-screening.md",
+  "article:2026-10-08-gaku-another-idol-free-gacha-2026.md",
+  "article:2026-10-08-gaku-chibi-furumi-unit-collection-2026.md",
+  "article:2026-10-08-gaku-gakumas-fujita-kotone-prize-fig-2027.md",
+  "article:2026-10-08-gaku-haratani-misuz-espresto-prize-2026-10.md",
+  "article:2026-10-08-gaku-radio-2026-10-14.md",
+  "article:2026-10-08-gaku-shirube-iwate-streaming-2026.md",
+  "article:2026-10-08-gaku-wednesday-ticket-2026-10-07.md",
+  "article:2026-10-08-general-deremi-live-fure-aka-radio-2026.md",
+  "article:2026-10-08-joint-tours-s2-featuring-brand-stream-2026.md",
+  "article:2026-10-08-million-9th-anniversary-goods-2026.md",
+  "article:2026-10-08-million-gaku-osaka-nipponbashi-kuji-inventory-2026-10-05.md",
+  "article:2026-10-08-million-medicos-cyberplanet-popup-2026.md",
+  "article:2026-10-08-million-platinum-star-tune-lilac-2026.md",
+  "article:2026-10-08-million-shizuka-the-animation-figure.md",
+  "article:2026-10-08-million-shs-my-brand-glasses-2026.md",
+  "article:2026-10-08-million-topic-049-2026.md",
+  "article:2026-10-08-shiny-collab-fes-2026-oct.md",
+  "article:2026-10-08-shiny-fumage-cruise-2026.md",
+  "article:2026-10-08-shiny-hana-birthday-gacha-2026.md",
+  "article:2026-10-08-shiny-maintenance-2026-10-08.md",
+  "article:2026-10-08-shiny-mattari-hbtk-october-2026.md",
+  "article:2026-10-08-shiny-new-idol-teaser-2026-10-08.md",
+  "article:2026-10-08-shiny-stillblue-asobipremium-lottery.md",
+  "article:2026-10-08-sidem-11th-live-performance-goods-2026.md",
+  "article:2026-10-08-sidem-daimaru-matsuzakaya-2026.md",
+  "article:2026-10-08-sidem-karatetsu-yokai-2026.md",
+  "article:2026-10-08-sidem-royal-chess-lounge-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-10-08-765-x-com-5.md": "7e2e19ee72a696c335b8ef6d268fddf844f70f9fbe311918782803dbf26b46d1",
+  "docs/_posts/2026-10-08-cg-15th-orchestra-2027.md": "d5d0fed5baa4adea73170cab475dd5f5057e0cb197bf4020fcea98a51bd57eb6",
+  "docs/_posts/2026-10-08-cg-cinderella-party-10th-cd-2026.md": "eb25d509210e422a483cfb968813cb5b83ece4193e05f572a81f37d9fe4379cb",
+  "docs/_posts/2026-10-08-cg-derepa-oishi-izumi-guest-2026.md": "7b62972f52a253e1dcfbdaf706e1f6a9cbe3b855daffc377f1a1a178efdf1cf4",
+  "docs/_posts/2026-10-08-dsva-va-liv-letora-birthday-2026.md": "d89e890649ac443900577f3239caf80505d696636aa37569dbdc761aef112003",
+  "docs/_posts/2026-10-08-dsva-valiv-cosmo-birthday-2026-screening.md": "a2a39f3cccaffec271402a6111e02c70f66f12d597d822f7144c1c964aa9533f",
+  "docs/_posts/2026-10-08-gaku-another-idol-free-gacha-2026.md": "e7b54bc39d2e2dfa73701f154fd9bf672a2ecabbb84480248b852cf8f8726a94",
+  "docs/_posts/2026-10-08-gaku-chibi-furumi-unit-collection-2026.md": "cdc923244ce4289fca4c85433a8c6201cdd9a18d565ec71eae72232f3b42dbda",
+  "docs/_posts/2026-10-08-gaku-gakumas-fujita-kotone-prize-fig-2027.md": "6259e70c9d3635684a2504dc91f780c122ca6992a9855fbc7d3e3b4a65bef2d4",
+  "docs/_posts/2026-10-08-gaku-haratani-misuz-espresto-prize-2026-10.md": "3083bee8a3b73a57a51a4a67d11a5ee978fff18f37b61a82af9e6e3ab29efdba",
+  "docs/_posts/2026-10-08-gaku-radio-2026-10-14.md": "0f3a3bae22ac07c425d58a2b0a5bab69f23587c53efa3220853b74f05959fbcc",
+  "docs/_posts/2026-10-08-gaku-shirube-iwate-streaming-2026.md": "00c8b8c670e36b6ab252535876e221adb5bca32eb95c06c9cb8ab9f10f437200",
+  "docs/_posts/2026-10-08-gaku-wednesday-ticket-2026-10-07.md": "a589ebfb4f46ae7c736fa24d57fcb544275e4170a0278afbf9ccb2a9ed3dfcfb",
+  "docs/_posts/2026-10-08-general-deremi-live-fure-aka-radio-2026.md": "5cd805bc978be53a20cc9b9f5c7384bf71512b669ebd10d845e6c65262fd9b0c",
+  "docs/_posts/2026-10-08-joint-tours-s2-featuring-brand-stream-2026.md": "fb51f2a72f5fdc9bd3f03bc9cd0e62665d4af4505899eb57e23a43ba36b0f39e",
+  "docs/_posts/2026-10-08-million-9th-anniversary-goods-2026.md": "81c70230b7ec2502cf5970d160956a4d7d0a56ae675e0bbdc8d6d1ec426d5057",
+  "docs/_posts/2026-10-08-million-gaku-osaka-nipponbashi-kuji-inventory-2026-10-05.md": "3210a04881ce869b07caa0a640ef63e7d1ed81ece4ad36e6124c93d0121b5ff0",
+  "docs/_posts/2026-10-08-million-medicos-cyberplanet-popup-2026.md": "e42b2eb12940b8602e4a60e91afb458b2e4204ff316ca20a8ec07541bd2fef50",
+  "docs/_posts/2026-10-08-million-platinum-star-tune-lilac-2026.md": "bc08b8e965b46cf150242dfe8436f67260fa4af436dc5cf0e23158aed1aed146",
+  "docs/_posts/2026-10-08-million-shizuka-the-animation-figure.md": "98fcc12c50a1c6d2f45f713f96bf2f17320c6902e637d55defc98e5f45498508",
+  "docs/_posts/2026-10-08-million-shs-my-brand-glasses-2026.md": "c0ea7dfef236999b10ef52e36a392de6df7ac184693e0abef6dd8a16a25dc18e",
+  "docs/_posts/2026-10-08-million-topic-049-2026.md": "27ca546cee981f9f636df6f98f5bad171aee17159111d699f690215e73c081e5",
+  "docs/_posts/2026-10-08-shiny-collab-fes-2026-oct.md": "2f2a1cd1906b4c9baa9a33509416ca08e13aec31d887417bd608483f11ea0a26",
+  "docs/_posts/2026-10-08-shiny-fumage-cruise-2026.md": "554efa375b40b3d767ac02acbed84839aed9946e1ae2f141f51534dbe39ddbf7",
+  "docs/_posts/2026-10-08-shiny-hana-birthday-gacha-2026.md": "4e3403b9d3bcea3d87d4d9802582a5b94a53bf0e0a12e01d524e0775b38514b6",
+  "docs/_posts/2026-10-08-shiny-maintenance-2026-10-08.md": "7a9ce459b6d9fa50256ca48abd46c6daee2301fada5e1ed6d396b9a9176a18e4",
+  "docs/_posts/2026-10-08-shiny-mattari-hbtk-october-2026.md": "f75441dbba2c39c5d15e8928a3343d0d66a24f67bbe8dda78f76a4abc13e38d2",
+  "docs/_posts/2026-10-08-shiny-new-idol-teaser-2026-10-08.md": "53dc77bbaae9d80de395c26dad234d4d113586b629849bdfc8b391e810f95460",
+  "docs/_posts/2026-10-08-shiny-stillblue-asobipremium-lottery.md": "336019d2be314a4e4b100887b4cd9d6e10ed1181f69def6942a444d1a0bd75bf",
+  "docs/_posts/2026-10-08-sidem-11th-live-performance-goods-2026.md": "a5b5fc87be46ef74405bedbe4c22718a5c1814af2c80bc7ecb890ebec39d8bdd",
+  "docs/_posts/2026-10-08-sidem-daimaru-matsuzakaya-2026.md": "860613eaab361f1eeb9c5b5adb489c77d975ac8a4b7bc4d78ff1b3d6cf6dada4",
+  "docs/_posts/2026-10-08-sidem-karatetsu-yokai-2026.md": "8beb44bcc51aedcc01bd2cb150bb29252afc8bab8279d9fad5c5ac46aefc14fd",
+  "docs/_posts/2026-10-08-sidem-royal-chess-lounge-2026.md": "dcb64a7582545e23b84c12f8614f52b4d73ffa2f8235504dbbc8dca3bcc6a4e9",
+  "docs/_editions/2026-10-08.md": "42fe425a95a2893bef3a86035ccf9506b7e653d5fc501e2636e26495e947ff7d",
+  "metrics/stories-before-2026-10-08.yml": "d108dc816c69e41998a31a530a89e3b8bc60a095722e33e297905a83b3396ce6"
+ }
+}

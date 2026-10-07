@@ -52,6 +52,7 @@ official_suffixes:
 
 # --- 準公式: 公式レーベル・公式ストア等のグループ/パートナー企業 ---
 semi_official_domains:
+  - krs.bz                # 合議で追加: アイマス公式配信番組のメールフォーム。日本コロムビアが運営
   - onsen.ag              # 合議で追加: 公式ラジオ配信プラットフォーム、公式登録済み
   - a-onstore.jp          # 合議で追加: バンダイナムコグループの公式ショップ。公式レーベル・公式ストアの定義に該当
   - 1kuji.com             # 合議で追加: バンダイナムコグループ企業が一番くじ商品の企画・開発・販売を行い、自社商品を告知
@@ -86,6 +87,7 @@ suffix_types:
 
 # --- 報道: 独立した報道メディア ---
 press_domains:
+  - radichubu.jp          # 合議で追加: 自社番組で取材した内容の記事化。報道メディアの自主取材による情報発信
   - toyamamikke.com       # 合議で追加: 富山の独立した地域メディア。自ら取材して記事を執筆
   - billboard-japan.com   # 合議で追加: 独立した音楽メディア企業のチャート集計・発表
   - leveluplogy.jp        # 合議で追加: TGS2026会場で自ら取材したゲーム系報道メディア
@@ -126,6 +128,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - hon-hikidashi.jp      # 合議で追加: 書籍情報メディア。発売情報は公式発表の転載
   - sina.cn               # 合議で追加: 公式発表をそのまま掲載。独自取材の形跡なし
   - torecamap.co.jp       # 合議で追加: TCGポータルサイトが他所の公式発表を整理して伝える
   - tubetre.com           # 合議で追加: YouTube動画の公開ランキング情報を集約・表示するメディア。独自取材でなく公
@@ -230,6 +233,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - travel.willer.co.jp   # 合議で追加: シャイニーカラーズコラボツアーを企画・販売するライセンス事業者
+  - taiko-ch.net          # 合議で追加: バンダイナムコ傘下の他タイトル公式サイト。アイマス視点では外部企業
   - bit.ly                # 合議で追加: リンク先はローソンプリント。ライセンスを受けてアイマス商品を販売する当事者
   - flowerstand.jp        # 合議で追加: アイマス関連イベントのフラワースタンド受付・販売を行う独立企業
   - famkuji.jp            # 合議で追加: グッズくじ販売、ライセンス商品
@@ -373,6 +378,7 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - oLklZ1DD-xo         # 機械で追加: @imas-official「【ミリシタ】ゲーム内楽曲『ライラックにつつまれて』MV【アイ」
     - trJ1Aog8L7w         # 機械で追加: @imas-official「【スタマス】5周年記念！越境コミュ公開「アイドルモノマネチャ」
     - YvB9Lkq5aOs         # 機械で追加: @KamizuruCosmo「クライヤ 踊ってみた with 四条貴音さん #shorts」
     - sl_TslKVAlQ         # 機械で追加: @KamizuruCosmo「DIAMOND JOKER 踊ってみた with 四条貴音さ」
@@ -519,6 +525,13 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - wahiwahin           # 合議で追加: 個人の商品購入投稿
+    - nodash              # 合議で追加: 個人による選択ツール開発・共有
+    - minato_mzk          # 合議で追加: 個人によるコスプレ投稿
+    - kodaicat            # 合議で追加: 個人の来店体験投稿
+    - Yumemi_Ruko_        # 合議で追加: 個人による創作・メイキング投稿
+    - Rosemarry_76        # 合議で追加: 個人による創作漫画投稿
+    - Okrrrrr_1582        # 合議で追加: 個人アカウント、ファンイベント参加投稿
     - rascal_19_rmy       # 合議で追加: 個人による聖地巡礼投稿
     - daburuha_77         # 合議で追加: 個人による視聴感想
     - GUND_ARM_0808       # 合議で追加: 個人ハンドルによるファン作品投稿
@@ -667,6 +680,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - sakaseru_jp         # 合議で追加: フラワースタンド販売・手配による出演祝い投稿
     - lawsonmulticopy     # 合議で追加: ローソンはライセンス商品（ブロマイド）の販売元・会場。ライセンス商品販売会社は当
     - sirasawasnbei       # 合議で追加: コラボ実施している店舗アカウント
     - WILLER_TRAVEL       # 合議で追加: ツアー企画・販売会社のコラボ募集
@@ -755,6 +769,8 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  note.com/mi_mei_: ファン                        # 合議で追加: noteの個人アカウント。ライブ参加者による個人レポート
+  note.com/konpotap: ファン                       # 合議で追加: noteの個人アカウント。イベント参加者による個人レポート
   note.com/kanokka: ファン                        # 合議で追加: 個人のnoteアカウント。シャニマスのソロライブ現地参加レポート
   note.com/jangajanganikki: ファン                # 合議で追加: 個人のnoteアカウント。シャニマスソロライブの感想・日記を発信
   docs.google.com/forms/d/e/1FAIpQLSewzEGUu-wlZ66kIHFIdR6ucKHMFo2syzmW9Oeq7lzKCSsSWQ: 公式 # 合議で追加: リンク元@valiv_officialは登録済み公式。VA-LIVブランド公式

@@ -1,0 +1,82 @@
+{
+ "decisions": {
+  "taiko-dondaful-song-03-ume-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "太鼓の達人25周年企画への花海佑芽の参加。主催は太鼓の達人側で共同名義ではなく、ゲスト出演扱いのため joint 面の話題ではない。"
+  },
+  "tours-s2-featuring-brand-stream-2026": {
+   "action": "article",
+   "angle": "10月15日19時の生配信で、S2弾のfeaturing BRANDのアイドル・楽曲・SSR/パラレルカードと「OFF MODE」カードが発表される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信の出演者・現地観覧は既報。新しい事実は featuring BRAND の登場内容と OFF MODE カード。"
+  },
+  "tours-s2-live-audience-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "応募締切は10月7日23:59で終了済み。10/4〜10/7に記事化済みで、新しい事実はない。"
+  },
+  "arcade-tours-s2-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "続報予約(現地観覧の当落発表)は、当選者へのDM連絡(8日ごろ)で、読者が見に行ける催しも取れる手続きも無い。素材の facts にも当日の出来事が無い。先行抽選は7日に締切済みで、出演者・会場・日時は10/2の記事で既報。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-s2-featuring-brand-stream-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "10月15日19時の生配信で、S2弾のfeaturing BRANDのアイドル・楽曲・SSR/パラレルカードと「OFF MODE」カードが発表される。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "tours-s2-featuring-brand-stream-2026",
+    "candidate_ids": [
+     "202610080222-grok-45"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "taiko-dondaful-song-03-ume-2026",
+    "reason": "面違い",
+    "note": "太鼓の達人25周年企画への花海佑芽の参加。主催は太鼓の達人側で共同名義ではなく、ゲスト出演扱いのため joint 面の話題ではない。"
+   },
+   {
+    "dedup_key": "tours-s2-live-audience-campaign-2026",
+    "reason": "既報",
+    "note": "応募締切は10月7日23:59で終了済み。10/4〜10/7に記事化済みで、新しい事実はない。"
+   },
+   {
+    "dedup_key": "arcade-tours-s2-live-2026",
+    "reason": "既報",
+    "note": "続報予約(現地観覧の当落発表)は、当選者へのDM連絡(8日ごろ)で、読者が見に行ける催しも取れる手続きも無い。素材の facts にも当日の出来事が無い。先行抽選は7日に締切済みで、出演者・会場・日時は10/2の記事で既報。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,50 @@
+{
+ "decisions": {
+  "x-vorder-runway-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "外部イベントへのゲスト出演で、765の主催ではない。9月27日開催で終了済み"
+  },
+  "x-com-5": {
+   "action": "article",
+   "angle": "アイマスMOR419から新パーソナリティとなる若林直美さん・汐谷文康さん宛てのメール受付が、本日10月8日で締め切られる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日締切。prior の本文と同内容なので期日の再告知として扱う"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-x-com-5",
+    "brand": "765",
+    "rank": "small",
+    "angle": "アイマスMOR419から新パーソナリティとなる若林直美さん・汐谷文康さん宛てのメール受付が、本日10月8日で締め切られる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "x-com-5",
+    "candidate_ids": [
+     "sched-2026-10-08-x-com-5-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "x-vorder-runway-2026",
+    "reason": "面違い",
+    "note": "外部イベントへのゲスト出演で、765の主催ではない。9月27日開催で終了済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

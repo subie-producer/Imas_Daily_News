@@ -1,0 +1,144 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-08T02:23:00+09:00",
+   "edition": "2026-10-08",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 348,
+      "pages": 1,
+      "new": 1,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 1,
+    "facted": 1,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 1,
+    "explore:gakuen": 0,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 1,
+    "grok:765as": 0,
+    "grok:cinderella": 7,
+    "grok:million": 9,
+    "grok:shiny": 7,
+    "grok:sidem": 6,
+    "grok:gakuen": 10,
+    "grok:dsva": 4,
+    "grok:joint-other": 6,
+    "grok:trend": 10,
+    "grok_searches:765": 6,
+    "grok_searches:cg": 8,
+    "grok_searches:gaku": 5,
+    "grok_searches:shiny": 9,
+    "grok_searches:sidem": 6,
+    "grok_searches:general": 7,
+    "grok_searches:joint": 5,
+    "grok_searches:dsva": 5,
+    "grok_searches:million": 6
+   },
+   "normalized": 64,
+   "added": 52,
+   "verify": {
+    "confirmed": 40,
+    "unconfirmed": 17,
+    "failed": 7
+   },
+   "duration_s": 1343
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-08T03:36:51+09:00",
+   "edition": "2026-10-08",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 36,
+   "written": 32,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 80,
+    "covered": 80,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "million-gaku-osaka-nipponbashi-kuji-inventory-2026-10-05"
+   ],
+   "stages_min": {
+    "選定": 1.141433318456014,
+    "執筆": 4.455977781613668,
+    "出典の判定": 0.6042919993400574,
+    "組版": 0.8795364697774252,
+    "校閲": 2.422252929210663,
+    "校閲1波": 2.422252929210663
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "million-ittan-aishite-frame-terms-2026",
+    "million-bot09-100ten-numberone-2026",
+    "shiny-dmm-pc-ranking-2026-10-06"
+   ],
+   "duration_s": 2173
+  }
+ ]
+}

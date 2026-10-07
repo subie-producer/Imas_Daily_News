@@ -1,0 +1,156 @@
+{
+ "decisions": {
+  "cg-cinderella-party-10th-cd-2026": {
+   "action": "article",
+   "angle": "「でれぱ 拾年の宴＆デレパの神曲」CD2枚組が11月25日発売、コロムビアミュージックショップ限定で通販は11月18日まで。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-onmyoji-pop-up-visit-2026-10-07": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の来店投稿のみ、未確認で出典不足"
+  },
+  "cg-parfait-coquette-fan-visit-2026-10-07": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の購入報告投稿のみ、未確認"
+  },
+  "cg-overclock-digital-single-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/7号で2曲の配信開始・作詞作曲・歌唱を報じ済み。新事実も当日トリガーも無い"
+  },
+  "derepa-oishi-izumi-guest-2026": {
+   "action": "article",
+   "angle": "デレパ10月21日放送に大石泉役・大木咲絵子が出演、メールは公式フォームで募集。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "derepa-620-takeda-guest-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "放送は10/7 22時で終了済み"
+  },
+  "cg-15th-orchestra-2027": {
+   "action": "article",
+   "angle": "15周年オケコン現地最速先行の当落が本日13時に発表され、当選者の入金は10月12日23時59分まで。",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cg-cinderella-orchestra-concert-2027 を統合"
+  },
+  "cg-cinderella-orchestra-concert-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-orchestra-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演・同じ先行抽選の当落"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-party-10th-cd-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "「でれぱ 拾年の宴＆デレパの神曲」CD2枚組が11月25日発売、コロムビアミュージックショップ限定で通販は11月18日まで。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "cg-cinderella-party-10th-cd-2026",
+    "candidate_ids": [
+     "202610080222-watch-0"
+    ]
+   },
+   {
+    "slug": "cg-derepa-oishi-izumi-guest-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレパ10月21日放送に大石泉役・大木咲絵子が出演、メールは公式フォームで募集。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "derepa-oishi-izumi-guest-2026",
+    "candidate_ids": [
+     "202610080222-grok-59"
+    ]
+   },
+   {
+    "slug": "cg-15th-orchestra-2027",
+    "brand": "cg",
+    "rank": "large",
+    "angle": "15周年オケコン現地最速先行の当落が本日13時に発表され、当選者の入金は10月12日23時59分まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 80,
+    "dedup_key": "cg-15th-orchestra-2027",
+    "candidate_ids": [
+     "sched-2026-10-08-cg-15th-orchestra-2027-結果",
+     "sched-2026-10-08-cg-cinderella-orchestra-concert-2027-結果"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-onmyoji-pop-up-visit-2026-10-07",
+    "reason": "個人の話題",
+    "note": "個人の来店投稿のみ、未確認で出典不足"
+   },
+   {
+    "dedup_key": "cg-parfait-coquette-fan-visit-2026-10-07",
+    "reason": "個人の話題",
+    "note": "個人の購入報告投稿のみ、未確認"
+   },
+   {
+    "dedup_key": "cg-overclock-digital-single-2026",
+    "reason": "既報",
+    "note": "10/7号で2曲の配信開始・作詞作曲・歌唱を報じ済み。新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "derepa-620-takeda-guest-2026",
+    "reason": "その他",
+    "note": "放送は10/7 22時で終了済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

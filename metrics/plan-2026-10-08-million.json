@@ -1,0 +1,331 @@
+{
+ "decisions": {
+  "million-shizuka-the-animation-figure": {
+   "action": "article",
+   "angle": "コトブキヤ新作に「最上静香 -The Animation-」1/8フィギュア、2027年4月発売予定・23,100円",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報(未確認)。出典の扱いに注意"
+  },
+  "gaku-osaka-nipponbashi-kuji-inventory-2026-10-05": {
+   "action": "article",
+   "angle": "大阪日本橋店・博多バスターミナル店のミリオンライブ抽選くじ在庫(10/5更新)。大阪はA賞の篠宮可憐が在庫切れ",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は学マスくじで別作品。博多店を統合"
+  },
+  "cg-lottery-stock-osaka-2026-09-08": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-osaka-nipponbashi-kuji-inventory-2026-10-05",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策(ミリオン抽選くじの在庫更新)。博多店分として統合"
+  },
+  "million-cyber-planet-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "medicos-cyberplanet-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP。特典・応募の素材を統合"
+  },
+  "million-shs-my-brand-glasses-2026": {
+   "action": "article",
+   "angle": "松田亜利沙がプロデュースする「セカンドヘアスタイルガシャ ～myブランド編 with glasses～」、メガネはON/OFF可能",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "運営情報は2件のみで roundup 条件(3件以上)に届かず"
+  },
+  "million-ittan-aishite-frame-terms-2026": {
+   "action": "article",
+   "angle": "「一旦愛して動画」フレームの利用規約を変更、制作・配信で守る事項を整理",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-only-maker-parker-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30の記事と同内容。締切10/12は3日以内でなく新事実もない"
+  },
+  "million-bot09-100ten-numberone-2026": {
+   "action": "article",
+   "angle": "BOT09「100てん☆ナンバーワン！」発売、CD限定ドラマパート収録と合同リリースイベント予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-platinum-star-tune-lilac-2026": {
+   "action": "article",
+   "angle": "「プラチナスターチューン～ライラックにつつまれて～」は本日20:59まで、最終日にイベント楽曲とショートMVを楽しめる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同イベントの theater キーを統合"
+  },
+  "medicos-cyberplanet-popup-2026": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOP東京会場が本日MEDICOS SHOP渋谷で開幕、10月20日まで。特典カード・等身大パネル応募を案内",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "3主題(開幕2本+告知)を1記事に統合。初日はシャッフル抽選入場"
+  },
+  "million-9th-anniversary-goods-2026": {
+   "action": "article",
+   "angle": "ミリシタ9周年イラスト公式グッズの受注は10月11日まで、残り3日(アクリルパネル含む)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "x-com-42(アクリルパネル)を統合"
+  },
+  "topic-049-2026": {
+   "action": "article",
+   "angle": "ミリオン14thLIVE開催記念グッズの受注は10月11日まで、残り3日(エミリーのラペルピン・このみの日本酒グラス含む)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じASOBI STOREページの受注。3主題を統合"
+  },
+  "million-14th-emily-lapel-pin-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-049-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注ページ・同じ締切"
+  },
+  "medicos-e-net-44": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "medicos-cyberplanet-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP。応募期間(11/16まで)の素材を統合"
+  },
+  "x-com-42": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-9th-anniversary-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9周年グッズ受注の一部(アクリルパネル)。同じ締切"
+  },
+  "million-14th-konomi-sake-glass-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-049-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注ページ・同じ締切"
+  },
+  "million-14th-memorial-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "topic-049-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注ページ・同じ締切"
+  },
+  "million-theater-tune-lilac-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-star-tune-lilac-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベントの終了日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-shizuka-the-animation-figure",
+    "brand": "million",
+    "rank": "small",
+    "angle": "コトブキヤ新作に「最上静香 -The Animation-」1/8フィギュア、2027年4月発売予定・23,100円",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-shizuka-the-animation-figure",
+    "candidate_ids": [
+     "202610070732-explore-0"
+    ]
+   },
+   {
+    "slug": "million-gaku-osaka-nipponbashi-kuji-inventory-2026-10-05",
+    "brand": "million",
+    "rank": "small",
+    "angle": "大阪日本橋店・博多バスターミナル店のミリオンライブ抽選くじ在庫(10/5更新)。大阪はA賞の篠宮可憐が在庫切れ",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "gaku-osaka-nipponbashi-kuji-inventory-2026-10-05",
+    "candidate_ids": [
+     "202610072333-explore-0",
+     "202610072333-explore-1"
+    ]
+   },
+   {
+    "slug": "million-shs-my-brand-glasses-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "松田亜利沙がプロデュースする「セカンドヘアスタイルガシャ ～myブランド編 with glasses～」、メガネはON/OFF可能",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-shs-my-brand-glasses-2026",
+    "candidate_ids": [
+     "202610080222-grok-11"
+    ]
+   },
+   {
+    "slug": "million-ittan-aishite-frame-terms-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「一旦愛して動画」フレームの利用規約を変更、制作・配信で守る事項を整理",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-ittan-aishite-frame-terms-2026",
+    "candidate_ids": [
+     "202610080222-grok-12"
+    ]
+   },
+   {
+    "slug": "million-bot09-100ten-numberone-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "BOT09「100てん☆ナンバーワン！」発売、CD限定ドラマパート収録と合同リリースイベント予定",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-bot09-100ten-numberone-2026",
+    "candidate_ids": [
+     "202610080222-grok-15"
+    ]
+   },
+   {
+    "slug": "million-platinum-star-tune-lilac-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「プラチナスターチューン～ライラックにつつまれて～」は本日20:59まで、最終日にイベント楽曲とショートMVを楽しめる",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-platinum-star-tune-lilac-2026",
+    "candidate_ids": [
+     "202610080222-grok-17",
+     "sched-2026-10-08-million-platinum-star-tune-lilac-2026-終了",
+     "sched-2026-10-08-million-theater-tune-lilac-2026-終了"
+    ]
+   },
+   {
+    "slug": "million-medicos-cyberplanet-popup-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "Cyber Planet POP UP SHOP東京会場が本日MEDICOS SHOP渋谷で開幕、10月20日まで。特典カード・等身大パネル応募を案内",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "medicos-cyberplanet-popup-2026",
+    "candidate_ids": [
+     "sched-2026-10-08-medicos-cyberplanet-popup-2026-開幕",
+     "202610080222-grok-10",
+     "sched-2026-10-08-medicos-e-net-44-開幕"
+    ]
+   },
+   {
+    "slug": "million-9th-anniversary-goods-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ9周年イラスト公式グッズの受注は10月11日まで、残り3日(アクリルパネル含む)",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-9th-anniversary-goods-2026",
+    "candidate_ids": [
+     "sched-2026-10-08-million-9th-anniversary-goods-2026-締切前",
+     "sched-2026-10-08-x-com-42-締切前"
+    ]
+   },
+   {
+    "slug": "million-topic-049-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリオン14thLIVE開催記念グッズの受注は10月11日まで、残り3日(エミリーのラペルピン・このみの日本酒グラス含む)",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "topic-049-2026",
+    "candidate_ids": [
+     "sched-2026-10-08-topic-049-2026-締切前",
+     "sched-2026-10-08-million-14th-emily-lapel-pin-2026-締切前",
+     "sched-2026-10-08-million-14th-konomi-sake-glass-2026-締切前",
+     "sched-2026-10-08-million-14th-memorial-goods-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-only-maker-parker-2026",
+    "reason": "既報",
+    "note": "9/30の記事と同内容。締切10/12は3日以内でなく新事実もない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

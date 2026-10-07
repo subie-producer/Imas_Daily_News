@@ -1,0 +1,599 @@
+{
+ "articles": [
+  {
+   "slug": "joint-tours-s2-featuring-brand-stream-2026",
+   "brand": "joint",
+   "rank": "lead",
+   "angle": "10月15日19時の生配信で、S2弾のfeaturing BRANDのアイドル・楽曲・SSR/パラレルカードと「OFF MODE」カードが発表される。",
+   "purpose": "新情報",
+   "lead_score": 60,
+   "dedup_key": "tours-s2-featuring-brand-stream-2026",
+   "candidate_ids": [
+    "202610080222-grok-45"
+   ]
+  },
+  {
+   "slug": "million-shizuka-the-animation-figure",
+   "brand": "million",
+   "rank": "medium",
+   "angle": "コトブキヤ新作に「最上静香 -The Animation-」1/8フィギュア、2027年4月発売予定・23,100円",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "million-shizuka-the-animation-figure",
+   "candidate_ids": [
+    "202610070732-explore-0"
+   ]
+  },
+  {
+   "slug": "million-gaku-osaka-nipponbashi-kuji-inventory-2026-10-05",
+   "brand": "million",
+   "rank": "small",
+   "angle": "大阪日本橋店・博多バスターミナル店のミリオンライブ抽選くじ在庫(10/5更新)。大阪はA賞の篠宮可憐が在庫切れ",
+   "purpose": "新情報",
+   "lead_score": 5,
+   "dedup_key": "gaku-osaka-nipponbashi-kuji-inventory-2026-10-05",
+   "candidate_ids": [
+    "202610072333-explore-0",
+    "202610072333-explore-1"
+   ]
+  },
+  {
+   "slug": "million-shs-my-brand-glasses-2026",
+   "brand": "million",
+   "rank": "large",
+   "angle": "松田亜利沙がプロデュースする「セカンドヘアスタイルガシャ ～myブランド編 with glasses～」、メガネはON/OFF可能",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "million-shs-my-brand-glasses-2026",
+   "candidate_ids": [
+    "202610080222-grok-11"
+   ]
+  },
+  {
+   "slug": "million-ittan-aishite-frame-terms-2026",
+   "brand": "million",
+   "rank": "small",
+   "angle": "「一旦愛して動画」フレームの利用規約を変更、制作・配信で守る事項を整理",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "million-ittan-aishite-frame-terms-2026",
+   "candidate_ids": [
+    "202610080222-grok-12"
+   ]
+  },
+  {
+   "slug": "million-bot09-100ten-numberone-2026",
+   "brand": "million",
+   "rank": "small",
+   "angle": "BOT09「100てん☆ナンバーワン！」発売、CD限定ドラマパート収録と合同リリースイベント予定",
+   "purpose": "新情報",
+   "lead_score": 25,
+   "dedup_key": "million-bot09-100ten-numberone-2026",
+   "candidate_ids": [
+    "202610080222-grok-15"
+   ]
+  },
+  {
+   "slug": "million-platinum-star-tune-lilac-2026",
+   "brand": "million",
+   "rank": "small",
+   "angle": "「プラチナスターチューン～ライラックにつつまれて～」は本日20:59まで、最終日にイベント楽曲とショートMVを楽しめる",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "million-platinum-star-tune-lilac-2026",
+   "candidate_ids": [
+    "202610080222-grok-17",
+    "sched-2026-10-08-million-platinum-star-tune-lilac-2026-終了",
+    "sched-2026-10-08-million-theater-tune-lilac-2026-終了"
+   ]
+  },
+  {
+   "slug": "million-medicos-cyberplanet-popup-2026",
+   "brand": "million",
+   "rank": "large",
+   "angle": "Cyber Planet POP UP SHOP東京会場が本日MEDICOS SHOP渋谷で開幕、10月20日まで。特典カード・等身大パネル応募を案内",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "medicos-cyberplanet-popup-2026",
+   "candidate_ids": [
+    "sched-2026-10-08-medicos-cyberplanet-popup-2026-開幕",
+    "202610080222-grok-10",
+    "sched-2026-10-08-medicos-e-net-44-開幕"
+   ]
+  },
+  {
+   "slug": "million-9th-anniversary-goods-2026",
+   "brand": "million",
+   "rank": "small",
+   "angle": "ミリシタ9周年イラスト公式グッズの受注は10月11日まで、残り3日(アクリルパネル含む)",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "million-9th-anniversary-goods-2026",
+   "candidate_ids": [
+    "sched-2026-10-08-million-9th-anniversary-goods-2026-締切前",
+    "sched-2026-10-08-x-com-42-締切前"
+   ]
+  },
+  {
+   "slug": "million-topic-049-2026",
+   "brand": "million",
+   "rank": "medium",
+   "angle": "ミリオン14thLIVE開催記念グッズの受注は10月11日まで、残り3日(エミリーのラペルピン・このみの日本酒グラス含む)",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "topic-049-2026",
+   "candidate_ids": [
+    "sched-2026-10-08-topic-049-2026-締切前",
+    "sched-2026-10-08-million-14th-emily-lapel-pin-2026-締切前",
+    "sched-2026-10-08-million-14th-konomi-sake-glass-2026-締切前",
+    "sched-2026-10-08-million-14th-memorial-goods-2026-締切前"
+   ]
+  },
+  {
+   "slug": "gaku-gakumas-fujita-kotone-prize-fig-2027",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "藤田ことねのプライズフィギュア「ESPRESTO-Heart bouquet」Another color ver.が2027年3月から全国のクレーンゲームに登場予定。",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "gakumas-fujita-kotone-prize-fig-2027",
+   "candidate_ids": [
+    "202610071233-watch-5"
+   ]
+  },
+  {
+   "slug": "gaku-radio-2026-10-14",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "初星学園放送部の10月14日放送回は長月あおい(花海咲季役)と花岩香奈(葛城リーリヤ役)がゲスト出演し、投稿フォームも案内された。",
+   "purpose": "新情報",
+   "lead_score": 25,
+   "dedup_key": "gaku-radio-2026-10-14",
+   "candidate_ids": [
+    "202610080222-grok-35"
+   ]
+  },
+  {
+   "slug": "gaku-wednesday-ticket-2026-10-07",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "今週の「学マ水曜日ガシャチケット×1」を配布中で、ログインで「Agitato リーリヤガシャ」を1回引ける。",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "gaku-wednesday-ticket-2026-10-07",
+   "candidate_ids": [
+    "202610080222-grok-37"
+   ]
+  },
+  {
+   "slug": "gaku-another-idol-free-gacha-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "アナザーアイドルアップデート記念の48時間限定SSR確定無料ガシャが、10月9日から2日おきに全13回開催される。",
+   "purpose": "新情報",
+   "lead_score": 65,
+   "dedup_key": "gaku-another-idol-free-gacha-2026",
+   "candidate_ids": [
+    "202610080222-grok-39"
+   ]
+  },
+  {
+   "slug": "gaku-shirube-iwate-streaming-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "岩手公演の配信視聴チケットは本日18時で販売終了、視聴コメント付きアーカイブとデジタルチケット画像生成は23時59分まで。DAY2では紫雲清夏の新曲「Private Glitter」が披露された。",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "gaku-shirube-iwate-streaming-2026",
+   "candidate_ids": [
+    "sched-2026-10-08-gaku-shirube-iwate-streaming-2026-終了",
+    "202610080222-grok-36"
+   ]
+  },
+  {
+   "slug": "gaku-chibi-furumi-unit-collection-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "ちびぐるみvol.4(紫雲清夏・篠澤広・姫崎莉波のREVERSI衣装)が、きょう10月8日から全国のクレーンゲームに順次登場する。",
+   "purpose": "期日の知らせ",
+   "lead_score": 15,
+   "dedup_key": "gaku-chibi-furumi-unit-collection-2026",
+   "candidate_ids": [
+    "sched-2026-10-08-gaku-chibi-furumi-unit-collection-2026-開始",
+    "202610070732-explore-1"
+   ]
+  },
+  {
+   "slug": "gaku-haratani-misuz-espresto-prize-2026-10",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "秦谷美鈴のプライズフィギュア「ESPRESTO-Fan out-」が、きょう10月8日から全国のクレーンゲームに順次登場する。",
+   "purpose": "期日の知らせ",
+   "lead_score": 15,
+   "dedup_key": "gaku-haratani-misuz-espresto-prize-2026-10",
+   "candidate_ids": [
+    "sched-2026-10-08-gaku-haratani-misuz-espresto-prize-2026-10-開始"
+   ]
+  },
+  {
+   "slug": "shiny-dmm-pc-ranking-2026-10-06",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニソンが10月6日19時時点のDMM GAMES PCゲームランキングで、前週の圏外から20位に登場した。",
+   "purpose": "新情報",
+   "lead_score": 5,
+   "dedup_key": "shiny-dmm-pc-ranking-2026-10-06",
+   "candidate_ids": [
+    "202610071233-explore-6"
+   ]
+  },
+  {
+   "slug": "shiny-fumage-cruise-2026",
+   "brand": "shiny",
+   "rank": "large",
+   "angle": "『Fumage』クルーズの抽選申込は10月11日23:59まで。締切3日前の知らせ。",
+   "purpose": "期日の知らせ",
+   "lead_score": 20,
+   "dedup_key": "shiny-fumage-cruise-2026",
+   "candidate_ids": [
+    "202610071233-explore-7",
+    "sched-2026-10-08-shiny-fumage-cruise-2026-締切前"
+   ]
+  },
+  {
+   "slug": "shiny-hana-birthday-gacha-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "羽那の誕生日記念ガシャと記念パック2026は、本日10月8日23:59で終了する。",
+   "purpose": "期日の知らせ",
+   "lead_score": 15,
+   "dedup_key": "shiny-hana-birthday-gacha-2026",
+   "candidate_ids": [
+    "202610080222-grok-22",
+    "202610080222-grok-21"
+   ]
+  },
+  {
+   "slug": "shiny-new-idol-teaser-2026-10-08",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "近日登場予定のアイドルが、10月8日15:00から登場する。公式がチラ見せ投稿で予告した。",
+   "purpose": "新情報",
+   "lead_score": 25,
+   "dedup_key": "shiny-new-idol-teaser-2026-10-08",
+   "candidate_ids": [
+    "202610080222-grok-23"
+   ]
+  },
+  {
+   "slug": "shiny-mattari-hbtk-october-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "「まったりHBTK」10月度のおたより募集は、本日10月8日頃が締切の目安。",
+   "purpose": "期日の知らせ",
+   "lead_score": 10,
+   "dedup_key": "shiny-mattari-hbtk-october-2026",
+   "candidate_ids": [
+    "202610080222-grok-24",
+    "sched-2026-10-08-shiny-mattari-hbtk-october-2026-締切"
+   ]
+  },
+  {
+   "slug": "shiny-stillblue-asobipremium-lottery",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "『Still blue』アソビストア一般会員先行の当落発表が本日13時にある。当選者の入金は10月12日23:59まで。",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "shiny-stillblue-asobipremium-lottery",
+   "candidate_ids": [
+    "sched-2026-10-08-shiny-stillblue-asobipremium-lottery-結果"
+   ]
+  },
+  {
+   "slug": "shiny-collab-fes-2026-oct",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニマスのコラボフェスが本日10月8日から始まる。開催期間は10月20日11:59までの予定。",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "shiny-collab-fes-2026-oct",
+   "candidate_ids": [
+    "sched-2026-10-08-shiny-collab-fes-2026-oct-開始"
+   ]
+  },
+  {
+   "slug": "shiny-maintenance-2026-10-08",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "本日12:00から15:00までメンテナンス。開催中の10連無料ガシャが引けるのはメンテ前まで。",
+   "purpose": "期日の知らせ",
+   "lead_score": 25,
+   "dedup_key": "shiny-maintenance-2026-10-08",
+   "candidate_ids": [
+    "sched-2026-10-08-shiny-maintenance-2026-10-08-その他"
+   ]
+  },
+  {
+   "slug": "sidem-daimaru-matsuzakaya-2026",
+   "brand": "sidem",
+   "rank": "medium",
+   "angle": "SideMの大丸ポップアップが東京店(10/28〜11/10)と梅田店(11/18〜11/24)で開催され、事前整理券とオンライン受注(11/27〜)も用意される。",
+   "purpose": "新情報",
+   "lead_score": 60,
+   "dedup_key": "sidem-daimaru-matsuzakaya-2026",
+   "candidate_ids": [
+    "202610071833-watch-0"
+   ]
+  },
+  {
+   "slug": "sidem-11th-live-performance-goods-2026",
+   "brand": "sidem",
+   "rank": "large",
+   "angle": "11th STAGE開催記念グッズの受注が10月11日(日)で締切、残り3日。",
+   "purpose": "期日の知らせ",
+   "lead_score": 25,
+   "dedup_key": "sidem-11th-live-performance-goods-2026",
+   "candidate_ids": [
+    "202610080222-grok-29"
+   ]
+  },
+  {
+   "slug": "sidem-royal-chess-lounge-2026",
+   "brand": "sidem",
+   "rank": "medium",
+   "angle": "Royal Chess Loungeコラボカフェ池袋店(SMILE BASE CAFE)が本日10月8日に開幕し、20日まで開催される。",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "sidem-royal-chess-lounge-2026",
+   "candidate_ids": [
+    "sched-2026-10-08-sidem-royal-chess-lounge-2026-開幕"
+   ]
+  },
+  {
+   "slug": "sidem-karatetsu-yokai-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "SideM×カラ鉄第3弾の通販受付は10月11日23時59分まで、残り3日。カラオケを利用しなくても購入できる。",
+   "purpose": "期日の知らせ",
+   "lead_score": 20,
+   "dedup_key": "sidem-karatetsu-yokai-2026",
+   "candidate_ids": [
+    "sched-2026-10-08-sidem-karatetsu-yokai-2026-締切前"
+   ]
+  },
+  {
+   "slug": "cg-cinderella-party-10th-cd-2026",
+   "brand": "cg",
+   "rank": "medium",
+   "angle": "「でれぱ 拾年の宴＆デレパの神曲」CD2枚組が11月25日発売、コロムビアミュージックショップ限定で通販は11月18日まで。",
+   "purpose": "新情報",
+   "lead_score": 30,
+   "dedup_key": "cg-cinderella-party-10th-cd-2026",
+   "candidate_ids": [
+    "202610080222-watch-0"
+   ]
+  },
+  {
+   "slug": "cg-derepa-oishi-izumi-guest-2026",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "デレパ10月21日放送に大石泉役・大木咲絵子が出演、メールは公式フォームで募集。",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "derepa-oishi-izumi-guest-2026",
+   "candidate_ids": [
+    "202610080222-grok-59"
+   ]
+  },
+  {
+   "slug": "cg-15th-orchestra-2027",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "15周年オケコン現地最速先行の当落が本日13時に発表され、当選者の入金は10月12日23時59分まで。",
+   "purpose": "期日の知らせ",
+   "lead_score": 80,
+   "dedup_key": "cg-15th-orchestra-2027",
+   "candidate_ids": [
+    "sched-2026-10-08-cg-15th-orchestra-2027-結果",
+    "sched-2026-10-08-cg-cinderella-orchestra-concert-2027-結果"
+   ]
+  },
+  {
+   "slug": "dsva-valiv-cosmo-birthday-2026-screening",
+   "brand": "dsva",
+   "rank": "medium",
+   "angle": "上水流宇宙バースデーライブのアーカイブ最終日10月12日13時から同時視聴上映会があり、視聴ページは明日10月9日に公開、アーカイブ券の販売は12日18時まで。",
+   "purpose": "新情報",
+   "lead_score": 60,
+   "dedup_key": "valiv-cosmo-birthday-2026-screening",
+   "candidate_ids": [
+    "202610071233-watch-4",
+    "202610080222-grok-44"
+   ]
+  },
+  {
+   "slug": "dsva-va-liv-letora-birthday-2026",
+   "brand": "dsva",
+   "rank": "medium",
+   "angle": "レトラ BIRTHDAY ONLINE LIVE 2026 の現地ライブビューイング先行抽選は10月11日23時59分締切。当落発表は13日、入金は18日まで。",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "va-liv-letora-birthday-2026",
+   "candidate_ids": [
+    "sched-2026-10-08-va-liv-letora-birthday-2026-締切前",
+    "202610080222-grok-41",
+    "202610080222-grok-63"
+   ]
+  },
+  {
+   "slug": "765-x-com-5",
+   "brand": "765",
+   "rank": "small",
+   "angle": "アイマスMOR419から新パーソナリティとなる若林直美さん・汐谷文康さん宛てのメール受付が、本日10月8日で締め切られる。",
+   "purpose": "期日の知らせ",
+   "lead_score": 20,
+   "dedup_key": "x-com-5",
+   "candidate_ids": [
+    "sched-2026-10-08-x-com-5-締切"
+   ]
+  },
+  {
+   "slug": "general-deremi-live-fure-aka-radio-2026",
+   "brand": "general",
+   "rank": "large",
+   "angle": "デレミリ合同ライブ「CLASH M@TCH!!」開催記念ラジオ第1回「フレあかラジオ」(宮本フレデリカ・野々原茜)のおたより締切は10月10日23:59、10月30日にはウォームアップ生配信も行われる。",
+   "purpose": "新情報",
+   "lead_score": 30,
+   "dedup_key": "deremi-live-fure-aka-radio-2026",
+   "candidate_ids": [
+    "202610071233-watch-0",
+    "202610071233-watch-2"
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "dedup_key": "taiko-dondaful-song-03-ume-2026",
+   "reason": "面違い",
+   "note": "太鼓の達人25周年企画への花海佑芽の参加。主催は太鼓の達人側で共同名義ではなく、ゲスト出演扱いのため joint 面の話題ではない。"
+  },
+  {
+   "dedup_key": "tours-s2-live-audience-campaign-2026",
+   "reason": "既報",
+   "note": "応募締切は10月7日23:59で終了済み。10/4〜10/7に記事化済みで、新しい事実はない。"
+  },
+  {
+   "dedup_key": "arcade-tours-s2-live-2026",
+   "reason": "既報",
+   "note": "続報予約(現地観覧の当落発表)は、当選者へのDM連絡(8日ごろ)で、読者が見に行ける催しも取れる手続きも無い。素材の facts にも当日の出来事が無い。先行抽選は7日に締切済みで、出演者・会場・日時は10/2の記事で既報。"
+  },
+  {
+   "dedup_key": "million-only-maker-parker-2026",
+   "reason": "既報",
+   "note": "9/30の記事と同内容。締切10/12は3日以内でなく新事実もない"
+  },
+  {
+   "dedup_key": "gaku-gold-rush-volume-7",
+   "reason": "既報",
+   "note": "10/7に「第7巻が本日発売」で記事化済み。新しい事実なし"
+  },
+  {
+   "dedup_key": "gaku-radio-2026-10-07",
+   "reason": "既報",
+   "note": "10/7に「本日放送」で記事化済み。放送は昨夜終了"
+  },
+  {
+   "dedup_key": "gaku-agitato-mv-million-views-2026",
+   "reason": "既報",
+   "note": "10/7に記事化済み。新しい事実なし"
+  },
+  {
+   "dedup_key": "fan-agitato-liliya-illustration-2026",
+   "reason": "同人・ファン主催",
+   "note": "個人のファン創作SNS投稿。単体では記事にしない"
+  },
+  {
+   "dedup_key": "gakumas-gold-rush-volume-7",
+   "reason": "既報",
+   "note": "10/7に記事化済み。gaku-gold-rush-volume-7と同一事象"
+  },
+  {
+   "dedup_key": "shiny-song-anteica-shes-ring-gacha-2026",
+   "reason": "既報",
+   "note": "10/5「アンティーカ＆シーズ新衣装ガシャ」と同じ施策。新事実もトリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-msp-memorial-goods-2026",
+   "reason": "既報",
+   "note": "10/7の記事にアクリルパネル・受注期限とも掲載済み。締切10/12は4日先でトリガー外"
+  },
+  {
+   "dedup_key": "shiny-msp-fan-flowers-2026",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。ファン面(general)の話題で、shiny面では単体記事にしない"
+  },
+  {
+   "dedup_key": "shiny-natsuhacosplay-2026-10",
+   "reason": "面違い",
+   "note": "ファンのコスプレ投稿。ファン面(general)の話題"
+  },
+  {
+   "dedup_key": "shiny-tooru-cooking-fan-comic-2026",
+   "reason": "同人・ファン主催",
+   "note": "料理部合同誌への寄稿作品。ファン創作でshiny面の対象外"
+  },
+  {
+   "dedup_key": "fuburaji-sidem-retrospective-2026",
+   "reason": "個人の話題",
+   "note": "声優個人のラジオでの振り返り談。出典も未確認"
+  },
+  {
+   "dedup_key": "sidem-11th-fan-report-2026",
+   "reason": "個人の話題",
+   "note": "個人のnote投稿。単体では記事にしない"
+  },
+  {
+   "dedup_key": "sidem-315-night-20261002-preview-2026",
+   "reason": "その他",
+   "note": "10/2放送済み回の紹介で、新しい事実も当日のトリガーも無い。10/16回は10/3に記事化済み"
+  },
+  {
+   "dedup_key": "deramas-sidem-mangaten-2026",
+   "reason": "出典不足",
+   "note": "8月開始の企画で、ポップアップストアの日程・場所などの事実が無く、10/31終了まで3日以内でもない"
+  },
+  {
+   "dedup_key": "sidem-11th-flower-stands-2026",
+   "reason": "同人・ファン主催",
+   "note": "ファン・外部事業者による祝い花の投稿で、10/6のライブは終了済み"
+  },
+  {
+   "dedup_key": "cg-onmyoji-pop-up-visit-2026-10-07",
+   "reason": "個人の話題",
+   "note": "個人の来店投稿のみ、未確認で出典不足"
+  },
+  {
+   "dedup_key": "cg-parfait-coquette-fan-visit-2026-10-07",
+   "reason": "個人の話題",
+   "note": "個人の購入報告投稿のみ、未確認"
+  },
+  {
+   "dedup_key": "cg-overclock-digital-single-2026",
+   "reason": "既報",
+   "note": "10/7号で2曲の配信開始・作詞作曲・歌唱を報じ済み。新事実も当日トリガーも無い"
+  },
+  {
+   "dedup_key": "derepa-620-takeda-guest-2026",
+   "reason": "その他",
+   "note": "放送は10/7 22時で終了済み"
+  },
+  {
+   "dedup_key": "valiv-study-equal-magic-dance-2026-10-06",
+   "reason": "既報",
+   "note": "10/7号で同じ動画を掲載済み。新しい事実もトリガーも無い。"
+  },
+  {
+   "dedup_key": "fan-imas-idol-pick-tool-posts-2026",
+   "reason": "同人・ファン主催",
+   "note": "ファン作成ツールで未確認。個人のSNS投稿で、dsva面では culture 対象外。"
+  },
+  {
+   "dedup_key": "x-vorder-runway-2026",
+   "reason": "面違い",
+   "note": "外部イベントへのゲスト出演で、765の主催ではない。9月27日開催で終了済み"
+  },
+  {
+   "dedup_key": "valiv-online-one-on-one-report-2026-10",
+   "reason": "個人の話題",
+   "note": "個人のnote参加レポート。未確認で、個人の体験談のため単体では記事にしない"
+  },
+  {
+   "dedup_key": "radio-lineup-2026-10-07",
+   "reason": "その他",
+   "note": "10月7日夜の放送の出演者告知で、すでに終了。未確認の投稿のみ"
+  }
+ ],
+ "editorial_slug": "joint-tours-s2-featuring-brand-stream-2026",
+ "editorial_brand": "joint"
+}

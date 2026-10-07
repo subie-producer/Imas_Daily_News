@@ -1,0 +1,289 @@
+{
+ "decisions": {
+  "shiny-dmm-pc-ranking-2026-10-06": {
+   "action": "article",
+   "angle": "シャニソンが10月6日19時時点のDMM GAMES PCゲームランキングで、前週の圏外から20位に登場した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "学マスの順位は他ブランドなので本文に入れない"
+  },
+  "shiny-fumage-cruise-2026": {
+   "action": "article",
+   "angle": "『Fumage』クルーズの抽選申込は10月11日23:59まで。締切3日前の知らせ。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "内容は10/7の記事と同じ。締切3日前のトリガーで記事にする"
+  },
+  "shiny-song-anteica-shes-ring-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/5「アンティーカ＆シーズ新衣装ガシャ」と同じ施策。新事実もトリガーも無い"
+  },
+  "shiny-msp-memorial-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/7の記事にアクリルパネル・受注期限とも掲載済み。締切10/12は4日先でトリガー外"
+  },
+  "shiny-hana-birthday-packs-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hana-birthday-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ羽那誕生日施策。購入できる終了日が同じ"
+  },
+  "shiny-hana-birthday-gacha-2026": {
+   "action": "article",
+   "angle": "羽那の誕生日記念ガシャと記念パック2026は、本日10月8日23:59で終了する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "パック2種(記念パック・特訓パック)の終了も同記事に入れる"
+  },
+  "shiny-new-idol-teaser-2026-10-08": {
+   "action": "article",
+   "angle": "近日登場予定のアイドルが、10月8日15:00から登場する。公式がチラ見せ投稿で予告した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アイドル名・種別は素材に無いので書かない"
+  },
+  "shiny-mattari-hbtk-october-2026": {
+   "action": "article",
+   "angle": "「まったりHBTK」10月度のおたより募集は、本日10月8日頃が締切の目安。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MC・ゲストは既報なので簡潔に"
+  },
+  "shiny-msp-fan-flowers-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。ファン面(general)の話題で、shiny面では単体記事にしない"
+  },
+  "shiny-natsuhacosplay-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファンのコスプレ投稿。ファン面(general)の話題"
+  },
+  "shiny-tooru-cooking-fan-comic-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "料理部合同誌への寄稿作品。ファン創作でshiny面の対象外"
+  },
+  "shiny-stillblue-asobipremium-lottery": {
+   "action": "article",
+   "angle": "『Still blue』アソビストア一般会員先行の当落発表が本日13時にある。当選者の入金は10月12日23:59まで。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当落は今日13時。入金期限も併せて伝える"
+  },
+  "shiny-collab-fes-2026-oct": {
+   "action": "article",
+   "angle": "シャニマスのコラボフェスが本日10月8日から始まる。開催期間は10月20日11:59までの予定。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "素材は期間のみ。ラインナップ等は書かない"
+  },
+  "shiny-maintenance-2026-10-08": {
+   "action": "article",
+   "angle": "本日12:00から15:00までメンテナンス。開催中の10連無料ガシャが引けるのはメンテ前まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "千雪「Grow to Glow」心得の回収も添える"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-dmm-pc-ranking-2026-10-06",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンが10月6日19時時点のDMM GAMES PCゲームランキングで、前週の圏外から20位に登場した。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "shiny-dmm-pc-ranking-2026-10-06",
+    "candidate_ids": [
+     "202610071233-explore-6"
+    ]
+   },
+   {
+    "slug": "shiny-fumage-cruise-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『Fumage』クルーズの抽選申込は10月11日23:59まで。締切3日前の知らせ。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-fumage-cruise-2026",
+    "candidate_ids": [
+     "202610071233-explore-7",
+     "sched-2026-10-08-shiny-fumage-cruise-2026-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-hana-birthday-gacha-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "羽那の誕生日記念ガシャと記念パック2026は、本日10月8日23:59で終了する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-hana-birthday-gacha-2026",
+    "candidate_ids": [
+     "202610080222-grok-22",
+     "202610080222-grok-21"
+    ]
+   },
+   {
+    "slug": "shiny-new-idol-teaser-2026-10-08",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "近日登場予定のアイドルが、10月8日15:00から登場する。公式がチラ見せ投稿で予告した。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-new-idol-teaser-2026-10-08",
+    "candidate_ids": [
+     "202610080222-grok-23"
+    ]
+   },
+   {
+    "slug": "shiny-mattari-hbtk-october-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「まったりHBTK」10月度のおたより募集は、本日10月8日頃が締切の目安。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shiny-mattari-hbtk-october-2026",
+    "candidate_ids": [
+     "202610080222-grok-24",
+     "sched-2026-10-08-shiny-mattari-hbtk-october-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-stillblue-asobipremium-lottery",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "『Still blue』アソビストア一般会員先行の当落発表が本日13時にある。当選者の入金は10月12日23:59まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-stillblue-asobipremium-lottery",
+    "candidate_ids": [
+     "sched-2026-10-08-shiny-stillblue-asobipremium-lottery-結果"
+    ]
+   },
+   {
+    "slug": "shiny-collab-fes-2026-oct",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニマスのコラボフェスが本日10月8日から始まる。開催期間は10月20日11:59までの予定。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "shiny-collab-fes-2026-oct",
+    "candidate_ids": [
+     "sched-2026-10-08-shiny-collab-fes-2026-oct-開始"
+    ]
+   },
+   {
+    "slug": "shiny-maintenance-2026-10-08",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "本日12:00から15:00までメンテナンス。開催中の10連無料ガシャが引けるのはメンテ前まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-maintenance-2026-10-08",
+    "candidate_ids": [
+     "sched-2026-10-08-shiny-maintenance-2026-10-08-その他"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-song-anteica-shes-ring-gacha-2026",
+    "reason": "既報",
+    "note": "10/5「アンティーカ＆シーズ新衣装ガシャ」と同じ施策。新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "shiny-msp-memorial-goods-2026",
+    "reason": "既報",
+    "note": "10/7の記事にアクリルパネル・受注期限とも掲載済み。締切10/12は4日先でトリガー外"
+   },
+   {
+    "dedup_key": "shiny-msp-fan-flowers-2026",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。ファン面(general)の話題で、shiny面では単体記事にしない"
+   },
+   {
+    "dedup_key": "shiny-natsuhacosplay-2026-10",
+    "reason": "面違い",
+    "note": "ファンのコスプレ投稿。ファン面(general)の話題"
+   },
+   {
+    "dedup_key": "shiny-tooru-cooking-fan-comic-2026",
+    "reason": "同人・ファン主催",
+    "note": "料理部合同誌への寄稿作品。ファン創作でshiny面の対象外"
+   }
+  ],
+  "cross_brand": []
+ }
+}

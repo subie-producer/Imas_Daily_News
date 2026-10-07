@@ -1,0 +1,125 @@
+{
+ "decisions": {
+  "valiv-cosmo-birthday-2026-screening": {
+   "action": "article",
+   "angle": "上水流宇宙バースデーライブのアーカイブ最終日10月12日13時から同時視聴上映会があり、視聴ページは明日10月9日に公開、アーカイブ券の販売は12日18時まで。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アーカイブ販売の主題を統合。直近の記事に宇宙BD公演の記事は無く新規。"
+  },
+  "dsva-letora-birthday-live-2026-lv": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-letora-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演・同じLV施策。事実は prior と同じ。"
+  },
+  "valiv-study-equal-magic-dance-2026-10-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/7号で同じ動画を掲載済み。新しい事実もトリガーも無い。"
+  },
+  "fan-imas-idol-pick-tool-posts-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン作成ツールで未確認。個人のSNS投稿で、dsva面では culture 対象外。"
+  },
+  "dsva-cosmo-birthday-live-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-cosmo-birthday-2026-screening",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ宇宙BDライブの同時視聴上映会とアーカイブ。1記事にまとめる。"
+  },
+  "valiv-letora-birthday-live-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-letora-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演・同じLV施策。事実は prior と同じ。"
+  },
+  "va-liv-letora-birthday-2026": {
+   "action": "article",
+   "angle": "レトラ BIRTHDAY ONLINE LIVE 2026 の現地ライブビューイング先行抽選は10月11日23時59分締切。当落発表は13日、入金は18日まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切3日前)。LV関連の2主題を統合。prior に無い新事実は無く、期日のトリガーで記事化。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-cosmo-birthday-2026-screening",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙バースデーライブのアーカイブ最終日10月12日13時から同時視聴上映会があり、視聴ページは明日10月9日に公開、アーカイブ券の販売は12日18時まで。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "valiv-cosmo-birthday-2026-screening",
+    "candidate_ids": [
+     "202610071233-watch-4",
+     "202610080222-grok-44"
+    ]
+   },
+   {
+    "slug": "dsva-va-liv-letora-birthday-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラ BIRTHDAY ONLINE LIVE 2026 の現地ライブビューイング先行抽選は10月11日23時59分締切。当落発表は13日、入金は18日まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "va-liv-letora-birthday-2026",
+    "candidate_ids": [
+     "sched-2026-10-08-va-liv-letora-birthday-2026-締切前",
+     "202610080222-grok-41",
+     "202610080222-grok-63"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-study-equal-magic-dance-2026-10-06",
+    "reason": "既報",
+    "note": "10/7号で同じ動画を掲載済み。新しい事実もトリガーも無い。"
+   },
+   {
+    "dedup_key": "fan-imas-idol-pick-tool-posts-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン作成ツールで未確認。個人のSNS投稿で、dsva面では culture 対象外。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

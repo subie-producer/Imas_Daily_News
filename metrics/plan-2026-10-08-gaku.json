@@ -1,0 +1,276 @@
+{
+ "decisions": {
+  "gaku-chibigurumivol3-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-chibi-furumi-unit-collection-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じちびぐるみvol.3・4の施策。10/6に既報"
+  },
+  "gakumas-fujita-kotone-prize-fig-2027": {
+   "action": "article",
+   "angle": "藤田ことねのプライズフィギュア「ESPRESTO-Heart bouquet」Another color ver.が2027年3月から全国のクレーンゲームに登場予定。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-gold-rush-volume-7": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/7に「第7巻が本日発売」で記事化済み。新しい事実なし"
+  },
+  "gaku-radio-2026-10-07": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/7に「本日放送」で記事化済み。放送は昨夜終了"
+  },
+  "gaku-radio-2026-10-14": {
+   "action": "article",
+   "angle": "初星学園放送部の10月14日放送回は長月あおい(花海咲季役)と花岩香奈(葛城リーリヤ役)がゲスト出演し、投稿フォームも案内された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-shirube-iwate-stream-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-iwate-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ岩手公演の配信。紫雲清夏の新曲「Private Glitter」の情報を統合"
+  },
+  "gaku-wednesday-ticket-2026-10-07": {
+   "action": "article",
+   "angle": "今週の「学マ水曜日ガシャチケット×1」を配布中で、ログインで「Agitato リーリヤガシャ」を1回引ける。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営は1件のみで roundup の3件に届かないため小記事"
+  },
+  "gaku-agitato-mv-million-views-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/7に記事化済み。新しい事実なし"
+  },
+  "gaku-another-idol-free-gacha-2026": {
+   "action": "article",
+   "angle": "アナザーアイドルアップデート記念の48時間限定SSR確定無料ガシャが、10月9日から2日おきに全13回開催される。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "明日開始。面でいちばん大きな新情報"
+  },
+  "fan-agitato-liliya-illustration-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人のファン創作SNS投稿。単体では記事にしない"
+  },
+  "gakumas-gold-rush-volume-7": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/7に記事化済み。gaku-gold-rush-volume-7と同一事象"
+  },
+  "gaku-shirube-iwate-streaming-2026": {
+   "action": "article",
+   "angle": "岩手公演の配信視聴チケットは本日18時で販売終了、視聴コメント付きアーカイブとデジタルチケット画像生成は23時59分まで。DAY2では紫雲清夏の新曲「Private Glitter」が披露された。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日18時が販売終了。Private Glitterは既報本文に無い新事実"
+  },
+  "gaku-chibi-furumi-unit-collection-2026": {
+   "action": "article",
+   "angle": "ちびぐるみvol.4(紫雲清夏・篠澤広・姫崎莉波のREVERSI衣装)が、きょう10月8日から全国のクレーンゲームに順次登場する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "vol.3の素材も統合。登場開始が当日のトリガー"
+  },
+  "gaku-haratani-misuz-espresto-prize-2026-10": {
+   "action": "article",
+   "angle": "秦谷美鈴のプライズフィギュア「ESPRESTO-Fan out-」が、きょう10月8日から全国のクレーンゲームに順次登場する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "登場開始が当日のトリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakumas-fujita-kotone-prize-fig-2027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "藤田ことねのプライズフィギュア「ESPRESTO-Heart bouquet」Another color ver.が2027年3月から全国のクレーンゲームに登場予定。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gakumas-fujita-kotone-prize-fig-2027",
+    "candidate_ids": [
+     "202610071233-watch-5"
+    ]
+   },
+   {
+    "slug": "gaku-radio-2026-10-14",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部の10月14日放送回は長月あおい(花海咲季役)と花岩香奈(葛城リーリヤ役)がゲスト出演し、投稿フォームも案内された。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gaku-radio-2026-10-14",
+    "candidate_ids": [
+     "202610080222-grok-35"
+    ]
+   },
+   {
+    "slug": "gaku-wednesday-ticket-2026-10-07",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "今週の「学マ水曜日ガシャチケット×1」を配布中で、ログインで「Agitato リーリヤガシャ」を1回引ける。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-wednesday-ticket-2026-10-07",
+    "candidate_ids": [
+     "202610080222-grok-37"
+    ]
+   },
+   {
+    "slug": "gaku-another-idol-free-gacha-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "アナザーアイドルアップデート記念の48時間限定SSR確定無料ガシャが、10月9日から2日おきに全13回開催される。",
+    "purpose": "新情報",
+    "lead_score": 65,
+    "dedup_key": "gaku-another-idol-free-gacha-2026",
+    "candidate_ids": [
+     "202610080222-grok-39"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-iwate-streaming-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "岩手公演の配信視聴チケットは本日18時で販売終了、視聴コメント付きアーカイブとデジタルチケット画像生成は23時59分まで。DAY2では紫雲清夏の新曲「Private Glitter」が披露された。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-shirube-iwate-streaming-2026",
+    "candidate_ids": [
+     "sched-2026-10-08-gaku-shirube-iwate-streaming-2026-終了",
+     "202610080222-grok-36"
+    ]
+   },
+   {
+    "slug": "gaku-chibi-furumi-unit-collection-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ちびぐるみvol.4(紫雲清夏・篠澤広・姫崎莉波のREVERSI衣装)が、きょう10月8日から全国のクレーンゲームに順次登場する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-chibi-furumi-unit-collection-2026",
+    "candidate_ids": [
+     "sched-2026-10-08-gaku-chibi-furumi-unit-collection-2026-開始",
+     "202610070732-explore-1"
+    ]
+   },
+   {
+    "slug": "gaku-haratani-misuz-espresto-prize-2026-10",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "秦谷美鈴のプライズフィギュア「ESPRESTO-Fan out-」が、きょう10月8日から全国のクレーンゲームに順次登場する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-haratani-misuz-espresto-prize-2026-10",
+    "candidate_ids": [
+     "sched-2026-10-08-gaku-haratani-misuz-espresto-prize-2026-10-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-gold-rush-volume-7",
+    "reason": "既報",
+    "note": "10/7に「第7巻が本日発売」で記事化済み。新しい事実なし"
+   },
+   {
+    "dedup_key": "gaku-radio-2026-10-07",
+    "reason": "既報",
+    "note": "10/7に「本日放送」で記事化済み。放送は昨夜終了"
+   },
+   {
+    "dedup_key": "gaku-agitato-mv-million-views-2026",
+    "reason": "既報",
+    "note": "10/7に記事化済み。新しい事実なし"
+   },
+   {
+    "dedup_key": "fan-agitato-liliya-illustration-2026",
+    "reason": "同人・ファン主催",
+    "note": "個人のファン創作SNS投稿。単体では記事にしない"
+   },
+   {
+    "dedup_key": "gakumas-gold-rush-volume-7",
+    "reason": "既報",
+    "note": "10/7に記事化済み。gaku-gold-rush-volume-7と同一事象"
+   }
+  ],
+  "cross_brand": []
+ }
+}

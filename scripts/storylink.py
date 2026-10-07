@@ -109,11 +109,14 @@ def past_articles(date: str, root: Path = ROOT, days: int = LINK_DAYS) -> list[d
         if ids:
             if ed not in cand_keys:
                 cand_keys[ed] = {}
-                try:
-                    for c in json.loads((root / "candidates" / f"{ed}.json").read_text(encoding="utf-8")):
-                        cand_keys[ed][c.get("id")] = (c.get("dedup_key"), url_key(c.get("url")))
-                except (OSError, ValueError):
-                    pass
+                # 記事の素材はその号の候補と、その号の続報予約(sched-*)。候補だけを引くと、予約から書いた記事の話題キー・URL が
+                # 照合から落ちる(素材の引き方は組版の load_materials と同じ: 候補が先。当番の指摘 f1a5050dcc と同じ型)
+                for src in (root / "stock" / "scheduled" / f"{ed}.json", root / "candidates" / f"{ed}.json"):
+                    try:
+                        for c in json.loads(src.read_text(encoding="utf-8")):
+                            cand_keys[ed][c.get("id")] = (c.get("dedup_key"), url_key(c.get("url")))
+                    except (OSError, ValueError):
+                        pass
             for i in ids:
                 k, u = cand_keys[ed].get(i, (None, ""))
                 urls.add(u)

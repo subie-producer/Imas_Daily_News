@@ -578,6 +578,23 @@ def test_lost_post_notified_once(tmp: Path):
     check(not any("deep.json" in m for m in notes), f"使わない深掘りの確かめの問いが読めないことを通知した: {notes}")
     notes = run("none")
     check(not any("status/9" in m for m in notes), f"深掘りで済んだ投稿を失ったと通知した: {notes}")
+    # 面どうしで同じアカウントを検索するので、同じ投稿が複数の面で残る。面の数だけ通知しない(監査指摘 lost-post-cross-face)
+    notes = []
+    saved = collect.notify
+    try:
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        u = "https://x.com/imas_official/status/1"
+        ledger = collect.lost_posts_ledger()
+        ledger["lost"]["765as"] = [(f"### 1\n- url: {u}\n- 本文: 告知", "時間切れ")]
+        ledger["lost"]["joint-other"] = [(f"### 3\n- url: {u}\n- 本文: 告知", "時間切れ"),
+                                         ("### 4\n- url: https://x.com/imas_official/status/7\n- 本文: 別", "時間切れ")]
+        ledger["settled"].add("https://x.com/imas_official/status/7")
+        collect.report_lost_posts(ledger)
+    finally:
+        collect.notify = saved
+    check(len(notes) == 1 and "\n".join(notes).count(u) == 1 and "765as" in notes[0] and "joint-other" in notes[0]
+          and "status/7" not in notes[0],
+          f"複数の面で残った同じ投稿の喪失を、所属の面を併記して1度だけ通知しない: {notes}")
 
 
 def test_review_paper_defines_same_subject():

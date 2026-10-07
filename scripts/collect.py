@@ -772,21 +772,27 @@ def lost_posts_ledger() -> dict:
 
 
 def report_lost_posts(ledger: dict) -> None:
-    """最後の段まで確かめ終えて、どの段でも済まなかった投稿だけを、面ごとに1度、投稿ごとに1行で名指しする。
-    途中の段で残っても、後の段(深掘りの確かめ)で済んだ投稿は失っていない。同じ投稿が複数の段で残っても1行にする。"""
+    """最後の段まで確かめ終えて、どの段でも済まなかった投稿だけを、まとめて1度、投稿ごとに1行で名指しする。
+    途中の段で残っても、後の段(深掘りの確かめ)で済んだ投稿は失っていない。同じ投稿が複数の段で残っても、
+    複数の面で残っても(面どうしで同じアカウントを検索するので、同じ投稿が複数の面に書き出される)1行にし、所属の面を併記する
+    (面ごとに数えると、同じ投稿の喪失を面の数だけ通知した。監査指摘 lost-post-cross-face)。"""
+    rows: dict[str, list] = {}  # 投稿 → [表示, 面の並び, 理由の並び](最初に現れた順)
     for key in sorted(ledger["lost"]):
-        rows, seen = [], set()
         for b, why in ledger["lost"][key]:
             u = post_url(b)
-            ident = u or b
-            if (u and u in ledger["settled"]) or ident in seen:
+            if u and u in ledger["settled"]:
                 continue
-            seen.add(ident)
-            rows.append(f"- {u or '(投稿に分けられない書き出し) ' + b[:80]}({why})")
-        if rows:
-            notify("collect", f"Grok の {key} 面: X の投稿 {len(rows)}件を、深掘りまで確かめても候補にも「事実なし」にもできなかった。"
-                              "この投稿の X の動きを失う:\n" + "\n".join(rows[:10])
-                              + (f"\n- ほか {len(rows) - 10}件" if len(rows) > 10 else ""), ok=False)
+            row = rows.setdefault(u or b, [u or "(投稿に分けられない書き出し) " + b[:80], [], []])
+            for lst, v in ((row[1], key), (row[2], why)):
+                if v not in lst:
+                    lst.append(v)
+    if not rows:
+        return
+    lines = [f"- {shown}(面: {', '.join(keys)}。{' / '.join(whys)})" for shown, keys, whys in rows.values()]
+    faces = sorted({k for _, keys, _ in rows.values() for k in keys})
+    notify("collect", f"Grok の {', '.join(faces)} 面: X の投稿 {len(lines)}件を、深掘りまで確かめても候補にも「事実なし」にもできなかった。"
+                      "この投稿の X の動きを失う:\n" + "\n".join(lines[:10])
+                      + (f"\n- ほか {len(lines) - 10}件" if len(lines) > 10 else ""), ok=False)
 
 
 # 投稿の url の行。見本は `- url: …` だが、行頭の記号が抜けた・全角のコロンなどの崩れも投稿の区切りとして拾う

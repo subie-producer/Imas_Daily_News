@@ -8,16 +8,15 @@ corrected: false
 corrections: []
 candidate_ids:
 - 202610030230-grok-18
-title: ツアマスS2弾に「ウィッチナイトパーティー」
-lede: ツアマスS2弾のSSR新衣装「ウィッチナイトパーティー」が10月2日に解禁され、カードには5名のアイドルが登場する。
+title: ツアマスS2弾にSSR衣装「ウィッチナイトパーティー」
+lede: 『アイドルマスター TOURS』S2弾のSSR新衣装「ウィッチナイトパーティー」が解禁され、カードには5名のアイドルが登場する。
 tags:
 - ツアマス
-- ウィッチナイトパーティー
+- 衣装
 sources:
-- label: 【ツアマス】アイドルマスター TOURS【公式】「『ツアマス』S2弾 SSR新衣装 解禁」(2026-10-02)
+- label: 【ツアマス】アイドルマスター TOURS【公式】「⚡『ツアマス』S2弾 SSR新衣装 解禁⚡」(2026年10月2日)
   url: https://x.com/TOURS_imas/status/2105945904654229973
   type: 公式
-event_date: "2026-10-02"
 title_fact_ids:
 - F1
 lede_fact_ids:
@@ -25,10 +24,7 @@ lede_fact_ids:
 - N1
 verified_facts:
 - id: N1
-  text: ツアマスS2弾の「ウィッチナイトパーティー」のカードには5名のアイドルが登場する。
-  url: https://x.com/TOURS_imas/status/2105945904654229973
-- id: N2
-  text: 告知では「Next idol」として如月千早が示された。
+  text: カードは5名のアイドルが登場し、次に紹介されるアイドルは如月千早。
   url: https://x.com/TOURS_imas/status/2105945904654229973
 ---
-公式告知では、次に登場するアイドルとして如月千早の名前も示された。 <!-- N2 -->
+次に紹介されるアイドルは如月千早。 <!-- N1 -->

@@ -158,6 +158,58 @@ def _is_date(s: str) -> bool:
         return False
 
 
+REWRITES = ROOT / "rewrites.yml"
+# 編集長が書き直しを認めた範囲(記録の at と、対象の号の範囲)。記録を足すだけでは例外にならない: 認める範囲はここ
+# (コードの変更=監査を通る)で決める。2026-10-08: GPT-6-Luna が調整前の依頼文で書いた 10/3〜10/7 号の記事
+REWRITE_AUTHORIZATIONS = ({"at": "2026-10-08", "from": "2026-10-03", "to": "2026-10-07"},)
+# 書き直しで変えてよい欄(本文と内容の欄)。rank は本文の長さで付け直す分だけ(一面・まとめ・ファン面は動かさない)。
+# corrections は既にある記録を残したまま。それ以外(candidate_ids など素材との系譜)は変えられない
+REWRITE_KEYS = {"src", "title", "lede", "tags", "sources", "event_date", "title_fact_ids", "lede_fact_ids", "verified_facts", "rank"}
+
+
+def load_rewrites(text: str | None = None) -> tuple[list[dict], list[str]]:
+    """編集長の判断で、訂正の注記なしに書き直した過去の記事の記録(2026-10-08「今回に限っては免責なしに全部やって良い」)。
+    形は取り下げの記録と同じ(post・at・by・reason)。append-only の例外として通すのは、**この差分で記録を足した**記事の
+    書き直しだけ(記録を恒久的な許可証にしない)。slug・号・面は変えられず、既にある訂正の記録は消せない。"""
+    if text is None:
+        if not REWRITES.exists():
+            return [], []
+        text = REWRITES.read_text(encoding="utf-8")
+    return load_withdrawn(text)
+
+
+def rewrite_record_errors(old_rows: list, rows: list, modified_now: set[str]) -> list[str]:
+    """書き直しの記録の差分の検査: 末尾への追記だけ・追記した記録はこの差分で実際に変えた記事のもの。"""
+    errs = []
+    if rows[:len(old_rows)] != old_rows:
+        errs.append("書き直しの記録が消された・書き換えられた・並べ替えられた(記録は末尾への追記だけ)")
+    for r in rows[len(old_rows):]:
+        if not isinstance(r, dict):
+            continue
+        if r.get("post") not in modified_now:
+            errs.append(f"書き直しの記録 {r.get('post')} に対応する記事の変更が、この差分に無い")
+        ed = str(r.get("post") or "")[:10]
+        if not any(str(r.get("at")) == a["at"] and a["from"] <= ed <= a["to"] for a in REWRITE_AUTHORIZATIONS):
+            errs.append(f"書き直しの記録 {r.get('post')}(at {r.get('at')})は、編集長が認めた書き直しの範囲"
+                        "(lint.REWRITE_AUTHORIZATIONS)に無い")
+    return errs
+
+
+def rewrite_change_errors(old: dict, new: dict) -> list[str]:
+    """書き直した記事の frontmatter の変更の検査: 変えてよい欄(REWRITE_KEYS)だけ・訂正の記録は残す・一面などの枠は動かさない。"""
+    errs = []
+    for k in sorted(set(old) | set(new)):
+        if k in REWRITE_KEYS or k == "corrections" or old.get(k) == new.get(k):
+            continue
+        errs.append(f"書き直しで {k} は変えられない")
+    if (new.get("corrections") or [])[:len(old.get("corrections") or [])] != (old.get("corrections") or []):
+        errs.append("書き直しで既にある訂正の記録を消した・変えた")
+    fixed = {"lead", "roundup", "culture"}
+    if old.get("rank") != new.get("rank") and (old.get("rank") in fixed or new.get("rank") in fixed):
+        errs.append(f"書き直しで枠を {old.get('rank')} → {new.get('rank')} に変えた(長さで付け直すのは一面・まとめ・ファン面以外だけ)")
+    return errs
+
+
 def load_withdrawn(text: str | None = None) -> tuple[list[dict], list[str]]:
     """取り下げた記事の記録(編集長の判断で紙面から外した記事)。戻りは (記録の並び, 形式の誤り)。
     append-only の例外はこれだけ: 記録のある記事の削除と、**同じ差分で**その号の機械算出値(記事数・面数)の更新を通す。
@@ -247,7 +299,7 @@ def src_rank(t):
 # 見出し・リード・ダイジェストの行は、テンプレートが**そのまま文字として**出す欄。
 # ここに Markdown 記法が混ざると、読者には `**強調**` がそのまま見える。
 # 本文(Markdown)では正しく太字になるので、混同しやすい。
-MD_IN_PLAIN = re.compile(r"\*\*|__|\[[^\]]{1,60}\]\([^)]{1,200}\)|^#{1,6}\s|`")
+from renderlib import MD_IN_PLAIN  # noqa: E402  検算(執筆の答えの検め)と同じ基準を1つの定義で持つ
 
 
 def check_plain_text(rep, path, label, value):
@@ -785,6 +837,16 @@ def main() -> int:
         old_rows = load_withdrawn(r_old.stdout)[0] if r_old.returncode == 0 else []
         for e in withdrawal_record_errors(old_rows, rows, deleted_now):
             rep.error(WITHDRAWN, e)
+        # 書き直し(rewrites.yml): この差分で記録を足した記事だけ、訂正の注記なしの書き直しを通す
+        rw_rows, rw_errs = load_rewrites()
+        for e in rw_errs:
+            rep.error(REWRITES, e)
+        r_rw_old = git("show", f"{base}:rewrites.yml")
+        rw_old_rows = load_rewrites(r_rw_old.stdout)[0] if r_rw_old.returncode == 0 else []
+        modified_now = {Path(e[1]).stem for e in diff_entries if e[0] == "M" and e[1].startswith("docs/_posts/")}
+        for e in rewrite_record_errors(rw_old_rows, rw_rows, modified_now):
+            rep.error(REWRITES, e)
+        rewritten_now = set() if rw_errs else {r["post"] for r in rw_rows[len(rw_old_rows):] if isinstance(r, dict)}
         # 号ごとの「この差分で取り下げた記事の slug」と、一面を取り下げた号で立て直した記事の slug
         gone_by_date: dict[str, set[str]] = collections.defaultdict(set)
         for k in deleted_now & withdrawn:
@@ -832,6 +894,11 @@ def main() -> int:
                     elif new_fm.get("corrected_count", 0) <= old.get("corrected_count", 0):
                         rep.error(ROOT / p, "append-only 違反: corrected_count が加算されていない")
                 else:  # 記事・社説: 訂正(corrections 追記)を伴う変更のみ許可
+                    # 例外: この差分で書き直しの記録(rewrites.yml。認めた範囲のもの)を足した記事。変えてよいのは本文と内容の欄だけ
+                    if p.startswith("docs/_posts/") and Path(p).stem in rewritten_now:
+                        for e in rewrite_change_errors(old, new_fm):
+                            rep.error(ROOT / p, e)
+                        continue
                     # 例外: 一面を取り下げた号で、残りの記事1本を一面へ立て直す(rank だけ lead に。本文は同じ)
                     if (p.startswith("docs/_posts/") and dm and promoted.get(dm.group(1))
                             and Path(p).stem == f"{dm.group(1)}-{promoted[dm.group(1)]}"

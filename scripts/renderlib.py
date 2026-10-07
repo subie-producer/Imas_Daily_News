@@ -339,7 +339,9 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         label = clean_label(s.get("label"))
         if not label:
             problems.append(f"出典 label が空: {s.get('label')!r}")
-        if re.search(r"\]\(|`", label):
+        # 発行前の検査(lint.MD_IN_PLAIN)と同じ基準で見る。基準が割れていると、ここを通った label が発行前の検査で赤になる
+        # (2026-10-08: ローソンプリントの商品名「コレクション__ブロマイド228」の `__` を通していた)
+        if MD_IN_PLAIN.search(label) or re.search(r"\]\(", label):
             problems.append(f"出典 label に Markdown 記号: {s.get('label')!r}")
     if any(unicodedata.category(ch) == "Cc" and ch not in "\n\t" for x in texts for ch in x):
         problems.append("本文・見出し・リードに制御文字がある(壊れたテキスト)")
@@ -370,6 +372,10 @@ def is_ignorable(ch: str) -> bool:
             or 0x180B <= o <= 0x180F or 0x200B <= o <= 0x200F
             or o in (0x2028, 0x2029, 0x2060, 0x2061, 0x2062, 0x2063, 0x2064, 0xFEFF,
                      0x115F, 0x1160, 0x3164, 0xFFA0))   # ハングルの filler(見えない字。監査指摘)
+
+
+# 紙面にそのまま出る欄(出典の label など)に残してはいけない Markdown 記法。lint もこれを使う(基準を1つにする)
+MD_IN_PLAIN = re.compile(r"\*\*|__|\[[^\]]{1,60}\]\([^)]{1,200}\)|^#{1,6}\s|`")
 
 
 def clean_label(s) -> str:

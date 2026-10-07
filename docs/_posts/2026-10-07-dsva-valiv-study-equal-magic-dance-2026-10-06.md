@@ -8,24 +8,25 @@ corrected: false
 corrections: []
 candidate_ids:
 - 202610070225-grok-34
-title: 上水流宇宙、愛夏・レトラと「Study Equal Magic!」
-lede: 上水流宇宙が「Study Equal Magic! 踊ってみた with 愛夏とレトラ」をYouTubeとTikTokで公開した。
+title: 宇宙、『Study Equal Magic!』踊ってみた公開
+lede: 上水流宇宙が『Study Equal Magic! 踊ってみた with 愛夏とレトラ』を公開し、YouTubeとTikTokで視聴できる。
 tags:
 - vα-liv
+- MV
 - 配信
-- 上水流宇宙
-- 灯里愛夏
 sources:
-- label: ヴイアライヴ公式「ヴイアライヴ3人の『Study Equal Magic!』踊ってみた動画」(2026-10-06)
+- label: vα-liv公式📢ヴイアライヴ「◤◢◤ショート動画公開！◢◤◢」(2026-10-06)
   url: https://x.com/valiv_official/status/2107395447484510235
   type: 公式
 event_date: "2026-10-06"
 title_fact_ids:
 - F1
-- F5
 lede_fact_ids:
 - F1
 - F2
 - F3
 ---
-動画は[YouTube](https://www.youtube.com/shorts/oJotfYLaYPU)と[TikTok](https://www.tiktok.com/@valiv_official/video/7691268331080404245)で視聴できる。 <!-- F2 F3 -->
+動画タイトルは『Study Equal Magic! 踊ってみた with 愛夏とレトラ』。YouTube ShortsとTikTokで公開されている。 <!-- F1 F2 F3 -->
+
+YouTube Shorts: https://www.youtube.com/shorts/oJotfYLaYPU
+TikTok: https://www.tiktok.com/@valiv_official/video/7691268331080404245 <!-- F2 F3 -->

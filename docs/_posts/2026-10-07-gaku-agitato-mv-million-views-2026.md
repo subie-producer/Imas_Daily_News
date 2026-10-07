@@ -9,7 +9,7 @@ corrections: []
 candidate_ids:
 - 202610070225-grok-29
 title: 学マス『Agitato』MVが100万再生突破
-lede: 学園アイドルマスター公式は10月6日、『Agitato』のMusic Videoが100万再生を突破したと発表した。
+lede: 学園アイドルマスターの『Agitato』Music Videoが100万再生を突破した。
 tags:
 - 学マス
 - MV
@@ -22,4 +22,4 @@ title_fact_ids:
 lede_fact_ids:
 - F1
 ---
-『Agitato』のMusic VideoはYouTubeで公開されている。 <!-- F2 -->
+MVはYouTubeで視聴できる。https://www.youtube.com/watch?v=hSg9Yb28vZA&feature=youtu.be <!-- F2 -->

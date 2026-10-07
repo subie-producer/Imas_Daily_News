@@ -196,6 +196,14 @@ def test_schema_hash_dates():
           "中見出しだけの block が落ちた")
     check(any("根拠" in p for p in renderlib.check_output(dict(OK, blocks=[{"markdown": "本文", "fact_ids": []}] + OK["blocks"]), fb, MATS)),
           "根拠の無い段落が通った")
+    # 中見出しと本文を空行で1 block に束ねた稿は、機械が見出しの block と本文の block に分けて通す
+    # (2026-10-08: 書き直しが「## 店名\n\n- 在庫…」を1 block で返し、「複数段落」で2巡戻されて記事が落ちた)
+    hb = dict(OK, blocks=[{"markdown": "## 会場\n\n" + OK["blocks"][0]["markdown"], "fact_ids": list(OK["blocks"][0]["fact_ids"])}] + OK["blocks"][1:])
+    check(renderlib.check_output(hb, fb, MATS) == [], f"中見出しと本文を束ねた block が落ちた: {renderlib.check_output(dict(hb), fb, MATS)}")
+    check(hb["blocks"][0] == {"markdown": "## 会場", "fact_ids": []} and hb["blocks"][1]["fact_ids"] == OK["blocks"][0]["fact_ids"],
+          f"中見出しの分け方が違う: {hb['blocks'][:2]}")
+    check(any("複数段落" in p for p in renderlib.check_output(dict(OK, blocks=[{"markdown": "## 会場\n\nA\n\nB", "fact_ids": ["F1", "F3", "F4"]}]), fb, MATS)),
+          "中見出しの後の複数段落が通った")
     # assemble の予約検証も同じ照合(年なし表記で 2099 年の予約は捨てる)
     mats = {"c1": {"id": "c1", "url": "https://a.example/1", "facts": ["9月20日締切"], "dedup_key": "k", "title": "t"}}
     out = {"reservations": [{"candidate_id": "c1", "date": "2099-09-20", "kind": "締切", "slug": "x", "subject": "s", "note": "n"},
@@ -240,6 +248,13 @@ def test_revise_check():
     check(any("足した" in p for p in R(a6)), "指摘に無い段落の追加が通った")
     a7 = dict(a3, blocks=[a3["blocks"][0], {"markdown": "別の段落。", "fact_ids": ["F1"]}])
     check(any("根拠 id" in p for p in R(a7)), "未指摘段落の根拠 id 改変が通った")
+    # 中見出し(根拠の控えが無い)と本文を1 block に束ねて返した稿も、検算が分けたあとは未指摘段落が同じと見なされる
+    # (2026-10-08 のくじ在庫記事: 書き直し2巡目が「1 block に複数段落」で戻され、校閲ブロックで落ちた)
+    hb_body = "## 店A\n\n- 在庫あり <!-- F3 -->\n\n価格は三千円である。 <!-- F1 -->"
+    ah = dict(a3, blocks=[{"markdown": "## 店A\n\n- 在庫あり", "fact_ids": ["F3"]}, {"markdown": "価格は改めて三千円と告知された。", "fact_ids": ["F1"]}])
+    _, fbh = renderlib.materials_with_ids(MATS)
+    ph = renderlib.check_output(ah, fbh, MATS) + R(ah, b=hb_body)
+    check(ph == [], f"中見出しと本文を束ねただけの書き直しが落ちた: {ph}")
     # 壊れた改行(文字としての `\n`)だけを直した稿は通る(2026-09-21 のセットリスト。旧稿も新稿も同じ単位で比べる。監査指摘 r71)
     broken = "前の段落。 <!-- F3 -->\n\n公開されたセットリストは次の通り。\\n- 曲A\\n- 曲B <!-- F1 -->"
     iss_nl = [{"issue_id": "I1", "rule_id": "R16", "repair": "rewrite_claim", "quote": "公開されたセットリストは次の通り。\\n- 曲A"}]
@@ -2090,6 +2105,67 @@ def test_extract_json_array_strict():
     check(E("[]") == [], "空配列(0件)を読めなかった(None)に落とした")
 
 
+def test_fetch_page_renders_whitespace_only_page():
+    """素の HTML がタイトルとメニューと大量の改行だけのページは、描画し直して読む。空白込みで数えると
+    400字を超えて描画せず、執筆が本文を読めずに記事を見送った(2026-10-08: 公式ポータルの LP、空白込み 591字)"""
+    import fetch_page
+    thin = "【ミリシタ】動画フレーム配布キャンペーン | 【公式】アイドルマスター ポータル" + "\n" * 500 + "メニュー\n検索\nログイン" + "\n" * 100
+    check(len(thin.strip()) >= 400 and pipelib.looks_unrendered(thin), "改行だらけの描画前ページを本文ありと判定した")
+    check(not pipelib.looks_unrendered("本文。" * 200), "本文のあるページを描画前と判定した")
+    calls = []
+    class R:
+        returncode, stdout = 0, "<html><body><p>（2026.10.7 変更）営利を目的とした制作・配信は行わないでください。</p></body></html>"
+    saved = (fetch_page.fetch, fetch_page.subprocess.run, sys.argv)
+    try:
+        fetch_page.fetch = lambda url: thin
+        fetch_page.subprocess.run = lambda *a, **k: calls.append(a) or R()
+        sys.argv = ["fetch_page.py", "https://idolmaster-official.jp/lp/x"]
+        import contextlib, io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            fetch_page.main()
+    finally:
+        fetch_page.fetch, fetch_page.subprocess.run, sys.argv = saved
+    check(calls and "2026.10.7 変更" in buf.getvalue(), f"改行だらけのページを描画し直さなかった: {buf.getvalue()[:120]!r}")
+    # 描画必須と分かっているサイト(sources.yml の portal)は、メニューだけで非空白 400字を超えても描画して読む
+    # (公式ポータルはナビだけで非空白 3千字を超える。監査指摘 render-detection-navigation)
+    nav = "【公式】アイドルマスター ポータル メニュー スケジュール 検索 ブランド選択 " * 100
+    check(len(re.sub(r"\s+", "", nav)) >= 3000 and not pipelib.looks_unrendered(nav), "長いナビの前提が崩れた")
+    check("idolmaster-official.jp" in pipelib.render_hosts(), f"公式ポータルが描画必須のサイトに入っていない: {pipelib.render_hosts()}")
+    check(not pipelib.needs_render("https://example.com/a", nav), "描画必須でないサイトの本文ありページを描画した")
+    calls.clear()
+    try:
+        fetch_page.fetch = lambda url: nav
+        fetch_page.subprocess.run = lambda *a, **k: calls.append(a) or R()
+        sys.argv = ["fetch_page.py", "https://idolmaster-official.jp/news/01_99999"]
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            fetch_page.main()
+    finally:
+        fetch_page.fetch, fetch_page.subprocess.run, sys.argv = saved
+    check(calls and "2026.10.7 変更" in buf.getvalue(), f"公式ポータルの長いナビのページを描画し直さなかった: {buf.getvalue()[:120]!r}")
+    # 収集の裏取りも同じ: 公式ポータルの長いナビのページは描画して期間を抜き出す
+    import collect
+    class U:
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
+        def read(self, n=None): return ("<p>" + nav + "</p>").encode("utf-8")
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    rcalls = []
+    saved_c = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=15: U()
+        collect.fetch_rendered = lambda url: rcalls.append(url) or "<p>受付期間：2026年10月8日(木)12:00〜10月12日(日)23:59</p>"
+        collect.classify_source = lambda u: "公式"
+        cv = collect.normalize([{"url": "https://idolmaster-official.jp/news/01_99999", "title": "t", "facts": ["f"], "_via": "explore"}])
+        collect.verify(cv)
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved_c
+    check(rcalls and cv[0].get("periods") == ["受付期間: 2026年10月8日(木)12:00〜10月12日(日)23:59"],
+          f"裏取りが公式ポータルの長いナビのページを描画せず期間を落とした: {rcalls} {cv[0].get('periods')}")
+
+
 def test_fetch_rendered_skips_images():
     """描画取得は画像を読み込まない。画像の多い一覧(columbia.jp/idolmaster/)は画像待ちで読み込み完了に届かず、
     毎回時間切れで空を返していた(2026-10-07)。selenium の無い環境でも確かめられるよう、ブラウザは偽物に差し替える"""
@@ -3936,6 +4012,7 @@ def main() -> int:
     test_accept_only_normal_and_schema(tmp / "an")
     test_grok_repoint_uses_each_face_posts(tmp / "grp")
     test_watch_pagination_and_batches(tmp / "wp")
+    test_fetch_page_renders_whitespace_only_page()
     test_fetch_rendered_skips_images()
     test_collect_oncall_rerun_exit(tmp / "cre")
     test_storylink(tmp / "sl")

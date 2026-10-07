@@ -25,7 +25,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import ROOT, extract_periods, html_to_text
+from pipelib import ROOT, extract_periods, html_to_text, needs_render
 
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
 
@@ -50,8 +50,8 @@ def main() -> int:
         print(f"FETCH_FAILED: {type(e).__name__}: {e}")
         return 1
 
-    # JS で描画するページは本文が空同然になる。その場合だけ描画してから読み直す
-    if len(text.strip()) < 400:
+    # JS で描画するページは本文が空同然になる。その場合と、描画必須と分かっているサイトは描画してから読み直す
+    if needs_render(args.url, text):
         try:
             r = subprocess.run(
                 [str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"),

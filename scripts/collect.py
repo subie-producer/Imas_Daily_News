@@ -41,7 +41,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
-                     extract_periods, html_to_text, loads_strict, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
+                     extract_periods, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
                      set_quiet, unbacked_facts,
                      anomaly, checkout_edition_branch, classify_retag_lint, commit_and_push, diagnose_anomalies, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
@@ -1359,8 +1359,8 @@ def verify(cands: list[dict]) -> dict:
                     cs = res.headers.get_content_charset()
                 if ok:
                     text = html_to_text(body, cs)
-                    # CSR で本文が空同然なら描画してから読み直す(定点観測と同じ経路)
-                    if len(text.strip()) < 400:
+                    # CSR で本文が空同然か、描画必須のサイト(定点観測の portal)なら描画してから読み直す(定点観測と同じ経路)
+                    if needs_render(c["url"], text):
                         rendered = fetch_rendered(c["url"])
                         if rendered:
                             text = html_to_text(rendered.encode("utf-8", "replace"))
@@ -1369,12 +1369,11 @@ def verify(cands: list[dict]) -> dict:
                         c["periods"] = periods
                     # facts の日付・金額が本文にあるか。取ってあるのに捨てていた本文を使う。
                     #
-                    # **食い違ったときだけ描画して確かめ直す。**素の HTML では
+                    # **食い違ったときも描画して確かめ直す。**素の HTML では
                     # 本文が JS で描かれるサイトがあり、ナビゲーションだけが取れて
                     # 「価格が本文に無い」と誤って判定していた(実測: 公式ポータルの
                     # 配信チケット記事で 14,000円 を取りこぼした)。
-                    # 上の 400字判定だけでは足りない(ナビだけで4千字を超える)。
-                    # 描画は重いので、粒が欠けたときに限って行う
+                    # portal 以外のサイトの描画漏れに備え、粒が欠けたときにも描画する
                     unbacked = unbacked_facts(c.get("facts") or [], text)
                     if unbacked:
                         rendered = fetch_rendered(c["url"])

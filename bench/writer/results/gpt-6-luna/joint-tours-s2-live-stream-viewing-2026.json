@@ -1,0 +1,73 @@
+{
+ "case": "joint-tours-s2-live-stream-viewing-2026",
+ "answer": {
+  "status": "ok",
+  "decline_code": "",
+  "decline_detail": "",
+  "title": "ツアマス現地観覧、応募は本日23:59まで",
+  "title_fact_ids": [
+   "F4",
+   "F5"
+  ],
+  "lede": "『アイドルマスター TOURS』S2弾生配信の現地観覧は抽選で25名を招待し、応募は本日10月7日23時59分まで受け付ける。",
+  "lede_fact_ids": [
+   "F1",
+   "F4",
+   "F5"
+  ],
+  "blocks": [
+   {
+    "markdown": "応募できるのは日本国内在住者で、Xアカウントが必要。『アイドルマスター TOURS』公式X（@TOURS_imas）をフォローし、公式Xのトップに固定された投稿をリポストする。",
+    "fact_ids": [
+     "F5",
+     "F7"
+    ]
+   },
+   {
+    "markdown": "会場は東京都新宿区のJR総武線沿線。現地までの交通費・宿泊費・その他諸経費は当選者負担となる。当選者には集合場所などの詳細が10月8日ごろにDMで届く。",
+    "fact_ids": [
+     "F4",
+     "F6"
+    ]
+   },
+   {
+    "markdown": "観覧する生配信は、10月15日19時から20時までの予定で、ツアマスS2弾アップデート情報を紹介する。出演は千春（『アイドルマスター TOURS』袖屋 璃空役）、青木たつや（MC）、箕浦（「アイドルマスター TOURS」プロデューサー）。",
+    "fact_ids": [
+     "F1",
+     "F2",
+     "F3"
+    ]
+   },
+   {
+    "markdown": "当日は当選連絡のDMをスマートフォンやタブレットなどの画面で提示し、確認を受けた人のみ入場できる。印刷物では入場できない。応募投稿の削除、公式アカウントのフォロー解除、応募アカウントの削除・ユーザー名変更や非公開化などは、応募が無効となる場合がある。",
+    "fact_ids": [
+     "F8",
+     "F34"
+    ]
+   }
+  ],
+  "tags": [
+   "ツアマス",
+   "配信",
+   "抽選",
+   "締切"
+  ],
+  "new_facts": [],
+  "sources": [
+   {
+    "url": "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20261001.html",
+    "label": "ツアマス公式サイト「『ツアマス』S2弾アップデート情報！公式生配信」(2026年10月1日)"
+   }
+  ],
+  "event_date": "2026-10-07",
+  "addressed_issue_ids": []
+ },
+ "exit": 0,
+ "metrics": {
+  "status": "ok",
+  "chars": 404,
+  "material_numbers": 10,
+  "numbers_in_body": 3,
+  "check_problems": []
+ }
+}

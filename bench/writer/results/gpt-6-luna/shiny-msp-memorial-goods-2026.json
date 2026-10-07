@@ -1,0 +1,57 @@
+{
+ "case": "shiny-msp-memorial-goods-2026",
+ "answer": {
+  "status": "ok",
+  "decline_code": "",
+  "decline_detail": "",
+  "title": "シャニマスMSP記念グッズ、受注は10月12日まで",
+  "title_fact_ids": [
+   "F1",
+   "F4"
+  ],
+  "lede": "「283 PRODUCTION Solo Live Collection -Master ShowPiece-」開催記念グッズの受注は、10月12日（月・祝）まで。",
+  "lede_fact_ids": [
+   "F1",
+   "F4"
+  ],
+  "blocks": [
+   {
+    "markdown": "キービジュアルグッズのほか、アイドル28名の新ソロ曲をイメージしたデザインのグッズを販売する。",
+    "fact_ids": [
+     "F2",
+     "F3"
+    ]
+   },
+   {
+    "markdown": "購入先は[ASOBI STOREの商品ページ](https://shop.asobistore.jp/feature/283pro_sololive_msp_memorial)。受注期間中に同ページから注文できる。",
+    "fact_ids": [
+     "F4",
+     "F5"
+    ]
+   }
+  ],
+  "tags": [
+   "シャニマス",
+   "グッズ",
+   "受注",
+   "締切"
+  ],
+  "new_facts": [],
+  "sources": [
+   {
+    "url": "https://x.com/shinyc_official/status/2107410539353924012",
+    "label": "アイドルマスター シャイニーカラーズ【ブランド公式】「283 PRODUCTION Solo Live Collection開催記念グッズ受注」(2026-10-06)"
+   }
+  ],
+  "event_date": "2026-10-12",
+  "addressed_issue_ids": []
+ },
+ "exit": 0,
+ "metrics": {
+  "status": "ok",
+  "chars": 153,
+  "material_numbers": 1,
+  "numbers_in_body": 1,
+  "check_problems": []
+ }
+}

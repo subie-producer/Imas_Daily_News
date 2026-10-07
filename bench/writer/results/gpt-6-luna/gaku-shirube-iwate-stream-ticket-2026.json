@@ -1,0 +1,87 @@
+{
+ "case": "gaku-shirube-iwate-stream-ticket-2026",
+ "answer": {
+  "status": "ok",
+  "decline_code": "",
+  "decline_detail": "",
+  "title": "学マス岩手公演、配信チケットは10月8日18時まで",
+  "title_fact_ids": [
+   "F1",
+   "F3",
+   "N1"
+  ],
+  "lede": "学園アイドルマスター「LIVE TOUR -標-」岩手公演の配信視聴チケットは10月8日18時まで販売予定で、DAY2では十王星南の新曲「Roar」も視聴できる。",
+  "lede_fact_ids": [
+   "F1",
+   "F2",
+   "N1",
+   "N2"
+  ],
+  "blocks": [
+   {
+    "markdown": "10月7日朝刊時点で、販売終了まで残り2日。DAY2公演から十王星南の新曲「Roar」を含む岩手公演のアーカイブを視聴するには、販売期間内にチケットを購入する。",
+    "fact_ids": [
+     "F2",
+     "F3",
+     "N1",
+     "N2"
+    ]
+   },
+   {
+    "markdown": "## 配信視聴チケットの購入・視聴",
+    "fact_ids": []
+   },
+   {
+    "markdown": "- 販売期間：2026年8月27日18時～10月8日18時（予定）\n- 両日視聴チケット：11,000円（税込・機能利用料込）\n- DAY1またはDAY2チケット：各5,500円（税込・機能利用料込）\n- 購入先：ASOBI STAGEの岩手公演チケットページ\n- 購入者は公演当日のリアルタイム配信に加え、アーカイブも視聴可能。視聴コメント付きアーカイブは10月8日23時59分まで（予定）。",
+    "fact_ids": [
+     "N1",
+     "N2",
+     "N3"
+    ]
+   }
+  ],
+  "tags": [
+   "学マス",
+   "ライブ",
+   "配信",
+   "チケット"
+  ],
+  "new_facts": [
+   {
+    "id": "N1",
+    "text": "岩手公演の配信視聴チケット販売期間は2026年8月27日(木)18:00～2026年10月8日(木)18:00（予定）。",
+    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/streaming/iwate.php"
+   },
+   {
+    "id": "N2",
+    "text": "券種は両日視聴チケット11,000円、DAY1/DAY2チケット各5,500円。各金額は税込・機能利用料込。配信視聴チケット購入者は公演当日のリアルタイム配信とアーカイブを視聴できる。",
+    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/streaming/iwate.php"
+   },
+   {
+    "id": "N3",
+    "text": "視聴コメント付きアーカイブ視聴期間は2026年9月24日(木)18:00～2026年10月8日(木)23:59（予定）。",
+    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/streaming/iwate.php"
+   }
+  ],
+  "sources": [
+   {
+    "url": "https://idolmaster-official.jp/live_event/gkmas_livetour_shirube/streaming/iwate.php",
+    "label": "バンダイナムコエンターテインメント公式サイト「岩手公演 | STREAMING | 学園アイドルマスター LIVE TOUR 標」(日付不明)"
+   },
+   {
+    "url": "https://x.com/gkmas_official/status/2107410547650216024",
+    "label": "学園アイドルマスター公式「LIVE TOUR -標- 岩手公演の配信視聴チケットを販売中」(2026年10月6日)"
+   }
+  ],
+  "event_date": "2026-10-08",
+  "addressed_issue_ids": []
+ },
+ "exit": 0,
+ "metrics": {
+  "status": "ok",
+  "chars": 283,
+  "material_numbers": 1,
+  "numbers_in_body": 1,
+  "check_problems": []
+ }
+}

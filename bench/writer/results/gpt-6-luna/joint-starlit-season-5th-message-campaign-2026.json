@@ -1,0 +1,79 @@
+{
+ "case": "joint-starlit-season-5th-message-campaign-2026",
+ "answer": {
+  "status": "ok",
+  "decline_code": "",
+  "decline_detail": "",
+  "title": "スタマス5周年、心白・亜夜募集は本日締切",
+  "title_fact_ids": [
+   "F3"
+  ],
+  "lede": "心白・亜夜への応援メッセージや質問の募集は、本日23時59分まで応募できる。",
+  "lede_fact_ids": [
+   "F2",
+   "F3"
+  ],
+  "blocks": [
+   {
+    "markdown": "「アイドルマスター スターリットシーズン」の5周年（10月14日）を記念した募集で、応募はXで「アイドルマスター」公式アカウント（@imas_official）をフォローし、「#スタマス5周年」を付けて心白・亜夜への応援メッセージや2人に聞きたいことなどをポストする。",
+    "fact_ids": [
+     "F1",
+     "F2",
+     "F4"
+    ]
+   },
+   {
+    "markdown": "応募できるのは日本国内在住者。Xアカウントを公開設定にし、キャンペーン終了まで公式アカウントのフォローを続ける必要がある。ハッシュタグを正しく付け、ポストを正しく行うことも条件で、運営が不適切と判断した場合は抽選対象外となる。未成年者は法定代理人（親権者等）の同意を得て参加する。",
+    "fact_ids": [
+     "F6",
+     "F7",
+     "F8",
+     "F9",
+     "F10",
+     "F11",
+     "F12"
+    ]
+   },
+   {
+    "markdown": "抽選で選ばれた人には、後日、応募ポストへの引用リポスト形式で2人からメッセージが届く場合がある。通信料は応募者負担。",
+    "fact_ids": [
+     "F5",
+     "N2"
+    ]
+   }
+  ],
+  "tags": [
+   "キャンペーン",
+   "周年",
+   "締切"
+  ],
+  "new_facts": [
+   {
+    "id": "N1",
+    "text": "告知ページの掲載日は2026年10月2日。",
+    "url": "https://idolmaster-official.jp/news/01_20009"
+   },
+   {
+    "id": "N2",
+    "text": "パケット料金などの通信料は応募者の負担。",
+    "url": "https://idolmaster-official.jp/news/01_20009"
+   }
+  ],
+  "sources": [
+   {
+    "url": "https://idolmaster-official.jp/news/01_20009",
+    "label": "【公式】アイドルマスター ポータル「【スタマス】スタマス5周年記念！心白・亜夜へのメッセージ大募集！」(2026年10月2日)"
+   }
+  ],
+  "event_date": "2026-10-07",
+  "addressed_issue_ids": []
+ },
+ "exit": 0,
+ "metrics": {
+  "status": "ok",
+  "chars": 331,
+  "material_numbers": 3,
+  "numbers_in_body": 2,
+  "check_problems": []
+ }
+}

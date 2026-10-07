@@ -1,0 +1,28 @@
+{
+ "model": "gpt-6-luna",
+ "prompt_hash": "622e8663b1b3",
+ "compared_with": "base",
+ "wins": {
+  "A": 0,
+  "B": 12,
+  "tie": 0
+ },
+ "accuracy_avg": {
+  "A": 8.25,
+  "B": 8.67
+ },
+ "cases": [
+  "cg-akira-birthday-2026",
+  "cg-yurakucho-popup-inventory-2026",
+  "gaku-osaka-nipponbashi-kuji-inventory-2026-10-05",
+  "gaku-shirube-iwate-stream-ticket-2026",
+  "gaku-taiko-25th-ume-song-2026",
+  "joint-starlit-season-5th-message-campaign-2026",
+  "joint-tours-s2-live-stream-viewing-2026",
+  "million-theater-tune-lilac-2026",
+  "shiny-chikusei-shinycolors-collab-2026",
+  "shiny-fumage-cruise-2026",
+  "shiny-hachiban-collab-2026",
+  "shiny-msp-memorial-goods-2026"
+ ]
+}

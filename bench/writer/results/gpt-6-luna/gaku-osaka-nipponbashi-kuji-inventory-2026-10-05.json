@@ -1,0 +1,79 @@
+{
+ "case": "gaku-osaka-nipponbashi-kuji-inventory-2026-10-05",
+ "answer": {
+  "status": "ok",
+  "decline_code": "",
+  "decline_detail": "",
+  "title": "学マス抽選くじ、大阪日本橋でA・B賞全種在庫",
+  "title_fact_ids": [
+   "F5",
+   "F7"
+  ],
+  "lede": "大阪日本橋店の学園アイドルマスター抽選くじは10月5日更新時点で、A賞アクリルボード全8種とB賞アクリルキーホルダー全12種がいずれも在庫ありとなっている。",
+  "lede_fact_ids": [
+   "F1",
+   "F5",
+   "F7"
+  ],
+  "blocks": [
+   {
+    "markdown": "## A賞は選べるアクリルボード8種",
+    "fact_ids": []
+   },
+   {
+    "markdown": "在庫があるのは「第2回教室パーティー！」「夏を満喫するわよ！」「1人たりとも欠けることなく」「二人ならあっという間だね」「すっかり秋色ですわね！」「キラキラして綺麗～っ！」「あったかいね」「これが私達の、3年間」。",
+    "fact_ids": [
+     "F5",
+     "F6"
+    ]
+   },
+   {
+    "markdown": "## B賞は選べるアクリルキーホルダー12種",
+    "fact_ids": []
+   },
+   {
+    "markdown": "花海咲季、月村手毬、藤田ことね、有村麻央、葛城リーリヤ、倉本千奈、紫雲清夏、篠澤 広、十王星南、秦谷美鈴、花海佑芽、姫崎莉波の全種が在庫あり。",
+    "fact_ids": [
+     "F7",
+     "F8"
+    ]
+   },
+   {
+    "markdown": "## 店頭での購入について",
+    "fact_ids": []
+   },
+   {
+    "markdown": "在庫状況は2026年10月5日更新。更新時期によって実際の在庫と異なる場合があり、大阪日本橋店の在庫情報は毎週日曜日または月曜日に更新予定で、臨時更新の場合もある。賞品の通信販売、予約、取り置きは行っていない。",
+    "fact_ids": [
+     "F1",
+     "F2",
+     "F3",
+     "F4"
+    ]
+   }
+  ],
+  "tags": [
+   "学マス",
+   "グッズ",
+   "抽選",
+   "くじ"
+  ],
+  "new_facts": [],
+  "sources": [
+   {
+    "url": "https://bandainamco-am.co.jp/chara_shop/idolmaster/NEWS/nipponbashi/20261005.html",
+    "label": "バンダイナムコ アミューズメントユニット公式サイト「【大阪日本橋店】抽選くじの在庫状況（10月5日更新）」(2026年10月5日)"
+   }
+  ],
+  "event_date": null,
+  "addressed_issue_ids": []
+ },
+ "exit": 0,
+ "metrics": {
+  "status": "ok",
+  "chars": 332,
+  "material_numbers": 9,
+  "numbers_in_body": 4,
+  "check_problems": []
+ }
+}

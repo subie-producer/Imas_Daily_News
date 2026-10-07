@@ -1,0 +1,53 @@
+{
+ "case": "cg-akira-birthday-2026",
+ "answer": {
+  "status": "ok",
+  "decline_code": "",
+  "decline_detail": "",
+  "title": "砂塚あきら誕生日のお祝いShorts公開",
+  "title_fact_ids": [
+   "F1",
+   "F2",
+   "F3",
+   "F5"
+  ],
+  "lede": "アイマスchが、10月7日の砂塚あきらの誕生日を祝うYouTube Shortsのお祝いムービーを公開した。",
+  "lede_fact_ids": [
+   "F1",
+   "F2",
+   "F3",
+   "F5"
+  ],
+  "blocks": [
+   {
+    "markdown": "ムービーはYouTube Shortsで視聴できる。",
+    "fact_ids": [
+     "F2",
+     "F3"
+    ]
+   }
+  ],
+  "tags": [
+   "シンデレラガールズ",
+   "アイマスch",
+   "誕生日"
+  ],
+  "new_facts": [],
+  "sources": [
+   {
+    "url": "https://x.com/imas_ch/status/2107486048695804178",
+    "label": "アイマスch「砂塚あきらの誕生日お祝いムービー公開」(2026年10月6日)"
+   }
+  ],
+  "event_date": "2026-10-07",
+  "addressed_issue_ids": []
+ },
+ "exit": 0,
+ "metrics": {
+  "status": "ok",
+  "chars": 25,
+  "material_numbers": 2,
+  "numbers_in_body": 0,
+  "check_problems": []
+ }
+}

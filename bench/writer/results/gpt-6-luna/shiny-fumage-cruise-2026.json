@@ -1,0 +1,185 @@
+{
+ "case": "shiny-fumage-cruise-2026",
+ "answer": {
+  "status": "ok",
+  "decline_code": "",
+  "decline_detail": "",
+  "title": "シャニマス「Fumage」クルーズ抽選は11日まで",
+  "title_fact_ids": [
+   "F5"
+  ],
+  "lede": "シャニマスの「Fumage」コラボクルーズは12月19・20日に東京湾で開催され、抽選申込は10月11日23時59分まで受け付ける。",
+  "lede_fact_ids": [
+   "F1",
+   "F5",
+   "N1"
+  ],
+  "blocks": [
+   {
+    "markdown": "## 抽選申込と料金",
+    "fact_ids": []
+   },
+   {
+    "markdown": "- 抽選申込期間：2026年10月6日～10月11日23時59分。抽選販売で、当落発表は10月16日午後。",
+    "fact_ids": [
+     "F5",
+     "N2"
+    ]
+   },
+   {
+    "markdown": "- 当選後の本申込期間：10月16日～10月21日23時59分。申し込みはWILLER TRAVELの企画ページから行い、本予約・決済時には無料のWILLER会員登録が必要。1回の申込で1名分、複数日程の申込もできる。",
+    "fact_ids": [
+     "N2",
+     "N3"
+    ]
+   },
+   {
+    "markdown": "- 通常プランは1人15,600円（税込）。オプションは通常プランに追加する形で、【Fumage】等身アクスタ2種付きが4,600円、【アンティーカ】アクスタ5種付きが4,500円、【ノクチル】アクスタ4種付きが3,600円。複数選択でき、全オプション追加時は28,300円。",
+    "fact_ids": [
+     "F6",
+     "F7",
+     "F8",
+     "F9",
+     "F10",
+     "F20",
+     "F21",
+     "F22",
+     "F23",
+     "N4"
+    ]
+   },
+   {
+    "markdown": "- 申込に伴う支払いはクレジットカード、コンビニ払い、Paidyなどから選べる。",
+    "fact_ids": [
+     "N5"
+    ]
+   },
+   {
+    "markdown": "## 開催内容",
+    "fact_ids": []
+   },
+   {
+    "markdown": "12月19日・20日に各日3便、計6便を運航する。各便の時間は1便目9時～10時、2便目11時～12時、3便目13時～14時。各便の受付は出航30分前からで、集合時間は順に8時30分、10時30分、12時30分。",
+    "fact_ids": [
+     "F1",
+     "F2",
+     "F3",
+     "F4",
+     "N6"
+    ]
+   },
+   {
+    "markdown": "集合場所は日の出ふ頭小型船ターミナル（日の出船着場）。各便の定員は100人、最少催行人数は75人。船内は自由席。",
+    "fact_ids": [
+     "N7"
+    ]
+   },
+   {
+    "markdown": "Fumageの二人がクルーズ船で撮影の仕事に挑戦し、乗船者は二人のやり取りを見守る。船内では二人の録り下ろしアナウンスを放送し、公式MVなどを上映。Fumageのキャラパネルと、撮影会を応援に来たアンティーカ・ノクチルのメンバーのちびキャラパネルで装飾する。",
+    "fact_ids": [
+     "F26",
+     "F27",
+     "F28",
+     "F29",
+     "N8"
+    ]
+   },
+   {
+    "markdown": "全プランに、フォト風デザインの本企画限定「フォト風クルーズチケット」と、ビュッフェまたはお弁当、ソフトドリンク飲み放題が付く。グッズ付きプランには、新規描き起こしのアンティーカ・ノクチルのちびキャラとFumageの等身イラストを使った特製アクリルスタンドが付く。",
+    "fact_ids": [
+     "F30",
+     "F31",
+     "F32",
+     "N9"
+    ]
+   },
+   {
+    "markdown": "オリジナルコラボドリンク（ランダムコースター付き）は現地会場のみで販売し、1,000円、支払いは現金のみ。購入制限がある。",
+    "fact_ids": [
+     "F11",
+     "F25",
+     "F44",
+     "N10"
+    ]
+   }
+  ],
+  "tags": [
+   "シャニマス",
+   "コラボ",
+   "抽選",
+   "締切"
+  ],
+  "new_facts": [
+   {
+    "id": "N1",
+    "text": "企画ページに掲載された開催日程は2026年12月19日・20日。クルーズは東京湾を航行する。",
+    "url": "https://travel.willer.co.jp/entertainment/shinycolors/cruise-2026/"
+   },
+   {
+    "id": "N2",
+    "text": "抽選申込は2026年10月6日から10月11日まで。当落発表は10月16日（金）午後、本申込期間は10月16日（金）から10月21日（水）23時59分まで。",
+    "url": "https://travel.willer.co.jp/entertainment/shinycolors/cruise-2026/"
+   },
+   {
+    "id": "N3",
+    "text": "本予約・決済時にはWILLER会員登録（無料）が必要。複数日程を申し込めるが、1回の申込で1名分のみ。",
+    "url": "https://travel.willer.co.jp/entertainment/shinycolors/cruise-2026/"
+   },
+   {
+    "id": "N4",
+    "text": "通常プランはおひとり様15,600円（税込）。Fumage等身アクスタ2種付きプランは4,600円、アンティーカアクスタ5種付きプランは4,500円、ノクチルアクスタ4種付きプランは3,600円を通常プランに追加でき、複数選択可。船内は自由席。",
+    "url": "https://travel.willer.co.jp/entertainment/shinycolors/cruise-2026/"
+   },
+   {
+    "id": "N5",
+    "text": "申込に伴う支払いはクレジットカード・コンビニ払い・Paidy等から選べる。",
+    "url": "https://travel.willer.co.jp/entertainment/shinycolors/cruise-2026/"
+   },
+   {
+    "id": "N6",
+    "text": "各便の出航30分前から受付開始。集合時間は1便目8時30分、2便目10時30分、3便目12時30分。",
+    "url": "https://travel.willer.co.jp/entertainment/shinycolors/cruise-2026/"
+   },
+   {
+    "id": "N7",
+    "text": "集合場所は日の出ふ頭小型船ターミナル（日の出船着場）。各便あたり定員100名、全6便合計600名。最少催行人数は各便75名。",
+    "url": "https://travel.willer.co.jp/entertainment/shinycolors/cruise-2026/"
+   },
+   {
+    "id": "N8",
+    "text": "コンセプトページは、Fumageとアンティーカ・ノクチルがクルーズ船で東京湾の海へ向かう企画と説明。Fumageの二人は撮影の仕事に挑戦し、乗船者は二人のやり取りを見守る。船内では録り下ろしアナウンス、公式MV等の上映、Fumageのキャラパネル、撮影会を応援に来たアンティーカ・ノクチルのメンバーの描き起こしちびキャラパネル装飾を実施する。",
+    "url": "https://travel.willer.co.jp/entertainment/shinycolors/cruise-2026/"
+   },
+   {
+    "id": "N9",
+    "text": "全プランにフォト風デザインの本企画限定「フォト風クルーズチケット」と、ビュッフェまたはお弁当、ソフトドリンク飲み放題が付く。グッズ付きプランでは、新規描き起こしのアンティーカ・ノクチルのちびキャラとFumageの等身イラストを使った特製アクリルスタンドが付く。",
+    "url": "https://travel.willer.co.jp/entertainment/shinycolors/cruise-2026/"
+   },
+   {
+    "id": "N10",
+    "text": "オリジナルコラボドリンク（ランダムコースター付き）は現地会場のみで販売し、別途1,000円。支払いは現金のみで、購入制限がある。",
+    "url": "https://travel.willer.co.jp/entertainment/shinycolors/cruise-2026/"
+   }
+  ],
+  "sources": [
+   {
+    "url": "https://idolmaster-official.jp/news/01_20083",
+    "label": "【公式】アイドルマスター ポータル「【シャニマス】『Fumage』コラボクルーズ ～船の上の撮影会～が、12月19日(土)・20日(日)に 開催決定！本日より抽選受付がスタート！」(2026年10月6日)"
+   },
+   {
+    "url": "https://travel.willer.co.jp/entertainment/shinycolors/cruise-2026/",
+    "label": "WILLER TRAVEL「アイドルマスター シャイニーカラーズ『Fumage』船上撮影会クルーズ〜」(日付記載なし)"
+   }
+  ],
+  "event_date": "2026-12-19",
+  "addressed_issue_ids": []
+ },
+ "exit": 0,
+ "metrics": {
+  "status": "ok",
+  "chars": 833,
+  "material_numbers": 15,
+  "numbers_in_body": 15,
+  "check_problems": []
+ }
+}

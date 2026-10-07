@@ -965,6 +965,27 @@ def looks_unrendered(text: str) -> bool:
     return len(re.sub(r"\s+", "", text or "")) < 400
 
 
+def render_hosts() -> set[str]:
+    """描画しないと本文が出ないと分かっているサイトのホスト(sources.yml で type: portal の観測先)。"""
+    import urllib.parse
+    import yaml
+    try:
+        sources = yaml.safe_load((ROOT / "sources.yml").read_text(encoding="utf-8")) or []
+    except OSError:
+        return set()
+    return {urllib.parse.urlsplit(u).hostname for s in sources if s.get("type") == "portal"
+            for u in (s.get("url"), s.get("base")) if u}
+
+
+def needs_render(url: str, text: str) -> bool:
+    """素の HTML から取った本文を描画し直して読むべきか。本文が空同然か、描画必須と分かっているサイトか。
+
+    字数だけでは足りない。公式ポータルはナビだけで非空白 3千字を超え、本文が JS で描かれる記事でも
+    「本文あり」に見える(実測: 配信チケット記事で 14,000円 を取りこぼした。collect.verify の注記)。"""
+    import urllib.parse
+    return looks_unrendered(text) or urllib.parse.urlsplit(url).hostname in render_hosts()
+
+
 def extract_periods(text: str, limit: int = 12) -> list[str]:
     """本文から「ラベル: 値」の形で期間を原文のまま抜き出す(編集規程15)。
 

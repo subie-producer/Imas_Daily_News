@@ -2127,6 +2127,43 @@ def test_fetch_page_renders_whitespace_only_page():
     finally:
         fetch_page.fetch, fetch_page.subprocess.run, sys.argv = saved
     check(calls and "2026.10.7 変更" in buf.getvalue(), f"改行だらけのページを描画し直さなかった: {buf.getvalue()[:120]!r}")
+    # 描画必須と分かっているサイト(sources.yml の portal)は、メニューだけで非空白 400字を超えても描画して読む
+    # (公式ポータルはナビだけで非空白 3千字を超える。監査指摘 render-detection-navigation)
+    nav = "【公式】アイドルマスター ポータル メニュー スケジュール 検索 ブランド選択 " * 100
+    check(len(re.sub(r"\s+", "", nav)) >= 3000 and not pipelib.looks_unrendered(nav), "長いナビの前提が崩れた")
+    check("idolmaster-official.jp" in pipelib.render_hosts(), f"公式ポータルが描画必須のサイトに入っていない: {pipelib.render_hosts()}")
+    check(not pipelib.needs_render("https://example.com/a", nav), "描画必須でないサイトの本文ありページを描画した")
+    calls.clear()
+    try:
+        fetch_page.fetch = lambda url: nav
+        fetch_page.subprocess.run = lambda *a, **k: calls.append(a) or R()
+        sys.argv = ["fetch_page.py", "https://idolmaster-official.jp/news/01_99999"]
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            fetch_page.main()
+    finally:
+        fetch_page.fetch, fetch_page.subprocess.run, sys.argv = saved
+    check(calls and "2026.10.7 変更" in buf.getvalue(), f"公式ポータルの長いナビのページを描画し直さなかった: {buf.getvalue()[:120]!r}")
+    # 収集の裏取りも同じ: 公式ポータルの長いナビのページは描画して期間を抜き出す
+    import collect
+    class U:
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
+        def read(self, n=None): return ("<p>" + nav + "</p>").encode("utf-8")
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    rcalls = []
+    saved_c = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=15: U()
+        collect.fetch_rendered = lambda url: rcalls.append(url) or "<p>受付期間：2026年10月8日(木)12:00〜10月12日(日)23:59</p>"
+        collect.classify_source = lambda u: "公式"
+        cv = collect.normalize([{"url": "https://idolmaster-official.jp/news/01_99999", "title": "t", "facts": ["f"], "_via": "explore"}])
+        collect.verify(cv)
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved_c
+    check(rcalls and cv[0].get("periods") == ["受付期間: 2026年10月8日(木)12:00〜10月12日(日)23:59"],
+          f"裏取りが公式ポータルの長いナビのページを描画せず期間を落とした: {rcalls} {cv[0].get('periods')}")
 
 
 def test_fetch_rendered_skips_images():

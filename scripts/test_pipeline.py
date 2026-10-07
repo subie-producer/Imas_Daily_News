@@ -2090,6 +2090,41 @@ def test_extract_json_array_strict():
     check(E("[]") == [], "空配列(0件)を読めなかった(None)に落とした")
 
 
+def test_fetch_rendered_skips_images():
+    """描画取得は画像を読み込まない。画像の多い一覧(columbia.jp/idolmaster/)は画像待ちで読み込み完了に届かず、
+    毎回時間切れで空を返していた(2026-10-07)。selenium の無い環境でも確かめられるよう、ブラウザは偽物に差し替える"""
+    import importlib
+    import types
+    got = {}
+    class Opts:
+        def __init__(self): self.args, self.prefs = [], {}
+        def add_argument(self, a): self.args.append(a)
+        def add_experimental_option(self, k, v): self.prefs[k] = v
+    fake = {n: types.ModuleType(n) for n in ("selenium", "selenium.webdriver", "selenium.webdriver.chrome",
+                                             "selenium.webdriver.chrome.options", "selenium.webdriver.common",
+                                             "selenium.webdriver.common.by", "selenium.webdriver.support",
+                                             "selenium.webdriver.support.ui", "selenium.webdriver.support.expected_conditions")}
+    fake["selenium.webdriver"].Chrome = lambda options: got.setdefault("opts", options)
+    fake["selenium"].webdriver = fake["selenium.webdriver"]
+    fake["selenium.webdriver.chrome.options"].Options = Opts
+    fake["selenium.webdriver.common.by"].By = object
+    fake["selenium.webdriver.support.ui"].WebDriverWait = object
+    fake["selenium.webdriver.support"].expected_conditions = fake["selenium.webdriver.support.expected_conditions"]
+    saved = {n: sys.modules.get(n) for n in list(fake) + ["fetch_rendered"]}
+    try:
+        sys.modules.update(fake)
+        sys.modules.pop("fetch_rendered", None)
+        importlib.import_module("fetch_rendered").make_driver()
+    finally:
+        for n, m in saved.items():
+            if m is None:
+                sys.modules.pop(n, None)
+            else:
+                sys.modules[n] = m
+    check(got["opts"].prefs.get("prefs", {}).get("profile.managed_default_content_settings.images") == 2,
+          f"描画取得が画像を読み込む(画像の多いページで読み込み完了に届かず時間切れになる): {got['opts'].prefs}")
+
+
 def test_watch_pagination_and_batches(tmp: Path):
     """定点観測(編集長 2026-09-30「公式のニュース12件しか見ないとか設計不備過ぎる」):
     一覧は既に見た記事だけのページに行き当たるまで遡る。上限まで読んでも新着が続けば打ち切りを返す。
@@ -3898,6 +3933,7 @@ def main() -> int:
     test_accept_only_normal_and_schema(tmp / "an")
     test_grok_repoint_uses_each_face_posts(tmp / "grp")
     test_watch_pagination_and_batches(tmp / "wp")
+    test_fetch_rendered_skips_images()
     test_collect_oncall_rerun_exit(tmp / "cre")
     test_storylink(tmp / "sl")
     test_oncall_rollback_subprocess(tmp / "rs")

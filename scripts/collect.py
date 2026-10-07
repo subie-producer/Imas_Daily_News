@@ -43,7 +43,8 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
                      set_quiet, unbacked_facts,
-                     anomaly, checkout_edition_branch, classify_retag_lint, commit_and_push, diagnose_anomalies, edition_date,
+                     anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
+                     edition_date, mark_collect_oncall,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author)
 
@@ -53,6 +54,8 @@ WATCH_BATCH = int(ENV.get("WATCH_BATCH", "12"))
 # facts 化のバッチを同時に走らせる数。新着は件数にかかわらず全部を処理する(上限で打ち切らない。編集長 2026-09-30
 # 「全部処理してねーじゃん」)。件数が増えても時間が線形に伸びないよう、バッチは並列に走らせる
 WATCH_PARALLEL = int(ENV.get("WATCH_PARALLEL", "3"))
+# 通常の収集が2度読めずに諦めた新着を、当番の取り直しのために残す上限(state の _given_up)
+GIVEN_UP_MAX = 200
 # 定点観測で facts 化のために渡すページ本文の量。切り詰めるとそのぶん facts が痩せる
 WATCH_BODY_CHARS = int(ENV.get("WATCH_BODY_CHARS", "20000"))
 # 探索(Luna)1クエリの打ち切り。codex には --max-budget-usd 相当が無いので、
@@ -203,6 +206,10 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
     # 前回 facts 化の出力が読めずにやり直しになった新着(未処理の列)を**先に**処理する。それらは既読にしていないが、一覧の上では
     # 既読のページの奥に隠れるので、一覧を遡っても二度と見えない(監査指摘 r102)
     pending = [it for it in state.get("_pending", []) if isinstance(it, dict) and it.get("url")]
+    # 当番の取り直しでは、通常の収集が2度読めずに諦めた新着(_given_up)も**先頭で**取り直す。諦めたものは既読なので、
+    # 一覧からも未処理の列からも二度と見えない。これを当番が直しても拾えないと、落とした新着が選定リストに入らない(監査指摘)
+    pending = ([it for it in state.get("_given_up", []) if isinstance(it, dict) and it.get("url")] if oncall_rerun else []) + pending
+    pending = list({it["url"]: it for it in reversed(pending)}.values())[::-1]   # 同じ URL は先に出たほうだけ
     pending_urls = {it["url"] for it in pending}
     # 一覧にもまだ出ている繰り越し記事も、未処理の列の位置(先頭)で処理する(一覧の位置だと、また上限の外に回る。監査指摘 r103)
     new_items = pending + [n for n in new_items if n["url"] not in pending_urls]
@@ -217,7 +224,8 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
         for got, tried in ex.map(lambda b: facts_batch(b, claude_call, state, oncall_rerun), batches):
             cands += got
             attempted |= tried
-    return finish_watch(new_items, attempted, found_by_source, stats, state, cands)
+    return finish_watch(new_items, attempted, found_by_source, stats, state, cands,
+                        retried_given_up={it["url"] for it in state.get("_given_up", []) if isinstance(it, dict)} if oncall_rerun else set())
 
 
 def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool = False) -> tuple[list[dict], set[str]]:
@@ -261,10 +269,13 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
             give_up = [it for it in failed if bad[it["url"]] >= 2]
             for it in give_up:
                 bad.pop(it["url"], None)   # 諦めたら回数も消す。残すと再登場時に1回で即既読になる(監査指摘)
+                # 諦めても捨てない: 当番が原因を直したあとの取り直し(--oncall-rerun)が拾えるよう、諦めた新着として残す
+                # (通常の収集では読み直さない。毎回先頭で読み直すと上限の外の新着が後回しになるため)
+                state.setdefault("_given_up", []).append({**it, "given_up_at": now_jst().isoformat(timespec="seconds")})
         if failed:
             notify("collect", f"定点観測: facts 化で読めなかった新着 {len(failed)}/{len(batch)}件"
                               f"({'出力が読めない' if got is None else 'ページの結果が読めなかった・欠けた'})。次回に持ち越す"
-                              f"(2度読めず諦めて既読にしたもの {len(give_up)}件"
+                              f"(2度読めず通常の収集では諦めたもの {len(give_up)}件。当番が直したあとの取り直しで読み直す"
                               + "".join(f"\n  - {it['url']}" for it in give_up) + ")", ok=False)
         for i, it in enumerate(batch):
             if i + 1 in done:
@@ -303,7 +314,7 @@ def watch_page_results(got, n: int) -> dict[int, list[dict]]:
 
 
 def finish_watch(new_items: list[dict], attempted: set[str], found_by_source: dict, stats: dict, state: dict,
-                 cands: list[dict]) -> tuple[list[dict], dict]:
+                 cands: list[dict], retried_given_up: set[str] = frozenset()) -> tuple[list[dict], dict]:
     # 状態の保存は facts 化の**後**。既知にするのは「今回処理を試みた URL」だけで、
     # 上限を超えて手つかずのまま残った新着は未読のままにする。
     #   - 巡回直後に全件を既知にすると、上限超過分は次回 new と判定されず、
@@ -325,6 +336,13 @@ def finish_watch(new_items: list[dict], attempted: set[str], found_by_source: di
             state[it["source_id"]] = ([it["url"]] + state.get(it["source_id"], []))[:500]
     # やり直しになった新着(出力が読めなかったバッチ)は未処理の列に残し、次回は一覧より先に処理する(一覧の上では既読のページの奥に隠れるため)
     state["_pending"] = deferred
+    # 当番の取り直しで読み直した「諦めた新着」は、読めたら候補へ、読めなければ未処理の列(上)へ移ったので、諦めた列から外す。
+    # 今回新しく諦めたもの(通常の収集)は残す。古いものから上限で切る
+    given_up = [g for g in state.get("_given_up", []) if isinstance(g, dict) and g.get("url") not in retried_given_up]
+    if len(given_up) > GIVEN_UP_MAX:
+        notify("collect", f"定点観測: 諦めた新着が {len(given_up)}件たまり、古い {len(given_up) - GIVEN_UP_MAX}件を取り直しの対象から外した"
+                          + "".join(f"\n  - {g['url']}" for g in given_up[:-GIVEN_UP_MAX][:20]), ok=False)
+    state["_given_up"] = given_up[-GIVEN_UP_MAX:]
     # **ここでは保存しない。**既読の確定は candidates への書き込みと同じ成功境界にする。
     # 先に既読にすると、後段(正規化・verify・保存)が例外で落ちたとき、新着は既読なのに
     # candidates に無い、という取りこぼしになる(監査指摘)。main が保存後に書く
@@ -1463,6 +1481,19 @@ def merge_into_day_file(cands: list[dict], day: str) -> int:
     return added
 
 
+def hand_to_oncall() -> None:
+    """人に「異常」として通知したものは、申告で終えずに当番がなぜなぜする。直したら定点観測を取り直し、落とした新着を
+    この号の選定リストに入れるまでが当番の仕事(編集長 2026-10-07「やらかしてドロップしたのは責任を持って修正して紙面に乗せろ」。
+    以前は「収集は終わっているので再実行しない」で、直しても次の定時収集まで拾われず、最後の収集なら1号遅れた)。
+    当番が取り直しまで終える時刻は、ここ(呼び出し時)で固定して渡す(起動し直しても延びない)。
+    当番を呼べたら、**工程の排他を持ったまま**動いている印を置く(収集が終わって排他が空いた瞬間に組版が取ると、
+    当番は取り直せない。組版は印を見て待ち、受け渡しの間は譲る。監査指摘)"""
+    end_at = collect_oncall_end(now_jst())
+    date = edition_date()
+    if diagnose_anomalies("collect", date, rerun=True, extra_args=["--end-at", str(int(end_at))]):
+        mark_collect_oncall(end_at, date)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-git", action="store_true", help="ブランチ操作・push をしない(テスト用)")
@@ -1525,7 +1556,11 @@ def main() -> int:
     if unknown:
         print(f"source_types.yml に無い出典 {sum(unknown.values())}件 / {len(unknown)}ドメイン: "
               + ", ".join(f"{h}({n})" for h, n in unknown.most_common(12)), flush=True)
-    if needs_classify(cands):
+    if needs_classify(cands) and args.oncall_rerun:
+        # 当番の取り直しでは判定表の取引(合議。単独で最大30分)をしない。取り直しは次の定時工程の前に終えて、
+        # 素材を commit するのが先(監査指摘)。未知の出典の判定は次の定時収集で行う
+        print("当番の取り直しのため、未知の出典の判定は次の定時収集で行う", flush=True)
+    elif needs_classify(cands):
         # **未知のドメインは合議で振り分ける。**表を人が育てるまで待つと、
         # 会場・チケット販売・自治体が未確認のまま紙面に載る。
         # 別ベンダーの2モデルが一致したものだけを足し、公式・準公式は自動で足さない
@@ -1568,6 +1603,14 @@ def main() -> int:
         notify("collect", f"{date}: 当番の拾い直しでも facts 化できないバッチが {watch_info['deferred']}件 残った。"
                           f"繰り越しは既読にせず保持した。直しが効いていない(原因が未確定の可能性)", ok=False)
         return 1
+    # 当番の取り直しで、観測先の一覧がまた取れなかったら成功にしない(一覧から新着を見つけられないので deferred は0のまま。
+    # 落とした新着がその号の素材に入っていない。監査指摘)
+    list_failed = sorted(sid for sid, st in ((watch_info or {}).get("stats") or {}).items()
+                         if isinstance(st, dict) and st.get("error")) if isinstance(watch_info, dict) else []
+    if args.oncall_rerun and list_failed:
+        notify("collect", f"{date}: 当番の取り直しでも観測先の一覧が取れない: " + ", ".join(list_failed)
+               + "。そこで落とした新着は、この号の素材に入っていない", ok=False)
+        return 1
     return 0
 
 
@@ -1577,6 +1620,5 @@ if __name__ == "__main__":
     except Exception as e:
         notify_crash("collect", e)
         code = 1
-    # 人に「異常」として通知したものは、申告で終えずに当番がなぜなぜする(収集は終わっているので再実行しない)
-    diagnose_anomalies("collect", edition_date(), rerun=False)
+    hand_to_oncall()
     sys.exit(code)

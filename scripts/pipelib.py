@@ -101,7 +101,77 @@ def anomaly(job: str, text: str) -> None:
         ANOMALIES.append(f"[{job}] {text.strip()}")
 
 
-def diagnose_anomalies(stage: str, date: str, rerun: bool = False, reason: str = "", edition: str = "") -> bool:
+# --- 定時工程の時刻(当番が工程の排他を手放すべき時刻の計算) ------------------------------------------
+# 定時工程の開始(時, 分)。01:30 道具の更新 / 02:00 収集 / 03:00 組版 / 06:00 発行 / 07:30・12:30・18:30・23:30 収集
+SCHEDULED = ((1, 30), (2, 0), (3, 0), (6, 0), (7, 30), (12, 30), (18, 30), (23, 30))
+SLOT_MARGIN_MIN = 15             # 次の定時工程の何分前に工程の排他を手放すか
+# 組版は、収集の当番(落とした新着の取り直し)が動いていれば、開始をこの分だけ待つ。組版の締切は 06:00 の8分前なので、
+# 03:40 に始めても実測の所要(40〜60分)と当番の立て直しの余裕は残る。その間に取り直して、落とした新着をその号の選定に間に合わせる
+COMPOSE_WAITS_FOR_COLLECT_ONCALL_MIN = 40
+COLLECT_ONCALL_MARK = ROOT / "metrics" / "oncall-collect-running.json"   # 収集の当番が動いている印({end_at, date, handover_at, held})
+# 収集が当番を呼んでから、当番が工程の排他を取るまでの受け渡しの猶予。この間は組版が排他を取らずに譲る
+# (収集が終わって排他が空いた瞬間に組版が取ると、当番は取り直せないまま組版が始まる。監査指摘)
+COLLECT_HANDOVER_SEC = 180
+
+
+def next_slot_end(now: datetime.datetime, compose_grace_min: int = 0) -> float:
+    """次の定時工程の SLOT_MARGIN_MIN 分前(epoch 秒)。当番はこの時刻までに工程の排他を手放す。
+    compose_grace_min は、03:00 の組版をその分だけ遅く数える(組版が収集の当番を待つ分)。"""
+    cands = []
+    for d in (0, 1):
+        for h, m in SCHEDULED:
+            t = (now + datetime.timedelta(days=d)).replace(hour=h, minute=m, second=0, microsecond=0)
+            if (h, m) == (3, 0):
+                t += datetime.timedelta(minutes=compose_grace_min)
+            if t > now:
+                cands.append(t)
+    return (min(cands) - datetime.timedelta(minutes=SLOT_MARGIN_MIN)).timestamp()
+
+
+def collect_oncall_end(now: datetime.datetime) -> float:
+    """収集が当番を呼ぶときに固定する、当番の終える時刻(取り直しまで含む)。呼び出し時に決めて引数で渡すので、
+    当番が起動し直しても延びない(監査指摘)。02:00 の収集なら、組版が待つ分を見込む: 組版は「この時刻+5分」まで
+    (上限 COMPOSE_WAITS_FOR_COLLECT_ONCALL_MIN)待つので、終える時刻は 03:00 + 上限 - 5分(=03:35)。"""
+    return next_slot_end(now, COMPOSE_WAITS_FOR_COLLECT_ONCALL_MIN + SLOT_MARGIN_MIN - 5)
+
+
+def compose_lock_wait_min(now_ts: float | None = None) -> int:
+    """組版が工程の排他を待つ分。収集の当番が動いている印があり、その終える時刻が先なら、それまで(+5分、上限
+    COMPOSE_WAITS_FOR_COLLECT_ONCALL_MIN)待つ。それ以外は10分。"""
+    now_ts = time.time() if now_ts is None else now_ts
+    try:
+        end_at = float(json.loads(COLLECT_ONCALL_MARK.read_text(encoding="utf-8"))["end_at"])
+    except (OSError, ValueError, KeyError, TypeError):
+        return 10
+    if end_at <= now_ts:
+        return 10
+    return max(10, min(COMPOSE_WAITS_FOR_COLLECT_ONCALL_MIN, int((end_at - now_ts) // 60) + 5))
+
+
+def mark_collect_oncall(end_at: float, date: str, held: bool = False) -> None:
+    """収集の当番が動いている印を置く。収集は当番を呼べたら(排他を持ったまま)置き、当番は排他を取ったら held にする。"""
+    import os
+    COLLECT_ONCALL_MARK.parent.mkdir(parents=True, exist_ok=True)
+    # 置き換えは一度に(書きかけの空の印を組版が読むと「受け渡し中でない」と見て排他を取る)
+    tmp = COLLECT_ONCALL_MARK.with_name(f".{COLLECT_ONCALL_MARK.name}.{os.getpid()}")
+    tmp.write_text(json.dumps({"end_at": end_at, "date": date, "handover_at": time.time(), "held": held}), encoding="utf-8")
+    os.replace(tmp, COLLECT_ONCALL_MARK)
+
+
+def collect_oncall_handover_pending(now_ts: float | None = None) -> bool:
+    """収集が当番を呼び、当番がまだ工程の排他を取っていない(受け渡しの最中)か。組版はこの間、空いていても排他を取らない。
+    当番が起動できずに死んだときも組版を止め続けないよう、COLLECT_HANDOVER_SEC で打ち切る。"""
+    now_ts = time.time() if now_ts is None else now_ts
+    try:
+        m = json.loads(COLLECT_ONCALL_MARK.read_text(encoding="utf-8"))
+        return (not m.get("held") and float(m["end_at"]) > now_ts
+                and now_ts - float(m["handover_at"]) < COLLECT_HANDOVER_SEC)
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        return False
+
+
+def diagnose_anomalies(stage: str, date: str, rerun: bool = False, reason: str = "", edition: str = "",
+                       extra_args: list[str] | None = None) -> bool:
     """工程の終わりに、台帳の異常を当番へ渡す(この process でまだ当番を呼んでいなければ)。
     既定は「工程は終わった(止まっていない)」ので再実行しない。止まったときは reason と rerun=True で呼ぶ。
     date は異常の発生日(当番はその日の journal を読む)。修正の取り込み先の号がそれと違うとき(発行後の release・watch)は
@@ -109,7 +179,7 @@ def diagnose_anomalies(stage: str, date: str, rerun: bool = False, reason: str =
     if not ANOMALIES or _ESCALATED:
         return False
     return escalate(stage, date, reason or "工程は終わった(止まっていない)が、人に異常として通知した事柄がある。下の一覧をなぜなぜすること",
-                    rerun=rerun, edition=edition)
+                    rerun=rerun, edition=edition, extra_args=extra_args)
 
 
 def escalate_reason(reason: str) -> str:
@@ -613,13 +683,19 @@ class JobLockTimeout(RuntimeError):
     pass
 
 
-def job_lock(job: str, wait_min: int = 0):
+LOCK_POLL_SEC = 10
+
+
+def job_lock(job: str, wait_min: float = 0, wait_fn=None, yield_fn=None):
     """collect / compose / release / oncall が**同じ作業ツリーと Git を同時に触らない**ための排他。
 
     pgrep で「いま走っていないか」を見るだけでは、確認した直後に timer が別の工程を起動できる
     (監査指摘)。flock は OS が保証し、プロセスが死ねば外れる。
     wait_min=0 なら取れなければ即 JobLockTimeout、それ以外はその分だけ待つ。
     当番が起動する再実行(子プロセス)は、親が持っているので IMAS_JOB_LOCK=held で取らない。
+    wait_fn(t0) は待つ分を待つ間に見直す(待ち始めてから現れた事情を見落とさない。組版が、待っている間に呼ばれた
+    収集の当番を待つ。監査指摘)。待つのは wait_min と wait_fn(t0) の大きいほう(t0 からの分)。
+    yield_fn() が真の間は、空いていても取らずに譲る(収集→当番の受け渡しの最中。待つ分の内だけ)。
     戻り値は開いた fd(閉じるまで保持。プロセス終了で自動的に外れる)。
     """
     import fcntl
@@ -630,15 +706,19 @@ def job_lock(job: str, wait_min: int = 0):
     fd = os.open(ROOT / "metrics" / "jobs.lock", os.O_RDWR | os.O_CREAT, 0o644)
     t0 = time.time()
     while True:
+        limit = max(wait_min, wait_fn(t0)) if wait_fn else wait_min
+        in_time = time.time() - t0 < limit * 60
         try:
             fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            return fd
+            if not (in_time and yield_fn and yield_fn()):
+                return fd
+            fcntl.flock(fd, fcntl.LOCK_UN)
         except OSError:
-            if time.time() - t0 >= wait_min * 60:
+            if not in_time:
                 os.close(fd)
                 raise JobLockTimeout(f"{job}: 他の工程が作業ツリーを使っている(metrics/jobs.lock)。"
-                                     + (f"{wait_min}分待ったが空かない" if wait_min else "同時には走らせない"))
-            time.sleep(10)
+                                     + (f"{limit:g}分待ったが空かない" if limit else "同時には走らせない"))
+        time.sleep(LOCK_POLL_SEC)
 
 
 def notify_crash(job: str, e: Exception) -> None:

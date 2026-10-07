@@ -84,6 +84,11 @@ def test_check_output():
     check(any("Markdown" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "[公式]​(https://evil)"}]))),
           "不可視文字で割った Markdown リンクの label が通った")
     check(any("空" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "​\x04"}]))), "空になる label が通った")
+    # 発行前の検査(lint)と同じ基準: `__` `**` も通さない(2026-10-08: 商品名の `__` が検算を通り、lint で赤になった)
+    check(any("Markdown" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "コレクション__ブロマイド228"}]))),
+          "lint が赤にする label(__)が検算を通った")
+    import lint as _lint
+    check(_lint.MD_IN_PLAIN is renderlib.MD_IN_PLAIN, "検算と lint の Markdown の基準が別の定義")
     check(any("制御文字" in p for p in C(dict(OK, title="見出し\x04"))), "見出しの制御文字が通った")
     check(C(dict(OK, blocks=[{"markdown": "- 1行目\n- 2行目", "fact_ids": ["F1"]}])) == [], "箇条書きの改行を制御文字として落とした")
     # 文字として残った `\n`(二重エスケープ)は、検算の前に本物の改行へ戻す(2026-09-21: セットリスト37曲が1段落で出た)
@@ -632,6 +637,104 @@ def test_job_lock():
     check(run() == "GOT", "離したのに取れない")
 
 
+def test_job_lock_collect_oncall_handover():
+    """03:00 の組版が待ち始めた時点で印が無く、03:02 に収集が当番を呼んだ(受け渡し)。組版は待つ分を見直し、
+    収集が排他を離してから当番が取るまでの間も取らずに譲り、当番が取り直しを終えてから始まる(監査指摘)。
+    時間は縮めて試す(分→0.1秒)。"""
+    import threading
+    import time
+    import collect
+    saved = (pipelib.COLLECT_ONCALL_MARK, pipelib.LOCK_POLL_SEC, collect.diagnose_anomalies, collect.collect_oncall_end)
+    with tempfile.TemporaryDirectory() as td:
+        try:
+            pipelib.COLLECT_ONCALL_MARK = Path(td) / "mark.json"
+            # 終える時刻は「いまから35分後」に固定(時刻表による計算は固定日時のテストで検める。走らせる時刻に依存させない。監査指摘)
+            collect.collect_oncall_end = lambda now: time.time() + 35 * 60
+            pipelib.LOCK_POLL_SEC = 0.02
+            order = []
+            collect_fd = pipelib.job_lock("collect")
+            scaled = lambda t0: pipelib.compose_lock_wait_min(t0) / 600   # 10分→1秒、40分→4秒
+
+            def compose_side():
+                try:
+                    fd = pipelib.job_lock("compose", wait_min=10 / 600, wait_fn=scaled,
+                                          yield_fn=pipelib.collect_oncall_handover_pending)
+                    order.append("compose")
+                    os.close(fd)
+                except pipelib.JobLockTimeout:
+                    order.append("compose-timeout")
+
+            def oncall_side():
+                time.sleep(1.4)          # 当番の起動が遅く、収集が離してから(組版の最初の待ち 1秒も過ぎて)取りに来る
+                fd = pipelib.job_lock("oncall", wait_min=1)
+                pipelib.mark_collect_oncall(time.time() + 35 * 60, "2026-10-09", held=True)
+                order.append("oncall")
+                time.sleep(0.5)          # 取り直し
+                pipelib.COLLECT_ONCALL_MARK.unlink()
+                os.close(fd)
+
+            tc = threading.Thread(target=compose_side)
+            tc.start()
+            time.sleep(0.2)              # 組版が印の無いまま待ち始めてから
+            collect.diagnose_anomalies = lambda *a, **k: True
+            collect.hand_to_oncall()     # 収集が当番を呼び、排他を持ったまま印を置く
+            m = json.loads(pipelib.COLLECT_ONCALL_MARK.read_text(encoding="utf-8"))
+            check(m["held"] is False and m["end_at"] > time.time(), f"収集が置く印: {m}")
+            to = threading.Thread(target=oncall_side)
+            to.start()
+            time.sleep(0.1)
+            os.close(collect_fd)         # 収集が終わって排他が空く(当番はまだ取りに来ていない)
+            tc.join(10)
+            to.join(10)
+            check(order == ["oncall", "compose"], f"組版が収集→当番の受け渡しに割り込んだ・待ちを見直さない: {order}")
+            # 当番を呼べなかったら印を置かない(組版を待たせない)
+            collect.diagnose_anomalies = lambda *a, **k: False
+            collect.hand_to_oncall()
+            check(not pipelib.COLLECT_ONCALL_MARK.exists(), "当番を呼べないのに印を置いた")
+            # 当番が起動できずに死んだときは、受け渡しの猶予で譲るのをやめる
+            pipelib.COLLECT_ONCALL_MARK.write_text(json.dumps({"end_at": time.time() + 3600, "handover_at": time.time() - pipelib.COLLECT_HANDOVER_SEC - 1,
+                                                               "held": False}), encoding="utf-8")
+            check(not pipelib.collect_oncall_handover_pending(), "受け渡しの猶予を過ぎても組版が譲り続ける")
+            # 当番が印を上書きしている最中に組版が読んでも、受け渡し中と見える(書きかけの空の印を読ませない。監査指摘)
+            pipelib.mark_collect_oncall(time.time() + 33 * 60, "2026-10-09")
+            seen, real_replace = [], os.replace
+
+            def watch_replace(src, dst):
+                seen.append(pipelib.collect_oncall_handover_pending())   # 差し替える直前に、組版が読む
+                real_replace(src, dst)
+            os.replace = watch_replace
+            try:
+                pipelib.mark_collect_oncall(time.time() + 33 * 60, "2026-10-09")
+            finally:
+                os.replace = real_replace
+            check(seen == [True] and pipelib.collect_oncall_handover_pending(), f"印の上書きの最中に組版が受け渡しを見落とす: {seen}")
+            check(not list(Path(td).glob(".mark.json.*")), "印の書きかけのファイルが残った")
+        finally:
+            pipelib.COLLECT_ONCALL_MARK, pipelib.LOCK_POLL_SEC, collect.diagnose_anomalies, collect.collect_oncall_end = saved
+    # 本物の当番(oncall.main)が、親の収集がまだ排他を持っている間に起動しても、取り直せる時刻まで待つ
+    # (02:00 の収集が 03:02 に呼ぶ: 終える時刻 03:35 → 取れた時点で30分残る 03:05 まで約3分待つ。以前は0分で即諦めた。監査指摘)
+    import oncall
+    saved_o = (sys.argv, oncall.job_lock, oncall.notify, oncall.COLLECT_ONCALL_MARK, pipelib.COLLECT_ONCALL_MARK,
+               oncall.STAGE_END_AT, oncall.DEADLINE_AT)   # main が書き換える期限も戻す(後の当番のテストが時間切れ扱いになる)
+    with tempfile.TemporaryDirectory() as td:
+        waits = []
+
+        def busy_lock(job, wait_min=0, **k):
+            waits.append(wait_min)
+            raise pipelib.JobLockTimeout("親の収集が持っている")
+        try:
+            oncall.COLLECT_ONCALL_MARK = pipelib.COLLECT_ONCALL_MARK = Path(td) / "mark.json"
+            oncall.job_lock, oncall.notify = busy_lock, lambda *a, **k: True
+            for left_min, lo, hi in ((33, 2.9, 3.1), (5 * 60, 90, 90), (20, 0, 0)):
+                sys.argv = ["oncall.py", "--stage", "collect", "--date", "2026-10-09", "--reason", "x",
+                            "--end-at", str(int(time.time() + left_min * 60))]
+                oncall.main()
+                check(lo <= waits[-1] <= hi, f"収集の当番が親の排他を待つ分(残り{left_min}分): {waits[-1]}")
+        finally:
+            (sys.argv, oncall.job_lock, oncall.notify, oncall.COLLECT_ONCALL_MARK, pipelib.COLLECT_ONCALL_MARK,
+             oncall.STAGE_END_AT, oncall.DEADLINE_AT) = saved_o
+
+
 def test_notify_require():
     pipelib.set_quiet(True)
     check(pipelib.notify("t", "x") is True, "通常通知が試験実行で False")
@@ -658,13 +761,16 @@ def test_oncall_rerun_policy():
         check(not oncall.rerun_policy(stage, ["scripts/collect.py"], "resume")[0], f"{stage}: 続きのはずが作り直し")
         check(oncall.rerun_policy(stage, ["scripts/assemble.py"], "none") == (False, "none"), f"{stage}: none が効かない")
     # 収集(collect/watch)の resume は「続き」として扱い、release の続きと取り違えない(当番 2026-10-02)
+    check(oncall.rerun_policy("watch", ["scripts/pipelib.py"], "resume") == (False, "続き(定点観測の繰り越しを拾い直す)"),
+          "watch: resume の表示名が collect 用でない")
+    check(oncall.rerun_policy("collect", ["scripts/pipelib.py"], "resume") == (False, "定点観測の取り直し(落とした新着をその号の素材へ)"),
+          "collect: 取り直しの表示名")
     for stage in ("collect", "watch"):
-        check(oncall.rerun_policy(stage, ["scripts/pipelib.py"], "resume") == (False, "続き(定点観測の繰り越しを拾い直す)"),
-              f"{stage}: resume の表示名が collect 用でない")
         check(oncall.rerun_policy(stage, ["scripts/pipelib.py"], "none") == (False, "none"), f"{stage}: none が効かない")
     # release 起点の作り直しは compose 先頭 → release の順に走る
     calls, cmds = [], []
-    saved = (oncall.reset_edition, oncall.run_stage, oncall.commit_paths, oncall.ROOT)
+    saved = (oncall.reset_edition, oncall.run_stage, oncall.commit_paths, oncall.ROOT, oncall.root_clean)
+    oncall.root_clean = lambda: True
     tmp = Path(tempfile.mkdtemp()); (tmp / "metrics").mkdir()
     try:
         oncall.ROOT = tmp
@@ -693,8 +799,39 @@ def test_oncall_rerun_policy():
         oncall.rerun_stage("watch", "2026-09-12", "edition/2026-09-13", full=False)
         i = cmds[0].index("--date")
         check(cmds[0][i + 1] == "2026-09-13", f"collect に取り込み先の号を渡していない: {cmds[0]}")
+        # 取り直しが途中で終わって作業ツリーが汚れたら、保存できた素材と既読状態を確定して clean にする(監査指摘)
+        states, committed = iter([False, True]), []
+        oncall.root_clean = lambda: next(states)
+        oncall.commit_paths = lambda paths, msg, branch, push_timeout=120: committed.append(paths)
+        oncall.run_stage = lambda cmd, log, t: 124
+        pushed = []
+        saved_ep = oncall.ensure_pushed
+        oncall.ensure_pushed = lambda branch, what, budget=300: pushed.append(branch) or True
+        try:
+            oncall.rerun_stage("collect", "2026-09-13", "edition/2026-09-13", False)
+        finally:
+            oncall.ensure_pushed = saved_ep
+        check(committed and "candidates" in committed[0] and "stock/watch-state.json" in committed[0],
+              f"途中で終わった取り直しの素材を確定しない: {committed}")
+        # clean でも、取り直しの commit がリモートに届いているかを確かめて送る(push の途中で時間切れ。監査指摘)
+        check(pushed == ["edition/2026-09-13"], f"取り直しの素材をリモートに確定しない: {pushed}")
+        # ensure_pushed: ローカルだけにある commit をリモートへ送る(実際の git で)
+        gtmp = Path(tempfile.mkdtemp(prefix="ep-"))
+        G = lambda *a, cwd=gtmp / "w": subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True, check=True).stdout.strip()
+        subprocess.run(["git", "init", "-q", "--bare", "-b", "edition/x", str(gtmp / "r.git")], check=True)
+        subprocess.run(["git", "clone", "-q", str(gtmp / "r.git"), str(gtmp / "w")], check=True, capture_output=True)
+        G("config", "user.email", "t@example.com"); G("config", "user.name", "t"); G("checkout", "-q", "-b", "edition/x")
+        (gtmp / "w" / "a").write_text("1"); G("add", "a"); G("commit", "-q", "-m", "c1"); G("push", "-q", "origin", "edition/x")
+        (gtmp / "w" / "a").write_text("2"); G("commit", "-q", "-am", "c2")
+        saved_root2 = oncall.ROOT
+        try:
+            oncall.ROOT = gtmp / "w"
+            ok_p = oncall.ensure_pushed("edition/x", "テスト")
+        finally:
+            oncall.ROOT = saved_root2
+        check(ok_p and G("rev-parse", "edition/x", cwd=gtmp / "r.git") == G("rev-parse", "HEAD"), "ローカルだけの commit を送らない")
     finally:
-        oncall.reset_edition, oncall.run_stage, oncall.commit_paths, oncall.ROOT = saved
+        oncall.reset_edition, oncall.run_stage, oncall.commit_paths, oncall.ROOT, oncall.root_clean = saved
 
 
 def test_oncall_report_text(tmp: Path):
@@ -2304,6 +2441,32 @@ def test_watch_pagination_and_batches(tmp: Path):
         check(info["deferred"] == 1 and [it["url"] for it in st.get("_pending") or []] == ["https://a.jp/1"]
               and "https://a.jp/1" not in st.get("old", []) and st.get("_unreadable", {}).get("https://a.jp/1") == 1,
               f"拾い直しで諦めず繰り越さない(=失う): deferred={info['deferred']} pending={st.get('_pending')} unreadable={st.get('_unreadable')}")
+        # 通常の収集が2度目で諦めた新着も、当番が直したあとの取り直しで拾う(諦めたら既読で、一覧にも未処理の列にも
+        # 二度と出ない。捨てると当番が直しても選定リストに入らない。監査指摘)
+        (tmp / "watch-state.json").write_text(json.dumps(base), encoding="utf-8")
+        cands, info = collect.run_watch(lambda prompt, timeout=0: None)                 # 通常の2度目 = 諦める
+        st = info["stats"]["_state"]
+        check([g["url"] for g in st.get("_given_up") or []] == ["https://a.jp/1"] and "https://a.jp/1" in st["old"],
+              f"諦めた新着を取り直しのために残さない: {st.get('_given_up')}")
+        (tmp / "watch-state.json").write_text(json.dumps(st), encoding="utf-8")
+        seen_calls = []
+        cands, info = collect.run_watch(lambda prompt, timeout=0: seen_calls.append(prompt) or [])   # 次の通常の収集
+        st = info["stats"]["_state"]
+        check(not seen_calls and [g["url"] for g in st.get("_given_up") or []] == ["https://a.jp/1"],
+              f"通常の収集が諦めた新着を読み直す(上限の外を後回しにする)か、諦めた列を消した: {len(seen_calls)} {st.get('_given_up')}")
+        given_up_state = st
+        hit = {"title": "t", "url": "https://src.jp/1", "facts": ["f"]}
+        (tmp / "watch-state.json").write_text(json.dumps(given_up_state), encoding="utf-8")
+        cands, info = collect.run_watch(lambda prompt, timeout=0: [{"page": 1, "status": "extracted", "items": [hit]}]
+                                        if "### 1. https://a.jp/1" in prompt else None, oncall_rerun=True)   # 当番が直した後の取り直し
+        st = info["stats"]["_state"]
+        check(len(cands) == 1 and info["deferred"] == 0 and not st.get("_given_up") and not st.get("_pending"),
+              f"当番の取り直しで諦めた新着を拾えない: cands={cands} given_up={st.get('_given_up')} pending={st.get('_pending')}")
+        (tmp / "watch-state.json").write_text(json.dumps(given_up_state), encoding="utf-8")
+        cands, info = collect.run_watch(lambda prompt, timeout=0: None, oncall_rerun=True)   # 直しが効いていない取り直し
+        st = info["stats"]["_state"]
+        check(info["deferred"] == 1 and [it["url"] for it in st.get("_pending") or []] == ["https://a.jp/1"] and not st.get("_given_up"),
+              f"取り直しでまた読めない諦めた新着を、未処理の列に移して申告しない: deferred={info['deferred']} {st.get('_pending')} {st.get('_given_up')}")
         # ページごとの結果(監査指摘 watch-read-status-contract): 本文を読めなかったページ・応答に無いページ・形の崩れた
         # ページは既読にせず未処理の列に残す。旧い契約の [](候補なし)で全件を既読にしない(2026-10-04: ?p=32544 を失った)
         listings = {"old": [(f"https://a.jp/q{i}", "") for i in range(5)] + [("https://a.jp/seen", "")], "fresh": []}
@@ -2350,6 +2513,11 @@ def test_collect_oncall_rerun_exit(tmp: Path):
         collect.run_watch = lambda call, oncall_rerun=False: ([], {"deferred": 0, "new": 2, "facted": 2})
         sys.argv = list(argv)
         check(collect.main() == 0, "拾い直しで全部読めたのに非0で終えた")
+        # 観測先の一覧がまた取れない(新着を見つけられないので deferred は0)→ 取り直しは成功にしない(監査指摘)
+        collect.run_watch = lambda call, oncall_rerun=False: ([], {"deferred": 0, "new": 0,
+                                                                  "stats": {"columbia-imas": {"error": "空の応答"}}})
+        sys.argv = list(argv)
+        check(collect.main() == 1, "取り直しで観測先の一覧がまた取れないのに成功(0)で終えた")
     finally:
         (collect.ROOT, collect.job_lock, collect.run_watch, collect.run_explores,
          collect.append_metric, collect.notify, sys.argv) = saved
@@ -3461,6 +3629,67 @@ def test_withdrawal(tmp: Path):
         check(lint.load_withdrawn(text)[1] != [], f"取り下げの記録の形式の誤り({what})を通した")
 
 
+def test_rewrites(tmp: Path):
+    """書き直し(rewrites.yml)の例外は、編集長が認めた範囲の記事の、本文と内容の欄だけ(監査指摘: 記録を足せば何でも通った)。"""
+    rec = lambda post, at="2026-10-08": {"post": post, "at": at, "by": "編集長", "reason": "r"}
+    ok = rec("2026-10-05-a")
+    check(lint.rewrite_record_errors([], [ok], {"2026-10-05-a"}) == [], "認めた範囲の書き直しの記録を止めた")
+    check(lint.rewrite_record_errors([], [rec("2026-09-06-a")], {"2026-09-06-a"}) != [], "範囲外の号の書き直しを通した")
+    check(lint.rewrite_record_errors([], [rec("2026-10-05-a", "2026-10-09")], {"2026-10-05-a"}) != [], "認めていない日の記録を通した")
+    check(lint.rewrite_record_errors([], [ok], set()) != [], "記事の変更を伴わない記録を通した")
+    check(lint.rewrite_record_errors([ok], [], set()) != [], "書き直しの記録の削除を通した")
+    old = {"slug": "a", "edition": "2026-10-05", "brand": "gaku", "rank": "small", "candidate_ids": ["c1"], "title": "t",
+           "corrections": [{"at": "x"}], "corrected": True}
+    check(lint.rewrite_change_errors(old, {**old, "title": "新", "lede": "l", "rank": "medium"}) == [], "本文と内容の欄の書き直しを止めた")
+    for k, v in (("candidate_ids", []), ("slug", "b"), ("edition", "2026-10-06"), ("brand", "cg"), ("corrected", False), ("extra", 1)):
+        check(lint.rewrite_change_errors(old, {**old, k: v}) != [], f"書き直しで {k} を変えられた")
+    check(lint.rewrite_change_errors(old, {**old, "corrections": []}) != [], "書き直しで既にある訂正を消せた")
+    check(lint.rewrite_change_errors(old, {**old, "corrections": [{"at": "x"}, {"at": "y"}]}) == [], "訂正の追記を止めた")
+    check(lint.rewrite_change_errors({**old, "rank": "lead"}, {**old, "rank": "large"}) != [], "書き直しで一面を外せた")
+    check(lint.rewrite_change_errors(old, {**old, "rank": "culture"}) != [], "書き直しでファン面に動かせた")
+    # 書き直しの道具: 校閲を通ったと確かめる前に止まったら、差し替えた記事を全部元に戻す(監査指摘)
+    import rewrite_past
+    import compose as _c
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    n = "2026-10-05-a.md"
+    (posts / n).write_text("元の記事", encoding="utf-8")
+    saved = (rewrite_past.ROOT, rewrite_past.apply_answer, _c.claude_review)
+
+    def fake_apply(path, case, ans):
+        path.write_text("差し替えた記事", encoding="utf-8")
+        return []
+
+    def boom(*a, **k):
+        raise FileNotFoundError("claude")
+    try:
+        rewrite_past.ROOT, rewrite_past.apply_answer, _c.claude_review = tmp, fake_apply, boom
+        try:
+            rewrite_past.replace_and_review({n: {"status": "ok"}}, {n: {"date": "2026-10-05"}}, {}, {}, bk := {}, conf := set())
+        except FileNotFoundError:
+            pass
+        check((posts / n).read_text(encoding="utf-8") == "差し替えた記事" and bk == {n: "元の記事"} and not conf,
+              "校閲の前に控えを取っていない")
+        # main の後始末(例外の経路)と同じ戻し方を、main 越しに確かめる
+        saved_argv, saved_build = sys.argv, rewrite_past.build_cases
+        rewrite_past.build_cases = lambda ops, dates: {n: {"date": "2026-10-05"}}
+        saved_raw = rewrite_past.latest_raw_answer
+        rewrite_past.latest_raw_answer = lambda label, stem: {"status": "ok"}
+        sys.argv = ["rewrite_past.py", "2026-10-05", "--from-raw"]
+        (posts / n).write_text("元の記事", encoding="utf-8")
+        try:
+            rewrite_past.main()
+            check(False, "校閲の例外が握り潰された")
+        except FileNotFoundError:
+            pass
+        finally:
+            sys.argv, rewrite_past.build_cases, rewrite_past.latest_raw_answer = saved_argv, saved_build, saved_raw
+        check((posts / n).read_text(encoding="utf-8") == "元の記事", "校閲の例外で未校閲の差し替えが残った")
+    finally:
+        rewrite_past.ROOT, rewrite_past.apply_answer, _c.claude_review = saved
+
+
 def test_oncall_ensure_edition(tmp: Path):
     """取り込み先の号が origin にだけある(新しい clone・ローカル branch を消したあと)なら、ローカルを作って揃える(監査指摘 r88)。
     origin に無ければ問題を返し、ローカルが origin と食い違えば問題を返す。"""
@@ -3688,6 +3917,33 @@ def test_oncall_fix_until_clean(tmp: Path):
         check(oncall.backlog_deadline(J(4, 0)) is None and oncall.backlog_deadline(J(12, 0)) is None, "発行の時間帯・短い枠で始める")
         check(oncall.backlog_deadline(J(0, 40)) is None and oncall.backlog_deadline(J(0, 0)) == J(1, 15).timestamp(),
               "深夜の枠が 01:30 の道具の更新を待たせる")
+        # 収集の当番は、直したら取り直してその号の素材に入れる。終える時刻は呼び出し時に固定(23:33 の失敗 → 01:15。
+        # 02:00 の収集の失敗 → 組版が待つ分を含めて 03:35。組版はその印を見て 03:40 まで待つ)
+        check(pipelib.collect_oncall_end(J(23, 40)) == (J(1, 15) + _dtb.timedelta(days=1)).timestamp()
+              and pipelib.collect_oncall_end(J(2, 20)) == J(3, 35).timestamp(), "収集の当番の終える時刻")
+        saved_mark = pipelib.COLLECT_ONCALL_MARK
+        try:
+            pipelib.COLLECT_ONCALL_MARK = tmp / "mark.json"
+            check(pipelib.compose_lock_wait_min(J(3, 0).timestamp()) == 10, "印が無いのに組版が長く待つ")
+            pipelib.COLLECT_ONCALL_MARK.write_text(json.dumps({"end_at": J(3, 35).timestamp()}), encoding="utf-8")
+            check(pipelib.compose_lock_wait_min(J(3, 0).timestamp()) == 40 and pipelib.compose_lock_wait_min(J(3, 40).timestamp()) == 10,
+                  "組版が収集の当番を待つ分")
+        finally:
+            pipelib.COLLECT_ONCALL_MARK = saved_mark
+        import collect
+        calls = []
+        saved_diag, saved_now = collect.diagnose_anomalies, collect.now_jst
+        try:
+            collect.diagnose_anomalies = lambda *a, **k: calls.append((a, k)) and False
+            collect.now_jst = lambda: J(2, 20)
+            collect.hand_to_oncall()
+        finally:
+            collect.diagnose_anomalies, collect.now_jst = saved_diag, saved_now
+        check(len(calls) == 1 and calls[0][0][0] == "collect" and calls[0][1].get("rerun") is True
+              and calls[0][1].get("extra_args") == ["--end-at", str(int(J(3, 35).timestamp()))],
+              f"収集の当番が、直したあと取り直さない・終える時刻を固定して渡さない: {calls}")
+        # 依頼文などの生成層を直しても、収集の当番は号を作り直さず取り直すだけ
+        check(oncall.rerun_policy("collect", ["prompts/watch-facts.md"], "rebuild")[0] is False, "収集の当番が号の作り直しに入る")
         # 終わりに、残った指摘を名指しで知らせる(全経路。atexit)/ 保管を読めないのは「残件なし」にしない
         notes_l = []
         saved_l = (oncall.notify, oncall.backlog_open)
@@ -3973,6 +4229,7 @@ def main() -> int:
     test_lost_post_notified_once(tmp / "lpn")
     test_review_paper_defines_same_subject()
     test_job_lock()
+    test_job_lock_collect_oncall_handover()
     test_notify_require()
     test_oncall_rerun_policy()
     test_revise_apply_decline(tmp / "ra")
@@ -3999,6 +4256,7 @@ def main() -> int:
     test_oncall_undo_merge()
     test_oncall_ensure_edition(tmp / "ee")
     test_withdrawal(tmp / "wd")
+    test_rewrites(tmp / "rw")
     test_article_purpose()
     test_plan_merge_into_drop()
     test_extract_json_array_strict()

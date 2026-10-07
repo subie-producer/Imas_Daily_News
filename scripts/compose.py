@@ -48,7 +48,8 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      checkout_edition_branch, classify_retag_lint, classify_source, commit_and_push,
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
-                     partial_output, reap, loads_strict, schema_ok, read_for_raw)
+                     partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
+                     collect_oncall_handover_pending)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
 # 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
@@ -2600,7 +2601,11 @@ def main() -> int:
     # 同じ作業ツリーを collect/release/当番と同時に触らない(監査指摘)
     if not args.plan:
         try:
-            _lock = job_lock("compose", wait_min=10)
+            # 収集の当番が落とした新着を取り直している間は、その号の選定に間に合わせるため開始を待つ(上限40分。
+            # pipelib.compose_lock_wait_min。それ以外は10分)。待つ間に当番が呼ばれても待つ分を見直し、収集から当番へ
+            # 排他を渡している最中は、空いていても取らない
+            _lock = job_lock("compose", wait_min=compose_lock_wait_min(), wait_fn=compose_lock_wait_min,
+                             yield_fn=collect_oncall_handover_pending)
         except JobLockTimeout as e:
             notify("compose", str(e), ok=False)
             return 1

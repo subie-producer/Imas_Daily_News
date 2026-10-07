@@ -74,8 +74,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hashlib
 
-from pipelib import (ENV, ROOT, JobLockTimeout, job_lock, loads_strict, notify, now_jst, partial_output, prompt_file,
-                     render_prompt, save_raw, schema_ok, tool_path)
+from pipelib import (COLLECT_ONCALL_MARK, ENV, ROOT, SCHEDULED, SLOT_MARGIN_MIN, JobLockTimeout, job_lock, loads_strict, mark_collect_oncall,
+                     next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, tool_path)
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")
@@ -230,12 +230,16 @@ def gather_context(stage: str, date: str, reason: str) -> str:
 BACKLOG_ROWS: list[dict] = []
 # 往復を終える時刻の上限(None なら ONCALL_LIMIT_MIN だけ)。backlog は次の定時工程の前に終える(backlog_deadline)
 DEADLINE_AT: float | None = None
-# 定時工程の開始(時, 分)。backlog はこの前に終え、発行の時間帯(02:00 の収集から 06:00 の発行の後片付けまで)には始めない
+# 定時工程の時刻は pipelib(SCHEDULED・next_slot_end)と共有する。backlog はこの前に終え、発行の時間帯には始めない
 # (01:30 は道具の CLI の更新。同じ工程の排他を使い、02:00 の収集の前に終える必要がある。監査指摘)
-SCHEDULED = ((1, 30), (2, 0), (3, 0), (6, 0), (7, 30), (12, 30), (18, 30), (23, 30))
-BACKLOG_MARGIN_MIN = 15      # 次の定時工程の何分前に終えるか
+BACKLOG_MARGIN_MIN = SLOT_MARGIN_MIN   # 次の定時工程の何分前に終えるか
 BACKLOG_MIN_WINDOW_MIN = 60  # これより短い枠なら始めない(取り込みの分を残して1往復も回らない)
 BACKLOG_MERGE_RESERVE_MIN = 15   # 往復を終えてから、取り込み・後始末に残す時間
+COLLECT_RERUN_RESERVE_MIN = 20   # 収集の当番: 往復を終えてから、取り込みと定点観測の取り直しに残す時間
+COLLECT_MIN_WINDOW_MIN = 30      # 収集の当番: ロックを取れた時点でこれだけ無ければ直して取り直す時間が無い(往復10分+取り直し20分)
+CLEANUP_RESERVE_SEC = 300        # 収集の当番: 取り直しを打ち切ってから、後始末(素材の確定・push・通知)に残す秒数
+# 収集の当番が、取り直しまで含めて終えるべき時刻(epoch 秒。呼び出し側の収集が --end-at で固定して渡す)
+STAGE_END_AT: float | None = None
 
 
 def backlog_deadline(now: datetime.datetime) -> float | None:
@@ -800,6 +804,11 @@ def rerun_policy(stage: str, changed: list[str], rerun_mode: str) -> tuple[bool,
         # 出典の判定は号を作らない。パーサを足したら、その号の判定(合議 → 付け直し → lint)をやり直すだけ
         # (prompts/ を触っても組版はやり直さない。組版はまだ走っていないか、走るなら 03:00 に新しいコードで走る)
         return False, "出典の判定のやり直し(classify_retag_lint)"
+    if stage == "collect":
+        # 収集の当番は、依頼文などの生成層を直しても号を作り直さない。やるのは定点観測の取り直しだけ(落とした新着を
+        # その号の素材に入れる)。号はまだ組んでいないか、組むなら新しいコードで組まれる(監査指摘: 作り直しに入ると
+        # 取り直しを飛ばして組版を始め、次の定時工程も待たせる)
+        return False, "定点観測の取り直し(落とした新着をその号の素材へ)"
     full = needs_full_rerun(changed) or rerun_mode == "rebuild"
     if full:
         return True, "作り直し(compose 全工程" + (" → release" if stage == "release" else "") + ")"
@@ -810,12 +819,12 @@ def rerun_policy(stage: str, changed: list[str], rerun_mode: str) -> tuple[bool,
     return False, "続き(release)"
 
 
-def commit_paths(paths: list[str], msg: str, branch: str) -> None:
+def commit_paths(paths: list[str], msg: str, branch: str, push_timeout: int = 120) -> None:
     """対象パスだけを stage して commit・push(包括的な add -A は使わない。監査指摘)。"""
     must(sh(["git", "add", "-A", "--"] + paths, cwd=ROOT), "add")
     if must(sh(["git", "status", "--porcelain"], cwd=ROOT), "git status").stdout.strip():
         must(sh(["git", "commit", "-q", "-m", msg + CO_AUTHOR], cwd=ROOT), "commit")
-        must(sh(["git", "push", "-q", "origin", branch], cwd=ROOT, timeout=120), "push")
+        must(sh(["git", "push", "-q", "origin", branch], cwd=ROOT, timeout=push_timeout), "push")
 
 
 def rollback_in_subprocess(date: str) -> list[str]:
@@ -879,14 +888,35 @@ CLASSIFY_RERUN = ("import sys; sys.path.insert(0, 'scripts'); import pipelib; "
                   "ok, why = pipelib.classify_retag_lint(sys.argv[1], require_parsers=True); print(why); sys.exit(0 if ok else 1)")
 
 
+def ensure_pushed(branch: str, what: str, budget: int = 300) -> bool:
+    """branch のローカルの commit がリモートに届いているかを確かめ、届いていなければ送る。届かなければ名指しで通知して False。
+    budget(秒)は fetch と push に使ってよい合計(期限のある後始末から呼ぶとき、残り時間で切る)。"""
+    try:
+        sh(["git", "fetch", "-q", "origin", branch], cwd=ROOT, timeout=max(10, budget // 3))
+        ahead = sh(["git", "rev-list", "--count", f"origin/{branch}..{branch}"], cwd=ROOT).stdout.strip()
+        if ahead in ("", "0"):
+            return True
+        r = sh(["git", "push", "-q", "origin", branch], cwd=ROOT, timeout=max(10, budget * 2 // 3))
+        if r.returncode == 0:
+            print(f"{what}: リモートに届いていなかった commit {ahead}件を送った", flush=True)
+            return True
+        why = (r.stderr or r.stdout or "")[-300:]
+    except (subprocess.TimeoutExpired, OSError) as e:
+        why = f"{type(e).__name__}: {e}"
+    notify("oncall", f"{what}がリモート({branch})に届いていない。次の工程がリモートから号を取り直すと消える: {why}", ok=False)
+    return False
+
+
 def run_stage(cmd: list[str], log: Path, timeout: int) -> int:
+    """再実行する工程を走らせる。時間切れなら子(モデルのセッション)ごと落とす(親だけ落とすと子が作業ツリーを触り続ける)。"""
+    from pipelib import reap
     with log.open("a", encoding="utf-8") as f:
+        p = subprocess.Popen(cmd, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
+                             env={**os.environ, "ONCALL": "off", "IMAS_JOB_LOCK": "held"}, start_new_session=True)
         try:
-            r = subprocess.run(cmd, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, timeout=timeout,
-                               stdin=subprocess.DEVNULL,
-                               env={**os.environ, "ONCALL": "off", "IMAS_JOB_LOCK": "held"})
-            return r.returncode
+            return p.wait(timeout=timeout)
         except subprocess.TimeoutExpired:
+            reap(p)
             return 124
 
 
@@ -924,8 +954,28 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool) -> int:
             #   - --oncall-rerun は、直しが効かず再び読めなかったバッチを諦めさせない。既読にせず繰り越し、
             #     残れば collect が非0で返す(原因未確定のまま新着を失わない。監査指摘)
             target = edition.removeprefix("edition/")
+            # 取り直しも次の定時工程の前に終える(STAGE_END_AT)。後始末(素材の確定・push・通知)の分
+            # (CLEANUP_RESERVE_SEC)を残して打ち切り、後始末の git 操作も残り時間で切る(監査指摘: 後始末で期限を越えると
+            # 組版が待つのをやめる)
+            left = lambda: (STAGE_END_AT - time.time()) if STAGE_END_AT else 3600
+            limit = max(60, min(3600, int(left() - CLEANUP_RESERVE_SEC)))
             code = run_stage([sys.executable, str(ROOT / "scripts" / "collect.py"),
-                              "--skip-explore", "--skip-grok", "--oncall-rerun", "--date", target], log, 3600)
+                              "--skip-explore", "--skip-grok", "--oncall-rerun", "--date", target], log, limit)
+            if not root_clean():
+                # 時間切れ・異常終了で取り直しが途中で終わっても、保存できた素材と既読状態は確定させ、作業ツリーを
+                # clean にして次の工程(組版・道具の更新)を止めない(監査指摘)。素材のファイルは丸ごと書き直す形なので途中は無い
+                try:
+                    commit_paths(["candidates", "stock/watch-state.json", "metrics"],
+                                 f"oncall: {target} 取り直しの途中までを確定(exit {code})", edition,
+                                 push_timeout=max(15, min(120, int(left() / 3))))
+                except Exception as e:      # noqa: BLE001
+                    notify("oncall", f"{date} collect: 取り直しの途中までを確定できない({type(e).__name__}: {e})", ok=False)
+                if not root_clean():
+                    notify("oncall", f"{date} collect: 取り直しのあと作業ツリーが clean でない。次の工程が止まりうる:\n"
+                                     + sh(["git", "status", "--short"], cwd=ROOT).stdout[:500], ok=False)
+            # clean でも、取り直しの commit がリモートに届いていなければ(push の途中で時間切れ・通信の停滞)、ここで送る。
+            # 届かないまま次の工程がリモートから号を取り直すと、取り直した新着がその号の素材から消える(監査指摘)
+            ensure_pushed(edition, f"{date} collect: 取り直した素材", budget=max(20, int(left() - 30)))
         else:
             code = 0
         if code == 0 and stage == "release":
@@ -953,6 +1003,8 @@ def main() -> int:
                     help="修正を取り込む号の日付(既定は --date)。発行後の release・watch は異常の発生日と取り込み先の号が違う")
     ap.add_argument("--backlog", action="store_true", help="発行後に直す指摘(未着手)を一覧する")
     ap.add_argument("--backlog-done", nargs="+", metavar="KEY", help="直し終えた指摘を消し込む")
+    ap.add_argument("--end-at", default="", metavar="EPOCH",
+                    help="収集の当番: 取り直しまで含めて終える時刻(呼び出し側の収集が固定して渡す。起動し直しても延びない)")
     ap.add_argument("--backlog-keys", nargs="+", default=[], metavar="KEY",
                     help="--stage backlog で渡した保管の指摘。取り込めたら(直す箇所なしの承認も)消し込む")
     a = ap.parse_args()
@@ -989,11 +1041,29 @@ def main() -> int:
             return 0
         # 往復はさらに取り込み・後始末の分(BACKLOG_MERGE_RESERVE_MIN)を残して終える
         DEADLINE_AT = end - BACKLOG_MERGE_RESERVE_MIN * 60
+    elif stage == "collect" and not a.no_rerun:
+        # 収集で落とした新着は、直して**取り直し、その号の選定リスト(素材)に入れる**までが当番の仕事(編集長 2026-10-07
+        # 「やらかしてドロップしたのは責任を持って修正して紙面に乗せろ」「正しくは選定リストにちゃんと乗せろ」)。
+        # 終える時刻は呼び出し側の収集が固定して渡す(--end-at。起動し直しても延びない。監査指摘)。02:00 の収集なら組版が待つ分を含む。
+        # 動いている間は印を置き、組版はそれを見て開始を待つ(pipelib.compose_lock_wait_min)
+        global STAGE_END_AT
+        STAGE_END_AT = float(a.end_at) if a.end_at else next_slot_end(now_jst())
+        DEADLINE_AT = STAGE_END_AT - COLLECT_RERUN_RESERVE_MIN * 60
+        if time.time() < STAGE_END_AT:
+            # 収集が置いた印を引き継ぐ(手で起動したときは収集が置いていないので、ここで置く)。排他を取ったら held にする
+            mark_collect_oncall(STAGE_END_AT, date)
+            import atexit
+            atexit.register(COLLECT_ONCALL_MARK.unlink, missing_ok=True)   # 置いた印そのもの(後から名前が差し替わっても他を消さない)
 
     # 工程の排他(collect/compose/release/当番で共通の flock)。起動直後は親の compose がまだ持って
     # いるので、ここで終わるまで待つ。以後、再実行が終わるまで持ち続ける(pgrep の隙間を作らない。監査指摘)。
-    # backlog は待つのも往復の期限まで(期限を過ぎてロックを取ると、次の定時工程を待たせる。監査指摘)
-    wait_min = WAIT_IDLE_MIN if DEADLINE_AT is None else max(0, min(WAIT_IDLE_MIN, int((DEADLINE_AT - time.time()) // 60) - 30))
+    # backlog は待つのも往復の期限まで(期限を過ぎてロックを取ると、次の定時工程を待たせる。監査指摘)。
+    # 収集は、取れた時点で COLLECT_MIN_WINDOW_MIN 残る時刻まで待つ(親の収集が終わるまで。02:00 の収集が 03:02 に呼んでも
+    # 3分は待つ。backlog と同じ「期限-30分」では 0分になり、親が離す前に諦めて取り直せなかった。監査指摘)
+    if stage == "collect" and STAGE_END_AT is not None:
+        wait_min = max(0.0, min(WAIT_IDLE_MIN, (STAGE_END_AT - time.time()) / 60 - COLLECT_MIN_WINDOW_MIN))
+    else:
+        wait_min = WAIT_IDLE_MIN if DEADLINE_AT is None else max(0, min(WAIT_IDLE_MIN, int((DEADLINE_AT - time.time()) // 60) - 30))
     try:
         lock_fd = job_lock("oncall", wait_min=wait_min)
     except JobLockTimeout as e:
@@ -1002,11 +1072,20 @@ def main() -> int:
             return 0
         notify("oncall", f"{date} {stage}: {e}。当番は諦める", ok=False)
         return 1
-    if DEADLINE_AT is not None and DEADLINE_AT - time.time() < 30 * 60:
+    if stage == "collect" and not a.no_rerun and time.time() < (STAGE_END_AT or 0):
+        mark_collect_oncall(STAGE_END_AT, date, held=True)   # 受け渡しは済んだ(組版は譲るのをやめ、印の end_at まで待つ)
+    need_min = 30 if stage == BACKLOG_STAGE else COLLECT_MIN_WINDOW_MIN - COLLECT_RERUN_RESERVE_MIN
+    if DEADLINE_AT is not None and DEADLINE_AT - time.time() < need_min * 60:
         # ロックを取れた時点で、1往復(当番・監査)と取り込みの時間が残っていなければ始めない
         os.close(lock_fd)
-        print("ロックを取れたが、期限までに1往復できない。保管の指摘は翌朝また渡る", flush=True)
-        return 0
+        if stage == BACKLOG_STAGE:
+            print("ロックを取れたが、期限までに1往復できない。保管の指摘は翌朝また渡る", flush=True)
+            return 0
+        # 収集: 次の定時工程までに直して取り直す時間が無い。落とした新着がこの号に載らないことを、通知で終えずに名指しする
+        # (次の収集で同じ失敗が起きれば、その収集がまた当番を呼ぶ)
+        notify("oncall", f"{date} collect: 次の定時工程までに、直して取り直す時間が無い(残り {int((STAGE_END_AT or 0) - time.time()) // 60}分)。"
+                         "収集で落とした新着は、この号に載らず1号遅れうる。異常の一覧:\n" + a.reason[-1500:], ok=False)
+        return 1
     # 試行回数はロックの中で数える・判定する・増やす(同時起動で上限をすり抜けない。監査指摘)。
     # 回数は印ファイルの個数(JSON の壊れ・書き換えで緩まない)、記録(log)は JSON
     state_p = ROOT / "metrics" / f"oncall-{date}-{stage}.json"

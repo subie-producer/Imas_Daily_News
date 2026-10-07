@@ -486,6 +486,117 @@ def test_restore_reservation_facts(tmp: Path):
         assemble.ROOT, assemble.SCHEDULED = saved
 
 
+def test_restore_chained_reservation_facts(tmp: Path):
+    """予約を元に付けた予約(src_candidate_id が sched-*)も、元の予約をたどって候補の facts まで復元する(当番の指摘 f1a5050dcc。
+    実測: 2027-01-12 のオケコン千秋楽の予約は 09-27 の予約 → 09-18 の候補 248件のうち12件だけを持っていた)。
+    途中の予約が元と食い違えば、たどった先を採らない。過去日の予約(途中の段)は書き換えない。既報の照合も予約の素材を引く。"""
+    import storylink as sl
+    st = tmp / "stock" / "scheduled"; st.mkdir(parents=True); (tmp / "candidates").mkdir()
+    facts = [f"事実 {i}" for i in range(20)] + ["A席全席指定料金: 12,000円（税込）"]
+    (tmp / "candidates" / "2026-09-18.json").write_text(json.dumps([{"id": "c-1", "facts": facts}], ensure_ascii=False), encoding="utf-8")
+    mid = {"id": "sched-2026-09-27-orch-締切", "dedup_key": "orch", "url": "https://idolmaster-official.jp/news/01_19894",
+           "reserved_on": "2026-09-18", "src_candidate_id": "c-1", "facts": facts[:12]}
+    bad = dict(mid, id="sched-2026-09-27-bad-締切", facts=["別の事実"] + facts[1:12])
+    (st / "2026-09-27.json").write_text(json.dumps([mid, bad], ensure_ascii=False), encoding="utf-8")
+    end = {"id": "sched-2027-01-12-orch-千秋楽", "reserved_on": "2026-09-27", "src_candidate_id": mid["id"], "facts": facts[:12]}
+    end_bad = dict(end, id="e2", src_candidate_id=bad["id"], facts=bad["facts"][:12])
+    (st / "2027-01-12.json").write_text(json.dumps([end, end_bad], ensure_ascii=False), encoding="utf-8")
+    saved = (assemble.ROOT, assemble.SCHEDULED)
+    try:
+        assemble.ROOT, assemble.SCHEDULED = tmp, st
+        log = assemble.restore_reservation_facts("2026-10-07")
+        rows = {r["id"]: r for r in json.loads((st / "2027-01-12.json").read_text(encoding="utf-8"))}
+        check(rows[end["id"]]["facts"] == facts, f"予約を元にした予約を復元しない: {len(rows[end['id']]['facts'])}件")
+        check(rows["e2"]["facts"] == bad["facts"][:12], "途中の予約が元と食い違うのに、元の候補の facts にすり替えた")
+        check(len(json.loads((st / "2026-09-27.json").read_text(encoding="utf-8"))[0]["facts"]) == 12, "過去日の予約(途中の段)を書き換えた")
+        check(len(log) == 1 and assemble.restore_reservation_facts("2026-10-07") == [], f"冪等でない: {log}")
+    finally:
+        assemble.ROOT, assemble.SCHEDULED = saved
+    # 既報の照合: 予約から書いた記事(candidate_ids が sched-*)の話題キーを、その号の予約から引く
+    (tmp / "docs" / "_posts").mkdir(parents=True)
+    (tmp / "docs" / "_posts" / "2026-09-27-orch.md").write_text(
+        "---\nslug: orch\nbrand: cg\ntitle: オケコン締切\ncandidate_ids: [sched-2026-09-27-orch-締切]\n---\n本文\n", encoding="utf-8")
+    arts = sl.past_articles("2026-09-28", tmp)
+    check(arts and "orch" in arts[0]["keys"] and "idolmaster-official.jp/news/01_19894" in arts[0]["urls"],
+          f"予約から書いた記事の話題キー・URL を既報の照合に載せない: {arts}")
+
+
+def test_lost_post_notified_once(tmp: Path):
+    """X の投稿の喪失は、深掘りの確かめまで終えた最終結果で、投稿ごとに1度だけ通知する(当番の指摘 11fc3de74b。
+    実測 2026-10-07: 通常の確かめで読めなかった投稿を深掘り前に通知し、深掘りでも読めずにもう一度通知した)。
+    深掘りで済んだ投稿は失ったと言わない。深掘りの確かめの問い(使わない)が読めなくても通知しない。"""
+    import collect
+    def run(deep_status: str) -> list[str]:
+        root = tmp / deep_status
+        (root / "candidates").mkdir(parents=True)
+        notes = []
+        class P:
+            pid = 0
+            returncode = 0
+            def wait(self, timeout=None): return 0
+        def fake_popen(args, cwd=None, **kw):
+            wd = Path(cwd)
+            urls = re.findall(r"(?m)^- url:\s*(\S+)", (wd / "x-posts.md").read_text(encoding="utf-8"))
+            deep_pass = "-deep" in wd.name
+            st = (lambda u: deep_status if "status/9" in u else "none") if deep_pass else (lambda u: "unreadable" if "status/9" in u else "none")
+            (wd / "items.json").write_text("[]", encoding="utf-8")
+            (wd / "posts.json").write_text(json.dumps([{"url": u, "status": st(u), "item": ""} for u in urls]), encoding="utf-8")
+            if not deep_pass:
+                (wd / "deep.json").write_text(json.dumps([{"question": "元の投稿", "why": "引用だけ"}]), encoding="utf-8")
+            return P()
+        def basic(queries, outdir, errs):
+            (outdir / "cg.md").write_text("### 1\n- url: https://x.com/a/status/9\n- 本文: 告知\n\n### 2\n- url: https://x.com/a/status/2\n- 本文: 雑談\n",
+                                          encoding="utf-8")
+            return []
+        def dive(queries, outdir, chosen, errs):
+            (outdir / "cg-deep.md").write_text("### 1\n- url: https://x.com/a/status/9\n- 本文: 告知\n", encoding="utf-8")
+            return set()
+        names = ("ROOT", "build_prompts", "grok_basic", "deep_dive_grok", "grok_week_usage", "grok_search_counts", "notify",
+                 "prompt_file", "save_raw", "explore_workdir")
+        saved = {n: getattr(collect, n) for n in names}
+        saved_popen = collect.subprocess.Popen
+        try:
+            collect.ROOT = root
+            collect.build_prompts = lambda: [{"key": "cg", "brand": "cg", "topic": "t"}]
+            collect.grok_basic, collect.deep_dive_grok = basic, dive
+            collect.grok_week_usage, collect.grok_search_counts = (lambda *a: 0), (lambda *a: {})
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+            collect.prompt_file = lambda date, name, prompt, base=None: "p"
+            collect.save_raw = lambda *a, **kw: None
+            collect.explore_workdir = lambda key: (root / "wd" / key).mkdir(parents=True) or root / "wd" / key
+            collect.subprocess.Popen = fake_popen
+            collect.run_explores(True, False)
+        finally:
+            for n, v in saved.items():
+                setattr(collect, n, v)
+            collect.subprocess.Popen = saved_popen
+        return notes
+    notes = run("unreadable")
+    lost = [m for m in notes if "status/9" in m]
+    check(len(lost) == 1 and lost[0].count("https://x.com/a/status/9") == 1 and "status/2" not in lost[0],
+          f"深掘りでも読めない投稿の喪失を、最終結果で1度だけ通知しない: {notes}")
+    check(not any("deep.json" in m for m in notes), f"使わない深掘りの確かめの問いが読めないことを通知した: {notes}")
+    notes = run("none")
+    check(not any("status/9" in m for m in notes), f"深掘りで済んだ投稿を失ったと通知した: {notes}")
+    # 面どうしで同じアカウントを検索するので、同じ投稿が複数の面で残る。面の数だけ通知しない(監査指摘 lost-post-cross-face)
+    notes = []
+    saved = collect.notify
+    try:
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        u = "https://x.com/imas_official/status/1"
+        ledger = collect.lost_posts_ledger()
+        ledger["lost"]["765as"] = [(f"### 1\n- url: {u}\n- 本文: 告知", "時間切れ")]
+        ledger["lost"]["joint-other"] = [(f"### 3\n- url: {u}\n- 本文: 告知", "時間切れ"),
+                                         ("### 4\n- url: https://x.com/imas_official/status/7\n- 本文: 別", "時間切れ")]
+        ledger["settled"].add("https://x.com/imas_official/status/7")
+        collect.report_lost_posts(ledger)
+    finally:
+        collect.notify = saved
+    check(len(notes) == 1 and "\n".join(notes).count(u) == 1 and "765as" in notes[0] and "joint-other" in notes[0]
+          and "status/7" not in notes[0],
+          f"複数の面で残った同じ投稿の喪失を、所属の面を併記して1度だけ通知しない: {notes}")
+
+
 def test_review_paper_defines_same_subject():
     """紙面担当の P1 は「同じ知らせ」だけ。同じ催しの別の知らせを重複にしない(2026-10-07 MSP アンケート)。"""
     text = (pipelib.ROOT / "prompts" / "review-paper.md").read_text(encoding="utf-8")
@@ -3744,6 +3855,8 @@ def main() -> int:
     test_rollback(tmp / "rb")
     test_reservation_keeps_all_facts(tmp / "rkf")
     test_restore_reservation_facts(tmp / "rrf")
+    test_restore_chained_reservation_facts(tmp / "rcf")
+    test_lost_post_notified_once(tmp / "lpn")
     test_review_paper_defines_same_subject()
     test_job_lock()
     test_notify_require()

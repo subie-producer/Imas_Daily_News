@@ -80,30 +80,48 @@ def restore_reservation_facts(date: str) -> list[str]:
     """発行日以降の続報予約のうち、facts が元素材の facts の途中で切れているものを元素材から全部写し直す。
 
     以前の組版は予約に facts を先頭12件しか写さなかった(実測 2026-10-07: 13件目の締切日時が落ち、締切前の
-    記事を見送った)。元素材は予約を付けた号の candidates/<reserved_on>.json にある。保存済みの facts が元の
-    facts の真の先頭部分であるときだけ直す(別物にすり替えない)。元が無ければそのまま。冪等。
+    記事を見送った)。元素材は予約を付けた号の素材(candidates/<reserved_on>.json か、その号の素材だった
+    stock/scheduled/<reserved_on>.json の予約)で、予約を元に付けた予約は元をたどって候補まで戻る(source_facts)。
+    保存済みの facts が元の facts の真の先頭部分であるときだけ直す(別物にすり替えない)。元が無ければそのまま。
+    過去日の予約は読むだけで書き換えない。冪等。
     """
-    log, cands = [], {}
+    log, cache = [], {}
     for p in sorted(SCHEDULED.glob("*.json")):
         if p.stem < date:
             continue
         rows = json.loads(p.read_text(encoding="utf-8"))
         n = 0
         for r in rows:
-            on, cid, have = r.get("reserved_on"), r.get("src_candidate_id"), list(r.get("facts") or [])
-            if not on or not cid:
-                continue
-            if on not in cands:
-                q = ROOT / "candidates" / f"{on}.json"
-                cands[on] = ({c["id"]: c for c in json.loads(q.read_text(encoding="utf-8")) if c.get("id")}
-                             if q.exists() else {})
-            full = list((cands[on].get(cid) or {}).get("facts") or [])
-            if len(full) > len(have) and full[:len(have)] == have:
+            have = list(r.get("facts") or [])
+            full = source_facts(r.get("reserved_on"), r.get("src_candidate_id"), cache)
+            if full is not None and len(full) > len(have) and full[:len(have)] == have:
                 r["facts"] = full; n += 1
         if n:
             p.write_text(json.dumps(rows, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
             log.append(f"予約 {p.name}: 切れていた facts を元素材から {n} 件復元")
     return log
+
+
+def source_facts(on, cid, cache: dict, depth: int = 0) -> list | None:
+    """予約を付けた号 on の素材 cid の facts を、元の候補までたどって返す(load_materials と同じ引き方: 候補が先、
+    無ければその号の予約)。素材が予約なら、その予約の facts が元の facts の先頭部分であるときだけ元の facts を採る
+    (各段で先頭一致を確かめる。食い違えば、その予約の facts のまま)。見つからなければ None。
+    以前は候補だけを引き、予約を元に付けた予約(src_candidate_id が sched-*)を復元できなかった(当番の指摘 f1a5050dcc)。"""
+    if not on or not cid or depth > 30:
+        return None
+    if on not in cache:
+        c, q = ROOT / "candidates" / f"{on}.json", SCHEDULED / f"{on}.json"
+        cache[on] = ({x["id"]: x for x in json.loads(c.read_text(encoding="utf-8")) if x.get("id")} if c.exists() else {},
+                     {x["id"]: x for x in json.loads(q.read_text(encoding="utf-8")) if x.get("id")} if q.exists() else {})
+    cands, sched = cache[on]
+    if cid in cands:
+        return list(cands[cid].get("facts") or [])
+    s = sched.get(cid)
+    if s is None:
+        return None
+    mine = list(s.get("facts") or [])
+    up = source_facts(s.get("reserved_on"), s.get("src_candidate_id"), cache, depth + 1)
+    return up if up is not None and len(up) > len(mine) and up[:len(mine)] == mine else mine
 
 
 def load_yaml_list(p: Path) -> list:

@@ -684,11 +684,20 @@ def repoint_to_post(items: list[dict], posts_md: str) -> list[dict]:
     return items
 
 
-def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "") -> tuple[list[dict], dict[str, list[dict]]]:
+def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
+                      ledger: dict | None = None) -> tuple[list[dict], dict[str, list[dict]]]:
     """Grok が書き出した X の投稿(<key><suffix>.md)を、面ごとに Luna が読み、リンク先を開いて確かめて候補にする(並列)。
     戻りは (候補, 面 → X の原本でしか確かめられない問い)。「なし」だけの面・ファイルの無い面は飛ばす。
     投稿ごとの結果(posts.json)と入力の投稿を突き合わせ、結果の無い投稿だけで1回やり直す(suffix に -again)。
+    2回とも残った投稿と、済んだ投稿は ledger(lost_posts_ledger)に記録する。ledger を渡されなければこの段の結果を最終として
+    喪失を通知し、渡されたら通知は呼び手が最後の段(深掘りの確かめ)のあとで report_lost_posts で1度だけ出す
+    (深掘りの前に通知すると、深掘りで済んだ投稿を失ったと言い、深掘りでも読めない投稿は二度通知した。当番の指摘 11fc3de74b)。
+    深掘りの確かめ(suffix に -deep)の問い(deep.json)は使わないので、読まず、読めなくても通知しない。
     Luna は探索と同じくリポジトリ外の作業ディレクトリで走る(ページの中身に指示が仕込まれていても、リポジトリに手が届かない)。"""
+    own = ledger is None
+    if own:
+        ledger = lost_posts_ledger()
+    wants_deep = "-deep" not in suffix
     deadline = time.time() + EXPLORE_TIMEOUT
     jobs = []
     for q in queries:
@@ -721,38 +730,69 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "") -> tu
         left = (post_blocks(text) or [text]) if got is None else unaccounted_posts(text, read_json_list(wd / "posts.json"), got)
         # 付け直し・正規化へ渡すのは、形を揃えた候補だけ(崩れた要素で収集全体を止めない。監査指摘)
         items += repoint_to_post([s for s in (shape_item(x) for x in got or []) if s], text)
+        left_urls = {post_url(b) for b in left}
+        ledger["settled"] |= {u for u in map(post_url, post_blocks(text)) if u and u not in left_urls}
         if left and not final:
             # 残った投稿だけを <key><suffix>-again.md に書き出し、もう1回だけ確かめさせる(下でまとめて)
             (outdir / f"{q['key']}{suffix}-again.md").write_text("\n\n".join(left) + "\n", encoding="utf-8")
             again.append(q)
         elif left:
-            # 2回目でも残った投稿は、申告で終えない(当番のなぜなぜへ)。どの投稿を失うかを名指しする
-            notify("collect", f"Grok の {q['key']} 面: X の投稿 {len(left)}件を、2回確かめても候補にも「事実なし」にもできなかった"
-                              f"({'候補の一覧が読めない' if got is None else '投稿ごとの結果に無い・読めなかった'}、"
-                              f"{'締切内に終わった' if in_time else '時間切れ'})。この投稿の X の動きを失う:\n"
-                              + "\n".join(f"- {post_url(b) or '(投稿に分けられない書き出し) ' + b[:80]}" for b in left[:10])
-                              + (f"\n- ほか {len(left) - 10}件" if len(left) > 10 else ""), ok=False)
+            # 2回目でも残った投稿は、申告で終えない(当番のなぜなぜへ)。どの投稿を失うかを最後の段のあとで名指しする
+            why = (f"{'候補の一覧が読めない' if got is None else '投稿ごとの結果に無い・読めなかった'}、"
+                   f"{'締切内に終わった' if in_time else '時間切れ'}")
+            ledger["lost"].setdefault(q["key"], []).extend((b, why) for b in left)
         raw_asks = read_json_list(wd / "deep.json") if in_time and p.returncode == 0 else None
-        if raw_asks is None:
+        if raw_asks is None and wants_deep:
             # 「問いなし([])」と「書けなかった」を分ける。原本の確かめを黙って失わない(監査指摘 r116)
             notify("collect", f"Grok の {q['key']} 面: X の原本でしか確かめられない問い(deep.json)が読めない"
                               f"({'締切内に終わった' if in_time else '時間切れ'})。深掘りの機会を失う", ok=False)
         asks = [a for a in (raw_asks or []) if schema_ok(a, DEEP_ASK_SCHEMA) and a["question"].strip()]
-        if raw_asks is not None and len(asks) < len(raw_asks):
+        if wants_deep and raw_asks is not None and len(asks) < len(raw_asks):
             # 崩れた問いを「問いなし」にしない(深掘りの機会を黙って失わない。監査指摘)。正しい問いは使う
             notify("collect", f"Grok の {q['key']} 面: X の原本でしか確かめられない問いのうち {len(raw_asks) - len(asks)}件の形が崩れていて使えない"
                               "(深掘りの機会を失う)", ok=False)
-        if asks:
+        if asks and wants_deep:
             deep[q["key"]] = asks
         shutil.rmtree(wd, ignore_errors=True)
     print(f"grok: 確かめ{suffix or ''} {len(jobs)}面 → 候補 {len(items)}件、原本の問い {sum(len(v) for v in deep.values())}件", flush=True)
     if again:
         print(f"grok: 結果の無い投稿が残った面 {', '.join(q['key'] for q in again)} を、残った投稿だけでもう1回確かめる", flush=True)
-        more, more_deep = verify_grok_faces(again, outdir, suffix=suffix + "-again")
+        more, more_deep = verify_grok_faces(again, outdir, suffix=suffix + "-again", ledger=ledger)
         items += more
         for k, v in more_deep.items():
             deep.setdefault(k, []).extend(v)
+    if own:
+        report_lost_posts(ledger)
     return items, deep
+
+
+def lost_posts_ledger() -> dict:
+    """X の投稿の確かめの記録(全段で共有)。lost: 面 → [(2回確かめても残った投稿の塊, 理由)] / settled: どこかの段で済んだ投稿の url。"""
+    return {"lost": {}, "settled": set()}
+
+
+def report_lost_posts(ledger: dict) -> None:
+    """最後の段まで確かめ終えて、どの段でも済まなかった投稿だけを、まとめて1度、投稿ごとに1行で名指しする。
+    途中の段で残っても、後の段(深掘りの確かめ)で済んだ投稿は失っていない。同じ投稿が複数の段で残っても、
+    複数の面で残っても(面どうしで同じアカウントを検索するので、同じ投稿が複数の面に書き出される)1行にし、所属の面を併記する
+    (面ごとに数えると、同じ投稿の喪失を面の数だけ通知した。監査指摘 lost-post-cross-face)。"""
+    rows: dict[str, list] = {}  # 投稿 → [表示, 面の並び, 理由の並び](最初に現れた順)
+    for key in sorted(ledger["lost"]):
+        for b, why in ledger["lost"][key]:
+            u = post_url(b)
+            if u and u in ledger["settled"]:
+                continue
+            row = rows.setdefault(u or b, [u or "(投稿に分けられない書き出し) " + b[:80], [], []])
+            for lst, v in ((row[1], key), (row[2], why)):
+                if v not in lst:
+                    lst.append(v)
+    if not rows:
+        return
+    lines = [f"- {shown}(面: {', '.join(keys)}。{' / '.join(whys)})" for shown, keys, whys in rows.values()]
+    faces = sorted({k for _, keys, _ in rows.values() for k in keys})
+    notify("collect", f"Grok の {', '.join(faces)} 面: X の投稿 {len(lines)}件を、深掘りまで確かめても候補にも「事実なし」にもできなかった。"
+                      "この投稿の X の動きを失う:\n" + "\n".join(lines[:10])
+                      + (f"\n- ほか {len(lines) - 10}件" if len(lines) > 10 else ""), ok=False)
 
 
 # 投稿の url の行。見本は `- url: …` だが、行頭の記号が抜けた・全角のコロンなどの崩れも投稿の区切りとして拾う
@@ -1004,7 +1044,9 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         grok_started = time.time()
         grok_basic(queries, outdir, grok_errs)
         # Luna が面ごとに確かめて候補にする。X の原本でしか確かめられない問いは、予算を確かめて Grok に深掘りさせ、もう一度 Luna が確かめる
-        got, deep = verify_grok_faces(queries, outdir)
+        # 投稿の喪失は、深掘りの確かめまで終えた最終結果で1度だけ通知する(当番の指摘 11fc3de74b)
+        ledger = lost_posts_ledger()
+        got, deep = verify_grok_faces(queries, outdir, ledger=ledger)
         if deep:
             used = grok_week_usage()
             budget = deep_budget(used)
@@ -1020,8 +1062,9 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                 if lost:
                     notify("collect", "Grok の深掘りが時間切れ・異常終了し、X の原本の確かめを失った面: "
                                       + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost), ok=False)
-                more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen], outdir, suffix="-deep")
+                more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen], outdir, suffix="-deep", ledger=ledger)
                 got += more
+        report_lost_posts(ledger)
         # 全面が正常に終わって明示的に「なし」と書いた(エラー出力も無い)なら、正常な空振りで異常ではない(監査指摘)
         explicit_none = not grok_errs and all(
             re.fullmatch(r"(なし|見つからない)[。\s]*", read_written(outdir / f"{q['key']}.md").strip()) for q in queries)

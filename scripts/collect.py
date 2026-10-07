@@ -41,7 +41,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
-                     extract_periods, html_to_text, loads_strict, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
+                     extract_periods, html_to_text, looks_unrendered, loads_strict, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
                      set_quiet, unbacked_facts,
                      anomaly, checkout_edition_branch, classify_retag_lint, commit_and_push, diagnose_anomalies, edition_date,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
@@ -1360,7 +1360,7 @@ def verify(cands: list[dict]) -> dict:
                 if ok:
                     text = html_to_text(body, cs)
                     # CSR で本文が空同然なら描画してから読み直す(定点観測と同じ経路)
-                    if len(text.strip()) < 400:
+                    if looks_unrendered(text):
                         rendered = fetch_rendered(c["url"])
                         if rendered:
                             text = html_to_text(rendered.encode("utf-8", "replace"))

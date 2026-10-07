@@ -956,6 +956,15 @@ def html_to_text(raw: bytes, charset: str | None = None) -> str:
     return re.sub(r"[ \t　]+", " ", t)
 
 
+def looks_unrendered(text: str) -> bool:
+    """素の HTML から取った本文が空同然(JS で描画するページ)か。空白・改行を除いた字数で測る。
+
+    html_to_text はタグを改行に置き換えるので、描画前のページでも改行が何百も残る。空白込みで数えると
+    タイトルとメニューしか無いページが「本文あり」になり、描画し直さずに執筆へ渡っていた
+    (実測 2026-10-08: 公式ポータルの LP が空白込み 591字・空白抜き 248字で、規約変更の記事が見送られた)。"""
+    return len(re.sub(r"\s+", "", text or "")) < 400
+
+
 def extract_periods(text: str, limit: int = 12) -> list[str]:
     """本文から「ラベル: 値」の形で期間を原文のまま抜き出す(編集規程15)。
 

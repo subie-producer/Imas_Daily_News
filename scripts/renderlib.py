@@ -208,6 +208,32 @@ def unescape_newlines(out: dict) -> int:
     return n
 
 
+def split_heading_blocks(out: dict) -> int:
+    """中見出し(`## …` 1行)と本文を空行で1 block に束ねた段落を、見出しの block と本文の block に分ける
+    (その場で書き換える)。分けた block の数を返す。
+
+    中見出しだけの block は根拠が要らないので、分けても根拠は増えも減りもしない(本文側に元の fact_ids を残す)。
+    書き直しの依頼文の「現在の記事」では中見出しに根拠の控えが付かないため、書き手が見出しを直後の段落と
+    同じ block に入れて返し、「1 block に複数段落」で2巡とも戻されて記事が校閲ブロックで落ちた(実測 2026-10-08)。
+    形の違いなので機械で直す(差し戻さない)。見出しでない段落が2つ以上ある block は分けない(根拠の束ねは検算が止める)。
+    """
+    n = 0
+    blocks = []
+    for b in out.get("blocks") or []:
+        md = b.get("markdown") if isinstance(b, dict) else None
+        chunks = [c.strip() for c in re.split(r"\n\s*\n", md.strip())] if isinstance(md, str) else []
+        chunks = [c for c in chunks if c]
+        if len(chunks) > 1 and sum(1 for c in chunks if not heading_only(c)) <= 1:
+            for c in chunks:
+                blocks.append(dict(b, markdown=c, fact_ids=[] if heading_only(c) else list(b.get("fact_ids") or [])))
+            n += 1
+        else:
+            blocks.append(b)
+    if n:
+        out["blocks"] = blocks
+    return n
+
+
 def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], rank: str = "",
                  edition: str = "") -> list[str]:
     """出力の**形**の検算(schema は型しか見ない)。通らない理由を返す(空なら合格)。
@@ -218,11 +244,15 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
     (roundup・culture の素材の件数は検めない。残った項目が1件でも載せる)。
     **中身の判断(出典を隠していないか、日付が素材と合うか、new_facts を本当に読んだか)は校閲(モデル)の
     仕事で、ここではしない**(校閲の機械化はしない。編集長の指示)
-    検算の前に、文字として残った `\\n` を本物の改行に戻す(unescape_newlines。out をその場で直す)。
+    検算の前に、文字として残った `\\n` を本物の改行に戻し(unescape_newlines)、中見出しと本文を束ねた block を
+    分ける(split_heading_blocks)。どちらも out をその場で直す。
     """
     fixed = unescape_newlines(out)
     if fixed:
         print(f"  文字として残った \\n を改行に戻した({fixed} か所)", flush=True)
+    split = split_heading_blocks(out)
+    if split:
+        print(f"  中見出しと本文を束ねた段落を分けた({split} か所)", flush=True)
     problems = []
     if out.get("status") == "decline":
         if out.get("decline_code") not in DECLINE_CODES:

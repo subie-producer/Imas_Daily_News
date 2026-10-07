@@ -17,7 +17,8 @@
           "claim": {"type": "string", "maxLength": 400, "description": "何が問題か(1文)"},
           "evidence": {"type": "string", "maxLength": 600, "description": "根拠(ファイル:行、再現した入力、実測)。推測なら (推測) と書く"},
           "occurs": {"type": "string", "maxLength": 400, "description": "どういうときに起きるか(実データ・ログ・実際の運用のどこからその入力や状態に到達するか)と、どのくらい起きそうか。「schema 上は可能」は道筋ではない。書けない指摘は出さない"},
-          "severity": {"enum": ["blocks_publish", "corrupts_data", "stopgap"]}
+          "severity": {"enum": ["blocks_publish", "corrupts_data", "stopgap", "misreport"],
+                       "description": "misreport = 編集長への報告がログ・データと合わない・求める中身を欠く(紙面への影響の打ち消しを含む)"}
         }
       }
     },

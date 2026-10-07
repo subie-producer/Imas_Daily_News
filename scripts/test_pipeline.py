@@ -3495,6 +3495,9 @@ def test_oncall_fix_until_clean(tmp: Path):
     rp = oncall.review_prompt("compose", "2026-09-18", {"status": "fixed"}, "diff --git a b", {"accepted": []})
     scope = "発行するのに必要な最小限で、今後もちゃんと動く正しい修正"
     check(scope in fp and scope in rp, "当番・監査の依頼文に仕事の範囲が無い")
+    # 紙面への影響は読者が受け取る結果で書き、1号の遅れも影響。打ち消す言い方を監査が咎める(編集長 2026-10-07「影響あるじゃん」)
+    check("1号でも遅れる・遅れうるなら影響がある" in fp and "影響を打ち消す言い方" in fp and "遅れを隠していないか" in rp,
+          "紙面への影響の書き方の契約が当番・監査の依頼文に無い")
     check("指摘されたものは直す" in fp and "反論する" not in fp and "commit 済み" in fp and "範囲は広げない" in fp, "当番への依頼が「範囲の中で直す」になっていない")
     check("**must_fix**" in rp and "**later**" in rp and "later が残っていてもよい" in rp, "監査への依頼が must_fix と later を分けていない")
     # 起きる道筋(どういうときに・どのくらい)を言えない指摘は、指摘として扱わない(編集長 2026-09-18)
@@ -3502,7 +3505,7 @@ def test_oncall_fix_until_clean(tmp: Path):
     check("起きる道筋が無い" in fp and "追いかけて直さない" in fp, "当番が、起きる道筋の無い指摘を弾けることになっていない")
     check(all(x in rp for x in oncall.POLICY_EXCLUDED) and all(x in fp for x in oncall.POLICY_EXCLUDED), "判定対象外(編集方針)が依頼文に無い")
     rs = json.loads((Path(oncall.__file__).resolve().parent.parent / "schema" / "oncall-review.schema.json").read_text(encoding="utf-8"))
-    check("later" in rs["required"] and rs["properties"]["must_fix"]["items"]["properties"]["severity"]["enum"] == ["blocks_publish", "corrupts_data", "stopgap"],
+    check("later" in rs["required"] and rs["properties"]["must_fix"]["items"]["properties"]["severity"]["enum"] == ["blocks_publish", "corrupts_data", "stopgap", "misreport"],
           "監査の schema: later が必須でない、または must_fix に品質・書き方の指摘を入れられる")
     check(all("occurs" in rs["properties"][k]["items"]["required"] for k in ("must_fix", "later")), "監査の schema: 指摘に occurs(起きる道筋)が必須でない")
     # 続きから始められる条件

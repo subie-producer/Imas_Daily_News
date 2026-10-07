@@ -1098,7 +1098,8 @@ def main() -> int:
             notify("oncall", editor_notice(
                 f"🚧 当番は修正を取り込めませんでした: {md}号の{STAGE_JA.get(stage, stage)}",
                 [("取り込めなかった理由", why + ("。次の試行は、ここまでの修正の続きから始める" if wip_branch else ""))]
-                + [(label, s[k]) for k, label in SUMMARY_LABELS if s.get(k)],
+                # 以下は当番の書いた要約で、監査で承認されていない(紙面への影響も確かめられていない)。そう明示する(監査指摘)
+                + [(label + "(監査で未承認)", s[k]) for k, label in SUMMARY_LABELS if s.get(k)],
                 footer=f"記録(差分・検証の全文): {rec.relative_to(ROOT)}" + (f"(記録ブランチ {wip_branch})" if wip_branch else "")), ok=False)
             return 1
 

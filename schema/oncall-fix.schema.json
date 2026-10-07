@@ -13,7 +13,7 @@
         "why": {"type": "string", "minLength": 1, "maxLength": 1500, "description": "なぜ起きたか。原因の型まで遡る。確定できないなら、なぜ確定できないか"},
         "what_changed": {"type": "string", "minLength": 1, "maxLength": 1500, "description": "どう直したか(直さなかったなら、なぜか)"},
         "similar": {"type": "string", "minLength": 1, "maxLength": 1500, "description": "同じ型の箇所: どこを探し、どれを直し、どれがなぜ起きないと言えるか"},
-        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 600, "description": "紙面への影響(失った・遅れた記事、戻せるか)と、いつの号から効くか"}
+        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 600, "description": "紙面への影響: どの話題が、いつ公式に出て、本来どの号に載るべきで、実際にどの号になる(なった)か。1号の遅れも影響。未確定なら条件・確かめる手段・時刻。打ち消す言い方をしない。影響なしは載るべき号が変わらないと確かめたときだけ。いつの号から効くか"}
       }
     },
     "status": {"enum": ["fixed", "no_fix_needed", "cannot_fix"], "description": "fixed=コードを直した(差分がある) / no_fix_needed=コードの欠陥ではない(データ・環境。差分は無いか、回帰テスト scripts/test_pipeline.py だけ) / cannot_fix=人が要る"},

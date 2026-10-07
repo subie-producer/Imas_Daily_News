@@ -13,7 +13,7 @@
         "why": {"type": "string", "minLength": 1, "maxLength": 1500},
         "what_changed": {"type": "string", "minLength": 1, "maxLength": 1500},
         "similar": {"type": "string", "minLength": 1, "maxLength": 1500},
-        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 600}
+        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 600, "description": "紙面への影響: どの話題が、いつ公式に出て、本来どの号に載るべきで、実際にどの号になる(なった)か。1号の遅れも影響。未確定なら条件・確かめる手段・時刻。打ち消す言い方をしない。影響なしは載るべき号が変わらないと確かめたときだけ。いつの号から効くか"}
       }
     },
     "status": {"enum": ["unchanged", "fixed", "no_fix_needed", "cannot_fix"],

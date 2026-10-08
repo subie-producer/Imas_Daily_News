@@ -2252,17 +2252,17 @@ def test_fetch_page_renders_whitespace_only_page():
     calls = []
     class R:
         returncode, stdout = 0, "<html><body><p>（2026.10.7 変更）営利を目的とした制作・配信は行わないでください。</p></body></html>"
-    saved = (fetch_page.fetch, fetch_page.subprocess.run, sys.argv)
+    saved = (fetch_page.fetch, pipelib.subprocess.run, sys.argv)
     try:
         fetch_page.fetch = lambda url: thin
-        fetch_page.subprocess.run = lambda *a, **k: calls.append(a) or R()
+        pipelib.subprocess.run = lambda *a, **k: calls.append(a) or R()
         sys.argv = ["fetch_page.py", "https://idolmaster-official.jp/lp/x"]
         import contextlib, io
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             fetch_page.main()
     finally:
-        fetch_page.fetch, fetch_page.subprocess.run, sys.argv = saved
+        fetch_page.fetch, pipelib.subprocess.run, sys.argv = saved
     check(calls and "2026.10.7 変更" in buf.getvalue(), f"改行だらけのページを描画し直さなかった: {buf.getvalue()[:120]!r}")
     # 描画必須と分かっているサイト(sources.yml の portal)は、メニューだけで非空白 400字を超えても描画して読む
     # (公式ポータルはナビだけで非空白 3千字を超える。監査指摘 render-detection-navigation)
@@ -2273,13 +2273,13 @@ def test_fetch_page_renders_whitespace_only_page():
     calls.clear()
     try:
         fetch_page.fetch = lambda url: nav
-        fetch_page.subprocess.run = lambda *a, **k: calls.append(a) or R()
+        pipelib.subprocess.run = lambda *a, **k: calls.append(a) or R()
         sys.argv = ["fetch_page.py", "https://idolmaster-official.jp/news/01_99999"]
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             fetch_page.main()
     finally:
-        fetch_page.fetch, fetch_page.subprocess.run, sys.argv = saved
+        fetch_page.fetch, pipelib.subprocess.run, sys.argv = saved
     check(calls and "2026.10.7 変更" in buf.getvalue(), f"公式ポータルの長いナビのページを描画し直さなかった: {buf.getvalue()[:120]!r}")
     # 収集の裏取りも同じ: 公式ポータルの長いナビのページは描画して期間を抜き出す
     import collect
@@ -2336,6 +2336,112 @@ def test_fetch_rendered_skips_images():
                 sys.modules[n] = m
     check(got["opts"].prefs.get("prefs", {}).get("profile.managed_default_content_settings.images") == 2,
           f"描画取得が画像を読み込む(画像の多いページで読み込み完了に届かず時間切れになる): {got['opts'].prefs}")
+
+
+def test_render_failure_keeps_cause(tmp: Path):
+    """描画取得の失敗は、終了コードと stderr の要点を記録に残す。空文字に変えると呼び出し側の記録は「空の応答」だけになり、
+    当番が別に再現して TimeoutException を特定していた(2026-10-07 コロムビアの一覧。当番の指摘 dc23e62472)"""
+    import contextlib, io, types, importlib
+    import collect
+    import fetch_page
+    tb = ("Traceback (most recent call last):\n  File \"x.py\", line 1\n"
+          "selenium.common.exceptions.TimeoutException: Message: \nStacktrace:\n#0 0x55 <unknown>\n#1 0x56 <unknown>\n"
+          "RENDER_FAILED: TimeoutException: timeout: Timed out receiving message from renderer: 39.9\n")
+    class Bad:
+        returncode, stdout, stderr = 1, "", tb
+    def timeout_run(*a, **k):
+        raise subprocess.TimeoutExpired(a[0], 90, output=b"", stderr=b"RENDER_FAILED: TimeoutException: page load\n")
+    saved = pipelib.subprocess.run
+    errs = []
+    try:
+        for run in (lambda *a, **k: Bad(), timeout_run):
+            pipelib.subprocess.run = run
+            try:
+                pipelib.render_page("https://columbia.jp/idolmaster/")
+                errs.append("")
+            except pipelib.RenderFailed as e:
+                errs.append(str(e))
+        # 定点観測の一覧(portal): 失敗の原因が観測先の失敗の記録に載る
+        pipelib.subprocess.run = lambda *a, **k: Bad()
+        try:
+            collect.list_source({"id": "c", "type": "portal", "url": "https://columbia.jp/idolmaster/", "base": "https://columbia.jp",
+                                 "list_regex": '<a href="([^"]+)">(.*?)</a>'}, set())
+            errs.append("")
+        except RuntimeError as e:
+            errs.append(str(e))
+        # 出典照合(fetch_page.py): 描画できず本文も無いとき、原因を FETCH_FAILED に添える
+        saved_f, saved_argv = fetch_page.fetch, sys.argv
+        buf, ebuf = io.StringIO(), io.StringIO()
+        try:
+            fetch_page.fetch = lambda url: ""
+            sys.argv = ["fetch_page.py", "https://columbia.jp/idolmaster/"]
+            with contextlib.redirect_stdout(buf), contextlib.redirect_stderr(ebuf):
+                rc = fetch_page.main()
+        finally:
+            fetch_page.fetch, sys.argv = saved_f, saved_argv
+    finally:
+        pipelib.subprocess.run = saved
+    check("終了コード 1" in errs[0] and "TimeoutException" in errs[0] and "#0" not in errs[0],
+          f"描画の失敗に終了コード・例外の要点が無い(またはスタックの屑が入った): {errs[0]!r}")
+    check("時間切れ" in errs[1] and "TimeoutException" in errs[1], f"描画の打ち切りに原因が無い: {errs[1]!r}")
+    check("TimeoutException" in errs[2] and "終了コード 1" in errs[2], f"一覧の取得失敗の記録が原因を失った: {errs[2]!r}")
+    check(rc == 1 and "TimeoutException" in buf.getvalue() and "終了コード 1" in buf.getvalue(),
+          f"出典照合の取得失敗に描画の原因が無い: {buf.getvalue()!r}")
+    # facts 化: 描画できなかった新着は、原因を添えて WebFetch へ回す
+    prompts = []
+    saved_c = (collect.fetch_rendered, collect.urllib.request.urlopen, collect.notify)
+    def fail(url, timeout=30):
+        raise pipelib.RenderFailed(f"{url} の描画に失敗: 終了コード 1: RENDER_FAILED: TimeoutException: x")
+    try:
+        collect.fetch_rendered = fail
+        collect.notify = lambda *a, **k: None
+        collect.facts_batch([{"url": "https://columbia.jp/a", "title": "t", "brand": "imas", "csr": True}],
+                            lambda prompt, timeout=0: prompts.append(prompt) or None, {})
+        # 裏取り: 出典を取れなかった候補は、取れなかった原因を verify_note に残す
+        def boom(req, timeout=15):
+            raise OSError("Connection reset by peer")
+        collect.urllib.request.urlopen = boom
+        cv = [{"url": "https://example.com/a", "title": "t", "facts": [], "source_type": "公式", "via": "explore"}]
+        collect.verify(cv)
+    finally:
+        collect.fetch_rendered, collect.urllib.request.urlopen, collect.notify = saved_c
+    check(prompts and "TimeoutException" in prompts[0], "facts 化の素材に描画の失敗の原因が無い")
+    check(cv[0]["verify"] == "failed" and "Connection reset by peer" in str(cv[0].get("verify_note")),
+          f"裏取りの取得失敗の原因を残さない: {cv[0]}")
+    # fetch_rendered.py 自身: 例外は RENDER_FAILED の1行で出し、非0で終わる
+    fake = {n: types.ModuleType(n) for n in ("selenium", "selenium.webdriver", "selenium.webdriver.chrome",
+                                             "selenium.webdriver.chrome.options", "selenium.webdriver.common",
+                                             "selenium.webdriver.common.by", "selenium.webdriver.support",
+                                             "selenium.webdriver.support.ui", "selenium.webdriver.support.expected_conditions")}
+    fake["selenium"].webdriver = fake["selenium.webdriver"]
+    fake["selenium.webdriver.chrome.options"].Options = object
+    fake["selenium.webdriver.common.by"].By = object
+    fake["selenium.webdriver.support.ui"].WebDriverWait = object
+    fake["selenium.webdriver.support"].expected_conditions = fake["selenium.webdriver.support.expected_conditions"]
+    saved_m = {n: sys.modules.get(n) for n in list(fake) + ["fetch_rendered"]}
+    saved_argv = sys.argv
+    ebuf = io.StringIO()
+    try:
+        sys.modules.update(fake)
+        sys.modules.pop("fetch_rendered", None)
+        fr = importlib.import_module("fetch_rendered")
+        class TimeoutException(Exception):
+            pass
+        def raise_timeout(*a):
+            raise TimeoutException("Message: timeout: Timed out receiving message from renderer\nStacktrace:\n#0 0x55")
+        fr.fetch = raise_timeout
+        sys.argv = ["fetch_rendered.py", "https://columbia.jp/idolmaster/"]
+        with contextlib.redirect_stderr(ebuf):
+            rc = fr.main()
+    finally:
+        sys.argv = saved_argv
+        for n, m in saved_m.items():
+            if m is None:
+                sys.modules.pop(n, None)
+            else:
+                sys.modules[n] = m
+    check(rc == 1 and ebuf.getvalue().strip() == "RENDER_FAILED: TimeoutException: timeout: Timed out receiving message from renderer",
+          f"描画取得が例外の要点を1行で出さない: {rc} {ebuf.getvalue()!r}")
 
 
 def test_watch_pagination_and_batches(tmp: Path):
@@ -4272,6 +4378,7 @@ def main() -> int:
     test_watch_pagination_and_batches(tmp / "wp")
     test_fetch_page_renders_whitespace_only_page()
     test_fetch_rendered_skips_images()
+    test_render_failure_keeps_cause(tmp / "rf")
     test_collect_oncall_rerun_exit(tmp / "cre")
     test_storylink(tmp / "sl")
     test_oncall_rollback_subprocess(tmp / "rs")

@@ -452,7 +452,7 @@ def rendered_excerpt(url: str, chars: int = 1200) -> str:
         body = r.stdout.split("--- 本文(要約なし) ---", 1)[-1] if "--- 本文" in r.stdout else r.stdout
         return re.sub(r"\s+", " ", body).strip()[:chars]
     except Exception as e:
-        return f"(取得できず: {type(e).__name__})"
+        return f"(取得できず: {type(e).__name__}: {e})"[:300]
 
 
 def site_profile(host: str, url: str, top: str | None = None) -> str:
@@ -497,7 +497,7 @@ def page_excerpt(url: str, chars: int = 1200) -> str:
             text = html_to_text(r.read(200_000), r.headers.get_content_charset())
         return re.sub(r"\s+", " ", text).strip()[:chars]
     except Exception as e:
-        return f"(取得できず: {type(e).__name__})"
+        return f"(取得できず: {type(e).__name__}: {e})"[:300]
 
 
 def ask(cmd: list[str], prompt: str, timeout: int = 900) -> list[dict]:

@@ -1,0 +1,371 @@
+{
+ "decisions": {
+  "shiny-style-collection-2026": {
+   "action": "article",
+   "angle": "SHINY Style COLLECTION第2弾の受注開始。「Sonic Heart (and Signal)」「No 1 feel alone」が題材で、10月25日まで",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第1弾の記事とは別の新弾"
+  },
+  "shiny-style-collection-goods-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-style-collection-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ第2弾受注開始の公式X投稿"
+  },
+  "shiny-prelude-collection-asakura-toru-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・ピース付きパッケージ(プレリュードコレクション、第2回シャイニーアクト、トワコレ関連)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-2nd-shiny-act-stamp-gacha-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・ピース付きパッケージ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-package-3-2026-10-08": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・ピース付きパッケージ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-package-4-2026-10-08": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・ピース付きパッケージ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-package-5-2026-10-08": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・ピース付きパッケージ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-package-6-2026-10-08": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・ピース付きパッケージ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-package-7-2026-10-08": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・ピース付きパッケージ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-package-8-2026-10-08": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・ピース付きパッケージ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-package-9-2026-10-08": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・ピース付きパッケージ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-package-10-2026-10-08": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・ピース付きパッケージ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-alev1-making-premiere-2026": {
+   "action": "article",
+   "angle": "ALEV-1メイキング動画「Wish your birth - THE MAKING OF ALEV-1」が10月10日20時にプレミア公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "明日のプレミア公開"
+  },
+  "shiny-msp-memorial-goods-2026": {
+   "action": "article",
+   "angle": "MSP記念グッズ(缶バッジセット1,600円など)とイベントグッズ追加受注の締切が10月12日、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MSPの追加受注も同じ10/12締切のため統合"
+  },
+  "shiny-283-solo-live-msp-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-memorial-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公演は終了済み。残る手続きは10/12締切のグッズ追加受注で同じ読者行動"
+  },
+  "shiny-majsoul-asakura-toru-figure-rerelease-2026": {
+   "action": "article",
+   "angle": "シャニマス×雀魂 浅倉透 おしごとエフォートレスVer.フィギュア(1/7)が再販、アクリル麻雀牌付き",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-stillblue-asobipremium-lottery": {
+   "action": "article",
+   "angle": "『Still blue』アソビストア一般会員先行の当選者の入金期限が10月12日23:59、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-noctchill-live-2027": {
+   "action": "article",
+   "angle": "ノクチル単独ライブ「283 Production LIVE Performance noctchill」のプレミアム会員先行・ティーン割先行が10月12日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式サイト公開の主題も同じ先行受付として統合"
+  },
+  "shiny-283-production-live-performance-noctchill": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-noctchill-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の同じ先行受付"
+  },
+  "shiny-pioneer-impact-mvgiveaway-2026": {
+   "action": "article",
+   "angle": "『Pioneer Impact』3DMV記念のQUOカード5,000円分(20名)抽選、応募は10月12日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fan-msp-first-live-attendance-2026-10-08": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみ"
+  },
+  "fan-msp-flower-gift-juri-2026-10-07": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-style-collection-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "SHINY Style COLLECTION第2弾の受注開始。「Sonic Heart (and Signal)」「No 1 feel alone」が題材で、10月25日まで",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shiny-style-collection-2026",
+    "candidate_ids": [
+     "202610081834-watch-0",
+     "202610090223-grok-77"
+    ]
+   },
+   {
+    "slug": "shiny-alev1-making-premiere-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ALEV-1メイキング動画「Wish your birth - THE MAKING OF ALEV-1」が10月10日20時にプレミア公開",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-alev1-making-premiere-2026",
+    "candidate_ids": [
+     "202610090223-grok-30"
+    ]
+   },
+   {
+    "slug": "shiny-msp-memorial-goods-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "MSP記念グッズ(缶バッジセット1,600円など)とイベントグッズ追加受注の締切が10月12日、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-msp-memorial-goods-2026",
+    "candidate_ids": [
+     "202610090223-grok-31",
+     "sched-2026-10-09-shiny-msp-memorial-goods-2026-締切前",
+     "sched-2026-10-09-shiny-283-solo-live-msp-2026-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-majsoul-asakura-toru-figure-rerelease-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス×雀魂 浅倉透 おしごとエフォートレスVer.フィギュア(1/7)が再販、アクリル麻雀牌付き",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-majsoul-asakura-toru-figure-rerelease-2026",
+    "candidate_ids": [
+     "202610090223-grok-32"
+    ]
+   },
+   {
+    "slug": "shiny-stillblue-asobipremium-lottery",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『Still blue』アソビストア一般会員先行の当選者の入金期限が10月12日23:59、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-stillblue-asobipremium-lottery",
+    "candidate_ids": [
+     "sched-2026-10-09-shiny-stillblue-asobipremium-lottery-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-noctchill-live-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "ノクチル単独ライブ「283 Production LIVE Performance noctchill」のプレミアム会員先行・ティーン割先行が10月12日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "shiny-noctchill-live-2027",
+    "candidate_ids": [
+     "sched-2026-10-09-shiny-noctchill-live-2027-締切前",
+     "sched-2026-10-09-shiny-283-production-live-performance-noctchill-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-pioneer-impact-mvgiveaway-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『Pioneer Impact』3DMV記念のQUOカード5,000円分(20名)抽選、応募は10月12日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-pioneer-impact-mvgiveaway-2026",
+    "candidate_ids": [
+     "sched-2026-10-09-shiny-pioneer-impact-mvgiveaway-2026-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "開催中のガシャ・ピース付きパッケージ(プレリュードコレクション、第2回シャイニーアクト、トワコレ関連)",
+    "lead_score": 0,
+    "dedup_key": "shiny-prelude-collection-asakura-toru-2026",
+    "candidate_ids": [
+     "202610090223-explore-1",
+     "202610090223-explore-2",
+     "202610090223-grok-37",
+     "202610090223-grok-38",
+     "202610090223-grok-39",
+     "202610090223-grok-40",
+     "202610090223-grok-41",
+     "202610090223-grok-42",
+     "202610090223-grok-43",
+     "202610090223-grok-44"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fan-msp-first-live-attendance-2026-10-08",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみ"
+   },
+   {
+    "dedup_key": "fan-msp-flower-gift-juri-2026-10-07",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

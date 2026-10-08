@@ -2,7 +2,7 @@
 slug: million-tanaka-kotoha-birthday-gasha-2026
 edition: "2026-10-05"
 brand: million
-src: 未確認
+src: 公式
 rank: medium
 corrected: false
 corrections: []
@@ -33,7 +33,7 @@ sources:
   type: 公式
 - label: アイドルマスターチャンネル「田中琴葉さん お誕生日おめでとうございます」(2026年10月5日)
   url: https://www.youtube.com/shorts/F480cpkjGdM
-  type: 未確認
+  type: 公式
 event_date: "2026-10-05"
 title_fact_ids:
 - F1

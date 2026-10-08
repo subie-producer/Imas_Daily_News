@@ -1,0 +1,152 @@
+{
+ "decisions": {
+  "medicos-cyberplanet-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8の開幕記事に全事実あり。終了10/20で3日以内でもなく、新事実・当日トリガー無し"
+  },
+  "million-princess-a-la-mode-idol-grand-prix-pv-2026": {
+   "action": "article",
+   "angle": "ミリシタ『プリンセス・アラモード』のiDOL GRAND-PRIX PVが10月10日14:50に公開予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14th-memorial-goods-2026": {
+   "action": "article",
+   "angle": "14thLIVE開催記念グッズの受注は10月11日までで締切まで2日。2WAYブレスレット&アンクレットなど商品も伝え直す",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が2日後でトリガーあり"
+  },
+  "million-second-hair-style-my-brand-glasses-subaru-2026": {
+   "action": "article",
+   "angle": "セカンドヘアスタイルガシャ myブランド編 with glassesで、昴が洋服とメガネをプロデュース。メガネはON/OFF可能",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/8の亜利沙メガネガシャ記事とは別の昴の新情報として扱う"
+  },
+  "million-only-maker-parker-2026": {
+   "action": "article",
+   "angle": "ミリシタ9周年カスタマイズパーカー(8,500円)の受注は10月12日まで、締切まで3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)"
+  },
+  "million-anime-tv-broadcast-third-anniversary-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "記念日の10/8は終了済み。アイマスchの第1話特別公開の期間は不明で、今日の新事実もトリガーも無い"
+  },
+  "million-anime-ova-itsuka-mannaka-bluray-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "「販売中」の再告知のみ。発売日・締切など新事実も当日トリガーも無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-princess-a-la-mode-idol-grand-prix-pv-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ『プリンセス・アラモード』のiDOL GRAND-PRIX PVが10月10日14:50に公開予定",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "million-princess-a-la-mode-idol-grand-prix-pv-2026",
+    "candidate_ids": [
+     "202610090223-grok-22"
+    ]
+   },
+   {
+    "slug": "million-14th-memorial-goods-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "14thLIVE開催記念グッズの受注は10月11日までで締切まで2日。2WAYブレスレット&アンクレットなど商品も伝え直す",
+    "purpose": "期日の知らせ",
+    "lead_score": 45,
+    "dedup_key": "million-14th-memorial-goods-2026",
+    "candidate_ids": [
+     "202610090223-grok-23"
+    ]
+   },
+   {
+    "slug": "million-second-hair-style-my-brand-glasses-subaru-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "セカンドヘアスタイルガシャ myブランド編 with glassesで、昴が洋服とメガネをプロデュース。メガネはON/OFF可能",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-second-hair-style-my-brand-glasses-subaru-2026",
+    "candidate_ids": [
+     "202610090223-grok-24"
+    ]
+   },
+   {
+    "slug": "million-only-maker-parker-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ9周年カスタマイズパーカー(8,500円)の受注は10月12日まで、締切まで3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-only-maker-parker-2026",
+    "candidate_ids": [
+     "202610090223-grok-25",
+     "sched-2026-10-09-million-only-maker-parker-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "medicos-cyberplanet-popup-2026",
+    "reason": "既報",
+    "note": "10/8の開幕記事に全事実あり。終了10/20で3日以内でもなく、新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "million-anime-tv-broadcast-third-anniversary-2026",
+    "reason": "その他",
+    "note": "記念日の10/8は終了済み。アイマスchの第1話特別公開の期間は不明で、今日の新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "million-anime-ova-itsuka-mannaka-bluray-2026",
+    "reason": "その他",
+    "note": "「販売中」の再告知のみ。発売日・締切など新事実も当日トリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,221 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-09T02:25:22+09:00",
+   "edition": "2026-10-09",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 348,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 1,
+    "explore:shiny": 2,
+    "explore:sidem": 0,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 0,
+    "grok_week_searches": 349,
+    "grok:765as": 3,
+    "grok:cinderella": 10,
+    "grok:million": 7,
+    "grok:shiny": 12,
+    "grok:sidem": 7,
+    "grok:gakuen": 5,
+    "grok:dsva": 8,
+    "grok:joint-other": 7,
+    "grok:trend": 23,
+    "grok_searches:shiny": 5,
+    "grok_searches:joint": 6,
+    "grok_searches:million": 7,
+    "grok_searches:sidem": 7,
+    "grok_searches:dsva": 9,
+    "grok_searches:765": 6,
+    "grok_searches:cg": 5,
+    "grok_searches:gaku": 5,
+    "grok_searches:general": 5
+   },
+   "normalized": 86,
+   "added": 79,
+   "verify": {
+    "confirmed": 49,
+    "unconfirmed": 32,
+    "failed": 5
+   },
+   "duration_s": 1484
+  },
+  {
+   "at": "2026-10-09T02:34:53+09:00",
+   "edition": "2026-10-09",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 348,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {},
+   "normalized": 0,
+   "added": 0,
+   "verify": {
+    "confirmed": 0,
+    "unconfirmed": 0,
+    "failed": 0
+   },
+   "duration_s": 14
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-09T03:27:33+09:00",
+   "edition": "2026-10-09",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 39,
+   "written": 33,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 99,
+    "covered": 99,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "gaku-katamarion-the-dun-ps-game-music-awards-2026",
+    "joint-starmas-5th-anniversary-cross-commu-2026",
+    "shiny-majsoul-asakura-toru-figure-rerelease-2026",
+    "shiny-style-collection-2026",
+    "sidem-mfes-christmas-cruise-2026"
+   ],
+   "stages_min": {
+    "選定": 1.7899745066960653,
+    "執筆": 4.978618745009104,
+    "出典の判定": 4.825260229905446,
+    "組版": 0.8989788452784221,
+    "校閲": 0.733128798007965,
+    "校閲1波": 0.733128798007965
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "million-second-hair-style-my-brand-glasses-subaru-2026"
+   ],
+   "duration_s": 1615
+  }
+ ]
+}

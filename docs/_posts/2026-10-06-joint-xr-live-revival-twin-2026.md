@@ -2,7 +2,7 @@
 slug: joint-xr-live-revival-twin-2026
 edition: "2026-10-06"
 brand: joint
-src: 未確認
+src: 当事者
 rank: lead
 corrected: false
 corrections: []
@@ -24,7 +24,7 @@ sources:
   type: 公式
 - label: オリックス劇場「交通アクセス」(日付記載なし)
   url: https://www.orixtheater.jp/access/
-  type: 未確認
+  type: 当事者
 event_date: "2026-12-13"
 title_fact_ids:
 - F6

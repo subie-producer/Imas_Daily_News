@@ -1,0 +1,98 @@
+{
+ "decisions": {
+  "sashibana-shio-archive-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優・希水しお主催のアイマス外イベント。今井麻美はゲストのみ"
+  },
+  "miki-cosmo-mirrorball-love-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "VTuber個人チャンネルの非公式コラボ投稿で、アイマス公式の施策ではない"
+  },
+  "30ms-hoshii-miki-replenishment-2026-10": {
+   "action": "article",
+   "angle": "BANDAI SPIRITS『30MS 星井美希(20th Anniv. YOU AND アイ!)』がAmazonで再入荷し、税込2,906円で購入できる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認の告知投稿。Amazon商品ページの価格は確認済み"
+  },
+  "765as-xr-ending-generation-culture-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人SNS投稿1件のみ。culture は general 面のみ"
+  },
+  "765as-tour-fan-meeting-reflection-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "参加者個人の感想投稿で、単体では記事にしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-30ms-hoshii-miki-replenishment-2026-10",
+    "brand": "765",
+    "rank": "small",
+    "angle": "BANDAI SPIRITS『30MS 星井美希(20th Anniv. YOU AND アイ!)』がAmazonで再入荷し、税込2,906円で購入できる",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "30ms-hoshii-miki-replenishment-2026-10",
+    "candidate_ids": [
+     "202610090223-grok-5"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sashibana-shio-archive-2026",
+    "reason": "個人の話題",
+    "note": "声優・希水しお主催のアイマス外イベント。今井麻美はゲストのみ"
+   },
+   {
+    "dedup_key": "miki-cosmo-mirrorball-love-short-2026",
+    "reason": "同人・ファン主催",
+    "note": "VTuber個人チャンネルの非公式コラボ投稿で、アイマス公式の施策ではない"
+   },
+   {
+    "dedup_key": "765as-xr-ending-generation-culture-2026",
+    "reason": "出典不足",
+    "note": "個人SNS投稿1件のみ。culture は general 面のみ"
+   },
+   {
+    "dedup_key": "765as-tour-fan-meeting-reflection-2026-10",
+    "reason": "個人の話題",
+    "note": "参加者個人の感想投稿で、単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,297 @@
+{
+ "decisions": {
+  "cg-15th-anniversary-orchestra-concert-goods-2026": {
+   "action": "article",
+   "angle": "15周年オケ公演の公式グッズ事前販売が10月8日に開始。アクリルスタンド・マフラータオル・応援フラッグ・ブランケットを10月18日まで受付",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "チケット入金とは別の行動(グッズ購入)なので別記事。grok-80を統合"
+  },
+  "cinderella-party-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8『デレパCD、通販は11月18日まで』と同じ商品。新事実・当日トリガー無し"
+  },
+  "cg-unit-joint-project-2026": {
+   "action": "article",
+   "angle": "公式ポータルで「ユニット合同企画」を公開。アイドル190人がさまざまなユニットに所属する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発信。事実は少ないので短い記事"
+  },
+  "dere-miri-fureaka-radio-2026": {
+   "action": "article",
+   "angle": "デレミリ合同ライブ記念ラジオで宮本フレデリカが野々原茜と共演。おたよりを募集中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "合同ライブ記念だが他の面の記事が無く、cross_brandの対象slugも無いのでこの面で記事化"
+  },
+  "cg-pop-up-shop-magical-cheers-animo-2026": {
+   "action": "article",
+   "angle": "A MAGICAL CHEERS事後通販の商品別の価格(880〜2,310円)と、1月下旬以降の発送予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "priorに価格と発送時期が無い。締切10/16は3日以内ではない"
+  },
+  "nanami-asari-birthday-fan-posts-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。ファン面(culture)はgeneral面のみ"
+  },
+  "fan-imas-six-picks-2026-10-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。cultureはgeneral面のみ"
+  },
+  "fan-seki-hiromi-discussion-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。cultureはgeneral面のみ"
+  },
+  "fan-cg-orchestra-reactions-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。cultureはgeneral面のみ"
+  },
+  "fan-mochizuki-hijiri-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。cultureはgeneral面のみ"
+  },
+  "cinderella-party-master-derepa-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "cinderella-party-cd-2026と同じCD。Tr24表記訂正のみで記事にするほどの新事実ではない"
+  },
+  "cg-15th-orchestra-concert-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-concert-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズ事前販売"
+  },
+  "pop-up-shop-2026": {
+   "action": "article",
+   "angle": "有楽町マルイPOP UPで、堀裕子ステッカー・鷺沢文香のステッカー/デカアクリルスタンド/カードケース・佐城雪美Tシャツが本日10月9日に再入荷・再販予定",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ店舗・同じ再入荷日の4主題を1記事に統合。10/14まで開催、再入荷は店頭入荷次第"
+  },
+  "cg-yurakucho-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pop-up-shop-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ有楽町POP UPの本日再入荷"
+  },
+  "cg-yurakucho-popup-inventory-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pop-up-shop-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ有楽町POP UPの本日再入荷・再販"
+  },
+  "cg-15th-orchestra-2027": {
+   "action": "article",
+   "angle": "15周年オケ先行当選者の入金期限は10月12日23時59分。3日前、未入金ならS席2万円・A席1万2000円を手続きできる",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "期限が3日以内のため当日トリガーあり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-15th-anniversary-orchestra-concert-goods-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "15周年オケ公演の公式グッズ事前販売が10月8日に開始。アクリルスタンド・マフラータオル・応援フラッグ・ブランケットを10月18日まで受付",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "cg-15th-anniversary-orchestra-concert-goods-2026",
+    "candidate_ids": [
+     "202610081233-watch-0",
+     "202610090223-grok-80"
+    ]
+   },
+   {
+    "slug": "cg-unit-joint-project-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "公式ポータルで「ユニット合同企画」を公開。アイドル190人がさまざまなユニットに所属する",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cg-unit-joint-project-2026",
+    "candidate_ids": [
+     "202610090223-grok-9"
+    ]
+   },
+   {
+    "slug": "cg-dere-miri-fureaka-radio-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレミリ合同ライブ記念ラジオで宮本フレデリカが野々原茜と共演。おたよりを募集中",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "dere-miri-fureaka-radio-2026",
+    "candidate_ids": [
+     "202610090223-grok-10"
+    ]
+   },
+   {
+    "slug": "cg-pop-up-shop-magical-cheers-animo-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "A MAGICAL CHEERS事後通販の商品別の価格(880〜2,310円)と、1月下旬以降の発送予定",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cg-pop-up-shop-magical-cheers-animo-2026",
+    "candidate_ids": [
+     "202610090223-grok-14"
+    ]
+   },
+   {
+    "slug": "cg-pop-up-shop-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "有楽町マルイPOP UPで、堀裕子ステッカー・鷺沢文香のステッカー/デカアクリルスタンド/カードケース・佐城雪美Tシャツが本日10月9日に再入荷・再販予定",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "pop-up-shop-2026",
+    "candidate_ids": [
+     "sched-2026-10-09-pop-up-shop-2026-その他",
+     "sched-2026-10-09-cg-yurakucho-popup-2026-発売",
+     "sched-2026-10-09-cg-yurakucho-popup-inventory-2026-発売"
+    ]
+   },
+   {
+    "slug": "cg-15th-orchestra-2027",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年オケ先行当選者の入金期限は10月12日23時59分。3日前、未入金ならS席2万円・A席1万2000円を手続きできる",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "cg-15th-orchestra-2027",
+    "candidate_ids": [
+     "sched-2026-10-09-cg-15th-orchestra-2027-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-party-cd-2026",
+    "reason": "既報",
+    "note": "10/8『デレパCD、通販は11月18日まで』と同じ商品。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "nanami-asari-birthday-fan-posts-2026",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。ファン面(culture)はgeneral面のみ"
+   },
+   {
+    "dedup_key": "fan-imas-six-picks-2026-10-09",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。cultureはgeneral面のみ"
+   },
+   {
+    "dedup_key": "fan-seki-hiromi-discussion-2026",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。cultureはgeneral面のみ"
+   },
+   {
+    "dedup_key": "fan-cg-orchestra-reactions-2026",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。cultureはgeneral面のみ"
+   },
+   {
+    "dedup_key": "fan-mochizuki-hijiri-2026",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。cultureはgeneral面のみ"
+   },
+   {
+    "dedup_key": "cinderella-party-master-derepa-2026",
+    "reason": "既報",
+    "note": "cinderella-party-cd-2026と同じCD。Tr24表記訂正のみで記事にするほどの新事実ではない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

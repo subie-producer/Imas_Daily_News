@@ -1,0 +1,69 @@
+{
+ "decisions": {
+  "fan-msp-crying-diamond-keychain-2026-10-08": {
+   "action": "article",
+   "angle": "手作りキーホルダーやコラージュ、誕生日の祝福、「アイマスアイドル6人」診断の共有など、10月8日前後にファンが投稿した創作と盛り上がりをまとめて紹介する",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面の細切れ4件を1本に束ねる。誰か1人を主役にしない"
+  },
+  "fan-shiny-gakumasu-collage-2026-10-08": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-msp-crying-diamond-keychain-2026-10-08",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作(コラージュ)としてファン面の1本に統合"
+  },
+  "fan-aslan-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-msp-crying-diamond-keychain-2026-10-08",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "記念日の盛り上がりとしてファン面の1本に統合"
+  },
+  "fan-share-imas-six-idol-picks-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-msp-crying-diamond-keychain-2026-10-08",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "界隈の現象としてファン面の1本に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-fan-msp-crying-diamond-keychain-2026-10-08",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "手作りキーホルダーやコラージュ、誕生日の祝福、「アイマスアイドル6人」診断の共有など、10月8日前後にファンが投稿した創作と盛り上がりをまとめて紹介する",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "fan-msp-crying-diamond-keychain-2026-10-08",
+    "candidate_ids": [
+     "202610090223-grok-34",
+     "202610090223-grok-36",
+     "202610090223-grok-50",
+     "202610090223-grok-58"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

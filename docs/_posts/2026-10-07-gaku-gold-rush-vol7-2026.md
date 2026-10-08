@@ -2,7 +2,7 @@
 slug: gaku-gold-rush-vol7-2026
 edition: "2026-10-07"
 brand: gaku
-src: 未確認
+src: 準公式
 rank: small
 corrected: false
 corrections: []
@@ -20,7 +20,7 @@ sources:
   type: 公式
 - label: 秋田書店「学園アイドルマスター GOLD RUSH 特装版 第7巻」(2026年10月7日)
   url: https://www.akitashoten.co.jp/comics/4253018807
-  type: 未確認
+  type: 準公式
 event_date: "2026-10-07"
 title_fact_ids:
 - F1

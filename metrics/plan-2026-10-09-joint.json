@@ -1,0 +1,130 @@
+{
+ "decisions": {
+  "deremi-live-fure-aka-radio-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8号の本文に受付期間・当落・入金・枚数まで掲載済み。新事実なし、締切は11/1で3日以内でもない"
+  },
+  "imas-ch-birthdays-2026-10-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "アイマスchの別ブランド2人の誕生日祝い。共同主催ではなく、記念日の話題はgeneral面のculture向き"
+  },
+  "tours-s2-next-region-preview-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8号『ツアマスS2弾、10月15日に生配信』と同じ配信の告知。新事実なし、配信は6日後でトリガーに当たらない"
+  },
+  "gakumas-afterschool-namco-promo-card-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/4号『学マス×namco、カードでクレーン演出のSPアピール』と同じ施策・特典カード。新事実なし、終了は11/1"
+  },
+  "starmas-5th-anniversary-cross-commu-2026": {
+   "action": "article",
+   "angle": "スタマス5周年企画のゲーム内越境コミュが公開され、Steam版本編は70%オフセールも実施中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式Xの10/8投稿。事実は少ないので短い記事にする"
+  },
+  "tours-shine-score-issue-discussion-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人のSNS投稿のみで公式確認なし。単体では記事にしない"
+  },
+  "tourmas-shine-bpm-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人noteの検証で公式確認なし(未確認)。個人の投稿は単体で記事にしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-starmas-5th-anniversary-cross-commu-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "スタマス5周年企画のゲーム内越境コミュが公開され、Steam版本編は70%オフセールも実施中",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "starmas-5th-anniversary-cross-commu-2026",
+    "candidate_ids": [
+     "202610090223-grok-72"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "deremi-live-fure-aka-radio-2026",
+    "reason": "既報",
+    "note": "10/8号の本文に受付期間・当落・入金・枚数まで掲載済み。新事実なし、締切は11/1で3日以内でもない"
+   },
+   {
+    "dedup_key": "imas-ch-birthdays-2026-10-09",
+    "reason": "面違い",
+    "note": "アイマスchの別ブランド2人の誕生日祝い。共同主催ではなく、記念日の話題はgeneral面のculture向き"
+   },
+   {
+    "dedup_key": "tours-s2-next-region-preview-2026",
+    "reason": "既報",
+    "note": "10/8号『ツアマスS2弾、10月15日に生配信』と同じ配信の告知。新事実なし、配信は6日後でトリガーに当たらない"
+   },
+   {
+    "dedup_key": "gakumas-afterschool-namco-promo-card-2026",
+    "reason": "既報",
+    "note": "10/4号『学マス×namco、カードでクレーン演出のSPアピール』と同じ施策・特典カード。新事実なし、終了は11/1"
+   },
+   {
+    "dedup_key": "tours-shine-score-issue-discussion-2026-10",
+    "reason": "出典不足",
+    "note": "個人のSNS投稿のみで公式確認なし。単体では記事にしない"
+   },
+   {
+    "dedup_key": "tourmas-shine-bpm-2026",
+    "reason": "出典不足",
+    "note": "個人noteの検証で公式確認なし(未確認)。個人の投稿は単体で記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

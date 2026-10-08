@@ -581,5 +581,29 @@
   "src_candidate_id": "202610060218-grok-37",
   "event_date": "2026-12-12",
   "deadline": "2026-10-12"
+ },
+ {
+  "id": "sched-2026-10-16-cg-a-magical-cheers-aftermarket-2026-締切",
+  "dedup_key": "cg-a-magical-cheers-aftermarket-2026",
+  "brand": "cg",
+  "subject": "POP UP SHOP A MAGICAL CHEERS 事後通販",
+  "kind": "締切",
+  "note": "17:00が受付締切。最終日に注文できる",
+  "reserved_on": "2026-10-09",
+  "title": "POP UP SHOP A MAGICAL CHEERS事後通販",
+  "url": "https://animall.jp/collections/idolmaster_cinderellagirls_pus_amc_goods",
+  "source_type": "当事者",
+  "facts": [
+   "「POP UP SHOP A MAGICAL CHEERS」の事後通販を受付中。",
+   "描き下ろしアクリルスタンドは2,310円、2026年10月16日(金)17:00締切、2027年1月下旬以降順次発送予定。",
+   "2連キーホルダーは2,090円、2026年10月16日(金)17:00締切、2027年1月下旬以降順次発送予定。",
+   "クリアポスターは1,760円、2026年10月16日(金)17:00締切、2027年1月下旬以降順次発送予定。",
+   "描き下ろしグリッター缶バッジは880円、2026年10月16日(金)17:00締切、2027年1月下旬以降順次発送予定。",
+   "エンゲージメント: 低"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610090223-grok-14",
+  "deadline": "2026-10-16"
  }
 ]

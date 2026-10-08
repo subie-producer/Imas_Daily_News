@@ -1,0 +1,149 @@
+{
+ "decisions": {
+  "gaku-katamarion-the-dun-ps-game-music-awards-2026": {
+   "action": "article",
+   "angle": "「カタマリオンザドゥン」がPlayStation Game Music大賞2026にノミネート、10月1日からの1か月間のSpotify再生・DL・投票コメントが結果に反映",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-asari-produce-seminar-2026-10": {
+   "action": "article",
+   "angle": "「あさり先生のプロデュースゼミ」が本日10月9日11時から開催予定、普段とは異なるプロデュースを楽しめる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本日開始のトリガーあり"
+  },
+  "gaku-another-idol-guaranteed-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-another-idol-free-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策(アナザーアイドル確定無料ガシャ)の別URL"
+  },
+  "gaku-agitato-saki-gacha-futaride-ishouzukuri-2026": {
+   "action": "article",
+   "angle": "「Agitato」咲季ガシャが本日10月9日11時に開始、SRサポートカード「ふたりで衣装作り」が登場",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "hr-12の予約開幕をここに統合"
+  },
+  "topic-bdbfeeichf": {
+   "action": "article",
+   "angle": "「LIVE TOUR -標- 岩手公演記念ガシャ」は本日10月9日10時59分で終了、有償10連でSSR確定",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が当日。既報の内容を伝え直す"
+  },
+  "gaku-kaisou-hr-12-2026-09-28": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-agitato-saki-gacha-futaride-ishouzukuri-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "HR#12の内容は既報。予約の咲季ガシャ開幕は咲季ガシャの記事に統合"
+  },
+  "gaku-another-idol-free-gacha-2026": {
+   "action": "article",
+   "angle": "アナザーアイドル確定の無料1連ガシャ第1回が本日10月9日に始まる、以降2日おきに全13回、各回48時間限定",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "確定ガシャ告知(guaranteed)を統合。開始が当日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-katamarion-the-dun-ps-game-music-awards-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「カタマリオンザドゥン」がPlayStation Game Music大賞2026にノミネート、10月1日からの1か月間のSpotify再生・DL・投票コメントが結果に反映",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gaku-katamarion-the-dun-ps-game-music-awards-2026",
+    "candidate_ids": [
+     "202610090223-grok-54"
+    ]
+   },
+   {
+    "slug": "gaku-asari-produce-seminar-2026-10",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「あさり先生のプロデュースゼミ」が本日10月9日11時から開催予定、普段とは異なるプロデュースを楽しめる",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-asari-produce-seminar-2026-10",
+    "candidate_ids": [
+     "202610090223-grok-55"
+    ]
+   },
+   {
+    "slug": "gaku-agitato-saki-gacha-futaride-ishouzukuri-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Agitato」咲季ガシャが本日10月9日11時に開始、SRサポートカード「ふたりで衣装作り」が登場",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-agitato-saki-gacha-futaride-ishouzukuri-2026",
+    "candidate_ids": [
+     "202610090223-grok-57",
+     "sched-2026-10-09-gaku-kaisou-hr-12-2026-09-28-開幕"
+    ]
+   },
+   {
+    "slug": "gaku-topic-bdbfeeichf",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「LIVE TOUR -標- 岩手公演記念ガシャ」は本日10月9日10時59分で終了、有償10連でSSR確定",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "topic-bdbfeeichf",
+    "candidate_ids": [
+     "sched-2026-10-09-topic-bdbfeeichf-終了"
+    ]
+   },
+   {
+    "slug": "gaku-another-idol-free-gacha-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "アナザーアイドル確定の無料1連ガシャ第1回が本日10月9日に始まる、以降2日おきに全13回、各回48時間限定",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "gaku-another-idol-free-gacha-2026",
+    "candidate_ids": [
+     "sched-2026-10-09-gaku-another-idol-free-gacha-2026-開始",
+     "202610090223-grok-56"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

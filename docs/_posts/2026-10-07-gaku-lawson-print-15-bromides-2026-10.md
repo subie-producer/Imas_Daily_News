@@ -2,7 +2,7 @@
 slug: gaku-lawson-print-15-bromides-2026-10
 edition: "2026-10-07"
 brand: gaku
-src: 未確認
+src: 当事者
 rank: small
 corrected: false
 corrections: []
@@ -20,10 +20,10 @@ sources:
   type: 当事者
 - label: ローソンプリント「学園アイドルマスター - 商品一覧」(2026年10月6日)
   url: https://lawson-print.com/products/categories/gakumasu-dcp
-  type: 未確認
+  type: 当事者
 - label: ローソンプリント「学園アイドルマスター コレクション ブロマイド228」(2026年10月6日)
   url: https://lawson-print.com/products/describe/1073490228
-  type: 未確認
+  type: 当事者
 event_date: "2026-10-06"
 title_fact_ids:
 - F1

@@ -1,0 +1,249 @@
+{
+ "decisions": {
+  "cosmo-ace-combat-8-stream-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "10/6の終了済み配信で、出典も未確認"
+  },
+  "dsva-kimchikura-vol-13-2026": {
+   "action": "article",
+   "angle": "上水流宇宙が10月31日、ソウルのKIMCHIKURA VOL.13にDJ setで出演。無料・事前予約制で、予約と保証金の詳細は後日案内",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式Xと主催者投稿で確認。kimchikura-vol-13-2026 を統合"
+  },
+  "dsva-letora-silent-hill-f-stream-2026-10-08": {
+   "action": "roundup",
+   "angle": "ヴイアラ配信・動画・4コマまとめ(レトラのSILENT HILL f配信)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/8実施の配信出演。定常運営まとめへ"
+  },
+  "dsva-cosmo-miki-mirrorball-love-short-2026": {
+   "action": "roundup",
+   "angle": "ヴイアラ配信・動画・4コマまとめ(宇宙×星井美希「ミラーボール・ラブ」ショート動画)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式のショート動画公開。ゲスト名が出るだけで面は変わらない"
+  },
+  "dsva-cosmo-katamari-dlc-stream-2026-10-09": {
+   "action": "roundup",
+   "angle": "ヴイアラ配信・動画・4コマまとめ(宇宙の塊魂新DLC配信、本日21時)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信出演。定常運営まとめへ"
+  },
+  "dsva-comic-episode-35": {
+   "action": "roundup",
+   "angle": "ヴイアラ配信・動画・4コマまとめ(4コマ第35話公開)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定期更新の4コマ"
+  },
+  "va-liv-letora-birthday-2026": {
+   "action": "article",
+   "angle": "レトラBDライブの現地ライブビューイング先行抽選は10月11日23時59分締切、残り2日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior と同内容で新事実なし。締切が3日以内のトリガーで記事にする"
+  },
+  "dsva-cosmo-birthday-live-watchparty-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-cosmo-birthday-2026-screening",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ同時視聴上映会の知らせ"
+  },
+  "dsva-letora-silent-hill-f-fan-reactions-2026-10-08": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人1人のSNS投稿で、出典も未確認"
+  },
+  "dsva-876pro-comic-35-fan-reaction": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で、出典も未確認。4コマ自体はまとめに入れた"
+  },
+  "dsva-876pro-fes-shirt-fan-post-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で、出典も未確認"
+  },
+  "kimchikura-vol-13-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-kimchikura-vol-13-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ出演の別ソース"
+  },
+  "2026-2": {
+   "action": "article",
+   "angle": "第2回中間能力評価の投票は10月12日23時59分まで、締切まで3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。prior と同内容で、締切が3日以内のトリガーで記事にする"
+  },
+  "valiv-cosmo-birthday-2026-screening": {
+   "action": "article",
+   "angle": "上水流宇宙BDライブの同時視聴上映会の視聴ページが本日公開。上映会は12日13時、アーカイブ券の販売は12日18時まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。視聴ページ公開日のトリガー。watchparty を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-kimchikura-vol-13-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙が10月31日、ソウルのKIMCHIKURA VOL.13にDJ setで出演。無料・事前予約制で、予約と保証金の詳細は後日案内",
+    "purpose": "新情報",
+    "lead_score": 50,
+    "dedup_key": "dsva-kimchikura-vol-13-2026",
+    "candidate_ids": [
+     "202610090223-grok-59",
+     "202610090223-grok-85"
+    ]
+   },
+   {
+    "slug": "dsva-va-liv-letora-birthday-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラBDライブの現地ライブビューイング先行抽選は10月11日23時59分締切、残り2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "va-liv-letora-birthday-2026",
+    "candidate_ids": [
+     "202610090223-grok-64"
+    ]
+   },
+   {
+    "slug": "dsva-2026-2-416afd",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "第2回中間能力評価の投票は10月12日23時59分まで、締切まで3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "2026-2",
+    "candidate_ids": [
+     "sched-2026-10-09-2026-2-締切前"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-cosmo-birthday-2026-screening",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙BDライブの同時視聴上映会の視聴ページが本日公開。上映会は12日13時、アーカイブ券の販売は12日18時まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "valiv-cosmo-birthday-2026-screening",
+    "candidate_ids": [
+     "sched-2026-10-09-valiv-cosmo-birthday-2026-screening-開始",
+     "202610090223-grok-65"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "ヴイアラ配信・動画・4コマまとめ(レトラのSILENT HILL f配信)",
+    "lead_score": 0,
+    "dedup_key": "dsva-letora-silent-hill-f-stream-2026-10-08",
+    "candidate_ids": [
+     "202610090223-grok-60",
+     "202610090223-grok-61",
+     "202610090223-grok-62",
+     "202610090223-grok-63"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cosmo-ace-combat-8-stream-2026-10",
+    "reason": "出典不足",
+    "note": "10/6の終了済み配信で、出典も未確認"
+   },
+   {
+    "dedup_key": "dsva-letora-silent-hill-f-fan-reactions-2026-10-08",
+    "reason": "個人の話題",
+    "note": "個人1人のSNS投稿で、出典も未確認"
+   },
+   {
+    "dedup_key": "dsva-876pro-comic-35-fan-reaction",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で、出典も未確認。4コマ自体はまとめに入れた"
+   },
+   {
+    "dedup_key": "dsva-876pro-fes-shirt-fan-post-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で、出典も未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

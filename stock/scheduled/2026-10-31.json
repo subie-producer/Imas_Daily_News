@@ -215,5 +215,31 @@
   "src_candidate_id": "202610011835-explore-16",
   "event_date": "2026-10-10",
   "deadline": "2026-11-23"
+ },
+ {
+  "id": "sched-2026-10-31-dsva-kimchikura-vol-13-2026-開幕",
+  "dedup_key": "dsva-kimchikura-vol-13-2026",
+  "brand": "dsva",
+  "subject": "KIMCHIKURA VOL.13(ソウル)",
+  "kind": "開幕",
+  "note": "14:00〜19:30開催。上水流宇宙のDJ set出演を見に行ける",
+  "reserved_on": "2026-10-09",
+  "title": "上水流宇宙がKIMCHIKURA VOL.13に出演",
+  "url": "https://x.com/valiv_official/status/2108136759083278716",
+  "source_type": "公式",
+  "facts": [
+   "上水流宇宙がKIMCHIKURA VOL.13にDJ setで出演する。",
+   "開催日は2026年10月31日。",
+   "会場は韓国・ソウルのPOPCON D SQUARE DAEWON CONTENT L。",
+   "引用された主催者投稿では、公演時間は14:00〜19:30、オールスタンディングと発表されている。",
+   "引用された主催者投稿では無料公演で事前予約制とされ、予約時に保証金を決済し、当日入場確認後に公演終了後返金するとしている。予約日程・サイトと保証金・返金の詳細は後日案内。",
+   "引用された主催者投稿の出演者: DJ Komiya Arisa、Takafumi Sato、Riko Kohara、Nanami Urara、Cosmo Kamizuru (DJ set)、KIMCHIKURA DJs & VJsのMê、Presti、Entee、Himin、VoidMain、GUEST DJの0000up。",
+   "エンゲージメント: 中",
+   "言及アイドル: 上水流宇宙"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610090223-grok-59",
+  "event_date": "2026-10-31"
  }
 ]

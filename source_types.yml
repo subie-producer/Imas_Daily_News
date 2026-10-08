@@ -37,6 +37,7 @@ official_paths:
   - bilibili.com/opus/1244186744338776068
 
 official_domains:
+  - forms.cloud.microsoft # 合議で追加: リンク元は公式X投稿(imas_CGofficial)、同企画の告知で別受付先な
   - va-liv.booth.pm       # 合議で追加: idolmaster-official.jpの公式プロジェクト。BOOTHは販売
   - t.co                  # 合議で追加: ページに『公式サイトオープン』と明記。シンデレラガールズは公式作品
   - idolmaster-tours-w.bn-am.net # 合議で追加: TOURS公式マイページ、バンダイナムコアミューズメント直営の一次発信
@@ -52,6 +53,7 @@ official_suffixes:
 
 # --- 準公式: 公式レーベル・公式ストア等のグループ/パートナー企業 ---
 semi_official_domains:
+  - akitashoten.co.jp     # 合議で追加: 週刊少年チャンピオンで学園アイドルマスター連載を掲載する出版社本体
   - krs.bz                # 合議で追加: アイマス公式配信番組のメールフォーム。日本コロムビアが運営
   - onsen.ag              # 合議で追加: 公式ラジオ配信プラットフォーム、公式登録済み
   - a-onstore.jp          # 合議で追加: バンダイナムコグループの公式ショップ。公式レーベル・公式ストアの定義に該当
@@ -212,6 +214,7 @@ secondary_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - hoshitsukiyo.com      # 合議で追加: 個人のXアカウントに紐づく非公式ツールサイト
   - cruzchqn.com          # 合議で追加: 定義で『個人を二次情報にしない』と明記。個人運営ならファン
   - hrurukku.hatenablog.com # 合議で追加: 個人のはてなブログ。ライブ観賞の個人感想
   - tokifuji.hatenablog.com # 合議で追加: Hatena Blog の個人ブログ。ライブ感想を投稿
@@ -233,6 +236,13 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - goodsmile.com         # 合議で追加: ライセンス商品を企画・製造・販売する会社の通販サイト
+  - store.steampowered.com # 合議で追加: アイマス作品を販売する第三者ストアの販売ページ。公式ストアではない
+  - playstation.com       # 合議で追加: PS Game Music大賞2026を主催し、応募・投票を運営
+  - caltla.com            # 合議で追加: SideM×大丸松坂屋の商品を販売する会社の自社通販サイト
+  - blog.ja.playstation.com # 合議で追加: PS Game Music大賞2026の主催側による告知記事
+  - orixtheater.jp        # 合議で追加: Pop'n ToyBox!!公演の開催会場・施設運営
+  - lawson-print.com      # 合議で追加: ローソンプリントでアイマスグッズを販売するライセンス企業
   - travel.willer.co.jp   # 合議で追加: シャイニーカラーズコラボツアーを企画・販売するライセンス事業者
   - taiko-ch.net          # 合議で追加: バンダイナムコ傘下の他タイトル公式サイト。アイマス視点では外部企業
   - bit.ly                # 合議で追加: リンク先はローソンプリント。ライセンスを受けてアイマス商品を販売する当事者
@@ -378,6 +388,9 @@ video_ids:
   ファン:
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - _6FBCOmBV_Q         # 機械で追加: @imas-official「【スタマス】5周年記念！越境コミュ公開「みんなでお掃除？」【」
+    - F480cpkjGdM         # 機械で追加: @imas-official「10/5 田中琴葉さん Happy Birthday‼」
+    - rcceniSuI4U         # 機械で追加: @KamizuruCosmo「【#ACE8 #1リベンジ】※ネタバレ注意※ シリーズ最新作」
     - oLklZ1DD-xo         # 機械で追加: @imas-official「【ミリシタ】ゲーム内楽曲『ライラックにつつまれて』MV【アイ」
     - trJ1Aog8L7w         # 機械で追加: @imas-official「【スタマス】5周年記念！越境コミュ公開「アイドルモノマネチャ」
     - YvB9Lkq5aOs         # 機械で追加: @KamizuruCosmo「クライヤ 踊ってみた with 四条貴音さん #shorts」
@@ -525,6 +538,25 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - watawatan7          # 合議で追加: 個人によるアイドル6人選びの投稿
+    - w111_h              # 合議で追加: 個人によるTシャツの共有投稿
+    - topopogi_gj         # 合議で追加: 個人による企画参加の共有投稿
+    - tokoro10p           # 合議で追加: 個人による関裕美に関するファン投稿
+    - takahi_read         # 合議で追加: 個人による4コマへの反応投稿
+    - pupiechu            # 合議で追加: 個人による誕生日告知の投稿
+    - paper_yang          # 合議で追加: 個人のライブ参加報告と痛バッグ投稿
+    - onborooooo          # 合議で追加: 個人のプレイ報告・BPM検証の投稿
+    - momo3102939         # 合議で追加: 個人による誕生日祝いのファン投稿
+    - million_star_       # 合議で追加: 個人によるオーケストラ当選報告と感想
+    - kn_oekaki           # 合議で追加: 個人が制作した手作りグッズの投稿
+    - kgr_ut23            # 合議で追加: 個人によるアイドル6人選びの投稿
+    - chimorium           # 合議で追加: 個人による誕生日祝いのファン投稿
+    - casinoj17P          # 合議で追加: 個人のツアー振り返り投稿
+    - _Mato_P_            # 合議で追加: 個人による投票結果の共有投稿
+    - Ui_Tanuguri0x0      # 合議で追加: 個人のコスプレ予定の共有投稿
+    - NariK75887          # 合議で追加: 個人のファンメイド作品の投稿
+    - Hijirinkawa11       # 合議で追加: 個人アカウントによる望月聖のファン投稿
+    - GG_AS               # 合議で追加: 個人の感想投稿。個人アカウント
     - wahiwahin           # 合議で追加: 個人の商品購入投稿
     - nodash              # 合議で追加: 個人による選択ツール開発・共有
     - minato_mzk          # 合議で追加: 個人によるコスプレ投稿
@@ -680,6 +712,8 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - 30MS____            # 合議で追加: 30MS商品のAmazon再入荷をPR付きで告知する販売・製品側の発信
+    - kimchikura          # 合議で追加: 催しの出演告知。主催側の一次発信とみられる
     - sakaseru_jp         # 合議で追加: フラワースタンド販売・手配による出演祝い投稿
     - lawsonmulticopy     # 合議で追加: ローソンはライセンス商品（ブロマイド）の販売元・会場。ライセンス商品販売会社は当
     - sirasawasnbei       # 合議で追加: コラボ実施している店舗アカウント

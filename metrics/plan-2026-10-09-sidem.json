@@ -1,0 +1,323 @@
+{
+ "decisions": {
+  "sidem-daimaru-matsuzakaya-vol-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-vol2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-seibuen-retro-party-2026": {
+   "action": "article",
+   "angle": "西武園ゆうえんち×SideM「超!!レトローズパーティ」の詳細解禁。10/30〜12/1開催、パーティ3日程、参加券付き切符は10/12 12時から先着販売",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "cho-retroseparty・retrose-partyを統合"
+  },
+  "sidem-seibuen-cho-retroseparty-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-seibuen-retro-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-11th-live-performance-goods-2026": {
+   "action": "article",
+   "angle": "11th開催記念グッズの受注は10月11日まで、締切まであと2日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior本文に価格等あり。新事実なし、締切トリガーのみ"
+  },
+  "sidem-daimaru-vol2-2026": {
+   "action": "article",
+   "angle": "大丸松坂屋コラボ第2弾の商品ラインナップと価格、3,300円以上購入ごとのクリアカード特典(全6種)",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/8記事は日程・整理券・受注のみで、商品・価格・特典は未掲載"
+  },
+  "315-pro-night-20261002-preview": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/2放送回の終了済みの話題"
+  },
+  "fan-suzaku-daimaru-selection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿、出典未確認"
+  },
+  "aslan-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "誕生日は10/8で終了済み、SNS投稿のみ"
+  },
+  "fan-imas-idol-six-picks-2026-10-08": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。ファン面はgeneral面のみ"
+  },
+  "fan-sidem-cosplay-plans-2026-10-08": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。cultureはgeneral面のみ"
+  },
+  "sidem-apple-music-anime-playlist-2026-10-08": {
+   "action": "article",
+   "angle": "Legenders『Remain Viable』ともふもふえん『もふパ・で・いりゅ～じょん！』がApple Music「最新ソング：アニメ」に選出",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-seibuen-retrose-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-seibuen-retro-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-daimaru-matsuzakaya-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-vol2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-producer-card-wave3-2026": {
+   "action": "article",
+   "angle": "プロデューサーカード第3弾の受注は10月12日23:59まで、締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-topic-61": {
+   "action": "article",
+   "angle": "315プロNight!が本日放送、11th感想月間で菊池勇成さん・千葉翔也さん・永塚拓馬さんが担当",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日放送が開始トリガー"
+  },
+  "sidem-fantastic-battle-fes-2026": {
+   "action": "article",
+   "angle": "F@NTASTIC BATTLE FES第2弾 プレミアム会員2次先行は10月12日23:59まで、締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-mfes-christmas-cruise-2026": {
+   "action": "article",
+   "angle": "Mフェス2026クリスマスクルーズの抽選申込は10月12日23:59まで、締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-seibuen-retro-party-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "西武園ゆうえんち×SideM「超!!レトローズパーティ」の詳細解禁。10/30〜12/1開催、パーティ3日程、参加券付き切符は10/12 12時から先着販売",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "sidem-seibuen-retro-party-2026",
+    "candidate_ids": [
+     "202610081834-watch-1",
+     "202610082332-explore-1",
+     "202610090223-grok-78"
+    ]
+   },
+   {
+    "slug": "sidem-11th-live-performance-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "11th開催記念グッズの受注は10月11日まで、締切まであと2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-11th-live-performance-goods-2026",
+    "candidate_ids": [
+     "202610090223-grok-45"
+    ]
+   },
+   {
+    "slug": "sidem-daimaru-vol2-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "大丸松坂屋コラボ第2弾の商品ラインナップと価格、3,300円以上購入ごとのクリアカード特典(全6種)",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "sidem-daimaru-vol2-2026",
+    "candidate_ids": [
+     "202610090223-grok-46",
+     "202610081233-explore-5",
+     "202610090223-grok-82"
+    ]
+   },
+   {
+    "slug": "sidem-apple-music-anime-playlist-2026-10-08",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Legenders『Remain Viable』ともふもふえん『もふパ・で・いりゅ～じょん！』がApple Music「最新ソング：アニメ」に選出",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-apple-music-anime-playlist-2026-10-08",
+    "candidate_ids": [
+     "202610090223-grok-53"
+    ]
+   },
+   {
+    "slug": "sidem-producer-card-wave3-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "プロデューサーカード第3弾の受注は10月12日23:59まで、締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-producer-card-wave3-2026",
+    "candidate_ids": [
+     "sched-2026-10-09-sidem-producer-card-wave3-2026-締切前"
+    ]
+   },
+   {
+    "slug": "sidem-topic-61",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315プロNight!が本日放送、11th感想月間で菊池勇成さん・千葉翔也さん・永塚拓馬さんが担当",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-topic-61",
+    "candidate_ids": [
+     "sched-2026-10-09-sidem-topic-61-開始"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "F@NTASTIC BATTLE FES第2弾 プレミアム会員2次先行は10月12日23:59まで、締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-fantastic-battle-fes-2026",
+    "candidate_ids": [
+     "sched-2026-10-09-sidem-fantastic-battle-fes-2026-締切前"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-christmas-cruise-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェス2026クリスマスクルーズの抽選申込は10月12日23:59まで、締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-mfes-christmas-cruise-2026",
+    "candidate_ids": [
+     "sched-2026-10-09-sidem-mfes-christmas-cruise-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "315-pro-night-20261002-preview",
+    "reason": "その他",
+    "note": "10/2放送回の終了済みの話題"
+   },
+   {
+    "dedup_key": "fan-suzaku-daimaru-selection-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿、出典未確認"
+   },
+   {
+    "dedup_key": "aslan-birthday-2026",
+    "reason": "その他",
+    "note": "誕生日は10/8で終了済み、SNS投稿のみ"
+   },
+   {
+    "dedup_key": "fan-imas-idol-six-picks-2026-10-08",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。ファン面はgeneral面のみ"
+   },
+   {
+    "dedup_key": "fan-sidem-cosplay-plans-2026-10-08",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。cultureはgeneral面のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -214,5 +214,49 @@
   "src_candidate_id": "202610071233-watch-0",
   "event_date": "2026-10-10",
   "deadline": "2026-10-10"
+ },
+ {
+  "id": "sched-2026-10-10-million-princess-a-la-mode-idol-grand-prix-pv-2026-開始",
+  "dedup_key": "million-princess-a-la-mode-idol-grand-prix-pv-2026",
+  "brand": "million",
+  "subject": "『プリンセス・アラモード』iDOL GRAND-PRIX PV公開",
+  "kind": "開始",
+  "note": "14:50にPVがYouTubeで公開され、見られる",
+  "reserved_on": "2026-10-09",
+  "title": "ミリシタ『プリンセス・アラモード』iDOL GRAND-PRIX PV予告",
+  "url": "https://x.com/imasml_theater/status/2108170949422113163",
+  "source_type": "公式",
+  "facts": [
+   "2026年10月10日14:50に『プリンセス・アラモード』iDOL GRAND-PRIX PVを公開予定と告知した。",
+   "YouTube: https://www.youtube.com/watch?v=a2MWbu9JVPw&feature=youtu.be",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610090223-grok-22",
+  "event_date": "2026-10-10"
+ },
+ {
+  "id": "sched-2026-10-10-shiny-alev1-making-premiere-2026-開始",
+  "dedup_key": "shiny-alev1-making-premiere-2026",
+  "brand": "shiny",
+  "subject": "ALEV-1メイキング動画プレミア公開",
+  "kind": "開始",
+  "note": "20:00からYouTubeでメイキング動画をプレミア視聴できる",
+  "reserved_on": "2026-10-09",
+  "title": "ALEV-1メイキング動画のプレミア公開",
+  "url": "https://x.com/shinyc_official/status/2108150411282542748",
+  "source_type": "公式",
+  "facts": [
+   "283 Production XXXX Performanceの表記は「XXX= S/N-GUL4R1TY」。",
+   "ALEV-1メイキング動画「Wish your birth - THE MAKING OF ALEV-1」を告知。",
+   "プレミア公開: 10月10日(土) 20:00。",
+   "YouTube: https://www.youtube.com/watch?v=Qptgkh0xO4w",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610090223-grok-30",
+  "event_date": "2026-10-10"
  }
 ]

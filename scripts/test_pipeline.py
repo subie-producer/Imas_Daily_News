@@ -3874,6 +3874,27 @@ def test_rewrites(tmp: Path):
         finally:
             sys.argv, rewrite_past.build_cases, rewrite_past.latest_raw_answer = saved_argv, saved_build, saved_raw
         check((posts / n).read_text(encoding="utf-8") == "元の記事", "校閲の例外で未校閲の差し替えが残った")
+        # 校閲を通った差し替えは、その号の紙面の出典を判定(合議 → 付け直し)に掛ける。掛けないと書き直しで新しく引いた
+        # 出典が未確認のまま紙面に残る(2026-10-08: 10/3〜10/7 号の書き直しで 6件、watch が鳴った)
+        (tmp / "metrics" / "work" / "bench").mkdir(parents=True, exist_ok=True)
+        _c.claude_review = lambda *a, **k: {"verdict": "approve", "blockers": [], "failed": []}
+        calls = []
+        saved_cls = rewrite_past.classify_retag_lint
+        try:
+            for ok_cls, want_rc in ((True, 0), (False, 1)):
+                calls.clear()
+                rewrite_past.classify_retag_lint = lambda d, **k: (calls.append((d, k)), (ok_cls, "" if ok_cls else "合議 exit 1"))[1]
+                rewrite_past.build_cases = lambda ops, dates: {n: {"date": "2026-10-05"}}
+                rewrite_past.latest_raw_answer = lambda label, stem: {"status": "ok"}
+                sys.argv = ["rewrite_past.py", "2026-10-05", "--from-raw"]
+                (posts / n).write_text("元の記事", encoding="utf-8")
+                rc = rewrite_past.main()
+                check(calls == [("2026-10-05", {"posts_only": True, "lint": False})],
+                      f"差し替えた号の出典を判定に掛けていない: {calls}")
+                check(rc == want_rc, f"出典の判定の{'成功' if ok_cls else '失敗'}で終了コード {rc}")
+        finally:
+            sys.argv, rewrite_past.build_cases, rewrite_past.latest_raw_answer = saved_argv, saved_build, saved_raw
+            rewrite_past.classify_retag_lint = saved_cls
     finally:
         rewrite_past.ROOT, rewrite_past.apply_answer, _c.claude_review = saved
 

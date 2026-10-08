@@ -42,6 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
+                     RenderFailed, render_page,
                      set_quiet, unbacked_facts,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall,
@@ -123,11 +124,18 @@ def http_get(url: str, timeout: int = 20) -> str:
 
 
 def fetch_rendered(url: str, timeout: int = 30) -> str:
-    r = subprocess.run(
-        [str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"),
-         url, "--timeout", str(timeout)],
-        capture_output=True, text=True, timeout=timeout + 60)
-    return r.stdout if r.returncode == 0 else ""
+    """描画したページの HTML。失敗は RenderFailed(終了コードと stderr の要点つき)で上げる(空で返さない)。"""
+    return render_page(url, timeout)
+
+
+def rendered_or_note(url: str) -> tuple[str, str]:
+    """描画を補いとして使う呼び出し側(facts 化の本文・裏取りの読み直し)向け: (HTML, 失敗の要点)。
+    失敗しても素の HTML や WebFetch で続けられるので止めないが、原因はログと呼び出し側の記録に残す"""
+    try:
+        return fetch_rendered(url) or "", ""
+    except RenderFailed as e:
+        print(f"  描画取得の失敗: {e}", flush=True)
+        return "", str(e)
 
 
 # ---- A-1 定点観測 --------------------------------------------------------------
@@ -148,7 +156,7 @@ def list_source(s: dict, known: set[str], fetch=None) -> tuple[list[tuple[str, s
         url = s["url"] if n == 1 else s["page_url"].format(n=n)
         html = fetch(url)
         if not (html or "").strip():
-            # 取得の失敗(fetch_rendered は失敗を空で返す)を一覧の終わりと取り違えない。手前のページだけ既読にすると、
+            # 取得の失敗(空の応答)を一覧の終わりと取り違えない。手前のページだけ既読にすると、
             # 次回は手前で止まって奥の新着を見ない(監査指摘 r102)。この観測先は今回まるごと失敗にし、次回同じ境界からやり直す
             raise RuntimeError(f"{url} の取得に失敗(空の応答)")
         pages = n
@@ -200,8 +208,9 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
                                   f"か、一覧の形が変わった)。これより古い新着を見落としている可能性がある", ok=False)
         except Exception as e:
             # 既読は更新しない(found_by_source に入れない)ので、次回同じ境界からやり直す。見えない失敗にしない(当番のなぜなぜへ)
-            stats[s["id"]] = {"error": str(e)[:120]}
-            notify("collect", f"定点観測 {s['id']}: 一覧を読めなかった({str(e)[:160]})。既読は更新せず、次回やり直す", ok=False)
+            # 原因(描画取得なら終了コードと stderr の要点)まで残す。切り詰めて「空の応答」だけにしない
+            stats[s["id"]] = {"error": str(e)[:400]}
+            notify("collect", f"定点観測 {s['id']}: 一覧を読めなかった({str(e)[:400]})。既読は更新せず、次回やり直す", ok=False)
 
     # 前回 facts 化の出力が読めずにやり直しになった新着(未処理の列)を**先に**処理する。それらは既読にしていないが、一覧の上では
     # 既読のページの奥に隠れるので、一覧を遡っても二度と見えない(監査指摘 r102)
@@ -234,19 +243,19 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
     if batch and claude_call:
         blobs = []
         for it in batch:
-            body = ""
+            body, why = "", ""
             if it["csr"]:
-                t = fetch_rendered(it["url"])
+                t, why = rendered_or_note(it["url"])
                 # 本文の切り詰めは facts の情報量に直結する。2500字にしていたとき、
                 # 本文8,219字のページから facts を359字しか起こせていなかった
                 body = html_to_text(t.encode("utf-8", "replace"))[:WATCH_BODY_CHARS]
-            blobs.append({"url": it["url"], "title": it["title"], "brand_hint": it["brand"], "rendered_text": body})
+            blobs.append({"url": it["url"], "title": it["title"], "brand_hint": it["brand"], "rendered_text": body, "render_error": why})
         # 素材は**人が読める形**(Markdown、1行が長くならない)で渡す。1行 60KB の JSON にすると Read ツールが
         # 行を切り詰めてモデルが本文を読めず、Bash で開けようとして時間切れになる(実測 2026-09-17: 420 秒)
         material = "\n\n".join(
             f"### {i + 1}. {b['url']}\n- title: {b['title'] or '(なし)'}\n- brand_hint: {b['brand_hint']}\n"
             + ("- 本文(取得済み):\n" + b["rendered_text"].strip() if b["rendered_text"].strip()
-               else "- 本文: (取得できず。URL を WebFetch で読むこと)")
+               else f"- 本文: (取得できず{'(' + b['render_error'][:200] + ')' if b['render_error'] else ''}。URL を WebFetch で読むこと)")
             for i, b in enumerate(blobs))
         prompt = render_prompt("watch-facts", RULES=COLLECT_RULES, ITEM=COLLECT_ITEM, MATERIAL=material)
         got = claude_call(prompt, timeout=420)
@@ -1377,9 +1386,14 @@ def verify(cands: list[dict]) -> dict:
                     cs = res.headers.get_content_charset()
                 if ok:
                     text = html_to_text(body, cs)
+                    # 描画の失敗は素の本文で続けるが、原因は判定の記録に残す。捨てると、描画の時間切れで写しが見えなかったのを
+                    # 「URL の取り違え」と記録し、なぜ落ちたかを当番が再現して確かめることになる(監査指摘
+                    # render-diagnostic-lost-in-classification と同じ型)
+                    render_errs: list[str] = []
                     # CSR で本文が空同然か、描画必須のサイト(定点観測の portal)なら描画してから読み直す(定点観測と同じ経路)
                     if needs_render(c["url"], text):
-                        rendered = fetch_rendered(c["url"])
+                        rendered, why = rendered_or_note(c["url"])
+                        render_errs += [why] if why else []
                         if rendered:
                             text = html_to_text(rendered.encode("utf-8", "replace"))
                     periods = extract_periods(text)
@@ -1394,7 +1408,8 @@ def verify(cands: list[dict]) -> dict:
                     # portal 以外のサイトの描画漏れに備え、粒が欠けたときにも描画する
                     unbacked = unbacked_facts(c.get("facts") or [], text)
                     if unbacked:
-                        rendered = fetch_rendered(c["url"])
+                        rendered, why = rendered_or_note(c["url"])
+                        render_errs += [why] if why else []
                         if rendered:
                             unbacked = unbacked_facts(c.get("facts") or [],
                                                       html_to_text(rendered.encode("utf-8", "replace")))
@@ -1408,14 +1423,16 @@ def verify(cands: list[dict]) -> dict:
                     missing = [q for q in quotes if quote_on_page(q, text) is False]
                     matched = any(quote_on_page(q, text) for q in quotes)
                     if missing:
-                        rendered = fetch_rendered(c["url"])
+                        rendered, why = rendered_or_note(c["url"])
+                        render_errs += [why] if why else []
                         if rendered:
                             rtext = html_to_text(rendered.encode("utf-8", "replace"))
                             missing = [q for q in missing if quote_on_page(q, rtext) is False]
                             matched = matched or any(quote_on_page(q, rtext) for q in quotes)
                     if missing:
                         c["verify"] = "failed"
-                        c["verify_note"] = f"写しが出典の本文に無い(URL の取り違えの疑い): {missing[0][:60]}"
+                        c["verify_note"] = (f"写しが出典の本文に無い(URL の取り違えの疑い): {missing[0][:60]}"
+                                            + (f"。ただし描画できず素の本文で照合した({render_errs[-1][:200]})" if render_errs else ""))
                         counts["failed"] += 1
                         print(f"  裏取り: {c['url']} に写しが無い → 使わない({c.get('title')})", flush=True)
                         continue
@@ -1424,11 +1441,15 @@ def verify(cands: list[dict]) -> dict:
                     # 定点観測の候補は URL を巡回先からコードが決めるので要らない
                     if c.get("via") != "watch" and not matched:
                         c["verify_note"] = "出典ページからの写しが無い・短すぎて、URL の取り違えを確かめられない"
+                    if render_errs:
+                        c["render_error"] = render_errs[-1][:300]
                 good_type = c["source_type"] in GOOD_SOURCE_TYPES
                 c["verify"] = ("confirmed" if ok and good_type and not c.get("unbacked_facts") and not c.get("verify_note")
                                else ("unconfirmed" if ok else "failed"))
-        except Exception:
+        except Exception as e:
+            # 取れなかった原因を候補に残す(採否・当番の診断で「なぜ failed か」を追えるように)
             c["verify"] = "failed"
+            c["verify_note"] = f"出典を取得できない: {type(e).__name__}: {e}"[:300]
         counts[c["verify"]] += 1
     return counts
 

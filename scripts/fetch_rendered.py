@@ -65,7 +65,14 @@ def main() -> int:
     ap.add_argument("--timeout", type=int, default=20)
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
-    html = fetch(args.url, args.wait_css, args.timeout)
+    try:
+        html = fetch(args.url, args.wait_css, args.timeout)
+    except Exception as e:
+        # 呼び出し側(pipelib.render_page)が原因を記録できるよう、例外の要点を1行で出す。Selenium の例外は
+        # 後ろに Chrome のスタックが続き、トレースバックの末尾だけでは何が起きたか読めない
+        msg = (str(e).strip().splitlines() or [""])[0].removeprefix("Message:").strip()
+        print(f"RENDER_FAILED: {type(e).__name__}: {msg}"[:300], file=sys.stderr)
+        return 1
     if args.out:
         with open(args.out, "w", encoding="utf-8") as f:
             f.write(html)

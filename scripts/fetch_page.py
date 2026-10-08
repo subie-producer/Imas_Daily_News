@@ -19,13 +19,12 @@
 1ページの本文はたいてい数千字で、読ませても執筆1回ぶんの負担は小さい。
 """
 import argparse
-import subprocess
 import sys
 import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import ROOT, extract_periods, html_to_text, needs_render
+from pipelib import RenderFailed, extract_periods, html_to_text, needs_render, render_page
 
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
 
@@ -51,19 +50,17 @@ def main() -> int:
         return 1
 
     # JS で描画するページは本文が空同然になる。その場合と、描画必須と分かっているサイトは描画してから読み直す
+    render_error = ""
     if needs_render(args.url, text):
         try:
-            r = subprocess.run(
-                [str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"),
-                 args.url, "--timeout", "30"],
-                capture_output=True, text=True, timeout=120)
-            if r.returncode == 0 and r.stdout:
-                text = html_to_text(r.stdout.encode("utf-8", "replace"))
-        except Exception:
-            pass
+            text = html_to_text(render_page(args.url, 30).encode("utf-8", "replace"))
+        except RenderFailed as e:
+            # 素の本文で続けるが、描画できなかった原因(終了コードと stderr の要点)は読み手に見せる
+            render_error = str(e)
+            print(f"RENDER_FAILED: {e}", file=sys.stderr)
 
     if not text.strip():
-        print("FETCH_FAILED: 本文を取得できませんでした")
+        print("FETCH_FAILED: 本文を取得できませんでした" + (f"({render_error})" if render_error else ""))
         return 1
 
     periods = extract_periods(text)

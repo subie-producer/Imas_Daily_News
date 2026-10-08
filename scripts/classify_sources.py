@@ -32,7 +32,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, classify_source,
                      source_type_table, write_source_table, prompt_part, render_prompt,
-                     edition_date, extract_json_array, html_to_text, notify, set_quiet,
+                     edition_date, extract_json_array, html_to_text, notify, render_failure, set_quiet,
                      X_ANON_POST, x_post_author)
 
 # 合議で足してよい種別。公式・準公式も答えさせる(作品・ブランドの公式アカウントを「不明」で人へ回して
@@ -444,15 +444,28 @@ def page_meta(url: str) -> tuple[str, str, str]:
         return "", "", ""
 
 
-def rendered_excerpt(url: str, chars: int = 1200) -> str:
-    """本文の冒頭。JS 描画のページは fetch_page.py が描画して読み直す。"""
+def rendered_excerpt(url: str, chars: int = 1200) -> tuple[str, str]:
+    """(本文の冒頭, 取得状態)。JS 描画のページは fetch_page.py が描画して読み直す。取得状態は、取れなかった・描画できずに
+    描画前の素の本文(メニューだけ等)で続けた、のときに原因(終了コードと stderr の要点)を書く。正常なら空。
+    以前は fetch_page.py の stdout だけを読み、描画の失敗(stderr に出て終了コード0で続く)を捨てていた。
+    分類の材料がメニューだけになっても、それが描画の時間切れのせいだと分類側にも当番にも見えなかった(監査指摘
+    render-diagnostic-lost-in-classification)"""
     try:
         r = subprocess.run([sys.executable, str(ROOT / "scripts" / "fetch_page.py"), url, "--chars", str(chars)],
                            capture_output=True, text=True, timeout=150, stdin=subprocess.DEVNULL, cwd=ROOT)
-        body = r.stdout.split("--- 本文(要約なし) ---", 1)[-1] if "--- 本文" in r.stdout else r.stdout
-        return re.sub(r"\s+", " ", body).strip()[:chars]
     except Exception as e:
-        return f"(取得できず: {type(e).__name__})"
+        return "", f"取得できず: {type(e).__name__}: {e}"[:300]
+    if r.returncode != 0 or "--- 本文(要約なし) ---" not in r.stdout:
+        head = next((l.strip() for l in r.stdout.splitlines() if l.strip()), "")
+        return "", (f"取得できず: {head[:200]} / " if head else "取得できず: ") + render_failure(r.returncode, r.stderr)
+    body = re.sub(r"\s+", " ", r.stdout.split("--- 本文(要約なし) ---", 1)[1]).strip()[:chars]
+    if "RENDER_FAILED:" in (r.stderr or ""):
+        return body, "描画できず、描画前の素の本文で代用(メニューだけのことがある): " + render_failure(r.returncode, r.stderr)
+    return body, ""
+
+
+def _with_status(text: str, status: str) -> str:
+    return text + (f"\n取得状態: {status}" if status else "")
 
 
 def site_profile(host: str, url: str, top: str | None = None) -> str:
@@ -461,11 +474,12 @@ def site_profile(host: str, url: str, top: str | None = None) -> str:
     URL の字面だけで判定しない(編集長の指摘)。"""
     parts = []
     title, desc, _ = page_meta(url)
-    parts.append(f"代表URL: {url}\ntitle: {title or '-'}\ndescription: {desc or '-'}\nページ冒頭: {rendered_excerpt(url)}")
+    body, status = rendered_excerpt(url)
+    parts.append(_with_status(f"代表URL: {url}\ntitle: {title or '-'}\ndescription: {desc or '-'}\nページ冒頭: {body}", status))
     top = top or f"https://{host}/"
     ttitle, tdesc, thtml = page_meta(top)
-    top_text = rendered_excerpt(top, 3000)
-    parts.append(f"サイトのトップ {top}\ntitle: {ttitle or '-'}\ndescription: {tdesc or '-'}\n冒頭: {top_text[:800]}")
+    top_text, top_status = rendered_excerpt(top, 3000)
+    parts.append(_with_status(f"サイトのトップ {top}\ntitle: {ttitle or '-'}\ndescription: {tdesc or '-'}\n冒頭: {top_text[:800]}", top_status))
     # 会社概要・運営会社・特定商取引法のどれか(その順で優先)。ナビの文言はトップと共通なので、
     # 共通の前置きを除いた本文を渡す(メニューだけで枠が埋まって運営者名が届かないのを防ぐ)
     links = re.findall(r'href=["\']([^"\']+)["\'][^>]*>\s*(?:<[^>]+>\s*)*([^<]{0,40})', thtml, re.I)
@@ -478,11 +492,11 @@ def site_profile(host: str, url: str, top: str | None = None) -> str:
         if about:
             break
     if about:
-        text = rendered_excerpt(about, 4000)
+        text, about_status = rendered_excerpt(about, 4000)
         import os as _os
         common = len(_os.path.commonprefix([top_text, text]))
         text = text[common:] if common > 200 else text
-        parts.append(f"運営者情報 {about}({about_kw}):\n{text[:1200]}")
+        parts.append(_with_status(f"運営者情報 {about}({about_kw}):\n{text[:1200]}", about_status))
     else:
         parts.append("運営者情報: トップから会社概要・About・特定商取引法のリンクを見つけられず(サイト内を fetch_page.py で探すこと)")
     return "\n".join(parts)
@@ -497,7 +511,7 @@ def page_excerpt(url: str, chars: int = 1200) -> str:
             text = html_to_text(r.read(200_000), r.headers.get_content_charset())
         return re.sub(r"\s+", " ", text).strip()[:chars]
     except Exception as e:
-        return f"(取得できず: {type(e).__name__})"
+        return f"(取得できず: {type(e).__name__}: {e})"[:300]
 
 
 def ask(cmd: list[str], prompt: str, timeout: int = 900) -> list[dict]:

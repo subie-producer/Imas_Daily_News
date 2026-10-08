@@ -1057,6 +1057,39 @@ def render_hosts() -> set[str]:
             for u in (s.get("url"), s.get("base")) if u}
 
 
+class RenderFailed(RuntimeError):
+    """描画取得(fetch_rendered.py)の失敗。終了コードと stderr の要点を持つ。"""
+
+
+def render_failure(returncode, stderr: str) -> str:
+    """描画取得の失敗の要点: 終了コードと、stderr のうち例外の行(fetch_rendered.py が出す RENDER_FAILED の行、
+    無ければ最後の例外の行、それも無ければ末尾の行)。Selenium の例外は後ろに Chrome のスタックが続くので、末尾だけでは原因が読めない"""
+    lines = [l.strip() for l in (stderr or "").splitlines() if l.strip()]
+    key = ([l for l in lines if l.startswith("RENDER_FAILED:")]
+           or [l for l in lines if re.match(r"^[\w.]*(?:Error|Exception|Exit|Interrupt)\b", l)] or lines[-2:])
+    return f"終了コード {returncode}: " + (" / ".join(key[-2:])[:300] if key else "(stderr なし)")
+
+
+def render_page(url: str, timeout: int = 30) -> str:
+    """ヘッドレスブラウザで描画したページの HTML。**失敗を空で返さない**: 非正常終了・時間切れ・空の出力は、
+    終了コードと stderr の要点を持った RenderFailed で上げる。以前は空文字に変えていて、呼び出し側の記録は「空の応答」
+    だけになり、原因(2026-10-07 コロムビアの一覧の TimeoutException)を当番が別に再現して確かめていた(当番の指摘 dc23e62472)"""
+    try:
+        r = subprocess.run(
+            [str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"), url, "--timeout", str(timeout)],
+            capture_output=True, text=True, timeout=timeout + 60, stdin=subprocess.DEVNULL, cwd=ROOT)
+    except subprocess.TimeoutExpired as e:
+        raise RenderFailed(f"{url} の描画が {timeout + 60} 秒で終わらず打ち切った: "
+                           + render_failure("(時間切れ)", partial_output(e)[1])) from None
+    except OSError as e:
+        raise RenderFailed(f"{url} の描画を起動できない: {type(e).__name__}: {e}") from None
+    if r.returncode != 0:
+        raise RenderFailed(f"{url} の描画に失敗: " + render_failure(r.returncode, r.stderr))
+    if not (r.stdout or "").strip():
+        raise RenderFailed(f"{url} の描画が空の HTML を返した: " + render_failure(r.returncode, r.stderr))
+    return r.stdout
+
+
 def needs_render(url: str, text: str) -> bool:
     """素の HTML から取った本文を描画し直して読むべきか。本文が空同然か、描画必須と分かっているサイトか。
 

@@ -9,6 +9,9 @@
 - 既に訂正が入った記事は、訂正後の内容で書かせ、訂正の記録(corrections)はそのまま残す
 - 本番と同じ検算(renderlib.check_output)と校閲(compose.claude_review)を通った記事だけ差し替える。
   見送り・検算不合格・校閲のブロック・答えが無いものは元の記事のまま(一覧を出す)
+- 差し替えた記事の出典で判定表に無いもの(書き直しで新しく引いた URL)は、本番の組版と同じく合議で判定表に足し、
+  記事の種別を付け直す(pipelib.classify_retag_lint の posts_only)。失敗したら、または合議が決めきれず差し替えた記事に
+  未確認の出典が残ったら、終了コード1(残った出典を一覧に出す)
 - 差し替えは作業ツリーの docs/_posts に書くだけ。コミット・反映は人(または呼び出し側)が行う
 """
 import argparse
@@ -19,7 +22,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import writer_bench as wb  # noqa: E402
-from pipelib import ROOT  # noqa: E402
+from pipelib import ROOT, classify_retag_lint  # noqa: E402
+from classify_sources import unresolved_post_sources  # noqa: E402
 
 PAST_RULE = ("- 書き直し: これは {date} 号の記事の書き直し。{date} 06:00 より後に出た情報(ページの更新・追記・後日の結果・完売など)は書かない。"
              "読んだページに更新日や追記があれば、{date} 時点で出ていた内容だけを使う\n")
@@ -156,7 +160,28 @@ def main() -> int:
     print(f"差し替え {len(done)}本 / 元のまま {len(kept)}本", flush=True)
     for n, why in kept.items():
         print(f"  元のまま: {n}: {why}", flush=True)
-    return 0
+    return classify_replaced(done, cases)
+
+
+def classify_replaced(done: list[str], cases: dict) -> int:
+    """差し替えた記事の号ごとに、紙面の出典の判定(合議 → 付け直し)を掛ける。本番の組版の「出典の判定」と同じ取引。
+    掛けないと、書き直しで新しく引いた出典が判定表に無いまま「未確認」で紙面に出る(2026-10-08: 10/3〜10/7 号の書き直しで
+    6件が未確認のまま残り、watch が鳴った)。合議が成功しても、割れた・持ち主を引けなかった出典は未確認のまま残るので、
+    差し替えた記事に未確認が残っていないかを見て、残っていれば失敗にする。戻りは終了コード(失敗した号があれば1)"""
+    rc = 0
+    for d in sorted({cases[n]["date"] for n in done}):
+        ok, why = classify_retag_lint(d, posts_only=True, lint=False)
+        left = unresolved_post_sources(d, only={n for n in done if cases[n]["date"] == d}) if ok else []
+        if not ok:
+            print(f"出典の判定 {d}: 失敗({why[:300]})。未確認の出典が残る。直してから反映すること", flush=True)
+        elif left:
+            print(f"出典の判定 {d}: 決まらず未確認のまま {len(left)}件。種別を決めて判定表に書いてから反映すること", flush=True)
+            for r in left:
+                print(f"  未確認: {r['url']} {r['title']}", flush=True)
+        else:
+            print(f"出典の判定 {d}: 済み", flush=True)
+        rc |= 0 if ok and not left else 1
+    return rc
 
 
 def replace_and_review(answers: dict, cases: dict, kept: dict, applied: dict, backups: dict, confirmed: set) -> None:

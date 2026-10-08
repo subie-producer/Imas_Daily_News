@@ -409,11 +409,14 @@ def target_rows(date: str) -> list[dict]:
     return rows + unresolved_post_sources()
 
 
-def unresolved_post_sources(date: str | None = None) -> list[dict]:
-    """紙面に載っている**未確認**の出典(全号。date を渡すとその号だけ)。執筆が自分で見つけた URL は
-    候補に無いので、候補だけ見ていると紙面の未確認が残る。収集は次号の日付で走るので、既定では号で絞らない。"""
+def unresolved_post_sources(date: str | None = None, only: set[str] | None = None) -> list[dict]:
+    """紙面に載っている**未確認**の出典(全号。date を渡すとその号だけ。only を渡すとそのファイル名の記事だけ)。
+    執筆が自分で見つけた URL は候補に無いので、候補だけ見ていると紙面の未確認が残る。収集は次号の日付で走るので、
+    既定では号で絞らない。"""
     rows = []
     for post in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md" if date else "*.md")):
+        if only is not None and post.name not in only:
+            continue
         text = post.read_text(encoding="utf-8")
         if "未確認" not in text:
             continue

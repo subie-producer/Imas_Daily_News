@@ -42,6 +42,7 @@ import planlib
 import renderlib
 import storylink
 import tags as tags_lib
+from classify_sources import unresolved_post_sources
 from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, EDITORIAL_MODEL,
                      COMPOSE_ARTICLE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file,
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
@@ -2579,6 +2580,29 @@ def self_check() -> list[str]:
             for name, why in need.items() if name not in src]
 
 
+def classify_post_sources(date: str, branch: str) -> bool:
+    """その号の記事に載った判定表に無い出典を、**発行前に**決める(登録済みチャンネルの動画 ID は機械で、
+    それ以外は合議で判定表に足し、記事の種別を付け直す。失敗したら開始時の中身へ戻す)。
+    戻り値 False = 判定表と記事を戻せなかった(commit して当番へ上げた。呼び出し側は止める)"""
+    with stage("出典の判定"):
+        ok_cls, why_cls = classify_retag_lint(date, posts_only=True, timeout=remaining_seconds(cap=1200), lint=False)
+    if not ok_cls:
+        if "戻せない" in why_cls:
+            commit_and_push(branch, f"compose {date}: 出典の判定に失敗(当番へ)", "compose")
+            escalate("compose", date, f"紙面の出典の判定で判定表と記事を戻せなかった: {why_cls[:300]}")
+            return False
+        notify("compose", f"{date}: 紙面の出典の判定で失敗({why_cls[:300]})。判定表と記事は戻した。未確認のまま先へ進む(翌朝の watch に出る)", ok=False)
+    return True
+
+
+def classify_revised_sources(date: str, branch: str, t0: float) -> bool:
+    """校閲往復の書き直しのあと、その号の記事に未確認の出典が残っていれば判定に掛け直す(classify_post_sources)。
+    残っていなければ合議を起こさない。戻り値は classify_post_sources と同じ(False = 止める)"""
+    if unresolved_post_sources(date) and afford(t0, "出典の判定", 5.0, "出典の判定(書き直し後)"):
+        return classify_post_sources(date, branch)
+    return True
+
+
 def main() -> int:
     missing = self_check()
     if missing:
@@ -2792,14 +2816,8 @@ def main() -> int:
     #      まだ無いのでここでは掛けず、直後の組版の lint に任せる。以前は翌朝の watch が
     #      「未確認の出典」を鳴らし、昼の収集で直っていた(実測 2026-09-19: 公式チャンネルの動画3件)
     if written and afford(t0, "出典の判定", 5.0, "出典の判定", extra=stage_cost("校閲", 25.0)):
-        with stage("出典の判定"):
-            ok_cls, why_cls = classify_retag_lint(date, posts_only=True, timeout=remaining_seconds(cap=1200), lint=False)
-        if not ok_cls:
-            if "戻せない" in why_cls:
-                commit_and_push(branch, f"compose {date}: 出典の判定に失敗(当番へ)", "compose")
-                escalate("compose", date, f"紙面の出典の判定で判定表と記事を戻せなかった: {why_cls[:300]}")
-                return 1
-            notify("compose", f"{date}: 紙面の出典の判定で失敗({why_cls[:300]})。判定表と記事は戻した。未確認のまま先へ進む(翌朝の watch に出る)", ok=False)
+        if not classify_post_sources(date, branch):
+            return 1
     # **書き上がりから枠を当てる**(字数を枠に合わせさせない。規程9)。
     # 組版より前に確定させる: 号スナップショットの lead_slug が一面に依存するため
     assign_ranks(date, plan, written)
@@ -3068,6 +3086,12 @@ def main() -> int:
         written[:] = [a for a in written if (ROOT / "docs" / "_posts" / f"{date}-{a['slug']}.md").exists()]
         subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
                        cwd=ROOT, capture_output=True, text=True)
+
+    # 3'. 往復の書き直し(lint 赤の修正・校閲の指摘)では書き手が新しい出典を引きうる。1b' の判定のあとなので、
+    #     ここで掛け直さないと判定表に無い出典が未確認のまま発行される(監査指摘 2026-10-08)。
+    #     付け直しで記事の値が変わったら、直後の取り直しが組版をやり直す
+    if not classify_revised_sources(date, branch, t0):
+        return 1
 
     # 往復しても下りなかったブロック指摘は、その記事を落とす。
     # 以前はそのまま発行しており、「出典にない事実」の指摘を残した号が実際に出ている

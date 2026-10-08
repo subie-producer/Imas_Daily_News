@@ -3502,6 +3502,25 @@ def test_grok_format_matches_parser():
     check(got[0]["url"] == "https://x.com/a/status/1", f"依頼文の見本の形を付け直しが読めない: {got}")
 
 
+
+def test_grok_deep_format_matches_parser():
+    """深掘り(grok-deep)に指示する書き出しの形を、突き合わせ(post_blocks / post_url)がそのまま読めること。
+    2026-10-09: 依頼文に形が無く、Grok が「## 問い1」+問いの文+「- 投稿の url:」で書いた。url を読めず、Luna が
+    候補にした・事実なしとした投稿まで「深掘りまで確かめても失った」と7件通知した(当番の指摘 b88a0534)。"""
+    import collect
+    p = collect.render_prompt("grok-deep", BRAND="million", TODAY="2026-10-09", OUT="o.md", MAX_SEARCHES=2,
+                              QUESTIONS="1. 投稿 https://x.com/b/status/2 の本文は何か。(なぜ X の原本が要るか: 記載なし)")
+    check("```" in p, "深掘りの依頼文に書き出しの形が無い")
+    if "```" not in p:
+        return
+    sample = p.split("```")[1].replace("<アカウント>/status/<ID>", "b/status/2")
+    blocks = collect.post_blocks(sample)
+    check([collect.post_url(b) for b in blocks] == ["https://x.com/b/status/2"], f"深掘りの見本を投稿に分けられない: {blocks}")
+    check(collect.unaccounted_posts(sample, [{"url": "https://x.com/b/status/2", "status": "none", "item": ""}], []) == [],
+          "深掘りの見本の投稿が、事実なしの結果で済みにならない")
+    # どの問いでも見つからないときの書き出しは、確かめを飛ばす「見つからない」と同じ形
+    check("「見つからない」とだけ書く" in p, "深掘りで何も見つからないときの書き方が無い")
+
 def test_grok_face_retry(tmp: Path):
     """Grok の面がまとめを残せなかったら、その面だけ「先に書く」順で1回やり直し、それでも残らなければ異常を上げる
     (実測 2026-10-03: 学マスの面が打ち切られて0件、公式Xの4コマを1日遅れで載せた)。手数(--max-turns)では縛らず、
@@ -4512,6 +4531,7 @@ def main() -> int:
     test_update_clis(tmp / "uc")
     test_grok_face_retry(tmp / "gr")
     test_grok_format_matches_parser()
+    test_grok_deep_format_matches_parser()
     test_collect_health()
     test_grok_roles(tmp / "gro")
     test_grok_item_url_repointed_to_post()

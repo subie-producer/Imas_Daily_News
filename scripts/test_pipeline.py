@@ -390,6 +390,35 @@ def test_revise_check():
     incl_ok = dict(incl_bad, lede="新商品の予約受付が始まった。")
     check(compose.revise_check(incl_ok, iss_incl, fm_incl, body_incl) == [],
           f"本文 quote で本文だけ直した稿が落ちた: {compose.revise_check(incl_ok, iss_incl, fm_incl, body_incl)}")
+    # 校閲が欄の**一部**を「…」で省略して引用したとき(実測 2026-10-09 joint-starmas R1:
+    # リード「…事務所を越えたアイドルたちが事務所を掃除するゲーム内コミュが公開され…」、gaku-katamarion R2:
+    # リード「花海咲季が歌う…ノミネートされ、…」 本文「Spotifyでは…掲載されている。」)、指摘どおり直した稿を通す。
+    # 以前は区画 ⊂ 欄 を見ず、正しい書き直しを「指摘に無いリードを変えた」で2巡とも戻して記事が落ちた
+    fm_ex = dict(old_fm, lede="5周年企画として、事務所を越えたアイドルたちが事務所を掃除するゲーム内コミュが公開され、Steamでは70％オフで販売中だ。")
+    body_ex = ("公式は10月8日に告知した。Spotifyでは収録アルバムに入り、花海咲季名義で掲載されている。 <!-- F1 -->\n\n"
+               "セールは10月22日まで。 <!-- F3 -->")
+    iss_ex = [{"issue_id": "I1", "rule_id": "R1", "repair": "rewrite_claim",
+               "quote": "リード「…事務所を越えたアイドルたちが事務所を掃除するゲーム内コミュが公開され…」"},
+              {"issue_id": "I2", "rule_id": "R2", "repair": "drop_claim",
+               "quote": "本文「Spotifyでは収録アルバムに入り、花海咲季名義で掲載されている。」"}]
+    ex_ok = dict(OK, addressed_issue_ids=["I1", "I2"],
+                 lede="5周年企画として、メンバーが事務所を掃除するゲーム内コミュが公開され、Steamでは70％オフで販売中だ。",
+                 blocks=[{"markdown": "公式は10月8日に告知した。Spotifyでは収録アルバムに入っている。", "fact_ids": ["F1"]},
+                         {"markdown": "セールは10月22日まで。", "fact_ids": ["F3"]}])
+    check(compose.revise_check(ex_ok, iss_ex, fm_ex, body_ex) == [],
+          f"欄の一部を引いた quote(リード「…」・本文「…」)どおりに直した稿が落ちた: {compose.revise_check(ex_ok, iss_ex, fm_ex, body_ex)}")
+    # 途中を「…」で省いた抜き出し、欄名の無い省略付き quote でも同じ
+    iss_ex2 = [{"issue_id": "I1", "rule_id": "R1", "repair": "rewrite_claim", "quote": "リード「5周年企画として、…事務所を越えたアイドルたち…」"},
+               {"issue_id": "I2", "rule_id": "R2", "repair": "drop_claim", "quote": "…Spotifyでは収録アルバムに入り、花海咲季名義…"}]
+    check(compose.revise_check(ex_ok, iss_ex2, fm_ex, body_ex) == [],
+          f"途中を省いた quote・欄名の無い省略付き quote どおりに直した稿が落ちた: {compose.revise_check(ex_ok, iss_ex2, fm_ex, body_ex)}")
+    # 抜き出しが欄に無い(別の欄の字面)ときは触っていない。リード指摘で本文の別段落を書き換えたら止める
+    ex_bad = dict(ex_ok, blocks=[ex_ok["blocks"][0], {"markdown": "セールは無期限に延びた。", "fact_ids": ["F3"]}])
+    check(any("段落" in p for p in compose.revise_check(ex_bad, iss_ex, fm_ex, body_ex)),
+          "欄の一部を引いた quote で、指摘の外の段落の改変が通った")
+    iss_ex3 = [{"issue_id": "I1", "rule_id": "R1", "repair": "rewrite_claim", "quote": "本文「…Spotifyでは収録アルバムに入り…」"}]
+    check(any("リード" in p for p in compose.revise_check(dict(ex_ok, addressed_issue_ids=["I1"]), iss_ex3, fm_ex, body_ex)),
+          "本文の一部だけを引いた quote で、指摘の外のリード改変が通った")
     # R4(出典の不一致): 誤 URL を外し、正しい一次情報に付け替える。quote は frontmatter の URL(本文段落を
     # 触らない)なので、根拠段落の fact_ids を正しい候補の facts に付け替えても、字面が同じなら通す。
     # 以前は差し替えを「出典を足した」で、fact_ids の変更を「未指摘段落を変えた」で二重に弾き、誤 URL の R4 が

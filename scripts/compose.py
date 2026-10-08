@@ -2014,12 +2014,28 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
         # 逆向き(欄 ⊂ quote)は、束ねた quote の **その欄の区画** に欄が丸ごと収まるときだけ認める。全欄共通で
         # 認めると、本文だけの長い quote がリード等の全文を偶然含む記事で指摘外の欄の改変まで通してしまう
         # (既存 docs/_posts で20/1301件がこの形。監査指摘 MF-1)。欄ごとに区画を分け、該当欄だけ照合する。
+        # 校閲は欄の**一部**を抜き出し、省略を「…」で示して引用する(リード「…事務所を越えた…公開され…」。
+        # NFKC で「...」になる)。抜き出しは区画 ⊂ 欄の向きで、省略記号で割った各片が欄に順に全部あれば触った
+        # とみなす。見ないと、指摘どおりリードを直した稿を「指摘に無いリードを変えた」で戻し、同じ指摘が
+        # 次の巡に残って記事が落ちる(実測 2026-10-09 joint-starmas・gaku-katamarion)
+        def excerpt_in(x, s):
+            pieces = [p for p in re.split(r"\.{3,}|…+", x) if p]
+            if sum(len(p) for p in pieces) < 8:
+                return False
+            k = 0
+            for p in pieces:
+                k = s.find(p, k)
+                if k < 0:
+                    return False
+                k += len(p)
+            return True
+
         def touched(s, label=None):
             for q in quotes:
-                if q in s:
+                if q in s or excerpt_in(q, s):
                     return True
                 if label and len(s) >= 8:
-                    if any(s in seg for seg in field_segments(q, label)):
+                    if any(s in seg or excerpt_in(seg, s) for seg in field_segments(q, label)):
                         return True
             return False
         old_title = norm(old_fm.get("title"))

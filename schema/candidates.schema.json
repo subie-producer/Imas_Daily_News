@@ -120,6 +120,10 @@
         "type": "string",
         "description": "verify 結果の補足(failed の理由など。人間とパイプラインの診断用)"
       },
+      "render_error": {
+        "type": "string",
+        "description": "verify が出典をヘッドレスブラウザで描画し直そうとして失敗した原因(終了コードと stderr の要点)。素の HTML の本文で照合を続けたことを示す。診断用"
+      },
       "unbacked_facts": {
         "type": "array",
         "items": {

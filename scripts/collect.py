@@ -1386,9 +1386,14 @@ def verify(cands: list[dict]) -> dict:
                     cs = res.headers.get_content_charset()
                 if ok:
                     text = html_to_text(body, cs)
+                    # 描画の失敗は素の本文で続けるが、原因は判定の記録に残す。捨てると、描画の時間切れで写しが見えなかったのを
+                    # 「URL の取り違え」と記録し、なぜ落ちたかを当番が再現して確かめることになる(監査指摘
+                    # render-diagnostic-lost-in-classification と同じ型)
+                    render_errs: list[str] = []
                     # CSR で本文が空同然か、描画必須のサイト(定点観測の portal)なら描画してから読み直す(定点観測と同じ経路)
                     if needs_render(c["url"], text):
-                        rendered, _ = rendered_or_note(c["url"])
+                        rendered, why = rendered_or_note(c["url"])
+                        render_errs += [why] if why else []
                         if rendered:
                             text = html_to_text(rendered.encode("utf-8", "replace"))
                     periods = extract_periods(text)
@@ -1403,7 +1408,8 @@ def verify(cands: list[dict]) -> dict:
                     # portal 以外のサイトの描画漏れに備え、粒が欠けたときにも描画する
                     unbacked = unbacked_facts(c.get("facts") or [], text)
                     if unbacked:
-                        rendered, _ = rendered_or_note(c["url"])
+                        rendered, why = rendered_or_note(c["url"])
+                        render_errs += [why] if why else []
                         if rendered:
                             unbacked = unbacked_facts(c.get("facts") or [],
                                                       html_to_text(rendered.encode("utf-8", "replace")))
@@ -1417,14 +1423,16 @@ def verify(cands: list[dict]) -> dict:
                     missing = [q for q in quotes if quote_on_page(q, text) is False]
                     matched = any(quote_on_page(q, text) for q in quotes)
                     if missing:
-                        rendered, _ = rendered_or_note(c["url"])
+                        rendered, why = rendered_or_note(c["url"])
+                        render_errs += [why] if why else []
                         if rendered:
                             rtext = html_to_text(rendered.encode("utf-8", "replace"))
                             missing = [q for q in missing if quote_on_page(q, rtext) is False]
                             matched = matched or any(quote_on_page(q, rtext) for q in quotes)
                     if missing:
                         c["verify"] = "failed"
-                        c["verify_note"] = f"写しが出典の本文に無い(URL の取り違えの疑い): {missing[0][:60]}"
+                        c["verify_note"] = (f"写しが出典の本文に無い(URL の取り違えの疑い): {missing[0][:60]}"
+                                            + (f"。ただし描画できず素の本文で照合した({render_errs[-1][:200]})" if render_errs else ""))
                         counts["failed"] += 1
                         print(f"  裏取り: {c['url']} に写しが無い → 使わない({c.get('title')})", flush=True)
                         continue
@@ -1433,6 +1441,8 @@ def verify(cands: list[dict]) -> dict:
                     # 定点観測の候補は URL を巡回先からコードが決めるので要らない
                     if c.get("via") != "watch" and not matched:
                         c["verify_note"] = "出典ページからの写しが無い・短すぎて、URL の取り違えを確かめられない"
+                    if render_errs:
+                        c["render_error"] = render_errs[-1][:300]
                 good_type = c["source_type"] in GOOD_SOURCE_TYPES
                 c["verify"] = ("confirmed" if ok and good_type and not c.get("unbacked_facts") and not c.get("verify_note")
                                else ("unconfirmed" if ok else "failed"))

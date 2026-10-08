@@ -2444,6 +2444,88 @@ def test_render_failure_keeps_cause(tmp: Path):
           f"描画取得が例外の要点を1行で出さない: {rc} {ebuf.getvalue()!r}")
 
 
+def test_render_failure_reaches_classify_and_verify(tmp: Path):
+    """描画の失敗は、素の本文で続ける経路でも原因を記録に残す。出典の分類(サイトの主体を掘る材料)は fetch_page.py の
+    stdout だけを読み、描画の失敗(stderr に出て終了コード0)を捨てていた。公式ポータルでは素の本文がメニューだけになり、
+    分類の材料がメニューだけでも、描画の時間切れのせいだと分からなかった(監査指摘 render-diagnostic-lost-in-classification)。
+    裏取りも同じ型: 描画できず写しが見えなかったのを「URL の取り違え」とだけ記録していた"""
+    import contextlib, io, json
+    import classify_sources as cs
+    import collect
+    import fetch_page
+    from jsonschema import Draft202012Validator
+    menu = "<html><body>" + "".join(f"<a href='/m{i}'>メニュー{i}</a> " for i in range(40)) + "</body></html>"
+    def render_fail(url, timeout=30):
+        raise pipelib.RenderFailed(f"{url} の描画に失敗: 終了コード 1: RENDER_FAILED: TimeoutException: page load")
+    plain = {"body": pipelib.html_to_text(menu.encode())}
+    def run_fetch_page(cmd, **k):
+        # 分類から起動される fetch_page.py をその場で走らせる(素の本文=メニュー、描画=時間切れ)
+        out, err = io.StringIO(), io.StringIO()
+        saved_argv = sys.argv
+        try:
+            sys.argv = ["fetch_page.py"] + [str(x) for x in cmd[2:]]
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                rc = fetch_page.main()
+        finally:
+            sys.argv = saved_argv
+        return subprocess.CompletedProcess(cmd, rc, out.getvalue(), err.getvalue())
+    saved = (cs.subprocess.run, fetch_page.fetch, fetch_page.render_page, cs.page_meta)
+    try:
+        fetch_page.render_page = render_fail
+        cs.subprocess.run = run_fetch_page
+        fetch_page.fetch = lambda url: plain["body"]
+        body, status = cs.rendered_excerpt("https://idolmaster-official.jp/")
+        cs.page_meta = lambda url: ("t", "d", "")
+        profile = cs.site_profile("idolmaster-official.jp", "https://idolmaster-official.jp/news/01_1")
+        plain["body"] = ""
+        body2, status2 = cs.rendered_excerpt("https://idolmaster-official.jp/")
+    finally:
+        cs.subprocess.run, fetch_page.fetch, fetch_page.render_page, cs.page_meta = saved
+    check("メニュー1" in body and "描画できず" in status and "TimeoutException" in status and "終了コード 0" in status,
+          f"分類の材料が描画の失敗を捨てた: {body[:60]!r} / {status!r}")
+    check(profile.count("取得状態: 描画できず") == 2 and "TimeoutException" in profile,
+          f"サイトの材料(代表ページ・トップ)に取得状態が無い: {profile!r}")
+    check(body2 == "" and "取得できず" in status2 and "終了コード 1" in status2 and "TimeoutException" in status2,
+          f"分類の材料が取得失敗の原因を失った: {body2!r} / {status2!r}")
+    # 正常なら取得状態は空(材料に余計な行を足さない)
+    ok_run = lambda cmd, **k: subprocess.CompletedProcess(cmd, 0, "URL: x\n--- 本文(要約なし) ---\n会社概要 株式会社X\n", "")
+    try:
+        cs.subprocess.run = ok_run
+        body3, status3 = cs.rendered_excerpt("https://example.com/")
+    finally:
+        cs.subprocess.run = saved[0]
+    check(body3 == "会社概要 株式会社X" and status3 == "", f"正常な取得に取得状態が付いた: {body3!r} {status3!r}")
+
+    # 裏取り: 描画できずに写しが見えなかった候補は、描画の失敗を記録に残す(URL の取り違えとだけ書かない)
+    class Res:
+        status = 200
+        headers = type("H", (), {"get_content_charset": staticmethod(lambda: "utf-8")})()
+        def read(self, n=-1):
+            return menu.encode()
+        def __enter__(self):
+            return self
+        def __exit__(self, *a):
+            return False
+    saved_c = (collect.fetch_rendered, collect.urllib.request.urlopen)
+    cv = [{"url": "https://idolmaster-official.jp/news/01_1", "title": "t", "facts": [], "source_type": "公式", "via": "explore",
+           "quotes": ["本日より受付を開始いたしました。詳しくは特設ページをご確認ください。"]},
+          {"url": "https://idolmaster-official.jp/news/01_2", "title": "t", "facts": [], "source_type": "公式", "via": "watch"}]
+    try:
+        collect.fetch_rendered = render_fail
+        collect.urllib.request.urlopen = lambda req, timeout=15: Res()
+        with contextlib.redirect_stdout(io.StringIO()):
+            collect.verify(cv)
+    finally:
+        collect.fetch_rendered, collect.urllib.request.urlopen = saved_c
+    check(cv[0]["verify"] == "failed" and "描画できず" in cv[0].get("verify_note", "") and "TimeoutException" in cv[0]["verify_note"],
+          f"裏取りが描画の失敗を捨てて「URL の取り違え」とだけ記録した: {cv[0]}")
+    check("TimeoutException" in cv[1].get("render_error", ""), f"裏取りが描画の失敗を候補に残さない: {cv[1]}")
+    v = Draft202012Validator(json.loads((Path(__file__).resolve().parent.parent / "schema" / "candidates.schema.json").read_text(encoding="utf-8")))
+    item = {k: x for k, x in cv[1].items()}
+    errs = [e.message for e in v.iter_errors([item]) if "render_error" in e.message]
+    check(errs == [], f"描画の失敗の記録が候補の schema に通らない: {errs}")
+
+
 def test_watch_pagination_and_batches(tmp: Path):
     """定点観測(編集長 2026-09-30「公式のニュース12件しか見ないとか設計不備過ぎる」):
     一覧は既に見た記事だけのページに行き当たるまで遡る。上限まで読んでも新着が続けば打ち切りを返す。
@@ -4379,6 +4461,7 @@ def main() -> int:
     test_fetch_page_renders_whitespace_only_page()
     test_fetch_rendered_skips_images()
     test_render_failure_keeps_cause(tmp / "rf")
+    test_render_failure_reaches_classify_and_verify(tmp / "rfc")
     test_collect_oncall_rerun_exit(tmp / "cre")
     test_storylink(tmp / "sl")
     test_oncall_rollback_subprocess(tmp / "rs")

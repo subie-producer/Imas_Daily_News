@@ -3879,11 +3879,15 @@ def test_rewrites(tmp: Path):
         (tmp / "metrics" / "work" / "bench").mkdir(parents=True, exist_ok=True)
         _c.claude_review = lambda *a, **k: {"verdict": "approve", "blockers": [], "failed": []}
         calls = []
-        saved_cls = rewrite_past.classify_retag_lint
+        saved_cls, saved_left = rewrite_past.classify_retag_lint, rewrite_past.unresolved_post_sources
         try:
-            for ok_cls, want_rc in ((True, 0), (False, 1)):
+            # 合議が成功しても、決まらず未確認のまま残った出典が差し替えた記事にあれば失敗(監査指摘 R2 2026-10-08)
+            left_row = [{"url": "https://www.nicovideo.jp/watch/sm1", "title": "a(記事の出典: ニコニコ動画)"}]
+            for ok_cls, left, want_rc in ((True, [], 0), (False, [], 1), (True, left_row, 1)):
                 calls.clear()
+                asked = []
                 rewrite_past.classify_retag_lint = lambda d, **k: (calls.append((d, k)), (ok_cls, "" if ok_cls else "合議 exit 1"))[1]
+                rewrite_past.unresolved_post_sources = lambda d, only=None: (asked.append((d, only)), left)[1]
                 rewrite_past.build_cases = lambda ops, dates: {n: {"date": "2026-10-05"}}
                 rewrite_past.latest_raw_answer = lambda label, stem: {"status": "ok"}
                 sys.argv = ["rewrite_past.py", "2026-10-05", "--from-raw"]
@@ -3891,12 +3895,47 @@ def test_rewrites(tmp: Path):
                 rc = rewrite_past.main()
                 check(calls == [("2026-10-05", {"posts_only": True, "lint": False})],
                       f"差し替えた号の出典を判定に掛けていない: {calls}")
-                check(rc == want_rc, f"出典の判定の{'成功' if ok_cls else '失敗'}で終了コード {rc}")
+                check(rc == want_rc, f"出典の判定の{'成功' if ok_cls else '失敗'}・未確認 {len(left)}件で終了コード {rc}")
+                check(asked == ([("2026-10-05", {n})] if ok_cls else []), f"差し替えた記事の未確認を見ていない: {asked}")
         finally:
             sys.argv, rewrite_past.build_cases, rewrite_past.latest_raw_answer = saved_argv, saved_build, saved_raw
-            rewrite_past.classify_retag_lint = saved_cls
+            rewrite_past.classify_retag_lint, rewrite_past.unresolved_post_sources = saved_cls, saved_left
     finally:
         rewrite_past.ROOT, rewrite_past.apply_answer, _c.claude_review = saved
+
+
+def test_compose_classifies_after_revise(tmp: Path):
+    """校閲往復の書き直しで書き手が足した出典(判定表に無い URL)も、発行前に判定へ掛ける。組版前の判定(1b')の
+    あとなので、掛け直さないと未確認のまま 06:00 に出る(監査指摘 R1 2026-10-08)。未確認が無ければ合議を起こさない。
+    書き直し(revise_articles)の最後の呼び出しより後、最終の commit より前で呼ぶ"""
+    import inspect
+    import classify_sources as cs
+    import compose as _c
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    head = "---\ntitle: a\nsources:\n- url: {u}\n  label: L\n  type: {t}\n---\n本文\n"
+    (posts / "2026-10-08-a.md").write_text(head.format(u="https://example.com/x", t="公式"), encoding="utf-8")
+    (posts / "2026-10-07-b.md").write_text(head.format(u="https://example.org/y", t="未確認"), encoding="utf-8")
+    saved = (cs.ROOT, _c.classify_retag_lint, _c.afford, _c.remaining_seconds)
+    calls = []
+    try:
+        cs.ROOT = tmp
+        _c.classify_retag_lint = lambda d, **k: (calls.append((d, k.get("posts_only"))), (True, ""))[1]
+        _c.afford = lambda *a, **k: True
+        _c.remaining_seconds = lambda **k: 60
+        check(_c.classify_revised_sources("2026-10-08", "edition/x", 0.0) and calls == [],
+              f"未確認の無い号で合議を起こした: {calls}")
+        (posts / "2026-10-08-a.md").write_text(head.format(u="https://lawson-print.com/p/1", t="未確認"), encoding="utf-8")
+        check(_c.classify_revised_sources("2026-10-08", "edition/x", 0.0) and calls == [("2026-10-08", True)],
+              f"書き直しで入った未確認の出典を判定に掛けていない: {calls}")
+        check([r["url"] for r in cs.unresolved_post_sources("2026-10-07", only={"2026-10-07-z.md"})] == [],
+              "only で絞った記事以外の未確認を数えた")
+    finally:
+        cs.ROOT, _c.classify_retag_lint, _c.afford, _c.remaining_seconds = saved
+    src = inspect.getsource(_c.main)
+    at = src.index("classify_revised_sources(")
+    check(at > src.rindex("revise_articles(") and at < src.rindex("紙面生成(校閲"),
+          "書き直し後の出典の判定が、最後の書き直しと最終の commit の間に無い")
 
 
 def test_oncall_ensure_edition(tmp: Path):
@@ -4466,6 +4505,7 @@ def main() -> int:
     test_oncall_ensure_edition(tmp / "ee")
     test_withdrawal(tmp / "wd")
     test_rewrites(tmp / "rw")
+    test_compose_classifies_after_revise(tmp / "car")
     test_article_purpose()
     test_plan_merge_into_drop()
     test_extract_json_array_strict()

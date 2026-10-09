@@ -80,10 +80,14 @@ GROK_HOURS = ENV.get("GROK_HOURS", "").strip()
 # 数字を書いても厳密には守られない(「最大10回」で34回引いた実績がある)ため、
 # 掘る角度を列挙して「言い換えでは足さない」と縛るほうを主にしている。
 GROK_MAX_SEARCHES = int(ENV.get("GROK_MAX_SEARCHES", "6"))
-# 一括取得の取得件数。x_keyword_search の limit にそのまま渡す。
-# 既定の 10 では1回で足りず引き直しを誘発する(検索回数=週次予算なので、
-# 1回を広く取るほうが安い)
-GROK_SWEEP_LIMIT = int(ENV.get("GROK_SWEEP_LIMIT", "40"))
+# x_keyword_search が1回に返す件数の上限(道具の上限。limit に大きい値を渡しても 10 件で返る。2026-10-10 に実測)。
+# 公式アカウントの一括取得が上限まで返ったら、取りこぼしがある: いちばん古い投稿より前を until_time で引き直す(遡る)。
+# 以前は「1回だけ」と縛っていたので、忙しい日の古い投稿を落とした(2026-10-10: 学マス公式の 10/8 19:00〜10/9 11:30 の
+# 投稿のうち3件(花海咲季の新アイドル『Agitato』ガシャ告知)は、どの回の収集にも入らなかった)
+X_SEARCH_LIMIT = 10
+# 公式アカウントを遡る検索の回数の上限(角度の検索 GROK_MAX_SEARCHES とは別枠)。対象期間(2日)に公式の投稿が
+# 多い面でも届く数: 学マス公式は1日20件前後 → 2日で4〜5回
+GROK_OFFICIAL_PAGES = int(ENV.get("GROK_OFFICIAL_PAGES", "6"))
 # 10面を1セッションで回すぶん長い。途中で切れても面ごとにファイルへ書かせているので
 # そこまでの成果は残る
 GROK_TIMEOUT = int(ENV.get("GROK_TIMEOUT", "3000"))
@@ -663,8 +667,14 @@ def write_grok_prompt(outdir: Path, q: dict, retry: bool = False) -> Path:
     accounts = q.get("accounts") or []
     at = "、".join(f"@{a}" for a in accounts)
     froms = " OR ".join(f"from:{a}" for a in accounts)
-    step1 = (f"1. 公式アカウントを1回で引く。`x_keyword_search` に `({froms}) since:{since}` を**1回だけ**渡す"
-             f"({at} の投稿がまとめて取れる。1アカウントずつ引き直さない)" if froms
+    step1 = (f"1. 公式アカウントをまとめて引く。`x_keyword_search` に query `({froms}) since:{since}`、limit {X_SEARCH_LIMIT}、"
+             f"mode Latest を渡す({at} の投稿がまとめて取れる。1アカウントずつ引き直さない)。\n"
+             f"   返ってきたのが {X_SEARCH_LIMIT}件(道具の上限)なら、それより古い投稿を取りこぼしている。いちばん古い投稿の日時を "
+             f"`date -u -d '<その日時>' +%s` で UNIX 秒にし、同じ query に `until_time:<その秒+1>` を足して引き直す(遡る。"
+             f"+1 は同じ秒の投稿を落とさないため)。いちばん古い投稿の秒が前の回と同じで進まないときは、+1 をせず "
+             f"`until_time:<その秒>` で進む。{X_SEARCH_LIMIT}件未満になるか、{since} より前に届くまで繰り返す"
+             f"(この遡りは最初の1回とは別に、追加で最大 {GROK_OFFICIAL_PAGES}回。下の検索回数の上限とは別に数える)。"
+             f"遡りの結果は前の回と重なるので、全部の回を通して同じ url の投稿は1回だけ書く" if froms
              else "1. (この面には公式アカウントの指定が無い。2 の角度から始める)")
     prompt = render_prompt("grok-collect", BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
                            SINCE=since, OUT=out, MAX_SEARCHES=GROK_MAX_SEARCHES, STEP1=step1,
@@ -769,6 +779,7 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         text = read_written(outdir / f"{q['key']}{suffix}.md").strip()
         if not text or re.fullmatch(r"(なし|見つからない)[。\s]*", text):
             continue
+        text = dedupe_posts(text)   # 公式アカウントの遡りのページの境目で重なった投稿を1つにする
         wd = explore_workdir(f"verify-{q['key']}{suffix}")
         (wd / "x-posts.md").write_text(text + "\n", encoding="utf-8")
         prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json", POSTS=wd / "posts.json",
@@ -903,6 +914,24 @@ def post_blocks(text: str) -> list[str]:
 def post_url(block: str) -> str:
     m = POST_URL_LINE.search(block)
     return m.group(1) if m else ""
+
+
+def dedupe_posts(text: str) -> str:
+    """同じ url の投稿の塊を1つにする(最初のものを残す)。公式アカウントの遡りはページの境目が重なるので、同じ投稿が2回書かれうる。
+    2回あると、確かめの結果が同じ url に2つ返り、突き合わせ(unaccounted_posts)が「結果が1つでない」で未処理にする(監査指摘)。
+    重なりが無ければ書き出しをそのまま返す。url の無い塊は全部残す(突き合わせで未処理として名指しされる)。"""
+    blocks = post_blocks(text)
+    urls = [post_url(b) for b in blocks]
+    if len([u for u in urls if u]) == len({u for u in urls if u}):
+        return text
+    seen: set[str] = set()
+    kept = []
+    for b, u in zip(blocks, urls):
+        if u and u in seen:
+            continue
+        seen.add(u)
+        kept.append(b)
+    return "\n\n".join(kept)
 
 
 def unaccounted_posts(text: str, results, written: list) -> list[str]:
@@ -1158,10 +1187,12 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         searches = grok_search_counts(grok_started)
         for b, n in searches.items():
             per[f"grok_searches:{b}"] = n
-        over = {b: n for b, n in searches.items() if n > GROK_MAX_SEARCHES * 2}
+        cap = (GROK_MAX_SEARCHES + GROK_OFFICIAL_PAGES) * 2    # 角度の検索と公式アカウントの遡りの、指示の2倍
+        over = {b: n for b, n in searches.items() if n > cap}
         print(f"grok: X 検索 {sum(searches.values())}回(面別 {searches})", flush=True)
         if over:
-            notify("collect", f"Grok(X 調査)の検索が指示({GROK_MAX_SEARCHES}回/面)の2倍を超えた面: {over}。週次の利用枠を余分に消費している", ok=False)
+            notify("collect", f"Grok(X 調査)の検索が指示(角度 {GROK_MAX_SEARCHES}回+公式の遡り {GROK_OFFICIAL_PAGES}回/面)の2倍を超えた面: "
+                              f"{over}。週次の利用枠を余分に消費している", ok=False)
 
     return items, per
 

@@ -3851,6 +3851,26 @@ def test_grok_format_matches_parser():
         "  - 投稿に付いたリンクの url(1行に1つ。無ければ「- リンク: なし」)", "  - https://youtube.com/watch?v=x")
     got = collect.repoint_to_post([{"url": "https://youtube.com/watch?v=x", "facts": []}], sample)
     check(got[0]["url"] == "https://x.com/a/status/1", f"依頼文の見本の形を付け直しが読めない: {got}")
+    # 公式アカウントは、道具の上限(10件)まで返ったら until_time で遡る。「1回だけ」と縛ると、忙しい日の古い投稿を落とす
+    # (2026-10-10: 学マス公式の3件がどの回の収集にも入らなかった)。遡りは別枠で上限があり、やらないことと矛盾しない
+    check(f"limit {collect.X_SEARCH_LIMIT}" in p and "until_time:" in p and "date -u -d" in p
+          and f"最大 {collect.GROK_OFFICIAL_PAGES}回" in p and "を**1回だけ**渡す" not in p,
+          "公式アカウントの検索が、上限まで返ったときに遡らない")
+    check("(1 の公式アカウントの遡りは別)" in p and "遡りはこれとは別枠" in p, "検索の上限・やらないことが遡りと食い違う")
+    check("`until_time:<その秒>` で進む" in p and "同じ url の投稿は1回だけ書く" in p,
+          "遡りの境界が進まないとき・ページの重なりの扱いが無い")
+    # ページの境目で重なった投稿は、確かめに渡す前にコードが1つにする(結果が同じ url に2つ返ると未処理になる。監査指摘)
+    blk = lambda n, body: f"### {n}\n- url: https://x.com/a/status/{n}\n- 本文:\n{body}"
+    dup = "\n\n".join([blk(1, "一"), blk(2, "二"), blk(2, "二"), blk(3, "三")])
+    got = collect.dedupe_posts(dup)
+    check([collect.post_url(b) for b in collect.post_blocks(got)] == [f"https://x.com/a/status/{n}" for n in (1, 2, 3)],
+          f"重なった投稿を1つにしない: {got}")
+    plain = "\n\n".join([blk(1, "一"), blk(2, "二")])
+    check(collect.dedupe_posts(plain) == plain, "重なりの無い書き出しを書き換えた")
+    check(collect.unaccounted_posts(got, [{"url": f"https://x.com/a/status/{n}", "status": "none", "item": ""} for n in (1, 2, 3)], []) == [],
+          "重なりを除いた書き出しが、投稿ごとの結果で済みにならない")
+    nof = collect.write_grok_prompt(Path(tempfile.mkdtemp()), {"key": "k", "brand": "765", "topic": "t", "accounts": []}).read_text(encoding="utf-8")
+    check("until_time:" not in nof, "公式アカウントの無い面に遡りの指示がある")
 
 
 

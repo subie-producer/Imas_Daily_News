@@ -803,10 +803,7 @@
   "https://imasnews765.com/?p=32178",
   "https://imasnews765.com/?p=32175"
  ],
- "_unreadable": {
-  "https://lantis.jp/sidem/extra/index.html#20261009_2": 1,
-  "https://lantis.jp/sidem/extra/index.html#20261009_1": 1
- },
+ "_unreadable": {},
  "pylonport-sidem": [
   "https://pylonport.bandainamcomusiclive.co.jp/more/861",
   "https://pylonport.bandainamcomusiclive.co.jp/more/831",
@@ -916,26 +913,11 @@
  "lantis-sidem": [
   "https://lantis.jp/sidem/event/index.html#20260912",
   "https://lantis.jp/sidem/event/index.html#20260611",
+  "https://lantis.jp/sidem/extra/index.html#20261009_2",
+  "https://lantis.jp/sidem/extra/index.html#20261009_1",
   "https://lantis.jp/sidem/extra/index.html#20260925",
   "https://lantis.jp/sidem/extra/index.html#20260912_2"
  ],
- "_pending": [
-  {
-   "source_id": "lantis-sidem",
-   "brand": "sidem",
-   "url": "https://lantis.jp/sidem/extra/index.html#20261009_2",
-   "title": "",
-   "source_type": "準公式",
-   "csr": false
-  },
-  {
-   "source_id": "lantis-sidem",
-   "brand": "sidem",
-   "url": "https://lantis.jp/sidem/extra/index.html#20261009_1",
-   "title": "",
-   "source_type": "準公式",
-   "csr": false
-  }
- ],
+ "_pending": [],
  "_given_up": []
 }

@@ -1,0 +1,153 @@
+{
+ "decisions": {
+  "cg-15th-anniversary-orchestra-concert-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "prior(10/9)と事前販売10/18まで・グッズ内容が同じ。締切は8日先で当日トリガー無し。公演詳細は別施策の既報"
+  },
+  "hachinohe-cinderella-collab-2026": {
+   "action": "article",
+   "angle": "はちます×シンデレラガールズのコラボ詳細が解禁。10月23日から12月27日までデジタルスタンプラリー、ノベルティ配布、グッズ販売、パネル設置を実施",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cinderella-party-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8「デレパCD、通販は11月18日まで」と同じ商品・同じ施策。新しい事実もトリガーも無い"
+  },
+  "cg-unit-joint-project-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "prior(10/9)と同内容。新しい事実なし"
+  },
+  "cg-pop-up-shop-magical-cheers-animo-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "prior(10/9)に全商品・締切10/16・発送時期あり。メタリックステッカーも既出。締切は6日先でトリガー無し"
+  },
+  "cg-fan-popup-visit-2026-10-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS訪問報告のみ。単体では記事にしない"
+  },
+  "cg-fan-kotobukiya-popup-visit-2026-10-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS訪問報告のみ。単体では記事にしない"
+  },
+  "cinderella-playlist-additions-2026-10": {
+   "action": "article",
+   "angle": "シンデレラガールズ公式プレイリストに「オーバークロック！」「エイエム×アイアム」の2曲が追加された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "楽曲追加は2件のためroundup条件(3件以上)に満たず、small の通常記事"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-hachinohe-cinderella-collab-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "はちます×シンデレラガールズのコラボ詳細が解禁。10月23日から12月27日までデジタルスタンプラリー、ノベルティ配布、グッズ販売、パネル設置を実施",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "hachinohe-cinderella-collab-2026",
+    "candidate_ids": [
+     "202610091834-watch-0"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-playlist-additions-2026-10",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "シンデレラガールズ公式プレイリストに「オーバークロック！」「エイエム×アイアム」の2曲が追加された",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "cinderella-playlist-additions-2026-10",
+    "candidate_ids": [
+     "202610100218-grok-72"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-15th-anniversary-orchestra-concert-goods-2026",
+    "reason": "既報",
+    "note": "prior(10/9)と事前販売10/18まで・グッズ内容が同じ。締切は8日先で当日トリガー無し。公演詳細は別施策の既報"
+   },
+   {
+    "dedup_key": "cinderella-party-cd-2026",
+    "reason": "既報",
+    "note": "10/8「デレパCD、通販は11月18日まで」と同じ商品・同じ施策。新しい事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "cg-unit-joint-project-2026",
+    "reason": "既報",
+    "note": "prior(10/9)と同内容。新しい事実なし"
+   },
+   {
+    "dedup_key": "cg-pop-up-shop-magical-cheers-animo-2026",
+    "reason": "既報",
+    "note": "prior(10/9)に全商品・締切10/16・発送時期あり。メタリックステッカーも既出。締切は6日先でトリガー無し"
+   },
+   {
+    "dedup_key": "cg-fan-popup-visit-2026-10-09",
+    "reason": "個人の話題",
+    "note": "個人のSNS訪問報告のみ。単体では記事にしない"
+   },
+   {
+    "dedup_key": "cg-fan-kotobukiya-popup-visit-2026-10-09",
+    "reason": "個人の話題",
+    "note": "個人のSNS訪問報告のみ。単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

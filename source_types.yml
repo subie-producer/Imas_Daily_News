@@ -236,6 +236,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - mwt.co.jp             # 合議で追加: ページ下部の「主催：名鉄観光サービス」。コラボ企画の主催者なので当事者
   - music.apple.com       # 合議で追加: 多数作品を扱う一般配信サービス。プレイリストの販売元として当事者
   - goodsmile.com         # 合議で追加: ライセンス商品を企画・製造・販売する会社の通販サイト
   - store.steampowered.com # 合議で追加: アイマス作品を販売する第三者ストアの販売ページ。公式ストアではない
@@ -372,6 +373,7 @@ video_channels:
   当事者:
     - whatsupmcdonalds    # 合議で追加: アイマスコラボの販売元・主催者として公式YouTubeで直接発信
   ファン:
+    - tokiwakaname        # 合議で追加: 個人チャンネルの踊ってみた投稿。公式・運営発信ではなく個人の二次創作
     - TogawaNonoha        # 合議で追加: YouTubeの個人チャンネル。個人アカウントに該当
   公式:
     - imas-official        # アイドルマスターチャンネル
@@ -387,9 +389,11 @@ video_ids:
   当事者:
     - YUWiY_qt3jM         # 機械で追加: @whatsupmcdonalds「今度いつきみに会えるのかな covered by 如月千早」
   ファン:
+    - lnlFRSXtUyY         # 機械で追加: @tokiwakaname「【踊ってみた】Poison Berry Daughters 」
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - a2MWbu9JVPw         # 機械で追加: @imas-official「【ミリシタ】『プリンセス・アラモード』アイドルグランプリ P」
     - _6FBCOmBV_Q         # 機械で追加: @imas-official「【スタマス】5周年記念！越境コミュ公開「みんなでお掃除？」【」
     - F480cpkjGdM         # 機械で追加: @imas-official「10/5 田中琴葉さん Happy Birthday‼」
     - rcceniSuI4U         # 機械で追加: @KamizuruCosmo「【#ACE8 #1リベンジ】※ネタバレ注意※ シリーズ最新作」

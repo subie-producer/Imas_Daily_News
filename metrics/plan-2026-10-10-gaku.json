@@ -1,0 +1,269 @@
+{
+ "decisions": {
+  "gakumas-seibu-chichibu-yukemuri-2026": {
+   "action": "article",
+   "angle": "学マスが西武秩父駅前温泉 祭の湯とコラボし、10月16日から11月29日までグッズ・コラボメニュー・館内装飾を展開する。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 65,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発表。新規の開催決定"
+  },
+  "gaku-asano-yonji-login-bonus-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-asano-4ji-login-bonus-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じログボ(二次情報)"
+  },
+  "gaku-asano-4ji-login-bonus-2026": {
+   "action": "roundup",
+   "angle": "開催中の定常運営:花海咲季『朝の4時よ!』ログボ(APドリンク10個、10/15 3:59まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-radio-clips-2026-10-09": {
+   "action": "roundup",
+   "angle": "初星学園放送部の切り抜き公開など配信・動画",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-ssr-producer-idols-bonus-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-saki-another-guaranteed-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じアナザーアイドル無料施策の告知"
+  },
+  "gaku-another-idol-free-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-saki-another-guaranteed-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior(10/9記事)と同内容。新事実なし、同施策として統合"
+  },
+  "gaku-comic-episode-175": {
+   "action": "roundup",
+   "angle": "公式4コマ漫画第175話「無意識な小悪魔」公開など定常コンテンツ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-asari-produce-seminar-2026": {
+   "action": "roundup",
+   "angle": "開催中のイベント:あさり先生のプロデュースゼミ(ロジック対象、10/20 10:59まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-saki-another-guaranteed-gacha-2026": {
+   "action": "article",
+   "angle": "花海咲季のSSRアナザーアイドル確定の無料ガシャが10月11日10:59に終了。次の回以降も2日おきに全13回続く。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内。最大13人分の案内も含める"
+  },
+  "gaku-agitato-saki-support-futari-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-agitato-saki-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ咲季ガシャ"
+  },
+  "gaku-agitato-saki-support-pumpkin-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-agitato-saki-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ咲季ガシャ"
+  },
+  "gaku-agitato-saki-gacha-2026": {
+   "action": "article",
+   "angle": "「Agitato 咲季ガシャ」の登場カード(SSR『これがあのかぼちゃ……』、SR『ふたりで衣装作り』)と楽曲クレジットが判明。10/20 10:59まで。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開始自体は10/9既報。カード名とクレジットが新事実"
+  },
+  "gaku-radio-guests-2026-10-14": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8に同内容(14日回に2人)を記事化済み。当日トリガーなし"
+  },
+  "gakumas-fujita-kotone-prize-fig-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8の記事と同内容"
+  },
+  "fan-amayo-tsubame-figure-review-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人投稿による外部ブログ紹介で未確認"
+  },
+  "eclipse-light-animate-fair-2026": {
+   "action": "article",
+   "angle": "アニメイト「ECLIPSE LIGHT」フェアが本日開幕。前半特典ポストカード6種の配布が10月30日まで。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕)。前半6人の絵柄と対象条件を伝える"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakumas-seibu-chichibu-yukemuri-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マスが西武秩父駅前温泉 祭の湯とコラボし、10月16日から11月29日までグッズ・コラボメニュー・館内装飾を展開する。",
+    "purpose": "新情報",
+    "lead_score": 65,
+    "dedup_key": "gakumas-seibu-chichibu-yukemuri-2026",
+    "candidate_ids": [
+     "202610091233-watch-0"
+    ]
+   },
+   {
+    "slug": "gaku-saki-another-guaranteed-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "花海咲季のSSRアナザーアイドル確定の無料ガシャが10月11日10:59に終了。次の回以降も2日おきに全13回続く。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-saki-another-guaranteed-gacha-2026",
+    "candidate_ids": [
+     "202610100218-grok-56",
+     "202610100218-grok-52",
+     "202610100218-grok-53"
+    ]
+   },
+   {
+    "slug": "gaku-agitato-saki-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Agitato 咲季ガシャ」の登場カード(SSR『これがあのかぼちゃ……』、SR『ふたりで衣装作り』)と楽曲クレジットが判明。10/20 10:59まで。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-agitato-saki-gacha-2026",
+    "candidate_ids": [
+     "202610100218-grok-59",
+     "202610100218-grok-57",
+     "202610100218-grok-58"
+    ]
+   },
+   {
+    "slug": "gaku-eclipse-light-animate-fair-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "アニメイト「ECLIPSE LIGHT」フェアが本日開幕。前半特典ポストカード6種の配布が10月30日まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "candidate_ids": [
+     "sched-2026-10-10-eclipse-light-animate-fair-2026-開幕"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "開催中の定常運営:花海咲季『朝の4時よ!』ログボ(APドリンク10個、10/15 3:59まで)",
+    "lead_score": 0,
+    "dedup_key": "gaku-asano-4ji-login-bonus-2026",
+    "candidate_ids": [
+     "202610100218-explore-3",
+     "202610100218-grok-51",
+     "202610100218-grok-54",
+     "202610100218-grok-55",
+     "202610091233-explore-9"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-radio-guests-2026-10-14",
+    "reason": "既報",
+    "note": "10/8に同内容(14日回に2人)を記事化済み。当日トリガーなし"
+   },
+   {
+    "dedup_key": "gakumas-fujita-kotone-prize-fig-2027",
+    "reason": "既報",
+    "note": "10/8の記事と同内容"
+   },
+   {
+    "dedup_key": "fan-amayo-tsubame-figure-review-2026",
+    "reason": "出典不足",
+    "note": "個人投稿による外部ブログ紹介で未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

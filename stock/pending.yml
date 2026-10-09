@@ -119,10 +119,6 @@
   brand: sidem
   subject: SideM初の家庭用ゲームプロジェクト
   watch: 正式タイトル・発売時期などの詳細(判明次第 triggers へ)
-- dedup_key: sidem-aji-project-2026
-  brand: sidem
-  subject: SideM「AJIプロジェクト」新ストーリーシリーズ
-  watch: 2026年10月開始予定の正式日程・詳細(判明次第 triggers へ)
 - dedup_key: cg-isetan-osechi-2027
   brand: cg
   subject: シンデレラガールズ×伊勢丹のおせち2027 販売情報
@@ -159,3 +155,7 @@
   brand: gaku
   subject: 倉本千奈 スケールフィギュア化(EUSUN)
   watch: 製品仕様・予約期間・価格等の発表(判明次第 triggers へ)
+- dedup_key: million-miricore-2026-10
+  brand: million
+  subject: ミリコレ！～MILLIONLIVE COLLECTION～ 詳細
+  watch: 10月10日15時の開催後に案内するとされた詳細(判明次第 triggers へ)

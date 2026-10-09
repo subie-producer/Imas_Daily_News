@@ -1,0 +1,299 @@
+{
+ "decisions": {
+  "million-14th-live-goods-2026": {
+   "action": "article",
+   "angle": "14thLIVE開催記念グッズの受注が明日10月11日(日)で締切。B3布ポスターやDAY1ファイングラフなど各商品の価格と締切を伝える。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "memorial-goods を統合"
+  },
+  "million-14thlive-memorial-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注施策"
+  },
+  "million-hibiki-birthday-gasha-2026": {
+   "action": "article",
+   "angle": "我那覇響の誕生日に合わせ、Birthdayガシャ・Birthdayセット2026が登場し、劇場も響仕様に装飾された。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "誕生日・セット・劇場装飾を統合"
+  },
+  "million-hibiki-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-hibiki-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "million-hibiki-birthday-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-hibiki-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "million-hibiki-theater-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-hibiki-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "million-only-maker-parker-2026": {
+   "action": "article",
+   "angle": "9周年公式カスタマイズパーカーの受注が10月12日まで、締切まで残り2日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-miricore-2026-10": {
+   "action": "article",
+   "angle": "「ミリコレ！～MILLIONLIVE COLLECTION～」が本日10月10日15:00に開催される。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "詳細は開催後に告知"
+  },
+  "million-kyoto-popup-2026": {
+   "action": "article",
+   "angle": "京まふ事後物販のミリオン分POP UP SHOPが本日有楽町マルイ7Fで開幕。デジタル整理券、購入特典と抽選会、購入制限を案内。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "yurakucho を統合。後者は未確認なので出典は公式を優先"
+  },
+  "million-yurakucho-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-kyoto-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP"
+  },
+  "medicos-cyberplanet-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8記事に全事実あり。当日トリガーなし"
+  },
+  "million-arisa-subaru-4komas-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "my-with-glasses-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じガシャの関連コンテンツ"
+  },
+  "million-cyber-planet-popup-fan-visit-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿のみ"
+  },
+  "million-idol-grand-prix-maintenance-2026-10": {
+   "action": "article",
+   "angle": "アイドルグランプリのメンテナンスが本日14:59に終了予定で、再開できる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "my-with-glasses-2026": {
+   "action": "article",
+   "angle": "セカンドヘアスタイルガシャ with glassesは本日14:59が最終日。亜利沙・昴の4コマ漫画も公開中。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "4コマ主題を統合"
+  },
+  "million-princess-a-la-mode-idol-grand-prix-pv-2026": {
+   "action": "article",
+   "angle": "『プリンセス・アラモード』iDOL GRAND-PRIX PVが本日14:50にYouTubeで公開される。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-14th-live-goods-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "14thLIVE開催記念グッズの受注が明日10月11日(日)で締切。B3布ポスターやDAY1ファイングラフなど各商品の価格と締切を伝える。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-14th-live-goods-2026",
+    "candidate_ids": [
+     "202610091834-watch-4",
+     "202610100218-grok-21"
+    ]
+   },
+   {
+    "slug": "million-hibiki-birthday-gasha-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "我那覇響の誕生日に合わせ、Birthdayガシャ・Birthdayセット2026が登場し、劇場も響仕様に装飾された。",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-hibiki-birthday-gasha-2026",
+    "candidate_ids": [
+     "202610100218-grok-18",
+     "202610100218-grok-17",
+     "202610100218-grok-19",
+     "202610100218-grok-20"
+    ]
+   },
+   {
+    "slug": "million-only-maker-parker-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "9周年公式カスタマイズパーカーの受注が10月12日まで、締切まで残り2日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "million-only-maker-parker-2026",
+    "candidate_ids": [
+     "202610100218-grok-23"
+    ]
+   },
+   {
+    "slug": "million-miricore-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「ミリコレ！～MILLIONLIVE COLLECTION～」が本日10月10日15:00に開催される。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-miricore-2026-10",
+    "candidate_ids": [
+     "202610100218-grok-24"
+    ]
+   },
+   {
+    "slug": "million-kyoto-popup-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "京まふ事後物販のミリオン分POP UP SHOPが本日有楽町マルイ7Fで開幕。デジタル整理券、購入特典と抽選会、購入制限を案内。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "million-kyoto-popup-2026",
+    "candidate_ids": [
+     "sched-2026-10-10-million-kyoto-popup-2026-開幕",
+     "202610100218-grok-25"
+    ]
+   },
+   {
+    "slug": "million-idol-grand-prix-maintenance-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "アイドルグランプリのメンテナンスが本日14:59に終了予定で、再開できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "million-idol-grand-prix-maintenance-2026-10",
+    "candidate_ids": [
+     "sched-2026-10-10-million-idol-grand-prix-maintenance-2026-10-終了"
+    ]
+   },
+   {
+    "slug": "million-my-with-glasses-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "セカンドヘアスタイルガシャ with glassesは本日14:59が最終日。亜利沙・昴の4コマ漫画も公開中。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "my-with-glasses-2026",
+    "candidate_ids": [
+     "sched-2026-10-10-my-with-glasses-2026-締切",
+     "202610100218-grok-27"
+    ]
+   },
+   {
+    "slug": "million-princess-a-la-mode-idol-grand-prix-pv-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "『プリンセス・アラモード』iDOL GRAND-PRIX PVが本日14:50にYouTubeで公開される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-princess-a-la-mode-idol-grand-prix-pv-2026",
+    "candidate_ids": [
+     "sched-2026-10-10-million-princess-a-la-mode-idol-grand-prix-pv-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "medicos-cyberplanet-popup-2026",
+    "reason": "既報",
+    "note": "10/8記事に全事実あり。当日トリガーなし"
+   },
+   {
+    "dedup_key": "million-cyber-planet-popup-fan-visit-2026-10",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

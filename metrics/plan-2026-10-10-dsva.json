@@ -1,0 +1,137 @@
+{
+ "decisions": {
+  "cosmo-birthday-watchparty-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8・10/9の上映会記事(券販売12日18時まで)と同じ施策。facts に新事実なし"
+  },
+  "letora-birthday-live-2026-liveviewing": {
+   "action": "article",
+   "angle": "レトラ BIRTHDAY ONLINE LIVE 2026 現地ライブビューイング先行抽選の申込が明日10月11日23:59に締切。限定グッズ・価格・当落発表日も伝える。",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が翌日で当日トリガーに該当。素材10件超"
+  },
+  "valiv-13th-online-one-on-one-report": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人のnote参加レポート。未確認で終了済みの催し"
+  },
+  "cosmo-miki-kouten-shuki-short-2026-10-09": {
+   "action": "article",
+   "angle": "上水流宇宙と星井美希のコラボショート動画「公転周期 踊ってみた」がYouTube・TikTokで公開された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "vα-liv公式発信。美希はゲスト出演で面は dsva"
+  },
+  "dsva-letora-silent-hill-f-stream-2026-10-08": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ミラーボール・ラブのショート動画と10/9の塊魂配信は10/9号の記事に全て掲載済み。新事実なし"
+  },
+  "cosmo-meccha-chameleon-collab-2026-10-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/9 18時の他ライバー主体のコラボ配信で終了済み"
+  },
+  "kimchikura-vol-13-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/9号の記事に開催概要・入場方法は掲載済み。予約日程は未案内で当日トリガーなし。出典も当事者の未確認情報"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-letora-birthday-live-2026-liveviewing",
+    "brand": "dsva",
+    "rank": "large",
+    "angle": "レトラ BIRTHDAY ONLINE LIVE 2026 現地ライブビューイング先行抽選の申込が明日10月11日23:59に締切。限定グッズ・価格・当落発表日も伝える。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "letora-birthday-live-2026-liveviewing",
+    "candidate_ids": [
+     "202610092334-watch-0"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-miki-kouten-shuki-short-2026-10-09",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙と星井美希のコラボショート動画「公転周期 踊ってみた」がYouTube・TikTokで公開された。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cosmo-miki-kouten-shuki-short-2026-10-09",
+    "candidate_ids": [
+     "202610100218-grok-62"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cosmo-birthday-watchparty-2026",
+    "reason": "既報",
+    "note": "10/8・10/9の上映会記事(券販売12日18時まで)と同じ施策。facts に新事実なし"
+   },
+   {
+    "dedup_key": "valiv-13th-online-one-on-one-report",
+    "reason": "個人の話題",
+    "note": "ファン個人のnote参加レポート。未確認で終了済みの催し"
+   },
+   {
+    "dedup_key": "dsva-letora-silent-hill-f-stream-2026-10-08",
+    "reason": "既報",
+    "note": "ミラーボール・ラブのショート動画と10/9の塊魂配信は10/9号の記事に全て掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "cosmo-meccha-chameleon-collab-2026-10-09",
+    "reason": "その他",
+    "note": "10/9 18時の他ライバー主体のコラボ配信で終了済み"
+   },
+   {
+    "dedup_key": "kimchikura-vol-13-2026",
+    "reason": "既報",
+    "note": "10/9号の記事に開催概要・入場方法は掲載済み。予約日程は未案内で当日トリガーなし。出典も当事者の未確認情報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

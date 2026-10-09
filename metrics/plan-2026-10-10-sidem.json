@@ -1,0 +1,344 @@
+{
+ "decisions": {
+  "sidem-seibuen-retro-party-2026": {
+   "action": "article",
+   "angle": "西武園ゆうえんち「超!!レトローズパーティ」の声優トークショー参加券付き1日レヂャー切符が10月12日12時から先着販売、特典付き切符は13日17時発売",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "西武園4主題の本体。10/12販売開始が2日後のトリガー"
+  },
+  "sidem-seibuen-retrose-roses-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-seibuen-retro-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ西武園コラボ"
+  },
+  "sidem-cho-retrose-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-seibuen-retro-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ西武園コラボ(当事者ページ)"
+  },
+  "sidem-retro-rose-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-seibuen-retro-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ西武園コラボ(二次情報)"
+  },
+  "sidem-daimaru-matsuzakaya-popup-2026": {
+   "action": "article",
+   "angle": "大丸東京店・梅田店ポップアップの事前整理券の申込方法(東京店は来場前日17時受付開始、本人のみ・1人1日1回、同行は未就学児のみ)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior本文にない整理券の申込条件が新事実"
+  },
+  "sidem-daimaru-matsuzakaya-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-matsuzakaya-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ大丸松坂屋ポップアップ。内容は既報"
+  },
+  "sidem-daimaru-matsuzakaya-vol-2-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-daimaru-matsuzakaya-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ大丸松坂屋ポップアップ。商品・価格は既報"
+  },
+  "sidem-monthly-theme-song-13-jupiter-tokuten": {
+   "action": "article",
+   "angle": "MONTHLY THEME SONG 13 Jupiter(11月25日発売)の店舗別特典が決定、アソビストア・アニメイト・Amazonで内容が異なる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-monthly-theme-song-14-beit-tokuten": {
+   "action": "article",
+   "angle": "MONTHLY THEME SONG 14 Beit(12月23日発売)の店舗別特典が決定、アソビストア・アニメイト・Amazonで内容が異なる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-315-episode-one-scene-2026-10": {
+   "action": "article",
+   "angle": "『315プロダクション エピソード』の「アイドルたちの1コマ」が315 PASSION CONTENTSで更新",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常まとめは3件未満のため通常記事"
+  },
+  "sem-lifes-side-menu-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/3号で10月14日公開を報じ済み。新事実なし、公開まで4日で3日以内でもない"
+  },
+  "sidem-11th-setlist-playlists-2026": {
+   "action": "article",
+   "angle": "SideM 11th STAGEのセットリストをDAY1・DAY2別のプレイリストで配信中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常まとめは3件未満のため通常記事"
+  },
+  "sidem-producer-card-vol3-2026": {
+   "action": "article",
+   "angle": "かざして聴ける!プロデューサーカード第3弾の受注は10月12日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内"
+  },
+  "sidem-11th-live-performance-goods-2026": {
+   "action": "article",
+   "angle": "SideM 11th STAGE開催記念グッズの受注は明日10月11日まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が明日"
+  },
+  "sidem-315pronight-2026-10-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "放送は10/9で終了済み。当日分は10/9号で掲載済み"
+  },
+  "sidem-aji-project-story-2026": {
+   "action": "article",
+   "angle": "新CDシリーズと連動した『-AJIプロジェクト-』のストーリー第1話「AJIなヤツら」が10月14日に公開予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-11th-performance-fan-reactions-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件のみ、未確認"
+  },
+  "sidem-shinycolors-sparkle-showdown-sp-seat-goods-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-sidem-shinycolors-live-sp-seat-benefits-2026",
+   "reason": "",
+   "note": "SideM×シャニマス共同のSPシート特典。合同面で記事化済み"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-monthly-theme-song-14-beit-tokuten",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "MONTHLY THEME SONG 14 Beit(12月23日発売)の店舗別特典が決定、アソビストア・アニメイト・Amazonで内容が異なる",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-monthly-theme-song-14-beit-tokuten",
+    "candidate_ids": [
+     "202610091245-watch-0"
+    ]
+   },
+   {
+    "slug": "sidem-monthly-theme-song-13-jupiter-tokuten",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "MONTHLY THEME SONG 13 Jupiter(11月25日発売)の店舗別特典が決定、アソビストア・アニメイト・Amazonで内容が異なる",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-monthly-theme-song-13-jupiter-tokuten",
+    "candidate_ids": [
+     "202610091245-watch-1"
+    ]
+   },
+   {
+    "slug": "sidem-seibuen-retro-party-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "西武園ゆうえんち「超!!レトローズパーティ」の声優トークショー参加券付き1日レヂャー切符が10月12日12時から先着販売、特典付き切符は13日17時発売",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "sidem-seibuen-retro-party-2026",
+    "candidate_ids": [
+     "202610091834-explore-13",
+     "202610100218-grok-78",
+     "202610090732-explore-3",
+     "202610091233-explore-8",
+     "202610091834-explore-19"
+    ]
+   },
+   {
+    "slug": "sidem-daimaru-matsuzakaya-popup-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "大丸東京店・梅田店ポップアップの事前整理券の申込方法(東京店は来場前日17時受付開始、本人のみ・1人1日1回、同行は未就学児のみ)",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-daimaru-matsuzakaya-popup-2026",
+    "candidate_ids": [
+     "202610100218-explore-2",
+     "202610091233-explore-7",
+     "202610100218-grok-76"
+    ]
+   },
+   {
+    "slug": "sidem-315-episode-one-scene-2026-10",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "『315プロダクション エピソード』の「アイドルたちの1コマ」が315 PASSION CONTENTSで更新",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "sidem-315-episode-one-scene-2026-10",
+    "candidate_ids": [
+     "202610100218-grok-42"
+    ]
+   },
+   {
+    "slug": "sidem-11th-setlist-playlists-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM 11th STAGEのセットリストをDAY1・DAY2別のプレイリストで配信中",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-11th-setlist-playlists-2026",
+    "candidate_ids": [
+     "202610100218-grok-44"
+    ]
+   },
+   {
+    "slug": "sidem-producer-card-vol3-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "かざして聴ける!プロデューサーカード第3弾の受注は10月12日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-producer-card-vol3-2026",
+    "candidate_ids": [
+     "202610100218-grok-45"
+    ]
+   },
+   {
+    "slug": "sidem-11th-live-performance-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM 11th STAGE開催記念グッズの受注は明日10月11日まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-11th-live-performance-goods-2026",
+    "candidate_ids": [
+     "202610100218-grok-46"
+    ]
+   },
+   {
+    "slug": "sidem-aji-project-story-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "新CDシリーズと連動した『-AJIプロジェクト-』のストーリー第1話「AJIなヤツら」が10月14日に公開予定",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-aji-project-story-2026",
+    "candidate_ids": [
+     "202610100218-grok-49"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sem-lifes-side-menu-2dmv-2026",
+    "reason": "既報",
+    "note": "10/3号で10月14日公開を報じ済み。新事実なし、公開まで4日で3日以内でもない"
+   },
+   {
+    "dedup_key": "sidem-315pronight-2026-10-09",
+    "reason": "その他",
+    "note": "放送は10/9で終了済み。当日分は10/9号で掲載済み"
+   },
+   {
+    "dedup_key": "sidem-11th-performance-fan-reactions-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿1件のみ、未確認"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-sidem-shinycolors-live-sp-seat-benefits-2026",
+    "dedup_key": "sidem-shinycolors-sparkle-showdown-sp-seat-goods-2026",
+    "note": "SideM×シャニマス共同のSPシート特典。合同面で記事化済み"
+   }
+  ]
+ }
+}

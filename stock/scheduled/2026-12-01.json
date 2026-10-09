@@ -87,29 +87,5 @@
   "src_candidate_id": "202610081834-watch-1",
   "event_date": "2026-10-30",
   "deadline": "2026-12-01"
- },
- {
-  "id": "sched-2026-12-01-sidem-cho-retrose-party-2026-終了",
-  "dedup_key": "sidem-cho-retrose-party-2026",
-  "brand": "sidem",
-  "subject": "SideM西武園ゆうえんちコラボ最終日",
-  "kind": "終了",
-  "note": "開催期間の最終日で、ラリーなどに参加できる最後の日",
-  "reserved_on": "2026-10-10",
-  "title": "西武園ゆうえんち「超!!レトローズパーティ」",
-  "url": "https://atfes.com/contents/cho-retroseparty/about",
-  "source_type": "当事者",
-  "facts": [
-   "開催期間は2026年10月30日〜12月1日。一部休園日がある。",
-   "開催場所は西武園ゆうえんち（埼玉県所沢市山口2964）。",
-   "10月31日、11月1日、11月22日の3日間にキャスト陣が登壇するスペシャルイベントを開催する。",
-   "オリジナルグッズの販売、コラボフード、園内を回るラリー、ミニゲームを実施する。",
-   "エンゲージメント: 高"
-  ],
-  "via": "explore",
-  "verify": "confirmed",
-  "src_candidate_id": "202610091233-explore-8",
-  "event_date": "2026-10-30",
-  "deadline": "2026-12-01"
  }
 ]

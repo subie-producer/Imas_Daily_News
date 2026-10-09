@@ -155,7 +155,3 @@
   brand: gaku
   subject: 倉本千奈 スケールフィギュア化(EUSUN)
   watch: 製品仕様・予約期間・価格等の発表(判明次第 triggers へ)
-- dedup_key: million-miricore-2026-10
-  brand: million
-  subject: ミリコレ！～MILLIONLIVE COLLECTION～の詳細
-  watch: 10月10日15時の開催後に案内されるとした詳細の内容(判明次第 triggers へ)

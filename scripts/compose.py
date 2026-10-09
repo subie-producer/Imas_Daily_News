@@ -21,6 +21,7 @@
 import argparse
 import collections
 import datetime
+import difflib
 import hashlib
 import json
 import os
@@ -1655,6 +1656,23 @@ def note_stuck(date: str, kind: str, file: str, rule_id: str, issue: str, rounds
     STUCK.setdefault(date, []).append({"kind": kind, "file": file, "rule_id": rule_id, "issue": (issue or "")[:300], "rounds": rounds})
 
 
+def same_issue_left(b: dict, prev_quotes: list[str] | None) -> bool:
+    """前の巡で書き直しに回した同じ記事・同じ規則の指摘(の quote 群)と、今の巡の指摘 b が**同じ箇所**か。
+
+    規則が同じでも別の記述への指摘(前の巡で見落とされ、今の巡で初めて出たもの)は「直せなかった」ではない
+    (実測 2026-10-10 shiny-ops-roundup: 1巡目の R1 は STEP の確定内容、2巡目の R1 は「投票企画」で、
+    1巡目の指摘は直っていたのに「2巡目まで残った」と通知した)。quote が8字以上の字面を共有するときだけ同じとみる。
+    quote が無い・短いときは場所を比べられないので同じとみる(見逃して申告しないより、診断に回す)。"""
+    if prev_quotes is None:
+        return False
+    q = renderlib.visible_text(b.get("quote"))
+    olds = [renderlib.visible_text(x) for x in prev_quotes]
+    if len(q) < 8 or any(len(o) < 8 for o in olds):
+        return True
+    return any(difflib.SequenceMatcher(None, q, o, autojunk=False).find_longest_match(0, len(q), 0, len(o)).size >= 8
+               for o in olds)
+
+
 def stuck_summary(date: str) -> str:
     """通知と当番の台帳に載せる「書き直しても直らなかった指摘」の一覧。無ければ空。"""
     rows = STUCK.get(date) or []
@@ -2055,12 +2073,18 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
         # 保つ。指摘の段落1つにつき新しい段落は1つまで(勝手な追加を許さない)(監査指摘)。
         # quote の無い指摘(場所を特定できない)が混ざっているときは段落の検査を掛けない
         if all(len(qnorm(b)) >= 8 for b in issues):
+            # R2(確かめられない verified_facts)が名指した N の id は、その事実ごと根拠から外すのが正しい直し方で、
+            # 指摘の quote の段落以外に付いていても外してよい(字面はそのまま)。見ないと、N1 を全段落から外した稿を
+            # 「指摘に無い段落を変えた」で戻し、R2 が次の巡に残って記事が落ちた(実測 2026-10-10 joint-dere-miri-fureaka)
+            retracted = {str(i) for b in issues if b.get("rule_id") == "R2"
+                         for i in (b.get("fact_ids") or []) if str(i).startswith("N")}
+
             def para(text, ids=None):
                 m = renderlib.FACT_NOTE.search(text or "")
                 ids = ids if ids is not None else (m.group(1).split() if m else [])
                 # 出典の付け替え中は根拠 id の変化を段落の同一性から外す(字面が同じなら未指摘段落として通す)。
                 # 字面の無断改変は従来どおり止まる(監査指摘 MF-1)
-                key_ids = () if source_repair else tuple(sorted(str(i) for i in ids))
+                key_ids = () if source_repair else tuple(sorted(str(i) for i in ids if str(i) not in retracted))
                 return norm(renderlib.strip_fact_notes(text)), key_ids
             # 旧稿も新稿も、**同じ正規化と同じ単位**で比べる(文字として残った `\n` を改行に戻し、
             # 地の文と箇条書きの境目で分ける = 書き出しと同じ renderlib の規則)。揃えないと、壊れた改行を
@@ -2078,10 +2102,19 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
             new_paras = [u for b in blocks for u in units(b.get("markdown"), b.get("fact_ids") or [])]
             # 一対一の対応: 未指摘の旧段落を順に、新しい段落から**1つずつ消費**して探す
             # (同じ段落が2つあれば2つ要る。集合の membership では複製・片方の削除を見逃す。監査指摘)
+            # 校閲は別々の段落から抜いた文を空白でつないで1つの quote にすることがある(「DAY1…400円(税込)。 DAY2…」)。
+            # どの段落にも quote が丸ごと入らないので、該当する段落を「指摘の外」と誤認して、指摘どおり直した稿を
+            # 戻していた(実測 2026-10-10 million-14th-live-goods: DAY1・DAY2 の2段落から抜いた R2)。
+            # 正規化(visible_text)は空白を落とすので、正規化の前の quote を空白で割り、各片(8字以上)を含む段落も
+            # 指摘の段落とする
+            pieces = [x for b in issues for raw in [re.split(r"\s+", str(b.get("quote") or "").strip())] if len(raw) > 1
+                      for x in map(norm, raw) if len(x) >= 8]
+            spanned = {i for i, p in enumerate(old_paras) if any(x in p[0] for x in pieces)}
+            hit = [i in spanned or touched(p[0], "本文") for i, p in enumerate(old_paras)]
             consumed = [False] * len(new_paras)
             cursor = 0
-            for p in old_paras:
-                if touched(p[0], "本文"):
+            for i, p in enumerate(old_paras):
+                if hit[i]:
                     continue
                 try:
                     j = next(k for k in range(cursor, len(new_paras)) if new_paras[k] == p and not consumed[k])
@@ -2093,7 +2126,7 @@ def revise_check(ans: dict, issues: list[dict], old_fm: dict | None, old_body: s
                     continue
                 consumed[j] = True
                 cursor = j + 1
-            n_allowed = sum(1 for p in old_paras if touched(p[0], "本文"))
+            n_allowed = sum(hit)
             n_new = sum(1 for c in consumed if not c)
             if n_new > n_allowed:
                 problems.append(f"指摘に無い段落を足した(新しい段落 {n_new} / 指摘の段落 {n_allowed})")
@@ -3022,7 +3055,7 @@ def main() -> int:
     # 有効である。だから合議の verdict は、絞って見直しても紙面全体の答えになる
     retarget: list[str] | None = None
     retarget_ed = with_editorial
-    revised_keys: set[tuple[str, str]] = set()   # 直前の巡で書き直しに回した (file, rule_id)。次の巡にも残れば「直せなかった」
+    revised_keys: dict[tuple[str, str], list[str]] = {}   # 直前の巡で書き直しに回した (file, rule_id) → quote 群。次の巡にも同じ箇所に残れば「直せなかった」
     for rounds in range(1, args.max_rounds + 2):
         # 紙面担当(主題の重複・記事の漏れ)は、**記事を直したら走らせる**。
         # 見出しや主題が変われば、別の記事との重複が新しく生まれうる(監査指摘)。
@@ -3053,9 +3086,9 @@ def main() -> int:
         # 書き直しをはさんでも、同じ記事に同じ規則の指摘が残った = 書き手が直せない。人に「落とした」と言う前に当番が診断する
         for b in art_blockers + paper_blockers:
             key = (str(b.get("file") or ""), str(b.get("rule_id") or ""))
-            if key in revised_keys:
+            if same_issue_left(b, revised_keys.get(key)):
                 note_stuck(date, "校閲", key[0], key[1], str(b.get("issue") or ""), rounds)
-        revised_keys = set()
+        revised_keys = {}
 
         by_file: dict[str, list[dict]] = {}
         for b in art_blockers + paper_blockers:
@@ -3096,8 +3129,11 @@ def main() -> int:
             anomaly("compose", f"校閲の往復({rounds}巡目)の同時実行のうち失敗: {e}")
         # 「書き手が書き直した(稿を出した)」記事だけを次の巡の照合の対象にする。出力が読めなかった・ジョブが失敗した記事に
         # 同じ指摘が残るのは実行の失敗であって、契約の欠陥ではない(監査指摘 r86)
-        revised_keys = {(f, str(b.get("rule_id") or "")) for f, bs in by_file.items() for b in bs
-                        if revised.get(Path(f).name[len(date) + 1:].removesuffix(".md")) in ("fixed", "kept")}
+        revised_keys = {}
+        for f, bs in by_file.items():
+            if revised.get(Path(f).name[len(date) + 1:].removesuffix(".md")) in ("fixed", "kept"):
+                for b in bs:
+                    revised_keys.setdefault((f, str(b.get("rule_id") or "")), []).append(str(b.get("quote") or ""))
         # 書き直しで落ちた記事(見送り)を written から外す
         written[:] = [a for a in written if (ROOT / "docs" / "_posts" / f"{date}-{a['slug']}.md").exists()]
         subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],

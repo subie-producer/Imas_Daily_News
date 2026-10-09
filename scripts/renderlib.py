@@ -215,7 +215,12 @@ def split_heading_blocks(out: dict) -> int:
     中見出しだけの block は根拠が要らないので、分けても根拠は増えも減りもしない(本文側に元の fact_ids を残す)。
     書き直しの依頼文の「現在の記事」では中見出しに根拠の控えが付かないため、書き手が見出しを直後の段落と
     同じ block に入れて返し、「1 block に複数段落」で2巡とも戻されて記事が校閲ブロックで落ちた(実測 2026-10-08)。
-    形の違いなので機械で直す(差し戻さない)。見出しでない段落が2つ以上ある block は分けない(根拠の束ねは検算が止める)。
+    形の違いなので機械で直す(差し戻さない)。
+    地の文と箇条書きを空行で区切って1 block にしたもの(「次の通り。」+空行+「- 項目…」、「## 見出し」+箇条書き+空行+
+    注記)も同じく分ける。空行が無ければ書き出し(split_list_blocks)が同じ境目で分けて同じ根拠を付けるので、
+    空行1つの違いで戻す理由が無い(実測 2026-10-10: 書き直しが「品目は次の通り。」と品目の箇条書きを空行で1 block に
+    入れて返し、「1 block に複数段落」で戻されて指摘が次の巡に残った。初稿でも2本が同じ形で差し戻された)。
+    地の文の段落が2つ以上ある block は分けない(根拠の束ねは検算が止める)。
     """
     n = 0
     blocks = []
@@ -223,7 +228,8 @@ def split_heading_blocks(out: dict) -> int:
         md = b.get("markdown") if isinstance(b, dict) else None
         chunks = [c.strip() for c in re.split(r"\n\s*\n", md.strip())] if isinstance(md, str) else []
         chunks = [c for c in chunks if c]
-        if len(chunks) > 1 and sum(1 for c in chunks if not heading_only(c)) <= 1:
+        prose = [u for u in split_list_blocks(md) if not heading_only(u) and not _LIST_ITEM.match(u)] if chunks else []
+        if len(chunks) > 1 and len(prose) <= 1:
             for c in chunks:
                 blocks.append(dict(b, markdown=c, fact_ids=[] if heading_only(c) else list(b.get("fact_ids") or [])))
             n += 1
@@ -252,7 +258,7 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         print(f"  文字として残った \\n を改行に戻した({fixed} か所)", flush=True)
     split = split_heading_blocks(out)
     if split:
-        print(f"  中見出しと本文を束ねた段落を分けた({split} か所)", flush=True)
+        print(f"  中見出し・箇条書きと本文を束ねた段落を分けた({split} か所)", flush=True)
     problems = []
     if out.get("status") == "decline":
         if out.get("decline_code") not in DECLINE_CODES:

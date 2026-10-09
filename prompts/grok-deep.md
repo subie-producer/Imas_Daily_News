@@ -4,7 +4,7 @@
 - 本日: {TODAY}
 - 書き出すファイル: `{OUT}`
 - X の検索は最大 {MAX_SEARCHES} 回(問い1つにつき多くて2回)。数えるのは X の検索だけ
-
+{RETRY}
 ## 1. 問い
 {QUESTIONS}
 

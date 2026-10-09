@@ -993,20 +993,50 @@ def plan_deep_dive(deep: dict[str, list[dict]], budget: int) -> dict[str, list[d
     return chosen
 
 
-def deep_dive_grok(queries: list[dict], outdir: Path, chosen: dict[str, list[dict]], errs: dict) -> set[str]:
-    """選んだ問いだけを、Grok に X の原本で調べさせる(<key>-deep.md に書き出す)。戻りは正常に終わらなかった面。"""
+def deep_dive_grok(queries: list[dict], outdir: Path, chosen: dict[str, list[dict]], errs: dict,
+                   suffix: str = "-deep", retry: bool = False) -> set[str]:
+    """選んだ問いだけを、Grok に X の原本で調べさせる(<key><suffix>.md に書き出す)。戻りは正常に終わらなかった面。
+    retry は、1回目で答え(投稿)が無かった問いの投げ直し: 1回目と違う角度(その面の公式アカウント・ハッシュタグ・企画名)で探させる。"""
     by_key = {q["key"]: q for q in queries}
     targets = []
     for key, asks in chosen.items():
         q = by_key[key]
-        pp = outdir / f"prompt-{key}-deep.md"
+        accounts = "、".join(f"@{a}" for a in (q.get("accounts") or [])) or "(指定なし)"
+        pp = outdir / f"prompt-{key}{suffix}.md"
         pp.write_text(render_prompt(
-            "grok-deep", BRAND=q["brand"], TODAY=now_jst().strftime("%Y-%m-%d"), OUT=outdir / f"{key}-deep.md",
+            "grok-deep", BRAND=q["brand"], TODAY=now_jst().strftime("%Y-%m-%d"), OUT=outdir / f"{key}{suffix}.md",
             MAX_SEARCHES=2 * len(asks),
+            RETRY=(f"- **投げ直し**: どの問いも、1回目の検索では答えの投稿が見つからなかった。1回目と違う角度で探す"
+                   f"(この面の公式アカウント {accounts} の from: 検索、ハッシュタグ、企画名・商品名)\n" if retry else ""),
             QUESTIONS="\n".join(f"{i + 1}. {a['question']}(なぜ X の原本が要るか: {a.get('why') or '記載なし'})" for i, a in enumerate(asks))),
             encoding="utf-8")
         targets.append((q, pp))
     return run_grok_prompts(targets, errs)
+
+
+DEEP_ASK_NO = re.compile(r"(?m)^\s*[-*・]?\s*問い\s*[:：]\s*(\d+)")
+
+
+def unanswered_asks(text: str, asks: list[dict]) -> list[dict]:
+    """深掘りの書き出しで、答えの投稿(url のある塊の「- 問い: 番号」)が1つも無かった問い。
+    番号の無い答えの投稿は、問いが1つならその問いの答えとみなす。問いが複数で番号の無い答えがあれば、どの問いの答えか
+    分からないので投げ直さない(答えのある問いに予算を使わない。監査指摘)。"""
+    answered, unnumbered = set(), False
+    for b in post_blocks(text):
+        if not post_url(b):
+            continue
+        m = DEEP_ASK_NO.search(b)
+        if m:
+            answered.add(int(m.group(1)))
+        else:
+            unnumbered = True
+    if unnumbered:
+        if len(asks) == 1:
+            answered.add(1)
+        else:
+            print("grok: 深掘りの答えに問いの番号が無い投稿がある(どの問いの答えか分からないので、この面は投げ直さない)", flush=True)
+            return []
+    return [a for i, a in enumerate(asks) if i + 1 not in answered]
 
 
 def grok_scheduled_now(now=None) -> bool:
@@ -1151,13 +1181,36 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
             if chosen:
                 # 深掘りが時間切れ・異常終了した面(書き出しは退けてある)と、正常に終わったのに書き出しが無い・空の面は、
                 # 選んだ問いの確かめを失う。名指しで異常にする(判定は終了状態と書き出しの両方。監査指摘)
+                deep_started = time.time()
                 failed = deep_dive_grok(queries, outdir, chosen, grok_errs)
+                spent1 = sum(grok_search_counts(deep_started).values())   # 1回目の実際の検索回数(指示は厳密には守られない)
                 lost = sorted(failed | {k for k in chosen if not read_written(outdir / f"{k}-deep.md").strip()})
                 if lost:
                     notify("collect", "Grok の深掘りが時間切れ・異常終了し、X の原本の確かめを失った面: "
                                       + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost), ok=False)
                 more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen], outdir, suffix="-deep", ledger=ledger)
                 got += more
+                # 答えの投稿が無かった問いは、予算の範囲で1回だけ、違う角度で投げ直す(「見つからない」で終えない。
+                # 2026-10-09: アスラン=BBⅡ世の誕生日ガシャの公式告知を1〜2回の検索で「見つからない」として、その号に載らなかった)。
+                # 予算は、この回の深掘りの予算から1回目の分(配った回数と実際の検索回数の大きいほう)を差し引いた残りと、
+                # 週の実使用から求め直した残りの小さいほう(監査指摘: 1回目が配分を超えて検索しても、この回の上限を超えない)
+                retry = {k: v for k, asks in chosen.items() if k not in failed
+                         for v in [unanswered_asks(read_written(outdir / f"{k}-deep.md"), asks)] if v}
+                budget2 = max(0, min(budget - max(2 * sum(len(v) for v in chosen.values()), spent1),
+                                     deep_budget(grok_week_usage())))
+                chosen2 = plan_deep_dive(retry, budget2)
+                if retry:
+                    print(f"grok: 深掘りで答えの無かった問い {sum(len(v) for v in retry.values())}件のうち "
+                          f"{sum(len(v) for v in chosen2.values())}件を投げ直す(予算 {budget2}回)", flush=True)
+                if chosen2:
+                    failed2 = deep_dive_grok(queries, outdir, chosen2, grok_errs, suffix="-deep2", retry=True)
+                    lost2 = sorted(failed2 | {k for k in chosen2 if not read_written(outdir / f"{k}-deep2.md").strip()})
+                    if lost2:
+                        # 投げ直しの失敗も、1回目と同じく名指しで異常にする(黙って問いの確かめを失わない。監査指摘)
+                        notify("collect", "Grok の深掘りの投げ直しが時間切れ・異常終了し、X の原本の確かめを失った面: "
+                                          + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost2), ok=False)
+                    more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen2], outdir, suffix="-deep2", ledger=ledger)
+                    got += more
         report_lost_posts(ledger)
         # 全面が正常に終わって明示的に「なし」と書いた(エラー出力も無い)なら、正常な空振りで異常ではない(監査指摘)
         explicit_none = not grok_errs and all(

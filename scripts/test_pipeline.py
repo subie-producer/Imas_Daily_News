@@ -603,6 +603,78 @@ def test_restore_chained_reservation_facts(tmp: Path):
           f"予約から書いた記事の話題キー・URL を既報の照合に載せない: {arts}")
 
 
+def test_grok_deep_retry(tmp: Path):
+    """深掘りで答えの無かった問いは、予算の範囲で1回だけ投げ直す。予算は1回目の配分と実際の検索回数の大きいほうを差し引いた残り。
+    投げ直しが異常終了・書き出しが無いときは名指しで知らせる(監査指摘)。"""
+    import collect
+
+    def run(spent1: int, deep_max: int, deep2_fails: bool) -> tuple[list[str], list[str]]:
+        root = tmp / f"{spent1}-{deep_max}-{deep2_fails}"
+        (root / "candidates").mkdir(parents=True)
+        notes, dives = [], []
+
+        class P:
+            pid = 0
+            returncode = 0
+            def wait(self, timeout=None): return 0
+
+        def fake_popen(args, cwd=None, **kw):
+            wd = Path(cwd)
+            urls = re.findall(r"(?m)^- url:\s*(\S+)", (wd / "x-posts.md").read_text(encoding="utf-8"))
+            (wd / "items.json").write_text("[]", encoding="utf-8")
+            (wd / "posts.json").write_text(json.dumps([{"url": u, "status": "none", "item": ""} for u in urls]), encoding="utf-8")
+            if "-deep" not in wd.name:
+                (wd / "deep.json").write_text(json.dumps([{"question": "元の告知", "why": "共有の文面だけ"}]), encoding="utf-8")
+            return P()
+
+        def basic(queries, outdir, errs):
+            (outdir / "cg.md").write_text("### 1\n- url: https://x.com/a/status/9\n- 本文: 共有の文面\n", encoding="utf-8")
+            return []
+
+        def dive(queries, outdir, chosen, errs, suffix="-deep", retry=False):
+            dives.append((suffix, retry, sum(len(v) for v in chosen.values())))
+            if suffix == "-deep":
+                (outdir / "cg-deep.md").write_text("見つからない\n", encoding="utf-8")
+                return set()
+            if deep2_fails:
+                errs["cg"] = "時間切れ"
+                return {"cg"}
+            (outdir / "cg-deep2.md").write_text("### 1\n- url: https://x.com/off/status/1\n- 問い: 1\n- 本文: 公式の告知\n", encoding="utf-8")
+            return set()
+        counts = iter([{"cg": spent1}] + [{} for _ in range(10)])
+        names = ("ROOT", "build_prompts", "grok_basic", "deep_dive_grok", "grok_week_usage", "grok_search_counts", "notify",
+                 "prompt_file", "save_raw", "explore_workdir", "GROK_DEEP_MAX")
+        saved = {n: getattr(collect, n) for n in names}
+        saved_popen = collect.subprocess.Popen
+        try:
+            collect.ROOT = root
+            collect.build_prompts = lambda: [{"key": "cg", "brand": "cg", "topic": "t"}]
+            collect.grok_basic, collect.deep_dive_grok = basic, dive
+            collect.grok_week_usage = lambda *a: 0
+            collect.grok_search_counts = lambda since: next(counts)
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+            collect.prompt_file = lambda date, name, prompt, base=None: "p"
+            collect.save_raw = lambda *a, **kw: None
+            collect.explore_workdir = lambda key: (root / "wd" / key).mkdir(parents=True) or root / "wd" / key
+            collect.GROK_DEEP_MAX = deep_max
+            collect.subprocess.Popen = fake_popen
+            collect.run_explores(True, False)
+        finally:
+            for n, v in saved.items():
+                setattr(collect, n, v)
+            collect.subprocess.Popen = saved_popen
+        return notes, dives
+    # 予算4: 1回目に2回配って実際に2回 → 残り2で1問を投げ直す
+    notes, dives = run(2, 4, False)
+    check(dives == [("-deep", False, 1), ("-deep2", True, 1)], f"答えの無い問いを投げ直さない: {dives}")
+    # 1回目が配分(2回)を超えて3回検索 → 残り1で投げ直さない(この回の上限 GROK_DEEP_MAX を超えない)
+    notes, dives = run(3, 4, False)
+    check(dives == [("-deep", False, 1)], f"1回目の超過を差し引かずに投げ直した: {dives}")
+    # 投げ直しが時間切れで書き出しも無い → 名指しで知らせる
+    notes, dives = run(2, 4, True)
+    check(any("投げ直し" in m and "cg" in m for m in notes), f"投げ直しの失敗を知らせない: {notes}")
+
+
 def test_lost_post_notified_once(tmp: Path):
     """X の投稿の喪失は、深掘りの確かめまで終えた最終結果で、投稿ごとに1度だけ通知する(当番の指摘 11fc3de74b。
     実測 2026-10-07: 通常の確かめで読めなかった投稿を深掘り前に通知し、深掘りでも読めずにもう一度通知した)。
@@ -630,8 +702,8 @@ def test_lost_post_notified_once(tmp: Path):
             (outdir / "cg.md").write_text("### 1\n- url: https://x.com/a/status/9\n- 本文: 告知\n\n### 2\n- url: https://x.com/a/status/2\n- 本文: 雑談\n",
                                           encoding="utf-8")
             return []
-        def dive(queries, outdir, chosen, errs):
-            (outdir / "cg-deep.md").write_text("### 1\n- url: https://x.com/a/status/9\n- 本文: 告知\n", encoding="utf-8")
+        def dive(queries, outdir, chosen, errs, suffix="-deep", retry=False):
+            (outdir / f"cg{suffix}.md").write_text("### 1\n- url: https://x.com/a/status/9\n- 本文: 告知\n", encoding="utf-8")
             return set()
         names = ("ROOT", "build_prompts", "grok_basic", "deep_dive_grok", "grok_week_usage", "grok_search_counts", "notify",
                  "prompt_file", "save_raw", "explore_workdir")
@@ -3879,7 +3951,7 @@ def test_grok_deep_format_matches_parser():
     2026-10-09: 依頼文に形が無く、Grok が「## 問い1」+問いの文+「- 投稿の url:」で書いた。url を読めず、Luna が
     候補にした・事実なしとした投稿まで「深掘りまで確かめても失った」と7件通知した(当番の指摘 b88a0534)。"""
     import collect
-    p = collect.render_prompt("grok-deep", BRAND="million", TODAY="2026-10-09", OUT="o.md", MAX_SEARCHES=2,
+    p = collect.render_prompt("grok-deep", BRAND="million", TODAY="2026-10-09", OUT="o.md", MAX_SEARCHES=2, RETRY="",
                               QUESTIONS="1. 投稿 https://x.com/b/status/2 の本文は何か。(なぜ X の原本が要るか: 記載なし)")
     check("```" in p, "深掘りの依頼文に書き出しの形が無い")
     if "```" not in p:
@@ -3891,6 +3963,27 @@ def test_grok_deep_format_matches_parser():
           "深掘りの見本の投稿が、事実なしの結果で済みにならない")
     # どの問いでも見つからないときの書き出しは、確かめを飛ばす「見つからない」と同じ形
     check("「見つからない」とだけ書く" in p, "深掘りで何も見つからないときの書き方が無い")
+    # 答えの投稿が無かった問いは、予算の範囲で1回だけ違う角度で投げ直す(「見つからない」で終えない。2026-10-09 のアスラン=BBⅡ世)
+    asks = [{"question": f"問{i}", "why": ""} for i in (1, 2, 3)]
+    ans = "### 1\n- url: https://x.com/b/status/2\n- 問い: 2\n- 本文:\nx\n\n### 2\n- 問い: 3\n- 本文:\nurl の無い塊は答えにしない"
+    check(collect.unanswered_asks(ans, asks) == [asks[0], asks[2]], f"答えの無かった問いの拾い方: {collect.unanswered_asks(ans, asks)}")
+    check(collect.unanswered_asks("見つからない", asks) == asks, "「見つからない」だけの書き出しで、全部の問いを投げ直しに回さない")
+    nonum = "### 1\n- url: https://x.com/b/status/2\n- 本文:\nx"
+    check(collect.unanswered_asks(nonum, asks[:1]) == [] and collect.unanswered_asks(nonum, asks) == [],
+          "番号の無い答え: 問いが1つならその答え、複数なら投げ直さない(答えのある問いに予算を使わない)")
+    with tempfile.TemporaryDirectory() as td:
+        saved = collect.run_grok_prompts
+        try:
+            sent = []
+            collect.run_grok_prompts = lambda targets, errs: sent.extend(pp.read_text(encoding="utf-8") for _, pp in targets) or set()
+            qs = [{"key": "sidem", "brand": "sidem", "topic": "t", "accounts": ["SideM_official"]}]
+            collect.deep_dive_grok(qs, Path(td), {"sidem": asks[:1]}, {}, suffix="-deep2", retry=True)
+            collect.deep_dive_grok(qs, Path(td), {"sidem": asks[:1]}, {})
+        finally:
+            collect.run_grok_prompts = saved
+        check(len(sent) == 2 and "投げ直し" in sent[0] and "@SideM_official" in sent[0] and "sidem-deep2.md" in sent[0]
+              and "投げ直し" not in sent[1] and "sidem-deep.md" in sent[1], "投げ直しの依頼が、違う角度・別の書き出しにならない")
+    # 収集の流れの中での投げ直し(予算・失敗の通知)は test_grok_deep_retry が run_explores 越しに検める
 
 def test_grok_face_retry(tmp: Path):
     """Grok の面がまとめを残せなかったら、その面だけ「先に書く」順で1回やり直し、それでも残らなければ異常を上げる
@@ -4865,6 +4958,7 @@ def main() -> int:
     test_restore_reservation_facts(tmp / "rrf")
     test_restore_chained_reservation_facts(tmp / "rcf")
     test_lost_post_notified_once(tmp / "lpn")
+    test_grok_deep_retry(tmp / "gdr")
     test_review_paper_defines_same_subject()
     test_job_lock()
     test_job_lock_collect_oncall_handover()

@@ -1682,6 +1682,19 @@ def stuck_summary(date: str) -> str:
             + "\n".join(f"- [{r['kind']}] {Path(r['file']).name} {r['rule_id']}({r['rounds']}巡目まで残った): {r['issue'][:200]}" for r in rows))
 
 
+def carry_usable(c, date: str) -> bool:
+    """--carry-review で引き継げる校閲結果か: この号の承認(verdict approve で、号スナップショットの指紋を持つ)。"""
+    return (isinstance(c, dict) and c.get("verdict") == "approve" and isinstance(c.get("hashes"), dict)
+            and f"docs/_editions/{date}.md" in c["hashes"])
+
+
+def carry_targets(date: str, carried: dict) -> list[str]:
+    """承認を引き継ぐ組み直しで校閲する記事: 承認時と中身の指紋が違う記事(今回書いた記事・組み直しの途中で変わった記事)。"""
+    from pipelib import review_manifest
+    return sorted(k.split("/")[-1] for k, h in review_manifest(date).items()
+                  if k.startswith("docs/_posts/") and carried["hashes"].get(k) != h)
+
+
 def hand_over_anomalies(date: str, rerun: bool, reason: str = "") -> None:
     """号の終わりに、外れた記事と直らなかった指摘を異常の台帳に積み、台帳ごと当番へ渡す(なぜなぜ)。
     人に「落とした」「決まらない」と申告するだけで終えない(編集長 2026-09-26「すべてのエラーがなぜ起きたかなぜなぜしろ」)。"""
@@ -2391,7 +2404,7 @@ def review_hint(date: str, name: str, notes_by_file: dict[str, list[str]]) -> st
 
 def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                   editorial: bool = True, paper: bool = True,
-                  carry: dict | None = None, findings: str = "") -> dict:
+                  carry: dict | None = None, findings: str = "", strict: bool = False) -> dict:
     """校閲。執筆(Codex)と別ベンダーにするため Claude(REVIEW_MODEL=haiku)で実施。
 
     **記事は1本ずつ、並列で見る。**紙面まるごとを1セッションで校閲していたが、
@@ -2585,6 +2598,12 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                                                     "校閲できていない記事は紙面に載せない", "quote": ""})
         print(f"校閲{round_no}巡目: {len(failed)}件の担当が2回とも動かなかった(巡は成立): "
               + " / ".join(merged["failed"][:3]), flush=True)
+    if strict and failed and merged["verdict"] != "error":
+        # 承認を引き継いだ組み直し(--carry-review)の1巡目は、担当が1つでも動かなければ承認にしない
+        # (前の承認で補うと、変わった中身や紙面全体を見ないまま承認になる。監査指摘)
+        merged["verdict"] = "error"
+        merged["failed"] = [f"{sc}: {why[:80]}" for sc, why in failed]
+        print(f"校閲{round_no}巡目: 承認を引き継いだ巡で動かなかった担当がある。承認にしない: " + " / ".join(merged["failed"][:3]), flush=True)
     if merged["blockers"] and merged["verdict"] != "error":
         merged["verdict"] = "block"
     # 次の巡を始めてよいかの判断に使う。見込みではなく**この号の実測**で決める。
@@ -2665,11 +2684,23 @@ def main() -> int:
     ap.add_argument("--reuse-plan", action="store_true",
                     help="既存の metrics/plan-<date>.json を使い、選定をやり直さない"
                          "(執筆層の修正だけを試すときに使う。既に書けている記事も再執筆しない)")
+    ap.add_argument("--carry-review", metavar="JSON", default="",
+                    help="承認済みの校閲結果。--reuse-plan と使い、承認済みの記事の判定を引き継いで今回書いた記事だけを校閲する"
+                         "(承認済みの号に、落とした記事を戻す組み直し)")
     args = ap.parse_args()
     t0 = time.time()
     date = args.date or edition_date()
     branch = f"edition/{date}"
     triggers = None
+    carried = None   # --carry-review: 引き継ぐ承認済みの校閲結果(承認でなければ使わず、全部を校閲する)
+    if args.carry_review:
+        try:
+            c = json.loads(Path(args.carry_review).read_text(encoding="utf-8"))
+            carried = c if args.reuse_plan and carry_usable(c, date) else None
+        except (OSError, ValueError):
+            carried = None
+        if carried is None:
+            notify("compose", f"{date}: 引き継ぐ承認済みの校閲結果が使えない({args.carry_review})。全部を校閲する", ok=False)
 
     # 同じ作業ツリーを collect/release/当番と同時に触らない(監査指摘)
     if not args.plan:
@@ -3054,6 +3085,17 @@ def main() -> int:
     # 付いたものは必ず直しに行くので、直さなかったファイルの判定は前巡のまま
     # 有効である。だから合議の verdict は、絞って見直しても紙面全体の答えになる
     retarget: list[str] | None = None
+    force_paper = False
+    if carried:
+        # 承認済みの号に、落とした記事を戻す組み直し。承認済みの記事の判定は引き継ぎ、1巡目から**承認時と中身(指紋)が違う
+        # 記事だけ**を見る: 今回書いた記事と、組み直しの途中(出典の付け直し・lint の直し 等)で変わった記事。紙面全体の担当は
+        # 必ず見る。2巡目以降と同じ絞り方。全部を見直すと、承認済みの記事に新しいブロックが付いて書き直しが検査で戻され、
+        # 戻すために承認済みの記事を失った(実測 2026-10-10 の救済: 1巡目でブロック13件、一面を含む4本の書き直しが戻された)
+        retarget = carry_targets(date, carried)
+        # 中身が変わった記事は「校閲済み」から外す(前の承認はその中身のものではない。校閲が動かなければ載せない側に倒れる)
+        review = dict(carried, reviewed=[s for s in (carried.get("reviewed") or []) if s not in {f"article:{n}" for n in retarget}])
+        force_paper = True
+        print(f"校閲: 承認済みの判定を引き継ぎ、承認時と中身が違う {len(retarget)}本だけを見る: {', '.join(retarget) or 'なし'}", flush=True)
     retarget_ed = with_editorial
     revised_keys: dict[tuple[str, str], list[str]] = {}   # 直前の巡で書き直しに回した (file, rule_id) → quote 群。次の巡にも同じ箇所に残れば「直せなかった」
     for rounds in range(1, args.max_rounds + 2):
@@ -3061,8 +3103,9 @@ def main() -> int:
         # 見出しや主題が変われば、別の記事との重複が新しく生まれうる(監査指摘)。
         # 見出しだけ読む担当なので1セッションで済む
         review = claude_review(date, rounds, targets=retarget, editorial=retarget_ed,
-                               paper=(retarget is None or bool(retarget)), carry=review,
-                               findings=lint_out)
+                               paper=(retarget is None or bool(retarget) or force_paper), carry=review,
+                               findings=lint_out, strict=force_paper)
+        force_paper = False
         if review.get("verdict") == "approve":
             break
         if review.get("verdict") == "error":

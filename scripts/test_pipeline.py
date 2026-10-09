@@ -812,6 +812,68 @@ def test_notify_require():
             pipelib.ENV["DISCORD_WEBHOOK_URL"] = saved
 
 
+def test_compose_carry_review():
+    """承認済みの号に落とした記事を戻す組み直し(--reuse-plan --carry-review)は、承認済みの記事の判定を引き継ぎ、今回書いた記事
+    だけを校閲する。全部を見直すと承認済みの記事に新しいブロックが付き、戻すために承認済みの記事を失う(2026-10-10 の救済)。
+    承認でない結果・--reuse-plan でない実行では引き継がない(全部を校閲する)。"""
+    import inspect
+    src = inspect.getsource(compose.main)
+    i_retarget, i_carry = src.find("retarget: list[str] | None = None"), src.find("retarget = carry_targets(date, carried)")
+    i_loop = src.find("for rounds in range(1, args.max_rounds + 2):")
+    check(0 <= i_retarget < i_carry < i_loop and "args.reuse_plan and carry_usable(c, date)" in src
+          and "bool(retarget) or force_paper)" in src, "校閲の往復の前に、承認を引き継いで変わった記事に絞っていない・紙面担当を走らせない")
+    d = "2099-01-01"
+    ok = {"verdict": "approve", "blockers": [], "comments": [], "hashes": {f"docs/_editions/{d}.md": "e"}}
+    check(compose.carry_usable(ok, d), "この号の承認を引き継げない")
+    for bad, what in (({**ok, "verdict": "block"}, "承認でない"), ({**ok, "hashes": {"docs/_editions/2099-01-02.md": "e"}}, "別の号"),
+                      ({k: v for k, v in ok.items() if k != "hashes"}, "指紋が無い"), ([], "形が違う")):
+        check(not compose.carry_usable(bad, d), f"引き継げない校閲結果({what})を引き継ぐ")
+    saved = (compose.ROOT, pipelib.ROOT)
+    with tempfile.TemporaryDirectory() as td:
+        try:
+            compose.ROOT = pipelib.ROOT = Path(td)
+            (Path(td) / "docs" / "_posts").mkdir(parents=True)
+            (Path(td) / "metrics").mkdir()
+            posts = Path(td) / "docs" / "_posts"
+            for s, body in (("a", "承認済み"), ("b", "承認済み"), ("c", "今回書いた")):
+                (posts / f"{d}-{s}.md").write_text(f"---\nslug: {s}\ntitle: {s}\n---\n{body}\n", encoding="utf-8")
+            approved = {k: v for k, v in pipelib.review_manifest(d).items() if not k.endswith("-c.md")}
+            (posts / f"{d}-b.md").write_text("---\nslug: b\ntitle: b\n---\n組み直しの途中で変わった\n", encoding="utf-8")
+            got = compose.carry_targets(d, {**ok, "hashes": approved})
+            check(got == [f"{d}-b.md", f"{d}-c.md"], f"承認時と中身が違う記事(今回書いた・途中で変わった)だけを校閲に回さない: {got}")
+            # 承認を引き継いだ巡(strict)で、変わった記事の担当が2回とも動かず、紙面全体の担当だけ承認した → 承認にしない
+            # (前の承認で補うと、変わった中身を見ないまま承認になり、release も新しい指紋で通す。監査指摘)
+            first: list[str] = []
+
+            class FakeP:
+                def __init__(self, ok_):
+                    self.ok, self.returncode, self.pid = ok_, (0 if ok_ else 1), 0
+
+                def communicate(self, timeout=None):
+                    return ((json.dumps({"verdict": "approve", "blockers": [], "comments": []}), "") if self.ok else ("", "boom"))
+
+            def fake_popen(argv, **k):
+                prompt = Path(argv[2]).read_text(encoding="utf-8") if Path(argv[2]).exists() else argv[2]
+                first.append(first[0] if first else prompt)
+                return FakeP(prompt != first[0])          # 最初の担当(変わった記事)だけ、やり直しも含めて失敗
+            saved_popen = compose.subprocess.Popen
+            compose.subprocess.Popen = fake_popen
+            try:
+                r = compose.claude_review(d, 1, targets=[f"{d}-b.md"], editorial=False, paper=True, strict=True,
+                                          carry={**ok, "reviewed": [f"article:{d}-b.md"]})
+            finally:
+                compose.subprocess.Popen = saved_popen
+            rec = json.loads((Path(td) / "metrics" / f"review-{d}-1.json").read_text(encoding="utf-8"))
+            check(r.get("verdict") == "error" and rec.get("verdict") == "error",
+                  f"引き継いだ巡で担当が動かなかったのに承認にした(記録 {rec.get('verdict')}): {r.get('verdict')} {r.get('failed')}")
+            r = compose.claude_review("2099-01-01", 1, targets=[], editorial=False, paper=False,
+                                      carry={"verdict": "approve", "blockers": [], "comments": [], "reviewed": ["article:x.md"]})
+            check(r.get("verdict") == "approve" and "article:x.md" in (r.get("reviewed") or []),
+                  f"今回書いた記事が無い組み直しで、引き継いだ承認が残らない: {r}")
+        finally:
+            compose.ROOT, pipelib.ROOT = saved
+
+
 def test_oncall_rerun_policy():
     import oncall
     check(oncall.needs_full_rerun(["scripts/renderlib.py"]) and not oncall.needs_full_rerun(["scripts/collect.py"]),
@@ -4620,6 +4682,7 @@ def main() -> int:
     test_job_lock_collect_oncall_handover()
     test_notify_require()
     test_oncall_rerun_policy()
+    test_compose_carry_review()
     test_revise_apply_decline(tmp / "ra")
     test_notify_long()
     test_oncall_state(tmp / "st")

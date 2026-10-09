@@ -117,34 +117,12 @@
   "deadline": "2026-10-28"
  },
  {
-  "id": "sched-2026-10-25-shiny-chikusei-collab-2026-千秋楽",
-  "dedup_key": "shiny-chikusei-collab-2026",
-  "brand": "shiny",
-  "subject": "筑西市×シャニマスコラボ 最終日",
-  "kind": "千秋楽",
-  "note": "コラボ最終日。街歩きスタンプラリーやグッズを楽しめる最後の日",
-  "reserved_on": "2026-10-10",
-  "title": "筑西市×シャニマス、花火と街歩きのコラボ詳細",
-  "url": "https://www.city.chikusei.lg.jp/kankou/kankou-news/page013798.html",
-  "source_type": "当事者",
-  "facts": [
-   "コラボ期間は2026年10月10日(土)〜10月25日(日)",
-   "描き下ろしイラストとオリジナルグッズ(アクスタ・バッジ等)を展開",
-   "10月17日のちくせい花火大会2026でスペシャルコラボミュージックスターマインを実施、打ち揚げ前に黛冬優子が場内アナウンス",
-   "専用アプリ「Auris」を使う黛冬優子の音声街歩きスタンプラリーも実施"
-  ],
-  "via": "",
-  "verify": "unconfirmed",
-  "src_candidate_id": "sched-2026-10-10-shiny-chikusei-collab-2026-開幕",
-  "event_date": "2026-10-10"
- },
- {
   "id": "sched-2026-10-25-shiny-style-collection-wave2-2026-締切",
   "dedup_key": "shiny-style-collection-wave2-2026",
   "brand": "shiny",
   "subject": "SHINY Style COLLECTION第2弾 受注締切",
   "kind": "締切",
-  "note": "ASOBI STOREでの受注最終日、注文できる",
+  "note": "受注最終日。ASOBI STOREでグッズを注文できる",
   "reserved_on": "2026-10-10",
   "title": "SHINY Style COLLECTION第2弾グッズ受注開始",
   "url": "https://idolmaster-official.jp/news/01_20095.html",

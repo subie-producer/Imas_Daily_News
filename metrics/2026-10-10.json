@@ -102,5 +102,42 @@
    },
    "duration_s": 1181
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-10T03:23:12+09:00",
+   "edition": "2026-10-10",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 36,
+   "written": 33,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 97,
+    "covered": 97,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "joint-dere-miri-fureaka-radio-2026",
+    "million-14th-live-goods-2026"
+   ],
+   "stages_min": {
+    "選定": 1.4693741122881572,
+    "執筆": 5.628836909929912,
+    "出典の判定": 0.9638721744219462,
+    "組版": 0.6868666132291158,
+    "校閲": 0.6029444297154745,
+    "校閲1波": 0.6029444297154745
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-ops-roundup"
+   ],
+   "duration_s": 1354
+  }
  ]
 }

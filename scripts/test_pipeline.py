@@ -209,6 +209,16 @@ def test_schema_hash_dates():
           f"中見出しの分け方が違う: {hb['blocks'][:2]}")
     check(any("複数段落" in p for p in renderlib.check_output(dict(OK, blocks=[{"markdown": "## 会場\n\nA\n\nB", "fact_ids": ["F1", "F3", "F4"]}]), fb, MATS)),
           "中見出しの後の複数段落が通った")
+    # 地の文と箇条書きを空行で1 block に束ねた稿も、空行なしと同じ境目で分けて通す(地の文が2つあれば戻す)
+    # (2026-10-10: 書き直しが「品目は次の通り。」+空行+箇条書きを1 block で返し、「複数段落」で戻されて指摘が残った)
+    pl = dict(OK, blocks=[{"markdown": "品目は次の通り。\n\n- A\n- B", "fact_ids": list(OK["blocks"][0]["fact_ids"])}] + OK["blocks"][1:])
+    check(renderlib.check_output(pl, fb, MATS) == [], f"地の文と箇条書きを空行で束ねた block が落ちた: {renderlib.check_output(dict(pl), fb, MATS)}")
+    check([b["markdown"] for b in pl["blocks"][:2]] == ["品目は次の通り。", "- A\n- B"]
+          and pl["blocks"][1]["fact_ids"] == OK["blocks"][0]["fact_ids"], f"地の文と箇条書きの分け方が違う: {pl['blocks'][:2]}")
+    hl = dict(OK, blocks=[{"markdown": "## DAY1\n- 曲A\n- 曲B\n\n未配信曲は含まない。", "fact_ids": ["F1", "F3", "F4"]}])
+    check(renderlib.check_output(hl, fb, MATS) == [], f"見出し+箇条書きと注記を空行で束ねた block が落ちた: {hl['blocks']}")
+    check(any("複数段落" in p for p in renderlib.check_output(dict(OK, blocks=[{"markdown": "A\n\n- x\n\nB", "fact_ids": ["F1", "F3", "F4"]}]), fb, MATS)),
+          "箇条書きをはさんだ地の文2段落が通った")
     # assemble の予約検証も同じ照合(年なし表記で 2099 年の予約は捨てる)
     mats = {"c1": {"id": "c1", "url": "https://a.example/1", "facts": ["9月20日締切"], "dedup_key": "k", "title": "t"}}
     out = {"reservations": [{"candidate_id": "c1", "date": "2099-09-20", "kind": "締切", "slug": "x", "subject": "s", "note": "n"},
@@ -260,6 +270,29 @@ def test_revise_check():
     _, fbh = renderlib.materials_with_ids(MATS)
     ph = renderlib.check_output(ah, fbh, MATS) + R(ah, b=hb_body)
     check(ph == [], f"中見出しと本文を束ねただけの書き直しが落ちた: {ph}")
+    # 別々の段落から抜いた文を空白でつないだ quote は、両方の段落に掛かる(2026-10-10 million-14th-live-goods)
+    two = "DAY1のグッズはステッカー400円。DAY1の対象は甲。 <!-- F1 -->\n\nDAY2のグッズはステッカー400円。DAY2の対象は乙。 <!-- F3 -->"
+    iss2 = [{"issue_id": "I1", "rule_id": "R2", "repair": "drop_claim",
+             "quote": "DAY1のグッズはステッカー400円。 DAY2のグッズはステッカー400円。"}]
+    fix2 = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "DAY1の対象は甲。", "fact_ids": ["F1"]},
+                                                        {"markdown": "DAY2の対象は乙。", "fact_ids": ["F3"]}])
+    check(compose.revise_check(fix2, iss2, old_fm, two) == [], f"段落をまたぐ quote の両段落を直した稿が落ちた: {compose.revise_check(fix2, iss2, old_fm, two)}")
+    iss2b = [dict(iss2[0], quote="DAY1のグッズはステッカー400円。")]
+    check(any("段落" in p for p in compose.revise_check(fix2, iss2b, old_fm, two)), "quote の無い段落の改変が通った")
+    # R2(確かめられない N)の id は、指摘の外の段落からも字面を変えずに外してよい(2026-10-10 joint-dere-miri-fureaka)
+    nb = "出演は甲と乙。 <!-- F3 N1 -->\n\nフォームは必須の1行入力欄。 <!-- F1 N1 -->"
+    iss_n = [{"issue_id": "I1", "rule_id": "R2", "repair": "drop_claim", "quote": "フォームは必須の1行入力欄", "fact_ids": ["N1"]}]
+    fix_n = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "出演は甲と乙。", "fact_ids": ["F3"]},
+                                                         {"markdown": "フォームから送る。", "fact_ids": ["F1"]}])
+    check(compose.revise_check(fix_n, iss_n, old_fm, nb) == [], f"R2 の N を全段落から外した稿が落ちた: {compose.revise_check(fix_n, iss_n, old_fm, nb)}")
+    fix_n2 = dict(fix_n, blocks=[{"markdown": "出演は甲と乙。", "fact_ids": ["F4"]}, fix_n["blocks"][1]])
+    check(any("根拠 id" in p for p in compose.revise_check(fix_n2, iss_n, old_fm, nb)), "R2 の外の根拠 id の付け替えが通った")
+    # 「直せなかった指摘」は同じ箇所への指摘だけ(同じ規則の別の記述は、前の巡の見落としで、書き手の失敗ではない)
+    # (2026-10-10 shiny-ops-roundup: 1巡目と2巡目で R1 の対象が違うのに「2巡目まで残った」と通知した)
+    prev = ["STEP3の最後の1枚はSSR以上確定、STEP4は限定SSR確定。"]
+    check(not compose.same_issue_left({"quote": "投票企画で選ばれた「灯織＆夏葉＆はるき」がコミュに登場する"}, prev), "別の記述への指摘を残ったと数えた")
+    check(compose.same_issue_left({"quote": "STEP4は限定SSR確定"}, prev), "同じ記述への指摘を残ったと数えない")
+    check(compose.same_issue_left({"quote": ""}, prev) and not compose.same_issue_left({"quote": "x"}, None), "quote の無い指摘・前の巡に無い規則の扱い")
     # 壊れた改行(文字としての `\n`)だけを直した稿は通る(2026-09-21 のセットリスト。旧稿も新稿も同じ単位で比べる。監査指摘 r71)
     broken = "前の段落。 <!-- F3 -->\n\n公開されたセットリストは次の通り。\\n- 曲A\\n- 曲B <!-- F1 -->"
     iss_nl = [{"issue_id": "I1", "rule_id": "R16", "repair": "rewrite_claim", "quote": "公開されたセットリストは次の通り。\\n- 曲A"}]

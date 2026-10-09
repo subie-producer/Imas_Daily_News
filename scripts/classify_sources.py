@@ -863,9 +863,12 @@ def nico_channel_alias(ch_id: str, ch_url: str = "") -> str:
 def nico_channel_fetch(vid: str, page: str | None = None, fetch_alias: bool = True) -> tuple[str, str, str]:
     """ニコニコの生放送・動画ページから、チャンネル(ch.nicovideo.jp の ID と別名)と題名を取る。page を渡せば取得しない(テスト用)。
     (channel_key, channel_id, title)。channel_key は判定表の path_types に書く単位(`ch.nicovideo.jp/<別名>` か
-    `ch.nicovideo.jp/channel/<ch id>`)。ユーザー投稿(チャンネルでない)や取れないときは ("", "", title)。
+    `ch.nicovideo.jp/channel/<ch id>`)。ユーザー投稿は投稿者のユーザーページ `nicovideo.jp/user/<id>` を単位にする
+    (channel_id は "")。取れないときは ("", "", title)。
     実測 2026-09-26: live.nicovideo.jp/watch/lv… の埋め込みデータに socialGroup {type: channel, id: ch2606757,
-    socialGroupPageUrl: https://ch.nicovideo.jp/channel/ch2606757} がある。"""
+    socialGroupPageUrl: https://ch.nicovideo.jp/channel/ch2606757} がある。
+    実測 2026-10-09: www.nicovideo.jp/watch/sm… は data-api-data を持たず、<meta name="server-response"> の
+    data.response に channel / owner {id: 17835786} がある。"""
     import html as _html
     if page is None:
         try:
@@ -879,12 +882,17 @@ def nico_channel_fetch(vid: str, page: str | None = None, fetch_alias: bool = Tr
     t = re.search(r"<title>([^<]*)</title>", page)
     title = _html.unescape(t.group(1)).replace(" - ニコニコ生放送", "").replace(" - ニコニコ動画", "").strip() if t else ""
     props = None
-    m = re.search(r'id="embedded-data"[^>]*data-props="([^"]*)"', page) or re.search(r'data-api-data="([^"]*)"', page)
+    m = (re.search(r'id="embedded-data"[^>]*data-props="([^"]*)"', page) or re.search(r'data-api-data="([^"]*)"', page)
+         or re.search(r'<meta name="server-response" content="([^"]*)"', page))
     if m:
         try:
             props = json.loads(_html.unescape(m.group(1)))
         except ValueError:
             props = None
+    if isinstance(props, dict) and isinstance(props.get("data"), dict) and isinstance(props["data"].get("response"), dict):
+        props = props["data"]["response"]      # server-response の包み(meta / data.response)
+        if not title and isinstance(props.get("video"), dict):
+            title = str(props["video"].get("title") or "")      # この形のページには <title> が無い
     # 投稿主体を示す構造化フィールドだけを見る(生放送: socialGroup{type: channel} / 動画: channel)。HTML 全体から
     # `ch.nicovideo.jp/channel/ch…` を拾うと、説明文に貼られた別チャンネルのリンクを投稿主体と取り違える(監査指摘 r82)
     ch_id = ch_url = ""
@@ -901,6 +909,17 @@ def nico_channel_fetch(vid: str, page: str | None = None, fetch_alias: bool = Tr
             if re.fullmatch(r"ch\d+", cid):
                 ch_id, ch_url = cid, str(ch.get("url") or "")
     if not ch_id:
+        # ユーザー投稿・ユーザー生放送は投稿者(個人のユーザーページ)が持ち主。単位が無いと合議に掛からず未確認のまま残る
+        uid = ""
+        if isinstance(props, dict):
+            sg = props.get("socialGroup") if isinstance(props.get("socialGroup"), dict) else None
+            sup = (props.get("program") or {}).get("supplier") if isinstance(props.get("program"), dict) else None
+            if sg is None and isinstance(props.get("owner"), dict):
+                uid = str(props["owner"].get("id") or "")
+            elif isinstance(sup, dict) and sup.get("supplierType") == "user":
+                uid = str(sup.get("programProviderId") or "")
+        if uid.isdigit():
+            return f"nicovideo.jp/user/{uid}", "", title
         return "", "", title
     alias = nico_channel_alias(ch_id, ch_url) if fetch_alias else ""
     key = f"ch.nicovideo.jp/{alias}" if alias else f"ch.nicovideo.jp/channel/{ch_id}"
@@ -1191,7 +1210,8 @@ def save_unresolved(rows: list[str]) -> None:
             continue
         m = re.fullmatch(r"nicovideo:((?:lv|sm|so|nm)\d+)\(([^)]*)\)", key)
         if m:      # ニコニコも同じ: 番組 ID とチャンネルの両方で引ける
-            rest = rest or "投稿者のチャンネルが判定表に無い(チャンネルの合議でも決まらなかった)"
+            rest = rest or ("投稿者のチャンネルが判定表に無い(チャンネルの合議でも決まらなかった)" if m.group(2) != "?"
+                            else "番組ページから投稿者を引けなかった(合議に掛かっていない)")
             out[nico_watch_url(m.group(1))] = rest.strip()[:400]
             if m.group(2) != "?":
                 out[f"https://{m.group(2)}"] = rest.strip()[:400]

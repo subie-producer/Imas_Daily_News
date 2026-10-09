@@ -1,5 +1,6 @@
 {
  "imas-portal": [
+  "https://idolmaster-official.jp/news/01_20099",
   "https://idolmaster-official.jp/news/01_20095",
   "https://idolmaster-official.jp/news/01_20092",
   "https://idolmaster-official.jp/news/01_20097",
@@ -802,7 +803,10 @@
   "https://imasnews765.com/?p=32178",
   "https://imasnews765.com/?p=32175"
  ],
- "_unreadable": {},
+ "_unreadable": {
+  "https://lantis.jp/sidem/extra/index.html#20261009_2": 1,
+  "https://lantis.jp/sidem/extra/index.html#20261009_1": 1
+ },
  "pylonport-sidem": [
   "https://pylonport.bandainamcomusiclive.co.jp/more/861",
   "https://pylonport.bandainamcomusiclive.co.jp/more/831",
@@ -915,6 +919,23 @@
   "https://lantis.jp/sidem/extra/index.html#20260925",
   "https://lantis.jp/sidem/extra/index.html#20260912_2"
  ],
- "_pending": [],
+ "_pending": [
+  {
+   "source_id": "lantis-sidem",
+   "brand": "sidem",
+   "url": "https://lantis.jp/sidem/extra/index.html#20261009_2",
+   "title": "",
+   "source_type": "準公式",
+   "csr": false
+  },
+  {
+   "source_id": "lantis-sidem",
+   "brand": "sidem",
+   "url": "https://lantis.jp/sidem/extra/index.html#20261009_1",
+   "title": "",
+   "source_type": "準公式",
+   "csr": false
+  }
+ ],
  "_given_up": []
 }

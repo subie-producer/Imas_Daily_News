@@ -158,6 +158,22 @@ DEADLINE: float | None = None   # 締切の絶対時刻(epoch 秒)。main が決
 HANDOFF_MIN = 8                 # 発行(06:00)の前に空けておく分(release の起動・ロック待ち・push)
 
 
+# 承認まで進んでも記事を落としていたら、当番が直したあとこの号に戻す(--recover)。始めるのは、発行の締切
+# (06:00 の HANDOFF_MIN 前)までにこれだけ残っているときだけ: 当番の往復(実測 13分)+ 組み直し(--reuse-plan の書き直しと校閲)
+RECOVER_MIN_LEFT_MIN = 45
+
+
+def recover_until(date: str, now: float | None = None) -> float | None:
+    """落とした記事をこの号に戻せる締切(epoch 秒。発行日 06:00 の HANDOFF_MIN 前)。間に合わなければ None。"""
+    now = time.time() if now is None else now
+    try:
+        d = datetime.date.fromisoformat(date)
+    except ValueError:
+        return None
+    publish = datetime.datetime(d.year, d.month, d.day, 6, 0, tzinfo=JST).timestamp() - HANDOFF_MIN * 60
+    return publish if now + RECOVER_MIN_LEFT_MIN * 60 <= publish else None
+
+
 def hard_deadline(t0: float, date: str) -> float:
     """締切の**絶対時刻**。発行日 06:00 の HANDOFF_MIN 前と、起動から COMPOSE_LIMIT_MIN の早いほう。
 
@@ -1695,12 +1711,12 @@ def carry_targets(date: str, carried: dict) -> list[str]:
                   if k.startswith("docs/_posts/") and carried["hashes"].get(k) != h)
 
 
-def hand_over_anomalies(date: str, rerun: bool, reason: str = "") -> None:
+def hand_over_anomalies(date: str, rerun: bool, reason: str = "", extra_args: list[str] | None = None) -> None:
     """号の終わりに、外れた記事と直らなかった指摘を異常の台帳に積み、台帳ごと当番へ渡す(なぜなぜ)。
     人に「落とした」「決まらない」と申告するだけで終えない(編集長 2026-09-26「すべてのエラーがなぜ起きたかなぜなぜしろ」)。"""
     anomaly("compose", drop_summary(date))
     anomaly("compose", stuck_summary(date))
-    diagnose_anomalies("compose", date, rerun=rerun, reason=reason)
+    diagnose_anomalies("compose", date, rerun=rerun, reason=reason, extra_args=extra_args)
 
 
 def drop_summary(date: str) -> str:
@@ -3378,8 +3394,13 @@ def main() -> int:
         # 外れた記事は slug ではなく概略(見出し・段・理由)で知らせる(編集長の指摘 2026-09-23)
         notify("compose", f"{date}号 準備完了(校閲{rounds}往復で approve)。06:00 に発行されます" + drop_summary(date) + stuck_summary(date)
                + ("\n(異常は当番がなぜなぜして報告する)" if ANOMALIES or DROP_LOG.get(date) or STUCK.get(date) else ""))
-        # 号は確定している(作り直さない)。外れた記事・直らなかった指摘・途中の異常の原因を当番に診断させ、欠陥なら直す(次の号から効く)
-        hand_over_anomalies(date, rerun=False)
+        # 外れた記事・直らなかった指摘・途中の異常の原因を当番に診断させ、欠陥なら直す。外れた記事があり、発行まで時間が
+        # 残っていれば、当番は直したあと落とした記事をこの号に戻す(--recover。承認済みの紙面は控えに取り、戻せなければ控えに戻す)。
+        # 以前は「号は確定している」として再実行させず、発行前に直したのに2本を戻さなかった(2026-10-10。編集長「復帰保証までが
+        # Opus/Sol の仕事だ」)
+        until = recover_until(date) if DROP_LOG.get(date) else None
+        hand_over_anomalies(date, rerun=until is not None,
+                            extra_args=["--recover", "--end-at", str(int(until))] if until else None)
         return 0
     reasons = []
     if not approved:

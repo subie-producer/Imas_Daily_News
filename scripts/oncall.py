@@ -240,6 +240,10 @@ COLLECT_MIN_WINDOW_MIN = 30      # 収集の当番: ロックを取れた時点�
 CLEANUP_RESERVE_SEC = 300        # 収集の当番: 取り直しを打ち切ってから、後始末(素材の確定・push・通知)に残す秒数
 # 収集の当番が、取り直しまで含めて終えるべき時刻(epoch 秒。呼び出し側の収集が --end-at で固定して渡す)
 STAGE_END_AT: float | None = None
+# 落とした記事をこの号に戻す当番(組版が承認まで進んだが記事を落とした。compose の --recover)。往復を終えてから
+# 組み直し(--reuse-plan の書き直しと校閲)に残す時間。終える時刻は組版が --end-at で渡す(発行の締切)
+RECOVER_RERUN_RESERVE_MIN = 25
+RECOVER = False
 
 
 def backlog_deadline(now: datetime.datetime) -> float | None:
@@ -792,12 +796,16 @@ def apply_integrate(fix: dict, integ: dict) -> dict:
     return fix
 
 
-def rerun_policy(stage: str, changed: list[str], rerun_mode: str) -> tuple[bool, str]:
+def rerun_policy(stage: str, changed: list[str], rerun_mode: str, recover: bool = False) -> tuple[bool, str]:
     """再実行の仕方を決める(テストで固定するため関数にする。監査指摘)。戻りは (作り直すか, 表示名)。
 
     生成層(FULL_RERUN_IF)を直したか、当番が rebuild と答えたら、**stage を問わず**号を作り直す
-    (release 起点でも生成済みの号をそのまま発行しない)。none なら再実行しない
+    (release 起点でも生成済みの号をそのまま発行しない)。none なら再実行しない。
+    recover(承認済みの号で落とした記事を戻す)は、何を直しても・当番が none と答えても、書けている記事はそのままに
+    落とした記事だけを書き直して戻す(--reuse-plan)。承認済みの紙面を作り直さない(控えを取り、悪くなれば控えに戻す)
     """
+    if recover and stage == "compose":
+        return False, "落とした記事をこの号に戻す(--reuse-plan)"
     if rerun_mode == "none":
         return False, "none"
     if stage == "classify":
@@ -844,25 +852,45 @@ def edition_artifacts(date: str) -> list[str]:
             f"metrics/stories-before-{date}.yml", f"metrics/pending-before-{date}.yml"]
 
 
-def restore_edition(date: str, edition: str, backup: str) -> None:
+def untracked_files() -> set[str] | None:
+    """作業ツリーの未追跡ファイル(.gitignore の対象は除く)。一覧を取れなければ None(復元はこの号の成果物だけを掃除し、
+    clean でなければ止まって人へ渡す)。"""
+    r = sh(["git", "ls-files", "--others", "--exclude-standard", "-z"], cwd=ROOT)
+    return {x for x in r.stdout.split("\0") if x} if r.returncode == 0 else None
+
+
+def restore_edition(date: str, edition: str, backup: str, untracked_before: set[str] | None = None) -> None:
+    """号を控えのブランチへ戻す。untracked_before を渡せば、そのあと(作り直し・組み直しの間)に新しく出来た未追跡ファイルも
+    消す(組版が作った先日付の予約 stock/scheduled/ 等。残ると clean 判定で復元も発行も止まる。開始前からあったものは消さない)。"""
     sh(["git", "merge", "--abort"], cwd=ROOT)
     must(sh(["git", "checkout", "-q", "-f", edition], cwd=ROOT), f"{edition} の checkout")
     must(sh(["git", "reset", "-q", "--hard", backup], cwd=ROOT), "控えへの reset")
     # reset は未追跡の生成物(作り直し中に compose が作った記事・号・計画・校閲記録)を消さない。
     # 残ると次の工程が clean 判定で拒否される。**この号のものだけ**を対象に消す(広い git clean は使わない。監査指摘)
     must(sh(["git", "clean", "-q", "-f", "--"] + edition_artifacts(date), cwd=ROOT), "生成物の掃除")
+    now_untracked = untracked_files() if untracked_before is not None else None
+    if now_untracked is not None:
+        new = sorted(now_untracked - untracked_before)
+        if new:
+            must(sh(["git", "clean", "-q", "-f", "--"] + new, cwd=ROOT), "作り直しの間に出来た未追跡ファイルの掃除")
     # 判定不能(status の失敗)は clean 扱いにしない(監査指摘)
     if must(sh(["git", "status", "--porcelain"], cwd=ROOT), "git status").stdout.strip():
         raise RuntimeError(f"控えへ戻したが作業ツリーが clean でない: {sh(['git', 'status', '--short'], cwd=ROOT).stdout[:300]}")
     must(sh(["git", "push", "-q", "--force-with-lease", "origin", edition], cwd=ROOT, timeout=120), "控えへ戻す push")
 
 
-def reset_edition(date: str, edition: str) -> str:
-    """号を作り直せる状態にする。戻せるように控えのブランチを push してから、stock の寄与を剥がし、
-    成果物を外す。**控えを作ったあとはどこで失敗しても控えへ戻す**(監査指摘)。戻り値は控えのブランチ名。"""
+def backup_edition(date: str, edition: str) -> str:
+    """号の控えのブランチを作って push する(戻せるようにしてから号に手を入れる)。戻り値は控えのブランチ名。"""
     backup = f"backup/{date}-{int(time.time())}"
     must(sh(["git", "branch", backup, edition], cwd=ROOT), "控えブランチの作成")
     must(sh(["git", "push", "-q", "origin", backup], cwd=ROOT, timeout=120), "控えブランチの push")
+    return backup
+
+
+def reset_edition(date: str, edition: str) -> str:
+    """号を作り直せる状態にする。戻せるように控えのブランチを push してから、stock の寄与を剥がし、
+    成果物を外す。**控えを作ったあとはどこで失敗しても控えへ戻す**(監査指摘)。戻り値は控えのブランチ名。"""
+    backup = backup_edition(date, edition)
     try:
         for line in rollback_in_subprocess(date):
             print(f"  {line}", flush=True)
@@ -910,34 +938,157 @@ def ensure_pushed(branch: str, what: str, budget: int = 300) -> bool:
 def run_stage(cmd: list[str], log: Path, timeout: int) -> int:
     """再実行する工程を走らせる。時間切れなら子(モデルのセッション)ごと落とす(親だけ落とすと子が作業ツリーを触り続ける)。"""
     from pipelib import reap
+    become_subreaper()
     with log.open("a", encoding="utf-8") as f:
         p = subprocess.Popen(cmd, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
                              env={**os.environ, "ONCALL": "off", "IMAS_JOB_LOCK": "held"}, start_new_session=True)
+        # 組版は執筆・校閲のセッションを別のセッション(プロセスグループ)で起動するので、親のグループを落としても残る。
+        # 当番は subreaper なので、親を失った孫もこの process の子に付け替わる。**終わり方を問わず**(時間切れ・異常終了・
+        # 正常終了・待機中の例外)、子孫が1つも残らなくなるまで、辿って落として刈り取るのを繰り返してから返す(写しを
+        # 1回取るだけだと取ったあとに生まれた孫が、時間切れのときだけだと異常終了で残った孫が、控えへ戻した作業ツリーに
+        # 書き込み、発行の clean 判定を壊す。監査指摘)
         try:
             return p.wait(timeout=timeout)
         except subprocess.TimeoutExpired:
             reap(p)
             return 124
+        finally:
+            if p.poll() is None:
+                reap(p)
+            kill_all_descendants()
 
 
-def rerun_stage(stage: str, date: str, edition: str, full: bool) -> int:
+def become_subreaper() -> None:
+    """この process を subreaper にする(PR_SET_CHILD_SUBREAPER)。子孫の親が死ぬと、孫は init ではなくこの process の子になる。"""
+    import ctypes
+    try:
+        ctypes.CDLL(None, use_errno=True).prctl(36, 1, 0, 0, 0)
+    except (OSError, AttributeError):
+        pass
+
+
+def kill_all_descendants(limit_sec: float = 15) -> list[int]:
+    """この process の子孫を、残らなくなるまで落として刈り取る(subreaper の下で使う)。戻りは最後まで残った pid。"""
+    import signal as _signal
+    end = time.time() + limit_sec
+    left: list[int] = []
+    while time.time() < end:
+        left = [q for q in descendants(os.getpid()) if _proc_state(q) not in ("Z", "X")]
+        for q in left:
+            try:
+                os.kill(q, _signal.SIGKILL)
+            except (ProcessLookupError, PermissionError):
+                pass
+        while True:   # 子になったものを刈り取る(ゾンビのまま残さない)
+            try:
+                if os.waitpid(-1, os.WNOHANG)[0] == 0:
+                    break
+            except ChildProcessError:
+                break
+        if not left:
+            break
+        time.sleep(0.05)
+    return left
+
+
+def descendants(pid: int) -> list[int]:
+    """pid の子孫(/proc の親子関係を辿る。別セッション・別グループの孫も含む)。"""
+    children: dict[int, list[int]] = {}
+    for d in Path("/proc").iterdir():
+        if not d.name.isdigit():
+            continue
+        try:
+            ppid = int((d / "stat").read_text().rsplit(")", 1)[1].split()[1])
+        except (OSError, ValueError, IndexError):
+            continue
+        children.setdefault(ppid, []).append(int(d.name))
+    out, todo = [], [pid]
+    while todo:
+        for c in children.get(todo.pop(), []):
+            out.append(c)
+            todo.append(c)
+    return out
+
+
+def _proc_state(pid: int) -> str:
+    try:
+        return Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()[0]
+    except (OSError, IndexError):
+        return "X"
+
+
+RECOVER_TRIED = False   # 落とした記事を戻す組み直しを、この当番で既に試みたか(main の後段が二度目を走らせない)
+
+
+def posted_slugs(date: str) -> set[str]:
+    """その号の紙面にいまある記事の slug。"""
+    return {p.stem[len(date) + 1:] for p in (ROOT / "docs" / "_posts").glob(f"{date}-*.md")}
+
+
+def planned_slugs(date: str) -> list[str]:
+    """その号の計画にある記事の slug(計画が読めなければ空)。"""
+    try:
+        return [a["slug"] for a in json.loads((ROOT / "metrics" / f"plan-{date}.json").read_text(encoding="utf-8"))["articles"]]
+    except (OSError, ValueError, KeyError, TypeError):
+        return []
+
+
+def latest_review(date: str) -> Path | None:
+    """その号のいちばん新しい巡の校閲記録(metrics/review-<日付>-<巡>.json)。無ければ None。"""
+    rows = [(int(m.group(1)), p) for p in (ROOT / "metrics").glob(f"review-{date}-*.json")
+            if (m := re.fullmatch(re.escape(f"review-{date}-") + r"(\d+)\.json", p.name))]
+    return max(rows)[1] if rows else None
+
+
+def recover_outcome(before: set[str], after: set[str], planned: list[str]) -> tuple[list[str], list[str], list[str]]:
+    """組み直しの結果: (戻った記事, まだ戻らない記事, 承認済みだったのに失った記事)。失った記事があれば控えに戻す。"""
+    return (sorted(after - before), [s for s in planned if s not in after], sorted(before - after))
+
+
+def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool = False) -> int:
     """止まった工程を再実行する。作り直し(full)なら、release 起点でも compose を先頭から走らせてから
-    release する(生成層を直したのに生成済みの号をそのまま発行しない。監査指摘)。"""
+    release する(生成層を直したのに生成済みの号をそのまま発行しない。監査指摘)。
+    recover(承認済みの号で落とした記事を戻す)は、控えを取ってから --reuse-plan で組み直し、発行の締切(STAGE_END_AT)までに
+    承認されて、承認済みだった記事を1本も失っていなければ採る。それ以外は控え(承認済みの紙面)に戻す。"""
+    global RECOVER_TRIED
     log = ROOT / "metrics" / f"oncall-{date}-{stage}-rerun.log"
     log.write_text("", encoding="utf-8")
     compose_py = str(ROOT / "scripts" / "compose.py")
     backup = ""
     code = 1
     done = False   # compose と(release 起点なら)release が**全部**終わったときだけ True(監査指摘)
+    untracked_before = untracked_files()   # 控えへ戻すとき、この間に出来た未追跡ファイルだけを消す(監査指摘)
     try:
         if full:
             backup = reset_edition(date, edition)
             code = run_stage([sys.executable, compose_py, "--date", date], log, 7200)
         elif stage == "compose":
+            limit, extra = 7200, []
+            if recover:
+                RECOVER_TRIED = True
+                before, planned = posted_slugs(date), planned_slugs(date)
+                backup = backup_edition(date, edition)
+                limit = max(60, int((STAGE_END_AT or time.time() + 3600) - time.time()))
+                # 承認済みの校閲結果を控えて組版に渡す(承認済みの記事の判定を引き継ぎ、今回書いた記事だけを校閲させる)
+                carry = latest_review(date)
+                if carry:
+                    keep = ROOT / "metrics" / "work" / date / "review-carry.json"
+                    keep.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(carry, keep)
+                    extra = ["--carry-review", str(keep)]
             for p in (ROOT / "metrics").glob(f"review-{date}-*.json"):
                 p.unlink()   # 古い校閲記録が残ると release が最大巡数の古い判定を読む(監査指摘)
             commit_paths(["metrics"], f"oncall: {date} の古い校閲記録を外す", edition)
-            code = run_stage([sys.executable, compose_py, "--date", date, "--reuse-plan"], log, 7200)
+            code = run_stage([sys.executable, compose_py, "--date", date, "--reuse-plan", *extra], log, limit)
+            if recover:
+                back, still, lost = recover_outcome(before, posted_slugs(date), planned)
+                if code == 0 and lost:
+                    code = 1   # 戻すために承認済みの記事を失うなら採らない(下で控えに戻す)
+                notify("oncall", f"{date} compose: 落とした記事を戻す組み直し(exit {code})。"
+                                 f"戻った {len(back)}本: {', '.join(back) or 'なし'} / 戻らない {len(still)}本: {', '.join(still) or 'なし'}"
+                                 + (f" / 承認済みだったのに組み直しで外れた {len(lost)}本: {', '.join(lost)}(採らずに控えへ戻す)" if lost else "")
+                                 + ("" if code == 0 else "。承認済みの紙面(控え)で発行する"),
+                       ok=(code == 0 and not still))
         elif stage == "classify":
             # 取り込んだあとのコードで、その号の出典の判定(合議 → 紙面の付け直し → lint)をやり直し、結果を commit する。
             # 取引が失敗すれば判定表と記事は開始時の中身に戻る(classify_retag_lint)
@@ -986,14 +1137,83 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool) -> int:
         # 控えを作ったあとは、失敗の種類を問わず(exit 非0・例外。release 起動時の例外も)控えへ戻す(監査指摘)
         if not done and backup:
             try:
-                restore_edition(date, edition, backup)
+                restore_edition(date, edition, backup, untracked_before)
                 notify("oncall", f"{date} {stage}: 作り直しが失敗(exit {code})したので {edition} を控え {backup} に戻した", ok=False)
             except Exception as e:
                 notify("oncall", f"{date} {stage}: 作り直しが失敗し、控え {backup} への復元も失敗: {e}。**手で戻すこと**", ok=False)
     return code
 
 
+RECOVER_TARGET: tuple[str, str] | None = None   # 落とした記事を戻す号(日付, edition ブランチ)。main が設定する
+
+
 def main() -> int:
+    """当番の本体(_main)のあと、落とした記事を戻す当番(--recover)で組み直しをまだ試していなければ、いまのコードで1回試す。
+    往復が承認されなかった・時間切れ・試行の上限・例外のどれで終わっても、戻すのを諦めない(編集長 2026-10-10
+    「復帰保証までが Opus/Sol の仕事だ」)。直せなかったことと、戻せたかどうかは別に報告する。"""
+    try:
+        code = _main()
+    except Exception as e:      # noqa: BLE001
+        # 往復の前(fetch の失敗・通信の停滞 等)の例外でも、戻す仕事は続ける(監査指摘)
+        if not (RECOVER and RECOVER_TARGET):
+            raise
+        notify("oncall", f"{RECOVER_TARGET[0]} compose: 当番の処理で例外({type(e).__name__}: {str(e)[:300]})。"
+                         "落とした記事を戻す組み直しは続ける", ok=False)
+        code = 1
+    if not (RECOVER and RECOVER_TARGET and not RECOVER_TRIED):
+        return code
+    release_held_job_locks()   # _main が例外で抜けて掴んだままの工程の排他があれば離す(同じ process の別 fd でも flock は競合する)
+    date, edition = RECOVER_TARGET
+    left = (STAGE_END_AT or 0) - time.time()
+    if left < RECOVER_RERUN_RESERVE_MIN * 60:
+        notify("oncall", f"{date} compose: 発行の締切までに、落とした記事を戻す時間が無い(残り {int(left) // 60}分)。"
+                         f"戻せない記事: {', '.join(s for s in planned_slugs(date) if s not in posted_slugs(date)) or 'なし'}", ok=False)
+        return code or 1
+    try:
+        lock_fd = job_lock("oncall", wait_min=2)
+    except JobLockTimeout as e:
+        notify("oncall", f"{date} compose: 落とした記事を戻す組み直しに入れない({e})", ok=False)
+        return code or 1
+    try:
+        got = recover_rerun(date, edition)
+        return got if got is not None else (code or 1)
+    finally:
+        os.close(lock_fd)
+
+
+def release_held_job_locks() -> None:
+    """この process が開いたままの工程の排他(metrics/jobs.lock)の fd を閉じる。flock は open ごとなので、同じ process でも
+    開き直した fd とは競合する。例外で抜けた経路が閉じ損ねても、後段の組み直しが排他を取れるようにする。"""
+    target = (ROOT / "metrics" / "jobs.lock").resolve()
+    for fd in Path("/proc/self/fd").iterdir():
+        try:
+            if Path(os.readlink(fd)) == target:
+                os.close(int(fd.name))
+        except (OSError, ValueError):
+            pass
+
+
+def recover_rerun(date: str, edition: str) -> int | None:
+    """落とした記事を戻す組み直し(排他は呼び手が持つ)。往復と同じ前提(作業ツリーが clean・edition がリモートと一致)を
+    確かめてから入る。前提を満たさなければ何も変えずに None(汚れを控えへの復元で消さない。監査指摘)。"""
+    try:
+        if not root_clean():
+            notify("oncall", f"{date} compose: 作業ツリーが clean でないので、落とした記事を戻す組み直しに入れない:\n"
+                             + sh(["git", "status", "--short"], cwd=ROOT).stdout[:500], ok=False)
+            return None
+        problem = ensure_edition(edition, ROOT)
+        if problem:
+            notify("oncall", f"{date} compose: {problem}。落とした記事を戻す組み直しに入れない", ok=False)
+            return None
+        must(sh(["git", "checkout", "-q", edition], cwd=ROOT), f"{edition} の checkout")
+        return rerun_stage("compose", date, edition, False, recover=True)
+    except Exception as e:      # noqa: BLE001
+        notify("oncall", f"{date} compose: 落とした記事を戻す組み直しで例外: {type(e).__name__}: {str(e)[:300]}", ok=False)
+        return 1
+
+
+def _main() -> int:
+    global DEADLINE_AT, STAGE_END_AT, RECOVER, RECOVER_TARGET
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", choices=list(STAGES))
     ap.add_argument("--date")
@@ -1004,7 +1224,10 @@ def main() -> int:
     ap.add_argument("--backlog", action="store_true", help="発行後に直す指摘(未着手)を一覧する")
     ap.add_argument("--backlog-done", nargs="+", metavar="KEY", help="直し終えた指摘を消し込む")
     ap.add_argument("--end-at", default="", metavar="EPOCH",
-                    help="収集の当番: 取り直しまで含めて終える時刻(呼び出し側の収集が固定して渡す。起動し直しても延びない)")
+                    help="収集の当番: 取り直しまで含めて終える時刻(呼び出し側の収集が固定して渡す。起動し直しても延びない)。"
+                         "組版の --recover: 落とした記事を戻し終える締切(発行の締切)")
+    ap.add_argument("--recover", action="store_true",
+                    help="組版の当番: 承認まで進んだが記事を落とした。直したあと --reuse-plan で落とした記事をこの号に戻す")
     ap.add_argument("--backlog-keys", nargs="+", default=[], metavar="KEY",
                     help="--stage backlog で渡した保管の指摘。取り込めたら(直す箇所なしの承認も)消し込む")
     a = ap.parse_args()
@@ -1024,7 +1247,6 @@ def main() -> int:
     date, stage = a.date, a.stage
     edition = f"edition/{a.edition or date}"
     if stage == BACKLOG_STAGE:
-        global DEADLINE_AT
         # どの経路で終わっても(前提の失敗・取り込みの失敗・例外・扱わなかった指摘)、残った指摘を名指しで知らせる
         arm_backlog_exit(list(a.backlog_keys), date)
         try:
@@ -1041,12 +1263,17 @@ def main() -> int:
             return 0
         # 往復はさらに取り込み・後始末の分(BACKLOG_MERGE_RESERVE_MIN)を残して終える
         DEADLINE_AT = end - BACKLOG_MERGE_RESERVE_MIN * 60
+    elif stage == "compose" and a.recover and not a.no_rerun and a.end_at:
+        # 組版は承認まで進んだが記事を落とした。直したあと、落とした記事をこの号に戻すまでが当番の仕事(編集長 2026-10-10
+        # 「落としていいと誰が言った? 復帰保証までが Opus/Sol の仕事だ」)。往復は組み直しの時間を残して終える
+        RECOVER, RECOVER_TARGET = True, (date, edition)
+        STAGE_END_AT = float(a.end_at)
+        DEADLINE_AT = STAGE_END_AT - RECOVER_RERUN_RESERVE_MIN * 60
     elif stage == "collect" and not a.no_rerun:
         # 収集で落とした新着は、直して**取り直し、その号の選定リスト(素材)に入れる**までが当番の仕事(編集長 2026-10-07
         # 「やらかしてドロップしたのは責任を持って修正して紙面に乗せろ」「正しくは選定リストにちゃんと乗せろ」)。
         # 終える時刻は呼び出し側の収集が固定して渡す(--end-at。起動し直しても延びない。監査指摘)。02:00 の収集なら組版が待つ分を含む。
         # 動いている間は印を置き、組版はそれを見て開始を待つ(pipelib.compose_lock_wait_min)
-        global STAGE_END_AT
         STAGE_END_AT = float(a.end_at) if a.end_at else next_slot_end(now_jst())
         DEADLINE_AT = STAGE_END_AT - COLLECT_RERUN_RESERVE_MIN * 60
         if time.time() < STAGE_END_AT:
@@ -1062,6 +1289,9 @@ def main() -> int:
     # 3分は待つ。backlog と同じ「期限-30分」では 0分になり、親が離す前に諦めて取り直せなかった。監査指摘)
     if stage == "collect" and STAGE_END_AT is not None:
         wait_min = max(0.0, min(WAIT_IDLE_MIN, (STAGE_END_AT - time.time()) / 60 - COLLECT_MIN_WINDOW_MIN))
+    elif RECOVER:
+        # 落とした記事を戻す当番も、親の組版が離すまで、組み直しの時間が残る時刻まで待つ(収集と同じ理由。期限-30分にしない)
+        wait_min = max(0.0, min(WAIT_IDLE_MIN, (STAGE_END_AT - time.time()) / 60 - RECOVER_RERUN_RESERVE_MIN))
     else:
         wait_min = WAIT_IDLE_MIN if DEADLINE_AT is None else max(0, min(WAIT_IDLE_MIN, int((DEADLINE_AT - time.time()) // 60) - 30))
     try:
@@ -1077,10 +1307,22 @@ def main() -> int:
     need_min = 30 if stage == BACKLOG_STAGE else COLLECT_MIN_WINDOW_MIN - COLLECT_RERUN_RESERVE_MIN
     if DEADLINE_AT is not None and DEADLINE_AT - time.time() < need_min * 60:
         # ロックを取れた時点で、1往復(当番・監査)と取り込みの時間が残っていなければ始めない
+        if RECOVER and STAGE_END_AT - time.time() >= RECOVER_RERUN_RESERVE_MIN * 60:
+            # 直す往復の時間は無くても、組み直しの時間が残っていれば、いまのコードで落とした記事を戻しに行く(戻すのを諦めない)。
+            # 排他は持ったまま(離すと、その隙に別の工程が取る)。往復と同じ前提の確認を通す(汚れた作業ツリーを控えへの
+            # 復元で消さない。監査指摘)
+            try:
+                return recover_rerun(date, edition)
+            finally:
+                os.close(lock_fd)
         os.close(lock_fd)
         if stage == BACKLOG_STAGE:
             print("ロックを取れたが、期限までに1往復できない。保管の指摘は翌朝また渡る", flush=True)
             return 0
+        if RECOVER:
+            notify("oncall", f"{date} compose: 発行の締切までに、落とした記事を戻す時間が無い(残り {int(STAGE_END_AT - time.time()) // 60}分)。"
+                             "戻せない記事:\n" + a.reason[-1500:], ok=False)
+            return 1
         # 収集: 次の定時工程までに直して取り直す時間が無い。落とした新着がこの号に載らないことを、通知で終えずに名指しする
         # (次の収集で同じ失敗が起きれば、その収集がまた当番を呼ぶ)
         notify("oncall", f"{date} collect: 次の定時工程までに、直して取り直す時間が無い(残り {int((STAGE_END_AT or 0) - time.time()) // 60}分)。"
@@ -1186,7 +1428,7 @@ def main() -> int:
         keep_later(res["later"], date, stage, head)
 
         # release 起点でも、生成層を直したなら号を作り直す(生成済みの号をそのまま発行しない。監査指摘)
-        full, rerun_mode = rerun_policy(stage, changed, str(fix.get("rerun_mode") or ""))
+        full, rerun_mode = rerun_policy(stage, changed, str(fix.get("rerun_mode") or ""), recover=RECOVER)
         if a.no_rerun:
             full, rerun_mode = False, "再実行なし(呼び出し側の指定: 工程は終わっている。次の実行から効く)"
         targets: list[str] = []
@@ -1283,7 +1525,7 @@ def main() -> int:
             notify("oncall", f"{date} {stage}: 再実行前に本体の作業ツリーが汚れた。再実行しない", ok=False)
             return 1
         must(sh(["git", "checkout", "-q", edition], cwd=ROOT), f"{edition} の checkout")
-        code = rerun_stage(stage, date, edition, full)
+        code = rerun_stage(stage, date, edition, full, recover=RECOVER)
         notify("oncall", f"{date} {stage}: 再実行({rerun_mode})が終わった(exit {code})。"
                          f"{'成功' if code == 0 else '失敗。metrics/oncall-' + date + '-' + stage + '-rerun.log を見ること'}",
                ok=(code == 0))

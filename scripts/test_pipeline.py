@@ -874,6 +874,169 @@ def test_compose_carry_review():
             compose.ROOT, pipelib.ROOT = saved
 
 
+def test_compose_recover(tmp: Path):
+    """承認まで進んでも記事を落とした号は、当番が直したあとこの号に戻す(2026-10-10 編集長「復帰保証までが Opus/Sol の仕事だ」)。
+    組み直しは控えを取ってから --reuse-plan。承認済みだった記事を失う・承認されないなら控えに戻す。戻った・戻らない記事を名指しする。"""
+    import datetime as _dt
+    import time
+    import oncall
+    # 組版: 落とした記事があり、発行の締切まで時間が残るときだけ --recover と締切を渡す
+    pub = _dt.datetime(2026, 10, 10, 6, 0, tzinfo=pipelib.JST).timestamp() - compose.HANDOFF_MIN * 60
+    check(compose.recover_until("2026-10-10", pub - 3 * 3600) == pub, "03:00 台に戻す締切を渡さない")
+    check(compose.recover_until("2026-10-10", pub - (compose.RECOVER_MIN_LEFT_MIN - 1) * 60) is None, "間に合わないのに戻しに行かせる")
+    src = __import__("inspect").getsource(compose.main)
+    check('extra_args=["--recover", "--end-at", str(int(until))] if until else None' in src and "recover_until(date) if DROP_LOG.get(date)" in src,
+          "承認済みで記事を落とした号を、当番に戻させていない")
+    text = (pipelib.ROOT / "prompts" / "oncall-whywhy.md").read_text(encoding="utf-8")
+    check("紙面に戻るまでが仕事" in text and "落とした記事・確定した号は戻さない" not in text, "なぜなぜの依頼文が、落とした記事を戻させていない")
+    # 当番: 控え → 校閲記録を外す → --reuse-plan → 結果で採るか控えに戻すか
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    (tmp / "metrics" / "plan-2026-10-10.json").write_text(json.dumps({"articles": [{"slug": s} for s in ("a", "b", "c", "d")]}), encoding="utf-8")
+    saved = (oncall.ROOT, oncall.run_stage, oncall.commit_paths, oncall.backup_edition, oncall.restore_edition, oncall.notify,
+             oncall.STAGE_END_AT, oncall.RECOVER_TRIED)
+    try:
+        for after, code, want_restore, want in ((["a", "b", "c"], 0, False, "戻った 1本: c"),          # c が戻った
+                                                (["a", "c"], 0, True, "外れた 1本: b"),               # c は戻ったが b を失った → 控えへ
+                                                (["a", "b"], 1, True, "戻った 0本")):                 # 承認されない → 控えへ
+            for p in posts.glob("*.md"):
+                p.unlink()
+            for s in ("a", "b"):
+                (posts / f"2026-10-10-{s}.md").write_text("x", encoding="utf-8")
+            (tmp / "metrics" / "review-2026-10-10-1.json").write_text('{"verdict": "block"}', encoding="utf-8")
+            (tmp / "metrics" / "review-2026-10-10-12.json").write_text('{"verdict": "approve"}', encoding="utf-8")   # 巡の番号は数で比べる
+            calls, notes = [], []
+
+            def fake_run(cmd, log, limit, after=after, code=code):
+                carry = cmd[cmd.index("--carry-review") + 1] if "--carry-review" in cmd else ""
+                calls.append(("run", "--reuse-plan" if "--reuse-plan" in cmd else "", limit,
+                              carry and json.loads(Path(carry).read_text(encoding="utf-8"))))
+                for p in posts.glob("*.md"):
+                    p.unlink()
+                for s in after:
+                    (posts / f"2026-10-10-{s}.md").write_text("x", encoding="utf-8")
+                return code
+            oncall.ROOT, oncall.run_stage = tmp, fake_run
+            oncall.commit_paths = lambda paths, msg, branch, push_timeout=120: calls.append(("commit", tuple(paths)))
+            oncall.backup_edition = lambda d, e: calls.append(("backup",)) or "backup/x"
+            oncall.restore_edition = lambda d, e, b, u=None: calls.append(("restore", b))
+            oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            oncall.STAGE_END_AT = time.time() + 1800
+            got = oncall.rerun_stage("compose", "2026-10-10", "edition/2026-10-10", False, recover=True)
+            check(calls[0] == ("backup",) and calls[1] == ("commit", ("metrics",)) and calls[2][:2] == ("run", "--reuse-plan")
+                  and 1500 < calls[2][2] <= 1800, f"組み直しの手順・時間の上限: {calls}")
+            check(calls[2][3] == {"verdict": "approve"}, f"承認済みの校閲結果(最新の巡)を引き継がせていない: {calls[2][3]}")
+            check(not list((tmp / "metrics").glob("review-*.json")), "古い校閲記録を外していない")
+            check((("restore", "backup/x") in calls) == want_restore and (got == 0) == (not want_restore),
+                  f"{after} exit {code}: 控えに戻す判断が違う: {calls} exit {got}")
+            check(any(want in m for m, _ in notes) and any("戻らない" in m and "d" in m for m, _ in notes), f"戻った・戻らない記事を名指ししない: {notes}")
+            check(oncall.RECOVER_TRIED, "組み直しを試みたことを記録しない(後段がもう一度走る)")
+    finally:
+        (oncall.ROOT, oncall.run_stage, oncall.commit_paths, oncall.backup_edition, oncall.restore_edition, oncall.notify,
+         oncall.STAGE_END_AT, oncall.RECOVER_TRIED) = saved
+    # 時間切れの組み直しは、別セッションで起動された孫(執筆・校閲のセッション)まで落とす。落としている最中に生まれる孫も
+    # 残さない(写しを1回取るだけだと、取ったあとに生まれた孫が残る。残ると控えへ戻した紙面に書く。監査指摘)
+    pidf = tmp / "spawned.pids"
+    spawner = ("import subprocess,sys,time\n"
+               "while True:\n"
+               f"    q=subprocess.Popen([sys.executable,'-c','import time;time.sleep(60)'],start_new_session=True)\n"
+               f"    open({str(pidf)!r},'a').write(str(q.pid)+'\\n');time.sleep(0.02)\n")
+    script = (f"import subprocess,sys,time;subprocess.Popen([sys.executable,'-c',{spawner!r}],start_new_session=True);time.sleep(60)")
+    saved_root = oncall.ROOT
+    try:
+        oncall.ROOT = tmp
+        code = oncall.run_stage([sys.executable, "-c", script], tmp / "rerun.log", 2)
+    finally:
+        oncall.ROOT = saved_root
+    time.sleep(0.3)
+    pids = [int(x) for x in pidf.read_text().split()] if pidf.exists() else []
+    alive = [q for q in pids if Path(f"/proc/{q}").exists() and oncall._proc_state(q) not in ("Z", "X")]
+    check(code == 124 and len(pids) > 5 and not alive, f"時間切れで別セッションの孫が残った({len(alive)}/{len(pids)}本, exit {code})")
+    # 期限前に終わった(異常終了・正常終了)ときも、残った孫を落としてから返す(監査指摘)
+    for want in (1, 0):
+        pidf = tmp / f"left-{want}.pid"
+        script = ("import subprocess,sys;"
+                  "q=subprocess.Popen([sys.executable,'-c','import time;time.sleep(60)'],start_new_session=True);"
+                  f"open({str(pidf)!r},'w').write(str(q.pid));sys.exit({want})")
+        saved_root = oncall.ROOT
+        try:
+            oncall.ROOT = tmp
+            code = oncall.run_stage([sys.executable, "-c", script], tmp / "rerun.log", 30)
+        finally:
+            oncall.ROOT = saved_root
+        gpid = int(pidf.read_text()) if pidf.exists() else 0
+        alive = gpid and Path(f"/proc/{gpid}").exists() and oncall._proc_state(gpid) not in ("Z", "X")
+        check(code == want and gpid and not alive, f"exit {want} で終わった子の孫が残った(pid {gpid}, exit {code})")
+    # 控えへ戻すとき、組み直しの間に出来た未追跡ファイル(組版が作った先日付の予約 等)も消して clean にし、push まで行う
+    # (残ると clean 判定で復元が止まり、06:00 の発行も未追跡ファイルで止まる。開始前からあったものは消さない。監査指摘)
+    remote, work = tmp / "remote.git", tmp / "work"
+    run = lambda *a, cwd=None: subprocess.run(list(a), cwd=cwd, capture_output=True, text=True, check=True)
+    run("git", "init", "-q", "--bare", str(remote))
+    run("git", "init", "-q", "-b", "edition/2026-10-10", str(work))
+    for k, v in (("user.email", "t@example.com"), ("user.name", "t")):
+        run("git", "config", k, v, cwd=work)
+    (work / "docs" / "_posts").mkdir(parents=True)
+    (work / "docs" / "_posts" / "2026-10-10-a.md").write_text("a", encoding="utf-8")
+    run("git", "add", "-A", cwd=work)
+    run("git", "commit", "-q", "-m", "approved", cwd=work)
+    run("git", "remote", "add", "origin", str(remote), cwd=work)
+    run("git", "push", "-q", "origin", "edition/2026-10-10", cwd=work)
+    run("git", "branch", "backup/x", cwd=work)
+    saved_root = oncall.ROOT
+    try:
+        oncall.ROOT = work
+        before = oncall.untracked_files()
+        (work / "stock" / "scheduled").mkdir(parents=True)
+        (work / "stock" / "scheduled" / "2026-10-20.json").write_text("{}", encoding="utf-8")   # 組み直しが作った予約(未コミット)
+        (work / "docs" / "_posts" / "2026-10-10-b.md").write_text("b", encoding="utf-8")       # 組み直しが書いた記事(未コミット)
+        oncall.restore_edition("2026-10-10", "edition/2026-10-10", "backup/x", before)
+        status = run("git", "status", "--porcelain", cwd=work).stdout
+        check(before == set() and status == "" and not (work / "stock" / "scheduled" / "2026-10-20.json").exists(),
+              f"組み直しの間に出来た未追跡ファイルを消さずに復元が止まる: {status!r}")
+    except RuntimeError as e:
+        check(False, f"組み直しの間に出来た未追跡ファイルで復元が止まった: {e}")
+    finally:
+        oncall.ROOT = saved_root
+    # 往復を省いて組み直すときも、作業ツリーが汚れていれば何も変えない(控えへの復元で汚れを消さない。監査指摘)
+    saved = (oncall.root_clean, oncall.ensure_edition, oncall.rerun_stage, oncall.notify, oncall.sh)
+    try:
+        ran, notes = [], []
+        oncall.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        oncall.rerun_stage = lambda *a, **k: ran.append(a) or 0
+        oncall.sh = lambda *a, **k: subprocess.CompletedProcess(a, 0, "", "")
+        oncall.root_clean, oncall.ensure_edition = (lambda: False), (lambda e, c: "")
+        check(oncall.recover_rerun("2026-10-10", "edition/2026-10-10") is None and not ran, "汚れた作業ツリーで組み直しに入った")
+        oncall.root_clean, oncall.ensure_edition = (lambda: True), (lambda e, c: "edition/2026-10-10 がリモートと食い違う")
+        check(oncall.recover_rerun("2026-10-10", "edition/2026-10-10") is None and not ran, "リモートと食い違う号で組み直しに入った")
+        oncall.ensure_edition = lambda e, c: ""
+        check(oncall.recover_rerun("2026-10-10", "edition/2026-10-10") == 0 and ran, "前提を満たすのに組み直さない")
+    finally:
+        oncall.root_clean, oncall.ensure_edition, oncall.rerun_stage, oncall.notify, oncall.sh = saved
+    # 当番の本体が例外で抜けても(往復の前の fetch の失敗 等)、掴んだままの排他を離して組み直しに進む(監査指摘)
+    saved = (oncall._main, oncall.recover_rerun, oncall.notify, oncall.RECOVER, oncall.RECOVER_TARGET, oncall.RECOVER_TRIED,
+             oncall.STAGE_END_AT, oncall.ROOT, pipelib.ROOT)
+    try:
+        (tmp / "lk" / "metrics").mkdir(parents=True)
+        oncall.ROOT = pipelib.ROOT = tmp / "lk"
+        held = []
+
+        def boom():
+            held.append(pipelib.job_lock("oncall"))      # 排他を掴んだまま例外で抜ける
+            raise RuntimeError("fetch に失敗")
+        tried = []
+        # 後段は排他を取ってから組み直す。掴んだままの排他が離されていなければ、取れずに(2分待って)組み直しに進まない
+        oncall._main, oncall.recover_rerun = boom, (lambda d, e: tried.append(d) or 0)
+        oncall.notify = lambda job, msg, ok=True, require=False: True
+        oncall.RECOVER, oncall.RECOVER_TARGET, oncall.RECOVER_TRIED = True, ("2026-10-10", "edition/2026-10-10"), False
+        oncall.STAGE_END_AT = time.time() + 3600
+        check(oncall.main() == 0 and tried == ["2026-10-10"], f"本体の例外で組み直しに進まない・排他が残る: {tried}")
+    finally:
+        oncall.release_held_job_locks()     # このテストで開いた排他(作業用の tmp のもの)を閉じる
+        (oncall._main, oncall.recover_rerun, oncall.notify, oncall.RECOVER, oncall.RECOVER_TARGET, oncall.RECOVER_TRIED,
+         oncall.STAGE_END_AT, oncall.ROOT, pipelib.ROOT) = saved
+
+
 def test_oncall_rerun_policy():
     import oncall
     check(oncall.needs_full_rerun(["scripts/renderlib.py"]) and not oncall.needs_full_rerun(["scripts/collect.py"]),
@@ -891,6 +1054,11 @@ def test_oncall_rerun_policy():
           "collect: 取り直しの表示名")
     for stage in ("collect", "watch"):
         check(oncall.rerun_policy(stage, ["scripts/pipelib.py"], "none") == (False, "none"), f"{stage}: none が効かない")
+    # 落とした記事を戻す当番(--recover)は、生成層を直しても・none と答えても、承認済みの紙面を作り直さず --reuse-plan で戻す
+    # (2026-10-10: 「確定した号は戻さない」で発行前の2本を戻さなかった。編集長「復帰保証までが Opus/Sol の仕事だ」)
+    for files, mode in ((["scripts/compose.py"], "rebuild"), (["scripts/assemble.py"], "none"), ([], "resume")):
+        check(oncall.rerun_policy("compose", files, mode, recover=True) == (False, "落とした記事をこの号に戻す(--reuse-plan)"),
+              f"recover: {files} {mode} で戻しに行かない・作り直しになる")
     # release 起点の作り直しは compose 先頭 → release の順に走る
     calls, cmds = [], []
     saved = (oncall.reset_edition, oncall.run_stage, oncall.commit_paths, oncall.ROOT, oncall.root_clean)
@@ -1025,7 +1193,7 @@ def test_oncall_report_text(tmp: Path):
             oncall.BACKLOG, oncall.backlog_add = saved_b, saved_add
         # main が合意のあと・再実行の判断の前に保管を呼び、差分なしの通知にも later を載せている(呼び出しを消したら落ちる)
         import inspect
-        src = inspect.getsource(oncall.main)
+        src = inspect.getsource(oncall._main)
         i_gate, i_keep, i_rerun = src.find("if not approved:"), src.find('keep_later(res["later"], date, stage, head)'), src.find("rerun_policy(")
         check(0 <= i_gate < i_keep < i_rerun, "main が合意のあとに later を保管していない")
         check("later_text(res['later'])" in src, "差分なし(no_fix_needed)の通知に later が載らない")
@@ -4212,7 +4380,7 @@ def test_oncall_restore_on_exception(tmp: Path):
         def boom(*a, **k):
             raise OSError("popen failed")
         oncall.run_stage = boom
-        oncall.restore_edition = lambda d, e, b: calls.append(("restore", b))
+        oncall.restore_edition = lambda d, e, b, u=None: calls.append(("restore", b))
         oncall.notify = lambda *a, **k: True
         try:
             oncall.rerun_stage("compose", "2026-09-12", "edition/2026-09-12", full=True)
@@ -4683,6 +4851,7 @@ def main() -> int:
     test_notify_require()
     test_oncall_rerun_policy()
     test_compose_carry_review()
+    test_compose_recover(tmp / "recover")
     test_revise_apply_decline(tmp / "ra")
     test_notify_long()
     test_oncall_state(tmp / "st")

@@ -9,7 +9,7 @@
 - `add_source`: 足りない出典を sources に加える。素材にある url か、読んで確かめた一次情報の url(後者は new_facts にも書く)。指摘に url があれば、それを読んで加える
 - `drop_source`: 食い違う弱い出典を sources から外し、記事は強い出典に合わせる
 - `drop_article`: 記事として成立しないなら、status を decline にして decline_code と decline_detail を書く
-- 指摘に無い箇所(見出し・他の段落・出典)は変えない
+- 指摘に無い箇所(見出し・他の段落・出典)は変えない。ただし指摘に応じるのに要る変更(区分・並びの誤りを直す組み直し、同じ誤りが別の段落にもある 等)はしてよい
 - 対応した指摘の issue_id を addressed_issue_ids に列挙する
 
 ## 2. 出力の注意

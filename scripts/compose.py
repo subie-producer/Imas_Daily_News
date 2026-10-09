@@ -1659,6 +1659,8 @@ def log_drop(date: str, slug: str, stage: str, why: str, path: Path | None = Non
 
 # 日付 → {slug: 直前の書き直しを機械の検査が戻した理由("" なら戻していない)}。校閲の依頼文に載せる
 REVISE_NOTES: dict[str, dict[str, str]] = {}
+# 日付 → {slug: 直前の書き直しが指摘の外も変えた箇所}。採ったうえで、次の巡の校閲に確かめさせる(revise_apply)
+OFFSCOPE_NOTES: dict[str, dict[str, str]] = {}
 
 # 日付 → **書き手が直せなかった**指摘の記録。書き直しをはさんでも同じ記事に同じ規則の指摘が残った / 機械検算を
 # 差し戻しても通らなかった。書き手が直せないのは、たいてい書き手ではなく契約(執筆 schema・依頼文・検算・校閲規則)の欠陥
@@ -2220,9 +2222,18 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     except Exception as e:
         # 欄の形が崩れた答え(addressed_issue_ids が数値など)で号全体を止めない。元の稿のまま(監査指摘)
         return "kept", f"答えの形が崩れていて照合できない({type(e).__name__}: {str(e)[:80]})。元の稿のまま"
-    if problems:
-        return "kept", "検算不合格 " + " / ".join(problems[:3]) + "(元の稿のまま)"
+    # 「指摘の外を変えた」(範囲)は形の不合格ではなく、その変更が指摘に応じるのに要ったか・素材に基づくかという**中身の判断**で、
+    # 校閲(モデル)が確かめる(コードは形だけ)。範囲で戻すと、校閲の quote の書き方しだいで正しい直しが戻され、記事が落ちた
+    # (2026-09-25・10-03・10-10 に繰り返し。10日号の救済では一面を含む4本の書き直しが戻された)。範囲を外れた変更は記録して
+    # 次の巡の校閲に添える。書き直した記事は次の巡で記事ごと校閲され、校閲されないまま時間切れになれば承認の指紋が合わず出ない
+    scope = [x for x in problems if x.startswith("指摘に無い")]
+    hard = [x for x in problems if not x.startswith("指摘に無い")]
+    if hard:
+        return "kept", "検算不合格 " + " / ".join(hard[:3]) + "(元の稿のまま)"
     renderlib.render_article(path, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
+    if scope:
+        OFFSCOPE_NOTES.setdefault(date, {})[art["slug"]] = " / ".join(scope)[:400]
+        return "fixed", f"対応 {ans.get('addressed_issue_ids')}(指摘の外も変えた: {' / '.join(scope)[:120]}。次の巡の校閲が確かめる)"
     return "fixed", f"対応 {ans.get('addressed_issue_ids')}"
 
 
@@ -2249,6 +2260,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
         materials = [cands[c] for c in art["candidate_ids"] if c in cands]
         mats_in, fact_by_id = renderlib.materials_with_ids(materials)
         REVISE_NOTES.setdefault(date, {}).pop(slug, None)    # この巡の書き直しの結果だけを校閲に伝える(古い巡を引きずらない)
+        OFFSCOPE_NOTES.setdefault(date, {}).pop(slug, None)
         # 指摘に機械の id を振る(rule_id は同じ規則で複数付くので、対応の照合に使えない。監査指摘)
         issues = [{**b, "issue_id": f"I{k + 1}"} for k, b in enumerate(issues)]
         jobs.append((art, path, fact_by_id, materials, issues,
@@ -2415,6 +2427,11 @@ def review_hint(date: str, name: str, notes_by_file: dict[str, list[str]]) -> st
                  "この記事の blockers は**最優先の1件だけ**にし、quote はその1つの誤りに絞り(同じ誤りが見出し・リード・本文の"
                  "複数の欄にあれば、その欄は欄名を付けて全部入れる)、repair は1つにすること"
                  "(執筆が1か所だけ直せば次の巡で通るように)")
+    offscope = (OFFSCOPE_NOTES.get(date) or {}).get(name[len(date) + 1:].removesuffix(".md"), "")
+    if offscope:
+        hint += ("\n\n## 前回の書き直しについて(指摘の外の変更)\n執筆は前回の指摘に応じて書き直したが、指摘の箇所の外も変えた"
+                 f"({offscope})。その変更が、指摘に応じるのに要った変更(構造の誤りを直すための組み直し 等)か、素材・出典に基づくかを"
+                 "確かめること。誤りを持ち込んでいれば blockers に挙げる。要った変更で正しければ、範囲を外れたこと自体は指摘しない")
     return hint
 
 
@@ -2604,14 +2621,23 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
         # 一部の担当だけが2回とも動かなかった。**巡は成立させる。**
         # - 一度も校閲できていない記事は、校閲なしで載せられないので、落とす指摘を付ける
         #   (号を止めるより、その1本を落とすほうが規程に合う)
-        # - 前に校閲できている記事・社説・紙面全体は、前回の指摘を引き継ぐだけでよい
+        # - 前に校閲できている記事・社説・紙面全体は、前回の指摘を引き継ぐだけでよい。ただし記事は**前の判定の時点から中身が
+        #   変わっていない**ときだけ(前の巡の記録の hashes と今の指紋を比べる)。書き直した記事の再校閲が動かないのに、担当の名前だけの
+        #   「校閲済み」で補うと、変わった中身を誰も見ないまま承認になり、release も新しい指紋で通す(監査指摘)
+        from pipelib import article_hash
+        prev_hashes = (carry or {}).get("hashes") or {}
         merged["failed"] = [f"{sc}: {why[:80]}" for sc, why in failed]
         for sc, why in failed:
-            if sc.startswith("article:") and sc not in reviewed_before:
-                name = sc.split(":", 1)[1]
+            if not sc.startswith("article:"):
+                continue
+            name = sc.split(":", 1)[1]
+            path = ROOT / "docs" / "_posts" / name
+            changed = path.exists() and prev_hashes.get(f"docs/_posts/{name}") != article_hash(path)
+            if sc not in reviewed_before or changed:
                 merged["blockers"].append({"scope": sc, "file": f"docs/_posts/{name}",
                                            "issue": f"校閲が2回とも実行できなかった({why[:60]})。"
-                                                    "校閲できていない記事は紙面に載せない", "quote": ""})
+                                                    + ("前の校閲のあとに中身が変わっている。" if changed and sc in reviewed_before else "")
+                                                    + "校閲できていない記事は紙面に載せない", "quote": ""})
         print(f"校閲{round_no}巡目: {len(failed)}件の担当が2回とも動かなかった(巡は成立): "
               + " / ".join(merged["failed"][:3]), flush=True)
     if strict and failed and merged["verdict"] != "error":

@@ -603,6 +603,53 @@ def test_restore_chained_reservation_facts(tmp: Path):
           f"予約から書いた記事の話題キー・URL を既報の照合に載せない: {arts}")
 
 
+def test_review_failed_changed_article(tmp: Path):
+    """書き直した記事(前の判定から中身の指紋が変わった)の再校閲が2回とも動かなければ、前の巡の「校閲済み」で補わず載せない。
+    補うと、変わった中身を誰も見ないまま承認になり、release も新しい指紋で通す(監査指摘)。中身が変わっていなければ引き継ぐ。"""
+    import release
+    d = "2099-01-02"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    art = posts / f"{d}-x.md"
+    art.write_text("---\nslug: x\ntitle: t\n---\n前の稿\n", encoding="utf-8")
+
+    class FakeP:
+        def __init__(self, ok_):
+            self.ok, self.returncode, self.pid = ok_, (0 if ok_ else 1), 0
+
+        def communicate(self, timeout=None):
+            return ((json.dumps({"verdict": "approve", "blockers": [], "comments": []}), "") if self.ok else ("", "boom"))
+    saved = (compose.ROOT, pipelib.ROOT, release.ROOT, compose.subprocess.Popen)
+    try:
+        compose.ROOT = pipelib.ROOT = release.ROOT = tmp
+        old_hash = pipelib.article_hash(art)
+        carry = {"verdict": "block", "blockers": [], "comments": [], "reviewed": [f"article:{d}-x.md", "paper"],
+                 "hashes": {f"docs/_posts/{d}-x.md": old_hash}}
+
+        first: list[str] = []
+
+        def fake_popen(argv, **k):
+            prompt = Path(argv[2]).read_text(encoding="utf-8") if Path(argv[2]).exists() else argv[2]
+            first.append(first[0] if first else prompt)
+            return FakeP(prompt != first[0])        # 最初に起動される記事の担当だけ、やり直しも含めて動かない
+        compose.subprocess.Popen = fake_popen
+        for changed in (True, False):
+            first.clear()
+            for p in (tmp / "metrics").glob("review-*.json"):
+                p.unlink()
+            art.write_text("---\nslug: x\ntitle: t\n---\n" + ("書き直した稿(指摘の外も変えた)\n" if changed else "前の稿\n"), encoding="utf-8")
+            r = compose.claude_review(d, 2, targets=[f"{d}-x.md"], editorial=False, paper=True, carry=carry)
+            v = release.review_verdict(d)[0]
+            if changed:
+                check(r.get("verdict") == "block" and v != "approve" and any(b.get("file") == f"docs/_posts/{d}-x.md" for b in r["blockers"]),
+                      f"書き直した記事の再校閲が動かないのに承認した: {r.get('verdict')} / release {v}")
+            else:
+                check(r.get("verdict") == "approve", f"中身の変わらない記事の前の判定を引き継がない: {r.get('verdict')} {r.get('blockers')}")
+    finally:
+        compose.ROOT, pipelib.ROOT, release.ROOT, compose.subprocess.Popen = saved
+
+
 def test_grok_deep_retry(tmp: Path):
     """深掘りで答えの無かった問いは、予算の範囲で1回だけ投げ直す。予算は1回目の配分と実際の検索回数の大きいほうを差し引いた残り。
     投げ直しが異常終了・書き出しが無いときは名指しで知らせる(監査指摘)。"""
@@ -1384,6 +1431,27 @@ def test_revise_apply_decline(tmp: Path):
     outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
     check(outcome == "fixed" and str((compose.parse_front_matter(p) or {}).get("event_date")) == "2026-09-13",
           f"指摘外の event_date が元の値に戻らない: {outcome} {msg}")
+    # 指摘の外の段落も変えた稿は、形が正しければ採り、次の巡の校閲に「指摘の外の変更」を確かめさせる(範囲は中身の判断で校閲が見る。
+    # 2026-10-10: DAY の区分の誤りを直す組み直しが「指摘に無い段落を変えた」で戻され、締切前日の記事が落ちた)
+    old2 = ("---\n" + compose.yaml_dump_keeping_strings({"title": "t", "lede": "l", "tags": ["a", "b"], "event_date": "2026-09-13",
+                                                          "sources": [{"url": u["url"], "label": "x", "type": "公式"} for u in OK["sources"]]})
+            + "---\n価格は三千円である。 <!-- F1 -->\n\n発売は秋である。 <!-- F1 -->\n")
+    p.write_text(old2, encoding="utf-8")
+    compose.OFFSCOPE_NOTES.clear()
+    ans_scope = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円。", "fact_ids": ["F1"]},
+                                                             {"markdown": "発売は秋の予定。", "fact_ids": ["F1"]}])
+    outcome, msg = compose.revise_apply("2026-09-12", art, p, ans_scope, fb, MATS, iss)
+    note = (compose.OFFSCOPE_NOTES.get("2026-09-12") or {}).get("x", "")
+    hint = compose.review_hint("2026-09-12", "2026-09-12-x.md", {})
+    check(outcome == "fixed" and "発売は秋の予定" in p.read_text(encoding="utf-8") and "指摘に無い段落" in note
+          and "指摘の外の変更" in hint and "発売は秋" in hint, f"指摘の外も直した稿を戻した・校閲に確かめさせない: {outcome} {msg} / {hint[-200:]}")
+    # 形の不合格(HTML のタグなど)は、範囲と関係なく従来どおり戻す
+    p.write_text(old2, encoding="utf-8")
+    ans_bad = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は<span>三千円</span>。", "fact_ids": ["F1"]},
+                                                           {"markdown": "発売は秋の予定。", "fact_ids": ["F1"]}])
+    outcome, msg = compose.revise_apply("2026-09-12", art, p, ans_bad, fb, MATS, iss)
+    check(outcome == "kept" and p.read_text(encoding="utf-8") == old2, f"形の崩れた稿が範囲の扱いに紛れて通った: {outcome} {msg}")
+    compose.OFFSCOPE_NOTES.clear()
     # 指摘が event_date を名指すなら書き手の値を使う
     p.write_text(old, encoding="utf-8")
     iss_ev = [dict(iss[0], issue="event_date 2026-09-13 は出典の開催日と違う")]
@@ -4959,6 +5027,7 @@ def main() -> int:
     test_restore_chained_reservation_facts(tmp / "rcf")
     test_lost_post_notified_once(tmp / "lpn")
     test_grok_deep_retry(tmp / "gdr")
+    test_review_failed_changed_article(tmp / "rfc")
     test_review_paper_defines_same_subject()
     test_job_lock()
     test_job_lock_collect_oncall_handover()

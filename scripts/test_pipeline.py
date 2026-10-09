@@ -2629,10 +2629,11 @@ def test_watch_pagination_and_batches(tmp: Path):
     calls, notes = [], []
     # facts 化の出力は新着ページごとの結果(全ページ「読んだが事実なし」)
     none_all = lambda prompt: [{"page": i + 1, "status": "none", "items": []} for i in range(prompt.count("### "))]
-    saved = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt)
+    saved = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt, collect.page_html_or_note)
     try:
         collect.ROOT, collect.STATE_PATH = tmp, tmp / "watch-state.json"
         collect.list_source = lambda s, known, fetch=None: (listings[s["id"]], 1, False)
+        collect.page_html_or_note = lambda url, csr: ("", "")   # 新着ページの本文は取らない(ネットに出ない)
         collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
         collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
         collect.WATCH_BATCH = 12
@@ -2728,7 +2729,41 @@ def test_watch_pagination_and_batches(tmp: Path):
             check(len(cands) == (0 if name == "[]" else 1) and (name == "[]" or {"https://a.jp/q0", "https://a.jp/q1"} <= set(st["old"])),
                   f"{name}: 抽出済み・対象外のページの扱い: cands={cands} old={st['old']}")
     finally:
-        (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt) = saved
+        (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt, collect.page_html_or_note) = saved
+
+
+def test_watch_static_page_body(tmp: Path):
+    """定点観測の facts 化: 描画の要らない観測先の新着も本文を取って渡す。`#id` で1ページの中の1件を指す URL は、その件の部分だけを渡す
+    (2026-10-09: ランティスの SideM 特典告知2件。本文を渡さず WebFetch に任せたら要約しか返らず、写しが取れずに読めなかった扱いになった)"""
+    import collect
+    page = ('<html><head><meta charset="Shift_JIS"></head><body><nav>ナビ</nav>'
+            '<div class="event_box"><div class="date" id="20261009_2">2026.10.9 update</div><h2>Beit の特典が決定</h2><p>品番 LACM-24794</p></div>'
+            '<div class="event_box"><div class="date" id="20261009_1">2026.10.9 update</div><h2>Jupiter の特典デザインが決定</h2><p>品番 LACM-24793</p></div>'
+            '<div class="event_box"><div class="date" id="20260925">2026.9.25 update</div><h2>古い告知</h2><p>' + "過去の告知の本文。" * 60 + '</p></div></body></html>')
+    class Res:
+        headers = type("H", (), {"get_content_charset": lambda self: None})()
+        def __init__(self, body): self.body = body
+        def read(self, *a): return self.body
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    prompts = []
+    saved = (collect.urllib.request.urlopen, collect.render_prompt, collect.notify, collect.fetch_rendered)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=20: Res(page.encode("cp932"))
+        collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+        collect.notify = lambda *a, **k: True
+        collect.fetch_rendered = lambda url, timeout=30: (_ for _ in ()).throw(AssertionError("素の HTML で読めるページを描画した"))
+        collect.facts_batch([{"url": "https://lantis.jp/sidem/extra/index.html#20261009_1", "title": "", "brand": "sidem", "csr": False},
+                             {"url": "https://lantis.jp/sidem/extra/index.html#nowhere", "title": "", "brand": "sidem", "csr": False}],
+                            lambda prompt, timeout=0: prompts.append(prompt) or None, {})
+    finally:
+        collect.urllib.request.urlopen, collect.render_prompt, collect.notify, collect.fetch_rendered = saved
+    m = prompts[0] if prompts else ""
+    first, second = (m.split("### 2.") + [""])[:2]
+    check("Jupiter の特典デザインが決定" in first and "LACM-24793" in first and "WebFetch" not in first,
+          f"素の HTML のページの本文を渡さず WebFetch に任せた(要約しか返らず写しが取れない): {first!r}")
+    check("Beit" not in first and "古い告知" not in first and "ナビ" not in first, f"#id の件以外を混ぜた: {first!r}")
+    check("古い告知" in second and "WebFetch" not in second, f"id がページに無いときページ全体を渡さない: {second!r}")
 
 
 def test_collect_oncall_rerun_exit(tmp: Path):
@@ -4592,6 +4627,7 @@ def main() -> int:
     test_accept_only_normal_and_schema(tmp / "an")
     test_grok_repoint_uses_each_face_posts(tmp / "grp")
     test_watch_pagination_and_batches(tmp / "wp")
+    test_watch_static_page_body(tmp / "ws")
     test_fetch_page_renders_whitespace_only_page()
     test_fetch_rendered_skips_images()
     test_render_failure_keeps_cause(tmp / "rf")

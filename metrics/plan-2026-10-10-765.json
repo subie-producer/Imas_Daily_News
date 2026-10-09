@@ -1,0 +1,98 @@
+{
+ "decisions": {
+  "765as-hibiki-birthday-2026": {
+   "action": "article",
+   "angle": "アイドルマスターチャンネルが10月10日の我那覇響・椎名法子の誕生日を祝い、お祝いムービー2本を公開した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発信・当日の出来事。事実が少ないので短い記事。"
+  },
+  "fan-hibiki-birthday-only-my-note-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の SNS 投稿(ギター演奏動画)。未確認で単体記事にしない。765面にculture枠なし。"
+  },
+  "fan-hibiki-birthday-destiny-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の SNS 投稿(ギター演奏動画)。未確認で単体記事にしない。"
+  },
+  "fan-765as-hibiki-cocktail-book-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "冬コミ向けの同人誌の制作告知。"
+  },
+  "million-hibiki-fan-birthday-posts-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファンの誕生日投稿(ハッシュタグ)。単体では記事にしない。culture は general 面のみ。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-765as-hibiki-birthday-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "アイドルマスターチャンネルが10月10日の我那覇響・椎名法子の誕生日を祝い、お祝いムービー2本を公開した。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "765as-hibiki-birthday-2026",
+    "candidate_ids": [
+     "202610100218-grok-4"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fan-hibiki-birthday-only-my-note-2026",
+    "reason": "個人の話題",
+    "note": "個人の SNS 投稿(ギター演奏動画)。未確認で単体記事にしない。765面にculture枠なし。"
+   },
+   {
+    "dedup_key": "fan-hibiki-birthday-destiny-2026",
+    "reason": "個人の話題",
+    "note": "個人の SNS 投稿(ギター演奏動画)。未確認で単体記事にしない。"
+   },
+   {
+    "dedup_key": "fan-765as-hibiki-cocktail-book-2026",
+    "reason": "同人・ファン主催",
+    "note": "冬コミ向けの同人誌の制作告知。"
+   },
+   {
+    "dedup_key": "million-hibiki-fan-birthday-posts-2026",
+    "reason": "個人の話題",
+    "note": "ファンの誕生日投稿(ハッシュタグ)。単体では記事にしない。culture は general 面のみ。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

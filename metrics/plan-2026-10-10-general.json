@@ -1,0 +1,45 @@
+{
+ "decisions": {
+  "fan-kaname-poison-berry-dance-2026-10-09": {
+   "action": "article",
+   "angle": "ファンが常磐カナメの『Poison Berry Daughters』を踊る動画を投稿し、対バンライブのタオル比較など界隈の盛り上がりとあわせて1本のファン面にまとめる。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認の個人投稿。個人を主役にせず作品・創作の話題として扱う"
+  },
+  "sidem-shinycolors-towel-comparison-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-kaname-poison-berry-dance-2026-10-09",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファンによる283と315のタオル比較投稿。culture記事に束ねる(単体では記事にしない)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-fan-kaname-poison-berry-dance-2026-10-09",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "ファンが常磐カナメの『Poison Berry Daughters』を踊る動画を投稿し、対バンライブのタオル比較など界隈の盛り上がりとあわせて1本のファン面にまとめる。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "fan-kaname-poison-berry-dance-2026-10-09",
+    "candidate_ids": [
+     "202610100218-grok-39",
+     "202610100218-grok-86"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

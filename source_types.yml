@@ -236,6 +236,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - mwt.co.jp             # 合議で追加: ページ下部の「主催：名鉄観光サービス」。コラボ企画の主催者なので当事者
+  - music.apple.com       # 合議で追加: 多数作品を扱う一般配信サービス。プレイリストの販売元として当事者
   - goodsmile.com         # 合議で追加: ライセンス商品を企画・製造・販売する会社の通販サイト
   - store.steampowered.com # 合議で追加: アイマス作品を販売する第三者ストアの販売ページ。公式ストアではない
   - playstation.com       # 合議で追加: PS Game Music大賞2026を主催し、応募・投票を運営
@@ -371,6 +373,7 @@ video_channels:
   当事者:
     - whatsupmcdonalds    # 合議で追加: アイマスコラボの販売元・主催者として公式YouTubeで直接発信
   ファン:
+    - tokiwakaname        # 合議で追加: 個人チャンネルの踊ってみた投稿。公式・運営発信ではなく個人の二次創作
     - TogawaNonoha        # 合議で追加: YouTubeの個人チャンネル。個人アカウントに該当
   公式:
     - imas-official        # アイドルマスターチャンネル
@@ -386,8 +389,11 @@ video_ids:
   当事者:
     - YUWiY_qt3jM         # 機械で追加: @whatsupmcdonalds「今度いつきみに会えるのかな covered by 如月千早」
   ファン:
+    - lnlFRSXtUyY         # 機械で追加: @tokiwakaname「【踊ってみた】Poison Berry Daughters 」
+    - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - a2MWbu9JVPw         # 機械で追加: @imas-official「【ミリシタ】『プリンセス・アラモード』アイドルグランプリ P」
     - _6FBCOmBV_Q         # 機械で追加: @imas-official「【スタマス】5周年記念！越境コミュ公開「みんなでお掃除？」【」
     - F480cpkjGdM         # 機械で追加: @imas-official「10/5 田中琴葉さん Happy Birthday‼」
     - rcceniSuI4U         # 機械で追加: @KamizuruCosmo「【#ACE8 #1リベンジ】※ネタバレ注意※ シリーズ最新作」
@@ -538,6 +544,17 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - wakkimillion        # 合議で追加: 個人風アカウント。765AS本の公式関与は確認できず個人の内容公開
+    - tama__666           # 合議で追加: 個人による8番らーめん×シャニマスコラボ来店報告
+    - nana5_03            # 合議で追加: 個人による響の誕生日を祝うファン投稿
+    - lirel8006           # 合議で追加: 個人によるファンの常磐カナメ踊ってみた動画
+    - k_roD_USA0532       # 合議で追加: 個人によるシャニマスファン漫画の投稿
+    - gingera50340869     # 合議で追加: 個人による対バンライブのタオル比較投稿
+    - armtwnkl1           # 合議で追加: 個人風のアカウント名で組織表記なし。個人の紹介記事はファン
+    - alchemistS3         # 合議で追加: 個人によるCyber Planet POP UP SHOP訪問の投稿
+    - Michiru_krsn        # 合議で追加: 個人によるツアマス販促カード全種コンプ報告
+    - EBI_guitar765       # 合議で追加: 個人による我那覇響誕生日のギター演奏動画投稿
+    - 3ninyouchu          # 合議で追加: 個人アカウントによるSideM公演曲へのファン反響投稿
     - watawatan7          # 合議で追加: 個人によるアイドル6人選びの投稿
     - w111_h              # 合議で追加: 個人によるTシャツの共有投稿
     - topopogi_gj         # 合議で追加: 個人による企画参加の共有投稿
@@ -803,6 +820,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  nicovideo.jp/user/17835786: ファン              # 合議で追加: 個人のユーザーページ(ID 17835786)。個人に紐づく発信なのでファン
   note.com/mi_mei_: ファン                        # 合議で追加: noteの個人アカウント。ライブ参加者による個人レポート
   note.com/konpotap: ファン                       # 合議で追加: noteの個人アカウント。イベント参加者による個人レポート
   note.com/kanokka: ファン                        # 合議で追加: 個人のnoteアカウント。シャニマスのソロライブ現地参加レポート

@@ -2,7 +2,7 @@
 slug: general-kiramekirari-viral-video-2026-10
 edition: "2026-10-03"
 brand: general
-src: 未確認
+src: ファン
 rank: culture
 corrected: false
 corrections: []
@@ -23,7 +23,7 @@ sources:
   type: ファン
 - label: ニコニコ動画「iM@S 6th Anniversary Live - キラメキラリ -」
   url: https://www.nicovideo.jp/watch/sm18526341?ref=nicoiphone_other
-  type: 未確認
+  type: ファン
 event_date: "2026-10-02"
 title_fact_ids:
 - F1

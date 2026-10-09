@@ -484,5 +484,26 @@
   "verify": "confirmed",
   "src_candidate_id": "202610080222-grok-35",
   "event_date": "2026-10-14"
+ },
+ {
+  "id": "sched-2026-10-14-sidem-aji-project-story-2026-開始",
+  "dedup_key": "sidem-aji-project-story-2026",
+  "brand": "sidem",
+  "subject": "AJIプロジェクト ストーリー第1話「AJIなヤツら」公開",
+  "kind": "開始",
+  "note": "第1話「AJIなヤツら」を読める",
+  "reserved_on": "2026-10-10",
+  "title": "『－AJIプロジェクト－』ストーリー第1話公開予定",
+  "url": "https://x.com/SideM_official/status/2108470772050305448",
+  "source_type": "公式",
+  "facts": [
+   "2026年10月14日(水)に新CDシリーズと連動した『－AJIプロジェクト－』ストーリーを公開予定。",
+   "第1話のタイトルは『AJIなヤツら』。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610100218-grok-49",
+  "event_date": "2026-10-14"
  }
 ]

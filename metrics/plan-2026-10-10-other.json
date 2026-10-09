@@ -1,0 +1,50 @@
+{
+ "decisions": {
+  "shiny-msp-memorial-goods-2026": {
+   "action": "article",
+   "angle": "シャニマスMSP開催記念グッズ(アクスタ・缶バッジ・アクリルパネル・ロンT・ステッカー)の受注が10月12日(月・祝)の締切まで残り2日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "factsは10/9号の本文に既出。新事実なし、締切3日以内の当日トリガーのみで記事化"
+  },
+  "shiny-style-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "shiny面のshiny-style-collection-wave2-2026(第2弾の受注・10/25まで)と同じ施策。価格5,000円・構成も同記事で扱う"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "other-shiny-msp-memorial-goods-2026",
+    "brand": "other",
+    "rank": "small",
+    "angle": "シャニマスMSP開催記念グッズ(アクスタ・缶バッジ・アクリルパネル・ロンT・ステッカー)の受注が10月12日(月・祝)の締切まで残り2日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "shiny-msp-memorial-goods-2026",
+    "candidate_ids": [
+     "202610100218-grok-32"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-style-collection-2026",
+    "reason": "重複",
+    "note": "shiny面のshiny-style-collection-wave2-2026(第2弾の受注・10/25まで)と同じ施策。価格5,000円・構成も同記事で扱う"
+   }
+  ],
+  "cross_brand": []
+ }
+}

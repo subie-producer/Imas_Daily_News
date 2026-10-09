@@ -119,10 +119,6 @@
   brand: sidem
   subject: SideM初の家庭用ゲームプロジェクト
   watch: 正式タイトル・発売時期などの詳細(判明次第 triggers へ)
-- dedup_key: sidem-aji-project-2026
-  brand: sidem
-  subject: SideM「AJIプロジェクト」新ストーリーシリーズ
-  watch: 2026年10月開始予定の正式日程・詳細(判明次第 triggers へ)
 - dedup_key: cg-isetan-osechi-2027
   brand: cg
   subject: シンデレラガールズ×伊勢丹のおせち2027 販売情報

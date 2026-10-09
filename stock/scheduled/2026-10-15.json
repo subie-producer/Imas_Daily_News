@@ -701,5 +701,28 @@
   "src_candidate_id": "202610081233-watch-0",
   "event_date": "2027-01-11",
   "deadline": "2026-10-18"
+ },
+ {
+  "id": "sched-2026-10-15-tours-s2-momoko-i-am-special-2026-開始",
+  "dedup_key": "tours-s2-momoko-i-am-special-2026",
+  "brand": "joint",
+  "subject": "ツアマスS2弾情報 生配信",
+  "kind": "開始",
+  "note": "生配信を視聴し、S2弾の情報を見られる",
+  "reserved_on": "2026-10-10",
+  "title": "ツアマスS2弾カード「周防桃子 / i am special」紹介",
+  "url": "https://x.com/TOURS_imas/status/2108482610242650258",
+  "source_type": "公式",
+  "facts": [
+   "『ツアマス』S2弾のカードとして「周防桃子 / i am special」が紹介された。",
+   "カードの説明は「FEVERゲージとSPアピールがアゲアゲ↑↑」である。",
+   "S2弾情報の生配信は10月15日と告知された。",
+   "YouTube: https://www.youtube.com/live/9LYcJoxB_r4",
+   "エンゲージメント: 中",
+   "言及アイドル: 周防桃子"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610100218-grok-66"
  }
 ]

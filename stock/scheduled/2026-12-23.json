@@ -36,5 +36,43 @@
   "event_date": "2026-12-23",
   "deadline": "2026-12-23",
   "src_candidate_id": "202609102333-explore-7"
+ },
+ {
+  "id": "sched-2026-12-23-sidem-monthly-theme-song-14-beit-tokuten-発売",
+  "dedup_key": "sidem-monthly-theme-song-14-beit-tokuten",
+  "brand": "sidem",
+  "subject": "SideM MONTHLY THEME SONG 14 Beit 発売",
+  "kind": "発売",
+  "note": "CDが発売され、店舗別特典付きで購入できる",
+  "reserved_on": "2026-10-10",
+  "title": "SideM MONTHLY THEME SONG 14 Beit 店舗別特典決定",
+  "url": "https://lantis.jp/sidem/extra/index.html#20261009_2",
+  "source_type": "準公式",
+  "facts": [
+   "発売日: 2026年12月23日(水)",
+   "商品: THE IDOLM@STER SideM ～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 14 Beit",
+   "アーティスト: Beit [鷹城恭二(CV.梅原裕一郎), ピエール(CV.堀江 瞬), 渡辺みのり(CV.高塚智人)]",
+   "品番: LACM-24794",
+   "価格: ￥2,200(10%税込)/￥2,000(税抜)",
+   "対象店舗・特典内容: アソビストア: L判ブロマイド",
+   "対象店舗・特典内容: アニメイト: ミニフォト(54mm×86mm)＆ロングフォト(150×50mm)",
+   "対象店舗・特典内容: Amazon: 缶バッジ",
+   "対象店舗・特典内容: ゲーマーズ: L判ブロマイド",
+   "対象店舗・特典内容: ソフマップ・アニメガ: アクリルコースター(76mm)",
+   "対象店舗・特典内容: タワーレコード(一部店舗を除く）: L判ブロマイド",
+   "対象店舗・特典内容: TSUTAYA RECORDS（一部店舗除く）: ましかくブロマイド",
+   "対象店舗・特典内容: とらのあな(通販含む/池袋店はご予約のみの場合あり）: L判ブロマイド",
+   "対象店舗・特典内容: 楽天ブックス: トレーディングカード（91×55㎜）",
+   "※全てジャケットイラストを使用した絵柄となります。",
+   "※一部実施のない店舗もございます。",
+   "※特典の有無についての詳細は各店舗様へご確認をお願いいたします。",
+   "※特典はなくなり次第終了となります。予めご了承ください。",
+   "エンゲージメント: 中",
+   "言及アイドル: 鷹城恭二、ピエール、渡辺みのり"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202610091245-watch-0",
+  "event_date": "2026-12-23"
  }
 ]

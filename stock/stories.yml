@@ -3763,18 +3763,9 @@
   - 会場物販は9月19日11時〜17時30分、20日11時〜16時30分、国立代々木競技場第一体育館の原宿口前特設テントで実施
   - 予定通り9月9日23:59に会場物販整理券の受付を締切
   - 抽選結果(当落発表)は9月15日13:00から、デジタル注文書も同時刻から利用可能
-  - THE IDOLM@STER MILLION LIVE! 14thLIVE開催記念グッズの受注締切は10月11日(日)。
-  - '公式B3布ポスター: 3,000円(税込)'
-  - '公式ラペルピン: 4,000円(税込)'
-  - '公式キャラファイングラフ DAY1: 16,000円(税込)'
   edition_facts:
     '2026-09-15':
     - 抽選結果(当落発表)は9月15日13:00から、デジタル注文書も同時刻から利用可能
-    '2026-10-10':
-    - THE IDOLM@STER MILLION LIVE! 14thLIVE開催記念グッズの受注締切は10月11日(日)。
-    - '公式B3布ポスター: 3,000円(税込)'
-    - '公式ラペルピン: 4,000円(税込)'
-    - '公式キャラファイングラフ DAY1: 16,000円(税込)'
 - story_id: million-x-stream-theater-vol1-2026
   brand: million
   subject: ミリシタ「X-STREAM THEATER」VOL.1パス
@@ -12119,17 +12110,13 @@
   published_facts:
   - 10/10（土）14:59まで
   - 開催中の「セカンドヘアスタイルガシャ～myブランド編 with glasses～」で、昴のSSRカードが出現率アップ中。
-  - '亜利沙の投稿（2026-10-02 13:00:00 JST、2026-10-02 04:00:00 GMT）:'
-  - '昴の投稿（2026-10-02 13:01:00 JST、2026-10-02 04:01:00 GMT）:'
-  - 亜利沙と昴の4コマ漫画も公開中。
+  - 亜利沙と昴の4コマ漫画も公開中だ。
   edition_facts:
     '2026-10-04':
     - 10/10（土）14:59まで
     - 開催中の「セカンドヘアスタイルガシャ～myブランド編 with glasses～」で、昴のSSRカードが出現率アップ中。
     '2026-10-10':
-    - '亜利沙の投稿（2026-10-02 13:00:00 JST、2026-10-02 04:00:00 GMT）:'
-    - '昴の投稿（2026-10-02 13:01:00 JST、2026-10-02 04:01:00 GMT）:'
-    - 亜利沙と昴の4コマ漫画も公開中。
+    - 亜利沙と昴の4コマ漫画も公開中だ。
 - story_id: stage04-2026
   brand: million
   subject: コトブキヤくじ ミリオンライブ！ stage04 B賞・C賞
@@ -13120,9 +13107,9 @@
   - 公式メリーゴーランドアクリルスタンドは3,500円(税込)。
   - 公式立体アクリルスタンドは3,000円(税込)。
   - 公式X投稿では開催記念グッズ販売は10/11(日)までと案内。
+  - THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～ 開催記念グッズを販売。
   - '公式ブック型ポーチ: 4,500円（税込）。'
   - トレーディングブロマイドは約W54×H85mmで、アイドルたちのビジュアルにサイン入り。ブロマイドセットもラインナップ。
-  - アコーディオン折りポストカードは集合ビジュアルと個人ビジュアルがつながり、切り離して個別にも楽しめると案内。
   edition_facts:
     '2026-10-08':
     - SideM公式X投稿によると、開催記念グッズは10月11日(日)締切。
@@ -13136,9 +13123,9 @@
     - 公式立体アクリルスタンドは3,000円(税込)。
     '2026-10-10':
     - 公式X投稿では開催記念グッズ販売は10/11(日)までと案内。
+    - THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～ 開催記念グッズを販売。
     - '公式ブック型ポーチ: 4,500円（税込）。'
     - トレーディングブロマイドは約W54×H85mmで、アイドルたちのビジュアルにサイン入り。ブロマイドセットもラインナップ。
-    - アコーディオン折りポストカードは集合ビジュアルと個人ビジュアルがつながり、切り離して個別にも楽しめると案内。
 - story_id: sidem-daimaru-matsuzakaya-2026
   brand: sidem
   subject: SideM×大丸松坂屋 ポップアップショップ
@@ -13443,7 +13430,7 @@
     - シンデレラガールズ公式プレイリストに『オーバークロック！』と『エイエム×アイアム』が追加された。
 - story_id: hachinohe-cinderella-collab-2026
   brand: cg
-  subject: シンデレラ×はちます、八戸18地点でコラボ
+  subject: シンデレラ×はちます、八戸でコラボ
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13473,7 +13460,7 @@
     - 'TikTok: https://www.tiktok.com/@valiv_official/video/7693787610724044084'
 - story_id: letora-birthday-live-2026-liveviewing
   brand: dsva
-  subject: レトラ誕生日ライブビューイング、先行抽選は明日締切
+  subject: レトラ誕生日ライブビューイング先行抽選
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13489,7 +13476,7 @@
     - '開催場所: ユナイテッド・シネマ アクアシティお台場 [3番スクリーン]'
 - story_id: gaku-agitato-saki-gacha-2026
   brand: gaku
-  subject: 学マス「Agitato」咲季ガシャに新カード2種
+  subject: 学マス「Agitato」咲季ガシャ
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13505,7 +13492,7 @@
     - SSRサポートカード「これがあのかぼちゃ……」が登場した。
 - story_id: gakumas-seibu-chichibu-yukemuri-2026
   brand: gaku
-  subject: 学マス×祭の湯、コラボを10月16日開始
+  subject: 学マス×祭の湯コラボ「山粧う湯けむり旅」
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13535,7 +13522,7 @@
     - 花海咲季のシーズン限定アナザーアイドルのいずれかが確定で手に入る無料1連ガシャ。
 - story_id: fan-kaname-poison-berry-dance-2026-10-09
   brand: general
-  subject: 常磐カナメの『Poison Berry Daughters』踊ってみた
+  subject: 常磐カナメの踊ってみた動画と対バンのタオル比較投稿
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13547,7 +13534,7 @@
     - 投稿者がSideMとシャニマスの対バンライブに関連して、283と315のタオルを比較する投稿をした。
 - story_id: clash-match-radio-fureaka-2026
   brand: joint
-  subject: デレミリ合同ライブ記念ラジオ「フレあかラジオ」おたより募集
+  subject: CLASH M@TCH!!記念ラジオ「フレあかラジオ」おたより募集
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13563,7 +13550,7 @@
     - 出演者は宮本フレデリカ、野々原 茜。
 - story_id: sidem-shinycolors-live-sp-seat-benefits-2026
   brand: joint
-  subject: SideM×シャニマス対バンライブ SPプロデューサーシート特典
+  subject: SideM×シャニマス対バン SPプロデューサーシート特典デザイン公開
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13579,7 +13566,7 @@
     - 315プロダクション SPプロデューサーシートは20,000円（税込）で、アリーナ・エリア指定・限定グッズ付き。
 - story_id: tours-s2-momoko-i-am-special-2026
   brand: joint
-  subject: ツアマス S2弾カード「周防桃子 / i am special」
+  subject: ツアマスS2弾 周防桃子「i am special」と10/15生配信
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13593,7 +13580,7 @@
     - カードの説明は「FEVERゲージとSPアピールがアゲアゲ↑↑」である。
 - story_id: million-hibiki-birthday-gasha-2026
   brand: million
-  subject: ミリシタ 我那覇響Birthdayガシャ
+  subject: ミリシタ 我那覇響Birthdayガシャ・セット2026
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13609,7 +13596,7 @@
     - 1ステップ目にはBirthday Memory 2026が付く。
 - story_id: million-idol-grand-prix-maintenance-2026-10
   brand: million
-  subject: ミリシタ アイドルグランプリ メンテナンス
+  subject: ミリシタ アイドルグランプリ メンテナンス(10/10 14:59終了予定)
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13635,7 +13622,7 @@
     - 営業時間は施設営業時間に準じ、最終日は18:00まで。
 - story_id: million-miricore-2026-10
   brand: million
-  subject: ミリコレ！～MILLIONLIVE COLLECTION～ 10月10日15時開催
+  subject: ミリコレ！～MILLIONLIVE COLLECTION～ 10月10日開催
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13652,18 +13639,18 @@
   first_published: '2026-10-10'
   published_facts:
   - 受注期間：2026年9月17日～2026年10月12日。
-  - アイドルマスター ミリオンライブ！ シアターデイズ9周年を記念した公式カスタマイズパーカー。
+  - 商品名は『アイドルマスター ミリオンライブ！ シアターデイズ 公式カスタマイズパーカー（グレー／ブラック）』。
   - 価格は8,500円（税込）。
   - 好きな絵柄やデザインを自由に組み合わせて自分だけのグッズを作れるサービスとして紹介されている。
   edition_facts:
     '2026-10-10':
     - 受注期間：2026年9月17日～2026年10月12日。
-    - アイドルマスター ミリオンライブ！ シアターデイズ9周年を記念した公式カスタマイズパーカー。
+    - 商品名は『アイドルマスター ミリオンライブ！ シアターデイズ 公式カスタマイズパーカー（グレー／ブラック）』。
     - 価格は8,500円（税込）。
     - 好きな絵柄やデザインを自由に組み合わせて自分だけのグッズを作れるサービスとして紹介されている。
 - story_id: shiny-85th-paracolle-stepup-2026
   brand: shiny
-  subject: シャニマス8.5th 72時間限定パラコレセレチケ付きステップアップガシャ
+  subject: シャニマス運営情報まとめ(8.5th パラコレセレチケ付きステップアップガシャ ほか)
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13686,30 +13673,26 @@
   - '受注期間: 2026年10月25日(日)まで'
   - 「SHINY Style COLLECTION」第2弾は「Sonic Heart (and Signal)」と「No 1 feel alone」が登場する。
   - 公式グッズセットは、アクリルスタンド、雑誌の表紙をイメージしたアクリルブロック、複製サイン入りブロマイドの3点入り。
-  - 「公式グッズセット【八宮めぐる】」は5,000円(税込)。
+  - 「公式トレーディングアクリルカード(全8種)」は500円(税込)。
   edition_facts:
     '2026-10-10':
     - '受注期間: 2026年10月25日(日)まで'
     - 「SHINY Style COLLECTION」第2弾は「Sonic Heart (and Signal)」と「No 1 feel alone」が登場する。
     - 公式グッズセットは、アクリルスタンド、雑誌の表紙をイメージしたアクリルブロック、複製サイン入りブロマイドの3点入り。
-    - 「公式グッズセット【八宮めぐる】」は5,000円(税込)。
+    - 「公式トレーディングアクリルカード(全8種)」は500円(税込)。
 - story_id: sidem-11th-setlist-playlists-2026
   brand: sidem
-  subject: SideM 11th STAGE DAY別セットリストプレイリスト配信
+  subject: SideM 11th STAGE セットリストのDAY別プレイリスト配信
   status: active
   first_published: '2026-10-10'
   published_facts:
   - SideM 11th STAGEセットリストのプレイリストを配信中。
-  - 'DAY1プレイリスト: https://lnk.to/SideM11th_day1'
-  - 'DAY2プレイリスト: https://lnk.to/SideM11th_day2'
   edition_facts:
     '2026-10-10':
     - SideM 11th STAGEセットリストのプレイリストを配信中。
-    - 'DAY1プレイリスト: https://lnk.to/SideM11th_day1'
-    - 'DAY2プレイリスト: https://lnk.to/SideM11th_day2'
 - story_id: sidem-315-episode-one-scene-2026-10
   brand: sidem
-  subject: SideM「アイドルたちの1コマ」更新
+  subject: SideM「315プロダクション エピソード」アイドルたちの1コマ更新
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13721,7 +13704,7 @@
     - 315 PASSION CONTENTSにて公開中。
 - story_id: sidem-aji-project-story-2026
   brand: sidem
-  subject: SideM「－AJIプロジェクト－」ストーリー第1話公開
+  subject: SideM『－AJIプロジェクト－』ストーリー第1話「AJIなヤツら」公開
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13733,7 +13716,7 @@
     - 第1話のタイトルは『AJIなヤツら』。
 - story_id: sidem-daimaru-matsuzakaya-popup-2026
   brand: sidem
-  subject: SideM×大丸松坂屋 大丸東京店・梅田店
+  subject: SideM×大丸松坂屋 大丸東京店・梅田店 開催と事前整理券
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13754,18 +13737,18 @@
   first_published: '2026-10-10'
   published_facts:
   - '発売日: 2026年12月23日(水)'
-  - '商品: THE IDOLM@STER SideM ～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 14 Beit'
   - '価格: ￥2,200(10%税込)/￥2,000(税抜)'
   - '対象店舗・特典内容: アソビストア: L判ブロマイド'
+  - '対象店舗・特典内容: アニメイト: ミニフォト(54mm×86mm)＆ロングフォト(150×50mm)'
   edition_facts:
     '2026-10-10':
     - '発売日: 2026年12月23日(水)'
-    - '商品: THE IDOLM@STER SideM ～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 14 Beit'
     - '価格: ￥2,200(10%税込)/￥2,000(税抜)'
     - '対象店舗・特典内容: アソビストア: L判ブロマイド'
+    - '対象店舗・特典内容: アニメイト: ミニフォト(54mm×86mm)＆ロングフォト(150×50mm)'
 - story_id: sidem-producer-card-vol3-2026
   brand: sidem
-  subject: SideM「かざして聴ける！プロデューサーカード」第3弾 受注販売
+  subject: SideM かざして聴ける！プロデューサーカード第3弾 受注
   status: active
   first_published: '2026-10-10'
   published_facts:
@@ -13777,17 +13760,17 @@
     - 『かざして聴ける！プロデューサーカード第3弾』を予約受付中。
 - story_id: sidem-seibuen-retro-rose-party-2026
   brand: sidem
-  subject: SideM×西武園ゆうえんち「超!!レトローズ“スペシャル”パーティ」チケット販売
+  subject: SideM西武園ゆうえんち「超!!レトローズ“スペシャル”パーティ」チケット販売
   status: active
   first_published: '2026-10-10'
   published_facts:
+  - 'トークショーイベント「超!!レトローズ“スペシャル”パーティ」の開催日: 2026年10月31日（土）、11月1日（日）、11月22日（日）'
   - チケットの販売は2026年10月12日（月・祝）12:00より先着順。
   - '販売期間: 2026年10月13日（火）17:00～'
-  - 'トークショーイベント「超!!レトローズ“スペシャル”パーティ」の開催日: 2026年10月31日（土）、11月1日（日）、11月22日（日）'
   - '開催期間: 2026年10月30日（金）～12月1日（火）'
   edition_facts:
     '2026-10-10':
+    - 'トークショーイベント「超!!レトローズ“スペシャル”パーティ」の開催日: 2026年10月31日（土）、11月1日（日）、11月22日（日）'
     - チケットの販売は2026年10月12日（月・祝）12:00より先着順。
     - '販売期間: 2026年10月13日（火）17:00～'
-    - 'トークショーイベント「超!!レトローズ“スペシャル”パーティ」の開催日: 2026年10月31日（土）、11月1日（日）、11月22日（日）'
     - '開催期間: 2026年10月30日（金）～12月1日（火）'

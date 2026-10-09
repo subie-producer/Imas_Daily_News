@@ -138,6 +138,40 @@
     "gaku-ops-roundup"
    ],
    "duration_s": 1354
+  },
+  {
+   "at": "2026-10-10T04:01:19+09:00",
+   "edition": "2026-10-10",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 36,
+   "written": 33,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 97,
+    "covered": 97,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "million-14th-live-goods-2026"
+   ],
+   "stages_min": {
+    "執筆": 1.0963583946228028,
+    "出典の判定": 0.047289530436197914,
+    "組版": 0.6433130145072937,
+    "校閲": 0.8295073350270589,
+    "校閲1波": 0.8295073350270589
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-ops-roundup",
+    "sidem-monthly-theme-song-13-jupiter-tokuten"
+   ],
+   "duration_s": 1080
   }
  ]
 }

@@ -392,5 +392,51 @@
   "src_candidate_id": "202610070225-explore-0",
   "event_date": "2026-10-10",
   "deadline": "2026-10-25"
+ },
+ {
+  "id": "sched-2026-10-17-gaku-agitato-saki-gacha-2026-締切前",
+  "dedup_key": "gaku-agitato-saki-gacha-2026",
+  "brand": "gaku",
+  "subject": "学マス「Agitato」咲季ガシャ 終了3日前",
+  "kind": "締切前",
+  "note": "10/20 10:59の終了前にガシャを引ける",
+  "reserved_on": "2026-10-10",
+  "title": "花海咲季『Agitato』ガシャ",
+  "url": "https://x.com/gkmas_official/status/2108386718164590694",
+  "source_type": "公式",
+  "facts": [
+   "新ガシャ『Agitato』を開催中と告知した。",
+   "歌唱：花海咲季（CV. 長月 あおい）。",
+   "作詞・作曲・編曲：Ryo'LEFTY'Miyata。",
+   "開催期間：10/20(火)10:59まで（予定）",
+   "エンゲージメント: 中",
+   "言及アイドル: 花海咲季"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610100218-grok-59",
+  "deadline": "2026-10-20"
+ },
+ {
+  "id": "sched-2026-10-17-shiny-chikusei-collab-2026-開幕",
+  "dedup_key": "shiny-chikusei-collab-2026",
+  "brand": "shiny",
+  "subject": "ちくせい花火大会2026 スペシャルコラボミュージックスターマイン",
+  "kind": "開幕",
+  "note": "黛冬優子の場内アナウンスつきコラボ花火を見に行ける日(荒天時は18日に順延)",
+  "reserved_on": "2026-10-10",
+  "title": "筑西市×シャニマス、花火と街歩きのコラボ詳細",
+  "url": "https://www.city.chikusei.lg.jp/kankou/kankou-news/page013798.html",
+  "source_type": "当事者",
+  "facts": [
+   "コラボ期間は2026年10月10日(土)〜10月25日(日)",
+   "描き下ろしイラストとオリジナルグッズ(アクスタ・バッジ等)を展開",
+   "10月17日のちくせい花火大会2026でスペシャルコラボミュージックスターマインを実施、打ち揚げ前に黛冬優子が場内アナウンス",
+   "専用アプリ「Auris」を使う黛冬優子の音声街歩きスタンプラリーも実施"
+  ],
+  "via": "",
+  "verify": "unconfirmed",
+  "src_candidate_id": "sched-2026-10-10-shiny-chikusei-collab-2026-開幕",
+  "event_date": "2026-10-10"
  }
 ]

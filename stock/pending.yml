@@ -157,5 +157,5 @@
   watch: 製品仕様・予約期間・価格等の発表(判明次第 triggers へ)
 - dedup_key: million-miricore-2026-10
   brand: million
-  subject: ミリコレ！～MILLIONLIVE COLLECTION～ イベント詳細
-  watch: 詳細はイベント開催後に案内と告知。案内内容(判明次第 triggers へ)
+  subject: ミリコレ！～MILLIONLIVE COLLECTION～ 開催後の詳細案内
+  watch: イベント開催後に案内するとされた詳細の内容(判明次第 triggers へ)

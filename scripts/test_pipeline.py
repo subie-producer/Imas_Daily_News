@@ -1538,7 +1538,20 @@ def test_classify_posts_only(tmp: Path):
                  '<p>関連: <a href="https://ch.nicovideo.jp/channel/ch2606757">公式チャンネル</a></p>')
     check(cs.nico_channel_fetch("lv2", page=page_user, fetch_alias=False) == ("", "", "ユーザー生放送"), "コミュニティ放送に、説明文のチャンネルを付けた")
     page_video = '<title>動画</title><div data-api-data="' + _html.escape(json.dumps({"channel": None, "owner": {"id": 5}})) + '"></div><a href="https://ch.nicovideo.jp/channel/ch2606757">x</a>'
-    check(cs.nico_channel_fetch("sm3", page=page_video, fetch_alias=False)[0] == "", "ユーザー投稿の動画に、ページ内のチャンネルを付けた")
+    check(cs.nico_channel_fetch("sm3", page=page_video, fetch_alias=False)[0] == "nicovideo.jp/user/5", "ユーザー投稿の動画に、ページ内のチャンネルを付けた")
+    # 動画ページの今の形(2026-10-09 実測): <meta name="server-response"> の data.response。ユーザー投稿は投稿者のユーザーページが単位
+    # (単位が無いと合議に掛からず、未確認のまま紙面に残った: sm18526341)
+    def page_sr(resp):
+        return ('<title>iM@S 6th - ニコニコ動画</title><meta name="server-response" content="'
+                + _html.escape(json.dumps({"meta": {"status": 200}, "data": {"metadata": {}, "response": resp}})) + '">'
+                '<a href="https://ch.nicovideo.jp/channel/ch2606757">x</a>')
+    got = cs.nico_channel_fetch("sm18526341", page=page_sr({"channel": None, "owner": {"id": 17835786, "nickname": "mingya"}}), fetch_alias=False)
+    check(got == ("nicovideo.jp/user/17835786", "", "iM@S 6th"), f"今の動画ページからユーザー投稿の投稿者を引けない: {got}")
+    got = cs.nico_channel_fetch("so5", page=page_sr({"channel": {"id": "ch2606757"}, "owner": None}), fetch_alias=False)
+    check(got[:2] == ("ch.nicovideo.jp/channel/ch2606757", "ch2606757"), f"今の動画ページからチャンネルを引けない: {got}")
+    props_ulive = {"socialGroup": {"type": "community", "id": "co1"}, "program": {"supplier": {"supplierType": "user", "programProviderId": "42"}}}
+    page_ulive = f'<title>ユーザー生放送</title><script id="embedded-data" data-props="{_html.escape(json.dumps(props_ulive))}"></script>'
+    check(cs.nico_channel_fetch("lv3", page=page_ulive, fetch_alias=False)[0] == "nicovideo.jp/user/42", "ユーザー生放送の放送者を引けない")
     page_video2 = '<title>動画</title><div data-api-data="' + _html.escape(json.dumps({"channel": {"id": "2606757", "url": "https://ch.nicovideo.jp/ch2606757"}})) + '"></div>'
     check(cs.nico_channel_fetch("sm4", page=page_video2, fetch_alias=False)[1] == "ch2606757", "チャンネル動画の channel フィールドを読めない")
     # 同じ番組 ID は1回しか取りに行かない(watch が出典行ごとに引く)
@@ -1568,6 +1581,17 @@ def test_classify_posts_only(tmp: Path):
         check(left == ["nicovideo:sm999(?)"] and unk == {}, f"チャンネルを引けない動画の扱い: {left} {unk}")
         d, a, p = cs.unknown_targets("2026-09-19")
         check(not d and not p and "https://www.nicovideo.jp/watch/sm999" not in cs.SKIPPED, "ニコニコの動画をドメインや skip に回した")
+        # ユーザー投稿: 投稿者のユーザーページが合議に回り、表に載れば動画 ID を機械で足す
+        cs.nico_channel = lambda vid: ("nicovideo.jp/user/17835786", "", "キラメキラリ") if vid == "sm999" else ("", "", "")
+        left, unk = cs.resolve_nico("2026-09-19", apply=False)
+        check(left == ["nicovideo:sm999(nicovideo.jp/user/17835786)"] and list(unk) == ["nicovideo.jp/user/17835786"],
+              f"ユーザー投稿の投稿者が合議に回らない: {left} {unk}")
+        cs.add_paths({"nicovideo.jp/user/17835786": ("ファン", "個人の投稿")})
+        pipelib._ST_TABLE, pipelib._ST_KEY = None, None
+        left, unk = cs.resolve_nico("2026-09-19", apply=True)
+        pipelib._ST_TABLE, pipelib._ST_KEY = None, None
+        check(pipelib.classify_source("https://www.nicovideo.jp/watch/sm999?ref=nicoiphone_other") == "ファン" and not left,
+              f"投稿者が表にあるユーザー投稿が決まらない: {left}")
     finally:
         cs.nico_channel, (cs.ROOT, pipelib.ROOT), (pipelib._ST_TABLE, pipelib._ST_KEY) = saved_nc, saved_root3, saved_st
         (tmp / "candidates" / "2026-09-19.json").write_text(json.dumps([{"url": "https://www.youtube.com/watch?v=CCCCCCCCCCC"}]), encoding="utf-8")

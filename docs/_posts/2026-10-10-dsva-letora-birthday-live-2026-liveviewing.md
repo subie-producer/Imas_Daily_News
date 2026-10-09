@@ -19,7 +19,7 @@ sources:
 - label: "アイドルマスター ポータル「【 #ヴイアラ】「レトラ BIRTHDAY ONLINE LIVE 2026」現地ライブビューイングチケット特典グッズデザイン公開！チケットの先行抽選申込は10月11日(日)まで！」(2026-10-09)"
   url: https://idolmaster-official.jp/news/01_20132
   type: 公式
-event_date: "2026-10-11"
+event_date: "2026-11-11"
 title_fact_ids:
 - F1
 - F12

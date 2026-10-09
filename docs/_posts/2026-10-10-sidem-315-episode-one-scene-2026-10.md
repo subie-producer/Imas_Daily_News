@@ -9,7 +9,7 @@ corrections: []
 candidate_ids:
 - 202610100218-grok-42
 title: SideM「アイドルたちの1コマ」更新
-lede: 「315プロダクション エピソード」の「アイドルたちの1コマ」に「尋常じゃない」が追加され、315 PASSION CONTENTSで公開されている。
+lede: 「315プロダクション エピソード」の「アイドルたちの1コマ」が更新され、「尋常じゃない」が315 PASSION CONTENTSで公開されている。
 tags:
 - SideM
 - キャンペーン

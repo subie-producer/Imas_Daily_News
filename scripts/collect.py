@@ -138,6 +138,46 @@ def rendered_or_note(url: str) -> tuple[str, str]:
         return "", str(e)
 
 
+def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
+    """facts 化に渡す新着ページの HTML: (HTML, 失敗の要点)。描画必須の観測先は描画し、それ以外は素の HTML を取る
+    (素の HTML で本文が空同然なら描画し直す)。取れなければ ("", 要点) で、呼び出し側は WebFetch に任せる。
+    素の HTML のページも本文を渡す。WebFetch は要約しか返さず、写し(原文どおりの引用)が取れないので読めなかった扱いになる
+    (2026-10-09: ランティスの SideM 特典告知2件)"""
+    if csr:
+        return rendered_or_note(url)
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": UA})
+        with urllib.request.urlopen(req, timeout=20) as res:
+            raw, cs = res.read(), res.headers.get_content_charset()
+    except (OSError, ValueError) as e:
+        return "", f"取得に失敗({type(e).__name__}: {e})"[:400]
+    if needs_render(url, html_to_text(raw, cs)):
+        t, why = rendered_or_note(url)
+        if t:
+            return t, ""
+    m = re.search(rb'<meta[^>]+charset=["\']?\s*([A-Za-z0-9_-]+)', raw[:4000], re.I)
+    for enc in (cs, m and m.group(1).decode("ascii", "ignore"), "utf-8"):
+        try:
+            return raw.decode(enc or "utf-8"), ""
+        except (UnicodeDecodeError, LookupError):
+            continue
+    return raw.decode("utf-8", errors="replace"), ""
+
+
+def fragment_section(html: str, url: str) -> str:
+    """URL が `#id` で1ページの中の1件を指すとき、その件の部分だけを返す(id を持つ要素から、同じ形の次の要素の手前まで)。
+    1ページに多数の告知が並ぶ観測先(ランティスの SideM)で、ページ全体を渡すと上限で切れたり、ほかの件を混ぜたりする。
+    id がページに無ければページ全体を返す"""
+    frag = urllib.parse.unquote(urllib.parse.urlsplit(url).fragment)
+    if not frag:
+        return html
+    m = re.search(r'<(\w+)([^>]*?)\s(?:id|name)=["\']' + re.escape(frag) + r'["\']', html)
+    if not m:
+        return html
+    nxt = re.compile(r'<' + m.group(1) + re.escape(m.group(2)) + r'\s(?:id|name)=["\']').search(html, m.end())
+    return html[m.start():nxt.start() if nxt else len(html)]
+
+
 # ---- A-1 定点観測 --------------------------------------------------------------
 
 def list_source(s: dict, known: set[str], fetch=None) -> tuple[list[tuple[str, str]], int, bool]:
@@ -243,12 +283,10 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
     if batch and claude_call:
         blobs = []
         for it in batch:
-            body, why = "", ""
-            if it["csr"]:
-                t, why = rendered_or_note(it["url"])
-                # 本文の切り詰めは facts の情報量に直結する。2500字にしていたとき、
-                # 本文8,219字のページから facts を359字しか起こせていなかった
-                body = html_to_text(t.encode("utf-8", "replace"))[:WATCH_BODY_CHARS]
+            t, why = page_html_or_note(it["url"], it["csr"])
+            # 本文の切り詰めは facts の情報量に直結する。2500字にしていたとき、
+            # 本文8,219字のページから facts を359字しか起こせていなかった
+            body = html_to_text(fragment_section(t, it["url"]).encode("utf-8", "replace"), "utf-8")[:WATCH_BODY_CHARS]
             blobs.append({"url": it["url"], "title": it["title"], "brand_hint": it["brand"], "rendered_text": body, "render_error": why})
         # 素材は**人が読める形**(Markdown、1行が長くならない)で渡す。1行 60KB の JSON にすると Read ツールが
         # 行を切り詰めてモデルが本文を読めず、Bash で開けようとして時間切れになる(実測 2026-09-17: 420 秒)

@@ -392,29 +392,5 @@
   "src_candidate_id": "202610070225-explore-0",
   "event_date": "2026-10-10",
   "deadline": "2026-10-25"
- },
- {
-  "id": "sched-2026-10-17-gaku-agitato-saki-gacha-2026-締切前",
-  "dedup_key": "gaku-agitato-saki-gacha-2026",
-  "brand": "gaku",
-  "subject": "学マス「Agitato」咲季ガシャ終了3日前",
-  "kind": "締切前",
-  "note": "終了まで3日、ガシャを引ける",
-  "reserved_on": "2026-10-10",
-  "title": "花海咲季『Agitato』ガシャ",
-  "url": "https://x.com/gkmas_official/status/2108386718164590694",
-  "source_type": "公式",
-  "facts": [
-   "新ガシャ『Agitato』を開催中と告知した。",
-   "歌唱：花海咲季（CV. 長月 あおい）。",
-   "作詞・作曲・編曲：Ryo'LEFTY'Miyata。",
-   "開催期間：10/20(火)10:59まで（予定）",
-   "エンゲージメント: 中",
-   "言及アイドル: 花海咲季"
-  ],
-  "via": "grok",
-  "verify": "confirmed",
-  "src_candidate_id": "202610100218-grok-59",
-  "deadline": "2026-10-20"
  }
 ]

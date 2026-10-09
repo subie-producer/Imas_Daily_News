@@ -1,0 +1,106 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-10T02:20:18+09:00",
+   "edition": "2026-10-10",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 349,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 0,
+    "explore:shiny": 0,
+    "explore:sidem": 2,
+    "explore:gakuen": 1,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 0,
+    "grok:765as": 1,
+    "grok:cinderella": 10,
+    "grok:million": 12,
+    "grok:shiny": 12,
+    "grok:sidem": 10,
+    "grok:gakuen": 12,
+    "grok:dsva": 7,
+    "grok:joint-other": 4,
+    "grok:trend": 15,
+    "grok_searches:general": 4,
+    "grok_searches:cg": 4,
+    "grok_searches:sidem": 7,
+    "grok_searches:shiny": 5,
+    "grok_searches:million": 5,
+    "grok_searches:joint": 2,
+    "grok_searches:765": 4,
+    "grok_searches:dsva": 4,
+    "grok_searches:gaku": 6
+   },
+   "normalized": 89,
+   "added": 77,
+   "verify": {
+    "confirmed": 61,
+    "unconfirmed": 23,
+    "failed": 5
+   },
+   "duration_s": 1181
+  }
+ ]
+}

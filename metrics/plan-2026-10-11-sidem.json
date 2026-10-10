@@ -1,0 +1,415 @@
+{
+ "decisions": {
+  "sidem-monthly-theme-song-14-beit-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10号「Beit新譜、店舗別特典が決定」と同内容(発売日・価格・店舗別特典)"
+  },
+  "sidem-seibuen-retro-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "factsは10/9・10/10号の本文に全て既出。先着販売開始は明日で当日トリガーでない"
+  },
+  "sidem-monthly-theme-song-14-beit-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10号Beit特典記事と同内容(URL違いの同じ知らせ)"
+  },
+  "sidem-episode-one-panel-2026-10-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10号「アイドルたちの1コマ」更新で記事化済み"
+  },
+  "christopher-birthday-2026": {
+   "action": "article",
+   "angle": "10月11日は古論クリスの誕生日で、SideM公式が「#古論クリスBD2026」でメッセージ付きのお祝いを投稿した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式アカウントの発信。誕生日当日"
+  },
+  "sidem-11th-memorial-goods-2026": {
+   "action": "article",
+   "angle": "11th STAGE開催記念グッズのASOBI STORE受注が本日10月11日23:59で締切。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同グッズの3主題(memorial-goods / 11th-goods-2026-09 / live-performance-goods)を1記事に統合。締切当日"
+  },
+  "sidem-fanfes-wsi-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/6号「WSI 2次先行、申込先は席種別」と同内容。締切日がfactsに無く当日トリガーも無い"
+  },
+  "sem-lifes-side-menu-2dmv-2026": {
+   "action": "article",
+   "angle": "S.E.M「Life's Side Menu!」の2DMVが10月14日21:00に公開予定。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "準公式の告知。未報の新情報"
+  },
+  "sidem-11th-setlist-playlists-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "prior(10/10号)と同一内容(DAY1・DAY2プレイリスト)"
+  },
+  "sidem-aji-project-story-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "prior(10/10号)と同一内容。公開は14日で当日トリガーなし"
+  },
+  "beit-monthly-theme-song-14-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10号Beit記事で発売日・商品名とも既出"
+  },
+  "jupiter-monthly-theme-song-13-2026": {
+   "action": "article",
+   "angle": "Jupiter「MONTHLY THEME SONG 13」のジャケットと試聴動画が公開され、封入のシリアルコードと初回生産のブロマイドも明らかになった。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/10号は店舗別特典のみ。ジャケット・試聴・封入/初回特典は新しい事実"
+  },
+  "deramas-sidem-myokoen-2026": {
+   "action": "roundup",
+   "angle": "開催中のでらます×SideMコラボ(妙香園・マンガ展)と315!!!SHOP抽選くじ運営再開など、進行中の運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "妙香園の限定商品・ノベルティ配布中"
+  },
+  "315shop-lottery-reopen-2026": {
+   "action": "roundup",
+   "angle": "開催中のでらます×SideMコラボと315!!!SHOP抽選くじ運営再開など、進行中の運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "運営再開・今冬賞品更新予定・A〜C賞は無くなり次第終了"
+  },
+  "deramas-sidem-mangaten-2026": {
+   "action": "roundup",
+   "angle": "開催中のでらます×SideMコラボ(妙香園・マンガ展)と315!!!SHOP抽選くじ運営再開など、進行中の運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "マンガ展ポップアップは10月31日まで"
+  },
+  "sidem-royal-chess-lounge-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8号に開催期間・時間割・テイクアウト情報が全て既出。新事実・当日トリガーなし"
+  },
+  "sidem-315pronight-2026-10-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/9放送分は終了済みで、10/9号「今夜21時放送」で記事化済み"
+  },
+  "sidem-producer-card-vol3-2026": {
+   "action": "article",
+   "angle": "かざして聴けるプロデューサーカード第3弾の受注は明日10月12日23:59まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内(明日)。新しい事実は無いので期日の知らせ"
+  },
+  "sidem-joypolis3-2026": {
+   "action": "article",
+   "angle": "SideM in JOYPOLIS 3の第2弾が本日10月11日に開始し、Altessimo・Beit・もふもふえん・S.E.M・C.FIRST・315 ALLSTARSのスペシャルショーに切り替わる。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。joypolis-3-2026を統合。第2弾の出演ユニットは既報本文に無い"
+  },
+  "sidem-joypolis-3-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-joypolis3-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ第2弾開始の続報予約。素材を統合"
+  },
+  "sidem-11th-goods-2026-09": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-memorial-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ記念グッズの受注締切。素材を統合"
+  },
+  "sidem-11th-live-performance-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-11th-memorial-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ記念グッズの受注終了。素材を統合(同時視聴上映会は終了済みで扱わない)"
+  },
+  "sidem-karatetsu-yokai-2026": {
+   "action": "article",
+   "angle": "SideM×カラオケの鉄人コラボ第3弾のグッズ通販は本日10月11日23:59で受付終了。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "通販の締切当日。店舗展開は10/5に終了済み"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-christopher-birthday-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "10月11日は古論クリスの誕生日で、SideM公式が「#古論クリスBD2026」でメッセージ付きのお祝いを投稿した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "christopher-birthday-2026",
+    "candidate_ids": [
+     "202610110238-grok-34"
+    ]
+   },
+   {
+    "slug": "sidem-11th-memorial-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "11th STAGE開催記念グッズのASOBI STORE受注が本日10月11日23:59で締切。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-11th-memorial-goods-2026",
+    "candidate_ids": [
+     "202610110238-grok-35",
+     "sched-2026-10-11-sidem-11th-memorial-goods-2026-締切",
+     "sched-2026-10-11-sidem-11th-goods-2026-09-締切",
+     "sched-2026-10-11-sidem-11th-live-performance-goods-2026-終了"
+    ]
+   },
+   {
+    "slug": "sidem-sem-lifes-side-menu-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "S.E.M「Life's Side Menu!」の2DMVが10月14日21:00に公開予定。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sem-lifes-side-menu-2dmv-2026",
+    "candidate_ids": [
+     "202610110238-grok-37"
+    ]
+   },
+   {
+    "slug": "sidem-jupiter-monthly-theme-song-13-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Jupiter「MONTHLY THEME SONG 13」のジャケットと試聴動画が公開され、封入のシリアルコードと初回生産のブロマイドも明らかになった。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "jupiter-monthly-theme-song-13-2026",
+    "candidate_ids": [
+     "202610110238-grok-42"
+    ]
+   },
+   {
+    "slug": "sidem-producer-card-vol3-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "かざして聴けるプロデューサーカード第3弾の受注は明日10月12日23:59まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-producer-card-vol3-2026",
+    "candidate_ids": [
+     "202610110238-grok-115"
+    ]
+   },
+   {
+    "slug": "sidem-joypolis3-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM in JOYPOLIS 3の第2弾が本日10月11日に開始し、Altessimo・Beit・もふもふえん・S.E.M・C.FIRST・315 ALLSTARSのスペシャルショーに切り替わる。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "sidem-joypolis3-2026",
+    "candidate_ids": [
+     "sched-2026-10-11-sidem-joypolis3-2026-開始",
+     "sched-2026-10-11-sidem-joypolis-3-2026-開始"
+    ]
+   },
+   {
+    "slug": "sidem-karatetsu-yokai-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×カラオケの鉄人コラボ第3弾のグッズ通販は本日10月11日23:59で受付終了。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-karatetsu-yokai-2026",
+    "candidate_ids": [
+     "sched-2026-10-11-sidem-karatetsu-yokai-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-ops-roundup",
+    "brand": "sidem",
+    "rank": "roundup",
+    "angle": "開催中のでらます×SideMコラボ(妙香園・マンガ展)と315!!!SHOP抽選くじ運営再開など、進行中の運営情報",
+    "lead_score": 0,
+    "dedup_key": "deramas-sidem-myokoen-2026",
+    "candidate_ids": [
+     "202610110238-grok-43",
+     "202610110238-grok-46",
+     "202610110238-grok-47"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-monthly-theme-song-14-beit-2026",
+    "reason": "既報",
+    "note": "10/10号「Beit新譜、店舗別特典が決定」と同内容(発売日・価格・店舗別特典)"
+   },
+   {
+    "dedup_key": "sidem-seibuen-retro-party-2026",
+    "reason": "既報",
+    "note": "factsは10/9・10/10号の本文に全て既出。先着販売開始は明日で当日トリガーでない"
+   },
+   {
+    "dedup_key": "sidem-monthly-theme-song-14-beit-bonus-2026",
+    "reason": "既報",
+    "note": "10/10号Beit特典記事と同内容(URL違いの同じ知らせ)"
+   },
+   {
+    "dedup_key": "sidem-episode-one-panel-2026-10-10",
+    "reason": "既報",
+    "note": "10/10号「アイドルたちの1コマ」更新で記事化済み"
+   },
+   {
+    "dedup_key": "sidem-fanfes-wsi-ticket-2026",
+    "reason": "既報",
+    "note": "10/6号「WSI 2次先行、申込先は席種別」と同内容。締切日がfactsに無く当日トリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-11th-setlist-playlists-2026",
+    "reason": "既報",
+    "note": "prior(10/10号)と同一内容(DAY1・DAY2プレイリスト)"
+   },
+   {
+    "dedup_key": "sidem-aji-project-story-2026",
+    "reason": "既報",
+    "note": "prior(10/10号)と同一内容。公開は14日で当日トリガーなし"
+   },
+   {
+    "dedup_key": "beit-monthly-theme-song-14-2026",
+    "reason": "既報",
+    "note": "10/10号Beit記事で発売日・商品名とも既出"
+   },
+   {
+    "dedup_key": "sidem-royal-chess-lounge-2026",
+    "reason": "既報",
+    "note": "10/8号に開催期間・時間割・テイクアウト情報が全て既出。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "sidem-315pronight-2026-10-09",
+    "reason": "既報",
+    "note": "10/9放送分は終了済みで、10/9号「今夜21時放送」で記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

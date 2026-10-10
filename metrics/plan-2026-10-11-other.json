@@ -1,0 +1,33 @@
+{
+ "decisions": {
+  "million-cyber-planet-popup-2026": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOPの大阪会場がアベノラクバスで11月7日〜15日に開催予定と告知され、東京会場は10月20日まで開催中。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(10/8)に無い新事実は大阪会場の場所と日程。出典は当事者のX投稿のみで未確認。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "other-million-cyber-planet-popup-2026",
+    "brand": "other",
+    "rank": "small",
+    "angle": "Cyber Planet POP UP SHOPの大阪会場がアベノラクバスで11月7日〜15日に開催予定と告知され、東京会場は10月20日まで開催中。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-cyber-planet-popup-2026",
+    "candidate_ids": [
+     "202610110238-grok-23"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

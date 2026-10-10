@@ -1,0 +1,177 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-11T02:41:54+09:00",
+   "edition": "2026-10-11",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 349,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 1,
+    "explore:shiny": 1,
+    "explore:sidem": 2,
+    "explore:gakuen": 1,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 1,
+    "grok_week_searches": 391,
+    "grok:765as": 3,
+    "grok:cinderella": 11,
+    "grok:million": 12,
+    "grok:shiny": 14,
+    "grok:sidem": 21,
+    "grok:gakuen": 14,
+    "grok:dsva": 10,
+    "grok:joint-other": 9,
+    "grok:trend": 4,
+    "grok_searches:cg": 6,
+    "grok_searches:dsva": 6,
+    "grok_searches:joint": 11,
+    "grok_searches:gaku": 8,
+    "grok_searches:shiny": 8,
+    "grok_searches:sidem": 13,
+    "grok_searches:general": 13,
+    "grok_searches:765": 9,
+    "grok_searches:million": 11
+   },
+   "normalized": 120,
+   "added": 84,
+   "verify": {
+    "confirmed": 75,
+    "unconfirmed": 33,
+    "failed": 12
+   },
+   "duration_s": 2476
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-11T03:27:00+09:00",
+   "edition": "2026-10-11",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 38,
+   "written": 33,
+   "roundups": 5,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 102,
+    "covered": 102,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.8207033435503641,
+    "執筆": 5.591899347305298,
+    "出典の判定": 1.1786800384521485,
+    "組版": 0.759630556901296,
+    "校閲": 0.8518176317214966,
+    "校閲1波": 0.8518176317214966
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-gakumas-hedgehog-hot-water-bottle-2026",
+    "gaku-ops-roundup",
+    "other-million-cyber-planet-popup-2026",
+    "sidem-sem-lifes-side-menu-2dmv-2026",
+    "gaku-letora-birthday-live-2026-liveviewing"
+   ],
+   "duration_s": 1582
+  },
+  {
+   "at": "2026-10-11T03:41:02+09:00",
+   "edition": "2026-10-11",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 38,
+   "written": 36,
+   "roundups": 5,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 102,
+    "covered": 102,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "執筆": 1.0470381498336792,
+    "出典の判定": 0.04975272019704183,
+    "組版": 0.887902049223582,
+    "校閲": 0.7490352233250935,
+    "校閲1波": 0.7490352233250935
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "other-million-cyber-planet-popup-2026",
+    "gaku-letora-birthday-live-2026-liveviewing"
+   ],
+   "duration_s": 408
+  }
+ ]
+}

@@ -1,0 +1,257 @@
+{
+ "decisions": {
+  "valiv-miki-kouten-shuuki-dance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10日号で「公転周期」動画公開を記事化済み。未確認ソースで新事実なし"
+  },
+  "valiv-situation-voice-2026-10": {
+   "action": "article",
+   "angle": "シチュエーションボイス第十六弾「お義兄ちゃんボイス」が10日18時に発売され、11月1日23時59分まで各3,300円で購入できる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-mid-ability-evaluation-2026-2": {
+   "action": "article",
+   "angle": "26年度第2回の中間能力評価(投票)は12日23時59分に締切。宇宙・愛夏・レトラそれぞれのフォームから5分以内で参加できる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "q2-ability-vote を統合"
+  },
+  "valiv-q2-ability-vote-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-mid-ability-evaluation-2026-2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ能力評価投票"
+  },
+  "letora-birthday-live-2026-onsite-lv": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-letora-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行抽選の締切"
+  },
+  "cosmo-ace-combat-8-stream-2026-10-10": {
+   "action": "roundup",
+   "angle": "ヴイアラの配信・コラボ出演まとめ(宇宙のACE COMBAT 8配信)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-duel-masters-play-2026-10-10": {
+   "action": "roundup",
+   "angle": "ヴイアラの配信・コラボ出演まとめ(愛夏のデュエル・マスターズ プレイス配信)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cosmo-katamari-dlc-stream-2026-10-09": {
+   "action": "roundup",
+   "angle": "ヴイアラの配信・コラボ出演まとめ(宇宙の塊魂新DLC配信)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cosmo-meccha-chameleon-collab-2026-10-09": {
+   "action": "roundup",
+   "angle": "ヴイアラの配信・コラボ出演まとめ(宇宙のめっちゃカメレオンコラボ配信)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "manaka-mieru-reading-collab-2026-10-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "他ブランド側のファンアカウントのみ。終了済みで未確認"
+  },
+  "manaka-bombanana-collab-2026-10-15": {
+   "action": "roundup",
+   "angle": "ヴイアラの配信・コラボ出演まとめ(15日21時の愛夏『BOMBANANA!』コラボ予告)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-fan-subscriber-count-tracking-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人ファン投稿の集計で未確認"
+  },
+  "cm": {
+   "action": "article",
+   "angle": "ABEMA限定の国際交流歌合戦CMは本日11日が放映最終日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "va-liv-letora-birthday-2026": {
+   "action": "article",
+   "angle": "レトラ BIRTHDAY ONLINE LIVE 2026の限定グッズ付き現地LV先行抽選は本日23時59分に申込締切。当落は13日、入金は18日まで。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ抽選の3主題を統合"
+  },
+  "dsva-letora-birthday-live-viewing-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-letora-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行抽選の締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-situation-voice-2026-10",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "シチュエーションボイス第十六弾「お義兄ちゃんボイス」が10日18時に発売され、11月1日23時59分まで各3,300円で購入できる。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "valiv-situation-voice-2026-10",
+    "candidate_ids": [
+     "202610101834-watch-0"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-mid-ability-evaluation-2026-2",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "26年度第2回の中間能力評価(投票)は12日23時59分に締切。宇宙・愛夏・レトラそれぞれのフォームから5分以内で参加できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "valiv-mid-ability-evaluation-2026-2",
+    "candidate_ids": [
+     "202610101834-watch-1",
+     "202610110238-grok-59"
+    ]
+   },
+   {
+    "slug": "dsva-cm-e283e1",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ABEMA限定の国際交流歌合戦CMは本日11日が放映最終日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cm",
+    "candidate_ids": [
+     "sched-2026-10-11-cm-終了"
+    ]
+   },
+   {
+    "slug": "dsva-va-liv-letora-birthday-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "レトラ BIRTHDAY ONLINE LIVE 2026の限定グッズ付き現地LV先行抽選は本日23時59分に申込締切。当落は13日、入金は18日まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "va-liv-letora-birthday-2026",
+    "candidate_ids": [
+     "sched-2026-10-11-va-liv-letora-birthday-2026-締切",
+     "202610110238-grok-60",
+     "sched-2026-10-11-dsva-letora-birthday-live-viewing-2026-締切"
+    ]
+   },
+   {
+    "slug": "dsva-ops-roundup",
+    "brand": "dsva",
+    "rank": "roundup",
+    "angle": "ヴイアラの配信・コラボ出演まとめ(宇宙のACE COMBAT 8配信)",
+    "lead_score": 0,
+    "dedup_key": "cosmo-ace-combat-8-stream-2026-10-10",
+    "candidate_ids": [
+     "202610110238-grok-62",
+     "202610110238-grok-63",
+     "202610110238-grok-64",
+     "202610110238-grok-65",
+     "202610110238-grok-67"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-miki-kouten-shuuki-dance-2026",
+    "reason": "既報",
+    "note": "10日号で「公転周期」動画公開を記事化済み。未確認ソースで新事実なし"
+   },
+   {
+    "dedup_key": "manaka-mieru-reading-collab-2026-10-10",
+    "reason": "出典不足",
+    "note": "他ブランド側のファンアカウントのみ。終了済みで未確認"
+   },
+   {
+    "dedup_key": "valiv-fan-subscriber-count-tracking-2026-10",
+    "reason": "出典不足",
+    "note": "個人ファン投稿の集計で未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

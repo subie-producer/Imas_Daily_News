@@ -1,0 +1,82 @@
+{
+ "decisions": {
+  "765as-hibiki-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10号「響・法子の誕生日ムービー公開」で動画2本とも掲載済み。新事実も当日のトリガーも無い。"
+  },
+  "million-hibiki-birthday-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10号の記念ガシャ記事に劇場外観の装飾とホワイトボードのメッセージ参加者まで掲載済み。新事実なし。"
+  },
+  "valiv-uchu-birth-festival-archive-2026": {
+   "action": "article",
+   "angle": "宇宙誕生祭2026のアーカイブチケット販売は12日18:00まで。購入者向けの同時視聴上映会は12日13:00からで、四条貴音が特別ゲストとして登場する。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。締切が翌日(3日以内)で、視聴期間は12日23:59まで。ゲスト出演のみで共同扱いにはしない。"
+  },
+  "fan-hibiki-birthday-celebration-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿1件で未確認。765面にファン面(culture)は無く、単体では記事にしない。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-valiv-uchu-birth-festival-archive-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "宇宙誕生祭2026のアーカイブチケット販売は12日18:00まで。購入者向けの同時視聴上映会は12日13:00からで、四条貴音が特別ゲストとして登場する。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "valiv-uchu-birth-festival-archive-2026",
+    "candidate_ids": [
+     "202610110238-grok-9"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "765as-hibiki-birthday-2026",
+    "reason": "既報",
+    "note": "10/10号「響・法子の誕生日ムービー公開」で動画2本とも掲載済み。新事実も当日のトリガーも無い。"
+   },
+   {
+    "dedup_key": "million-hibiki-birthday-gasha-2026",
+    "reason": "既報",
+    "note": "10/10号の記念ガシャ記事に劇場外観の装飾とホワイトボードのメッセージ参加者まで掲載済み。新事実なし。"
+   },
+   {
+    "dedup_key": "fan-hibiki-birthday-celebration-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿1件で未確認。765面にファン面(culture)は無く、単体では記事にしない。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -168,5 +168,29 @@
   "verify": "confirmed",
   "src_candidate_id": "202610090732-explore-2",
   "deadline": "2026-10-25"
+ },
+ {
+  "id": "sched-2026-10-25-gakumas-hedgehog-hot-water-bottle-2026-締切",
+  "dedup_key": "gakumas-hedgehog-hot-water-bottle-2026",
+  "brand": "gaku",
+  "subject": "学マス ハリネズミゆたんぽ・アクリルスタンド受注",
+  "kind": "締切",
+  "note": "アソビストアでの受注最終日。この日まで注文できる",
+  "reserved_on": "2026-10-11",
+  "title": "学マス秦谷美鈴・月村手毬ハリネズミゆたんぽ",
+  "url": "https://shop.asobistore.jp/category/gkms_tmr_msz_ytmp",
+  "source_type": "準公式",
+  "facts": [
+   "秦谷美鈴のハリネズミゆたんぽを受注受付中。",
+   "美鈴・手毬の新規描きおろしを使用したアクリルスタンドも登場。",
+   "月村手毬のハリネズミゆたんぽも再登場。",
+   "受注は10月25日まで。",
+   "エンゲージメント: 中",
+   "言及アイドル: 秦谷美鈴、月村手毬"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610110238-grok-87",
+  "deadline": "2026-10-25"
  }
 ]

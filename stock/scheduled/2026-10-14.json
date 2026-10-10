@@ -505,5 +505,29 @@
   "verify": "confirmed",
   "src_candidate_id": "202610100218-grok-49",
   "event_date": "2026-10-14"
+ },
+ {
+  "id": "sched-2026-10-14-sem-lifes-side-menu-2dmv-2026-開始",
+  "dedup_key": "sem-lifes-side-menu-2dmv-2026",
+  "brand": "sidem",
+  "subject": "S.E.M「Life's Side Menu!」2DMV公開",
+  "kind": "開始",
+  "note": "21:00公開予定の2DMVを視聴できる",
+  "reserved_on": "2026-10-11",
+  "title": "S.E.M「Life’s Side Menu!」2DMV公開予定",
+  "url": "https://x.com/SideM_lantis/status/2108535452508787027",
+  "source_type": "準公式",
+  "facts": [
+   "S.E.M「Life’s Side Menu!」の2DMVを2026年10月14日(水)21:00に公開予定。",
+   "エンゲージメント: 中",
+   "言及アイドル: 舞田類、山下次郎、硲道夫",
+   "S.E.M『Life's Side Menu!』の2DMVを10月14日21:00に公開予定。",
+   "S.E.M『Life's Side Menu!』2DMVを10月14日(水)21:00に公開予定。",
+   "投稿では公開日時を21:00（予定）と告知。"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610110238-grok-37",
+  "event_date": "2026-10-14"
  }
 ]

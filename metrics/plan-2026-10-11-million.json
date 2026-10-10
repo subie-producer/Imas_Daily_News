@@ -1,0 +1,267 @@
+{
+ "decisions": {
+  "9": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-9th-anniversary-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ9周年グッズ受注の最終日"
+  },
+  "million-14th-live-goods-2026": {
+   "action": "article",
+   "angle": "ミリオン14thLIVE開催記念グッズのASOBI STORE受注が本日10月11日で締切。全31アイドル分の選択肢と価格を伝え直す",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "14th記念グッズ受注の7主題を統合した本体"
+  },
+  "million-live-14th-commemorative-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ14th記念グッズ受注"
+  },
+  "topic-049-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ14th記念グッズ受注の締切"
+  },
+  "million-14th-memorial-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ14th記念グッズ受注の締切"
+  },
+  "million-14thlive-memorial-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ14th記念グッズ受注の締切"
+  },
+  "million-14th-emily-lapel-pin-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注・同じ締切の個別商品"
+  },
+  "million-14th-konomi-sake-glass-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-14th-live-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注・同じ締切の個別商品"
+  },
+  "million-9th-anniversary-goods-2026": {
+   "action": "article",
+   "angle": "ミリシタ9周年イラスト公式グッズのアソビストア受注が本日10月11日で最終日。アクリルパネルなど全商品と価格を伝え直す",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9周年グッズ受注の3主題を統合した本体"
+  },
+  "x-com-42": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-9th-anniversary-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9周年グッズ受注のうちアクリルパネル"
+  },
+  "millionlive-hinata-apple-ambassador-2026": {
+   "action": "article",
+   "angle": "木下ひなたが壮瞥町りんご大使を務める第50回りんごまつりの「そうべつ物産市」が本日9時から開催。500円以上の購入でステッカー用スタンプが貯まる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日開始のトリガー。出典は町公式で verify は unconfirmed"
+  },
+  "million-snapshot-memories-gasha-2026-10": {
+   "action": "roundup",
+   "angle": "開催中のガシャ: Snapshot Memoriesガシャ(限定SSR琴葉・環、新衣装付き)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-idol-grand-prix-matsuri-update-2026-10": {
+   "action": "roundup",
+   "angle": "ミリシタ運営: アイドルグランプリで徳川まつりがプロデュース可能に、イメージトレーニング・フリーレッスン追加、特別ミッションは11/10まで",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-official-shop-lottery-stock-2026-10-10": {
+   "action": "roundup",
+   "angle": "店頭情報: 大阪日本橋店のミリオンライブ抽選くじ在庫状況(A〜D賞)が更新",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-kyomafu-popup-shop-2026": {
+   "action": "roundup",
+   "angle": "店頭情報: 京まふPOP UP SHOP(有楽町マルイ、〜10/22)でくのいちver.ダイカットステッカー3種が完売、再入荷未定",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕自体は10/10号で既報。完売情報のみ新しい事実として束ねる"
+  },
+  "million-collection-event-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10号「ミリコレ！本日15時開催へ」と同じイベント。新事実・当日トリガーなし"
+  },
+  "million-princess-a-la-mode-igp-pv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/09・10/10号の「アラモード」PV記事と同じ。iGP開始はグランプリ更新の roundup 側で扱う"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-14th-live-goods-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリオン14thLIVE開催記念グッズのASOBI STORE受注が本日10月11日で締切。全31アイドル分の選択肢と価格を伝え直す",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "million-14th-live-goods-2026",
+    "candidate_ids": [
+     "202610101834-explore-6",
+     "202610110238-grok-14",
+     "202610101834-watch-4",
+     "sched-2026-10-11-topic-049-2026-締切",
+     "sched-2026-10-11-million-14th-emily-lapel-pin-2026-締切",
+     "sched-2026-10-11-million-14th-konomi-sake-glass-2026-締切",
+     "sched-2026-10-11-million-14th-memorial-goods-2026-締切",
+     "sched-2026-10-11-million-14thlive-memorial-goods-2026-締切"
+    ]
+   },
+   {
+    "slug": "million-millionlive-hinata-apple-ambassador-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "木下ひなたが壮瞥町りんご大使を務める第50回りんごまつりの「そうべつ物産市」が本日9時から開催。500円以上の購入でステッカー用スタンプが貯まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "millionlive-hinata-apple-ambassador-2026",
+    "candidate_ids": [
+     "sched-2026-10-11-millionlive-hinata-apple-ambassador-2026-開始"
+    ]
+   },
+   {
+    "slug": "million-9th-anniversary-goods-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ9周年イラスト公式グッズのアソビストア受注が本日10月11日で最終日。アクリルパネルなど全商品と価格を伝え直す",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-9th-anniversary-goods-2026",
+    "candidate_ids": [
+     "sched-2026-10-11-million-9th-anniversary-goods-2026-締切",
+     "sched-2026-10-11-9-締切",
+     "sched-2026-10-11-x-com-42-締切"
+    ]
+   },
+   {
+    "slug": "million-ops-roundup",
+    "brand": "million",
+    "rank": "roundup",
+    "angle": "店頭情報: 大阪日本橋店のミリオンライブ抽選くじ在庫状況(A〜D賞)が更新",
+    "lead_score": 0,
+    "dedup_key": "million-official-shop-lottery-stock-2026-10-10",
+    "candidate_ids": [
+     "202610110238-explore-1",
+     "202610110238-grok-17",
+     "202610110238-grok-19",
+     "202610110238-grok-22"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-collection-event-2026-10",
+    "reason": "既報",
+    "note": "10/10号「ミリコレ！本日15時開催へ」と同じイベント。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "million-princess-a-la-mode-igp-pv-2026",
+    "reason": "既報",
+    "note": "10/09・10/10号の「アラモード」PV記事と同じ。iGP開始はグランプリ更新の roundup 側で扱う"
+   }
+  ],
+  "cross_brand": []
+ }
+}

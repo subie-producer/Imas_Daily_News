@@ -18,10 +18,10 @@ sources:
 - label: アイドルマスター SideM ランティス「【CD情報】#SideM」（2026-10-09）
   url: https://x.com/SideM_lantis/status/2108392014656012400
   type: 準公式
-- label: Lantis「THE IDOLM@STER SideM ～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 13 Jupiter」(2026-10-09)
+- label: Lantis「THE IDOLM@STER SideM ～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 13 Jupiter」（2026-10-09）
   url: https://www.lantis.jp/sidem/releaseinfo/release_LACM-24793.html
   type: 準公式
-event_date: "2026-10-09"
+event_date: "2026-11-25"
 title_fact_ids:
 - F1
 - F3
@@ -40,7 +40,7 @@ verified_facts:
   text: 封入特典のシリアルコードが記載されたチラシは、アイドルマスター ポータルのSideMブランドページ内『315 PASSION CONTENTS』でCD特典ストーリーを閲覧するためのもの。
   url: https://www.lantis.jp/sidem/releaseinfo/release_LACM-24793.html
 ---
-試聴動画は[YouTube](https://www.youtube.com/watch?v=Ox9ZxjEtjsY&feature=youtu.be)で視聴できる。商品は「THE IDOLM@STER SideM ～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 13 Jupiter」。価格は2,200円（10％税込）／2,000円（税抜）、品番はLACM-24793。CD SHOPの案内は[こちら](https://lnk.to/LACM-24793)。 <!-- F1 F2 F6 F7 F13 F14 -->
+試聴動画は[YouTube](https://www.youtube.com/watch?v=Ox9ZxjEtjsY&feature=youtu.be)で視聴できる。商品は「THE IDOLM@STER SideM ～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 13 Jupiter」。価格は2,200円（10％税込）／2,000円（税抜）、品番はLACM-24793。CD SHOPの案内は[こちら](https://lnk.to/LACM-24793)。 <!-- F1 F2 F3 F6 F7 F13 F14 -->
 
 ## 収録内容
 

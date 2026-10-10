@@ -48,7 +48,7 @@ verified_facts:
   text: 現地チケットは未就学児入場不可。16歳未満は法定代理人（親権者など）の同意のうえ申し込む必要がある。
   url: https://livepocket.jp/e/va-liv_letora_bd2026
 ---
-先行抽選の申込受付は10月1日から10月11日23時59分まで。申込先は[LivePocket-Ticket-の受付ページ](https://livepocket.jp/e/va-liv_letora_bd2026)。受付中の申込は1人1回までで、1人2枚まで申し込める。申込にはLivePocket-Ticket-の会員登録が必要で、来場する本人が申し込む。チケットはデジタルチケットで、支払いはクレジットカード、コンビニ決済、LivePocketあと払い powered by atone。コンビニ決済は受付終了の2日前まで選択できる。 <!-- F10 F14 F26 N1 -->
+先行抽選の申込受付は10月1日から10月11日23時59分まで。申込先は[LivePocket-Ticket-の受付ページ](https://livepocket.jp/e/va-liv_letora_bd2026)。受付中の申込は1人1回までで、1人2枚まで申し込める。申込にはLivePocket-Ticket-の会員登録が必要で、来場する本人が申し込む。チケットはデジタルチケットで、支払いはクレジットカード、コンビニ決済、LivePocketあと払い powered by atone。コンビニ決済は販売終了の2日前まで選択できる。 <!-- F10 F14 F26 N1 -->
 
 ## 先行抽選の内容
 

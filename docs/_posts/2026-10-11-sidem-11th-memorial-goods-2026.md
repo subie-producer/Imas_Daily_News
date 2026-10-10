@@ -2,7 +2,7 @@
 slug: sidem-11th-memorial-goods-2026
 edition: "2026-10-11"
 brand: sidem
-src: 公式
+src: 準公式
 rank: medium
 corrected: false
 corrections: []
@@ -22,9 +22,9 @@ sources:
 - label: アイドルマスター ポータル「【SideM11th】本日より開催記念グッズ販売スタート！「トランセンドリヴェイル ライブパフォーマンスバージョン」の衣装を身にまとったアイドルたちのグッズが登場！！」(2026年9月13日)
   url: https://idolmaster-official.jp/news/01_19873
   type: 公式
-- label: アイドルマスター ポータル「【SideM11th】THE IDOLM@STER SideM 11th STAGE ～EVER EVER＠FTER～ DAY2 ご来場&ご視聴いただきありがとうございました！！本日の告知情報とセットリストはこちら！」(2026年9月13日)
-  url: https://idolmaster-official.jp/news/01_19806.html
-  type: 公式
+- label: ASOBI STORE「SideM 11th STAGE開催記念グッズ販売」
+  url: https://shop.asobistore.jp/feature/sidem11th_memorial
+  type: 準公式
 event_date: "2026-10-11"
 title_fact_ids:
 - F18
@@ -71,6 +71,6 @@ verified_facts:
 - 公式トレーディングブロマイド（全16種）：200円
 - 公式トレーディングブロマイドセット：3,200円 <!-- F29 F30 F31 F32 F33 F34 F35 F36 F37 F38 F39 F40 F41 -->
 
-メリーゴーランドアクリルスタンド、立体アクリルスタンド、アコーディオン折りポストカードはA～Lのバリエーションがある。メタルしおり、アクリルスタンド、クリアカード、アクリルコネクトプレートは各48種。缶バッジセットとブロマイドセットはそれぞれA・B・Cのセットが用意されている。 <!-- N2 N3 N4 -->
+メリーゴーランドアクリルスタンド、立体アクリルスタンド、アコーディオン折りポストカードはA～Lのバリエーションがある。メタルしおり、アクリルスタンド、クリアカード、アクリルコネクトプレートの商品選択肢には全アイドルの名前が並ぶ。缶バッジセットとブロマイドセットはそれぞれA・B・Cのセットが用意されている。 <!-- N2 N3 N4 -->
 
 商品は2027年1月以降、順次届けられる予定。他の商品と一緒に注文した場合は全商品がそろってから発送となり、配送料は注文ごとに発生する。 <!-- N5 N6 -->

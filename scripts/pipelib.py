@@ -803,6 +803,26 @@ def git(*args, check: bool = True) -> subprocess.CompletedProcess:
     return r
 
 
+def watch_state_at(ref: str) -> dict | None:
+    """ref の定点観測の状態。無ければ None。"""
+    r = git("show", f"{ref}:{WATCH_STATE_REL}", check=False)
+    return json.loads(r.stdout) if r.returncode == 0 and r.stdout.strip() else None
+
+
+def write_merged_watch_state(ours: dict | None, theirs: dict | None) -> bool:
+    """両側の定点観測の状態を merge_watch_state で合わせて書き、index に載せる。中身が変わったら True。
+    行単位の git merge は JSON の中身を合わせない(片側で処理済みの新着を、もう片側の未処理のまま残す)ので、
+    状態を持つブランチどうしを merge したあとは必ずこれで作り直す。"""
+    merged = merge_watch_state(ours or {}, theirs or {})
+    p = ROOT / WATCH_STATE_REL
+    text = json.dumps(merged, ensure_ascii=False, indent=1) + "\n"
+    changed = not p.exists() or p.read_text(encoding="utf-8") != text
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(text, encoding="utf-8")
+    git("add", "--", WATCH_STATE_REL)
+    return changed
+
+
 # WSL のホスト側 DNS プロキシ(10.255.255.254)は断続的に名前解決に失敗する。
 # 数秒後には復旧することが多いので、通信を伴う git 操作は待って再試行する。
 # これが無いと DNS の一瞬の不調だけで収集や発行が落ちる。
@@ -865,6 +885,7 @@ def checkout_edition_branch(date: str, job: str) -> bool:
     # 紙面ファイルは main 側に無いので、ここでの取り込みが号の中身を壊すことはない。
     # --is-ancestor は「祖先でない」を終了コード1で返す。これは異常ではないので check=False
     if git("merge-base", "--is-ancestor", "origin/main", "HEAD", check=False).returncode != 0:
+        ours, theirs = watch_state_at("HEAD"), watch_state_at("origin/main")
         m = git("merge", "origin/main", "--no-edit")
         if m.returncode != 0:
             git("merge", "--abort")
@@ -873,6 +894,14 @@ def checkout_edition_branch(date: str, job: str) -> bool:
         else:
             print(f"{branch}: main を取り込んだ({git('rev-parse', '--short', 'origin/main').stdout.strip()})",
                   flush=True)
+            # 発行で main に入った定点観測の状態は release が翌日の号へ合わせて取り込む。それが走らなかったとき
+            # (発行の途中で落ちた等)はここが最初の取り込みになり、行単位の merge のままでは処理済みの新着が
+            # 未処理へ戻る・未処理が消える(監査指摘 R2 と同じ型)。両側から作り直して同じ push に載せる
+            if ours is not None and theirs is not None and write_merged_watch_state(ours, theirs):
+                c = git("commit", "-q", "-m", f"定点観測の状態: main と {branch} を合わせる", check=False)
+                if c.returncode != 0:
+                    notify(job, f"定点観測の状態を合わせたが commit できない: {(c.stderr or c.stdout).strip()[:200]}", ok=False)
+                    return False
             # union merge で判定表の行が二重になったら、ここで除いて同じ push に載せる
             removed = dedupe_source_table()
             if removed:

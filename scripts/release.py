@@ -147,26 +147,6 @@ def deploy_site() -> str:
     return "⚠️配信は失敗(要再実行)。"
 
 
-def watch_state_at(ref: str) -> dict | None:
-    """ref の定点観測の状態。無ければ None。"""
-    from pipelib import WATCH_STATE_REL
-    r = git("show", f"{ref}:{WATCH_STATE_REL}", check=False)
-    return json.loads(r.stdout) if r.returncode == 0 and r.stdout.strip() else None
-
-
-def write_merged_watch_state(ours: dict | None, theirs: dict | None) -> bool:
-    """両側の定点観測の状態を合わせて書き、index に載せる。中身が変わったら True。"""
-    from pipelib import WATCH_STATE_REL, merge_watch_state
-    merged = merge_watch_state(ours or {}, theirs or {})
-    p = ROOT / WATCH_STATE_REL
-    text = json.dumps(merged, ensure_ascii=False, indent=1) + "\n"
-    changed = not p.exists() or p.read_text(encoding="utf-8") != text
-    p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(text, encoding="utf-8")
-    git("add", "--", WATCH_STATE_REL)
-    return changed
-
-
 def ensure_next_branch(next_name: str, dry: bool) -> None:
     if branch_exists(next_name) or branch_exists(next_name, remote=True):
         # **既にあるなら main を取り込む。**collect は翌日ブランチを main から先に切る。
@@ -188,6 +168,7 @@ def ensure_next_branch(next_name: str, dry: bool) -> None:
             git("checkout", next_name)
             if branch_exists(next_name, remote=True):
                 git("pull", "--ff-only", "origin", next_name, check=False)
+        from pipelib import watch_state_at, write_merged_watch_state
         ours, theirs = (watch_state_at(next_name), watch_state_at("main"))
         r = git("merge", "main", "-m", f"Merge branch 'main' into {next_name}(発行後の取り込み)", check=False)
         if r.returncode != 0:
@@ -199,16 +180,22 @@ def ensure_next_branch(next_name: str, dry: bool) -> None:
                 if re.fullmatch(r"metrics/\d{4}-\d{2}-\d{2}\.json", f):
                     git("checkout", "--theirs", f)      # main 側
                     git("add", f)
-                elif f == "stock/watch-state.json":
-                    write_merged_watch_state(ours, theirs)
-                else:
+                elif f != "stock/watch-state.json":     # 定点観測の状態は下で両側から作り直す
                     others.append(f)
             if others:
                 git("merge", "--abort", check=False)
                 notify(f"翌日ブランチ {next_name} への main の取り込みが衝突した(手で解くこと): "
                        + ", ".join(others[:8]), ok=False)
                 return
-            git("commit", "--no-edit", check=False)
+            # 状態のファイル自体が衝突しなくても(メトリクスだけの衝突)、行単位の自動 merge は中身を合わせないので
+            # 必ず両側から作り直してから commit する(監査指摘 R2: 自動 merge が処理済みの新着を未処理へ戻した)
+            if ours is not None or theirs is not None:
+                write_merged_watch_state(ours, theirs)
+            c = git("commit", "--no-edit", check=False)
+            if c.returncode != 0:
+                notify(f"翌日ブランチ {next_name}: main の取り込みの衝突を解いたが commit できない(push せず): "
+                       f"{(c.stderr or c.stdout).strip()[:200]}", ok=False)
+                return
         elif ours is not None and theirs is not None and write_merged_watch_state(ours, theirs):
             c = git("commit", "-q", "-m", f"定点観測の状態: 発行した号と {next_name} を合わせる", check=False)
             if c.returncode != 0:

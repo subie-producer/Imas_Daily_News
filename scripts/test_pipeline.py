@@ -3374,6 +3374,73 @@ def test_watch_state_carry(tmp: Path):
     finally:
         release.ROOT, pipelib.ROOT, release.notify = saved
 
+    # release: 日別メトリクスだけが衝突し、状態のファイルは行単位の自動 merge が通る場合も、両側から作り直す(監査指摘 R2)。
+    # 共通: 未処理8件・諦めた G。10/12号: G の取り直しに失敗して未処理へ。発行側: G を取り直して処理済み。
+    # 両側が触らない諦めた G2 を挟むと、行単位の merge は衝突せず未処理9件(G が戻る)になる。正しくは未処理8件・諦めた G2 だけ
+    Ps = [dict(P, url=f"https://s.jp/p{i}") for i in range(8)]
+    G2 = dict(G, url="https://s.jp/g2")
+    common = dict(base, _pending=Ps, _given_up=[G2, G])
+    repo = tmp / "release-metrics"
+    g = _git_repo(repo, common)
+    (repo / "metrics").mkdir(exist_ok=True)
+    (repo / "metrics" / "2026-10-11.json").write_text('{"n": 0}\n', encoding="utf-8")
+    g("add", "-A")
+    g("commit", "-q", "-m", "metrics")
+    g("checkout", "-q", "-B", "edition/2026-10-12")
+    (repo / "stock" / "watch-state.json").write_text(
+        json.dumps(dict(base, _pending=Ps + [{k: v for k, v in G.items() if k != "given_up_at"}], _given_up=[G2]), indent=1) + "\n",
+        encoding="utf-8")
+    (repo / "metrics" / "2026-10-11.json").write_text('{"n": 1}\n', encoding="utf-8")
+    g("commit", "-q", "-am", "10/12 collect")
+    g("checkout", "-q", "main")
+    (repo / "stock" / "watch-state.json").write_text(
+        json.dumps(dict(src=["https://s.jp/a", "https://s.jp/g"], _pending=Ps, _given_up=[G2]), indent=1) + "\n", encoding="utf-8")
+    (repo / "metrics" / "2026-10-11.json").write_text('{"n": 2}\n', encoding="utf-8")
+    g("commit", "-q", "-am", "第n号")
+    g("push", "-q", "origin", "main", "edition/2026-10-12")
+    saved = (release.ROOT, pipelib.ROOT, release.notify)
+    try:
+        release.ROOT = pipelib.ROOT = repo
+        release.notify = lambda *a, **k: None
+        release.ensure_next_branch("edition/2026-10-12", False)
+        st = json.loads(g("show", "edition/2026-10-12:stock/watch-state.json").stdout)
+        check(sorted(it["url"] for it in st.get("_pending", [])) == sorted(it["url"] for it in Ps)
+              and [it["url"] for it in st.get("_given_up", [])] == [G2["url"]]
+              and json.loads(g("show", "edition/2026-10-12:metrics/2026-10-11.json").stdout) == {"n": 2},
+              f"メトリクスだけが衝突した取り込みで、処理済みの新着が未処理へ戻った: "
+              f"{[it['url'] for it in st.get('_pending', [])]} given_up={st.get('_given_up')}")
+        check(g("rev-parse", "edition/2026-10-12").stdout == g("rev-parse", "origin/edition/2026-10-12").stdout
+              and not g("status", "--porcelain").stdout.strip(), "衝突を解いた取り込みが commit・push されていない")
+    finally:
+        release.ROOT, pipelib.ROOT, release.notify = saved
+
+    # 同じ型: 発行が翌日の号への取り込みまで進まなかったとき、各工程の始めの main の取り込みが最初の取り込みになる。
+    # ここも行単位の merge のままにせず両側から作り直す(上と同じ状態で、衝突の無い取り込み)
+    repo = tmp / "jobstart"
+    g = _git_repo(repo, common)
+    g("checkout", "-q", "-B", "edition/2026-10-12")
+    (repo / "stock" / "watch-state.json").write_text(
+        json.dumps(dict(base, _pending=Ps + [{k: v for k, v in G.items() if k != "given_up_at"}], _given_up=[G2]), indent=1) + "\n",
+        encoding="utf-8")
+    g("commit", "-q", "-am", "10/12 collect")
+    g("checkout", "-q", "main")
+    (repo / "stock" / "watch-state.json").write_text(
+        json.dumps(dict(src=["https://s.jp/a", "https://s.jp/g"], _pending=Ps, _given_up=[G2]), indent=1) + "\n", encoding="utf-8")
+    g("commit", "-q", "-am", "第n号")
+    g("push", "-q", "origin", "main", "edition/2026-10-12")
+    saved = (pipelib.ROOT, pipelib.notify)
+    try:
+        pipelib.ROOT = repo
+        pipelib.notify = lambda *a, **k: None
+        ok = pipelib.checkout_edition_branch("2026-10-12", "collect")
+        st = json.loads(g("show", "edition/2026-10-12:stock/watch-state.json").stdout)
+        check(ok and sorted(it["url"] for it in st.get("_pending", [])) == sorted(it["url"] for it in Ps)
+              and [it["url"] for it in st.get("_given_up", [])] == [G2["url"]]
+              and g("rev-parse", "edition/2026-10-12").stdout == g("rev-parse", "origin/edition/2026-10-12").stdout,
+              f"工程の始めの main の取り込みで、処理済みの新着が未処理へ戻った: ok={ok} {[it['url'] for it in st.get('_pending', [])]}")
+    finally:
+        pipelib.ROOT, pipelib.notify = saved
+
 
 def test_storylink(tmp: Path):
     """既報の照合(二度載せの防止): 同じ一次情報の候補を、過去の記事の話題へ**話題ごと**つなぎ直し、今日の候補どうしもまとめる。

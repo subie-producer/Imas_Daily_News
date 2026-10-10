@@ -1,0 +1,49 @@
+[
+  {
+    "id": "202610110732-explore-1",
+    "title": "「Agitato」配信開始",
+    "brand": "gaku",
+    "source_type": "準公式",
+    "url": "https://gakuen-label.idolmaster-official.jp/discography/tx19n4icz0m",
+    "found_at": "2026-10-11T07:32:08+09:00",
+    "dedup_key": "agitato-streaming-2026",
+    "facts": [
+      "ページには「2026.10.11」と記載されている。",
+      "「Agitato」がStreaming&DLとして掲載されている。",
+      "作詞・作曲・編曲はRyo'LEFTY'Miyata。",
+      "エンゲージメント: 低"
+    ],
+    "origin": "explore",
+    "via": "explore",
+    "verify": "confirmed",
+    "published_date": "2026-10-11",
+    "quotes": [
+      "Agitato 作詞・作曲・編曲：Ryo'LEFTY'Miyata"
+    ]
+  },
+  {
+    "id": "202610110732-explore-0",
+    "title": "『プリンセス・アラモード』アイドルグランプリPV公開",
+    "brand": "million",
+    "source_type": "公式",
+    "url": "https://millionlive-theaterdays.idolmaster-official.jp/",
+    "found_at": "2026-10-11T07:32:08+09:00",
+    "dedup_key": "million-princess-a-la-mode-idol-grand-prix-pv-2026",
+    "facts": [
+      "2026年10月10日、ミリシタ公式サイトのMOVIE欄に「『プリンセス・アラモード』アイドルグランプリ PV」が掲載された。",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "explore",
+    "verify": "failed",
+    "published_date": "2026-10-10",
+    "quotes": [
+      "【ミリシタ】『プリンセス・アラモード』アイドルグランプリ PV【アイドルマスター】"
+    ],
+    "unbacked_facts": [
+      "2026-10-10",
+      "10月10日"
+    ],
+    "verify_note": "写しが出典の本文に無い(URL の取り違えの疑い): 【ミリシタ】『プリンセス・アラモード』アイドルグランプリ PV【アイドルマスター】"
+  }
+]

@@ -57,7 +57,7 @@ def merge_watch_state(cur: dict, other: dict) -> dict:
     """定点観測の状態(stock/watch-state.json)を2つの号ブランチから1つにまとめる。どちらか一方にしか無い未処理(_pending)・
     諦めた新着(_given_up)を落とさない(号を切り替える・発行で取り込むときに片方だけを採ると、そこにしか無い回収対象が消える)。
     URL ごとに、どちらかで処理済み(既読で、未処理でも諦めたでもない)なら処理済み、そうでなく未処理ならどちらかの未処理、
-    残りは諦めた新着。観測先ごとの既読は和(cur の順が先)。入力は書き換えない。"""
+    残りは諦めた新着。観測先ごとの既読は和(両側を通して新しい順に 500 件)。入力は書き換えない。"""
     def lists(s: dict) -> tuple[dict, dict, set]:
         pend = {it["url"]: it for it in s.get("_pending", []) if isinstance(it, dict) and it.get("url")}
         gave = {it["url"]: it for it in s.get("_given_up", []) if isinstance(it, dict) and it.get("url")}
@@ -66,12 +66,18 @@ def merge_watch_state(cur: dict, other: dict) -> dict:
     states = [cur or {}, other or {}]
     parts = [lists(s) for s in states]
     done = set().union(*(p[2] for p in parts))
-    merged: dict = {}
-    for s in states:
+    # 既読は観測先ごとに新しい順(収集が先頭へ足す)。上限で削るのは両側を通して古いものから。cur を先に並べて
+    # 切ると、cur が上限まで埋まっているとき other にしか無い新しい既読が落ち、次の収集でその URL がまた新着になる
+    # (監査指摘 L1)。URL の新しさは両側でいちばん浅い位置で測り、同じ深さは cur を先にする
+    rank: dict = {}
+    for si, s in enumerate(states):
         for k, v in s.items():
             if not k.startswith("_") and isinstance(v, list):
-                have = merged.setdefault(k, [])
-                merged[k] = (have + [u for u in v if u not in have])[:500]
+                r = rank.setdefault(k, {})
+                for i, u in enumerate(v):
+                    if u not in r or (i, si) < r[u]:
+                        r[u] = (i, si)
+    merged: dict = {k: sorted(r, key=r.get)[:500] for k, r in rank.items()}
     pending: dict = {}
     for p in parts:
         for u, it in p[0].items():
@@ -823,6 +829,38 @@ def write_merged_watch_state(ours: dict | None, theirs: dict | None) -> bool:
     return changed
 
 
+def merge_main_into(ref: str, message: str) -> tuple[str, str]:
+    """発行済みの ref(main)を、いまのブランチ(号)へ取り込んで commit する。衝突するのは決まって2種類なので機械で解く:
+      metrics/<日付>.json … ref 側(発行側)を採る
+      stock/watch-state.json … 両側から merge_watch_state で作り直す(片側だけを採ると、もう片側にしか無い未処理・
+        諦めた新着が消える)。衝突しなくても行単位の自動 merge は JSON の中身を合わせないので、merge のあと必ず作り直す
+    返り値は (結果, 説明)。結果は "ok"(取り込んで commit した)/ "conflict"(それ以外の衝突。解かずに merge を戻した)/
+    "uncommitted"(解いたが commit できない。push してはいけない)。git() の例外で止めない(衝突は終了コード 1 で返るので check=False で受ける。監査指摘 R4)。"""
+    ours, theirs = watch_state_at("HEAD"), watch_state_at(ref)
+    r = git("merge", ref, "-m", message, check=False)
+    if r.returncode != 0:
+        conflicted = git("diff", "--name-only", "--diff-filter=U", check=False).stdout.split()
+        others = [f for f in conflicted
+                  if f != WATCH_STATE_REL and not re.fullmatch(r"metrics/\d{4}-\d{2}-\d{2}\.json", f)]
+        if others or not conflicted:      # 衝突のファイルが分からない失敗も解かずに戻す
+            git("merge", "--abort", check=False)
+            return "conflict", ("衝突: " + ", ".join(others[:8])) if others else (r.stderr or r.stdout).strip()
+        for f in conflicted:
+            if f != WATCH_STATE_REL:
+                git("checkout", "--theirs", "--", f)
+                git("add", "--", f)
+        if ours is not None or theirs is not None:
+            write_merged_watch_state(ours, theirs)
+        c = git("commit", "--no-edit", check=False)
+        if c.returncode != 0:
+            return "uncommitted", f"commit できない(衝突は解いた): {(c.stderr or c.stdout).strip()[:200]}"
+    elif ours is not None and theirs is not None and write_merged_watch_state(ours, theirs):
+        c = git("commit", "-q", "-m", f"定点観測の状態: {ref} と合わせる", check=False)
+        if c.returncode != 0:
+            return "uncommitted", f"commit できない(定点観測の状態を合わせた): {(c.stderr or c.stdout).strip()[:200]}"
+    return "ok", ""
+
+
 # WSL のホスト側 DNS プロキシ(10.255.255.254)は断続的に名前解決に失敗する。
 # 数秒後には復旧することが多いので、通信を伴う git 操作は待って再試行する。
 # これが無いと DNS の一瞬の不調だけで収集や発行が落ちる。
@@ -885,23 +923,17 @@ def checkout_edition_branch(date: str, job: str) -> bool:
     # 紙面ファイルは main 側に無いので、ここでの取り込みが号の中身を壊すことはない。
     # --is-ancestor は「祖先でない」を終了コード1で返す。これは異常ではないので check=False
     if git("merge-base", "--is-ancestor", "origin/main", "HEAD", check=False).returncode != 0:
-        ours, theirs = watch_state_at("HEAD"), watch_state_at("origin/main")
-        m = git("merge", "origin/main", "--no-edit")
-        if m.returncode != 0:
-            git("merge", "--abort")
-            notify(job, f"{branch} への main 取り込みが衝突。**古いスクリプトのまま続行**します:\n"
-                        f"{m.stdout.strip()[:300]}", ok=False)
+        # 発行で main に入った定点観測の状態は release が翌日の号へ合わせて取り込む。それが走らなかったとき
+        # (発行の途中で落ちた等)はここが最初の取り込みになる。release と同じ規則で取り込む(merge_main_into)
+        res, why = merge_main_into("origin/main", f"Merge origin/main into {branch}")
+        if res == "uncommitted":
+            notify(job, f"{branch} への main 取り込み: {why}", ok=False)
+            return False
+        if res == "conflict":
+            notify(job, f"{branch} への main 取り込みが衝突。**古いスクリプトのまま続行**します:\n{why[:300]}", ok=False)
         else:
             print(f"{branch}: main を取り込んだ({git('rev-parse', '--short', 'origin/main').stdout.strip()})",
                   flush=True)
-            # 発行で main に入った定点観測の状態は release が翌日の号へ合わせて取り込む。それが走らなかったとき
-            # (発行の途中で落ちた等)はここが最初の取り込みになり、行単位の merge のままでは処理済みの新着が
-            # 未処理へ戻る・未処理が消える(監査指摘 R2 と同じ型)。両側から作り直して同じ push に載せる
-            if ours is not None and theirs is not None and write_merged_watch_state(ours, theirs):
-                c = git("commit", "-q", "-m", f"定点観測の状態: main と {branch} を合わせる", check=False)
-                if c.returncode != 0:
-                    notify(job, f"定点観測の状態を合わせたが commit できない: {(c.stderr or c.stdout).strip()[:200]}", ok=False)
-                    return False
             # union merge で判定表の行が二重になったら、ここで除いて同じ push に載せる
             removed = dedupe_source_table()
             if removed:

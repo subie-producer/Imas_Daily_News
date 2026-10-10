@@ -168,40 +168,11 @@ def ensure_next_branch(next_name: str, dry: bool) -> None:
             git("checkout", next_name)
             if branch_exists(next_name, remote=True):
                 git("pull", "--ff-only", "origin", next_name, check=False)
-        from pipelib import watch_state_at, write_merged_watch_state
-        ours, theirs = (watch_state_at(next_name), watch_state_at("main"))
-        r = git("merge", "main", "-m", f"Merge branch 'main' into {next_name}(発行後の取り込み)", check=False)
-        if r.returncode != 0:
-            conflicted = [l.split("\t", 1)[1] for l in
-                          git("diff", "--name-only", "--diff-filter=U", check=False).stdout.splitlines()
-                          if "\t" in l] or git("diff", "--name-only", "--diff-filter=U", check=False).stdout.split()
-            others = []
-            for f in conflicted:
-                if re.fullmatch(r"metrics/\d{4}-\d{2}-\d{2}\.json", f):
-                    git("checkout", "--theirs", f)      # main 側
-                    git("add", f)
-                elif f != "stock/watch-state.json":     # 定点観測の状態は下で両側から作り直す
-                    others.append(f)
-            if others:
-                git("merge", "--abort", check=False)
-                notify(f"翌日ブランチ {next_name} への main の取り込みが衝突した(手で解くこと): "
-                       + ", ".join(others[:8]), ok=False)
-                return
-            # 状態のファイル自体が衝突しなくても(メトリクスだけの衝突)、行単位の自動 merge は中身を合わせないので
-            # 必ず両側から作り直してから commit する(監査指摘 R2: 自動 merge が処理済みの新着を未処理へ戻した)
-            if ours is not None or theirs is not None:
-                write_merged_watch_state(ours, theirs)
-            c = git("commit", "--no-edit", check=False)
-            if c.returncode != 0:
-                notify(f"翌日ブランチ {next_name}: main の取り込みの衝突を解いたが commit できない(push せず): "
-                       f"{(c.stderr or c.stdout).strip()[:200]}", ok=False)
-                return
-        elif ours is not None and theirs is not None and write_merged_watch_state(ours, theirs):
-            c = git("commit", "-q", "-m", f"定点観測の状態: 発行した号と {next_name} を合わせる", check=False)
-            if c.returncode != 0:
-                notify(f"翌日ブランチ {next_name}: 定点観測の状態を合わせたが commit できない(push せず): "
-                       f"{(c.stderr or c.stdout).strip()[:200]}", ok=False)
-                return
+        from pipelib import merge_main_into
+        res, why = merge_main_into("main", f"Merge branch 'main' into {next_name}(発行後の取り込み)")
+        if res != "ok":
+            notify(f"翌日ブランチ {next_name} への main の取り込み: {why}(手で解くこと。push せず)", ok=False)
+            return
         # union merge で判定表の行が二重になったら、ここで除いて同じ push に載せる(2026-09-17: 5行が二重)
         from pipelib import dedupe_source_table
         removed = dedupe_source_table()

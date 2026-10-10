@@ -3441,6 +3441,76 @@ def test_watch_state_carry(tmp: Path):
     finally:
         pipelib.ROOT, pipelib.notify = saved
 
+    # 既読の上限(500件)は両側を通して古いものから削る。cur が上限まで埋まっていても、other にしか無い新しい既読を落とさない
+    # (落とすと次の収集でまた新着になる。監査指摘 L1)
+    old = [f"https://s.jp/o{i}" for i in range(500)]
+    cap = pipelib.merge_watch_state(dict(src=old), dict(src=["https://s.jp/new"] + old[:499]))
+    check(len(cap["src"]) == 500 and cap["src"][:3] == ["https://s.jp/o0", "https://s.jp/new", "https://s.jp/o1"] and "https://s.jp/o499" not in cap["src"],
+          f"上限で other の新しい既読を落とした・古いものを残した: {cap['src'][:3]} … {cap['src'][-2:]}")
+    cap2 = pipelib.merge_watch_state(dict(src=["https://s.jp/c1"] + old[:499]), dict(src=["https://s.jp/o1", "https://s.jp/n1"]))
+    check(cap2["src"][:3] == ["https://s.jp/c1", "https://s.jp/o1", "https://s.jp/o0"] and "https://s.jp/n1" in cap2["src"],
+          f"両側の新しい既読を新しい順に並べていない: {cap2['src'][:4]}")
+
+    # 工程の始めの取り込みで、状態とメトリクスが行単位で衝突する場合(監査指摘 R4)。共通: 未処理 P。号: 未処理 P・G。
+    # main: 未処理なし・G は既読。git merge は終了 1 を返すが、例外で止めずに release と同じ規則で解いて commit・push する
+    repo = tmp / "jobstart-conflict"
+    g = _git_repo(repo, dict(base, _pending=[P], _given_up=[]))
+    (repo / "metrics").mkdir(exist_ok=True)
+    (repo / "metrics" / "2026-10-11.json").write_text('{"n": 0}\n', encoding="utf-8")
+    g("add", "-A")
+    g("commit", "-q", "-m", "metrics")
+    g("checkout", "-q", "-B", "edition/2026-10-12")
+    G_p = {k: v for k, v in G.items() if k != "given_up_at"}
+    (repo / "stock" / "watch-state.json").write_text(json.dumps(dict(base, _pending=[P, G_p], _given_up=[]), indent=1) + "\n",
+                                                    encoding="utf-8")
+    (repo / "metrics" / "2026-10-11.json").write_text('{"n": 1}\n', encoding="utf-8")
+    g("commit", "-q", "-am", "10/12 collect")
+    g("checkout", "-q", "main")
+    (repo / "stock" / "watch-state.json").write_text(
+        json.dumps(dict(src=["https://s.jp/g", "https://s.jp/p", "https://s.jp/a"], _pending=[], _given_up=[]), indent=1) + "\n",
+        encoding="utf-8")
+    (repo / "metrics" / "2026-10-11.json").write_text('{"n": 2}\n', encoding="utf-8")
+    g("commit", "-q", "-am", "第n号")
+    g("push", "-q", "origin", "main", "edition/2026-10-12")
+    saved = (pipelib.ROOT, pipelib.notify)
+    try:
+        pipelib.ROOT = repo
+        pipelib.notify = lambda *a, **k: None
+        ok = pipelib.checkout_edition_branch("2026-10-12", "collect")
+        st = json.loads(g("show", "edition/2026-10-12:stock/watch-state.json").stdout)
+        check(ok and not st.get("_pending") and not st.get("_given_up")
+              and json.loads(g("show", "edition/2026-10-12:metrics/2026-10-11.json").stdout) == {"n": 2}
+              and g("rev-parse", "edition/2026-10-12").stdout == g("rev-parse", "origin/edition/2026-10-12").stdout
+              and subprocess.run(["git", "merge-base", "--is-ancestor", "main", "edition/2026-10-12"], cwd=repo).returncode == 0
+              and not g("status", "--porcelain").stdout.strip(),
+              f"工程の始めの取り込みが状態の衝突を解けない: ok={ok} {st}")
+    finally:
+        pipelib.ROOT, pipelib.notify = saved
+
+    # 状態・メトリクス以外の衝突は解かずに戻し、明示的に失敗を返す(作業ツリーを衝突のまま残さない)
+    repo = tmp / "merge-other"
+    g = _git_repo(repo, base)
+    (repo / "x.txt").write_text("0\n", encoding="utf-8")
+    g("add", "-A")
+    g("commit", "-q", "-m", "x")
+    g("checkout", "-q", "-B", "edition/2026-10-12")
+    (repo / "x.txt").write_text("1\n", encoding="utf-8")
+    g("commit", "-q", "-am", "号")
+    head = g("rev-parse", "HEAD").stdout
+    g("checkout", "-q", "main")
+    (repo / "x.txt").write_text("2\n", encoding="utf-8")
+    g("commit", "-q", "-am", "main")
+    g("checkout", "-q", "edition/2026-10-12")
+    saved = pipelib.ROOT
+    try:
+        pipelib.ROOT = repo
+        res, why = pipelib.merge_main_into("main", "m")
+        check(res == "conflict" and "x.txt" in why and g("rev-parse", "HEAD").stdout == head
+              and not g("status", "--porcelain").stdout.strip(),
+              f"解けない衝突を戻さず・失敗を返さない: {res} {why}")
+    finally:
+        pipelib.ROOT = saved
+
 
 def test_storylink(tmp: Path):
     """既報の照合(二度載せの防止): 同じ一次情報の候補を、過去の記事の話題へ**話題ごと**つなぎ直し、今日の候補どうしもまとめる。

@@ -1108,7 +1108,10 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
             #     その号のブランチで確定・送信する。読んだ号へ足すとどの号にも載らない)。collect へは読み終えた号のまま渡す。
             #     collect は同じ規則で次の号へ回し、読み終えた号に保存した未処理・諦めた新着を引き継ぐ(先に回した号を渡すと、
             #     どの号から引き継ぐかが分からず、取り直すべき新着が見えない。監査指摘)
-            asked = edition.removeprefix("edition/")
+            #   - 収集の当番は、読み終えた号を --date(収集が頼まれた号)で受け取る。収集は取り込み先(--edition)を回した先の号に
+            #     するので、edition から求めると、状態を引き継ぐ前に落ちた収集のあと、読み終えた号の未処理を引き継げない
+            #     (監査指摘 R5)。watch の --date は異常の発生日(発行済みの号)なので、取り込み先の号を使う
+            asked = date if stage == "collect" else edition.removeprefix("edition/")
             target = collect_edition(asked)
             target_branch = f"edition/{target}"
             # 取り直しも次の定時工程の前に終える(STAGE_END_AT)。後始末(素材の確定・push・通知)の分

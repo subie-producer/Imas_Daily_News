@@ -1642,16 +1642,24 @@ def carry_watch_state(asked: str, date: str) -> None:
           f"諦めた新着 {len(state.get('_given_up', []))}件)", flush=True)
 
 
+# この収集が頼まれた号(--date か壁時計。組版が読み終えていれば、新着は次の号へ回す)。main が最初に決め、失敗しても当番へ渡す
+ASKED: str | None = None
+
+
 def hand_to_oncall() -> None:
     """人に「異常」として通知したものは、申告で終えずに当番がなぜなぜする。直したら定点観測を取り直し、落とした新着を
     この号の選定リストに入れるまでが当番の仕事(編集長 2026-10-07「やらかしてドロップしたのは責任を持って修正して紙面に乗せろ」。
     以前は「収集は終わっているので再実行しない」で、直しても次の定時収集まで拾われず、最後の収集なら1号遅れた)。
     当番が取り直しまで終える時刻は、ここ(呼び出し時)で固定して渡す(起動し直しても延びない)。
     当番を呼べたら、**工程の排他を持ったまま**動いている印を置く(収集が終わって排他が空いた瞬間に組版が取ると、
-    当番は取り直せない。組版は印を見て待ち、受け渡しの間は譲る。監査指摘)"""
+    当番は取り直せない。組版は印を見て待ち、受け渡しの間は譲る。監査指摘)
+    当番へは、この収集が頼まれた号(ASKED)を発生日として、新着を足す号を取り込み先として渡す。取り込み先だけを渡すと、
+    状態を引き継ぐ前に落ちた(fetch の失敗等)とき、当番の取り直しは組版が読み終えた号を知らず、そこに保存した未処理・
+    諦めた新着を引き継がない(監査指摘 R5)"""
     end_at = collect_oncall_end(now_jst())
-    date = collect_edition(edition_date())
-    if diagnose_anomalies("collect", date, rerun=True, extra_args=["--end-at", str(int(end_at))]):
+    asked = ASKED or edition_date()
+    date = collect_edition(asked)
+    if diagnose_anomalies("collect", asked, rerun=True, edition=date, extra_args=["--end-at", str(int(end_at))]):
         mark_collect_oncall(end_at, date)
 
 
@@ -1670,6 +1678,8 @@ def main() -> int:
     ap.add_argument("--oncall-rerun", action="store_true",
                     help="当番が繰り越し(_pending)を拾い直す再実行。読めないバッチを諦めず未処理のまま残し、残れば非0で終える")
     args = ap.parse_args()
+    global ASKED
+    asked = ASKED = args.date or edition_date()
     # 試験実行(--no-git)では Discord へ通知しない。本物の警報と見分けが付かなくなる
     set_quiet(args.no_git)
     # 同じ作業ツリーを compose/release/当番と同時に触らない(監査指摘)。当番の再実行が長引くと
@@ -1680,7 +1690,6 @@ def main() -> int:
         notify("collect", str(e), ok=False)
         return 1
     t0 = time.time()
-    asked = args.date or edition_date()
     # 組版がもう候補を読んだ号へは足さない(読み直されず、次の号にも読まれないので消える)。読まれていない最初の号へ回す
     date = collect_edition(asked)
     if date != asked:

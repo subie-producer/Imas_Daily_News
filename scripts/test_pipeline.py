@@ -3245,14 +3245,105 @@ def test_collect_after_compose_read(tmp: Path):
     csrc = inspect.getsource(compose.main)
     check(re.search(r"cands = load_window_candidates\(date\)\n(\s*#.*\n)*\s*mark_candidates_read\(date,", csrc),
           "組版が候補を読んだ印を置いていない(読込後の新着が読まれた号へ足され、どの号にも載らない)")
-    check("date = collect_edition(edition_date())" in inspect.getsource(collect.hand_to_oncall),
-          "収集の当番へ、組版が読み終えた号を取り込み先として渡している")
+    hsrc = inspect.getsource(collect.hand_to_oncall)
+    check("date = collect_edition(asked)" in hsrc and 'diagnose_anomalies("collect", asked, rerun=True, edition=date,' in hsrc,
+          "収集の当番へ、組版が読み終えた号を取り込み先として渡している(または頼まれた号を渡さない)")
     osrc = inspect.getsource(oncall)
-    check('target = collect_edition(asked)' in osrc and '"--oncall-rerun", "--date", asked]' in osrc
+    check('asked = date if stage == "collect" else edition.removeprefix("edition/")' in osrc
+          and 'target = collect_edition(asked)' in osrc and '"--oncall-rerun", "--date", asked]' in osrc
           and "取り直しの途中までを確定(exit {code})\", target_branch" in osrc
           and 'ensure_pushed(target_branch, f"{date} collect: 取り直した素材"' in osrc,
           "当番の取り直しが、組版が読み終えた号のブランチで素材を確定・送信している"
           "(または collect へ回した先の号を渡し、読み終えた号の未処理を引き継げない)")
+
+
+def test_collect_oncall_carry_after_early_failure(tmp: Path):
+    """状態を引き継ぐ前に収集が落ちても(号ブランチの fetch 失敗等)、当番の取り直しは組版が読み終えた号の未処理・諦めた新着を
+    次の号へ引き継いで拾う(監査指摘 R5: 当番へ回した先の号だけを渡し、取り直しが元の号を知らずに終わっていた)。
+    10/11 04:30、10/11号は組版が読んだ → 収集は10/12号へ回すが fetch で落ちる → 当番 → 取り直しが10/11号の2件を10/12号へ入れる。"""
+    import collect, oncall
+    import yaml
+    P = {"source_id": "src", "brand": "general", "url": "https://s.jp/p", "title": "未処理", "source_type": "公式", "csr": False}
+    G = {"source_id": "src", "brand": "general", "url": "https://s.jp/g", "title": "諦めた", "source_type": "公式", "csr": False,
+         "given_up_at": "2026-10-11T02:10:00+09:00"}
+    base = {"src": ["https://s.jp/a"]}
+    repo = tmp / "repo"
+    g = _git_repo(repo, base)
+    _commit_state(g, repo, "edition/2026-10-11", dict(base, _pending=[P], _given_up=[G]))
+    g("checkout", "-q", "main")
+    (repo / "candidates").mkdir(exist_ok=True)
+    (repo / "metrics").mkdir(exist_ok=True)
+    (repo / "sources.yml").write_text(yaml.safe_dump([{"id": "src", "brand": "general", "type": "html", "url": "https://s.jp/",
+                                                       "base": "https://s.jp", "list_regex": "x", "enabled": True}]), encoding="utf-8")
+    switched, handed, runs = [], [], []
+    fetch_ok = [False]
+
+    def fake_checkout(date, job):
+        switched.append(date)
+        if not fetch_ok[0]:
+            return False          # origin への fetch に失敗(状態の引き継ぎより前)
+        g("checkout", "-q", "-B", f"edition/{date}", "main")
+        return True
+
+    def fake_run_stage(cmd, log, limit):
+        runs.append(cmd)
+        sys.argv = ["collect", *cmd[2:]]
+        return collect.main()
+    hits = lambda prompt: [{"page": i + 1, "status": "extracted",
+                            "items": [{"title": u, "url": u, "facts": ["告知"], "brand": "general", "source_type": "公式"}]}
+                           for i, u in enumerate(re.findall(r"^### \d+\. (\S+)", prompt, re.M))]
+    saved = (collect.ROOT, pipelib.ROOT, oncall.ROOT, collect.STATE_PATH, collect.job_lock, collect.checkout_edition_branch,
+             collect.commit_and_push, collect.run_explores, collect.append_metric, collect.notify, collect.list_source,
+             collect.page_html_or_note, collect.render_prompt, collect.claude_exec, collect.normalize, collect.verify,
+             collect.diagnose_anomalies, collect.mark_collect_oncall, collect.edition_date, collect.ASKED,
+             oncall.run_stage, oncall.root_clean, oncall.ensure_pushed, oncall.untracked_files, sys.argv)
+    try:
+        collect.ROOT = pipelib.ROOT = oncall.ROOT = repo
+        collect.STATE_PATH = repo / "stock" / "watch-state.json"
+        collect.job_lock = lambda *a, **k: None
+        collect.checkout_edition_branch = fake_checkout
+        collect.commit_and_push = lambda *a, **k: True
+        collect.run_explores = lambda *a, **k: ([], {})
+        collect.append_metric = lambda *a, **k: None
+        collect.notify = lambda *a, **k: True
+        collect.list_source = lambda s, known, fetch=None: ([("https://s.jp/a", "")], 1, False)
+        collect.page_html_or_note = lambda url, csr: ("", "")
+        collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+        collect.claude_exec = lambda prompt, timeout=0: hits(prompt)
+        collect.normalize, collect.verify = (lambda cs: cs), (lambda cs: {})
+        collect.diagnose_anomalies = lambda *a, **k: handed.append((a, k)) or True
+        collect.mark_collect_oncall = lambda *a, **k: None
+        collect.edition_date = lambda now=None: "2026-10-11"     # 壁時計 04:30
+        oncall.run_stage = fake_run_stage
+        oncall.root_clean = lambda: True
+        oncall.ensure_pushed = lambda *a, **k: True
+        oncall.untracked_files = lambda: set()
+        pipelib.mark_candidates_read("2026-10-11", 5)
+        # 定時の収集(--date なし)が、号ブランチへ移る前の fetch で落ちて当番を呼ぶ
+        sys.argv = ["collect", "--skip-explore", "--skip-grok"]
+        code = collect.main()
+        collect.hand_to_oncall()
+        check(code == 1 and switched == ["2026-10-12"] and len(handed) == 1, f"fetch の失敗の再現: exit={code} {switched} {handed}")
+        a, k = handed[0]
+        check(a[1] == "2026-10-11" and k.get("edition") == "2026-10-12",
+              f"当番へ、組版が読み終えた号(引き継ぎ元)を渡していない: date={a[1]} edition={k.get('edition')}")
+        # 当番が直した(fetch が戻った)あと、受け取った号で取り直す
+        fetch_ok[0] = True
+        switched.clear()
+        code = oncall.rerun_stage("collect", a[1], f"edition/{k.get('edition') or a[1]}", False)
+        got = repo / "candidates" / "2026-10-12.json"
+        urls = {c.get("url") for c in json.loads(got.read_text(encoding="utf-8"))} if got.exists() else set()
+        st = json.loads((repo / "stock" / "watch-state.json").read_text(encoding="utf-8"))
+        check(code == 0 and switched == ["2026-10-12"] and urls == {P["url"], G["url"]},
+              f"状態を引き継ぐ前に落ちた収集のあと、当番の取り直しが読み終えた号の未処理・諦めた新着を拾えない: "
+              f"exit={code} switched={switched} {urls} cmd={runs[-1][-2:] if runs else None}")
+        check(not st.get("_pending") and not st.get("_given_up"), f"取り直したのに次の号の状態に未処理・諦めたが残る: {st}")
+    finally:
+        (collect.ROOT, pipelib.ROOT, oncall.ROOT, collect.STATE_PATH, collect.job_lock, collect.checkout_edition_branch,
+         collect.commit_and_push, collect.run_explores, collect.append_metric, collect.notify, collect.list_source,
+         collect.page_html_or_note, collect.render_prompt, collect.claude_exec, collect.normalize, collect.verify,
+         collect.diagnose_anomalies, collect.mark_collect_oncall, collect.edition_date, collect.ASKED,
+         oncall.run_stage, oncall.root_clean, oncall.ensure_pushed, oncall.untracked_files, sys.argv) = saved
 
 
 def _git_repo(tmp: Path, state: dict) -> callable:
@@ -5393,6 +5484,7 @@ def main() -> int:
     test_collect_oncall_rerun_exit(tmp / "cre")
     test_collect_after_compose_read(tmp / "car2")
     test_watch_state_carry(tmp / "wsc")
+    test_collect_oncall_carry_after_early_failure(tmp / "ocf")
     test_storylink(tmp / "sl")
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()

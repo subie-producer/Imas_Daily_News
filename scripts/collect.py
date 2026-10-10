@@ -45,7 +45,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      RenderFailed, render_page,
                      set_quiet, unbacked_facts,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
-                     collect_edition, edition_date, mark_collect_oncall,
+                     collect_edition, edition_date, mark_collect_oncall, merge_watch_state, WATCH_STATE_REL,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author)
 
@@ -1624,6 +1624,24 @@ def merge_into_day_file(cands: list[dict], day: str) -> int:
     return added
 
 
+def carry_watch_state(asked: str, date: str) -> None:
+    """組版が読み終えた号(asked〜date の前日)から、新着を足す号(date)へ定点観測の状態を引き継ぐ。状態は号ブランチごとに
+    あり、date のブランチ(発行前の main から作られる)は、読み終えた号に保存した未処理・諦めた新着・既読を持たない。
+    引き継がないと、当番が取り直すべき新着をどの号の候補にも入れられない(監査指摘)。手元と origin の両方を和で取り込む。"""
+    state = json.loads(STATE_PATH.read_text(encoding="utf-8")) if STATE_PATH.exists() else {}
+    d = asked
+    while d < date:
+        for ref in (f"edition/{d}", f"origin/edition/{d}"):
+            r = git("show", f"{ref}:{WATCH_STATE_REL}", check=False)
+            if r.returncode == 0 and r.stdout.strip():
+                state = merge_watch_state(state, json.loads(r.stdout))
+        d = (datetime.date.fromisoformat(d) + datetime.timedelta(days=1)).isoformat()
+    STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    print(f"定点観測の状態を {asked}号から {date}号へ引き継いだ(未処理 {len(state.get('_pending', []))}件・"
+          f"諦めた新着 {len(state.get('_given_up', []))}件)", flush=True)
+
+
 def hand_to_oncall() -> None:
     """人に「異常」として通知したものは、申告で終えずに当番がなぜなぜする。直したら定点観測を取り直し、落とした新着を
     この号の選定リストに入れるまでが当番の仕事(編集長 2026-10-07「やらかしてドロップしたのは責任を持って修正して紙面に乗せろ」。
@@ -1671,6 +1689,8 @@ def main() -> int:
 
     if not args.no_git and not checkout_edition_branch(date, "collect"):
         return 1
+    if not args.no_git and date != asked:
+        carry_watch_state(asked, date)
 
     # Grok は SuperGrok の週次上限を消費するため、収集のたびに回すと枠を使い切る
     # (実測: 1回の収集で10セッション。日5回だと週350セッションになり上限の数倍)。

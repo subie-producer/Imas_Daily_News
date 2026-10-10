@@ -1105,8 +1105,11 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
             #   - --oncall-rerun は、直しが効かず再び読めなかったバッチを諦めさせない。既読にせず繰り越し、
             #     残れば collect が非0で返す(原因未確定のまま新着を失わない。監査指摘)
             #   - 組版がもう候補を読んだ号なら、取り直した新着は読まれていない次の号へ足す(collect と同じ規則で決め、
-            #     その号のブランチで確定・送信する。読んだ号へ足すとどの号にも載らない)
-            target = collect_edition(edition.removeprefix("edition/"))
+            #     その号のブランチで確定・送信する。読んだ号へ足すとどの号にも載らない)。collect へは読み終えた号のまま渡す。
+            #     collect は同じ規則で次の号へ回し、読み終えた号に保存した未処理・諦めた新着を引き継ぐ(先に回した号を渡すと、
+            #     どの号から引き継ぐかが分からず、取り直すべき新着が見えない。監査指摘)
+            asked = edition.removeprefix("edition/")
+            target = collect_edition(asked)
             target_branch = f"edition/{target}"
             # 取り直しも次の定時工程の前に終える(STAGE_END_AT)。後始末(素材の確定・push・通知)の分
             # (CLEANUP_RESERVE_SEC)を残して打ち切り、後始末の git 操作も残り時間で切る(監査指摘: 後始末で期限を越えると
@@ -1114,7 +1117,7 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
             left = lambda: (STAGE_END_AT - time.time()) if STAGE_END_AT else 3600
             limit = max(60, min(3600, int(left() - CLEANUP_RESERVE_SEC)))
             code = run_stage([sys.executable, str(ROOT / "scripts" / "collect.py"),
-                              "--skip-explore", "--skip-grok", "--oncall-rerun", "--date", target], log, limit)
+                              "--skip-explore", "--skip-grok", "--oncall-rerun", "--date", asked], log, limit)
             if not root_clean():
                 # 時間切れ・異常終了で取り直しが途中で終わっても、保存できた素材と既読状態は確定させ、作業ツリーを
                 # clean にして次の工程(組版・道具の更新)を止めない(監査指摘)。素材のファイルは丸ごと書き直す形なので途中は無い

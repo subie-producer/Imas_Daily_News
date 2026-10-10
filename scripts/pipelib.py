@@ -50,6 +50,53 @@ def collect_edition(date: str) -> str:
     return date
 
 
+WATCH_STATE_REL = "stock/watch-state.json"
+
+
+def merge_watch_state(cur: dict, other: dict) -> dict:
+    """定点観測の状態(stock/watch-state.json)を2つの号ブランチから1つにまとめる。どちらか一方にしか無い未処理(_pending)・
+    諦めた新着(_given_up)を落とさない(号を切り替える・発行で取り込むときに片方だけを採ると、そこにしか無い回収対象が消える)。
+    URL ごとに、どちらかで処理済み(既読で、未処理でも諦めたでもない)なら処理済み、そうでなく未処理ならどちらかの未処理、
+    残りは諦めた新着。観測先ごとの既読は和(cur の順が先)。入力は書き換えない。"""
+    def lists(s: dict) -> tuple[dict, dict, set]:
+        pend = {it["url"]: it for it in s.get("_pending", []) if isinstance(it, dict) and it.get("url")}
+        gave = {it["url"]: it for it in s.get("_given_up", []) if isinstance(it, dict) and it.get("url")}
+        seen = {u for k, v in s.items() if not k.startswith("_") and isinstance(v, list) for u in v}
+        return pend, gave, {u for u in seen if u not in pend and u not in gave}
+    states = [cur or {}, other or {}]
+    parts = [lists(s) for s in states]
+    done = set().union(*(p[2] for p in parts))
+    merged: dict = {}
+    for s in states:
+        for k, v in s.items():
+            if not k.startswith("_") and isinstance(v, list):
+                have = merged.setdefault(k, [])
+                merged[k] = (have + [u for u in v if u not in have])[:500]
+    pending: dict = {}
+    for p in parts:
+        for u, it in p[0].items():
+            if u not in done:
+                pending.setdefault(u, it)
+    given: dict = {}
+    for p in parts:
+        for u, it in p[1].items():
+            if u not in done and u not in pending:
+                given.setdefault(u, it)
+    unreadable: dict = {}
+    for s in states:
+        for u, n in (s.get("_unreadable") or {}).items():
+            if u in pending:
+                unreadable[u] = max(unreadable.get(u, 0), n)
+    for s in states:      # 知らない下線の項目は cur を優先して残す
+        for k, v in s.items():
+            if k.startswith("_") and k not in ("_pending", "_given_up", "_unreadable"):
+                merged.setdefault(k, v)
+    merged["_pending"] = list(pending.values())
+    merged["_given_up"] = sorted(given.values(), key=lambda g: str(g.get("given_up_at", "")))
+    merged["_unreadable"] = unreadable
+    return merged
+
+
 def load_env() -> dict:
     env = {}
     p = ROOT / ".env"

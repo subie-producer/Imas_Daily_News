@@ -147,6 +147,26 @@ def deploy_site() -> str:
     return "⚠️配信は失敗(要再実行)。"
 
 
+def watch_state_at(ref: str) -> dict | None:
+    """ref の定点観測の状態。無ければ None。"""
+    from pipelib import WATCH_STATE_REL
+    r = git("show", f"{ref}:{WATCH_STATE_REL}", check=False)
+    return json.loads(r.stdout) if r.returncode == 0 and r.stdout.strip() else None
+
+
+def write_merged_watch_state(ours: dict | None, theirs: dict | None) -> bool:
+    """両側の定点観測の状態を合わせて書き、index に載せる。中身が変わったら True。"""
+    from pipelib import WATCH_STATE_REL, merge_watch_state
+    merged = merge_watch_state(ours or {}, theirs or {})
+    p = ROOT / WATCH_STATE_REL
+    text = json.dumps(merged, ensure_ascii=False, indent=1) + "\n"
+    changed = not p.exists() or p.read_text(encoding="utf-8") != text
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(text, encoding="utf-8")
+    git("add", "--", WATCH_STATE_REL)
+    return changed
+
+
 def ensure_next_branch(next_name: str, dry: bool) -> None:
     if branch_exists(next_name) or branch_exists(next_name, remote=True):
         # **既にあるなら main を取り込む。**collect は翌日ブランチを main から先に切る。
@@ -155,7 +175,9 @@ def ensure_next_branch(next_name: str, dry: bool) -> None:
         # 「既に存在」と言うだけで放置し、毎日人が手でマージして衝突を解いていた
         # (2026-09-07〜09、3日連続)。衝突するのは決まって2種類なので、機械で解く:
         #   metrics/<発行日>.json … 発行側(main)を採る
-        #   stock/watch-state.json … 生きているブランチ側(新しいほう)を採る
+        #   stock/watch-state.json … 両側を合わせる(merge_watch_state)。片側だけを採ると、もう片側にしか無い
+        #     未処理・諦めた新着(発行した号に保存した取り直しの対象)が消える(監査指摘)。衝突しなくても行単位の
+        #     自動 merge は JSON の中身を合わせないので、merge のあと必ず両側から作り直す
         # それ以外の衝突は解かずに戻し、人へ知らせる
         print(f"翌日ブランチ {next_name} は既に存在。main を取り込む", flush=True)
         if dry:
@@ -166,6 +188,7 @@ def ensure_next_branch(next_name: str, dry: bool) -> None:
             git("checkout", next_name)
             if branch_exists(next_name, remote=True):
                 git("pull", "--ff-only", "origin", next_name, check=False)
+        ours, theirs = (watch_state_at(next_name), watch_state_at("main"))
         r = git("merge", "main", "-m", f"Merge branch 'main' into {next_name}(発行後の取り込み)", check=False)
         if r.returncode != 0:
             conflicted = [l.split("\t", 1)[1] for l in
@@ -177,8 +200,7 @@ def ensure_next_branch(next_name: str, dry: bool) -> None:
                     git("checkout", "--theirs", f)      # main 側
                     git("add", f)
                 elif f == "stock/watch-state.json":
-                    git("checkout", "--ours", f)        # ブランチ側
-                    git("add", f)
+                    write_merged_watch_state(ours, theirs)
                 else:
                     others.append(f)
             if others:
@@ -187,6 +209,12 @@ def ensure_next_branch(next_name: str, dry: bool) -> None:
                        + ", ".join(others[:8]), ok=False)
                 return
             git("commit", "--no-edit", check=False)
+        elif ours is not None and theirs is not None and write_merged_watch_state(ours, theirs):
+            c = git("commit", "-q", "-m", f"定点観測の状態: 発行した号と {next_name} を合わせる", check=False)
+            if c.returncode != 0:
+                notify(f"翌日ブランチ {next_name}: 定点観測の状態を合わせたが commit できない(push せず): "
+                       f"{(c.stderr or c.stdout).strip()[:200]}", ok=False)
+                return
         # union merge で判定表の行が二重になったら、ここで除いて同じ push に載せる(2026-09-17: 5行が二重)
         from pipelib import dedupe_source_table
         removed = dedupe_source_table()

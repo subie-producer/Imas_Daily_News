@@ -3248,10 +3248,131 @@ def test_collect_after_compose_read(tmp: Path):
     check("date = collect_edition(edition_date())" in inspect.getsource(collect.hand_to_oncall),
           "収集の当番へ、組版が読み終えた号を取り込み先として渡している")
     osrc = inspect.getsource(oncall)
-    check('target = collect_edition(edition.removeprefix("edition/"))' in osrc
+    check('target = collect_edition(asked)' in osrc and '"--oncall-rerun", "--date", asked]' in osrc
           and "取り直しの途中までを確定(exit {code})\", target_branch" in osrc
           and 'ensure_pushed(target_branch, f"{date} collect: 取り直した素材"' in osrc,
-          "当番の取り直しが、組版が読み終えた号のブランチで素材を確定・送信している")
+          "当番の取り直しが、組版が読み終えた号のブランチで素材を確定・送信している"
+          "(または collect へ回した先の号を渡し、読み終えた号の未処理を引き継げない)")
+
+
+def _git_repo(tmp: Path, state: dict) -> callable:
+    """tmp に定点観測の状態を持つ main だけの Git リポジトリ(origin は隣の裸リポジトリ)を作り、tmp で git を回す関数を返す。"""
+    tmp.mkdir(parents=True, exist_ok=True)
+    g = lambda *a: subprocess.run(["git", *a], cwd=tmp, capture_output=True, text=True, check=True)
+    subprocess.run(["git", "init", "-q", "--bare", str(tmp.parent / (tmp.name + "-origin.git"))], check=True)
+    g("init", "-q", "-b", "main")
+    g("config", "user.email", "t@example.com")
+    g("config", "user.name", "t")
+    g("remote", "add", "origin", str(tmp.parent / (tmp.name + "-origin.git")))
+    (tmp / "stock").mkdir(exist_ok=True)
+    (tmp / "stock" / "watch-state.json").write_text(json.dumps(state, indent=1) + "\n", encoding="utf-8")
+    (tmp / "source_types.yml").write_text("{}\n", encoding="utf-8")
+    g("add", "-A")
+    g("commit", "-q", "-m", "init")
+    return g
+
+
+def _commit_state(g, tmp: Path, branch: str, state: dict) -> None:
+    g("checkout", "-q", "-B", branch)
+    (tmp / "stock" / "watch-state.json").write_text(json.dumps(state, indent=1) + "\n", encoding="utf-8")
+    g("commit", "-q", "-am", f"state {branch}")
+
+
+def test_watch_state_carry(tmp: Path):
+    """定点観測の状態は号ブランチごとにある。組版が読み終えた号から次の号へ新着を回すとき、読み終えた号に保存した未処理
+    (_pending)・諦めた新着(_given_up)・既読を次の号へ引き継ぐ(次の号は発行前の main から作られ、それを持たない。
+    引き継がないと取り直すべき新着がどの号の候補にも入らない。監査指摘 R1)。発行で次の号へ main を取り込むときも、
+    片側だけを採らずに両側を合わせる(同じ型)。"""
+    import collect, release
+    import yaml
+    P = {"source_id": "src", "brand": "general", "url": "https://s.jp/p", "title": "未処理", "source_type": "公式", "csr": False}
+    G = {"source_id": "src", "brand": "general", "url": "https://s.jp/g", "title": "諦めた", "source_type": "公式", "csr": False,
+         "given_up_at": "2026-10-11T02:10:00+09:00"}
+    base = {"src": ["https://s.jp/a"]}
+    # 合わせ方: どちらかで処理済みなら処理済み、そうでなく未処理ならどちらかの未処理、残りは諦めた新着
+    m = pipelib.merge_watch_state(dict(base, _pending=[], _given_up=[]),
+                                  dict(src=["https://s.jp/a", "https://s.jp/g"], _pending=[P], _given_up=[G],
+                                       _unreadable={"https://s.jp/p": 1}))
+    check([it["url"] for it in m["_pending"]] == [P["url"]] and [it["url"] for it in m["_given_up"]] == [G["url"]]
+          and m["_unreadable"] == {P["url"]: 1} and set(m["src"]) == {"https://s.jp/a", "https://s.jp/g"},
+          f"片側にしか無い未処理・諦めた新着を合わせ損ねた: {m}")
+    done = pipelib.merge_watch_state(dict(src=["https://s.jp/p", "https://s.jp/g", "https://s.jp/a"], _pending=[], _given_up=[]),
+                                     dict(src=["https://s.jp/a", "https://s.jp/g"], _pending=[P], _given_up=[G]))
+    check(not done["_pending"] and not done["_given_up"], f"もう片側で処理済みの新着を、未処理・諦めたとして戻した: {done}")
+    back = pipelib.merge_watch_state(dict(src=["https://s.jp/g"], _pending=[G], _given_up=[]), dict(src=["https://s.jp/g"], _given_up=[G]))
+    check([it["url"] for it in back["_pending"]] == [G["url"]] and not back["_given_up"], f"未処理と諦めたの両方に残した: {back}")
+
+    # collect: 10/11号に未処理1件・諦めた1件を保存 → 組版が10/11号を読む → 当番の取り直し(--date 2026-10-11)が10/12号へ回す。
+    # 10/12号のブランチは発行前の main から作られ、未処理0件。取り直しが10/11号の2件を facts 化して10/12号の候補に入れる
+    repo = tmp / "collect"
+    g = _git_repo(repo, base)
+    _commit_state(g, repo, "edition/2026-10-11", dict(base, _pending=[P], _given_up=[G]))
+    g("checkout", "-q", "main")
+    (repo / "candidates").mkdir(exist_ok=True)
+    (repo / "sources.yml").write_text(yaml.safe_dump([{"id": "src", "brand": "general", "type": "html", "url": "https://s.jp/",
+                                                       "base": "https://s.jp", "list_regex": "x", "enabled": True}]), encoding="utf-8")
+    switched = []
+
+    def fake_checkout(date, job):
+        switched.append(date)
+        g("checkout", "-q", "-B", f"edition/{date}", "main")   # 次の号は無いので main から作る(pipelib と同じ)
+        return True
+    hits = lambda prompt: [{"page": i + 1, "status": "extracted",
+                            "items": [{"title": u, "url": u, "facts": ["告知"], "brand": "general", "source_type": "公式"}]}
+                           for i, u in enumerate(re.findall(r"^### \d+\. (\S+)", prompt, re.M))]
+    saved = (collect.ROOT, pipelib.ROOT, collect.STATE_PATH, collect.job_lock, collect.checkout_edition_branch, collect.commit_and_push,
+             collect.run_explores, collect.append_metric, collect.notify, collect.list_source, collect.page_html_or_note,
+             collect.render_prompt, collect.claude_exec, collect.normalize, collect.verify, sys.argv, pipelib._QUIET)
+    try:
+        collect.ROOT = pipelib.ROOT = repo
+        collect.STATE_PATH = repo / "stock" / "watch-state.json"
+        collect.job_lock = lambda *a, **k: None
+        collect.checkout_edition_branch = fake_checkout
+        collect.commit_and_push = lambda *a, **k: True
+        collect.run_explores = lambda *a, **k: ([], {})
+        collect.append_metric = lambda *a, **k: None
+        collect.notify = lambda *a, **k: True
+        collect.list_source = lambda s, known, fetch=None: ([("https://s.jp/a", "")], 1, False)
+        collect.page_html_or_note = lambda url, csr: ("", "")
+        collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+        collect.claude_exec = lambda prompt, timeout=0: hits(prompt)
+        collect.normalize, collect.verify = (lambda cs: cs), (lambda cs: {})
+        pipelib.mark_candidates_read("2026-10-11", 5)
+        sys.argv = ["collect", "--oncall-rerun", "--skip-explore", "--skip-grok", "--date", "2026-10-11"]
+        code = collect.main()
+        got = repo / "candidates" / "2026-10-12.json"
+        urls = {c.get("url") for c in json.loads(got.read_text(encoding="utf-8"))} if got.exists() else set()
+        st = json.loads((repo / "stock" / "watch-state.json").read_text(encoding="utf-8"))
+        check(switched == ["2026-10-12"] and code == 0 and urls == {P["url"], G["url"]},
+              f"読み終えた号に保存した未処理・諦めた新着を、次の号へ回す取り直しが拾えない: switched={switched} exit={code} {urls}")
+        check(not st.get("_pending") and not st.get("_given_up"), f"取り直したのに次の号の状態に未処理・諦めたが残る: {st}")
+    finally:
+        (collect.ROOT, pipelib.ROOT, collect.STATE_PATH, collect.job_lock, collect.checkout_edition_branch, collect.commit_and_push,
+         collect.run_explores, collect.append_metric, collect.notify, collect.list_source, collect.page_html_or_note,
+         collect.render_prompt, collect.claude_exec, collect.normalize, collect.verify, sys.argv, pipelib._QUIET) = saved
+
+    # release: 10/11号(未処理1件・諦めた1件)を発行した main を、先に main から切られていた10/12号へ取り込む。
+    # 10/12号の側の状態だけを採ると、10/11号にしか無い2件が消える
+    repo = tmp / "release"
+    g = _git_repo(repo, base)
+    _commit_state(g, repo, "edition/2026-10-12", dict(src=["https://s.jp/a", "https://s.jp/b"], _pending=[], _given_up=[]))
+    g("checkout", "-q", "main")
+    (repo / "stock" / "watch-state.json").write_text(json.dumps(dict(base, _pending=[P], _given_up=[G]), indent=1) + "\n",
+                                                    encoding="utf-8")
+    g("commit", "-q", "-am", "第n号")
+    g("push", "-q", "origin", "main", "edition/2026-10-12")
+    saved = (release.ROOT, pipelib.ROOT, release.notify)
+    try:
+        release.ROOT = pipelib.ROOT = repo
+        release.notify = lambda *a, **k: None
+        release.ensure_next_branch("edition/2026-10-12", False)
+        st = json.loads(g("show", "edition/2026-10-12:stock/watch-state.json").stdout)
+        check([it["url"] for it in st.get("_pending", [])] == [P["url"]] and [it["url"] for it in st.get("_given_up", [])] == [G["url"]]
+              and set(st.get("src", [])) == {"https://s.jp/a", "https://s.jp/b"},
+              f"発行した号の未処理・諦めた新着が、翌日の号へ取り込まれない: {st}")
+        check(not g("status", "--porcelain").stdout.strip(), "翌日の号へ状態を合わせたあと作業ツリーが汚れている")
+    finally:
+        release.ROOT, pipelib.ROOT, release.notify = saved
 
 
 def test_storylink(tmp: Path):
@@ -5134,6 +5255,7 @@ def main() -> int:
     test_render_failure_reaches_classify_and_verify(tmp / "rfc")
     test_collect_oncall_rerun_exit(tmp / "cre")
     test_collect_after_compose_read(tmp / "car2")
+    test_watch_state_carry(tmp / "wsc")
     test_storylink(tmp / "sl")
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()

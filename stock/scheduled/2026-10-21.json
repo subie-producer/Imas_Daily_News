@@ -282,5 +282,27 @@
   "verify": "confirmed",
   "src_candidate_id": "202610080222-grok-59",
   "event_date": "2026-10-21"
+ },
+ {
+  "id": "sched-2026-10-21-shiny-party-2026-終了",
+  "dedup_key": "shiny-party-2026",
+  "brand": "shiny",
+  "subject": "シャニソン シャイニーパーティー",
+  "kind": "終了",
+  "note": "23:59の終了日。ログイン報酬・交換所・ミッションの最終日",
+  "reserved_on": "2026-10-11",
+  "title": "シャイニーパーティー",
+  "url": "https://x.com/imassc_prism/status/2108935585863958967",
+  "source_type": "公式",
+  "facts": [
+   "期間内ログインでSSRサポートキャラ【スプーキー・パーリー】郁田はるきを入手。",
+   "交換所アイテムとミッションクリア報酬あり。",
+   "開催期間: 10/21 23:59まで",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610110238-grok-28",
+  "deadline": "2026-10-21"
  }
 ]

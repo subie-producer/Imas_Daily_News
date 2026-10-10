@@ -1,0 +1,57 @@
+{
+ "decisions": {
+  "birthday-hitomi-tohko-chris-coron-2026": {
+   "action": "article",
+   "angle": "アイマスch公式が10月11日の服部瞳子・古論クリスの誕生日をお祝いムービーで祝い、ファンの間でも祝福が広がった。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン面の1本。古論クリスはSideM面にも公式投稿の記事があるが、こちらはアイマスch公式の動画で別の発信。"
+  },
+  "still-blue-ticket-lottery-reactions-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "birthday-hitomi-tohko-chris-coron-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "界隈の反応として、ファン面の1本にまとめる。掲示板の二次情報で素材は薄く、特定個人を主役にしない。"
+  },
+  "fan-idol-pick-tool-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "birthday-hitomi-tohko-chris-coron-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン作成ツールの話題として、ファン面の1本にまとめる。個人のSNS投稿単体では記事にしない。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-birthday-hitomi-tohko-chris-coron-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "アイマスch公式が10月11日の服部瞳子・古論クリスの誕生日をお祝いムービーで祝い、ファンの間でも祝福が広がった。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "birthday-hitomi-tohko-chris-coron-2026",
+    "candidate_ids": [
+     "202610110238-grok-117",
+     "202610102332-explore-1",
+     "202610110238-grok-44"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

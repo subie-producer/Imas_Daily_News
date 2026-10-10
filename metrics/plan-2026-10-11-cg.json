@@ -1,0 +1,130 @@
+{
+ "decisions": {
+  "cg-memory-pict-7th-pict": {
+   "action": "article",
+   "angle": "Memory Pict.第7弾(佐藤心・白菊ほたる)の単品価格(缶バッジ500円・B2タペストリー5,000円・キャラファイングラフ16,000円)と、受注が10月18日までであることを伝える。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/30の受注開始記事に価格は無い"
+  },
+  "cg-15th-anniversary-orchestra-concert-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "グッズ・会場・日程・DAY1出演は10/9と過去号で既報。締切18日は3日以内でない"
+  },
+  "cinderella-party-album-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8『デレパCD、通販は11月18日まで』と同一商品。発売日・価格・収録内容は既報で当日のトリガーも無い"
+  },
+  "cg-athome-apple-of-my-ai-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/29記事に公演日程・出演・先行期間・当落日まで掲載済み。先行締切18日は3日以内でない"
+  },
+  "hachinohe-cinderella-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "factsは特設サイト公開のみで、prior本文(10/10)に無い新事実も当日トリガーも無い"
+  },
+  "cinderella-playlist-additions-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じ2曲の追加を10/10に記事化済み"
+  },
+  "cg-15th-party-2026-tickets": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/18・9/30記事に会場・日程・先行期間(10/19締切)を掲載済み。締切は8日先で当日トリガー無し"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-memory-pict-7th-pict",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Memory Pict.第7弾(佐藤心・白菊ほたる)の単品価格(缶バッジ500円・B2タペストリー5,000円・キャラファイングラフ16,000円)と、受注が10月18日までであることを伝える。",
+    "purpose": "新情報",
+    "lead_score": 40,
+    "dedup_key": "cg-memory-pict-7th-pict",
+    "candidate_ids": [
+     "202610101233-watch-0"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-15th-anniversary-orchestra-concert-goods-2026",
+    "reason": "既報",
+    "note": "グッズ・会場・日程・DAY1出演は10/9と過去号で既報。締切18日は3日以内でない"
+   },
+   {
+    "dedup_key": "cinderella-party-album-2026",
+    "reason": "既報",
+    "note": "10/8『デレパCD、通販は11月18日まで』と同一商品。発売日・価格・収録内容は既報で当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "cg-athome-apple-of-my-ai-2027",
+    "reason": "既報",
+    "note": "9/29記事に公演日程・出演・先行期間・当落日まで掲載済み。先行締切18日は3日以内でない"
+   },
+   {
+    "dedup_key": "hachinohe-cinderella-collab-2026",
+    "reason": "既報",
+    "note": "factsは特設サイト公開のみで、prior本文(10/10)に無い新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "cinderella-playlist-additions-2026-10",
+    "reason": "既報",
+    "note": "同じ2曲の追加を10/10に記事化済み"
+   },
+   {
+    "dedup_key": "cg-15th-party-2026-tickets",
+    "reason": "既報",
+    "note": "9/18・9/30記事に会場・日程・先行期間(10/19締切)を掲載済み。締切は8日先で当日トリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

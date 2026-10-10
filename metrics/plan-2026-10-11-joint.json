@@ -1,0 +1,151 @@
+{
+ "decisions": {
+  "cosmo-miki-kouten-shuki-short-2026-10-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月10日号で同じ動画を掲載済み。新しい事実・当日のトリガー無し"
+  },
+  "tours-s2-livestream-2026": {
+   "action": "article",
+   "angle": "10月15日の生配信でS2弾情報を告知し、S1弾・S2弾で合わせたコーディネートとハロウィンアイテムも準備中と案内した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信日時・視聴先は既報。新しいのはコーデ紹介とハロウィンアイテム準備中の点"
+  },
+  "tours-s2-momoko-i-am-special-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月10日号に同内容(FEVERゲージ・SPアピール・生配信案内)。新事実無し"
+  },
+  "tours-s2-sp-appeal-adjustment-2026": {
+   "action": "article",
+   "angle": "S2弾から既存SPアピール「Quiet Charm」「デュアルハート」が調整され、全アイドルが対象だが使用条件がある。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。新規の仕様変更の告知"
+  },
+  "tours-late-summer-campaign-2026": {
+   "action": "article",
+   "angle": "レイトサマーキャンペーンは12日25時59分で終了、景品交換は13日25時59分までで、桃子カードやストレージボックスは在庫がなくなり次第終了。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "交換期限まで3日以内の当日トリガー。本日が期間終了前日"
+  },
+  "tours-livestream-studio-audience-2026": {
+   "action": "article",
+   "angle": "現地番組観覧の当選者へDMで連絡済み。回答期限切れや辞退があれば予備当選を13日頃に1回だけ行う。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "応募締切の既報とは別の新情報(当選連絡・予備当選の予定)"
+  },
+  "sidem-shiny-taiban-sp-seat": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月10日号『SP席特典デザイン公開』と同内容。unconfirmedで新事実・トリガーも無し"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-s2-livestream-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "10月15日の生配信でS2弾情報を告知し、S1弾・S2弾で合わせたコーディネートとハロウィンアイテムも準備中と案内した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "tours-s2-livestream-2026",
+    "candidate_ids": [
+     "202610110238-grok-69"
+    ]
+   },
+   {
+    "slug": "joint-tours-s2-sp-appeal-adjustment-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "S2弾から既存SPアピール「Quiet Charm」「デュアルハート」が調整され、全アイドルが対象だが使用条件がある。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "tours-s2-sp-appeal-adjustment-2026",
+    "candidate_ids": [
+     "202610110238-grok-71"
+    ]
+   },
+   {
+    "slug": "joint-tours-late-summer-campaign-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "レイトサマーキャンペーンは12日25時59分で終了、景品交換は13日25時59分までで、桃子カードやストレージボックスは在庫がなくなり次第終了。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "tours-late-summer-campaign-2026",
+    "candidate_ids": [
+     "202610110238-grok-72"
+    ]
+   },
+   {
+    "slug": "joint-tours-livestream-studio-audience-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "現地番組観覧の当選者へDMで連絡済み。回答期限切れや辞退があれば予備当選を13日頃に1回だけ行う。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "tours-livestream-studio-audience-2026",
+    "candidate_ids": [
+     "202610110238-grok-73"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cosmo-miki-kouten-shuki-short-2026-10-09",
+    "reason": "既報",
+    "note": "10月10日号で同じ動画を掲載済み。新しい事実・当日のトリガー無し"
+   },
+   {
+    "dedup_key": "tours-s2-momoko-i-am-special-2026",
+    "reason": "既報",
+    "note": "10月10日号に同内容(FEVERゲージ・SPアピール・生配信案内)。新事実無し"
+   },
+   {
+    "dedup_key": "sidem-shiny-taiban-sp-seat",
+    "reason": "既報",
+    "note": "10月10日号『SP席特典デザイン公開』と同内容。unconfirmedで新事実・トリガーも無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

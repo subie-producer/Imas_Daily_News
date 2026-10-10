@@ -1,0 +1,265 @@
+{
+ "decisions": {
+  "shiny-style-collection-wave2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-10号の本文に価格・商品・受注期限まで既出。新事実なし、締切(10/25)も3日以内でない"
+  },
+  "shiny-casting-halloween-2026": {
+   "action": "article",
+   "angle": "キャスコレ「ハロウィンノケモノ編」が開始。累計個数報酬、ステップアップガシャ、2回特訓の台本、朝昼夜で変わるホームボイスなど。【束の間ロアー】七草はづきのピックアップも統合",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-party-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・ログインボーナス等の運営情報(シャイニーパーティーの郁田はるきSSR配布、10/21まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-alev1-making-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "プレミア公開は10/10 20:00で終了済み。10-09・10-10号で既報"
+  },
+  "shiny-orchestra-2027": {
+   "action": "article",
+   "angle": "シャニマスオケ2027の昼公演歌唱者として礒部花凜・幸村恵理・和久井優・山根綺の4人が発表され、アソビストアプレミアム会員先行を受付中",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "面の最大ニュース"
+  },
+  "shiny-85th-paracolle-stepup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-10号の運営情報まとめに同内容(STEP3〜5の中身)が既出。新事実・当日トリガーなし"
+  },
+  "sidem-shinycolors-live-sp-seat-benefits-2026": {
+   "action": "article",
+   "angle": "SideM×シャニマス対バンのアソビストアプレミアム会員先行は明日12日23時59分まで。SP席特典のタオルとタスキ、申込条件を伝え直す",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内。facts自体は既報なので期日を軸にする"
+  },
+  "noctchill-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "verify=unconfirmed(URLの取り違えを確認できない)。同公演は10-09号で先行受付を既報。出典を確認できれば演出参加キャンペーンは新情報"
+  },
+  "chikusei-shiny-collab-fan-activity-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿の感想で出典も未確認。開幕は10-10号で既報"
+  },
+  "shiny-casting-theme-voice-gacha-monster-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ(キャスコレ連動テーマボイス称号付きガシャ・モンスター役)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-casting-theme-voice-gacha-hazuki-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ(キャスコレ連動テーマボイス称号(はづき)付きガシャ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-casting-collection-halloween-2026-hazuki": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-casting-halloween-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じキャスコレのピックアップ紹介"
+  },
+  "shiny-song-for-prism-event-goods-2026-10": {
+   "action": "article",
+   "angle": "『Song for Prism』発売記念イベントの会場物販が本日12時30分から終演後30分程度まで。購入制限と体験会なしを伝える",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。当日開始"
+  },
+  "shiny-fumage-cruise-2026": {
+   "action": "article",
+   "angle": "『Fumage』船上撮影会クルーズの抽選申込は本日23時59分まで。12月19・20日開催、通常プラン15,600円",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。本日締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-casting-halloween-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "キャスコレ「ハロウィンノケモノ編」が開始。累計個数報酬、ステップアップガシャ、2回特訓の台本、朝昼夜で変わるホームボイスなど。【束の間ロアー】七草はづきのピックアップも統合",
+    "purpose": "新情報",
+    "lead_score": 40,
+    "dedup_key": "shiny-casting-halloween-2026",
+    "candidate_ids": [
+     "202610110238-grok-27",
+     "202610110238-grok-119"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニマスオケ2027の昼公演歌唱者として礒部花凜・幸村恵理・和久井優・山根綺の4人が発表され、アソビストアプレミアム会員先行を受付中",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "shiny-orchestra-2027",
+    "candidate_ids": [
+     "202610110238-grok-30"
+    ]
+   },
+   {
+    "slug": "shiny-sidem-shinycolors-live-sp-seat-benefits-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "SideM×シャニマス対バンのアソビストアプレミアム会員先行は明日12日23時59分まで。SP席特典のタオルとタスキ、申込条件を伝え直す",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-shinycolors-live-sp-seat-benefits-2026",
+    "candidate_ids": [
+     "202610110238-grok-32",
+     "202610110238-grok-39"
+    ]
+   },
+   {
+    "slug": "shiny-song-for-prism-event-goods-2026-10",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『Song for Prism』発売記念イベントの会場物販が本日12時30分から終演後30分程度まで。購入制限と体験会なしを伝える",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-song-for-prism-event-goods-2026-10",
+    "candidate_ids": [
+     "sched-2026-10-11-shiny-song-for-prism-event-goods-2026-10-開始"
+    ]
+   },
+   {
+    "slug": "shiny-fumage-cruise-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『Fumage』船上撮影会クルーズの抽選申込は本日23時59分まで。12月19・20日開催、通常プラン15,600円",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-fumage-cruise-2026",
+    "candidate_ids": [
+     "sched-2026-10-11-shiny-fumage-cruise-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "開催中のガシャ・ログインボーナス等の運営情報(シャイニーパーティーの郁田はるきSSR配布、10/21まで)",
+    "lead_score": 0,
+    "dedup_key": "shiny-party-2026",
+    "candidate_ids": [
+     "202610110238-grok-28",
+     "202610110238-grok-98",
+     "202610110238-grok-99"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-style-collection-wave2-2026",
+    "reason": "既報",
+    "note": "10-10号の本文に価格・商品・受注期限まで既出。新事実なし、締切(10/25)も3日以内でない"
+   },
+   {
+    "dedup_key": "shiny-alev1-making-2026",
+    "reason": "既報",
+    "note": "プレミア公開は10/10 20:00で終了済み。10-09・10-10号で既報"
+   },
+   {
+    "dedup_key": "shiny-85th-paracolle-stepup-2026",
+    "reason": "既報",
+    "note": "10-10号の運営情報まとめに同内容(STEP3〜5の中身)が既出。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "noctchill-live-2027",
+    "reason": "出典不足",
+    "note": "verify=unconfirmed(URLの取り違えを確認できない)。同公演は10-09号で先行受付を既報。出典を確認できれば演出参加キャンペーンは新情報"
+   },
+   {
+    "dedup_key": "chikusei-shiny-collab-fan-activity-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿の感想で出典も未確認。開幕は10-10号で既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

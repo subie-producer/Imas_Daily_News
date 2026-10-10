@@ -307,5 +307,40 @@
   "verify": "confirmed",
   "src_candidate_id": "202610091245-watch-1",
   "event_date": "2026-11-25"
+ },
+ {
+  "id": "sched-2026-11-25-jupiter-monthly-theme-song-13-2026-発売",
+  "dedup_key": "jupiter-monthly-theme-song-13-2026",
+  "brand": "sidem",
+  "subject": "SideM Jupiter MONTHLY THEME SONG 13",
+  "kind": "発売",
+  "note": "CDが発売され、店頭・通販で購入できる",
+  "reserved_on": "2026-10-11",
+  "title": "Jupiter MONTHLY THEME SONG 13 ジャケット・試聴公開",
+  "url": "https://x.com/SideM_lantis/status/2108392014656012400",
+  "source_type": "準公式",
+  "facts": [
+   "商品名: P@SSION CHALLENGE We are 315！ MONTHLY THEME SONG 13 Jupiter",
+   "発売日: 2026年11月25日(水)",
+   "ジャケットと試聴動画を公開した。",
+   "封入特典: ポータルサイトでCD特典ストーリーが閲覧できるストーリー解放用シリアルコード。",
+   "初回生産特典: ユニットメンバー全員分の特製ブロマイド。",
+   "試聴動画: YouTube: https://www.youtube.com/watch?v=Ox9ZxjEtjsY&feature=youtu.be",
+   "CD SHOP: https://lnk.to/LACM-24793",
+   "エンゲージメント: 中",
+   "言及アイドル: 天ヶ瀬冬馬、御手洗翔太、伊集院北斗",
+   "『～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 13 Jupiter』は11月25日(水)発売。",
+   "ジャケットと試聴動画が公開された。",
+   "歌唱：Jupiter（天ヶ瀬冬馬(CV.寺島拓篤)、御手洗翔太(CV.松岡禎丞)、伊集院北斗(CV.神原大地)）。",
+   "価格：2,200円(10%税込) / 2,000円(税抜)。",
+   "品番：LACM-24793。",
+   "封入特典：ポータルサイトでCD特典ストーリーが閲覧できるストーリー解放用シリアルコード。",
+   "初回生産特典：ユニットメンバー全員分の特製ブロマイド。",
+   "YouTube: https://www.youtube.com/watch?v=Ox9ZxjEtjsY&feature=youtu.be"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610110238-grok-42",
+  "event_date": "2026-11-25"
  }
 ]

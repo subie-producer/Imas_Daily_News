@@ -159,5 +159,25 @@
   "src_candidate_id": "202610080222-grok-10",
   "event_date": "2026-10-08",
   "deadline": "2026-11-16"
+ },
+ {
+  "id": "sched-2026-11-07-sidem-joypolis3-2026-終了",
+  "dedup_key": "sidem-joypolis3-2026",
+  "brand": "sidem",
+  "subject": "SideM in JOYPOLIS 3 第2弾",
+  "kind": "終了",
+  "note": "第2弾スペシャルショー(Altessimoら6ユニット)の最終日。上映を観られる",
+  "reserved_on": "2026-10-11",
+  "title": "アイドルマスター SideM in JOYPOLIS 3",
+  "url": "https://tokyo-joypolis.com/event/sidem_jp2026/index.html",
+  "source_type": "当事者",
+  "facts": [
+   "第2弾(10月11日〜11月7日)の登場ユニットはAltessimo・Beit・もふもふえん・S.E.M・C.FIRST・315 ALLSTARS",
+   "スペシャルショーは1st Floorメインステージで12時・15時・17時に無料上映"
+  ],
+  "via": "",
+  "verify": "unconfirmed",
+  "src_candidate_id": "sched-2026-10-11-sidem-joypolis3-2026-開始",
+  "event_date": "2026-09-12〜2026-12-06"
  }
 ]

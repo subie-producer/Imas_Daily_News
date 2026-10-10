@@ -1,0 +1,229 @@
+{
+ "decisions": {
+  "gaku-agitato-streaming-2026": {
+   "action": "article",
+   "angle": "「Agitato」が10月10日にStreaming&DLで配信開始され、作詞・作曲・編曲はRyo'LEFTY'Miyata。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "直近の記事に配信開始の報は無い"
+  },
+  "gaku-gacha-schedule-2026-09-08": {
+   "action": "roundup",
+   "angle": "開催中の運営情報:あさり先生のプロデュースゼミ(10月20日9:59まで)など",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior は9月の無関係な楽曲まとめ。ゼミは既報だが開催中情報として束ねる"
+  },
+  "gaku-agitato-saki-gacha-2026": {
+   "action": "roundup",
+   "angle": "開催中の運営情報:Agitato咲季ガシャ(10月20日10:59まで)と登場カードの性能",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ガシャ自体は既報だがカード性能は新情報として roundup に入れる"
+  },
+  "gaku-asano-4ji-login-bonus-2026": {
+   "action": "roundup",
+   "angle": "開催中の運営情報:初星学園放送部の切り抜き公開、4コマ第175話、ゼミ開催中",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "切り抜きと4コマは prior に無い新情報"
+  },
+  "gaku-saki-another-guaranteed-gacha-2026": {
+   "action": "article",
+   "angle": "花海咲季のアナザーアイドル確定ガシャ(無料1連)は本日10時59分まで、最終日に引ける。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。終了が当日"
+  },
+  "gaku-agitato-saki-gacha-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-agitato-saki-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じAgitato咲季ガシャの公式告知"
+  },
+  "letora-birthday-live-2026-liveviewing": {
+   "action": "article",
+   "angle": "レトラ BIRTHDAY ONLINE LIVE 2026の現地ライブビューイング先行抽選は本日23時59分まで。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が当日。当落発表は13日"
+  },
+  "gakumas-seibu-chichibu-yukemuri-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "prior本文に全情報あり。開始は16日で3日以内ではない"
+  },
+  "gakumas-hedgehog-hot-water-bottle-2026": {
+   "action": "article",
+   "angle": "秦谷美鈴のハリネズミゆたんぽと新規描きおろしアクスタの受注が10月25日まで、手毬版も再登場。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注は単独記事"
+  },
+  "gakumas-miraimira-temari-iris-2026": {
+   "action": "article",
+   "angle": "月村手毬「雨上がりのアイリス」特訓前Ver.フィギュアのプレゼント応募は本日23時59分まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。応募最終日"
+  },
+  "gaku-sevenprint-bromide-202609": {
+   "action": "article",
+   "angle": "セブン-イレブンの学マスランダムブロマイド(全13種)は本日23時59分で販売終了。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。販売終了が当日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-agitato-streaming-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Agitato」が10月10日にStreaming&DLで配信開始され、作詞・作曲・編曲はRyo'LEFTY'Miyata。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-agitato-streaming-2026",
+    "candidate_ids": [
+     "202610101233-explore-5"
+    ]
+   },
+   {
+    "slug": "gaku-saki-another-guaranteed-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "花海咲季のアナザーアイドル確定ガシャ(無料1連)は本日10時59分まで、最終日に引ける。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-saki-another-guaranteed-gacha-2026",
+    "candidate_ids": [
+     "202610110238-grok-52",
+     "202610110238-grok-53",
+     "sched-2026-10-11-gaku-saki-another-guaranteed-gacha-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-letora-birthday-live-2026-liveviewing",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "レトラ BIRTHDAY ONLINE LIVE 2026の現地ライブビューイング先行抽選は本日23時59分まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 45,
+    "dedup_key": "letora-birthday-live-2026-liveviewing",
+    "candidate_ids": [
+     "202610110238-grok-80",
+     "sched-2026-10-11-letora-birthday-live-2026-liveviewing-締切"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-hedgehog-hot-water-bottle-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "秦谷美鈴のハリネズミゆたんぽと新規描きおろしアクスタの受注が10月25日まで、手毬版も再登場。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gakumas-hedgehog-hot-water-bottle-2026",
+    "candidate_ids": [
+     "202610110238-grok-87"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-miraimira-temari-iris-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "月村手毬「雨上がりのアイリス」特訓前Ver.フィギュアのプレゼント応募は本日23時59分まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gakumas-miraimira-temari-iris-2026",
+    "candidate_ids": [
+     "sched-2026-10-11-gakumas-miraimira-temari-iris-2026-締切"
+    ]
+   },
+   {
+    "slug": "gaku-sevenprint-bromide-202609",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "セブン-イレブンの学マスランダムブロマイド(全13種)は本日23時59分で販売終了。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-sevenprint-bromide-202609",
+    "candidate_ids": [
+     "sched-2026-10-11-gaku-sevenprint-bromide-202609-締切"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "開催中の運営情報:あさり先生のプロデュースゼミ(10月20日9:59まで)など",
+    "lead_score": 0,
+    "dedup_key": "gaku-gacha-schedule-2026-09-08",
+    "candidate_ids": [
+     "202610101834-explore-9",
+     "202610101834-explore-10",
+     "202610110238-explore-5",
+     "202610110238-grok-51",
+     "202610110238-grok-54",
+     "202610110238-grok-55",
+     "202610110238-grok-56"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gakumas-seibu-chichibu-yukemuri-2026",
+    "reason": "既報",
+    "note": "prior本文に全情報あり。開始は16日で3日以内ではない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

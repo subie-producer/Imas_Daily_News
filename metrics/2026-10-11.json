@@ -103,5 +103,43 @@
    },
    "duration_s": 2476
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-11T03:27:00+09:00",
+   "edition": "2026-10-11",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 38,
+   "written": 33,
+   "roundups": 5,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 102,
+    "covered": 102,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.8207033435503641,
+    "執筆": 5.591899347305298,
+    "出典の判定": 1.1786800384521485,
+    "組版": 0.759630556901296,
+    "校閲": 0.8518176317214966,
+    "校閲1波": 0.8518176317214966
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-gakumas-hedgehog-hot-water-bottle-2026",
+    "gaku-ops-roundup",
+    "other-million-cyber-planet-popup-2026",
+    "sidem-sem-lifes-side-menu-2dmv-2026",
+    "gaku-letora-birthday-live-2026-liveviewing"
+   ],
+   "duration_s": 1582
+  }
  ]
 }

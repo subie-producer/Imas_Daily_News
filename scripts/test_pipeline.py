@@ -3176,10 +3176,10 @@ def test_collect_oncall_rerun_exit(tmp: Path):
     import collect
     tmp.mkdir(parents=True, exist_ok=True)
     (tmp / "candidates").mkdir(exist_ok=True)
-    saved = (collect.ROOT, collect.job_lock, collect.run_watch, collect.run_explores,
+    saved = (collect.ROOT, pipelib.ROOT, collect.job_lock, collect.run_watch, collect.run_explores,
              collect.append_metric, collect.notify, sys.argv)
     try:
-        collect.ROOT = tmp
+        collect.ROOT = pipelib.ROOT = tmp
         collect.job_lock = lambda *a, **k: None
         collect.run_explores = lambda *a, **k: ([], {})
         collect.append_metric = lambda *a, **k: None
@@ -3198,8 +3198,60 @@ def test_collect_oncall_rerun_exit(tmp: Path):
         sys.argv = list(argv)
         check(collect.main() == 1, "取り直しで観測先の一覧がまた取れないのに成功(0)で終えた")
     finally:
-        (collect.ROOT, collect.job_lock, collect.run_watch, collect.run_explores,
+        (collect.ROOT, pipelib.ROOT, collect.job_lock, collect.run_watch, collect.run_explores,
          collect.append_metric, collect.notify, sys.argv) = saved
+
+
+def test_collect_after_compose_read(tmp: Path):
+    """組版がその号の候補を読んだあと(〜06:00)に足した新着は、読まれていない次の号へ足す。読んだ号へ足すと、その号は読み直さず、
+    次の号は自分の号のファイルしか読まないので、どの号にも載らない(保管の指摘 b2a9e39466: 夜間の収集失敗の取り直しが
+    組版の読込後に終わると起きる)。収集・当番の取り直し・組版の読込が同じ規則を使う。"""
+    import collect, inspect, oncall
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    saved = (collect.ROOT, pipelib.ROOT, collect.job_lock, collect.run_watch, collect.run_explores,
+             collect.append_metric, collect.notify, sys.argv)
+    try:
+        collect.ROOT = pipelib.ROOT = tmp
+        check(pipelib.collect_edition("2026-10-10") == "2026-10-10", "組版が読んでいない号から新着を逸らした")
+        pipelib.mark_candidates_read("2026-10-10", 5)
+        check(pipelib.collect_edition("2026-10-10") == "2026-10-11", "組版が読んだ号へ新着を足す(どの号にも載らない)")
+        pipelib.mark_candidates_read("2026-10-11", 3)
+        check(pipelib.collect_edition("2026-10-10") == "2026-10-12", "読まれた号を飛ばして、読まれていない最初の号へ回さない")
+        (pipelib.candidates_read_mark("2026-10-11")).unlink()
+        collect.job_lock = lambda *a, **k: None
+        collect.run_explores = lambda *a, **k: ([], {})
+        collect.append_metric = lambda *a, **k: None
+        collect.notify = lambda *a, **k: True
+        new = {"id": "n1", "title": "新着", "url": "https://idolmaster-official.jp/news/01_1.html", "facts": ["告知"],
+               "brand": "general", "source_type": "公式"}
+        collect.run_watch = lambda call, oncall_rerun=False: ([new], {"deferred": 0, "new": 1, "facted": 1})
+        saved_nv = (collect.normalize, collect.verify)
+        collect.normalize, collect.verify = (lambda cs: cs), (lambda cs: {})
+        try:
+            # 当番の取り直し(--date で読まれた号を渡す)も、壁時計の号が読まれていても、読まれていない号へ足す
+            sys.argv = ["collect", "--no-git", "--oncall-rerun", "--skip-explore", "--skip-grok", "--date", "2026-10-10"]
+            collect.main()
+        finally:
+            collect.normalize, collect.verify = saved_nv
+        late = tmp / "candidates" / "2026-10-11.json"
+        check(not (tmp / "candidates" / "2026-10-10.json").exists(), "組版が読み終えた号の候補ファイルへ新着を足した")
+        check(late.exists() and any(c.get("title") == "新着" for c in json.loads(late.read_text(encoding="utf-8"))),
+              "組版の読込後に回収した新着が次の号の候補に入らない")
+    finally:
+        (collect.ROOT, pipelib.ROOT, collect.job_lock, collect.run_watch, collect.run_explores,
+         collect.append_metric, collect.notify, sys.argv) = saved
+    # 組版は候補を読んだその場で印を置く。収集の当番を呼ぶ号・当番の取り直しの号とブランチも同じ規則で決める
+    csrc = inspect.getsource(compose.main)
+    check(re.search(r"cands = load_window_candidates\(date\)\n(\s*#.*\n)*\s*mark_candidates_read\(date,", csrc),
+          "組版が候補を読んだ印を置いていない(読込後の新着が読まれた号へ足され、どの号にも載らない)")
+    check("date = collect_edition(edition_date())" in inspect.getsource(collect.hand_to_oncall),
+          "収集の当番へ、組版が読み終えた号を取り込み先として渡している")
+    osrc = inspect.getsource(oncall)
+    check('target = collect_edition(edition.removeprefix("edition/"))' in osrc
+          and "取り直しの途中までを確定(exit {code})\", target_branch" in osrc
+          and 'ensure_pushed(target_branch, f"{date} collect: 取り直した素材"' in osrc,
+          "当番の取り直しが、組版が読み終えた号のブランチで素材を確定・送信している")
 
 
 def test_storylink(tmp: Path):
@@ -5081,6 +5133,7 @@ def main() -> int:
     test_render_failure_keeps_cause(tmp / "rf")
     test_render_failure_reaches_classify_and_verify(tmp / "rfc")
     test_collect_oncall_rerun_exit(tmp / "cre")
+    test_collect_after_compose_read(tmp / "car2")
     test_storylink(tmp / "sl")
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()

@@ -30,6 +30,26 @@ def edition_date(now: datetime.datetime | None = None) -> str:
     return d.isoformat()
 
 
+def candidates_read_mark(date: str) -> Path:
+    """組版がその号の候補(candidates/<date>.json)を読んだ印(Git 管理外の号ごとの作業物)。"""
+    return ROOT / "metrics" / "work" / date / "candidates-read.json"
+
+
+def mark_candidates_read(date: str, n: int) -> None:
+    """組版がその号の候補を読んだ(選定に掛けた)ことを記す。以後この号へ足した候補は誰にも読まれない(collect_edition)。"""
+    p = candidates_read_mark(date)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps({"read_at": now_jst().isoformat(timespec="seconds"), "candidates": n}) + "\n", encoding="utf-8")
+
+
+def collect_edition(date: str) -> str:
+    """収集が新着を足す号。組版がもう候補を読んだ号へ足すと、その号は読み直さず、次の号は自分の号のファイルしか読まない
+    ので、どの号にも載らない(組版の読込後〜06:00 の取り直し・手動の収集)。読まれていない最初の号へ回す。"""
+    while candidates_read_mark(date).exists():
+        date = (datetime.date.fromisoformat(date) + datetime.timedelta(days=1)).isoformat()
+    return date
+
+
 def load_env() -> dict:
     env = {}
     p = ROOT / ".env"

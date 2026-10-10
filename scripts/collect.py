@@ -45,7 +45,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      RenderFailed, render_page,
                      set_quiet, unbacked_facts,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
-                     edition_date, mark_collect_oncall,
+                     collect_edition, edition_date, mark_collect_oncall,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author)
 
@@ -1632,7 +1632,7 @@ def hand_to_oncall() -> None:
     当番を呼べたら、**工程の排他を持ったまま**動いている印を置く(収集が終わって排他が空いた瞬間に組版が取ると、
     当番は取り直せない。組版は印を見て待ち、受け渡しの間は譲る。監査指摘)"""
     end_at = collect_oncall_end(now_jst())
-    date = edition_date()
+    date = collect_edition(edition_date())
     if diagnose_anomalies("collect", date, rerun=True, extra_args=["--end-at", str(int(end_at))]):
         mark_collect_oncall(end_at, date)
 
@@ -1662,7 +1662,11 @@ def main() -> int:
         notify("collect", str(e), ok=False)
         return 1
     t0 = time.time()
-    date = args.date or edition_date()
+    asked = args.date or edition_date()
+    # 組版がもう候補を読んだ号へは足さない(読み直されず、次の号にも読まれないので消える)。読まれていない最初の号へ回す
+    date = collect_edition(asked)
+    if date != asked:
+        print(f"{asked}号の候補は組版が読み終えている。新着は {date}号へ足す", flush=True)
     branch = f"edition/{date}"
 
     if not args.no_git and not checkout_edition_branch(date, "collect"):

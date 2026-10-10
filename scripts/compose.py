@@ -51,7 +51,7 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
-                     collect_oncall_handover_pending)
+                     collect_oncall_handover_pending, mark_candidates_read)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
 # 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
@@ -2814,6 +2814,8 @@ def main() -> int:
     for line in _assemble.restore_reservation_facts(date):
         print(line, flush=True)
     cands = load_window_candidates(date)
+    # 読んだ印を置く。以後の収集はこの号ではなく次の号へ足す(読んだあとに足した新着が、どの号にも載らずに消えないように)
+    mark_candidates_read(date, len(cands))
     blocklist = load_blocklist()
     if not cands:
         notify("compose", f"{date}: 発行日±1日の candidates が空。compose 続行不能", ok=False)

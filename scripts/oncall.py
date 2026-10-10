@@ -74,7 +74,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hashlib
 
-from pipelib import (COLLECT_ONCALL_MARK, ENV, ROOT, SCHEDULED, SLOT_MARGIN_MIN, JobLockTimeout, job_lock, loads_strict, mark_collect_oncall,
+from pipelib import (COLLECT_ONCALL_MARK, collect_edition, ENV, ROOT, SCHEDULED, SLOT_MARGIN_MIN, JobLockTimeout, job_lock, loads_strict, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, tool_path)
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
@@ -1104,7 +1104,10 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
             #     06:00 境界をまたいだ往復や発行後 watch で別号を checkout してしまう(監査指摘)
             #   - --oncall-rerun は、直しが効かず再び読めなかったバッチを諦めさせない。既読にせず繰り越し、
             #     残れば collect が非0で返す(原因未確定のまま新着を失わない。監査指摘)
-            target = edition.removeprefix("edition/")
+            #   - 組版がもう候補を読んだ号なら、取り直した新着は読まれていない次の号へ足す(collect と同じ規則で決め、
+            #     その号のブランチで確定・送信する。読んだ号へ足すとどの号にも載らない)
+            target = collect_edition(edition.removeprefix("edition/"))
+            target_branch = f"edition/{target}"
             # 取り直しも次の定時工程の前に終える(STAGE_END_AT)。後始末(素材の確定・push・通知)の分
             # (CLEANUP_RESERVE_SEC)を残して打ち切り、後始末の git 操作も残り時間で切る(監査指摘: 後始末で期限を越えると
             # 組版が待つのをやめる)
@@ -1117,7 +1120,7 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
                 # clean にして次の工程(組版・道具の更新)を止めない(監査指摘)。素材のファイルは丸ごと書き直す形なので途中は無い
                 try:
                     commit_paths(["candidates", "stock/watch-state.json", "metrics"],
-                                 f"oncall: {target} 取り直しの途中までを確定(exit {code})", edition,
+                                 f"oncall: {target} 取り直しの途中までを確定(exit {code})", target_branch,
                                  push_timeout=max(15, min(120, int(left() / 3))))
                 except Exception as e:      # noqa: BLE001
                     notify("oncall", f"{date} collect: 取り直しの途中までを確定できない({type(e).__name__}: {e})", ok=False)
@@ -1126,7 +1129,7 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
                                      + sh(["git", "status", "--short"], cwd=ROOT).stdout[:500], ok=False)
             # clean でも、取り直しの commit がリモートに届いていなければ(push の途中で時間切れ・通信の停滞)、ここで送る。
             # 届かないまま次の工程がリモートから号を取り直すと、取り直した新着がその号の素材から消える(監査指摘)
-            ensure_pushed(edition, f"{date} collect: 取り直した素材", budget=max(20, int(left() - 30)))
+            ensure_pushed(target_branch, f"{date} collect: 取り直した素材", budget=max(20, int(left() - 30)))
         else:
             code = 0
         if code == 0 and stage == "release":

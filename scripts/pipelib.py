@@ -30,6 +30,34 @@ def edition_date(now: datetime.datetime | None = None) -> str:
     return d.isoformat()
 
 
+def candidate_misplaced(c: dict) -> bool:
+    """写しの照合で落ちた候補(URL の取り違え)。事実がこのページのものではない。"""
+    return bool(c.get("quotes")) and str(c.get("verify_note") or "").startswith("写しが出典の本文に無い")
+
+
+def merge_candidate_facts(tgt: dict, c: dict) -> bool:
+    """同じページの候補 c の facts を tgt へ増分マージする(収集の再検出と、組版が前の号の未読の事実を引き継ぐときの共通)。
+    足したら裏取りの結果も引き継ぎ、弱いほうを採る。facts が増えたら True。"""
+    merged = list(dict.fromkeys((tgt.get("facts") or []) + (c.get("facts") or [])))
+    if len(merged) <= len(tgt.get("facts") or []):
+        return False
+    tgt["facts"] = merged
+    # **裏取りの結果も引き継ぐ。**facts だけ足して verify を据え置くと、
+    # 後から来た「出典に無い事実」が confirmed の候補に紛れ込む(監査指摘)。
+    # 同じ URL を何度も拾うのは通常経路なので、実際に起きる
+    ub = list(dict.fromkeys((tgt.get("unbacked_facts") or []) + (c.get("unbacked_facts") or [])))
+    if ub:
+        tgt["unbacked_facts"] = ub[:12]
+    # **弱いほうを採る。**未一致の粒だけを見ていると、
+    # 新しく拾ったときに URL が死んでいて failed でも、
+    # 粒が欠けていなければ既存の confirmed が残る(監査指摘)
+    order = ["failed", "unconfirmed", "confirmed"]
+    cur = "unconfirmed" if ub else tgt.get("verify", "unconfirmed")
+    new = c.get("verify", "unconfirmed")
+    tgt["verify"] = min([cur, new], key=lambda v: order.index(v) if v in order else 1)
+    return True
+
+
 def load_env() -> dict:
     env = {}
     p = ROOT / ".env"

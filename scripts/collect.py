@@ -42,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
-                     RenderFailed, render_page,
+                     RenderFailed, render_page, candidate_misplaced, merge_candidate_facts,
                      set_quiet, unbacked_facts,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall,
@@ -1590,7 +1590,7 @@ def merge_into_day_file(cands: list[dict], day: str) -> int:
     # 写しの照合で落ちた候補(URL の取り違え)は、事実がこのページのものではない。このページの候補へ混ぜない
     # (混ぜると「弱いほうを採る」でこのページの正しい候補まで failed になる。監査指摘)。正しい候補を先に入れ、
     # 落ちた候補は同じ URL の候補が無いときだけ記録として残す。既にあるのが落ちた候補なら、正しい候補で置き換える
-    misplaced = lambda x: bool(x.get("quotes")) and str(x.get("verify_note") or "").startswith("写しが出典の本文に無い")
+    misplaced = candidate_misplaced
     for c in sorted(cands, key=misplaced):
         if c["url"] in by_url:
             tgt = by_url[c["url"]]
@@ -1600,23 +1600,7 @@ def merge_into_day_file(cands: list[dict], day: str) -> int:
                 existing[existing.index(tgt)] = c
                 by_url[c["url"]] = c
                 continue
-            merged = list(dict.fromkeys(tgt.get("facts", []) + c["facts"]))
-            if len(merged) > len(tgt.get("facts", [])):
-                tgt["facts"] = merged
-                # **裏取りの結果も引き継ぐ。**facts だけ足して verify を据え置くと、
-                # 後から来た「出典に無い事実」が confirmed の候補に紛れ込む(監査指摘)。
-                # 同じ URL を何度も拾うのは通常経路なので、実際に起きる
-                ub = list(dict.fromkeys((tgt.get("unbacked_facts") or [])
-                                        + (c.get("unbacked_facts") or [])))
-                if ub:
-                    tgt["unbacked_facts"] = ub[:12]
-                # **弱いほうを採る。**未一致の粒だけを見ていると、
-                # 新しく拾ったときに URL が死んでいて failed でも、
-                # 粒が欠けていなければ既存の confirmed が残る(監査指摘)
-                order = ["failed", "unconfirmed", "confirmed"]
-                cur = "unconfirmed" if ub else tgt.get("verify", "unconfirmed")
-                new = c.get("verify", "unconfirmed")
-                tgt["verify"] = min([cur, new], key=lambda v: order.index(v) if v in order else 1)
+            merge_candidate_facts(tgt, c)
         else:
             existing.append(c)
             by_url[c["url"]] = c

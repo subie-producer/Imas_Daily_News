@@ -51,7 +51,7 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
-                     collect_oncall_handover_pending)
+                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
 # 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
@@ -281,55 +281,82 @@ def read_record_path(date: str) -> Path:
     return ROOT / "metrics" / f"candidates-read-{date}.json"
 
 
+def fact_key(fact: str) -> str:
+    """選定記録に残す事実の識別(本文そのものは候補ファイルにあるので、短い要約値だけを残す)。"""
+    return hashlib.sha1(fact.encode("utf-8")).hexdigest()[:12]
+
+
 def record_candidates_read(date: str, cands: dict) -> None:
-    """選定に掛ける候補ファイルの候補を、id → facts の件数で記録する(選定し直すたびに上書き。--reuse-plan では書かない)。"""
+    """選定に掛ける候補ファイルの候補を、id → URL・読んだ facts の識別で記録する(選定し直すたびに上書き。--reuse-plan では書かない)。
+    件数ではなく事実そのものを記録する: 次の号が同じページを拾い直していても、読んだ後に足された事実は次の号の候補に無いことがある。"""
     p = ROOT / "candidates" / f"{date}.json"
     file_ids = {c["id"] for c in json.loads(p.read_text(encoding="utf-8")) if c.get("id")} if p.exists() else set()
-    ids = [i for i in sorted(cands) if i in file_ids]
     read_record_path(date).write_text(json.dumps(
-        {"read": {i: len(cands[i].get("facts") or []) for i in ids},
-         "urls": sorted({cands[i]["url"] for i in ids if cands[i].get("url")})},
+        {"read": {i: {"url": cands[i].get("url"), "facts": [fact_key(f) for f in cands[i].get("facts") or []]}
+                  for i in sorted(cands) if i in file_ids}},
         ensure_ascii=False, indent=0) + "\n", encoding="utf-8")
 
 
 def carry_late_candidates(date: str) -> list[str]:
-    """前の号の選定が候補を読んだ後に、その号の候補ファイルへ入った候補(当番の取り直しが組版の開始後〜06:00 に
+    """前の号の選定が候補を読んだ後に、その号の候補ファイルへ入った候補・事実(当番の取り直しが組版の開始後〜06:00 に
     終わった、など)を、この号の候補ファイルへ写す。収集は 06:00 前の分を前の号へ入れ、組版は自分の号のファイルしか
     読まないので、写さなければどの号の選定にも掛からない。
-    前の号 P の候補のうち、P〜前日の号の選定記録のどれにも無い id と、選定が読んだときより facts が増えた候補
-    (取り直しが既存の URL に事実を足した)を写す(写した候補は同じ id のまま、この号の選定記録に入るので二度は
-    写らない)。同じ URL がこの号の候補にあるか、P より後の号が選定に掛けていれば写さない(その号で拾い直している)。P の選定記録が無い号(組版が選定まで進まなかった・記録を始める前の号)は
-    遡らない。冪等。"""
+    前の号 P の候補の事実のうち、P〜前日の号の選定記録のどれでも(同じ id でも同じ URL でも)読まれていないものを未読とする。
+    この号に同じ URL(または同じ id の写し)の候補があれば、未読の事実だけをその候補へ増分マージし、裏取りの結果も
+    収集と同じ規則で引き継ぐ(同じページを拾い直していても、読んだ後に足された事実がこの号の候補にあるとは限らない)。
+    無ければ候補を同じ id のまま写す。写した候補・事実はこの号の選定記録に入るので二度は写らない。P の選定記録が無い号
+    (組版が選定まで進まなかった・記録を始める前の号)は遡らない。冪等。"""
+    import copy
     d = datetime.date.fromisoformat(date)
     target = ROOT / "candidates" / f"{date}.json"
     rows = json.loads(target.read_text(encoding="utf-8")) if target.exists() else []
-    have_ids, have_urls = {c.get("id") for c in rows}, {c.get("url") for c in rows}
+    by_url = {c.get("url"): c for c in rows if c.get("url")}
+    by_id = {c.get("id"): c for c in rows if c.get("id")}
     log = []
     for k in range(LATE_LOOKBACK, 0, -1):
         prev = (d - datetime.timedelta(days=k)).isoformat()
         src = ROOT / "candidates" / f"{prev}.json"
         if not src.exists() or not read_record_path(prev).exists():
             continue
-        read: dict[str, int] = {}
-        later_urls = set()      # P より後の号が、同じページを拾い直して選定に掛けた URL
+        seen_id: dict[str, set] = {}
+        seen_url: dict[str, set] = {}
         for j in range(k, 0, -1):
             rp = read_record_path((d - datetime.timedelta(days=j)).isoformat())
             if rp.exists():
-                rec = json.loads(rp.read_text(encoding="utf-8"))
-                for i, n in (rec.get("read") or {}).items():
-                    read[i] = max(read.get(i, 0), int(n))
-                if j < k:
-                    later_urls |= set(rec.get("urls") or [])
-        late = [c for c in json.loads(src.read_text(encoding="utf-8"))
-                if c.get("id") and (c["id"] not in read or len(c.get("facts") or []) > read[c["id"]])
-                and c["id"] not in have_ids and c.get("url") not in have_urls and c.get("url") not in later_urls]
-        for c in late:
-            rows.append(c)
-            have_ids.add(c["id"])
-            have_urls.add(c.get("url"))
-        if late:
-            log.append(f"{prev}号の選定が読んだ後に入った・事実が増えた候補 {len(late)}件をこの号の候補へ写した: "
-                       + ", ".join(c["id"] for c in late[:10]))
+                for i, e in (json.loads(rp.read_text(encoding="utf-8")).get("read") or {}).items():
+                    seen_id.setdefault(i, set()).update(e.get("facts") or [])
+                    if e.get("url"):
+                        seen_url.setdefault(e["url"], set()).update(e.get("facts") or [])
+        added, merged = [], []
+        for c in json.loads(src.read_text(encoding="utf-8")):
+            if not c.get("id"):
+                continue
+            seen = seen_id.get(c["id"], set()) | seen_url.get(c.get("url"), set())
+            unread = [f for f in c.get("facts") or [] if fact_key(f) not in seen]
+            never_read = c["id"] not in seen_id and c.get("url") not in seen_url
+            if not unread and not never_read:
+                continue
+            tgt = by_url.get(c.get("url")) or by_id.get(c["id"])
+            if tgt is None:
+                c = copy.deepcopy(c)
+                rows.append(c)
+                by_url[c.get("url")], by_id[c["id"]] = c, c
+                added.append(c["id"])
+            elif candidate_misplaced(c):
+                continue
+            elif candidate_misplaced(tgt):
+                # この号の候補が写しの照合で落ちたもの: 収集と同じく正しい候補で置き換える
+                c = copy.deepcopy(c)
+                rows[rows.index(tgt)] = c
+                by_url[c.get("url")], by_id[c["id"]] = c, c
+                added.append(c["id"])
+            elif merge_candidate_facts(tgt, {**c, "facts": unread}):
+                merged.append(tgt["id"])
+        if added:
+            log.append(f"{prev}号の選定が読んだ後に入った候補 {len(added)}件をこの号の候補へ写した: " + ", ".join(added[:10]))
+        if merged:
+            log.append(f"{prev}号の選定が読んだ後に足された事実を、この号の同じページの候補 {len(merged)}件へ足した: "
+                       + ", ".join(merged[:10]))
     if log:
         target.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return log

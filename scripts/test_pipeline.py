@@ -4492,34 +4492,56 @@ def test_compose_classifies_after_revise(tmp: Path):
 def test_carry_late_candidates(tmp: Path):
     """前の号の選定が候補を読んだ後に、その号の候補ファイルへ入った候補(当番の取り直しが組版の開始後〜06:00 に終わった)を、
     次の号の候補へ写す。写さないと、収集は 06:00 前の分を前の号へ入れ、組版は自分の号のファイルしか読まないので、
-    どの号の選定にも掛からない(当番の指摘 b2a9e39466)。読んだ後に facts が増えた候補も写す。冪等"""
+    どの号の選定にも掛からない(当番の指摘 b2a9e39466)。読んだ後に足された事実は、次の号が同じページを拾い直していても
+    その候補へ増分マージする(次の号の候補にその事実があるとは限らない。監査指摘 late-facts-url-dedup)。冪等"""
     import inspect
     cdir, mdir = tmp / "candidates", tmp / "metrics"
     cdir.mkdir(parents=True)
     mdir.mkdir(parents=True)
     w = lambda d, rows: (cdir / f"{d}.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
     r = lambda d: json.loads((cdir / f"{d}.json").read_text(encoding="utf-8"))
-    c = lambda i, u, n=1: {"id": i, "url": f"https://e.example/{u}", "facts": [f"{i}-{k}" for k in range(n)]}
+    c = lambda i, u, n=1, v="confirmed", base=None: {"id": i, "url": f"https://e.example/{u}", "verify": v,
+                                                     "facts": [f"{base or i}-{k}" for k in range(n)]}
     saved = compose.ROOT
     try:
         compose.ROOT = tmp
-        w("2026-10-10", [c("a1", "1"), c("a2", "2")])
-        compose.record_candidates_read("2026-10-10", {"a1": c("a1", "1"), "a2": c("a2", "2"), "sched-x": {"id": "sched-x"}})
-        check(json.loads(compose.read_record_path("2026-10-10").read_text(encoding="utf-8"))["read"] == {"a1": 1, "a2": 1},
-              "選定記録が候補ファイルの id と facts の件数になっていない(予約を混ぜた・件数が無い)")
-        # 選定が読んだ後: 新しい候補 a3、既存の a1 に事実が足された、10-11 で拾い直した URL の a4
-        w("2026-10-10", [c("a1", "1", 2), c("a2", "2"), c("a3", "3"), c("a4", "4")])
-        w("2026-10-11", [c("b1", "4"), c("b2", "5")])
+        w("2026-10-10", [c("a1", "1"), c("a2", "2"), c("a5", "5", 3)])
+        compose.record_candidates_read("2026-10-10", {"a1": c("a1", "1"), "a2": c("a2", "2"), "a5": c("a5", "5", 3),
+                                                      "sched-x": {"id": "sched-x"}})
+        rec = json.loads(compose.read_record_path("2026-10-10").read_text(encoding="utf-8"))["read"]
+        check(sorted(rec) == ["a1", "a2", "a5"] and rec["a1"] == {"url": "https://e.example/1", "facts": [compose.fact_key("a1-0")]},
+              f"選定記録が候補ファイルの id・URL・読んだ事実になっていない(予約を混ぜた・事実が無い): {rec}")
+        # 選定が読んだ後: 新しい候補 a3、既存の a1 に事実が足された、10-11 で拾い直した URL の a4(事実は同じ)、
+        # 10-11 で拾い直した URL の a5 に、10-11 の候補に無い事実が足された(10-11 の b5 は事実が少なく、裏取りは unconfirmed)
+        w("2026-10-10", [c("a1", "1", 2), c("a2", "2"), c("a3", "3"), c("a4", "4", base="a4"),
+                         c("a5", "5", 4, v="unconfirmed")])
+        w("2026-10-11", [c("b1", "4", base="a4"), c("b2", "6"), c("b5", "5", 2, base="a5")])
         log = compose.carry_late_candidates("2026-10-11")
-        got = {x["id"]: len(x["facts"]) for x in r("2026-10-11")}
-        check(got == {"b1": 1, "b2": 1, "a1": 2, "a3": 1} and log,
-              f"選定の後に入った候補・増えた事実を次の号へ写していない(または読んだもの・拾い直した URL まで写した): {got}")
-        check(compose.carry_late_candidates("2026-10-11") == [] and len(r("2026-10-11")) == 4, "2回目で二重に写した")
-        # 次の号が選定したら、写した候補は D+2 で二度と写らない。記録の無い号からは遡らない
+        got = {x["id"]: x["facts"] for x in r("2026-10-11")}
+        check(got == {"b1": ["a4-0"], "b2": ["b2-0"], "b5": ["a5-0", "a5-1", "a5-3"], "a1": ["a1-0", "a1-1"], "a3": ["a3-0"]}
+              and len(log) == 2,
+              f"選定の後に入った候補・足された事実を次の号へ渡していない(または読んだ事実まで足した・拾い直した URL の候補を重ねた): {got} {log}")
+        b5 = next(x for x in r("2026-10-11") if x["id"] == "b5")
+        check(b5["verify"] == "unconfirmed", f"足した事実の裏取りを引き継いでいない(弱いほうを採っていない): {b5}")
+        check(compose.carry_late_candidates("2026-10-11") == [] and len(r("2026-10-11")) == 5, "2回目で二重に写した")
+        # 10-11 の選定より前に、写した a3 の元へさらに事実が足された: 同じ id の写しへ増分だけ足す
+        w("2026-10-10", [c("a1", "1", 2), c("a2", "2"), c("a3", "3", 2), c("a4", "4", base="a4"),
+                         c("a5", "5", 4, v="unconfirmed")])
+        log = compose.carry_late_candidates("2026-10-11")
+        a3 = [x for x in r("2026-10-11") if x["id"] == "a3"]
+        check(len(a3) == 1 and a3[0]["facts"] == ["a3-0", "a3-1"] and log,
+              f"写した候補の元に足された事実を、同じ id の写しへ足していない(または候補を重ねた): {a3}")
+        # 次の号が選定したら、写した候補・足した事実は D+2 で二度と写らない。記録の無い号からは遡らない
         compose.record_candidates_read("2026-10-11", {x["id"]: x for x in r("2026-10-11")})
         w("2026-10-12", [c("d1", "9")])
         check(compose.carry_late_candidates("2026-10-12") == [] and len(r("2026-10-12")) == 1,
               f"選定の済んだ候補を次の次の号へまた写した: {r('2026-10-12')}")
+        # 10-11 の選定の後に、10-10 の a5 へまた事実が足された: 10-12 の候補へ写す(10-11 の選定は読んでいない)
+        w("2026-10-10", [c("a1", "1", 2), c("a2", "2"), c("a3", "3", 2), c("a4", "4", base="a4"),
+                         c("a5", "5", 5, v="unconfirmed")])
+        log = compose.carry_late_candidates("2026-10-12")
+        got = {x["id"]: x["facts"] for x in r("2026-10-12")}
+        check(set(got) == {"d1", "a5"} and log, f"2号前の候補に足された未読の事実を写していない: {got}")
         w("2026-10-13", [])
         compose.read_record_path("2026-10-11").unlink()
         compose.read_record_path("2026-10-12").unlink(missing_ok=True)

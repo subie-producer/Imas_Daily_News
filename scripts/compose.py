@@ -51,7 +51,7 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
-                     collect_oncall_handover_pending)
+                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
 # 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
@@ -272,6 +272,114 @@ def load_window_candidates(date: str) -> dict:
     return items
 
 
+# 選定が読んだ後に前の号の候補ファイルへ入った候補を、何号前まで遡って引き継ぐか
+LATE_LOOKBACK = 3
+
+
+def read_record_path(date: str) -> Path:
+    """その号の選定が読んだ候補 id の記録(metrics/candidates-read-<date>.json)。"""
+    return ROOT / "metrics" / f"candidates-read-{date}.json"
+
+
+def fact_key(fact: str) -> str:
+    """選定記録に残す事実の識別(本文そのものは候補ファイルにあるので、短い要約値だけを残す)。"""
+    return hashlib.sha1(fact.encode("utf-8")).hexdigest()[:12]
+
+
+def record_candidates_read(date: str, cands: dict, hidden: set | frozenset = frozenset()) -> None:
+    """選定に掛ける候補ファイルの候補を、id → URL・読んだ facts の識別で記録する(選定し直すたびに上書き。--reuse-plan では書かない)。
+    件数ではなく事実そのものを記録する: 次の号が同じページを拾い直していても、読んだ後に足された事実は次の号の候補に無いことがある。
+    hidden(前の号から引き継いだ未読の事実のうち、選定インデックスの件数上限で切れて選定に渡らなかったもの。write_plan_index が返す)は
+    読んだことにしない: 記録すれば次の号へも引き継がれず、どの号の選定にも掛からない(監査指摘 late-facts-hidden-by-plan-index)。"""
+    p = ROOT / "candidates" / f"{date}.json"
+    file_ids = {c["id"] for c in json.loads(p.read_text(encoding="utf-8")) if c.get("id")} if p.exists() else set()
+    read_record_path(date).write_text(json.dumps(
+        {"read": {i: {"url": cands[i].get("url"),
+                      "facts": [k for k in (fact_key(f) for f in cands[i].get("facts") or []) if k not in hidden]}
+                  for i in sorted(cands) if i in file_ids}},
+        ensure_ascii=False, indent=0) + "\n", encoding="utf-8")
+
+
+def _late_facts(date: str):
+    """前の号 P(直近 LATE_LOOKBACK 号のうち選定記録のある号)の候補ごとに、P〜前日の号の選定記録のどれでも(同じ id でも
+    同じ URL でも)読まれていない事実を (P, 候補, 未読の事実, 一度も読まれていない候補か) で返す。前の号のファイルと選定記録
+    だけで決まる(この号の候補ファイルを書き換えても変わらない)ので、引き継ぎと選定インデックスの並べ替えが同じ集合を見る。"""
+    d = datetime.date.fromisoformat(date)
+    for k in range(LATE_LOOKBACK, 0, -1):
+        prev = (d - datetime.timedelta(days=k)).isoformat()
+        src = ROOT / "candidates" / f"{prev}.json"
+        if not src.exists() or not read_record_path(prev).exists():
+            continue
+        seen_id: dict[str, set] = {}
+        seen_url: dict[str, set] = {}
+        for j in range(k, 0, -1):
+            rp = read_record_path((d - datetime.timedelta(days=j)).isoformat())
+            if rp.exists():
+                for i, e in (json.loads(rp.read_text(encoding="utf-8")).get("read") or {}).items():
+                    seen_id.setdefault(i, set()).update(e.get("facts") or [])
+                    if e.get("url"):
+                        seen_url.setdefault(e["url"], set()).update(e.get("facts") or [])
+        for c in json.loads(src.read_text(encoding="utf-8")):
+            if not c.get("id"):
+                continue
+            seen = seen_id.get(c["id"], set()) | seen_url.get(c.get("url"), set())
+            unread = [f for f in c.get("facts") or [] if fact_key(f) not in seen]
+            never_read = c["id"] not in seen_id and c.get("url") not in seen_url
+            if unread or never_read:
+                yield prev, c, unread, never_read
+
+
+def late_fact_keys(date: str) -> set[str]:
+    """前の号から引き継ぐ未読の事実の識別(選定インデックスで先に並べ、切れた分は選定記録に入れない)。"""
+    return {fact_key(f) for _, _, unread, _ in _late_facts(date) for f in unread}
+
+
+def carry_late_candidates(date: str) -> list[str]:
+    """前の号の選定が候補を読んだ後に、その号の候補ファイルへ入った候補・事実(当番の取り直しが組版の開始後〜06:00 に
+    終わった、など)を、この号の候補ファイルへ写す。収集は 06:00 前の分を前の号へ入れ、組版は自分の号のファイルしか
+    読まないので、写さなければどの号の選定にも掛からない。
+    前の号 P の候補の事実のうち、P〜前日の号の選定記録のどれでも(同じ id でも同じ URL でも)読まれていないものを未読とする。
+    この号に同じ URL(または同じ id の写し)の候補があれば、未読の事実だけをその候補へ増分マージし、裏取りの結果も
+    収集と同じ規則で引き継ぐ(同じページを拾い直していても、読んだ後に足された事実がこの号の候補にあるとは限らない)。
+    無ければ候補を同じ id のまま写す。写した候補・事実はこの号の選定記録に入るので二度は写らない。P の選定記録が無い号
+    (組版が選定まで進まなかった・記録を始める前の号)は遡らない。冪等。"""
+    import copy
+    target = ROOT / "candidates" / f"{date}.json"
+    rows = json.loads(target.read_text(encoding="utf-8")) if target.exists() else []
+    by_url = {c.get("url"): c for c in rows if c.get("url")}
+    by_id = {c.get("id"): c for c in rows if c.get("id")}
+    added: dict[str, list] = {}
+    merged: dict[str, list] = {}
+    for prev, c, unread, _never_read in _late_facts(date):
+        tgt = by_url.get(c.get("url")) or by_id.get(c["id"])
+        if tgt is None:
+            c = copy.deepcopy(c)
+            rows.append(c)
+            by_url[c.get("url")], by_id[c["id"]] = c, c
+            added.setdefault(prev, []).append(c["id"])
+        elif candidate_misplaced(c):
+            continue
+        elif candidate_misplaced(tgt):
+            # この号の候補が写しの照合で落ちたもの: 収集と同じく正しい候補で置き換える
+            c = copy.deepcopy(c)
+            rows[rows.index(tgt)] = c
+            by_url[c.get("url")], by_id[c["id"]] = c, c
+            added.setdefault(prev, []).append(c["id"])
+        elif merge_candidate_facts(tgt, {**c, "facts": unread}):
+            merged.setdefault(prev, []).append(tgt["id"])
+    log = []
+    for prev in sorted(set(added) | set(merged)):
+        if added.get(prev):
+            log.append(f"{prev}号の選定が読んだ後に入った候補 {len(added[prev])}件をこの号の候補へ写した: "
+                       + ", ".join(added[prev][:10]))
+        if merged.get(prev):
+            log.append(f"{prev}号の選定が読んだ後に足された事実を、この号の同じページの候補 {len(merged[prev])}件へ足した: "
+                       + ", ".join(merged[prev][:10]))
+    if log:
+        target.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return log
+
+
 def load_blocklist() -> dict:
     p = ROOT / "stock" / "blocklist.yml"
     if not p.exists():
@@ -286,7 +394,8 @@ PLAN_FACTS_PER_SUBJECT = int(ENV.get("PLAN_FACTS_PER_SUBJECT", "8"))
 PLAN_FACT_CHARS = int(ENV.get("PLAN_FACT_CHARS", "220"))
 
 
-def write_plan_index(date: str, cands: dict, blocklist: dict) -> tuple[Path, int]:
+def write_plan_index(date: str, cands: dict, blocklist: dict,
+                     late: set | frozenset = frozenset()) -> tuple[dict, int, set]:
     """選定用の主題インデックスを機械生成する。
 
     候補ファイルをそのまま読ませると、収集の増分マージで facts がほぼ同文のまま
@@ -294,8 +403,14 @@ def write_plan_index(date: str, cands: dict, blocklist: dict) -> tuple[Path, int
     「どの主題があり、どの id を指せばよいか」であって facts の全文ではない
     (facts の全文は執筆セッションが素材として別途受け取る)。
     dedup_key で束ねて主題単位にし、facts は先頭数件・各短縮で渡す。
+    late(前の号から引き継いだ未読の事実の識別。late_fact_keys)は先に並べる: 引き継ぎは候補の末尾へ足すので、
+    そのままでは件数上限で切れて選定に渡らない(監査指摘 late-facts-hidden-by-plan-index)。それでも上限で切れた late の
+    識別を3つ目の値で返し、選定記録はそれを読んだことにしない(次の号がまた引き継ぐ)。
+    late は文字数で短縮せず全文で渡す: 選定記録は全文の識別で読んだと残すので、PLAN_FACT_CHARS 以降にある新情報
+    (長い一覧の後半への追記など)が見えないまま読了になり、次の号へも渡らない(監査指摘 late-facts-hidden-by-char-limit)。
     """
     subjects: dict[str, dict] = {}
+    pool: dict[str, list] = {}  # 主題 → (短縮した事実, 事実の識別)。候補の順
     for c in cands.values():
         dk = c.get("dedup_key")
         if not dk or c.get("verify") == "failed" or dk in blocklist:
@@ -314,16 +429,18 @@ def write_plan_index(date: str, cands: dict, blocklist: dict) -> tuple[Path, int
         if c.get("verify") == "confirmed":
             s["verify"] = "confirmed"
         for f in c.get("facts", []):
-            f = f[:PLAN_FACT_CHARS]
-            if f not in s["facts"]:
-                s["facts"].append(f)
+            k = fact_key(f)
+            pool.setdefault(dk, []).append((f if k in late else f[:PLAN_FACT_CHARS], k))
     # 既報の照合はコードがする(選定のモデルに約1万行の台帳を読ませない。読み切れず、同じ知らせを新規として通していた)。
     # 候補の dedup_key は storylink.link で、同じ一次情報の過去の記事の話題につなぎ直してある
     # 既報は台帳の要約(1記事1〜4件)ではなく、過去の記事が**読者に出した本文**で渡す(要約で渡したら、価格・店舗を「新しい事実」と
     # 判断して同じ記事をもう一度載せた。実測 2026-10-01 の8番らーめん)
     prior = storylink.prior_by_key(date, ROOT)
+    hidden: set[str] = set()
     for s in subjects.values():
-        s["facts"] = s["facts"][:PLAN_FACTS_PER_SUBJECT]
+        items = sorted(pool.get(s["dedup_key"], []), key=lambda t: t[1] not in late)
+        s["facts"] = list(dict.fromkeys(t for t, _ in items))[:PLAN_FACTS_PER_SUBJECT]
+        hidden |= {k for t, k in items if k in late and t not in s["facts"]}
         if prior.get(s["dedup_key"]):
             s["prior"] = prior[s["dedup_key"]]
     # 1主題1行で書く(整形すると数千行になり、Read の既定上限 2000行で頭から切れて
@@ -338,7 +455,7 @@ def write_plan_index(date: str, cands: dict, blocklist: dict) -> tuple[Path, int
         by_brand.setdefault(s.get("brand") or "other", []).append(s)
     for b, rows in by_brand.items():
         dump(rows, ROOT / "metrics" / f"plan-index-{date}-{b}.json")
-    return by_brand, len(subjects)
+    return by_brand, len(subjects), hidden
 
 
 def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dict],
@@ -2813,6 +2930,8 @@ def main() -> int:
     import assemble as _assemble
     for line in _assemble.restore_reservation_facts(date):
         print(line, flush=True)
+    for line in carry_late_candidates(date):
+        print(line, flush=True)
     cands = load_window_candidates(date)
     blocklist = load_blocklist()
     if not cands:
@@ -2826,7 +2945,7 @@ def main() -> int:
         print(f"既報の話題につなぎ直した候補 {len(relinked)}件:", flush=True)
         for cid, old, new, why in relinked[:40]:
             print(f"  {cid}: {old} → {new}({why})", flush=True)
-    by_brand, n_subjects = write_plan_index(date, cands, blocklist)
+    by_brand, n_subjects, hidden_late = write_plan_index(date, cands, blocklist, late_fact_keys(date))
     print(f"選定インデックス: {n_subjects}主題 / {len(by_brand)}面 "
           f"({', '.join(f'{b}:{len(v)}' for b, v in sorted(by_brand.items()))})", flush=True)
     plan_saved = ROOT / "metrics" / f"plan-{date}.json"
@@ -2836,6 +2955,9 @@ def main() -> int:
         plan = json.loads(plan_saved.read_text(encoding="utf-8"))
         print(f"選定を再利用: {plan_saved.name}({len(plan.get('articles') or [])}本)", flush=True)
     else:
+        # 選定に掛けた候補を記録する。これより後にこの号の候補ファイルへ入った候補は、次の号が引き継ぐ(carry_late_candidates)
+        # 前の号から引き継いだ事実のうち、選定インデックスの件数上限で選定に渡らなかったものは読んだことにしない
+        record_candidates_read(date, cands, hidden_late)
         with stage("選定"):
             plan = run_plan(date, by_brand, triggers)
         pick_lead(date, plan)
@@ -3457,6 +3579,7 @@ def own_artifacts(date: str) -> list[str]:
     return [f"docs/_posts/{date}-*.md", f"docs/_editions/{date}.md", f"docs/_editorials/{date}.md",
             f"metrics/plan-{date}*.json", f"metrics/plan-lead-{date}.json", f"metrics/review-{date}-*.json",
             f"metrics/stories-before-{date}.yml", f"metrics/pending-before-{date}.yml", f"metrics/{date}.json",
+            f"metrics/candidates-read-{date}.json", f"candidates/{date}.json",
             "stock/stories.yml", "stock/pending.yml", "stock/scheduled/*.json", "stock/columnist.md"]
 
 

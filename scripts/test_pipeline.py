@@ -3261,7 +3261,7 @@ def test_storylink(tmp: Path):
     saved = compose.ROOT
     try:
         compose.ROOT = tmp
-        by_brand, _ = compose.write_plan_index(d, {k: {**v, "brand": "cg", "facts": ["f"]} for k, v in cands.items() if k != "sched-1"}, {})
+        by_brand, _, _ = compose.write_plan_index(d, {k: {**v, "brand": "cg", "facts": ["f"]} for k, v in cands.items() if k != "sched-1"}, {})
     finally:
         compose.ROOT = saved
     row = next(r for rs in by_brand.values() for r in rs if r["dedup_key"] == "dijimas-cg-2026")
@@ -4489,6 +4489,63 @@ def test_compose_classifies_after_revise(tmp: Path):
           "書き直し後の出典の判定が、最後の書き直しと最終の commit の間に無い")
 
 
+def test_late_facts_reach_plan_index(tmp: Path):
+    """前の号から引き継いだ未読の事実は、選定インデックス(主題ごと先頭 PLAN_FACTS_PER_SUBJECT 件)に先に並べる。
+    引き継ぎは候補の末尾へ足すので、既に上限以上の事実を持つ候補ではインデックスで切れ、それでも選定記録に読んだと残って
+    次の号へも渡らなかった(監査指摘 late-facts-hidden-by-plan-index: 実データ 10日号 100候補中32件が8事実超)。
+    上限を超えて切れた分は読んだことにせず、次の号がまた引き継いで先に並べる"""
+    cdir, mdir = tmp / "candidates", tmp / "metrics"
+    cdir.mkdir(parents=True)
+    mdir.mkdir(parents=True)
+    w = lambda d, rows: (cdir / f"{d}.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+    r = lambda d: {x["id"]: x for x in json.loads((cdir / f"{d}.json").read_text(encoding="utf-8"))}
+    url, n = "https://shop.example/premium", compose.PLAN_FACTS_PER_SUBJECT
+    old = [f"既存{k}" for k in range(n + 2)]
+    cand = lambda i, facts: {"id": i, "url": url, "dedup_key": "premium", "brand": "cg", "verify": "confirmed", "facts": facts}
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        # 10日号の選定は既存の事実だけを読んだ。その後、取り直しで同じ候補に事実が1件・別の候補に上限+2件足された
+        w("2026-10-10", [cand("p1", old), {**cand("p2", ["別0"]), "url": "https://shop.example/other", "dedup_key": "other"}])
+        compose.record_candidates_read("2026-10-10", r("2026-10-10"))
+        late1 = "プレミアム会員限定商品の購入にはプレミアム会員登録が必要"
+        late2 = [f"追加{k}" for k in range(n + 2)]
+        w("2026-10-10", [cand("p1", old + [late1]),
+                         {**cand("p2", ["別0"] + late2), "url": "https://shop.example/other", "dedup_key": "other"}])
+        # 11日号は同じページを拾い直しており、既に上限以上の事実を持つ
+        w("2026-10-11", [cand("q1", old), {**cand("q2", ["別0"]), "url": "https://shop.example/other", "dedup_key": "other"}])
+        compose.carry_late_candidates("2026-10-11")
+        cands = r("2026-10-11")
+        late = compose.late_fact_keys("2026-10-11")
+        by_brand, _, hidden = compose.write_plan_index("2026-10-11", cands, {}, late)
+        idx = {s["dedup_key"]: s["facts"] for s in by_brand["cg"]}
+        check(late1 in idx["premium"] and len(idx["premium"]) == n,
+              f"引き継いだ未読の事実が選定インデックスで切れた(末尾に足したまま上限で切った): {idx['premium']}")
+        check(idx["other"] == late2[:n] and hidden == {compose.fact_key(f) for f in late2[n:]},
+              f"上限を超えた引き継ぎ分を先に並べていない・切れた分を返していない: {idx['other']} {hidden}")
+        compose.record_candidates_read("2026-10-11", cands, hidden)
+        rec = json.loads(compose.read_record_path("2026-10-11").read_text(encoding="utf-8"))["read"]
+        check(compose.fact_key(late1) in rec["q1"]["facts"]
+              and not set(rec["q2"]["facts"]) & hidden and compose.fact_key(late2[0]) in rec["q2"]["facts"],
+              f"選定記録が実際に選定へ渡した範囲と一致しない: {rec['q2']}")
+        # 12日号: 切れた分だけが未読として引き継がれ、インデックスの先頭に並ぶ。選定に渡ったものは二度と引き継がない
+        w("2026-10-12", [{**cand("s2", ["別0"] + late2[:n]), "url": "https://shop.example/other", "dedup_key": "other"}])
+        compose.carry_late_candidates("2026-10-12")
+        late = compose.late_fact_keys("2026-10-12")
+        check(late == {compose.fact_key(f) for f in late2[n:]},
+              f"12日号へ引き継ぐ未読が、11日号の選定に渡らなかった分と一致しない: {len(late)}件")
+        by_brand, _, hidden = compose.write_plan_index("2026-10-12", r("2026-10-12"), {}, late)
+        idx = {s["dedup_key"]: s["facts"] for s in by_brand["cg"]}
+        check(idx["other"][:2] == late2[n:] and not hidden, f"切れた分を次の号の選定に渡していない: {idx['other']}")
+    finally:
+        compose.ROOT = saved
+    import inspect
+    src = inspect.getsource(compose.main)
+    check("write_plan_index(date, cands, blocklist, late_fact_keys(date))" in src
+          and "record_candidates_read(date, cands, hidden_late)" in src,
+          "組版が引き継いだ事実を選定インデックスへ先に並べ、切れた分を選定記録から外していない")
+
+
 def test_carry_late_candidates(tmp: Path):
     """前の号の選定が候補を読んだ後に、その号の候補ファイルへ入った候補(当番の取り直しが組版の開始後〜06:00 に終わった)を、
     次の号の候補へ写す。写さないと、収集は 06:00 前の分を前の号へ入れ、組版は自分の号のファイルしか読まないので、
@@ -5133,6 +5190,7 @@ def main() -> int:
     test_rewrites(tmp / "rw")
     test_compose_classifies_after_revise(tmp / "car")
     test_carry_late_candidates(tmp / "clc")
+    test_late_facts_reach_plan_index(tmp / "lfpi")
     test_article_purpose()
     test_plan_merge_into_drop()
     test_extract_json_array_strict()

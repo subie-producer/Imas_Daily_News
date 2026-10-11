@@ -1526,7 +1526,7 @@ def test_revise_apply_decline(tmp: Path):
         compose.REVISE_NOTES.clear()
     # 校閲の依頼文: 続報予約の素材の在りか、「X の投稿 URL を特定しろ」と言わせない(2026-09-25: 執筆に直せない指摘で3本落ちた)
     rp = (pipelib.PROMPTS / "review-article.md").read_text(encoding="utf-8")
-    check("stock/scheduled/{DATE}.json" in rp and "執筆には直せない" in rp and "執筆も X を開けない" in rp, "校閲の依頼文に、執筆に直せない指摘を避ける規則が無い")
+    check("続報予約の素材" in rp and "stock/scheduled/{DATE}.json" not in rp and "執筆には直せない" in rp and "執筆も X を開けない" in rp, "校閲の依頼文に、執筆に直せない指摘を避ける規則が無い")
     check(any("HTML コメント" in p_ for p_ in renderlib.check_output(dict(OK, blocks=[{"markdown": "x<!-- F1 -->", "fact_ids": ["F1", "F3", "F4"]}]), fb, MATS)),
           "本文の HTML コメントが通った")
 
@@ -5161,12 +5161,63 @@ def test_url_alive_verdict():
         lint.urllib.request.urlopen, lint.time.sleep = orig_urlopen, orig_sleep
 
 
+def test_reminder_event_date(tmp: Path):
+    """続報予約を素材として読むとき、event_date は予約が指す日(締切前は予約の日の3日後、ほかは予約の日)にする。元の話題の開始日を
+    渡すと書き手が写し、1か月前の日付の記事として lint の鮮度検査で赤になった(実測 2026-10-12: 9/11 開始の香水予約の締切前)。
+    元の話題の deadline は別の期限(入金期限など)のことがあるので使わない(監査指摘: 10/15 の予約で deadline 11/4)"""
+    sdir = tmp / "stock" / "scheduled"
+    sdir.mkdir(parents=True)
+    rows = [{"id": "sched-2026-10-12-anideal-締切前", "dedup_key": "anideal", "kind": "締切前",
+             "event_date": "2026-09-11", "deadline": "2026-10-15", "facts": ["予約期間は2026年9月11日〜10月15日"]},
+            {"id": "sched-2026-10-12-x-締切前", "dedup_key": "x", "kind": "締切前", "event_date": "2026-09-01", "facts": []},
+            {"id": "sched-2026-10-12-letora-発売", "dedup_key": "letora", "kind": "発売",
+             "event_date": "2026-11-11", "facts": []},
+            {"id": "sched-2026-10-12-tours-終了", "dedup_key": "tours", "kind": "終了",
+             "event_date": "2026-08-28", "deadline": "2026-10-12", "facts": []},
+            {"id": "sched-2026-10-12-apple-締切前", "dedup_key": "apple", "kind": "締切前",
+             "event_date": None, "deadline": "2026-11-04", "facts": ["受付締切: 10月15日(木) 23:59", "入金期限: 11月4日"]},
+            {"id": "sched-2026-10-12-noct-締切前", "dedup_key": "noct", "kind": "締切前",
+             "event_date": "2027-01-01", "deadline": "2026-09-27", "facts": []}]
+    (sdir / "2026-10-12.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        got = {r["dedup_key"]: r["event_date"] for r in compose.load_scheduled("2026-10-12")}
+        mats = compose.load_window_candidates("2026-10-12")
+    finally:
+        compose.ROOT = saved
+    check(got == {"anideal": "2026-10-15", "x": "2026-10-15", "letora": "2026-10-12", "tours": "2026-10-12",
+                  "apple": "2026-10-15", "noct": "2026-10-15"},
+          f"続報予約の event_date が予約の日になっていない: {got}")
+    check(mats["sched-2026-10-12-anideal-締切前"]["event_date"] == "2026-10-15", "執筆の素材に元の話題の開始日が渡る")
+    check(json.loads((sdir / "2026-10-12.json").read_text(encoding="utf-8"))[0]["event_date"] == "2026-09-11",
+          "予約のファイルを書き換えた")
+    # 校閲にも執筆と同じ補正済みの予約の素材を渡す(監査指摘: 校閲が予約のファイルを直接読み、元の話題の日付で執筆をブロックした)
+    pdir = tmp / "docs" / "_posts"
+    pdir.mkdir(parents=True)
+    (pdir / "2026-10-12-letora.md").write_text(
+        "---\ntitle: x\ncandidate_ids:\n- sched-2026-10-12-letora-発売\n- c-1\n---\n本文\n", encoding="utf-8")
+    (pdir / "2026-10-12-plain.md").write_text("---\ntitle: y\ncandidate_ids:\n- c-1\n---\n本文\n", encoding="utf-8")
+    try:
+        compose.ROOT = tmp
+        h = compose.review_hint("2026-10-12", "2026-10-12-letora.md", {})
+        h_plain = compose.review_hint("2026-10-12", "2026-10-12-plain.md", {})
+    finally:
+        compose.ROOT = saved
+    i = h.find("## 続報予約の素材")
+    shown = json.loads(h[h.index("\n", i) + 1:]) if i >= 0 else []
+    check([(r["id"], r["event_date"]) for r in shown] == [("sched-2026-10-12-letora-発売", "2026-10-12")],
+          f"校閲の依頼文に補正済みの予約の素材が載らない: {h!r}")
+    check(h_plain == "", f"予約の素材を使わない記事に予約の素材が載った: {h_plain!r}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_slugify_format()
     test_escalate_is_module_global()
     test_anomaly_ledger_and_whywhy(tmp / "al")
     test_url_alive_verdict()
+    test_reminder_event_date(tmp / "red")
     test_check_output()
     test_render_and_length()
     test_earliest_date()

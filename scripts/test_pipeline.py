@@ -5161,12 +5161,40 @@ def test_url_alive_verdict():
         lint.urllib.request.urlopen, lint.time.sleep = orig_urlopen, orig_sleep
 
 
+def test_reminder_event_date(tmp: Path):
+    """続報予約を素材として読むとき、event_date は予約が指す日(締切前は締切日、ほかは予約の日)にする。元の話題の開始日を
+    渡すと書き手が写し、1か月前の日付の記事として lint の鮮度検査で赤になった(実測 2026-10-12: 9/11 開始の香水予約の締切前)"""
+    sdir = tmp / "stock" / "scheduled"
+    sdir.mkdir(parents=True)
+    rows = [{"id": "sched-2026-10-12-anideal-締切前", "dedup_key": "anideal", "kind": "締切前",
+             "event_date": "2026-09-11", "deadline": "2026-10-15", "facts": ["予約期間は2026年9月11日〜10月15日"]},
+            {"id": "sched-2026-10-12-x-締切前", "dedup_key": "x", "kind": "締切前", "event_date": "2026-09-01", "facts": []},
+            {"id": "sched-2026-10-12-letora-発売", "dedup_key": "letora", "kind": "発売",
+             "event_date": "2026-11-11", "facts": []},
+            {"id": "sched-2026-10-12-tours-終了", "dedup_key": "tours", "kind": "終了",
+             "event_date": "2026-08-28", "deadline": "2026-10-12", "facts": []}]
+    (sdir / "2026-10-12.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        got = {r["dedup_key"]: r["event_date"] for r in compose.load_scheduled("2026-10-12")}
+        mats = compose.load_window_candidates("2026-10-12")
+    finally:
+        compose.ROOT = saved
+    check(got == {"anideal": "2026-10-15", "x": "2026-10-15", "letora": "2026-10-12", "tours": "2026-10-12"},
+          f"続報予約の event_date が予約の日になっていない: {got}")
+    check(mats["sched-2026-10-12-anideal-締切前"]["event_date"] == "2026-10-15", "執筆の素材に元の話題の開始日が渡る")
+    check(json.loads((sdir / "2026-10-12.json").read_text(encoding="utf-8"))[0]["event_date"] == "2026-09-11",
+          "予約のファイルを書き換えた")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_slugify_format()
     test_escalate_is_module_global()
     test_anomaly_ledger_and_whywhy(tmp / "al")
     test_url_alive_verdict()
+    test_reminder_event_date(tmp / "red")
     test_check_output()
     test_render_and_length()
     test_earliest_date()

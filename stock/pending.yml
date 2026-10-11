@@ -123,6 +123,10 @@
   brand: shiny
   subject: シルバーウィーク記念 キャスコレ確定ステップアップガシャ
   watch: 72時間限定の終了日時(判明次第 triggers へ)
+- dedup_key: mirishita-tokugawa-matsuri-idol-grand-prix-2026
+  brand: million
+  subject: ミリシタ 徳川まつりiDOL GRAND-PRIX(10月実装予定)
+  watch: 10月内の正式実装日(判明次第 triggers へ)
 - dedup_key: sena-roar-gasha-2026
   brand: gaku
   subject: 十王星南「Roar」ガシャ
@@ -147,7 +151,3 @@
   brand: gaku
   subject: 倉本千奈 スケールフィギュア化(EUSUN)
   watch: 製品仕様・予約期間・価格等の発表(判明次第 triggers へ)
-- dedup_key: shiny-hazuki-bugfix-2026
-  brand: shiny
-  subject: シャニマス 七草はづき特訓はづきさん誤使用不具合の今後の対応
-  watch: 不具合に関する今後の対応(後日お知らせ予定)の内容

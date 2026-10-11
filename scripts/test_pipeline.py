@@ -5162,8 +5162,9 @@ def test_url_alive_verdict():
 
 
 def test_reminder_event_date(tmp: Path):
-    """続報予約を素材として読むとき、event_date は予約が指す日(締切前は締切日、ほかは予約の日)にする。元の話題の開始日を
-    渡すと書き手が写し、1か月前の日付の記事として lint の鮮度検査で赤になった(実測 2026-10-12: 9/11 開始の香水予約の締切前)"""
+    """続報予約を素材として読むとき、event_date は予約が指す日(締切前は予約の日の3日後、ほかは予約の日)にする。元の話題の開始日を
+    渡すと書き手が写し、1か月前の日付の記事として lint の鮮度検査で赤になった(実測 2026-10-12: 9/11 開始の香水予約の締切前)。
+    元の話題の deadline は別の期限(入金期限など)のことがあるので使わない(監査指摘: 10/15 の予約で deadline 11/4)"""
     sdir = tmp / "stock" / "scheduled"
     sdir.mkdir(parents=True)
     rows = [{"id": "sched-2026-10-12-anideal-締切前", "dedup_key": "anideal", "kind": "締切前",
@@ -5172,7 +5173,11 @@ def test_reminder_event_date(tmp: Path):
             {"id": "sched-2026-10-12-letora-発売", "dedup_key": "letora", "kind": "発売",
              "event_date": "2026-11-11", "facts": []},
             {"id": "sched-2026-10-12-tours-終了", "dedup_key": "tours", "kind": "終了",
-             "event_date": "2026-08-28", "deadline": "2026-10-12", "facts": []}]
+             "event_date": "2026-08-28", "deadline": "2026-10-12", "facts": []},
+            {"id": "sched-2026-10-12-apple-締切前", "dedup_key": "apple", "kind": "締切前",
+             "event_date": None, "deadline": "2026-11-04", "facts": ["受付締切: 10月15日(木) 23:59", "入金期限: 11月4日"]},
+            {"id": "sched-2026-10-12-noct-締切前", "dedup_key": "noct", "kind": "締切前",
+             "event_date": "2027-01-01", "deadline": "2026-09-27", "facts": []}]
     (sdir / "2026-10-12.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
     saved = compose.ROOT
     try:
@@ -5181,7 +5186,8 @@ def test_reminder_event_date(tmp: Path):
         mats = compose.load_window_candidates("2026-10-12")
     finally:
         compose.ROOT = saved
-    check(got == {"anideal": "2026-10-15", "x": "2026-10-15", "letora": "2026-10-12", "tours": "2026-10-12"},
+    check(got == {"anideal": "2026-10-15", "x": "2026-10-15", "letora": "2026-10-12", "tours": "2026-10-12",
+                  "apple": "2026-10-15", "noct": "2026-10-15"},
           f"続報予約の event_date が予約の日になっていない: {got}")
     check(mats["sched-2026-10-12-anideal-締切前"]["event_date"] == "2026-10-15", "執筆の素材に元の話題の開始日が渡る")
     check(json.loads((sdir / "2026-10-12.json").read_text(encoding="utf-8"))[0]["event_date"] == "2026-09-11",

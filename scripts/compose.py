@@ -72,14 +72,12 @@ def load_scheduled(date: str) -> list[dict]:
 
 
 def reminder_event_date(row: dict, date: str) -> str:
-    """続報予約の記事の出来事の日(素材の event_date として渡す値)。予約が指す日そのもの: 締切前は締切日、ほかは予約の日。
-    予約には元の話題の event_date(販売・受付の開始日)が写してあり、それを渡すと書き手が写して1か月前の日付の記事になり、
-    lint の鮮度検査で赤になった。素材と違う日を書けば校閲が「素材の日付と合わない」で止める(実測 2026-10-12: 9/11 開始の
-    予約受付の締切前の記事が event_date 9/11 で lint 赤。発売の記事が発売日を書いて、素材の公演日と違うとブロック)"""
+    """続報予約の記事の出来事の日(素材の event_date として渡す値)。予約が指す日そのもの: 締切前は予約の日の3日後(締切日)、
+    ほかは予約の日。予約には元の話題の event_date(販売・受付の開始日)が写してあり、それを渡すと書き手が写して1か月前の日付の
+    記事になり、lint の鮮度検査で赤になった(実測 2026-10-12: 9/11 開始の予約受付の締切前の記事が event_date 9/11 で lint 赤)。
+    元の話題の deadline も使わない: 受付締切・入金期限・公演日など、予約が指す締切とは別の日のことがある(監査指摘: 10/18 の
+    申込締切を指す 10/15 の予約で deadline は 11/4 の入金期限)"""
     if row.get("kind") == "締切前":
-        dl = str(row.get("deadline") or "")[:10]
-        if dl > date:
-            return dl
         return (datetime.date.fromisoformat(date) + datetime.timedelta(days=3)).isoformat()
     return date
 

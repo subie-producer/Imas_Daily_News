@@ -1,0 +1,327 @@
+{
+ "decisions": {
+  "valiv-letora-birthday-2026-lv-goods-lottery": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-letora-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演。LV先行抽選は締切済みで内容は既報、当落発表は明日"
+  },
+  "2026-2": {
+   "action": "article",
+   "angle": "第2回中間能力評価の投票は本日23時59分締切。各ライバーアイドルのフォームから5分以内で投票でき、結果が公式能力値になる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一施策の dsva-midterm-assessment-2026-2 と valiv-mid-ability-evaluation-2026-2 を統合"
+  },
+  "valiv-situation-voice-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11号に価格・種類・販売期間とも掲載済み。新事実も当日トリガーも無い(締切は11/1)"
+  },
+  "manaka-biohazard-re2-stream-2026-10-11": {
+   "action": "article",
+   "angle": "灯里愛夏の『BIOHAZARD RE:2』初見プレイ配信は、10月13日にレオン編最終回を予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11日の配信自体は終了済み。次回予定を伝える"
+  },
+  "valiv-call-me-maybe-dance-video-2026-10": {
+   "action": "article",
+   "angle": "上水流宇宙が灯里愛夏・レトラと『Call Me Maybe』を踊るショート動画を公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "YouTube Shorts/TikTokで公開"
+  },
+  "cosmo-ace-combat-8-stream-2026-10-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/15 BOMBANANA!コラボは10/11号に掲載済み。ACE COMBAT配信は10/10に終了済み"
+  },
+  "manaka-morning-stream-2026-10-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/11朝の配信で終了済み。新情報も当日トリガーも無い"
+  },
+  "dsva-uchu-birthday-archive-watch-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-cosmo-birthday-2026-screening",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の同時視聴上映会・アーカイブ券販売"
+  },
+  "dsva-midterm-assessment-2026-2": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "2026-2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ中間能力評価"
+  },
+  "dsva-retra-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "LV特典グッズのデザイン公開と10/11締切は10/8〜10/11号で掲載済み。締切も過ぎた"
+  },
+  "cosmo-birthday-online-live-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-cosmo-birthday-2026-screening",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演のチケット販売・アーカイブ終了予定"
+  },
+  "kamizuru-cosmo-birthday-online-live-2026-report": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "公演レポートは9/17号で掲載済み。facts に当日の動きが無い。販売・視聴期限は上映会の記事に含める"
+  },
+  "dsva-cosmo-birthday-live-report-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-cosmo-birthday-2026-screening",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信チケット販売終了(18時)・アーカイブ視聴終了(23:59)の予告。同じ公演"
+  },
+  "va-liv-letora-birthday-2026": {
+   "action": "article",
+   "angle": "レトラ BIRTHDAY ONLINE LIVE 2026の通常配信チケットが本日12時に発売。公演は11月11日、LV先行抽選の当落は13日発表",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ASOBI STAGE配信チケット販売開始が当日トリガー。LV先行抽選の主題を統合"
+  },
+  "shinkai-fes-2026-timetable": {
+   "action": "article",
+   "angle": "深海フェス2026「超・深海」第三次販売(先着)は10月15日23:59まで。1DAYチケットなどを購入でき、17日DAY1に宇宙・レトラ、18日DAY2に愛夏が出演",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日前。VIP等は一部完売"
+  },
+  "valiv-cosmo-birthday-2026-screening": {
+   "action": "article",
+   "angle": "上水流宇宙BDライブの同時視聴上映会は本日13時開始。配信・アーカイブチケットの販売は18時、アーカイブ視聴は23:59で終了",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一公演の複数主題(上映会・券販売終了・アーカイブ終了)を1記事に統合。今日の面の主役"
+  },
+  "dsva-cosmo-birthday-live-archive-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-cosmo-birthday-2026-screening",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演・同じ施策"
+  },
+  "dsva-cosmo-birthday-live-watchparty-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-cosmo-birthday-2026-screening",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演・同じ施策"
+  },
+  "valiv-mid-ability-evaluation-2026-2": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "2026-2",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ中間能力評価。投票フォームURLは統合先で使う"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-2026-2-416afd",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "第2回中間能力評価の投票は本日23時59分締切。各ライバーアイドルのフォームから5分以内で投票でき、結果が公式能力値になる",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "2026-2",
+    "candidate_ids": [
+     "202610120224-grok-49",
+     "sched-2026-10-12-2026-2-締切",
+     "202610120224-grok-75",
+     "sched-2026-10-12-valiv-mid-ability-evaluation-2026-2-締切"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-biohazard-re2-stream-2026-10-11",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏の『BIOHAZARD RE:2』初見プレイ配信は、10月13日にレオン編最終回を予定",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "manaka-biohazard-re2-stream-2026-10-11",
+    "candidate_ids": [
+     "202610120224-grok-53"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-call-me-maybe-dance-video-2026-10",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙が灯里愛夏・レトラと『Call Me Maybe』を踊るショート動画を公開",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "valiv-call-me-maybe-dance-video-2026-10",
+    "candidate_ids": [
+     "202610120224-grok-54"
+    ]
+   },
+   {
+    "slug": "dsva-va-liv-letora-birthday-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラ BIRTHDAY ONLINE LIVE 2026の通常配信チケットが本日12時に発売。公演は11月11日、LV先行抽選の当落は13日発表",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "va-liv-letora-birthday-2026",
+    "candidate_ids": [
+     "sched-2026-10-12-va-liv-letora-birthday-2026-発売",
+     "202610111234-watch-1"
+    ]
+   },
+   {
+    "slug": "dsva-shinkai-fes-2026-timetable",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "深海フェス2026「超・深海」第三次販売(先着)は10月15日23:59まで。1DAYチケットなどを購入でき、17日DAY1に宇宙・レトラ、18日DAY2に愛夏が出演",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shinkai-fes-2026-timetable",
+    "candidate_ids": [
+     "sched-2026-10-12-shinkai-fes-2026-timetable-締切前"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-cosmo-birthday-2026-screening",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "上水流宇宙BDライブの同時視聴上映会は本日13時開始。配信・アーカイブチケットの販売は18時、アーカイブ視聴は23:59で終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "valiv-cosmo-birthday-2026-screening",
+    "candidate_ids": [
+     "sched-2026-10-12-valiv-cosmo-birthday-2026-screening-締切",
+     "sched-2026-10-12-valiv-cosmo-birthday-2026-screening-開始",
+     "202610120224-grok-65",
+     "sched-2026-10-12-cosmo-birthday-online-live-2026-終了",
+     "sched-2026-10-12-dsva-cosmo-birthday-live-report-2026-締切",
+     "sched-2026-10-12-dsva-cosmo-birthday-live-archive-2026-開始",
+     "sched-2026-10-12-dsva-cosmo-birthday-live-watchparty-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-situation-voice-2026-10",
+    "reason": "既報",
+    "note": "10/11号に価格・種類・販売期間とも掲載済み。新事実も当日トリガーも無い(締切は11/1)"
+   },
+   {
+    "dedup_key": "cosmo-ace-combat-8-stream-2026-10-10",
+    "reason": "既報",
+    "note": "10/15 BOMBANANA!コラボは10/11号に掲載済み。ACE COMBAT配信は10/10に終了済み"
+   },
+   {
+    "dedup_key": "manaka-morning-stream-2026-10-11",
+    "reason": "その他",
+    "note": "10/11朝の配信で終了済み。新情報も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "dsva-retra-birthday-live-2026",
+    "reason": "既報",
+    "note": "LV特典グッズのデザイン公開と10/11締切は10/8〜10/11号で掲載済み。締切も過ぎた"
+   },
+   {
+    "dedup_key": "kamizuru-cosmo-birthday-online-live-2026-report",
+    "reason": "重複",
+    "note": "公演レポートは9/17号で掲載済み。facts に当日の動きが無い。販売・視聴期限は上映会の記事に含める"
+   }
+  ],
+  "cross_brand": []
+ }
+}

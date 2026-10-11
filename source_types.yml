@@ -236,6 +236,9 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - shinkaifes.pjblue.com # 合議で追加: フッターで主催を明記。アイマス関連の記述はなし
+  - naganokenbun.jp       # 合議で追加: ホールの指定管理者。トップの「指定管理者」表記で確認、会場案内
+  - m-messe.co.jp         # 合議で追加: 会場の運営会社。会社概要で事業内容を確認、先行の会場案内
   - nex-tone.link         # 合議で追加: 一般の配信サービスのリリース用リンク。運営者情報はページから取れず
   - myokoen.com           # 合議で追加: コラボ商品・ノベルティを販売する店の一次発信(自社お知らせ)
   - manga10.com           # 合議で追加: コラボ催事の会場側。自社サイトで主催者の告知を掲載、取材の形跡なし
@@ -376,6 +379,8 @@ video_channels:
   当事者:
     - whatsupmcdonalds    # 合議で追加: アイマスコラボの販売元・主催者として公式YouTubeで直接発信
   ファン:
+    - kon_kitunebana      # 合議で追加: 個人チャンネル。本人のコスプレ・ライブ動画などの発信
+    - VTKazune            # 合議で追加: 個人チャンネル。本人の自己紹介・配信・歌ってみた動画の発信
     - tokiwakaname        # 合議で追加: 個人チャンネルの踊ってみた投稿。公式・運営発信ではなく個人の二次創作
     - TogawaNonoha        # 合議で追加: YouTubeの個人チャンネル。個人アカウントに該当
   公式:
@@ -392,6 +397,8 @@ video_ids:
   当事者:
     - YUWiY_qt3jM         # 機械で追加: @whatsupmcdonalds「今度いつきみに会えるのかな covered by 如月千早」
   ファン:
+    - lixtC4sChpo         # 機械で追加: @kon_kitunebana「【Cosplay_学園アイドルマスター】仮装狂騒曲組で野外ラ」
+    - 0pJbRoGru8E         # 機械で追加: @VTKazune「【#エムシャニ対バンライブ】カフェパレ&放クラPが愛を叫ぶ！」
     - lnlFRSXtUyY         # 機械で追加: @tokiwakaname「【踊ってみた】Poison Berry Daughters 」
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
@@ -548,6 +555,21 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - yozora1123l         # 合議で追加: 個人による我那覇響の誕生日祝いの投稿
+    - wataridori84        # 合議で追加: 個人による梅田スカイビル訪問のレポート投稿
+    - teishotoku_dayo     # 合議で追加: 個人による倉本千奈フィギュアの色調調整写真の投稿
+    - tarte376            # 合議で追加: 個人による『私が選ぶアイマスアイドル6人』投稿
+    - shiraip_923         # 合議で追加: 個人制作のファン制作ツール「概念ポケトレメーカー」紹介
+    - kon_kitunebana      # 合議で追加: 個人アカウントによる仮装狂騒曲組の野外ライブ動画公開
+    - isaya               # 合議で追加: 個人アカウントによる愛美の出演作への言及
+    - gomadarerere        # 合議で追加: 個人による杜野凛世のファンイラスト投稿
+    - bashimike           # 合議で追加: 個人によるミリコレ765AS登場の感想投稿
+    - PERfect_COmmu       # 合議で追加: 個人による徳川まつりのファンイラスト投稿
+    - M_aichanko          # 合議で追加: 個人によるミリオン14thライブ後の感想投稿
+    - CAMEKOJ             # 合議で追加: 個人アカウントによる開発秘話への言及
+    - 2Kazune_VTiger2     # 合議で追加: 個人のSideM・シャニマス楽曲紹介配信
+    - 1qZejWXI2vKEX2V     # 合議で追加: 個人によるアクリルスタンドの展示投稿
+    - 00Kuranarisan00     # 合議で追加: 個人アカウントによる姫崎莉波のファンイラスト投稿
     - raka_nsu            # 合議で追加: 個人作成の企画投稿。「私が選ぶアイマスアイドル6人」
     - fu_ru_he_he_he      # 合議で追加: 個人の体験投稿。筑西市シャニマスコラボの来訪記録
     - ext_edouard         # 合議で追加: 個人の投稿。我那覇響の誕生日を祝う内容
@@ -738,6 +760,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - fanta_sistan        # 合議で追加: 店舗によるツアマスカード筐体の運用案内
     - 30MS____            # 合議で追加: 30MS商品のAmazon再入荷をPR付きで告知する販売・製品側の発信
     - kimchikura          # 合議で追加: 催しの出演告知。主催側の一次発信とみられる
     - sakaseru_jp         # 合議で追加: フラワースタンド販売・手配による出演祝い投稿

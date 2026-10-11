@@ -1,0 +1,121 @@
+{
+ "decisions": {
+  "gaku-agitato-streaming-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11号で配信開始を報じ済み。facts は prior と同じで新事実・当日トリガーなし"
+  },
+  "gakumas-seibu-chichibu-yukemuri-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10号で期間・グッズ・スタンプラリー・乗車券まで報じ済み。開始は10/16で3日以内ではない"
+  },
+  "gaku-temari-another-idol-guaranteed-gacha-2026": {
+   "action": "article",
+   "angle": "月村手毬のシーズン限定アナザーアイドルが確定で手に入る無料1連ガシャは、明日10月13日10時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内。手毬は未報の新しい対象"
+  },
+  "fan-china-figure-photo-edit-2026-10-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿(未確認)。単体では記事にしない。culture は general 面のみ"
+  },
+  "rinami-fan-art-2026-10-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿(未確認)。culture は general 面のみ"
+  },
+  "gaku-round1-collab-2026": {
+   "action": "article",
+   "angle": "学園アイドルマスター×ROUND1コラボキャンペーンが本日10月12日で終了。全国のラウンドワン店舗で開催",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(千秋楽)。facts に終了日10/12が明記。週の表記(火/日)は2025年と一致するが、7月13日号で2026年開催として報じ済み"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-temari-another-idol-guaranteed-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "月村手毬のシーズン限定アナザーアイドルが確定で手に入る無料1連ガシャは、明日10月13日10時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-temari-another-idol-guaranteed-gacha-2026",
+    "candidate_ids": [
+     "202610120224-grok-46"
+    ]
+   },
+   {
+    "slug": "gaku-round1-collab-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学園アイドルマスター×ROUND1コラボキャンペーンが本日10月12日で終了。全国のラウンドワン店舗で開催",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "gaku-round1-collab-2026",
+    "candidate_ids": [
+     "sched-2026-10-12-gaku-round1-collab-2026-千秋楽"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-agitato-streaming-2026",
+    "reason": "既報",
+    "note": "10/11号で配信開始を報じ済み。facts は prior と同じで新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "gakumas-seibu-chichibu-yukemuri-2026",
+    "reason": "既報",
+    "note": "10/10号で期間・グッズ・スタンプラリー・乗車券まで報じ済み。開始は10/16で3日以内ではない"
+   },
+   {
+    "dedup_key": "fan-china-figure-photo-edit-2026-10-11",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿(未確認)。単体では記事にしない。culture は general 面のみ"
+   },
+   {
+    "dedup_key": "rinami-fan-art-2026-10-09",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿(未確認)。culture は general 面のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

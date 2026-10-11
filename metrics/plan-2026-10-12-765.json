@@ -1,0 +1,67 @@
+{
+ "decisions": {
+  "valiv-uchu-birth-festival-archive-2026": {
+   "action": "article",
+   "angle": "アーカイブチケットの販売は本日18時まで、13時からは購入者向けの同時視聴上映会が始まり、視聴期限は23時59分",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。prior本文と同じ事実を当日のトリガーとして伝え直す"
+  },
+  "fan-mirikore-as-members-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "一般ファンの投稿のみで公式の裏取りが無い(unconfirmed)。個人のSNS投稿は単体で記事にしない"
+  },
+  "fan-hibiki-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "誕生日は10/10で終了済み。ファン投稿のみで新情報なし。culture枠は general 面だけで765面では扱わない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-valiv-uchu-birth-festival-archive-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "アーカイブチケットの販売は本日18時まで、13時からは購入者向けの同時視聴上映会が始まり、視聴期限は23時59分",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "valiv-uchu-birth-festival-archive-2026",
+    "candidate_ids": [
+     "202610120224-grok-1",
+     "sched-2026-10-12-valiv-uchu-birth-festival-archive-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fan-mirikore-as-members-2026-10",
+    "reason": "出典不足",
+    "note": "一般ファンの投稿のみで公式の裏取りが無い(unconfirmed)。個人のSNS投稿は単体で記事にしない"
+   },
+   {
+    "dedup_key": "fan-hibiki-birthday-2026",
+    "reason": "その他",
+    "note": "誕生日は10/10で終了済み。ファン投稿のみで新情報なし。culture枠は general 面だけで765面では扱わない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

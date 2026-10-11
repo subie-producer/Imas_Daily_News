@@ -1,0 +1,322 @@
+{
+ "decisions": {
+  "million-14thlive-kinen-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は10/11で終了済み。10/11号で「本日受注締切」を既報"
+  },
+  "million-14thlive-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は10/11で終了済み。同じ14thLIVE記念グッズ受注で既報"
+  },
+  "million-official-shop-lottery-stock-2026-10-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11号の本文と同内容(A〜D賞の在庫・通販不可)。新事実なし"
+  },
+  "million-only-maker-9th-parka-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-live-9th-anniversary-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じパーカー受注。素材を統合"
+  },
+  "million-sports-day-login-2026": {
+   "action": "roundup",
+   "angle": "開催中のログインボーナス(スポーツの日、10/12〜18、ミリオンジュエル計500個)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-matsuri-igp-mission-2026": {
+   "action": "roundup",
+   "angle": "開催中の特別ミッション(徳川まつりのアイドルグランプリ追加記念、11/10 23:59まで、フラッシュGPメダル計1380枚)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-igp-practice-features-2026-10": {
+   "action": "article",
+   "angle": "アイドルグランプリに「イメージトレーニング」「フリーレッスン」が加わり、消費なしで何度でも練習できるお試しキャンペーンも開催中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "大会Sランク再挑戦の近日実装予定も同記事で触れる"
+  },
+  "million-igp-s-rank-retry-update": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-igp-practice-features-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じアイドルグランプリの機能アップデート"
+  },
+  "million-master-rank-5-2026-10": {
+   "action": "article",
+   "angle": "対象カードにマスターランク5が追加され、基礎ステータスとスキルLv上限が上昇しアナザー2衣装も獲得できる。対象6枚のピックアップガシャも開催",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MR5対象6カードのピックアップガシャ2件を統合"
+  },
+  "million-pickup-step-gasha-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-master-rank-5-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じマスターランク5施策のピックアップガシャ"
+  },
+  "million-once-ssr-pickup-gasha-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-master-rank-5-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じマスターランク5施策のピックアップガシャ"
+  },
+  "million-milicolle-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10号「ミリコレ！本日15時開催へ」と同じイベント。新事実・当日トリガーなし"
+  },
+  "million-battle-of-theater-medal-shop-2026": {
+   "action": "roundup",
+   "angle": "プレミアムメダルショップにBATTLE OF THEATERの衣装引換券とメールが追加(各50枚)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-14th-fan-afterparty-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿・未確認"
+  },
+  "matsuri-fan-post-million-14th-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿・未確認。ファン面(culture)はgeneral面のみ"
+  },
+  "million-cyber-planet-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8号の本文と同内容。終了10/20は3日以内でなく新事実もない"
+  },
+  "million-live-9th-anniversary-2026": {
+   "action": "article",
+   "angle": "ミリシタ9周年「モルフォ・パレシア」のカスタマイズパーカー(8,500円)の受注が本日10/12で締切。12月上旬から順次お届け",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "パーカー受注の4主題(ONLY MAKER・公式カスタマイズ・シアターデイズ版)を統合"
+  },
+  "million-only-maker-parker-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-live-9th-anniversary-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じパーカー受注の締切"
+  },
+  "million-9th-anniversary-custom-parka-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-live-9th-anniversary-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じパーカー受注の締切"
+  },
+  "million-theaterdays-9th-custom-hoodie-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-live-9th-anniversary-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じパーカー受注の締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-igp-practice-features-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "アイドルグランプリに「イメージトレーニング」「フリーレッスン」が加わり、消費なしで何度でも練習できるお試しキャンペーンも開催中",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-igp-practice-features-2026-10",
+    "candidate_ids": [
+     "202610120224-grok-17",
+     "202610120224-grok-18"
+    ]
+   },
+   {
+    "slug": "million-master-rank-5-2026-10",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "対象カードにマスターランク5が追加され、基礎ステータスとスキルLv上限が上昇しアナザー2衣装も獲得できる。対象6枚のピックアップガシャも開催",
+    "purpose": "新情報",
+    "lead_score": 55,
+    "dedup_key": "million-master-rank-5-2026-10",
+    "candidate_ids": [
+     "202610120224-grok-19",
+     "202610120224-grok-20",
+     "202610120224-grok-21"
+    ]
+   },
+   {
+    "slug": "million-live-9th-anniversary-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ミリシタ9周年「モルフォ・パレシア」のカスタマイズパーカー(8,500円)の受注が本日10/12で締切。12月上旬から順次お届け",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-live-9th-anniversary-2026",
+    "candidate_ids": [
+     "sched-2026-10-12-million-live-9th-anniversary-2026-締切",
+     "202610112333-watch-2",
+     "sched-2026-10-12-million-only-maker-parker-2026-締切",
+     "sched-2026-10-12-million-9th-anniversary-custom-parka-2026-締切",
+     "sched-2026-10-12-million-theaterdays-9th-custom-hoodie-2026-締切"
+    ]
+   },
+   {
+    "slug": "million-ops-roundup",
+    "brand": "million",
+    "rank": "roundup",
+    "angle": "開催中のログインボーナス(スポーツの日、10/12〜18、ミリオンジュエル計500個)",
+    "lead_score": 0,
+    "dedup_key": "million-sports-day-login-2026",
+    "candidate_ids": [
+     "202610120224-grok-12",
+     "202610120224-grok-16",
+     "202610120224-grok-23"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-14thlive-kinen-goods-2026",
+    "reason": "既報",
+    "note": "受注は10/11で終了済み。10/11号で「本日受注締切」を既報"
+   },
+   {
+    "dedup_key": "million-official-shop-lottery-stock-2026-10-10",
+    "reason": "既報",
+    "note": "10/11号の本文と同内容(A〜D賞の在庫・通販不可)。新事実なし"
+   },
+   {
+    "dedup_key": "million-14thlive-goods-2026",
+    "reason": "既報",
+    "note": "受注は10/11で終了済み。同じ14thLIVE記念グッズ受注で既報"
+   },
+   {
+    "dedup_key": "million-milicolle-2026-10",
+    "reason": "既報",
+    "note": "10/10号「ミリコレ！本日15時開催へ」と同じイベント。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "million-14th-fan-afterparty-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿・未確認"
+   },
+   {
+    "dedup_key": "matsuri-fan-post-million-14th-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿・未確認。ファン面(culture)はgeneral面のみ"
+   },
+   {
+    "dedup_key": "million-cyber-planet-popup-2026",
+    "reason": "既報",
+    "note": "10/8号の本文と同内容。終了10/20は3日以内でなく新事実もない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,147 @@
+{
+ "decisions": {
+  "tours-s2-stream-preview-2026": {
+   "action": "article",
+   "angle": "S2弾カード紹介として最上静香の「pretty cheer」(応援でFEVERゲージ上昇、リズム完璧でスコア上昇)と、準備中のハロウィンアイテムを伝える",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "生配信10/15 19:00・SPアピール調整は10/8・10/11で既報。桃子カードは10/10既報。静香カードとハロウィンアイテムのみ新規扱い"
+  },
+  "stamas-5th-anniversary-cross-comm-2026": {
+   "action": "article",
+   "angle": "スタマス5周年を記念したゲーム内越境コミュが公開され、レッスンの合間のおしゃべりをYouTubeでも視聴できる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Steam本編70%オフセールの告知も添える。他の面の記事は無いため cross_brand ではなく通常記事"
+  },
+  "fanta-sistan-tours-card-stock-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "一店舗の個人投稿(未確認)で、店舗の筐体運用案内に過ぎない"
+  },
+  "birthday-hitomi-tohko-chris-coron-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11号で同じお祝いムービー2本を記事化済み。新しい事実も当日のトリガーも無い"
+  },
+  "tours-late-summer-campaign-2026": {
+   "action": "article",
+   "angle": "晩夏キャンペーンは本日25時59分に開催終了。景品交換は明日13日25時59分までで、在庫がなくなり次第終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。今日が開催終了日というトリガーあり"
+  },
+  "sidem-shinycolors-sparkle-showdown-2027-06": {
+   "action": "article",
+   "angle": "SideM×シャニマス合同ライブ、アソビストアプレミアム会員先行抽選の申込締切は本日23時59分",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当落発表10/24 13時、入金10/24〜10/28 23:59。席種・枚数上限は申込時の注意として伝える。同じ締切の joint-… を統合"
+  },
+  "joint-sidem-shiny-sparkle-showdown-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-shinycolors-sparkle-showdown-2027-06",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演・同じ先行抽選の締切(読者の行動が同一)。報道ソースとして素材を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-s2-stream-preview-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "S2弾カード紹介として最上静香の「pretty cheer」(応援でFEVERゲージ上昇、リズム完璧でスコア上昇)と、準備中のハロウィンアイテムを伝える",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "tours-s2-stream-preview-2026",
+    "candidate_ids": [
+     "202610120224-grok-60"
+    ]
+   },
+   {
+    "slug": "joint-stamas-5th-anniversary-cross-comm-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "スタマス5周年を記念したゲーム内越境コミュが公開され、レッスンの合間のおしゃべりをYouTubeでも視聴できる",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "stamas-5th-anniversary-cross-comm-2026",
+    "candidate_ids": [
+     "202610120224-grok-61"
+    ]
+   },
+   {
+    "slug": "joint-tours-late-summer-campaign-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "晩夏キャンペーンは本日25時59分に開催終了。景品交換は明日13日25時59分までで、在庫がなくなり次第終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "tours-late-summer-campaign-2026",
+    "candidate_ids": [
+     "sched-2026-10-12-tours-late-summer-campaign-2026-終了"
+    ]
+   },
+   {
+    "slug": "joint-sidem-shinycolors-sparkle-showdown-2027-06",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "SideM×シャニマス合同ライブ、アソビストアプレミアム会員先行抽選の申込締切は本日23時59分",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "sidem-shinycolors-sparkle-showdown-2027-06",
+    "candidate_ids": [
+     "sched-2026-10-12-sidem-shinycolors-sparkle-showdown-2027-06-締切",
+     "sched-2026-10-12-joint-sidem-shiny-sparkle-showdown-2027-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fanta-sistan-tours-card-stock-2026-10",
+    "reason": "出典不足",
+    "note": "一店舗の個人投稿(未確認)で、店舗の筐体運用案内に過ぎない"
+   },
+   {
+    "dedup_key": "birthday-hitomi-tohko-chris-coron-2026",
+    "reason": "既報",
+    "note": "10/11号で同じお祝いムービー2本を記事化済み。新しい事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

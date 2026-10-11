@@ -1,0 +1,183 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-12T02:25:39+09:00",
+   "edition": "2026-10-12",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 0,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 349,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 0,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 0,
+    "grok:765as": 1,
+    "grok:cinderella": 10,
+    "grok:million": 16,
+    "grok:shiny": 18,
+    "grok:sidem": 3,
+    "grok:gakuen": 4,
+    "grok:dsva": 13,
+    "grok:joint-other": 5,
+    "grok:trend": 11,
+    "grok_searches:shiny": 8,
+    "grok_searches:sidem": 6,
+    "grok_searches:cg": 6,
+    "grok_searches:general": 7,
+    "grok_searches:dsva": 6,
+    "grok_searches:million": 11,
+    "grok_searches:765": 8,
+    "grok_searches:joint": 7,
+    "grok_searches:gaku": 5
+   },
+   "normalized": 82,
+   "added": 76,
+   "verify": {
+    "confirmed": 52,
+    "unconfirmed": 19,
+    "failed": 11
+   },
+   "duration_s": 1501
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-12T03:29:07+09:00",
+   "edition": "2026-10-12",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 35,
+   "written": 27,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 104,
+    "covered": 104,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "dsva-shinkai-fes-2026-timetable",
+    "dsva-va-liv-letora-birthday-2026"
+   ],
+   "stages_min": {
+    "選定": 1.4931704839070639,
+    "執筆": 5.970541898409525,
+    "出典の判定": 2.093865938981374,
+    "組版": 0.931333065032959,
+    "校閲": 0.6735185503959655,
+    "校閲1波": 0.6735185503959655
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-round1-collab-2026",
+    "765-valiv-uchu-birth-festival-archive-2026",
+    "million-master-rank-5-2026-10",
+    "shiny-hazuki-bugfix-2026",
+    "sidem-315-fitness-project-renaissance-2026",
+    "sidem-fan-fes-world-side-in-premium-2nd"
+   ],
+   "duration_s": 1709
+  },
+  {
+   "at": "2026-10-12T04:15:49+09:00",
+   "edition": "2026-10-12",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 35,
+   "written": 30,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 104,
+    "covered": 104,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "執筆": 0.816686995824178,
+    "出典の判定": 0.051349230607350665,
+    "組版": 0.8355117996533712,
+    "校閲": 0.8924262205759684,
+    "校閲1波": 0.8924262205759684
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-round1-collab-2026",
+    "million-master-rank-5-2026-10",
+    "shiny-hazuki-bugfix-2026",
+    "sidem-fan-fes-world-side-in-premium-2nd",
+    "765-valiv-uchu-birth-festival-archive-2026"
+   ],
+   "duration_s": 425
+  }
+ ]
+}

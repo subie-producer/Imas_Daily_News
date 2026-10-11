@@ -91,10 +91,6 @@
   brand: million
   subject: ミリオン「スペードのQ」ちびぐるみ(BANDAI SPIRITS)
   watch: 2027年1月内の正式な店舗展開開始日(判明次第 triggers へ)
-- dedup_key: dsva-manaka-biohazard-postponed-2026
-  brand: dsva
-  subject: 灯里愛夏『BIOHAZARD RE:2』初見配信(見送り分)
-  watch: 配信の新日程が判明次第 triggers へ
 - dedup_key: million-theater-access-issue-2026-09
   brand: million
   subject: ミリシタ アクセス障害(9月8日発生)

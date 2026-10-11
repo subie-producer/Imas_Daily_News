@@ -3261,7 +3261,7 @@ def test_storylink(tmp: Path):
     saved = compose.ROOT
     try:
         compose.ROOT = tmp
-        by_brand, _ = compose.write_plan_index(d, {k: {**v, "brand": "cg", "facts": ["f"]} for k, v in cands.items() if k != "sched-1"}, {})
+        by_brand, _, _ = compose.write_plan_index(d, {k: {**v, "brand": "cg", "facts": ["f"]} for k, v in cands.items() if k != "sched-1"}, {})
     finally:
         compose.ROOT = saved
     row = next(r for rs in by_brand.values() for r in rs if r["dedup_key"] == "dijimas-cg-2026")
@@ -4489,6 +4489,157 @@ def test_compose_classifies_after_revise(tmp: Path):
           "書き直し後の出典の判定が、最後の書き直しと最終の commit の間に無い")
 
 
+def test_late_facts_reach_plan_index(tmp: Path):
+    """前の号から引き継いだ未読の事実は、選定インデックス(主題ごと先頭 PLAN_FACTS_PER_SUBJECT 件)に先に並べる。
+    引き継ぎは候補の末尾へ足すので、既に上限以上の事実を持つ候補ではインデックスで切れ、それでも選定記録に読んだと残って
+    次の号へも渡らなかった(監査指摘 late-facts-hidden-by-plan-index: 実データ 10日号 100候補中32件が8事実超)。
+    上限を超えて切れた分は読んだことにせず、次の号がまた引き継いで先に並べる"""
+    cdir, mdir = tmp / "candidates", tmp / "metrics"
+    cdir.mkdir(parents=True)
+    mdir.mkdir(parents=True)
+    w = lambda d, rows: (cdir / f"{d}.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+    r = lambda d: {x["id"]: x for x in json.loads((cdir / f"{d}.json").read_text(encoding="utf-8"))}
+    url, n = "https://shop.example/premium", compose.PLAN_FACTS_PER_SUBJECT
+    old = [f"既存{k}" for k in range(n + 2)]
+    cand = lambda i, facts: {"id": i, "url": url, "dedup_key": "premium", "brand": "cg", "verify": "confirmed", "facts": facts}
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        # 10日号の選定は既存の事実だけを読んだ。その後、取り直しで同じ候補に事実が1件・別の候補に上限+2件足された
+        w("2026-10-10", [cand("p1", old), {**cand("p2", ["別0"]), "url": "https://shop.example/other", "dedup_key": "other"}])
+        compose.record_candidates_read("2026-10-10", r("2026-10-10"))
+        late1 = "プレミアム会員限定商品の購入にはプレミアム会員登録が必要"
+        late2 = [f"追加{k}" for k in range(n + 2)]
+        w("2026-10-10", [cand("p1", old + [late1]),
+                         {**cand("p2", ["別0"] + late2), "url": "https://shop.example/other", "dedup_key": "other"}])
+        # 11日号は同じページを拾い直しており、既に上限以上の事実を持つ
+        w("2026-10-11", [cand("q1", old), {**cand("q2", ["別0"]), "url": "https://shop.example/other", "dedup_key": "other"}])
+        compose.carry_late_candidates("2026-10-11")
+        cands = r("2026-10-11")
+        late = compose.late_fact_keys("2026-10-11")
+        by_brand, _, hidden = compose.write_plan_index("2026-10-11", cands, {}, late)
+        idx = {s["dedup_key"]: s["facts"] for s in by_brand["cg"]}
+        check(late1 in idx["premium"] and len(idx["premium"]) == n,
+              f"引き継いだ未読の事実が選定インデックスで切れた(末尾に足したまま上限で切った): {idx['premium']}")
+        check(idx["other"] == late2[:n] and hidden == {compose.fact_key(f) for f in late2[n:]},
+              f"上限を超えた引き継ぎ分を先に並べていない・切れた分を返していない: {idx['other']} {hidden}")
+        compose.record_candidates_read("2026-10-11", cands, hidden)
+        rec = json.loads(compose.read_record_path("2026-10-11").read_text(encoding="utf-8"))["read"]
+        check(compose.fact_key(late1) in rec["q1"]["facts"]
+              and not set(rec["q2"]["facts"]) & hidden and compose.fact_key(late2[0]) in rec["q2"]["facts"],
+              f"選定記録が実際に選定へ渡した範囲と一致しない: {rec['q2']}")
+        # 12日号: 切れた分だけが未読として引き継がれ、インデックスの先頭に並ぶ。選定に渡ったものは二度と引き継がない
+        w("2026-10-12", [{**cand("s2", ["別0"] + late2[:n]), "url": "https://shop.example/other", "dedup_key": "other"}])
+        compose.carry_late_candidates("2026-10-12")
+        late = compose.late_fact_keys("2026-10-12")
+        check(late == {compose.fact_key(f) for f in late2[n:]},
+              f"12日号へ引き継ぐ未読が、11日号の選定に渡らなかった分と一致しない: {len(late)}件")
+        by_brand, _, hidden = compose.write_plan_index("2026-10-12", r("2026-10-12"), {}, late)
+        idx = {s["dedup_key"]: s["facts"] for s in by_brand["cg"]}
+        check(idx["other"][:2] == late2[n:] and not hidden, f"切れた分を次の号の選定に渡していない: {idx['other']}")
+        # 引き継いだ事実は文字数でも切らない(監査指摘 late-facts-hidden-by-char-limit。実データ 11日号の「DISC2の歌唱者」698字):
+        # 10日号の選定は先頭 PLAN_FACT_CHARS 字までの事実を読み、その後、同じ書き出しの全文(後半に新しい歌唱者)が足された
+        for d in ("2026-10-11", "2026-10-12"):
+            compose.read_record_path(d).unlink(missing_ok=True)
+        lim = compose.PLAN_FACT_CHARS
+        head = ("DISC2の歌唱者：" + "、".join(f"曲{k}＝アイドル{k}" for k in range(60)))[:lim]
+        full = head + "、" + "、".join(f"新曲{k}＝新アイドル{k}" for k in range(40))
+        dcand = lambda i, facts: {"id": i, "url": "https://e.example/disc", "dedup_key": "disc", "brand": "cg",
+                                  "verify": "confirmed", "facts": facts}
+        w("2026-10-10", [dcand("d1", ["発売日", head])])
+        compose.record_candidates_read("2026-10-10", r("2026-10-10"))
+        w("2026-10-10", [dcand("d1", ["発売日", head, full])])
+        w("2026-10-11", [dcand("e1", ["発売日", head])])
+        compose.carry_late_candidates("2026-10-11")
+        cands = r("2026-10-11")
+        late = compose.late_fact_keys("2026-10-11")
+        by_brand, _, hidden = compose.write_plan_index("2026-10-11", cands, {}, late)
+        facts = {s["dedup_key"]: s["facts"] for s in by_brand["cg"]}["disc"]
+        check(late == {compose.fact_key(full)} and full in facts,
+              f"引き継いだ長い事実の {lim}字以降が選定インデックスに無い(先頭だけ見せて全文を読了にする): {[len(f) for f in facts]}")
+        compose.record_candidates_read("2026-10-11", cands, hidden)
+        check(full in facts or compose.late_fact_keys("2026-10-12"),
+              "選定に見せていない後半を読了と記録し、次の号へも引き継がない")
+    finally:
+        compose.ROOT = saved
+    import inspect
+    src = inspect.getsource(compose.main)
+    check("write_plan_index(date, cands, blocklist, late_fact_keys(date))" in src
+          and "record_candidates_read(date, cands, hidden_late)" in src,
+          "組版が引き継いだ事実を選定インデックスへ先に並べ、切れた分を選定記録から外していない")
+
+
+def test_carry_late_candidates(tmp: Path):
+    """前の号の選定が候補を読んだ後に、その号の候補ファイルへ入った候補(当番の取り直しが組版の開始後〜06:00 に終わった)を、
+    次の号の候補へ写す。写さないと、収集は 06:00 前の分を前の号へ入れ、組版は自分の号のファイルしか読まないので、
+    どの号の選定にも掛からない(当番の指摘 b2a9e39466)。読んだ後に足された事実は、次の号が同じページを拾い直していても
+    その候補へ増分マージする(次の号の候補にその事実があるとは限らない。監査指摘 late-facts-url-dedup)。冪等"""
+    import inspect
+    cdir, mdir = tmp / "candidates", tmp / "metrics"
+    cdir.mkdir(parents=True)
+    mdir.mkdir(parents=True)
+    w = lambda d, rows: (cdir / f"{d}.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+    r = lambda d: json.loads((cdir / f"{d}.json").read_text(encoding="utf-8"))
+    c = lambda i, u, n=1, v="confirmed", base=None: {"id": i, "url": f"https://e.example/{u}", "verify": v,
+                                                     "facts": [f"{base or i}-{k}" for k in range(n)]}
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        w("2026-10-10", [c("a1", "1"), c("a2", "2"), c("a5", "5", 3)])
+        compose.record_candidates_read("2026-10-10", {"a1": c("a1", "1"), "a2": c("a2", "2"), "a5": c("a5", "5", 3),
+                                                      "sched-x": {"id": "sched-x"}})
+        rec = json.loads(compose.read_record_path("2026-10-10").read_text(encoding="utf-8"))["read"]
+        check(sorted(rec) == ["a1", "a2", "a5"] and rec["a1"] == {"url": "https://e.example/1", "facts": [compose.fact_key("a1-0")]},
+              f"選定記録が候補ファイルの id・URL・読んだ事実になっていない(予約を混ぜた・事実が無い): {rec}")
+        # 選定が読んだ後: 新しい候補 a3、既存の a1 に事実が足された、10-11 で拾い直した URL の a4(事実は同じ)、
+        # 10-11 で拾い直した URL の a5 に、10-11 の候補に無い事実が足された(10-11 の b5 は事実が少なく、裏取りは unconfirmed)
+        w("2026-10-10", [c("a1", "1", 2), c("a2", "2"), c("a3", "3"), c("a4", "4", base="a4"),
+                         c("a5", "5", 4, v="unconfirmed")])
+        w("2026-10-11", [c("b1", "4", base="a4"), c("b2", "6"), c("b5", "5", 2, base="a5")])
+        log = compose.carry_late_candidates("2026-10-11")
+        got = {x["id"]: x["facts"] for x in r("2026-10-11")}
+        check(got == {"b1": ["a4-0"], "b2": ["b2-0"], "b5": ["a5-0", "a5-1", "a5-3"], "a1": ["a1-0", "a1-1"], "a3": ["a3-0"]}
+              and len(log) == 2,
+              f"選定の後に入った候補・足された事実を次の号へ渡していない(または読んだ事実まで足した・拾い直した URL の候補を重ねた): {got} {log}")
+        b5 = next(x for x in r("2026-10-11") if x["id"] == "b5")
+        check(b5["verify"] == "unconfirmed", f"足した事実の裏取りを引き継いでいない(弱いほうを採っていない): {b5}")
+        check(compose.carry_late_candidates("2026-10-11") == [] and len(r("2026-10-11")) == 5, "2回目で二重に写した")
+        # 10-11 の選定より前に、写した a3 の元へさらに事実が足された: 同じ id の写しへ増分だけ足す
+        w("2026-10-10", [c("a1", "1", 2), c("a2", "2"), c("a3", "3", 2), c("a4", "4", base="a4"),
+                         c("a5", "5", 4, v="unconfirmed")])
+        log = compose.carry_late_candidates("2026-10-11")
+        a3 = [x for x in r("2026-10-11") if x["id"] == "a3"]
+        check(len(a3) == 1 and a3[0]["facts"] == ["a3-0", "a3-1"] and log,
+              f"写した候補の元に足された事実を、同じ id の写しへ足していない(または候補を重ねた): {a3}")
+        # 次の号が選定したら、写した候補・足した事実は D+2 で二度と写らない。記録の無い号からは遡らない
+        compose.record_candidates_read("2026-10-11", {x["id"]: x for x in r("2026-10-11")})
+        w("2026-10-12", [c("d1", "9")])
+        check(compose.carry_late_candidates("2026-10-12") == [] and len(r("2026-10-12")) == 1,
+              f"選定の済んだ候補を次の次の号へまた写した: {r('2026-10-12')}")
+        # 10-11 の選定の後に、10-10 の a5 へまた事実が足された: 10-12 の候補へ写す(10-11 の選定は読んでいない)
+        w("2026-10-10", [c("a1", "1", 2), c("a2", "2"), c("a3", "3", 2), c("a4", "4", base="a4"),
+                         c("a5", "5", 5, v="unconfirmed")])
+        log = compose.carry_late_candidates("2026-10-12")
+        got = {x["id"]: x["facts"] for x in r("2026-10-12")}
+        check(set(got) == {"d1", "a5"} and log, f"2号前の候補に足された未読の事実を写していない: {got}")
+        w("2026-10-13", [])
+        compose.read_record_path("2026-10-11").unlink()
+        compose.read_record_path("2026-10-12").unlink(missing_ok=True)
+        compose.read_record_path("2026-10-10").unlink()
+        check(compose.carry_late_candidates("2026-10-13") == [], "選定記録の無い号から候補を写した")
+    finally:
+        compose.ROOT = saved
+    src = inspect.getsource(compose.main)
+    check(src.index("carry_late_candidates(") < src.index("load_window_candidates("),
+          "前の号の遅れた候補を、この号の候補を読む前に写していない")
+    plan = src.index("run_plan(")
+    check(src.index("args.reuse_plan and plan_saved.exists()") < src.index("record_candidates_read(") < plan,
+          "選定記録を、選定をやり直すとき(--reuse-plan でない)の選定の直前に書いていない")
+    own = compose.own_artifacts("2026-10-11")
+    check("metrics/candidates-read-2026-10-11.json" in own and "candidates/2026-10-11.json" in own,
+          "途中終了の commit に選定記録・写した候補が含まれない")
+
+
 def test_oncall_ensure_edition(tmp: Path):
     """取り込み先の号が origin にだけある(新しい clone・ローカル branch を消したあと)なら、ローカルを作って揃える(監査指摘 r88)。
     origin に無ければ問題を返し、ローカルが origin と食い違えば問題を返す。"""
@@ -5061,6 +5212,8 @@ def main() -> int:
     test_withdrawal(tmp / "wd")
     test_rewrites(tmp / "rw")
     test_compose_classifies_after_revise(tmp / "car")
+    test_carry_late_candidates(tmp / "clc")
+    test_late_facts_reach_plan_index(tmp / "lfpi")
     test_article_purpose()
     test_plan_merge_into_drop()
     test_extract_json_array_strict()

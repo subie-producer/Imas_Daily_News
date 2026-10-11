@@ -102,5 +102,47 @@
    },
    "duration_s": 1501
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-12T03:29:07+09:00",
+   "edition": "2026-10-12",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 35,
+   "written": 27,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 104,
+    "covered": 104,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "dsva-shinkai-fes-2026-timetable",
+    "dsva-va-liv-letora-birthday-2026"
+   ],
+   "stages_min": {
+    "選定": 1.4931704839070639,
+    "執筆": 5.970541898409525,
+    "出典の判定": 2.093865938981374,
+    "組版": 0.931333065032959,
+    "校閲": 0.6735185503959655,
+    "校閲1波": 0.6735185503959655
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-round1-collab-2026",
+    "765-valiv-uchu-birth-festival-archive-2026",
+    "million-master-rank-5-2026-10",
+    "shiny-hazuki-bugfix-2026",
+    "sidem-315-fitness-project-renaissance-2026",
+    "sidem-fan-fes-world-side-in-premium-2nd"
+   ],
+   "duration_s": 1709
+  }
  ]
 }

@@ -993,6 +993,52 @@ def test_compose_carry_review():
             compose.ROOT, pipelib.ROOT = saved
 
 
+def test_compose_carry_kept_paper():
+    """落とした記事を戻す組み直しで、紙面担当に承認済みのまま残す記事を名指しし、P1(重複)で落とすほうにさせない。
+    名指しが無いと、戻した記事と承認済みの記事の重複で承認済みのほうを落とし、組み直しごと控えに戻された
+    (2026-10-12: 宇宙誕生祭の上映会。同じ組み直しで戻ったレトラの記事も失った)。"""
+    import inspect
+    src = inspect.getsource(compose.main)
+    check(src.count("kept=carry_kept(date, carried) if carried else None") == 3,
+          "組み直しの紙面担当の呼び出し(往復・取り直し・ブロック記事の除外のあと)に、承認済みの記事を渡していない")
+    check("承認済みの記事" in (compose.PROMPTS / "review-paper.md").read_text(encoding="utf-8"),
+          "紙面担当の指示に、承認済みの記事を落とすほうにしない決まりが無い")
+    d = "2099-01-01"
+    ok = {"verdict": "approve", "blockers": [], "comments": [], "hashes": {f"docs/_editions/{d}.md": "e"}}
+    saved = (compose.ROOT, pipelib.ROOT)
+    with tempfile.TemporaryDirectory() as td:
+        try:
+            compose.ROOT = pipelib.ROOT = Path(td)
+            posts = Path(td) / "docs" / "_posts"
+            posts.mkdir(parents=True)
+            (Path(td) / "metrics").mkdir()
+            for s_, body in (("a", "承認済み"), ("b", "承認済み"), ("c", "今回書いた")):
+                (posts / f"{d}-{s_}.md").write_text(f"---\nslug: {s_}\ntitle: {s_}\n---\n{body}\n", encoding="utf-8")
+            approved = {k: v for k, v in pipelib.review_manifest(d).items() if not k.endswith("-c.md")}
+            (posts / f"{d}-b.md").write_text("---\nslug: b\ntitle: b\n---\n組み直しの途中で変わった\n", encoding="utf-8")
+            kept = compose.carry_kept(d, {**ok, "hashes": approved})
+            check(kept == [f"{d}-a.md"], f"承認時から変わっていない記事だけを承認済みとしない: {kept}")
+
+            class FakeP:
+                returncode, pid = 0, 0
+
+                def communicate(self, timeout=None):
+                    return (json.dumps({"verdict": "approve", "blockers": [], "comments": []}), "")
+            saved_popen = compose.subprocess.Popen
+            compose.subprocess.Popen = lambda argv, **k: FakeP()
+            try:
+                compose.claude_review(d, 1, targets=[], editorial=False, paper=True, kept=kept)
+            finally:
+                compose.subprocess.Popen = saved_popen
+            paper = [t for t in (f.read_text(encoding="utf-8") for f in (Path(td) / "metrics" / "work" / d).glob("*.md"))
+                     if "紙面全体" in t and "P1" in t]
+            sec = paper[0].split("## 承認済みの記事", 1)[-1] if paper and "## 承認済みの記事" in paper[0] else ""
+            check(f"docs/_posts/{d}-a.md" in sec and f"{d}-b.md" not in sec and f"{d}-c.md" not in sec,
+                  f"紙面担当の依頼に承認済みの記事が名指しされない: {sec!r}")
+        finally:
+            compose.ROOT, pipelib.ROOT = saved
+
+
 def test_compose_recover(tmp: Path):
     """承認まで進んでも記事を落とした号は、当番が直したあとこの号に戻す(2026-10-10 編集長「復帰保証までが Opus/Sol の仕事だ」)。
     組み直しは控えを取ってから --reuse-plan。承認済みだった記事を失う・承認されないなら控えに戻す。戻った・戻らない記事を名指しする。"""
@@ -5236,6 +5282,7 @@ def main() -> int:
     test_notify_require()
     test_oncall_rerun_policy()
     test_compose_carry_review()
+    test_compose_carry_kept_paper()
     test_compose_recover(tmp / "recover")
     test_revise_apply_decline(tmp / "ra")
     test_notify_long()

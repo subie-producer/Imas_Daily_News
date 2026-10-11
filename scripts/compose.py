@@ -406,6 +406,8 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
     late(前の号から引き継いだ未読の事実の識別。late_fact_keys)は先に並べる: 引き継ぎは候補の末尾へ足すので、
     そのままでは件数上限で切れて選定に渡らない(監査指摘 late-facts-hidden-by-plan-index)。それでも上限で切れた late の
     識別を3つ目の値で返し、選定記録はそれを読んだことにしない(次の号がまた引き継ぐ)。
+    late は文字数で短縮せず全文で渡す: 選定記録は全文の識別で読んだと残すので、PLAN_FACT_CHARS 以降にある新情報
+    (長い一覧の後半への追記など)が見えないまま読了になり、次の号へも渡らない(監査指摘 late-facts-hidden-by-char-limit)。
     """
     subjects: dict[str, dict] = {}
     pool: dict[str, list] = {}  # 主題 → (短縮した事実, 事実の識別)。候補の順
@@ -427,7 +429,8 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
         if c.get("verify") == "confirmed":
             s["verify"] = "confirmed"
         for f in c.get("facts", []):
-            pool.setdefault(dk, []).append((f[:PLAN_FACT_CHARS], fact_key(f)))
+            k = fact_key(f)
+            pool.setdefault(dk, []).append((f if k in late else f[:PLAN_FACT_CHARS], k))
     # 既報の照合はコードがする(選定のモデルに約1万行の台帳を読ませない。読み切れず、同じ知らせを新規として通していた)。
     # 候補の dedup_key は storylink.link で、同じ一次情報の過去の記事の話題につなぎ直してある
     # 既報は台帳の要約(1記事1〜4件)ではなく、過去の記事が**読者に出した本文**で渡す(要約で渡したら、価格・店舗を「新しい事実」と

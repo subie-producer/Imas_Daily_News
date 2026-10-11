@@ -4537,6 +4537,29 @@ def test_late_facts_reach_plan_index(tmp: Path):
         by_brand, _, hidden = compose.write_plan_index("2026-10-12", r("2026-10-12"), {}, late)
         idx = {s["dedup_key"]: s["facts"] for s in by_brand["cg"]}
         check(idx["other"][:2] == late2[n:] and not hidden, f"切れた分を次の号の選定に渡していない: {idx['other']}")
+        # 引き継いだ事実は文字数でも切らない(監査指摘 late-facts-hidden-by-char-limit。実データ 11日号の「DISC2の歌唱者」698字):
+        # 10日号の選定は先頭 PLAN_FACT_CHARS 字までの事実を読み、その後、同じ書き出しの全文(後半に新しい歌唱者)が足された
+        for d in ("2026-10-11", "2026-10-12"):
+            compose.read_record_path(d).unlink(missing_ok=True)
+        lim = compose.PLAN_FACT_CHARS
+        head = ("DISC2の歌唱者：" + "、".join(f"曲{k}＝アイドル{k}" for k in range(60)))[:lim]
+        full = head + "、" + "、".join(f"新曲{k}＝新アイドル{k}" for k in range(40))
+        dcand = lambda i, facts: {"id": i, "url": "https://e.example/disc", "dedup_key": "disc", "brand": "cg",
+                                  "verify": "confirmed", "facts": facts}
+        w("2026-10-10", [dcand("d1", ["発売日", head])])
+        compose.record_candidates_read("2026-10-10", r("2026-10-10"))
+        w("2026-10-10", [dcand("d1", ["発売日", head, full])])
+        w("2026-10-11", [dcand("e1", ["発売日", head])])
+        compose.carry_late_candidates("2026-10-11")
+        cands = r("2026-10-11")
+        late = compose.late_fact_keys("2026-10-11")
+        by_brand, _, hidden = compose.write_plan_index("2026-10-11", cands, {}, late)
+        facts = {s["dedup_key"]: s["facts"] for s in by_brand["cg"]}["disc"]
+        check(late == {compose.fact_key(full)} and full in facts,
+              f"引き継いだ長い事実の {lim}字以降が選定インデックスに無い(先頭だけ見せて全文を読了にする): {[len(f) for f in facts]}")
+        compose.record_candidates_read("2026-10-11", cands, hidden)
+        check(full in facts or compose.late_fact_keys("2026-10-12"),
+              "選定に見せていない後半を読了と記録し、次の号へも引き継がない")
     finally:
         compose.ROOT = saved
     import inspect

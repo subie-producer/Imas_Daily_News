@@ -236,6 +236,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - shinkaifes.pjblue.com # 合議で追加: フッターで主催を明記。アイマス関連の記述はなし
   - naganokenbun.jp       # 合議で追加: ホールの指定管理者。トップの「指定管理者」表記で確認、会場案内
   - m-messe.co.jp         # 合議で追加: 会場の運営会社。会社概要で事業内容を確認、先行の会場案内
   - nex-tone.link         # 合議で追加: 一般の配信サービスのリリース用リンク。運営者情報はページから取れず

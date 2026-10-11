@@ -25,14 +25,12 @@ sources:
 - label: バンダイナムコエンターテインメント「283 Production LIVE Performance noctchill」(2026年9月27日)
   url: https://idolmaster-official.jp/live_event/283_noctchill/
   type: 公式
-event_date: "2026-10-12"
+event_date: "2027-03-27"
 title_fact_ids:
 - F48
-- F84
 lede_fact_ids:
 - F48
-- F52
-- F84
+- F172
 ---
 受付はアソビチケットの各ページから。どちらの先行も、申し込みはアソビストアプレミアム12か月会員が対象で、1か月会員は対象外。申し込みから当落発表までに12か月会員を退会すると抽選対象外となる。 <!-- F51 F52 F54 F55 -->
 

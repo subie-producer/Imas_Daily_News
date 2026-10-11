@@ -20,7 +20,7 @@ sources:
 - label: 【公式】アイドルマスター ポータル「【SideMシャニマス対バンライブ】2027年6月5日(土)・6日(日) 横浜アリーナにて「THE IDOLM@STER SideM × SHINY COLORS SPARKLE SHOWDOWN」開催決定！本日よりアソビストアプレミアム会員先行受付スタート！」(2026年9月12日)
   url: https://idolmaster-official.jp/news/01_19789
   type: 公式
-event_date: "2026-10-12"
+event_date: "2027-06-05"
 title_fact_ids:
 - F1
 - F35

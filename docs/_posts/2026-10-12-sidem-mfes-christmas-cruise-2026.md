@@ -22,7 +22,7 @@ sources:
 - label: WILLER TRAVEL「アイドルマスター SideM ～Mフェス2026・クリスマスクルーズ～」(掲載日記載なし)
   url: https://travel.willer.co.jp/entertainment/sidem/christmas-cruise-2026/
   type: 当事者
-event_date: "2026-10-12"
+event_date: "2026-12-12"
 title_fact_ids:
 - F1
 - F3

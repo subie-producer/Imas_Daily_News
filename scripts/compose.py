@@ -1841,6 +1841,13 @@ def carry_targets(date: str, carried: dict) -> list[str]:
                   if k.startswith("docs/_posts/") and carried["hashes"].get(k) != h)
 
 
+def carry_kept(date: str, carried: dict) -> list[str]:
+    """承認を引き継ぐ組み直しで、承認時から中身が変わっていない記事(承認済みのまま残す記事)。carry_targets の裏。"""
+    from pipelib import review_manifest
+    return sorted(k.split("/")[-1] for k, h in review_manifest(date).items()
+                  if k.startswith("docs/_posts/") and carried["hashes"].get(k) == h)
+
+
 def hand_over_anomalies(date: str, rerun: bool, reason: str = "", extra_args: list[str] | None = None) -> None:
     """号の終わりに、外れた記事と直らなかった指摘を異常の台帳に積み、台帳ごと当番へ渡す(なぜなぜ)。
     人に「落とした」「決まらない」と申告するだけで終えない(編集長 2026-09-26「すべてのエラーがなぜ起きたかなぜなぜしろ」)。"""
@@ -2573,7 +2580,8 @@ def review_hint(date: str, name: str, notes_by_file: dict[str, list[str]]) -> st
 
 def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                   editorial: bool = True, paper: bool = True,
-                  carry: dict | None = None, findings: str = "", strict: bool = False) -> dict:
+                  carry: dict | None = None, findings: str = "", strict: bool = False,
+                  kept: list[str] | None = None) -> dict:
     """校閲。執筆(Codex)と別ベンダーにするため Claude(REVIEW_MODEL=haiku)で実施。
 
     **記事は1本ずつ、並列で見る。**紙面まるごとを1セッションで校閲していたが、
@@ -2627,6 +2635,11 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                        if re.match(r"::warning file=docs/_editions/", l)]
         hint = (("\n\n## 機械の所見(号スナップショットについて。当たっていればブロック、外れていれば無視)\n- "
                  + "\n- ".join(paper_notes)) if paper_notes else "")
+        # 承認済みの紙面に落とした記事を戻す組み直しでは、承認済みのまま残す記事を名指しする。名指しが無いと、戻した記事と
+        # 承認済みの記事の重複(P1)で承認済みのほうを落とし、組み直しごと捨てられた(実測 2026-10-12: 宇宙誕生祭の上映会)
+        if kept:
+            hint += ("\n\n## 承認済みの記事(承認時から中身が変わっていない。P1 で落とすほうにしない)\n- "
+                     + "\n- ".join(f"docs/_posts/{n}" for n in kept))
         jobs.append(("紙面全体",
                      (PROMPTS / "review-paper.md").read_text(encoding="utf-8")
                      .replace("{DATE}", date) + hint + again, "-", "paper"))
@@ -3287,7 +3300,8 @@ def main() -> int:
         # 見出しだけ読む担当なので1セッションで済む
         review = claude_review(date, rounds, targets=retarget, editorial=retarget_ed,
                                paper=(retarget is None or bool(retarget) or force_paper), carry=review,
-                               findings=lint_out, strict=force_paper)
+                               findings=lint_out, strict=force_paper,
+                               kept=carry_kept(date, carried) if carried else None)
         force_paper = False
         if review.get("verdict") == "approve":
             break
@@ -3428,7 +3442,7 @@ def main() -> int:
             # 記事は往復で見終わっている。作り直したのは社説と digest なので、
             # 見直すのは社説と紙面担当(digest・主題の重複)。記事は見直さない
             review = claude_review(date, rounds, targets=[], editorial=with_editorial, paper=True,
-                                   carry=review)
+                                   carry=review, kept=carry_kept(date, carried) if carried else None)
         except Exception as e:
             traceback.print_exc()
             notify("compose", f"{date}: 記事修正後の取り直しに失敗({e})。"
@@ -3510,7 +3524,7 @@ def main() -> int:
             # 残った記事は直していないので見直さない。落としたことで変わるのは
             # 社説と、紙面全体(主題の重複・記事の漏れ)だけ
             review = claude_review(date, rounds, targets=[], editorial=with_editorial, paper=True,
-                                   carry=review)
+                                   carry=review, kept=carry_kept(date, carried) if carried else None)
         except Exception as e:
             # **途中で落ちたら全部戻す。**記事を消した後に組版のやり直しが失敗すると、
             # 「記事だけ欠けて digest は古いまま」という壊れた紙面が残る

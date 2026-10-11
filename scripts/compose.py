@@ -272,6 +272,69 @@ def load_window_candidates(date: str) -> dict:
     return items
 
 
+# 選定が読んだ後に前の号の候補ファイルへ入った候補を、何号前まで遡って引き継ぐか
+LATE_LOOKBACK = 3
+
+
+def read_record_path(date: str) -> Path:
+    """その号の選定が読んだ候補 id の記録(metrics/candidates-read-<date>.json)。"""
+    return ROOT / "metrics" / f"candidates-read-{date}.json"
+
+
+def record_candidates_read(date: str, cands: dict) -> None:
+    """選定に掛ける候補ファイルの候補を、id → facts の件数で記録する(選定し直すたびに上書き。--reuse-plan では書かない)。"""
+    p = ROOT / "candidates" / f"{date}.json"
+    file_ids = {c["id"] for c in json.loads(p.read_text(encoding="utf-8")) if c.get("id")} if p.exists() else set()
+    ids = [i for i in sorted(cands) if i in file_ids]
+    read_record_path(date).write_text(json.dumps(
+        {"read": {i: len(cands[i].get("facts") or []) for i in ids},
+         "urls": sorted({cands[i]["url"] for i in ids if cands[i].get("url")})},
+        ensure_ascii=False, indent=0) + "\n", encoding="utf-8")
+
+
+def carry_late_candidates(date: str) -> list[str]:
+    """前の号の選定が候補を読んだ後に、その号の候補ファイルへ入った候補(当番の取り直しが組版の開始後〜06:00 に
+    終わった、など)を、この号の候補ファイルへ写す。収集は 06:00 前の分を前の号へ入れ、組版は自分の号のファイルしか
+    読まないので、写さなければどの号の選定にも掛からない。
+    前の号 P の候補のうち、P〜前日の号の選定記録のどれにも無い id と、選定が読んだときより facts が増えた候補
+    (取り直しが既存の URL に事実を足した)を写す(写した候補は同じ id のまま、この号の選定記録に入るので二度は
+    写らない)。同じ URL がこの号の候補にあるか、P より後の号が選定に掛けていれば写さない(その号で拾い直している)。P の選定記録が無い号(組版が選定まで進まなかった・記録を始める前の号)は
+    遡らない。冪等。"""
+    d = datetime.date.fromisoformat(date)
+    target = ROOT / "candidates" / f"{date}.json"
+    rows = json.loads(target.read_text(encoding="utf-8")) if target.exists() else []
+    have_ids, have_urls = {c.get("id") for c in rows}, {c.get("url") for c in rows}
+    log = []
+    for k in range(LATE_LOOKBACK, 0, -1):
+        prev = (d - datetime.timedelta(days=k)).isoformat()
+        src = ROOT / "candidates" / f"{prev}.json"
+        if not src.exists() or not read_record_path(prev).exists():
+            continue
+        read: dict[str, int] = {}
+        later_urls = set()      # P より後の号が、同じページを拾い直して選定に掛けた URL
+        for j in range(k, 0, -1):
+            rp = read_record_path((d - datetime.timedelta(days=j)).isoformat())
+            if rp.exists():
+                rec = json.loads(rp.read_text(encoding="utf-8"))
+                for i, n in (rec.get("read") or {}).items():
+                    read[i] = max(read.get(i, 0), int(n))
+                if j < k:
+                    later_urls |= set(rec.get("urls") or [])
+        late = [c for c in json.loads(src.read_text(encoding="utf-8"))
+                if c.get("id") and (c["id"] not in read or len(c.get("facts") or []) > read[c["id"]])
+                and c["id"] not in have_ids and c.get("url") not in have_urls and c.get("url") not in later_urls]
+        for c in late:
+            rows.append(c)
+            have_ids.add(c["id"])
+            have_urls.add(c.get("url"))
+        if late:
+            log.append(f"{prev}号の選定が読んだ後に入った・事実が増えた候補 {len(late)}件をこの号の候補へ写した: "
+                       + ", ".join(c["id"] for c in late[:10]))
+    if log:
+        target.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return log
+
+
 def load_blocklist() -> dict:
     p = ROOT / "stock" / "blocklist.yml"
     if not p.exists():
@@ -2813,6 +2876,8 @@ def main() -> int:
     import assemble as _assemble
     for line in _assemble.restore_reservation_facts(date):
         print(line, flush=True)
+    for line in carry_late_candidates(date):
+        print(line, flush=True)
     cands = load_window_candidates(date)
     blocklist = load_blocklist()
     if not cands:
@@ -2836,6 +2901,8 @@ def main() -> int:
         plan = json.loads(plan_saved.read_text(encoding="utf-8"))
         print(f"選定を再利用: {plan_saved.name}({len(plan.get('articles') or [])}本)", flush=True)
     else:
+        # 選定に掛けた候補を記録する。これより後にこの号の候補ファイルへ入った候補は、次の号が引き継ぐ(carry_late_candidates)
+        record_candidates_read(date, cands)
         with stage("選定"):
             plan = run_plan(date, by_brand, triggers)
         pick_lead(date, plan)
@@ -3457,6 +3524,7 @@ def own_artifacts(date: str) -> list[str]:
     return [f"docs/_posts/{date}-*.md", f"docs/_editions/{date}.md", f"docs/_editorials/{date}.md",
             f"metrics/plan-{date}*.json", f"metrics/plan-lead-{date}.json", f"metrics/review-{date}-*.json",
             f"metrics/stories-before-{date}.yml", f"metrics/pending-before-{date}.yml", f"metrics/{date}.json",
+            f"metrics/candidates-read-{date}.json", f"candidates/{date}.json",
             "stock/stories.yml", "stock/pending.yml", "stock/scheduled/*.json", "stock/columnist.md"]
 
 

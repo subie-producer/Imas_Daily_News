@@ -4489,6 +4489,55 @@ def test_compose_classifies_after_revise(tmp: Path):
           "書き直し後の出典の判定が、最後の書き直しと最終の commit の間に無い")
 
 
+def test_carry_late_candidates(tmp: Path):
+    """前の号の選定が候補を読んだ後に、その号の候補ファイルへ入った候補(当番の取り直しが組版の開始後〜06:00 に終わった)を、
+    次の号の候補へ写す。写さないと、収集は 06:00 前の分を前の号へ入れ、組版は自分の号のファイルしか読まないので、
+    どの号の選定にも掛からない(当番の指摘 b2a9e39466)。読んだ後に facts が増えた候補も写す。冪等"""
+    import inspect
+    cdir, mdir = tmp / "candidates", tmp / "metrics"
+    cdir.mkdir(parents=True)
+    mdir.mkdir(parents=True)
+    w = lambda d, rows: (cdir / f"{d}.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+    r = lambda d: json.loads((cdir / f"{d}.json").read_text(encoding="utf-8"))
+    c = lambda i, u, n=1: {"id": i, "url": f"https://e.example/{u}", "facts": [f"{i}-{k}" for k in range(n)]}
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        w("2026-10-10", [c("a1", "1"), c("a2", "2")])
+        compose.record_candidates_read("2026-10-10", {"a1": c("a1", "1"), "a2": c("a2", "2"), "sched-x": {"id": "sched-x"}})
+        check(json.loads(compose.read_record_path("2026-10-10").read_text(encoding="utf-8"))["read"] == {"a1": 1, "a2": 1},
+              "選定記録が候補ファイルの id と facts の件数になっていない(予約を混ぜた・件数が無い)")
+        # 選定が読んだ後: 新しい候補 a3、既存の a1 に事実が足された、10-11 で拾い直した URL の a4
+        w("2026-10-10", [c("a1", "1", 2), c("a2", "2"), c("a3", "3"), c("a4", "4")])
+        w("2026-10-11", [c("b1", "4"), c("b2", "5")])
+        log = compose.carry_late_candidates("2026-10-11")
+        got = {x["id"]: len(x["facts"]) for x in r("2026-10-11")}
+        check(got == {"b1": 1, "b2": 1, "a1": 2, "a3": 1} and log,
+              f"選定の後に入った候補・増えた事実を次の号へ写していない(または読んだもの・拾い直した URL まで写した): {got}")
+        check(compose.carry_late_candidates("2026-10-11") == [] and len(r("2026-10-11")) == 4, "2回目で二重に写した")
+        # 次の号が選定したら、写した候補は D+2 で二度と写らない。記録の無い号からは遡らない
+        compose.record_candidates_read("2026-10-11", {x["id"]: x for x in r("2026-10-11")})
+        w("2026-10-12", [c("d1", "9")])
+        check(compose.carry_late_candidates("2026-10-12") == [] and len(r("2026-10-12")) == 1,
+              f"選定の済んだ候補を次の次の号へまた写した: {r('2026-10-12')}")
+        w("2026-10-13", [])
+        compose.read_record_path("2026-10-11").unlink()
+        compose.read_record_path("2026-10-12").unlink(missing_ok=True)
+        compose.read_record_path("2026-10-10").unlink()
+        check(compose.carry_late_candidates("2026-10-13") == [], "選定記録の無い号から候補を写した")
+    finally:
+        compose.ROOT = saved
+    src = inspect.getsource(compose.main)
+    check(src.index("carry_late_candidates(") < src.index("load_window_candidates("),
+          "前の号の遅れた候補を、この号の候補を読む前に写していない")
+    plan = src.index("run_plan(")
+    check(src.index("args.reuse_plan and plan_saved.exists()") < src.index("record_candidates_read(") < plan,
+          "選定記録を、選定をやり直すとき(--reuse-plan でない)の選定の直前に書いていない")
+    own = compose.own_artifacts("2026-10-11")
+    check("metrics/candidates-read-2026-10-11.json" in own and "candidates/2026-10-11.json" in own,
+          "途中終了の commit に選定記録・写した候補が含まれない")
+
+
 def test_oncall_ensure_edition(tmp: Path):
     """取り込み先の号が origin にだけある(新しい clone・ローカル branch を消したあと)なら、ローカルを作って揃える(監査指摘 r88)。
     origin に無ければ問題を返し、ローカルが origin と食い違えば問題を返す。"""
@@ -5061,6 +5110,7 @@ def main() -> int:
     test_withdrawal(tmp / "wd")
     test_rewrites(tmp / "rw")
     test_compose_classifies_after_revise(tmp / "car")
+    test_carry_late_candidates(tmp / "clc")
     test_article_purpose()
     test_plan_merge_into_drop()
     test_extract_json_array_strict()

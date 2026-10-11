@@ -1579,7 +1579,8 @@ def verify(cands: list[dict]) -> dict:
 def merge_into_day_file(cands: list[dict], day: str) -> int:
     """candidates は号(edition)日付でキーする。1つの号の素材=1ファイルで、収集サイクル
     (07:30〜翌03:30)が暦日をまたいでも分割されない。パイプラインが前日以前の
-    ファイルを読む必要は無い(未来日程は stock/scheduled、既報判定は stock/stories.yml)。
+    ファイルを読む必要は無い(未来日程は stock/scheduled、既報判定は stock/stories.yml。選定が読んだ後にこのファイルへ
+    入った候補は、次の号の組版が自分のファイルへ写す: compose.carry_late_candidates)。
     day は対象号(main で決めた date)を使う。壁時計から取り直すと、06:00 をまたいだ
     当番の拾い直しで checkout した号と別日のファイルへ書く(監査指摘 rerun-collect-ignores-target-edition)。"""
     p = ROOT / "candidates" / f"{day}.json"

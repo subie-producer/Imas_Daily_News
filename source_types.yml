@@ -236,6 +236,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - naganokenbun.jp       # 合議で追加: ホールの指定管理者。トップの「指定管理者」表記で確認、会場案内
+  - m-messe.co.jp         # 合議で追加: 会場の運営会社。会社概要で事業内容を確認、先行の会場案内
   - nex-tone.link         # 合議で追加: 一般の配信サービスのリリース用リンク。運営者情報はページから取れず
   - myokoen.com           # 合議で追加: コラボ商品・ノベルティを販売する店の一次発信(自社お知らせ)
   - manga10.com           # 合議で追加: コラボ催事の会場側。自社サイトで主催者の告知を掲載、取材の形跡なし
@@ -376,6 +378,8 @@ video_channels:
   当事者:
     - whatsupmcdonalds    # 合議で追加: アイマスコラボの販売元・主催者として公式YouTubeで直接発信
   ファン:
+    - kon_kitunebana      # 合議で追加: 個人チャンネル。本人のコスプレ・ライブ動画などの発信
+    - VTKazune            # 合議で追加: 個人チャンネル。本人の自己紹介・配信・歌ってみた動画の発信
     - tokiwakaname        # 合議で追加: 個人チャンネルの踊ってみた投稿。公式・運営発信ではなく個人の二次創作
     - TogawaNonoha        # 合議で追加: YouTubeの個人チャンネル。個人アカウントに該当
   公式:
@@ -392,6 +396,8 @@ video_ids:
   当事者:
     - YUWiY_qt3jM         # 機械で追加: @whatsupmcdonalds「今度いつきみに会えるのかな covered by 如月千早」
   ファン:
+    - lixtC4sChpo         # 機械で追加: @kon_kitunebana「【Cosplay_学園アイドルマスター】仮装狂騒曲組で野外ラ」
+    - 0pJbRoGru8E         # 機械で追加: @VTKazune「【#エムシャニ対バンライブ】カフェパレ&放クラPが愛を叫ぶ！」
     - lnlFRSXtUyY         # 機械で追加: @tokiwakaname「【踊ってみた】Poison Berry Daughters 」
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」

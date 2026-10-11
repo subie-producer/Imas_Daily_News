@@ -1,0 +1,232 @@
+{
+ "decisions": {
+  "sidem-11th-kinen-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "販売は10/11 23:59に終了済み。10/8〜10/11に受注締切の記事を出し済みで、新事実も当日のトリガーも無い"
+  },
+  "sidem-315-fitness-project-renaissance-2026": {
+   "action": "article",
+   "angle": "SideM×ルネサンス「315 Fitness Project」が10月22日から全国49店舗で開催され、蒼井悠介ら5名がアンバサダーを務める映像レッスンや限定館内ボイスを実施する",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報(collabo-cafe)のみで unconfirmed。公式確認が取れる範囲で書く"
+  },
+  "sidem-315-episode-one-panel-update-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10に「アイドルたちの1コマ」更新を記事化済み。facts は更新の告知のみで新事実なし"
+  },
+  "christopher-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11号で誕生日記事を出し済み。prior 本文と同内容で、誕生日は10/11に終了"
+  },
+  "sidem-fan-fes-world-side-in-premium-2nd": {
+   "action": "article",
+   "angle": "SideM FAN FES -World Side in- のアソビストアプレミアム会員2次先行は本日が申込最終日で、SP席とS席・A席は申込先が別",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/11の公式投稿「お申し込みは明日まで」から締切は本日。申込ページの締切時刻は素材で未確認なので時刻は書かない"
+  },
+  "sidem-anideal-daimaru-fragrance-2026": {
+   "action": "article",
+   "angle": "Anideal×大丸のSideMコラボ香水の予約は10月15日14:59までで、締切まで3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新事実は無く、締切が3日以内に迫ったことが当日のトリガー"
+  },
+  "sidem-producer-card-vol3-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-card-wave3-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品・同じ受注締切(10/12 23:59)。公式ソースのある wave3 側へ統合"
+  },
+  "sidem-fantastic-battle-fes-2026": {
+   "action": "article",
+   "angle": "F@NTASTIC BATTLE FES 第2弾のアソビストアプレミアム会員2次先行は本日23:59が申込最終日。当落発表は10月23日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "長野・幕張の全8公演が対象。席種別の受付URLと入金期間も伝える"
+  },
+  "sidem-mfes-christmas-cruise-2026": {
+   "action": "article",
+   "angle": "F-LAGSが招く「Mフェス2026・クリスマスクルーズ」の抽選申込は本日23:59まで。当選発表は10月16日17時予定",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は主催WILLER TRAVELの投稿(unconfirmed)。申込にはWILLER会員登録が必要"
+  },
+  "sidem-producer-card-wave3-2026": {
+   "action": "article",
+   "angle": "「かざして聴ける！プロデューサーカード」第3弾の受注販売は本日23:59が最終日。FRAME・神速一魂・F-LAGS・Legendersの4ユニット",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "vol3 を統合。受注先と発売予定日12月2日を伝え直す"
+  },
+  "sidem-seibuen-retro-rose-party-2026": {
+   "action": "article",
+   "angle": "西武園ゆうえんちのトークショー参加券付き1日レヂャー切符(10,000円)が本日12時からアソビューで先着販売",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "各公演の前日23:59まで、売り切れ次第終了。特典付き切符は13日17時から別販売"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-315-fitness-project-renaissance-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideM×ルネサンス「315 Fitness Project」が10月22日から全国49店舗で開催され、蒼井悠介ら5名がアンバサダーを務める映像レッスンや限定館内ボイスを実施する",
+    "purpose": "新情報",
+    "lead_score": 55,
+    "dedup_key": "sidem-315-fitness-project-renaissance-2026",
+    "candidate_ids": [
+     "202610112333-explore-8"
+    ]
+   },
+   {
+    "slug": "sidem-fan-fes-world-side-in-premium-2nd",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM FAN FES -World Side in- のアソビストアプレミアム会員2次先行は本日が申込最終日で、SP席とS席・A席は申込先が別",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-fan-fes-world-side-in-premium-2nd",
+    "candidate_ids": [
+     "202610120224-grok-42"
+    ]
+   },
+   {
+    "slug": "sidem-anideal-daimaru-fragrance-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Anideal×大丸のSideMコラボ香水の予約は10月15日14:59までで、締切まで3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "sidem-anideal-daimaru-fragrance-2026",
+    "candidate_ids": [
+     "sched-2026-10-12-sidem-anideal-daimaru-fragrance-2026-締切前"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "F@NTASTIC BATTLE FES 第2弾のアソビストアプレミアム会員2次先行は本日23:59が申込最終日。当落発表は10月23日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-fantastic-battle-fes-2026",
+    "candidate_ids": [
+     "sched-2026-10-12-sidem-fantastic-battle-fes-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-christmas-cruise-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "F-LAGSが招く「Mフェス2026・クリスマスクルーズ」の抽選申込は本日23:59まで。当選発表は10月16日17時予定",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-mfes-christmas-cruise-2026",
+    "candidate_ids": [
+     "sched-2026-10-12-sidem-mfes-christmas-cruise-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-producer-card-wave3-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「かざして聴ける！プロデューサーカード」第3弾の受注販売は本日23:59が最終日。FRAME・神速一魂・F-LAGS・Legendersの4ユニット",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-producer-card-wave3-2026",
+    "candidate_ids": [
+     "sched-2026-10-12-sidem-producer-card-wave3-2026-締切",
+     "sched-2026-10-12-sidem-producer-card-vol3-2026-締切"
+    ]
+   },
+   {
+    "slug": "sidem-seibuen-retro-rose-party-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "西武園ゆうえんちのトークショー参加券付き1日レヂャー切符(10,000円)が本日12時からアソビューで先着販売",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-seibuen-retro-rose-party-2026",
+    "candidate_ids": [
+     "sched-2026-10-12-sidem-seibuen-retro-rose-party-2026-発売"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-11th-kinen-goods-2026",
+    "reason": "既報",
+    "note": "販売は10/11 23:59に終了済み。10/8〜10/11に受注締切の記事を出し済みで、新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-315-episode-one-panel-update-2026-10",
+    "reason": "既報",
+    "note": "10/10に「アイドルたちの1コマ」更新を記事化済み。facts は更新の告知のみで新事実なし"
+   },
+   {
+    "dedup_key": "christopher-birthday-2026",
+    "reason": "既報",
+    "note": "10/11号で誕生日記事を出し済み。prior 本文と同内容で、誕生日は10/11に終了"
+   }
+  ],
+  "cross_brand": []
+ }
+}

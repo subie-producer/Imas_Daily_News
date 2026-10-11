@@ -1,0 +1,372 @@
+{
+ "decisions": {
+  "shiny-noctchill-live-2027": {
+   "action": "article",
+   "angle": "ノクチル単独ライブ「noctchill」のアソビストアプレミアム会員先行・ティーン割先行の受付は本日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "先行受付関連4主題を1記事に集約"
+  },
+  "shiny-noctchill-2027-live-presale": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-noctchill-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受付(受付URL・入金期間の素材)"
+  },
+  "shiny-noctchill-performance-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-noctchill-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受付の締切告知"
+  },
+  "shiny-283-production-live-performance-noctchill": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-noctchill-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受付(続報予約)"
+  },
+  "shiny-parallel-collection-popup-2026": {
+   "action": "article",
+   "angle": "「パラレル回廊」の事後通販(ASOBI STORE・あみあみ)とオフィシャルショップでの取扱いは本日10月12日まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "通販の受付終了日が当日。既報の店舗取扱いに通販を加えた形"
+  },
+  "shiny-parallel-corridor-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-parallel-collection-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ事後通販"
+  },
+  "shiny-parallel-corridor-post-event-sales-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-parallel-collection-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ事後通販の終了告知"
+  },
+  "shiny-msp-memorial-goods-2026": {
+   "action": "article",
+   "angle": "MSP開催記念グッズと一部イベントグッズの追加販売の受注は本日10月12日が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注締切の2主題を集約"
+  },
+  "shiny-283-solo-live-msp-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-msp-memorial-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注締切(追加受注)"
+  },
+  "shiny-stillblue-asobipremium-lottery": {
+   "action": "article",
+   "angle": "「Still blue」アソビストア一般会員先行の当選者の入金期限は本日23:59",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日締切"
+  },
+  "shiny-pioneer-impact-mvgiveaway-2026": {
+   "action": "article",
+   "angle": "『Pioneer Impact』3DMV記念QUOカード抽選の応募締切は本日23:59、最終日に引用リポストで応募できる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日締切"
+  },
+  "shiny-hazuki-bugfix-2026": {
+   "action": "article",
+   "angle": "【束の間ロアー】七草はづきに特定の特訓はづきさんが使えてしまう不具合の修正が完了、今後の対応は後日案内",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "キャスコレ素材(特訓はづきさんの使用可否)もここに統合"
+  },
+  "shiny-casting-halloween-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-hazuki-bugfix-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本文は10/11に既報。新要素は特訓はづきさん使用可の点のみで、不具合修正と同じ件"
+  },
+  "shiny-song-focus-chocodate-2026": {
+   "action": "roundup",
+   "angle": "シャニソン縦画面フォーカスカメラの追加楽曲・ガシャ・web4コマなど開催中の運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-focus-hanamaru-2026": {
+   "action": "roundup",
+   "angle": "シャニソン縦画面フォーカスカメラの追加楽曲・ガシャ・web4コマなど開催中の運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-pickup-natsuha-2026": {
+   "action": "roundup",
+   "angle": "シャニソン縦画面フォーカスカメラの追加楽曲・ガシャ・web4コマなど開催中の運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-web4koma-659": {
+   "action": "roundup",
+   "angle": "シャニソン縦画面フォーカスカメラの追加楽曲・ガシャ・web4コマなど開催中の運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11の運営情報まとめで掲載済み。新事実も当日トリガーも無い(終了10/21)"
+  },
+  "shiny-fumage-cruise-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11の記事に全項目掲載済み。抽選結果は10/16で3日以内ではない"
+  },
+  "shiny-orchestra-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11に出演者・先行を記事化済み。締切10/18は3日以内ではなく新事実も無い"
+  },
+  "shiny-alev1-making-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10 20:00にプレミア公開済みで、10/9・10/10に記事化済み"
+  },
+  "rinze-fan-art-2026-10-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で未確認。shiny面にculture枠は無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-hazuki-bugfix-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "【束の間ロアー】七草はづきに特定の特訓はづきさんが使えてしまう不具合の修正が完了、今後の対応は後日案内",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-hazuki-bugfix-2026",
+    "candidate_ids": [
+     "202610120224-grok-34",
+     "202610120224-grok-31"
+    ]
+   },
+   {
+    "slug": "shiny-stillblue-asobipremium-lottery",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「Still blue」アソビストア一般会員先行の当選者の入金期限は本日23:59",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-stillblue-asobipremium-lottery",
+    "candidate_ids": [
+     "sched-2026-10-12-shiny-stillblue-asobipremium-lottery-締切"
+    ]
+   },
+   {
+    "slug": "shiny-parallel-collection-popup-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「パラレル回廊」の事後通販(ASOBI STORE・あみあみ)とオフィシャルショップでの取扱いは本日10月12日まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-parallel-collection-popup-2026",
+    "candidate_ids": [
+     "sched-2026-10-12-shiny-parallel-collection-popup-2026-終了",
+     "202610112333-watch-1",
+     "202610120224-explore-0"
+    ]
+   },
+   {
+    "slug": "shiny-noctchill-live-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "ノクチル単独ライブ「noctchill」のアソビストアプレミアム会員先行・ティーン割先行の受付は本日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 55,
+    "dedup_key": "shiny-noctchill-live-2027",
+    "candidate_ids": [
+     "sched-2026-10-12-shiny-noctchill-live-2027-締切",
+     "202610111234-watch-4",
+     "202610120224-grok-74",
+     "sched-2026-10-12-shiny-283-production-live-performance-noctchill-締切"
+    ]
+   },
+   {
+    "slug": "shiny-pioneer-impact-mvgiveaway-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "『Pioneer Impact』3DMV記念QUOカード抽選の応募締切は本日23:59、最終日に引用リポストで応募できる",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-pioneer-impact-mvgiveaway-2026",
+    "candidate_ids": [
+     "sched-2026-10-12-shiny-pioneer-impact-mvgiveaway-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-msp-memorial-goods-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "MSP開催記念グッズと一部イベントグッズの追加販売の受注は本日10月12日が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-msp-memorial-goods-2026",
+    "candidate_ids": [
+     "sched-2026-10-12-shiny-msp-memorial-goods-2026-締切",
+     "sched-2026-10-12-shiny-283-solo-live-msp-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニソン縦画面フォーカスカメラの追加楽曲・ガシャ・web4コマなど開催中の運営情報",
+    "lead_score": 0,
+    "dedup_key": "shiny-web4koma-659",
+    "candidate_ids": [
+     "202610120224-grok-30",
+     "202610120224-grok-35",
+     "202610120224-grok-36",
+     "202610120224-grok-38",
+     "202610120224-grok-37"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-fumage-cruise-2026",
+    "reason": "既報",
+    "note": "10/11の記事に全項目掲載済み。抽選結果は10/16で3日以内ではない"
+   },
+   {
+    "dedup_key": "shiny-orchestra-2027",
+    "reason": "既報",
+    "note": "10/11に出演者・先行を記事化済み。締切10/18は3日以内ではなく新事実も無い"
+   },
+   {
+    "dedup_key": "shiny-party-2026",
+    "reason": "既報",
+    "note": "10/11の運営情報まとめで掲載済み。新事実も当日トリガーも無い(終了10/21)"
+   },
+   {
+    "dedup_key": "shiny-alev1-making-video-2026",
+    "reason": "既報",
+    "note": "10/10 20:00にプレミア公開済みで、10/9・10/10に記事化済み"
+   },
+   {
+    "dedup_key": "rinze-fan-art-2026-10-09",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で未確認。shiny面にculture枠は無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,176 @@
+{
+ "decisions": {
+  "hachinohe-cinderella-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "prior本文に期間・スタンプラリー・グッズ・宿泊プラン・イラスト公開まで全て既出。申込開始10/20は3日以内でない"
+  },
+  "cg-memory-pict-7th-pict": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11号と同内容。受注締切10/18は6日先でトリガーなし"
+  },
+  "cinderella-party-master-album-2026": {
+   "action": "article",
+   "angle": "10/8号に無かった収録の詳細(Disc1のライブトラック3曲と歌唱者、オリジナルカラオケ、Disc2『歌姫楽園SideC』30曲の曲目と歌唱者、品番SACX-1162-3)を伝える",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売日・価格・店舗限定・予約締切は10/8号に既出なので触れ方は最小限に"
+  },
+  "cg-15th-anniversary-orchestra-concert-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/9号に事前販売の開始日・18日までの受付が既出。facts に新事実なし、締切10/18は6日先"
+  },
+  "cg-apple-of-my-ai-2027": {
+   "action": "article",
+   "angle": "ATHOME xR LIVE「Apple of my アイ」が2027年2月13・14日にやまぎん県民ホールで開催、5人の出演者とアソビストアプレミアム会員先行(10月18日まで)を伝える",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当落発表は10月31日13時。先行締切は10/18で当日トリガーではない"
+  },
+  "fan-cg-umeda-sky-visit-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人ブログの訪問記で出典は未確認。単体では記事にしない"
+  },
+  "cg-memory-pict-7-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-memory-pict-7th-pict",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じMemory Pict.第7弾の受注の知らせ。統合先は既報で不採用"
+  },
+  "cinderella-playlist-additions-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10号が同じ2曲の追加を報じており新事実なし"
+  },
+  "cg-15th-orchestra-2027": {
+   "action": "article",
+   "angle": "先行当選分の入金は本日23時59分が最終日。S席2万円・A席1万2000円、パシフィコ横浜で2027年1月11・12日開催",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。対象はアソビストアプレミアム会員最速先行の当選者"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-party-master-album-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "10/8号に無かった収録の詳細(Disc1のライブトラック3曲と歌唱者、オリジナルカラオケ、Disc2『歌姫楽園SideC』30曲の曲目と歌唱者、品番SACX-1162-3)を伝える",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cinderella-party-master-album-2026",
+    "candidate_ids": [
+     "202610112333-explore-5"
+    ]
+   },
+   {
+    "slug": "cg-apple-of-my-ai-2027",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "ATHOME xR LIVE「Apple of my アイ」が2027年2月13・14日にやまぎん県民ホールで開催、5人の出演者とアソビストアプレミアム会員先行(10月18日まで)を伝える",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "cg-apple-of-my-ai-2027",
+    "candidate_ids": [
+     "202610120224-grok-7"
+    ]
+   },
+   {
+    "slug": "cg-15th-orchestra-2027",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "先行当選分の入金は本日23時59分が最終日。S席2万円・A席1万2000円、パシフィコ横浜で2027年1月11・12日開催",
+    "purpose": "期日の知らせ",
+    "lead_score": 75,
+    "dedup_key": "cg-15th-orchestra-2027",
+    "candidate_ids": [
+     "sched-2026-10-12-cg-15th-orchestra-2027-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "hachinohe-cinderella-collab-2026",
+    "reason": "既報",
+    "note": "prior本文に期間・スタンプラリー・グッズ・宿泊プラン・イラスト公開まで全て既出。申込開始10/20は3日以内でない"
+   },
+   {
+    "dedup_key": "cg-memory-pict-7th-pict",
+    "reason": "既報",
+    "note": "10/11号と同内容。受注締切10/18は6日先でトリガーなし"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-orchestra-concert-goods-2026",
+    "reason": "既報",
+    "note": "10/9号に事前販売の開始日・18日までの受付が既出。facts に新事実なし、締切10/18は6日先"
+   },
+   {
+    "dedup_key": "fan-cg-umeda-sky-visit-2026-10",
+    "reason": "個人の話題",
+    "note": "個人ブログの訪問記で出典は未確認。単体では記事にしない"
+   },
+   {
+    "dedup_key": "cinderella-playlist-additions-2026-10",
+    "reason": "既報",
+    "note": "10/10号が同じ2曲の追加を報じており新事実なし"
+   },
+   {
+    "dedup_key": "cg-memory-pict-7-2026",
+    "reason": "既報",
+    "note": "不採用の主題 cg-memory-pict-7th-pict へ統合: 10/11号と同内容。受注締切10/18は6日先でトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -4,7 +4,7 @@
 ## 1. 読むもの
 - `docs/_posts/{FILE}`: 校閲する記事(frontmatter と本文)。段落末の `<!-- F1 N2 -->` は根拠の控えで、
   F は candidates の facts を素材順に通し番号にしたもの、N は frontmatter の `verified_facts`(執筆が一次情報を読んで確かめた事実。url 付き)。控え自体は指摘しない
-- 素材: frontmatter の candidate_ids が指す候補(出典と facts)。id が `sched-` で始まるものは続報予約の素材で `stock/scheduled/{DATE}.json` に、
+- 素材: frontmatter の candidate_ids が指す候補(出典と facts)。id が `sched-` で始まるものは続報予約の素材で、この依頼の末尾「続報予約の素材」に載せてある(`stock/scheduled/` のファイルは読まない)。
   それ以外は `candidates/{DATE}.json`(前後の日付のこともある)にある。**素材ファイルに無い、は執筆には直せないので、探した場所を書いたうえで
   R1 の「根拠から導けない」として扱う**(candidate_ids そのものは計画からコードが付ける。指摘の対象にしない)
 - `metrics/stories-before-{DATE}.yml`: この号の組版前の既報台帳。`stock/stories.yml` は読まない(この号の記事の事実が書き足されたあとの状態)

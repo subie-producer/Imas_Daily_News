@@ -151,3 +151,7 @@
   brand: gaku
   subject: 倉本千奈 スケールフィギュア化(EUSUN)
   watch: 製品仕様・予約期間・価格等の発表(判明次第 triggers へ)
+- dedup_key: shiny-85th-towakore-stepup-2026
+  brand: shiny
+  subject: シャニマス 8.5th Anniversaryトワコレ ステップアップガシャ(72時間限定)
+  watch: 72時間限定の終了の年月日時(記事に数値なし、判明次第 triggers へ)

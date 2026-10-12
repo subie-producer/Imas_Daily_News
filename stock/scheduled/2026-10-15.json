@@ -978,9 +978,9 @@
   "id": "sched-2026-10-15-va-liv-letora-birthday-2026-締切前",
   "dedup_key": "va-liv-letora-birthday-2026",
   "brand": "dsva",
-  "subject": "レトラ BIRTHDAY ONLINE LIVE 2026 LV当選者入金期限まで3日",
+  "subject": "レトラ誕生日ライブ LV先行抽選 入金期限まであと3日",
   "kind": "締切前",
-  "note": "当選者はあと3日の入金期限(18日23時59分)に向けて入金手続きを進められる。",
+  "note": "当選者は18日23時59分までの入金期限を確認し、入金できる",
   "reserved_on": "2026-10-13",
   "title": "ヴイアライヴ「レトラ BIRTHDAY ONLINE LIVE 2026」開催決定",
   "url": "https://idolmaster-official.jp/news/01_20045",
@@ -1021,7 +1021,7 @@
   "brand": "joint",
   "subject": "ツアマス S2弾 生配信",
   "kind": "開始",
-  "note": "19時からの生配信でS2弾の詳細とRHYTHM LIVE FESTIVAL 2027予選の課題曲を見られる。",
+  "note": "19時からの生配信でS2弾の詳細とRHYTHM LIVE予選課題曲を見られる",
   "reserved_on": "2026-10-13",
   "title": "アイドルマスター TOURS S2弾情報の生配信告知",
   "url": "https://x.com/TOURS_imas/status/2109131879572181496",
@@ -1040,30 +1040,5 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202610130225-grok-35"
- },
- {
-  "id": "sched-2026-10-15-million-snapshot-memories-gasha-2026-10-締切前",
-  "dedup_key": "million-snapshot-memories-gasha-2026-10",
-  "brand": "million",
-  "subject": "ミリシタ Snapshot Memoriesガシャ",
-  "kind": "締切前",
-  "note": "開催終了まであと3日。琴葉・環SSRを引くなら今のうちに",
-  "reserved_on": "2026-10-13",
-  "title": "Snapshot Memoriesガシャで琴葉・環のSSRが登場",
-  "url": "https://x.com/imasml_theater/status/2109494271602487681",
-  "source_type": "公式",
-  "facts": [
-   "ミリシタ公式は『Snapshot Memoriesガシャ』を開催中と告知した。",
-   "田中琴葉のSSRカード名は「受け取って、この気持ち」。",
-   "大神環のSSRカード名は「いつか、ね？」。",
-   "琴葉と環のSSRカードは出現率UP中と告知された。",
-   "Snapshot Memoriesガシャの告知に「2026/10/18（日）14:59まで」とある。",
-   "エンゲージメント: 中",
-   "言及アイドル: 田中琴葉、大神環"
-  ],
-  "via": "grok",
-  "verify": "confirmed",
-  "src_candidate_id": "202610130225-grok-8",
-  "deadline": "2026-10-18"
  }
 ]

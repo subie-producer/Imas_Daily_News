@@ -103,5 +103,44 @@
    },
    "duration_s": 1510
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-13T03:13:03+09:00",
+   "edition": "2026-10-13",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 18,
+   "written": 13,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 60,
+    "covered": 60,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "joint-imas-radio-stamas-5th-2026"
+   ],
+   "stages_min": {
+    "選定": 1.5379738966623941,
+    "執筆": 2.6034118056297304,
+    "出典の判定": 0.056477983792622886,
+    "組版": 0.7089279135068257,
+    "校閲": 0.3917010267575582,
+    "校閲1波": 0.3917010267575582
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "dsva-manaka-biohazard-re2-stream-2026-10-11",
+    "sidem-pashakore-mfes2026-a",
+    "gaku-asano-4ji-login-bonus-2026",
+    "gaku-hatsuboshi-live-tour-single-shurakuryoko-2026"
+   ],
+   "duration_s": 746
+  }
  ]
 }

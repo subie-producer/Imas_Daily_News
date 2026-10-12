@@ -392,6 +392,48 @@ def carry_late_candidates(date: str) -> list[str]:
 
 
 CARRY_DROPPED_MAX = 2   # 前の号で記事にならなかった素材を、次の号の選定に戻す回数の上限(毎号同じ理由で落ち続けるのを止める)
+# 日付 → {slug: {稿の指紋: その稿を採ったときの F 番号 → 事実の文}}。台帳はこれで記事の根拠 id を引く(素材から番号を振り直すと、
+# 執筆の後に素材の事実が増減したとき番号がずれて、書いていない事実を「掲載済み」にする。監査指摘)。稿の指紋(renderlib.draft_key)ごとに
+# 残すので、除外・組み直しの失敗で記事を旧い稿へ巻き戻しても、旧い稿の対応が選ばれる(監査指摘)。metrics/factmap-<号>.json に残す
+FACT_MAP: dict[str, dict[str, dict[str, dict[str, str]]]] = {}
+
+
+FACT_CONFLICT = {"__conflict__": "同じ稿の指紋に、違う事実の対応が記録された"}   # 台帳はこれを引かない(申告する)
+FACTMAP_CORRUPTED = "__corrupted__"   # 記録が一度壊れた号の印(台帳は、記録の無い稿を素材の事実で代えず見出しだけにする)
+
+
+def merge_fact_map(drafts: dict, key: str, fmap: dict) -> None:
+    """稿の指紋 key の対応を drafts に足す。同じ指紋に違う対応が来たら、黙って上書きせず食い違いとして残す(監査指摘)。"""
+    if key in drafts and drafts[key] != fmap:
+        drafts[key] = dict(FACT_CONFLICT)
+    else:
+        drafts[key] = dict(fmap)
+
+
+def remember_fact_map(date: str, slug: str, path: Path, fact_by_id: dict) -> None:
+    """稿を採った(書き出した)直後に、その稿の指紋と F 番号 → 事実の対応を記録する。"""
+    merge_fact_map(FACT_MAP.setdefault(date, {}).setdefault(slug, {}), renderlib.draft_key(path), fact_by_id)
+
+
+def persist_records(date: str) -> None:
+    """組版の各コミットの前と途中終了の後始末で、次の工程が読む記録(外れた記事・稿ごとの事実の対応)を残す。"""
+    persist_drops(date)
+    p = ROOT / "metrics" / f"factmap-{date}.json"
+    old, ok = read_record(p)
+    ok = ok and renderlib.factmap_valid(old)     # 読めても形が崩れていれば壊れている(監査指摘)
+    rows = {s: dict(v) for s, v in (old if isinstance(old, dict) else {}).items() if isinstance(v, dict)} if ok else {}
+    if not ok or (isinstance(old, dict) and old.get(FACTMAP_CORRUPTED)):
+        # 既存の記録が読めない(書きかけで壊れた 等): 今回書いていない稿の対応は失われた。そうと分かる印を残し、台帳はその稿を素材の
+        # 事実で代えず見出しだけにする(印が無いと「記録の無い古い稿」と同じに扱われ、書いていない事実を掲載済みにする。監査指摘)
+        if not ok:
+            anomaly("compose", f"{p.name} が読めない(壊れている)。今回書いていない稿の事実の対応を失った。台帳はそれらを見出しだけにする")
+        rows[FACTMAP_CORRUPTED] = "既存の記録が読めなかった"
+    for slug, drafts in (FACT_MAP.get(date) or {}).items():
+        for key, fmap in drafts.items():
+            merge_fact_map(rows.setdefault(slug, {}), key, fmap)
+    # 空でも書く: 記録のファイルがあることが「この号は稿ごとの記録で書いた」の印で、台帳は記録の無い稿を素材の事実で代えない
+    # (初回の保存の前に止まった号を、仕組みより前の号と取り違えない。監査指摘)
+    write_record(p, rows)
 
 
 def persist_drops(date: str) -> None:
@@ -400,20 +442,38 @@ def persist_drops(date: str) -> None:
     以前の記録(同じ号の前の実行・--reuse-plan の組み直し)と合わせ、紙面にある記事(組み直しで戻った記事)だけを除く。
     素材の id は計画のファイルから読む。"""
     p = ROOT / "metrics" / f"drops-{date}.json"
-
-    def read(path: Path):
-        try:
-            return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
-        except (OSError, ValueError):
-            return {}
-    old, plan = read(p), read(ROOT / "metrics" / f"plan-{date}.json")
+    old, ok = read_record(p)
+    if not ok:
+        anomaly("compose", f"{p.name} が読めない(壊れている)。前の実行で外れた記事の記録を失った(この号で外れた記事だけを残す)")
+    plan, _ = read_record(ROOT / "metrics" / f"plan-{date}.json")
     ids = {a.get("slug"): a.get("candidate_ids") or [] for a in (plan if isinstance(plan, dict) else {}).get("articles") or []}
     rows = dict(old if isinstance(old, dict) else {})
     rows.update({slug: {"title": t, "stage": st, "why": why, "candidate_ids": ids.get(slug, [])}
                  for slug, (t, st, why) in (DROP_LOG.get(date) or {}).items()})
     rows = {s: r for s, r in rows.items() if not (ROOT / "docs" / "_posts" / f"{date}-{s}.md").exists()}
     if rows or p.exists():
-        p.write_text(json.dumps(rows, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        write_record(p, rows)
+
+
+def read_record(path: Path) -> tuple[object, bool]:
+    """記録の JSON を読む。戻りは (中身, 読めたか)。ファイルが無いのは読めた扱いで {}(無いことと壊れていることを分ける。監査指摘)。"""
+    if not path.exists():
+        return {}, True
+    try:
+        return json.loads(path.read_text(encoding="utf-8")), True
+    except (OSError, ValueError):
+        return {}, False
+
+
+def write_record(path: Path, data) -> None:
+    """記録の JSON を一時ファイルに書いてから一度に差し替える(書きかけで止まっても、壊れた記録を残さない。監査指摘)。"""
+    import os
+    # 一時ファイルは Git 管理外(metrics/work/)に置く。書いている途中で止まっても、未追跡のファイルで発行の clean 判定を止めない
+    tmpdir = ROOT / "metrics" / "work"
+    tmpdir.mkdir(parents=True, exist_ok=True)
+    tmp = tmpdir / f".{path.name}.{os.getpid()}"
+    tmp.write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    os.replace(tmp, path)
 
 
 def carry_dropped_candidates(date: str) -> list[str]:
@@ -903,6 +963,7 @@ def run_assemble(date: str, number: int) -> None:
     成果物から抜く、という手順はもう要らない。
     """
     import assemble as _assemble
+    persist_records(date)    # 台帳は、稿を採ったときの事実の記録(factmap)をファイルから読む。組版の前に残す
     code = _assemble.run(date, number, budget=lambda: remaining_seconds(cap=_assemble.SESSION_CAP))
     if code == 1:
         raise RuntimeError("組版: 記事が無い")
@@ -2109,6 +2170,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                         note_stuck(date, "機械検算", f"docs/_posts/{date}-{art['slug']}.md", "", " / ".join(problems[:4]), 2)
                     continue
                 renderlib.render_article(target, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
+                remember_fact_map(date, art["slug"], target, fact_by_id)
                 if tries:
                     print(f"記事 {art['slug']}: 差し戻し後に合格", flush=True)
             elif "ABORT:" in out[-2000:] and not target.exists():
@@ -2468,6 +2530,7 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     if hard:
         return "kept", "検算不合格 " + " / ".join(hard[:3]) + "(元の稿のまま)"
     renderlib.render_article(path, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
+    remember_fact_map(date, art["slug"], path, fact_by_id)
     if scope:
         OFFSCOPE_NOTES.setdefault(date, {})[art["slug"]] = " / ".join(scope)[:400]
         return "fixed", f"対応 {ans.get('addressed_issue_ids')}(指摘の外も変えた: {' / '.join(scope)[:120]}。次の巡の校閲が確かめる)"
@@ -3165,7 +3228,7 @@ def main() -> int:
         print("素材に対して rank が小さい: " + ", ".join(thin), flush=True)
     if errors:
         notify("compose", f"{date}: 記事計画が機械検証を通らず。当番に渡す\n- " + "\n- ".join(errors[:8]), ok=False)
-        persist_drops(date)
+        persist_records(date)
         commit_and_push(branch, f"compose {date}: 計画不成立(当番へ)", "compose")
         escalate("compose", date, "記事計画が機械検証を通らず:\n- " + "\n- ".join(errors[:20]))
         return 1
@@ -3182,6 +3245,9 @@ def main() -> int:
                           "計画で判断されず消えた(発行は続行。選定の取りこぼし)", ok=False)
 
     # 1b. 個別執筆: 記事ごとに素材を機械切り出しして独立セッションで書く
+    # 執筆を始める前に、稿ごとの事実の記録のファイルを作る(この号は記録で書いた、の印。初回の保存の前に止まっても、台帳が
+    # 記録の無い稿を素材の事実で代えない。監査指摘)
+    persist_records(date)
     with stage("執筆"):
         written, aborted = write_articles(date, plan, cands, triggers, load_story_facts(),
                                           reuse=args.reuse_plan)
@@ -3211,7 +3277,7 @@ def main() -> int:
     if len(written) < 1 or (aborted and len(written) < 8):
         notify("compose", f"{date}: 執筆成立 {len(written)}本/計画 {n_plan}本(不成立: {aborted})。下限割れの疑い", ok=False)
     if not written:
-        persist_drops(date)
+        persist_records(date)
         commit_and_push(branch, f"compose {date}: 執筆全滅(当番へ)", "compose")
         escalate("compose", date, f"執筆が全滅(計画 {n_plan}本、不成立 {aborted})。執筆の出力契約・検算・素材の切り出しを疑うこと")
         return 1
@@ -3365,7 +3431,7 @@ def main() -> int:
             code, lint_out = run_lint(date)
         if code != 0:
             notify("compose", f"{date}: lint 赤が解消できず。当番に渡す\n{lint_out[-500:]}", ok=False)
-            persist_drops(date)
+            persist_records(date)
             commit_and_push(branch, f"compose {date}: lint未解消(当番へ)", "compose")
             escalate("compose", date, "lint 赤が解消できず:\n" + lint_out[-3000:])
             return 1
@@ -3376,7 +3442,7 @@ def main() -> int:
     # release も collect も「作業ツリーが汚れている」で止まった)。
     # 校閲前の紙面でも、release は approve を見て発行を止めるので出てしまうことはない。
     # 途中で死んでも、人が lint と校閲記録を見て確定できる状態を残す
-    persist_drops(date)
+    persist_records(date)
     commit_and_push(branch, f"compose {date}: 紙面生成(校閲前・lint green)", "compose")
 
     # 校閲が既報判定に使う台帳は**組版前の**もの(metrics/stories-before-<日付>.yml)。
@@ -3527,7 +3593,7 @@ def main() -> int:
             print(f"記事が {len(changed_posts)}本変わった"
                   f"(中身 {len(changed_read)}本 / 組版が使う値 {len(changed_meta)}本)。取り直す",
                   flush=True)
-            persist_drops(date)
+            persist_records(date)
             commit_and_push(branch, f"compose {date}: 校閲往復のあと(取り直し前)", "compose")
             ed_comments = [c for c in (review.get("comments") or [])
                            if (c.get("file") or "").startswith("docs/_editorials/")]
@@ -3594,7 +3660,7 @@ def main() -> int:
                 break  # 機械で落とせる指摘が残っていない(一面・社説・対象不明)
             dropped_by_review += dropped
             print(f"校閲ブロックで {len(dropped)}本を落とす({_pass + 1}巡目): {dropped}", flush=True)
-            persist_drops(date)
+            persist_records(date)
             commit_and_push(branch, f"compose {date}: ブロック記事を除外({_pass + 1}巡目)", "compose")
 
             # **記事が落ちたら社説を取り直す。**起点かどうかは関係ない。
@@ -3679,7 +3745,7 @@ def main() -> int:
     if took_min > COMPOSE_TARGET_MIN:
         detail = " / ".join(f"{k} {v:.0f}分" for k, v in STAGE_MIN.items()) or "(段の実測なし)"
         print(f"目標({COMPOSE_TARGET_MIN}分)を超えた: {took_min:.0f}分 — {detail}", flush=True)
-    persist_drops(date)   # 最後の commit に含める(後に書くと作業ツリーが汚れて発行が止まる)
+    persist_records(date)   # 最後の commit に含める(後に書くと作業ツリーが汚れて発行が止まる)
     pushed = commit_and_push(branch, f"compose {date}: 紙面生成(校閲{'approve' if approved else '未approve'}・{rounds}往復"
                              + (f"・ブロック{len(dropped_by_review)}本を除外" if dropped_by_review else "") + ")", "compose")
     if not pushed:
@@ -3729,6 +3795,7 @@ def own_artifacts(date: str) -> list[str]:
             f"metrics/plan-{date}*.json", f"metrics/plan-lead-{date}.json", f"metrics/review-{date}-*.json",
             f"metrics/stories-before-{date}.yml", f"metrics/pending-before-{date}.yml", f"metrics/{date}.json",
             f"metrics/candidates-read-{date}.json", f"candidates/{date}.json", f"metrics/drops-{date}.json",
+            f"metrics/factmap-{date}.json",
             "stock/stories.yml", "stock/pending.yml", "stock/scheduled/*.json", "stock/columnist.md"]
 
 
@@ -3746,7 +3813,7 @@ def _leave_tree_clean(reason: str) -> None:
         return
     try:
         try:
-            persist_drops(date)      # 途中終了でも、外れた記事を次の号の選定に戻せるよう残す(監査指摘)
+            persist_records(date)      # 途中終了でも、外れた記事を次の号の選定に戻せるよう残す(監査指摘)
         except Exception as e:      # noqa: BLE001  後始末を止めない
             print(f"途中終了時に外れた記事の記録を残せない: {e}", flush=True)
         if git("status", "--porcelain").stdout.strip():

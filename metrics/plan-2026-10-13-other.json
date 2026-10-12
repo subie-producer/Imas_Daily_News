@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "starlit-season-5th-anniversary-initiatives-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "特番(20時開始)は joint-imas-radio-stamas-5th-2026 が記事化済み。メッセージ募集と動画公開は既報で新事実なし"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "starlit-season-5th-anniversary-initiatives-2026",
+    "reason": "重複",
+    "note": "特番(20時開始)は joint-imas-radio-stamas-5th-2026 が記事化済み。メッセージ募集と動画公開は既報で新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

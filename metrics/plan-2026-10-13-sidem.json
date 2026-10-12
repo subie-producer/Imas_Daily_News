@@ -1,0 +1,204 @@
+{
+ "decisions": {
+  "sidem-seibuen-retro-party-2026": {
+   "action": "article",
+   "angle": "西武園ゆうえんち「超!!レトローズパーティ」の特典付き1日レヂャー切符(ブロマイド5枚セット付き、大人5,400円など)が本日17時から販売開始",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日トリガー=発売。価格・販売先は既報なので販売開始を伝え直す。rose-party を統合"
+  },
+  "sidem-seibuen-retro-rose-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-seibuen-retro-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ17時発売の知らせ。facts は既報の範囲"
+  },
+  "sidem-cho-retroseparty-rally-2026": {
+   "action": "article",
+   "angle": "西武園の謎解きラリーはLINEが必要で、ゴール受付はレッツゴー!バザール。縁日ミニゲームは3回中1回成功で成功賞を選べるなど、園内企画の遊び方が判明",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/9既報に無い事実(LINE必須、ゴール受付場所、ポストカード全5種、成功賞を選べる等)。mini-game を統合"
+  },
+  "sidem-cho-retroseparty-mini-game-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-cho-retroseparty-rally-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボの園内企画。読者の行動(園内で遊ぶ)が同じ"
+  },
+  "tsukumo-kazuki-birthday-2026": {
+   "action": "article",
+   "angle": "九十九一希の誕生日を公式が祝い、お祝いムービーをYouTube Shortsで公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式アカウントの発信。10/11の古論クリス誕生日記事と同種"
+  },
+  "sidem-pashakore-mfes2026-a": {
+   "action": "article",
+   "angle": "「SideM ぱしゃこれクリアVer.／Mフェス2026」A-BOX(全25種)・B-BOX(全24種)の予約がアニメイト通販と店頭で受付中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "価格・締切は素材に無い。b を統合"
+  },
+  "sidem-pashakore-mfes2026-b": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-pashakore-mfes2026-a",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同一商品のA/B。予約の行動が同じ"
+  },
+  "sidem-11th-memorial-goods-deadline-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "受注は10/11 23:59で終了済み。10/8〜10/11に既報"
+  },
+  "sidem-joypolis-fan-visit-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人のSNS投稿"
+  },
+  "fifs-popup-fukuoka-sidem-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の店舗投稿のみ。SideM主催でなく、開始日・商品も不明"
+  },
+  "sidem-2dmv-clear-card-vol-2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の投稿のみ。価格・期間など具体情報が無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-tsukumo-kazuki-birthday-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "九十九一希の誕生日を公式が祝い、お祝いムービーをYouTube Shortsで公開",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "tsukumo-kazuki-birthday-2026",
+    "candidate_ids": [
+     "202610130225-grok-22",
+     "202610130225-grok-37"
+    ]
+   },
+   {
+    "slug": "sidem-pashakore-mfes2026-a",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「SideM ぱしゃこれクリアVer.／Mフェス2026」A-BOX(全25種)・B-BOX(全24種)の予約がアニメイト通販と店頭で受付中",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-pashakore-mfes2026-a",
+    "candidate_ids": [
+     "202610130225-grok-23",
+     "202610130225-grok-24"
+    ]
+   },
+   {
+    "slug": "sidem-cho-retroseparty-rally-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "西武園の謎解きラリーはLINEが必要で、ゴール受付はレッツゴー!バザール。縁日ミニゲームは3回中1回成功で成功賞を選べるなど、園内企画の遊び方が判明",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-cho-retroseparty-rally-2026",
+    "candidate_ids": [
+     "202610130225-grok-26",
+     "202610130225-grok-25"
+    ]
+   },
+   {
+    "slug": "sidem-seibuen-retro-party-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "西武園ゆうえんち「超!!レトローズパーティ」の特典付き1日レヂャー切符(ブロマイド5枚セット付き、大人5,400円など)が本日17時から販売開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "sidem-seibuen-retro-party-2026",
+    "candidate_ids": [
+     "sched-2026-10-13-sidem-seibuen-retro-party-2026-発売",
+     "sched-2026-10-13-sidem-seibuen-retro-rose-party-2026-発売"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-11th-memorial-goods-deadline-2026",
+    "reason": "その他",
+    "note": "受注は10/11 23:59で終了済み。10/8〜10/11に既報"
+   },
+   {
+    "dedup_key": "sidem-joypolis-fan-visit-2026-10",
+    "reason": "個人の話題",
+    "note": "ファン個人のSNS投稿"
+   },
+   {
+    "dedup_key": "fifs-popup-fukuoka-sidem-2026",
+    "reason": "出典不足",
+    "note": "未確認の店舗投稿のみ。SideM主催でなく、開始日・商品も不明"
+   },
+   {
+    "dedup_key": "sidem-2dmv-clear-card-vol-2",
+    "reason": "出典不足",
+    "note": "未確認の投稿のみ。価格・期間など具体情報が無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

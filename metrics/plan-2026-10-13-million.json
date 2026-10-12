@@ -1,0 +1,130 @@
+{
+ "decisions": {
+  "million-live-9th-anniversary-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は10/12で終了済み。10/12号の締切記事が本文に同内容。新事実なし"
+  },
+  "765-topic-004": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人ブログのプレイ記録(未確認・低エンゲージメント)。prior は無関係な亜美真美ライブ記事"
+  },
+  "million-snapshot-memories-gasha-2026-10": {
+   "action": "article",
+   "angle": "ミリシタで開催中の「Snapshot Memoriesガシャ」で田中琴葉・大神環のSSRが出現率UP、10月18日14:59まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "roundup 候補が2件のみ(ログボは既報で不採用)のため small の通常記事"
+  },
+  "million-sports-day-login-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/12号の運営まとめに同内容。終了は10/18で3日以内でなく当日トリガーも無い"
+  },
+  "fan-art-arisa-alternate-costume-2026-10-12": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。ファン創作は culture(general面)の扱いで、million面では単体記事にしない"
+  },
+  "million-sports-day-ai-art-timeline-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿・界隈の現象。culture は general 面の扱い"
+  },
+  "fan-screenshot-umi-sports-costume-2026-10-12": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "個人のSNS投稿(スクリーンショット)。culture は general 面の扱い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-snapshot-memories-gasha-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタで開催中の「Snapshot Memoriesガシャ」で田中琴葉・大神環のSSRが出現率UP、10月18日14:59まで",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-snapshot-memories-gasha-2026-10",
+    "candidate_ids": [
+     "202610130225-grok-8"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-live-9th-anniversary-2026",
+    "reason": "既報",
+    "note": "受注は10/12で終了済み。10/12号の締切記事が本文に同内容。新事実なし"
+   },
+   {
+    "dedup_key": "765-topic-004",
+    "reason": "個人の話題",
+    "note": "個人ブログのプレイ記録(未確認・低エンゲージメント)。prior は無関係な亜美真美ライブ記事"
+   },
+   {
+    "dedup_key": "million-sports-day-login-2026",
+    "reason": "既報",
+    "note": "10/12号の運営まとめに同内容。終了は10/18で3日以内でなく当日トリガーも無い"
+   },
+   {
+    "dedup_key": "fan-art-arisa-alternate-costume-2026-10-12",
+    "reason": "面違い",
+    "note": "個人のSNS投稿。ファン創作は culture(general面)の扱いで、million面では単体記事にしない"
+   },
+   {
+    "dedup_key": "million-sports-day-ai-art-timeline-2026",
+    "reason": "面違い",
+    "note": "個人のSNS投稿・界隈の現象。culture は general 面の扱い"
+   },
+   {
+    "dedup_key": "fan-screenshot-umi-sports-costume-2026-10-12",
+    "reason": "面違い",
+    "note": "個人のSNS投稿(スクリーンショット)。culture は general 面の扱い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,172 @@
+{
+ "decisions": {
+  "shiny-noctchill-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受付は10/12 23:59で終了。facts は10/12号の本文と同じで、当落発表(10/24)も3日以内ではない"
+  },
+  "shiny-parallel-collection-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "通販・5店販売とも10/12で終了。facts は10/12号と同じで新事実なし"
+  },
+  "shiny-jong-tama-higuchi-madoka-figure-2026": {
+   "action": "article",
+   "angle": "シャニマス×雀魂の樋口円香フィギュアの予約が始まり、浅倉透版は3次受注。予約は11月11日まで、発送は2027年6月予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "jantama の同内容を統合。雀魂は他のアイマスブランドではなく joint に当たらない"
+  },
+  "shiny-jantama-higuchi-madoka-figure-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-jong-tama-higuchi-madoka-figure-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品(URLだけ違う同じ報道)"
+  },
+  "shiny-85th-towakore-stepup-2026": {
+   "action": "roundup",
+   "angle": "開催中の有償限定ガシャ(8.5th Anniversary 72時間限定トワコレセレチケ付きステップアップ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催中のガシャとして運営まとめへ"
+  },
+  "shinyson-focus-camera-arittake-2026": {
+   "action": "roundup",
+   "angle": "シャニソン縦画面フォーカスカメラの追加楽曲「ありったけの輝きで」(櫻木真乃)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/12号の2曲とは別の新曲。楽曲追加として運営まとめへ"
+  },
+  "shiny-web4koma-659": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ピックアップガシャとweb4コマ第659話は10/12号の本文に既出で、新事実もトリガーも無い"
+  },
+  "shinyson-shiny-party-2026": {
+   "action": "roundup",
+   "angle": "シャニソン「シャイニーパーティー」開催中。ログインでSSRサポート郁田はるきを入手",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ログインボーナス系の進行中施策として運営まとめへ"
+  },
+  "fan-shiny-pokemon-concept-tool-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人のSNS投稿のみ(未確認)。ファン制作で、この面では culture 枠を使わない"
+  },
+  "fan-chikusei-shiny-cosplay-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人のSNS投稿のみ(未確認)。ファンの衣装制作で、単体では記事にしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-jong-tama-higuchi-madoka-figure-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス×雀魂の樋口円香フィギュアの予約が始まり、浅倉透版は3次受注。予約は11月11日まで、発送は2027年6月予定",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "shiny-jong-tama-higuchi-madoka-figure-2026",
+    "candidate_ids": [
+     "202610121233-explore-3",
+     "202610121233-explore-8"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "開催中の有償限定ガシャ(8.5th Anniversary 72時間限定トワコレセレチケ付きステップアップ)",
+    "lead_score": 0,
+    "dedup_key": "shiny-85th-towakore-stepup-2026",
+    "candidate_ids": [
+     "202610130225-grok-14",
+     "202610130225-grok-15",
+     "202610130225-grok-18"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-noctchill-live-2027",
+    "reason": "既報",
+    "note": "受付は10/12 23:59で終了。facts は10/12号の本文と同じで、当落発表(10/24)も3日以内ではない"
+   },
+   {
+    "dedup_key": "shiny-parallel-collection-popup-2026",
+    "reason": "既報",
+    "note": "通販・5店販売とも10/12で終了。facts は10/12号と同じで新事実なし"
+   },
+   {
+    "dedup_key": "shiny-web4koma-659",
+    "reason": "既報",
+    "note": "ピックアップガシャとweb4コマ第659話は10/12号の本文に既出で、新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "fan-shiny-pokemon-concept-tool-2026",
+    "reason": "出典不足",
+    "note": "個人のSNS投稿のみ(未確認)。ファン制作で、この面では culture 枠を使わない"
+   },
+   {
+    "dedup_key": "fan-chikusei-shiny-cosplay-2026",
+    "reason": "出典不足",
+    "note": "個人のSNS投稿のみ(未確認)。ファンの衣装制作で、単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

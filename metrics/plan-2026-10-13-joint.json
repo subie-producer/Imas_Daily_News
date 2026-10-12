@@ -1,0 +1,97 @@
+{
+ "decisions": {
+  "tours-s2-stream-preview-2026": {
+   "action": "article",
+   "angle": "10月15日19時の生配信で、RHYTHM LIVE FESTIVAL 2027予選の課題曲発表、UR特別衣装、スペシャルなハイタッチが予告された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報本文に無い新事実(課題曲発表・UR衣装・ハイタッチ)のみを切り口にする"
+  },
+  "fullahead-tours-kuji-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "出典は未確認の個人店SNSと商品ページのみで、公式発表ではない。販売開始(10/11)も過ぎている"
+  },
+  "tours-late-summer-campaign-2026": {
+   "action": "article",
+   "angle": "晩夏キャンペーンの景品交換は本日25時59分が最終日で、在庫がなくなり次第終了する",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切・終了の2件の続報予約は同一主題なので1記事にまとめる"
+  },
+  "imas-radio-stamas-5th-2026": {
+   "action": "article",
+   "angle": "IM＠S RADIOのスタマス5周年特番が本日20時からYouTubeで配信される(ゲスト:田中あいみ・山崎はるか)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信開始が当日のトリガー。新事実は無いので既知の日時・出演者を伝え直す"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-s2-stream-preview-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "10月15日19時の生配信で、RHYTHM LIVE FESTIVAL 2027予選の課題曲発表、UR特別衣装、スペシャルなハイタッチが予告された",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "tours-s2-stream-preview-2026",
+    "candidate_ids": [
+     "202610130225-grok-35"
+    ]
+   },
+   {
+    "slug": "joint-tours-late-summer-campaign-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "晩夏キャンペーンの景品交換は本日25時59分が最終日で、在庫がなくなり次第終了する",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "tours-late-summer-campaign-2026",
+    "candidate_ids": [
+     "sched-2026-10-13-tours-late-summer-campaign-2026-締切",
+     "sched-2026-10-13-tours-late-summer-campaign-2026-終了"
+    ]
+   },
+   {
+    "slug": "joint-imas-radio-stamas-5th-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "IM＠S RADIOのスタマス5周年特番が本日20時からYouTubeで配信される(ゲスト:田中あいみ・山崎はるか)",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "imas-radio-stamas-5th-2026",
+    "candidate_ids": [
+     "sched-2026-10-13-imas-radio-stamas-5th-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fullahead-tours-kuji-2026-10",
+    "reason": "出典不足",
+    "note": "出典は未確認の個人店SNSと商品ページのみで、公式発表ではない。販売開始(10/11)も過ぎている"
+   }
+  ],
+  "cross_brand": []
+ }
+}

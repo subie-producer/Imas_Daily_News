@@ -51,7 +51,8 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
-                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts)
+                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts,
+                     withdrawn_path, load_withdrawn)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
 # 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
@@ -1675,7 +1676,8 @@ def drop_blocked_articles(date: str, review: dict, written: list[dict]) -> tuple
     """
     dropped, unresolved = [], []
     by_slug = {a["slug"]: a for a in written}
-    for b in review.get("blockers") or []:
+    blockers = review.get("blockers") or []
+    for b in blockers:
         f = (b.get("file") or "").strip()
         issue = (b.get("issue") or "")[:120]
         name = Path(f).name
@@ -1686,6 +1688,9 @@ def drop_blocked_articles(date: str, review: dict, written: list[dict]) -> tuple
         p = ROOT / "docs" / "_posts" / name
         if slug not in dropped:
             log_drop(date, slug, "校閲ブロック", f"{b.get('rule_id') or ''} {issue}".strip(), p)
+            w = withdraw_issue([x for x in blockers if Path((x.get("file") or "").strip()).name == name])
+            if w:
+                record_withdrawn(date, slug, w)
         if p.exists():
             p.unlink()
         if slug not in dropped:
@@ -1785,6 +1790,21 @@ def log_drop(date: str, slug: str, stage: str, why: str, path: Path | None = Non
     DROP_LOG.setdefault(date, {})[slug] = (title, stage, why[:160])
 
 
+def withdraw_issue(issues: list[dict]) -> dict | None:
+    """指摘のうち、記事の書き方ではなく「この号に要らない」(重複・既報・記事として成立しない)という判断。無ければ None。
+    書き直しでは変わらない判断なので、これで外れた記事は救済の組み直しで再執筆しない(record_withdrawn)。"""
+    return next((b for b in issues or [] if isinstance(b, dict) and b.get("repair") == "drop_article"), None)
+
+
+def record_withdrawn(date: str, slug: str, issue: dict) -> None:
+    """取り下げた記事を号の記録に書く(--reuse-plan の組み直しが読む。冪等: 同じ slug は上書き)。"""
+    rows = load_withdrawn(ROOT, date)
+    rows[slug] = {"rule_id": str(issue.get("rule_id") or ""), "issue": str(issue.get("issue") or "")[:300]}
+    p = withdrawn_path(ROOT, date)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(dict(sorted(rows.items())), ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+
+
 # 日付 → {slug: 直前の書き直しを機械の検査が戻した理由("" なら戻していない)}。校閲の依頼文に載せる
 REVISE_NOTES: dict[str, dict[str, str]] = {}
 # 日付 → {slug: 直前の書き直しが指摘の外も変えた箇所}。採ったうえで、次の巡の校閲に確かめさせる(revise_apply)
@@ -1856,6 +1876,12 @@ def hand_over_anomalies(date: str, rerun: bool, reason: str = "", extra_args: li
     diagnose_anomalies("compose", date, rerun=rerun, reason=reason, extra_args=extra_args)
 
 
+def rescuable_drops(date: str) -> list[str]:
+    """紙面から外れた記事のうち、直して戻せる見込みのもの(取り下げ = 重複・既報で外したものを除く)。"""
+    withdrawn = load_withdrawn(ROOT, date)
+    return [s for s in DROP_LOG.get(date) or {} if s not in withdrawn]
+
+
 def drop_summary(date: str) -> str:
     """完了通知に載せる、外れた記事の一覧(見出し・段・理由)。"""
     rows = DROP_LOG.get(date) or {}
@@ -1888,9 +1914,14 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
     trig_by_key = {t["dedup_key"]: t for t in triggers}
     prior = storylink.prior_by_key(date, ROOT)
     jobs, written_before = [], []
+    withdrawn = load_withdrawn(ROOT, date) if reuse else {}
     for art in plan["articles"]:
         if reuse and (ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md").exists():
             written_before.append(art)
+            continue
+        if art["slug"] in withdrawn:
+            # 校閲が「この号に要らない」(重複・既報)と判断して外した記事。書き直しても同じ判断になり、
+            # 重複の相手と並べばまた片方が落ちる(2026-10-12)。救済の組み直しで書かない
             continue
         materials = [cands[cid] for cid in art["candidate_ids"]]
         # src も**申告ではなく判定表**から出す。素材の source_type には収集時点の
@@ -1907,6 +1938,10 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
     written, aborted = list(written_before), []
     if written_before:
         print(f"既存の記事 {len(written_before)}本は再執筆しない(--reuse-plan)", flush=True)
+    skipped = [a["slug"] for a in plan["articles"] if a["slug"] in withdrawn and a not in written_before]
+    if skipped:
+        print(f"取り下げた記事 {len(skipped)}本は再執筆しない(--reuse-plan): "
+              + " / ".join(f"{s}({withdrawn[s].get('rule_id')})" for s in skipped), flush=True)
     schema_out = ROOT / "schema" / "article-out.schema.json"
     WRITE_OUTCOMES[date] = outcomes = {}
     DROP_LOG.setdefault(date, {})
@@ -2348,6 +2383,9 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
         if problems:
             return "kept", "理由の無い decline(" + " / ".join(problems[:2]) + ")。元の稿のまま"
         log_drop(date, art["slug"], "書き直しで見送り", f"{ans.get('decline_code')} {str(ans.get('decline_detail') or '')}".strip(), path)
+        w = withdraw_issue(issues)
+        if w:
+            record_withdrawn(date, art["slug"], w)
         path.unlink(missing_ok=True)
         return "dropped", f"執筆側が不成立と判断({ans.get('decline_code')})。落とす"
     old_text = path.read_text(encoding="utf-8") if path.exists() else ""
@@ -2990,6 +3028,8 @@ def main() -> int:
         # 選定に掛けた候補を記録する。これより後にこの号の候補ファイルへ入った候補は、次の号が引き継ぐ(carry_late_candidates)
         # 前の号から引き継いだ事実のうち、選定インデックスの件数上限で選定に渡らなかったものは読んだことにしない
         record_candidates_read(date, cands, hidden_late)
+        # 選定し直すなら、前の計画で取り下げた記録は捨てる(新しい計画の記事は、まだ誰も取り下げていない)
+        withdrawn_path(ROOT, date).unlink(missing_ok=True)
         with stage("選定"):
             plan = run_plan(date, by_brand, triggers)
         pick_lead(date, plan)
@@ -3579,7 +3619,8 @@ def main() -> int:
         # 残っていれば、当番は直したあと落とした記事をこの号に戻す(--recover。承認済みの紙面は控えに取り、戻せなければ控えに戻す)。
         # 以前は「号は確定している」として再実行させず、発行前に直したのに2本を戻さなかった(2026-10-10。編集長「復帰保証までが
         # Opus/Sol の仕事だ」)
-        until = recover_until(date) if DROP_LOG.get(date) else None
+        # 取り下げた記事(重複・既報)だけなら戻すものは無い。当番の組み直しを呼ばない
+        until = recover_until(date) if rescuable_drops(date) else None
         hand_over_anomalies(date, rerun=until is not None,
                             extra_args=["--recover", "--end-at", str(int(until))] if until else None)
         return 0

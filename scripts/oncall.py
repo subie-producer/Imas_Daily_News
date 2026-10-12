@@ -75,7 +75,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hashlib
 
 from pipelib import (COLLECT_ONCALL_MARK, ENV, ROOT, SCHEDULED, SLOT_MARGIN_MIN, JobLockTimeout, job_lock, loads_strict, mark_collect_oncall,
-                     next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, tool_path)
+                     load_withdrawn, next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, tool_path)
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")
@@ -1026,9 +1026,11 @@ def posted_slugs(date: str) -> set[str]:
 
 
 def planned_slugs(date: str) -> list[str]:
-    """その号の計画にある記事の slug(計画が読めなければ空)。"""
+    """その号の計画にあり、戻す対象の記事の slug(計画が読めなければ空)。取り下げた記事(重複・既報。組み直しで書かない)は除く。"""
+    withdrawn = load_withdrawn(ROOT, date)
     try:
-        return [a["slug"] for a in json.loads((ROOT / "metrics" / f"plan-{date}.json").read_text(encoding="utf-8"))["articles"]]
+        return [a["slug"] for a in json.loads((ROOT / "metrics" / f"plan-{date}.json").read_text(encoding="utf-8"))["articles"]
+                if a["slug"] not in withdrawn]
     except (OSError, ValueError, KeyError, TypeError):
         return []
 

@@ -326,6 +326,23 @@ def edition_hash(date: str) -> str:
                           .encode("utf-8")).hexdigest()
 
 
+def withdrawn_path(root: Path, date: str) -> Path:
+    """組版で**取り下げた**記事の記録(slug → 規則・理由)。取り下げ = 校閲が記事の中身ではなく「この号に要らない」
+    (重複・既報・記事として成立しない。repair drop_article)と判断して外したこと。書き直しでは変わらないので、
+    --reuse-plan の組み直し(落とした記事を戻す救済)で再執筆しない(実測 2026-10-12: 重複で外した記事を再執筆し、重複が再発した)。
+    計画(plan-<日付>*.json)と同じ寿命: 選定し直せば消し、号の作り直しでも外れる。"""
+    return root / "metrics" / f"plan-{date}-withdrawn.json"
+
+
+def load_withdrawn(root: Path, date: str) -> dict[str, dict]:
+    """取り下げた記事の記録。無い・読めなければ空(空は「取り下げは無い」= 全部を救済の対象にする)。"""
+    try:
+        d = json.loads(withdrawn_path(root, date).read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    return d if isinstance(d, dict) else {}
+
+
 def review_manifest(date: str) -> dict[str, str]:
     """校閲が見る中身の指紋。{相対パス: sha256}。
 

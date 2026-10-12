@@ -1050,7 +1050,7 @@ def test_compose_recover(tmp: Path):
     check(compose.recover_until("2026-10-10", pub - 3 * 3600) == pub, "03:00 台に戻す締切を渡さない")
     check(compose.recover_until("2026-10-10", pub - (compose.RECOVER_MIN_LEFT_MIN - 1) * 60) is None, "間に合わないのに戻しに行かせる")
     src = __import__("inspect").getsource(compose.main)
-    check('extra_args=["--recover", "--end-at", str(int(until))] if until else None' in src and "recover_until(date) if DROP_LOG.get(date)" in src,
+    check('extra_args=["--recover", "--end-at", str(int(until))] if until else None' in src and "recover_until(date) if rescuable_drops(date)" in src,
           "承認済みで記事を落とした号を、当番に戻させていない")
     text = (pipelib.ROOT / "prompts" / "oncall-whywhy.md").read_text(encoding="utf-8")
     check("紙面に戻るまでが仕事" in text and "落とした記事・確定した号は戻さない" not in text, "なぜなぜの依頼文が、落とした記事を戻させていない")
@@ -1429,6 +1429,73 @@ def test_oncall_apply_integrate():
         oncall.apply_integrate(fix4, {"status": "unchanged", "rerun_mode": "unchanged", "risk": "情報漏えい\n予約消失"})
     check(fix4["risk"].splitlines() == ["重大な情報漏えい", "[監査後の変更で] 情報漏えい", "[監査後の変更で] 予約消失"],
           f"複数行の risk の重複除去: {fix4}")
+
+
+def test_reuse_skips_withdrawn(tmp: Path):
+    """重複・既報で取り下げた記事(校閲の repair drop_article)は、救済の組み直し(--reuse-plan)で再執筆しない。
+    書き直しの不成立・機械検算の不合格で落とした記事は、従来どおり再執筆の対象(2026-10-12: 重複で外した 765 の記事を
+    再執筆し、承認済みの上映会記事との重複が再発した)。"""
+    import oncall
+    date = "2026-10-12"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    _, fb = renderlib.materials_with_ids(MATS)
+    decline = {"status": "decline", "decline_code": "OTHER", "decline_detail": "重複", "new_facts": []}
+    saved = (compose.ROOT, compose.storylink.prior_by_key, compose.article_prompt, oncall.ROOT)
+    try:
+        compose.ROOT = oncall.ROOT = tmp
+        compose.DROP_LOG.pop(date, None)
+        # 書き直しで見送り: 指摘に drop_article があれば取り下げ、無ければ救済の対象のまま
+        for slug, iss in (("dup", [{"rule_id": "R16", "repair": "rewrite_claim", "issue": "lede"},
+                                   {"rule_id": "P1", "repair": "drop_article", "issue": "上映会と重複"}]),
+                          ("fixable", [{"rule_id": "R1", "repair": "drop_claim", "issue": "根拠なし"}])):
+            p = posts / f"{date}-{slug}.md"
+            p.write_text("---\ntitle: t\n---\n本文\n", encoding="utf-8")
+            outcome, _ = compose.revise_apply(date, {"slug": slug, "candidate_ids": ["c1"], "rank": "small"}, p, decline, fb, MATS, iss)
+            check(outcome == "dropped" and not p.exists(), f"{slug}: 見送りで落ちていない")
+        # 校閲ブロックで落とす: drop_article の指摘があれば取り下げ
+        for slug in ("known", "blocked"):
+            (posts / f"{date}-{slug}.md").write_text("---\ntitle: t\n---\n本文\n", encoding="utf-8")
+        review = {"blockers": [{"file": f"docs/_posts/{date}-known.md", "rule_id": "R8", "repair": "rewrite_claim", "issue": "日付"},
+                               {"file": f"docs/_posts/{date}-known.md", "rule_id": "R10", "repair": "drop_article", "issue": "既報"},
+                               {"file": f"docs/_posts/{date}-blocked.md", "rule_id": "R1", "repair": "drop_claim", "issue": "根拠"}]}
+        written = [{"slug": s, "rank": "medium"} for s in ("known", "blocked", "kept")]
+        dropped, _ = compose.drop_blocked_articles(date, review, written)
+        check(sorted(dropped) == ["blocked", "known"], f"校閲ブロックの除外: {dropped}")
+        w = pipelib.load_withdrawn(tmp, date)
+        check(sorted(w) == ["dup", "known"] and w["dup"]["rule_id"] == "P1" and w["known"]["rule_id"] == "R10",
+              f"取り下げの記録(重複・既報だけ): {w}")
+        check(compose.rescuable_drops(date) == ["fixable", "blocked"], f"戻す見込みの記事: {compose.rescuable_drops(date)}")
+        # 組み直し: 取り下げた記事は書かず、書けている記事は残し、直せば戻る記事だけを書く
+        (posts / f"{date}-kept.md").write_text("---\ntitle: t\n---\n本文\n", encoding="utf-8")
+        spawned = []
+
+        def fake_prompt(d, art, *a):
+            spawned.append(art["slug"])     # 執筆の依頼を作った = 再執筆する
+            raise RuntimeError("stop")
+        compose.storylink.prior_by_key = lambda d, r: {}
+        compose.article_prompt = fake_prompt
+        plan = {"articles": [{"slug": s, "brand": "765", "candidate_ids": ["c1"], "rank": "medium", "dedup_key": s}
+                             for s in ("kept", "dup", "known")]}
+        written, aborted = compose.write_articles(date, plan, {"c1": MATS[0]}, [], {}, wave=1, reuse=True)
+        check([a["slug"] for a in written] == ["kept"] and not spawned, f"取り下げた記事を再執筆した: {spawned} {written}")
+        plan["articles"].append({"slug": "fixable", "brand": "765", "candidate_ids": ["c1"], "rank": "medium", "dedup_key": "fixable"})
+        try:
+            compose.write_articles(date, plan, {"c1": MATS[0]}, [], {}, wave=1, reuse=True)
+        except RuntimeError:
+            pass
+        check(spawned == ["fixable"], f"直せば戻る記事を書かない: {spawned}")
+        # 当番の救済: 取り下げた記事を「戻らない」に数えない
+        (tmp / "metrics" / f"plan-{date}.json").write_text(json.dumps(plan), encoding="utf-8")
+        check(oncall.planned_slugs(date) == ["kept", "fixable"], f"取り下げた記事を戻す対象に数えた: {oncall.planned_slugs(date)}")
+        # 取り下げの記録は計画と同じ寿命(号の作り直しで外れる・途中終了でも commit される)
+        check(pipelib.withdrawn_path(tmp, date).name.startswith(f"plan-{date}"), "取り下げの記録が計画と同じ扱いにならない")
+    finally:
+        compose.ROOT, compose.storylink.prior_by_key, compose.article_prompt, oncall.ROOT = saved
+        compose.DROP_LOG.pop(date, None)
+    src = __import__("inspect").getsource(compose.main)
+    check("withdrawn_path(ROOT, date).unlink(missing_ok=True)" in src, "選定し直しても前の計画の取り下げを引きずる")
 
 
 def test_revise_apply_decline(tmp: Path):
@@ -5285,6 +5352,7 @@ def main() -> int:
     test_compose_carry_kept_paper()
     test_compose_recover(tmp / "recover")
     test_revise_apply_decline(tmp / "ra")
+    test_reuse_skips_withdrawn(tmp / "rwd")
     test_notify_long()
     test_oncall_state(tmp / "st")
     test_oncall_restore_cleans_untracked()

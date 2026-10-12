@@ -830,10 +830,19 @@ def test_review_paper_defines_same_subject():
 
 
 def test_job_lock():
-    code = ("import sys; sys.path.insert(0, %r)\nimport pipelib\n"
+    # 本物の作業ツリーの排他(metrics/jobs.lock)は使わない: 走っている工程やもう1本のテストとぶつかって、テストが揺れる
+    # (2026-10-13: selfcheck を2本同時に流すと、片方が「他の工程が作業ツリーを使っている」で赤になった)
+    td = Path(tempfile.mkdtemp())
+    (td / "metrics").mkdir()
+    code = ("import sys; from pathlib import Path; sys.path.insert(0, %r)\nimport pipelib\npipelib.ROOT = Path(%r)\n"
             "try:\n    pipelib.job_lock('t', wait_min=0); print('GOT')\n"
-            "except pipelib.JobLockTimeout: print('TIMEOUT')") % str(Path(__file__).resolve().parent)
-    fd = pipelib.job_lock("t")
+            "except pipelib.JobLockTimeout: print('TIMEOUT')") % (str(Path(__file__).resolve().parent), str(td))
+    saved = pipelib.ROOT
+    try:
+        pipelib.ROOT = td
+        fd = pipelib.job_lock("t")
+    finally:
+        pipelib.ROOT = saved
     check(fd is not None, "job_lock が取れない")
     run = lambda env=None: subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, env=env).stdout.strip()
     check(run() == "TIMEOUT", "他プロセスが持っているのに取れた")
@@ -849,9 +858,11 @@ def test_job_lock_collect_oncall_handover():
     import threading
     import time
     import collect
-    saved = (pipelib.COLLECT_ONCALL_MARK, pipelib.LOCK_POLL_SEC, collect.diagnose_anomalies, collect.collect_oncall_end)
+    saved = (pipelib.COLLECT_ONCALL_MARK, pipelib.LOCK_POLL_SEC, collect.diagnose_anomalies, collect.collect_oncall_end, pipelib.ROOT)
     with tempfile.TemporaryDirectory() as td:
         try:
+            pipelib.ROOT = Path(td)      # 本物の作業ツリーの排他は使わない(走っている工程・もう1本のテストとぶつかる)
+            (Path(td) / "metrics").mkdir()
             pipelib.COLLECT_ONCALL_MARK = Path(td) / "mark.json"
             # 終える時刻は「いまから35分後」に固定(時刻表による計算は固定日時のテストで検める。走らせる時刻に依存させない。監査指摘)
             collect.collect_oncall_end = lambda now: time.time() + 35 * 60
@@ -915,7 +926,7 @@ def test_job_lock_collect_oncall_handover():
             check(seen == [True] and pipelib.collect_oncall_handover_pending(), f"印の上書きの最中に組版が受け渡しを見落とす: {seen}")
             check(not list(Path(td).glob(".mark.json.*")), "印の書きかけのファイルが残った")
         finally:
-            pipelib.COLLECT_ONCALL_MARK, pipelib.LOCK_POLL_SEC, collect.diagnose_anomalies, collect.collect_oncall_end = saved
+            pipelib.COLLECT_ONCALL_MARK, pipelib.LOCK_POLL_SEC, collect.diagnose_anomalies, collect.collect_oncall_end, pipelib.ROOT = saved
     # 本物の当番(oncall.main)が、親の収集がまだ排他を持っている間に起動しても、取り直せる時刻まで待つ
     # (02:00 の収集が 03:02 に呼ぶ: 終える時刻 03:35 → 取れた時点で30分残る 03:05 まで約3分待つ。以前は0分で即諦めた。監査指摘)
     import oncall
@@ -4694,6 +4705,124 @@ def test_late_facts_reach_plan_index(tmp: Path):
           "組版が引き継いだ事実を選定インデックスへ先に並べ、切れた分を選定記録から外していない")
 
 
+def test_carry_dropped_candidates(tmp: Path):
+    """前の号の計画に入ったのに紙面に載らなかった記事の素材を、次の号の選定に戻す(2026-10-13: 報道を出典にしてよいと決めたログボが、
+    翌号の選定に戻る経路が無かった)。組み直しで戻った記事は写さない。同じ素材は CARRY_DROPPED_MAX 回まで。冪等。選定に理由が見える。"""
+    for sub in ("candidates", "metrics", "docs/_posts"):
+        (tmp / sub).mkdir(parents=True, exist_ok=True)
+    saved_root, saved_log = compose.ROOT, dict(compose.DROP_LOG)
+    try:
+        compose.ROOT = tmp
+        d0, d1 = "2026-10-13", "2026-10-14"
+        (tmp / "candidates" / f"{d0}.json").write_text(json.dumps([
+            {"id": "c1", "url": "https://press.example/1", "dedup_key": "login", "brand": "gaku", "facts": ["ログボ"]},
+            {"id": "c2", "url": "https://e.example/2", "dedup_key": "back", "brand": "gaku", "facts": ["戻った"]},
+            {"id": "c3", "url": "https://e.example/3", "dedup_key": "tour", "brand": "gaku", "facts": ["三回目"], "carried": {"count": 2}},
+        ], ensure_ascii=False), encoding="utf-8")
+        compose.DROP_LOG.clear()
+        compose.DROP_LOG[d0] = {"login": ("ログボ", "執筆で見送り", "NO_PRIMARY_SOURCE 公式の告知に届かない"),
+                                "back": ("戻った", "校閲ブロック", "R2"), "tour": ("三回目", "執筆で見送り", "SOURCE_MISMATCH")}
+        plan = {"articles": [{"slug": "login", "candidate_ids": ["c1"]}, {"slug": "back", "candidate_ids": ["c2"]},
+                             {"slug": "tour", "candidate_ids": ["c3"]}, {"slug": "sch", "candidate_ids": ["sched-9"]}]}
+        (tmp / "metrics" / f"plan-{d0}.json").write_text(json.dumps(plan), encoding="utf-8")
+        compose.persist_drops(d0)
+        # 同じ号の組み直し(--reuse-plan)で一部が戻り、別の記事が落ちた: 以前の記録と合わせ、戻った記事だけを除く(監査指摘)
+        (tmp / "docs" / "_posts" / f"{d0}-back.md").write_text("---\ntitle: 戻った\n---\n本文\n", encoding="utf-8")   # 組み直しで戻った
+        compose.DROP_LOG[d0] = {"sch": ("予約の記事", "校閲ブロック", "R4")}
+        compose.persist_drops(d0)
+        rec = json.loads((tmp / "metrics" / f"drops-{d0}.json").read_text(encoding="utf-8"))
+        check(sorted(rec) == ["login", "sch", "tour"] and rec["login"]["candidate_ids"] == ["c1"],
+              f"外れた記事の記録が、以前の記録と合わさらない・戻った記事を除かない: {sorted(rec)}")
+        # 前の号の続報予約から選んだ記事の素材も戻す(日付は前の号で使った値のまま。監査指摘)
+        (tmp / "stock" / "scheduled").mkdir(parents=True)
+        (tmp / "stock" / "scheduled" / f"{d0}.json").write_text(json.dumps([{"id": "sched-9", "url": "https://s.example/9", "dedup_key": "sch",
+                                                                            "brand": "gaku", "kind": "締切前", "facts": ["予約"]}]),
+                                                               encoding="utf-8")
+        (tmp / "candidates" / f"{d1}.json").write_text(json.dumps([{"id": "n1", "url": "https://n.example/1", "facts": ["新"]}]),
+                                                       encoding="utf-8")
+        log = compose.carry_dropped_candidates(d1)
+        rows = json.loads((tmp / "candidates" / f"{d1}.json").read_text(encoding="utf-8"))
+        ids = [x["id"] for x in rows]
+        c1 = next((x for x in rows if x["id"] == "c1"), {})
+        s9 = next((x for x in rows if x["id"] == "sched-9"), {})
+        check(sorted(ids) == ["c1", "n1", "sched-9"] and c1.get("carried", {}).get("count") == 1 and "NO_PRIMARY_SOURCE" in c1["carried"]["why"]
+              and s9.get("event_date") == "2026-10-16" and log,
+              f"見送った記事の素材(予約を含む)を次の号に戻さない・戻った記事や上限を超えた素材まで写した: {ids} {c1.get('carried')} {s9} {log}")
+        compose.carry_dropped_candidates(d1)
+        check(sorted(x["id"] for x in json.loads((tmp / "candidates" / f"{d1}.json").read_text(encoding="utf-8"))) == ["c1", "n1", "sched-9"],
+              "2回呼ぶと素材が重なる(冪等でない)")
+        # 同じページを毎号拾い直す素材: この号の同じ URL の候補へ前の号の事実をマージし、回数を付け続ける(上限を超えても回数は残し、
+        # 選定には見せない)。回数が 1→2→無し→1 と戻らない(監査指摘)
+        chain = [("2026-10-20", None), ("2026-10-21", None), ("2026-10-22", None), ("2026-10-23", None)]
+        prev_row = {"id": "p0", "url": "https://press.example/same", "dedup_key": "same", "brand": "gaku", "facts": ["期限は15日"]}
+        (tmp / "candidates" / "2026-10-19.json").write_text(json.dumps([prev_row], ensure_ascii=False), encoding="utf-8")
+        (tmp / "metrics" / "plan-2026-10-19.json").write_text(json.dumps({"articles": [{"slug": "same", "candidate_ids": ["p0"]}]}), encoding="utf-8")
+        compose.DROP_LOG["2026-10-19"] = {"same": ("同じ", "執筆で見送り", "NO_PRIMARY_SOURCE")}
+        compose.persist_drops("2026-10-19")
+        counts, shown = [], []
+        prev = "2026-10-19"
+        for k, (day, _) in enumerate(chain):
+            nid = f"q{k}"
+            (tmp / "candidates" / f"{day}.json").write_text(json.dumps([{"id": nid, "url": "https://press.example/same", "dedup_key": "same",
+                                                                         "brand": "gaku", "facts": [f"別の事実{k}"]}], ensure_ascii=False), encoding="utf-8")
+            compose.carry_dropped_candidates(day)
+            row = json.loads((tmp / "candidates" / f"{day}.json").read_text(encoding="utf-8"))[0]
+            counts.append((row.get("carried") or {}).get("count"))
+            b, _, _ = compose.write_plan_index(day, {row["id"]: row}, {})
+            shown.append(bool(next((s for s in b.get("gaku", []) if s["dedup_key"] == "same"), {}).get("carried")))
+            if k == 0:
+                check("期限は15日" in row["facts"], f"同じページの候補に、前の号の事実をマージしない: {row['facts']}")
+            (tmp / "metrics" / f"plan-{day}.json").write_text(json.dumps({"articles": [{"slug": "same", "candidate_ids": [nid]}]}), encoding="utf-8")
+            compose.DROP_LOG[day] = {"same": ("同じ", "執筆で見送り", "NO_PRIMARY_SOURCE")}
+            compose.persist_drops(day)
+            prev = day
+        check(counts == [1, 2, 3, 4] and shown == [True, True, False, False],
+              f"毎号拾い直す素材の回数が戻る・上限を超えても選定に見せる: {counts} {shown}")
+        check("metrics/drops-2026-10-13.json" in compose.own_artifacts("2026-10-13"), "途中終了の後始末が外れた記事の記録をコミットしない")
+        # 同じ URL の素材が複数(通常の候補と予約など): 全部の事実をまとめ、回数は最大値から一度だけ増やす。順序に依らない(監査指摘)
+        results = []
+        for order in (["m1", "m2"], ["m2", "m1"]):
+            d2, d3 = "2026-11-01", "2026-11-02"
+            mats = {"m1": {"id": "m1", "url": "https://p.example/same2", "dedup_key": "s2", "brand": "gaku", "facts": ["事実A"]},
+                    "m2": {"id": "m2", "url": "https://p.example/same2", "dedup_key": "s2", "brand": "gaku", "facts": ["事実B"],
+                           "carried": {"count": 1}}}
+            (tmp / "candidates" / f"{d2}.json").write_text(json.dumps([mats[i] for i in order], ensure_ascii=False), encoding="utf-8")
+            (tmp / "metrics" / f"plan-{d2}.json").write_text(json.dumps({"articles": [{"slug": "s2", "candidate_ids": order}]}), encoding="utf-8")
+            (tmp / "metrics" / f"drops-{d2}.json").unlink(missing_ok=True)
+            (tmp / "candidates" / f"{d3}.json").unlink(missing_ok=True)
+            compose.DROP_LOG[d2] = {"s2": ("同じ2", "執筆で見送り", "NO_PRIMARY_SOURCE")}
+            compose.persist_drops(d2)
+            compose.carry_dropped_candidates(d3)
+            got = json.loads((tmp / "candidates" / f"{d3}.json").read_text(encoding="utf-8"))
+            results.append([(x["id"], sorted(x["facts"]), x["carried"]["count"]) for x in got])
+        check(results[0] == results[1] == [("m1", ["事実A", "事実B"], 2)],
+              f"同じ URL の2件目以降の事実が戻らない・回数が最大値から増えない・順序で結果が変わる: {results}")
+        # 候補ファイルの無い号(予約だけで組んだ)でも、予約の素材は戻す。戻した予約は、校閲にも執筆と同じ素材として載る(監査指摘)
+        d4, d5 = "2026-11-10", "2026-11-11"
+        (tmp / "stock" / "scheduled" / f"{d4}.json").write_text(json.dumps([{"id": "sched-k", "url": "https://s.example/k", "dedup_key": "k",
+                                                                            "brand": "gaku", "kind": "締切前", "facts": ["予約K"]}]),
+                                                               encoding="utf-8")
+        (tmp / "metrics" / f"plan-{d4}.json").write_text(json.dumps({"articles": [{"slug": "k", "candidate_ids": ["sched-k"]}]}), encoding="utf-8")
+        compose.DROP_LOG[d4] = {"k": ("予約K", "校閲ブロック", "R4")}
+        compose.persist_drops(d4)
+        compose.carry_dropped_candidates(d5)
+        got = json.loads((tmp / "candidates" / f"{d5}.json").read_text(encoding="utf-8"))
+        check([x["id"] for x in got] == ["sched-k"] and got[0]["event_date"] == "2026-11-13",
+              f"候補ファイルの無い号の予約の素材が戻らない(日付は前の号の値): {got}")
+        (tmp / "docs" / "_posts" / f"{d5}-k.md").write_text("---\ntitle: k\ncandidate_ids:\n- sched-k\n---\n本文\n", encoding="utf-8")
+        hint = compose.review_hint(d5, f"{d5}-k.md", {})
+        check("予約K" in hint and "予約に見つからない" not in hint, f"戻した予約の素材が校閲に渡らない: {hint[-200:]}")
+        by_brand, _, _ = compose.write_plan_index(d1, {x["id"]: x for x in rows}, {})
+        subj = next((s for s in by_brand.get("gaku", []) if s["dedup_key"] == "login"), {})
+        check("記事にならなかった" in str(subj.get("carried")), f"選定に、前の号で記事にならなかった理由が見えない: {subj}")
+    finally:
+        compose.ROOT = saved_root
+        compose.DROP_LOG.clear()
+        compose.DROP_LOG.update(saved_log)
+    rules = (pipelib.ROOT / "prompts" / "plan-rules.md").read_text(encoding="utf-8")
+    check("`carried`" in rules, "選定の規則に、前の号で記事にならなかった主題の扱いが無い")
+
+
 def test_carry_late_candidates(tmp: Path):
     """前の号の選定が候補を読んだ後に、その号の候補ファイルへ入った候補(当番の取り直しが組版の開始後〜06:00 に終わった)を、
     次の号の候補へ写す。写さないと、収集は 06:00 前の分を前の号へ入れ、組版は自分の号のファイルしか読まないので、
@@ -5391,6 +5520,7 @@ def main() -> int:
     test_rewrites(tmp / "rw")
     test_compose_classifies_after_revise(tmp / "car")
     test_carry_late_candidates(tmp / "clc")
+    test_carry_dropped_candidates(tmp / "cdc")
     test_late_facts_reach_plan_index(tmp / "lfpi")
     test_article_purpose()
     test_plan_merge_into_drop()

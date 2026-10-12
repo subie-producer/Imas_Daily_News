@@ -1,0 +1,391 @@
+{
+ "articles": [
+  {
+   "slug": "joint-tours-s2-stream-preview-2026",
+   "brand": "joint",
+   "rank": "lead",
+   "angle": "10月15日19時の生配信で、RHYTHM LIVE FESTIVAL 2027予選の課題曲発表、UR特別衣装、スペシャルなハイタッチが予告された",
+   "purpose": "新情報",
+   "lead_score": 25,
+   "dedup_key": "tours-s2-stream-preview-2026",
+   "candidate_ids": [
+    "202610130225-grok-35"
+   ]
+  },
+  {
+   "slug": "joint-tours-late-summer-campaign-2026",
+   "brand": "joint",
+   "rank": "large",
+   "angle": "晩夏キャンペーンの景品交換は本日25時59分が最終日で、在庫がなくなり次第終了する",
+   "purpose": "期日の知らせ",
+   "lead_score": 20,
+   "dedup_key": "tours-late-summer-campaign-2026",
+   "candidate_ids": [
+    "sched-2026-10-13-tours-late-summer-campaign-2026-締切",
+    "sched-2026-10-13-tours-late-summer-campaign-2026-終了"
+   ]
+  },
+  {
+   "slug": "joint-imas-radio-stamas-5th-2026",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "IM＠S RADIOのスタマス5周年特番が本日20時からYouTubeで配信される(ゲスト:田中あいみ・山崎はるか)",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "imas-radio-stamas-5th-2026",
+   "candidate_ids": [
+    "sched-2026-10-13-imas-radio-stamas-5th-2026-開始"
+   ]
+  },
+  {
+   "slug": "dsva-va-liv-letora-birthday-2026",
+   "brand": "dsva",
+   "rank": "medium",
+   "angle": "レトラ誕生日ライブの現地ライブビューイング先行抽選の当落が本日発表され、当選者は10月18日23時59分までの入金期間に入る",
+   "purpose": "期日の知らせ",
+   "lead_score": 70,
+   "dedup_key": "va-liv-letora-birthday-2026",
+   "candidate_ids": [
+    "202610121233-explore-7",
+    "202610130225-grok-38",
+    "sched-2026-10-13-va-liv-letora-birthday-2026-結果",
+    "202610130225-grok-33",
+    "sched-2026-10-13-dsva-letora-birthday-live-2026-lv-結果",
+    "sched-2026-10-13-dsva-letora-birthday-live-viewing-2026-結果",
+    "sched-2026-10-13-letora-birthday-live-2026-liveviewing-結果",
+    "sched-2026-10-13-valiv-letora-birthday-2026-lv-goods-lottery-結果"
+   ]
+  },
+  {
+   "slug": "dsva-valiv-letora-girls-frontier-cover-2026",
+   "brand": "dsva",
+   "rank": "small",
+   "angle": "レトラが「ガールズ・イン・ザ・フロンティア」カバー動画を10月16日20時にプレミア公開する",
+   "purpose": "新情報",
+   "lead_score": 15,
+   "dedup_key": "valiv-letora-girls-frontier-cover-2026",
+   "candidate_ids": [
+    "202610130225-grok-31"
+   ]
+  },
+  {
+   "slug": "dsva-manaka-biohazard-re2-stream-2026-10-11",
+   "brand": "dsva",
+   "rank": "small",
+   "angle": "灯里愛夏の『BIOHAZARD RE:2』レオン編最終回の配信が本日実施の予定(開始時刻は素材に記載なし)",
+   "purpose": "期日の知らせ",
+   "lead_score": 10,
+   "dedup_key": "manaka-biohazard-re2-stream-2026-10-11",
+   "candidate_ids": [
+    "sched-2026-10-13-manaka-biohazard-re2-stream-2026-10-11-開始"
+   ]
+  },
+  {
+   "slug": "sidem-tsukumo-kazuki-birthday-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "九十九一希の誕生日を公式が祝い、お祝いムービーをYouTube Shortsで公開",
+   "purpose": "新情報",
+   "lead_score": 15,
+   "dedup_key": "tsukumo-kazuki-birthday-2026",
+   "candidate_ids": [
+    "202610130225-grok-22",
+    "202610130225-grok-37"
+   ]
+  },
+  {
+   "slug": "sidem-pashakore-mfes2026-a",
+   "brand": "sidem",
+   "rank": "medium",
+   "angle": "「SideM ぱしゃこれクリアVer.／Mフェス2026」A-BOX(全25種)・B-BOX(全24種)の予約がアニメイト通販と店頭で受付中",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "sidem-pashakore-mfes2026-a",
+   "candidate_ids": [
+    "202610130225-grok-23",
+    "202610130225-grok-24"
+   ]
+  },
+  {
+   "slug": "sidem-cho-retroseparty-rally-2026",
+   "brand": "sidem",
+   "rank": "medium",
+   "angle": "西武園の謎解きラリーはLINEが必要で、ゴール受付はレッツゴー!バザール。縁日ミニゲームは3回中1回成功で成功賞を選べるなど、園内企画の遊び方が判明",
+   "purpose": "新情報",
+   "lead_score": 25,
+   "dedup_key": "sidem-cho-retroseparty-rally-2026",
+   "candidate_ids": [
+    "202610130225-grok-26",
+    "202610130225-grok-25"
+   ]
+  },
+  {
+   "slug": "sidem-seibuen-retro-party-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "西武園ゆうえんち「超!!レトローズパーティ」の特典付き1日レヂャー切符(ブロマイド5枚セット付き、大人5,400円など)が本日17時から販売開始",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "sidem-seibuen-retro-party-2026",
+   "candidate_ids": [
+    "sched-2026-10-13-sidem-seibuen-retro-party-2026-発売",
+    "sched-2026-10-13-sidem-seibuen-retro-rose-party-2026-発売"
+   ]
+  },
+  {
+   "slug": "shiny-jong-tama-higuchi-madoka-figure-2026",
+   "brand": "shiny",
+   "rank": "medium",
+   "angle": "シャニマス×雀魂の樋口円香フィギュアの予約が始まり、浅倉透版は3次受注。予約は11月11日まで、発送は2027年6月予定",
+   "purpose": "新情報",
+   "lead_score": 60,
+   "dedup_key": "shiny-jong-tama-higuchi-madoka-figure-2026",
+   "candidate_ids": [
+    "202610121233-explore-3",
+    "202610121233-explore-8"
+   ]
+  },
+  {
+   "slug": "shiny-ops-roundup",
+   "brand": "shiny",
+   "rank": "roundup",
+   "angle": "開催中の有償限定ガシャ(8.5th Anniversary 72時間限定トワコレセレチケ付きステップアップ)",
+   "lead_score": 0,
+   "dedup_key": "shiny-85th-towakore-stepup-2026",
+   "candidate_ids": [
+    "202610130225-grok-14",
+    "202610130225-grok-15",
+    "202610130225-grok-18"
+   ]
+  },
+  {
+   "slug": "million-snapshot-memories-gasha-2026-10",
+   "brand": "million",
+   "rank": "small",
+   "angle": "ミリシタで開催中の「Snapshot Memoriesガシャ」で田中琴葉・大神環のSSRが出現率UP、10月18日14:59まで",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "million-snapshot-memories-gasha-2026-10",
+   "candidate_ids": [
+    "202610130225-grok-8"
+   ]
+  },
+  {
+   "slug": "gaku-temari-another-idol-guaranteed-gacha-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "月村手毬のアナザーアイドル確定ガシャ(無料1連)は本日10時59分で終了する最終日",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "gaku-temari-another-idol-guaranteed-gacha-2026",
+   "candidate_ids": [
+    "202610121233-explore-4",
+    "202610130225-grok-29",
+    "sched-2026-10-13-gaku-temari-another-idol-guaranteed-gacha-2026-終了"
+   ]
+  },
+  {
+   "slug": "gaku-asano-4ji-login-bonus-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "花海咲季が朝4時にランニングへ誘う「朝の4時よ！」ログインボーナスは10月15日3時59分まで、APドリンク10個を受け取れる",
+   "purpose": "新情報",
+   "lead_score": 25,
+   "dedup_key": "gaku-asano-4ji-login-bonus-2026",
+   "candidate_ids": [
+    "202610121832-explore-3"
+   ]
+  },
+  {
+   "slug": "gaku-hatsuboshi-live-tour-single-shurakuryoko-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "初星学園 LIVE TOUR Single「修楽旅行」(11月4日発売、2,500円)の予約期間は10月14日まで",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "hatsuboshi-live-tour-single-shurakuryoko-2026",
+   "candidate_ids": [
+    "202610130225-grok-30"
+   ]
+  },
+  {
+   "slug": "cg-a-magical-cheers-aftermarket-2026",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "POP UP SHOP A MAGICAL CHEERS事後通販の受付締切が10月16日17時に迫り、全9品が550円から3,960円で注文できる",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "cg-a-magical-cheers-aftermarket-2026",
+   "candidate_ids": [
+    "sched-2026-10-13-cg-a-magical-cheers-aftermarket-2026-締切前"
+   ]
+  },
+  {
+   "slug": "general-fanart-autumn-rain-mansion-2026-10-12",
+   "brand": "general",
+   "rank": "culture",
+   "angle": "秋雨洋館テーマのファンアートや宇宙誕生祭アーカイブの繰り返し視聴など、ファンの楽しみ方が広がっている",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "fanart-autumn-rain-mansion-2026-10-12",
+   "candidate_ids": [
+    "202610130225-grok-13",
+    "202610130225-grok-34"
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "dedup_key": "fullahead-tours-kuji-2026-10",
+   "reason": "出典不足",
+   "note": "出典は未確認の個人店SNSと商品ページのみで、公式発表ではない。販売開始(10/11)も過ぎている"
+  },
+  {
+   "dedup_key": "valiv-cosmo-birthday-live-2026",
+   "reason": "既報",
+   "note": "アーカイブ券販売・上映会は10/12に終了済みで、10/9・10/12に記事化済み"
+  },
+  {
+   "dedup_key": "valiv-situation-voice-2026-10",
+   "reason": "既報",
+   "note": "10/11の記事と同内容。価格・期間・商品とも新事実なし、締切は11/1でトリガーなし"
+  },
+  {
+   "dedup_key": "valiv-letora-birthday-live-2026",
+   "reason": "既報",
+   "note": "配信券の発売内容は10/12「本日12時発売」で記事化済み。新事実・当日トリガーなし"
+  },
+  {
+   "dedup_key": "valiv-call-me-maybe-dance-video-2026-10",
+   "reason": "既報",
+   "note": "10/12に記事化済みで新事実なし"
+  },
+  {
+   "dedup_key": "2026-2",
+   "reason": "既報",
+   "note": "投票は10/12 23時59分に終了済み。10/9・10/12に記事化済み"
+  },
+  {
+   "dedup_key": "sidem-11th-memorial-goods-deadline-2026",
+   "reason": "その他",
+   "note": "受注は10/11 23:59で終了済み。10/8〜10/11に既報"
+  },
+  {
+   "dedup_key": "sidem-joypolis-fan-visit-2026-10",
+   "reason": "個人の話題",
+   "note": "ファン個人のSNS投稿"
+  },
+  {
+   "dedup_key": "fifs-popup-fukuoka-sidem-2026",
+   "reason": "出典不足",
+   "note": "未確認の店舗投稿のみ。SideM主催でなく、開始日・商品も不明"
+  },
+  {
+   "dedup_key": "sidem-2dmv-clear-card-vol-2",
+   "reason": "出典不足",
+   "note": "未確認の投稿のみ。価格・期間など具体情報が無い"
+  },
+  {
+   "dedup_key": "shiny-noctchill-live-2027",
+   "reason": "既報",
+   "note": "受付は10/12 23:59で終了。facts は10/12号の本文と同じで、当落発表(10/24)も3日以内ではない"
+  },
+  {
+   "dedup_key": "shiny-parallel-collection-popup-2026",
+   "reason": "既報",
+   "note": "通販・5店販売とも10/12で終了。facts は10/12号と同じで新事実なし"
+  },
+  {
+   "dedup_key": "shiny-web4koma-659",
+   "reason": "既報",
+   "note": "ピックアップガシャとweb4コマ第659話は10/12号の本文に既出で、新事実もトリガーも無い"
+  },
+  {
+   "dedup_key": "fan-shiny-pokemon-concept-tool-2026",
+   "reason": "出典不足",
+   "note": "個人のSNS投稿のみ(未確認)。ファン制作で、この面では culture 枠を使わない"
+  },
+  {
+   "dedup_key": "fan-chikusei-shiny-cosplay-2026",
+   "reason": "出典不足",
+   "note": "個人のSNS投稿のみ(未確認)。ファンの衣装制作で、単体では記事にしない"
+  },
+  {
+   "dedup_key": "million-live-9th-anniversary-2026",
+   "reason": "既報",
+   "note": "受注は10/12で終了済み。10/12号の締切記事が本文に同内容。新事実なし"
+  },
+  {
+   "dedup_key": "765-topic-004",
+   "reason": "個人の話題",
+   "note": "個人ブログのプレイ記録(未確認・低エンゲージメント)。prior は無関係な亜美真美ライブ記事"
+  },
+  {
+   "dedup_key": "million-sports-day-login-2026",
+   "reason": "既報",
+   "note": "10/12号の運営まとめに同内容。終了は10/18で3日以内でなく当日トリガーも無い"
+  },
+  {
+   "dedup_key": "fan-art-arisa-alternate-costume-2026-10-12",
+   "reason": "面違い",
+   "note": "個人のSNS投稿。ファン創作は culture(general面)の扱いで、million面では単体記事にしない"
+  },
+  {
+   "dedup_key": "million-sports-day-ai-art-timeline-2026",
+   "reason": "面違い",
+   "note": "個人のSNS投稿・界隈の現象。culture は general 面の扱い"
+  },
+  {
+   "dedup_key": "fan-screenshot-umi-sports-costume-2026-10-12",
+   "reason": "面違い",
+   "note": "個人のSNS投稿(スクリーンショット)。culture は general 面の扱い"
+  },
+  {
+   "dedup_key": "gakumas-katsuragi-lillia-fanart-feature-2026",
+   "reason": "面違い",
+   "note": "ファン創作の特集(未確認)。culture は general 面だけで、gaku 面では扱わない"
+  },
+  {
+   "dedup_key": "hedgehog-hot-water-bottle-2026",
+   "reason": "既報",
+   "note": "10月11日号「学マス美鈴らのゆたんぽ受注」と同じ施策。受注は10月25日までで当日のトリガー無し"
+  },
+  {
+   "dedup_key": "gaku-11",
+   "reason": "既報",
+   "note": "続報予約(開始)だが、コラボの開催は10月16日で今日は何も起きない。facts にデジタルラリーの記載も無く、9/29号・10/10号で既報"
+  },
+  {
+   "dedup_key": "cg-memory-pict-7th",
+   "reason": "既報",
+   "note": "9/30号で報じた受注開始と同内容。受注締切10/18は5日先で当日トリガーなし"
+  },
+  {
+   "dedup_key": "cg-15th-anniversary-orchestra-concert-goods-2026",
+   "reason": "既報",
+   "note": "10/9号と同内容。事前販売の締切10/18は5日先で新事実・当日トリガーなし"
+  },
+  {
+   "dedup_key": "fan-ai-totoki-airi-2026-10-12",
+   "reason": "同人・ファン主催",
+   "note": "ファンのAIイラスト投稿で未確認。個人のSNS投稿は単体で記事にしない"
+  },
+  {
+   "dedup_key": "cinderella-memory-pict-7-2026",
+   "reason": "既報",
+   "note": "9/30号・10/11号で報じた第7弾受注と同じ知らせ。新事実なし、締切10/18は5日先"
+  },
+  {
+   "dedup_key": "niwa-hitomi-kanayama-photo-spot-2026",
+   "reason": "出典不足",
+   "note": "未確認の個人SNS投稿1件のみで、設置期間・主催者などの事実が無い"
+  },
+  {
+   "dedup_key": "starlit-season-5th-anniversary-initiatives-2026",
+   "reason": "重複",
+   "note": "特番(20時開始)は joint-imas-radio-stamas-5th-2026 が記事化済み。メッセージ募集と動画公開は既報で新事実なし"
+  }
+ ],
+ "editorial_slug": "joint-tours-s2-stream-preview-2026",
+ "editorial_brand": "joint"
+}

@@ -130,6 +130,7 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - pixivision.net        # 合議で追加: pixiv運営。他者投稿のファンアートを集めて紹介するまとめ特集
   - hon-hikidashi.jp      # 合議で追加: 書籍情報メディア。発売情報は公式発表の転載
   - sina.cn               # 合議で追加: 公式発表をそのまま掲載。独自取材の形跡なし
   - torecamap.co.jp       # 合議で追加: TCGポータルサイトが他所の公式発表を整理して伝える
@@ -403,6 +404,8 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - 7j384Q3585o         # 機械で追加: @TomoriManaka「#2【BIOHAZARD RE:2】はじめてのバイオ！初見で」
+    - yTqVGq--aBk         # 機械で追加: @UtagawaLetora「ガールズ・イン・ザ・フロンティア【covered by レト」
     - Cp7vLEDc-ok         # 機械で追加: @KamizuruCosmo「公転周期 踊ってみた with 星井 美希さん #short」
     - a2MWbu9JVPw         # 機械で追加: @imas-official「【ミリシタ】『プリンセス・アラモード』アイドルグランプリ P」
     - _6FBCOmBV_Q         # 機械で追加: @imas-official「【スタマス】5周年記念！越境コミュ公開「みんなでお掃除？」【」
@@ -478,6 +481,7 @@ video_ids:
 # 公式アカウント以外の X 投稿は公式ではない。表に無いアカウントは未確認になる。
 x_accounts:
   公式:
+    - gkmas_goods         # 合議で追加: 学園アイマスの作品公式の運営によるグッズ情報。公式と同じ主体
     - imas_official                   # アイドルマスター公式
     - idolmaster_en                   # アイドルマスター公式(英語)
     - jimushiny_oa                    # 「事務所のシャイニーカラーズ(ジムシャニ)」作品公式
@@ -555,6 +559,15 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - uramingy            # 合議で追加: 筑西市シャニマスコラボ衣装のストレイライト版を制作
+    - umtUMT              # 合議で追加: ファンアートに言及する個人の投稿
+    - umih0taru           # 合議で追加: SideMコラボ期間に来園した個人の投稿
+    - rraamen_Hot         # 合議で追加: シャニマス概念ポケトレを制作したファン
+    - megrez7             # 合議で追加: 十時愛梨のファンイラストを投稿する個人
+    - levabooballpark     # 合議で追加: AIイラストの拡散を伝える個人の投稿
+    - Z1000redithion      # 合議で追加: 個人による高坂海美の衣装のゲームスクリーンショット
+    - Arte_2532           # 合議で追加: 個人によるファンアート投稿
+    - 12Funana            # 合議で追加: 個人による宇宙誕生祭アーカイブ視聴の投稿
     - yozora1123l         # 合議で追加: 個人による我那覇響の誕生日祝いの投稿
     - wataridori84        # 合議で追加: 個人による梅田スカイビル訪問のレポート投稿
     - teishotoku_dayo     # 合議で追加: 個人による倉本千奈フィギュアの色調調整写真の投稿
@@ -760,6 +773,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - oinagoya            # 合議で追加: 金山観光案内所で丹羽仁美のフォトスポットを設置
+    - fullaheadtaisen     # 合議で追加: ツアーズくじの販売元側の告知。一番くじ公式ストアではない
+    - FiFS_info           # 合議で追加: ポップアップストアの販売元としてSideMグッズを展開
     - fanta_sistan        # 合議で追加: 店舗によるツアマスカード筐体の運用案内
     - 30MS____            # 合議で追加: 30MS商品のAmazon再入荷をPR付きで告知する販売・製品側の発信
     - kimchikura          # 合議で追加: 催しの出演告知。主催側の一次発信とみられる

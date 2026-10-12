@@ -1,0 +1,45 @@
+{
+ "decisions": {
+  "fanart-autumn-rain-mansion-2026-10-12": {
+   "action": "article",
+   "angle": "秋雨洋館テーマのファンアートや宇宙誕生祭アーカイブの繰り返し視聴など、ファンの楽しみ方が広がっている",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "細切れのファン話題を1本にまとめた culture 記事の主題"
+  },
+  "fan-cosmo-birthday-live-archive-repeat-viewing-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fanart-autumn-rain-mansion-2026-10-12",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "宇宙誕生祭アーカイブ28回視聴の投稿は、ファン面の1本にまとめる"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-fanart-autumn-rain-mansion-2026-10-12",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "秋雨洋館テーマのファンアートや宇宙誕生祭アーカイブの繰り返し視聴など、ファンの楽しみ方が広がっている",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "fanart-autumn-rain-mansion-2026-10-12",
+    "candidate_ids": [
+     "202610130225-grok-13",
+     "202610130225-grok-34"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,114 @@
+{
+ "decisions": {
+  "cg-memory-pict-7th": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30号で報じた受注開始と同内容。受注締切10/18は5日先で当日トリガーなし"
+  },
+  "cg-15th-anniversary-orchestra-concert-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/9号と同内容。事前販売の締切10/18は5日先で新事実・当日トリガーなし"
+  },
+  "fan-ai-totoki-airi-2026-10-12": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンのAIイラスト投稿で未確認。個人のSNS投稿は単体で記事にしない"
+  },
+  "cinderella-memory-pict-7-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/30号・10/11号で報じた第7弾受注と同じ知らせ。新事実なし、締切10/18は5日先"
+  },
+  "niwa-hitomi-kanayama-photo-spot-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の個人SNS投稿1件のみで、設置期間・主催者などの事実が無い"
+  },
+  "cg-a-magical-cheers-aftermarket-2026": {
+   "action": "article",
+   "angle": "POP UP SHOP A MAGICAL CHEERS事後通販の受付締切が10月16日17時に迫り、全9品が550円から3,960円で注文できる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。締切まで3日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-a-magical-cheers-aftermarket-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "POP UP SHOP A MAGICAL CHEERS事後通販の受付締切が10月16日17時に迫り、全9品が550円から3,960円で注文できる",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "cg-a-magical-cheers-aftermarket-2026",
+    "candidate_ids": [
+     "sched-2026-10-13-cg-a-magical-cheers-aftermarket-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-memory-pict-7th",
+    "reason": "既報",
+    "note": "9/30号で報じた受注開始と同内容。受注締切10/18は5日先で当日トリガーなし"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-orchestra-concert-goods-2026",
+    "reason": "既報",
+    "note": "10/9号と同内容。事前販売の締切10/18は5日先で新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "fan-ai-totoki-airi-2026-10-12",
+    "reason": "同人・ファン主催",
+    "note": "ファンのAIイラスト投稿で未確認。個人のSNS投稿は単体で記事にしない"
+   },
+   {
+    "dedup_key": "cinderella-memory-pict-7-2026",
+    "reason": "既報",
+    "note": "9/30号・10/11号で報じた第7弾受注と同じ知らせ。新事実なし、締切10/18は5日先"
+   },
+   {
+    "dedup_key": "niwa-hitomi-kanayama-photo-spot-2026",
+    "reason": "出典不足",
+    "note": "未確認の個人SNS投稿1件のみで、設置期間・主催者などの事実が無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

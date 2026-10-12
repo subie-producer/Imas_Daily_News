@@ -656,5 +656,27 @@
   "src_candidate_id": "202610091233-watch-0",
   "event_date": "2026-10-16",
   "deadline": "2026-11-29"
+ },
+ {
+  "id": "sched-2026-10-16-valiv-letora-girls-frontier-cover-2026-開始",
+  "dedup_key": "valiv-letora-girls-frontier-cover-2026",
+  "brand": "dsva",
+  "subject": "レトラ「ガルフロ」カバー動画プレミア公開",
+  "kind": "開始",
+  "note": "20時からYouTubeでカバー動画のプレミア公開を視聴できる",
+  "reserved_on": "2026-10-13",
+  "title": "レトラが「ガールズ・イン・ザ・フロンティア」をカバー",
+  "url": "https://x.com/valiv_official/status/2109622614587261117",
+  "source_type": "公式",
+  "facts": [
+   "10/16 20:00- レトラが「ガールズ・イン・ザ・フロンティア」をカバーした動画をプレミア公開する。",
+   "YouTube: https://www.youtube.com/watch?v=yTqVGq--aBk&feature=youtu.be",
+   "エンゲージメント: 低",
+   "言及アイドル: レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610130225-grok-31",
+  "event_date": "2026-10-16"
  }
 ]

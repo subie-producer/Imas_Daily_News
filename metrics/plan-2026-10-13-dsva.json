@@ -1,0 +1,222 @@
+{
+ "decisions": {
+  "valiv-cosmo-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "アーカイブ券販売・上映会は10/12に終了済みで、10/9・10/12に記事化済み"
+  },
+  "valiv-situation-voice-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11の記事と同内容。価格・期間・商品とも新事実なし、締切は11/1でトリガーなし"
+  },
+  "va-liv-letora-birthday-2026": {
+   "action": "article",
+   "angle": "レトラ誕生日ライブの現地ライブビューイング先行抽選の当落が本日発表され、当選者は10月18日23時59分までの入金期間に入る",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "LV抽選結果の5主題と現地LV情報をここに集約"
+  },
+  "valiv-letora-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "配信券の発売内容は10/12「本日12時発売」で記事化済み。新事実・当日トリガーなし"
+  },
+  "valiv-letora-girls-frontier-cover-2026": {
+   "action": "article",
+   "angle": "レトラが「ガールズ・イン・ザ・フロンティア」カバー動画を10月16日20時にプレミア公開する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式アカウントの告知。未報の新情報"
+  },
+  "valiv-call-me-maybe-dance-video-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/12に記事化済みで新事実なし"
+  },
+  "valiv-letora-birthday-online-live-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-letora-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の現地LV情報。facts は既報の範囲内"
+  },
+  "2026-2": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "投票は10/12 23時59分に終了済み。10/9・10/12に記事化済み"
+  },
+  "dsva-letora-birthday-live-2026-lv": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-letora-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ現地LV抽選の当落発表"
+  },
+  "dsva-letora-birthday-live-viewing-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-letora-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ現地LV抽選の当落発表(入金〜10/18)"
+  },
+  "letora-birthday-live-2026-liveviewing": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-letora-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ現地LV抽選の当落発表"
+  },
+  "manaka-biohazard-re2-stream-2026-10-11": {
+   "action": "article",
+   "angle": "灯里愛夏の『BIOHAZARD RE:2』レオン編最終回の配信が本日実施の予定(開始時刻は素材に記載なし)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信出演は1件のみで roundup 要件(3件以上)を満たさない"
+  },
+  "valiv-letora-birthday-2026-lv-goods-lottery": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-letora-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ現地LV抽選の当落発表"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-va-liv-letora-birthday-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "レトラ誕生日ライブの現地ライブビューイング先行抽選の当落が本日発表され、当選者は10月18日23時59分までの入金期間に入る",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "va-liv-letora-birthday-2026",
+    "candidate_ids": [
+     "202610121233-explore-7",
+     "202610130225-grok-38",
+     "sched-2026-10-13-va-liv-letora-birthday-2026-結果",
+     "202610130225-grok-33",
+     "sched-2026-10-13-dsva-letora-birthday-live-2026-lv-結果",
+     "sched-2026-10-13-dsva-letora-birthday-live-viewing-2026-結果",
+     "sched-2026-10-13-letora-birthday-live-2026-liveviewing-結果",
+     "sched-2026-10-13-valiv-letora-birthday-2026-lv-goods-lottery-結果"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-letora-girls-frontier-cover-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラが「ガールズ・イン・ザ・フロンティア」カバー動画を10月16日20時にプレミア公開する",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "valiv-letora-girls-frontier-cover-2026",
+    "candidate_ids": [
+     "202610130225-grok-31"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-biohazard-re2-stream-2026-10-11",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏の『BIOHAZARD RE:2』レオン編最終回の配信が本日実施の予定(開始時刻は素材に記載なし)",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "manaka-biohazard-re2-stream-2026-10-11",
+    "candidate_ids": [
+     "sched-2026-10-13-manaka-biohazard-re2-stream-2026-10-11-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-cosmo-birthday-live-2026",
+    "reason": "既報",
+    "note": "アーカイブ券販売・上映会は10/12に終了済みで、10/9・10/12に記事化済み"
+   },
+   {
+    "dedup_key": "valiv-situation-voice-2026-10",
+    "reason": "既報",
+    "note": "10/11の記事と同内容。価格・期間・商品とも新事実なし、締切は11/1でトリガーなし"
+   },
+   {
+    "dedup_key": "valiv-letora-birthday-live-2026",
+    "reason": "既報",
+    "note": "配信券の発売内容は10/12「本日12時発売」で記事化済み。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "valiv-call-me-maybe-dance-video-2026-10",
+    "reason": "既報",
+    "note": "10/12に記事化済みで新事実なし"
+   },
+   {
+    "dedup_key": "2026-2",
+    "reason": "既報",
+    "note": "投票は10/12 23時59分に終了済み。10/9・10/12に記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

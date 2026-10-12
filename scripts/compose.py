@@ -391,6 +391,105 @@ def carry_late_candidates(date: str) -> list[str]:
     return log
 
 
+CARRY_DROPPED_MAX = 2   # 前の号で記事にならなかった素材を、次の号の選定に戻す回数の上限(毎号同じ理由で落ち続けるのを止める)
+
+
+def persist_drops(date: str) -> None:
+    """紙面から外れた記事(見出し・段・理由・素材の id)を metrics/drops-<日付>.json に残す。次の号の組版が、その素材を選定に
+    戻すのに使う(carry_dropped_candidates)。組版の各コミットの前と途中終了の後始末で呼ぶ(終わり方を問わず残す。監査指摘)。
+    以前の記録(同じ号の前の実行・--reuse-plan の組み直し)と合わせ、紙面にある記事(組み直しで戻った記事)だけを除く。
+    素材の id は計画のファイルから読む。"""
+    p = ROOT / "metrics" / f"drops-{date}.json"
+
+    def read(path: Path):
+        try:
+            return json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+        except (OSError, ValueError):
+            return {}
+    old, plan = read(p), read(ROOT / "metrics" / f"plan-{date}.json")
+    ids = {a.get("slug"): a.get("candidate_ids") or [] for a in (plan if isinstance(plan, dict) else {}).get("articles") or []}
+    rows = dict(old if isinstance(old, dict) else {})
+    rows.update({slug: {"title": t, "stage": st, "why": why, "candidate_ids": ids.get(slug, [])}
+                 for slug, (t, st, why) in (DROP_LOG.get(date) or {}).items()})
+    rows = {s: r for s, r in rows.items() if not (ROOT / "docs" / "_posts" / f"{date}-{s}.md").exists()}
+    if rows or p.exists():
+        p.write_text(json.dumps(rows, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+
+
+def carry_dropped_candidates(date: str) -> list[str]:
+    """前の号の計画に入ったのに紙面に載らなかった記事(執筆の見送り・校閲のブロック・検算の不合格)の素材を、この号の候補へ写す。
+    選定は自分の号の候補しか読まないので、写さなければ、直したあと(規則・道具の修正)でも二度と選定に掛からない
+    (2026-10-13: 報道を出典にしてよいと決めたログボが、翌号の選定に戻る経路が無かった。編集長「復帰保証までが仕事」)。
+    写した候補には carried(どの号で・なぜ記事にならなかったか・何回目か)を付け、選定に見せる。採るかは選定が決める。
+    同じ素材を写すのは CARRY_DROPPED_MAX 回まで。この号に同じ URL・id の候補があれば、写さずに carried だけを付ける。冪等。"""
+    import copy
+    prev = (datetime.date.fromisoformat(date) - datetime.timedelta(days=1)).isoformat()
+    drops_p = ROOT / "metrics" / f"drops-{prev}.json"
+    src_p = ROOT / "candidates" / f"{prev}.json"
+    if not drops_p.exists():
+        return []
+    try:
+        drops = json.loads(drops_p.read_text(encoding="utf-8")) or {}
+        # 候補ファイルの無い号(当日の続報予約だけで組んだ)でも、予約の素材は戻す(監査指摘)
+        src = {c.get("id"): c for c in (json.loads(src_p.read_text(encoding="utf-8")) if src_p.exists() else []) if c.get("id")}
+    except (OSError, ValueError):
+        return [f"{prev}号の外れた記事の記録が読めない(素材を選定に戻せない)"]
+    # 前の号の続報予約から選んだ記事の素材(sched-*)も戻す元にする。日付は前の号で使った値のまま(load_scheduled(前の号)。監査指摘)
+    src.update({s["id"]: s for s in load_scheduled(prev) if s.get("id")})
+    target = ROOT / "candidates" / f"{date}.json"
+    rows = json.loads(target.read_text(encoding="utf-8")) if target.exists() else []
+    by_url = {c.get("url"): c for c in rows if c.get("url")}
+    by_id = {c.get("id"): c for c in rows if c.get("id")}
+    # 写す先(同じページ = 同じ URL、無ければ id)ごとに、外れた記事の素材を全部まとめる(同じ URL の素材が複数あっても、
+    # 2件目以降の事実を落とさない。監査指摘)
+    groups: dict[str, dict] = {}
+    for slug, d in drops.items():
+        if (ROOT / "docs" / "_posts" / f"{prev}-{slug}.md").exists():
+            continue    # 組み直しで戻った記事
+        why = f"{prev}号で記事にならなかった({d.get('stage', '')}: {str(d.get('why') or '')[:120]})"
+        for cid in d.get("candidate_ids") or []:
+            c = src.get(cid)
+            if c:
+                g = groups.setdefault(c.get("url") or f"id:{cid}", {"srcs": {}, "why": why})
+                g["srcs"][cid] = c
+    carried, changed = [], False
+    for key, g in groups.items():
+        srcs = [g["srcs"][i] for i in sorted(g["srcs"])]          # 順序に依らない
+        good = [c for c in srcs if not candidate_misplaced(c)]
+        # 回数は、まとめた素材の最大値から一度だけ増やす。この号に同じページの候補があれば、上限を超えても回数を付け続ける
+        # (残さないと、毎号拾い直す素材の回数が 1→2→無し→1 と戻る。監査指摘)。写す(候補が無い)のは上限まで
+        n = max(int((c.get("carried") or {}).get("count") or 0) for c in srcs) + 1
+        tag = {"from": prev, "count": n, "why": g["why"]}
+        tgt = (by_url.get(key) if not key.startswith("id:") else None) or next(
+            (by_id[c["id"]] for c in srcs if c.get("id") in by_id), None)
+        if tgt is None:
+            if n > CARRY_DROPPED_MAX or not good:
+                continue
+            new = copy.deepcopy(good[0])
+            for c in good[1:]:
+                merge_candidate_facts(new, c)
+            new["carried"] = tag
+            rows.append(new)
+            by_url[new.get("url")], by_id[new.get("id")] = new, new
+            carried.append(new.get("id"))
+            changed = True
+            continue
+        if candidate_misplaced(tgt) and good:
+            # この号の候補が写しの照合で落ちたもの: 収集・late の引き継ぎと同じく正しい候補で置き換える
+            new = copy.deepcopy(good[0])
+            rows[rows.index(tgt)] = new
+            by_url[new.get("url")], by_id[new.get("id")] = new, new
+            tgt, changed = new, True
+        for c in good:      # 前の号の事実と裏取りを既存の規則で引き継ぐ(重なりは除かれるので、何度呼んでも同じ)
+            changed = merge_candidate_facts(tgt, c) or changed
+        if (tgt.get("carried") or {}).get("from") != prev:      # 印と回数は一度だけ(冪等)
+            tgt["carried"] = tag
+            changed = True
+    if changed:
+        target.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return [f"{prev}号で記事にならなかった記事の素材 {len(carried)}件を、この号の選定に戻した: " + ", ".join(carried[:10])] if carried else []
+
+
 def load_blocklist() -> dict:
     p = ROOT / "stock" / "blocklist.yml"
     if not p.exists():
@@ -439,6 +538,9 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
             s["urls"].append(c["url"])
         if c.get("verify") == "confirmed":
             s["verify"] = "confirmed"
+        cr = c.get("carried") or {}
+        if cr.get("why") and int(cr.get("count") or 0) <= CARRY_DROPPED_MAX and not s.get("carried"):
+            s["carried"] = cr["why"]     # 前の号で記事にならなかった(選定が、直ったか・まだ間に合うかを判断する)。上限を超えたら見せない
         for f in c.get("facts", []):
             k = fact_key(f)
             pool.setdefault(dk, []).append((f if k in late else f[:PLAN_FACT_CHARS], k))
@@ -2572,7 +2674,9 @@ def review_hint(date: str, name: str, notes_by_file: dict[str, list[str]]) -> st
     fm = parse_front_matter(ROOT / "docs" / "_posts" / name) or {}
     sched_ids = [c for c in fm.get("candidate_ids") or [] if str(c).startswith("sched-")]
     if sched_ids:
-        rows = [r for r in load_scheduled(date) if r.get("id") in sched_ids]
+        # 執筆と同じ素材索引から引く(当日の予約に加え、前の号から戻した予約の素材は候補ファイルにある。監査指摘)
+        window = load_window_candidates(date)
+        rows = [window[i] for i in sched_ids if i in window]
         hint += ("\n\n## 続報予約の素材(candidate_ids の sched- の素材。執筆に渡したものと同じ)\n"
                  + (json.dumps(rows, ensure_ascii=False, indent=1) if rows else "(予約に見つからない)"))
     return hint
@@ -2967,6 +3071,8 @@ def main() -> int:
         print(line, flush=True)
     for line in carry_late_candidates(date):
         print(line, flush=True)
+    for line in carry_dropped_candidates(date):
+        print(line, flush=True)
     cands = load_window_candidates(date)
     blocklist = load_blocklist()
     if not cands:
@@ -3059,6 +3165,7 @@ def main() -> int:
         print("素材に対して rank が小さい: " + ", ".join(thin), flush=True)
     if errors:
         notify("compose", f"{date}: 記事計画が機械検証を通らず。当番に渡す\n- " + "\n- ".join(errors[:8]), ok=False)
+        persist_drops(date)
         commit_and_push(branch, f"compose {date}: 計画不成立(当番へ)", "compose")
         escalate("compose", date, "記事計画が機械検証を通らず:\n- " + "\n- ".join(errors[:20]))
         return 1
@@ -3104,6 +3211,7 @@ def main() -> int:
     if len(written) < 1 or (aborted and len(written) < 8):
         notify("compose", f"{date}: 執筆成立 {len(written)}本/計画 {n_plan}本(不成立: {aborted})。下限割れの疑い", ok=False)
     if not written:
+        persist_drops(date)
         commit_and_push(branch, f"compose {date}: 執筆全滅(当番へ)", "compose")
         escalate("compose", date, f"執筆が全滅(計画 {n_plan}本、不成立 {aborted})。執筆の出力契約・検算・素材の切り出しを疑うこと")
         return 1
@@ -3257,6 +3365,7 @@ def main() -> int:
             code, lint_out = run_lint(date)
         if code != 0:
             notify("compose", f"{date}: lint 赤が解消できず。当番に渡す\n{lint_out[-500:]}", ok=False)
+            persist_drops(date)
             commit_and_push(branch, f"compose {date}: lint未解消(当番へ)", "compose")
             escalate("compose", date, "lint 赤が解消できず:\n" + lint_out[-3000:])
             return 1
@@ -3267,6 +3376,7 @@ def main() -> int:
     # release も collect も「作業ツリーが汚れている」で止まった)。
     # 校閲前の紙面でも、release は approve を見て発行を止めるので出てしまうことはない。
     # 途中で死んでも、人が lint と校閲記録を見て確定できる状態を残す
+    persist_drops(date)
     commit_and_push(branch, f"compose {date}: 紙面生成(校閲前・lint green)", "compose")
 
     # 校閲が既報判定に使う台帳は**組版前の**もの(metrics/stories-before-<日付>.yml)。
@@ -3417,6 +3527,7 @@ def main() -> int:
             print(f"記事が {len(changed_posts)}本変わった"
                   f"(中身 {len(changed_read)}本 / 組版が使う値 {len(changed_meta)}本)。取り直す",
                   flush=True)
+            persist_drops(date)
             commit_and_push(branch, f"compose {date}: 校閲往復のあと(取り直し前)", "compose")
             ed_comments = [c for c in (review.get("comments") or [])
                            if (c.get("file") or "").startswith("docs/_editorials/")]
@@ -3483,6 +3594,7 @@ def main() -> int:
                 break  # 機械で落とせる指摘が残っていない(一面・社説・対象不明)
             dropped_by_review += dropped
             print(f"校閲ブロックで {len(dropped)}本を落とす({_pass + 1}巡目): {dropped}", flush=True)
+            persist_drops(date)
             commit_and_push(branch, f"compose {date}: ブロック記事を除外({_pass + 1}巡目)", "compose")
 
             # **記事が落ちたら社説を取り直す。**起点かどうかは関係ない。
@@ -3567,6 +3679,7 @@ def main() -> int:
     if took_min > COMPOSE_TARGET_MIN:
         detail = " / ".join(f"{k} {v:.0f}分" for k, v in STAGE_MIN.items()) or "(段の実測なし)"
         print(f"目標({COMPOSE_TARGET_MIN}分)を超えた: {took_min:.0f}分 — {detail}", flush=True)
+    persist_drops(date)   # 最後の commit に含める(後に書くと作業ツリーが汚れて発行が止まる)
     pushed = commit_and_push(branch, f"compose {date}: 紙面生成(校閲{'approve' if approved else '未approve'}・{rounds}往復"
                              + (f"・ブロック{len(dropped_by_review)}本を除外" if dropped_by_review else "") + ")", "compose")
     if not pushed:
@@ -3615,7 +3728,7 @@ def own_artifacts(date: str) -> list[str]:
     return [f"docs/_posts/{date}-*.md", f"docs/_editions/{date}.md", f"docs/_editorials/{date}.md",
             f"metrics/plan-{date}*.json", f"metrics/plan-lead-{date}.json", f"metrics/review-{date}-*.json",
             f"metrics/stories-before-{date}.yml", f"metrics/pending-before-{date}.yml", f"metrics/{date}.json",
-            f"metrics/candidates-read-{date}.json", f"candidates/{date}.json",
+            f"metrics/candidates-read-{date}.json", f"candidates/{date}.json", f"metrics/drops-{date}.json",
             "stock/stories.yml", "stock/pending.yml", "stock/scheduled/*.json", "stock/columnist.md"]
 
 
@@ -3632,6 +3745,10 @@ def _leave_tree_clean(reason: str) -> None:
         print("途中終了: 開始前の状態か別ブランチなので commit しない", flush=True)
         return
     try:
+        try:
+            persist_drops(date)      # 途中終了でも、外れた記事を次の号の選定に戻せるよう残す(監査指摘)
+        except Exception as e:      # noqa: BLE001  後始末を止めない
+            print(f"途中終了時に外れた記事の記録を残せない: {e}", flush=True)
         if git("status", "--porcelain").stdout.strip():
             ok = commit_and_push(STARTED_ON, f"compose {date}: 途中終了時点の成果物({reason[:60]})", "compose",
                                  paths=own_artifacts(date))

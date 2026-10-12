@@ -798,6 +798,30 @@ def test_lost_post_notified_once(tmp: Path):
           f"複数の面で残った同じ投稿の喪失を、所属の面を併記して1度だけ通知しない: {notes}")
 
 
+def test_official_topic_accepts_press():
+    """公式が告知するはずの話題でも、報道があれば書く。執筆の出典の規則・見送りの理由コード・校閲の R5 が同じ基準(公式・準公式・報道)。
+    2026-10-13: ゲーム内のお知らせだけのログボを、電ファミの報道があるのに見送った。編集長「信頼できるソースを無視すんな」。
+    片方だけ直すと、報道で書いた記事を校閲が R5 で落とす。"""
+    w = (pipelib.ROOT / "prompts" / "write-article.md").read_text(encoding="utf-8")
+    r = (pipelib.ROOT / "prompts" / "review-article.md").read_text(encoding="utf-8")
+    rule = next((l for l in w.splitlines() if "**公式が告知するはずの話題**" in l), "")
+    code = next((l for l in w.splitlines() if l.startswith("- NO_PRIMARY_SOURCE:")), "")
+    r5 = "\n".join(l for l in r.splitlines()[next((i for i, l in enumerate(r.splitlines()) if l.startswith("- R5 ")), 0):][:2])
+    check("報道" in rule and "報道" in code and "報道" in r5, f"報道を認める基準が執筆・理由コード・校閲で揃っていない: {rule[:60]} / {code[:60]} / {r5[:80]}")
+    # 報道は「公式の告知を取材・引用したもの」に限る(ファンの投稿を集めた記事・転載は除く)。公式と食い違う値は公式を採る。両方とも
+    # 執筆と校閲の両側にある(片側だけ旧状態に戻ると、まとめ記事や報道の誤った値で書いた記事が通る。監査指摘)
+    limit = "公式の告知を取材・引用した報道"
+    r5_full = "\n".join(r.splitlines()[next((i for i, l in enumerate(r.splitlines()) if l.startswith("- R5 ")), 0):][:3])
+    check(limit in w and limit in r5_full and "ファンの投稿を集めた記事・転載は除く" in w and "ファンの投稿を集めた記事・転載は除く" in r5_full,
+          "報道の限定条件が執筆・校閲の両方に無い")
+    check("公式と食い違う値は、どの出典で書くときも公式を採る" in w and "食い違う値" in r5_full and "公式を採る" in r5_full,
+          "公式と食い違う値は公式を採る、が執筆・校閲の両方に無い")
+    # 報道で書く記事でも、報道の本文で確かめた具体を足せる(素材に無い事実の確かめの元に報道を含める。執筆・校閲・書き直し)
+    rv = (pipelib.ROOT / "prompts" / "revise-article.md").read_text(encoding="utf-8")
+    check("3 で出典にできる報道" in w and "R5 の条件を満たす報道" in r and "公式の告知を取材・引用した報道" in rv,
+          "報道の本文で確かめた事実を足せない(素材に無い事実の確かめの元が一次情報だけ)")
+
+
 def test_review_paper_defines_same_subject():
     """紙面担当の P1 は「同じ知らせ」だけ。同じ催しの別の知らせを重複にしない(2026-10-07 MSP アンケート)。"""
     text = (pipelib.ROOT / "prompts" / "review-paper.md").read_text(encoding="utf-8")
@@ -5332,6 +5356,7 @@ def main() -> int:
     test_grok_deep_retry(tmp / "gdr")
     test_review_failed_changed_article(tmp / "rfc")
     test_review_paper_defines_same_subject()
+    test_official_topic_accepts_press()
     test_job_lock()
     test_job_lock_collect_oncall_handover()
     test_notify_require()

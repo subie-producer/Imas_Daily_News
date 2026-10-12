@@ -1,0 +1,253 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-10-13-dsva-va-liv-letora-birthday-2026.md",
+   "issue": "コンビニ決済の期限を「受付終了」の2日前としている。素材(N2、LivePocket)は「販売終了の2日前まで」で、受付期間(10/1〜10/11)とは別の期間。受付終了で数えると期限日が変わるため、期間の取り違え。",
+   "quote": "コンビニ決済は受付終了の2日前まで選択できる。",
+   "rule_id": "R9",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "N2"
+   ],
+   "expected": "コンビニ決済の選択期限を「販売終了の2日前まで」と書き、受付期間の終了とは結びつけない。",
+   "scope": "article:2026-10-13-dsva-va-liv-letora-birthday-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-joint-imas-radio-stamas-5th-2026.md",
+   "issue": "本文の「映像あり」の記述が、出典 URL(https://idolmaster-official.jp/news/01_19986)で確認できなかった。当校閲の取得では本文が見えず、ページのタイトル行しか得られなかったため、N1 の「映像ありの特別配信」を裏づけられない。",
+   "quote": "「アイドルマスター スターリットシーズン」5周年を記念した映像ありの特別配信",
+   "rule_id": "R2",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "N1"
+   ],
+   "expected": "本文の「映像あり」の記述は、出典ページで確認できた文言に限られ、確認できない部分は削られている(または出典で確認し直されている)。",
+   "scope": "article:2026-10-13-joint-imas-radio-stamas-5th-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-joint-imas-radio-stamas-5th-2026.md",
+   "issue": "本編の無料視聴、配信URL、アフタートークの自動切替、メンバーシップ限定の条件が、出典 URL で確認できなかった。N4・N5 の内容を裏づけられない。",
+   "quote": "本編は誰でも視聴できる。本編終了後にはメンバーシップ限定のアフタートークが予定され、視聴にはYouTube「アイドルマスターチャンネル」のメンバーシップ加入が必要。アフタートークは本編終了後、同じ配信枠から自動で切り替わる。",
+   "rule_id": "R2",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "N4",
+    "N5"
+   ],
+   "expected": "視聴条件・配信枠の記述は、出典ページで確認できた内容だけになっている。確認できない部分は削られている。",
+   "scope": "article:2026-10-13-joint-imas-radio-stamas-5th-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-joint-imas-radio-stamas-5th-2026.md",
+   "issue": "パーソナリティの役名と、Moments Mail・Best Stories の募集内容が、出典 URL で確認できなかった。N3・N6・N7 を裏づけられない。",
+   "quote": "パーソナリティ：平田宏美さん（菊地真役）、若林直美さん（秋月律子役） ／ 番組ではメールも募集中。Moments Mailのテーマは「スタマス、ココがオススメ」。Best Storiesでは、パーソナリティ2人とゲストのアイドルが好きなセリフを、理由とともに募集している。",
+   "rule_id": "R2",
+   "repair": "drop_claim",
+   "fact_ids": [
+    "N3",
+    "N6",
+    "N7"
+   ],
+   "expected": "出典ページで確認できた人物・募集の記述だけが残り、確認できない役名やメール募集の詳細は削られている。",
+   "scope": "article:2026-10-13-joint-imas-radio-stamas-5th-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-10-13-cg-a-magical-cheers-aftermarket-2026.md",
+   "issue": "見出し「シンデレラガールズ事後通販、16日17時締切」は作品名までで、催しの名前(POP UP SHOP A MAGICAL CHEERS)が入っていない。リードで補えているが、見出しだけでは何の事後通販か分かりにくいので、催しの名前を入れると良い。",
+   "scope": "article:2026-10-13-cg-a-magical-cheers-aftermarket-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-dsva-va-liv-letora-birthday-2026.md",
+   "issue": "出典1(idolmaster-official 01_20086)のラベル日付「2026年9月27日」は根拠がない。候補の published_date は 2026-10-11 で、ページ本体にも掲載日は見当たらなかった。ラベルの日付を確かめて直すこと。",
+   "scope": "article:2026-10-13-dsva-va-liv-letora-birthday-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-dsva-va-liv-letora-birthday-2026.md",
+   "issue": "リードは「本日10月13日に当落発表」と予定の表記を落としている。素材はいずれも「当落発表: 2026年10月13日(火)(予定)」。当日の発表として書くなら根拠を確かめ、そうでなければ「予定」を残す。",
+   "scope": "article:2026-10-13-dsva-va-liv-letora-birthday-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-dsva-va-liv-letora-birthday-2026.md",
+   "issue": "出典1のURLを開いた要約では、当落発表・入金期間・払戻規定の記述が確認できなかった(本文の記述は候補の facts に基づく)。LivePocket の出典では、払戻なし・当選後の変更取り消し不可・入金期間・販売終了の2日前ルールを確認できた。機械の時制所見(本日と10月18日の共起)は、当落発表(10/13)と入金期限(10/18)を指しており誤りではないため無視した。",
+   "scope": "article:2026-10-13-dsva-va-liv-letora-birthday-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-dsva-valiv-letora-girls-frontier-cover-2026.md",
+   "issue": "見出し「レトラ「ガルフロ」カバーを16日20時公開」の「ガルフロ」は素材にない略称。「ガルフロ」は『ガールズフロントライン』の略としても使われるため、何の作品のカバーか読者に紛れる恐れがある。見出しで「ガールズ・イン・ザ・フロンティア」と書くか、略称を使うなら本文で作品名を示すとよい(表記の判断は執筆側)。",
+   "scope": "article:2026-10-13-dsva-valiv-letora-girls-frontier-cover-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-dsva-valiv-letora-girls-frontier-cover-2026.md",
+   "issue": "分量不足: rank が small(目安250字)に対して本文が約100字。素材にあるのは公開日時・視聴先・カバーの事実だけで、これ以上は一般論になるため、無理に水増ししないこと。",
+   "scope": "article:2026-10-13-dsva-valiv-letora-girls-frontier-cover-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-dsva-valiv-letora-girls-frontier-cover-2026.md",
+   "issue": "確認範囲: 出典1のx.com投稿は機械から開けないため、素材の facts(10/16 20:00 プレミア公開、YouTube URL)と照合した。出典2のYouTubeページは開き、動画タイトル「ガールズ・イン・ザ・フロンティア【covered by レトラ】」が一致することを確認した(日時はページから読めず、X投稿の facts に依拠)。重複: stories-before-2026-10-13.yml に同じ動画・同じ話の既報は無く、R10 には当たらない。",
+   "scope": "article:2026-10-13-dsva-valiv-letora-girls-frontier-cover-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-gaku-temari-another-idol-guaranteed-gacha-2026.md",
+   "issue": "分量不足(rank: small の目安250字に対し、lede と本文の合計が約180字)。出典にある告知日(10月11日)、対象が月村手毬のシーズン限定アナザーアイドルであること、SSR・無料1連という条件を本文に足せば埋まる。推測や言い換えでの水増しは不要。",
+   "scope": "article:2026-10-13-gaku-temari-another-idol-guaranteed-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-gaku-temari-another-idol-guaranteed-gacha-2026.md",
+   "issue": "本文の「いずれか1人が確定で手に入る」の「1人」は出典(「いずれか確定で手に入る」)にない言い回し。1連で1枚が出る意味なら問題ないが、「いずれかのアナザーアイドルが確定で手に入る」と出典の言い方に寄せた方が誤読されにくい。",
+   "scope": "article:2026-10-13-gaku-temari-another-idol-guaranteed-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-general-fanart-autumn-rain-mansion-2026-10-12.md",
+   "issue": "リード「ファンの姿が見られた」「動きが見られた」と見出し「ファンの楽しみ方広がる」は、素材が2件の個別X投稿(真を探偵・貴音を主人と想像する投稿、28回目の視聴と記した投稿)だけなので、傾向として一般化しすぎている。『〜と記した投稿があった』『〜という声があった』程度に留めるのが素材の範囲に合う。",
+   "scope": "article:2026-10-13-general-fanart-autumn-rain-mansion-2026-10-12.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-general-fanart-autumn-rain-mansion-2026-10-12.md",
+   "issue": "frontmatter に verified_facts(N)が無く、出典はどちらも x.com で機械からは開けなかった。本文の事実は候補の facts(F1・F3・F4・F6)と引用文 quotes が一致しているので照合は取れた。X の投稿は執筆側で開けない前提のため、ここでは指摘しない。",
+   "scope": "article:2026-10-13-general-fanart-autumn-rain-mansion-2026-10-12.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-general-fanart-autumn-rain-mansion-2026-10-12.md",
+   "issue": "候補 id は 2026-10-13.json の 202610130225-grok-13 / -grok-34 で、ともに published_date 2026-10-12。日付・年(2026)は ledger の宇宙誕生祭2026(上水流宇宙のバースデー企画)と合う。続報予約の素材は依頼文に含まれておらず、この記事は sched- の id も持たないため照合対象は無し。",
+   "scope": "article:2026-10-13-general-fanart-autumn-rain-mansion-2026-10-12.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-joint-imas-radio-stamas-5th-2026.md",
+   "issue": "校閲の取得では出典 URL が本文を返さず、タイトル行(「次回放送は10月13日(火)20時～」「ゲスト山崎 はるかさん、田中 あいみさん」)しか確かめられなかった。確かめられたのは日時とゲスト名だけ。ブロックは取得できなかった範囲による判定で、ページを直接開いて本文を確認すれば解消できる可能性がある。その場合は根拠どおり残してよい。",
+   "scope": "article:2026-10-13-joint-imas-radio-stamas-5th-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-joint-imas-radio-stamas-5th-2026.md",
+   "issue": "素材の sched-2026-10-13-imas-radio-stamas-5th-2026-開始 の配信 URL(youtube.com/live/Qqbq1eR1GWE)は、記事の出典に含まれていない。記事本文は N4 を根拠にしているため、確認できれば出典に足すとよい。",
+   "scope": "article:2026-10-13-joint-imas-radio-stamas-5th-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-joint-tours-late-summer-campaign-2026.md",
+   "issue": "frontmatter の verified_facts N2 の text が「ポイントはBandai Namcoボン」で途切れている。本文の「ポイント数はBandai Namco Passportサイトの『交換する』からICカードを選んで確認できる」「キャンペーンの実施有無は店舗に問い合わせる」は N2 に記録が無い。公式ページ(2026-08-24 告知)の本文には両方の記述があり、再登録不要・フリープレイ対象外・店舗単位/IC単位で合算不可も確認できたので、事実としては問題ない。N2 の text を完全な形で書き足すと根拠の控えと一致する。",
+   "scope": "article:2026-10-13-joint-tours-late-summer-campaign-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-joint-tours-s2-stream-preview-2026.md",
+   "issue": "分量不足(rank: lead の目安は1000字に対し、リードと本文は合わせて約170字)。候補の素材には、最上静香のカード「pretty cheer」の紹介、応援でFEVERゲージが上がりリズムが完璧ならスコアも上がるという仕様(F3・F4)がある。出典にある事実で埋めること。一般論や推測での水増しはしない。",
+   "scope": "article:2026-10-13-joint-tours-s2-stream-preview-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-joint-tours-s2-stream-preview-2026.md",
+   "issue": "出典はX投稿(x.comのため機械的に開けず)で、検証は候補の facts に対して行った。候補の verify は confirmed。リードの「RHYTHM LIVE予選の課題曲発表」「UR特別衣装」「ハイタッチ」は候補 facts(F2・F5・F6)の記述に従っており、候補の quotes にはこれらの文言は無い。素材どおりであることは確認したが、執筆側で一次情報を見られる場合は見ておくとよい。",
+   "scope": "article:2026-10-13-joint-tours-s2-stream-preview-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-million-snapshot-memories-gasha-2026-10.md",
+   "issue": "分量不足: rank small の目安250字に対して本文は約110字。素材の事実は5件のみ(告知・SSR名2件・出現率UP・期限)なので、ここに無い内容で水増しする必要はない。",
+   "scope": "article:2026-10-13-million-snapshot-memories-gasha-2026-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-shiny-jong-tama-higuchi-madoka-figure-2026.md",
+   "issue": "見出し「シャニマス×雀魂フィギュア、予約は11月11日まで」に樋口円香・浅倉透の名が無く、どの商品の話かが見出しだけでは分からない(§3 見出しの主体の項目)。例: 「樋口円香・浅倉透フィギュア、予約は11月11日まで」など。",
+   "scope": "article:2026-10-13-shiny-jong-tama-higuchi-madoka-figure-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-shiny-jong-tama-higuchi-madoka-figure-2026.md",
+   "issue": "「両商品とも2026年10月1日から11月11日まで」の根拠が N1(樋口円香の商品ページ)だけで、浅倉透の予約期間を示す verified_facts が無い。浅倉透の商品ページ(goodsmile 1142812)では 2026年10月1日〜11月11日と確認できたので、その url を根拠として verified_facts に足すとよい。",
+   "scope": "article:2026-10-13-shiny-jong-tama-higuchi-madoka-figure-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-shiny-jong-tama-higuchi-madoka-figure-2026.md",
+   "issue": "候補の url は cdn.inside-games.jp、sources は www.inside-games.jp で host が異なる。開いた結果は同じ記事(2026/10/11 189083)だったため問題は無いが、同じ url に揃えると R3 の照合が楽になる。",
+   "scope": "article:2026-10-13-shiny-jong-tama-higuchi-madoka-figure-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-shiny-jong-tama-higuchi-madoka-figure-2026.md",
+   "issue": "樋口円香フィギュアの予約開始・19,800円・2027年6月の発送は、2026-10-03 号の既報(stories の shiny-marui-figurine-2027-06、active)に既にある。今回の新規は予約期間(11月11日まで)と浅倉透の三次受注・特典で、R10 の『新事実あり』には当たるので block はしない。ただし既報との重なりが大きく、ニュース性は薄い(R11 の境界)。新規の部分を前に出す書き方が望ましい。",
+   "scope": "article:2026-10-13-shiny-jong-tama-higuchi-madoka-figure-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-shiny-ops-roundup.md",
+   "issue": "シャイニーパーティー(シャニソン)の段落は、10/11号(docs/_posts/2026-10-11-shiny-ops-roundup.md)で「期間内にログインするとSSRサポートキャラ郁田はるきを入手」として既報で、この段落の内容は新事実がない。記事全体には10/13の新規ガシャと10/12の新規楽曲があるため R10 のブロックにはしないが、段落の扱い(削る、または他の項目と一緒に短くまとめる)を検討してほしい。",
+   "scope": "article:2026-10-13-shiny-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-sidem-cho-retroseparty-rally-2026.md",
+   "issue": "Voice paragraph says the attractions '放送する' (broadcast) the recorded voices, but the source (atfes /other) says the voices are heard while riding (乗車中に楽しめる). Suggest wording such as '乗車中に録り下ろしボイスを楽しめる対象アトラクションは…'. Rest of the article matches the source pages checked: rally (atfes /rally) and mini-game/voice (atfes /other).",
+   "scope": "article:2026-10-13-sidem-cho-retroseparty-rally-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-sidem-seibuen-retro-party-2026.md",
+   "issue": "出典の確認: prtimes（当事者）を開き、販売期間（2026年10月13日17:00～）、料金、販売場所、前売り券の扱い、特典受け渡し場所、別途料金の3アトラクション、未就学児の3歳からの適用を本文と照合した。すべて一致。公式（idolmaster-official.jp/news/01_20092）は開けたがタイトルのみで本文が取れなかった。タイトルは候補と一致しているので、R4の不一致とはしない。本文の事実は当事者の一次情報で裏付けられている。",
+   "scope": "article:2026-10-13-sidem-seibuen-retro-party-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-sidem-seibuen-retro-party-2026.md",
+   "issue": "既報（2026-10-09 詳細解禁、2026-10-10 チケット販売）と同じ一次情報だが、本日17時の販売開始は当日のトリガーなのでR10の対象外。ニュース性（R11）も本日の発売で満たしている。",
+   "scope": "article:2026-10-13-sidem-seibuen-retro-party-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-sidem-seibuen-retro-party-2026.md",
+   "issue": "時制（R6）: 「本日17時から」「切符の販売期間は本日17時から」は2026-10-13の17時販売開始と一致し、正しい。",
+   "scope": "article:2026-10-13-sidem-seibuen-retro-party-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-sidem-tsukumo-kazuki-birthday-2026.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は2段落で短い。素材にある「公式の投稿日は10月12日」「アイドルマスターチャンネル側の投稿文」など、出典にある事実で補えば埋まる。一般論での水増しは不要。",
+   "scope": "article:2026-10-13-sidem-tsukumo-kazuki-birthday-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-13-sidem-tsukumo-kazuki-birthday-2026.md",
+   "issue": "本文2段落目で『一希』と名だけで書いている(リードは『九十九一希』)。同一人物で誤りではないが、初出以降は統一してよい。",
+   "scope": "article:2026-10-13-sidem-tsukumo-kazuki-birthday-2026.md"
+  },
+  {
+   "file": "-",
+   "issue": "記事にすべき公式発表が candidates にあるのに、紙面に記事が無い: 「シンデレラガールズ15周年記念 PARTY!!!!」(202610130225-grok-2, 公式)、「ATHOME xR LIVE Apple of my アイ」(grok-3, 公式)、「15周年記念オーケストラコンサート公式グッズ事前販売」(grok-5, 公式)、「ライバーアイドル中間能力評価を実施」(grok-39, 公式)。落とされた理由は見えないため、確認のみ。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "面のバランス: 本日記事は合同・ヴイアラ・SideM・シャニが厚く、シンデレラガールズは事後通販の1本のみ。15周年関連の公式発表が紙面に無いため、cg 側の厚みが薄い。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "digest の本日群の先頭は『ツアマス15日生配信』で、lead もこの話題。ranking 1位のレトラ(LV当落・カバー動画)は本日行に入っており、digest にその日いちばん大きい話題の欠落は見当たらない。",
+   "scope": "paper"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-13-cg-a-magical-cheers-aftermarket-2026.md",
+  "article:2026-10-13-dsva-va-liv-letora-birthday-2026.md",
+  "article:2026-10-13-dsva-valiv-letora-girls-frontier-cover-2026.md",
+  "article:2026-10-13-gaku-temari-another-idol-guaranteed-gacha-2026.md",
+  "article:2026-10-13-general-fanart-autumn-rain-mansion-2026-10-12.md",
+  "article:2026-10-13-joint-imas-radio-stamas-5th-2026.md",
+  "article:2026-10-13-joint-tours-late-summer-campaign-2026.md",
+  "article:2026-10-13-joint-tours-s2-stream-preview-2026.md",
+  "article:2026-10-13-million-snapshot-memories-gasha-2026-10.md",
+  "article:2026-10-13-shiny-jong-tama-higuchi-madoka-figure-2026.md",
+  "article:2026-10-13-shiny-ops-roundup.md",
+  "article:2026-10-13-sidem-cho-retroseparty-rally-2026.md",
+  "article:2026-10-13-sidem-seibuen-retro-party-2026.md",
+  "article:2026-10-13-sidem-tsukumo-kazuki-birthday-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-10-13-cg-a-magical-cheers-aftermarket-2026.md": "5af68b2779649310cea704dd57b3011f69be9c9b41978728a318bbcf08d2223c",
+  "docs/_posts/2026-10-13-dsva-va-liv-letora-birthday-2026.md": "141552e2a8761aa0d42fd94e8d236712ffbd432fda3776b438b0a97b4af24c31",
+  "docs/_posts/2026-10-13-dsva-valiv-letora-girls-frontier-cover-2026.md": "89fb1f9294666526074c1b3a54e6e90605fc6b85ff228e25815799e298367c33",
+  "docs/_posts/2026-10-13-gaku-temari-another-idol-guaranteed-gacha-2026.md": "3a56f74dbb1b44b15489d8839c35d27baa6d9d81e3c5c3c65142db7697fa11aa",
+  "docs/_posts/2026-10-13-general-fanart-autumn-rain-mansion-2026-10-12.md": "ebbe78ba17da42a9105a6e15d9945e9a3ea2c2f1ff2df6757b9bb6f99ff5e9c5",
+  "docs/_posts/2026-10-13-joint-imas-radio-stamas-5th-2026.md": "e0e7391cf5c949c456272d3275501443db9cb28c016286159b515295334c875d",
+  "docs/_posts/2026-10-13-joint-tours-late-summer-campaign-2026.md": "18accf82451ad7bcd800088f819a7bf8f4a6bc134daffbd4acb1072ab226c854",
+  "docs/_posts/2026-10-13-joint-tours-s2-stream-preview-2026.md": "fc1028744ca577560b4f5ac54b8a5d2ba8d43ae2f45f265a8be8b34bccc8c2f6",
+  "docs/_posts/2026-10-13-million-snapshot-memories-gasha-2026-10.md": "cb8aa4cbca643fddb0c2b81fa13b73092f4cd7d7517f05f727daa1ab1727306e",
+  "docs/_posts/2026-10-13-shiny-jong-tama-higuchi-madoka-figure-2026.md": "d7e49b2f48afa742bdf75e8e3597e887115c3e3cf910ce7ecc460d11958bb149",
+  "docs/_posts/2026-10-13-shiny-ops-roundup.md": "297dfa86a8b8d852647f5173842f37888882ac57688c784dc2ffe41d54813cc0",
+  "docs/_posts/2026-10-13-sidem-cho-retroseparty-rally-2026.md": "fce1fadf2ecc80b74fc1268e4d531411488722620ee6cb69d5804b3a5a85348f",
+  "docs/_posts/2026-10-13-sidem-seibuen-retro-party-2026.md": "4f894a4886ee6c0b0abdb8ce72e0fa1af01983e00919ea56c187470794baba61",
+  "docs/_posts/2026-10-13-sidem-tsukumo-kazuki-birthday-2026.md": "3600e7f6ce4358911833ca8b7320a5b3de4a02cd58b0d81a2686a30b7cc28670",
+  "docs/_editions/2026-10-13.md": "8612df4a01bdf7553db536c6c948e09cbf5935ac6ca4987dfd691f7002d9814e",
+  "metrics/stories-before-2026-10-13.yml": "33756170668631aed57826690b7eb069e127b106374b2be9b078442188daedad"
+ }
+}

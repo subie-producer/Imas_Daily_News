@@ -154,20 +154,90 @@ def primary_key(fm: dict, mats: dict) -> str:
     return max(keys, key=lambda k: (keys.count(k), -order[k], k))
 
 
+def cited_facts(fm: dict, drafts: dict | None) -> list[str] | None:
+    """記事が根拠として指した事実の文(見出し・リードの根拠 id、本文の各段落の根拠の控え、verified_facts の N)。
+    F は、その稿を採ったときの「F 番号 → 事実」の記録(drafts = {稿の指紋: 対応}。組版が metrics/factmap-<号>.json に残す)のうち、
+    **いまの稿の指紋に一致する対応**で引く。いまの素材から番号を振り直さない(執筆の後に素材の事実が増減すると番号がずれ、書いていない
+    事実を「掲載済み」にする。監査指摘)。指紋で選ぶので、除外・組み直しの失敗で旧い稿に巻き戻っても旧い稿の対応が選ばれる(監査指摘)。
+    根拠 id が1つも無い記事・記録の無い記事(この仕組みより前の稿)は None(呼び手は素材の事実で代える)。
+    記録があるのに、いまの稿の対応が無い・引けない根拠 id があれば、誤った事実を載せないよう空を返し、異常として申告する(見出しが事実になる)。"""
+    fmap = None
+    if drafts:
+        try:
+            fmap = drafts.get(renderlib.draft_key(POSTS / fm["_name"]))
+        except (OSError, KeyError):
+            fmap = None
+        if fmap is None or "__conflict__" in fmap:
+            from pipelib import anomaly
+            anomaly("compose", f"台帳: {fm.get('_name')} のいまの稿に、稿を採ったときの事実の記録が"
+                               + ("食い違って残っている(同じ稿に違う対応)" if fmap else "無い(記録は別の稿のもの)")
+                               + "。誤った事実を掲載済みにしないよう、この記事は見出しだけを台帳に残す")
+            return []
+    by_id = {str(k): str(v) for k, v in (fmap or {}).items()}
+    by_id.update({str(v.get("id")): str(v.get("text")) for v in fm.get("verified_facts") or []
+                  if isinstance(v, dict) and v.get("id") and v.get("text")})
+    used = [str(i) for i in (fm.get("title_fact_ids") or []) + (fm.get("lede_fact_ids") or [])]
+    try:
+        text = (POSTS / fm["_name"]).read_text(encoding="utf-8")
+    except (OSError, KeyError):
+        text = ""
+    m = FM_RE.match(text)
+    for para in re.split(r"\n\s*\n", text[m.end():] if m else text):
+        n = renderlib.FACT_NOTE.search(para.strip())
+        if n:
+            used += n.group(1).split()
+    if not used or (fmap is None and any(i.startswith("F") for i in used)):
+        return None
+    missing = sorted({i for i in used if i not in by_id})
+    if missing:
+        from pipelib import anomaly
+        anomaly("compose", f"台帳: {fm.get('_name')} の根拠 id {', '.join(missing)} を、稿を採ったときの事実の記録から引けない。"
+                           "誤った事実を掲載済みにしないよう、この記事は見出しだけを台帳に残す")
+        return []
+    return list(dict.fromkeys(by_id[i] for i in used))
+
+
 def build_input(date: str, posts: list[dict], mats: dict, stories: list[dict], pending: list[dict]) -> dict:
     by_id = {e.get("story_id"): e for e in stories}
     arts = []
+    # 稿ごとの事実の記録。無い(この仕組みより前の号)なら、記録の無い稿は素材の事実で代える。壊れている・一度壊れた印があるなら、
+    # 記録の無い稿を素材の事実で代えない(書いていない事実を掲載済みにしない)。見出しだけにして申告する(監査指摘)
+    fmp = ROOT / "metrics" / f"factmap-{date}.json"
+    has_record = fmp.exists()     # 記録のファイルがある号では、記録の無い稿を素材の事実で代えない(書き出し後・記録前の中断。監査指摘)
+    trusted = True
+    try:
+        factmap = json.loads(fmp.read_text(encoding="utf-8")) if has_record else {}
+    except (OSError, ValueError):
+        factmap, trusted = {}, False
+    if not renderlib.factmap_valid(factmap) or factmap.get("__corrupted__"):
+        factmap, trusted = (factmap if renderlib.factmap_valid(factmap) else {}), False
+    if not trusted:
+        from pipelib import anomaly
+        anomaly("compose", f"台帳: {fmp.name} が壊れている(または一度壊れた)。記録の無い稿は見出しだけを台帳に残す")
     for fm in posts:
         ids = fm.get("candidate_ids") or []
         key = primary_key(fm, mats)
         # 事実には id を振る(F1, F2, …)。モデルは既報にする事実を id で指せるので、
         # 言い換えの検算で正しい事実を落とすことが無い(監査指摘)。日付付きを先に、
         # 価格・出演者など日付の無い事実も少し渡す(台帳に残せるように)
-        raw = []
-        for i in ids:
-            for f in (mats.get(i) or {}).get("facts") or []:
-                if f not in raw:
-                    raw.append(f)
+        # 渡すのは**記事が根拠として指した事実**だけ(本文に書かなかった素材の事実を「掲載済み」にしない。2026-10-10: 学マス運営まとめは
+        # プロデュースゼミだけを書いたのに、素材にあったログボの事実まで台帳に載り、以後ログボが既報扱いになった)。
+        # 根拠 id の無い古い形の記事だけ、素材の事実で代える
+        raw = cited_facts(fm, factmap.get(fm.get("slug")) if isinstance(factmap, dict) else None)
+        if raw is None and (has_record or not trusted):
+            # 記録のファイルがある号・記録が壊れた号では、記録の無い稿を素材の事実で代えない(見出しだけが台帳に残る)。
+            # 素材の事実で代えるのは、記録のファイルが無い号(この仕組みより前の号)だけ
+            if trusted:
+                from pipelib import anomaly
+                anomaly("compose", f"台帳: {fm.get('_name')} の稿の事実の記録が無い(書き出しの後、記録の前に止まった など)。"
+                                   "見出しだけを台帳に残す")
+            raw = []
+        if raw is None:
+            raw = []
+            for i in ids:
+                for f in (mats.get(i) or {}).get("facts") or []:
+                    if f not in raw:
+                        raw.append(f)
         dated = [f for f in raw if DATE_RE.search(f)]
         undated = [f for f in raw if not DATE_RE.search(f)]
         facts = [{"id": f"F{n + 1}", "text": f[:140]} for n, f in enumerate((dated[:6] + undated)[:9])]

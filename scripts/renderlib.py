@@ -24,6 +24,42 @@ FACT_NOTE = re.compile(r"\s*<!--\s*((?:[FN]\d+\s*)+)-->\s*$")
 _ZEN = str.maketrans("０１２３４５６７８９／．－", "0123456789/.-")
 
 
+def draft_key(path) -> str:
+    """稿の指紋(見出し・リード・本文と、見出し・リードの根拠 id・verified_facts)。稿ごとの「F 番号 → 事実」の記録を、どの稿のものかに
+    結び付ける(巻き戻しで旧い稿に戻っても、その稿の記録が選ばれる)。根拠だけを付け替えた改稿も別の稿になる(監査指摘)。
+    枠・出典の種別など、稿を採った後にコードが付け直す欄は含めない。"""
+    import hashlib
+    import json as _json
+    import yaml
+    text = Path(path).read_text(encoding="utf-8")
+    m = re.match(r"^---\n(.*?)\n---\n", text, re.S)
+    fm = (yaml.safe_load(m.group(1)) or {}) if m else {}
+    body = text[m.end():] if m else text
+    cites = _json.dumps([fm.get("title_fact_ids") or [], fm.get("lede_fact_ids") or [], fm.get("verified_facts") or []],
+                        ensure_ascii=False, sort_keys=True, default=str)
+    return hashlib.sha256("\n\0".join([str(fm.get("title") or ""), str(fm.get("lede") or ""), body.strip(), cites])
+                          .encode("utf-8")).hexdigest()[:16]
+
+
+def factmap_valid(data) -> bool:
+    """稿ごとの事実の記録(metrics/factmap-<号>.json)の形: {slug: {稿の指紋: {F 番号: 事実の文}}}(と、壊れた印 "__corrupted__": 文字列)。
+    JSON として読めても形が崩れていれば壊れている(保存も台帳も同じ基準で見る。監査指摘)。"""
+    if not isinstance(data, dict):
+        return False
+    for slug, drafts in data.items():
+        if slug == "__corrupted__":
+            if not isinstance(drafts, str):
+                return False
+            continue
+        if not isinstance(drafts, dict):
+            return False
+        for key, fmap in drafts.items():
+            if not (isinstance(key, str) and isinstance(fmap, dict)
+                    and all(isinstance(k, str) and isinstance(v, str) for k, v in fmap.items())):
+                return False
+    return True
+
+
 def materials_with_ids(materials: list[dict]) -> tuple[list[dict], dict[str, str]]:
     """素材の facts に F1, F2 … を振って、執筆に渡す形にする。戻りは (素材, {id: 事実})。
 

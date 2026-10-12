@@ -2271,6 +2271,134 @@ def _assemble_input(n_articles: int, inject: str = "") -> dict:
             "pending": [{"dedup_key": s(f"p{i}"), "subject": s("未確定"), "watch": s("発表を待つ")} for i in range(40)]}
 
 
+def test_ledger_facts_are_cited(tmp: Path):
+    """台帳に「掲載済み」として渡す事実は、記事が根拠として指した事実だけ(見出し・リードの根拠 id、本文の段落の控え、verified_facts)。
+    2026-10-10: 学マス運営まとめはプロデュースゼミだけを書いたのに、素材にあったログボの事実まで台帳に載り、以後ログボが既報扱いになった。
+    根拠 id の無い古い形の記事だけ、素材の事実で代える。"""
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    # 執筆のときの素材: c1=[ゼミ, ログボ], c2=[ガシャ] → F1=ゼミ, F2=ログボ, F3=ガシャ。その後、収集が c1 の先頭に事実を足した
+    # (いまの素材から番号を振り直すと F1・F3 がずれる。監査指摘)。台帳は、稿を採ったときの記録(factmap)で引く
+    at_write = {"c1": {"id": "c1", "facts": ["ゼミは10/20まで", "ログボは15日まで"]}, "c2": {"id": "c2", "facts": ["ガシャは11日まで"]}}
+    _, fmap = renderlib.materials_with_ids([at_write["c1"], at_write["c2"]])
+    mats_now = {"c1": {"id": "c1", "facts": ["後から足された事実", "ゼミは10/20まで", "ログボは15日まで"]}, "c2": at_write["c2"]}
+    saved = (assemble.POSTS, assemble.ROOT)
+    try:
+        assemble.POSTS, assemble.ROOT = posts, tmp
+        old_text = ("---\nslug: a\ncandidate_ids: [c1, c2]\ntitle_fact_ids: [F1]\nlede_fact_ids: [F1]\n"
+                    "verified_facts:\n- id: N1\n  text: ゼミの報酬はSSR\n  url: https://x.example/1\n---\n"
+                    "ゼミを開催中だ。 <!-- F1 N1 -->\n\nガシャも開催中。 <!-- F3 -->\n")
+        (posts / "2026-10-10-a.md").write_text(old_text, encoding="utf-8")
+        old_key = renderlib.draft_key(posts / "2026-10-10-a.md")
+        drafts = {old_key: fmap}
+        (tmp / "metrics" / "factmap-2026-10-10.json").write_text(json.dumps({"a": drafts}, ensure_ascii=False), encoding="utf-8")
+        fm = {"slug": "a", "candidate_ids": ["c1", "c2"], "title_fact_ids": ["F1"], "lede_fact_ids": ["F1"],
+              "verified_facts": [{"id": "N1", "text": "ゼミの報酬はSSR", "url": "https://x.example/1"}], "_name": "2026-10-10-a.md"}
+        got = assemble.cited_facts(fm, drafts)
+        check(got == ["ゼミは10/20まで", "ゼミの報酬はSSR", "ガシャは11日まで"], f"記事が根拠にした事実だけにならない: {got}")
+        inp = assemble.build_input("2026-10-10", [fm], mats_now, [], [])
+        texts = [f["text"] for f in inp["articles"][0]["facts"]]
+        check(texts and set(texts) == {"ゼミは10/20まで", "ゼミの報酬はSSR", "ガシャは11日まで"},
+              f"台帳への入力が、稿を採ったときの事実の記録でなく、いまの素材からずれた番号で引かれた: {texts}")
+        # 記録にない根拠 id(素材の欠落・取り違え)は引かずに空(見出しだけが台帳に残る)、異常として申告する
+        pipelib.ANOMALIES.clear()
+        bad = dict(fm, title_fact_ids=["F9"])
+        check(assemble.cited_facts(bad, drafts) == [] and any("F9" in a for a in pipelib.ANOMALIES),
+              f"引けない根拠 id で、誤った事実を返す・黙って捨てる: {assemble.cited_facts(bad, drafts)} {pipelib.ANOMALIES}")
+        pipelib.ANOMALIES.clear()
+        # 改稿(素材が増えたあとの番号で F1=ログボ)を採ったあと、除外・組み直しの失敗で旧い稿に巻き戻った: 旧い稿の対応が選ばれる(監査指摘)
+        (posts / "2026-10-10-a.md").write_text(old_text.replace("ゼミを開催中だ。", "ログボを開催中だ。"), encoding="utf-8")
+        drafts[renderlib.draft_key(posts / "2026-10-10-a.md")] = {"F1": "ログボは15日まで", "F3": "ガシャは11日まで"}
+        check(assemble.cited_facts(fm, drafts)[0] == "ログボは15日まで", "いまの稿(改稿)の対応が選ばれない")
+        (posts / "2026-10-10-a.md").write_text(old_text, encoding="utf-8")          # 巻き戻し
+        check(assemble.cited_facts(fm, drafts)[0] == "ゼミは10/20まで", f"旧い稿に巻き戻ったのに、改稿の対応で引いた: {assemble.cited_facts(fm, drafts)}")
+        # 記録はあるのに、いまの稿の対応が無い(記録の無い書き換え): 空と申告
+        (posts / "2026-10-10-a.md").write_text(old_text.replace("ゼミを開催中だ。", "記録の無い稿"), encoding="utf-8")
+        check(assemble.cited_facts(fm, drafts) == [] and pipelib.ANOMALIES, "いまの稿の対応が無いのに、別の稿の対応で引いた")
+        (posts / "2026-10-10-a.md").write_text(old_text, encoding="utf-8")
+        pipelib.ANOMALIES.clear()
+        # 字面・本文の控えは同じで、見出し・リードの根拠だけを付け替えた改稿(素材が増えて F2=ゼミ)は別の稿。巻き戻すと旧い稿の対応で引く
+        re_cited = old_text.replace("title_fact_ids: [F1]\nlede_fact_ids: [F1]", "title_fact_ids: [F2]\nlede_fact_ids: [F2]")
+        (posts / "2026-10-10-a.md").write_text(re_cited, encoding="utf-8")
+        k_new = renderlib.draft_key(posts / "2026-10-10-a.md")
+        check(k_new != old_key, "根拠だけを付け替えた改稿が、旧い稿と同じ指紋になる")
+        d2 = {old_key: fmap, k_new: {"F1": "ログボは15日まで", "F2": "ゼミは10/20まで", "F3": "ガシャは11日まで"}}
+        (posts / "2026-10-10-a.md").write_text(old_text, encoding="utf-8")       # 巻き戻し
+        check(assemble.cited_facts(fm, d2)[0] == "ゼミは10/20まで", "根拠だけ付け替えた改稿から巻き戻したのに、改稿の対応で引いた")
+        # 同じ指紋に違う対応が来たら、上書きせず食い違いとして残し、台帳は引かずに申告する
+        dd = {}
+        compose.merge_fact_map(dd, old_key, fmap)
+        compose.merge_fact_map(dd, old_key, {"F1": "ログボは15日まで"})
+        check("__conflict__" in dd[old_key] and assemble.cited_facts(fm, dd) == [] and pipelib.ANOMALIES,
+              f"同じ稿の指紋に違う対応が来たのに、上書き・黙って引いた: {dd}")
+        pipelib.ANOMALIES.clear()
+        # 記録のファイルがある号で、記録の無い稿(書き出しの後・記録の前に止まって、--reuse-plan が再利用した 等)は、素材の事実で
+        # 代えず見出しだけにして申告する(監査指摘)
+        (posts / "2026-10-10-b.md").write_text("---\nslug: b\ncandidate_ids: [c1]\n---\n古い形の記事\n", encoding="utf-8")
+        old = {"slug": "b", "candidate_ids": ["c1"], "_name": "2026-10-10-b.md"}
+        pipelib.ANOMALIES.clear()
+        facts = assemble.build_input("2026-10-10", [old], at_write, [], [])["articles"][0]["facts"]
+        check(facts == [] and pipelib.ANOMALIES, f"記録のある号で、記録の無い稿を素材の事実に代えた: {facts}")
+        pipelib.ANOMALIES.clear()
+        # 記録のファイルが無い号(この仕組みより前)だけ、従来どおり素材の事実で代える
+        (tmp / "metrics" / "factmap-2026-10-10.json").unlink()
+        fallback = {f["text"] for f in assemble.build_input("2026-10-10", [old], at_write, [], [])["articles"][0]["facts"]}
+        check(assemble.cited_facts(old, None) is None and assemble.cited_facts(fm, None) is None
+              and fallback == {"ゼミは10/20まで", "ログボは15日まで"}, f"記録の無い号で、素材の事実に代えない: {fallback}")
+        # 記録のファイルが壊れている(構文・形)・一度壊れた印がある号では、記録の無い稿を素材の事実で代えない(見出しだけ。申告する。監査指摘)
+        for broken in ('{"a": {"k": {"F1": "ゼ', json.dumps({"__corrupted__": "読めなかった"}), "[]", json.dumps({"old": None})):
+            (tmp / "metrics" / "factmap-2026-10-10.json").write_text(broken, encoding="utf-8")
+            pipelib.ANOMALIES.clear()
+            facts = assemble.build_input("2026-10-10", [old], at_write, [], [])["articles"][0]["facts"]
+            check(facts == [] and pipelib.ANOMALIES, f"壊れた記録で、記録の無い稿を素材の事実に代えた: {broken[:20]} → {facts}")
+        pipelib.ANOMALIES.clear()
+    finally:
+        assemble.POSTS, assemble.ROOT = saved
+    # 組版: 稿を採ったら対応を記録し、台帳づくり(run_assemble)の前と各コミットの前にファイルへ残す(以前の記録と合わせる)
+    saved_root = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        compose.FACT_MAP.clear()
+        compose.FACT_MAP["2026-10-11"] = {"x": {"k1": {"F1": "一"}}}
+        compose.persist_records("2026-10-11")
+        compose.FACT_MAP["2026-10-11"] = {"x": {"k2": {"F1": "改"}}, "y": {"k3": {"F1": "二"}}}
+        compose.persist_records("2026-10-11")
+        rec = json.loads((tmp / "metrics" / "factmap-2026-10-11.json").read_text(encoding="utf-8"))
+        check(rec == {"x": {"k1": {"F1": "一"}, "k2": {"F1": "改"}}, "y": {"k3": {"F1": "二"}}},
+              f"稿ごとの事実の記録が、以前の記録(旧い稿の対応)と合わさらない: {rec}")
+        # 既存の記録が壊れていたら(書きかけで止まった)、申告して「壊れた」印を付けて残す(--reuse-plan の再開で黙って上書きしない)。
+        # 書き込みは一度に差し替えるので、一時ファイルは Git 管理外に残るだけ
+        # 対応が空でも空の記録を書く(記録のファイルがあること=稿ごとの記録で書いた号、の印。初回の保存の前に止まった号を、
+        # 仕組みより前の号と取り違えない。監査指摘)。執筆を始める前に作る
+        compose.FACT_MAP.clear()
+        compose.persist_records("2026-10-12")
+        check(json.loads((tmp / "metrics" / "factmap-2026-10-12.json").read_text(encoding="utf-8")) == {},
+              "対応が空のとき記録のファイルを作らない(仕組みより前の号と取り違える)")
+        src_main = __import__("inspect").getsource(compose.main)
+        check(0 <= src_main.find("persist_records(date)\n    with stage(\"執筆\"):"), "執筆を始める前に記録のファイルを作らない")
+        for broken in ('{"x": {"k1": ', "[]", json.dumps({"old": None})):      # 構文が壊れた・形が崩れた
+            (tmp / "metrics" / "factmap-2026-10-11.json").write_text(broken, encoding="utf-8")
+            pipelib.ANOMALIES.clear()
+            compose.FACT_MAP["2026-10-11"] = {"z": {"k9": {"F1": "再"}}}
+            compose.persist_records("2026-10-11")
+            rec = json.loads((tmp / "metrics" / "factmap-2026-10-11.json").read_text(encoding="utf-8"))
+            check(rec.get("__corrupted__") and rec.get("z") == {"k9": {"F1": "再"}} and pipelib.ANOMALIES and renderlib.factmap_valid(rec),
+                  f"壊れた記録({broken})を黙って上書きした・印を残さない: {rec}")
+        check(not [p for p in (tmp / "metrics").glob(".*")], "一時ファイルが Git の管理する場所に残った")
+        pipelib.ANOMALIES.clear()
+        check("metrics/factmap-2026-10-11.json" in compose.own_artifacts("2026-10-11"), "途中終了の後始末が事実の記録をコミットしない")
+    finally:
+        compose.ROOT = saved_root
+        compose.FACT_MAP.clear()
+    import inspect
+    src = inspect.getsource(compose.run_assemble)
+    check(0 <= src.find("persist_records(date)") < src.find("_assemble.run("), "台帳づくりの前に、稿ごとの事実の記録を残さない")
+    w, rv = inspect.getsource(compose.write_articles), inspect.getsource(compose.revise_apply)
+    check('remember_fact_map(date, art["slug"], target, fact_by_id)' in w and 'remember_fact_map(date, art["slug"], path, fact_by_id)' in rv,
+          "執筆・書き直しで稿を採ったときに、事実の対応を記録しない")
+
+
 def test_assemble_prompt_shape():
     """組版の指示ファイル: 指示が入力より先にあり、行数は記事数と facts の件数だけで決まる
     (値に改行が入っていても増えない。識別子も含めて全部の値で確かめる)。台帳の判断は LEDGER_CHUNK 本ずつ。
@@ -5502,6 +5630,7 @@ def main() -> int:
     test_classify_posts_only(tmp / "cp")
     test_request_parsers(tmp / "rq")
     test_assemble_prompt_shape()
+    test_ledger_facts_are_cited(tmp / "lfc")
     test_prompts_are_instructions_only()
     test_assemble_judge()
     test_claude_traced(tmp / "ct")

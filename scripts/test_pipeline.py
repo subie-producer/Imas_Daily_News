@@ -1039,6 +1039,61 @@ def test_compose_carry_kept_paper():
             compose.ROOT, pipelib.ROOT = saved
 
 
+
+def test_review_reads_sources_like_writer():
+    """校閲は出典を執筆と同じ fetch_page.py で読む。WebFetch は JS を描画せず、公式ポータルの告知が見出しだけに見えて、
+    執筆が読めた事実を「確認できない」と3巡ブロックし、スタマス5周年の IM＠S RADIO の記事が落ちた(2026-10-13)"""
+    import contextlib, io
+    import fetch_page
+    d = "2099-01-01"
+    argvs = []
+    saved = (compose.ROOT, pipelib.ROOT)
+    with tempfile.TemporaryDirectory() as td:
+        try:
+            compose.ROOT = pipelib.ROOT = Path(td)
+            posts = Path(td) / "docs" / "_posts"
+            posts.mkdir(parents=True)
+            (Path(td) / "metrics").mkdir()
+            (posts / f"{d}-a.md").write_text("---\nslug: a\ntitle: a\n---\n本文\n", encoding="utf-8")
+
+            class FakeP:
+                returncode, pid = 0, 0
+
+                def communicate(self, timeout=None):
+                    return (json.dumps({"verdict": "approve", "blockers": [], "comments": []}), "")
+            saved_popen = compose.subprocess.Popen
+            compose.subprocess.Popen = lambda argv, **k: argvs.append(argv) or FakeP()
+            try:
+                compose.claude_review(d, 1, targets=[f"{d}-a.md"], editorial=False, paper=False)
+            finally:
+                compose.subprocess.Popen = saved_popen
+            prompts = [f.read_text(encoding="utf-8") for f in (Path(td) / "metrics" / "work" / d).glob("review-*.md")]
+        finally:
+            compose.ROOT, pipelib.ROOT = saved
+    check(len(argvs) == 1, f"記事1本の校閲が1回起動しない: {len(argvs)}")
+    a = argvs[0] if argvs else []
+    denied = a[a.index("--disallowedTools") + 1] if "--disallowedTools" in a else ""
+    check("WebFetch" in denied.split(","), f"校閲が WebFetch で出典を読める(JS を描画しない): {a}")
+    check(prompts and "scripts/fetch_page.py" in prompts[0], "校閲の依頼に出典の読み方(fetch_page.py)が無い")
+    # 描画したページの空行の連なりを詰める。行数で切って読んでも本文が見える
+    page = "【生配信】IM＠S RADIO | 【公式】アイドルマスター ポータル" + "\n \n" * 150 + "パーソナリティ 平田 宏美(菊地 真役)\n" + "本文。" * 200
+    saved_f = (fetch_page.fetch, sys.argv)
+    buf = io.StringIO()
+    try:
+        fetch_page.fetch = lambda url: page
+        sys.argv = ["fetch_page.py", "https://example.com/news/1"]
+        with contextlib.redirect_stdout(buf):
+            fetch_page.main()
+    finally:
+        fetch_page.fetch, sys.argv = saved_f
+    head = "\n".join(buf.getvalue().splitlines()[:10])
+    check("菊地 真役" in head, f"空行の連なりで本文が先頭10行に入らない: {head!r}")
+    # 素材の一部だけが食い違う記事は、残りの素材で書く(2026-10-13: ぱしゃこれ B-BOX が販売終了で、A-BOX ごと見送った)
+    w = (compose.PROMPTS / "write-article.md").read_text(encoding="utf-8")
+    sec = w.split("## 6. 見送り", 1)[-1].split("## 7.", 1)[0]
+    check("一部の素材だけがそうなら" in sec and "残りの素材で書く" in sec,
+          "執筆の見送りに、一部の素材だけが食い違うときは残りで書く決まりが無い")
+
 def test_compose_recover(tmp: Path):
     """承認まで進んでも記事を落とした号は、当番が直したあとこの号に戻す(2026-10-10 編集長「復帰保証までが Opus/Sol の仕事だ」)。
     組み直しは控えを取ってから --reuse-plan。承認済みだった記事を失う・承認されないなら控えに戻す。戻った・戻らない記事を名指しする。"""
@@ -5328,6 +5383,7 @@ def main() -> int:
     test_watch_pagination_and_batches(tmp / "wp")
     test_watch_static_page_body(tmp / "ws")
     test_fetch_page_renders_whitespace_only_page()
+    test_review_reads_sources_like_writer()
     test_fetch_rendered_skips_images()
     test_render_failure_keeps_cause(tmp / "rf")
     test_render_failure_reaches_classify_and_verify(tmp / "rfc")

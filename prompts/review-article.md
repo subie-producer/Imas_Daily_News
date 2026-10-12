@@ -8,6 +8,7 @@
   それ以外は `candidates/{DATE}.json`(前後の日付のこともある)にある。**素材ファイルに無い、は執筆には直せないので、探した場所を書いたうえで
   R1 の「根拠から導けない」として扱う**(candidate_ids そのものは計画からコードが付ける。指摘の対象にしない)
 - `metrics/stories-before-{DATE}.yml`: この号の組版前の既報台帳。`stock/stories.yml` は読まない(この号の記事の事実が書き足されたあとの状態)
+- 出典のページ: url を開くときは `python3 scripts/fetch_page.py <url>` で読む(WebFetch は使えない)。出力は `--- 本文(要約なし) ---` の後ろを全部読む
 
 ## 2. ブロック項目(1件でもあれば verdict は block)
 ### A. 事実と出典

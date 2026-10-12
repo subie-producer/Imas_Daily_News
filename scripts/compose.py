@@ -2654,6 +2654,9 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
         return subprocess.Popen(
             ["claude", "-p", short, "--model", REVIEW_MODEL,
              "--json-schema", schema, "--dangerously-skip-permissions",
+             # 出典は執筆と同じ fetch_page.py で読ませる。WebFetch は JS を描画せず、公式ポータルの告知が見出しだけに見えて
+             # 執筆が読めた事実を「確認できない」とブロックし、記事が落ちた(2026-10-13: スタマス5周年の IM＠S RADIO)
+             "--disallowedTools", "WebFetch",
              # 1本ずつなので上限も1本分でよい(紙面まるごとの額を配ると
              # 並列数ぶんの掛け算になる)
              "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],

@@ -19,6 +19,7 @@
 1ページの本文はたいてい数千字で、読ませても執筆1回ぶんの負担は小さい。
 """
 import argparse
+import re
 import sys
 import urllib.request
 from pathlib import Path
@@ -72,6 +73,9 @@ def main() -> int:
     else:
         print("--- 期間: ラベル付きの期間は見つかりませんでした ---")
     print("--- 本文(要約なし) ---")
+    # 空行の連なりは1つに詰める。描画した公式ポータルの告知はタイトルと本文の間に百行を超える空行があり、
+    # `| head` のように行数で切って読むと本文が見えずタイトルだけになる(2026-10-13 当番の再現: IM＠S RADIO 告知)
+    text = re.sub(r"\n[ \t\u3000]*(?:\n[ \t\u3000]*)+", "\n\n", text).strip()
     print(text[:args.chars])
     return 0
 

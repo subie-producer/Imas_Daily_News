@@ -100,6 +100,38 @@ def has_editorial(date: str) -> bool:
     return str(date) <= EDITORIAL_UNTIL
 
 
+# 書き直しても紙面に戻らない取り下げの規則(校閲の規則番号)。判断が記事の書き方ではなく**話題そのもの**に掛かり、
+# いまも成り立つかをコードが確かめられるものだけ:
+#   P1 = 同じ知らせの記事がもう1本紙面にある(相手が紙面に残っているあいだだけ成り立つ)
+# R10(既報と同じ内容)は入れない。校閲は稿を見て判断するので、同じ素材でも期日の知らせとして書き直せば載りうる
+# (実測 2026-10-09: 永吉昴のガシャ記事は「本文に 10/10 14:59 の終了が無い」ことを含めて R10。監査指摘)
+SETTLED_DROP_RULES = ("P1",)
+
+
+def settled_drops(date: str, root: Path | None = None) -> dict[str, str]:
+    """その号で紙面から外れた記事(metrics/drops-<日付>.json)のうち、外した理由がいまも成り立つものの {slug: 理由}。
+    組み直し(--reuse-plan)はこれを書き直さず、救済(--recover)の戻す対象にも、次の号の選定に戻す素材にもしない
+    (実測 2026-10-12: 重複で取り下げた上映会記事を救済の組み直しが書き直し、承認済みの記事と同じ重複がまた出た)。
+    記録が無い・読めないときは空(全部を書き直す対象のまま。取り下げの理由が分からない記事を戻さない側に倒さない)。"""
+    root = root or ROOT
+    p = root / "metrics" / f"drops-{date}.json"
+    try:
+        rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    except (OSError, ValueError):
+        return {}
+    posts = root / "docs" / "_posts"
+    out = {}
+    for slug, r in (rows if isinstance(rows, dict) else {}).items():
+        s = r.get("settled") if isinstance(r, dict) else None
+        if not isinstance(s, dict) or (posts / f"{date}-{slug}.md").exists():
+            continue
+        if s.get("rule") == "P1":
+            alive = [d for d in s.get("dup_of") or [] if isinstance(d, str) and d != slug and (posts / f"{date}-{d}.md").exists()]
+            if alive:
+                out[slug] = f"P1 同じ知らせの記事 {alive[0]} が紙面にある"
+    return out
+
+
 # --- 当番(oncall)への引き継ぎ -------------------------------------------------
 # 工程が「人間判断が必要」で止まるとき、人へ投げる前に scripts/oncall.py を起動する。
 # 当番(Opus)が診断・修正し、監査(Sol)の敵対的レビューを通ったものだけを取り込んで再実行する。

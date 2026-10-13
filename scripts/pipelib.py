@@ -377,6 +377,31 @@ def review_manifest(date: str) -> dict[str, str]:
     if before.exists():
         out[f"metrics/stories-before-{date}.yml"] = hashlib.sha256(before.read_bytes()).hexdigest()
     return out
+
+
+def last_review_record(date: str, root: Path | None = None) -> Path | None:
+    """その号の校閲の判定: **いちばん新しい組版の実行**(記録の run)の最後の巡の記録(metrics/review-<日付>-<巡>.json)。無ければ None。
+    巡の番号は実行ごとに1から数え直す。実行をまたいで番号の最大を採ると、組み直しの新しい判定より前の実行の後ろの巡を読む
+    (監査指摘 2026-10-14: 組み直しが1巡目で承認したのに前の実行の5巡目の承認を読み、戻した記事を「承認後の変更」として発行を止めた。
+    逆に新しい実行が承認しなかったときに古い承認へ戻ることもある)。run の無い記録(印を付ける前)はいちばん古い実行とみなす。
+    読めない記録はどの実行か分からないので、それを返す(読めないと判定させる。新しい実行の記録を飛ばして古い承認を採らない)。"""
+    base = (root or ROOT) / "metrics"
+    rows, unreadable = [], []
+    for p in base.glob(f"review-{date}-*.json"):
+        m = re.fullmatch(re.escape(f"review-{date}-") + r"(\d+)\.json", p.name)
+        if not m:
+            continue
+        try:
+            run = json.loads(p.read_text(encoding="utf-8")).get("run")
+        except (OSError, ValueError, AttributeError):
+            unreadable.append((int(m.group(1)), p))
+            continue
+        rows.append((run if isinstance(run, str) else "", int(m.group(1)), p))
+    if unreadable:
+        return max(unreadable)[1]
+    return max(rows)[2] if rows else None
+
+
 # 暴走セッション対策の安全弁(--max-budget-usd)。通常運用なら到達しない額を目安に設定。
 # 注: codex exec には同等のコスト上限フラグが無いため、執筆(Codex)側には適用できない
 EXPLORE_MAX_BUDGET_USD = ENV.get("EXPLORE_MAX_BUDGET_USD", "1.5")

@@ -1,0 +1,284 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-10-14-dsva-cosmo-ayumu-dance-in-the-light-short-2026.md",
+   "issue": "分量不足: rank small の目安(250字)に対し、リードと本文は合計130字ほど。素材の facts は楽曲名「Dance in the Light」、765プロの舞浜歩との組み合わせ、公開先(YouTube Shorts・TikTok)だけで、会場・価格・日時などの追加事実は無い。水増しはしないこと。",
+   "scope": "article:2026-10-14-dsva-cosmo-ayumu-dance-in-the-light-short-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-dsva-cosmo-ayumu-dance-in-the-light-short-2026.md",
+   "issue": "表記ゆれ: 見出しは「宇宙と舞浜歩」と上水流宇宙を『宇宙』と略しているが、リードは『上水流宇宙』と正式名で書いている。見出しを『上水流宇宙と舞浜歩』に揃えるか検討してよい。",
+   "scope": "article:2026-10-14-dsva-cosmo-ayumu-dance-in-the-light-short-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-dsva-cosmo-ayumu-dance-in-the-light-short-2026.md",
+   "issue": "R4 の照合が取れていない(ブロックにはしていない): sources の YouTube Shorts・TikTok は fetch_page.py で取得できたが、本文に動画タイトル・投稿者などのメタ情報が現れず、記事の内容と一致するかは確認できなかった。X の投稿は機械から開けない。素材の candidate(verify: confirmed、X投稿の引用「上水流宇宙 × 765プロ 舞浜 歩さん コラボショート動画を公開しました！」)と記事の内容は一致している。",
+   "scope": "article:2026-10-14-dsva-cosmo-ayumu-dance-in-the-light-short-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-gaku-radio-2026-10-14.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は「#100以降の過去アーカイブ」の1文だけで、記事全体が短い。素材の候補 facts にある投稿フォーム URL(https://idolmaster-official.jp/gakuen/gakuenradio/contact/)と、公式ページにある番組の概要(MCは村田綾香さん、おたよりを募集中、放送部部長は真城優役)を拾えば埋まる。推測や一般論で水増しは不要。",
+   "scope": "article:2026-10-14-gaku-radio-2026-10-14.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-gaku-radio-2026-10-14.md",
+   "issue": "出典1の見出しラベル「(2026年10月8日)」と、候補の published_date(2026-10-07)が一致しない。found_at と reserved_on は 2026-10-08。投稿日を確かめられないなら、ラベルの日付を外すか、掲載日を確かめて合わせる。本文・見出し・リードには出てこないので、verdict には影響しない。",
+   "scope": "article:2026-10-14-gaku-radio-2026-10-14.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-gaku-radio-2026-10-14.md",
+   "issue": "確認済み: 出典1(x.com 公式投稿)の2名のゲストと放送日 10/14(水)は、素材 F1・F2 と候補の quotes「10/14(水)放送回 ゲスト 長月あおい さん (花海咲季役) 花岩香奈 さん (葛城リーリヤ役)」に一致。N2(#100以降の過去アーカイブ・YouTube)は出典2の公式ページ本文「#100以降の過去アーカイブはこちら（YouTube）」に一致。既報台帳 metrics/stories-before-2026-10-14.yml に同じ10/14回の記事はなく、R10 には当たらない。",
+   "scope": "article:2026-10-14-gaku-radio-2026-10-14.md"
+  },
+  {
+   "file": "-",
+   "issue": "記事にすべき公式の締切案件が candidates にあるのに紙面に無い: 「シンデレラガールズ15周年ライブ」一般会員先行の受付締切が10月19日(月)23:59(公式, candidates 202610140226-grok-4)。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "記事にすべき公式の締切案件が candidates にあるのに紙面に無い: xR LIVE「Apple of my アイ」現地チケットのアソビストアプレミアム会員最速先行の受付締切が10月18日(日)(公式, 202610140226-grok-6)。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "記事にすべき公式の締切案件が candidates にあるのに紙面に無い: ミリシタ「Snapshot Memoriesガシャ」の環・琴葉SSR出現率UPの期限が10月18日(日)14:59(公式, 202610140226-grok-10)。ミリオンは本日1本のみで、この告知も無い。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "記事にすべき公式発表が candidates にあるのに紙面に無い: 『RHYTHM LIVE FESTIVAL 2027』予選課題曲の発表が10月15日の生配信で予定(公式, 202610140226-grok-38)。ツアマス記事の本文では S2 弾の案内のみ触れており、課題曲の予告は含まれていない。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-765-imas-radio-2026-10-27.md",
+   "issue": "分量不足(small 目安250字)。本文は100字台。ただし素材 202610140226-grok-2 の facts(放送日時・ゲスト・パーソナリティ・URL・お便りテーマ)はすべて使用済みで、出典にある他の事実は無い。水増しは不要。",
+   "scope": "article:2026-10-14-765-imas-radio-2026-10-27.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-765-imas-radio-2026-10-27.md",
+   "issue": "表記ゆれ: 見出し・リードは「IM@S」(半角@)、出典ラベルと台帳(metrics/stories-before-2026-10-14.yml)は「IM＠S」(全角＠)。号内の表記を揃えること。",
+   "scope": "article:2026-10-14-765-imas-radio-2026-10-27.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-765-imas-radio-2026-10-27.md",
+   "issue": "本文「今回のお便りテーマ」: 記事は10/14号で、対象は10/27の次回放送。「今回」は現在の放送と読まれやすい。「次回放送のお便りテーマ」などに改めると正確。",
+   "scope": "article:2026-10-14-765-imas-radio-2026-10-27.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-765-miki-hoshii-future-spotlight-comifuro-2026.md",
+   "issue": "確認内容: 根拠は watch-9(公式 01_20133)の facts F1〜F9 で、見出し・リード・本文の日付(2026-11-01 日曜)、会場(インドネシア ICE BSD)、出演者(星井美希)、配信なし、演出・披露楽曲の一部変更は、いずれも公式ページ(01_20133 と英語版 01_20140)の記述と一致した。既報台帳(metrics/stories-before-2026-10-14.yml)に同じ公演の記事は無い。発行前に終わる催しではなく、告知は 2026-10-13 で新しい。",
+   "scope": "article:2026-10-14-765-miki-hoshii-future-spotlight-comifuro-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-765-miki-hoshii-future-spotlight-comifuro-2026.md",
+   "issue": "出典 comifuro.net(当事者)は公式サイトのトップページで、この公演の記述は無い(CF23 Ticket への導線のみ)。本文が『詳細・参加方法は Comic Frontier 23 公式サイトで確認できる』と案内するだけなので、R4 の不一致にはしないが、出典ラベルの『日付記載なし』は正確。",
+   "scope": "article:2026-10-14-765-miki-hoshii-future-spotlight-comifuro-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-765-miki-hoshii-future-spotlight-comifuro-2026.md",
+   "issue": "Comic Frontier は同人即売会だが、記事が扱うのは公式が告知した星井美希のソロ公演で、即売会そのものは扱っていない。R14 の対象外と判断した。",
+   "scope": "article:2026-10-14-765-miki-hoshii-future-spotlight-comifuro-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-765-miki-hoshii-future-spotlight-comifuro-2026.md",
+   "issue": "本文は約280字で small の目安(250字)を満たしている。分量不足の指摘は無し。",
+   "scope": "article:2026-10-14-765-miki-hoshii-future-spotlight-comifuro-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-cg-a-magical-cheers-aftermarket-2026.md",
+   "issue": "リードの「10月16日（金）17時に締め切られ」は、まだ来ていない締切を過去形で書いている。「締め切り」「締め切る」など、これからの締切と分かる言い方に直すと読みやすい(R7 の違反ではない)。",
+   "scope": "article:2026-10-14-cg-a-magical-cheers-aftermarket-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-cg-a-magical-cheers-aftermarket-2026.md",
+   "issue": "見出しに催しの名前(POP UP SHOP A MAGICAL CHEERS)が入っていない。「シンデレラガールズ事後通販」だけだと、どの催しの通販か分かりにくい。",
+   "scope": "article:2026-10-14-cg-a-magical-cheers-aftermarket-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-cg-a-magical-cheers-aftermarket-2026.md",
+   "issue": "確認結果: 出典 animall.jp のページで、全9品の名前・価格(550円〜3,960円)・締切(2026年10月16日17:00)・発送時期(2027年1月下旬以降)・決済方法の表示・カートとレジの流れを確かめられた。本文の事実はすべて F・N と一致する。",
+   "scope": "article:2026-10-14-cg-a-magical-cheers-aftermarket-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-cg-meiko-namiki-rina-fujimoto-birthday-2026.md",
+   "issue": "分量不足: rank は small(目安 250字)に対して本文が約130字で薄い。素材には公式投稿の祝辞「10/14 並木芽衣子さん 藤本里奈さん お誕生日おめでとうございます🎂」があり、本文に足せる。一般論や推測での水増しは不要。",
+   "scope": "article:2026-10-14-cg-meiko-namiki-rina-fujimoto-birthday-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-cg-www-the-chara-com-blog-p-121064.md",
+   "issue": "出典は当事者(THEキャラ本店のブログ)1件のみ。公式X・公式HPへの言及はあるが、R5の『公式・準公式』に当たるかは判断が分かれる。ブロックにはせず、記載は出典の本文と一致しているため問題ないと判断した。",
+   "scope": "article:2026-10-14-cg-www-the-chara-com-blog-p-121064.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-dsva-va-liv-manaka-birthday-live-2026.md",
+   "issue": "リードが「延期公演が10月28日に開かれ」と過去形で書いているが、10月28日は発行日(10月14日)より後の公演。「開かれる」などの未来形にすると事実関係が正確になる(時制の誤り。校閲の判定には影響しない)。",
+   "scope": "article:2026-10-14-dsva-va-liv-manaka-birthday-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-dsva-va-liv-manaka-birthday-live-2026.md",
+   "issue": "本文の受付ページ(livepocket)と配信チケットページ(asobistage)の links は、出典の公式ニュース(sources)に載っている受付URLと一致する。出典は公式ニュース1本で、事実の根拠(F)もすべてそこから取られているため、R3 には当たらないと判断した。",
+   "scope": "article:2026-10-14-dsva-va-liv-manaka-birthday-live-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-gaku-gakumas-hatsuboshi-houkago-talk-20261020.md",
+   "issue": "リードが配信日時を断定しているが、出典の配信日時は「2026/10/20 (火) 20:00～（予定）」で、本文も「予定」と「予告なく変更される場合がある」と書いている。リードにも「（予定）」または「予定されている」を入れると、本文と揃う。事実の誤りではないためブロックしない。",
+   "scope": "article:2026-10-14-gaku-gakumas-hatsuboshi-houkago-talk-20261020.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-gaku-gakumas-hatsuboshi-houkago-talk-20261020.md",
+   "issue": "分量は rank: small の目安(250字)を満たしており、問題ない。出典にある番組名・出演者・視聴先はすべて本文に入っている。",
+   "scope": "article:2026-10-14-gaku-gakumas-hatsuboshi-houkago-talk-20261020.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-gaku-kimi-to-semi-blue-mv-2m-views.md",
+   "issue": "分量不足: rank small の目安250字に対し、本文はMVへのリンク1文(約60字)だけ。出典の公式X投稿にある内容は『キミとセミブルー』のMusic Videoが200万再生を突破したという発表と、視聴への謝辞、MVへの案内のみで、拾える具体情報は少ない。水増しは不要。",
+   "scope": "article:2026-10-14-gaku-kimi-to-semi-blue-mv-2m-views.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-gaku-kimi-to-semi-blue-mv-2m-views.md",
+   "issue": "見出しとリードがほぼ同文(「MV200万再生」と「200万再生を突破した」)で、リードが見出しの言い換えにとどまる。読み物としての面白さは平板。",
+   "scope": "article:2026-10-14-gaku-kimi-to-semi-blue-mv-2m-views.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-gaku-kotone-another-idol-guaranteed-gacha-2026.md",
+   "issue": "分量不足(rank small の目安250字に対し本文は約120字)。素材の facts は対象・無料1連・開催時期の3点だけで、会場・価格などの埋められる事実は無い。一般論での水増しは勧めない。",
+   "scope": "article:2026-10-14-gaku-kotone-another-idol-guaranteed-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-joint-starlit-season-kohaku-aya-solo-songs-2026.md",
+   "issue": "分量不足: rank が small(目安250字)に対し本文は1段落で約90字。ただし素材(202610140226-grok-50)には追加の事実がなく、水増しは勧めない。見出し・リードの内容で足りている。",
+   "scope": "article:2026-10-14-joint-starlit-season-kohaku-aya-solo-songs-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-joint-starlit-season-kohaku-aya-solo-songs-2026.md",
+   "issue": "照合の範囲: 出典は x.com の公式投稿で機械からは開けなかった。素材 facts(発表・「雪」・「夜」・続報予定)と記事の記述が一致することを確認した。",
+   "scope": "article:2026-10-14-joint-starlit-season-kohaku-aya-solo-songs-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-joint-tours-s2-special-appeal-kaoru-2026.md",
+   "issue": "リードの「URアイドルの予告も出そろった」は言い過ぎ。素材の予告(grok-40、公式X 10/12)は「S2弾のURはこのアイドル」と1人の予告で、出典にも複数の予告が出そろったとは書かれていない。「URアイドルの予告も出た」など、素材の範囲に収める言い方が妥当。",
+   "scope": "article:2026-10-14-joint-tours-s2-special-appeal-kaoru-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-joint-tours-s2-special-appeal-kaoru-2026.md",
+   "issue": "分量不足: rank は small(目安250字)に対し本文は3段落で約200字。出典にある事実は桜庭薫・星井美希の紹介、URアイドル予告の内容(特別な衣装・ハイタッチ)、10/15生配信の案内で、すでに入っている。水増しはせず、出典にある範囲で補える程度のコメントにとどめる。",
+   "scope": "article:2026-10-14-joint-tours-s2-special-appeal-kaoru-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-joint-xr-765vs961-guest-idols.md",
+   "issue": "分量不足: 本文は約860字で rank: lead の目安(1000字)に届いていない。公式サイトの出演アイドル情報(第一公演 SIDE：765 PRODUCTION「星井 美希、四条 貴音、我那覇 響、奥空 心白」、SIDE：961 PRODUCTION「玲音、詩花、亜夜」、and more)を公演日程の段落に足せば埋まる。出典にある事実で、推測での水増しではない。",
+   "scope": "article:2026-10-14-joint-xr-765vs961-guest-idols.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-joint-xr-765vs961-guest-idols.md",
+   "issue": "確認メモ(指摘ではない): 続報予約の素材について、依頼ファイルは『末尾の「続報予約の素材」』に載せてあると書いているが、ファイルの末尾にそのような節は無かった。candidate_ids に sched- で始まるものも無いので、判定には影響しない。",
+   "scope": "article:2026-10-14-joint-xr-765vs961-guest-idols.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-million-cyber-planet-pop-up-serika-tapestry-2026-10.md",
+   "issue": "分量は small の目安(250字)にほぼ届いている。出典の medicos-e.net ページにある会場限定の情報(1,000円ごとの特典クリアカード、等身大パネルの展示・プレゼント、購入点数の制限)を一文足すと読み応えが増す。任意。",
+   "scope": "article:2026-10-14-million-cyber-planet-pop-up-serika-tapestry-2026-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-million-cyber-planet-pop-up-serika-tapestry-2026-10.md",
+   "issue": "出典 x.com/medicos_et_02/status/2109876445921300693 は機械から開けないため、完売の告知は素材の facts(F1: 完売の告知、F2: 再入荷は追って知らせる)との照合で確認した。どちらも記事の書き方と一致している。",
+   "scope": "article:2026-10-14-million-cyber-planet-pop-up-serika-tapestry-2026-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-shiny-song-focus-camera-hoshi-2026.md",
+   "issue": "分量不足(rank small の目安250字に対し本文は1文のみ)。素材の facts は『星をめざして』と芹沢あさひの2点だけで、出典にない内容で埋めるのは勧めない。素材に書き足せる事実が増えたときに補う程度でよい。",
+   "scope": "article:2026-10-14-shiny-song-focus-camera-hoshi-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-sidem-aji-project-story-2026.md",
+   "issue": "分量不足(rank: small の目安250字に対し本文は1段落・約100字)。ただし出典は第1話タイトル・公開日・CDシリーズ名しか持たず、素材から足せる事実が無いため、現状のままでも差し支えない。一般論での水増しは勧めない。",
+   "scope": "article:2026-10-14-sidem-aji-project-story-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-sidem-aji-project-story-2026.md",
+   "issue": "確認メモ: 出典2件(x.com/SideM_official/status/2109947258934530388 と …/2108470772050305448)は fetch_page.py で開けて、本文・公開日(2026年10月14日(水)公開予定、第1話『AJIなヤツら』、CDシリーズ『-What's it taste like?-』連動)が記事と一致。出典1のラベル日付「2026年10月9日」は開いたページからは確認できなかったが、素材の facts と矛盾はないため指摘しない。",
+   "scope": "article:2026-10-14-sidem-aji-project-story-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-sidem-fantastic-battle-fes-movie-2026.md",
+   "issue": "見出し「SideM劇場版、週替わり映像は初週と2週目で変更」は、初週と2週目の間で内容が変わるという意味に読めるため、表記を見直す余地がある(例:「週替わり映像、11月20日の初週と27日の2週目で内容が変わる」)。事実の誤りではない。",
+   "scope": "article:2026-10-14-sidem-fantastic-battle-fes-movie-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-sidem-fantastic-battle-fes-movie-2026.md",
+   "issue": "検査メモ: 本文の『事前に各劇場のホームページで確認できる』は、候補の facts(F22〜F25)には無いが、出典ページの『事前に劇場のホームページをご確認ください』と一致するため、R1 にはしない。根拠の控えに出典の該当箇所を明記しておくと次回の照合が楽になる。",
+   "scope": "article:2026-10-14-sidem-fantastic-battle-fes-movie-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-sidem-lifes-side-menu-2dmv-2026.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は視聴先リンク1行だけ。素材にある「言及アイドル: 舞田類、山下次郎、硲道夫」(sched-2026-10-14-sem-lifes-side-menu-2dmv-2026-開始 の facts)を本文に入れれば埋まる。ほかに出典の「プレミア公開」(X 投稿本文)も書ける。",
+   "scope": "article:2026-10-14-sidem-lifes-side-menu-2dmv-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-sidem-lifes-side-menu-2dmv-2026.md",
+   "issue": "frontmatter に verified_facts が無い。素材の確認は執筆側で済んでいるかもしれないが、この記事の記録からは確かめられなかった(R2 の対象は無し)。",
+   "scope": "article:2026-10-14-sidem-lifes-side-menu-2dmv-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-14-sidem-seasonal-sense-of-responsibility-2026.md",
+   "issue": "分量は small の目安(250字)にわずかに届かない程度だが、出典(ASOBI STORE 2026/10/11 のお知らせ)の事実はすべて本文に入っており、水増しの材料は無い。見出しは「SideM」まで入るが、「季節感への責任感」が何のストーリーかは出典の『315プロダクション エピソード』の「アイドルたちの1コマ」という名称を本文に入れると分かりやすい(任意)。",
+   "scope": "article:2026-10-14-sidem-seasonal-sense-of-responsibility-2026.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-14-765-imas-radio-2026-10-27.md",
+  "article:2026-10-14-765-miki-hoshii-future-spotlight-comifuro-2026.md",
+  "article:2026-10-14-cg-a-magical-cheers-aftermarket-2026.md",
+  "article:2026-10-14-cg-meiko-namiki-rina-fujimoto-birthday-2026.md",
+  "article:2026-10-14-cg-www-the-chara-com-blog-p-121064.md",
+  "article:2026-10-14-dsva-cosmo-ayumu-dance-in-the-light-short-2026.md",
+  "article:2026-10-14-dsva-va-liv-manaka-birthday-live-2026.md",
+  "article:2026-10-14-gaku-gakumas-duet-song-collection-2026.md",
+  "article:2026-10-14-gaku-gakumas-hatsuboshi-houkago-talk-20261020.md",
+  "article:2026-10-14-gaku-kimi-to-semi-blue-mv-2m-views.md",
+  "article:2026-10-14-gaku-kotone-another-idol-guaranteed-gacha-2026.md",
+  "article:2026-10-14-gaku-radio-2026-10-14.md",
+  "article:2026-10-14-joint-starlit-season-kohaku-aya-solo-songs-2026.md",
+  "article:2026-10-14-joint-tours-s2-special-appeal-kaoru-2026.md",
+  "article:2026-10-14-joint-xr-765vs961-guest-idols.md",
+  "article:2026-10-14-million-cyber-planet-pop-up-serika-tapestry-2026-10.md",
+  "article:2026-10-14-shiny-hyakki-popup-2026.md",
+  "article:2026-10-14-shiny-song-focus-camera-hoshi-2026.md",
+  "article:2026-10-14-sidem-aji-project-story-2026.md",
+  "article:2026-10-14-sidem-fantastic-battle-fes-movie-2026.md",
+  "article:2026-10-14-sidem-fes-parade-story-2026.md",
+  "article:2026-10-14-sidem-lifes-side-menu-2dmv-2026.md",
+  "article:2026-10-14-sidem-seasonal-sense-of-responsibility-2026.md",
+  "paper"
+ ],
+ "hashes": {
+  "docs/_posts/2026-10-14-765-imas-radio-2026-10-27.md": "a58a6f55f1e322337a8b6a311cbbf92f2973e73e885cd9b15e55dfbc2e22ad88",
+  "docs/_posts/2026-10-14-765-miki-hoshii-future-spotlight-comifuro-2026.md": "bb87b70b1ca1d64f4b98f7e5562040a385b60c27d44121acfed6a3bee41d3895",
+  "docs/_posts/2026-10-14-cg-a-magical-cheers-aftermarket-2026.md": "efbcb9f26fbb9f3cb35b8888d27d3091cbd658d51bad448e311e853a62c091ff",
+  "docs/_posts/2026-10-14-cg-meiko-namiki-rina-fujimoto-birthday-2026.md": "475d069ec8dcef7ff297cab8c7d6078f495316f9754dd4adc62852b217914083",
+  "docs/_posts/2026-10-14-cg-www-the-chara-com-blog-p-121064.md": "07a2df2f05d1c5cfac285e0b486a40b5c3da6c5cb5c0d70400e4b755deed07d3",
+  "docs/_posts/2026-10-14-dsva-cosmo-ayumu-dance-in-the-light-short-2026.md": "5c25ed9d36d7490fb0883c6b727b62f9e308e416d263a962dfe6ddd2f15b790f",
+  "docs/_posts/2026-10-14-dsva-va-liv-manaka-birthday-live-2026.md": "faf76dc43ad91c40cb633d9b9844aa219562f74af1d601a38fdfa1f992ad66ac",
+  "docs/_posts/2026-10-14-gaku-gakumas-duet-song-collection-2026.md": "719a04e401d87f89ffa23260fc977b5aaba52abdd899a342a3327b67fe00887b",
+  "docs/_posts/2026-10-14-gaku-gakumas-hatsuboshi-houkago-talk-20261020.md": "efa10eee2c39bc515279c874d35f5379f4c7ad3cb3e861f9d69f823010bc49f7",
+  "docs/_posts/2026-10-14-gaku-kimi-to-semi-blue-mv-2m-views.md": "84952f9e8bc3a91343a51df887357e5da2c98ce1a32935969f7b0b89b96206cb",
+  "docs/_posts/2026-10-14-gaku-kotone-another-idol-guaranteed-gacha-2026.md": "d9e1345a565a5dbe3a81c1303ff0dfc15721a092a61d9cf0a454f242072cda42",
+  "docs/_posts/2026-10-14-gaku-radio-2026-10-14.md": "a02bc6a7c43e06dda00774a7f37c8ca48cf9c6534bddbe277bf8ad517947060c",
+  "docs/_posts/2026-10-14-joint-starlit-season-kohaku-aya-solo-songs-2026.md": "85114cfdbed3cdc29743894c9f1665cec9129c992d22f959e0699373cafd51eb",
+  "docs/_posts/2026-10-14-joint-tours-s2-special-appeal-kaoru-2026.md": "34703190c7fdfc552bddc8459cf95fa435d4b0ec242ab9efd0f9bfd2e743182c",
+  "docs/_posts/2026-10-14-joint-xr-765vs961-guest-idols.md": "448c9a76b5090610b3886fb7fdabe83baaaf8fe2db2e819c8bfe8841f0769bca",
+  "docs/_posts/2026-10-14-million-cyber-planet-pop-up-serika-tapestry-2026-10.md": "0fa573a86af4477cfd84b1c05242014efe2dbd84ffc4a5275ef326d413b50a5d",
+  "docs/_posts/2026-10-14-shiny-hyakki-popup-2026.md": "c756e08fc9f945fcd4697b140a67c87b848c32c3d93b21b8334d634ead7b6fc6",
+  "docs/_posts/2026-10-14-shiny-song-focus-camera-hoshi-2026.md": "f3df0b3c5443c982daf684eaa88c7b743fd4565d98d48f842d4e4826df0b5dfa",
+  "docs/_posts/2026-10-14-sidem-aji-project-story-2026.md": "652afbc0db353141ed5630ffde6d57d03f731378bbe8510b765369f1a5e0a448",
+  "docs/_posts/2026-10-14-sidem-fantastic-battle-fes-movie-2026.md": "e7826415a6b875c940da3f6f7ebf4090c082f247454e74c2d2b514c8649eebd6",
+  "docs/_posts/2026-10-14-sidem-fes-parade-story-2026.md": "bf3e76effea0f0185b2e37a38d58b9e96b2285438714f0f8a55c587780a74be6",
+  "docs/_posts/2026-10-14-sidem-lifes-side-menu-2dmv-2026.md": "f07a2b95a4313ae6840d027f1a16b348412cec861b4f1ff118873fefcab10ccb",
+  "docs/_posts/2026-10-14-sidem-seasonal-sense-of-responsibility-2026.md": "497f048a9d424c57484c052fd9300b7a68569ac0a2bf881ec81a612bb00d5f1a",
+  "docs/_editions/2026-10-14.md": "4e5400ae81254f931f045e5623c9a5ef68b0e4f34da193f8d973d8c733a8f7ad",
+  "metrics/stories-before-2026-10-14.yml": "b2eb411194b62287cc2def2579c18ffff436b939bbceb2874f1a5f33101c0dac"
+ }
+}

@@ -1,0 +1,144 @@
+{
+ "decisions": {
+  "million-nipponbashi-lottery-stock-2026-10-12": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "賞品構成・在庫ありの内容は10-11号の本文と同じで、新事実も当日トリガーも無い"
+  },
+  "million-sports-day-login-bonus-2026": {
+   "action": "article",
+   "angle": "スポーツの日ログインボーナスが10月18日23:59まで開催中で、7回のログインでミリオンジュエル計500個を獲得できる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営は他に3件そろわないためroundupにせず small の通常記事"
+  },
+  "starlit-5th-anniv-radio-special-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "IM＠S RADIOのスタマス5周年特番。主催はミリオンではなく、ミリオン声優はゲスト出演のみ。他の合同記事とも別の話題"
+  },
+  "million-snapshot-memories-gasha-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-13号の本文に同じ内容(カード名・18日14:59まで)。期限は4日先でトリガー未到達"
+  },
+  "million-yurakucho-pop-up-shop-2026": {
+   "action": "article",
+   "angle": "有楽町マルイ7FのミリオンライブPOP UP SHOPは10月22日まで開催中で、3,000円購入ごとに特典ブロマイドと抽選会参加1回、景品は特大アクリルフィギュア",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "過去の京まふPOP UPや東京会場とは別会場・別施策"
+  },
+  "million-cyber-planet-pop-up-serika-tapestry-2026-10": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOPの描き下ろし等身大タペストリー④箱崎星梨花が完売し、再入荷は追って案内される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10-08号の開幕記事には無い完売という新事実。出典は当事者告知で未確認扱い"
+  },
+  "fan-arisa-prima-princess-clip-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の投稿によるファン編集映像。出典も未確認で、単体では記事にしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-sports-day-login-bonus-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "スポーツの日ログインボーナスが10月18日23:59まで開催中で、7回のログインでミリオンジュエル計500個を獲得できる",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-sports-day-login-bonus-2026",
+    "candidate_ids": [
+     "202610131833-explore-3"
+    ]
+   },
+   {
+    "slug": "million-yurakucho-pop-up-shop-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "有楽町マルイ7FのミリオンライブPOP UP SHOPは10月22日まで開催中で、3,000円購入ごとに特典ブロマイドと抽選会参加1回、景品は特大アクリルフィギュア",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-yurakucho-pop-up-shop-2026",
+    "candidate_ids": [
+     "202610140226-grok-11"
+    ]
+   },
+   {
+    "slug": "million-cyber-planet-pop-up-serika-tapestry-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Cyber Planet POP UP SHOPの描き下ろし等身大タペストリー④箱崎星梨花が完売し、再入荷は追って案内される",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-cyber-planet-pop-up-serika-tapestry-2026-10",
+    "candidate_ids": [
+     "202610140226-grok-12"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-nipponbashi-lottery-stock-2026-10-12",
+    "reason": "既報",
+    "note": "賞品構成・在庫ありの内容は10-11号の本文と同じで、新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "starlit-5th-anniv-radio-special-2026",
+    "reason": "面違い",
+    "note": "IM＠S RADIOのスタマス5周年特番。主催はミリオンではなく、ミリオン声優はゲスト出演のみ。他の合同記事とも別の話題"
+   },
+   {
+    "dedup_key": "million-snapshot-memories-gasha-2026-10",
+    "reason": "既報",
+    "note": "10-13号の本文に同じ内容(カード名・18日14:59まで)。期限は4日先でトリガー未到達"
+   },
+   {
+    "dedup_key": "fan-arisa-prima-princess-clip-2026-10",
+    "reason": "個人の話題",
+    "note": "個人の投稿によるファン編集映像。出典も未確認で、単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

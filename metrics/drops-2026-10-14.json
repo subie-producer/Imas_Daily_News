@@ -1,0 +1,26 @@
+{
+ "million-sports-day-login-bonus-2026": {
+  "title": "スポーツの日ログインボーナスが10月18日23:59まで開催中で、7回のログインでミリオンジュエル計500個を獲得できる",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 素材のGamerch本文では期間と報酬を確認できましたが、公式・準公式または報道の出典を確認できませんでした。公式告知の出典要件を満たせないため、見送ります。",
+  "candidate_ids": [
+   "202610131833-explore-3"
+  ]
+ },
+ "gaku-hatsuboshi-live-tour-single-shurakuryoko-2026": {
+  "title": "初星学園 LIVE TOUR Single「修楽旅行」が11月4日発売、参考価格2,500円と公式グッズ情報が告知した",
+  "stage": "執筆で見送り",
+  "why": "NOT_NEWS 確認できた公式ページは2026年8月21日付で、発売日・価格・収録内容を告知したものです。予約特典の受付は9月23日までで終了しており、今回の素材から新たに確認できる情報はありません。",
+  "candidate_ids": [
+   "202610130225-grok-30"
+  ]
+ },
+ "million-yurakucho-pop-up-shop-2026": {
+  "title": "有楽町マルイ7FのミリオンライブPOP UP SHOPは10月22日まで開催中で、3,000円購入ごとに特典ブロマイドと抽選会参加1回、景品は特大アクリルフィギュア",
+  "stage": "執筆で落とした",
+  "why": "無い事実 id: ['N5', 'N6', 'N7', 'N8', 'N9'](N の id は new_facts に id・text・url を書いたものだけ使える。前の稿の verified_facts を使うなら書き写す)",
+  "candidate_ids": [
+   "202610140226-grok-11"
+  ]
+ }
+}

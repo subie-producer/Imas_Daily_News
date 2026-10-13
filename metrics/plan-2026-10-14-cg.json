@@ -1,0 +1,172 @@
+{
+ "decisions": {
+  "cg-apple-of-my-eye-xr-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/12号で先行受付〜18日を既報。新事実なし、締切も4日先でトリガー未到達"
+  },
+  "cg-a-magical-cheers-aftermarket-2026": {
+   "action": "article",
+   "angle": "「A MAGICAL CHEERS」POP UP SHOP事後通販の受付は16日(金)17時まで、締切まであと2日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が3日以内に迫るため既報でも期日の知らせとして記事化"
+  },
+  "cg-fan-birthdays-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人SNSのファン投稿で未確認。単体記事にしない(公式の祝福は別主題で記事化)"
+  },
+  "meiko-namiki-rina-fujimoto-birthday-2026": {
+   "action": "article",
+   "angle": "公式が10月14日誕生日の並木芽衣子・藤本里奈のお祝いShortsを公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同種の誕生日Shorts記事が直近にあり、同じ形式で記事化"
+  },
+  "cg-kyoto-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "www-the-chara-com-blog-p-121064",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "京まふ事後物販のシンデレラ分は同じ有楽町マルイPOP UP。最終日記事へ統合"
+  },
+  "www-the-chara-com-blog-p-121064": {
+   "action": "article",
+   "angle": "有楽町マルイ7FのシンデレラガールズPOP UP SHOPは本日14日が最終日、営業は18時まで。開店前の待機は不可",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "最終日の来店案内。同じ催しの6主題を1記事に統合(特典ブロマイド・抽選会・現金/カード払い等)"
+  },
+  "cinderella-pop-up-yurakucho-marui-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "www-the-chara-com-blog-p-121064",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP SHOPの最終日予約"
+  },
+  "pop-up-shop-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "www-the-chara-com-blog-p-121064",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP SHOP。完売・再入荷9日の情報は過去のもので、最終日記事へ統合"
+  },
+  "cg-yurakucho-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "www-the-chara-com-blog-p-121064",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP SHOPの最終日予約。再入荷情報は9日分で既報"
+  },
+  "cg-yurakucho-popup-inventory-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "www-the-chara-com-blog-p-121064",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP SHOPの最終日。特典ブロマイド・抽選会の案内を統合記事に入れる"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-a-magical-cheers-aftermarket-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "「A MAGICAL CHEERS」POP UP SHOP事後通販の受付は16日(金)17時まで、締切まであと2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cg-a-magical-cheers-aftermarket-2026",
+    "candidate_ids": [
+     "202610140226-grok-8"
+    ]
+   },
+   {
+    "slug": "cg-meiko-namiki-rina-fujimoto-birthday-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "公式が10月14日誕生日の並木芽衣子・藤本里奈のお祝いShortsを公開",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "meiko-namiki-rina-fujimoto-birthday-2026",
+    "candidate_ids": [
+     "202610140226-grok-49"
+    ]
+   },
+   {
+    "slug": "cg-www-the-chara-com-blog-p-121064",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "有楽町マルイ7FのシンデレラガールズPOP UP SHOPは本日14日が最終日、営業は18時まで。開店前の待機は不可",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "www-the-chara-com-blog-p-121064",
+    "candidate_ids": [
+     "sched-2026-10-14-www-the-chara-com-blog-p-121064-千秋楽",
+     "sched-2026-10-14-cg-kyoto-popup-2026-終了",
+     "sched-2026-10-14-cinderella-pop-up-yurakucho-marui-2026-終了",
+     "sched-2026-10-14-pop-up-shop-2026-終了",
+     "sched-2026-10-14-cg-yurakucho-popup-2026-終了",
+     "sched-2026-10-14-cg-yurakucho-popup-inventory-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-apple-of-my-eye-xr-live-2027",
+    "reason": "既報",
+    "note": "10/12号で先行受付〜18日を既報。新事実なし、締切も4日先でトリガー未到達"
+   },
+   {
+    "dedup_key": "cg-fan-birthdays-2026",
+    "reason": "個人の話題",
+    "note": "個人SNSのファン投稿で未確認。単体記事にしない(公式の祝福は別主題で記事化)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,120 @@
+{
+ "decisions": {
+  "xr-765vs961-guest-idols": {
+   "action": "article",
+   "angle": "765×961 IDOL ULTIMATE「ONCE AND FOR ALL」「TO:STARLIT OF PROMISE」のゲストアイドルとして神崎蘭子・春日未来・小宮果穂が解禁された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "765と961の共同主催のため joint。公式Xの発表(verify未確認だが出典は公式)"
+  },
+  "tours-s2-special-appeal-kaoru-2026": {
+   "action": "article",
+   "angle": "ツアマスS2弾の専用SPアピールとして桜庭薫「Trick and smile」・星井美希「rice ball nova」、URアイドル予告が出そろい、詳細は15日の生配信で",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2弾の施策なので薫・美希・URを1記事に統合。薫・美希は直近の桃子・静香とは別カード"
+  },
+  "tours-s2-special-appeal-miki-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-s2-special-appeal-kaoru-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "S2弾専用SPアピール紹介として薫と同じ施策"
+  },
+  "tours-rhythm-live-festival-2027-qualifier-song-announcement": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/13「RHYTHM LIVE予選曲を発表へ」と同内容。新事実なし、当日のトリガー(発表は15日)も無い"
+  },
+  "tours-s2-ur-idol-teaser-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-s2-special-appeal-kaoru-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "S2弾の同じ施策。URアイドル予告として統合"
+  },
+  "starlit-season-kohaku-aya-solo-songs-2026": {
+   "action": "article",
+   "angle": "スタマス5周年の特大情報として、奥空心白のソロ楽曲「雪」と亜夜のソロ楽曲「夜」の制作が決定した",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "直近の5周年記事(越境コミュ・特番)に無い新事実。続報予定あり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-xr-765vs961-guest-idols",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "765×961 IDOL ULTIMATE「ONCE AND FOR ALL」「TO:STARLIT OF PROMISE」のゲストアイドルとして神崎蘭子・春日未来・小宮果穂が解禁された",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "xr-765vs961-guest-idols",
+    "candidate_ids": [
+     "202610132336-watch-11"
+    ]
+   },
+   {
+    "slug": "joint-tours-s2-special-appeal-kaoru-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスS2弾の専用SPアピールとして桜庭薫「Trick and smile」・星井美希「rice ball nova」、URアイドル予告が出そろい、詳細は15日の生配信で",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "tours-s2-special-appeal-kaoru-2026",
+    "candidate_ids": [
+     "202610140226-grok-36",
+     "202610140226-grok-37",
+     "202610140226-grok-40"
+    ]
+   },
+   {
+    "slug": "joint-starlit-season-kohaku-aya-solo-songs-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "スタマス5周年の特大情報として、奥空心白のソロ楽曲「雪」と亜夜のソロ楽曲「夜」の制作が決定した",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "starlit-season-kohaku-aya-solo-songs-2026",
+    "candidate_ids": [
+     "202610140226-grok-50"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-rhythm-live-festival-2027-qualifier-song-announcement",
+    "reason": "既報",
+    "note": "10/13「RHYTHM LIVE予選曲を発表へ」と同内容。新事実なし、当日のトリガー(発表は15日)も無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

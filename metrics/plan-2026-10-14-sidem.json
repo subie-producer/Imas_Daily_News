@@ -1,0 +1,210 @@
+{
+ "decisions": {
+  "sidem-seasonal-sense-of-responsibility-2026": {
+   "action": "article",
+   "angle": "「アイドルたちの1コマ」に蒼井悠介・蒼井享介が登場する新ストーリー「季節感への責任感」が追加された(ボイスなし、閲覧はASOBI STORE会員登録が必要)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10日更新分とは別ストーリー(11日0:00追加)"
+  },
+  "jupiter-monthly-theme-song-13-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "発売日・価格・品番・シリアルコード特典とも10月11日号の本文に既出。新事実も当日トリガーも無い"
+  },
+  "sidem-fantastic-battle-fes-movie-2026": {
+   "action": "article",
+   "angle": "劇場版SideMの公開1週目・2週目に、バックステージ映像と本編ラストMCのカメラワークが替わる週替わり映像の上映が決まった",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "応援上映・ムビチケは既報。週替わり映像は未報の新事実"
+  },
+  "sidem-kazuki-tsukumo-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月13日号の誕生日ムービー記事に同じ投稿内容が既出。二次情報で個人SNS投稿でもある"
+  },
+  "sidem-lifes-side-menu-2dmv-2026": {
+   "action": "article",
+   "angle": "S.E.M「Life's Side Menu!」の2DMVが今夜21時にYouTubeで公開される",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2DMVの他2主題(sidem-sem-/sem-)をここへ統合。YouTubeリンクを含む"
+  },
+  "sidem-aji-na-yatsura-story-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-aji-project-story-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じAJIプロジェクト第1話公開。CDシリーズ名『-What's it taste like?-』の素材を統合"
+  },
+  "sidem-fes-parade-story-2026": {
+   "action": "article",
+   "angle": "MONTHLY THEME SONG 12 Café Parade(10月21日発売)のCD特典ストーリー『Fes Parade！』が公開され、シリアルコードで読める。動画・静止画の共有は禁止",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "未報の新情報。共有禁止の注意も伝える"
+  },
+  "tsukumo-kazuki-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月13日号の本文と同内容(ケーキの感想・感謝)。新事実無し"
+  },
+  "sidem-sem-lifes-side-menu-2dmv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-lifes-side-menu-2dmv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS.E.M 2DMV公開(今夜21時)。続報予約もこの記事で扱う"
+  },
+  "sidem-aji-project-story-2026": {
+   "action": "article",
+   "angle": "『－AJIプロジェクト－』ストーリー第1話「AJIなヤツら」が本日公開される",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公開当日のトリガー。連動CDシリーズ名『-What's it taste like?-』も添える"
+  },
+  "sem-lifes-side-menu-2dmv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-lifes-side-menu-2dmv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS.E.M 2DMV公開(今夜21時)。続報予約もこの記事で扱う"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-seasonal-sense-of-responsibility-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「アイドルたちの1コマ」に蒼井悠介・蒼井享介が登場する新ストーリー「季節感への責任感」が追加された(ボイスなし、閲覧はASOBI STORE会員登録が必要)",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-seasonal-sense-of-responsibility-2026",
+    "candidate_ids": [
+     "202610131231-explore-0"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-movie-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版SideMの公開1週目・2週目に、バックステージ映像と本編ラストMCのカメラワークが替わる週替わり映像の上映が決まった",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "sidem-fantastic-battle-fes-movie-2026",
+    "candidate_ids": [
+     "202610131833-explore-4"
+    ]
+   },
+   {
+    "slug": "sidem-lifes-side-menu-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "S.E.M「Life's Side Menu!」の2DMVが今夜21時にYouTubeで公開される",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-lifes-side-menu-2dmv-2026",
+    "candidate_ids": [
+     "202610140226-grok-18",
+     "sched-2026-10-14-sidem-sem-lifes-side-menu-2dmv-2026-開始",
+     "sched-2026-10-14-sem-lifes-side-menu-2dmv-2026-開始"
+    ]
+   },
+   {
+    "slug": "sidem-fes-parade-story-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "MONTHLY THEME SONG 12 Café Parade(10月21日発売)のCD特典ストーリー『Fes Parade！』が公開され、シリアルコードで読める。動画・静止画の共有は禁止",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-fes-parade-story-2026",
+    "candidate_ids": [
+     "202610140226-grok-21"
+    ]
+   },
+   {
+    "slug": "sidem-aji-project-story-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "『－AJIプロジェクト－』ストーリー第1話「AJIなヤツら」が本日公開される",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-aji-project-story-2026",
+    "candidate_ids": [
+     "sched-2026-10-14-sidem-aji-project-story-2026-開始",
+     "202610140226-grok-19"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "jupiter-monthly-theme-song-13-2026",
+    "reason": "既報",
+    "note": "発売日・価格・品番・シリアルコード特典とも10月11日号の本文に既出。新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-kazuki-tsukumo-birthday-2026",
+    "reason": "既報",
+    "note": "10月13日号の誕生日ムービー記事に同じ投稿内容が既出。二次情報で個人SNS投稿でもある"
+   },
+   {
+    "dedup_key": "tsukumo-kazuki-birthday-2026",
+    "reason": "既報",
+    "note": "10月13日号の本文と同内容(ケーキの感想・感謝)。新事実無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

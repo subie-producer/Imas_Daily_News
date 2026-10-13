@@ -237,6 +237,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - t2u.asia              # 合議で追加: CF23のチケット販売元。ページの主催者は別記載なし
+  - comifuro.net          # 合議で追加: CF23の主催者による告知サイト。運営者情報は未確認
   - shinkaifes.pjblue.com # 合議で追加: フッターで主催を明記。アイマス関連の記述はなし
   - naganokenbun.jp       # 合議で追加: ホールの指定管理者。トップの「指定管理者」表記で確認、会場案内
   - m-messe.co.jp         # 合議で追加: 会場の運営会社。会社概要で事業内容を確認、先行の会場案内
@@ -404,6 +406,10 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - ioQmV7-M1z8         # 機械で追加: @KamizuruCosmo「Dance in the Light 踊ってみた with 」
+    - Z-LWjF5J6Mw         # 機械で追加: @hatsuboshi_gakuen「初星学園 「キミとセミブルー」Official Music 」
+    - Oq5n5dcZsm0         # 機械で追加: @imas-official「10/14 藤本里奈さん Happy Birthday‼」
+    - 0_pXMe1AeyI         # 機械で追加: @imas-official「10/14 並木芽衣子さん Happy Birthday‼」
     - 7j384Q3585o         # 機械で追加: @TomoriManaka「#2【BIOHAZARD RE:2】はじめてのバイオ！初見で」
     - yTqVGq--aBk         # 機械で追加: @UtagawaLetora「ガールズ・イン・ザ・フロンティア【covered by レト」
     - Cp7vLEDc-ok         # 機械で追加: @KamizuruCosmo「公転周期 踊ってみた with 星井 美希さん #short」
@@ -559,6 +565,15 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - serebixi            # 合議で追加: 個人の小悪魔リーリヤファンイラスト
+    - oukanocos           # 合議で追加: 個人によるまねきねこコラボ衣装のコスプレ投稿
+    - mumiizumu           # 合議で追加: 個人によるGiGOコラボ衣装のコスプレ投稿
+    - glasses_oni         # 合議で追加: 個人による並木芽衣子・藤本里奈の誕生日祝いファン投稿
+    - dawagon_DMP         # 合議で追加: 個人のハロウィンことねファンイラスト投稿
+    - animedangi          # 合議で追加: 個人が痛バッグを持参する予定の投稿。来場者側の発信
+    - EYESHIELD_RB21      # 合議で追加: 応援幕企画の発信。企業・自治体の関与は材料になし、個人の出会い語り
+    - Azumiruu_Create     # 合議で追加: 個人の創作。花海佑芽の夕焼けの海イラスト
+    - Atamafuyu_takep     # 合議で追加: 個人アカウント。ライブ映像の切り抜き編集はファンの発信
     - uramingy            # 合議で追加: 筑西市シャニマスコラボ衣装のストレイライト版を制作
     - umtUMT              # 合議で追加: ファンアートに言及する個人の投稿
     - umih0taru           # 合議で追加: SideMコラボ期間に来園した個人の投稿

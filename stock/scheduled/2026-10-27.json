@@ -48,5 +48,29 @@
   "src_candidate_id": "sched-2026-10-12-sidem-fantastic-battle-fes-2026-締切",
   "event_date": "2026-12-26",
   "deadline": "2026-10-27"
+ },
+ {
+  "id": "sched-2026-10-27-imas-radio-2026-10-27-開始",
+  "dedup_key": "imas-radio-2026-10-27",
+  "brand": "765",
+  "subject": "IM@S RADIO 長谷川明子ゲスト回",
+  "kind": "開始",
+  "note": "20時からの生放送をYouTubeで視聴できる",
+  "reserved_on": "2026-10-14",
+  "title": "IM＠S RADIO 次回放送（10月27日）",
+  "url": "https://x.com/imas_ch/status/2110000115251605510",
+  "source_type": "公式",
+  "facts": [
+   "次回放送は10月27日（火）20時から生放送。",
+   "ゲストは長谷川明子。",
+   "パーソナリティは平田宏美、若林直美。",
+   "YouTube: https://www.youtube.com/live/RRByxc2z4eM",
+   "お便りのテーマは「副業、教えられる範囲でいいので教えて」。",
+   "エンゲージメント: 低"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610140226-grok-2",
+  "event_date": "2026-10-27"
  }
 ]

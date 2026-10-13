@@ -1,0 +1,144 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-14T02:27:32+09:00",
+   "edition": "2026-10-14",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 349,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 0,
+    "explore:sidem": 0,
+    "explore_failed:sidem": 1,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 1,
+    "grok_week_searches": 434,
+    "grok:765as": 4,
+    "grok:cinderella": 7,
+    "grok:million": 3,
+    "grok:shiny": 4,
+    "grok:sidem": 6,
+    "grok:gakuen": 5,
+    "grok:dsva": 4,
+    "grok:joint-other": 7,
+    "grok:trend": 13,
+    "grok_searches:gaku": 5,
+    "grok_searches:million": 7,
+    "grok_searches:cg": 6,
+    "grok_searches:general": 17,
+    "grok_searches:dsva": 10,
+    "grok_searches:shiny": 5,
+    "grok_searches:765": 7,
+    "grok_searches:joint": 10,
+    "grok_searches:sidem": 5
+   },
+   "normalized": 54,
+   "added": 40,
+   "verify": {
+    "confirmed": 36,
+    "unconfirmed": 14,
+    "failed": 4
+   },
+   "duration_s": 1614
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-14T03:32:44+09:00",
+   "edition": "2026-10-14",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 26,
+   "written": 23,
+   "roundups": 0,
+   "dropped": 1,
+   "coverage": {
+    "subjects": 64,
+    "covered": 64,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.4122894326845805,
+    "執筆": 4.353211816151937,
+    "出典の判定": 0.05460379918416341,
+    "組版": 0.6270362337430319,
+    "校閲": 0.4896196405092875,
+    "校閲1波": 0.4896196405092875
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-hatsuboshi-live-tour-single-shurakuryoko-2026",
+    "million-sports-day-login-bonus-2026",
+    "million-yurakucho-pop-up-shop-2026"
+   ],
+   "duration_s": 841
+  }
+ ]
+}

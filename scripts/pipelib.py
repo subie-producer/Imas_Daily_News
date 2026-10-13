@@ -100,10 +100,12 @@ def has_editorial(date: str) -> bool:
     return str(date) <= EDITORIAL_UNTIL
 
 
-# 書き直しても紙面に戻らない取り下げの規則(校閲の規則番号)。判断が記事の書き方ではなく**話題そのもの**に掛かる:
+# 書き直しても紙面に戻らない取り下げの規則(校閲の規則番号)。判断が記事の書き方ではなく**話題そのもの**に掛かり、
+# いまも成り立つかをコードが確かめられるものだけ:
 #   P1 = 同じ知らせの記事がもう1本紙面にある(相手が紙面に残っているあいだだけ成り立つ)
-#   R10 = 既報と同じ内容で新しい事実が無い(同じ素材・同じ既報なら、書き直しても同じ判定になる)
-SETTLED_DROP_RULES = ("P1", "R10")
+# R10(既報と同じ内容)は入れない。校閲は稿を見て判断するので、同じ素材でも期日の知らせとして書き直せば載りうる
+# (実測 2026-10-09: 永吉昴のガシャ記事は「本文に 10/10 14:59 の終了が無い」ことを含めて R10。監査指摘)
+SETTLED_DROP_RULES = ("P1",)
 
 
 def settled_drops(date: str, root: Path | None = None) -> dict[str, str]:
@@ -127,8 +129,6 @@ def settled_drops(date: str, root: Path | None = None) -> dict[str, str]:
             alive = [d for d in s.get("dup_of") or [] if isinstance(d, str) and d != slug and (posts / f"{date}-{d}.md").exists()]
             if alive:
                 out[slug] = f"P1 同じ知らせの記事 {alive[0]} が紙面にある"
-        elif s.get("rule") == "R10":
-            out[slug] = "R10 既報と同じ内容(新しい事実が無い)"
     return out
 
 

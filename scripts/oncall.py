@@ -1028,7 +1028,7 @@ def posted_slugs(date: str) -> set[str]:
 
 def planned_slugs(date: str) -> list[str]:
     """その号の計画にある記事のうち、紙面に戻す対象の slug(計画が読めなければ空)。外した理由がいまも成り立つ記事
-    (重複の相手が紙面にある・既報。settled_drops)は組み直しが書き直さないので、「戻らない記事」に数えない。"""
+    (重複の相手が紙面にある。settled_drops)は組み直しが書き直さないので、「戻らない記事」に数えない。"""
     try:
         slugs = [a["slug"] for a in json.loads((ROOT / "metrics" / f"plan-{date}.json").read_text(encoding="utf-8"))["articles"]]
     except (OSError, ValueError, KeyError, TypeError):

@@ -4834,9 +4834,10 @@ def test_late_facts_reach_plan_index(tmp: Path):
 
 
 def test_settled_drops_not_rewritten(tmp: Path):
-    """重複(P1)・既報(R10)で外した記事は、外した理由がいまも成り立つあいだ、組み直し(--reuse-plan)で書き直さない・救済で戻させない・
+    """重複(P1)で外した記事は、重複の相手が紙面にあるあいだ、組み直し(--reuse-plan)で書き直さない・救済で戻させない・
     次の号の選定に戻さない(実測 2026-10-12: 救済の組み直しが重複で外した上映会記事を書き直し、承認済みの記事と同じ重複がまた出た)。
-    重複の相手が紙面から消えたら書き直す。書き方の指摘(R1 等)で外した記事は今までどおり書き直す。"""
+    重複の相手が紙面から消えたら書き直す。書き方の指摘(R1 等)と既報(R10)で外した記事は今までどおり書き直す
+    (R10 は稿への判断で、期日の知らせとして書き直せば載りうる。実測 2026-10-09 の永吉昴ガシャ記事。監査指摘)。"""
     import oncall
     for sub in ("candidates", "metrics", "docs/_posts"):
         (tmp / sub).mkdir(parents=True, exist_ok=True)
@@ -4864,19 +4865,21 @@ def test_settled_drops_not_rewritten(tmp: Path):
             {"file": f"docs/_posts/{d0}-fix.md", "rule_id": "R1", "repair": "drop_claim", "issue": "出典に無い店舗名"},
         ]}
         dropped, _ = compose.drop_blocked_articles(d0, review, written)
-        # 既報(R10)は書き直しで執筆が見送った経路(revise_apply)と同じく、指摘ごと控える
+        # 既報(R10)は書き直しで執筆が見送った経路(revise_apply)と同じく、指摘ごと控える。指摘は 2026-10-09 の実例の形
         compose.log_drop(d0, "old", "書き直しで見送り", "NOT_NEWS 既報と同じ", posts / f"{d0}-old.md",
-                         issues=[{"rule_id": "R10", "repair": "drop_article", "issue": "既報と同じ内容"}])
+                         issues=[{"rule_id": "R10", "repair": "drop_article",
+                                  "issue": "記事の内容は既報と同じで、新しい事実も当日のトリガーも無い。3日以内の締切の告知を目的とする"
+                                           "記事でもない(本文に10/10 14:59の終了が無い)。"}])
         (posts / f"{d0}-old.md").unlink()
         compose.persist_drops(d0)
         rec = json.loads((tmp / "metrics" / f"drops-{d0}.json").read_text(encoding="utf-8"))
         check(sorted(dropped) == ["dup", "fix", "orphan"] and rec["dup"].get("settled") == {"rule": "P1", "dup_of": ["keep"]}
-              and rec["old"].get("settled") == {"rule": "R10"} and "settled" not in rec["fix"],
+              and "settled" not in rec["old"] and "settled" not in rec["fix"],
               f"外れた記事の記録に、外した理由が話題に掛かること(規則と重複の相手)を残さない: {rec}")
         got = pipelib.settled_drops(d0, tmp)
-        check(sorted(got) == ["dup", "old"],
-              f"重複の相手が紙面にある・既報の記事だけを、書き直さない対象にしていない(相手の消えた重複・書き方の指摘まで入る): {got}")
-        # 組み直し(--reuse-plan): 書き直しに回すのは、相手の消えた重複と書き方の指摘で外した記事だけ
+        check(sorted(got) == ["dup"],
+              f"重複の相手が紙面にある記事だけを、書き直さない対象にしていない(既報・相手の消えた重複・書き方の指摘まで入る): {got}")
+        # 組み直し(--reuse-plan): 書き直さないのは、相手が紙面にある重複だけ
         asked = []
 
         class Stop(Exception):
@@ -4894,20 +4897,29 @@ def test_settled_drops_not_rewritten(tmp: Path):
             compose.write_articles(d0, plan, cands, [], {}, reuse=True)
         except Stop:
             pass
-        check(sorted(asked) == ["fix", "orphan"], f"組み直しが、重複・既報で外した記事を書き直す: {sorted(asked)}")
-        # 救済: 戻す対象(戻らない記事に数える計画の記事)から外す。重複・既報だけが外れた号では、戻す組み直しを当番に頼まない
-        check(oncall.planned_slugs(d0) == ["keep", "orphan", "fix"], f"救済が、重複・既報で外した記事を戻らない記事に数える: {oncall.planned_slugs(d0)}")
+        check(sorted(asked) == ["fix", "old", "orphan"],
+              f"組み直しが、重複で外した記事を書き直す・既報(期日の知らせとして書き直せる)を書き直さない: {sorted(asked)}")
+        # 救済: 戻す対象(戻らない記事に数える計画の記事)から外す。重複だけが外れた号では、戻す組み直しを当番に頼まない
+        check(oncall.planned_slugs(d0) == ["keep", "orphan", "old", "fix"],
+              f"救済が、重複で外した記事を戻らない記事に数える・既報を数えない: {oncall.planned_slugs(d0)}")
         check(compose.recover_pending(d0), "書き直せば戻る記事があるのに、戻す組み直しを頼まない")
         compose.DROP_LOG[d0] = {k: v for k, v in compose.DROP_LOG[d0].items() if k in ("dup", "old")}
-        check(not compose.recover_pending(d0), "重複・既報で外した記事だけなのに、戻す組み直しを頼む")
-        # 次の号の選定: 重複・既報の素材は戻さない。相手の消えた重複・書き方の指摘の素材は戻す
+        check(compose.recover_pending(d0), "既報で外した記事があるのに、戻す組み直しを頼まない")
+        compose.DROP_LOG[d0] = {k: v for k, v in compose.DROP_LOG[d0].items() if k == "dup"}
+        check(not compose.recover_pending(d0), "重複で外した記事だけなのに、戻す組み直しを頼む")
+        # 次の号の選定: 重複の素材は戻さない。既報・相手の消えた重複・書き方の指摘の素材は戻す
         (tmp / "candidates" / f"{d1}.json").write_text("[]", encoding="utf-8")
         compose.carry_dropped_candidates(d1)
         ids = sorted(x["id"] for x in json.loads((tmp / "candidates" / f"{d1}.json").read_text(encoding="utf-8")))
-        check(ids == ["c-fix", "c-orphan"], f"重複・既報で外した記事の素材を、次の号の選定に戻す: {ids}")
+        check(ids == ["c-fix", "c-old", "c-orphan"], f"重複で外した記事の素材を戻す・既報の素材を戻さない: {ids}")
+        # 既報の印が残った記録(この修正の前に書かれた形)でも、既報だけでは書き直さない対象にしない
+        rec = json.loads((tmp / "metrics" / f"drops-{d0}.json").read_text(encoding="utf-8"))
+        rec["old"]["settled"] = {"rule": "R10"}
+        (tmp / "metrics" / f"drops-{d0}.json").write_text(json.dumps(rec, ensure_ascii=False), encoding="utf-8")
+        check(sorted(pipelib.settled_drops(d0, tmp)) == ["dup"], "既報の印だけで、記事を書き直さない対象にする")
         # 重複の相手が紙面から消えたら、重複で外した記事は書き直す対象に戻る
         (posts / f"{d0}-keep.md").unlink()
-        check(sorted(pipelib.settled_drops(d0, tmp)) == ["old"], "重複の相手が紙面から消えても、重複で外した記事を書き直さない")
+        check(pipelib.settled_drops(d0, tmp) == {}, "重複の相手が紙面から消えても、重複で外した記事を書き直さない")
         # 記録が壊れていたら、全部を書き直す対象のまま(理由の分からない記事を戻さない側に倒さない)
         (tmp / "metrics" / f"drops-{d0}.json").write_text("{", encoding="utf-8")
         check(pipelib.settled_drops(d0, tmp) == {}, "外れた記事の記録が読めないのに、書き直さない記事を決める")

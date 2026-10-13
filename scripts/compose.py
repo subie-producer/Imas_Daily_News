@@ -519,7 +519,7 @@ def carry_dropped_candidates(date: str) -> list[str]:
         if (ROOT / "docs" / "_posts" / f"{prev}-{slug}.md").exists():
             continue    # 組み直しで戻った記事
         if slug in settled:
-            continue    # 同じ知らせが前の号に載った(重複)・既報と同じ内容。選定に戻しても同じ理由で外れる
+            continue    # 同じ知らせが前の号に載った(重複)。選定に戻しても同じ理由で外れる
         why = f"{prev}号で記事にならなかった({d.get('stage', '')}: {str(d.get('why') or '')[:120]})"
         for cid in d.get("candidate_ids") or []:
             c = src.get(cid)
@@ -1961,7 +1961,7 @@ DROP_SETTLED: dict[str, dict[str, dict]] = {}
 def log_drop(date: str, slug: str, stage: str, why: str, path: Path | None = None,
              issues: list[dict] | None = None) -> None:
     """紙面から外す記事の概略を控える。**ファイルを消す前に**呼ぶ(見出しはファイルから取る)。
-    issues は外す理由になった校閲の指摘。話題そのものに掛かる規則(SETTLED_DROP_RULES: 重複・既報)なら、その規則と
+    issues は外す理由になった校閲の指摘。話題そのものに掛かる規則(SETTLED_DROP_RULES: 重複)なら、その規則と
     重複の相手を DROP_SETTLED に控える(組み直しが書き直さない・救済が戻さない印。pipelib.settled_drops)。"""
     title = ""
     p = path or (ROOT / "docs" / "_posts" / f"{date}-{slug}.md")
@@ -1975,9 +1975,6 @@ def log_drop(date: str, slug: str, stage: str, why: str, path: Path | None = Non
         rule = str(b.get("rule_id") or "")
         if rule not in SETTLED_DROP_RULES:
             continue
-        if rule == "R10":
-            settled[slug] = {"rule": rule}
-            break
         # 重複の相手は issue に slug で書かれる(review-paper.md の P1)。紙面の記事のパスで書かれても slug に直す。
         # slug らしい語を全部控え、相手かどうかは紙面にその記事があるかで決める(settled_drops)
         dup = sorted({t.removeprefix(f"{date}-") for t in re.findall(r"[a-z0-9]+(?:-[a-z0-9]+)*", str(b.get("issue") or ""))}
@@ -2060,7 +2057,7 @@ def hand_over_anomalies(date: str, rerun: bool, reason: str = "", extra_args: li
 
 def recover_pending(date: str) -> bool:
     """この号で外れた記事に、戻す組み直し(--recover)で書き直せば戻りうるものがあるか。外した理由がいまも成り立つ記事
-    (重複の相手が紙面にある・既報。settled_drops)だけなら、組み直しは何も書き直さないので当番に戻させない。
+    (重複の相手が紙面にある。settled_drops)だけなら、組み直しは何も書き直さないので当番に戻させない。
     外れた記事の記録(persist_records)を書いたあとに呼ぶ。"""
     settled = settled_drops(date, ROOT)
     return any(s not in settled for s in DROP_LOG.get(date) or {})
@@ -2093,7 +2090,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
 
     reuse=True(--reuse-plan)のときは、既に書けている記事を再執筆しない。
     執筆層だけを直して落ちた記事を拾い直す、という再試行を安く保つため。
-    前の実行で外した理由が話題そのものに掛かり、いまも成り立つ記事(重複の相手が紙面にある・既報。settled_drops)も書き直さない。
+    前の実行で外した理由が話題そのものに掛かり、いまも成り立つ記事(重複の相手が紙面にある。settled_drops)も書き直さない。
     書き直しても同じ指摘で落ちるか、承認済みの記事との重複をまた作るだけ(実測 2026-10-12: 救済の組み直しが重複で外した
     上映会記事を書き直し、承認済みの記事と同じ重複がまた出た)。
     """

@@ -1,0 +1,73 @@
+{
+ "decisions": {
+  "va-liv-manaka-birthday-live-2026": {
+   "action": "article",
+   "angle": "灯里愛夏 BIRTHDAY ONLINE LIVE 2026 の延期公演が10月28日に開催、ASOBI STAGE配信とお台場でのLVの日程・アーカイブ期間を案内",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cosmo-ayumu-dance-in-the-light-short-2026": {
+   "action": "article",
+   "angle": "上水流宇宙と舞浜歩による「Dance in the Light」コラボショート動画がYouTube・TikTokで公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-letora-girls-frontier-cover-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/13号と同内容(16日20時プレミア公開)。新事実なし、公開は16日で当日・締切のトリガーも未到来"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-va-liv-manaka-birthday-live-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏 BIRTHDAY ONLINE LIVE 2026 の延期公演が10月28日に開催、ASOBI STAGE配信とお台場でのLVの日程・アーカイブ期間を案内",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "va-liv-manaka-birthday-live-2026",
+    "candidate_ids": [
+     "202610132336-watch-5"
+    ]
+   },
+   {
+    "slug": "dsva-cosmo-ayumu-dance-in-the-light-short-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙と舞浜歩による「Dance in the Light」コラボショート動画がYouTube・TikTokで公開",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cosmo-ayumu-dance-in-the-light-short-2026",
+    "candidate_ids": [
+     "202610140226-grok-33"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-letora-girls-frontier-cover-2026",
+    "reason": "既報",
+    "note": "10/13号と同内容(16日20時プレミア公開)。新事実なし、公開は16日で当日・締切のトリガーも未到来"
+   }
+  ],
+  "cross_brand": []
+ }
+}

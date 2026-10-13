@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "idol-ultimate-first-performance-guest-idols-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-xr-765vs961-guest-idols",
+   "reason": "",
+   "note": "765 PRO×961 PROの共同公演のゲスト発表(神崎蘭子・春日未来・小宮果穂)で、合同面が同内容を記事化済み"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [],
+  "cross_brand": [
+   {
+    "slug": "joint-xr-765vs961-guest-idols",
+    "dedup_key": "idol-ultimate-first-performance-guest-idols-2026",
+    "note": "765 PRO×961 PROの共同公演のゲスト発表(神崎蘭子・春日未来・小宮果穂)で、合同面が同内容を記事化済み"
+   }
+  ]
+ }
+}

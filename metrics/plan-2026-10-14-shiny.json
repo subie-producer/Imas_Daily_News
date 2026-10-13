@@ -1,0 +1,112 @@
+{
+ "decisions": {
+  "shiny-song-focus-camera-hoshi-2026": {
+   "action": "article",
+   "angle": "シャニソンの縦画面フォーカスカメラに、芹沢あさひ歌唱の『星をめざして』が追加された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発信。素材は少ないが短い記事にする。定常運営まとめは3件に満たない"
+  },
+  "shiny-style-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-10号「SHINY Style 第2弾、10月25日まで受注」と同じ施策。価格・内容・締切に新事実なし。締切は11日先で当日トリガーも無い"
+  },
+  "shiny-mattari-hbtk-2026-10-13": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "放送は10月13日23:00で終了済み。発行日時点で新しい情報でも当日のトリガーでもない"
+  },
+  "shiny-megashaki-campaign-2026": {
+   "action": "article",
+   "angle": "メガシャキ×シャニマスのコラボキャンペーン、第3期の賞品はボイス付きクッション50名で、応募は10月21日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "過去の記事・prior が無く初出。出典は当事者の公式サイトだが verify は unconfirmed。締切は7日先なので期日の知らせにはしない"
+  },
+  "shiny-hyakki-popup-2026": {
+   "action": "article",
+   "angle": "「百鬼夜行 POP UP SHOP」の有楽町マルイ8F開催は本日10月14日が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。本日が最終日で読者が会場へ行ける。この面の主催なので cross_brand にはならない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-song-focus-camera-hoshi-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンの縦画面フォーカスカメラに、芹沢あさひ歌唱の『星をめざして』が追加された",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-song-focus-camera-hoshi-2026",
+    "candidate_ids": [
+     "202610140226-grok-14"
+    ]
+   },
+   {
+    "slug": "shiny-megashaki-campaign-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "メガシャキ×シャニマスのコラボキャンペーン、第3期の賞品はボイス付きクッション50名で、応募は10月21日まで",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-megashaki-campaign-2026",
+    "candidate_ids": [
+     "202610140226-grok-17"
+    ]
+   },
+   {
+    "slug": "shiny-hyakki-popup-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「百鬼夜行 POP UP SHOP」の有楽町マルイ8F開催は本日10月14日が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 35,
+    "dedup_key": "shiny-hyakki-popup-2026",
+    "candidate_ids": [
+     "sched-2026-10-14-shiny-hyakki-popup-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-style-collection-2026",
+    "reason": "既報",
+    "note": "10-10号「SHINY Style 第2弾、10月25日まで受注」と同じ施策。価格・内容・締切に新事実なし。締切は11日先で当日トリガーも無い"
+   },
+   {
+    "dedup_key": "shiny-mattari-hbtk-2026-10-13",
+    "reason": "その他",
+    "note": "放送は10月13日23:00で終了済み。発行日時点で新しい情報でも当日のトリガーでもない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

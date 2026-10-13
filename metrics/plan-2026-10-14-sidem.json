@@ -1,0 +1,210 @@
+{
+ "decisions": {
+  "sidem-seasonal-sense-of-responsibility-2026": {
+   "action": "article",
+   "angle": "「アイドルたちの1コマ」に新ストーリー「季節感への責任感」(蒼井悠介・蒼井享介)が10月11日から閲覧可能になった",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "jupiter-monthly-theme-song-13-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "発売日・価格・品番・封入特典とも10/11の記事本文に既出。当日トリガーも無い(発売は11/25)"
+  },
+  "sidem-fantastic-battle-fes-movie-2026": {
+   "action": "article",
+   "angle": "劇場版『F＠NTASTIC BATTLE FES』は11月20日公開から週替わりでバックステージ映像と本編ラストMCのカメラワークが変わる",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior本文に週替わり映像の内容は無い"
+  },
+  "sidem-kazuki-tsukumo-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/13の誕生日ムービー記事に同じ投稿内容が既出。二次情報で個人投稿単体"
+  },
+  "sidem-lifes-side-menu-2dmv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-sem-lifes-side-menu-2dmv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2DMV公開。YouTubeリンクを統合"
+  },
+  "sidem-aji-na-yatsura-story-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-aji-project-story-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ第1話公開"
+  },
+  "sidem-fes-parade-story-2026": {
+   "action": "article",
+   "angle": "Café Parade(MONTHLY THEME SONG 12)のCD特典ストーリー『Fes Parade！』が公開、読むにはCD同封のシリアルコードが必要で動画・静止画の投稿は禁止",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "CD発売は10/21"
+  },
+  "tsukumo-kazuki-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/13の誕生日ムービー記事本文に同じ内容が既出"
+  },
+  "sidem-sem-lifes-side-menu-2dmv-2026": {
+   "action": "article",
+   "angle": "S.E.M「Life's Side Menu!」の2DMVが今夜21時にYouTubeで公開される",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。重複3主題を統合"
+  },
+  "sidem-aji-project-story-2026": {
+   "action": "article",
+   "angle": "AJIプロジェクトのストーリー第1話「AJIなヤツら」がきょう公開される",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。CDシリーズ『-What's it taste like?-』連動"
+  },
+  "sem-lifes-side-menu-2dmv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-sem-lifes-side-menu-2dmv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2DMV公開の続報予約"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-seasonal-sense-of-responsibility-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「アイドルたちの1コマ」に新ストーリー「季節感への責任感」(蒼井悠介・蒼井享介)が10月11日から閲覧可能になった",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-seasonal-sense-of-responsibility-2026",
+    "candidate_ids": [
+     "202610131231-explore-0"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-movie-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版『F＠NTASTIC BATTLE FES』は11月20日公開から週替わりでバックステージ映像と本編ラストMCのカメラワークが変わる",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "sidem-fantastic-battle-fes-movie-2026",
+    "candidate_ids": [
+     "202610131833-explore-4"
+    ]
+   },
+   {
+    "slug": "sidem-fes-parade-story-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Café Parade(MONTHLY THEME SONG 12)のCD特典ストーリー『Fes Parade！』が公開、読むにはCD同封のシリアルコードが必要で動画・静止画の投稿は禁止",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-fes-parade-story-2026",
+    "candidate_ids": [
+     "202610140226-grok-21"
+    ]
+   },
+   {
+    "slug": "sidem-sem-lifes-side-menu-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "S.E.M「Life's Side Menu!」の2DMVが今夜21時にYouTubeで公開される",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-sem-lifes-side-menu-2dmv-2026",
+    "candidate_ids": [
+     "sched-2026-10-14-sidem-sem-lifes-side-menu-2dmv-2026-開始",
+     "202610140226-grok-18",
+     "sched-2026-10-14-sem-lifes-side-menu-2dmv-2026-開始"
+    ]
+   },
+   {
+    "slug": "sidem-aji-project-story-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "AJIプロジェクトのストーリー第1話「AJIなヤツら」がきょう公開される",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-aji-project-story-2026",
+    "candidate_ids": [
+     "sched-2026-10-14-sidem-aji-project-story-2026-開始",
+     "202610140226-grok-19"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "jupiter-monthly-theme-song-13-2026",
+    "reason": "既報",
+    "note": "発売日・価格・品番・封入特典とも10/11の記事本文に既出。当日トリガーも無い(発売は11/25)"
+   },
+   {
+    "dedup_key": "sidem-kazuki-tsukumo-birthday-2026",
+    "reason": "既報",
+    "note": "10/13の誕生日ムービー記事に同じ投稿内容が既出。二次情報で個人投稿単体"
+   },
+   {
+    "dedup_key": "tsukumo-kazuki-birthday-2026",
+    "reason": "既報",
+    "note": "10/13の誕生日ムービー記事本文に同じ内容が既出"
+   }
+  ],
+  "cross_brand": []
+ }
+}

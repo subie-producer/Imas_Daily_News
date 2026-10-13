@@ -1,0 +1,42 @@
+{
+ "decisions": {
+  "starmas-anniversary-cheer-banner-fan-project-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン個人の応援幕・のぼり企画。出典はX個人投稿のみで未確認、公式情報なし"
+  },
+  "starlit-season-5th-anniversary-message-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "素材は10/7締切のメッセージ募集のみで10/3号に既報。予約の「アイドル紹介動画」公開は facts に無く、新事実も当日のトリガーも確認できない"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "starmas-anniversary-cheer-banner-fan-project-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン個人の応援幕・のぼり企画。出典はX個人投稿のみで未確認、公式情報なし"
+   },
+   {
+    "dedup_key": "starlit-season-5th-anniversary-message-2026",
+    "reason": "既報",
+    "note": "素材は10/7締切のメッセージ募集のみで10/3号に既報。予約の「アイドル紹介動画」公開は facts に無く、新事実も当日のトリガーも確認できない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -237,6 +237,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - t2u.asia              # 合議で追加: CF23のチケット販売元。ページの主催者は別記載なし
+  - comifuro.net          # 合議で追加: CF23の主催者による告知サイト。運営者情報は未確認
   - shinkaifes.pjblue.com # 合議で追加: フッターで主催を明記。アイマス関連の記述はなし
   - naganokenbun.jp       # 合議で追加: ホールの指定管理者。トップの「指定管理者」表記で確認、会場案内
   - m-messe.co.jp         # 合議で追加: 会場の運営会社。会社概要で事業内容を確認、先行の会場案内
@@ -404,6 +406,10 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - ioQmV7-M1z8         # 機械で追加: @KamizuruCosmo「Dance in the Light 踊ってみた with 」
+    - Z-LWjF5J6Mw         # 機械で追加: @hatsuboshi_gakuen「初星学園 「キミとセミブルー」Official Music 」
+    - Oq5n5dcZsm0         # 機械で追加: @imas-official「10/14 藤本里奈さん Happy Birthday‼」
+    - 0_pXMe1AeyI         # 機械で追加: @imas-official「10/14 並木芽衣子さん Happy Birthday‼」
     - 7j384Q3585o         # 機械で追加: @TomoriManaka「#2【BIOHAZARD RE:2】はじめてのバイオ！初見で」
     - yTqVGq--aBk         # 機械で追加: @UtagawaLetora「ガールズ・イン・ザ・フロンティア【covered by レト」
     - Cp7vLEDc-ok         # 機械で追加: @KamizuruCosmo「公転周期 踊ってみた with 星井 美希さん #short」

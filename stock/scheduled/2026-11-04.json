@@ -90,5 +90,30 @@
   "verify": "confirmed",
   "src_candidate_id": "202609282336-watch-0",
   "deadline": "2026-11-04"
+ },
+ {
+  "id": "sched-2026-11-04-hatsuboshi-live-tour-single-shurakuryoko-2026-発売",
+  "dedup_key": "hatsuboshi-live-tour-single-shurakuryoko-2026",
+  "brand": "gaku",
+  "subject": "初星学園 LIVE TOUR Single「修楽旅行」",
+  "kind": "発売",
+  "note": "税込2,500円で発売。店頭・通販で購入できる",
+  "reserved_on": "2026-10-14",
+  "title": "初星学園 LIVE TOUR Single「修楽旅行」",
+  "url": "https://x.com/gkmas_goods/status/2109635344991948833",
+  "source_type": "公式",
+  "facts": [
+   "公式グッズ情報投稿は、初星学園 LIVE TOUR Single「修楽旅行」が2026年11月4日発売予定と告知した。",
+   "商品ページ掲載日: 2026年8月21日",
+   "発売時期: 2026年11月4日",
+   "参考価格: 2,500円(税込)",
+   "JANコード/予約コード: 4580891535127",
+   "予約期間: 2026年10月14日まで",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610130225-grok-30",
+  "event_date": "2026-11-04"
  }
 ]

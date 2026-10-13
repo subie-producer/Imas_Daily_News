@@ -735,6 +735,14 @@
   - 収録は「ゆめぱしー」「REVERSI」「RippleSign」の3タイトル
   - 特装盤は私服・ステージ衣装姿の完全新規描き下ろしとディスクにイラストが映るギミックを採用
   - 価格は特装盤税込3,500円・通常盤税込2,500円、3種同時購入セット税込10,500円
+  - 発売日は2026年10月14日(水)
+  - 特装盤はギミック付き特殊パッケージでASOBI STORE限定
+  - 公式レーベルサイトに掲載されたショップ別オリジナル特典：アソビストアはスマホサイズステッカー、アニメイト（通販含む）はA3クリアポスター、Amazon.co.jpはメガジャケ、amiami（オンラインショップ）はましかくブロマイド、ゲーマーズはマルチクロス、ソフマップ・アニメガは
+  edition_facts:
+    '2026-10-14':
+    - 発売日は2026年10月14日(水)
+    - 特装盤はギミック付き特殊パッケージでASOBI STORE限定
+    - 公式レーベルサイトに掲載されたショップ別オリジナル特典：アソビストアはスマホサイズステッカー、アニメイト（通販含む）はA3クリアポスター、Amazon.co.jpはメガジャケ、amiami（オンラインショップ）はましかくブロマイド、ゲーマーズはマルチクロス、ソフマップ・アニメガは
 - story_id: imas-taiwan-manga-expo-2026
   brand: general
   subject: アイマス、台湾「第25回漫画博覧会」参加
@@ -2849,9 +2857,14 @@
   - 対象は放課後クライマックスガールズ5名、描き下ろし・新規描き起こし商品を販売
   - 3,000円(税込)以上購入ごとにノベルティプレゼント、抽選会も実施、最新情報は特設サイトで公開
   - シャニマス百鬼夜行POP UP SHOP、有楽町で本日開幕
+  - 有楽町マルイ8Fでの開催は10月14日まで
+  - 開催場所は有楽町マルイ 8F。
   edition_facts:
     '2026-09-26':
     - シャニマス百鬼夜行POP UP SHOP、有楽町で本日開幕
+    '2026-10-14':
+    - 有楽町マルイ8Fでの開催は10月14日まで
+    - 開催場所は有楽町マルイ 8F。
 - story_id: sidem-flags-meet-yumenotopia-2dmv-2026
   brand: sidem
   subject: F-LAGS「ミート・ユメノトピア」2DMV
@@ -7489,6 +7502,9 @@
   - '開催場所: 有楽町マルイ 7F'
   - '営業時間: 施設営業時間に準ずる(最終日18:00)'
   - ※ 開店時間前の待機は固くお断りさせていただきます。
+  - 'お支払いについて: 現金、クレジットカード各種がご利用いただけます。'
+  - ブロマイドは全8種で、購入者特典として配布する。
+  - 抽選会景品は特大アクリルフィギュア全8種で、好きな絵柄を選べる。
   edition_facts:
     '2026-09-19':
     - '開催期間: 2026年9月26日(土)~10月14日(水)'
@@ -7498,6 +7514,10 @@
     '2026-09-25':
     - '営業時間: 施設営業時間に準ずる(最終日18:00)'
     - ※ 開店時間前の待機は固くお断りさせていただきます。
+    '2026-10-14':
+    - 'お支払いについて: 現金、クレジットカード各種がご利用いただけます。'
+    - ブロマイドは全8種で、購入者特典として配布する。
+    - 抽選会景品は特大アクリルフィギュア全8種で、好きな絵柄を選べる。
 - story_id: x-com-imas-cgofficial-status-2100963067651576145
   brand: cg
   subject: シンデレラガール総選挙2026 結果発表(11/29)
@@ -12031,9 +12051,14 @@
   first_published: '2026-10-03'
   published_facts:
   - S.E.M「Life's Side Menu!」2DMVの公開日を決定。公開日は10月14日(水)21:00予定。投稿本文に公開日の年、MVのURL、配信リンク、ストーリー名は記載されていない。
+  - 'YouTube: https://www.youtube.com/watch?v=zbbTB-_h6Qg&feature=youtu.be'
+  - 『Life's Side Menu!』はS.E.Mの楽曲。
   edition_facts:
     '2026-10-03':
     - S.E.M「Life's Side Menu!」2DMVの公開日を決定。公開日は10月14日(水)21:00予定。投稿本文に公開日の年、MVのURL、配信リンク、ストーリー名は記載されていない。
+    '2026-10-14':
+    - 'YouTube: https://www.youtube.com/watch?v=zbbTB-_h6Qg&feature=youtu.be'
+    - 『Life's Side Menu!』はS.E.Mの楽曲。
 - story_id: 765-never-end-idol-blu-ray-correction-2026
   brand: '765'
   subject: 765PRO ALLSTARS NEVER END IDOL Blu-ray通常版の商品情報訂正
@@ -13071,10 +13096,13 @@
   published_facts:
   - 10月14日(水)放送回のゲストは長月あおい（花海咲季役）。
   - 10月14日(水)放送回のゲストは花岩香奈（葛城リーリヤ役）。
+  - 「初星学園放送部」は「学園アイドルマスター」公式Webラジオ。公式ページには「最新話はこちら」と案内されている。
   edition_facts:
     '2026-10-08':
     - 10月14日(水)放送回のゲストは長月あおい（花海咲季役）。
     - 10月14日(水)放送回のゲストは花岩香奈（葛城リーリヤ役）。
+    '2026-10-14':
+    - 「初星学園放送部」は「学園アイドルマスター」公式Webラジオ。公式ページには「最新話はこちら」と案内されている。
 - story_id: gaku-wednesday-ticket-2026-10-07
   brand: gaku
   subject: 学マス 水曜日ガシャチケット配布
@@ -13852,10 +13880,13 @@
   published_facts:
   - 2026年10月14日(水)に新CDシリーズと連動した『－AJIプロジェクト－』ストーリーを公開予定。
   - 第1話のタイトルは『AJIなヤツら』。
+  - 2026年10月13日10:00に、CDシリーズ『-What's it taste like?-』と連動するストーリー第1話『AJIなヤツら』を2026年10月14日(水)に公開予定と投稿した。
   edition_facts:
     '2026-10-10':
     - 2026年10月14日(水)に新CDシリーズと連動した『－AJIプロジェクト－』ストーリーを公開予定。
     - 第1話のタイトルは『AJIなヤツら』。
+    '2026-10-14':
+    - 2026年10月13日10:00に、CDシリーズ『-What's it taste like?-』と連動するストーリー第1話『AJIなヤツら』を2026年10月14日(水)に公開予定と投稿した。
 - story_id: sidem-daimaru-matsuzakaya-popup-2026
   brand: sidem
   subject: SideM×大丸松坂屋 大丸東京店・梅田店
@@ -14658,3 +14689,325 @@
     - 九十九一希のお祝いムービーをYouTube Shortsで公開した。
     - 投稿内で九十九一希は、2人が自分のために作ったケーキがおいしかったと述べている。
     - 九十九一希はプロデューサーに誕生日を祝ってくれたことへの感謝を述べている。
+- story_id: imas-radio-2026-10-27
+  brand: '765'
+  subject: IM＠S RADIO 10月27日放送(ゲスト長谷川明子)
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - 次回放送は10月27日（火）20時から生放送。
+  - ゲストは長谷川明子。
+  - パーソナリティは平田宏美、若林直美。
+  - お便りのテーマは「副業、教えられる範囲でいいので教えて」。
+  edition_facts:
+    '2026-10-14':
+    - 次回放送は10月27日（火）20時から生放送。
+    - ゲストは長谷川明子。
+    - パーソナリティは平田宏美、若林直美。
+    - お便りのテーマは「副業、教えられる範囲でいいので教えて」。
+- story_id: miki-hoshii-future-spotlight-comifuro-2026
+  brand: '765'
+  subject: 星井美希 Comic Frontier 23 ソロショーケース
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - '日時: 2026.11.01.(Sun)（2026年11月1日 日曜日）'
+  - '公演名: MIKI HOSHII SOLO SHOWCASE「THE FUTURE SPOTLIGHT」in Comic Frontier'
+  - '会場: インドネシア、ICE (Indonesia Convention Exhibition) BSD'
+  - ※本公演の配信予定はない
+  edition_facts:
+    '2026-10-14':
+    - '日時: 2026.11.01.(Sun)（2026年11月1日 日曜日）'
+    - '公演名: MIKI HOSHII SOLO SHOWCASE「THE FUTURE SPOTLIGHT」in Comic Frontier'
+    - '会場: インドネシア、ICE (Indonesia Convention Exhibition) BSD'
+    - ※本公演の配信予定はない
+- story_id: cg-magical-cheers-aftermarket-2026
+  brand: cg
+  subject: POP UP SHOP A MAGICAL CHEERS 事後通販
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - '受付締切: 2026年10月16日(金)17:00'
+  - コレクションには9商品が掲載されている。
+  - '描き下ろしアクリルスタンド: 2,310円'
+  - 'クリアポスター: 1,760円'
+  edition_facts:
+    '2026-10-14':
+    - '受付締切: 2026年10月16日(金)17:00'
+    - コレクションには9商品が掲載されている。
+    - '描き下ろしアクリルスタンド: 2,310円'
+    - 'クリアポスター: 1,760円'
+- story_id: meiko-namiki-rina-fujimoto-birthday-2026
+  brand: cg
+  subject: 並木芽衣子・藤本里奈 誕生日Shorts動画
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - アイドルマスターチャンネルは10/14を並木芽衣子の誕生日として祝った。
+  - アイドルマスターチャンネルは10/14を藤本里奈の誕生日として祝った。
+  - 並木芽衣子のお祝い動画：https://www.youtube.com/shorts/0_pXMe1AeyI
+  - 藤本里奈のお祝い動画：https://www.youtube.com/shorts/Oq5n5dcZsm0
+  edition_facts:
+    '2026-10-14':
+    - アイドルマスターチャンネルは10/14を並木芽衣子の誕生日として祝った。
+    - アイドルマスターチャンネルは10/14を藤本里奈の誕生日として祝った。
+    - 並木芽衣子のお祝い動画：https://www.youtube.com/shorts/0_pXMe1AeyI
+    - 藤本里奈のお祝い動画：https://www.youtube.com/shorts/Oq5n5dcZsm0
+- story_id: cosmo-ayumu-dance-in-the-light-short-2026
+  brand: dsva
+  subject: 上水流宇宙×舞浜歩「Dance in the Light」ショート動画
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - ヴイアライヴの上水流宇宙と765プロの舞浜歩によるコラボショート動画が公開された。
+  - 動画の楽曲は「Dance in the Light」。
+  - 'YouTube: https://www.youtube.com/shorts/ioQmV7-M1z8'
+  - 'TikTok: https://www.tiktok.com/@valiv_official/video/7696001981248212244'
+  edition_facts:
+    '2026-10-14':
+    - ヴイアライヴの上水流宇宙と765プロの舞浜歩によるコラボショート動画が公開された。
+    - 動画の楽曲は「Dance in the Light」。
+    - 'YouTube: https://www.youtube.com/shorts/ioQmV7-M1z8'
+    - 'TikTok: https://www.tiktok.com/@valiv_official/video/7696001981248212244'
+- story_id: va-liv-manaka-birthday-live-2026
+  brand: dsva
+  subject: 灯里愛夏 BIRTHDAY ONLINE LIVE 2026 延期公演
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - '一般先着販売: 10月17日(土)12時より開始'
+  - '公演日時: 2026年10月28日(水)'
+  - '販売期間: 2026年9月21日(月)～2026年11月29日(日)18:00'
+  - 「灯里愛夏 BIRTHDAY ONLINE LIVE 2026」の延期公演である
+  edition_facts:
+    '2026-10-14':
+    - '一般先着販売: 10月17日(土)12時より開始'
+    - '公演日時: 2026年10月28日(水)'
+    - '販売期間: 2026年9月21日(月)～2026年11月29日(日)18:00'
+    - 「灯里愛夏 BIRTHDAY ONLINE LIVE 2026」の延期公演である
+- story_id: gakumas-hatsuboshi-houkago-talk-20261020
+  brand: gaku
+  subject: 学マス「はつぼし放課後とーく」10月20日配信
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - '配信日時: 2026/10/20 (火) 20:00～（予定）'
+  - '配信URL（ニコニコ生放送）: https://live.nicovideo.jp/watch/lv351539765'
+  - '配信URL（YouTube Live・アイドルマスターチャンネル）: https://youtube.com/live/AqmehK0-ads'
+  - '配信URL（「学園アイドルマスター」公式X）: https://x.com/gkmas_official。Xは当日配信するポスト上で視聴可能'
+  edition_facts:
+    '2026-10-14':
+    - '配信日時: 2026/10/20 (火) 20:00～（予定）'
+    - '配信URL（ニコニコ生放送）: https://live.nicovideo.jp/watch/lv351539765'
+    - '配信URL（YouTube Live・アイドルマスターチャンネル）: https://youtube.com/live/AqmehK0-ads'
+    - '配信URL（「学園アイドルマスター」公式X）: https://x.com/gkmas_official。Xは当日配信するポスト上で視聴可能'
+- story_id: hatsuboshi-live-tour-single-shurakuryoko-2026
+  brand: gaku
+  subject: 初星学園 LIVE TOUR Single「修楽旅行」11月4日発売
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - 公式告知は商品を2026年11月4日（水）発売予定とし、販売価格を2,500円（税込）と記載している。
+  - Disc1には「修楽旅行」の歌唱版3曲と各Instrumental版を収録。歌唱版は、有村麻央・葛城リーリヤ・花海佑芽・姫崎莉波 ver.、花海咲季・月村手毬・藤田ことね・雨夜 燕・篠澤 広 ver.、倉本千奈・紫雲清夏・十王星南・秦谷美鈴 ver.。
+  - Disc2には「1人ずつご挨拶タイム」全13トラックと、おまけトラック「パジャマパーティはじまるよタイム」「いつどこでだれがなにをしたゲーム」タイムを収録。「いつどこでだれがなにをしたゲーム」タイムは、いつA/どこでA/だれがA/なにをしたA/いつB/どこでB/だれがB/なにをし
+  - アソビストア予約特典はジャケットデザインを使用した「ジャケットイラストステッカー」。サイズは約W50mm×H50mm、素材は紙（PVC加工）。特典は無くなり次第終了。
+  edition_facts:
+    '2026-10-14':
+    - 公式告知は商品を2026年11月4日（水）発売予定とし、販売価格を2,500円（税込）と記載している。
+    - Disc1には「修楽旅行」の歌唱版3曲と各Instrumental版を収録。歌唱版は、有村麻央・葛城リーリヤ・花海佑芽・姫崎莉波 ver.、花海咲季・月村手毬・藤田ことね・雨夜 燕・篠澤 広 ver.、倉本千奈・紫雲清夏・十王星南・秦谷美鈴 ver.。
+    - Disc2には「1人ずつご挨拶タイム」全13トラックと、おまけトラック「パジャマパーティはじまるよタイム」「いつどこでだれがなにをしたゲーム」タイムを収録。「いつどこでだれがなにをしたゲーム」タイムは、いつA/どこでA/だれがA/なにをしたA/いつB/どこでB/だれがB/なにをし
+    - アソビストア予約特典はジャケットデザインを使用した「ジャケットイラストステッカー」。サイズは約W50mm×H50mm、素材は紙（PVC加工）。特典は無くなり次第終了。
+- story_id: gaku-kimi-to-semi-blue-mv-2m-views
+  brand: gaku
+  subject: 『キミとセミブルー』MV 200万再生突破
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - 学園アイドルマスター公式Xが『キミとセミブルー』のMusic Videoが200万再生を突破したと発表した。
+  edition_facts:
+    '2026-10-14':
+    - 学園アイドルマスター公式Xが『キミとセミブルー』のMusic Videoが200万再生を突破したと発表した。
+- story_id: gaku-kotone-another-idol-guaranteed-gacha-2026
+  brand: gaku
+  subject: 学マス 藤田ことねアナザーアイドル確定無料ガシャ
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - ガシャ開催時期：10/15(木) 10:59まで（予定）
+  - 藤田ことねのシーズン限定「アナザーアイドル」がいずれか確定で手に入る無料1連ガシャ。
+  - アナザーアイドルアップデート記念のSSR アナザーアイドル確定ガシャを開催中。
+  edition_facts:
+    '2026-10-14':
+    - ガシャ開催時期：10/15(木) 10:59まで（予定）
+    - 藤田ことねのシーズン限定「アナザーアイドル」がいずれか確定で手に入る無料1連ガシャ。
+    - アナザーアイドルアップデート記念のSSR アナザーアイドル確定ガシャを開催中。
+- story_id: starlit-season-kohaku-aya-solo-songs-2026
+  brand: joint
+  subject: スタマス5周年 心白「雪」・亜夜「夜」ソロ曲制作決定
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - 『アイドルマスター スターリットシーズン』5周年の特大情報として発表された。
+  - 奥空心白のソロ楽曲「雪」の制作が決定した。
+  - 亜夜のソロ楽曲「夜」の制作が決定した。
+  - 続報を予定している。
+  edition_facts:
+    '2026-10-14':
+    - 『アイドルマスター スターリットシーズン』5周年の特大情報として発表された。
+    - 奥空心白のソロ楽曲「雪」の制作が決定した。
+    - 亜夜のソロ楽曲「夜」の制作が決定した。
+    - 続報を予定している。
+- story_id: tours-s2-special-appeal-kaoru-2026
+  brand: joint
+  subject: ツアマスS2弾 専用SPアピール(薫・美希)
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - S2弾情報は10月15日の生配信で案内予定。
+  - 『ツアマス』S2弾専用SPアピールとして、桜庭薫の「Trick and smile」を紹介。
+  - 『ツアマス』S2弾専用SPアピールとして、星井美希の「rice ball nova」を紹介。
+  - 『ツアマス』S2弾のURアイドルを予告。
+  edition_facts:
+    '2026-10-14':
+    - S2弾情報は10月15日の生配信で案内予定。
+    - 『ツアマス』S2弾専用SPアピールとして、桜庭薫の「Trick and smile」を紹介。
+    - 『ツアマス』S2弾専用SPアピールとして、星井美希の「rice ball nova」を紹介。
+    - 『ツアマス』S2弾のURアイドルを予告。
+- story_id: xr-765vs961-guest-idols
+  brand: joint
+  subject: 765×961ライブ 第一公演ゲストアイドル発表
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - 公式ライブページには、第一公演「TO:STARLIT OF PROMISE」は2027年7月24日（土）開場17:00・開演18:00、第二公演は2027年7月25日（日）開場11:00・開演12:00、第三公演は同日17:00開場・18:00開演と記載。
+  - 公式ライブページのアソビストアプレミアム会員先行は2026年9月6日（日）12:00から10月28日（水）23:59まで受付。当落発表は11月16日（月）13:00から、当選者の入金期間は11月16日（月）13:00から11月23日（月）23:59まで。
+  - ゲストアイドルは神崎蘭子、春日未来、小宮果穂。
+  - 公式ライブページは開催場所を「京王アリーナ TOKYO」と記載。所在地は東京都調布市西町290-11。
+  edition_facts:
+    '2026-10-14':
+    - 公式ライブページには、第一公演「TO:STARLIT OF PROMISE」は2027年7月24日（土）開場17:00・開演18:00、第二公演は2027年7月25日（日）開場11:00・開演12:00、第三公演は同日17:00開場・18:00開演と記載。
+    - 公式ライブページのアソビストアプレミアム会員先行は2026年9月6日（日）12:00から10月28日（水）23:59まで受付。当落発表は11月16日（月）13:00から、当選者の入金期間は11月16日（月）13:00から11月23日（月）23:59まで。
+    - ゲストアイドルは神崎蘭子、春日未来、小宮果穂。
+    - 公式ライブページは開催場所を「京王アリーナ TOKYO」と記載。所在地は東京都調布市西町290-11。
+- story_id: million-cyber-planet-pop-up-serika-tapestry-2026-10
+  brand: million
+  subject: ミリオンライブ Cyber Planet POP UP SHOP 星梨花タペストリー完売
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - 「アイドルマスター ミリオンライブ！」Cyber Planet POP UP SHOPは、東京会場のMEDICOS SHOP 渋谷（MAGNET by SHIBUYA109 5階）で2026年10月8日から20日まで、大阪会場のアベノラクバス（あべのHoop）で2026年11月7
+  - 「アイドルマスター ミリオンライブ！」Cyber Planet POP UP SHOPの描き下ろし等身大タペストリー④箱崎星梨花が完売したと告知された。
+  - 再入荷については追って知らせると告知された。
+  edition_facts:
+    '2026-10-14':
+    - 「アイドルマスター ミリオンライブ！」Cyber Planet POP UP SHOPは、東京会場のMEDICOS SHOP 渋谷（MAGNET by SHIBUYA109 5階）で2026年10月8日から20日まで、大阪会場のアベノラクバス（あべのHoop）で2026年11月7
+    - 「アイドルマスター ミリオンライブ！」Cyber Planet POP UP SHOPの描き下ろし等身大タペストリー④箱崎星梨花が完売したと告知された。
+    - 再入荷については追って知らせると告知された。
+- story_id: million-nipponbashi-lottery-stock-2026-10-12
+  brand: million
+  subject: ミリオンライブ抽選くじ 大阪日本橋店の在庫状況(10/11更新分)
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - A賞は選べるアクリルボード全27種で、掲載された27種はいずれも在庫あり。
+  - B賞は選べるアクリルキーホルダー全39種で、掲載された39種はいずれも在庫あり。
+  - C賞は選べる缶バッジ全39種で、掲載された39種はいずれも在庫あり。
+  - D賞は全52種のランダムミニブロマイドで、在庫あり。
+  edition_facts:
+    '2026-10-14':
+    - A賞は選べるアクリルボード全27種で、掲載された27種はいずれも在庫あり。
+    - B賞は選べるアクリルキーホルダー全39種で、掲載された39種はいずれも在庫あり。
+    - C賞は選べる缶バッジ全39種で、掲載された39種はいずれも在庫あり。
+    - D賞は全52種のランダムミニブロマイドで、在庫あり。
+- story_id: million-yurakucho-pop-up-shop-2026
+  brand: million
+  subject: ミリオンライブ 有楽町マルイ POP UP SHOP(〜10/22)
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - '開催期間: 2026年10月10日(土)～10月22日(木)。'
+  - 10月13日(火)現在、アクリルネームバッジ くのいち ミニキャラ ver.各種を販売中と案内された。
+  - イベント販売商品に「アクリルネームバッジ くのいちミニキャラ ver.」が掲載され、各税込1,045円、全8種、サイズ約43mm×80mmと記載されている。
+  - 税込3,000円の購入ごとに特典ブロマイド1枚と抽選会参加1回。
+  edition_facts:
+    '2026-10-14':
+    - '開催期間: 2026年10月10日(土)～10月22日(木)。'
+    - 10月13日(火)現在、アクリルネームバッジ くのいち ミニキャラ ver.各種を販売中と案内された。
+    - イベント販売商品に「アクリルネームバッジ くのいちミニキャラ ver.」が掲載され、各税込1,045円、全8種、サイズ約43mm×80mmと記載されている。
+    - 税込3,000円の購入ごとに特典ブロマイド1枚と抽選会参加1回。
+- story_id: shiny-megashaki-campaign-2026
+  brand: shiny
+  subject: メガシャキ×シャニマス コラボ第3期 応募キャンペーン
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - '第3期応募期間: 2026年9月24日(木) 10:00～2026年10月21日(水) 23:59'
+  - 第3期賞品はボイス付きクッションで50名に当選。サイズは約W450×H450mm。
+  - 賞品に当選しなかった人には全12種からランダムで1種のコラボ限定壁紙をプレゼント。
+  - 応募シール1枚で1口応募でき、応募口数の上限はない。
+  edition_facts:
+    '2026-10-14':
+    - '第3期応募期間: 2026年9月24日(木) 10:00～2026年10月21日(水) 23:59'
+    - 第3期賞品はボイス付きクッションで50名に当選。サイズは約W450×H450mm。
+    - 賞品に当選しなかった人には全12種からランダムで1種のコラボ限定壁紙をプレゼント。
+    - 応募シール1枚で1口応募でき、応募口数の上限はない。
+- story_id: shiny-song-focus-camera-hoshi-2026
+  brand: shiny
+  subject: シャニソン 縦画面フォーカスカメラ対応曲『星をめざして』
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - 縦画面フォーカスカメラ追加楽曲は『星をめざして』。
+  - 歌唱アイドルは芹沢あさひ。
+  edition_facts:
+    '2026-10-14':
+    - 縦画面フォーカスカメラ追加楽曲は『星をめざして』。
+    - 歌唱アイドルは芹沢あさひ。
+- story_id: sidem-fantastic-battle-fes-movie-weekly-footage-2026
+  brand: sidem
+  subject: SideM劇場版 F＠NTASTIC BATTLE FES 週替わり映像・ムビチケ
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - 【1週目】期間：2026年11月20日(金)～11月26日(木)まで。
+  - ムビチケ前売券（カード・オンライン）は2026年10月16日（金）発売開始予定。
+  - 2026年11月20日(金)より全国の映画館で『劇場版 アイドルマスター SideM F＠NTASTIC BATTLE FES ～Who goes first～』を公開する。
+  - 週替わり映像では、ステージに向かうアイドルたちのバックステージ映像と、本編ラストMCを異なるカメラワークで上映する。
+  edition_facts:
+    '2026-10-14':
+    - 【1週目】期間：2026年11月20日(金)～11月26日(木)まで。
+    - ムビチケ前売券（カード・オンライン）は2026年10月16日（金）発売開始予定。
+    - 2026年11月20日(金)より全国の映画館で『劇場版 アイドルマスター SideM F＠NTASTIC BATTLE FES ～Who goes first～』を公開する。
+    - 週替わり映像では、ステージに向かうアイドルたちのバックステージ映像と、本編ラストMCを異なるカメラワークで上映する。
+- story_id: sidem-fes-parade-story-2026
+  brand: sidem
+  subject: SideMカフェパレ特典ストーリー『Fes Parade！』公開
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - '対象CD: 2026年10月21日(水)発売予定『THE IDOLM@STER SideM ～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 12 Café Parade』。'
+  - CD特典ストーリー『Fes Parade！』が公開された。
+  - 『Fes Parade！』を閲覧できるのは、アイドルマスター ポータルのSideMブランドページ内『315 PASSION CONTENTS』。
+  - CDに同封のストーリー解放用シリアルコードを入力すると読める。
+  edition_facts:
+    '2026-10-14':
+    - '対象CD: 2026年10月21日(水)発売予定『THE IDOLM@STER SideM ～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 12 Café Parade』。'
+    - CD特典ストーリー『Fes Parade！』が公開された。
+    - 『Fes Parade！』を閲覧できるのは、アイドルマスター ポータルのSideMブランドページ内『315 PASSION CONTENTS』。
+    - CDに同封のストーリー解放用シリアルコードを入力すると読める。
+- story_id: sidem-seasonal-sense-of-responsibility-2026
+  brand: sidem
+  subject: SideM「季節感への責任感」追加
+  status: active
+  first_published: '2026-10-14'
+  published_facts:
+  - 追加日時は2026年10月11日(日) 0:00。
+  - 「季節感への責任感」のストーリーが追加された。
+  - 登場アイドルは蒼井悠介、蒼井享介。
+  - 閲覧には無料のASOBI STORE会員登録が必要。
+  edition_facts:
+    '2026-10-14':
+    - 追加日時は2026年10月11日(日) 0:00。
+    - 「季節感への責任感」のストーリーが追加された。
+    - 登場アイドルは蒼井悠介、蒼井享介。
+    - 閲覧には無料のASOBI STORE会員登録が必要。

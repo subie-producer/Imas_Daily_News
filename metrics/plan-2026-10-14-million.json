@@ -1,0 +1,151 @@
+{
+ "decisions": {
+  "million-nipponbashi-lottery-stock-2026-10-12": {
+   "action": "article",
+   "angle": "大阪日本橋店のミリオンライブ抽選くじは10月11日更新分でA〜D賞の全種が在庫ありと掲載された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior本文に無い『全種在庫あり』『11日更新』が新しい事実"
+  },
+  "million-sports-day-login-bonus-2026": {
+   "action": "article",
+   "angle": "スポーツの日ログインボーナスが10月18日23:59まで開催、7回ログインでミリオンジュエル計500個",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "roundupに束ねる3件が揃わないため small の通常記事"
+  },
+  "starlit-5th-anniv-radio-special-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "スタマス5周年を扱う765側の番組で、ミリオン面の主催・話題ではない。ミリオンの春日未来はゲスト出演のみ"
+  },
+  "million-snapshot-memories-gasha-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/13号の本文と同内容(琴葉・環SSR、18日14:59まで)。新事実なし、期限は3日以内でもない"
+  },
+  "million-yurakucho-pop-up-shop-2026": {
+   "action": "article",
+   "angle": "有楽町マルイ7FのミリオンライブPOP UP SHOPは10月22日まで、3,000円ごとにブロマイドと抽選会1回、くのいちミニキャラver.アクリルネームバッジを販売中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "主催はコンテンツシードの公式物販。会期中で読者が行ける催し"
+  },
+  "million-cyber-planet-pop-up-serika-tapestry-2026-10": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOPの描き下ろし等身大タペストリー④箱崎星梨花が完売、再入荷は追って案内",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/8の開幕記事とは別の新しい事実(完売)。出典は当事者の告知で未確認"
+  },
+  "fan-arisa-prima-princess-clip-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿による切り抜き編集で、単体では記事にしない。ファン面(culture)はgeneral面のみ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-nipponbashi-lottery-stock-2026-10-12",
+    "brand": "million",
+    "rank": "small",
+    "angle": "大阪日本橋店のミリオンライブ抽選くじは10月11日更新分でA〜D賞の全種が在庫ありと掲載された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-nipponbashi-lottery-stock-2026-10-12",
+    "candidate_ids": [
+     "202610130731-explore-0"
+    ]
+   },
+   {
+    "slug": "million-sports-day-login-bonus-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "スポーツの日ログインボーナスが10月18日23:59まで開催、7回ログインでミリオンジュエル計500個",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-sports-day-login-bonus-2026",
+    "candidate_ids": [
+     "202610131833-explore-3"
+    ]
+   },
+   {
+    "slug": "million-yurakucho-pop-up-shop-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "有楽町マルイ7FのミリオンライブPOP UP SHOPは10月22日まで、3,000円ごとにブロマイドと抽選会1回、くのいちミニキャラver.アクリルネームバッジを販売中",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "million-yurakucho-pop-up-shop-2026",
+    "candidate_ids": [
+     "202610140226-grok-11"
+    ]
+   },
+   {
+    "slug": "million-cyber-planet-pop-up-serika-tapestry-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Cyber Planet POP UP SHOPの描き下ろし等身大タペストリー④箱崎星梨花が完売、再入荷は追って案内",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-cyber-planet-pop-up-serika-tapestry-2026-10",
+    "candidate_ids": [
+     "202610140226-grok-12"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "starlit-5th-anniv-radio-special-2026",
+    "reason": "面違い",
+    "note": "スタマス5周年を扱う765側の番組で、ミリオン面の主催・話題ではない。ミリオンの春日未来はゲスト出演のみ"
+   },
+   {
+    "dedup_key": "million-snapshot-memories-gasha-2026-10",
+    "reason": "既報",
+    "note": "10/13号の本文と同内容(琴葉・環SSR、18日14:59まで)。新事実なし、期限は3日以内でもない"
+   },
+   {
+    "dedup_key": "fan-arisa-prima-princess-clip-2026-10",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿による切り抜き編集で、単体では記事にしない。ファン面(culture)はgeneral面のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,473 @@
+{
+ "articles": [
+  {
+   "slug": "joint-xr-765vs961-guest-idols",
+   "brand": "joint",
+   "rank": "lead",
+   "angle": "765 PRO×961 PRO「ONCE AND FOR ALL」「TO:STARLIT OF PROMISE」のゲストアイドルに神崎蘭子・春日未来・小宮果穂が解禁",
+   "purpose": "新情報",
+   "lead_score": 30,
+   "dedup_key": "xr-765vs961-guest-idols",
+   "candidate_ids": [
+    "202610132336-watch-11",
+    "202610140226-grok-3",
+    "202610140226-explore-0"
+   ]
+  },
+  {
+   "slug": "joint-tours-s2-special-appeal-kaoru-2026",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "ツアマスS2弾の専用SPアピールとURアイドル予告をまとめ、薫「Trick and smile」・美希「rice ball nova」と詳細は15日の生配信で案内",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "tours-s2-special-appeal-kaoru-2026",
+   "candidate_ids": [
+    "202610140226-grok-36",
+    "202610140226-grok-37",
+    "202610140226-grok-40"
+   ]
+  },
+  {
+   "slug": "joint-starlit-season-kohaku-aya-solo-songs-2026",
+   "brand": "joint",
+   "rank": "small",
+   "angle": "スタマス5周年の特大情報として、奥空心白「雪」・亜夜「夜」のソロ楽曲制作が決定、続報予定",
+   "purpose": "新情報",
+   "lead_score": 60,
+   "dedup_key": "starlit-season-kohaku-aya-solo-songs-2026",
+   "candidate_ids": [
+    "202610140226-grok-50"
+   ]
+  },
+  {
+   "slug": "gaku-gakumas-hatsuboshi-houkago-talk-20261020",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "「はつぼし放課後とーく」が10月20日20時からニコニコ生放送で配信され、天音ゆかり・伊藤舞音・春咲暖と山本亮Pが出演する",
+   "purpose": "新情報",
+   "lead_score": 25,
+   "dedup_key": "gakumas-hatsuboshi-houkago-talk-20261020",
+   "candidate_ids": [
+    "202610131833-watch-1",
+    "202610132336-explore-14"
+   ]
+  },
+  {
+   "slug": "gaku-kimi-to-semi-blue-mv-2m-views",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "『キミとセミブルー』のMusic Videoが200万再生を突破したと公式Xが発表した",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "gaku-kimi-to-semi-blue-mv-2m-views",
+   "candidate_ids": [
+    "202610140226-grok-23"
+   ]
+  },
+  {
+   "slug": "gaku-kotone-another-idol-guaranteed-gacha-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "藤田ことねのシーズン限定アナザーアイドルが確定で手に入る無料1連ガシャは10月15日10時59分まで",
+   "purpose": "新情報",
+   "lead_score": 15,
+   "dedup_key": "gaku-kotone-another-idol-guaranteed-gacha-2026",
+   "candidate_ids": [
+    "202610140226-grok-25"
+   ]
+  },
+  {
+   "slug": "gaku-hatsuboshi-live-tour-single-shurakuryoko-2026",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "初星学園 LIVE TOUR Single「修楽旅行」が11月4日に税込2,500円で発売される(予約期限は確認できないため書かない)",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "hatsuboshi-live-tour-single-shurakuryoko-2026",
+   "candidate_ids": [
+    "202610130225-grok-30"
+   ]
+  },
+  {
+   "slug": "gaku-gakumas-duet-song-collection-2026",
+   "brand": "gaku",
+   "rank": "large",
+   "angle": "「Duet Song Collection」(ゆめぱしー・REVERSI・RippleSign)が本日10月14日発売。特装盤3,500円・通常盤2,500円",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "gakumas-duet-song-collection-2026",
+   "candidate_ids": [
+    "sched-2026-10-14-gakumas-duet-song-collection-2026-発売"
+   ]
+  },
+  {
+   "slug": "gaku-radio-2026-10-14",
+   "brand": "gaku",
+   "rank": "small",
+   "angle": "初星学園放送部の10月14日放送回に長月あおい(花海咲季役)と花岩香奈(葛城リーリヤ役)がゲスト出演する",
+   "purpose": "期日の知らせ",
+   "lead_score": 20,
+   "dedup_key": "gaku-radio-2026-10-14",
+   "candidate_ids": [
+    "sched-2026-10-14-gaku-radio-2026-10-14-開始"
+   ]
+  },
+  {
+   "slug": "sidem-seasonal-sense-of-responsibility-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "「アイドルたちの1コマ」に新ストーリー「季節感への責任感」(蒼井悠介・蒼井享介)が10月11日から閲覧可能になった",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "sidem-seasonal-sense-of-responsibility-2026",
+   "candidate_ids": [
+    "202610131231-explore-0"
+   ]
+  },
+  {
+   "slug": "sidem-fantastic-battle-fes-movie-2026",
+   "brand": "sidem",
+   "rank": "large",
+   "angle": "劇場版『F＠NTASTIC BATTLE FES』は11月20日公開から週替わりでバックステージ映像と本編ラストMCのカメラワークが変わる",
+   "purpose": "新情報",
+   "lead_score": 60,
+   "dedup_key": "sidem-fantastic-battle-fes-movie-2026",
+   "candidate_ids": [
+    "202610131833-explore-4"
+   ]
+  },
+  {
+   "slug": "sidem-fes-parade-story-2026",
+   "brand": "sidem",
+   "rank": "medium",
+   "angle": "Café Parade(MONTHLY THEME SONG 12)のCD特典ストーリー『Fes Parade！』が公開、読むにはCD同封のシリアルコードが必要で動画・静止画の投稿は禁止",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "sidem-fes-parade-story-2026",
+   "candidate_ids": [
+    "202610140226-grok-21"
+   ]
+  },
+  {
+   "slug": "sidem-sem-lifes-side-menu-2dmv-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "S.E.M「Life's Side Menu!」の2DMVが今夜21時にYouTubeで公開される",
+   "purpose": "期日の知らせ",
+   "lead_score": 30,
+   "dedup_key": "sidem-sem-lifes-side-menu-2dmv-2026",
+   "candidate_ids": [
+    "sched-2026-10-14-sidem-sem-lifes-side-menu-2dmv-2026-開始",
+    "202610140226-grok-18",
+    "sched-2026-10-14-sem-lifes-side-menu-2dmv-2026-開始"
+   ]
+  },
+  {
+   "slug": "sidem-aji-project-story-2026",
+   "brand": "sidem",
+   "rank": "small",
+   "angle": "AJIプロジェクトのストーリー第1話「AJIなヤツら」がきょう公開される",
+   "purpose": "期日の知らせ",
+   "lead_score": 25,
+   "dedup_key": "sidem-aji-project-story-2026",
+   "candidate_ids": [
+    "sched-2026-10-14-sidem-aji-project-story-2026-開始",
+    "202610140226-grok-19"
+   ]
+  },
+  {
+   "slug": "cg-a-magical-cheers-aftermarket-2026",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "A MAGICAL CHEERS事後通販の受付締切は10月16日(金)17時、締切まで残り2日",
+   "purpose": "期日の知らせ",
+   "lead_score": 25,
+   "dedup_key": "cg-a-magical-cheers-aftermarket-2026",
+   "candidate_ids": [
+    "202610140226-grok-8"
+   ]
+  },
+  {
+   "slug": "cg-meiko-namiki-rina-fujimoto-birthday-2026",
+   "brand": "cg",
+   "rank": "small",
+   "angle": "10月14日は並木芽衣子・藤本里奈の誕生日で、公式チャンネルがお祝い動画(Shorts)を公開",
+   "purpose": "新情報",
+   "lead_score": 15,
+   "dedup_key": "meiko-namiki-rina-fujimoto-birthday-2026",
+   "candidate_ids": [
+    "202610140226-grok-49"
+   ]
+  },
+  {
+   "slug": "cg-www-the-chara-com-blog-p-121064",
+   "brand": "cg",
+   "rank": "large",
+   "angle": "シンデレラガールズPOP UP SHOP(有楽町マルイ7F)は本日10月14日が最終日で、営業は18時まで。3,000円ごとのブロマイド配布と抽選会も本日まで",
+   "purpose": "期日の知らせ",
+   "lead_score": 60,
+   "dedup_key": "www-the-chara-com-blog-p-121064",
+   "candidate_ids": [
+    "sched-2026-10-14-www-the-chara-com-blog-p-121064-千秋楽",
+    "sched-2026-10-14-cg-kyoto-popup-2026-終了",
+    "sched-2026-10-14-cinderella-pop-up-yurakucho-marui-2026-終了",
+    "sched-2026-10-14-pop-up-shop-2026-終了",
+    "sched-2026-10-14-cg-yurakucho-popup-2026-終了",
+    "sched-2026-10-14-cg-yurakucho-popup-inventory-2026-終了"
+   ]
+  },
+  {
+   "slug": "million-nipponbashi-lottery-stock-2026-10-12",
+   "brand": "million",
+   "rank": "small",
+   "angle": "大阪日本橋店のミリオンライブ抽選くじは10月11日更新分でA〜D賞の全種が在庫ありと掲載された",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "million-nipponbashi-lottery-stock-2026-10-12",
+   "candidate_ids": [
+    "202610130731-explore-0"
+   ]
+  },
+  {
+   "slug": "million-sports-day-login-bonus-2026",
+   "brand": "million",
+   "rank": "small",
+   "angle": "スポーツの日ログインボーナスが10月18日23:59まで開催、7回ログインでミリオンジュエル計500個",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "million-sports-day-login-bonus-2026",
+   "candidate_ids": [
+    "202610131833-explore-3"
+   ]
+  },
+  {
+   "slug": "million-yurakucho-pop-up-shop-2026",
+   "brand": "million",
+   "rank": "small",
+   "angle": "有楽町マルイ7FのミリオンライブPOP UP SHOPは10月22日まで、3,000円ごとにブロマイドと抽選会1回、くのいちミニキャラver.アクリルネームバッジを販売中",
+   "purpose": "新情報",
+   "lead_score": 30,
+   "dedup_key": "million-yurakucho-pop-up-shop-2026",
+   "candidate_ids": [
+    "202610140226-grok-11"
+   ]
+  },
+  {
+   "slug": "million-cyber-planet-pop-up-serika-tapestry-2026-10",
+   "brand": "million",
+   "rank": "small",
+   "angle": "Cyber Planet POP UP SHOPの描き下ろし等身大タペストリー④箱崎星梨花が完売、再入荷は追って案内",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "million-cyber-planet-pop-up-serika-tapestry-2026-10",
+   "candidate_ids": [
+    "202610140226-grok-12"
+   ]
+  },
+  {
+   "slug": "shiny-song-focus-camera-hoshi-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "シャニソンの縦画面フォーカスカメラに、芹沢あさひ歌唱の『星をめざして』が追加された",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "shiny-song-focus-camera-hoshi-2026",
+   "candidate_ids": [
+    "202610140226-grok-14"
+   ]
+  },
+  {
+   "slug": "shiny-megashaki-campaign-2026",
+   "brand": "shiny",
+   "rank": "medium",
+   "angle": "メガシャキ×シャニマスのコラボキャンペーン、第3期の賞品はボイス付きクッション50名で、応募は10月21日まで",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "shiny-megashaki-campaign-2026",
+   "candidate_ids": [
+    "202610140226-grok-17"
+   ]
+  },
+  {
+   "slug": "shiny-hyakki-popup-2026",
+   "brand": "shiny",
+   "rank": "small",
+   "angle": "「百鬼夜行 POP UP SHOP」の有楽町マルイ8F開催は本日10月14日が最終日",
+   "purpose": "期日の知らせ",
+   "lead_score": 35,
+   "dedup_key": "shiny-hyakki-popup-2026",
+   "candidate_ids": [
+    "sched-2026-10-14-shiny-hyakki-popup-2026-終了"
+   ]
+  },
+  {
+   "slug": "dsva-va-liv-manaka-birthday-live-2026",
+   "brand": "dsva",
+   "rank": "large",
+   "angle": "灯里愛夏 BIRTHDAY ONLINE LIVE 2026 の延期公演が10月28日に開催、ASOBI STAGE配信とお台場でのLVの日程・アーカイブ期間を案内",
+   "purpose": "新情報",
+   "lead_score": 60,
+   "dedup_key": "va-liv-manaka-birthday-live-2026",
+   "candidate_ids": [
+    "202610132336-watch-5"
+   ]
+  },
+  {
+   "slug": "dsva-cosmo-ayumu-dance-in-the-light-short-2026",
+   "brand": "dsva",
+   "rank": "small",
+   "angle": "上水流宇宙と舞浜歩による「Dance in the Light」コラボショート動画がYouTube・TikTokで公開",
+   "purpose": "新情報",
+   "lead_score": 20,
+   "dedup_key": "cosmo-ayumu-dance-in-the-light-short-2026",
+   "candidate_ids": [
+    "202610140226-grok-33"
+   ]
+  },
+  {
+   "slug": "765-miki-hoshii-future-spotlight-comifuro-2026",
+   "brand": "765",
+   "rank": "large",
+   "angle": "星井美希がインドネシアのComic Frontier 23で11月1日にソロショーケース「THE FUTURE SPOTLIGHT」を開催、配信予定はなし",
+   "purpose": "新情報",
+   "lead_score": 60,
+   "dedup_key": "miki-hoshii-future-spotlight-comifuro-2026",
+   "candidate_ids": [
+    "202610132336-watch-9",
+    "202610132336-watch-10"
+   ]
+  },
+  {
+   "slug": "765-imas-radio-2026-10-27",
+   "brand": "765",
+   "rank": "small",
+   "angle": "IM＠S RADIO次回は10月27日20時から生放送、ゲストは長谷川明子、お便りテーマは「副業」",
+   "purpose": "新情報",
+   "lead_score": 10,
+   "dedup_key": "imas-radio-2026-10-27",
+   "candidate_ids": [
+    "202610140226-grok-2"
+   ]
+  }
+ ],
+ "dropped": [
+  {
+   "dedup_key": "tours-rhythm-live-festival-2027-qualifier-song-announcement",
+   "reason": "既報",
+   "note": "10/13号「ツアマス、RHYTHM LIVE予選曲を発表へ」と同内容。新事実なし、発表は明日15日で当日のトリガーでもない"
+  },
+  {
+   "dedup_key": "eclipse-light-animate-fair-2026",
+   "reason": "既報",
+   "note": "10/10号の本文と同内容。前半終了は10/30で3日以内ではなく、新事実も無い"
+  },
+  {
+   "dedup_key": "gaku-misuzu-temari-hedgehog-warmer-2026",
+   "reason": "既報",
+   "note": "10/11号「美鈴らのゆたんぽ受注」と同じ商品・施策。締切10/25は3日以内でなく新事実も無い"
+  },
+  {
+   "dedup_key": "fan-hanami-ume-sunset-sea-art-2026-10-13",
+   "reason": "同人・ファン主催",
+   "note": "個人のAIイラスト投稿。ファン面(culture)はgeneral面のみ"
+  },
+  {
+   "dedup_key": "fan-halloween-kotone-2026-10-13",
+   "reason": "同人・ファン主催",
+   "note": "個人のファン創作投稿。ファン面はgeneral面のみ"
+  },
+  {
+   "dedup_key": "fan-mao-itabag-onsen-collab-2026-10-13",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で単体記事にしない"
+  },
+  {
+   "dedup_key": "fan-gkmas-gigo-cosplay-2026-10-13",
+   "reason": "個人の話題",
+   "note": "個人のコスプレ投稿。ファン面はgeneral面のみ"
+  },
+  {
+   "dedup_key": "fan-manekineko-collab-cosplay-2026-10-13",
+   "reason": "個人の話題",
+   "note": "個人のコスプレ投稿。ファン面はgeneral面のみ"
+  },
+  {
+   "dedup_key": "lilja-agitato-fan-art-2026-10",
+   "reason": "同人・ファン主催",
+   "note": "個人のファンイラスト投稿。ファン面はgeneral面のみ"
+  },
+  {
+   "dedup_key": "gaku-asano-4ji-login-bonus-2026",
+   "reason": "出典不足",
+   "note": "前号の見送り理由(公式告知が無い)と同じ。素材は電ファミ記事のみで公式・準公式の告知が確認できない"
+  },
+  {
+   "dedup_key": "jupiter-monthly-theme-song-13-2026",
+   "reason": "既報",
+   "note": "発売日・価格・品番・封入特典とも10/11の記事本文に既出。当日トリガーも無い(発売は11/25)"
+  },
+  {
+   "dedup_key": "sidem-kazuki-tsukumo-birthday-2026",
+   "reason": "既報",
+   "note": "10/13の誕生日ムービー記事に同じ投稿内容が既出。二次情報で個人投稿単体"
+  },
+  {
+   "dedup_key": "tsukumo-kazuki-birthday-2026",
+   "reason": "既報",
+   "note": "10/13の誕生日ムービー記事本文に同じ内容が既出"
+  },
+  {
+   "dedup_key": "cg-apple-of-my-eye-xr-live-2027",
+   "reason": "既報",
+   "note": "10/12号で先行受付10/18締切を報道済み。新事実なし、締切も3日以内ではない"
+  },
+  {
+   "dedup_key": "cg-fan-birthdays-2026",
+   "reason": "重複",
+   "note": "ファン個人の投稿で未確認。公式の誕生日祝福(meiko-namiki-rina-fujimoto-birthday-2026)で扱う"
+  },
+  {
+   "dedup_key": "starlit-5th-anniv-radio-special-2026",
+   "reason": "面違い",
+   "note": "スタマス5周年を扱う765側の番組で、ミリオン面の主催・話題ではない。ミリオンの春日未来はゲスト出演のみ"
+  },
+  {
+   "dedup_key": "million-snapshot-memories-gasha-2026-10",
+   "reason": "既報",
+   "note": "10/13号の本文と同内容(琴葉・環SSR、18日14:59まで)。新事実なし、期限は3日以内でもない"
+  },
+  {
+   "dedup_key": "fan-arisa-prima-princess-clip-2026-10",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿による切り抜き編集で、単体では記事にしない。ファン面(culture)はgeneral面のみ"
+  },
+  {
+   "dedup_key": "shiny-style-collection-2026",
+   "reason": "既報",
+   "note": "10-10号「SHINY Style 第2弾、10月25日まで受注」と同じ施策。価格・内容・締切に新事実なし。締切は11日先で当日トリガーも無い"
+  },
+  {
+   "dedup_key": "shiny-mattari-hbtk-2026-10-13",
+   "reason": "その他",
+   "note": "放送は10月13日23:00で終了済み。発行日時点で新しい情報でも当日のトリガーでもない"
+  },
+  {
+   "dedup_key": "valiv-letora-girls-frontier-cover-2026",
+   "reason": "既報",
+   "note": "10/13号と同内容(16日20時プレミア公開)。新事実なし、公開は16日で当日・締切のトリガーも未到来"
+  },
+  {
+   "dedup_key": "starmas-anniversary-cheer-banner-fan-project-2026",
+   "reason": "同人・ファン主催",
+   "note": "ファン個人の応援幕・のぼり企画。出典はX個人投稿のみで未確認、公式情報なし"
+  },
+  {
+   "dedup_key": "starlit-season-5th-anniversary-message-2026",
+   "reason": "既報",
+   "note": "素材は10/7締切のメッセージ募集のみで10/3号に既報。予約の「アイドル紹介動画」公開は facts に無く、新事実も当日のトリガーも確認できない"
+  }
+ ],
+ "editorial_slug": "joint-xr-765vs961-guest-idols",
+ "editorial_brand": "joint"
+}

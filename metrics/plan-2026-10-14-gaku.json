@@ -1,0 +1,305 @@
+{
+ "decisions": {
+  "eclipse-light-animate-fair-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10号の本文と同内容。前半終了は10/30で3日以内ではなく、新事実も無い"
+  },
+  "gakumas-hatsuboshi-houkago-talk-20261020": {
+   "action": "article",
+   "angle": "「はつぼし放課後とーく」が10月20日20時からニコニコ生放送で配信され、天音ゆかり・伊藤舞音・春咲暖と山本亮Pが出演する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式ソース確認済み。gaku-hr-12 の素材(YouTube Live併記)を統合"
+  },
+  "gaku-hr-12-2026-09-28": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-hatsuboshi-houkago-talk-20261020",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ10/20配信の二次情報。prior の HR#12 は別番組なので既報扱いにしない"
+  },
+  "gaku-kimi-to-semi-blue-mv-2m-views": {
+   "action": "article",
+   "angle": "『キミとセミブルー』のMusic Videoが200万再生を突破したと公式Xが発表した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発表。10/7の『Agitato』100万再生とは別のMV"
+  },
+  "gaku-kotone-another-idol-guaranteed-gacha-2026": {
+   "action": "article",
+   "angle": "藤田ことねのシーズン限定アナザーアイドルが確定で手に入る無料1連ガシャは10月15日10時59分まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内。開催中ガシャ単体は1件のみで roundup の3件に届かないため small 記事"
+  },
+  "gaku-misuzu-temari-hedgehog-warmer-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11号「美鈴らのゆたんぽ受注」と同じ商品・施策。締切10/25は3日以内でなく新事実も無い"
+  },
+  "fan-hanami-ume-sunset-sea-art-2026-10-13": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人のAIイラスト投稿。ファン面(culture)はgeneral面のみ"
+  },
+  "fan-halloween-kotone-2026-10-13": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人のファン創作投稿。ファン面はgeneral面のみ"
+  },
+  "fan-mao-itabag-onsen-collab-2026-10-13": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で単体記事にしない"
+  },
+  "fan-gkmas-gigo-cosplay-2026-10-13": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のコスプレ投稿。ファン面はgeneral面のみ"
+  },
+  "fan-manekineko-collab-cosplay-2026-10-13": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のコスプレ投稿。ファン面はgeneral面のみ"
+  },
+  "lilja-agitato-fan-art-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人のファンイラスト投稿。ファン面はgeneral面のみ"
+  },
+  "gaku-asano-4ji-login-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "前号の見送り理由(公式告知が無い)と同じ。素材は電ファミ記事のみで公式・準公式の告知が確認できない"
+  },
+  "hatsuboshi-live-tour-single-shurakuryoko-2026": {
+   "action": "article",
+   "angle": "初星学園 LIVE TOUR Single「修楽旅行」が11月4日に税込2,500円で発売される(予約期限は確認できないため書かない)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。見送り理由は予約期限の不一致のみ。発売日・価格は公式グッズ告知で、期限の記述を除けば書ける"
+  },
+  "gakumas-duet-song-collection-2026": {
+   "action": "article",
+   "angle": "「Duet Song Collection」(ゆめぱしー・REVERSI・RippleSign)が本日10月14日発売。特装盤3,500円・通常盤2,500円",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。発売日が本日。7/15号の予約締切記事とは別の出来事"
+  },
+  "gaku-radio-2026-10-14": {
+   "action": "article",
+   "angle": "初星学園放送部の10月14日放送回に長月あおい(花海咲季役)と花岩香奈(葛城リーリヤ役)がゲスト出演する",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。本日が放送日。放送時刻・配信先は素材に無いので書かない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakumas-hatsuboshi-houkago-talk-20261020",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「はつぼし放課後とーく」が10月20日20時からニコニコ生放送で配信され、天音ゆかり・伊藤舞音・春咲暖と山本亮Pが出演する",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gakumas-hatsuboshi-houkago-talk-20261020",
+    "candidate_ids": [
+     "202610131833-watch-1",
+     "202610132336-explore-14"
+    ]
+   },
+   {
+    "slug": "gaku-kimi-to-semi-blue-mv-2m-views",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "『キミとセミブルー』のMusic Videoが200万再生を突破したと公式Xが発表した",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gaku-kimi-to-semi-blue-mv-2m-views",
+    "candidate_ids": [
+     "202610140226-grok-23"
+    ]
+   },
+   {
+    "slug": "gaku-kotone-another-idol-guaranteed-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "藤田ことねのシーズン限定アナザーアイドルが確定で手に入る無料1連ガシャは10月15日10時59分まで",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-kotone-another-idol-guaranteed-gacha-2026",
+    "candidate_ids": [
+     "202610140226-grok-25"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-live-tour-single-shurakuryoko-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園 LIVE TOUR Single「修楽旅行」が11月4日に税込2,500円で発売される(予約期限は確認できないため書かない)",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "hatsuboshi-live-tour-single-shurakuryoko-2026",
+    "candidate_ids": [
+     "202610130225-grok-30"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-duet-song-collection-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Duet Song Collection」(ゆめぱしー・REVERSI・RippleSign)が本日10月14日発売。特装盤3,500円・通常盤2,500円",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "gakumas-duet-song-collection-2026",
+    "candidate_ids": [
+     "sched-2026-10-14-gakumas-duet-song-collection-2026-発売"
+    ]
+   },
+   {
+    "slug": "gaku-radio-2026-10-14",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部の10月14日放送回に長月あおい(花海咲季役)と花岩香奈(葛城リーリヤ役)がゲスト出演する",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gaku-radio-2026-10-14",
+    "candidate_ids": [
+     "sched-2026-10-14-gaku-radio-2026-10-14-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "eclipse-light-animate-fair-2026",
+    "reason": "既報",
+    "note": "10/10号の本文と同内容。前半終了は10/30で3日以内ではなく、新事実も無い"
+   },
+   {
+    "dedup_key": "gaku-misuzu-temari-hedgehog-warmer-2026",
+    "reason": "既報",
+    "note": "10/11号「美鈴らのゆたんぽ受注」と同じ商品・施策。締切10/25は3日以内でなく新事実も無い"
+   },
+   {
+    "dedup_key": "fan-hanami-ume-sunset-sea-art-2026-10-13",
+    "reason": "同人・ファン主催",
+    "note": "個人のAIイラスト投稿。ファン面(culture)はgeneral面のみ"
+   },
+   {
+    "dedup_key": "fan-halloween-kotone-2026-10-13",
+    "reason": "同人・ファン主催",
+    "note": "個人のファン創作投稿。ファン面はgeneral面のみ"
+   },
+   {
+    "dedup_key": "fan-mao-itabag-onsen-collab-2026-10-13",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で単体記事にしない"
+   },
+   {
+    "dedup_key": "fan-gkmas-gigo-cosplay-2026-10-13",
+    "reason": "個人の話題",
+    "note": "個人のコスプレ投稿。ファン面はgeneral面のみ"
+   },
+   {
+    "dedup_key": "fan-manekineko-collab-cosplay-2026-10-13",
+    "reason": "個人の話題",
+    "note": "個人のコスプレ投稿。ファン面はgeneral面のみ"
+   },
+   {
+    "dedup_key": "lilja-agitato-fan-art-2026-10",
+    "reason": "同人・ファン主催",
+    "note": "個人のファンイラスト投稿。ファン面はgeneral面のみ"
+   },
+   {
+    "dedup_key": "gaku-asano-4ji-login-bonus-2026",
+    "reason": "出典不足",
+    "note": "前号の見送り理由(公式告知が無い)と同じ。素材は電ファミ記事のみで公式・準公式の告知が確認できない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

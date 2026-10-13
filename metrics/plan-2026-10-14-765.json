@@ -1,0 +1,74 @@
+{
+ "decisions": {
+  "miki-hoshii-future-spotlight-comifuro-2026": {
+   "action": "article",
+   "angle": "星井美希がインドネシアのComic Frontier 23で11月1日にソロショーケース「THE FUTURE SPOTLIGHT」を開催、配信予定はなし",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "imas-radio-2026-10-27": {
+   "action": "article",
+   "angle": "IM＠S RADIO次回は10月27日20時から生放送、ゲストは長谷川明子、お便りテーマは「副業」",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営だが1件のみで roundup の3件に満たないため small の通常記事"
+  },
+  "idol-ultimate-starlit-promise-guests-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-xr-765vs961-guest-idols",
+   "reason": "",
+   "note": "765×961 共同主催の公演のため合同面の既存記事に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-miki-hoshii-future-spotlight-comifuro-2026",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "星井美希がインドネシアのComic Frontier 23で11月1日にソロショーケース「THE FUTURE SPOTLIGHT」を開催、配信予定はなし",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "miki-hoshii-future-spotlight-comifuro-2026",
+    "candidate_ids": [
+     "202610132336-watch-9",
+     "202610132336-watch-10"
+    ]
+   },
+   {
+    "slug": "765-imas-radio-2026-10-27",
+    "brand": "765",
+    "rank": "small",
+    "angle": "IM＠S RADIO次回は10月27日20時から生放送、ゲストは長谷川明子、お便りテーマは「副業」",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "imas-radio-2026-10-27",
+    "candidate_ids": [
+     "202610140226-grok-2"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": [
+   {
+    "slug": "joint-xr-765vs961-guest-idols",
+    "dedup_key": "idol-ultimate-starlit-promise-guests-2026",
+    "note": "765×961 共同主催の公演のため合同面の既存記事に統合"
+   }
+  ]
+ }
+}

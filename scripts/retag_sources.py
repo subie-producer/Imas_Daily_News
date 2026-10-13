@@ -126,7 +126,8 @@ def main() -> int:
             got = yaml.safe_load(FM_RE.match(new).group(1))
             assert [s.get("type") for s in got.get("sources") or []] == types, path
             assert got.get("src") == src, path
-            path.write_text(new, encoding="utf-8")
+            from pipelib import write_checked      # 書式(article.schema)で検めてから書く
+            write_checked(path, new)
 
     verb = "書き換えた" if args.apply else "書き換わる"
     print(f"\n記事 {n_files}本 / 出典 {n_type}件 / src {n_src}本 が{verb}")

@@ -143,7 +143,8 @@ def main() -> int:
         ed_fm[k] = derived[k]
     _, body = parse_frontmatter(ed_path)
     fmtext = yaml.safe_dump(ed_fm, allow_unicode=True, sort_keys=False, default_flow_style=False)
-    ed_path.write_text(f"---\n{fmtext}---\n{body}", encoding="utf-8")
+    from pipelib import write_checked      # 書式(edition.schema)で検めてから書く
+    write_checked(ed_path, f"---\n{fmtext}---\n{body}")
     print(f"updated {ed_path.relative_to(ROOT)}")
     return 0
 

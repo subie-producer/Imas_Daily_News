@@ -35,7 +35,8 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import renderlib
 from pipelib import (ROOT, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, COMPOSE_WAVE, classify_source,
-                     anomaly, claude_traced, extract_json_array, loads_strict, notify, prompt_file, render_prompt, schema_ok)
+                     anomaly, claude_traced, extract_json_array, loads_strict, notify, prompt_file, render_prompt, schema_ok,
+                     write_checked)
 
 POSTS = ROOT / "docs" / "_posts"
 EDITIONS = ROOT / "docs" / "_editions"
@@ -97,7 +98,7 @@ def restore_reservation_facts(date: str) -> list[str]:
             if full is not None and len(full) > len(have) and full[:len(have)] == have:
                 r["facts"] = full; n += 1
         if n:
-            p.write_text(json.dumps(rows, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+            write_checked(p, json.dumps(rows, ensure_ascii=False, indent=1) + "\n")
             log.append(f"予約 {p.name}: 切れていた facts を元素材から {n} 件復元")
     return log
 
@@ -779,7 +780,7 @@ def rollback(date: str) -> list[str]:
         rest = [r for r in rows if r.get("reserved_on") != date]
         if len(rest) != len(rows):
             if rest:
-                p.write_text(json.dumps(rest, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+                write_checked(p, json.dumps(rest, ensure_ascii=False, indent=1) + "\n")
             else:
                 p.unlink()
             log.append(f"予約 {p.name}: この号の {len(rows) - len(rest)} 件を外した")
@@ -923,12 +924,13 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
     dump_yaml(STORIES, stories)
     for p, rows in files.items():
         if rows:
-            p.write_text(json.dumps(rows, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+            write_checked(p, json.dumps(rows, ensure_ascii=False, indent=1) + "\n")
         else:
             p.unlink(missing_ok=True)
     dump_yaml(PENDING, pending, header="# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。")
-    ed_path.write_text("---\n" + yaml.safe_dump(snap, allow_unicode=True, sort_keys=False, width=200) + "---\n",
-                       encoding="utf-8")
+    # 号のスナップショットは途中の形(ranking・birthdays は派生 derive が埋める)なので、ここでは最終の書式で検めない。
+    # 最終の形を書く derive が書式で検める
+    ed_path.write_text("---\n" + yaml.safe_dump(snap, allow_unicode=True, sort_keys=False, width=200) + "---\n", encoding="utf-8")
     return log
 
 

@@ -45,7 +45,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      RenderFailed, render_page, candidate_misplaced, merge_candidate_facts,
                      set_quiet, unbacked_facts,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
-                     edition_date, mark_collect_oncall,
+                     edition_date, mark_collect_oncall, write_checked,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author)
 
@@ -1605,7 +1605,7 @@ def merge_into_day_file(cands: list[dict], day: str) -> int:
             existing.append(c)
             by_url[c["url"]] = c
             added += 1
-    p.write_text(json.dumps(existing, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_checked(p, json.dumps(existing, ensure_ascii=False, indent=2) + "\n")   # 書式(candidates.schema)で検めてから書く
     return added
 
 

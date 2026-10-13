@@ -14,6 +14,8 @@ import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+# 本番のコードが書式(schema/)で決めたファイルを書式に合わない形で書いたら、テストでは例外にする(pipelib.write_checked)
+os.environ["IMAS_STRICT_WRITES"] = "1"
 import assemble
 import compose
 import lint
@@ -21,6 +23,63 @@ import pipelib
 import renderlib
 
 FAILS: list[str] = []
+# 書式で決めたファイルを、本番のコードが write_checked を通さずに書いたら控える(見張り。全テストの終わりに検める)。
+# 書く側の検査を足しても、あとから足した書き込みが素通しなら同じ止まり方(2026-10-14 03:11 の組版停止)をする。
+# 素通しを認めるのは、下の理由のある所だけ
+STRAY_WRITES: list[str] = []
+WRITE_PASSTHROUGH = {
+    ("assemble.py", "apply"): "組み立て途中の号スナップショット(ランキング・誕生日が空)。最後の形は derive が write_checked で書く",
+    ("rewrite_past.py", "main"): "校閲を通ったと確かめる前に止まった差し替えを、元の文面に戻す",
+    ("rewrite_past.py", "replace_and_review"): "校閲を通らなかった差し替えを、元の文面に戻す",
+    ("pipelib.py", "_restore"): "失敗した取引(出典の判定・付け直し・lint)のファイルを、開始時の中身へバイト単位で戻す",
+}
+
+
+def _watch_governed_writes() -> None:
+    scripts = Path(__file__).resolve().parent
+
+    def wrap(orig):
+        def write(self, *a, **k):
+            if any(rx.search(self.as_posix()) for rx, _ in pipelib.SCHEMA_OF_PATH):
+                f = sys._getframe(1)
+                fn = Path(f.f_code.co_filename)
+                if fn.parent == scripts and fn.name != Path(__file__).name and f.f_code.co_name != "write_checked" \
+                        and (fn.name, f.f_code.co_name) not in WRITE_PASSTHROUGH:
+                    STRAY_WRITES.append(f"{fn.name}:{f.f_lineno} {f.f_code.co_name} → {self.name}")
+            return orig(self, *a, **k)
+        return write
+    Path.write_text = wrap(Path.write_text)
+    Path.write_bytes = wrap(Path.write_bytes)
+
+
+_watch_governed_writes()
+
+
+def article_fm(slug: str = "k", edition: str = "2026-10-03", **kw) -> str:
+    """記事の frontmatter(書式 article.schema の必須の欄を満たす最小の形)の YAML 本文。kw で欄を足す・差し替える。"""
+    import yaml
+    fm = {"slug": slug, "edition": edition, "brand": "cg", "src": "未確認", "rank": "small", "title": "t", "lede": "l",
+          "sources": [{"label": "l1", "url": "https://a.example/1", "type": "未確認"}], "corrected": False, "corrections": []}
+    fm.update(kw)
+    return yaml.safe_dump(fm, allow_unicode=True, sort_keys=False)
+
+
+def cand_row(i: str, url: str, **kw) -> dict:
+    """素材の行(書式 candidates.schema の必須の欄を満たす最小の形)。kw で欄を足す・差し替える。"""
+    return {"id": i, "title": kw.pop("title", i), "brand": kw.pop("brand", "cg"), "source_type": kw.pop("source_type", "公式"),
+            "url": url, "found_at": kw.pop("found_at", "2026-10-01T00:00:00+09:00"), "dedup_key": kw.pop("dedup_key", f"k-{i}"),
+            "verify": kw.pop("verify", "confirmed"), **kw}
+
+
+def sched_row(i: str, reserved_on: str, **kw) -> dict:
+    """続報予約の行(書式 scheduled.schema の必須の欄を満たす最小の形)。本番のコードは書式で検めてから書くので、テストの下準備も
+    書式に合う形にする(pipelib.write_checked)。"""
+    return {"id": i, "dedup_key": kw.pop("dedup_key", f"k-{i}"), "brand": kw.pop("brand", "cg"), "subject": kw.pop("subject", i),
+            "kind": kw.pop("kind", "その他"), "reserved_on": reserved_on, "facts": kw.pop("facts", [f"{i} の事実"]), **kw}
+# 監査(Sol)の承認の偽の答えに付ける「実際に走らせた記録」。これの無い承認は承認にならない(oncall.audit_ran_checks)
+AUDIT_RAN = [{"command": "python3 scripts/test_pipeline.py", "result": "test_pipeline: 0 failures"},
+             {"command": "python3 scripts/selfcheck.py", "result": "selfcheck: 0 errors"},
+             {"command": "python3 scripts/lint.py --base origin/main", "result": "lint: 0 errors"}]
 
 # **テストは本物の Discord に絶対に送らない。**通知の経路を差し替え忘れたテストが本物の webhook に届いた
 # (実測 2026-09-23: 当番の修正報告の見本 3 通が編集長の Discord に出た)。webhook の URL を最初に消し、
@@ -493,7 +552,7 @@ def test_rollback(tmp: Path):
     stories = [{"story_id": "s1", "first_published": "2026-09-01", "published_facts": ["旧", "新"],
                 "edition_facts": {"2026-09-01": ["旧"], "2026-09-12": ["新"]}}]
     assemble.dump_yaml(st / "stories.yml", stories)
-    (st / "scheduled" / "2026-09-20.json").write_text(json.dumps([{"id": "a", "reserved_on": "2026-09-12"}, {"id": "b", "reserved_on": "2026-09-01"}]), encoding="utf-8")
+    (st / "scheduled" / "2026-09-20.json").write_text(json.dumps([sched_row("a", "2026-09-12"), sched_row("b", "2026-09-01")]), encoding="utf-8")
     assemble.dump_yaml(st / "pending.yml", [{"dedup_key": "after"}])
     assemble.dump_yaml(tmp / "metrics" / "pending-before-2026-09-12.yml", [{"dedup_key": "before"}])
     saved = (assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING)
@@ -544,9 +603,9 @@ def test_restore_reservation_facts(tmp: Path):
         rc = rr and next((c for c in json.loads(real_c.read_text(encoding="utf-8")) if c.get("id") == rr.get("src_candidate_id")), None)
         if rr and rc and len(rc.get("facts") or []) > len(rr.get("facts") or []):
             cand, facts = rc, rc["facts"]
-    row = {"id": "sched-2026-10-10-glasses-締切", "reserved_on": "2026-10-04", "src_candidate_id": cand["id"], "facts": facts[:12]}
-    other = {"id": "o", "reserved_on": "2026-10-04", "src_candidate_id": cand["id"], "facts": ["別の事実"]}
-    gone = {"id": "g", "reserved_on": "2026-10-04", "src_candidate_id": "missing", "facts": ["x"]}
+    row = sched_row("sched-2026-10-10-glasses-締切", "2026-10-04", src_candidate_id=cand["id"], facts=facts[:12])
+    other = sched_row("o", "2026-10-04", src_candidate_id=cand["id"], facts=["別の事実"])
+    gone = sched_row("g", "2026-10-04", src_candidate_id="missing", facts=["x"])
     (st / "2026-10-10.json").write_text(json.dumps([row, other, gone], ensure_ascii=False), encoding="utf-8")
     (st / "2026-10-06.json").write_text(json.dumps([dict(row, id="past")], ensure_ascii=False), encoding="utf-8")
     (tmp / "candidates" / "2026-10-04.json").write_text(json.dumps([cand], ensure_ascii=False), encoding="utf-8")
@@ -576,11 +635,11 @@ def test_restore_chained_reservation_facts(tmp: Path):
     st = tmp / "stock" / "scheduled"; st.mkdir(parents=True); (tmp / "candidates").mkdir()
     facts = [f"事実 {i}" for i in range(20)] + ["A席全席指定料金: 12,000円（税込）"]
     (tmp / "candidates" / "2026-09-18.json").write_text(json.dumps([{"id": "c-1", "facts": facts}], ensure_ascii=False), encoding="utf-8")
-    mid = {"id": "sched-2026-09-27-orch-締切", "dedup_key": "orch", "url": "https://idolmaster-official.jp/news/01_19894",
-           "reserved_on": "2026-09-18", "src_candidate_id": "c-1", "facts": facts[:12]}
+    mid = sched_row("sched-2026-09-27-orch-締切", "2026-09-18", dedup_key="orch", url="https://idolmaster-official.jp/news/01_19894",
+                    src_candidate_id="c-1", facts=facts[:12])
     bad = dict(mid, id="sched-2026-09-27-bad-締切", facts=["別の事実"] + facts[1:12])
     (st / "2026-09-27.json").write_text(json.dumps([mid, bad], ensure_ascii=False), encoding="utf-8")
-    end = {"id": "sched-2027-01-12-orch-千秋楽", "reserved_on": "2026-09-27", "src_candidate_id": mid["id"], "facts": facts[:12]}
+    end = sched_row("sched-2027-01-12-orch-千秋楽", "2026-09-27", src_candidate_id=mid["id"], facts=facts[:12])
     end_bad = dict(end, id="e2", src_candidate_id=bad["id"], facts=bad["facts"][:12])
     (st / "2027-01-12.json").write_text(json.dumps([end, end_bad], ensure_ascii=False), encoding="utf-8")
     saved = (assemble.ROOT, assemble.SCHEDULED)
@@ -2722,8 +2781,8 @@ def test_x_anonymous_post_in_posts(tmp: Path):
     (tmp / "candidates").mkdir()
     a, b = "https://x.com/i/status/2105957772651385193", "https://x.com/i/status/2105254556238291021"
     post = tmp / "docs" / "_posts" / "2026-10-03-k.md"
-    post.write_text(f"---\ntitle: t\nsrc: 未確認\nsources:\n- label: l1\n  url: {a}\n  type: 未確認\n"
-                    f"- label: l2\n  url: {b}\n  type: 未確認\n---\n本文\n", encoding="utf-8")
+    post.write_text("---\n" + article_fm(sources=[{"label": "l1", "url": a, "type": "未確認"}, {"label": "l2", "url": b, "type": "未確認"}])
+                    + "---\n本文\n", encoding="utf-8")
     (tmp / "source_types.yml").write_text("x_accounts:\n  ファン:\n    - somebody\n", encoding="utf-8")
     authors = {"2105957772651385193": "ChuLo5738", "2105254556238291021": "mkzk_CRESCENT"}
     asked = []
@@ -4532,18 +4591,23 @@ def test_withdrawal(tmp: Path):
     posts, eds = tmp / "docs" / "_posts", tmp / "docs" / "_editions"
     for p in (posts, eds, tmp / "metrics", tmp / "stock" / "scheduled"):
         p.mkdir(parents=True, exist_ok=True)
-    post = lambda slug, rank, brand, cid: (f"---\nslug: {slug}\nedition: \"{d}\"\nbrand: {brand}\nrank: {rank}\ncorrected: false\n"
-                                         f"candidate_ids:\n- {cid}\ntitle: {slug}\n---\n{slug} の本文。\n\n二段落目。\n")
-    (posts / f"{d}-a.md").write_text(post("a", "lead", "x", "c-a"), encoding="utf-8")
-    (posts / f"{d}-b.md").write_text(post("b", "large", "y", "c-b"), encoding="utf-8")
-    (posts / f"{d}-c.md").write_text(post("c", "roundup", "y", "c-c"), encoding="utf-8")
-    ed_text = (f"---\nnumber: 15\ndate: '{d}'\npages: 2\narticle_count: 3\ncorrected_count: 0\nlead_slug: a\ndigest:\n"
-               "- label: 本日\n  rows:\n  - k: 発\n    t: A\n    slug: a\n  - k: 発\n    t: B\n    slug: b\n- label: 昨日\n  rows: []\n"
+    # 下準備も書式(article / edition)に合う形にする(本番の取り下げは公開済みの書式どおりの記事・号を書き換える。pipelib.write_checked)
+    post = lambda slug, rank, brand, cid: ("---\n" + article_fm(slug, d, brand=brand, rank=rank, candidate_ids=[cid], title=slug)
+                                         + f"---\n{slug} の本文。\n\n二段落目。\n")
+    (posts / f"{d}-a.md").write_text(post("a", "lead", "cg", "c-a"), encoding="utf-8")
+    (posts / f"{d}-b.md").write_text(post("b", "large", "million", "c-b"), encoding="utf-8")
+    (posts / f"{d}-c.md").write_text(post("c", "roundup", "million", "c-c"), encoding="utf-8")
+    ranking = "".join(f"- n: {i}\n  name: 名{i}\n  brand: cg\n  delta: new\n" for i in range(1, 9))
+    ed_text = (f"---\nnumber: 15\ndate: '{d}'\nweekday: 月\nissued_at: '{d}T06:00:00+09:00'\npages: 2\narticle_count: 3\ncorrected_count: 0\n"
+               "lead_slug: a\ndigest:\n"
+               "- label: 本日\n  rows:\n  - k: 発\n    t: A\n    d: ''\n    brand: cg\n    slug: a\n  - k: 発\n    t: B\n    d: ''\n    brand: million\n    slug: b\n"
+               "- label: 昨日\n  rows: []\n- label: 継続中\n  rows: []\n- label: 明日\n  rows: []\n"
+               f"ranking:\n{ranking}birthdays: []\n"
                "---\n号の本文(そのまま残ること)\n")
     (eds / f"{d}.md").write_text(ed_text, encoding="utf-8")
     (tmp / "metrics" / f"plan-{d}.json").write_text(json.dumps({"articles": [
         {"slug": "a", "lead_score": 50}, {"slug": "b", "lead_score": 40}, {"slug": "c", "lead_score": 90}]}), encoding="utf-8")
-    sched = [{"id": "s-a", "reserved_on": d, "src_candidate_id": "c-a"}, {"id": "s-b", "reserved_on": d, "src_candidate_id": "c-b"}]
+    sched = [sched_row("s-a", d, src_candidate_id="c-a"), sched_row("s-b", d, src_candidate_id="c-b")]
     (tmp / "stock" / "scheduled" / "2026-10-02.json").write_text(json.dumps(sched, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     (tmp / "stock" / "scheduled" / "2026-09-20.json").write_text(json.dumps(sched[:1], indent=1) + "\n", encoding="utf-8")
     b_before = (posts / f"{d}-b.md").read_text(encoding="utf-8")
@@ -4765,7 +4829,7 @@ def test_late_facts_reach_plan_index(tmp: Path):
     r = lambda d: {x["id"]: x for x in json.loads((cdir / f"{d}.json").read_text(encoding="utf-8"))}
     url, n = "https://shop.example/premium", compose.PLAN_FACTS_PER_SUBJECT
     old = [f"既存{k}" for k in range(n + 2)]
-    cand = lambda i, facts: {"id": i, "url": url, "dedup_key": "premium", "brand": "cg", "verify": "confirmed", "facts": facts}
+    cand = lambda i, facts: cand_row(i, url, dedup_key="premium", brand="cg", verify="confirmed", facts=facts)
     saved = compose.ROOT
     try:
         compose.ROOT = tmp
@@ -4808,8 +4872,7 @@ def test_late_facts_reach_plan_index(tmp: Path):
         lim = compose.PLAN_FACT_CHARS
         head = ("DISC2の歌唱者：" + "、".join(f"曲{k}＝アイドル{k}" for k in range(60)))[:lim]
         full = head + "、" + "、".join(f"新曲{k}＝新アイドル{k}" for k in range(40))
-        dcand = lambda i, facts: {"id": i, "url": "https://e.example/disc", "dedup_key": "disc", "brand": "cg",
-                                  "verify": "confirmed", "facts": facts}
+        dcand = lambda i, facts: cand_row(i, "https://e.example/disc", dedup_key="disc", brand="cg", verify="confirmed", facts=facts)
         w("2026-10-10", [dcand("d1", ["発売日", head])])
         compose.record_candidates_read("2026-10-10", r("2026-10-10"))
         w("2026-10-10", [dcand("d1", ["発売日", head, full])])
@@ -4850,8 +4913,9 @@ def test_settled_drops_not_rewritten(tmp: Path):
         compose.DROP_SETTLED.clear()
         slugs = ["keep", "dup", "orphan", "old", "fix"]
         for sl in slugs:
-            (posts / f"{d0}-{sl}.md").write_text(f"---\ntitle: {sl}\nrank: medium\n---\n本文\n", encoding="utf-8")
-        cands = {f"c-{sl}": {"id": f"c-{sl}", "url": f"https://www.example.com/{sl}", "dedup_key": sl, "brand": "765", "facts": [sl]}
+            (posts / f"{d0}-{sl}.md").write_text("---\n" + article_fm(sl, d0, title=sl, rank="medium", brand="765") + "---\n本文\n",
+                                                 encoding="utf-8")
+        cands = {f"c-{sl}": cand_row(f"c-{sl}", f"https://www.example.com/{sl}", dedup_key=sl, brand="765", facts=[sl])
                  for sl in slugs}
         (tmp / "candidates" / f"{d0}.json").write_text(json.dumps(list(cands.values())), encoding="utf-8")
         plan = {"articles": [{"slug": sl, "rank": "medium", "brand": "765", "candidate_ids": [f"c-{sl}"], "dedup_key": sl} for sl in slugs]}
@@ -4988,9 +5052,10 @@ def test_carry_dropped_candidates(tmp: Path):
         compose.ROOT = tmp
         d0, d1 = "2026-10-13", "2026-10-14"
         (tmp / "candidates" / f"{d0}.json").write_text(json.dumps([
-            {"id": "c1", "url": "https://press.example/1", "dedup_key": "login", "brand": "gaku", "facts": ["ログボ"]},
-            {"id": "c2", "url": "https://e.example/2", "dedup_key": "back", "brand": "gaku", "facts": ["戻った"]},
-            {"id": "c3", "url": "https://e.example/3", "dedup_key": "tour", "brand": "gaku", "facts": ["三回目"], "carried": {"count": 2}},
+            cand_row("c1", "https://press.example/1", dedup_key="login", brand="gaku", facts=["ログボ"]),
+            cand_row("c2", "https://e.example/2", dedup_key="back", brand="gaku", facts=["戻った"]),
+            cand_row("c3", "https://e.example/3", dedup_key="tour", brand="gaku", facts=["三回目"],
+                     carried={"from": "2026-10-12", "count": 2, "why": "2026-10-12号で記事にならなかった(執筆で見送り: SOURCE_MISMATCH)"}),
         ], ensure_ascii=False), encoding="utf-8")
         compose.DROP_LOG.clear()
         compose.DROP_LOG[d0] = {"login": ("ログボ", "執筆で見送り", "NO_PRIMARY_SOURCE 公式の告知に届かない"),
@@ -5008,10 +5073,11 @@ def test_carry_dropped_candidates(tmp: Path):
               f"外れた記事の記録が、以前の記録と合わさらない・戻った記事を除かない: {sorted(rec)}")
         # 前の号の続報予約から選んだ記事の素材も戻す(日付は前の号で使った値のまま。監査指摘)
         (tmp / "stock" / "scheduled").mkdir(parents=True)
-        (tmp / "stock" / "scheduled" / f"{d0}.json").write_text(json.dumps([{"id": "sched-9", "url": "https://s.example/9", "dedup_key": "sch",
-                                                                            "brand": "gaku", "kind": "締切前", "facts": ["予約"]}]),
+        (tmp / "stock" / "scheduled" / f"{d0}.json").write_text(json.dumps([sched_row("sched-9", "2026-10-10", url="https://s.example/9",
+                                                                                     dedup_key="sch", brand="gaku", kind="締切前",
+                                                                                     facts=["予約"])]),
                                                                encoding="utf-8")
-        (tmp / "candidates" / f"{d1}.json").write_text(json.dumps([{"id": "n1", "url": "https://n.example/1", "facts": ["新"]}]),
+        (tmp / "candidates" / f"{d1}.json").write_text(json.dumps([cand_row("n1", "https://n.example/1", facts=["新"])]),
                                                        encoding="utf-8")
         log = compose.carry_dropped_candidates(d1)
         rows = json.loads((tmp / "candidates" / f"{d1}.json").read_text(encoding="utf-8"))
@@ -5027,7 +5093,7 @@ def test_carry_dropped_candidates(tmp: Path):
         # 同じページを毎号拾い直す素材: この号の同じ URL の候補へ前の号の事実をマージし、回数を付け続ける(上限を超えても回数は残し、
         # 選定には見せない)。回数が 1→2→無し→1 と戻らない(監査指摘)
         chain = [("2026-10-20", None), ("2026-10-21", None), ("2026-10-22", None), ("2026-10-23", None)]
-        prev_row = {"id": "p0", "url": "https://press.example/same", "dedup_key": "same", "brand": "gaku", "facts": ["期限は15日"]}
+        prev_row = cand_row("p0", "https://press.example/same", dedup_key="same", brand="gaku", facts=["期限は15日"])
         (tmp / "candidates" / "2026-10-19.json").write_text(json.dumps([prev_row], ensure_ascii=False), encoding="utf-8")
         (tmp / "metrics" / "plan-2026-10-19.json").write_text(json.dumps({"articles": [{"slug": "same", "candidate_ids": ["p0"]}]}), encoding="utf-8")
         compose.DROP_LOG["2026-10-19"] = {"same": ("同じ", "執筆で見送り", "NO_PRIMARY_SOURCE")}
@@ -5036,8 +5102,9 @@ def test_carry_dropped_candidates(tmp: Path):
         prev = "2026-10-19"
         for k, (day, _) in enumerate(chain):
             nid = f"q{k}"
-            (tmp / "candidates" / f"{day}.json").write_text(json.dumps([{"id": nid, "url": "https://press.example/same", "dedup_key": "same",
-                                                                         "brand": "gaku", "facts": [f"別の事実{k}"]}], ensure_ascii=False), encoding="utf-8")
+            (tmp / "candidates" / f"{day}.json").write_text(json.dumps([cand_row(nid, "https://press.example/same", dedup_key="same",
+                                                                                  brand="gaku", facts=[f"別の事実{k}"])], ensure_ascii=False),
+                                                            encoding="utf-8")
             compose.carry_dropped_candidates(day)
             row = json.loads((tmp / "candidates" / f"{day}.json").read_text(encoding="utf-8"))[0]
             counts.append((row.get("carried") or {}).get("count"))
@@ -5056,9 +5123,9 @@ def test_carry_dropped_candidates(tmp: Path):
         results = []
         for order in (["m1", "m2"], ["m2", "m1"]):
             d2, d3 = "2026-11-01", "2026-11-02"
-            mats = {"m1": {"id": "m1", "url": "https://p.example/same2", "dedup_key": "s2", "brand": "gaku", "facts": ["事実A"]},
-                    "m2": {"id": "m2", "url": "https://p.example/same2", "dedup_key": "s2", "brand": "gaku", "facts": ["事実B"],
-                           "carried": {"count": 1}}}
+            mats = {"m1": cand_row("m1", "https://p.example/same2", dedup_key="s2", brand="gaku", facts=["事実A"]),
+                    "m2": cand_row("m2", "https://p.example/same2", dedup_key="s2", brand="gaku", facts=["事実B"],
+                                   carried={"from": "2026-10-31", "count": 1, "why": "2026-10-31号で記事にならなかった(執筆で見送り)"})}
             (tmp / "candidates" / f"{d2}.json").write_text(json.dumps([mats[i] for i in order], ensure_ascii=False), encoding="utf-8")
             (tmp / "metrics" / f"plan-{d2}.json").write_text(json.dumps({"articles": [{"slug": "s2", "candidate_ids": order}]}), encoding="utf-8")
             (tmp / "metrics" / f"drops-{d2}.json").unlink(missing_ok=True)
@@ -5072,8 +5139,9 @@ def test_carry_dropped_candidates(tmp: Path):
               f"同じ URL の2件目以降の事実が戻らない・回数が最大値から増えない・順序で結果が変わる: {results}")
         # 候補ファイルの無い号(予約だけで組んだ)でも、予約の素材は戻す。戻した予約は、校閲にも執筆と同じ素材として載る(監査指摘)
         d4, d5 = "2026-11-10", "2026-11-11"
-        (tmp / "stock" / "scheduled" / f"{d4}.json").write_text(json.dumps([{"id": "sched-k", "url": "https://s.example/k", "dedup_key": "k",
-                                                                            "brand": "gaku", "kind": "締切前", "facts": ["予約K"]}]),
+        (tmp / "stock" / "scheduled" / f"{d4}.json").write_text(json.dumps([sched_row("sched-k", "2026-11-07", url="https://s.example/k",
+                                                                                     dedup_key="k", brand="gaku", kind="締切前",
+                                                                                     facts=["予約K"])]),
                                                                encoding="utf-8")
         (tmp / "metrics" / f"plan-{d4}.json").write_text(json.dumps({"articles": [{"slug": "k", "candidate_ids": ["sched-k"]}]}), encoding="utf-8")
         compose.DROP_LOG[d4] = {"k": ("予約K", "校閲ブロック", "R4")}
@@ -5085,9 +5153,34 @@ def test_carry_dropped_candidates(tmp: Path):
         (tmp / "docs" / "_posts" / f"{d5}-k.md").write_text("---\ntitle: k\ncandidate_ids:\n- sched-k\n---\n本文\n", encoding="utf-8")
         hint = compose.review_hint(d5, f"{d5}-k.md", {})
         check("予約K" in hint and "予約に見つからない" not in hint, f"戻した予約の素材が校閲に渡らない: {hint[-200:]}")
+        # 戻した素材を前の号の選定がまた選ばなかった: 外れた記事の記録に載らなくても、締切までは上限の回数まで戻す
+        # (2026-10-14: 戻したログボを選定が外し、締切の 10/15 号に戻らなかった)。選ばれた・締切を過ぎた・戻した印の無い素材は戻さない
+        da, db, dc = "2026-11-20", "2026-11-21", "2026-11-22"
+        tag = {"from": "2026-11-19", "count": 1, "why": "2026-11-19号で記事にならなかった(執筆で見送り)"}
+        (tmp / "candidates" / f"{da}.json").write_text(json.dumps([
+            cand_row("r1", "https://press.example/r1", dedup_key="r1", deadline=dc, carried=tag),
+            cand_row("r2", "https://press.example/r2", dedup_key="r2", deadline=da, carried=tag),
+            cand_row("r3", "https://press.example/r3", dedup_key="r3", carried=tag),
+            cand_row("r4", "https://press.example/r4", dedup_key="r4"),
+        ], ensure_ascii=False), encoding="utf-8")
+        (tmp / "metrics" / f"plan-{da}.json").write_text(json.dumps({"articles": [{"slug": "r3", "candidate_ids": ["r3"]}]}), encoding="utf-8")
+        (tmp / "metrics" / f"drops-{da}.json").unlink(missing_ok=True)
+        compose.carry_dropped_candidates(db)
+        got = json.loads((tmp / "candidates" / f"{db}.json").read_text(encoding="utf-8"))
+        check([(x["id"], x["carried"]["from"], x["carried"]["count"]) for x in got] == [("r1", da, 2)] and "選定" in got[0]["carried"]["why"],
+              f"選定が選ばなかった戻し素材を次の号に戻さない・選ばれた/締切を過ぎた/印の無い素材まで戻した: {got}")
+        (tmp / "metrics" / f"plan-{db}.json").write_text(json.dumps({"articles": []}), encoding="utf-8")
+        compose.carry_dropped_candidates(dc)
+        check(not (tmp / "candidates" / f"{dc}.json").exists(), "選定が選ばなかった戻し素材を、上限を超えても戻し続ける")
         by_brand, _, _ = compose.write_plan_index(d1, {x["id"]: x for x in rows}, {})
         subj = next((s for s in by_brand.get("gaku", []) if s["dedup_key"] == "login"), {})
-        check("記事にならなかった" in str(subj.get("carried")), f"選定に、前の号で記事にならなかった理由が見えない: {subj}")
+        # 選定には印だけを見せ、前の号の理由は見せない(選定が前の号の理由で外した。2026-10-14 のログボ)
+        check("記事にならず" in str(subj.get("carried")) and "NO_PRIMARY_SOURCE" not in str(subj.get("carried"))
+              and "公式の告知" not in str(subj.get("carried")),
+              f"選定に、前の号で記事にならなかった印が見えない・前の号の理由まで見せている: {subj}")
+        rules = compose.plan_rules()
+        check("不採用の理由にしない" in rules and "同じ理由で記事にならない" not in rules,
+              "選定の規則が、前の号で記事にならなかった主題を前の号の理由で外させる")
     finally:
         compose.ROOT = saved_root
         compose.DROP_LOG.clear()
@@ -5107,8 +5200,8 @@ def test_carry_late_candidates(tmp: Path):
     mdir.mkdir(parents=True)
     w = lambda d, rows: (cdir / f"{d}.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
     r = lambda d: json.loads((cdir / f"{d}.json").read_text(encoding="utf-8"))
-    c = lambda i, u, n=1, v="confirmed", base=None: {"id": i, "url": f"https://e.example/{u}", "verify": v,
-                                                     "facts": [f"{base or i}-{k}" for k in range(n)]}
+    c = lambda i, u, n=1, v="confirmed", base=None: cand_row(i, f"https://e.example/{u}", verify=v,
+                                                             facts=[f"{base or i}-{k}" for k in range(n)])
     saved = compose.ROOT
     try:
         compose.ROOT = tmp
@@ -5290,6 +5383,19 @@ def test_oncall_fix_until_clean(tmp: Path):
     check("later" in rs["required"] and rs["properties"]["must_fix"]["items"]["properties"]["severity"]["enum"] == ["blocks_publish", "corrupts_data", "stopgap", "misreport"],
           "監査の schema: later が必須でない、または must_fix に品質・書き方の指摘を入れられる")
     check(all("occurs" in rs["properties"][k]["items"]["required"] for k in ("must_fix", "later")), "監査の schema: 指摘に occurs(起きる道筋)が必須でない")
+    # 監査は実際に走らせる: 走らせたコマンドと結果(verification)が必須。テスト・selfcheck・lint を走らせた記録の無い承認は承認にしない
+    # (2026-10-14: 読み取り専用の監査が走らせないまま承認し、素材ファイルの書式に無い欄で号が止まった。編集長「ずさんな承認は全部ゴミ」)
+    check("verification" in rs["required"] and rs["properties"]["verification"].get("minItems") == 1,
+          "監査の schema: 走らせたコマンドと結果(verification)が必須でない")
+    check("## 0. 走らせること" in rp and "test_pipeline.py" in rp and "lint.py" in rp and "approve しない" in rp,
+          "監査への依頼が、テスト・selfcheck・lint を走らせることを求めていない")
+    check(oncall.audit_ran_checks({"verification": AUDIT_RAN})
+          and not oncall.audit_ran_checks({"verification": AUDIT_RAN[:2]})
+          and not oncall.audit_ran_checks({"verification": [dict(v, result="") for v in AUDIT_RAN]})
+          and not oncall.audit_ran_checks({}), "走らせた記録の検め方(3つ全部・結果が空でない)")
+    src_rc = __import__("inspect").getsource(oncall.run_codex)
+    check('"workspace-write"' in src_rc and '"read-only"' not in src_rc and '"worktree", "add", "--detach"' in src_rc
+          and '"worktree", "remove", "--force"' in src_rc, "監査を、使い捨ての作業ツリーで書き込みのできる環境として起動していない")
     # 続きから始められる条件
     tmp.mkdir(parents=True, exist_ok=True)
     g = lambda *a: subprocess.run(["git", *a], cwd=tmp, capture_output=True, text=True, check=True).stdout.strip()
@@ -5344,16 +5450,25 @@ def test_oncall_fix_until_clean(tmp: Path):
         check(not r["approved"] and not r["error"] and r["kept"]["head"] == "H%039d" % 3 and [o["id"] for o in r["kept"]["open"]] == ["p1"]
               and sum(1 for t in tr if "integrate" in t) == 2, f"reject が続いたときの往復: {r['kept']} {[list(t) for t in tr]}")
         # (3) 指摘が無くなれば終わる(続きから始めた場合も、監査を通るまで approved にならない)
-        answers = iter([{"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "notes": ""}, {"verdict": "approve", "must_fix": [], "notes": ""}])
+        answers = iter([{"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "notes": ""}, {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""}])
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
         r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
                               {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}]}, "env", [])
         check(r["approved"] and r["kept"]["open"] == [], f"指摘が無くなったのに終わらない: {r}")
+        # (3x) 走らせた記録の無い承認は承認にならず、「走らせていない」を指摘として次の往復へ回す
+        answers = iter([{"verdict": "approve", "must_fix": [], "verification": [{"command": "読んだ", "result": "問題なし"}], "notes": ""},
+                        {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""}])
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
+        tr = []
+        r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
+                              {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}]}, "env", tr)
+        reviews = [t["review"] for t in tr if "review" in t]
+        check(r["approved"] and len(reviews) == 2, f"走らせた記録の無い承認を承認にした: {len(reviews)}回 {r.get('approved')}")
         # (3a) 発行後でよい指摘(later)は approve を妨げず、往復と試行をまたいで重複なしで集まる
         #      起きる道筋(occurs)の無い later は集めない(「schema 上は可能」の類を後の仕事にしない)
         la = {"id": "l1", "claim": "堅牢化A", "evidence": "e", "occurs": "記事が60本を超えた号(月に1〜2回)"}
         answers = iter([{"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "later": [la], "notes": ""},
-                        {"verdict": "approve", "must_fix": [], "notes": "",
+                        {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": "",
                          "later": [la, {"id": "l2", "claim": "テストB", "evidence": "", "occurs": "毎号"},
                                    {"id": "l9", "claim": "改行が2100個入ったら", "evidence": "schema 上は可能", "occurs": ""}]}])
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
@@ -5365,8 +5480,8 @@ def test_oncall_fix_until_clean(tmp: Path):
         check([x["claim"] for x in oncall.collect_later(tr)] == ["前の試行の分", "堅牢化A", "テストB"], "報告に載せる later が往復の記録から集まらない")
         check("堅牢化A" in oncall.later_text(r["later"]) and "なし" in oncall.later_text([]), "later の報告文")
         # (3c) 保管していた指摘を直す昼の仕事(backlog)では、later も must_fix として直すまで approve にならず、保管にも積まない
-        answers = iter([{"verdict": "approve", "must_fix": [], "notes": "", "later": [la]},
-                        {"verdict": "approve", "must_fix": [], "notes": "", "later": []}])
+        answers = iter([{"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": "", "later": [la]},
+                        {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": "", "later": []}])
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
         tr = []
         r = oncall.run_rounds(oncall.BACKLOG_STAGE, "2026-10-07", "ctx", tmp, "B" * 40, None, "env", tr)
@@ -5738,8 +5853,31 @@ def test_reminder_event_date(tmp: Path):
     check(h_plain == "", f"予約の素材を使わない記事に予約の素材が載った: {h_plain!r}")
 
 
+def test_stray_governed_write_is_caught(tmp: Path):
+    """見張り(_watch_governed_writes)が、本番のコードの素通しの書き込みを控え、write_checked・テストの下準備・書式の無いファイルは控えない。"""
+    (tmp / "candidates").mkdir(parents=True)
+    scripts = Path(__file__).resolve().parent
+    ns: dict = {}
+    exec(compile("def bad(p):\n    p.write_text('[]', encoding='utf-8')\n", str(scripts / "compose.py"), "exec"), ns)
+    n = len(STRAY_WRITES)
+    ns["bad"](tmp / "candidates" / "2026-10-01.json")
+    caught = STRAY_WRITES[n:]
+    del STRAY_WRITES[n:]
+    ns["bad"](tmp / "candidates" / "notes.txt")
+    saved, pipelib.ROOT = pipelib.ROOT, tmp          # 一時ファイルの置き場も一時ディレクトリに(本体の作業ツリーに触らない)
+    try:
+        pipelib.write_checked(tmp / "candidates" / "2026-10-02.json", "[]\n")
+    finally:
+        pipelib.ROOT = saved
+    (tmp / "candidates" / "2026-10-03.json").write_text("[]", encoding="utf-8")
+    check(len(caught) == 1 and caught[0].startswith("compose.py:2 bad") and len(STRAY_WRITES) == n,
+          f"見張りが素通しの書き込みを控えない・控えなくてよいものを控えた: {caught} {STRAY_WRITES[n:]}")
+    del STRAY_WRITES[n:]
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
+    test_stray_governed_write_is_caught(tmp / "sgw")
     test_slugify_format()
     test_escalate_is_module_global()
     test_anomaly_ledger_and_whywhy(tmp / "al")
@@ -5825,6 +5963,8 @@ def main() -> int:
     test_oncall_restore_on_exception(tmp / "oc")
     test_oncall_fix_until_clean(tmp / "of")
     test_settled_drops_not_rewritten(tmp / "sd")
+    check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
+          + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:
         print(f"  [FAIL] {f}")
     print(f"test_pipeline: {len(FAILS)} failures")

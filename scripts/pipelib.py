@@ -975,6 +975,85 @@ def loads_strict(text: str):
     return json.loads(text, object_pairs_hook=_no_duplicate_keys)
 
 
+# 書式(schema/)で形を決めているファイルと、その定義。lint が発行前に検めるのと同じもの
+SCHEMA_OF_PATH = (
+    (re.compile(r"(^|/)candidates/\d{4}-\d{2}-\d{2}\.json$"), "candidates.schema.json"),
+    (re.compile(r"(^|/)stock/scheduled/\d{4}-\d{2}-\d{2}\.json$"), "scheduled.schema.json"),
+    (re.compile(r"(^|/)docs/_posts/[^/]+\.md$"), "article.schema.json"),
+    (re.compile(r"(^|/)docs/_editions/[^/]+\.md$"), "edition.schema.json"),
+)
+
+
+class SchemaViolation(RuntimeError):
+    """書式で形を決めているファイルに、定義に合わない中身を書こうとした。"""
+
+
+def _norm_yaml(v):
+    """YAML が date 型に解釈した値を ISO 文字列へ戻す(lint と同じ正規化。書式は文字列の契約)。"""
+    if isinstance(v, (datetime.date, datetime.datetime)):
+        return v.isoformat()
+    if isinstance(v, dict):
+        return {k: _norm_yaml(x) for k, x in v.items()}
+    if isinstance(v, list):
+        return [_norm_yaml(x) for x in v]
+    return v
+
+
+def schema_errors(path, text: str) -> list[str]:
+    """path が書式で決めているファイルなら、text を lint と同じ定義・正規化で検めた誤り(無ければ空)。対象外のファイルは空。"""
+    from jsonschema import Draft202012Validator
+    import yaml
+    rel = str(path).replace("\\", "/")
+    name = next((s for pat, s in SCHEMA_OF_PATH if pat.search(rel)), None)
+    if not name:
+        return []
+    try:
+        if rel.endswith(".json"):
+            data = json.loads(text)
+        else:
+            m = re.match(r"\A---\s*\n(.*?)\n---", text, re.DOTALL)
+            if not m:
+                return ["frontmatter が無い"]
+            data = _norm_yaml(yaml.safe_load(m.group(1)) or {})
+    except (ValueError, yaml.YAMLError) as e:
+        return [f"読めない: {e}"]
+    # 書式の定義はデータではなくコードの一部: ROOT(作業ツリー・テストでは一時ディレクトリ)ではなく、このファイルの場所から引く
+    v = Draft202012Validator(json.loads((Path(__file__).resolve().parent.parent / "schema" / name).read_text(encoding="utf-8")))
+    return [f"{'/'.join(str(p) for p in e.absolute_path) or '(root)'}: {e.message}" for e in v.iter_errors(data)]
+
+
+def strict_writes() -> bool:
+    """書式に合わない書き込みを例外にするか。テスト(test_pipeline・selfcheck)は例外にする(IMAS_STRICT_WRITES=1)。"""
+    return os.environ.get("IMAS_STRICT_WRITES") == "1"
+
+
+def write_checked(path, text: str) -> None:
+    """書式で形を決めているファイルを書く唯一の入口。書く**前に** lint と同じ定義で検める
+    (2026-10-14: 素材ファイルに書式の定義に無い欄を足した変更が、単体テストも監査も通って、03:11 の発行前の検査で初めて号を止めた。
+    書く側で検めれば、その変更のテストが書いた瞬間に落ちる)。
+    - テストでは(strict_writes)合わなければ SchemaViolation で止める: 書式と食い違う変更を、作った時点で捕まえる
+    - 本番では止めずに書き、どのファイルのどの欄が合わないかを異常として申告する(当番のなぜなぜへ)。最後の門は発行前の lint で、
+      止まり方(lint の段でその1本を落とす 等)は変えない。書く場所で例外にすると、1本を落とせば済む誤りで組版全体が止まる
+    一時ファイルに書いて一度に差し替える(書きかけを残さない)。一時ファイルは Git 管理外(<ROOT>/metrics/work/)に置く。"""
+    path = Path(path)
+    errs = schema_errors(path, text)
+    if errs:
+        msg = (f"{path.name} が書式({next(s for p, s in SCHEMA_OF_PATH if p.search(str(path).replace(chr(92), '/')))})に合わない: "
+               + " / ".join(errs[:5]))
+        if strict_writes():
+            raise SchemaViolation(msg)
+        anomaly("schema", msg + "(書いたうえで申告。発行前の lint が止める)")
+    tmpdir = ROOT / "metrics" / "work"
+    try:
+        tmpdir.mkdir(parents=True, exist_ok=True)
+        same_fs = os.stat(tmpdir).st_dev == os.stat(path.parent).st_dev
+    except OSError:
+        same_fs = False
+    tmp = (tmpdir if same_fs else path.parent) / f".{path.name}.{os.getpid()}.tmp"
+    tmp.write_text(text, encoding="utf-8")
+    os.replace(tmp, path)
+
+
 def schema_ok(value, schema) -> bool:
     """モデルの答えが、そのセッションに渡した出力 schema のとおりか(形だけを見る)。schema は dict か JSON 文字列。
     **モデルの答えは、正常に終わったセッションのものを、渡した schema で検めてから使う**(2026-10-06 の洗い出し:

@@ -2,10 +2,24 @@
   "title": "oncall-review",
   "description": "監査(Sol)の敵対的レビューの判定",
   "type": "object",
-  "required": ["verdict", "must_fix", "later", "notes"],
+  "required": ["verdict", "verification", "must_fix", "later", "notes"],
   "additionalProperties": false,
   "properties": {
     "verdict": {"enum": ["approve", "reject"]},
+    "verification": {
+      "type": "array",
+      "minItems": 1,
+      "description": "実際に走らせたコマンドと、その結果(最後の行など)。走らせていない確認は書かない",
+      "items": {
+        "type": "object",
+        "required": ["command", "result"],
+        "additionalProperties": false,
+        "properties": {
+          "command": {"type": "string", "maxLength": 300},
+          "result": {"type": "string", "maxLength": 400}
+        }
+      }
+    },
     "must_fix": {
       "type": "array",
       "items": {

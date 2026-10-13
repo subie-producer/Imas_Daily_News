@@ -485,4 +485,5 @@ def render_article(path: Path, date: str, art: dict, out: dict, source_type_of, 
         for md in split_list_blocks(strip_fact_notes(b.get("markdown", ""))):
             paras.append(f"{md} <!-- {ids} -->" if ids else md)
     body = "\n\n".join(paras)
-    path.write_text("---\n" + dump_yaml(fm) + "---\n" + body + "\n", encoding="utf-8")
+    from pipelib import write_checked      # 書式(article.schema)で検めてから書く(循環を避けて関数の中で読む)
+    write_checked(path, "---\n" + dump_yaml(fm) + "---\n" + body + "\n")

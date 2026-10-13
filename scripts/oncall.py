@@ -342,17 +342,35 @@ def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -
     return ans
 
 
+AUDIT_REQUIRED_RUNS = ("test_pipeline", "selfcheck", "lint")
+
+
+def audit_ran_checks(rev: dict) -> bool:
+    """監査の答えに、テストの全体・selfcheck・lint を実際に走らせた記録(コマンドと空でない結果)があるか。"""
+    runs = [v for v in rev.get("verification") or [] if isinstance(v, dict) and str(v.get("result") or "").strip()]
+    return all(any(k in str(v.get("command") or "") for v in runs) for k in AUDIT_REQUIRED_RUNS)
+
+
 def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -> dict:
+    """監査(Sol)を走らせる。監査する commit(cwd の HEAD)から**使い捨ての作業ツリー**を切り出し、そこで書き込みのできる
+    サンドボックス(workspace-write)で動かす: テストの全体・selfcheck・lint を実際に走らせ、再現のテストを書けるように。
+    読み取り専用では何も走らせられず、走らせないまま承認していた(2026-10-14: 承認済みの変更が素材ファイルの書式に無い欄を
+    書いて発行前の検査で号が止まった。編集長「ずさんな承認は全部ゴミ」)。当番の作業ツリーでは書かせない(Sol の一時ファイルが
+    次の往復の修正に紛れる)。"""
     fd, out_name = tempfile.mkstemp(prefix="oncall-review-", suffix=".json")
     os.close(fd)
     out_path = Path(out_name)
+    head = sh(["git", "rev-parse", "HEAD"], cwd=cwd).stdout.strip()
+    aw = Path(tempfile.mkdtemp(prefix="oncall-audit-"))
+    shutil.rmtree(aw)
+    must(sh(["git", "worktree", "add", "--detach", str(aw), head], cwd=cwd, timeout=120), "監査用の作業ツリー")
     try:
         name = "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
-        short = prompt_file("oncall", name, prompt, base=cwd)
+        short = prompt_file("oncall", name, prompt, base=aw)
         try:
-            r = subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "read-only", "--skip-git-repo-check",
-                                "--output-schema", str(schema_file), "-o", str(out_path), short],
-                               cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
+            r = subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
+                                "-C", str(aw), "--output-schema", str(schema_file), "-o", str(out_path), short],
+                               cwd=aw, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
                                env=session_env())
             so, se, code = r.stdout, r.stderr, r.returncode
         except subprocess.TimeoutExpired as e:
@@ -365,6 +383,8 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
         save_raw("oncall", name, so, se, code, files={"answer": text})
     finally:
         out_path.unlink(missing_ok=True)
+        sh(["git", "worktree", "remove", "--force", str(aw)], cwd=cwd)
+        sh(["git", "worktree", "prune"], cwd=cwd)
     # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ({"verdict":"approve"} だけの答えで承認にしない。監査指摘)
     ans = parse_json(text) if code == 0 else None
     if ans is None or not schema_ok(ans, schema_file.read_text(encoding="utf-8")):
@@ -734,6 +754,10 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                 for item in round_later:
                     if not any(x.get("claim") == item.get("claim") for x in later):
                         later.append(item)
+            if rev.get("verdict") == "approve" and not must_fix and not audit_ran_checks(rev):
+                # テスト・selfcheck・lint を走らせた記録の無い承認は、承認として扱わない(走らせていない確認は確認ではない)
+                must_fix = [{"id": "audit-not-run", "severity": "blocks_publish", "evidence": json.dumps(rev.get("verification"), ensure_ascii=False)[:600],
+                             "claim": "監査がテスト(test_pipeline)・selfcheck・lint を走らせていない。走らせて結果を verification に書き直すこと"}]
             if rev.get("verdict") == "approve" and not must_fix:
                 res["approved"] = True
                 kept["open"] = []

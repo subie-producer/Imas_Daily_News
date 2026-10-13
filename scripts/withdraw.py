@@ -146,14 +146,16 @@ def withdraw(stem: str, by: str, reason: str, at: str, lead: str = "", root: Pat
     if gone:
         done.append("未来の続報予約を消す: " + ", ".join(gone))
 
-    # ここまで検めてから書く
+    # ここまで検めてから書く(号・記事など書式で決めたファイルは、書式でも検めてから書く)
+    from pipelib import write_checked
     for p, text in writes.items():
-        p.write_text(text, encoding="utf-8")
+        write_checked(p, text)
     for p, rows in sched.items():
         if rows is None:
             p.unlink()
         else:
-            p.write_text(json.dumps(rows, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")   # 組版と同じ書き方
+            from pipelib import write_checked      # 書式(scheduled.schema)で検めてから書く
+            write_checked(p, json.dumps(rows, ensure_ascii=False, indent=1) + "\n")   # 組版と同じ書き方
     post.unlink()
     return done
 

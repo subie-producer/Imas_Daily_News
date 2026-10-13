@@ -52,7 +52,7 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      SETTLED_DROP_RULES, settled_drops,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
-                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts)
+                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
 # 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
@@ -388,7 +388,7 @@ def carry_late_candidates(date: str) -> list[str]:
             log.append(f"{prev}号の選定が読んだ後に足された事実を、この号の同じページの候補 {len(merged[prev])}件へ足した: "
                        + ", ".join(merged[prev][:10]))
     if log:
-        target.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        write_checked(target, json.dumps(rows, ensure_ascii=False, indent=2) + "\n")
     return log
 
 
@@ -515,15 +515,15 @@ def carry_dropped_candidates(date: str) -> list[str]:
     選定は自分の号の候補しか読まないので、写さなければ、直したあと(規則・道具の修正)でも二度と選定に掛からない
     (2026-10-13: 報道を出典にしてよいと決めたログボが、翌号の選定に戻る経路が無かった。編集長「復帰保証までが仕事」)。
     写した候補には carried(どの号で・なぜ記事にならなかったか・何回目か)を付け、選定に見せる。採るかは選定が決める。
+    戻した素材を前の号の選定が選ばなかったときも、締切までは戻す。
     同じ素材を写すのは CARRY_DROPPED_MAX 回まで。この号に同じ URL・id の候補があれば、写さずに carried だけを付ける。冪等。"""
     import copy
     prev = (datetime.date.fromisoformat(date) - datetime.timedelta(days=1)).isoformat()
     drops_p = ROOT / "metrics" / f"drops-{prev}.json"
     src_p = ROOT / "candidates" / f"{prev}.json"
-    if not drops_p.exists():
-        return []
     try:
-        drops = json.loads(drops_p.read_text(encoding="utf-8")) or {}
+        # 外れた記事の記録が無い号でも、選定が選ばなかった戻し素材は戻す(下)
+        drops = (json.loads(drops_p.read_text(encoding="utf-8")) or {}) if drops_p.exists() else {}
         # 候補ファイルの無い号(当日の続報予約だけで組んだ)でも、予約の素材は戻す(監査指摘)
         src = {c.get("id"): c for c in (json.loads(src_p.read_text(encoding="utf-8")) if src_p.exists() else []) if c.get("id")}
     except (OSError, ValueError):
@@ -549,6 +549,17 @@ def carry_dropped_candidates(date: str) -> list[str]:
             if c:
                 g = groups.setdefault(c.get("url") or f"id:{cid}", {"srcs": {}, "why": why})
                 g["srcs"][cid] = c
+    # 戻した素材を前の号の選定がまた選ばなかった(計画に入らなかった)ものも戻す。選定で外れると外れた記事の記録に載らず、次の号に
+    # 戻る経路が無かった(2026-10-14: 戻したログボを選定が前の号の理由で外し、締切の 10/15 号に戻らなかった)。回数の上限で止まる。
+    # 締切を過ぎた素材は戻さない
+    plan, _ = read_record(ROOT / "metrics" / f"plan-{prev}.json")
+    picked = {i for a in (plan if isinstance(plan, dict) else {}).get("articles") or [] for i in a.get("candidate_ids") or []}
+    picked_urls = {src[i].get("url") for i in picked if i in src}
+    for cid, c in src.items():
+        if c.get("carried") and cid not in picked and c.get("url") not in picked_urls \
+                and not (re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(c.get("deadline") or "")) and c["deadline"] < date):
+            g = groups.setdefault(c.get("url") or f"id:{cid}", {"srcs": {}, "why": f"{prev}号の選定で選ばれなかった(戻した素材)"})
+            g["srcs"][cid] = c
     carried, changed = [], False
     for key, g in groups.items():
         srcs = [g["srcs"][i] for i in sorted(g["srcs"])]          # 順序に依らない
@@ -583,7 +594,7 @@ def carry_dropped_candidates(date: str) -> list[str]:
             tgt["carried"] = tag
             changed = True
     if changed:
-        target.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        write_checked(target, json.dumps(rows, ensure_ascii=False, indent=2) + "\n")
     return [f"{prev}号で記事にならなかった記事の素材 {len(carried)}件を、この号の選定に戻した: " + ", ".join(carried[:10])] if carried else []
 
 
@@ -636,8 +647,11 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
         if c.get("verify") == "confirmed":
             s["verify"] = "confirmed"
         cr = c.get("carried") or {}
-        if cr.get("why") and int(cr.get("count") or 0) <= CARRY_DROPPED_MAX and not s.get("carried"):
-            s["carried"] = cr["why"]     # 前の号で記事にならなかった(選定が、直ったか・まだ間に合うかを判断する)。上限を超えたら見せない
+        if cr.get("from") and int(cr.get("count") or 0) <= CARRY_DROPPED_MAX and not s.get("carried"):
+            # 前の号で記事にならなかった印だけを見せ、理由は見せない(選定が前の号の理由を今日の判定と読んで外した。2026-10-14 の
+            # ログボ: 報道を出典にしてよいと決めた後も「出典不足」で外れた)。記事にできるかは執筆と校閲が今日の規則で判断する。
+            # 上限を超えたら見せない
+            s["carried"] = f"{cr['from']}号までに記事にならず、選定に戻した({int(cr.get('count') or 0)}回目)"
         for f in c.get("facts", []):
             k = fact_key(f)
             pool.setdefault(dk, []).append((f if k in late else f[:PLAN_FACT_CHARS], k))
@@ -1778,7 +1792,7 @@ def canonicalize_article(date: str, art: dict, cands: dict) -> list[str]:
     ordered = {k: fm[k] for k in order if k in fm}
     ordered.update({k: v for k, v in fm.items() if k not in ordered})
     head = yaml_dump_keeping_strings(ordered)
-    path.write_text("---\n" + head + "---\n" + body, encoding="utf-8")
+    write_checked(path, "---\n" + head + "---\n" + body)
     return log
 
 
@@ -1906,7 +1920,7 @@ def drop_blocked_articles(date: str, review: dict, written: list[dict]) -> tuple
             m = re.match(r"^---\n(.*?)\n---\n", txt, re.S)
             if m:
                 head = re.sub(r"^rank:.*$", "rank: lead", m.group(1), count=1, flags=re.M)
-                p.write_text("---\n" + head + "\n---\n" + txt[m.end():], encoding="utf-8")
+                write_checked(p, "---\n" + head + "\n---\n" + txt[m.end():])
         print(f"一面が落ちたので {top['slug']} を一面に立てる(lead_score 最大)", flush=True)
     return dropped, unresolved
 
@@ -1963,8 +1977,7 @@ def assign_ranks(date: str, plan: dict, written: list[dict], keep_lead: bool = F
             by_slug.get(art["slug"], {})["rank"] = rank
         p = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
         txt = p.read_text(encoding="utf-8")
-        p.write_text(re.sub(r"^rank: .*$", f"rank: {rank}", txt, count=1, flags=re.MULTILINE),
-                     encoding="utf-8")
+        write_checked(p, re.sub(r"^rank: .*$", f"rank: {rank}", txt, count=1, flags=re.MULTILINE))
     lens = sorted(n for _, n, _ in sized)
     if lens:
         print(f"枠割り: {dict(stats)} / 本文 中央値{lens[len(lens)//2]}字 "

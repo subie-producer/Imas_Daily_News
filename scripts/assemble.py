@@ -928,10 +928,14 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
         else:
             p.unlink(missing_ok=True)
     dump_yaml(PENDING, pending, header="# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。")
-    # 号のスナップショットは途中の形(ranking・birthdays は派生 derive が埋める)なので、ここでは最終の書式で検めない。
-    # 最終の形を書く derive が書式で検める
-    ed_path.write_text("---\n" + yaml.safe_dump(snap, allow_unicode=True, sort_keys=False, width=200) + "---\n", encoding="utf-8")
+    write_snapshot(ed_path, snap)
     return log
+
+
+def write_snapshot(ed_path: Path, snap: dict) -> None:
+    """号のスナップショットの途中の形(ranking・birthdays は派生 derive が埋める)を書く。最終の書式では検めず、最終の形を書く
+    derive が書式で検める。書式を素通しで書くのはここだけ(テストの見張りの許可は、この関数に限る。監査指摘)。"""
+    ed_path.write_text("---\n" + yaml.safe_dump(snap, allow_unicode=True, sort_keys=False, width=200) + "---\n", encoding="utf-8")
 
 
 def run(date: str, number: int | None = None, dry: bool = False, budget=None) -> int:

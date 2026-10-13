@@ -28,7 +28,7 @@ FAILS: list[str] = []
 # 素通しを認めるのは、下の理由のある所だけ
 STRAY_WRITES: list[str] = []
 WRITE_PASSTHROUGH = {
-    ("assemble.py", "apply"): "組み立て途中の号スナップショット(ランキング・誕生日が空)。最後の形は derive が write_checked で書く",
+    ("assemble.py", "write_snapshot"): "組み立て途中の号スナップショット(ランキング・誕生日が空)。最後の形は derive が write_checked で書く",
     ("rewrite_past.py", "main"): "校閲を通ったと確かめる前に止まった差し替えを、元の文面に戻す",
     ("rewrite_past.py", "replace_and_review"): "校閲を通らなかった差し替えを、元の文面に戻す",
     ("pipelib.py", "_restore"): "失敗した取引(出典の判定・付け直し・lint)のファイルを、開始時の中身へバイト単位で戻す",
@@ -202,7 +202,9 @@ def test_render_and_length():
     good = dict(OK, new_facts=[{"id": "N1", "text": "9月25日発売", "url": "https://a.example/1"}],
                 blocks=[{"markdown": "本文", "fact_ids": ["F1", "N1"]}],
                 sources=[{"url": "https://a.example/1", "label": "ポータル「お​知らせ」"}])
-    p = Path(tempfile.mkdtemp()) / "2026-09-12-x.md"
+    # 書く先は docs/_posts の下(本番と同じ置き場。書式の検査と見張りが効く。監査指摘)
+    p = Path(tempfile.mkdtemp()) / "docs" / "_posts" / "2026-09-12-x.md"
+    p.parent.mkdir(parents=True)
     renderlib.render_article(p, "2026-09-12", {"slug": "x", "brand": "765", "candidate_ids": ["c1"], "rank": "small"},
                              good, lambda u: "公式", lambda ts: "公式", compose.yaml_dump_keeping_strings)
     t = p.read_text(encoding="utf-8")
@@ -226,7 +228,8 @@ def test_schema_hash_dates():
     v = Draft202012Validator(schema)
     good = dict(OK, new_facts=[{"id": "N1", "text": "9月25日発売", "url": "https://a.example/1"}],
                 blocks=[{"markdown": "段落A\n\n段落B", "fact_ids": ["F1", "N1"]}])
-    p = Path(tempfile.mkdtemp()) / "2026-09-12-x.md"
+    p = Path(tempfile.mkdtemp()) / "docs" / "_posts" / "2026-09-12-x.md"
+    p.parent.mkdir(parents=True)
     renderlib.render_article(p, "2026-09-12", {"slug": "x", "brand": "765", "candidate_ids": ["c1"], "rank": "small"},
                              good, lambda u: "公式", lambda ts: "公式", compose.yaml_dump_keeping_strings)
     text = p.read_text(encoding="utf-8")
@@ -5928,6 +5931,90 @@ def test_stray_governed_write_is_caught(tmp: Path):
     del STRAY_WRITES[n:]
 
 
+def test_derive_write(tmp: Path):
+    """derive --write(号の最後の形)を見張りの下で通す: 書式で検めて書き、素通しの書き込みが無い(監査指摘: derive の書き込みを
+    素通しに変えてもテストが通った)。組み立て途中の号(ranking が空)から、最後の形(ranking 8件・数・誕生日)を書く。"""
+    import derive
+    import shutil
+    import yaml
+    d = "2026-10-03"
+    posts, eds, data = tmp / "docs" / "_posts", tmp / "docs" / "_editions", tmp / "docs" / "_data"
+    for p in (posts, eds, data, tmp / "candidates"):
+        p.mkdir(parents=True, exist_ok=True)
+    real = Path(__file__).resolve().parent.parent / "docs" / "_data" / "idols.json"
+    shutil.copy(real, data / "idols.json")
+    names = [x["name"] for x in json.loads(real.read_text(encoding="utf-8"))[:8]]
+    (posts / f"{d}-a.md").write_text("---\n" + article_fm("a", d, rank="lead", title="a") + "---\n" + "、".join(names) + "が出演する。\n",
+                                     encoding="utf-8")
+    (eds / f"{d}.md").write_text(
+        f"---\nnumber: 15\ndate: '{d}'\nweekday: 土\nissued_at: '{d}T06:00:00+09:00'\npages: 0\narticle_count: 0\ncorrected_count: 0\n"
+        "lead_slug: a\ndigest:\n- label: 本日\n  rows:\n  - k: 発\n    t: A\n    d: ''\n    brand: cg\n    slug: a\n"
+        "- label: 昨日\n  rows: []\n- label: 継続中\n  rows: []\n- label: 明日\n  rows: []\nranking: []\nbirthdays: []\n---\n", encoding="utf-8")
+    saved, n = (derive.ROOT, sys.argv), len(STRAY_WRITES)
+    try:
+        derive.ROOT, sys.argv = tmp, ["derive.py", "--date", d, "--write"]
+        rc = derive.main()
+    finally:
+        derive.ROOT, sys.argv = saved
+    text = (eds / f"{d}.md").read_text(encoding="utf-8")
+    fm = yaml.safe_load(text.split("\n---\n", 1)[0].lstrip("-\n"))
+    check(rc == 0 and len(fm.get("ranking") or []) == 8 and fm.get("article_count") == 1
+          and pipelib.schema_errors(eds / f"{d}.md", text) == [] and len(STRAY_WRITES) == n,
+          f"derive の書き込みが最後の形を書式どおりに書かない・素通しで書いた: rc={rc} {fm.get('ranking')} {STRAY_WRITES[n:]}")
+
+
+def test_canonicalize_and_assign_ranks(tmp: Path):
+    """組版の記事の書き直し(計画への固定項目の写し・枠の割り当て)を見張りの下で通す。どちらも書式どおりに書き、素通しで書かない
+    (監査指摘: この2つの書き込みを素通しに変えても全テストが通った)。"""
+    import yaml
+    d = "2026-10-03"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    a, b = posts / f"{d}-a.md", posts / f"{d}-b.md"
+    # 執筆の転記が計画と食い違う(slug・号・面・候補)・出典の種別が判定表と違う・訂正欄が初期値でない
+    a.write_text("---\n" + article_fm("wrong", "2026-01-01", brand="other", candidate_ids=["zz"], corrected=True, src="公式",
+                                      sources=[{"label": "l1", "url": "https://a.example/1", "type": "公式"}])
+                 + "---\n" + "あ" * 800 + "\n", encoding="utf-8")
+    b.write_text("---\n" + article_fm("b", d, candidate_ids=["c2"]) + "---\n" + "い" * 100 + "\n", encoding="utf-8")
+    art_a = {"slug": "a", "brand": "cg", "rank": "small", "candidate_ids": ["c1"]}
+    art_b = {"slug": "b", "brand": "cg", "rank": "small", "candidate_ids": ["c2"]}
+    saved, n = compose.ROOT, len(STRAY_WRITES)
+    try:
+        compose.ROOT = tmp
+        compose.canonicalize_article(d, art_a, {"c1": cand_row("c1", "https://a.example/1")})
+        compose.assign_ranks(d, {"articles": [{"slug": "a", "lead_score": 10}, {"slug": "b", "lead_score": 50}]}, [art_a, art_b])
+    finally:
+        compose.ROOT = saved
+    fm = lambda p: yaml.safe_load(p.read_text(encoding="utf-8").split("\n---\n", 1)[0].lstrip("-\n"))
+    fa, fb_ = fm(a), fm(b)
+    want_type = compose.classify_source("https://a.example/1")
+    check((fa["slug"], str(fa["edition"]), fa["brand"], fa["candidate_ids"], fa["corrected"]) == ("a", d, "cg", ["c1"], False)
+          and fa["sources"][0]["type"] == want_type and fa["src"] == want_type and fa["rank"] == "large" and fb_["rank"] == "lead"
+          and all(pipelib.schema_errors(p, p.read_text(encoding="utf-8")) == [] for p in (a, b)) and len(STRAY_WRITES) == n,
+          f"固定項目の写し・枠の割り当てが書式どおりに書かない・素通しで書いた: {fa} {fb_.get('rank')} {STRAY_WRITES[n:]}")
+
+
+def test_rewrite_past_apply_answer(tmp: Path):
+    """過去記事の書き直しの差し替え(rewrite_past.apply_answer)と枠の付け直し(fix_rank)を見張りの下で通す: 元の記録(訂正・号・slug・
+    候補)を残して内容を差し替え、短くなった記事の枠を付け直し、書式どおりに書く(監査指摘: 素通しに変えても全テストが通った)。"""
+    import rewrite_past
+    import yaml
+    d = "2026-09-12"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    p = posts / f"{d}-x.md"
+    p.write_text("---\n" + article_fm("x", d, rank="large", candidate_ids=["c1"], title="旧見出し") + "---\n旧本文\n", encoding="utf-8")
+    mats, _ = renderlib.materials_with_ids(MATS)
+    n = len(STRAY_WRITES)
+    problems = rewrite_past.apply_answer(p, {"materials": mats, "rank": "small", "date": d}, OK)
+    text = p.read_text(encoding="utf-8")
+    fm = yaml.safe_load(text.split("\n---\n", 1)[0].lstrip("-\n"))
+    check(problems == [] and fm["title"] == OK["title"] and fm["slug"] == "x" and fm["candidate_ids"] == ["c1"] and fm["rank"] == "small"
+          and "旧本文" not in text and not p.with_suffix(".rewrite.tmp").exists()
+          and pipelib.schema_errors(p, text) == [] and len(STRAY_WRITES) == n,
+          f"過去記事の差し替え・枠の付け直しが書式どおりに書かない・素通しで書いた: {problems} {fm.get('rank')} {STRAY_WRITES[n:]}")
+
+
 def test_restore_files(tmp: Path):
     """落とした後の組版が失敗したときの巻き戻し(compose.restore_files): 控えた記事・号・予約をバイト単位で戻し、後から増えた
     ファイルを消す。書式に合わない古い中身でも戻す(見張りの許可の理由。監査指摘: この経路をテストが通っていなかった)。"""
@@ -6048,6 +6135,9 @@ def main() -> int:
     test_write_checked_contract(tmp / "wcc")
     test_remove_worktree(tmp / "rmw")
     test_restore_files(tmp / "rsf")
+    test_derive_write(tmp / "dw")
+    test_canonicalize_and_assign_ranks(tmp / "car2")
+    test_rewrite_past_apply_answer(tmp / "rpa")
     test_slugify_format()
     test_escalate_is_module_global()
     test_anomaly_ledger_and_whywhy(tmp / "al")

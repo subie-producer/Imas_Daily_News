@@ -1140,7 +1140,7 @@ def test_compose_recover(tmp: Path):
     check(compose.recover_until("2026-10-10", pub - 3 * 3600) == pub, "03:00 台に戻す締切を渡さない")
     check(compose.recover_until("2026-10-10", pub - (compose.RECOVER_MIN_LEFT_MIN - 1) * 60) is None, "間に合わないのに戻しに行かせる")
     src = __import__("inspect").getsource(compose.main)
-    check('extra_args=["--recover", "--end-at", str(int(until))] if until else None' in src and "recover_until(date) if DROP_LOG.get(date)" in src,
+    check('extra_args=["--recover", "--end-at", str(int(until))] if until else None' in src and "recover_until(date) if recover_pending(date)" in src,
           "承認済みで記事を落とした号を、当番に戻させていない")
     text = (pipelib.ROOT / "prompts" / "oncall-whywhy.md").read_text(encoding="utf-8")
     check("紙面に戻るまでが仕事" in text and "落とした記事・確定した号は戻さない" not in text, "なぜなぜの依頼文が、落とした記事を戻させていない")
@@ -4833,6 +4833,103 @@ def test_late_facts_reach_plan_index(tmp: Path):
           "組版が引き継いだ事実を選定インデックスへ先に並べ、切れた分を選定記録から外していない")
 
 
+def test_settled_drops_not_rewritten(tmp: Path):
+    """重複(P1)で外した記事は、重複の相手が紙面にあるあいだ、組み直し(--reuse-plan)で書き直さない・救済で戻させない・
+    次の号の選定に戻さない(実測 2026-10-12: 救済の組み直しが重複で外した上映会記事を書き直し、承認済みの記事と同じ重複がまた出た)。
+    重複の相手が紙面から消えたら書き直す。書き方の指摘(R1 等)と既報(R10)で外した記事は今までどおり書き直す
+    (R10 は稿への判断で、期日の知らせとして書き直せば載りうる。実測 2026-10-09 の永吉昴ガシャ記事。監査指摘)。"""
+    import oncall
+    for sub in ("candidates", "metrics", "docs/_posts"):
+        (tmp / sub).mkdir(parents=True, exist_ok=True)
+    saved = (compose.ROOT, oncall.ROOT, dict(compose.DROP_LOG), dict(compose.DROP_SETTLED), compose.article_prompt, compose.prompt_file)
+    d0, d1 = "2026-10-12", "2026-10-13"
+    posts = tmp / "docs" / "_posts"
+    try:
+        compose.ROOT = oncall.ROOT = tmp
+        compose.DROP_LOG.clear()
+        compose.DROP_SETTLED.clear()
+        slugs = ["keep", "dup", "orphan", "old", "fix"]
+        for sl in slugs:
+            (posts / f"{d0}-{sl}.md").write_text(f"---\ntitle: {sl}\nrank: medium\n---\n本文\n", encoding="utf-8")
+        cands = {f"c-{sl}": {"id": f"c-{sl}", "url": f"https://www.example.com/{sl}", "dedup_key": sl, "brand": "765", "facts": [sl]}
+                 for sl in slugs}
+        (tmp / "candidates" / f"{d0}.json").write_text(json.dumps(list(cands.values())), encoding="utf-8")
+        plan = {"articles": [{"slug": sl, "rank": "medium", "brand": "765", "candidate_ids": [f"c-{sl}"], "dedup_key": sl} for sl in slugs]}
+        (tmp / "metrics" / f"plan-{d0}.json").write_text(json.dumps(plan), encoding="utf-8")
+        written = [dict(a) for a in plan["articles"]]
+        review = {"blockers": [
+            {"file": f"docs/_posts/{d0}-dup.md", "rule_id": "P1", "repair": "drop_article",
+             "issue": "同じ知らせが2本ある。765記事(slug: keep)と同じ上映会を伝えている。落とすのはこちら"},
+            {"file": f"docs/_posts/{d0}-orphan.md", "rule_id": "P1", "repair": "drop_article",
+             "issue": f"同じ知らせが2本ある。docs/_posts/{d0}-gone.md と同じ。落とすのはこちら"},
+            {"file": f"docs/_posts/{d0}-fix.md", "rule_id": "R1", "repair": "drop_claim", "issue": "出典に無い店舗名"},
+        ]}
+        dropped, _ = compose.drop_blocked_articles(d0, review, written)
+        # 既報(R10)は書き直しで執筆が見送った経路(revise_apply)と同じく、指摘ごと控える。指摘は 2026-10-09 の実例の形
+        compose.log_drop(d0, "old", "書き直しで見送り", "NOT_NEWS 既報と同じ", posts / f"{d0}-old.md",
+                         issues=[{"rule_id": "R10", "repair": "drop_article",
+                                  "issue": "記事の内容は既報と同じで、新しい事実も当日のトリガーも無い。3日以内の締切の告知を目的とする"
+                                           "記事でもない(本文に10/10 14:59の終了が無い)。"}])
+        (posts / f"{d0}-old.md").unlink()
+        compose.persist_drops(d0)
+        rec = json.loads((tmp / "metrics" / f"drops-{d0}.json").read_text(encoding="utf-8"))
+        check(sorted(dropped) == ["dup", "fix", "orphan"] and rec["dup"].get("settled") == {"rule": "P1", "dup_of": ["keep"]}
+              and "settled" not in rec["old"] and "settled" not in rec["fix"],
+              f"外れた記事の記録に、外した理由が話題に掛かること(規則と重複の相手)を残さない: {rec}")
+        got = pipelib.settled_drops(d0, tmp)
+        check(sorted(got) == ["dup"],
+              f"重複の相手が紙面にある記事だけを、書き直さない対象にしていない(既報・相手の消えた重複・書き方の指摘まで入る): {got}")
+        # 組み直し(--reuse-plan): 書き直さないのは、相手が紙面にある重複だけ
+        asked = []
+
+        class Stop(Exception):
+            pass
+
+        def fake_prompt(date, art, *a, **k):
+            asked.append(art["slug"])
+            return "x"
+
+        def stop(*a, **k):
+            raise Stop
+
+        compose.article_prompt, compose.prompt_file = fake_prompt, stop
+        try:
+            compose.write_articles(d0, plan, cands, [], {}, reuse=True)
+        except Stop:
+            pass
+        check(sorted(asked) == ["fix", "old", "orphan"],
+              f"組み直しが、重複で外した記事を書き直す・既報(期日の知らせとして書き直せる)を書き直さない: {sorted(asked)}")
+        # 救済: 戻す対象(戻らない記事に数える計画の記事)から外す。重複だけが外れた号では、戻す組み直しを当番に頼まない
+        check(oncall.planned_slugs(d0) == ["keep", "orphan", "old", "fix"],
+              f"救済が、重複で外した記事を戻らない記事に数える・既報を数えない: {oncall.planned_slugs(d0)}")
+        check(compose.recover_pending(d0), "書き直せば戻る記事があるのに、戻す組み直しを頼まない")
+        compose.DROP_LOG[d0] = {k: v for k, v in compose.DROP_LOG[d0].items() if k in ("dup", "old")}
+        check(compose.recover_pending(d0), "既報で外した記事があるのに、戻す組み直しを頼まない")
+        compose.DROP_LOG[d0] = {k: v for k, v in compose.DROP_LOG[d0].items() if k == "dup"}
+        check(not compose.recover_pending(d0), "重複で外した記事だけなのに、戻す組み直しを頼む")
+        # 次の号の選定: 重複の素材は戻さない。既報・相手の消えた重複・書き方の指摘の素材は戻す
+        (tmp / "candidates" / f"{d1}.json").write_text("[]", encoding="utf-8")
+        compose.carry_dropped_candidates(d1)
+        ids = sorted(x["id"] for x in json.loads((tmp / "candidates" / f"{d1}.json").read_text(encoding="utf-8")))
+        check(ids == ["c-fix", "c-old", "c-orphan"], f"重複で外した記事の素材を戻す・既報の素材を戻さない: {ids}")
+        # 既報の印が残った記録(この修正の前に書かれた形)でも、既報だけでは書き直さない対象にしない
+        rec = json.loads((tmp / "metrics" / f"drops-{d0}.json").read_text(encoding="utf-8"))
+        rec["old"]["settled"] = {"rule": "R10"}
+        (tmp / "metrics" / f"drops-{d0}.json").write_text(json.dumps(rec, ensure_ascii=False), encoding="utf-8")
+        check(sorted(pipelib.settled_drops(d0, tmp)) == ["dup"], "既報の印だけで、記事を書き直さない対象にする")
+        # 重複の相手が紙面から消えたら、重複で外した記事は書き直す対象に戻る
+        (posts / f"{d0}-keep.md").unlink()
+        check(pipelib.settled_drops(d0, tmp) == {}, "重複の相手が紙面から消えても、重複で外した記事を書き直さない")
+        # 記録が壊れていたら、全部を書き直す対象のまま(理由の分からない記事を戻さない側に倒さない)
+        (tmp / "metrics" / f"drops-{d0}.json").write_text("{", encoding="utf-8")
+        check(pipelib.settled_drops(d0, tmp) == {}, "外れた記事の記録が読めないのに、書き直さない記事を決める")
+    finally:
+        compose.ROOT, oncall.ROOT = saved[0], saved[1]
+        compose.DROP_LOG.clear(); compose.DROP_LOG.update(saved[2])
+        compose.DROP_SETTLED.clear(); compose.DROP_SETTLED.update(saved[3])
+        compose.article_prompt, compose.prompt_file = saved[4], saved[5]
+
+
 def test_carry_dropped_candidates(tmp: Path):
     """前の号の計画に入ったのに紙面に載らなかった記事の素材を、次の号の選定に戻す(2026-10-13: 報道を出典にしてよいと決めたログボが、
     翌号の選定に戻る経路が無かった)。組み直しで戻った記事は写さない。同じ素材は CARRY_DROPPED_MAX 回まで。冪等。選定に理由が見える。"""
@@ -5678,6 +5775,7 @@ def main() -> int:
     test_oncall_report_text(tmp / "rp")
     test_oncall_restore_on_exception(tmp / "oc")
     test_oncall_fix_until_clean(tmp / "of")
+    test_settled_drops_not_rewritten(tmp / "sd")
     for f in FAILS:
         print(f"  [FAIL] {f}")
     print(f"test_pipeline: {len(FAILS)} failures")

@@ -49,6 +49,7 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      COMPOSE_WHOLE_MAX_BUDGET_USD, REVIEW_MODEL, append_metric,
                      checkout_edition_branch, classify_retag_lint, classify_source, commit_and_push,
                      edition_date, escalate, extract_json_array, git, has_editorial, EDITORIAL_UNTIL,
+                     SETTLED_DROP_RULES, settled_drops,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
                      collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts)
@@ -448,7 +449,17 @@ def persist_drops(date: str) -> None:
     plan, _ = read_record(ROOT / "metrics" / f"plan-{date}.json")
     ids = {a.get("slug"): a.get("candidate_ids") or [] for a in (plan if isinstance(plan, dict) else {}).get("articles") or []}
     rows = dict(old if isinstance(old, dict) else {})
-    rows.update({slug: {"title": t, "stage": st, "why": why, "candidate_ids": ids.get(slug, [])}
+    # 重複の相手は、issue から拾った語のうち計画にある記事に絞る(計画が読めなければ拾ったまま。相手かどうかは settled_drops が
+    # 紙面にあるかで決める)。絞って相手が残らない重複は、外した理由が成り立つか分からないので印を付けない
+    settled = {}
+    for slug, st in (DROP_SETTLED.get(date) or {}).items():
+        if st.get("rule") == "P1" and ids:
+            st = dict(st, dup_of=[d for d in st.get("dup_of") or [] if d in ids])
+            if not st["dup_of"]:
+                continue
+        settled[slug] = st
+    rows.update({slug: {"title": t, "stage": st, "why": why, "candidate_ids": ids.get(slug, []),
+                        **({"settled": settled[slug]} if slug in settled else {})}
                  for slug, (t, st, why) in (DROP_LOG.get(date) or {}).items()})
     rows = {s: r for s, r in rows.items() if not (ROOT / "docs" / "_posts" / f"{date}-{s}.md").exists()}
     if rows or p.exists():
@@ -503,9 +514,12 @@ def carry_dropped_candidates(date: str) -> list[str]:
     # 写す先(同じページ = 同じ URL、無ければ id)ごとに、外れた記事の素材を全部まとめる(同じ URL の素材が複数あっても、
     # 2件目以降の事実を落とさない。監査指摘)
     groups: dict[str, dict] = {}
+    settled = settled_drops(prev, ROOT)
     for slug, d in drops.items():
         if (ROOT / "docs" / "_posts" / f"{prev}-{slug}.md").exists():
             continue    # 組み直しで戻った記事
+        if slug in settled:
+            continue    # 同じ知らせが前の号に載った(重複)。選定に戻しても同じ理由で外れる
         why = f"{prev}号で記事にならなかった({d.get('stage', '')}: {str(d.get('why') or '')[:120]})"
         for cid in d.get("candidate_ids") or []:
             c = src.get(cid)
@@ -1838,6 +1852,9 @@ def drop_blocked_articles(date: str, review: dict, written: list[dict]) -> tuple
     """
     dropped, unresolved = [], []
     by_slug = {a["slug"]: a for a in written}
+    issues_of = collections.defaultdict(list)
+    for b in review.get("blockers") or []:
+        issues_of[Path((b.get("file") or "").strip()).name].append(b)
     for b in review.get("blockers") or []:
         f = (b.get("file") or "").strip()
         issue = (b.get("issue") or "")[:120]
@@ -1848,7 +1865,7 @@ def drop_blocked_articles(date: str, review: dict, written: list[dict]) -> tuple
         slug = name[len(date) + 1:].removesuffix(".md")
         p = ROOT / "docs" / "_posts" / name
         if slug not in dropped:
-            log_drop(date, slug, "校閲ブロック", f"{b.get('rule_id') or ''} {issue}".strip(), p)
+            log_drop(date, slug, "校閲ブロック", f"{b.get('rule_id') or ''} {issue}".strip(), p, issues=issues_of[name])
         if p.exists():
             p.unlink()
         if slug not in dropped:
@@ -1936,16 +1953,35 @@ WRITE_OUTCOMES: dict[str, dict[str, str]] = {}   # 日付 → {slug: 書けな�
 # 日付 → {slug: (見出し, どの段で, なぜ)}。紙面から外れた記事の**概略**。slug だけ並べても人には何の記事か
 # 分からない(編集長の指摘 2026-09-23)。落とす前に見出しを控え、完了通知に載せる
 DROP_LOG: dict[str, dict[str, tuple[str, str, str]]] = {}
+# 日付 → {slug: {"rule": 規則, "dup_of": [重複の相手]}}。外した理由が話題そのものに掛かる記事(log_drop が控え、persist_drops が
+# 外れた記事の記録の settled に写す)
+DROP_SETTLED: dict[str, dict[str, dict]] = {}
 
 
-def log_drop(date: str, slug: str, stage: str, why: str, path: Path | None = None) -> None:
-    """紙面から外す記事の概略を控える。**ファイルを消す前に**呼ぶ(見出しはファイルから取る)。"""
+def log_drop(date: str, slug: str, stage: str, why: str, path: Path | None = None,
+             issues: list[dict] | None = None) -> None:
+    """紙面から外す記事の概略を控える。**ファイルを消す前に**呼ぶ(見出しはファイルから取る)。
+    issues は外す理由になった校閲の指摘。話題そのものに掛かる規則(SETTLED_DROP_RULES: 重複)なら、その規則と
+    重複の相手を DROP_SETTLED に控える(組み直しが書き直さない・救済が戻さない印。pipelib.settled_drops)。"""
     title = ""
     p = path or (ROOT / "docs" / "_posts" / f"{date}-{slug}.md")
     fm = parse_front_matter(p) if p.exists() else None
     if fm:
         title = str(fm.get("title") or "")
     DROP_LOG.setdefault(date, {})[slug] = (title, stage, why[:160])
+    settled = DROP_SETTLED.setdefault(date, {})
+    settled.pop(slug, None)
+    for b in issues or []:
+        rule = str(b.get("rule_id") or "")
+        if rule not in SETTLED_DROP_RULES:
+            continue
+        # 重複の相手は issue に slug で書かれる(review-paper.md の P1)。紙面の記事のパスで書かれても slug に直す。
+        # slug らしい語を全部控え、相手かどうかは紙面にその記事があるかで決める(settled_drops)
+        dup = sorted({t.removeprefix(f"{date}-") for t in re.findall(r"[a-z0-9]+(?:-[a-z0-9]+)*", str(b.get("issue") or ""))}
+                     - {slug, date})
+        if dup:
+            settled[slug] = {"rule": rule, "dup_of": dup}
+            break
 
 
 # 日付 → {slug: 直前の書き直しを機械の検査が戻した理由("" なら戻していない)}。校閲の依頼文に載せる
@@ -2019,6 +2055,14 @@ def hand_over_anomalies(date: str, rerun: bool, reason: str = "", extra_args: li
     diagnose_anomalies("compose", date, rerun=rerun, reason=reason, extra_args=extra_args)
 
 
+def recover_pending(date: str) -> bool:
+    """この号で外れた記事に、戻す組み直し(--recover)で書き直せば戻りうるものがあるか。外した理由がいまも成り立つ記事
+    (重複の相手が紙面にある。settled_drops)だけなら、組み直しは何も書き直さないので当番に戻させない。
+    外れた記事の記録(persist_records)を書いたあとに呼ぶ。"""
+    settled = settled_drops(date, ROOT)
+    return any(s not in settled for s in DROP_LOG.get(date) or {})
+
+
 def drop_summary(date: str) -> str:
     """完了通知に載せる、外れた記事の一覧(見出し・段・理由)。"""
     rows = DROP_LOG.get(date) or {}
@@ -2046,14 +2090,21 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
 
     reuse=True(--reuse-plan)のときは、既に書けている記事を再執筆しない。
     執筆層だけを直して落ちた記事を拾い直す、という再試行を安く保つため。
+    前の実行で外した理由が話題そのものに掛かり、いまも成り立つ記事(重複の相手が紙面にある。settled_drops)も書き直さない。
+    書き直しても同じ指摘で落ちるか、承認済みの記事との重複をまた作るだけ(実測 2026-10-12: 救済の組み直しが重複で外した
+    上映会記事を書き直し、承認済みの記事と同じ重複がまた出た)。
     """
     wave = wave or COMPOSE_WAVE
     trig_by_key = {t["dedup_key"]: t for t in triggers}
     prior = storylink.prior_by_key(date, ROOT)
     jobs, written_before = [], []
+    settled = settled_drops(date, ROOT) if reuse else {}
     for art in plan["articles"]:
         if reuse and (ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md").exists():
             written_before.append(art)
+            continue
+        if art["slug"] in settled:
+            print(f"記事 {art['slug']} は書き直さない(前の実行で外した理由がいまも成り立つ: {settled[art['slug']]})", flush=True)
             continue
         materials = [cands[cid] for cid in art["candidate_ids"]]
         # src も**申告ではなく判定表**から出す。素材の source_type には収集時点の
@@ -2511,7 +2562,8 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     if ans.get("status") == "decline":
         if problems:
             return "kept", "理由の無い decline(" + " / ".join(problems[:2]) + ")。元の稿のまま"
-        log_drop(date, art["slug"], "書き直しで見送り", f"{ans.get('decline_code')} {str(ans.get('decline_detail') or '')}".strip(), path)
+        log_drop(date, art["slug"], "書き直しで見送り", f"{ans.get('decline_code')} {str(ans.get('decline_detail') or '')}".strip(), path,
+                 issues=issues)
         path.unlink(missing_ok=True)
         return "dropped", f"執筆側が不成立と判断({ans.get('decline_code')})。落とす"
     old_text = path.read_text(encoding="utf-8") if path.exists() else ""
@@ -3761,7 +3813,7 @@ def main() -> int:
         # 残っていれば、当番は直したあと落とした記事をこの号に戻す(--recover。承認済みの紙面は控えに取り、戻せなければ控えに戻す)。
         # 以前は「号は確定している」として再実行させず、発行前に直したのに2本を戻さなかった(2026-10-10。編集長「復帰保証までが
         # Opus/Sol の仕事だ」)
-        until = recover_until(date) if DROP_LOG.get(date) else None
+        until = recover_until(date) if recover_pending(date) else None
         hand_over_anomalies(date, rerun=until is not None,
                             extra_args=["--recover", "--end-at", str(int(until))] if until else None)
         return 0

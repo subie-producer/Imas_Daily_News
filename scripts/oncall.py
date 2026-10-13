@@ -74,7 +74,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hashlib
 
-from pipelib import (COLLECT_ONCALL_MARK, ENV, ROOT, SCHEDULED, SLOT_MARGIN_MIN, JobLockTimeout, job_lock, loads_strict, mark_collect_oncall,
+from pipelib import (COLLECT_ONCALL_MARK, ENV, ROOT, SCHEDULED, SLOT_MARGIN_MIN, JobLockTimeout, anomaly, job_lock, loads_strict, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, settled_drops,
                      tool_path)
 
@@ -345,10 +345,29 @@ def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -
 AUDIT_REQUIRED_RUNS = ("test_pipeline", "selfcheck", "lint")
 
 
+AUDIT_MUST_PASS = ("test_pipeline", "selfcheck")   # 修正の後は通っていなければならない。lint は号の中身(組み直す前の記事)でも赤になる
+
+
 def audit_ran_checks(rev: dict) -> bool:
-    """監査の答えに、テストの全体・selfcheck・lint を実際に走らせた記録(コマンドと空でない結果)があるか。"""
-    runs = [v for v in rev.get("verification") or [] if isinstance(v, dict) and str(v.get("result") or "").strip()]
-    return all(any(k in str(v.get("command") or "") for v in runs) for k in AUDIT_REQUIRED_RUNS)
+    """監査の答えに、テストの全体・selfcheck・lint を実際に走らせた記録があるか。走らせた = 終了コードがある。テストと selfcheck は
+    終了コード 0。「走らせられなかった」の結果文で承認にしない(監査指摘: 結果が空でないだけで承認になった)。"""
+    runs = [v for v in rev.get("verification") or []
+            if isinstance(v, dict) and isinstance(v.get("exit_code"), int) and not isinstance(v.get("exit_code"), bool)]
+    ran = lambda k: [v for v in runs if k in str(v.get("command") or "")]
+    return all(ran(k) for k in AUDIT_REQUIRED_RUNS) and all(ran(k)[-1]["exit_code"] == 0 for k in AUDIT_MUST_PASS)
+
+
+def remove_worktree(aw: Path, cwd: Path) -> None:
+    """使い捨ての作業ツリーを片付ける。git で消せなければディレクトリを消して登録を掃除し、それでも残れば異常として申告する
+    (消せないまま黙って進むと、作業ツリーと登録が溜まる。監査指摘)。"""
+    r = sh(["git", "worktree", "remove", "--force", str(aw)], cwd=cwd)
+    if r.returncode != 0 or aw.exists():
+        shutil.rmtree(aw, ignore_errors=True)
+    sh(["git", "worktree", "prune"], cwd=cwd)
+    listed = any(ln == f"worktree {aw}" for ln in sh(["git", "worktree", "list", "--porcelain"], cwd=cwd).stdout.splitlines())
+    if aw.exists() or listed:
+        anomaly("oncall", f"監査用の作業ツリーを片付けられない: {aw}(ディレクトリ {'あり' if aw.exists() else 'なし'}・"
+                          f"登録 {'あり' if listed else 'なし'})。git worktree remove: {(r.stderr or r.stdout or '').strip()[:200]}")
 
 
 def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -> dict:
@@ -363,8 +382,8 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
     head = sh(["git", "rev-parse", "HEAD"], cwd=cwd).stdout.strip()
     aw = Path(tempfile.mkdtemp(prefix="oncall-audit-"))
     shutil.rmtree(aw)
-    must(sh(["git", "worktree", "add", "--detach", str(aw), head], cwd=cwd, timeout=120), "監査用の作業ツリー")
     try:
+        must(sh(["git", "worktree", "add", "--detach", str(aw), head], cwd=cwd, timeout=120), "監査用の作業ツリー")
         name = "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
         short = prompt_file("oncall", name, prompt, base=aw)
         try:
@@ -383,8 +402,7 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
         save_raw("oncall", name, so, se, code, files={"answer": text})
     finally:
         out_path.unlink(missing_ok=True)
-        sh(["git", "worktree", "remove", "--force", str(aw)], cwd=cwd)
-        sh(["git", "worktree", "prune"], cwd=cwd)
+        remove_worktree(aw, cwd)
     # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ({"verdict":"approve"} だけの答えで承認にしない。監査指摘)
     ans = parse_json(text) if code == 0 else None
     if ans is None or not schema_ok(ans, schema_file.read_text(encoding="utf-8")):

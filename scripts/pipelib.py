@@ -1034,7 +1034,9 @@ def write_checked(path, text: str) -> None:
     - テストでは(strict_writes)合わなければ SchemaViolation で止める: 書式と食い違う変更を、作った時点で捕まえる
     - 本番では止めずに書き、どのファイルのどの欄が合わないかを異常として申告する(当番のなぜなぜへ)。最後の門は発行前の lint で、
       止まり方(lint の段でその1本を落とす 等)は変えない。書く場所で例外にすると、1本を落とせば済む誤りで組版全体が止まる
-    一時ファイルに書いて一度に差し替える(書きかけを残さない)。一時ファイルは Git 管理外(<ROOT>/metrics/work/)に置く。"""
+    一時ファイルに書いて一度に差し替える(書きかけを残さない)。一時ファイルは書く先と同じディレクトリに置き(別の置き場からの
+    差し替えは、同じ装置でもサンドボックスの境で EXDEV になった。監査指摘)、失敗しても消す。名前(`.<名前>.<pid>.tmp`)は
+    .gitignore の対象で、止まって残っても作業ツリーを汚さない。"""
     path = Path(path)
     errs = schema_errors(path, text)
     if errs:
@@ -1043,15 +1045,12 @@ def write_checked(path, text: str) -> None:
         if strict_writes():
             raise SchemaViolation(msg)
         anomaly("schema", msg + "(書いたうえで申告。発行前の lint が止める)")
-    tmpdir = ROOT / "metrics" / "work"
+    tmp = path.parent / f".{path.name}.{os.getpid()}.tmp"
     try:
-        tmpdir.mkdir(parents=True, exist_ok=True)
-        same_fs = os.stat(tmpdir).st_dev == os.stat(path.parent).st_dev
-    except OSError:
-        same_fs = False
-    tmp = (tmpdir if same_fs else path.parent) / f".{path.name}.{os.getpid()}.tmp"
-    tmp.write_text(text, encoding="utf-8")
-    os.replace(tmp, path)
+        tmp.write_text(text, encoding="utf-8")
+        os.replace(tmp, path)
+    finally:
+        tmp.unlink(missing_ok=True)
 
 
 def schema_ok(value, schema) -> bool:

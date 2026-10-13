@@ -3,7 +3,8 @@
 
 ## 0. 走らせること
 - この作業ツリーは監査する commit を切り出した使い捨てのもの。書き込んでよい
-- `python3 scripts/test_pipeline.py`・`python3 scripts/selfcheck.py`・`python3 scripts/lint.py --base origin/main` を走らせ、`verification` にコマンドと結果を書く
+- `python3 scripts/test_pipeline.py`・`python3 scripts/selfcheck.py`・`python3 scripts/lint.py --base origin/main` を走らせ、`verification` にコマンド・終了コード・結果(最後の行)を書く。走らせられなかった・終わらなかったものの終了コードは null
+- lint が 0 でないときは、その誤りが修正によるものか(修正で増えた・修正が直すはずのものが残る)を確かめ、修正によるなら must_fix にする
 - 修正が書くファイル(素材・予約・台帳・記事・号・記録)は、実際に書かせて schema/ と lint で検める。疑った道筋は一時的なテストを書いて再現する
 - 走らせられなかったものは、走らせられなかったと書く。走らせていない確認で approve しない
 

@@ -550,19 +550,21 @@ def carry_dropped_candidates(date: str) -> list[str]:
                 g = groups.setdefault(c.get("url") or f"id:{cid}", {"srcs": {}, "why": why})
                 g["srcs"][cid] = c
     # 戻した素材を前の号の選定がまた選ばなかった(計画に入らなかった)ものも戻す。選定で外れると外れた記事の記録に載らず、次の号に
-    # 戻る経路が無かった(2026-10-14: 戻したログボを選定が前の号の理由で外し、締切の 10/15 号に戻らなかった)。回数の上限で止まる。
-    # 締切を過ぎた素材は戻さない
+    # 戻る経路が無かった(2026-10-14: 戻したログボを選定が前の号の理由で外し、締切の 10/15 号に戻らなかった)。回数の上限で止まる
     plan, _ = read_record(ROOT / "metrics" / f"plan-{prev}.json")
     picked = {i for a in (plan if isinstance(plan, dict) else {}).get("articles") or [] for i in a.get("candidate_ids") or []}
     picked_urls = {src[i].get("url") for i in picked if i in src}
     for cid, c in src.items():
-        if c.get("carried") and cid not in picked and c.get("url") not in picked_urls \
-                and not (re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(c.get("deadline") or "")) and c["deadline"] < date):
+        if c.get("carried") and cid not in picked and c.get("url") not in picked_urls:
             g = groups.setdefault(c.get("url") or f"id:{cid}", {"srcs": {}, "why": f"{prev}号の選定で選ばれなかった(戻した素材)"})
             g["srcs"][cid] = c
+    # 締切を過ぎた素材は、どちらの経路でも戻さない(監査指摘: 外れた記事の経路だけ締切を見ていなかった)
+    expired = lambda c: bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(c.get("deadline") or ""))) and c["deadline"] < date
     carried, changed = [], False
     for key, g in groups.items():
-        srcs = [g["srcs"][i] for i in sorted(g["srcs"])]          # 順序に依らない
+        srcs = [g["srcs"][i] for i in sorted(g["srcs"]) if not expired(g["srcs"][i])]       # 順序に依らない
+        if not srcs:
+            continue
         good = [c for c in srcs if not candidate_misplaced(c)]
         # 回数は、まとめた素材の最大値から一度だけ増やす。この号に同じページの候補があれば、上限を超えても回数を付け続ける
         # (残さないと、毎号拾い直す素材の回数が 1→2→無し→1 と戻る。監査指摘)。写す(候補が無い)のは上限まで

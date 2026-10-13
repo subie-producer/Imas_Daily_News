@@ -9,13 +9,14 @@
     "verification": {
       "type": "array",
       "minItems": 1,
-      "description": "実際に走らせたコマンドと、その結果(最後の行など)。走らせていない確認は書かない",
+      "description": "実際に走らせたコマンドと、その終了コード・結果(最後の行など)。走らせていない確認は書かない",
       "items": {
         "type": "object",
-        "required": ["command", "result"],
+        "required": ["command", "exit_code", "result"],
         "additionalProperties": false,
         "properties": {
           "command": {"type": "string", "maxLength": 300},
+          "exit_code": {"type": ["integer", "null"], "description": "プロセスの終了コード。走らせられなかった・終わらなかったときは null"},
           "result": {"type": "string", "maxLength": 400}
         }
       }

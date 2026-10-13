@@ -32,24 +32,49 @@ WRITE_PASSTHROUGH = {
     ("rewrite_past.py", "main"): "校閲を通ったと確かめる前に止まった差し替えを、元の文面に戻す",
     ("rewrite_past.py", "replace_and_review"): "校閲を通らなかった差し替えを、元の文面に戻す",
     ("pipelib.py", "_restore"): "失敗した取引(出典の判定・付け直し・lint)のファイルを、開始時の中身へバイト単位で戻す",
+    ("compose.py", "restore_files"): "落とした後の組版が失敗したとき、記事・号・予約を控えた時点の中身へバイト単位で戻す",
 }
 
 
 def _watch_governed_writes() -> None:
+    """書く口は全部見張る: open(書く・足す・作るの mode)・Path.open・Path.write_text/write_bytes(内部で io.open)・
+    os.replace/os.rename の行き先(監査指摘: write_text/write_bytes だけを見ていて、open("w") の迂回を見逃した)。"""
+    import builtins
+    import io
     scripts = Path(__file__).resolve().parent
+    stdlib = Path(os.__file__).resolve().parent
 
-    def wrap(orig):
-        def write(self, *a, **k):
-            if any(rx.search(self.as_posix()) for rx, _ in pipelib.SCHEMA_OF_PATH):
-                f = sys._getframe(1)
-                fn = Path(f.f_code.co_filename)
-                if fn.parent == scripts and fn.name != Path(__file__).name and f.f_code.co_name != "write_checked" \
-                        and (fn.name, f.f_code.co_name) not in WRITE_PASSTHROUGH:
-                    STRAY_WRITES.append(f"{fn.name}:{f.f_lineno} {f.f_code.co_name} → {self.name}")
-            return orig(self, *a, **k)
-        return write
-    Path.write_text = wrap(Path.write_text)
-    Path.write_bytes = wrap(Path.write_bytes)
+    def note(target) -> None:
+        try:
+            s = Path(os.fspath(target)).as_posix()
+        except TypeError:
+            return
+        if not any(rx.search(s) for rx, _ in pipelib.SCHEMA_OF_PATH):
+            return
+        f = sys._getframe(2)
+        while f is not None and Path(f.f_code.co_filename).resolve().is_relative_to(stdlib):
+            f = f.f_back          # pathlib・io の中は飛ばし、書いた本人のフレームを見る
+        if f is None:
+            return
+        fn = Path(f.f_code.co_filename)
+        if fn.parent == scripts and fn.name != Path(__file__).name and f.f_code.co_name != "write_checked" \
+                and (fn.name, f.f_code.co_name) not in WRITE_PASSTHROUGH:
+            STRAY_WRITES.append(f"{fn.name}:{f.f_lineno} {f.f_code.co_name} → {Path(s).name}")
+
+    orig_open = io.open
+
+    def watched_open(file, mode="r", *a, **k):
+        if isinstance(mode, str) and any(c in mode for c in "wax+"):
+            note(file)
+        return orig_open(file, mode, *a, **k)
+
+    def moved(orig):
+        def move(src, dst, *a, **k):
+            note(dst)
+            return orig(src, dst, *a, **k)
+        return move
+    io.open = builtins.open = watched_open
+    os.replace, os.rename = moved(os.replace), moved(os.rename)
 
 
 _watch_governed_writes()
@@ -77,9 +102,9 @@ def sched_row(i: str, reserved_on: str, **kw) -> dict:
     return {"id": i, "dedup_key": kw.pop("dedup_key", f"k-{i}"), "brand": kw.pop("brand", "cg"), "subject": kw.pop("subject", i),
             "kind": kw.pop("kind", "その他"), "reserved_on": reserved_on, "facts": kw.pop("facts", [f"{i} の事実"]), **kw}
 # 監査(Sol)の承認の偽の答えに付ける「実際に走らせた記録」。これの無い承認は承認にならない(oncall.audit_ran_checks)
-AUDIT_RAN = [{"command": "python3 scripts/test_pipeline.py", "result": "test_pipeline: 0 failures"},
-             {"command": "python3 scripts/selfcheck.py", "result": "selfcheck: 0 errors"},
-             {"command": "python3 scripts/lint.py --base origin/main", "result": "lint: 0 errors"}]
+AUDIT_RAN = [{"command": "python3 scripts/test_pipeline.py", "exit_code": 0, "result": "test_pipeline: 0 failures"},
+             {"command": "python3 scripts/selfcheck.py", "exit_code": 0, "result": "selfcheck: 0 errors"},
+             {"command": "python3 scripts/lint.py --base origin/main", "exit_code": 0, "result": "lint: 0 errors"}]
 
 # **テストは本物の Discord に絶対に送らない。**通知の経路を差し替え忘れたテストが本物の webhook に届いた
 # (実測 2026-09-23: 当番の修正報告の見本 3 通が編集長の Discord に出た)。webhook の URL を最初に消し、
@@ -5162,9 +5187,13 @@ def test_carry_dropped_candidates(tmp: Path):
             cand_row("r2", "https://press.example/r2", dedup_key="r2", deadline=da, carried=tag),
             cand_row("r3", "https://press.example/r3", dedup_key="r3", carried=tag),
             cand_row("r4", "https://press.example/r4", dedup_key="r4"),
+            cand_row("r5", "https://press.example/r5", dedup_key="r5", deadline=da),
         ], ensure_ascii=False), encoding="utf-8")
-        (tmp / "metrics" / f"plan-{da}.json").write_text(json.dumps({"articles": [{"slug": "r3", "candidate_ids": ["r3"]}]}), encoding="utf-8")
-        (tmp / "metrics" / f"drops-{da}.json").unlink(missing_ok=True)
+        (tmp / "metrics" / f"plan-{da}.json").write_text(json.dumps({"articles": [{"slug": "r3", "candidate_ids": ["r3"]},
+                                                                                  {"slug": "r5", "candidate_ids": ["r5"]}]}), encoding="utf-8")
+        # 外れた記事の経路でも、締切を過ぎた素材は戻さない(監査指摘)
+        (tmp / "metrics" / f"drops-{da}.json").write_text(json.dumps({"r5": {"title": "r5", "stage": "執筆で見送り", "why": "NO_PRIMARY_SOURCE",
+                                                                          "candidate_ids": ["r5"]}}), encoding="utf-8")
         compose.carry_dropped_candidates(db)
         got = json.loads((tmp / "candidates" / f"{db}.json").read_text(encoding="utf-8"))
         check([(x["id"], x["carried"]["from"], x["carried"]["count"]) for x in got] == [("r1", da, 2)] and "選定" in got[0]["carried"]["why"],
@@ -5179,8 +5208,8 @@ def test_carry_dropped_candidates(tmp: Path):
               and "公式の告知" not in str(subj.get("carried")),
               f"選定に、前の号で記事にならなかった印が見えない・前の号の理由まで見せている: {subj}")
         rules = compose.plan_rules()
-        check("不採用の理由にしない" in rules and "同じ理由で記事にならない" not in rules,
-              "選定の規則が、前の号で記事にならなかった主題を前の号の理由で外させる")
+        check("不採用の理由にしない" in rules and "同じ理由で記事にならない" not in rules and "ほかの主題と同じ基準" in rules,
+              "選定の規則が、前の号で記事にならなかった主題を前の号の理由で外させる・既報などの基準を上書きして選ばせる")
     finally:
         compose.ROOT = saved_root
         compose.DROP_LOG.clear()
@@ -5389,13 +5418,25 @@ def test_oncall_fix_until_clean(tmp: Path):
           "監査の schema: 走らせたコマンドと結果(verification)が必須でない")
     check("## 0. 走らせること" in rp and "test_pipeline.py" in rp and "lint.py" in rp and "approve しない" in rp,
           "監査への依頼が、テスト・selfcheck・lint を走らせることを求めていない")
+    # 走らせた = 終了コードがある。テストと selfcheck は 0。「走らせられなかった」の結果文では承認にならない(監査指摘)。lint は号の中身で
+    # 赤になりうるので、走らせた記録があればよい(修正によるかは監査が判断する)
+    cannot = [dict(v, exit_code=None, result="実行できなかった: permission denied") for v in AUDIT_RAN]
     check(oncall.audit_ran_checks({"verification": AUDIT_RAN})
+          and oncall.audit_ran_checks({"verification": AUDIT_RAN[:2] + [dict(AUDIT_RAN[2], exit_code=1)]})
           and not oncall.audit_ran_checks({"verification": AUDIT_RAN[:2]})
-          and not oncall.audit_ran_checks({"verification": [dict(v, result="") for v in AUDIT_RAN]})
-          and not oncall.audit_ran_checks({}), "走らせた記録の検め方(3つ全部・結果が空でない)")
+          and not oncall.audit_ran_checks({"verification": cannot})
+          and not oncall.audit_ran_checks({"verification": [{k: v for k, v in r.items() if k != "exit_code"} for r in AUDIT_RAN]})
+          and not oncall.audit_ran_checks({"verification": [dict(AUDIT_RAN[0], exit_code=1)] + AUDIT_RAN[1:]})
+          and not oncall.audit_ran_checks({"verification": AUDIT_RAN + [dict(AUDIT_RAN[1], exit_code=1)]})
+          and not oncall.audit_ran_checks({"verification": [dict(v, exit_code=True) for v in AUDIT_RAN]})
+          and not oncall.audit_ran_checks({}),
+          "走らせた記録の検め方(3つ全部に終了コード・テストと selfcheck は最後の実行が 0・走らせられなかったものは数えない)")
+    vi = rs["properties"]["verification"]["items"]
+    check(vi["required"] == ["command", "exit_code", "result"] and vi["properties"]["exit_code"]["type"] == ["integer", "null"],
+          "監査の schema: 走らせた記録に終了コードが必須でない")
     src_rc = __import__("inspect").getsource(oncall.run_codex)
     check('"workspace-write"' in src_rc and '"read-only"' not in src_rc and '"worktree", "add", "--detach"' in src_rc
-          and '"worktree", "remove", "--force"' in src_rc, "監査を、使い捨ての作業ツリーで書き込みのできる環境として起動していない")
+          and "remove_worktree(aw, cwd)" in src_rc.split("finally:")[-1], "監査を、使い捨ての作業ツリーで書き込みのできる環境として起動していない")
     # 続きから始められる条件
     tmp.mkdir(parents=True, exist_ok=True)
     g = lambda *a: subprocess.run(["git", *a], cwd=tmp, capture_output=True, text=True, check=True).stdout.strip()
@@ -5858,26 +5899,155 @@ def test_stray_governed_write_is_caught(tmp: Path):
     (tmp / "candidates").mkdir(parents=True)
     scripts = Path(__file__).resolve().parent
     ns: dict = {}
-    exec(compile("def bad(p):\n    p.write_text('[]', encoding='utf-8')\n", str(scripts / "compose.py"), "exec"), ns)
+    code = ("import os\n"
+            "def bad(p):\n    p.write_text('[]', encoding='utf-8')\n"
+            "def bad_open(p):\n    with open(p, 'w', encoding='utf-8') as f:\n        f.write('[]')\n"
+            "def bad_path_open(p):\n    with p.open('a', encoding='utf-8') as f:\n        f.write('')\n"
+            "def bad_bytes(p):\n    p.write_bytes(b'[]')\n"
+            "def bad_move(src, p):\n    os.replace(src, p)\n"
+            "def read(p):\n    return open(p, encoding='utf-8').read()\n")
+    exec(compile(code, str(scripts / "compose.py"), "exec"), ns)
     n = len(STRAY_WRITES)
-    ns["bad"](tmp / "candidates" / "2026-10-01.json")
-    caught = STRAY_WRITES[n:]
+    target = tmp / "candidates" / "2026-10-01.json"
+    ns["bad"](target)
+    ns["bad_open"](target)
+    ns["bad_path_open"](target)
+    ns["bad_bytes"](target)
+    (tmp / "x.tmp").write_text("[]", encoding="utf-8")
+    ns["bad_move"](tmp / "x.tmp", target)
+    caught = [s.split(" →")[0] for s in STRAY_WRITES[n:]]
     del STRAY_WRITES[n:]
     ns["bad"](tmp / "candidates" / "notes.txt")
-    saved, pipelib.ROOT = pipelib.ROOT, tmp          # 一時ファイルの置き場も一時ディレクトリに(本体の作業ツリーに触らない)
-    try:
-        pipelib.write_checked(tmp / "candidates" / "2026-10-02.json", "[]\n")
-    finally:
-        pipelib.ROOT = saved
+    ns["read"](target)
+    pipelib.write_checked(tmp / "candidates" / "2026-10-02.json", "[]\n")
     (tmp / "candidates" / "2026-10-03.json").write_text("[]", encoding="utf-8")
-    check(len(caught) == 1 and caught[0].startswith("compose.py:2 bad") and len(STRAY_WRITES) == n,
-          f"見張りが素通しの書き込みを控えない・控えなくてよいものを控えた: {caught} {STRAY_WRITES[n:]}")
+    check(caught == ["compose.py:3 bad", "compose.py:5 bad_open", "compose.py:8 bad_path_open", "compose.py:11 bad_bytes",
+                     "compose.py:13 bad_move"] and len(STRAY_WRITES) == n,
+          f"見張りが素通しの書き込み(write_text・open・Path.open・write_bytes・os.replace)を控えない・控えなくてよいもの"
+          f"(書式の無いファイル・読むだけ・write_checked・テストの下準備)を控えた: {caught} {STRAY_WRITES[n:]}")
     del STRAY_WRITES[n:]
+
+
+def test_restore_files(tmp: Path):
+    """落とした後の組版が失敗したときの巻き戻し(compose.restore_files): 控えた記事・号・予約をバイト単位で戻し、後から増えた
+    ファイルを消す。書式に合わない古い中身でも戻す(見張りの許可の理由。監査指摘: この経路をテストが通っていなかった)。"""
+    d = "2026-10-05"
+    for sub in ("docs/_posts", "docs/_editions", "stock/scheduled"):
+        (tmp / sub).mkdir(parents=True, exist_ok=True)
+    a, b = tmp / "docs" / "_posts" / f"{d}-a.md", tmp / "docs" / "_posts" / f"{d}-b.md"
+    ed, sc = tmp / "docs" / "_editions" / f"{d}.md", tmp / "stock" / "scheduled" / "2026-10-08.json"
+    a.write_bytes(("---\n" + article_fm("a", d) + "---\n本文\n").encode("utf-8"))
+    b.write_bytes(b"---\ntitle: old form\n---\n")          # 書式の古い記事も、控えたとおりに戻す
+    ed.write_bytes(b"---\nnumber: 1\n---\n")
+    sc.write_bytes(b"[]\n")
+    before = {p: p.read_bytes() for p in (a, b, ed, sc)}
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        snap = compose.snapshot_files([f"docs/_posts/{d}-*.md", f"docs/_editions/{d}.md", "stock/scheduled/*.json"])
+        a.write_text("changed", encoding="utf-8")
+        b.unlink()
+        ed.write_text("changed", encoding="utf-8")
+        new = tmp / "docs" / "_posts" / f"{d}-new.md"
+        new.write_text("new", encoding="utf-8")
+        compose.restore_files(snap)
+    finally:
+        compose.ROOT = saved
+    check(all(p.exists() and p.read_bytes() == v for p, v in before.items()) and not new.exists(),
+          "落とした後の組版の巻き戻しが、控えた中身へ戻さない・後から増えた記事を残す")
+
+
+def test_remove_worktree(tmp: Path):
+    """監査用の使い捨ての作業ツリーは、git で消せなくても片付け、片付けられなければ異常として申告する(黙って残さない。監査指摘)。"""
+    import oncall
+    repo = tmp / "repo"
+    repo.mkdir(parents=True)
+    g = lambda *a: subprocess.run(["git", *a], cwd=repo, capture_output=True, text=True, check=True).stdout
+    g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
+    (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
+    listed = lambda aw: f"worktree {aw}" in g("worktree", "list", "--porcelain").splitlines()
+    saved_sh, saved_rmtree, saved_anomaly, seen = oncall.sh, oncall.shutil.rmtree, oncall.anomaly, []
+    try:
+        oncall.anomaly = lambda job, text: seen.append(text)
+        aw = tmp / "aw1"
+        g("worktree", "add", "-q", "--detach", str(aw), "HEAD")
+        oncall.remove_worktree(aw, repo)
+        ok_normal = not aw.exists() and not listed(aw) and not seen
+        # git worktree remove だけが失敗: ディレクトリを消して登録を掃除する
+        aw = tmp / "aw2"
+        g("worktree", "add", "-q", "--detach", str(aw), "HEAD")
+        oncall.sh = lambda args, cwd, timeout=600: (subprocess.CompletedProcess(args, 1, "", "fatal: injected")
+                                                    if args[:3] == ["git", "worktree", "remove"] else saved_sh(args, cwd, timeout))
+        oncall.remove_worktree(aw, repo)
+        ok_fallback = not aw.exists() and not listed(aw) and not seen
+        # ディレクトリも消せない: 異常として申告する
+        aw = tmp / "aw3"
+        g("worktree", "add", "-q", "--detach", str(aw), "HEAD")
+        oncall.shutil.rmtree = lambda *a, **k: None
+        oncall.remove_worktree(aw, repo)
+        ok_report = aw.exists() and len(seen) == 1 and "片付けられない" in seen[0]
+    finally:
+        oncall.sh, oncall.shutil.rmtree, oncall.anomaly = saved_sh, saved_rmtree, saved_anomaly
+    check(ok_normal and ok_fallback and ok_report,
+          f"監査用の作業ツリーの片付け(普通に消す・git で消せなければディレクトリを消す・それも無理なら申告): {ok_normal} {ok_fallback} {ok_report} {seen}")
+
+
+def test_write_checked_contract(tmp: Path):
+    """write_checked: テスト(strict)では書式に合わない中身で例外にして元のファイルを変えない。本番では書いて異常を申告する。
+    差し替えに失敗しても元のファイルを保ち、一時ファイルを残さない。一時ファイルは書く先と同じディレクトリで、Git の対象外の名前
+    (監査指摘: 検査を空にしても全テストが通った・別の置き場からの差し替えが EXDEV で止まり一時ファイルが残った)。"""
+    d = tmp / "candidates"
+    d.mkdir(parents=True)
+    p = d / "2026-10-05.json"
+    good = json.dumps([cand_row("c1", "https://a.example/1")], ensure_ascii=False) + "\n"
+    bad = json.dumps([cand_row("c1", "https://a.example/1", unknown_field=1)], ensure_ascii=False) + "\n"
+    pipelib.write_checked(p, good)
+    raised = False
+    try:
+        pipelib.write_checked(p, bad)
+    except pipelib.SchemaViolation as e:
+        raised = "candidates.schema.json" in str(e)
+    check(raised and p.read_text(encoding="utf-8") == good, "テストで書式に合わない中身を書かせても例外にならない・元のファイルを変えた")
+    saved_anomaly, seen = pipelib.anomaly, []
+    os.environ.pop("IMAS_STRICT_WRITES")
+    try:
+        pipelib.anomaly = lambda stage, msg, *a, **k: seen.append((stage, msg))
+        pipelib.write_checked(p, bad)
+    finally:
+        os.environ["IMAS_STRICT_WRITES"] = "1"
+        pipelib.anomaly = saved_anomaly
+    check(p.read_text(encoding="utf-8") == bad and len(seen) == 1 and seen[0][0] == "schema" and "unknown_field" in seen[0][1],
+          f"本番で書式に合わない中身を書かない・異常として申告しない: {seen}")
+    # 差し替えの失敗(EXDEV 等): 元のファイルを保ち、一時ファイルを残さない
+    pipelib.write_checked(p, good)
+    saved_replace, used = pipelib.os.replace, []
+
+    def failing_replace(src, dst):
+        used.append(Path(src).parent)
+        raise OSError(18, "Invalid cross-device link")
+    pipelib.os.replace = failing_replace
+    try:
+        failed = False
+        try:
+            pipelib.write_checked(p, json.dumps([cand_row("c2", "https://a.example/2")]) + "\n")
+        except OSError:
+            failed = True
+    finally:
+        pipelib.os.replace = saved_replace
+    left = [x.name for x in d.iterdir() if x.name != p.name]
+    check(failed and p.read_text(encoding="utf-8") == good and not left and used == [d],
+          f"差し替えに失敗したとき元のファイルを保たない・一時ファイルを残した・一時ファイルが書く先と別の置き場: {left} {used}")
+    ign = subprocess.run(["git", "check-ignore", "-q", "--no-index", f"candidates/.{p.name}.123.tmp"],
+                         cwd=Path(__file__).resolve().parent.parent, capture_output=True)
+    check(ign.returncode == 0, "write_checked の一時ファイルの名前が .gitignore の対象でない(止まって残ると作業ツリーを汚す)")
 
 
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_stray_governed_write_is_caught(tmp / "sgw")
+    test_write_checked_contract(tmp / "wcc")
+    test_remove_worktree(tmp / "rmw")
+    test_restore_files(tmp / "rsf")
     test_slugify_format()
     test_escalate_is_module_global()
     test_anomaly_ledger_and_whywhy(tmp / "al")

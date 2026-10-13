@@ -487,6 +487,29 @@ def write_record(path: Path, data) -> None:
     os.replace(tmp, path)
 
 
+def scheduled_as_candidate(s: dict) -> dict | None:
+    """続報予約の素材スナップショットを、候補ファイルに置ける形(schema/candidates.schema.json)にする。予約の項目(kind・subject・
+    reserved_on 等)をそのまま候補ファイルへ写すと lint のスキーマ違反で号が止まる。出典 URL の無い予約は候補にならない(None)。
+    発見日時は予約した日(素材を写し取った日)。"""
+    if not str(s.get("url") or "").startswith(("http://", "https://")):
+        return None
+    schema_p = Path(__file__).resolve().parent.parent / "schema" / "candidates.schema.json"    # 作業ツリーの ROOT ではなくコードの schema
+    props = json.loads(schema_p.read_text(encoding="utf-8"))["items"]["properties"]
+    c = {k: v for k, v in s.items() if k in props}
+    c["title"] = s.get("title") or s.get("subject") or ""
+    c["found_at"] = f"{s.get('reserved_on') or ''}T00:00:00+09:00"
+    if c.get("source_type") not in props["source_type"]["enum"]:
+        c["source_type"] = "未確認"
+    if c.get("verify") not in props["verify"]["enum"]:
+        c["verify"] = "unconfirmed"
+    if "via" in c and c["via"] not in props["via"]["enum"]:
+        c.pop("via")
+    for k in ("event_date", "deadline"):
+        if k in c and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(c[k])):
+            c.pop(k)
+    return c
+
+
 def carry_dropped_candidates(date: str) -> list[str]:
     """前の号の計画に入ったのに紙面に載らなかった記事(執筆の見送り・校閲のブロック・検算の不合格)の素材を、この号の候補へ写す。
     選定は自分の号の候補しか読まないので、写さなければ、直したあと(規則・道具の修正)でも二度と選定に掛からない
@@ -506,7 +529,7 @@ def carry_dropped_candidates(date: str) -> list[str]:
     except (OSError, ValueError):
         return [f"{prev}号の外れた記事の記録が読めない(素材を選定に戻せない)"]
     # 前の号の続報予約から選んだ記事の素材(sched-*)も戻す元にする。日付は前の号で使った値のまま(load_scheduled(前の号)。監査指摘)
-    src.update({s["id"]: s for s in load_scheduled(prev) if s.get("id")})
+    src.update({s["id"]: c for s in load_scheduled(prev) if s.get("id") and (c := scheduled_as_candidate(s))})
     target = ROOT / "candidates" / f"{date}.json"
     rows = json.loads(target.read_text(encoding="utf-8")) if target.exists() else []
     by_url = {c.get("url"): c for c in rows if c.get("url")}

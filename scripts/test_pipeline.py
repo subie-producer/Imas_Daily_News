@@ -4930,6 +4930,54 @@ def test_settled_drops_not_rewritten(tmp: Path):
         compose.article_prompt, compose.prompt_file = saved[4], saved[5]
 
 
+def test_carry_dropped_candidates_schema(tmp: Path):
+    """前の号から戻した素材を書いた候補ファイルが、候補のスキーマ(lint と同じ)に合う(2026-10-14: 戻した印 carried がスキーマに無く、
+    lint 赤で号が止まった)。続報予約の素材は、予約の項目(kind・subject・reserved_on 等)を持ち込まず候補の形にして写す。"""
+    from jsonschema import Draft202012Validator
+    for sub in ("candidates", "metrics", "docs/_posts", "stock/scheduled"):
+        (tmp / sub).mkdir(parents=True, exist_ok=True)
+    saved_root, saved_log = compose.ROOT, dict(compose.DROP_LOG)
+    try:
+        compose.ROOT = tmp
+        d0, d1 = "2026-10-13", "2026-10-14"
+        (tmp / "candidates" / f"{d0}.json").write_text(json.dumps([
+            {"id": "c1", "title": "ログボ", "brand": "gaku", "source_type": "報道", "url": "https://press.example/1",
+             "found_at": "2026-10-12T18:32:50+09:00", "dedup_key": "login", "facts": ["ログボ"], "via": "explore", "verify": "confirmed"},
+        ], ensure_ascii=False), encoding="utf-8")
+        (tmp / "stock" / "scheduled" / f"{d0}.json").write_text(json.dumps([
+            {"id": "sched-2026-10-13-tour-締切前", "dedup_key": "tour", "brand": "gaku", "subject": "ツアー", "kind": "締切前",
+             "note": "受付締切の3日前", "reserved_on": "2026-09-20", "title": "ツアー受付", "url": "https://s.example/9",
+             "source_type": "公式", "facts": ["受付は16日まで"], "via": "watch", "verify": "confirmed", "deadline": "2026-10-16",
+             "src_candidate_id": "x9"},
+            {"id": "sched-2026-10-13-nourl-終了", "dedup_key": "nourl", "brand": "gaku", "subject": "URL無し", "kind": "終了",
+             "reserved_on": "2026-09-20", "facts": ["終了"]},
+        ], ensure_ascii=False), encoding="utf-8")
+        (tmp / "candidates" / f"{d1}.json").write_text(json.dumps([
+            {"id": "n1", "title": "新", "brand": "cg", "source_type": "公式", "url": "https://n.example/1",
+             "found_at": "2026-10-14T02:26:00+09:00", "dedup_key": "new", "facts": ["新"], "verify": "confirmed"},
+        ], ensure_ascii=False), encoding="utf-8")
+        (tmp / "metrics" / f"plan-{d0}.json").write_text(json.dumps({"articles": [
+            {"slug": "login", "candidate_ids": ["c1"]}, {"slug": "tour", "candidate_ids": ["sched-2026-10-13-tour-締切前"]},
+            {"slug": "nourl", "candidate_ids": ["sched-2026-10-13-nourl-終了"]}]}), encoding="utf-8")
+        compose.DROP_LOG.clear()
+        compose.DROP_LOG[d0] = {"login": ("ログボ", "執筆で見送り", "NO_PRIMARY_SOURCE"), "tour": ("ツアー", "校閲ブロック", "R4"),
+                                "nourl": ("URL無し", "執筆で見送り", "NO_PRIMARY_SOURCE")}
+        compose.persist_drops(d0)
+        compose.carry_dropped_candidates(d1)
+        rows = json.loads((tmp / "candidates" / f"{d1}.json").read_text(encoding="utf-8"))
+        schema = json.loads((pipelib.ROOT / "schema" / "candidates.schema.json").read_text(encoding="utf-8"))
+        errs = [f"{e.path}: {e.message}" for e in Draft202012Validator(schema).iter_errors(rows)]
+        ids = sorted(x["id"] for x in rows)
+        tour = next((x for x in rows if x["id"].startswith("sched-2026-10-13-tour")), {})
+        check(not errs and ids == ["c1", "n1", "sched-2026-10-13-tour-締切前"] and tour.get("carried", {}).get("count") == 1
+              and tour.get("title") == "ツアー受付" and tour.get("facts") == ["受付は16日まで"] and tour.get("event_date") == "2026-10-16",
+              f"前の号から戻した素材の候補ファイルが候補のスキーマに合わない(lint 赤で号が止まる): {errs[:5]} {ids} {tour}")
+    finally:
+        compose.ROOT = saved_root
+        compose.DROP_LOG.clear()
+        compose.DROP_LOG.update(saved_log)
+
+
 def test_carry_dropped_candidates(tmp: Path):
     """前の号の計画に入ったのに紙面に載らなかった記事の素材を、次の号の選定に戻す(2026-10-13: 報道を出典にしてよいと決めたログボが、
     翌号の選定に戻る経路が無かった)。組み直しで戻った記事は写さない。同じ素材は CARRY_DROPPED_MAX 回まで。冪等。選定に理由が見える。"""
@@ -5747,6 +5795,7 @@ def main() -> int:
     test_compose_classifies_after_revise(tmp / "car")
     test_carry_late_candidates(tmp / "clc")
     test_carry_dropped_candidates(tmp / "cdc")
+    test_carry_dropped_candidates_schema(tmp / "cdcs")
     test_late_facts_reach_plan_index(tmp / "lfpi")
     test_article_purpose()
     test_plan_merge_into_drop()

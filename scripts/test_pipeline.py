@@ -252,7 +252,10 @@ def test_check_output_unread_pages():
                         ("https://www.lantis.jp/release_1.html", {"https://lnk.to/1", "https://www.lantis.jp/release_1.html"}),
                         ("https://twitter.com/imas/status/1", {"https://x.com/imas/status/1?s=20"}),
                         ("https://x.com/imas/status/1?s=46&t=abc", {"https://x.com/imas/status/1?s=20"}),
-                        ("https://example.jp:443/a", {"https://example.jp/a"})):
+                        ("https://example.jp:443/a", {"https://example.jp/a"}),
+                        ("https://example.jp/a%2fb", {"https://example.jp/a%2Fb"}), ("https://example.jp/%7Euser", {"https://example.jp/~user"}),
+                        ("https://example.jp/s?q=商品", {"https://example.jp/s?q=%E5%95%86%E5%93%81"}),
+                        ("https://example.jp/s?q=a+b", {"https://example.jp/s?q=a%20b"})):
         a = dict(ans, new_facts=[dict(ans["new_facts"][0], url=cited)], sources=OK["sources"] + [{"url": cited, "label": "l"}])
         check(C(a, fetched=pool) == [], f"同じページの書き方の違いで落とした: {cited} / {sorted(pool)}: {C(a, fetched=pool)}")
     # 素材の url は記録が無くても根拠にできる(FETCH_FAILED の素材・X の投稿も出典には書く)。書き方が違うだけでも同じ
@@ -267,7 +270,11 @@ def test_check_output_unread_pages():
                         ("https://shop.example.jp/item?id=1&id=2", {"https://shop.example.jp/item?id=1"}),
                         ("https://shop.example.jp/item?id=1&s=20", {"https://shop.example.jp/item?id=1"}),
                         ("https://a.example/1?id=2", set()), ("https://example.jp:8080/a", {"https://example.jp/a"}),
-                        ("https://example.jp/a%2Fb", {"https://example.jp/a/b"}),
+                        ("https://example.jp/a%2Fb", {"https://example.jp/a/b"}), ("https://example.jp/a/b", {"https://example.jp/a%2Fb"}),
+                        # 二重の %エンコード(%252F は「%2F」という文字列)・不正な UTF-8 の別のバイトは別のページ(2026-10-14 監査指摘)
+                        ("https://example.jp/a%252Fb", {"https://example.jp/a%2Fb"}), ("https://example.jp/a%2Fb", {"https://example.jp/a%252Fb"}),
+                        ("https://example.jp/%FF", {"https://example.jp/%FE"}), ("https://example.jp/s?q=%FF", {"https://example.jp/s?q=%FE"}),
+                        ("https://example.jp/s?q=a%26b", {"https://example.jp/s?q=a&b"}),
                         ("https://a.example/12", {"https://a.example/1"}), ("https://a.example.evil/1", set())):
         a = dict(ans, new_facts=[dict(ans["new_facts"][0], url=cited)], sources=OK["sources"])
         check(unread(C(a, fetched=pool)), f"別のページを読めたページ・素材として通した: {cited} / {sorted(pool)}")

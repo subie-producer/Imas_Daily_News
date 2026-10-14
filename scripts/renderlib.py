@@ -294,9 +294,22 @@ SHARE_QUERY_BY_HOST = {"x.com": ("s", "t", "ref_src", "ref_url"), "youtube.com":
                        "youtu.be": ("si", "feature", "t"), "open.spotify.com": ("si",)}
 
 
+_UNRESERVED = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
+
+
+def norm_escapes(s: str) -> str:
+    """%エンコードの書き方だけを揃える(RFC 3986 6.2.2 の同値): ASCII の外の文字は UTF-8 のバイトの %XX に、%xx は大文字に、
+    非予約文字(英数字と - . _ ~)の %XX は文字に戻す。予約文字(/ ? & = % など)の %XX は戻さない(%2F とパスの区切りの /、
+    %252F と %2F は別のページ。2026-10-14 監査指摘: 退避の置き換えで %2F と %252F が同じになった)。バイトのまま扱い、不正な UTF-8 も潰さない"""
+    import urllib.parse
+    s = urllib.parse.quote(s, safe="".join(chr(i) for i in range(0x21, 0x7f)))
+    return re.sub(r"%([0-9A-Fa-f]{2})",
+                  lambda m: chr(int(m.group(1), 16)) if chr(int(m.group(1), 16)) in _UNRESERVED else "%" + m.group(1).upper(), s)
+
+
 def page_key(url) -> tuple | None:
     """同じページかを比べる形: ホスト(小文字。www.・m.・mobile. を外し、twitter.com は x.com)、ポート(既定の 80/443 は無し)、
-    パス(%エンコードを戻し、末尾の / を外す。%2F はパスの区切りと別なので戻さない)、共有・計測用を外したクエリの並び(名前順)。
+    パス(%エンコードの書き方を揃え(norm_escapes)、末尾の / を外す)、共有・計測用を外したクエリの並び(名前順。値はバイトのまま比べる)。
     scheme と # 以降は見ない。"""
     import urllib.parse
     try:
@@ -308,9 +321,10 @@ def page_key(url) -> tuple | None:
         return None
     host = re.sub(r"^(?:www|m|mobile)\.", "", host)
     host = "x.com" if host == "twitter.com" else host
-    path = urllib.parse.unquote(re.sub(r"%2[fF]", "%252F", u.path)).rstrip("/")
+    path = norm_escapes(u.path).rstrip("/")
     drop = SHARE_QUERY_BY_HOST.get(host, ())
-    query = tuple(sorted((k, v) for k, v in urllib.parse.parse_qsl(u.query, keep_blank_values=True)
+    # latin-1 はバイトと1対1(不正な UTF-8 の値を置換文字に潰して別の値を同じにしない)
+    query = tuple(sorted((k, v) for k, v in urllib.parse.parse_qsl(norm_escapes(u.query), keep_blank_values=True, encoding="latin-1")
                          if not SHARE_QUERY.match(k) and k not in drop))
     return host, (None if port in (80, 443) else port), path, query
 

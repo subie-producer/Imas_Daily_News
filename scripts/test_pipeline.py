@@ -3517,6 +3517,22 @@ def test_watch_resume_after_cut(tmp: Path):
         got = {u for u in st5["official"]}
         check(all(url(u) in got for u in ("m7", "n7", "n8", "n9")) and not st5.get("_cut"),
               f"2つの境界の先を読まない: 読んだページ {both} 境界 {st5.get('_cut')} 既読 {sorted(got)[:12]}")
+        # 読んでいる間に一覧がずれて、前に読んだ項目の一部だけのページが挟まった: 一覧の終わりと取り違えず、その先も読む
+        listing.clear()
+        listing.update({1: ["n1", "n2", "n3"], 2: ["n4", "n5", "n6"], 3: ["n5", "n6"], 4: ["n7", "n8", "n9"], 5: ["o1", "o2", "o3"]})
+        ov, info6, st6 = run(2, st)
+        check(info6["new"] == 3 and all(url(f"n{i}") in st6["official"] for i in (7, 8, 9)) and not st6.get("_cut"),
+              f"重なっただけのページを一覧の終わりにして、境界の先を読まない: 読んだページ {ov} 新着 {info6['new']} 境界 {st6.get('_cut')}")
+        # 境界より手前の記事が消えて、境界が記録したページより手前へずれた: 記録したページへ飛ばずに順に読み、境界の先を読む
+        listing.clear()
+        listing.update({i: [f"d{i}"] for i in range(1, 7)})
+        listing[7] = ["o1"]
+        _, _, sd = run(4, base)                       # d1〜d4 を読んで打ち切る(境界は4ページ目の d4)
+        listing.clear()
+        listing.update({1: ["d4"], 2: ["d5"], 3: ["d6"], 4: ["o1", "o2"]})      # d1〜d3 が消えた
+        moved, info7, sd2 = run(4, sd, rerun=True)
+        check(moved == [1, 2, 3, 4] and info7["new"] == 2 and url("d5") in sd2["official"] and not sd2.get("_cut"),
+              f"手前へずれた境界の先を飛ばして失った: 読んだページ {moved} 新着 {info7['new']} 境界 {sd2.get('_cut')}")
     finally:
         (collect.ROOT, collect.STATE_PATH, collect.http_get, collect.page_html_or_note, collect.notify, collect.render_prompt) = saved
 
@@ -3711,10 +3727,13 @@ def test_collect_settles_on_sigterm(tmp: Path):
     実際の別プロセスに SIGTERM を送り、実際の git で検める。"""
     import signal as _signal
     import time as _time
-    root = _collect_repo(tmp)
-    ready = tmp / "ready"
-    driver = tmp / "driver.py"
-    driver.write_text(f"""import sys, time
+
+    def run(case: str, pause_in: str, extra: list[str]):
+        """収集の別プロセスを、pause_in(append_metric=保存したあと / notify=確定したあとの通知)で止めて SIGTERM を送る。"""
+        root = _collect_repo(tmp / case)
+        ready = tmp / case / "ready"
+        driver = tmp / case / "driver.py"
+        driver.write_text(f"""import sys, time
 from pathlib import Path
 sys.path.insert(0, {str(Path(__file__).resolve().parent)!r})
 import collect, pipelib
@@ -3725,51 +3744,63 @@ pipelib.ENV.pop("DISCORD_WEBHOOK_URL", None)
 root = Path({str(root)!r})
 collect.ROOT = pipelib.ROOT = root
 collect.STATE_PATH = root / "stock" / "watch-state.json"
-collect.notify = pipelib.notify = lambda job, msg, ok=True, require=False: print("NOTIFY", msg, flush=True) or True
+def pause(*a, **k):
+    Path({str(ready)!r}).write_text("ここで止めた")
+    time.sleep(60)
+def note(job, msg, ok=True, require=False):
+    print("NOTIFY", msg, flush=True)
+    if {pause_in!r} == "notify" and "一覧が取れない" in msg:
+        pause()
+    return True
+collect.notify = pipelib.notify = note
 collect.job_lock = lambda *a, **k: None
 row = {{"title": "告知", "url": "https://shinycolors.lantis.jp/audit-term", "brand": "shiny", "facts": ["受付を開始"],
        "_via": "watch", "dedup_key": "audit-term"}}
-collect.run_watch = lambda call, oncall_rerun=False: ([dict(row)], {{"stats": {{"_state": {{"official": [row["url"]]}}}}, "new": 1, "deferred": 0}})
+collect.run_watch = lambda call, oncall_rerun=False: ([dict(row)], {{"stats": {{"_state": {{"official": [row["url"]]}},
+                                                                             "other": {{"error": "空の応答"}}}}, "new": 1, "deferred": 0}})
 collect.run_explores = lambda *a, **k: ([], {{}})
 collect.verify = lambda cands: {{"confirmed": 0, "unconfirmed": len(cands), "failed": 0}}
 collect.needs_classify = lambda cands: False
-def pause(*a, **k):
-    Path({str(ready)!r}).write_text("素材と既読状態を保存した")
-    time.sleep(60)
-collect.append_metric = pause
-sys.argv = ["collect", "--date", "2026-10-14", "--skip-explore", "--skip-grok"]
+if {pause_in!r} == "append_metric":
+    collect.append_metric = pause
+sys.argv = ["collect", "--date", "2026-10-14", "--skip-explore", "--skip-grok"] + {extra!r}
 try:
     code = collect.main()
 except collect.Terminated:
     code = 143
 sys.exit(code)
 """, encoding="utf-8")
-    p = subprocess.Popen([sys.executable, str(driver)], cwd=root, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
-    end = _time.time() + 60
-    while not ready.exists() and p.poll() is None and _time.time() < end:
-        _time.sleep(0.05)
-    if ready.exists():
-        p.send_signal(_signal.SIGTERM)
-    try:
-        out, _ = p.communicate(timeout=60)
-    except subprocess.TimeoutExpired:
-        p.kill()
-        out, _ = p.communicate()
-    dirty = subprocess.run(["git", "status", "--porcelain"], cwd=root, capture_output=True, text=True).stdout.strip()
-    saved = (pipelib.ROOT, pipelib.notify)
-    try:
-        pipelib.ROOT, pipelib.notify = root, (lambda *a, **k: True)
-        next_ok = pipelib.checkout_edition_branch("2026-10-14", "compose")
-    finally:
-        pipelib.ROOT, pipelib.notify = saved
-    cands = _json_or_none(_remote_file(root, "candidates/2026-10-14.json")) or []
-    state = _json_or_none(_remote_file(root, "stock/watch-state.json")) or {}
-    check(ready.exists() and p.returncode == 143, f"SIGTERM で後始末をして終えない(終了 {p.returncode}): {out[-600:]}")
-    check(not dirty and next_ok, f"SIGTERM のあと作業ツリーが汚れたまま・次の工程の checkout が止まる: {dirty!r} {next_ok}")
-    check([c.get("url") for c in cands] == ["https://shinycolors.lantis.jp/audit-term"]
-          and state.get("official") == ["https://shinycolors.lantis.jp/audit-term"],
-          f"保存した素材と既読状態をリモートに確定しない: {cands} {state}")
+        p = subprocess.Popen([sys.executable, str(driver)], cwd=root, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        end = _time.time() + 60
+        while not ready.exists() and p.poll() is None and _time.time() < end:
+            _time.sleep(0.05)
+        if ready.exists():
+            p.send_signal(_signal.SIGTERM)
+        try:
+            out, _ = p.communicate(timeout=60)
+        except subprocess.TimeoutExpired:
+            p.kill()
+            out, _ = p.communicate()
+        dirty = subprocess.run(["git", "status", "--porcelain"], cwd=root, capture_output=True, text=True).stdout.strip()
+        saved = (pipelib.ROOT, pipelib.notify)
+        try:
+            pipelib.ROOT, pipelib.notify = root, (lambda *a, **k: True)
+            next_ok = pipelib.checkout_edition_branch("2026-10-14", "compose")
+        finally:
+            pipelib.ROOT, pipelib.notify = saved
+        cands = _json_or_none(_remote_file(root, "candidates/2026-10-14.json")) or []
+        state = _json_or_none(_remote_file(root, "stock/watch-state.json")) or {}
+        check(ready.exists() and p.returncode == 143, f"{case}: SIGTERM で後始末をして終えない(終了 {p.returncode}): {out[-600:]}")
+        check(not dirty and next_ok, f"{case}: SIGTERM のあと作業ツリーが汚れたまま・次の工程の checkout が止まる: {dirty!r} {next_ok}")
+        check([c.get("url") for c in cands] == ["https://shinycolors.lantis.jp/audit-term"]
+              and state.get("official") == ["https://shinycolors.lantis.jp/audit-term"],
+              f"{case}: 保存した素材と既読状態をリモートに確定しない: {cands} {state}")
+        return out
+    # 素材と既読状態を保存したあと(記録・判定・commit の前)
+    out = run("saved", "append_metric", [])
     check("SIGTERM" in out, f"打ち切られたことを申告しない: {out[-400:]}")
+    # 確定(commit・push)のあとの通知の最中: 飲み込まずに終える(監査指摘: 確定のあとも SIGTERM を遅らせ続けて 0 で終えた)
+    run("committed", "notify", ["--oncall-rerun"])
 
 
 def test_collect_state_write_is_atomic(tmp: Path):

@@ -191,10 +191,10 @@ def list_source(s: dict, known: set[str], fetch=None, resume=None) -> tuple[list
     空の並びは、一覧を読み終えた(既に見た記事に行き当たった・一覧の終わり)。
 
     resume は前回までの未完了の境界。境界の先はまだ読んでいないので、手前の既読だけのページに行き当たっても止まらず、
-    境界のページ(の1つ手前。新着が増えると境界は奥へずれる)へ飛び、境界を越えた先を `max_pages` まで読む
-    (2026-10-14 監査指摘: 打ち切った回が手前のページを既読にするので、上限を上げて当番が取り直しても先頭の既読ページで
-    巡回を終え、奥の新着を回収できなかった)。境界の URL が一覧から消えていれば越えられないので、一覧の終わりに着くまで
-    未完了として残す(黙って捨てない)。
+    境界を越えた先を `max_pages` まで読む(2026-10-14 監査指摘: 打ち切った回が手前のページを既読にするので、上限を上げて
+    当番が取り直しても先頭の既読ページで巡回を終え、奥の新着を回収できなかった)。境界までのページは飛ばさずに順に読む
+    (記事が増えると境界は奥へ、消えると手前へずれる。記録したページ番号へ飛ぶと、手前へずれた境界の先を読まずに失った。
+    監査指摘)。境界の URL が一覧から消えていれば越えられないので、一覧の終わりに着くまで未完了として残す(黙って捨てない)。
     """
     fetch = fetch or (fetch_rendered if s["type"] == "portal" else http_get)
     found: list[tuple[str, str]] = []
@@ -204,6 +204,8 @@ def list_source(s: dict, known: set[str], fetch=None, resume=None) -> tuple[list
                    key=lambda r: int(r.get("page") or 1))
     passed = [0] * len(marks)     # 境界ごとに 0: まだ / 1: 境界の URL を読んでいる / 2: 越えた(境界の後ろの項目を読んだ)
     target = None                 # いま向かっている境界(None は先頭からの巡回)
+    read_pages: set[tuple[str, ...]] = set()     # 読んだページの中身(URL の並び)
+    last, last_settled = [], True                # 最後に初めて出た項目のあったページの URL の並びと、それが既読だけだったか
     pages, n, left = 0, 1, max_pages
     while True:
         url = s["url"] if n == 1 else s["page_url"].format(n=n)
@@ -214,14 +216,21 @@ def list_source(s: dict, known: set[str], fetch=None, resume=None) -> tuple[list
             raise RuntimeError(f"{url} の取得に失敗(空の応答)")
         pages += 1
         left -= 1
-        on_page = []
+        page_urls, on_page = [], []
         for m in re.finditer(s["list_regex"], html, re.DOTALL):
             u = m.group(1)
             if not u.startswith("http"):
                 u = s["base"].rstrip("/") + "/" + u.lstrip("/")
             title = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", m.group(2) if m.lastindex >= 2 else "")).strip()
+            page_urls.append(u)
             if u not in {x for x, _ in found} and u not in {x for x, _ in on_page}:
                 on_page.append((u, title))
+        # 項目の無いページ・前に読んだページと同じ中身のページ(範囲外のページに1ページ目や最後のページを返すサイト)= 一覧の終わり。
+        # 前に読んだ項目の一部だけのページ(読んでいる間に一覧がずれて重なった)は終わりにしない(監査指摘)
+        if not page_urls or tuple(page_urls) in read_pages or not paged:
+            found += on_page
+            return found, pages, []
+        read_pages.add(tuple(page_urls))
         found += on_page
         for u, _ in on_page:
             for i, r in enumerate(marks):
@@ -229,28 +238,24 @@ def list_source(s: dict, known: set[str], fetch=None, resume=None) -> tuple[list
                     passed[i] = 1
                 elif passed[i] == 1:
                     passed[i] = 2
-        # 空のページ(か、既に集めた項目だけのページ)= 一覧の終わり。境界も含めて全部読んだ
-        if not on_page or not paged:
-            return found, pages, []
-        settled = all(u in known for u, _ in on_page)      # 既に見た記事だけのページ
-        if settled:
-            rest = [i for i, p in enumerate(passed) if p < 2]
-            if not rest:
-                return found, pages, []
-            if target is None or passed[target] == 2:
-                # まだ越えていない境界へ向かう。手前の既読のページは読み直さずに飛び、境界から先を上限まで読む
-                # (飛んだ先の1ページ目は、記事が消えて境界が手前へずれたときの余裕。上限に数えない)
-                target = rest[0]
-                n = max(n + 1, int(marks[target].get("page") or 1) - 1)
-                left = max_pages + 1
-                continue
+        if on_page:
+            last, last_settled = [u for u, _ in on_page], all(u in known for u, _ in on_page)
+            if last_settled:          # 既に見た記事だけのページ
+                rest = [i for i, p in enumerate(passed) if p < 2]
+                if not rest:
+                    return found, pages, []
+                if target is None or passed[target] == 2:
+                    # まだ越えていない境界へ、ページを飛ばさずに向かう。上限は、境界を記録したページまでの残りに、
+                    # 境界の先の max_pages を足した分(境界の記録したページは余裕の1ページとして数えない)
+                    target = rest[0]
+                    left = max(int(marks[target].get("page") or 1) - n, 0) + max_pages + 1
         if left <= 0:
             break
         n += 1
     # 上限まで読んだ: 新着の続くページで止まったらそこを新しい境界に、まだ越えていない境界は奥へずらして残す
-    cut = [] if settled else [{"page": n, "after": [u for u, _ in on_page]}]
+    cut = [] if last_settled else [{"page": n, "after": last}]
     for i, r in enumerate(marks):
-        if passed[i] == 0 or (passed[i] == 1 and settled):
+        if passed[i] == 0 or (passed[i] == 1 and last_settled):
             cut.append({"page": max(int(r.get("page") or 1), n), "after": r["after"]})
     return found, pages, cut
 
@@ -1770,6 +1775,7 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
     if not args.no_git:
         _TERM["defer"] = True     # 確定の途中では SIGTERM で中断しない(受けたら確定のあとで終える)
         pushed = commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect")
+        _TERM["defer"] = False    # 確定のあと(通知など)の SIGTERM は、すぐ受けて終える(飲み込まない。監査指摘)
         if _TERM["got"]:
             raise Terminated()
         if not pushed:

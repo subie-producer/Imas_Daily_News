@@ -6879,6 +6879,41 @@ def test_writer_children(tmp: Path):
         check("crash" in [a["slug"] for a in w4] and res4 == {"probe": "unreadable"}
               and all(path(s).read_bytes() == before4[s] for s in ("probe", "delta")),
               f"child_guard が落ちたあと、残った道具が控えへ戻した記事を書き換えた: {[a['slug'] for a in w4]} {res4}")
+        # 8) 校閲の往復で、社説の書き直し(子を起こす別の工程)と記事の書き直しを並べない(run_in_turn)。子が記録の間隔より先に
+        #    child_guard を SIGKILL して、環境を読めなくした道具を残しても、付け替わった孤児として止めてから控えへ戻す(監査指摘:
+        #    並べたとき、記録・グループ・印のどれでも拾えず、過去号の書き直しで記事が書き換わった)
+        spec["revise-probe"] = [{"answer": fixed}, {"answer": fixed}, {"background": late_write("delta", "turn"), "detach": True,
+                                                                        "nodump": True, "kill_guard": True}]
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        before5 = path("delta").read_bytes()
+        res5: dict = {}
+        spans: list = []
+
+        def editorial_like():           # 社説の書き直しのように、子を起こして待つ工程
+            t = time.monotonic()
+            subprocess.run([sys.executable, "-c", "import time; time.sleep(0.4)"])
+            spans.append(("社説", t, time.monotonic()))
+
+        def revise_job():
+            t = time.monotonic()
+            res5.update(compose.revise_articles(date, {f"docs/_posts/{date}-probe.md": [dict(issue)]}, plan, {"c1": cand}, []))
+            spans.append(("書き直し", t, time.monotonic()))
+        pipelib.ANOMALIES.clear()
+        errs = compose.run_in_turn([("社説", editorial_like), ("記事の書き直し", revise_job)])
+        (tmp / "release-turn").write_text("", encoding="utf-8")
+        time.sleep(0.6)
+        (_, a0, a1), (_, b0, b1) = sorted(spans, key=lambda x: x[1])
+        check(not errs and res5 == {"probe": "unreadable"} and a1 <= b0 and path("delta").read_bytes() == before5
+              and not any("止められない" in a for a in pipelib.ANOMALIES),
+              f"社説と並べた・付け替わった孤児を止めない: {errs} {res5} {spans} {pipelib.ANOMALIES}")
+        # ほかに子を起こしうるスレッドが動いているあいだは、片付けを確かめたとは言わない(異常として申告させる)
+        hold = __import__("threading").Event()
+        other = __import__("threading").Thread(target=hold.wait, daemon=True)
+        other.start()
+        check(compose.ChildTracker().start().sweep() is False, "ほかのスレッドが動いているのに、片付けを確かめたとした")
+        hold.set()
+        other.join()
+        check(compose.ChildTracker().start().sweep() is True, "ほかのスレッドが無いのに、片付けを確かめられないとした")
     finally:
         compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_by_key, compose.DEADLINE = saved[:5]
         os.environ["PATH"] = saved[5] or ""

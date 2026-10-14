@@ -2421,6 +2421,12 @@ def run_parallel(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[
     return [f"{n}: {why}" for n, why in errs.items()]
 
 
+def run_in_turn(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[str]:
+    """工程を1つずつ順に走らせる(失敗の扱いは run_parallel と同じ)。子の子孫を記録して止める工程(記事の書き直し)を、ほかに子を
+    起こす工程と並べないため(ChildTracker)。"""
+    return [e for job in jobs for e in run_parallel([job], timeout=timeout)]
+
+
 def revise_prompt(date: str, art: dict, mats_in: list[dict], current: str, issues: list[dict]) -> str:
     """校閲の指摘を受けた**執筆側(Codex)**の書き直し。同じ出力契約(article-out)で返す。"""
     iss = json.dumps([{k: b.get(k) for k in ("issue_id", "rule_id", "issue", "quote", "repair", "fact_ids", "expected")}
@@ -2838,7 +2844,8 @@ class ChildTracker:
     (2026-10-14 監査: child_guard だけを SIGKILL すると、別のセッションに抜けて環境を読めなくした道具が残り、控えへ戻したあとに
     承認済みの記事を書き換えた)。compose 自身も孤児の受け皿になる(child_guard が落ちたあとの孤児が init へ行かず、ここの子として
     残る)。止めるのは: 記録した子孫(pid と起動時刻で照合)とその子孫 / child_guard のプロセスグループ / 印(child_env)を環境に持つ
-    プロセス / ほかのスレッドが子を起こしていないときは、束ねの間に起動してここへ付け替わった孤児。"""
+    プロセス / ほかのスレッドが子を起こしていないときは、束ねの間に起動してここへ付け替わった孤児。起こしうるスレッドがあれば、
+    孤児がどの仕事のものか決められないので、片付けたとは言わない(記事の書き直しはほかの工程と並べない: run_in_turn)。"""
 
     def __init__(self, interval: float = 0.05):
         self.roots: dict[int, int] = {}            # child_guard の pid → 起動時刻
@@ -2941,7 +2948,8 @@ class ChildTracker:
                 except (ChildProcessError, OSError):
                     pass
             if not targets:
-                return True
+                # ほかに子を起こしうるスレッドがあれば、付け替わった孤児がこの束ねのものか確かめられないので、確かめたとは言わない
+                return alone
             if time.monotonic() >= end:
                 return False
             for pid in targets:
@@ -4054,7 +4062,10 @@ def main() -> int:
                 jobs.append(("記事の書き直し", lambda: revised.update(revise_articles(date, by_file, plan, cands, aborted))))
             else:
                 jobs.append(("記事の修正", lambda: fix_articles(date, by_file)))
-        for e in run_parallel(jobs):
+        # 記事の書き直しは、子の子孫を記録して止める(ChildTracker)。ほかに子を起こす仕事と並べると、付け替わった孤児がどの仕事の
+        # ものか決められないので、順に走らせる(2026-10-14 監査: 社説の書き直しと並べた過去号で、残った道具が記事を書き換えた)。
+        # 社説は 2026-09-06 号で終わっていて、並ぶのは過去号の組み直しだけ
+        for e in run_in_turn(jobs):
             print(f"同時実行のうち失敗: {e}", flush=True)
             anomaly("compose", f"校閲の往復({rounds}巡目)の同時実行のうち失敗: {e}")
         # 「書き手が書き直した(稿を出した)」記事だけを次の巡の照合の対象にする。出力が読めなかった・ジョブが失敗した記事に

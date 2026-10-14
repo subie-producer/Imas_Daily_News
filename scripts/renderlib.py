@@ -286,27 +286,40 @@ def split_heading_blocks(out: dict) -> int:
     return n
 
 
-def page_key(url) -> tuple[str, str, frozenset] | None:
-    """同じページかを比べる形: ホスト(小文字。www.・m.・mobile. を外し、twitter.com は x.com)、パス(%エンコードを戻し、末尾の / を外す)、
-    クエリの組。scheme と # 以降は見ない。"""
+# ページを選ばない共有・計測用のクエリ(比べる前に外す)。どのホストでも外すものと、そのホストでだけ外すもの。
+# ここに無いクエリはページを選ぶものとして扱い、名前・値・個数まで一致を求める(2026-10-14 監査指摘: 「片方がもう片方を含めば同じ」
+# にしたら、読んだ /item と読んでいない別の商品 /item?id=2 が同じになり、utm_source の値が両側で違う同じ商品は別になった)
+SHARE_QUERY = re.compile(r"^(?:utm_\w+|fbclid|gclid|yclid|igshid|igsh|_ga|_gl|mc_cid|mc_eid)$", re.I)
+SHARE_QUERY_BY_HOST = {"x.com": ("s", "t", "ref_src", "ref_url"), "youtube.com": ("si", "feature", "pp", "t", "ab_channel"),
+                       "youtu.be": ("si", "feature", "t"), "open.spotify.com": ("si",)}
+
+
+def page_key(url) -> tuple | None:
+    """同じページかを比べる形: ホスト(小文字。www.・m.・mobile. を外し、twitter.com は x.com)、ポート(既定の 80/443 は無し)、
+    パス(%エンコードを戻し、末尾の / を外す。%2F はパスの区切りと別なので戻さない)、共有・計測用を外したクエリの並び(名前順)。
+    scheme と # 以降は見ない。"""
     import urllib.parse
     try:
         u = urllib.parse.urlsplit(str(url or "").strip())
-        host = (u.hostname or "").lower()
+        host, port = (u.hostname or "").lower(), u.port
     except ValueError:
         return None
     if not host:
         return None
     host = re.sub(r"^(?:www|m|mobile)\.", "", host)
     host = "x.com" if host == "twitter.com" else host
-    return host, urllib.parse.unquote(u.path).rstrip("/"), frozenset(urllib.parse.parse_qsl(u.query, keep_blank_values=True))
+    path = urllib.parse.unquote(re.sub(r"%2[fF]", "%252F", u.path)).rstrip("/")
+    drop = SHARE_QUERY_BY_HOST.get(host, ())
+    query = tuple(sorted((k, v) for k, v in urllib.parse.parse_qsl(u.query, keep_blank_values=True)
+                         if not SHARE_QUERY.match(k) and k not in drop))
+    return host, (None if port in (80, 443) else port), path, query
 
 
 def same_page(a, b) -> bool:
-    """a と b が同じページか。クエリは片方がもう片方に含まれれば同じ(共有用の ?si= や utm_* の有無で、素材・読んだページと
-    同じ出典を落とさない)。同じ名前で値の違うクエリ(?v=A と ?v=B)は別のページ。"""
-    ka, kb = page_key(a), page_key(b)
-    return bool(ka and kb and ka[:2] == kb[:2] and (ka[2] <= kb[2] or kb[2] <= ka[2]))
+    """a と b が同じページか(page_key が一致する)。共有用の ?si=・utm_* などの有無・値の違いでは素材・読んだページと同じ出典を落とさず、
+    ページを選ぶクエリ(?id=・?v= など)が違えば・片方にしか無ければ別のページ。"""
+    ka = page_key(a)
+    return ka is not None and ka == page_key(b)
 
 
 def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], rank: str = "",

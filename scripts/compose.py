@@ -2187,10 +2187,21 @@ def fetch_record(date: str, slug: str) -> Path:
     return ROOT / "metrics" / "work" / date / "fetched" / f"{slug}.jsonl"
 
 
+FETCH_RECORD_BROKEN: set[str] = set()     # 置き場を作れなかった記録のフォルダ(同じ障害を記事ごとに重ねて申告しない)
+
+
 def fetch_env(date: str, slug: str) -> dict:
-    """執筆・書き直しの子に渡す環境。子が走らせた fetch_page.py が、この記事の記録に書き足す。"""
+    """執筆・書き直しの子に渡す環境。子が走らせた fetch_page.py が、この記事の記録に書き足す。
+    置き場を作れなくても工程は止めない(例外を外へ出さない。2026-10-14 監査指摘: フォルダの作成の失敗で執筆ごと止まった)。
+    記録は空のまま検算へ進み(素材の外のページは根拠にできないので、差し戻し・元の稿のまま)、障害は異常として申告する"""
     rec = fetch_record(date, slug)
-    rec.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        rec.parent.mkdir(parents=True, exist_ok=True)
+    except OSError as e:
+        if str(rec.parent) not in FETCH_RECORD_BROKEN:
+            FETCH_RECORD_BROKEN.add(str(rec.parent))
+            anomaly("compose", f"fetch_page.py の記録の置き場 {rec.parent} を作れない({type(e).__name__}: {str(e)[:120]})。"
+                               "執筆・書き直しは素材の外のページを根拠にできず、差し戻し・元の稿のままになる")
     return {**os.environ, FETCH_RECORD_ENV: str(rec)}
 
 

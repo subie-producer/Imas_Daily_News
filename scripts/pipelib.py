@@ -1288,6 +1288,8 @@ SHORTENERS = ("t.co", "bit.ly", "x.gd", "lin.ee", "tinyurl.com", "ow.ly", "buff.
 # 文書 ID がクエリの id にある共有サービス(Microsoft Forms)。どの文書もパスが同じなので、id まで含めて1つの文書とする
 # (同: forms.cloud.microsoft が丸ごと公式に登録され、文書 ID の違う別のフォームまで公式になった)
 QUERY_DOC_PAGES = {"forms.cloud.microsoft": "/pages/responsepage.aspx", "forms.office.com": "/pages/responsepage.aspx"}
+# 多数の会社が同居し、持ち主がパスの先頭(アカウント)で決まるメールフォームのサービス(同: krs.bz が丸ごと準公式だった)
+PATH_FORM_HOSTS = ("krs.bz",)
 
 
 def query_doc_key(url: str) -> str | None:
@@ -1303,8 +1305,9 @@ def query_doc_key(url: str) -> str | None:
 
 
 def shared_host(host: str) -> bool:
-    """ドメイン全体では判定しない共有サービス(短縮 URL・クエリの id で文書が決まるフォーム)のホストか。"""
-    return host in SHORTENERS or host in QUERY_DOC_PAGES
+    """ドメイン全体では判定しない共有サービス(短縮 URL・フォーム・メールフォーム)のホストか。判定表のドメインの一覧に
+    載っていても使わない(merge で撤去した行が戻っても効かない)。"""
+    return host in SHORTENERS or host in QUERY_DOC_PAGES or host in PATH_FORM_HOSTS
 
 
 def parse_source_table(text: str, p) -> dict:
@@ -1432,7 +1435,10 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
     posts = ROOT / "docs" / "_posts"
     snap = _snapshot([ROOT / "source_types.yml"] + sorted(posts.glob("*.md")))
     _TXN.update(proc=None, signum=None)
-    _write_txn_journal(snap, posts)
+    try:
+        _write_txn_journal(snap, posts)
+    except OSError as e:        # 戻せる控えが無いまま表を書き換えない(まだ何も変えていない)
+        return False, f"取引の控えを書けない({type(e).__name__}: {str(e)[:160]})。判定表と記事は変えずに終えた"
     prev = _arm_txn_signals()
     ok, why, done = False, "", False
     try:
@@ -1513,10 +1519,14 @@ def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
     try:
         if _TXN["signum"] is not None:      # 起動の直前に中断を受けていた
             _txn_stop_child()
+        tmp = child.with_name(f".{child.name}.{os.getpid()}.tmp")
         try:
-            child.write_text(json.dumps({"pid": p.pid, "started": _proc_started(p.pid)}), encoding="utf-8")
+            tmp.write_text(json.dumps({"pid": p.pid, "started": _proc_started(p.pid)}), encoding="utf-8")
+            os.replace(tmp, child)
         except OSError as e:
             print(f"取引の子の記録を書けない({e})", flush=True)
+        finally:
+            tmp.unlink(missing_ok=True)
         out, err = p.communicate(timeout=timeout)
     except subprocess.TimeoutExpired:
         out, err = reap(p)
@@ -1888,7 +1898,7 @@ def classify_source(url: str) -> str:
     for pre, typ in (t.get("path_types") or {}).items():
         if (str(pre).strip().rstrip("/") == qdoc) if qdoc else under(str(pre)):
             return str(typ)
-    # 共有サービス(短縮 URL・フォーム)は、短縮・文書1つずつの登録(上の path_types)にだけ当てる。
+    # 共有サービス(短縮 URL・フォーム・メールフォーム)は、短縮・文書・アカウント1つずつの登録(上の path_types)にだけ当てる。
     # ドメインの一覧に載っていても使わない(t.co の丸ごと登録で、どこへの短縮も公式になった。監査指摘 2026-10-14)
     if shared_host(host):
         return "未確認"

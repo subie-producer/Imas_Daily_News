@@ -2258,6 +2258,16 @@ def test_classify_posts_only(tmp: Path):
         back = pipelib.recover_classify_txn()
         check("開始時へ戻した" in back and "a.example" in (tmp / "source_types.yml").read_text(encoding="utf-8") and not journal.exists(),
               f"残った控えから次の起動が戻さない: {back}")
+        # 控えを書けない(空き容量が無い等)ときは、子を起こさずに失敗で返す(戻せない取引を始めない。工程は落とさない)
+        calls.clear()
+        pipelib._txn_run = lambda cmd, timeout: (calls.append(cmd), subprocess.CompletedProcess(cmd, 0, "", ""))[1]
+        saved_journal = pipelib._write_txn_journal
+        pipelib._write_txn_journal = lambda snap, posts: (_ for _ in ()).throw(OSError(28, "No space left on device"))
+        try:
+            ok, why = pipelib.classify_retag_lint("2026-09-19")
+        finally:
+            pipelib._write_txn_journal = saved_journal
+        check(not ok and "控えを書けない" in why and not calls, f"控えを書けないのに取引を始めた: {ok} {why} {calls}")
     finally:
         pipelib._txn_run, pipelib.ROOT = saved_run, saved_root
 
@@ -5903,7 +5913,7 @@ def test_shared_service_units(tmp: Path):
     form2 = "https://forms.cloud.microsoft/pages/responsepage.aspx?id=unrelatedDocument0123456789"
     # 撤去する前の表の形(ドメイン全体の登録)。union merge で行が戻ってきても、判定には使わない
     table.write_text("official_domains:\n  - t.co\n  - forms.cloud.microsoft\nsemi_official_domains:\n  - asobistage.asobistore.jp\n"
-                     "party_domains:\n  - bit.ly\n", encoding="utf-8")
+                     "  - krs.bz\nparty_domains:\n  - bit.ly\n", encoding="utf-8")
     saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, getattr(cs, "expand_short_fetch", None), cs.ask, cs.site_profile,
              cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv)
     try:
@@ -5913,6 +5923,7 @@ def test_shared_service_units(tmp: Path):
         check(pipelib.classify_source(short) == "未確認" and pipelib.classify_source("https://bit.ly/abc") == "未確認",
               f"短縮 URL がドメインの登録で種別を持った: {pipelib.classify_source(short)}")
         check(pipelib.classify_source(form2) == "未確認", "文書 ID の違うフォームがドメインの登録で公式になった")
+        check(pipelib.classify_source("https://krs.bz/other/m/form") == "未確認", "別の会社のメールフォームがドメインの登録で準公式になった")
         # 判定の単位: 短縮は1つずつ、フォームは文書 ID まで(id 以外のクエリは落とす)、メールフォームはアカウント
         check(cs.platform_unit(short) == ("short", "t.co/YknRoOJtym"), f"短縮の単位: {cs.platform_unit(short)}")
         k1, k2 = cs.platform_unit(form1)[1], cs.platform_unit(form2)[1]

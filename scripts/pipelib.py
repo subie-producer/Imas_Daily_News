@@ -1039,6 +1039,8 @@ def commit_and_push(branch: str, message: str, job: str, paths: list[str] | None
     if cur != branch:
         notify(job, f"commit 中止: いるブランチが {cur or '(detached)'} で {branch} ではない", ok=False)
         return False
+    if not classify_txn_settled(job):
+        return False
     bad = conflict_markers()
     if bad:
         notify(job, "マージ衝突マーカーが残ったファイルがあるためコミットを中止:\n- "
@@ -1914,6 +1916,24 @@ def _write_txn_journal(snap: dict[str, bytes | None], posts: Path) -> None:
         os.replace(tmp, j)
     finally:
         tmp.unlink(missing_ok=True)
+
+
+def classify_txn_settled(job: str) -> bool:
+    """確定(commit)してよいか。出典の判定の取引の控えが残っていれば、確定の前に戻す。戻せない・控えを書いた工程がまだ動いている
+    なら False(確定しない)。先に commit すると HEAD が控えと食い違い、判定表と記事を二度と戻せず、次の工程の checkout が止まる
+    (2026-10-14 取り込みの監査: 当番の取り直しの後始末、戻しに失敗した後の収集・組版の後始末)。"""
+    if not (ROOT / TXN_JOURNAL).exists():
+        return True
+    back = recover_classify_txn()
+    if back:
+        print(back, flush=True)
+    if "戻せない" in back or (ROOT / TXN_JOURNAL).exists():
+        notify(job, "出典の判定の取引を戻せないまま残っているので確定しない(先に確定すると戻せなくなる): "
+                    + (back or "控えを書いた工程がまだ動いている"), ok=False)
+        return False
+    if back:
+        anomaly(job, back)
+    return True
 
 
 def recover_classify_txn() -> str:

@@ -7880,6 +7880,66 @@ def test_oncall_collect_rerun_killed_classify(tmp: Path):
           f"checkout {ok} / 記録を確定 {kept_metric}")
 
 
+def test_failed_rollback_blocks_commit(tmp: Path):
+    """出典の判定の取引を戻せなかった(書き込めない 等)まま、収集・組版の途中終了の後始末が確定(commit)しない。確定すると HEAD が
+    控えと食い違い、書き込めるようになっても二度と戻せない(2026-10-14 取り込みの監査)。戻せるようになれば控えから戻せる。
+    本物の子プロセス・SIGTERM・実 Git で、収集(settle_interrupted)と組版(_leave_tree_clean)の両方を通す。"""
+    import shutil
+    repo = Path(__file__).resolve().parent.parent
+    root, remote = tmp / "work", tmp / "origin.git"
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True, capture_output=True)
+    g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+    g("config", "user.name", "t"); g("config", "user.email", "t@example.com")
+    for name in ("scripts", "schema", "prompts"):
+        shutil.copytree(repo / name, root / name, dirs_exist_ok=True)
+    for name in ("docs/_posts", "candidates", "metrics", "stock"):
+        (root / name).mkdir(parents=True, exist_ok=True)
+    shutil.copy2(repo / ".gitignore", root / ".gitignore")
+    shutil.copy2(repo / "source_types.yml", root / "source_types.yml")
+    post = root / "docs" / "_posts" / "2026-10-14-a.md"
+    post.write_text("---\n" + article_fm("a", "2026-10-14") + "---\n本文\n", encoding="utf-8")
+    (root / "candidates" / "2026-10-15.json").write_text("[]\n", encoding="utf-8")
+    (root / "stock" / "watch-state.json").write_text("{}\n", encoding="utf-8")
+    (root / "scripts" / "classify_sources.py").write_text(
+        "def unresolved_post_sources(*a,**k): return []\nif __name__ == '__main__':\n from pathlib import Path\n"
+        " p=Path('source_types.yml');p.write_text(p.read_text()+'\\n# txn unfinished\\n')\n", encoding="utf-8")
+    # 記事を書き換えて書き込めなくし(戻しが失敗する)、親に SIGTERM を送る
+    (root / "scripts" / "retag_sources.py").write_text(
+        "from pathlib import Path\nimport os,signal,time\np=next(Path('docs/_posts').glob('*.md'));p.write_text(p.read_text()+'\\n<!-- txn unfinished -->\\n')\n"
+        "p.chmod(0o444)\nos.kill(os.getppid(),signal.SIGTERM)\ntime.sleep(30)\n", encoding="utf-8")
+    g("add", "."); g("commit", "-qm", "base"); g("remote", "add", "origin", str(remote)); g("push", "-qu", "origin", "main")
+    branch = "edition/2026-10-15"
+    g("checkout", "-qb", branch); g("push", "-qu", "origin", branch)
+    original_post, original_table = post.read_bytes(), (root / "source_types.yml").read_bytes()
+    common = ("import sys,signal,os;sys.path.insert(0,'scripts');import pipelib,collect,compose;from pathlib import Path\n"
+              "pipelib.set_quiet(True);pipelib.notify=collect.notify=compose.notify=lambda *a,**k: True\n"
+              "Path('metrics/2026-10-15.json').write_text('{\"collect\":[{\"added\":1}]}')\n")
+    programs = {"collect": ("signal.signal(signal.SIGTERM,collect._on_sigterm)\ntry:\n pipelib.classify_retag_lint('2026-10-15')\n"
+                            "except BaseException as e:\n collect.settle_interrupted('2026-10-15','edition/2026-10-15',e)\n sys.exit(143)\n"),
+                "compose": ("compose.STARTED_ON='edition/2026-10-15';compose.STARTED_DATE='2026-10-15'\ndef handler(s,f):\n"
+                            " compose._leave_tree_clean('SIGTERM')\n os._exit(143)\nsignal.signal(signal.SIGTERM,handler)\n"
+                            "pipelib.classify_retag_lint('2026-10-15',lint=False)\n")}
+    results = {}
+    saved = (pipelib.ROOT, pipelib.notify)
+    try:
+        for name, program in programs.items():
+            head = g("rev-parse", "HEAD")
+            r = subprocess.run([sys.executable, "-c", common + program], cwd=root, capture_output=True, text=True, timeout=60)
+            moved = head != g("rev-parse", "HEAD")
+            post.chmod(0o644)          # 書き込めるようになった
+            pipelib.ROOT, pipelib.notify = root, (lambda *a, **k: True)
+            back = pipelib.recover_classify_txn()
+            results[name] = (r.returncode, moved, back, post.read_bytes() == original_post,
+                             (root / "source_types.yml").read_bytes() == original_table)
+            g("checkout", "-q", "--", "."); g("clean", "-qfd", "--", "metrics")
+    finally:
+        pipelib.ROOT, pipelib.notify = saved
+    check(all(code == 143 and not moved and "戻した" in back and post_ok and table_ok
+              for code, moved, back, post_ok, table_ok in results.values()) and len(results) == 2,
+          f"判定の取引を戻せないまま、途中終了の後始末が確定した・書き込めるようになっても戻せない: {results}")
+
+
 def test_compose_run_derive(tmp: Path):
     """組版の派生(compose.run_derive): 成功は True、失敗(0 以外の終了・スクリプトが無い)は終了コードと最後の行を異常として申告して
     False。組版は derive を run_derive だけで呼ぶ(監査指摘 2026-10-14: 5か所とも終了コードを見ず、derive が落ちても黙って lint へ進んだ)。"""
@@ -9728,6 +9788,7 @@ def main() -> int:
     test_derive_write(tmp / "dw")
     test_compose_run_derive(tmp / "crd")
     test_oncall_collect_rerun_killed_classify(tmp / "ock")
+    test_failed_rollback_blocks_commit(tmp / "frb")
     test_canonicalize_and_assign_ranks(tmp / "car2")
     test_rewrite_past_apply_answer(tmp / "rpa")
     test_slugify_format()

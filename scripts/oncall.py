@@ -74,7 +74,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hashlib
 
-from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, recover_classify_txn, settle_collect_outputs, SCHEDULED, SLOT_MARGIN_MIN,
+from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_txn_settled, settle_collect_outputs, SCHEDULED, SLOT_MARGIN_MIN,
                      JobLockTimeout, anomaly,
                      job_lock, loads_strict, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, settled_drops,
@@ -975,7 +975,10 @@ def rerun_policy(stage: str, changed: list[str], rerun_mode: str, recover: bool 
 
 
 def commit_paths(paths: list[str], msg: str, branch: str, push_timeout: int = 120) -> None:
-    """対象パスだけを stage して commit・push(包括的な add -A は使わない。監査指摘)。"""
+    """対象パスだけを stage して commit・push(包括的な add -A は使わない。監査指摘)。出典の判定の取引の控えが残っていれば
+    戻してから確定し、戻せなければ確定しない(pipelib.classify_txn_settled)。"""
+    if not classify_txn_settled("oncall"):
+        raise RuntimeError("出典の判定の取引を戻せないので確定しない")
     must(sh(["git", "add", "-A", "--"] + paths, cwd=ROOT), "add")
     if must(sh(["git", "status", "--porcelain"], cwd=ROOT), "git status").stdout.strip():
         must(sh(["git", "commit", "-q", "-m", msg + CO_AUTHOR], cwd=ROOT), "commit")
@@ -1270,12 +1273,8 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
                     # 確定(commit)する前に、取り直しの中で途中で終わった出典の判定の取引(SIGKILL 等)を控えから戻す。先に commit すると
                     # HEAD が控えと食い違って戻せなくなり、判定表と記事が未コミットで残って次の工程の checkout が止まる
                     # (2026-10-14 取り込みの監査)。戻せなければ確定しない
-                    back = recover_classify_txn()
-                    if back:
-                        print(back, flush=True)
-                        if "戻せない" in back:
-                            raise RuntimeError(back)
-                        anomaly("oncall", f"{date} collect: {back}")
+                    if not classify_txn_settled("oncall"):
+                        raise RuntimeError("出典の判定の取引を戻せない")
                     dropped = settle_collect_outputs(ROOT)
                     if dropped:
                         notify("oncall", f"{date} collect: 取り直しの出力が壊れていたので確定せずに戻した: " + " / ".join(dropped)[:600],

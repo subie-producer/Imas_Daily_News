@@ -6026,16 +6026,20 @@ def test_document_id_case(tmp: Path):
         k1, k2 = cs.platform_unit(f1)[1], cs.platform_unit(f2)[1]
         check(k1 != k2 and cs._key_forms(k1)[0] != cs._key_forms(k2)[0] and cs._key_forms(cs.platform_unit(g1)[1])[0] != cs._key_forms(cs.platform_unit(g2)[1])[0],
               f"大小文字だけ違う文書が合議の同じ対象になる: {cs._key_forms(k1)} {cs._key_forms(k2)}")
-        # 経路: 候補の2つのフォーム → 合議(両モデルが後者だけを公式と答える)→ 表。前者は未確認のまま
-        (tmp / "candidates" / "2026-10-14.json").write_text(json.dumps([{"url": f1, "title": "a"}, {"url": f2, "title": "b"}]), encoding="utf-8")
-        cs.ask = lambda cmd, prompt, timeout=900: [{"host": k2, "operator": "公式", "type": "公式", "why": "リンク元が公式"}]
+        # 経路: 候補の大小文字だけ違うフォーム(文書 ID のクエリの形と、短縮の /r/<ID> の形)→ 合議(両モデルが後者だけを公式と
+        # 答える)→ 表。前者は未確認のまま
+        r1, r2 = "https://forms.office.com/r/AbCdEfGh12", "https://forms.office.com/r/abCdEfGh12"
+        kr1, kr2 = cs.platform_unit(r1)[1], cs.platform_unit(r2)[1]
+        check(kr1 == "forms.office.com/r/AbCdEfGh12" and cs._key_forms(kr1)[0] != cs._key_forms(kr2)[0], f"短縮の形のフォームの単位: {kr1} {kr2}")
+        (tmp / "candidates" / "2026-10-14.json").write_text(json.dumps([{"url": u, "title": u[-4:]} for u in (f1, f2, r1, r2)]), encoding="utf-8")
+        cs.ask = lambda cmd, prompt, timeout=900: [{"host": k, "operator": "公式", "type": "公式", "why": "リンク元が公式"} for k in (k2, kr2)]
         cs.site_profile = lambda *a, **k: "材料"
         cs.POSTS_ONLY, cs.UNRESOLVED = None, tmp / "metrics" / "classify-unresolved.json"
         sys.argv = ["classify_sources.py", "--date", "2026-10-14", "--apply"]
         cs.main()
         pipelib._ST_TABLE = None
-        check(pipelib.classify_source(f2) == "公式" and pipelib.classify_source(f1) == "未確認",
-              f"合議が答えた文書と違う文書に公式が付いた: {pipelib.classify_source(f1)} / {pipelib.classify_source(f2)}")
+        got = [pipelib.classify_source(u) for u in (f1, f2, r1, r2)]
+        check(got == ["未確認", "公式", "未確認", "公式"], f"合議が答えた文書と違う文書に公式が付いた: {got}")
         # 大小文字だけ違う文書を別々に足せる(表の検査で重複にしない)。Google の文書も同じ
         cs.add_paths({k1: ("ファン", "x"), cs.platform_unit(g1)[1]: ("公式", "y"), cs.platform_unit(g2)[1]: ("ファン", "z")})
         pipelib._ST_TABLE = None
@@ -6284,7 +6288,7 @@ def test_classify_txn_interrupt(tmp: Path):
     finally:
         cleanup(pids)
     # 4. 時間切れ: 子と孫を止めてから戻す
-    def in_process(name, mode, label, call):
+    def in_process(name, mode, label, call, need_pids=None):
         """この process の中で取引を走らせる(合議の代役の終わり方は mode)。call は取引を呼ぶ関数(戻りは検める側が見る)"""
         root = setup(name)
         saved_root, saved_env, pids = pipelib.ROOT, os.environ.get("TXN_CLASSIFY"), []
@@ -6293,7 +6297,7 @@ def test_classify_txn_interrupt(tmp: Path):
             os.environ["TXN_CLASSIFY"] = mode
             call(root)
             pids = [int(x) for x in (root / "ready").read_text().split()] if (root / "ready").exists() else []
-            settled(root, pids, label, need_pids=mode != "")
+            settled(root, pids, label, need_pids=(mode != "") if need_pids is None else need_pids)
         except (Exception, SystemExit) as e:      # noqa: BLE001
             check(False, f"{label}のテストが例外: {type(e).__name__}: {e}")
         finally:
@@ -6313,6 +6317,29 @@ def test_classify_txn_interrupt(tmp: Path):
         ok, why = pipelib.classify_retag_lint("2026-10-14", posts_only=True, lint=False)
         check(not ok and "合議 exit 1" in why, f"合議の失敗の扱い: {ok} {why}")
     in_process("orphan-fail", "orphan-fail", "子が先に失敗して孫が残る", failed_first)
+    # 4'''. 子の記録を書けない(空き容量が無い等): 子を動かさずに止めて段を失敗にする(記録の無い子を残さない。親が SIGKILL で
+    #       死んでも次の起動が止められない子を作らない)
+    def no_record(root):
+        saved_w = pipelib._write_txn_child
+        pipelib._write_txn_child = lambda *a: (_ for _ in ()).throw(OSError(28, "No space left on device"))
+        try:
+            ok, why = pipelib.classify_retag_lint("2026-10-14", posts_only=True, lint=False)
+        finally:
+            pipelib._write_txn_child = saved_w
+        check(not ok and "OSError" in why and not (root / "ready").exists()
+              and (root / "source_types.yml").read_text(encoding="utf-8") == orig_table, f"子の記録を書けないのに子が動いた: {ok} {why}")
+    in_process("no-record", "orphan-ok", "子の記録を書けない", no_record, need_pids=False)
+    # 親が合図の前に死んだ(標準入力が閉じた)子は、本来のコマンドを動かさずに終わる
+    gate_dir = tmp / "gate"
+    gate_dir.mkdir(exist_ok=True)
+    try:
+        g = subprocess.Popen([sys.executable, "-c", pipelib._TXN_GATE, sys.executable, "-c", "open('ran', 'w').write('x')"],
+                             cwd=gate_dir, stdin=subprocess.PIPE)
+        g.stdin.close()
+        g.wait(timeout=30)
+        check(g.returncode == 125 and not (gate_dir / "ran").exists(), f"合図の無いまま取引の子が動いた: exit {g.returncode}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"取引の子の入口のテストが例外: {type(e).__name__}: {e}")
     # 4''. 工程の終了の例外(収集の SIGTERM を例外にした Terminated のような BaseException)・KeyboardInterrupt が取引の中で
     #      起きても、戻してから例外を通す
     class Terminated(BaseException):
@@ -6508,6 +6535,7 @@ def main() -> int:
     test_table_write_and_reload(tmp / "tw")
     test_classify_posts_only(tmp / "cp")
     test_shared_service_units(tmp / "ssu")
+    test_document_id_case(tmp / "dic")
     test_performer_domains(tmp / "pd")
     test_platform_owner_units(tmp / "pou")
     test_classify_txn_interrupt(tmp / "cti")

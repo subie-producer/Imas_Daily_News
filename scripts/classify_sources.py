@@ -671,7 +671,11 @@ def _key_forms(s: str) -> tuple[str, str]:
     # 文書の ID(Google の文書・フォームのパス、Microsoft Forms のクエリの id)は大小文字を区別する。ほかは区別しない。
     # クエリは落とすが、Microsoft Forms の id は残す(落とす・同一視すると、別のフォームどうしが同じ対象になり、別の文書に判定が付く。
     # 監査指摘 2026-10-14)
-    if head not in ID_CASE_HOSTS or head in QUERY_DOC_PAGES:
+    if head in QUERY_DOC_PAGES:
+        # Microsoft Forms: 固定のページ(/pages/responsepage.aspx)は小文字にそろえ、短縮の /r/<ID> の ID はそのまま
+        segs = path.split("/")
+        path = path.lower() if path.lower() == QUERY_DOC_PAGES[head].strip("/") else "/".join([segs[0].lower()] + segs[1:])
+    elif head not in ID_CASE_HOSTS:
         path = path.lower()
     qid = query.split("&")[0] if head in QUERY_DOC_PAGES and query[:3].lower() == "id=" else ""
     full = (head + sep + path).rstrip("/").removesuffix("/about") + (f"?id={qid[3:]}" if qid else "")

@@ -1525,6 +1525,20 @@ _TXN: dict = {"proc": None, "signum": None, "stray": []}
 TXN_JOURNAL = Path("metrics") / "work" / "classify-txn.json"   # 取引の開始時の中身の控え(ROOT から。Git 管理外)
 TXN_CHILD = Path("metrics") / "work" / "classify-txn.child.json"   # 動いている取引の子(pid・起動時刻)。親が死んでも次の起動が止める
 TXN_SIGNALS = (signal.SIGTERM, signal.SIGINT)
+# 取引の子の入口: 標準入力から合図("1")を受けてから本来のコマンドに置き換わる(pid と起動時刻は変わらない)。合図が来なければ動かない
+_TXN_GATE = ("import os, sys\n"
+             "if sys.stdin.buffer.read(1) != b'1':\n    sys.exit(125)\n"
+             "os.execv(sys.argv[1], sys.argv[1:])\n")
+
+
+def _write_txn_child(child: Path, pid: int, started: str) -> None:
+    """取引の子の記録(pid・起動時刻)を書く(一時ファイル → 置き換え)。書けなければ OSError(段の失敗にする)。"""
+    tmp = child.with_name(f".{child.name}.{os.getpid()}.tmp")
+    try:
+        tmp.write_text(json.dumps({"pid": pid, "started": started}), encoding="utf-8")
+        os.replace(tmp, child)
+    finally:
+        tmp.unlink(missing_ok=True)
 
 
 def _txn_stop_child() -> None:
@@ -1544,23 +1558,18 @@ def _txn_stop_child() -> None:
 def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
     """取引の1段を子プロセスで走らせる。子は自分のプロセスグループで起動し、時間切れ・例外では**グループごと止めて回収してから**
     抜ける。中断のシグナルはハンドラが子を止める(communicate が子の終わりで戻る)。"""
-    p = subprocess.Popen(cmd, cwd=ROOT, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                         text=True, start_new_session=True)
+    # 子は、親が子の記録(TXN_CHILD)を書き終えて合図を送るまで動き出さない(_TXN_GATE)。記録の無い子を残さない: 書けなければ
+    # 子を動かさずに止めて段を失敗にし、親が合図の前に死ねば子は動かずに終わる(監査指摘 2026-10-14)
+    p = subprocess.Popen([sys.executable, "-c", _TXN_GATE, *cmd], cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE, text=True, start_new_session=True)
     _TXN["proc"] = p
     started = _proc_started(p.pid)
     child = ROOT / TXN_CHILD
     try:
         if _TXN["signum"] is not None:      # 起動の直前に中断を受けていた
             _txn_stop_child()
-        tmp = child.with_name(f".{child.name}.{os.getpid()}.tmp")
-        try:
-            tmp.write_text(json.dumps({"pid": p.pid, "started": started}), encoding="utf-8")
-            os.replace(tmp, child)
-        except OSError as e:
-            print(f"取引の子の記録を書けない({e})", flush=True)
-        finally:
-            tmp.unlink(missing_ok=True)
-        out, err = p.communicate(timeout=timeout)
+        _write_txn_child(child, p.pid, started)
+        out, err = p.communicate(input="1", timeout=timeout)
     except subprocess.TimeoutExpired:
         out, err = reap(p)
         raise subprocess.TimeoutExpired(cmd, timeout, output=out, stderr=err)

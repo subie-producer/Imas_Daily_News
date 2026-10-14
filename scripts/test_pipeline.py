@@ -6002,6 +6002,55 @@ def test_shared_service_units(tmp: Path):
     check(not bad, f"判定表にドメイン単位で決まらないホストがドメインとして載っている: {bad}")
 
 
+def test_document_id_case(tmp: Path):
+    """文書・短縮・動画の ID は大小文字を区別する(監査指摘 2026-10-14: Microsoft Forms の文書 ID を大小文字で同一視し、合議が
+    `abCd…` を公式と答えたのに、別の文書 `AbCd…` に公式が保存された)。合議の対応付け・表への追加・表の検査・merge 後の二重行の除去の
+    どれも同じ比べ方(pipelib.path_type_norm)。"""
+    import classify_sources as cs
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    f1 = "https://forms.cloud.microsoft/pages/responsepage.aspx?id=AbCdEfGhIjKlMnOpQr12&route=shorturl"
+    f2 = "https://forms.cloud.microsoft/pages/responsepage.aspx?id=abCdEfGhIjKlMnOpQr12"
+    g1 = "https://docs.google.com/forms/d/e/1FAIpQLSAbCdEfGhIjKlMnOpQrStUvWx/viewform"
+    g2 = "https://docs.google.com/forms/d/e/1FAIpQLSabCdEfGhIjKlMnOpQrStUvWx/viewform"
+    table = tmp / "source_types.yml"
+    table.write_text("official_domains:\n  - a.example\nvideo_ids:\n  公式:\n    - AAAAAAAAAAA\n", encoding="utf-8")
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask, cs.site_profile, cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        k1, k2 = cs.platform_unit(f1)[1], cs.platform_unit(f2)[1]
+        check(k1 != k2 and cs._key_forms(k1)[0] != cs._key_forms(k2)[0] and cs._key_forms(cs.platform_unit(g1)[1])[0] != cs._key_forms(cs.platform_unit(g2)[1])[0],
+              f"大小文字だけ違う文書が合議の同じ対象になる: {cs._key_forms(k1)} {cs._key_forms(k2)}")
+        # 経路: 候補の2つのフォーム → 合議(両モデルが後者だけを公式と答える)→ 表。前者は未確認のまま
+        (tmp / "candidates" / "2026-10-14.json").write_text(json.dumps([{"url": f1, "title": "a"}, {"url": f2, "title": "b"}]), encoding="utf-8")
+        cs.ask = lambda cmd, prompt, timeout=900: [{"host": k2, "operator": "公式", "type": "公式", "why": "リンク元が公式"}]
+        cs.site_profile = lambda *a, **k: "材料"
+        cs.POSTS_ONLY, cs.UNRESOLVED = None, tmp / "metrics" / "classify-unresolved.json"
+        sys.argv = ["classify_sources.py", "--date", "2026-10-14", "--apply"]
+        cs.main()
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source(f2) == "公式" and pipelib.classify_source(f1) == "未確認",
+              f"合議が答えた文書と違う文書に公式が付いた: {pipelib.classify_source(f1)} / {pipelib.classify_source(f2)}")
+        # 大小文字だけ違う文書を別々に足せる(表の検査で重複にしない)。Google の文書も同じ
+        cs.add_paths({k1: ("ファン", "x"), cs.platform_unit(g1)[1]: ("公式", "y"), cs.platform_unit(g2)[1]: ("ファン", "z")})
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source(f1) == "ファン" and pipelib.classify_source(f2) == "公式"
+              and pipelib.classify_source(g1) == "公式" and pipelib.classify_source(g2) == "ファン", "大小文字だけ違う文書を別々に判定できない")
+        # merge 後の二重行の除去も、大小文字だけ違う文書・動画 ID を消さない(同じ行は消す)
+        text = table.read_text(encoding="utf-8").replace("    - AAAAAAAAAAA\n", "    - AAAAAAAAAAA\n    - aaaaaaaaaaa\n    - AAAAAAAAAAA\n")
+        table.write_text(text, encoding="utf-8")
+        removed = pipelib.dedupe_source_table(table)
+        t = pipelib.parse_source_table(table.read_text(encoding="utf-8"), table)
+        check(removed == ["    - AAAAAAAAAAA"] and t["video_ids"]["公式"] == ["AAAAAAAAAAA", "aaaaaaaaaaa"]
+              and k1 in t["path_types"] and k2 in t["path_types"], f"二重行の除去が別の ID を消した: {removed} {t['video_ids']}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"文書 ID の大小文字のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask, cs.site_profile, cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv = saved
+
+
 def test_performer_domains(tmp: Path):
     """合議が答えてよい種別(ALLOWED)は、どれもドメインとして保存でき、判定と表の検査が同じ種別で読み戻す(監査指摘 2026-10-14:
     依頼文どおり所属事務所のサイトを演者と答えて2モデルが一致しても、保存先が無く KeyError('演者') で取引ごと落ちた)。"""
@@ -6101,13 +6150,23 @@ def test_classify_txn_interrupt(tmp: Path):
     scripts_dir = Path(__file__).resolve().parent
     orig_table = "official_domains:\n  - a.example\n"
     orig_post = "---\n" + article_fm("a", "2026-10-14") + "---\n本文\n"
+    # 合議の代役: 表と記事を書く。TXN_CLASSIFY で終わり方を変える(slow: 孫を起こして待つ / fail: 失敗で終わる /
+    # orphan-fail・orphan-ok: 孫(go が置かれたら・無くても数秒後に表を書き直す)を残して、失敗・成功で先に終わる)
     classify = ("import os, subprocess, sys, time\nfrom pathlib import Path\n"
                 "Path('source_types.yml').write_text('official_domains:\\n  - b.example\\n')\n"
                 "Path('docs/_posts/2026-10-14-new.md').write_text('new')\n"
                 "Path('.source_types.yml.999.tmp').write_text('half')\n"
-                "if os.environ.get('SLOW_CLASSIFY'):\n"
+                "mode = os.environ.get('TXN_CLASSIFY', '')\n"
+                "if mode == 'slow':\n"
                 "    g = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'])\n"
-                "    Path('ready').write_text(f'{os.getpid()} {g.pid}')\n    time.sleep(60)\n")
+                "    Path('ready').write_text(f'{os.getpid()} {g.pid}')\n    time.sleep(60)\n"
+                "if mode == 'fail':\n    sys.exit(1)\n"
+                "if mode in ('orphan-fail', 'orphan-ok'):\n"
+                "    g = subprocess.Popen([sys.executable, 'scripts/grandchild.py'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)\n"
+                "    Path('ready').write_text(f'{os.getpid()} {g.pid}')\n"
+                "    sys.exit(1 if mode == 'orphan-fail' else 0)\n")
+    grandchild = ("import time\nfrom pathlib import Path\nfor _ in range(60):\n    if Path('go').exists():\n        break\n"
+                  "    time.sleep(0.1)\nPath('source_types.yml').write_text('official_domains:\\n  - grandchild.example\\n')\n")
     retag = ("import os, subprocess, sys, time\nfrom pathlib import Path\n"
              "Path('docs/_posts/2026-10-14-a.md').write_text('retagged')\n"
              "g = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'])\n"
@@ -6125,7 +6184,8 @@ def test_classify_txn_interrupt(tmp: Path):
         (root / "docs" / "_posts" / "2026-10-14-a.md").write_text(orig_post, encoding="utf-8")
         (root / "scripts" / "classify_sources.py").write_text(classify, encoding="utf-8")
         (root / "scripts" / "retag_sources.py").write_text(retag, encoding="utf-8")
-        (root / ".gitignore").write_text("/metrics/\n/ready\n/out\n", encoding="utf-8")
+        (root / "scripts" / "grandchild.py").write_text(grandchild, encoding="utf-8")
+        (root / ".gitignore").write_text("/metrics/\n/ready\n/out\n/go\n/flag\n/sweeping\n", encoding="utf-8")
         git_(root, "init", "-q", "-b", "edition/2026-10-14")
         git_(root, "add", "-A")
         git_(root, "commit", "-qm", "base")
@@ -6137,16 +6197,17 @@ def test_classify_txn_interrupt(tmp: Path):
         except (OSError, IndexError):
             return False
 
-    def start(root, handler=""):
-        prog = (f"import sys\nsys.path.insert(0, {str(scripts_dir)!r})\nfrom pathlib import Path\nimport pipelib\n"
-                f"pipelib.ROOT = Path({str(root)!r})\n{handler}\n"
-                "print(pipelib.classify_retag_lint('2026-10-14', posts_only=True, lint=False), flush=True)\n")
+    run = "print(pipelib.classify_retag_lint('2026-10-14', posts_only=True, lint=False), flush=True)\n"
+
+    def start(root, handler="", body=run, wait_for="ready", env=None):
+        prog = (f"import os, signal, sys, time\nsys.path.insert(0, {str(scripts_dir)!r})\nfrom pathlib import Path\nimport pipelib\n"
+                f"pipelib.ROOT = Path({str(root)!r})\n{handler}\n{body}")
         proc = subprocess.Popen([sys.executable, "-c", prog], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-                                stdin=subprocess.DEVNULL)
-        for _ in range(400):
+                                stdin=subprocess.DEVNULL, env={**os.environ, **(env or {})})
+        for _ in range(400 if wait_for else 0):
             try:
                 pids = [int(x) for x in (root / "ready").read_text().split()]
-                if len(pids) == 2:
+                if len(pids) == 2 and (wait_for == "ready" or (root / wait_for).exists()):
                     return proc, pids
             except (OSError, ValueError):
                 pass
@@ -6155,17 +6216,20 @@ def test_classify_txn_interrupt(tmp: Path):
             time.sleep(0.05)
         return proc, []
 
-    def settled(root, pids, label):
-        for _ in range(50):          # 止めた孫が回収されるまで
+    def settled(root, pids, label, need_pids=True):
+        (root / "go").write_text("go", encoding="utf-8")      # 残った孫がいれば、ここで表を書き直す
+        for _ in range(50):          # 止めた孫が回収されるまで(残っていれば書き直すまで)
             if not any(alive(q) for q in pids):
                 break
             time.sleep(0.1)
-        (root / "ready").unlink(missing_ok=True)
+        time.sleep(0.5)
+        for f in ("ready", "go"):
+            (root / f).unlink(missing_ok=True)
         got = {"表": (root / "source_types.yml").read_text(encoding="utf-8") == orig_table,
                "記事": (root / "docs" / "_posts" / "2026-10-14-a.md").read_text(encoding="utf-8") == orig_post,
                "増えた記事": not (root / "docs" / "_posts" / "2026-10-14-new.md").exists(),
                "書きかけの表": not (root / ".source_types.yml.999.tmp").exists(),
-               "子と孫": bool(pids) and not any(alive(q) for q in pids),
+               "子と孫": (bool(pids) or not need_pids) and not any(alive(q) for q in pids),
                "作業ツリー": git_(root, "status", "--porcelain").stdout.strip() == "",
                "控え": not (root / "metrics" / "work" / "classify-txn.json").exists()}
         check(all(got.values()), f"{label}: 開始時へ戻っていない・止まっていない {[k for k, v in got.items() if not v]}")
@@ -6217,26 +6281,57 @@ def test_classify_txn_interrupt(tmp: Path):
     finally:
         cleanup(pids)
     # 4. 時間切れ: 子と孫を止めてから戻す
-    root = setup("timeout")
-    saved_root = pipelib.ROOT
-    saved_env = os.environ.get("SLOW_CLASSIFY")
-    pids = []
-    try:
-        pipelib.ROOT = root
-        os.environ["SLOW_CLASSIFY"] = "1"
+    def in_process(name, mode, label, call):
+        """この process の中で取引を走らせる(合議の代役の終わり方は mode)。call は取引を呼ぶ関数(戻りは検める側が見る)"""
+        root = setup(name)
+        saved_root, saved_env, pids = pipelib.ROOT, os.environ.get("TXN_CLASSIFY"), []
+        try:
+            pipelib.ROOT = root
+            os.environ["TXN_CLASSIFY"] = mode
+            call(root)
+            pids = [int(x) for x in (root / "ready").read_text().split()] if (root / "ready").exists() else []
+            settled(root, pids, label, need_pids=mode != "")
+        except (Exception, SystemExit) as e:      # noqa: BLE001
+            check(False, f"{label}のテストが例外: {type(e).__name__}: {e}")
+        finally:
+            pipelib.ROOT = saved_root
+            if saved_env is None:
+                os.environ.pop("TXN_CLASSIFY", None)
+            else:
+                os.environ["TXN_CLASSIFY"] = saved_env
+            cleanup(pids)
+
+    def timed_out(root):
         ok, why = pipelib.classify_retag_lint("2026-10-14", posts_only=True, timeout=3, lint=False)
-        pids = [int(x) for x in (root / "ready").read_text().split()] if (root / "ready").exists() else []
         check(not ok and "TimeoutExpired" in why, f"時間切れの扱い: {ok} {why}")
-        settled(root, pids, "時間切れ")
-    except (Exception, SystemExit) as e:      # noqa: BLE001
-        check(False, f"時間切れのテストが例外: {type(e).__name__}: {e}")
-    finally:
-        pipelib.ROOT = saved_root
-        if saved_env is None:
-            os.environ.pop("SLOW_CLASSIFY", None)
-        else:
-            os.environ["SLOW_CLASSIFY"] = saved_env
-        cleanup(pids)
+    in_process("timeout", "slow", "時間切れ", timed_out)
+    # 4'. 合議の子が先に終わり、孫が残る(失敗で終わる・成功して付け直しへ進む): 孫も止めてから戻す。戻した後で孫に書き直させない
+    def failed_first(root):
+        ok, why = pipelib.classify_retag_lint("2026-10-14", posts_only=True, lint=False)
+        check(not ok and "合議 exit 1" in why, f"合議の失敗の扱い: {ok} {why}")
+    in_process("orphan-fail", "orphan-fail", "子が先に失敗して孫が残る", failed_first)
+    # 4''. 工程の終了の例外(収集の SIGTERM を例外にした Terminated のような BaseException)・KeyboardInterrupt が取引の中で
+    #      起きても、戻してから例外を通す
+    class Terminated(BaseException):
+        pass
+    for exc in (Terminated, KeyboardInterrupt):
+        def raised(root, exc=exc):
+            real = pipelib._txn_run
+
+            def after_classify(cmd, timeout):
+                r = real(cmd, timeout)
+                if "classify_sources.py" in str(cmd[1]):
+                    raise exc()
+                return r
+            pipelib._txn_run = after_classify
+            try:
+                pipelib.classify_retag_lint("2026-10-14", posts_only=True, lint=False)
+                check(False, f"{exc.__name__} が取引の外へ出ない")
+            except exc:
+                pass
+            finally:
+                pipelib._txn_run = real
+        in_process(f"raise-{exc.__name__}", "", f"取引の中の {exc.__name__}", raised)
     # 5. 親が SIGKILL(後始末できない): 次の工程の checkout が、未コミットの変更を見る前に控えから戻し、残った子も止める
     root = setup("kill")
     proc, pids = start(root)
@@ -6257,6 +6352,72 @@ def test_classify_txn_interrupt(tmp: Path):
     finally:
         pipelib.ROOT, pipelib.notify, pipelib.git_net = saved[:3]
         pipelib.ANOMALIES[:] = saved[3]
+        cleanup(pids)
+    # 6. 合議の子が先に終わったあと・孫を止める前に親が SIGKILL: 次の工程の checkout が、直接の子が終わっていても孫を止めてから戻す
+    root = setup("kill-orphan")
+    slow_sweep = (f"_real = pipelib._stop_session\n"
+                  f"def _slow(*a, **k):\n    Path({str(root / 'sweeping')!r}).write_text('x')\n    time.sleep(60)\n    return _real(*a, **k)\n"
+                  "pipelib._stop_session = _slow\n")
+    proc, pids = start(root, slow_sweep, wait_for="sweeping", env={"TXN_CLASSIFY": "orphan-ok"})
+    saved = (pipelib.ROOT, pipelib.notify, pipelib.git_net, list(pipelib.ANOMALIES))
+    try:
+        check(len(pids) == 2 and not alive(pids[0]) and alive(pids[1]), f"前提: 合議の子は終わり、孫が残っている: {pids}")
+        os.kill(proc.pid, _signal.SIGKILL)
+        proc.communicate(timeout=30)
+        pipelib.ROOT = root
+        pipelib.notify = lambda job, msg, ok=True, require=False: True
+        pipelib.git_net = lambda *a, **k: subprocess.CompletedProcess(a, 1, "", "offline")
+        pipelib.checkout_edition_branch("2026-10-14", "collect")
+        (root / "sweeping").unlink(missing_ok=True)
+        settled(root, pids, "子が終わった後の SIGKILL の後の checkout")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"子が終わった後の SIGKILL のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        pipelib.ROOT, pipelib.notify, pipelib.git_net = saved[:3]
+        pipelib.ANOMALIES[:] = saved[3]
+        cleanup(pids)
+    # 7. 戻している最中に届いた SIGTERM・SIGINT も落とさない: 戻し終えてから元の扱いへ届く(合議の失敗で戻す最中に自分へ送る)
+    for sig, want in ((_signal.SIGTERM, "既定"), (_signal.SIGINT, "KeyboardInterrupt"), (_signal.SIGTERM, "扱いを持つ親")):
+        root = setup(f"during-{sig.name}-{len(want)}")
+        out = root / "out"
+        handler = (f"_real = pipelib._restore\n"
+                   f"def _r(*a, **k):\n    if not Path({str(root / 'flag')!r}).exists():\n"
+                   f"        Path({str(root / 'flag')!r}).write_text('x')\n        os.kill(os.getpid(), {int(sig)})\n"
+                   "    return _real(*a, **k)\npipelib._restore = _r\n")
+        if want == "扱いを持つ親":
+            handler += ("def _h(s, f):\n"
+                        f"    Path({str(out)!r}).write_text(Path({str(root / 'source_types.yml')!r}).read_text())\n    os._exit(7)\n"
+                        "signal.signal(signal.SIGTERM, _h)\n")
+        proc, _p = start(root, handler, wait_for=None, env={"TXN_CLASSIFY": "fail"})
+        try:
+            _out, err = proc.communicate(timeout=60)
+            if want == "既定":
+                ok_end = proc.returncode == -_signal.SIGTERM
+            elif want == "KeyboardInterrupt":
+                ok_end = proc.returncode != 0 and "KeyboardInterrupt" in err
+            else:
+                ok_end = proc.returncode == 7 and out.exists() and out.read_text() == orig_table
+            check(ok_end and (root / "flag").exists(), f"戻す最中の {sig.name}({want})を落とした: exit {proc.returncode} {err[-200:]}")
+            (root / "flag").unlink(missing_ok=True)
+            settled(root, [], f"戻す最中の {sig.name}({want})", need_pids=False)
+        finally:
+            if proc.poll() is None:
+                proc.kill()
+    # 8. SIGTERM を例外(収集の Terminated のような BaseException)に変える親: 戻してから、その例外が親へ届く
+    root = setup("terminated")
+    out = root / "out"
+    handler = ("class Terminated(BaseException):\n    pass\n"
+               "def _h(s, f):\n    raise Terminated()\nsignal.signal(signal.SIGTERM, _h)\n")
+    body = ("try:\n    " + run + "except Terminated:\n"
+            f"    Path({str(out)!r}).write_text(Path({str(root / 'source_types.yml')!r}).read_text())\n    sys.exit(5)\n")
+    proc, pids = start(root, handler, body)
+    try:
+        os.kill(proc.pid, _signal.SIGTERM)
+        proc.communicate(timeout=30)
+        check(proc.returncode == 5 and out.exists() and out.read_text() == orig_table,
+              f"SIGTERM を例外にする親へ、戻した後に例外が届かない: {proc.returncode} {out.read_text() if out.exists() else '(届いていない)'}")
+        settled(root, pids, "SIGTERM を例外にする親")
+    finally:
         cleanup(pids)
 
 

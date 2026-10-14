@@ -1304,6 +1304,20 @@ def query_doc_key(url: str) -> str | None:
     return f"{host}{page}?id={ids[0]}" if len(ids) == 1 and re.fullmatch(r"[A-Za-z0-9._-]{16,}", ids[0]) else None
 
 
+# 文書・短縮の ID がパスかクエリに入り、大小文字だけ違う別の文書・短縮がありうるホスト(Google の文書・フォーム、Microsoft Forms、
+# 短縮 URL)。判定表のキーを比べるとき、このホストのパスは大小文字を区別する(同一視すると、別の文書に判定が付く。監査指摘 2026-10-14)
+ID_CASE_HOSTS = ("docs.google.com", "drive.google.com", "forms.gle") + tuple(QUERY_DOC_PAGES) + SHORTENERS
+
+
+def path_type_norm(key) -> str:
+    """path_types のキーを比べる形(表の重複の検査・merge 後の二重行の除去・合議の追加で同じ比べ方をする)。末尾の / を落とし、
+    ホストは小文字。パスも小文字にするが、ID_CASE_HOSTS のパス(文書・短縮の ID)はそのまま。"""
+    k = str(key).strip().rstrip("/")
+    host, sep, rest = k.partition("/")
+    host = host.lower()
+    return host + sep + (rest if host in ID_CASE_HOSTS else rest.lower())
+
+
 def shared_host(host: str) -> bool:
     """ドメイン全体では判定しない共有サービス(短縮 URL・フォーム・メールフォーム)のホストか。判定表のドメインの一覧に
     載っていても使わない(merge で撤去した行が戻っても効かない)。"""
@@ -1434,7 +1448,7 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
     scripts = ROOT / "scripts"
     posts = ROOT / "docs" / "_posts"
     snap = _snapshot([ROOT / "source_types.yml"] + sorted(posts.glob("*.md")))
-    _TXN.update(proc=None, signum=None)
+    _TXN.update(proc=None, signum=None, stray=[])
     try:
         _write_txn_journal(snap, posts)
     except OSError as e:        # 戻せる控えが無いまま表を書き換えない(まだ何も変えていない)
@@ -1469,16 +1483,27 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
         why = f"{type(e).__name__}: {str(e)[:200]}"
         done = True
     finally:
-        signum = _TXN["signum"]
-        keep = ok and done and signum is None
+        # ほかの例外(KeyboardInterrupt・工程のハンドラが投げる終了の例外など)で抜けるときも done は False のままで、ここで戻す。
+        # 決める・戻す・ハンドラを戻すあいだは中断を保留する(戻す最中に届いた中断を落とさない。監査指摘 2026-10-14)。
+        # 保留したものは、元のハンドラへ戻したあとで届く。決める時点で届いていれば、子が成功していても開始時へ戻す
+        old_mask = signal.pthread_sigmask(signal.SIG_BLOCK, TXN_SIGNALS) if prev else None
+        pending = (set(signal.sigpending()) & set(TXN_SIGNALS)) if prev else set()
+        signum = _TXN["signum"] if _TXN["signum"] is not None else (min(pending) if pending else None)
+        keep = ok and done and signum is None and not _TXN["stray"]
         failed = "" if keep else _txn_rollback(snap, posts)
+        if keep and _TXN["signum"] is not None:     # 保留の直前に届き、保留の後で Python のハンドラが走ったものも戻す
+            keep, signum = False, _TXN["signum"]
+            failed = _txn_rollback(snap, posts)
         if not failed:
             (ROOT / TXN_JOURNAL).unlink(missing_ok=True)    # 戻せなければ控えを残す(次の取引・checkout が戻し直す)
         _disarm_txn_signals(prev)
         if signum is not None:
             print(f"取引の途中でシグナル {signal.Signals(signum).name} を受けた。子を止めて判定表と記事を開始時へ戻した"
                   + (f"(戻せない: {failed[:200]})" if failed else ""), flush=True)
-            signal.raise_signal(signum)      # 戻してから、元の扱い(既定なら終了、組版なら途中終了の後始末)へ渡す
+            if signum not in pending:
+                signal.raise_signal(signum)      # 保留中に送る。保留を解くと、元の扱い(既定なら終了、組版なら途中終了の後始末)へ届く
+        if old_mask is not None:
+            signal.pthread_sigmask(signal.SIG_SETMASK, old_mask)
     if keep:
         return True, ""
     if signum is not None:
@@ -1488,8 +1513,8 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
     return False, why
 
 
-# 進行中の取引の子プロセスと、取引の途中で受けた中断のシグナル(_arm_txn_signals のハンドラが書く)
-_TXN: dict = {"proc": None, "signum": None}
+# 進行中の取引の子プロセス、取引の途中で受けた中断のシグナル(_arm_txn_signals のハンドラが書く)、止めきれなかった子孫
+_TXN: dict = {"proc": None, "signum": None, "stray": []}
 TXN_JOURNAL = Path("metrics") / "work" / "classify-txn.json"   # 取引の開始時の中身の控え(ROOT から。Git 管理外)
 TXN_CHILD = Path("metrics") / "work" / "classify-txn.child.json"   # 動いている取引の子(pid・起動時刻)。親が死んでも次の起動が止める
 TXN_SIGNALS = (signal.SIGTERM, signal.SIGINT)
@@ -1515,13 +1540,14 @@ def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
     p = subprocess.Popen(cmd, cwd=ROOT, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                          text=True, start_new_session=True)
     _TXN["proc"] = p
+    started = _proc_started(p.pid)
     child = ROOT / TXN_CHILD
     try:
         if _TXN["signum"] is not None:      # 起動の直前に中断を受けていた
             _txn_stop_child()
         tmp = child.with_name(f".{child.name}.{os.getpid()}.tmp")
         try:
-            tmp.write_text(json.dumps({"pid": p.pid, "started": _proc_started(p.pid)}), encoding="utf-8")
+            tmp.write_text(json.dumps({"pid": p.pid, "started": started}), encoding="utf-8")
             os.replace(tmp, child)
         except OSError as e:
             print(f"取引の子の記録を書けない({e})", flush=True)
@@ -1536,7 +1562,12 @@ def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
         raise
     finally:
         _TXN["proc"] = None
-        child.unlink(missing_ok=True)
+        # 子が先に終わっても、子が起こした孫(同じセッション)が残っていれば止める。成功した段でも残さない
+        stray = _stop_session(p.pid, started)
+        if stray:
+            _TXN["stray"] = stray
+        else:
+            child.unlink(missing_ok=True)       # 止めきれなければ記録を残す(次の起動がまた止める)
     return subprocess.CompletedProcess(cmd, p.returncode, out, err)
 
 
@@ -1568,8 +1599,12 @@ def _disarm_txn_signals(prev: dict) -> None:
 
 
 def _txn_rollback(snap: dict[str, bytes | None], posts: Path) -> str:
-    """子を止め、判定表と記事を開始時へ戻し、止めた子が書きかけた表の一時ファイルを消す。戻せなかったものの説明を返す。"""
+    """子を止め、判定表と記事を開始時へ戻し、止めた子が書きかけた表の一時ファイルを消す。戻せなかったものの説明を返す。
+    止めきれない子孫が残っていれば、戻しても書き直されうるので「戻せない」扱いにする(控えを残し、次の起動がまた止めて戻す)。"""
     _txn_stop_child()
+    stray = [q for q in _TXN.get("stray") or [] if _proc_started(q)]
+    if stray:
+        return f"止めきれない子孫が残っている(pid {', '.join(map(str, stray[:5]))})"
     failed = _restore(snap, posts)
     for t in ROOT.glob(".source_types.yml.*.tmp"):
         try:
@@ -1588,24 +1623,62 @@ def _proc_started(pid: int) -> str:
         return ""
 
 
-def _stop_txn_orphan() -> None:
-    """親が死んで残った取引の子(と、そのプロセスグループ)を止め、止まるまで待つ。戻した後で書き直させない。"""
+def _session_members(sid: int, started: str = "") -> list[int]:
+    """セッション sid に残っているプロセス(ゾンビは除く)。sid の pid を別のプロセスが使い直していれば(起動時刻が違う)、
+    そのセッションは取引の子のものではないので空(Linux はセッションに属するプロセスが残るあいだ、その pid を使い直さない)。"""
+    if started:
+        cur = _proc_started(sid)
+        if cur and cur != started:
+            return []
+    out = []
+    try:
+        names = os.listdir("/proc")
+    except OSError:
+        return out
+    for d in names:
+        if not d.isdigit():
+            continue
+        try:
+            f = Path(f"/proc/{d}/stat").read_text().rsplit(")", 1)[1].split()
+        except (OSError, IndexError):
+            continue
+        if len(f) > 3 and f[3] == str(sid) and f[0] != "Z":
+            out.append(int(d))
+    return out
+
+
+def _stop_session(sid: int, started: str = "", wait: float = 10.0) -> list[int]:
+    """取引の子のセッション(子は start_new_session で起動するので、子と、子が起こした孫は setsid しない限り同じセッション)を、
+    残らなくなるまで止める。直接の子が先に終わっていても、残った孫を止める(止めずに戻すと、戻した後で孫が判定表を書き直す。
+    監査指摘 2026-10-14)。戻りは止めきれなかった pid。"""
+    end = time.monotonic() + wait
+    left = _session_members(sid, started)
+    while left:
+        for q in left:
+            try:
+                os.kill(q, signal.SIGKILL)
+            except OSError:
+                pass
+        if time.monotonic() > end:
+            break
+        time.sleep(0.05)
+        left = _session_members(sid, started)
+    return left
+
+
+def _stop_txn_orphan() -> list[int]:
+    """親が死んで残った取引の子と孫(子のセッション)を止め、止まるまで待つ。戻した後で書き直させない。
+    直接の子が終わっていても孫は残りうるので、子の生死に関わらずセッションを見る。戻りは止めきれなかった pid。"""
     c = ROOT / TXN_CHILD
     try:
         rec = json.loads(c.read_text(encoding="utf-8"))
         pid, started = int(rec.get("pid") or 0), str(rec.get("started") or "")
     except (OSError, ValueError, TypeError, AttributeError):
-        return
-    if pid and started and _proc_started(pid) == started:
-        try:
-            os.killpg(pid, signal.SIGKILL)
-        except OSError:
-            pass
-        for _ in range(100):
-            if _proc_started(pid) != started:
-                break
-            time.sleep(0.1)
-    c.unlink(missing_ok=True)
+        return []
+    left = _stop_session(pid, started) if pid else []
+    if not left:
+        c.unlink(missing_ok=True)
+    return left
 
 
 def _txn_place() -> tuple[str, str]:
@@ -1653,7 +1726,10 @@ def recover_classify_txn() -> str:
     pid = int(rec.get("pid") or 0)
     if pid and pid != os.getpid() and rec.get("started") and _proc_started(pid) == rec.get("started"):
         return ""
-    _stop_txn_orphan()
+    left = _stop_txn_orphan()
+    if left:
+        return (f"前の出典の判定の取引(pid {pid})の子孫が止まらない(pid {', '.join(map(str, left[:5]))})。"
+                "判定表と記事を戻せない(戻しても書き直されうる)")
     if tuple(_txn_place()) != (rec.get("branch", ""), rec.get("head", "")):
         aside = j.with_name(f"classify-txn.stale-{int(time.time())}.json")
         os.replace(j, aside)
@@ -1689,10 +1765,13 @@ def dedupe_source_table(path=None) -> list[str]:
         if section and (m_item or m_kv):
             # 同じ節・**同じ種別**・同じ値のものだけが二重。種別や値が違う同一キーは分類の競合なので
             # ここでは消さず、_check_table に止めさせる(監査指摘)
+            # 動画 ID・文書や短縮の ID は大小文字を区別する(同一視すると別の ID の行を二重として消す。監査指摘 2026-10-14)
             if m_item:
-                key = (section, label, m_item.group(1).rstrip("/").lower(), None)
+                item = m_item.group(1).rstrip("/")
+                key = (section, label, item if section == "video_ids" else item.lower(), None)
             else:
-                key = (section, None, m_kv.group(1).rstrip("/").lower(), m_kv.group(2))
+                key = (section, None, path_type_norm(m_kv.group(1)) if section == "path_types" else m_kv.group(1).rstrip("/").lower(),
+                       m_kv.group(2))
             if key in seen:
                 removed.append(ln.rstrip("\n"))
                 continue
@@ -1735,7 +1814,7 @@ def _check_table_text(text: str, p) -> None:
             continue
         seen: dict[str, int] = {}
         for kk, _vv in v_node.value:
-            key = str(getattr(kk, "value", "")).rstrip("/").lower()
+            key = path_type_norm(getattr(kk, "value", "")) if section == "path_types" else str(getattr(kk, "value", "")).rstrip("/").lower()
             line = kk.start_mark.line + 1
             if key in seen:
                 raise SystemExit(f"{p} の {section}: {kk.value} が {seen[key]} 行目と {line} 行目に二重に書かれている"
@@ -1778,7 +1857,7 @@ def _check_table(t: dict, p) -> None:
     allowed = {"公式", "準公式", "当事者", "演者", "報道", "ファン", "二次情報"}
     norm: dict[str, str] = {}
     for k, v in pt.items():
-        key = str(k).strip().rstrip("/").lower()
+        key = path_type_norm(k)
         if str(v) not in allowed:
             raise SystemExit(f"{p} の path_types: {k} の種別 {v!r} は使えない({'/'.join(sorted(allowed))})")
         if "/" not in key or key.startswith(("http://", "https://")):
@@ -1792,7 +1871,7 @@ def _check_table(t: dict, p) -> None:
     index: list[tuple[str, str, str]] = []   # (正規化キー, 種別, 群)
     for fam, typ in families:
         for v in t.get(fam) or []:
-            index.append((str(v).strip().rstrip("/").lower(), typ, fam))
+            index.append((path_type_norm(v), typ, fam))
     index += [(k, v, "path_types") for k, v in norm.items()]
     for a, ta, fa in index:
         for b, tb, fb in index:

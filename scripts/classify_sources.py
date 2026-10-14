@@ -30,8 +30,8 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, QUERY_DOC_PAGES, SHORTENERS, classify_source,
-                     source_type_table, write_source_table, prompt_part, render_prompt, query_doc_key,
+from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, ID_CASE_HOSTS, QUERY_DOC_PAGES, SHORTENERS, classify_source,
+                     source_type_table, write_source_table, prompt_part, render_prompt, query_doc_key, path_type_norm,
                      edition_date, extract_json_array, html_to_text, notify, render_failure, set_quiet,
                      X_ANON_POST, x_post_author)
 
@@ -664,10 +664,17 @@ CMD_B = ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "read-only", "--skip-git-re
 def _key_forms(s: str) -> tuple[str, str]:
     """対象の書き方の揺れを吸収するための (全体, 末尾) の正規形。
     `https://www.youtube.com/@Foo/` も `youtube.com/@foo` も `@Foo` も、末尾は `foo`。"""
-    full = re.sub(r"^[a-z]+://", "", str(s or "").strip().lower()).removeprefix("www.").rstrip("/")
-    # クエリは落とす。ただし文書 ID のクエリ(Microsoft Forms の `?id=`)は残す(落とすと別のフォームどうしが同じ対象になる)
-    base, _, query = full.partition("?")
-    full = base.removesuffix("/about") + (f"?{query.split('&')[0]}" if query.startswith("id=") else "")
+    raw = re.sub(r"^[a-z]+://", "", str(s or "").strip(), flags=re.I).rstrip("/")
+    head, sep, rest = raw.partition("/")
+    head = head.lower().removeprefix("www.")
+    path, _, query = rest.partition("?")
+    # 文書の ID(Google の文書・フォームのパス、Microsoft Forms のクエリの id)は大小文字を区別する。ほかは区別しない。
+    # クエリは落とすが、Microsoft Forms の id は残す(落とす・同一視すると、別のフォームどうしが同じ対象になり、別の文書に判定が付く。
+    # 監査指摘 2026-10-14)
+    if head not in ID_CASE_HOSTS or head in QUERY_DOC_PAGES:
+        path = path.lower()
+    qid = query.split("&")[0] if head in QUERY_DOC_PAGES and query[:3].lower() == "id=" else ""
+    full = (head + sep + path).rstrip("/").removesuffix("/about") + (f"?id={qid[3:]}" if qid else "")
     return full.lstrip("@"), full.rsplit("/", 1)[-1].lstrip("@")
 
 
@@ -851,7 +858,8 @@ def add_paths(agreed: dict, how: str = "合議で追加") -> None:
                                    "path_types:\n")
     for k, (t, why) in agreed.items():
         a, b = _span(text, "path_types")
-        if re.search(rf"^\s+{re.escape(k)}:", text[a:b], re.M | re.I):
+        # 既にあるかは、表の検査と同じ比べ方で見る(文書・短縮の ID は大小文字を区別する。pipelib.path_type_norm)
+        if path_type_norm(k) in {path_type_norm(x) for x in re.findall(r"^  (\S+?):\s", text[a:b], re.M)}:
             continue
         text = text[:a] + f"  {k}: {t}{' ' * max(1, 40 - len(k))}# {how}: {why}\n" + text[a:]
     write_source_table(text, p)

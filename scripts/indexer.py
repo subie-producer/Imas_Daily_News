@@ -9,10 +9,12 @@ append-only で不変なので、**内容ハッシュが変わったファイル
 その日に増えた分だけで済む。
 
 タグの表記ゆれは docs/_data/tags.yml に従って投入時に正規化する
-(過去記事の frontmatter は書き換えない = append-only を守る)。
+(過去記事の frontmatter は書き換えない = append-only を守る)。辞書(alias・drop)が
+変わったら、本文の変わっていない記事もタグと全文検索のタグを付け直す。
 """
 import argparse
 import hashlib
+import json
 import re
 import sqlite3
 import sys
@@ -130,8 +132,20 @@ def connect(db_path: Path) -> sqlite3.Connection:
     return conn
 
 
+def tag_spec_sha(spec: dict) -> str:
+    """タグの正規化に効く辞書の部分(alias・drop)の指紋。語彙(vocabulary)は索引に効かないので含めない。"""
+    return sha_of(json.dumps({"alias": sorted(spec["alias"].items()), "drop": sorted(spec["drop"])}, ensure_ascii=False))
+
+
 def index_articles(conn: sqlite3.Connection, spec: dict, full: bool) -> tuple[int, int]:
     known = {} if full else {r["path"]: r["sha"] for r in conn.execute("SELECT path, sha FROM articles")}
+    # 本文の指紋だけで飛ばすと、辞書の alias・drop だけを直したとき既存記事のタグが古いまま残る(2026-10-14 監査指摘)。
+    # 辞書の指紋が前回と違えば、全記事のタグ・全文検索を付け直す
+    spec_sha = tag_spec_sha(spec)
+    row = conn.execute("SELECT value FROM meta WHERE key = 'tags_sha'").fetchone()
+    if not row or row[0] != spec_sha:
+        known = {}
+    conn.execute("INSERT OR REPLACE INTO meta (key, value) VALUES ('tags_sha', ?)", (spec_sha,))
     seen, added = set(), 0
 
     for path in sorted((DOCS / "_posts").glob("*.md")):
@@ -239,6 +253,7 @@ def main() -> int:
     ap.add_argument("--full", action="store_true", help="差分更新せず作り直す")
     ap.add_argument("--db", default=str(DEFAULT_DB))
     ap.add_argument("--quiet", action="store_true")
+    ap.add_argument("--run-id", default="", help="この更新を頼んだ配信の印(deploy.py が渡す。同じ取引で meta に残す)")
     args = ap.parse_args()
 
     t0 = time.time()
@@ -256,6 +271,13 @@ def main() -> int:
         index_brands(conn)
         conn.execute("INSERT OR REPLACE INTO meta (key, value) VALUES ('indexed_at', ?)",
                      (time.strftime("%Y-%m-%dT%H:%M:%S"),))
+        if args.run_id:
+            # 配信は、失敗したときにこの印で「索引がその版まで進んだか(取引が通ったか)」を確かめる
+            conn.execute("INSERT OR REPLACE INTO meta (key, value) VALUES ('run_id', ?)", (args.run_id,))
+        else:
+            # 配信以外の更新(手での復旧など)では、索引がどのリリースと揃っているか分からない。前の記録を残すと、次の配信の
+            # 失敗でそのリリースへ戻して「揃っている」と言ってしまう(2026-10-14 再監査)
+            conn.execute("DELETE FROM meta WHERE key = 'run_id'")
     conn.execute("PRAGMA optimize")
     totals = {t: conn.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
               for t in ("articles", "article_tags", "editions", "editorials")}

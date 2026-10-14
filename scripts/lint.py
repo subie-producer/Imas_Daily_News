@@ -210,6 +210,22 @@ def rewrite_change_errors(old: dict, new: dict) -> list[str]:
     return errs
 
 
+def correction_change_errors(old: dict, new: dict) -> list[str]:
+    """訂正した過去の記事・社説の frontmatter の変更の検査: 訂正の記録は末尾への追記だけ・号や面などの枠は変えない。
+    2026-10-14 監査指摘: 件数の増加だけを見ていたので、既にある訂正の記録を書き換えて1件足しても通った
+    (初出の表記や訂正の経緯が読者から消える。第1号以降は append-only・訂正ボックス)"""
+    errs = []
+    o, n = old.get("corrections") or [], new.get("corrections") or []
+    if n[:len(o)] != o:
+        errs.append("append-only 違反: 既にある訂正の記録を変えた・消した・並べ替えた(訂正の記録は末尾への追記だけ)")
+    if len(n) <= len(o):
+        errs.append("append-only 違反: 過去紙面の変更には corrections の追記が必要")
+    for k in ("slug", "edition", "brand", "rank"):  # src はソース再分類の訂正を許容
+        if k in old and old.get(k) != new.get(k):
+            errs.append(f"append-only 違反: 訂正で {k} は変更できない")
+    return errs
+
+
 def load_withdrawn(text: str | None = None) -> tuple[list[dict], list[str]]:
     """取り下げた記事の記録(編集長の判断で紙面から外した記事)。戻りは (記録の並び, 形式の誤り)。
     append-only の例外はこれだけ: 記録のある記事の削除と、**同じ差分で**その号の機械算出値(記事数・面数)の更新を通す。
@@ -919,11 +935,8 @@ def main() -> int:
                                 and {k: v for k, v in a.items() if k != "type"} == {k: v for k, v in b.items() if k != "type"}
                                 for a, b in zip(o_s, n_s)):
                             continue
-                    if len(new_fm.get("corrections", [])) <= len(old.get("corrections", [])):
-                        rep.error(ROOT / p, "append-only 違反: 過去紙面の変更には corrections の追記が必要")
-                    for k in ("slug", "edition", "brand", "rank"):  # src はソース再分類の訂正を許容
-                        if k in old and old.get(k) != new_fm.get(k):
-                            rep.error(ROOT / p, f"append-only 違反: 訂正で {k} は変更できない")
+                    for e in correction_change_errors(old, new_fm):
+                        rep.error(ROOT / p, e)
 
     print(f"\nlint: {rep.errors} errors, {rep.warnings} warnings "
           f"(posts={len(posts)}, editions={len(editions)}, editorials={len(editorials)})")

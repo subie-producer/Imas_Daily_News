@@ -7766,10 +7766,605 @@ def test_write_checked_contract(tmp: Path):
     check(ign.returncode == 0, "write_checked の一時ファイルの名前が .gitignore の対象でない(止まって残ると作業ツリーを汚す)")
 
 
+RELEASE_DAY = "2026-10-14"
+
+
+def _release_fixture(base: Path, conflict: bool = False, ahead: bool = False) -> tuple[Path, Path]:
+    """発行の試験用の Git(本物の origin には触らない): 手元の bare を origin にした clone。main に1つ、
+    edition/RELEASE_DAY に号の commit を1つ(origin へ push 済み)。conflict は main と edition で同じファイルを別々に変える。
+    ahead は edition に origin へ出していない commit を1つ足す。戻りは (作業ツリー, bare)。"""
+    bare, repo = base / "origin.git", base / "work"
+    base.mkdir(parents=True)
+
+    def g(*a, cwd=repo):
+        return subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True, check=True)
+    g("init", "-q", "--bare", "-b", "main", str(bare), cwd=base)
+    g("clone", "-q", str(bare), str(repo), cwd=base)
+    g("symbolic-ref", "HEAD", "refs/heads/main")
+    g("config", "user.email", "t@example.com")
+    g("config", "user.name", "t")
+    (repo / "x").write_text("base\n", encoding="utf-8")
+    g("add", "-A")
+    g("commit", "-qm", "base")
+    g("push", "-q", "-u", "origin", "main")
+    g("checkout", "-q", "-b", f"edition/{RELEASE_DAY}")
+    ed = repo / "docs" / "_editions" / f"{RELEASE_DAY}.md"
+    ed.parent.mkdir(parents=True)
+    ed.write_text("---\nnumber: 58\narticle_count: 1\n---\n", encoding="utf-8")
+    if conflict:
+        (repo / "x").write_text("edition\n", encoding="utf-8")
+    g("add", "-A")
+    g("commit", "-qm", "edition")
+    g("push", "-q", "-u", "origin", f"edition/{RELEASE_DAY}")
+    if ahead:
+        (repo / "local").write_text("組み直した commit(まだ push していない)\n", encoding="utf-8")
+        g("add", "-A")
+        g("commit", "-qm", "local")
+    if conflict:
+        g("checkout", "-q", "main")
+        (repo / "x").write_text("main\n", encoding="utf-8")
+        g("commit", "-qam", "main changed")
+        g("push", "-q", "origin", "main")
+        g("checkout", "-q", f"edition/{RELEASE_DAY}")
+    return repo, bare
+
+
+def _git_out(cwd: Path, *a) -> str:
+    return subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True).stdout.strip()
+
+
+class _ReleaseEnv:
+    """release.main を手元の Git だけで走らせる: 校閲・発行前の lint・配信・排他・当番・通知を偽物にする(この試験は Git の扱いを見る)。"""
+
+    def __init__(self, repo: Path, dry: bool = False):
+        import release
+        self.r, self.repo, self.dry = release, repo, dry
+        self.notes: list[tuple[bool, str]] = []
+        self.escalated: list[str] = []
+        self.deployed: list[bool] = []
+
+    def __enter__(self):
+        r = self.r
+        real_run = subprocess.run
+
+        def run(cmd, *a, **k):
+            if len(cmd) > 1 and str(cmd[1]).endswith("lint.py"):
+                return subprocess.CompletedProcess(cmd, 0, "lint: 0 errors\n", "")
+            return real_run(cmd, *a, **k)
+        self.saved = (r.ROOT, r.notify, r.review_verdict, r.deploy_site, r.DRY_RUN, subprocess.run, pipelib.job_lock,
+                      pipelib.dedupe_source_table, pipelib.escalate, sys.argv)
+        r.ROOT = self.repo
+        r.notify = lambda msg, ok=True: self.notes.append((ok, msg))
+        r.review_verdict = lambda d: ("approve", "試験")
+        r.deploy_site = lambda: self.deployed.append(True) or "配信済み(試験)。"
+        subprocess.run = run
+        pipelib.job_lock = lambda *a, **k: None
+        pipelib.dedupe_source_table = lambda *a, **k: []
+        pipelib.escalate = lambda stage, date, reason, **k: self.escalated.append(f"{stage}: {reason}") or True
+        sys.argv = ["release.py", "--date", RELEASE_DAY] + (["--dry-run"] if self.dry else [])
+        return self
+
+    def __exit__(self, *exc):
+        r = self.r
+        (r.ROOT, r.notify, r.review_verdict, r.deploy_site, r.DRY_RUN, subprocess.run, pipelib.job_lock,
+         pipelib.dedupe_source_table, pipelib.escalate, sys.argv) = self.saved
+        return False
+
+    def main(self):
+        """release.main の終了コード。例外で抜けたら「例外: …」(直す前の実装は失敗を例外で上げる)。"""
+        try:
+            return self.r.main()
+        except Exception as e:      # noqa: BLE001
+            return f"例外: {type(e).__name__}: {e}"
+
+
+def test_release_push_retry(tmp: Path):
+    """main の push だけが失敗したら、配信せず edition も消さずに止まる。再実行は squash が「差分なし」でも手元の号の commit を
+    push し、origin/main に号が届いたことを確かめてから配信・edition の削除へ進む(監査指摘 ar7-1: 再実行が push を省き、
+    origin/main に号が無いまま成功で終わって edition ブランチまで消した)。push の失敗は origin の pre-receive で本物に起こす。"""
+    repo, bare = _release_fixture(tmp / "push")
+    marker = tmp / "push" / "reject-main-once"
+    hook = bare / "hooks" / "pre-receive"
+    hook.write_text("#!/bin/sh\nwhile read old new ref; do\n"
+                    f"  if [ \"$ref\" = refs/heads/main ] && [ -e '{marker}' ]; then rm -f '{marker}'; echo 試験の拒否 >&2; exit 1; fi\n"
+                    "done\nexit 0\n", encoding="utf-8")
+    hook.chmod(0o755)
+    marker.touch()
+    on_origin = lambda: subprocess.run(["git", "cat-file", "-e", f"main:docs/_editions/{RELEASE_DAY}.md"], cwd=bare,
+                                       capture_output=True).returncode == 0
+    edition_on_origin = lambda: bool(_git_out(bare, "branch", "--list", f"edition/{RELEASE_DAY}"))
+    with _ReleaseEnv(repo) as env:
+        rc = env.main()
+        check(rc == 1 and not env.deployed and edition_on_origin() and not on_origin() and env.escalated
+              and _git_out(repo, "status", "--porcelain") == "",
+              f"main の push の失敗で止まらない・配信した・edition を消した・当番を呼ばない: rc={rc!r} 配信={env.deployed} "
+              f"edition={edition_on_origin()} 当番={env.escalated}")
+        check(not marker.exists(), "試験の下準備: origin が main の push を1回拒否していない")
+        rc = env.main()
+        check(rc == 0 and on_origin() and _git_out(bare, "rev-parse", "main") == _git_out(repo, "rev-parse", "main")
+              and env.deployed and not edition_on_origin(),
+              f"push の失敗の後の再実行で origin/main に号が届かない(か、届く前に edition を消した): rc={rc!r} "
+              f"origin に号={on_origin()} 配信={env.deployed} edition={edition_on_origin()}")
+    # push が成功と答えても、origin から取り直して号が届いたと確かめられなければ進まない(届かない push・取り直しの失敗)
+    import release
+    real_git = release.git
+    for what, fake in (("push が成功と答えたが origin に届いていない", ("push", "origin", "main")),
+                       ("push の後の origin の取り直しに失敗", ("fetch", "origin", "main"))):
+        repo, bare = _release_fixture(tmp / ("silent" if fake[0] == "push" else "nofetch"))
+        edition_on_origin = lambda: bool(_git_out(bare, "branch", "--list", f"edition/{RELEASE_DAY}"))
+
+        def faked(*a, check=True, _fake=fake):
+            if a == _fake:
+                return subprocess.CompletedProcess(["git", *a], 0 if a[0] == "push" else 128, "",
+                                                   "" if a[0] == "push" else "fatal: unable to access(試験)")
+            return real_git(*a, check=check)
+        with _ReleaseEnv(repo) as env:
+            release.git = faked
+            try:
+                rc = env.main()
+            finally:
+                release.git = real_git
+            check(rc == 1 and not env.deployed and edition_on_origin() and env.escalated
+                  and any(not ok and "届いたことを確かめられない" in m for ok, m in env.notes),
+                  f"{what}のに、配信・edition の削除へ進んだ(か、当番を呼ばない): rc={rc!r} 配信={env.deployed} "
+                  f"edition={edition_on_origin()} {env.notes}")
+            rc = env.main()          # 取り直せる再実行は、届いたことを確かめて進む
+            check(rc == 0 and env.deployed and not edition_on_origin()
+                  and _git_out(bare, "rev-parse", "main") == _git_out(repo, "rev-parse", "main"),
+                  f"{what}の後の再実行で発行を終えない: rc={rc!r} 配信={env.deployed} edition={edition_on_origin()}")
+
+
+def test_release_squash_conflict(tmp: Path):
+    """main と edition の同じファイルが衝突したら、作業ツリーを squash 前の main に戻して止まる(未解決の index と stage 済みの号を
+    残さない)。edition の commit はそのまま。次の release は dirty で止まらない(監査指摘 ar7-2)。中断(Ctrl-C・systemctl stop の
+    SIGTERM)でも同じに戻す。"""
+    import signal
+    repo, bare = _release_fixture(tmp / "cf", conflict=True)
+    ed_before = _git_out(repo, "rev-parse", f"edition/{RELEASE_DAY}")
+    with _ReleaseEnv(repo) as env:
+        rc = env.main()
+        status = _git_out(repo, "status", "--porcelain")
+        check(rc == 1 and status == "" and _git_out(repo, "rev-parse", "main") == _git_out(bare, "rev-parse", "main")
+              and _git_out(repo, "rev-parse", f"edition/{RELEASE_DAY}") == ed_before and not env.deployed,
+              f"squash の衝突の後に作業ツリーが戻らない・edition が変わった: rc={rc!r} status={status!r}")
+        check(any(not ok and "squash" in m and "衝突: x" in m for ok, m in env.notes) and env.escalated,
+              f"squash の衝突を(衝突したファイルの名前つきで)知らせない・当番を呼ばない: {env.notes}")
+        env.notes.clear()
+        rc = env.main()
+        check(rc == 1 and not any("未コミットの変更" in m for _, m in env.notes),
+              f"衝突の後の再実行が dirty で止まる: {env.notes}")
+    # 中断: commit の最中の Ctrl-C でも squash 前の main に戻し、中断はそのまま上げる
+    repo, bare = _release_fixture(tmp / "intr")
+    import release
+    real_git = release.git
+
+    def interrupted(*a, **k):
+        if a and a[0] == "commit":
+            raise KeyboardInterrupt("試験の中断")
+        return real_git(*a, **k)
+    with _ReleaseEnv(repo) as env:
+        release.git = interrupted
+        try:
+            env.main()
+            stopped = False
+        except KeyboardInterrupt:
+            stopped = True
+        finally:
+            release.git = real_git
+        status = _git_out(repo, "status", "--porcelain")
+        check(stopped and status == "" and _git_out(repo, "rev-parse", "main") == _git_out(bare, "rev-parse", "main"),
+              f"commit の最中の中断で作業ツリーが戻らない: 中断={stopped} status={status!r}")
+    # systemctl stop の SIGTERM も、squash の間は同じ後始末を通る例外にする(既定の SIGTERM は後始末なしに即死)
+    import time
+    stop = getattr(release, "stop_as_exception", None)
+    got = None
+    if stop:
+        before = signal.getsignal(signal.SIGTERM)
+        try:
+            with stop():
+                os.kill(os.getpid(), signal.SIGTERM)
+                for _ in range(100):
+                    time.sleep(0.01)
+        except KeyboardInterrupt:
+            got = signal.getsignal(signal.SIGTERM) == before
+    check(got is True, "squash の間の SIGTERM が後始末を通る例外にならない(か、終わった後に元の扱いへ戻らない)")
+    # 本物の SIGTERM: release を子プロセス(別のプロセス群)で走らせ、本物の git commit の最中に、systemctl stop と同じく
+    # プロセス群ごと SIGTERM を送る(commit の pre-commit フックから1回だけ)。squash 前の main に戻り、再実行で発行できる(再監査)
+    repo, bare = _release_fixture(tmp / "sigterm")
+    marker = tmp / "sigterm" / "stop-once"
+    marker.touch()
+    hook = repo / ".git" / "hooks" / "pre-commit"
+    hook.write_text(f"#!/bin/sh\nif [ -e '{marker}' ]; then rm -f '{marker}'; kill -TERM -$(ps -o pgid= $$ | tr -d ' '); sleep 5; fi\n"
+                    "exit 0\n", encoding="utf-8")
+    hook.chmod(0o755)
+    driver = tmp / "sigterm" / "drive.py"
+    driver.write_text(
+        "import subprocess, sys\n"
+        f"sys.path.insert(0, {str(Path(__file__).resolve().parent)!r})\n"
+        "import pipelib, release\n"
+        "real_run = subprocess.run\n"
+        "def run(cmd, *a, **k):\n"
+        "    if len(cmd) > 1 and str(cmd[1]).endswith('lint.py'):\n"
+        "        return subprocess.CompletedProcess(cmd, 0, 'lint: 0 errors\\n', '')\n"
+        "    return real_run(cmd, *a, **k)\n"
+        "subprocess.run = run\n"
+        f"release.ROOT = __import__('pathlib').Path({str(repo)!r})\n"
+        "release.notify = lambda msg, ok=True: print('NOTIFY', ok, msg, flush=True)\n"
+        "release.review_verdict = lambda d: ('approve', '試験')\n"
+        "release.deploy_site = lambda: '配信済み(試験)。'\n"
+        "pipelib.job_lock = lambda *a, **k: None\n"
+        "pipelib.dedupe_source_table = lambda *a, **k: []\n"
+        "pipelib.escalate = lambda *a, **k: True\n"
+        f"sys.argv = ['release.py', '--date', {RELEASE_DAY!r}]\n"
+        "sys.exit(release.main())\n", encoding="utf-8")
+    p = subprocess.run([sys.executable, str(driver)], capture_output=True, text=True, timeout=120, start_new_session=True)
+    status = _git_out(repo, "status", "--porcelain")
+    check(not marker.exists() and p.returncode != 0 and status == ""
+          and _git_out(repo, "rev-parse", "main") == _git_out(bare, "rev-parse", "main"),
+          f"commit の最中の SIGTERM で作業ツリーが squash 前の main に戻らない: exit={p.returncode} status={status!r} "
+          f"送った={not marker.exists()}")
+    with _ReleaseEnv(repo) as env:
+        rc = env.main()
+    check(rc == 0 and env.deployed, f"SIGTERM で止まった後の再実行で発行できない: rc={rc!r} {env.notes}")
+
+
+def test_release_dry_run_no_push(tmp: Path):
+    """--dry-run は、edition に origin へ出していない commit があっても push しない・手元の commit を捨てない(監査指摘 ar7-5)。"""
+    repo, bare = _release_fixture(tmp / "dry", ahead=True)
+    refs = lambda: _git_out(bare, "for-each-ref", "--format=%(refname) %(objectname)")
+    remote_before, local_before = refs(), _git_out(repo, "rev-parse", f"edition/{RELEASE_DAY}")
+    with _ReleaseEnv(repo, dry=True) as env:
+        rc = env.main()
+    check(rc == 0 and refs() == remote_before, f"--dry-run が origin を変えた(push した): rc={rc!r}\n前 {remote_before}\n後 {refs()}")
+    check(_git_out(repo, "rev-parse", f"edition/{RELEASE_DAY}") == local_before,
+          "--dry-run が手元だけの commit を捨てた(origin へ引き戻した)")
+    # origin だけが先(手元の edition が遅れている): 点検は origin の中身を見るが、手元のブランチ(edition・main)は動かさない(再監査)
+    repo, bare = _release_fixture(tmp / "dry-behind")
+    (repo / "later").write_text("origin にだけある commit\n", encoding="utf-8")
+    for a in (["add", "-A"], ["commit", "-qm", "origin only"], ["push", "-q", "origin", f"edition/{RELEASE_DAY}"],
+              ["reset", "-q", "--hard", "HEAD~1"]):
+        subprocess.run(["git", *a], cwd=repo, capture_output=True, check=True)
+    local = lambda: _git_out(repo, "for-each-ref", "--format=%(refname) %(objectname)", "refs/heads")
+    remote_before, local_before = refs(), local()
+    tip, seen = _git_out(bare, "rev-parse", f"edition/{RELEASE_DAY}"), []
+    with _ReleaseEnv(repo, dry=True) as env:
+        # 点検(校閲の判定を読む時点)の中身が、発行なら出す origin の先端か(origin にだけある file が見えるか)
+        env.r.review_verdict = lambda d: (seen.append((_git_out(repo, "rev-parse", "HEAD") == tip, (repo / "later").exists())),
+                                          ("approve", "試験"))[1]
+        rc = env.main()
+    check(rc == 0 and refs() == remote_before and local() == local_before,
+          f"--dry-run が手元のブランチを動かした(origin へ引き戻した)・origin を変えた: rc={rc!r}\n前 {local_before}\n後 {local()}")
+    check(seen == [(True, True)], f"--dry-run が発行なら出す origin の中身でなく、遅れた手元の中身を点検した: {seen}")
+
+
+def test_deploy_index_failure(tmp: Path):
+    """current を切り替えた後に索引の更新が落ちたら、current を索引が取り込んだリリース(索引の run_id)へ戻してパージし、
+    実態どおりに知らせる(監査指摘 ar7-4: 新しい静的と古い索引が残り、取り下げた記事が検索に残った)。前の配信が索引の状態を
+    確かめられずに新しい版を残していても、戻す先は索引の記録で決める。記録が無ければ前の版へ戻し、揃っているとは言わない
+    (再監査)。予算(--budget-sec)のうちに、戻す・知らせるまで終える(再監査: release の打ち切りを越えた)。
+    本物の indexer を子プロセスで、本物の SQLite を別の接続で書き込みロックして落とす。ロックを外した再実行は新しい版を揃えて出す。"""
+    import datetime
+    import shutil
+    import sqlite3
+    import deploy
+    import release
+    here = Path(__file__).resolve().parent
+    root = tmp / "root"
+    (root / "scripts").mkdir(parents=True)
+    for n in ("indexer.py", "tags.py"):
+        shutil.copy(here / n, root / "scripts" / n)
+    posts = root / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (root / "docs" / "_data").mkdir()
+    (root / "docs" / "_data" / "tags.yml").write_text("alias: {}\ndrop: []\n", encoding="utf-8")
+    d = "2026-10-13"
+    for s in ("a", "b"):
+        (posts / f"{d}-{s}.md").write_text(f"---\nslug: {s}\nedition: '{d}'\ntitle: 記事{s}\ntags: [t]\n---\n本文{s}\n", encoding="utf-8")
+    srv = tmp / "srv"
+    db = srv / "data" / "paper.db"
+    real_run = subprocess.run
+    subprocess.run(  # 前の版(リリース old)の索引(a・b)
+        [sys.executable, str(root / "scripts" / "indexer.py"), "--db", str(db), "--run-id", "old", "--quiet"],
+        check=True, capture_output=True)
+    (posts / f"{d}-b.md").unlink()          # b を取り下げた版を配信する
+    releases = srv / "releases"
+    old = releases / "old"
+    for s in ("a", "b"):
+        (old / "articles" / f"{d}-{s}").mkdir(parents=True)
+        (old / "articles" / f"{d}-{s}" / "index.html").write_text("前の版", encoding="utf-8")
+    current = srv / "current"
+    current.symlink_to(old)
+    slow_build = []
+
+    def fake_build(dest: Path, timeout=None):     # 今の記事から静的な記事ページを作る(slow_build があればその秒だけ掛ける)
+        import time
+        need = slow_build[-1] if slow_build else 0
+        if timeout is not None and need > timeout:  # 本物の build と同じく、渡された上限で打ち切られる
+            time.sleep(timeout)
+            raise subprocess.TimeoutExpired("jekyll", timeout)
+        time.sleep(need)
+        for rel in deploy.REQUIRED + [f"articles/{p.stem}/index.html" for p in posts.glob("*.md")]:
+            p = dest / rel
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text("新しい版", encoding="utf-8")
+
+    def guarded_run(cmd, *a, **k):
+        # 索引の子プロセスには試験の DB を必ず渡させる(渡さないと本番の既定の DB に書く)
+        if len(cmd) > 1 and str(cmd[1]).endswith("indexer.py") and str(db) not in [str(c) for c in cmd]:
+            raise AssertionError(f"indexer に試験の DB(--db)を渡していない: {cmd}")
+        return real_run(cmd, *a, **k)
+    def articles() -> list[str]:
+        c = sqlite3.connect(db)
+        try:
+            return sorted(r[0] for r in c.execute("SELECT slug FROM articles"))
+        finally:
+            c.close()
+    notes, purges = [], []
+    names = [f"20261014T{6 + m:02d}0000" for m in range(12)]       # 配信ごとのリリースの名前(時刻順)
+    stamps = iter(names)
+    saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "build", "purge_cache", "notify", "sync_app",
+                                             "now_jst", "INDEX_ATTEMPTS", "INDEX_RETRY_SEC", "reindex", "indexed_run",
+                                             "INDEX_TIMEOUT_SEC", "INDEX_MIN_SEC", "RESERVE_SEC") if hasattr(deploy, k)}
+    saved_db, saved_argv = getattr(deploy, "DB", None), sys.argv
+    lock = sqlite3.connect(db)
+    try:
+        deploy.ROOT, deploy.SRV, deploy.RELEASES, deploy.CURRENT = root, srv, releases, current
+        deploy.DB = db
+        deploy.build, deploy.sync_app = fake_build, (lambda: False)
+        deploy.purge_cache = lambda: purges.append(True) or "パージ(試験)"
+        deploy.notify = lambda job, msg, ok=True, **k: notes.append((ok, msg)) or True
+        deploy.now_jst = lambda: datetime.datetime.strptime(next(stamps), "%Y%m%dT%H%M%S")
+        deploy.INDEX_ATTEMPTS, deploy.INDEX_RETRY_SEC = 1, 0      # SQLite の待ち(5秒)を1回だけ
+        sys.argv = ["deploy.py"]
+        subprocess.run = guarded_run
+        def run_main():
+            try:
+                return deploy.main()
+            except (Exception, SystemExit) as e:       # noqa: BLE001  直す前の実装は索引の失敗を例外で上げる
+                return f"例外: {type(e).__name__}: {str(e)[:200]}"
+        cur = lambda: current.resolve().name
+        state = lambda: getattr(deploy, "STATE", "")
+        # S1 本物の書き込みロック: 索引が取り込んだ old へ戻す(静的 a・b / 索引 a・b で揃う)
+        lock.execute("BEGIN IMMEDIATE")                           # 別の接続が書き込み中
+        rc = run_main()
+        lock.rollback()
+        check(rc == 1 and cur() == "old" and articles() == ["a", "b"] and purges,
+              f"索引の失敗で current を索引の版へ戻さない・パージしない(静的と索引が食い違う): rc={rc!r} current={cur()} "
+              f"索引={articles()} パージ={purges}")
+        check("索引が取り込んだ版(old)に戻した" in state() and any(not ok and "戻した" in m for ok, m in notes),
+              f"索引の失敗の後の公開の状態を実態どおりに言わない: {state()!r} {notes}")
+        # S2 ロックが外れた再実行: 新しい版を揃えて出す
+        notes.clear()
+        purges.clear()
+        rc = run_main()
+        check(rc == 0 and cur() == names[1] and articles() == ["a"] and purges and "新しい版" in state(),
+              f"ロックが外れた再実行で新しい版を揃えて出さない: rc={rc!r} current={cur()} 索引={articles()}")
+        # S3 索引の状態が読めない失敗: 新しい版(記事 c を足した版)を残し、確かめられないと言う(戻さない)
+        (posts / f"{d}-c.md").write_text(f"---\nslug: c\nedition: '{d}'\ntitle: 記事c\ntags: [t]\n---\n本文c\n", encoding="utf-8")
+        real_reindex, real_indexed_run = deploy.reindex, getattr(deploy, "indexed_run", None)
+
+        def broken(run_id, timeout=None):
+            raise RuntimeError("database is locked(試験)")
+
+        def unreadable():
+            raise sqlite3.OperationalError("unable to open database file(試験)")
+        deploy.reindex, deploy.indexed_run = broken, unreadable
+        rc = run_main()
+        deploy.indexed_run = real_indexed_run
+        check(rc == 1 and cur() == names[2] and "確かめられない" in state() and "静的と索引が揃っている" not in state(),
+              f"索引の状態が読めないのに戻した・揃っていると言った: rc={rc!r} current={cur()} {state()!r}")
+        # S4 続けて失敗: 戻す先は直前の current(names[2]。索引と食い違う)でなく、索引が取り込んだ names[1]
+        rc = run_main()
+        check(rc == 1 and cur() == names[1] and not (current / "articles" / f"{d}-c").exists() and articles() == ["a"]
+              and f"索引が取り込んだ版({names[1]})に戻した(静的と索引が揃っている)" in state(),
+              f"索引が取り込んでいない版へ戻して「揃っている」と言った: rc={rc!r} current={cur()} 索引={articles()} {state()!r}")
+        # S5 取り込みの記録が無い索引(この直しより前の索引): 前の版へ戻すが、揃っているとは言わない
+        c = sqlite3.connect(db)
+        c.execute("DELETE FROM meta WHERE key = 'run_id'")
+        c.commit()
+        c.close()
+        rc = run_main()
+        check(rc == 1 and cur() == names[1] and "確かめられない" in state() and "静的と索引が揃っている" not in state(),
+              f"取り込みの記録が無いのに揃っていると言った: rc={rc!r} current={cur()} {state()!r}")
+        (posts / f"{d}-c.md").unlink()
+        # S6 1回目だけ落ちる索引は、戻さずに再試行で通す
+        calls = []
+
+        def flaky(run_id, timeout=None):
+            calls.append(run_id)
+            if len(calls) == 1:
+                raise RuntimeError("database is locked(試験)")
+            return real_reindex(run_id)
+        deploy.reindex, deploy.INDEX_ATTEMPTS = flaky, 2
+        rc = run_main()
+        check(rc == 0 and calls == [names[5]] * 2 and cur() == names[5],
+              f"索引の一時的な失敗を再試行しない(か、通ったのに戻した): rc={rc!r} {calls} current={cur()}")
+        # S7 取引は通った(索引はこの版まで進んだ)が indexer が後で落ちた: 静的と索引は揃っているので戻さない
+        def late(run_id, timeout=None):
+            real_reindex(run_id)
+            raise RuntimeError("後始末で落ちた(試験)")
+        deploy.reindex = late
+        rc = run_main()
+        c = sqlite3.connect(db)
+        ran = (c.execute("SELECT value FROM meta WHERE key = 'run_id'").fetchone() or [None])[0]
+        c.close()
+        check(rc == 0 and cur() == names[6] and ran == names[6],
+              f"索引が新しい版まで進んだのに current を戻した: rc={rc!r} current={cur()}")
+        # S8 予算: ビルドが長引き、索引が毎回時間切れまで掛かっても、予算のうちに戻す・知らせるまで終える
+        # (秒を縮めて試す。予算 3秒・後始末に残す 1秒・ビルド 0.5秒)
+        import time
+
+        def hang(run_id, timeout=None):
+            time.sleep(timeout if timeout is not None else 60)
+            raise subprocess.TimeoutExpired("indexer.py", timeout)
+        deploy.reindex, deploy.INDEX_ATTEMPTS, deploy.INDEX_RETRY_SEC = hang, 3, 0.3
+        deploy.INDEX_TIMEOUT_SEC, deploy.INDEX_MIN_SEC, deploy.RESERVE_SEC = 10, 0.2, 1.0
+        slow_build.append(0.5)
+        sys.argv = ["deploy.py", "--budget-sec", "3"]
+        t0 = time.time()
+        rc = run_main()
+        took = time.time() - t0
+        check(rc == 1 and took < 3.0 and cur() == names[6] and "戻した" in state(),
+              f"予算のうちに戻す・知らせるまで終えない: rc={rc!r} {took:.1f}秒 current={cur()} {state()!r}")
+        # S9 ビルドが予算を食い尽くす: 渡した上限で打ち切り、current は差し替えない(予算 2秒・ビルド 3秒掛かる)
+        slow_build.append(3.0)
+        sys.argv = ["deploy.py", "--budget-sec", "2"]
+        t0 = time.time()
+        rc = run_main()
+        took = time.time() - t0
+        check(rc == 1 and took < 2.0 and cur() == names[6] and "前の版のまま" in state(),
+              f"ビルドを予算の残りで打ち切らない(か、差し替えた): rc={rc!r} {took:.1f}秒 current={cur()} {state()!r}")
+        slow_build.clear()
+        sys.argv = ["deploy.py"]
+        # S10 索引の状態が読めずに新しい版(b2 を足した版)が残る → 手で索引を直す(--run-id なし) → 次の配信も失敗:
+        # 手での更新は前の取り込みの記録を消すので、古い記録のリリース(names[6])へ戻して「揃っている」と言わない(再監査)
+        (posts / f"{d}-b2.md").write_text(f"---\nslug: b2\nedition: '{d}'\ntitle: 記事b2\ntags: [t]\n---\n本文b2\n", encoding="utf-8")
+        deploy.reindex, deploy.INDEX_ATTEMPTS, deploy.indexed_run = broken, 1, unreadable
+        rc = run_main()
+        deploy.indexed_run = real_indexed_run
+        live = cur()
+        subprocess.run([sys.executable, str(root / "scripts" / "indexer.py"), "--db", str(db), "--quiet"],
+                       check=True, capture_output=True)
+        rc2 = run_main()
+        check(rc == 1 and live == names[9] and rc2 == 1 and cur() == names[9] and articles() == ["a", "b2"]
+              and "静的と索引が揃っている" not in state() and "確かめられない" in state(),
+              f"手で直した索引の後の失敗で、古い取り込みの記録のリリースへ戻した(か、揃っていると言った): rc={rc!r}/{rc2!r} "
+              f"current={cur()} 索引={articles()} {state()!r}")
+    finally:
+        subprocess.run = real_run
+        lock.close()
+        for k, v in saved.items():
+            setattr(deploy, k, v)
+        deploy.DB, sys.argv = saved_db, saved_argv
+    # release の通知は deploy が出す「配信の状態」をそのまま載せる(「current は前号のまま」と決めつけない)。時間切れも止めない
+    sent, saved_run, saved_notify, asked = [], subprocess.run, release.notify, []
+    try:
+        release.notify = lambda msg, ok=True: sent.append(msg)
+        subprocess.run = lambda cmd, *a, **k: asked.append((cmd, k.get("timeout"))) or subprocess.CompletedProcess(
+            cmd, 1, "検証OK\n" + getattr(release, "DEPLOY_STATE_MARK", "配信の状態: ") + "current は新しい版(X)。索引はまだ前の版\n", "boom")
+        release.deploy_site()
+
+        def slow(cmd, *a, **k):
+            raise subprocess.TimeoutExpired(cmd, 2400)
+        subprocess.run = slow
+        try:
+            out = release.deploy_site()
+        except subprocess.TimeoutExpired:
+            out = "例外"
+    finally:
+        subprocess.run, release.notify = saved_run, saved_notify
+    check(len(sent) == 2 and "current は新しい版(X)" in sent[0] and "前号のまま" not in sent[0] and out != "例外",
+          f"配信の失敗の通知が deploy の状態を載せない・時間切れで止まる: {sent} {out}")
+    check(getattr(release, "DEPLOY_STATE_MARK", None) == getattr(deploy, "STATE_MARK", ""), "release と deploy の「配信の状態」の印が違う")
+    # release は deploy に、自分が打ち切る時間より短い予算を渡す(打ち切られる前に戻す・知らせるまで終えさせる)
+    cmd, timeout = asked[0] if asked else ([], None)
+    budget = float(cmd[cmd.index("--budget-sec") + 1]) if "--budget-sec" in cmd else None
+    check(budget is not None and timeout is not None and budget < timeout,
+          f"release が deploy に打ち切りより短い予算を渡さない: {cmd} timeout={timeout}")
+
+
+def test_correction_append_only(tmp: Path):
+    """訂正(第1号以降)は訂正の記録の末尾への追記だけ。既にある記録の書き換え・削除・並べ替えは、件数が増えていても lint が止める
+    (監査指摘 ar7-3)。判定の関数と、一時の Git で走らせた本物の lint の両方で検める。"""
+    import contextlib
+    import io
+    import shutil
+    first = {"at": "2026-09-16T10:00:00+09:00", "by": "編集長", "initial": "初出の表記", "corrected_to": "正しい表記"}
+    second = {"at": "2026-10-14T10:00:00+09:00", "by": "編集長", "initial": "a", "corrected_to": "b"}
+    # 本物の lint(append-only の経路)
+    d = "2026-09-15"
+    root = tmp / "lintroot"
+    posts = root / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    shutil.copytree(Path(__file__).resolve().parent.parent / "schema", root / "schema")
+    p = posts / f"{d}-k.md"
+    write = lambda corr, body: p.write_text("---\n" + article_fm("k", d, corrected=True, corrections=corr) + "---\n" + body, encoding="utf-8")
+    write([first], "本文。\n")
+    for a in (["init", "-q", "-b", "main"], ["config", "user.email", "t@example.com"], ["config", "user.name", "t"],
+              ["add", "-A"], ["commit", "-qm", "base"]):
+        subprocess.run(["git", *a], cwd=root, capture_output=True, check=True)
+    keys = ("ROOT", "DOCS", "POSTS", "EDITIONS", "EDITORIALS", "CANDIDATES", "IDOLS", "WITHDRAWN", "REWRITES")
+    saved, saved_argv = {k: getattr(lint, k) for k in keys}, sys.argv
+
+    def run_lint() -> list[str]:
+        out = io.StringIO()
+        sys.argv = ["lint.py", "--base", "HEAD", "--no-net"]
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+            lint.main()
+        return [l for l in out.getvalue().splitlines() if l.startswith(f"::error file=docs/_posts/{d}-k.md::append-only")]
+    try:
+        lint.ROOT = root
+        lint.DOCS = root / "docs"
+        lint.POSTS, lint.EDITIONS, lint.EDITORIALS = posts, root / "docs" / "_editions", root / "docs" / "_editorials"
+        lint.CANDIDATES, lint.IDOLS = root / "candidates", root / "docs" / "_data" / "idols.json"
+        lint.WITHDRAWN, lint.REWRITES = root / "withdrawn.yml", root / "rewrites.yml"
+        write([first, second], "本文(訂正した)。\n")
+        ok_lines = run_lint()
+        write([{**first, "initial": "書き換え"}, second], "本文(訂正した)。\n")
+        bad_lines = run_lint()
+    finally:
+        for k, v in saved.items():
+            setattr(lint, k, v)
+        sys.argv = saved_argv
+    check(ok_lines == [], f"本物の lint が正しい訂正の追記を止めた: {ok_lines}")
+    check(bad_lines != [], "本物の lint が既にある訂正の記録の書き換え(と1件の追記)を通した")
+    # 判定の関数: 削除・並べ替え・追記なし・枠の変更も止める
+    old = {"slug": "k", "edition": d, "brand": "cg", "rank": "small", "corrected": True, "corrections": [first]}
+    judge = getattr(lint, "correction_change_errors", None)
+    errs = (lambda new: judge(old, {**old, **new})) if judge else (lambda new: [])
+    check(judge is not None and errs({"corrections": [first, second]}) == [], "正しい訂正の追記を止めた")
+    for corr, what in (([{**first, "initial": "書き換え"}, second], "既にある記録の書き換え"),
+                       ([second, second], "既にある記録の削除(件数は増えている)"),
+                       ([second, first], "並べ替え"),
+                       ([first], "追記なし")):
+        check(errs({"corrections": corr}) != [], f"訂正で{what}を通した")
+    check(errs({"corrections": [first, second], "rank": "lead"}) != [], "訂正で rank を変えられた")
+
+
+def test_indexer_tag_dictionary(tmp: Path):
+    """タグ辞書(alias・drop)だけを直しても、本文の変わらない記事のタグ・全文検索のタグを付け直す。全件の作り直しと差分の更新は
+    同じ索引になる。辞書も記事も変わらなければ入れ直さない(監査指摘 ar7-6)。"""
+    import indexer
+    root = tmp / "ix"
+    posts = root / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (posts / "2026-10-14-a.md").write_text("---\nslug: a\nedition: '2026-10-14'\ntitle: 記事\ntags: [旧タグ, 残す]\n---\n本文\n",
+                                          encoding="utf-8")
+    saved = (indexer.ROOT, indexer.DOCS)
+    plain = {"alias": {}, "drop": set()}
+    fixed = {"alias": {"旧タグ": "正規タグ"}, "drop": {"残す"}}
+    try:
+        indexer.ROOT, indexer.DOCS = root, root / "docs"
+        conn = indexer.connect(root / "diff.db")
+        with conn:
+            indexer.index_articles(conn, plain, False)
+        with conn:
+            again = indexer.index_articles(conn, plain, False)
+        with conn:
+            indexer.index_articles(conn, fixed, False)
+        got = ([r[0] for r in conn.execute("SELECT tag FROM article_tags")], [r[0] for r in conn.execute("SELECT tags FROM search")])
+        conn.close()
+        full = indexer.connect(root / "full.db")
+        with full:
+            indexer.index_articles(full, fixed, True)
+        want = ([r[0] for r in full.execute("SELECT tag FROM article_tags")], [r[0] for r in full.execute("SELECT tags FROM search")])
+        full.close()
+    finally:
+        indexer.ROOT, indexer.DOCS = saved
+    check(again == (0, 0), f"辞書も記事も変わらないのに入れ直した: {again}")
+    check(got == want == (["正規タグ"], ["正規タグ"]), f"タグ辞書だけを直したとき差分の索引に反映しない: 差分 {got} / 全件 {want}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_stray_governed_write_is_caught(tmp / "sgw")
     test_write_checked_contract(tmp / "wcc")
+    test_release_push_retry(tmp / "rpr")
+    test_release_squash_conflict(tmp / "rsc")
+    test_release_dry_run_no_push(tmp / "rdr")
+    test_deploy_index_failure(tmp / "dif")
+    test_correction_append_only(tmp / "cao")
+    test_indexer_tag_dictionary(tmp / "itd")
     test_remove_worktree(tmp / "rmw")
     test_run_codex_isolation(tmp / "rci")
     test_restore_files(tmp / "rsf")

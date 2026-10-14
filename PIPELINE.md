@@ -160,6 +160,7 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 - 号ごとに `edition/YYYY-MM-DD`(発行日)ブランチを **main から作成**。日中の collect コミットと早朝の compose コミットはすべてこのブランチに載る。
 - 発行 = ローカルで `git merge --squash` により main へ取り込み、**main へ直接 push**(コミット題: `第N号 YYYY-MM-DD 発行`)。PR・branch protection・gh CLI は使わない。main の履歴は「1号=1コミット」になり、candidates・stories の更新も同じコミットに同梱される。
+  - push は「新しい commit を作ったか」でなく「手元の main が origin より先か」で決め、origin/main に号が届いたことを取り直して確かめてから配信・ブランチ削除へ進む(push だけ失敗した号は、再実行が送る)。squash の衝突・中断では squash 前の main に戻し、edition はそのまま残して当番へ。`--dry-run` は push も origin への引き戻しもしない。
 - マージ前ゲートはローカルの lint green+校閲 approve。push 後の GitHub Actions lint は事後検査(すり抜け検知)として常時走らせる。
 - マージ直後に当該ブランチを削除し、**すぐに翌日のブランチを main から作成**する(publish.py の最終ステップ)。
 - **発行忘れ検知**: 朝の監視(09:00)で「発行日が今日以前の edition ブランチが残っている」= 未発行として Discord 通知。
@@ -280,11 +281,11 @@ Cloudflare エッジ(TLS 終端・キャッシュ・CDN) → 読者
 | 論点 | 設計 |
 |------|------|
 | 動的層の実体 | `webapp/app.py`(Flask + waitress、`~/srv/imas-news/venv`)。データは `scripts/indexer.py` が作る SQLite。日本語検索は FTS5 の **trigram** トークナイザ(分かち書き不要・部分一致が効く)。3文字未満の語は trigram で引けないため `LIKE` に落とす |
-| 索引の更新コスト | 記事は不変なので**内容ハッシュが変わったファイルだけ**を入れ直す。実測 154本で全構築 0.35秒 / 差分 0.04秒。記事が数万本になっても日々の更新はその日の増分だけ |
+| 索引の更新コスト | 記事は不変なので**内容ハッシュが変わったファイルだけ**を入れ直す。実測 154本で全構築 0.35秒 / 差分 0.04秒。記事が数万本になっても日々の更新はその日の増分だけ。タグ辞書(alias・drop)の指紋が変わった更新だけは、全記事のタグと全文検索のタグを付け直す |
 | ビルド系 | **bundler を経由しない**。Gemfile の `github-pages` gem は safe モードを強制するため、`JEKYLL_NO_BUNDLER_REQUIRE=true` で素の Jekyll を使う。`deploy.py` は `baseurl` の残留を検出して誤配信を止める |
 | 設定の二重化 | `_config.yml`(Pages 互換・触らない)+ `_config.production.yml`(baseurl 除去・sitemap)。`url` は `.env` の `SITE_URL` から一時設定として渡し、ドメインを git に置かない |
 | 更新順序 | **静的 → 索引** の順。逆順だと、索引に載った記事へのリンクが 404 になる時間帯ができる |
-| 原子性・切り戻し | `current` symlink の張替のみで切替。中途半端なツリーは配信されない。`releases/` に既定5世代を保持し、`ln -sfn` で即時に前号へ戻せる |
+| 原子性・切り戻し | `current` symlink の張替のみで切替。中途半端なツリーは配信されない。`releases/` に既定5世代を保持し、`ln -sfn` で即時に前号へ戻せる。索引の更新は1つの取引で、取り込んだリリースの名前(`run_id`)を索引に残す。再試行しても通らなければ、`current` を索引が取り込んだリリースへ戻してパージする(記録が無ければこの配信の前の版へ戻し、揃っているとは言わない)。deploy は release の打ち切り(40分)より短い予算(`--budget-sec`)のうちに戻す・知らせるまで終える。最後に出す「配信の状態」を release が通知に載せる |
 | アプリ再起動の吸収 | Caddy はアクティブヘルスチェックを**使わない**。upstream は1台だけで、一度 down 判定されると復帰済みでも次回チェックまで 503 を返し続けるため。代わりに `lb_try_duration 5s` で接続失敗を再試行し、再起動(約1秒)を透過させる |
 | 障害の切り分け | アプリが落ちても静的な紙面(記事・号・アーカイブ)は配信され続ける。読めなくなるのはタグ・検索だけ |
 | **可用性** | オリジンは自宅PCだが**24時間稼働**させる運用で担保する。`loginctl` の Linger が有効なので、ログアウトしても systemd user サービスは動き続ける(これが切れると配信ごと止まるため、環境を作り直したときは `loginctl enable-linger` を確認すること)。Windows の再起動に備えるなら WSL の自動起動を Windows 側で設定する |

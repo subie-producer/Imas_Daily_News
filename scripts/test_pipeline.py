@@ -5,9 +5,11 @@
 
 外部サービス・本体の作業ツリー・Git には触らない。全部一時ディレクトリの中で済ませる。
 """
+import atexit
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -16,6 +18,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 # 本番のコードが書式(schema/)で決めたファイルを書式に合わない形で書いたら、テストでは例外にする(pipelib.write_checked)
 os.environ["IMAS_STRICT_WRITES"] = "1"
+# テストの一時ファイルは全部1つのディレクトリの下に作り、終わったら消す。子プロセスも同じ置き場(TMPDIR)。/tmp は 3.8GB の tmpfs で、
+# 走らせるたびに一時ディレクトリを残して埋まり、監査のテストが容量不足で止まった(2026-10-14。selfcheck・当番の往復でも走る)
+TEST_TMP = Path(tempfile.mkdtemp(prefix="imas-test-"))
+tempfile.tempdir = str(TEST_TMP)
+os.environ["TMPDIR"] = str(TEST_TMP)
+atexit.register(shutil.rmtree, TEST_TMP, True)
 import assemble
 import compose
 import lint
@@ -5432,8 +5440,21 @@ def test_oncall_fix_until_clean(tmp: Path):
           and not oncall.audit_ran_checks({"verification": [dict(AUDIT_RAN[0], exit_code=1)] + AUDIT_RAN[1:]})
           and not oncall.audit_ran_checks({"verification": AUDIT_RAN + [dict(AUDIT_RAN[1], exit_code=1)]})
           and not oncall.audit_ran_checks({"verification": [dict(v, exit_code=True) for v in AUDIT_RAN]})
+          and not oncall.audit_ran_checks({"verification": cannot + [{"command": "python3 -m py_compile scripts/test_pipeline.py "
+                                                                                 "scripts/selfcheck.py scripts/lint.py",
+                                                                      "exit_code": 0, "result": "ok"}]})
           and not oncall.audit_ran_checks({}),
-          "走らせた記録の検め方(3つ全部に終了コード・テストと selfcheck は最後の実行が 0・走らせられなかったものは数えない)")
+          "走らせた記録の検め方(3つ全部に終了コード・テストと selfcheck は最後の実行が 0・走らせられなかったもの・名前を含むだけの"
+          "別のコマンドは数えない)")
+    # スクリプトを実行したコマンドだけを数える(監査指摘: py_compile の1件で3つを走らせたことになった)
+    for cmd, want in (("python3 scripts/test_pipeline.py", True), ("cd /w/x && timeout 900 python3 scripts/test_pipeline.py", True),
+                      ("TMPDIR=/tmp/a python3 -u scripts/test_pipeline.py 2>&1 | tail -3", True),
+                      ("timeout -k 5 900 /usr/bin/python3.14 /w/x/scripts/test_pipeline.py", True),
+                      ("env A=1 python3 -X dev scripts/test_pipeline.py", True),
+                      ("python3 -m py_compile scripts/test_pipeline.py", False), ("echo python3 scripts/test_pipeline.py", False),
+                      ("cat scripts/test_pipeline.py", False), ("python3 -c 'import scripts/test_pipeline.py'", False),
+                      ("python3 audit_test_pipeline.py", False), ("python3 scripts/test_pipeline.py.bak", False)):
+        check(oncall.runs_script(cmd, "test_pipeline") is want, f"スクリプトを実行したコマンドの見分けが違う: {cmd!r} → {not want}")
     vi = rs["properties"]["verification"]["items"]
     check(vi["required"] == ["command", "exit_code", "result"] and vi["properties"]["exit_code"]["type"] == ["integer", "null"],
           "監査の schema: 走らせた記録に終了コードが必須でない")

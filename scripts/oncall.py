@@ -348,12 +348,41 @@ AUDIT_REQUIRED_RUNS = ("test_pipeline", "selfcheck", "lint")
 AUDIT_MUST_PASS = ("test_pipeline", "selfcheck")   # 修正の後は通っていなければならない。lint は号の中身(組み直す前の記事)でも赤になる
 
 
+def runs_script(command: str, name: str) -> bool:
+    """コマンドが scripts/<name>.py を python で**実行する**か。引数に名前があるだけのもの(`python3 -m py_compile scripts/…`・
+    echo・cat 等)は数えない(監査指摘: 構文の検査1件で3つの検査を走らせた記録になった)。`cd … &&`・環境変数・timeout は許す。"""
+    import shlex
+    for seg in re.split(r"&&|\|\||;|\|", command):
+        try:
+            toks = shlex.split(seg)
+        except ValueError:
+            continue
+        while toks and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*=.*", toks[0]):
+            toks = toks[1:]
+        while toks and toks[0] in ("timeout", "env", "nice", "stdbuf", "time"):
+            toks = toks[1:]
+            while toks and (toks[0].startswith("-") or re.fullmatch(r"\d+(\.\d+)?[smhd]?", toks[0]) or "=" in toks[0]):
+                toks = toks[1:]
+        if not toks or not re.fullmatch(r"python(3(\.\d+)?)?", Path(toks[0]).name):
+            continue
+        args = toks[1:]
+        while args and args[0].startswith("-"):
+            if args[0] in ("-m", "-c"):
+                args = []
+                break
+            args = args[2:] if args[0] in ("-X", "-W") else args[1:]
+        if args and (args[0] in (f"scripts/{name}.py", f"./scripts/{name}.py", f"{name}.py") or args[0].endswith(f"/scripts/{name}.py")):
+            return True
+    return False
+
+
 def audit_ran_checks(rev: dict) -> bool:
-    """監査の答えに、テストの全体・selfcheck・lint を実際に走らせた記録があるか。走らせた = 終了コードがある。テストと selfcheck は
-    終了コード 0。「走らせられなかった」の結果文で承認にしない(監査指摘: 結果が空でないだけで承認になった)。"""
+    """監査の答えに、テストの全体・selfcheck・lint を実際に走らせた記録があるか。走らせた = そのスクリプトを実行したコマンドで、
+    終了コードがある。テストと selfcheck は終了コード 0。「走らせられなかった」の結果文や、名前を含むだけの別のコマンドで承認にしない
+    (監査指摘: 結果が空でないだけで承認になった・構文の検査で3つを走らせたことになった)。"""
     runs = [v for v in rev.get("verification") or []
             if isinstance(v, dict) and isinstance(v.get("exit_code"), int) and not isinstance(v.get("exit_code"), bool)]
-    ran = lambda k: [v for v in runs if k in str(v.get("command") or "")]
+    ran = lambda k: [v for v in runs if runs_script(str(v.get("command") or ""), k)]
     return all(ran(k) for k in AUDIT_REQUIRED_RUNS) and all(ran(k)[-1]["exit_code"] == 0 for k in AUDIT_MUST_PASS)
 
 

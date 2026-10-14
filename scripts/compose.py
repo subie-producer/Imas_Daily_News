@@ -52,7 +52,8 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      SETTLED_DROP_RULES, settled_drops,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
-                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked)
+                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked,
+                     FETCH_RECORD_ENV, fetched_urls)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
 # 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
@@ -2180,6 +2181,25 @@ def returned_note(problems: list[str]) -> str:
             + "\n記事として成立しないと判断するなら status を decline にし、理由コードと説明を書く。")
 
 
+def fetch_record(date: str, slug: str) -> Path:
+    """記事ごとの、fetch_page.py が本文を取れたページの記録(pipelib.note_fetched。Git 管理外)。初稿・差し戻し・書き直しの
+    セッションが同じ記録に書き足す(書き直しは、初稿のセッションが読んだページの事実を verified_facts から写して使う)。"""
+    return ROOT / "metrics" / "work" / date / "fetched" / f"{slug}.jsonl"
+
+
+def fetch_env(date: str, slug: str) -> dict:
+    """執筆・書き直しの子に渡す環境。子が走らせた fetch_page.py が、この記事の記録に書き足す。"""
+    rec = fetch_record(date, slug)
+    rec.parent.mkdir(parents=True, exist_ok=True)
+    return {**os.environ, FETCH_RECORD_ENV: str(rec)}
+
+
+def draft_urls(fm: dict | None) -> set[str]:
+    """現在の稿の verified_facts・sources の url(書いたときに検算を通ったもの)。書き直しが verified_facts を写して使うとき、
+    初稿のセッションで読んだページを読み直させない。"""
+    return {str(x["url"]) for k in ("verified_facts", "sources") for x in (fm or {}).get(k) or [] if isinstance(x, dict) and x.get("url")}
+
+
 def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                    stories: dict, wave: int = 0,
                    reuse: bool = False) -> tuple[list[dict], list[str]]:
@@ -2246,11 +2266,12 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
             if STRUCTURED_WRITE:
                 cmd += ["--output-schema", str(schema_out)]
             # 素材と指示はファイルで渡す(引数に詰めると 128KB で落ちる。エージェントは自分で読める)。
-            # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(最終メッセージを残さず終わった回の原因を追うため)
+            # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(最終メッセージを残さず終わった回の原因を追うため)。
+            # 子の fetch_page.py が本文を取れたページは、この記事の記録に残る(fetch_env。検算が根拠の URL と照らす)
             with open(log_of(out_path), "w", encoding="utf-8") as lf:
                 procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, subprocess.Popen(
                     cmd + [prompt_file(date, f"write-{art['slug']}-{tries}", prompt)],
-                    stdout=lf, stderr=subprocess.STDOUT, text=True,
+                    stdout=lf, stderr=subprocess.STDOUT, text=True, env=fetch_env(date, art["slug"]),
                     stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True)))
         for art, src, prompt, out_path, fact_by_id, materials, tries, p in procs:
             timed_out = False
@@ -2296,7 +2317,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                     # 検算を status の分岐より**先に**掛ける(理由の無い見送りを素通りさせない。監査指摘)
                     try:
                         problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "",
-                                                          edition=date)
+                                                          edition=date, fetched=fetched_urls(fetch_record(date, art["slug"])))
                     except Exception as e:
                         # 中の要素の形が崩れた答え(null の段落など)で検算が例外になっても、号全体を止めない。
                         # 検算の不合格として差し戻しへ回す(監査指摘)
@@ -2655,8 +2676,10 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     if ans.get("status") != "decline" and old_fm and not event_date_targeted(issues, old_fm):
         ev = old_fm.get("event_date")
         ans = dict(ans, event_date=ev.isoformat() if hasattr(ev, "isoformat") else (str(ev) if ev else None))
+    # 根拠にできるページ: 素材と、この記事のセッション(初稿・書き直し)で fetch_page.py が本文を取れたページと、現在の稿の根拠のページ
+    fetched = fetched_urls(fetch_record(date, art["slug"])) | draft_urls(old_fm)
     try:
-        problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date)
+        problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date, fetched=fetched)
     except Exception as e:
         # 中の要素の形が崩れた答えで検算が例外になっても号全体を止めない。元の稿のまま(監査指摘)
         return "kept", f"答えの形が崩れていて検算できない({type(e).__name__}: {str(e)[:80]})。元の稿のまま"
@@ -2766,7 +2789,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                      "--output-last-message", out_name, "--output-schema", str(schema_out),
                      prompt_file(date, f"revise-{art['slug']}", prompt)],
                     stdout=lf, stderr=subprocess.STDOUT, text=True, stdin=subprocess.DEVNULL, cwd=ROOT,
-                    start_new_session=True)))
+                    env=fetch_env(date, art["slug"]), start_new_session=True)))
         waited = []
         for art, path, fact_by_id, materials, issues, out_path, p in procs:
             timed_out = False

@@ -164,9 +164,11 @@ def test_check_output():
     good = dict(OK, sources=OK["sources"] + [{"url": "https://z.example/9", "label": "w"}],
                 new_facts=[{"id": "N1", "text": "9月25日発売", "url": "https://z.example/9"}], event_date="2026-09-25",
                 blocks=[{"markdown": "x", "fact_ids": ["F1", "F3", "F4", "N1"]}])
-    check(C(good) == [], f"new_facts 付きの出力が落ちた: {C(good)}")
-    # 素材に無い URL(執筆が見つけた出典)は許す。実在・一致の確認は校閲(項目3)
-    check(C(dict(OK, sources=OK["sources"] + [{"url": "https://q.example", "label": "q"}])) == [], "素材に無い出典 URL を機械が落とした")
+    check(C(good, fetched={"https://z.example/9"}) == [], f"new_facts 付きの出力が落ちた: {C(good, fetched={'https://z.example/9'})}")
+    # 素材に無い URL(執筆が見つけた出典)は、fetch_page.py で本文を取れたページなら許す。中身の一致の確認は校閲(項目3)
+    # (読めたかの検査は test_check_output_unread_pages)
+    check(C(dict(OK, sources=OK["sources"] + [{"url": "https://q.example", "label": "q"}]), fetched=["https://q.example/"]) == [],
+          "読めた素材の外の出典 URL を機械が落とした")
     check(C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "#タグ_付き ID"}])) == [], "label の # や _ を落とした")
     check(any("Markdown" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "[リンク](x)"}]))),
           "label の Markdown リンクが通った")
@@ -219,6 +221,48 @@ def test_check_output():
     check(len(C({"status": "decline", "decline_code": "", "decline_detail": ""})) == 2, "理由の無い decline が通った")
     check(C({"status": "decline", "decline_code": "NOT_NEWS", "decline_detail": "x"}) == [], "正当な decline が落ちた")
     check(any("decline_code" in p for p in C(dict(OK, decline_code="OTHER"))), "ok なのに decline_code ありが通った")
+
+
+def test_check_output_unread_pages():
+    """執筆の根拠の URL(new_facts・sources)は、素材の url か、fetch_page.py が本文を取れたページ(セッションの記録)だけ。2026-10-14 の rule_bench:
+    執筆が fetch_page.py の取れなかった報道を Web 検索で読んで期間を断定し、綴りの誤った URL(news.denfamicogamer.jp)を new_facts と出典に
+    書いた答えが検算を通った(校閲は fetch_page.py だけで読むので確かめられない)。素材・読んだページと書き方が違うだけ(末尾の /・scheme・
+    共有用のクエリ・%エンコード・リダイレクトの行き先)の正しい答えは落とさない"""
+    import copy
+    _, fb = renderlib.materials_with_ids(MATS)
+    C = lambda o, fetched=(): renderlib.check_output(copy.deepcopy(o), fb, MATS, fetched=fetched)
+    unread = lambda ps: [p for p in ps if "fetch_page.py で本文を取れていない" in p]
+    press, typo = "https://news.denfaminicogamer.jp/news/261009y", "https://news.denfamicogamer.jp/news/261009y"
+    ans = dict(OK, new_facts=[{"id": "N1", "text": "10月15日3:59まで", "url": press}], blocks=[{"markdown": "x", "fact_ids": ["F1", "F3", "F4", "N1"]}],
+               sources=OK["sources"] + [{"url": press, "label": "電ファミニコゲーマー"}])
+    check(unread(C(ans)), "fetch_page.py で読めていない素材の外のページを根拠にした答えが検算を通った")
+    check(C(ans, fetched={press}) == [], f"fetch_page.py で読めたページを根拠にした答えを落とした: {C(ans, fetched={press})}")
+    # 綴りの誤った URL(実在しないページ)は、正しい綴りのページを読んでいても通さない。new_facts だけ・sources だけでも
+    only_n = dict(ans, new_facts=[dict(ans["new_facts"][0], url=typo)])
+    only_s = dict(ans, sources=OK["sources"] + [{"url": typo, "label": "電ファミニコゲーマー"}])
+    check(unread(C(only_n, fetched={press})) and unread(C(only_s, fetched={press})), "綴りの誤った URL を根拠にした答えが検算を通った")
+    check(typo in " ".join(unread(C(only_s, fetched={press}))), "差し戻しの理由に、読めていない URL が無い(書き手が直せない)")
+    # 書き方が違うだけの同じページは落とさない
+    for cited, pool in ((press + "/", {press}), ("http://news.denfaminicogamer.jp/news/261009y", {press}),
+                        ("https://www.youtube.com/watch?v=abc", {"https://youtube.com/watch?v=abc&si=xyz"}),
+                        ("https://example.jp/商品/1", {"https://example.jp/%E5%95%86%E5%93%81/1"}),
+                        ("https://www.lantis.jp/release_1.html", {"https://lnk.to/1", "https://www.lantis.jp/release_1.html"}),
+                        ("https://twitter.com/imas/status/1", {"https://x.com/imas/status/1?s=20"}),
+                        ("https://www.s-renaissance.co.jp/news/detail/?did=2562", {"https://www.s-renaissance.co.jp/news/detail/?did=2562&p=1&y="})):
+        a = dict(ans, new_facts=[dict(ans["new_facts"][0], url=cited)], sources=OK["sources"] + [{"url": cited, "label": "l"}])
+        check(C(a, fetched=pool) == [], f"同じページの書き方の違いで落とした: {cited} / {sorted(pool)}: {C(a, fetched=pool)}")
+    # 素材の url は記録が無くても根拠にできる(FETCH_FAILED の素材・X の投稿も出典には書く)。書き方が違うだけでも同じ
+    mat = dict(OK, sources=[{"url": "https://a.example/1/?utm_source=x", "label": "x"}, {"url": "http://b.example/2", "label": "y"}],
+               new_facts=[{"id": "N1", "text": "t", "url": "https://c.example/3/"}], blocks=[{"markdown": "x", "fact_ids": ["F1", "N1"]}])
+    check(C(mat) == [], f"素材の url(書き方違い)を根拠にした答えを落とした: {C(mat)}")
+    # 値の違うクエリ・別のパスは別のページ
+    for cited, pool in (("https://www.youtube.com/watch?v=B", {"https://www.youtube.com/watch?v=A"}),
+                        ("https://a.example/12", {"https://a.example/1"}), ("https://a.example.evil/1", set())):
+        a = dict(ans, new_facts=[dict(ans["new_facts"][0], url=cited)], sources=OK["sources"])
+        check(unread(C(a, fetched=pool)), f"別のページを読めたページ・素材として通した: {cited} / {sorted(pool)}")
+    # 見送りは根拠の URL を持たない。記録の無い答え(記録を始める前の答えを読み直す道具が fetched=None を渡す)は読めたかを見ない
+    check(C({"status": "decline", "decline_code": "NOT_NEWS", "decline_detail": "x"}) == [], "見送りを根拠の URL で落とした")
+    check(C(ans, fetched=None) == [], "記録の無い答え(fetched=None)で、読めたかを見た")
 
 
 def test_render_and_length():
@@ -1047,17 +1091,21 @@ def test_official_topic_accepts_press():
     code = next((l for l in w.splitlines() if l.startswith("- NO_PRIMARY_SOURCE:")), "")
     r5 = "\n".join(l for l in r.splitlines()[next((i for i, l in enumerate(r.splitlines()) if l.startswith("- R5 ")), 0):][:2])
     check("報道" in rule and "報道" in code and "報道" in r5, f"報道を認める基準が執筆・理由コード・校閲で揃っていない: {rule[:60]} / {code[:60]} / {r5[:80]}")
-    # 報道は「公式の告知を取材・引用したもの」に限る(ファンの投稿を集めた記事・転載は除く)。公式と食い違う値は公式を採る。両方とも
-    # 執筆と校閲の両側にある(片側だけ旧状態に戻ると、まとめ記事や報道の誤った値で書いた記事が通る。監査指摘)
-    limit = "公式の告知を取材・引用した報道"
+    # 報道は「公式の発表・ゲーム内のお知らせを報じたもの」に限る(ファンの投稿を集めた記事・転載は除く)。公式と食い違う値は公式を採る。両方とも
+    # 執筆と校閲の両側にある(片側だけ旧状態に戻ると、まとめ記事や報道の誤った値で書いた記事が通る。監査指摘)。
+    # 報道の範囲は執筆・校閲・書き直しで同じ書き方で、告知文の引用を条件にしない(2026-10-14: 「公式の告知を取材・引用した報道」を、校閲が
+    # 「告知文を引用しておらず R5 は境界線上」と読んだ。規則が効くかは rule_bench の事例 review-article-press-only-no-r5 が見る)
+    limit = "公式の発表・ゲーム内のお知らせを報じた報道"
     r5_full = "\n".join(r.splitlines()[next((i for i, l in enumerate(r.splitlines()) if l.startswith("- R5 ")), 0):][:3])
-    check(limit in w and limit in r5_full and "ファンの投稿を集めた記事・転載は除く" in w and "ファンの投稿を集めた記事・転載は除く" in r5_full,
-          "報道の限定条件が執筆・校閲の両方に無い")
+    rv = (pipelib.ROOT / "prompts" / "revise-article.md").read_text(encoding="utf-8")
+    check(limit in w and limit in r5_full and limit in rv and "ファンの投稿を集めた記事・転載は除く" in w and "ファンの投稿を集めた記事・転載は除く" in r5_full,
+          "報道の限定条件が執筆・校閲・書き直しに同じ書き方で無い")
+    check(all("告知文を引用していなくてよい" in t for t in (w, r5_full, rv)) and not any("取材・引用" in t for t in (w, r, rv)),
+          "報道の範囲に告知文の引用を条件と読める書き方が残っている")
     check("公式と食い違う値は、どの出典で書くときも公式を採る" in w and "食い違う値" in r5_full and "公式を採る" in r5_full,
           "公式と食い違う値は公式を採る、が執筆・校閲の両方に無い")
     # 報道で書く記事でも、報道の本文で確かめた具体を足せる(素材に無い事実の確かめの元に報道を含める。執筆・校閲・書き直し)
-    rv = (pipelib.ROOT / "prompts" / "revise-article.md").read_text(encoding="utf-8")
-    check("3 で出典にできる報道" in w and "R5 の条件を満たす報道" in r and "公式の告知を取材・引用した報道" in rv,
+    check("3 で出典にできる報道" in w and "R5 の条件を満たす報道" in r and limit in rv,
           "報道の本文で確かめた事実を足せない(素材に無い事実の確かめの元が一次情報だけ)")
 
 
@@ -1076,6 +1124,7 @@ RULE_CASES = {
     "review-article-fan-matome-only-r5": "review_article", "review-article-press-price-conflict-r5": "review_article",
     "review-paper-same-event-different-news-kept": "review_paper", "review-paper-same-news-twice-drops-one": "review_paper",
     "revise-press-price-conflict-uses-official": "revise",
+    "write-linked-official-read-by-fetch-page": "write", "write-unreadable-link-not-cited": "write",
 }
 
 
@@ -1122,6 +1171,15 @@ def test_rule_bench_cases():
           "素材に無い出典を cite_sources にできる")
     check(broken("revise-press-price-conflict-uses-official", lambda c: c.update(issues=[])), "指摘の無い書き直しの事例を通す")
     check(broken("revise-press-price-conflict-uses-official", lambda c: c.update(slug="other")), "書き直す記事と slug が合わない事例を通す")
+    # 素材の外のページの事例: 読めるリンク先(本文を持たせた素材の外のページ)を出典に期待する / 読めないリンク先(本文が無い)は見送りを期待する
+    lo, ul = cases["write-linked-official-read-by-fetch-page"], cases["write-unreadable-link-not-cited"]
+    off = (lo["expect"].get("sources") or [""])[0]
+    check(off in lo["pages"] and off not in {m["url"] for m in lo["materials"]} and any(off in f for m in lo["materials"] for f in m["facts"]),
+          f"読めるリンク先の事例: 期待の出典が、素材がリンクする素材の外のページ(本文あり)でない: {off}")
+    link = re.findall(r"https://\S+", " ".join(f for m in ul["materials"] for f in m["facts"]))
+    check(link and not any(u in ul["pages"] for u in link) and ul["expect"].get("status") == "decline",
+          f"読めないリンク先の事例: リンク先の本文を持たせている・見送りを期待しない: {link}")
+    check(broken("write-linked-official-read-by-fetch-page", lambda c: c["pages"].pop(off, None)), "期待の出典が素材にも pages にも無い事例を通す")
 
 
 def test_rule_bench_judges_shape(tmp: Path):
@@ -1342,6 +1400,65 @@ def test_rule_bench_judges_shape(tmp: Path):
           f"事例の本文を本番と同じ形(期間・本文)で返さない: {outs[:1]}")
     check(len(outs) == 2 and outs[1][0] == 1 and outs[1][1].startswith("FETCH_FAILED"), f"事例に無いページを取れたことにした: {outs[1:]}")
     check(not wrong, f"事例の固定の本文が、そのままの中身で返らない: {wrong[:3]}")
+
+
+def test_rule_bench_checks_read_pages(tmp: Path):
+    """規則の事例でも本番と同じく、根拠の URL をセッションの記録と照らす: writer_bench.write_one は子に記録の置き場を渡し、子の fetch_page.py が
+    本文を取れたページを返す。rule_bench はそれで本番の検算を掛け、読んでいないページを根拠にした答えを「形」の不合格にする
+    (2026-10-14: 素材の外の読めないページを出典にした答えが、本番の検算を通る形のまま合格・不合格を判定されていた)"""
+    import copy
+    import rule_bench
+    import writer_bench
+    cases = rule_bench.load_cases()
+    names = ("write-linked-official-read-by-fetch-page", "write-unreadable-link-not-cited")
+    if not all(n in cases for n in names):
+        check(False, f"素材の外のページの事例が無い: {names}")
+        return
+    off = cases[names[0]]["expect"]["sources"][0]
+    link = re.findall(r"https://\S+", " ".join(f for m in cases[names[1]]["materials"] for f in m["facts"]))[0]
+    good = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "ミリシタ、秋のしおりログボ", "title_fact_ids": ["N1"],
+            "lede": "l", "lede_fact_ids": ["N1"], "blocks": [{"markdown": "m", "fact_ids": ["N1", "F2"]}], "tags": ["ミリシタ", "ログインボーナス"],
+            "new_facts": [{"id": "N1", "text": "10月20日14:59まで", "url": off}], "event_date": "2026-10-12", "addressed_issue_ids": [],
+            "sources": [{"url": off, "label": "アイドルマスター ポータル「秋のしおり集めログインボーナス」(2026年10月12日)"}]}
+    saved = (rule_bench.OUT, pipelib.ROOT, compose.ROOT, writer_bench.write_one, writer_bench.subprocess.run, os.environ.get(rule_bench.FIXED_PAGES_ENV))
+    try:
+        rule_bench.OUT = tmp / "out"
+        pipelib.ROOT = compose.ROOT = tmp / "root"
+        # 素材がリンクする告知を読んで書いた答え: 読めた記録があれば合格、記録が無ければ「形」の不合格(本番なら差し戻し)
+        for fetched, ok in (([off], True), ([], False)):
+            writer_bench.write_one = lambda name, short, label, model, f=fetched: {"case": name, "answer": copy.deepcopy(good), "exit": 0,
+                                                                                   "fetched": list(f)}
+            r = rule_bench.run_one(names[0], f"rp{len(fetched)}")
+            check(r["pass"] == ok and r["problems"] == [] and bool(r["shape_problems"]) != ok and r.get("fetched") == fetched,
+                  f"読めた記録 {fetched} で、告知を読んで書いた答えの判定が違う: {r.get('pass')} {r.get('problems')} {r.get('shape_problems')}")
+        # 読めないリンク先を出典にして書いた答え: 規則(見送り)の不合格と、形(読めていないページ)の不合格の両方
+        bad = dict(good, new_facts=[{"id": "N1", "text": "t", "url": link}], sources=[{"url": link, "label": "公式のお知らせ"}])
+        writer_bench.write_one = lambda name, short, label, model: {"case": name, "answer": copy.deepcopy(bad), "exit": 0, "fetched": []}
+        r = rule_bench.run_one(names[1], "ul")
+        check(not r["pass"] and r["problems"] and any(link in x for x in r["shape_problems"]),
+              f"読めないリンク先を出典にした答えを、形の不合格にしない: {r.get('problems')} {r.get('shape_problems')}")
+        # writer_bench.write_one(本物)は子に記録の置き場を渡し、子が書いたページを返して、記録を消す
+        writer_bench.write_one = saved[3]
+        seen = {}
+
+        def fake_run(cmd, **kw):
+            seen["rec"] = (kw.get("env") or {}).get(pipelib.FETCH_RECORD_ENV, "")
+            if seen["rec"]:
+                Path(seen["rec"]).write_text(json.dumps({"url": off, "final": None}) + "\n", encoding="utf-8")
+            Path(cmd[cmd.index("--output-last-message") + 1]).write_text(json.dumps(good, ensure_ascii=False), encoding="utf-8")
+            return subprocess.CompletedProcess(cmd, 0, "", "")
+        writer_bench.subprocess.run = fake_run
+        got = writer_bench.write_one("x", "p", "t", "m")
+        rec = Path(seen.get("rec") or "/nonexistent")
+        check(got.get("fetched") == [off] and got.get("answer") == good and not rec.exists()
+              and rec.parent == tmp / "root" / "metrics" / "work" / "bench" / "fetched",
+              f"write_one が子に記録の置き場を渡さない・読めたページを返さない・記録を残す: {seen} {got.get('fetched')}")
+    finally:
+        (rule_bench.OUT, pipelib.ROOT, compose.ROOT, writer_bench.write_one, writer_bench.subprocess.run, env) = saved
+        if env is None:
+            os.environ.pop(rule_bench.FIXED_PAGES_ENV, None)
+        else:
+            os.environ[rule_bench.FIXED_PAGES_ENV] = env
 
 
 def test_job_lock():
@@ -3637,6 +3754,71 @@ def test_fetch_page_renders_whitespace_only_page():
           f"裏取りが公式ポータルの長いナビのページを描画せず期間を落とした: {rcalls} {cv[0].get('periods')}")
 
 
+def test_fetch_page_records_read_pages(tmp: Path):
+    """fetch_page.py は本文を取れたページだけを、環境変数 IMAS_FETCH_RECORD の記録に残す(頼んだ URL とリダイレクトの行き先)。
+    取れなかったページ(FETCH_FAILED)は残さない。記録を書けなくても読み取りは止めない。検算はこの記録で根拠の URL を照らす
+    (2026-10-14 rule_bench: 執筆が fetch_page.py の取れなかった報道を Web 検索で読んで書いた答えが検算を通った)"""
+    import contextlib, io
+    import fetch_page
+    tmp.mkdir(parents=True, exist_ok=True)
+    rec = tmp / "rec" / "slug.jsonl"            # 置き場のフォルダが無くても作って書く
+    pages = tmp / "pages.json"
+    pages.write_text(json.dumps({"https://a.example/x": "告知の本文"}, ensure_ascii=False), encoding="utf-8")
+    page = "<html><body><p>" + "公式の告知の本文。" * 80 + "</p></body></html>"
+
+    class U:
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
+        def geturl(self): return "https://www.lantis.jp/release_1.html"
+        def read(self, n=None): return page.encode("utf-8")
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    def run(url, record=None, fixed=None):
+        env_keys = (pipelib.FETCH_RECORD_ENV, fetch_page.FIXED_PAGES_ENV)
+        saved_env = {k: os.environ.get(k) for k in env_keys}
+        saved = (sys.argv, fetch_page.urllib.request.urlopen, fetch_page.needs_render)
+        out, err = io.StringIO(), io.StringIO()
+        try:
+            for k, v in zip(env_keys, (record, fixed)):
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = str(v)
+            fetch_page.urllib.request.urlopen = lambda req, timeout=25: U()
+            fetch_page.needs_render = lambda u, t: False
+            sys.argv = ["fetch_page.py", url]
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                rc = fetch_page.main()
+        finally:
+            sys.argv, fetch_page.urllib.request.urlopen, fetch_page.needs_render = saved
+            for k, v in saved_env.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+        return rc, out.getvalue(), err.getvalue()
+    rc1, _, _ = run("https://a.example/x", rec, pages)              # 事例の本文(取れる)
+    rc2, out2, _ = run("https://a.example/missing", rec, pages)     # 事例に無い(取れない)
+    rc3, _, _ = run("https://lnk.to/1", rec)                         # 本物の取得の経路: リダイレクトの行き先も残す
+    lines = [json.loads(l) for l in rec.read_text(encoding="utf-8").splitlines()] if rec.exists() else []
+    check(rc1 == 0 and rc2 == 1 and out2.startswith("FETCH_FAILED") and rc3 == 0, f"fetch_page の終了: {rc1} {rc2} {rc3}")
+    check(lines == [{"url": "https://a.example/x", "final": None}, {"url": "https://lnk.to/1", "final": "https://www.lantis.jp/release_1.html"}],
+          f"本文を取れたページ(とリダイレクトの行き先)だけを記録しない: {lines}")
+    check(pipelib.fetched_urls(rec) == {"https://a.example/x", "https://lnk.to/1", "https://www.lantis.jp/release_1.html"},
+          f"記録から読めたページを読めない: {pipelib.fetched_urls(rec)}")
+    # 記録を書けない(置き場がフォルダ)ときも本文は返し、書けなかったことを stderr に出す。記録の変数が無ければ何も書かない
+    rc4, out4, err4 = run("https://a.example/x", tmp, pages)
+    check(rc4 == 0 and "告知の本文" in out4 and "FETCH_RECORD_FAILED" in err4, f"記録を書けないと読み取りが止まる・黙る: {rc4} {err4[:80]}")
+    before = rec.read_text(encoding="utf-8")
+    rc5, _, _ = run("https://a.example/x", None, pages)
+    check(rc5 == 0 and rec.read_text(encoding="utf-8") == before, "記録の変数が無いのに記録に書いた")
+    # 壊れた行・無い記録は飛ばす(読めた分だけ返す)
+    rec.write_text(before + "{壊れた行\n[1]\n", encoding="utf-8")
+    check(pipelib.fetched_urls(rec) == {"https://a.example/x", "https://lnk.to/1", "https://www.lantis.jp/release_1.html"}
+          and pipelib.fetched_urls(tmp / "none.jsonl") == set(), "壊れた行・無い記録で、読めたページの読み方が崩れる")
+
+
 def test_fetch_rendered_skips_images():
     """描画取得は画像を読み込まない。画像の多い一覧(columbia.jp/idolmaster/)は画像待ちで読み込み完了に届かず、
     毎回時間切れで空を返していた(2026-10-07)。selenium の無い環境でも確かめられるよう、ブラウザは偽物に差し替える"""
@@ -5928,7 +6110,7 @@ def test_rewrites(tmp: Path):
     (posts / n).write_text("元の記事", encoding="utf-8")
     saved = (rewrite_past.ROOT, rewrite_past.apply_answer, _c.claude_review)
 
-    def fake_apply(path, case, ans):
+    def fake_apply(path, case, ans, fetched=None):
         path.write_text("差し替えた記事", encoding="utf-8")
         return []
 
@@ -7647,8 +7829,9 @@ def test_reservation_occurs_on(tmp: Path):
 
 FAKE_CODEX = r'''#!/usr/bin/env python3
 # テスト用の偽の codex(本物の子プロセスとして起動される)。依頼の種類と記事(write-<slug> / revise-<slug>)ごとに、呼ばれた回数番目の
-# 手順を FAKE_CODEX_SPEC から引く: touch(作業ツリーのファイルを直接書く・消す)→ answer(最終メッセージ)→ sleep → exit
-import json, os, pathlib, re, sys, time
+# 手順を FAKE_CODEX_SPEC から引く: touch(作業ツリーのファイルを直接書く・消す)→ fetch(本物の fetch_page.py で読む。FAKE_FETCH_PAGE)
+# → answer(最終メッセージ)→ sleep → exit
+import json, os, pathlib, re, subprocess, sys, time
 spec_p = pathlib.Path(os.environ["FAKE_CODEX_SPEC"])
 m = re.search(r"/metrics/work/[^/]+/(write|revise)-([a-z]+(?:-[a-z]+)*)(?:-\d+)?\.md", sys.argv[-1])
 key = m.group(1) + "-" + m.group(2)
@@ -7662,6 +7845,8 @@ for rel, text in (step.get("touch") or {}).items():
         pathlib.Path(rel).unlink()
     else:
         pathlib.Path(rel).write_text(text, encoding="utf-8")
+for u in step.get("fetch") or []:
+    subprocess.run([sys.executable, os.environ["FAKE_FETCH_PAGE"], u], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 if step.get("answer") is not None:
     pathlib.Path(sys.argv[sys.argv.index("--output-last-message") + 1]).write_text(json.dumps(step["answer"], ensure_ascii=False), encoding="utf-8")
 time.sleep(step.get("sleep", 0))
@@ -7757,6 +7942,102 @@ def test_writer_children(tmp: Path):
         os.environ["PATH"] = saved[5] or ""
         os.environ.pop("FAKE_CODEX_SPEC", None)
         compose.FACT_MAP.clear()
+        pipelib.ANOMALIES.clear()
+
+
+def test_writer_reads_only_fetched_pages(tmp: Path):
+    """執筆・書き直しを本物の子プロセス(偽の codex が本物の fetch_page.py を走らせる)で通し、根拠の URL を検める。2026-10-14 の rule_bench:
+    執筆が fetch_page.py の取れなかった報道を Web 検索で読んで期間を断定し、綴りの誤った URL を出典に書いた答えが検算を通った。
+    - 子の fetch_page.py が本文を取れたページは、compose が渡した記事ごとの記録に残り、そのページを根拠にした稿は採る
+    - 読んでいない・綴りの誤った・取れなかった(FETCH_FAILED)ページを根拠にした稿は差し戻し、読み直して出せば採る。2回とも通らなければ落とす
+    - 書き直しは、現在の稿の根拠のページと書き直しのセッションで読めたページを使える。読んでいないページを足した稿は採らない(元の稿のまま)"""
+    import shutil
+    date = "2026-10-14"
+    repo = Path(__file__).resolve().parent.parent
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    shutil.copytree(repo / "schema", tmp / "schema")
+    bindir = tmp / "bin"
+    bindir.mkdir()
+    (bindir / "codex").write_text(FAKE_CODEX, encoding="utf-8")
+    os.chmod(bindir / "codex", 0o755)
+    spec_p = tmp / "spec" / "spec.json"
+    spec_p.parent.mkdir()
+    cand = cand_row("c1", "https://example.com/news", facts=["販売開始", "価格は3000円"], dedup_key="x")
+    shop, other = "https://shop.example.jp/item/1", "https://other.example.jp/p"
+    typo, gone = "https://shop.exampel.jp/item/1", "https://gone.example.jp/x"
+    pages = tmp / "spec" / "pages.json"         # 子の fetch_page.py が返す本文(取りに行かない)。gone は無い = FETCH_FAILED
+    pages.write_text(json.dumps({cand["url"]: "告知の本文", shop: "商品ページの本文", other: "別の店舗の本文"}, ensure_ascii=False), encoding="utf-8")
+    base = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
+            "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "tags": ["シンデレラガールズ", "販売"], "event_date": None, "addressed_issue_ids": []}
+    para = "販売を開始する。価格は3000円。店舗で受け取れる。"
+    n1 = lambda url: {"id": "N1", "text": "店舗で受け取れる", "url": url}
+    with_page = lambda url: dict(base, new_facts=[n1(url)], blocks=[{"markdown": para, "fact_ids": ["F1", "F2", "N1"]}],
+                                 sources=[{"url": cand["url"], "label": "公式告知"}, {"url": url, "label": "商品ページ"}])
+    # 書き直し: 指摘の段落だけを直し、現在の稿の N1 を写して、別のページの N2 を足す
+    revised = lambda: dict(with_page(shop), addressed_issue_ids=["I1"], new_facts=[n1(shop), {"id": "N2", "text": "別の店舗でも扱う", "url": other}],
+                           blocks=[{"markdown": "販売を開始した。価格は3000円。店舗で受け取れる。別の店舗でも扱う。", "fact_ids": ["F1", "F2", "N1", "N2"]}],
+                           sources=[{"url": cand["url"], "label": "公式告知"}, {"url": shop, "label": "商品ページ"}, {"url": other, "label": "別の店舗"}])
+    spec = {"write-seen": [{"fetch": [cand["url"], shop], "answer": with_page(shop)}],
+            "write-late": [{"answer": with_page(shop)}, {"fetch": [shop], "answer": with_page(shop)}],
+            "write-typo": [{"fetch": [shop], "answer": with_page(typo)}],
+            "write-gone": [{"fetch": [gone], "answer": with_page(gone)}],
+            "revise-seen": [{"fetch": [other], "answer": revised()}],
+            "revise-late": [{"answer": revised()}]}
+    spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+    art = lambda s: {"slug": s, "brand": "cg", "rank": "small", "angle": "知らせ", "candidate_ids": ["c1"], "dedup_key": "x"}
+    plan = {"articles": [art(s) for s in ("seen", "late", "typo", "gone")]}
+    path = lambda s: posts / f"{date}-{s}.md"
+    env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "IMAS_FETCH_PAGES", "PATH")
+    saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_by_key, compose.DEADLINE,
+             {k: os.environ.get(k) for k in env_keys})
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        compose.classify_source = lambda u: "公式"
+        compose.storylink.prior_by_key = lambda *a: {}
+        compose.DEADLINE = None
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}"
+        os.environ.update(FAKE_CODEX_SPEC=str(spec_p), FAKE_FETCH_PAGE=str(repo / "scripts" / "fetch_page.py"), IMAS_FETCH_PAGES=str(pages))
+        compose.FACT_MAP.clear()
+        written, aborted = compose.write_articles(date, plan, {"c1": cand}, [], {})
+        counts = {s: (spec_p.parent / f"count-write-{s}").read_text() for s in ("seen", "late", "typo", "gone")}
+        outcomes = compose.WRITE_OUTCOMES.get(date) or {}
+        check(sorted(a["slug"] for a in written) == ["late", "seen"] and sorted(aborted) == ["gone", "typo"],
+              f"読めたページを根拠にした稿だけを採る、になっていない: 採った {[a['slug'] for a in written]} / 外した {aborted}")
+        check(counts == {"seen": "1", "late": "2", "typo": "2", "gone": "2"}, f"差し戻しの回数: {counts}")
+        check(all("fetch_page.py で本文を取れていない" in outcomes.get(s, "") for s in ("typo", "gone")),
+              f"読めていないページで落とした理由が残らない: {outcomes}")
+        ret = tmp / "metrics" / "work" / date / "write-late-1.md"
+        check(ret.exists() and "fetch_page.py で本文を取れていない" in ret.read_text(encoding="utf-8") and shop in ret.read_text(encoding="utf-8"),
+              "差し戻しの依頼に、読めていないページと直し方が無い")
+        rec = compose.fetch_record(date, "seen")
+        check(pipelib.fetched_urls(rec) == {cand["url"], shop} and not pipelib.fetched_urls(compose.fetch_record(date, "gone")),
+              f"子の fetch_page.py が記事ごとの記録に、取れたページだけを残さない: {pipelib.fetched_urls(rec)}")
+        fm = compose.parse_front_matter(path("seen")) or {}
+        check([v.get("url") for v in fm.get("verified_facts") or []] == [shop], f"読めたページの事実が記事に残らない: {fm.get('verified_facts')}")
+        # 書き直し: 初稿のセッションの記録が無くても、現在の稿の根拠のページ(shop)は写して使える。書き直しで読んだ other も使える。
+        # 読んでいない other を足した late の稿は採らない
+        rec.unlink()
+        before_late = path("late").read_bytes()
+        issue = {"rule_id": "R1", "issue": "事実を直す", "quote": para, "repair": "rewrite_claim", "expected": "正しく書く", "fact_ids": ["F1"]}
+        res = compose.revise_articles(date, {f"docs/_posts/{date}-{s}.md": [dict(issue)] for s in ("seen", "late")}, plan, {"c1": cand}, [])
+        fm = compose.parse_front_matter(path("seen")) or {}
+        check(res == {"seen": "fixed", "late": "kept"}, f"書き直しの結果: {res} {compose.REVISE_NOTES.get(date)}")
+        check([v.get("url") for v in fm.get("verified_facts") or []] == [shop, other] and path("late").read_bytes() == before_late,
+              f"書き直しの稿の当て方: {fm.get('verified_facts')}")
+        check("fetch_page.py で本文を取れていない" in (compose.REVISE_NOTES.get(date) or {}).get("late", ""),
+              f"採らなかった書き直しの理由が次の巡の校閲に渡らない: {compose.REVISE_NOTES.get(date)}")
+    finally:
+        compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_by_key, compose.DEADLINE = saved[:5]
+        for k, v in saved[5].items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        compose.FACT_MAP.clear()
+        for d in (compose.WRITE_OUTCOMES, compose.REVISE_NOTES, compose.OFFSCOPE_NOTES, compose.DROP_LOG, compose.STUCK):
+            d.pop(date, None)
         pipelib.ANOMALIES.clear()
 
 
@@ -9287,8 +9568,10 @@ def main() -> int:
     test_reminder_event_date(tmp / "red")
     test_reservation_occurs_on(tmp / "roo")
     test_writer_children(tmp / "wch")
+    test_writer_reads_only_fetched_pages(tmp / "wrf")
     test_restore_files_ledger(tmp / "rsfl")
     test_check_output()
+    test_check_output_unread_pages()
     test_render_and_length()
     test_earliest_date()
     test_schema_hash_dates()
@@ -9372,6 +9655,7 @@ def main() -> int:
     test_watch_body_cp932(tmp / "wc")
     test_watch_static_page_body(tmp / "ws")
     test_fetch_page_renders_whitespace_only_page()
+    test_fetch_page_records_read_pages(tmp / "fpr")
     test_review_reads_sources_like_writer()
     test_fetch_rendered_skips_images()
     test_render_failure_keeps_cause(tmp / "rf")
@@ -9392,6 +9676,7 @@ def main() -> int:
     test_settled_drops_not_rewritten(tmp / "sd")
     test_rule_bench_cases()
     test_rule_bench_judges_shape(tmp / "rb")
+    test_rule_bench_checks_read_pages(tmp / "rbp")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:

@@ -764,6 +764,48 @@ def clean_url(raw) -> str | None:
     return urllib.parse.urlunsplit((u.scheme, netloc, u.path, u.query, u.fragment))
 
 
+# fetch_page.py が本文を取れたページの記録(JSON Lines。1行 {"url": 頼んだ URL, "final": リダイレクトの行き先 or null})。
+# 置き場は執筆・書き直しのセッションを起動する側(compose・writer_bench)が決め、この環境変数で子に渡す。検算は、根拠にした URL が
+# 素材かこの記録にあるかを見る(2026-10-14 rule_bench: 執筆が fetch_page.py の取れなかった報道を Web 検索で読んで期間を断定し、
+# 綴りの誤った URL を出典に書いた答えが検算を通った。校閲は fetch_page.py だけで出典を読むので確かめられない)
+FETCH_RECORD_ENV = "IMAS_FETCH_RECORD"
+
+
+def note_fetched(url: str, final: str | None = None) -> None:
+    """本文を取れたページを FETCH_RECORD_ENV の記録に書き足す(変数が無ければ何もしない)。書けなくても読み取りは止めない
+    (stderr に出す。記録に無いページは検算が差し戻すので、黙って通ることはない)。"""
+    rec = os.environ.get(FETCH_RECORD_ENV)
+    if not rec:
+        return
+    line = json.dumps({"url": url, "final": final if final and final != url else None}, ensure_ascii=False) + "\n"
+    try:
+        Path(rec).parent.mkdir(parents=True, exist_ok=True)
+        fd = os.open(rec, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
+        try:
+            os.write(fd, line.encode("utf-8"))      # 1回の追記(並列の fetch_page.py が同じ記録に書いても行が混ざらない)
+        finally:
+            os.close(fd)
+    except OSError as e:
+        print(f"FETCH_RECORD_FAILED: {type(e).__name__}: {e}", file=sys.stderr)
+
+
+def fetched_urls(path) -> set[str]:
+    """記録(note_fetched)にある、本文を取れたページの URL(頼んだ URL とリダイレクトの行き先)。記録が無ければ空。読めない行は飛ばす。"""
+    try:
+        lines = Path(path).read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError:
+        return set()
+    out: set[str] = set()
+    for ln in lines:
+        try:
+            row = json.loads(ln)
+        except ValueError:
+            continue
+        if isinstance(row, dict):
+            out |= {row[k] for k in ("url", "final") if isinstance(row.get(k), str) and row[k]}
+    return out
+
+
 class JobLockTimeout(RuntimeError):
     pass
 

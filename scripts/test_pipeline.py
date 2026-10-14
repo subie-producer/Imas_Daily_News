@@ -6355,6 +6355,23 @@ def test_pending_keeps_later_editions(tmp: Path):
     check(legacy_rolled2 == ["k0", "X"] and legacy_void == ["k0", "X"],
           f"印の仕組みより前の号の巻き戻しで後の号(9/15)の追加が消えた・巻き戻した号の追加を後の号の組み直しがよみがえらせた: "
           f"{legacy_rolled2} {legacy_void}")
+    # 2c. 印の仕組みより前の号どうし: 9/13 が K を足し、9/14 が K を消した(pending に行は残っていない)。9/13 を巻き戻した後、
+    #     9/14 を巻き戻しても・K を消さない判断で組み直しても K はよみがえらない(3巡目の監査。実データの sidem-mfes-2026-winter-wonderland)
+    for how in ("rollback", "rebuild"):
+        with assemble_at(tmp / f"legacy3-{how}"):
+            assemble.dump_yaml(assemble.STORIES, [])
+            assemble.dump_yaml(assemble.PENDING, [item("k0")])
+            m = tmp / f"legacy3-{how}" / "metrics"
+            assemble.dump_yaml(m / "pending-before-2026-09-13.yml", [item("k0")])
+            assemble.dump_yaml(m / "pending-before-2026-09-14.yml", [item("k0"), item("K")])
+            assemble.dump_yaml(m / "pending-before-2026-09-15.yml", [item("k0")])
+            assemble.rollback("2026-09-13")
+            if how == "rollback":
+                assemble.rollback("2026-09-14")
+            else:
+                ap("2026-09-14", out())
+            legacy3 = keys()
+        check(legacy3 == ["k0"], f"巻き戻した号(9/13)の追加を、それを消した号(9/14)の{how}がよみがえらせた: {legacy3}")
     # 3. 巻き戻した号(10/12)の追加を、後の号(10/13)の組み直しがよみがえらせない
     with assemble_at(tmp / "void"):
         assemble.dump_yaml(assemble.STORIES, [])

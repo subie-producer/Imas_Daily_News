@@ -6302,10 +6302,15 @@ def test_release_dry_run_no_push(tmp: Path):
         subprocess.run(["git", *a], cwd=repo, capture_output=True, check=True)
     local = lambda: _git_out(repo, "for-each-ref", "--format=%(refname) %(objectname)", "refs/heads")
     remote_before, local_before = refs(), local()
+    tip, seen = _git_out(bare, "rev-parse", f"edition/{RELEASE_DAY}"), []
     with _ReleaseEnv(repo, dry=True) as env:
+        # 点検(校閲の判定を読む時点)の中身が、発行なら出す origin の先端か(origin にだけある file が見えるか)
+        env.r.review_verdict = lambda d: (seen.append((_git_out(repo, "rev-parse", "HEAD") == tip, (repo / "later").exists())),
+                                          ("approve", "試験"))[1]
         rc = env.main()
     check(rc == 0 and refs() == remote_before and local() == local_before,
           f"--dry-run が手元のブランチを動かした(origin へ引き戻した)・origin を変えた: rc={rc!r}\n前 {local_before}\n後 {local()}")
+    check(seen == [(True, True)], f"--dry-run が発行なら出す origin の中身でなく、遅れた手元の中身を点検した: {seen}")
 
 
 def test_deploy_index_failure(tmp: Path):

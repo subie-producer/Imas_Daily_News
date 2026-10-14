@@ -9,7 +9,7 @@ corrections: []
 candidate_ids:
 - 202610150225-grok-19
 title: ミリオンライブ、Charlotte応援法被が予約受付中
-lede: 「アイドルマスター ミリオンライブ！ Charlotte・Charlotte＋ 応援法被」の予約を受け付けており、価格は税込7,700円。
+lede: 「アイドルマスター ミリオンライブ！ Charlotte・Charlotte＋ 応援法被」の予約を受け付けている。
 tags:
 - ミリオンライブ
 - グッズ
@@ -26,12 +26,5 @@ title_fact_ids:
 - F1
 lede_fact_ids:
 - F1
-- N1
-verified_facts:
-- id: N1
-  text: アソビストアの商品一覧に「アイドルマスター ミリオンライブ！ Charlotte・Charlotte＋ 応援法被」が税込7,700円で掲載されている。
-  url: https://shop.asobistore.jp/product/catalog/s/newer/n/90/t/category/es/99/eos/99/ca/10102/v/b
 ---
 アニメイトタイムズ「グッズ情報」公式アカウントは10月14日、同商品の予約受付中と案内した。 <!-- F1 -->
-
-アソビストアの商品一覧にも掲載されており、価格は税込7,700円。 <!-- N1 -->

@@ -28,7 +28,10 @@ sources:
 - label: アイドルマスター公式サイト「シンデレラガールズ山形バレンタインライブ『ATHOME xR LIVE Apple of my アイ』開催決定」(日付確認できず)
   url: https://idolmaster-official.jp/live_event/cg_apai/
   type: 公式
-event_date: "2026-10-18"
+- label: ATHOME xR LIVE Apple of my アイ (2026年10月14日)
+  url: https://x.com/imas_CGofficial/status/2110211492385800644
+  type: 公式
+event_date: "2027-02-13"
 title_fact_ids:
 - F1
 - F14
@@ -37,6 +40,12 @@ lede_fact_ids:
 - F18
 - N4
 verified_facts:
+- id: N4
+  text: アソビストアプレミアム会員先行の受付URLは https://asobiticket2.asobistore.jp/receptions/d6491799-d79c-4c61-a182-22b7ba6041b5 。
+  url: https://t.co/F4IcLM9ABj
+- id: N5
+  text: 申し込みから当落発表までの間にアソビストアプレミアム12か月会員を退会した場合は抽選対象外となる。
+  url: https://t.co/F4IcLM9ABj
 - id: N1
   text: 2027年2月13日の公演名は「山形愛♡果物愛♡いろんな愛を産地直送♡」。
   url: https://t.co/F4IcLM9ABj
@@ -45,12 +54,6 @@ verified_facts:
   url: https://t.co/F4IcLM9ABj
 - id: N3
   text: 2027年2月14日夜公演の公演名は「ハッピーバレンタイン♡珠玉の『大好き♡』狩り放題♡」。
-  url: https://t.co/F4IcLM9ABj
-- id: N4
-  text: アソビストアプレミアム会員先行の受付URLは https://asobiticket2.asobistore.jp/receptions/d6491799-d79c-4c61-a182-22b7ba6041b5 。
-  url: https://t.co/F4IcLM9ABj
-- id: N5
-  text: 申し込みから当落発表までの間にアソビストアプレミアム12か月会員を退会した場合は抽選対象外となる。
   url: https://t.co/F4IcLM9ABj
 - id: N6
   text: スペシャル特典付き券の色紙にデザインされるアイドルは公演ごとに異なる。終演後オーディオドラマの内容も公演ごとに異なり、出演アイドルも異なる可能性がある。

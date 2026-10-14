@@ -22,5 +22,23 @@
   "candidate_ids": [
    "202610130225-grok-30"
   ]
+ },
+ "dsva-valiv-letora-birthday-2026-lv-goods-lottery": {
+  "title": "レトラ誕生日ライブLV、入金期限まであと3日",
+  "stage": "校閲ブロック",
+  "why": "R12 終わった先行抽選の受付日(10月11日に受付終了)を本文で述べているが、今日の読者が入金する行動に要らない。R12 が例に挙げる『終わった受付・販売・抽選の日程』に当たる。",
+  "candidate_ids": [
+   "sched-2026-10-15-valiv-letora-birthday-2026-lv-goods-lottery-締切前",
+   "sched-2026-10-15-va-liv-letora-birthday-2026-締切前"
+  ]
+ },
+ "million-snapshot-memories-gasha-2026-10": {
+  "title": "ミリシタ、琴葉・環SSR出現率UPは18日まで",
+  "stage": "校閲ブロック",
+  "why": "R4 出典2のラベルが「2026年10月13日」の投稿について「田中琴葉・大神環のカードを紹介」と書いているが、素材の本文では10/13の投稿は琴葉のカード(受け取って、この気持ち)だけを紹介している。大神環のカード紹介は素材の facts では",
+  "candidate_ids": [
+   "sched-2026-10-15-million-snapshot-memories-gasha-2026-10-締切前",
+   "202610150225-grok-16"
+  ]
  }
 }

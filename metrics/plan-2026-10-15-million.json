@@ -1,0 +1,212 @@
+{
+ "decisions": {
+  "wandering-dream-chaser": {
+   "action": "article",
+   "angle": "名古屋駅前店のミリオンライブ抽選くじの在庫状況が10月13日に更新され、A賞アクリルボード全27種が在庫ありと案内された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior はシャニマス面の別ブランドの話題で重複しない"
+  },
+  "million-snapshot-memories-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-snapshot-memories-gasha-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じSnapshot Memoriesガシャ。琴葉・環の4コマまんが公開の告知を統合先で扱う"
+  },
+  "million-cyber-planet-popup-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "特典・応募条件は10/8の記事に既出。東京会場の終了は10/20で3日以内ではなく新事実も無い"
+  },
+  "million-official-shop-lottery-stock-2026-10-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-yurakucho-pop-up-shop-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "有楽町マルイPOP UP SHOPと同じ施策(キー名は在庫の話題だが中身は有楽町マルイ)"
+  },
+  "million-charlotte-charlotte-cheer-happi-2026": {
+   "action": "article",
+   "angle": "「ミリオンライブ! Charlotte・Charlotte＋ 応援法被」の予約受付が始まっていると案内された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典が未確認の二次投稿のみ。出典で書けるかは執筆・校閲が判断する"
+  },
+  "million-sports-day-login-bonus-2026": {
+   "action": "article",
+   "angle": "スポーツの日ログインボーナスは10月18日23:59まで。7回のログインでミリオンジュエル計500個を獲得できる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了3日前。単体の運営情報が3件に満たず roundup にはしない"
+  },
+  "million-yurakucho-pop-up-shop-2026": {
+   "action": "article",
+   "angle": "有楽町マルイ7Fのミリオンライブ！POP UP SHOPが10月22日まで開催中で、3,000円購入ごとにブロマイドと抽選会1回の特典がある。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "この面では未報。official-shop-lottery-stock-2026-10-10 を統合"
+  },
+  "million-seasonal-snapshot-jan-2027": {
+   "action": "article",
+   "angle": "《SEASONAL SNAPSHOT》1月「初日の出」の舞浜歩・百瀬莉緒グッズの受注締切が10月18日に迫る。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。受注期間は10/18まで、3日以内。価格は既報本文に無い新事実"
+  },
+  "stage04-2026": {
+   "action": "article",
+   "angle": "コトブキヤくじ ミリオンライブ！ stage04の販売が10月18日23:59で終了する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。販売終了まで3日"
+  },
+  "million-snapshot-memories-gasha-2026-10": {
+   "action": "article",
+   "angle": "Snapshot Memoriesガシャの琴葉・環SSR出現率UPは10月18日14:59まで。琴葉・環の4コマまんがも公開される。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。終了3日前。million-snapshot-memories-gasha-2026 を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-wandering-dream-chaser",
+    "brand": "million",
+    "rank": "small",
+    "angle": "名古屋駅前店のミリオンライブ抽選くじの在庫状況が10月13日に更新され、A賞アクリルボード全27種が在庫ありと案内された。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "wandering-dream-chaser",
+    "candidate_ids": [
+     "202610141233-explore-4"
+    ]
+   },
+   {
+    "slug": "million-charlotte-charlotte-cheer-happi-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「ミリオンライブ! Charlotte・Charlotte＋ 応援法被」の予約受付が始まっていると案内された。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "million-charlotte-charlotte-cheer-happi-2026",
+    "candidate_ids": [
+     "202610150225-grok-19"
+    ]
+   },
+   {
+    "slug": "million-sports-day-login-bonus-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "スポーツの日ログインボーナスは10月18日23:59まで。7回のログインでミリオンジュエル計500個を獲得できる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "million-sports-day-login-bonus-2026",
+    "candidate_ids": [
+     "202610131833-explore-3"
+    ]
+   },
+   {
+    "slug": "million-yurakucho-pop-up-shop-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "有楽町マルイ7Fのミリオンライブ！POP UP SHOPが10月22日まで開催中で、3,000円購入ごとにブロマイドと抽選会1回の特典がある。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-yurakucho-pop-up-shop-2026",
+    "candidate_ids": [
+     "202610140226-grok-11",
+     "202610150225-grok-18"
+    ]
+   },
+   {
+    "slug": "million-seasonal-snapshot-jan-2027",
+    "brand": "million",
+    "rank": "small",
+    "angle": "《SEASONAL SNAPSHOT》1月「初日の出」の舞浜歩・百瀬莉緒グッズの受注締切が10月18日に迫る。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-seasonal-snapshot-jan-2027",
+    "candidate_ids": [
+     "sched-2026-10-15-million-seasonal-snapshot-jan-2027-締切前"
+    ]
+   },
+   {
+    "slug": "million-stage04-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "コトブキヤくじ ミリオンライブ！ stage04の販売が10月18日23:59で終了する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "stage04-2026",
+    "candidate_ids": [
+     "sched-2026-10-15-stage04-2026-締切前"
+    ]
+   },
+   {
+    "slug": "million-snapshot-memories-gasha-2026-10",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "Snapshot Memoriesガシャの琴葉・環SSR出現率UPは10月18日14:59まで。琴葉・環の4コマまんがも公開される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 35,
+    "dedup_key": "million-snapshot-memories-gasha-2026-10",
+    "candidate_ids": [
+     "sched-2026-10-15-million-snapshot-memories-gasha-2026-10-締切前",
+     "202610150225-grok-16"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-cyber-planet-popup-2026",
+    "reason": "既報",
+    "note": "特典・応募条件は10/8の記事に既出。東京会場の終了は10/20で3日以内ではなく新事実も無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

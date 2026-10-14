@@ -1,0 +1,179 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-15T02:26:45+09:00",
+   "edition": "2026-10-15",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 349,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 68,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 0,
+    "explore:sidem": 1,
+    "explore:gakuen": 0,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 1,
+    "grok_week_searches": 448,
+    "grok:765as": 3,
+    "grok:cinderella": 5,
+    "grok:million": 4,
+    "grok:shiny": 7,
+    "grok:sidem": 5,
+    "grok:gakuen": 6,
+    "grok:dsva": 4,
+    "grok:joint-other": 12,
+    "grok:trend": 4,
+    "grok_searches:gaku": 5,
+    "grok_searches:765": 16,
+    "grok_searches:joint": 10,
+    "grok_searches:shiny": 6,
+    "grok_searches:dsva": 8,
+    "grok_searches:cg": 6,
+    "grok_searches:sidem": 6,
+    "grok_searches:general": 9,
+    "grok_searches:million": 5
+   },
+   "normalized": 59,
+   "added": 50,
+   "verify": {
+    "confirmed": 42,
+    "unconfirmed": 15,
+    "failed": 2
+   },
+   "duration_s": 1567
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-15T03:20:31+09:00",
+   "edition": "2026-10-15",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 36,
+   "written": 31,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 88,
+    "covered": 88,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "dsva-valiv-letora-birthday-2026-lv-goods-lottery",
+    "million-snapshot-memories-gasha-2026-10"
+   ],
+   "stages_min": {
+    "選定": 1.319904903570811,
+    "執筆": 4.007130626837412,
+    "出典の判定": 0.730871589978536,
+    "組版": 0.5822172045707703,
+    "校閲": 0.5177192250887553,
+    "校閲1波": 0.5177192250887553
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "million-sports-day-login-bonus-2026",
+    "765-chibi-mako-yukiho-2026",
+    "gaku-hatsuboshi-live-tour-single-shurakuryoko-2026"
+   ],
+   "duration_s": 1193
+  },
+  {
+   "at": "2026-10-15T03:53:50+09:00",
+   "edition": "2026-10-15",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 36,
+   "written": 33,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 88,
+    "covered": 88,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "執筆": 0.6968627572059631,
+    "出典の判定": 0.05801578760147095,
+    "組版": 0.7844778021176656,
+    "校閲": 0.786933179696401,
+    "校閲1波": 0.786933179696401
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "million-sports-day-login-bonus-2026",
+    "765-chibi-mako-yukiho-2026",
+    "gaku-hatsuboshi-live-tour-single-shurakuryoko-2026"
+   ],
+   "duration_s": 381
+  }
+ ]
+}

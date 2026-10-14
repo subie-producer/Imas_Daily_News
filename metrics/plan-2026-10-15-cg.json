@@ -1,0 +1,251 @@
+{
+ "decisions": {
+  "cinderella-15th-orchestra-concert": {
+   "action": "article",
+   "angle": "15周年オケ(パシフィコ横浜)のアソビストアプレミアム会員2次先行が10/14〜10/25 23:59に受付中で、S席スペシャルシート限定お土産の詳細も公開された。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-orchestra-concert-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-15th-orchestra-concert",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2次先行の知らせ"
+  },
+  "cg-15th-party-2026": {
+   "action": "article",
+   "angle": "シンデレラ15thPARTY(Kアリーナ横浜、11/28-29)の現地チケット一般会員先行が10/19 23:59まで受付中で、CHILL-Partyの紹介アイドルが公開された。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-memory-pict-7th-december-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-memory-pict-7th-pict",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じMemory Pict.第7弾の受注"
+  },
+  "cg-memory-pict-7th-pict": {
+   "action": "article",
+   "angle": "Memory Pict.第7弾(佐藤心・白菊ほたる)のアソビストア受注は10月18日までで、締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-apple-of-my-ai-2027": {
+   "action": "article",
+   "angle": "「ATHOME xR LIVE Apple of my アイ」のアソビストアプレミアム会員先行(抽選)の申込は10月18日23:59まで、締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-xr-live-apple-of-my-ai-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-apple-of-my-ai-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受付の締切"
+  },
+  "cg-athome-apple-of-my-ai-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-apple-of-my-ai-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受付の締切"
+  },
+  "cg-15th-anniversary-orchestra-concert-goods-2026": {
+   "action": "article",
+   "angle": "15周年オケ公式グッズ(アクリルスタンド・マフラータオル・応援フラッグ・ブランケット)の事前販売は10月18日まで、締切まであと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-orchestra-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-anniversary-orchestra-concert-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じグッズ事前販売"
+  },
+  "cg-nao-flower-ad-project-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン有志のフラスタ・広告企画"
+  },
+  "cg-aiko-hijiri-flower-project-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン有志のフラスタ企画"
+  },
+  "cg-anzu-flower-project-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン有志のフラスタ企画"
+  },
+  "cg-fabulous-party-flower-project-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン有志の花贈り企画"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-15th-orchestra-concert",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年オケ(パシフィコ横浜)のアソビストアプレミアム会員2次先行が10/14〜10/25 23:59に受付中で、S席スペシャルシート限定お土産の詳細も公開された。",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "cinderella-15th-orchestra-concert",
+    "candidate_ids": [
+     "202610141233-watch-0",
+     "202610150225-grok-9"
+    ]
+   },
+   {
+    "slug": "cg-15th-party-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "シンデレラ15thPARTY(Kアリーナ横浜、11/28-29)の現地チケット一般会員先行が10/19 23:59まで受付中で、CHILL-Partyの紹介アイドルが公開された。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "cg-15th-party-2026",
+    "candidate_ids": [
+     "202610150225-grok-6"
+    ]
+   },
+   {
+    "slug": "cg-apple-of-my-ai-2027",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "「ATHOME xR LIVE Apple of my アイ」のアソビストアプレミアム会員先行(抽選)の申込は10月18日23:59まで、締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "cg-apple-of-my-ai-2027",
+    "candidate_ids": [
+     "202610150225-grok-8",
+     "sched-2026-10-15-cg-apple-of-my-ai-2027-締切前",
+     "sched-2026-10-15-cg-xr-live-apple-of-my-ai-2027-締切前",
+     "sched-2026-10-15-cg-athome-apple-of-my-ai-2026-締切前"
+    ]
+   },
+   {
+    "slug": "cg-15th-anniversary-orchestra-concert-goods-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "15周年オケ公式グッズ(アクリルスタンド・マフラータオル・応援フラッグ・ブランケット)の事前販売は10月18日まで、締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "cg-15th-anniversary-orchestra-concert-goods-2026",
+    "candidate_ids": [
+     "sched-2026-10-15-cg-15th-anniversary-orchestra-concert-goods-2026-締切前",
+     "202610150225-grok-10"
+    ]
+   },
+   {
+    "slug": "cg-memory-pict-7th-pict",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "Memory Pict.第7弾(佐藤心・白菊ほたる)のアソビストア受注は10月18日までで、締切まであと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "cg-memory-pict-7th-pict",
+    "candidate_ids": [
+     "sched-2026-10-15-cg-memory-pict-7th-pict-締切前",
+     "202610150225-grok-7"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-nao-flower-ad-project-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン有志のフラスタ・広告企画"
+   },
+   {
+    "dedup_key": "cg-aiko-hijiri-flower-project-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン有志のフラスタ企画"
+   },
+   {
+    "dedup_key": "cg-anzu-flower-project-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン有志のフラスタ企画"
+   },
+   {
+    "dedup_key": "cg-fabulous-party-flower-project-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン有志の花贈り企画"
+   }
+  ],
+  "cross_brand": []
+ }
+}

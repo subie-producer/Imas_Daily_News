@@ -481,5 +481,43 @@
   "src_candidate_id": "202610112333-explore-5",
   "event_date": "2026-11-25",
   "deadline": "2026-11-18"
+ },
+ {
+  "id": "sched-2026-11-25-sidem-monthly-theme-song-13-jupiter-cd-発売",
+  "dedup_key": "sidem-monthly-theme-song-13-jupiter-cd",
+  "brand": "sidem",
+  "subject": "SideM MONTHLY THEME SONG 13 Jupiter 発売",
+  "kind": "発売",
+  "note": "CDを購入でき、封入シリアルで特典ストーリーを読める",
+  "reserved_on": "2026-10-15",
+  "occurs_on": "2026-11-25",
+  "title": "MONTHLY THEME SONG 13 JupiterのCD情報公開",
+  "url": "https://idolmaster-official.jp/news/01_20123.html",
+  "source_type": "公式",
+  "facts": [
+   "発売日: 2026年11月25日(水)",
+   "商品名: THE IDOLM@STER SideM ～P@SSION CHALLENGE We are 315！～ MONTHLY THEME SONG 13 Jupiter",
+   "歌: Jupiter [天ヶ瀬冬馬(CV.寺島拓篤), 御手洗翔太(CV.松岡禎丞), 伊集院北斗(CV.神原大地)]",
+   "価格: 2,200円(10%税込) / 2,000円(税抜)",
+   "品番: LACM-24793",
+   "封入特典: ポータルサイトでCD特典ストーリーが閲覧できるストーリー解放用シリアルコード",
+   "シリアルコードの入力およびストーリーの閲覧には、アソビストア会員への登録（無料）/ASOBI STOREへのログインが必要。",
+   "初回生産特典: ユニットメンバー全員分の特製ブロマイド",
+   "特典デザイン ASOBI STORE: L判ブロマイド",
+   "特典デザイン アニメイト: ミニフォト(54mm×86mm)＆ロングフォト(150×50mm)",
+   "特典デザイン Amazon: 缶バッジ",
+   "特典デザイン ゲーマーズ: L判ブロマイド",
+   "特典デザイン ソフマップ・アニメガ: アクリルコースター(76mm)",
+   "特典デザイン タワーレコード(一部店舗を除く): L判ブロマイド",
+   "特典デザイン TSUTAYA RECORDS(一部店舗除く): ましかくブロマイド",
+   "特典デザイン とらのあな(通販含む/池袋店はご予約のみの場合あり): L判ブロマイド",
+   "特典デザイン 楽天ブックス: トレーディングカード(91×55㎜)",
+   "特典は全てジャケットイラストを使用した絵柄。一部実施のない店舗があり、特典の有無は各店舗への確認が必要。特典はなくなり次第終了。",
+   "エンゲージメント: 中",
+   "言及アイドル: 天ヶ瀬冬馬、御手洗翔太、伊集院北斗"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "src_candidate_id": "202610140732-explore-1"
  }
 ]

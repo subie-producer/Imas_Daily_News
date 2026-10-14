@@ -1,0 +1,50 @@
+{
+ "decisions": {
+  "im-s-radio-2026-10-27": {
+   "action": "article",
+   "angle": "IM＠S RADIO の10月27日(火)20時からの放送に、星井美希役の長谷川明子さんがゲスト出演する。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-bloom-dream-hope-flower-project-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン主催のフラスタ企画で、参加締切(10/14)も過ぎており、出典も未確認。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-im-s-radio-2026-10-27",
+    "brand": "general",
+    "rank": "small",
+    "angle": "IM＠S RADIO の10月27日(火)20時からの放送に、星井美希役の長谷川明子さんがゲスト出演する。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "im-s-radio-2026-10-27",
+    "candidate_ids": [
+     "202610141233-watch-2"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-bloom-dream-hope-flower-project-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン主催のフラスタ企画で、参加締切(10/14)も過ぎており、出典も未確認。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -542,5 +542,27 @@
   "src_candidate_id": "202610132336-watch-5",
   "event_date": "2026-10-28",
   "deadline": "2026-11-29"
+ },
+ {
+  "id": "sched-2026-10-23-sidem-ultimate-flame-2dmv-2026-開始",
+  "dedup_key": "sidem-ultimate-flame-2dmv-2026",
+  "brand": "sidem",
+  "subject": "FRAME「ULTIMATE FLAME」2DMV公開",
+  "kind": "開始",
+  "note": "22:00に公開予定のFRAME「ULTIMATE FLAME」2DMVを視聴できる",
+  "reserved_on": "2026-10-15",
+  "occurs_on": "2026-10-23",
+  "title": "FRAME「ULTIMATE FLAME」2DMV公開日決定",
+  "url": "https://x.com/SideM_lantis/status/2110342355232645510",
+  "source_type": "準公式",
+  "facts": [
+   "FRAME「ULTIMATE FLAME」の2DMV公開日：10月23日(金)22:00（予定）",
+   "エンゲージメント: 中",
+   "言及アイドル: FRAME"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610150225-grok-27",
+  "event_date": "2026-10-23"
  }
 ]

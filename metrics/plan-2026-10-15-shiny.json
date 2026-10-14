@@ -1,0 +1,154 @@
+{
+ "decisions": {
+  "shiny-coherent-light-28-scattering-part1": {
+   "action": "article",
+   "angle": "漫画『コヒーレントライト』第28話「Scattering【前編】」が公開され、次回更新は10月27日。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-orchestra-2027-premium-ticket": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-orchestra-concert-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の同じ先行受付(10/18まで)"
+  },
+  "shiny-song-for-prism-focus-muku-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの縦画面フォーカスカメラに鈴木羽那の『無垢』が追加",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-v219-profile-episode-zero": {
+   "action": "roundup",
+   "angle": "シャニソンVer.2.19.0で、プロフィール画面とエピソードゼロ画面を相互に移動可能に",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-radio-habataki-404-2026": {
+   "action": "roundup",
+   "angle": "配信出演・番組情報: はばたきラジオステーション#404(おたより目安は15日頃まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-focus-camera-hoshi-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/14号で『星をめざして』の縦画面フォーカス追加を記事化済み。新事実なし"
+  },
+  "shiny-orchestra-concert-2027": {
+   "action": "article",
+   "angle": "「Radiant Chord」アソビストアプレミアム最速先行受付は10月18日23時59分の締切まで3日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "premium-ticketを統合"
+  },
+  "shiny-msp-solo-collection-after-sale-2026": {
+   "action": "article",
+   "angle": "「Master ShowPiece」事後物販の受注は10月18日23時59分まで、締切まで3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-coherent-light-28-scattering-part1",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "漫画『コヒーレントライト』第28話「Scattering【前編】」が公開され、次回更新は10月27日。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-coherent-light-28-scattering-part1",
+    "candidate_ids": [
+     "202610141833-explore-0"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-concert-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「Radiant Chord」アソビストアプレミアム最速先行受付は10月18日23時59分の締切まで3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "shiny-orchestra-concert-2027",
+    "candidate_ids": [
+     "sched-2026-10-15-shiny-orchestra-concert-2027-締切前",
+     "202610150225-grok-21"
+    ]
+   },
+   {
+    "slug": "shiny-msp-solo-collection-after-sale-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「Master ShowPiece」事後物販の受注は10月18日23時59分まで、締切まで3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-msp-solo-collection-after-sale-2026",
+    "candidate_ids": [
+     "sched-2026-10-15-shiny-msp-solo-collection-after-sale-2026-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニソンの縦画面フォーカスカメラに鈴木羽那の『無垢』が追加",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-for-prism-focus-muku-2026",
+    "candidate_ids": [
+     "202610150225-grok-22",
+     "202610150225-grok-23",
+     "202610150225-grok-24"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-song-focus-camera-hoshi-2026",
+    "reason": "既報",
+    "note": "10/14号で『星をめざして』の縦画面フォーカス追加を記事化済み。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

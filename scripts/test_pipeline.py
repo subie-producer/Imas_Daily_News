@@ -1078,17 +1078,18 @@ def test_rule_bench_judges_shape(tmp: Path):
             "case": name, "answer": {**decl, "decline_code": "NO_PRIMARY_SOURCE", "decline_detail": ""}, "exit": 0}
         r = rule_bench.run_one("write-fan-matome-only-declines", "t2b")
         check(not r["pass"] and r["problems"] == [] and r["shape_problems"], f"本番の検算に通らない答えを合格にした: {r.get('shape_problems')}")
-        # 答えの読み込みは本番と同じ(同じキーが2回ある答えは読めない答え)
+        # 答えの読み込みは本番と同じ(同じキーが2回ある答え・出力 schema に合わない答えは読めない答え)
         saved_run = writer_bench.subprocess.run
         try:
             whole = json.dumps(good, ensure_ascii=False)
-            for text, readable in (('{"status": "decline", ' + whole[1:], False), (whole, True)):
+            off_schema = json.dumps(dict(good, addressed_issue_ids="I1"), ensure_ascii=False)
+            for text, readable in (('{"status": "decline", ' + whole[1:], False), (off_schema, False), (whole, True)):
                 def fake_run(cmd, **kw):
                     Path(cmd[cmd.index("--output-last-message") + 1]).write_text(text, encoding="utf-8")
                     return subprocess.CompletedProcess(cmd, 0, "", "")
                 writer_bench.subprocess.run = fake_run
                 got = saved[3]("x", "p", "t", "m")["answer"]
-                check((got is not None) == readable, f"答えの読み込みが本番と違う(同じキーが2回ある答え・正しい答え): {text[:40]} → {got}")
+                check((got is not None) == readable, f"答えの読み込みが本番と違う(同じキーが2回ある答え・schema 違反・正しい答え): {text[:40]} → {got}")
         finally:
             writer_bench.subprocess.run = saved_run
         # 書き直し: 本番と同じ依頼文(指摘に I1 を振る・現在の記事・素材)で書かせ、報道の食い違う価格を根拠に残さない答えだけを合格にする

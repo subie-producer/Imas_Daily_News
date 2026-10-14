@@ -6333,6 +6333,26 @@ def test_session_escaped_and_term(tmp: Path):
         check(ready and h.returncode == 143 and not left,
               f"{name}: SIGTERM で、起動した CLI を止めずに終わった(準備 {ready} / 終了 {h.returncode} / 残った {left} / "
               f"{(err or '').strip()[-200:]})")
+    # 工程が例外(Ctrl-C を含む)で終わるときも、回収していないセッション(別スレッドの担当も)を残さない
+    d = tmp / "exit-int"
+    d.mkdir(parents=True, exist_ok=True)
+    code = ("import sys, threading; sys.path.insert(0, sys.argv[1]); import pipelib\n"
+            "from pathlib import Path; d = Path(sys.argv[2])\n"
+            "threading.Thread(target=lambda: pipelib.start_group([sys.argv[3]], cwd=d), daemon=True).start()\n"
+            "import time\n"
+            "while not ((d / 'group.pid').exists() and (d / 'escaped.pid').exists()): time.sleep(0.005)\n"
+            "raise KeyboardInterrupt\n")
+    env = dict(os.environ, SESSION_PROBE=str(d))
+    h = subprocess.run([sys.executable, "-c", code, str(scripts), str(d), str(b / "claude")], env=env, cwd=tmp,
+                       capture_output=True, text=True, timeout=60, start_new_session=True)
+    left = []
+    for n in ("group", "escaped"):
+        pf = d / f"{n}.pid"
+        pid = int(pf.read_text()) if pf.exists() else 0
+        if pid and _pid_alive(pid):
+            left.append(n)
+            os.kill(pid, signal.SIGKILL)
+    check(h.returncode != 0 and not left, f"例外で終わった工程が、別スレッドで起動した CLI を残した(終了 {h.returncode} / 残った {left})")
 
 
 def test_session_signal_windows(tmp: Path):
@@ -6365,18 +6385,24 @@ def test_session_signal_windows(tmp: Path):
         started.clear()
     start = getattr(pipelib, "start_group", None)
     check(start is not None, "セッションを起動して控える関数(pipelib.start_group)が無い")
-    # 起動の隙間の SIGINT(既定の扱い: KeyboardInterrupt)
+    # 起動の隙間の SIGINT(既定の扱い: KeyboardInterrupt)・SIGTERM(exit_on_term)。モデル・道具の起動(start_group)と、
+    # 当番が工程を再実行する起動(oncall.run_stage)の両方
+    import oncall
     old_int = signal.signal(signal.SIGINT, signal.default_int_handler)
     old_term = signal.getsignal(signal.SIGTERM)
     try:
-        for sig, want in ((signal.SIGINT, "KeyboardInterrupt"), (signal.SIGTERM, "SystemExit 143")):
+        for (sig, want), via in [(c, v) for v in ("start_group", "run_stage")
+                                 for c in ((signal.SIGINT, "KeyboardInterrupt"), (signal.SIGTERM, "SystemExit 143"))]:
             if start is None:
                 break
             if sig == signal.SIGTERM:
                 pipelib.exit_on_term()
             subprocess.Popen = popen_then(sig)
             try:
-                start(["probe"], cwd=tmp)
+                if via == "run_stage":
+                    oncall.run_stage(["probe"], tmp / "stage.log", 30)
+                else:
+                    start(["probe"], cwd=tmp)
                 got = "返った"
             except KeyboardInterrupt:
                 got = "KeyboardInterrupt"
@@ -6385,9 +6411,11 @@ def test_session_signal_windows(tmp: Path):
             finally:
                 subprocess.Popen = real_popen
             check(got == want and started and started[-1].poll() is not None,
-                  f"起動から控えるまでのあいだの {signal.Signals(sig).name} で、起動した担当を見失った({got} / "
+                  f"{via}: 起動から控えるまでのあいだの {signal.Signals(sig).name} で、起動した担当を見失った({got} / "
                   f"生きている {[p.pid for p in started if p.poll() is None]})")
             cleanup()
+            if hasattr(pipelib, "STOPPING"):
+                pipelib.STOPPING.clear()    # SIGTERM の後始末が立てた「終えるところ」を、次の確かめのために戻す
     finally:
         subprocess.Popen = real_popen
         signal.signal(signal.SIGINT, old_int)
@@ -6686,6 +6714,49 @@ def test_collect_handover_deadline(tmp: Path):
         saved["page_html_or_note"]("https://a.example/n3", True)
         check(limits and isinstance(limits[0], (int, float)) and limits[0] <= 5.1,
               f"定点観測: 新着の本文の描画が収集の締切を越えて待つ(待つ上限 {limits})")
+        # 少しずつ届く応答(1回の受信は速いが、全部で 2.5 秒)も、収集の締切で打ち切る。socket の待ち時間は1回の受信ごとにしか効かない
+        class Drip:
+            status = 200
+            headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
+
+            def __init__(self):
+                self.n = 0
+
+            def read1(self, n=-1):
+                _t.sleep(0.1)
+                self.n += 1
+                return b"x" if self.n < 25 else b""
+
+            def read(self, n=-1):
+                out = b""
+                while (b := self.read1(n)):
+                    out += b
+                return out
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+        saved_open = collect.urllib.request.urlopen
+        collect.urllib.request.urlopen = lambda req, timeout=None: Drip()
+        try:
+            collect.DEADLINE = _t.time() + 0.3
+            t0 = _t.time()
+            _, why = saved["page_html_or_note"]("https://a.example/drip", False)
+            took1 = _t.time() - t0
+            collect.DEADLINE = _t.time() + 0.3
+            t0 = _t.time()
+            try:
+                collect.watch_fetch({"type": "html"})("https://a.example/list")
+                err2 = ""
+            except Exception as e:      # noqa: BLE001
+                err2 = str(e)
+            took2 = _t.time() - t0
+        finally:
+            collect.urllib.request.urlopen = saved_open
+        check(took1 < 1.5 and "締切" in why and took2 < 1.5 and "締切" in err2,
+              f"定点観測: 少しずつ届く応答を、収集の締切を越えて読み続けた(本文 {took1:.1f}秒 {why!r} / 一覧 {took2:.1f}秒 {err2!r})")
         # 締切の決め方
         deadline_of = getattr(collect, "collect_deadline", None)
         if deadline_of is None:

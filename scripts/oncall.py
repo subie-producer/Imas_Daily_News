@@ -961,25 +961,29 @@ def ensure_pushed(branch: str, what: str, budget: int = 300) -> bool:
 
 
 def run_stage(cmd: list[str], log: Path, timeout: int) -> int:
-    """再実行する工程を走らせる。時間切れなら子(モデルのセッション)ごと落とす(親だけ落とすと子が作業ツリーを触り続ける)。"""
-    from pipelib import reap
+    """再実行する工程を走らせる。時間切れなら子(モデルのセッション)ごと落とす(親だけ落とすと子が作業ツリーを触り続ける)。
+    起動はモデル・道具と同じ start_group(自前のグループ・セッションの印・起動から控えるまでの信号の保留。SIGTERM の後始末の
+    一覧に載る)。起動の直後に中断されても工程を残さないよう、後始末は起動を含む範囲で行う(監査指摘 2026-10-14)。"""
+    from pipelib import LaunchFailed, finish_group, start_group, stop_groups
     become_subreaper()
+    p = None
     with log.open("a", encoding="utf-8") as f:
-        p = subprocess.Popen(cmd, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
-                             env={**os.environ, "ONCALL": "off", "IMAS_JOB_LOCK": "held"}, start_new_session=True)
         # 組版は執筆・校閲のセッションを別のセッション(プロセスグループ)で起動するので、親のグループを落としても残る。
         # 当番は subreaper なので、親を失った孫もこの process の子に付け替わる。**終わり方を問わず**(時間切れ・異常終了・
         # 正常終了・待機中の例外)、子孫が1つも残らなくなるまで、辿って落として刈り取るのを繰り返してから返す(写しを
         # 1回取るだけだと取ったあとに生まれた孫が、時間切れのときだけだと異常終了で残った孫が、控えへ戻した作業ツリーに
         # 書き込み、発行の clean 判定を壊す。監査指摘)
         try:
-            return p.wait(timeout=timeout)
-        except subprocess.TimeoutExpired:
-            reap(p)
-            return 124
+            p = start_group(cmd, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT,
+                            env={**os.environ, "ONCALL": "off", "IMAS_JOB_LOCK": "held"})
+            if isinstance(p, LaunchFailed):
+                f.write(p.error + "\n")
+                return 127
+            _, _, timed_out = finish_group(p, timeout)
+            return 124 if timed_out else p.returncode
         finally:
-            if p.poll() is None:
-                reap(p)
+            if p is not None:
+                stop_groups([p])
             kill_all_descendants()
 
 

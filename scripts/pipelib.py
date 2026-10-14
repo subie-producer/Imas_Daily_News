@@ -1,4 +1,5 @@
 """パイプライン共通ユーティリティ(collect/compose/release/watch)。標準ライブラリのみ。"""
+import atexit
 import contextlib
 import datetime
 import html as html_lib
@@ -818,6 +819,11 @@ def exit_on_term() -> None:
         stop_groups()
         raise SystemExit(143)
     signal.signal(signal.SIGTERM, _term)
+
+
+# 工程が例外・Ctrl-C・SystemExit で終わるときも、回収していないセッション(別スレッドの担当も)を残さない(interpreter の終わりに
+# 止める。os._exit・既定の SIGTERM では走らないので、それは exit_on_term・組版の SIGTERM の後始末が受け持つ)
+atexit.register(stop_groups)
 
 
 def read_for_raw(p: Path) -> str | None:

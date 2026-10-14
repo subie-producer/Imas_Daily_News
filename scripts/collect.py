@@ -150,7 +150,23 @@ COLLECT_ITEM = prompt_part("collect-item")
 def http_get(url: str, timeout: int = 20) -> str:
     req = urllib.request.Request(url, headers={"User-Agent": UA})
     with urllib.request.urlopen(req, timeout=timeout) as res:
-        return res.read().decode("utf-8", errors="replace")
+        return watch_read(res).decode("utf-8", errors="replace")
+
+
+def watch_read(res) -> bytes:
+    """定点観測の応答を読み切る。収集の締切があるときは、受信のたびに締切を確かめて打ち切る(socket の待ち時間は1回の受信
+    ごとにしか効かず、少しずつ届く応答は締切を越えて読み続けた。監査指摘 2026-10-14)。締切が無ければ今までどおり読む。"""
+    if not DEADLINE:
+        return res.read()
+    chunks = []
+    read1 = getattr(res, "read1", None) or (lambda n: res.read(n))
+    while True:
+        if deadline_passed():
+            raise TimeoutError("収集の締切を過ぎたので受信を打ち切った")
+        b = read1(65536)
+        if not b:
+            return b"".join(chunks)
+        chunks.append(b)
 
 
 def fetch_rendered(url: str, timeout: int = 30, limit: float | None = None) -> str:
@@ -204,7 +220,7 @@ def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     try:
         req = urllib.request.Request(url, headers={"User-Agent": UA})
         with urllib.request.urlopen(req, timeout=20 if left is None else max(1, left)) as res:
-            raw, cs = res.read(), res.headers.get_content_charset()
+            raw, cs = watch_read(res), res.headers.get_content_charset()
     except (OSError, ValueError) as e:
         return "", f"取得に失敗({type(e).__name__}: {e})"[:400]
     if needs_render(url, html_to_text(raw, cs)):

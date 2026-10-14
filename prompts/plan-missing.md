@@ -9,7 +9,8 @@
 ## 2. 仕事
 主題1つずつに、**まず「どの面の話か」を決め**、次のどれか1つを答える。{N}主題すべてが、どれかに1回ずつ現れること。
 面は general / 765 / cg / million / shiny / sidem / gaku / dsva / joint / other から選ぶ(どのブランドにも属さないアイマスの話は other)。
-1. 記事にする: 単独で記事になるなら `articles` に足す(rank は large / medium / small。この拾い直しでは roundup・culture を新しく作らない)
+1. 記事にする: 単独で記事になるなら `articles` に足す(rank は large / medium / small。この拾い直しでは roundup・culture を新しく作らない。
+   `purpose` は選定の規則の「記事の目的」の `新情報` か `期日の知らせ`)
 2. 統合する: 既存の記事と同じ話題なら `merge_into` に書く(面をまたいでよい)。進行中の運営情報はその面の既存の roundup へ、ファン面の話題は既存の culture の記事へ統合する。無ければ 1 か 3
 3. 不採用: 理由を付けて `dropped` に書く
 
@@ -19,7 +20,7 @@
 ## 4. 出力
 ```
 {"articles": [{"brand": "決めた面", "rank": "large|medium|small",
-               "angle": "切り口(1文)", "lead_score": 0, "dedup_key": "主題の dedup_key"}],
+               "angle": "切り口(1文)", "purpose": "新情報|期日の知らせ", "lead_score": 0, "dedup_key": "主題の dedup_key"}],
  "merge_into": [{"slug": "既存記事の slug", "dedup_key": "統合する主題の dedup_key"}],
  "dropped": [{"dedup_key": "主題の dedup_key", "brand": "本来の面",
               "reason": "既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|アイマス外|その他", "note": "一言(任意)"}]}

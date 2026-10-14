@@ -62,6 +62,9 @@ if ENV.get("WRITE_MODE", "structured").lower() != "structured":
 STRUCTURED_WRITE = True
 
 PAPER_STAGE = None  # main() で .env から
+# この組版の実行の印(起動した時刻。文字列の順が時刻の順)。校閲記録に残し、発行は最新の実行の最後の巡を読む
+# (pipelib.last_review_record。巡の番号は実行ごとに1から数え直す。監査指摘 2026-10-14)
+RUN_ID = now_jst().strftime("%Y%m%dT%H%M%S.%f")
 
 
 def load_scheduled(date: str) -> list[dict]:
@@ -298,17 +301,20 @@ def fact_key(fact: str) -> str:
     return hashlib.sha1(fact.encode("utf-8")).hexdigest()[:12]
 
 
-def record_candidates_read(date: str, cands: dict, hidden: set | frozenset = frozenset()) -> None:
-    """選定に掛ける候補ファイルの候補を、id → URL・読んだ facts の識別で記録する(選定し直すたびに上書き。--reuse-plan では書かない)。
+def record_candidates_read(date: str, cands: dict, hidden: set | frozenset = frozenset(),
+                           unjudged: set | frozenset = frozenset()) -> None:
+    """選定に掛けた候補ファイルの候補を、id → URL・読んだ facts の識別で記録する(選定し直すたびに上書き。--reuse-plan では書かない)。
+    選定を始めるときは cands を空で呼び、空の記録にする(選定を始めた号の印。次の号はこの号のファイルを遡る)。
     件数ではなく事実そのものを記録する: 次の号が同じページを拾い直していても、読んだ後に足された事実は次の号の候補に無いことがある。
     hidden(前の号から引き継いだ未読の事実のうち、選定インデックスの件数上限で切れて選定に渡らなかったもの。write_plan_index が返す)は
-    読んだことにしない: 記録すれば次の号へも引き継がれず、どの号の選定にも掛からない(監査指摘 late-facts-hidden-by-plan-index)。"""
+    読んだことにしない: 記録すれば次の号へも引き継がれず、どの号の選定にも掛からない(監査指摘 late-facts-hidden-by-plan-index)。
+    unjudged(判定を得られなかった主題の dedup_key。coverage_gaps の missing_keys)の候補も読んだことにしない(次の号が引き継ぐ)。"""
     p = ROOT / "candidates" / f"{date}.json"
     file_ids = {c["id"] for c in json.loads(p.read_text(encoding="utf-8")) if c.get("id")} if p.exists() else set()
     read_record_path(date).write_text(json.dumps(
         {"read": {i: {"url": cands[i].get("url"),
                       "facts": [k for k in (fact_key(f) for f in cands[i].get("facts") or []) if k not in hidden]}
-                  for i in sorted(cands) if i in file_ids}},
+                  for i in sorted(cands) if i in file_ids and cands[i].get("dedup_key") not in unjudged}},
         ensure_ascii=False, indent=0) + "\n", encoding="utf-8")
 
 
@@ -1522,9 +1528,11 @@ def missing_plan_prompt(date: str, rows: list[dict], existing: list[dict]) -> st
 # 記事の slug と candidate_ids はコードが付ける(下の replan_missing)ので、答えには求めない
 _STR = {"type": "string", "minLength": 1}
 MISSING_ROW_SCHEMA = {
-    "articles": {"type": "object", "required": ["brand", "rank", "angle", "lead_score", "dedup_key"],
+    # 目的(purpose)は面別選定と同じ語彙(planlib.PURPOSES)。拾い直しで記事にした期日の知らせを、執筆へ「新情報」で渡さない(監査指摘 2026-10-14)
+    "articles": {"type": "object", "required": ["brand", "rank", "angle", "purpose", "lead_score", "dedup_key"],
                  "properties": {"brand": {"enum": sorted(BRANDS)}, "rank": {"enum": ["large", "medium", "small"]},
-                                "angle": {"type": "string"}, "lead_score": {"type": "integer", "minimum": 0, "maximum": 100},
+                                "angle": {"type": "string"}, "purpose": {"enum": list(planlib.PURPOSES)},
+                                "lead_score": {"type": "integer", "minimum": 0, "maximum": 100},
                                 "dedup_key": _STR}},
     "merge_into": {"type": "object", "required": ["slug", "dedup_key"],
                    "properties": {"slug": _STR, "dedup_key": _STR}},
@@ -1610,7 +1618,7 @@ def replan_missing(date: str, plan: dict, by_brand: dict, cands: dict,
                 continue
             b = x["brand"]
             a = {"slug": planlib.slugify(b, key, slugs), "brand": b, "rank": x["rank"], "angle": x["angle"],
-                 "lead_score": x["lead_score"], "dedup_key": key, "candidate_ids": ids}
+                 "purpose": x["purpose"], "lead_score": x["lead_score"], "dedup_key": key, "candidate_ids": ids}
             plan["articles"].append(a)
             log.append(f"{key} → {b} 面で記事化({a['slug']})")
         elif kind == "merge_into":
@@ -3072,6 +3080,7 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     # 校閲のあとに変わった紙面を古い approve で出さない(監査指摘)
     from pipelib import review_manifest
     merged["hashes"] = review_manifest(date)
+    merged["run"] = RUN_ID     # どの実行の巡か(発行は最新の実行の最後の巡を読む)
     (ROOT / "metrics" / f"review-{date}-{round_no}.json").write_text(
         json.dumps(merged, ensure_ascii=False, indent=1), encoding="utf-8")
     return merged
@@ -3243,15 +3252,18 @@ def main() -> int:
     print(f"選定インデックス: {n_subjects}主題 / {len(by_brand)}面 "
           f"({', '.join(f'{b}:{len(v)}' for b, v in sorted(by_brand.items()))})", flush=True)
     plan_saved = ROOT / "metrics" / f"plan-{date}.json"
-    if args.reuse_plan and plan_saved.exists():
+    reused = args.reuse_plan and plan_saved.exists()
+    if reused:
         # **保存した計画を本当に使う。**以前は旗があるだけで毎回選定し直しており、
         # 再試行で判断が変わると新しい計画と古い記事が混在した(監査指摘)
         plan = json.loads(plan_saved.read_text(encoding="utf-8"))
         print(f"選定を再利用: {plan_saved.name}({len(plan.get('articles') or [])}本)", flush=True)
     else:
-        # 選定に掛けた候補を記録する。これより後にこの号の候補ファイルへ入った候補は、次の号が引き継ぐ(carry_late_candidates)
-        # 前の号から引き継いだ事実のうち、選定インデックスの件数上限で選定に渡らなかったものは読んだことにしない
-        record_candidates_read(date, cands, hidden_late)
+        # 選定記録は空で始める(この号は選定を始めた、の印)。読んだと書くのは判定を得た主題だけ(拾い直しのあと、下)。
+        # 先に全候補を読んだと書くと、選定が起動できず再実行も成功しない号で、選ばれていない素材が次の号へ引き継がれない
+        # (監査指摘 2026-10-14: FileNotFoundError: claude で読了記録あり・計画なし・翌号の引き継ぎ 0件)。記録を消すだけでは、
+        # 記録の無い号を遡らない carry_late_candidates で拾えない
+        record_candidates_read(date, {})
         with stage("選定"):
             plan = run_plan(date, by_brand, triggers)
         pick_lead(date, plan)
@@ -3301,6 +3313,12 @@ def main() -> int:
             print(f"拾い直しても残った取りこぼし: {gaps[0][:120]}", flush=True)
             anomaly("compose", "選定で判断されないまま残った主題(拾い直しても答えが無い)。この号では扱われない:\n"
                                + "\n".join(f"- {k}" for k in (cov.get("missing_keys") or [])[:20]))
+    if not reused:
+        # 選定に掛けた候補のうち、判定を得た主題(面別の選定か拾い直しで、記事・統合・不採用のどれか)の候補を読んだと記録する。
+        # 判定の無いまま残った主題(面の答えが無い・崩れた・非0終了で、拾い直しも答えなかった)は未読のまま、次の号が引き継ぐ。
+        # これより後にこの号の候補ファイルへ入った候補も次の号が引き継ぐ(carry_late_candidates)。前の号から引き継いだ事実のうち、
+        # 選定インデックスの件数上限で選定に渡らなかったものは読んだことにしない
+        record_candidates_read(date, cands, hidden_late, unjudged=set(cov.get("missing_keys") or []))
     # 素材に対して rank が小さい記事の可視化(規程9)。発行は止めない。
     # 束ねること自体は正しい(同じ系統の話を分けると全部が薄くなる)。問題は
     # 束ねたまま rank を上げないことで、書ける上限に収まらず中身が落ちる

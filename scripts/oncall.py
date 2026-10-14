@@ -1125,10 +1125,9 @@ def planned_slugs(date: str) -> list[str]:
 
 
 def latest_review(date: str) -> Path | None:
-    """その号のいちばん新しい巡の校閲記録(metrics/review-<日付>-<巡>.json)。無ければ None。"""
-    rows = [(int(m.group(1)), p) for p in (ROOT / "metrics").glob(f"review-{date}-*.json")
-            if (m := re.fullmatch(re.escape(f"review-{date}-") + r"(\d+)\.json", p.name))]
-    return max(rows)[1] if rows else None
+    """その号のいちばん新しい組版の実行の、最後の巡の校閲記録(発行が読むものと同じ。pipelib.last_review_record)。無ければ None。"""
+    from pipelib import last_review_record
+    return last_review_record(date, ROOT)
 
 
 def recover_outcome(before: set[str], after: set[str], planned: list[str]) -> tuple[list[str], list[str], list[str]]:

@@ -93,13 +93,14 @@ def lint_failure_summary(r: subprocess.CompletedProcess) -> str:
 
 
 def review_verdict(date: str) -> tuple[str, str]:
-    """その号の校閲結果(最後の往復)を読む。(verdict, 説明) を返す。
+    """その号の校閲結果(いちばん新しい組版の実行の最後の巡)を読む。(verdict, 説明) を返す。
 
-    compose が `metrics/review-<日付>-<往復数>.json` に残す。
-    往復数は数として比べる(文字列順だと 10 が 9 より前に来る)。
+    compose が `metrics/review-<日付>-<往復数>.json` に実行の印(run)を付けて残す。どれを読むかは pipelib.last_review_record
+    (往復数は実行ごとに1から数え直すので、実行をまたいで最大を採らない。往復数は数として比べる)。
     """
-    files = sorted((ROOT / "metrics").glob(f"review-{date}-*.json"),
-                   key=lambda p: int(p.stem.rsplit("-", 1)[-1]) if p.stem.rsplit("-", 1)[-1].isdigit() else -1)
+    from pipelib import last_review_record
+    last = last_review_record(date, ROOT)
+    files = [last] if last else []
     if not files:
         return "missing", "校閲の記録が無い(compose が最後まで走っていない)"
     try:

@@ -3963,7 +3963,8 @@ def test_empty_answer_is_not_done(tmp: Path):
             return compose.replan_missing("2099-01-01", pl, {"cg": [{"dedup_key": k, "ids": [f"c-{k}"]} for k in keys]}, cands_t, keys), pl
         finally:
             compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.missing_plan_prompt, compose.ROOT = saved_rp
-    art = lambda k, **kw: dict({"slug": "cg_new", "brand": "cg", "dedup_key": k, "candidate_ids": ["c"], "rank": "small", "angle": "", "lead_score": 0}, **kw)
+    art = lambda k, **kw: dict({"slug": "cg_new", "brand": "cg", "dedup_key": k, "candidate_ids": ["c"], "rank": "small", "angle": "",
+                                "purpose": "新情報", "lead_score": 0}, **kw)
     for ans in ("null", '{"articles": [null], "dropped": [{"dedup_key": ["x"]}]}', '{"dropped": [{"dedup_key": "k"}]}',
                 '{"dropped": [{"dedup_key": "k", "brand": "cg", "reason": " "}]}', json.dumps({"articles": [art("k", rank=["small"])]})):
         res, pl = replan_with(ans, ["k"])
@@ -4928,8 +4929,254 @@ def test_late_facts_reach_plan_index(tmp: Path):
     import inspect
     src = inspect.getsource(compose.main)
     check("write_plan_index(date, cands, blocklist, late_fact_keys(date))" in src
-          and "record_candidates_read(date, cands, hidden_late)" in src,
+          and "record_candidates_read(date, cands, hidden_late, unjudged=" in src,
           "組版が引き継いだ事実を選定インデックスへ先に並べ、切れた分を選定記録から外していない")
+
+
+# テスト用の偽の claude CLI。本物と同じ引数(-p の短い指示・--json-schema)で起動され、cwd(組版の ROOT)の fake-cli.json の
+# 指示で答える。起動された依頼の名前を fake-cli.log に残す。モデルの答えから先(読み込み・検め・計画への反映)は本番のコードが動く
+FAKE_CLAUDE = r'''#!/usr/bin/env python3
+import json, re, sys
+from pathlib import Path
+a = sys.argv[1:]
+short = a[a.index("-p") + 1] if "-p" in a else ""
+schema = json.loads(a[a.index("--json-schema") + 1]) if "--json-schema" in a else {}
+m = re.search(r"metrics/work/([0-9-]+)/([^\s/]+?)\.md", short)
+date, name = (m.group(1), m.group(2)) if m else ("", "")
+ctl = json.loads(Path("fake-cli.json").read_text(encoding="utf-8"))
+log = open("fake-cli.log", "a", encoding="utf-8")
+log.write(name + "\n")
+def answer(obj):
+    print(json.dumps(obj, ensure_ascii=False))
+    sys.exit(0)
+if name.startswith("plan-") and name != "plan-missing":
+    b = name[len("plan-"):]
+    c = ctl.get("plan", {}).get(b, {})
+    if "exit" in c:
+        sys.exit(c["exit"])
+    keys = schema["properties"]["decisions"]["required"]
+    dec = {k: {"action": "article", "angle": f"{b} 面の判定 {k}", "purpose": "新情報", "rank": "small", "lead_score": 10,
+               "merge_into": "", "claimed_slug": "", "reason": "", "note": ""} for k in keys}
+    dec.update(c.get("decisions", {}))
+    answer({"decisions": dec})
+if name == "lead":
+    c = ctl.get("lead", {})
+    if "exit" in c:
+        sys.exit(c["exit"])
+    answer({"lead_slug": schema["properties"]["lead_slug"]["enum"][0]})
+if name == "plan-missing":
+    c = ctl.get("missing", {})
+    rows = json.loads(Path(f"metrics/plan-index-{date}-missing.json").read_text(encoding="utf-8"))
+    log.write("missing-keys " + " ".join(sorted(r["dedup_key"] for r in rows)) + "\n")
+    if "exit" in c:
+        sys.exit(c["exit"])
+    Path(f"metrics/plan-{date}-missing.json").write_text(json.dumps(c.get("answer", {}), ensure_ascii=False), encoding="utf-8")
+    print("拾い直し: 記事1本")
+    sys.exit(0)
+c = ctl.get("review", {"verdict": "approve", "blockers": [], "comments": []})
+if "exit" in c:
+    sys.exit(c["exit"])
+answer(c)
+'''
+
+
+def _fake_claude(root: Path, ctl: dict) -> str:
+    """root/bin に偽の claude を置き、root/fake-cli.json に答え方を書く。PATH の先頭に足す値を返す。"""
+    b = root / "bin"
+    b.mkdir(parents=True, exist_ok=True)
+    (b / "claude").write_text(FAKE_CLAUDE, encoding="utf-8")
+    (b / "claude").chmod(0o755)
+    (root / "fake-cli.json").write_text(json.dumps(ctl, ensure_ascii=False), encoding="utf-8")
+    return str(b)
+
+
+def test_release_reads_latest_run(tmp: Path):
+    """発行は、いちばん新しい組版の実行の最後の巡の校閲を読む(監査指摘 2026-10-14)。巡の番号は実行ごとに1から数え直すので、
+    番号の最大を採ると、組み直し(--reuse-plan --carry-review)が1巡目で承認しても前の実行の5巡目の承認を読み、戻した記事を
+    「承認後の変更」として発行を止める。逆に新しい実行が承認しなかったときに、中身の同じ古い承認へ戻ってもいけない。
+    当番が組み直しに引き継ぐ校閲記録(oncall.latest_review)も同じものを選ぶ。"""
+    import oncall
+    import release
+    d = "2026-10-10"
+    posts, metrics = tmp / "docs" / "_posts", tmp / "metrics"
+    posts.mkdir(parents=True)
+    metrics.mkdir()
+    (tmp / "docs" / "_editions").mkdir()
+    (tmp / "docs" / "_editions" / f"{d}.md").write_text("---\nnumber: 1\ndate: 2026-10-10\n---\n", encoding="utf-8")
+    (posts / f"{d}-old.md").write_text("---\nslug: old\ntitle: 承認済み\n---\n承認済みの記事\n", encoding="utf-8")
+    saved = (compose.ROOT, pipelib.ROOT, release.ROOT, oncall.ROOT, compose.RUN_ID, os.environ.get("PATH", ""))
+    try:
+        compose.ROOT = pipelib.ROOT = release.ROOT = oncall.ROOT = tmp
+        os.environ["PATH"] = _fake_claude(tmp, {}) + os.pathsep + saved[-1]
+        # 前の実行(印を付ける前の形)が5巡目で承認した。そのあと組み直しが落とした記事を戻し、新しい実行の1巡目で承認した
+        old = {"verdict": "approve", "blockers": [], "comments": [], "reviewed": [f"article:{d}-old.md", "paper"],
+               "hashes": pipelib.review_manifest(d)}
+        (metrics / f"review-{d}-5.json").write_text(json.dumps(old), encoding="utf-8")
+        (posts / f"{d}-new.md").write_text("---\nslug: new\ntitle: 戻した記事\n---\n戻した記事\n", encoding="utf-8")
+        compose.RUN_ID = "20261010T050000.000000"
+        r = compose.claude_review(d, 1, targets=compose.carry_targets(d, old), editorial=False, paper=True, carry=old, strict=True)
+        v = release.review_verdict(d)
+        check(r.get("verdict") == "approve" and v == ("approve", f"review-{d}-1.json"),
+              f"組み直しの新しい承認より、前の実行の後ろの巡を読んだ: 新しい1巡目 {r.get('verdict')} / 発行の判定 {v}")
+        check(oncall.latest_review(d) == metrics / f"review-{d}-1.json", f"当番が引き継ぐ校閲記録が新しい実行のものでない: {oncall.latest_review(d)}")
+        # 新しい実行が承認しなかった(担当が動かない)。中身は前の実行の承認と同じでも、古い承認へ戻らない
+        for p in metrics.glob("review-*.json"):
+            p.unlink()
+        (posts / f"{d}-new.md").unlink()
+        old_run = dict(old, run="20261010T030000.000000", hashes=pipelib.review_manifest(d))
+        (metrics / f"review-{d}-5.json").write_text(json.dumps(old_run), encoding="utf-8")
+        (tmp / "fake-cli.json").write_text(json.dumps({"review": {"exit": 1}}), encoding="utf-8")
+        compose.RUN_ID = "20261010T053000.000000"
+        r = compose.claude_review(d, 1, targets=[], editorial=False, paper=True, carry=old_run, strict=True)
+        v = release.review_verdict(d)
+        check(r.get("verdict") == "error" and v[0] != "approve" and f"review-{d}-1.json" in v[1],
+              f"新しい実行が承認しなかったのに、前の実行の承認で発行する: 新しい1巡目 {r.get('verdict')} / 発行の判定 {v}")
+        # 印の無い記録だけなら、巡の番号を数として比べる(10 は 9 より後)。読めない記録があれば、読めないと判定する
+        for p in metrics.glob("review-*.json"):
+            p.unlink()
+        cur = pipelib.review_manifest(d)
+        (metrics / f"review-{d}-9.json").write_text(json.dumps({"verdict": "block", "blockers": [{"file": "x", "issue": "y"}], "hashes": cur}), encoding="utf-8")
+        (metrics / f"review-{d}-10.json").write_text(json.dumps({"verdict": "approve", "blockers": [], "hashes": cur}), encoding="utf-8")
+        check(release.review_verdict(d) == ("approve", f"review-{d}-10.json"), f"印の無い記録で巡の番号を数として比べない: {release.review_verdict(d)}")
+        (metrics / f"review-{d}-3.json").write_text("{壊れた", encoding="utf-8")
+        check(release.review_verdict(d)[0] == "unreadable", f"読めない記録を飛ばして承認を採った: {release.review_verdict(d)}")
+    finally:
+        compose.ROOT, pipelib.ROOT, release.ROOT, oncall.ROOT, compose.RUN_ID = saved[:5]
+        os.environ["PATH"] = saved[-1]
+
+
+class _StopBeforeWriting(Exception):
+    """選定の検査で、組版を執筆の直前で止める印。"""
+
+
+def _compose_selection(root: Path, date: str, path_head: str) -> tuple[object, str]:
+    """compose.main を選定(面別の選定 → 一面 → 形の修復 → 検証 → 取りこぼしの拾い直し → 選定記録)まで実際に走らせ、執筆の直前で
+    止める。モデルの CLI は PATH の先頭(path_head)にあるもの。Git・排他・通知は差し替える。戻りは (終わり方, 標準出力)。"""
+    import contextlib
+    import io
+    import signal
+    names = ("ROOT", "job_lock", "checkout_edition_branch", "next_number", "notify", "escalate", "commit_and_push", "write_articles",
+             "DEADLINE", "STARTED_ON", "STARTED_DATE")
+    saved = {n: getattr(compose, n) for n in names}
+    saved_other = (pipelib.ROOT, assemble.ROOT, assemble.SCHEDULED, list(pipelib.ANOMALIES), sys.argv, os.environ.get("PATH", ""),
+                   signal.getsignal(signal.SIGTERM))
+
+    def stop(*a, **k):
+        raise _StopBeforeWriting()
+    buf = io.StringIO()
+    try:
+        compose.ROOT = pipelib.ROOT = assemble.ROOT = root
+        assemble.SCHEDULED = root / "stock" / "scheduled"
+        compose.job_lock = lambda *a, **k: None
+        compose.checkout_edition_branch = lambda *a, **k: True
+        compose.next_number = lambda *a, **k: 1
+        compose.notify = lambda *a, **k: True
+        compose.escalate = lambda *a, **k: None
+        compose.commit_and_push = lambda *a, **k: True
+        compose.write_articles = stop
+        sys.argv = ["compose.py", "--date", date]
+        os.environ["PATH"] = path_head
+        try:
+            with contextlib.redirect_stdout(buf):
+                end = compose.main()
+        except (_StopBeforeWriting, OSError) as e:
+            end = e
+        return end, buf.getvalue()
+    finally:
+        for n, v in saved.items():
+            setattr(compose, n, v)
+        pipelib.ROOT, assemble.ROOT, assemble.SCHEDULED = saved_other[:3]
+        pipelib.ANOMALIES[:] = saved_other[3]
+        sys.argv = saved_other[4]
+        os.environ["PATH"] = saved_other[5]
+        signal.signal(signal.SIGTERM, saved_other[6])
+
+
+def test_compose_selection_from_cli(tmp: Path):
+    """選定を CLI の答えから計画の検証・選定記録まで実際に通す(監査指摘 2026-10-14: run_plan を常に空の計画にしても回帰テストが通った)。
+    - 正常に答えた面の判定が計画に載り、一面・形の修復・検証を通って執筆の直前まで進む
+    - 非0終了の面・形の崩れた判定の主題は判断済みにせず、拾い直しへ回す(拾い直しに渡るのはその主題だけ)
+    - 拾い直しで記事にした主題は目的(期日の知らせ)を保ち、執筆の依頼文まで届く(以前は目的を捨てて「新情報」になった)
+    - 選定記録は判定を得た主題だけ。拾い直しも答えなかった主題の候補は次の号が引き継ぐ
+    - 選定の CLI が起動できない号は、全候補を読んだと記録しない(以前は起動前に全候補を記録し、翌号の引き継ぎが 0件だった)"""
+    d, nxt = "2026-10-10", "2026-10-11"
+    rows = [cand_row("ca1", "https://e.example/cg-a1", dedup_key="cg-a", facts=["CG の公演A 開催決定"]),
+            cand_row("ca2", "https://e.example/cg-a2", dedup_key="cg-a", facts=["CG の公演A チケット先行"]),
+            cand_row("cb1", "https://e.example/cg-b", dedup_key="cg-b", facts=["CG の新曲B 配信開始"]),
+            cand_row("cx1", "https://e.example/cg-x", dedup_key="cg-x", verify="failed", facts=["確かめられない話"]),
+            cand_row("ma1", "https://e.example/ml-a", brand="million", dedup_key="ml-a", deadline="2026-10-11",
+                     facts=["ミリオンの抽選申込は10月11日23:59締切"]),
+            cand_row("sa1", "https://e.example/sh-a", brand="shiny", dedup_key="sh-a", facts=["シャニの企画A 開始"]),
+            cand_row("sb1", "https://e.example/sh-b", brand="shiny", dedup_key="sh-b", facts=["シャニの企画B 告知"])]
+    usable = {"ca1", "ca2", "cb1", "ma1", "sa1", "sb1"}
+
+    def setup(root: Path) -> None:
+        for sub in ("candidates", "metrics", "docs/_posts", "docs/_editions", "stock/scheduled"):
+            (root / sub).mkdir(parents=True, exist_ok=True)
+        (root / "candidates" / f"{d}.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+
+    # 1. 正常: cg 面は答える、million 面は非0終了、shiny 面は sh-b の判定だけ形が崩れる。一面の選定は答えない(機械で立てる)。
+    #    拾い直しは ml-a を期日の知らせで記事にし、sh-b には答えない
+    ok = tmp / "ok"
+    setup(ok)
+    bad_rank = {"action": "article", "angle": "崩れた判定", "purpose": "新情報", "rank": "huge", "lead_score": 0,
+                "merge_into": "", "claimed_slug": "", "reason": "", "note": ""}
+    head = _fake_claude(ok, {"plan": {"million": {"exit": 1}, "shiny": {"decisions": {"sh-b": bad_rank}}}, "lead": {"exit": 1},
+                             "missing": {"answer": {"articles": [{"brand": "million", "rank": "small", "angle": "抽選申込の締切は明日",
+                                                                  "purpose": "期日の知らせ", "lead_score": 5, "dedup_key": "ml-a"}],
+                                                    "merge_into": [], "dropped": []}}})
+    end, out = _compose_selection(ok, d, head + os.pathsep + os.environ.get("PATH", ""))
+    check(isinstance(end, _StopBeforeWriting), f"選定が執筆の直前まで進まない(計画の検証で止まった・例外): {end!r} {out[-600:]}")
+    log = (ok / "fake-cli.log").read_text(encoding="utf-8").splitlines() if (ok / "fake-cli.log").exists() else []
+    check({"plan-cg", "plan-million", "plan-shiny", "lead", "plan-missing"} <= set(log) and "missing-keys ml-a sh-b" in log,
+          f"拾い直しに渡ったのが、答えの無かった主題(ml-a・sh-b)だけでない: {log}")
+    plan = json.loads((ok / "metrics" / f"plan-{d}.json").read_text(encoding="utf-8")) if (ok / "metrics" / f"plan-{d}.json").exists() else {}
+    arts = {a.get("dedup_key"): a for a in plan.get("articles") or []}
+    check(set(arts) == {"cg-a", "cg-b", "sh-a", "ml-a"} and arts["cg-a"]["candidate_ids"] == ["ca1", "ca2"]
+          and arts["cg-b"]["angle"] == "cg 面の判定 cg-b" and arts["sh-a"]["angle"] == "shiny 面の判定 sh-a",
+          f"面別の選定の答えが計画に載らない(または判断の無い主題を載せた): {sorted(arts)}")
+    cands = {r["id"]: r for r in rows}
+    check(plan and compose.validate_plan(plan, cands, {}) == [] and sum(a.get("rank") == "lead" for a in arts.values()) == 1,
+          f"計画が検証を通らない: {compose.validate_plan(plan, cands, {}) if plan else '計画なし'}")
+    ml = arts.get("ml-a") or {}
+    check(ml.get("purpose") == "期日の知らせ" and ml.get("brand") == "million"
+          and "- 目的: 期日の知らせ" in compose.article_prompt(d, ml, [cands["ma1"]], [], None),
+          f"拾い直しで記事にした期日の知らせの目的が、計画・執筆の依頼文に届かない: {ml}")
+    rp = ok / "metrics" / f"candidates-read-{d}.json"
+    rec = json.loads(rp.read_text(encoding="utf-8"))["read"] if rp.exists() else None
+    check(rec is not None and set(rec) == {"ca1", "ca2", "cb1", "cx1", "ma1", "sa1"},
+          f"選定記録が、判定を得た主題(と選定に掛けない候補)になっていない: {sorted(rec or [])}")
+    # 引き継ぎは write_checked(一時ファイルは pipelib.ROOT の下)で書くので、両方を一時領域へ向ける(本体に書かない。監査指摘)
+    saved_root = (compose.ROOT, pipelib.ROOT)
+    try:
+        compose.ROOT = pipelib.ROOT = ok
+        carry = compose.carry_late_candidates(nxt)
+        got = [r["id"] for r in json.loads((ok / "candidates" / f"{nxt}.json").read_text(encoding="utf-8"))] \
+            if (ok / "candidates" / f"{nxt}.json").exists() else []
+    finally:
+        compose.ROOT, pipelib.ROOT = saved_root
+    check(got == ["sb1"] and carry, f"判定を得られなかった主題の候補を次の号が引き継がない(または判定済みまで引き継いだ): {got}")
+
+    # 2. 選定の CLI が起動できない(FileNotFoundError: claude)。計画は出来ず、再実行も成功しなかった
+    dead = tmp / "dead"
+    setup(dead)
+    (dead / "empty-bin").mkdir()
+    end, out = _compose_selection(dead, d, str(dead / "empty-bin"))
+    check(not (dead / "metrics" / f"plan-{d}.json").exists() or not json.loads(
+        (dead / "metrics" / f"plan-{d}.json").read_text(encoding="utf-8")).get("articles"),
+          f"CLI が無いのに計画ができた: {end!r}")
+    rec = json.loads((dead / "metrics" / f"candidates-read-{d}.json").read_text(encoding="utf-8"))["read"] \
+        if (dead / "metrics" / f"candidates-read-{d}.json").exists() else None
+    check(rec is not None and not set(rec) & usable,
+          f"選定が起動できなかった号で、選定に掛けていない候補を読んだと記録した(または記録が無く、次の号が遡らない): {rec}")
+    try:
+        compose.ROOT = pipelib.ROOT = dead
+        compose.carry_late_candidates(nxt)
+        got = {r["id"] for r in json.loads((dead / "candidates" / f"{nxt}.json").read_text(encoding="utf-8"))} \
+            if (dead / "candidates" / f"{nxt}.json").exists() else set()
+    finally:
+        compose.ROOT, pipelib.ROOT = saved_root
+    check(usable <= got, f"選定が起動できなかった号の素材を、次の号が引き継がない: {sorted(got)}")
 
 
 def test_settled_drops_not_rewritten(tmp: Path):
@@ -5294,7 +5541,7 @@ def test_carry_late_candidates(tmp: Path):
           "前の号の遅れた候補を、この号の候補を読む前に写していない")
     plan = src.index("run_plan(")
     check(src.index("args.reuse_plan and plan_saved.exists()") < src.index("record_candidates_read(") < plan,
-          "選定記録を、選定をやり直すとき(--reuse-plan でない)の選定の直前に書いていない")
+          "選定記録(空の記録)を、選定をやり直すとき(--reuse-plan でない)の選定の直前に書いていない")
     own = compose.own_artifacts("2026-10-11")
     check("metrics/candidates-read-2026-10-11.json" in own and "candidates/2026-10-11.json" in own,
           "途中終了の commit に選定記録・写した候補が含まれない")
@@ -6236,6 +6483,8 @@ def main() -> int:
     test_carry_dropped_candidates(tmp / "cdc")
     test_carry_dropped_candidates_schema(tmp / "cdcs")
     test_late_facts_reach_plan_index(tmp / "lfpi")
+    test_release_reads_latest_run(tmp / "rlr")
+    test_compose_selection_from_cli(tmp / "csc")
     test_article_purpose()
     test_plan_merge_into_drop()
     test_extract_json_array_strict()

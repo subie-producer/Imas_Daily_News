@@ -77,7 +77,7 @@ import hashlib
 from pipelib import (COLLECT_ONCALL_MARK, ENV, ROOT, SCHEDULED, SLOT_MARGIN_MIN, JobLockTimeout, job_lock, loads_strict, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, settled_drops,
                      tool_path)
-from pipelib import run_group   # モデルのセッションは自前のグループで起動し、時間切れ・中断では道具ごと止める
+from pipelib import exit_on_term, run_group   # モデルのセッションは自前のグループで起動し、時間切れ・中断では道具ごと止める
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")
@@ -576,9 +576,8 @@ def arm_backlog_exit(keys: list[str], date: str) -> None:
     既定の SIGTERM では atexit が走らないので、通常の終了(SystemExit)に変える(監査指摘)。
     SIGKILL などで報告できなくても、指摘は保管に残り翌朝また渡る。"""
     import atexit
-    import signal as _signal
     atexit.register(lambda: report_left_backlog(keys, date))
-    _signal.signal(_signal.SIGTERM, lambda *_: sys.exit(143))
+    exit_on_term()      # 起動したセッションを子孫ごと止めてから、通常の終了(SystemExit 143)にする
 
 
 def report_left_backlog(keys: list[str], date: str) -> None:
@@ -1180,6 +1179,9 @@ def main() -> int:
     """当番の本体(_main)のあと、落とした記事を戻す当番(--recover)で組み直しをまだ試していなければ、いまのコードで1回試す。
     往復が承認されなかった・時間切れ・試行の上限・例外のどれで終わっても、戻すのを諦めない(編集長 2026-10-10
     「復帰保証までが Opus/Sol の仕事だ」)。直せなかったことと、戻せたかどうかは別に報告する。"""
+    # SIGTERM(unit の停止)でも、起動したセッション(当番・監査)を子孫ごと止めてから終わる。既定の SIGTERM は後始末を
+    # 走らせず、CLI と道具が当番の終了後も作業ツリーへ書いた(監査指摘 2026-10-14)。保管の指摘の当番は、このあと自前の報告付きに変える
+    exit_on_term()
     try:
         code = _main()
     except Exception as e:      # noqa: BLE001

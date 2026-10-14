@@ -767,7 +767,11 @@ def finish_group(p, timeout: float | None) -> tuple[str, str, bool]:
     try:
         so, se = p.communicate(timeout=None if timeout is None else max(0, timeout))
     except subprocess.TimeoutExpired:
-        so, se = reap(p)
+        try:
+            so, se = reap(p)
+        except BaseException:
+            stop_groups([p])    # 回収の途中の中断: 控えたまま止め直してから上げる(凍らせたまま残さない)
+            raise
         return so, se, True
     except BaseException:
         stop_groups([p])        # 中断でも止めて回収してから、元の例外を上げる

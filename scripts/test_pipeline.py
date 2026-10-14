@@ -6303,6 +6303,11 @@ def test_session_escaped_and_term(tmp: Path):
                     "m.run_watch = lambda call, oncall_rerun=False: (call('x', timeout=120), ([], {}))[1]\n"
                     "m.prompt_file = lambda *a, **k: 'p'; m.save_raw = lambda *a, **k: None\n"
                     "sys.argv = ['collect', '--no-git', '--skip-explore', '--skip-grok', '--date', '2099-01-01']; m.main()\n"),
+        "oncall": ("import os, sys; sys.path.insert(0, sys.argv[1]); import oncall as m\n"
+                   "from pathlib import Path; d = Path(sys.argv[2]); sf = d / 's.json'; sf.write_text('{\"type\": \"object\"}')\n"
+                   "m.prompt_file = lambda *a, **k: 'p'; m.save_raw = lambda *a, **k: None; m.session_env = lambda: dict(os.environ)\n"
+                   "m._main = lambda: m.run_claude('x', sf, d, timeout=60)     # 通常の当番(どの工程でも入口は main)\n"
+                   "m.main()\n"),
     }
     for name, code in harness.items():
         d = tmp / f"term-{name}"
@@ -6502,6 +6507,40 @@ def test_session_signal_windows(tmp: Path):
         if alive:
             os.kill(pid, signal.SIGKILL)
         check(got == "中断" and pid and not alive, f"後始末の途中の中断で、残った道具を止めずに忘れた({got} / pid {pid} 生存 {alive})")
+        # 時間切れの回収の途中の中断(Ctrl-C)でも、凍らせた子を残さず、一覧からも漏らさない
+        d2 = tmp / "timeout-int"
+        d2.mkdir(parents=True, exist_ok=True)
+        b2 = _probe_bin(tmp / "timeout-int-bin")
+        saved_probe = os.environ.get("SESSION_PROBE")
+        os.environ["SESSION_PROBE"] = str(d2)
+        try:
+            p = start([str(b2 / "claude")], cwd=tmp)
+            ready = _wait_files(d2 / "group.pid", d2 / "escaped.pid")
+            n.clear()
+            pipelib.stop_tree = interrupted_once
+            try:
+                pipelib.finish_group(p, 0.2)
+                got = "返った"
+            except KeyboardInterrupt:
+                got = "中断"
+            finally:
+                pipelib.stop_tree = real_stop
+        finally:
+            if saved_probe is None:
+                os.environ.pop("SESSION_PROBE", None)
+            else:
+                os.environ["SESSION_PROBE"] = saved_probe
+        left = []
+        for name in ("group", "escaped"):
+            q = int((d2 / f"{name}.pid").read_text()) if (d2 / f"{name}.pid").exists() else 0
+            if q and _pid_alive(q):
+                left.append(name)
+                os.kill(q, signal.SIGKILL)
+        kept = p in getattr(pipelib, "_SESSIONS", set())
+        if kept:
+            pipelib.stop_groups([p])
+        check(ready and got == "中断" and not left and p.poll() is not None and not kept,
+              f"時間切れの回収の途中の中断で、子を残した・一覧から漏らさない(準備 {ready} / {got} / 残った {left} / 一覧に残る {kept})")
     # この process の子でない対象(ほかの親が起こした独立したセッション)は、グループも含めて止めない
     pf = tmp / "foreign.pid"
     helper = real_popen([sys.executable, "-c",
@@ -6602,6 +6641,21 @@ def test_collect_handover_deadline(tmp: Path):
         failed = collect.run_grok_prompts(targets, errs)
         check(not launched and failed == {"f0", "f1", "f2"} and all("締切" in errs.get(k, "") for k in failed),
               f"Grok: 締切後に面を起動した・理由を残さない(起動 {len(launched)}本 / {errs})")
+        # 波の途中で締切を過ぎたら、同じ波の残りの面も起動しない(1本目の起動に時間が掛かった)
+        def slow_first(*a, **k):
+            launched.append(a)
+            if len(launched) == 1:
+                _t.sleep(0.2)
+            return GP()
+        subprocess.Popen = slow_first
+        collect.DEADLINE = _t.time() + 0.15
+        errs = {}
+        failed = collect.run_grok_prompts(targets, errs)
+        check(len(launched) == 1 and failed == {"f0", "f1", "f2"} and all("締切" in errs.get(k, "") for k in ("f1", "f2")),
+              f"Grok: 波の途中で締切を過ぎたのに、同じ波の残りの面を起動した(起動 {len(launched)}本 / {errs})")
+        launched.clear()
+        subprocess.Popen = lambda *a, **k: launched.append(a) or GP()
+        collect.DEADLINE = _t.time() - 1
         od = tmp / "grok"
         od.mkdir(exist_ok=True)
         (od / "cg.md").write_text("### 1\n- url: https://x.com/a/status/9\n- 本文: 告知\n", encoding="utf-8")

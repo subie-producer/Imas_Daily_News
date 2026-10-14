@@ -570,6 +570,11 @@ def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> set[str]:
         procs, finished = [], []
         try:
             for q, pp in wave:
+                if deadline_passed():
+                    # 波の途中で収集の締切を過ぎたら、残りの面も起動しない(起動の直前に確かめる)
+                    errs[q["key"]] = "収集の締切を過ぎたので起動しなかった"
+                    failed.add(q["key"])
+                    continue
                 procs.append((q, start_group(
                     ["grok", "--prompt-file", str(pp), "--always-approve",
                      "--cwd", str(ROOT), "--reasoning-effort", GROK_EFFORT],

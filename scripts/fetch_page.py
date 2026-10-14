@@ -19,6 +19,8 @@
 1ページの本文はたいてい数千字で、読ませても執筆1回ぶんの負担は小さい。
 """
 import argparse
+import json
+import os
 import re
 import sys
 import urllib.request
@@ -28,6 +30,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import RenderFailed, extract_periods, html_to_text, needs_render, render_page
 
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
+FIXED_PAGES_ENV = "IMAS_FETCH_PAGES"
 
 
 def fetch(url: str) -> str:
@@ -38,21 +41,33 @@ def fetch(url: str) -> str:
         return html_to_text(res.read(400_000), res.headers.get_content_charset())
 
 
+def fixed_page(pages_file: str, url: str) -> str:
+    """規則の事例(scripts/rule_bench.py)が固定で持たせた出典の本文({url: 本文} の JSON)。事例に無いページは空(= 取れない)。
+    事例は毎回ページを取りに行かず、事例の外のページも読ませない(2026-10-14 監査指摘: 依頼文の規則を固定の事例でモデルに判断させる)"""
+    pages = json.loads(Path(pages_file).read_text(encoding="utf-8"))
+    for u in (url, url.rstrip("/"), url.rstrip("/") + "/"):
+        if u in pages:
+            return pages[u]
+    return ""
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("url")
     ap.add_argument("--chars", type=int, default=40000, help="本文の出力上限")
     args = ap.parse_args()
 
+    fixed = os.environ.get(FIXED_PAGES_ENV, "")
     try:
-        text = fetch(args.url)
+        text = fixed_page(fixed, args.url) if fixed else fetch(args.url)
     except Exception as e:
         print(f"FETCH_FAILED: {type(e).__name__}: {e}")
         return 1
 
     # JS で描画するページは本文が空同然になる。その場合と、描画必須と分かっているサイトは描画してから読み直す
+    # (固定の本文は描画したあとのもの。取りに行かない)
     render_error = ""
-    if needs_render(args.url, text):
+    if not fixed and needs_render(args.url, text):
         try:
             text = html_to_text(render_page(args.url, 30).encode("utf-8", "replace"))
         except RenderFailed as e:

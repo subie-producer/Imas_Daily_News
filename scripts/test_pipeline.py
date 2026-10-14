@@ -924,6 +924,206 @@ def test_review_paper_defines_same_subject():
     check("同じ知らせ" in p1 and "別の主題" in p1, f"P1 に「同じ主題」の定義が無い: {p1}")
 
 
+# 規則の事例(scripts/rule_bench.py)。上の2つの文言の検査は、逆の規則を書き足しても文言が残れば通る(監査指摘 2026-10-14)。
+# 規則が効くかは rule_bench が実際のモデルに判断させて検める。ここでは事例の形と、答えを照らすコードの振る舞いだけを見る(モデルは呼ばない)
+RULE_CASES = {
+    "write-partial-mismatch-drops-one": "write", "write-press-only-writes": "write", "write-fan-matome-only-declines": "write",
+    "write-press-price-conflict-uses-official": "write", "review-article-press-only-no-r5": "review_article",
+    "review-article-fan-matome-only-r5": "review_article", "review-article-press-price-conflict-r5": "review_article",
+    "review-paper-same-event-different-news-kept": "review_paper", "review-paper-same-news-twice-drops-one": "review_paper",
+}
+
+
+def test_rule_bench_cases():
+    """事例ファイルが揃っていて形が正しい(素材・記事は書式どおり、期待の欄は事例の素材・記事を指す)。形の検査は崩れた事例を拒む。"""
+    import copy
+    import rule_bench
+    cases = rule_bench.load_cases()
+    check(set(RULE_CASES) <= set(cases), f"規則の事例が欠けている: {sorted(set(RULE_CASES) - set(cases))}")
+    for n, kind in RULE_CASES.items():
+        c = cases.get(n) or {}
+        check(c.get("kind") == kind, f"{n} の kind: {c.get('kind')}")
+        probs = rule_bench.case_problems(c) if c else ["無い"]
+        check(not probs, f"{n} の形: {probs[:3]}")
+    if not all(n in cases for n in RULE_CASES):
+        return
+    w = cases["write-partial-mismatch-drops-one"]
+    # 期待の欄が読める: 外すべき素材の事実 id は2つ目の素材のもの(本番と同じ通し番号)、外すべき url は2つ目の素材の url
+    ids = rule_bench.material_ids(w["materials"])
+    check({ids[i] for i in w["expect"]["not_cite"]} == {w["materials"][1]["url"]} and w["expect"]["not_sources"] == [w["materials"][1]["url"]],
+          f"一部の素材だけが食い違う事例の期待: {w['expect']}")
+    check(cases["write-fan-matome-only-declines"]["expect"] == {"status": "decline", "decline_codes": ["NO_PRIMARY_SOURCE"]},
+          "まとめ記事だけの事例は NO_PRIMARY_SOURCE の見送りを期待する")
+    pair = cases["review-paper-same-news-twice-drops-one"]
+    check(pair["expect"]["blockers"] == [{"rule": "P1", "files": [f"docs/_posts/{n}" for n in pair["posts"]], "n_files": 1}],
+          f"同じ知らせの2本の事例の期待: {pair['expect']}")
+
+    def broken(name, edit):
+        c = copy.deepcopy(cases[name])
+        edit(c)
+        return rule_bench.case_problems(c)
+    check(broken("write-partial-mismatch-drops-one", lambda c: c["expect"].update(not_cite=["F99"])), "素材に無い事実 id を期待にできる")
+    check(broken("write-partial-mismatch-drops-one", lambda c: c["pages"].pop(c["materials"][0]["url"])), "素材の url の本文が無い事例を通す")
+    check(broken("write-partial-mismatch-drops-one", lambda c: c["materials"][0].update(extra=1)), "書式に無い欄のある素材を通す")
+    check(broken("write-fan-matome-only-declines", lambda c: c["expect"].pop("decline_codes")), "見送りの理由コードの無い期待を通す")
+    check(broken("write-press-only-writes", lambda c: c["expect"].pop("sources")), "使う素材の期待が無い執筆の事例を通す")
+    check(broken("review-paper-same-news-twice-drops-one", lambda c: c["expect"]["blockers"][0].update(files=["docs/_posts/x.md"])),
+          "事例に無い記事を期待にできる")
+    check(broken("review-article-press-only-no-r5", lambda c: c.update(candidates=[])), "記事の素材が無い校閲の事例を通す")
+    check(broken("review-article-press-only-no-r5", lambda c: c["posts"].update({k: v.replace("rank: small", "rank: tiny") for k, v in c["posts"].items()})),
+          "書式に合わない記事を通す")
+    check(broken("review-paper-same-event-different-news-kept", lambda c: c.update(kind="review")), "知らない kind を通す")
+
+
+def test_rule_bench_judges_shape(tmp: Path):
+    """答えの形の欄(執筆の status・decline_code・根拠の事実 id・出典の url / 校閲の blockers の rule_id と file)を期待と照らし、
+    偽の答えで合格・不合格を正しく出す。本番の経路(執筆の依頼文・校閲の claude_review)を偽の答えで通しても同じ結果になる。"""
+    import contextlib
+    import copy
+    import io
+    import fetch_page
+    import rule_bench
+    import writer_bench
+    cases = rule_bench.load_cases()
+    if not all(n in cases for n in RULE_CASES):
+        check(False, "規則の事例が欠けている")
+        return
+    w = cases["write-partial-mismatch-drops-one"]
+    a_url, b_url = w["materials"][0]["url"], w["materials"][1]["url"]
+    good = {"status": "ok", "title": "t", "title_fact_ids": ["F1"], "lede": "l", "lede_fact_ids": ["F1"],
+            "blocks": [{"markdown": "m", "fact_ids": ["F2", "N1"]}], "new_facts": [{"id": "N1", "text": "8,800円", "url": a_url}],
+            "sources": [{"url": a_url.rstrip("/"), "label": "x"}]}
+    jw = rule_bench.judge_write
+    check(jw(w["expect"], good) == [], f"残りの素材で書いた答えを不合格にした: {jw(w['expect'], good)}")
+    bad = copy.deepcopy(good)
+    bad["blocks"][0]["fact_ids"].append("F6")
+    check(jw(w["expect"], bad), "食い違う素材の事実を根拠にした答えを合格にした")
+    bad = copy.deepcopy(good)
+    bad["new_facts"].append({"id": "N2", "text": "販売終了", "url": b_url})
+    check(jw(w["expect"], bad), "食い違う素材のページを読んで足した答えを合格にした")
+    bad = copy.deepcopy(good)
+    bad["sources"] = [{"url": b_url, "label": "y"}]
+    check(len(jw(w["expect"], bad)) == 2, f"出典の取り違えを2点とも挙げない: {jw(w['expect'], bad)}")
+    decl = {"status": "decline", "decline_code": "SOURCE_MISMATCH", "decline_detail": "B が販売終了"}
+    check(jw(w["expect"], decl) and "decline" in jw(w["expect"], decl)[0], "素材ごと見送った答えを合格にした")
+    check(jw(w["expect"], None), "答えが無いのを合格にした")
+    m = cases["write-fan-matome-only-declines"]["expect"]
+    check(jw(m, dict(decl, decline_code="NO_PRIMARY_SOURCE")) == [] and jw(m, decl) and jw(m, good),
+          "まとめ記事だけの事例: NO_PRIMARY_SOURCE の見送りだけを合格にする")
+    p = cases["write-press-price-conflict-uses-official"]["expect"]
+    off = cases["write-press-price-conflict-uses-official"]["materials"][0]["url"]
+    ans = dict(good, title_fact_ids=["F1"], lede_fact_ids=["F3"], blocks=[{"markdown": "m", "fact_ids": ["F2"]}], new_facts=[],
+               sources=[{"url": off, "label": "x"}])
+    check(jw(p, ans) == [], f"公式の価格で書いた答えを不合格にした: {jw(p, ans)}")
+    check(jw(p, dict(ans, lede_fact_ids=["F15"])) and jw(p, dict(ans, lede_fact_ids=["F3", "F15"])), "報道の食い違う価格を使った答えを合格にした")
+    # 校閲: rule_id は頭の項目番号で読む(R15 は R1 ではない)
+    check([rule_bench.rule_of(x) for x in ("P1", "P1 同じ主題", " R-5", "R15", "", None)] == ["P1", "P1", "R5", "R15", "", ""], "rule_id の読み方")
+    pair = cases["review-paper-same-news-twice-drops-one"]
+    fa, fb = (f"docs/_posts/{n}" for n in pair["posts"])
+    blk = lambda rid, f: {"file": f, "issue": "i", "quote": "q", "rule_id": rid, "repair": "drop_article", "fact_ids": [], "expected": "e"}
+    jr = rule_bench.judge_review
+    check(jr(pair["expect"], {"verdict": "block", "blockers": [blk("P1", fb)]}) == [], "同じ知らせの1本を落とす答えを不合格にした")
+    check(jr(pair["expect"], {"verdict": "block", "blockers": [blk("P1 同じ知らせ", fa), blk("P1", fa)]}) == [], "同じ1本への2つの P1 を不合格にした")
+    check(jr(pair["expect"], {"verdict": "block", "blockers": [blk("P1", fa), blk("P1", fb)]}), "両方を落とす答えを合格にした")
+    check(jr(pair["expect"], {"verdict": "approve", "blockers": []}), "同じ知らせを2本とも残す答えを合格にした")
+    check(jr(pair["expect"], {"verdict": "block", "blockers": [blk("R1", fa)]}), "P1 でない指摘を合格にした")
+    check(jr(pair["expect"], {"verdict": "error", "blockers": [], "failed": ["paper: 時間切れ"]}), "判定の無い校閲を合格にした")
+    kept = cases["review-paper-same-event-different-news-kept"]
+    k1 = f"docs/_posts/{next(iter(kept['posts']))}"
+    check(jr(kept["expect"], {"verdict": "approve", "blockers": []}) == [] and jr(kept["expect"], {"verdict": "block", "blockers": [blk("R3", k1)]}) == [],
+          "別の知らせを2本とも残す答えを不合格にした")
+    check(jr(kept["expect"], {"verdict": "block", "blockers": [blk("P1", k1)]}), "別の知らせを P1 で落とす答えを合格にした")
+    r5 = cases["review-article-press-price-conflict-r5"]
+    f5 = f"docs/_posts/{next(iter(r5['posts']))}"
+    check(jr(r5["expect"], {"verdict": "block", "blockers": [blk("R5", f5)]}) == [] and jr(r5["expect"], {"verdict": "block", "blockers": [blk("R1", f5)]}),
+          "食い違う報道の価格の記事: R5 の指摘だけを合格にする")
+    # 本番の経路を偽の答えで通す(モデルは呼ばない)。結果の置き場・作業フォルダ・依頼文のファイルは一時ディレクトリに作る
+    saved = (rule_bench.OUT, pipelib.ROOT, compose.ROOT, writer_bench.write_one, compose.subprocess.Popen, os.environ.get(rule_bench.FIXED_PAGES_ENV))
+    saved_stage = dict(compose.STAGE_MIN)      # 校閲は巡の実測を残す(ほかのテストの見積もりに混ぜない)
+    seen = {}
+    try:
+        rule_bench.OUT = tmp / "out"
+        pipelib.ROOT = compose.ROOT = tmp / "root"
+
+        def fake_write(name, short, label, model):
+            seen["write"] = (short, os.environ.get(rule_bench.FIXED_PAGES_ENV), model)
+            return {"case": name, "answer": copy.deepcopy(good), "exit": 0}
+        writer_bench.write_one = fake_write
+        r = rule_bench.run_one("write-partial-mismatch-drops-one", "t1")
+        short, pages, model = seen.get("write", ("", "", ""))
+        prompt_path = re.search(r"`([^`]+\.md)`", short)
+        prompt = Path(prompt_path.group(1)).read_text(encoding="utf-8") if prompt_path else ""
+        check(r["pass"] and r["problems"] == [], f"偽の答え(残りの素材で書いた)が本番の執筆の経路で不合格: {r.get('problems')}")
+        check(a_url in prompt and '"id": "F5"' in prompt and "## 素材" in prompt, "執筆の依頼文に素材が本番と同じ形(F 番号付き)で入っていない")
+        check(model == pipelib.CODEX_WRITE_MODEL, f"執筆のモデルが本番と違う: {model}")
+        check(pages and json.loads(Path(pages).read_text(encoding="utf-8")) == w["pages"], "執筆に事例の出典の本文が渡らない")
+        writer_bench.write_one = lambda name, short, label, model: {"case": name, "answer": dict(decl), "exit": 0}
+        r = rule_bench.run_one("write-partial-mismatch-drops-one", "t2")
+        check(not r["pass"] and (rule_bench.OUT / "t2" / "write-partial-mismatch-drops-one.json").exists(), "見送った偽の答えを合格にした・結果が残らない")
+        calls, said = [], [blk("P1", fb)]
+
+        class FakeP:
+            returncode, pid = 0, 0
+
+            def __init__(self, argv, cwd=None, **k):
+                calls.append({"argv": argv, "cwd": Path(cwd), "pages": os.environ.get(rule_bench.FIXED_PAGES_ENV),
+                              "posts": sorted(p.name for p in (Path(cwd) / "docs" / "_posts").glob("*.md"))})
+
+            def communicate(self, timeout=None):
+                return (json.dumps({"verdict": "block", "comments": [], "blockers": said}), "")
+        compose.subprocess.Popen = FakeP
+        r = rule_bench.run_one("review-paper-same-news-twice-drops-one", "t3")
+        c0 = calls[0] if calls else {}
+        check(r["pass"], f"偽の答え(1本を落とす)が本番の校閲の経路で不合格: {r.get('problems')}")
+        check(len(calls) == 1 and c0["posts"] == sorted(pair["posts"]) and c0["cwd"] == rule_bench.OUT / "t3" / "review-paper-same-news-twice-drops-one",
+              f"校閲が事例の記事だけを置いた作業フォルダで動かない: {c0.get('cwd')} {c0.get('posts')}")
+        check("--json-schema" in c0.get("argv", []) and pipelib.REVIEW_MODEL in c0.get("argv", []) and c0.get("pages"),
+              "校閲の呼び出しが本番と違う(判定 schema・モデル)か、出典の本文が渡らない")
+        check(pipelib.ROOT == compose.ROOT == tmp / "root", "校閲のあとに ROOT が戻らない")
+        calls.clear()
+        said[:] = [blk("P1", k1)]
+        r = rule_bench.run_one("review-paper-same-event-different-news-kept", "t4")
+        check(not r["pass"] and "P1" in " ".join(r["problems"]), f"別の知らせを落とす偽の答えを合格にした: {r.get('problems')}")
+        # 事例の記事を指さない指摘は、本番の校閲がコメントに回す(落とす力を持たない)。照らすのは本番が動く形
+        said[:] = [blk("P1", "docs/_posts/2026-10-07-not-in-case.md")]
+        r = rule_bench.run_one("review-paper-same-event-different-news-kept", "t5")
+        check(r["pass"] and r["answer"]["verdict"] == "approve", f"事例の記事を指さない指摘で不合格にした: {r.get('problems')}")
+    finally:
+        (rule_bench.OUT, pipelib.ROOT, compose.ROOT, writer_bench.write_one, compose.subprocess.Popen, env) = saved
+        compose.STAGE_MIN.clear()
+        compose.STAGE_MIN.update(saved_stage)
+        if env is None:
+            os.environ.pop(rule_bench.FIXED_PAGES_ENV, None)
+        else:
+            os.environ[rule_bench.FIXED_PAGES_ENV] = env
+    # fetch_page.py は事例の本文を返す(取りに行かない・描画しない)。事例に無いページは取れない
+    pages = tmp / "pages.json"
+    pages.write_text(json.dumps({"https://a.example/x/": "告知\n\n\n\n受付期間：10月1日～10月12日\n本文"}, ensure_ascii=False), encoding="utf-8")
+    saved_f = (fetch_page.fetch, fetch_page.needs_render, sys.argv, os.environ.get(fetch_page.FIXED_PAGES_ENV))
+
+    def no_net(*a, **k):
+        raise AssertionError("事例の本文を返すときに取りに行った")
+    outs = []
+    try:
+        fetch_page.fetch = fetch_page.needs_render = no_net
+        os.environ[fetch_page.FIXED_PAGES_ENV] = str(pages)
+        for u in ("https://a.example/x", "https://a.example/other"):
+            buf = io.StringIO()
+            sys.argv = ["fetch_page.py", u]
+            with contextlib.redirect_stdout(buf):
+                rc = fetch_page.main()
+            outs.append((rc, buf.getvalue()))
+    finally:
+        fetch_page.fetch, fetch_page.needs_render, sys.argv, env = saved_f
+        if env is None:
+            os.environ.pop(fetch_page.FIXED_PAGES_ENV, None)
+        else:
+            os.environ[fetch_page.FIXED_PAGES_ENV] = env
+    check(outs and outs[0][0] == 0 and "--- 本文(要約なし) ---\n告知\n\n受付期間" in outs[0][1] and "受付期間" in outs[0][1].split("--- 本文")[0],
+          f"事例の本文を本番と同じ形(期間・本文)で返さない: {outs[:1]}")
+    check(len(outs) == 2 and outs[1][0] == 1 and outs[1][1].startswith("FETCH_FAILED"), f"事例に無いページを取れたことにした: {outs[1:]}")
+
+
 def test_job_lock():
     # 本物の作業ツリーの排他(metrics/jobs.lock)は使わない: 走っている工程やもう1本のテストとぶつかって、テストが揺れる
     # (2026-10-13: selfcheck を2本同時に流すと、片方が「他の工程が作業ツリーを使っている」で赤になった)
@@ -6513,6 +6713,8 @@ def main() -> int:
     test_oncall_restore_on_exception(tmp / "oc")
     test_oncall_fix_until_clean(tmp / "of")
     test_settled_drops_not_rewritten(tmp / "sd")
+    test_rule_bench_cases()
+    test_rule_bench_judges_shape(tmp / "rb")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:

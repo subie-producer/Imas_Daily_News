@@ -9,11 +9,13 @@
 
 - 事例(bench/rules/cases/<名前>.json)は、依頼文に埋める変数(素材・切り口・記事ファイル)、出典のページの本文(固定)、期待する判断の形(expect)。
   素材は候補(candidates)の行の形で持つ。執筆には本番と同じく renderlib.materials_with_ids で F1… を振って渡す(expect の id はその番号)
-- 執筆(kind: write)は compose.article_prompt で依頼文を作り、writer_bench.write_one(本番の執筆と同じ codex exec・モデル・出力 schema)で書かせる。
+- 執筆(kind: write)は compose.article_prompt、書き直し(kind: revise)は compose.revise_prompt で依頼文を作り、writer_bench.write_one
+  (本番の執筆・書き直しと同じ codex exec・モデル・出力 schema・読み込み)で書かせる。
   校閲(kind: review_article / review_paper)は、事例の記事・素材・既報の台帳を置いた作業フォルダを ROOT にして compose.claude_review をそのまま呼ぶ
   (本番と同じ claude -p・モデル・判定 schema・指摘のまとめ方)
-- 照らすのは答えの形の欄だけ(判断はモデル、コードは形): 執筆は status・decline_code・根拠に付けた事実 id(見出し・リード・段落)・
-  sources と new_facts の url。校閲は claude_review がまとめた blockers の rule_id と file。内容の良し悪しはコードで判定しない
+- 照らすのは答えの形の欄だけ(判断はモデル、コードは形): 執筆・書き直しは status・decline_code・根拠に付けた事実 id(見出し・リード・段落)・
+  sources と new_facts の url。校閲は claude_review がまとめた blockers の rule_id と file。内容の良し悪しはコードで判定しない。
+  本番の検算(書き直しは指摘の外の照合も)に通らない答えは、本番では採らないので「形」の不合格として別に出す
 - 出典のページは毎回取りに行かない: 事例の本文を置いたファイルを環境変数 IMAS_FETCH_PAGES で渡し、fetch_page.py はそれを返す(事例に無いページは取れない)。
   ただし執筆(codex)の Web 検索は本物の Web に届く。「公式・報道に届かない」ことを前提にする事例は、Web に出典の無い話題で作る
   (2026-10-14 の初回: 本物の話題のまとめ記事の事例で、執筆が Web 検索で本物の報道を見つけて書いた)
@@ -42,7 +44,7 @@ from pipelib import CODEX_WRITE_MODEL, REVIEW_MODEL, ROOT, schema_errors  # noqa
 CODE = Path(__file__).resolve().parent.parent          # 事例・依頼文・道具はコードと同じ版
 CASES = CODE / "bench" / "rules" / "cases"
 OUT = ROOT / "metrics" / "work" / "bench" / "rules"
-KINDS = ("write", "review_article", "review_paper")
+KINDS = ("write", "revise", "review_article", "review_paper")
 RANKS = ("lead", "large", "medium", "small", "roundup", "culture")
 DECLINE_CODES = ("NO_PRIMARY_SOURCE", "SOURCE_MISMATCH", "TOO_FEW_MATERIALS", "NOT_NEWS", "OTHER")   # renderlib.DECLINE_CODES と同じ
 FIXED_PAGES_ENV = "IMAS_FETCH_PAGES"                  # fetch_page.py が読む(事例の出典の本文)
@@ -92,30 +94,41 @@ def case_problems(case: dict) -> list[str]:
         pages = {}
     if not isinstance(exp, dict):
         return p + ["expect が無い"]
-    if kind == "write":
+    if kind in ("write", "revise"):
         rows = case.get("materials")
         if not isinstance(rows, list) or not rows:
             return p + ["materials(素材の候補の行)が無い"]
         p += [f"materials: {e}" for e in schema_errors("candidates/2000-01-01.json", json.dumps(rows, ensure_ascii=False))]
-        for k in ("slug", "angle"):
-            if not isinstance(case.get(k), str) or not case[k]:
-                p.append(f"{k} が無い")
+        if not isinstance(case.get("slug"), str) or not case["slug"]:
+            p.append("slug が無い")
         if case.get("rank") not in RANKS:
             p.append(f"rank が {RANKS} のどれでもない")
-        if case.get("purpose") not in ("新情報", "期日の知らせ"):
-            p.append("purpose は 新情報 / 期日の知らせ")
-        trig = case.get("trigger")
-        if trig is not None and not (isinstance(trig, dict) and trig.get("kind") and trig.get("subject")):
-            p.append("trigger は null か {kind, subject, note}")
-        if not isinstance(case.get("story_facts"), list) or not all(isinstance(x, str) for x in case["story_facts"]):
-            p.append("story_facts は文字列の配列(既報が無ければ [])")
+        if kind == "write":
+            if not isinstance(case.get("angle"), str) or not case["angle"]:
+                p.append("angle が無い")
+            if case.get("purpose") not in ("新情報", "期日の知らせ"):
+                p.append("purpose は 新情報 / 期日の知らせ")
+            trig = case.get("trigger")
+            if trig is not None and not (isinstance(trig, dict) and trig.get("kind") and trig.get("subject")):
+                p.append("trigger は null か {kind, subject, note}")
+            if not isinstance(case.get("story_facts"), list) or not all(isinstance(x, str) for x in case["story_facts"]):
+                p.append("story_facts は文字列の配列(既報が無ければ [])")
+        else:
+            posts = case.get("posts")
+            if not (isinstance(posts, dict) and list(posts) == [f"{case.get('date')}-{case.get('slug')}.md"]):
+                p.append("revise の posts は書き直す記事1本({日付}-{slug}.md: 全文)")
+            else:
+                p += [f"posts: {e}" for e in schema_errors(f"docs/_posts/{next(iter(posts))}", str(next(iter(posts.values()))))]
+            issues = case.get("issues")
+            if not (isinstance(issues, list) and issues and all(isinstance(b, dict) and b.get("rule_id") and b.get("quote") for b in issues)):
+                p.append("issues は校閲の指摘(rule_id・quote …)の配列")
         ids = material_ids(rows if isinstance(rows, list) else [])
         urls = {norm_url(r.get("url")) for r in rows if isinstance(r, dict)}
         for r in rows:
             u = str((r or {}).get("url") or "")
             if u and not re.match(r"^https?://(x|twitter)\.com/", u) and u not in pages:
                 p.append(f"素材の url の本文が pages に無い(執筆は素材の url を全部読む): {u}")
-        unknown = set(exp) - {"status", "decline_codes", "cite", "not_cite", "sources", "not_sources"}
+        unknown = set(exp) - {"status", "decline_codes", "cite", "not_cite", "sources", "not_sources", "cite_sources"}
         if unknown:
             p.append(f"expect に知らない欄: {sorted(unknown)}")
         if exp.get("status") not in ("ok", "decline"):
@@ -128,12 +141,12 @@ def case_problems(case: dict) -> list[str]:
             bad = [i for i in exp.get(k) or [] if i not in ids]
             if bad:
                 p.append(f"expect.{k} に素材に無い事実 id: {bad}")
-        for k in ("sources", "not_sources"):
+        for k in ("sources", "not_sources", "cite_sources"):
             bad = [u for u in exp.get(k) or [] if norm_url(u) not in urls]
             if bad:
                 p.append(f"expect.{k} に素材に無い url: {bad}")
-        if exp.get("status") == "ok" and not any(exp.get(k) for k in ("cite", "not_cite", "sources", "not_sources")):
-            p.append("書くことを期待する事例に、使う・使わない素材の期待(cite / not_cite / sources / not_sources)が無い")
+        if exp.get("status") == "ok" and not any(exp.get(k) for k in ("cite", "not_cite", "sources", "not_sources", "cite_sources")):
+            p.append("書くことを期待する事例に、使う・使わない素材の期待(cite / not_cite / sources / not_sources / cite_sources)が無い")
         return p
     posts = case.get("posts")
     if not isinstance(posts, dict) or not posts:
@@ -194,8 +207,10 @@ def cited_ids(ans: dict) -> set[str]:
     return {str(i).strip() for i in ids}
 
 
-def judge_write(expect: dict, ans) -> list[str]:
-    """執筆の答えの形を期待と照らす(空なら合格)。"""
+def judge_write(expect: dict, ans, materials: list[dict] | tuple = ()) -> list[str]:
+    """執筆・書き直しの答えの形を期待と照らす(空なら合格)。
+    cite_sources は「その出典の事実(素材の F か、その url を読んだ new_facts の N)を根拠に使った」。どの値を本文に書いたかは見ない
+    (内容の判断はモデル。報道の食い違う値を N に書き写して使う答えは、この形では捕まらない。それは校閲の R5 の事例が見る)"""
     if not isinstance(ans, dict):
         return ["答えが無い・読めない(正常に終わったセッションの、出力 schema どおりの答えが無い)"]
     st = ans.get("status")
@@ -213,7 +228,18 @@ def judge_write(expect: dict, ans) -> list[str]:
     used = srcs | {norm_url(f.get("url")) for f in ans.get("new_facts") or [] if isinstance(f, dict)}
     p += [f"出典に {u} が無い" for u in expect.get("sources") or [] if norm_url(u) not in srcs]
     p += [f"{u} を出典・確かめた事実に使った" for u in expect.get("not_sources") or [] if norm_url(u) in used]
+    if expect.get("cite_sources"):
+        url_of = {i: norm_url(u) for i, u in material_ids(list(materials)).items()}
+        url_of.update({str(f.get("id")): norm_url(f.get("url")) for f in ans.get("new_facts") or [] if isinstance(f, dict)})
+        cited_urls = {url_of.get(i) for i in cited}
+        p += [f"{u} の事実を根拠に使っていない" for u in expect["cite_sources"] if norm_url(u) not in cited_urls]
     return p
+
+
+def shape_problems(problems: list[str]) -> list[str]:
+    """本番の検算・書き直しの照合で、本番なら採らない(差し戻す・元の稿のまま)形の誤り。「指摘に無い…」は範囲の記録で、形の誤りではない
+    (compose.revise_apply と同じ分け方)。規則の判断とは別に不合格として報告する(本番で採れない答えを合格にしない。監査指摘)"""
+    return [x for x in problems if not str(x).startswith("指摘に無い")]
 
 
 def judge_review(expect: dict, merged) -> list[str]:
@@ -247,7 +273,7 @@ def summary(kind: str, ans) -> str:
     """答えの要点(報告用)。"""
     if not isinstance(ans, dict):
         return "答えなし"
-    if kind == "write":
+    if kind in ("write", "revise"):
         if ans.get("status") == "decline":
             return f"decline {ans.get('decline_code')}: {str(ans.get('decline_detail') or '')[:140]}"
         return (f"ok 「{ans.get('title')}」 根拠 {sorted(cited_ids(ans), key=lambda i: (i[0], int(re.sub(r'\D', '', i) or 0)))} "
@@ -268,9 +294,42 @@ def run_write(name: str, case: dict, label: str, work: Path) -> dict:
     ans = res["answer"]
     check = []
     if ans:
-        # 本番の検算も掛けて残す(通らなければ本番では差し戻しになる形の誤り)。合否は expect だけで決める
+        # 本番の検算(status の分岐より先に掛ける。通らなければ本番では差し戻し)
         try:
             check = renderlib.check_output(copy.deepcopy(ans), fact_by_id, case["materials"], rank=case["rank"], edition=case["date"])
+        except Exception as e:      # noqa: BLE001
+            check = [f"検算できない({type(e).__name__})"]
+    return {"answer": ans, "exit": res["exit"], "check_problems": check}
+
+
+def run_revise(name: str, case: dict, label: str, work: Path) -> dict:
+    """書き直し: 本番の revise_articles と同じ依頼文(compose.revise_prompt)・素材の形・指摘の id で、執筆と同じ codex exec に書き直させる。
+    形の検査も本番の revise_apply と同じ順(event_date の写し → 検算 → 指摘の外の照合)。"""
+    import compose
+    import renderlib
+    import writer_bench
+    date = case["date"]
+    mats_in, fact_by_id = renderlib.materials_with_ids(case["materials"])
+    issues = [{**b, "issue_id": f"I{k + 1}"} for k, b in enumerate(case["issues"])]    # 本番と同じく機械が id を振る
+    (n, current), = case["posts"].items()
+    post = work / "docs" / "_posts" / n
+    post.parent.mkdir(parents=True)
+    pipelib.write_checked(post, current)
+    prompt = compose.revise_prompt(date, {"slug": case["slug"], "rank": case["rank"]}, mats_in, current, issues)
+    short = pipelib.prompt_file("bench", f"rules-{label}-{name}", prompt)
+    res = writer_bench.write_one(f"rules-{name}", short, label, CODEX_WRITE_MODEL)
+    ans = res["answer"]
+    check = []
+    if ans:
+        try:
+            a = copy.deepcopy(ans)
+            old_fm = compose.parse_front_matter(post)
+            if a.get("status") != "decline" and old_fm and not compose.event_date_targeted(issues, old_fm):
+                ev = old_fm.get("event_date")
+                a["event_date"] = ev.isoformat() if hasattr(ev, "isoformat") else (str(ev) if ev else None)
+            check = renderlib.check_output(a, fact_by_id, case["materials"], rank=case["rank"], edition=date)
+            if a.get("status") != "decline":
+                check += compose.revise_check(a, issues, old_fm, re.split(r"\n---\n", current, maxsplit=1)[-1])
         except Exception as e:      # noqa: BLE001
             check = [f"検算できない({type(e).__name__})"]
     return {"answer": ans, "exit": res["exit"], "check_problems": check}
@@ -314,10 +373,13 @@ def run_one(name: str, label: str) -> dict:
     pages = work / "pages.json"
     pages.write_text(json.dumps(case["pages"], ensure_ascii=False), encoding="utf-8")
     os.environ[FIXED_PAGES_ENV] = str(pages)      # 子(codex・claude とその道具)が引き継ぐ
-    res = (run_write if case["kind"] == "write" else run_review)(name, case, label, work)
-    judge = judge_write if case["kind"] == "write" else judge_review
-    res.update({"case": name, "kind": case["kind"], "rule": case["rule"], "problems": judge(case["expect"], res["answer"])})
-    res["pass"] = not res["problems"]
+    writes = case["kind"] in ("write", "revise")
+    res = {"write": run_write, "revise": run_revise}.get(case["kind"], run_review)(name, case, label, work)
+    res.update({"case": name, "kind": case["kind"], "rule": case["rule"],
+                "problems": (judge_write(case["expect"], res["answer"], case["materials"]) if writes
+                             else judge_review(case["expect"], res["answer"])),
+                "shape_problems": shape_problems(res.get("check_problems") or []) if writes and res["answer"] else []})
+    res["pass"] = not res["problems"] and not res["shape_problems"]
     res["summary"] = summary(case["kind"], res["answer"])
     (OUT / label / f"{name}.json").write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
     return res
@@ -356,7 +418,9 @@ def run(names: list[str], label: str) -> int:
         results = list(ex.map(child, cases))
     for r in results:
         print(f"{'合格' if r['pass'] else '不合格'} {r['case']}: {r.get('summary', '')}"
-              + ("" if r["pass"] else f"\n    → {' / '.join(r['problems'])}"), flush=True)
+              + (f"\n    → 規則: {' / '.join(r['problems'])}" if r.get("problems") else "")
+              + (f"\n    → 形(本番なら差し戻し・元の稿のまま): {' / '.join(r['shape_problems'])}" if r.get("shape_problems") else ""),
+              flush=True)
     n_ok = sum(1 for r in results if r["pass"])
     print(f"rule_bench: {n_ok}/{len(results)} 合格(記録 {d.relative_to(ROOT)}/)", flush=True)
     return 0 if n_ok == len(results) else 1

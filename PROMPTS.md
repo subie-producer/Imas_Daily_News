@@ -9,7 +9,8 @@
 - オッカムの剃刀: コードや schema が決めることを依頼文で繰り返さない。使われていない経路の指示を残さない。90 行を超えたら分けるか削る
 - これらは `scripts/test_pipeline.py` の `test_prompts_are_instructions_only` が確かめる
 - 執筆・書き直し・校閲の依頼文(write-article*・revise-article・review-*)を変えたら、`python3 scripts/rule_bench.py --run` で規則の事例を
-  いまのモデルに判断させ、全部合格を確かめる(手順は PIPELINE.md 4g4)。規則を足したら、その規則の事例も `bench/rules/cases/` に足す。
+  いまのモデルに判断させ、全部合格を確かめる(手順と、いま事例のある規則の一覧は PIPELINE.md 4g4)。事例の無い規則を変える・足すときは、
+  その規則の事例(合う例と外れる例)を `bench/rules/cases/` に足してから走らせる。
   回帰テストは依頼文の文言しか見られず、逆の規則を書き足しても文言が残れば通った(2026-10-14 の監査)
 
 ## 2. 一覧

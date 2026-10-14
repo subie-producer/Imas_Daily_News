@@ -931,6 +931,7 @@ RULE_CASES = {
     "write-press-price-conflict-uses-official": "write", "review-article-press-only-no-r5": "review_article",
     "review-article-fan-matome-only-r5": "review_article", "review-article-press-price-conflict-r5": "review_article",
     "review-paper-same-event-different-news-kept": "review_paper", "review-paper-same-news-twice-drops-one": "review_paper",
+    "revise-press-price-conflict-uses-official": "revise",
 }
 
 
@@ -973,6 +974,10 @@ def test_rule_bench_cases():
     check(broken("review-article-press-only-no-r5", lambda c: c["posts"].update({k: v.replace("rank: small", "rank: tiny") for k, v in c["posts"].items()})),
           "書式に合わない記事を通す")
     check(broken("review-paper-same-event-different-news-kept", lambda c: c.update(kind="review")), "知らない kind を通す")
+    check(broken("write-press-price-conflict-uses-official", lambda c: c["expect"].update(cite_sources=["https://x.example/"])),
+          "素材に無い出典を cite_sources にできる")
+    check(broken("revise-press-price-conflict-uses-official", lambda c: c.update(issues=[])), "指摘の無い書き直しの事例を通す")
+    check(broken("revise-press-price-conflict-uses-official", lambda c: c.update(slug="other")), "書き直す記事と slug が合わない事例を通す")
 
 
 def test_rule_bench_judges_shape(tmp: Path):
@@ -990,9 +995,11 @@ def test_rule_bench_judges_shape(tmp: Path):
         return
     w = cases["write-partial-mismatch-drops-one"]
     a_url, b_url = w["materials"][0]["url"], w["materials"][1]["url"]
-    good = {"status": "ok", "title": "t", "title_fact_ids": ["F1"], "lede": "l", "lede_fact_ids": ["F1"],
-            "blocks": [{"markdown": "m", "fact_ids": ["F2", "N1"]}], "new_facts": [{"id": "N1", "text": "8,800円", "url": a_url}],
-            "sources": [{"url": a_url.rstrip("/"), "label": "x"}]}
+    # 本番の検算に通る形の答え(形の不合格と規則の不合格を分けて見るため)
+    good = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "SideMぱしゃこれA-BOX予約", "title_fact_ids": ["F1"],
+            "lede": "l", "lede_fact_ids": ["F1"], "blocks": [{"markdown": "m", "fact_ids": ["F2", "N1"]}], "tags": ["SideM", "予約"],
+            "new_facts": [{"id": "N1", "text": "8,800円", "url": a_url}], "event_date": None, "addressed_issue_ids": [],
+            "sources": [{"url": a_url.rstrip("/"), "label": "アニメイト通販「A-BOX」(2026年10月12日)"}]}
     jw = rule_bench.judge_write
     check(jw(w["expect"], good) == [], f"残りの素材で書いた答えを不合格にした: {jw(w['expect'], good)}")
     bad = copy.deepcopy(good)
@@ -1010,12 +1017,18 @@ def test_rule_bench_judges_shape(tmp: Path):
     m = cases["write-fan-matome-only-declines"]["expect"]
     check(jw(m, dict(decl, decline_code="NO_PRIMARY_SOURCE")) == [] and jw(m, decl) and jw(m, good),
           "まとめ記事だけの事例: NO_PRIMARY_SOURCE の見送りだけを合格にする")
-    p = cases["write-press-price-conflict-uses-official"]["expect"]
-    off = cases["write-press-price-conflict-uses-official"]["materials"][0]["url"]
+    pc = cases["write-press-price-conflict-uses-official"]
+    p, mats = pc["expect"], pc["materials"]
+    off, press = mats[0]["url"], mats[1]["url"]
     ans = dict(good, title_fact_ids=["F1"], lede_fact_ids=["F3"], blocks=[{"markdown": "m", "fact_ids": ["F2"]}], new_facts=[],
                sources=[{"url": off, "label": "x"}])
-    check(jw(p, ans) == [], f"公式の価格で書いた答えを不合格にした: {jw(p, ans)}")
-    check(jw(p, dict(ans, lede_fact_ids=["F15"])) and jw(p, dict(ans, lede_fact_ids=["F3", "F15"])), "報道の食い違う価格を使った答えを合格にした")
+    check(jw(p, ans, mats) == [], f"公式の価格で書いた答えを不合格にした: {jw(p, ans, mats)}")
+    check(jw(p, dict(ans, lede_fact_ids=["F15"]), mats) and jw(p, dict(ans, lede_fact_ids=["F3", "F15"]), mats), "報道の食い違う価格を使った答えを合格にした")
+    # 公式のページを読んで N に書いた価格を根拠にしても、規則どおり(F3 でなくてよい。監査指摘)
+    via_n = dict(ans, lede_fact_ids=["N4"], title_fact_ids=["F12"], new_facts=[{"id": "N4", "text": "価格は19,800円(税込)", "url": off}])
+    check(jw(p, via_n, mats) == [], f"公式を読んだ N で書いた答えを不合格にした: {jw(p, via_n, mats)}")
+    only_press = dict(ans, lede_fact_ids=["F12"], title_fact_ids=["F16"], blocks=[], sources=[{"url": off, "label": "x"}, {"url": press, "label": "y"}])
+    check(jw(p, only_press, mats), "公式の事実を根拠に使わない答えを合格にした")
     # 校閲: rule_id は頭の項目番号で読む(R15 は R1 ではない)
     check([rule_bench.rule_of(x) for x in ("P1", "P1 同じ主題", " R-5", "R15", "", None)] == ["P1", "P1", "R5", "R15", "", ""], "rule_id の読み方")
     pair = cases["review-paper-same-news-twice-drops-one"]
@@ -1060,6 +1073,55 @@ def test_rule_bench_judges_shape(tmp: Path):
         writer_bench.write_one = lambda name, short, label, model: {"case": name, "answer": dict(decl), "exit": 0}
         r = rule_bench.run_one("write-partial-mismatch-drops-one", "t2")
         check(not r["pass"] and (rule_bench.OUT / "t2" / "write-partial-mismatch-drops-one.json").exists(), "見送った偽の答えを合格にした・結果が残らない")
+        # 本番の検算に通らない答え(理由の無い見送り)は、規則の判断が期待どおりでも合格にしない(本番は差し戻す。監査指摘)
+        writer_bench.write_one = lambda name, short, label, model: {
+            "case": name, "answer": {**decl, "decline_code": "NO_PRIMARY_SOURCE", "decline_detail": ""}, "exit": 0}
+        r = rule_bench.run_one("write-fan-matome-only-declines", "t2b")
+        check(not r["pass"] and r["problems"] == [] and r["shape_problems"], f"本番の検算に通らない答えを合格にした: {r.get('shape_problems')}")
+        # 答えの読み込みは本番と同じ(同じキーが2回ある答えは読めない答え)
+        saved_run = writer_bench.subprocess.run
+        try:
+            whole = json.dumps(good, ensure_ascii=False)
+            for text, readable in (('{"status": "decline", ' + whole[1:], False), (whole, True)):
+                def fake_run(cmd, **kw):
+                    Path(cmd[cmd.index("--output-last-message") + 1]).write_text(text, encoding="utf-8")
+                    return subprocess.CompletedProcess(cmd, 0, "", "")
+                writer_bench.subprocess.run = fake_run
+                got = saved[3]("x", "p", "t", "m")["answer"]
+                check((got is not None) == readable, f"答えの読み込みが本番と違う(同じキーが2回ある答え・正しい答え): {text[:40]} → {got}")
+        finally:
+            writer_bench.subprocess.run = saved_run
+        # 書き直し: 本番と同じ依頼文(指摘に I1 を振る・現在の記事・素材)で書かせ、報道の食い違う価格を根拠に残さない答えだけを合格にする
+        import yaml
+        rv = rule_bench.load_cases(["revise-press-price-conflict-uses-official"])["revise-press-price-conflict-uses-official"]
+        post_text = next(iter(rv["posts"].values()))
+        fm = yaml.safe_load(post_text.split("---\n")[1])
+        paras = [re.match(r"(.*) <!-- (.*) -->$", x, re.S) for x in post_text.split("\n---\n", 1)[1].strip().split("\n\n")]
+        blocks = [{"markdown": m_.group(1), "fact_ids": m_.group(2).split()} for m_ in paras]
+        rev_good = {"status": "ok", "decline_code": "", "decline_detail": "", "title": fm["title"], "title_fact_ids": fm["title_fact_ids"],
+                    "lede": fm["lede"], "lede_fact_ids": fm["lede_fact_ids"], "tags": fm["tags"], "new_facts": [], "event_date": None,
+                    "blocks": [{"markdown": blocks[0]["markdown"].replace("18,700", "19,800"), "fact_ids": ["F3", "F2", "F7"]}] + blocks[1:],
+                    "sources": [{"url": s["url"], "label": s["label"]} for s in fm["sources"]], "addressed_issue_ids": ["I1"]}
+        rev_keep = copy.deepcopy(rev_good)
+        rev_keep["blocks"][0] = blocks[0]
+
+        def fake_revise(answer):
+            def f(name, short, label, model):
+                seen["revise"] = Path(re.search(r"`([^`]+\.md)`", short).group(1)).read_text(encoding="utf-8")
+                return {"case": name, "answer": copy.deepcopy(answer), "exit": 0}
+            return f
+        writer_bench.write_one = fake_revise(rev_good)
+        r = rule_bench.run_one("revise-press-price-conflict-uses-official", "t6")
+        rp = seen.get("revise", "")
+        check(r["pass"], f"公式の価格に書き直した偽の答えを不合格にした: {r.get('problems')} {r.get('shape_problems')}")
+        check('"issue_id": "I1"' in rp and '"rule_id": "R5"' in rp and fm["title"] in rp and '"id": "F15"' in rp,
+              "書き直しの依頼文に、本番と同じ形の指摘(I1)・現在の記事・素材が入っていない")
+        writer_bench.write_one = fake_revise(rev_keep)
+        r = rule_bench.run_one("revise-press-price-conflict-uses-official", "t7")
+        check(not r["pass"] and any("F15" in x for x in r["problems"]), f"報道の価格を残した書き直しを合格にした: {r.get('problems')}")
+        writer_bench.write_one = fake_revise(dict(rev_good, addressed_issue_ids=[]))
+        r = rule_bench.run_one("revise-press-price-conflict-uses-official", "t8")
+        check(not r["pass"] and r["shape_problems"], f"本番の照合で戻る書き直し(対応していない指摘)を合格にした: {r.get('shape_problems')}")
         calls, said = [], [blk("P1", fb)]
 
         class FakeP:
@@ -1104,15 +1166,27 @@ def test_rule_bench_judges_shape(tmp: Path):
     def no_net(*a, **k):
         raise AssertionError("事例の本文を返すときに取りに行った")
     outs = []
+
+    def run_fetch(u):
+        buf = io.StringIO()
+        sys.argv = ["fetch_page.py", u]
+        with contextlib.redirect_stdout(buf):
+            rc = fetch_page.main()
+        return rc, buf.getvalue()
+    wrong = []
     try:
         fetch_page.fetch = fetch_page.needs_render = no_net
         os.environ[fetch_page.FIXED_PAGES_ENV] = str(pages)
         for u in ("https://a.example/x", "https://a.example/other"):
-            buf = io.StringIO()
-            sys.argv = ["fetch_page.py", u]
-            with contextlib.redirect_stdout(buf):
-                rc = fetch_page.main()
-            outs.append((rc, buf.getvalue()))
+            outs.append(run_fetch(u))
+        # 全事例の固定の本文が、本番の出力の形(空行の連なりを詰める・上限で切る)以外は一字も変わらずに返る(監査指摘: 値の破損を見逃さない)
+        for n, c in cases.items():
+            pages.write_text(json.dumps(c["pages"], ensure_ascii=False), encoding="utf-8")
+            for u, body in c["pages"].items():
+                rc, out = run_fetch(u)
+                want = re.sub(r"\n[ \t　]*(?:\n[ \t　]*)+", "\n\n", body).strip()[:40000]
+                if rc != 0 or out.split("--- 本文(要約なし) ---\n", 1)[-1] != want + "\n":
+                    wrong.append(f"{n}: {u}")
     finally:
         fetch_page.fetch, fetch_page.needs_render, sys.argv, env = saved_f
         if env is None:
@@ -1122,6 +1196,7 @@ def test_rule_bench_judges_shape(tmp: Path):
     check(outs and outs[0][0] == 0 and "--- 本文(要約なし) ---\n告知\n\n受付期間" in outs[0][1] and "受付期間" in outs[0][1].split("--- 本文")[0],
           f"事例の本文を本番と同じ形(期間・本文)で返さない: {outs[:1]}")
     check(len(outs) == 2 and outs[1][0] == 1 and outs[1][1].startswith("FETCH_FAILED"), f"事例に無いページを取れたことにした: {outs[1:]}")
+    check(not wrong, f"事例の固定の本文が、そのままの中身で返らない: {wrong[:3]}")
 
 
 def test_job_lock():

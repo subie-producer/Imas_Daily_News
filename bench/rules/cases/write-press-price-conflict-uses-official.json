@@ -67,11 +67,11 @@
  },
  "expect": {
   "status": "ok",
-  "cite": [
-   "F3"
-  ],
   "not_cite": [
    "F15"
+  ],
+  "cite_sources": [
+   "https://idolmaster-official.jp/news/01_20050"
   ],
   "sources": [
    "https://idolmaster-official.jp/news/01_20050"

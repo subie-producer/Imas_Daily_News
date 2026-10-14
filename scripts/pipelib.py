@@ -8,6 +8,7 @@ import shutil
 import signal
 import subprocess
 import sys
+import threading
 import time
 import traceback
 import urllib.request
@@ -496,11 +497,19 @@ def reap(p, grace: int = 10) -> tuple[str, str]:
     """時間切れのセッションを落とし、それまでの出力を回収する。**回収にも上限を付ける。**
     claude / codex が起動した子(道具の実行)が出力のパイプを持ったまま残ると、親だけを kill しても
     上限なしの communicate() が子の終了まで待ち、締切を越えて工程が止まる(監査指摘)。
-    start_new_session=True で起動したものはプロセスグループごと落とす。"""
+    プロセスグループと子孫(自分でグループを分けた道具も)を止め、死んだのを確かめてから出力を読む(stop_tree)。"""
+    if isinstance(p, LaunchFailed):
+        return "", p.error
+    pid = getattr(p, "pid", None)
     try:
-        os.killpg(p.pid, signal.SIGKILL)
-    except (ProcessLookupError, PermissionError, OSError):
+        # 頭がまだ回収前(生きている・ゾンビ)なら pid は再利用されていないので、頭から子孫を辿ってよい
+        stop_tree(pid, root=pid if p.returncode is None else None)
+    except Exception:       # noqa: BLE001  止め方の失敗で回収を飛ばさない(下で頭だけは必ず落とす)
+        traceback.print_exc()
+    try:
         p.kill()
+    except OSError:
+        pass
     try:
         so, se = p.communicate(timeout=grace)
     except subprocess.TimeoutExpired as e:
@@ -508,7 +517,190 @@ def reap(p, grace: int = 10) -> tuple[str, str]:
         se += "\n(出力を回収しきれなかった)"
     except ValueError:      # すでに回収済み・パイプが閉じている
         so, se = "", ""
+    finally:
+        _forget(p)
     return so or "", (se or "") + "\n(時間切れ)"
+
+
+# --- モデル・道具のセッションの起動と回収 ---------------------------------------------------------
+# モデルの CLI(claude・codex・grok)と、それが起動する道具(Bash・fetch_page.py・描画のブラウザ)は、すべて start_group / run_group で
+# 自前のセッション(プロセスグループ)に起動し、時間切れ・中断(例外・SIGTERM)ではグループと子孫を止めて、死んだのを確かめてから返す。
+# subprocess.run(timeout=) は直接の子しか止めず、CLI が起動した道具が残って、失敗を返したあとも作業ツリーへ書き続けた
+# (監査指摘 2026-10-14: compose.claude_run・oncall.run_claude の時間切れのあとに孫がファイルを書いた)
+_SESSIONS: set = set()          # 起動して、まだ回収していないセッション(中断のとき stop_groups がまとめて止める)
+_SESSIONS_LOCK = threading.RLock()     # SIGTERM の後始末(同じスレッドの割り込み)から取り直せるように RLock
+
+
+class LaunchFailed:
+    """起動できなかったセッション(Popen の OSError)。その担当だけの異常終了(終了コード 127、理由は標準エラー)として扱う。
+    並列に起動している途中で1つが起動できなくても、例外で抜けて先に起動した担当を置き去りにしない(監査指摘 2026-10-14:
+    選定・校閲の2本目の起動の失敗で、1本目が回収されずに残った)。"""
+    pid = None
+    returncode = 127
+
+    def __init__(self, args, err: OSError):
+        self.args = args
+        self.error = f"起動できない({type(err).__name__}: {err})"
+
+    def poll(self):
+        return self.returncode
+
+    def wait(self, timeout=None):
+        return self.returncode
+
+    def communicate(self, timeout=None):
+        return "", self.error
+
+    def kill(self):
+        pass
+
+
+def _forget(p) -> None:
+    with _SESSIONS_LOCK:
+        _SESSIONS.discard(p)
+
+
+def _proc_table() -> dict[int, tuple[int, int, str]] | None:
+    """/proc の全プロセス: pid → (親の pid, プロセスグループ, 状態)。/proc が無ければ None。"""
+    try:
+        names = os.listdir("/proc")
+    except OSError:
+        return None
+    out: dict[int, tuple[int, int, str]] = {}
+    for d in names:
+        if not d.isdigit():
+            continue
+        try:
+            with open(f"/proc/{d}/stat", "rb") as f:
+                rest = f.read().decode("utf-8", "replace").rsplit(")", 1)[1].split()
+            out[int(d)] = (int(rest[1]), int(rest[2]), rest[0])
+        except (OSError, ValueError, IndexError):
+            continue
+    return out
+
+
+def _proc_gone(pid: int) -> bool:
+    """死んだ(消えた・ゾンビ)か。"""
+    try:
+        with open(f"/proc/{pid}/stat", "rb") as f:
+            return f.read().decode("utf-8", "replace").rsplit(")", 1)[1].split()[0] in ("Z", "X")
+    except (OSError, IndexError):
+        return True
+
+
+def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5) -> list[int]:
+    """プロセスグループ pgid の全員と、その子孫(自分でグループ・セッションを分けた道具も)を止め、死んだのを確かめる(上限 wait 秒)。
+    root はまだ回収していないセッションの頭(グループの頭でなくても、そこから子孫を辿る)。CLI が道具を別のグループ・セッションで
+    起動すると、グループだけを落としても残る。先に SIGSTOP で凍らせてから辿り直す(止めている間に起動された子を取りこぼさない)。
+    この process とそのグループには触らない。戻りは止めた pid。"""
+    if not isinstance(pgid, int) or pgid <= 1:
+        return []
+    me, own = os.getpid(), os.getpgrp()
+    caught: set[int] = set()
+    groups: set[int] = set()
+    table = _proc_table()
+    if table is None:           # /proc が無い: グループを落とすだけ
+        try:
+            os.killpg(pgid, signal.SIGKILL)
+        except OSError:
+            pass
+        return []
+    for _ in range(50):
+        groups = ({pgid} | {table[q][1] for q in caught if q in table}) - {own, 0}
+        found = {q for q, (_, pg, _) in table.items() if pg in groups} | caught
+        if root and root in table:
+            found.add(root)
+        kids: dict[int, list[int]] = {}
+        for q, (pp, _, _) in table.items():
+            kids.setdefault(pp, []).append(q)
+        todo = list(found)
+        while todo:
+            for c in kids.get(todo.pop(), []):
+                if c not in found:
+                    found.add(c)
+                    todo.append(c)
+        new = {q for q in found - caught - {me, 1} if table.get(q, (0, 0, "X"))[2] not in ("Z", "X")}
+        if not new:
+            break
+        for q in new:
+            try:
+                os.kill(q, signal.SIGSTOP)
+            except OSError:
+                pass
+        caught |= new
+        table = _proc_table() or {}
+    for g in (groups if caught else ()):     # 誰もいないグループの番号は再利用されうるので送らない
+        try:
+            os.killpg(g, signal.SIGKILL)
+        except OSError:
+            pass
+    for q in caught:
+        try:
+            os.kill(q, signal.SIGKILL)
+        except OSError:
+            pass
+    end = time.time() + wait
+    while time.time() < end and not all(_proc_gone(q) for q in caught):
+        time.sleep(0.01)
+    return sorted(caught)
+
+
+def start_group(cmd: list[str], *, cwd=None, env: dict | None = None, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
+    """モデル・道具のセッションを自前のセッション(プロセスグループ)で起動する。回収は finish_group。
+    並列に起動するときは、起動のたびに一覧へ足し、finally で stop_groups(一覧) を呼ぶ(途中の例外・中断で置き去りにしない)。
+    起動できなければ例外にせず LaunchFailed(その担当だけの異常終了)を返す。"""
+    try:
+        p = subprocess.Popen(cmd, cwd=cwd, env=env, stdout=stdout, stderr=stderr, text=True,
+                             stdin=subprocess.DEVNULL, start_new_session=True)
+    except OSError as e:
+        return LaunchFailed(cmd, e)
+    with _SESSIONS_LOCK:
+        _SESSIONS.add(p)
+    return p
+
+
+def finish_group(p, timeout: float | None) -> tuple[str, str, bool]:
+    """セッションの終わりを待ち、(標準出力, 標準エラー, 時間切れか) を返す(ファイルに出させたものは空)。timeout は秒(None は無制限)。
+    時間切れはグループと子孫を止めて、それまでの出力を回収する(reap)。中断(例外・SIGTERM を変えた SystemExit・Ctrl-C)でも
+    止めて回収してから上げる。正常に終わっても、グループに残った道具は止める(答えを読んだあとに作業ツリーへ書かせない)。"""
+    if isinstance(p, LaunchFailed):
+        return "", p.error, False
+    try:
+        so, se = p.communicate(timeout=None if timeout is None else max(0, timeout))
+    except subprocess.TimeoutExpired:
+        so, se = reap(p)
+        return so, se, True
+    except BaseException:
+        stop_groups([p])        # 中断でも止めて回収してから、元の例外を上げる
+        raise
+    try:
+        stop_tree(getattr(p, "pid", None))
+    finally:
+        _forget(p)
+    return so or "", se or "", False
+
+
+def run_group(cmd: list[str], timeout: float | None, *, cwd=None, env: dict | None = None) -> subprocess.CompletedProcess:
+    """モデル・道具を1つ走らせて終わりを待つ(subprocess.run(capture_output=True, text=True, stdin=DEVNULL, timeout=) の代わり)。
+    時間切れは TimeoutExpired(それまでの出力を持つ。partial_output で読める)で上げる。起動できなければ終了コード 127(理由は stderr)。"""
+    p = start_group(cmd, cwd=cwd, env=env)
+    so, se, timed_out = finish_group(p, timeout)
+    if timed_out:
+        raise subprocess.TimeoutExpired(cmd, timeout, output=so, stderr=se)
+    return subprocess.CompletedProcess(cmd, p.returncode, so, se)
+
+
+def stop_groups(procs=None) -> None:
+    """起動して、まだ回収していないセッションを止めて回収する。並列の起動・回収の finally(procs にその一覧)と、
+    SIGTERM の後始末(引数なし=この process の全部)から呼ぶ。回収済みのものには何もしない。"""
+    with _SESSIONS_LOCK:
+        live = [p for p in (list(_SESSIONS) if procs is None else procs) if p in _SESSIONS]
+    for p in live:
+        try:
+            reap(p, grace=2)
+        except Exception:       # noqa: BLE001  後始末の途中で止めない(finally から呼ばれ、元の例外を隠さない)
+            traceback.print_exc()
+            _forget(p)
 
 
 def read_for_raw(p: Path) -> str | None:
@@ -648,34 +840,11 @@ def claude_traced(args: list[str], trace: Path, timeout: int, cwd: Path | None =
     cmd = ["claude", "-p", *args, "--output-format", "stream-json", "--verbose"]
     t0, timed_out, rc, err = time.time(), False, None, ""
     with open(trace, "w", encoding="utf-8") as out:
-        # 自前のプロセスグループで起動し、時間切れには**グループごと**止める。直系の claude だけを殺すと、
-        # それが起動した道具(Bash の find など)が残り、やり直しのセッションと並走する(監査指摘)
-        proc = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE, text=True, stdin=subprocess.DEVNULL,
-                                cwd=cwd or ROOT, start_new_session=True)
-        try:
-            _, err = proc.communicate(timeout=timeout)
-            rc = proc.returncode
-        except subprocess.TimeoutExpired:
-            timed_out = True
-            for sig, grace in ((signal.SIGTERM, 5), (signal.SIGKILL, 5)):
-                try:
-                    os.killpg(proc.pid, sig)
-                except ProcessLookupError:
-                    break
-                try:
-                    proc.wait(timeout=grace)
-                except subprocess.TimeoutExpired:
-                    continue
-                # 親が終わっても、TERM を無視する子孫がグループに残っていれば KILL まで進む
-                try:
-                    os.killpg(proc.pid, 0)
-                except ProcessLookupError:
-                    break
-            try:
-                _, err = proc.communicate(timeout=5)
-            except (subprocess.TimeoutExpired, ValueError, OSError):
-                err = ""
-        err = err or ""
+        # 自前のプロセスグループで起動し、時間切れ・中断には**グループと子孫ごと**止める(start_group / finish_group)。直系の claude
+        # だけを殺すと、それが起動した道具(Bash の find など)が残り、やり直しのセッションと並走する(監査指摘)
+        proc = start_group(cmd, cwd=cwd or ROOT, stdout=out)
+        _, err, timed_out = finish_group(proc, timeout)
+        rc = None if timed_out else proc.returncode
     if err.strip():
         # 標準エラーは全文を経過の記録の隣に残す(要約は末尾 200 字だけで、先頭の原因が消える。監査指摘)
         try:
@@ -1214,9 +1383,9 @@ def render_page(url: str, timeout: int = 30) -> str:
     終了コードと stderr の要点を持った RenderFailed で上げる。以前は空文字に変えていて、呼び出し側の記録は「空の応答」
     だけになり、原因(2026-10-07 コロムビアの一覧の TimeoutException)を当番が別に再現して確かめていた(当番の指摘 dc23e62472)"""
     try:
-        r = subprocess.run(
-            [str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"), url, "--timeout", str(timeout)],
-            capture_output=True, text=True, timeout=timeout + 60, stdin=subprocess.DEVNULL, cwd=ROOT)
+        # ブラウザ(chromedriver・chrome)ごと止めるため、自前のグループで起動する(run_group)
+        r = run_group([str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"), url, "--timeout", str(timeout)],
+                      timeout=timeout + 60, cwd=ROOT)
     except subprocess.TimeoutExpired as e:
         raise RenderFailed(f"{url} の描画が {timeout + 60} 秒で終わらず打ち切った: "
                            + render_failure("(時間切れ)", partial_output(e)[1])) from None
@@ -1389,7 +1558,8 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
         cmd = [sys.executable, str(scripts / "classify_sources.py"), "--date", date, "--apply"] + (["--posts-only"] if posts_only else [])
         if require_parsers:      # 当番の再実行: パーサの無い URL が残っていたら失敗(成功扱いにしない。監査指摘 r85)
             cmd.append("--require-parsers")
-        r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout)
+        # 合議はモデルのセッションを起動する。時間切れで合議だけを落とすと、セッションが残って下の巻き戻しのあとに表を書く(run_group)
+        r = run_group(cmd, timeout=timeout, cwd=ROOT)
         print(r.stdout[-1200:], flush=True)
         if r.returncode != 0:
             why = f"合議 exit {r.returncode}: {err_tail(r)}"

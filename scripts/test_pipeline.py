@@ -723,6 +723,7 @@ def test_grok_deep_retry(tmp: Path):
             pid = 0
             returncode = 0
             def wait(self, timeout=None): return 0
+            def communicate(self, timeout=None): return None, None
 
         def fake_popen(args, cwd=None, **kw):
             wd = Path(cwd)
@@ -794,6 +795,7 @@ def test_lost_post_notified_once(tmp: Path):
             pid = 0
             returncode = 0
             def wait(self, timeout=None): return 0
+            def communicate(self, timeout=None): return None, None
         def fake_popen(args, cwd=None, **kw):
             wd = Path(cwd)
             urls = re.findall(r"(?m)^- url:\s*(\S+)", (wd / "x-posts.md").read_text(encoding="utf-8"))
@@ -1680,7 +1682,9 @@ def test_revise_apply_decline(tmp: Path):
         class P:
             returncode = 0
             def __init__(self, out_path): self.out_path = out_path
-            def communicate(self, timeout=None): Path(self.out_path).write_text("これは JSON ではない", encoding="utf-8")
+            def communicate(self, timeout=None):
+                Path(self.out_path).write_text("これは JSON ではない", encoding="utf-8")
+                return None, None
             def kill(self): pass
         def fake_popen(cmd, **kw):
             return P(cmd[cmd.index("--output-last-message") + 1])
@@ -2227,9 +2231,11 @@ def test_classify_posts_only(tmp: Path):
             (tmp / "docs" / "_posts" / "2026-09-19-new.md").write_text("x", encoding="utf-8")
             return subprocess.CompletedProcess(cmd, 1, "", "boom")
         return subprocess.CompletedProcess(cmd, 0, "", "")
-    saved_run, saved_root = pipelib.subprocess.run, pipelib.ROOT
+    # 合議(モデルのセッションを起動する)は run_group、付け直し・lint は subprocess.run。どちらも同じ偽物で受ける
+    saved_run, saved_group, saved_root = pipelib.subprocess.run, pipelib.run_group, pipelib.ROOT
     try:
-        pipelib.subprocess.run, pipelib.ROOT = fake_run, tmp
+        pipelib.subprocess.run = pipelib.run_group = fake_run
+        pipelib.ROOT = tmp
         ok, why = pipelib.classify_retag_lint("2026-09-19", posts_only=True, lint=False)
         check(not ok and "合議 exit 1" in why and "boom" in why and "戻せない" not in why, f"取引の失敗の扱い: {ok} {why}")
         check("--posts-only" in calls[0] and not any("lint.py" in str(c) for cmd in calls for c in cmd), f"組版前の旗と lint 無し: {calls}")
@@ -2237,7 +2243,7 @@ def test_classify_posts_only(tmp: Path):
               and not (tmp / "docs" / "_posts" / "2026-09-19-new.md").exists(), "失敗した取引が開始時の中身へ戻っていない")
         # 成功の経路(組版前): 合議 → 付け直し で終わり、lint は掛けない
         calls.clear()
-        pipelib.subprocess.run = lambda cmd, **kw: (calls.append(cmd), subprocess.CompletedProcess(cmd, 0, "", ""))[1]
+        pipelib.subprocess.run = pipelib.run_group = lambda cmd, **kw: (calls.append(cmd), subprocess.CompletedProcess(cmd, 0, "", ""))[1]
         ok, why = pipelib.classify_retag_lint("2026-09-19", posts_only=True, lint=False)
         check(ok and len(calls) == 2, f"組版前の成功の経路: {ok} {len(calls)}")
         ok, why = pipelib.classify_retag_lint("2026-09-19")
@@ -2245,12 +2251,12 @@ def test_classify_posts_only(tmp: Path):
         # 戻せないとき
         saved_restore = pipelib._restore
         pipelib._restore = lambda snap, new_under=None: "a.md: Permission denied"
-        pipelib.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 1, "", "cannot")
+        pipelib.subprocess.run = pipelib.run_group = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 1, "", "cannot")
         ok, why = pipelib.classify_retag_lint("2026-09-19")
         check(not ok and "戻せない" in why, f"戻せないときの理由: {why}")
         pipelib._restore = saved_restore
     finally:
-        pipelib.subprocess.run, pipelib.ROOT = saved_run, saved_root
+        pipelib.subprocess.run, pipelib.run_group, pipelib.ROOT = saved_run, saved_group, saved_root
 
 
 def test_table_write_and_reload(tmp: Path):
@@ -3031,17 +3037,17 @@ def test_fetch_page_renders_whitespace_only_page():
     calls = []
     class R:
         returncode, stdout = 0, "<html><body><p>（2026.10.7 変更）営利を目的とした制作・配信は行わないでください。</p></body></html>"
-    saved = (fetch_page.fetch, pipelib.subprocess.run, sys.argv)
+    saved = (fetch_page.fetch, pipelib.run_group, sys.argv)
     try:
         fetch_page.fetch = lambda url: thin
-        pipelib.subprocess.run = lambda *a, **k: calls.append(a) or R()
+        pipelib.run_group = lambda *a, **k: calls.append(a) or R()
         sys.argv = ["fetch_page.py", "https://idolmaster-official.jp/lp/x"]
         import contextlib, io
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             fetch_page.main()
     finally:
-        fetch_page.fetch, pipelib.subprocess.run, sys.argv = saved
+        fetch_page.fetch, pipelib.run_group, sys.argv = saved
     check(calls and "2026.10.7 変更" in buf.getvalue(), f"改行だらけのページを描画し直さなかった: {buf.getvalue()[:120]!r}")
     # 描画必須と分かっているサイト(sources.yml の portal)は、メニューだけで非空白 400字を超えても描画して読む
     # (公式ポータルはナビだけで非空白 3千字を超える。監査指摘 render-detection-navigation)
@@ -3052,13 +3058,13 @@ def test_fetch_page_renders_whitespace_only_page():
     calls.clear()
     try:
         fetch_page.fetch = lambda url: nav
-        pipelib.subprocess.run = lambda *a, **k: calls.append(a) or R()
+        pipelib.run_group = lambda *a, **k: calls.append(a) or R()
         sys.argv = ["fetch_page.py", "https://idolmaster-official.jp/news/01_99999"]
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             fetch_page.main()
     finally:
-        fetch_page.fetch, pipelib.subprocess.run, sys.argv = saved
+        fetch_page.fetch, pipelib.run_group, sys.argv = saved
     check(calls and "2026.10.7 変更" in buf.getvalue(), f"公式ポータルの長いナビのページを描画し直さなかった: {buf.getvalue()[:120]!r}")
     # 収集の裏取りも同じ: 公式ポータルの長いナビのページは描画して期間を抜き出す
     import collect
@@ -3130,18 +3136,18 @@ def test_render_failure_keeps_cause(tmp: Path):
         returncode, stdout, stderr = 1, "", tb
     def timeout_run(*a, **k):
         raise subprocess.TimeoutExpired(a[0], 90, output=b"", stderr=b"RENDER_FAILED: TimeoutException: page load\n")
-    saved = pipelib.subprocess.run
+    saved = pipelib.run_group
     errs = []
     try:
         for run in (lambda *a, **k: Bad(), timeout_run):
-            pipelib.subprocess.run = run
+            pipelib.run_group = run
             try:
                 pipelib.render_page("https://columbia.jp/idolmaster/")
                 errs.append("")
             except pipelib.RenderFailed as e:
                 errs.append(str(e))
         # 定点観測の一覧(portal): 失敗の原因が観測先の失敗の記録に載る
-        pipelib.subprocess.run = lambda *a, **k: Bad()
+        pipelib.run_group = lambda *a, **k: Bad()
         try:
             collect.list_source({"id": "c", "type": "portal", "url": "https://columbia.jp/idolmaster/", "base": "https://columbia.jp",
                                  "list_regex": '<a href="([^"]+)">(.*?)</a>'}, set())
@@ -3159,7 +3165,7 @@ def test_render_failure_keeps_cause(tmp: Path):
         finally:
             fetch_page.fetch, sys.argv = saved_f, saved_argv
     finally:
-        pipelib.subprocess.run = saved
+        pipelib.run_group = saved
     check("終了コード 1" in errs[0] and "TimeoutException" in errs[0] and "#0" not in errs[0],
           f"描画の失敗に終了コード・例外の要点が無い(またはスタックの屑が入った): {errs[0]!r}")
     check("時間切れ" in errs[1] and "TimeoutException" in errs[1], f"描画の打ち切りに原因が無い: {errs[1]!r}")
@@ -3248,10 +3254,10 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
         finally:
             sys.argv = saved_argv
         return subprocess.CompletedProcess(cmd, rc, out.getvalue(), err.getvalue())
-    saved = (cs.subprocess.run, fetch_page.fetch, fetch_page.render_page, cs.page_meta)
+    saved = (cs.run_group, fetch_page.fetch, fetch_page.render_page, cs.page_meta)
     try:
         fetch_page.render_page = render_fail
-        cs.subprocess.run = run_fetch_page
+        cs.run_group = run_fetch_page
         fetch_page.fetch = lambda url: plain["body"]
         body, status = cs.rendered_excerpt("https://idolmaster-official.jp/")
         cs.page_meta = lambda url: ("t", "d", "")
@@ -3259,7 +3265,7 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
         plain["body"] = ""
         body2, status2 = cs.rendered_excerpt("https://idolmaster-official.jp/")
     finally:
-        cs.subprocess.run, fetch_page.fetch, fetch_page.render_page, cs.page_meta = saved
+        cs.run_group, fetch_page.fetch, fetch_page.render_page, cs.page_meta = saved
     check("メニュー1" in body and "描画できず" in status and "TimeoutException" in status and "終了コード 0" in status,
           f"分類の材料が描画の失敗を捨てた: {body[:60]!r} / {status!r}")
     check(profile.count("取得状態: 描画できず") == 2 and "TimeoutException" in profile,
@@ -3269,10 +3275,10 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
     # 正常なら取得状態は空(材料に余計な行を足さない)
     ok_run = lambda cmd, **k: subprocess.CompletedProcess(cmd, 0, "URL: x\n--- 本文(要約なし) ---\n会社概要 株式会社X\n", "")
     try:
-        cs.subprocess.run = ok_run
+        cs.run_group = ok_run
         body3, status3 = cs.rendered_excerpt("https://example.com/")
     finally:
-        cs.subprocess.run = saved[0]
+        cs.run_group = saved[0]
     check(body3 == "会社概要 株式会社X" and status3 == "", f"正常な取得に取得状態が付いた: {body3!r} {status3!r}")
 
     # 裏取り: 描画できずに写しが見えなかった候補は、描画の失敗を記録に残す(URL の取り違えとだけ書かない)
@@ -3648,6 +3654,7 @@ def test_grok_roles(tmp: Path):
         pid = 0
         returncode = 0
         def wait(self, timeout=None): return 0
+        def communicate(self, timeout=None): return None, None
     def fake_popen(args, cwd=None, **kw):
         started.append(Path(cwd).name)
         if "sidem" in Path(cwd).name:
@@ -3702,6 +3709,7 @@ def test_empty_answer_is_not_done(tmp: Path):
         pid = 0
         returncode = 0
         def wait(self, timeout=None): return 0
+        def communicate(self, timeout=None): return None, None
     def fake_popen(args, cwd=None, **kw):
         inputs[re.sub(r"^explore-|-[^-]+$", "", Path(cwd).name)] = (Path(cwd) / "x-posts.md").read_text(encoding="utf-8")
         (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "cg", "facts": ["f"]}]), encoding="utf-8")
@@ -3769,12 +3777,12 @@ def test_empty_answer_is_not_done(tmp: Path):
         pipelib.ROOT = saved_root
     check(a != b and "1回目" in a.read_text(encoding="utf-8") and "2回目" in b.read_text(encoding="utf-8"), f"生の出力を上書きした: {a} {b}")
     # 時間切れの回も、それまでの出力を残す(判定には使わない)
-    saved_rs = (compose.subprocess.run, compose.save_raw, compose.prompt_file)
+    saved_rs = (compose.run_group, compose.save_raw, compose.prompt_file)
     kept = []
     def timeout_run(cmd, **kw):
         raise subprocess.TimeoutExpired(cmd, 1, output=b'{"partial', stderr=b"working")
     try:
-        compose.subprocess.run, compose.prompt_file = timeout_run, (lambda d, n, p, base=None: "p")
+        compose.run_group, compose.prompt_file = timeout_run, (lambda d, n, p, base=None: "p")
         compose.save_raw = lambda date, name, out="", err="", code=None, files=None: kept.append((name, out, err))
         try:
             compose.claude_run("x", timeout=5)
@@ -3782,7 +3790,7 @@ def test_empty_answer_is_not_done(tmp: Path):
             pass
         compose.codex_run("x", timeout=5)
     finally:
-        compose.subprocess.run, compose.save_raw, compose.prompt_file = saved_rs
+        compose.run_group, compose.save_raw, compose.prompt_file = saved_rs
     check(len(kept) == 2 and all('{"partial' in o and "working" in e for _, o, e in kept), f"時間切れの回の出力を残さない: {kept}")
     # 3. 面別選定: 判定の無い主題を「不採用」にしない(取りこぼしとして拾い直しに回る)
     rows = [{"dedup_key": "a", "ids": ["1"]}, {"dedup_key": "b", "ids": ["2"]}]
@@ -3798,6 +3806,7 @@ def test_empty_answer_is_not_done(tmp: Path):
     class EP:
         pid, returncode, args = 0, 0, []
         def wait(self, timeout=None): return 0
+        def communicate(self, timeout=None): return None, None
     saved_sr = collect.save_raw
     try:
         collect.save_raw = lambda *a, **kw: None
@@ -3912,7 +3921,7 @@ def test_empty_answer_is_not_done(tmp: Path):
     check(rp[0]["url"] == "https://www.youtube.com/watch?v=b", f"url の無い投稿のリンクを前の投稿へ付け直した: {rp}")
     # 拾い直しの答えが null・崩れた要素でも号を止めない(取りこぼしのまま残す)
     # (テスト用のディレクトリで動かす。本体の metrics に書かない)
-    saved_rp = (compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.missing_plan_prompt, compose.ROOT)
+    saved_rp = (compose.run_group, compose.prompt_file, compose.save_raw, compose.missing_plan_prompt, compose.ROOT)
     def replan_with(ans: str, keys: list[str]) -> tuple[list, dict]:
         try:
             compose.ROOT = tmp / "rp"
@@ -3920,13 +3929,13 @@ def test_empty_answer_is_not_done(tmp: Path):
             def fake_run(cmd, **kw):
                 (compose.ROOT / "metrics" / "plan-2099-01-01-missing.json").write_text(ans, encoding="utf-8")
                 return subprocess.CompletedProcess(cmd, 0, "", "")
-            compose.subprocess.run, compose.prompt_file = fake_run, (lambda d, n, p, base=None: "p")
+            compose.run_group, compose.prompt_file = fake_run, (lambda d, n, p, base=None: "p")
             compose.save_raw, compose.missing_plan_prompt = (lambda *a, **kw: None), (lambda *a, **kw: "")
             pl = {"articles": [{"slug": "cg-old", "brand": "cg", "candidate_ids": ["c0"]}]}
             cands_t = {f"c-{k}": {"id": f"c-{k}"} for k in keys} | {"c0": {"id": "c0"}}
             return compose.replan_missing("2099-01-01", pl, {"cg": [{"dedup_key": k, "ids": [f"c-{k}"]} for k in keys]}, cands_t, keys), pl
         finally:
-            compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.missing_plan_prompt, compose.ROOT = saved_rp
+            compose.run_group, compose.prompt_file, compose.save_raw, compose.missing_plan_prompt, compose.ROOT = saved_rp
     art = lambda k, **kw: dict({"slug": "cg_new", "brand": "cg", "dedup_key": k, "candidate_ids": ["c"], "rank": "small", "angle": "", "lead_score": 0}, **kw)
     for ans in ("null", '{"articles": [null], "dropped": [{"dedup_key": ["x"]}]}', '{"dropped": [{"dedup_key": "k"}]}',
                 '{"dropped": [{"dedup_key": "k", "brand": "cg", "reason": " "}]}', json.dumps({"articles": [art("k", rank=["small"])]})):
@@ -4052,23 +4061,23 @@ def test_accept_only_normal_and_schema(tmp: Path):
         collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved
     check([c["verify"] for c in cs] == ["unconfirmed", "confirmed"], f"写しの無い候補を confirmed にした: {[(c['verify'], c.get('verify_note')) for c in cs]}")
     # 一面選定: schema どおりでない答えはフォールバックへ
-    saved = (compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.ROOT)
+    saved = (compose.run_group, compose.prompt_file, compose.save_raw, compose.ROOT)
     try:
         compose.ROOT = tmp / "lead"
         (compose.ROOT / "metrics").mkdir(parents=True, exist_ok=True)
-        compose.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 0, '{"lead_slug": []}', "")
+        compose.run_group = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 0, '{"lead_slug": []}', "")
         compose.prompt_file, compose.save_raw = (lambda d, n, p, base=None: "p"), (lambda *a, **kw: None)
         pl = {"articles": [{"slug": "a", "rank": "small", "lead_score": 5}, {"slug": "b", "rank": "small", "lead_score": 9}]}
         compose.pick_lead("2026-10-06", pl)
     finally:
-        compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.ROOT = saved
+        compose.run_group, compose.prompt_file, compose.save_raw, compose.ROOT = saved
     check([a["slug"] for a in pl["articles"] if a["rank"] == "lead"] == ["b"], f"崩れた一面の答えで止まった・フォールバックしない: {pl}")
     # 当番・監査: schema どおりでない答えは使わない
     sf = tmp / "s.json"
     sf.write_text(json.dumps({"type": "object", "required": ["status", "editor_summary"]}), encoding="utf-8")
-    saved = (oncall.subprocess.run, oncall.prompt_file, oncall.save_raw)
+    saved = (oncall.run_group, oncall.prompt_file, oncall.save_raw)
     try:
-        oncall.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 0, '{"status": "no_fix_needed"}', "")
+        oncall.run_group = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 0, '{"status": "no_fix_needed"}', "")
         oncall.prompt_file, oncall.save_raw = (lambda d, n, p, base=None: "p"), (lambda *a, **kw: None)
         try:
             oncall.run_claude("x", sf, tmp)
@@ -4076,7 +4085,7 @@ def test_accept_only_normal_and_schema(tmp: Path):
         except RuntimeError:
             pass
     finally:
-        oncall.subprocess.run, oncall.prompt_file, oncall.save_raw = saved
+        oncall.run_group, oncall.prompt_file, oncall.save_raw = saved
     # 16巡目: 重複キーは入口ごとに読めない答え / 真偽値の番号 / 日付の形 / item の契約 / 前置きの投稿 / Grok の書きかけ
     (tmp / "dup.json").write_text('[{"url": "u", "status": "unreadable", "status": "none", "item": ""}]', encoding="utf-8")
     check(collect.read_json_list(tmp / "dup.json") is None, "重複キーのファイルを読んだ")
@@ -4272,6 +4281,7 @@ def test_grok_repoint_uses_each_face_posts(tmp: Path):
         pid = 0
         returncode = 0
         def wait(self, timeout=None): return 0
+        def communicate(self, timeout=None): return None, None
     def fake_popen(args, cwd=None, **kw):
         items = ([{"url": "https://www.youtube.com/shorts/YvB9Lkq5aOs", "brand": "dsva", "facts": ["クライヤ"]}]
                  if "dsva" in Path(cwd).name else [])
@@ -5875,6 +5885,424 @@ def test_stray_governed_write_is_caught(tmp: Path):
     del STRAY_WRITES[n:]
 
 
+# --- モデル・道具のセッションの起動と回収(2026-10-14 の再監査) ------------------------------------------------------
+# 子孫が死んだかは、関数が返った直後に /proc で見る(回収は死んだのを確かめてから返す。待ち時間に頼らない)
+
+# 偽の CLI: 子を2つ起こす(同じグループの子と、自分でセッションを分けた子)。どちらも 30 秒後に書く。親は 60 秒待つ
+_PROBE_CLI = ("import os, sys, time\n"
+              "from pathlib import Path\n"
+              "d = Path(os.environ['SESSION_PROBE'])\n"
+              "for n in ('group', 'escaped'):\n"
+              "    pid = os.fork()\n"
+              "    if pid == 0:\n"
+              "        if n == 'escaped':\n"
+              "            os.setsid()\n"
+              "        time.sleep(30)\n"
+              "        (d / (n + '.wrote')).write_text('時間切れのあとに書いた')\n"
+              "        os._exit(0)\n"
+              "    (d / (n + '.pid')).write_text(str(pid))\n"
+              "time.sleep(60)\n")
+_NO_PID = 4194311     # どのプロセスにも当たらない pid(pid_max の外。偽のプロセスの回収が本物のグループに触れない)
+
+
+def _pid_alive(pid: int) -> bool:
+    try:
+        return Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()[0] not in ("Z", "X")
+    except (OSError, IndexError):
+        return False
+
+
+def _probe_bin(tmp: Path) -> Path:
+    """偽の claude / codex / grok を置いたディレクトリ(PATH の先頭に足す)。"""
+    b = tmp / "bin"
+    b.mkdir(parents=True, exist_ok=True)
+    for name in ("claude", "codex", "grok"):
+        (b / name).write_text(f"#!{sys.executable}\n" + _PROBE_CLI, encoding="utf-8")
+        (b / name).chmod(0o755)
+    return b
+
+
+def _left_after(tmp: Path, name: str, call) -> list[str]:
+    """call(偽の CLI を時間切れ・中断まで走らせる)が返った直後に、生き残っている・時間切れのあとに書いた子孫。"""
+    import signal
+    d = tmp / name.replace(".", "-")
+    d.mkdir(parents=True, exist_ok=True)
+    saved = os.environ.get("SESSION_PROBE")
+    os.environ["SESSION_PROBE"] = str(d)
+    try:
+        call()
+    except (subprocess.TimeoutExpired, KeyboardInterrupt):
+        pass
+    finally:
+        if saved is None:
+            os.environ.pop("SESSION_PROBE", None)
+        else:
+            os.environ["SESSION_PROBE"] = saved
+    left = []
+    for n in ("group", "escaped"):
+        pf = d / f"{n}.pid"
+        if not pf.exists():
+            left.append(f"{n}(子を起こす前に止まった)")
+            continue
+        pid = int(pf.read_text())
+        if _pid_alive(pid):
+            left.append(f"{n}(生きている)")
+            try:
+                os.kill(pid, signal.SIGKILL)    # 後片付け
+            except OSError:
+                pass
+        if (d / f"{n}.wrote").exists():
+            left.append(f"{n}(書いた)")
+    return left
+
+
+def _raise_interrupt(signum, frame):
+    raise KeyboardInterrupt
+
+
+def test_session_timeout_stops_descendants(tmp: Path):
+    """モデル・道具を時間切れ・中断で止めたら、CLI が起動した道具(同じグループの子も、自分でセッションを分けた子も)まで止まり、
+    関数が返った時点で死んでいる(監査指摘 2026-10-14: compose.claude_run・oncall.run_claude の時間切れのあとに孫がファイルを
+    書いた。codex_run・run_codex・定点観測・分類・ベンチ・道具の更新・経過を残す実行も同じ形だった)。
+    起動できない CLI は例外にせず、終了コード 127 と理由を返す"""
+    import signal
+    import threading
+    import collect
+    import classify_sources as cs
+    import oncall
+    import update_clis as uc
+    import writer_bench as wb
+    tmp.mkdir(parents=True, exist_ok=True)
+    b = _probe_bin(tmp)
+    sf = tmp / "answer.schema.json"
+    sf.write_text('{"type": "object"}', encoding="utf-8")
+    repo = tmp / "repo"     # 監査(run_codex)は commit から作業ツリーを切り出す
+    subprocess.run(["git", "init", "-q", str(repo)], check=True, capture_output=True)
+    subprocess.run(["git", "-C", str(repo), "-c", "user.email=t@example.com", "-c", "user.name=t", "commit", "-q",
+                    "--allow-empty", "-m", "x"], check=True, capture_output=True)
+    names = [(compose, "prompt_file"), (compose, "save_raw"), (oncall, "prompt_file"), (oncall, "save_raw"),
+             (oncall, "session_env"), (collect, "save_raw"), (pipelib, "prompt_file"), (pipelib, "save_raw"),
+             (wb, "save_raw"), (wb, "run_group")]
+    saved = [(m, n, getattr(m, n, None)) for m, n in names]
+    saved_path = os.environ.get("PATH", "")
+    real_group = getattr(pipelib, "run_group", None)
+    try:
+        os.environ["PATH"] = f"{b}:{saved_path}"
+        nop = lambda *a, **k: None
+        compose.prompt_file = oncall.prompt_file = pipelib.prompt_file = lambda *a, **k: "p"
+        compose.save_raw = oncall.save_raw = collect.save_raw = pipelib.save_raw = wb.save_raw = nop
+        oncall.session_env = lambda: dict(os.environ)
+        # ベンチの 1500 秒は縮める(run_group 経由で起動していなければ縮まらず、偽の CLI の親が 60 秒で終わったあとに子が書く)
+        wb.run_group = lambda cmd, timeout=None, **k: real_group(cmd, timeout=2, **k)
+        cases = {
+            "compose.claude_run": lambda: compose.claude_run("x", timeout=2),
+            "compose.codex_run": lambda: compose.codex_run("x", timeout=2),
+            "oncall.run_claude": lambda: oncall.run_claude("x", sf, tmp, timeout=2),
+            "oncall.run_codex": lambda: oncall.run_codex("x", sf, repo, timeout=2),
+            "collect.claude_exec": lambda: collect.claude_exec("x", timeout=2),
+            "classify_sources.ask": lambda: cs.ask(["claude"], "x", timeout=2),
+            "writer_bench.write_one": lambda: wb.write_one("probe", "x", "probe", "m"),
+            "update_clis.run": lambda: uc.run([str(b / "codex")], timeout=2, cwd=tmp),
+            "pipelib.claude_traced": lambda: pipelib.claude_traced(["x"], tmp / "trace.jsonl", timeout=2, cwd=tmp),
+        }
+        for name, call in cases.items():
+            left = _left_after(tmp, name, call)
+            check(not left, f"{name}: 時間切れで止めたあとに子孫が残った・書いた({', '.join(left)})")
+
+        # 中断(Ctrl-C・SIGTERM を変えた SystemExit など、待っている間の例外)でも、道具まで止めてから上げる
+        def interrupted():
+            old = signal.signal(signal.SIGUSR1, _raise_interrupt)
+            t = threading.Timer(1.0, lambda: os.kill(os.getpid(), signal.SIGUSR1))
+            t.start()
+            try:
+                compose.claude_run("x", timeout=30)
+            finally:
+                t.cancel()
+                signal.signal(signal.SIGUSR1, old)
+        left = _left_after(tmp, "interrupted", interrupted)
+        check(not left, f"中断で止めたあとに子孫が残った・書いた({', '.join(left)})")
+        # 起動できない CLI: 例外にせず、その担当だけの異常終了(127)と理由を返す
+        if real_group is None:
+            check(False, "モデル・道具の起動の関数(pipelib.run_group)が無い")
+        else:
+            r = real_group([str(tmp / "no-such-cli")], timeout=5, cwd=tmp)
+            check(r.returncode == 127 and "起動できない" in r.stderr, f"起動できない CLI の結果: {r.returncode} {r.stderr!r}")
+    finally:
+        os.environ["PATH"] = saved_path
+        for m, n, v in saved:
+            setattr(m, n, v)
+
+
+def test_parallel_launch_failure_reaps(tmp: Path):
+    """並列に起動している途中で、2本目の起動が失敗(OSError)しても、例外で抜けずにその担当だけの失敗として扱い、
+    先に起動した担当を止めて回収する(監査指摘 2026-10-14: 選定 run_plan・校閲 claude_review の2本目の起動の失敗で例外になり、
+    1本目が回収されずに残って、確定後の記事に書いた)。起動以外の例外で抜けても、起動済みの担当は止めて回収してから上げる"""
+    import time as _t
+    real_popen = subprocess.Popen
+    d = "2099-03-01"
+    started: list = []
+
+    def popen(fail_from: int):
+        def fake(argv, **kw):
+            if len(started) >= fail_from:
+                raise OSError("injected: 起動できない")
+            p = real_popen([sys.executable, "-c", "import time; time.sleep(30)"], **kw)
+            started.append(p)
+            return p
+        return fake
+
+    def alive() -> list:
+        return [p.pid for p in started if p.poll() is None]
+
+    def cleanup():
+        for p in started:
+            if p.poll() is None:
+                p.kill()
+                p.wait()
+        started.clear()
+
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "metrics").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts" / f"{d}-a.md").write_text("---\nslug: a\ntitle: a\n---\n本文\n", encoding="utf-8")
+    saved = (compose.ROOT, pipelib.ROOT, compose.DEADLINE, subprocess.Popen, compose.brand_plan_prompt, compose.prompt_file,
+             compose.save_raw)
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        compose.save_raw = lambda *a, **k: None
+        compose.brand_plan_prompt = lambda *a, **k: "x"
+        # 選定: 2面を同じ波で起動し、2面目の起動が失敗する
+        compose.DEADLINE = _t.time() + 2
+        subprocess.Popen = popen(1)
+        by_brand = {"cg": [{"dedup_key": "k1", "ids": ["c1"]}], "765": [{"dedup_key": "k2", "ids": ["c2"]}]}
+        try:
+            compose.run_plan(d, by_brand, [], wave=2)
+            raised = ""
+        except Exception as e:      # noqa: BLE001
+            raised = f"{type(e).__name__}: {e}"
+        check(not raised, f"選定: 2面目の起動の失敗で例外になった({raised})")
+        check(started and not alive(), f"選定: 起動に失敗した波で、先に起動した面が回収されずに残った({alive()})")
+        cleanup()
+        # 校閲: 記事担当を起動したあと、紙面担当の起動が失敗する
+        compose.DEADLINE = _t.time() + 2
+        subprocess.Popen = popen(1)
+        try:
+            r = compose.claude_review(d, 1, targets=[f"{d}-a.md"], editorial=False, paper=True)
+            raised = ""
+        except Exception as e:      # noqa: BLE001
+            r, raised = {}, f"{type(e).__name__}: {e}"
+        check(not raised and r.get("verdict") == "error", f"校閲: 2件目の起動の失敗で例外になった・判定ありにした({raised} {r.get('verdict')})")
+        check(started and not alive(), f"校閲: 起動に失敗した波で、先に起動した担当が回収されずに残った({alive()})")
+        cleanup()
+        # 起動以外の例外(2件目の依頼文が書けない)で抜けても、起動済みの担当を止めて回収してから上げる
+        compose.DEADLINE = _t.time() + 30
+        subprocess.Popen = popen(99)
+        n_pf = []
+
+        def pf(*a, **k):
+            n_pf.append(1)
+            if len(n_pf) >= 2:
+                raise OSError("injected: 依頼文を書けない")
+            return "p"
+        compose.prompt_file = pf
+        try:
+            compose.claude_review(d, 1, targets=[f"{d}-a.md"], editorial=False, paper=True)
+        except OSError:
+            pass
+        check(started and not alive(), f"校閲: 例外で抜けたとき、起動済みの担当が回収されずに残った({alive()})")
+    finally:
+        cleanup()
+        (compose.ROOT, pipelib.ROOT, compose.DEADLINE, subprocess.Popen, compose.brand_plan_prompt, compose.prompt_file,
+         compose.save_raw) = saved
+
+
+def test_compose_no_launch_after_deadline(tmp: Path):
+    """締切を過ぎたら、執筆・校閲・書き直し・修正の担当を(やり直し・差し戻しも)起動しない。未着手の記事は理由付きで記録して
+    後始末へ進む(監査指摘 2026-10-14: 待ち時間を縮めるだけで起動は止まらず、締切後も後続の記事・紙面とその再試行を起動した)。
+    締切前に起動した分は今どおり書く(打ち切りは締切だけ)"""
+    import time as _t
+    d = "2099-03-02"
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "metrics").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts" / f"{d}-a.md").write_text("---\nslug: a\ntitle: a\n---\n本文\n", encoding="utf-8")
+    launched: list = []
+
+    class P:
+        pid, returncode = _NO_PID, 0
+
+        def communicate(self, timeout=None):
+            compose.DEADLINE = _t.time() - 1        # 1本目の担当が動いている間に締切を過ぎる
+            return None, None
+
+        def kill(self):
+            pass
+
+        def poll(self):
+            return 0
+
+        def wait(self, timeout=None):
+            return 0
+    cands = {"c1": dict(MATS[0], id="c1"), "c2": dict(MATS[1], id="c2")}
+    plan = {"articles": [{"slug": s, "rank": "small", "brand": "765", "candidate_ids": [c], "dedup_key": s, "angle": s}
+                         for s, c in (("w1", "c1"), ("w2", "c2"))]}
+    saved = (compose.ROOT, pipelib.ROOT, compose.DEADLINE, subprocess.Popen, compose.article_prompt, compose.prompt_file,
+             compose.save_raw)
+    try:
+        compose.ROOT = tmp
+        compose.save_raw = lambda *a, **k: None
+        compose.prompt_file = lambda *a, **k: "p"
+        compose.article_prompt = lambda *a, **k: "x"
+        subprocess.Popen = lambda argv, **k: launched.append(argv) or P()
+        # 執筆: 1本目の執筆中に締切を過ぎる → 2本目と、1本目のやり直しを起動しない
+        compose.DEADLINE = _t.time() + 600
+        written, aborted = compose.write_articles(d, plan, cands, [], {}, wave=1)
+        drops = compose.DROP_LOG.get(d) or {}
+        check(len(launched) == 1 and not written and sorted(aborted) == ["w1", "w2"]
+              and all((drops.get(s) or ("", ""))[1] == "締切で未着手" for s in ("w1", "w2")),
+              f"執筆: 締切後に記事の担当を起動した・未着手を記録しない(起動 {len(launched)}本 / 外した {aborted} / 記録 {drops})")
+        # 校閲・書き直し・修正: 締切を過ぎていれば1本も起動しない。校閲は担当が動かなかった巡(判定なし)になる
+        compose.ROOT = pipelib.ROOT = tmp
+        launched.clear()
+        compose.DEADLINE = _t.time() - 60
+        r = compose.claude_review(d, 1, targets=[f"{d}-a.md"], editorial=False, paper=True)
+        check(not launched and r.get("verdict") == "error" and all("締切" in f for f in r.get("failed") or ["(なし)"]),
+              f"校閲: 締切後に担当を起動した・判定ありにした(起動 {len(launched)}本 / {r.get('verdict')} {r.get('failed')})")
+        arts = {"articles": [{"slug": "a", "rank": "small", "brand": "765", "candidate_ids": ["c1"], "dedup_key": "a"}]}
+        res = compose.revise_articles(d, {f"docs/_posts/{d}-a.md": [{"rule_id": "R1", "issue": "x", "quote": "本文"}]},
+                                      arts, cands, [])
+        compose.fix_articles(d, {f"docs/_posts/{d}-a.md": [{"rule_id": "R1", "issue": "x"}]})
+        check(not launched and res.get("a") == "not_started", f"書き直し・修正: 締切後に担当を起動した(起動 {len(launched)}本 / {res})")
+    finally:
+        compose.DROP_LOG.pop(d, None)
+        compose.WRITE_OUTCOMES.pop(d, None)
+        compose.REVISE_NOTES.pop(d, None)
+        (compose.ROOT, pipelib.ROOT, compose.DEADLINE, subprocess.Popen, compose.article_prompt, compose.prompt_file,
+         compose.save_raw) = saved
+
+
+def test_leave_tree_clean_stops_sessions(tmp: Path):
+    """組版が例外・SIGTERM で途中終了するときは、確定(commit)の前に、起動したまま回収していないセッションを子孫ごと止める
+    (残すと確定のあとに記事を書き、作業ツリーがまた dirty になる。監査指摘 2026-10-14)"""
+    start = getattr(pipelib, "start_group", None)
+    if start is None:
+        check(False, "セッションを起動して控える関数(pipelib.start_group)が無い")
+        return
+    tmp.mkdir(parents=True, exist_ok=True)
+    p = start([sys.executable, "-c", "import time; time.sleep(30)"], cwd=tmp)
+    saved = compose.STARTED_ON
+    try:
+        compose.STARTED_ON = None       # commit はしない経路(開始前)。止めるのはその前
+        compose._leave_tree_clean("test")
+    finally:
+        compose.STARTED_ON = saved
+        if p.poll() is None:
+            p.kill()
+            p.wait()
+            check(False, "途中終了の確定の前に、起動したままのセッションを止めない")
+
+
+def test_collect_handover_deadline(tmp: Path):
+    """収集は組版へ引き渡す締切を持つ(監査指摘 2026-10-14: Grok の面を順に待つたびに GROK_TIMEOUT を与え直し、応答しない面が
+    並ぶと1波で 3×GROK_TIMEOUT になって、02:00 の収集が排他を持ったまま 03:00 の組版を妨げた)。
+    - Grok の1波は起動時に決めた絶対の締切で回収する(待ちが面の数だけ足し算にならない)
+    - 定時の収集の締切は次の定時工程の15分前(02:00 の収集なら 02:45)。手で回したとき・当番の取り直しには付けない
+    - 締切を越えて待たず、過ぎたら Grok・確かめ・探索・定点観測の facts 化を起動しない(定点観測の新着は読めなかった回数に数えない)"""
+    import datetime as _dt
+    import time as _t
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    waits: list = []
+    launched: list = []
+
+    class GP:      # 応答しない Grok(時間切れまで返らない。止められたら空で返る)
+        pid, returncode = _NO_PID, None
+
+        def __init__(self):
+            self.killed = False
+
+        def communicate(self, timeout=None):
+            if self.killed:
+                return "", ""
+            waits.append(timeout)
+            _t.sleep(min(timeout or 0, 1))
+            raise subprocess.TimeoutExpired("grok", timeout)
+
+        def kill(self):
+            self.killed, self.returncode = True, -9
+
+        def poll(self):
+            return self.returncode
+
+        def wait(self, timeout=None):
+            return self.returncode
+    names = ("GROK_TIMEOUT", "GROK_WAVE", "save_raw", "notify", "prompt_file", "explore_workdir", "page_html_or_note", "DEADLINE")
+    saved = {n: getattr(collect, n, None) for n in names}
+    saved_popen, saved_inv = subprocess.Popen, os.environ.get("INVOCATION_ID")
+    notes: list = []
+    try:
+        collect.GROK_TIMEOUT, collect.GROK_WAVE = 0.3, 3
+        collect.save_raw = lambda *a, **k: None
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        collect.prompt_file = lambda *a, **k: "p"
+        collect.explore_workdir = lambda key: (tmp / "wd" / key).mkdir(parents=True, exist_ok=True) or tmp / "wd" / key
+        collect.page_html_or_note = lambda url, csr: ("<p>本文</p>", "")
+        collect.DEADLINE = None
+        subprocess.Popen = lambda *a, **k: launched.append(a) or GP()
+        targets = [({"key": f"f{i}"}, tmp / f"prompt-f{i}.md") for i in range(3)]
+        failed = collect.run_grok_prompts(targets, {})
+        check(failed == {"f0", "f1", "f2"} and sum(waits) <= 0.45,
+              f"Grok の1波の待ちが面ごとに足し算になった(待った秒 {waits}。上限は GROK_TIMEOUT 0.3 秒)")
+        # 収集の締切が先なら、そこまでしか待たない
+        waits.clear()
+        collect.GROK_TIMEOUT = 100
+        collect.DEADLINE = _t.time() + 0.2
+        collect.run_grok_prompts(targets[:1], {})
+        check(waits and waits[0] <= 0.25, f"収集の締切を越えて Grok を待った(待った秒 {waits})")
+        # 締切を過ぎたら起動しない
+        launched.clear()
+        collect.DEADLINE = _t.time() - 1
+        errs: dict = {}
+        failed = collect.run_grok_prompts(targets, errs)
+        check(not launched and failed == {"f0", "f1", "f2"} and all("締切" in errs.get(k, "") for k in failed),
+              f"Grok: 締切後に面を起動した・理由を残さない(起動 {len(launched)}本 / {errs})")
+        od = tmp / "grok"
+        od.mkdir(exist_ok=True)
+        (od / "cg.md").write_text("### 1\n- url: https://x.com/a/status/9\n- 本文: 告知\n", encoding="utf-8")
+        items, _ = collect.verify_grok_faces([{"key": "cg", "brand": "cg", "topic": "t"}], od)
+        check(not launched and not items and any("status/9" in m and "締切" in m for m in notes),
+              f"確かめ: 締切後に起動した・失う投稿を理由付きで名指ししない(起動 {len(launched)}本 / {notes[-1:]})")
+        items, per = collect.run_explores(False, True)
+        check(not launched and per and all(k.startswith("explore_failed:") for k in per),
+              f"探索: 締切後に起動した・取得の失敗として残さない(起動 {len(launched)}本 / {per})")
+        called: list = []
+        state: dict = {}
+        got, tried = collect.facts_batch([{"url": "https://a.example/n1", "title": "t", "brand": "cg", "csr": False}],
+                                         lambda prompt, timeout=0: called.append(1) or [], state)
+        check(not called and not tried and not state.get("_unreadable"),
+              f"定点観測: 締切後に facts 化を起動した・読めなかった回数に数えた({called} {tried} {state})")
+        # 締切の決め方
+        deadline_of = getattr(collect, "collect_deadline", None)
+        if deadline_of is None:
+            check(False, "収集の締切を決める関数(collect.collect_deadline)が無い")
+        else:
+            now = _dt.datetime(2026, 10, 14, 2, 0, tzinfo=pipelib.JST)
+            os.environ.pop("INVOCATION_ID", None)
+            check(deadline_of(False, now) is None, "手で回した収集に締切を付けた")
+            os.environ["INVOCATION_ID"] = "test"
+            want = _dt.datetime(2026, 10, 14, 2, 45, tzinfo=pipelib.JST).timestamp()
+            check(deadline_of(False, now) == want, f"02:00 の定時の収集の締切が 02:45 でない: {deadline_of(False, now)}")
+            check(deadline_of(True, now) is None, "当番の取り直し(当番が時刻を決めて止める)に収集の締切を付けた")
+    finally:
+        for n, v in saved.items():
+            setattr(collect, n, v)
+        subprocess.Popen = saved_popen
+        if saved_inv is None:
+            os.environ.pop("INVOCATION_ID", None)
+        else:
+            os.environ["INVOCATION_ID"] = saved_inv
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_stray_governed_write_is_caught(tmp / "sgw")
@@ -5963,6 +6391,11 @@ def main() -> int:
     test_oncall_restore_on_exception(tmp / "oc")
     test_oncall_fix_until_clean(tmp / "of")
     test_settled_drops_not_rewritten(tmp / "sd")
+    test_session_timeout_stops_descendants(tmp / "sts")
+    test_parallel_launch_failure_reaps(tmp / "plf")
+    test_compose_no_launch_after_deadline(tmp / "nld")
+    test_leave_tree_clean_stops_sessions(tmp / "ltc")
+    test_collect_handover_deadline(tmp / "chd")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:

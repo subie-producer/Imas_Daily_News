@@ -77,6 +77,7 @@ import hashlib
 from pipelib import (COLLECT_ONCALL_MARK, ENV, ROOT, SCHEDULED, SLOT_MARGIN_MIN, JobLockTimeout, job_lock, loads_strict, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, settled_drops,
                      tool_path)
+from pipelib import run_group   # モデルのセッションは自前のグループで起動し、時間切れ・中断では道具ごと止める
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")
@@ -324,11 +325,12 @@ def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -
     name = "fix-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
     short = prompt_file("oncall", name, prompt, base=cwd)
     try:
-        r = subprocess.run(["claude", "-p", short, "--model", ONCALL_MODEL, "--dangerously-skip-permissions",
-                            "--json-schema", schema_file.read_text(encoding="utf-8"),
-                            "--max-budget-usd", ONCALL_MAX_BUDGET_USD],
-                           cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
-                           env=session_env())
+        # 自前のグループで起動し、時間切れ・中断(SIGTERM)では道具ごと止める。親だけを止めると、失敗を返したあとも道具が
+        # 作業ツリーへ書き続けた(監査指摘 2026-10-14)
+        r = run_group(["claude", "-p", short, "--model", ONCALL_MODEL, "--dangerously-skip-permissions",
+                       "--json-schema", schema_file.read_text(encoding="utf-8"),
+                       "--max-budget-usd", ONCALL_MAX_BUDGET_USD],
+                      timeout=timeout, cwd=cwd, env=session_env())
     except subprocess.TimeoutExpired as e:
         save_raw("oncall", name, *partial_output(e))      # 時間切れの回も、それまでの出力を残す
         raise
@@ -368,10 +370,9 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
         name = "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
         short = prompt_file("oncall", name, prompt, base=aw)
         try:
-            r = subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
-                                "-C", str(aw), "--output-schema", str(schema_file), "-o", str(out_path), short],
-                               cwd=aw, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
-                               env=session_env())
+            r = run_group(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
+                           "-C", str(aw), "--output-schema", str(schema_file), "-o", str(out_path), short],
+                          timeout=timeout, cwd=aw, env=session_env())
             so, se, code = r.stdout, r.stderr, r.returncode
         except subprocess.TimeoutExpired as e:
             (so, se), code = partial_output(e), None

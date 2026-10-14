@@ -22,7 +22,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ROOT, CODEX_WRITE_MODEL, JobLockTimeout, diagnose_anomalies, edition_date, job_lock, notify, now_jst,
-                     tool_path)
+                     run_group, tool_path)
 
 RECORD = ROOT / "metrics" / "cli-versions.json"
 QUESTION = "1+1は? 半角の数字だけを答えて"
@@ -53,8 +53,9 @@ def run(args: list[str], timeout: int = 600, cwd: Path | None = None) -> subproc
     import os
     timeout = max(1, int(min(timeout, remaining()))) if _deadline else timeout
     try:
-        return subprocess.run(args, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
-                              cwd=cwd or ROOT, env={**os.environ, "PATH": tool_path()})
+        # 自前のグループで起動し、時間切れ・中断では子孫まで止める(更新・動作確認の CLI が起動した子が、時間切れのあとも
+        # 書き続けた。監査指摘 2026-10-14)。起動できなければ終了コード 127(理由は stderr)
+        return run_group(args, timeout=timeout, cwd=cwd or ROOT, env={**os.environ, "PATH": tool_path()})
     except (subprocess.TimeoutExpired, OSError) as e:
         return subprocess.CompletedProcess(args, 124, "", f"{type(e).__name__}: {e}")
 

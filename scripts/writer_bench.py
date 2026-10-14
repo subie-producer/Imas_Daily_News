@@ -26,7 +26,7 @@ import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import CODEX_WRITE_MODEL, ENV, ROOT, prompt_file, save_raw, schema_ok  # noqa: E402
+from pipelib import CODEX_WRITE_MODEL, ENV, ROOT, prompt_file, run_group, save_raw, schema_ok  # noqa: E402
 
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")      # 読み比べの判定(当番の監査と同じモデル)
 
@@ -78,7 +78,8 @@ def write_one(name: str, short: str, label: str, model: str) -> dict:
     cmd = ["codex", "exec", "-m", model, "-s", "workspace-write", "-c", "sandbox_workspace_write.network_access=true",
            "--output-last-message", out_name, "--output-schema", str(SCHEMA_OUT), short]
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=1500, stdin=subprocess.DEVNULL, cwd=ROOT)
+        # 自前のグループで起動し、時間切れ・中断では道具ごと止める(手で回して時間切れになった後も子孫が書き続けた。監査指摘 2026-10-14)
+        r = run_group(cmd, timeout=1500, cwd=ROOT)
         code, log = r.returncode, (r.stdout or "") + (r.stderr or "")
     except subprocess.TimeoutExpired:
         code, log = None, "時間切れ"
@@ -191,10 +192,10 @@ def judge_one(name: str, case: dict, a: dict | None, b: dict | None) -> dict:
     sf.write_text(json.dumps(JUDGE_SCHEMA, ensure_ascii=False), encoding="utf-8")
     Path(out_name).unlink()
     # 判定役も new_facts の url を読んで確かめられるよう、通信を許す(書き込みは作業用の記録だけ)
-    r = subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "-c", "sandbox_workspace_write.network_access=true",
-                        "--skip-git-repo-check",
-                        "--output-schema", str(sf), "-o", out_name, prompt_file("bench", f"judge-{name}", prompt)],
-                       capture_output=True, text=True, timeout=1200, stdin=subprocess.DEVNULL, cwd=ROOT)
+    r = run_group(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "-c", "sandbox_workspace_write.network_access=true",
+                   "--skip-git-repo-check",
+                   "--output-schema", str(sf), "-o", out_name, prompt_file("bench", f"judge-{name}", prompt)],
+                  timeout=1200, cwd=ROOT)
     sf.unlink(missing_ok=True)
     try:
         v = json.loads(Path(out_name).read_text(encoding="utf-8")) if r.returncode == 0 else None

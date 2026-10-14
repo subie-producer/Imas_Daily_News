@@ -34,6 +34,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, classify_source,
                      source_type_table, write_source_table, prompt_part, render_prompt,
                      edition_date, extract_json_array, html_to_text, notify, render_failure, set_quiet,
                      X_ANON_POST, x_post_author)
+from pipelib import run_group   # モデル・道具は自前のグループで起動し、時間切れでは子孫まで止める
 
 # 合議で足してよい種別。公式・準公式も答えさせる(作品・ブランドの公式アカウントを「不明」で人へ回して
 # いたら、@idolmaster_en もジムシャニ公式も未確認のまま紙面に載った。編集長の指摘)。
@@ -454,8 +455,8 @@ def rendered_excerpt(url: str, chars: int = 1200) -> tuple[str, str]:
     分類の材料がメニューだけになっても、それが描画の時間切れのせいだと分類側にも当番にも見えなかった(監査指摘
     render-diagnostic-lost-in-classification)"""
     try:
-        r = subprocess.run([sys.executable, str(ROOT / "scripts" / "fetch_page.py"), url, "--chars", str(chars)],
-                           capture_output=True, text=True, timeout=150, stdin=subprocess.DEVNULL, cwd=ROOT)
+        r = run_group([sys.executable, str(ROOT / "scripts" / "fetch_page.py"), url, "--chars", str(chars)],
+                      timeout=150, cwd=ROOT)
     except Exception as e:
         return "", f"取得できず: {type(e).__name__}: {e}"[:300]
     if r.returncode != 0 or "--- 本文(要約なし) ---" not in r.stdout:
@@ -524,8 +525,7 @@ def ask(cmd: list[str], prompt: str, timeout: int = 900) -> list[dict]:
         name = f"classify-{cmd[0]}-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
         short = prompt_file(edition_date(), name, prompt)
         try:
-            r = subprocess.run(cmd + [short], capture_output=True, text=True,
-                               timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
+            r = run_group(cmd + [short], timeout=timeout, cwd=ROOT)
         except subprocess.TimeoutExpired as e:
             save_raw(edition_date(), name, *partial_output(e))     # 時間切れの回も、それまでの出力を残す
             raise

@@ -48,6 +48,8 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      edition_date, mark_collect_oncall, write_checked,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author)
+# モデル・道具のセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
+from pipelib import finish_group, next_slot_end, run_group, start_group, stop_groups
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
@@ -111,6 +113,28 @@ GROK_EFFORT = ENV.get("GROK_EFFORT", "medium")
 # 使い方そのものが原因だったとみている(いずれも実測に基づく)。
 STATE_PATH = ROOT / "stock" / "watch-state.json"
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
+# 収集のモデル・道具のセッションを打ち切る絶対時刻(epoch 秒。collect_deadline で main が起動時に決める)。None なら締切なし
+DEADLINE: float | None = None
+
+
+def collect_deadline(oncall_rerun: bool, now: datetime.datetime | None = None) -> float | None:
+    """収集の締切。定時の収集(systemd が起動した: INVOCATION_ID)は、次の定時工程の SLOT_MARGIN_MIN 分前(02:00 の収集なら
+    02:45)。そのあとの裏取り・保存・commit を済ませて、03:00 の組版(工程の排他を10分待つ)に引き渡す。Grok の面を順に待つと
+    時間切れが足し算になり、02:00 の収集が排他を持ったまま 03:00 の組版を妨げた(監査指摘 2026-10-14)。
+    当番の取り直し(当番が時刻を決めて止める)と手で回したときは決めない。"""
+    if oncall_rerun or not os.environ.get("INVOCATION_ID"):
+        return None
+    return next_slot_end(now or now_jst())
+
+
+def deadline_passed() -> bool:
+    """収集の締切を過ぎたか。過ぎたら新しいセッション(やり直し・深掘りも)を起動しない。"""
+    return bool(DEADLINE) and time.time() >= DEADLINE
+
+
+def session_left(cap: float) -> float:
+    """セッションに待たせてよい秒数。収集の締切を越えない(過ぎていれば 0 = 待たずに止める)。"""
+    return cap if not DEADLINE else max(0.0, min(cap, DEADLINE - time.time()))
 X_HOSTS = ("x.com", "twitter.com")
 
 # 候補1件のスキーマと編集規程。標準出力に吐かせる場合(Claude)とファイルに書かせる場合
@@ -300,6 +324,12 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
                else f"- 本文: (取得できず{'(' + b['render_error'][:200] + ')' if b['render_error'] else ''}。URL を WebFetch で読むこと)")
             for i, b in enumerate(blobs))
         prompt = render_prompt("watch-facts", RULES=COLLECT_RULES, ITEM=COLLECT_ITEM, MATERIAL=material)
+        if deadline_passed():
+            # 収集の締切を過ぎたら facts 化を始めない(本文の取得のあいだに過ぎることもあるので、起動の直前に確かめる)。
+            # 試みなかった新着として未処理の列に残し、読めなかった回数に数えない。当番の取り直しが先に処理して、この号の素材に入れる
+            notify("collect", f"定点観測: 収集の締切を過ぎたので、新着 {len(batch)}件の facts 化を始めなかった(未処理の列に残す):"
+                              + "".join(f"\n  - {it['url']}" for it in batch), ok=False)
+            return [], set()
         got = claude_call(prompt, timeout=420)
         # 出力は新着ページごとの結果(抽出済み/対象外/読めなかった)。処理済みにするのは、結果が契約どおりに返った
         # extracted・none のページだけ。読めなかった・応答に無い・形が崩れたページは未処理(0件の [] とは別)。
@@ -479,26 +509,37 @@ def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> set[str]:
     戻りは、正常に終わらなかった(時間切れ・非0終了)面のキー(書き出しの有無では判定しない。監査指摘)。"""
     failed: set[str] = set()
     for i in range(0, len(targets), GROK_WAVE):
-        procs = []
-        for q, pp in targets[i:i + GROK_WAVE]:
-            procs.append((q, subprocess.Popen(
-                ["grok", "--prompt-file", str(pp), "--always-approve",
-                 "--cwd", str(ROOT), "--reasoning-effort", GROK_EFFORT],
-                stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True,
-                stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True), pp))
-        for q, pr, pp in procs:
-            timed_out = False
-            try:
-                _, err = pr.communicate(timeout=GROK_TIMEOUT)
-                if pr.returncode or (err or "").strip():
-                    errs[q["key"]] = f"exit {pr.returncode}: {(err or '').strip()[-300:]}"
-                else:
-                    errs.pop(q["key"], None)     # errs は最後の試みの状態(やり直しで直った面の古いエラーを残さない。監査指摘)
-            except subprocess.TimeoutExpired:
-                _, err = reap(pr)     # 子も落とし、それまでのエラー出力を上限つきで回収する
-                timed_out = True
+        wave = targets[i:i + GROK_WAVE]
+        if deadline_passed():
+            # 収集の締切を過ぎたら、残りの面を起動しない(組版の開始を妨げない)。正常に終わらなかった面として、やり直し・名指しの異常へ
+            for q, _ in wave:
+                errs[q["key"]] = "収集の締切を過ぎたので起動しなかった"
+                failed.add(q["key"])
+            continue
+        # **締切は起動時に絶対時刻で決め、残り時間で回収する。**1本ずつ GROK_TIMEOUT を与え直すと、応答しない面が並ぶほど
+        # 待ちが足し算になる(3本で 3×GROK_TIMEOUT。監査指摘 2026-10-14)。収集の締切も越えない
+        wave_end = time.time() + session_left(GROK_TIMEOUT)
+        procs, finished = [], []
+        try:
+            for q, pp in wave:
+                procs.append((q, start_group(
+                    ["grok", "--prompt-file", str(pp), "--always-approve",
+                     "--cwd", str(ROOT), "--reasoning-effort", GROK_EFFORT],
+                    cwd=ROOT, stdout=subprocess.DEVNULL), pp))
+            for q, pr, pp in procs:
+                # 時間切れは子も落とし、それまでのエラー出力を上限つきで回収する
+                _, err, timed_out = finish_group(pr, max(0, wave_end - time.time()))
+                finished.append((q, pr, pp, err, timed_out))
+        finally:
+            stop_groups([pr for _, pr, _ in procs])
+        for q, pr, pp, err, timed_out in finished:
+            if timed_out:
                 errs[q["key"]] = f"時間切れ: {(err or '').strip()[-300:]}"
                 print(f"grok: {q['key']} 面がタイムアウト(そこまでの記録は残る)", flush=True)
+            elif pr.returncode or (err or "").strip():
+                errs[q["key"]] = f"exit {pr.returncode}: {(err or '').strip()[-300:]}"
+            else:
+                errs.pop(q["key"], None)     # errs は最後の試みの状態(やり直しで直った面の古いエラーを残さない。監査指摘)
             out = pp.with_name(pp.name.removeprefix("prompt-"))
             # エラー出力の全文と、この試みの書き出しを、基本の調べ・やり直し・深掘りの別に残す(要約は末尾 300 字だけ。
             # 書き出しは次の試み・次の収集で消える。監査指摘)。経過は Grok のセッション記録に残る
@@ -627,14 +668,15 @@ def claude_exec(prompt: str, timeout: int = 300):
     import hashlib as _hl
     name = "watch-" + _hl.sha256(prompt.encode("utf-8")).hexdigest()[:8]
     try:
-        r = subprocess.run(
+        # 自前のグループで起動し、時間切れでは道具ごと止める(run_group)。待つのは収集の締切まで
+        r = run_group(
             ["claude", "-p", prompt_file(edition_date(), name, prompt),
              "--model", COLLECT_MODEL,
              # 指示と素材はファイルなので **Read が要る**。WebSearch/WebFetch だけに絞っていたら、ファイルを読めずに
              # 420 秒待って落ちた(実測 2026-09-17)
              "--allowedTools", "Read,WebSearch,WebFetch",
              "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
-            capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
+            timeout=session_left(timeout), cwd=ROOT)
     except (subprocess.TimeoutExpired, OSError) as e:
         # 1バッチの失敗で収集全体を落とさない。読めなかった扱い(既読にしない)
         print(f"定点観測: facts 化のセッションが失敗({type(e).__name__})。このバッチは既読にしない", flush=True)
@@ -700,17 +742,8 @@ def collect_health(watch_info, per_query: dict) -> list[str]:
 
 
 def wait_session(proc, deadline: float) -> bool:
-    """codex のセッションを締切まで待つ。超えたらプロセスグループごと落とす。戻り値は締切内に終わったか。"""
-    try:
-        proc.wait(timeout=max(0, deadline - time.time()))
-        return True
-    except subprocess.TimeoutExpired:
-        try:
-            os.killpg(proc.pid, signal.SIGKILL)
-        except (ProcessLookupError, PermissionError, OSError):
-            proc.kill()
-        proc.wait()
-        return False
+    """codex のセッションを締切まで待つ。超えたらプロセスグループと子孫ごと落とす(finish_group)。戻り値は締切内に終わったか。"""
+    return not finish_group(proc, max(0, deadline - time.time()))[2]
 
 
 def read_json_list(p: Path) -> list | None:
@@ -773,30 +806,40 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
     if own:
         ledger = lost_posts_ledger()
     wants_deep = "-deep" not in suffix
-    deadline = time.time() + EXPLORE_TIMEOUT
-    jobs = []
-    for q in queries:
-        text = read_written(outdir / f"{q['key']}{suffix}.md").strip()
-        if not text or re.fullmatch(r"(なし|見つからない)[。\s]*", text):
-            continue
-        text = dedupe_posts(text)   # 公式アカウントの遡りのページの境目で重なった投稿を1つにする
-        wd = explore_workdir(f"verify-{q['key']}{suffix}")
-        (wd / "x-posts.md").write_text(text + "\n", encoding="utf-8")
-        prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json", POSTS=wd / "posts.json",
-                               BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
-                               RULES=COLLECT_RULES, ITEM=COLLECT_ITEM)
-        # 進行ログ(標準出力・エラー)は作業ディレクトリのファイルで受け、生の出力に残す(ファイルを書かずに終わった回の原因を追うため)
-        with open(wd / "session.log", "w", encoding="utf-8") as lf:
-            jobs.append((q, wd, text, subprocess.Popen(explore_argv(prompt_file(edition_date(), f"grok-verify-{q['key']}{suffix}", prompt, base=wd)),
-                                                       stdout=lf, stderr=subprocess.STDOUT, text=True,
-                                                       stdin=subprocess.DEVNULL, cwd=wd, start_new_session=True)))
+    deadline = time.time() + session_left(EXPLORE_TIMEOUT)    # 収集の締切も越えない
+    jobs, waited = [], []
+    # 起動は1面ずつ一覧に足し、例外・中断で抜けても finally で起動済みの面を止めて回収する。収集の締切を過ぎたら起動しない
+    # (その面の投稿は未処理のまま残り、下でやり直し・名指しの喪失になる)
+    try:
+        for q in queries:
+            text = read_written(outdir / f"{q['key']}{suffix}.md").strip()
+            if not text or re.fullmatch(r"(なし|見つからない)[。\s]*", text):
+                continue
+            text = dedupe_posts(text)   # 公式アカウントの遡りのページの境目で重なった投稿を1つにする
+            wd = explore_workdir(f"verify-{q['key']}{suffix}")
+            (wd / "x-posts.md").write_text(text + "\n", encoding="utf-8")
+            if deadline_passed():
+                jobs.append((q, wd, text, None))
+                continue
+            prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json", POSTS=wd / "posts.json",
+                                   BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
+                                   RULES=COLLECT_RULES, ITEM=COLLECT_ITEM)
+            # 進行ログ(標準出力・エラー)は作業ディレクトリのファイルで受け、生の出力に残す(ファイルを書かずに終わった回の原因を追うため)
+            with open(wd / "session.log", "w", encoding="utf-8") as lf:
+                jobs.append((q, wd, text, start_group(explore_argv(prompt_file(edition_date(), f"grok-verify-{q['key']}{suffix}", prompt, base=wd)),
+                                                      cwd=wd, stdout=lf, stderr=subprocess.STDOUT)))
+        for q, wd, text, p in jobs:
+            waited.append((q, wd, text, p, p is not None and wait_session(p, deadline)))
+    finally:
+        stop_groups([p for *_, p in jobs if p is not None])
     items, deep = [], {}
     final = suffix.endswith("-again")
     again: list[dict] = []
-    for q, wd, text, p in jobs:
-        in_time = wait_session(p, deadline)
+    for q, wd, text, p, in_time in waited:
+        late = p is None      # 収集の締切を過ぎて起動しなかった
         # 何より先に、Luna が書いたものを生の出力として残す(このあとの処理で止まっても原因を追えるように)
-        save_raw(edition_date(), f"grok-verify-{q['key']}{suffix}", "", "", p.returncode,
+        save_raw(edition_date(), f"grok-verify-{q['key']}{suffix}", "", "収集の締切を過ぎたので起動しなかった" if late else "",
+                 None if late else p.returncode,
                  files={n: read_for_raw(wd / n) for n in ("x-posts.md", "items.json", "posts.json", "deep.json", "session.log")})
         # 時間切れ・異常終了のセッションが書いたファイルは答えにしない(全投稿を未処理としてやり直し・異常へ。監査指摘)
         got = read_json_list(wd / "items.json") if in_time and p.returncode == 0 else None
@@ -815,13 +858,14 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         elif left:
             # 2回目でも残った投稿は、申告で終えない(当番のなぜなぜへ)。どの投稿を失うかを最後の段のあとで名指しする
             why = (f"{'候補の一覧が読めない' if got is None else '投稿ごとの結果に無い・読めなかった'}、"
-                   f"{'締切内に終わった' if in_time else '時間切れ'}")
+                   f"{'締切内に終わった' if in_time else ('収集の締切を過ぎて起動しなかった' if late else '時間切れ')}")
             ledger["lost"].setdefault(q["key"], []).extend((b, why) for b in left)
         raw_asks = read_json_list(wd / "deep.json") if in_time and p.returncode == 0 else None
         if raw_asks is None and wants_deep:
             # 「問いなし([])」と「書けなかった」を分ける。原本の確かめを黙って失わない(監査指摘 r116)
             notify("collect", f"Grok の {q['key']} 面: X の原本でしか確かめられない問い(deep.json)が読めない"
-                              f"({'締切内に終わった' if in_time else '時間切れ'})。深掘りの機会を失う", ok=False)
+                              f"({'締切内に終わった' if in_time else ('収集の締切を過ぎて起動しなかった' if late else '時間切れ')})。"
+                              "深掘りの機会を失う", ok=False)
         asks = [a for a in (raw_asks or []) if schema_ok(a, DEEP_ASK_SCHEMA) and a["question"].strip()]
         if wants_deep and raw_asks is not None and len(asks) < len(raw_asks):
             # 崩れた問いを「問いなし」にしない(深掘りの機会を黙って失わない。監査指摘)。正しい問いは使う
@@ -1054,21 +1098,10 @@ def collect_explore(key: str, proc, out_f, err_f, deadline: float) -> tuple[list
     締切を過ぎても1本あたり30秒ずつ延びていた)。
     出力は一時ファイルで受けるので、回収の順番待ちでパイプが詰まることはない。
     """
-    remain = deadline - time.time()
-    cut = ""
-    try:
-        if remain <= 0:
-            raise subprocess.TimeoutExpired(proc.args, 0)
-        proc.wait(timeout=remain)
-    except subprocess.TimeoutExpired:
-        # codex 本体を kill しても配下(fetch_page.py 等)は生き残るので、
-        # プロセスグループごと落とす(start_new_session=True で独立させてある)
-        try:
-            os.killpg(proc.pid, signal.SIGKILL)
-        except (ProcessLookupError, PermissionError, OSError):
-            proc.kill()
-        proc.wait()              # ゾンビを残さない
-        cut = " [打ち切り]"
+    # codex 本体を kill しても配下(fetch_page.py 等)は生き残るので、プロセスグループと子孫ごと落として回収する(finish_group)。
+    # 起動できなかった探索は、その理由を標準エラーに添える
+    _, note, timed_out = finish_group(proc, max(0, deadline - time.time()))
+    cut = " [打ち切り]" if timed_out else ""
     out = err = ""
     for f, box in ((out_f, "out"), (err_f, "err")):
         try:
@@ -1083,7 +1116,7 @@ def collect_explore(key: str, proc, out_f, err_f, deadline: float) -> tuple[list
             out = text
         else:
             err = text
-    err = (err or "") + cut
+    err = (err or "") + note + cut
     save_raw(edition_date(), f"explore-{key}-{time.time_ns() % 10**6}", out, err, proc.returncode)   # 生の出力を必ず残す
     from pipelib import extract_json_array_strict
     # 打ち切り・異常終了の間際の出力は答えにしない(途中までの候補を「全部」と読まない。監査指摘)
@@ -1115,40 +1148,48 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
 
     # **探索役は Luna(codex)**。全クエリ並列。締切は**起動前**に決める
     # (起動後に決めると、後から起動したぶんだけ実質の持ち時間が延びる)
-    explore_deadline = time.time() + EXPLORE_TIMEOUT
+    explore_deadline = time.time() + session_left(EXPLORE_TIMEOUT)    # 収集の締切も越えない
     explore_procs = []
     grok_jobs = []
-    for q in queries:
-        window = "直近72時間" if q["key"] in ("trend", "fan-culture") else "直近48時間"
-        if not skip_explore:
-            cp = render_prompt("explore", WINDOW=window, TOPIC=q["topic"], MAX_ITEMS=8,
-                               RULES=COLLECT_RULES, ITEM=COLLECT_ITEM)
-            wd = explore_workdir(q["key"])
-            # 出力は**一時ファイル**へ落とす。PIPE のまま並列起動して順番に
-            # communicate すると、後続プロセスはパイプが埋まった時点で止まり、
-            # 正常な探索が打ち切り扱いになる(監査指摘)
-            of = tempfile.NamedTemporaryFile(prefix=f"explore-{q['key']}-", suffix=".out",
-                                             delete=False, mode="w+", encoding="utf-8")
-            ef = tempfile.NamedTemporaryFile(prefix=f"explore-{q['key']}-", suffix=".err",
-                                             delete=False, mode="w+", encoding="utf-8")
-            explore_procs.append((q["key"], subprocess.Popen(
-                # 指示と素材は隔離ディレクトリ側のファイルで渡す(引数に詰めない。cwd がリポジトリ外なので base=wd)
-                explore_argv(prompt_file(edition_date(), f"explore-{q['key']}", cp, base=wd)), stdout=of, stderr=ef, text=True,
-                # 打ち切り時に子孫ごと落とせるよう、独立したプロセスグループにする
-                # cwd は隔離ディレクトリ。ここが workspace-write の書き込み範囲になる
-                stdin=subprocess.DEVNULL, cwd=wd, start_new_session=True), of, ef, wd))
+    # 起動は1本ずつ一覧に足し、例外・中断で抜けても finally で起動済みの探索を止めて回収する
+    try:
+        for q in queries:
+            window = "直近72時間" if q["key"] in ("trend", "fan-culture") else "直近48時間"
+            if not skip_explore and deadline_passed():
+                # 収集の締切を過ぎたら起動しない(取得の失敗として collect_health に上がる)
+                print(f"探索: 収集の締切を過ぎたので {q['key']} を起動しない", flush=True)
+                per[f"explore_failed:{q['key']}"] = 1
+            elif not skip_explore:
+                cp = render_prompt("explore", WINDOW=window, TOPIC=q["topic"], MAX_ITEMS=8,
+                                   RULES=COLLECT_RULES, ITEM=COLLECT_ITEM)
+                wd = explore_workdir(q["key"])
+                # 出力は**一時ファイル**へ落とす。PIPE のまま並列起動して順番に
+                # communicate すると、後続プロセスはパイプが埋まった時点で止まり、
+                # 正常な探索が打ち切り扱いになる(監査指摘)
+                of = tempfile.NamedTemporaryFile(prefix=f"explore-{q['key']}-", suffix=".out",
+                                                 delete=False, mode="w+", encoding="utf-8")
+                ef = tempfile.NamedTemporaryFile(prefix=f"explore-{q['key']}-", suffix=".err",
+                                                 delete=False, mode="w+", encoding="utf-8")
+                explore_procs.append((q["key"], start_group(
+                    # 指示と素材は隔離ディレクトリ側のファイルで渡す(引数に詰めない。cwd がリポジトリ外なので base=wd)
+                    # 打ち切り時に子孫ごと落とせるよう、独立したプロセスグループにする(start_group)
+                    # cwd は隔離ディレクトリ。ここが workspace-write の書き込み範囲になる
+                    explore_argv(prompt_file(edition_date(), f"explore-{q['key']}", cp, base=wd)),
+                    cwd=wd, stdout=of, stderr=ef), of, ef, wd))
 
-    # **探索は Grok より先に回収する。**後回しにすると、Grok が長引くあいだ
-    # 探索プロセスが締切を超えて走り続けてしまう(監査指摘)
-    for key, p, of, ef, wd in explore_procs:
-        got, err = collect_explore(key, p, of, ef, explore_deadline)
-        for it in got:
-            it["_via"] = "explore"
-        items += got
-        per[f"explore:{key}"] = len(got)
-        if "[出力が読めない]" in err or "[打ち切り]" in err:
-            per[f"explore_failed:{key}"] = 1     # 0件(正常な空振り)と取得の失敗を分ける(collect_health)
-        shutil.rmtree(wd, ignore_errors=True)
+        # **探索は Grok より先に回収する。**後回しにすると、Grok が長引くあいだ
+        # 探索プロセスが締切を超えて走り続けてしまう(監査指摘)
+        for key, p, of, ef, wd in explore_procs:
+            got, err = collect_explore(key, p, of, ef, explore_deadline)
+            for it in got:
+                it["_via"] = "explore"
+            items += got
+            per[f"explore:{key}"] = len(got)
+            if "[出力が読めない]" in err or "[打ち切り]" in err:
+                per[f"explore_failed:{key}"] = 1     # 0件(正常な空振り)と取得の失敗を分ける(collect_health)
+            shutil.rmtree(wd, ignore_errors=True)
+    finally:
+        stop_groups([p for _, p, _, _, _ in explore_procs])
 
     # -- Grok(X 動向) --
     # **面ごとに独立したセッション**で回す。
@@ -1639,6 +1680,9 @@ def main() -> int:
     args = ap.parse_args()
     # 試験実行(--no-git)では Discord へ通知しない。本物の警報と見分けが付かなくなる
     set_quiet(args.no_git)
+    # 収集の締切は**排他を待つ前**に決める(待った分だけ延ばさない)
+    global DEADLINE
+    DEADLINE = collect_deadline(args.oncall_rerun)
     # 同じ作業ツリーを compose/release/当番と同時に触らない(監査指摘)。当番の再実行が長引くと
     # ここで待つ。空かなければこの回は諦める(次の timer で拾う)
     try:
@@ -1688,6 +1732,9 @@ def main() -> int:
         # 当番の取り直しでは判定表の取引(合議。単独で最大30分)をしない。取り直しは次の定時工程の前に終えて、
         # 素材を commit するのが先(監査指摘)。未知の出典の判定は次の定時収集で行う
         print("当番の取り直しのため、未知の出典の判定は次の定時収集で行う", flush=True)
+    elif needs_classify(cands) and deadline_passed():
+        # 収集の締切を過ぎたら合議を始めない(組版の開始を妨げない)。素材の commit を先にし、判定は次の定時収集で行う
+        print("収集の締切を過ぎたので、未知の出典の判定は次の定時収集で行う", flush=True)
     elif needs_classify(cands):
         # **未知のドメインは合議で振り分ける。**表を人が育てるまで待つと、
         # 会場・チケット販売・自治体が未確認のまま紙面に載る。
@@ -1697,7 +1744,8 @@ def main() -> int:
             # 判定表の更新 → 紙面の種別付け直し → lint を**1つの取引**にする。どれかが失敗したら、
             # この取引が触った判定表と記事を開始時に戻し、commit しない(表だけ進んで次の lint が赤くなる、
             # 部分的な付け直しが混ざる、を防ぐ。監査指摘)
-            ok, why = classify_retag_lint(date)
+            # 合議も収集の締切までに終える(越えたら取引の失敗として戻す)
+            ok, why = classify_retag_lint(date, timeout=max(1, int(session_left(1800))))
             if not ok:
                 if "戻せない" in why:
                     notify("collect", f"{date}: 判定表の取引に失敗({why[:400]})。commit せずに終える。作業ツリーを確かめること", ok=False)

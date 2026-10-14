@@ -6709,6 +6709,9 @@ for rel, text in (step.get("touch") or {}).items():
         pathlib.Path(rel).write_text(text, encoding="utf-8")
 if step.get("answer") is not None:
     pathlib.Path(sys.argv[sys.argv.index("--output-last-message") + 1]).write_text(json.dumps(step["answer"], ensure_ascii=False), encoding="utf-8")
+if step.get("background"):      # 道具の実行を残して終わる(同じプロセスグループのまま、あとから書く)
+    import subprocess
+    subprocess.Popen([sys.executable, "-c", step["background"]], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 time.sleep(step.get("sleep", 0))
 sys.exit(step.get("exit", 0))
 '''
@@ -6746,12 +6749,18 @@ def test_writer_children(tmp: Path):
     issue = {"rule_id": "R1", "issue": "事実を直す", "quote": "販売を開始する。価格は3000円。", "repair": "rewrite_claim",
              "expected": "正しく書く", "fact_ids": ["F1"]}
     fixed = dict(base, addressed_issue_ids=["I1"], blocks=[{"markdown": "販売を開始した。価格は3000円。", "fact_ids": ["F1", "F2"]}])
+    # 子の CLI が終わったあとも同じプロセスグループに残り、テストが合図(release-<段>)を置いてから記事を書き換える道具の実行
+    # (書き換えが控えへ戻したあとに来るように。合図が来なければ 20 秒で書かずに終わる)
+    late_write = lambda s, phase: (f"import time,pathlib\nfor _ in range(400):\n    if pathlib.Path({str(tmp / ('release-' + phase))!r}).exists():\n"
+                                   f"        pathlib.Path('docs/_posts/{date}-{s}.md').write_text('残った道具の書き込み')\n        break\n"
+                                   f"    time.sleep(0.05)\n")
     spec = {"write-probe": [{"answer": dict(base, title="**販売開始**", lede="**販売開始**する。")}, {"answer": base}],
             **{f"write-{s}": [{"answer": base}] for s in slugs[1:]},
-            "revise-probe": [{"answer": fixed}],
-            # 記事を直接書き換え、ほかの記事も書き換え、新しい記事ファイルを作って異常終了
+            "revise-probe": [{"answer": fixed, "background": late_write("delta", "revise")}],     # 正常終了して道具を残す
+            # 記事を直接書き換え、ほかの記事も書き換え、新しい記事ファイルを作り、道具を残して異常終了
             "revise-alpha": [{"touch": {f"docs/_posts/{date}-alpha.md": "壊れた直書き", f"docs/_posts/{date}-delta.md": "よその記事も直書き",
-                                        f"docs/_posts/{date}-zeta.md": "勝手に作った記事"}, "answer": fixed, "exit": 1}],
+                                        f"docs/_posts/{date}-zeta.md": "勝手に作った記事"}, "answer": fixed, "exit": 1,
+                              "background": late_write("beta", "revise")}],
             # 書き換えて時間切れ
             "revise-beta": [{"touch": {f"docs/_posts/{date}-beta.md": "時間切れの直書き"}, "answer": fixed, "sleep": 20}],
             # 書き換え、検算で適用を拒まれる答え(tags 1個)を返す
@@ -6785,7 +6794,10 @@ def test_writer_children(tmp: Path):
         compose.DEADLINE = time.time() + 3      # beta の子だけが時間切れになる
         res = compose.revise_articles(date, by_file, plan, {"c1": cand}, [])
         compose.DEADLINE = None
-        # 3) 子の直接の書き込みは、異常終了・時間切れ・適用の拒否のどれでも控えへ戻る(よその記事・新しいファイルも)
+        (tmp / "release-revise").write_text("", encoding="utf-8")    # 控えへ戻したあと: 残った道具の実行に書かせる合図
+        time.sleep(0.6)
+        # 3) 子の直接の書き込みは、異常終了・時間切れ・適用の拒否のどれでも控えへ戻る(よその記事・新しいファイルも)。
+        #    子が残した道具の実行も止めてから戻すので、戻したあとに書き換えられない(監査指摘)
         check(res == {"probe": "fixed", "alpha": "unreadable", "beta": "unreadable", "gamma": "kept"}, f"書き直しの結果: {res}")
         for s in ("alpha", "beta", "gamma", "delta"):
             check(path(s).read_bytes() == before[s], f"書き直しの子が直接書き換えた {s} が控えに戻らない: {path(s).read_text(encoding='utf-8')[:40]!r}")
@@ -6803,8 +6815,9 @@ def test_writer_children(tmp: Path):
         spec.update({
             "write-fresh": [{"touch": {f"docs/_posts/{date}-fresh.md": "子が直接書いた稿", f"docs/_posts/{date}-alpha.md": "承認済みを直書き",
                                        f"docs/_posts/{date}-delta.md": None, f"docs/_posts/{date}-ghost.md": "勝手に作った記事"},
-                             "answer": base}],
-            "write-late": [{"touch": {f"docs/_posts/{date}-gamma.md": "異常終了の直書き"}, "exit": 1}, {"answer": base}],
+                             "answer": base, "background": late_write("probe", "reuse")}],
+            "write-late": [{"touch": {f"docs/_posts/{date}-gamma.md": "異常終了の直書き"}, "exit": 1, "background": late_write("alpha", "reuse")},
+                           {"answer": base}],
             "write-slow": [{"touch": {f"docs/_posts/{date}-beta.md": "時間切れの直書き"}, "answer": base, "sleep": 20}, {"answer": base}]})
         spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
         before2 = {s: path(s).read_bytes() for s in slugs}
@@ -6812,6 +6825,8 @@ def test_writer_children(tmp: Path):
         compose.DEADLINE = time.time() + 3      # slow の子の1回目だけが時間切れになる
         written2, aborted2 = compose.write_articles(date, plan2, {"c1": cand}, [], {}, reuse=True)
         compose.DEADLINE = None
+        (tmp / "release-reuse").write_text("", encoding="utf-8")     # 控えへ戻したあと: 残った道具の実行に書かせる合図
+        time.sleep(0.6)
         for s in slugs:
             check(path(s).exists() and path(s).read_bytes() == before2[s],
                   f"組み直しの初稿の子が直接書き換え・消した既存の記事 {s} が控えに戻らない: {path(s).read_text(encoding='utf-8')[:40] if path(s).exists() else '(消えた)'!r}")
@@ -6826,6 +6841,34 @@ def test_writer_children(tmp: Path):
         os.environ.pop("FAKE_CODEX_SPEC", None)
         compose.FACT_MAP.clear()
         pipelib.ANOMALIES.clear()
+
+
+def test_restore_posts_skip(tmp: Path):
+    """控えへ戻す(compose.restore_posts)は、skip に渡した記事(呼び出し側が答えから書く・消す記事)には触らない: 控えにある記事の書き換えも、
+    控えに無い新しい記事も、そのまま残す。ほかの記事だけを戻し、子が作った記事を消す(監査指摘: skip を壊してもテストが通った)"""
+    date = "2026-10-14"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    p = lambda s: posts / f"{date}-{s}.md"
+    for s in ("kept", "target", "other"):
+        p(s).write_text("---\n" + article_fm(s, date) + "---\n元の本文\n", encoding="utf-8")
+    saved, saved_p = compose.ROOT, pipelib.ROOT
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        snap = compose.posts_snapshot(date)
+        before = {s: p(s).read_bytes() for s in ("kept", "target", "other")}
+        p("target").write_text("書かせる記事の書き換え", encoding="utf-8")     # 控えにある・skip
+        p("newtarget").write_text("書かせる新しい記事", encoding="utf-8")       # 控えに無い・skip
+        p("other").write_text("ほかの記事の書き換え", encoding="utf-8")
+        p("ghost").write_text("子が作った記事", encoding="utf-8")
+        p("kept").unlink()
+        back = compose.restore_posts(date, snap, skip={p("target"), p("newtarget")})
+    finally:
+        compose.ROOT, pipelib.ROOT = saved, saved_p
+    check(p("target").read_text(encoding="utf-8") == "書かせる記事の書き換え" and p("newtarget").exists()
+          and p("other").read_bytes() == before["other"] and p("kept").read_bytes() == before["kept"] and not p("ghost").exists()
+          and sorted(back) == sorted(f"{date}-{s}.md" for s in ("other", "kept", "ghost")),
+          f"skip の記事に触った・ほかの記事を戻さない: {back}")
 
 
 def test_restore_files_ledger(tmp: Path):
@@ -7156,6 +7199,7 @@ def main() -> int:
     test_reminder_event_date(tmp / "red")
     test_reservation_occurs_on(tmp / "roo")
     test_writer_children(tmp / "wch")
+    test_restore_posts_skip(tmp / "rps")
     test_restore_files_ledger(tmp / "rsfl")
     test_check_output()
     test_render_and_length()

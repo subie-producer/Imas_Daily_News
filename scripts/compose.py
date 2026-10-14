@@ -2265,6 +2265,8 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
             except subprocess.TimeoutExpired:
                 reap(p)              # 子(道具の実行)も落としてから答えのファイルを読む
                 timed_out = True
+            if not stop_leftovers(p):    # 正常終了・異常終了でも、残した道具の実行を止めてから控えへ戻す
+                anomaly("compose", f"執筆の子 {art['slug']} が残した道具の実行を止められない(控えへ戻したあとに記事を書き換えうる)")
             waited.append((art, src, prompt, out_path, fact_by_id, materials, tries, p, timed_out))
         back = restore_posts(date, kept_posts, skip={ROOT / "docs" / "_posts" / f"{date}-{w[0]['slug']}.md" for w in waited})
         if back:
@@ -2701,6 +2703,48 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     return "fixed", f"対応 {ans.get('addressed_issue_ids')}"
 
 
+def group_running(pgid: int) -> bool:
+    """プロセスグループ pgid に、まだ動いている(ゾンビでない)プロセスがあるか。"""
+    proc = Path("/proc")
+    if not proc.is_dir():
+        try:
+            os.killpg(pgid, 0)
+            return True
+        except ProcessLookupError:
+            return False
+        except OSError:
+            return True
+    for st in proc.glob("[0-9]*/stat"):
+        try:
+            f = st.read_text().rsplit(")", 1)[1].split()    # 状態・親・プロセスグループ …
+        except (OSError, IndexError):
+            continue
+        if len(f) > 2 and f[2] == str(pgid) and f[0] not in ("Z", "X"):
+            return True
+    return False
+
+
+def stop_leftovers(p, grace: float = 3.0) -> bool:
+    """子(start_new_session で起動した CLI)が残した道具の実行(同じプロセスグループ)を止め、無くなったのを確かめる。
+    CLI が正常終了・異常終了しても残りうる。残したまま記事を控えへ戻すと、戻したあとに書き換えられる(2026-10-14 監査: 1.5秒後に
+    承認済みの記事を書き換える道具を残して終了した子で再現)。確かめられたら True。"""
+    pid = getattr(p, "pid", None)
+    if not isinstance(pid, int) or pid <= 1:      # 0 は自分のプロセスグループを指す。グループを持たない子には何もしない
+        return True
+    try:
+        os.killpg(pid, signal.SIGKILL)
+    except ProcessLookupError:
+        return True
+    except OSError:
+        return False
+    end = time.monotonic() + grace
+    while group_running(pid):
+        if time.monotonic() >= end:
+            return False
+        time.sleep(0.05)
+    return True
+
+
 def posts_snapshot(date: str) -> dict[Path, bytes]:
     """この号の記事ファイルの控え(パス → 中身)。執筆の子が作業ツリーに直接書いた変更を戻すため(restore_posts)。"""
     return {p: p.read_bytes() for p in (ROOT / "docs" / "_posts").glob(f"{date}-*.md")}
@@ -2788,6 +2832,8 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
             except subprocess.TimeoutExpired:
                 reap(p)              # 子(道具の実行)も落としてから答えのファイルを読む
                 timed_out = True
+            if not stop_leftovers(p):    # 正常終了・異常終了でも、残した道具の実行を止めてから控えへ戻す
+                anomaly("compose", f"書き直しの子 {art['slug']} が残した道具の実行を止められない(控えへ戻したあとに記事を書き換えうる)")
             waited.append((art, path, fact_by_id, materials, issues, out_path, p, timed_out))
         back = restore_posts(date, kept_posts)
         if back:

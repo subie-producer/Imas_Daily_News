@@ -6797,6 +6797,29 @@ def test_writer_children(tmp: Path):
         rec = json.loads((tmp / "metrics" / f"factmap-{date}.json").read_text(encoding="utf-8"))
         check(rec.get("probe") == {key0: fmap, key1: fmap} and renderlib.factmap_valid(rec),
               f"採った稿(初稿・改稿)の指紋と事実の対応がファイルに残らない: {rec.get('probe')}")
+        # 5) 組み直し(--reuse-plan・--recover)の初稿の子が、この号のほかの記事(承認済み)を直接書き換え・消し・作っても採らない。
+        #    正常終了・異常終了・時間切れのどれでも、書かせた記事以外は控えへ戻り、書かせた記事は答えから書く
+        #    (監査: 書き直しと同じ型が初稿の執筆に残っていた)
+        spec.update({
+            "write-fresh": [{"touch": {f"docs/_posts/{date}-fresh.md": "子が直接書いた稿", f"docs/_posts/{date}-alpha.md": "承認済みを直書き",
+                                       f"docs/_posts/{date}-delta.md": None, f"docs/_posts/{date}-ghost.md": "勝手に作った記事"},
+                             "answer": base}],
+            "write-late": [{"touch": {f"docs/_posts/{date}-gamma.md": "異常終了の直書き"}, "exit": 1}, {"answer": base}],
+            "write-slow": [{"touch": {f"docs/_posts/{date}-beta.md": "時間切れの直書き"}, "answer": base, "sleep": 20}, {"answer": base}]})
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        before2 = {s: path(s).read_bytes() for s in slugs}
+        plan2 = {"articles": [art(s) for s in slugs + ("fresh", "late", "slow")]}
+        compose.DEADLINE = time.time() + 3      # slow の子の1回目だけが時間切れになる
+        written2, aborted2 = compose.write_articles(date, plan2, {"c1": cand}, [], {}, reuse=True)
+        compose.DEADLINE = None
+        for s in slugs:
+            check(path(s).exists() and path(s).read_bytes() == before2[s],
+                  f"組み直しの初稿の子が直接書き換え・消した既存の記事 {s} が控えに戻らない: {path(s).read_text(encoding='utf-8')[:40] if path(s).exists() else '(消えた)'!r}")
+        check(not path("ghost").exists(), "組み直しの初稿の子が勝手に作った記事ファイルが残った")
+        check(sorted(a["slug"] for a in written2) == sorted(slugs + ("fresh", "late", "slow")) and not aborted2
+              and all((compose.parse_front_matter(path(s)) or {}).get("title") == base["title"] for s in ("fresh", "late", "slow"))
+              and "子が直接書いた稿" not in path("fresh").read_text(encoding="utf-8"),
+              f"組み直しで書かせた記事が答えから書かれない: {[a['slug'] for a in written2]} {aborted2}")
     finally:
         compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_by_key, compose.DEADLINE = saved[:5]
         os.environ["PATH"] = saved[5] or ""

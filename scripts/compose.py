@@ -2233,6 +2233,11 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
     unreadable: set[str] = set()   # 出力が読めず、同じ依頼でもう1回書かせた記事(実行の失敗のやり直しは1回だけ)
     while queue:
         batch, queue = queue[:wave], queue[wave:]
+        # 子は本体の作業ツリー(cwd=ROOT)で動き、この号のほかの記事(--reuse-plan・--recover の組み直しでは承認済みの記事)を
+        # 直接書き換え・作り・消しうる。稿は答えの JSON からコードが書くので、子の直接の書き込みは採らない: この号の記事を控え、
+        # 子が全部終わったら(異常終了・時間切れ・答えの不採用を問わず)書かせる記事以外を控えへ戻し、子が作った記事を消す。
+        # 書かせる記事は従来どおり答えから書く(2026-10-14 監査: 書き直し(revise_articles)と同じ型の残り)
+        kept_posts = posts_snapshot(date)
         procs = []
         for art, src, prompt, fact_by_id, materials, tries in batch:
             fd, out_name = tempfile.mkstemp(prefix=f"codexwrite-{art['slug']}-", suffix=".txt")
@@ -2252,6 +2257,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                     cmd + [prompt_file(date, f"write-{art['slug']}-{tries}", prompt)],
                     stdout=lf, stderr=subprocess.STDOUT, text=True,
                     stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True)))
+        waited = []
         for art, src, prompt, out_path, fact_by_id, materials, tries, p in procs:
             timed_out = False
             try:
@@ -2259,6 +2265,11 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
             except subprocess.TimeoutExpired:
                 reap(p)              # 子(道具の実行)も落としてから答えのファイルを読む
                 timed_out = True
+            waited.append((art, src, prompt, out_path, fact_by_id, materials, tries, p, timed_out))
+        back = restore_posts(date, kept_posts, skip={ROOT / "docs" / "_posts" / f"{date}-{w[0]['slug']}.md" for w in waited})
+        if back:
+            print(f"執筆の子が直接書き換えた記事を控えへ戻した(稿は答えから書く): {', '.join(back[:8])}", flush=True)
+        for art, src, prompt, out_path, fact_by_id, materials, tries, p, timed_out in waited:
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             out_path.unlink(missing_ok=True)
             save_raw(date, f"write-{art['slug']}-{tries}", "", take_log(out_path), p.returncode, files={"last-message": out})
@@ -2695,18 +2706,20 @@ def posts_snapshot(date: str) -> dict[Path, bytes]:
     return {p: p.read_bytes() for p in (ROOT / "docs" / "_posts").glob(f"{date}-*.md")}
 
 
-def restore_posts(date: str, snap: dict[Path, bytes]) -> list[str]:
+def restore_posts(date: str, snap: dict[Path, bytes], skip: set[Path] | frozenset = frozenset()) -> list[str]:
     """控えを取ってからの、この号の記事ファイルの変更(書き換え・削除・新しいファイル)を控えへ戻す。戻したファイル名を返す。
-    戻せなかったファイルは異常として申告する(1つ戻せなくても残りは戻す)。"""
+    skip の記事(呼び出し側が答えから書く・消す記事)には触らない。戻せなかったファイルは異常として申告する(1つ戻せなくても残りは戻す)。"""
     back = []
     for p in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md")):
-        if p not in snap:
+        if p not in snap and p not in skip:
             try:
                 p.unlink(missing_ok=True)
                 back.append(p.name)
             except OSError as e:
                 anomaly("compose", f"執筆の子が作った {p.name} を消せない({type(e).__name__}: {str(e)[:120]})")
     for p, data in snap.items():
+        if p in skip:
+            continue
         try:
             if not p.is_file() or p.read_bytes() != data:
                 write_checked(p, data.decode("utf-8"))

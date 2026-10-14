@@ -2884,12 +2884,18 @@ def test_time_budget():
         compose.STAGE_MIN.update(saved)
 
 
-def test_deadline_publish_boundary():
+def test_deadline_publish_boundary(tmp: Path):
     """「発行を過ぎたか」は実際の発行時刻(06:00)で見る。05:52〜06:00 に始まった組版の締切は 05:52(06:00 の HANDOFF_MIN 前)のままで、
     main は排他も取らず新しい作業を始めない。起動からの相対の締切は 06:00 以後の再実行だけ(監査指摘 2026-10-14: 05:53 の再起動で
-    締切が 08:43 に延び、06:00 の発行を待たせうる)。排他を待つ間に締切を過ぎたときも始めない。"""
+    締切が 08:43 に延び、06:00 の発行を待たせうる)。排他を待つ間に締切を過ぎたときも始めない。
+    始めずに終えるときは、なぜなぜを当番の保管へ回し、終わりの処理で当番を起こさない(当番が排他を持ったまま診断して 06:00 の発行を
+    待たせる。監査指摘 2026-10-14)。締切の前に始まって止まったときは、従来どおり終わりの処理が当番を起こす。"""
     import datetime as _dt
+    import oncall
+    import runpy
+    import time as _time
     import types
+    tmp.mkdir(parents=True, exist_ok=True)
     d = "2026-10-14"
     at = lambda h, m: _dt.datetime(2026, 10, 14, h, m, tzinfo=pipelib.JST).timestamp()
     handoff = at(6, 0) - compose.HANDOFF_MIN * 60
@@ -2907,25 +2913,48 @@ def test_deadline_publish_boundary():
 
     def fake_checkout(*a, **k):
         seen.append("checkout")
+        pipelib.notify("compose", "checkout に失敗(テストの代役)", ok=False)   # 締切の前に始まって止まった、の代役
         return False                     # ここまで来たら打ち切る(締切の検査を通ったことだけを見る)
-    saved = (compose.time, compose.job_lock, compose.checkout_edition_branch, compose.notify, sys.argv)
-    notes: list[str] = []
+    escalated: list[list] = []
+    saved = (compose.time, compose.job_lock, compose.checkout_edition_branch, sys.argv, oncall.BACKLOG,
+             pipelib.job_lock, pipelib.checkout_edition_branch, pipelib.escalate, pipelib._ESCALATED, list(pipelib.ANOMALIES), _time.time)
+    backlog = lambda: [r for r in oncall.backlog_open() if r.get("stage") == "compose"]
     try:
+        oncall.BACKLOG = tmp / "oncall-backlog.jsonl"
         compose.time = types.SimpleNamespace(time=lambda: clock["now"], sleep=lambda s: None)
         compose.job_lock, compose.checkout_edition_branch = fake_lock, fake_checkout
-        compose.notify = lambda job, msg, ok=True, **k: notes.append(msg) or True
         sys.argv = ["compose.py", "--date", d, "--reuse-plan"]
-        for start, wait, want, what in ((at(5, 53), 0, [], "05:53 の再起動"),
-                                        (at(5, 40), 15 * 60, ["lock"], "05:40 に起動し、排他を待つ間に 05:55"),
-                                        (at(5, 0), 0, ["lock", "checkout"], "05:00 の起動")):
+        cases = ((at(5, 53), 0, [], "05:53 の再起動"),
+                 (at(5, 40), 15 * 60, ["lock"], "05:40 に起動し、排他を待つ間に 05:55"),
+                 (at(5, 0), 0, ["lock", "checkout"], "05:00 の起動"))
+        for start, wait, want, what in cases:
             clock.update(now=start, wait=wait)
-            seen.clear(); notes.clear()
+            seen.clear(); pipelib.ANOMALIES.clear()
+            n_kept = len(backlog())
             code = compose.main()
             check(code == 1 and seen == want, f"{what}: 締切の前後で始める・始めないを取り違えた(通った工程 {seen})")
             late = want != ["lock", "checkout"]
-            check(late == any("締切" in n and "始めず" in n for n in notes), f"{what}: 締切を過ぎて始めないことを知らせない/誤って知らせた: {notes}")
+            check(late == (len(backlog()) == n_kept + 1), f"{what}: 締切を過ぎて始めないときに、なぜなぜを当番の保管へ回さない/誤って回した")
+            check(late == (not pipelib.ANOMALIES), f"{what}: 始めずに終えたあとの異常の台帳: {pipelib.ANOMALIES}")
+        # 終わりの処理まで通す(compose.py を __main__ として走らせ、当番の起動を記録する)
+        pipelib.job_lock, pipelib.checkout_edition_branch = fake_lock, fake_checkout
+        pipelib.escalate = lambda stage, date, reason, **k: escalated.append([stage, date, k.get("rerun")]) or True
+        _time.time = lambda: clock["now"]
+        for start, late, what in ((at(5, 55), True, "05:55 の再起動"), (at(5, 0), False, "05:00 に起動して止まった")):
+            clock.update(now=start, wait=0)
+            escalated.clear(); pipelib.ANOMALIES.clear(); pipelib._ESCALATED = False
+            try:
+                runpy.run_path(str(Path(compose.__file__)), run_name="__main__")
+                code = None
+            except SystemExit as e:
+                code = e.code
+            check(code == 1 and (escalated == []) == late,
+                  f"{what}: 終わりの処理が当番を{'起こした(発行の排他を塞ぐ)' if late else '起こさない'}: exit {code} / {escalated}")
+        check(len(backlog()) == 3, f"当番の保管に積んだなぜなぜの数が違う: {backlog()}")
     finally:
-        compose.time, compose.job_lock, compose.checkout_edition_branch, compose.notify, sys.argv = saved
+        (compose.time, compose.job_lock, compose.checkout_edition_branch, sys.argv, oncall.BACKLOG,
+         pipelib.job_lock, pipelib.checkout_edition_branch, pipelib.escalate, pipelib._ESCALATED, anomalies, _time.time) = saved
+        pipelib.ANOMALIES[:] = anomalies
 
 
 def test_x_anonymous_post_url():
@@ -6258,7 +6287,7 @@ def main() -> int:
     test_assemble_judge()
     test_claude_traced(tmp / "ct")
     test_time_budget()
-    test_deadline_publish_boundary()
+    test_deadline_publish_boundary(tmp / "dpb")
     test_clean_url_and_table()
     test_x_anonymous_post_url()
     test_x_anonymous_post_in_posts(tmp / "xap")

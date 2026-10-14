@@ -205,13 +205,29 @@ def hard_deadline(t0: float, date: str) -> float:
 
 
 def too_late_to_start(t0: float, date: str) -> bool:
-    """締切(hard_deadline)を過ぎてから始まったか。過ぎていれば知らせて True(main は排他も取らず、新しい作業を始めない)。
+    """締切(hard_deadline)を過ぎてから始まったか。過ぎていれば知らせ、なぜなぜを当番の保管へ回して True(main は排他も取らず、
+    新しい作業を始めない)。
     06:00 の発行より前に始まった組版の締切は 05:52 のまま。始めると排他を持ち続け、06:00 の発行を待たせる(監査指摘 2026-10-14)"""
     dl = hard_deadline(t0, date)
     if time.time() < dl:
         return False
-    notify("compose", f"{date}: 締切({datetime.datetime.fromtimestamp(dl, JST):%H:%M})を過ぎてから始まった。06:00 の発行を"
-                      "待たせないよう、新しい作業を始めずに終える(出し直すなら発行のあとに再実行する)", ok=False)
+    started = datetime.datetime.fromtimestamp(t0, JST)
+    why = (f"{date}: 締切({datetime.datetime.fromtimestamp(dl, JST):%H:%M})を過ぎてから始まった(起動 {started:%H:%M})。"
+           "06:00 の発行を待たせないよう、新しい作業を始めずに終える(出し直すなら発行のあとに再実行する)")
+    # なぜなぜは発行のあとに回す: この process の異常の台帳を当番の保管へ積み、台帳を空にする(終わりの diagnose_anomalies が
+    # 当番を起こさない)。発行前に当番を起こすと、当番が工程の排他を持ったまま診断し、06:00 の発行を待たせる(監査指摘 2026-10-14)。
+    # 保管は発行のあとの監視(watch 09:00)が当番に渡す
+    try:
+        import oncall
+        kept = oncall.backlog_add([{"claim": f"{date} の組版が発行前の締切を過ぎて起動された(起動 {started:%H:%M})。誰が・なぜその時刻に"
+                                             "起動したかを遡り、起動した仕組み(当番の組み直し・手動の再実行・排他の待ち)の欠陥なら直す",
+                                    "occurs": "06:00 の発行より前で、締切(06:00 の HANDOFF_MIN 前)を過ぎてから組版が起動されたとき",
+                                    "evidence": "\n".join(ANOMALIES + [why])[:3000]}], date, "compose", "")
+        where = "当番の保管に積んだ(発行のあと watch が当番に渡す)" if kept else "当番の保管に既にある"
+    except Exception as e:      # noqa: BLE001 — 保管に積めなくても、発行前に当番は起こさない(人には知らせる)
+        where = f"当番の保管に積めなかった({type(e).__name__}: {e})。人が原因を確かめること"
+    notify("compose", f"{why}。なぜなぜは{where}", ok=False)
+    ANOMALIES.clear()
     return True
 
 

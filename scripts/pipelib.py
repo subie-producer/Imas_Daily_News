@@ -830,6 +830,14 @@ def branch_exists(name: str, remote: bool = False) -> bool:
 
 def checkout_edition_branch(date: str, job: str) -> bool:
     """edition/<date> を origin と同期して checkout。無ければ main から作る。"""
+    # 前の工程の出典の判定の取引が後始末できずに終わっていたら(SIGKILL 等)、未コミットの変更を見る前に開始時へ戻す(監査指摘 2026-10-14)
+    back = recover_classify_txn()
+    if back:
+        print(back, flush=True)
+        if "戻せない" in back:
+            notify(job, back, ok=False)
+            return False
+        anomaly(job, back)
     if git("status", "--porcelain").stdout.strip():
         notify(job, f"作業ツリーに未コミットの変更があるため中止", ok=False)
         return False
@@ -1272,6 +1280,32 @@ SOURCE_TYPES = ("公式", "準公式", "当事者", "報道", "ファン", "二�
 _ST_TABLE: dict | None = None
 _ST_KEY: tuple | None = None     # _ST_TABLE を読んだときのファイルの同一性(mtime_ns, size, inode)
 
+# 短縮 URL のサービス。ホスト自身は持ち主を持たず、誰の何を指すかは展開先で決まる。**ドメインでは判定しない**
+# (2026-10-14 監査指摘: t.co が丸ごと公式に登録され、LivePocket・Amazon・ザッキャラへの短縮まで公式として紙面に出た)。
+# 短縮1つずつ、展開先の種別を path_types へ写す(classify_sources.resolve_short_links)
+SHORTENERS = ("t.co", "bit.ly", "x.gd", "lin.ee", "tinyurl.com", "ow.ly", "buff.ly", "is.gd", "cutt.ly",
+              "amzn.to", "amzn.asia", "goo.gl")
+# 文書 ID がクエリの id にある共有サービス(Microsoft Forms)。どの文書もパスが同じなので、id まで含めて1つの文書とする
+# (同: forms.cloud.microsoft が丸ごと公式に登録され、文書 ID の違う別のフォームまで公式になった)
+QUERY_DOC_PAGES = {"forms.cloud.microsoft": "/pages/responsepage.aspx", "forms.office.com": "/pages/responsepage.aspx"}
+
+
+def query_doc_key(url: str) -> str | None:
+    """クエリの id で文書が決まる URL なら、判定表に書く文書のキー(`<host>/pages/responsepage.aspx?id=<ID>`)。それ以外は None。"""
+    import urllib.parse
+    u = urllib.parse.urlparse(url if "//" in url else "//" + url)
+    host = (u.hostname or "").removeprefix("www.")
+    page = QUERY_DOC_PAGES.get(host)
+    if not page or u.path.rstrip("/").lower() != page:
+        return None
+    ids = urllib.parse.parse_qs(u.query).get("id") or []
+    return f"{host}{page}?id={ids[0]}" if len(ids) == 1 and re.fullmatch(r"[A-Za-z0-9._-]{16,}", ids[0]) else None
+
+
+def shared_host(host: str) -> bool:
+    """ドメイン全体では判定しない共有サービス(短縮 URL・クエリの id で文書が決まるフォーム)のホストか。"""
+    return host in SHORTENERS or host in QUERY_DOC_PAGES
+
 
 def parse_source_table(text: str, p) -> dict:
     """判定表の本文を検査して dict にする。読むときも書くときも**同じ検査**を通す。"""
@@ -1317,7 +1351,9 @@ def write_source_table(text: str, path=None) -> None:
     global _ST_TABLE, _ST_KEY
     p = Path(path) if path else ROOT / "source_types.yml"
     parse_source_table(text, p)
-    tmp = p.with_name(p.name + f".tmp-{os.getpid()}")
+    # 一時ファイルの名前は write_checked と同じ `.<名前>.<pid>.tmp`(.gitignore の対象)。取引の中断で書き手を止めたときに
+    # 残っても作業ツリーを汚さない(取引の後始末も消す)
+    tmp = p.with_name(f".{p.name}.{os.getpid()}.tmp")
     try:
         with open(tmp, "w", encoding="utf-8") as f:
             if p.exists():      # 置き換えで権限を変えない(新規ファイルは umask で決まるため。監査指摘)
@@ -1381,42 +1417,243 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
     失敗したら理由に「戻せない」を含める(呼び出し側は commit せずに終えること)。
     収集(候補 + 紙面の未確認。lint あり)と組版前(その号の記事の未確認だけ。posts_only。号スナップショットが
     まだ無いので lint は直後の組版に任せる: lint=False)が同じ取引を使う。
+    成功が確定していない終わり方(子の失敗・時間切れ・例外・SIGTERM・SIGINT)は、**子をプロセスグループごと止めてから**
+    開始時へ戻し、受けた中断はそのあとで元の扱いへ送り直す(2026-10-14 監査指摘: 表を書いた後・付け直しの前に親へ SIGTERM・SIGINT が
+    来ると戻さずに終わり、出典の lint が赤く、次の工程の checkout も「未コミットの変更」で止まった)。開始時の中身は控え
+    (TXN_JOURNAL)にも書き、親が SIGKILL などで後始末できずに死んでも、次の取引・次の工程の checkout が戻す(recover_classify_txn)。
     """
+    back = recover_classify_txn()
+    if back:
+        print(back, flush=True)
+        if "戻せない" in back:
+            return False, back
+        anomaly("classify", back)
     scripts = ROOT / "scripts"
-    snap = _snapshot([ROOT / "source_types.yml"] + sorted((ROOT / "docs" / "_posts").glob("*.md")))
-    ok, why = False, ""
+    posts = ROOT / "docs" / "_posts"
+    snap = _snapshot([ROOT / "source_types.yml"] + sorted(posts.glob("*.md")))
+    _TXN.update(proc=None, signum=None)
+    _write_txn_journal(snap, posts)
+    prev = _arm_txn_signals()
+    ok, why, done = False, "", False
     try:
         cmd = [sys.executable, str(scripts / "classify_sources.py"), "--date", date, "--apply"] + (["--posts-only"] if posts_only else [])
         if require_parsers:      # 当番の再実行: パーサの無い URL が残っていたら失敗(成功扱いにしない。監査指摘 r85)
             cmd.append("--require-parsers")
-        r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout)
-        print(r.stdout[-1200:], flush=True)
-        if r.returncode != 0:
-            why = f"合議 exit {r.returncode}: {err_tail(r)}"
+        steps = [("合議", cmd, timeout), ("付け直し", [sys.executable, str(scripts / "retag_sources.py"), "--apply"], 600)]
+        if lint:
+            steps.append(("lint", [sys.executable, str(scripts / "lint.py"), "--base", lint_base], 600))
+        for name, step, limit in steps:
+            if _TXN["signum"] is not None:
+                break
+            r = _txn_run(step, limit)
+            if name == "合議":
+                print(r.stdout[-1200:], flush=True)
+            elif name == "付け直し":
+                tail = (r.stdout or "").strip().splitlines()[-1:] if r.stdout else []
+                print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r.returncode}"), flush=True)
+            if _TXN["signum"] is not None:
+                break
+            if r.returncode != 0:
+                why = f"{name} exit {r.returncode}: {err_tail(r)}"
+                break
         else:
-            r2 = subprocess.run([sys.executable, str(scripts / "retag_sources.py"), "--apply"],
-                                cwd=ROOT, capture_output=True, text=True, timeout=600)
-            tail = (r2.stdout or "").strip().splitlines()[-1:] if r2.stdout else []
-            print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r2.returncode}"), flush=True)
-            if r2.returncode != 0:
-                why = f"付け直し exit {r2.returncode}: {err_tail(r2)}"
-            elif not lint:
-                ok = True
-            else:
-                r3 = subprocess.run([sys.executable, str(scripts / "lint.py"), "--base", lint_base],
-                                    cwd=ROOT, capture_output=True, text=True, timeout=600)
-                if r3.returncode != 0:
-                    why = f"lint exit {r3.returncode}: {err_tail(r3)}"
-                else:
-                    ok = True
+            ok = True
+        done = True
     except (subprocess.TimeoutExpired, OSError) as e:   # 途中の timeout・起動失敗も取引の失敗
         why = f"{type(e).__name__}: {str(e)[:200]}"
-    if ok:
+        done = True
+    finally:
+        signum = _TXN["signum"]
+        keep = ok and done and signum is None
+        failed = "" if keep else _txn_rollback(snap, posts)
+        if not failed:
+            (ROOT / TXN_JOURNAL).unlink(missing_ok=True)    # 戻せなければ控えを残す(次の取引・checkout が戻し直す)
+        _disarm_txn_signals(prev)
+        if signum is not None:
+            print(f"取引の途中でシグナル {signal.Signals(signum).name} を受けた。子を止めて判定表と記事を開始時へ戻した"
+                  + (f"(戻せない: {failed[:200]})" if failed else ""), flush=True)
+            signal.raise_signal(signum)      # 戻してから、元の扱い(既定なら終了、組版なら途中終了の後始末)へ渡す
+    if keep:
         return True, ""
-    failed = _restore(snap, ROOT / "docs" / "_posts")
+    if signum is not None:
+        why = why or f"シグナル {signal.Signals(signum).name} で中断"
     if failed:
         return False, f"{why}。判定表と記事を戻せない({failed[:200]})"
     return False, why
+
+
+# 進行中の取引の子プロセスと、取引の途中で受けた中断のシグナル(_arm_txn_signals のハンドラが書く)
+_TXN: dict = {"proc": None, "signum": None}
+TXN_JOURNAL = Path("metrics") / "work" / "classify-txn.json"   # 取引の開始時の中身の控え(ROOT から。Git 管理外)
+TXN_CHILD = Path("metrics") / "work" / "classify-txn.child.json"   # 動いている取引の子(pid・起動時刻)。親が死んでも次の起動が止める
+TXN_SIGNALS = (signal.SIGTERM, signal.SIGINT)
+
+
+def _txn_stop_child() -> None:
+    """取引の子をプロセスグループごと止める(止めずに戻すと、戻した後で子が判定表を書き直す)。"""
+    p = _TXN.get("proc")
+    if p is None or p.poll() is not None:
+        return
+    try:
+        os.killpg(p.pid, signal.SIGKILL)
+    except OSError:
+        try:
+            p.kill()
+        except OSError:
+            pass
+
+
+def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
+    """取引の1段を子プロセスで走らせる。子は自分のプロセスグループで起動し、時間切れ・例外では**グループごと止めて回収してから**
+    抜ける。中断のシグナルはハンドラが子を止める(communicate が子の終わりで戻る)。"""
+    p = subprocess.Popen(cmd, cwd=ROOT, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                         text=True, start_new_session=True)
+    _TXN["proc"] = p
+    child = ROOT / TXN_CHILD
+    try:
+        if _TXN["signum"] is not None:      # 起動の直前に中断を受けていた
+            _txn_stop_child()
+        try:
+            child.write_text(json.dumps({"pid": p.pid, "started": _proc_started(p.pid)}), encoding="utf-8")
+        except OSError as e:
+            print(f"取引の子の記録を書けない({e})", flush=True)
+        out, err = p.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        out, err = reap(p)
+        raise subprocess.TimeoutExpired(cmd, timeout, output=out, stderr=err)
+    except BaseException:
+        reap(p)
+        raise
+    finally:
+        _TXN["proc"] = None
+        child.unlink(missing_ok=True)
+    return subprocess.CompletedProcess(cmd, p.returncode, out, err)
+
+
+def _arm_txn_signals() -> dict:
+    """取引のあいだ SIGTERM・SIGINT を受け止める。ハンドラは子を止めて印を付けるだけで、戻すのは取引の後始末(どの行で
+    受けても、戻す処理の途中で例外にならない)。戻り値は元のハンドラ(_disarm_txn_signals で戻す)。無視している・Python の外で
+    決めたシグナル、メインスレッドでないときは差し替えない。"""
+    import threading
+    if threading.current_thread() is not threading.main_thread():
+        return {}
+    prev = {}
+    for sig in TXN_SIGNALS:
+        h = signal.getsignal(sig)
+        if h in (signal.SIG_IGN, None):
+            continue
+
+        def on_signal(signum, frame):
+            if _TXN["signum"] is None:
+                _TXN["signum"] = signum
+            _txn_stop_child()
+        prev[sig] = h
+        signal.signal(sig, on_signal)
+    return prev
+
+
+def _disarm_txn_signals(prev: dict) -> None:
+    for sig, h in prev.items():
+        signal.signal(sig, h)
+
+
+def _txn_rollback(snap: dict[str, bytes | None], posts: Path) -> str:
+    """子を止め、判定表と記事を開始時へ戻し、止めた子が書きかけた表の一時ファイルを消す。戻せなかったものの説明を返す。"""
+    _txn_stop_child()
+    failed = _restore(snap, posts)
+    for t in ROOT.glob(".source_types.yml.*.tmp"):
+        try:
+            t.unlink()
+        except OSError as e:
+            failed = (failed + " / " if failed else "") + f"{t.name}: {e}"
+    return failed
+
+
+def _proc_started(pid: int) -> str:
+    """プロセスの起動時刻(/proc/<pid>/stat の starttime)。終わっていれば(ゾンビも)""。pid の使い回しと見分けるため。"""
+    try:
+        f = Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()
+        return "" if f[0] == "Z" else f[19]
+    except (OSError, IndexError):
+        return ""
+
+
+def _stop_txn_orphan() -> None:
+    """親が死んで残った取引の子(と、そのプロセスグループ)を止め、止まるまで待つ。戻した後で書き直させない。"""
+    c = ROOT / TXN_CHILD
+    try:
+        rec = json.loads(c.read_text(encoding="utf-8"))
+        pid, started = int(rec.get("pid") or 0), str(rec.get("started") or "")
+    except (OSError, ValueError, TypeError, AttributeError):
+        return
+    if pid and started and _proc_started(pid) == started:
+        try:
+            os.killpg(pid, signal.SIGKILL)
+        except OSError:
+            pass
+        for _ in range(100):
+            if _proc_started(pid) != started:
+                break
+            time.sleep(0.1)
+    c.unlink(missing_ok=True)
+
+
+def _txn_place() -> tuple[str, str]:
+    """取引をした作業ツリーの (ブランチ, HEAD)。Git でなければ ("", "")。"""
+    return (git("branch", "--show-current", check=False).stdout.strip(),
+            git("rev-parse", "--verify", "-q", "HEAD", check=False).stdout.strip())
+
+
+def _write_txn_journal(snap: dict[str, bytes | None], posts: Path) -> None:
+    """取引の開始時の中身を控えに書く(一時ファイル → fsync → 置き換え)。子を起動する前に書き終える。"""
+    import base64
+    branch, head = _txn_place()
+    body = {"pid": os.getpid(), "started": _proc_started(os.getpid()), "branch": branch, "head": head,
+            "posts": str(posts.relative_to(ROOT)),
+            "files": {str(Path(k).relative_to(ROOT)): (None if v is None else base64.b64encode(v).decode("ascii"))
+                      for k, v in snap.items()}}
+    j = ROOT / TXN_JOURNAL
+    j.parent.mkdir(parents=True, exist_ok=True)
+    tmp = j.parent / f".{j.name}.{os.getpid()}.tmp"
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            f.write(json.dumps(body))
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, j)
+    finally:
+        tmp.unlink(missing_ok=True)
+
+
+def recover_classify_txn() -> str:
+    """前の取引が後始末できずに終わっていたら(親が SIGKILL・電源断で死んだ)、控え(TXN_JOURNAL)から判定表と記事を開始時へ戻す。
+    戻り値は説明(何もしなければ "")。戻せなければ「戻せない」を含める(呼び出し側は先へ進まない)。
+    - 控えを書いたプロセスがまだ動いていれば触らない(その取引の途中)
+    - ブランチか HEAD が取引の開始時から変わっていれば戻さない(別の号・その後の commit を古い中身で上書きしない)。控えは脇へ退ける"""
+    import base64
+    j = ROOT / TXN_JOURNAL
+    if not j.exists():
+        return ""
+    try:
+        rec = json.loads(j.read_text(encoding="utf-8"))
+        files = {str(ROOT / k): (None if v is None else base64.b64decode(v)) for k, v in rec["files"].items()}
+        posts = ROOT / rec["posts"]
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        return f"前の出典の判定の取引の控えが読めない({type(e).__name__}: {str(e)[:120]})。判定表と記事を戻せない({j})"
+    pid = int(rec.get("pid") or 0)
+    if pid and pid != os.getpid() and rec.get("started") and _proc_started(pid) == rec.get("started"):
+        return ""
+    _stop_txn_orphan()
+    if tuple(_txn_place()) != (rec.get("branch", ""), rec.get("head", "")):
+        aside = j.with_name(f"classify-txn.stale-{int(time.time())}.json")
+        os.replace(j, aside)
+        return (f"前の出典の判定の取引の控えが残っていたが、ブランチか HEAD が開始時({rec.get('branch')} {str(rec.get('head'))[:10]})と"
+                f"違うので戻さなかった(控えは {aside.name} へ退けた)")
+    failed = _txn_rollback(files, posts)
+    if failed:
+        return f"前の出典の判定の取引(pid {pid})が途中で終わっていた。判定表と記事を戻せない({failed[:200]})"
+    j.unlink(missing_ok=True)
+    return f"前の出典の判定の取引(pid {pid})が途中で終わっていたので、判定表と記事を開始時へ戻した"
 
 
 def dedupe_source_table(path=None) -> list[str]:
@@ -1506,7 +1743,7 @@ def _check_table(t: dict, p) -> None:
     import collections
     seen = collections.defaultdict(list)
     for key in ("official_domains", "semi_official_domains", "press_domains",
-                "secondary_domains", "fan_domains", "party_domains",
+                "secondary_domains", "fan_domains", "party_domains", "performer_domains",
                 "official_paths", "semi_official_paths", "party_paths"):
         for v in t.get(key) or []:
             seen[v].append(key)
@@ -1646,9 +1883,15 @@ def classify_source(url: str) -> str:
             return "当事者"
     # プラットフォーム上のアカウント・チャンネル・作品ページ(tiktok.com/@…, ch.nicovideo.jp/…,
     # manga.nicovideo.jp/comic/…)は、パス単位で種別が決まる。合議が足す(path_types: パス → 種別)
+    # クエリの id で決まる文書(Microsoft Forms)は、その文書のキーとの完全一致だけ(パスの前方一致ではどの文書にも当たる)
+    qdoc = query_doc_key(url)
     for pre, typ in (t.get("path_types") or {}).items():
-        if under(str(pre)):
+        if (str(pre).strip().rstrip("/") == qdoc) if qdoc else under(str(pre)):
             return str(typ)
+    # 共有サービス(短縮 URL・フォーム)は、短縮・文書1つずつの登録(上の path_types)にだけ当てる。
+    # ドメインの一覧に載っていても使わない(t.co の丸ごと登録で、どこへの短縮も公式になった。監査指摘 2026-10-14)
+    if shared_host(host):
+        return "未確認"
 
     # 2. 動画・生放送は**投稿者**で決まる。ドメインでは決まらない。
     #    同じ youtube.com に公式チャンネルの PV とレーベルの試聴動画が混ざる。
@@ -1710,10 +1953,11 @@ def classify_source(url: str) -> str:
     # 4. それ以外はドメイン。**完全一致を先に見る。**
     #    公式ポータル配下でも gakuen-label.(公式レーベル)は準公式なので、
     #    末尾一致より個別指定が勝たないと誤って公式になる(監査指摘)
+    # 演者(出演者の所属事務所のサイト)もドメインで持つ(合議が答えてよい種別。監査指摘 2026-10-14: 保存先が無く KeyError)
     for key, label in (("official_domains", "公式"), ("semi_official_domains", "準公式"),
                        ("press_domains", "報道"), ("secondary_domains", "二次情報"),
                        ("discovery_only_domains", "二次情報"),
-                       ("fan_domains", "ファン"), ("party_domains", "当事者")):
+                       ("fan_domains", "ファン"), ("party_domains", "当事者"), ("performer_domains", "演者")):
         if host in set(t.get(key) or []):
             return label
     # 5. 公式ポータル配下の特設サイト(号ごとに増える)。個別指定に当たらなかったものだけ
@@ -1732,7 +1976,7 @@ def classify_source(url: str) -> str:
     for key, label in (("semi_official_domains", "準公式"), ("press_domains", "報道"),
                        ("secondary_domains", "二次情報"),
                        ("discovery_only_domains", "二次情報"),
-                       ("fan_domains", "ファン"), ("party_domains", "当事者")):
+                       ("fan_domains", "ファン"), ("party_domains", "当事者"), ("performer_domains", "演者")):
         for d in t.get(key) or []:
             if host.endswith("." + d):
                 return label

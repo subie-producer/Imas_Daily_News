@@ -30,8 +30,8 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, classify_source,
-                     source_type_table, write_source_table, prompt_part, render_prompt,
+from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, QUERY_DOC_PAGES, SHORTENERS, classify_source,
+                     source_type_table, write_source_table, prompt_part, render_prompt, query_doc_key,
                      edition_date, extract_json_array, html_to_text, notify, render_failure, set_quiet,
                      X_ANON_POST, x_post_author)
 
@@ -39,9 +39,10 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, classify_source,
 # いたら、@idolmaster_en もジムシャニ公式も未確認のまま紙面に載った。編集長の指摘)。
 # どの種別も2モデルの一致が要る。割れたら議論(consensus の2巡目)
 ALLOWED = ("公式", "準公式", "当事者", "演者", "報道", "二次情報", "ファン")
-# ドメインの一覧は種別ごと。演者はドメインを持たない(X アカウントで表す)ので入れない
+# ドメインの一覧は種別ごと。ALLOWED のどれとも対応させる(依頼文は所属事務所のサイトも演者と答えさせる。演者の保存先が無く、
+# 2モデルが一致した答えが KeyError で取引ごと落ちた。監査指摘 2026-10-14)
 LIST_OF = {"公式": "official_domains", "準公式": "semi_official_domains",
-           "当事者": "party_domains", "報道": "press_domains",
+           "当事者": "party_domains", "演者": "performer_domains", "報道": "press_domains",
            "二次情報": "secondary_domains", "ファン": "fan_domains"}
 # ドメインでは決まらない場(アカウント・動画IDで決まる)。対象外
 # **公式の主体がページを持ちうる場**だけを外す。そこはドメインでは決まらない。
@@ -50,7 +51,8 @@ LIST_OF = {"公式": "official_domains", "準公式": "semi_official_domains",
 PLATFORMS = ("x.com", "twitter.com", "youtube.com", "youtu.be", "nicovideo.jp",
              "note.com", "docs.google.com", "drive.google.com", "forms.gle", "hatenablog.com",
              "ameblo.jp", "fanbox.cc", "booth.pm", "github.com", "rakuten.co.jp",
-             "tiktok.com", "instagram.com", "threads.net", "bsky.app", "pixiv.net", "twitch.tv", "lit.link")
+             "tiktok.com", "instagram.com", "threads.net", "bsky.app", "pixiv.net", "twitch.tv", "lit.link",
+             "krs.bz", "line.me")
 # 多数の主体が同居するプラットフォームでは、**持ち主が決まる単位**が3通りある。どれにも当たらない URL は
 # 判定の単位を決められないので、黙って飛ばさず理由付きで記録する(unknown_targets の skipped)。
 # 1. パス単位(アカウント・チャンネル・作品ページ): 先頭何区切りで主体か。ホスト → (区切り数, 先頭区切りに要る接頭辞)
@@ -58,10 +60,15 @@ PATH_KEYS = {"tiktok.com": (1, "@"), "ch.nicovideo.jp": (1, ""), "manga.nicovide
              "seiga.nicovideo.jp": (2, ""), "note.com": (1, ""), "ameblo.jp": (1, ""), "github.com": (2, ""),
              "instagram.com": (1, ""), "threads.net": (1, "@"), "bsky.app": (2, ""), "pixiv.net": (2, ""),
              "twitch.tv": (1, ""), "lit.link": (1, ""), "item.rakuten.co.jp": (1, ""),
-             "fanbox.cc": (1, "@"), "forms.gle": (1, "")}
+             "fanbox.cc": (1, "@"), "forms.gle": (1, ""), "krs.bz": (1, "")}
+# 先頭の区切りが持ち主(アカウント)ではないもの。投稿・動画の ID しか無く、持ち主はパーサで引く(先頭1区切りで切ると、
+# 別の人の投稿がみな同じ主体になる。2026-10-14: instagram.com/p が1つの主体として表に載り、どの投稿も同じ種別になっていた)
+NOT_OWNER_HEADS = {"instagram.com": ("p", "reel", "reels", "tv", "explore", "stories"), "twitch.tv": ("videos", "directory"),
+                   "note.com": ("hashtag", "search")}
 # 2. 文書単位(フォーム・文書・表計算): 1つの文書が1つの主体のもの。告知から張られる応募フォームなどで紙面に出る
 #    (実測 2026-09-20: 公式の特別配信のおたよりフォーム docs.google.com/forms/d/e/<id> が未確認のまま載った)。
-#    キーは文書 ID まで(`/viewform` や `?usp=` は含めない)
+#    キーは文書 ID まで(`/viewform` や `?usp=` は含めない)。Microsoft Forms は ID がクエリにあり、キーは
+#    `<host>/pages/responsepage.aspx?id=<ID>`(pipelib.query_doc_key)か短縮の `<host>/r/<ID>`
 DOC_HOSTS = ("docs.google.com", "drive.google.com")
 # 3. サブドメイン単位(ブログ・ショップ): `<名前>.hatenablog.com` のようにホストがそのまま主体。ドメインとして判定する
 SUBDOMAIN_PLATFORMS = ("hatenablog.com", "fanbox.cc", "booth.pm")
@@ -79,8 +86,15 @@ def path_key(url: str) -> str | None:
             if i >= 1 and seg[i - 1] in ("d", "e", "folders") and len(s) >= 20:
                 return host + "/" + "/".join(seg[:i + 1])
         return None
+    if host in QUERY_DOC_PAGES:
+        # 文書 ID はクエリの id か、短縮の /r/<ID>。取れなければ None(フォームのサービス全体を1つの主体にしない。監査指摘 2026-10-14)
+        return query_doc_key(url) or (f"{host}/r/{seg[1]}" if len(seg) >= 2 and seg[0].lower() == "r" else None)
+    if host == "ch.nicovideo.jp" and seg and seg[0] == "channel":
+        # `/channel/<ch ID>` は ID までが1つのチャンネル。先頭1区切りで切ると、別のチャンネルが同じ `ch.nicovideo.jp/channel` になり、
+        # 1つを公式にすると他のチャンネル(とその番組)まで公式になった(監査指摘 2026-10-14)。別名の形(`/sidem`)は先頭1区切り
+        return f"{host}/channel/{seg[1]}" if len(seg) >= 2 and re.fullmatch(r"ch\d+", seg[1]) else None
     for h, (n, prefix) in PATH_KEYS.items():
-        if host == h and len(seg) >= n and seg[0].startswith(prefix):
+        if host == h and len(seg) >= n and seg[0].startswith(prefix) and seg[0] not in NOT_OWNER_HEADS.get(h, ()):
             return host + "/" + "/".join(seg[:n])
     return None
 
@@ -116,7 +130,7 @@ def display_base(url_or_key: str) -> str:
     unit, key = platform_unit(s)
     if unit == "x":
         return f"https://x.com/{key}"
-    if unit in ("path", "domain"):
+    if unit in ("path", "domain", "short"):
         return f"https://{key}"
     if unit == "parser":
         return f"(持ち主を取るパーサが無い: {key})"
@@ -124,17 +138,21 @@ def display_base(url_or_key: str) -> str:
 
 
 def platform_unit(url: str) -> tuple[str, str]:
-    """未知の URL を、何の単位で判定するか。("domain" | "path" | "x" | "skip" | "parser", キーか理由)。
+    """未知の URL を、何の単位で判定するか。("domain" | "path" | "x" | "short" | "skip" | "parser", キーか理由)。
 
     skip は「持ち主が無いと分かっている URL」(検索・トレンド・ID の無い文書ホスト)。
     parser は「持ち主はいるはずだが、取る手段(パーサ)をこのコードが持っていない」。後者は人に「決まらない」と
     申告する事象ではなく、パーサを書かせる依頼を当番に出す(`request_parsers`。編集長 2026-09-26:
     「この手のやつが来たら『パースしろ』という判定をしろ」「申告前に診断しろ」)。
+    short は短縮 URL(`t.co/<ID>`)。ホストでは決まらず、展開先の種別を短縮1つずつへ写す(resolve_short_links)。
     """
     u = urllib.parse.urlparse(url)
     host = (u.hostname or "").removeprefix("www.")
     if not host:
         return "skip", "ホストが読めない"
+    if host in SHORTENERS:
+        seg = [s for s in u.path.split("/") if s]
+        return ("short", f"{host}/{seg[0]}") if seg else ("skip", f"{host} の短縮 ID の無い URL")
     if host in ("x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com"):    # classify_source と同じ集合
         seg = [s for s in u.path.split("/") if s]
         if seg and seg[0].lower() not in ("i", "search", "hashtag", "home", "explore"):
@@ -143,7 +161,7 @@ def platform_unit(url: str) -> tuple[str, str]:
     pk = path_key(url)
     if pk:
         return "path", pk
-    if host in DOC_HOSTS:
+    if host in DOC_HOSTS or host in QUERY_DOC_PAGES:
         return "skip", f"{host} の文書 ID の無い URL(文書でなければ持ち主は無い)"
     for q in SUBDOMAIN_PLATFORMS:
         if host.endswith("." + q):
@@ -193,6 +211,7 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     NEED_PARSER.clear()
     USED_IN.clear()
     X_POSTS.clear()
+    SHORT_LINKS.clear()
     rows = target_rows(date)
     if not rows:
         return {}, {}, {}
@@ -227,6 +246,10 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
         if unit == "skip":
             SKIPPED.setdefault(url, key)   # 黙って飛ばさない。main が理由ごと報告する
             continue
+        if unit == "short":
+            # 短縮 URL そのものは判定しない。展開先は target_rows が対象に足してあり、決まった種別を resolve_short_links が写す
+            SHORT_LINKS.setdefault(key, url)
+            continue
         if unit == "parser":
             NEED_PARSER.setdefault(url, key)   # パーサが無い種類。main が当番に書かせる依頼を出す(人には申告しない)
             if c.get("title") and len(USED_IN.setdefault(url, [])) < 3:
@@ -249,7 +272,12 @@ PRIMARY = ("公式", "準公式", "当事者", "演者")    # 自分の告知と
 
 def is_document(key: str) -> bool:
     """フォーム・文書など、**それ自身は身元を持たない**単位か(持ち主は、それを張った告知で決まる)。"""
-    return key.split("/")[0] in DOC_HOSTS + ("forms.gle",)
+    return key.split("/")[0] in DOC_HOSTS + ("forms.gle",) + tuple(QUERY_DOC_PAGES)
+
+
+def doc_id_of(key: str) -> str:
+    """文書の単位のキーから文書 ID(Microsoft Forms はクエリの id、ほかは最後の区切り)。"""
+    return key.split("?id=", 1)[1] if "?id=" in key else key.rsplit("/", 1)[-1]
 
 
 def link_sources(key: str, days: int = 7) -> list[tuple[str, str]]:
@@ -257,7 +285,7 @@ def link_sources(key: str, days: int = 7) -> list[tuple[str, str]]:
     文書 ID が現れるものを探す。リンク元が分かれば、モデルに推測させるまでもない(編集長の指摘 2026-09-20:
     「どこに書いてあって、どこにリンクされているかで決まる」。実測: 公式 X の投稿の facts に
     「配信へのお便り募集: https://docs.google.com/forms/…」とあるのに、フォームを未確認のまま合議に回していた)。"""
-    doc_id = key.rsplit("/", 1)[-1]
+    doc_id = doc_id_of(key)
     out: list[tuple[str, str]] = []
     for p in sorted((ROOT / "candidates").glob("????-??-??.json"))[-days:]:
         text = p.read_text(encoding="utf-8", errors="replace")
@@ -305,6 +333,73 @@ NEED_PARSER: dict[str, str] = {}      # 持ち主を取るパーサが無い URL
 USED_IN: dict[str, list[str]] = {}    # 判定のキー → 紙面・候補での使われ方(題名と出典の label)
 X_POSTS: dict[str, str] = {}          # 投稿者の無い X の投稿 ID → 投稿者(unknown_targets が埋める。resolve_x_posts が表へ)
 _X_AUTHOR: dict[str, str] = {}        # 投稿 ID → 投稿者(引けなければ "")。同じ実行で何度も問い合わせない
+SHORT_LINKS: dict[str, str] = {}      # 判定表に無い短縮 URL のキー(`t.co/<ID>`)→ URL(unknown_targets が埋める。resolve_short_links が表へ)
+_SHORT: dict[str, str] = {}           # 短縮 URL → 展開先(引けなければ "")。同じ実行で何度も問い合わせない
+
+
+def expand_short(url: str) -> str:
+    """短縮 URL の展開先。引けなければ ""。"""
+    if url not in _SHORT:
+        _SHORT[url] = expand_short_fetch(url)
+    return _SHORT[url]
+
+
+def expand_short_fetch(url: str, hops: int = 5) -> str:
+    """短縮 URL を、短縮サービスの外へ出るまで辿る(展開先のページそのものは取りに行かない)。辿れなければ ""。
+    リダイレクト(Location)と、ページで飛ばす形(meta refresh / location.replace)の両方を読む。"""
+    import html as _html
+    import urllib.error
+    import urllib.request
+
+    class _Stay(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, *a, **k):
+            return None
+    opener = urllib.request.build_opener(_Stay)
+    cur = url
+    for _ in range(hops):
+        if (urllib.parse.urlparse(cur).hostname or "").removeprefix("www.") not in SHORTENERS:
+            return cur
+        nxt = ""
+        try:
+            with opener.open(urllib.request.Request(cur, headers={"User-Agent": UA}), timeout=20) as r:
+                body = r.read(100_000).decode("utf-8", "replace")
+            m = (re.search(r'http-equiv=["\']?refresh["\']?[^>]*content=["\'][^"\']*?url=([^"\'>]+)', body, re.I)
+                 or re.search(r'location\.replace\(["\']([^"\']+)', body))
+            nxt = _html.unescape(m.group(1)).replace("\\/", "/").strip() if m else ""
+        except urllib.error.HTTPError as e:
+            if 300 <= e.code < 400:
+                nxt = e.headers.get("Location") or ""
+        except Exception as e:      # noqa: BLE001  引けなければ未確認のまま(理由は resolve_short_links が残す)
+            print(f"  短縮 URL を展開できず {cur}: {type(e).__name__}", flush=True)
+            return ""
+        if not nxt:
+            return ""
+        cur = urllib.parse.urljoin(cur, nxt)
+    return ""
+
+
+def resolve_short_links(apply: bool) -> list[str]:
+    """判定表に無い短縮 URL へ、展開先の種別を機械で写す(path_types に短縮1つずつ。合議には掛けない。x_posts と同じ)。
+    展開先が表に無ければ、展開先は target_rows で合議・機械の判定に掛かっている(この関数は main の最後に呼ぶ)。
+    戻り値は決まらなかったものの説明(`<短縮のキー>: 理由`)。"""
+    found: dict[str, tuple[str, str]] = {}
+    left: list[str] = []
+    for key, url in sorted(SHORT_LINKS.items()):
+        if classify_source(url) != "未確認":
+            continue
+        dest = expand_short(url)
+        typ = classify_source(dest) if dest else "未確認"
+        if not dest:
+            left.append(f"{key}: 短縮 URL の展開先を引けない(リダイレクトもページ内の転送も読めなかった)")
+        elif typ == "未確認":
+            left.append(f"{key}: 短縮 URL。展開先 {dest[:160]} の種別が決まらない(展開先の判定を参照)")
+        else:
+            found[key] = (typ, f"展開先 {dest[:160]}")
+            print(f"  {typ}\t{key}\t→ {dest[:80]}", flush=True)
+    if found and apply:
+        add_paths(found, how="機械で追加")
+        print(f"  → 短縮 URL {len(found)}件を表に追加(展開先の種別を写した)", flush=True)
+    return left
 
 
 def anon_x_author(url: str) -> tuple[str, str]:
@@ -401,12 +496,22 @@ POSTS_ONLY: str | None = None    # 号の日付。組版前の判定では、そ
 
 
 def target_rows(date: str) -> list[dict]:
-    """判定の対象: その号の候補 + 紙面に載った未確認の出典。組版前(POSTS_ONLY)は、その号の記事の出典だけ。"""
+    """判定の対象: その号の候補 + 紙面に載った未確認の出典。組版前(POSTS_ONLY)は、その号の記事の出典だけ。
+    判定表に無い短縮 URL は、その**展開先**も対象に足す(短縮そのものは持ち主を持たない。展開先がドメイン・アカウント・動画の
+    どれでも、同じ規則で決まる。決まった種別は resolve_short_links が短縮へ写す)。"""
     if POSTS_ONLY:
-        return unresolved_post_sources(POSTS_ONLY)
-    p = ROOT / "candidates" / f"{date}.json"
-    rows = json.loads(p.read_text(encoding="utf-8")) if p.exists() else []
-    return rows + unresolved_post_sources()
+        rows = unresolved_post_sources(POSTS_ONLY)
+    else:
+        p = ROOT / "candidates" / f"{date}.json"
+        rows = (json.loads(p.read_text(encoding="utf-8")) if p.exists() else []) + unresolved_post_sources()
+    dests = []
+    for c in rows:
+        url = ((c.get("url") or "").split() or [""])[0]
+        if url and platform_unit(url)[0] == "short" and classify_source(url) == "未確認":
+            dest = expand_short(url)
+            if dest:
+                dests.append({"url": dest, "title": f"{c.get('title') or ''}(短縮 URL {url} の展開先)"})
+    return rows + dests
 
 
 def unresolved_post_sources(date: str | None = None, only: set[str] | None = None) -> list[dict]:
@@ -561,7 +666,9 @@ def _key_forms(s: str) -> tuple[str, str]:
     """対象の書き方の揺れを吸収するための (全体, 末尾) の正規形。
     `https://www.youtube.com/@Foo/` も `youtube.com/@foo` も `@Foo` も、末尾は `foo`。"""
     full = re.sub(r"^[a-z]+://", "", str(s or "").strip().lower()).removeprefix("www.").rstrip("/")
-    full = full.split("?")[0].removesuffix("/about")
+    # クエリは落とす。ただし文書 ID のクエリ(Microsoft Forms の `?id=`)は残す(落とすと別のフォームどうしが同じ対象になる)
+    base, _, query = full.partition("?")
+    full = base.removesuffix("/about") + (f"?{query.split('&')[0]}" if query.startswith("id=") else "")
     return full.lstrip("@"), full.rsplit("/", 1)[-1].lstrip("@")
 
 
@@ -715,13 +822,18 @@ def _add_labeled(section: str, agreed: dict, note: str, ci: bool, show=lambda k:
 
 
 def add_domains(agreed: dict) -> None:
+    """ドメインを種別ごとの一覧へ足す。その種別の一覧がまだ表に無ければ作る。
+    ドメイン単位で決まらないホスト(短縮 URL・フォーム・プラットフォーム)は足さない(ドメイン全体の登録で、別の主体の
+    短縮・フォームまで同じ種別になった。監査指摘 2026-10-14)。"""
     p = ROOT / "source_types.yml"
     text = p.read_text(encoding="utf-8")
     for h, (t, why) in agreed.items():
-        sp = _span(text, LIST_OF[t])
-        if not sp:
-            print(f"  ★{LIST_OF[t]} が表に無いので {h} を足せない")
+        if platform_unit(f"https://{h}/") != ("domain", h.removeprefix("www.")):
+            print(f"  ★{h} はドメイン単位で決まらない({platform_unit(f'https://{h}/')[0]})ので、ドメインとしては足さない")
             continue
+        if not _span(text, LIST_OF[t]):
+            text = text.rstrip("\n") + f"\n\n{LIST_OF[t]}:\n"
+        sp = _span(text, LIST_OF[t])
         if _listed(text, LIST_OF[t], h, ci=True):
             print(f"  {h} は既に {LIST_OF[t]} にある(足さない)")
             continue
@@ -1061,7 +1173,8 @@ def main() -> int:
         for s in rows:
             print(f"  パーサが無い\t{s}", flush=True)
         split_all += rows
-    if not doms and not accts and not paths and not X_POSTS and not unknown_videos(date) and not unknown_nico(date):
+    if (not doms and not accts and not paths and not X_POSTS and not SHORT_LINKS
+            and not unknown_videos(date) and not unknown_nico(date)):
         if not split_all:
             print(f"{date}: 判定表に無い出典はありません")
             return 0
@@ -1174,6 +1287,9 @@ def main() -> int:
         else:
             left = [x for x in left if not any(f"({k})" in x for k in agreed)] + split
     split_all += left
+
+    # 短縮 URL は、展開先の種別が上で決まってから、その種別を短縮1つずつへ写す(展開先が決まらなければ理由を残す)
+    split_all += resolve_short_links(args.apply)
 
     # **決まらなかったものを、その場で人へ上げない。**
     #

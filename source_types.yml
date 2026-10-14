@@ -37,9 +37,7 @@ official_paths:
   - bilibili.com/opus/1244186744338776068
 
 official_domains:
-  - forms.cloud.microsoft # 合議で追加: リンク元は公式X投稿(imas_CGofficial)、同企画の告知で別受付先な
   - va-liv.booth.pm       # 合議で追加: idolmaster-official.jpの公式プロジェクト。BOOTHは販売
-  - t.co                  # 合議で追加: ページに『公式サイトオープン』と明記。シンデレラガールズは公式作品
   - idolmaster-tours-w.bn-am.net # 合議で追加: TOURS公式マイページ、バンダイナムコアミューズメント直営の一次発信
   - idolmaster-official.jp                          # 公式ポータル
   - cinderellagirls.idolmaster-official.jp          # シンデレラガールズ公式
@@ -54,7 +52,6 @@ official_suffixes:
 # --- 準公式: 公式レーベル・公式ストア等のグループ/パートナー企業 ---
 semi_official_domains:
   - akitashoten.co.jp     # 合議で追加: 週刊少年チャンピオンで学園アイドルマスター連載を掲載する出版社本体
-  - krs.bz                # 合議で追加: アイマス公式配信番組のメールフォーム。日本コロムビアが運営
   - onsen.ag              # 合議で追加: 公式ラジオ配信プラットフォーム、公式登録済み
   - a-onstore.jp          # 合議で追加: バンダイナムコグループの公式ショップ。公式レーベル・公式ストアの定義に該当
   - 1kuji.com             # 合議で追加: バンダイナムコグループ企業が一番くじ商品の企画・開発・販売を行い、自社商品を告知
@@ -208,9 +205,11 @@ secondary_domains:
   - wikia.com
 
 # --- 演者 ---
-# **その作品を演じている人**とその所属事務所。X アカウントで表す(下の x_accounts)。
+# **その作品を演じている人**とその所属事務所。本人・事務所の X アカウントは下の x_accounts、
+# 所属事務所のサイトはこの performer_domains(合議が足す)。
 # 出演したことや現場の様子については強い一次情報だが、価格・日程・仕様のような
 # 運営側の事実は当事者・公式のほうが正確なので、信頼順では当事者の次に置く。
+performer_domains:
 
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
@@ -256,7 +255,6 @@ party_domains:
   - lawson-print.com      # 合議で追加: ローソンプリントでアイマスグッズを販売するライセンス企業
   - travel.willer.co.jp   # 合議で追加: シャイニーカラーズコラボツアーを企画・販売するライセンス事業者
   - taiko-ch.net          # 合議で追加: バンダイナムコ傘下の他タイトル公式サイト。アイマス視点では外部企業
-  - bit.ly                # 合議で追加: リンク先はローソンプリント。ライセンスを受けてアイマス商品を販売する当事者
   - flowerstand.jp        # 合議で追加: アイマス関連イベントのフラワースタンド受付・販売を行う独立企業
   - famkuji.jp            # 合議で追加: グッズくじ販売、ライセンス商品
   - amiami.jp             # 合議で追加: ライセンス商品販売、フィギュア予約受付
@@ -890,7 +888,7 @@ path_types:
   note.com/jangajanganikki: ファン                # 合議で追加: 個人のnoteアカウント。シャニマスソロライブの感想・日記を発信
   docs.google.com/forms/d/e/1FAIpQLSewzEGUu-wlZ66kIHFIdR6ucKHMFo2syzmW9Oeq7lzKCSsSWQ: 公式 # 合議で追加: リンク元@valiv_officialは登録済み公式。VA-LIVブランド公式
   docs.google.com/forms/d/e/1FAIpQLSf3XywxIR7Ud5lymd-PnVk2ESVRCaO58ZrdVgITrHiZZlrc8g: 公式 # 合議で追加: リンク元が公式X account @imas_ch。IM@S RADIO番組の受
-  instagram.com/p: ファン                         # 合議で追加: 個人アカウント@flowers_room_fによる終演後の投稿
+  instagram.com/p/DdzDtpoE52W: ファン             # 合議で追加: 個人アカウント@flowers_room_fによる終演後の投稿(2026-10-14 instagram.com/p 全体の登録を、判定した投稿1つに絞った)
   note.com/sammy_sammy: ファン                    # 合議で追加: 個人のnoteアカウント。アイマスLIVE観賞レポート等、個人のファン発信。
   note.com/hokuhokuawaawa: ファン                 # 合議で追加: 個人のnoteユーザーアカウント。シャニマスの感想・物販紹介
   note.com/kaaiiiiiiii_trip: ファン               # 合議で追加: 個人ブログ。アイマスSideMの個人的な目撃・体験レポート
@@ -901,6 +899,21 @@ path_types:
   tiktok.com/@valiv_official: 公式              # ヴイアラ(vα-liv)公式の TikTok(X の @valiv_official と同じ主体)
   ch.nicovideo.jp/sidem: 公式                    # アイドルマスター SideM チャンネル(ブランド公式のニコニコチャンネル)
   manga.nicovideo.jp/comic/31422: 準公式          # 『ぷちます!』のニコニコ漫画連載ページ(連載先)
+  # 共有サービス(短縮 URL・メールフォーム・Microsoft Forms)はドメイン全体では決まらない。短縮・文書・アカウント1つずつ載せる。
+  # 短縮 URL(t.co/<ID> など)は、展開先の種別を機械で写す(classify_sources.resolve_short_links)。
+  # 2026-10-14 ドメイン全体の登録(t.co・forms.cloud.microsoft を公式、krs.bz を準公式、bit.ly を当事者)を撤去し、
+  # 判定した相手と紙面に載った短縮だけを、それまでの種別のまま1つずつに移した。t.co の行は公開済みの記事の種別の引き継ぎで、
+  # 展開先の種別と食い違うものは訂正の手順で直す
+  forms.cloud.microsoft/pages/responsepage.aspx?id=q7kiOCyrIE-ozavmrJhsN7Xo70AL1htBl0YLyOneN9FUN0ZEUDlKOElYWUJPRVU3TUJESUtGVjFNTS4u: 公式 # 合議で追加: リンク元は公式X投稿(imas_CGofficial)、同企画の告知で別受付先な
+  krs.bz/columbia: 準公式                          # 合議で追加: アイマス公式配信番組のメールフォーム。日本コロムビアが運営
+  t.co/DExCRB8aIf: 公式                            # 公開済みの記事の種別の引き継ぎ(2026-10-07 号)。展開先 https://forms.gle/FG23YTfHe6NW9tEP6
+  t.co/c8iRoxEJow: 公式                            # 公開済みの記事の種別の引き継ぎ(2026-10-07 号)。展開先 https://www.youtube.com/@imas-official/join
+  t.co/ON7vMQp5kT: 公式                            # 公開済みの記事の種別の引き継ぎ(2026-10-08 号)。展開先 https://livepocket.jp/e/va-liv_letora_bd2026
+  t.co/odKdocfo6v: 公式                            # 公開済みの記事の種別の引き継ぎ(2026-10-08 号)。展開先 https://asobistore.jp/content/title/Idolmaster/shinyradio/contact/
+  t.co/GUc5UbFYOR: 公式                            # 公開済みの記事の種別の引き継ぎ(2026-10-09 号)。展開先 https://www.amazon.co.jp/B0ZA5TKAN7/dp/B0DXDXBLL5
+  t.co/3gNh7QxFR7: 公式                            # 公開済みの記事の種別の引き継ぎ(2026-10-10 号)。展開先 https://www.the-chara.com/blog/?p=120999
+  t.co/F4IcLM9ABj: 公式                            # 公開済みの記事の種別の引き継ぎ(2026-10-12 号)。展開先 https://idolmaster-official.jp/live_event/cg_apai/
+  t.co/nullju5tFc: 公式                            # 公開済みの記事の種別の引き継ぎ(2026-10-14 号)。展開先 https://idolmaster-official.jp/live_event/IUOAFA/
 
 # --- 投稿者の無い X の投稿(x.com/i/status/<ID>)。投稿者のアカウントの種別を機械で写す ---
 x_posts:

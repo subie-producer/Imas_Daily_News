@@ -6827,6 +6827,28 @@ def test_collect_handover_deadline(tmp: Path):
               f"定点観測: 1回の受信の上限を、収集の締切までの残り時間で延ばした({took4:.1f}秒 {why4!r})")
         check(took5 < 1.0 and "締切" in why5,
               f"定点観測: 1回の読み込みの中で何度も受信する応答を、締切を越えて読み続けた({took5:.1f}秒 {why5!r})")
+        # ヘッダーが少しずつ届く(urlopen はヘッダーを読み終えるまで返らない)ときも、接続・ヘッダーを含めて締切までしか待たない
+        def slow_headers(req, timeout=None):
+            _t.sleep(2.5)
+            return Wire([(0, b"")], 20.0)
+        collect.urllib.request.urlopen = slow_headers
+        try:
+            collect.DEADLINE = _t.time() + 0.3
+            t0 = _t.time()
+            _, why6 = saved["page_html_or_note"]("https://a.example/headers", False)
+            took6 = _t.time() - t0
+            collect.DEADLINE = _t.time() + 0.3
+            t0 = _t.time()
+            try:
+                collect.watch_fetch({"type": "html"})("https://a.example/list")
+                err7 = ""
+            except Exception as e:      # noqa: BLE001
+                err7 = str(e)
+            took7 = _t.time() - t0
+        finally:
+            collect.urllib.request.urlopen = saved_open
+        check(took6 < 1.0 and "締切" in why6 and took7 < 1.0 and "締切" in err7,
+              f"定点観測: 少しずつ届くヘッダーを、収集の締切を越えて待った(本文 {took6:.1f}秒 {why6!r} / 一覧 {took7:.1f}秒 {err7!r})")
         # 締切の決め方
         deadline_of = getattr(collect, "collect_deadline", None)
         if deadline_of is None:

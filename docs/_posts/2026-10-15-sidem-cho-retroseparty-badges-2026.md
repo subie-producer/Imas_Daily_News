@@ -3,7 +3,7 @@ slug: sidem-cho-retroseparty-badges-2026
 edition: "2026-10-15"
 brand: sidem
 src: 当事者
-rank: medium
+rank: small
 corrected: false
 corrections: []
 candidate_ids:

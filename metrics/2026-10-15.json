@@ -103,5 +103,44 @@
    },
    "duration_s": 1567
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-15T03:20:31+09:00",
+   "edition": "2026-10-15",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 36,
+   "written": 31,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 88,
+    "covered": 88,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "dsva-valiv-letora-birthday-2026-lv-goods-lottery",
+    "million-snapshot-memories-gasha-2026-10"
+   ],
+   "stages_min": {
+    "選定": 1.319904903570811,
+    "執筆": 4.007130626837412,
+    "出典の判定": 0.730871589978536,
+    "組版": 0.5822172045707703,
+    "校閲": 0.5177192250887553,
+    "校閲1波": 0.5177192250887553
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "million-sports-day-login-bonus-2026",
+    "765-chibi-mako-yukiho-2026",
+    "gaku-hatsuboshi-live-tour-single-shurakuryoko-2026"
+   ],
+   "duration_s": 1193
+  }
  ]
 }

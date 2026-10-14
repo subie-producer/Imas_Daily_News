@@ -892,7 +892,7 @@ def edition_artifacts(date: str) -> list[str]:
     """その号の成果物のパス(glob)。作り直しで外す・復元で掃除する対象。社説(EDITORIAL_UNTIL 以前の号)も含む(監査指摘)。"""
     return [f"docs/_posts/{date}-*.md", f"docs/_editions/{date}.md", f"docs/_editorials/{date}.md",
             f"metrics/plan-{date}*.json", f"metrics/review-{date}-*.json",
-            f"metrics/stories-before-{date}.yml", f"metrics/pending-before-{date}.yml"]
+            f"metrics/stories-before-{date}.yml", f"metrics/pending-before-{date}.yml", f"metrics/pending-removed-{date}.yml"]
 
 
 def untracked_files() -> set[str] | None:

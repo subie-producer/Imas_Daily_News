@@ -7,7 +7,7 @@
 - birthdays: 名鑑(docs/_data/idols.json)から機械抽出
 - ranking: スコア = 紙面(title+lede+本文+digest)の名鑑アイドル登場回数×1.0
            + 当日 candidates の探索(explore)由来エントリでの言及回数×0.5(トレンド分)
-  上位8名。同点は前号順位優先、次いで名鑑順(characterId)。delta は前号比。
+  上位8名。同点は前号順位優先、次いで名鑑順(characterId)。言及が8名に満たなければスコア0も同じ規則で並べる。delta は前号比。
   ※重み(1.0/0.5)は暫定。第0号期間の実測で確定する(REQUIREMENTS 8章)。
 --write で docs/_editions/<date>.md の該当フィールドを上書きする(digest 等は保持)。
 """
@@ -80,13 +80,12 @@ def compute(date: str) -> dict:
         except Exception:
             continue
 
-    # スコアリング
+    # スコアリング。言及の無いアイドル(スコア0)も同じ規則(同点は前号順位、次いで名鑑順)で並べ、必ず8件にする
+    # (2026-10-14 監査: 言及が8名に満たない号でランキングが8件に届かず、lint の「ranking は8件」で止まった)
     scores = {}
     for idol in idols:
         name = idol["name"]
-        s = paper_text.count(name) * WEIGHT_PAPER + trend_text.count(name) * WEIGHT_TREND
-        if s > 0:
-            scores[name] = (s, idol)
+        scores[name] = (paper_text.count(name) * WEIGHT_PAPER + trend_text.count(name) * WEIGHT_TREND, idol)
 
     # 前号(日付順で直前の号)
     prev_rank = {}
@@ -120,7 +119,7 @@ def compute(date: str) -> dict:
         "corrected_count": sum(1 for fm, _ in posts if fm.get("corrected")),
         "ranking": ranking,
         "birthdays": birthdays,
-        "_scores": {n: s for n, (s, _) in sorted(scores.items(), key=sort_key)[:16]},
+        "_scores": {n: s for n, (s, _) in sorted(scores.items(), key=sort_key)[:16] if s > 0},
     }
     return derived, ed_fm, ed_path
 

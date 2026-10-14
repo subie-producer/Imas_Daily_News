@@ -1020,7 +1020,7 @@ def run_assemble(date: str, number: int) -> None:
     code = _assemble.run(date, number, budget=lambda: remaining_seconds(cap=_assemble.SESSION_CAP))
     if code == 1:
         raise RuntimeError("組版: 記事が無い")
-    # 2 = lint が赤い(組版の欠陥として通知済み)。呼び出し側の lint ゲートで扱う
+    # 2 = lint が赤い・派生欄(derive)か lint が異常終了した(組版の欠陥として通知済み)。呼び出し側の lint ゲートで扱う
 
 
 def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str:
@@ -3885,7 +3885,7 @@ def own_artifacts(date: str) -> list[str]:
             f"metrics/plan-{date}*.json", f"metrics/plan-lead-{date}.json", f"metrics/review-{date}-*.json",
             f"metrics/stories-before-{date}.yml", f"metrics/pending-before-{date}.yml", f"metrics/{date}.json",
             f"metrics/candidates-read-{date}.json", f"candidates/{date}.json", f"metrics/drops-{date}.json",
-            f"metrics/factmap-{date}.json",
+            f"metrics/factmap-{date}.json", f"metrics/pending-removed-{date}.yml",
             "stock/stories.yml", "stock/pending.yml", "stock/scheduled/*.json", "stock/columnist.md"]
 
 

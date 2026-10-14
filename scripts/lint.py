@@ -299,7 +299,7 @@ def src_rank(t):
 # 見出し・リード・ダイジェストの行は、テンプレートが**そのまま文字として**出す欄。
 # ここに Markdown 記法が混ざると、読者には `**強調**` がそのまま見える。
 # 本文(Markdown)では正しく太字になるので、混同しやすい。
-from renderlib import MD_IN_PLAIN  # noqa: E402  検算(執筆の答えの検め)と同じ基準を1つの定義で持つ
+from renderlib import markdown_in_plain  # noqa: E402  検算(執筆の答えの検め)と同じ基準を1つの定義で持つ
 
 
 def check_plain_text(rep, path, label, value):
@@ -311,7 +311,7 @@ def check_plain_text(rep, path, label, value):
     誰も一度も通し読みしていない、という形で読者に伝わってしまう)。
     """
     v = str(value or "")
-    m = MD_IN_PLAIN.search(v)
+    m = markdown_in_plain(v)
     if m:
         rep.error(path, f"{label} に Markdown 記法が残っている(この欄は記号がそのまま紙面に出る): "
                         f"…{v[max(0, m.start() - 12):m.end() + 12]}…")

@@ -65,22 +65,45 @@ PAPER_STAGE = None  # main() で .env から
 
 
 def load_scheduled(date: str) -> list[dict]:
-    """発行日の続報予約(素材スナップショット同梱)。過去の candidates を遡らないための日付別ストア。"""
+    """発行日の続報予約(素材スナップショット同梱)。過去の candidates を遡らないための日付別ストア。
+    event_date は予約が指す出来事の日(reminder_event_date)に置き換える。決められない予約は event_date を外す(執筆が決める)。
+    予約のファイルは書き換えない(予約後は原則変更しない)。"""
     p = ROOT / "stock" / "scheduled" / f"{date}.json"
     if not p.exists():
         return []
-    return [dict(r, event_date=reminder_event_date(r, date)) for r in json.loads(p.read_text(encoding="utf-8"))]
+    rows = []
+    for r in json.loads(p.read_text(encoding="utf-8")):
+        row = dict(r)
+        row.pop("event_date", None)         # 元の話題の日付は渡さない(下)
+        ev = reminder_event_date(r, date)
+        if ev:
+            row["event_date"] = ev
+        rows.append(row)
+    return rows
 
 
-def reminder_event_date(row: dict, date: str) -> str:
-    """続報予約の記事の出来事の日(素材の event_date として渡す値)。予約が指す日そのもの: 締切前は予約の日の3日後(締切日)、
-    ほかは予約の日。予約には元の話題の event_date(販売・受付の開始日)が写してあり、それを渡すと書き手が写して1か月前の日付の
-    記事になり、lint の鮮度検査で赤になった(実測 2026-10-12: 9/11 開始の予約受付の締切前の記事が event_date 9/11 で lint 赤)。
-    元の話題の deadline も使わない: 受付締切・入金期限・公演日など、予約が指す締切とは別の日のことがある(監査指摘: 10/18 の
-    申込締切を指す 10/15 の予約で deadline は 11/4 の入金期限)"""
-    if row.get("kind") == "締切前":
-        return (datetime.date.fromisoformat(date) + datetime.timedelta(days=3)).isoformat()
-    return date
+def reminder_event_date(row: dict, date: str) -> str | None:
+    """続報予約の記事の出来事の日(素材の event_date として渡す値)。予約が指す出来事の日そのもの。
+    予約の日(ファイルの日付 = 記事を出す号)とは別: 06:00 より前に終わる締切・終了は前日の号に予約するので、予約の日を渡すと
+    1日早い日付の記事になる(2026-10-14 監査指摘: 10/1 4:59 に終わる学マスのミッションパスの終了の予約(9/30)で、記事の
+    event_date が 9/30 になり lint も通った)。組版は予約に出来事の日(occurs_on)を書く。
+    occurs_on の無い古い予約(2026-10-14 より前)は、予約の日と種別から決める: 締切前は3日後(締切日)、ほかは予約の日。ただし
+    予約の日とずれうる種別で、ずれた先の日(締切前は4日後、締切・終了は翌日)が予約に書いてあれば、どちらの日かをコードは決め
+    られないので None(素材に event_date を付けず、執筆が素材と予約の種別から決める)。
+    予約に写した元の話題の event_date(販売・受付の開始日)は渡さない: 書き手が写して1か月前の日付の記事になり、lint の鮮度検査で
+    赤になった(実測 2026-10-12: 9/11 開始の予約受付の締切前の記事が event_date 9/11 で lint 赤)。元の話題の deadline も使わない:
+    受付締切・入金期限・公演日など、予約が指す締切とは別の日のことがある(監査指摘: 10/18 の申込締切を指す 10/15 の予約で
+    deadline は 11/4 の入金期限)"""
+    if row.get("occurs_on"):
+        return str(row["occurs_on"])
+    d = datetime.date.fromisoformat(date)
+    lags = renderlib.RESERVATION_LAG.get(row.get("kind"), (0,))
+    hay = " ".join([str(f) for f in row.get("facts") or []]
+                   + [str(row.get(k) or "") for k in ("note", "title", "subject", "event_date", "deadline")])
+    if any(renderlib.date_mentioned((d + datetime.timedelta(days=n)).isoformat(), hay, renderlib.years_in(hay + " " + date))
+           for n in lags[1:]):
+        return None
+    return (d + datetime.timedelta(days=lags[0])).isoformat()
 
 
 def next_number(date: str | None = None, live: bool | None = None) -> int:
@@ -2625,11 +2648,37 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     return "fixed", f"対応 {ans.get('addressed_issue_ids')}"
 
 
+def posts_snapshot(date: str) -> dict[Path, bytes]:
+    """この号の記事ファイルの控え(パス → 中身)。執筆の子が作業ツリーに直接書いた変更を戻すため(restore_posts)。"""
+    return {p: p.read_bytes() for p in (ROOT / "docs" / "_posts").glob(f"{date}-*.md")}
+
+
+def restore_posts(date: str, snap: dict[Path, bytes]) -> list[str]:
+    """控えを取ってからの、この号の記事ファイルの変更(書き換え・削除・新しいファイル)を控えへ戻す。戻したファイル名を返す。
+    戻せなかったファイルは異常として申告する(1つ戻せなくても残りは戻す)。"""
+    back = []
+    for p in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md")):
+        if p not in snap:
+            try:
+                p.unlink(missing_ok=True)
+                back.append(p.name)
+            except OSError as e:
+                anomaly("compose", f"執筆の子が作った {p.name} を消せない({type(e).__name__}: {str(e)[:120]})")
+    for p, data in snap.items():
+        try:
+            if not p.is_file() or p.read_bytes() != data:
+                write_checked(p, data.decode("utf-8"))
+                back.append(p.name)
+        except OSError as e:
+            anomaly("compose", f"執筆の子が書き換えた {p.name} を控えへ戻せない({type(e).__name__}: {str(e)[:120]})")
+    return back
+
+
 def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands: dict,
                     aborted: list[str] | None = None) -> dict[str, str]:
     """校閲の指摘を**執筆側(Codex)**に構造化で直させる。校閲側(Claude)には編集させない(監査の設計レビュー)。
 
-    直した稿は初稿と同じ検算(事実 id・出典・タグ・日付)を通してからファイルにする。
+    直した稿は初稿と同じ検算(事実 id・出典・タグ・日付)を通してからファイルにする。子が記事を直接書き換えても採らない(控えへ戻す)。
     decline(見送り)が返れば記事を落とす。何も直せないままなら次の巡でまたブロックが付き、上限で落ちる。
     戻り値は {slug: 結果}(fixed / kept / dropped / unreadable)。呼び出し側は「書き手が書き直した(fixed / kept)」記事に
     同じ指摘が残ったときだけ「直せなかった」と記録する(実行の失敗を契約の欠陥と取り違えない。監査指摘 r86)。
@@ -2659,6 +2708,10 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
     schema_out = ROOT / "schema" / "article-out.schema.json"
     n_fixed = n_dropped = 0
     for i in range(0, len(jobs), COMPOSE_WAVE):
+        # 子は本体の作業ツリー(cwd=ROOT)で動き、記事を直接書き換えられる。稿は答えの JSON からコードが書くので、子の直接の
+        # 書き込みは採らない: この号の記事を控え、子が全部終わったら(異常終了・時間切れでも)控えへ戻してから答えを当てる
+        # (2026-10-14 監査指摘: 記事を直接書き換えて異常終了した子の変更が残り、答えは不採用なのに記事は書き換わっていた)
+        kept_posts = posts_snapshot(date)
         procs = []
         for art, path, fact_by_id, materials, issues, prompt in jobs[i:i + COMPOSE_WAVE]:
             fd, out_name = tempfile.mkstemp(prefix=f"codexrevise-{art['slug']}-", suffix=".txt")
@@ -2672,6 +2725,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                      prompt_file(date, f"revise-{art['slug']}", prompt)],
                     stdout=lf, stderr=subprocess.STDOUT, text=True, stdin=subprocess.DEVNULL, cwd=ROOT,
                     start_new_session=True)))
+        waited = []
         for art, path, fact_by_id, materials, issues, out_path, p in procs:
             timed_out = False
             try:
@@ -2679,6 +2733,11 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
             except subprocess.TimeoutExpired:
                 reap(p)              # 子(道具の実行)も落としてから答えのファイルを読む
                 timed_out = True
+            waited.append((art, path, fact_by_id, materials, issues, out_path, p, timed_out))
+        back = restore_posts(date, kept_posts)
+        if back:
+            print(f"書き直しの子が直接書き換えた記事を控えへ戻した(稿は答えから書く): {', '.join(back[:8])}", flush=True)
+        for art, path, fact_by_id, materials, issues, out_path, p, timed_out in waited:
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             out_path.unlink(missing_ok=True)
             save_raw(date, f"revise-{art['slug']}", "", take_log(out_path), p.returncode, files={"last-message": out})

@@ -15,6 +15,7 @@
       "kind": {"enum": ["締切前", "締切", "開幕", "千秋楽", "発売", "結果", "終了", "開始", "その他"], "description": "トリガー種別"},
       "note": {"type": "string"},
       "reserved_on": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "description": "予約した日(初報の compose 日)"},
+      "occurs_on": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "description": "その予約が指す出来事の日(締切・終了などが実際に起きる日。記事の event_date になる)。ファイルの日付(予約を消化する号の日)とずれるのは、締切前(締切の日)と、06:00 より前に終わる締切・終了(翌日)。組版が書く(2026-10-14 から。それより前の予約には無い)"},
       "title": {"type": "string", "description": "素材スナップショット: 元候補の title"},
       "url": {"type": "string", "description": "素材スナップショット: 出典 URL(記事の sources に使える)"},
       "source_type": {"enum": ["公式", "準公式", "当事者", "演者", "報道", "ファン", "二次情報", "もちより", "未確認"]},

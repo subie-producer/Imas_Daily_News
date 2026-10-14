@@ -714,10 +714,23 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict) -> 
         probe = [dt] + ([dt + datetime.timedelta(days=3)] if r.get("kind") == "締切前" else []) + \
                 ([dt + datetime.timedelta(days=1)] if r.get("kind") in ("締切", "終了") else [])
         years = renderlib.years_in(hay + " " + str(c.get("published_date") or "") + " " + str(c.get("url") or "") + " " + date)
-        if not any(renderlib.date_mentioned(p.isoformat(), hay, years) for p in probe):
+        # 予約が指す出来事の日(occurs_on)は予約の日とは別に持つ(2026-10-14 監査指摘: 10/1 4:59 に終わる催しを 9/30 に予約し、
+        # 予約の日を出来事の日として執筆に渡していた)。予約の日からのずれが種別と合わない・素材に無い日は採らない
+        # (予約は残し、出来事の日は読み込み側の決め方に任せる)
+        try:
+            occ = datetime.date.fromisoformat(str(r.get("occurs_on") or ""))
+        except ValueError:
+            occ = None
+        if occ is not None and ((occ - dt).days not in renderlib.RESERVATION_LAG.get(r["kind"], (0,))
+                                or not renderlib.date_mentioned(occ.isoformat(), hay, years)):
+            notes.append(f"reservations: 出来事の日 {occ.isoformat()} が素材に無いか、予約の日 {dt.isoformat()}・種別 {r['kind']} と"
+                         f"合わない。出来事の日を付けずに予約する({s})")
+            occ = None
+        if occ is None and not any(renderlib.date_mentioned(p.isoformat(), hay, years) for p in probe):
             notes.append(f"reservations: 素材に無い日付 {dt.isoformat()} を捨てた({s})"); continue
         res.append({"slug": s, "candidate_id": cid, "date": dt.isoformat(), "kind": r["kind"],
-                    "subject": (r.get("subject") or "")[:60], "note": (r.get("note") or "")[:120]})
+                    "subject": (r.get("subject") or "")[:60], "note": (r.get("note") or "")[:120],
+                    **({"occurs_on": occ.isoformat()} if occ else {})})
 
     p_add = []
     for x in out.get("pending_add") or []:
@@ -883,7 +896,8 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
         # 予約の根拠の日付ごと落ちる。実測 2026-10-07: 13件目の「10/10 14:59まで」が落ち、締切前の記事を見送った)
         entry = {"id": rid, "dedup_key": dk, "brand": brand_of.get(r["slug"]) or c.get("brand") or "other",
                  "subject": r["subject"] or c.get("title") or dk, "kind": r["kind"], "note": r["note"],
-                 "reserved_on": date, "title": c.get("title") or "", "url": c.get("url") or "",
+                 "reserved_on": date, **({"occurs_on": r["occurs_on"]} if r.get("occurs_on") else {}),
+                 "title": c.get("title") or "", "url": c.get("url") or "",
                  "source_type": classify_source(c.get("url") or ""), "facts": list(c.get("facts") or []),
                  "via": c.get("via") or "", "verify": c.get("verify") or "unconfirmed",
                  "src_candidate_id": r["candidate_id"]}

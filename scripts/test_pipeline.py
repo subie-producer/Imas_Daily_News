@@ -6969,8 +6969,17 @@ def test_child_tracker_edges(tmp: Path):
     import time
     tmp.mkdir(parents=True, exist_ok=True)
     early = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(3)"])
+    # 始める前からの子が、始めたあとに別のセッションの道具を起こして終わる(道具はここへ付け替わる)。束ねの孤児として止めない
+    go, tool_pid = tmp / "go", tmp / "tool.pid"
+    pre = subprocess.Popen([sys.executable, "-c",
+                            "import pathlib, subprocess, sys, time\n"
+                            f"while not pathlib.Path({str(go)!r}).exists(): time.sleep(0.02)\n"
+                            "q = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(3)'], start_new_session=True)\n"
+                            f"pathlib.Path({str(tool_pid)!r}).write_text(str(q.pid)); time.sleep(0.3)\n"])
     tr = compose.ChildTracker().start()
     tr.t0 = 0       # 起動時刻が始まりと同じ刻みになった場合を、いつでも起こす(時刻では見分けられない)
+    go.write_text("", encoding="utf-8")
+    pre.wait(timeout=10)
     # 親が先に終わり、付け替わった子も終わる(ここの子のゾンビになる)
     mid = subprocess.Popen([sys.executable, "-c", "import subprocess, sys; subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(0.2)'])"])
     mid.wait()
@@ -6978,6 +6987,15 @@ def test_child_tracker_edges(tmp: Path):
     ok = tr.sweep()
     zombies = [pid for pid, (s, ppid, _, _) in compose.proc_table().items() if ppid == os.getpid() and s == "Z"]
     check(ok and early.poll() is None and zombies == [], f"始める前からの子を止めた・終わった孤児を回収しない: {early.poll()} {zombies}")
+    tool = int(tool_pid.read_text())
+    tool_alive = compose.proc_table().get(tool, ("X",))[0] not in ("Z", "X")
+    check(tool_alive, "始める前からの子が、始めたあとに起こした道具を、束ねの孤児として止めた")
+    for q in (tool,):
+        try:
+            os.kill(q, 9)
+            os.waitpid(q, 0)
+        except (OSError, ChildProcessError):
+            pass
     early.kill()
     early.wait()
     started: list = []

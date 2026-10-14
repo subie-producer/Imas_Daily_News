@@ -2863,6 +2863,7 @@ class ChildTracker:
         self.thread: threading.Thread | None = None
         self.t0 = 0
         self.before: set[tuple[int, int]] = set()
+        self.foreign: set[tuple[int, int]] = set()    # 始める前からの子の子孫(束ねのものではない)
         self.ok = Path("/proc").is_dir()
 
     def start(self) -> "ChildTracker":
@@ -2896,13 +2897,15 @@ class ChildTracker:
         kids: dict[int, list[int]] = {}
         for pid, (_, ppid, _, _) in table.items():
             kids.setdefault(ppid, []).append(pid)
-        todo = [pid for pid, st in list(self.roots.items()) + list(self.seen) if table.get(pid, ("", 0, 0, -1))[3] == st]
-        while todo:
-            for k in kids.get(todo.pop(), []):
-                key = (k, table[k][3])
-                if key not in self.seen:
-                    self.seen.add(key)
-                    todo.append(k)
+        for roots, rec in ((list(self.roots.items()) + list(self.seen), self.seen), (list(self.before | self.foreign), self.foreign)):
+            # 束ねの子の子孫は seen へ、始める前からの子の子孫は foreign へ(あとで付け替わっても、束ねの孤児と取り違えない。監査指摘)
+            todo = [pid for pid, st in roots if table.get(pid, ("", 0, 0, -1))[3] == st]
+            while todo:
+                for k in kids.get(todo.pop(), []):
+                    key = (k, table[k][3])
+                    if key not in rec:
+                        rec.add(key)
+                        todo.append(k)
         return table
 
     def _run(self) -> None:
@@ -2939,7 +2942,8 @@ class ChildTracker:
             table = self._poll()
             targets = {pid for pid, (s, ppid, pgrp, st) in table.items()
                        if (pid, st) in self.seen or pgrp in self.roots
-                       or (alone and ppid == me and st >= self.t0 and pid not in self.roots and (pid, st) not in self.before)}
+                       or (alone and ppid == me and st >= self.t0 and pid not in self.roots
+                           and (pid, st) not in self.before and (pid, st) not in self.foreign)}
             for mark in self.marks:
                 targets.update(live_procs(None, mark))
             kids: dict[int, list[int]] = {}

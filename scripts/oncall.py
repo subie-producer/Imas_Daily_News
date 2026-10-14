@@ -74,7 +74,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hashlib
 
-from pipelib import (COLLECT_ONCALL_MARK, ENV, ROOT, SCHEDULED, SLOT_MARGIN_MIN, JobLockTimeout, job_lock, loads_strict, mark_collect_oncall,
+from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, settle_collect_outputs, SCHEDULED, SLOT_MARGIN_MIN, JobLockTimeout, job_lock, loads_strict, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, settled_drops,
                      tool_path)
 
@@ -1142,9 +1142,15 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
                               "--skip-explore", "--skip-grok", "--oncall-rerun", "--date", target], log, limit)
             if not root_clean():
                 # 時間切れ・異常終了で取り直しが途中で終わっても、保存できた素材と既読状態は確定させ、作業ツリーを
-                # clean にして次の工程(組版・道具の更新)を止めない(監査指摘)。素材のファイルは丸ごと書き直す形なので途中は無い
+                # clean にして次の工程(組版・道具の更新)を止めない(監査指摘)。確定する前に中身を検め、壊れた出力(書きかけで
+                # 切れた JSON・書式に合わない素材)は確定せずに HEAD の中身へ戻す(2026-10-14 監査指摘: 保存の途中で打ち切られた
+                # 素材の JSON を commit・push し、組版・発行前の lint が読めずに止まる経路があった)
                 try:
-                    commit_paths(["candidates", "stock/watch-state.json", "metrics"],
+                    dropped = settle_collect_outputs(ROOT)
+                    if dropped:
+                        notify("oncall", f"{date} collect: 取り直しの出力が壊れていたので確定せずに戻した: " + " / ".join(dropped)[:600],
+                               ok=False)
+                    commit_paths(list(COLLECT_OUTPUTS),
                                  f"oncall: {target} 取り直しの途中までを確定(exit {code})", edition,
                                  push_timeout=max(15, min(120, int(left() / 3))))
                 except Exception as e:      # noqa: BLE001

@@ -41,11 +41,11 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
-                     extract_periods, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
+                     extract_periods, decode_html, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
                      RenderFailed, render_page, candidate_misplaced, merge_candidate_facts,
                      set_quiet, unbacked_facts,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
-                     edition_date, mark_collect_oncall, write_checked,
+                     edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author)
 
@@ -159,13 +159,9 @@ def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
         t, why = rendered_or_note(url)
         if t:
             return t, ""
-    m = re.search(rb'<meta[^>]+charset=["\']?\s*([A-Za-z0-9_-]+)', raw[:4000], re.I)
-    for enc in (cs, m and m.group(1).decode("ascii", "ignore"), "utf-8"):
-        try:
-            return raw.decode(enc or "utf-8"), ""
-        except (UnicodeDecodeError, LookupError):
-            continue
-    return raw.decode("utf-8", errors="replace"), ""
+    # 文字コードの判定は本文の取得の共通処理(decode_html)と同じ。Shift_JIS 宣言で CP932 の拡張文字を含むページを、ここだけ
+    # 置換文字だらけで読んでいた(監査指摘 2026-10-14)
+    return decode_html(raw, cs), ""
 
 
 def fragment_section(html: str, url: str) -> str:
@@ -184,26 +180,40 @@ def fragment_section(html: str, url: str) -> str:
 
 # ---- A-1 定点観測 --------------------------------------------------------------
 
-def list_source(s: dict, known: set[str], fetch=None) -> tuple[list[tuple[str, str]], int, bool]:
-    """観測先の一覧から (URL, 見出し) を集める。戻りは (一覧の並び, 読んだページ数, 上限で打ち切ったか)。
+def list_source(s: dict, known: set[str], fetch=None, resume=None) -> tuple[list[tuple[str, str]], int, list[dict]]:
+    """観測先の一覧から (URL, 見出し) を集める。戻りは (一覧の並び, 読んだページ数, 未完了の境界の並び)。
 
     **件数で打ち切らない。**一覧の先頭ページだけを見ていたとき、公式ニュースは毎回 12 件しか見えず、実行と実行の
     あいだに 12 件を超えて更新されると、押し出された記事を定点観測が一度も見ない(編集長 2026-09-30「公式のニュース
     12件しか見ないとか設計不備過ぎる」)。`page_url`(`{n}` がページ番号)を持つ観測先は、**既に見た記事だけの
-    ページに行き当たるまで**遡る。`max_pages` まで読んでもまだ新着が続くなら、打ち切ったことを返す(呼び出し側が異常として上げる)。
+    ページに行き当たるまで**遡る。`max_pages` まで読んでもまだ新着が続くなら、読んだ最後のページを未完了の境界
+    ({"page": ページ番号, "after": そのページで初めて出た URL の並び})として返す(呼び出し側が状態に残し、異常として上げる)。
+    空の並びは、一覧を読み終えた(既に見た記事に行き当たった・一覧の終わり)。
+
+    resume は前回までの未完了の境界。境界の先はまだ読んでいないので、手前の既読だけのページに行き当たっても止まらず、
+    境界のページ(の1つ手前。新着が増えると境界は奥へずれる)へ飛び、境界を越えた先を `max_pages` まで読む
+    (2026-10-14 監査指摘: 打ち切った回が手前のページを既読にするので、上限を上げて当番が取り直しても先頭の既読ページで
+    巡回を終え、奥の新着を回収できなかった)。境界の URL が一覧から消えていれば越えられないので、一覧の終わりに着くまで
+    未完了として残す(黙って捨てない)。
     """
     fetch = fetch or (fetch_rendered if s["type"] == "portal" else http_get)
     found: list[tuple[str, str]] = []
-    max_pages = int(s.get("max_pages") or 1) if s.get("page_url") else 1
-    pages = 0
-    for n in range(1, max_pages + 1):
+    paged = bool(s.get("page_url"))
+    max_pages = int(s.get("max_pages") or 1) if paged else 1
+    marks = sorted((r for r in (resume or []) if paged and isinstance(r, dict) and r.get("after")),
+                   key=lambda r: int(r.get("page") or 1))
+    passed = [0] * len(marks)     # 境界ごとに 0: まだ / 1: 境界の URL を読んでいる / 2: 越えた(境界の後ろの項目を読んだ)
+    target = None                 # いま向かっている境界(None は先頭からの巡回)
+    pages, n, left = 0, 1, max_pages
+    while True:
         url = s["url"] if n == 1 else s["page_url"].format(n=n)
         html = fetch(url)
         if not (html or "").strip():
             # 取得の失敗(空の応答)を一覧の終わりと取り違えない。手前のページだけ既読にすると、
             # 次回は手前で止まって奥の新着を見ない(監査指摘 r102)。この観測先は今回まるごと失敗にし、次回同じ境界からやり直す
             raise RuntimeError(f"{url} の取得に失敗(空の応答)")
-        pages = n
+        pages += 1
+        left -= 1
         on_page = []
         for m in re.finditer(s["list_regex"], html, re.DOTALL):
             u = m.group(1)
@@ -213,10 +223,36 @@ def list_source(s: dict, known: set[str], fetch=None) -> tuple[list[tuple[str, s
             if u not in {x for x, _ in found} and u not in {x for x, _ in on_page}:
                 on_page.append((u, title))
         found += on_page
-        # 既に見た記事だけのページ(か、空のページ=一覧の終わり)に来たら止める
-        if not on_page or all(u in known for u, _ in on_page):
-            return found, pages, False
-    return found, pages, bool(s.get("page_url"))
+        for u, _ in on_page:
+            for i, r in enumerate(marks):
+                if passed[i] < 2 and u in r["after"]:
+                    passed[i] = 1
+                elif passed[i] == 1:
+                    passed[i] = 2
+        # 空のページ(か、既に集めた項目だけのページ)= 一覧の終わり。境界も含めて全部読んだ
+        if not on_page or not paged:
+            return found, pages, []
+        settled = all(u in known for u, _ in on_page)      # 既に見た記事だけのページ
+        if settled:
+            rest = [i for i, p in enumerate(passed) if p < 2]
+            if not rest:
+                return found, pages, []
+            if target is None or passed[target] == 2:
+                # まだ越えていない境界へ向かう。手前の既読のページは読み直さずに飛び、境界から先を上限まで読む
+                # (飛んだ先の1ページ目は、記事が消えて境界が手前へずれたときの余裕。上限に数えない)
+                target = rest[0]
+                n = max(n + 1, int(marks[target].get("page") or 1) - 1)
+                left = max_pages + 1
+                continue
+        if left <= 0:
+            break
+        n += 1
+    # 上限まで読んだ: 新着の続くページで止まったらそこを新しい境界に、まだ越えていない境界は奥へずらして残す
+    cut = [] if settled else [{"page": n, "after": [u for u, _ in on_page]}]
+    for i, r in enumerate(marks):
+        if passed[i] == 0 or (passed[i] == 1 and settled):
+            cut.append({"page": max(int(r.get("page") or 1), n), "after": r["after"]})
+    return found, pages, cut
 
 
 def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict]:
@@ -225,16 +261,19 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
     new_items = []  # {source_id, brand, url, title, source_type}
     found_by_source = {}  # 状態の保存は facts 化の後に行うため、巡回結果を持ち越す
     stats = {}
+    # 一覧を上限で打ち切った観測先の未完了の境界(観測先 → 境界の並び)。次回(当番の取り直しを含む)はその先から読む(list_source)
+    cuts = {k: v for k, v in state["_cut"].items() if isinstance(v, list)} if isinstance(state.get("_cut"), dict) else {}
     for s in sources:
         if not s.get("enabled"):
             continue
         try:
-            listed, pages, cut = list_source(s, set(state.get(s["id"], [])))
+            listed, pages, cut = list_source(s, set(state.get(s["id"], [])), resume=cuts.get(s["id"]))
             if s["id"] not in state:
                 # 初めて見る観測先: いまの一覧は「既に見た」として記録するだけ(過去の記事を新着として候補に流さない。
                 # 流すと、古い知らせが今日の記事として載る)。次の実行から、これより新しいものが新着になる
                 found_by_source[s["id"]] = [u for u, _ in listed]
                 stats[s["id"]] = {"found": len(listed), "pages": pages, "new": 0, "baseline": True}
+                cuts.pop(s["id"], None)
                 continue
             found = []
             for u, title in listed:
@@ -247,14 +286,23 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
             stats[s["id"]] = {"found": len(found), "pages": pages,
                               "new": len([n for n in new_items if n["source_id"] == s["id"]])}
             if cut:
-                # 上限のページまで読んでも新着が続いた = それより古い新着を見落としている可能性。申告で終えずに当番がなぜなぜする
-                notify("collect", f"定点観測 {s['id']}: {pages}ページ読んでも既に見た記事に行き当たらない(新着が上限を超えた"
-                                  f"か、一覧の形が変わった)。これより古い新着を見落としている可能性がある", ok=False)
+                # 上限のページまで読んでも新着が続いた(か、前回打ち切った境界を越えられない)= それより古い新着をまだ見ていない。
+                # 読んだ位置を境界として残し、次回(当番の取り直しを含む)はその先から読む。申告で終えずに当番がなぜなぜする
+                cuts[s["id"]] = cut
+                stats[s["id"]]["unfinished"] = len(cut)
+                notify("collect", f"定点観測 {s['id']}: {pages}ページ読んでも、一覧の読んでいない区間が残った(新着が上限を超えた"
+                                  f"か、一覧の形が変わった)。読んだ位置を残し、次回はその先から読む(残った区間の新着はまだ素材に無い)", ok=False)
+            else:
+                cuts.pop(s["id"], None)
         except Exception as e:
             # 既読は更新しない(found_by_source に入れない)ので、次回同じ境界からやり直す。見えない失敗にしない(当番のなぜなぜへ)
             # 原因(描画取得なら終了コードと stderr の要点)まで残す。切り詰めて「空の応答」だけにしない
             stats[s["id"]] = {"error": str(e)[:400]}
             notify("collect", f"定点観測 {s['id']}: 一覧を読めなかった({str(e)[:400]})。既読は更新せず、次回やり直す", ok=False)
+    if cuts:
+        state["_cut"] = cuts
+    else:
+        state.pop("_cut", None)
 
     # 前回 facts 化の出力が読めずにやり直しになった新着(未処理の列)を**先に**処理する。それらは既読にしていないが、一覧の上では
     # 既読のページの奥に隠れるので、一覧を遡っても二度と見えない(監査指摘 r102)
@@ -1652,7 +1700,21 @@ def main() -> int:
 
     if not args.no_git and not checkout_edition_branch(date, "collect"):
         return 1
+    # 例外・SIGTERM で途中で終わっても、保存した素材と既読状態を検めて確定し、作業ツリーを clean にして終える(settle_interrupted)
+    prev = signal.signal(signal.SIGTERM, _on_sigterm)
+    try:
+        return run_collect(args, date, branch, t0)
+    except BaseException as e:
+        if not args.no_git:
+            settle_interrupted(date, branch, e)
+        raise
+    finally:
+        signal.signal(signal.SIGTERM, prev)
+        _TERM.update(defer=False, got=False)
 
+
+def run_collect(args, date: str, branch: str, t0: float) -> int:
+    """収集の本体(main が号のブランチを checkout したあと)。"""
     # Grok は SuperGrok の週次上限を消費するため、収集のたびに回すと枠を使い切る
     # (実測: 1回の収集で10セッション。日5回だと週350セッションになり上限の数倍)。
     # 定点観測と Claude 探索は安価なので毎回回し、Grok の実行時刻だけを GROK_HOURS で絞る。
@@ -1668,7 +1730,8 @@ def main() -> int:
     # candidates が保存できてから、定点観測の既読を確定する(同じ成功境界。監査指摘)
     watch_state = (watch_info.get("stats") or {}).pop("_state", None) if isinstance(watch_info, dict) else None
     if watch_state is not None:
-        STATE_PATH.write_text(json.dumps(watch_state, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        # 一度に差し替える(直接の上書きが途中で止まると、切れた JSON が残り次の収集が既読を読めない。監査指摘 2026-10-14)
+        write_atomic(STATE_PATH, json.dumps(watch_state, ensure_ascii=False, indent=1) + "\n")
     dur = int(time.time() - t0)
     append_metric("collect", {"edition": date, "watch": watch_info, "per_query": per_query,
                               "normalized": len(cands), "added": added, "verify": vcounts,
@@ -1705,7 +1768,11 @@ def main() -> int:
                 notify("collect", f"{date}: 判定表の更新〜紙面の付け直し〜lint で失敗({why[:400]})。判定表と記事を"
                                   f"戻した(候補は残す)。次回の収集で再試行する", ok=False)
     if not args.no_git:
-        if not commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect"):
+        _TERM["defer"] = True     # 確定の途中では SIGTERM で中断しない(受けたら確定のあとで終える)
+        pushed = commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect")
+        if _TERM["got"]:
+            raise Terminated()
+        if not pushed:
             # 永続化できなかった収集は「無かった」のと同じ。成功として終わらない(監査指摘: fail-open)
             notify("collect", f"{date}: 候補を commit/push できなかった。作業ツリーを確かめること", ok=False)
             return 1
@@ -1739,12 +1806,62 @@ def main() -> int:
         notify("collect", f"{date}: 当番の取り直しでも観測先の一覧が取れない: " + ", ".join(list_failed)
                + "。そこで落とした新着は、この号の素材に入っていない", ok=False)
         return 1
+    # 当番の取り直しでも、一覧の読んでいない区間が残ったら成功にしない(残った区間の新着はこの号の素材に入っていない)
+    unfinished = sorted(sid for sid, st in ((watch_info or {}).get("stats") or {}).items()
+                        if isinstance(st, dict) and st.get("unfinished")) if isinstance(watch_info, dict) else []
+    if args.oncall_rerun and unfinished:
+        notify("collect", f"{date}: 当番の取り直しでも観測先の一覧を読み終えられない: " + ", ".join(unfinished)
+               + "。読んだ位置は残した。残った区間の新着は、この号の素材に入っていない", ok=False)
+        return 1
     return 0
+
+
+class Terminated(BaseException):
+    """SIGTERM を受けた(systemd の打ち切り・停止)。main の後始末で素材を確定してから終える。"""
+
+
+# SIGTERM の扱い。確定(commit・push)の途中では中断しない(git を途中で落とすと index.lock が残り、次の工程の git が止まる)
+_TERM = {"defer": False, "got": False}
+
+
+def _on_sigterm(signum, frame) -> None:
+    if _TERM["defer"]:
+        _TERM["got"] = True
+        return
+    _TERM["defer"] = True      # 後始末の間にもう一度受けても中断しない
+    raise Terminated()
+
+
+def settle_interrupted(date: str, branch: str, e: BaseException) -> None:
+    """例外・SIGTERM で途中で終わった収集の後始末(2026-10-14 監査指摘: 素材と既読状態を保存してから記録・出典の判定・commit へ
+    進むので、その途中で落ちると保存した変更が未コミットのまま残り、次の工程が作業ツリーの汚れで止まった)。
+    **開始時へ戻さずに、検めた成果を確定する。**素材は書式で検めて一度に差し替えて書き、既読状態は素材を保存できてから書く
+    (同じ成功境界)ので、壊れていなければそのまま正しい。戻すと、この回の探索・X 調査の素材(X 調査は週の検索枠を使い、
+    回す時刻も限られる)を捨てて紙面から落とす。壊れた出力だけは確定せずに HEAD の中身へ戻す(settle_collect_outputs)。
+    確定できなければ、作業ツリーに残ったものを名指しする(当番のなぜなぜへ)。"""
+    _TERM["defer"] = True
+    why = "SIGTERM で打ち切られた" if isinstance(e, Terminated) else f"例外 {type(e).__name__}"
+    try:
+        dropped = settle_collect_outputs(ROOT)
+        ok = commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: 途中で終わった収集の素材を確定({why})",
+                             "collect", paths=list(COLLECT_OUTPUTS))
+        left = git("status", "--porcelain", check=False).stdout.strip()
+    except Exception as e2:      # noqa: BLE001
+        dropped, ok, left = [], False, f"{type(e2).__name__}: {e2}"
+    msg = (f"{date}: 収集が途中で終わった({why})。保存できた素材と既読状態を検めて" + ("確定した" if ok else "確定できなかった")
+           + (f"。壊れていたので確定せずに戻したもの: {' / '.join(dropped)}" if dropped else "")
+           + (f"。作業ツリーに残っているもの(次の工程が止まる): {left[:300]}" if left else ""))
+    if isinstance(e, Terminated) or dropped or not ok or left:
+        notify("collect", msg, ok=False)
+    else:
+        print(msg, flush=True)
 
 
 if __name__ == "__main__":
     try:
         code = main()
+    except Terminated:
+        code = 143      # SIGTERM で打ち切られた(素材は main の後始末で確定した。当番のなぜなぜへ渡す)
     except Exception as e:
         notify_crash("collect", e)
         code = 1

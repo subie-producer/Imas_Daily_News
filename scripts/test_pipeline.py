@@ -1411,12 +1411,13 @@ def test_oncall_rerun_policy():
         oncall.commit_paths = lambda paths, msg, branch, push_timeout=120: committed.append(paths)
         oncall.run_stage = lambda cmd, log, t: 124
         pushed = []
-        saved_ep = oncall.ensure_pushed
+        saved_ep = oncall.ensure_pushed, oncall.settle_collect_outputs
         oncall.ensure_pushed = lambda branch, what, budget=300: pushed.append(branch) or True
+        oncall.settle_collect_outputs = lambda root: []     # 出力の検めは test_oncall_collect_rerun_settles_broken_output が実際の git で検める
         try:
             oncall.rerun_stage("collect", "2026-09-13", "edition/2026-09-13", False)
         finally:
-            oncall.ensure_pushed = saved_ep
+            oncall.ensure_pushed, oncall.settle_collect_outputs = saved_ep
         check(committed and "candidates" in committed[0] and "stock/watch-state.json" in committed[0],
               f"途中で終わった取り直しの素材を確定しない: {committed}")
         # clean でも、取り直しの commit がリモートに届いているかを確かめて送る(push の途中で時間切れ。監査指摘)
@@ -3358,7 +3359,7 @@ def test_watch_pagination_and_batches(tmp: Path):
     saved = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt, collect.page_html_or_note)
     try:
         collect.ROOT, collect.STATE_PATH = tmp, tmp / "watch-state.json"
-        collect.list_source = lambda s, known, fetch=None: (listings[s["id"]], 1, False)
+        collect.list_source = lambda s, known, fetch=None, resume=None: (listings[s["id"]], 1, [])
         collect.page_html_or_note = lambda url, csr: ("", "")   # 新着ページの本文は取らない(ネットに出ない)
         collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
         collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
@@ -3458,6 +3459,96 @@ def test_watch_pagination_and_batches(tmp: Path):
         (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt, collect.page_html_or_note) = saved
 
 
+def test_watch_resume_after_cut(tmp: Path):
+    """定点観測の一覧を上限で打ち切ったら、読んだ位置(未完了の境界)を状態に残し、次の回(当番の取り直し・通常の収集)は
+    手前の既読ページで巡回を終えずに、境界の先の新着を回収する(2026-10-14 監査指摘: 新着3ページ・上限2で打ち切った後、
+    上限10で取り直しても1ページ目だけ読んで新着0件だった)。実際の list_source・run_watch に一覧のページだけを返す。"""
+    import collect
+    import yaml
+    tmp.mkdir(parents=True, exist_ok=True)
+    listing = {}
+    reads = []
+
+    def fetch(url):
+        n = int(url.rsplit("=", 1)[1]) if "=" in url else 1
+        reads.append(n)
+        return "<ul>" + "".join(f'<a href="https://example.org/{u}">{u}</a>' for u in listing.get(n, [])) + "</ul>"
+    src = {"id": "official", "brand": "shiny", "type": "html", "enabled": True, "url": "https://example.org/news",
+           "page_url": "https://example.org/news?p={n}", "base": "https://example.org", "list_regex": r'<a href="([^"]+)">([^<]+)</a>'}
+    none_all = lambda prompt, timeout=0: [{"page": i + 1, "status": "none", "items": []} for i in range(prompt.count("### "))]
+
+    def run(max_pages, state, rerun=False):
+        (tmp / "sources.yml").write_text(yaml.safe_dump([{**src, "max_pages": max_pages}]), encoding="utf-8")
+        (tmp / "watch-state.json").write_text(json.dumps(state), encoding="utf-8")
+        reads.clear()
+        _, info = collect.run_watch(none_all, oncall_rerun=rerun)
+        return list(reads), info, info["stats"].pop("_state")
+    url = lambda u: f"https://example.org/{u}"
+    saved = (collect.ROOT, collect.STATE_PATH, collect.http_get, collect.page_html_or_note, collect.notify, collect.render_prompt)
+    notes = []
+    try:
+        collect.ROOT, collect.STATE_PATH = tmp, tmp / "watch-state.json"
+        collect.http_get = fetch
+        collect.page_html_or_note = lambda u, csr: ("", "")
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+        listing.update({1: ["n1", "n2", "n3"], 2: ["n4", "n5", "n6"], 3: ["n7", "n8", "n9"], 4: ["o1", "o2", "o3"], 5: ["o4", "o5", "o6"]})
+        base = {"official": [url(f"o{i}") for i in range(1, 7)]}
+        first, info, st = run(2, base)
+        check(first == [1, 2] and info["new"] == 6 and info["stats"]["official"].get("unfinished") and st.get("_cut", {}).get("official")
+              and any("official" in m for m in notes), f"上限で打ち切ったことと読んだ位置を残さない: {first} {info['stats']} {st.get('_cut')}")
+        # 当番の取り直し(上限を上げた): 先頭の既読ページで終えず、境界の先(3ページ目)の新着を回収して、境界を消す
+        again, info2, st2 = run(10, st, rerun=True)
+        check(again == [1, 2, 3, 4] and info2["new"] == 3 and all(url(f"n{i}") in st2["official"] for i in (7, 8, 9))
+              and not st2.get("_cut") and not info2["stats"]["official"].get("unfinished"),
+              f"取り直しが手前の既読ページで巡回を終え、奥の新着を回収しない: 読んだページ {again} 新着 {info2['new']} 境界 {st2.get('_cut')}")
+        # 通常の収集(上限は同じ 2)も、次の回は境界のページへ飛んで先を読む(手前の既読ページで上限を使い切らない)
+        nxt, info3, st3 = run(2, st)
+        check(nxt == [1, 2, 3, 4] and info3["new"] == 3 and not st3.get("_cut"),
+              f"上限が同じ次の回が、境界の先を読まない: 読んだページ {nxt} 新着 {info3['new']} 境界 {st3.get('_cut')}")
+        # 境界が残ったまま、先頭にも上限を超える新着が来た: 両方の境界を残し、次の回で手前から順に両方の先を読む
+        listing.clear()
+        listing.update({1: ["m1", "m2", "m3"], 2: ["m4", "m5", "m6"], 3: ["m7", "n1", "n2"], 4: ["n3", "n4", "n5"],
+                        5: ["n6", "n7", "n8"], 6: ["n9", "o1", "o2"], 7: ["o3", "o4", "o5"]})
+        front, info4, st4 = run(2, st)
+        check(front == [1, 2] and len(st4.get("_cut", {}).get("official", [])) == 2,
+              f"先頭の打ち切りで、前の境界を失った: {front} {st4.get('_cut')}")
+        both, info5, st5 = run(2, st4)
+        got = {u for u in st5["official"]}
+        check(all(url(u) in got for u in ("m7", "n7", "n8", "n9")) and not st5.get("_cut"),
+              f"2つの境界の先を読まない: 読んだページ {both} 境界 {st5.get('_cut')} 既読 {sorted(got)[:12]}")
+    finally:
+        (collect.ROOT, collect.STATE_PATH, collect.http_get, collect.page_html_or_note, collect.notify, collect.render_prompt) = saved
+
+
+def test_watch_body_cp932(tmp: Path):
+    """定点観測の facts 化に渡す本文: Shift_JIS と宣言して CP932 の拡張文字(①)を含むページを、置換文字だらけにせず読む
+    (2026-10-14 監査指摘: 本文の取得だけが cp932 を試さず、置換文字 1,110 個の本文を「取得済み」として渡した)。"""
+    import collect
+    html = '<html><meta charset="Shift_JIS"><body><h2>①特典の受付を開始</h2><p>' + "受付の告知本文です。" * 100 + "</p></body></html>"
+    raw = html.encode("cp932")
+
+    class Res:
+        headers = type("H", (), {"get_content_charset": lambda self: None})()
+        def read(self, *a): return raw
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    prompts = []
+    saved = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.render_prompt, collect.notify)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=20: Res()
+        collect.fetch_rendered = lambda url, timeout=30: (_ for _ in ()).throw(AssertionError("素の HTML で読めるページを描画した"))
+        collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+        collect.notify = lambda *a, **k: True
+        got, why = collect.page_html_or_note("https://lantis.jp/sidem/extra/index.html", False)
+        collect.facts_batch([{"url": "https://lantis.jp/sidem/extra/index.html", "title": "", "brand": "sidem", "csr": False}],
+                            lambda prompt, timeout=0: prompts.append(prompt) or None, {})
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.render_prompt, collect.notify = saved
+    check("①特典の受付を開始" in got and "�" not in got and why == "", f"CP932 の本文を読めない: {got[:80]!r} {why!r}")
+    check(prompts and "①特典の受付を開始" in prompts[0] and "�" not in prompts[0], "facts 化に置換文字だらけの本文を渡した")
+
+
 def test_watch_static_page_body(tmp: Path):
     """定点観測の facts 化: 描画の要らない観測先の新着も本文を取って渡す。`#id` で1ページの中の1件を指す URL は、その件の部分だけを渡す
     (2026-10-09: ランティスの SideM 特典告知2件。本文を渡さず WebFetch に任せたら要約しか返らず、写しが取れずに読めなかった扱いになった)"""
@@ -3520,9 +3611,279 @@ def test_collect_oncall_rerun_exit(tmp: Path):
                                                                   "stats": {"columbia-imas": {"error": "空の応答"}}})
         sys.argv = list(argv)
         check(collect.main() == 1, "取り直しで観測先の一覧がまた取れないのに成功(0)で終えた")
+        # 一覧の読んでいない区間(未完了の境界)が残った → 取り直しは成功にしない(残った区間の新着は素材に入っていない)
+        collect.run_watch = lambda call, oncall_rerun=False: ([], {"deferred": 0, "new": 3,
+                                                                  "stats": {"imas-portal": {"found": 30, "unfinished": 1}}})
+        sys.argv = list(argv)
+        check(collect.main() == 1, "取り直しで一覧を読み終えられないのに成功(0)で終えた")
     finally:
         (collect.ROOT, collect.job_lock, collect.run_watch, collect.run_explores,
          collect.append_metric, collect.notify, sys.argv) = saved
+
+
+def _collect_repo(tmp: Path) -> Path:
+    """収集の後始末を実際の git で検める下準備: 号のブランチ(edition/2026-10-14)を checkout した作業ツリーと、push 先の bare
+    リモート。.gitignore と判定表は本物を写す(後始末が残す一時ファイル・正規化の種別判定を本番と同じにする)。"""
+    root, remote = tmp / "w", tmp / "r.git"
+    G = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True)
+    root.mkdir(parents=True)
+    G("init", "-q", "-b", "main")
+    G("config", "user.email", "t@example.com")
+    G("config", "user.name", "t")
+    repo = Path(__file__).resolve().parent.parent
+    for d in ("candidates", "stock", "metrics"):
+        (root / d).mkdir()
+    (root / ".gitignore").write_text((repo / ".gitignore").read_text(encoding="utf-8"), encoding="utf-8")
+    (root / "source_types.yml").write_text((repo / "source_types.yml").read_text(encoding="utf-8"), encoding="utf-8")
+    (root / "candidates" / "2026-10-14.json").write_text("[]\n", encoding="utf-8")
+    (root / "stock" / "watch-state.json").write_text("{}\n", encoding="utf-8")
+    G("add", "-A")
+    G("commit", "-qm", "base")
+    G("remote", "add", "origin", str(remote))
+    G("push", "-q", "origin", "main")
+    G("checkout", "-qb", "edition/2026-10-14")
+    G("push", "-qu", "origin", "edition/2026-10-14")
+    return root
+
+
+def _remote_file(root: Path, path: str) -> str:
+    """リモートの号のブランチにある path の中身(無ければ空)。"""
+    r = subprocess.run(["git", "show", f"origin/edition/2026-10-14:{path}"], cwd=root, capture_output=True, text=True)
+    return r.stdout if r.returncode == 0 else ""
+
+
+def _json_or_none(text: str):
+    try:
+        return json.loads(text)
+    except ValueError:
+        return None
+
+
+def test_collect_settles_on_exception(tmp: Path):
+    """収集が素材と既読状態を保存したあと(記録・出典の判定・commit の前)に例外で落ちても、保存した成果を検めて確定し、作業ツリーを
+    clean にして終える。次の工程(組版)の checkout が汚れで止まらない(2026-10-14 監査指摘: 例外のあと candidates/ と stock/ が
+    未コミットのまま残り、組版の checkout_edition_branch が拒否した)。実際の git・main で検める。"""
+    import collect
+    root = _collect_repo(tmp)
+    row = {"title": "告知", "url": "https://shinycolors.lantis.jp/audit-exc", "brand": "shiny", "facts": ["受付を開始"],
+           "_via": "watch", "dedup_key": "audit-exc"}
+    notes = []
+    names = ("ROOT", "STATE_PATH", "job_lock", "run_watch", "run_explores", "verify", "needs_classify", "append_metric", "notify")
+    saved = {n: getattr(collect, n) for n in names}
+    saved_p = (pipelib.ROOT, pipelib.notify, sys.argv)
+
+    def broken_metric(*a, **k):
+        raise OSError(28, "No space left on device")
+    raised = None
+    try:
+        collect.ROOT = pipelib.ROOT = root
+        collect.STATE_PATH = root / "stock" / "watch-state.json"
+        collect.job_lock = lambda *a, **k: None
+        collect.run_watch = lambda call, oncall_rerun=False: ([dict(row)], {"stats": {"_state": {"official": [row["url"]]}}, "new": 1, "deferred": 0})
+        collect.run_explores = lambda *a, **k: ([], {})
+        collect.verify = lambda cands: {"confirmed": 0, "unconfirmed": len(cands), "failed": 0}
+        collect.needs_classify = lambda cands: False
+        collect.append_metric = broken_metric
+        collect.notify = pipelib.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        sys.argv = ["collect", "--date", "2026-10-14", "--skip-explore", "--skip-grok"]
+        try:
+            collect.main()
+        except OSError as e:
+            raised = e
+        dirty = subprocess.run(["git", "status", "--porcelain"], cwd=root, capture_output=True, text=True).stdout.strip()
+        next_ok = pipelib.checkout_edition_branch("2026-10-14", "compose")
+    finally:
+        for n, v in saved.items():
+            setattr(collect, n, v)
+        pipelib.ROOT, pipelib.notify, sys.argv = saved_p
+    cands = _json_or_none(_remote_file(root, "candidates/2026-10-14.json")) or []
+    state = _json_or_none(_remote_file(root, "stock/watch-state.json")) or {}
+    check(raised is not None, "収集の例外を飲み込んだ(当番のなぜなぜに渡らない)")
+    check(not dirty and next_ok, f"例外のあと作業ツリーが汚れたまま・次の工程の checkout が止まる: {dirty!r} {next_ok}")
+    check([c.get("url") for c in cands] == [row["url"]] and state.get("official") == [row["url"]],
+          f"保存した素材と既読状態をリモートに確定しない: {cands} {state}")
+
+
+def test_collect_settles_on_sigterm(tmp: Path):
+    """収集が素材と既読状態を保存したあとに SIGTERM(systemd の打ち切り)を受けても、保存した成果を検めて確定し、作業ツリーを
+    clean にして終える(2026-10-14 監査指摘: 保存直後の SIGTERM で候補と既読状態が変更のまま残り、次の工程が拒否した)。
+    実際の別プロセスに SIGTERM を送り、実際の git で検める。"""
+    import signal as _signal
+    import time as _time
+    root = _collect_repo(tmp)
+    ready = tmp / "ready"
+    driver = tmp / "driver.py"
+    driver.write_text(f"""import sys, time
+from pathlib import Path
+sys.path.insert(0, {str(Path(__file__).resolve().parent)!r})
+import collect, pipelib
+def no_net(*a, **k):
+    raise AssertionError("通信しない")
+pipelib.urllib.request.urlopen = no_net
+pipelib.ENV.pop("DISCORD_WEBHOOK_URL", None)
+root = Path({str(root)!r})
+collect.ROOT = pipelib.ROOT = root
+collect.STATE_PATH = root / "stock" / "watch-state.json"
+collect.notify = pipelib.notify = lambda job, msg, ok=True, require=False: print("NOTIFY", msg, flush=True) or True
+collect.job_lock = lambda *a, **k: None
+row = {{"title": "告知", "url": "https://shinycolors.lantis.jp/audit-term", "brand": "shiny", "facts": ["受付を開始"],
+       "_via": "watch", "dedup_key": "audit-term"}}
+collect.run_watch = lambda call, oncall_rerun=False: ([dict(row)], {{"stats": {{"_state": {{"official": [row["url"]]}}}}, "new": 1, "deferred": 0}})
+collect.run_explores = lambda *a, **k: ([], {{}})
+collect.verify = lambda cands: {{"confirmed": 0, "unconfirmed": len(cands), "failed": 0}}
+collect.needs_classify = lambda cands: False
+def pause(*a, **k):
+    Path({str(ready)!r}).write_text("素材と既読状態を保存した")
+    time.sleep(60)
+collect.append_metric = pause
+sys.argv = ["collect", "--date", "2026-10-14", "--skip-explore", "--skip-grok"]
+try:
+    code = collect.main()
+except collect.Terminated:
+    code = 143
+sys.exit(code)
+""", encoding="utf-8")
+    p = subprocess.Popen([sys.executable, str(driver)], cwd=root, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    end = _time.time() + 60
+    while not ready.exists() and p.poll() is None and _time.time() < end:
+        _time.sleep(0.05)
+    if ready.exists():
+        p.send_signal(_signal.SIGTERM)
+    try:
+        out, _ = p.communicate(timeout=60)
+    except subprocess.TimeoutExpired:
+        p.kill()
+        out, _ = p.communicate()
+    dirty = subprocess.run(["git", "status", "--porcelain"], cwd=root, capture_output=True, text=True).stdout.strip()
+    saved = (pipelib.ROOT, pipelib.notify)
+    try:
+        pipelib.ROOT, pipelib.notify = root, (lambda *a, **k: True)
+        next_ok = pipelib.checkout_edition_branch("2026-10-14", "compose")
+    finally:
+        pipelib.ROOT, pipelib.notify = saved
+    cands = _json_or_none(_remote_file(root, "candidates/2026-10-14.json")) or []
+    state = _json_or_none(_remote_file(root, "stock/watch-state.json")) or {}
+    check(ready.exists() and p.returncode == 143, f"SIGTERM で後始末をして終えない(終了 {p.returncode}): {out[-600:]}")
+    check(not dirty and next_ok, f"SIGTERM のあと作業ツリーが汚れたまま・次の工程の checkout が止まる: {dirty!r} {next_ok}")
+    check([c.get("url") for c in cands] == ["https://shinycolors.lantis.jp/audit-term"]
+          and state.get("official") == ["https://shinycolors.lantis.jp/audit-term"],
+          f"保存した素材と既読状態をリモートに確定しない: {cands} {state}")
+    check("SIGTERM" in out, f"打ち切られたことを申告しない: {out[-400:]}")
+
+
+def test_collect_state_write_is_atomic(tmp: Path):
+    """既読状態の保存が途中で止まっても(ファイルの大きさの上限で書けない)、前の既読状態は壊れずに残る(2026-10-14 監査指摘:
+    直接の上書きが途中で止まると切れた JSON が残り、当番の後始末がそれを確定した)。実際の main を別プロセスで走らせる。"""
+    root = tmp / "w"
+    (root / "candidates").mkdir(parents=True)
+    (root / "stock").mkdir()
+    (root / "source_types.yml").write_text((Path(__file__).resolve().parent.parent / "source_types.yml").read_text(encoding="utf-8"),
+                                           encoding="utf-8")
+    before = json.dumps({"official": ["https://example.org/old"]}) + "\n"
+    (root / "stock" / "watch-state.json").write_text(before, encoding="utf-8")
+    driver = tmp / "driver.py"
+    driver.write_text(f"""import resource, sys
+from pathlib import Path
+sys.path.insert(0, {str(Path(__file__).resolve().parent)!r})
+import collect, pipelib
+pipelib.urllib.request.urlopen = None
+root = Path({str(root)!r})
+collect.ROOT = pipelib.ROOT = root
+collect.STATE_PATH = root / "stock" / "watch-state.json"
+collect.job_lock = lambda *a, **k: None
+big = {{"official": [f"https://example.org/n{{i}}" for i in range(3000)]}}
+row = {{"title": "告知", "url": "https://example.org/n1", "brand": "shiny", "facts": ["受付を開始"], "_via": "watch", "dedup_key": "a"}}
+collect.run_watch = lambda call, oncall_rerun=False: ([dict(row)], {{"stats": {{"_state": big}}, "new": 1, "deferred": 0}})
+collect.run_explores = lambda *a, **k: ([], {{}})
+collect.verify = lambda cands: {{"confirmed": 0, "unconfirmed": len(cands), "failed": 0}}
+collect.append_metric = lambda *a, **k: None
+resource.setrlimit(resource.RLIMIT_FSIZE, (8192, 8192))     # 素材(小さい)は書けて、既読状態(大きい)は途中で書けない
+sys.argv = ["collect", "--no-git", "--date", "2026-10-14", "--skip-explore", "--skip-grok"]
+sys.exit(collect.main())
+""", encoding="utf-8")
+    r = subprocess.run([sys.executable, str(driver)], cwd=root, capture_output=True, text=True, timeout=120)
+    after = (root / "stock" / "watch-state.json").read_text(encoding="utf-8")
+    cands = _json_or_none((root / "candidates" / "2026-10-14.json").read_text(encoding="utf-8")) or []
+    check(r.returncode != 0 and "File too large" in (r.stdout + r.stderr), f"既読状態の書き込みを途中で止められていない(試験の前提): {r.returncode} {r.stderr[-300:]}")
+    check(after == before, f"既読状態の保存が途中で止まり、前の既読状態を壊した: {after[:80]!r}")
+    check([c.get("url") for c in cands] == ["https://example.org/n1"], f"素材を書けていない(試験の前提): {cands}")
+    check([p.name for p in (root / "stock").iterdir()] == ["watch-state.json"],
+          f"書けなかった一時ファイルを既読状態の置き場に残した: {list((root / 'stock').iterdir())}")
+
+
+def test_oncall_collect_rerun_settles_broken_output(tmp: Path):
+    """当番の取り直し(収集)が時間切れ・異常終了で途中で終わったときの後始末: 確定する前に出力を検め、書きかけで切れた JSON・書式に
+    合わない素材は確定せずに HEAD の中身へ戻す(素材を戻したら既読状態も戻す)。壊れていない成果は確定して作業ツリーを clean にする
+    (2026-10-14 監査指摘: 保存の途中で打ち切られた JSON を当番の後始末が commit・push し、組版・発行前の lint が読めずに止まる)。
+    実際の git と、実際の収集のプロセス(書き込みの途中で終わる)で検める。"""
+    import oncall
+    scripts = Path(__file__).resolve().parent
+    names = ("ROOT", "run_stage", "notify", "STAGE_END_AT")
+    saved = {n: getattr(oncall, n) for n in names}
+    saved_root = pipelib.ROOT
+    notes = []
+    try:
+        oncall.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        oncall.STAGE_END_AT = None
+        # 1) 実際の収集(取り直し)が、素材を保存したあと既読状態の保存の途中(8文字目)でプロセスごと終わる
+        root = _collect_repo(tmp / "cut")
+        oncall.ROOT = pipelib.ROOT = root
+        child = tmp / "cut-child.py"
+        child.write_text(f"""import os, sys, pathlib
+sys.path.insert(0, {str(scripts)!r})
+import collect, pipelib
+pipelib.urllib.request.urlopen = None
+root = pathlib.Path({str(root)!r})
+collect.ROOT = pipelib.ROOT = root
+collect.STATE_PATH = root / "stock" / "watch-state.json"
+collect.job_lock = lambda *a, **k: None
+collect.notify = pipelib.notify = lambda *a, **k: True
+orig = pathlib.Path.write_text
+def cut(self, data, *a, **k):
+    if self.parent == root / "stock":      # 既読状態の書き込み(一時ファイルを含む)を 8 文字目で打ち切ってプロセスごと終える
+        with open(self, "w", encoding="utf-8") as f:
+            f.write(data[:8])
+        os._exit(124)
+    return orig(self, data, *a, **k)
+pathlib.Path.write_text = cut
+row = {{"title": "告知", "url": "https://example.org/n1", "brand": "shiny", "facts": ["受付を開始"], "_via": "watch", "dedup_key": "a"}}
+collect.run_watch = lambda call, oncall_rerun=False: ([dict(row)], {{"stats": {{"_state": {{"official": [row["url"]]}}}}, "new": 1, "deferred": 0}})
+collect.run_explores = lambda *a, **k: ([], {{}})
+collect.verify = lambda cands: {{"confirmed": 0, "unconfirmed": len(cands), "failed": 0}}
+collect.needs_classify = lambda cands: False
+sys.argv = ["collect", "--skip-explore", "--skip-grok", "--oncall-rerun", "--date", "2026-10-14"]
+sys.exit(collect.main())
+""", encoding="utf-8")
+        oncall.run_stage = lambda cmd, log, timeout: subprocess.run([sys.executable, str(child)], cwd=root, capture_output=True,
+                                                                     text=True, timeout=120).returncode
+        code = oncall.rerun_stage("collect", "2026-10-14", "edition/2026-10-14", False)
+        state = _json_or_none(_remote_file(root, "stock/watch-state.json"))
+        cands = _json_or_none(_remote_file(root, "candidates/2026-10-14.json")) or []
+        check(code == 124 and state == {} and [c.get("url") for c in cands] == ["https://example.org/n1"] and oncall.root_clean(),
+              f"書き込みの途中で終わった取り直しの後始末: exit {code} / リモートの既読 {state!r} / 素材 {cands} / clean {oncall.root_clean()}")
+        # 2) 一時ファイルを経ない書き手が素材の保存の途中で終わった(書きかけの JSON)。既読状態と記録は書けていた
+        root2 = _collect_repo(tmp / "broken")
+        oncall.ROOT = pipelib.ROOT = root2
+
+        def broken_stage(cmd, log, timeout):
+            (root2 / "candidates" / "2026-10-14.json").write_text('[{"id": "x", "ur', encoding="utf-8")
+            (root2 / "stock" / "watch-state.json").write_text(json.dumps({"official": ["https://example.org/x"]}), encoding="utf-8")
+            (root2 / "metrics" / "2026-10-14.json").write_text(json.dumps({"collect": [{"added": 1}]}), encoding="utf-8")
+            return 124
+        oncall.run_stage = broken_stage
+        notes.clear()
+        code = oncall.rerun_stage("collect", "2026-10-14", "edition/2026-10-14", False)
+        check(_remote_file(root2, "candidates/2026-10-14.json") == "[]\n" and _remote_file(root2, "stock/watch-state.json") == "{}\n",
+              f"書きかけの素材(と、それに合わせた既読状態)をリモートに確定した: {_remote_file(root2, 'candidates/2026-10-14.json')!r} "
+              f"{_remote_file(root2, 'stock/watch-state.json')!r}")
+        check(_json_or_none(_remote_file(root2, "metrics/2026-10-14.json")) == {"collect": [{"added": 1}]} and oncall.root_clean(),
+              f"壊れていない記録を確定しない・作業ツリーが clean でない: {_remote_file(root2, 'metrics/2026-10-14.json')!r} {oncall.root_clean()}")
+        check(any("candidates/2026-10-14.json" in m and "戻した" in m for m in notes), f"戻した出力を名指ししない: {notes}")
+    finally:
+        for n, v in saved.items():
+            setattr(oncall, n, v)
+        pipelib.ROOT = saved_root
 
 
 def test_storylink(tmp: Path):
@@ -4337,6 +4698,71 @@ def test_grok_format_matches_parser():
 
 
 
+def test_grok_official_paging_follows_prompt(tmp: Path):
+    """公式アカウントの遡り(依頼文 grok-collect の 1): 返った件数が道具の上限(満杯)なら古い側へ遡り、上限未満になったら止める。
+    依頼文に書かれた止める条件のとおりに動く検索役(Grok の代わり)へ、満杯 → 境界の重複を含む満杯 → 満杯未満、の検索結果を返すと、
+    3回引いて止まり、境界で重なった投稿は1つにまとめて確かめ(Luna)に渡る。実際の grok_basic・verify_grok_faces を通す
+    (監査指摘 2026-10-14: 止める条件を「件以上」に反転しても、語句の有無だけを見るテストが通った)。"""
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    out = tmp / "g"
+    out.mkdir()
+    (tmp / "source_types.yml").write_text((Path(__file__).resolve().parent.parent / "source_types.yml").read_text(encoding="utf-8"),
+                                          encoding="utf-8")     # 投稿の付け直しが種別を引く(作業の置き場を一時ディレクトリにするため)
+    lim = collect.X_SEARCH_LIMIT
+    # 公式アカウントの投稿(新しい順・秒は別々)。until_time:<いちばん古い秒+1> で引き直すと、前の回のいちばん古い投稿がまた返る(境界の重複)
+    posts = [(f"https://x.com/off/status/{900 + i}", 1_760_000_000 - 60 * i) for i in range(2 * lim + 4)]
+    searches, given, notes = [], [], []
+
+    class Session:
+        pid, returncode = 0, 0
+
+        def __init__(self, args, cwd=None, **kw):
+            if args[0] == "grok":       # 基本の調べ: 依頼文の 1 に書かれた止める条件のとおりに、公式アカウントを遡る
+                prompt = Path(args[args.index("--prompt-file") + 1]).read_text(encoding="utf-8")
+                step1 = prompt.split("1. 公式アカウントをまとめて引く", 1)[-1].split("\n2. ", 1)[0]
+                n = int(re.search(r"limit (\d+)", step1).group(1))
+                more = int(re.search(r"追加で最大 (\d+)回", step1).group(1))
+                stop = re.search(r"(\d+)件(未満|以上)になるか", step1)
+                written, until = [], None
+                while stop and len(searches) < 1 + more:
+                    got = [p for p in posts if until is None or p[1] < until][:n]
+                    searches.append(len(got))
+                    written += got
+                    k = int(stop.group(1))
+                    if not got or (len(got) < k if stop.group(2) == "未満" else len(got) >= k):
+                        break
+                    until = got[-1][1] + 1
+                sample = prompt.split("```")[1].strip("\n")
+                dest = re.search(r"書き出すファイル: `([^`]+)`", prompt).group(1)
+                Path(dest).write_text("\n\n".join(sample.replace("### 番号", f"### {i + 1}").replace("https://x.com/<アカウント>/status/<ID>", u)
+                                                  for i, (u, _) in enumerate(written)) + "\n", encoding="utf-8")
+            else:                       # 確かめ(Luna): 渡された投稿を全部「事実なし」で済ませる
+                urls = re.findall(r"(?m)^- url:\s*(\S+)", (Path(cwd) / "x-posts.md").read_text(encoding="utf-8"))
+                given.extend(urls)
+                (Path(cwd) / "items.json").write_text("[]", encoding="utf-8")
+                (Path(cwd) / "deep.json").write_text("[]", encoding="utf-8")
+                (Path(cwd) / "posts.json").write_text(json.dumps([{"url": u, "status": "none", "item": ""} for u in urls]), encoding="utf-8")
+
+        def communicate(self, timeout=None): return "", ""
+        def wait(self, timeout=None): return 0
+        def poll(self): return 0
+    q = {"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": ["off"]}
+    saved = (collect.notify, collect.ROOT, pipelib.ROOT, collect.subprocess.Popen)
+    try:
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        collect.ROOT = pipelib.ROOT = tmp
+        collect.subprocess.Popen = Session
+        collect.grok_basic([q], out, {})
+        collect.verify_grok_faces([q], out)
+    finally:
+        collect.notify, collect.ROOT, pipelib.ROOT, collect.subprocess.Popen = saved
+    check(searches == [lim, lim, len(posts) - 2 * lim + 2],
+          f"満杯なら遡り、満杯未満で止める、のとおりに引かない(依頼文の止める条件): 1回ごとの件数 {searches}")
+    check(given == [u for u, _ in posts], f"境界で重なった投稿を1つにして、全部の投稿を1回ずつ確かめに渡さない: {len(given)}件 {given[:3]}")
+    check(not notes, f"全部済んだのに投稿の喪失を知らせた: {notes}")
+
+
 def test_grok_deep_format_matches_parser():
     """深掘り(grok-deep)に指示する書き出しの形を、突き合わせ(post_blocks / post_url)がそのまま読めること。
     2026-10-09: 依頼文に形が無く、Grok が「## 問い1」+問いの文+「- 投稿の url:」で書いた。url を読めず、Luna が
@@ -4362,6 +4788,14 @@ def test_grok_deep_format_matches_parser():
     nonum = "### 1\n- url: https://x.com/b/status/2\n- 本文:\nx"
     check(collect.unanswered_asks(nonum, asks[:1]) == [] and collect.unanswered_asks(nonum, asks) == [],
           "番号の無い答え: 問いが1つならその答え、複数なら投げ直さない(答えのある問いに予算を使わない)")
+    # 問いの番号の契約: 依頼文の見本の形のとおりに、2つの問いのうち2つ目だけに答えた書き出しから、1つ目が投げ直しの対象になる
+    # (見本から「- 問い:」の行が消えると番号の無い答えになり、どの問いの答えか分からず投げ直さない。監査指摘 2026-10-14)
+    two = [{"question": "第一の問い", "why": ""}, {"question": "第二の問い", "why": ""}]
+    p2 = collect.render_prompt("grok-deep", BRAND="million", TODAY="2026-10-09", OUT="o.md", MAX_SEARCHES=4, RETRY="",
+                               QUESTIONS="1. 第一の問い\n2. 第二の問い")
+    one = re.sub(r"(?m)^([ \t]*[-*・]?[ \t]*問い[ \t]*[:：]).*$", r"\g<1> 2", p2.split("```")[1]).replace("<アカウント>/status/<ID>", "b/status/2")
+    check(collect.unanswered_asks(one, two) == [two[0]],
+          f"見本の形で2つ目の問いに答えた書き出しから、答えの無い1つ目を投げ直しに回さない: {collect.unanswered_asks(one, two)} / {one!r}")
     with tempfile.TemporaryDirectory() as td:
         saved = collect.run_grok_prompts
         try:
@@ -4388,25 +4822,38 @@ def test_grok_face_retry(tmp: Path):
     qs = [{"key": "gakuen", "brand": "gaku", "topic": "t"}, {"key": "shiny", "brand": "shiny", "topic": "t"},
           {"key": "dsva", "brand": "dsva", "topic": "t"}]
     runs, notes = [], []
-    def fake_run(queries, outdir, errs, retry=False):
-        runs.append(([q["key"] for q in queries], retry))
-        for q in queries:
-            if q["key"] == "shiny" or (q["key"] == "gakuen" and retry):   # 学マスはやり直しで書ける、dsva は書けない
-                (outdir / f"{q['key']}.md").write_text("まとめ", encoding="utf-8")
-    saved = (collect.run_grok_faces, collect.notify, collect.grok_session_error)
+
+    class Grok:
+        """Grok のセッション(外部)の代わり: 依頼文の書き出し先に、面ごとの決まった結果を書いて正常に終わる。
+        学マスはやり直しで書ける、dsva は書けない(打ち切られて何も書かずに終わる)"""
+        pid, returncode = 0, 0
+
+        def __init__(self, args, **kw):
+            prompt = Path(args[args.index("--prompt-file") + 1]).read_text(encoding="utf-8")
+            key = Path(args[args.index("--prompt-file") + 1]).stem.removeprefix("prompt-")
+            retry = "**やり直し**" in prompt
+            runs.append((key, retry))
+            if key == "shiny" or (key == "gakuen" and retry):
+                dest = re.search(r"書き出すファイル: `([^`]+)`", prompt).group(1)
+                Path(dest).write_text("### 1\n- url: https://x.com/a/status/1\n- 本文:\nまとめ\n", encoding="utf-8")
+
+        def communicate(self, timeout=None): return "", ""
+        def wait(self, timeout=None): return 0
+        def poll(self): return 0
+    saved = (collect.notify, collect.ROOT, pipelib.ROOT, collect.subprocess.Popen)
     try:
-        collect.run_grok_faces = fake_run
         collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
-        collect.grok_session_error = lambda since_s=7200: "max_turns_reached"
-        # 収集の Grok 部分の流れ(run_grok_faces → grok_wrote → やり直し)を再現する
-        errs = {}
-        collect.run_grok_faces(qs, out, errs)
-        missing = [q for q in qs if not collect.grok_wrote(out, q)]
-        collect.run_grok_faces(missing, out, errs, retry=True)
-        still = [q["key"] for q in missing if not collect.grok_wrote(out, q)]
-        check(runs[1] == (["gakuen", "dsva"], True) and still == ["dsva"], f"やり直しの対象と結果: {runs} {still}")
+        collect.ROOT = pipelib.ROOT = tmp          # 生の出力・セッション記録の置き場も一時ディレクトリに
+        collect.subprocess.Popen = Grok
+        # 本番の基本の調べ(grok_basic)を走らせ、外部のセッションの実行だけを差し替える
+        still = collect.grok_basic(qs, out, {})
     finally:
-        collect.run_grok_faces, collect.notify, collect.grok_session_error = saved
+        collect.notify, collect.ROOT, pipelib.ROOT, collect.subprocess.Popen = saved
+    first, second = runs[:3], runs[3:]
+    check(sorted(first) == [("dsva", False), ("gakuen", False), ("shiny", False)] and sorted(second) == [("dsva", True), ("gakuen", True)]
+          and still == ["dsva"], f"やり直しの対象と結果: {runs} {still}")
+    check(any("dsva" in m and not ok for m, ok in notes) and not any("gakuen" in m for m, _ in notes),
+          f"やり直しても書けなかった面だけを名指ししない: {notes}")
     # 依頼文: やり直しのときだけ「先に書く」行。数えるのは検索だけ、と常に書く
     p1 = collect.write_grok_prompt(out, {"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": ["gkmas_official"]}).read_text(encoding="utf-8")
     p2 = collect.write_grok_prompt(out, {"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": ["gkmas_official"]}, retry=True).read_text(encoding="utf-8")
@@ -5941,6 +6388,7 @@ def main() -> int:
     test_update_clis(tmp / "uc")
     test_grok_face_retry(tmp / "gr")
     test_grok_format_matches_parser()
+    test_grok_official_paging_follows_prompt(tmp / "gop")
     test_grok_deep_format_matches_parser()
     test_collect_health()
     test_grok_roles(tmp / "gro")
@@ -5949,6 +6397,8 @@ def main() -> int:
     test_accept_only_normal_and_schema(tmp / "an")
     test_grok_repoint_uses_each_face_posts(tmp / "grp")
     test_watch_pagination_and_batches(tmp / "wp")
+    test_watch_resume_after_cut(tmp / "wr")
+    test_watch_body_cp932(tmp / "wc")
     test_watch_static_page_body(tmp / "ws")
     test_fetch_page_renders_whitespace_only_page()
     test_review_reads_sources_like_writer()
@@ -5956,6 +6406,10 @@ def main() -> int:
     test_render_failure_keeps_cause(tmp / "rf")
     test_render_failure_reaches_classify_and_verify(tmp / "rfc")
     test_collect_oncall_rerun_exit(tmp / "cre")
+    test_collect_settles_on_exception(tmp / "cse")
+    test_collect_settles_on_sigterm(tmp / "cst")
+    test_collect_state_write_is_atomic(tmp / "csa")
+    test_oncall_collect_rerun_settles_broken_output(tmp / "ocb")
     test_storylink(tmp / "sl")
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()

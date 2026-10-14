@@ -18,7 +18,7 @@ __pycache__/
 # リポジトリには残さない。collect が commit 前に git add -A するため明示的に除外する)
 candidates/.grok/
 
-# 書式で決めたファイルを差し替えるときの一時ファイル(pipelib.write_checked。止まって残っても作業ツリーを汚さない)
+# ファイルを差し替えるときの一時ファイル(pipelib.write_checked・assemble.dump_yaml。止まって残っても作業ツリーを汚さない)
 .*.tmp
 
 # 選定用の主題インデックス(candidates から機械生成される派生物)

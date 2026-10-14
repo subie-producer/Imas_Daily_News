@@ -9264,6 +9264,377 @@ def test_tags_and_idols(tmp: Path):
           "公開している名鑑(docs/_data/idols.json)が原本から作り直したものと違う")
 
 
+DIGEST_LABELS = ("本日", "昨日", "継続中", "明日")
+
+
+class assemble_at:
+    """assemble の置き場(記事・号・台帳・予約・pending・控え)を tmp に向ける。抜けるときに戻す。"""
+    NAMES = ("ROOT", "POSTS", "EDITIONS", "STORIES", "SCHEDULED", "PENDING")
+
+    def __init__(self, tmp: Path):
+        self.tmp = tmp
+
+    def __enter__(self):
+        t = self.tmp
+        for d in (t / "stock" / "scheduled", t / "metrics", t / "docs" / "_posts", t / "docs" / "_editions", t / "candidates"):
+            d.mkdir(parents=True, exist_ok=True)
+        self.saved = {n: getattr(assemble, n) for n in self.NAMES}
+        assemble.ROOT, assemble.POSTS, assemble.EDITIONS = t, t / "docs" / "_posts", t / "docs" / "_editions"
+        assemble.STORIES, assemble.SCHEDULED, assemble.PENDING = t / "stock" / "stories.yml", t / "stock" / "scheduled", t / "stock" / "pending.yml"
+        return self
+
+    def __exit__(self, *exc):
+        for n, v in self.saved.items():
+            setattr(assemble, n, v)
+        return False
+
+
+def test_derive_ranking(tmp: Path):
+    """ランキング(derive --write が書いた号)を、算出の実装とは別に手で数えた順位と突き合わせる: 紙面(見出し・リード・本文・目次)の
+    言及×1.0 + 当日の探索(explore)素材の言及×0.5、同点は前号順位→名鑑順(characterId。名鑑ファイルの並びではない)、delta は前号比。
+    言及が8名に満たない号でもスコア0を同じ規則で並べて8件にする(2026-10-14 監査: 言及が8名未満の号でランキングが8件に届かず
+    lint が止めた・重みを0にしても全テストが通った)。"""
+    import contextlib
+    import datetime
+    import io as _io
+    import derive
+    import yaml
+    for d in ("docs/_data", "docs/_posts", "docs/_editions", "candidates"):
+        (tmp / d).mkdir(parents=True, exist_ok=True)
+    idols = [("アカネ", "cg", 50), ("イズミ", "765", 10), ("ウタハ", "million", 30), ("エマ", "shiny", 20), ("オトハ", "sidem", 60),
+             ("カナデ", "cg", 40), ("キララ", "gaku", 70), ("クルミ", "765", 80), ("ケイ", "million", 90), ("コハル", "shiny", 5),
+             ("サクラ", "cg", 3)]
+    (tmp / "docs/_data/idols.json").write_text(json.dumps([{"name": n, "brand": b, "birthday": "01-01", "characterId": c}
+                                                           for n, b, c in idols], ensure_ascii=False), encoding="utf-8")
+    brand = {n: b for n, b, _ in idols}
+
+    def edition(date: str, rows=(), ranking=()):
+        fm = {"number": 1, "date": date, "weekday": "月火水木金土日"[datetime.date.fromisoformat(date).weekday()],
+              "issued_at": f"{date}T06:00:00+09:00", "pages": 0, "article_count": 0, "corrected_count": 0, "lead_slug": "a1",
+              "digest": [{"label": l, "rows": list(rows) if l == "本日" else []} for l in DIGEST_LABELS],
+              "ranking": [{"n": i + 1, "name": n, "brand": brand[n], "delta": "new"} for i, n in enumerate(ranking)], "birthdays": []}
+        (tmp / "docs/_editions" / f"{date}.md").write_text("---\n" + yaml.safe_dump(fm, allow_unicode=True, sort_keys=False) + "---\n",
+                                                           encoding="utf-8")
+
+    def post(date: str, slug: str, title: str, lede: str, body: str):
+        (tmp / "docs/_posts" / f"{date}-{slug}.md").write_text("---\n" + article_fm(slug, date, title=title, lede=lede) + "---\n" + body + "\n",
+                                                               encoding="utf-8")
+
+    def ranking(date: str):
+        saved_root, saved_argv = derive.ROOT, sys.argv
+        derive.ROOT, sys.argv = tmp, ["derive.py", "--date", date, "--write"]
+        try:
+            with contextlib.redirect_stdout(_io.StringIO()):
+                derive.main()
+        except Exception as e:      # noqa: BLE001  8件に届かない号は書式違反(SchemaViolation)で上がる
+            return f"{type(e).__name__}: {e}"
+        finally:
+            derive.ROOT, sys.argv = saved_root, saved_argv
+        fm, _ = derive.parse_frontmatter(tmp / "docs/_editions" / f"{date}.md")
+        return [(r["n"], r["name"], r["brand"], r["delta"]) for r in fm["ranking"]]
+
+    edition("2026-10-19", ranking=["カナデ", "オトハ", "ウタハ", "イズミ", "エマ", "キララ", "クルミ", "ケイ"])
+    # 10/20: 紙面 = 記事2本+目次の行。探索素材は当日の explore だけを数える(watch・前日の素材は数えない)
+    post("2026-10-20", "a1", "アカネの新曲。", "アカネが歌う。", "アカネの声。")
+    post("2026-10-20", "a2", "イズミ公演。", "オトハも登場。", "イズミが出演。")
+    edition("2026-10-20", rows=[{"k": "発", "t": "ウタハ出演", "d": "", "brand": "million", "slug": "a2"}])
+    (tmp / "candidates/2026-10-20.json").write_text(json.dumps([
+        cand_row("e1", "https://x.example/1", origin="explore", title="ウタハ配信", facts=["ウタハ登場"]),
+        cand_row("e2", "https://x.example/2", origin="explore", title="エマ特集", facts=["エマ写真", "サクラ告知"]),
+        cand_row("e3", "https://x.example/3", origin="explore", title="コハル生誕", facts=[]),
+        cand_row("w1", "https://x.example/4", origin="watch", title="ケイケイケイ", facts=["ケイ"])], ensure_ascii=False), encoding="utf-8")
+    (tmp / "candidates/2026-10-19.json").write_text(json.dumps([
+        cand_row("e9", "https://x.example/9", origin="explore", title="クルミクルミクルミ", facts=[])], ensure_ascii=False), encoding="utf-8")
+    # 手で数えた点: アカネ 3 / ウタハ 1+2×0.5=2 / イズミ 2 / オトハ 1 / エマ 2×0.5=1 / サクラ 0.5 / コハル 0.5 / ほか 0(言及は7名)。
+    # 同点: ウタハ(前号3位)>イズミ(4位)、オトハ(2位)>エマ(5位)、サクラ(id 3)>コハル(id 5)。8位はスコア0のうち前号最上位のカナデ
+    want = [(1, "アカネ", "cg", "new"), (2, "ウタハ", "million", "up"), (3, "イズミ", "765", "up"), (4, "オトハ", "sidem", "down"),
+            (5, "エマ", "shiny", "stay"), (6, "サクラ", "cg", "new"), (7, "コハル", "shiny", "new"), (8, "カナデ", "cg", "down")]
+    got = ranking("2026-10-20")
+    check(got == want, f"ランキング(言及7名・同点・探索の重み・前号比)が手で数えた順位と違う: {got}")
+    # 10/21: 言及は1名だけ。残りはスコア0を前号(10/20 の derive の出力)の順位で並べて8件
+    post("2026-10-21", "b1", "ケイの話。", "続報。", "本文。")
+    edition("2026-10-21")
+    want2 = [(1, "ケイ", "million", "new"), (2, "アカネ", "cg", "down"), (3, "ウタハ", "million", "down"), (4, "イズミ", "765", "down"),
+             (5, "オトハ", "sidem", "down"), (6, "エマ", "shiny", "down"), (7, "サクラ", "cg", "down"), (8, "コハル", "shiny", "down")]
+    got2 = ranking("2026-10-21")
+    check(got2 == want2, f"言及が1名の号のランキングが8件にならない・スコア0の並びが前号順位でない: {got2}")
+
+
+def test_assemble_digest_keeps_lead_within_cap():
+    """一面を欠く 4群×3行の答えでも、一面を足したうえで目次は全体12行・群4行に収まり、一面の行は1行残る
+    (2026-10-14 監査: 12行に縮めた後に一面を足して13行になり、lint と組版が止まった)。"""
+    posts = [{"slug": "lead", "brand": "cg", "rank": "lead", "title": "一面の大きな知らせ", "lede": "一面のリード", "candidate_ids": []}]
+    posts += [{"slug": f"o{i}", "brand": "765", "rank": "small", "title": f"知らせ{i}号の見出し", "lede": "リード", "candidate_ids": []}
+              for i in range(16)]
+    inp = {"articles": [{"slug": p["slug"], "title": p["title"], "lede": p["lede"], "facts": [], "dedup_key": p["slug"]} for p in posts],
+           "pending": [], "tomorrow_reservations": []}
+    row = lambda p: {"k": "発", "t": p["title"][:20], "d": "", "brand": p["brand"], "slug": p["slug"]}
+    empty = {"stories": [], "reservations": [], "pending_add": [], "pending_remove": []}
+    no_lead = dict(empty, digest=[{"label": l, "rows": [row(posts[1 + 3 * g + j]) for j in range(3)]} for g, l in enumerate(DIGEST_LABELS)])
+    late_lead = dict(empty, digest=[{"label": l, "rows": [row(posts[1 + 4 * g + j]) for j in range(4)]} for g, l in enumerate(DIGEST_LABELS)])
+    late_lead["digest"][3]["rows"][3] = row(posts[0])          # 一面が最後の群の最後の行(縮めるときに削られる位置)
+    for name, out in (("一面を欠く4群×3行", no_lead), ("一面が末尾の4群×4行", late_lead)):
+        res, _ = assemble.validate("2026-10-14", json.loads(json.dumps(out)), posts, {}, inp)
+        groups = res["digest"]
+        check([g["label"] for g in groups] == list(DIGEST_LABELS) and sum(len(g["rows"]) for g in groups) == 12
+              and all(len(g["rows"]) <= 4 for g in groups) and sum(r.get("slug") == "lead" for g in groups for r in g["rows"]) == 1,
+              f"目次が全体12行・群4行・一面1行に収まらない({name}): {[[r.get('slug') for r in g['rows']] for g in groups]}")
+
+
+def test_assemble_interrupted_writes(tmp: Path):
+    """台帳(YAML)・予約(JSON)・号スナップショットの書き直しが途中で止まっても(容量不足)、元のファイルを保ち、一時ファイルを残さず、同じ組版を
+    もう一度走らせれば直る。一時ファイルは書く先と同じディレクトリの Git の対象外の名前(2026-10-14 監査: 予約の書き直しの中断で
+    JSON が壊れ再実行も JSONDecodeError で止まった・stories.yml.tmp が残って作業ツリーを汚した)。"""
+    import builtins
+    import io as _io
+    D = "2026-10-14"
+    post = {"slug": "x", "brand": "cg", "rank": "lead", "candidate_ids": ["c1"], "title": "催し", "lede": "l"}
+    mats = {"c1": cand_row("c1", "https://idolmaster-official.jp/news/01_1", dedup_key="event", title="催し",
+                           facts=["2026年10月20日に催しを開催"])}
+
+    def out(note: str) -> dict:
+        return {"digest": [{"label": l, "rows": []} for l in DIGEST_LABELS],
+                "stories": [{"slug": "x", "story_id": "event", "subject": "催し", "published_facts": [note]}],
+                "reservations": [{"slug": "x", "candidate_id": "c1", "date": "2026-10-20", "kind": "開幕", "subject": "催し", "note": note}],
+                "pending_add": [], "pending_remove": []}
+    repo = Path(__file__).resolve().parent.parent
+    res = {}
+    with assemble_at(tmp):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [])
+        assemble.apply(D, 1, out("一回目"), [post], mats, False)
+        sched, ed = assemble.SCHEDULED / "2026-10-20.json", assemble.EDITIONS / f"{D}.md"
+        for target in (assemble.STORIES, sched, ed):
+            before, seen, saved_open = target.read_bytes(), [], _io.open
+
+            def full_disk(file, mode="r", *a, **k):
+                try:
+                    p = Path(os.fspath(file))
+                except TypeError:
+                    return saved_open(file, mode, *a, **k)
+                if any(c in mode for c in "wax") and p.parent == target.parent and target.name in p.name:
+                    seen.append(p)
+                    with saved_open(file, mode, *a, **k) as f:
+                        f.write(b'[{"partial' if "b" in mode else '[{"partial')      # 書きかけで容量が尽きる
+                    raise OSError(28, "No space left on device(試験)")
+                return saved_open(file, mode, *a, **k)
+            _io.open = builtins.open = full_disk
+            try:
+                failed = False
+                try:
+                    assemble.apply(D, 1, out("二回目"), [post], mats, False)
+                except OSError:
+                    failed = True
+            finally:
+                _io.open = builtins.open = saved_open
+            intact = target.read_bytes() == before
+            left = sorted(x.name for x in target.parent.iterdir() if x.name.endswith(".tmp"))
+            ignored = bool(seen) and all(subprocess.run(["git", "check-ignore", "-q", "--no-index", str(p.relative_to(tmp))],
+                                                        cwd=repo, capture_output=True).returncode == 0 for p in seen)
+            try:
+                assemble.apply(D, 1, out("二回目"), [post], mats, False)
+                again = ("二回目" in assemble.load_yaml_list(assemble.STORIES)[0]["published_facts"]
+                         and json.loads(sched.read_text(encoding="utf-8"))[0]["note"] == "二回目"
+                         and assemble.FM_RE.match(ed.read_text(encoding="utf-8")) is not None)
+            except Exception as e:      # noqa: BLE001
+                again = f"{type(e).__name__}: {e}"
+            res[target.name] = (failed, intact, left, ignored, again)
+    for name, (failed, intact, left, ignored, again) in res.items():
+        check(failed and intact and not left and ignored and again is True,
+              f"{name} の書き直しの中断: 元を保たない・一時ファイルを残した・一時ファイルが Git の対象・再実行で直らない: "
+              f"intact={intact} left={left} ignored={ignored} again={again}")
+
+
+def test_assemble_checks_exit_codes(tmp: Path):
+    """組版は派生欄(derive)・lint を**終了コードで**判定する: 非0(signal を含む)は組版の失敗(2)にして stderr の言い分を知らせ、
+    derive が落ちたら lint へ進まない(2026-10-14 監査: 別の号の書きかけの候補 JSON で lint が JSONDecodeError で落ちても、stdout に
+    ::error が無いので組版は 0 を返した)。子の検査は替え玉のスクリプトを本当に子プロセスとして走らせる。"""
+    import contextlib
+    import io as _io
+    D = "2026-10-20"
+    res = {}
+    with assemble_at(tmp):
+        (assemble.POSTS / f"{D}-a1.md").write_text("---\n" + article_fm("a1", D, rank="lead", title="一面の見出し") + "---\n本文。\n",
+                                                  encoding="utf-8")
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [])
+        (tmp / "scripts").mkdir()
+        for name in ("derive", "lint"):
+            (tmp / "scripts" / f"{name}.py").write_text(
+                "import os, pathlib, signal, sys\n"
+                "here = pathlib.Path(__file__).resolve().parent.parent\n"
+                f"(here / 'ran-{name}').write_text('1')\n"
+                f"mode = (here / 'mode-{name}').read_text().strip()\n"
+                "if mode == 'kill':\n    os.kill(os.getpid(), signal.SIGKILL)\n"
+                "if mode == 'crash':\n    print('途中まで')\n"
+                "    sys.stderr.write('Traceback (most recent call last):\\njson.decoder.JSONDecodeError: Expecting value: line 1 column 12\\n')\n"
+                "    sys.exit(1)\n"
+                "if mode == 'red':\n    print('::error file=docs/_editions/x.md::digest 全体が13行')\n    print('lint: 1 errors')\n    sys.exit(1)\n"
+                "print('lint: 0 errors')\n", encoding="utf-8")
+        answer = {"digest": [{"label": l, "rows": []} for l in DIGEST_LABELS], "stories": [], "reservations": [],
+                  "pending_add": [], "pending_remove": []}
+        saved, sent = (assemble.judge, assemble.notify), []
+        assemble.judge = lambda date, inp, budget=None: json.loads(json.dumps(answer))
+        assemble.notify = lambda job, msg, ok=True, **k: sent.append(msg)
+        try:
+            for modes in (("ok", "ok"), ("crash", "ok"), ("kill", "ok"), ("ok", "crash"), ("ok", "kill"), ("ok", "red")):
+                (tmp / "mode-derive").write_text(modes[0])
+                (tmp / "mode-lint").write_text(modes[1])
+                for f in ("ran-derive", "ran-lint"):
+                    (tmp / f).unlink(missing_ok=True)
+                sent.clear()
+                with contextlib.redirect_stdout(_io.StringIO()):
+                    code = assemble.run(D, 1)
+                res[modes] = (code, (tmp / "ran-lint").exists(), " ".join(sent))
+        finally:
+            assemble.judge, assemble.notify = saved
+    check(res[("ok", "ok")][0] == 0 and not res[("ok", "ok")][2], f"検査が通った組版を失敗にした: {res[('ok', 'ok')]}")
+    for k in (("crash", "ok"), ("kill", "ok")):
+        code, lint_ran, msg = res[k]
+        check(code == 2 and not lint_ran and "derive" in msg and ("JSONDecodeError" in msg or "exit -9" in msg),
+              f"派生欄(derive)の異常終了({k[0]})を組版の失敗にしない・言い分を知らせない・lint へ進んだ: {res[k]}")
+    for k in (("ok", "crash"), ("ok", "kill")):
+        code, _, msg = res[k]
+        check(code == 2 and "lint" in msg and ("JSONDecodeError" in msg or "exit -9" in msg),
+              f"lint の異常終了({k[1]})を組版の失敗にしない・言い分を知らせない: {res[k]}")
+    check(res[("ok", "red")][0] == 2 and "13行" in res[("ok", "red")][2], f"lint の赤を組版の失敗にしない: {res[('ok', 'red')]}")
+
+
+def test_pending_keeps_later_editions(tmp: Path):
+    """過去の号を組み直しても、後の号の pending の足し引き(追加・決着の削除)は残り、組み直した号の足し引きは後の号の組み直しでも
+    残る。同じ判断の組み直しは同じ中身、巻き戻しはその号の分だけを外す。消した行は判断に渡さない(2026-10-14 監査: 10/12 の
+    組み直しで 10/13 が足した追跡事項が黙って消えた。1巡目の監査: 印の記録を別のファイルに書くと書き込みの間で止まって消した行を
+    戻せない・印の仕組みより前の号の組み直しで後の号の追加が消える・巻き戻した号の追加を後の号の組み直しがよみがえらせる)。"""
+    import builtins
+    import io as _io
+    item = lambda k: {"dedup_key": k, "brand": "cg", "subject": f"{k} の件", "watch": "発表日"}
+
+    def out(add=(), rm=()):
+        return {"digest": [{"label": l, "rows": []} for l in DIGEST_LABELS], "stories": [], "reservations": [],
+                "pending_add": [item(k) for k in add], "pending_remove": list(rm)}
+    keys = lambda: [x["dedup_key"] for x in assemble.load_yaml_list(assemble.PENDING) if not x.get("removed_on")]   # 追跡中の行
+    ap = lambda d, o: assemble.apply(d, 1, o, [], {}, False)
+    # 1. 書き込みの中断: 一度組んだ号を組み直し、初めて k0 を消す回が pending.yml を書いた直後に止まる(容量不足)
+    #    → もう一度組めば k0 は消えたまま、巻き戻せば k0 が戻る
+    with assemble_at(tmp / "enospc"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [item("k0"), item("k9")])
+        ap("2026-10-12", out())
+        saved_replace, saved_open, stopped = os.replace, _io.open, []
+
+        def replace_then_stop(src, dst, *a, **k):
+            if stopped:
+                raise OSError(28, "No space left on device(試験)")
+            r = saved_replace(src, dst, *a, **k)
+            if Path(os.fspath(dst)) == assemble.PENDING:
+                stopped.append(dst)
+            return r
+
+        def stop_open(file, mode="r", *a, **k):
+            if stopped and any(c in mode for c in "wax"):
+                raise OSError(28, "No space left on device(試験)")
+            return saved_open(file, mode, *a, **k)
+        os.replace, _io.open, builtins.open = replace_then_stop, stop_open, stop_open
+        try:
+            try:
+                ap("2026-10-12", out(rm=["k0"]))
+            except OSError:
+                pass
+        finally:
+            os.replace, _io.open, builtins.open = saved_replace, saved_open, saved_open
+        ap("2026-10-12", out(rm=["k0"]))
+        retried = keys()
+        assemble.rollback("2026-10-12")
+        restored = keys()
+    check(bool(stopped) and retried == ["k9"] and sorted(restored) == ["k0", "k9"],
+          f"pending.yml を書いた直後に止まった後、もう一度組む・巻き戻すで消した行を戻せない: {bool(stopped)} {retried} {restored}")
+    # 2. 印の仕組みより前に組んだ号(控えに印が無い・行に印が無い)を、後の号(印の仕組み)が入った後で組み直す・巻き戻す
+    with assemble_at(tmp / "legacy"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [item("k0"), item("old")])         # old は 10/12 が(印なしで)足した行
+        assemble.dump_yaml(tmp / "legacy" / "metrics" / "pending-before-2026-10-12.yml", [item("k0")])
+        ap("2026-10-13", out(add=["later"], rm=["k0"]))
+        ap("2026-10-12", out())
+        legacy_rebuilt = keys()
+        assemble.rollback("2026-10-12")
+        legacy_rolled = keys()
+    check(legacy_rebuilt == ["later"] and legacy_rolled == ["later"],
+          f"印の仕組みより前の号の組み直し・巻き戻しで、後の号の足し引きが消えた・前回の分が残った: {legacy_rebuilt} {legacy_rolled}")
+    # 2b. 印の仕組みより前の号どうし: 9/14 が K、9/15 が X を(印なしで)足した。9/14 を組み直しても X は残り、9/14 の K は外れる。
+    #     新しい仕組みの 10/15 が K を消した後、9/14 を巻き戻し、10/15 を K を消さない判断で組み直しても K はよみがえらない(2巡目の監査)
+    with assemble_at(tmp / "legacy2"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [item("k0"), item("K"), item("X")])
+        m = tmp / "legacy2" / "metrics"
+        assemble.dump_yaml(m / "pending-before-2026-09-14.yml", [item("k0")])
+        assemble.dump_yaml(m / "pending-before-2026-09-15.yml", [item("k0"), item("K")])
+        assemble.dump_yaml(m / "pending-before-2026-09-16.yml", [item("k0"), item("K"), item("X")])
+        ap("2026-10-15", out(rm=["K"]))
+        assemble.rollback("2026-09-14")
+        legacy_rolled2 = keys()
+        ap("2026-10-15", out())
+        legacy_void = keys()
+    check(legacy_rolled2 == ["k0", "X"] and legacy_void == ["k0", "X"],
+          f"印の仕組みより前の号の巻き戻しで後の号(9/15)の追加が消えた・巻き戻した号の追加を後の号の組み直しがよみがえらせた: "
+          f"{legacy_rolled2} {legacy_void}")
+    # 2c. 印の仕組みより前の号どうし: 9/13 が K を足し、9/14 が K を消した(pending に行は残っていない)。9/13 を巻き戻した後、
+    #     9/14 を巻き戻しても・K を消さない判断で組み直しても K はよみがえらない(3巡目の監査。実データの sidem-mfes-2026-winter-wonderland)
+    for how in ("rollback", "rebuild"):
+        with assemble_at(tmp / f"legacy3-{how}"):
+            assemble.dump_yaml(assemble.STORIES, [])
+            assemble.dump_yaml(assemble.PENDING, [item("k0")])
+            m = tmp / f"legacy3-{how}" / "metrics"
+            assemble.dump_yaml(m / "pending-before-2026-09-13.yml", [item("k0")])
+            assemble.dump_yaml(m / "pending-before-2026-09-14.yml", [item("k0"), item("K")])
+            assemble.dump_yaml(m / "pending-before-2026-09-15.yml", [item("k0")])
+            assemble.rollback("2026-09-13")
+            if how == "rollback":
+                assemble.rollback("2026-09-14")
+            else:
+                ap("2026-09-14", out())
+            legacy3 = keys()
+        check(legacy3 == ["k0"], f"巻き戻した号(9/13)の追加を、それを消した号(9/14)の{how}がよみがえらせた: {legacy3}")
+    # 3. 巻き戻した号(10/12)の追加を、後の号(10/13)の組み直しがよみがえらせない
+    with assemble_at(tmp / "void"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [])
+        ap("2026-10-12", out(add=["k1"]))
+        ap("2026-10-13", out(rm=["k1"]))
+        assemble.rollback("2026-10-12")
+        ap("2026-10-13", out())
+        voided = keys()
+    check(voided == [], f"巻き戻した号の追加を、後の号の組み直しがよみがえらせた: {voided}")
+    # 4. 組み直し・巻き戻しの一連(過去の号・後の号の両方)
+    with assemble_at(tmp / "seq"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [item("k0"), item("k9")])
+        ap("2026-10-12", out(add=["k1"]))
+        ap("2026-10-13", out(add=["k2"], rm=["k0", "k1"]))         # 10/13: k2 を足し、k0・k1 が決着
+        after13 = keys()
+        ap("2026-10-12", out(add=["k1"]))                          # 10/12 を同じ判断で組み直す
+        same = keys()
+        ap("2026-10-12", out(add=["k1", "k3"], rm=["k9"]))         # 10/12 を別の判断で組み直す(k3 を足し、k9 が決着)
+        changed = keys()
+        b = assemble.PENDING.read_bytes()
+        ap("2026-10-12", out(add=["k1", "k3"], rm=["k9"]))
+        stable = assemble.PENDING.read_bytes() == b
+        ap("2026-10-13", out(add=["k2"], rm=["k0", "k1"]))         # そのあと 10/13 を組み直しても 10/12 の分は残る
+        later_rerun = sorted(keys())
+        log = assemble.rollback("2026-10-12")
+        rolled = sorted(keys())
+        again = assemble.rollback("2026-10-12")
+        ap("2026-10-12", out(add=["k1"]))                          # 巻き戻した号を組み直す(k1 は 10/13 が決着済み)
+        rebuilt = sorted(keys())
+        inp_keys = [x["dedup_key"] for x in assemble.build_input("2026-10-14", [], {}, [], assemble.baseline_pending("2026-10-14", False))["pending"]]
+    check(sorted(inp_keys) == ["k2", "k9"], f"決着済み(removed_on)の行を判断に渡した: {inp_keys}")
+    check(after13 == ["k9", "k2"], f"前提: 10/13 の足し引き: {after13}")
+    check(same == ["k9", "k2"], f"過去の号(10/12)を同じ判断で組み直すと、後の号(10/13)の足し引きが消えた: {same}")
+    check(changed == ["k2", "k3"] and stable, f"過去の号を別の判断で組み直したときの pending・冪等: {changed} {stable}")
+    check(later_rerun == ["k2", "k3"], f"後の号(10/13)を組み直すと、組み直した過去の号(10/12)の足し引きが消えた: {later_rerun}")
+    check(rolled == ["k2", "k9"] and log and again == [], f"巻き戻しがその号の足し引きだけを外さない・冪等でない: {rolled} {log} {again}")
+    check(rebuilt == ["k2", "k9"], f"巻き戻した号の組み直しで、後の号が決着させた追跡事項がよみがえった: {rebuilt}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_stray_governed_write_is_caught(tmp / "sgw")
@@ -9392,6 +9763,11 @@ def main() -> int:
     test_settled_drops_not_rewritten(tmp / "sd")
     test_rule_bench_cases()
     test_rule_bench_judges_shape(tmp / "rb")
+    test_derive_ranking(tmp / "drk")
+    test_assemble_digest_keeps_lead_within_cap()
+    test_assemble_interrupted_writes(tmp / "aiw")
+    test_assemble_checks_exit_codes(tmp / "ace")
+    test_pending_keeps_later_editions(tmp / "pkl")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:

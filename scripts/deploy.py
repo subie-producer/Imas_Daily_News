@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """deploy: 紙面を自前オリジンへ配信する。
 
-  python3 scripts/deploy.py [--skip-purge] [--dry-run]
+  python3 scripts/deploy.py [--skip-purge] [--dry-run] [--budget-sec 秒]
 
 紙面は二層で配信する:
   静的 — 記事・号・社説・アーカイブ。発行後に変わらないので Jekyll で生成して置く
@@ -19,6 +19,11 @@
 - 検証に通らないビルドは配信しない(壊れた紙面を世界に出さないためのゲート)。
 - 静的 → 索引 の順で更新する。逆順だと、索引に載った記事のリンクが 404 になる
   時間帯ができる。
+- 索引の更新は1つの取引で、取り込んだリリースの名前を索引に残す。失敗すれば索引は前の取り込みのまま
+  残る。再試行しても通らなければ、current を索引が取り込んだリリースへ戻して静的と索引を揃える
+  (新しい静的と古い索引を残さない)。
+- 予算(--budget-sec)のうちに必ず終える。release が打ち切る前に、戻す・知らせるまで済ませる。
+- 最後に「配信の状態」(current と索引がどの版か)を1行出す。release はそれを通知に載せる。
 """
 import argparse
 import datetime
@@ -45,13 +50,42 @@ KEEP_RELEASES = int(ENV.get("KEEP_RELEASES", "5"))
 
 WEBAPP_SRC = ROOT / "webapp"
 APP_DIR = SRV / "app"
+DB = SRV / "data" / "paper.db"
+
+# 索引の更新の再試行(書き込みの競合 database is locked は待てば通ることがある)。1回の上限は INDEX_TIMEOUT_SEC
+# (全記事の付け直しでも実測 5.5秒)。残りの予算が足りなければ、それより短く切る・再試行をやめる
+INDEX_ATTEMPTS = 3
+INDEX_RETRY_SEC = 20
+INDEX_TIMEOUT_SEC = 300
+INDEX_MIN_SEC = 10
+BUILD_TIMEOUT_SEC = 1800
+# 配信の時間の予算(--budget-sec)。release は deploy を打ち切るので、その手前で必ず終える。ビルドと索引の試行は、残りが
+# RESERVE_SEC を切る前にやめる(戻す・アプリの再起動・旧版の整理・パージ・通知に残す時間。再起動の上限 130秒+パージ 30秒+通知)
+# 2026-10-14 監査指摘: ビルド 1800秒+索引 300秒×3+待ち 60秒が release の待つ 2400秒を越え、戻す前に打ち切られた
+BUDGET_SEC = 2340
+RESERVE_SEC = 240
+DEADLINE = 0.0
+
+
+def left() -> float:
+    """配信の予算の残り(秒)。"""
+    return DEADLINE - time.time()
+
+# 公開の状態。止まった所で実態が違うので、段ごとに言い直し、最後に STATE_MARK の行で出す(release が通知に載せる)
+STATE_MARK = "配信の状態: "
+STATE = "current は前の版のまま(差し替える前に止まった)"
+
+
+def say_state(s: str) -> None:
+    global STATE
+    STATE = s
 
 # 配信前の最低限の健全性チェック(ここに無いものが欠けている紙面は出さない)。
 # /tags/ と /search は動的アプリが描くのでビルド成果物には含まれない。
 REQUIRED = ["index.html", "archive/index.html", "404.html"]
 
 
-def build(dest: Path) -> None:
+def build(dest: Path, timeout: float = BUILD_TIMEOUT_SEC) -> None:
     """本番設定でビルドする。url は .env の SITE_URL から一時設定として渡す。"""
     site_url = ENV.get("SITE_URL", "").rstrip("/")
     if not site_url:
@@ -71,7 +105,7 @@ def build(dest: Path) -> None:
             ["jekyll", "build",
              "--config", f"_config.yml,_config.production.yml,{url_cfg}",
              "--destination", str(dest)],
-            cwd=DOCS, capture_output=True, text=True, timeout=1800, env=env,
+            cwd=DOCS, capture_output=True, text=True, timeout=timeout, env=env,
         )
     finally:
         os.unlink(url_cfg)
@@ -103,21 +137,90 @@ def verify(dest: Path) -> list[str]:
     return errors
 
 
-def reindex() -> int:
+def reindex(run_id: str, timeout: float = INDEX_TIMEOUT_SEC) -> int:
     """動的ページ(タグ・検索)が引く SQLite インデックスを更新する。
-    記事は不変なので差分更新で済み、増えた分だけを入れ直す。"""
-    r = subprocess.run([sys.executable, str(ROOT / "scripts" / "indexer.py")],
-                       cwd=ROOT, capture_output=True, text=True, timeout=1800)
+    記事は不変なので差分更新で済み、増えた分だけを入れ直す。
+    run_id(このリリースの名前)は indexer が同じ取引で meta に残す。索引がどのリリースと揃っているかの記録になる。"""
+    r = subprocess.run([sys.executable, str(ROOT / "scripts" / "indexer.py"), "--db", str(DB), "--run-id", run_id],
+                       cwd=ROOT, capture_output=True, text=True, timeout=timeout)
     if r.returncode != 0:
         raise RuntimeError(f"インデックス更新に失敗:\n{(r.stderr or r.stdout)[-600:]}")
     for line in r.stdout.strip().splitlines():
         print(line, flush=True)
-    db = SRV / "data" / "paper.db"
-    conn = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+    return indexed_count()
+
+
+def indexed_count() -> int:
+    conn = sqlite3.connect(f"file:{DB}?mode=ro", uri=True)
     try:
         return conn.execute("SELECT COUNT(*) FROM articles").fetchone()[0]
     finally:
         conn.close()
+
+
+def indexed_run() -> str | None:
+    """索引が最後に取り込んだ配信の run_id(indexer の取引で書く。無ければ None)。読めなければ sqlite3.Error。"""
+    conn = sqlite3.connect(f"file:{DB}?mode=ro", uri=True, timeout=30)
+    try:
+        row = conn.execute("SELECT value FROM meta WHERE key = 'run_id'").fetchone()
+    finally:
+        conn.close()
+    return row[0] if row else None
+
+
+def reindex_or_restore(release: Path, prev: Path | None, run_id: str, skip_purge: bool) -> int | None:
+    """索引を更新する(INDEX_ATTEMPTS 回まで。予算の残りが RESERVE_SEC を切る前にやめる)。通れば索引の記事数を返す。
+    通らなければ None を返し、current を索引が取り込んだリリース(meta の run_id = リリースの名前)へ戻して静的と索引を揃える。
+    そのリリースが分からない(記録が無い・消えている)ときは、この配信の前の状態(prev)へ戻し、揃っているとは言わない。
+    2026-10-14 監査指摘: current を切り替えた後に索引の更新が落ちると、新しい静的と古い索引(取り下げた記事が検索に残る)が
+    残り、パージにも進まなかった。release は「current は前号のまま」と誤って通知していた。
+    同 再監査: 「この配信の run_id でない」は「索引が prev と同じ版」の証明にならない(前の配信が索引の状態を確かめられずに
+    新しい版を残していた)。戻す先は索引の記録から決める"""
+    err = ""
+    for i in range(INDEX_ATTEMPTS):
+        budget = min(INDEX_TIMEOUT_SEC, left() - RESERVE_SEC)
+        if budget < INDEX_MIN_SEC:
+            err += "\n(配信の時間の予算が残っていないので、索引の試行をやめた)"
+            break
+        try:
+            return reindex(run_id, budget)
+        except Exception as e:      # noqa: BLE001  indexer の異常終了・時間切れ・DB の読み出し
+            err = str(e)
+        wait = INDEX_RETRY_SEC * (i + 1)
+        if i < INDEX_ATTEMPTS - 1 and left() - wait - RESERVE_SEC >= INDEX_MIN_SEC:
+            print(f"索引の更新に失敗({i + 1}/{INDEX_ATTEMPTS})。{wait}秒後に再試行:\n{err[-300:]}", flush=True)
+            time.sleep(wait)
+    try:
+        ran, unread = indexed_run(), None
+    except sqlite3.Error as e:
+        ran, unread = None, e
+    if unread is None and ran == run_id:
+        # 取引は通っていた(その後の後始末で落ちた)。索引は静的と同じ版なので、戻さずに進む
+        say_state(f"current・索引とも新しい版({release.name})")
+        print(f"indexer は異常終了したが、索引はこの版({run_id})まで進んでいる:\n{err[-300:]}", flush=True)
+        return indexed_count()
+    if unread is not None:
+        say_state(f"current は新しい版({release.name})。索引がどの版か確かめられない({unread})。静的と索引が食い違っている可能性がある")
+        notify("deploy", f"索引の更新に失敗し、索引の状態も確かめられない。{STATE}:\n```\n{err[-600:]}\n```", ok=False)
+        return None
+    match = RELEASES / ran if ran and Path(ran).name == ran and (RELEASES / ran).is_dir() else None
+    if match is not None:
+        swap(match)
+        say_state(f"current を索引が取り込んだ版({match.name})に戻した(静的と索引が揃っている)。新しい版({release.name})は配信していない")
+    elif prev is not None:
+        swap(prev)
+        say_state(f"current は前の版({prev.name})に戻した。索引がどのリリースを取り込んだかの記録が無い"
+                  f"({'記録 ' + ran + ' のリリースが無い' if ran else '取り込みの記録なし'})ので、揃っているかは確かめられない。"
+                  f"新しい版({release.name})は配信していない")
+    else:
+        say_state(f"current は新しい版({release.name})のまま。戻せる版が無い。索引は前の取り込み({ran or '記録なし'})のまま"
+                  "(静的と索引が食い違う)")
+        notify("deploy", f"索引の更新に失敗した。{STATE}:\n```\n{err[-600:]}\n```", ok=False)
+        return None
+    # 切り替えていた間にエッジが新しい版を載せたかもしれないので、戻した版でも落とす
+    purge_msg = "パージ省略(--skip-purge)" if skip_purge else purge_cache()
+    notify("deploy", f"索引の更新に失敗したので配信を戻した。{STATE}。{purge_msg}:\n```\n{err[-600:]}\n```", ok=False)
+    return None
 
 
 def sync_app() -> bool:
@@ -200,7 +303,12 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--skip-purge", action="store_true", help="Cloudflare のキャッシュパージを行わない")
     ap.add_argument("--dry-run", action="store_true", help="ビルドと検証だけ行い、配信は差し替えない")
+    ap.add_argument("--budget-sec", type=float, default=BUDGET_SEC,
+                    help="この秒数のうちに必ず終える(release が打ち切る時間より短く渡す)")
     args = ap.parse_args()
+    global DEADLINE
+    DEADLINE = time.time() + args.budget_sec
+    say_state("current は前の版のまま(差し替える前に止まった)")
     # 試験実行(--dry-run)では Discord へ通知しない。本物の警報と見分けが付かなくなる
     set_quiet(args.dry_run)
 
@@ -211,7 +319,14 @@ def main() -> int:
 
     print(f"ビルド中 → {staging}", flush=True)
     shutil.rmtree(staging, ignore_errors=True)
-    build(staging)
+    # ビルドが長引いても、索引の1回と後始末の分は残す(足りなければ時間切れで止め、current は差し替えない)
+    build_limit = max(1.0, min(BUILD_TIMEOUT_SEC, left() - RESERVE_SEC - INDEX_MIN_SEC))
+    try:
+        build(staging, timeout=build_limit)
+    except subprocess.TimeoutExpired:
+        shutil.rmtree(staging, ignore_errors=True)
+        notify("deploy", f"配信を中止(ビルドが予算のうちに終わらない。上限 {build_limit:.0f}秒)。{STATE}", ok=False)
+        return 1
 
     errors = verify(staging)
     if errors:
@@ -229,12 +344,16 @@ def main() -> int:
     # 静的紙面の差し替え(原子的)
     os.replace(staging, release)
     prev = swap(release)
+    say_state(f"current は新しい版({release.name})。索引はまだ前の版(静的と索引が食い違う)")
     print(f"current → {release.name}(直前: {prev.name if prev else 'なし'})", flush=True)
 
     # 動的ページのデータを更新。静的側を先に切り替えているので、記事ページは
     # 既に新しく、索引だけが数秒遅れて追いつく形になる(逆順だと索引に載った
-    # 記事のリンクが 404 になる時間ができる)
-    n_indexed = reindex()
+    # 記事のリンクが 404 になる時間ができる)。通らなければ current を前の版へ戻す
+    n_indexed = reindex_or_restore(release, prev, stamp, args.skip_purge)
+    if n_indexed is None:
+        return 1
+    say_state(f"current・索引とも新しい版({release.name})。キャッシュのパージはまだ")
 
     app_msg = restart_app() if sync_app() else "アプリのコードに変更なし"
     print(app_msg, flush=True)
@@ -245,6 +364,7 @@ def main() -> int:
 
     purge_msg = "パージ省略(--skip-purge)" if args.skip_purge else purge_cache()
     print(purge_msg, flush=True)
+    say_state(f"current・索引とも新しい版({release.name})。{purge_msg}")
 
     notify("deploy", f"配信を更新しました(記事 {n_posts}本・索引 {n_indexed}本・{release.name})。"
                      f"{app_msg}。{purge_msg}")
@@ -253,7 +373,9 @@ def main() -> int:
 
 if __name__ == "__main__":
     try:
-        sys.exit(main())
+        code = main()
     except Exception as e:
         notify_crash("deploy", e)
-        sys.exit(1)
+        code = 1
+    print(STATE_MARK + STATE, flush=True)
+    sys.exit(code)

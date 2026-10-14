@@ -28,7 +28,7 @@
 `decisions[<dedup_key>]` に、主題ごとの判定を書く。使わない項目は空文字(lead_score は 0)。id や slug は書かない(コードが付ける)。
 - `action`:
   - `article`: 単独の記事にする。`angle`(切り口を1文)・`purpose`・`rank`・`lead_score` を付ける
-- `purpose`(article のとき): `新情報`(新しい事実を伝える)か `期日の知らせ`(当日のトリガーで記事にする。読者が期日を逃さないよう、既に知られた期日・手続きを伝え直す)
+- `purpose`(article のとき): 選定の規則の「記事の目的」の `新情報` か `期日の知らせ`
   - `roundup`: 定常運営まとめに束ねる。`angle` に束ねる観点
   - `merge`: この面の別の主題と同じ出来事。`merge_into` に相手の dedup_key
   - `drop`: 不採用。`reason`(既報|過年度|同人・ファン主催|個人の話題|重複|出典不足|面違い|その他)と、必要なら `note`

@@ -5,15 +5,25 @@
 
 外部サービス・本体の作業ツリー・Git には触らない。全部一時ディレクトリの中で済ませる。
 """
+import atexit
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+# 本番のコードが書式(schema/)で決めたファイルを書式に合わない形で書いたら、テストでは例外にする(pipelib.write_checked)
+os.environ["IMAS_STRICT_WRITES"] = "1"
+# テストの一時ファイルは全部1つのディレクトリの下に作り、終わったら消す。子プロセスも同じ置き場(TMPDIR)。/tmp は 3.8GB の tmpfs で、
+# 走らせるたびに一時ディレクトリを残して埋まり、監査のテストが容量不足で止まった(2026-10-14。selfcheck・当番の往復でも走る)
+TEST_TMP = Path(tempfile.mkdtemp(prefix="imas-test-"))
+tempfile.tempdir = str(TEST_TMP)
+os.environ["TMPDIR"] = str(TEST_TMP)
+atexit.register(shutil.rmtree, TEST_TMP, True)
 import assemble
 import compose
 import lint
@@ -21,6 +31,93 @@ import pipelib
 import renderlib
 
 FAILS: list[str] = []
+# 書式で決めたファイルを、本番のコードが write_checked を通さずに書いたら控える(見張り。全テストの終わりに検める)。
+# 書く側の検査を足しても、あとから足した書き込みが素通しなら同じ止まり方(2026-10-14 03:11 の組版停止)をする。
+# 素通しを認めるのは、下の理由のある所だけ
+STRAY_WRITES: list[str] = []
+WRITE_PASSTHROUGH = {
+    ("assemble.py", "write_snapshot"): "組み立て途中の号スナップショット(ランキング・誕生日が空)。最後の形は derive が write_checked で書く",
+    ("rewrite_past.py", "main"): "校閲を通ったと確かめる前に止まった差し替えを、元の文面に戻す",
+    ("rewrite_past.py", "replace_and_review"): "校閲を通らなかった差し替えを、元の文面に戻す",
+    ("pipelib.py", "_restore"): "失敗した取引(出典の判定・付け直し・lint)のファイルを、開始時の中身へバイト単位で戻す",
+    ("compose.py", "restore_files"): "記事を落としたあとの組み直しが失敗したとき、記事・号・台帳・予約を組み直しの前の中身へバイト単位で戻す",
+}
+
+
+def _watch_governed_writes() -> None:
+    """書く口は全部見張る: open(書く・足す・作るの mode)・Path.open・Path.write_text/write_bytes(内部で io.open)・
+    os.replace/os.rename の行き先(監査指摘: write_text/write_bytes だけを見ていて、open("w") の迂回を見逃した)。"""
+    import builtins
+    import io
+    scripts = Path(__file__).resolve().parent
+    stdlib = Path(os.__file__).resolve().parent
+
+    def note(target) -> None:
+        try:
+            s = Path(os.fspath(target)).as_posix()
+        except TypeError:
+            return
+        if not any(rx.search(s) for rx, _ in pipelib.SCHEMA_OF_PATH):
+            return
+        f = sys._getframe(2)
+        while f is not None and Path(f.f_code.co_filename).resolve().is_relative_to(stdlib):
+            f = f.f_back          # pathlib・io の中は飛ばし、書いた本人のフレームを見る
+        if f is None:
+            return
+        if f.f_code.co_name == "write_atomic" and Path(f.f_code.co_filename).name == "pipelib.py":
+            # 差し替えの本体。write_checked から呼ばれたなら書式で検めた後。ほかから書式のファイルへ呼んだなら、呼んだ所を控える
+            if f.f_back is not None and f.f_back.f_code.co_name == "write_checked":
+                return
+            f = f.f_back or f
+        fn = Path(f.f_code.co_filename)
+        if fn.parent == scripts and fn.name != Path(__file__).name and f.f_code.co_name != "write_checked" \
+                and (fn.name, f.f_code.co_name) not in WRITE_PASSTHROUGH:
+            STRAY_WRITES.append(f"{fn.name}:{f.f_lineno} {f.f_code.co_name} → {Path(s).name}")
+
+    orig_open = io.open
+
+    def watched_open(file, mode="r", *a, **k):
+        if isinstance(mode, str) and any(c in mode for c in "wax+"):
+            note(file)
+        return orig_open(file, mode, *a, **k)
+
+    def moved(orig):
+        def move(src, dst, *a, **k):
+            note(dst)
+            return orig(src, dst, *a, **k)
+        return move
+    io.open = builtins.open = watched_open
+    os.replace, os.rename = moved(os.replace), moved(os.rename)
+
+
+_watch_governed_writes()
+
+
+def article_fm(slug: str = "k", edition: str = "2026-10-03", **kw) -> str:
+    """記事の frontmatter(書式 article.schema の必須の欄を満たす最小の形)の YAML 本文。kw で欄を足す・差し替える。"""
+    import yaml
+    fm = {"slug": slug, "edition": edition, "brand": "cg", "src": "未確認", "rank": "small", "title": "t", "lede": "l",
+          "sources": [{"label": "l1", "url": "https://a.example/1", "type": "未確認"}], "corrected": False, "corrections": []}
+    fm.update(kw)
+    return yaml.safe_dump(fm, allow_unicode=True, sort_keys=False)
+
+
+def cand_row(i: str, url: str, **kw) -> dict:
+    """素材の行(書式 candidates.schema の必須の欄を満たす最小の形)。kw で欄を足す・差し替える。"""
+    return {"id": i, "title": kw.pop("title", i), "brand": kw.pop("brand", "cg"), "source_type": kw.pop("source_type", "公式"),
+            "url": url, "found_at": kw.pop("found_at", "2026-10-01T00:00:00+09:00"), "dedup_key": kw.pop("dedup_key", f"k-{i}"),
+            "verify": kw.pop("verify", "confirmed"), **kw}
+
+
+def sched_row(i: str, reserved_on: str, **kw) -> dict:
+    """続報予約の行(書式 scheduled.schema の必須の欄を満たす最小の形)。本番のコードは書式で検めてから書くので、テストの下準備も
+    書式に合う形にする(pipelib.write_checked)。"""
+    return {"id": i, "dedup_key": kw.pop("dedup_key", f"k-{i}"), "brand": kw.pop("brand", "cg"), "subject": kw.pop("subject", i),
+            "kind": kw.pop("kind", "その他"), "reserved_on": reserved_on, "facts": kw.pop("facts", [f"{i} の事実"]), **kw}
+# 監査(Sol)の承認の偽の答えに付ける「実際に走らせた記録」。これの無い承認は承認にならない(oncall.audit_ran_checks)
+AUDIT_RAN = [{"command": "python3 scripts/test_pipeline.py", "exit_code": 0, "result": "test_pipeline: 0 failures"},
+             {"command": "python3 scripts/selfcheck.py", "exit_code": 0, "result": "selfcheck: 0 errors"},
+             {"command": "python3 scripts/lint.py --base origin/main", "exit_code": 0, "result": "lint: 0 errors"}]
 
 # **テストは本物の Discord に絶対に送らない。**通知の経路を差し替え忘れたテストが本物の webhook に届いた
 # (実測 2026-09-23: 当番の修正報告の見本 3 通が編集長の Discord に出た)。webhook の URL を最初に消し、
@@ -87,8 +184,19 @@ def test_check_output():
     # 発行前の検査(lint)と同じ基準: `__` `**` も通さない(2026-10-08: 商品名の `__` が検算を通り、lint で赤になった)
     check(any("Markdown" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "コレクション__ブロマイド228"}]))),
           "lint が赤にする label(__)が検算を通った")
+    # 見出し・リードも、発行前の検査(lint.check_plain_text)が赤にするものは検算で差し戻す(2026-10-14 監査指摘: `**販売開始**` の見出しが
+    # 検算を通って記事に採られ、lint が赤にして組み直し・書き直し・記事を外すへ進んだ)。基準は同じ定義(実際に両方を走らせて比べる)
+    import contextlib, io
     import lint as _lint
-    check(_lint.MD_IN_PLAIN is renderlib.MD_IN_PLAIN, "検算と lint の Markdown の基準が別の定義")
+    for v in ("**販売開始**", "__限定__", "[公式](https://a.example)", "# 見出し", "`code`", "  ## 前に空白", "#タグ_付き ID", "販売開始", "[A] 告知"):
+        for key in ("title", "lede"):
+            rep = _lint.Report()
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                _lint.check_plain_text(rep, "-", key, v.strip())
+            flagged = [p for p in C(dict(OK, **{key: v})) if "Markdown" in p]
+            check(bool(flagged) == (rep.errors > 0), f"{key}={v!r}: 検算 {flagged} / lint {rep.errors} 件(基準が割れている)")
+    check(any("見出しに Markdown" in p for p in C(dict(OK, title="**販売開始**"))) and any("リードに Markdown" in p for p in C(dict(OK, lede="**販売開始**"))),
+          "見出し・リードの Markdown 記法が検算を通った")
     check(any("制御文字" in p for p in C(dict(OK, title="見出し\x04"))), "見出しの制御文字が通った")
     check(C(dict(OK, blocks=[{"markdown": "- 1行目\n- 2行目", "fact_ids": ["F1"]}])) == [], "箇条書きの改行を制御文字として落とした")
     # 文字として残った `\n`(二重エスケープ)は、検算の前に本物の改行へ戻す(2026-09-21: セットリスト37曲が1段落で出た)
@@ -118,7 +226,9 @@ def test_render_and_length():
     good = dict(OK, new_facts=[{"id": "N1", "text": "9月25日発売", "url": "https://a.example/1"}],
                 blocks=[{"markdown": "本文", "fact_ids": ["F1", "N1"]}],
                 sources=[{"url": "https://a.example/1", "label": "ポータル「お​知らせ」"}])
-    p = Path(tempfile.mkdtemp()) / "2026-09-12-x.md"
+    # 書く先は docs/_posts の下(本番と同じ置き場。書式の検査と見張りが効く。監査指摘)
+    p = Path(tempfile.mkdtemp()) / "docs" / "_posts" / "2026-09-12-x.md"
+    p.parent.mkdir(parents=True)
     renderlib.render_article(p, "2026-09-12", {"slug": "x", "brand": "765", "candidate_ids": ["c1"], "rank": "small"},
                              good, lambda u: "公式", lambda ts: "公式", compose.yaml_dump_keeping_strings)
     t = p.read_text(encoding="utf-8")
@@ -142,7 +252,8 @@ def test_schema_hash_dates():
     v = Draft202012Validator(schema)
     good = dict(OK, new_facts=[{"id": "N1", "text": "9月25日発売", "url": "https://a.example/1"}],
                 blocks=[{"markdown": "段落A\n\n段落B", "fact_ids": ["F1", "N1"]}])
-    p = Path(tempfile.mkdtemp()) / "2026-09-12-x.md"
+    p = Path(tempfile.mkdtemp()) / "docs" / "_posts" / "2026-09-12-x.md"
+    p.parent.mkdir(parents=True)
     renderlib.render_article(p, "2026-09-12", {"slug": "x", "brand": "765", "candidate_ids": ["c1"], "rank": "small"},
                              good, lambda u: "公式", lambda ts: "公式", compose.yaml_dump_keeping_strings)
     text = p.read_text(encoding="utf-8")
@@ -493,7 +604,7 @@ def test_rollback(tmp: Path):
     stories = [{"story_id": "s1", "first_published": "2026-09-01", "published_facts": ["旧", "新"],
                 "edition_facts": {"2026-09-01": ["旧"], "2026-09-12": ["新"]}}]
     assemble.dump_yaml(st / "stories.yml", stories)
-    (st / "scheduled" / "2026-09-20.json").write_text(json.dumps([{"id": "a", "reserved_on": "2026-09-12"}, {"id": "b", "reserved_on": "2026-09-01"}]), encoding="utf-8")
+    (st / "scheduled" / "2026-09-20.json").write_text(json.dumps([sched_row("a", "2026-09-12"), sched_row("b", "2026-09-01")]), encoding="utf-8")
     assemble.dump_yaml(st / "pending.yml", [{"dedup_key": "after"}])
     assemble.dump_yaml(tmp / "metrics" / "pending-before-2026-09-12.yml", [{"dedup_key": "before"}])
     saved = (assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING)
@@ -526,8 +637,12 @@ def test_reservation_keeps_all_facts(tmp: Path):
         assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = \
             tmp, st / "stories.yml", st / "scheduled", st / "pending.yml", tmp / "docs" / "_editions"
         assemble.apply("2026-10-04", 1, out, [{"slug": "x", "brand": "million"}], mats, False, stories=[])
-        rows = json.loads((st / "scheduled" / "2026-10-07.json").read_text(encoding="utf-8"))
+        text = (st / "scheduled" / "2026-10-07.json").read_text(encoding="utf-8")
+        rows = json.loads(text)
         check(rows and rows[0]["facts"] == facts, f"予約が素材の facts を切り詰めた: {rows and rows[0]['facts'][-1:]}")
+        # 書いた予約のファイル全体を書式(scheduled.schema)で検める(facts だけ見ていると、予約に書式の無い欄を足しても通る。監査指摘)
+        errs = pipelib.schema_errors(st / "scheduled" / "2026-10-07.json", text)
+        check(errs == [], f"組版が書いた予約が書式に合わない: {errs}")
     finally:
         assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = saved
 
@@ -544,9 +659,9 @@ def test_restore_reservation_facts(tmp: Path):
         rc = rr and next((c for c in json.loads(real_c.read_text(encoding="utf-8")) if c.get("id") == rr.get("src_candidate_id")), None)
         if rr and rc and len(rc.get("facts") or []) > len(rr.get("facts") or []):
             cand, facts = rc, rc["facts"]
-    row = {"id": "sched-2026-10-10-glasses-締切", "reserved_on": "2026-10-04", "src_candidate_id": cand["id"], "facts": facts[:12]}
-    other = {"id": "o", "reserved_on": "2026-10-04", "src_candidate_id": cand["id"], "facts": ["別の事実"]}
-    gone = {"id": "g", "reserved_on": "2026-10-04", "src_candidate_id": "missing", "facts": ["x"]}
+    row = sched_row("sched-2026-10-10-glasses-締切", "2026-10-04", src_candidate_id=cand["id"], facts=facts[:12])
+    other = sched_row("o", "2026-10-04", src_candidate_id=cand["id"], facts=["別の事実"])
+    gone = sched_row("g", "2026-10-04", src_candidate_id="missing", facts=["x"])
     (st / "2026-10-10.json").write_text(json.dumps([row, other, gone], ensure_ascii=False), encoding="utf-8")
     (st / "2026-10-06.json").write_text(json.dumps([dict(row, id="past")], ensure_ascii=False), encoding="utf-8")
     (tmp / "candidates" / "2026-10-04.json").write_text(json.dumps([cand], ensure_ascii=False), encoding="utf-8")
@@ -576,11 +691,11 @@ def test_restore_chained_reservation_facts(tmp: Path):
     st = tmp / "stock" / "scheduled"; st.mkdir(parents=True); (tmp / "candidates").mkdir()
     facts = [f"事実 {i}" for i in range(20)] + ["A席全席指定料金: 12,000円（税込）"]
     (tmp / "candidates" / "2026-09-18.json").write_text(json.dumps([{"id": "c-1", "facts": facts}], ensure_ascii=False), encoding="utf-8")
-    mid = {"id": "sched-2026-09-27-orch-締切", "dedup_key": "orch", "url": "https://idolmaster-official.jp/news/01_19894",
-           "reserved_on": "2026-09-18", "src_candidate_id": "c-1", "facts": facts[:12]}
+    mid = sched_row("sched-2026-09-27-orch-締切", "2026-09-18", dedup_key="orch", url="https://idolmaster-official.jp/news/01_19894",
+                    src_candidate_id="c-1", facts=facts[:12])
     bad = dict(mid, id="sched-2026-09-27-bad-締切", facts=["別の事実"] + facts[1:12])
     (st / "2026-09-27.json").write_text(json.dumps([mid, bad], ensure_ascii=False), encoding="utf-8")
-    end = {"id": "sched-2027-01-12-orch-千秋楽", "reserved_on": "2026-09-27", "src_candidate_id": mid["id"], "facts": facts[:12]}
+    end = sched_row("sched-2027-01-12-orch-千秋楽", "2026-09-27", src_candidate_id=mid["id"], facts=facts[:12])
     end_bad = dict(end, id="e2", src_candidate_id=bad["id"], facts=bad["facts"][:12])
     (st / "2027-01-12.json").write_text(json.dumps([end, end_bad], ensure_ascii=False), encoding="utf-8")
     saved = (assemble.ROOT, assemble.SCHEDULED)
@@ -648,6 +763,130 @@ def test_review_failed_changed_article(tmp: Path):
                 check(r.get("verdict") == "approve", f"中身の変わらない記事の前の判定を引き継がない: {r.get('verdict')} {r.get('blockers')}")
     finally:
         compose.ROOT, pipelib.ROOT, release.ROOT, compose.subprocess.Popen = saved
+
+
+def test_review_unchecked_scope_not_approved(tmp: Path):
+    """紙面全体・社説の担当が2回とも動かなければ、その担当が**いまの中身を前に検めていた**ときだけ判定を引き継ぐ。初めて見る紙面・
+    検めたあとに変わった紙面を、記事の担当の承認や巡の終わりの指紋(hashes)で補って approve にしない。release も承認として通さない
+    (監査指摘 2026-10-14: 記事の担当が通り紙面担当だけ2回とも動かないと approve になった。紙面が変わった後の巡でも同じ)。"""
+    import release
+    d = "2099-01-03"
+    posts, eds = tmp / "docs" / "_posts", tmp / "docs" / "_editions"
+    for p in (posts, eds, tmp / "docs" / "_editorials", tmp / "metrics"):
+        p.mkdir(parents=True, exist_ok=True)
+    (posts / f"{d}-a.md").write_text("---\n" + article_fm("a", d, title="学マスの告知") + "---\n本文\n", encoding="utf-8")
+    ranking = "".join(f"- n: {i}\n  name: 名{i}\n  brand: cg\n  delta: new\n" for i in range(1, 9))
+
+    def set_paper(row: str) -> None:
+        (eds / f"{d}.md").write_text(
+            f"---\nnumber: 30\ndate: '{d}'\nweekday: 土\nissued_at: '{d}T06:00:00+09:00'\npages: 1\narticle_count: 1\ncorrected_count: 0\n"
+            f"lead_slug: a\ndigest:\n- label: 本日\n  rows:\n  - k: 発\n    t: {row}\n    d: ''\n    brand: cg\n    slug: a\n"
+            f"- label: 昨日\n  rows: []\n- label: 継続中\n  rows: []\n- label: 明日\n  rows: []\nranking:\n{ranking}birthdays: []\n---\n",
+            encoding="utf-8")
+    set_paper("学マスの告知")
+    fail: set[str] = set()       # 2回とも動かない担当(article / paper / editorial)
+    calls: list[str] = []
+
+    class FakeP:
+        def __init__(self, ok_):
+            self.ok, self.returncode, self.pid = ok_, (0 if ok_ else 1), 0
+
+        def communicate(self, timeout=None):
+            return ((json.dumps({"verdict": "approve", "blockers": [], "comments": []}), "") if self.ok else ("", "boom"))
+
+    def fake_popen(argv, **k):
+        text = Path(re.search(r"`([^`]+)`", argv[2]).group(1)).read_text(encoding="utf-8")
+        who = "paper" if "紙面全体**を見て" in text else "editorial" if "**社説**を校閲" in text else "article"
+        calls.append(who)
+        return FakeP(who not in fail)
+
+    def run(round_no: int, failing: set[str], **kw) -> tuple[dict, str]:
+        fail.clear(); fail.update(failing); calls.clear()
+        r = compose.claude_review(d, round_no, **kw)
+        return r, release.review_verdict(d)[0]
+
+    saved = (compose.ROOT, pipelib.ROOT, release.ROOT, compose.subprocess.Popen)
+    try:
+        compose.ROOT = pipelib.ROOT = release.ROOT = tmp
+        compose.subprocess.Popen = fake_popen
+        a_only = dict(targets=[f"{d}-a.md"], editorial=False, paper=True)
+        # 1巡目: 記事の担当は通り、紙面担当だけ2回とも動かない(一度も紙面を見ていない)
+        r1, v = run(1, {"paper"}, **a_only)
+        check(calls.count("paper") == 2, f"紙面担当をやり直していない: {calls}")
+        check(r1.get("verdict") != "approve" and v != "approve" and "paper" not in r1.get("checked", {}),
+              f"紙面担当が一度も動いていないのに承認した: {r1.get('verdict')} / release {v} / checked {sorted(r1.get('checked') or {})}")
+        # 2巡目: 紙面担当が動いて承認 → 3巡目: 同じ紙面で紙面担当が動かなければ、前の判定を引き継ぐ
+        r2, v = run(2, set(), **a_only, carry=r1)
+        check(r2.get("verdict") == "approve" and v == "approve" and "paper" in r2.get("checked", {}), f"紙面担当が動いたのに承認しない: {r2.get('verdict')} / {v}")
+        r3, v = run(3, {"paper"}, **a_only, carry=r2)
+        check(r3.get("verdict") == "approve" and v == "approve", f"前に検めた紙面と同じなのに、紙面担当の前の判定を引き継がない: {r3.get('verdict')} / {v}")
+        # 4巡目: 紙面(digest)が変わったあと紙面担当が動かない → 5巡目: 紙面はそのまま、また動かない(4巡目の hashes は変わった紙面を
+        # 指すが、紙面担当はそれを検めていない)
+        set_paper("学マスの告知(差し替え)")
+        r4, v = run(4, {"paper"}, **a_only, carry=r3)
+        check(r4.get("verdict") != "approve" and v != "approve", f"変わった紙面を、前の紙面の判定で承認した: {r4.get('verdict')} / release {v}")
+        r5, v = run(5, {"paper"}, **a_only, carry=r4)
+        check(r5.get("verdict") != "approve" and v != "approve",
+              f"紙面担当が検めていない紙面を、前の巡の指紋(hashes)と同じだからと承認した: {r5.get('verdict')} / release {v}")
+        # 社説も同じ: 一度も検めていない社説の担当が2回とも動かなければ承認しない
+        (tmp / "docs" / "_editorials" / f"{d}.md").write_text("---\n" + article_fm("ed", d, title="社説") + "---\n社説の本文\n", encoding="utf-8")
+        r6, v = run(6, {"editorial"}, targets=[f"{d}-a.md"], editorial=True, paper=False, carry=r3)
+        check("editorial" in calls and r6.get("verdict") != "approve" and v != "approve",
+              f"社説の担当が一度も動いていないのに承認した: {r6.get('verdict')} / release {v} / {calls}")
+        # 古い記録(checked が無い)からの引き継ぎは、巡の終わりの指紋(hashes)で代える: 同じ紙面なら引き継ぐ
+        (tmp / "docs" / "_editorials" / f"{d}.md").unlink()
+        old = {"verdict": "approve", "blockers": [], "comments": [], "reviewed": [f"article:{d}-a.md", "paper"],
+               "hashes": pipelib.review_manifest(d)}
+        r7, v = run(7, {"paper"}, **a_only, carry=old)
+        check(r7.get("verdict") == "approve" and v == "approve", f"古い記録の、同じ紙面への紙面担当の判定を引き継がない: {r7.get('verdict')} / {v}")
+    finally:
+        compose.ROOT, pipelib.ROOT, release.ROOT, compose.subprocess.Popen = saved
+
+
+def test_leave_tree_clean_partial(tmp: Path):
+    """途中終了の後始末は、compose の成果物のうち**実際に変わったファイル**(変更・削除・未追跡)だけを stage して commit/push する。
+    号を作る前に止まると、まだ無い成果物(号スナップショット・社説・予約)のパスで git add が pathspec エラーになり、計画や記録まで
+    残った(監査指摘 2026-10-14)。compose の成果物でない変更・無視するファイルは commit しない。"""
+    d = "2099-01-04"
+    branch = f"edition/{d}"
+    work, origin = tmp / "work", tmp / "origin.git"
+    g = lambda *a: subprocess.run(["git", *a], cwd=work, capture_output=True, text=True, check=True)
+    subprocess.run(["git", "init", "-q", "--bare", str(origin)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", branch, str(work)], check=True, capture_output=True)
+    g("config", "user.email", "t@example"); g("config", "user.name", "t")
+    for p in ("docs/_posts", "stock", "metrics", "scripts"):
+        (work / p).mkdir(parents=True)
+    (work / ".gitignore").write_text("metrics/work/\n", encoding="utf-8")
+    (work / "docs" / "_posts" / f"{d}-old.md").write_text("---\n" + article_fm("old", d) + "---\n前の実行の記事\n", encoding="utf-8")
+    (work / "stock" / "stories.yml").write_text("stories: []\n", encoding="utf-8")
+    (work / "scripts" / "other.py").write_text("x = 1\n", encoding="utf-8")
+    g("add", "-A"); g("commit", "-q", "-m", "fixture"); g("remote", "add", "origin", str(origin)); g("push", "-q", "-u", "origin", branch)
+    # 選定のあと、号を作る前に止まった: 計画(未追跡)・台帳(変更)・前の実行の記事の削除・作業ファイル(無視)・compose の成果物でない変更
+    (work / "metrics" / f"plan-{d}.json").write_text("{}\n", encoding="utf-8")
+    (work / "stock" / "stories.yml").write_text("stories: [x]\n", encoding="utf-8")
+    (work / "docs" / "_posts" / f"{d}-old.md").unlink()
+    (work / "metrics" / "work").mkdir()
+    (work / "metrics" / "work" / "p.md").write_text("依頼文\n", encoding="utf-8")
+    (work / "scripts" / "other.py").write_text("x = 2\n", encoding="utf-8")
+    notes: list[str] = []
+    saved = (compose.ROOT, pipelib.ROOT, compose.STARTED_ON, compose.STARTED_DATE, compose.notify, pipelib.notify)
+    try:
+        compose.ROOT = pipelib.ROOT = work
+        compose.STARTED_ON, compose.STARTED_DATE = branch, d
+        compose.notify = pipelib.notify = lambda job, msg, ok=True, **k: notes.append(msg) or True
+        compose._leave_tree_clean("テスト: 号を作る前に停止")
+    finally:
+        compose.ROOT, pipelib.ROOT, compose.STARTED_ON, compose.STARTED_DATE, compose.notify, pipelib.notify = saved
+    left = g("status", "--porcelain", "--untracked-files=all").stdout.splitlines()
+    committed = set(g("show", "--name-only", "--format=", "HEAD").stdout.split())
+    check(left == [" M scripts/other.py"], f"途中終了の後始末のあとに compose の成果物が残った/成果物でない変更まで commit した: {left} / {notes}")
+    check({f"metrics/plan-{d}.json", "stock/stories.yml", f"docs/_posts/{d}-old.md"} <= committed
+          and "scripts/other.py" not in committed and not any(c.startswith("metrics/work/") for c in committed),
+          f"変わった成果物(未追跡・変更・削除)だけを commit していない: {sorted(committed)}")
+    check(g("rev-parse", "HEAD").stdout == subprocess.run(["git", "rev-parse", branch], cwd=origin, capture_output=True, text=True).stdout,
+          "途中終了の commit を push していない")
+    check(not any("git add 失敗" in n or "commit/push できなかった" in n for n in notes), f"後始末の commit が失敗した: {notes}")
+    check(any("成果物ではない変更" in n and "scripts/other.py" in n for n in notes), f"成果物でない変更を知らせない: {notes}")
 
 
 def test_grok_deep_retry(tmp: Path):
@@ -827,6 +1066,282 @@ def test_review_paper_defines_same_subject():
     text = (pipelib.ROOT / "prompts" / "review-paper.md").read_text(encoding="utf-8")
     p1 = next((l for l in text.splitlines() if l.startswith("- P1 ")), "")
     check("同じ知らせ" in p1 and "別の主題" in p1, f"P1 に「同じ主題」の定義が無い: {p1}")
+
+
+# 規則の事例(scripts/rule_bench.py)。上の2つの文言の検査は、逆の規則を書き足しても文言が残れば通る(監査指摘 2026-10-14)。
+# 規則が効くかは rule_bench が実際のモデルに判断させて検める。ここでは事例の形と、答えを照らすコードの振る舞いだけを見る(モデルは呼ばない)
+RULE_CASES = {
+    "write-partial-mismatch-drops-one": "write", "write-press-only-writes": "write", "write-fan-matome-only-declines": "write",
+    "write-press-price-conflict-uses-official": "write", "review-article-press-only-no-r5": "review_article",
+    "review-article-fan-matome-only-r5": "review_article", "review-article-press-price-conflict-r5": "review_article",
+    "review-paper-same-event-different-news-kept": "review_paper", "review-paper-same-news-twice-drops-one": "review_paper",
+    "revise-press-price-conflict-uses-official": "revise",
+}
+
+
+def test_rule_bench_cases():
+    """事例ファイルが揃っていて形が正しい(素材・記事は書式どおり、期待の欄は事例の素材・記事を指す)。形の検査は崩れた事例を拒む。"""
+    import copy
+    import rule_bench
+    cases = rule_bench.load_cases()
+    check(set(RULE_CASES) <= set(cases), f"規則の事例が欠けている: {sorted(set(RULE_CASES) - set(cases))}")
+    for n, kind in RULE_CASES.items():
+        c = cases.get(n) or {}
+        check(c.get("kind") == kind, f"{n} の kind: {c.get('kind')}")
+        probs = rule_bench.case_problems(c) if c else ["無い"]
+        check(not probs, f"{n} の形: {probs[:3]}")
+    if not all(n in cases for n in RULE_CASES):
+        return
+    w = cases["write-partial-mismatch-drops-one"]
+    # 期待の欄が読める: 外すべき素材の事実 id は2つ目の素材のもの(本番と同じ通し番号)、外すべき url は2つ目の素材の url
+    ids = rule_bench.material_ids(w["materials"])
+    check({ids[i] for i in w["expect"]["not_cite"]} == {w["materials"][1]["url"]} and w["expect"]["not_sources"] == [w["materials"][1]["url"]],
+          f"一部の素材だけが食い違う事例の期待: {w['expect']}")
+    check(cases["write-fan-matome-only-declines"]["expect"] == {"status": "decline", "decline_codes": ["NO_PRIMARY_SOURCE"]},
+          "まとめ記事だけの事例は NO_PRIMARY_SOURCE の見送りを期待する")
+    pair = cases["review-paper-same-news-twice-drops-one"]
+    check(pair["expect"]["blockers"] == [{"rule": "P1", "files": [f"docs/_posts/{n}" for n in pair["posts"]], "n_files": 1}],
+          f"同じ知らせの2本の事例の期待: {pair['expect']}")
+
+    def broken(name, edit):
+        c = copy.deepcopy(cases[name])
+        edit(c)
+        return rule_bench.case_problems(c)
+    check(broken("write-partial-mismatch-drops-one", lambda c: c["expect"].update(not_cite=["F99"])), "素材に無い事実 id を期待にできる")
+    check(broken("write-partial-mismatch-drops-one", lambda c: c["pages"].pop(c["materials"][0]["url"])), "素材の url の本文が無い事例を通す")
+    check(broken("write-partial-mismatch-drops-one", lambda c: c["materials"][0].update(extra=1)), "書式に無い欄のある素材を通す")
+    check(broken("write-fan-matome-only-declines", lambda c: c["expect"].pop("decline_codes")), "見送りの理由コードの無い期待を通す")
+    check(broken("write-press-only-writes", lambda c: c["expect"].pop("sources")), "使う素材の期待が無い執筆の事例を通す")
+    check(broken("review-paper-same-news-twice-drops-one", lambda c: c["expect"]["blockers"][0].update(files=["docs/_posts/x.md"])),
+          "事例に無い記事を期待にできる")
+    check(broken("review-article-press-only-no-r5", lambda c: c.update(candidates=[])), "記事の素材が無い校閲の事例を通す")
+    check(broken("review-article-press-only-no-r5", lambda c: c["posts"].update({k: v.replace("rank: small", "rank: tiny") for k, v in c["posts"].items()})),
+          "書式に合わない記事を通す")
+    check(broken("review-paper-same-event-different-news-kept", lambda c: c.update(kind="review")), "知らない kind を通す")
+    check(broken("write-press-price-conflict-uses-official", lambda c: c["expect"].update(cite_sources=["https://x.example/"])),
+          "素材に無い出典を cite_sources にできる")
+    check(broken("revise-press-price-conflict-uses-official", lambda c: c.update(issues=[])), "指摘の無い書き直しの事例を通す")
+    check(broken("revise-press-price-conflict-uses-official", lambda c: c.update(slug="other")), "書き直す記事と slug が合わない事例を通す")
+
+
+def test_rule_bench_judges_shape(tmp: Path):
+    """答えの形の欄(執筆の status・decline_code・根拠の事実 id・出典の url / 校閲の blockers の rule_id と file)を期待と照らし、
+    偽の答えで合格・不合格を正しく出す。本番の経路(執筆の依頼文・校閲の claude_review)を偽の答えで通しても同じ結果になる。"""
+    import contextlib
+    import copy
+    import io
+    import fetch_page
+    import rule_bench
+    import writer_bench
+    cases = rule_bench.load_cases()
+    if not all(n in cases for n in RULE_CASES):
+        check(False, "規則の事例が欠けている")
+        return
+    w = cases["write-partial-mismatch-drops-one"]
+    a_url, b_url = w["materials"][0]["url"], w["materials"][1]["url"]
+    # 本番の検算に通る形の答え(形の不合格と規則の不合格を分けて見るため)
+    good = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "SideMぱしゃこれA-BOX予約", "title_fact_ids": ["F1"],
+            "lede": "l", "lede_fact_ids": ["F1"], "blocks": [{"markdown": "m", "fact_ids": ["F2", "N1"]}], "tags": ["SideM", "予約"],
+            "new_facts": [{"id": "N1", "text": "8,800円", "url": a_url}], "event_date": None, "addressed_issue_ids": [],
+            "sources": [{"url": a_url.rstrip("/"), "label": "アニメイト通販「A-BOX」(2026年10月12日)"}]}
+    jw = rule_bench.judge_write
+    check(jw(w["expect"], good) == [], f"残りの素材で書いた答えを不合格にした: {jw(w['expect'], good)}")
+    bad = copy.deepcopy(good)
+    bad["blocks"][0]["fact_ids"].append("F6")
+    check(jw(w["expect"], bad), "食い違う素材の事実を根拠にした答えを合格にした")
+    bad = copy.deepcopy(good)
+    bad["new_facts"].append({"id": "N2", "text": "販売終了", "url": b_url})
+    check(jw(w["expect"], bad), "食い違う素材のページを読んで足した答えを合格にした")
+    bad = copy.deepcopy(good)
+    bad["sources"] = [{"url": b_url, "label": "y"}]
+    check(len(jw(w["expect"], bad)) == 2, f"出典の取り違えを2点とも挙げない: {jw(w['expect'], bad)}")
+    decl = {"status": "decline", "decline_code": "SOURCE_MISMATCH", "decline_detail": "B が販売終了"}
+    check(jw(w["expect"], decl) and "decline" in jw(w["expect"], decl)[0], "素材ごと見送った答えを合格にした")
+    check(jw(w["expect"], None), "答えが無いのを合格にした")
+    m = cases["write-fan-matome-only-declines"]["expect"]
+    check(jw(m, dict(decl, decline_code="NO_PRIMARY_SOURCE")) == [] and jw(m, decl) and jw(m, good),
+          "まとめ記事だけの事例: NO_PRIMARY_SOURCE の見送りだけを合格にする")
+    pc = cases["write-press-price-conflict-uses-official"]
+    p, mats = pc["expect"], pc["materials"]
+    off, press = mats[0]["url"], mats[1]["url"]
+    ans = dict(good, title_fact_ids=["F1"], lede_fact_ids=["F3"], blocks=[{"markdown": "m", "fact_ids": ["F2"]}], new_facts=[],
+               sources=[{"url": off, "label": "x"}])
+    check(jw(p, ans, mats) == [], f"公式の価格で書いた答えを不合格にした: {jw(p, ans, mats)}")
+    check(jw(p, dict(ans, lede_fact_ids=["F15"]), mats) and jw(p, dict(ans, lede_fact_ids=["F3", "F15"]), mats), "報道の食い違う価格を使った答えを合格にした")
+    # 公式のページを読んで N に書いた価格を根拠にしても、規則どおり(F3 でなくてよい。監査指摘)
+    via_n = dict(ans, lede_fact_ids=["N4"], title_fact_ids=["F12"], new_facts=[{"id": "N4", "text": "価格は19,800円(税込)", "url": off}])
+    check(jw(p, via_n, mats) == [], f"公式を読んだ N で書いた答えを不合格にした: {jw(p, via_n, mats)}")
+    only_press = dict(ans, lede_fact_ids=["F12"], title_fact_ids=["F16"], blocks=[], sources=[{"url": off, "label": "x"}, {"url": press, "label": "y"}])
+    check(jw(p, only_press, mats), "公式の事実を根拠に使わない答えを合格にした")
+    # 校閲: rule_id は頭の項目番号で読む(R15 は R1 ではない)
+    check([rule_bench.rule_of(x) for x in ("P1", "P1 同じ主題", " R-5", "R15", "", None)] == ["P1", "P1", "R5", "R15", "", ""], "rule_id の読み方")
+    pair = cases["review-paper-same-news-twice-drops-one"]
+    fa, fb = (f"docs/_posts/{n}" for n in pair["posts"])
+    blk = lambda rid, f: {"file": f, "issue": "i", "quote": "q", "rule_id": rid, "repair": "drop_article", "fact_ids": [], "expected": "e"}
+    jr = rule_bench.judge_review
+    check(jr(pair["expect"], {"verdict": "block", "blockers": [blk("P1", fb)]}) == [], "同じ知らせの1本を落とす答えを不合格にした")
+    check(jr(pair["expect"], {"verdict": "block", "blockers": [blk("P1 同じ知らせ", fa), blk("P1", fa)]}) == [], "同じ1本への2つの P1 を不合格にした")
+    check(jr(pair["expect"], {"verdict": "block", "blockers": [blk("P1", fa), blk("P1", fb)]}), "両方を落とす答えを合格にした")
+    check(jr(pair["expect"], {"verdict": "approve", "blockers": []}), "同じ知らせを2本とも残す答えを合格にした")
+    check(jr(pair["expect"], {"verdict": "block", "blockers": [blk("R1", fa)]}), "P1 でない指摘を合格にした")
+    check(jr(pair["expect"], {"verdict": "error", "blockers": [], "failed": ["paper: 時間切れ"]}), "判定の無い校閲を合格にした")
+    kept = cases["review-paper-same-event-different-news-kept"]
+    k1 = f"docs/_posts/{next(iter(kept['posts']))}"
+    check(jr(kept["expect"], {"verdict": "approve", "blockers": []}) == [] and jr(kept["expect"], {"verdict": "block", "blockers": [blk("R3", k1)]}) == [],
+          "別の知らせを2本とも残す答えを不合格にした")
+    check(jr(kept["expect"], {"verdict": "block", "blockers": [blk("P1", k1)]}), "別の知らせを P1 で落とす答えを合格にした")
+    r5 = cases["review-article-press-price-conflict-r5"]
+    f5 = f"docs/_posts/{next(iter(r5['posts']))}"
+    check(jr(r5["expect"], {"verdict": "block", "blockers": [blk("R5", f5)]}) == [] and jr(r5["expect"], {"verdict": "block", "blockers": [blk("R1", f5)]}),
+          "食い違う報道の価格の記事: R5 の指摘だけを合格にする")
+    # 本番の経路を偽の答えで通す(モデルは呼ばない)。結果の置き場・作業フォルダ・依頼文のファイルは一時ディレクトリに作る
+    saved = (rule_bench.OUT, pipelib.ROOT, compose.ROOT, writer_bench.write_one, compose.subprocess.Popen, os.environ.get(rule_bench.FIXED_PAGES_ENV))
+    saved_stage = dict(compose.STAGE_MIN)      # 校閲は巡の実測を残す(ほかのテストの見積もりに混ぜない)
+    seen = {}
+    try:
+        rule_bench.OUT = tmp / "out"
+        pipelib.ROOT = compose.ROOT = tmp / "root"
+
+        def fake_write(name, short, label, model):
+            seen["write"] = (short, os.environ.get(rule_bench.FIXED_PAGES_ENV), model)
+            return {"case": name, "answer": copy.deepcopy(good), "exit": 0}
+        writer_bench.write_one = fake_write
+        r = rule_bench.run_one("write-partial-mismatch-drops-one", "t1")
+        short, pages, model = seen.get("write", ("", "", ""))
+        prompt_path = re.search(r"`([^`]+\.md)`", short)
+        prompt = Path(prompt_path.group(1)).read_text(encoding="utf-8") if prompt_path else ""
+        check(r["pass"] and r["problems"] == [], f"偽の答え(残りの素材で書いた)が本番の執筆の経路で不合格: {r.get('problems')}")
+        check(a_url in prompt and '"id": "F5"' in prompt and "## 素材" in prompt, "執筆の依頼文に素材が本番と同じ形(F 番号付き)で入っていない")
+        check(model == pipelib.CODEX_WRITE_MODEL, f"執筆のモデルが本番と違う: {model}")
+        check(pages and json.loads(Path(pages).read_text(encoding="utf-8")) == w["pages"], "執筆に事例の出典の本文が渡らない")
+        writer_bench.write_one = lambda name, short, label, model: {"case": name, "answer": dict(decl), "exit": 0}
+        r = rule_bench.run_one("write-partial-mismatch-drops-one", "t2")
+        check(not r["pass"] and (rule_bench.OUT / "t2" / "write-partial-mismatch-drops-one.json").exists(), "見送った偽の答えを合格にした・結果が残らない")
+        # 本番の検算に通らない答え(理由の無い見送り)は、規則の判断が期待どおりでも合格にしない(本番は差し戻す。監査指摘)
+        writer_bench.write_one = lambda name, short, label, model: {
+            "case": name, "answer": {**decl, "decline_code": "NO_PRIMARY_SOURCE", "decline_detail": ""}, "exit": 0}
+        r = rule_bench.run_one("write-fan-matome-only-declines", "t2b")
+        check(not r["pass"] and r["problems"] == [] and r["shape_problems"], f"本番の検算に通らない答えを合格にした: {r.get('shape_problems')}")
+        # 答えの読み込みは本番と同じ(同じキーが2回ある答え・出力 schema に合わない答えは読めない答え)
+        saved_run = writer_bench.subprocess.run
+        try:
+            whole = json.dumps(good, ensure_ascii=False)
+            off_schema = json.dumps(dict(good, addressed_issue_ids="I1"), ensure_ascii=False)
+            for text, readable in (('{"status": "decline", ' + whole[1:], False), (off_schema, False), (whole, True)):
+                def fake_run(cmd, **kw):
+                    Path(cmd[cmd.index("--output-last-message") + 1]).write_text(text, encoding="utf-8")
+                    return subprocess.CompletedProcess(cmd, 0, "", "")
+                writer_bench.subprocess.run = fake_run
+                got = saved[3]("x", "p", "t", "m")["answer"]
+                check((got is not None) == readable, f"答えの読み込みが本番と違う(同じキーが2回ある答え・schema 違反・正しい答え): {text[:40]} → {got}")
+        finally:
+            writer_bench.subprocess.run = saved_run
+        # 書き直し: 本番と同じ依頼文(指摘に I1 を振る・現在の記事・素材)で書かせ、報道の食い違う価格を根拠に残さない答えだけを合格にする
+        import yaml
+        rv = rule_bench.load_cases(["revise-press-price-conflict-uses-official"])["revise-press-price-conflict-uses-official"]
+        post_text = next(iter(rv["posts"].values()))
+        fm = yaml.safe_load(post_text.split("---\n")[1])
+        paras = [re.match(r"(.*) <!-- (.*) -->$", x, re.S) for x in post_text.split("\n---\n", 1)[1].strip().split("\n\n")]
+        blocks = [{"markdown": m_.group(1), "fact_ids": m_.group(2).split()} for m_ in paras]
+        rev_good = {"status": "ok", "decline_code": "", "decline_detail": "", "title": fm["title"], "title_fact_ids": fm["title_fact_ids"],
+                    "lede": fm["lede"], "lede_fact_ids": fm["lede_fact_ids"], "tags": fm["tags"], "new_facts": [], "event_date": None,
+                    "blocks": [{"markdown": blocks[0]["markdown"].replace("18,700", "19,800"), "fact_ids": ["F3", "F2", "F7"]}] + blocks[1:],
+                    "sources": [{"url": s["url"], "label": s["label"]} for s in fm["sources"]], "addressed_issue_ids": ["I1"]}
+        rev_keep = copy.deepcopy(rev_good)
+        rev_keep["blocks"][0] = blocks[0]
+
+        def fake_revise(answer):
+            def f(name, short, label, model):
+                seen["revise"] = Path(re.search(r"`([^`]+\.md)`", short).group(1)).read_text(encoding="utf-8")
+                return {"case": name, "answer": copy.deepcopy(answer), "exit": 0}
+            return f
+        writer_bench.write_one = fake_revise(rev_good)
+        r = rule_bench.run_one("revise-press-price-conflict-uses-official", "t6")
+        rp = seen.get("revise", "")
+        check(r["pass"], f"公式の価格に書き直した偽の答えを不合格にした: {r.get('problems')} {r.get('shape_problems')}")
+        check('"issue_id": "I1"' in rp and '"rule_id": "R5"' in rp and fm["title"] in rp and '"id": "F15"' in rp,
+              "書き直しの依頼文に、本番と同じ形の指摘(I1)・現在の記事・素材が入っていない")
+        writer_bench.write_one = fake_revise(rev_keep)
+        r = rule_bench.run_one("revise-press-price-conflict-uses-official", "t7")
+        check(not r["pass"] and any("F15" in x for x in r["problems"]), f"報道の価格を残した書き直しを合格にした: {r.get('problems')}")
+        writer_bench.write_one = fake_revise(dict(rev_good, addressed_issue_ids=[]))
+        r = rule_bench.run_one("revise-press-price-conflict-uses-official", "t8")
+        check(not r["pass"] and r["shape_problems"], f"本番の照合で戻る書き直し(対応していない指摘)を合格にした: {r.get('shape_problems')}")
+        calls, said = [], [blk("P1", fb)]
+
+        class FakeP:
+            returncode, pid = 0, 0
+
+            def __init__(self, argv, cwd=None, **k):
+                calls.append({"argv": argv, "cwd": Path(cwd), "pages": os.environ.get(rule_bench.FIXED_PAGES_ENV),
+                              "posts": sorted(p.name for p in (Path(cwd) / "docs" / "_posts").glob("*.md"))})
+
+            def communicate(self, timeout=None):
+                return (json.dumps({"verdict": "block", "comments": [], "blockers": said}), "")
+        compose.subprocess.Popen = FakeP
+        r = rule_bench.run_one("review-paper-same-news-twice-drops-one", "t3")
+        c0 = calls[0] if calls else {}
+        check(r["pass"], f"偽の答え(1本を落とす)が本番の校閲の経路で不合格: {r.get('problems')}")
+        check(len(calls) == 1 and c0["posts"] == sorted(pair["posts"]) and c0["cwd"] == rule_bench.OUT / "t3" / "review-paper-same-news-twice-drops-one",
+              f"校閲が事例の記事だけを置いた作業フォルダで動かない: {c0.get('cwd')} {c0.get('posts')}")
+        check("--json-schema" in c0.get("argv", []) and pipelib.REVIEW_MODEL in c0.get("argv", []) and c0.get("pages"),
+              "校閲の呼び出しが本番と違う(判定 schema・モデル)か、出典の本文が渡らない")
+        check(pipelib.ROOT == compose.ROOT == tmp / "root", "校閲のあとに ROOT が戻らない")
+        calls.clear()
+        said[:] = [blk("P1", k1)]
+        r = rule_bench.run_one("review-paper-same-event-different-news-kept", "t4")
+        check(not r["pass"] and "P1" in " ".join(r["problems"]), f"別の知らせを落とす偽の答えを合格にした: {r.get('problems')}")
+        # 事例の記事を指さない指摘は、本番の校閲がコメントに回す(落とす力を持たない)。照らすのは本番が動く形
+        said[:] = [blk("P1", "docs/_posts/2026-10-07-not-in-case.md")]
+        r = rule_bench.run_one("review-paper-same-event-different-news-kept", "t5")
+        check(r["pass"] and r["answer"]["verdict"] == "approve", f"事例の記事を指さない指摘で不合格にした: {r.get('problems')}")
+    finally:
+        (rule_bench.OUT, pipelib.ROOT, compose.ROOT, writer_bench.write_one, compose.subprocess.Popen, env) = saved
+        compose.STAGE_MIN.clear()
+        compose.STAGE_MIN.update(saved_stage)
+        if env is None:
+            os.environ.pop(rule_bench.FIXED_PAGES_ENV, None)
+        else:
+            os.environ[rule_bench.FIXED_PAGES_ENV] = env
+    # fetch_page.py は事例の本文を返す(取りに行かない・描画しない)。事例に無いページは取れない
+    pages = tmp / "pages.json"
+    pages.write_text(json.dumps({"https://a.example/x/": "告知\n\n\n\n受付期間：10月1日～10月12日\n本文"}, ensure_ascii=False), encoding="utf-8")
+    saved_f = (fetch_page.fetch, fetch_page.needs_render, sys.argv, os.environ.get(fetch_page.FIXED_PAGES_ENV))
+
+    def no_net(*a, **k):
+        raise AssertionError("事例の本文を返すときに取りに行った")
+    outs = []
+
+    def run_fetch(u):
+        buf = io.StringIO()
+        sys.argv = ["fetch_page.py", u]
+        with contextlib.redirect_stdout(buf):
+            rc = fetch_page.main()
+        return rc, buf.getvalue()
+    wrong = []
+    try:
+        fetch_page.fetch = fetch_page.needs_render = no_net
+        os.environ[fetch_page.FIXED_PAGES_ENV] = str(pages)
+        for u in ("https://a.example/x", "https://a.example/other"):
+            outs.append(run_fetch(u))
+        # 全事例の固定の本文が、本番の出力の形(空行の連なりを詰める・上限で切る)以外は一字も変わらずに返る(監査指摘: 値の破損を見逃さない)
+        for n, c in cases.items():
+            pages.write_text(json.dumps(c["pages"], ensure_ascii=False), encoding="utf-8")
+            for u, body in c["pages"].items():
+                rc, out = run_fetch(u)
+                want = re.sub(r"\n[ \t　]*(?:\n[ \t　]*)+", "\n\n", body).strip()[:40000]
+                if rc != 0 or out.split("--- 本文(要約なし) ---\n", 1)[-1] != want + "\n":
+                    wrong.append(f"{n}: {u}")
+    finally:
+        fetch_page.fetch, fetch_page.needs_render, sys.argv, env = saved_f
+        if env is None:
+            os.environ.pop(fetch_page.FIXED_PAGES_ENV, None)
+        else:
+            os.environ[fetch_page.FIXED_PAGES_ENV] = env
+    check(outs and outs[0][0] == 0 and "--- 本文(要約なし) ---\n告知\n\n受付期間" in outs[0][1] and "受付期間" in outs[0][1].split("--- 本文")[0],
+          f"事例の本文を本番と同じ形(期間・本文)で返さない: {outs[:1]}")
+    check(len(outs) == 2 and outs[1][0] == 1 and outs[1][1].startswith("FETCH_FAILED"), f"事例に無いページを取れたことにした: {outs[1:]}")
+    check(not wrong, f"事例の固定の本文が、そのままの中身で返らない: {wrong[:3]}")
 
 
 def test_job_lock():
@@ -1352,12 +1867,13 @@ def test_oncall_rerun_policy():
         oncall.commit_paths = lambda paths, msg, branch, push_timeout=120: committed.append(paths)
         oncall.run_stage = lambda cmd, log, t: 124
         pushed = []
-        saved_ep = oncall.ensure_pushed
+        saved_ep = oncall.ensure_pushed, oncall.settle_collect_outputs
         oncall.ensure_pushed = lambda branch, what, budget=300: pushed.append(branch) or True
+        oncall.settle_collect_outputs = lambda root: []     # 出力の検めは test_oncall_collect_rerun_settles_broken_output が実際の git で検める
         try:
             oncall.rerun_stage("collect", "2026-09-13", "edition/2026-09-13", False)
         finally:
-            oncall.ensure_pushed = saved_ep
+            oncall.ensure_pushed, oncall.settle_collect_outputs = saved_ep
         check(committed and "candidates" in committed[0] and "stock/watch-state.json" in committed[0],
               f"途中で終わった取り直しの素材を確定しない: {committed}")
         # clean でも、取り直しの commit がリモートに届いているかを確かめて送る(push の途中で時間切れ。監査指摘)
@@ -2160,7 +2676,7 @@ def test_classify_posts_only(tmp: Path):
     post_a = tmp / "docs" / "_posts" / "2026-09-19-a.md"
     before = post_a.read_bytes()
     calls = []
-    def fake_run(cmd, **kw):
+    def fake_run(cmd, timeout):
         calls.append(cmd)
         if any("classify_sources.py" in str(c) for c in cmd):    # 合議が表と記事を書き換えたあと失敗
             (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n  - b.example\n", encoding="utf-8")
@@ -2168,30 +2684,52 @@ def test_classify_posts_only(tmp: Path):
             (tmp / "docs" / "_posts" / "2026-09-19-new.md").write_text("x", encoding="utf-8")
             return subprocess.CompletedProcess(cmd, 1, "", "boom")
         return subprocess.CompletedProcess(cmd, 0, "", "")
-    saved_run, saved_root = pipelib.subprocess.run, pipelib.ROOT
+    # 取引の段は pipelib._txn_run(子を自分のプロセスグループで起動し、止めてから戻す)。本物の子プロセスでの中断は
+    # test_classify_txn_interrupt が見る
+    saved_run, saved_root = pipelib._txn_run, pipelib.ROOT
+    journal = tmp / pipelib.TXN_JOURNAL
     try:
-        pipelib.subprocess.run, pipelib.ROOT = fake_run, tmp
+        pipelib._txn_run, pipelib.ROOT = fake_run, tmp
         ok, why = pipelib.classify_retag_lint("2026-09-19", posts_only=True, lint=False)
         check(not ok and "合議 exit 1" in why and "boom" in why and "戻せない" not in why, f"取引の失敗の扱い: {ok} {why}")
         check("--posts-only" in calls[0] and not any("lint.py" in str(c) for cmd in calls for c in cmd), f"組版前の旗と lint 無し: {calls}")
         check(post_a.read_bytes() == before and "b.example" not in (tmp / "source_types.yml").read_text(encoding="utf-8")
               and not (tmp / "docs" / "_posts" / "2026-09-19-new.md").exists(), "失敗した取引が開始時の中身へ戻っていない")
+        check(not journal.exists(), "戻せた取引の控えが残った")
         # 成功の経路(組版前): 合議 → 付け直し で終わり、lint は掛けない
         calls.clear()
-        pipelib.subprocess.run = lambda cmd, **kw: (calls.append(cmd), subprocess.CompletedProcess(cmd, 0, "", ""))[1]
+        pipelib._txn_run = lambda cmd, timeout: (calls.append(cmd), subprocess.CompletedProcess(cmd, 0, "", ""))[1]
         ok, why = pipelib.classify_retag_lint("2026-09-19", posts_only=True, lint=False)
         check(ok and len(calls) == 2, f"組版前の成功の経路: {ok} {len(calls)}")
         ok, why = pipelib.classify_retag_lint("2026-09-19")
         check(ok and any("lint.py" in str(c) for c in calls[-1]), "収集の取引で lint が掛からない")
-        # 戻せないとき
+        check(not journal.exists(), "成功した取引の控えが残った")
+        # 戻せないとき: 理由に「戻せない」。控えは残し、次の起動(recover_classify_txn)が戻し直す
         saved_restore = pipelib._restore
         pipelib._restore = lambda snap, new_under=None: "a.md: Permission denied"
-        pipelib.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 1, "", "cannot")
+        pipelib._txn_run = lambda cmd, timeout: ((tmp / "source_types.yml").write_text("official_domains:\n  - c.example\n", encoding="utf-8"),
+                                                 subprocess.CompletedProcess(cmd, 1, "", "cannot"))[1]
         ok, why = pipelib.classify_retag_lint("2026-09-19")
-        check(not ok and "戻せない" in why, f"戻せないときの理由: {why}")
+        check(not ok and "戻せない" in why and journal.exists(), f"戻せないときの理由・控え: {why} {journal.exists()}")
         pipelib._restore = saved_restore
+        back = pipelib.recover_classify_txn()
+        check("開始時へ戻した" in back and "a.example" in (tmp / "source_types.yml").read_text(encoding="utf-8") and not journal.exists(),
+              f"残った控えから次の起動が戻さない: {back}")
+        # 控えを書けない(空き容量が無い等)ときは、子を起こさずに失敗で返す(戻せない取引を始めない。工程は落とさない)
+        calls.clear()
+        pipelib._txn_run = lambda cmd, timeout: (calls.append(cmd), subprocess.CompletedProcess(cmd, 0, "", ""))[1]
+        saved_journal = pipelib._write_txn_journal
+        pipelib._write_txn_journal = lambda snap, posts: (_ for _ in ()).throw(OSError(28, "No space left on device"))
+        import signal as _signal
+        handlers = (_signal.getsignal(_signal.SIGTERM), _signal.getsignal(_signal.SIGINT))
+        try:
+            ok, why = pipelib.classify_retag_lint("2026-09-19")
+        finally:
+            pipelib._write_txn_journal = saved_journal
+        check(not ok and "控えを書けない" in why and not calls and not journal.exists(), f"控えを書けないのに取引を始めた: {ok} {why} {calls}")
+        check((_signal.getsignal(_signal.SIGTERM), _signal.getsignal(_signal.SIGINT)) == handlers, "取引が終わっても中断のハンドラが戻らない")
     finally:
-        pipelib.subprocess.run, pipelib.ROOT = saved_run, saved_root
+        pipelib._txn_run, pipelib.ROOT = saved_run, saved_root
 
 
 def test_table_write_and_reload(tmp: Path):
@@ -2235,7 +2773,7 @@ def test_table_write_and_reload(tmp: Path):
             check(False, "二重定義の表を書けてしまった")
         except SystemExit:
             pass
-        check(p.read_text(encoding="utf-8") == before and not list(tmp.glob("source_types.yml.tmp-*")),
+        check(p.read_text(encoding="utf-8") == before and not list(tmp.glob(".source_types.yml.*.tmp")),
               "検査に落ちた表が書かれた、または一時ファイルが残った")
         # 置き換えで権限を変えない
         os.chmod(p, 0o664)
@@ -2394,9 +2932,7 @@ def test_ledger_facts_are_cited(tmp: Path):
     import inspect
     src = inspect.getsource(compose.run_assemble)
     check(0 <= src.find("persist_records(date)") < src.find("_assemble.run("), "台帳づくりの前に、稿ごとの事実の記録を残さない")
-    w, rv = inspect.getsource(compose.write_articles), inspect.getsource(compose.revise_apply)
-    check('remember_fact_map(date, art["slug"], target, fact_by_id)' in w and 'remember_fact_map(date, art["slug"], path, fact_by_id)' in rv,
-          "執筆・書き直しで稿を採ったときに、事実の対応を記録しない")
+    # 執筆・書き直しで稿を採ったときに対応を記録することは、実際に稿を採らせて検める(test_writer_children。ソースの文字列は見ない)
 
 
 def test_assemble_prompt_shape():
@@ -2499,7 +3035,7 @@ def test_assemble_judge():
     seen = []
     # 模擬の答えも出力 schema の形にする(崩れた答えはまとめに使わない)
     srow = lambda s, subject=None: {"slug": s, "story_id": s, "subject": subject or s, "published_facts": ["F1"]}
-    rres = lambda s, d: {"slug": s, "candidate_id": "c1", "date": d, "kind": "締切", "subject": "x", "note": ""}
+    rres = lambda s, d: {"slug": s, "candidate_id": "c1", "date": d, "occurs_on": d, "kind": "締切", "subject": "x", "note": ""}
     padd = lambda k, subject="s", watch="w": {"dedup_key": k, "brand": "cg", "subject": subject, "watch": watch}
     def fake_session(text, date, name, schema, budget=None):
         seen.append((name, sorted(json.loads(schema)["required"])))
@@ -2676,6 +3212,84 @@ def test_time_budget():
         compose.STAGE_MIN.update(saved)
 
 
+def test_deadline_publish_boundary(tmp: Path):
+    """「発行を過ぎたか」は実際の発行時刻(06:00)で見る。05:52〜06:00 に始まった組版の締切は 05:52(06:00 の HANDOFF_MIN 前)のままで、
+    main は排他も取らず新しい作業を始めない。起動からの相対の締切は 06:00 以後の再実行だけ(監査指摘 2026-10-14: 05:53 の再起動で
+    締切が 08:43 に延び、06:00 の発行を待たせうる)。排他を待つ間に締切を過ぎたときも始めない。
+    始めずに終えるときは、なぜなぜを当番の保管へ回し、終わりの処理で当番を起こさない(当番が排他を持ったまま診断して 06:00 の発行を
+    待たせる。監査指摘 2026-10-14)。締切の前に始まって止まったときは、従来どおり終わりの処理が当番を起こす。"""
+    import datetime as _dt
+    import oncall
+    import runpy
+    import time as _time
+    import types
+    tmp.mkdir(parents=True, exist_ok=True)
+    d = "2026-10-14"
+    at = lambda h, m: _dt.datetime(2026, 10, 14, h, m, tzinfo=pipelib.JST).timestamp()
+    handoff = at(6, 0) - compose.HANDOFF_MIN * 60
+    for h, m in ((5, 51), (5, 52), (5, 53), (5, 59)):
+        got = compose.hard_deadline(at(h, m), d)
+        check(got == handoff, f"{h:02d}:{m:02d} 起動の締切が 05:52 でない: {_dt.datetime.fromtimestamp(got, pipelib.JST):%H:%M}")
+    check(compose.hard_deadline(at(6, 0), d) == at(6, 0) + compose.COMPOSE_LIMIT_MIN * 60, "06:00 以後の再実行の締切が起動からの相対でない")
+    clock = {"now": 0.0}
+    seen: list[str] = []
+
+    def fake_lock(*a, **k):
+        seen.append("lock")
+        clock["now"] += clock.get("wait", 0)
+        if clock.get("timeout"):
+            raise pipelib.JobLockTimeout("工程の排他を取れない(テストの代役)")
+        return object()
+
+    def fake_checkout(*a, **k):
+        seen.append("checkout")
+        pipelib.notify("compose", "checkout に失敗(テストの代役)", ok=False)   # 締切の前に始まって止まった、の代役
+        return False                     # ここまで来たら打ち切る(締切の検査を通ったことだけを見る)
+    escalated: list[list] = []
+    saved = (compose.time, compose.job_lock, compose.checkout_edition_branch, sys.argv, oncall.BACKLOG,
+             pipelib.job_lock, pipelib.checkout_edition_branch, pipelib.escalate, pipelib._ESCALATED, list(pipelib.ANOMALIES), _time.time)
+    backlog = lambda: [r for r in oncall.backlog_open() if r.get("stage") == "compose"]
+    try:
+        oncall.BACKLOG = tmp / "oncall-backlog.jsonl"
+        compose.time = types.SimpleNamespace(time=lambda: clock["now"], sleep=lambda s: None)
+        compose.job_lock, compose.checkout_edition_branch = fake_lock, fake_checkout
+        sys.argv = ["compose.py", "--date", d, "--reuse-plan"]
+        cases = ((at(5, 53), 0, [], "05:53 の再起動"),
+                 (at(5, 40), 15 * 60, ["lock"], "05:40 に起動し、排他を待つ間に 05:55"),
+                 (at(5, 0), 0, ["lock", "checkout"], "05:00 の起動"))
+        for start, wait, want, what in cases:
+            clock.update(now=start, wait=wait, timeout=False)
+            seen.clear(); pipelib.ANOMALIES.clear()
+            n_kept = len(backlog())
+            code = compose.main()
+            check(code == 1 and seen == want, f"{what}: 締切の前後で始める・始めないを取り違えた(通った工程 {seen})")
+            late = want != ["lock", "checkout"]
+            check(late == (len(backlog()) == n_kept + 1), f"{what}: 締切を過ぎて始めないときに、なぜなぜを当番の保管へ回さない/誤って回した")
+            check(late == (not pipelib.ANOMALIES), f"{what}: 始めずに終えたあとの異常の台帳: {pipelib.ANOMALIES}")
+        # 終わりの処理まで通す(compose.py を __main__ として走らせ、当番の起動を記録する)
+        pipelib.job_lock, pipelib.checkout_edition_branch = fake_lock, fake_checkout
+        pipelib.escalate = lambda stage, date, reason, **k: escalated.append([stage, date, k.get("rerun")]) or True
+        _time.time = lambda: clock["now"]
+        for start, wait, timeout, late, what in ((at(5, 55), 0, False, True, "05:55 の再起動"),
+                                                 (at(5, 0), 0, False, False, "05:00 に起動して止まった"),
+                                                 (at(5, 45), 10 * 60, True, True, "05:45 に起動し、排他を取れないまま 05:55"),
+                                                 (at(5, 0), 10 * 60, True, False, "05:00 に起動し、排他を取れないまま 05:10")):
+            clock.update(now=start, wait=wait, timeout=timeout)
+            escalated.clear(); pipelib.ANOMALIES.clear(); pipelib._ESCALATED = False
+            try:
+                runpy.run_path(str(Path(compose.__file__)), run_name="__main__")
+                code = None
+            except SystemExit as e:
+                code = e.code
+            check(code == 1 and (escalated == []) == late,
+                  f"{what}: 終わりの処理が当番を{'起こした(発行の排他を塞ぐ)' if late else '起こさない'}: exit {code} / {escalated}")
+        check(len(backlog()) == 4, f"当番の保管に積んだなぜなぜの数が違う: {backlog()}")
+    finally:
+        (compose.time, compose.job_lock, compose.checkout_edition_branch, sys.argv, oncall.BACKLOG,
+         pipelib.job_lock, pipelib.checkout_edition_branch, pipelib.escalate, pipelib._ESCALATED, anomalies, _time.time) = saved
+        pipelib.ANOMALIES[:] = anomalies
+
+
 def test_x_anonymous_post_url():
     """`x.com/i/status/<ID>` は投稿者を引いて `x.com/<投稿者>/status/<ID>` に直す。直さないと種別を判定する単位
     (X のアカウント)が無く、紙面に未確認の出典が残る(2026-10-03: trend 面の 16件)。引けなければ元のまま"""
@@ -2722,8 +3336,8 @@ def test_x_anonymous_post_in_posts(tmp: Path):
     (tmp / "candidates").mkdir()
     a, b = "https://x.com/i/status/2105957772651385193", "https://x.com/i/status/2105254556238291021"
     post = tmp / "docs" / "_posts" / "2026-10-03-k.md"
-    post.write_text(f"---\ntitle: t\nsrc: 未確認\nsources:\n- label: l1\n  url: {a}\n  type: 未確認\n"
-                    f"- label: l2\n  url: {b}\n  type: 未確認\n---\n本文\n", encoding="utf-8")
+    post.write_text("---\n" + article_fm(sources=[{"label": "l1", "url": a, "type": "未確認"}, {"label": "l2", "url": b, "type": "未確認"}])
+                    + "---\n本文\n", encoding="utf-8")
     (tmp / "source_types.yml").write_text("x_accounts:\n  ファン:\n    - somebody\n", encoding="utf-8")
     authors = {"2105957772651385193": "ChuLo5738", "2105254556238291021": "mkzk_CRESCENT"}
     asked = []
@@ -3173,7 +3787,6 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
     import classify_sources as cs
     import collect
     import fetch_page
-    from jsonschema import Draft202012Validator
     menu = "<html><body>" + "".join(f"<a href='/m{i}'>メニュー{i}</a> " for i in range(40)) + "</body></html>"
     def render_fail(url, timeout=30):
         raise pipelib.RenderFailed(f"{url} の描画に失敗: 終了コード 1: RENDER_FAILED: TimeoutException: page load")
@@ -3240,10 +3853,11 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
     check(cv[0]["verify"] == "failed" and "描画できず" in cv[0].get("verify_note", "") and "TimeoutException" in cv[0]["verify_note"],
           f"裏取りが描画の失敗を捨てて「URL の取り違え」とだけ記録した: {cv[0]}")
     check("TimeoutException" in cv[1].get("render_error", ""), f"裏取りが描画の失敗を候補に残さない: {cv[1]}")
-    v = Draft202012Validator(json.loads((Path(__file__).resolve().parent.parent / "schema" / "candidates.schema.json").read_text(encoding="utf-8")))
-    item = {k: x for k, x in cv[1].items()}
-    errs = [e.message for e in v.iter_errors([item]) if "render_error" in e.message]
-    check(errs == [], f"描画の失敗の記録が候補の schema に通らない: {errs}")
+    # 描画の失敗を残した候補は、候補ファイルの書式(candidates.schema)に丸ごと合う。必須の欄を満たした行で、誤りの全件が空であることを
+    # 見る(エラー文に欄の名前が入るものだけを拾うと、render_error の型を壊しても通った。監査指摘)
+    row = cand_row("c-render", cv[1]["url"], **{k: x for k, x in cv[1].items() if k != "url"})
+    errs = pipelib.schema_errors(Path("candidates") / "2026-10-14.json", json.dumps([row], ensure_ascii=False))
+    check(row.get("render_error") and errs == [], f"描画の失敗の記録が候補の書式に通らない: {errs}")
 
 
 def test_watch_pagination_and_batches(tmp: Path):
@@ -3299,7 +3913,7 @@ def test_watch_pagination_and_batches(tmp: Path):
     saved = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt, collect.page_html_or_note)
     try:
         collect.ROOT, collect.STATE_PATH = tmp, tmp / "watch-state.json"
-        collect.list_source = lambda s, known, fetch=None: (listings[s["id"]], 1, False)
+        collect.list_source = lambda s, known, fetch=None, resume=None: (listings[s["id"]], 1, [])
         collect.page_html_or_note = lambda url, csr: ("", "")   # 新着ページの本文は取らない(ネットに出ない)
         collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
         collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
@@ -3399,6 +4013,112 @@ def test_watch_pagination_and_batches(tmp: Path):
         (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.WATCH_BATCH, collect.render_prompt, collect.page_html_or_note) = saved
 
 
+def test_watch_resume_after_cut(tmp: Path):
+    """定点観測の一覧を上限で打ち切ったら、読んだ位置(未完了の境界)を状態に残し、次の回(当番の取り直し・通常の収集)は
+    手前の既読ページで巡回を終えずに、境界の先の新着を回収する(2026-10-14 監査指摘: 新着3ページ・上限2で打ち切った後、
+    上限10で取り直しても1ページ目だけ読んで新着0件だった)。実際の list_source・run_watch に一覧のページだけを返す。"""
+    import collect
+    import yaml
+    tmp.mkdir(parents=True, exist_ok=True)
+    listing = {}
+    reads = []
+
+    def fetch(url):
+        n = int(url.rsplit("=", 1)[1]) if "=" in url else 1
+        reads.append(n)
+        return "<ul>" + "".join(f'<a href="https://example.org/{u}">{u}</a>' for u in listing.get(n, [])) + "</ul>"
+    src = {"id": "official", "brand": "shiny", "type": "html", "enabled": True, "url": "https://example.org/news",
+           "page_url": "https://example.org/news?p={n}", "base": "https://example.org", "list_regex": r'<a href="([^"]+)">([^<]+)</a>'}
+    none_all = lambda prompt, timeout=0: [{"page": i + 1, "status": "none", "items": []} for i in range(prompt.count("### "))]
+
+    def run(max_pages, state, rerun=False):
+        (tmp / "sources.yml").write_text(yaml.safe_dump([{**src, "max_pages": max_pages}]), encoding="utf-8")
+        (tmp / "watch-state.json").write_text(json.dumps(state), encoding="utf-8")
+        reads.clear()
+        _, info = collect.run_watch(none_all, oncall_rerun=rerun)
+        return list(reads), info, info["stats"].pop("_state")
+    url = lambda u: f"https://example.org/{u}"
+    saved = (collect.ROOT, collect.STATE_PATH, collect.http_get, collect.page_html_or_note, collect.notify, collect.render_prompt)
+    notes = []
+    try:
+        collect.ROOT, collect.STATE_PATH = tmp, tmp / "watch-state.json"
+        collect.http_get = fetch
+        collect.page_html_or_note = lambda u, csr: ("", "")
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+        listing.update({1: ["n1", "n2", "n3"], 2: ["n4", "n5", "n6"], 3: ["n7", "n8", "n9"], 4: ["o1", "o2", "o3"], 5: ["o4", "o5", "o6"]})
+        base = {"official": [url(f"o{i}") for i in range(1, 7)]}
+        first, info, st = run(2, base)
+        check(first == [1, 2] and info["new"] == 6 and info["stats"]["official"].get("unfinished") and st.get("_cut", {}).get("official")
+              and any("official" in m for m in notes), f"上限で打ち切ったことと読んだ位置を残さない: {first} {info['stats']} {st.get('_cut')}")
+        # 当番の取り直し(上限を上げた): 先頭の既読ページで終えず、境界の先(3ページ目)の新着を回収して、境界を消す
+        again, info2, st2 = run(10, st, rerun=True)
+        check(again == [1, 2, 3, 4] and info2["new"] == 3 and all(url(f"n{i}") in st2["official"] for i in (7, 8, 9))
+              and not st2.get("_cut") and not info2["stats"]["official"].get("unfinished"),
+              f"取り直しが手前の既読ページで巡回を終え、奥の新着を回収しない: 読んだページ {again} 新着 {info2['new']} 境界 {st2.get('_cut')}")
+        # 通常の収集(上限は同じ 2)も、次の回は境界のページへ飛んで先を読む(手前の既読ページで上限を使い切らない)
+        nxt, info3, st3 = run(2, st)
+        check(nxt == [1, 2, 3, 4] and info3["new"] == 3 and not st3.get("_cut"),
+              f"上限が同じ次の回が、境界の先を読まない: 読んだページ {nxt} 新着 {info3['new']} 境界 {st3.get('_cut')}")
+        # 境界が残ったまま、先頭にも上限を超える新着が来た: 両方の境界を残し、次の回で手前から順に両方の先を読む
+        listing.clear()
+        listing.update({1: ["m1", "m2", "m3"], 2: ["m4", "m5", "m6"], 3: ["m7", "n1", "n2"], 4: ["n3", "n4", "n5"],
+                        5: ["n6", "n7", "n8"], 6: ["n9", "o1", "o2"], 7: ["o3", "o4", "o5"]})
+        front, info4, st4 = run(2, st)
+        check(front == [1, 2] and len(st4.get("_cut", {}).get("official", [])) == 2,
+              f"先頭の打ち切りで、前の境界を失った: {front} {st4.get('_cut')}")
+        both, info5, st5 = run(2, st4)
+        got = {u for u in st5["official"]}
+        check(all(url(u) in got for u in ("m7", "n7", "n8", "n9")) and not st5.get("_cut"),
+              f"2つの境界の先を読まない: 読んだページ {both} 境界 {st5.get('_cut')} 既読 {sorted(got)[:12]}")
+        # 読んでいる間に一覧がずれて、前に読んだ項目の一部だけのページが挟まった: 一覧の終わりと取り違えず、その先も読む
+        listing.clear()
+        listing.update({1: ["n1", "n2", "n3"], 2: ["n4", "n5", "n6"], 3: ["n5", "n6"], 4: ["n7", "n8", "n9"], 5: ["o1", "o2", "o3"]})
+        ov, info6, st6 = run(2, st)
+        check(info6["new"] == 3 and all(url(f"n{i}") in st6["official"] for i in (7, 8, 9)) and not st6.get("_cut"),
+              f"重なっただけのページを一覧の終わりにして、境界の先を読まない: 読んだページ {ov} 新着 {info6['new']} 境界 {st6.get('_cut')}")
+        # 境界より手前の記事が消えて、境界が記録したページより手前へずれた: 記録したページへ飛ばずに順に読み、境界の先を読む
+        listing.clear()
+        listing.update({i: [f"d{i}"] for i in range(1, 7)})
+        listing[7] = ["o1"]
+        _, _, sd = run(4, base)                       # d1〜d4 を読んで打ち切る(境界は4ページ目の d4)
+        listing.clear()
+        listing.update({1: ["d4"], 2: ["d5"], 3: ["d6"], 4: ["o1", "o2"]})      # d1〜d3 が消えた
+        moved, info7, sd2 = run(4, sd, rerun=True)
+        check(moved == [1, 2, 3, 4] and info7["new"] == 2 and url("d5") in sd2["official"] and not sd2.get("_cut"),
+              f"手前へずれた境界の先を飛ばして失った: 読んだページ {moved} 新着 {info7['new']} 境界 {sd2.get('_cut')}")
+    finally:
+        (collect.ROOT, collect.STATE_PATH, collect.http_get, collect.page_html_or_note, collect.notify, collect.render_prompt) = saved
+
+
+def test_watch_body_cp932(tmp: Path):
+    """定点観測の facts 化に渡す本文: Shift_JIS と宣言して CP932 の拡張文字(①)を含むページを、置換文字だらけにせず読む
+    (2026-10-14 監査指摘: 本文の取得だけが cp932 を試さず、置換文字 1,110 個の本文を「取得済み」として渡した)。"""
+    import collect
+    html = '<html><meta charset="Shift_JIS"><body><h2>①特典の受付を開始</h2><p>' + "受付の告知本文です。" * 100 + "</p></body></html>"
+    raw = html.encode("cp932")
+
+    class Res:
+        headers = type("H", (), {"get_content_charset": lambda self: None})()
+        def read(self, *a): return raw
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    prompts = []
+    saved = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.render_prompt, collect.notify)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=20: Res()
+        collect.fetch_rendered = lambda url, timeout=30: (_ for _ in ()).throw(AssertionError("素の HTML で読めるページを描画した"))
+        collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+        collect.notify = lambda *a, **k: True
+        got, why = collect.page_html_or_note("https://lantis.jp/sidem/extra/index.html", False)
+        collect.facts_batch([{"url": "https://lantis.jp/sidem/extra/index.html", "title": "", "brand": "sidem", "csr": False}],
+                            lambda prompt, timeout=0: prompts.append(prompt) or None, {})
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.render_prompt, collect.notify = saved
+    check("①特典の受付を開始" in got and "�" not in got and why == "", f"CP932 の本文を読めない: {got[:80]!r} {why!r}")
+    check(prompts and "①特典の受付を開始" in prompts[0] and "�" not in prompts[0], "facts 化に置換文字だらけの本文を渡した")
+
+
 def test_watch_static_page_body(tmp: Path):
     """定点観測の facts 化: 描画の要らない観測先の新着も本文を取って渡す。`#id` で1ページの中の1件を指す URL は、その件の部分だけを渡す
     (2026-10-09: ランティスの SideM 特典告知2件。本文を渡さず WebFetch に任せたら要約しか返らず、写しが取れずに読めなかった扱いになった)"""
@@ -3461,9 +4181,294 @@ def test_collect_oncall_rerun_exit(tmp: Path):
                                                                   "stats": {"columbia-imas": {"error": "空の応答"}}})
         sys.argv = list(argv)
         check(collect.main() == 1, "取り直しで観測先の一覧がまた取れないのに成功(0)で終えた")
+        # 一覧の読んでいない区間(未完了の境界)が残った → 取り直しは成功にしない(残った区間の新着は素材に入っていない)
+        collect.run_watch = lambda call, oncall_rerun=False: ([], {"deferred": 0, "new": 3,
+                                                                  "stats": {"imas-portal": {"found": 30, "unfinished": 1}}})
+        sys.argv = list(argv)
+        check(collect.main() == 1, "取り直しで一覧を読み終えられないのに成功(0)で終えた")
     finally:
         (collect.ROOT, collect.job_lock, collect.run_watch, collect.run_explores,
          collect.append_metric, collect.notify, sys.argv) = saved
+
+
+def _collect_repo(tmp: Path) -> Path:
+    """収集の後始末を実際の git で検める下準備: 号のブランチ(edition/2026-10-14)を checkout した作業ツリーと、push 先の bare
+    リモート。.gitignore と判定表は本物を写す(後始末が残す一時ファイル・正規化の種別判定を本番と同じにする)。"""
+    root, remote = tmp / "w", tmp / "r.git"
+    G = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True)
+    root.mkdir(parents=True)
+    G("init", "-q", "-b", "main")
+    G("config", "user.email", "t@example.com")
+    G("config", "user.name", "t")
+    repo = Path(__file__).resolve().parent.parent
+    for d in ("candidates", "stock", "metrics"):
+        (root / d).mkdir()
+    (root / ".gitignore").write_text((repo / ".gitignore").read_text(encoding="utf-8"), encoding="utf-8")
+    (root / "source_types.yml").write_text((repo / "source_types.yml").read_text(encoding="utf-8"), encoding="utf-8")
+    (root / "candidates" / "2026-10-14.json").write_text("[]\n", encoding="utf-8")
+    (root / "stock" / "watch-state.json").write_text("{}\n", encoding="utf-8")
+    G("add", "-A")
+    G("commit", "-qm", "base")
+    G("remote", "add", "origin", str(remote))
+    G("push", "-q", "origin", "main")
+    G("checkout", "-qb", "edition/2026-10-14")
+    G("push", "-qu", "origin", "edition/2026-10-14")
+    return root
+
+
+def _remote_file(root: Path, path: str) -> str:
+    """リモートの号のブランチにある path の中身(無ければ空)。"""
+    r = subprocess.run(["git", "show", f"origin/edition/2026-10-14:{path}"], cwd=root, capture_output=True, text=True)
+    return r.stdout if r.returncode == 0 else ""
+
+
+def _json_or_none(text: str):
+    try:
+        return json.loads(text)
+    except ValueError:
+        return None
+
+
+def test_collect_settles_on_exception(tmp: Path):
+    """収集が素材と既読状態を保存したあと(記録・出典の判定・commit の前)に例外で落ちても、保存した成果を検めて確定し、作業ツリーを
+    clean にして終える。次の工程(組版)の checkout が汚れで止まらない(2026-10-14 監査指摘: 例外のあと candidates/ と stock/ が
+    未コミットのまま残り、組版の checkout_edition_branch が拒否した)。実際の git・main で検める。"""
+    import collect
+    root = _collect_repo(tmp)
+    row = {"title": "告知", "url": "https://shinycolors.lantis.jp/audit-exc", "brand": "shiny", "facts": ["受付を開始"],
+           "_via": "watch", "dedup_key": "audit-exc"}
+    notes = []
+    names = ("ROOT", "STATE_PATH", "job_lock", "run_watch", "run_explores", "verify", "needs_classify", "append_metric", "notify")
+    saved = {n: getattr(collect, n) for n in names}
+    saved_p = (pipelib.ROOT, pipelib.notify, sys.argv)
+
+    def broken_metric(*a, **k):
+        raise OSError(28, "No space left on device")
+    raised = None
+    try:
+        collect.ROOT = pipelib.ROOT = root
+        collect.STATE_PATH = root / "stock" / "watch-state.json"
+        collect.job_lock = lambda *a, **k: None
+        collect.run_watch = lambda call, oncall_rerun=False: ([dict(row)], {"stats": {"_state": {"official": [row["url"]]}}, "new": 1, "deferred": 0})
+        collect.run_explores = lambda *a, **k: ([], {})
+        collect.verify = lambda cands: {"confirmed": 0, "unconfirmed": len(cands), "failed": 0}
+        collect.needs_classify = lambda cands: False
+        collect.append_metric = broken_metric
+        collect.notify = pipelib.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        sys.argv = ["collect", "--date", "2026-10-14", "--skip-explore", "--skip-grok"]
+        try:
+            collect.main()
+        except OSError as e:
+            raised = e
+        dirty = subprocess.run(["git", "status", "--porcelain"], cwd=root, capture_output=True, text=True).stdout.strip()
+        next_ok = pipelib.checkout_edition_branch("2026-10-14", "compose")
+    finally:
+        for n, v in saved.items():
+            setattr(collect, n, v)
+        pipelib.ROOT, pipelib.notify, sys.argv = saved_p
+    cands = _json_or_none(_remote_file(root, "candidates/2026-10-14.json")) or []
+    state = _json_or_none(_remote_file(root, "stock/watch-state.json")) or {}
+    check(raised is not None, "収集の例外を飲み込んだ(当番のなぜなぜに渡らない)")
+    check(not dirty and next_ok, f"例外のあと作業ツリーが汚れたまま・次の工程の checkout が止まる: {dirty!r} {next_ok}")
+    check([c.get("url") for c in cands] == [row["url"]] and state.get("official") == [row["url"]],
+          f"保存した素材と既読状態をリモートに確定しない: {cands} {state}")
+
+
+def test_collect_settles_on_sigterm(tmp: Path):
+    """収集が素材と既読状態を保存したあとに SIGTERM(systemd の打ち切り)を受けても、保存した成果を検めて確定し、作業ツリーを
+    clean にして終える(2026-10-14 監査指摘: 保存直後の SIGTERM で候補と既読状態が変更のまま残り、次の工程が拒否した)。
+    実際の別プロセスに SIGTERM を送り、実際の git で検める。"""
+    import signal as _signal
+    import time as _time
+
+    def run(case: str, pause_in: str, extra: list[str]):
+        """収集の別プロセスを、pause_in(append_metric=保存したあと / notify=確定したあとの通知)で止めて SIGTERM を送る。"""
+        root = _collect_repo(tmp / case)
+        ready = tmp / case / "ready"
+        driver = tmp / case / "driver.py"
+        driver.write_text(f"""import sys, time
+from pathlib import Path
+sys.path.insert(0, {str(Path(__file__).resolve().parent)!r})
+import collect, pipelib
+def no_net(*a, **k):
+    raise AssertionError("通信しない")
+pipelib.urllib.request.urlopen = no_net
+pipelib.ENV.pop("DISCORD_WEBHOOK_URL", None)
+root = Path({str(root)!r})
+collect.ROOT = pipelib.ROOT = root
+collect.STATE_PATH = root / "stock" / "watch-state.json"
+def pause(*a, **k):
+    Path({str(ready)!r}).write_text("ここで止めた")
+    time.sleep(60)
+def note(job, msg, ok=True, require=False):
+    print("NOTIFY", msg, flush=True)
+    if {pause_in!r} == "notify" and "一覧が取れない" in msg:
+        pause()
+    return True
+collect.notify = pipelib.notify = note
+collect.job_lock = lambda *a, **k: None
+row = {{"title": "告知", "url": "https://shinycolors.lantis.jp/audit-term", "brand": "shiny", "facts": ["受付を開始"],
+       "_via": "watch", "dedup_key": "audit-term"}}
+collect.run_watch = lambda call, oncall_rerun=False: ([dict(row)], {{"stats": {{"_state": {{"official": [row["url"]]}},
+                                                                             "other": {{"error": "空の応答"}}}}, "new": 1, "deferred": 0}})
+collect.run_explores = lambda *a, **k: ([], {{}})
+collect.verify = lambda cands: {{"confirmed": 0, "unconfirmed": len(cands), "failed": 0}}
+collect.needs_classify = lambda cands: False
+if {pause_in!r} == "append_metric":
+    collect.append_metric = pause
+sys.argv = ["collect", "--date", "2026-10-14", "--skip-explore", "--skip-grok"] + {extra!r}
+try:
+    code = collect.main()
+except collect.Terminated:
+    code = 143
+sys.exit(code)
+""", encoding="utf-8")
+        p = subprocess.Popen([sys.executable, str(driver)], cwd=root, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+        end = _time.time() + 60
+        while not ready.exists() and p.poll() is None and _time.time() < end:
+            _time.sleep(0.05)
+        if ready.exists():
+            p.send_signal(_signal.SIGTERM)
+        try:
+            out, _ = p.communicate(timeout=60)
+        except subprocess.TimeoutExpired:
+            p.kill()
+            out, _ = p.communicate()
+        dirty = subprocess.run(["git", "status", "--porcelain"], cwd=root, capture_output=True, text=True).stdout.strip()
+        saved = (pipelib.ROOT, pipelib.notify)
+        try:
+            pipelib.ROOT, pipelib.notify = root, (lambda *a, **k: True)
+            next_ok = pipelib.checkout_edition_branch("2026-10-14", "compose")
+        finally:
+            pipelib.ROOT, pipelib.notify = saved
+        cands = _json_or_none(_remote_file(root, "candidates/2026-10-14.json")) or []
+        state = _json_or_none(_remote_file(root, "stock/watch-state.json")) or {}
+        check(ready.exists() and p.returncode == 143, f"{case}: SIGTERM で後始末をして終えない(終了 {p.returncode}): {out[-600:]}")
+        check(not dirty and next_ok, f"{case}: SIGTERM のあと作業ツリーが汚れたまま・次の工程の checkout が止まる: {dirty!r} {next_ok}")
+        check([c.get("url") for c in cands] == ["https://shinycolors.lantis.jp/audit-term"]
+              and state.get("official") == ["https://shinycolors.lantis.jp/audit-term"],
+              f"{case}: 保存した素材と既読状態をリモートに確定しない: {cands} {state}")
+        return out
+    # 素材と既読状態を保存したあと(記録・判定・commit の前)
+    out = run("saved", "append_metric", [])
+    check("SIGTERM" in out, f"打ち切られたことを申告しない: {out[-400:]}")
+    # 確定(commit・push)のあとの通知の最中: 飲み込まずに終える(監査指摘: 確定のあとも SIGTERM を遅らせ続けて 0 で終えた)
+    run("committed", "notify", ["--oncall-rerun"])
+
+
+def test_collect_state_write_is_atomic(tmp: Path):
+    """既読状態の保存が途中で止まっても(ファイルの大きさの上限で書けない)、前の既読状態は壊れずに残る(2026-10-14 監査指摘:
+    直接の上書きが途中で止まると切れた JSON が残り、当番の後始末がそれを確定した)。実際の main を別プロセスで走らせる。"""
+    root = tmp / "w"
+    (root / "candidates").mkdir(parents=True)
+    (root / "stock").mkdir()
+    (root / "source_types.yml").write_text((Path(__file__).resolve().parent.parent / "source_types.yml").read_text(encoding="utf-8"),
+                                           encoding="utf-8")
+    before = json.dumps({"official": ["https://example.org/old"]}) + "\n"
+    (root / "stock" / "watch-state.json").write_text(before, encoding="utf-8")
+    driver = tmp / "driver.py"
+    driver.write_text(f"""import resource, sys
+from pathlib import Path
+sys.path.insert(0, {str(Path(__file__).resolve().parent)!r})
+import collect, pipelib
+pipelib.urllib.request.urlopen = None
+root = Path({str(root)!r})
+collect.ROOT = pipelib.ROOT = root
+collect.STATE_PATH = root / "stock" / "watch-state.json"
+collect.job_lock = lambda *a, **k: None
+big = {{"official": [f"https://example.org/n{{i}}" for i in range(3000)]}}
+row = {{"title": "告知", "url": "https://example.org/n1", "brand": "shiny", "facts": ["受付を開始"], "_via": "watch", "dedup_key": "a"}}
+collect.run_watch = lambda call, oncall_rerun=False: ([dict(row)], {{"stats": {{"_state": big}}, "new": 1, "deferred": 0}})
+collect.run_explores = lambda *a, **k: ([], {{}})
+collect.verify = lambda cands: {{"confirmed": 0, "unconfirmed": len(cands), "failed": 0}}
+collect.append_metric = lambda *a, **k: None
+resource.setrlimit(resource.RLIMIT_FSIZE, (8192, 8192))     # 素材(小さい)は書けて、既読状態(大きい)は途中で書けない
+sys.argv = ["collect", "--no-git", "--date", "2026-10-14", "--skip-explore", "--skip-grok"]
+sys.exit(collect.main())
+""", encoding="utf-8")
+    r = subprocess.run([sys.executable, str(driver)], cwd=root, capture_output=True, text=True, timeout=120)
+    after = (root / "stock" / "watch-state.json").read_text(encoding="utf-8")
+    cands = _json_or_none((root / "candidates" / "2026-10-14.json").read_text(encoding="utf-8")) or []
+    check(r.returncode != 0 and "File too large" in (r.stdout + r.stderr), f"既読状態の書き込みを途中で止められていない(試験の前提): {r.returncode} {r.stderr[-300:]}")
+    check(after == before, f"既読状態の保存が途中で止まり、前の既読状態を壊した: {after[:80]!r}")
+    check([c.get("url") for c in cands] == ["https://example.org/n1"], f"素材を書けていない(試験の前提): {cands}")
+    check([p.name for p in (root / "stock").iterdir()] == ["watch-state.json"],
+          f"書けなかった一時ファイルを既読状態の置き場に残した: {list((root / 'stock').iterdir())}")
+
+
+def test_oncall_collect_rerun_settles_broken_output(tmp: Path):
+    """当番の取り直し(収集)が時間切れ・異常終了で途中で終わったときの後始末: 確定する前に出力を検め、書きかけで切れた JSON・書式に
+    合わない素材は確定せずに HEAD の中身へ戻す(素材を戻したら既読状態も戻す)。壊れていない成果は確定して作業ツリーを clean にする
+    (2026-10-14 監査指摘: 保存の途中で打ち切られた JSON を当番の後始末が commit・push し、組版・発行前の lint が読めずに止まる)。
+    実際の git と、実際の収集のプロセス(書き込みの途中で終わる)で検める。"""
+    import oncall
+    scripts = Path(__file__).resolve().parent
+    names = ("ROOT", "run_stage", "notify", "STAGE_END_AT")
+    saved = {n: getattr(oncall, n) for n in names}
+    saved_root = pipelib.ROOT
+    notes = []
+    try:
+        oncall.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        oncall.STAGE_END_AT = None
+        # 1) 実際の収集(取り直し)が、素材を保存したあと既読状態の保存の途中(8文字目)でプロセスごと終わる
+        root = _collect_repo(tmp / "cut")
+        oncall.ROOT = pipelib.ROOT = root
+        child = tmp / "cut-child.py"
+        child.write_text(f"""import os, sys, pathlib
+sys.path.insert(0, {str(scripts)!r})
+import collect, pipelib
+pipelib.urllib.request.urlopen = None
+root = pathlib.Path({str(root)!r})
+collect.ROOT = pipelib.ROOT = root
+collect.STATE_PATH = root / "stock" / "watch-state.json"
+collect.job_lock = lambda *a, **k: None
+collect.notify = pipelib.notify = lambda *a, **k: True
+orig = pathlib.Path.write_text
+def cut(self, data, *a, **k):
+    if self.parent == root / "stock":      # 既読状態の書き込み(一時ファイルを含む)を 8 文字目で打ち切ってプロセスごと終える
+        with open(self, "w", encoding="utf-8") as f:
+            f.write(data[:8])
+        os._exit(124)
+    return orig(self, data, *a, **k)
+pathlib.Path.write_text = cut
+row = {{"title": "告知", "url": "https://example.org/n1", "brand": "shiny", "facts": ["受付を開始"], "_via": "watch", "dedup_key": "a"}}
+collect.run_watch = lambda call, oncall_rerun=False: ([dict(row)], {{"stats": {{"_state": {{"official": [row["url"]]}}}}, "new": 1, "deferred": 0}})
+collect.run_explores = lambda *a, **k: ([], {{}})
+collect.verify = lambda cands: {{"confirmed": 0, "unconfirmed": len(cands), "failed": 0}}
+collect.needs_classify = lambda cands: False
+sys.argv = ["collect", "--skip-explore", "--skip-grok", "--oncall-rerun", "--date", "2026-10-14"]
+sys.exit(collect.main())
+""", encoding="utf-8")
+        oncall.run_stage = lambda cmd, log, timeout: subprocess.run([sys.executable, str(child)], cwd=root, capture_output=True,
+                                                                     text=True, timeout=120).returncode
+        code = oncall.rerun_stage("collect", "2026-10-14", "edition/2026-10-14", False)
+        state = _json_or_none(_remote_file(root, "stock/watch-state.json"))
+        cands = _json_or_none(_remote_file(root, "candidates/2026-10-14.json")) or []
+        check(code == 124 and state == {} and [c.get("url") for c in cands] == ["https://example.org/n1"] and oncall.root_clean(),
+              f"書き込みの途中で終わった取り直しの後始末: exit {code} / リモートの既読 {state!r} / 素材 {cands} / clean {oncall.root_clean()}")
+        # 2) 一時ファイルを経ない書き手が素材の保存の途中で終わった(書きかけの JSON)。既読状態と記録は書けていた
+        root2 = _collect_repo(tmp / "broken")
+        oncall.ROOT = pipelib.ROOT = root2
+
+        def broken_stage(cmd, log, timeout):
+            (root2 / "candidates" / "2026-10-14.json").write_text('[{"id": "x", "ur', encoding="utf-8")
+            (root2 / "stock" / "watch-state.json").write_text(json.dumps({"official": ["https://example.org/x"]}), encoding="utf-8")
+            (root2 / "metrics" / "2026-10-14.json").write_text(json.dumps({"collect": [{"added": 1}]}), encoding="utf-8")
+            return 124
+        oncall.run_stage = broken_stage
+        notes.clear()
+        code = oncall.rerun_stage("collect", "2026-10-14", "edition/2026-10-14", False)
+        check(_remote_file(root2, "candidates/2026-10-14.json") == "[]\n" and _remote_file(root2, "stock/watch-state.json") == "{}\n",
+              f"書きかけの素材(と、それに合わせた既読状態)をリモートに確定した: {_remote_file(root2, 'candidates/2026-10-14.json')!r} "
+              f"{_remote_file(root2, 'stock/watch-state.json')!r}")
+        check(_json_or_none(_remote_file(root2, "metrics/2026-10-14.json")) == {"collect": [{"added": 1}]} and oncall.root_clean(),
+              f"壊れていない記録を確定しない・作業ツリーが clean でない: {_remote_file(root2, 'metrics/2026-10-14.json')!r} {oncall.root_clean()}")
+        check(any("candidates/2026-10-14.json" in m and "戻した" in m for m in notes), f"戻した出力を名指ししない: {notes}")
+    finally:
+        for n, v in saved.items():
+            setattr(oncall, n, v)
+        pipelib.ROOT = saved_root
 
 
 def test_storylink(tmp: Path):
@@ -3868,7 +4873,8 @@ def test_empty_answer_is_not_done(tmp: Path):
             return compose.replan_missing("2099-01-01", pl, {"cg": [{"dedup_key": k, "ids": [f"c-{k}"]} for k in keys]}, cands_t, keys), pl
         finally:
             compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.missing_plan_prompt, compose.ROOT = saved_rp
-    art = lambda k, **kw: dict({"slug": "cg_new", "brand": "cg", "dedup_key": k, "candidate_ids": ["c"], "rank": "small", "angle": "", "lead_score": 0}, **kw)
+    art = lambda k, **kw: dict({"slug": "cg_new", "brand": "cg", "dedup_key": k, "candidate_ids": ["c"], "rank": "small", "angle": "",
+                                "purpose": "新情報", "lead_score": 0}, **kw)
     for ans in ("null", '{"articles": [null], "dropped": [{"dedup_key": ["x"]}]}', '{"dropped": [{"dedup_key": "k"}]}',
                 '{"dropped": [{"dedup_key": "k", "brand": "cg", "reason": " "}]}', json.dumps({"articles": [art("k", rank=["small"])]})):
         res, pl = replan_with(ans, ["k"])
@@ -4278,6 +5284,71 @@ def test_grok_format_matches_parser():
 
 
 
+def test_grok_official_paging_follows_prompt(tmp: Path):
+    """公式アカウントの遡り(依頼文 grok-collect の 1): 返った件数が道具の上限(満杯)なら古い側へ遡り、上限未満になったら止める。
+    依頼文に書かれた止める条件のとおりに動く検索役(Grok の代わり)へ、満杯 → 境界の重複を含む満杯 → 満杯未満、の検索結果を返すと、
+    3回引いて止まり、境界で重なった投稿は1つにまとめて確かめ(Luna)に渡る。実際の grok_basic・verify_grok_faces を通す
+    (監査指摘 2026-10-14: 止める条件を「件以上」に反転しても、語句の有無だけを見るテストが通った)。"""
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    out = tmp / "g"
+    out.mkdir()
+    (tmp / "source_types.yml").write_text((Path(__file__).resolve().parent.parent / "source_types.yml").read_text(encoding="utf-8"),
+                                          encoding="utf-8")     # 投稿の付け直しが種別を引く(作業の置き場を一時ディレクトリにするため)
+    lim = collect.X_SEARCH_LIMIT
+    # 公式アカウントの投稿(新しい順・秒は別々)。until_time:<いちばん古い秒+1> で引き直すと、前の回のいちばん古い投稿がまた返る(境界の重複)
+    posts = [(f"https://x.com/off/status/{900 + i}", 1_760_000_000 - 60 * i) for i in range(2 * lim + 4)]
+    searches, given, notes = [], [], []
+
+    class Session:
+        pid, returncode = 0, 0
+
+        def __init__(self, args, cwd=None, **kw):
+            if args[0] == "grok":       # 基本の調べ: 依頼文の 1 に書かれた止める条件のとおりに、公式アカウントを遡る
+                prompt = Path(args[args.index("--prompt-file") + 1]).read_text(encoding="utf-8")
+                step1 = prompt.split("1. 公式アカウントをまとめて引く", 1)[-1].split("\n2. ", 1)[0]
+                n = int(re.search(r"limit (\d+)", step1).group(1))
+                more = int(re.search(r"追加で最大 (\d+)回", step1).group(1))
+                stop = re.search(r"(\d+)件(未満|以上)になるか", step1)
+                written, until = [], None
+                while stop and len(searches) < 1 + more:
+                    got = [p for p in posts if until is None or p[1] < until][:n]
+                    searches.append(len(got))
+                    written += got
+                    k = int(stop.group(1))
+                    if not got or (len(got) < k if stop.group(2) == "未満" else len(got) >= k):
+                        break
+                    until = got[-1][1] + 1
+                sample = prompt.split("```")[1].strip("\n")
+                dest = re.search(r"書き出すファイル: `([^`]+)`", prompt).group(1)
+                Path(dest).write_text("\n\n".join(sample.replace("### 番号", f"### {i + 1}").replace("https://x.com/<アカウント>/status/<ID>", u)
+                                                  for i, (u, _) in enumerate(written)) + "\n", encoding="utf-8")
+            else:                       # 確かめ(Luna): 渡された投稿を全部「事実なし」で済ませる
+                urls = re.findall(r"(?m)^- url:\s*(\S+)", (Path(cwd) / "x-posts.md").read_text(encoding="utf-8"))
+                given.extend(urls)
+                (Path(cwd) / "items.json").write_text("[]", encoding="utf-8")
+                (Path(cwd) / "deep.json").write_text("[]", encoding="utf-8")
+                (Path(cwd) / "posts.json").write_text(json.dumps([{"url": u, "status": "none", "item": ""} for u in urls]), encoding="utf-8")
+
+        def communicate(self, timeout=None): return "", ""
+        def wait(self, timeout=None): return 0
+        def poll(self): return 0
+    q = {"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": ["off"]}
+    saved = (collect.notify, collect.ROOT, pipelib.ROOT, collect.subprocess.Popen)
+    try:
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        collect.ROOT = pipelib.ROOT = tmp
+        collect.subprocess.Popen = Session
+        collect.grok_basic([q], out, {})
+        collect.verify_grok_faces([q], out)
+    finally:
+        collect.notify, collect.ROOT, pipelib.ROOT, collect.subprocess.Popen = saved
+    check(searches == [lim, lim, len(posts) - 2 * lim + 2],
+          f"満杯なら遡り、満杯未満で止める、のとおりに引かない(依頼文の止める条件): 1回ごとの件数 {searches}")
+    check(given == [u for u, _ in posts], f"境界で重なった投稿を1つにして、全部の投稿を1回ずつ確かめに渡さない: {len(given)}件 {given[:3]}")
+    check(not notes, f"全部済んだのに投稿の喪失を知らせた: {notes}")
+
+
 def test_grok_deep_format_matches_parser():
     """深掘り(grok-deep)に指示する書き出しの形を、突き合わせ(post_blocks / post_url)がそのまま読めること。
     2026-10-09: 依頼文に形が無く、Grok が「## 問い1」+問いの文+「- 投稿の url:」で書いた。url を読めず、Luna が
@@ -4303,6 +5374,14 @@ def test_grok_deep_format_matches_parser():
     nonum = "### 1\n- url: https://x.com/b/status/2\n- 本文:\nx"
     check(collect.unanswered_asks(nonum, asks[:1]) == [] and collect.unanswered_asks(nonum, asks) == [],
           "番号の無い答え: 問いが1つならその答え、複数なら投げ直さない(答えのある問いに予算を使わない)")
+    # 問いの番号の契約: 依頼文の見本の形のとおりに、2つの問いのうち2つ目だけに答えた書き出しから、1つ目が投げ直しの対象になる
+    # (見本から「- 問い:」の行が消えると番号の無い答えになり、どの問いの答えか分からず投げ直さない。監査指摘 2026-10-14)
+    two = [{"question": "第一の問い", "why": ""}, {"question": "第二の問い", "why": ""}]
+    p2 = collect.render_prompt("grok-deep", BRAND="million", TODAY="2026-10-09", OUT="o.md", MAX_SEARCHES=4, RETRY="",
+                               QUESTIONS="1. 第一の問い\n2. 第二の問い")
+    one = re.sub(r"(?m)^([ \t]*[-*・]?[ \t]*問い[ \t]*[:：]).*$", r"\g<1> 2", p2.split("```")[1]).replace("<アカウント>/status/<ID>", "b/status/2")
+    check(collect.unanswered_asks(one, two) == [two[0]],
+          f"見本の形で2つ目の問いに答えた書き出しから、答えの無い1つ目を投げ直しに回さない: {collect.unanswered_asks(one, two)} / {one!r}")
     with tempfile.TemporaryDirectory() as td:
         saved = collect.run_grok_prompts
         try:
@@ -4329,25 +5408,38 @@ def test_grok_face_retry(tmp: Path):
     qs = [{"key": "gakuen", "brand": "gaku", "topic": "t"}, {"key": "shiny", "brand": "shiny", "topic": "t"},
           {"key": "dsva", "brand": "dsva", "topic": "t"}]
     runs, notes = [], []
-    def fake_run(queries, outdir, errs, retry=False):
-        runs.append(([q["key"] for q in queries], retry))
-        for q in queries:
-            if q["key"] == "shiny" or (q["key"] == "gakuen" and retry):   # 学マスはやり直しで書ける、dsva は書けない
-                (outdir / f"{q['key']}.md").write_text("まとめ", encoding="utf-8")
-    saved = (collect.run_grok_faces, collect.notify, collect.grok_session_error)
+
+    class Grok:
+        """Grok のセッション(外部)の代わり: 依頼文の書き出し先に、面ごとの決まった結果を書いて正常に終わる。
+        学マスはやり直しで書ける、dsva は書けない(打ち切られて何も書かずに終わる)"""
+        pid, returncode = 0, 0
+
+        def __init__(self, args, **kw):
+            prompt = Path(args[args.index("--prompt-file") + 1]).read_text(encoding="utf-8")
+            key = Path(args[args.index("--prompt-file") + 1]).stem.removeprefix("prompt-")
+            retry = "**やり直し**" in prompt
+            runs.append((key, retry))
+            if key == "shiny" or (key == "gakuen" and retry):
+                dest = re.search(r"書き出すファイル: `([^`]+)`", prompt).group(1)
+                Path(dest).write_text("### 1\n- url: https://x.com/a/status/1\n- 本文:\nまとめ\n", encoding="utf-8")
+
+        def communicate(self, timeout=None): return "", ""
+        def wait(self, timeout=None): return 0
+        def poll(self): return 0
+    saved = (collect.notify, collect.ROOT, pipelib.ROOT, collect.subprocess.Popen)
     try:
-        collect.run_grok_faces = fake_run
         collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
-        collect.grok_session_error = lambda since_s=7200: "max_turns_reached"
-        # 収集の Grok 部分の流れ(run_grok_faces → grok_wrote → やり直し)を再現する
-        errs = {}
-        collect.run_grok_faces(qs, out, errs)
-        missing = [q for q in qs if not collect.grok_wrote(out, q)]
-        collect.run_grok_faces(missing, out, errs, retry=True)
-        still = [q["key"] for q in missing if not collect.grok_wrote(out, q)]
-        check(runs[1] == (["gakuen", "dsva"], True) and still == ["dsva"], f"やり直しの対象と結果: {runs} {still}")
+        collect.ROOT = pipelib.ROOT = tmp          # 生の出力・セッション記録の置き場も一時ディレクトリに
+        collect.subprocess.Popen = Grok
+        # 本番の基本の調べ(grok_basic)を走らせ、外部のセッションの実行だけを差し替える
+        still = collect.grok_basic(qs, out, {})
     finally:
-        collect.run_grok_faces, collect.notify, collect.grok_session_error = saved
+        collect.notify, collect.ROOT, pipelib.ROOT, collect.subprocess.Popen = saved
+    first, second = runs[:3], runs[3:]
+    check(sorted(first) == [("dsva", False), ("gakuen", False), ("shiny", False)] and sorted(second) == [("dsva", True), ("gakuen", True)]
+          and still == ["dsva"], f"やり直しの対象と結果: {runs} {still}")
+    check(any("dsva" in m and not ok for m, ok in notes) and not any("gakuen" in m for m, _ in notes),
+          f"やり直しても書けなかった面だけを名指ししない: {notes}")
     # 依頼文: やり直しのときだけ「先に書く」行。数えるのは検索だけ、と常に書く
     p1 = collect.write_grok_prompt(out, {"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": ["gkmas_official"]}).read_text(encoding="utf-8")
     p2 = collect.write_grok_prompt(out, {"key": "gakuen", "brand": "gaku", "topic": "t", "accounts": ["gkmas_official"]}, retry=True).read_text(encoding="utf-8")
@@ -4474,6 +5566,177 @@ def test_update_clis(tmp: Path):
             os.environ["HOME"] = saved_home
 
 
+def test_update_clis_smoke_answer(tmp: Path):
+    """道具の動作確認は、正常終了して、答え(標準出力の最後の行)が求めたとおりの「2」のときだけ動作 OK(監査指摘 2026-10-14 ar9:
+    実の CLI が `2` を出して exit 1、`1+1=3 (attempt 2)` を出して exit 0、のどちらも動作 OK になっていた)。
+    実の子プロセス(一時ディレクトリの偽の CLI)を起動して確かめる。"""
+    import update_clis as uc
+    bindir, wd = tmp / "bin", tmp / "wd"
+    bindir.mkdir(parents=True, exist_ok=True)
+    wd.mkdir(parents=True, exist_ok=True)
+    saved = (uc.tool_path, uc._deadline)
+    try:
+        uc.tool_path, uc._deadline = (lambda: f"{bindir}:{os.environ.get('PATH', '')}"), 0
+        for out, code, want in (("2", 0, True), ("前置き\n2\n", 0, True), ("2", 1, False), ("1+1=3 (attempt 2)", 0, False),
+                                ("", 0, False), ("2 です", 0, False), ("12", 0, False)):
+            for tool in ("claude", "codex", "grok"):
+                exe, said = bindir / tool, bindir / f"{tool}.out"
+                said.write_text(out, encoding="utf-8")
+                exe.write_text(f"#!/bin/sh\ncat '{said}'\nexit {code}\n", encoding="utf-8")
+                exe.chmod(0o755)
+                ok, why = uc.smoke(tool, wd)
+                check(ok is want and (ok or why), f"{tool} の動作確認: 出力 {out!r} / exit {code} → {(ok, why)}(期待 {want})")
+    finally:
+        uc.tool_path, uc._deadline = saved
+
+
+def test_git_commit_push_checkout(tmp: Path):
+    """収集・組版の Git 操作(pipelib.commit_and_push / checkout_edition_branch)を、実の Git(一時リポジトリとローカルの bare origin)で通す
+    (監査指摘 2026-10-14 ar9: 既存のテストは commit/push と checkout を無効にしても全部通っていた)。
+    push を拒まれた commit は、変更の無い再試行でも送ってから成功と返す。次の工程の checkout は、送れない commit を origin に合わせて
+    捨てず(止まる)、送れるようになれば送ってから進む。分かれていれば origin の上に積み直す。main は衝突しなければ取り込んで送り、
+    edition と main が同じファイルを変えていれば、取り込む前の clean な状態へ戻して止まり、当番へ渡す。"""
+    tmp.mkdir(parents=True, exist_ok=True)
+    remote, work, other = tmp / "remote.git", tmp / "work", tmp / "other"
+    date, branch = "2026-10-15", "edition/2026-10-15"
+
+    def g(*a, cwd=work, check_=True):
+        return subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True, check=check_)
+
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(work)], check=True, capture_output=True)
+    g("config", "core.hooksPath", str(remote / "hooks"), cwd=remote)
+    for k, v in (("user.email", "t@example.com"), ("user.name", "t")):
+        g("config", k, v)
+    (work / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+    (work / "shared.txt").write_text("base\n", encoding="utf-8")
+    g("add", "-A"); g("commit", "-q", "-m", "base")
+    g("remote", "add", "origin", str(remote)); g("push", "-q", "origin", "main")
+    g("checkout", "-q", "-b", branch); g("push", "-q", "origin", branch)
+    subprocess.run(["git", "clone", "-q", str(remote), str(other)], check=True, capture_output=True)
+    for k, v in (("user.email", "o@example.com"), ("user.name", "o")):
+        g("config", k, v, cwd=other)
+    hook = remote / "hooks" / "pre-receive"
+    hook.parent.mkdir(exist_ok=True)
+
+    def reject(on: bool) -> None:
+        if on:
+            hook.write_text("#!/bin/sh\necho 'rejected by test' >&2\nexit 1\n", encoding="utf-8")
+            hook.chmod(0o755)
+        else:
+            hook.unlink(missing_ok=True)
+
+    def remote_tip() -> str:
+        return g("rev-parse", "-q", "--verify", f"refs/heads/{branch}", cwd=remote, check_=False).stdout.strip()
+
+    def remote_has(path: str) -> bool:
+        return g("cat-file", "-e", f"refs/heads/{branch}:{path}", cwd=remote, check_=False).returncode == 0
+
+    def call(fn, *a):
+        try:
+            return fn(*a)
+        except Exception as e:      # noqa: BLE001 — 例外で抜けること自体が欠陥(衝突で abort に届かない 等)
+            check(False, f"Git 操作が例外で抜けた({a}): {type(e).__name__}: {e}")
+            return None
+
+    notes, called = [], []
+    saved = (pipelib.ROOT, pipelib.notify, pipelib.escalate)
+    try:
+        pipelib.ROOT = work
+        pipelib.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        # 当番へは止まった工程の再実行つきで渡す(rerun の実効値まで控える。組版の終わりの診断は再実行なし)
+        pipelib.escalate = lambda stage, d, reason, rerun=True, **k: called.append((stage, d, reason, rerun)) or True
+        # 1. push を拒まれたら False(commit は手元に残る)
+        reject(True)
+        (work / "material-1.txt").write_text("1", encoding="utf-8")
+        ok = call(pipelib.commit_and_push, branch, "collect 1", "collect")
+        head1 = g("rev-parse", "HEAD").stdout.strip()
+        check(ok is False and remote_tip() != head1, f"push を拒まれたのに成功と返した: {ok}")
+        # 2. 変更の無い再試行でも、届いていない commit を送ってから成功と返す
+        reject(False)
+        ok = call(pipelib.commit_and_push, branch, "collect retry", "collect")
+        check(ok is True and remote_tip() == head1, f"届いていない commit を送らずに成功と返した: {ok} / origin {remote_tip()[:10]} 手元 {head1[:10]}")
+        # 2b. 書く先を限った後始末(paths)で変更が無くても、届いていない commit を送ってから成功と返す
+        #     (監査指摘 2026-10-14 取り込みの監査: 限った確定の「変更なし」が送らずに成功と返した)
+        reject(True)
+        (work / "material-1b.txt").write_text("1b", encoding="utf-8")
+        check(call(pipelib.commit_and_push, branch, "collect 1b", "collect", ["material-*"]) is False, "push を拒まれたのに成功と返した(限った確定)")
+        head1b = g("rev-parse", "HEAD").stdout.strip()
+        reject(False)
+        ok = call(pipelib.commit_and_push, branch, "collect 1b retry", "collect", ["material-*"])
+        check(ok is True and remote_tip() == head1b,
+              f"限った確定で変更が無いとき、届いていない commit を送らずに成功と返した: {ok} / origin {remote_tip()[:10]} 手元 {head1b[:10]}")
+        # 3. 次の工程の checkout は、送れない commit を origin に合わせて捨てない(止まる)。送れるようになれば送ってから進む
+        reject(True)
+        (work / "material-2.txt").write_text("2", encoding="utf-8")
+        check(call(pipelib.commit_and_push, branch, "collect 2", "collect") is False, "push を拒まれたのに成功と返した(2回目)")
+        head2 = g("rev-parse", "HEAD").stdout.strip()
+        g("checkout", "-q", "main")      # 次の工程は別のブランチにいることもある
+        called.clear()
+        ok = call(pipelib.checkout_edition_branch, date, "compose")
+        check(ok is False and g("rev-parse", branch).stdout.strip() == head2,
+              f"送れない commit を checkout で捨てた / 止まらなかった: {ok} / {g('rev-parse', branch).stdout.strip()[:10]} ≠ {head2[:10]}")
+        check([(c[0], c[1], c[3]) for c in called] == [("compose", date, True)],
+              f"送れない commit で止めたことを、再実行つきで当番へ渡さない: {[(c[0], c[1], c[3]) for c in called]}")
+        reject(False)
+        ok = call(pipelib.checkout_edition_branch, date, "compose")
+        check(ok is True and (work / "material-2.txt").exists() and remote_tip() == head2,
+              f"checkout が手元だけの素材を消した・送っていない: {ok} / 素材 {(work / 'material-2.txt').exists()} / origin {remote_tip()[:10]}")
+        # 4. 送れなかった間に他の工程が push して分かれていたら、origin の上に積み直して送る(どちらも消さない)
+        reject(True)
+        (work / "material-3.txt").write_text("3", encoding="utf-8")
+        check(call(pipelib.commit_and_push, branch, "collect 3", "collect") is False, "push を拒まれたのに成功と返した(3回目)")
+        reject(False)
+        g("fetch", "-q", "origin", cwd=other); g("checkout", "-q", "-B", branch, f"origin/{branch}", cwd=other)
+        (other / "other.txt").write_text("o", encoding="utf-8")
+        g("add", "-A", cwd=other); g("commit", "-q", "-m", "other", cwd=other); g("push", "-q", "origin", branch, cwd=other)
+        ok = call(pipelib.checkout_edition_branch, date, "collect")
+        check(ok is True and remote_has("material-3.txt") and remote_has("other.txt") and (work / "material-3.txt").exists()
+              and g("rev-parse", "HEAD").stdout.strip() == remote_tip(),
+              f"分かれた手元の commit を積み直して送らない: {ok} / origin に素材 {remote_has('material-3.txt')} 他 {remote_has('other.txt')}")
+        # 5. main は衝突しなければ取り込んで送る
+        g("checkout", "-q", "main", cwd=other); g("pull", "-q", "--ff-only", "origin", "main", cwd=other)
+        (other / "script.txt").write_text("fix", encoding="utf-8")
+        g("add", "-A", cwd=other); g("commit", "-q", "-m", "main fix", cwd=other); g("push", "-q", "origin", "main", cwd=other)
+        ok = call(pipelib.checkout_edition_branch, date, "collect")
+        main_tip = g("rev-parse", "refs/heads/main", cwd=remote).stdout.strip()
+        check(ok is True and remote_has("script.txt")
+              and g("merge-base", "--is-ancestor", main_tip, remote_tip(), cwd=remote, check_=False).returncode == 0,
+              f"main を取り込んで送らない: {ok}")
+        # 6. edition と main が同じファイルを変えていたら、取り込む前の clean な状態へ戻して止まり、当番へ渡す
+        (work / "shared.txt").write_text("edition\n", encoding="utf-8")
+        check(call(pipelib.commit_and_push, branch, "edition edit", "collect") is True, "edition の変更を送れない")
+        (other / "shared.txt").write_text("main\n", encoding="utf-8")
+        g("add", "-A", cwd=other); g("commit", "-q", "-m", "main edit", cwd=other); g("push", "-q", "origin", "main", cwd=other)
+        before = g("rev-parse", "HEAD").stdout.strip()
+        notes.clear(); called.clear()
+        for job in ("compose", "collect"):       # 次の工程も同じ衝突で止まるが、作業ツリーを汚さない
+            ok = call(pipelib.checkout_edition_branch, date, job)
+            merging = g("rev-parse", "-q", "--verify", "MERGE_HEAD", check_=False).returncode == 0
+            status = g("status", "--porcelain").stdout
+            check(ok is False and not merging and status == "" and g("rev-parse", "HEAD").stdout.strip() == before
+                  and g("branch", "--show-current").stdout.strip() == branch,
+                  f"{job}: main との衝突のあと戻さない・止まらない: {ok} / merge 中 {merging} / {status!r}")
+        check(any(not ok_ and "shared.txt" in m for m, ok_ in notes), f"衝突したファイルを名指しで異常にしない: {notes}")
+        check([(c[0], c[1], c[3]) for c in called] == [("compose", date, True), ("collect", date, True)]
+              and all("shared.txt" in c[2] for c in called),
+              f"衝突で止めたことを再実行つきで当番へ渡さない: {[(c[0], c[1], c[3]) for c in called]}")
+        # merge --abort で戻らなくても、取り込む前の commit へ戻してから止まる
+        real_git = pipelib.git
+        pipelib.git = lambda *a, check=True: (subprocess.CompletedProcess(["git", *a], 128, "", "abort failed (test)")
+                                              if a[:2] == ("merge", "--abort") else real_git(*a, check=check))
+        try:
+            ok = call(pipelib.checkout_edition_branch, date, "compose")
+        finally:
+            pipelib.git = real_git
+        merging = g("rev-parse", "-q", "--verify", "MERGE_HEAD", check_=False).returncode == 0
+        status = g("status", "--porcelain").stdout
+        check(ok is False and not merging and status == "" and g("rev-parse", "HEAD").stdout.strip() == before,
+              f"abort が効かないとき取り込む前へ戻さない: {ok} / merge 中 {merging} / {status!r}")
+    finally:
+        pipelib.ROOT, pipelib.notify, pipelib.escalate = saved
+
+
 def test_article_purpose():
     """記事の目的(編集長 2026-10-03「目的の間違い」: 予約締切の前日の記事を、執筆が新しい事実が無いと見送った)。
     選定が purpose を返し、計画に載り、執筆の依頼文に出る。続報予約の消化は目的が期日の知らせ。"""
@@ -4532,18 +5795,23 @@ def test_withdrawal(tmp: Path):
     posts, eds = tmp / "docs" / "_posts", tmp / "docs" / "_editions"
     for p in (posts, eds, tmp / "metrics", tmp / "stock" / "scheduled"):
         p.mkdir(parents=True, exist_ok=True)
-    post = lambda slug, rank, brand, cid: (f"---\nslug: {slug}\nedition: \"{d}\"\nbrand: {brand}\nrank: {rank}\ncorrected: false\n"
-                                         f"candidate_ids:\n- {cid}\ntitle: {slug}\n---\n{slug} の本文。\n\n二段落目。\n")
-    (posts / f"{d}-a.md").write_text(post("a", "lead", "x", "c-a"), encoding="utf-8")
-    (posts / f"{d}-b.md").write_text(post("b", "large", "y", "c-b"), encoding="utf-8")
-    (posts / f"{d}-c.md").write_text(post("c", "roundup", "y", "c-c"), encoding="utf-8")
-    ed_text = (f"---\nnumber: 15\ndate: '{d}'\npages: 2\narticle_count: 3\ncorrected_count: 0\nlead_slug: a\ndigest:\n"
-               "- label: 本日\n  rows:\n  - k: 発\n    t: A\n    slug: a\n  - k: 発\n    t: B\n    slug: b\n- label: 昨日\n  rows: []\n"
+    # 下準備も書式(article / edition)に合う形にする(本番の取り下げは公開済みの書式どおりの記事・号を書き換える。pipelib.write_checked)
+    post = lambda slug, rank, brand, cid: ("---\n" + article_fm(slug, d, brand=brand, rank=rank, candidate_ids=[cid], title=slug)
+                                         + f"---\n{slug} の本文。\n\n二段落目。\n")
+    (posts / f"{d}-a.md").write_text(post("a", "lead", "cg", "c-a"), encoding="utf-8")
+    (posts / f"{d}-b.md").write_text(post("b", "large", "million", "c-b"), encoding="utf-8")
+    (posts / f"{d}-c.md").write_text(post("c", "roundup", "million", "c-c"), encoding="utf-8")
+    ranking = "".join(f"- n: {i}\n  name: 名{i}\n  brand: cg\n  delta: new\n" for i in range(1, 9))
+    ed_text = (f"---\nnumber: 15\ndate: '{d}'\nweekday: 月\nissued_at: '{d}T06:00:00+09:00'\npages: 2\narticle_count: 3\ncorrected_count: 0\n"
+               "lead_slug: a\ndigest:\n"
+               "- label: 本日\n  rows:\n  - k: 発\n    t: A\n    d: ''\n    brand: cg\n    slug: a\n  - k: 発\n    t: B\n    d: ''\n    brand: million\n    slug: b\n"
+               "- label: 昨日\n  rows: []\n- label: 継続中\n  rows: []\n- label: 明日\n  rows: []\n"
+               f"ranking:\n{ranking}birthdays: []\n"
                "---\n号の本文(そのまま残ること)\n")
     (eds / f"{d}.md").write_text(ed_text, encoding="utf-8")
     (tmp / "metrics" / f"plan-{d}.json").write_text(json.dumps({"articles": [
         {"slug": "a", "lead_score": 50}, {"slug": "b", "lead_score": 40}, {"slug": "c", "lead_score": 90}]}), encoding="utf-8")
-    sched = [{"id": "s-a", "reserved_on": d, "src_candidate_id": "c-a"}, {"id": "s-b", "reserved_on": d, "src_candidate_id": "c-b"}]
+    sched = [sched_row("s-a", d, src_candidate_id="c-a"), sched_row("s-b", d, src_candidate_id="c-b")]
     (tmp / "stock" / "scheduled" / "2026-10-02.json").write_text(json.dumps(sched, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     (tmp / "stock" / "scheduled" / "2026-09-20.json").write_text(json.dumps(sched[:1], indent=1) + "\n", encoding="utf-8")
     b_before = (posts / f"{d}-b.md").read_text(encoding="utf-8")
@@ -4765,7 +6033,7 @@ def test_late_facts_reach_plan_index(tmp: Path):
     r = lambda d: {x["id"]: x for x in json.loads((cdir / f"{d}.json").read_text(encoding="utf-8"))}
     url, n = "https://shop.example/premium", compose.PLAN_FACTS_PER_SUBJECT
     old = [f"既存{k}" for k in range(n + 2)]
-    cand = lambda i, facts: {"id": i, "url": url, "dedup_key": "premium", "brand": "cg", "verify": "confirmed", "facts": facts}
+    cand = lambda i, facts: cand_row(i, url, dedup_key="premium", brand="cg", verify="confirmed", facts=facts)
     saved = compose.ROOT
     try:
         compose.ROOT = tmp
@@ -4808,8 +6076,7 @@ def test_late_facts_reach_plan_index(tmp: Path):
         lim = compose.PLAN_FACT_CHARS
         head = ("DISC2の歌唱者：" + "、".join(f"曲{k}＝アイドル{k}" for k in range(60)))[:lim]
         full = head + "、" + "、".join(f"新曲{k}＝新アイドル{k}" for k in range(40))
-        dcand = lambda i, facts: {"id": i, "url": "https://e.example/disc", "dedup_key": "disc", "brand": "cg",
-                                  "verify": "confirmed", "facts": facts}
+        dcand = lambda i, facts: cand_row(i, "https://e.example/disc", dedup_key="disc", brand="cg", verify="confirmed", facts=facts)
         w("2026-10-10", [dcand("d1", ["発売日", head])])
         compose.record_candidates_read("2026-10-10", r("2026-10-10"))
         w("2026-10-10", [dcand("d1", ["発売日", head, full])])
@@ -4829,8 +6096,254 @@ def test_late_facts_reach_plan_index(tmp: Path):
     import inspect
     src = inspect.getsource(compose.main)
     check("write_plan_index(date, cands, blocklist, late_fact_keys(date))" in src
-          and "record_candidates_read(date, cands, hidden_late)" in src,
+          and "record_candidates_read(date, cands, hidden_late, unjudged=" in src,
           "組版が引き継いだ事実を選定インデックスへ先に並べ、切れた分を選定記録から外していない")
+
+
+# テスト用の偽の claude CLI。本物と同じ引数(-p の短い指示・--json-schema)で起動され、cwd(組版の ROOT)の fake-cli.json の
+# 指示で答える。起動された依頼の名前を fake-cli.log に残す。モデルの答えから先(読み込み・検め・計画への反映)は本番のコードが動く
+FAKE_CLAUDE = r'''#!/usr/bin/env python3
+import json, re, sys
+from pathlib import Path
+a = sys.argv[1:]
+short = a[a.index("-p") + 1] if "-p" in a else ""
+schema = json.loads(a[a.index("--json-schema") + 1]) if "--json-schema" in a else {}
+m = re.search(r"metrics/work/([0-9-]+)/([^\s/]+?)\.md", short)
+date, name = (m.group(1), m.group(2)) if m else ("", "")
+ctl = json.loads(Path("fake-cli.json").read_text(encoding="utf-8"))
+log = open("fake-cli.log", "a", encoding="utf-8")
+log.write(name + "\n")
+def answer(obj):
+    print(json.dumps(obj, ensure_ascii=False))
+    sys.exit(0)
+if name.startswith("plan-") and name != "plan-missing":
+    b = name[len("plan-"):]
+    c = ctl.get("plan", {}).get(b, {})
+    if "exit" in c:
+        sys.exit(c["exit"])
+    keys = schema["properties"]["decisions"]["required"]
+    dec = {k: {"action": "article", "angle": f"{b} 面の判定 {k}", "purpose": "新情報", "rank": "small", "lead_score": 10,
+               "merge_into": "", "claimed_slug": "", "reason": "", "note": ""} for k in keys}
+    dec.update(c.get("decisions", {}))
+    answer({"decisions": dec})
+if name == "lead":
+    c = ctl.get("lead", {})
+    if "exit" in c:
+        sys.exit(c["exit"])
+    answer({"lead_slug": schema["properties"]["lead_slug"]["enum"][0]})
+if name == "plan-missing":
+    c = ctl.get("missing", {})
+    rows = json.loads(Path(f"metrics/plan-index-{date}-missing.json").read_text(encoding="utf-8"))
+    log.write("missing-keys " + " ".join(sorted(r["dedup_key"] for r in rows)) + "\n")
+    if "exit" in c:
+        sys.exit(c["exit"])
+    Path(f"metrics/plan-{date}-missing.json").write_text(json.dumps(c.get("answer", {}), ensure_ascii=False), encoding="utf-8")
+    print("拾い直し: 記事1本")
+    sys.exit(0)
+c = ctl.get("review", {"verdict": "approve", "blockers": [], "comments": []})
+if "exit" in c:
+    sys.exit(c["exit"])
+answer(c)
+'''
+
+
+def _fake_claude(root: Path, ctl: dict) -> str:
+    """root/bin に偽の claude を置き、root/fake-cli.json に答え方を書く。PATH の先頭に足す値を返す。"""
+    b = root / "bin"
+    b.mkdir(parents=True, exist_ok=True)
+    (b / "claude").write_text(FAKE_CLAUDE, encoding="utf-8")
+    (b / "claude").chmod(0o755)
+    (root / "fake-cli.json").write_text(json.dumps(ctl, ensure_ascii=False), encoding="utf-8")
+    return str(b)
+
+
+def test_release_reads_latest_run(tmp: Path):
+    """発行は、いちばん新しい組版の実行の最後の巡の校閲を読む(監査指摘 2026-10-14)。巡の番号は実行ごとに1から数え直すので、
+    番号の最大を採ると、組み直し(--reuse-plan --carry-review)が1巡目で承認しても前の実行の5巡目の承認を読み、戻した記事を
+    「承認後の変更」として発行を止める。逆に新しい実行が承認しなかったときに、中身の同じ古い承認へ戻ってもいけない。
+    当番が組み直しに引き継ぐ校閲記録(oncall.latest_review)も同じものを選ぶ。"""
+    import oncall
+    import release
+    d = "2026-10-10"
+    posts, metrics = tmp / "docs" / "_posts", tmp / "metrics"
+    posts.mkdir(parents=True)
+    metrics.mkdir()
+    (tmp / "docs" / "_editions").mkdir()
+    (tmp / "docs" / "_editions" / f"{d}.md").write_text("---\nnumber: 1\ndate: 2026-10-10\n---\n", encoding="utf-8")
+    (posts / f"{d}-old.md").write_text("---\nslug: old\ntitle: 承認済み\n---\n承認済みの記事\n", encoding="utf-8")
+    saved = (compose.ROOT, pipelib.ROOT, release.ROOT, oncall.ROOT, compose.RUN_ID, os.environ.get("PATH", ""))
+    try:
+        compose.ROOT = pipelib.ROOT = release.ROOT = oncall.ROOT = tmp
+        os.environ["PATH"] = _fake_claude(tmp, {}) + os.pathsep + saved[-1]
+        # 前の実行(印を付ける前の形)が5巡目で承認した。そのあと組み直しが落とした記事を戻し、新しい実行の1巡目で承認した
+        old = {"verdict": "approve", "blockers": [], "comments": [], "reviewed": [f"article:{d}-old.md", "paper"],
+               "hashes": pipelib.review_manifest(d)}
+        (metrics / f"review-{d}-5.json").write_text(json.dumps(old), encoding="utf-8")
+        (posts / f"{d}-new.md").write_text("---\nslug: new\ntitle: 戻した記事\n---\n戻した記事\n", encoding="utf-8")
+        compose.RUN_ID = "20261010T050000.000000"
+        r = compose.claude_review(d, 1, targets=compose.carry_targets(d, old), editorial=False, paper=True, carry=old, strict=True)
+        v = release.review_verdict(d)
+        check(r.get("verdict") == "approve" and v == ("approve", f"review-{d}-1.json"),
+              f"組み直しの新しい承認より、前の実行の後ろの巡を読んだ: 新しい1巡目 {r.get('verdict')} / 発行の判定 {v}")
+        check(oncall.latest_review(d) == metrics / f"review-{d}-1.json", f"当番が引き継ぐ校閲記録が新しい実行のものでない: {oncall.latest_review(d)}")
+        # 新しい実行が承認しなかった(担当が動かない)。中身は前の実行の承認と同じでも、古い承認へ戻らない
+        for p in metrics.glob("review-*.json"):
+            p.unlink()
+        (posts / f"{d}-new.md").unlink()
+        old_run = dict(old, run="20261010T030000.000000", hashes=pipelib.review_manifest(d))
+        (metrics / f"review-{d}-5.json").write_text(json.dumps(old_run), encoding="utf-8")
+        (tmp / "fake-cli.json").write_text(json.dumps({"review": {"exit": 1}}), encoding="utf-8")
+        compose.RUN_ID = "20261010T053000.000000"
+        r = compose.claude_review(d, 1, targets=[], editorial=False, paper=True, carry=old_run, strict=True)
+        v = release.review_verdict(d)
+        check(r.get("verdict") == "error" and v[0] != "approve" and f"review-{d}-1.json" in v[1],
+              f"新しい実行が承認しなかったのに、前の実行の承認で発行する: 新しい1巡目 {r.get('verdict')} / 発行の判定 {v}")
+        # 印の無い記録だけなら、巡の番号を数として比べる(10 は 9 より後)。読めない記録があれば、読めないと判定する
+        for p in metrics.glob("review-*.json"):
+            p.unlink()
+        cur = pipelib.review_manifest(d)
+        (metrics / f"review-{d}-9.json").write_text(json.dumps({"verdict": "block", "blockers": [{"file": "x", "issue": "y"}], "hashes": cur}), encoding="utf-8")
+        (metrics / f"review-{d}-10.json").write_text(json.dumps({"verdict": "approve", "blockers": [], "hashes": cur}), encoding="utf-8")
+        check(release.review_verdict(d) == ("approve", f"review-{d}-10.json"), f"印の無い記録で巡の番号を数として比べない: {release.review_verdict(d)}")
+        (metrics / f"review-{d}-3.json").write_text("{壊れた", encoding="utf-8")
+        check(release.review_verdict(d)[0] == "unreadable", f"読めない記録を飛ばして承認を採った: {release.review_verdict(d)}")
+    finally:
+        compose.ROOT, pipelib.ROOT, release.ROOT, oncall.ROOT, compose.RUN_ID = saved[:5]
+        os.environ["PATH"] = saved[-1]
+
+
+class _StopBeforeWriting(Exception):
+    """選定の検査で、組版を執筆の直前で止める印。"""
+
+
+def _compose_selection(root: Path, date: str, path_head: str) -> tuple[object, str]:
+    """compose.main を選定(面別の選定 → 一面 → 形の修復 → 検証 → 取りこぼしの拾い直し → 選定記録)まで実際に走らせ、執筆の直前で
+    止める。モデルの CLI は PATH の先頭(path_head)にあるもの。Git・排他・通知は差し替える。戻りは (終わり方, 標準出力)。"""
+    import contextlib
+    import io
+    import signal
+    names = ("ROOT", "job_lock", "checkout_edition_branch", "next_number", "notify", "escalate", "commit_and_push", "write_articles",
+             "DEADLINE", "STARTED_ON", "STARTED_DATE")
+    saved = {n: getattr(compose, n) for n in names}
+    saved_other = (pipelib.ROOT, assemble.ROOT, assemble.SCHEDULED, list(pipelib.ANOMALIES), sys.argv, os.environ.get("PATH", ""),
+                   signal.getsignal(signal.SIGTERM))
+
+    def stop(*a, **k):
+        raise _StopBeforeWriting()
+    buf = io.StringIO()
+    try:
+        compose.ROOT = pipelib.ROOT = assemble.ROOT = root
+        assemble.SCHEDULED = root / "stock" / "scheduled"
+        compose.job_lock = lambda *a, **k: None
+        compose.checkout_edition_branch = lambda *a, **k: True
+        compose.next_number = lambda *a, **k: 1
+        compose.notify = lambda *a, **k: True
+        compose.escalate = lambda *a, **k: None
+        compose.commit_and_push = lambda *a, **k: True
+        compose.write_articles = stop
+        sys.argv = ["compose.py", "--date", date]
+        os.environ["PATH"] = path_head
+        try:
+            with contextlib.redirect_stdout(buf):
+                end = compose.main()
+        except (_StopBeforeWriting, OSError) as e:
+            end = e
+        return end, buf.getvalue()
+    finally:
+        for n, v in saved.items():
+            setattr(compose, n, v)
+        pipelib.ROOT, assemble.ROOT, assemble.SCHEDULED = saved_other[:3]
+        pipelib.ANOMALIES[:] = saved_other[3]
+        sys.argv = saved_other[4]
+        os.environ["PATH"] = saved_other[5]
+        signal.signal(signal.SIGTERM, saved_other[6])
+
+
+def test_compose_selection_from_cli(tmp: Path):
+    """選定を CLI の答えから計画の検証・選定記録まで実際に通す(監査指摘 2026-10-14: run_plan を常に空の計画にしても回帰テストが通った)。
+    - 正常に答えた面の判定が計画に載り、一面・形の修復・検証を通って執筆の直前まで進む
+    - 非0終了の面・形の崩れた判定の主題は判断済みにせず、拾い直しへ回す(拾い直しに渡るのはその主題だけ)
+    - 拾い直しで記事にした主題は目的(期日の知らせ)を保ち、執筆の依頼文まで届く(以前は目的を捨てて「新情報」になった)
+    - 選定記録は判定を得た主題だけ。拾い直しも答えなかった主題の候補は次の号が引き継ぐ
+    - 選定の CLI が起動できない号は、全候補を読んだと記録しない(以前は起動前に全候補を記録し、翌号の引き継ぎが 0件だった)"""
+    d, nxt = "2026-10-10", "2026-10-11"
+    rows = [cand_row("ca1", "https://e.example/cg-a1", dedup_key="cg-a", facts=["CG の公演A 開催決定"]),
+            cand_row("ca2", "https://e.example/cg-a2", dedup_key="cg-a", facts=["CG の公演A チケット先行"]),
+            cand_row("cb1", "https://e.example/cg-b", dedup_key="cg-b", facts=["CG の新曲B 配信開始"]),
+            cand_row("cx1", "https://e.example/cg-x", dedup_key="cg-x", verify="failed", facts=["確かめられない話"]),
+            cand_row("ma1", "https://e.example/ml-a", brand="million", dedup_key="ml-a", deadline="2026-10-11",
+                     facts=["ミリオンの抽選申込は10月11日23:59締切"]),
+            cand_row("sa1", "https://e.example/sh-a", brand="shiny", dedup_key="sh-a", facts=["シャニの企画A 開始"]),
+            cand_row("sb1", "https://e.example/sh-b", brand="shiny", dedup_key="sh-b", facts=["シャニの企画B 告知"])]
+    usable = {"ca1", "ca2", "cb1", "ma1", "sa1", "sb1"}
+
+    def setup(root: Path) -> None:
+        for sub in ("candidates", "metrics", "docs/_posts", "docs/_editions", "stock/scheduled"):
+            (root / sub).mkdir(parents=True, exist_ok=True)
+        (root / "candidates" / f"{d}.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+
+    # 1. 正常: cg 面は答える、million 面は非0終了、shiny 面は sh-b の判定だけ形が崩れる。一面の選定は答えない(機械で立てる)。
+    #    拾い直しは ml-a を期日の知らせで記事にし、sh-b には答えない
+    ok = tmp / "ok"
+    setup(ok)
+    bad_rank = {"action": "article", "angle": "崩れた判定", "purpose": "新情報", "rank": "huge", "lead_score": 0,
+                "merge_into": "", "claimed_slug": "", "reason": "", "note": ""}
+    head = _fake_claude(ok, {"plan": {"million": {"exit": 1}, "shiny": {"decisions": {"sh-b": bad_rank}}}, "lead": {"exit": 1},
+                             "missing": {"answer": {"articles": [{"brand": "million", "rank": "small", "angle": "抽選申込の締切は明日",
+                                                                  "purpose": "期日の知らせ", "lead_score": 5, "dedup_key": "ml-a"}],
+                                                    "merge_into": [], "dropped": []}}})
+    end, out = _compose_selection(ok, d, head + os.pathsep + os.environ.get("PATH", ""))
+    check(isinstance(end, _StopBeforeWriting), f"選定が執筆の直前まで進まない(計画の検証で止まった・例外): {end!r} {out[-600:]}")
+    log = (ok / "fake-cli.log").read_text(encoding="utf-8").splitlines() if (ok / "fake-cli.log").exists() else []
+    check({"plan-cg", "plan-million", "plan-shiny", "lead", "plan-missing"} <= set(log) and "missing-keys ml-a sh-b" in log,
+          f"拾い直しに渡ったのが、答えの無かった主題(ml-a・sh-b)だけでない: {log}")
+    plan = json.loads((ok / "metrics" / f"plan-{d}.json").read_text(encoding="utf-8")) if (ok / "metrics" / f"plan-{d}.json").exists() else {}
+    arts = {a.get("dedup_key"): a for a in plan.get("articles") or []}
+    check(set(arts) == {"cg-a", "cg-b", "sh-a", "ml-a"} and arts["cg-a"]["candidate_ids"] == ["ca1", "ca2"]
+          and arts["cg-b"]["angle"] == "cg 面の判定 cg-b" and arts["sh-a"]["angle"] == "shiny 面の判定 sh-a",
+          f"面別の選定の答えが計画に載らない(または判断の無い主題を載せた): {sorted(arts)}")
+    cands = {r["id"]: r for r in rows}
+    check(plan and compose.validate_plan(plan, cands, {}) == [] and sum(a.get("rank") == "lead" for a in arts.values()) == 1,
+          f"計画が検証を通らない: {compose.validate_plan(plan, cands, {}) if plan else '計画なし'}")
+    ml = arts.get("ml-a") or {}
+    check(ml.get("purpose") == "期日の知らせ" and ml.get("brand") == "million"
+          and "- 目的: 期日の知らせ" in compose.article_prompt(d, ml, [cands["ma1"]], [], None),
+          f"拾い直しで記事にした期日の知らせの目的が、計画・執筆の依頼文に届かない: {ml}")
+    rp = ok / "metrics" / f"candidates-read-{d}.json"
+    rec = json.loads(rp.read_text(encoding="utf-8"))["read"] if rp.exists() else None
+    check(rec is not None and set(rec) == {"ca1", "ca2", "cb1", "cx1", "ma1", "sa1"},
+          f"選定記録が、判定を得た主題(と選定に掛けない候補)になっていない: {sorted(rec or [])}")
+    # 引き継ぎは write_checked(一時ファイルは pipelib.ROOT の下)で書くので、両方を一時領域へ向ける(本体に書かない。監査指摘)
+    saved_root = (compose.ROOT, pipelib.ROOT)
+    try:
+        compose.ROOT = pipelib.ROOT = ok
+        carry = compose.carry_late_candidates(nxt)
+        got = [r["id"] for r in json.loads((ok / "candidates" / f"{nxt}.json").read_text(encoding="utf-8"))] \
+            if (ok / "candidates" / f"{nxt}.json").exists() else []
+    finally:
+        compose.ROOT, pipelib.ROOT = saved_root
+    check(got == ["sb1"] and carry, f"判定を得られなかった主題の候補を次の号が引き継がない(または判定済みまで引き継いだ): {got}")
+
+    # 2. 選定の CLI が起動できない(FileNotFoundError: claude)。計画は出来ず、再実行も成功しなかった
+    dead = tmp / "dead"
+    setup(dead)
+    (dead / "empty-bin").mkdir()
+    end, out = _compose_selection(dead, d, str(dead / "empty-bin"))
+    check(not (dead / "metrics" / f"plan-{d}.json").exists() or not json.loads(
+        (dead / "metrics" / f"plan-{d}.json").read_text(encoding="utf-8")).get("articles"),
+          f"CLI が無いのに計画ができた: {end!r}")
+    rec = json.loads((dead / "metrics" / f"candidates-read-{d}.json").read_text(encoding="utf-8"))["read"] \
+        if (dead / "metrics" / f"candidates-read-{d}.json").exists() else None
+    check(rec is not None and not set(rec) & usable,
+          f"選定が起動できなかった号で、選定に掛けていない候補を読んだと記録した(または記録が無く、次の号が遡らない): {rec}")
+    try:
+        compose.ROOT = pipelib.ROOT = dead
+        compose.carry_late_candidates(nxt)
+        got = {r["id"] for r in json.loads((dead / "candidates" / f"{nxt}.json").read_text(encoding="utf-8"))} \
+            if (dead / "candidates" / f"{nxt}.json").exists() else set()
+    finally:
+        compose.ROOT, pipelib.ROOT = saved_root
+    check(usable <= got, f"選定が起動できなかった号の素材を、次の号が引き継がない: {sorted(got)}")
 
 
 def test_settled_drops_not_rewritten(tmp: Path):
@@ -4850,8 +6363,9 @@ def test_settled_drops_not_rewritten(tmp: Path):
         compose.DROP_SETTLED.clear()
         slugs = ["keep", "dup", "orphan", "old", "fix"]
         for sl in slugs:
-            (posts / f"{d0}-{sl}.md").write_text(f"---\ntitle: {sl}\nrank: medium\n---\n本文\n", encoding="utf-8")
-        cands = {f"c-{sl}": {"id": f"c-{sl}", "url": f"https://www.example.com/{sl}", "dedup_key": sl, "brand": "765", "facts": [sl]}
+            (posts / f"{d0}-{sl}.md").write_text("---\n" + article_fm(sl, d0, title=sl, rank="medium", brand="765") + "---\n本文\n",
+                                                 encoding="utf-8")
+        cands = {f"c-{sl}": cand_row(f"c-{sl}", f"https://www.example.com/{sl}", dedup_key=sl, brand="765", facts=[sl])
                  for sl in slugs}
         (tmp / "candidates" / f"{d0}.json").write_text(json.dumps(list(cands.values())), encoding="utf-8")
         plan = {"articles": [{"slug": sl, "rank": "medium", "brand": "765", "candidate_ids": [f"c-{sl}"], "dedup_key": sl} for sl in slugs]}
@@ -4988,9 +6502,10 @@ def test_carry_dropped_candidates(tmp: Path):
         compose.ROOT = tmp
         d0, d1 = "2026-10-13", "2026-10-14"
         (tmp / "candidates" / f"{d0}.json").write_text(json.dumps([
-            {"id": "c1", "url": "https://press.example/1", "dedup_key": "login", "brand": "gaku", "facts": ["ログボ"]},
-            {"id": "c2", "url": "https://e.example/2", "dedup_key": "back", "brand": "gaku", "facts": ["戻った"]},
-            {"id": "c3", "url": "https://e.example/3", "dedup_key": "tour", "brand": "gaku", "facts": ["三回目"], "carried": {"count": 2}},
+            cand_row("c1", "https://press.example/1", dedup_key="login", brand="gaku", facts=["ログボ"]),
+            cand_row("c2", "https://e.example/2", dedup_key="back", brand="gaku", facts=["戻った"]),
+            cand_row("c3", "https://e.example/3", dedup_key="tour", brand="gaku", facts=["三回目"],
+                     carried={"from": "2026-10-12", "count": 2, "why": "2026-10-12号で記事にならなかった(執筆で見送り: SOURCE_MISMATCH)"}),
         ], ensure_ascii=False), encoding="utf-8")
         compose.DROP_LOG.clear()
         compose.DROP_LOG[d0] = {"login": ("ログボ", "執筆で見送り", "NO_PRIMARY_SOURCE 公式の告知に届かない"),
@@ -5008,10 +6523,11 @@ def test_carry_dropped_candidates(tmp: Path):
               f"外れた記事の記録が、以前の記録と合わさらない・戻った記事を除かない: {sorted(rec)}")
         # 前の号の続報予約から選んだ記事の素材も戻す(日付は前の号で使った値のまま。監査指摘)
         (tmp / "stock" / "scheduled").mkdir(parents=True)
-        (tmp / "stock" / "scheduled" / f"{d0}.json").write_text(json.dumps([{"id": "sched-9", "url": "https://s.example/9", "dedup_key": "sch",
-                                                                            "brand": "gaku", "kind": "締切前", "facts": ["予約"]}]),
+        (tmp / "stock" / "scheduled" / f"{d0}.json").write_text(json.dumps([sched_row("sched-9", "2026-10-10", url="https://s.example/9",
+                                                                                     dedup_key="sch", brand="gaku", kind="締切前",
+                                                                                     facts=["予約", "受付は10月16日まで"])]),
                                                                encoding="utf-8")
-        (tmp / "candidates" / f"{d1}.json").write_text(json.dumps([{"id": "n1", "url": "https://n.example/1", "facts": ["新"]}]),
+        (tmp / "candidates" / f"{d1}.json").write_text(json.dumps([cand_row("n1", "https://n.example/1", facts=["新"])]),
                                                        encoding="utf-8")
         log = compose.carry_dropped_candidates(d1)
         rows = json.loads((tmp / "candidates" / f"{d1}.json").read_text(encoding="utf-8"))
@@ -5027,7 +6543,7 @@ def test_carry_dropped_candidates(tmp: Path):
         # 同じページを毎号拾い直す素材: この号の同じ URL の候補へ前の号の事実をマージし、回数を付け続ける(上限を超えても回数は残し、
         # 選定には見せない)。回数が 1→2→無し→1 と戻らない(監査指摘)
         chain = [("2026-10-20", None), ("2026-10-21", None), ("2026-10-22", None), ("2026-10-23", None)]
-        prev_row = {"id": "p0", "url": "https://press.example/same", "dedup_key": "same", "brand": "gaku", "facts": ["期限は15日"]}
+        prev_row = cand_row("p0", "https://press.example/same", dedup_key="same", brand="gaku", facts=["期限は15日"])
         (tmp / "candidates" / "2026-10-19.json").write_text(json.dumps([prev_row], ensure_ascii=False), encoding="utf-8")
         (tmp / "metrics" / "plan-2026-10-19.json").write_text(json.dumps({"articles": [{"slug": "same", "candidate_ids": ["p0"]}]}), encoding="utf-8")
         compose.DROP_LOG["2026-10-19"] = {"same": ("同じ", "執筆で見送り", "NO_PRIMARY_SOURCE")}
@@ -5036,8 +6552,9 @@ def test_carry_dropped_candidates(tmp: Path):
         prev = "2026-10-19"
         for k, (day, _) in enumerate(chain):
             nid = f"q{k}"
-            (tmp / "candidates" / f"{day}.json").write_text(json.dumps([{"id": nid, "url": "https://press.example/same", "dedup_key": "same",
-                                                                         "brand": "gaku", "facts": [f"別の事実{k}"]}], ensure_ascii=False), encoding="utf-8")
+            (tmp / "candidates" / f"{day}.json").write_text(json.dumps([cand_row(nid, "https://press.example/same", dedup_key="same",
+                                                                                  brand="gaku", facts=[f"別の事実{k}"])], ensure_ascii=False),
+                                                            encoding="utf-8")
             compose.carry_dropped_candidates(day)
             row = json.loads((tmp / "candidates" / f"{day}.json").read_text(encoding="utf-8"))[0]
             counts.append((row.get("carried") or {}).get("count"))
@@ -5056,9 +6573,9 @@ def test_carry_dropped_candidates(tmp: Path):
         results = []
         for order in (["m1", "m2"], ["m2", "m1"]):
             d2, d3 = "2026-11-01", "2026-11-02"
-            mats = {"m1": {"id": "m1", "url": "https://p.example/same2", "dedup_key": "s2", "brand": "gaku", "facts": ["事実A"]},
-                    "m2": {"id": "m2", "url": "https://p.example/same2", "dedup_key": "s2", "brand": "gaku", "facts": ["事実B"],
-                           "carried": {"count": 1}}}
+            mats = {"m1": cand_row("m1", "https://p.example/same2", dedup_key="s2", brand="gaku", facts=["事実A"]),
+                    "m2": cand_row("m2", "https://p.example/same2", dedup_key="s2", brand="gaku", facts=["事実B"],
+                                   carried={"from": "2026-10-31", "count": 1, "why": "2026-10-31号で記事にならなかった(執筆で見送り)"})}
             (tmp / "candidates" / f"{d2}.json").write_text(json.dumps([mats[i] for i in order], ensure_ascii=False), encoding="utf-8")
             (tmp / "metrics" / f"plan-{d2}.json").write_text(json.dumps({"articles": [{"slug": "s2", "candidate_ids": order}]}), encoding="utf-8")
             (tmp / "metrics" / f"drops-{d2}.json").unlink(missing_ok=True)
@@ -5072,8 +6589,9 @@ def test_carry_dropped_candidates(tmp: Path):
               f"同じ URL の2件目以降の事実が戻らない・回数が最大値から増えない・順序で結果が変わる: {results}")
         # 候補ファイルの無い号(予約だけで組んだ)でも、予約の素材は戻す。戻した予約は、校閲にも執筆と同じ素材として載る(監査指摘)
         d4, d5 = "2026-11-10", "2026-11-11"
-        (tmp / "stock" / "scheduled" / f"{d4}.json").write_text(json.dumps([{"id": "sched-k", "url": "https://s.example/k", "dedup_key": "k",
-                                                                            "brand": "gaku", "kind": "締切前", "facts": ["予約K"]}]),
+        (tmp / "stock" / "scheduled" / f"{d4}.json").write_text(json.dumps([sched_row("sched-k", "2026-11-07", url="https://s.example/k",
+                                                                                     dedup_key="k", brand="gaku", kind="締切前",
+                                                                                     facts=["予約K", "申込は11月13日まで"])]),
                                                                encoding="utf-8")
         (tmp / "metrics" / f"plan-{d4}.json").write_text(json.dumps({"articles": [{"slug": "k", "candidate_ids": ["sched-k"]}]}), encoding="utf-8")
         compose.DROP_LOG[d4] = {"k": ("予約K", "校閲ブロック", "R4")}
@@ -5085,9 +6603,38 @@ def test_carry_dropped_candidates(tmp: Path):
         (tmp / "docs" / "_posts" / f"{d5}-k.md").write_text("---\ntitle: k\ncandidate_ids:\n- sched-k\n---\n本文\n", encoding="utf-8")
         hint = compose.review_hint(d5, f"{d5}-k.md", {})
         check("予約K" in hint and "予約に見つからない" not in hint, f"戻した予約の素材が校閲に渡らない: {hint[-200:]}")
+        # 戻した素材を前の号の選定がまた選ばなかった: 外れた記事の記録に載らなくても、締切までは上限の回数まで戻す
+        # (2026-10-14: 戻したログボを選定が外し、締切の 10/15 号に戻らなかった)。選ばれた・締切を過ぎた・戻した印の無い素材は戻さない
+        da, db, dc = "2026-11-20", "2026-11-21", "2026-11-22"
+        tag = {"from": "2026-11-19", "count": 1, "why": "2026-11-19号で記事にならなかった(執筆で見送り)"}
+        (tmp / "candidates" / f"{da}.json").write_text(json.dumps([
+            cand_row("r1", "https://press.example/r1", dedup_key="r1", deadline=dc, carried=tag),
+            cand_row("r2", "https://press.example/r2", dedup_key="r2", deadline=da, carried=tag),
+            cand_row("r3", "https://press.example/r3", dedup_key="r3", carried=tag),
+            cand_row("r4", "https://press.example/r4", dedup_key="r4"),
+            cand_row("r5", "https://press.example/r5", dedup_key="r5", deadline=da),
+        ], ensure_ascii=False), encoding="utf-8")
+        (tmp / "metrics" / f"plan-{da}.json").write_text(json.dumps({"articles": [{"slug": "r3", "candidate_ids": ["r3"]},
+                                                                                  {"slug": "r5", "candidate_ids": ["r5"]}]}), encoding="utf-8")
+        # 外れた記事の経路でも、締切を過ぎた素材は戻さない(監査指摘)
+        (tmp / "metrics" / f"drops-{da}.json").write_text(json.dumps({"r5": {"title": "r5", "stage": "執筆で見送り", "why": "NO_PRIMARY_SOURCE",
+                                                                          "candidate_ids": ["r5"]}}), encoding="utf-8")
+        compose.carry_dropped_candidates(db)
+        got = json.loads((tmp / "candidates" / f"{db}.json").read_text(encoding="utf-8"))
+        check([(x["id"], x["carried"]["from"], x["carried"]["count"]) for x in got] == [("r1", da, 2)] and "選定" in got[0]["carried"]["why"],
+              f"選定が選ばなかった戻し素材を次の号に戻さない・選ばれた/締切を過ぎた/印の無い素材まで戻した: {got}")
+        (tmp / "metrics" / f"plan-{db}.json").write_text(json.dumps({"articles": []}), encoding="utf-8")
+        compose.carry_dropped_candidates(dc)
+        check(not (tmp / "candidates" / f"{dc}.json").exists(), "選定が選ばなかった戻し素材を、上限を超えても戻し続ける")
         by_brand, _, _ = compose.write_plan_index(d1, {x["id"]: x for x in rows}, {})
         subj = next((s for s in by_brand.get("gaku", []) if s["dedup_key"] == "login"), {})
-        check("記事にならなかった" in str(subj.get("carried")), f"選定に、前の号で記事にならなかった理由が見えない: {subj}")
+        # 選定には印だけを見せ、前の号の理由は見せない(選定が前の号の理由で外した。2026-10-14 のログボ)
+        check("記事にならず" in str(subj.get("carried")) and "NO_PRIMARY_SOURCE" not in str(subj.get("carried"))
+              and "公式の告知" not in str(subj.get("carried")),
+              f"選定に、前の号で記事にならなかった印が見えない・前の号の理由まで見せている: {subj}")
+        rules = compose.plan_rules()
+        check("不採用の理由にしない" in rules and "同じ理由で記事にならない" not in rules and "ほかの主題と同じ基準" in rules,
+              "選定の規則が、前の号で記事にならなかった主題を前の号の理由で外させる・既報などの基準を上書きして選ばせる")
     finally:
         compose.ROOT = saved_root
         compose.DROP_LOG.clear()
@@ -5107,8 +6654,8 @@ def test_carry_late_candidates(tmp: Path):
     mdir.mkdir(parents=True)
     w = lambda d, rows: (cdir / f"{d}.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
     r = lambda d: json.loads((cdir / f"{d}.json").read_text(encoding="utf-8"))
-    c = lambda i, u, n=1, v="confirmed", base=None: {"id": i, "url": f"https://e.example/{u}", "verify": v,
-                                                     "facts": [f"{base or i}-{k}" for k in range(n)]}
+    c = lambda i, u, n=1, v="confirmed", base=None: cand_row(i, f"https://e.example/{u}", verify=v,
+                                                             facts=[f"{base or i}-{k}" for k in range(n)])
     saved = compose.ROOT
     try:
         compose.ROOT = tmp
@@ -5161,7 +6708,7 @@ def test_carry_late_candidates(tmp: Path):
           "前の号の遅れた候補を、この号の候補を読む前に写していない")
     plan = src.index("run_plan(")
     check(src.index("args.reuse_plan and plan_saved.exists()") < src.index("record_candidates_read(") < plan,
-          "選定記録を、選定をやり直すとき(--reuse-plan でない)の選定の直前に書いていない")
+          "選定記録(空の記録)を、選定をやり直すとき(--reuse-plan でない)の選定の直前に書いていない")
     own = compose.own_artifacts("2026-10-11")
     check("metrics/candidates-read-2026-10-11.json" in own and "candidates/2026-10-11.json" in own,
           "途中終了の commit に選定記録・写した候補が含まれない")
@@ -5185,6 +6732,18 @@ def test_oncall_ensure_edition(tmp: Path):
     check("origin に無い" in oncall.ensure_edition("edition/2026-09-28", work), "無い号を問題として返さない")
     (work / "a").write_text("2", encoding="utf-8"); g("checkout", "-q", "edition/2026-09-27"); g("commit", "-q", "-am", "2")
     check("食い違う" in oncall.ensure_edition("edition/2026-09-27", work), "ローカルが進んでいるのに揃ったことにした")
+    # 遅れているだけ(取り込みの push が届いたか確かめられずに巻き戻した 等)なら、checkout 中でもそうでなくても早送りで揃える
+    # (監査指摘 2026-10-14)
+    g("push", "-q", "origin", "edition/2026-09-27")
+    for checked_out in (True, False):
+        if checked_out:
+            g("reset", "-q", "--hard", "HEAD~1")
+        else:
+            g("checkout", "-q", "main"); g("branch", "-f", "edition/2026-09-27", "main")
+        check(oncall.ensure_edition("edition/2026-09-27", work) == ""
+              and g("rev-parse", "edition/2026-09-27").stdout == g("rev-parse", "origin/edition/2026-09-27").stdout
+              and not g("status", "--porcelain").stdout and (work / "a").read_text(encoding="utf-8") == ("2" if checked_out else "1"),
+              f"遅れているだけのローカルを早送りで揃えない(checkout 中 {checked_out})")
     # 通信の停滞(timeout)は traceback で落とさず「前提の確認に失敗」(RuntimeError)にする(監査指摘 r89)
     saved_sh = oncall.sh
     try:
@@ -5267,6 +6826,158 @@ def test_oncall_restore_on_exception(tmp: Path):
         oncall.reset_edition, oncall.run_stage, oncall.restore_edition, oncall.notify, oncall.ROOT = saved
 
 
+def test_oncall_restore_to_backup(tmp: Path):
+    """控えへの復元は、控えを作ったあとに commit・push された記事・台帳の変更も控えの中身へ戻し、ローカルとリモートの号を
+    控えのハッシュに揃える(監査指摘 2026-10-14: 控えのあとに未追跡ファイルだけを足す試験では、控えでなく HEAD へ戻す誤りを見逃した)。"""
+    import oncall
+    date, edition = "2026-10-14", "edition/2026-10-14"
+    tmp.mkdir(parents=True, exist_ok=True)
+    remote, work = tmp / "remote.git", tmp / "work"
+    g = lambda *a: subprocess.run(["git", *a], cwd=work, capture_output=True, text=True, check=True).stdout.strip()
+    subprocess.run(["git", "init", "-q", "--bare", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", edition, str(work)], check=True, capture_output=True)
+    g("config", "user.email", "t@example"); g("config", "user.name", "t")
+    post, ledger = work / "docs" / "_posts" / f"{date}-keep.md", work / "stock" / "stories.yml"
+    post.parent.mkdir(parents=True); ledger.parent.mkdir(parents=True)
+    post.write_text("APPROVED", encoding="utf-8"); ledger.write_text("stories: [APPROVED]\n", encoding="utf-8")
+    g("add", "-A"); g("commit", "-q", "-m", "approved")
+    g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", edition)
+    saved = oncall.ROOT
+    try:
+        oncall.ROOT = work
+        before = oncall.untracked_files()
+        backup = oncall.backup_edition(date, edition)
+        approved = g("rev-parse", backup)
+        # 組み直しが記事と台帳を書き換えて commit・push し、未追跡の生成物も残した(控えと HEAD の中身が違う)
+        post.write_text("BROKEN", encoding="utf-8"); ledger.write_text("stories: [BROKEN]\n", encoding="utf-8")
+        g("commit", "-q", "-am", "bad rerun"); g("push", "-q", "origin", edition)
+        (work / "docs" / "_posts" / f"{date}-new.md").write_text("new", encoding="utf-8")
+        oncall.restore_edition(date, edition, backup, before)
+        tip = subprocess.run(["git", "ls-remote", str(remote), f"refs/heads/{edition}"], capture_output=True, text=True).stdout.split()
+        check(post.read_text(encoding="utf-8") == "APPROVED" and ledger.read_text(encoding="utf-8") == "stories: [APPROVED]\n"
+              and not (work / "docs" / "_posts" / f"{date}-new.md").exists(),
+              f"控えの中身(記事・台帳)に戻らない: {post.read_text(encoding='utf-8')!r} / {ledger.read_text(encoding='utf-8')!r}")
+        check(g("rev-parse", edition) == approved and tip[:1] == [approved] and g("branch", "--show-current") == edition
+              and not g("status", "--porcelain"),
+              f"ローカル・リモートの号が控えのハッシュに揃わない(控え {approved[:10]} / ローカル {g('rev-parse', edition)[:10]} / リモート {tip[:1]})")
+    except (RuntimeError, subprocess.CalledProcessError) as e:
+        check(False, f"控えへの復元が失敗した: {e}")
+    finally:
+        oncall.ROOT = saved
+
+
+def test_oncall_merge_push_settles(tmp: Path):
+    """当番の取り込み(main・号への merge と push)は1つの取引。push が非0で終わっても、時間切れ・例外で抜けても、リモートを見て、
+    届いていれば揃えて続け、届いていなければ巻き戻し、号のブランチで終える。確かめられなければ巻き戻し、届いていた分は次の当番が
+    早送りで揃える(監査指摘 2026-10-14: main の push の時間切れで巻き戻しを通らず、ローカルの main だけが進んだまま残り、
+    次の当番も前提の検査で止まって取り込めなかった)。本物の _main を一時リポジトリで走らせ、push と確かめる通信だけに障害を入れる。"""
+    import oncall
+    date, edition = "2026-10-14", "edition/2026-10-14"
+    tmp.mkdir(parents=True, exist_ok=True)
+
+    def g(root, *a):
+        return subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+
+    def ok(root, *a):
+        return subprocess.run(["git", *a], cwd=root, capture_output=True, text=True).returncode == 0
+
+    def repo(name):
+        root, remote = tmp / name, tmp / f"{name}.git"
+        subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+        subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True, capture_output=True)
+        g(root, "config", "user.email", "t@example"); g(root, "config", "user.name", "t")
+        (root / "scripts").mkdir(); (root / "metrics").mkdir()
+        (root / ".gitignore").write_text("metrics/oncall-*\nmetrics/jobs.lock\nmetrics/work/\n", encoding="utf-8")
+        (root / "scripts" / "x.py").write_text("x = 0\n", encoding="utf-8")
+        g(root, "add", "-A"); g(root, "commit", "-q", "-m", "base")
+        g(root, "remote", "add", "origin", str(remote)); g(root, "push", "-q", "-u", "origin", "main")
+        g(root, "checkout", "-q", "-b", edition)
+        (root / "paper.txt").write_text("approved", encoding="utf-8")      # 号の紙面(main には無い)
+        g(root, "add", "-A"); g(root, "commit", "-q", "-m", "paper"); g(root, "push", "-q", "-u", "origin", edition)
+        return root
+
+    real_sh, n = oncall.sh, [0]
+
+    def rounds(stage, d, context, wt, base, *a):
+        n[0] += 1
+        (wt / "scripts" / "x.py").write_text(f"x = {n[0]}\n", encoding="utf-8")
+        head, diff, changed = oncall.freeze(wt, base, 1)
+        return dict(approved=True, fix={"status": "fixed", "rerun_mode": "resume"}, head=head, diff=diff, changed=changed,
+                    kept={}, later=[], error="")
+
+    def faulty(target, how, delivered, blind):
+        # how: push の終わり方(時間切れ・非0の終了・起動の失敗)/ delivered: そのまえにリモートへ届いたか /
+        # blind: そのあと届いたかを確かめる通信も止まる
+        def fake(args, cwd, timeout=600):
+            if args[:2] == ["git", "push"] and args[-1] == target:
+                if delivered:
+                    real_sh(args, cwd, timeout)
+                if how == "nonzero":
+                    return subprocess.CompletedProcess(args, 1, "", "rejected")
+                if how == "oserror":
+                    raise OSError("起動できない")
+                raise subprocess.TimeoutExpired(args, timeout)
+            if blind and args[:2] == ["git", "ls-remote"]:
+                raise subprocess.TimeoutExpired(args, timeout)
+            return real_sh(args, cwd, timeout)
+        return fake
+
+    names = ("ROOT", "sh", "notify", "job_lock", "gather_context", "report_change", "env_fingerprint", "run_rounds", "keep_later",
+             "DEADLINE_AT", "STAGE_END_AT", "RECOVER", "REMOTE_CHECK_PAUSE_SEC")
+    saved, saved_argv, notes = {k: getattr(oncall, k, None) for k in names}, sys.argv, []
+    try:
+        oncall.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        oncall.job_lock = lambda *a, **k: os.open(os.devnull, os.O_RDONLY)
+        oncall.gather_context = lambda *a: "ctx"
+        oncall.report_change = lambda *a, **k: True
+        oncall.env_fingerprint = lambda: ""
+        oncall.run_rounds, oncall.keep_later = rounds, (lambda *a: 0)
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        oncall.RECOVER, oncall.REMOTE_CHECK_PAUSE_SEC = False, 0
+        sys.argv = ["oncall", "--stage", "compose", "--date", date, "--no-rerun"]
+        cases = (("timeout", False, False), ("timeout", True, False), ("timeout", False, True), ("timeout", True, True),
+                 ("nonzero", False, False), ("nonzero", True, False), ("oserror", False, False))
+        for target in ("main", edition):
+            for how, delivered, blind in cases:
+                kind = f"{how}{'-delivered' if delivered else ''}{'-blind' if blind else ''}"
+                where = f"{target} の push が {kind}"
+                root = oncall.ROOT = repo(f"{target.replace('/', '-')}-{kind}")
+                base = g(root, "rev-parse", "main")
+                notes.clear()
+                oncall.sh = faulty(target, how, delivered, blind)
+                try:
+                    code = oncall._main()
+                finally:
+                    oncall.sh = real_sh
+                g(root, "fetch", "-q", "origin")
+                state = dict(exit=code, branch=g(root, "branch", "--show-current"), status=g(root, "status", "--porcelain"))
+                settled = delivered and not blind      # 届いたと確かめられたときだけ取り込めたことにする
+                check(code == (0 if settled else 1) and state["branch"] == edition and not state["status"],
+                      f"{where}: 終わり方・終えるブランチが違う: {state} {notes[-1:]}")
+                for b in ("main", edition):
+                    check(ok(root, "merge-base", "--is-ancestor", b, f"origin/{b}"),
+                          f"{where}: ローカルの {b} がリモートに無い commit を持ったまま残った(次の当番が前提の検査で止まる)")
+                if settled:
+                    check(g(root, "rev-parse", "main") == g(root, "rev-parse", "origin/main") != base
+                          and g(root, "rev-parse", edition) == g(root, "rev-parse", f"origin/{edition}")
+                          and ok(root, "merge-base", "--is-ancestor", "origin/main", f"origin/{edition}"),
+                          f"{where}: 届いていたのに取り込めたことにしない")
+                elif blind:
+                    check(any("確かめられない" in m for m in notes), f"{where}: 届いたか確かめられないことを知らせない: {notes[-1:]}")
+                # 次の当番は前提の検査を通り、新しい修正を main と号へ取り込める
+                notes.clear()
+                code = oncall._main()
+                g(root, "fetch", "-q", "origin")
+                check(code == 0 and g(root, "branch", "--show-current") == edition
+                      and all(g(root, "rev-parse", b) == g(root, "rev-parse", f"origin/{b}") for b in ("main", edition))
+                      and ok(root, "merge-base", "--is-ancestor", "origin/main", f"origin/{edition}"),
+                      f"{where}: 次の当番が取り込めない(exit {code}): {notes[-1:]}")
+    finally:
+        for k, v in saved.items():
+            setattr(oncall, k, v)
+        sys.argv = saved_argv
+
+
 def test_oncall_fix_until_clean(tmp: Path):
     """当番と監査の範囲は「発行に必要な最小限で、今後もちゃんと動く正しい修正」(編集長の整理 2026-09-18)。
     その範囲の指摘(must_fix)は合意するまで直す。発行後でよい指摘(later)は別に保管して、発行してから直す。
@@ -5290,6 +7001,47 @@ def test_oncall_fix_until_clean(tmp: Path):
     check("later" in rs["required"] and rs["properties"]["must_fix"]["items"]["properties"]["severity"]["enum"] == ["blocks_publish", "corrupts_data", "stopgap", "misreport"],
           "監査の schema: later が必須でない、または must_fix に品質・書き方の指摘を入れられる")
     check(all("occurs" in rs["properties"][k]["items"]["required"] for k in ("must_fix", "later")), "監査の schema: 指摘に occurs(起きる道筋)が必須でない")
+    # 監査は実際に走らせる: 走らせたコマンドと結果(verification)が必須。テスト・selfcheck・lint を走らせた記録の無い承認は承認にしない
+    # (2026-10-14: 読み取り専用の監査が走らせないまま承認し、素材ファイルの書式に無い欄で号が止まった。編集長「ずさんな承認は全部ゴミ」)
+    check("verification" in rs["required"] and rs["properties"]["verification"].get("minItems") == 1,
+          "監査の schema: 走らせたコマンドと結果(verification)が必須でない")
+    check("## 0. 走らせること" in rp and "test_pipeline.py" in rp and "lint.py" in rp and "approve しない" in rp,
+          "監査への依頼が、テスト・selfcheck・lint を走らせることを求めていない")
+    # 走らせた = 終了コードがある。テストと selfcheck は 0。「走らせられなかった」の結果文では承認にならない(監査指摘)。lint は号の中身で
+    # 赤になりうるので、走らせた記録があればよい(修正によるかは監査が判断する)
+    cannot = [dict(v, exit_code=None, result="実行できなかった: permission denied") for v in AUDIT_RAN]
+    check(oncall.audit_ran_checks({"verification": AUDIT_RAN})
+          and oncall.audit_ran_checks({"verification": AUDIT_RAN[:2] + [dict(AUDIT_RAN[2], exit_code=1)]})
+          and not oncall.audit_ran_checks({"verification": AUDIT_RAN[:2]})
+          and not oncall.audit_ran_checks({"verification": cannot})
+          and not oncall.audit_ran_checks({"verification": [{k: v for k, v in r.items() if k != "exit_code"} for r in AUDIT_RAN]})
+          and not oncall.audit_ran_checks({"verification": [dict(AUDIT_RAN[0], exit_code=1)] + AUDIT_RAN[1:]})
+          and not oncall.audit_ran_checks({"verification": AUDIT_RAN + [dict(AUDIT_RAN[1], exit_code=1)]})
+          and not oncall.audit_ran_checks({"verification": [dict(v, exit_code=True) for v in AUDIT_RAN]})
+          and not oncall.audit_ran_checks({"verification": cannot + [{"command": "python3 -m py_compile scripts/test_pipeline.py "
+                                                                                 "scripts/selfcheck.py scripts/lint.py",
+                                                                      "exit_code": 0, "result": "ok"}]})
+          and not oncall.audit_ran_checks({}),
+          "走らせた記録の検め方(3つ全部に終了コード・テストと selfcheck は最後の実行が 0・走らせられなかったもの・名前を含むだけの"
+          "別のコマンドは数えない)")
+    # スクリプトを実行したコマンドだけを数える(監査指摘: py_compile の1件で3つを走らせたことになった)
+    for cmd, want in (("python3 scripts/test_pipeline.py", True), ("cd /w/x && timeout 900 python3 scripts/test_pipeline.py", True),
+                      ("TMPDIR=/tmp/a python3 -u scripts/test_pipeline.py 2>&1 | tail -3", True),
+                      ("timeout -k 5 900 /usr/bin/python3.14 /w/x/scripts/test_pipeline.py", True),
+                      ("env A=1 python3 -X dev scripts/test_pipeline.py", True),
+                      ("python3 -m py_compile scripts/test_pipeline.py", False), ("echo python3 scripts/test_pipeline.py", False),
+                      ("cat scripts/test_pipeline.py", False), ("python3 -c 'import scripts/test_pipeline.py'", False),
+                      ("python3 audit_test_pipeline.py", False), ("python3 scripts/test_pipeline.py.bak", False),
+                      ("python3 --help scripts/test_pipeline.py", False), ("python3 -V scripts/test_pipeline.py", False),
+                      ("true || python3 scripts/test_pipeline.py", False), ("true || x && python3 scripts/test_pipeline.py", False),
+                      ("false; python3 scripts/test_pipeline.py", True), ("python3 -B -X dev scripts/test_pipeline.py", True)):
+        check(oncall.runs_script(cmd, "test_pipeline") is want, f"スクリプトを実行したコマンドの見分けが違う: {cmd!r} → {not want}")
+    vi = rs["properties"]["verification"]["items"]
+    check(vi["required"] == ["command", "exit_code", "result"] and vi["properties"]["exit_code"]["type"] == ["integer", "null"],
+          "監査の schema: 走らせた記録に終了コードが必須でない")
+    src_rc = __import__("inspect").getsource(oncall.run_codex)
+    check('"workspace-write"' in src_rc and '"read-only"' not in src_rc and '"worktree", "add", "--detach"' in src_rc
+          and "remove_worktree(aw, cwd)" in src_rc.split("finally:")[-1], "監査を、使い捨ての作業ツリーで書き込みのできる環境として起動していない")
     # 続きから始められる条件
     tmp.mkdir(parents=True, exist_ok=True)
     g = lambda *a: subprocess.run(["git", *a], cwd=tmp, capture_output=True, text=True, check=True).stdout.strip()
@@ -5344,16 +7096,42 @@ def test_oncall_fix_until_clean(tmp: Path):
         check(not r["approved"] and not r["error"] and r["kept"]["head"] == "H%039d" % 3 and [o["id"] for o in r["kept"]["open"]] == ["p1"]
               and sum(1 for t in tr if "integrate" in t) == 2, f"reject が続いたときの往復: {r['kept']} {[list(t) for t in tr]}")
         # (3) 指摘が無くなれば終わる(続きから始めた場合も、監査を通るまで approved にならない)
-        answers = iter([{"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "notes": ""}, {"verdict": "approve", "must_fix": [], "notes": ""}])
+        answers = iter([{"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "notes": ""}, {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""}])
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
         r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
                               {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}]}, "env", [])
         check(r["approved"] and r["kept"]["open"] == [], f"指摘が無くなったのに終わらない: {r}")
+        # (3x) 走らせた記録の無い承認は承認にならず、「走らせていない」を指摘として次の往復へ回す
+        answers = iter([{"verdict": "approve", "must_fix": [], "verification": [{"command": "読んだ", "result": "問題なし"}], "notes": ""},
+                        {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""}])
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
+        tr = []
+        r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
+                              {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}]}, "env", tr)
+        reviews = [t["review"] for t in tr if "review" in t]
+        check(r["approved"] and len(reviews) == 2, f"走らせた記録の無い承認を承認にした: {len(reviews)}回 {r.get('approved')}")
+        # (3y) 3つの検査は当番のコードが自分で走らせ(selfcheck が赤なら監査に進まない)、lint の結果を監査の依頼に載せる
+        #      (監査の自己申告だけを門にすると、走らせない記録で通る道が何度も見つかった。監査指摘)
+        calls, prompts = [], []
+        oncall.sh = lambda args, cwd, timeout=600: (calls.append([str(a) for a in args])
+                                                    or subprocess.CompletedProcess(args, 1 if "scripts/lint.py" in args else 0,
+                                                                                   "lint: 2 errors, 0 warnings\n", ""))
+        answers = iter([{"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""}])
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (prompts.append(prompt) or next(answers))
+        tr = []
+        r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
+                              {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}]}, "env", tr)
+        order = [next((k for k in ("selfcheck.py", "lint.py") if any(a.endswith(k) for a in c)), None) for c in calls]
+        check(r["approved"] and [o for o in order if o] == ["selfcheck.py", "lint.py"] and prompts
+              and "当番のコードが走らせた検査" in prompts[0] and "lint.py --base origin/main: 終了 1: lint: 2 errors" in prompts[0]
+              and any(t.get("code_checks") == {"selfcheck": 0, "lint": 1} for t in tr),
+              f"当番のコードが3つの検査を走らせて結果を監査に渡していない: {order} {prompts[:1] and prompts[0][-300:]}")
+        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
         # (3a) 発行後でよい指摘(later)は approve を妨げず、往復と試行をまたいで重複なしで集まる
         #      起きる道筋(occurs)の無い later は集めない(「schema 上は可能」の類を後の仕事にしない)
         la = {"id": "l1", "claim": "堅牢化A", "evidence": "e", "occurs": "記事が60本を超えた号(月に1〜2回)"}
         answers = iter([{"verdict": "reject", "must_fix": [{"id": "p1", "claim": "c"}], "later": [la], "notes": ""},
-                        {"verdict": "approve", "must_fix": [], "notes": "",
+                        {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": "",
                          "later": [la, {"id": "l2", "claim": "テストB", "evidence": "", "occurs": "毎号"},
                                    {"id": "l9", "claim": "改行が2100個入ったら", "evidence": "schema 上は可能", "occurs": ""}]}])
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
@@ -5365,8 +7143,8 @@ def test_oncall_fix_until_clean(tmp: Path):
         check([x["claim"] for x in oncall.collect_later(tr)] == ["前の試行の分", "堅牢化A", "テストB"], "報告に載せる later が往復の記録から集まらない")
         check("堅牢化A" in oncall.later_text(r["later"]) and "なし" in oncall.later_text([]), "later の報告文")
         # (3c) 保管していた指摘を直す昼の仕事(backlog)では、later も must_fix として直すまで approve にならず、保管にも積まない
-        answers = iter([{"verdict": "approve", "must_fix": [], "notes": "", "later": [la]},
-                        {"verdict": "approve", "must_fix": [], "notes": "", "later": []}])
+        answers = iter([{"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": "", "later": [la]},
+                        {"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": "", "later": []}])
         oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: next(answers)
         tr = []
         r = oncall.run_rounds(oncall.BACKLOG_STAGE, "2026-10-07", "ctx", tmp, "B" * 40, None, "env", tr)
@@ -5691,14 +7469,15 @@ def test_url_alive_verdict():
 def test_reminder_event_date(tmp: Path):
     """続報予約を素材として読むとき、event_date は予約が指す日(締切前は予約の日の3日後、ほかは予約の日)にする。元の話題の開始日を
     渡すと書き手が写し、1か月前の日付の記事として lint の鮮度検査で赤になった(実測 2026-10-12: 9/11 開始の香水予約の締切前)。
-    元の話題の deadline は別の期限(入金期限など)のことがあるので使わない(監査指摘: 10/15 の予約で deadline 11/4)"""
+    元の話題の deadline は別の期限(入金期限など)のことがあるので使わない(監査指摘: 10/15 の予約で deadline 11/4)。
+    出来事の日(occurs_on)の無い古い予約で、その日が予約に書いていないもの(x・noct)は日付を渡さない(執筆が決める。監査指摘)"""
     sdir = tmp / "stock" / "scheduled"
     sdir.mkdir(parents=True)
     rows = [{"id": "sched-2026-10-12-anideal-締切前", "dedup_key": "anideal", "kind": "締切前",
              "event_date": "2026-09-11", "deadline": "2026-10-15", "facts": ["予約期間は2026年9月11日〜10月15日"]},
             {"id": "sched-2026-10-12-x-締切前", "dedup_key": "x", "kind": "締切前", "event_date": "2026-09-01", "facts": []},
             {"id": "sched-2026-10-12-letora-発売", "dedup_key": "letora", "kind": "発売",
-             "event_date": "2026-11-11", "facts": []},
+             "event_date": "2026-11-11", "facts": ["10月12日発売"]},
             {"id": "sched-2026-10-12-tours-終了", "dedup_key": "tours", "kind": "終了",
              "event_date": "2026-08-28", "deadline": "2026-10-12", "facts": []},
             {"id": "sched-2026-10-12-apple-締切前", "dedup_key": "apple", "kind": "締切前",
@@ -5709,12 +7488,12 @@ def test_reminder_event_date(tmp: Path):
     saved = compose.ROOT
     try:
         compose.ROOT = tmp
-        got = {r["dedup_key"]: r["event_date"] for r in compose.load_scheduled("2026-10-12")}
+        got = {r["dedup_key"]: r.get("event_date") for r in compose.load_scheduled("2026-10-12")}
         mats = compose.load_window_candidates("2026-10-12")
     finally:
         compose.ROOT = saved
-    check(got == {"anideal": "2026-10-15", "x": "2026-10-15", "letora": "2026-10-12", "tours": "2026-10-12",
-                  "apple": "2026-10-15", "noct": "2026-10-15"},
+    check(got == {"anideal": "2026-10-15", "x": None, "letora": "2026-10-12", "tours": "2026-10-12",
+                  "apple": "2026-10-15", "noct": None},
           f"続報予約の event_date が予約の日になっていない: {got}")
     check(mats["sched-2026-10-12-anideal-締切前"]["event_date"] == "2026-10-15", "執筆の素材に元の話題の開始日が渡る")
     check(json.loads((sdir / "2026-10-12.json").read_text(encoding="utf-8"))[0]["event_date"] == "2026-09-11",
@@ -5738,13 +7517,2288 @@ def test_reminder_event_date(tmp: Path):
     check(h_plain == "", f"予約の素材を使わない記事に予約の素材が載った: {h_plain!r}")
 
 
+# 実データ stock/scheduled/2026-09-30.json の2件の写し(リポジトリにあればそちらを使う)。ミッションパスは 10/1 4:59 に終わるので、
+# 紙面が届く 06:00 には終わっている → 前日(9/30)の号に予約した。デレステの周年施策は 9/30 23:59 に終わる → 当日の予約
+REAL_SCHED_0930 = [
+    {"id": "sched-2026-09-30-gaku-mission-pass-2026-09-終了", "dedup_key": "gaku-mission-pass-2026-09", "brand": "gaku",
+     "subject": "学マス9月ミッションパス", "kind": "終了",
+     "note": "実際の終了は10/1 4:59。読者に紙面が届く06:00には終わっているため前日に予約", "reserved_on": "2026-09-02",
+     "title": "学マス、9月ミッションパス開催", "url": "https://x.com/gkmas_official/status/2094621274098307424", "source_type": "公式",
+     "facts": ["期間は9月1日から10月1日4時59分までの予定", "無償ジュエルを最大5000個獲得できる", "プレミアム報酬は「おしのび用メガネ」"],
+     "verify": "confirmed", "event_date": "2026-09-01", "src_candidate_id": "202609020238-grok-29"},
+    {"id": "sched-2026-09-30-deresute-11th-anniversary-campaign-2026-終了", "dedup_key": "deresute-11th-anniversary-campaign-2026",
+     "brand": "cg", "subject": "デレステ11周年記念キャンペーン", "kind": "終了", "note": "記念施策終了", "reserved_on": "2026-09-04",
+     "title": "デレステ11周年記念キャンペーン", "url": "https://apis.game.starlight-stage.jp/information/detail/7864/1/10/1",
+     "source_type": "当事者",
+     "facts": ["2026年9月3日に11周年を迎え記念キャンペーンを実施",
+               "プラチナスペシャルガシャセット(リミテッドver/フェスver)の販売期間は9月30日23:59まで",
+               "育成強化キャンペーン等の周年施策も9月30日23:59まで"],
+     "via": "claude", "verify": "confirmed", "src_candidate_id": "202609031835-explore-5", "deadline": "2026-09-30"}]
+# 実データ stock/scheduled/2026-08-26.json の写し: 8/25 19時の配信の結果を翌日の号で伝える予約(予約に 8/26 は書いていない)
+REAL_SCHED_0826_RESULT = {
+    "id": "sched-2026-08-26-shiny-new-idol-teaser-stream-2026-08-25-結果", "dedup_key": "shiny-new-idol-teaser-stream-2026-08-25",
+    "brand": "shiny", "subject": "シャニマス生配信で発表された近日登場アイドル", "kind": "結果", "note": "前日8/25 19時配信の発表内容を回収",
+    "reserved_on": "2026-08-25",
+    "facts": ["シャイニーカラーズ公式が8月24日付で近日登場予定のアイドルをチラ見せし、8月25日(火)19時からの生配信で発表予定と告知",
+              "番組タイトルは「シャニマス生配信 ～8月も意外と暑い～ズSP～」、出演は峯田茉優さん(八宮めぐる役)・前川涼子さん(大崎甜花役)・プロデューサー高山祐介さん",
+              "配信時点では正体は非公開、シャニソン側の最新情報・機能アップデートも予告されている"],
+    "title": "近日登場アイドルをチラ見せ・8月25日生配信で発表予定", "url": "https://x.com/imassc_official/status/2091782560091394410",
+    "source_type": "公式", "verify": "confirmed", "src_candidate_id": "202608242201-grok-22", "event_date": "2026-08-25"}
+
+
+def test_reservation_occurs_on(tmp: Path):
+    """続報予約は、予約の日(記事を出す号)とは別に、予約が指す出来事の日(occurs_on)を持つ。06:00 より前に終わる催しは前日の号に
+    予約するので2つは一致しない(監査指摘 2026-10-14: 実データ sched-2026-09-30-gaku-mission-pass-2026-09-終了 は「10月1日4時59分まで」
+    なのに、執筆・校閲に event_date 9/30 を渡し、記事の frontmatter に誤った日付が書かれても lint は通った)。
+    組版が書いた予約は書式どおりで出来事の日を持ち、執筆・校閲にはそれが渡る。欄の無い古い予約も読め、決められなければ日付を渡さない。"""
+    real_p = Path(__file__).resolve().parent.parent / "stock" / "scheduled" / "2026-09-30.json"
+    real = {r["id"]: r for r in REAL_SCHED_0930}
+    if real_p.exists():
+        real.update({r["id"]: r for r in json.loads(real_p.read_text(encoding="utf-8")) if r.get("id") in real})
+    mp, ds = (real[r["id"]] for r in REAL_SCHED_0930)
+    check(renderlib.date_mentioned("2026-10-01", "10月1日4時59分まで", {2026}) and renderlib.date_mentioned("2026-10-01", "１０月１日まで", {2026})
+          and not renderlib.date_mentioned("2026-09-01", "9/13開催", {2026}), "時刻の続く日付・全角の日付を素材の日付と見ない(9/1 が 9/13 に当たる)")
+    # 1) 組版: 9/2 の号が、ミッションパスの記事の素材から予約する(モデルの答えは出来事の日 10/1 を付けて 9/30 の号に予約)
+    st = tmp / "stock"; (st / "scheduled").mkdir(parents=True)
+    (tmp / "metrics").mkdir(); (tmp / "docs" / "_editions").mkdir(parents=True); (tmp / "docs" / "_posts").mkdir(parents=True)
+    assemble.dump_yaml(st / "stories.yml", [])
+    assemble.dump_yaml(st / "pending.yml", [])
+    cid = mp["src_candidate_id"]
+    mats = {cid: cand_row(cid, mp["url"], title=mp["title"], brand="gaku", dedup_key=mp["dedup_key"], facts=list(mp["facts"]),
+                          event_date=mp["event_date"])}
+    posts = [{"slug": "gaku-mission-pass", "brand": "gaku", "candidate_ids": [cid], "title": "t", "lede": "l", "rank": "small"}]
+    resv = lambda kind, occ, date="2026-09-30": {"slug": "gaku-mission-pass", "candidate_id": cid, "date": date, "occurs_on": occ,
+                                                 "kind": kind, "subject": mp["subject"], "note": mp["note"]}
+    out = {"digest": [], "stories": [], "pending_add": [], "pending_remove": [],
+           "reservations": [resv("終了", "2026-10-01"),                  # 06:00 前に終わる → 前日の号・出来事は翌日
+                            resv("開始", "2026-10-02", "2026-10-01"),    # 開始は予約の日とずれない → 出来事の日を付けずに予約する
+                            resv("締切", "2026-10-02"),                  # 締切のずれは翌日まで(しかも素材に無い日)→ 同上
+                            # 締切前(9/27)の答えの出来事の日(9/30)が素材に無い → 出来事の日だけ外す。予約は残す(締切 10/1 は
+                            # 素材にあり、締切前の4日前にあたる。監査指摘: 出来事の日を外したあとの照合が3日後までしか見ず、予約ごと捨てた)
+                            resv("締切前", "2026-09-30", "2026-09-27")]}
+    ledger = {k: out[k] for k in assemble.LEDGER_KEYS}
+    check(assemble.ledger_out_ok(ledger)
+          and not assemble.ledger_out_ok(dict(ledger, reservations=[{k: v for k, v in resv("終了", "2026-10-01").items() if k != "occurs_on"}])),
+          "組版の答えの書式が、予約の出来事の日を求めていない")
+    inp = {"facts": [], "existing_story": {}, "tomorrow_reservations": [], "pending": [], "subjects": []}
+    saved = (assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS, compose.ROOT, pipelib.ROOT,
+             assemble.classify_source)
+    try:
+        assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = \
+            tmp, st / "stories.yml", st / "scheduled", st / "pending.yml", tmp / "docs" / "_editions"
+        compose.ROOT = pipelib.ROOT = tmp
+        assemble.classify_source = lambda u: "公式"
+        clean, notes = assemble.validate("2026-09-02", out, posts, mats, inp)
+        got = {r["kind"]: r.get("occurs_on") for r in clean["reservations"]}
+        check(got == {"終了": "2026-10-01", "開始": None, "締切": None, "締切前": None} and sum("出来事の日" in n for n in notes) == 3
+              and not any("捨てた" in n for n in notes), f"予約の出来事の日の検め(種別とのずれ・素材の日付)が違う: {got} {notes}")
+        ok4, _ = assemble.validate("2026-09-02", dict(out, reservations=[resv("締切前", "2026-10-01", "2026-09-27")]), posts, mats, inp)
+        check([r.get("occurs_on") for r in ok4["reservations"]] == ["2026-10-01"], f"06:00 前の締切の4日前の締切前の出来事の日を採らない: {ok4}")
+        assemble.apply("2026-09-02", 1, clean, posts, mats, False, stories=[])
+        written = {}
+        for sp in sorted((st / "scheduled").glob("*.json")):
+            text = sp.read_text(encoding="utf-8")
+            check(pipelib.schema_errors(sp, text) == [], f"組版が書いた予約が書式(scheduled.schema)に合わない: {sp.name} {pipelib.schema_errors(sp, text)}")
+            written.update({r["kind"]: r for r in json.loads(text)})
+        end = written.get("終了") or {}
+        check(sorted(written) == ["終了", "締切", "締切前", "開始"] and end.get("occurs_on") == "2026-10-01"
+              and end.get("facts") == mp["facts"] and end.get("reserved_on") == "2026-09-02"
+              and not any("occurs_on" in written.get(k, {}) for k in ("開始", "締切", "締切前")),
+              f"予約が落ちた・予約に出来事の日が残らない・合わない日を残した: {written}")
+        # 2) 9/30 の号: 執筆と校閲の素材の event_date は出来事の日(10/1)。予約の日(9/30)も元の話題の開始日(9/1)も渡さない
+        loaded = {r["kind"]: r for r in compose.load_scheduled("2026-09-30")}
+        check(loaded.get("終了", {}).get("event_date") == "2026-10-01",
+              f"執筆に渡す event_date が出来事の日でない: {loaded.get('終了', {}).get('event_date')}")
+        window = compose.load_window_candidates("2026-09-30")
+        sid = end.get("id", "(予約が無い)")
+        mats_in, _ = renderlib.materials_with_ids([window[sid]] if sid in window else [])
+        art = {"slug": "gaku-mission-pass-end", "brand": "gaku", "rank": "small", "angle": "終了", "candidate_ids": [sid]}
+        prompt = compose.article_prompt("2026-09-30", art, mats_in, [], loaded.get("終了"))
+        check('"event_date": "2026-10-01"' in prompt and '"event_date": "2026-09-30"' not in prompt and '"event_date": "2026-09-01"' not in prompt,
+              "執筆の素材の event_date が出来事の日でない")
+        (tmp / "docs" / "_posts" / "2026-09-30-gaku-mission-pass-end.md").write_text(
+            "---\n" + article_fm("gaku-mission-pass-end", "2026-09-30", candidate_ids=[sid]) + "---\n本文\n", encoding="utf-8")
+        h = compose.review_hint("2026-09-30", "2026-09-30-gaku-mission-pass-end.md", {})
+        i = h.find("## 続報予約の素材")
+        shown = json.loads(h[h.index("\n", i) + 1:]) if i >= 0 else []
+        check([(r["id"], r.get("event_date")) for r in shown] == [(sid, "2026-10-01")], f"校閲の素材の event_date が出来事の日でない: {shown}")
+        # 3) 欄の無い古い予約(実データのまま): 読める。ミッションパスは 9/30 と 10/1 のどちらかを予約の字面から決められないので
+        #    event_date を渡さず執筆が決める(予約の日 9/30・元の話題の開始日 9/1 は渡さない)。デレステ(9/30 23:59)は 9/30
+        old_dir = tmp / "old"
+        (old_dir / "stock" / "scheduled").mkdir(parents=True)
+        (old_dir / "stock" / "scheduled" / "2026-09-30.json").write_text(json.dumps([mp, ds], ensure_ascii=False), encoding="utf-8")
+        compose.ROOT = old_dir
+        old = {r["id"]: r for r in compose.load_scheduled("2026-09-30")}
+        check("event_date" not in old[mp["id"]] and old[ds["id"]].get("event_date") == "2026-09-30",
+              f"古い予約の出来事の日: {[(k, v.get('event_date')) for k, v in old.items()]}")
+        check(json.loads((old_dir / "stock" / "scheduled" / "2026-09-30.json").read_text(encoding="utf-8")) == [mp, ds], "古い予約のファイルを書き換えた")
+        # 前日 19時の配信の結果を翌日の号で伝える古い予約: 予約の日(8/26)は予約に書いていない → 渡さない(監査指摘)
+        (old_dir / "stock" / "scheduled" / "2026-08-26.json").write_text(json.dumps([REAL_SCHED_0826_RESULT], ensure_ascii=False), encoding="utf-8")
+        res26 = compose.load_scheduled("2026-08-26")
+        check(len(res26) == 1 and "event_date" not in res26[0], f"翌日に結果を伝える古い予約に予約の日・元の話題の日を渡した: {res26}")
+    finally:
+        (assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS, compose.ROOT, pipelib.ROOT,
+         assemble.classify_source) = saved
+    # 執筆の依頼文: 続報予約の記事の event_date は予約の出来事の日(素材に無いときも執筆が決められるように)
+    check("続報予約の記事は、その予約の出来事" in (pipelib.PROMPTS / "write-article.md").read_text(encoding="utf-8")
+          and "occurs_on" in (pipelib.PROMPTS / "assemble-ledger.md").read_text(encoding="utf-8"),
+          "依頼文に、続報予約の出来事の日の決め方が無い")
+
+
+FAKE_CODEX = r'''#!/usr/bin/env python3
+# テスト用の偽の codex(本物の子プロセスとして起動される)。依頼の種類と記事(write-<slug> / revise-<slug>)ごとに、呼ばれた回数番目の
+# 手順を FAKE_CODEX_SPEC から引く: touch(作業ツリーのファイルを直接書く・消す)→ answer(最終メッセージ)→ sleep → exit
+import json, os, pathlib, re, sys, time
+spec_p = pathlib.Path(os.environ["FAKE_CODEX_SPEC"])
+m = re.search(r"/metrics/work/[^/]+/(write|revise)-([a-z]+(?:-[a-z]+)*)(?:-\d+)?\.md", sys.argv[-1])
+key = m.group(1) + "-" + m.group(2)
+cnt = spec_p.with_name("count-" + key)
+n = int(cnt.read_text()) if cnt.exists() else 0
+cnt.write_text(str(n + 1))
+steps = json.loads(spec_p.read_text(encoding="utf-8"))[key]
+step = steps[min(n, len(steps) - 1)]
+for rel, text in (step.get("touch") or {}).items():
+    if text is None:
+        pathlib.Path(rel).unlink()
+    else:
+        pathlib.Path(rel).write_text(text, encoding="utf-8")
+if step.get("answer") is not None:
+    pathlib.Path(sys.argv[sys.argv.index("--output-last-message") + 1]).write_text(json.dumps(step["answer"], ensure_ascii=False), encoding="utf-8")
+time.sleep(step.get("sleep", 0))
+sys.exit(step.get("exit", 0))
+'''
+
+
+def test_writer_children(tmp: Path):
+    """執筆・書き直しを本物の子プロセス(偽の codex)で走らせて、採った稿と作業ツリーを検める。
+    - 見出し・リードの Markdown 記法は検算で差し戻す(2026-10-14 監査指摘: `**販売開始**` を採ってから lint が赤にした)
+    - 稿を採ったら、その稿の指紋と F 番号 → 事実の対応を記録し、ファイルに残す(監査指摘: 記録の呼び出しを消してもテストが通った)
+    - 書き直しの子が記事を直接書き換えても採らない。異常終了・時間切れ・適用の拒否のどれでも、記事は控えのまま
+      (監査指摘: 直接書き換えて異常終了した子の変更が残った)"""
+    import contextlib, io, shutil, time
+    import lint as _lint
+    date = "2026-10-14"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    shutil.copytree(Path(__file__).resolve().parent.parent / "schema", tmp / "schema")
+    bindir = tmp / "bin"
+    bindir.mkdir()
+    (bindir / "codex").write_text(FAKE_CODEX, encoding="utf-8")
+    os.chmod(bindir / "codex", 0o755)
+    spec_p = tmp / "spec" / "spec.json"
+    spec_p.parent.mkdir()
+    cand = cand_row("c1", "https://example.com/news", facts=["販売開始", "価格は3000円"], dedup_key="x")
+    _, fmap = renderlib.materials_with_ids([cand])
+    base = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
+            "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "blocks": [{"markdown": "販売を開始する。価格は3000円。", "fact_ids": ["F1", "F2"]}],
+            "tags": ["シンデレラガールズ", "販売"], "sources": [{"url": cand["url"], "label": "公式告知"}], "event_date": None,
+            "new_facts": [], "addressed_issue_ids": []}
+    slugs = ("probe", "alpha", "beta", "gamma", "delta")
+    art = lambda s: {"slug": s, "brand": "cg", "rank": "small", "angle": "知らせ", "candidate_ids": ["c1"], "dedup_key": "x"}
+    plan = {"articles": [art(s) for s in slugs]}
+    path = lambda s: posts / f"{date}-{s}.md"
+    issue = {"rule_id": "R1", "issue": "事実を直す", "quote": "販売を開始する。価格は3000円。", "repair": "rewrite_claim",
+             "expected": "正しく書く", "fact_ids": ["F1"]}
+    fixed = dict(base, addressed_issue_ids=["I1"], blocks=[{"markdown": "販売を開始した。価格は3000円。", "fact_ids": ["F1", "F2"]}])
+    spec = {"write-probe": [{"answer": dict(base, title="**販売開始**", lede="**販売開始**する。")}, {"answer": base}],
+            **{f"write-{s}": [{"answer": base}] for s in slugs[1:]},
+            "revise-probe": [{"answer": fixed}],
+            # 記事を直接書き換え、ほかの記事も書き換え、新しい記事ファイルを作って異常終了
+            "revise-alpha": [{"touch": {f"docs/_posts/{date}-alpha.md": "壊れた直書き", f"docs/_posts/{date}-delta.md": "よその記事も直書き",
+                                        f"docs/_posts/{date}-zeta.md": "勝手に作った記事"}, "answer": fixed, "exit": 1}],
+            # 書き換えて時間切れ
+            "revise-beta": [{"touch": {f"docs/_posts/{date}-beta.md": "時間切れの直書き"}, "answer": fixed, "sleep": 20}],
+            # 書き換え、検算で適用を拒まれる答え(tags 1個)を返す
+            "revise-gamma": [{"touch": {f"docs/_posts/{date}-gamma.md": "拒まれた稿の直書き"}, "answer": dict(fixed, tags=["販売"])}]}
+    spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+    saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_by_key, compose.DEADLINE, os.environ.get("PATH"))
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        compose.classify_source = lambda u: "公式"
+        compose.storylink.prior_by_key = lambda *a: {}
+        compose.DEADLINE = None
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}"
+        os.environ["FAKE_CODEX_SPEC"] = str(spec_p)
+        compose.FACT_MAP.clear()
+        written, aborted = compose.write_articles(date, plan, {"c1": cand}, [], {})
+        # 1) 見出し・リードの Markdown は差し戻され、2回目の稿が採られる。採った記事は lint の検査も通る
+        fm = compose.parse_front_matter(path("probe")) or {}
+        rep = _lint.Report()
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+            _lint.check_plain_text(rep, "-", "title", fm.get("title"))
+            _lint.check_plain_text(rep, "-", "lede", fm.get("lede"))
+        check(sorted(a["slug"] for a in written) == sorted(slugs) and fm.get("title") == base["title"] and rep.errors == 0
+              and (spec_p.parent / "count-write-probe").read_text() == "2",
+              f"見出し・リードの Markdown 記法を差し戻さずに採った: {fm.get('title')!r} {fm.get('lede')!r} lint {rep.errors}件 {aborted}")
+        # 2) 初稿の稿の指紋と事実の対応が記録され、ファイルに残る
+        key0 = renderlib.draft_key(path("probe"))
+        check((compose.FACT_MAP.get(date) or {}).get("probe", {}).get(key0) == fmap,
+              f"初稿を採ったのに事実の対応を記録しない: {compose.FACT_MAP.get(date)}")
+        before = {s: path(s).read_bytes() for s in slugs}
+        by_file = {f"docs/_posts/{date}-{s}.md": [dict(issue)] for s in ("probe", "alpha", "beta", "gamma")}
+        compose.DEADLINE = time.time() + 3      # beta の子だけが時間切れになる
+        res = compose.revise_articles(date, by_file, plan, {"c1": cand}, [])
+        compose.DEADLINE = None
+        # 3) 子の直接の書き込みは、異常終了・時間切れ・適用の拒否のどれでも控えへ戻る(よその記事・新しいファイルも)
+        check(res == {"probe": "fixed", "alpha": "unreadable", "beta": "unreadable", "gamma": "kept"}, f"書き直しの結果: {res}")
+        for s in ("alpha", "beta", "gamma", "delta"):
+            check(path(s).read_bytes() == before[s], f"書き直しの子が直接書き換えた {s} が控えに戻らない: {path(s).read_text(encoding='utf-8')[:40]!r}")
+        check(not path("zeta").exists(), "書き直しの子が勝手に作った記事ファイルが残った")
+        # 4) 改稿を採ると、改稿の指紋の対応も記録され、初稿の対応と合わせてファイルに残る
+        key1 = renderlib.draft_key(path("probe"))
+        check(key1 != key0 and "販売を開始した。" in path("probe").read_text(encoding="utf-8"), "改稿が記事に当たっていない")
+        compose.persist_records(date)
+        rec = json.loads((tmp / "metrics" / f"factmap-{date}.json").read_text(encoding="utf-8"))
+        check(rec.get("probe") == {key0: fmap, key1: fmap} and renderlib.factmap_valid(rec),
+              f"採った稿(初稿・改稿)の指紋と事実の対応がファイルに残らない: {rec.get('probe')}")
+    finally:
+        compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_by_key, compose.DEADLINE = saved[:5]
+        os.environ["PATH"] = saved[5] or ""
+        os.environ.pop("FAKE_CODEX_SPEC", None)
+        compose.FACT_MAP.clear()
+        pipelib.ANOMALIES.clear()
+
+
+def test_restore_files_ledger(tmp: Path):
+    """記事を落としたあとの組み直しが失敗したときの巻き戻し(compose.restore_files)を実際に走らせる: 記事・号・台帳・予約が組み直しの
+    前の中身へバイト単位で戻り、増えた記事は消える。書式のファイルを素通しで書く経路なので、見張りの許可(WRITE_PASSTHROUGH)に理由を
+    書いて載せてある(載せていなければ全テストの終わりの見張りが落ちる。監査指摘: この経路を走らせるテストが無かった)"""
+    date = "2026-10-14"
+    (tmp / "docs" / "_posts").mkdir(parents=True)
+    (tmp / "docs" / "_editions").mkdir(parents=True)
+    (tmp / "stock" / "scheduled").mkdir(parents=True)
+    files = {"docs/_posts/2026-10-14-a.md": "---\n" + article_fm("a", date) + "---\n本文\n",
+             "docs/_editions/2026-10-14.md": "---\nnumber: 30\n---\n",
+             "stock/scheduled/2026-10-20.json": json.dumps([sched_row("s1", date)], ensure_ascii=False),
+             "stock/stories.yml": "- story_id: k\n"}
+    for rel, text in files.items():
+        (tmp / rel).write_text(text, encoding="utf-8")
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        snap = compose.snapshot_files([f"docs/_posts/{date}-*.md", f"docs/_editions/{date}.md", "stock/**/*", "stock/*"])
+        (tmp / "docs" / "_posts" / "2026-10-14-a.md").write_text("壊れた記事", encoding="utf-8")
+        (tmp / "docs" / "_editions" / "2026-10-14.md").unlink()
+        (tmp / "docs" / "_posts" / "2026-10-14-b.md").write_text("増えた記事", encoding="utf-8")
+        (tmp / "stock" / "scheduled" / "2026-10-20.json").write_text("[]", encoding="utf-8")
+        n = len(STRAY_WRITES)
+        compose.restore_files(snap)
+    finally:
+        compose.ROOT = saved
+    check(all((tmp / rel).read_text(encoding="utf-8") == text for rel, text in files.items())
+          and not (tmp / "docs" / "_posts" / "2026-10-14-b.md").exists() and len(STRAY_WRITES) == n,
+          f"組み直しの巻き戻しが戻らない・増えた記事が残る・許可の無い素通しの書き込み: {STRAY_WRITES[n:]}")
+
+
+def test_stray_governed_write_is_caught(tmp: Path):
+    """見張り(_watch_governed_writes)が、本番のコードの素通しの書き込みを控え、write_checked・テストの下準備・書式の無いファイルは控えない。"""
+    (tmp / "candidates").mkdir(parents=True)
+    scripts = Path(__file__).resolve().parent
+    ns: dict = {}
+    code = ("import os\n"
+            "import pipelib\n"
+            "def bad(p):\n    p.write_text('[]', encoding='utf-8')\n"
+            "def bad_open(p):\n    with open(p, 'w', encoding='utf-8') as f:\n        f.write('[]')\n"
+            "def bad_path_open(p):\n    with p.open('a', encoding='utf-8') as f:\n        f.write('')\n"
+            "def bad_bytes(p):\n    p.write_bytes(b'[]')\n"
+            "def bad_move(src, p):\n    os.replace(src, p)\n"
+            "def bad_atomic(p):\n    pipelib.write_atomic(p, '[]')\n"
+            "def read(p):\n    return open(p, encoding='utf-8').read()\n")
+    exec(compile(code, str(scripts / "compose.py"), "exec"), ns)
+    n = len(STRAY_WRITES)
+    target = tmp / "candidates" / "2026-10-01.json"
+    ns["bad"](target)
+    ns["bad_open"](target)
+    ns["bad_path_open"](target)
+    ns["bad_bytes"](target)
+    (tmp / "x.tmp").write_text("[]", encoding="utf-8")
+    ns["bad_move"](tmp / "x.tmp", target)
+    ns["bad_atomic"](target)      # 書式の検査を飛ばした原子的な書き込み(write_checked を通さない write_atomic)
+    caught = [s.split(" →")[0] for s in STRAY_WRITES[n:]]
+    del STRAY_WRITES[n:]
+    ns["bad"](tmp / "candidates" / "notes.txt")
+    ns["read"](target)
+    pipelib.write_checked(tmp / "candidates" / "2026-10-02.json", "[]\n")
+    (tmp / "candidates" / "2026-10-03.json").write_text("[]", encoding="utf-8")
+    check(caught == ["compose.py:4 bad", "compose.py:6 bad_open", "compose.py:9 bad_path_open", "compose.py:12 bad_bytes",
+                     "compose.py:14 bad_move", "compose.py:16 bad_atomic"] and len(STRAY_WRITES) == n,
+          f"見張りが素通しの書き込み(write_text・open・Path.open・write_bytes・os.replace・write_atomic)を控えない・控えなくてよいもの"
+          f"(書式の無いファイル・読むだけ・write_checked・テストの下準備)を控えた: {caught} {STRAY_WRITES[n:]}")
+    del STRAY_WRITES[n:]
+
+
+def test_oncall_collect_rerun_killed_classify(tmp: Path):
+    """当番の収集の取り直しで、出典の判定の取引の途中で収集が SIGKILL されても、当番の後始末は確定(commit)の前に控えから判定表と
+    記事を戻し、作業ツリーを clean にして次の工程の checkout を通す(2026-10-14 取り込みの監査: 先に収集の記録を commit して HEAD が
+    控えと食い違い、判定表と記事が未コミットで残って次の checkout が止まった)。本物の子プロセスと SIGKILL・ローカルの bare origin で。"""
+    import oncall
+    import shutil
+    repo = Path(__file__).resolve().parent.parent
+    root, remote = tmp / "work", tmp / "origin.git"
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True, capture_output=True)
+    g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+    g("config", "user.name", "t"); g("config", "user.email", "t@example.com")
+    for name in ("scripts", "schema", "prompts"):
+        shutil.copytree(repo / name, root / name, dirs_exist_ok=True)
+    for name in ("docs/_posts", "candidates", "metrics", "stock"):
+        (root / name).mkdir(parents=True, exist_ok=True)
+    shutil.copy2(repo / ".gitignore", root / ".gitignore")
+    shutil.copy2(repo / "source_types.yml", root / "source_types.yml")
+    post = root / "docs" / "_posts" / "2026-10-14-a.md"
+    post.write_text("---\n" + article_fm("a", "2026-10-14") + "---\n本文\n", encoding="utf-8")
+    (root / "candidates" / "2026-10-15.json").write_text("[]\n", encoding="utf-8")
+    (root / "stock" / "watch-state.json").write_text("{}\n", encoding="utf-8")
+    # 判定表と記事を書き換えたところで、付け直しの子が親(収集)を SIGKILL する
+    (root / "scripts" / "classify_sources.py").write_text(
+        "from pathlib import Path\np=Path('source_types.yml');p.write_text(p.read_text()+'\\n# txn unfinished\\n')\n", encoding="utf-8")
+    (root / "scripts" / "retag_sources.py").write_text(
+        "from pathlib import Path\nimport os,signal\np=next(Path('docs/_posts').glob('*.md'));p.write_text(p.read_text()+'\\n<!-- txn unfinished -->\\n')\n"
+        "os.kill(os.getppid(),signal.SIGKILL)\n", encoding="utf-8")
+    (root / "scripts" / "collect.py").write_text(
+        "import pipelib\nfrom pathlib import Path\nPath('metrics/2026-10-15.json').write_text('{\"collect\":[{\"added\":1}]}')\n"
+        "pipelib.classify_retag_lint('2026-10-15')\n", encoding="utf-8")
+    g("add", "."); g("commit", "-qm", "base"); g("remote", "add", "origin", str(remote)); g("push", "-qu", "origin", "main")
+    branch = "edition/2026-10-15"
+    g("checkout", "-qb", branch); g("push", "-qu", "origin", branch)
+    table_before, post_before = (root / "source_types.yml").read_text(encoding="utf-8"), post.read_text(encoding="utf-8")
+    saved = (pipelib.ROOT, oncall.ROOT, pipelib.notify, oncall.notify, pipelib.escalate)
+    try:
+        pipelib.ROOT = oncall.ROOT = root
+        pipelib.notify = oncall.notify = lambda *a, **k: True
+        pipelib.escalate = lambda *a, **k: True
+        code = oncall.rerun_stage("collect", "2026-10-15", branch, False)
+        dirty = g("status", "--porcelain")
+        ok = pipelib.checkout_edition_branch("2026-10-15", "compose")
+    finally:
+        pipelib.ROOT, oncall.ROOT, pipelib.notify, oncall.notify, pipelib.escalate = saved
+    kept_metric = '"added":1' in g("show", f"origin/{branch}:metrics/2026-10-15.json").replace(" ", "")
+    check(code == -9 and not dirty and ok and (root / "source_types.yml").read_text(encoding="utf-8") == table_before
+          and post.read_text(encoding="utf-8") == post_before and not (root / pipelib.TXN_JOURNAL).exists() and kept_metric,
+          f"収集が判定の取引の途中で殺されたあと、当番の後始末が判定表と記事を戻してから確定しない: exit {code} / dirty {dirty!r} / "
+          f"checkout {ok} / 記録を確定 {kept_metric}")
+
+
+def test_failed_rollback_blocks_commit(tmp: Path):
+    """出典の判定の取引を戻せなかった(書き込めない 等)まま、収集・組版の途中終了の後始末が確定(commit)しない。確定すると HEAD が
+    控えと食い違い、書き込めるようになっても二度と戻せない(2026-10-14 取り込みの監査)。戻せるようになれば控えから戻せる。
+    本物の子プロセス・SIGTERM・実 Git で、収集(settle_interrupted)と組版(_leave_tree_clean)の両方を通す。"""
+    import shutil
+    repo = Path(__file__).resolve().parent.parent
+    root, remote = tmp / "work", tmp / "origin.git"
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True, capture_output=True)
+    g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+    g("config", "user.name", "t"); g("config", "user.email", "t@example.com")
+    for name in ("scripts", "schema", "prompts"):
+        shutil.copytree(repo / name, root / name, dirs_exist_ok=True)
+    for name in ("docs/_posts", "candidates", "metrics", "stock"):
+        (root / name).mkdir(parents=True, exist_ok=True)
+    shutil.copy2(repo / ".gitignore", root / ".gitignore")
+    shutil.copy2(repo / "source_types.yml", root / "source_types.yml")
+    post = root / "docs" / "_posts" / "2026-10-14-a.md"
+    post.write_text("---\n" + article_fm("a", "2026-10-14") + "---\n本文\n", encoding="utf-8")
+    (root / "candidates" / "2026-10-15.json").write_text("[]\n", encoding="utf-8")
+    (root / "stock" / "watch-state.json").write_text("{}\n", encoding="utf-8")
+    (root / "scripts" / "classify_sources.py").write_text(
+        "def unresolved_post_sources(*a,**k): return []\nif __name__ == '__main__':\n from pathlib import Path\n"
+        " p=Path('source_types.yml');p.write_text(p.read_text()+'\\n# txn unfinished\\n')\n", encoding="utf-8")
+    # 記事を書き換えて書き込めなくし(戻しが失敗する)、親に SIGTERM を送る
+    (root / "scripts" / "retag_sources.py").write_text(
+        "from pathlib import Path\nimport os,signal,time\np=next(Path('docs/_posts').glob('*.md'));p.write_text(p.read_text()+'\\n<!-- txn unfinished -->\\n')\n"
+        "p.chmod(0o444)\nos.kill(os.getppid(),signal.SIGTERM)\ntime.sleep(30)\n", encoding="utf-8")
+    g("add", "."); g("commit", "-qm", "base"); g("remote", "add", "origin", str(remote)); g("push", "-qu", "origin", "main")
+    branch = "edition/2026-10-15"
+    g("checkout", "-qb", branch); g("push", "-qu", "origin", branch)
+    original_post, original_table = post.read_bytes(), (root / "source_types.yml").read_bytes()
+    common = ("import sys,signal,os;sys.path.insert(0,'scripts');import pipelib,collect,compose;from pathlib import Path\n"
+              "pipelib.set_quiet(True);pipelib.notify=collect.notify=compose.notify=lambda *a,**k: True\n"
+              "Path('metrics/2026-10-15.json').write_text('{\"collect\":[{\"added\":1}]}')\n")
+    programs = {"collect": ("signal.signal(signal.SIGTERM,collect._on_sigterm)\ntry:\n pipelib.classify_retag_lint('2026-10-15')\n"
+                            "except BaseException as e:\n collect.settle_interrupted('2026-10-15','edition/2026-10-15',e)\n sys.exit(143)\n"),
+                "compose": ("compose.STARTED_ON='edition/2026-10-15';compose.STARTED_DATE='2026-10-15'\ndef handler(s,f):\n"
+                            " compose._leave_tree_clean('SIGTERM')\n os._exit(143)\nsignal.signal(signal.SIGTERM,handler)\n"
+                            "pipelib.classify_retag_lint('2026-10-15',lint=False)\n")}
+    results = {}
+    saved = (pipelib.ROOT, pipelib.notify)
+    try:
+        for name, program in programs.items():
+            head = g("rev-parse", "HEAD")
+            r = subprocess.run([sys.executable, "-c", common + program], cwd=root, capture_output=True, text=True, timeout=60)
+            moved = head != g("rev-parse", "HEAD")
+            post.chmod(0o644)          # 書き込めるようになった
+            pipelib.ROOT, pipelib.notify = root, (lambda *a, **k: True)
+            back = pipelib.recover_classify_txn()
+            results[name] = (r.returncode, moved, back, post.read_bytes() == original_post,
+                             (root / "source_types.yml").read_bytes() == original_table)
+            g("checkout", "-q", "--", "."); g("clean", "-qfd", "--", "metrics")
+    finally:
+        pipelib.ROOT, pipelib.notify = saved
+    check(all(code == 143 and not moved and "戻した" in back and post_ok and table_ok
+              for code, moved, back, post_ok, table_ok in results.values()) and len(results) == 2,
+          f"判定の取引を戻せないまま、途中終了の後始末が確定した・書き込めるようになっても戻せない: {results}")
+
+
+def test_compose_run_derive(tmp: Path):
+    """組版の派生(compose.run_derive): 成功は True、失敗(0 以外の終了・スクリプトが無い)は終了コードと最後の行を異常として申告して
+    False。組版は derive を run_derive だけで呼ぶ(監査指摘 2026-10-14: 5か所とも終了コードを見ず、derive が落ちても黙って lint へ進んだ)。"""
+    (tmp / "scripts").mkdir(parents=True)
+    fake = tmp / "scripts" / "derive.py"
+    saved, seen = (compose.ROOT, compose.anomaly), []
+    try:
+        compose.ROOT = tmp
+        compose.anomaly = lambda job, text: seen.append(text)
+        fake.write_text("import sys\nsys.exit(0)\n", encoding="utf-8")
+        ok = compose.run_derive("2026-10-05")
+        fake.write_text("import sys\nprint('途中', file=sys.stderr)\nprint('ranking が作れない', file=sys.stderr)\nsys.exit(3)\n",
+                        encoding="utf-8")
+        bad = compose.run_derive("2026-10-05")
+        fake.unlink()
+        missing = compose.run_derive("2026-10-05")
+    finally:
+        compose.ROOT, compose.anomaly = saved
+    check(ok is True and bad is False and missing is False and len(seen) == 2
+          and "終了 3" in seen[0] and "ranking が作れない" in seen[0] and "終了 2" in seen[1],
+          f"組版の派生の失敗を申告しない・成功を失敗にした: {ok} {bad} {missing} {seen}")
+    src = Path(compose.__file__).read_text(encoding="utf-8")
+    check(src.count('"derive.py"') == 1, "組版が派生(derive.py)を run_derive を通さずに呼んでいる(終了コードを見ない)")
+
+
+def test_derive_write(tmp: Path):
+    """derive --write(号の最後の形)を見張りの下で通す: 書式で検めて書き、素通しの書き込みが無い(監査指摘: derive の書き込みを
+    素通しに変えてもテストが通った)。組み立て途中の号(ranking が空)から、最後の形(ranking 8件・数・誕生日)を書く。"""
+    import derive
+    import shutil
+    import yaml
+    d = "2026-10-03"
+    posts, eds, data = tmp / "docs" / "_posts", tmp / "docs" / "_editions", tmp / "docs" / "_data"
+    for p in (posts, eds, data, tmp / "candidates"):
+        p.mkdir(parents=True, exist_ok=True)
+    real = Path(__file__).resolve().parent.parent / "docs" / "_data" / "idols.json"
+    shutil.copy(real, data / "idols.json")
+    names = [x["name"] for x in json.loads(real.read_text(encoding="utf-8"))[:8]]
+    (posts / f"{d}-a.md").write_text("---\n" + article_fm("a", d, rank="lead", title="a") + "---\n" + "、".join(names) + "が出演する。\n",
+                                     encoding="utf-8")
+    (eds / f"{d}.md").write_text(
+        f"---\nnumber: 15\ndate: '{d}'\nweekday: 土\nissued_at: '{d}T06:00:00+09:00'\npages: 0\narticle_count: 0\ncorrected_count: 0\n"
+        "lead_slug: a\ndigest:\n- label: 本日\n  rows:\n  - k: 発\n    t: A\n    d: ''\n    brand: cg\n    slug: a\n"
+        "- label: 昨日\n  rows: []\n- label: 継続中\n  rows: []\n- label: 明日\n  rows: []\nranking: []\nbirthdays: []\n---\n", encoding="utf-8")
+    saved, n = (derive.ROOT, sys.argv), len(STRAY_WRITES)
+    try:
+        derive.ROOT, sys.argv = tmp, ["derive.py", "--date", d, "--write"]
+        rc = derive.main()
+    finally:
+        derive.ROOT, sys.argv = saved
+    text = (eds / f"{d}.md").read_text(encoding="utf-8")
+    fm = yaml.safe_load(text.split("\n---\n", 1)[0].lstrip("-\n"))
+    check(rc == 0 and len(fm.get("ranking") or []) == 8 and fm.get("article_count") == 1
+          and pipelib.schema_errors(eds / f"{d}.md", text) == [] and len(STRAY_WRITES) == n,
+          f"derive の書き込みが最後の形を書式どおりに書かない・素通しで書いた: rc={rc} {fm.get('ranking')} {STRAY_WRITES[n:]}")
+
+
+def test_canonicalize_and_assign_ranks(tmp: Path):
+    """組版の記事の書き直し(計画への固定項目の写し・枠の割り当て)を見張りの下で通す。どちらも書式どおりに書き、素通しで書かない
+    (監査指摘: この2つの書き込みを素通しに変えても全テストが通った)。"""
+    import yaml
+    d = "2026-10-03"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    a, b = posts / f"{d}-a.md", posts / f"{d}-b.md"
+    # 執筆の転記が計画と食い違う(slug・号・面・候補)・出典の種別が判定表と違う・訂正欄が初期値でない
+    a.write_text("---\n" + article_fm("wrong", "2026-01-01", brand="other", candidate_ids=["zz"], corrected=True, src="公式",
+                                      sources=[{"label": "l1", "url": "https://a.example/1", "type": "公式"}])
+                 + "---\n" + "あ" * 800 + "\n", encoding="utf-8")
+    b.write_text("---\n" + article_fm("b", d, candidate_ids=["c2"]) + "---\n" + "い" * 100 + "\n", encoding="utf-8")
+    art_a = {"slug": "a", "brand": "cg", "rank": "small", "candidate_ids": ["c1"]}
+    art_b = {"slug": "b", "brand": "cg", "rank": "small", "candidate_ids": ["c2"]}
+    saved, n = compose.ROOT, len(STRAY_WRITES)
+    try:
+        compose.ROOT = tmp
+        compose.canonicalize_article(d, art_a, {"c1": cand_row("c1", "https://a.example/1")})
+        compose.assign_ranks(d, {"articles": [{"slug": "a", "lead_score": 10}, {"slug": "b", "lead_score": 50}]}, [art_a, art_b])
+    finally:
+        compose.ROOT = saved
+    fm = lambda p: yaml.safe_load(p.read_text(encoding="utf-8").split("\n---\n", 1)[0].lstrip("-\n"))
+    fa, fb_ = fm(a), fm(b)
+    want_type = compose.classify_source("https://a.example/1")
+    check((fa["slug"], str(fa["edition"]), fa["brand"], fa["candidate_ids"], fa["corrected"]) == ("a", d, "cg", ["c1"], False)
+          and fa["sources"][0]["type"] == want_type and fa["src"] == want_type and fa["rank"] == "large" and fb_["rank"] == "lead"
+          and all(pipelib.schema_errors(p, p.read_text(encoding="utf-8")) == [] for p in (a, b)) and len(STRAY_WRITES) == n,
+          f"固定項目の写し・枠の割り当てが書式どおりに書かない・素通しで書いた: {fa} {fb_.get('rank')} {STRAY_WRITES[n:]}")
+
+
+def test_rewrite_past_apply_answer(tmp: Path):
+    """過去記事の書き直しの差し替え(rewrite_past.apply_answer)と枠の付け直し(fix_rank)を見張りの下で通す: 元の記録(訂正・号・slug・
+    候補)を残して内容を差し替え、短くなった記事の枠を付け直し、書式どおりに書く(監査指摘: 素通しに変えても全テストが通った)。"""
+    import rewrite_past
+    import yaml
+    d = "2026-09-12"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    p = posts / f"{d}-x.md"
+    p.write_text("---\n" + article_fm("x", d, rank="large", candidate_ids=["c1"], title="旧見出し") + "---\n旧本文\n", encoding="utf-8")
+    mats, _ = renderlib.materials_with_ids(MATS)
+    n = len(STRAY_WRITES)
+    problems = rewrite_past.apply_answer(p, {"materials": mats, "rank": "small", "date": d}, OK)
+    text = p.read_text(encoding="utf-8")
+    fm = yaml.safe_load(text.split("\n---\n", 1)[0].lstrip("-\n"))
+    check(problems == [] and fm["title"] == OK["title"] and fm["slug"] == "x" and fm["candidate_ids"] == ["c1"] and fm["rank"] == "small"
+          and "旧本文" not in text and not p.with_suffix(".rewrite.tmp").exists()
+          and pipelib.schema_errors(p, text) == [] and len(STRAY_WRITES) == n,
+          f"過去記事の差し替え・枠の付け直しが書式どおりに書かない・素通しで書いた: {problems} {fm.get('rank')} {STRAY_WRITES[n:]}")
+
+
+def test_restore_files(tmp: Path):
+    """落とした後の組版が失敗したときの巻き戻し(compose.restore_files): 控えた記事・号・予約をバイト単位で戻し、後から増えた
+    ファイルを消す。書式に合わない古い中身でも戻す(見張りの許可の理由。監査指摘: この経路をテストが通っていなかった)。"""
+    d = "2026-10-05"
+    for sub in ("docs/_posts", "docs/_editions", "stock/scheduled"):
+        (tmp / sub).mkdir(parents=True, exist_ok=True)
+    a, b = tmp / "docs" / "_posts" / f"{d}-a.md", tmp / "docs" / "_posts" / f"{d}-b.md"
+    ed, sc = tmp / "docs" / "_editions" / f"{d}.md", tmp / "stock" / "scheduled" / "2026-10-08.json"
+    a.write_bytes(("---\n" + article_fm("a", d) + "---\n本文\n").encode("utf-8"))
+    b.write_bytes(b"---\ntitle: old form\n---\n")          # 書式の古い記事も、控えたとおりに戻す
+    ed.write_bytes(b"---\nnumber: 1\n---\n")
+    sc.write_bytes(b"[]\n")
+    before = {p: p.read_bytes() for p in (a, b, ed, sc)}
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        snap = compose.snapshot_files([f"docs/_posts/{d}-*.md", f"docs/_editions/{d}.md", "stock/scheduled/*.json"])
+        a.write_text("changed", encoding="utf-8")
+        b.unlink()
+        ed.write_text("changed", encoding="utf-8")
+        new = tmp / "docs" / "_posts" / f"{d}-new.md"
+        new.write_text("new", encoding="utf-8")
+        compose.restore_files(snap)
+    finally:
+        compose.ROOT = saved
+    check(all(p.exists() and p.read_bytes() == v for p, v in before.items()) and not new.exists(),
+          "落とした後の組版の巻き戻しが、控えた中身へ戻さない・後から増えた記事を残す")
+
+
+def test_run_codex_isolation(tmp: Path):
+    """監査(run_codex)は使い捨ての作業ツリーで動く: CLI の -C とプロセスの cwd がそこを指し、呼び出し元の作業ツリーに何も残さず、
+    CLI が失敗しても片付ける(監査指摘: -C を呼び出し元に変えても全テストが通った)。偽の codex を PATH の先頭に置いて実際に起動する。"""
+    import oncall
+    repo, bindir = tmp / "repo", tmp / "bin"
+    repo.mkdir(parents=True)
+    bindir.mkdir()
+    g = lambda *a: subprocess.run(["git", *a], cwd=repo, capture_output=True, text=True, check=True).stdout
+    g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
+    (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
+    log, fail_flag = tmp / "codex-calls.jsonl", tmp / "fail"
+    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "notes": ""}, ensure_ascii=False)
+    fake = bindir / "codex"
+    fake.write_text(f"#!{sys.executable}\n"
+                    "import json, os, sys\n"
+                    "a = sys.argv[1:]\n"
+                    "c, o = a[a.index('-C') + 1], a[a.index('-o') + 1]\n"
+                    f"open({str(log)!r}, 'a').write(json.dumps({{'C': c, 'cwd': os.getcwd()}}) + '\\n')\n"
+                    "open(os.path.join(c, 'written-by-audit'), 'w').write('x')\n"
+                    "open('cwd-written', 'w').write('x')\n"
+                    f"if os.path.exists({str(fail_flag)!r}):\n    sys.exit(1)\n"
+                    f"open(o, 'w', encoding='utf-8').write({answer!r})\n", encoding="utf-8")
+    fake.chmod(0o755)
+    schema = Path(__file__).resolve().parent.parent / "schema" / "oncall-review.schema.json"
+    clean = lambda: (g("status", "--porcelain") == "" and not (repo / "written-by-audit").exists() and not (repo / "cwd-written").exists()
+                     and sum(1 for ln in g("worktree", "list", "--porcelain").splitlines() if ln.startswith("worktree ")) == 1)
+    saved_path, saved_root = os.environ.get("PATH", ""), pipelib.ROOT
+    try:
+        os.environ["PATH"] = f"{bindir}:{saved_path}"
+        pipelib.ROOT = tmp           # 生の出力の控え(save_raw)も一時ディレクトリへ
+        ans = oncall.run_codex("監査して", schema, repo)
+        ok_run = ans.get("verdict") == "approve" and clean()
+        fail_flag.write_text("1")
+        failed = False
+        try:
+            oncall.run_codex("監査して", schema, repo)
+        except RuntimeError:
+            failed = True
+        ok_fail = failed and clean()
+    finally:
+        os.environ["PATH"], pipelib.ROOT = saved_path, saved_root
+    calls = [json.loads(ln) for ln in log.read_text(encoding="utf-8").splitlines()] if log.exists() else []
+    real = os.path.realpath
+    ok_place = len(calls) == 2 and all(real(c["C"]) == real(c["cwd"]) != real(str(repo)) and not Path(c["C"]).exists() for c in calls)
+    check(ok_run and ok_fail and ok_place,
+          f"監査が使い捨ての作業ツリーで動かない・呼び出し元に書き込みが残る・失敗で片付かない: {ok_run} {ok_fail} {ok_place} {calls}")
+
+
+def test_remove_worktree(tmp: Path):
+    """監査用の使い捨ての作業ツリーは、git で消せなくても片付け、片付けられなければ異常として申告する(黙って残さない。監査指摘)。"""
+    import oncall
+    repo = tmp / "repo"
+    repo.mkdir(parents=True)
+    g = lambda *a: subprocess.run(["git", *a], cwd=repo, capture_output=True, text=True, check=True).stdout
+    g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
+    (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
+    listed = lambda aw: f"worktree {aw}" in g("worktree", "list", "--porcelain").splitlines()
+    saved_sh, saved_rmtree, saved_anomaly, seen = oncall.sh, oncall.shutil.rmtree, oncall.anomaly, []
+    try:
+        oncall.anomaly = lambda job, text: seen.append(text)
+        aw = tmp / "aw1"
+        g("worktree", "add", "-q", "--detach", str(aw), "HEAD")
+        oncall.remove_worktree(aw, repo)
+        ok_normal = not aw.exists() and not listed(aw) and not seen
+        # git worktree remove だけが失敗: ディレクトリを消して登録を掃除する
+        aw = tmp / "aw2"
+        g("worktree", "add", "-q", "--detach", str(aw), "HEAD")
+        oncall.sh = lambda args, cwd, timeout=600: (subprocess.CompletedProcess(args, 1, "", "fatal: injected")
+                                                    if args[:3] == ["git", "worktree", "remove"] else saved_sh(args, cwd, timeout))
+        oncall.remove_worktree(aw, repo)
+        ok_fallback = not aw.exists() and not listed(aw) and not seen
+        # ディレクトリも消せない: 異常として申告する
+        aw = tmp / "aw3"
+        g("worktree", "add", "-q", "--detach", str(aw), "HEAD")
+        oncall.shutil.rmtree = lambda *a, **k: None
+        oncall.remove_worktree(aw, repo)
+        ok_report = aw.exists() and len(seen) == 1 and "片付けられない" in seen[0]
+    finally:
+        oncall.sh, oncall.shutil.rmtree, oncall.anomaly = saved_sh, saved_rmtree, saved_anomaly
+    check(ok_normal and ok_fallback and ok_report,
+          f"監査用の作業ツリーの片付け(普通に消す・git で消せなければディレクトリを消す・それも無理なら申告): {ok_normal} {ok_fallback} {ok_report} {seen}")
+
+
+def test_write_checked_contract(tmp: Path):
+    """write_checked: テスト(strict)では書式に合わない中身で例外にして元のファイルを変えない。本番では書いて異常を申告する。
+    差し替えに失敗しても元のファイルを保ち、一時ファイルを残さない。一時ファイルは書く先と同じディレクトリで、Git の対象外の名前
+    (監査指摘: 検査を空にしても全テストが通った・別の置き場からの差し替えが EXDEV で止まり一時ファイルが残った)。"""
+    d = tmp / "candidates"
+    d.mkdir(parents=True)
+    p = d / "2026-10-05.json"
+    good = json.dumps([cand_row("c1", "https://a.example/1")], ensure_ascii=False) + "\n"
+    bad = json.dumps([cand_row("c1", "https://a.example/1", unknown_field=1)], ensure_ascii=False) + "\n"
+    pipelib.write_checked(p, good)
+    raised = False
+    try:
+        pipelib.write_checked(p, bad)
+    except pipelib.SchemaViolation as e:
+        raised = "candidates.schema.json" in str(e)
+    check(raised and p.read_text(encoding="utf-8") == good, "テストで書式に合わない中身を書かせても例外にならない・元のファイルを変えた")
+    saved_anomaly, seen = pipelib.anomaly, []
+    os.environ.pop("IMAS_STRICT_WRITES")
+    try:
+        pipelib.anomaly = lambda stage, msg, *a, **k: seen.append((stage, msg))
+        pipelib.write_checked(p, bad)
+    finally:
+        os.environ["IMAS_STRICT_WRITES"] = "1"
+        pipelib.anomaly = saved_anomaly
+    check(p.read_text(encoding="utf-8") == bad and len(seen) == 1 and seen[0][0] == "schema" and "unknown_field" in seen[0][1],
+          f"本番で書式に合わない中身を書かない・異常として申告しない: {seen}")
+    # 差し替えの失敗(EXDEV 等): 元のファイルを保ち、一時ファイルを残さない
+    pipelib.write_checked(p, good)
+    saved_replace, used = pipelib.os.replace, []
+
+    def failing_replace(src, dst):
+        used.append(Path(src).parent)
+        raise OSError(18, "Invalid cross-device link")
+    pipelib.os.replace = failing_replace
+    try:
+        failed = False
+        try:
+            pipelib.write_checked(p, json.dumps([cand_row("c2", "https://a.example/2")]) + "\n")
+        except OSError:
+            failed = True
+    finally:
+        pipelib.os.replace = saved_replace
+    left = [x.name for x in d.iterdir() if x.name != p.name]
+    check(failed and p.read_text(encoding="utf-8") == good and not left and used == [d],
+          f"差し替えに失敗したとき元のファイルを保たない・一時ファイルを残した・一時ファイルが書く先と別の置き場: {left} {used}")
+    ign = subprocess.run(["git", "check-ignore", "-q", "--no-index", f"candidates/.{p.name}.123.tmp"],
+                         cwd=Path(__file__).resolve().parent.parent, capture_output=True)
+    check(ign.returncode == 0, "write_checked の一時ファイルの名前が .gitignore の対象でない(止まって残ると作業ツリーを汚す)")
+
+
+RELEASE_DAY = "2026-10-14"
+
+
+def _release_fixture(base: Path, conflict: bool = False, ahead: bool = False) -> tuple[Path, Path]:
+    """発行の試験用の Git(本物の origin には触らない): 手元の bare を origin にした clone。main に1つ、
+    edition/RELEASE_DAY に号の commit を1つ(origin へ push 済み)。conflict は main と edition で同じファイルを別々に変える。
+    ahead は edition に origin へ出していない commit を1つ足す。戻りは (作業ツリー, bare)。"""
+    bare, repo = base / "origin.git", base / "work"
+    base.mkdir(parents=True)
+
+    def g(*a, cwd=repo):
+        return subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True, check=True)
+    g("init", "-q", "--bare", "-b", "main", str(bare), cwd=base)
+    g("clone", "-q", str(bare), str(repo), cwd=base)
+    g("symbolic-ref", "HEAD", "refs/heads/main")
+    g("config", "user.email", "t@example.com")
+    g("config", "user.name", "t")
+    (repo / "x").write_text("base\n", encoding="utf-8")
+    g("add", "-A")
+    g("commit", "-qm", "base")
+    g("push", "-q", "-u", "origin", "main")
+    g("checkout", "-q", "-b", f"edition/{RELEASE_DAY}")
+    ed = repo / "docs" / "_editions" / f"{RELEASE_DAY}.md"
+    ed.parent.mkdir(parents=True)
+    ed.write_text("---\nnumber: 58\narticle_count: 1\n---\n", encoding="utf-8")
+    if conflict:
+        (repo / "x").write_text("edition\n", encoding="utf-8")
+    g("add", "-A")
+    g("commit", "-qm", "edition")
+    g("push", "-q", "-u", "origin", f"edition/{RELEASE_DAY}")
+    if ahead:
+        (repo / "local").write_text("組み直した commit(まだ push していない)\n", encoding="utf-8")
+        g("add", "-A")
+        g("commit", "-qm", "local")
+    if conflict:
+        g("checkout", "-q", "main")
+        (repo / "x").write_text("main\n", encoding="utf-8")
+        g("commit", "-qam", "main changed")
+        g("push", "-q", "origin", "main")
+        g("checkout", "-q", f"edition/{RELEASE_DAY}")
+    return repo, bare
+
+
+def _git_out(cwd: Path, *a) -> str:
+    return subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True).stdout.strip()
+
+
+class _ReleaseEnv:
+    """release.main を手元の Git だけで走らせる: 校閲・発行前の lint・配信・排他・当番・通知を偽物にする(この試験は Git の扱いを見る)。"""
+
+    def __init__(self, repo: Path, dry: bool = False):
+        import release
+        self.r, self.repo, self.dry = release, repo, dry
+        self.notes: list[tuple[bool, str]] = []
+        self.escalated: list[str] = []
+        self.deployed: list[bool] = []
+
+    def __enter__(self):
+        r = self.r
+        real_run = subprocess.run
+
+        def run(cmd, *a, **k):
+            if len(cmd) > 1 and str(cmd[1]).endswith("lint.py"):
+                return subprocess.CompletedProcess(cmd, 0, "lint: 0 errors\n", "")
+            return real_run(cmd, *a, **k)
+        self.saved = (r.ROOT, r.notify, r.review_verdict, r.deploy_site, r.DRY_RUN, subprocess.run, pipelib.job_lock,
+                      pipelib.dedupe_source_table, pipelib.escalate, sys.argv)
+        r.ROOT = self.repo
+        r.notify = lambda msg, ok=True: self.notes.append((ok, msg))
+        r.review_verdict = lambda d: ("approve", "試験")
+        r.deploy_site = lambda: self.deployed.append(True) or "配信済み(試験)。"
+        subprocess.run = run
+        pipelib.job_lock = lambda *a, **k: None
+        pipelib.dedupe_source_table = lambda *a, **k: []
+        pipelib.escalate = lambda stage, date, reason, **k: self.escalated.append(f"{stage}: {reason}") or True
+        sys.argv = ["release.py", "--date", RELEASE_DAY] + (["--dry-run"] if self.dry else [])
+        return self
+
+    def __exit__(self, *exc):
+        r = self.r
+        (r.ROOT, r.notify, r.review_verdict, r.deploy_site, r.DRY_RUN, subprocess.run, pipelib.job_lock,
+         pipelib.dedupe_source_table, pipelib.escalate, sys.argv) = self.saved
+        return False
+
+    def main(self):
+        """release.main の終了コード。例外で抜けたら「例外: …」(直す前の実装は失敗を例外で上げる)。"""
+        try:
+            return self.r.main()
+        except Exception as e:      # noqa: BLE001
+            return f"例外: {type(e).__name__}: {e}"
+
+
+def test_release_push_retry(tmp: Path):
+    """main の push だけが失敗したら、配信せず edition も消さずに止まる。再実行は squash が「差分なし」でも手元の号の commit を
+    push し、origin/main に号が届いたことを確かめてから配信・edition の削除へ進む(監査指摘 ar7-1: 再実行が push を省き、
+    origin/main に号が無いまま成功で終わって edition ブランチまで消した)。push の失敗は origin の pre-receive で本物に起こす。"""
+    repo, bare = _release_fixture(tmp / "push")
+    marker = tmp / "push" / "reject-main-once"
+    hook = bare / "hooks" / "pre-receive"
+    hook.write_text("#!/bin/sh\nwhile read old new ref; do\n"
+                    f"  if [ \"$ref\" = refs/heads/main ] && [ -e '{marker}' ]; then rm -f '{marker}'; echo 試験の拒否 >&2; exit 1; fi\n"
+                    "done\nexit 0\n", encoding="utf-8")
+    hook.chmod(0o755)
+    marker.touch()
+    on_origin = lambda: subprocess.run(["git", "cat-file", "-e", f"main:docs/_editions/{RELEASE_DAY}.md"], cwd=bare,
+                                       capture_output=True).returncode == 0
+    edition_on_origin = lambda: bool(_git_out(bare, "branch", "--list", f"edition/{RELEASE_DAY}"))
+    with _ReleaseEnv(repo) as env:
+        rc = env.main()
+        check(rc == 1 and not env.deployed and edition_on_origin() and not on_origin() and env.escalated
+              and _git_out(repo, "status", "--porcelain") == "",
+              f"main の push の失敗で止まらない・配信した・edition を消した・当番を呼ばない: rc={rc!r} 配信={env.deployed} "
+              f"edition={edition_on_origin()} 当番={env.escalated}")
+        check(not marker.exists(), "試験の下準備: origin が main の push を1回拒否していない")
+        rc = env.main()
+        check(rc == 0 and on_origin() and _git_out(bare, "rev-parse", "main") == _git_out(repo, "rev-parse", "main")
+              and env.deployed and not edition_on_origin(),
+              f"push の失敗の後の再実行で origin/main に号が届かない(か、届く前に edition を消した): rc={rc!r} "
+              f"origin に号={on_origin()} 配信={env.deployed} edition={edition_on_origin()}")
+    # push が成功と答えても、origin から取り直して号が届いたと確かめられなければ進まない(届かない push・取り直しの失敗)
+    import release
+    real_git = release.git
+    for what, fake in (("push が成功と答えたが origin に届いていない", ("push", "origin", "main")),
+                       ("push の後の origin の取り直しに失敗", ("fetch", "origin", "main"))):
+        repo, bare = _release_fixture(tmp / ("silent" if fake[0] == "push" else "nofetch"))
+        edition_on_origin = lambda: bool(_git_out(bare, "branch", "--list", f"edition/{RELEASE_DAY}"))
+
+        def faked(*a, check=True, _fake=fake):
+            if a == _fake:
+                return subprocess.CompletedProcess(["git", *a], 0 if a[0] == "push" else 128, "",
+                                                   "" if a[0] == "push" else "fatal: unable to access(試験)")
+            return real_git(*a, check=check)
+        with _ReleaseEnv(repo) as env:
+            release.git = faked
+            try:
+                rc = env.main()
+            finally:
+                release.git = real_git
+            check(rc == 1 and not env.deployed and edition_on_origin() and env.escalated
+                  and any(not ok and "届いたことを確かめられない" in m for ok, m in env.notes),
+                  f"{what}のに、配信・edition の削除へ進んだ(か、当番を呼ばない): rc={rc!r} 配信={env.deployed} "
+                  f"edition={edition_on_origin()} {env.notes}")
+            rc = env.main()          # 取り直せる再実行は、届いたことを確かめて進む
+            check(rc == 0 and env.deployed and not edition_on_origin()
+                  and _git_out(bare, "rev-parse", "main") == _git_out(repo, "rev-parse", "main"),
+                  f"{what}の後の再実行で発行を終えない: rc={rc!r} 配信={env.deployed} edition={edition_on_origin()}")
+
+
+def test_release_squash_conflict(tmp: Path):
+    """main と edition の同じファイルが衝突したら、作業ツリーを squash 前の main に戻して止まる(未解決の index と stage 済みの号を
+    残さない)。edition の commit はそのまま。次の release は dirty で止まらない(監査指摘 ar7-2)。中断(Ctrl-C・systemctl stop の
+    SIGTERM)でも同じに戻す。"""
+    import signal
+    repo, bare = _release_fixture(tmp / "cf", conflict=True)
+    ed_before = _git_out(repo, "rev-parse", f"edition/{RELEASE_DAY}")
+    with _ReleaseEnv(repo) as env:
+        rc = env.main()
+        status = _git_out(repo, "status", "--porcelain")
+        check(rc == 1 and status == "" and _git_out(repo, "rev-parse", "main") == _git_out(bare, "rev-parse", "main")
+              and _git_out(repo, "rev-parse", f"edition/{RELEASE_DAY}") == ed_before and not env.deployed,
+              f"squash の衝突の後に作業ツリーが戻らない・edition が変わった: rc={rc!r} status={status!r}")
+        check(any(not ok and "squash" in m and "衝突: x" in m for ok, m in env.notes) and env.escalated,
+              f"squash の衝突を(衝突したファイルの名前つきで)知らせない・当番を呼ばない: {env.notes}")
+        env.notes.clear()
+        rc = env.main()
+        check(rc == 1 and not any("未コミットの変更" in m for _, m in env.notes),
+              f"衝突の後の再実行が dirty で止まる: {env.notes}")
+    # 中断: commit の最中の Ctrl-C でも squash 前の main に戻し、中断はそのまま上げる
+    repo, bare = _release_fixture(tmp / "intr")
+    import release
+    real_git = release.git
+
+    def interrupted(*a, **k):
+        if a and a[0] == "commit":
+            raise KeyboardInterrupt("試験の中断")
+        return real_git(*a, **k)
+    with _ReleaseEnv(repo) as env:
+        release.git = interrupted
+        try:
+            env.main()
+            stopped = False
+        except KeyboardInterrupt:
+            stopped = True
+        finally:
+            release.git = real_git
+        status = _git_out(repo, "status", "--porcelain")
+        check(stopped and status == "" and _git_out(repo, "rev-parse", "main") == _git_out(bare, "rev-parse", "main"),
+              f"commit の最中の中断で作業ツリーが戻らない: 中断={stopped} status={status!r}")
+    # systemctl stop の SIGTERM も、squash の間は同じ後始末を通る例外にする(既定の SIGTERM は後始末なしに即死)
+    import time
+    stop = getattr(release, "stop_as_exception", None)
+    got = None
+    if stop:
+        before = signal.getsignal(signal.SIGTERM)
+        try:
+            with stop():
+                os.kill(os.getpid(), signal.SIGTERM)
+                for _ in range(100):
+                    time.sleep(0.01)
+        except KeyboardInterrupt:
+            got = signal.getsignal(signal.SIGTERM) == before
+    check(got is True, "squash の間の SIGTERM が後始末を通る例外にならない(か、終わった後に元の扱いへ戻らない)")
+    # 本物の SIGTERM: release を子プロセス(別のプロセス群)で走らせ、本物の git commit の最中に、systemctl stop と同じく
+    # プロセス群ごと SIGTERM を送る(commit の pre-commit フックから1回だけ)。squash 前の main に戻り、再実行で発行できる(再監査)
+    repo, bare = _release_fixture(tmp / "sigterm")
+    marker = tmp / "sigterm" / "stop-once"
+    marker.touch()
+    hook = repo / ".git" / "hooks" / "pre-commit"
+    hook.write_text(f"#!/bin/sh\nif [ -e '{marker}' ]; then rm -f '{marker}'; kill -TERM -$(ps -o pgid= $$ | tr -d ' '); sleep 5; fi\n"
+                    "exit 0\n", encoding="utf-8")
+    hook.chmod(0o755)
+    driver = tmp / "sigterm" / "drive.py"
+    driver.write_text(
+        "import subprocess, sys\n"
+        f"sys.path.insert(0, {str(Path(__file__).resolve().parent)!r})\n"
+        "import pipelib, release\n"
+        "real_run = subprocess.run\n"
+        "def run(cmd, *a, **k):\n"
+        "    if len(cmd) > 1 and str(cmd[1]).endswith('lint.py'):\n"
+        "        return subprocess.CompletedProcess(cmd, 0, 'lint: 0 errors\\n', '')\n"
+        "    return real_run(cmd, *a, **k)\n"
+        "subprocess.run = run\n"
+        f"release.ROOT = __import__('pathlib').Path({str(repo)!r})\n"
+        "release.notify = lambda msg, ok=True: print('NOTIFY', ok, msg, flush=True)\n"
+        "release.review_verdict = lambda d: ('approve', '試験')\n"
+        "release.deploy_site = lambda: '配信済み(試験)。'\n"
+        "pipelib.job_lock = lambda *a, **k: None\n"
+        "pipelib.dedupe_source_table = lambda *a, **k: []\n"
+        "pipelib.escalate = lambda *a, **k: True\n"
+        f"sys.argv = ['release.py', '--date', {RELEASE_DAY!r}]\n"
+        "sys.exit(release.main())\n", encoding="utf-8")
+    p = subprocess.run([sys.executable, str(driver)], capture_output=True, text=True, timeout=120, start_new_session=True)
+    status = _git_out(repo, "status", "--porcelain")
+    check(not marker.exists() and p.returncode != 0 and status == ""
+          and _git_out(repo, "rev-parse", "main") == _git_out(bare, "rev-parse", "main"),
+          f"commit の最中の SIGTERM で作業ツリーが squash 前の main に戻らない: exit={p.returncode} status={status!r} "
+          f"送った={not marker.exists()}")
+    with _ReleaseEnv(repo) as env:
+        rc = env.main()
+    check(rc == 0 and env.deployed, f"SIGTERM で止まった後の再実行で発行できない: rc={rc!r} {env.notes}")
+
+
+def test_release_dry_run_no_push(tmp: Path):
+    """--dry-run は、edition に origin へ出していない commit があっても push しない・手元の commit を捨てない(監査指摘 ar7-5)。"""
+    repo, bare = _release_fixture(tmp / "dry", ahead=True)
+    refs = lambda: _git_out(bare, "for-each-ref", "--format=%(refname) %(objectname)")
+    remote_before, local_before = refs(), _git_out(repo, "rev-parse", f"edition/{RELEASE_DAY}")
+    with _ReleaseEnv(repo, dry=True) as env:
+        rc = env.main()
+    check(rc == 0 and refs() == remote_before, f"--dry-run が origin を変えた(push した): rc={rc!r}\n前 {remote_before}\n後 {refs()}")
+    check(_git_out(repo, "rev-parse", f"edition/{RELEASE_DAY}") == local_before,
+          "--dry-run が手元だけの commit を捨てた(origin へ引き戻した)")
+    # origin だけが先(手元の edition が遅れている): 点検は origin の中身を見るが、手元のブランチ(edition・main)は動かさない(再監査)
+    repo, bare = _release_fixture(tmp / "dry-behind")
+    (repo / "later").write_text("origin にだけある commit\n", encoding="utf-8")
+    for a in (["add", "-A"], ["commit", "-qm", "origin only"], ["push", "-q", "origin", f"edition/{RELEASE_DAY}"],
+              ["reset", "-q", "--hard", "HEAD~1"]):
+        subprocess.run(["git", *a], cwd=repo, capture_output=True, check=True)
+    local = lambda: _git_out(repo, "for-each-ref", "--format=%(refname) %(objectname)", "refs/heads")
+    remote_before, local_before = refs(), local()
+    tip, seen = _git_out(bare, "rev-parse", f"edition/{RELEASE_DAY}"), []
+    with _ReleaseEnv(repo, dry=True) as env:
+        # 点検(校閲の判定を読む時点)の中身が、発行なら出す origin の先端か(origin にだけある file が見えるか)
+        env.r.review_verdict = lambda d: (seen.append((_git_out(repo, "rev-parse", "HEAD") == tip, (repo / "later").exists())),
+                                          ("approve", "試験"))[1]
+        rc = env.main()
+    check(rc == 0 and refs() == remote_before and local() == local_before,
+          f"--dry-run が手元のブランチを動かした(origin へ引き戻した)・origin を変えた: rc={rc!r}\n前 {local_before}\n後 {local()}")
+    check(seen == [(True, True)], f"--dry-run が発行なら出す origin の中身でなく、遅れた手元の中身を点検した: {seen}")
+
+
+def test_deploy_index_failure(tmp: Path):
+    """current を切り替えた後に索引の更新が落ちたら、current を索引が取り込んだリリース(索引の run_id)へ戻してパージし、
+    実態どおりに知らせる(監査指摘 ar7-4: 新しい静的と古い索引が残り、取り下げた記事が検索に残った)。前の配信が索引の状態を
+    確かめられずに新しい版を残していても、戻す先は索引の記録で決める。記録が無ければ前の版へ戻し、揃っているとは言わない
+    (再監査)。予算(--budget-sec)のうちに、戻す・知らせるまで終える(再監査: release の打ち切りを越えた)。
+    本物の indexer を子プロセスで、本物の SQLite を別の接続で書き込みロックして落とす。ロックを外した再実行は新しい版を揃えて出す。"""
+    import datetime
+    import shutil
+    import sqlite3
+    import deploy
+    import release
+    here = Path(__file__).resolve().parent
+    root = tmp / "root"
+    (root / "scripts").mkdir(parents=True)
+    for n in ("indexer.py", "tags.py"):
+        shutil.copy(here / n, root / "scripts" / n)
+    posts = root / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (root / "docs" / "_data").mkdir()
+    (root / "docs" / "_data" / "tags.yml").write_text("alias: {}\ndrop: []\n", encoding="utf-8")
+    d = "2026-10-13"
+    for s in ("a", "b"):
+        (posts / f"{d}-{s}.md").write_text(f"---\nslug: {s}\nedition: '{d}'\ntitle: 記事{s}\ntags: [t]\n---\n本文{s}\n", encoding="utf-8")
+    srv = tmp / "srv"
+    db = srv / "data" / "paper.db"
+    real_run = subprocess.run
+    subprocess.run(  # 前の版(リリース old)の索引(a・b)
+        [sys.executable, str(root / "scripts" / "indexer.py"), "--db", str(db), "--run-id", "old", "--quiet"],
+        check=True, capture_output=True)
+    (posts / f"{d}-b.md").unlink()          # b を取り下げた版を配信する
+    releases = srv / "releases"
+    old = releases / "old"
+    for s in ("a", "b"):
+        (old / "articles" / f"{d}-{s}").mkdir(parents=True)
+        (old / "articles" / f"{d}-{s}" / "index.html").write_text("前の版", encoding="utf-8")
+    current = srv / "current"
+    current.symlink_to(old)
+    slow_build = []
+
+    def fake_build(dest: Path, timeout=None):     # 今の記事から静的な記事ページを作る(slow_build があればその秒だけ掛ける)
+        import time
+        need = slow_build[-1] if slow_build else 0
+        if timeout is not None and need > timeout:  # 本物の build と同じく、渡された上限で打ち切られる
+            time.sleep(timeout)
+            raise subprocess.TimeoutExpired("jekyll", timeout)
+        time.sleep(need)
+        for rel in deploy.REQUIRED + [f"articles/{p.stem}/index.html" for p in posts.glob("*.md")]:
+            p = dest / rel
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text("新しい版", encoding="utf-8")
+
+    def guarded_run(cmd, *a, **k):
+        # 索引の子プロセスには試験の DB を必ず渡させる(渡さないと本番の既定の DB に書く)
+        if len(cmd) > 1 and str(cmd[1]).endswith("indexer.py") and str(db) not in [str(c) for c in cmd]:
+            raise AssertionError(f"indexer に試験の DB(--db)を渡していない: {cmd}")
+        return real_run(cmd, *a, **k)
+    def articles() -> list[str]:
+        c = sqlite3.connect(db)
+        try:
+            return sorted(r[0] for r in c.execute("SELECT slug FROM articles"))
+        finally:
+            c.close()
+    notes, purges = [], []
+    names = [f"20261014T{6 + m:02d}0000" for m in range(12)]       # 配信ごとのリリースの名前(時刻順)
+    stamps = iter(names)
+    saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "build", "purge_cache", "notify", "sync_app",
+                                             "now_jst", "INDEX_ATTEMPTS", "INDEX_RETRY_SEC", "reindex", "indexed_run",
+                                             "INDEX_TIMEOUT_SEC", "INDEX_MIN_SEC", "RESERVE_SEC") if hasattr(deploy, k)}
+    saved_db, saved_argv = getattr(deploy, "DB", None), sys.argv
+    lock = sqlite3.connect(db)
+    try:
+        deploy.ROOT, deploy.SRV, deploy.RELEASES, deploy.CURRENT = root, srv, releases, current
+        deploy.DB = db
+        deploy.build, deploy.sync_app = fake_build, (lambda: False)
+        deploy.purge_cache = lambda: purges.append(True) or "パージ(試験)"
+        deploy.notify = lambda job, msg, ok=True, **k: notes.append((ok, msg)) or True
+        deploy.now_jst = lambda: datetime.datetime.strptime(next(stamps), "%Y%m%dT%H%M%S")
+        deploy.INDEX_ATTEMPTS, deploy.INDEX_RETRY_SEC = 1, 0      # SQLite の待ち(5秒)を1回だけ
+        sys.argv = ["deploy.py"]
+        subprocess.run = guarded_run
+        def run_main():
+            try:
+                return deploy.main()
+            except (Exception, SystemExit) as e:       # noqa: BLE001  直す前の実装は索引の失敗を例外で上げる
+                return f"例外: {type(e).__name__}: {str(e)[:200]}"
+        cur = lambda: current.resolve().name
+        state = lambda: getattr(deploy, "STATE", "")
+        # S1 本物の書き込みロック: 索引が取り込んだ old へ戻す(静的 a・b / 索引 a・b で揃う)
+        lock.execute("BEGIN IMMEDIATE")                           # 別の接続が書き込み中
+        rc = run_main()
+        lock.rollback()
+        check(rc == 1 and cur() == "old" and articles() == ["a", "b"] and purges,
+              f"索引の失敗で current を索引の版へ戻さない・パージしない(静的と索引が食い違う): rc={rc!r} current={cur()} "
+              f"索引={articles()} パージ={purges}")
+        check("索引が取り込んだ版(old)に戻した" in state() and any(not ok and "戻した" in m for ok, m in notes),
+              f"索引の失敗の後の公開の状態を実態どおりに言わない: {state()!r} {notes}")
+        # S2 ロックが外れた再実行: 新しい版を揃えて出す
+        notes.clear()
+        purges.clear()
+        rc = run_main()
+        check(rc == 0 and cur() == names[1] and articles() == ["a"] and purges and "新しい版" in state(),
+              f"ロックが外れた再実行で新しい版を揃えて出さない: rc={rc!r} current={cur()} 索引={articles()}")
+        # S3 索引の状態が読めない失敗: 新しい版(記事 c を足した版)を残し、確かめられないと言う(戻さない)
+        (posts / f"{d}-c.md").write_text(f"---\nslug: c\nedition: '{d}'\ntitle: 記事c\ntags: [t]\n---\n本文c\n", encoding="utf-8")
+        real_reindex, real_indexed_run = deploy.reindex, getattr(deploy, "indexed_run", None)
+
+        def broken(run_id, timeout=None):
+            raise RuntimeError("database is locked(試験)")
+
+        def unreadable():
+            raise sqlite3.OperationalError("unable to open database file(試験)")
+        deploy.reindex, deploy.indexed_run = broken, unreadable
+        rc = run_main()
+        deploy.indexed_run = real_indexed_run
+        check(rc == 1 and cur() == names[2] and "確かめられない" in state() and "静的と索引が揃っている" not in state(),
+              f"索引の状態が読めないのに戻した・揃っていると言った: rc={rc!r} current={cur()} {state()!r}")
+        # S4 続けて失敗: 戻す先は直前の current(names[2]。索引と食い違う)でなく、索引が取り込んだ names[1]
+        rc = run_main()
+        check(rc == 1 and cur() == names[1] and not (current / "articles" / f"{d}-c").exists() and articles() == ["a"]
+              and f"索引が取り込んだ版({names[1]})に戻した(静的と索引が揃っている)" in state(),
+              f"索引が取り込んでいない版へ戻して「揃っている」と言った: rc={rc!r} current={cur()} 索引={articles()} {state()!r}")
+        # S5 取り込みの記録が無い索引(この直しより前の索引): 前の版へ戻すが、揃っているとは言わない
+        c = sqlite3.connect(db)
+        c.execute("DELETE FROM meta WHERE key = 'run_id'")
+        c.commit()
+        c.close()
+        rc = run_main()
+        check(rc == 1 and cur() == names[1] and "確かめられない" in state() and "静的と索引が揃っている" not in state(),
+              f"取り込みの記録が無いのに揃っていると言った: rc={rc!r} current={cur()} {state()!r}")
+        (posts / f"{d}-c.md").unlink()
+        # S6 1回目だけ落ちる索引は、戻さずに再試行で通す
+        calls = []
+
+        def flaky(run_id, timeout=None):
+            calls.append(run_id)
+            if len(calls) == 1:
+                raise RuntimeError("database is locked(試験)")
+            return real_reindex(run_id)
+        deploy.reindex, deploy.INDEX_ATTEMPTS = flaky, 2
+        rc = run_main()
+        check(rc == 0 and calls == [names[5]] * 2 and cur() == names[5],
+              f"索引の一時的な失敗を再試行しない(か、通ったのに戻した): rc={rc!r} {calls} current={cur()}")
+        # S7 取引は通った(索引はこの版まで進んだ)が indexer が後で落ちた: 静的と索引は揃っているので戻さない
+        def late(run_id, timeout=None):
+            real_reindex(run_id)
+            raise RuntimeError("後始末で落ちた(試験)")
+        deploy.reindex = late
+        rc = run_main()
+        c = sqlite3.connect(db)
+        ran = (c.execute("SELECT value FROM meta WHERE key = 'run_id'").fetchone() or [None])[0]
+        c.close()
+        check(rc == 0 and cur() == names[6] and ran == names[6],
+              f"索引が新しい版まで進んだのに current を戻した: rc={rc!r} current={cur()}")
+        # S8 予算: ビルドが長引き、索引が毎回時間切れまで掛かっても、予算のうちに戻す・知らせるまで終える
+        # (秒を縮めて試す。予算 3秒・後始末に残す 1秒・ビルド 0.5秒)
+        import time
+
+        def hang(run_id, timeout=None):
+            time.sleep(timeout if timeout is not None else 60)
+            raise subprocess.TimeoutExpired("indexer.py", timeout)
+        deploy.reindex, deploy.INDEX_ATTEMPTS, deploy.INDEX_RETRY_SEC = hang, 3, 0.3
+        deploy.INDEX_TIMEOUT_SEC, deploy.INDEX_MIN_SEC, deploy.RESERVE_SEC = 10, 0.2, 1.0
+        slow_build.append(0.5)
+        sys.argv = ["deploy.py", "--budget-sec", "3"]
+        t0 = time.time()
+        rc = run_main()
+        took = time.time() - t0
+        check(rc == 1 and took < 3.0 and cur() == names[6] and "戻した" in state(),
+              f"予算のうちに戻す・知らせるまで終えない: rc={rc!r} {took:.1f}秒 current={cur()} {state()!r}")
+        # S9 ビルドが予算を食い尽くす: 渡した上限で打ち切り、current は差し替えない(予算 2秒・ビルド 3秒掛かる)
+        slow_build.append(3.0)
+        sys.argv = ["deploy.py", "--budget-sec", "2"]
+        t0 = time.time()
+        rc = run_main()
+        took = time.time() - t0
+        check(rc == 1 and took < 2.0 and cur() == names[6] and "前の版のまま" in state(),
+              f"ビルドを予算の残りで打ち切らない(か、差し替えた): rc={rc!r} {took:.1f}秒 current={cur()} {state()!r}")
+        slow_build.clear()
+        sys.argv = ["deploy.py"]
+        # S10 索引の状態が読めずに新しい版(b2 を足した版)が残る → 手で索引を直す(--run-id なし) → 次の配信も失敗:
+        # 手での更新は前の取り込みの記録を消すので、古い記録のリリース(names[6])へ戻して「揃っている」と言わない(再監査)
+        (posts / f"{d}-b2.md").write_text(f"---\nslug: b2\nedition: '{d}'\ntitle: 記事b2\ntags: [t]\n---\n本文b2\n", encoding="utf-8")
+        deploy.reindex, deploy.INDEX_ATTEMPTS, deploy.indexed_run = broken, 1, unreadable
+        rc = run_main()
+        deploy.indexed_run = real_indexed_run
+        live = cur()
+        subprocess.run([sys.executable, str(root / "scripts" / "indexer.py"), "--db", str(db), "--quiet"],
+                       check=True, capture_output=True)
+        rc2 = run_main()
+        check(rc == 1 and live == names[9] and rc2 == 1 and cur() == names[9] and articles() == ["a", "b2"]
+              and "静的と索引が揃っている" not in state() and "確かめられない" in state(),
+              f"手で直した索引の後の失敗で、古い取り込みの記録のリリースへ戻した(か、揃っていると言った): rc={rc!r}/{rc2!r} "
+              f"current={cur()} 索引={articles()} {state()!r}")
+    finally:
+        subprocess.run = real_run
+        lock.close()
+        for k, v in saved.items():
+            setattr(deploy, k, v)
+        deploy.DB, sys.argv = saved_db, saved_argv
+    # release の通知は deploy が出す「配信の状態」をそのまま載せる(「current は前号のまま」と決めつけない)。時間切れも止めない
+    sent, saved_run, saved_notify, asked = [], subprocess.run, release.notify, []
+    try:
+        release.notify = lambda msg, ok=True: sent.append(msg)
+        subprocess.run = lambda cmd, *a, **k: asked.append((cmd, k.get("timeout"))) or subprocess.CompletedProcess(
+            cmd, 1, "検証OK\n" + getattr(release, "DEPLOY_STATE_MARK", "配信の状態: ") + "current は新しい版(X)。索引はまだ前の版\n", "boom")
+        release.deploy_site()
+
+        def slow(cmd, *a, **k):
+            raise subprocess.TimeoutExpired(cmd, 2400)
+        subprocess.run = slow
+        try:
+            out = release.deploy_site()
+        except subprocess.TimeoutExpired:
+            out = "例外"
+    finally:
+        subprocess.run, release.notify = saved_run, saved_notify
+    check(len(sent) == 2 and "current は新しい版(X)" in sent[0] and "前号のまま" not in sent[0] and out != "例外",
+          f"配信の失敗の通知が deploy の状態を載せない・時間切れで止まる: {sent} {out}")
+    check(getattr(release, "DEPLOY_STATE_MARK", None) == getattr(deploy, "STATE_MARK", ""), "release と deploy の「配信の状態」の印が違う")
+    # release は deploy に、自分が打ち切る時間より短い予算を渡す(打ち切られる前に戻す・知らせるまで終えさせる)
+    cmd, timeout = asked[0] if asked else ([], None)
+    budget = float(cmd[cmd.index("--budget-sec") + 1]) if "--budget-sec" in cmd else None
+    check(budget is not None and timeout is not None and budget < timeout,
+          f"release が deploy に打ち切りより短い予算を渡さない: {cmd} timeout={timeout}")
+
+
+def test_correction_append_only(tmp: Path):
+    """訂正(第1号以降)は訂正の記録の末尾への追記だけ。既にある記録の書き換え・削除・並べ替えは、件数が増えていても lint が止める
+    (監査指摘 ar7-3)。判定の関数と、一時の Git で走らせた本物の lint の両方で検める。"""
+    import contextlib
+    import io
+    import shutil
+    first = {"at": "2026-09-16T10:00:00+09:00", "by": "編集長", "initial": "初出の表記", "corrected_to": "正しい表記"}
+    second = {"at": "2026-10-14T10:00:00+09:00", "by": "編集長", "initial": "a", "corrected_to": "b"}
+    # 本物の lint(append-only の経路)
+    d = "2026-09-15"
+    root = tmp / "lintroot"
+    posts = root / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    shutil.copytree(Path(__file__).resolve().parent.parent / "schema", root / "schema")
+    p = posts / f"{d}-k.md"
+    write = lambda corr, body: p.write_text("---\n" + article_fm("k", d, corrected=True, corrections=corr) + "---\n" + body, encoding="utf-8")
+    write([first], "本文。\n")
+    for a in (["init", "-q", "-b", "main"], ["config", "user.email", "t@example.com"], ["config", "user.name", "t"],
+              ["add", "-A"], ["commit", "-qm", "base"]):
+        subprocess.run(["git", *a], cwd=root, capture_output=True, check=True)
+    keys = ("ROOT", "DOCS", "POSTS", "EDITIONS", "EDITORIALS", "CANDIDATES", "IDOLS", "WITHDRAWN", "REWRITES")
+    saved, saved_argv = {k: getattr(lint, k) for k in keys}, sys.argv
+
+    def run_lint() -> list[str]:
+        out = io.StringIO()
+        sys.argv = ["lint.py", "--base", "HEAD", "--no-net"]
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+            lint.main()
+        return [l for l in out.getvalue().splitlines() if l.startswith(f"::error file=docs/_posts/{d}-k.md::append-only")]
+    try:
+        lint.ROOT = root
+        lint.DOCS = root / "docs"
+        lint.POSTS, lint.EDITIONS, lint.EDITORIALS = posts, root / "docs" / "_editions", root / "docs" / "_editorials"
+        lint.CANDIDATES, lint.IDOLS = root / "candidates", root / "docs" / "_data" / "idols.json"
+        lint.WITHDRAWN, lint.REWRITES = root / "withdrawn.yml", root / "rewrites.yml"
+        write([first, second], "本文(訂正した)。\n")
+        ok_lines = run_lint()
+        write([{**first, "initial": "書き換え"}, second], "本文(訂正した)。\n")
+        bad_lines = run_lint()
+    finally:
+        for k, v in saved.items():
+            setattr(lint, k, v)
+        sys.argv = saved_argv
+    check(ok_lines == [], f"本物の lint が正しい訂正の追記を止めた: {ok_lines}")
+    check(bad_lines != [], "本物の lint が既にある訂正の記録の書き換え(と1件の追記)を通した")
+    # 判定の関数: 削除・並べ替え・追記なし・枠の変更も止める
+    old = {"slug": "k", "edition": d, "brand": "cg", "rank": "small", "corrected": True, "corrections": [first]}
+    judge = getattr(lint, "correction_change_errors", None)
+    errs = (lambda new: judge(old, {**old, **new})) if judge else (lambda new: [])
+    check(judge is not None and errs({"corrections": [first, second]}) == [], "正しい訂正の追記を止めた")
+    for corr, what in (([{**first, "initial": "書き換え"}, second], "既にある記録の書き換え"),
+                       ([second, second], "既にある記録の削除(件数は増えている)"),
+                       ([second, first], "並べ替え"),
+                       ([first], "追記なし")):
+        check(errs({"corrections": corr}) != [], f"訂正で{what}を通した")
+    check(errs({"corrections": [first, second], "rank": "lead"}) != [], "訂正で rank を変えられた")
+
+
+def test_indexer_tag_dictionary(tmp: Path):
+    """タグ辞書(alias・drop)だけを直しても、本文の変わらない記事のタグ・全文検索のタグを付け直す。全件の作り直しと差分の更新は
+    同じ索引になる。辞書も記事も変わらなければ入れ直さない(監査指摘 ar7-6)。"""
+    import indexer
+    root = tmp / "ix"
+    posts = root / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (posts / "2026-10-14-a.md").write_text("---\nslug: a\nedition: '2026-10-14'\ntitle: 記事\ntags: [旧タグ, 残す]\n---\n本文\n",
+                                          encoding="utf-8")
+    saved = (indexer.ROOT, indexer.DOCS)
+    plain = {"alias": {}, "drop": set()}
+    fixed = {"alias": {"旧タグ": "正規タグ"}, "drop": {"残す"}}
+    try:
+        indexer.ROOT, indexer.DOCS = root, root / "docs"
+        conn = indexer.connect(root / "diff.db")
+        with conn:
+            indexer.index_articles(conn, plain, False)
+        with conn:
+            again = indexer.index_articles(conn, plain, False)
+        with conn:
+            indexer.index_articles(conn, fixed, False)
+        got = ([r[0] for r in conn.execute("SELECT tag FROM article_tags")], [r[0] for r in conn.execute("SELECT tags FROM search")])
+        conn.close()
+        full = indexer.connect(root / "full.db")
+        with full:
+            indexer.index_articles(full, fixed, True)
+        want = ([r[0] for r in full.execute("SELECT tag FROM article_tags")], [r[0] for r in full.execute("SELECT tags FROM search")])
+        full.close()
+    finally:
+        indexer.ROOT, indexer.DOCS = saved
+    check(again == (0, 0), f"辞書も記事も変わらないのに入れ直した: {again}")
+    check(got == want == (["正規タグ"], ["正規タグ"]), f"タグ辞書だけを直したとき差分の索引に反映しない: 差分 {got} / 全件 {want}")
+
+
+def test_shared_service_units(tmp: Path):
+    """共有サービス(短縮 URL・フォーム・メールフォーム)はドメイン全体では判定しない(監査指摘 2026-10-14: t.co と
+    forms.cloud.microsoft が丸ごと公式に登録され、どこへの短縮も・文書 ID の違うどのフォームも公式になった)。
+    短縮は展開先の種別を短縮1つずつへ写し(合議には掛けない)、フォームは文書 ID ごとに判定する。"""
+    import classify_sources as cs
+    import email.message
+    import io
+    import urllib.error
+    import urllib.request
+    import yaml
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    table = tmp / "source_types.yml"
+    short, dest = "https://t.co/YknRoOJtym", "https://asobistage.asobistore.jp/event/valiv_bd2026_cosmo/ticket"
+    form1 = "https://forms.cloud.microsoft/pages/responsepage.aspx?id=officialDocument0123456789&route=shorturl"
+    form2 = "https://forms.cloud.microsoft/pages/responsepage.aspx?id=unrelatedDocument0123456789"
+    # 撤去する前の表の形(ドメイン全体の登録)。union merge で行が戻ってきても、判定には使わない
+    table.write_text("official_domains:\n  - t.co\n  - forms.cloud.microsoft\nsemi_official_domains:\n  - asobistage.asobistore.jp\n"
+                     "  - krs.bz\nparty_domains:\n  - bit.ly\n", encoding="utf-8")
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, getattr(cs, "expand_short_fetch", None), cs.ask, cs.site_profile,
+             cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        getattr(cs, "_SHORT", {}).clear()
+        check(pipelib.classify_source(short) == "未確認" and pipelib.classify_source("https://bit.ly/abc") == "未確認",
+              f"短縮 URL がドメインの登録で種別を持った: {pipelib.classify_source(short)}")
+        check(pipelib.classify_source(form2) == "未確認", "文書 ID の違うフォームがドメインの登録で公式になった")
+        check(pipelib.classify_source("https://krs.bz/other/m/form") == "未確認", "別の会社のメールフォームがドメインの登録で準公式になった")
+        # 判定の単位: 短縮は1つずつ、フォームは文書 ID まで(id 以外のクエリは落とす)、メールフォームはアカウント
+        check(cs.platform_unit(short) == ("short", "t.co/YknRoOJtym"), f"短縮の単位: {cs.platform_unit(short)}")
+        k1, k2 = cs.platform_unit(form1)[1], cs.platform_unit(form2)[1]
+        check(k1 == "forms.cloud.microsoft/pages/responsepage.aspx?id=officialDocument0123456789" and k1 != k2 and cs.is_document(k1),
+              f"フォームの単位: {k1} / {k2}")
+        check(cs.platform_unit("https://forms.cloud.microsoft/pages/responsepage.aspx")[0] == "skip", "文書 ID の無いフォームを判定の対象にした")
+        check(cs._key_forms(k1)[0] != cs._key_forms(k2)[0], "合議の答えの対応付けで、別のフォームが同じ対象になる")
+        check(cs.platform_unit("https://krs.bz/columbia/m/morform") == ("path", "krs.bz/columbia"), "メールフォームの単位はアカウント")
+        # 合議がドメインと答えても、共有サービスはドメインとしては足さない
+        before = table.read_text(encoding="utf-8")
+        cs.add_domains({"t.co": ("公式", "x"), "forms.cloud.microsoft": ("公式", "y"), "krs.bz": ("準公式", "z")})
+        check(yaml.safe_load(table.read_text(encoding="utf-8")) == yaml.safe_load(before), "共有サービスをドメインとして表に足した")
+        # フォームは、文書のキーで登録したものにだけ当たる
+        cs.add_paths({k1: ("公式", "リンク元が公式")})
+        check(pipelib.classify_source(form1) == "公式" and pipelib.classify_source(form2) == "未確認", "フォームが文書 ID ごとに決まらない")
+        # 短縮: 候補の短縮 URL の展開先を判定の対象にし、決まった種別を短縮1つずつへ写す。短縮そのものは合議に掛けない
+        unknown = "https://t.co/Unknown0001"
+        (tmp / "candidates" / "2026-10-14.json").write_text(json.dumps([
+            {"url": short, "title": "誕生日ライブのチケット"}, {"url": unknown, "title": "コラボ商品"},
+            {"url": "https://t.co/Broken0001", "title": "展開できない"}], ensure_ascii=False), encoding="utf-8")
+        fetched, asked = [], []
+        dests = {short: dest, unknown: "https://shop.unknown.example/item/1"}
+        cs.expand_short_fetch = lambda u, hops=5: (fetched.append(u), dests.get(u, ""))[1]
+        cs.ask = lambda cmd, prompt, timeout=900: (asked.append(prompt), [
+            {"host": "shop.unknown.example", "operator": "雑貨店", "type": "当事者", "why": "コラボ商品の販売元"}])[1]
+        cs.site_profile = lambda *a, **k: "材料"
+        cs.POSTS_ONLY, cs.UNRESOLVED = None, tmp / "metrics" / "classify-unresolved.json"
+        sys.argv = ["classify_sources.py", "--date", "2026-10-14", "--apply"]
+        code = cs.main()
+        pipelib._ST_TABLE = None
+        check(code == 0 and pipelib.classify_source(short) == "準公式", f"短縮へ展開先の種別が写らない: {pipelib.classify_source(short)}")
+        check(pipelib.classify_source(unknown) == "当事者" and pipelib.classify_source("https://shop.unknown.example/") == "当事者",
+              "展開先が表に無い短縮: 展開先を合議で決めてから短縮へ写していない")
+        check(len(asked) == 2 and all("### shop.unknown.example" in p and "### t.co" not in p for p in asked),
+              f"合議の対象が展開先でない: {[p[-200:] for p in asked]}")
+        row = next((ln for ln in table.read_text(encoding="utf-8").splitlines() if "t.co/YknRoOJtym" in ln), "")
+        check("機械で追加" in row and dest in row, f"短縮の行に決め方と展開先が無い: {row}")
+        check(fetched.count(short) == 1, f"同じ短縮を何度も展開した: {fetched}")
+        rec = cs.load_unresolved()
+        check("展開先を引けない" in rec.get(cs.display_base("https://t.co/Broken0001"), ""), f"展開できない短縮の理由が watch のキーで残らない: {rec}")
+        # lint: 展開先が準公式の短縮を公式と書いた記事は、過大表示で止まる
+        rep = lint.Report()
+        lint.check_source_types(rep, lint.ROOT / "x.md", {"sources": [{"url": short, "type": "公式", "label": "l"}], "src": "公式"})
+        check(rep.errors == 2, f"展開先が準公式の短縮を公式と書いた記事が lint を通った: {rep.errors}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001  直す前の実装(関数が無い・表の検査で止まる等)でも、落ちたことを記録して先へ進む
+        check(False, f"共有サービスの判定のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.expand_short_fetch, cs.ask, cs.site_profile,
+         cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv) = saved
+    # 展開: リダイレクト(Location)とページで飛ばす形(meta refresh)を、短縮サービスの外へ出るまで辿る。展開先そのものは取りに行かない
+    opened = []
+
+    class Opener:
+        def open(self, req, timeout=None):
+            opened.append(req.full_url)
+            if req.full_url == "https://t.co/a1":
+                h = email.message.Message()
+                h["Location"] = "https://bit.ly/b2"
+                raise urllib.error.HTTPError(req.full_url, 301, "Moved", h, None)
+            if req.full_url == "https://bit.ly/b2":
+                return io.BytesIO(b'<meta http-equiv="refresh" content="0;URL=https://example.jp/page?x=1&amp;y=2">')
+            raise AssertionError(f"展開先まで取りに行った: {req.full_url}")
+    saved_bo = urllib.request.build_opener
+    try:
+        urllib.request.build_opener = lambda *h: Opener()
+        got = cs.expand_short_fetch("https://t.co/a1")
+        check(got == "https://example.jp/page?x=1&y=2" and opened == ["https://t.co/a1", "https://bit.ly/b2"], f"短縮の展開: {got} {opened}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"短縮の展開のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        urllib.request.build_opener = saved_bo
+    # 本番の判定表: ドメインの一覧に、ドメイン単位で決まらないホスト(短縮・フォーム・プラットフォーム)が載っていない
+    real = pipelib.parse_source_table((Path(__file__).resolve().parent.parent / "source_types.yml").read_text(encoding="utf-8"), "source_types.yml")
+    bad = [f"{k}: {h}" for k, v in real.items() if k.endswith("_domains") for h in v or []
+           if cs.platform_unit(f"https://{h}/") != ("domain", h)]
+    check(not bad, f"判定表にドメイン単位で決まらないホストがドメインとして載っている: {bad}")
+
+
+def test_document_id_case(tmp: Path):
+    """文書・短縮・動画の ID は大小文字を区別する(監査指摘 2026-10-14: Microsoft Forms の文書 ID を大小文字で同一視し、合議が
+    `abCd…` を公式と答えたのに、別の文書 `AbCd…` に公式が保存された)。合議の対応付け・表への追加・表の検査・merge 後の二重行の除去の
+    どれも同じ比べ方(pipelib.path_type_norm)。"""
+    import classify_sources as cs
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    f1 = "https://forms.cloud.microsoft/pages/responsepage.aspx?id=AbCdEfGhIjKlMnOpQr12&route=shorturl"
+    f2 = "https://forms.cloud.microsoft/pages/responsepage.aspx?id=abCdEfGhIjKlMnOpQr12"
+    g1 = "https://docs.google.com/forms/d/e/1FAIpQLSAbCdEfGhIjKlMnOpQrStUvWx/viewform"
+    g2 = "https://docs.google.com/forms/d/e/1FAIpQLSabCdEfGhIjKlMnOpQrStUvWx/viewform"
+    table = tmp / "source_types.yml"
+    table.write_text("official_domains:\n  - a.example\nvideo_ids:\n  公式:\n    - AAAAAAAAAAA\n", encoding="utf-8")
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask, cs.site_profile, cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        k1, k2 = cs.platform_unit(f1)[1], cs.platform_unit(f2)[1]
+        check(k1 != k2 and cs._key_forms(k1)[0] != cs._key_forms(k2)[0] and cs._key_forms(cs.platform_unit(g1)[1])[0] != cs._key_forms(cs.platform_unit(g2)[1])[0],
+              f"大小文字だけ違う文書が合議の同じ対象になる: {cs._key_forms(k1)} {cs._key_forms(k2)}")
+        # 経路: 候補の大小文字だけ違うフォーム(文書 ID のクエリの形と、短縮の /r/<ID> の形)→ 合議(両モデルが後者だけを公式と
+        # 答える)→ 表。前者は未確認のまま
+        r1, r2 = "https://forms.office.com/r/AbCdEfGh12", "https://forms.office.com/r/abCdEfGh12"
+        kr1, kr2 = cs.platform_unit(r1)[1], cs.platform_unit(r2)[1]
+        check(kr1 == "forms.office.com/r/AbCdEfGh12" and cs._key_forms(kr1)[0] != cs._key_forms(kr2)[0], f"短縮の形のフォームの単位: {kr1} {kr2}")
+        (tmp / "candidates" / "2026-10-14.json").write_text(json.dumps([{"url": u, "title": u[-4:]} for u in (f1, f2, r1, r2)]), encoding="utf-8")
+        cs.ask = lambda cmd, prompt, timeout=900: [{"host": k, "operator": "公式", "type": "公式", "why": "リンク元が公式"} for k in (k2, kr2)]
+        cs.site_profile = lambda *a, **k: "材料"
+        cs.POSTS_ONLY, cs.UNRESOLVED = None, tmp / "metrics" / "classify-unresolved.json"
+        sys.argv = ["classify_sources.py", "--date", "2026-10-14", "--apply"]
+        cs.main()
+        pipelib._ST_TABLE = None
+        got = [pipelib.classify_source(u) for u in (f1, f2, r1, r2)]
+        check(got == ["未確認", "公式", "未確認", "公式"], f"合議が答えた文書と違う文書に公式が付いた: {got}")
+        # 大小文字だけ違う文書を別々に足せる(表の検査で重複にしない)。Google の文書も同じ
+        cs.add_paths({k1: ("ファン", "x"), cs.platform_unit(g1)[1]: ("公式", "y"), cs.platform_unit(g2)[1]: ("ファン", "z")})
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source(f1) == "ファン" and pipelib.classify_source(f2) == "公式"
+              and pipelib.classify_source(g1) == "公式" and pipelib.classify_source(g2) == "ファン", "大小文字だけ違う文書を別々に判定できない")
+        # merge 後の二重行の除去も、大小文字だけ違う文書・動画 ID を消さない(同じ行は消す)
+        text = table.read_text(encoding="utf-8").replace("    - AAAAAAAAAAA\n", "    - AAAAAAAAAAA\n    - aaaaaaaaaaa\n    - AAAAAAAAAAA\n")
+        table.write_text(text, encoding="utf-8")
+        removed = pipelib.dedupe_source_table(table)
+        t = pipelib.parse_source_table(table.read_text(encoding="utf-8"), table)
+        check(removed == ["    - AAAAAAAAAAA"] and t["video_ids"]["公式"] == ["AAAAAAAAAAA", "aaaaaaaaaaa"]
+              and k1 in t["path_types"] and k2 in t["path_types"], f"二重行の除去が別の ID を消した: {removed} {t['video_ids']}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"文書 ID の大小文字のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask, cs.site_profile, cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv = saved
+
+
+def test_performer_domains(tmp: Path):
+    """合議が答えてよい種別(ALLOWED)は、どれもドメインとして保存でき、判定と表の検査が同じ種別で読み戻す(監査指摘 2026-10-14:
+    依頼文どおり所属事務所のサイトを演者と答えて2モデルが一致しても、保存先が無く KeyError('演者') で取引ごと落ちた)。"""
+    import classify_sources as cs
+    tmp.mkdir(parents=True, exist_ok=True)
+    p = tmp / "source_types.yml"
+    p.write_text("official_domains:\n  - a.example\n", encoding="utf-8")      # 演者などの一覧がまだ無い表
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        check(set(cs.LIST_OF) == set(cs.ALLOWED), f"合議の種別とドメインの一覧が対応していない: {set(cs.ALLOWED) ^ set(cs.LIST_OF)}")
+        check("所属事務所" in (pipelib.PROMPTS / "classify-rules.md").read_text(encoding="utf-8"), "依頼文の演者の定義が変わった(テストの前提)")
+        answer = [{"host": "actor-agency.example", "operator": "声優事務所", "type": "演者", "why": "出演者の所属事務所"}]
+        cs.ask = lambda *a, **k: answer
+        agreed, split = cs.consensus("p", ["actor-agency.example"])
+        check(agreed.get("actor-agency.example", ("",))[0] == "演者" and not split, f"演者の答えが一致しない: {agreed} {split}")
+        try:
+            cs.add_domains(agreed)
+            cs.add_domains({f"{t}-{i}.example": (t, "w") for i, t in enumerate(cs.ALLOWED)})
+        except (Exception, SystemExit) as e:      # noqa: BLE001
+            check(False, f"合議で一致した種別を保存できない: {type(e).__name__}: {e}")
+        pipelib._ST_TABLE = None
+        t = pipelib.parse_source_table(p.read_text(encoding="utf-8"), p)
+        check("actor-agency.example" in (t.get("performer_domains") or []), f"演者のドメインの保存先: {sorted(t)}")
+        for i, typ in enumerate(cs.ALLOWED):
+            got = pipelib.classify_source(f"https://{typ}-{i}.example/news")
+            check(got == typ, f"{typ} として保存したドメインの判定: {got}")
+        check(pipelib.classify_source("https://www.actor-agency.example/profile") == "演者"
+              and pipelib.classify_source("https://fc.actor-agency.example/") == "演者", "演者のドメインの配下が演者にならない")
+        rep = lint.Report()
+        lint.check_source_types(rep, lint.ROOT / "x.md", {"sources": [{"url": "https://actor-agency.example/n", "type": "演者", "label": "l"}], "src": "演者"})
+        check(rep.errors == 0, f"演者のドメインを演者と書いた記事が lint で止まる: {rep.errors}")
+        # 表の検査: 同じドメインを演者と別の種別に載せたら止める
+        try:
+            pipelib.parse_source_table("performer_domains:\n  - x.example\nparty_domains:\n  - x.example\n", p)
+            check(False, "演者と当事者に同じドメインが載った表を通した")
+        except SystemExit as e:
+            check("performer_domains" in str(e), f"重複の理由: {e}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"演者のドメインのテストが例外: {type(e).__name__}: {e}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask = saved
+
+
+def test_platform_owner_units(tmp: Path):
+    """プラットフォーム上の持ち主の単位: ニコニコの `/channel/<ch ID>` は ID まで(監査指摘 2026-10-14: 別のチャンネルが同じ
+    `ch.nicovideo.jp/channel` になり、1つを公式にすると別のチャンネルとその番組まで公式になった)。同じ型として、先頭の区切りが
+    持ち主でない投稿の URL(instagram.com/p/<ID>)を1つの主体にしない。"""
+    import classify_sources as cs
+    import html as _html
+    one, two = "https://ch.nicovideo.jp/channel/ch1111111", "https://ch.nicovideo.jp/channel/ch2222222"
+    k1 = "ch.nicovideo.jp/channel/ch1111111"
+    check(cs.path_key(one) == k1 and cs.path_key(two) == "ch.nicovideo.jp/channel/ch2222222", f"チャンネルの単位: {cs.path_key(one)} {cs.path_key(two)}")
+    check(cs.path_key(one + "/video?page=2") == k1 and cs.path_key("https://ch.nicovideo.jp/sidem/video") == "ch.nicovideo.jp/sidem"
+          and cs.path_key("https://ch.nicovideo.jp/channel") is None, "チャンネルの単位(配下・別名・ID 無し)")
+    check(cs.display_base(one) == "https://" + k1, f"表示の単位: {cs.display_base(one)}")
+    props = {"socialGroup": {"type": "channel", "id": "ch1111111", "socialGroupPageUrl": one}}
+    page = f'<title>番組 - ニコニコ生放送</title><script id="embedded-data" data-props="{_html.escape(json.dumps(props))}"></script>'
+    check(cs.nico_channel_fetch("lv1", page=page, fetch_alias=False)[0] == k1, "番組から引いたチャンネルとチャンネルの URL の単位が違う")
+    check(cs.path_key("https://www.instagram.com/p/AbCdEf/") is None and cs.platform_unit("https://www.instagram.com/p/AbCdEf/")[0] == "parser"
+          and cs.path_key("https://www.instagram.com/someone/") == "instagram.com/someone", "Instagram の投稿を1つの主体にした")
+    # 経路: 候補のチャンネル URL → 合議の対象 → 表。別のチャンネルとその番組は公式にならない
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.nico_channel)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        cs.POSTS_ONLY = None
+        (tmp / "candidates" / "2026-10-14.json").write_text(json.dumps([{"url": one, "title": "チャンネル告知"}]), encoding="utf-8")
+        _d, _a, paths = cs.unknown_targets("2026-10-14")
+        check(paths == {k1: one}, f"チャンネルの合議の対象: {paths}")
+        cs.add_paths({k: ("公式", "対象チャンネル") for k in paths})
+        check(pipelib.classify_source(one) == "公式" and pipelib.classify_source(two) == "未確認", "別のチャンネルまで公式になった")
+        (tmp / "candidates" / "2026-10-14.json").write_text(json.dumps([{"url": "https://live.nicovideo.jp/watch/lv2222222"}]), encoding="utf-8")
+        cs.nico_channel = lambda vid: ("ch.nicovideo.jp/channel/ch2222222", "ch2222222", "別番組")
+        left, unk = cs.resolve_nico("2026-10-14", True)
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source("https://live.nicovideo.jp/watch/lv2222222") == "未確認" and list(unk) == ["ch.nicovideo.jp/channel/ch2222222"],
+              f"別のチャンネルの番組が公式になった: {left} {unk}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"チャンネルの単位のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.nico_channel = saved
+
+
+def test_classify_txn_interrupt(tmp: Path):
+    """出典の判定の取引の途中(表を書いた後・付け直しの最中)に親へ SIGTERM・SIGINT が来ても、子をプロセスグループごと止めてから
+    判定表と記事を開始時へ戻し、中断はそのあとで元の扱いへ渡す(監査指摘 2026-10-14: 戻さずに終わって表だけが変わり、出典の lint が
+    赤く、次の工程の checkout が「未コミットの変更」で止まった)。親が SIGKILL で死んだら、次の工程の checkout が控えから戻す。
+    本物の親子のプロセスとシグナルで確かめる(合議・付け直しの子は、表と記事を書いて待つだけの代役)。"""
+    import signal as _signal
+    import time
+    scripts_dir = Path(__file__).resolve().parent
+    orig_table = "official_domains:\n  - a.example\n"
+    orig_post = "---\n" + article_fm("a", "2026-10-14") + "---\n本文\n"
+    # 合議の代役: 表と記事を書く。TXN_CLASSIFY で終わり方を変える(slow: 孫を起こして待つ / fail: 失敗で終わる /
+    # orphan-fail・orphan-ok: 孫(go が置かれたら・無くても数秒後に表を書き直す)を残して、失敗・成功で先に終わる)
+    classify = ("import os, subprocess, sys, time\nfrom pathlib import Path\n"
+                "Path('source_types.yml').write_text('official_domains:\\n  - b.example\\n')\n"
+                "Path('docs/_posts/2026-10-14-new.md').write_text('new')\n"
+                "Path('.source_types.yml.999.tmp').write_text('half')\n"
+                "mode = os.environ.get('TXN_CLASSIFY', '')\n"
+                "if mode == 'slow':\n"
+                "    g = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'])\n"
+                "    Path('ready').write_text(f'{os.getpid()} {g.pid}')\n    time.sleep(60)\n"
+                "if mode == 'fail':\n    sys.exit(1)\n"
+                "if mode in ('orphan-fail', 'orphan-ok'):\n"
+                "    g = subprocess.Popen([sys.executable, 'scripts/grandchild.py'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)\n"
+                "    Path('ready').write_text(f'{os.getpid()} {g.pid}')\n"
+                "    sys.exit(1 if mode == 'orphan-fail' else 0)\n")
+    grandchild = ("import time\nfrom pathlib import Path\nfor _ in range(60):\n    if Path('go').exists():\n        break\n"
+                  "    time.sleep(0.1)\nPath('source_types.yml').write_text('official_domains:\\n  - grandchild.example\\n')\n")
+    retag = ("import os, subprocess, sys, time\nfrom pathlib import Path\n"
+             "Path('docs/_posts/2026-10-14-a.md').write_text('retagged')\n"
+             "g = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'])\n"
+             "Path('ready').write_text(f'{os.getpid()} {g.pid}')\ntime.sleep(60)\n")
+
+    def git_(root, *a):
+        return subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@example.invalid", *a], cwd=root,
+                              capture_output=True, text=True, stdin=subprocess.DEVNULL)
+
+    def setup(name):
+        root = tmp / name
+        (root / "scripts").mkdir(parents=True)
+        (root / "docs" / "_posts").mkdir(parents=True)
+        (root / "source_types.yml").write_text(orig_table, encoding="utf-8")
+        (root / "docs" / "_posts" / "2026-10-14-a.md").write_text(orig_post, encoding="utf-8")
+        (root / "scripts" / "classify_sources.py").write_text(classify, encoding="utf-8")
+        (root / "scripts" / "retag_sources.py").write_text(retag, encoding="utf-8")
+        (root / "scripts" / "grandchild.py").write_text(grandchild, encoding="utf-8")
+        (root / ".gitignore").write_text("/metrics/\n/ready\n/out\n/go\n/flag\n/sweeping\n", encoding="utf-8")
+        git_(root, "init", "-q", "-b", "edition/2026-10-14")
+        git_(root, "add", "-A")
+        git_(root, "commit", "-qm", "base")
+        return root
+
+    def alive(pid):
+        try:
+            return Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()[0] != "Z"
+        except (OSError, IndexError):
+            return False
+
+    run = "print(pipelib.classify_retag_lint('2026-10-14', posts_only=True, lint=False), flush=True)\n"
+
+    def start(root, handler="", body=run, wait_for="ready", env=None):
+        prog = (f"import os, signal, sys, time\nsys.path.insert(0, {str(scripts_dir)!r})\nfrom pathlib import Path\nimport pipelib\n"
+                f"pipelib.ROOT = Path({str(root)!r})\n{handler}\n{body}")
+        proc = subprocess.Popen([sys.executable, "-c", prog], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                                stdin=subprocess.DEVNULL, env={**os.environ, **(env or {})})
+        for _ in range(400 if wait_for else 0):
+            try:
+                pids = [int(x) for x in (root / "ready").read_text().split()]
+                if len(pids) == 2 and (wait_for == "ready" or (root / wait_for).exists()):
+                    return proc, pids
+            except (OSError, ValueError):
+                pass
+            if proc.poll() is not None:
+                break
+            time.sleep(0.05)
+        return proc, []
+
+    def settled(root, pids, label, need_pids=True):
+        (root / "go").write_text("go", encoding="utf-8")      # 残った孫がいれば、ここで表を書き直す
+        for _ in range(50):          # 止めた孫が回収されるまで(残っていれば書き直すまで)
+            if not any(alive(q) for q in pids):
+                break
+            time.sleep(0.1)
+        time.sleep(0.5)
+        for f in ("ready", "go"):
+            (root / f).unlink(missing_ok=True)
+        got = {"表": (root / "source_types.yml").read_text(encoding="utf-8") == orig_table,
+               "記事": (root / "docs" / "_posts" / "2026-10-14-a.md").read_text(encoding="utf-8") == orig_post,
+               "増えた記事": not (root / "docs" / "_posts" / "2026-10-14-new.md").exists(),
+               "書きかけの表": not (root / ".source_types.yml.999.tmp").exists(),
+               "子と孫": (bool(pids) or not need_pids) and not any(alive(q) for q in pids),
+               "作業ツリー": git_(root, "status", "--porcelain").stdout.strip() == "",
+               "控え": not (root / "metrics" / "work" / "classify-txn.json").exists()}
+        check(all(got.values()), f"{label}: 開始時へ戻っていない・止まっていない {[k for k, v in got.items() if not v]}")
+
+    def cleanup(pids):
+        for q in pids:
+            try:
+                os.kill(q, _signal.SIGKILL)
+            except OSError:
+                pass
+
+    tmp.mkdir(parents=True, exist_ok=True)
+    # 1. SIGTERM(既定の扱い): 戻してから SIGTERM で終わる
+    root = setup("term")
+    proc, pids = start(root)
+    try:
+        check(pids, "付け直しの子が始まらない")
+        os.kill(proc.pid, _signal.SIGTERM)
+        proc.communicate(timeout=30)
+        check(proc.returncode == -_signal.SIGTERM, f"SIGTERM の終わり方: {proc.returncode}")
+        settled(root, pids, "SIGTERM")
+    finally:
+        cleanup(pids)
+    # 2. SIGINT(Ctrl-C): 戻してから KeyboardInterrupt で終わる
+    root = setup("int")
+    proc, pids = start(root)
+    try:
+        os.kill(proc.pid, _signal.SIGINT)
+        _out, err = proc.communicate(timeout=30)
+        check(proc.returncode != 0 and "KeyboardInterrupt" in err, f"SIGINT の終わり方: {proc.returncode} {err[-200:]}")
+        settled(root, pids, "SIGINT")
+    finally:
+        cleanup(pids)
+    # 3. 組版のように SIGTERM の扱いを持つ親: 戻した**あと**で、その扱い(途中終了の後始末)が走る
+    root = setup("handler")
+    out = root / "out"
+    handler = ("import os, signal\n"
+               "def _h(s, f):\n"
+               f"    Path({str(out)!r}).write_text(Path({str(root / 'source_types.yml')!r}).read_text())\n"
+               "    os._exit(7)\n"
+               "signal.signal(signal.SIGTERM, _h)\n")
+    proc, pids = start(root, handler)
+    try:
+        os.kill(proc.pid, _signal.SIGTERM)
+        proc.communicate(timeout=30)
+        check(proc.returncode == 7 and out.exists() and out.read_text() == orig_table,
+              f"元の SIGTERM の扱いが、戻した後に走らない: {proc.returncode} {out.read_text() if out.exists() else '(走っていない)'}")
+        settled(root, pids, "SIGTERM(扱いを持つ親)")
+    finally:
+        cleanup(pids)
+    # 4. 時間切れ: 子と孫を止めてから戻す
+    def in_process(name, mode, label, call, need_pids=None):
+        """この process の中で取引を走らせる(合議の代役の終わり方は mode)。call は取引を呼ぶ関数(戻りは検める側が見る)"""
+        root = setup(name)
+        saved_root, saved_env, pids = pipelib.ROOT, os.environ.get("TXN_CLASSIFY"), []
+        try:
+            pipelib.ROOT = root
+            os.environ["TXN_CLASSIFY"] = mode
+            call(root)
+            pids = [int(x) for x in (root / "ready").read_text().split()] if (root / "ready").exists() else []
+            settled(root, pids, label, need_pids=(mode != "") if need_pids is None else need_pids)
+        except (Exception, SystemExit) as e:      # noqa: BLE001
+            check(False, f"{label}のテストが例外: {type(e).__name__}: {e}")
+        finally:
+            pipelib.ROOT = saved_root
+            if saved_env is None:
+                os.environ.pop("TXN_CLASSIFY", None)
+            else:
+                os.environ["TXN_CLASSIFY"] = saved_env
+            cleanup(pids)
+
+    def timed_out(root):
+        ok, why = pipelib.classify_retag_lint("2026-10-14", posts_only=True, timeout=3, lint=False)
+        check(not ok and "TimeoutExpired" in why, f"時間切れの扱い: {ok} {why}")
+    in_process("timeout", "slow", "時間切れ", timed_out)
+    # 4'. 合議の子が先に終わり、孫が残る(失敗で終わる・成功して付け直しへ進む): 孫も止めてから戻す。戻した後で孫に書き直させない
+    def failed_first(root):
+        ok, why = pipelib.classify_retag_lint("2026-10-14", posts_only=True, lint=False)
+        check(not ok and "合議 exit 1" in why, f"合議の失敗の扱い: {ok} {why}")
+    in_process("orphan-fail", "orphan-fail", "子が先に失敗して孫が残る", failed_first)
+    # 4'''. 子の記録を書けない(空き容量が無い等): 子を動かさずに止めて段を失敗にする(記録の無い子を残さない。親が SIGKILL で
+    #       死んでも次の起動が止められない子を作らない)
+    def no_record(root):
+        saved_w = pipelib._write_txn_child
+        pipelib._write_txn_child = lambda *a: (_ for _ in ()).throw(OSError(28, "No space left on device"))
+        try:
+            ok, why = pipelib.classify_retag_lint("2026-10-14", posts_only=True, lint=False)
+        finally:
+            pipelib._write_txn_child = saved_w
+        check(not ok and "OSError" in why and not (root / "ready").exists()
+              and (root / "source_types.yml").read_text(encoding="utf-8") == orig_table, f"子の記録を書けないのに子が動いた: {ok} {why}")
+    in_process("no-record", "orphan-ok", "子の記録を書けない", no_record, need_pids=False)
+    # 親が合図の前に死んだ(標準入力が閉じた)子は、本来のコマンドを動かさずに終わる
+    gate_dir = tmp / "gate"
+    gate_dir.mkdir(exist_ok=True)
+    try:
+        g = subprocess.Popen([sys.executable, "-c", pipelib._TXN_GATE, sys.executable, "-c", "open('ran', 'w').write('x')"],
+                             cwd=gate_dir, stdin=subprocess.PIPE)
+        g.stdin.close()
+        g.wait(timeout=30)
+        check(g.returncode == 125 and not (gate_dir / "ran").exists(), f"合図の無いまま取引の子が動いた: exit {g.returncode}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"取引の子の入口のテストが例外: {type(e).__name__}: {e}")
+    # 4''. 工程の終了の例外(収集の SIGTERM を例外にした Terminated のような BaseException)・KeyboardInterrupt が取引の中で
+    #      起きても、戻してから例外を通す
+    class Terminated(BaseException):
+        pass
+    for exc in (Terminated, KeyboardInterrupt):
+        def raised(root, exc=exc):
+            real = pipelib._txn_run
+
+            def after_classify(cmd, timeout):
+                r = real(cmd, timeout)
+                if "classify_sources.py" in str(cmd[1]):
+                    raise exc()
+                return r
+            pipelib._txn_run = after_classify
+            try:
+                pipelib.classify_retag_lint("2026-10-14", posts_only=True, lint=False)
+                check(False, f"{exc.__name__} が取引の外へ出ない")
+            except exc:
+                pass
+            finally:
+                pipelib._txn_run = real
+        in_process(f"raise-{exc.__name__}", "", f"取引の中の {exc.__name__}", raised)
+    # 5. 親が SIGKILL(後始末できない): 次の工程の checkout が、未コミットの変更を見る前に控えから戻し、残った子も止める
+    root = setup("kill")
+    proc, pids = start(root)
+    saved = (pipelib.ROOT, pipelib.notify, pipelib.git_net, list(pipelib.ANOMALIES))
+    try:
+        os.kill(proc.pid, _signal.SIGKILL)
+        proc.communicate(timeout=30)
+        check((root / "source_types.yml").read_text(encoding="utf-8") != orig_table, "SIGKILL の前提: 表が書き換わっていない")
+        notes = []
+        pipelib.ROOT = root
+        pipelib.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        pipelib.git_net = lambda *a, **k: subprocess.CompletedProcess(a, 1, "", "offline")
+        pipelib.checkout_edition_branch("2026-10-14", "collect")
+        check(notes and "未コミット" not in notes[0] and "fetch" in notes[0], f"checkout が控えから戻さずに止まった: {notes}")
+        settled(root, pids, "SIGKILL の後の checkout")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"SIGKILL の後の回復のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        pipelib.ROOT, pipelib.notify, pipelib.git_net = saved[:3]
+        pipelib.ANOMALIES[:] = saved[3]
+        cleanup(pids)
+    # 6. 合議の子が先に終わったあと・孫を止める前に親が SIGKILL: 次の工程の checkout が、直接の子が終わっていても孫を止めてから戻す
+    root = setup("kill-orphan")
+    slow_sweep = (f"_real = pipelib._stop_session\n"
+                  f"def _slow(*a, **k):\n    Path({str(root / 'sweeping')!r}).write_text('x')\n    time.sleep(60)\n    return _real(*a, **k)\n"
+                  "pipelib._stop_session = _slow\n")
+    proc, pids = start(root, slow_sweep, wait_for="sweeping", env={"TXN_CLASSIFY": "orphan-ok"})
+    saved = (pipelib.ROOT, pipelib.notify, pipelib.git_net, list(pipelib.ANOMALIES))
+    try:
+        check(len(pids) == 2 and not alive(pids[0]) and alive(pids[1]), f"前提: 合議の子は終わり、孫が残っている: {pids}")
+        os.kill(proc.pid, _signal.SIGKILL)
+        proc.communicate(timeout=30)
+        pipelib.ROOT = root
+        pipelib.notify = lambda job, msg, ok=True, require=False: True
+        pipelib.git_net = lambda *a, **k: subprocess.CompletedProcess(a, 1, "", "offline")
+        pipelib.checkout_edition_branch("2026-10-14", "collect")
+        (root / "sweeping").unlink(missing_ok=True)
+        settled(root, pids, "子が終わった後の SIGKILL の後の checkout")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"子が終わった後の SIGKILL のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        pipelib.ROOT, pipelib.notify, pipelib.git_net = saved[:3]
+        pipelib.ANOMALIES[:] = saved[3]
+        cleanup(pids)
+    # 7. 戻している最中に届いた SIGTERM・SIGINT も落とさない: 戻し終えてから元の扱いへ届く(合議の失敗で戻す最中に自分へ送る)
+    for sig, want in ((_signal.SIGTERM, "既定"), (_signal.SIGINT, "KeyboardInterrupt"), (_signal.SIGTERM, "扱いを持つ親")):
+        root = setup(f"during-{sig.name}-{len(want)}")
+        out = root / "out"
+        handler = (f"_real = pipelib._restore\n"
+                   f"def _r(*a, **k):\n    if not Path({str(root / 'flag')!r}).exists():\n"
+                   f"        Path({str(root / 'flag')!r}).write_text('x')\n        os.kill(os.getpid(), {int(sig)})\n"
+                   "    return _real(*a, **k)\npipelib._restore = _r\n")
+        if want == "扱いを持つ親":
+            handler += ("def _h(s, f):\n"
+                        f"    Path({str(out)!r}).write_text(Path({str(root / 'source_types.yml')!r}).read_text())\n    os._exit(7)\n"
+                        "signal.signal(signal.SIGTERM, _h)\n")
+        proc, _p = start(root, handler, wait_for=None, env={"TXN_CLASSIFY": "fail"})
+        try:
+            _out, err = proc.communicate(timeout=60)
+            if want == "既定":
+                ok_end = proc.returncode == -_signal.SIGTERM
+            elif want == "KeyboardInterrupt":
+                ok_end = proc.returncode != 0 and "KeyboardInterrupt" in err
+            else:
+                ok_end = proc.returncode == 7 and out.exists() and out.read_text() == orig_table
+            check(ok_end and (root / "flag").exists(), f"戻す最中の {sig.name}({want})を落とした: exit {proc.returncode} {err[-200:]}")
+            (root / "flag").unlink(missing_ok=True)
+            settled(root, [], f"戻す最中の {sig.name}({want})", need_pids=False)
+        finally:
+            if proc.poll() is None:
+                proc.kill()
+    # 8. SIGTERM を例外(収集の Terminated のような BaseException)に変える親: 戻してから、その例外が親へ届く
+    root = setup("terminated")
+    out = root / "out"
+    handler = ("class Terminated(BaseException):\n    pass\n"
+               "def _h(s, f):\n    raise Terminated()\nsignal.signal(signal.SIGTERM, _h)\n")
+    body = ("try:\n    " + run + "except Terminated:\n"
+            f"    Path({str(out)!r}).write_text(Path({str(root / 'source_types.yml')!r}).read_text())\n    sys.exit(5)\n")
+    proc, pids = start(root, handler, body)
+    try:
+        os.kill(proc.pid, _signal.SIGTERM)
+        proc.communicate(timeout=30)
+        check(proc.returncode == 5 and out.exists() and out.read_text() == orig_table,
+              f"SIGTERM を例外にする親へ、戻した後に例外が届かない: {proc.returncode} {out.read_text() if out.exists() else '(届いていない)'}")
+        settled(root, pids, "SIGTERM を例外にする親")
+    finally:
+        cleanup(pids)
+
+
+def test_tags_and_idols(tmp: Path):
+    """タグの正規化と名鑑のブランドの写像を、結果で検める(監査指摘 2026-10-14: 正規化を全消去にしても、名鑑 367件を全部 other で
+    作っても、既存のテストが 0 failures だった)。"""
+    import collections
+    import build_idols
+    import tags
+    spec = {"drop": {"公式", "未確認"}, "alias": {"shiny": "シャニマス", "765": "765AS", "シンデレラ": "シンデレラガールズ"}, "vocabulary": {}}
+    got = tags.normalize([" shiny ", "シャニマス", "公式", 765, "", "新しい固有名", "シンデレラ", "シンデレラガールズ", "未確認"], spec)
+    check(got == ["シャニマス", "765AS", "新しい固有名", "シンデレラガールズ"], f"タグの正規化(表記ゆれ・除外・重複・順序・自由な固有名): {got}")
+    real = tags.load()
+    check(real["alias"] and real["drop"], "語彙(docs/_data/tags.yml)の表記ゆれ・除外が読めない")
+    for k, v in real["alias"].items():
+        want = [] if v in real["drop"] else [v]
+        check(tags.normalize([k], real) == want, f"語彙の表記ゆれ {k} → {v} が効かない: {tags.normalize([k], real)}")
+    check(all(tags.normalize([d], real) == [] for d in real["drop"]), "語彙の除外が効かない")
+    # 名鑑: 原本の brandId は、原本に書かれたブランド名を通して本紙のブランドへ写る(写像の表とは別に、ここに持つ対応で検める)
+    name_of_id = {1: "765AS", 3: "DS", 4: "シンデレラ", 5: "ミリオン", 6: "SideM", 7: ".KR", 8: "シャニ", 9: "961プロ",
+                  10: "ヴイアラ", 11: "学園", 255: "その他"}
+    brand_of_name = {"765AS": "765", "DS": "dsva", "シンデレラ": "cg", "ミリオン": "million", "SideM": "sidem", ".KR": "other",
+                     "シャニ": "shiny", "961プロ": "other", "ヴイアラ": "dsva", "学園": "gaku", "その他": "other"}
+    repo = Path(__file__).resolve().parent.parent
+    raw = json.loads((repo / "birthdays.json").read_text(encoding="utf-8"))
+    tmp.mkdir(parents=True, exist_ok=True)
+    saved = (build_idols.SRC, build_idols.DST, build_idols.ROOT)
+    try:
+        build_idols.SRC, build_idols.DST, build_idols.ROOT = repo / "birthdays.json", tmp / "idols.json", tmp
+        rc = build_idols.main()
+    finally:
+        build_idols.SRC, build_idols.DST, build_idols.ROOT = saved
+    built = json.loads((tmp / "idols.json").read_text(encoding="utf-8")) if (tmp / "idols.json").exists() else []
+    by_id = {e["characterId"]: e for e in raw}
+    check(rc == 0 and len(built) == len(raw) == len(by_id) > 300, f"名鑑の件数: {rc} {len(built)} / 原本 {len(raw)}")
+    wrong = []
+    for item in built:
+        src = by_id.get(item["characterId"]) or {}
+        name = name_of_id.get(src.get("brandId"))
+        m, d = (int(x) for x in str(src.get("birthday", "0/0")).split("/"))
+        if (name not in (src.get("brands") or []) or item["brand"] != brand_of_name.get(name) or item["name"] != src.get("name")
+                or item["birthday"] != f"{m:02d}-{d:02d}"):
+            wrong.append(f"{item['name']}({src.get('brandId')}→{item['brand']})")
+    check(not wrong, f"名鑑のブランド・名前・誕生日が原本と合わない {len(wrong)}件: {wrong[:5]}")
+    counts = collections.Counter(i["brand"] for i in built)
+    check(counts["cg"] == sum(1 for e in raw if e["brandId"] == 4) and len(counts) == 8, f"名鑑のブランドの分布: {dict(counts)}")
+    check((repo / "docs" / "_data" / "idols.json").read_text(encoding="utf-8") == (tmp / "idols.json").read_text(encoding="utf-8"),
+          "公開している名鑑(docs/_data/idols.json)が原本から作り直したものと違う")
+
+
+DIGEST_LABELS = ("本日", "昨日", "継続中", "明日")
+
+
+class assemble_at:
+    """assemble の置き場(記事・号・台帳・予約・pending・控え)を tmp に向ける。抜けるときに戻す。"""
+    NAMES = ("ROOT", "POSTS", "EDITIONS", "STORIES", "SCHEDULED", "PENDING")
+
+    def __init__(self, tmp: Path):
+        self.tmp = tmp
+
+    def __enter__(self):
+        t = self.tmp
+        for d in (t / "stock" / "scheduled", t / "metrics", t / "docs" / "_posts", t / "docs" / "_editions", t / "candidates"):
+            d.mkdir(parents=True, exist_ok=True)
+        self.saved = {n: getattr(assemble, n) for n in self.NAMES}
+        assemble.ROOT, assemble.POSTS, assemble.EDITIONS = t, t / "docs" / "_posts", t / "docs" / "_editions"
+        assemble.STORIES, assemble.SCHEDULED, assemble.PENDING = t / "stock" / "stories.yml", t / "stock" / "scheduled", t / "stock" / "pending.yml"
+        return self
+
+    def __exit__(self, *exc):
+        for n, v in self.saved.items():
+            setattr(assemble, n, v)
+        return False
+
+
+def test_derive_ranking(tmp: Path):
+    """ランキング(derive --write が書いた号)を、算出の実装とは別に手で数えた順位と突き合わせる: 紙面(見出し・リード・本文・目次)の
+    言及×1.0 + 当日の探索(explore)素材の言及×0.5、同点は前号順位→名鑑順(characterId。名鑑ファイルの並びではない)、delta は前号比。
+    言及が8名に満たない号でもスコア0を同じ規則で並べて8件にする(2026-10-14 監査: 言及が8名未満の号でランキングが8件に届かず
+    lint が止めた・重みを0にしても全テストが通った)。"""
+    import contextlib
+    import datetime
+    import io as _io
+    import derive
+    import yaml
+    for d in ("docs/_data", "docs/_posts", "docs/_editions", "candidates"):
+        (tmp / d).mkdir(parents=True, exist_ok=True)
+    idols = [("アカネ", "cg", 50), ("イズミ", "765", 10), ("ウタハ", "million", 30), ("エマ", "shiny", 20), ("オトハ", "sidem", 60),
+             ("カナデ", "cg", 40), ("キララ", "gaku", 70), ("クルミ", "765", 80), ("ケイ", "million", 90), ("コハル", "shiny", 5),
+             ("サクラ", "cg", 3)]
+    (tmp / "docs/_data/idols.json").write_text(json.dumps([{"name": n, "brand": b, "birthday": "01-01", "characterId": c}
+                                                           for n, b, c in idols], ensure_ascii=False), encoding="utf-8")
+    brand = {n: b for n, b, _ in idols}
+
+    def edition(date: str, rows=(), ranking=()):
+        fm = {"number": 1, "date": date, "weekday": "月火水木金土日"[datetime.date.fromisoformat(date).weekday()],
+              "issued_at": f"{date}T06:00:00+09:00", "pages": 0, "article_count": 0, "corrected_count": 0, "lead_slug": "a1",
+              "digest": [{"label": l, "rows": list(rows) if l == "本日" else []} for l in DIGEST_LABELS],
+              "ranking": [{"n": i + 1, "name": n, "brand": brand[n], "delta": "new"} for i, n in enumerate(ranking)], "birthdays": []}
+        (tmp / "docs/_editions" / f"{date}.md").write_text("---\n" + yaml.safe_dump(fm, allow_unicode=True, sort_keys=False) + "---\n",
+                                                           encoding="utf-8")
+
+    def post(date: str, slug: str, title: str, lede: str, body: str):
+        (tmp / "docs/_posts" / f"{date}-{slug}.md").write_text("---\n" + article_fm(slug, date, title=title, lede=lede) + "---\n" + body + "\n",
+                                                               encoding="utf-8")
+
+    def ranking(date: str):
+        saved_root, saved_argv = derive.ROOT, sys.argv
+        derive.ROOT, sys.argv = tmp, ["derive.py", "--date", date, "--write"]
+        try:
+            with contextlib.redirect_stdout(_io.StringIO()):
+                derive.main()
+        except Exception as e:      # noqa: BLE001  8件に届かない号は書式違反(SchemaViolation)で上がる
+            return f"{type(e).__name__}: {e}"
+        finally:
+            derive.ROOT, sys.argv = saved_root, saved_argv
+        fm, _ = derive.parse_frontmatter(tmp / "docs/_editions" / f"{date}.md")
+        return [(r["n"], r["name"], r["brand"], r["delta"]) for r in fm["ranking"]]
+
+    edition("2026-10-19", ranking=["カナデ", "オトハ", "ウタハ", "イズミ", "エマ", "キララ", "クルミ", "ケイ"])
+    # 10/20: 紙面 = 記事2本+目次の行。探索素材は当日の explore だけを数える(watch・前日の素材は数えない)
+    post("2026-10-20", "a1", "アカネの新曲。", "アカネが歌う。", "アカネの声。")
+    post("2026-10-20", "a2", "イズミ公演。", "オトハも登場。", "イズミが出演。")
+    edition("2026-10-20", rows=[{"k": "発", "t": "ウタハ出演", "d": "", "brand": "million", "slug": "a2"}])
+    (tmp / "candidates/2026-10-20.json").write_text(json.dumps([
+        cand_row("e1", "https://x.example/1", origin="explore", title="ウタハ配信", facts=["ウタハ登場"]),
+        cand_row("e2", "https://x.example/2", origin="explore", title="エマ特集", facts=["エマ写真", "サクラ告知"]),
+        cand_row("e3", "https://x.example/3", origin="explore", title="コハル生誕", facts=[]),
+        cand_row("w1", "https://x.example/4", origin="watch", title="ケイケイケイ", facts=["ケイ"])], ensure_ascii=False), encoding="utf-8")
+    (tmp / "candidates/2026-10-19.json").write_text(json.dumps([
+        cand_row("e9", "https://x.example/9", origin="explore", title="クルミクルミクルミ", facts=[])], ensure_ascii=False), encoding="utf-8")
+    # 手で数えた点: アカネ 3 / ウタハ 1+2×0.5=2 / イズミ 2 / オトハ 1 / エマ 2×0.5=1 / サクラ 0.5 / コハル 0.5 / ほか 0(言及は7名)。
+    # 同点: ウタハ(前号3位)>イズミ(4位)、オトハ(2位)>エマ(5位)、サクラ(id 3)>コハル(id 5)。8位はスコア0のうち前号最上位のカナデ
+    want = [(1, "アカネ", "cg", "new"), (2, "ウタハ", "million", "up"), (3, "イズミ", "765", "up"), (4, "オトハ", "sidem", "down"),
+            (5, "エマ", "shiny", "stay"), (6, "サクラ", "cg", "new"), (7, "コハル", "shiny", "new"), (8, "カナデ", "cg", "down")]
+    got = ranking("2026-10-20")
+    check(got == want, f"ランキング(言及7名・同点・探索の重み・前号比)が手で数えた順位と違う: {got}")
+    # 10/21: 言及は1名だけ。残りはスコア0を前号(10/20 の derive の出力)の順位で並べて8件
+    post("2026-10-21", "b1", "ケイの話。", "続報。", "本文。")
+    edition("2026-10-21")
+    want2 = [(1, "ケイ", "million", "new"), (2, "アカネ", "cg", "down"), (3, "ウタハ", "million", "down"), (4, "イズミ", "765", "down"),
+             (5, "オトハ", "sidem", "down"), (6, "エマ", "shiny", "down"), (7, "サクラ", "cg", "down"), (8, "コハル", "shiny", "down")]
+    got2 = ranking("2026-10-21")
+    check(got2 == want2, f"言及が1名の号のランキングが8件にならない・スコア0の並びが前号順位でない: {got2}")
+
+
+def test_assemble_digest_keeps_lead_within_cap():
+    """一面を欠く 4群×3行の答えでも、一面を足したうえで目次は全体12行・群4行に収まり、一面の行は1行残る
+    (2026-10-14 監査: 12行に縮めた後に一面を足して13行になり、lint と組版が止まった)。"""
+    posts = [{"slug": "lead", "brand": "cg", "rank": "lead", "title": "一面の大きな知らせ", "lede": "一面のリード", "candidate_ids": []}]
+    posts += [{"slug": f"o{i}", "brand": "765", "rank": "small", "title": f"知らせ{i}号の見出し", "lede": "リード", "candidate_ids": []}
+              for i in range(16)]
+    inp = {"articles": [{"slug": p["slug"], "title": p["title"], "lede": p["lede"], "facts": [], "dedup_key": p["slug"]} for p in posts],
+           "pending": [], "tomorrow_reservations": []}
+    row = lambda p: {"k": "発", "t": p["title"][:20], "d": "", "brand": p["brand"], "slug": p["slug"]}
+    empty = {"stories": [], "reservations": [], "pending_add": [], "pending_remove": []}
+    no_lead = dict(empty, digest=[{"label": l, "rows": [row(posts[1 + 3 * g + j]) for j in range(3)]} for g, l in enumerate(DIGEST_LABELS)])
+    late_lead = dict(empty, digest=[{"label": l, "rows": [row(posts[1 + 4 * g + j]) for j in range(4)]} for g, l in enumerate(DIGEST_LABELS)])
+    late_lead["digest"][3]["rows"][3] = row(posts[0])          # 一面が最後の群の最後の行(縮めるときに削られる位置)
+    for name, out in (("一面を欠く4群×3行", no_lead), ("一面が末尾の4群×4行", late_lead)):
+        res, _ = assemble.validate("2026-10-14", json.loads(json.dumps(out)), posts, {}, inp)
+        groups = res["digest"]
+        check([g["label"] for g in groups] == list(DIGEST_LABELS) and sum(len(g["rows"]) for g in groups) == 12
+              and all(len(g["rows"]) <= 4 for g in groups) and sum(r.get("slug") == "lead" for g in groups for r in g["rows"]) == 1,
+              f"目次が全体12行・群4行・一面1行に収まらない({name}): {[[r.get('slug') for r in g['rows']] for g in groups]}")
+
+
+def test_assemble_interrupted_writes(tmp: Path):
+    """台帳(YAML)・予約(JSON)・号スナップショットの書き直しが途中で止まっても(容量不足)、元のファイルを保ち、一時ファイルを残さず、同じ組版を
+    もう一度走らせれば直る。一時ファイルは書く先と同じディレクトリの Git の対象外の名前(2026-10-14 監査: 予約の書き直しの中断で
+    JSON が壊れ再実行も JSONDecodeError で止まった・stories.yml.tmp が残って作業ツリーを汚した)。"""
+    import builtins
+    import io as _io
+    D = "2026-10-14"
+    post = {"slug": "x", "brand": "cg", "rank": "lead", "candidate_ids": ["c1"], "title": "催し", "lede": "l"}
+    mats = {"c1": cand_row("c1", "https://idolmaster-official.jp/news/01_1", dedup_key="event", title="催し",
+                           facts=["2026年10月20日に催しを開催"])}
+
+    def out(note: str) -> dict:
+        return {"digest": [{"label": l, "rows": []} for l in DIGEST_LABELS],
+                "stories": [{"slug": "x", "story_id": "event", "subject": "催し", "published_facts": [note]}],
+                "reservations": [{"slug": "x", "candidate_id": "c1", "date": "2026-10-20", "kind": "開幕", "subject": "催し", "note": note}],
+                "pending_add": [], "pending_remove": []}
+    repo = Path(__file__).resolve().parent.parent
+    res = {}
+    with assemble_at(tmp):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [])
+        assemble.apply(D, 1, out("一回目"), [post], mats, False)
+        sched, ed = assemble.SCHEDULED / "2026-10-20.json", assemble.EDITIONS / f"{D}.md"
+        for target in (assemble.STORIES, sched, ed):
+            before, seen, saved_open = target.read_bytes(), [], _io.open
+
+            def full_disk(file, mode="r", *a, **k):
+                try:
+                    p = Path(os.fspath(file))
+                except TypeError:
+                    return saved_open(file, mode, *a, **k)
+                if any(c in mode for c in "wax") and p.parent == target.parent and target.name in p.name:
+                    seen.append(p)
+                    with saved_open(file, mode, *a, **k) as f:
+                        f.write(b'[{"partial' if "b" in mode else '[{"partial')      # 書きかけで容量が尽きる
+                    raise OSError(28, "No space left on device(試験)")
+                return saved_open(file, mode, *a, **k)
+            _io.open = builtins.open = full_disk
+            try:
+                failed = False
+                try:
+                    assemble.apply(D, 1, out("二回目"), [post], mats, False)
+                except OSError:
+                    failed = True
+            finally:
+                _io.open = builtins.open = saved_open
+            intact = target.read_bytes() == before
+            left = sorted(x.name for x in target.parent.iterdir() if x.name.endswith(".tmp"))
+            ignored = bool(seen) and all(subprocess.run(["git", "check-ignore", "-q", "--no-index", str(p.relative_to(tmp))],
+                                                        cwd=repo, capture_output=True).returncode == 0 for p in seen)
+            try:
+                assemble.apply(D, 1, out("二回目"), [post], mats, False)
+                again = ("二回目" in assemble.load_yaml_list(assemble.STORIES)[0]["published_facts"]
+                         and json.loads(sched.read_text(encoding="utf-8"))[0]["note"] == "二回目"
+                         and assemble.FM_RE.match(ed.read_text(encoding="utf-8")) is not None)
+            except Exception as e:      # noqa: BLE001
+                again = f"{type(e).__name__}: {e}"
+            res[target.name] = (failed, intact, left, ignored, again)
+    for name, (failed, intact, left, ignored, again) in res.items():
+        check(failed and intact and not left and ignored and again is True,
+              f"{name} の書き直しの中断: 元を保たない・一時ファイルを残した・一時ファイルが Git の対象・再実行で直らない: "
+              f"intact={intact} left={left} ignored={ignored} again={again}")
+
+
+def test_assemble_checks_exit_codes(tmp: Path):
+    """組版は派生欄(derive)・lint を**終了コードで**判定する: 非0(signal を含む)は組版の失敗(2)にして stderr の言い分を知らせ、
+    derive が落ちたら lint へ進まない(2026-10-14 監査: 別の号の書きかけの候補 JSON で lint が JSONDecodeError で落ちても、stdout に
+    ::error が無いので組版は 0 を返した)。子の検査は替え玉のスクリプトを本当に子プロセスとして走らせる。"""
+    import contextlib
+    import io as _io
+    D = "2026-10-20"
+    res = {}
+    with assemble_at(tmp):
+        (assemble.POSTS / f"{D}-a1.md").write_text("---\n" + article_fm("a1", D, rank="lead", title="一面の見出し") + "---\n本文。\n",
+                                                  encoding="utf-8")
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [])
+        (tmp / "scripts").mkdir()
+        for name in ("derive", "lint"):
+            (tmp / "scripts" / f"{name}.py").write_text(
+                "import os, pathlib, signal, sys\n"
+                "here = pathlib.Path(__file__).resolve().parent.parent\n"
+                f"(here / 'ran-{name}').write_text('1')\n"
+                f"mode = (here / 'mode-{name}').read_text().strip()\n"
+                "if mode == 'kill':\n    os.kill(os.getpid(), signal.SIGKILL)\n"
+                "if mode == 'crash':\n    print('途中まで')\n"
+                "    sys.stderr.write('Traceback (most recent call last):\\njson.decoder.JSONDecodeError: Expecting value: line 1 column 12\\n')\n"
+                "    sys.exit(1)\n"
+                "if mode == 'red':\n    print('::error file=docs/_editions/x.md::digest 全体が13行')\n    print('lint: 1 errors')\n    sys.exit(1)\n"
+                "print('lint: 0 errors')\n", encoding="utf-8")
+        answer = {"digest": [{"label": l, "rows": []} for l in DIGEST_LABELS], "stories": [], "reservations": [],
+                  "pending_add": [], "pending_remove": []}
+        saved, sent = (assemble.judge, assemble.notify), []
+        assemble.judge = lambda date, inp, budget=None: json.loads(json.dumps(answer))
+        assemble.notify = lambda job, msg, ok=True, **k: sent.append(msg)
+        try:
+            for modes in (("ok", "ok"), ("crash", "ok"), ("kill", "ok"), ("ok", "crash"), ("ok", "kill"), ("ok", "red")):
+                (tmp / "mode-derive").write_text(modes[0])
+                (tmp / "mode-lint").write_text(modes[1])
+                for f in ("ran-derive", "ran-lint"):
+                    (tmp / f).unlink(missing_ok=True)
+                sent.clear()
+                with contextlib.redirect_stdout(_io.StringIO()):
+                    code = assemble.run(D, 1)
+                res[modes] = (code, (tmp / "ran-lint").exists(), " ".join(sent))
+        finally:
+            assemble.judge, assemble.notify = saved
+    check(res[("ok", "ok")][0] == 0 and not res[("ok", "ok")][2], f"検査が通った組版を失敗にした: {res[('ok', 'ok')]}")
+    for k in (("crash", "ok"), ("kill", "ok")):
+        code, lint_ran, msg = res[k]
+        check(code == 2 and not lint_ran and "derive" in msg and ("JSONDecodeError" in msg or "exit -9" in msg),
+              f"派生欄(derive)の異常終了({k[0]})を組版の失敗にしない・言い分を知らせない・lint へ進んだ: {res[k]}")
+    for k in (("ok", "crash"), ("ok", "kill")):
+        code, _, msg = res[k]
+        check(code == 2 and "lint" in msg and ("JSONDecodeError" in msg or "exit -9" in msg),
+              f"lint の異常終了({k[1]})を組版の失敗にしない・言い分を知らせない: {res[k]}")
+    check(res[("ok", "red")][0] == 2 and "13行" in res[("ok", "red")][2], f"lint の赤を組版の失敗にしない: {res[('ok', 'red')]}")
+
+
+def test_pending_keeps_later_editions(tmp: Path):
+    """過去の号を組み直しても、後の号の pending の足し引き(追加・決着の削除)は残り、組み直した号の足し引きは後の号の組み直しでも
+    残る。同じ判断の組み直しは同じ中身、巻き戻しはその号の分だけを外す。消した行は判断に渡さない(2026-10-14 監査: 10/12 の
+    組み直しで 10/13 が足した追跡事項が黙って消えた。1巡目の監査: 印の記録を別のファイルに書くと書き込みの間で止まって消した行を
+    戻せない・印の仕組みより前の号の組み直しで後の号の追加が消える・巻き戻した号の追加を後の号の組み直しがよみがえらせる)。"""
+    import builtins
+    import io as _io
+    item = lambda k: {"dedup_key": k, "brand": "cg", "subject": f"{k} の件", "watch": "発表日"}
+
+    def out(add=(), rm=()):
+        return {"digest": [{"label": l, "rows": []} for l in DIGEST_LABELS], "stories": [], "reservations": [],
+                "pending_add": [item(k) for k in add], "pending_remove": list(rm)}
+    keys = lambda: [x["dedup_key"] for x in assemble.load_yaml_list(assemble.PENDING) if not x.get("removed_on")]   # 追跡中の行
+    ap = lambda d, o: assemble.apply(d, 1, o, [], {}, False)
+    # 1. 書き込みの中断: 一度組んだ号を組み直し、初めて k0 を消す回が pending.yml を書いた直後に止まる(容量不足)
+    #    → もう一度組めば k0 は消えたまま、巻き戻せば k0 が戻る
+    with assemble_at(tmp / "enospc"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [item("k0"), item("k9")])
+        ap("2026-10-12", out())
+        saved_replace, saved_open, stopped = os.replace, _io.open, []
+
+        def replace_then_stop(src, dst, *a, **k):
+            if stopped:
+                raise OSError(28, "No space left on device(試験)")
+            r = saved_replace(src, dst, *a, **k)
+            if Path(os.fspath(dst)) == assemble.PENDING:
+                stopped.append(dst)
+            return r
+
+        def stop_open(file, mode="r", *a, **k):
+            if stopped and any(c in mode for c in "wax"):
+                raise OSError(28, "No space left on device(試験)")
+            return saved_open(file, mode, *a, **k)
+        os.replace, _io.open, builtins.open = replace_then_stop, stop_open, stop_open
+        try:
+            try:
+                ap("2026-10-12", out(rm=["k0"]))
+            except OSError:
+                pass
+        finally:
+            os.replace, _io.open, builtins.open = saved_replace, saved_open, saved_open
+        ap("2026-10-12", out(rm=["k0"]))
+        retried = keys()
+        assemble.rollback("2026-10-12")
+        restored = keys()
+    check(bool(stopped) and retried == ["k9"] and sorted(restored) == ["k0", "k9"],
+          f"pending.yml を書いた直後に止まった後、もう一度組む・巻き戻すで消した行を戻せない: {bool(stopped)} {retried} {restored}")
+    # 2. 印の仕組みより前に組んだ号(控えに印が無い・行に印が無い)を、後の号(印の仕組み)が入った後で組み直す・巻き戻す
+    with assemble_at(tmp / "legacy"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [item("k0"), item("old")])         # old は 10/12 が(印なしで)足した行
+        assemble.dump_yaml(tmp / "legacy" / "metrics" / "pending-before-2026-10-12.yml", [item("k0")])
+        ap("2026-10-13", out(add=["later"], rm=["k0"]))
+        ap("2026-10-12", out())
+        legacy_rebuilt = keys()
+        assemble.rollback("2026-10-12")
+        legacy_rolled = keys()
+    check(legacy_rebuilt == ["later"] and legacy_rolled == ["later"],
+          f"印の仕組みより前の号の組み直し・巻き戻しで、後の号の足し引きが消えた・前回の分が残った: {legacy_rebuilt} {legacy_rolled}")
+    # 2b. 印の仕組みより前の号どうし: 9/14 が K、9/15 が X を(印なしで)足した。9/14 を組み直しても X は残り、9/14 の K は外れる。
+    #     新しい仕組みの 10/15 が K を消した後、9/14 を巻き戻し、10/15 を K を消さない判断で組み直しても K はよみがえらない(2巡目の監査)
+    with assemble_at(tmp / "legacy2"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [item("k0"), item("K"), item("X")])
+        m = tmp / "legacy2" / "metrics"
+        assemble.dump_yaml(m / "pending-before-2026-09-14.yml", [item("k0")])
+        assemble.dump_yaml(m / "pending-before-2026-09-15.yml", [item("k0"), item("K")])
+        assemble.dump_yaml(m / "pending-before-2026-09-16.yml", [item("k0"), item("K"), item("X")])
+        ap("2026-10-15", out(rm=["K"]))
+        assemble.rollback("2026-09-14")
+        legacy_rolled2 = keys()
+        ap("2026-10-15", out())
+        legacy_void = keys()
+    check(legacy_rolled2 == ["k0", "X"] and legacy_void == ["k0", "X"],
+          f"印の仕組みより前の号の巻き戻しで後の号(9/15)の追加が消えた・巻き戻した号の追加を後の号の組み直しがよみがえらせた: "
+          f"{legacy_rolled2} {legacy_void}")
+    # 2c. 印の仕組みより前の号どうし: 9/13 が K を足し、9/14 が K を消した(pending に行は残っていない)。9/13 を巻き戻した後、
+    #     9/14 を巻き戻しても・K を消さない判断で組み直しても K はよみがえらない(3巡目の監査。実データの sidem-mfes-2026-winter-wonderland)
+    for how in ("rollback", "rebuild"):
+        with assemble_at(tmp / f"legacy3-{how}"):
+            assemble.dump_yaml(assemble.STORIES, [])
+            assemble.dump_yaml(assemble.PENDING, [item("k0")])
+            m = tmp / f"legacy3-{how}" / "metrics"
+            assemble.dump_yaml(m / "pending-before-2026-09-13.yml", [item("k0")])
+            assemble.dump_yaml(m / "pending-before-2026-09-14.yml", [item("k0"), item("K")])
+            assemble.dump_yaml(m / "pending-before-2026-09-15.yml", [item("k0")])
+            assemble.rollback("2026-09-13")
+            if how == "rollback":
+                assemble.rollback("2026-09-14")
+            else:
+                ap("2026-09-14", out())
+            legacy3 = keys()
+        check(legacy3 == ["k0"], f"巻き戻した号(9/13)の追加を、それを消した号(9/14)の{how}がよみがえらせた: {legacy3}")
+    # 3. 巻き戻した号(10/12)の追加を、後の号(10/13)の組み直しがよみがえらせない
+    with assemble_at(tmp / "void"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [])
+        ap("2026-10-12", out(add=["k1"]))
+        ap("2026-10-13", out(rm=["k1"]))
+        assemble.rollback("2026-10-12")
+        ap("2026-10-13", out())
+        voided = keys()
+    check(voided == [], f"巻き戻した号の追加を、後の号の組み直しがよみがえらせた: {voided}")
+    # 4. 組み直し・巻き戻しの一連(過去の号・後の号の両方)
+    with assemble_at(tmp / "seq"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [item("k0"), item("k9")])
+        ap("2026-10-12", out(add=["k1"]))
+        ap("2026-10-13", out(add=["k2"], rm=["k0", "k1"]))         # 10/13: k2 を足し、k0・k1 が決着
+        after13 = keys()
+        ap("2026-10-12", out(add=["k1"]))                          # 10/12 を同じ判断で組み直す
+        same = keys()
+        ap("2026-10-12", out(add=["k1", "k3"], rm=["k9"]))         # 10/12 を別の判断で組み直す(k3 を足し、k9 が決着)
+        changed = keys()
+        b = assemble.PENDING.read_bytes()
+        ap("2026-10-12", out(add=["k1", "k3"], rm=["k9"]))
+        stable = assemble.PENDING.read_bytes() == b
+        ap("2026-10-13", out(add=["k2"], rm=["k0", "k1"]))         # そのあと 10/13 を組み直しても 10/12 の分は残る
+        later_rerun = sorted(keys())
+        log = assemble.rollback("2026-10-12")
+        rolled = sorted(keys())
+        again = assemble.rollback("2026-10-12")
+        ap("2026-10-12", out(add=["k1"]))                          # 巻き戻した号を組み直す(k1 は 10/13 が決着済み)
+        rebuilt = sorted(keys())
+        inp_keys = [x["dedup_key"] for x in assemble.build_input("2026-10-14", [], {}, [], assemble.baseline_pending("2026-10-14", False))["pending"]]
+    check(sorted(inp_keys) == ["k2", "k9"], f"決着済み(removed_on)の行を判断に渡した: {inp_keys}")
+    check(after13 == ["k9", "k2"], f"前提: 10/13 の足し引き: {after13}")
+    check(same == ["k9", "k2"], f"過去の号(10/12)を同じ判断で組み直すと、後の号(10/13)の足し引きが消えた: {same}")
+    check(changed == ["k2", "k3"] and stable, f"過去の号を別の判断で組み直したときの pending・冪等: {changed} {stable}")
+    check(later_rerun == ["k2", "k3"], f"後の号(10/13)を組み直すと、組み直した過去の号(10/12)の足し引きが消えた: {later_rerun}")
+    check(rolled == ["k2", "k9"] and log and again == [], f"巻き戻しがその号の足し引きだけを外さない・冪等でない: {rolled} {log} {again}")
+    check(rebuilt == ["k2", "k9"], f"巻き戻した号の組み直しで、後の号が決着させた追跡事項がよみがえった: {rebuilt}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
+    test_stray_governed_write_is_caught(tmp / "sgw")
+    test_write_checked_contract(tmp / "wcc")
+    test_release_push_retry(tmp / "rpr")
+    test_release_squash_conflict(tmp / "rsc")
+    test_release_dry_run_no_push(tmp / "rdr")
+    test_deploy_index_failure(tmp / "dif")
+    test_correction_append_only(tmp / "cao")
+    test_indexer_tag_dictionary(tmp / "itd")
+    test_remove_worktree(tmp / "rmw")
+    test_run_codex_isolation(tmp / "rci")
+    test_restore_files(tmp / "rsf")
+    test_derive_write(tmp / "dw")
+    test_compose_run_derive(tmp / "crd")
+    test_oncall_collect_rerun_killed_classify(tmp / "ock")
+    test_failed_rollback_blocks_commit(tmp / "frb")
+    test_canonicalize_and_assign_ranks(tmp / "car2")
+    test_rewrite_past_apply_answer(tmp / "rpa")
     test_slugify_format()
     test_escalate_is_module_global()
     test_anomaly_ledger_and_whywhy(tmp / "al")
     test_url_alive_verdict()
     test_reminder_event_date(tmp / "red")
+    test_reservation_occurs_on(tmp / "roo")
+    test_writer_children(tmp / "wch")
+    test_restore_files_ledger(tmp / "rsfl")
     test_check_output()
     test_render_and_length()
     test_earliest_date()
@@ -5757,6 +9811,8 @@ def main() -> int:
     test_lost_post_notified_once(tmp / "lpn")
     test_grok_deep_retry(tmp / "gdr")
     test_review_failed_changed_article(tmp / "rfc")
+    test_review_unchecked_scope_not_approved(tmp / "rus")
+    test_leave_tree_clean_partial(tmp / "ltc")
     test_review_paper_defines_same_subject()
     test_official_topic_accepts_press()
     test_job_lock()
@@ -5773,6 +9829,12 @@ def main() -> int:
     test_classify_consensus(tmp / "cs")
     test_table_write_and_reload(tmp / "tw")
     test_classify_posts_only(tmp / "cp")
+    test_shared_service_units(tmp / "ssu")
+    test_document_id_case(tmp / "dic")
+    test_performer_domains(tmp / "pd")
+    test_platform_owner_units(tmp / "pou")
+    test_classify_txn_interrupt(tmp / "cti")
+    test_tags_and_idols(tmp / "ti")
     test_request_parsers(tmp / "rq")
     test_assemble_prompt_shape()
     test_ledger_facts_are_cited(tmp / "lfc")
@@ -5780,6 +9842,7 @@ def main() -> int:
     test_assemble_judge()
     test_claude_traced(tmp / "ct")
     test_time_budget()
+    test_deadline_publish_boundary(tmp / "dpb")
     test_clean_url_and_table()
     test_x_anonymous_post_url()
     test_x_anonymous_post_in_posts(tmp / "xap")
@@ -5797,12 +9860,17 @@ def main() -> int:
     test_carry_dropped_candidates(tmp / "cdc")
     test_carry_dropped_candidates_schema(tmp / "cdcs")
     test_late_facts_reach_plan_index(tmp / "lfpi")
+    test_release_reads_latest_run(tmp / "rlr")
+    test_compose_selection_from_cli(tmp / "csc")
     test_article_purpose()
     test_plan_merge_into_drop()
     test_extract_json_array_strict()
     test_update_clis(tmp / "uc")
+    test_update_clis_smoke_answer(tmp / "ucs")
+    test_git_commit_push_checkout(tmp / "gcp")
     test_grok_face_retry(tmp / "gr")
     test_grok_format_matches_parser()
+    test_grok_official_paging_follows_prompt(tmp / "gop")
     test_grok_deep_format_matches_parser()
     test_collect_health()
     test_grok_roles(tmp / "gro")
@@ -5811,6 +9879,8 @@ def main() -> int:
     test_accept_only_normal_and_schema(tmp / "an")
     test_grok_repoint_uses_each_face_posts(tmp / "grp")
     test_watch_pagination_and_batches(tmp / "wp")
+    test_watch_resume_after_cut(tmp / "wr")
+    test_watch_body_cp932(tmp / "wc")
     test_watch_static_page_body(tmp / "ws")
     test_fetch_page_renders_whitespace_only_page()
     test_review_reads_sources_like_writer()
@@ -5818,13 +9888,28 @@ def main() -> int:
     test_render_failure_keeps_cause(tmp / "rf")
     test_render_failure_reaches_classify_and_verify(tmp / "rfc")
     test_collect_oncall_rerun_exit(tmp / "cre")
+    test_collect_settles_on_exception(tmp / "cse")
+    test_collect_settles_on_sigterm(tmp / "cst")
+    test_collect_state_write_is_atomic(tmp / "csa")
+    test_oncall_collect_rerun_settles_broken_output(tmp / "ocb")
     test_storylink(tmp / "sl")
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()
     test_oncall_report_text(tmp / "rp")
     test_oncall_restore_on_exception(tmp / "oc")
+    test_oncall_restore_to_backup(tmp / "rtb")
+    test_oncall_merge_push_settles(tmp / "mps")
     test_oncall_fix_until_clean(tmp / "of")
     test_settled_drops_not_rewritten(tmp / "sd")
+    test_rule_bench_cases()
+    test_rule_bench_judges_shape(tmp / "rb")
+    test_derive_ranking(tmp / "drk")
+    test_assemble_digest_keeps_lead_within_cap()
+    test_assemble_interrupted_writes(tmp / "aiw")
+    test_assemble_checks_exit_codes(tmp / "ace")
+    test_pending_keeps_later_editions(tmp / "pkl")
+    check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
+          + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:
         print(f"  [FAIL] {f}")
     print(f"test_pipeline: {len(FAILS)} failures")

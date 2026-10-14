@@ -5,14 +5,16 @@ PIPELINE.md §5 の実装。毎朝 06:00 JST に systemd user timer(ops/systemd/
 
   python3 scripts/release.py [--date YYYY-MM-DD] [--dry-run]
 
-手順: 前提確認 → lint(赤なら中止) → main へ squash merge → push →
-      発行済みブランチ削除 → 翌日ブランチ作成 → Discord 通知
+手順: 前提確認 → lint(赤なら中止) → main へ squash merge → push → origin に届いたことの確認 →
+      配信 → 発行済みブランチ削除 → 翌日ブランチ作成 → Discord 通知
 標準ライブラリのみで動く(lint はサブプロセスで system python3 を使う)。
 """
 import argparse
+import contextlib
 import datetime
 import json
 import re
+import signal
 import subprocess
 import sys
 import urllib.request
@@ -80,6 +82,56 @@ def branch_exists(name: str, remote: bool = False) -> bool:
     return git("show-ref", "--verify", "--quiet", ref, check=False).returncode == 0
 
 
+@contextlib.contextmanager
+def stop_as_exception():
+    """systemctl stop の SIGTERM も Ctrl-C と同じく例外にする(後始末の except を通すため。既定の SIGTERM は即死)。"""
+    def stop(signum, frame):
+        raise KeyboardInterrupt(f"signal {signum}")
+    old = signal.signal(signal.SIGTERM, stop)
+    try:
+        yield
+    finally:
+        signal.signal(signal.SIGTERM, old)
+
+
+def squash_into_main(branch: str, message: str) -> bool:
+    """checkout 済みの main へ branch を squash merge し、差分があれば commit する。新しい commit を作ったかを返す。
+    衝突・commit の失敗・中断(Ctrl-C・systemctl stop)では、この処理が作った index と作業ツリーの変更を squash 前の
+    main へ戻してから例外を上げる(呼び出し側は開始時に clean を確かめている)。edition の commit には触らない。
+    2026-10-14 監査指摘: main と edition の同じファイルが衝突すると、未解決の index(UU)と stage 済みの号が残り、
+    次の release が dirty で止まった。squash には MERGE_HEAD が無く merge --abort は効かないので、reset で戻す"""
+    pre = git("rev-parse", "HEAD").stdout.strip()
+    try:
+        with stop_as_exception():
+            m = git("merge", "--squash", branch, check=False)
+            if m.returncode != 0:
+                conflicted = git("diff", "--name-only", "--diff-filter=U", check=False).stdout.split()
+                raise RuntimeError(f"git merge --squash {branch} 失敗"
+                                   + (f"(衝突: {', '.join(conflicted[:8])})" if conflicted else "")
+                                   + f": {(m.stdout + m.stderr).strip()[-400:]}")
+            if git("diff", "--cached", "--quiet", check=False).returncode == 0:
+                return False
+            git("commit", "-m", message)
+            return True
+    except BaseException:
+        r = git("reset", "--hard", pre, check=False)       # SQUASH_MSG も reset が消す
+        if r.returncode != 0:
+            print(f"squash の後始末(git reset --hard {pre[:10]})に失敗: {r.stderr.strip()[:300]}", flush=True)
+        raise
+
+
+def main_missing_on_origin(date: str) -> str:
+    """手元の main(この号を含む)が origin/main に届いているかを origin から取り直して確かめる。届いていなければ理由を返す。"""
+    f = git("fetch", "origin", "main", check=False)
+    if f.returncode != 0:
+        return f"origin の main を取り直せない: {f.stderr.strip()[:200]}"
+    if git("merge-base", "--is-ancestor", "main", "origin/main", check=False).returncode != 0:
+        return "手元の main(号の commit)が origin/main に無い"
+    if git("cat-file", "-e", f"origin/main:docs/_editions/{date}.md", check=False).returncode != 0:
+        return f"origin/main に docs/_editions/{date}.md が無い"
+    return ""
+
+
 def lint_failure_summary(r: subprocess.CompletedProcess) -> str:
     """lint 失敗時の通知文。エラーの中身(最大5件)まで載せる(「lint 赤」だけでは原因が追えない)。"""
     errs = re.findall(r"^::error(?: file=([^:]*))?::(.*)$", r.stdout, re.MULTILINE)
@@ -93,13 +145,14 @@ def lint_failure_summary(r: subprocess.CompletedProcess) -> str:
 
 
 def review_verdict(date: str) -> tuple[str, str]:
-    """その号の校閲結果(最後の往復)を読む。(verdict, 説明) を返す。
+    """その号の校閲結果(いちばん新しい組版の実行の最後の巡)を読む。(verdict, 説明) を返す。
 
-    compose が `metrics/review-<日付>-<往復数>.json` に残す。
-    往復数は数として比べる(文字列順だと 10 が 9 より前に来る)。
+    compose が `metrics/review-<日付>-<往復数>.json` に実行の印(run)を付けて残す。どれを読むかは pipelib.last_review_record
+    (往復数は実行ごとに1から数え直すので、実行をまたいで最大を採らない。往復数は数として比べる)。
     """
-    files = sorted((ROOT / "metrics").glob(f"review-{date}-*.json"),
-                   key=lambda p: int(p.stem.rsplit("-", 1)[-1]) if p.stem.rsplit("-", 1)[-1].isdigit() else -1)
+    from pipelib import last_review_record
+    last = last_review_record(date, ROOT)
+    files = [last] if last else []
     if not files:
         return "missing", "校閲の記録が無い(compose が最後まで走っていない)"
     try:
@@ -129,20 +182,34 @@ def review_verdict(date: str) -> tuple[str, str]:
     return "block", f"{files[-1].name} に残ブロック {len(blockers)}件 — {head}"
 
 
+DEPLOY_STATE_MARK = "配信の状態: "      # deploy.py が最後に出す行(公開の状態。deploy.STATE_MARK と同じ)
+# deploy を打ち切る時間。deploy にはそれより短い予算(--budget-sec)を渡し、打ち切られる前に戻す・知らせるまで終えさせる
+DEPLOY_TIMEOUT_SEC = 2400
+DEPLOY_BUDGET_MARGIN_SEC = 60
+
+
 def deploy_site() -> str:
     """自前オリジンへ配信する。失敗しても発行そのものは巻き戻さない。
 
-    紙面は main への push で確定しており、配信は「届け方」の工程である。
-    ここで失敗しても current は直前のリリースを指したままなので、読者には
-    前号が見え続ける(壊れた紙面が出るより望ましい)。復旧は deploy.py の再実行。
+    紙面は main への push で確定しており、配信は「届け方」の工程である。復旧は deploy.py の再実行。
+    失敗したときの公開の状態(current と索引がどの版か)は、止まった所で違う。deploy.py が最後に出す
+    「配信の状態」をそのまま伝える(2026-10-14 監査指摘: current を切り替えた後の索引の失敗でも
+    「current は前号のまま」と通知していた)。
     """
-    r = subprocess.run([sys.executable, str(ROOT / "scripts" / "deploy.py")],
-                       cwd=ROOT, capture_output=True, text=True, timeout=2400)
+    try:
+        r = subprocess.run([sys.executable, str(ROOT / "scripts" / "deploy.py"),
+                            "--budget-sec", str(DEPLOY_TIMEOUT_SEC - DEPLOY_BUDGET_MARGIN_SEC)],
+                           cwd=ROOT, capture_output=True, text=True, timeout=DEPLOY_TIMEOUT_SEC)
+    except subprocess.TimeoutExpired as e:
+        out = e.stdout.decode(errors="replace") if isinstance(e.stdout, bytes) else (e.stdout or "")
+        r = subprocess.CompletedProcess(e.cmd, -9, out, "deploy.py が時間切れで止められた")
     print(r.stdout[-1500:], flush=True)
     if r.returncode == 0:
         return "自前オリジンへ配信済み。"
+    states = [l[len(DEPLOY_STATE_MARK):] for l in r.stdout.splitlines() if l.startswith(DEPLOY_STATE_MARK)]
+    state = states[-1] if states else "deploy.py の出力から読めない(current と索引を確かめること)"
     tail = (r.stderr.strip() or r.stdout.strip())[-400:]
-    notify(f"配信に失敗しました(紙面は main に確定済み。current は前号のまま)。"
+    notify(f"配信に失敗しました(紙面は main に確定済み)。公開の状態: {state}。"
            f"`python3 scripts/deploy.py` で再実行してください:\n```\n{tail}\n```", ok=False)
     return "⚠️配信は失敗(要再実行)。"
 
@@ -234,7 +301,15 @@ def main() -> int:
         notify(str(e), ok=False)
         return 1
 
-    # 0. 作業ツリーが汚れていたら触らない(自動実行の安全弁)
+    # 0. 作業ツリーが汚れていたら触らない(自動実行の安全弁)。その前に、組版の出典の判定の取引が後始末できずに終わっていたら
+    #    (SIGKILL 等)開始時へ戻す(pipelib.recover_classify_txn。監査指摘 2026-10-14)
+    if not dry:
+        from pipelib import anomaly, recover_classify_txn
+        back = recover_classify_txn()
+        if back:
+            print(back, flush=True)
+            if "戻せない" not in back:
+                anomaly("release", back)
     dirty = git("status", "--porcelain").stdout.strip()
     if dirty:
         files = dirty.splitlines()
@@ -249,7 +324,8 @@ def main() -> int:
         if git("cat-file", "-e", f"origin/main:docs/_editions/{date}.md", check=False).returncode == 0:
             print(f"{date} 号は発行済み(main に存在)", flush=True)
             git("checkout", "main")
-            git("pull", "--ff-only", "origin", "main")
+            if not dry:              # 点検では手元のブランチを動かさない
+                git("pull", "--ff-only", "origin", "main")
             ensure_next_branch(nxt, dry)
             return 0
         notify(f"{date}: edition ブランチが存在しない(収集・compose 未実行?)。発行なし", ok=False)
@@ -264,11 +340,21 @@ def main() -> int:
     # 消してよいものではないので、push してから進む
     if branch_exists(branch, remote=True):
         ahead = git("rev-list", f"origin/{branch}..{branch}", check=False).stdout.strip()
-        if ahead:
-            n = len(ahead.splitlines())
-            print(f"{branch} に origin へ出していない commit が {n}件ある。先に push する", flush=True)
-            git("push", "origin", branch)
-        git("checkout", "-B", branch, f"origin/{branch}")
+        if dry:
+            # 点検(--dry-run)では push しない。手元のブランチの位置も動かさない(checkout -B は手元だけの commit を消す)。
+            # 発行なら出す中身を点検する: 手元が先なら手元(push してから出す)、そうでなければ origin の位置を detached で
+            # (2026-10-14 監査指摘: dry-run でも push していた・origin だけが先のとき手元のブランチを引き戻した)
+            if ahead:
+                print(f"[dry-run] {branch} に origin へ出していない commit が {len(ahead.splitlines())}件ある"
+                      "(発行なら先に push する。点検では push しない)", flush=True)
+                git("checkout", branch)
+            else:
+                git("checkout", "--detach", f"origin/{branch}")
+        else:
+            if ahead:
+                print(f"{branch} に origin へ出していない commit が {len(ahead.splitlines())}件ある。先に push する", flush=True)
+                git("push", "origin", branch)
+            git("checkout", "-B", branch, f"origin/{branch}")
     else:
         git("checkout", branch)
 
@@ -320,12 +406,36 @@ def main() -> int:
     # 4. squash merge → push(これが「発行」)
     git("checkout", "main")
     git("pull", "--ff-only", "origin", "main")
-    git("merge", "--squash", branch)
-    if not git("status", "--porcelain").stdout.strip():
-        print("差分なし(発行済み?)。コミットせず終了", flush=True)
-    else:
-        git("commit", "-m", f"{label} {date} 発行({count}本)")
-        git("push", "origin", "main")
+    from pipelib import escalate
+    try:
+        made = squash_into_main(branch, f"{label} {date} 発行({count}本)")
+    except RuntimeError as e:
+        left = git("status", "--porcelain", check=False).stdout.strip()
+        tree = ("作業ツリーは squash 前の main に戻した" if not left
+                else f"作業ツリーを squash 前の main に戻せていない(残り: {' / '.join(left.splitlines()[:5])})")
+        notify(f"{date}: 発行中止(第{number}号)。main への squash merge に失敗した({tree}。"
+               f"{branch} はそのまま):\n```\n{str(e)[-600:]}\n```", ok=False)
+        escalate("release", date, f"main への squash merge に失敗({tree}):\n{e}")
+        return 1
+    if not made:
+        print("squash で新しい差分なし(main は既にこの号を含む)", flush=True)
+    # 新しい commit を作ったかと、push が要るかは別に決める。手元の main が origin より先にあれば(前回 push できなかった
+    # 号の commit を含む)ここで送り、origin に届いたことを確かめてから配信・ブランチ削除へ進む
+    # (2026-10-14 監査指摘: main の push だけ失敗した後の再実行で、squash が「差分なし」になって push を省き、
+    # origin/main に号が無いまま配信・edition ブランチの削除・発行の通知へ進んだ)
+    if git("rev-list", "origin/main..main", check=False).stdout.strip():
+        p = git("push", "origin", "main", check=False)
+        if p.returncode != 0:
+            notify(f"{date}: 発行中止(第{number}号)。main への push に失敗した(号の commit は手元の main にある。"
+                   f"{branch} は消していない。release の再実行で push する):\n```\n{p.stderr.strip()[-400:]}\n```", ok=False)
+            escalate("release", date, f"main への push に失敗(号の commit は手元の main にある):\n{p.stderr.strip()[-1000:]}")
+            return 1
+    missing = main_missing_on_origin(date)
+    if missing:
+        notify(f"{date}: 発行中止(第{number}号)。origin に号が届いたことを確かめられない({missing})。"
+               f"{branch} は消していない", ok=False)
+        escalate("release", date, f"origin に号が届いたことを確かめられない: {missing}")
+        return 1
 
     # 5. 自前オリジンへ配信(main へ push した紙面をビルドして current を差し替える)
     #    ここが実際の「読者に届く」工程。GitHub Pages は main への push で

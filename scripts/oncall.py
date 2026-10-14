@@ -74,7 +74,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hashlib
 
-from pipelib import (COLLECT_ONCALL_MARK, ENV, ROOT, SCHEDULED, SLOT_MARGIN_MIN, JobLockTimeout, job_lock, loads_strict, mark_collect_oncall,
+from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_txn_settled, settle_collect_outputs, SCHEDULED, SLOT_MARGIN_MIN,
+                     JobLockTimeout, anomaly,
+                     job_lock, loads_strict, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, settled_drops,
                      tool_path)
 
@@ -113,6 +115,53 @@ def undo_merge(before: str, what: str) -> None:
     """merge を無かったことにする。abort は補助で、**必ず** merge 前のハッシュへ reset する(監査指摘)。"""
     sh(["git", "merge", "--abort"], cwd=ROOT)
     must(sh(["git", "reset", "-q", "--hard", before], cwd=ROOT), f"{what} の巻き戻し")
+
+
+REMOTE_CHECK_TRIES = 2          # push が届いたかを確かめる ls-remote の回数(WSL の DNS は断続的に失敗する)
+REMOTE_CHECK_PAUSE_SEC = 10
+
+
+def remote_tip(branch: str) -> str | None:
+    """リモートの branch がいま指す commit(リモートに無ければ "")。通信できなければ None(確かめられない)。"""
+    for i in range(REMOTE_CHECK_TRIES):
+        if i:
+            time.sleep(REMOTE_CHECK_PAUSE_SEC)
+        try:
+            r = sh(["git", "ls-remote", "origin", f"refs/heads/{branch}"], cwd=ROOT, timeout=60)
+        except (subprocess.TimeoutExpired, OSError):
+            continue
+        if r.returncode == 0:
+            return r.stdout.split()[0] if r.stdout.strip() else ""
+    return None
+
+
+def merge_and_push(branch: str, before: str, merge: list[str], push: list[str]) -> tuple[str, str]:
+    """いま checkout している branch(merge 前の先頭は before)へ merge して push する取引。戻りは (結果, 説明)。
+    結果は "pushed"(リモートに届いた。説明は merge 後のハッシュ)・"conflict"(merge できない)・"absent"(届いていない)・
+    "unknown"(届いたか確かめられない)。pushed 以外はローカルの branch を before へ戻す(届いていても、次の当番・工程が
+    リモートから早送りで揃える)。push が非0で終わっても、時間切れ・例外で抜けても、リモートの branch を見て決める
+    (監査指摘 2026-10-14: push の時間切れが巻き戻しを通らず、ローカルの main だけが進んだまま残り、次の当番も取り込めなかった)。"""
+    new, why = "", ""
+    try:
+        m = sh(["git", "merge", *merge], cwd=ROOT)
+        if m.returncode != 0:
+            undo_merge(before, branch)
+            return "conflict", (m.stderr or m.stdout or "")[-200:]
+        new = must(sh(["git", "rev-parse", "HEAD"], cwd=ROOT), "rev-parse").stdout.strip()
+        r = sh(push, cwd=ROOT, timeout=120)
+        if r.returncode == 0:
+            return "pushed", new
+        why = (r.stderr or r.stdout or "")[-200:]
+    except Exception as e:      # noqa: BLE001  時間切れ・起動の失敗も、非0の終了と同じ後始末を通す
+        why = f"{type(e).__name__}: {str(e)[:200]}"
+    tip = remote_tip(branch) if new else ""      # merge の前に抜けたなら、届いているはずがない
+    if new and tip == new:
+        # 届いていた(応答が返らなかった・失敗として返った)。リモート追跡の参照を揃えて、取り込めたことにする
+        must(sh(["git", "update-ref", f"refs/remotes/origin/{branch}", new], cwd=ROOT), "リモート追跡の参照の更新")
+        print(f"{branch} の push は失敗として終わった({why})が、リモートに届いていた", flush=True)
+        return "pushed", new
+    undo_merge(before, branch)
+    return ("unknown" if tip is None else "absent"), why
 
 
 def session_env() -> dict:
@@ -194,7 +243,17 @@ def ensure_edition(edition: str, cwd: Path) -> str:
         raise RuntimeError(f"{edition} の origin との通信が {e.timeout:.0f} 秒で応答しない") from e
     if sh(["git", "rev-parse", "--verify", "-q", edition], cwd=cwd).returncode != 0:
         must(sh(["git", "branch", edition, f"origin/{edition}"], cwd=cwd), f"{edition} のローカル作成")
-    if sh(["git", "rev-parse", edition], cwd=cwd).stdout.strip() != sh(["git", "rev-parse", f"origin/{edition}"], cwd=cwd).stdout.strip():
+    local = sh(["git", "rev-parse", edition], cwd=cwd).stdout.strip()
+    remote = sh(["git", "rev-parse", f"origin/{edition}"], cwd=cwd).stdout.strip()
+    if local and remote and local != remote and sh(["git", "merge-base", "--is-ancestor", local, remote], cwd=cwd).returncode == 0:
+        # ローカルが遅れているだけ(取り込みの push が時間切れで、届いたか確かめられずに巻き戻した 等)なら早送りで揃える。
+        # リモートに無い commit をローカルが持つときだけ食い違いとして止まる(監査指摘 2026-10-14)
+        if sh(["git", "branch", "--show-current"], cwd=cwd).stdout.strip() == edition:
+            must(sh(["git", "merge", "-q", "--ff-only", remote], cwd=cwd), f"{edition} の早送り")
+        else:
+            must(sh(["git", "update-ref", f"refs/heads/{edition}", remote, local], cwd=cwd), f"{edition} の早送り")
+        local = remote
+    if local != remote:
         return f"{edition} がリモートと食い違う"
     return ""
 
@@ -342,17 +401,90 @@ def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -
     return ans
 
 
+AUDIT_REQUIRED_RUNS = ("test_pipeline", "selfcheck", "lint")
+
+
+AUDIT_MUST_PASS = ("test_pipeline", "selfcheck")   # 修正の後は通っていなければならない。lint は号の中身(組み直す前の記事)でも赤になる
+
+
+def runs_script(command: str, name: str) -> bool:
+    """コマンドが scripts/<name>.py を python で**実行する**か。引数に名前があるだけのもの(`python3 -m py_compile scripts/…`・
+    echo・cat 等)、実行しない python のオプション(--help・-V 等)、`||` の後ろ(前が成功すると走らない)は数えない
+    (監査指摘: 構文の検査・--help・`true ||` の記録で3つの検査を走らせたことになった)。`cd … &&`・環境変数・timeout は許す。
+    承認の門は当番のコードが自分で走らせる検査(run_rounds)で、これは監査の自己申告の形の検査。"""
+    import shlex
+    parts = re.split(r"(&&|\|\||;|\|)", command)
+    for i in range(0, len(parts), 2):
+        if "||" in parts[1:i:2]:
+            break
+        try:
+            toks = shlex.split(parts[i])
+        except ValueError:
+            continue
+        while toks and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*=.*", toks[0]):
+            toks = toks[1:]
+        while toks and toks[0] in ("timeout", "env", "nice", "stdbuf", "time"):
+            toks = toks[1:]
+            while toks and (toks[0].startswith("-") or re.fullmatch(r"\d+(\.\d+)?[smhd]?", toks[0]) or "=" in toks[0]):
+                toks = toks[1:]
+        if not toks or not re.fullmatch(r"python(3(\.\d+)?)?", Path(toks[0]).name):
+            continue
+        args = toks[1:]
+        while args and args[0].startswith("-"):
+            if args[0] in ("-X", "-W"):
+                args = args[2:]
+            elif args[0] in ("-u", "-B", "-E", "-s", "-I", "-O", "-OO", "-q"):
+                args = args[1:]
+            else:           # -m・-c・--help・-V など、スクリプトを実行しないオプション
+                args = []
+        if args and (args[0] in (f"scripts/{name}.py", f"./scripts/{name}.py", f"{name}.py") or args[0].endswith(f"/scripts/{name}.py")):
+            return True
+    return False
+
+
+def audit_ran_checks(rev: dict) -> bool:
+    """監査の答えに、テストの全体・selfcheck・lint を実際に走らせた記録があるか。走らせた = そのスクリプトを実行したコマンドで、
+    終了コードがある。テストと selfcheck は終了コード 0。「走らせられなかった」の結果文や、名前を含むだけの別のコマンドで承認にしない
+    (監査指摘: 結果が空でないだけで承認になった・構文の検査で3つを走らせたことになった)。"""
+    runs = [v for v in rev.get("verification") or []
+            if isinstance(v, dict) and isinstance(v.get("exit_code"), int) and not isinstance(v.get("exit_code"), bool)]
+    ran = lambda k: [v for v in runs if runs_script(str(v.get("command") or ""), k)]
+    return all(ran(k) for k in AUDIT_REQUIRED_RUNS) and all(ran(k)[-1]["exit_code"] == 0 for k in AUDIT_MUST_PASS)
+
+
+def remove_worktree(aw: Path, cwd: Path) -> None:
+    """使い捨ての作業ツリーを片付ける。git で消せなければディレクトリを消して登録を掃除し、それでも残れば異常として申告する
+    (消せないまま黙って進むと、作業ツリーと登録が溜まる。監査指摘)。"""
+    r = sh(["git", "worktree", "remove", "--force", str(aw)], cwd=cwd)
+    if r.returncode != 0 or aw.exists():
+        shutil.rmtree(aw, ignore_errors=True)
+    sh(["git", "worktree", "prune"], cwd=cwd)
+    listed = any(ln == f"worktree {aw}" for ln in sh(["git", "worktree", "list", "--porcelain"], cwd=cwd).stdout.splitlines())
+    if aw.exists() or listed:
+        anomaly("oncall", f"監査用の作業ツリーを片付けられない: {aw}(ディレクトリ {'あり' if aw.exists() else 'なし'}・"
+                          f"登録 {'あり' if listed else 'なし'})。git worktree remove: {(r.stderr or r.stdout or '').strip()[:200]}")
+
+
 def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -> dict:
+    """監査(Sol)を走らせる。監査する commit(cwd の HEAD)から**使い捨ての作業ツリー**を切り出し、そこで書き込みのできる
+    サンドボックス(workspace-write)で動かす: テストの全体・selfcheck・lint を実際に走らせ、再現のテストを書けるように。
+    読み取り専用では何も走らせられず、走らせないまま承認していた(2026-10-14: 承認済みの変更が素材ファイルの書式に無い欄を
+    書いて発行前の検査で号が止まった。編集長「ずさんな承認は全部ゴミ」)。当番の作業ツリーでは書かせない(Sol の一時ファイルが
+    次の往復の修正に紛れる)。"""
     fd, out_name = tempfile.mkstemp(prefix="oncall-review-", suffix=".json")
     os.close(fd)
     out_path = Path(out_name)
+    head = sh(["git", "rev-parse", "HEAD"], cwd=cwd).stdout.strip()
+    aw = Path(tempfile.mkdtemp(prefix="oncall-audit-"))
+    shutil.rmtree(aw)
     try:
+        must(sh(["git", "worktree", "add", "--detach", str(aw), head], cwd=cwd, timeout=120), "監査用の作業ツリー")
         name = "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
-        short = prompt_file("oncall", name, prompt, base=cwd)
+        short = prompt_file("oncall", name, prompt, base=aw)
         try:
-            r = subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "read-only", "--skip-git-repo-check",
-                                "--output-schema", str(schema_file), "-o", str(out_path), short],
-                               cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
+            r = subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
+                                "-C", str(aw), "--output-schema", str(schema_file), "-o", str(out_path), short],
+                               cwd=aw, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
                                env=session_env())
             so, se, code = r.stdout, r.stderr, r.returncode
         except subprocess.TimeoutExpired as e:
@@ -365,6 +497,7 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
         save_raw("oncall", name, so, se, code, files={"answer": text})
     finally:
         out_path.unlink(missing_ok=True)
+        remove_worktree(aw, cwd)
     # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ({"verdict":"approve"} だけの答えで承認にしない。監査指摘)
     ans = parse_json(text) if code == 0 else None
     if ans is None or not schema_ok(ans, schema_file.read_text(encoding="utf-8")):
@@ -711,9 +844,18 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
             if left() < MIN_STEP_SEC:
                 transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
                 break
+            # 3つの検査は当番のコードが自分で走らせ、その結果を監査に渡す(承認の門はここ: selfcheck が赤なら上で監査に進まない。
+            # selfcheck は回帰テスト test_pipeline を含む)。監査の自己申告(verification)だけを門にすると、走らせない記録で通る道が
+            # 何度でも見つかった(監査指摘: py_compile・--help・`true ||`)。lint は組み直す前の号の中身でも赤になるので、修正によるかは監査が判断する
+            lc = sh([sys.executable, "scripts/lint.py", "--base", "origin/main"], cwd=wt, timeout=min(300, left()))
+            code_checks = ("\n\n## 当番のコードが走らせた検査(この commit)\n"
+                           "- python3 scripts/selfcheck.py(回帰テスト test_pipeline を含む): 終了 0\n"
+                           f"- python3 scripts/lint.py --base origin/main: 終了 {lc.returncode}: "
+                           f"{((lc.stdout or '').strip().splitlines() or [''])[-1][:300]}\n")
+            transcript.append({"round": rnd, "code_checks": {"selfcheck": 0, "lint": lc.returncode}})
             print(f"監査 {rnd}回目", flush=True)
             # 差分が無くても(no_fix_needed)監査は通す: 誤診を検める機会を残す(監査指摘)
-            rev = run_codex(review_prompt(stage, date, fix, diff, integ), schemas / "oncall-review.schema.json", wt,
+            rev = run_codex(review_prompt(stage, date, fix, diff, integ) + code_checks, schemas / "oncall-review.schema.json", wt,
                             timeout=min(1800, left()))
             transcript.append({"round": rnd, "review": rev})
             round_later = []
@@ -734,6 +876,10 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                 for item in round_later:
                     if not any(x.get("claim") == item.get("claim") for x in later):
                         later.append(item)
+            if rev.get("verdict") == "approve" and not must_fix and not audit_ran_checks(rev):
+                # テスト・selfcheck・lint を走らせた記録の無い承認は、承認として扱わない(走らせていない確認は確認ではない)
+                must_fix = [{"id": "audit-not-run", "severity": "blocks_publish", "evidence": json.dumps(rev.get("verification"), ensure_ascii=False)[:600],
+                             "claim": "監査がテスト(test_pipeline)・selfcheck・lint を走らせていない。走らせて結果を verification に書き直すこと"}]
             if rev.get("verdict") == "approve" and not must_fix:
                 res["approved"] = True
                 kept["open"] = []
@@ -829,7 +975,10 @@ def rerun_policy(stage: str, changed: list[str], rerun_mode: str, recover: bool 
 
 
 def commit_paths(paths: list[str], msg: str, branch: str, push_timeout: int = 120) -> None:
-    """対象パスだけを stage して commit・push(包括的な add -A は使わない。監査指摘)。"""
+    """対象パスだけを stage して commit・push(包括的な add -A は使わない。監査指摘)。出典の判定の取引の控えが残っていれば
+    戻してから確定し、戻せなければ確定しない(pipelib.classify_txn_settled)。"""
+    if not classify_txn_settled("oncall"):
+        raise RuntimeError("出典の判定の取引を戻せないので確定しない")
     must(sh(["git", "add", "-A", "--"] + paths, cwd=ROOT), "add")
     if must(sh(["git", "status", "--porcelain"], cwd=ROOT), "git status").stdout.strip():
         must(sh(["git", "commit", "-q", "-m", msg + CO_AUTHOR], cwd=ROOT), "commit")
@@ -1038,10 +1187,9 @@ def planned_slugs(date: str) -> list[str]:
 
 
 def latest_review(date: str) -> Path | None:
-    """その号のいちばん新しい巡の校閲記録(metrics/review-<日付>-<巡>.json)。無ければ None。"""
-    rows = [(int(m.group(1)), p) for p in (ROOT / "metrics").glob(f"review-{date}-*.json")
-            if (m := re.fullmatch(re.escape(f"review-{date}-") + r"(\d+)\.json", p.name))]
-    return max(rows)[1] if rows else None
+    """その号のいちばん新しい組版の実行の、最後の巡の校閲記録(発行が読むものと同じ。pipelib.last_review_record)。無ければ None。"""
+    from pipelib import last_review_record
+    return last_review_record(date, ROOT)
 
 
 def recover_outcome(before: set[str], after: set[str], planned: list[str]) -> tuple[list[str], list[str], list[str]]:
@@ -1118,9 +1266,20 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
                               "--skip-explore", "--skip-grok", "--oncall-rerun", "--date", target], log, limit)
             if not root_clean():
                 # 時間切れ・異常終了で取り直しが途中で終わっても、保存できた素材と既読状態は確定させ、作業ツリーを
-                # clean にして次の工程(組版・道具の更新)を止めない(監査指摘)。素材のファイルは丸ごと書き直す形なので途中は無い
+                # clean にして次の工程(組版・道具の更新)を止めない(監査指摘)。確定する前に中身を検め、壊れた出力(書きかけで
+                # 切れた JSON・書式に合わない素材)は確定せずに HEAD の中身へ戻す(2026-10-14 監査指摘: 保存の途中で打ち切られた
+                # 素材の JSON を commit・push し、組版・発行前の lint が読めずに止まる経路があった)
                 try:
-                    commit_paths(["candidates", "stock/watch-state.json", "metrics"],
+                    # 確定(commit)する前に、取り直しの中で途中で終わった出典の判定の取引(SIGKILL 等)を控えから戻す。先に commit すると
+                    # HEAD が控えと食い違って戻せなくなり、判定表と記事が未コミットで残って次の工程の checkout が止まる
+                    # (2026-10-14 取り込みの監査)。戻せなければ確定しない
+                    if not classify_txn_settled("oncall"):
+                        raise RuntimeError("出典の判定の取引を戻せない")
+                    dropped = settle_collect_outputs(ROOT)
+                    if dropped:
+                        notify("oncall", f"{date} collect: 取り直しの出力が壊れていたので確定せずに戻した: " + " / ".join(dropped)[:600],
+                               ok=False)
+                    commit_paths(list(COLLECT_OUTPUTS),
                                  f"oncall: {target} 取り直しの途中までを確定(exit {code})", edition,
                                  push_timeout=max(15, min(120, int(left() / 3))))
                 except Exception as e:      # noqa: BLE001
@@ -1450,51 +1609,54 @@ def _main() -> int:
             if not root_clean():
                 notify("oncall", f"{date} {stage}: 取り込み前に本体の作業ツリーが汚れた。取り込まない(記録ブランチ {branch})", ok=False)
                 return 1
-            must(sh(["git", "checkout", "-q", "main"], cwd=ROOT), "main の checkout")
-            must(sh(["git", "pull", "-q", "--ff-only", "origin", "main"], cwd=ROOT, timeout=120), "main の pull")
-            # ローカル main に監査していない commit が乗っていたら、一緒に push してしまう(監査指摘)。
-            # origin/main と完全一致のときだけ取り込む。push に失敗したら merge を巻き戻す
-            main_before = sh(["git", "rev-parse", "main"], cwd=ROOT).stdout.strip()
-            # 監査の基準(base)から origin/main が動いていないこと。動いていれば監査していない変更との
-            # 組み合わせになるので取り込まない(監査指摘)
-            if main_before != remote_main() or main_before != base:
-                sh(["git", "checkout", "-q", edition], cwd=ROOT)
-                notify("oncall", f"{date} {stage}: main が監査の基準から動いた(ローカル {main_before[:10]} / 基準 {base[:10]})。取り込まない(記録ブランチ {branch})", ok=False)
-                return 1
-            # --no-ff で必ず merge commit を作る。戻すときは `git revert -m 1 <merge commit>` 1つで済み、
-            # 報告にそのハッシュを書ける(fast-forward だと -m 1 が使えない。監査指摘)
-            m = sh(["git", "merge", "--no-ff", "--no-edit", head], cwd=ROOT)
-            if m.returncode != 0:
-                undo_merge(main_before, "main")
+            # main と号への取り込みは1つの取引。merge・push は merge_and_push が、非0の終了も時間切れ・例外も同じに扱い、
+            # 届いていない merge をローカルに残さない。どの経路で抜けても号のブランチで終える(監査指摘 2026-10-14)
+            try:
+                must(sh(["git", "checkout", "-q", "main"], cwd=ROOT), "main の checkout")
+                must(sh(["git", "pull", "-q", "--ff-only", "origin", "main"], cwd=ROOT, timeout=120), "main の pull")
+                # ローカル main に監査していない commit が乗っていたら、一緒に push してしまう(監査指摘)。
+                # origin/main と完全一致のときだけ取り込む。push に失敗したら merge を巻き戻す
+                main_before = sh(["git", "rev-parse", "main"], cwd=ROOT).stdout.strip()
+                # 監査の基準(base)から origin/main が動いていないこと。動いていれば監査していない変更との
+                # 組み合わせになるので取り込まない(監査指摘)
+                if main_before != remote_main() or main_before != base:
+                    notify("oncall", f"{date} {stage}: main が監査の基準から動いた(ローカル {main_before[:10]} / 基準 {base[:10]})。取り込まない(記録ブランチ {branch})", ok=False)
+                    return 1
+                # --no-ff で必ず merge commit を作る。戻すときは `git revert -m 1 <merge commit>` 1つで済み、
+                # 報告にそのハッシュを書ける(fast-forward だと -m 1 が使えない。監査指摘)。
+                # リモートの main が基準のままのときだけ push が通る(競合検出。監査指摘)
+                got, info = merge_and_push("main", main_before, ["--no-ff", "--no-edit", head],
+                                           ["git", "push", "-q", f"--force-with-lease=refs/heads/main:{base}", "origin", "main"])
+                if got != "pushed":
+                    notify("oncall", f"{date} {stage}: " + {
+                        "conflict": f"修正を main に入れられない(衝突)。記録ブランチ {branch} に置いた",
+                        "absent": f"main の push に失敗したので merge を巻き戻した: {info}",
+                        "unknown": f"main の push が失敗し({info})、リモートに届いたか確かめられない。ローカルの merge は巻き戻した"
+                                   f"(届いていれば次の当番・工程が main を早送りで揃える)。記録ブランチ {branch}"}[got], ok=False)
+                    return 1
+                merge_commit = info
+                targets.append("main")
                 must(sh(["git", "checkout", "-q", edition], cwd=ROOT), f"{edition} の checkout")
-                notify("oncall", f"{date} {stage}: 修正を main に入れられない(衝突)。記録ブランチ {branch} に置いた", ok=False)
-                return 1
-            merge_commit = sh(["git", "rev-parse", "main"], cwd=ROOT).stdout.strip()
-            # リモートの main が基準のままのときだけ push が通る(競合検出。監査指摘)
-            pushed = sh(["git", "push", "-q", f"--force-with-lease=refs/heads/main:{base}", "origin", "main"], cwd=ROOT, timeout=120)
-            if pushed.returncode != 0:
-                undo_merge(main_before, "main")
-                must(sh(["git", "checkout", "-q", edition], cwd=ROOT), f"{edition} の checkout")
-                notify("oncall", f"{date} {stage}: main の push に失敗したので merge を巻き戻した: {(pushed.stderr or '')[-200:]}", ok=False)
-                return 1
-            targets.append("main")
-            must(sh(["git", "checkout", "-q", edition], cwd=ROOT), f"{edition} の checkout")
-            ed_before = sh(["git", "rev-parse", edition], cwd=ROOT).stdout.strip()
-            m2 = sh(["git", "merge", "--no-edit", "main"], cwd=ROOT)
-            if m2.returncode != 0:
-                undo_merge(ed_before, edition)
-                report_change(stage, date, fix, transcript, base, head, merge_commit, branch, targets, "取り込み衝突のため未実行")
-                notify("oncall", f"{date} {stage}: 修正は main に入ったが {edition} への取り込みが衝突。手で解くこと", ok=False)
-                return 1
-            pushed = sh(["git", "push", "-q", "origin", edition], cwd=ROOT, timeout=120)
-            if pushed.returncode != 0:
-                # ローカルだけ進んだままにしない(次回の前提検査で「リモートと食い違う」になり、当番が
-                # 二度と動けなくなる。監査指摘)。main には入っているので、次回は merge し直せば済む
-                undo_merge(ed_before, edition)
-                report_change(stage, date, fix, transcript, base, head, merge_commit, branch, targets, "edition の push 失敗のため未実行")
-                notify("oncall", f"{date} {stage}: 修正は main に入ったが {edition} の push に失敗したので巻き戻した: {(pushed.stderr or '')[-200:]}", ok=False)
-                return 1
-            targets.append(edition)
+                ed_before = sh(["git", "rev-parse", edition], cwd=ROOT).stdout.strip()
+                # 号の push が届かなければ、ローカルだけ進んだままにしない(次回の前提検査で「リモートと食い違う」になり、
+                # 当番が二度と動けなくなる。監査指摘)。main には入っているので、次回は merge し直せば済む
+                got, info = merge_and_push(edition, ed_before, ["--no-edit", "main"], ["git", "push", "-q", "origin", edition])
+                if got != "pushed":
+                    report_change(stage, date, fix, transcript, base, head, merge_commit, branch, targets,
+                                  "取り込み衝突のため未実行" if got == "conflict" else "edition の push 失敗のため未実行")
+                    notify("oncall", f"{date} {stage}: 修正は main に入ったが " + {
+                        "conflict": f"{edition} への取り込みが衝突。手で解くこと",
+                        "absent": f"{edition} の push に失敗したので巻き戻した: {info}",
+                        "unknown": f"{edition} の push が失敗し({info})、リモートに届いたか確かめられない。ローカルは巻き戻した"
+                                   "(届いていれば次の当番が早送りで揃え、届いていなければ次の工程が main を取り込む)"}[got], ok=False)
+                    return 1
+                targets.append(edition)
+            finally:
+                if sh(["git", "branch", "--show-current"], cwd=ROOT).stdout.strip() != edition \
+                        and sh(["git", "checkout", "-q", edition], cwd=ROOT).returncode != 0:
+                    notify("oncall", f"{date} {stage}: 取り込みのあと {edition} に戻れない(いま "
+                                     f"{sh(['git', 'branch', '--show-current'], cwd=ROOT).stdout.strip() or '(detached)'})。"
+                                     "次の工程の前に確かめること", ok=False)
             # 追送: 取り込んだ merge commit と戻し方(全文は取り込み前に届いている)
             (ROOT / "metrics" / f"oncall-{date}-{stage}-report.md").open("a", encoding="utf-8").write(
                 f"\n\n## 取り込み結果\nmain の merge commit: {merge_commit}\n戻し方: git revert -m 1 {merge_commit}\n")

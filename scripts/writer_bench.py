@@ -11,8 +11,10 @@
   metrics/work/bench/<ラベル>/<ケース>.json に答えを残す(本番と同じ codex exec・出力 schema・検算)
 - `--judge <ラベルA> <ラベルB>` で、監査モデル(Sol)にケースごとに2本を読み比べさせる(どちらが先かは伏せて入れ替える)。
   品質の判断はモデル。コードは形(検算・字数・素材の数値が本文に出たか)だけを数える
-- `--record <ラベル>` で、合格した結果を bench/writer/pass-<執筆モデル>.json に残す。selfcheck はいまの執筆モデルの
-  合格記録が無ければ赤(モデルを替えたらこの比較を通すまで発行の検査が通らない)
+- `--record <ラベル>` で、合格した結果を bench/writer/pass-<執筆モデル>.json と合格記事 bench/writer/results/<執筆モデル>/ に残す
+  (次にモデルを替えたときの比較の相手)。合格記録の有無は selfcheck・watch・当番の検査に結びつけない(モデルの切り替えは止めず、
+  チューニングは発行とは別のワークフローで回して、終わったら main に入れる。編集長 2026-10-08「毎朝の監視とかは関係ない」)。
+  以前ここにあった「合格記録が無ければ selfcheck が赤」は実装されておらず、方針にも合わない(監査指摘 2026-10-14)
 """
 import argparse
 import concurrent.futures
@@ -26,7 +28,7 @@ import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import CODEX_WRITE_MODEL, ENV, ROOT, prompt_file, save_raw, schema_ok  # noqa: E402
+from pipelib import CODEX_WRITE_MODEL, ENV, ROOT, loads_strict, prompt_file, save_raw, schema_ok  # noqa: E402
 
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")      # 読み比べの判定(当番の監査と同じモデル)
 
@@ -86,7 +88,8 @@ def write_one(name: str, short: str, label: str, model: str) -> dict:
     Path(out_name).unlink(missing_ok=True)
     save_raw("bench", f"{label}-{name}", "", log[-20000:], code, files={"last-message": out})
     try:
-        ans = json.loads(out) if code == 0 else None
+        # 本番と同じ読み込み(同じキーが2回ある答えは読めない答え。rule_bench も使う。監査指摘 2026-10-14)
+        ans = loads_strict(out.strip()) if code == 0 else None
     except ValueError:
         ans = None
     if ans is not None and not schema_ok(ans, json.loads(SCHEMA_OUT.read_text(encoding="utf-8"))):

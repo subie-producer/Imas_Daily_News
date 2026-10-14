@@ -78,7 +78,8 @@ def apply_answer(path: Path, case: dict, ans: dict) -> list[str]:
             fm[k] = new_fm[k]
         else:
             fm.pop(k, None)
-    path.write_text("---\n" + yaml_dump_keeping_strings(fm) + "---\n" + new_body, encoding="utf-8")
+    from pipelib import write_checked      # 書式(article.schema)で検めてから書く
+    write_checked(path, "---\n" + yaml_dump_keeping_strings(fm) + "---\n" + new_body)
     fix_rank(path)
     return []
 
@@ -94,7 +95,8 @@ def fix_rank(path: Path) -> None:
     rank = next(r for r, lo in RANK_BY_LENGTH if n >= lo and r != "lead")
     if rank != fm.get("rank"):
         fm["rank"] = rank
-        path.write_text("---\n" + yaml_dump_keeping_strings(fm) + "---\n" + body, encoding="utf-8")
+        from pipelib import write_checked
+        write_checked(path, "---\n" + yaml_dump_keeping_strings(fm) + "---\n" + body)
 
 
 def latest_raw_answer(label: str, stem: str) -> dict | None:

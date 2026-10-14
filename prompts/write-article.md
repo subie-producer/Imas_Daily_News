@@ -67,7 +67,7 @@
 
 ## 7. 出力(JSON。形は schema が決める)
 - status: ok か decline(decline なら以下は空でよい)
-- title(全角換算28字まで)と title_fact_ids、lede(記事の中身を言い切る1文)と lede_fact_ids。
+- title(全角換算28字まで)と title_fact_ids、lede(記事の中身を言い切る1文)と lede_fact_ids。title と lede には Markdown 記法(`**` など)を使わない。
   見出しには**どの作品・ブランド・アイドル・催しの話か**が入っていること。「公式X告知」「公式Xが」のように主体を名前で言わない書き方はしない
   (「ミリシタ、名月ログボで計500個」のように名前で書く)
 - blocks: 1 block = 1 段落(block の中に空行を入れない)。中見出しは `## 見出し` だけの block(fact_ids は空)。箇条書きは1行1項目で1 block にまとめてよい
@@ -76,7 +76,7 @@
 - sources: `{"url", "label"}`。url は素材の出典か new_facts の url。label は `出典元表記「告知タイトル」(日付)` の形で、Markdown 記法を使わない
 - tags: 2〜4個。シリーズ名・施策カテゴリは下の語彙から選ぶ。固有名詞(アイドル名・会場名・作品固有名)は語彙の外でよい(正式名称)。
   brand の id(shiny / million など)と src の値(公式・報道・ファン・未確認)はタグにしない。毎年ある定例企画は年を含める(例: 総選挙2026)
-- event_date: 記事の出来事が起きる(始まる)日を1つだけ YYYY-MM-DD(範囲・複数なら開始日。無ければ null)。素材か new_facts にある日付
+- event_date: 記事の出来事が起きる(始まる)日を1つだけ YYYY-MM-DD(範囲・複数なら開始日。続報予約の記事は、その予約の出来事(締切・終了など)が起きる日。無ければ null)。素材か new_facts にある日付
 - slug・brand・candidate_ids・rank・src・出典の種別は書かない(コードが付ける)
 
 ## タグの語彙

@@ -52,7 +52,7 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      SETTLED_DROP_RULES, settled_drops,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
-                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts)
+                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
 # 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
@@ -62,25 +62,53 @@ if ENV.get("WRITE_MODE", "structured").lower() != "structured":
 STRUCTURED_WRITE = True
 
 PAPER_STAGE = None  # main() で .env から
+# この組版の実行の印(起動した時刻。文字列の順が時刻の順)。校閲記録に残し、発行は最新の実行の最後の巡を読む
+# (pipelib.last_review_record。巡の番号は実行ごとに1から数え直す。監査指摘 2026-10-14)
+RUN_ID = now_jst().strftime("%Y%m%dT%H%M%S.%f")
 
 
 def load_scheduled(date: str) -> list[dict]:
-    """発行日の続報予約(素材スナップショット同梱)。過去の candidates を遡らないための日付別ストア。"""
+    """発行日の続報予約(素材スナップショット同梱)。過去の candidates を遡らないための日付別ストア。
+    event_date は予約が指す出来事の日(reminder_event_date)に置き換える。決められない予約は event_date を外す(執筆が決める)。
+    予約のファイルは書き換えない(予約後は原則変更しない)。"""
     p = ROOT / "stock" / "scheduled" / f"{date}.json"
     if not p.exists():
         return []
-    return [dict(r, event_date=reminder_event_date(r, date)) for r in json.loads(p.read_text(encoding="utf-8"))]
+    rows = []
+    for r in json.loads(p.read_text(encoding="utf-8")):
+        row = dict(r)
+        row.pop("event_date", None)         # 元の話題の日付は渡さない(下)
+        ev = reminder_event_date(r, date)
+        if ev:
+            row["event_date"] = ev
+        rows.append(row)
+    return rows
 
 
-def reminder_event_date(row: dict, date: str) -> str:
-    """続報予約の記事の出来事の日(素材の event_date として渡す値)。予約が指す日そのもの: 締切前は予約の日の3日後(締切日)、
-    ほかは予約の日。予約には元の話題の event_date(販売・受付の開始日)が写してあり、それを渡すと書き手が写して1か月前の日付の
-    記事になり、lint の鮮度検査で赤になった(実測 2026-10-12: 9/11 開始の予約受付の締切前の記事が event_date 9/11 で lint 赤)。
-    元の話題の deadline も使わない: 受付締切・入金期限・公演日など、予約が指す締切とは別の日のことがある(監査指摘: 10/18 の
-    申込締切を指す 10/15 の予約で deadline は 11/4 の入金期限)"""
-    if row.get("kind") == "締切前":
-        return (datetime.date.fromisoformat(date) + datetime.timedelta(days=3)).isoformat()
-    return date
+def reminder_event_date(row: dict, date: str) -> str | None:
+    """続報予約の記事の出来事の日(素材の event_date として渡す値)。予約が指す出来事の日そのもの。
+    予約の日(ファイルの日付 = 記事を出す号)とは別: 06:00 より前に終わる締切・終了は前日の号に予約するので、予約の日を渡すと
+    1日早い日付の記事になる(2026-10-14 監査指摘: 10/1 4:59 に終わる学マスのミッションパスの終了の予約(9/30)で、記事の
+    event_date が 9/30 になり lint も通った)。組版は予約に出来事の日(occurs_on)を書く。
+    occurs_on の無い古い予約(2026-10-14 より前)は、予約の日と種別から決まる日(締切前は3日後の締切日、ほかは予約の日)を、
+    それが予約に書いてあり、ずれうる先の日(締切前は4日後、締切・終了は翌日)が書いていないときだけ渡す。ほかは、どの日かを
+    コードは字面から決められないので None(素材に event_date を付けず、執筆が素材と予約の種別から決める)。例: 8/25 19時の配信の
+    結果を翌日の号で伝える 8/26 の「結果」の予約は、予約に 8/26 が書いていない(監査指摘)。
+    予約に写した元の話題の event_date(販売・受付の開始日)は渡さない: 書き手が写して1か月前の日付の記事になり、lint の鮮度検査で
+    赤になった(実測 2026-10-12: 9/11 開始の予約受付の締切前の記事が event_date 9/11 で lint 赤)。元の話題の deadline も使わない:
+    受付締切・入金期限・公演日など、予約が指す締切とは別の日のことがある(監査指摘: 10/18 の申込締切を指す 10/15 の予約で
+    deadline は 11/4 の入金期限)"""
+    if row.get("occurs_on"):
+        return str(row["occurs_on"])
+    d = datetime.date.fromisoformat(date)
+    lags = renderlib.RESERVATION_LAG.get(row.get("kind"), (0,))
+    hay = " ".join([str(f) for f in row.get("facts") or []]
+                   + [str(row.get(k) or "") for k in ("note", "title", "subject", "event_date", "deadline")])
+    written = [renderlib.date_mentioned((d + datetime.timedelta(days=n)).isoformat(), hay, renderlib.years_in(hay + " " + date))
+               for n in lags]
+    if not written[0] or any(written[1:]):
+        return None
+    return (d + datetime.timedelta(days=lags[0])).isoformat()
 
 
 def next_number(date: str | None = None, live: bool | None = None) -> int:
@@ -190,15 +218,45 @@ def hard_deadline(t0: float, date: str) -> float:
     """締切の**絶対時刻**。発行日 06:00 の HANDOFF_MIN 前と、起動から COMPOSE_LIMIT_MIN の早いほう。
 
     起動からの相対時間だけで測ると、遅れて起動した日は発行時刻を越える(監査指摘)。
-    発行時刻を過ぎてからの手動再実行(その日の号をあとから出す)は、相対 120 分だけで測る。
+    発行時刻を過ぎてからの手動再実行(その日の号をあとから出す)は、相対 COMPOSE_LIMIT_MIN 分だけで測る。
+    「発行を過ぎたか」は実際の発行時刻(06:00)で見る。作業の締切(06:00 の HANDOFF_MIN 前)で見ると、05:53 の再起動が
+    「発行後」になって締切が 08:43 に延び、06:00 の発行を待たせた(監査指摘 2026-10-14)。06:00 より前の起動は、締切を
+    過ぎていても締切のまま(main が新しい作業を始めない)。
     """
     rel = t0 + COMPOSE_LIMIT_MIN * 60
     try:
         d = datetime.date.fromisoformat(date)
-        publish = datetime.datetime(d.year, d.month, d.day, 6, 0, tzinfo=JST).timestamp() - HANDOFF_MIN * 60
+        publish_at = datetime.datetime(d.year, d.month, d.day, 6, 0, tzinfo=JST).timestamp()
     except ValueError:
         return rel
-    return min(rel, publish) if publish > t0 else rel
+    return min(rel, publish_at - HANDOFF_MIN * 60) if t0 < publish_at else rel
+
+
+def too_late_to_start(t0: float, date: str) -> bool:
+    """締切(hard_deadline)を過ぎてから始まったか。過ぎていれば知らせ、なぜなぜを当番の保管へ回して True(main は排他も取らず、
+    新しい作業を始めない)。
+    06:00 の発行より前に始まった組版の締切は 05:52 のまま。始めると排他を持ち続け、06:00 の発行を待たせる(監査指摘 2026-10-14)"""
+    dl = hard_deadline(t0, date)
+    if time.time() < dl:
+        return False
+    started = datetime.datetime.fromtimestamp(t0, JST)
+    why = (f"{date}: 締切({datetime.datetime.fromtimestamp(dl, JST):%H:%M})を過ぎてから始まった(起動 {started:%H:%M})。"
+           "06:00 の発行を待たせないよう、新しい作業を始めずに終える(出し直すなら発行のあとに再実行する)")
+    # なぜなぜは発行のあとに回す: この process の異常の台帳を当番の保管へ積み、台帳を空にする(終わりの diagnose_anomalies が
+    # 当番を起こさない)。発行前に当番を起こすと、当番が工程の排他を持ったまま診断し、06:00 の発行を待たせる(監査指摘 2026-10-14)。
+    # 保管は発行のあとの監視(watch 09:00)が当番に渡す
+    try:
+        import oncall
+        kept = oncall.backlog_add([{"claim": f"{date} の組版が発行前の締切を過ぎて起動された(起動 {started:%H:%M})。誰が・なぜその時刻に"
+                                             "起動したかを遡り、起動した仕組み(当番の組み直し・手動の再実行・排他の待ち)の欠陥なら直す",
+                                    "occurs": "06:00 の発行より前で、締切(06:00 の HANDOFF_MIN 前)を過ぎてから組版が起動されたとき",
+                                    "evidence": "\n".join(ANOMALIES + [why])[:3000]}], date, "compose", "")
+        where = "当番の保管に積んだ(発行のあと watch が当番に渡す)" if kept else "当番の保管に既にある"
+    except Exception as e:      # noqa: BLE001 — 保管に積めなくても、発行前に当番は起こさない(人には知らせる)
+        where = f"当番の保管に積めなかった({type(e).__name__}: {e})。人が原因を確かめること"
+    notify("compose", f"{why}。なぜなぜは{where}", ok=False)
+    ANOMALIES.clear()
+    return True
 
 
 def time_left(t0: float) -> float:
@@ -298,17 +356,20 @@ def fact_key(fact: str) -> str:
     return hashlib.sha1(fact.encode("utf-8")).hexdigest()[:12]
 
 
-def record_candidates_read(date: str, cands: dict, hidden: set | frozenset = frozenset()) -> None:
-    """選定に掛ける候補ファイルの候補を、id → URL・読んだ facts の識別で記録する(選定し直すたびに上書き。--reuse-plan では書かない)。
+def record_candidates_read(date: str, cands: dict, hidden: set | frozenset = frozenset(),
+                           unjudged: set | frozenset = frozenset()) -> None:
+    """選定に掛けた候補ファイルの候補を、id → URL・読んだ facts の識別で記録する(選定し直すたびに上書き。--reuse-plan では書かない)。
+    選定を始めるときは cands を空で呼び、空の記録にする(選定を始めた号の印。次の号はこの号のファイルを遡る)。
     件数ではなく事実そのものを記録する: 次の号が同じページを拾い直していても、読んだ後に足された事実は次の号の候補に無いことがある。
     hidden(前の号から引き継いだ未読の事実のうち、選定インデックスの件数上限で切れて選定に渡らなかったもの。write_plan_index が返す)は
-    読んだことにしない: 記録すれば次の号へも引き継がれず、どの号の選定にも掛からない(監査指摘 late-facts-hidden-by-plan-index)。"""
+    読んだことにしない: 記録すれば次の号へも引き継がれず、どの号の選定にも掛からない(監査指摘 late-facts-hidden-by-plan-index)。
+    unjudged(判定を得られなかった主題の dedup_key。coverage_gaps の missing_keys)の候補も読んだことにしない(次の号が引き継ぐ)。"""
     p = ROOT / "candidates" / f"{date}.json"
     file_ids = {c["id"] for c in json.loads(p.read_text(encoding="utf-8")) if c.get("id")} if p.exists() else set()
     read_record_path(date).write_text(json.dumps(
         {"read": {i: {"url": cands[i].get("url"),
                       "facts": [k for k in (fact_key(f) for f in cands[i].get("facts") or []) if k not in hidden]}
-                  for i in sorted(cands) if i in file_ids}},
+                  for i in sorted(cands) if i in file_ids and cands[i].get("dedup_key") not in unjudged}},
         ensure_ascii=False, indent=0) + "\n", encoding="utf-8")
 
 
@@ -388,7 +449,7 @@ def carry_late_candidates(date: str) -> list[str]:
             log.append(f"{prev}号の選定が読んだ後に足された事実を、この号の同じページの候補 {len(merged[prev])}件へ足した: "
                        + ", ".join(merged[prev][:10]))
     if log:
-        target.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        write_checked(target, json.dumps(rows, ensure_ascii=False, indent=2) + "\n")
     return log
 
 
@@ -515,15 +576,15 @@ def carry_dropped_candidates(date: str) -> list[str]:
     選定は自分の号の候補しか読まないので、写さなければ、直したあと(規則・道具の修正)でも二度と選定に掛からない
     (2026-10-13: 報道を出典にしてよいと決めたログボが、翌号の選定に戻る経路が無かった。編集長「復帰保証までが仕事」)。
     写した候補には carried(どの号で・なぜ記事にならなかったか・何回目か)を付け、選定に見せる。採るかは選定が決める。
+    戻した素材を前の号の選定が選ばなかったときも、締切までは戻す。
     同じ素材を写すのは CARRY_DROPPED_MAX 回まで。この号に同じ URL・id の候補があれば、写さずに carried だけを付ける。冪等。"""
     import copy
     prev = (datetime.date.fromisoformat(date) - datetime.timedelta(days=1)).isoformat()
     drops_p = ROOT / "metrics" / f"drops-{prev}.json"
     src_p = ROOT / "candidates" / f"{prev}.json"
-    if not drops_p.exists():
-        return []
     try:
-        drops = json.loads(drops_p.read_text(encoding="utf-8")) or {}
+        # 外れた記事の記録が無い号でも、選定が選ばなかった戻し素材は戻す(下)
+        drops = (json.loads(drops_p.read_text(encoding="utf-8")) or {}) if drops_p.exists() else {}
         # 候補ファイルの無い号(当日の続報予約だけで組んだ)でも、予約の素材は戻す(監査指摘)
         src = {c.get("id"): c for c in (json.loads(src_p.read_text(encoding="utf-8")) if src_p.exists() else []) if c.get("id")}
     except (OSError, ValueError):
@@ -549,9 +610,22 @@ def carry_dropped_candidates(date: str) -> list[str]:
             if c:
                 g = groups.setdefault(c.get("url") or f"id:{cid}", {"srcs": {}, "why": why})
                 g["srcs"][cid] = c
+    # 戻した素材を前の号の選定がまた選ばなかった(計画に入らなかった)ものも戻す。選定で外れると外れた記事の記録に載らず、次の号に
+    # 戻る経路が無かった(2026-10-14: 戻したログボを選定が前の号の理由で外し、締切の 10/15 号に戻らなかった)。回数の上限で止まる
+    plan, _ = read_record(ROOT / "metrics" / f"plan-{prev}.json")
+    picked = {i for a in (plan if isinstance(plan, dict) else {}).get("articles") or [] for i in a.get("candidate_ids") or []}
+    picked_urls = {src[i].get("url") for i in picked if i in src}
+    for cid, c in src.items():
+        if c.get("carried") and cid not in picked and c.get("url") not in picked_urls:
+            g = groups.setdefault(c.get("url") or f"id:{cid}", {"srcs": {}, "why": f"{prev}号の選定で選ばれなかった(戻した素材)"})
+            g["srcs"][cid] = c
+    # 締切を過ぎた素材は、どちらの経路でも戻さない(監査指摘: 外れた記事の経路だけ締切を見ていなかった)
+    expired = lambda c: bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(c.get("deadline") or ""))) and c["deadline"] < date
     carried, changed = [], False
     for key, g in groups.items():
-        srcs = [g["srcs"][i] for i in sorted(g["srcs"])]          # 順序に依らない
+        srcs = [g["srcs"][i] for i in sorted(g["srcs"]) if not expired(g["srcs"][i])]       # 順序に依らない
+        if not srcs:
+            continue
         good = [c for c in srcs if not candidate_misplaced(c)]
         # 回数は、まとめた素材の最大値から一度だけ増やす。この号に同じページの候補があれば、上限を超えても回数を付け続ける
         # (残さないと、毎号拾い直す素材の回数が 1→2→無し→1 と戻る。監査指摘)。写す(候補が無い)のは上限まで
@@ -583,7 +657,7 @@ def carry_dropped_candidates(date: str) -> list[str]:
             tgt["carried"] = tag
             changed = True
     if changed:
-        target.write_text(json.dumps(rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        write_checked(target, json.dumps(rows, ensure_ascii=False, indent=2) + "\n")
     return [f"{prev}号で記事にならなかった記事の素材 {len(carried)}件を、この号の選定に戻した: " + ", ".join(carried[:10])] if carried else []
 
 
@@ -636,8 +710,11 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
         if c.get("verify") == "confirmed":
             s["verify"] = "confirmed"
         cr = c.get("carried") or {}
-        if cr.get("why") and int(cr.get("count") or 0) <= CARRY_DROPPED_MAX and not s.get("carried"):
-            s["carried"] = cr["why"]     # 前の号で記事にならなかった(選定が、直ったか・まだ間に合うかを判断する)。上限を超えたら見せない
+        if cr.get("from") and int(cr.get("count") or 0) <= CARRY_DROPPED_MAX and not s.get("carried"):
+            # 前の号で記事にならなかった印だけを見せ、理由は見せない(選定が前の号の理由を今日の判定と読んで外した。2026-10-14 の
+            # ログボ: 報道を出典にしてよいと決めた後も「出典不足」で外れた)。記事にできるかは執筆と校閲が今日の規則で判断する。
+            # 上限を超えたら見せない
+            s["carried"] = f"{cr['from']}号までに記事にならず、選定に戻した({int(cr.get('count') or 0)}回目)"
         for f in c.get("facts", []):
             k = fact_key(f)
             pool.setdefault(dk, []).append((f if k in late else f[:PLAN_FACT_CHARS], k))
@@ -1004,7 +1081,7 @@ def run_assemble(date: str, number: int) -> None:
     code = _assemble.run(date, number, budget=lambda: remaining_seconds(cap=_assemble.SESSION_CAP))
     if code == 1:
         raise RuntimeError("組版: 記事が無い")
-    # 2 = lint が赤い(組版の欠陥として通知済み)。呼び出し側の lint ゲートで扱う
+    # 2 = lint が赤い・派生欄(derive)か lint が異常終了した(組版の欠陥として通知済み)。呼び出し側の lint ゲートで扱う
 
 
 def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str:
@@ -1506,9 +1583,11 @@ def missing_plan_prompt(date: str, rows: list[dict], existing: list[dict]) -> st
 # 記事の slug と candidate_ids はコードが付ける(下の replan_missing)ので、答えには求めない
 _STR = {"type": "string", "minLength": 1}
 MISSING_ROW_SCHEMA = {
-    "articles": {"type": "object", "required": ["brand", "rank", "angle", "lead_score", "dedup_key"],
+    # 目的(purpose)は面別選定と同じ語彙(planlib.PURPOSES)。拾い直しで記事にした期日の知らせを、執筆へ「新情報」で渡さない(監査指摘 2026-10-14)
+    "articles": {"type": "object", "required": ["brand", "rank", "angle", "purpose", "lead_score", "dedup_key"],
                  "properties": {"brand": {"enum": sorted(BRANDS)}, "rank": {"enum": ["large", "medium", "small"]},
-                                "angle": {"type": "string"}, "lead_score": {"type": "integer", "minimum": 0, "maximum": 100},
+                                "angle": {"type": "string"}, "purpose": {"enum": list(planlib.PURPOSES)},
+                                "lead_score": {"type": "integer", "minimum": 0, "maximum": 100},
                                 "dedup_key": _STR}},
     "merge_into": {"type": "object", "required": ["slug", "dedup_key"],
                    "properties": {"slug": _STR, "dedup_key": _STR}},
@@ -1594,7 +1673,7 @@ def replan_missing(date: str, plan: dict, by_brand: dict, cands: dict,
                 continue
             b = x["brand"]
             a = {"slug": planlib.slugify(b, key, slugs), "brand": b, "rank": x["rank"], "angle": x["angle"],
-                 "lead_score": x["lead_score"], "dedup_key": key, "candidate_ids": ids}
+                 "purpose": x["purpose"], "lead_score": x["lead_score"], "dedup_key": key, "candidate_ids": ids}
             plan["articles"].append(a)
             log.append(f"{key} → {b} 面で記事化({a['slug']})")
         elif kind == "merge_into":
@@ -1778,7 +1857,7 @@ def canonicalize_article(date: str, art: dict, cands: dict) -> list[str]:
     ordered = {k: fm[k] for k in order if k in fm}
     ordered.update({k: v for k, v in fm.items() if k not in ordered})
     head = yaml_dump_keeping_strings(ordered)
-    path.write_text("---\n" + head + "---\n" + body, encoding="utf-8")
+    write_checked(path, "---\n" + head + "---\n" + body)
     return log
 
 
@@ -1906,7 +1985,7 @@ def drop_blocked_articles(date: str, review: dict, written: list[dict]) -> tuple
             m = re.match(r"^---\n(.*?)\n---\n", txt, re.S)
             if m:
                 head = re.sub(r"^rank:.*$", "rank: lead", m.group(1), count=1, flags=re.M)
-                p.write_text("---\n" + head + "\n---\n" + txt[m.end():], encoding="utf-8")
+                write_checked(p, "---\n" + head + "\n---\n" + txt[m.end():])
         print(f"一面が落ちたので {top['slug']} を一面に立てる(lead_score 最大)", flush=True)
     return dropped, unresolved
 
@@ -1963,8 +2042,7 @@ def assign_ranks(date: str, plan: dict, written: list[dict], keep_lead: bool = F
             by_slug.get(art["slug"], {})["rank"] = rank
         p = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
         txt = p.read_text(encoding="utf-8")
-        p.write_text(re.sub(r"^rank: .*$", f"rank: {rank}", txt, count=1, flags=re.MULTILINE),
-                     encoding="utf-8")
+        write_checked(p, re.sub(r"^rank: .*$", f"rank: {rank}", txt, count=1, flags=re.MULTILINE))
     lens = sorted(n for _, n, _ in sized)
     if lens:
         print(f"枠割り: {dict(stats)} / 本文 中央値{lens[len(lens)//2]}字 "
@@ -2278,6 +2356,23 @@ def load_story_facts() -> dict:
     for e in yaml.safe_load(p.read_text(encoding="utf-8")) or []:
         out[e.get("story_id")] = e.get("published_facts", [])
     return out
+
+
+def run_derive(date: str) -> bool:
+    """派生(derive --write)を走らせる。失敗(0 以外の終了・起動できない・時間切れ)は黙って進まず、理由(終了コードと最後の行)を
+    異常として申告し False を返す。最後の門はこのあとの lint(古い・途中の号は lint が止める)。以前は終了コードを見ず、derive が
+    落ちても lint の書式の誤りとしてしか見えなかった(監査指摘 2026-10-14)。"""
+    try:
+        r = subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
+                           cwd=ROOT, capture_output=True, text=True, timeout=300)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        anomaly("compose", f"{date}: 派生(derive)を走らせられない: {type(e).__name__}: {str(e)[:200]}")
+        return False
+    if r.returncode != 0:
+        last = ((r.stderr or r.stdout or "").strip().splitlines() or ["(出力なし)"])[-1][:300]
+        anomaly("compose", f"{date}: 派生(derive)が失敗(終了 {r.returncode}): {last}")
+        return False
+    return True
 
 
 def run_lint(date: str) -> tuple[int, str]:
@@ -2612,11 +2707,37 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     return "fixed", f"対応 {ans.get('addressed_issue_ids')}"
 
 
+def posts_snapshot(date: str) -> dict[Path, bytes]:
+    """この号の記事ファイルの控え(パス → 中身)。執筆の子が作業ツリーに直接書いた変更を戻すため(restore_posts)。"""
+    return {p: p.read_bytes() for p in (ROOT / "docs" / "_posts").glob(f"{date}-*.md")}
+
+
+def restore_posts(date: str, snap: dict[Path, bytes]) -> list[str]:
+    """控えを取ってからの、この号の記事ファイルの変更(書き換え・削除・新しいファイル)を控えへ戻す。戻したファイル名を返す。
+    戻せなかったファイルは異常として申告する(1つ戻せなくても残りは戻す)。"""
+    back = []
+    for p in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md")):
+        if p not in snap:
+            try:
+                p.unlink(missing_ok=True)
+                back.append(p.name)
+            except OSError as e:
+                anomaly("compose", f"執筆の子が作った {p.name} を消せない({type(e).__name__}: {str(e)[:120]})")
+    for p, data in snap.items():
+        try:
+            if not p.is_file() or p.read_bytes() != data:
+                write_checked(p, data.decode("utf-8"))
+                back.append(p.name)
+        except OSError as e:
+            anomaly("compose", f"執筆の子が書き換えた {p.name} を控えへ戻せない({type(e).__name__}: {str(e)[:120]})")
+    return back
+
+
 def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands: dict,
                     aborted: list[str] | None = None) -> dict[str, str]:
     """校閲の指摘を**執筆側(Codex)**に構造化で直させる。校閲側(Claude)には編集させない(監査の設計レビュー)。
 
-    直した稿は初稿と同じ検算(事実 id・出典・タグ・日付)を通してからファイルにする。
+    直した稿は初稿と同じ検算(事実 id・出典・タグ・日付)を通してからファイルにする。子が記事を直接書き換えても採らない(控えへ戻す)。
     decline(見送り)が返れば記事を落とす。何も直せないままなら次の巡でまたブロックが付き、上限で落ちる。
     戻り値は {slug: 結果}(fixed / kept / dropped / unreadable)。呼び出し側は「書き手が書き直した(fixed / kept)」記事に
     同じ指摘が残ったときだけ「直せなかった」と記録する(実行の失敗を契約の欠陥と取り違えない。監査指摘 r86)。
@@ -2646,6 +2767,10 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
     schema_out = ROOT / "schema" / "article-out.schema.json"
     n_fixed = n_dropped = 0
     for i in range(0, len(jobs), COMPOSE_WAVE):
+        # 子は本体の作業ツリー(cwd=ROOT)で動き、記事を直接書き換えられる。稿は答えの JSON からコードが書くので、子の直接の
+        # 書き込みは採らない: この号の記事を控え、子が全部終わったら(異常終了・時間切れでも)控えへ戻してから答えを当てる
+        # (2026-10-14 監査指摘: 記事を直接書き換えて異常終了した子の変更が残り、答えは不採用なのに記事は書き換わっていた)
+        kept_posts = posts_snapshot(date)
         procs = []
         for art, path, fact_by_id, materials, issues, prompt in jobs[i:i + COMPOSE_WAVE]:
             fd, out_name = tempfile.mkstemp(prefix=f"codexrevise-{art['slug']}-", suffix=".txt")
@@ -2659,6 +2784,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                      prompt_file(date, f"revise-{art['slug']}", prompt)],
                     stdout=lf, stderr=subprocess.STDOUT, text=True, stdin=subprocess.DEVNULL, cwd=ROOT,
                     start_new_session=True)))
+        waited = []
         for art, path, fact_by_id, materials, issues, out_path, p in procs:
             timed_out = False
             try:
@@ -2666,6 +2792,11 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
             except subprocess.TimeoutExpired:
                 reap(p)              # 子(道具の実行)も落としてから答えのファイルを読む
                 timed_out = True
+            waited.append((art, path, fact_by_id, materials, issues, out_path, p, timed_out))
+        back = restore_posts(date, kept_posts)
+        if back:
+            print(f"書き直しの子が直接書き換えた記事を控えへ戻した(稿は答えから書く): {', '.join(back[:8])}", flush=True)
+        for art, path, fact_by_id, materials, issues, out_path, p, timed_out in waited:
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             out_path.unlink(missing_ok=True)
             save_raw(date, f"revise-{art['slug']}", "", take_log(out_path), p.returncode, files={"last-message": out})
@@ -2820,6 +2951,17 @@ def review_hint(date: str, name: str, notes_by_file: dict[str, list[str]]) -> st
     return hint
 
 
+def scope_hash(date: str, scope: str, manifest: dict[str, str]) -> str:
+    """校閲の担当が見る中身の指紋(manifest は review_manifest の形)。記事・社説はそのファイル、紙面全体は全記事と号スナップショット
+    (主題の重複・記事の漏れは、どの記事が変わっても変わりうる)。"""
+    if scope.startswith("article:"):
+        return manifest.get(f"docs/_posts/{scope.split(':', 1)[1]}", "")
+    if scope == "editorial":
+        return manifest.get(f"docs/_editorials/{date}.md", "")
+    seen = {k: v for k, v in manifest.items() if k.startswith(("docs/_posts/", "docs/_editions/"))}
+    return hashlib.sha256(json.dumps(seen, sort_keys=True).encode("utf-8")).hexdigest()
+
+
 def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                   editorial: bool = True, paper: bool = True,
                   carry: dict | None = None, findings: str = "", strict: bool = False,
@@ -2886,6 +3028,9 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                      (PROMPTS / "review-paper.md").read_text(encoding="utf-8")
                      .replace("{DATE}", date) + hint + again, "-", "paper"))
 
+    # 担当が見る中身の指紋を起動の前に採る。成功した担当だけ「この中身を検めた」と残す(checked)
+    from pipelib import review_manifest
+    at_start = review_manifest(date)
     t_review = time.time()
     merged = {"verdict": "approve", "blockers": [], "comments": []}
     failed: list[tuple[str, str]] = []   # (scope, 理由)。2回とも動かなかった担当
@@ -3002,6 +3147,16 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     # これまでに一度でも校閲できた担当。動かなかった担当の扱いを決めるのに使う
     reviewed_before = set((carry or {}).get("reviewed") or [])
     merged["reviewed"] = sorted(reviewed_before | seen)
+    # 担当ごとに、最後に成功したときに見た中身の指紋。巡の終わりの指紋(hashes)は担当が動いたかと関係なく採るので、動かなかった
+    # 担当の判定を引き継げるかはこれで決める(hashes で決めると、紙面担当が動かなかった巡の紙面を「検めた中身」と取り違え、
+    # 次の巡でまた動かなくても承認になった。監査指摘 2026-10-14)。checked の無い古い記録は hashes で代える
+    checked_before = (carry or {}).get("checked")
+    if not isinstance(checked_before, dict):
+        prev = (carry or {}).get("hashes") or {}
+        checked_before = {sc: scope_hash(date, sc, prev) for sc in reviewed_before}
+    now_manifest = review_manifest(date)
+    merged["checked"] = {sc: h for sc, h in {**checked_before, **{sc: scope_hash(date, sc, at_start) for sc in seen}}.items()
+                         if not sc.startswith("article:") or f"docs/_posts/{sc.split(':', 1)[1]}" in now_manifest}
     quota_hit = any(any(q.lower() in why.lower() for q in QUOTA) for _, why in failed)
     if failed and (quota_hit or len(failed) == len(jobs)):
         # **全滅か枠切れのときだけ、巡ごと「判定なし」にする。**呼び出し側はこれを見て
@@ -3015,25 +3170,31 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
         # 一部の担当だけが2回とも動かなかった。**巡は成立させる。**
         # - 一度も校閲できていない記事は、校閲なしで載せられないので、落とす指摘を付ける
         #   (号を止めるより、その1本を落とすほうが規程に合う)
-        # - 前に校閲できている記事・社説・紙面全体は、前回の指摘を引き継ぐだけでよい。ただし記事は**前の判定の時点から中身が
-        #   変わっていない**ときだけ(前の巡の記録の hashes と今の指紋を比べる)。書き直した記事の再校閲が動かないのに、担当の名前だけの
+        # - 前に校閲できている記事・社説・紙面全体は、前回の指摘を引き継ぐだけでよい。ただし**その担当が最後に検めた時点から中身が
+        #   変わっていない**ときだけ(checked と今の指紋を比べる)。書き直した記事の再校閲が動かないのに、担当の名前だけの
         #   「校閲済み」で補うと、変わった中身を誰も見ないまま承認になり、release も新しい指紋で通す(監査指摘)
-        from pipelib import article_hash
-        prev_hashes = (carry or {}).get("hashes") or {}
+        # - 紙面全体・社説は落とせないので、検めていない中身なら巡ごと判定なしにする(監査指摘 2026-10-14: 記事の担当が通り、
+        #   紙面担当だけ2回とも動かないと、紙面全体を誰も見ないまま approve になり release も通した)
         merged["failed"] = [f"{sc}: {why[:80]}" for sc, why in failed]
+        unchecked = []
         for sc, why in failed:
+            changed = checked_before.get(sc) != scope_hash(date, sc, now_manifest)
             if not sc.startswith("article:"):
+                if sc not in reviewed_before or changed:
+                    unchecked.append(sc)
                 continue
             name = sc.split(":", 1)[1]
-            path = ROOT / "docs" / "_posts" / name
-            changed = path.exists() and prev_hashes.get(f"docs/_posts/{name}") != article_hash(path)
+            changed = changed and (ROOT / "docs" / "_posts" / name).exists()
             if sc not in reviewed_before or changed:
                 merged["blockers"].append({"scope": sc, "file": f"docs/_posts/{name}",
                                            "issue": f"校閲が2回とも実行できなかった({why[:60]})。"
                                                     + ("前の校閲のあとに中身が変わっている。" if changed and sc in reviewed_before else "")
                                                     + "校閲できていない記事は紙面に載せない", "quote": ""})
-        print(f"校閲{round_no}巡目: {len(failed)}件の担当が2回とも動かなかった(巡は成立): "
+        print(f"校閲{round_no}巡目: {len(failed)}件の担当が2回とも動かなかった{'' if unchecked else '(巡は成立)'}: "
               + " / ".join(merged["failed"][:3]), flush=True)
+        if unchecked:
+            merged["verdict"] = "error"
+            print(f"校閲{round_no}巡目: 動かなかった担当({', '.join(unchecked)})がいまの中身を検めていない。承認にしない(判定なし)", flush=True)
     if strict and failed and merged["verdict"] != "error":
         # 承認を引き継いだ組み直し(--carry-review)の1巡目は、担当が1つでも動かなければ承認にしない
         # (前の承認で補うと、変わった中身や紙面全体を見ないまま承認になる。監査指摘)
@@ -3055,8 +3216,8 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
           f"({STAGE_MIN['校閲']:.0f}分)", flush=True)
     # approve が「どの中身」に対するものかを残す。release はこれと現在の指紋を照合し、
     # 校閲のあとに変わった紙面を古い approve で出さない(監査指摘)
-    from pipelib import review_manifest
-    merged["hashes"] = review_manifest(date)
+    merged["hashes"] = now_manifest
+    merged["run"] = RUN_ID     # どの実行の巡か(発行は最新の実行の最後の巡を読む)
     (ROOT / "metrics" / f"review-{date}-{round_no}.json").write_text(
         json.dumps(merged, ensure_ascii=False, indent=1), encoding="utf-8")
     return merged
@@ -3140,6 +3301,8 @@ def main() -> int:
 
     # 同じ作業ツリーを collect/release/当番と同時に触らない(監査指摘)
     if not args.plan:
+        if too_late_to_start(t0, date):
+            return 1
         try:
             # 収集の当番が落とした新着を取り直している間は、その号の選定に間に合わせるため開始を待つ(上限40分。
             # pipelib.compose_lock_wait_min。それ以外は10分)。待つ間に当番が呼ばれても待つ分を見直し、収集から当番へ
@@ -3148,6 +3311,10 @@ def main() -> int:
                              yield_fn=collect_oncall_handover_pending)
         except JobLockTimeout as e:
             notify("compose", str(e), ok=False)
+            # 排他を取れないまま締切を過ぎたなら、同じくなぜなぜを発行のあとへ回す(当番を起こすと発行の排他を塞ぐ。監査 2026-10-14)
+            too_late_to_start(t0, date)
+            return 1
+        if too_late_to_start(t0, date):      # 排他を待つ間に締切を過ぎた
             return 1
     if not args.plan and not checkout_edition_branch(date, "compose"):
         return 1
@@ -3228,15 +3395,18 @@ def main() -> int:
     print(f"選定インデックス: {n_subjects}主題 / {len(by_brand)}面 "
           f"({', '.join(f'{b}:{len(v)}' for b, v in sorted(by_brand.items()))})", flush=True)
     plan_saved = ROOT / "metrics" / f"plan-{date}.json"
-    if args.reuse_plan and plan_saved.exists():
+    reused = args.reuse_plan and plan_saved.exists()
+    if reused:
         # **保存した計画を本当に使う。**以前は旗があるだけで毎回選定し直しており、
         # 再試行で判断が変わると新しい計画と古い記事が混在した(監査指摘)
         plan = json.loads(plan_saved.read_text(encoding="utf-8"))
         print(f"選定を再利用: {plan_saved.name}({len(plan.get('articles') or [])}本)", flush=True)
     else:
-        # 選定に掛けた候補を記録する。これより後にこの号の候補ファイルへ入った候補は、次の号が引き継ぐ(carry_late_candidates)
-        # 前の号から引き継いだ事実のうち、選定インデックスの件数上限で選定に渡らなかったものは読んだことにしない
-        record_candidates_read(date, cands, hidden_late)
+        # 選定記録は空で始める(この号は選定を始めた、の印)。読んだと書くのは判定を得た主題だけ(拾い直しのあと、下)。
+        # 先に全候補を読んだと書くと、選定が起動できず再実行も成功しない号で、選ばれていない素材が次の号へ引き継がれない
+        # (監査指摘 2026-10-14: FileNotFoundError: claude で読了記録あり・計画なし・翌号の引き継ぎ 0件)。記録を消すだけでは、
+        # 記録の無い号を遡らない carry_late_candidates で拾えない
+        record_candidates_read(date, {})
         with stage("選定"):
             plan = run_plan(date, by_brand, triggers)
         pick_lead(date, plan)
@@ -3286,6 +3456,12 @@ def main() -> int:
             print(f"拾い直しても残った取りこぼし: {gaps[0][:120]}", flush=True)
             anomaly("compose", "選定で判断されないまま残った主題(拾い直しても答えが無い)。この号では扱われない:\n"
                                + "\n".join(f"- {k}" for k in (cov.get("missing_keys") or [])[:20]))
+    if not reused:
+        # 選定に掛けた候補のうち、判定を得た主題(面別の選定か拾い直しで、記事・統合・不採用のどれか)の候補を読んだと記録する。
+        # 判定の無いまま残った主題(面の答えが無い・崩れた・非0終了で、拾い直しも答えなかった)は未読のまま、次の号が引き継ぐ。
+        # これより後にこの号の候補ファイルへ入った候補も次の号が引き継ぐ(carry_late_candidates)。前の号から引き継いだ事実のうち、
+        # 選定インデックスの件数上限で選定に渡らなかったものは読んだことにしない
+        record_candidates_read(date, cands, hidden_late, unjudged=set(cov.get("missing_keys") or []))
     # 素材に対して rank が小さい記事の可視化(規程9)。発行は止めない。
     # 束ねること自体は正しい(同じ系統の話を分けると全部が薄くなる)。問題は
     # 束ねたまま rank を上げないことで、書ける上限に収まらず中身が落ちる
@@ -3429,8 +3605,7 @@ def main() -> int:
                           f"このまま進めても紙面に社説が載らない。人の判断が要る", ok=False)
 
     # 2. 機械算出の確定 + lint ゲート
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
-                   cwd=ROOT, capture_output=True, text=True)
+    run_derive(date)
     code, lint_out = run_lint(date)
     print(lint_out, flush=True)
     if code != 0:
@@ -3630,8 +3805,7 @@ def main() -> int:
                     revised_keys.setdefault((f, str(b.get("rule_id") or "")), []).append(str(b.get("quote") or ""))
         # 書き直しで落ちた記事(見送り)を written から外す
         written[:] = [a for a in written if (ROOT / "docs" / "_posts" / f"{date}-{a['slug']}.md").exists()]
-        subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
-                       cwd=ROOT, capture_output=True, text=True)
+        run_derive(date)
 
     # 3'. 往復の書き直し(lint 赤の修正・校閲の指摘)では書き手が新しい出典を引きうる。1b' の判定のあとなので、
     #     ここで掛け直さないと判定表に無い出典が未確認のまま発行される(監査指摘 2026-10-08)。
@@ -3691,8 +3865,7 @@ def main() -> int:
             errs = run_parallel(jobs)
             if errs:
                 raise RuntimeError("；".join(errs))
-            subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
-                            "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
+            run_derive(date)
             rounds += 1
             # 記事は往復で見終わっている。作り直したのは社説と digest なので、
             # 見直すのは社説と紙面担当(digest・主題の重複)。記事は見直さない
@@ -3786,8 +3959,7 @@ def main() -> int:
             # 「記事だけ欠けて digest は古いまま」という壊れた紙面が残る
             traceback.print_exc()
             restore_files(pre_assembly)
-            subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
-                            "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
+            run_derive(date)
             dropped_by_review = []
             unresolved = [f"ブロック記事の除外処理が失敗({e})。紙面は組版直後の状態へ戻した"]
             break
@@ -3802,8 +3974,7 @@ def main() -> int:
     # **一面は動かさない**(インパクトで決めた枠であり、号スナップショットの
     # lead_slug が指しているため。ここで変えると組版と食い違う)
     assign_ranks(date, plan, written, keep_lead=True)
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
-                   cwd=ROOT, capture_output=True, text=True)
+    run_derive(date)
 
     approved = review and review.get("verdict") == "approve"
     code, lint_out = run_lint(date)

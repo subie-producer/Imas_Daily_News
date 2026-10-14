@@ -377,6 +377,31 @@ def review_manifest(date: str) -> dict[str, str]:
     if before.exists():
         out[f"metrics/stories-before-{date}.yml"] = hashlib.sha256(before.read_bytes()).hexdigest()
     return out
+
+
+def last_review_record(date: str, root: Path | None = None) -> Path | None:
+    """その号の校閲の判定: **いちばん新しい組版の実行**(記録の run)の最後の巡の記録(metrics/review-<日付>-<巡>.json)。無ければ None。
+    巡の番号は実行ごとに1から数え直す。実行をまたいで番号の最大を採ると、組み直しの新しい判定より前の実行の後ろの巡を読む
+    (監査指摘 2026-10-14: 組み直しが1巡目で承認したのに前の実行の5巡目の承認を読み、戻した記事を「承認後の変更」として発行を止めた。
+    逆に新しい実行が承認しなかったときに古い承認へ戻ることもある)。run の無い記録(印を付ける前)はいちばん古い実行とみなす。
+    読めない記録はどの実行か分からないので、それを返す(読めないと判定させる。新しい実行の記録を飛ばして古い承認を採らない)。"""
+    base = (root or ROOT) / "metrics"
+    rows, unreadable = [], []
+    for p in base.glob(f"review-{date}-*.json"):
+        m = re.fullmatch(re.escape(f"review-{date}-") + r"(\d+)\.json", p.name)
+        if not m:
+            continue
+        try:
+            run = json.loads(p.read_text(encoding="utf-8")).get("run")
+        except (OSError, ValueError, AttributeError):
+            unreadable.append((int(m.group(1)), p))
+            continue
+        rows.append((run if isinstance(run, str) else "", int(m.group(1)), p))
+    if unreadable:
+        return max(unreadable)[1]
+    return max(rows)[2] if rows else None
+
+
 # 暴走セッション対策の安全弁(--max-budget-usd)。通常運用なら到達しない額を目安に設定。
 # 注: codex exec には同等のコスト上限フラグが無いため、執筆(Codex)側には適用できない
 EXPLORE_MAX_BUDGET_USD = ENV.get("EXPLORE_MAX_BUDGET_USD", "1.5")
@@ -828,8 +853,69 @@ def branch_exists(name: str, remote: bool = False) -> bool:
     return git("show-ref", "--verify", "--quiet", ref, check=False).returncode == 0
 
 
+def unsent_commits(branch: str) -> int | None:
+    """手元の branch にあって origin/<branch>(最後に fetch・push した時点の origin)に無い commit の数。
+    origin に branch が無い・数えられないときは None(送ってみるまで届いているとは言えない)。"""
+    if not branch_exists(branch, remote=True):
+        return None
+    r = git("rev-list", "--count", f"origin/{branch}..{branch}", check=False)
+    return int(r.stdout.strip()) if r.returncode == 0 and r.stdout.strip().isdigit() else None
+
+
+def send_branch(branch: str) -> str:
+    """いまいる branch を origin へ送り、**届いたことを確かめる**(origin/<branch> が手元の先端を含む)。戻り値は届かなかった理由
+    ("" なら届いた)。届いていれば通信しない。拒まれたら(collect 同士/release/当番が先に push した)origin の上に積み直して
+    送り直す。積み直せなければ戻す(手元の commit は消さない)。"""
+    if unsent_commits(branch) == 0:
+        return ""
+    r = git_net("push", "origin", branch)
+    if r.returncode != 0:
+        # collect 同士/release との競合: リモートを取り込んで積み直す
+        p = git_net("pull", "--rebase", "origin", branch)
+        if p.returncode != 0:
+            git("rebase", "--abort", check=False)
+            return f"push 失敗(pull --rebase も失敗): {(p.stderr or r.stderr).strip()[:200]}"
+        r2 = git_net("push", "origin", branch)
+        if r2.returncode != 0:
+            return f"push 失敗: {r2.stderr.strip()[:200]}"
+    left = unsent_commits(branch)
+    if left != 0:
+        return f"push は成功と返ったが、{branch} の commit が origin に届いていない(未送信 {'不明' if left is None else f'{left}件'})"
+    return ""
+
+
+def _merge_leftover(before: str) -> str:
+    """取り込み(merge)の後始末の確認。取り込む前(HEAD が before・clean・merge の途中でない)に戻っていなければ、残っているものを返す。"""
+    left = []
+    if git("rev-parse", "-q", "--verify", "MERGE_HEAD", check=False).returncode == 0:
+        left.append("merge の途中(MERGE_HEAD)")
+    head = git("rev-parse", "HEAD", check=False).stdout.strip()
+    if head != before:
+        left.append(f"HEAD が {head[:10] or '(不明)'}(取り込む前は {before[:10]})")
+    st = git("status", "--porcelain", check=False)
+    if st.returncode != 0 or st.stdout.strip():
+        left.append("作業ツリーが clean でない: " + (st.stdout.strip() or st.stderr.strip())[:300])
+    return "; ".join(left)
+
+
+def _stop_to_oncall(job: str, date: str, msg: str) -> bool:
+    """checkout で止まった工程を、人に異常として知らせ、当番へ渡す(直して再実行させる)。組版は工程の終わりの診断が
+    再実行なしで呼ぶので、止まったここで渡す(その process の診断は重ねて呼ばない)。戻り値はいつも False(工程は止まる)。"""
+    notify(job, msg, ok=False)
+    escalate(job, date, msg)
+    return False
+
+
 def checkout_edition_branch(date: str, job: str) -> bool:
     """edition/<date> を origin と同期して checkout。無ければ main から作る。"""
+    # 前の工程の出典の判定の取引が後始末できずに終わっていたら(SIGKILL 等)、未コミットの変更を見る前に開始時へ戻す(監査指摘 2026-10-14)
+    back = recover_classify_txn()
+    if back:
+        print(back, flush=True)
+        if "戻せない" in back:
+            notify(job, back, ok=False)
+            return False
+        anomaly(job, back)
     if git("status", "--porcelain").stdout.strip():
         notify(job, f"作業ツリーに未コミットの変更があるため中止", ok=False)
         return False
@@ -838,6 +924,18 @@ def checkout_edition_branch(date: str, job: str) -> bool:
         notify(job, f"origin への fetch に失敗(再試行後も回復せず)。中止:\n{f.stderr.strip()[:200]}", ok=False)
         return False
     branch = f"edition/{date}"
+    # **手元だけにある commit を捨てない。**下の `checkout -B` は手元のブランチを origin の位置へ引き戻すので、前の工程が
+    # commit したが push できなかった成果物(収集の素材・組版の紙面)が消える(監査指摘 2026-10-14 ar9: push を拒まれた収集の
+    # commit が、次の工程の checkout で消えた)。先に送り(分かれていれば origin の上に積み直す)、送れなければ捨てずに止まる
+    unsent = unsent_commits(branch) if branch_exists(branch) and branch_exists(branch, remote=True) else 0
+    if unsent != 0:
+        n = "数が不明の" if unsent is None else f"{unsent}件の"
+        c = git("checkout", branch, check=False)
+        why = f"{branch} の checkout 失敗: {(c.stderr or c.stdout).strip()[:200]}" if c.returncode != 0 else send_branch(branch)
+        if why:
+            return _stop_to_oncall(job, date, f"{branch} に origin へ出していない {n} commit があるが送れない({why})。"
+                                              "origin に合わせると消えるので、checkout せずに止めた")
+        print(f"{branch}: origin へ出していなかった {n} commit を送った", flush=True)
     if branch_exists(branch, remote=True):
         git("checkout", "-B", branch, f"origin/{branch}")
     elif branch_exists(branch):
@@ -858,11 +956,22 @@ def checkout_edition_branch(date: str, job: str) -> bool:
     # 紙面ファイルは main 側に無いので、ここでの取り込みが号の中身を壊すことはない。
     # --is-ancestor は「祖先でない」を終了コード1で返す。これは異常ではないので check=False
     if git("merge-base", "--is-ancestor", "origin/main", "HEAD", check=False).returncode != 0:
-        m = git("merge", "origin/main", "--no-edit")
+        # 取り込みの失敗(衝突)は例外にせず受けて、取り込む前の clean な状態へ戻してから止まり、当番へ渡す。以前は git() の例外で
+        # abort に届かず、merge の途中(UU)のまま残って次の工程の checkout も止まった(監査指摘 2026-10-14 ar9)。古いスクリプトの
+        # ままは進めない(直した当日の号が直っていない版で生成される)
+        before = git("rev-parse", "HEAD").stdout.strip()
+        m = git("merge", "origin/main", "--no-edit", check=False)
         if m.returncode != 0:
-            git("merge", "--abort")
-            notify(job, f"{branch} への main 取り込みが衝突。**古いスクリプトのまま続行**します:\n"
-                        f"{m.stdout.strip()[:300]}", ok=False)
+            conflicted = git("diff", "--name-only", "--diff-filter=U", check=False).stdout.splitlines()
+            git("merge", "--abort", check=False)
+            if _merge_leftover(before):
+                # abort で戻らなければ取り込む前の commit へ戻す(この関数の頭で clean を確かめたので、消えるのは merge が持ち込んだものだけ)
+                git("reset", "-q", "--hard", before, check=False)
+            left = _merge_leftover(before)
+            why = (f"{branch} へ main を取り込むと衝突した({', '.join(conflicted[:8])})。edition と main が同じファイルを別々に変えている。"
+                   if conflicted else f"{branch} へ main を取り込めない({(m.stderr or m.stdout).strip()[:300]})。")
+            return _stop_to_oncall(job, date, why + (f"取り込む前の状態に戻せない({left})。作業ツリーを確かめること" if left else
+                                                      "取り込む前の状態に戻して、工程を止めた(古いスクリプトのまま進めない)"))
         else:
             print(f"{branch}: main を取り込んだ({git('rev-parse', '--short', 'origin/main').stdout.strip()})",
                   flush=True)
@@ -876,7 +985,10 @@ def checkout_edition_branch(date: str, job: str) -> bool:
                     notify(job, f"判定表の二重行を除いたが commit できない: {(c.stderr or c.stdout).strip()[:200]}", ok=False)
                     return False
                 print(f"判定表の二重行 {len(removed)} 件を除いた", flush=True)
-            git_net("push", "origin", branch)
+            # 送れなくても取り込みは手元に残る(この工程の commit_and_push が一緒に送り、届いたかを確かめる。次の工程の checkout も捨てない)
+            sent = send_branch(branch)
+            if sent:
+                print(f"{branch}: main の取り込みをまだ送れない({sent})。この工程の commit と一緒に送る", flush=True)
     return True
 
 
@@ -900,17 +1012,34 @@ def conflict_markers() -> list[str]:
     return bad
 
 
+def changed_paths(patterns: list[str]) -> list[str] | None:
+    """作業ツリーで変わったファイル(追跡中の変更・削除と、無視されていない未追跡)のうち、patterns に当たるもの。
+    patterns は git の pathspec と同じ読み方(glob の * は / もまたぐ。ディレクトリ名はその下全部)。git status が失敗したら None。"""
+    import fnmatch
+    r = git("status", "--porcelain=v1", "-z", "--untracked-files=all", "--no-renames", check=False)
+    if r.returncode != 0:
+        return None
+    hits = set()
+    for entry in r.stdout.split("\0"):
+        path = entry[3:]
+        if path and any(fnmatch.fnmatchcase(path, p) or path.startswith(p.rstrip("/") + "/") for p in patterns):
+            hits.add(path)
+    return sorted(hits)
+
+
 def commit_and_push(branch: str, message: str, job: str, paths: list[str] | None = None) -> bool:
     """成果物を commit して push する。**戻り値は「リモートに載ったか」**。
 
     以前は commit / push の失敗を通知するだけで戻り値が無く、呼び出し側は「コミット済み・clean」と
     して先へ進んでいた(監査指摘: fail-open)。失敗したら False を返し、呼び出し側が判断する。
-    `paths` を渡すとそのパスだけを stage する(渡さなければ全部。工程の途中終了時は必ず渡す)。
+    `paths`(glob 可)を渡すと、それに当たる変わったファイルだけを stage する(渡さなければ全部。工程の途中終了時は必ず渡す)。
     現在のブランチが `branch` でなければ何もしない(別のブランチに成果物を積まない)。
     """
     cur = git("branch", "--show-current", check=False).stdout.strip()
     if cur != branch:
         notify(job, f"commit 中止: いるブランチが {cur or '(detached)'} で {branch} ではない", ok=False)
+        return False
+    if not classify_txn_settled(job):
         return False
     bad = conflict_markers()
     if bad:
@@ -923,32 +1052,38 @@ def commit_and_push(branch: str, message: str, job: str, paths: list[str] | None
         if rs.returncode != 0:
             notify(job, f"git reset 失敗(stage を空にできない): {rs.stderr.strip()[:200]}", ok=False)
             return False
-    r = git("add", "-A", "--", *paths, check=False) if paths else git("add", "-A", check=False)
-    if r.returncode != 0:
-        notify(job, f"git add 失敗: {r.stderr.strip()[:200]}", ok=False)
-        return False
-    if not git("status", "--porcelain").stdout.strip():
-        print("変更なし(コミットせず)", flush=True)
-        return True
-    if git("diff", "--cached", "--quiet", check=False).returncode == 0:
-        print("stage した変更なし(コミットせず)", flush=True)
-        return True
-    r = git("commit", "-m", message, check=False)
-    if r.returncode != 0:
-        notify(job, f"git commit 失敗: {(r.stderr or r.stdout).strip()[:200]}", ok=False)
-        return False
-    r = git_net("push", "origin", branch)
-    if r.returncode != 0:
-        # collect 同士/release との競合: リモートを取り込んで積み直す
-        p = git_net("pull", "--rebase", "origin", branch)
-        if p.returncode != 0:
-            git("rebase", "--abort", check=False)
-            notify(job, f"push 失敗(pull --rebase も失敗): {(p.stderr or r.stderr).strip()[:200]}", ok=False)
+        # 渡されたパターンに当たる「変わったファイル」を列挙して、それだけを渡す。パターンをそのまま git add に渡すと、まだ無い成果物
+        # (号を作る前に止まった)で pathspec エラーになり、計画や記録まで確定できずに残った(監査指摘 2026-10-14)
+        found = changed_paths(paths)
+        if found is None:
+            notify(job, "git status 失敗(stage するファイルを列挙できない)", ok=False)
             return False
-        r2 = git_net("push", "origin", branch)
-        if r2.returncode != 0:
-            notify(job, f"push 失敗: {r2.stderr.strip()[:200]}", ok=False)
+        if not found:
+            # 送れなかった前の commit は下で送る(ここで成功と返すと、push を拒まれた後の後始末が未送信の commit を残したまま
+            # 「確定した」と報告し、当番の取り込みは食い違いで止まった。監査指摘 2026-10-14 取り込みの監査)
+            print("stage する変更なし(コミットせず)", flush=True)
+        paths = found
+    if paths != []:
+        r = (git("--literal-pathspecs", "add", "-A", "--", *paths, check=False) if paths
+             else git("add", "-A", check=False))
+        if r.returncode != 0:
+            notify(job, f"git add 失敗: {r.stderr.strip()[:200]}", ok=False)
             return False
+        if not git("status", "--porcelain").stdout.strip():
+            print("変更なし(コミットせず)", flush=True)
+        elif git("diff", "--cached", "--quiet", check=False).returncode == 0:
+            print("stage した変更なし(コミットせず)", flush=True)
+        else:
+            r = git("commit", "-m", message, check=False)
+            if r.returncode != 0:
+                notify(job, f"git commit 失敗: {(r.stderr or r.stdout).strip()[:200]}", ok=False)
+                return False
+    # 変更が無くても、前の回に commit して送れなかったもの(push を拒まれた・通信の失敗)があれば送り、届いたことを確かめてから
+    # 成功と返す。以前は「変更なし」で送らずに True を返し、次の工程の checkout がその commit を外して素材が消えた(監査指摘 2026-10-14 ar9)
+    why = send_branch(branch)
+    if why:
+        notify(job, why, ok=False)
+        return False
     return True
 
 
@@ -957,7 +1092,7 @@ def append_metric(kind: str, data: dict) -> None:
     p = ROOT / "metrics" / f"{d}.json"
     doc = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
     doc.setdefault(kind, []).append({"at": now_jst().isoformat(timespec="seconds"), **data})
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    write_atomic(p, json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
 
 
 def _no_duplicate_keys(pairs):
@@ -973,6 +1108,145 @@ def loads_strict(text: str):
     """JSON を読む。**同じキーが2回ある object は読めない答えにする**(json.loads は後の値で黙って上書きし、
     崩れた判定と正しい判定が同じ主題に並ぶと、前者が消えて後者だけが採られる。監査指摘)。"""
     return json.loads(text, object_pairs_hook=_no_duplicate_keys)
+
+
+# 書式(schema/)で形を決めているファイルと、その定義。lint が発行前に検めるのと同じもの
+SCHEMA_OF_PATH = (
+    (re.compile(r"(^|/)candidates/\d{4}-\d{2}-\d{2}\.json$"), "candidates.schema.json"),
+    (re.compile(r"(^|/)stock/scheduled/\d{4}-\d{2}-\d{2}\.json$"), "scheduled.schema.json"),
+    (re.compile(r"(^|/)docs/_posts/[^/]+\.md$"), "article.schema.json"),
+    (re.compile(r"(^|/)docs/_editions/[^/]+\.md$"), "edition.schema.json"),
+)
+
+
+class SchemaViolation(RuntimeError):
+    """書式で形を決めているファイルに、定義に合わない中身を書こうとした。"""
+
+
+def _norm_yaml(v):
+    """YAML が date 型に解釈した値を ISO 文字列へ戻す(lint と同じ正規化。書式は文字列の契約)。"""
+    if isinstance(v, (datetime.date, datetime.datetime)):
+        return v.isoformat()
+    if isinstance(v, dict):
+        return {k: _norm_yaml(x) for k, x in v.items()}
+    if isinstance(v, list):
+        return [_norm_yaml(x) for x in v]
+    return v
+
+
+def schema_errors(path, text: str) -> list[str]:
+    """path が書式で決めているファイルなら、text を lint と同じ定義・正規化で検めた誤り(無ければ空)。対象外のファイルは空。"""
+    from jsonschema import Draft202012Validator
+    import yaml
+    rel = str(path).replace("\\", "/")
+    name = next((s for pat, s in SCHEMA_OF_PATH if pat.search(rel)), None)
+    if not name:
+        return []
+    try:
+        if rel.endswith(".json"):
+            data = json.loads(text)
+        else:
+            m = re.match(r"\A---\s*\n(.*?)\n---", text, re.DOTALL)
+            if not m:
+                return ["frontmatter が無い"]
+            data = _norm_yaml(yaml.safe_load(m.group(1)) or {})
+    except (ValueError, yaml.YAMLError) as e:
+        return [f"読めない: {e}"]
+    # 書式の定義はデータではなくコードの一部: ROOT(作業ツリー・テストでは一時ディレクトリ)ではなく、このファイルの場所から引く
+    v = Draft202012Validator(json.loads((Path(__file__).resolve().parent.parent / "schema" / name).read_text(encoding="utf-8")))
+    return [f"{'/'.join(str(p) for p in e.absolute_path) or '(root)'}: {e.message}" for e in v.iter_errors(data)]
+
+
+def strict_writes() -> bool:
+    """書式に合わない書き込みを例外にするか。テスト(test_pipeline・selfcheck)は例外にする(IMAS_STRICT_WRITES=1)。"""
+    return os.environ.get("IMAS_STRICT_WRITES") == "1"
+
+
+def write_checked(path, text: str) -> None:
+    """書式で形を決めているファイルを書く唯一の入口。書く**前に** lint と同じ定義で検める
+    (2026-10-14: 素材ファイルに書式の定義に無い欄を足した変更が、単体テストも監査も通って、03:11 の発行前の検査で初めて号を止めた。
+    書く側で検めれば、その変更のテストが書いた瞬間に落ちる)。
+    - テストでは(strict_writes)合わなければ SchemaViolation で止める: 書式と食い違う変更を、作った時点で捕まえる
+    - 本番では止めずに書き、どのファイルのどの欄が合わないかを異常として申告する(当番のなぜなぜへ)。最後の門は発行前の lint で、
+      止まり方(lint の段でその1本を落とす 等)は変えない。書く場所で例外にすると、1本を落とせば済む誤りで組版全体が止まる
+    一時ファイルに書いて一度に差し替える(書きかけを残さない)。一時ファイルは書く先と同じディレクトリに置き(別の置き場からの
+    差し替えは、同じ装置でもサンドボックスの境で EXDEV になった。監査指摘)、失敗しても消す。名前(`.<名前>.<pid>.tmp`)は
+    .gitignore の対象で、止まって残っても作業ツリーを汚さない。"""
+    path = Path(path)
+    errs = schema_errors(path, text)
+    if errs:
+        msg = (f"{path.name} が書式({next(s for p, s in SCHEMA_OF_PATH if p.search(str(path).replace(chr(92), '/')))})に合わない: "
+               + " / ".join(errs[:5]))
+        if strict_writes():
+            raise SchemaViolation(msg)
+        anomaly("schema", msg + "(書いたうえで申告。発行前の lint が止める)")
+    write_atomic(path, text)
+
+
+def write_atomic(path, text: str) -> None:
+    """ファイルを一時ファイルに書いて一度に差し替える(書きかけを残さない)。書式で決めたファイルは write_checked を通す。
+    工程の記録(metrics/<日付>.json)・既読状態(stock/watch-state.json)もこれで書く(2026-10-14 監査指摘: 直接の上書きが途中で
+    止まると、切れた JSON が残り、当番の後始末がそれを確定して次の工程が読めなくなる)。一時ファイルの置き方は write_checked と同じ。"""
+    path = Path(path)
+    tmp = path.parent / f".{path.name}.{os.getpid()}.tmp"
+    try:
+        tmp.write_text(text, encoding="utf-8")
+        os.replace(tmp, path)
+    finally:
+        tmp.unlink(missing_ok=True)
+
+
+# 収集が書く成果(素材・既読状態・工程の記録)。途中で終わった収集の後始末(collect の例外・SIGTERM、当番の取り直しの時間切れ)が
+# 確定する範囲
+COLLECT_OUTPUTS = ("candidates", "stock/watch-state.json", "metrics")
+
+
+def output_problem(path) -> str:
+    """成果のファイルを確定してよいか: 読めること、JSON は JSON として読めること、書式(schema/)で決めたファイルは書式に合うこと。
+    問題があれば理由、無ければ空。形だけを見る(中身の判断はしない)。"""
+    path = Path(path)
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as e:
+        return f"読めない({type(e).__name__})"
+    if path.suffix == ".json":
+        try:
+            json.loads(text)
+        except ValueError as e:
+            return f"JSON が読めない({str(e)[:80]})"
+    return " / ".join(schema_errors(path, text)[:3])
+
+
+def settle_collect_outputs(root=None) -> list[str]:
+    """途中で終わった収集の成果を、確定する前に検める(2026-10-14 監査指摘: 書きかけで切れた素材の JSON を当番の後始末が
+    commit・push し、次の組版・発行前の lint が読めずに止まる)。COLLECT_OUTPUTS の下で HEAD から変わったファイルのうち、
+    壊れたもの(output_problem)は確定せずに HEAD の中身へ戻す(HEAD に無ければ消す)。素材(candidates)を1つでも戻したら
+    既読状態も戻す(既読にした新着が素材に無い、を作らない。戻せば次の収集が同じ新着を拾い直す)。戻したファイルと理由を返す。
+    git の状態が読めない・戻せないなら例外(確定してよいか分からないまま確定しない)。"""
+    root = Path(root or ROOT)
+    run = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True)
+    st = run("status", "--porcelain", "-z", "--untracked-files=all", "--", *COLLECT_OUTPUTS)
+    if st.returncode != 0:
+        raise RuntimeError(f"git status 失敗: {st.stderr.strip()[:200]}")
+    changed, entries, i = [], st.stdout.split("\0"), 0
+    while i < len(entries):
+        e = entries[i]
+        i += 1
+        if len(e) > 3:
+            changed.append(e[3:])
+            if e[0] in "RC":
+                i += 1        # 名前を変えた元のパス(使わない)
+    bad = {p: why for p in changed if (why := output_problem(root / p))}
+    if any(p.startswith("candidates/") for p in bad) and "stock/watch-state.json" in changed:
+        bad.setdefault("stock/watch-state.json", "素材を戻したので既読も戻す")
+    for p in bad:
+        if run("cat-file", "-e", f"HEAD:{p}").returncode == 0:
+            r = run("checkout", "-q", "HEAD", "--", p)
+            if r.returncode != 0:
+                raise RuntimeError(f"{p} を HEAD の中身へ戻せない: {r.stderr.strip()[:200]}")
+        else:
+            (root / p).unlink(missing_ok=True)
+    return [f"{p}: {why}" for p, why in bad.items()]
 
 
 def schema_ok(value, schema) -> bool:
@@ -1073,24 +1347,31 @@ _DATE_RE = re.compile(r"(?:\d{4}\s*年)?\s*\d{1,2}\s*月\s*\d{1,2}\s*日|\d{4}[/
 _TAG_RE = re.compile(r"(?is)<(script|style)[^>]*>.*?</\1>|<[^>]+>")
 
 
-def html_to_text(raw: bytes, charset: str | None = None) -> str:
-    # ヘッダに charset が無い古いサイト(Shift_JIS / EUC-JP の会社概要ページ等)は <meta> から拾う。
-    # 決め打ちの utf-8 だと文字化けして運営者名が読めない(実測 2026-09-13: ホビーストック会社概要)
-    if not charset:
-        m = re.search(rb'<meta[^>]+charset=["\']?\s*([A-Za-z0-9_-]+)', raw[:4000], re.I)
-        charset = m.group(1).decode("ascii", "ignore") if m else None
-    try:
-        t = raw.decode(charset or "utf-8", errors="strict")
-    except (UnicodeDecodeError, LookupError):
-        t = None
-        for enc in ("utf-8", "cp932", "euc_jp"):
+def decode_html(raw: bytes, charset: str | None = None) -> str:
+    """HTML のバイト列を文字列にする(ページの本文を取る経路はこれを共有する)。ヘッダの charset、<meta> の charset、utf-8・cp932・
+    euc_jp の順に、置換文字を出さずに読めるものを採る。
+    - ヘッダに charset が無い古いサイト(Shift_JIS / EUC-JP の会社概要ページ等)は <meta> から拾う。決め打ちの utf-8 だと文字化けして
+      運営者名が読めない(実測 2026-09-13: ホビーストック会社概要)
+    - Shift_JIS と宣言したページは CP932 の拡張文字(①・髙 など)を含むことがあり、宣言どおりには読めない。cp932 で読み直す
+      (2026-10-14 監査指摘: 定点観測の本文取得が cp932 を試さず、置換文字だらけの本文を「取得済み」として facts 化へ渡した)"""
+    m = re.search(rb'<meta[^>]+charset=["\']?\s*([A-Za-z0-9_-]+)', raw[:4000], re.I)
+    meta = m.group(1).decode("ascii", "ignore") if m else None
+    for enc in dict.fromkeys(e for e in (charset, meta, "utf-8", "cp932", "euc_jp") if e):
+        try:
+            return raw.decode(enc, errors="strict")
+        except (UnicodeDecodeError, LookupError):
+            continue
+    for enc in (charset, meta):      # どれでも読めなければ、宣言どおりに読んで読めない字だけを置き換える
+        if enc:
             try:
-                t = raw.decode(enc, errors="strict")
-                break
-            except UnicodeDecodeError:
+                return raw.decode(enc, errors="replace")
+            except LookupError:
                 continue
-        if t is None:
-            t = raw.decode(charset or "utf-8", errors="replace")
+    return raw.decode("utf-8", errors="replace")
+
+
+def html_to_text(raw: bytes, charset: str | None = None) -> str:
+    t = decode_html(raw, charset)
     t = _TAG_RE.sub("\n", t)
     t = html_lib.unescape(t)
     return re.sub(r"[ \t　]+", " ", t)
@@ -1193,6 +1474,49 @@ SOURCE_TYPES = ("公式", "準公式", "当事者", "報道", "ファン", "二�
 _ST_TABLE: dict | None = None
 _ST_KEY: tuple | None = None     # _ST_TABLE を読んだときのファイルの同一性(mtime_ns, size, inode)
 
+# 短縮 URL のサービス。ホスト自身は持ち主を持たず、誰の何を指すかは展開先で決まる。**ドメインでは判定しない**
+# (2026-10-14 監査指摘: t.co が丸ごと公式に登録され、LivePocket・Amazon・ザッキャラへの短縮まで公式として紙面に出た)。
+# 短縮1つずつ、展開先の種別を path_types へ写す(classify_sources.resolve_short_links)
+SHORTENERS = ("t.co", "bit.ly", "x.gd", "lin.ee", "tinyurl.com", "ow.ly", "buff.ly", "is.gd", "cutt.ly",
+              "amzn.to", "amzn.asia", "goo.gl")
+# 文書 ID がクエリの id にある共有サービス(Microsoft Forms)。どの文書もパスが同じなので、id まで含めて1つの文書とする
+# (同: forms.cloud.microsoft が丸ごと公式に登録され、文書 ID の違う別のフォームまで公式になった)
+QUERY_DOC_PAGES = {"forms.cloud.microsoft": "/pages/responsepage.aspx", "forms.office.com": "/pages/responsepage.aspx"}
+# 多数の会社が同居し、持ち主がパスの先頭(アカウント)で決まるメールフォームのサービス(同: krs.bz が丸ごと準公式だった)
+PATH_FORM_HOSTS = ("krs.bz",)
+
+
+def query_doc_key(url: str) -> str | None:
+    """クエリの id で文書が決まる URL なら、判定表に書く文書のキー(`<host>/pages/responsepage.aspx?id=<ID>`)。それ以外は None。"""
+    import urllib.parse
+    u = urllib.parse.urlparse(url if "//" in url else "//" + url)
+    host = (u.hostname or "").removeprefix("www.")
+    page = QUERY_DOC_PAGES.get(host)
+    if not page or u.path.rstrip("/").lower() != page:
+        return None
+    ids = urllib.parse.parse_qs(u.query).get("id") or []
+    return f"{host}{page}?id={ids[0]}" if len(ids) == 1 and re.fullmatch(r"[A-Za-z0-9._-]{16,}", ids[0]) else None
+
+
+# 文書・短縮の ID がパスかクエリに入り、大小文字だけ違う別の文書・短縮がありうるホスト(Google の文書・フォーム、Microsoft Forms、
+# 短縮 URL)。判定表のキーを比べるとき、このホストのパスは大小文字を区別する(同一視すると、別の文書に判定が付く。監査指摘 2026-10-14)
+ID_CASE_HOSTS = ("docs.google.com", "drive.google.com", "forms.gle") + tuple(QUERY_DOC_PAGES) + SHORTENERS
+
+
+def path_type_norm(key) -> str:
+    """path_types のキーを比べる形(表の重複の検査・merge 後の二重行の除去・合議の追加で同じ比べ方をする)。末尾の / を落とし、
+    ホストは小文字。パスも小文字にするが、ID_CASE_HOSTS のパス(文書・短縮の ID)はそのまま。"""
+    k = str(key).strip().rstrip("/")
+    host, sep, rest = k.partition("/")
+    host = host.lower()
+    return host + sep + (rest if host in ID_CASE_HOSTS else rest.lower())
+
+
+def shared_host(host: str) -> bool:
+    """ドメイン全体では判定しない共有サービス(短縮 URL・フォーム・メールフォーム)のホストか。判定表のドメインの一覧に
+    載っていても使わない(merge で撤去した行が戻っても効かない)。"""
+    return host in SHORTENERS or host in QUERY_DOC_PAGES or host in PATH_FORM_HOSTS
+
 
 def parse_source_table(text: str, p) -> dict:
     """判定表の本文を検査して dict にする。読むときも書くときも**同じ検査**を通す。"""
@@ -1238,7 +1562,9 @@ def write_source_table(text: str, path=None) -> None:
     global _ST_TABLE, _ST_KEY
     p = Path(path) if path else ROOT / "source_types.yml"
     parse_source_table(text, p)
-    tmp = p.with_name(p.name + f".tmp-{os.getpid()}")
+    # 一時ファイルの名前は write_checked と同じ `.<名前>.<pid>.tmp`(.gitignore の対象)。取引の中断で書き手を止めたときに
+    # 残っても作業ツリーを汚さない(取引の後始末も消す)
+    tmp = p.with_name(f".{p.name}.{os.getpid()}.tmp")
     try:
         with open(tmp, "w", encoding="utf-8") as f:
             if p.exists():      # 置き換えで権限を変えない(新規ファイルは umask で決まるため。監査指摘)
@@ -1302,42 +1628,346 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
     失敗したら理由に「戻せない」を含める(呼び出し側は commit せずに終えること)。
     収集(候補 + 紙面の未確認。lint あり)と組版前(その号の記事の未確認だけ。posts_only。号スナップショットが
     まだ無いので lint は直後の組版に任せる: lint=False)が同じ取引を使う。
+    成功が確定していない終わり方(子の失敗・時間切れ・例外・SIGTERM・SIGINT)は、**子をプロセスグループごと止めてから**
+    開始時へ戻し、受けた中断はそのあとで元の扱いへ送り直す(2026-10-14 監査指摘: 表を書いた後・付け直しの前に親へ SIGTERM・SIGINT が
+    来ると戻さずに終わり、出典の lint が赤く、次の工程の checkout も「未コミットの変更」で止まった)。開始時の中身は控え
+    (TXN_JOURNAL)にも書き、親が SIGKILL などで後始末できずに死んでも、次の取引・次の工程の checkout が戻す(recover_classify_txn)。
     """
+    back = recover_classify_txn()
+    if back:
+        print(back, flush=True)
+        if "戻せない" in back:
+            return False, back
+        anomaly("classify", back)
     scripts = ROOT / "scripts"
-    snap = _snapshot([ROOT / "source_types.yml"] + sorted((ROOT / "docs" / "_posts").glob("*.md")))
-    ok, why = False, ""
+    posts = ROOT / "docs" / "_posts"
+    snap = _snapshot([ROOT / "source_types.yml"] + sorted(posts.glob("*.md")))
+    _TXN.update(proc=None, signum=None, stray=[])
+    # 中断を受け止めてから控えを書く(書いた直後・受け止める前に、工程の終了の例外で抜けて控えだけが残る、を無くす)
+    prev = _arm_txn_signals()
+    try:
+        _write_txn_journal(snap, posts)
+    except BaseException as e:      # 戻せる控えが無いまま表を書き換えない(まだ何も変えていない)。控えを消して終える
+        (ROOT / TXN_JOURNAL).unlink(missing_ok=True)
+        _disarm_txn_signals(prev)
+        if _TXN["signum"] is not None:
+            signal.raise_signal(_TXN["signum"])
+        if not isinstance(e, OSError):
+            raise
+        return False, f"取引の控えを書けない({type(e).__name__}: {str(e)[:160]})。判定表と記事は変えずに終えた"
+    ok, why, done = False, "", False
     try:
         cmd = [sys.executable, str(scripts / "classify_sources.py"), "--date", date, "--apply"] + (["--posts-only"] if posts_only else [])
         if require_parsers:      # 当番の再実行: パーサの無い URL が残っていたら失敗(成功扱いにしない。監査指摘 r85)
             cmd.append("--require-parsers")
-        r = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout)
-        print(r.stdout[-1200:], flush=True)
-        if r.returncode != 0:
-            why = f"合議 exit {r.returncode}: {err_tail(r)}"
+        steps = [("合議", cmd, timeout), ("付け直し", [sys.executable, str(scripts / "retag_sources.py"), "--apply"], 600)]
+        if lint:
+            steps.append(("lint", [sys.executable, str(scripts / "lint.py"), "--base", lint_base], 600))
+        for name, step, limit in steps:
+            if _TXN["signum"] is not None:
+                break
+            r = _txn_run(step, limit)
+            if name == "合議":
+                print(r.stdout[-1200:], flush=True)
+            elif name == "付け直し":
+                tail = (r.stdout or "").strip().splitlines()[-1:] if r.stdout else []
+                print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r.returncode}"), flush=True)
+            if _TXN["signum"] is not None:
+                break
+            if r.returncode != 0:
+                why = f"{name} exit {r.returncode}: {err_tail(r)}"
+                break
         else:
-            r2 = subprocess.run([sys.executable, str(scripts / "retag_sources.py"), "--apply"],
-                                cwd=ROOT, capture_output=True, text=True, timeout=600)
-            tail = (r2.stdout or "").strip().splitlines()[-1:] if r2.stdout else []
-            print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r2.returncode}"), flush=True)
-            if r2.returncode != 0:
-                why = f"付け直し exit {r2.returncode}: {err_tail(r2)}"
-            elif not lint:
-                ok = True
-            else:
-                r3 = subprocess.run([sys.executable, str(scripts / "lint.py"), "--base", lint_base],
-                                    cwd=ROOT, capture_output=True, text=True, timeout=600)
-                if r3.returncode != 0:
-                    why = f"lint exit {r3.returncode}: {err_tail(r3)}"
-                else:
-                    ok = True
+            ok = True
+        done = True
     except (subprocess.TimeoutExpired, OSError) as e:   # 途中の timeout・起動失敗も取引の失敗
         why = f"{type(e).__name__}: {str(e)[:200]}"
-    if ok:
+        done = True
+    finally:
+        # ほかの例外(KeyboardInterrupt・工程のハンドラが投げる終了の例外など)で抜けるときも done は False のままで、ここで戻す。
+        # 決める・戻す・ハンドラを戻すあいだは中断を保留する(戻す最中に届いた中断を落とさない。監査指摘 2026-10-14)。
+        # 保留したものは、元のハンドラへ戻したあとで届く。決める時点で届いていれば、子が成功していても開始時へ戻す
+        old_mask = signal.pthread_sigmask(signal.SIG_BLOCK, TXN_SIGNALS) if prev else None
+        pending = (set(signal.sigpending()) & set(TXN_SIGNALS)) if prev else set()
+        signum = _TXN["signum"] if _TXN["signum"] is not None else (min(pending) if pending else None)
+        keep = ok and done and signum is None and not _TXN["stray"]
+        failed = "" if keep else _txn_rollback(snap, posts)
+        if keep and _TXN["signum"] is not None:     # 保留の直前に届き、保留の後で Python のハンドラが走ったものも戻す
+            keep, signum = False, _TXN["signum"]
+            failed = _txn_rollback(snap, posts)
+        if not failed:
+            (ROOT / TXN_JOURNAL).unlink(missing_ok=True)    # 戻せなければ控えを残す(次の取引・checkout が戻し直す)
+        _disarm_txn_signals(prev)
+        if signum is not None:
+            print(f"取引の途中でシグナル {signal.Signals(signum).name} を受けた。子を止めて判定表と記事を開始時へ戻した"
+                  + (f"(戻せない: {failed[:200]})" if failed else ""), flush=True)
+            if signum not in pending:
+                signal.raise_signal(signum)      # 保留中に送る。保留を解くと、元の扱い(既定なら終了、組版なら途中終了の後始末)へ届く
+        if old_mask is not None:
+            signal.pthread_sigmask(signal.SIG_SETMASK, old_mask)
+    if keep:
         return True, ""
-    failed = _restore(snap, ROOT / "docs" / "_posts")
+    if signum is not None:
+        why = why or f"シグナル {signal.Signals(signum).name} で中断"
     if failed:
         return False, f"{why}。判定表と記事を戻せない({failed[:200]})"
     return False, why
+
+
+# 進行中の取引の子プロセス、取引の途中で受けた中断のシグナル(_arm_txn_signals のハンドラが書く)、止めきれなかった子孫
+_TXN: dict = {"proc": None, "signum": None, "stray": []}
+TXN_JOURNAL = Path("metrics") / "work" / "classify-txn.json"   # 取引の開始時の中身の控え(ROOT から。Git 管理外)
+TXN_CHILD = Path("metrics") / "work" / "classify-txn.child.json"   # 動いている取引の子(pid・起動時刻)。親が死んでも次の起動が止める
+TXN_SIGNALS = (signal.SIGTERM, signal.SIGINT)
+# 取引の子の入口: 標準入力から合図("1")を受けてから本来のコマンドに置き換わる(pid と起動時刻は変わらない)。合図が来なければ動かない
+_TXN_GATE = ("import os, sys\n"
+             "if sys.stdin.buffer.read(1) != b'1':\n    sys.exit(125)\n"
+             "os.execv(sys.argv[1], sys.argv[1:])\n")
+
+
+def _write_txn_child(child: Path, pid: int, started: str) -> None:
+    """取引の子の記録(pid・起動時刻)を書く(一時ファイル → 置き換え)。書けなければ OSError(段の失敗にする)。"""
+    tmp = child.with_name(f".{child.name}.{os.getpid()}.tmp")
+    try:
+        tmp.write_text(json.dumps({"pid": pid, "started": started}), encoding="utf-8")
+        os.replace(tmp, child)
+    finally:
+        tmp.unlink(missing_ok=True)
+
+
+def _txn_stop_child() -> None:
+    """取引の子をプロセスグループごと止める(止めずに戻すと、戻した後で子が判定表を書き直す)。"""
+    p = _TXN.get("proc")
+    if p is None or p.poll() is not None:
+        return
+    try:
+        os.killpg(p.pid, signal.SIGKILL)
+    except OSError:
+        try:
+            p.kill()
+        except OSError:
+            pass
+
+
+def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
+    """取引の1段を子プロセスで走らせる。子は自分のプロセスグループで起動し、時間切れ・例外では**グループごと止めて回収してから**
+    抜ける。中断のシグナルはハンドラが子を止める(communicate が子の終わりで戻る)。"""
+    # 子は、親が子の記録(TXN_CHILD)を書き終えて合図を送るまで動き出さない(_TXN_GATE)。記録の無い子を残さない: 書けなければ
+    # 子を動かさずに止めて段を失敗にし、親が合図の前に死ねば子は動かずに終わる(監査指摘 2026-10-14)
+    p = subprocess.Popen([sys.executable, "-c", _TXN_GATE, *cmd], cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE, text=True, start_new_session=True)
+    _TXN["proc"] = p
+    started = _proc_started(p.pid)
+    child = ROOT / TXN_CHILD
+    try:
+        if _TXN["signum"] is not None:      # 起動の直前に中断を受けていた
+            _txn_stop_child()
+        _write_txn_child(child, p.pid, started)
+        out, err = p.communicate(input="1", timeout=timeout)
+    except subprocess.TimeoutExpired:
+        out, err = reap(p)
+        raise subprocess.TimeoutExpired(cmd, timeout, output=out, stderr=err)
+    except BaseException:
+        reap(p)
+        raise
+    finally:
+        _TXN["proc"] = None
+        # 子が先に終わっても、子が起こした孫(同じセッション)が残っていれば止める。成功した段でも残さない
+        stray = _stop_session(p.pid, started)
+        if stray:
+            _TXN["stray"] = stray
+        else:
+            child.unlink(missing_ok=True)       # 止めきれなければ記録を残す(次の起動がまた止める)
+    return subprocess.CompletedProcess(cmd, p.returncode, out, err)
+
+
+def _arm_txn_signals() -> dict:
+    """取引のあいだ SIGTERM・SIGINT を受け止める。ハンドラは子を止めて印を付けるだけで、戻すのは取引の後始末(どの行で
+    受けても、戻す処理の途中で例外にならない)。戻り値は元のハンドラ(_disarm_txn_signals で戻す)。無視している・Python の外で
+    決めたシグナル、メインスレッドでないときは差し替えない。"""
+    import threading
+    if threading.current_thread() is not threading.main_thread():
+        return {}
+    prev = {}
+    for sig in TXN_SIGNALS:
+        h = signal.getsignal(sig)
+        if h in (signal.SIG_IGN, None):
+            continue
+
+        def on_signal(signum, frame):
+            if _TXN["signum"] is None:
+                _TXN["signum"] = signum
+            _txn_stop_child()
+        prev[sig] = h
+        signal.signal(sig, on_signal)
+    return prev
+
+
+def _disarm_txn_signals(prev: dict) -> None:
+    for sig, h in prev.items():
+        signal.signal(sig, h)
+
+
+def _txn_rollback(snap: dict[str, bytes | None], posts: Path) -> str:
+    """子を止め、判定表と記事を開始時へ戻し、止めた子が書きかけた表の一時ファイルを消す。戻せなかったものの説明を返す。
+    止めきれない子孫が残っていれば、戻しても書き直されうるので「戻せない」扱いにする(控えを残し、次の起動がまた止めて戻す)。"""
+    _txn_stop_child()
+    stray = [q for q in _TXN.get("stray") or [] if _proc_started(q)]
+    if stray:
+        return f"止めきれない子孫が残っている(pid {', '.join(map(str, stray[:5]))})"
+    failed = _restore(snap, posts)
+    for t in ROOT.glob(".source_types.yml.*.tmp"):
+        try:
+            t.unlink()
+        except OSError as e:
+            failed = (failed + " / " if failed else "") + f"{t.name}: {e}"
+    return failed
+
+
+def _proc_started(pid: int) -> str:
+    """プロセスの起動時刻(/proc/<pid>/stat の starttime)。終わっていれば(ゾンビも)""。pid の使い回しと見分けるため。"""
+    try:
+        f = Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()
+        return "" if f[0] == "Z" else f[19]
+    except (OSError, IndexError):
+        return ""
+
+
+def _session_members(sid: int, started: str = "") -> list[int]:
+    """セッション sid に残っているプロセス(ゾンビは除く)。sid の pid を別のプロセスが使い直していれば(起動時刻が違う)、
+    そのセッションは取引の子のものではないので空(Linux はセッションに属するプロセスが残るあいだ、その pid を使い直さない)。"""
+    if started:
+        cur = _proc_started(sid)
+        if cur and cur != started:
+            return []
+    out = []
+    try:
+        names = os.listdir("/proc")
+    except OSError:
+        return out
+    for d in names:
+        if not d.isdigit():
+            continue
+        try:
+            f = Path(f"/proc/{d}/stat").read_text().rsplit(")", 1)[1].split()
+        except (OSError, IndexError):
+            continue
+        if len(f) > 3 and f[3] == str(sid) and f[0] != "Z":
+            out.append(int(d))
+    return out
+
+
+def _stop_session(sid: int, started: str = "", wait: float = 10.0) -> list[int]:
+    """取引の子のセッション(子は start_new_session で起動するので、子と、子が起こした孫は setsid しない限り同じセッション)を、
+    残らなくなるまで止める。直接の子が先に終わっていても、残った孫を止める(止めずに戻すと、戻した後で孫が判定表を書き直す。
+    監査指摘 2026-10-14)。戻りは止めきれなかった pid。"""
+    end = time.monotonic() + wait
+    left = _session_members(sid, started)
+    while left:
+        for q in left:
+            try:
+                os.kill(q, signal.SIGKILL)
+            except OSError:
+                pass
+        if time.monotonic() > end:
+            break
+        time.sleep(0.05)
+        left = _session_members(sid, started)
+    return left
+
+
+def _stop_txn_orphan() -> list[int]:
+    """親が死んで残った取引の子と孫(子のセッション)を止め、止まるまで待つ。戻した後で書き直させない。
+    直接の子が終わっていても孫は残りうるので、子の生死に関わらずセッションを見る。戻りは止めきれなかった pid。"""
+    c = ROOT / TXN_CHILD
+    try:
+        rec = json.loads(c.read_text(encoding="utf-8"))
+        pid, started = int(rec.get("pid") or 0), str(rec.get("started") or "")
+    except (OSError, ValueError, TypeError, AttributeError):
+        return []
+    left = _stop_session(pid, started) if pid else []
+    if not left:
+        c.unlink(missing_ok=True)
+    return left
+
+
+def _txn_place() -> tuple[str, str]:
+    """取引をした作業ツリーの (ブランチ, HEAD)。Git でなければ ("", "")。"""
+    return (git("branch", "--show-current", check=False).stdout.strip(),
+            git("rev-parse", "--verify", "-q", "HEAD", check=False).stdout.strip())
+
+
+def _write_txn_journal(snap: dict[str, bytes | None], posts: Path) -> None:
+    """取引の開始時の中身を控えに書く(一時ファイル → fsync → 置き換え)。子を起動する前に書き終える。"""
+    import base64
+    branch, head = _txn_place()
+    body = {"pid": os.getpid(), "started": _proc_started(os.getpid()), "branch": branch, "head": head,
+            "posts": str(posts.relative_to(ROOT)),
+            "files": {str(Path(k).relative_to(ROOT)): (None if v is None else base64.b64encode(v).decode("ascii"))
+                      for k, v in snap.items()}}
+    j = ROOT / TXN_JOURNAL
+    j.parent.mkdir(parents=True, exist_ok=True)
+    tmp = j.parent / f".{j.name}.{os.getpid()}.tmp"
+    try:
+        with open(tmp, "w", encoding="utf-8") as f:
+            f.write(json.dumps(body))
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, j)
+    finally:
+        tmp.unlink(missing_ok=True)
+
+
+def classify_txn_settled(job: str) -> bool:
+    """確定(commit)してよいか。出典の判定の取引の控えが残っていれば、確定の前に戻す。戻せない・控えを書いた工程がまだ動いている
+    なら False(確定しない)。先に commit すると HEAD が控えと食い違い、判定表と記事を二度と戻せず、次の工程の checkout が止まる
+    (2026-10-14 取り込みの監査: 当番の取り直しの後始末、戻しに失敗した後の収集・組版の後始末)。"""
+    if not (ROOT / TXN_JOURNAL).exists():
+        return True
+    back = recover_classify_txn()
+    if back:
+        print(back, flush=True)
+    if "戻せない" in back or (ROOT / TXN_JOURNAL).exists():
+        notify(job, "出典の判定の取引を戻せないまま残っているので確定しない(先に確定すると戻せなくなる): "
+                    + (back or "控えを書いた工程がまだ動いている"), ok=False)
+        return False
+    if back:
+        anomaly(job, back)
+    return True
+
+
+def recover_classify_txn() -> str:
+    """前の取引が後始末できずに終わっていたら(親が SIGKILL・電源断で死んだ)、控え(TXN_JOURNAL)から判定表と記事を開始時へ戻す。
+    戻り値は説明(何もしなければ "")。戻せなければ「戻せない」を含める(呼び出し側は先へ進まない)。
+    - 控えを書いたプロセスがまだ動いていれば触らない(その取引の途中)
+    - ブランチか HEAD が取引の開始時から変わっていれば戻さない(別の号・その後の commit を古い中身で上書きしない)。控えは脇へ退ける"""
+    import base64
+    j = ROOT / TXN_JOURNAL
+    if not j.exists():
+        return ""
+    try:
+        rec = json.loads(j.read_text(encoding="utf-8"))
+        files = {str(ROOT / k): (None if v is None else base64.b64decode(v)) for k, v in rec["files"].items()}
+        posts = ROOT / rec["posts"]
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        return f"前の出典の判定の取引の控えが読めない({type(e).__name__}: {str(e)[:120]})。判定表と記事を戻せない({j})"
+    pid = int(rec.get("pid") or 0)
+    if pid and pid != os.getpid() and rec.get("started") and _proc_started(pid) == rec.get("started"):
+        return ""
+    left = _stop_txn_orphan()
+    if left:
+        return (f"前の出典の判定の取引(pid {pid})の子孫が止まらない(pid {', '.join(map(str, left[:5]))})。"
+                "判定表と記事を戻せない(戻しても書き直されうる)")
+    if tuple(_txn_place()) != (rec.get("branch", ""), rec.get("head", "")):
+        aside = j.with_name(f"classify-txn.stale-{int(time.time())}.json")
+        os.replace(j, aside)
+        return (f"前の出典の判定の取引の控えが残っていたが、ブランチか HEAD が開始時({rec.get('branch')} {str(rec.get('head'))[:10]})と"
+                f"違うので戻さなかった(控えは {aside.name} へ退けた)")
+    failed = _txn_rollback(files, posts)
+    if failed:
+        return f"前の出典の判定の取引(pid {pid})が途中で終わっていた。判定表と記事を戻せない({failed[:200]})"
+    j.unlink(missing_ok=True)
+    return f"前の出典の判定の取引(pid {pid})が途中で終わっていたので、判定表と記事を開始時へ戻した"
 
 
 def dedupe_source_table(path=None) -> list[str]:
@@ -1363,10 +1993,13 @@ def dedupe_source_table(path=None) -> list[str]:
         if section and (m_item or m_kv):
             # 同じ節・**同じ種別**・同じ値のものだけが二重。種別や値が違う同一キーは分類の競合なので
             # ここでは消さず、_check_table に止めさせる(監査指摘)
+            # 動画 ID・文書や短縮の ID は大小文字を区別する(同一視すると別の ID の行を二重として消す。監査指摘 2026-10-14)
             if m_item:
-                key = (section, label, m_item.group(1).rstrip("/").lower(), None)
+                item = m_item.group(1).rstrip("/")
+                key = (section, label, item if section == "video_ids" else item.lower(), None)
             else:
-                key = (section, None, m_kv.group(1).rstrip("/").lower(), m_kv.group(2))
+                key = (section, None, path_type_norm(m_kv.group(1)) if section == "path_types" else m_kv.group(1).rstrip("/").lower(),
+                       m_kv.group(2))
             if key in seen:
                 removed.append(ln.rstrip("\n"))
                 continue
@@ -1409,7 +2042,7 @@ def _check_table_text(text: str, p) -> None:
             continue
         seen: dict[str, int] = {}
         for kk, _vv in v_node.value:
-            key = str(getattr(kk, "value", "")).rstrip("/").lower()
+            key = path_type_norm(getattr(kk, "value", "")) if section == "path_types" else str(getattr(kk, "value", "")).rstrip("/").lower()
             line = kk.start_mark.line + 1
             if key in seen:
                 raise SystemExit(f"{p} の {section}: {kk.value} が {seen[key]} 行目と {line} 行目に二重に書かれている"
@@ -1427,7 +2060,7 @@ def _check_table(t: dict, p) -> None:
     import collections
     seen = collections.defaultdict(list)
     for key in ("official_domains", "semi_official_domains", "press_domains",
-                "secondary_domains", "fan_domains", "party_domains",
+                "secondary_domains", "fan_domains", "party_domains", "performer_domains",
                 "official_paths", "semi_official_paths", "party_paths"):
         for v in t.get(key) or []:
             seen[v].append(key)
@@ -1452,7 +2085,7 @@ def _check_table(t: dict, p) -> None:
     allowed = {"公式", "準公式", "当事者", "演者", "報道", "ファン", "二次情報"}
     norm: dict[str, str] = {}
     for k, v in pt.items():
-        key = str(k).strip().rstrip("/").lower()
+        key = path_type_norm(k)
         if str(v) not in allowed:
             raise SystemExit(f"{p} の path_types: {k} の種別 {v!r} は使えない({'/'.join(sorted(allowed))})")
         if "/" not in key or key.startswith(("http://", "https://")):
@@ -1466,7 +2099,7 @@ def _check_table(t: dict, p) -> None:
     index: list[tuple[str, str, str]] = []   # (正規化キー, 種別, 群)
     for fam, typ in families:
         for v in t.get(fam) or []:
-            index.append((str(v).strip().rstrip("/").lower(), typ, fam))
+            index.append((path_type_norm(v), typ, fam))
     index += [(k, v, "path_types") for k, v in norm.items()]
     for a, ta, fa in index:
         for b, tb, fb in index:
@@ -1567,9 +2200,15 @@ def classify_source(url: str) -> str:
             return "当事者"
     # プラットフォーム上のアカウント・チャンネル・作品ページ(tiktok.com/@…, ch.nicovideo.jp/…,
     # manga.nicovideo.jp/comic/…)は、パス単位で種別が決まる。合議が足す(path_types: パス → 種別)
+    # クエリの id で決まる文書(Microsoft Forms)は、その文書のキーとの完全一致だけ(パスの前方一致ではどの文書にも当たる)
+    qdoc = query_doc_key(url)
     for pre, typ in (t.get("path_types") or {}).items():
-        if under(str(pre)):
+        if (str(pre).strip().rstrip("/") == qdoc) if qdoc else under(str(pre)):
             return str(typ)
+    # 共有サービス(短縮 URL・フォーム・メールフォーム)は、短縮・文書・アカウント1つずつの登録(上の path_types)にだけ当てる。
+    # ドメインの一覧に載っていても使わない(t.co の丸ごと登録で、どこへの短縮も公式になった。監査指摘 2026-10-14)
+    if shared_host(host):
+        return "未確認"
 
     # 2. 動画・生放送は**投稿者**で決まる。ドメインでは決まらない。
     #    同じ youtube.com に公式チャンネルの PV とレーベルの試聴動画が混ざる。
@@ -1631,10 +2270,11 @@ def classify_source(url: str) -> str:
     # 4. それ以外はドメイン。**完全一致を先に見る。**
     #    公式ポータル配下でも gakuen-label.(公式レーベル)は準公式なので、
     #    末尾一致より個別指定が勝たないと誤って公式になる(監査指摘)
+    # 演者(出演者の所属事務所のサイト)もドメインで持つ(合議が答えてよい種別。監査指摘 2026-10-14: 保存先が無く KeyError)
     for key, label in (("official_domains", "公式"), ("semi_official_domains", "準公式"),
                        ("press_domains", "報道"), ("secondary_domains", "二次情報"),
                        ("discovery_only_domains", "二次情報"),
-                       ("fan_domains", "ファン"), ("party_domains", "当事者")):
+                       ("fan_domains", "ファン"), ("party_domains", "当事者"), ("performer_domains", "演者")):
         if host in set(t.get(key) or []):
             return label
     # 5. 公式ポータル配下の特設サイト(号ごとに増える)。個別指定に当たらなかったものだけ
@@ -1653,7 +2293,7 @@ def classify_source(url: str) -> str:
     for key, label in (("semi_official_domains", "準公式"), ("press_domains", "報道"),
                        ("secondary_domains", "二次情報"),
                        ("discovery_only_domains", "二次情報"),
-                       ("fan_domains", "ファン"), ("party_domains", "当事者")):
+                       ("fan_domains", "ファン"), ("party_domains", "当事者"), ("performer_domains", "演者")):
         for d in t.get(key) or []:
             if host.endswith("." + d):
                 return label

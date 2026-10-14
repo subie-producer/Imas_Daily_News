@@ -116,6 +116,53 @@ def undo_merge(before: str, what: str) -> None:
     must(sh(["git", "reset", "-q", "--hard", before], cwd=ROOT), f"{what} の巻き戻し")
 
 
+REMOTE_CHECK_TRIES = 2          # push が届いたかを確かめる ls-remote の回数(WSL の DNS は断続的に失敗する)
+REMOTE_CHECK_PAUSE_SEC = 10
+
+
+def remote_tip(branch: str) -> str | None:
+    """リモートの branch がいま指す commit(リモートに無ければ "")。通信できなければ None(確かめられない)。"""
+    for i in range(REMOTE_CHECK_TRIES):
+        if i:
+            time.sleep(REMOTE_CHECK_PAUSE_SEC)
+        try:
+            r = sh(["git", "ls-remote", "origin", f"refs/heads/{branch}"], cwd=ROOT, timeout=60)
+        except (subprocess.TimeoutExpired, OSError):
+            continue
+        if r.returncode == 0:
+            return r.stdout.split()[0] if r.stdout.strip() else ""
+    return None
+
+
+def merge_and_push(branch: str, before: str, merge: list[str], push: list[str]) -> tuple[str, str]:
+    """いま checkout している branch(merge 前の先頭は before)へ merge して push する取引。戻りは (結果, 説明)。
+    結果は "pushed"(リモートに届いた。説明は merge 後のハッシュ)・"conflict"(merge できない)・"absent"(届いていない)・
+    "unknown"(届いたか確かめられない)。pushed 以外はローカルの branch を before へ戻す(届いていても、次の当番・工程が
+    リモートから早送りで揃える)。push が非0で終わっても、時間切れ・例外で抜けても、リモートの branch を見て決める
+    (監査指摘 2026-10-14: push の時間切れが巻き戻しを通らず、ローカルの main だけが進んだまま残り、次の当番も取り込めなかった)。"""
+    new, why = "", ""
+    try:
+        m = sh(["git", "merge", *merge], cwd=ROOT)
+        if m.returncode != 0:
+            undo_merge(before, branch)
+            return "conflict", (m.stderr or m.stdout or "")[-200:]
+        new = must(sh(["git", "rev-parse", "HEAD"], cwd=ROOT), "rev-parse").stdout.strip()
+        r = sh(push, cwd=ROOT, timeout=120)
+        if r.returncode == 0:
+            return "pushed", new
+        why = (r.stderr or r.stdout or "")[-200:]
+    except Exception as e:      # noqa: BLE001  時間切れ・起動の失敗も、非0の終了と同じ後始末を通す
+        why = f"{type(e).__name__}: {str(e)[:200]}"
+    tip = remote_tip(branch) if new else ""      # merge の前に抜けたなら、届いているはずがない
+    if new and tip == new:
+        # 届いていた(応答が返らなかった・失敗として返った)。リモート追跡の参照を揃えて、取り込めたことにする
+        must(sh(["git", "update-ref", f"refs/remotes/origin/{branch}", new], cwd=ROOT), "リモート追跡の参照の更新")
+        print(f"{branch} の push は失敗として終わった({why})が、リモートに届いていた", flush=True)
+        return "pushed", new
+    undo_merge(before, branch)
+    return ("unknown" if tip is None else "absent"), why
+
+
 def session_env() -> dict:
     env = {k: v for k, v in os.environ.items() if k in ENV_ALLOW}
     env["PATH"] = tool_path()   # service 由来の PATH には ~/.local/bin(claude/codex)が無い(実測 2026-09-17)
@@ -195,7 +242,17 @@ def ensure_edition(edition: str, cwd: Path) -> str:
         raise RuntimeError(f"{edition} の origin との通信が {e.timeout:.0f} 秒で応答しない") from e
     if sh(["git", "rev-parse", "--verify", "-q", edition], cwd=cwd).returncode != 0:
         must(sh(["git", "branch", edition, f"origin/{edition}"], cwd=cwd), f"{edition} のローカル作成")
-    if sh(["git", "rev-parse", edition], cwd=cwd).stdout.strip() != sh(["git", "rev-parse", f"origin/{edition}"], cwd=cwd).stdout.strip():
+    local = sh(["git", "rev-parse", edition], cwd=cwd).stdout.strip()
+    remote = sh(["git", "rev-parse", f"origin/{edition}"], cwd=cwd).stdout.strip()
+    if local and remote and local != remote and sh(["git", "merge-base", "--is-ancestor", local, remote], cwd=cwd).returncode == 0:
+        # ローカルが遅れているだけ(取り込みの push が時間切れで、届いたか確かめられずに巻き戻した 等)なら早送りで揃える。
+        # リモートに無い commit をローカルが持つときだけ食い違いとして止まる(監査指摘 2026-10-14)
+        if sh(["git", "branch", "--show-current"], cwd=cwd).stdout.strip() == edition:
+            must(sh(["git", "merge", "-q", "--ff-only", remote], cwd=cwd), f"{edition} の早送り")
+        else:
+            must(sh(["git", "update-ref", f"refs/heads/{edition}", remote, local], cwd=cwd), f"{edition} の早送り")
+        local = remote
+    if local != remote:
         return f"{edition} がリモートと食い違う"
     return ""
 
@@ -1543,51 +1600,54 @@ def _main() -> int:
             if not root_clean():
                 notify("oncall", f"{date} {stage}: 取り込み前に本体の作業ツリーが汚れた。取り込まない(記録ブランチ {branch})", ok=False)
                 return 1
-            must(sh(["git", "checkout", "-q", "main"], cwd=ROOT), "main の checkout")
-            must(sh(["git", "pull", "-q", "--ff-only", "origin", "main"], cwd=ROOT, timeout=120), "main の pull")
-            # ローカル main に監査していない commit が乗っていたら、一緒に push してしまう(監査指摘)。
-            # origin/main と完全一致のときだけ取り込む。push に失敗したら merge を巻き戻す
-            main_before = sh(["git", "rev-parse", "main"], cwd=ROOT).stdout.strip()
-            # 監査の基準(base)から origin/main が動いていないこと。動いていれば監査していない変更との
-            # 組み合わせになるので取り込まない(監査指摘)
-            if main_before != remote_main() or main_before != base:
-                sh(["git", "checkout", "-q", edition], cwd=ROOT)
-                notify("oncall", f"{date} {stage}: main が監査の基準から動いた(ローカル {main_before[:10]} / 基準 {base[:10]})。取り込まない(記録ブランチ {branch})", ok=False)
-                return 1
-            # --no-ff で必ず merge commit を作る。戻すときは `git revert -m 1 <merge commit>` 1つで済み、
-            # 報告にそのハッシュを書ける(fast-forward だと -m 1 が使えない。監査指摘)
-            m = sh(["git", "merge", "--no-ff", "--no-edit", head], cwd=ROOT)
-            if m.returncode != 0:
-                undo_merge(main_before, "main")
+            # main と号への取り込みは1つの取引。merge・push は merge_and_push が、非0の終了も時間切れ・例外も同じに扱い、
+            # 届いていない merge をローカルに残さない。どの経路で抜けても号のブランチで終える(監査指摘 2026-10-14)
+            try:
+                must(sh(["git", "checkout", "-q", "main"], cwd=ROOT), "main の checkout")
+                must(sh(["git", "pull", "-q", "--ff-only", "origin", "main"], cwd=ROOT, timeout=120), "main の pull")
+                # ローカル main に監査していない commit が乗っていたら、一緒に push してしまう(監査指摘)。
+                # origin/main と完全一致のときだけ取り込む。push に失敗したら merge を巻き戻す
+                main_before = sh(["git", "rev-parse", "main"], cwd=ROOT).stdout.strip()
+                # 監査の基準(base)から origin/main が動いていないこと。動いていれば監査していない変更との
+                # 組み合わせになるので取り込まない(監査指摘)
+                if main_before != remote_main() or main_before != base:
+                    notify("oncall", f"{date} {stage}: main が監査の基準から動いた(ローカル {main_before[:10]} / 基準 {base[:10]})。取り込まない(記録ブランチ {branch})", ok=False)
+                    return 1
+                # --no-ff で必ず merge commit を作る。戻すときは `git revert -m 1 <merge commit>` 1つで済み、
+                # 報告にそのハッシュを書ける(fast-forward だと -m 1 が使えない。監査指摘)。
+                # リモートの main が基準のままのときだけ push が通る(競合検出。監査指摘)
+                got, info = merge_and_push("main", main_before, ["--no-ff", "--no-edit", head],
+                                           ["git", "push", "-q", f"--force-with-lease=refs/heads/main:{base}", "origin", "main"])
+                if got != "pushed":
+                    notify("oncall", f"{date} {stage}: " + {
+                        "conflict": f"修正を main に入れられない(衝突)。記録ブランチ {branch} に置いた",
+                        "absent": f"main の push に失敗したので merge を巻き戻した: {info}",
+                        "unknown": f"main の push が失敗し({info})、リモートに届いたか確かめられない。ローカルの merge は巻き戻した"
+                                   f"(届いていれば次の当番・工程が main を早送りで揃える)。記録ブランチ {branch}"}[got], ok=False)
+                    return 1
+                merge_commit = info
+                targets.append("main")
                 must(sh(["git", "checkout", "-q", edition], cwd=ROOT), f"{edition} の checkout")
-                notify("oncall", f"{date} {stage}: 修正を main に入れられない(衝突)。記録ブランチ {branch} に置いた", ok=False)
-                return 1
-            merge_commit = sh(["git", "rev-parse", "main"], cwd=ROOT).stdout.strip()
-            # リモートの main が基準のままのときだけ push が通る(競合検出。監査指摘)
-            pushed = sh(["git", "push", "-q", f"--force-with-lease=refs/heads/main:{base}", "origin", "main"], cwd=ROOT, timeout=120)
-            if pushed.returncode != 0:
-                undo_merge(main_before, "main")
-                must(sh(["git", "checkout", "-q", edition], cwd=ROOT), f"{edition} の checkout")
-                notify("oncall", f"{date} {stage}: main の push に失敗したので merge を巻き戻した: {(pushed.stderr or '')[-200:]}", ok=False)
-                return 1
-            targets.append("main")
-            must(sh(["git", "checkout", "-q", edition], cwd=ROOT), f"{edition} の checkout")
-            ed_before = sh(["git", "rev-parse", edition], cwd=ROOT).stdout.strip()
-            m2 = sh(["git", "merge", "--no-edit", "main"], cwd=ROOT)
-            if m2.returncode != 0:
-                undo_merge(ed_before, edition)
-                report_change(stage, date, fix, transcript, base, head, merge_commit, branch, targets, "取り込み衝突のため未実行")
-                notify("oncall", f"{date} {stage}: 修正は main に入ったが {edition} への取り込みが衝突。手で解くこと", ok=False)
-                return 1
-            pushed = sh(["git", "push", "-q", "origin", edition], cwd=ROOT, timeout=120)
-            if pushed.returncode != 0:
-                # ローカルだけ進んだままにしない(次回の前提検査で「リモートと食い違う」になり、当番が
-                # 二度と動けなくなる。監査指摘)。main には入っているので、次回は merge し直せば済む
-                undo_merge(ed_before, edition)
-                report_change(stage, date, fix, transcript, base, head, merge_commit, branch, targets, "edition の push 失敗のため未実行")
-                notify("oncall", f"{date} {stage}: 修正は main に入ったが {edition} の push に失敗したので巻き戻した: {(pushed.stderr or '')[-200:]}", ok=False)
-                return 1
-            targets.append(edition)
+                ed_before = sh(["git", "rev-parse", edition], cwd=ROOT).stdout.strip()
+                # 号の push が届かなければ、ローカルだけ進んだままにしない(次回の前提検査で「リモートと食い違う」になり、
+                # 当番が二度と動けなくなる。監査指摘)。main には入っているので、次回は merge し直せば済む
+                got, info = merge_and_push(edition, ed_before, ["--no-edit", "main"], ["git", "push", "-q", "origin", edition])
+                if got != "pushed":
+                    report_change(stage, date, fix, transcript, base, head, merge_commit, branch, targets,
+                                  "取り込み衝突のため未実行" if got == "conflict" else "edition の push 失敗のため未実行")
+                    notify("oncall", f"{date} {stage}: 修正は main に入ったが " + {
+                        "conflict": f"{edition} への取り込みが衝突。手で解くこと",
+                        "absent": f"{edition} の push に失敗したので巻き戻した: {info}",
+                        "unknown": f"{edition} の push が失敗し({info})、リモートに届いたか確かめられない。ローカルは巻き戻した"
+                                   "(届いていれば次の当番が早送りで揃え、届いていなければ次の工程が main を取り込む)"}[got], ok=False)
+                    return 1
+                targets.append(edition)
+            finally:
+                if sh(["git", "branch", "--show-current"], cwd=ROOT).stdout.strip() != edition \
+                        and sh(["git", "checkout", "-q", edition], cwd=ROOT).returncode != 0:
+                    notify("oncall", f"{date} {stage}: 取り込みのあと {edition} に戻れない(いま "
+                                     f"{sh(['git', 'branch', '--show-current'], cwd=ROOT).stdout.strip() or '(detached)'})。"
+                                     "次の工程の前に確かめること", ok=False)
             # 追送: 取り込んだ merge commit と戻し方(全文は取り込み前に届いている)
             (ROOT / "metrics" / f"oncall-{date}-{stage}-report.md").open("a", encoding="utf-8").write(
                 f"\n\n## 取り込み結果\nmain の merge commit: {merge_commit}\n戻し方: git revert -m 1 {merge_commit}\n")

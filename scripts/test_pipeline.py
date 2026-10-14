@@ -6424,6 +6424,18 @@ def test_oncall_ensure_edition(tmp: Path):
     check("origin に無い" in oncall.ensure_edition("edition/2026-09-28", work), "無い号を問題として返さない")
     (work / "a").write_text("2", encoding="utf-8"); g("checkout", "-q", "edition/2026-09-27"); g("commit", "-q", "-am", "2")
     check("食い違う" in oncall.ensure_edition("edition/2026-09-27", work), "ローカルが進んでいるのに揃ったことにした")
+    # 遅れているだけ(取り込みの push が届いたか確かめられずに巻き戻した 等)なら、checkout 中でもそうでなくても早送りで揃える
+    # (監査指摘 2026-10-14)
+    g("push", "-q", "origin", "edition/2026-09-27")
+    for checked_out in (True, False):
+        if checked_out:
+            g("reset", "-q", "--hard", "HEAD~1")
+        else:
+            g("checkout", "-q", "main"); g("branch", "-f", "edition/2026-09-27", "main")
+        check(oncall.ensure_edition("edition/2026-09-27", work) == ""
+              and g("rev-parse", "edition/2026-09-27").stdout == g("rev-parse", "origin/edition/2026-09-27").stdout
+              and not g("status", "--porcelain").stdout and (work / "a").read_text(encoding="utf-8") == ("2" if checked_out else "1"),
+              f"遅れているだけのローカルを早送りで揃えない(checkout 中 {checked_out})")
     # 通信の停滞(timeout)は traceback で落とさず「前提の確認に失敗」(RuntimeError)にする(監査指摘 r89)
     saved_sh = oncall.sh
     try:
@@ -6504,6 +6516,158 @@ def test_oncall_restore_on_exception(tmp: Path):
               f"成功したのに控えへ戻した: {calls}")
     finally:
         oncall.reset_edition, oncall.run_stage, oncall.restore_edition, oncall.notify, oncall.ROOT = saved
+
+
+def test_oncall_restore_to_backup(tmp: Path):
+    """控えへの復元は、控えを作ったあとに commit・push された記事・台帳の変更も控えの中身へ戻し、ローカルとリモートの号を
+    控えのハッシュに揃える(監査指摘 2026-10-14: 控えのあとに未追跡ファイルだけを足す試験では、控えでなく HEAD へ戻す誤りを見逃した)。"""
+    import oncall
+    date, edition = "2026-10-14", "edition/2026-10-14"
+    tmp.mkdir(parents=True, exist_ok=True)
+    remote, work = tmp / "remote.git", tmp / "work"
+    g = lambda *a: subprocess.run(["git", *a], cwd=work, capture_output=True, text=True, check=True).stdout.strip()
+    subprocess.run(["git", "init", "-q", "--bare", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", edition, str(work)], check=True, capture_output=True)
+    g("config", "user.email", "t@example"); g("config", "user.name", "t")
+    post, ledger = work / "docs" / "_posts" / f"{date}-keep.md", work / "stock" / "stories.yml"
+    post.parent.mkdir(parents=True); ledger.parent.mkdir(parents=True)
+    post.write_text("APPROVED", encoding="utf-8"); ledger.write_text("stories: [APPROVED]\n", encoding="utf-8")
+    g("add", "-A"); g("commit", "-q", "-m", "approved")
+    g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", edition)
+    saved = oncall.ROOT
+    try:
+        oncall.ROOT = work
+        before = oncall.untracked_files()
+        backup = oncall.backup_edition(date, edition)
+        approved = g("rev-parse", backup)
+        # 組み直しが記事と台帳を書き換えて commit・push し、未追跡の生成物も残した(控えと HEAD の中身が違う)
+        post.write_text("BROKEN", encoding="utf-8"); ledger.write_text("stories: [BROKEN]\n", encoding="utf-8")
+        g("commit", "-q", "-am", "bad rerun"); g("push", "-q", "origin", edition)
+        (work / "docs" / "_posts" / f"{date}-new.md").write_text("new", encoding="utf-8")
+        oncall.restore_edition(date, edition, backup, before)
+        tip = subprocess.run(["git", "ls-remote", str(remote), f"refs/heads/{edition}"], capture_output=True, text=True).stdout.split()
+        check(post.read_text(encoding="utf-8") == "APPROVED" and ledger.read_text(encoding="utf-8") == "stories: [APPROVED]\n"
+              and not (work / "docs" / "_posts" / f"{date}-new.md").exists(),
+              f"控えの中身(記事・台帳)に戻らない: {post.read_text(encoding='utf-8')!r} / {ledger.read_text(encoding='utf-8')!r}")
+        check(g("rev-parse", edition) == approved and tip[:1] == [approved] and g("branch", "--show-current") == edition
+              and not g("status", "--porcelain"),
+              f"ローカル・リモートの号が控えのハッシュに揃わない(控え {approved[:10]} / ローカル {g('rev-parse', edition)[:10]} / リモート {tip[:1]})")
+    except (RuntimeError, subprocess.CalledProcessError) as e:
+        check(False, f"控えへの復元が失敗した: {e}")
+    finally:
+        oncall.ROOT = saved
+
+
+def test_oncall_merge_push_settles(tmp: Path):
+    """当番の取り込み(main・号への merge と push)は1つの取引。push が非0で終わっても、時間切れ・例外で抜けても、リモートを見て、
+    届いていれば揃えて続け、届いていなければ巻き戻し、号のブランチで終える。確かめられなければ巻き戻し、届いていた分は次の当番が
+    早送りで揃える(監査指摘 2026-10-14: main の push の時間切れで巻き戻しを通らず、ローカルの main だけが進んだまま残り、
+    次の当番も前提の検査で止まって取り込めなかった)。本物の _main を一時リポジトリで走らせ、push と確かめる通信だけに障害を入れる。"""
+    import oncall
+    date, edition = "2026-10-14", "edition/2026-10-14"
+    tmp.mkdir(parents=True, exist_ok=True)
+
+    def g(root, *a):
+        return subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+
+    def ok(root, *a):
+        return subprocess.run(["git", *a], cwd=root, capture_output=True, text=True).returncode == 0
+
+    def repo(name):
+        root, remote = tmp / name, tmp / f"{name}.git"
+        subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+        subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True, capture_output=True)
+        g(root, "config", "user.email", "t@example"); g(root, "config", "user.name", "t")
+        (root / "scripts").mkdir(); (root / "metrics").mkdir()
+        (root / ".gitignore").write_text("metrics/oncall-*\nmetrics/jobs.lock\nmetrics/work/\n", encoding="utf-8")
+        (root / "scripts" / "x.py").write_text("x = 0\n", encoding="utf-8")
+        g(root, "add", "-A"); g(root, "commit", "-q", "-m", "base")
+        g(root, "remote", "add", "origin", str(remote)); g(root, "push", "-q", "-u", "origin", "main")
+        g(root, "checkout", "-q", "-b", edition)
+        (root / "paper.txt").write_text("approved", encoding="utf-8")      # 号の紙面(main には無い)
+        g(root, "add", "-A"); g(root, "commit", "-q", "-m", "paper"); g(root, "push", "-q", "-u", "origin", edition)
+        return root
+
+    real_sh, n = oncall.sh, [0]
+
+    def rounds(stage, d, context, wt, base, *a):
+        n[0] += 1
+        (wt / "scripts" / "x.py").write_text(f"x = {n[0]}\n", encoding="utf-8")
+        head, diff, changed = oncall.freeze(wt, base, 1)
+        return dict(approved=True, fix={"status": "fixed", "rerun_mode": "resume"}, head=head, diff=diff, changed=changed,
+                    kept={}, later=[], error="")
+
+    def faulty(target, how, delivered, blind):
+        # how: push の終わり方(時間切れ・非0の終了・起動の失敗)/ delivered: そのまえにリモートへ届いたか /
+        # blind: そのあと届いたかを確かめる通信も止まる
+        def fake(args, cwd, timeout=600):
+            if args[:2] == ["git", "push"] and args[-1] == target:
+                if delivered:
+                    real_sh(args, cwd, timeout)
+                if how == "nonzero":
+                    return subprocess.CompletedProcess(args, 1, "", "rejected")
+                if how == "oserror":
+                    raise OSError("起動できない")
+                raise subprocess.TimeoutExpired(args, timeout)
+            if blind and args[:2] == ["git", "ls-remote"]:
+                raise subprocess.TimeoutExpired(args, timeout)
+            return real_sh(args, cwd, timeout)
+        return fake
+
+    names = ("ROOT", "sh", "notify", "job_lock", "gather_context", "report_change", "env_fingerprint", "run_rounds", "keep_later",
+             "DEADLINE_AT", "STAGE_END_AT", "RECOVER", "REMOTE_CHECK_PAUSE_SEC")
+    saved, saved_argv, notes = {k: getattr(oncall, k, None) for k in names}, sys.argv, []
+    try:
+        oncall.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        oncall.job_lock = lambda *a, **k: os.open(os.devnull, os.O_RDONLY)
+        oncall.gather_context = lambda *a: "ctx"
+        oncall.report_change = lambda *a, **k: True
+        oncall.env_fingerprint = lambda: ""
+        oncall.run_rounds, oncall.keep_later = rounds, (lambda *a: 0)
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        oncall.RECOVER, oncall.REMOTE_CHECK_PAUSE_SEC = False, 0
+        sys.argv = ["oncall", "--stage", "compose", "--date", date, "--no-rerun"]
+        cases = (("timeout", False, False), ("timeout", True, False), ("timeout", False, True), ("timeout", True, True),
+                 ("nonzero", False, False), ("nonzero", True, False), ("oserror", False, False))
+        for target in ("main", edition):
+            for how, delivered, blind in cases:
+                kind = f"{how}{'-delivered' if delivered else ''}{'-blind' if blind else ''}"
+                where = f"{target} の push が {kind}"
+                root = oncall.ROOT = repo(f"{target.replace('/', '-')}-{kind}")
+                base = g(root, "rev-parse", "main")
+                notes.clear()
+                oncall.sh = faulty(target, how, delivered, blind)
+                try:
+                    code = oncall._main()
+                finally:
+                    oncall.sh = real_sh
+                g(root, "fetch", "-q", "origin")
+                state = dict(exit=code, branch=g(root, "branch", "--show-current"), status=g(root, "status", "--porcelain"))
+                settled = delivered and not blind      # 届いたと確かめられたときだけ取り込めたことにする
+                check(code == (0 if settled else 1) and state["branch"] == edition and not state["status"],
+                      f"{where}: 終わり方・終えるブランチが違う: {state} {notes[-1:]}")
+                for b in ("main", edition):
+                    check(ok(root, "merge-base", "--is-ancestor", b, f"origin/{b}"),
+                          f"{where}: ローカルの {b} がリモートに無い commit を持ったまま残った(次の当番が前提の検査で止まる)")
+                if settled:
+                    check(g(root, "rev-parse", "main") == g(root, "rev-parse", "origin/main") != base
+                          and g(root, "rev-parse", edition) == g(root, "rev-parse", f"origin/{edition}")
+                          and ok(root, "merge-base", "--is-ancestor", "origin/main", f"origin/{edition}"),
+                          f"{where}: 届いていたのに取り込めたことにしない")
+                elif blind:
+                    check(any("確かめられない" in m for m in notes), f"{where}: 届いたか確かめられないことを知らせない: {notes[-1:]}")
+                # 次の当番は前提の検査を通り、新しい修正を main と号へ取り込める
+                notes.clear()
+                code = oncall._main()
+                g(root, "fetch", "-q", "origin")
+                check(code == 0 and g(root, "branch", "--show-current") == edition
+                      and all(g(root, "rev-parse", b) == g(root, "rev-parse", f"origin/{b}") for b in ("main", edition))
+                      and ok(root, "merge-base", "--is-ancestor", "origin/main", f"origin/{edition}"),
+                      f"{where}: 次の当番が取り込めない(exit {code}): {notes[-1:]}")
+    finally:
+        for k, v in saved.items():
+            setattr(oncall, k, v)
+        sys.argv = saved_argv
 
 
 def test_oncall_fix_until_clean(tmp: Path):
@@ -7712,6 +7876,8 @@ def main() -> int:
     test_oncall_apply_integrate()
     test_oncall_report_text(tmp / "rp")
     test_oncall_restore_on_exception(tmp / "oc")
+    test_oncall_restore_to_backup(tmp / "rtb")
+    test_oncall_merge_push_settles(tmp / "mps")
     test_oncall_fix_until_clean(tmp / "of")
     test_settled_drops_not_rewritten(tmp / "sd")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "

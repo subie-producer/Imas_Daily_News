@@ -3224,6 +3224,8 @@ def main() -> int:
                              yield_fn=collect_oncall_handover_pending)
         except JobLockTimeout as e:
             notify("compose", str(e), ok=False)
+            # 排他を取れないまま締切を過ぎたなら、同じくなぜなぜを発行のあとへ回す(当番を起こすと発行の排他を塞ぐ。監査 2026-10-14)
+            too_late_to_start(t0, date)
             return 1
         if too_late_to_start(t0, date):      # 排他を待つ間に締切を過ぎた
             return 1

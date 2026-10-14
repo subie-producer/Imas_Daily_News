@@ -2909,6 +2909,8 @@ def test_deadline_publish_boundary(tmp: Path):
     def fake_lock(*a, **k):
         seen.append("lock")
         clock["now"] += clock.get("wait", 0)
+        if clock.get("timeout"):
+            raise pipelib.JobLockTimeout("工程の排他を取れない(テストの代役)")
         return object()
 
     def fake_checkout(*a, **k):
@@ -2928,7 +2930,7 @@ def test_deadline_publish_boundary(tmp: Path):
                  (at(5, 40), 15 * 60, ["lock"], "05:40 に起動し、排他を待つ間に 05:55"),
                  (at(5, 0), 0, ["lock", "checkout"], "05:00 の起動"))
         for start, wait, want, what in cases:
-            clock.update(now=start, wait=wait)
+            clock.update(now=start, wait=wait, timeout=False)
             seen.clear(); pipelib.ANOMALIES.clear()
             n_kept = len(backlog())
             code = compose.main()
@@ -2940,8 +2942,11 @@ def test_deadline_publish_boundary(tmp: Path):
         pipelib.job_lock, pipelib.checkout_edition_branch = fake_lock, fake_checkout
         pipelib.escalate = lambda stage, date, reason, **k: escalated.append([stage, date, k.get("rerun")]) or True
         _time.time = lambda: clock["now"]
-        for start, late, what in ((at(5, 55), True, "05:55 の再起動"), (at(5, 0), False, "05:00 に起動して止まった")):
-            clock.update(now=start, wait=0)
+        for start, wait, timeout, late, what in ((at(5, 55), 0, False, True, "05:55 の再起動"),
+                                                 (at(5, 0), 0, False, False, "05:00 に起動して止まった"),
+                                                 (at(5, 45), 10 * 60, True, True, "05:45 に起動し、排他を取れないまま 05:55"),
+                                                 (at(5, 0), 10 * 60, True, False, "05:00 に起動し、排他を取れないまま 05:10")):
+            clock.update(now=start, wait=wait, timeout=timeout)
             escalated.clear(); pipelib.ANOMALIES.clear(); pipelib._ESCALATED = False
             try:
                 runpy.run_path(str(Path(compose.__file__)), run_name="__main__")
@@ -2950,7 +2955,7 @@ def test_deadline_publish_boundary(tmp: Path):
                 code = e.code
             check(code == 1 and (escalated == []) == late,
                   f"{what}: 終わりの処理が当番を{'起こした(発行の排他を塞ぐ)' if late else '起こさない'}: exit {code} / {escalated}")
-        check(len(backlog()) == 3, f"当番の保管に積んだなぜなぜの数が違う: {backlog()}")
+        check(len(backlog()) == 4, f"当番の保管に積んだなぜなぜの数が違う: {backlog()}")
     finally:
         (compose.time, compose.job_lock, compose.checkout_edition_branch, sys.argv, oncall.BACKLOG,
          pipelib.job_lock, pipelib.checkout_edition_branch, pipelib.escalate, pipelib._ESCALATED, anomalies, _time.time) = saved

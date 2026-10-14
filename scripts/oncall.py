@@ -350,11 +350,16 @@ AUDIT_MUST_PASS = ("test_pipeline", "selfcheck")   # 修正の後は通ってい
 
 def runs_script(command: str, name: str) -> bool:
     """コマンドが scripts/<name>.py を python で**実行する**か。引数に名前があるだけのもの(`python3 -m py_compile scripts/…`・
-    echo・cat 等)は数えない(監査指摘: 構文の検査1件で3つの検査を走らせた記録になった)。`cd … &&`・環境変数・timeout は許す。"""
+    echo・cat 等)、実行しない python のオプション(--help・-V 等)、`||` の後ろ(前が成功すると走らない)は数えない
+    (監査指摘: 構文の検査・--help・`true ||` の記録で3つの検査を走らせたことになった)。`cd … &&`・環境変数・timeout は許す。
+    承認の門は当番のコードが自分で走らせる検査(run_rounds)で、これは監査の自己申告の形の検査。"""
     import shlex
-    for seg in re.split(r"&&|\|\||;|\|", command):
+    parts = re.split(r"(&&|\|\||;|\|)", command)
+    for i in range(0, len(parts), 2):
+        if "||" in parts[1:i:2]:
+            break
         try:
-            toks = shlex.split(seg)
+            toks = shlex.split(parts[i])
         except ValueError:
             continue
         while toks and re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*=.*", toks[0]):
@@ -367,10 +372,12 @@ def runs_script(command: str, name: str) -> bool:
             continue
         args = toks[1:]
         while args and args[0].startswith("-"):
-            if args[0] in ("-m", "-c"):
+            if args[0] in ("-X", "-W"):
+                args = args[2:]
+            elif args[0] in ("-u", "-B", "-E", "-s", "-I", "-O", "-OO", "-q"):
+                args = args[1:]
+            else:           # -m・-c・--help・-V など、スクリプトを実行しないオプション
                 args = []
-                break
-            args = args[2:] if args[0] in ("-X", "-W") else args[1:]
         if args and (args[0] in (f"scripts/{name}.py", f"./scripts/{name}.py", f"{name}.py") or args[0].endswith(f"/scripts/{name}.py")):
             return True
     return False
@@ -778,9 +785,18 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
             if left() < MIN_STEP_SEC:
                 transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
                 break
+            # 3つの検査は当番のコードが自分で走らせ、その結果を監査に渡す(承認の門はここ: selfcheck が赤なら上で監査に進まない。
+            # selfcheck は回帰テスト test_pipeline を含む)。監査の自己申告(verification)だけを門にすると、走らせない記録で通る道が
+            # 何度でも見つかった(監査指摘: py_compile・--help・`true ||`)。lint は組み直す前の号の中身でも赤になるので、修正によるかは監査が判断する
+            lc = sh([sys.executable, "scripts/lint.py", "--base", "origin/main"], cwd=wt, timeout=min(300, left()))
+            code_checks = ("\n\n## 当番のコードが走らせた検査(この commit)\n"
+                           "- python3 scripts/selfcheck.py(回帰テスト test_pipeline を含む): 終了 0\n"
+                           f"- python3 scripts/lint.py --base origin/main: 終了 {lc.returncode}: "
+                           f"{((lc.stdout or '').strip().splitlines() or [''])[-1][:300]}\n")
+            transcript.append({"round": rnd, "code_checks": {"selfcheck": 0, "lint": lc.returncode}})
             print(f"監査 {rnd}回目", flush=True)
             # 差分が無くても(no_fix_needed)監査は通す: 誤診を検める機会を残す(監査指摘)
-            rev = run_codex(review_prompt(stage, date, fix, diff, integ), schemas / "oncall-review.schema.json", wt,
+            rev = run_codex(review_prompt(stage, date, fix, diff, integ) + code_checks, schemas / "oncall-review.schema.json", wt,
                             timeout=min(1800, left()))
             transcript.append({"round": rnd, "review": rev})
             round_later = []

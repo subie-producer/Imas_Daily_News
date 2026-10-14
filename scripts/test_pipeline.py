@@ -5453,7 +5453,10 @@ def test_oncall_fix_until_clean(tmp: Path):
                       ("env A=1 python3 -X dev scripts/test_pipeline.py", True),
                       ("python3 -m py_compile scripts/test_pipeline.py", False), ("echo python3 scripts/test_pipeline.py", False),
                       ("cat scripts/test_pipeline.py", False), ("python3 -c 'import scripts/test_pipeline.py'", False),
-                      ("python3 audit_test_pipeline.py", False), ("python3 scripts/test_pipeline.py.bak", False)):
+                      ("python3 audit_test_pipeline.py", False), ("python3 scripts/test_pipeline.py.bak", False),
+                      ("python3 --help scripts/test_pipeline.py", False), ("python3 -V scripts/test_pipeline.py", False),
+                      ("true || python3 scripts/test_pipeline.py", False), ("true || x && python3 scripts/test_pipeline.py", False),
+                      ("false; python3 scripts/test_pipeline.py", True), ("python3 -B -X dev scripts/test_pipeline.py", True)):
         check(oncall.runs_script(cmd, "test_pipeline") is want, f"スクリプトを実行したコマンドの見分けが違う: {cmd!r} → {not want}")
     vi = rs["properties"]["verification"]["items"]
     check(vi["required"] == ["command", "exit_code", "result"] and vi["properties"]["exit_code"]["type"] == ["integer", "null"],
@@ -5529,6 +5532,23 @@ def test_oncall_fix_until_clean(tmp: Path):
                               {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}]}, "env", tr)
         reviews = [t["review"] for t in tr if "review" in t]
         check(r["approved"] and len(reviews) == 2, f"走らせた記録の無い承認を承認にした: {len(reviews)}回 {r.get('approved')}")
+        # (3y) 3つの検査は当番のコードが自分で走らせ(selfcheck が赤なら監査に進まない)、lint の結果を監査の依頼に載せる
+        #      (監査の自己申告だけを門にすると、走らせない記録で通る道が何度も見つかった。監査指摘)
+        calls, prompts = [], []
+        oncall.sh = lambda args, cwd, timeout=600: (calls.append([str(a) for a in args])
+                                                    or subprocess.CompletedProcess(args, 1 if "scripts/lint.py" in args else 0,
+                                                                                   "lint: 2 errors, 0 warnings\n", ""))
+        answers = iter([{"verdict": "approve", "must_fix": [], "verification": AUDIT_RAN, "notes": ""}])
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (prompts.append(prompt) or next(answers))
+        tr = []
+        r = oncall.run_rounds("compose", "2026-09-18", "ctx", tmp, "B" * 40,
+                              {"base": "B" * 40, "head": "B" * 40, "fix": {"status": "no_fix_needed"}, "open": [{"id": "old"}]}, "env", tr)
+        order = [next((k for k in ("selfcheck.py", "lint.py") if any(a.endswith(k) for a in c)), None) for c in calls]
+        check(r["approved"] and [o for o in order if o] == ["selfcheck.py", "lint.py"] and prompts
+              and "当番のコードが走らせた検査" in prompts[0] and "lint.py --base origin/main: 終了 1: lint: 2 errors" in prompts[0]
+              and any(t.get("code_checks") == {"selfcheck": 0, "lint": 1} for t in tr),
+              f"当番のコードが3つの検査を走らせて結果を監査に渡していない: {order} {prompts[:1] and prompts[0][-300:]}")
+        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
         # (3a) 発行後でよい指摘(later)は approve を妨げず、往復と試行をまたいで重複なしで集まる
         #      起きる道筋(occurs)の無い later は集めない(「schema 上は可能」の類を後の仕事にしない)
         la = {"id": "l1", "claim": "堅牢化A", "evidence": "e", "occurs": "記事が60本を超えた号(月に1〜2回)"}

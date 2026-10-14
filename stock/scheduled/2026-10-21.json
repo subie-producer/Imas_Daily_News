@@ -327,5 +327,29 @@
   "verify": "confirmed",
   "src_candidate_id": "202610140226-grok-21",
   "event_date": "2026-10-13"
+ },
+ {
+  "id": "sched-2026-10-21-gaku-hatsuboshi-radio-guests-2026-10-21-開始",
+  "dedup_key": "gaku-hatsuboshi-radio-guests-2026-10-21",
+  "brand": "gaku",
+  "subject": "初星学園放送部 薄井友里さん・松田彩音さんゲスト回",
+  "kind": "開始",
+  "note": "ゲスト回の放送を聴ける",
+  "reserved_on": "2026-10-15",
+  "occurs_on": "2026-10-21",
+  "title": "初星学園放送部 10月21日放送回ゲスト",
+  "url": "https://x.com/gkmas_official/status/2110352420979228694",
+  "source_type": "公式",
+  "facts": [
+   "10月21日(水)の放送回に薄井友里さん（姫崎莉波役）がゲスト出演すると告知された。",
+   "10月21日(水)の放送回に松田彩音さん（花海佑芽役）がゲスト出演すると告知された。",
+   "投稿におたより投稿フォームとして https://idolmaster-official.jp/gakuen/gakuenradio/contact/ が記載された。",
+   "エンゲージメント: 中",
+   "言及アイドル: 姫崎莉波、花海佑芽"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610150225-grok-35",
+  "event_date": "2026-10-21"
  }
 ]

@@ -776,5 +776,56 @@
   "verify": "confirmed",
   "src_candidate_id": "202610131833-explore-4",
   "event_date": "2026-11-20"
+ },
+ {
+  "id": "sched-2026-10-16-cg-15th-party-2026-締切前",
+  "dedup_key": "cg-15th-party-2026",
+  "brand": "cg",
+  "subject": "シンデレラ15thPARTY 現地チケットのアソビストア一般会員先行",
+  "kind": "締切前",
+  "note": "締切3日前。アソビストア一般会員先行に申し込める",
+  "reserved_on": "2026-10-15",
+  "occurs_on": "2026-10-19",
+  "title": "シンデレラ15thPARTY 現地チケット先行",
+  "url": "https://x.com/imas_CGofficial/status/2110339843678974316",
+  "source_type": "公式",
+  "facts": [
+   "公演名は「シンデレラ15thPARTY」。",
+   "会場: Kアリーナ横浜。",
+   "開催日: 2026.11.28(SAT)-29(SUN)",
+   "現地チケット一般会員先行受付中。",
+   "申込期限: 10/19(月)23:59まで。",
+   "CHILL-Partyの紹介アイドル: 久川 凪、高森藍子、鷹富士茄子、アナスタシア、道明寺歌鈴、宮本フレデリカ。",
+   "紹介投稿では、各アイドルが『ウィズ・ユア・ハート』に身を包んだアイドルとして告知されている。",
+   "エンゲージメント: 高",
+   "言及アイドル: 久川 凪、高森藍子、鷹富士茄子、アナスタシア、道明寺歌鈴、宮本フレデリカ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610150225-grok-6",
+  "event_date": "2026-11-28",
+  "deadline": "2026-10-19"
+ },
+ {
+  "id": "sched-2026-10-16-sidem-fanfes-wgf-weekly-video-2026-発売",
+  "dedup_key": "sidem-fanfes-wgf-weekly-video-2026",
+  "brand": "sidem",
+  "subject": "劇場版SideM ムビチケ前売券 発売",
+  "kind": "発売",
+  "note": "通販・アソビストア限定セット・オンライン券を10時から購入できる",
+  "reserved_on": "2026-10-15",
+  "occurs_on": "2026-10-16",
+  "title": "劇場版SideMFANFES_WGF週替わり映像公開決定",
+  "url": "https://idolmaster-official.jp/news/01_19798",
+  "source_type": "公式",
+  "facts": [
+   "週替わり映像の公開が決定。",
+   "ムビチケ販売は2026年10月16日(金)開始予定。",
+   "公式サイト：https://idolmaster-official.jp/live_event/sidem_fbfes_wgf/movie/",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610150225-grok-31"
  }
 ]

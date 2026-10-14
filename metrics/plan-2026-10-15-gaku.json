@@ -1,0 +1,184 @@
+{
+ "decisions": {
+  "gakumas-hatsuboshi-houkago-talk-20261020": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/14号に出演者・日時・視聴先まで掲載済み。新事実なし、配信は5日後で3日以内のトリガーでもない"
+  },
+  "gaku-hatsuboshi-radio-109-2026-10-14": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/14号で本日放送として掲載済み。放送は終了済みで新たな発表なし"
+  },
+  "gaku-hatsuboshi-radio-guests-2026-10-21": {
+   "action": "article",
+   "angle": "初星学園放送部の10月21日放送回に、姫崎莉波役の薄井友里さんと花海佑芽役の松田彩音さんがゲスト出演する。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-jewel-login-gift-2026-10-14": {
+   "action": "article",
+   "angle": "今週のログインでジュエル250個を配布中。受け取りは10月21日4時59分までの予定。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営だが3件に満たないためroundupを作らず単独small"
+  },
+  "gaku-kimi-to-semi-blue-mv-2m-views": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/14号に同内容を掲載済み。新事実・トリガーなし"
+  },
+  "gaku-hatsuboshi-hokago-talk-2026-10-20": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/14号に出演者・日時・視聴URLを掲載済み。facts に新事実なく、配信日は5日後でトリガー外"
+  },
+  "gaku-kotone-another-idol-guaranteed-gacha-2026": {
+   "action": "article",
+   "angle": "藤田ことねのシーズン限定アナザーアイドルが確定する無料1連ガシャは、本日10時59分で終了する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。本日が最終日"
+  },
+  "hatsuboshi-live-tour-single-shurakuryoko-2026": {
+   "action": "article",
+   "angle": "初星学園 LIVE TOUR Single「修楽旅行」が11月4日に発売予定で、参考価格は2,500円(税込)。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "未確認出典。出典の足りるかは執筆・校閲で判断。予約期間は10/14で終了済みの点に注意"
+  },
+  "gaku-asano-4ji-login-bonus-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "ログインボーナスは本日3時59分に終了済み。開催中・開始の新発表ではなくプレイヤーの反応を報じる内容で、記事化の価値が薄い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-hatsuboshi-radio-guests-2026-10-21",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部の10月21日放送回に、姫崎莉波役の薄井友里さんと花海佑芽役の松田彩音さんがゲスト出演する。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-hatsuboshi-radio-guests-2026-10-21",
+    "candidate_ids": [
+     "202610150225-grok-35"
+    ]
+   },
+   {
+    "slug": "gaku-jewel-login-gift-2026-10-14",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "今週のログインでジュエル250個を配布中。受け取りは10月21日4時59分までの予定。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-jewel-login-gift-2026-10-14",
+    "candidate_ids": [
+     "202610150225-grok-36"
+    ]
+   },
+   {
+    "slug": "gaku-kotone-another-idol-guaranteed-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "藤田ことねのシーズン限定アナザーアイドルが確定する無料1連ガシャは、本日10時59分で終了する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 35,
+    "dedup_key": "gaku-kotone-another-idol-guaranteed-gacha-2026",
+    "candidate_ids": [
+     "202610150225-grok-39",
+     "sched-2026-10-15-gaku-kotone-another-idol-guaranteed-gacha-2026-締切"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-live-tour-single-shurakuryoko-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園 LIVE TOUR Single「修楽旅行」が11月4日に発売予定で、参考価格は2,500円(税込)。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "hatsuboshi-live-tour-single-shurakuryoko-2026",
+    "candidate_ids": [
+     "202610130225-grok-30"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gakumas-hatsuboshi-houkago-talk-20261020",
+    "reason": "既報",
+    "note": "10/14号に出演者・日時・視聴先まで掲載済み。新事実なし、配信は5日後で3日以内のトリガーでもない"
+   },
+   {
+    "dedup_key": "gaku-hatsuboshi-radio-109-2026-10-14",
+    "reason": "既報",
+    "note": "10/14号で本日放送として掲載済み。放送は終了済みで新たな発表なし"
+   },
+   {
+    "dedup_key": "gaku-kimi-to-semi-blue-mv-2m-views",
+    "reason": "既報",
+    "note": "10/14号に同内容を掲載済み。新事実・トリガーなし"
+   },
+   {
+    "dedup_key": "gaku-hatsuboshi-hokago-talk-2026-10-20",
+    "reason": "既報",
+    "note": "10/14号に出演者・日時・視聴URLを掲載済み。facts に新事実なく、配信日は5日後でトリガー外"
+   },
+   {
+    "dedup_key": "gaku-asano-4ji-login-bonus-2026",
+    "reason": "その他",
+    "note": "ログインボーナスは本日3時59分に終了済み。開催中・開始の新発表ではなくプレイヤーの反応を報じる内容で、記事化の価値が薄い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

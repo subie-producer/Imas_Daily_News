@@ -1,0 +1,208 @@
+{
+ "decisions": {
+  "sidem-monthly-theme-song-13-jupiter-cd": {
+   "action": "article",
+   "angle": "Jupiter MONTHLY THEME SONG 13のCDの価格2,200円(税込)・品番LACM-24793とストーリー閲覧にASOBI STORE会員登録が要る点を伝える。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売日・特典・店舗別特典は既報。価格と品番が新事実"
+  },
+  "sidem-aji-na-yatsura-story": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-aji-na-yatsura-story-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公開予告。同じ出来事(10/14公開)"
+  },
+  "sidem-aji-na-yatsura-story-2026": {
+   "action": "article",
+   "angle": "「AJIなヤツら」は3話まで無料で閲覧でき、4話以降はアソビストアプレミアム会員登録が必要になる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "前日の記事は公開予告のみで閲覧条件が新事実"
+  },
+  "sidem-315-episode-one-scene-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-aji-na-yatsura-story-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ「AJIなヤツら」公開の別出典"
+  },
+  "sidem-ultimate-flame-2dmv-2026": {
+   "action": "article",
+   "angle": "FRAME「ULTIMATE FLAME」の2DMVが10月23日(金)22:00に公開される予定。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "準公式の告知。予定として扱う"
+  },
+  "sidem-sems-lifes-side-menu-2dmv-2026": {
+   "action": "article",
+   "angle": "S.E.M「Life's Side Menu!」2DMVが公開され、連動ストーリー名は『華麗なるあの味を』と判明した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公開日・YouTubeリンクは既報。ストーリー名が新事実。未確認出典"
+  },
+  "sidem-fantastic-battle-fes-movie-2026": {
+   "action": "article",
+   "angle": "劇場版SideMのムビチケ前売券が明日10月16日に発売される(通販・アソビストア限定セット・オンライン券は10時)。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "週替わり映像の詳細は既報。明日の発売開始が当日のトリガー"
+  },
+  "sidem-cho-retroseparty-badges-2026": {
+   "action": "article",
+   "angle": "「超!!レトローズパーティ」の描き下ろし缶バッジは全16種のランダムで、単品550円、コンプリート8,800円(税込)。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当事者(Atfes)の告知。販売日・場所は素材に無い"
+  },
+  "sidem-anideal-perfume-order-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-anideal-daimaru-fragrance-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じSideM×Anideal香水の受注締切(10/15 14:59)"
+  },
+  "sidem-anideal-daimaru-fragrance-2026": {
+   "action": "article",
+   "angle": "SideM×Anideal・大丸コラボ香水の予約は本日10月15日14:59で締切になる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。サイン入りポストカード付属、お届けは2027年3月中旬以降"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-monthly-theme-song-13-jupiter-cd",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Jupiter MONTHLY THEME SONG 13のCDの価格2,200円(税込)・品番LACM-24793とストーリー閲覧にASOBI STORE会員登録が要る点を伝える。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-monthly-theme-song-13-jupiter-cd",
+    "candidate_ids": [
+     "202610140732-explore-1"
+    ]
+   },
+   {
+    "slug": "sidem-ultimate-flame-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "FRAME「ULTIMATE FLAME」の2DMVが10月23日(金)22:00に公開される予定。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-ultimate-flame-2dmv-2026",
+    "candidate_ids": [
+     "202610150225-grok-27"
+    ]
+   },
+   {
+    "slug": "sidem-sems-lifes-side-menu-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "S.E.M「Life's Side Menu!」2DMVが公開され、連動ストーリー名は『華麗なるあの味を』と判明した。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-sems-lifes-side-menu-2dmv-2026",
+    "candidate_ids": [
+     "202610150225-grok-28"
+    ]
+   },
+   {
+    "slug": "sidem-aji-na-yatsura-story-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「AJIなヤツら」は3話まで無料で閲覧でき、4話以降はアソビストアプレミアム会員登録が必要になる。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-aji-na-yatsura-story-2026",
+    "candidate_ids": [
+     "202610150225-grok-29",
+     "202610141833-explore-1",
+     "202610142332-explore-1",
+     "202610150225-explore-0"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-movie-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版SideMのムビチケ前売券が明日10月16日に発売される(通販・アソビストア限定セット・オンライン券は10時)。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "sidem-fantastic-battle-fes-movie-2026",
+    "candidate_ids": [
+     "202610150225-grok-31"
+    ]
+   },
+   {
+    "slug": "sidem-cho-retroseparty-badges-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「超!!レトローズパーティ」の描き下ろし缶バッジは全16種のランダムで、単品550円、コンプリート8,800円(税込)。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-cho-retroseparty-badges-2026",
+    "candidate_ids": [
+     "202610150225-grok-32"
+    ]
+   },
+   {
+    "slug": "sidem-anideal-daimaru-fragrance-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM×Anideal・大丸コラボ香水の予約は本日10月15日14:59で締切になる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-anideal-daimaru-fragrance-2026",
+    "candidate_ids": [
+     "sched-2026-10-15-sidem-anideal-daimaru-fragrance-2026-締切",
+     "202610150225-grok-33"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

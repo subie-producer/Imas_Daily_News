@@ -51,6 +51,7 @@ official_suffixes:
 
 # --- 準公式: 公式レーベル・公式ストア等のグループ/パートナー企業 ---
 semi_official_domains:
+  - asobistore.jp         # 合議で追加: アイマス商品を扱う公式ストア(アソビストア)。運営元の本体で準公式
   - akitashoten.co.jp     # 合議で追加: 週刊少年チャンピオンで学園アイドルマスター連載を掲載する出版社本体
   - onsen.ag              # 合議で追加: 公式ラジオ配信プラットフォーム、公式登録済み
   - a-onstore.jp          # 合議で追加: バンダイナムコグループの公式ショップ。公式レーベル・公式ストアの定義に該当
@@ -236,6 +237,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - info-anideal.com      # 合議で追加: SideM香水のライセンス販売元。特商法表記で販売事業者を確認
   - t2u.asia              # 合議で追加: CF23のチケット販売元。ページの主催者は別記載なし
   - comifuro.net          # 合議で追加: CF23の主催者による告知サイト。運営者情報は未確認
   - shinkaifes.pjblue.com # 合議で追加: フッターで主催を明記。アイマス関連の記述はなし

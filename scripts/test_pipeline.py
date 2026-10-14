@@ -32,6 +32,7 @@ WRITE_PASSTHROUGH = {
     ("rewrite_past.py", "main"): "校閲を通ったと確かめる前に止まった差し替えを、元の文面に戻す",
     ("rewrite_past.py", "replace_and_review"): "校閲を通らなかった差し替えを、元の文面に戻す",
     ("pipelib.py", "_restore"): "失敗した取引(出典の判定・付け直し・lint)のファイルを、開始時の中身へバイト単位で戻す",
+    ("compose.py", "restore_files"): "記事を落としたあとの組み直しが失敗したとき、記事・号・台帳を組み直しの前の中身へバイト単位で戻す",
 }
 
 
@@ -5088,7 +5089,7 @@ def test_carry_dropped_candidates(tmp: Path):
         (tmp / "stock" / "scheduled").mkdir(parents=True)
         (tmp / "stock" / "scheduled" / f"{d0}.json").write_text(json.dumps([sched_row("sched-9", "2026-10-10", url="https://s.example/9",
                                                                                      dedup_key="sch", brand="gaku", kind="締切前",
-                                                                                     facts=["予約"])]),
+                                                                                     facts=["予約", "受付は10月16日まで"])]),
                                                                encoding="utf-8")
         (tmp / "candidates" / f"{d1}.json").write_text(json.dumps([cand_row("n1", "https://n.example/1", facts=["新"])]),
                                                        encoding="utf-8")
@@ -5154,7 +5155,7 @@ def test_carry_dropped_candidates(tmp: Path):
         d4, d5 = "2026-11-10", "2026-11-11"
         (tmp / "stock" / "scheduled" / f"{d4}.json").write_text(json.dumps([sched_row("sched-k", "2026-11-07", url="https://s.example/k",
                                                                                      dedup_key="k", brand="gaku", kind="締切前",
-                                                                                     facts=["予約K"])]),
+                                                                                     facts=["予約K", "申込は11月13日まで"])]),
                                                                encoding="utf-8")
         (tmp / "metrics" / f"plan-{d4}.json").write_text(json.dumps({"articles": [{"slug": "k", "candidate_ids": ["sched-k"]}]}), encoding="utf-8")
         compose.DROP_LOG[d4] = {"k": ("予約K", "校閲ブロック", "R4")}
@@ -5819,14 +5820,15 @@ def test_url_alive_verdict():
 def test_reminder_event_date(tmp: Path):
     """続報予約を素材として読むとき、event_date は予約が指す日(締切前は予約の日の3日後、ほかは予約の日)にする。元の話題の開始日を
     渡すと書き手が写し、1か月前の日付の記事として lint の鮮度検査で赤になった(実測 2026-10-12: 9/11 開始の香水予約の締切前)。
-    元の話題の deadline は別の期限(入金期限など)のことがあるので使わない(監査指摘: 10/15 の予約で deadline 11/4)"""
+    元の話題の deadline は別の期限(入金期限など)のことがあるので使わない(監査指摘: 10/15 の予約で deadline 11/4)。
+    出来事の日(occurs_on)の無い古い予約で、その日が予約に書いていないもの(x・noct)は日付を渡さない(執筆が決める。監査指摘)"""
     sdir = tmp / "stock" / "scheduled"
     sdir.mkdir(parents=True)
     rows = [{"id": "sched-2026-10-12-anideal-締切前", "dedup_key": "anideal", "kind": "締切前",
              "event_date": "2026-09-11", "deadline": "2026-10-15", "facts": ["予約期間は2026年9月11日〜10月15日"]},
             {"id": "sched-2026-10-12-x-締切前", "dedup_key": "x", "kind": "締切前", "event_date": "2026-09-01", "facts": []},
             {"id": "sched-2026-10-12-letora-発売", "dedup_key": "letora", "kind": "発売",
-             "event_date": "2026-11-11", "facts": []},
+             "event_date": "2026-11-11", "facts": ["10月12日発売"]},
             {"id": "sched-2026-10-12-tours-終了", "dedup_key": "tours", "kind": "終了",
              "event_date": "2026-08-28", "deadline": "2026-10-12", "facts": []},
             {"id": "sched-2026-10-12-apple-締切前", "dedup_key": "apple", "kind": "締切前",
@@ -5837,12 +5839,12 @@ def test_reminder_event_date(tmp: Path):
     saved = compose.ROOT
     try:
         compose.ROOT = tmp
-        got = {r["dedup_key"]: r["event_date"] for r in compose.load_scheduled("2026-10-12")}
+        got = {r["dedup_key"]: r.get("event_date") for r in compose.load_scheduled("2026-10-12")}
         mats = compose.load_window_candidates("2026-10-12")
     finally:
         compose.ROOT = saved
-    check(got == {"anideal": "2026-10-15", "x": "2026-10-15", "letora": "2026-10-12", "tours": "2026-10-12",
-                  "apple": "2026-10-15", "noct": "2026-10-15"},
+    check(got == {"anideal": "2026-10-15", "x": None, "letora": "2026-10-12", "tours": "2026-10-12",
+                  "apple": "2026-10-15", "noct": None},
           f"続報予約の event_date が予約の日になっていない: {got}")
     check(mats["sched-2026-10-12-anideal-締切前"]["event_date"] == "2026-10-15", "執筆の素材に元の話題の開始日が渡る")
     check(json.loads((sdir / "2026-10-12.json").read_text(encoding="utf-8"))[0]["event_date"] == "2026-09-11",
@@ -5883,6 +5885,16 @@ REAL_SCHED_0930 = [
                "プラチナスペシャルガシャセット(リミテッドver/フェスver)の販売期間は9月30日23:59まで",
                "育成強化キャンペーン等の周年施策も9月30日23:59まで"],
      "via": "claude", "verify": "confirmed", "src_candidate_id": "202609031835-explore-5", "deadline": "2026-09-30"}]
+# 実データ stock/scheduled/2026-08-26.json の写し: 8/25 19時の配信の結果を翌日の号で伝える予約(予約に 8/26 は書いていない)
+REAL_SCHED_0826_RESULT = {
+    "id": "sched-2026-08-26-shiny-new-idol-teaser-stream-2026-08-25-結果", "dedup_key": "shiny-new-idol-teaser-stream-2026-08-25",
+    "brand": "shiny", "subject": "シャニマス生配信で発表された近日登場アイドル", "kind": "結果", "note": "前日8/25 19時配信の発表内容を回収",
+    "reserved_on": "2026-08-25",
+    "facts": ["シャイニーカラーズ公式が8月24日付で近日登場予定のアイドルをチラ見せし、8月25日(火)19時からの生配信で発表予定と告知",
+              "番組タイトルは「シャニマス生配信 ～8月も意外と暑い～ズSP～」、出演は峯田茉優さん(八宮めぐる役)・前川涼子さん(大崎甜花役)・プロデューサー高山祐介さん",
+              "配信時点では正体は非公開、シャニソン側の最新情報・機能アップデートも予告されている"],
+    "title": "近日登場アイドルをチラ見せ・8月25日生配信で発表予定", "url": "https://x.com/imassc_official/status/2091782560091394410",
+    "source_type": "公式", "verify": "confirmed", "src_candidate_id": "202608242201-grok-22", "event_date": "2026-08-25"}
 
 
 def test_reservation_occurs_on(tmp: Path):
@@ -5911,7 +5923,10 @@ def test_reservation_occurs_on(tmp: Path):
     out = {"digest": [], "stories": [], "pending_add": [], "pending_remove": [],
            "reservations": [resv("終了", "2026-10-01"),                  # 06:00 前に終わる → 前日の号・出来事は翌日
                             resv("開始", "2026-10-02", "2026-10-01"),    # 開始は予約の日とずれない → 出来事の日を付けずに予約する
-                            resv("締切", "2026-10-02")]}                 # 締切のずれは翌日まで(しかも素材に無い日)→ 同上
+                            resv("締切", "2026-10-02"),                  # 締切のずれは翌日まで(しかも素材に無い日)→ 同上
+                            # 締切前(9/27)の答えの出来事の日(9/30)が素材に無い → 出来事の日だけ外す。予約は残す(締切 10/1 は
+                            # 素材にあり、締切前の4日前にあたる。監査指摘: 出来事の日を外したあとの照合が3日後までしか見ず、予約ごと捨てた)
+                            resv("締切前", "2026-09-30", "2026-09-27")]}
     ledger = {k: out[k] for k in assemble.LEDGER_KEYS}
     check(assemble.ledger_out_ok(ledger)
           and not assemble.ledger_out_ok(dict(ledger, reservations=[{k: v for k, v in resv("終了", "2026-10-01").items() if k != "occurs_on"}])),
@@ -5926,8 +5941,10 @@ def test_reservation_occurs_on(tmp: Path):
         assemble.classify_source = lambda u: "公式"
         clean, notes = assemble.validate("2026-09-02", out, posts, mats, inp)
         got = {r["kind"]: r.get("occurs_on") for r in clean["reservations"]}
-        check(got == {"終了": "2026-10-01", "開始": None, "締切": None} and sum("出来事の日" in n for n in notes) == 2,
-              f"予約の出来事の日の検め(種別とのずれ・素材の日付)が違う: {got} {notes}")
+        check(got == {"終了": "2026-10-01", "開始": None, "締切": None, "締切前": None} and sum("出来事の日" in n for n in notes) == 3
+              and not any("捨てた" in n for n in notes), f"予約の出来事の日の検め(種別とのずれ・素材の日付)が違う: {got} {notes}")
+        ok4, _ = assemble.validate("2026-09-02", dict(out, reservations=[resv("締切前", "2026-10-01", "2026-09-27")]), posts, mats, inp)
+        check([r.get("occurs_on") for r in ok4["reservations"]] == ["2026-10-01"], f"06:00 前の締切の4日前の締切前の出来事の日を採らない: {ok4}")
         assemble.apply("2026-09-02", 1, clean, posts, mats, False, stories=[])
         written = {}
         for sp in sorted((st / "scheduled").glob("*.json")):
@@ -5935,9 +5952,9 @@ def test_reservation_occurs_on(tmp: Path):
             check(pipelib.schema_errors(sp, text) == [], f"組版が書いた予約が書式(scheduled.schema)に合わない: {sp.name} {pipelib.schema_errors(sp, text)}")
             written.update({r["kind"]: r for r in json.loads(text)})
         end = written.get("終了") or {}
-        check(sorted(written) == ["終了", "締切", "開始"] and end.get("occurs_on") == "2026-10-01"
+        check(sorted(written) == ["終了", "締切", "締切前", "開始"] and end.get("occurs_on") == "2026-10-01"
               and end.get("facts") == mp["facts"] and end.get("reserved_on") == "2026-09-02"
-              and "occurs_on" not in written.get("開始", {}) and "occurs_on" not in written.get("締切", {}),
+              and not any("occurs_on" in written.get(k, {}) for k in ("開始", "締切", "締切前")),
               f"予約が落ちた・予約に出来事の日が残らない・合わない日を残した: {written}")
         # 2) 9/30 の号: 執筆と校閲の素材の event_date は出来事の日(10/1)。予約の日(9/30)も元の話題の開始日(9/1)も渡さない
         loaded = {r["kind"]: r for r in compose.load_scheduled("2026-09-30")}
@@ -5966,6 +5983,10 @@ def test_reservation_occurs_on(tmp: Path):
         check("event_date" not in old[mp["id"]] and old[ds["id"]].get("event_date") == "2026-09-30",
               f"古い予約の出来事の日: {[(k, v.get('event_date')) for k, v in old.items()]}")
         check(json.loads((old_dir / "stock" / "scheduled" / "2026-09-30.json").read_text(encoding="utf-8")) == [mp, ds], "古い予約のファイルを書き換えた")
+        # 前日 19時の配信の結果を翌日の号で伝える古い予約: 予約の日(8/26)は予約に書いていない → 渡さない(監査指摘)
+        (old_dir / "stock" / "scheduled" / "2026-08-26.json").write_text(json.dumps([REAL_SCHED_0826_RESULT], ensure_ascii=False), encoding="utf-8")
+        res26 = compose.load_scheduled("2026-08-26")
+        check(len(res26) == 1 and "event_date" not in res26[0], f"翌日に結果を伝える古い予約に予約の日・元の話題の日を渡した: {res26}")
     finally:
         (assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS, compose.ROOT, pipelib.ROOT,
          assemble.classify_source) = saved
@@ -6090,6 +6111,37 @@ def test_writer_children(tmp: Path):
         pipelib.ANOMALIES.clear()
 
 
+def test_restore_files(tmp: Path):
+    """記事を落としたあとの組み直しが失敗したときの巻き戻し(compose.restore_files)を実際に走らせる: 記事・号・台帳・予約が組み直しの
+    前の中身へバイト単位で戻り、増えた記事は消える。書式のファイルを素通しで書く経路なので、見張りの許可(WRITE_PASSTHROUGH)に理由を
+    書いて載せてある(載せていなければ全テストの終わりの見張りが落ちる。監査指摘: この経路を走らせるテストが無かった)"""
+    date = "2026-10-14"
+    (tmp / "docs" / "_posts").mkdir(parents=True)
+    (tmp / "docs" / "_editions").mkdir(parents=True)
+    (tmp / "stock" / "scheduled").mkdir(parents=True)
+    files = {"docs/_posts/2026-10-14-a.md": "---\n" + article_fm("a", date) + "---\n本文\n",
+             "docs/_editions/2026-10-14.md": "---\nnumber: 30\n---\n",
+             "stock/scheduled/2026-10-20.json": json.dumps([sched_row("s1", date)], ensure_ascii=False),
+             "stock/stories.yml": "- story_id: k\n"}
+    for rel, text in files.items():
+        (tmp / rel).write_text(text, encoding="utf-8")
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        snap = compose.snapshot_files([f"docs/_posts/{date}-*.md", f"docs/_editions/{date}.md", "stock/**/*", "stock/*"])
+        (tmp / "docs" / "_posts" / "2026-10-14-a.md").write_text("壊れた記事", encoding="utf-8")
+        (tmp / "docs" / "_editions" / "2026-10-14.md").unlink()
+        (tmp / "docs" / "_posts" / "2026-10-14-b.md").write_text("増えた記事", encoding="utf-8")
+        (tmp / "stock" / "scheduled" / "2026-10-20.json").write_text("[]", encoding="utf-8")
+        n = len(STRAY_WRITES)
+        compose.restore_files(snap)
+    finally:
+        compose.ROOT = saved
+    check(all((tmp / rel).read_text(encoding="utf-8") == text for rel, text in files.items())
+          and not (tmp / "docs" / "_posts" / "2026-10-14-b.md").exists() and len(STRAY_WRITES) == n,
+          f"組み直しの巻き戻しが戻らない・増えた記事が残る・許可の無い素通しの書き込み: {STRAY_WRITES[n:]}")
+
+
 def test_stray_governed_write_is_caught(tmp: Path):
     """見張り(_watch_governed_writes)が、本番のコードの素通しの書き込みを控え、write_checked・テストの下準備・書式の無いファイルは控えない。"""
     (tmp / "candidates").mkdir(parents=True)
@@ -6122,6 +6174,7 @@ def main() -> int:
     test_reminder_event_date(tmp / "red")
     test_reservation_occurs_on(tmp / "roo")
     test_writer_children(tmp / "wch")
+    test_restore_files(tmp / "rsf")
     test_check_output()
     test_render_and_length()
     test_earliest_date()

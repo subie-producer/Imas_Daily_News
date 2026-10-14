@@ -87,9 +87,10 @@ def reminder_event_date(row: dict, date: str) -> str | None:
     予約の日(ファイルの日付 = 記事を出す号)とは別: 06:00 より前に終わる締切・終了は前日の号に予約するので、予約の日を渡すと
     1日早い日付の記事になる(2026-10-14 監査指摘: 10/1 4:59 に終わる学マスのミッションパスの終了の予約(9/30)で、記事の
     event_date が 9/30 になり lint も通った)。組版は予約に出来事の日(occurs_on)を書く。
-    occurs_on の無い古い予約(2026-10-14 より前)は、予約の日と種別から決める: 締切前は3日後(締切日)、ほかは予約の日。ただし
-    予約の日とずれうる種別で、ずれた先の日(締切前は4日後、締切・終了は翌日)が予約に書いてあれば、どちらの日かをコードは決め
-    られないので None(素材に event_date を付けず、執筆が素材と予約の種別から決める)。
+    occurs_on の無い古い予約(2026-10-14 より前)は、予約の日と種別から決まる日(締切前は3日後の締切日、ほかは予約の日)を、
+    それが予約に書いてあり、ずれうる先の日(締切前は4日後、締切・終了は翌日)が書いていないときだけ渡す。ほかは、どの日かを
+    コードは字面から決められないので None(素材に event_date を付けず、執筆が素材と予約の種別から決める)。例: 8/25 19時の配信の
+    結果を翌日の号で伝える 8/26 の「結果」の予約は、予約に 8/26 が書いていない(監査指摘)。
     予約に写した元の話題の event_date(販売・受付の開始日)は渡さない: 書き手が写して1か月前の日付の記事になり、lint の鮮度検査で
     赤になった(実測 2026-10-12: 9/11 開始の予約受付の締切前の記事が event_date 9/11 で lint 赤)。元の話題の deadline も使わない:
     受付締切・入金期限・公演日など、予約が指す締切とは別の日のことがある(監査指摘: 10/18 の申込締切を指す 10/15 の予約で
@@ -100,8 +101,9 @@ def reminder_event_date(row: dict, date: str) -> str | None:
     lags = renderlib.RESERVATION_LAG.get(row.get("kind"), (0,))
     hay = " ".join([str(f) for f in row.get("facts") or []]
                    + [str(row.get(k) or "") for k in ("note", "title", "subject", "event_date", "deadline")])
-    if any(renderlib.date_mentioned((d + datetime.timedelta(days=n)).isoformat(), hay, renderlib.years_in(hay + " " + date))
-           for n in lags[1:]):
+    written = [renderlib.date_mentioned((d + datetime.timedelta(days=n)).isoformat(), hay, renderlib.years_in(hay + " " + date))
+               for n in lags]
+    if not written[0] or any(written[1:]):
         return None
     return (d + datetime.timedelta(days=lags[0])).isoformat()
 

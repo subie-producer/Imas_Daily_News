@@ -101,7 +101,7 @@ scripts/collect.py                   collect.py        scripts/publish.py
 
 - **素材同梱が原則**: 予約には元候補の title/url/source_type/facts/src_candidate_id を写す。発火日のパイプラインは古い candidates を一切読まないため、予約ファイルが唯一の素材になる(+当日の新観測と統合)。candidates は次号で消費されて終わる調査データ、scheduled は未来の紙面のための編集予約、と役割を分ける
 - 予約は原則変更しない(予約時点で何を知っていたかの記録=検証可能性)。日付未確定の追跡事項は `stock/pending.yml`(watchlist)に置き、日付が判明したら scheduled へ移す
-- **予約の日と出来事の日は別**(2026-10-14): ファイルの日付は記事を出す号の日。予約が指す出来事の日は `occurs_on` に持つ(締切前は締切の日、06:00 より前に終わる締切・終了は翌日)。組版のモデルが決め、コードは種別とのずれ(`renderlib.RESERVATION_LAG`)と素材に日付があることだけを検める。compose は素材の `event_date` を `occurs_on` に置き換えて執筆・校閲に渡す(`compose.reminder_event_date`)。`occurs_on` の無い古い予約は予約の日と種別から決め、ずれた先の日が予約に書いてあって決められないものは `event_date` を外して執筆に決めさせる
+- **予約の日と出来事の日は別**(2026-10-14): ファイルの日付は記事を出す号の日。予約が指す出来事の日は `occurs_on` に持つ(締切前は締切の日、06:00 より前に終わる締切・終了は翌日)。組版のモデルが決め、コードは種別とのずれ(`renderlib.RESERVATION_LAG`)と素材に日付があることだけを検める。compose は素材の `event_date` を `occurs_on` に置き換えて執筆・校閲に渡す(`compose.reminder_event_date`)。`occurs_on` の無い古い予約は、予約の日と種別から決まる日が予約に書いてあり、ずれうる先の日が書いていないときだけそれを渡し、ほか(字面から決められないもの)は `event_date` を外して執筆に決めさせる
 
 トリガー種別と意味:
 

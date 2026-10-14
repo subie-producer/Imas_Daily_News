@@ -710,9 +710,9 @@ def validate(date: str, out: dict, posts: list[dict], mats: dict, inp: dict) -> 
         c = mats[cid]
         hay = _norm(" ".join(list(c.get("facts") or []) + [str(c.get("event_date") or ""), str(c.get("deadline") or ""),
                                                            str(c.get("title") or "")]))
-        # 締切前(3日前)は締切日そのものが素材にあればよい
-        probe = [dt] + ([dt + datetime.timedelta(days=3)] if r.get("kind") == "締切前" else []) + \
-                ([dt + datetime.timedelta(days=1)] if r.get("kind") in ("締切", "終了") else [])
+        # 予約の日か、予約が指しうる出来事の日(締切前は締切日、06:00 前に終わる締切・終了は翌日。renderlib.RESERVATION_LAG)が
+        # 素材にあればよい(出来事の日の答えが外れても、この照合は同じ範囲で掛ける。監査指摘)
+        probe = [dt] + [dt + datetime.timedelta(days=n) for n in renderlib.RESERVATION_LAG.get(r["kind"], (0,)) if n]
         years = renderlib.years_in(hay + " " + str(c.get("published_date") or "") + " " + str(c.get("url") or "") + " " + date)
         # 予約が指す出来事の日(occurs_on)は予約の日とは別に持つ(2026-10-14 監査指摘: 10/1 4:59 に終わる催しを 9/30 に予約し、
         # 予約の日を出来事の日として執筆に渡していた)。予約の日からのずれが種別と合わない・素材に無い日は採らない

@@ -308,7 +308,7 @@ def norm_escapes(s: str) -> str:
 
 
 def page_key(url) -> tuple | None:
-    """同じページかを比べる形: ホスト(小文字。www.・m.・mobile. を外し、twitter.com は x.com)、ポート(既定の 80/443 は無し)、
+    """同じページかを比べる形: ホスト(小文字。www.・m.・mobile. を外し、twitter.com は x.com)、ポート(http の 80・https の 443 は無し)、
     パス(%エンコードの書き方を揃え(norm_escapes)、末尾の / を外す)、共有・計測用を外したクエリの並び(名前順。値はバイトのまま比べる)。
     scheme と # 以降は見ない。"""
     import urllib.parse
@@ -326,7 +326,8 @@ def page_key(url) -> tuple | None:
     # latin-1 はバイトと1対1(不正な UTF-8 の値を置換文字に潰して別の値を同じにしない)
     query = tuple(sorted((k, v) for k, v in urllib.parse.parse_qsl(norm_escapes(u.query), keep_blank_values=True, encoding="latin-1")
                          if not SHARE_QUERY.match(k) and k not in drop))
-    return host, (None if port in (80, 443) else port), path, query
+    # 既定のポートは scheme ごと(http の 443・https の 80 は既定ではなく、別のサービスを指す。2026-10-14 監査指摘)
+    return host, (None if (u.scheme.lower(), port) in (("http", 80), ("https", 443)) else port), path, query
 
 
 def same_page(a, b) -> bool:

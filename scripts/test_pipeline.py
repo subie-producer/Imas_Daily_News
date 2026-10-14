@@ -252,7 +252,7 @@ def test_check_output_unread_pages():
                         ("https://www.lantis.jp/release_1.html", {"https://lnk.to/1", "https://www.lantis.jp/release_1.html"}),
                         ("https://twitter.com/imas/status/1", {"https://x.com/imas/status/1?s=20"}),
                         ("https://x.com/imas/status/1?s=46&t=abc", {"https://x.com/imas/status/1?s=20"}),
-                        ("https://example.jp:443/a", {"https://example.jp/a"}),
+                        ("https://example.jp:443/a", {"https://example.jp/a"}), ("http://example.jp:80/a", {"https://example.jp/a"}),
                         ("https://example.jp/a%2fb", {"https://example.jp/a%2Fb"}), ("https://example.jp/%7Euser", {"https://example.jp/~user"}),
                         ("https://example.jp/s?q=商品", {"https://example.jp/s?q=%E5%95%86%E5%93%81"}),
                         ("https://example.jp/s?q=a+b", {"https://example.jp/s?q=a%20b"})):
@@ -270,6 +270,9 @@ def test_check_output_unread_pages():
                         ("https://shop.example.jp/item?id=1&id=2", {"https://shop.example.jp/item?id=1"}),
                         ("https://shop.example.jp/item?id=1&s=20", {"https://shop.example.jp/item?id=1"}),
                         ("https://a.example/1?id=2", set()), ("https://example.jp:8080/a", {"https://example.jp/a"}),
+                        # 既定のポートは scheme ごと: http の 443・https の 80 は既定ではない(2026-10-14 監査指摘)
+                        ("http://shop.example.jp:443/item", {"http://shop.example.jp:80/item"}),
+                        ("https://shop.example.jp:80/item", {"https://shop.example.jp/item"}),
                         ("https://example.jp/a%2Fb", {"https://example.jp/a/b"}), ("https://example.jp/a/b", {"https://example.jp/a%2Fb"}),
                         # 二重の %エンコード(%252F は「%2F」という文字列)・不正な UTF-8 の別のバイトは別のページ(2026-10-14 監査指摘)
                         ("https://example.jp/a%252Fb", {"https://example.jp/a%2Fb"}), ("https://example.jp/a%2Fb", {"https://example.jp/a%252Fb"}),
@@ -1499,6 +1502,40 @@ def test_rule_bench_checks_read_pages(tmp: Path):
         r = rule_bench.run_one(names[1], "ul")
         check(not r["pass"] and r["problems"] and any(link in x for x in r["shape_problems"]),
               f"読めないリンク先を出典にした答えを、形の不合格にしない: {r.get('problems')} {r.get('shape_problems')}")
+        # 書き直し(run_revise)も本番の revise_apply と同じ: 素材の外のページは、このセッションで読めたか、現在の稿の根拠(verified_facts)に
+        # あるときだけ根拠にできる(2026-10-14 監査指摘: run_revise の検算で記録を捨てても全テストが通った)
+        import yaml
+        rv_name = "revise-press-price-conflict-uses-official"
+        rv = copy.deepcopy(rule_bench.load_cases([rv_name])[rv_name])
+        (pn, post_text), = rv["posts"].items()
+        mt = re.match(r"\A---\n(.*?)\n---\n(.*)\Z", post_text, re.S)
+        fm = yaml.safe_load(mt.group(1))
+        draft_page, new_page = "https://shop.example.jp/figure/1", "https://unread.example.jp/figure"
+        fm["verified_facts"] = [{"id": "N1", "text": "予約特典はアクリル麻雀牌", "url": draft_page}]
+        rv["posts"] = {pn: "---\n" + compose.yaml_dump_keeping_strings(fm) + "---\n" + mt.group(2)}
+        paras = [re.match(r"(.*) <!-- (.*) -->$", x, re.S) for x in mt.group(2).strip().split("\n\n")]
+        blocks = [{"markdown": p_.group(1), "fact_ids": p_.group(2).split()} for p_ in paras]
+        rev = {"status": "ok", "decline_code": "", "decline_detail": "", "title": fm["title"], "title_fact_ids": fm["title_fact_ids"],
+               "lede": fm["lede"], "lede_fact_ids": fm["lede_fact_ids"], "tags": fm["tags"], "event_date": None, "addressed_issue_ids": ["I1"],
+               "new_facts": [{"id": "N1", "text": "予約特典はアクリル麻雀牌", "url": draft_page}],
+               "blocks": [{"markdown": blocks[0]["markdown"].replace("18,700", "19,800"), "fact_ids": ["F3", "F2", "F7", "N1"]}] + blocks[1:],
+               "sources": [{"url": s["url"], "label": s["label"]} for s in fm["sources"]]}
+        with_new = dict(rev, new_facts=rev["new_facts"] + [{"id": "N2", "text": "受注は11月まで", "url": new_page}],
+                        blocks=[dict(rev["blocks"][0], fact_ids=rev["blocks"][0]["fact_ids"] + ["N2"])] + rev["blocks"][1:],
+                        sources=rev["sources"] + [{"url": new_page, "label": "受注のページ"}])
+        saved_load = rule_bench.load_cases
+        try:
+            rule_bench.load_cases = lambda names=None: {rv_name: copy.deepcopy(rv)}
+            got = {}
+            for key, answer, fetched in (("写した", rev, []), ("未読", with_new, []), ("読めた", with_new, [new_page])):
+                writer_bench.write_one = lambda name, short, label, model, a=answer, f=fetched: {"case": name, "answer": copy.deepcopy(a), "exit": 0,
+                                                                                                 "fetched": list(f)}
+                r = rule_bench.run_one(rv_name, f"rv-{len(got)}")
+                got[key] = (r["pass"], any("fetch_page.py で本文を取れていない" in x for x in r["shape_problems"]), r["shape_problems"])
+        finally:
+            rule_bench.load_cases = saved_load
+        check({k: v[:2] for k, v in got.items()} == {"写した": (True, False), "未読": (False, True), "読めた": (True, False)},
+              f"書き直しの事例の検算が、読めたページ・現在の稿の根拠を本番と同じに扱わない: {got}")
         # writer_bench.write_one(本物)は子に記録の置き場を渡し、子が書いたページを返して、記録を消す
         writer_bench.write_one = saved[3]
         seen = {}

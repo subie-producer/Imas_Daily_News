@@ -7828,6 +7828,31 @@ def test_stray_governed_write_is_caught(tmp: Path):
     del STRAY_WRITES[n:]
 
 
+def test_compose_run_derive(tmp: Path):
+    """組版の派生(compose.run_derive): 成功は True、失敗(0 以外の終了・スクリプトが無い)は終了コードと最後の行を異常として申告して
+    False。組版は derive を run_derive だけで呼ぶ(監査指摘 2026-10-14: 5か所とも終了コードを見ず、derive が落ちても黙って lint へ進んだ)。"""
+    (tmp / "scripts").mkdir(parents=True)
+    fake = tmp / "scripts" / "derive.py"
+    saved, seen = (compose.ROOT, compose.anomaly), []
+    try:
+        compose.ROOT = tmp
+        compose.anomaly = lambda job, text: seen.append(text)
+        fake.write_text("import sys\nsys.exit(0)\n", encoding="utf-8")
+        ok = compose.run_derive("2026-10-05")
+        fake.write_text("import sys\nprint('途中', file=sys.stderr)\nprint('ranking が作れない', file=sys.stderr)\nsys.exit(3)\n",
+                        encoding="utf-8")
+        bad = compose.run_derive("2026-10-05")
+        fake.unlink()
+        missing = compose.run_derive("2026-10-05")
+    finally:
+        compose.ROOT, compose.anomaly = saved
+    check(ok is True and bad is False and missing is False and len(seen) == 2
+          and "終了 3" in seen[0] and "ranking が作れない" in seen[0] and "終了 2" in seen[1],
+          f"組版の派生の失敗を申告しない・成功を失敗にした: {ok} {bad} {missing} {seen}")
+    src = Path(compose.__file__).read_text(encoding="utf-8")
+    check(src.count('"derive.py"') == 1, "組版が派生(derive.py)を run_derive を通さずに呼んでいる(終了コードを見ない)")
+
+
 def test_derive_write(tmp: Path):
     """derive --write(号の最後の形)を見張りの下で通す: 書式で検めて書き、素通しの書き込みが無い(監査指摘: derive の書き込みを
     素通しに変えてもテストが通った)。組み立て途中の号(ranking が空)から、最後の形(ranking 8件・数・誕生日)を書く。"""
@@ -9649,6 +9674,7 @@ def main() -> int:
     test_run_codex_isolation(tmp / "rci")
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")
+    test_compose_run_derive(tmp / "crd")
     test_canonicalize_and_assign_ranks(tmp / "car2")
     test_rewrite_past_apply_answer(tmp / "rpa")
     test_slugify_format()

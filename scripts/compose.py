@@ -2358,6 +2358,23 @@ def load_story_facts() -> dict:
     return out
 
 
+def run_derive(date: str) -> bool:
+    """派生(derive --write)を走らせる。失敗(0 以外の終了・起動できない・時間切れ)は黙って進まず、理由(終了コードと最後の行)を
+    異常として申告し False を返す。最後の門はこのあとの lint(古い・途中の号は lint が止める)。以前は終了コードを見ず、derive が
+    落ちても lint の書式の誤りとしてしか見えなかった(監査指摘 2026-10-14)。"""
+    try:
+        r = subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
+                           cwd=ROOT, capture_output=True, text=True, timeout=300)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        anomaly("compose", f"{date}: 派生(derive)を走らせられない: {type(e).__name__}: {str(e)[:200]}")
+        return False
+    if r.returncode != 0:
+        last = ((r.stderr or r.stdout or "").strip().splitlines() or ["(出力なし)"])[-1][:300]
+        anomaly("compose", f"{date}: 派生(derive)が失敗(終了 {r.returncode}): {last}")
+        return False
+    return True
+
+
 def run_lint(date: str) -> tuple[int, str]:
     r = subprocess.run([sys.executable, str(ROOT / "scripts" / "lint.py"), "--base", "origin/main"],
                        capture_output=True, text=True, cwd=ROOT)
@@ -3588,8 +3605,7 @@ def main() -> int:
                           f"このまま進めても紙面に社説が載らない。人の判断が要る", ok=False)
 
     # 2. 機械算出の確定 + lint ゲート
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
-                   cwd=ROOT, capture_output=True, text=True)
+    run_derive(date)
     code, lint_out = run_lint(date)
     print(lint_out, flush=True)
     if code != 0:
@@ -3789,8 +3805,7 @@ def main() -> int:
                     revised_keys.setdefault((f, str(b.get("rule_id") or "")), []).append(str(b.get("quote") or ""))
         # 書き直しで落ちた記事(見送り)を written から外す
         written[:] = [a for a in written if (ROOT / "docs" / "_posts" / f"{date}-{a['slug']}.md").exists()]
-        subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
-                       cwd=ROOT, capture_output=True, text=True)
+        run_derive(date)
 
     # 3'. 往復の書き直し(lint 赤の修正・校閲の指摘)では書き手が新しい出典を引きうる。1b' の判定のあとなので、
     #     ここで掛け直さないと判定表に無い出典が未確認のまま発行される(監査指摘 2026-10-08)。
@@ -3850,8 +3865,7 @@ def main() -> int:
             errs = run_parallel(jobs)
             if errs:
                 raise RuntimeError("；".join(errs))
-            subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
-                            "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
+            run_derive(date)
             rounds += 1
             # 記事は往復で見終わっている。作り直したのは社説と digest なので、
             # 見直すのは社説と紙面担当(digest・主題の重複)。記事は見直さない
@@ -3945,8 +3959,7 @@ def main() -> int:
             # 「記事だけ欠けて digest は古いまま」という壊れた紙面が残る
             traceback.print_exc()
             restore_files(pre_assembly)
-            subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"),
-                            "--date", date, "--write"], cwd=ROOT, capture_output=True, text=True)
+            run_derive(date)
             dropped_by_review = []
             unresolved = [f"ブロック記事の除外処理が失敗({e})。紙面は組版直後の状態へ戻した"]
             break
@@ -3961,8 +3974,7 @@ def main() -> int:
     # **一面は動かさない**(インパクトで決めた枠であり、号スナップショットの
     # lead_slug が指しているため。ここで変えると組版と食い違う)
     assign_ranks(date, plan, written, keep_lead=True)
-    subprocess.run([sys.executable, str(ROOT / "scripts" / "derive.py"), "--date", date, "--write"],
-                   cwd=ROOT, capture_output=True, text=True)
+    run_derive(date)
 
     approved = review and review.get("verdict") == "approve"
     code, lint_out = run_lint(date)

@@ -161,15 +161,18 @@ def watch_read(res) -> bytes:
     # 1回の受信の待ち時間も、その時点の残り時間に合わせる(応答が途中で止まったとき、最初に決めた待ち時間まで待たない)。
     # 受信の socket を取れない応答では、urlopen に渡した待ち時間(残り時間と 20 秒の小さいほう)で切れる
     sock = getattr(getattr(getattr(res, "fp", None), "raw", None), "_sock", None)
+    if not (hasattr(sock, "settimeout") and hasattr(sock, "gettimeout")):
+        sock = None
+    cap = sock.gettimeout() if sock is not None else None      # urlopen が決めた1回の受信の上限(これより延ばさない)
     chunks = []
     read1 = getattr(res, "read1", None) or (lambda n: res.read(n))
     while True:
         left = DEADLINE - time.time()
         if left <= 0:
             raise TimeoutError("収集の締切を過ぎたので受信を打ち切った")
-        if sock is not None and hasattr(sock, "settimeout"):
+        if sock is not None:
             try:
-                sock.settimeout(left)
+                sock.settimeout(left if cap is None else min(cap, left))
             except OSError:
                 pass
         try:

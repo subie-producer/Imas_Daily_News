@@ -6771,6 +6771,9 @@ def test_collect_handover_deadline(tmp: Path):
             def settimeout(self, t):
                 self.timeout = t
 
+            def gettimeout(self):
+                return self.timeout
+
         class Stall(Drip):
             def __init__(self):
                 super().__init__()
@@ -6796,6 +6799,28 @@ def test_collect_handover_deadline(tmp: Path):
             collect.urllib.request.urlopen = saved_open
         check(took3 < 1.0 and "締切" in why,
               f"定点観測: 締切の直前に止まった応答を、最初の受信の待ち時間まで待った({took3:.1f}秒 {why!r})")
+        # 締切が遠いときは、1回の受信の上限(urlopen が決めた待ち時間。ここでは 0.15 秒)を残り時間で延ばさない
+        class Capped(Stall):
+            def __init__(self):
+                super().__init__()
+                self.fp.raw._sock.timeout = 0.15
+
+            def read1(self, n=-1):
+                t = self.fp.raw._sock.timeout
+                _t.sleep(min(t, 2.0))
+                if t < 2.0:
+                    raise TimeoutError("timed out")
+                return b""
+        collect.urllib.request.urlopen = lambda req, timeout=None: Capped()
+        try:
+            collect.DEADLINE = _t.time() + 5
+            t0 = _t.time()
+            _, why = saved["page_html_or_note"]("https://a.example/capped", False)
+            took4 = _t.time() - t0
+        finally:
+            collect.urllib.request.urlopen = saved_open
+        check(took4 < 1.0 and "TimeoutError" in why,
+              f"定点観測: 1回の受信の上限を、収集の締切までの残り時間で延ばした({took4:.1f}秒 {why!r})")
         # 締切の決め方
         deadline_of = getattr(collect, "collect_deadline", None)
         if deadline_of is None:

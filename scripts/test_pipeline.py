@@ -6709,9 +6709,10 @@ for rel, text in (step.get("touch") or {}).items():
         pathlib.Path(rel).write_text(text, encoding="utf-8")
 if step.get("answer") is not None:
     pathlib.Path(sys.argv[sys.argv.index("--output-last-message") + 1]).write_text(json.dumps(step["answer"], ensure_ascii=False), encoding="utf-8")
-if step.get("background"):      # 道具の実行を残して終わる(あとから書く。detach なら別のセッション・プロセスグループに抜ける)
-    import subprocess
-    subprocess.Popen([sys.executable, "-c", step["background"]], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+if step.get("background"):      # 道具の実行を残して終わる(あとから書く。detach なら別のセッション・プロセスグループに抜け、
+    import subprocess             # nodump なら /proc/<pid>/environ を読めなくする)
+    code = ("import ctypes; ctypes.CDLL(None).prctl(4, 0, 0, 0, 0)\n" if step.get("nodump") else "") + step["background"]
+    subprocess.Popen([sys.executable, "-c", code], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                      start_new_session=bool(step.get("detach")))
 time.sleep(step.get("sleep", 0))
 sys.exit(step.get("exit", 0))
@@ -6757,8 +6758,8 @@ def test_writer_children(tmp: Path):
                                    f"    time.sleep(0.05)\n")
     spec = {"write-probe": [{"answer": dict(base, title="**販売開始**", lede="**販売開始**する。")}, {"answer": base}],
             **{f"write-{s}": [{"answer": base}] for s in slugs[1:]},
-            # 正常終了して、別のセッションに抜けた道具を残す
-            "revise-probe": [{"answer": fixed, "background": late_write("delta", "revise"), "detach": True}],
+            # 正常終了して、別のセッションに抜け、環境を読めなくした道具を残す
+            "revise-probe": [{"answer": fixed, "background": late_write("delta", "revise"), "detach": True, "nodump": True}],
             # 記事を直接書き換え、ほかの記事も書き換え、新しい記事ファイルを作り、道具を残して異常終了
             "revise-alpha": [{"touch": {f"docs/_posts/{date}-alpha.md": "壊れた直書き", f"docs/_posts/{date}-delta.md": "よその記事も直書き",
                                         f"docs/_posts/{date}-zeta.md": "勝手に作った記事"}, "answer": fixed, "exit": 1,
@@ -6818,10 +6819,12 @@ def test_writer_children(tmp: Path):
             "write-fresh": [{"touch": {f"docs/_posts/{date}-fresh.md": "子が直接書いた稿", f"docs/_posts/{date}-alpha.md": "承認済みを直書き",
                                        f"docs/_posts/{date}-delta.md": None, f"docs/_posts/{date}-ghost.md": "勝手に作った記事"},
                              "answer": base, "background": late_write("probe", "reuse")}],
-            # 異常終了して、別のセッションに抜けた道具を残す(やり直しは正常)
+            # 異常終了して、別のセッションに抜け環境を読めなくした道具を残す(やり直しは正常)
             "write-late": [{"touch": {f"docs/_posts/{date}-gamma.md": "異常終了の直書き"}, "exit": 1, "background": late_write("alpha", "reuse"),
-                            "detach": True}, {"answer": base}],
-            "write-slow": [{"touch": {f"docs/_posts/{date}-beta.md": "時間切れの直書き"}, "answer": base, "sleep": 20}, {"answer": base}]})
+                            "detach": True, "nodump": True}, {"answer": base}],
+            # 時間切れになり、別のセッションに抜け環境を読めなくした道具を残す(やり直しは正常)
+            "write-slow": [{"touch": {f"docs/_posts/{date}-beta.md": "時間切れの直書き"}, "answer": base, "sleep": 20,
+                            "background": late_write("gamma", "reuse"), "detach": True, "nodump": True}, {"answer": base}]})
         spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
         before2 = {s: path(s).read_bytes() for s in slugs}
         plan2 = {"articles": [art(s) for s in slugs + ("fresh", "late", "slow")]}
@@ -6844,6 +6847,39 @@ def test_writer_children(tmp: Path):
         os.environ.pop("FAKE_CODEX_SPEC", None)
         compose.FACT_MAP.clear()
         pipelib.ANOMALIES.clear()
+
+
+def test_child_guard(tmp: Path):
+    """child_guard(執筆・書き直しの子の CLI を包む)を実際に走らせる: CLI の終了コードを返す。起動できなければ CANNOT_START で、compose は
+    直接起動したときと同じく FileNotFoundError にする。CLI が終わったら(SIGTERM で止められても)、CLI が残した道具の実行を、別のセッションに
+    抜けて環境を読めなくしたものまで止めてから終わる(2026-10-14 監査: 印で探す止め方では見落とし、控えへ戻したあとに記事を書き換えた)"""
+    import time
+    import child_guard
+    tmp.mkdir(parents=True, exist_ok=True)
+    guard = [sys.executable, str(compose.GUARD)]
+    check(subprocess.run(guard + ["sh", "-c", "exit 3"]).returncode == 3, "CLI の終了コードを返さない")
+    r = subprocess.run(guard + ["no-such-cli-imas-test"], capture_output=True, text=True)
+    check(r.returncode == child_guard.CANNOT_START and "起動できない" in r.stderr, f"起動できない CLI の終わり方: {r.returncode} {r.stderr[-120:]}")
+    try:
+        compose.guard_failed(subprocess.CompletedProcess([], child_guard.CANNOT_START), "test")
+        check(False, "起動できない CLI を、出力の読めない回として扱った(FileNotFoundError にしない)")
+    except FileNotFoundError:
+        pass
+    # 別のセッションに抜け、環境を読めなくし、あとから書く道具を残して終わる CLI(正常終了・SIGTERM で止められた)
+    for name, sleep in (("exit", 0), ("term", 30)):
+        out = tmp / f"left-{name}.txt"
+        tool = (f"import ctypes, time, pathlib; ctypes.CDLL(None).prctl(4, 0, 0, 0, 0); time.sleep(0.8); "
+                f"pathlib.Path({str(out)!r}).write_text('残った道具の書き込み')")
+        cli = (f"import subprocess, sys, time; subprocess.Popen([sys.executable, '-c', {tool!r}], start_new_session=True, "
+               f"stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL); time.sleep({sleep})")
+        p = subprocess.Popen(guard + [sys.executable, "-c", cli], start_new_session=True)
+        if sleep:
+            time.sleep(0.3)
+            compose.end_guarded(p)
+        else:
+            p.wait(timeout=10)
+        time.sleep(1.2)
+        check(not out.exists() and p.returncode is not None, f"CLI が残した道具の実行が child_guard のあとも書いた({name}): rc {p.returncode}")
 
 
 def test_restore_posts_skip(tmp: Path):
@@ -7203,6 +7239,7 @@ def main() -> int:
     test_reservation_occurs_on(tmp / "roo")
     test_writer_children(tmp / "wch")
     test_restore_posts_skip(tmp / "rps")
+    test_child_guard(tmp / "cg")
     test_restore_files_ledger(tmp / "rsfl")
     test_check_output()
     test_render_and_length()

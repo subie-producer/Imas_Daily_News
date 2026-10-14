@@ -6764,9 +6764,11 @@ def test_collect_handover_deadline(tmp: Path):
             collect.urllib.request.urlopen = saved_open
         check(took1 < 1.5 and "締切" in why and took2 < 1.5 and "締切" in err2,
               f"定点観測: 少しずつ届く応答を、収集の締切を越えて読み続けた(本文 {took1:.1f}秒 {why!r} / 一覧 {took2:.1f}秒 {err2!r})")
-        # 締切の直前に1回受信してから応答が止まっても、最初に決めた受信の待ち時間(ここでは 2 秒)まで待たない
+        # 応答の下の受信(socket から1回読む)の待ち時間: 応答の形を本物(http.client の応答 → BufferedReader → raw.readinto →
+        # socket)に合わせた偽物で確かめる。plan は受信ごとの (届くまでの秒, 中身)。待ち時間を越えれば時間切れ
         class Sock:
-            timeout = 2.0
+            def __init__(self, t):
+                self.timeout = t
 
             def settimeout(self, t):
                 self.timeout = t
@@ -6774,53 +6776,57 @@ def test_collect_handover_deadline(tmp: Path):
             def gettimeout(self):
                 return self.timeout
 
-        class Stall(Drip):
-            def __init__(self):
+        class Raw:
+            def __init__(self, plan, cap):
+                self._sock, self.plan = Sock(cap), list(plan)
+
+            def readinto(self, b):
+                delay, data = self.plan.pop(0) if self.plan else (0, b"")
+                t = self._sock.timeout
+                if t is not None and delay > t:
+                    _t.sleep(t)
+                    raise TimeoutError("timed out")
+                _t.sleep(delay)
+                b[:len(data)] = data
+                return len(data)
+
+        class Wire(Drip):       # read1 は下の受信を per 回まとめて呼ぶ(chunked の長さの行を1字ずつ読むのと同じ形)
+            def __init__(self, plan, cap, per=1):
                 super().__init__()
-                self.fp = type("F", (), {"raw": type("R", (), {"_sock": Sock()})()})()
+                self.fp = type("F", (), {})()
+                self.fp.raw, self.per = Raw(plan, cap), per
 
             def read1(self, n=-1):
-                self.n += 1
-                if self.n == 1:
-                    _t.sleep(0.25)
-                    return b"x"
-                t = self.fp.raw._sock.timeout
-                _t.sleep(min(t, 2.0))
-                if t < 2.0:
-                    raise TimeoutError("timed out")
-                return b""
-        collect.urllib.request.urlopen = lambda req, timeout=None: Stall()
-        try:
-            collect.DEADLINE = _t.time() + 0.3
-            t0 = _t.time()
-            _, why = saved["page_html_or_note"]("https://a.example/stall", False)
-            took3 = _t.time() - t0
-        finally:
-            collect.urllib.request.urlopen = saved_open
-        check(took3 < 1.0 and "締切" in why,
-              f"定点観測: 締切の直前に止まった応答を、最初の受信の待ち時間まで待った({took3:.1f}秒 {why!r})")
+                out = b""
+                for _ in range(self.per):
+                    buf = bytearray(64)
+                    k = self.fp.raw.readinto(buf)
+                    if not k:
+                        break
+                    out += bytes(buf[:k])
+                return out
+
+        def fetch_took(resp, deadline_in):
+            collect.urllib.request.urlopen = lambda req, timeout=None: resp
+            try:
+                collect.DEADLINE = _t.time() + deadline_in
+                t0 = _t.time()
+                _, why = saved["page_html_or_note"]("https://a.example/wire", False)
+                return _t.time() - t0, why
+            finally:
+                collect.urllib.request.urlopen = saved_open
+        # 締切の直前に1回受信してから応答が止まっても、最初に決めた受信の待ち時間(20 秒)まで待たない
+        took3, why3 = fetch_took(Wire([(0.25, b"x"), (20, b"")], 20.0), 0.3)
         # 締切が遠いときは、1回の受信の上限(urlopen が決めた待ち時間。ここでは 0.15 秒)を残り時間で延ばさない
-        class Capped(Stall):
-            def __init__(self):
-                super().__init__()
-                self.fp.raw._sock.timeout = 0.15
-
-            def read1(self, n=-1):
-                t = self.fp.raw._sock.timeout
-                _t.sleep(min(t, 2.0))
-                if t < 2.0:
-                    raise TimeoutError("timed out")
-                return b""
-        collect.urllib.request.urlopen = lambda req, timeout=None: Capped()
-        try:
-            collect.DEADLINE = _t.time() + 5
-            t0 = _t.time()
-            _, why = saved["page_html_or_note"]("https://a.example/capped", False)
-            took4 = _t.time() - t0
-        finally:
-            collect.urllib.request.urlopen = saved_open
-        check(took4 < 1.0 and "TimeoutError" in why,
-              f"定点観測: 1回の受信の上限を、収集の締切までの残り時間で延ばした({took4:.1f}秒 {why!r})")
+        took4, why4 = fetch_took(Wire([(2.0, b"")], 0.15), 5)
+        # 1回の read1 の中で何度も受信する応答(chunked の長さの行を少しずつ送る)も、受信のたびに締切で切る
+        took5, why5 = fetch_took(Wire([(0.1, b"1")] * 25, 20.0, per=30), 0.3)
+        check(took3 < 1.0 and "締切" in why3,
+              f"定点観測: 締切の直前に止まった応答を、最初の受信の待ち時間まで待った({took3:.1f}秒 {why3!r})")
+        check(took4 < 1.0 and "TimeoutError" in why4,
+              f"定点観測: 1回の受信の上限を、収集の締切までの残り時間で延ばした({took4:.1f}秒 {why4!r})")
+        check(took5 < 1.0 and "締切" in why5,
+              f"定点観測: 1回の読み込みの中で何度も受信する応答を、締切を越えて読み続けた({took5:.1f}秒 {why5!r})")
         # 締切の決め方
         deadline_of = getattr(collect, "collect_deadline", None)
         if deadline_of is None:

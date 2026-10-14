@@ -158,29 +158,37 @@ def watch_read(res) -> bytes:
     ごとにしか効かず、少しずつ届く応答は締切を越えて読み続けた。監査指摘 2026-10-14)。締切が無ければ今までどおり読む。"""
     if not DEADLINE:
         return res.read()
-    # 1回の受信の待ち時間も、その時点の残り時間に合わせる(応答が途中で止まったとき、最初に決めた待ち時間まで待たない)。
-    # 受信の socket を取れない応答では、urlopen に渡した待ち時間(残り時間と 20 秒の小さいほう)で切れる
-    sock = getattr(getattr(getattr(res, "fp", None), "raw", None), "_sock", None)
-    if not (hasattr(sock, "settimeout") and hasattr(sock, "gettimeout")):
-        sock = None
-    cap = sock.gettimeout() if sock is not None else None      # urlopen が決めた1回の受信の上限(これより延ばさない)
+    # 下の受信(socket から読む1回ごと)の待ち時間を、その時点の残り時間に合わせる。応答の読み方(chunked の長さの行を
+    # 1字ずつ読む等)によって1回の read1 の中で何度も受信するので、受信の入口(raw.readinto)で合わせる(監査指摘 2026-10-14)。
+    # 待ち時間は urlopen が決めた1回の受信の上限(20 秒)より延ばさない。受信の socket を取れない応答では、urlopen に渡した
+    # 待ち時間(残り時間と 20 秒の小さいほう)で切れる
+    raw = getattr(getattr(res, "fp", None), "raw", None)
+    sock = getattr(raw, "_sock", None)
+    if hasattr(raw, "readinto") and hasattr(sock, "settimeout") and hasattr(sock, "gettimeout"):
+        cap = sock.gettimeout()
+        inner = raw.readinto
+
+        def readinto(b):
+            left = DEADLINE - time.time()
+            if left <= 0:
+                raise TimeoutError("収集の締切を過ぎたので受信を打ち切った")
+            sock.settimeout(left if cap is None else min(cap, left))
+            try:
+                return inner(b)
+            except TimeoutError:
+                if deadline_passed():
+                    raise TimeoutError("収集の締切を過ぎたので受信を打ち切った") from None
+                raise
+        try:
+            raw.readinto = readinto
+        except AttributeError:
+            pass
     chunks = []
     read1 = getattr(res, "read1", None) or (lambda n: res.read(n))
     while True:
-        left = DEADLINE - time.time()
-        if left <= 0:
+        if deadline_passed():
             raise TimeoutError("収集の締切を過ぎたので受信を打ち切った")
-        if sock is not None:
-            try:
-                sock.settimeout(left if cap is None else min(cap, left))
-            except OSError:
-                pass
-        try:
-            b = read1(65536)
-        except TimeoutError:
-            if deadline_passed():
-                raise TimeoutError("収集の締切を過ぎたので受信を打ち切った") from None
-            raise
+        b = read1(65536)
         if not b:
             return b"".join(chunks)
         chunks.append(b)

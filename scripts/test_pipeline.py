@@ -6961,6 +6961,31 @@ def test_child_guard(tmp: Path):
               f"CLI が残した道具の実行が child_guard のあとも書いた({name}): rc {p.returncode} {st}")
 
 
+def test_child_tracker_edges(tmp: Path):
+    """ChildTracker と run_in_turn の境目(監査指摘 later):
+    - 始める前からの子は、起動時刻が同じ時計刻みでも止めない(止めると終了状態を横取りし、Popen が 0 を返す)
+    - 所属を確かめた、すでに終わった孤児も回収する(ゾンビを残さない)
+    - run_in_turn は、前の工程が時間切れで動いているあいだ、あとの工程を始めない"""
+    import time
+    tmp.mkdir(parents=True, exist_ok=True)
+    early = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(3)"])
+    tr = compose.ChildTracker().start()
+    tr.t0 = 0       # 起動時刻が始まりと同じ刻みになった場合を、いつでも起こす(時刻では見分けられない)
+    # 親が先に終わり、付け替わった子も終わる(ここの子のゾンビになる)
+    mid = subprocess.Popen([sys.executable, "-c", "import subprocess, sys; subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(0.2)'])"])
+    mid.wait()
+    time.sleep(0.6)
+    ok = tr.sweep()
+    zombies = [pid for pid, (s, ppid, _, _) in compose.proc_table().items() if ppid == os.getpid() and s == "Z"]
+    check(ok and early.poll() is None and zombies == [], f"始める前からの子を止めた・終わった孤児を回収しない: {early.poll()} {zombies}")
+    early.kill()
+    early.wait()
+    started: list = []
+    errs = compose.run_in_turn([("前", lambda: time.sleep(0.4)), ("あと", lambda: started.append(1))], timeout=0.05)
+    check(started == [] and any("始めない" in e for e in errs), f"前の工程が時間切れで動いているのに、あとの工程を始めた: {errs}")
+    time.sleep(0.5)
+
+
 def test_restore_posts_skip(tmp: Path):
     """控えへ戻す(compose.restore_posts)は、skip に渡した記事(呼び出し側が答えから書く・消す記事)には触らない: 控えにある記事の書き換えも、
     控えに無い新しい記事も、そのまま残す。ほかの記事だけを戻し、子が作った記事を消す(監査指摘: skip を壊してもテストが通った)"""
@@ -7319,6 +7344,7 @@ def main() -> int:
     test_writer_children(tmp / "wch")
     test_restore_posts_skip(tmp / "rps")
     test_child_guard(tmp / "cg")
+    test_child_tracker_edges(tmp / "cte")
     test_restore_files_ledger(tmp / "rsfl")
     test_check_output()
     test_render_and_length()

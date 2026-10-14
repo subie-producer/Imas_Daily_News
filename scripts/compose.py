@@ -2423,8 +2423,15 @@ def run_parallel(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[
 
 def run_in_turn(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[str]:
     """工程を1つずつ順に走らせる(失敗の扱いは run_parallel と同じ)。子の子孫を記録して止める工程(記事の書き直し)を、ほかに子を
-    起こす工程と並べないため(ChildTracker)。"""
-    return [e for job in jobs for e in run_parallel([job], timeout=timeout)]
+    起こす工程と並べないため(ChildTracker)。前の工程が時間切れでまだ動いていれば、あとの工程は始めない(並んでしまう。監査指摘)。"""
+    errs: list[str] = []
+    for k, job in enumerate(jobs):
+        got = run_parallel([job], timeout=timeout)
+        errs += got
+        if any(e.endswith("時間切れ(スレッドが終わっていない)") for e in got):
+            errs += [f"{n}: 前の工程({job[0]})が終わっていないので始めない" for n, _ in jobs[k + 1:]]
+            break
+    return errs
 
 
 def revise_prompt(date: str, art: dict, mats_in: list[dict], current: str, issues: list[dict]) -> str:
@@ -2855,6 +2862,7 @@ class ChildTracker:
         self.stop_ev = threading.Event()
         self.thread: threading.Thread | None = None
         self.t0 = 0
+        self.before: set[tuple[int, int]] = set()
         self.ok = Path("/proc").is_dir()
 
     def start(self) -> "ChildTracker":
@@ -2865,6 +2873,8 @@ class ChildTracker:
             self.t0 = int(float(Path("/proc/uptime").read_text().split()[0]) * os.sysconf("SC_CLK_TCK"))
         except (OSError, ValueError):
             self.t0 = 0
+        # 始める前からの子は孤児として扱わない(起動時刻は時計刻みなので、直前に生まれた子は t0 と同じ刻みになりうる。監査指摘)
+        self.before = {(pid, st) for pid, (_, ppid, _, st) in proc_table().items() if ppid == os.getpid()}
         self.thread = threading.Thread(target=self._run, daemon=True)
         self.thread.start()
         return self
@@ -2929,7 +2939,7 @@ class ChildTracker:
             table = self._poll()
             targets = {pid for pid, (s, ppid, pgrp, st) in table.items()
                        if (pid, st) in self.seen or pgrp in self.roots
-                       or (alone and ppid == me and st >= self.t0 and pid not in self.roots)}
+                       or (alone and ppid == me and st >= self.t0 and pid not in self.roots and (pid, st) not in self.before)}
             for mark in self.marks:
                 targets.update(live_procs(None, mark))
             kids: dict[int, list[int]] = {}
@@ -2941,12 +2951,14 @@ class ChildTracker:
                     if k not in targets:
                         targets.add(k)
                         todo.append(k)
-            targets = {pid for pid in targets if pid != me and pid in table and table[pid][0] not in ("Z", "X")}
-            for pid in killed:          # 止めた孤児(ここの子になったもの)を回収する
+            mine = {pid for pid in targets if pid != me and pid in table}
+            # 止めた孤児と、所属を確かめた終わった孤児(ここの子になったもの)を回収する(ゾンビを残さない。監査指摘)
+            for pid in killed | {q for q in mine if table[q][1] == me and table[q][0] in ("Z", "X") and q not in self.roots}:
                 try:
                     os.waitpid(pid, os.WNOHANG)
                 except (ChildProcessError, OSError):
                     pass
+            targets = {pid for pid in mine if table[pid][0] not in ("Z", "X")}
             if not targets:
                 # ほかに子を起こしうるスレッドがあれば、付け替わった孤児がこの束ねのものか確かめられないので、確かめたとは言わない
                 return alone

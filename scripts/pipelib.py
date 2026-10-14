@@ -1049,23 +1049,25 @@ def commit_and_push(branch: str, message: str, job: str, paths: list[str] | None
             notify(job, "git status 失敗(stage するファイルを列挙できない)", ok=False)
             return False
         if not found:
+            # 送れなかった前の commit は下で送る(ここで成功と返すと、push を拒まれた後の後始末が未送信の commit を残したまま
+            # 「確定した」と報告し、当番の取り込みは食い違いで止まった。監査指摘 2026-10-14 取り込みの監査)
             print("stage する変更なし(コミットせず)", flush=True)
-            return True
         paths = found
-    r = (git("--literal-pathspecs", "add", "-A", "--", *paths, check=False) if paths
-         else git("add", "-A", check=False))
-    if r.returncode != 0:
-        notify(job, f"git add 失敗: {r.stderr.strip()[:200]}", ok=False)
-        return False
-    if not git("status", "--porcelain").stdout.strip():
-        print("変更なし(コミットせず)", flush=True)
-    elif git("diff", "--cached", "--quiet", check=False).returncode == 0:
-        print("stage した変更なし(コミットせず)", flush=True)
-    else:
-        r = git("commit", "-m", message, check=False)
+    if paths != []:
+        r = (git("--literal-pathspecs", "add", "-A", "--", *paths, check=False) if paths
+             else git("add", "-A", check=False))
         if r.returncode != 0:
-            notify(job, f"git commit 失敗: {(r.stderr or r.stdout).strip()[:200]}", ok=False)
+            notify(job, f"git add 失敗: {r.stderr.strip()[:200]}", ok=False)
             return False
+        if not git("status", "--porcelain").stdout.strip():
+            print("変更なし(コミットせず)", flush=True)
+        elif git("diff", "--cached", "--quiet", check=False).returncode == 0:
+            print("stage した変更なし(コミットせず)", flush=True)
+        else:
+            r = git("commit", "-m", message, check=False)
+            if r.returncode != 0:
+                notify(job, f"git commit 失敗: {(r.stderr or r.stdout).strip()[:200]}", ok=False)
+                return False
     # 変更が無くても、前の回に commit して送れなかったもの(push を拒まれた・通信の失敗)があれば送り、届いたことを確かめてから
     # 成功と返す。以前は「変更なし」で送らずに True を返し、次の工程の checkout がその commit を外して素材が消えた(監査指摘 2026-10-14 ar9)
     why = send_branch(branch)

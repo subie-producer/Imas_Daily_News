@@ -5358,6 +5358,16 @@ def test_git_commit_push_checkout(tmp: Path):
         reject(False)
         ok = call(pipelib.commit_and_push, branch, "collect retry", "collect")
         check(ok is True and remote_tip() == head1, f"届いていない commit を送らずに成功と返した: {ok} / origin {remote_tip()[:10]} 手元 {head1[:10]}")
+        # 2b. 書く先を限った後始末(paths)で変更が無くても、届いていない commit を送ってから成功と返す
+        #     (監査指摘 2026-10-14 取り込みの監査: 限った確定の「変更なし」が送らずに成功と返した)
+        reject(True)
+        (work / "material-1b.txt").write_text("1b", encoding="utf-8")
+        check(call(pipelib.commit_and_push, branch, "collect 1b", "collect", ["material-*"]) is False, "push を拒まれたのに成功と返した(限った確定)")
+        head1b = g("rev-parse", "HEAD").stdout.strip()
+        reject(False)
+        ok = call(pipelib.commit_and_push, branch, "collect 1b retry", "collect", ["material-*"])
+        check(ok is True and remote_tip() == head1b,
+              f"限った確定で変更が無いとき、届いていない commit を送らずに成功と返した: {ok} / origin {remote_tip()[:10]} 手元 {head1b[:10]}")
         # 3. 次の工程の checkout は、送れない commit を origin に合わせて捨てない(止まる)。送れるようになれば送ってから進む
         reject(True)
         (work / "material-2.txt").write_text("2", encoding="utf-8")

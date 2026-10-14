@@ -190,15 +190,29 @@ def hard_deadline(t0: float, date: str) -> float:
     """締切の**絶対時刻**。発行日 06:00 の HANDOFF_MIN 前と、起動から COMPOSE_LIMIT_MIN の早いほう。
 
     起動からの相対時間だけで測ると、遅れて起動した日は発行時刻を越える(監査指摘)。
-    発行時刻を過ぎてからの手動再実行(その日の号をあとから出す)は、相対 120 分だけで測る。
+    発行時刻を過ぎてからの手動再実行(その日の号をあとから出す)は、相対 COMPOSE_LIMIT_MIN 分だけで測る。
+    「発行を過ぎたか」は実際の発行時刻(06:00)で見る。作業の締切(06:00 の HANDOFF_MIN 前)で見ると、05:53 の再起動が
+    「発行後」になって締切が 08:43 に延び、06:00 の発行を待たせた(監査指摘 2026-10-14)。06:00 より前の起動は、締切を
+    過ぎていても締切のまま(main が新しい作業を始めない)。
     """
     rel = t0 + COMPOSE_LIMIT_MIN * 60
     try:
         d = datetime.date.fromisoformat(date)
-        publish = datetime.datetime(d.year, d.month, d.day, 6, 0, tzinfo=JST).timestamp() - HANDOFF_MIN * 60
+        publish_at = datetime.datetime(d.year, d.month, d.day, 6, 0, tzinfo=JST).timestamp()
     except ValueError:
         return rel
-    return min(rel, publish) if publish > t0 else rel
+    return min(rel, publish_at - HANDOFF_MIN * 60) if t0 < publish_at else rel
+
+
+def too_late_to_start(t0: float, date: str) -> bool:
+    """締切(hard_deadline)を過ぎてから始まったか。過ぎていれば知らせて True(main は排他も取らず、新しい作業を始めない)。
+    06:00 の発行より前に始まった組版の締切は 05:52 のまま。始めると排他を持ち続け、06:00 の発行を待たせる(監査指摘 2026-10-14)"""
+    dl = hard_deadline(t0, date)
+    if time.time() < dl:
+        return False
+    notify("compose", f"{date}: 締切({datetime.datetime.fromtimestamp(dl, JST):%H:%M})を過ぎてから始まった。06:00 の発行を"
+                      "待たせないよう、新しい作業を始めずに終える(出し直すなら発行のあとに再実行する)", ok=False)
+    return True
 
 
 def time_left(t0: float) -> float:
@@ -2835,6 +2849,17 @@ def review_hint(date: str, name: str, notes_by_file: dict[str, list[str]]) -> st
     return hint
 
 
+def scope_hash(date: str, scope: str, manifest: dict[str, str]) -> str:
+    """校閲の担当が見る中身の指紋(manifest は review_manifest の形)。記事・社説はそのファイル、紙面全体は全記事と号スナップショット
+    (主題の重複・記事の漏れは、どの記事が変わっても変わりうる)。"""
+    if scope.startswith("article:"):
+        return manifest.get(f"docs/_posts/{scope.split(':', 1)[1]}", "")
+    if scope == "editorial":
+        return manifest.get(f"docs/_editorials/{date}.md", "")
+    seen = {k: v for k, v in manifest.items() if k.startswith(("docs/_posts/", "docs/_editions/"))}
+    return hashlib.sha256(json.dumps(seen, sort_keys=True).encode("utf-8")).hexdigest()
+
+
 def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                   editorial: bool = True, paper: bool = True,
                   carry: dict | None = None, findings: str = "", strict: bool = False,
@@ -2901,6 +2926,9 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                      (PROMPTS / "review-paper.md").read_text(encoding="utf-8")
                      .replace("{DATE}", date) + hint + again, "-", "paper"))
 
+    # 担当が見る中身の指紋を起動の前に採る。成功した担当だけ「この中身を検めた」と残す(checked)
+    from pipelib import review_manifest
+    at_start = review_manifest(date)
     t_review = time.time()
     merged = {"verdict": "approve", "blockers": [], "comments": []}
     failed: list[tuple[str, str]] = []   # (scope, 理由)。2回とも動かなかった担当
@@ -3017,6 +3045,16 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     # これまでに一度でも校閲できた担当。動かなかった担当の扱いを決めるのに使う
     reviewed_before = set((carry or {}).get("reviewed") or [])
     merged["reviewed"] = sorted(reviewed_before | seen)
+    # 担当ごとに、最後に成功したときに見た中身の指紋。巡の終わりの指紋(hashes)は担当が動いたかと関係なく採るので、動かなかった
+    # 担当の判定を引き継げるかはこれで決める(hashes で決めると、紙面担当が動かなかった巡の紙面を「検めた中身」と取り違え、
+    # 次の巡でまた動かなくても承認になった。監査指摘 2026-10-14)。checked の無い古い記録は hashes で代える
+    checked_before = (carry or {}).get("checked")
+    if not isinstance(checked_before, dict):
+        prev = (carry or {}).get("hashes") or {}
+        checked_before = {sc: scope_hash(date, sc, prev) for sc in reviewed_before}
+    now_manifest = review_manifest(date)
+    merged["checked"] = {sc: h for sc, h in {**checked_before, **{sc: scope_hash(date, sc, at_start) for sc in seen}}.items()
+                         if not sc.startswith("article:") or f"docs/_posts/{sc.split(':', 1)[1]}" in now_manifest}
     quota_hit = any(any(q.lower() in why.lower() for q in QUOTA) for _, why in failed)
     if failed and (quota_hit or len(failed) == len(jobs)):
         # **全滅か枠切れのときだけ、巡ごと「判定なし」にする。**呼び出し側はこれを見て
@@ -3030,25 +3068,31 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
         # 一部の担当だけが2回とも動かなかった。**巡は成立させる。**
         # - 一度も校閲できていない記事は、校閲なしで載せられないので、落とす指摘を付ける
         #   (号を止めるより、その1本を落とすほうが規程に合う)
-        # - 前に校閲できている記事・社説・紙面全体は、前回の指摘を引き継ぐだけでよい。ただし記事は**前の判定の時点から中身が
-        #   変わっていない**ときだけ(前の巡の記録の hashes と今の指紋を比べる)。書き直した記事の再校閲が動かないのに、担当の名前だけの
+        # - 前に校閲できている記事・社説・紙面全体は、前回の指摘を引き継ぐだけでよい。ただし**その担当が最後に検めた時点から中身が
+        #   変わっていない**ときだけ(checked と今の指紋を比べる)。書き直した記事の再校閲が動かないのに、担当の名前だけの
         #   「校閲済み」で補うと、変わった中身を誰も見ないまま承認になり、release も新しい指紋で通す(監査指摘)
-        from pipelib import article_hash
-        prev_hashes = (carry or {}).get("hashes") or {}
+        # - 紙面全体・社説は落とせないので、検めていない中身なら巡ごと判定なしにする(監査指摘 2026-10-14: 記事の担当が通り、
+        #   紙面担当だけ2回とも動かないと、紙面全体を誰も見ないまま approve になり release も通した)
         merged["failed"] = [f"{sc}: {why[:80]}" for sc, why in failed]
+        unchecked = []
         for sc, why in failed:
+            changed = checked_before.get(sc) != scope_hash(date, sc, now_manifest)
             if not sc.startswith("article:"):
+                if sc not in reviewed_before or changed:
+                    unchecked.append(sc)
                 continue
             name = sc.split(":", 1)[1]
-            path = ROOT / "docs" / "_posts" / name
-            changed = path.exists() and prev_hashes.get(f"docs/_posts/{name}") != article_hash(path)
+            changed = changed and (ROOT / "docs" / "_posts" / name).exists()
             if sc not in reviewed_before or changed:
                 merged["blockers"].append({"scope": sc, "file": f"docs/_posts/{name}",
                                            "issue": f"校閲が2回とも実行できなかった({why[:60]})。"
                                                     + ("前の校閲のあとに中身が変わっている。" if changed and sc in reviewed_before else "")
                                                     + "校閲できていない記事は紙面に載せない", "quote": ""})
-        print(f"校閲{round_no}巡目: {len(failed)}件の担当が2回とも動かなかった(巡は成立): "
+        print(f"校閲{round_no}巡目: {len(failed)}件の担当が2回とも動かなかった{'' if unchecked else '(巡は成立)'}: "
               + " / ".join(merged["failed"][:3]), flush=True)
+        if unchecked:
+            merged["verdict"] = "error"
+            print(f"校閲{round_no}巡目: 動かなかった担当({', '.join(unchecked)})がいまの中身を検めていない。承認にしない(判定なし)", flush=True)
     if strict and failed and merged["verdict"] != "error":
         # 承認を引き継いだ組み直し(--carry-review)の1巡目は、担当が1つでも動かなければ承認にしない
         # (前の承認で補うと、変わった中身や紙面全体を見ないまま承認になる。監査指摘)
@@ -3070,8 +3114,7 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
           f"({STAGE_MIN['校閲']:.0f}分)", flush=True)
     # approve が「どの中身」に対するものかを残す。release はこれと現在の指紋を照合し、
     # 校閲のあとに変わった紙面を古い approve で出さない(監査指摘)
-    from pipelib import review_manifest
-    merged["hashes"] = review_manifest(date)
+    merged["hashes"] = now_manifest
     (ROOT / "metrics" / f"review-{date}-{round_no}.json").write_text(
         json.dumps(merged, ensure_ascii=False, indent=1), encoding="utf-8")
     return merged
@@ -3155,6 +3198,8 @@ def main() -> int:
 
     # 同じ作業ツリーを collect/release/当番と同時に触らない(監査指摘)
     if not args.plan:
+        if too_late_to_start(t0, date):
+            return 1
         try:
             # 収集の当番が落とした新着を取り直している間は、その号の選定に間に合わせるため開始を待つ(上限40分。
             # pipelib.compose_lock_wait_min。それ以外は10分)。待つ間に当番が呼ばれても待つ分を見直し、収集から当番へ
@@ -3163,6 +3208,8 @@ def main() -> int:
                              yield_fn=collect_oncall_handover_pending)
         except JobLockTimeout as e:
             notify("compose", str(e), ok=False)
+            return 1
+        if too_late_to_start(t0, date):      # 排他を待つ間に締切を過ぎた
             return 1
     if not args.plan and not checkout_edition_branch(date, "compose"):
         return 1

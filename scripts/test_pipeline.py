@@ -734,6 +734,130 @@ def test_review_failed_changed_article(tmp: Path):
         compose.ROOT, pipelib.ROOT, release.ROOT, compose.subprocess.Popen = saved
 
 
+def test_review_unchecked_scope_not_approved(tmp: Path):
+    """紙面全体・社説の担当が2回とも動かなければ、その担当が**いまの中身を前に検めていた**ときだけ判定を引き継ぐ。初めて見る紙面・
+    検めたあとに変わった紙面を、記事の担当の承認や巡の終わりの指紋(hashes)で補って approve にしない。release も承認として通さない
+    (監査指摘 2026-10-14: 記事の担当が通り紙面担当だけ2回とも動かないと approve になった。紙面が変わった後の巡でも同じ)。"""
+    import release
+    d = "2099-01-03"
+    posts, eds = tmp / "docs" / "_posts", tmp / "docs" / "_editions"
+    for p in (posts, eds, tmp / "docs" / "_editorials", tmp / "metrics"):
+        p.mkdir(parents=True, exist_ok=True)
+    (posts / f"{d}-a.md").write_text("---\n" + article_fm("a", d, title="学マスの告知") + "---\n本文\n", encoding="utf-8")
+    ranking = "".join(f"- n: {i}\n  name: 名{i}\n  brand: cg\n  delta: new\n" for i in range(1, 9))
+
+    def set_paper(row: str) -> None:
+        (eds / f"{d}.md").write_text(
+            f"---\nnumber: 30\ndate: '{d}'\nweekday: 土\nissued_at: '{d}T06:00:00+09:00'\npages: 1\narticle_count: 1\ncorrected_count: 0\n"
+            f"lead_slug: a\ndigest:\n- label: 本日\n  rows:\n  - k: 発\n    t: {row}\n    d: ''\n    brand: cg\n    slug: a\n"
+            f"- label: 昨日\n  rows: []\n- label: 継続中\n  rows: []\n- label: 明日\n  rows: []\nranking:\n{ranking}birthdays: []\n---\n",
+            encoding="utf-8")
+    set_paper("学マスの告知")
+    fail: set[str] = set()       # 2回とも動かない担当(article / paper / editorial)
+    calls: list[str] = []
+
+    class FakeP:
+        def __init__(self, ok_):
+            self.ok, self.returncode, self.pid = ok_, (0 if ok_ else 1), 0
+
+        def communicate(self, timeout=None):
+            return ((json.dumps({"verdict": "approve", "blockers": [], "comments": []}), "") if self.ok else ("", "boom"))
+
+    def fake_popen(argv, **k):
+        text = Path(re.search(r"`([^`]+)`", argv[2]).group(1)).read_text(encoding="utf-8")
+        who = "paper" if "紙面全体**を見て" in text else "editorial" if "**社説**を校閲" in text else "article"
+        calls.append(who)
+        return FakeP(who not in fail)
+
+    def run(round_no: int, failing: set[str], **kw) -> tuple[dict, str]:
+        fail.clear(); fail.update(failing); calls.clear()
+        r = compose.claude_review(d, round_no, **kw)
+        return r, release.review_verdict(d)[0]
+
+    saved = (compose.ROOT, pipelib.ROOT, release.ROOT, compose.subprocess.Popen)
+    try:
+        compose.ROOT = pipelib.ROOT = release.ROOT = tmp
+        compose.subprocess.Popen = fake_popen
+        a_only = dict(targets=[f"{d}-a.md"], editorial=False, paper=True)
+        # 1巡目: 記事の担当は通り、紙面担当だけ2回とも動かない(一度も紙面を見ていない)
+        r1, v = run(1, {"paper"}, **a_only)
+        check(calls.count("paper") == 2, f"紙面担当をやり直していない: {calls}")
+        check(r1.get("verdict") != "approve" and v != "approve" and "paper" not in r1.get("checked", {}),
+              f"紙面担当が一度も動いていないのに承認した: {r1.get('verdict')} / release {v} / checked {sorted(r1.get('checked') or {})}")
+        # 2巡目: 紙面担当が動いて承認 → 3巡目: 同じ紙面で紙面担当が動かなければ、前の判定を引き継ぐ
+        r2, v = run(2, set(), **a_only, carry=r1)
+        check(r2.get("verdict") == "approve" and v == "approve" and "paper" in r2.get("checked", {}), f"紙面担当が動いたのに承認しない: {r2.get('verdict')} / {v}")
+        r3, v = run(3, {"paper"}, **a_only, carry=r2)
+        check(r3.get("verdict") == "approve" and v == "approve", f"前に検めた紙面と同じなのに、紙面担当の前の判定を引き継がない: {r3.get('verdict')} / {v}")
+        # 4巡目: 紙面(digest)が変わったあと紙面担当が動かない → 5巡目: 紙面はそのまま、また動かない(4巡目の hashes は変わった紙面を
+        # 指すが、紙面担当はそれを検めていない)
+        set_paper("学マスの告知(差し替え)")
+        r4, v = run(4, {"paper"}, **a_only, carry=r3)
+        check(r4.get("verdict") != "approve" and v != "approve", f"変わった紙面を、前の紙面の判定で承認した: {r4.get('verdict')} / release {v}")
+        r5, v = run(5, {"paper"}, **a_only, carry=r4)
+        check(r5.get("verdict") != "approve" and v != "approve",
+              f"紙面担当が検めていない紙面を、前の巡の指紋(hashes)と同じだからと承認した: {r5.get('verdict')} / release {v}")
+        # 社説も同じ: 一度も検めていない社説の担当が2回とも動かなければ承認しない
+        (tmp / "docs" / "_editorials" / f"{d}.md").write_text("---\n" + article_fm("ed", d, title="社説") + "---\n社説の本文\n", encoding="utf-8")
+        r6, v = run(6, {"editorial"}, targets=[f"{d}-a.md"], editorial=True, paper=False, carry=r3)
+        check("editorial" in calls and r6.get("verdict") != "approve" and v != "approve",
+              f"社説の担当が一度も動いていないのに承認した: {r6.get('verdict')} / release {v} / {calls}")
+        # 古い記録(checked が無い)からの引き継ぎは、巡の終わりの指紋(hashes)で代える: 同じ紙面なら引き継ぐ
+        (tmp / "docs" / "_editorials" / f"{d}.md").unlink()
+        old = {"verdict": "approve", "blockers": [], "comments": [], "reviewed": [f"article:{d}-a.md", "paper"],
+               "hashes": pipelib.review_manifest(d)}
+        r7, v = run(7, {"paper"}, **a_only, carry=old)
+        check(r7.get("verdict") == "approve" and v == "approve", f"古い記録の、同じ紙面への紙面担当の判定を引き継がない: {r7.get('verdict')} / {v}")
+    finally:
+        compose.ROOT, pipelib.ROOT, release.ROOT, compose.subprocess.Popen = saved
+
+
+def test_leave_tree_clean_partial(tmp: Path):
+    """途中終了の後始末は、compose の成果物のうち**実際に変わったファイル**(変更・削除・未追跡)だけを stage して commit/push する。
+    号を作る前に止まると、まだ無い成果物(号スナップショット・社説・予約)のパスで git add が pathspec エラーになり、計画や記録まで
+    残った(監査指摘 2026-10-14)。compose の成果物でない変更・無視するファイルは commit しない。"""
+    d = "2099-01-04"
+    branch = f"edition/{d}"
+    work, origin = tmp / "work", tmp / "origin.git"
+    g = lambda *a: subprocess.run(["git", *a], cwd=work, capture_output=True, text=True, check=True)
+    subprocess.run(["git", "init", "-q", "--bare", str(origin)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", branch, str(work)], check=True, capture_output=True)
+    g("config", "user.email", "t@example"); g("config", "user.name", "t")
+    for p in ("docs/_posts", "stock", "metrics", "scripts"):
+        (work / p).mkdir(parents=True)
+    (work / ".gitignore").write_text("metrics/work/\n", encoding="utf-8")
+    (work / "docs" / "_posts" / f"{d}-old.md").write_text("---\n" + article_fm("old", d) + "---\n前の実行の記事\n", encoding="utf-8")
+    (work / "stock" / "stories.yml").write_text("stories: []\n", encoding="utf-8")
+    (work / "scripts" / "other.py").write_text("x = 1\n", encoding="utf-8")
+    g("add", "-A"); g("commit", "-q", "-m", "fixture"); g("remote", "add", "origin", str(origin)); g("push", "-q", "-u", "origin", branch)
+    # 選定のあと、号を作る前に止まった: 計画(未追跡)・台帳(変更)・前の実行の記事の削除・作業ファイル(無視)・compose の成果物でない変更
+    (work / "metrics" / f"plan-{d}.json").write_text("{}\n", encoding="utf-8")
+    (work / "stock" / "stories.yml").write_text("stories: [x]\n", encoding="utf-8")
+    (work / "docs" / "_posts" / f"{d}-old.md").unlink()
+    (work / "metrics" / "work").mkdir()
+    (work / "metrics" / "work" / "p.md").write_text("依頼文\n", encoding="utf-8")
+    (work / "scripts" / "other.py").write_text("x = 2\n", encoding="utf-8")
+    notes: list[str] = []
+    saved = (compose.ROOT, pipelib.ROOT, compose.STARTED_ON, compose.STARTED_DATE, compose.notify, pipelib.notify)
+    try:
+        compose.ROOT = pipelib.ROOT = work
+        compose.STARTED_ON, compose.STARTED_DATE = branch, d
+        compose.notify = pipelib.notify = lambda job, msg, ok=True, **k: notes.append(msg) or True
+        compose._leave_tree_clean("テスト: 号を作る前に停止")
+    finally:
+        compose.ROOT, pipelib.ROOT, compose.STARTED_ON, compose.STARTED_DATE, compose.notify, pipelib.notify = saved
+    left = g("status", "--porcelain", "--untracked-files=all").stdout.splitlines()
+    committed = set(g("show", "--name-only", "--format=", "HEAD").stdout.split())
+    check(left == [" M scripts/other.py"], f"途中終了の後始末のあとに compose の成果物が残った/成果物でない変更まで commit した: {left} / {notes}")
+    check({f"metrics/plan-{d}.json", "stock/stories.yml", f"docs/_posts/{d}-old.md"} <= committed
+          and "scripts/other.py" not in committed and not any(c.startswith("metrics/work/") for c in committed),
+          f"変わった成果物(未追跡・変更・削除)だけを commit していない: {sorted(committed)}")
+    check(g("rev-parse", "HEAD").stdout == subprocess.run(["git", "rev-parse", branch], cwd=origin, capture_output=True, text=True).stdout,
+          "途中終了の commit を push していない")
+    check(not any("git add 失敗" in n or "commit/push できなかった" in n for n in notes), f"後始末の commit が失敗した: {notes}")
+    check(any("成果物ではない変更" in n and "scripts/other.py" in n for n in notes), f"成果物でない変更を知らせない: {notes}")
+
+
 def test_grok_deep_retry(tmp: Path):
     """深掘りで答えの無かった問いは、予算の範囲で1回だけ投げ直す。予算は1回目の配分と実際の検索回数の大きいほうを差し引いた残り。
     投げ直しが異常終了・書き出しが無いときは名指しで知らせる(監査指摘)。"""
@@ -2758,6 +2882,50 @@ def test_time_budget():
     finally:
         compose.STAGE_MIN.clear()
         compose.STAGE_MIN.update(saved)
+
+
+def test_deadline_publish_boundary():
+    """「発行を過ぎたか」は実際の発行時刻(06:00)で見る。05:52〜06:00 に始まった組版の締切は 05:52(06:00 の HANDOFF_MIN 前)のままで、
+    main は排他も取らず新しい作業を始めない。起動からの相対の締切は 06:00 以後の再実行だけ(監査指摘 2026-10-14: 05:53 の再起動で
+    締切が 08:43 に延び、06:00 の発行を待たせうる)。排他を待つ間に締切を過ぎたときも始めない。"""
+    import datetime as _dt
+    import types
+    d = "2026-10-14"
+    at = lambda h, m: _dt.datetime(2026, 10, 14, h, m, tzinfo=pipelib.JST).timestamp()
+    handoff = at(6, 0) - compose.HANDOFF_MIN * 60
+    for h, m in ((5, 51), (5, 52), (5, 53), (5, 59)):
+        got = compose.hard_deadline(at(h, m), d)
+        check(got == handoff, f"{h:02d}:{m:02d} 起動の締切が 05:52 でない: {_dt.datetime.fromtimestamp(got, pipelib.JST):%H:%M}")
+    check(compose.hard_deadline(at(6, 0), d) == at(6, 0) + compose.COMPOSE_LIMIT_MIN * 60, "06:00 以後の再実行の締切が起動からの相対でない")
+    clock = {"now": 0.0}
+    seen: list[str] = []
+
+    def fake_lock(*a, **k):
+        seen.append("lock")
+        clock["now"] += clock.get("wait", 0)
+        return object()
+
+    def fake_checkout(*a, **k):
+        seen.append("checkout")
+        return False                     # ここまで来たら打ち切る(締切の検査を通ったことだけを見る)
+    saved = (compose.time, compose.job_lock, compose.checkout_edition_branch, compose.notify, sys.argv)
+    notes: list[str] = []
+    try:
+        compose.time = types.SimpleNamespace(time=lambda: clock["now"], sleep=lambda s: None)
+        compose.job_lock, compose.checkout_edition_branch = fake_lock, fake_checkout
+        compose.notify = lambda job, msg, ok=True, **k: notes.append(msg) or True
+        sys.argv = ["compose.py", "--date", d, "--reuse-plan"]
+        for start, wait, want, what in ((at(5, 53), 0, [], "05:53 の再起動"),
+                                        (at(5, 40), 15 * 60, ["lock"], "05:40 に起動し、排他を待つ間に 05:55"),
+                                        (at(5, 0), 0, ["lock", "checkout"], "05:00 の起動")):
+            clock.update(now=start, wait=wait)
+            seen.clear(); notes.clear()
+            code = compose.main()
+            check(code == 1 and seen == want, f"{what}: 締切の前後で始める・始めないを取り違えた(通った工程 {seen})")
+            late = want != ["lock", "checkout"]
+            check(late == any("締切" in n and "始めず" in n for n in notes), f"{what}: 締切を過ぎて始めないことを知らせない/誤って知らせた: {notes}")
+    finally:
+        compose.time, compose.job_lock, compose.checkout_edition_branch, compose.notify, sys.argv = saved
 
 
 def test_x_anonymous_post_url():
@@ -6065,6 +6233,8 @@ def main() -> int:
     test_lost_post_notified_once(tmp / "lpn")
     test_grok_deep_retry(tmp / "gdr")
     test_review_failed_changed_article(tmp / "rfc")
+    test_review_unchecked_scope_not_approved(tmp / "rus")
+    test_leave_tree_clean_partial(tmp / "ltc")
     test_review_paper_defines_same_subject()
     test_official_topic_accepts_press()
     test_job_lock()
@@ -6088,6 +6258,7 @@ def main() -> int:
     test_assemble_judge()
     test_claude_traced(tmp / "ct")
     test_time_budget()
+    test_deadline_publish_boundary()
     test_clean_url_and_table()
     test_x_anonymous_post_url()
     test_x_anonymous_post_in_posts(tmp / "xap")

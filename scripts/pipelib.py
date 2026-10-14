@@ -900,12 +900,27 @@ def conflict_markers() -> list[str]:
     return bad
 
 
+def changed_paths(patterns: list[str]) -> list[str] | None:
+    """作業ツリーで変わったファイル(追跡中の変更・削除と、無視されていない未追跡)のうち、patterns に当たるもの。
+    patterns は git の pathspec と同じ読み方(glob の * は / もまたぐ。ディレクトリ名はその下全部)。git status が失敗したら None。"""
+    import fnmatch
+    r = git("status", "--porcelain=v1", "-z", "--untracked-files=all", "--no-renames", check=False)
+    if r.returncode != 0:
+        return None
+    hits = set()
+    for entry in r.stdout.split("\0"):
+        path = entry[3:]
+        if path and any(fnmatch.fnmatchcase(path, p) or path.startswith(p.rstrip("/") + "/") for p in patterns):
+            hits.add(path)
+    return sorted(hits)
+
+
 def commit_and_push(branch: str, message: str, job: str, paths: list[str] | None = None) -> bool:
     """成果物を commit して push する。**戻り値は「リモートに載ったか」**。
 
     以前は commit / push の失敗を通知するだけで戻り値が無く、呼び出し側は「コミット済み・clean」と
     して先へ進んでいた(監査指摘: fail-open)。失敗したら False を返し、呼び出し側が判断する。
-    `paths` を渡すとそのパスだけを stage する(渡さなければ全部。工程の途中終了時は必ず渡す)。
+    `paths`(glob 可)を渡すと、それに当たる変わったファイルだけを stage する(渡さなければ全部。工程の途中終了時は必ず渡す)。
     現在のブランチが `branch` でなければ何もしない(別のブランチに成果物を積まない)。
     """
     cur = git("branch", "--show-current", check=False).stdout.strip()
@@ -923,7 +938,18 @@ def commit_and_push(branch: str, message: str, job: str, paths: list[str] | None
         if rs.returncode != 0:
             notify(job, f"git reset 失敗(stage を空にできない): {rs.stderr.strip()[:200]}", ok=False)
             return False
-    r = git("add", "-A", "--", *paths, check=False) if paths else git("add", "-A", check=False)
+        # 渡されたパターンに当たる「変わったファイル」を列挙して、それだけを渡す。パターンをそのまま git add に渡すと、まだ無い成果物
+        # (号を作る前に止まった)で pathspec エラーになり、計画や記録まで確定できずに残った(監査指摘 2026-10-14)
+        found = changed_paths(paths)
+        if found is None:
+            notify(job, "git status 失敗(stage するファイルを列挙できない)", ok=False)
+            return False
+        if not found:
+            print("stage する変更なし(コミットせず)", flush=True)
+            return True
+        paths = found
+    r = (git("--literal-pathspecs", "add", "-A", "--", *paths, check=False) if paths
+         else git("add", "-A", check=False))
     if r.returncode != 0:
         notify(job, f"git add 失敗: {r.stderr.strip()[:200]}", ok=False)
         return False

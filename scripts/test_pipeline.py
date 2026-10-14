@@ -6709,9 +6709,10 @@ for rel, text in (step.get("touch") or {}).items():
         pathlib.Path(rel).write_text(text, encoding="utf-8")
 if step.get("answer") is not None:
     pathlib.Path(sys.argv[sys.argv.index("--output-last-message") + 1]).write_text(json.dumps(step["answer"], ensure_ascii=False), encoding="utf-8")
-if step.get("background"):      # 道具の実行を残して終わる(同じプロセスグループのまま、あとから書く)
+if step.get("background"):      # 道具の実行を残して終わる(あとから書く。detach なら別のセッション・プロセスグループに抜ける)
     import subprocess
-    subprocess.Popen([sys.executable, "-c", step["background"]], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.Popen([sys.executable, "-c", step["background"]], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                     start_new_session=bool(step.get("detach")))
 time.sleep(step.get("sleep", 0))
 sys.exit(step.get("exit", 0))
 '''
@@ -6756,7 +6757,8 @@ def test_writer_children(tmp: Path):
                                    f"    time.sleep(0.05)\n")
     spec = {"write-probe": [{"answer": dict(base, title="**販売開始**", lede="**販売開始**する。")}, {"answer": base}],
             **{f"write-{s}": [{"answer": base}] for s in slugs[1:]},
-            "revise-probe": [{"answer": fixed, "background": late_write("delta", "revise")}],     # 正常終了して道具を残す
+            # 正常終了して、別のセッションに抜けた道具を残す
+            "revise-probe": [{"answer": fixed, "background": late_write("delta", "revise"), "detach": True}],
             # 記事を直接書き換え、ほかの記事も書き換え、新しい記事ファイルを作り、道具を残して異常終了
             "revise-alpha": [{"touch": {f"docs/_posts/{date}-alpha.md": "壊れた直書き", f"docs/_posts/{date}-delta.md": "よその記事も直書き",
                                         f"docs/_posts/{date}-zeta.md": "勝手に作った記事"}, "answer": fixed, "exit": 1,
@@ -6816,8 +6818,9 @@ def test_writer_children(tmp: Path):
             "write-fresh": [{"touch": {f"docs/_posts/{date}-fresh.md": "子が直接書いた稿", f"docs/_posts/{date}-alpha.md": "承認済みを直書き",
                                        f"docs/_posts/{date}-delta.md": None, f"docs/_posts/{date}-ghost.md": "勝手に作った記事"},
                              "answer": base, "background": late_write("probe", "reuse")}],
-            "write-late": [{"touch": {f"docs/_posts/{date}-gamma.md": "異常終了の直書き"}, "exit": 1, "background": late_write("alpha", "reuse")},
-                           {"answer": base}],
+            # 異常終了して、別のセッションに抜けた道具を残す(やり直しは正常)
+            "write-late": [{"touch": {f"docs/_posts/{date}-gamma.md": "異常終了の直書き"}, "exit": 1, "background": late_write("alpha", "reuse"),
+                            "detach": True}, {"answer": base}],
             "write-slow": [{"touch": {f"docs/_posts/{date}-beta.md": "時間切れの直書き"}, "answer": base, "sleep": 20}, {"answer": base}]})
         spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
         before2 = {s: path(s).read_bytes() for s in slugs}

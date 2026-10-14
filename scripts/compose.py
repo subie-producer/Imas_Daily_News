@@ -2255,7 +2255,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
             with open(log_of(out_path), "w", encoding="utf-8") as lf:
                 procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, subprocess.Popen(
                     cmd + [prompt_file(date, f"write-{art['slug']}-{tries}", prompt)],
-                    stdout=lf, stderr=subprocess.STDOUT, text=True,
+                    stdout=lf, stderr=subprocess.STDOUT, text=True, env=child_env(out_path.name),   # 印は答えのファイル名(子ごとに一意)
                     stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True)))
         waited = []
         for art, src, prompt, out_path, fact_by_id, materials, tries, p in procs:
@@ -2265,7 +2265,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
             except subprocess.TimeoutExpired:
                 reap(p)              # 子(道具の実行)も落としてから答えのファイルを読む
                 timed_out = True
-            if not stop_leftovers(p):    # 正常終了・異常終了でも、残した道具の実行を止めてから控えへ戻す
+            if not stop_leftovers(p, out_path.name):    # 正常終了・異常終了でも、残した道具の実行を止めてから控えへ戻す
                 anomaly("compose", f"執筆の子 {art['slug']} が残した道具の実行を止められない(控えへ戻したあとに記事を書き換えうる)")
             waited.append((art, src, prompt, out_path, fact_by_id, materials, tries, p, timed_out))
         back = restore_posts(date, kept_posts, skip={ROOT / "docs" / "_posts" / f"{date}-{w[0]['slug']}.md" for w in waited})
@@ -2703,46 +2703,69 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     return "fixed", f"対応 {ans.get('addressed_issue_ids')}"
 
 
-def group_running(pgid: int) -> bool:
-    """プロセスグループ pgid に、まだ動いている(ゾンビでない)プロセスがあるか。"""
+# 執筆・書き直しの子(CLI)に渡す印の環境変数。子が起動した道具は環境を受け継ぐので、別のセッション・プロセスグループを作って
+# 抜けても印で見つかる。名前に KEY・SECRET・TOKEN を含めない(codex は道具に渡す環境から、それらを含む名前の変数を外す)
+CHILD_MARK = "IMAS_WRITER_RUN"
+
+
+def child_env(mark: str) -> dict:
+    """子に渡す環境: いまの環境に印(CHILD_MARK=mark)を足したもの。mark は子ごとに一意にする。"""
+    return dict(os.environ, **{CHILD_MARK: mark})
+
+
+def live_procs(pgid: int | None, mark: str = "") -> list[int]:
+    """動いている(ゾンビでない)プロセスのうち、プロセスグループが pgid のもの・環境に印 mark を持つもの(自分は除く)。"""
     proc = Path("/proc")
-    if not proc.is_dir():
+    if not proc.is_dir():           # /proc の無い環境ではプロセスグループだけを見る
+        if not pgid:
+            return []
         try:
             os.killpg(pgid, 0)
-            return True
+            return [pgid]
         except ProcessLookupError:
-            return False
+            return []
         except OSError:
-            return True
-    for st in proc.glob("[0-9]*/stat"):
+            return [pgid]
+    needle = f"{CHILD_MARK}={mark}\0".encode() if mark else None
+    found = []
+    for d in proc.glob("[0-9]*"):
         try:
-            f = st.read_text().rsplit(")", 1)[1].split()    # 状態・親・プロセスグループ …
-        except (OSError, IndexError):
+            pid = int(d.name)
+            if pid == os.getpid():
+                continue
+            f = (d / "stat").read_text().rsplit(")", 1)[1].split()     # 状態・親・プロセスグループ …
+            if len(f) < 3 or f[0] in ("Z", "X"):
+                continue
+            if (pgid and f[2] == str(pgid)) or (needle and needle in (d / "environ").read_bytes()):
+                found.append(pid)
+        except (OSError, ValueError, IndexError):
             continue
-        if len(f) > 2 and f[2] == str(pgid) and f[0] not in ("Z", "X"):
-            return True
-    return False
+    return found
 
 
-def stop_leftovers(p, grace: float = 3.0) -> bool:
-    """子(start_new_session で起動した CLI)が残した道具の実行(同じプロセスグループ)を止め、無くなったのを確かめる。
-    CLI が正常終了・異常終了しても残りうる。残したまま記事を控えへ戻すと、戻したあとに書き換えられる(2026-10-14 監査: 1.5秒後に
-    承認済みの記事を書き換える道具を残して終了した子で再現)。確かめられたら True。"""
+def stop_leftovers(p, mark: str = "", grace: float = 3.0) -> bool:
+    """子(start_new_session で起動した CLI)が残した道具の実行を止め、無くなったのを確かめる。止めるのは、子のプロセスグループ
+    (pgid = 子の pid)と、子に渡した印(mark。child_env)を環境に持つプロセス(別のセッションを作って抜けた道具も含む)。
+    CLI が正常終了・異常終了しても道具は残りうる。残したまま記事を控えへ戻すと、戻したあとに書き換えられる(2026-10-14 監査:
+    承認済みの記事をあとから書き換える道具を、同じグループ・別のセッションに残して終了した子で再現)。確かめられたら True。"""
     pid = getattr(p, "pid", None)
-    if not isinstance(pid, int) or pid <= 1:      # 0 は自分のプロセスグループを指す。グループを持たない子には何もしない
+    pgid = pid if isinstance(pid, int) and pid > 1 else None    # 0 は自分のプロセスグループを指す。グループを持たない子は見ない
+    if pgid is None and not mark:
         return True
-    try:
-        os.killpg(pid, signal.SIGKILL)
-    except ProcessLookupError:
-        return True
-    except OSError:
-        return False
+    has_proc = Path("/proc").is_dir()
     end = time.monotonic() + grace
-    while group_running(pid):
+    while True:
+        left = live_procs(pgid, mark)
+        if not left:
+            return True
         if time.monotonic() >= end:
             return False
+        for q in left:              # 見つけたプロセスだけを止める(/proc が無ければグループごと)
+            try:
+                os.kill(q, signal.SIGKILL) if has_proc else os.killpg(q, signal.SIGKILL)
+            except OSError:
+                pass
         time.sleep(0.05)
-    return True
 
 
 def posts_snapshot(date: str) -> dict[Path, bytes]:
@@ -2823,7 +2846,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                      "--output-last-message", out_name, "--output-schema", str(schema_out),
                      prompt_file(date, f"revise-{art['slug']}", prompt)],
                     stdout=lf, stderr=subprocess.STDOUT, text=True, stdin=subprocess.DEVNULL, cwd=ROOT,
-                    start_new_session=True)))
+                    env=child_env(Path(out_name).name), start_new_session=True)))     # 印は答えのファイル名(子ごとに一意)
         waited = []
         for art, path, fact_by_id, materials, issues, out_path, p in procs:
             timed_out = False
@@ -2832,7 +2855,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
             except subprocess.TimeoutExpired:
                 reap(p)              # 子(道具の実行)も落としてから答えのファイルを読む
                 timed_out = True
-            if not stop_leftovers(p):    # 正常終了・異常終了でも、残した道具の実行を止めてから控えへ戻す
+            if not stop_leftovers(p, out_path.name):    # 正常終了・異常終了でも、残した道具の実行を止めてから控えへ戻す
                 anomaly("compose", f"書き直しの子 {art['slug']} が残した道具の実行を止められない(控えへ戻したあとに記事を書き換えうる)")
             waited.append((art, path, fact_by_id, materials, issues, out_path, p, timed_out))
         back = restore_posts(date, kept_posts)

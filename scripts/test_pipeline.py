@@ -6285,6 +6285,13 @@ def test_session_escaped_and_term(tmp: Path):
             pipelib.stop_tree(peers[0].pid, root=peers[0].pid)     # 頭でない(自分のグループの)子: グループは無く、辿るのは子からだけ
             check(not _pid_alive(peers[0].pid) and _pid_alive(peers[1].pid),
                   "自分を指す偽の対象・グループの頭でない pid の回収で、無関係な子を止めた(または対象を止めない)")
+            # 頭でない子が、兄弟(別のグループの頭)のグループに入っている: その子だけを止め、兄弟のグループには広げない
+            sib = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"], process_group=0)
+            kid = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"], process_group=sib.pid)
+            peers += [sib, kid]
+            pipelib.stop_tree(kid.pid, root=kid.pid)
+            check(not _pid_alive(kid.pid) and _pid_alive(sib.pid),
+                  "頭でない子の回収で、その子が入った兄弟のグループ(自分のものと分からないグループ)まで止めた")
     finally:
         for q in peers:
             if q.poll() is None:
@@ -6757,6 +6764,38 @@ def test_collect_handover_deadline(tmp: Path):
             collect.urllib.request.urlopen = saved_open
         check(took1 < 1.5 and "締切" in why and took2 < 1.5 and "締切" in err2,
               f"定点観測: 少しずつ届く応答を、収集の締切を越えて読み続けた(本文 {took1:.1f}秒 {why!r} / 一覧 {took2:.1f}秒 {err2!r})")
+        # 締切の直前に1回受信してから応答が止まっても、最初に決めた受信の待ち時間(ここでは 2 秒)まで待たない
+        class Sock:
+            timeout = 2.0
+
+            def settimeout(self, t):
+                self.timeout = t
+
+        class Stall(Drip):
+            def __init__(self):
+                super().__init__()
+                self.fp = type("F", (), {"raw": type("R", (), {"_sock": Sock()})()})()
+
+            def read1(self, n=-1):
+                self.n += 1
+                if self.n == 1:
+                    _t.sleep(0.25)
+                    return b"x"
+                t = self.fp.raw._sock.timeout
+                _t.sleep(min(t, 2.0))
+                if t < 2.0:
+                    raise TimeoutError("timed out")
+                return b""
+        collect.urllib.request.urlopen = lambda req, timeout=None: Stall()
+        try:
+            collect.DEADLINE = _t.time() + 0.3
+            t0 = _t.time()
+            _, why = saved["page_html_or_note"]("https://a.example/stall", False)
+            took3 = _t.time() - t0
+        finally:
+            collect.urllib.request.urlopen = saved_open
+        check(took3 < 1.0 and "締切" in why,
+              f"定点観測: 締切の直前に止まった応答を、最初の受信の待ち時間まで待った({took3:.1f}秒 {why!r})")
         # 締切の決め方
         deadline_of = getattr(collect, "collect_deadline", None)
         if deadline_of is None:

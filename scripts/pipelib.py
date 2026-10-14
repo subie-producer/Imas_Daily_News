@@ -646,12 +646,16 @@ def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5, mark: 
     # グループ pgid が自分のものか: 生きている頭(この process の子)がいる、または印を受け継いだメンバーがいる
     mine = root is not None or any(table[q][1] == pgid for q in marked if q in table)
     for _ in range(50):
-        groups = (({pgid} if mine else set()) | {table[q][1] for q in caught if q in table}) - {own, 0}
-        found = {q for q, (_, pg, _) in table.items() if pg in groups} | caught
+        marked = _proc_marked(table, mark) if mark else set()
+        # 止めたプロセスのグループに広げるのは、そのグループが自分のものと分かるときだけ: グループの頭を止めた(この
+        # セッションの子孫が作ったグループ)か、印を受け継いだメンバーがいる。分からないグループ(頭でない子が入った、ほかの親の
+        # グループ)は広げない。止めたプロセス自身は下で1つずつ止める
+        trusted = {table[q][1] for q in marked if q in table}
+        groups = (({pgid} if mine else set())
+                  | {g for g in (table[q][1] for q in caught if q in table) if g in caught or g in trusted}) - {own, 0}
+        found = {q for q, (_, pg, _) in table.items() if pg in groups} | caught | marked
         if root and root in table:
             found.add(root)
-        if mark:
-            found |= _proc_marked(table, mark)
         kids: dict[int, list[int]] = {}
         for q, (pp, _, _) in table.items():
             kids.setdefault(pp, []).append(q)
@@ -671,8 +675,8 @@ def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5, mark: 
                 pass
         caught |= new
         table = _proc_table() or {}
-    # 止めたプロセスのいるグループにだけ送る(誰もいないグループの番号は再利用されうる)
-    for g in {pg for q, (_, pg, _) in table.items() if q in caught} - {own, 0}:
+    # 自分のものと分かったグループのうち、止めたプロセスのいるグループにだけ送る(誰もいないグループの番号は再利用されうる)
+    for g in {pg for q, (_, pg, _) in table.items() if q in caught} & groups:
         try:
             os.killpg(g, signal.SIGKILL)
         except OSError:

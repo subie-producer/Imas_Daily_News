@@ -158,12 +158,26 @@ def watch_read(res) -> bytes:
     ごとにしか効かず、少しずつ届く応答は締切を越えて読み続けた。監査指摘 2026-10-14)。締切が無ければ今までどおり読む。"""
     if not DEADLINE:
         return res.read()
+    # 1回の受信の待ち時間も、その時点の残り時間に合わせる(応答が途中で止まったとき、最初に決めた待ち時間まで待たない)。
+    # 受信の socket を取れない応答では、urlopen に渡した待ち時間(残り時間と 20 秒の小さいほう)で切れる
+    sock = getattr(getattr(getattr(res, "fp", None), "raw", None), "_sock", None)
     chunks = []
     read1 = getattr(res, "read1", None) or (lambda n: res.read(n))
     while True:
-        if deadline_passed():
+        left = DEADLINE - time.time()
+        if left <= 0:
             raise TimeoutError("収集の締切を過ぎたので受信を打ち切った")
-        b = read1(65536)
+        if sock is not None and hasattr(sock, "settimeout"):
+            try:
+                sock.settimeout(left)
+            except OSError:
+                pass
+        try:
+            b = read1(65536)
+        except TimeoutError:
+            if deadline_passed():
+                raise TimeoutError("収集の締切を過ぎたので受信を打ち切った") from None
+            raise
         if not b:
             return b"".join(chunks)
         chunks.append(b)

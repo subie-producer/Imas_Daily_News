@@ -4636,7 +4636,8 @@ def test_git_commit_push_checkout(tmp: Path):
     try:
         pipelib.ROOT = work
         pipelib.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
-        pipelib.escalate = lambda stage, d, reason, **k: called.append((stage, d, reason)) or True
+        # 当番へは止まった工程の再実行つきで渡す(rerun の実効値まで控える。組版の終わりの診断は再実行なし)
+        pipelib.escalate = lambda stage, d, reason, rerun=True, **k: called.append((stage, d, reason, rerun)) or True
         # 1. push を拒まれたら False(commit は手元に残る)
         reject(True)
         (work / "material-1.txt").write_text("1", encoding="utf-8")
@@ -4653,9 +4654,12 @@ def test_git_commit_push_checkout(tmp: Path):
         check(call(pipelib.commit_and_push, branch, "collect 2", "collect") is False, "push を拒まれたのに成功と返した(2回目)")
         head2 = g("rev-parse", "HEAD").stdout.strip()
         g("checkout", "-q", "main")      # 次の工程は別のブランチにいることもある
+        called.clear()
         ok = call(pipelib.checkout_edition_branch, date, "compose")
         check(ok is False and g("rev-parse", branch).stdout.strip() == head2,
               f"送れない commit を checkout で捨てた / 止まらなかった: {ok} / {g('rev-parse', branch).stdout.strip()[:10]} ≠ {head2[:10]}")
+        check([(c[0], c[1], c[3]) for c in called] == [("compose", date, True)],
+              f"送れない commit で止めたことを、再実行つきで当番へ渡さない: {[(c[0], c[1], c[3]) for c in called]}")
         reject(False)
         ok = call(pipelib.checkout_edition_branch, date, "compose")
         check(ok is True and (work / "material-2.txt").exists() and remote_tip() == head2,
@@ -4696,8 +4700,9 @@ def test_git_commit_push_checkout(tmp: Path):
                   and g("branch", "--show-current").stdout.strip() == branch,
                   f"{job}: main との衝突のあと戻さない・止まらない: {ok} / merge 中 {merging} / {status!r}")
         check(any(not ok_ and "shared.txt" in m for m, ok_ in notes), f"衝突したファイルを名指しで異常にしない: {notes}")
-        check([c[:2] for c in called] == [("compose", date), ("collect", date)] and all("shared.txt" in c[2] for c in called),
-              f"衝突で止めたことを当番へ渡さない: {[c[:2] for c in called]}")
+        check([(c[0], c[1], c[3]) for c in called] == [("compose", date, True), ("collect", date, True)]
+              and all("shared.txt" in c[2] for c in called),
+              f"衝突で止めたことを再実行つきで当番へ渡さない: {[(c[0], c[1], c[3]) for c in called]}")
         # merge --abort で戻らなくても、取り込む前の commit へ戻してから止まる
         real_git = pipelib.git
         pipelib.git = lambda *a, check=True: (subprocess.CompletedProcess(["git", *a], 128, "", "abort failed (test)")

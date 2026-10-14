@@ -49,7 +49,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author)
 # モデル・道具のセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
-from pipelib import exit_on_term, finish_group, next_slot_end, run_group, start_group, stop_groups
+from pipelib import STOPPING, exit_on_term, finish_group, next_slot_end, run_group, start_group, stop_groups
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
@@ -115,6 +115,8 @@ STATE_PATH = ROOT / "stock" / "watch-state.json"
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
 # 収集のモデル・道具のセッションを打ち切る絶対時刻(epoch 秒。collect_deadline で main が起動時に決める)。None なら締切なし
 DEADLINE: float | None = None
+# 定点観測の facts 化を、収集の締切で始めなかった・打ち切った(claude_exec の戻り。読めなかった None とは別で、回数に数えない)
+DEADLINE_CUT = object()
 
 
 def collect_deadline(oncall_rerun: bool, now: datetime.datetime | None = None) -> float | None:
@@ -334,9 +336,15 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
     batches = [new_items[i:i + WATCH_BATCH] for i in range(0, len(new_items), WATCH_BATCH)]
     cands, attempted = [], set()
     with ThreadPoolExecutor(max_workers=max(1, WATCH_PARALLEL)) as ex:
-        for got, tried in ex.map(lambda b: facts_batch(b, claude_call, state, oncall_rerun), batches):
-            cands += got
-            attempted |= tried
+        try:
+            for got, tried in ex.map(lambda b: facts_batch(b, claude_call, state, oncall_rerun), batches):
+                cands += got
+                attempted |= tried
+        except BaseException:
+            # 中断(SIGTERM・例外)では、まだ始めていないバッチを取り消す(後始末のあとに次のバッチが CLI を起動しない。
+            # 走っているバッチの起動は STOPPING が断る。監査指摘 2026-10-14)
+            ex.shutdown(wait=False, cancel_futures=True)
+            raise
     return finish_watch(new_items, attempted, found_by_source, stats, state, cands,
                         retried_given_up={it["url"] for it in state.get("_given_up", []) if isinstance(it, dict)} if oncall_rerun else set())
 
@@ -347,8 +355,8 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
     if batch and claude_call:
         blobs = []
         for it in batch:
-            if deadline_passed():
-                break       # 収集の締切を過ぎたら本文も取らない(下で、このバッチを始めずに未処理の列へ残す)
+            if deadline_passed() or STOPPING.is_set():
+                break       # 収集の締切を過ぎた・工程を終えるところなら本文も取らない(下で、このバッチを始めずに未処理の列へ残す)
             t, why = page_html_or_note(it["url"], it["csr"])
             # 本文の切り詰めは facts の情報量に直結する。2500字にしていたとき、
             # 本文8,219字のページから facts を359字しか起こせていなかった
@@ -362,14 +370,15 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
                else f"- 本文: (取得できず{'(' + b['render_error'][:200] + ')' if b['render_error'] else ''}。URL を WebFetch で読むこと)")
             for i, b in enumerate(blobs))
         prompt = render_prompt("watch-facts", RULES=COLLECT_RULES, ITEM=COLLECT_ITEM, MATERIAL=material)
-        if deadline_passed():
-            # 収集の締切を過ぎたら facts 化を始めない(本文の取得のあいだに過ぎることもあるので、起動の直前にも確かめる。取得の待ちは
-            # 残り時間で切ってある: watch_limit)。試みなかった新着として未処理の列に残し、読めなかった回数に数えない。
-            # 当番の取り直しが先に処理して、この号の素材に入れる
-            notify("collect", f"定点観測: 収集の締切を過ぎたので、新着 {len(batch)}件の facts 化を始めなかった(未処理の列に残す):"
-                              + "".join(f"\n  - {it['url']}" for it in batch), ok=False)
+        got = DEADLINE_CUT if deadline_passed() or STOPPING.is_set() else claude_call(prompt, timeout=420)
+        if got is DEADLINE_CUT or STOPPING.is_set():
+            # 収集の締切を過ぎたら facts 化を始めない・締切で打ち切った(本文の取得・依頼文の準備のあいだに過ぎることもあるので、
+            # 起動の直前にも確かめる: claude_exec。取得の待ちは残り時間で切ってある: watch_limit)。工程を終えるところも同じ。
+            # 試みなかった新着として未処理の列に残し、読めなかった回数に数えない。当番の取り直しが先に処理して、この号の素材に入れる
+            if not STOPPING.is_set():
+                notify("collect", f"定点観測: 収集の締切で、新着 {len(batch)}件の facts 化を始めなかった・打ち切った(未処理の列に残す):"
+                                  + "".join(f"\n  - {it['url']}" for it in batch), ok=False)
             return [], set()
-        got = claude_call(prompt, timeout=420)
         # 出力は新着ページごとの結果(抽出済み/対象外/読めなかった)。処理済みにするのは、結果が契約どおりに返った
         # extracted・none のページだけ。読めなかった・応答に無い・形が崩れたページは未処理(0件の [] とは別)。
         # 以前は候補の配列だけを受け、[] をバッチ全件の「候補なし」として既読にしていたので、WebFetch で
@@ -706,10 +715,13 @@ def claude_exec(prompt: str, timeout: int = 300):
     from pipelib import extract_json_array_strict, prompt_file
     import hashlib as _hl
     name = "watch-" + _hl.sha256(prompt.encode("utf-8")).hexdigest()[:8]
+    short = prompt_file(edition_date(), name, prompt)
+    if deadline_passed():
+        return DEADLINE_CUT     # 依頼文を書くあいだに収集の締切を過ぎた: 起動しない(読めなかったのとは別)
     try:
         # 自前のグループで起動し、時間切れでは道具ごと止める(run_group)。待つのは収集の締切まで
         r = run_group(
-            ["claude", "-p", prompt_file(edition_date(), name, prompt),
+            ["claude", "-p", short,
              "--model", COLLECT_MODEL,
              # 指示と素材はファイルなので **Read が要る**。WebSearch/WebFetch だけに絞っていたら、ファイルを読めずに
              # 420 秒待って落ちた(実測 2026-09-17)
@@ -717,9 +729,11 @@ def claude_exec(prompt: str, timeout: int = 300):
              "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
             timeout=session_left(timeout), cwd=ROOT)
     except (subprocess.TimeoutExpired, OSError) as e:
+        save_raw(edition_date(), name, *partial_output(e))     # 時間切れまでの出力も残す
+        if deadline_passed():
+            return DEADLINE_CUT     # 収集の締切で打ち切った(読めなかったのとは別。読めなかった回数に数えない)
         # 1バッチの失敗で収集全体を落とさない。読めなかった扱い(既読にしない)
         print(f"定点観測: facts 化のセッションが失敗({type(e).__name__})。このバッチは既読にしない", flush=True)
-        save_raw(edition_date(), name, *partial_output(e))     # 時間切れまでの出力も残す
         return None
     # 生の出力を必ず残す(依頼文 metrics/work/<日付>/<name>.md と同じ名前。候補が出なかった理由を後から確かめるため。
     # 2026-10-04: まとめサイトの新着1件を失ったが出力が残っておらず、当番も原因を確定できなかった。当番の指摘 b39801ce34・8bdc37f36c)

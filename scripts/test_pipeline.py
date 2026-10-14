@@ -6216,8 +6216,15 @@ def test_leave_tree_clean_stops_sessions(tmp: Path):
     try:
         compose.STARTED_ON = None       # commit はしない経路(開始前)。止めるのはその前
         compose._leave_tree_clean("test")
+        # 後始末のあとは、別スレッドの担当が次の担当を起動しない(工程を終えるところ)
+        later = start([sys.executable, "-c", "pass"], cwd=tmp)
+        check(isinstance(later, pipelib.LaunchFailed), "途中終了の後始末のあとに、新しい担当を起動した")
+        if not isinstance(later, pipelib.LaunchFailed):
+            pipelib.finish_group(later, 10)
     finally:
         compose.STARTED_ON = saved
+        if hasattr(pipelib, "STOPPING"):
+            pipelib.STOPPING.clear()    # 途中終了の後始末が立てた「終えるところ」を、後のテストのために戻す
         if p.poll() is None:
             p.kill()
             p.wait()
@@ -6321,6 +6328,178 @@ def test_session_escaped_and_term(tmp: Path):
         check(ready and h.returncode == 143 and not left,
               f"{name}: SIGTERM で、起動した CLI を止めずに終わった(準備 {ready} / 終了 {h.returncode} / 残った {left} / "
               f"{(err or '').strip()[-200:]})")
+
+
+def test_session_signal_windows(tmp: Path):
+    """中断の隙間を残さない(Sol 監査2巡目の指摘 2026-10-14):
+    - 起動から控えるまでのあいだに届いた SIGINT・SIGTERM でも、起動した担当を見失わずに止める
+    - 収集の SIGTERM のあと、待っていた定点観測のバッチが CLI を起動しない(工程を終えるところでは起動しない)
+    - 依頼文を書くあいだに収集の締切を過ぎたら facts 化を起動せず、読めなかった回数にも数えない
+    - 正常に終わったあとの後始末の途中の中断でも、残った道具を凍らせたまま忘れない
+    - この process の子でない対象(ほかの親の独立したセッション)は、グループも含めて止めない"""
+    import signal
+    import time as _t
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    real_popen = subprocess.Popen
+    started: list = []
+
+    def popen_then(sig):
+        def fake(argv, **kw):
+            p = real_popen([sys.executable, "-c", "import time; time.sleep(30)"], **kw)
+            started.append(p)
+            os.kill(os.getpid(), sig)       # 起動から控えるまでのあいだに届く信号
+            return p
+        return fake
+
+    def cleanup():
+        for p in started:
+            if p.poll() is None:
+                p.kill()
+                p.wait()
+        started.clear()
+    start = getattr(pipelib, "start_group", None)
+    check(start is not None, "セッションを起動して控える関数(pipelib.start_group)が無い")
+    # 起動の隙間の SIGINT(既定の扱い: KeyboardInterrupt)
+    old_int = signal.signal(signal.SIGINT, signal.default_int_handler)
+    old_term = signal.getsignal(signal.SIGTERM)
+    try:
+        for sig, want in ((signal.SIGINT, "KeyboardInterrupt"), (signal.SIGTERM, "SystemExit 143")):
+            if start is None:
+                break
+            if sig == signal.SIGTERM:
+                pipelib.exit_on_term()
+            subprocess.Popen = popen_then(sig)
+            try:
+                start(["probe"], cwd=tmp)
+                got = "返った"
+            except KeyboardInterrupt:
+                got = "KeyboardInterrupt"
+            except SystemExit as e:
+                got = f"SystemExit {e.code}"
+            finally:
+                subprocess.Popen = real_popen
+            check(got == want and started and started[-1].poll() is not None,
+                  f"起動から控えるまでのあいだの {signal.Signals(sig).name} で、起動した担当を見失った({got} / "
+                  f"生きている {[p.pid for p in started if p.poll() is None]})")
+            cleanup()
+    finally:
+        subprocess.Popen = real_popen
+        signal.signal(signal.SIGINT, old_int)
+        signal.signal(signal.SIGTERM, old_term if old_term is not None else signal.SIG_DFL)
+        if hasattr(pipelib, "STOPPING"):
+            pipelib.STOPPING.clear()        # SIGTERM の後始末が立てた「終えるところ」を、後のテストのために戻す
+        cleanup()
+    # 収集の SIGTERM: 待っていたバッチが CLI を起動しない(実際の collect.main・run_watch・定点観測の並列)
+    d = tmp / "watch-term"
+    (d / "bin").mkdir(parents=True, exist_ok=True)
+    (d / "bin" / "claude").write_text(f'#!/bin/sh\necho $$ >> "{d}/launches"\nexec sleep 30\n', encoding="utf-8")
+    (d / "bin" / "claude").chmod(0o755)
+    (d / "sources.yml").write_text("[]\n", encoding="utf-8")
+    (d / "state.json").write_text(json.dumps({"_pending": [{"url": f"https://a.example/p{i}", "title": "t", "brand": "cg",
+                                                            "source_id": "s", "csr": False} for i in range(3)]}), encoding="utf-8")
+    code = ("import sys; sys.path.insert(0, sys.argv[1]); import collect as m, pipelib\n"
+            "from pathlib import Path; m.ROOT = pipelib.ROOT = Path(sys.argv[2]); m.STATE_PATH = m.ROOT / 'state.json'\n"
+            "m.job_lock = lambda *a, **k: None; pipelib.prompt_file = lambda *a, **k: 'p'; m.save_raw = lambda *a, **k: None\n"
+            "m.page_html_or_note = lambda url, csr: ('<p>本文</p>', ''); m.WATCH_BATCH = m.WATCH_PARALLEL = 1\n"
+            "sys.argv = ['collect', '--no-git', '--skip-explore', '--skip-grok', '--date', '2099-01-01']; m.main()\n")
+    env = {k: v for k, v in os.environ.items() if k != "INVOCATION_ID"}
+    env["PATH"] = f"{d / 'bin'}:{os.environ.get('PATH', '')}"
+    h = subprocess.Popen([sys.executable, "-c", code, str(Path(__file__).resolve().parent), str(d)], env=env, cwd=d,
+                         start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
+    ready = _wait_files(d / "launches")     # 1本目が起動して待っているあいだに送る(待っている担当は時間切れまで返らない)
+    h.terminate()
+    try:
+        _, err = h.communicate(timeout=20)
+    except subprocess.TimeoutExpired:
+        h.kill()
+        _, err = h.communicate()
+    pids = [int(x) for x in (d / "launches").read_text().split()] if (d / "launches").exists() else []
+    left = [q for q in pids if _pid_alive(q)]
+    for q in left:
+        os.kill(q, signal.SIGKILL)
+    check(ready and h.returncode == 143 and len(pids) == 1 and not left,
+          f"収集の SIGTERM のあと、待っていたバッチが CLI を起動した・止めずに終わった(起動 {len(pids)}本 / 残った {left} / "
+          f"終了 {h.returncode} / {(err or '').strip()[-200:]})")
+    # 依頼文を書くあいだに収集の締切を過ぎた facts 化: 起動せず、読めなかった回数にも数えない
+    saved_c = (getattr(collect, "DEADLINE", None), pipelib.prompt_file, collect.save_raw, collect.notify, collect.page_html_or_note)
+    launched: list = []
+
+    def slow_prompt(*a, **k):
+        _t.sleep(0.1)
+        return "p"
+    try:
+        collect.DEADLINE = _t.time() + 0.05
+        pipelib.prompt_file = slow_prompt
+        collect.save_raw = collect.notify = lambda *a, **k: None
+        collect.page_html_or_note = lambda url, csr: ("<p>本文</p>", "")
+        subprocess.Popen = lambda argv, **kw: launched.append(argv) or real_popen([sys.executable, "-c", "import time; time.sleep(30)"], **kw)
+        state = {"_unreadable": {"https://a.example/u1": 1}}
+        _, tried = collect.facts_batch([{"url": "https://a.example/u1", "title": "t", "brand": "cg", "csr": False}],
+                                       collect.claude_exec, state)
+        check(not launched and not tried and state.get("_unreadable") == {"https://a.example/u1": 1} and not state.get("_given_up"),
+              f"依頼文を書くあいだに収集の締切を過ぎた facts 化を起動した・読めなかった回数に数えた(起動 {len(launched)}本 / {state})")
+    finally:
+        subprocess.Popen = real_popen
+        (collect.DEADLINE, pipelib.prompt_file, collect.save_raw, collect.notify, collect.page_html_or_note) = saved_c
+    # 正常に終わったあとの後始末の途中の中断: 残った道具を忘れずに止めてから上げる
+    if start is not None:
+        pf = tmp / "after.pid"
+        code = ("import os, sys, time\nfrom pathlib import Path\n"
+                "if os.fork() == 0:\n    os.setsid(); os.close(1); os.close(2)\n"
+                f"    Path({str(pf) + '.tmp'!r}).write_text(str(os.getpid())); os.replace({str(pf) + '.tmp'!r}, {str(pf)!r})\n"
+                "    time.sleep(30); os._exit(0)\n"
+                f"while not Path({str(pf)!r}).exists(): time.sleep(0.005)\n")
+        p = start([sys.executable, "-c", code], cwd=tmp)
+        real_stop, n = pipelib.stop_tree, []
+
+        def interrupted_once(*a, **k):
+            n.append(1)
+            if len(n) == 1:
+                raise KeyboardInterrupt
+            return real_stop(*a, **k)
+        pipelib.stop_tree = interrupted_once
+        try:
+            pipelib.finish_group(p, 30)
+            got = "返った"
+        except KeyboardInterrupt:
+            got = "中断"
+        finally:
+            pipelib.stop_tree = real_stop
+        pid = int(pf.read_text()) if pf.exists() else 0
+        alive = bool(pid) and _pid_alive(pid)
+        if alive:
+            os.kill(pid, signal.SIGKILL)
+        check(got == "中断" and pid and not alive, f"後始末の途中の中断で、残った道具を止めずに忘れた({got} / pid {pid} 生存 {alive})")
+    # この process の子でない対象(ほかの親が起こした独立したセッション)は、グループも含めて止めない
+    pf = tmp / "foreign.pid"
+    helper = real_popen([sys.executable, "-c",
+                         "import os, subprocess, sys, time\n"
+                         "q = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(30)'], start_new_session=True)\n"
+                         f"open({str(pf) + '.tmp'!r}, 'w').write(str(q.pid)); os.replace({str(pf) + '.tmp'!r}, {str(pf)!r})\n"
+                         "time.sleep(30)\n"])
+    try:
+        fpid = int(pf.read_text()) if _wait_files(pf) else 0
+
+        class Foreign:
+            pid, returncode = fpid, None
+
+            def kill(self):
+                pass
+
+            def communicate(self, timeout=None):
+                return "", ""
+        if fpid:
+            pipelib.reap(Foreign(), grace=1)
+        check(fpid and _pid_alive(fpid), f"この process の子でない対象(pid {fpid})のグループを止めた")
+    finally:
+        if pf.exists():
+            try:
+                os.kill(int(pf.read_text()), signal.SIGKILL)
+            except (OSError, ValueError):
+                pass
+        helper.kill()
+        helper.wait()
 
 
 def test_collect_handover_deadline(tmp: Path):
@@ -6533,6 +6712,7 @@ def main() -> int:
     test_compose_no_launch_after_deadline(tmp / "nld")
     test_leave_tree_clean_stops_sessions(tmp / "ltc")
     test_session_escaped_and_term(tmp / "set")
+    test_session_signal_windows(tmp / "ssw")
     test_collect_handover_deadline(tmp / "chd")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))

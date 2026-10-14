@@ -1,4 +1,5 @@
 """パイプライン共通ユーティリティ(collect/compose/release/watch)。標準ライブラリのみ。"""
+import contextlib
 import datetime
 import html as html_lib
 import json
@@ -533,6 +534,9 @@ _SESSIONS_LOCK = threading.RLock()     # SIGTERM の後始末(同じスレッド
 # セッションごとの印。起動するときに環境変数へ足し(入れ子のセッションは空白区切りで足していく)、子孫は受け継ぐ。親が先に終わって
 # 親子の関係から辿れなくなった道具(自分でセッションを分けて親より長く生きる子)も、この印で見つけて止める(監査指摘 2026-10-14)
 SESSION_ENV = "IMAS_SESSION"
+# 工程を終えるところ(SIGTERM・途中終了の後始末で stop_groups() を呼んだ)。以後の起動は断る(別スレッドの担当が、後始末のあとに
+# 次の担当を起動しない。監査指摘 2026-10-14: 収集の SIGTERM のあと、待っていたバッチが CLI を起動した)
+STOPPING = threading.Event()
 
 
 class LaunchFailed:
@@ -629,8 +633,9 @@ def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5, mark: 
         except OSError:
             pass
         return []
-    if root is not None and table.get(root, (None,))[0] != me:
-        root = None             # この process の子でない pid から辿らない(再利用された番号・偽の対象で、無関係なプロセスを止めない)
+    if root is not None and root in table and table[root][0] != me:
+        # この process の子でない対象は回収しない(グループも辿らない。再利用された番号・偽の対象で、無関係なプロセスを止めない)
+        return []
     for _ in range(50):
         groups = ({pgid} | {table[q][1] for q in caught if q in table}) - {own, 0}
         found = {q for q, (_, pg, _) in table.items() if pg in groups} | caught
@@ -678,23 +683,63 @@ def start_group(cmd: list[str], *, cwd=None, env: dict | None = None, stdout=sub
     """モデル・道具のセッションを自前のセッション(プロセスグループ)で起動する。回収は finish_group。
     並列に起動するときは、起動のたびに一覧へ足し、finally で stop_groups(一覧) を呼ぶ(途中の例外・中断で置き去りにしない)。
     起動できなければ例外にせず LaunchFailed(その担当だけの異常終了)を返す。
-    環境変数にセッションの印(SESSION_ENV)を足して起動する(親が先に終わった道具も、回収のときに印で見つける)。"""
+    環境変数にセッションの印(SESSION_ENV)を足して起動する(親が先に終わった道具も、回収のときに印で見つける)。
+    工程を終えるところ(STOPPING)なら起動しない。起動から控えるまでのあいだに届いた SIGTERM・SIGINT は、控えたあとで扱う
+    (控える前に中断されると、起動した担当を見失う。監査指摘 2026-10-14)。"""
     import uuid
+    if STOPPING.is_set():
+        return LaunchFailed(cmd, OSError("工程を終えるところなので起動しない"))
     mark = uuid.uuid4().hex
     env = dict(os.environ if env is None else env)
     env[SESSION_ENV] = f"{env.get(SESSION_ENV, '')} {mark}".strip()
+    p = None
     try:
-        p = subprocess.Popen(cmd, cwd=cwd, env=env, stdout=stdout, stderr=stderr, text=True,
-                             stdin=subprocess.DEVNULL, start_new_session=True)
+        with _hold_signals():
+            p = subprocess.Popen(cmd, cwd=cwd, env=env, stdout=stdout, stderr=stderr, text=True,
+                                 stdin=subprocess.DEVNULL, start_new_session=True)
+            try:
+                p.session_mark = mark
+            except AttributeError:      # 差し替えた起動(テストの偽物)が属性を持てないときは、印なしで回収する
+                pass
+            with _SESSIONS_LOCK:
+                _SESSIONS.add(p)
     except OSError as e:
-        return LaunchFailed(cmd, e)
-    try:
-        p.session_mark = mark
-    except AttributeError:      # 差し替えた起動(テストの偽物)が属性を持てないときは、印なしで回収する
-        pass
-    with _SESSIONS_LOCK:
-        _SESSIONS.add(p)
+        if p is None:
+            return LaunchFailed(cmd, e)
+        stop_groups([p])
+        raise
+    except BaseException:
+        if p is not None:
+            stop_groups([p])        # 控えたあとで扱った中断: この担当を止めてから上げる
+        raise
     return p
+
+
+@contextlib.contextmanager
+def _hold_signals():
+    """主スレッドで、起動から控えるまでのあいだ SIGTERM・SIGINT を後回しにし、抜けるときにもとの扱いで処理する
+    (ハンドラは主スレッドでしか動かないので、ほかのスレッドの起動は中断されない)。"""
+    if threading.current_thread() is not threading.main_thread():
+        yield
+        return
+    got: list[int] = []
+    old = {}
+    for s in (signal.SIGTERM, signal.SIGINT):
+        prev = signal.getsignal(s)
+        if prev is not None:        # Python の外で決めた扱いは触らない
+            old[s] = signal.signal(s, lambda signum, frame: got.append(signum))
+    try:
+        yield
+    finally:
+        for s, h in old.items():
+            signal.signal(s, h)
+        for s in got:
+            h = old[s]
+            if callable(h):
+                h(s, None)
+            elif h == signal.SIG_DFL:   # 既定の扱い(終了): 起動したセッションを止めてから、同じ信号で終わる
+                stop_groups()
+                os.kill(os.getpid(), s)
 
 
 def finish_group(p, timeout: float | None) -> tuple[str, str, bool]:
@@ -713,8 +758,10 @@ def finish_group(p, timeout: float | None) -> tuple[str, str, bool]:
         raise
     try:
         stop_tree(getattr(p, "pid", None), mark=getattr(p, "session_mark", None))
-    finally:
-        _forget(p)
+    except BaseException:
+        stop_groups([p])        # 残った道具を止めている途中の中断: 控えたまま止め直してから上げる(凍らせたまま残さない)
+        raise
+    _forget(p)
     return so or "", se or "", False
 
 
@@ -730,7 +777,9 @@ def run_group(cmd: list[str], timeout: float | None, *, cwd=None, env: dict | No
 
 def stop_groups(procs=None) -> None:
     """起動して、まだ回収していないセッションを止めて回収する。並列の起動・回収の finally(procs にその一覧)と、
-    SIGTERM の後始末(引数なし=この process の全部)から呼ぶ。回収済みのものには何もしない。"""
+    SIGTERM・途中終了の後始末(引数なし=この process の全部。以後の起動も断る: STOPPING)から呼ぶ。回収済みのものには何もしない。"""
+    if procs is None:
+        STOPPING.set()
     with _SESSIONS_LOCK:
         live = [p for p in (list(_SESSIONS) if procs is None else procs) if p in _SESSIONS]
     for p in live:

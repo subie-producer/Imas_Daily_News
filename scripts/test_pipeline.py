@@ -6161,6 +6161,33 @@ def test_release_push_retry(tmp: Path):
               and env.deployed and not edition_on_origin(),
               f"push の失敗の後の再実行で origin/main に号が届かない(か、届く前に edition を消した): rc={rc!r} "
               f"origin に号={on_origin()} 配信={env.deployed} edition={edition_on_origin()}")
+    # push が成功と答えても、origin から取り直して号が届いたと確かめられなければ進まない(届かない push・取り直しの失敗)
+    import release
+    real_git = release.git
+    for what, fake in (("push が成功と答えたが origin に届いていない", ("push", "origin", "main")),
+                       ("push の後の origin の取り直しに失敗", ("fetch", "origin", "main"))):
+        repo, bare = _release_fixture(tmp / ("silent" if fake[0] == "push" else "nofetch"))
+        edition_on_origin = lambda: bool(_git_out(bare, "branch", "--list", f"edition/{RELEASE_DAY}"))
+
+        def faked(*a, check=True, _fake=fake):
+            if a == _fake:
+                return subprocess.CompletedProcess(["git", *a], 0 if a[0] == "push" else 128, "",
+                                                   "" if a[0] == "push" else "fatal: unable to access(試験)")
+            return real_git(*a, check=check)
+        with _ReleaseEnv(repo) as env:
+            release.git = faked
+            try:
+                rc = env.main()
+            finally:
+                release.git = real_git
+            check(rc == 1 and not env.deployed and edition_on_origin() and env.escalated
+                  and any(not ok and "届いたことを確かめられない" in m for ok, m in env.notes),
+                  f"{what}のに、配信・edition の削除へ進んだ(か、当番を呼ばない): rc={rc!r} 配信={env.deployed} "
+                  f"edition={edition_on_origin()} {env.notes}")
+            rc = env.main()          # 取り直せる再実行は、届いたことを確かめて進む
+            check(rc == 0 and env.deployed and not edition_on_origin()
+                  and _git_out(bare, "rev-parse", "main") == _git_out(repo, "rev-parse", "main"),
+                  f"{what}の後の再実行で発行を終えない: rc={rc!r} 配信={env.deployed} edition={edition_on_origin()}")
 
 
 def test_release_squash_conflict(tmp: Path):
@@ -6232,8 +6259,10 @@ def test_release_dry_run_no_push(tmp: Path):
 
 
 def test_deploy_index_failure(tmp: Path):
-    """current を切り替えた後に索引の更新が落ちたら、索引が前の版のまま(取引ごと戻った)ことを確かめて current も前の版へ戻し、
-    パージして、実態どおりに知らせる(監査指摘 ar7-4: 新しい静的と古い索引が残り、取り下げた記事が検索に残った)。
+    """current を切り替えた後に索引の更新が落ちたら、current を索引が取り込んだリリース(索引の run_id)へ戻してパージし、
+    実態どおりに知らせる(監査指摘 ar7-4: 新しい静的と古い索引が残り、取り下げた記事が検索に残った)。前の配信が索引の状態を
+    確かめられずに新しい版を残していても、戻す先は索引の記録で決める。記録が無ければ前の版へ戻し、揃っているとは言わない
+    (再監査)。予算(--budget-sec)のうちに、戻す・知らせるまで終える(再監査: release の打ち切りを越えた)。
     本物の indexer を子プロセスで、本物の SQLite を別の接続で書き込みロックして落とす。ロックを外した再実行は新しい版を揃えて出す。"""
     import datetime
     import shutil
@@ -6255,8 +6284,9 @@ def test_deploy_index_failure(tmp: Path):
     srv = tmp / "srv"
     db = srv / "data" / "paper.db"
     real_run = subprocess.run
-    subprocess.run(  # 前の版の索引(a・b)
-        [sys.executable, str(root / "scripts" / "indexer.py"), "--db", str(db), "--quiet"], check=True, capture_output=True)
+    subprocess.run(  # 前の版(リリース old)の索引(a・b)
+        [sys.executable, str(root / "scripts" / "indexer.py"), "--db", str(db), "--run-id", "old", "--quiet"],
+        check=True, capture_output=True)
     (posts / f"{d}-b.md").unlink()          # b を取り下げた版を配信する
     releases = srv / "releases"
     old = releases / "old"
@@ -6265,9 +6295,12 @@ def test_deploy_index_failure(tmp: Path):
         (old / "articles" / f"{d}-{s}" / "index.html").write_text("前の版", encoding="utf-8")
     current = srv / "current"
     current.symlink_to(old)
+    slow_build = []
 
-    def fake_build(dest: Path):
-        for rel in deploy.REQUIRED + [f"articles/{d}-a/index.html"]:
+    def fake_build(dest: Path, timeout=None):     # 今の記事から静的な記事ページを作る(slow_build があればその秒だけ掛ける)
+        import time
+        time.sleep(slow_build[0] if slow_build else 0)
+        for rel in deploy.REQUIRED + [f"articles/{p.stem}/index.html" for p in posts.glob("*.md")]:
             p = dest / rel
             p.parent.mkdir(parents=True, exist_ok=True)
             p.write_text("新しい版", encoding="utf-8")
@@ -6284,9 +6317,11 @@ def test_deploy_index_failure(tmp: Path):
         finally:
             c.close()
     notes, purges = [], []
-    stamps = iter(["20261014T060000", "20261014T061000", "20261014T062000", "20261014T063000"])
+    names = [f"20261014T{6 + m:02d}0000" for m in range(10)]       # 配信ごとのリリースの名前(時刻順)
+    stamps = iter(names)
     saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "build", "purge_cache", "notify", "sync_app",
-                                             "now_jst", "INDEX_ATTEMPTS", "INDEX_RETRY_SEC", "reindex") if hasattr(deploy, k)}
+                                             "now_jst", "INDEX_ATTEMPTS", "INDEX_RETRY_SEC", "reindex", "indexed_run",
+                                             "INDEX_TIMEOUT_SEC", "INDEX_MIN_SEC", "RESERVE_SEC") if hasattr(deploy, k)}
     saved_db, saved_argv = getattr(deploy, "DB", None), sys.argv
     lock = sqlite3.connect(db)
     try:
@@ -6302,37 +6337,67 @@ def test_deploy_index_failure(tmp: Path):
         def run_main():
             try:
                 return deploy.main()
-            except Exception as e:       # noqa: BLE001  直す前の実装は索引の失敗を例外で上げる
+            except (Exception, SystemExit) as e:       # noqa: BLE001  直す前の実装は索引の失敗を例外で上げる
                 return f"例外: {type(e).__name__}: {str(e)[:200]}"
+        cur = lambda: current.resolve().name
+        state = lambda: getattr(deploy, "STATE", "")
+        # S1 本物の書き込みロック: 索引が取り込んだ old へ戻す(静的 a・b / 索引 a・b で揃う)
         lock.execute("BEGIN IMMEDIATE")                           # 別の接続が書き込み中
         rc = run_main()
         lock.rollback()
-        state = getattr(deploy, "STATE", "")
-        check(rc == 1 and current.resolve() == old.resolve() and articles() == ["a", "b"] and purges,
-              f"索引の失敗で current を前の版へ戻さない・パージしない(静的と索引が食い違う): rc={rc!r} current={current.resolve().name} "
+        check(rc == 1 and cur() == "old" and articles() == ["a", "b"] and purges,
+              f"索引の失敗で current を索引の版へ戻さない・パージしない(静的と索引が食い違う): rc={rc!r} current={cur()} "
               f"索引={articles()} パージ={purges}")
-        check("前の版(old)に戻した" in state and any(not ok and "戻した" in m for ok, m in notes),
-              f"索引の失敗の後の公開の状態を実態どおりに言わない: {state!r} {notes}")
+        check("索引が取り込んだ版(old)に戻した" in state() and any(not ok and "戻した" in m for ok, m in notes),
+              f"索引の失敗の後の公開の状態を実態どおりに言わない: {state()!r} {notes}")
+        # S2 ロックが外れた再実行: 新しい版を揃えて出す
         notes.clear()
         purges.clear()
         rc = run_main()
-        check(rc == 0 and current.resolve().name == "20261014T061000" and articles() == ["a"] and purges
-              and "新しい版" in getattr(deploy, "STATE", ""),
-              f"ロックが外れた再実行で新しい版を揃えて出さない: rc={rc!r} current={current.resolve().name} 索引={articles()}")
-        # 1回目だけ落ちる索引は、戻さずに再試行で通す
-        real_reindex, calls = deploy.reindex, []
+        check(rc == 0 and cur() == names[1] and articles() == ["a"] and purges and "新しい版" in state(),
+              f"ロックが外れた再実行で新しい版を揃えて出さない: rc={rc!r} current={cur()} 索引={articles()}")
+        # S3 索引の状態が読めない失敗: 新しい版(記事 c を足した版)を残し、確かめられないと言う(戻さない)
+        (posts / f"{d}-c.md").write_text(f"---\nslug: c\nedition: '{d}'\ntitle: 記事c\ntags: [t]\n---\n本文c\n", encoding="utf-8")
+        real_reindex, real_indexed_run = deploy.reindex, getattr(deploy, "indexed_run", None)
 
-        def flaky(run_id):
+        def broken(run_id, timeout=None):
+            raise RuntimeError("database is locked(試験)")
+
+        def unreadable():
+            raise sqlite3.OperationalError("unable to open database file(試験)")
+        deploy.reindex, deploy.indexed_run = broken, unreadable
+        rc = run_main()
+        deploy.indexed_run = real_indexed_run
+        check(rc == 1 and cur() == names[2] and "確かめられない" in state() and "静的と索引が揃っている" not in state(),
+              f"索引の状態が読めないのに戻した・揃っていると言った: rc={rc!r} current={cur()} {state()!r}")
+        # S4 続けて失敗: 戻す先は直前の current(names[2]。索引と食い違う)でなく、索引が取り込んだ names[1]
+        rc = run_main()
+        check(rc == 1 and cur() == names[1] and not (current / "articles" / f"{d}-c").exists() and articles() == ["a"]
+              and f"索引が取り込んだ版({names[1]})に戻した(静的と索引が揃っている)" in state(),
+              f"索引が取り込んでいない版へ戻して「揃っている」と言った: rc={rc!r} current={cur()} 索引={articles()} {state()!r}")
+        # S5 取り込みの記録が無い索引(この直しより前の索引): 前の版へ戻すが、揃っているとは言わない
+        c = sqlite3.connect(db)
+        c.execute("DELETE FROM meta WHERE key = 'run_id'")
+        c.commit()
+        c.close()
+        rc = run_main()
+        check(rc == 1 and cur() == names[1] and "確かめられない" in state() and "静的と索引が揃っている" not in state(),
+              f"取り込みの記録が無いのに揃っていると言った: rc={rc!r} current={cur()} {state()!r}")
+        (posts / f"{d}-c.md").unlink()
+        # S6 1回目だけ落ちる索引は、戻さずに再試行で通す
+        calls = []
+
+        def flaky(run_id, timeout=None):
             calls.append(run_id)
             if len(calls) == 1:
                 raise RuntimeError("database is locked(試験)")
             return real_reindex(run_id)
         deploy.reindex, deploy.INDEX_ATTEMPTS = flaky, 2
         rc = run_main()
-        check(rc == 0 and calls == ["20261014T062000"] * 2 and current.resolve().name == "20261014T062000",
-              f"索引の一時的な失敗を再試行しない(か、通ったのに戻した): rc={rc!r} {calls} current={current.resolve().name}")
-        # 取引は通った(索引はこの版まで進んだ)が indexer が後で落ちた: 静的と索引は揃っているので戻さない
-        def late(run_id):
+        check(rc == 0 and calls == [names[5]] * 2 and cur() == names[5],
+              f"索引の一時的な失敗を再試行しない(か、通ったのに戻した): rc={rc!r} {calls} current={cur()}")
+        # S7 取引は通った(索引はこの版まで進んだ)が indexer が後で落ちた: 静的と索引は揃っているので戻さない
+        def late(run_id, timeout=None):
             real_reindex(run_id)
             raise RuntimeError("後始末で落ちた(試験)")
         deploy.reindex = late
@@ -6340,8 +6405,24 @@ def test_deploy_index_failure(tmp: Path):
         c = sqlite3.connect(db)
         ran = (c.execute("SELECT value FROM meta WHERE key = 'run_id'").fetchone() or [None])[0]
         c.close()
-        check(rc == 0 and current.resolve().name == "20261014T063000" and ran == "20261014T063000",
-              f"索引が新しい版まで進んだのに current を戻した: rc={rc!r} current={current.resolve().name}")
+        check(rc == 0 and cur() == names[6] and ran == names[6],
+              f"索引が新しい版まで進んだのに current を戻した: rc={rc!r} current={cur()}")
+        # S8 予算: ビルドが長引き、索引が毎回時間切れまで掛かっても、予算のうちに戻す・知らせるまで終える
+        # (秒を縮めて試す。予算 3秒・後始末に残す 1秒・ビルド 0.5秒)
+        import time
+
+        def hang(run_id, timeout=None):
+            time.sleep(timeout if timeout is not None else 60)
+            raise subprocess.TimeoutExpired("indexer.py", timeout)
+        deploy.reindex, deploy.INDEX_ATTEMPTS, deploy.INDEX_RETRY_SEC = hang, 3, 0.3
+        deploy.INDEX_TIMEOUT_SEC, deploy.INDEX_MIN_SEC, deploy.RESERVE_SEC = 10, 0.2, 1.0
+        slow_build.append(0.5)
+        sys.argv = ["deploy.py", "--budget-sec", "3"]
+        t0 = time.time()
+        rc = run_main()
+        took = time.time() - t0
+        check(rc == 1 and took < 3.0 and cur() == names[6] and "戻した" in state(),
+              f"予算のうちに戻す・知らせるまで終えない: rc={rc!r} {took:.1f}秒 current={cur()} {state()!r}")
     finally:
         subprocess.run = real_run
         lock.close()
@@ -6349,10 +6430,10 @@ def test_deploy_index_failure(tmp: Path):
             setattr(deploy, k, v)
         deploy.DB, sys.argv = saved_db, saved_argv
     # release の通知は deploy が出す「配信の状態」をそのまま載せる(「current は前号のまま」と決めつけない)。時間切れも止めない
-    sent, saved_run, saved_notify = [], subprocess.run, release.notify
+    sent, saved_run, saved_notify, asked = [], subprocess.run, release.notify, []
     try:
         release.notify = lambda msg, ok=True: sent.append(msg)
-        subprocess.run = lambda cmd, *a, **k: subprocess.CompletedProcess(
+        subprocess.run = lambda cmd, *a, **k: asked.append((cmd, k.get("timeout"))) or subprocess.CompletedProcess(
             cmd, 1, "検証OK\n" + getattr(release, "DEPLOY_STATE_MARK", "配信の状態: ") + "current は新しい版(X)。索引はまだ前の版\n", "boom")
         release.deploy_site()
 
@@ -6368,6 +6449,11 @@ def test_deploy_index_failure(tmp: Path):
     check(len(sent) == 2 and "current は新しい版(X)" in sent[0] and "前号のまま" not in sent[0] and out != "例外",
           f"配信の失敗の通知が deploy の状態を載せない・時間切れで止まる: {sent} {out}")
     check(getattr(release, "DEPLOY_STATE_MARK", None) == getattr(deploy, "STATE_MARK", ""), "release と deploy の「配信の状態」の印が違う")
+    # release は deploy に、自分が打ち切る時間より短い予算を渡す(打ち切られる前に戻す・知らせるまで終えさせる)
+    cmd, timeout = asked[0] if asked else ([], None)
+    budget = float(cmd[cmd.index("--budget-sec") + 1]) if "--budget-sec" in cmd else None
+    check(budget is not None and timeout is not None and budget < timeout,
+          f"release が deploy に打ち切りより短い予算を渡さない: {cmd} timeout={timeout}")
 
 
 def test_correction_append_only(tmp: Path):

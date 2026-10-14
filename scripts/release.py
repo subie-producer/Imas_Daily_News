@@ -114,7 +114,9 @@ def squash_into_main(branch: str, message: str) -> bool:
             git("commit", "-m", message)
             return True
     except BaseException:
-        git("reset", "--hard", pre, check=False)       # SQUASH_MSG も reset が消す
+        r = git("reset", "--hard", pre, check=False)       # SQUASH_MSG も reset が消す
+        if r.returncode != 0:
+            print(f"squash の後始末(git reset --hard {pre[:10]})に失敗: {r.stderr.strip()[:300]}", flush=True)
         raise
 
 
@@ -180,6 +182,9 @@ def review_verdict(date: str) -> tuple[str, str]:
 
 
 DEPLOY_STATE_MARK = "配信の状態: "      # deploy.py が最後に出す行(公開の状態。deploy.STATE_MARK と同じ)
+# deploy を打ち切る時間。deploy にはそれより短い予算(--budget-sec)を渡し、打ち切られる前に戻す・知らせるまで終えさせる
+DEPLOY_TIMEOUT_SEC = 2400
+DEPLOY_BUDGET_MARGIN_SEC = 60
 
 
 def deploy_site() -> str:
@@ -191,8 +196,9 @@ def deploy_site() -> str:
     「current は前号のまま」と通知していた)。
     """
     try:
-        r = subprocess.run([sys.executable, str(ROOT / "scripts" / "deploy.py")],
-                           cwd=ROOT, capture_output=True, text=True, timeout=2400)
+        r = subprocess.run([sys.executable, str(ROOT / "scripts" / "deploy.py"),
+                            "--budget-sec", str(DEPLOY_TIMEOUT_SEC - DEPLOY_BUDGET_MARGIN_SEC)],
+                           cwd=ROOT, capture_output=True, text=True, timeout=DEPLOY_TIMEOUT_SEC)
     except subprocess.TimeoutExpired as e:
         out = e.stdout.decode(errors="replace") if isinstance(e.stdout, bytes) else (e.stdout or "")
         r = subprocess.CompletedProcess(e.cmd, -9, out, "deploy.py が時間切れで止められた")
@@ -390,9 +396,12 @@ def main() -> int:
     try:
         made = squash_into_main(branch, f"{label} {date} 発行({count}本)")
     except RuntimeError as e:
-        notify(f"{date}: 発行中止(第{number}号)。main への squash merge に失敗した(作業ツリーは squash 前の main に戻した。"
+        left = git("status", "--porcelain", check=False).stdout.strip()
+        tree = ("作業ツリーは squash 前の main に戻した" if not left
+                else f"作業ツリーを squash 前の main に戻せていない(残り: {' / '.join(left.splitlines()[:5])})")
+        notify(f"{date}: 発行中止(第{number}号)。main への squash merge に失敗した({tree}。"
                f"{branch} はそのまま):\n```\n{str(e)[-600:]}\n```", ok=False)
-        escalate("release", date, f"main への squash merge に失敗(作業ツリーは squash 前の main に戻した):\n{e}")
+        escalate("release", date, f"main への squash merge に失敗({tree}):\n{e}")
         return 1
     if not made:
         print("squash で新しい差分なし(main は既にこの号を含む)", flush=True)

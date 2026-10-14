@@ -2254,10 +2254,10 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
             # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(最終メッセージを残さず終わった回の原因を追うため)
             with open(log_of(out_path), "w", encoding="utf-8") as lf:
                 procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, subprocess.Popen(
-                    guarded(cmd + [prompt_file(date, f"write-{art['slug']}-{tries}", prompt)]),
+                    guarded(cmd + [prompt_file(date, f"write-{art['slug']}-{tries}", prompt)], out_path),
                     stdout=lf, stderr=subprocess.STDOUT, text=True, env=child_env(out_path.name),   # 印は答えのファイル名(子ごとに一意)
                     stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True)))
-        waited = []
+        waited, cannot = [], []
         for art, src, prompt, out_path, fact_by_id, materials, tries, p in procs:
             timed_out = False
             try:
@@ -2267,15 +2267,26 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                 timed_out = True
             if not stop_leftovers(p, out_path.name):    # 正常終了・異常終了でも、残した道具の実行を止めてから控えへ戻す
                 anomaly("compose", f"執筆の子 {art['slug']} が残した道具の実行を止められない(控えへ戻したあとに記事を書き換えうる)")
+            if not guard_result(out_path, f"執筆 {art['slug']}"):
+                cannot.append(art["slug"])
             waited.append((art, src, prompt, out_path, fact_by_id, materials, tries, p, timed_out))
-        back = restore_posts(date, kept_posts, skip={ROOT / "docs" / "_posts" / f"{date}-{w[0]['slug']}.md" for w in waited})
+        targets = {ROOT / "docs" / "_posts" / f"{date}-{w[0]['slug']}.md" for w in waited}
+        back = restore_posts(date, kept_posts, skip=targets)
         if back:
             print(f"執筆の子が直接書き換えた記事を控えへ戻した(稿は答えから書く): {', '.join(back[:8])}", flush=True)
+        if cannot:
+            # CLI を起動できない: 直接起動したときと同じく例外で止める。答えを当てないので、この束ねで書かせる記事(ほかの子が
+            # 直接書いたもの)も残さない
+            for t in targets:
+                t.unlink(missing_ok=True)
+            for w in waited:
+                w[3].unlink(missing_ok=True)
+                take_log(w[3])
+            raise FileNotFoundError(f"執筆の子の CLI を起動できない: {', '.join(cannot)}")
         for art, src, prompt, out_path, fact_by_id, materials, tries, p, timed_out in waited:
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             out_path.unlink(missing_ok=True)
             save_raw(date, f"write-{art['slug']}-{tries}", "", take_log(out_path), p.returncode, files={"last-message": out})
-            guard_failed(p, f"執筆 {art['slug']}")
             target = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
             if STRUCTURED_WRITE:
                 # 判断と文章を JSON で受け、検算して、コードがファイルを作る(renderlib)。
@@ -2707,11 +2718,36 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
 GUARD = Path(__file__).resolve().parent / "child_guard.py"
 
 
-def guarded(cmd: list[str]) -> list[str]:
+def guarded(cmd: list[str], out_path: Path) -> list[str]:
     """執筆・書き直しの子(CLI)を child_guard 越しに起動するコマンド。child_guard は孤児の受け皿になってから CLI を起動し、
     CLI が終わったら、CLI が残した道具の実行を(別のセッションに抜けた・環境を読めなくしたものも)全部止めて回収してから終わる
-    (2026-10-14 監査: プロセスグループ・環境の印で探す止め方では、/proc/<pid>/environ を読めなくした道具を見落とした)。"""
-    return [sys.executable, str(GUARD)] + cmd
+    (2026-10-14 監査: プロセスグループ・環境の印で探す止め方では、/proc/<pid>/environ を読めなくした道具を見落とした)。
+    起動できたか・片付けを確かめられたかは、終了コード(CLI のもの)ではなく結果のファイル(guard_status_of)で返る。"""
+    return [sys.executable, str(GUARD), "--status", str(guard_status_of(out_path))] + cmd
+
+
+def guard_status_of(out_path: Path) -> Path:
+    """Codex の最終メッセージの一時ファイルに対応する、child_guard の結果のファイル。"""
+    return Path(str(out_path) + ".guard")
+
+
+def guard_result(out_path: Path, who: str) -> bool:
+    """child_guard の結果を読んで消す。CLI を起動できていなければ False(呼び出し側は直接起動したときと同じく FileNotFoundError に
+    する。出力の読めない回と取り違えない)。道具の実行を片付けたと確かめられなかったら異常として申告する。結果が無い(child_guard が
+    落とされた・使われていない)ときは stop_leftovers の確かめに任せる。"""
+    p = guard_status_of(out_path)
+    try:
+        st = json.loads(p.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        st = None
+    p.unlink(missing_ok=True)
+    if not isinstance(st, dict):
+        return True
+    if st.get("started") is False:
+        return False
+    if st.get("cleaned") is not True:
+        anomaly("compose", f"{who}: 子の CLI が残した道具の実行を片付けたと確かめられない({st.get('note') or '理由不明'})")
+    return True
 
 
 def end_guarded(p, grace: int = 15) -> None:
@@ -2723,16 +2759,6 @@ def end_guarded(p, grace: int = 15) -> None:
         reap(p)
     except (OSError, AttributeError):
         reap(p)
-
-
-def guard_failed(p, who: str) -> None:
-    """child_guard の終わり方を検める: CLI を起動できなかったら、直接起動したときと同じく FileNotFoundError(出力の読めない回と
-    取り違えない)。道具の実行を片付けられなかったら異常として申告する(答えは採らない: 終了コードが 0 でない)。"""
-    from child_guard import CANNOT_START, CLEANUP_FAILED
-    if p.returncode == CANNOT_START:
-        raise FileNotFoundError(f"{who}: 子の CLI を起動できない(child_guard の出力を見ること)")
-    if p.returncode == CLEANUP_FAILED:
-        anomaly("compose", f"{who}: 子の CLI が残した道具の実行を片付けられない(控えへ戻したあとに記事を書き換えうる)")
 
 
 # 執筆・書き直しの子(CLI)に渡す印の環境変数。子が起動した道具は環境を受け継ぐので、別のセッション・プロセスグループを作って
@@ -2877,10 +2903,10 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                     guarded(["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
                              "-c", "sandbox_workspace_write.network_access=true",
                              "--output-last-message", out_name, "--output-schema", str(schema_out),
-                             prompt_file(date, f"revise-{art['slug']}", prompt)]),
+                             prompt_file(date, f"revise-{art['slug']}", prompt)], Path(out_name)),
                     stdout=lf, stderr=subprocess.STDOUT, text=True, stdin=subprocess.DEVNULL, cwd=ROOT,
                     env=child_env(Path(out_name).name), start_new_session=True)))     # 印は答えのファイル名(子ごとに一意)
-        waited = []
+        waited, cannot = [], []
         for art, path, fact_by_id, materials, issues, out_path, p in procs:
             timed_out = False
             try:
@@ -2890,15 +2916,21 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                 timed_out = True
             if not stop_leftovers(p, out_path.name):    # 正常終了・異常終了でも、残した道具の実行を止めてから控えへ戻す
                 anomaly("compose", f"書き直しの子 {art['slug']} が残した道具の実行を止められない(控えへ戻したあとに記事を書き換えうる)")
+            if not guard_result(out_path, f"書き直し {art['slug']}"):
+                cannot.append(art["slug"])
             waited.append((art, path, fact_by_id, materials, issues, out_path, p, timed_out))
         back = restore_posts(date, kept_posts)
         if back:
             print(f"書き直しの子が直接書き換えた記事を控えへ戻した(稿は答えから書く): {', '.join(back[:8])}", flush=True)
+        if cannot:      # CLI を起動できない: 直接起動したときと同じく例外で止める(記事は控えへ戻してある)
+            for w in waited:
+                w[5].unlink(missing_ok=True)
+                take_log(w[5])
+            raise FileNotFoundError(f"書き直しの子の CLI を起動できない: {', '.join(cannot)}")
         for art, path, fact_by_id, materials, issues, out_path, p, timed_out in waited:
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             out_path.unlink(missing_ok=True)
             save_raw(date, f"revise-{art['slug']}", "", take_log(out_path), p.returncode, files={"last-message": out})
-            guard_failed(p, f"書き直し {art['slug']}")
             try:
                 # 採るのは正常に終わったセッションの、schema どおりの答えだけ(時間切れの間際に書かれた見送りで
                 # 既存の記事を消さない・{} の理由を理由と認めない。執筆と同じ。監査指摘)

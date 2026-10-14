@@ -6758,11 +6758,13 @@ def test_writer_children(tmp: Path):
                                    f"    time.sleep(0.05)\n")
     spec = {"write-probe": [{"answer": dict(base, title="**販売開始**", lede="**販売開始**する。")}, {"answer": base}],
             **{f"write-{s}": [{"answer": base}] for s in slugs[1:]},
+            # 書かせる記事を直接書いて 96 で異常終了(CLI の普通の終了コード。起動の失敗ではない)→ やり直しで答えから書く(監査指摘)
+            "write-alpha": [{"touch": {f"docs/_posts/{date}-alpha.md": "不採用の直書き"}, "exit": 96}, {"answer": base}],
             # 正常終了して、別のセッションに抜け、環境を読めなくした道具を残す
             "revise-probe": [{"answer": fixed, "background": late_write("delta", "revise"), "detach": True, "nodump": True}],
             # 記事を直接書き換え、ほかの記事も書き換え、新しい記事ファイルを作り、道具を残して異常終了
             "revise-alpha": [{"touch": {f"docs/_posts/{date}-alpha.md": "壊れた直書き", f"docs/_posts/{date}-delta.md": "よその記事も直書き",
-                                        f"docs/_posts/{date}-zeta.md": "勝手に作った記事"}, "answer": fixed, "exit": 1,
+                                        f"docs/_posts/{date}-zeta.md": "勝手に作った記事"}, "answer": fixed, "exit": 97,
                               "background": late_write("beta", "revise")}],
             # 書き換えて時間切れ
             "revise-beta": [{"touch": {f"docs/_posts/{date}-beta.md": "時間切れの直書き"}, "answer": fixed, "sleep": 20}],
@@ -6785,6 +6787,9 @@ def test_writer_children(tmp: Path):
         with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
             _lint.check_plain_text(rep, "-", "title", fm.get("title"))
             _lint.check_plain_text(rep, "-", "lede", fm.get("lede"))
+        check((spec_p.parent / "count-write-alpha").read_text() == "2" and "不採用の直書き" not in path("alpha").read_text(encoding="utf-8")
+              and (compose.parse_front_matter(path("alpha")) or {}).get("title") == base["title"],
+              f"96 で終わった CLI を起動の失敗と取り違えた・やり直さない: {path('alpha').read_text(encoding='utf-8')[:40]!r}")
         check(sorted(a["slug"] for a in written) == sorted(slugs) and fm.get("title") == base["title"] and rep.errors == 0
               and (spec_p.parent / "count-write-probe").read_text() == "2",
               f"見出し・リードの Markdown 記法を差し戻さずに採った: {fm.get('title')!r} {fm.get('lede')!r} lint {rep.errors}件 {aborted}")
@@ -6841,6 +6846,21 @@ def test_writer_children(tmp: Path):
               and all((compose.parse_front_matter(path(s)) or {}).get("title") == base["title"] for s in ("fresh", "late", "slow"))
               and "子が直接書いた稿" not in path("fresh").read_text(encoding="utf-8"),
               f"組み直しで書かせた記事が答えから書かれない: {[a['slug'] for a in written2]} {aborted2}")
+        # 6) CLI を本当に起動できない(PATH に codex が無い): 直接起動したときと同じく FileNotFoundError で止まり、書かせる記事を残さず、
+        #    ほかの記事は変えない(出力の読めない回としてやり直し・落とすことはしない)
+        before3 = {p_.name: p_.read_bytes() for p_ in posts.glob(f"{date}-*.md")}
+        empty = tmp / "nobin"
+        empty.mkdir()
+        os.environ["PATH"] = str(empty)
+        try:
+            compose.write_articles(date, {"articles": [art(s) for s in slugs + ("fresh", "late", "slow", "nocli")]}, {"c1": cand}, [], {},
+                                   reuse=True)
+            check(False, "CLI を起動できないのに、出力の読めない回として扱った(FileNotFoundError にしない)")
+        except FileNotFoundError as e:
+            check("起動できない" in str(e) and "nocli" in str(e), f"起動できない理由が違う: {e}")
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[5] or ''}"
+        check({p_.name: p_.read_bytes() for p_ in posts.glob(f"{date}-*.md")} == before3 and not path("nocli").exists(),
+              "CLI を起動できないときに、記事が変わった・書かせる記事が残った")
     finally:
         compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_by_key, compose.DEADLINE = saved[:5]
         os.environ["PATH"] = saved[5] or ""
@@ -6850,21 +6870,25 @@ def test_writer_children(tmp: Path):
 
 
 def test_child_guard(tmp: Path):
-    """child_guard(執筆・書き直しの子の CLI を包む)を実際に走らせる: CLI の終了コードを返す。起動できなければ CANNOT_START で、compose は
-    直接起動したときと同じく FileNotFoundError にする。CLI が終わったら(SIGTERM で止められても)、CLI が残した道具の実行を、別のセッションに
-    抜けて環境を読めなくしたものまで止めてから終わる(2026-10-14 監査: 印で探す止め方では見落とし、控えへ戻したあとに記事を書き換えた)"""
+    """child_guard(執筆・書き直しの子の CLI を包む)を実際に走らせる: 終了コードは CLI のもの(96・97 などどの値も)をそのまま返し、
+    起動できたか・片付けを確かめられたかは結果のファイルで返す(2026-10-14 監査: 96 を起動の失敗に使い、CLI が普通に返した 96 を取り違えた)。
+    起動できなければ compose は直接起動したときと同じく FileNotFoundError にする。CLI が終わったら(SIGTERM で止められても)、CLI が残した
+    道具の実行を、別のセッションに抜けて環境を読めなくしたものまで止めてから終わる(監査: 印で探す止め方では見落とした)"""
     import time
-    import child_guard
     tmp.mkdir(parents=True, exist_ok=True)
-    guard = [sys.executable, str(compose.GUARD)]
-    check(subprocess.run(guard + ["sh", "-c", "exit 3"]).returncode == 3, "CLI の終了コードを返さない")
-    r = subprocess.run(guard + ["no-such-cli-imas-test"], capture_output=True, text=True)
-    check(r.returncode == child_guard.CANNOT_START and "起動できない" in r.stderr, f"起動できない CLI の終わり方: {r.returncode} {r.stderr[-120:]}")
-    try:
-        compose.guard_failed(subprocess.CompletedProcess([], child_guard.CANNOT_START), "test")
-        check(False, "起動できない CLI を、出力の読めない回として扱った(FileNotFoundError にしない)")
-    except FileNotFoundError:
-        pass
+
+    def run(cmd, name):
+        out_path = tmp / f"{name}.txt"
+        r = subprocess.run(compose.guarded(cmd, out_path), capture_output=True, text=True)
+        st = json.loads(compose.guard_status_of(out_path).read_text(encoding="utf-8")) if compose.guard_status_of(out_path).exists() else None
+        return r, st, out_path
+    for code in (0, 3, 96, 97, 127):
+        r, st, out_path = run(["sh", "-c", f"exit {code}"], f"rc{code}")
+        check(r.returncode == code and st == {"started": True, "cleaned": True, "note": ""} and compose.guard_result(out_path, "test") is True
+              and not compose.guard_status_of(out_path).exists(), f"CLI の終了コード {code} の返し方・結果: {r.returncode} {st}")
+    r, st, out_path = run(["no-such-cli-imas-test"], "missing")
+    check(st and st["started"] is False and "起動できない" in r.stderr and compose.guard_result(out_path, "test") is False,
+          f"起動できない CLI を結果で返さない: {r.returncode} {st}")
     # 別のセッションに抜け、環境を読めなくし、あとから書く道具を残して終わる CLI(正常終了・SIGTERM で止められた)
     for name, sleep in (("exit", 0), ("term", 30)):
         out = tmp / f"left-{name}.txt"
@@ -6872,14 +6896,16 @@ def test_child_guard(tmp: Path):
                 f"pathlib.Path({str(out)!r}).write_text('残った道具の書き込み')")
         cli = (f"import subprocess, sys, time; subprocess.Popen([sys.executable, '-c', {tool!r}], start_new_session=True, "
                f"stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL); time.sleep({sleep})")
-        p = subprocess.Popen(guard + [sys.executable, "-c", cli], start_new_session=True)
+        p = subprocess.Popen(compose.guarded([sys.executable, "-c", cli], tmp / f"g-{name}.txt"), start_new_session=True)
         if sleep:
             time.sleep(0.3)
             compose.end_guarded(p)
         else:
             p.wait(timeout=10)
         time.sleep(1.2)
-        check(not out.exists() and p.returncode is not None, f"CLI が残した道具の実行が child_guard のあとも書いた({name}): rc {p.returncode}")
+        st = json.loads(compose.guard_status_of(tmp / f"g-{name}.txt").read_text(encoding="utf-8"))
+        check(not out.exists() and p.returncode is not None and st["cleaned"] is True,
+              f"CLI が残した道具の実行が child_guard のあとも書いた({name}): rc {p.returncode} {st}")
 
 
 def test_restore_posts_skip(tmp: Path):

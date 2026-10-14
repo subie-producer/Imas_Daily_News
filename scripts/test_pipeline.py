@@ -5110,14 +5110,15 @@ def test_compose_selection_from_cli(tmp: Path):
     rec = json.loads(rp.read_text(encoding="utf-8"))["read"] if rp.exists() else None
     check(rec is not None and set(rec) == {"ca1", "ca2", "cb1", "cx1", "ma1", "sa1"},
           f"選定記録が、判定を得た主題(と選定に掛けない候補)になっていない: {sorted(rec or [])}")
-    saved_root = compose.ROOT
+    # 引き継ぎは write_checked(一時ファイルは pipelib.ROOT の下)で書くので、両方を一時領域へ向ける(本体に書かない。監査指摘)
+    saved_root = (compose.ROOT, pipelib.ROOT)
     try:
-        compose.ROOT = ok
+        compose.ROOT = pipelib.ROOT = ok
         carry = compose.carry_late_candidates(nxt)
         got = [r["id"] for r in json.loads((ok / "candidates" / f"{nxt}.json").read_text(encoding="utf-8"))] \
             if (ok / "candidates" / f"{nxt}.json").exists() else []
     finally:
-        compose.ROOT = saved_root
+        compose.ROOT, pipelib.ROOT = saved_root
     check(got == ["sb1"] and carry, f"判定を得られなかった主題の候補を次の号が引き継がない(または判定済みまで引き継いだ): {got}")
 
     # 2. 選定の CLI が起動できない(FileNotFoundError: claude)。計画は出来ず、再実行も成功しなかった
@@ -5133,12 +5134,12 @@ def test_compose_selection_from_cli(tmp: Path):
     check(rec is not None and not set(rec) & usable,
           f"選定が起動できなかった号で、選定に掛けていない候補を読んだと記録した(または記録が無く、次の号が遡らない): {rec}")
     try:
-        compose.ROOT = dead
+        compose.ROOT = pipelib.ROOT = dead
         compose.carry_late_candidates(nxt)
         got = {r["id"] for r in json.loads((dead / "candidates" / f"{nxt}.json").read_text(encoding="utf-8"))} \
             if (dead / "candidates" / f"{nxt}.json").exists() else set()
     finally:
-        compose.ROOT = saved_root
+        compose.ROOT, pipelib.ROOT = saved_root
     check(usable <= got, f"選定が起動できなかった号の素材を、次の号が引き継がない: {sorted(got)}")
 
 

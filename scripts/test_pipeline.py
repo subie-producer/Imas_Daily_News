@@ -5480,14 +5480,19 @@ def test_oncall_merge_push_settles(tmp: Path):
         return dict(approved=True, fix={"status": "fixed", "rerun_mode": "resume"}, head=head, diff=diff, changed=changed,
                     kept={}, later=[], error="")
 
-    def faulty(target, kind):
-        # lost: push は届かずに時間切れ / late: 届いたが応答が時間切れ / *_blind: そのあと届いたかを確かめる通信も止まる
+    def faulty(target, how, delivered, blind):
+        # how: push の終わり方(時間切れ・非0の終了・起動の失敗)/ delivered: そのまえにリモートへ届いたか /
+        # blind: そのあと届いたかを確かめる通信も止まる
         def fake(args, cwd, timeout=600):
             if args[:2] == ["git", "push"] and args[-1] == target:
-                if kind.startswith("late"):
+                if delivered:
                     real_sh(args, cwd, timeout)
+                if how == "nonzero":
+                    return subprocess.CompletedProcess(args, 1, "", "rejected")
+                if how == "oserror":
+                    raise OSError("起動できない")
                 raise subprocess.TimeoutExpired(args, timeout)
-            if kind.endswith("blind") and args[:2] == ["git", "ls-remote"]:
+            if blind and args[:2] == ["git", "ls-remote"]:
                 raise subprocess.TimeoutExpired(args, timeout)
             return real_sh(args, cwd, timeout)
         return fake
@@ -5505,30 +5510,34 @@ def test_oncall_merge_push_settles(tmp: Path):
         oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
         oncall.RECOVER, oncall.REMOTE_CHECK_PAUSE_SEC = False, 0
         sys.argv = ["oncall", "--stage", "compose", "--date", date, "--no-rerun"]
+        cases = (("timeout", False, False), ("timeout", True, False), ("timeout", False, True), ("timeout", True, True),
+                 ("nonzero", False, False), ("nonzero", True, False), ("oserror", False, False))
         for target in ("main", edition):
-            for kind in ("lost", "late", "lost_blind", "late_blind"):
+            for how, delivered, blind in cases:
+                kind = f"{how}{'-delivered' if delivered else ''}{'-blind' if blind else ''}"
                 where = f"{target} の push が {kind}"
                 root = oncall.ROOT = repo(f"{target.replace('/', '-')}-{kind}")
                 base = g(root, "rev-parse", "main")
                 notes.clear()
-                oncall.sh = faulty(target, kind)
+                oncall.sh = faulty(target, how, delivered, blind)
                 try:
                     code = oncall._main()
                 finally:
                     oncall.sh = real_sh
                 g(root, "fetch", "-q", "origin")
                 state = dict(exit=code, branch=g(root, "branch", "--show-current"), status=g(root, "status", "--porcelain"))
-                check(code == (0 if kind == "late" else 1) and state["branch"] == edition and not state["status"],
+                settled = delivered and not blind      # 届いたと確かめられたときだけ取り込めたことにする
+                check(code == (0 if settled else 1) and state["branch"] == edition and not state["status"],
                       f"{where}: 終わり方・終えるブランチが違う: {state} {notes[-1:]}")
                 for b in ("main", edition):
                     check(ok(root, "merge-base", "--is-ancestor", b, f"origin/{b}"),
                           f"{where}: ローカルの {b} がリモートに無い commit を持ったまま残った(次の当番が前提の検査で止まる)")
-                if kind == "late":
+                if settled:
                     check(g(root, "rev-parse", "main") == g(root, "rev-parse", "origin/main") != base
                           and g(root, "rev-parse", edition) == g(root, "rev-parse", f"origin/{edition}")
                           and ok(root, "merge-base", "--is-ancestor", "origin/main", f"origin/{edition}"),
                           f"{where}: 届いていたのに取り込めたことにしない")
-                elif kind.endswith("blind"):
+                elif blind:
                     check(any("確かめられない" in m for m in notes), f"{where}: 届いたか確かめられないことを知らせない: {notes[-1:]}")
                 # 次の当番は前提の検査を通り、新しい修正を main と号へ取り込める
                 notes.clear()

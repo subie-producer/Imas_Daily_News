@@ -154,9 +154,9 @@ def merge_and_push(branch: str, before: str, merge: list[str], push: list[str]) 
         why = f"{type(e).__name__}: {str(e)[:200]}"
     tip = remote_tip(branch) if new else ""      # merge の前に抜けたなら、届いているはずがない
     if new and tip == new:
-        # 届いていた(応答だけが返らなかった)。リモート追跡の参照を揃えて、取り込めたことにする
+        # 届いていた(応答が返らなかった・失敗として返った)。リモート追跡の参照を揃えて、取り込めたことにする
         must(sh(["git", "update-ref", f"refs/remotes/origin/{branch}", new], cwd=ROOT), "リモート追跡の参照の更新")
-        print(f"{branch} の push は応答が返らなかった({why})が、リモートに届いていた", flush=True)
+        print(f"{branch} の push は失敗として終わった({why})が、リモートに届いていた", flush=True)
         return "pushed", new
     undo_merge(before, branch)
     return ("unknown" if tip is None else "absent"), why

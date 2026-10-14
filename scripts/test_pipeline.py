@@ -6332,6 +6332,54 @@ def test_restore_files(tmp: Path):
           "落とした後の組版の巻き戻しが、控えた中身へ戻さない・後から増えた記事を残す")
 
 
+def test_run_codex_isolation(tmp: Path):
+    """監査(run_codex)は使い捨ての作業ツリーで動く: CLI の -C とプロセスの cwd がそこを指し、呼び出し元の作業ツリーに何も残さず、
+    CLI が失敗しても片付ける(監査指摘: -C を呼び出し元に変えても全テストが通った)。偽の codex を PATH の先頭に置いて実際に起動する。"""
+    import oncall
+    repo, bindir = tmp / "repo", tmp / "bin"
+    repo.mkdir(parents=True)
+    bindir.mkdir()
+    g = lambda *a: subprocess.run(["git", *a], cwd=repo, capture_output=True, text=True, check=True).stdout
+    g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
+    (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
+    log, fail_flag = tmp / "codex-calls.jsonl", tmp / "fail"
+    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "notes": ""}, ensure_ascii=False)
+    fake = bindir / "codex"
+    fake.write_text(f"#!{sys.executable}\n"
+                    "import json, os, sys\n"
+                    "a = sys.argv[1:]\n"
+                    "c, o = a[a.index('-C') + 1], a[a.index('-o') + 1]\n"
+                    f"open({str(log)!r}, 'a').write(json.dumps({{'C': c, 'cwd': os.getcwd()}}) + '\\n')\n"
+                    "open(os.path.join(c, 'written-by-audit'), 'w').write('x')\n"
+                    "open('cwd-written', 'w').write('x')\n"
+                    f"if os.path.exists({str(fail_flag)!r}):\n    sys.exit(1)\n"
+                    f"open(o, 'w', encoding='utf-8').write({answer!r})\n", encoding="utf-8")
+    fake.chmod(0o755)
+    schema = Path(__file__).resolve().parent.parent / "schema" / "oncall-review.schema.json"
+    clean = lambda: (g("status", "--porcelain") == "" and not (repo / "written-by-audit").exists() and not (repo / "cwd-written").exists()
+                     and sum(1 for ln in g("worktree", "list", "--porcelain").splitlines() if ln.startswith("worktree ")) == 1)
+    saved_path, saved_root = os.environ.get("PATH", ""), pipelib.ROOT
+    try:
+        os.environ["PATH"] = f"{bindir}:{saved_path}"
+        pipelib.ROOT = tmp           # 生の出力の控え(save_raw)も一時ディレクトリへ
+        ans = oncall.run_codex("監査して", schema, repo)
+        ok_run = ans.get("verdict") == "approve" and clean()
+        fail_flag.write_text("1")
+        failed = False
+        try:
+            oncall.run_codex("監査して", schema, repo)
+        except RuntimeError:
+            failed = True
+        ok_fail = failed and clean()
+    finally:
+        os.environ["PATH"], pipelib.ROOT = saved_path, saved_root
+    calls = [json.loads(ln) for ln in log.read_text(encoding="utf-8").splitlines()] if log.exists() else []
+    real = os.path.realpath
+    ok_place = len(calls) == 2 and all(real(c["C"]) == real(c["cwd"]) != real(str(repo)) and not Path(c["C"]).exists() for c in calls)
+    check(ok_run and ok_fail and ok_place,
+          f"監査が使い捨ての作業ツリーで動かない・呼び出し元に書き込みが残る・失敗で片付かない: {ok_run} {ok_fail} {ok_place} {calls}")
+
+
 def test_remove_worktree(tmp: Path):
     """監査用の使い捨ての作業ツリーは、git で消せなくても片付け、片付けられなければ異常として申告する(黙って残さない。監査指摘)。"""
     import oncall
@@ -6422,6 +6470,7 @@ def main() -> int:
     test_stray_governed_write_is_caught(tmp / "sgw")
     test_write_checked_contract(tmp / "wcc")
     test_remove_worktree(tmp / "rmw")
+    test_run_codex_isolation(tmp / "rci")
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")
     test_canonicalize_and_assign_ranks(tmp / "car2")

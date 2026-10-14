@@ -7828,6 +7828,58 @@ def test_stray_governed_write_is_caught(tmp: Path):
     del STRAY_WRITES[n:]
 
 
+def test_oncall_collect_rerun_killed_classify(tmp: Path):
+    """当番の収集の取り直しで、出典の判定の取引の途中で収集が SIGKILL されても、当番の後始末は確定(commit)の前に控えから判定表と
+    記事を戻し、作業ツリーを clean にして次の工程の checkout を通す(2026-10-14 取り込みの監査: 先に収集の記録を commit して HEAD が
+    控えと食い違い、判定表と記事が未コミットで残って次の checkout が止まった)。本物の子プロセスと SIGKILL・ローカルの bare origin で。"""
+    import oncall
+    import shutil
+    repo = Path(__file__).resolve().parent.parent
+    root, remote = tmp / "work", tmp / "origin.git"
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True, capture_output=True)
+    g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+    g("config", "user.name", "t"); g("config", "user.email", "t@example.com")
+    for name in ("scripts", "schema", "prompts"):
+        shutil.copytree(repo / name, root / name, dirs_exist_ok=True)
+    for name in ("docs/_posts", "candidates", "metrics", "stock"):
+        (root / name).mkdir(parents=True, exist_ok=True)
+    shutil.copy2(repo / ".gitignore", root / ".gitignore")
+    shutil.copy2(repo / "source_types.yml", root / "source_types.yml")
+    post = root / "docs" / "_posts" / "2026-10-14-a.md"
+    post.write_text("---\n" + article_fm("a", "2026-10-14") + "---\n本文\n", encoding="utf-8")
+    (root / "candidates" / "2026-10-15.json").write_text("[]\n", encoding="utf-8")
+    (root / "stock" / "watch-state.json").write_text("{}\n", encoding="utf-8")
+    # 判定表と記事を書き換えたところで、付け直しの子が親(収集)を SIGKILL する
+    (root / "scripts" / "classify_sources.py").write_text(
+        "from pathlib import Path\np=Path('source_types.yml');p.write_text(p.read_text()+'\\n# txn unfinished\\n')\n", encoding="utf-8")
+    (root / "scripts" / "retag_sources.py").write_text(
+        "from pathlib import Path\nimport os,signal\np=next(Path('docs/_posts').glob('*.md'));p.write_text(p.read_text()+'\\n<!-- txn unfinished -->\\n')\n"
+        "os.kill(os.getppid(),signal.SIGKILL)\n", encoding="utf-8")
+    (root / "scripts" / "collect.py").write_text(
+        "import pipelib\nfrom pathlib import Path\nPath('metrics/2026-10-15.json').write_text('{\"collect\":[{\"added\":1}]}')\n"
+        "pipelib.classify_retag_lint('2026-10-15')\n", encoding="utf-8")
+    g("add", "."); g("commit", "-qm", "base"); g("remote", "add", "origin", str(remote)); g("push", "-qu", "origin", "main")
+    branch = "edition/2026-10-15"
+    g("checkout", "-qb", branch); g("push", "-qu", "origin", branch)
+    table_before, post_before = (root / "source_types.yml").read_text(encoding="utf-8"), post.read_text(encoding="utf-8")
+    saved = (pipelib.ROOT, oncall.ROOT, pipelib.notify, oncall.notify, pipelib.escalate)
+    try:
+        pipelib.ROOT = oncall.ROOT = root
+        pipelib.notify = oncall.notify = lambda *a, **k: True
+        pipelib.escalate = lambda *a, **k: True
+        code = oncall.rerun_stage("collect", "2026-10-15", branch, False)
+        dirty = g("status", "--porcelain")
+        ok = pipelib.checkout_edition_branch("2026-10-15", "compose")
+    finally:
+        pipelib.ROOT, oncall.ROOT, pipelib.notify, oncall.notify, pipelib.escalate = saved
+    kept_metric = '"added":1' in g("show", f"origin/{branch}:metrics/2026-10-15.json").replace(" ", "")
+    check(code == -9 and not dirty and ok and (root / "source_types.yml").read_text(encoding="utf-8") == table_before
+          and post.read_text(encoding="utf-8") == post_before and not (root / pipelib.TXN_JOURNAL).exists() and kept_metric,
+          f"収集が判定の取引の途中で殺されたあと、当番の後始末が判定表と記事を戻してから確定しない: exit {code} / dirty {dirty!r} / "
+          f"checkout {ok} / 記録を確定 {kept_metric}")
+
+
 def test_compose_run_derive(tmp: Path):
     """組版の派生(compose.run_derive): 成功は True、失敗(0 以外の終了・スクリプトが無い)は終了コードと最後の行を異常として申告して
     False。組版は derive を run_derive だけで呼ぶ(監査指摘 2026-10-14: 5か所とも終了コードを見ず、derive が落ちても黙って lint へ進んだ)。"""
@@ -9675,6 +9727,7 @@ def main() -> int:
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")
     test_compose_run_derive(tmp / "crd")
+    test_oncall_collect_rerun_killed_classify(tmp / "ock")
     test_canonicalize_and_assign_ranks(tmp / "car2")
     test_rewrite_past_apply_answer(tmp / "rpa")
     test_slugify_format()

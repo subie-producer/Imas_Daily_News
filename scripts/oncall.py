@@ -74,7 +74,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import hashlib
 
-from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, settle_collect_outputs, SCHEDULED, SLOT_MARGIN_MIN, JobLockTimeout, anomaly,
+from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, recover_classify_txn, settle_collect_outputs, SCHEDULED, SLOT_MARGIN_MIN,
+                     JobLockTimeout, anomaly,
                      job_lock, loads_strict, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, settled_drops,
                      tool_path)
@@ -1266,6 +1267,15 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
                 # 切れた JSON・書式に合わない素材)は確定せずに HEAD の中身へ戻す(2026-10-14 監査指摘: 保存の途中で打ち切られた
                 # 素材の JSON を commit・push し、組版・発行前の lint が読めずに止まる経路があった)
                 try:
+                    # 確定(commit)する前に、取り直しの中で途中で終わった出典の判定の取引(SIGKILL 等)を控えから戻す。先に commit すると
+                    # HEAD が控えと食い違って戻せなくなり、判定表と記事が未コミットで残って次の工程の checkout が止まる
+                    # (2026-10-14 取り込みの監査)。戻せなければ確定しない
+                    back = recover_classify_txn()
+                    if back:
+                        print(back, flush=True)
+                        if "戻せない" in back:
+                            raise RuntimeError(back)
+                        anomaly("oncall", f"{date} collect: {back}")
                     dropped = settle_collect_outputs(ROOT)
                     if dropped:
                         notify("oncall", f"{date} collect: 取り直しの出力が壊れていたので確定せずに戻した: " + " / ".join(dropped)[:600],

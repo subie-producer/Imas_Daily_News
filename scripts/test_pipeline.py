@@ -6299,7 +6299,11 @@ def test_deploy_index_failure(tmp: Path):
 
     def fake_build(dest: Path, timeout=None):     # 今の記事から静的な記事ページを作る(slow_build があればその秒だけ掛ける)
         import time
-        time.sleep(slow_build[0] if slow_build else 0)
+        need = slow_build[-1] if slow_build else 0
+        if timeout is not None and need > timeout:  # 本物の build と同じく、渡された上限で打ち切られる
+            time.sleep(timeout)
+            raise subprocess.TimeoutExpired("jekyll", timeout)
+        time.sleep(need)
         for rel in deploy.REQUIRED + [f"articles/{p.stem}/index.html" for p in posts.glob("*.md")]:
             p = dest / rel
             p.parent.mkdir(parents=True, exist_ok=True)
@@ -6317,7 +6321,7 @@ def test_deploy_index_failure(tmp: Path):
         finally:
             c.close()
     notes, purges = [], []
-    names = [f"20261014T{6 + m:02d}0000" for m in range(10)]       # 配信ごとのリリースの名前(時刻順)
+    names = [f"20261014T{6 + m:02d}0000" for m in range(12)]       # 配信ごとのリリースの名前(時刻順)
     stamps = iter(names)
     saved = {k: getattr(deploy, k) for k in ("ROOT", "SRV", "RELEASES", "CURRENT", "build", "purge_cache", "notify", "sync_app",
                                              "now_jst", "INDEX_ATTEMPTS", "INDEX_RETRY_SEC", "reindex", "indexed_run",
@@ -6423,6 +6427,30 @@ def test_deploy_index_failure(tmp: Path):
         took = time.time() - t0
         check(rc == 1 and took < 3.0 and cur() == names[6] and "戻した" in state(),
               f"予算のうちに戻す・知らせるまで終えない: rc={rc!r} {took:.1f}秒 current={cur()} {state()!r}")
+        # S9 ビルドが予算を食い尽くす: 渡した上限で打ち切り、current は差し替えない(予算 2秒・ビルド 3秒掛かる)
+        slow_build.append(3.0)
+        sys.argv = ["deploy.py", "--budget-sec", "2"]
+        t0 = time.time()
+        rc = run_main()
+        took = time.time() - t0
+        check(rc == 1 and took < 2.0 and cur() == names[6] and "前の版のまま" in state(),
+              f"ビルドを予算の残りで打ち切らない(か、差し替えた): rc={rc!r} {took:.1f}秒 current={cur()} {state()!r}")
+        slow_build.clear()
+        sys.argv = ["deploy.py"]
+        # S10 索引の状態が読めずに新しい版(b2 を足した版)が残る → 手で索引を直す(--run-id なし) → 次の配信も失敗:
+        # 手での更新は前の取り込みの記録を消すので、古い記録のリリース(names[6])へ戻して「揃っている」と言わない(再監査)
+        (posts / f"{d}-b2.md").write_text(f"---\nslug: b2\nedition: '{d}'\ntitle: 記事b2\ntags: [t]\n---\n本文b2\n", encoding="utf-8")
+        deploy.reindex, deploy.INDEX_ATTEMPTS, deploy.indexed_run = broken, 1, unreadable
+        rc = run_main()
+        deploy.indexed_run = real_indexed_run
+        live = cur()
+        subprocess.run([sys.executable, str(root / "scripts" / "indexer.py"), "--db", str(db), "--quiet"],
+                       check=True, capture_output=True)
+        rc2 = run_main()
+        check(rc == 1 and live == names[9] and rc2 == 1 and cur() == names[9] and articles() == ["a", "b2"]
+              and "静的と索引が揃っている" not in state() and "確かめられない" in state(),
+              f"手で直した索引の後の失敗で、古い取り込みの記録のリリースへ戻した(か、揃っていると言った): rc={rc!r}/{rc2!r} "
+              f"current={cur()} 索引={articles()} {state()!r}")
     finally:
         subprocess.run = real_run
         lock.close()

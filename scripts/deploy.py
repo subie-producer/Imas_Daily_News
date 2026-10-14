@@ -308,6 +308,7 @@ def main() -> int:
     args = ap.parse_args()
     global DEADLINE
     DEADLINE = time.time() + args.budget_sec
+    say_state("current は前の版のまま(差し替える前に止まった)")
     # 試験実行(--dry-run)では Discord へ通知しない。本物の警報と見分けが付かなくなる
     set_quiet(args.dry_run)
 
@@ -318,8 +319,14 @@ def main() -> int:
 
     print(f"ビルド中 → {staging}", flush=True)
     shutil.rmtree(staging, ignore_errors=True)
-    # ビルドが長引いても、索引の1回と後始末の分は残す(足りなければ時間切れで止まり、current は差し替えない)
-    build(staging, timeout=max(1.0, min(BUILD_TIMEOUT_SEC, left() - RESERVE_SEC - INDEX_MIN_SEC)))
+    # ビルドが長引いても、索引の1回と後始末の分は残す(足りなければ時間切れで止め、current は差し替えない)
+    build_limit = max(1.0, min(BUILD_TIMEOUT_SEC, left() - RESERVE_SEC - INDEX_MIN_SEC))
+    try:
+        build(staging, timeout=build_limit)
+    except subprocess.TimeoutExpired:
+        shutil.rmtree(staging, ignore_errors=True)
+        notify("deploy", f"配信を中止(ビルドが予算のうちに終わらない。上限 {build_limit:.0f}秒)。{STATE}", ok=False)
+        return 1
 
     errors = verify(staging)
     if errors:

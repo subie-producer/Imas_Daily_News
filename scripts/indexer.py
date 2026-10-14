@@ -274,6 +274,10 @@ def main() -> int:
         if args.run_id:
             # 配信は、失敗したときにこの印で「索引がその版まで進んだか(取引が通ったか)」を確かめる
             conn.execute("INSERT OR REPLACE INTO meta (key, value) VALUES ('run_id', ?)", (args.run_id,))
+        else:
+            # 配信以外の更新(手での復旧など)では、索引がどのリリースと揃っているか分からない。前の記録を残すと、次の配信の
+            # 失敗でそのリリースへ戻して「揃っている」と言ってしまう(2026-10-14 再監査)
+            conn.execute("DELETE FROM meta WHERE key = 'run_id'")
     conn.execute("PRAGMA optimize")
     totals = {t: conn.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
               for t in ("articles", "article_tags", "editions", "editorials")}

@@ -1023,6 +1023,8 @@ def resolve_videos(date: str, apply: bool) -> tuple[list[str], dict]:
 
 
 def main() -> int:
+    from pipelib import exit_on_term
+    exit_on_term()      # SIGTERM でも、起動した分類のセッションを子孫ごと止めてから終わる
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=None)
     ap.add_argument("--apply", action="store_true", help="一致したものを source_types.yml に足す")

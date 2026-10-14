@@ -497,13 +497,14 @@ def reap(p, grace: int = 10) -> tuple[str, str]:
     """時間切れのセッションを落とし、それまでの出力を回収する。**回収にも上限を付ける。**
     claude / codex が起動した子(道具の実行)が出力のパイプを持ったまま残ると、親だけを kill しても
     上限なしの communicate() が子の終了まで待ち、締切を越えて工程が止まる(監査指摘)。
-    プロセスグループと子孫(自分でグループを分けた道具も)を止め、死んだのを確かめてから出力を読む(stop_tree)。"""
+    プロセスグループと子孫(自分でグループを分けた道具も、親が先に終わって辿れなくなった道具も)を止め、死んだのを確かめてから
+    出力を読む(stop_tree)。"""
     if isinstance(p, LaunchFailed):
         return "", p.error
     pid = getattr(p, "pid", None)
     try:
         # 頭がまだ回収前(生きている・ゾンビ)なら pid は再利用されていないので、頭から子孫を辿ってよい
-        stop_tree(pid, root=pid if p.returncode is None else None)
+        stop_tree(pid, root=pid if p.returncode is None else None, mark=getattr(p, "session_mark", None))
     except Exception:       # noqa: BLE001  止め方の失敗で回収を飛ばさない(下で頭だけは必ず落とす)
         traceback.print_exc()
     try:
@@ -529,6 +530,9 @@ def reap(p, grace: int = 10) -> tuple[str, str]:
 # (監査指摘 2026-10-14: compose.claude_run・oncall.run_claude の時間切れのあとに孫がファイルを書いた)
 _SESSIONS: set = set()          # 起動して、まだ回収していないセッション(中断のとき stop_groups がまとめて止める)
 _SESSIONS_LOCK = threading.RLock()     # SIGTERM の後始末(同じスレッドの割り込み)から取り直せるように RLock
+# セッションごとの印。起動するときに環境変数へ足し(入れ子のセッションは空白区切りで足していく)、子孫は受け継ぐ。親が先に終わって
+# 親子の関係から辿れなくなった道具(自分でセッションを分けて親より長く生きる子)も、この印で見つけて止める(監査指摘 2026-10-14)
+SESSION_ENV = "IMAS_SESSION"
 
 
 class LaunchFailed:
@@ -588,14 +592,34 @@ def _proc_gone(pid: int) -> bool:
         return True
 
 
-def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5) -> list[int]:
-    """プロセスグループ pgid の全員と、その子孫(自分でグループ・セッションを分けた道具も)を止め、死んだのを確かめる(上限 wait 秒)。
-    root はまだ回収していないセッションの頭(グループの頭でなくても、そこから子孫を辿る)。CLI が道具を別のグループ・セッションで
-    起動すると、グループだけを落としても残る。先に SIGSTOP で凍らせてから辿り直す(止めている間に起動された子を取りこぼさない)。
-    この process とそのグループには触らない。戻りは止めた pid。"""
+def _proc_marked(table: dict, mark: str) -> set[int]:
+    """環境変数にセッションの印 mark を受け継いでいるプロセス(読めないものは除く)。"""
+    key = (SESSION_ENV + "=").encode()
+    out = set()
+    for q in table:
+        try:
+            with open(f"/proc/{q}/environ", "rb") as f:
+                env = f.read()
+        except OSError:
+            continue
+        for kv in env.split(b"\0"):
+            if kv.startswith(key) and mark.encode() in kv[len(key):].split():
+                out.add(q)
+                break
+    return out
+
+
+def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5, mark: str | None = None) -> list[int]:
+    """プロセスグループ pgid の全員と、その子孫(自分でグループ・セッションを分けた道具も)と、セッションの印 mark を受け継いだ
+    プロセス(親が先に終わって辿れなくなった道具も)を止め、死んだのを確かめる(上限 wait 秒)。
+    root はまだ回収していないセッションの頭(この process の子。グループの頭でなくても、そこから子孫を辿る)。CLI が道具を別の
+    グループ・セッションで起動すると、グループだけを落としても残る。先に SIGSTOP で凍らせてから辿り直す(止めている間に起動された
+    子を取りこぼさない)。この process・そのグループ・この process の子でない root には触らない。戻りは止めた pid。"""
     if not isinstance(pgid, int) or pgid <= 1:
         return []
     me, own = os.getpid(), os.getpgrp()
+    if pgid in (me, own) or root == me:      # 自分自身・自分のグループを指す回収は断る(この process とその子を止めてしまう)
+        return []
     caught: set[int] = set()
     groups: set[int] = set()
     table = _proc_table()
@@ -605,11 +629,15 @@ def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5) -> lis
         except OSError:
             pass
         return []
+    if root is not None and table.get(root, (None,))[0] != me:
+        root = None             # この process の子でない pid から辿らない(再利用された番号・偽の対象で、無関係なプロセスを止めない)
     for _ in range(50):
         groups = ({pgid} | {table[q][1] for q in caught if q in table}) - {own, 0}
         found = {q for q, (_, pg, _) in table.items() if pg in groups} | caught
         if root and root in table:
             found.add(root)
+        if mark:
+            found |= _proc_marked(table, mark)
         kids: dict[int, list[int]] = {}
         for q, (pp, _, _) in table.items():
             kids.setdefault(pp, []).append(q)
@@ -629,7 +657,8 @@ def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5) -> lis
                 pass
         caught |= new
         table = _proc_table() or {}
-    for g in (groups if caught else ()):     # 誰もいないグループの番号は再利用されうるので送らない
+    # 止めたプロセスのいるグループにだけ送る(誰もいないグループの番号は再利用されうる)
+    for g in {pg for q, (_, pg, _) in table.items() if q in caught} - {own, 0}:
         try:
             os.killpg(g, signal.SIGKILL)
         except OSError:
@@ -648,12 +677,21 @@ def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5) -> lis
 def start_group(cmd: list[str], *, cwd=None, env: dict | None = None, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
     """モデル・道具のセッションを自前のセッション(プロセスグループ)で起動する。回収は finish_group。
     並列に起動するときは、起動のたびに一覧へ足し、finally で stop_groups(一覧) を呼ぶ(途中の例外・中断で置き去りにしない)。
-    起動できなければ例外にせず LaunchFailed(その担当だけの異常終了)を返す。"""
+    起動できなければ例外にせず LaunchFailed(その担当だけの異常終了)を返す。
+    環境変数にセッションの印(SESSION_ENV)を足して起動する(親が先に終わった道具も、回収のときに印で見つける)。"""
+    import uuid
+    mark = uuid.uuid4().hex
+    env = dict(os.environ if env is None else env)
+    env[SESSION_ENV] = f"{env.get(SESSION_ENV, '')} {mark}".strip()
     try:
         p = subprocess.Popen(cmd, cwd=cwd, env=env, stdout=stdout, stderr=stderr, text=True,
                              stdin=subprocess.DEVNULL, start_new_session=True)
     except OSError as e:
         return LaunchFailed(cmd, e)
+    try:
+        p.session_mark = mark
+    except AttributeError:      # 差し替えた起動(テストの偽物)が属性を持てないときは、印なしで回収する
+        pass
     with _SESSIONS_LOCK:
         _SESSIONS.add(p)
     return p
@@ -674,7 +712,7 @@ def finish_group(p, timeout: float | None) -> tuple[str, str, bool]:
         stop_groups([p])        # 中断でも止めて回収してから、元の例外を上げる
         raise
     try:
-        stop_tree(getattr(p, "pid", None))
+        stop_tree(getattr(p, "pid", None), mark=getattr(p, "session_mark", None))
     finally:
         _forget(p)
     return so or "", se or "", False
@@ -701,6 +739,16 @@ def stop_groups(procs=None) -> None:
         except Exception:       # noqa: BLE001  後始末の途中で止めない(finally から呼ばれ、元の例外を隠さない)
             traceback.print_exc()
             _forget(p)
+
+
+def exit_on_term() -> None:
+    """SIGTERM を「起動したセッションを子孫ごと止めてから終わる」終了(SystemExit 143)に変える。モデル・道具を起動する工程の
+    入口(main の最初)で呼ぶ。既定の SIGTERM は Python の後始末(finally・回収)を走らせずに落ち、起動した CLI が残った
+    (監査指摘 2026-10-14: 手で回した update_clis を止めると、CLI が生き残った)。別スレッドのセッションも先に止める。"""
+    def _term(signum, frame):
+        stop_groups()
+        raise SystemExit(143)
+    signal.signal(signal.SIGTERM, _term)
 
 
 def read_for_raw(p: Path) -> str | None:
@@ -1378,16 +1426,20 @@ def render_failure(returncode, stderr: str) -> str:
     return f"終了コード {returncode}: " + (" / ".join(key[-2:])[:300] if key else "(stderr なし)")
 
 
-def render_page(url: str, timeout: int = 30) -> str:
+def render_page(url: str, timeout: int = 30, limit: float | None = None) -> str:
     """ヘッドレスブラウザで描画したページの HTML。**失敗を空で返さない**: 非正常終了・時間切れ・空の出力は、
     終了コードと stderr の要点を持った RenderFailed で上げる。以前は空文字に変えていて、呼び出し側の記録は「空の応答」
-    だけになり、原因(2026-10-07 コロムビアの一覧の TimeoutException)を当番が別に再現して確かめていた(当番の指摘 dc23e62472)"""
+    だけになり、原因(2026-10-07 コロムビアの一覧の TimeoutException)を当番が別に再現して確かめていた(当番の指摘 dc23e62472)。
+    limit は待ってよい秒数の上限(工程の締切の残り。0 以下なら起動しない)。"""
+    wait = timeout + 60 if limit is None else min(timeout + 60, limit)
+    if wait <= 0:
+        raise RenderFailed(f"{url} を描画しない: 工程の締切を過ぎた")
     try:
         # ブラウザ(chromedriver・chrome)ごと止めるため、自前のグループで起動する(run_group)
         r = run_group([str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"), url, "--timeout", str(timeout)],
-                      timeout=timeout + 60, cwd=ROOT)
+                      timeout=wait, cwd=ROOT)
     except subprocess.TimeoutExpired as e:
-        raise RenderFailed(f"{url} の描画が {timeout + 60} 秒で終わらず打ち切った: "
+        raise RenderFailed(f"{url} の描画が {int(wait)} 秒で終わらず打ち切った: "
                            + render_failure("(時間切れ)", partial_output(e)[1])) from None
     except OSError as e:
         raise RenderFailed(f"{url} の描画を起動できない: {type(e).__name__}: {e}") from None

@@ -253,6 +253,8 @@ def record(label: str, judge_file: str) -> None:
 
 
 def main() -> int:
+    from pipelib import exit_on_term
+    exit_on_term()      # SIGTERM でも、起動した執筆・判定のセッションを子孫ごと止めてから終わる
     ap = argparse.ArgumentParser()
     ap.add_argument("--make", nargs="+", metavar=("DATE", "SLUG"))
     ap.add_argument("--ops", default=str(Path.home() / "git" / "imas-ops"))

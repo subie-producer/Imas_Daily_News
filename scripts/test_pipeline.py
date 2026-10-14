@@ -2646,14 +2646,12 @@ def test_claude_traced(tmp: Path):
         slow = pipelib.claude_traced(["SLOW"], tmp / "t2.jsonl", timeout=2, cwd=tmp)
         check(slow["timed_out"] and not slow["ok"] and slow["structured"] is None
               and "時間切れ" in slow["summary"] and "Read(" in slow["summary"], f"時間切れ時に経過が残らない: {slow}")
-        # 時間切れでは子孫(道具が起動したプロセス)まで止める。残すと、やり直しのセッションと並走する(監査指摘)
-        gpid = int((tmp / "grandchild.pid").read_text().strip())
-        try:
-            os.kill(gpid, 0)
-            alive = "Z" not in Path(f"/proc/{gpid}/stat").read_text().split(")")[-1].split()[0]   # ゾンビは止まっている
-        except (ProcessLookupError, FileNotFoundError):
-            alive = False
-        check(not alive, f"時間切れのあとに孫プロセス {gpid} が残った")
+        # 時間切れでは子孫(道具が起動したプロセス)まで止める。残すと、やり直しのセッションと並走する(監査指摘)。
+        # 回収は死んだのを確かめてから返すので、返った直後に見てよい(待ち時間に頼らない)。孫を起こす前に時間切れになったら、
+        # 確かめられなかったとして落とす(例外で止めない)
+        gp = tmp / "grandchild.pid"
+        gpid = int(gp.read_text().strip() or 0) if gp.exists() else 0
+        check(gpid and not _pid_alive(gpid), f"時間切れのあとに孫プロセス {gpid or '(起こす前に時間切れ)'} が残った")
         # 正常に終わらなかったセッションの出力は、形が合っていても採らない
         half = dict(slow, structured={"digest": 9})
         saved_h = assemble.claude_traced
@@ -5888,20 +5886,14 @@ def test_stray_governed_write_is_caught(tmp: Path):
 # --- モデル・道具のセッションの起動と回収(2026-10-14 の再監査) ------------------------------------------------------
 # 子孫が死んだかは、関数が返った直後に /proc で見る(回収は死んだのを確かめてから返す。待ち時間に頼らない)
 
-# 偽の CLI: 子を2つ起こす(同じグループの子と、自分でセッションを分けた子)。どちらも 30 秒後に書く。親は 60 秒待つ
-_PROBE_CLI = ("import os, sys, time\n"
-              "from pathlib import Path\n"
-              "d = Path(os.environ['SESSION_PROBE'])\n"
-              "for n in ('group', 'escaped'):\n"
-              "    pid = os.fork()\n"
-              "    if pid == 0:\n"
-              "        if n == 'escaped':\n"
-              "            os.setsid()\n"
-              "        time.sleep(30)\n"
-              "        (d / (n + '.wrote')).write_text('時間切れのあとに書いた')\n"
-              "        os._exit(0)\n"
-              "    (d / (n + '.pid')).write_text(str(pid))\n"
-              "time.sleep(60)\n")
+# 偽の CLI: 子を2つ起こす(同じグループの子と、自分でセッションを分けた子)。どちらも 30 秒後に書く。親は 60 秒待つ。
+# 起動が速い sh で書き、子の pid は起こした直後に置き換えで書く(時間切れの前に子が揃う。読む側が書きかけを読まない)
+_PROBE_CLI = ('d="$SESSION_PROBE"\n'
+              '( sleep 30; echo x > "$d/group.wrote" ) &\n'
+              'echo $! > "$d/group.pid.tmp" && mv "$d/group.pid.tmp" "$d/group.pid"\n'
+              'setsid sh -c \'sleep 30; echo x > "$1/escaped.wrote"\' sh "$d" &\n'
+              'echo $! > "$d/escaped.pid.tmp" && mv "$d/escaped.pid.tmp" "$d/escaped.pid"\n'
+              'sleep 60\n')
 _NO_PID = 4194311     # どのプロセスにも当たらない pid(pid_max の外。偽のプロセスの回収が本物のグループに触れない)
 
 
@@ -5917,9 +5909,20 @@ def _probe_bin(tmp: Path) -> Path:
     b = tmp / "bin"
     b.mkdir(parents=True, exist_ok=True)
     for name in ("claude", "codex", "grok"):
-        (b / name).write_text(f"#!{sys.executable}\n" + _PROBE_CLI, encoding="utf-8")
+        (b / name).write_text("#!/bin/sh\n" + _PROBE_CLI, encoding="utf-8")
         (b / name).chmod(0o755)
     return b
+
+
+def _wait_files(*paths: Path, limit: float = 30) -> bool:
+    """子の準備ができた(pid のファイルが揃った)のを待つ。時間切れ・中断を起こす前に、相手が揃ったことを確かめる。"""
+    import time as _t
+    end = _t.time() + limit
+    while not all(p.exists() for p in paths):
+        if _t.time() > end:
+            return False
+        _t.sleep(0.005)
+    return True
 
 
 def _left_after(tmp: Path, name: str, call) -> list[str]:
@@ -6009,15 +6012,21 @@ def test_session_timeout_stops_descendants(tmp: Path):
             left = _left_after(tmp, name, call)
             check(not left, f"{name}: 時間切れで止めたあとに子孫が残った・書いた({', '.join(left)})")
 
-        # 中断(Ctrl-C・SIGTERM を変えた SystemExit など、待っている間の例外)でも、道具まで止めてから上げる
+        # 中断(Ctrl-C・SIGTERM を変えた SystemExit など、待っている間の例外)でも、道具まで止めてから上げる。
+        # 中断は子が揃ってから起こす(揃う前に止めると、確かめられない)
         def interrupted():
+            d = tmp / "interrupted"
+
+            def fire():
+                if _wait_files(d / "group.pid", d / "escaped.pid"):
+                    os.kill(os.getpid(), signal.SIGUSR1)
             old = signal.signal(signal.SIGUSR1, _raise_interrupt)
-            t = threading.Timer(1.0, lambda: os.kill(os.getpid(), signal.SIGUSR1))
+            t = threading.Thread(target=fire, daemon=True)
             t.start()
             try:
-                compose.claude_run("x", timeout=30)
+                compose.claude_run("x", timeout=60)
             finally:
-                t.cancel()
+                t.join()
                 signal.signal(signal.SIGUSR1, old)
         left = _left_after(tmp, "interrupted", interrupted)
         check(not left, f"中断で止めたあとに子孫が残った・書いた({', '.join(left)})")
@@ -6173,6 +6182,19 @@ def test_compose_no_launch_after_deadline(tmp: Path):
                                       arts, cands, [])
         compose.fix_articles(d, {f"docs/_posts/{d}-a.md": [{"rule_id": "R1", "issue": "x"}]})
         check(not launched and res.get("a") == "not_started", f"書き直し・修正: 締切後に担当を起動した(起動 {len(launched)}本 / {res})")
+        # 依頼文を書くあいだに締切を過ぎても起動しない(起動の直前にも確かめる)
+        def slow_prompt(*a, **k):
+            _t.sleep(0.1)
+            return "p"
+        compose.prompt_file = slow_prompt
+        compose.DEADLINE = _t.time() + 0.05
+        r = compose.claude_review(d, 2, targets=[f"{d}-a.md"], editorial=False, paper=False)
+        compose.DEADLINE = _t.time() + 0.05
+        compose.DROP_LOG.pop(d, None)
+        pipelib.ROOT = saved[1]     # 出典の種別の判定表は本体のものを読む(書かない)
+        written, aborted = compose.write_articles(d, {"articles": plan["articles"][:1]}, cands, [], {}, wave=1)
+        check(not launched and r.get("verdict") == "error" and aborted == ["w1"],
+              f"準備のあいだに締切を過ぎた担当を起動した(起動 {len(launched)}本 / 校閲 {r.get('verdict')} / 執筆で外した {aborted})")
     finally:
         compose.DROP_LOG.pop(d, None)
         compose.WRITE_OUTCOMES.pop(d, None)
@@ -6200,6 +6222,105 @@ def test_leave_tree_clean_stops_sessions(tmp: Path):
             p.kill()
             p.wait()
             check(False, "途中終了の確定の前に、起動したままのセッションを止めない")
+
+
+def test_session_escaped_and_term(tmp: Path):
+    """セッションの親(CLI)が先に終わっても、自分でセッションを分けて残った道具を止める(正常終了でも、時間切れでも)。
+    回収は、この process 自身・この process の子でない pid を起点にしない。工程の入口は、実際の SIGTERM でも起動した CLI を
+    子孫ごと止めてから終わる(監査指摘 2026-10-14: 親が先に終わると別セッションの子が残った。既定の SIGTERM は後始末を走らせず、
+    手で回した update_clis を止めると CLI が残った。自分を指す偽の対象の回収が無関係な子を止めた)"""
+    import signal
+    import time as _t
+    tmp.mkdir(parents=True, exist_ok=True)
+    run = getattr(pipelib, "run_group", None)
+    check(run is not None and hasattr(pipelib, "stop_tree"), "モデル・道具の起動・回収の関数(pipelib.run_group・stop_tree)が無い")
+    # 親は、自分でセッションを分けた子が揃うのを待ってから終わる(正常終了 / 子が出力のパイプを持ったまま、時間切れ)
+    for case, closes, timeout in ((("normal", True, 30), ("pipe", False, 1)) if run else ()):
+        pf = tmp / f"{case}.pid"
+        code = ("import os, sys, time\n"
+                "from pathlib import Path\n"
+                "if os.fork() == 0:\n"
+                "    os.setsid()\n"
+                + ("    os.close(1); os.close(2)\n" if closes else "")
+                + f"    Path({str(pf) + '.tmp'!r}).write_text(str(os.getpid())); os.replace({str(pf) + '.tmp'!r}, {str(pf)!r})\n"
+                "    time.sleep(30)\n"
+                "    os._exit(0)\n"
+                f"while not Path({str(pf)!r}).exists(): time.sleep(0.005)\n")
+        t0 = _t.time()
+        try:
+            r = run([sys.executable, "-c", code], timeout=timeout, cwd=tmp)
+            how = f"exit {r.returncode}"
+        except subprocess.TimeoutExpired:
+            how = "時間切れ"
+        took = _t.time() - t0
+        pid = int(pf.read_text()) if pf.exists() else 0
+        alive = bool(pid) and _pid_alive(pid)
+        check(pid and not alive and took < 8,
+              f"親が先に終わったセッション({case}: {how})で、自分でセッションを分けた子が残った・回収を待ち続けた"
+              f"(pid {pid} 生存 {alive} / {took:.1f}秒)")
+        if alive:
+            os.kill(pid, signal.SIGKILL)
+    # 自分を指す偽の対象・この process の子でない pid を起点に、無関係な子を止めない
+    class Self:
+        pid, returncode = os.getpid(), None
+
+        def kill(self):
+            pass
+
+        def communicate(self, timeout=None):
+            return "", ""
+    # (回収の関数が無い実装では確かめない。上で落としてある)
+    peers = [subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"]) for _ in range(2)] \
+        if hasattr(pipelib, "stop_tree") else []
+    try:
+        if peers:
+            pipelib.reap(Self(), grace=1)
+            pipelib.stop_tree(peers[0].pid, root=peers[0].pid)     # 頭でない(自分のグループの)子: グループは無く、辿るのは子からだけ
+            check(not _pid_alive(peers[0].pid) and _pid_alive(peers[1].pid),
+                  "自分を指す偽の対象・グループの頭でない pid の回収で、無関係な子を止めた(または対象を止めない)")
+    finally:
+        for q in peers:
+            if q.poll() is None:
+                q.kill()
+            q.wait()
+    # 工程の入口: 実際の SIGTERM でも、起動した CLI を子孫ごと止めてから終わる(手で回したとき。systemd の外)
+    b = _probe_bin(tmp / "term-bin")
+    scripts = Path(__file__).resolve().parent
+    harness = {
+        "update_clis": ("import sys; sys.path.insert(0, sys.argv[1]); import update_clis as m\n"
+                        "m.job_lock = lambda *a, **k: None; m.notify = lambda *a, **k: True\n"
+                        "sys.argv = ['update_clis', '--no-update']; m.main()\n"),
+        "collect": ("import sys; sys.path.insert(0, sys.argv[1]); import collect as m, pipelib\n"
+                    "from pathlib import Path; m.ROOT = pipelib.ROOT = Path(sys.argv[2])     # 本体の作業ツリーに書かない\n"
+                    "m.job_lock = lambda *a, **k: None; pipelib.prompt_file = lambda *a, **k: 'p'\n"
+                    "m.run_watch = lambda call, oncall_rerun=False: (call('x', timeout=120), ([], {}))[1]\n"
+                    "m.prompt_file = lambda *a, **k: 'p'; m.save_raw = lambda *a, **k: None\n"
+                    "sys.argv = ['collect', '--no-git', '--skip-explore', '--skip-grok', '--date', '2099-01-01']; m.main()\n"),
+    }
+    for name, code in harness.items():
+        d = tmp / f"term-{name}"
+        d.mkdir(parents=True, exist_ok=True)
+        env = {k: v for k, v in os.environ.items() if k != "INVOCATION_ID"}
+        env.update(PATH=f"{b}:{os.environ.get('PATH', '')}", SESSION_PROBE=str(d))
+        h = subprocess.Popen([sys.executable, "-c", code, str(scripts), str(d)], env=env, cwd=tmp, start_new_session=True,
+                             stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
+        ready = _wait_files(d / "group.pid", d / "escaped.pid")
+        h.terminate()       # 実際の SIGTERM
+        try:
+            _, err = h.communicate(timeout=30)
+        except subprocess.TimeoutExpired:
+            h.kill()
+            _, err = h.communicate()
+        left = []
+        for n in ("group", "escaped"):
+            pf = d / f"{n}.pid"
+            pid = int(pf.read_text()) if pf.exists() else 0
+            if pid and _pid_alive(pid):
+                left.append(n)
+                os.kill(pid, signal.SIGKILL)
+        check(ready and h.returncode == 143 and not left,
+              f"{name}: SIGTERM で、起動した CLI を止めずに終わった(準備 {ready} / 終了 {h.returncode} / 残った {left} / "
+              f"{(err or '').strip()[-200:]})")
 
 
 def test_collect_handover_deadline(tmp: Path):
@@ -6236,7 +6357,8 @@ def test_collect_handover_deadline(tmp: Path):
 
         def wait(self, timeout=None):
             return self.returncode
-    names = ("GROK_TIMEOUT", "GROK_WAVE", "save_raw", "notify", "prompt_file", "explore_workdir", "page_html_or_note", "DEADLINE")
+    names = ("GROK_TIMEOUT", "GROK_WAVE", "save_raw", "notify", "prompt_file", "explore_workdir", "page_html_or_note", "DEADLINE",
+             "list_source", "render_page")
     saved = {n: getattr(collect, n, None) for n in names}
     saved_popen, saved_inv = subprocess.Popen, os.environ.get("INVOCATION_ID")
     notes: list = []
@@ -6281,6 +6403,21 @@ def test_collect_handover_deadline(tmp: Path):
                                          lambda prompt, timeout=0: called.append(1) or [], state)
         check(not called and not tried and not state.get("_unreadable"),
               f"定点観測: 締切後に facts 化を起動した・読めなかった回数に数えた({called} {tried} {state})")
+        # 定点観測: 締切を過ぎたら、一覧も新着の本文も取らない(監査指摘 2026-10-14: 締切後に新着48件の描画を起動して、組版の排他を妨げた)
+        listed, fetched = [], []
+        collect.list_source = lambda s, known, fetch=None: listed.append(s["id"]) or ([("https://a.example/n2", "t")], 1, False)
+        collect.page_html_or_note = lambda url, csr: fetched.append(url) or ("", "")
+        _, info = collect.run_watch(lambda prompt, timeout=0: called.append(1) or [])
+        errs_w = [v.get("error", "") for k, v in ((info or {}).get("stats") or {}).items() if k != "_state" and isinstance(v, dict)]
+        check(not listed and not fetched and not called and errs_w and all("締切" in e for e in errs_w),
+              f"定点観測: 締切後に一覧・本文を取った・facts 化を起動した(一覧 {listed} / 本文 {fetched} / 起動 {len(called)})")
+        # 締切の前でも、新着の本文の描画は収集の締切までしか待たない
+        limits: list = []
+        collect.render_page = lambda url, timeout=30, limit=None: limits.append(limit) or "<p>本文</p>"
+        collect.DEADLINE = _t.time() + 5
+        saved["page_html_or_note"]("https://a.example/n3", True)
+        check(limits and isinstance(limits[0], (int, float)) and limits[0] <= 5.1,
+              f"定点観測: 新着の本文の描画が収集の締切を越えて待つ(待つ上限 {limits})")
         # 締切の決め方
         deadline_of = getattr(collect, "collect_deadline", None)
         if deadline_of is None:
@@ -6395,6 +6532,7 @@ def main() -> int:
     test_parallel_launch_failure_reaps(tmp / "plf")
     test_compose_no_launch_after_deadline(tmp / "nld")
     test_leave_tree_clean_stops_sessions(tmp / "ltc")
+    test_session_escaped_and_term(tmp / "set")
     test_collect_handover_deadline(tmp / "chd")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))

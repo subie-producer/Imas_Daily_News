@@ -49,7 +49,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author)
 # モデル・道具のセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
-from pipelib import finish_group, next_slot_end, run_group, start_group, stop_groups
+from pipelib import exit_on_term, finish_group, next_slot_end, run_group, start_group, stop_groups
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
@@ -151,16 +151,39 @@ def http_get(url: str, timeout: int = 20) -> str:
         return res.read().decode("utf-8", errors="replace")
 
 
-def fetch_rendered(url: str, timeout: int = 30) -> str:
-    """描画したページの HTML。失敗は RenderFailed(終了コードと stderr の要点つき)で上げる(空で返さない)。"""
-    return render_page(url, timeout)
+def fetch_rendered(url: str, timeout: int = 30, limit: float | None = None) -> str:
+    """描画したページの HTML。失敗は RenderFailed(終了コードと stderr の要点つき)で上げる(空で返さない)。
+    limit は待ってよい秒数の上限(定点観測は収集の締切の残り: watch_limit)。"""
+    return render_page(url, timeout, limit=limit) if limit is not None else render_page(url, timeout)
 
 
-def rendered_or_note(url: str) -> tuple[str, str]:
+def watch_limit(cap: float) -> float | None:
+    """定点観測の取得(一覧・本文・描画)に待ってよい秒数。収集の締切が無ければ None(各取得の既定の上限だけ)。
+    締切を過ぎたあとに描画を始めて、組版へ引き渡す時刻を越えない(監査指摘 2026-10-14: 締切後に新着48件の描画を起動した)。
+    裏取り(verify)は締切で切らない(描画できずに写しを照合できないと、正しい候補を取り違えとして使えなくする)"""
+    return session_left(cap) if DEADLINE else None
+
+
+def watch_fetch(s: dict):
+    """定点観測の一覧の取得関数。収集の締切があるときは、取得の待ちを残り時間で切る(無ければ None = list_source の既定)。"""
+    if not DEADLINE:
+        return None
+    if s["type"] == "portal":
+        return lambda u: fetch_rendered(u, limit=watch_limit(90))
+
+    def get(u: str) -> str:
+        left = watch_limit(20)
+        if left <= 0:
+            raise RuntimeError(f"{u} を取得しない: 収集の締切を過ぎた")
+        return http_get(u, timeout=max(1, int(left)))
+    return get
+
+
+def rendered_or_note(url: str, limit: float | None = None) -> tuple[str, str]:
     """描画を補いとして使う呼び出し側(facts 化の本文・裏取りの読み直し)向け: (HTML, 失敗の要点)。
     失敗しても素の HTML や WebFetch で続けられるので止めないが、原因はログと呼び出し側の記録に残す"""
     try:
-        return fetch_rendered(url) or "", ""
+        return (fetch_rendered(url) if limit is None else fetch_rendered(url, limit=limit)) or "", ""
     except RenderFailed as e:
         print(f"  描画取得の失敗: {e}", flush=True)
         return "", str(e)
@@ -172,15 +195,18 @@ def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     素の HTML のページも本文を渡す。WebFetch は要約しか返さず、写し(原文どおりの引用)が取れないので読めなかった扱いになる
     (2026-10-09: ランティスの SideM 特典告知2件)"""
     if csr:
-        return rendered_or_note(url)
+        return rendered_or_note(url, limit=watch_limit(90))
+    left = watch_limit(20)
+    if left is not None and left <= 0:
+        return "", "収集の締切を過ぎたので取得しなかった"
     try:
         req = urllib.request.Request(url, headers={"User-Agent": UA})
-        with urllib.request.urlopen(req, timeout=20) as res:
+        with urllib.request.urlopen(req, timeout=20 if left is None else max(1, left)) as res:
             raw, cs = res.read(), res.headers.get_content_charset()
     except (OSError, ValueError) as e:
         return "", f"取得に失敗({type(e).__name__}: {e})"[:400]
     if needs_render(url, html_to_text(raw, cs)):
-        t, why = rendered_or_note(url)
+        t, why = rendered_or_note(url, limit=watch_limit(90))
         if t:
             return t, ""
     m = re.search(rb'<meta[^>]+charset=["\']?\s*([A-Za-z0-9_-]+)', raw[:4000], re.I)
@@ -249,11 +275,18 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
     new_items = []  # {source_id, brand, url, title, source_type}
     found_by_source = {}  # 状態の保存は facts 化の後に行うため、巡回結果を持ち越す
     stats = {}
+    late: list[str] = []
     for s in sources:
         if not s.get("enabled"):
             continue
+        if deadline_passed():
+            # 収集の締切を過ぎたら一覧を読まない(既読は更新しないので、次の取り直しが同じ境界から読む)。組版の開始を妨げない
+            stats[s["id"]] = {"error": "収集の締切を過ぎたので一覧を読まなかった"}
+            late.append(s["id"])
+            continue
         try:
-            listed, pages, cut = list_source(s, set(state.get(s["id"], [])))
+            # 締切があるときは、一覧の取得の待ちも残り時間で切る
+            listed, pages, cut = list_source(s, set(state.get(s["id"], [])), fetch=watch_fetch(s))
             if s["id"] not in state:
                 # 初めて見る観測先: いまの一覧は「既に見た」として記録するだけ(過去の記事を新着として候補に流さない。
                 # 流すと、古い知らせが今日の記事として載る)。次の実行から、これより新しいものが新着になる
@@ -279,6 +312,9 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
             # 原因(描画取得なら終了コードと stderr の要点)まで残す。切り詰めて「空の応答」だけにしない
             stats[s["id"]] = {"error": str(e)[:400]}
             notify("collect", f"定点観測 {s['id']}: 一覧を読めなかった({str(e)[:400]})。既読は更新せず、次回やり直す", ok=False)
+    if late:
+        notify("collect", f"定点観測: 収集の締切を過ぎたので、観測先 {len(late)}件の一覧を読まなかった(既読は更新せず、"
+                          f"当番の取り直しで読む): {', '.join(late)}", ok=False)
 
     # 前回 facts 化の出力が読めずにやり直しになった新着(未処理の列)を**先に**処理する。それらは既読にしていないが、一覧の上では
     # 既読のページの奥に隠れるので、一覧を遡っても二度と見えない(監査指摘 r102)
@@ -311,6 +347,8 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
     if batch and claude_call:
         blobs = []
         for it in batch:
+            if deadline_passed():
+                break       # 収集の締切を過ぎたら本文も取らない(下で、このバッチを始めずに未処理の列へ残す)
             t, why = page_html_or_note(it["url"], it["csr"])
             # 本文の切り詰めは facts の情報量に直結する。2500字にしていたとき、
             # 本文8,219字のページから facts を359字しか起こせていなかった
@@ -325,8 +363,9 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
             for i, b in enumerate(blobs))
         prompt = render_prompt("watch-facts", RULES=COLLECT_RULES, ITEM=COLLECT_ITEM, MATERIAL=material)
         if deadline_passed():
-            # 収集の締切を過ぎたら facts 化を始めない(本文の取得のあいだに過ぎることもあるので、起動の直前に確かめる)。
-            # 試みなかった新着として未処理の列に残し、読めなかった回数に数えない。当番の取り直しが先に処理して、この号の素材に入れる
+            # 収集の締切を過ぎたら facts 化を始めない(本文の取得のあいだに過ぎることもあるので、起動の直前にも確かめる。取得の待ちは
+            # 残り時間で切ってある: watch_limit)。試みなかった新着として未処理の列に残し、読めなかった回数に数えない。
+            # 当番の取り直しが先に処理して、この号の素材に入れる
             notify("collect", f"定点観測: 収集の締切を過ぎたので、新着 {len(batch)}件の facts 化を始めなかった(未処理の列に残す):"
                               + "".join(f"\n  - {it['url']}" for it in batch), ok=False)
             return [], set()
@@ -818,16 +857,17 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
             text = dedupe_posts(text)   # 公式アカウントの遡りのページの境目で重なった投稿を1つにする
             wd = explore_workdir(f"verify-{q['key']}{suffix}")
             (wd / "x-posts.md").write_text(text + "\n", encoding="utf-8")
-            if deadline_passed():
-                jobs.append((q, wd, text, None))
-                continue
-            prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json", POSTS=wd / "posts.json",
-                                   BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
-                                   RULES=COLLECT_RULES, ITEM=COLLECT_ITEM)
-            # 進行ログ(標準出力・エラー)は作業ディレクトリのファイルで受け、生の出力に残す(ファイルを書かずに終わった回の原因を追うため)
-            with open(wd / "session.log", "w", encoding="utf-8") as lf:
-                jobs.append((q, wd, text, start_group(explore_argv(prompt_file(edition_date(), f"grok-verify-{q['key']}{suffix}", prompt, base=wd)),
-                                                      cwd=wd, stdout=lf, stderr=subprocess.STDOUT)))
+            if not deadline_passed():
+                prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json", POSTS=wd / "posts.json",
+                                       BRAND=q["brand"], TOPIC=q["topic"], TODAY=now_jst().strftime("%Y-%m-%d"),
+                                       RULES=COLLECT_RULES, ITEM=COLLECT_ITEM)
+                short = prompt_file(edition_date(), f"grok-verify-{q['key']}{suffix}", prompt, base=wd)
+                # 進行ログ(標準出力・エラー)は作業ディレクトリのファイルで受け、生の出力に残す(ファイルを書かずに終わった回の原因を追うため)
+                with open(wd / "session.log", "w", encoding="utf-8") as lf:
+                    if not deadline_passed():       # 準備のあいだに締切を過ぎることもあるので、起動の直前にも確かめる
+                        jobs.append((q, wd, text, start_group(explore_argv(short), cwd=wd, stdout=lf, stderr=subprocess.STDOUT)))
+                        continue
+            jobs.append((q, wd, text, None))
         for q, wd, text, p in jobs:
             waited.append((q, wd, text, p, p is not None and wait_session(p, deadline)))
     finally:
@@ -1155,14 +1195,14 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
     try:
         for q in queries:
             window = "直近72時間" if q["key"] in ("trend", "fan-culture") else "直近48時間"
-            if not skip_explore and deadline_passed():
-                # 収集の締切を過ぎたら起動しない(取得の失敗として collect_health に上がる)
-                print(f"探索: 収集の締切を過ぎたので {q['key']} を起動しない", flush=True)
-                per[f"explore_failed:{q['key']}"] = 1
-            elif not skip_explore:
+            if skip_explore:
+                continue
+            if not deadline_passed():
                 cp = render_prompt("explore", WINDOW=window, TOPIC=q["topic"], MAX_ITEMS=8,
                                    RULES=COLLECT_RULES, ITEM=COLLECT_ITEM)
                 wd = explore_workdir(q["key"])
+                # 指示と素材は隔離ディレクトリ側のファイルで渡す(引数に詰めない。cwd がリポジトリ外なので base=wd)
+                short = prompt_file(edition_date(), f"explore-{q['key']}", cp, base=wd)
                 # 出力は**一時ファイル**へ落とす。PIPE のまま並列起動して順番に
                 # communicate すると、後続プロセスはパイプが埋まった時点で止まり、
                 # 正常な探索が打ち切り扱いになる(監査指摘)
@@ -1170,12 +1210,19 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                                                  delete=False, mode="w+", encoding="utf-8")
                 ef = tempfile.NamedTemporaryFile(prefix=f"explore-{q['key']}-", suffix=".err",
                                                  delete=False, mode="w+", encoding="utf-8")
-                explore_procs.append((q["key"], start_group(
-                    # 指示と素材は隔離ディレクトリ側のファイルで渡す(引数に詰めない。cwd がリポジトリ外なので base=wd)
-                    # 打ち切り時に子孫ごと落とせるよう、独立したプロセスグループにする(start_group)
-                    # cwd は隔離ディレクトリ。ここが workspace-write の書き込み範囲になる
-                    explore_argv(prompt_file(edition_date(), f"explore-{q['key']}", cp, base=wd)),
-                    cwd=wd, stdout=of, stderr=ef), of, ef, wd))
+                if not deadline_passed():       # 準備のあいだに締切を過ぎることもあるので、起動の直前にも確かめる
+                    explore_procs.append((q["key"], start_group(
+                        # 打ち切り時に子孫ごと落とせるよう、独立したプロセスグループにする(start_group)
+                        # cwd は隔離ディレクトリ。ここが workspace-write の書き込み範囲になる
+                        explore_argv(short), cwd=wd, stdout=of, stderr=ef), of, ef, wd))
+                    continue
+                for f in (of, ef):
+                    f.close()
+                    Path(f.name).unlink(missing_ok=True)
+                shutil.rmtree(wd, ignore_errors=True)
+            # 収集の締切を過ぎたら起動しない(取得の失敗として collect_health に上がる)
+            print(f"探索: 収集の締切を過ぎたので {q['key']} を起動しない", flush=True)
+            per[f"explore_failed:{q['key']}"] = 1
 
         # **探索は Grok より先に回収する。**後回しにすると、Grok が長引くあいだ
         # 探索プロセスが締切を超えて走り続けてしまう(監査指摘)
@@ -1683,6 +1730,7 @@ def main() -> int:
     # 収集の締切は**排他を待つ前**に決める(待った分だけ延ばさない)
     global DEADLINE
     DEADLINE = collect_deadline(args.oncall_rerun)
+    exit_on_term()      # SIGTERM でも、起動したセッションを子孫ごと止めてから終わる(既定の SIGTERM は後始末を走らせない)
     # 同じ作業ツリーを compose/release/当番と同時に触らない(監査指摘)。当番の再実行が長引くと
     # ここで待つ。空かなければこの回は諦める(次の timer で拾う)
     try:

@@ -2121,6 +2121,16 @@ def returned_note(problems: list[str]) -> str:
             + "\n記事として成立しないと判断するなら status を decline にし、理由コードと説明を書く。")
 
 
+def _late_article(date: str, art: dict, outcomes: dict, aborted: list) -> None:
+    """締切を過ぎて執筆を始めなかった記事(差し戻し・やり直しを含む)を、理由付きで外れた記事に記録する(後始末・当番へ流れる)。
+    締切後も後続の記事の担当を起動していた(監査指摘 2026-10-14)。打ち切りは締切だけで、締切前は今どおり全部書く"""
+    outcomes[art["slug"]] = "落とした(締切を過ぎ、執筆を始めなかった)"
+    print(f"記事 {art['slug']} を{outcomes[art['slug']]}", flush=True)
+    if art["slug"] not in aborted:
+        aborted.append(art["slug"])
+    DROP_LOG.setdefault(date, {})[art["slug"]] = (str(art.get("angle") or ""), "締切で未着手", outcomes[art["slug"]][4:])
+
+
 def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                    stories: dict, wave: int = 0,
                    reuse: bool = False) -> tuple[list[dict], list[str]]:
@@ -2180,12 +2190,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
         try:
             for art, src, prompt, fact_by_id, materials, tries in batch:
                 if deadline_passed():
-                    # 締切を過ぎたら、まだ起動していない記事(差し戻し・やり直しを含む)は書かない。理由を記録して後始末へ
-                    # (監査指摘 2026-10-14: 締切後も後続の記事の担当を起動していた)。打ち切りは締切だけで、締切前は今どおり全部書く
-                    outcomes[art["slug"]] = "落とした(締切を過ぎ、執筆を始めなかった)"
-                    print(f"記事 {art['slug']} を{outcomes[art['slug']]}", flush=True)
-                    aborted.append(art["slug"])
-                    DROP_LOG.setdefault(date, {})[art["slug"]] = (str(art.get("angle") or ""), "締切で未着手", outcomes[art["slug"]][4:])
+                    _late_article(date, art, outcomes, aborted)
                     continue
                 fd, out_name = tempfile.mkstemp(prefix=f"codexwrite-{art['slug']}-", suffix=".txt")
                 os.close(fd)
@@ -2199,10 +2204,15 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                     cmd += ["--output-schema", str(schema_out)]
                 # 素材と指示はファイルで渡す(引数に詰めると 128KB で落ちる。エージェントは自分で読める)。
                 # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(最終メッセージを残さず終わった回の原因を追うため)
+                short = prompt_file(date, f"write-{art['slug']}-{tries}", prompt)
                 with open(log_of(out_path), "w", encoding="utf-8") as lf:
-                    procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, start_group(
-                        cmd + [prompt_file(date, f"write-{art['slug']}-{tries}", prompt)],
-                        cwd=ROOT, stdout=lf, stderr=subprocess.STDOUT)))
+                    if not deadline_passed():       # 準備のあいだに締切を過ぎることもあるので、起動の直前にも確かめる
+                        procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, start_group(
+                            cmd + [short], cwd=ROOT, stdout=lf, stderr=subprocess.STDOUT)))
+                        continue
+                out_path.unlink(missing_ok=True)
+                log_of(out_path).unlink(missing_ok=True)
+                _late_article(date, art, outcomes, aborted)
             for job in procs:
                 _, se, timed_out = finish_group(job[-1], remaining_seconds())
                 finished.append((*job, se, timed_out))
@@ -2679,22 +2689,25 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
         # 執筆と同じ: 1本ずつ一覧に足し、全員の終わりを待ってから答えを読む。例外・中断でも finally で起動済みの担当を止めて回収する
         try:
             for art, path, fact_by_id, materials, issues, prompt in jobs[i:i + COMPOSE_WAVE]:
-                if deadline_passed():
-                    # 締切を過ぎたら書き直しを始めない(稿はそのまま。指摘は次の判断へ残る)
-                    print(f"書き直し {art['slug']}: 締切を過ぎたので始めない", flush=True)
-                    REVISE_NOTES.setdefault(date, {})[art["slug"]] = "締切を過ぎ、書き直しを始めなかった"
-                    results[art["slug"]] = "not_started"
-                    continue
-                fd, out_name = tempfile.mkstemp(prefix=f"codexrevise-{art['slug']}-", suffix=".txt")
-                os.close(fd)
-                # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(執筆と同じ)
-                with open(log_of(Path(out_name)), "w", encoding="utf-8") as lf:
-                    procs.append((art, path, fact_by_id, materials, issues, Path(out_name), start_group(
-                        ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
-                         "-c", "sandbox_workspace_write.network_access=true",
-                         "--output-last-message", out_name, "--output-schema", str(schema_out),
-                         prompt_file(date, f"revise-{art['slug']}", prompt)],
-                        cwd=ROOT, stdout=lf, stderr=subprocess.STDOUT)))
+                if not deadline_passed():
+                    fd, out_name = tempfile.mkstemp(prefix=f"codexrevise-{art['slug']}-", suffix=".txt")
+                    os.close(fd)
+                    short = prompt_file(date, f"revise-{art['slug']}", prompt)
+                    # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(執筆と同じ)
+                    with open(log_of(Path(out_name)), "w", encoding="utf-8") as lf:
+                        if not deadline_passed():       # 準備のあいだに締切を過ぎることもあるので、起動の直前にも確かめる
+                            procs.append((art, path, fact_by_id, materials, issues, Path(out_name), start_group(
+                                ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
+                                 "-c", "sandbox_workspace_write.network_access=true",
+                                 "--output-last-message", out_name, "--output-schema", str(schema_out), short],
+                                cwd=ROOT, stdout=lf, stderr=subprocess.STDOUT)))
+                            continue
+                    Path(out_name).unlink(missing_ok=True)
+                    log_of(Path(out_name)).unlink(missing_ok=True)
+                # 締切を過ぎたら書き直しを始めない(稿はそのまま。指摘は次の判断へ残る)
+                print(f"書き直し {art['slug']}: 締切を過ぎたので始めない", flush=True)
+                REVISE_NOTES.setdefault(date, {})[art["slug"]] = "締切を過ぎ、書き直しを始めなかった"
+                results[art["slug"]] = "not_started"
             for job in procs:
                 _, se, timed_out = finish_group(job[-1], remaining_seconds())   # 子(道具の実行)も落としてから答えのファイルを読む
                 finished.append((*job, se, timed_out))
@@ -2768,11 +2781,12 @@ def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
         # 自前のグループで起動し、時間切れ・中断では道具ごと止める(親だけ kill すると道具が記事を書き続ける)
         try:
             for f, prompt in jobs[i:i + COMPOSE_WAVE]:
-                if deadline_passed():
+                short = None if deadline_passed() else prompt_file(date, "fix-" + Path(f).stem, prompt)
+                if short is None or deadline_passed():      # 準備のあいだに締切を過ぎることもあるので、起動の直前にも確かめる
                     print(f"記事の修正 {Path(f).name}: 締切を過ぎたので始めない", flush=True)
                     continue
                 procs.append(start_group(
-                    ["claude", "-p", prompt_file(date, "fix-" + Path(f).stem, prompt), "--model", REVIEW_MODEL,
+                    ["claude", "-p", short, "--model", REVIEW_MODEL,
                      "--dangerously-skip-permissions",
                      "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
                     cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL))
@@ -2930,7 +2944,12 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     QUOTA = ("session limit", "Exceeded USD budget", "rate limit", "usage limit")
 
     def spawn(prompt: str):
+        """担当を起動する。締切を過ぎていれば起動せず None(依頼文を書くあいだに過ぎることもあるので、起動の直前にも確かめる)。"""
+        if deadline_passed():
+            return None
         short = prompt_file(date, "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt)
+        if deadline_passed():
+            return None
         # 起動できなければ、その担当だけの異常終了(LaunchFailed)として collect が扱う(例外で抜けない)
         return start_group(
             ["claude", "-p", short, "--model", REVIEW_MODEL,
@@ -2993,10 +3012,11 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
         procs = []
         try:
             for what, prompt, where, scope in jobs[i:i + COMPOSE_WAVE]:
-                if deadline_passed():
+                p = spawn(prompt)
+                if p is None:
                     failed.append((scope, late))
                     continue
-                procs.append((scope, where, prompt, spawn(prompt)))
+                procs.append((scope, where, prompt, p))
             for scope, where, prompt, p in procs:
                 r = collect(p, where)
                 if r.get("verdict") != "error":
@@ -3011,10 +3031,11 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
         procs = []
         try:
             for scope, where, prompt in retry[i:i + COMPOSE_WAVE]:
-                if deadline_passed():
+                p = spawn(prompt)
+                if p is None:
                     failed.append((scope, "やり直し: " + late))
                     continue
-                procs.append((scope, where, spawn(prompt)))
+                procs.append((scope, where, p))
             for scope, where, p in procs:
                 r = collect(p, where)
                 if r.get("verdict") != "error":

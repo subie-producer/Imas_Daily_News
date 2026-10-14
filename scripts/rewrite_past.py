@@ -119,6 +119,8 @@ def latest_raw_answer(label: str, stem: str) -> dict | None:
 
 
 def main() -> int:
+    from pipelib import exit_on_term
+    exit_on_term()      # SIGTERM でも、起動した執筆・校閲のセッションを子孫ごと止めてから終わる
     ap = argparse.ArgumentParser()
     ap.add_argument("dates", nargs="+")
     ap.add_argument("--ops", default=str(Path.home() / "git" / "imas-ops"))

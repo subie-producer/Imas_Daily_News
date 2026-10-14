@@ -63,8 +63,7 @@ PATH_KEYS = {"tiktok.com": (1, "@"), "ch.nicovideo.jp": (1, ""), "manga.nicovide
              "fanbox.cc": (1, "@"), "forms.gle": (1, ""), "krs.bz": (1, "")}
 # 先頭の区切りが持ち主(アカウント)ではないもの。投稿・動画の ID しか無く、持ち主はパーサで引く(先頭1区切りで切ると、
 # 別の人の投稿がみな同じ主体になる。2026-10-14: instagram.com/p が1つの主体として表に載り、どの投稿も同じ種別になっていた)
-NOT_OWNER_HEADS = {"instagram.com": ("p", "reel", "reels", "tv", "explore", "stories"), "twitch.tv": ("videos", "directory"),
-                   "note.com": ("hashtag", "search")}
+NOT_OWNER_HEADS = {"instagram.com": ("p", "reel", "reels", "tv", "stories"), "twitch.tv": ("videos",)}
 # 2. 文書単位(フォーム・文書・表計算): 1つの文書が1つの主体のもの。告知から張られる応募フォームなどで紙面に出る
 #    (実測 2026-09-20: 公式の特別配信のおたよりフォーム docs.google.com/forms/d/e/<id> が未確認のまま載った)。
 #    キーは文書 ID まで(`/viewform` や `?usp=` は含めない)。Microsoft Forms は ID がクエリにあり、キーは

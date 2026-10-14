@@ -50,9 +50,11 @@ WEBAPP_SRC = ROOT / "webapp"
 APP_DIR = SRV / "app"
 DB = SRV / "data" / "paper.db"
 
-# 索引の更新の再試行(書き込みの競合 database is locked は待てば通ることがある)
+# 索引の更新の再試行(書き込みの競合 database is locked は待てば通ることがある)。1回の上限 INDEX_TIMEOUT_SEC は、
+# 全回を足してもビルド(実測 6〜7分)と合わせて release の待つ 40分に収まる値(全記事の付け直しでも実測 5秒)
 INDEX_ATTEMPTS = 3
 INDEX_RETRY_SEC = 20
+INDEX_TIMEOUT_SEC = 300
 
 # 公開の状態。止まった所で実態が違うので、段ごとに言い直し、最後に STATE_MARK の行で出す(release が通知に載せる)
 STATE_MARK = "配信の状態: "
@@ -125,7 +127,7 @@ def reindex(run_id: str) -> int:
     記事は不変なので差分更新で済み、増えた分だけを入れ直す。
     run_id は indexer が同じ取引で meta に残す(失敗したとき、索引がこの配信の版まで進んだかを indexed_run で確かめる)。"""
     r = subprocess.run([sys.executable, str(ROOT / "scripts" / "indexer.py"), "--db", str(DB), "--run-id", run_id],
-                       cwd=ROOT, capture_output=True, text=True, timeout=1800)
+                       cwd=ROOT, capture_output=True, text=True, timeout=INDEX_TIMEOUT_SEC)
     if r.returncode != 0:
         raise RuntimeError(f"インデックス更新に失敗:\n{(r.stderr or r.stdout)[-600:]}")
     for line in r.stdout.strip().splitlines():

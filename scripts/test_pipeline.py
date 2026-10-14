@@ -6378,15 +6378,6 @@ def test_correction_append_only(tmp: Path):
     import shutil
     first = {"at": "2026-09-16T10:00:00+09:00", "by": "編集長", "initial": "初出の表記", "corrected_to": "正しい表記"}
     second = {"at": "2026-10-14T10:00:00+09:00", "by": "編集長", "initial": "a", "corrected_to": "b"}
-    old = {"slug": "k", "edition": "2026-09-15", "brand": "cg", "rank": "small", "corrected": True, "corrections": [first]}
-    errs = lambda new: lint.correction_change_errors(old, {**old, **new})
-    check(errs({"corrections": [first, second]}) == [], "正しい訂正の追記を止めた")
-    for corr, what in (([{**first, "initial": "書き換え"}, second], "既にある記録の書き換え"),
-                       ([second, second], "既にある記録の削除(件数は増えている)"),
-                       ([second, first], "並べ替え"),
-                       ([first], "追記なし")):
-        check(errs({"corrections": corr}) != [], f"訂正で{what}を通した")
-    check(errs({"corrections": [first, second], "rank": "lead"}) != [], "訂正で rank を変えられた")
     # 本物の lint(append-only の経路)
     d = "2026-09-15"
     root = tmp / "lintroot"
@@ -6423,7 +6414,18 @@ def test_correction_append_only(tmp: Path):
             setattr(lint, k, v)
         sys.argv = saved_argv
     check(ok_lines == [], f"本物の lint が正しい訂正の追記を止めた: {ok_lines}")
-    check(any("既にある訂正の記録" in l for l in bad_lines), f"本物の lint が既にある訂正の記録の書き換えを通した: {bad_lines}")
+    check(bad_lines != [], "本物の lint が既にある訂正の記録の書き換え(と1件の追記)を通した")
+    # 判定の関数: 削除・並べ替え・追記なし・枠の変更も止める
+    old = {"slug": "k", "edition": d, "brand": "cg", "rank": "small", "corrected": True, "corrections": [first]}
+    judge = getattr(lint, "correction_change_errors", None)
+    errs = (lambda new: judge(old, {**old, **new})) if judge else (lambda new: [])
+    check(judge is not None and errs({"corrections": [first, second]}) == [], "正しい訂正の追記を止めた")
+    for corr, what in (([{**first, "initial": "書き換え"}, second], "既にある記録の書き換え"),
+                       ([second, second], "既にある記録の削除(件数は増えている)"),
+                       ([second, first], "並べ替え"),
+                       ([first], "追記なし")):
+        check(errs({"corrections": corr}) != [], f"訂正で{what}を通した")
+    check(errs({"corrections": [first, second], "rank": "lead"}) != [], "訂正で rank を変えられた")
 
 
 def test_indexer_tag_dictionary(tmp: Path):

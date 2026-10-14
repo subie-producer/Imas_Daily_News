@@ -6390,6 +6390,37 @@ def test_session_signal_windows(tmp: Path):
         if hasattr(pipelib, "STOPPING"):
             pipelib.STOPPING.clear()        # SIGTERM の後始末が立てた「終えるところ」を、後のテストのために戻す
         cleanup()
+    # 別スレッドで起動してから控えるまでのあいだに、主スレッドが終了の後始末(stop_groups)をしても、その担当を止める
+    # (後始末の一覧に載らないまま待ち続けない。Sol 監査3巡目の指摘)
+    if start is not None:
+        import threading
+        launched, resume, res = threading.Event(), threading.Event(), {}
+
+        def held(argv, **kw):
+            p = real_popen([sys.executable, "-c", "import time; time.sleep(30)"], **kw)
+            started.append(p)
+            launched.set()
+            resume.wait(10)         # 主スレッドの後始末が済むまで、控える前で止まる
+            return p
+        subprocess.Popen = held
+        try:
+            t = threading.Thread(target=lambda: res.setdefault("r", start(["probe"], cwd=tmp)), daemon=True)
+            t.start()
+            launched.wait(10)
+            pipelib.stop_groups()           # 終了の後始末(主スレッド。SIGTERM のハンドラと同じ)
+            resume.set()
+            t.join(30)
+        finally:
+            subprocess.Popen = real_popen
+            if hasattr(pipelib, "STOPPING"):
+                pipelib.STOPPING.clear()
+        r = res.get("r")
+        check(isinstance(r, getattr(pipelib, "LaunchFailed", ())) and started and started[-1].poll() is not None,
+              f"別スレッドの起動のあいだに始まった終了の後始末から、その担当が漏れた({type(r).__name__} / "
+              f"生きている {[p.pid for p in started if p.poll() is None]})")
+        if r is not None and not isinstance(r, getattr(pipelib, "LaunchFailed", ())):
+            pipelib.stop_groups([r])
+        cleanup()
     # 収集の SIGTERM: 待っていたバッチが CLI を起動しない(実際の collect.main・run_watch・定点観測の並列)
     d = tmp / "watch-term"
     (d / "bin").mkdir(parents=True, exist_ok=True)
@@ -6489,9 +6520,13 @@ def test_session_signal_windows(tmp: Path):
 
             def communicate(self, timeout=None):
                 return "", ""
+        class Reaped(Foreign):          # 回収済みの頭(番号がほかの親のグループに使われている)・印が違う
+            returncode, session_mark = 0, "0" * 32
         if fpid:
             pipelib.reap(Foreign(), grace=1)
-        check(fpid and _pid_alive(fpid), f"この process の子でない対象(pid {fpid})のグループを止めた")
+            pipelib.reap(Reaped(), grace=1)
+            pipelib.stop_tree(fpid, mark="0" * 32)       # 正常に終わったあとの後始末と同じ呼び方
+        check(fpid and _pid_alive(fpid), f"この process の子でない対象・回収済みの頭の番号(pid {fpid})のグループを止めた")
     finally:
         if pf.exists():
             try:

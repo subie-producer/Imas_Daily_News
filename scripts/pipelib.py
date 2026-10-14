@@ -618,7 +618,9 @@ def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5, mark: 
     プロセス(親が先に終わって辿れなくなった道具も)を止め、死んだのを確かめる(上限 wait 秒)。
     root はまだ回収していないセッションの頭(この process の子。グループの頭でなくても、そこから子孫を辿る)。CLI が道具を別の
     グループ・セッションで起動すると、グループだけを落としても残る。先に SIGSTOP で凍らせてから辿り直す(止めている間に起動された
-    子を取りこぼさない)。この process・そのグループ・この process の子でない root には触らない。戻りは止めた pid。"""
+    子を取りこぼさない)。この process・そのグループ・この process の子でない root には触らない。頭が回収済み(root なし)のときは、
+    グループ pgid は印を受け継いだメンバーがいるときだけ自分のものとして止める(番号が別のグループに再利用されていても触らない)。
+    戻りは止めた pid。"""
     if not isinstance(pgid, int) or pgid <= 1:
         return []
     me, own = os.getpid(), os.getpgrp()
@@ -627,17 +629,23 @@ def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5, mark: 
     caught: set[int] = set()
     groups: set[int] = set()
     table = _proc_table()
-    if table is None:           # /proc が無い: グループを落とすだけ
-        try:
-            os.killpg(pgid, signal.SIGKILL)
-        except OSError:
-            pass
+    if table is None:           # /proc が無い: 生きている頭のグループを落とすだけ
+        if root is not None:
+            try:
+                os.killpg(pgid, signal.SIGKILL)
+            except OSError:
+                pass
         return []
-    if root is not None and root in table and table[root][0] != me:
+    if root is not None and root not in table:
+        root = None             # 頭はもう無い(回収済み)
+    if root is not None and table[root][0] != me:
         # この process の子でない対象は回収しない(グループも辿らない。再利用された番号・偽の対象で、無関係なプロセスを止めない)
         return []
+    marked = _proc_marked(table, mark) if mark else set()
+    # グループ pgid が自分のものか: 生きている頭(この process の子)がいる、または印を受け継いだメンバーがいる
+    mine = root is not None or any(table[q][1] == pgid for q in marked if q in table)
     for _ in range(50):
-        groups = ({pgid} | {table[q][1] for q in caught if q in table}) - {own, 0}
+        groups = (({pgid} if mine else set()) | {table[q][1] for q in caught if q in table}) - {own, 0}
         found = {q for q, (_, pg, _) in table.items() if pg in groups} | caught
         if root and root in table:
             found.add(root)
@@ -693,6 +701,7 @@ def start_group(cmd: list[str], *, cwd=None, env: dict | None = None, stdout=sub
     env = dict(os.environ if env is None else env)
     env[SESSION_ENV] = f"{env.get(SESSION_ENV, '')} {mark}".strip()
     p = None
+    late = False
     try:
         with _hold_signals():
             p = subprocess.Popen(cmd, cwd=cwd, env=env, stdout=stdout, stderr=stderr, text=True,
@@ -701,8 +710,15 @@ def start_group(cmd: list[str], *, cwd=None, env: dict | None = None, stdout=sub
                 p.session_mark = mark
             except AttributeError:      # 差し替えた起動(テストの偽物)が属性を持てないときは、印なしで回収する
                 pass
+            # 控えるのと「終えるところ」を確かめるのは、終了の後始末(stop_groups)と同じ鍵の中で一度に行う。起動のあいだに
+            # 別のスレッドで後始末が始まっていたら控えずに自分で止める(後始末の一覧に載らないまま待ち続けない。監査指摘 2026-10-14)
             with _SESSIONS_LOCK:
-                _SESSIONS.add(p)
+                late = STOPPING.is_set()
+                if not late:
+                    _SESSIONS.add(p)
+            if late:
+                reap(p, grace=2)
+                return LaunchFailed(cmd, OSError("工程を終えるところなので起動しない"))
     except OSError as e:
         if p is None:
             return LaunchFailed(cmd, e)
@@ -778,9 +794,9 @@ def run_group(cmd: list[str], timeout: float | None, *, cwd=None, env: dict | No
 def stop_groups(procs=None) -> None:
     """起動して、まだ回収していないセッションを止めて回収する。並列の起動・回収の finally(procs にその一覧)と、
     SIGTERM・途中終了の後始末(引数なし=この process の全部。以後の起動も断る: STOPPING)から呼ぶ。回収済みのものには何もしない。"""
-    if procs is None:
-        STOPPING.set()
-    with _SESSIONS_LOCK:
+    with _SESSIONS_LOCK:        # 「終えるところ」を立てるのと一覧を写すのを一度に(起動の控えと同じ鍵。どちらかに必ず載る)
+        if procs is None:
+            STOPPING.set()
         live = [p for p in (list(_SESSIONS) if procs is None else procs) if p in _SESSIONS]
     for p in live:
         try:

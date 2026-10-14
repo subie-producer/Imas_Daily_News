@@ -1084,6 +1084,17 @@ def run_assemble(date: str, number: int) -> None:
     # 2 = lint が赤い・派生欄(derive)か lint が異常終了した(組版の欠陥として通知済み)。呼び出し側の lint ゲートで扱う
 
 
+def reassemble(date: str, number: int, plan: dict, written: list[dict]) -> None:
+    """**組版をやり直す前に、枠を書き上がりの長さで当て直す。**
+
+    書き直し(lint 赤の修正・校閲の指摘)で本文の長さが変わると、前に当てた枠が字数と合わなくなる。
+    当て直さずに組み直すと、組版のあとの lint が「本文と枠が不一致」で赤くなる(2026-10-15号: 394字・438字の
+    記事が medium のまま)。一面は動かさない(号スナップショットの lead_slug が指している)
+    """
+    assign_ranks(date, plan, written, keep_lead=True)
+    run_assemble(date, number)
+
+
 def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str:
     try:
         r = subprocess.run(
@@ -3631,7 +3642,7 @@ def main() -> int:
             if a["slug"] in by_slug_plan:
                 canonicalize_article(date, by_slug_plan[a["slug"]], cands)
         try:
-            run_assemble(date, number)
+            reassemble(date, number, plan, written)
         except Exception as e:
             print(f"組版のやり直しに失敗: {e}", flush=True)
         code, lint_out = run_lint(date)
@@ -3661,6 +3672,8 @@ def main() -> int:
             for a in written:
                 if a["slug"] in by_slug_plan:
                     canonicalize_article(date, by_slug_plan[a["slug"]], cands)
+            # 書き直しで本文の長さが変わる。枠を当て直してから見る(当て直さないと枠の不一致で記事を落とす)
+            assign_ranks(date, plan, written, keep_lead=True)
             code, lint_out = run_lint(date)
             still = post_errors(lint_out)
             if still:
@@ -3675,7 +3688,7 @@ def main() -> int:
                 written[:] = [a for a in written if a["slug"] not in gone]
                 aborted.extend(sorted(gone))
             try:
-                run_assemble(date, number)
+                reassemble(date, number, plan, written)
             except Exception as e:
                 print(f"組版のやり直しに失敗: {e}", flush=True)
             code, lint_out = run_lint(date)
@@ -3850,7 +3863,7 @@ def main() -> int:
             if touches_digest:
                 # digest と台帳も直る前の記事から作られている。組版は冪等なので
                 # もう一度呼ぶだけでよい(巻き戻しは要らない)
-                jobs.append(("組版", lambda: run_assemble(date, number)))
+                jobs.append(("組版", lambda: reassemble(date, number, plan, written)))
             if with_editorial and touches_editorial:
                 jobs.append(("社説", lambda: rewrite_editorial(
                     date, number, plan.get("editorial_slug", ""), plan.get("editorial_brand", ""),
@@ -3933,9 +3946,8 @@ def main() -> int:
             # 足した台帳の事実・予約)は再実行で消える。以前は台帳を組版前へ巻き戻して
             # セッションに作り直させ(43本で25分)、締切前にそれが払えず号が止まった(2026-09-11)。
             # 巻き戻しも「抜く」セッションも要らない
-            assign_ranks(date, plan, written, keep_lead=True)
             ed_file = ROOT / "docs" / "_editions" / f"{date}.md"
-            jobs = [("組版", lambda: run_assemble(date, number))]
+            jobs = [("組版", lambda: reassemble(date, number, plan, written))]
             if with_editorial:
                 jobs.insert(0, ("社説", lambda: rewrite_editorial(
                     date, number, plan.get("editorial_slug", ""), plan.get("editorial_brand", ""),

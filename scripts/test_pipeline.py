@@ -8028,6 +8028,41 @@ def test_canonicalize_and_assign_ranks(tmp: Path):
           f"固定項目の写し・枠の割り当てが書式どおりに書かない・素通しで書いた: {fa} {fb_.get('rank')} {STRAY_WRITES[n:]}")
 
 
+def test_reassemble_reranks_rewritten(tmp: Path):
+    """書き直しで本文が短くなった記事は、組版をやり直す前に枠を当て直す。当て直さずに組み直すと、組版のあとの lint が
+    「本文と枠が不一致」で赤くなる(2026-10-15号: 校閲の書き直しで 394字・438字になった記事が medium のまま組版された)。
+    一面は動かさない。main の組版のやり直しはすべて枠の当て直しを通す"""
+    import assemble as _assemble
+    import inspect
+    d = "2026-10-15"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    a, b = posts / f"{d}-a.md", posts / f"{d}-b.md"
+    a.write_text("---\n" + article_fm("a", d, rank="medium") + "---\n" + "あ" * 394 + "\n", encoding="utf-8")
+    b.write_text("---\n" + article_fm("b", d, rank="lead") + "---\n" + "い" * 300 + "\n", encoding="utf-8")
+    art_a, art_b = {"slug": "a", "brand": "cg", "rank": "medium"}, {"slug": "b", "brand": "cg", "rank": "lead"}
+    plan = {"articles": [{"slug": "a", "lead_score": 90, "rank": "medium"}, {"slug": "b", "lead_score": 10, "rank": "lead"}]}
+    seen = []
+    saved = compose.ROOT, _assemble.run, compose.persist_records
+    try:
+        compose.ROOT = tmp
+        compose.persist_records = lambda *x, **k: None
+        _assemble.run = lambda date, number, **k: (seen.append(re.search(r"^rank: (\S+)$", a.read_text(encoding="utf-8"), re.M).group(1)), 0)[1]
+        compose.reassemble(d, 1, plan, [art_a, art_b])
+    finally:
+        compose.ROOT, _assemble.run, compose.persist_records = saved
+    check(seen == ["small"] and art_a["rank"] == "small" and plan["articles"][0]["rank"] == "small"
+          and re.search(r"^rank: lead$", b.read_text(encoding="utf-8"), re.M),
+          f"組版のやり直しの前に枠を当て直していない(または一面を動かした): 組版が見た枠 {seen} / {art_a} / {plan}")
+    src = inspect.getsource(compose.main)
+    calls = re.findall(r"\b(run_assemble|reassemble)\(", src)
+    check(calls.count("run_assemble") == 1 and calls[0] == "run_assemble" and calls.count("reassemble") >= 4,
+          f"main の組版のやり直しが枠の当て直しを通っていない: {calls}")
+    at = src.index("revise_articles(date, by_file, plan, cands, aborted)\n")
+    check(src.index("assign_ranks(date, plan, written, keep_lead=True)", at) < src.index("run_lint(date)", at),
+          "lint 赤の書き直しのあと、枠を当て直す前に lint を見ている(枠の不一致で記事を落とす)")
+
+
 def test_rewrite_past_apply_answer(tmp: Path):
     """過去記事の書き直しの差し替え(rewrite_past.apply_answer)と枠の付け直し(fix_rank)を見張りの下で通す: 元の記録(訂正・号・slug・
     候補)を残して内容を差し替え、短くなった記事の枠を付け直し、書式どおりに書く(監査指摘: 素通しに変えても全テストが通った)。"""
@@ -9790,6 +9825,7 @@ def main() -> int:
     test_oncall_collect_rerun_killed_classify(tmp / "ock")
     test_failed_rollback_blocks_commit(tmp / "frb")
     test_canonicalize_and_assign_ranks(tmp / "car2")
+    test_reassemble_reranks_rewritten(tmp / "rerank")
     test_rewrite_past_apply_answer(tmp / "rpa")
     test_slugify_format()
     test_escalate_is_module_global()

@@ -861,23 +861,23 @@ def baseline_pending(date: str, dry: bool) -> list[dict]:
 def pending_rows(date: str) -> list[dict]:
     """この号の足し引きを当て直す起点(pending の全行。消した印の付いた行も)。
 
-    印の仕組みで組んだ号(控えの1行目の印)・まだ控えの無い号は、いまの pending そのもの。それより前に組んだ号は、この号の
-    足し引きに印が無いので組版前の控えから組み、後の号の足し引き(後の号の印の付いた行)を写す(写さないと、印の仕組みより前の号を
-    組み直したとき、後の号が足した追跡事項が消える。2026-10-14 監査)。"""
+    印の仕組みで組んだ号(控えの1行目の印)・まだ控えの無い号は、いまの pending そのもの。それより前に組んだ号は、行に印が無いので、
+    この号の足し引きを「この号の控え」と「次の号の控え(次の号が無ければいまの pending)」の差から読み、同じ印に直して返す:
+    足した key の印の無い行に added_on、消した key(いまどの行にも無いもの)は控えの行に removed_on を付けて足す。以後は
+    印の仕組みの号と同じに扱える(控えから組み直すと後の号の足し引きが消え、印が無いと取り消した追加を後の号がよみがえらせた。監査指摘)。"""
     cur = load_yaml_list(PENDING)
     p = ROOT / "metrics" / f"pending-before-{date}.yml"
     if not p.exists() or p.read_text(encoding="utf-8").startswith(PENDING_BEFORE_HEADER):
         return cur
     key = lambda x: x.get("dedup_key")
-    # 後の号が消した、この号より前からある行: 控えの同じ行をその消した行に置き換える(控えに無ければ足す)
-    later_rm = {key(x): x for x in cur if removed_on(x) > date and added_on(x) <= date}
-    out = [dict(later_rm.pop(key(x), x)) for x in active_pending(load_yaml_list(p))] + [dict(x) for x in later_rm.values()]
-    have = {key(x) for x in active_pending(out)}
-    for x in cur:          # 後の号が足した行(消した印の付いたものも)
-        if added_on(x) > date and (removed_on(x) or key(x) not in have):
-            out.append(dict(x))
-            if not removed_on(x):
-                have.add(key(x))
+    before = active_pending(load_yaml_list(p))
+    later = sorted(q for q in (ROOT / "metrics").glob("pending-before-*.yml")
+                   if re.fullmatch(r"pending-before-\d{4}-\d{2}-\d{2}\.yml", q.name) and q.stem[len("pending-before-"):] > date)
+    after = {key(x) for x in active_pending(load_yaml_list(later[0]) if later else cur)}
+    added = after - {key(x) for x in before}
+    out = [{**x, "added_on": date} if key(x) in added and not added_on(x) else x for x in cur]
+    have = {key(x) for x in out}
+    out += [{**x, "removed_on": date} for x in before if key(x) not in after and key(x) not in have]
     return out
 
 

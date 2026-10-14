@@ -6714,6 +6714,9 @@ if step.get("background"):      # 道具の実行を残して終わる(あとか
     code = ("import ctypes; ctypes.CDLL(None).prctl(4, 0, 0, 0, 0)\n" if step.get("nodump") else "") + step["background"]
     subprocess.Popen([sys.executable, "-c", code], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
                      start_new_session=bool(step.get("detach")))
+if step.get("kill_guard"):      # 自分を包む child_guard を SIGKILL する(OOM などで監督だけが落ちた形)
+    import signal
+    os.kill(os.getppid(), signal.SIGKILL)
 time.sleep(step.get("sleep", 0))
 sys.exit(step.get("exit", 0))
 '''
@@ -6861,6 +6864,21 @@ def test_writer_children(tmp: Path):
         os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[5] or ''}"
         check({p_.name: p_.read_bytes() for p_ in posts.glob(f"{date}-*.md")} == before3 and not path("nocli").exists(),
               "CLI を起動できないときに、記事が変わった・書かせる記事が残った")
+        # 7) child_guard だけが SIGKILL で落ちた(OOM など): CLI が別のセッションに抜けて環境を読めなくした道具を残していても、
+        #    compose が記録していた子孫として止めてから控えへ戻す(監査指摘)。初稿(組み直し)と書き直しの両方
+        spec.update({"write-crash": [{"background": late_write("probe", "crash"), "detach": True, "nodump": True, "kill_guard": True,
+                                      "sleep": 0.3}, {"answer": base}],
+                     "revise-probe": [{"answer": fixed}, {"background": late_write("delta", "crash"), "detach": True, "nodump": True,
+                                                          "kill_guard": True, "sleep": 0.3}]})
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        before4 = {s: path(s).read_bytes() for s in ("probe", "delta")}
+        w4, a4 = compose.write_articles(date, {"articles": [art(s) for s in slugs + ("crash",)]}, {"c1": cand}, [], {}, reuse=True)
+        res4 = compose.revise_articles(date, {f"docs/_posts/{date}-probe.md": [dict(issue)]}, plan, {"c1": cand}, [])
+        (tmp / "release-crash").write_text("", encoding="utf-8")      # 控えへ戻したあと: 残った道具の実行に書かせる合図
+        time.sleep(0.6)
+        check("crash" in [a["slug"] for a in w4] and res4 == {"probe": "unreadable"}
+              and all(path(s).read_bytes() == before4[s] for s in ("probe", "delta")),
+              f"child_guard が落ちたあと、残った道具が控えへ戻した記事を書き換えた: {[a['slug'] for a in w4]} {res4}")
     finally:
         compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_by_key, compose.DEADLINE = saved[:5]
         os.environ["PATH"] = saved[5] or ""

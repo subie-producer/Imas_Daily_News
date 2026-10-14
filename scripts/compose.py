@@ -2238,6 +2238,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
         # 子が全部終わったら(異常終了・時間切れ・答えの不採用を問わず)書かせる記事以外を控えへ戻し、子が作った記事を消す。
         # 書かせる記事は従来どおり答えから書く(2026-10-14 監査: 書き直し(revise_articles)と同じ型の残り)
         kept_posts = posts_snapshot(date)
+        tracker = ChildTracker().start()    # 子の子孫を記録し続ける(child_guard が落とされたときの備え)
         procs = []
         for art, src, prompt, fact_by_id, materials, tries in batch:
             fd, out_name = tempfile.mkstemp(prefix=f"codexwrite-{art['slug']}-", suffix=".txt")
@@ -2253,10 +2254,12 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
             # 素材と指示はファイルで渡す(引数に詰めると 128KB で落ちる。エージェントは自分で読める)。
             # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(最終メッセージを残さず終わった回の原因を追うため)
             with open(log_of(out_path), "w", encoding="utf-8") as lf:
-                procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, subprocess.Popen(
+                p = subprocess.Popen(
                     guarded(cmd + [prompt_file(date, f"write-{art['slug']}-{tries}", prompt)], out_path),
                     stdout=lf, stderr=subprocess.STDOUT, text=True, env=child_env(out_path.name),   # 印は答えのファイル名(子ごとに一意)
-                    stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True)))
+                    stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True)
+            tracker.add(p, out_path.name)
+            procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, p))
         waited, cannot = [], []
         for art, src, prompt, out_path, fact_by_id, materials, tries, p in procs:
             timed_out = False
@@ -2265,11 +2268,11 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
             except subprocess.TimeoutExpired:
                 end_guarded(p)       # CLI と道具の実行を止めさせてから答えのファイルを読む
                 timed_out = True
-            if not stop_leftovers(p, out_path.name):    # 正常終了・異常終了でも、残した道具の実行を止めてから控えへ戻す
-                anomaly("compose", f"執筆の子 {art['slug']} が残した道具の実行を止められない(控えへ戻したあとに記事を書き換えうる)")
             if not guard_result(out_path, f"執筆 {art['slug']}"):
                 cannot.append(art["slug"])
             waited.append((art, src, prompt, out_path, fact_by_id, materials, tries, p, timed_out))
+        if not tracker.sweep():      # 終わり方を問わず、子が残した道具の実行を止めてから控えへ戻す
+            anomaly("compose", "執筆の子が残した道具の実行を止められない(控えへ戻したあとに記事を書き換えうる)")
         targets = {ROOT / "docs" / "_posts" / f"{date}-{w[0]['slug']}.md" for w in waited}
         back = restore_posts(date, kept_posts, skip=targets)
         if back:
@@ -2734,7 +2737,7 @@ def guard_status_of(out_path: Path) -> Path:
 def guard_result(out_path: Path, who: str) -> bool:
     """child_guard の結果を読んで消す。CLI を起動できていなければ False(呼び出し側は直接起動したときと同じく FileNotFoundError に
     する。出力の読めない回と取り違えない)。道具の実行を片付けたと確かめられなかったら異常として申告する。結果が無い(child_guard が
-    落とされた・使われていない)ときは stop_leftovers の確かめに任せる。"""
+    落とされた・使われていない)ときは ChildTracker の確かめに任せる。"""
     p = guard_status_of(out_path)
     try:
         st = json.loads(p.read_text(encoding="utf-8"))
@@ -2801,30 +2804,153 @@ def live_procs(pgid: int | None, mark: str = "") -> list[int]:
     return found
 
 
-def stop_leftovers(p, mark: str = "", grace: float = 3.0) -> bool:
-    """子(start_new_session で起動した CLI)が残した道具の実行を止め、無くなったのを確かめる。止めるのは、子のプロセスグループ
-    (pgid = 子の pid)と、子に渡した印(mark。child_env)を環境に持つプロセス(別のセッションを作って抜けた道具も含む)。
-    CLI が正常終了・異常終了しても道具は残りうる。残したまま記事を控えへ戻すと、戻したあとに書き換えられる(2026-10-14 監査:
-    承認済みの記事をあとから書き換える道具を、同じグループ・別のセッションに残して終了した子で再現)。確かめられたら True。
-    主な片付けは child_guard(孤児の受け皿)がする。これは child_guard 自身が止められた(時間切れで落とした)ときの備え。"""
-    pid = getattr(p, "pid", None)
-    pgid = pid if isinstance(pid, int) and pid > 1 else None    # 0 は自分のプロセスグループを指す。グループを持たない子は見ない
-    if pgid is None and not mark:
-        return True
-    has_proc = Path("/proc").is_dir()
-    end = time.monotonic() + grace
-    while True:
-        left = live_procs(pgid, mark)
-        if not left:
+PR_SET_CHILD_SUBREAPER = 36
+_SUBREAPER = {"n": 0, "lock": threading.Lock()}
+
+
+def subreaper(on: bool) -> None:
+    """compose を孤児の受け皿にする/やめる(ChildTracker が使っているあいだだけ。重なっても最後の1つが終わるまで続ける)。"""
+    import ctypes
+    with _SUBREAPER["lock"]:
+        _SUBREAPER["n"] += 1 if on else -1
+        want = 1 if _SUBREAPER["n"] > 0 else 0
+        try:
+            ctypes.CDLL(None, use_errno=True).prctl(PR_SET_CHILD_SUBREAPER, want, 0, 0, 0)
+        except (OSError, AttributeError):
+            pass
+
+
+def proc_table() -> dict[int, tuple[str, int, int, int]]:
+    """プロセスの表 {pid: (状態, 親, プロセスグループ, 起動時刻)}(/proc/<pid>/stat。環境を読めなくした道具のものも読める)。"""
+    table = {}
+    for st in Path("/proc").glob("[0-9]*/stat"):
+        try:
+            f = st.read_text().rsplit(")", 1)[1].split()
+            table[int(st.parent.name)] = (f[0], int(f[1]), int(f[2]), int(f[19]))
+        except (OSError, ValueError, IndexError):
+            continue
+    return table
+
+
+class ChildTracker:
+    """執筆・書き直しの子(child_guard)の子孫を、束ねのあいだ記録し続け(ジョブ所属の追跡)、終わったら全部止める。
+    主な片付けは child_guard(孤児の受け皿)がする。これは child_guard 自身が落とされた(SIGKILL・時間切れの reap)ときの備え
+    (2026-10-14 監査: child_guard だけを SIGKILL すると、別のセッションに抜けて環境を読めなくした道具が残り、控えへ戻したあとに
+    承認済みの記事を書き換えた)。compose 自身も孤児の受け皿になる(child_guard が落ちたあとの孤児が init へ行かず、ここの子として
+    残る)。止めるのは: 記録した子孫(pid と起動時刻で照合)とその子孫 / child_guard のプロセスグループ / 印(child_env)を環境に持つ
+    プロセス / ほかのスレッドが子を起こしていないときは、束ねの間に起動してここへ付け替わった孤児。"""
+
+    def __init__(self, interval: float = 0.05):
+        self.roots: dict[int, int] = {}            # child_guard の pid → 起動時刻
+        self.marks: list[str] = []
+        self.seen: set[tuple[int, int]] = set()     # (pid, 起動時刻)
+        self.interval = interval
+        self.stop_ev = threading.Event()
+        self.thread: threading.Thread | None = None
+        self.t0 = 0
+        self.ok = Path("/proc").is_dir()
+
+    def start(self) -> "ChildTracker":
+        if not self.ok:
+            return self
+        subreaper(True)
+        try:
+            self.t0 = int(float(Path("/proc/uptime").read_text().split()[0]) * os.sysconf("SC_CLK_TCK"))
+        except (OSError, ValueError):
+            self.t0 = 0
+        self.thread = threading.Thread(target=self._run, daemon=True)
+        self.thread.start()
+        return self
+
+    def add(self, p, mark: str) -> None:
+        """起動した子(child_guard)と、その子に渡した印を記録する。"""
+        self.marks.append(mark)
+        pid = getattr(p, "pid", None)
+        if self.ok and isinstance(pid, int) and pid > 1:     # 0 は自分のプロセスグループを指す。テストの偽物は見ない
+            st = proc_table().get(pid)
+            if st:
+                self.roots[pid] = st[3]
+        self._poll()
+
+    def _poll(self) -> dict:
+        if not self.ok:
+            return {}
+        table = proc_table()
+        kids: dict[int, list[int]] = {}
+        for pid, (_, ppid, _, _) in table.items():
+            kids.setdefault(ppid, []).append(pid)
+        todo = [pid for pid, st in list(self.roots.items()) + list(self.seen) if table.get(pid, ("", 0, 0, -1))[3] == st]
+        while todo:
+            for k in kids.get(todo.pop(), []):
+                key = (k, table[k][3])
+                if key not in self.seen:
+                    self.seen.add(key)
+                    todo.append(k)
+        return table
+
+    def _run(self) -> None:
+        while not self.stop_ev.wait(self.interval):
+            self._poll()
+
+    def _alone(self) -> bool:
+        """ほかに子を起こしうるスレッドが無いか(このスレッド・main(run_parallel の join で待つ)・記録のスレッドだけ)。"""
+        mine = {threading.current_thread(), threading.main_thread(), self.thread}
+        return all(t in mine for t in threading.enumerate())
+
+    def sweep(self, grace: float = 3.0) -> bool:
+        """記録を止め、子孫を全部止めて、動いているものが無くなったのを確かめる(確かめられたら True)。"""
+        self.stop_ev.set()
+        if self.thread:
+            self.thread.join(timeout=5)
+        if not self.ok:     # /proc の無い環境: child_guard のプロセスグループだけを止める
+            for pid in self.roots:
+                try:
+                    os.killpg(pid, signal.SIGKILL)
+                except OSError:
+                    pass
             return True
-        if time.monotonic() >= end:
-            return False
-        for q in left:              # 見つけたプロセスだけを止める(/proc が無ければグループごと)
-            try:
-                os.kill(q, signal.SIGKILL) if has_proc else os.killpg(q, signal.SIGKILL)
-            except OSError:
-                pass
-        time.sleep(0.05)
+        try:
+            return self._sweep(grace)
+        finally:
+            subreaper(False)
+
+    def _sweep(self, grace: float) -> bool:
+        me, killed = os.getpid(), set()
+        alone = self._alone()
+        end = time.monotonic() + grace
+        while True:
+            table = self._poll()
+            targets = {pid for pid, (s, ppid, pgrp, st) in table.items()
+                       if (pid, st) in self.seen or pgrp in self.roots
+                       or (alone and ppid == me and st >= self.t0 and pid not in self.roots)}
+            for mark in self.marks:
+                targets.update(live_procs(None, mark))
+            kids: dict[int, list[int]] = {}
+            for pid, (_, ppid, _, _) in table.items():
+                kids.setdefault(ppid, []).append(pid)
+            todo = list(targets)
+            while todo:
+                for k in kids.get(todo.pop(), []):
+                    if k not in targets:
+                        targets.add(k)
+                        todo.append(k)
+            targets = {pid for pid in targets if pid != me and pid in table and table[pid][0] not in ("Z", "X")}
+            for pid in killed:          # 止めた孤児(ここの子になったもの)を回収する
+                try:
+                    os.waitpid(pid, os.WNOHANG)
+                except (ChildProcessError, OSError):
+                    pass
+            if not targets:
+                return True
+            if time.monotonic() >= end:
+                return False
+            for pid in targets:
+                try:
+                    os.kill(pid, signal.SIGKILL)
+                except OSError:
+                    pass
+            killed |= targets
+            time.sleep(0.05)
 
 
 def posts_snapshot(date: str) -> dict[Path, bytes]:
@@ -2893,19 +3019,22 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
         # 書き込みは採らない: この号の記事を控え、子が全部終わったら(異常終了・時間切れでも)控えへ戻してから答えを当てる
         # (2026-10-14 監査指摘: 記事を直接書き換えて異常終了した子の変更が残り、答えは不採用なのに記事は書き換わっていた)
         kept_posts = posts_snapshot(date)
+        tracker = ChildTracker().start()    # 子の子孫を記録し続ける(child_guard が落とされたときの備え)
         procs = []
         for art, path, fact_by_id, materials, issues, prompt in jobs[i:i + COMPOSE_WAVE]:
             fd, out_name = tempfile.mkstemp(prefix=f"codexrevise-{art['slug']}-", suffix=".txt")
             os.close(fd)
             # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(執筆と同じ)
             with open(log_of(Path(out_name)), "w", encoding="utf-8") as lf:
-                procs.append((art, path, fact_by_id, materials, issues, Path(out_name), subprocess.Popen(
+                p = subprocess.Popen(
                     guarded(["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
                              "-c", "sandbox_workspace_write.network_access=true",
                              "--output-last-message", out_name, "--output-schema", str(schema_out),
                              prompt_file(date, f"revise-{art['slug']}", prompt)], Path(out_name)),
                     stdout=lf, stderr=subprocess.STDOUT, text=True, stdin=subprocess.DEVNULL, cwd=ROOT,
-                    env=child_env(Path(out_name).name), start_new_session=True)))     # 印は答えのファイル名(子ごとに一意)
+                    env=child_env(Path(out_name).name), start_new_session=True)     # 印は答えのファイル名(子ごとに一意)
+            tracker.add(p, Path(out_name).name)
+            procs.append((art, path, fact_by_id, materials, issues, Path(out_name), p))
         waited, cannot = [], []
         for art, path, fact_by_id, materials, issues, out_path, p in procs:
             timed_out = False
@@ -2914,11 +3043,11 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
             except subprocess.TimeoutExpired:
                 end_guarded(p)       # CLI と道具の実行を止めさせてから答えのファイルを読む
                 timed_out = True
-            if not stop_leftovers(p, out_path.name):    # 正常終了・異常終了でも、残した道具の実行を止めてから控えへ戻す
-                anomaly("compose", f"書き直しの子 {art['slug']} が残した道具の実行を止められない(控えへ戻したあとに記事を書き換えうる)")
             if not guard_result(out_path, f"書き直し {art['slug']}"):
                 cannot.append(art["slug"])
             waited.append((art, path, fact_by_id, materials, issues, out_path, p, timed_out))
+        if not tracker.sweep():      # 終わり方を問わず、子が残した道具の実行を止めてから控えへ戻す
+            anomaly("compose", "書き直しの子が残した道具の実行を止められない(控えへ戻したあとに記事を書き換えうる)")
         back = restore_posts(date, kept_posts)
         if back:
             print(f"書き直しの子が直接書き換えた記事を控えへ戻した(稿は答えから書く): {', '.join(back[:8])}", flush=True)

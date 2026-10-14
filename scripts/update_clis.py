@@ -8,7 +8,8 @@
 その工程が全滅する。編集長「定期的に Codex/Grok/Claude のアップデートを仕掛けるようにしないと駄目だ」。
 
 - 工程の排他(job_lock)を取ってから更新する(収集・組版の最中に実行ファイルを差し替えない)
-- 更新のあと、各 CLI に小さな問いを投げて**答えの中身**で動作を確かめる(Grok は API に拒まれても終了コードが 0 だった)
+- 更新のあと、各 CLI に小さな問いを投げて、正常終了し**答えが求めたとおり(2 だけ)**かで動作を確かめる(Grok は API に拒まれても
+  終了コードが 0 だった)
 - 更新の失敗・動作確認の失敗は異常として通知し、当番がなぜなぜする。版が変わったら知らせる
 - 版の記録は metrics/cli-versions.json(Git 管理外)
 """
@@ -66,7 +67,9 @@ def version(tool: str) -> str:
 
 
 def smoke(tool: str, workdir: Path) -> tuple[bool, str]:
-    """小さな問いを投げて、答えに 2 が返るか。戻りは (動いたか, 失敗なら理由)。"""
+    """小さな問いを投げて、求めたとおりの答えが返るか。戻りは (動いたか, 失敗なら理由)。
+    正常終了(exit 0)で、答え(標準出力の最後の行)がちょうど「2」のときだけ動いたとする(形の検査。監査指摘 2026-10-14 ar9:
+    `2` を出して exit 1 や、`1+1=3 (attempt 2)` を、どこかに 2 があるとして動作 OK にしていた)。"""
     if tool == "claude":
         r = run(["claude", "-p", QUESTION, "--model", "haiku", "--max-budget-usd", "0.5"], timeout=300, cwd=workdir)
     elif tool == "codex":
@@ -76,7 +79,7 @@ def smoke(tool: str, workdir: Path) -> tuple[bool, str]:
         pf.write_text(QUESTION + "\n", encoding="utf-8")
         r = run(["grok", "--prompt-file", str(pf), "--always-approve", "--max-turns", "1"], timeout=300, cwd=workdir)
     out = (r.stdout or "").strip()
-    if re.search(r"(^|\D)2(\D|$)", out.splitlines()[-1] if out else ""):
+    if r.returncode == 0 and out and out.splitlines()[-1].strip() == "2":
         return True, ""
     return False, f"exit {r.returncode} / 出力 {out[-160:]!r} / エラー {(r.stderr or '').strip()[-240:]!r}"
 

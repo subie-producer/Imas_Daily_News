@@ -4570,6 +4570,167 @@ def test_update_clis(tmp: Path):
             os.environ["HOME"] = saved_home
 
 
+def test_update_clis_smoke_answer(tmp: Path):
+    """道具の動作確認は、正常終了して、答え(標準出力の最後の行)が求めたとおりの「2」のときだけ動作 OK(監査指摘 2026-10-14 ar9:
+    実の CLI が `2` を出して exit 1、`1+1=3 (attempt 2)` を出して exit 0、のどちらも動作 OK になっていた)。
+    実の子プロセス(一時ディレクトリの偽の CLI)を起動して確かめる。"""
+    import update_clis as uc
+    bindir, wd = tmp / "bin", tmp / "wd"
+    bindir.mkdir(parents=True, exist_ok=True)
+    wd.mkdir(parents=True, exist_ok=True)
+    saved = (uc.tool_path, uc._deadline)
+    try:
+        uc.tool_path, uc._deadline = (lambda: f"{bindir}:{os.environ.get('PATH', '')}"), 0
+        for out, code, want in (("2", 0, True), ("前置き\n2\n", 0, True), ("2", 1, False), ("1+1=3 (attempt 2)", 0, False),
+                                ("", 0, False), ("2 です", 0, False), ("12", 0, False)):
+            for tool in ("claude", "codex", "grok"):
+                exe, said = bindir / tool, bindir / f"{tool}.out"
+                said.write_text(out, encoding="utf-8")
+                exe.write_text(f"#!/bin/sh\ncat '{said}'\nexit {code}\n", encoding="utf-8")
+                exe.chmod(0o755)
+                ok, why = uc.smoke(tool, wd)
+                check(ok is want and (ok or why), f"{tool} の動作確認: 出力 {out!r} / exit {code} → {(ok, why)}(期待 {want})")
+    finally:
+        uc.tool_path, uc._deadline = saved
+
+
+def test_git_commit_push_checkout(tmp: Path):
+    """収集・組版の Git 操作(pipelib.commit_and_push / checkout_edition_branch)を、実の Git(一時リポジトリとローカルの bare origin)で通す
+    (監査指摘 2026-10-14 ar9: 既存のテストは commit/push と checkout を無効にしても全部通っていた)。
+    push を拒まれた commit は、変更の無い再試行でも送ってから成功と返す。次の工程の checkout は、送れない commit を origin に合わせて
+    捨てず(止まる)、送れるようになれば送ってから進む。分かれていれば origin の上に積み直す。main は衝突しなければ取り込んで送り、
+    edition と main が同じファイルを変えていれば、取り込む前の clean な状態へ戻して止まり、当番へ渡す。"""
+    tmp.mkdir(parents=True, exist_ok=True)
+    remote, work, other = tmp / "remote.git", tmp / "work", tmp / "other"
+    date, branch = "2026-10-15", "edition/2026-10-15"
+
+    def g(*a, cwd=work, check_=True):
+        return subprocess.run(["git", *a], cwd=cwd, capture_output=True, text=True, check=check_)
+
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(work)], check=True, capture_output=True)
+    g("config", "core.hooksPath", str(remote / "hooks"), cwd=remote)
+    for k, v in (("user.email", "t@example.com"), ("user.name", "t")):
+        g("config", k, v)
+    (work / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+    (work / "shared.txt").write_text("base\n", encoding="utf-8")
+    g("add", "-A"); g("commit", "-q", "-m", "base")
+    g("remote", "add", "origin", str(remote)); g("push", "-q", "origin", "main")
+    g("checkout", "-q", "-b", branch); g("push", "-q", "origin", branch)
+    subprocess.run(["git", "clone", "-q", str(remote), str(other)], check=True, capture_output=True)
+    for k, v in (("user.email", "o@example.com"), ("user.name", "o")):
+        g("config", k, v, cwd=other)
+    hook = remote / "hooks" / "pre-receive"
+    hook.parent.mkdir(exist_ok=True)
+
+    def reject(on: bool) -> None:
+        if on:
+            hook.write_text("#!/bin/sh\necho 'rejected by test' >&2\nexit 1\n", encoding="utf-8")
+            hook.chmod(0o755)
+        else:
+            hook.unlink(missing_ok=True)
+
+    def remote_tip() -> str:
+        return g("rev-parse", "-q", "--verify", f"refs/heads/{branch}", cwd=remote, check_=False).stdout.strip()
+
+    def remote_has(path: str) -> bool:
+        return g("cat-file", "-e", f"refs/heads/{branch}:{path}", cwd=remote, check_=False).returncode == 0
+
+    def call(fn, *a):
+        try:
+            return fn(*a)
+        except Exception as e:      # noqa: BLE001 — 例外で抜けること自体が欠陥(衝突で abort に届かない 等)
+            check(False, f"Git 操作が例外で抜けた({a}): {type(e).__name__}: {e}")
+            return None
+
+    notes, called = [], []
+    saved = (pipelib.ROOT, pipelib.notify, pipelib.escalate)
+    try:
+        pipelib.ROOT = work
+        pipelib.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        # 当番へは止まった工程の再実行つきで渡す(rerun の実効値まで控える。組版の終わりの診断は再実行なし)
+        pipelib.escalate = lambda stage, d, reason, rerun=True, **k: called.append((stage, d, reason, rerun)) or True
+        # 1. push を拒まれたら False(commit は手元に残る)
+        reject(True)
+        (work / "material-1.txt").write_text("1", encoding="utf-8")
+        ok = call(pipelib.commit_and_push, branch, "collect 1", "collect")
+        head1 = g("rev-parse", "HEAD").stdout.strip()
+        check(ok is False and remote_tip() != head1, f"push を拒まれたのに成功と返した: {ok}")
+        # 2. 変更の無い再試行でも、届いていない commit を送ってから成功と返す
+        reject(False)
+        ok = call(pipelib.commit_and_push, branch, "collect retry", "collect")
+        check(ok is True and remote_tip() == head1, f"届いていない commit を送らずに成功と返した: {ok} / origin {remote_tip()[:10]} 手元 {head1[:10]}")
+        # 3. 次の工程の checkout は、送れない commit を origin に合わせて捨てない(止まる)。送れるようになれば送ってから進む
+        reject(True)
+        (work / "material-2.txt").write_text("2", encoding="utf-8")
+        check(call(pipelib.commit_and_push, branch, "collect 2", "collect") is False, "push を拒まれたのに成功と返した(2回目)")
+        head2 = g("rev-parse", "HEAD").stdout.strip()
+        g("checkout", "-q", "main")      # 次の工程は別のブランチにいることもある
+        called.clear()
+        ok = call(pipelib.checkout_edition_branch, date, "compose")
+        check(ok is False and g("rev-parse", branch).stdout.strip() == head2,
+              f"送れない commit を checkout で捨てた / 止まらなかった: {ok} / {g('rev-parse', branch).stdout.strip()[:10]} ≠ {head2[:10]}")
+        check([(c[0], c[1], c[3]) for c in called] == [("compose", date, True)],
+              f"送れない commit で止めたことを、再実行つきで当番へ渡さない: {[(c[0], c[1], c[3]) for c in called]}")
+        reject(False)
+        ok = call(pipelib.checkout_edition_branch, date, "compose")
+        check(ok is True and (work / "material-2.txt").exists() and remote_tip() == head2,
+              f"checkout が手元だけの素材を消した・送っていない: {ok} / 素材 {(work / 'material-2.txt').exists()} / origin {remote_tip()[:10]}")
+        # 4. 送れなかった間に他の工程が push して分かれていたら、origin の上に積み直して送る(どちらも消さない)
+        reject(True)
+        (work / "material-3.txt").write_text("3", encoding="utf-8")
+        check(call(pipelib.commit_and_push, branch, "collect 3", "collect") is False, "push を拒まれたのに成功と返した(3回目)")
+        reject(False)
+        g("fetch", "-q", "origin", cwd=other); g("checkout", "-q", "-B", branch, f"origin/{branch}", cwd=other)
+        (other / "other.txt").write_text("o", encoding="utf-8")
+        g("add", "-A", cwd=other); g("commit", "-q", "-m", "other", cwd=other); g("push", "-q", "origin", branch, cwd=other)
+        ok = call(pipelib.checkout_edition_branch, date, "collect")
+        check(ok is True and remote_has("material-3.txt") and remote_has("other.txt") and (work / "material-3.txt").exists()
+              and g("rev-parse", "HEAD").stdout.strip() == remote_tip(),
+              f"分かれた手元の commit を積み直して送らない: {ok} / origin に素材 {remote_has('material-3.txt')} 他 {remote_has('other.txt')}")
+        # 5. main は衝突しなければ取り込んで送る
+        g("checkout", "-q", "main", cwd=other); g("pull", "-q", "--ff-only", "origin", "main", cwd=other)
+        (other / "script.txt").write_text("fix", encoding="utf-8")
+        g("add", "-A", cwd=other); g("commit", "-q", "-m", "main fix", cwd=other); g("push", "-q", "origin", "main", cwd=other)
+        ok = call(pipelib.checkout_edition_branch, date, "collect")
+        main_tip = g("rev-parse", "refs/heads/main", cwd=remote).stdout.strip()
+        check(ok is True and remote_has("script.txt")
+              and g("merge-base", "--is-ancestor", main_tip, remote_tip(), cwd=remote, check_=False).returncode == 0,
+              f"main を取り込んで送らない: {ok}")
+        # 6. edition と main が同じファイルを変えていたら、取り込む前の clean な状態へ戻して止まり、当番へ渡す
+        (work / "shared.txt").write_text("edition\n", encoding="utf-8")
+        check(call(pipelib.commit_and_push, branch, "edition edit", "collect") is True, "edition の変更を送れない")
+        (other / "shared.txt").write_text("main\n", encoding="utf-8")
+        g("add", "-A", cwd=other); g("commit", "-q", "-m", "main edit", cwd=other); g("push", "-q", "origin", "main", cwd=other)
+        before = g("rev-parse", "HEAD").stdout.strip()
+        notes.clear(); called.clear()
+        for job in ("compose", "collect"):       # 次の工程も同じ衝突で止まるが、作業ツリーを汚さない
+            ok = call(pipelib.checkout_edition_branch, date, job)
+            merging = g("rev-parse", "-q", "--verify", "MERGE_HEAD", check_=False).returncode == 0
+            status = g("status", "--porcelain").stdout
+            check(ok is False and not merging and status == "" and g("rev-parse", "HEAD").stdout.strip() == before
+                  and g("branch", "--show-current").stdout.strip() == branch,
+                  f"{job}: main との衝突のあと戻さない・止まらない: {ok} / merge 中 {merging} / {status!r}")
+        check(any(not ok_ and "shared.txt" in m for m, ok_ in notes), f"衝突したファイルを名指しで異常にしない: {notes}")
+        check([(c[0], c[1], c[3]) for c in called] == [("compose", date, True), ("collect", date, True)]
+              and all("shared.txt" in c[2] for c in called),
+              f"衝突で止めたことを再実行つきで当番へ渡さない: {[(c[0], c[1], c[3]) for c in called]}")
+        # merge --abort で戻らなくても、取り込む前の commit へ戻してから止まる
+        real_git = pipelib.git
+        pipelib.git = lambda *a, check=True: (subprocess.CompletedProcess(["git", *a], 128, "", "abort failed (test)")
+                                              if a[:2] == ("merge", "--abort") else real_git(*a, check=check))
+        try:
+            ok = call(pipelib.checkout_edition_branch, date, "compose")
+        finally:
+            pipelib.git = real_git
+        merging = g("rev-parse", "-q", "--verify", "MERGE_HEAD", check_=False).returncode == 0
+        status = g("status", "--porcelain").stdout
+        check(ok is False and not merging and status == "" and g("rev-parse", "HEAD").stdout.strip() == before,
+              f"abort が効かないとき取り込む前へ戻さない: {ok} / merge 中 {merging} / {status!r}")
+    finally:
+        pipelib.ROOT, pipelib.notify, pipelib.escalate = saved
+
+
 def test_article_purpose():
     """記事の目的(編集長 2026-10-03「目的の間違い」: 予約締切の前日の記事を、執筆が新しい事実が無いと見送った)。
     選定が purpose を返し、計画に載り、執筆の依頼文に出る。続報予約の消化は目的が期日の知らせ。"""
@@ -6538,6 +6699,8 @@ def main() -> int:
     test_plan_merge_into_drop()
     test_extract_json_array_strict()
     test_update_clis(tmp / "uc")
+    test_update_clis_smoke_answer(tmp / "ucs")
+    test_git_commit_push_checkout(tmp / "gcp")
     test_grok_face_retry(tmp / "gr")
     test_grok_format_matches_parser()
     test_grok_deep_format_matches_parser()

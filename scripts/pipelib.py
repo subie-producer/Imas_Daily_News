@@ -853,6 +853,59 @@ def branch_exists(name: str, remote: bool = False) -> bool:
     return git("show-ref", "--verify", "--quiet", ref, check=False).returncode == 0
 
 
+def unsent_commits(branch: str) -> int | None:
+    """手元の branch にあって origin/<branch>(最後に fetch・push した時点の origin)に無い commit の数。
+    origin に branch が無い・数えられないときは None(送ってみるまで届いているとは言えない)。"""
+    if not branch_exists(branch, remote=True):
+        return None
+    r = git("rev-list", "--count", f"origin/{branch}..{branch}", check=False)
+    return int(r.stdout.strip()) if r.returncode == 0 and r.stdout.strip().isdigit() else None
+
+
+def send_branch(branch: str) -> str:
+    """いまいる branch を origin へ送り、**届いたことを確かめる**(origin/<branch> が手元の先端を含む)。戻り値は届かなかった理由
+    ("" なら届いた)。届いていれば通信しない。拒まれたら(collect 同士/release/当番が先に push した)origin の上に積み直して
+    送り直す。積み直せなければ戻す(手元の commit は消さない)。"""
+    if unsent_commits(branch) == 0:
+        return ""
+    r = git_net("push", "origin", branch)
+    if r.returncode != 0:
+        # collect 同士/release との競合: リモートを取り込んで積み直す
+        p = git_net("pull", "--rebase", "origin", branch)
+        if p.returncode != 0:
+            git("rebase", "--abort", check=False)
+            return f"push 失敗(pull --rebase も失敗): {(p.stderr or r.stderr).strip()[:200]}"
+        r2 = git_net("push", "origin", branch)
+        if r2.returncode != 0:
+            return f"push 失敗: {r2.stderr.strip()[:200]}"
+    left = unsent_commits(branch)
+    if left != 0:
+        return f"push は成功と返ったが、{branch} の commit が origin に届いていない(未送信 {'不明' if left is None else f'{left}件'})"
+    return ""
+
+
+def _merge_leftover(before: str) -> str:
+    """取り込み(merge)の後始末の確認。取り込む前(HEAD が before・clean・merge の途中でない)に戻っていなければ、残っているものを返す。"""
+    left = []
+    if git("rev-parse", "-q", "--verify", "MERGE_HEAD", check=False).returncode == 0:
+        left.append("merge の途中(MERGE_HEAD)")
+    head = git("rev-parse", "HEAD", check=False).stdout.strip()
+    if head != before:
+        left.append(f"HEAD が {head[:10] or '(不明)'}(取り込む前は {before[:10]})")
+    st = git("status", "--porcelain", check=False)
+    if st.returncode != 0 or st.stdout.strip():
+        left.append("作業ツリーが clean でない: " + (st.stdout.strip() or st.stderr.strip())[:300])
+    return "; ".join(left)
+
+
+def _stop_to_oncall(job: str, date: str, msg: str) -> bool:
+    """checkout で止まった工程を、人に異常として知らせ、当番へ渡す(直して再実行させる)。組版は工程の終わりの診断が
+    再実行なしで呼ぶので、止まったここで渡す(その process の診断は重ねて呼ばない)。戻り値はいつも False(工程は止まる)。"""
+    notify(job, msg, ok=False)
+    escalate(job, date, msg)
+    return False
+
+
 def checkout_edition_branch(date: str, job: str) -> bool:
     """edition/<date> を origin と同期して checkout。無ければ main から作る。"""
     if git("status", "--porcelain").stdout.strip():
@@ -863,6 +916,18 @@ def checkout_edition_branch(date: str, job: str) -> bool:
         notify(job, f"origin への fetch に失敗(再試行後も回復せず)。中止:\n{f.stderr.strip()[:200]}", ok=False)
         return False
     branch = f"edition/{date}"
+    # **手元だけにある commit を捨てない。**下の `checkout -B` は手元のブランチを origin の位置へ引き戻すので、前の工程が
+    # commit したが push できなかった成果物(収集の素材・組版の紙面)が消える(監査指摘 2026-10-14 ar9: push を拒まれた収集の
+    # commit が、次の工程の checkout で消えた)。先に送り(分かれていれば origin の上に積み直す)、送れなければ捨てずに止まる
+    unsent = unsent_commits(branch) if branch_exists(branch) and branch_exists(branch, remote=True) else 0
+    if unsent != 0:
+        n = "数が不明の" if unsent is None else f"{unsent}件の"
+        c = git("checkout", branch, check=False)
+        why = f"{branch} の checkout 失敗: {(c.stderr or c.stdout).strip()[:200]}" if c.returncode != 0 else send_branch(branch)
+        if why:
+            return _stop_to_oncall(job, date, f"{branch} に origin へ出していない {n} commit があるが送れない({why})。"
+                                              "origin に合わせると消えるので、checkout せずに止めた")
+        print(f"{branch}: origin へ出していなかった {n} commit を送った", flush=True)
     if branch_exists(branch, remote=True):
         git("checkout", "-B", branch, f"origin/{branch}")
     elif branch_exists(branch):
@@ -883,11 +948,22 @@ def checkout_edition_branch(date: str, job: str) -> bool:
     # 紙面ファイルは main 側に無いので、ここでの取り込みが号の中身を壊すことはない。
     # --is-ancestor は「祖先でない」を終了コード1で返す。これは異常ではないので check=False
     if git("merge-base", "--is-ancestor", "origin/main", "HEAD", check=False).returncode != 0:
-        m = git("merge", "origin/main", "--no-edit")
+        # 取り込みの失敗(衝突)は例外にせず受けて、取り込む前の clean な状態へ戻してから止まり、当番へ渡す。以前は git() の例外で
+        # abort に届かず、merge の途中(UU)のまま残って次の工程の checkout も止まった(監査指摘 2026-10-14 ar9)。古いスクリプトの
+        # ままは進めない(直した当日の号が直っていない版で生成される)
+        before = git("rev-parse", "HEAD").stdout.strip()
+        m = git("merge", "origin/main", "--no-edit", check=False)
         if m.returncode != 0:
-            git("merge", "--abort")
-            notify(job, f"{branch} への main 取り込みが衝突。**古いスクリプトのまま続行**します:\n"
-                        f"{m.stdout.strip()[:300]}", ok=False)
+            conflicted = git("diff", "--name-only", "--diff-filter=U", check=False).stdout.splitlines()
+            git("merge", "--abort", check=False)
+            if _merge_leftover(before):
+                # abort で戻らなければ取り込む前の commit へ戻す(この関数の頭で clean を確かめたので、消えるのは merge が持ち込んだものだけ)
+                git("reset", "-q", "--hard", before, check=False)
+            left = _merge_leftover(before)
+            why = (f"{branch} へ main を取り込むと衝突した({', '.join(conflicted[:8])})。edition と main が同じファイルを別々に変えている。"
+                   if conflicted else f"{branch} へ main を取り込めない({(m.stderr or m.stdout).strip()[:300]})。")
+            return _stop_to_oncall(job, date, why + (f"取り込む前の状態に戻せない({left})。作業ツリーを確かめること" if left else
+                                                      "取り込む前の状態に戻して、工程を止めた(古いスクリプトのまま進めない)"))
         else:
             print(f"{branch}: main を取り込んだ({git('rev-parse', '--short', 'origin/main').stdout.strip()})",
                   flush=True)
@@ -901,7 +977,10 @@ def checkout_edition_branch(date: str, job: str) -> bool:
                     notify(job, f"判定表の二重行を除いたが commit できない: {(c.stderr or c.stdout).strip()[:200]}", ok=False)
                     return False
                 print(f"判定表の二重行 {len(removed)} 件を除いた", flush=True)
-            git_net("push", "origin", branch)
+            # 送れなくても取り込みは手元に残る(この工程の commit_and_push が一緒に送り、届いたかを確かめる。次の工程の checkout も捨てない)
+            sent = send_branch(branch)
+            if sent:
+                print(f"{branch}: main の取り込みをまだ送れない({sent})。この工程の commit と一緒に送る", flush=True)
     return True
 
 
@@ -954,26 +1033,19 @@ def commit_and_push(branch: str, message: str, job: str, paths: list[str] | None
         return False
     if not git("status", "--porcelain").stdout.strip():
         print("変更なし(コミットせず)", flush=True)
-        return True
-    if git("diff", "--cached", "--quiet", check=False).returncode == 0:
+    elif git("diff", "--cached", "--quiet", check=False).returncode == 0:
         print("stage した変更なし(コミットせず)", flush=True)
-        return True
-    r = git("commit", "-m", message, check=False)
-    if r.returncode != 0:
-        notify(job, f"git commit 失敗: {(r.stderr or r.stdout).strip()[:200]}", ok=False)
+    else:
+        r = git("commit", "-m", message, check=False)
+        if r.returncode != 0:
+            notify(job, f"git commit 失敗: {(r.stderr or r.stdout).strip()[:200]}", ok=False)
+            return False
+    # 変更が無くても、前の回に commit して送れなかったもの(push を拒まれた・通信の失敗)があれば送り、届いたことを確かめてから
+    # 成功と返す。以前は「変更なし」で送らずに True を返し、次の工程の checkout がその commit を外して素材が消えた(監査指摘 2026-10-14 ar9)
+    why = send_branch(branch)
+    if why:
+        notify(job, why, ok=False)
         return False
-    r = git_net("push", "origin", branch)
-    if r.returncode != 0:
-        # collect 同士/release との競合: リモートを取り込んで積み直す
-        p = git_net("pull", "--rebase", "origin", branch)
-        if p.returncode != 0:
-            git("rebase", "--abort", check=False)
-            notify(job, f"push 失敗(pull --rebase も失敗): {(p.stderr or r.stderr).strip()[:200]}", ok=False)
-            return False
-        r2 = git_net("push", "origin", branch)
-        if r2.returncode != 0:
-            notify(job, f"push 失敗: {r2.stderr.strip()[:200]}", ok=False)
-            return False
     return True
 
 

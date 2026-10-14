@@ -42,11 +42,12 @@
     "reservations": {
       "type": "array",
       "items": {
-        "type": "object", "required": ["slug", "candidate_id", "date", "kind", "subject", "note"], "additionalProperties": false,
+        "type": "object", "required": ["slug", "candidate_id", "date", "occurs_on", "kind", "subject", "note"], "additionalProperties": false,
         "properties": {
           "slug": {"type": "string", "minLength": 1},
           "candidate_id": {"type": "string", "minLength": 1, "description": "素材スナップショットの元になる候補 id(その記事の candidate_ids から)"},
           "date": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "description": "その日、読者が何かを見に行ける・できる日"},
+          "occurs_on": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$", "description": "その予約が指す出来事が起きる日。締切前は締切の日、06:00 より前に終わる締切・終了は date の翌日、ほかは date と同じ日"},
           "kind": {"enum": ["締切前", "締切", "開幕", "千秋楽", "発売", "結果", "終了", "開始", "その他"]},
           "subject": {"type": "string", "minLength": 1, "maxLength": 60},
           "note": {"type": "string", "maxLength": 120}

@@ -113,6 +113,7 @@ def date_mentioned(iso: str, hay: str, years: set[int] | None = None) -> bool:
         y = datetime.date.fromisoformat(iso).year
     except ValueError:
         return False
+    hay = (hay or "").translate(_ZEN)        # 全角の数字・記号(１０/１)も日付として見る
     year_ok = years is None or y in years
     # 年付きの日付(2099年9月13日 / 2099/9/13 …)の月日部分を、年なし表記の照合対象から外す
     # (別の年の日付を号の年の「9月13日」として拾わない。監査指摘)
@@ -121,9 +122,18 @@ def date_mentioned(iso: str, hay: str, years: set[int] | None = None) -> bool:
         with_year = str(y) in form
         if not year_ok and not with_year:
             continue
-        if re.search(r"(?<!\d)" + re.escape(form) + r"(?!\d)", hay if with_year else hay_no_year):
+        # 後ろの数字の境界は、数字で終わる書き方(9/1)にだけ要る。「10月1日4時59分」の「10月1日」は日付
+        # (2026-10-14: 早朝に終わる催しの終了日を、時刻が続くため素材に無いと見ていた。監査指摘)
+        tail = r"(?!\d)" if form[-1].isdigit() else ""
+        if re.search(r"(?<!\d)" + re.escape(form) + tail, hay if with_year else hay_no_year):
             return True
     return False
+
+
+# 続報予約の種別ごとに、予約が指す出来事の日(occurs_on)が予約の日(予約のファイルの日付 = 記事を出す号)から何日後になりうるか。
+# 先頭が既定。締切前は締切の3日前の号に、06:00 より前に終わる締切・終了は前日の号に予約する(prompts/assemble-ledger.md)。
+# 締切前の4日後は、06:00 より前の締切を前日の号に予約し、その3日前にも予約したとき。ほかの種別はずれない
+RESERVATION_LAG = {"締切前": (3, 4), "締切": (0, 1), "終了": (0, 1)}
 
 
 def fact_index(materials: list[dict]) -> dict[str, int]:
@@ -282,7 +292,8 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
 
     見るのは形だけ: 見出し・リード・段落に根拠 id が付いていて実在する / 出典 URL は素材か new_facts の
     もの / tags は2〜4 / event_date は日付の形 / 見送りは理由付き / 1 block = 1 段落 /
-    HTML・参照リンク・不可視文字・制御文字を書いていない / label は不可視文字を除いた値が空でなく Markdown 記号を含まない
+    HTML・参照リンク・不可視文字・制御文字を書いていない / 見出し・リードに Markdown 記法が無い(lint と同じ markdown_in_plain) /
+    label は不可視文字を除いた値が空でなく Markdown 記号を含まない
     (roundup・culture の素材の件数は検めない。残った項目が1件でも載せる)。
     **中身の判断(出典を隠していないか、日付が素材と合うか、new_facts を本当に読んだか)は校閲(モデル)の
     仕事で、ここではしない**(校閲の機械化はしない。編集長の指示)
@@ -314,6 +325,12 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         known_ids[f.get("id")] = str(f.get("text") or "")
     if not str(out.get("title") or "").strip() or not str(out.get("lede") or "").strip():
         problems.append("見出しかリードが空")
+    # 見出し・リードは文字のまま紙面に出る。発行前の検査(lint.check_plain_text)と同じ基準で見て、執筆の段で差し戻す
+    # (2026-10-14 監査指摘: `**販売開始**` の見出しを採ってから lint が赤にし、組み直し・書き直し・記事を外すへ進んだ)
+    for key, label in (("title", "見出し"), ("lede", "リード")):
+        m = markdown_in_plain(str(out.get(key) or "").strip())
+        if m:
+            problems.append(f"{label}に Markdown 記法 {m.group(0)!r} がある(この欄は記号がそのまま紙面に出る)")
     if not out.get("blocks"):
         problems.append("本文が空")
     if not out.get("sources"):
@@ -381,9 +398,9 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         label = clean_label(s.get("label"))
         if not label:
             problems.append(f"出典 label が空: {s.get('label')!r}")
-        # 発行前の検査(lint.MD_IN_PLAIN)と同じ基準で見る。基準が割れていると、ここを通った label が発行前の検査で赤になる
-        # (2026-10-08: ローソンプリントの商品名「コレクション__ブロマイド228」の `__` を通していた)
-        if MD_IN_PLAIN.search(label) or re.search(r"\]\(", label):
+        # 発行前の検査(lint.check_plain_text)と同じ基準(markdown_in_plain)で見る。基準が割れていると、ここを通った label が
+        # 発行前の検査で赤になる(2026-10-08: ローソンプリントの商品名「コレクション__ブロマイド228」の `__` を通していた)
+        if markdown_in_plain(label) or re.search(r"\]\(", label):
             problems.append(f"出典 label に Markdown 記号: {s.get('label')!r}")
     if any(unicodedata.category(ch) == "Cc" and ch not in "\n\t" for x in texts for ch in x):
         problems.append("本文・見出し・リードに制御文字がある(壊れたテキスト)")
@@ -418,6 +435,12 @@ def is_ignorable(ch: str) -> bool:
 
 # 紙面にそのまま出る欄(出典の label など)に残してはいけない Markdown 記法。lint もこれを使う(基準を1つにする)
 MD_IN_PLAIN = re.compile(r"\*\*|__|\[[^\]]{1,60}\]\([^)]{1,200}\)|^#{1,6}\s|`")
+
+
+def markdown_in_plain(value):
+    """紙面に文字のまま出る欄(見出し・リード・digest の行)に残った Markdown 記法の一致(無ければ None)。
+    執筆の検算(check_output)と発行前の検査(lint.check_plain_text)が同じこれで見る(基準が割れると、検算を通った稿が lint で赤になる)。"""
+    return MD_IN_PLAIN.search(str(value or ""))
 
 
 def clean_label(s) -> str:

@@ -1,0 +1,51 @@
+{
+ "kind": "review_paper",
+ "rule": "review-paper.md P1: 同じ知らせ(同じ告知を軸に同じ事実を伝える)の記事が2本あれば、1本を落とす",
+ "origin": "2026-10-12号の SideM「F＠NTASTIC BATTLE FES」アソビストアプレミアム会員2次先行の締切を伝えた2本(続報予約から書いた記事と、X の告知から書いた記事。ops の執筆の記録の答えを本番と同じ renderlib.render_article でファイルにした)。当時は紙面担当が P1 で1本を落とした",
+ "date": "2026-10-12",
+ "posts": {
+  "2026-10-12-sidem-fantastic-battle-fes-2026.md": "---\nslug: sidem-fantastic-battle-fes-2026\nedition: \"2026-10-12\"\nbrand: sidem\nsrc: 公式\nrank: large\ncorrected: false\ncorrections: []\ncandidate_ids:\n- sched-2026-10-12-sidem-fantastic-battle-fes-2026-締切\ntitle: SideMバトルフェス2次先行、きょう締切\nlede: 315 Production presents F@NTASTIC BATTLE FES ～Wanna step in～のアソビストアプレミアム会員2次先行は、10月12日23時59分に申込受付を終了する。\ntags:\n- SideM\n- ライブ\n- チケット\n- 締切\nsources:\n- label: アイドルマスター ポータル「【SideMF@NFES】 ～Wanna step in～ 本日12:00よりアソビストアプレミアム会員2次先行のお申し込み受付開始！」(2026.10.02)\n  url: https://idolmaster-official.jp/news/01_20039\n  type: 公式\nevent_date: \"2026-10-12\"\ntitle_fact_ids:\n- F1\nlede_fact_ids:\n- F1\nverified_facts:\n- id: N1\n  text: 2次先行のSP席受付URLは https://asobiticket2.asobistore.jp/receptions/126b89b5-a21d-4482-9f12-21b526012d76。\n  url: https://idolmaster-official.jp/news/01_20039\n- id: N2\n  text: 2次先行のS席・A席受付URLは https://asobiticket2.asobistore.jp/receptions/5534967b-a12c-40b7-94b0-d5c3f91035be。\n  url: https://idolmaster-official.jp/news/01_20039\n---\n受付は10月2日12時に始まり、本日23時59分まで申し込める。SP席とS席・A席で受付URLが異なる。 <!-- F1 N1 N2 -->\n\n## 申込・抽選の日程\n\n- 2次先行の受付期間：10月2日（金）12時～10月12日（月・祝）23時59分\n- 当落発表：10月23日（金）13時から\n- 当選者の入金期間：10月23日（金）13時～10月27日（火）23時59分 <!-- F1 F2 F3 -->\n\n- SP席の申込：[受付ページ](https://asobiticket2.asobistore.jp/receptions/126b89b5-a21d-4482-9f12-21b526012d76)\n- S席・A席の申込：[受付ページ](https://asobiticket2.asobistore.jp/receptions/5534967b-a12c-40b7-94b0-d5c3f91035be) <!-- N1 N2 -->\n\nSP席は1公演につき1人2枚まで、S席・A席は同4枚まで申し込め、いずれも複数公演への申込が可能。 <!-- F10 F11 -->\n\n公演は長野・ホクト文化ホールで2026年12月26日・27日、幕張イベントホールで2027年1月23日・24日に開催予定。長野公演は両日とも昼公演が11時開場・12時開演、夜公演が16時開場・17時開演。幕張公演は両日とも昼公演が10時30分開場・11時30分開演、夜公演が16時開場・17時開演。いずれも予定時刻。 <!-- F4 F5 F6 F7 F8 F9 -->\n\n出演者はJupiterの天ヶ瀬冬馬、御手洗翔太、伊集院北斗、Altessimoの都築圭、神楽麗、Beitの鷹城恭二、ピエール、渡辺みのり、Wの蒼井悠介、蒼井享介、Café Paradeの神谷幸広、東雲荘一郎、アスラン=BBⅡ世、卯月巻緒、水嶋咲、もふもふえんの岡村直央、橘志狼、姫野かのん、S.E.Mの硲道夫、舞田類、山下次郎、C.FIRSTの天峰秀、花園百々人、眉見鋭心。 <!-- F12 F13 F14 F15 F16 F17 F18 F19 -->\n",
+  "2026-10-12-sidem-fan-fes-world-side-in-premium-2nd.md": "---\nslug: sidem-fan-fes-world-side-in-premium-2nd\nedition: \"2026-10-12\"\nbrand: sidem\nsrc: 公式\nrank: large\ncorrected: false\ncorrections: []\ncandidate_ids:\n- 202610120224-grok-42\ntitle: SideM「F＠NTASTIC BATTLE FES」2次先行は本日締切\nlede: 「315 Production presents F＠NTASTIC BATTLE FES ～Wanna step in～」のアソビストアプレミアム会員2次先行は、SP席とS席・A席で申込先が分かれ、10月12日23時59分に受付を終える。\ntags:\n- SideM\n- ライブ\n- チケット\n- 締切\nsources:\n- label: アイドルマスター公式ポータル「【SideMF＠NFES】 ～Wanna step in～ 本日12:00よりアソビストアプレミアム会員2次先行のお申し込み受付開始！」(2026年10月2日)\n  url: https://idolmaster-official.jp/news/01_20039\n  type: 公式\n- label: アイドルマスター SideM【ブランド公式】「SideM FAN FES -World Side in- アソビストアプレミアム会員2次先行」(2026年10月11日)\n  url: https://x.com/SideM_official/status/2108844996619108723\n  type: 公式\nevent_date: \"2026-10-02\"\ntitle_fact_ids:\n- F1\n- F2\n- F3\n- F4\n- N1\n- N2\nlede_fact_ids:\n- F1\n- F2\n- F3\n- F4\n- N1\n- N2\nverified_facts:\n- id: N1\n  text: アイドルマスター公式ポータル掲載記事のタイトルは「【SideMF＠NFES】 ～Wanna step in～ 本日12:00よりアソビストアプレミアム会員2次先行のお申し込み受付開始！」で、掲載日は2026年10月2日。記事は「315 Production presents F＠NTASTIC BATTLE FES ～Wanna step in～」のアソビストアプレミアム会員2次先行を案内している。\n  url: https://idolmaster-official.jp/news/01_20039\n- id: N2\n  text: アソビストアプレミアム会員2次先行の受付期間は2026年10月2日12時から10月12日23時59分。受付URLはSP席がhttps://asobiticket2.asobistore.jp/receptions/126b89b5-a21d-4482-9f12-21b526012d76、S席・A席がhttps://asobiticket2.asobistore.jp/receptions/5534967b-a12c-40b7-94b0-d5c3f91035be。当落発表は10月23日13時から、入金期間は10月23日13時から10月27日23時59分。SP席は1公演につき2枚まで、S席・A席は\n  url: https://idolmaster-official.jp/news/01_20039\n- id: N3\n  text: 「315 Production presents F＠NTASTIC BATTLE FES ～Wanna step in～」は、2026年12月26日・27日にホクト文化ホールで長野公演、2027年1月23日・24日に幕張イベントホールで幕張公演を開催予定。長野公演は各日昼公演11時開場・12時開演、夜公演16時開場・17時開演。幕張公演は各日昼公演10時30分開場・11時30分開演、夜公演16時開場・17時開演。8公演それぞれでセットリスト・MC・演出等の公演内容が一部異なる。\n  url: https://idolmaster-official.jp/news/01_20039\n- id: N4\n  text: 公式記事に掲載された出演者は、Jupiter：天ヶ瀬冬馬/御手洗翔太/伊集院北斗、Altessimo：都築圭/神楽麗、Beit：鷹城恭二/ピエール/渡辺みのり、W：蒼井悠介/蒼井享介、Café Parade：神谷幸広/東雲荘一郎/アスラン=BBⅡ世/卯月巻緒/水嶋咲、もふもふえん：岡村直央/橘志狼/姫野かのん、S.E.M：硲道夫/舞田類/山下次郎、C.FIRST：天峰秀/花園百々人/眉見鋭心。\n  url: https://idolmaster-official.jp/news/01_20039\n---\nアイドルマスター公式ポータルが10月2日付で案内した同先行の受付期間は、10月2日12時から10月12日23時59分まで。当落発表は10月23日13時から、当選者の入金期間は10月23日13時から27日23時59分まで。 <!-- N1 N2 -->\n\n## 申込先と枚数制限\n\n- SP席：申込ページ（https://asobiticket2.asobistore.jp/receptions/126b89b5-a21d-4482-9f12-21b526012d76）。1公演につき2枚まで。複数公演に申し込める。\n- S席・A席：申込ページ（https://asobiticket2.asobistore.jp/receptions/5534967b-a12c-40b7-94b0-d5c3f91035be）。1公演につき4枚まで。複数公演に申し込める。 <!-- F2 F3 N2 -->\n\n申し込み前にイベント公式サイトの注意事項を確認する。 <!-- F2 F3 N2 -->\n\n## 公演日程\n\n長野公演はホクト文化ホールで2026年12月26日・27日、幕張公演は幕張イベントホールで2027年1月23日・24日に開催予定。各日とも昼・夜の2公演で、長野公演は両日とも昼公演が11時開場・12時開演、夜公演が16時開場・17時開演。幕張公演は両日とも昼公演が10時30分開場・11時30分開演、夜公演が16時開場・17時開演。いずれも予定時刻。8公演それぞれでセットリスト、MC、演出など公演内容の一部が異なる。 <!-- N3 -->\n\n## 出演者\n\n- Jupiter：天ヶ瀬冬馬、御手洗翔太、伊集院北斗\n- Altessimo：都築圭、神楽麗\n- Beit：鷹城恭二、ピエール、渡辺みのり\n- W：蒼井悠介、蒼井享介\n- Café Parade：神谷幸広、東雲荘一郎、アスラン=BBⅡ世、卯月巻緒、水嶋咲\n- もふもふえん：岡村直央、橘志狼、姫野かのん\n- S.E.M：硲道夫、舞田類、山下次郎\n- C.FIRST：天峰秀、花園百々人、眉見鋭心 <!-- N4 -->\n"
+ },
+ "candidates": [
+  {
+   "id": "202610120224-grok-42",
+   "title": "SideM FAN FES -World Side in- アソビストアプレミアム会員2次先行",
+   "brand": "sidem",
+   "source_type": "公式",
+   "url": "https://x.com/SideM_official/status/2108844996619108723",
+   "found_at": "2026-10-12T02:24:25+09:00",
+   "dedup_key": "sidem-fan-fes-world-side-in-premium-2nd",
+   "facts": [
+    "SideM公式アカウントがアソビストアプレミアム会員2次先行の受付中と告知した。",
+    "SP席の申込リンクを案内した。",
+    "S席・A席の申込リンクを案内した。",
+    "10/11の投稿で「お申し込みは明日まで」と案内した。",
+    "YouTubeではなく、申込ページの本文は指定取得方法で確認できなかった。",
+    "エンゲージメント: 高"
+   ],
+   "origin": "explore",
+   "via": "grok",
+   "verify": "confirmed",
+   "deadline": "2026-10-12",
+   "published_date": "2026-10-11",
+   "quotes": [
+    "アソビストアプレミアム会員2次先行\n　お申し込み受付中！\n＼\n\nパッションあふれるステージにご期待ください"
+   ]
+  }
+ ],
+ "stories_before": [],
+ "pages": {},
+ "expect": {
+  "blockers": [
+   {
+    "rule": "P1",
+    "files": [
+     "docs/_posts/2026-10-12-sidem-fantastic-battle-fes-2026.md",
+     "docs/_posts/2026-10-12-sidem-fan-fes-world-side-in-premium-2nd.md"
+    ],
+    "n_files": 1
+   }
+  ]
+ }
+}

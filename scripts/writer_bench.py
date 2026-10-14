@@ -28,7 +28,7 @@ import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import CODEX_WRITE_MODEL, ENV, ROOT, prompt_file, save_raw, schema_ok  # noqa: E402
+from pipelib import CODEX_WRITE_MODEL, ENV, ROOT, loads_strict, prompt_file, save_raw, schema_ok  # noqa: E402
 
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")      # 読み比べの判定(当番の監査と同じモデル)
 
@@ -88,7 +88,8 @@ def write_one(name: str, short: str, label: str, model: str) -> dict:
     Path(out_name).unlink(missing_ok=True)
     save_raw("bench", f"{label}-{name}", "", log[-20000:], code, files={"last-message": out})
     try:
-        ans = json.loads(out) if code == 0 else None
+        # 本番と同じ読み込み(同じキーが2回ある答えは読めない答え。rule_bench も使う。監査指摘 2026-10-14)
+        ans = loads_strict(out.strip()) if code == 0 else None
     except ValueError:
         ans = None
     if ans is not None and not schema_ok(ans, json.loads(SCHEMA_OUT.read_text(encoding="utf-8"))):

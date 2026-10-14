@@ -315,7 +315,8 @@ def main() -> int:
         if git("cat-file", "-e", f"origin/main:docs/_editions/{date}.md", check=False).returncode == 0:
             print(f"{date} 号は発行済み(main に存在)", flush=True)
             git("checkout", "main")
-            git("pull", "--ff-only", "origin", "main")
+            if not dry:              # 点検では手元のブランチを動かさない
+                git("pull", "--ff-only", "origin", "main")
             ensure_next_branch(nxt, dry)
             return 0
         notify(f"{date}: edition ブランチが存在しない(収集・compose 未実行?)。発行なし", ok=False)
@@ -330,12 +331,16 @@ def main() -> int:
     # 消してよいものではないので、push してから進む
     if branch_exists(branch, remote=True):
         ahead = git("rev-list", f"origin/{branch}..{branch}", check=False).stdout.strip()
-        if ahead and dry:
-            # 点検(--dry-run)では push しない。origin へ引き戻す同期(checkout -B)もしない(手元だけの commit が消える)。
-            # 手元のブランチをそのまま点検する(2026-10-14 監査指摘: dry-run でも push していた)
-            print(f"[dry-run] {branch} に origin へ出していない commit が {len(ahead.splitlines())}件ある"
-                  "(発行なら先に push する。点検では push しない)", flush=True)
-            git("checkout", branch)
+        if dry:
+            # 点検(--dry-run)では push しない。手元のブランチの位置も動かさない(checkout -B は手元だけの commit を消す)。
+            # 発行なら出す中身を点検する: 手元が先なら手元(push してから出す)、そうでなければ origin の位置を detached で
+            # (2026-10-14 監査指摘: dry-run でも push していた・origin だけが先のとき手元のブランチを引き戻した)
+            if ahead:
+                print(f"[dry-run] {branch} に origin へ出していない commit が {len(ahead.splitlines())}件ある"
+                      "(発行なら先に push する。点検では push しない)", flush=True)
+                git("checkout", branch)
+            else:
+                git("checkout", "--detach", f"origin/{branch}")
         else:
             if ahead:
                 print(f"{branch} に origin へ出していない commit が {len(ahead.splitlines())}件ある。先に push する", flush=True)

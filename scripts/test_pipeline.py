@@ -6244,6 +6244,44 @@ def test_release_squash_conflict(tmp: Path):
         except KeyboardInterrupt:
             got = signal.getsignal(signal.SIGTERM) == before
     check(got is True, "squash の間の SIGTERM が後始末を通る例外にならない(か、終わった後に元の扱いへ戻らない)")
+    # 本物の SIGTERM: release を子プロセス(別のプロセス群)で走らせ、本物の git commit の最中に、systemctl stop と同じく
+    # プロセス群ごと SIGTERM を送る(commit の pre-commit フックから1回だけ)。squash 前の main に戻り、再実行で発行できる(再監査)
+    repo, bare = _release_fixture(tmp / "sigterm")
+    marker = tmp / "sigterm" / "stop-once"
+    marker.touch()
+    hook = repo / ".git" / "hooks" / "pre-commit"
+    hook.write_text(f"#!/bin/sh\nif [ -e '{marker}' ]; then rm -f '{marker}'; kill -TERM -$(ps -o pgid= $$ | tr -d ' '); sleep 5; fi\n"
+                    "exit 0\n", encoding="utf-8")
+    hook.chmod(0o755)
+    driver = tmp / "sigterm" / "drive.py"
+    driver.write_text(
+        "import subprocess, sys\n"
+        f"sys.path.insert(0, {str(Path(__file__).resolve().parent)!r})\n"
+        "import pipelib, release\n"
+        "real_run = subprocess.run\n"
+        "def run(cmd, *a, **k):\n"
+        "    if len(cmd) > 1 and str(cmd[1]).endswith('lint.py'):\n"
+        "        return subprocess.CompletedProcess(cmd, 0, 'lint: 0 errors\\n', '')\n"
+        "    return real_run(cmd, *a, **k)\n"
+        "subprocess.run = run\n"
+        f"release.ROOT = __import__('pathlib').Path({str(repo)!r})\n"
+        "release.notify = lambda msg, ok=True: print('NOTIFY', ok, msg, flush=True)\n"
+        "release.review_verdict = lambda d: ('approve', '試験')\n"
+        "release.deploy_site = lambda: '配信済み(試験)。'\n"
+        "pipelib.job_lock = lambda *a, **k: None\n"
+        "pipelib.dedupe_source_table = lambda *a, **k: []\n"
+        "pipelib.escalate = lambda *a, **k: True\n"
+        f"sys.argv = ['release.py', '--date', {RELEASE_DAY!r}]\n"
+        "sys.exit(release.main())\n", encoding="utf-8")
+    p = subprocess.run([sys.executable, str(driver)], capture_output=True, text=True, timeout=120, start_new_session=True)
+    status = _git_out(repo, "status", "--porcelain")
+    check(not marker.exists() and p.returncode != 0 and status == ""
+          and _git_out(repo, "rev-parse", "main") == _git_out(bare, "rev-parse", "main"),
+          f"commit の最中の SIGTERM で作業ツリーが squash 前の main に戻らない: exit={p.returncode} status={status!r} "
+          f"送った={not marker.exists()}")
+    with _ReleaseEnv(repo) as env:
+        rc = env.main()
+    check(rc == 0 and env.deployed, f"SIGTERM で止まった後の再実行で発行できない: rc={rc!r} {env.notes}")
 
 
 def test_release_dry_run_no_push(tmp: Path):
@@ -6256,6 +6294,18 @@ def test_release_dry_run_no_push(tmp: Path):
     check(rc == 0 and refs() == remote_before, f"--dry-run が origin を変えた(push した): rc={rc!r}\n前 {remote_before}\n後 {refs()}")
     check(_git_out(repo, "rev-parse", f"edition/{RELEASE_DAY}") == local_before,
           "--dry-run が手元だけの commit を捨てた(origin へ引き戻した)")
+    # origin だけが先(手元の edition が遅れている): 点検は origin の中身を見るが、手元のブランチ(edition・main)は動かさない(再監査)
+    repo, bare = _release_fixture(tmp / "dry-behind")
+    (repo / "later").write_text("origin にだけある commit\n", encoding="utf-8")
+    for a in (["add", "-A"], ["commit", "-qm", "origin only"], ["push", "-q", "origin", f"edition/{RELEASE_DAY}"],
+              ["reset", "-q", "--hard", "HEAD~1"]):
+        subprocess.run(["git", *a], cwd=repo, capture_output=True, check=True)
+    local = lambda: _git_out(repo, "for-each-ref", "--format=%(refname) %(objectname)", "refs/heads")
+    remote_before, local_before = refs(), local()
+    with _ReleaseEnv(repo, dry=True) as env:
+        rc = env.main()
+    check(rc == 0 and refs() == remote_before and local() == local_before,
+          f"--dry-run が手元のブランチを動かした(origin へ引き戻した)・origin を変えた: rc={rc!r}\n前 {local_before}\n後 {local()}")
 
 
 def test_deploy_index_failure(tmp: Path):

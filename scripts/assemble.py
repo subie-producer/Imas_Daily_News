@@ -44,7 +44,9 @@ EDITIONS = ROOT / "docs" / "_editions"
 STORIES = ROOT / "stock" / "stories.yml"
 SCHEDULED = ROOT / "stock" / "scheduled"
 PENDING = ROOT / "stock" / "pending.yml"
-PENDING_HEADER = "# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。"
+PENDING_HEADER = ("# 日付未確定の追跡事項(watchlist)。日付が判明したら組版が stock/scheduled/<日付>.json へ予約して、ここから消す。\n"
+                  "# added_on は足した号、removed_on は消した(決着した)号。removed_on の付いた行は号の組み直し・巻き戻しのために残し、判断には渡さない")
+PENDING_BEFORE_HEADER = "# 組版前の pending(この号の足し引きは stock/pending.yml の印 added_on・removed_on で外す)"
 BRANDS = ("general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other")
 KINDS = ("締切前", "締切", "開幕", "千秋楽", "発売", "結果", "終了", "開始", "その他")
 K_VOCAB = "誕開終配売受締発演"
@@ -774,7 +776,7 @@ def rollback(date: str) -> list[str]:
     """この号の組版の寄与を stock から剥がし、組版前の状態に戻す(号を作り直すときに使う)。
 
     台帳は edition_facts[date] の印で剥がす。予約は reserved_on == date を消す。
-    pending は印 added_on と記録 metrics/pending-removed-<日付>.yml で、この号の足し引きだけを外す(rebase_pending)。
+    pending は行の印 added_on・removed_on で、この号の足し引きだけを外す(rebase_pending)。
     控え(metrics/*-before-<日付>.yml)は**消さない**:
     消すと次の組版が「組版後の状態」を新しい組版前として控え直し、消した追跡事項が
     戻らず、記事の既報判定にこの号自身の事実が混ざる(監査指摘)。
@@ -796,21 +798,12 @@ def rollback(date: str) -> list[str]:
             else:
                 p.unlink()
             log.append(f"予約 {p.name}: この号の {len(rows) - len(rest)} 件を外した")
-    # pending は、この号が足した行(印 added_on)を外し、消した行(記録)を戻す。後の号の足し引きは残す。
-    # 記録の無い号(この仕組みより前に組んだ号)は従来どおり組版前の控えに戻す
-    rec, before = pending_removed_path(date), ROOT / "metrics" / f"pending-before-{date}.yml"
-    want = None
-    if rec.exists():
-        want = [x for x in restore_removed(date, load_yaml_list(PENDING), load_yaml_list(rec)) if added_on(x) != date]
-    elif before.exists():
-        want = load_yaml_list(before)
-    if want is not None:
+    # pending は、この号の足し引き(印 added_on・removed_on)だけを外す。後の号の足し引きは残す(rebase_pending)
+    if (ROOT / "metrics" / f"pending-before-{date}.yml").exists():
+        want = rebase_pending(date, pending_rows(date), [], [])
         if load_yaml_list(PENDING) != want:
             dump_yaml(PENDING, want, header=PENDING_HEADER)
             log.append("pending からこの号の足し引きを外した")
-        # 寄与が無いことを記録に残す(記録が無いと、次の組版が号を「この仕組みより前」とみなして控えから組み直し、後の号の分を落とす)
-        if not rec.exists() or load_yaml_list(rec) != []:
-            dump_yaml(rec, [])
     return log
 
 
@@ -836,86 +829,104 @@ def baseline_stories(date: str) -> list[dict]:
     return strip_edition(date, load_yaml_list(STORIES))
 
 
-def baseline_pending(date: str, dry: bool) -> list[dict]:
-    """組版前の pending(判断に渡す入力)。初回に控え(metrics/pending-before-<日付>.yml)、以後はそれを起点にする。
-    初回だけは現在の pending がそのまま控えになる(監査指摘 P0-4)。反映は rebase_pending がいまの pending へ当てる。
-    """
-    p = ROOT / "metrics" / f"pending-before-{date}.yml"
-    if p.exists():
-        return load_yaml_list(p)
-    cur = load_yaml_list(PENDING)
-    if not dry:
-        dump_yaml(p, cur)
-    return cur
-
-
-def pending_removed_path(date: str) -> Path:
-    """号が pending から消した行の記録(足した行は pending の行の印 added_on で分かる)。"""
-    return ROOT / "metrics" / f"pending-removed-{date}.yml"
-
-
 def added_on(x: dict) -> str:
     """pending の行を足した号(印。無ければ空 = この仕組みより前・手で足した行)。"""
     return str(x.get("added_on") or "")
 
 
-def restore_removed(date: str, cur: list[dict], removed: list[dict]) -> list[dict]:
-    """いまの pending に、この号が前回消した行を戻したもの。同じ key がいまあれば戻さない(後の号が足し直した行を残す)。"""
-    out = [dict(x) for x in cur]
-    have = {x.get("dedup_key") for x in out if added_on(x) != date}
-    for x in removed:
-        if x.get("dedup_key") not in have:
-            out.append(dict(x)); have.add(x.get("dedup_key"))
+def removed_on(x: dict) -> str:
+    """pending の行を消した(決着させた)号(印。無ければ空 = 追跡中)。"""
+    return str(x.get("removed_on") or "")
+
+
+def active_pending(rows: list[dict]) -> list[dict]:
+    """追跡中の行(消した印の無い行)。判断に渡すのはこれだけ。"""
+    return [x for x in rows if not removed_on(x)]
+
+
+def baseline_pending(date: str, dry: bool) -> list[dict]:
+    """組版前の pending(判断に渡す入力。追跡中の行だけ)。初回に控え(metrics/pending-before-<日付>.yml)、以後はそれを起点にする。
+    初回だけは現在の pending がそのまま控えになる(監査指摘 P0-4)。控えの1行目の印(PENDING_BEFORE_HEADER)は、この号を
+    pending の印(added_on・removed_on)の仕組みで組んだことを示す(pending_rows)。反映は rebase_pending がいまの pending へ当てる。
+    """
+    p = ROOT / "metrics" / f"pending-before-{date}.yml"
+    if p.exists():
+        return active_pending(load_yaml_list(p))
+    cur = active_pending(load_yaml_list(PENDING))
+    if not dry:
+        dump_yaml(p, cur, header=PENDING_BEFORE_HEADER)
+    return cur
+
+
+def pending_rows(date: str) -> list[dict]:
+    """この号の足し引きを当て直す起点(pending の全行。消した印の付いた行も)。
+
+    印の仕組みで組んだ号(控えの1行目の印)・まだ控えの無い号は、いまの pending そのもの。それより前に組んだ号は、この号の
+    足し引きに印が無いので組版前の控えから組み、後の号の足し引き(後の号の印の付いた行)を写す(写さないと、印の仕組みより前の号を
+    組み直したとき、後の号が足した追跡事項が消える。2026-10-14 監査)。"""
+    cur = load_yaml_list(PENDING)
+    p = ROOT / "metrics" / f"pending-before-{date}.yml"
+    if not p.exists() or p.read_text(encoding="utf-8").startswith(PENDING_BEFORE_HEADER):
+        return cur
+    key = lambda x: x.get("dedup_key")
+    # 後の号が消した、この号より前からある行: 控えの同じ行をその消した行に置き換える(控えに無ければ足す)
+    later_rm = {key(x): x for x in cur if removed_on(x) > date and added_on(x) <= date}
+    out = [dict(later_rm.pop(key(x), x)) for x in active_pending(load_yaml_list(p))] + [dict(x) for x in later_rm.values()]
+    have = {key(x) for x in active_pending(out)}
+    for x in cur:          # 後の号が足した行(消した印の付いたものも)
+        if added_on(x) > date and (removed_on(x) or key(x) not in have):
+            out.append(dict(x))
+            if not removed_on(x):
+                have.add(key(x))
     return out
 
 
-def later_removed_keys(date: str) -> set:
-    """この号より後の号が pending から消した key(後の号の記録)。"""
-    keys: set = set()
-    for p in (ROOT / "metrics").glob("pending-removed-*.yml"):
-        d = p.stem[len("pending-removed-"):]
-        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", d) and d > date:
-            keys |= {x.get("dedup_key") for x in load_yaml_list(p)}
-    return keys
+def rebase_pending(date: str, rows: list[dict], add: list[dict], remove: list[str]) -> list[dict]:
+    """pending の全行 rows から、この号の前回の足し引きを外し、今回の足し引き(add・remove)を当てた全行を返す。
+    add・remove が空なら巻き戻し(この号の寄与だけを外す)。
 
-
-def rebase_pending(date: str, add: list[dict], remove: list[str], dry: bool) -> tuple[list[dict], list[dict]]:
-    """この号の pending の足し引きを、**いまの pending に**当てる。戻り値は (新しい pending, この号が消した行)。
-
-    以前は組版前の控えから毎回組み立て直したので、過去の号を組み直すと後の号が足した追跡事項が黙って消えた
-    (2026-10-14 監査: 10/12 の組み直しで 10/13 の追加が消えた)。台帳(edition_facts)と同じく、号の寄与に印を付ける:
-    - 足した行には印 added_on: <号>。前回この号が足した行は、今回も足すなら同じ位置で差し替え、足さないなら外す
-    - 消した行は記録(pending_removed_path)に残す。前回消した行をいったん戻してから、今回の削除を当てる
-    - 後の号の足し引きはそのまま残る: 後の号が足した行(印が後の日付)は消さない、後の号が消した key は足し直さない
-    記録の無い号(この仕組みより前に組んだ号)は、従来どおり組版前の控えを起点にする。
+    以前は組版前の控えから毎回組み立て直したので、過去の号を組み直すと後の号が足した追跡事項が黙って消えた(2026-10-14 監査:
+    10/12 の組み直しで 10/13 の追加が消えた)。台帳(edition_facts)と同じく号の寄与に印を付け、**印は stock/pending.yml の行に
+    持たせる**(別のファイルに記録すると、2つの書き込みの間で止まったときに印と中身が食い違い、消した行を戻せなくなった。監査指摘):
+    - 足した行には added_on: <号>。消した行は消さずに removed_on: <号> を付けて残す(判断には渡さない)
+    - 前回この号が足した行は、今回も足すなら同じ位置で差し替え、足さないなら外す。前回この号が消した行は、今回も消すならそのまま、
+      消さないなら戻す(同じ key の行が追跡中なら戻さない)。今回消すのは、この号より前からある追跡中の行だけ
+    - 後の号の足し引きは残す: 後の号が足した行は消さない・後の号が消した key は足し直さない。この号が足して後の号が消した行は、
+      今回も足すなら決着済みのまま残し、足さないなら voided(足した号が取り消した)にする。voided の行は、それを消した号の組み直しで
+      戻さない(取り消した追加を、後の号の組み直しがよみがえらせない。監査指摘)
     """
-    rec = pending_removed_path(date)
-    if rec.exists():
-        base = restore_removed(date, load_yaml_list(PENDING), load_yaml_list(rec))
-    else:
-        base = [dict(x) for x in baseline_pending(date, dry)]
-    later_rm = later_removed_keys(date)
+    key = lambda x: x.get("dedup_key")
     rm = set(remove)
     new: dict[str, dict] = {}
     for x in add:
-        if x["dedup_key"] not in later_rm and x["dedup_key"] not in new:
-            new[x["dedup_key"]] = {**x, "added_on": date}
-    gone = lambda x: x.get("dedup_key") in rm and added_on(x) < date   # この号より前からある行だけ消す
-    have = {x.get("dedup_key") for x in base if added_on(x) != date and not gone(x)}
-    out, removed, placed = [], [], set()
-    for x in base:
-        k = x.get("dedup_key")
-        if added_on(x) == date:
-            if k in new and k not in have and k not in placed:
+        new.setdefault(key(x), {**x, "added_on": date})
+    later_rm = {key(x) for x in rows if removed_on(x) > date}
+    removes = lambda x: not removed_on(x) and key(x) in rm and added_on(x) < date      # 今回この号が消す行
+    tracked = {key(x) for x in rows if not removed_on(x) and added_on(x) != date and not removes(x)}
+    out, placed = [], set()
+    for x in rows:
+        k = key(x)
+        if added_on(x) == date:                      # 前回この号が足した行
+            if removed_on(x):                        # 後の号が消した: 今回も足すなら決着済みのまま、足さないなら取り消し
+                if k in new:
+                    out.append({y: v for y, v in x.items() if y != "voided"}); placed.add(k)
+                else:
+                    out.append({**x, "voided": True})
+            elif k in new and k not in placed and k not in tracked and k not in later_rm:
                 out.append(new[k]); placed.add(k)
-        elif gone(x):
-            removed.append(x)
+        elif removed_on(x) == date:                  # 前回この号が消した行
+            if k in rm:
+                out.append(x)
+            elif not x.get("voided") and k not in tracked:
+                out.append({y: v for y, v in x.items() if y != "removed_on"}); tracked.add(k)
+        elif removes(x):
+            out.append({**x, "removed_on": date})
         else:
             out.append(x)
     for k, x in new.items():
-        if k not in have and k not in placed:
+        if k not in placed and k not in tracked and k not in later_rm:
             out.append(x); placed.add(k)
-    return out, removed
+    return out
 
 
 def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry: bool,
@@ -983,8 +994,9 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
     log.append(f"予約: {n_res} 件")
 
     # 3. pending(この号の足し引きを、いまの pending に当て直す。後の号の足し引きは残す。rebase_pending)
-    pending, p_removed = rebase_pending(date, out["pending_add"], out["pending_remove"], dry)
-    log.append(f"pending: -{len(set(out['pending_remove']))} +{len(out['pending_add'])} → {len(pending)} 件")
+    baseline_pending(date, dry)          # 組版前の控え(初回だけ書く)
+    pending = rebase_pending(date, pending_rows(date), out["pending_add"], out["pending_remove"])
+    log.append(f"pending: -{len(set(out['pending_remove']))} +{len(out['pending_add'])} → {len(active_pending(pending))} 件")
 
     # 4. 号スナップショット(機械算出欄は derive が上書きする)
     lead = next((fm.get("slug") for fm in posts if fm.get("rank") == "lead"), (posts[0].get("slug") if posts else ""))
@@ -1009,10 +1021,14 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
         else:
             p.unlink(missing_ok=True)
     dump_yaml(PENDING, pending, header=PENDING_HEADER)
-    dump_yaml(pending_removed_path(date), p_removed)
     # 号のスナップショットは途中の形(ranking・birthdays は派生 derive が埋める)なので、ここでは最終の書式で検めない。
-    # 最終の形を書く derive が書式で検める
-    ed_path.write_text("---\n" + yaml.safe_dump(snap, allow_unicode=True, sort_keys=False, width=200) + "---\n", encoding="utf-8")
+    # 最終の形を書く derive が書式で検める。書き方は dump_yaml と同じ置き換え(途中で止まっても前の号ファイルを残す)
+    tmp = ed_path.parent / f".{ed_path.name}.{os.getpid()}.tmp"
+    try:
+        tmp.write_text("---\n" + yaml.safe_dump(snap, allow_unicode=True, sort_keys=False, width=200) + "---\n", encoding="utf-8")
+        os.replace(tmp, ed_path)
+    finally:
+        tmp.unlink(missing_ok=True)
     return log
 
 

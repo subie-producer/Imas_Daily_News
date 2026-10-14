@@ -6160,7 +6160,7 @@ def test_assemble_digest_keeps_lead_within_cap():
 
 
 def test_assemble_interrupted_writes(tmp: Path):
-    """台帳(YAML)・予約(JSON)の書き直しが途中で止まっても(容量不足)、元のファイルを保ち、一時ファイルを残さず、同じ組版を
+    """台帳(YAML)・予約(JSON)・号スナップショットの書き直しが途中で止まっても(容量不足)、元のファイルを保ち、一時ファイルを残さず、同じ組版を
     もう一度走らせれば直る。一時ファイルは書く先と同じディレクトリの Git の対象外の名前(2026-10-14 監査: 予約の書き直しの中断で
     JSON が壊れ再実行も JSONDecodeError で止まった・stories.yml.tmp が残って作業ツリーを汚した)。"""
     import builtins
@@ -6181,8 +6181,8 @@ def test_assemble_interrupted_writes(tmp: Path):
         assemble.dump_yaml(assemble.STORIES, [])
         assemble.dump_yaml(assemble.PENDING, [])
         assemble.apply(D, 1, out("一回目"), [post], mats, False)
-        sched = assemble.SCHEDULED / "2026-10-20.json"
-        for target in (assemble.STORIES, sched):
+        sched, ed = assemble.SCHEDULED / "2026-10-20.json", assemble.EDITIONS / f"{D}.md"
+        for target in (assemble.STORIES, sched, ed):
             before, seen, saved_open = target.read_bytes(), [], _io.open
 
             def full_disk(file, mode="r", *a, **k):
@@ -6212,7 +6212,8 @@ def test_assemble_interrupted_writes(tmp: Path):
             try:
                 assemble.apply(D, 1, out("二回目"), [post], mats, False)
                 again = ("二回目" in assemble.load_yaml_list(assemble.STORIES)[0]["published_facts"]
-                         and json.loads(sched.read_text(encoding="utf-8"))[0]["note"] == "二回目")
+                         and json.loads(sched.read_text(encoding="utf-8"))[0]["note"] == "二回目"
+                         and assemble.FM_RE.match(ed.read_text(encoding="utf-8")) is not None)
             except Exception as e:      # noqa: BLE001
                 again = f"{type(e).__name__}: {e}"
             res[target.name] = (failed, intact, left, ignored, again)
@@ -6279,18 +6280,78 @@ def test_assemble_checks_exit_codes(tmp: Path):
 
 def test_pending_keeps_later_editions(tmp: Path):
     """過去の号を組み直しても、後の号の pending の足し引き(追加・決着の削除)は残り、組み直した号の足し引きは後の号の組み直しでも
-    残る。同じ判断の組み直しは同じ中身、巻き戻しはその号の分だけを外す(2026-10-14 監査: 10/12 の組み直しで 10/13 が足した
-    追跡事項が黙って消えた)。"""
+    残る。同じ判断の組み直しは同じ中身、巻き戻しはその号の分だけを外す。消した行は判断に渡さない(2026-10-14 監査: 10/12 の
+    組み直しで 10/13 が足した追跡事項が黙って消えた。1巡目の監査: 印の記録を別のファイルに書くと書き込みの間で止まって消した行を
+    戻せない・印の仕組みより前の号の組み直しで後の号の追加が消える・巻き戻した号の追加を後の号の組み直しがよみがえらせる)。"""
+    import builtins
+    import io as _io
     item = lambda k: {"dedup_key": k, "brand": "cg", "subject": f"{k} の件", "watch": "発表日"}
 
     def out(add=(), rm=()):
         return {"digest": [{"label": l, "rows": []} for l in DIGEST_LABELS], "stories": [], "reservations": [],
                 "pending_add": [item(k) for k in add], "pending_remove": list(rm)}
-    with assemble_at(tmp):
+    keys = lambda: [x["dedup_key"] for x in assemble.load_yaml_list(assemble.PENDING) if not x.get("removed_on")]   # 追跡中の行
+    ap = lambda d, o: assemble.apply(d, 1, o, [], {}, False)
+    # 1. 書き込みの中断: 一度組んだ号を組み直し、初めて k0 を消す回が pending.yml を書いた直後に止まる(容量不足)
+    #    → もう一度組めば k0 は消えたまま、巻き戻せば k0 が戻る
+    with assemble_at(tmp / "enospc"):
         assemble.dump_yaml(assemble.STORIES, [])
         assemble.dump_yaml(assemble.PENDING, [item("k0"), item("k9")])
-        keys = lambda: [x["dedup_key"] for x in assemble.load_yaml_list(assemble.PENDING)]
-        ap = lambda d, o: assemble.apply(d, 1, o, [], {}, False)
+        ap("2026-10-12", out())
+        saved_replace, saved_open, stopped = os.replace, _io.open, []
+
+        def replace_then_stop(src, dst, *a, **k):
+            if stopped:
+                raise OSError(28, "No space left on device(試験)")
+            r = saved_replace(src, dst, *a, **k)
+            if Path(os.fspath(dst)) == assemble.PENDING:
+                stopped.append(dst)
+            return r
+
+        def stop_open(file, mode="r", *a, **k):
+            if stopped and any(c in mode for c in "wax"):
+                raise OSError(28, "No space left on device(試験)")
+            return saved_open(file, mode, *a, **k)
+        os.replace, _io.open, builtins.open = replace_then_stop, stop_open, stop_open
+        try:
+            try:
+                ap("2026-10-12", out(rm=["k0"]))
+            except OSError:
+                pass
+        finally:
+            os.replace, _io.open, builtins.open = saved_replace, saved_open, saved_open
+        ap("2026-10-12", out(rm=["k0"]))
+        retried = keys()
+        assemble.rollback("2026-10-12")
+        restored = keys()
+    check(bool(stopped) and retried == ["k9"] and sorted(restored) == ["k0", "k9"],
+          f"pending.yml を書いた直後に止まった後、もう一度組む・巻き戻すで消した行を戻せない: {bool(stopped)} {retried} {restored}")
+    # 2. 印の仕組みより前に組んだ号(控えに印が無い・行に印が無い)を、後の号(印の仕組み)が入った後で組み直す・巻き戻す
+    with assemble_at(tmp / "legacy"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [item("k0"), item("old")])         # old は 10/12 が(印なしで)足した行
+        assemble.dump_yaml(tmp / "legacy" / "metrics" / "pending-before-2026-10-12.yml", [item("k0")])
+        ap("2026-10-13", out(add=["later"], rm=["k0"]))
+        ap("2026-10-12", out())
+        legacy_rebuilt = keys()
+        assemble.rollback("2026-10-12")
+        legacy_rolled = keys()
+    check(legacy_rebuilt == ["later"] and legacy_rolled == ["later"],
+          f"印の仕組みより前の号の組み直し・巻き戻しで、後の号の足し引きが消えた・前回の分が残った: {legacy_rebuilt} {legacy_rolled}")
+    # 3. 巻き戻した号(10/12)の追加を、後の号(10/13)の組み直しがよみがえらせない
+    with assemble_at(tmp / "void"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [])
+        ap("2026-10-12", out(add=["k1"]))
+        ap("2026-10-13", out(rm=["k1"]))
+        assemble.rollback("2026-10-12")
+        ap("2026-10-13", out())
+        voided = keys()
+    check(voided == [], f"巻き戻した号の追加を、後の号の組み直しがよみがえらせた: {voided}")
+    # 4. 組み直し・巻き戻しの一連(過去の号・後の号の両方)
+    with assemble_at(tmp / "seq"):
+        assemble.dump_yaml(assemble.STORIES, [])
+        assemble.dump_yaml(assemble.PENDING, [item("k0"), item("k9")])
         ap("2026-10-12", out(add=["k1"]))
         ap("2026-10-13", out(add=["k2"], rm=["k0", "k1"]))         # 10/13: k2 を足し、k0・k1 が決着
         after13 = keys()
@@ -6308,6 +6369,8 @@ def test_pending_keeps_later_editions(tmp: Path):
         again = assemble.rollback("2026-10-12")
         ap("2026-10-12", out(add=["k1"]))                          # 巻き戻した号を組み直す(k1 は 10/13 が決着済み)
         rebuilt = sorted(keys())
+        inp_keys = [x["dedup_key"] for x in assemble.build_input("2026-10-14", [], {}, [], assemble.baseline_pending("2026-10-14", False))["pending"]]
+    check(sorted(inp_keys) == ["k2", "k9"], f"決着済み(removed_on)の行を判断に渡した: {inp_keys}")
     check(after13 == ["k9", "k2"], f"前提: 10/13 の足し引き: {after13}")
     check(same == ["k9", "k2"], f"過去の号(10/12)を同じ判断で組み直すと、後の号(10/13)の足し引きが消えた: {same}")
     check(changed == ["k2", "k3"] and stable, f"過去の号を別の判断で組み直したときの pending・冪等: {changed} {stable}")

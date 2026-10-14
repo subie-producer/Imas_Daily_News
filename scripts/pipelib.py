@@ -1080,7 +1080,7 @@ def append_metric(kind: str, data: dict) -> None:
     p = ROOT / "metrics" / f"{d}.json"
     doc = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
     doc.setdefault(kind, []).append({"at": now_jst().isoformat(timespec="seconds"), **data})
-    p.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    write_atomic(p, json.dumps(doc, ensure_ascii=False, indent=1) + "\n")
 
 
 def _no_duplicate_keys(pairs):
@@ -1168,12 +1168,73 @@ def write_checked(path, text: str) -> None:
         if strict_writes():
             raise SchemaViolation(msg)
         anomaly("schema", msg + "(書いたうえで申告。発行前の lint が止める)")
+    write_atomic(path, text)
+
+
+def write_atomic(path, text: str) -> None:
+    """ファイルを一時ファイルに書いて一度に差し替える(書きかけを残さない)。書式で決めたファイルは write_checked を通す。
+    工程の記録(metrics/<日付>.json)・既読状態(stock/watch-state.json)もこれで書く(2026-10-14 監査指摘: 直接の上書きが途中で
+    止まると、切れた JSON が残り、当番の後始末がそれを確定して次の工程が読めなくなる)。一時ファイルの置き方は write_checked と同じ。"""
+    path = Path(path)
     tmp = path.parent / f".{path.name}.{os.getpid()}.tmp"
     try:
         tmp.write_text(text, encoding="utf-8")
         os.replace(tmp, path)
     finally:
         tmp.unlink(missing_ok=True)
+
+
+# 収集が書く成果(素材・既読状態・工程の記録)。途中で終わった収集の後始末(collect の例外・SIGTERM、当番の取り直しの時間切れ)が
+# 確定する範囲
+COLLECT_OUTPUTS = ("candidates", "stock/watch-state.json", "metrics")
+
+
+def output_problem(path) -> str:
+    """成果のファイルを確定してよいか: 読めること、JSON は JSON として読めること、書式(schema/)で決めたファイルは書式に合うこと。
+    問題があれば理由、無ければ空。形だけを見る(中身の判断はしない)。"""
+    path = Path(path)
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as e:
+        return f"読めない({type(e).__name__})"
+    if path.suffix == ".json":
+        try:
+            json.loads(text)
+        except ValueError as e:
+            return f"JSON が読めない({str(e)[:80]})"
+    return " / ".join(schema_errors(path, text)[:3])
+
+
+def settle_collect_outputs(root=None) -> list[str]:
+    """途中で終わった収集の成果を、確定する前に検める(2026-10-14 監査指摘: 書きかけで切れた素材の JSON を当番の後始末が
+    commit・push し、次の組版・発行前の lint が読めずに止まる)。COLLECT_OUTPUTS の下で HEAD から変わったファイルのうち、
+    壊れたもの(output_problem)は確定せずに HEAD の中身へ戻す(HEAD に無ければ消す)。素材(candidates)を1つでも戻したら
+    既読状態も戻す(既読にした新着が素材に無い、を作らない。戻せば次の収集が同じ新着を拾い直す)。戻したファイルと理由を返す。
+    git の状態が読めない・戻せないなら例外(確定してよいか分からないまま確定しない)。"""
+    root = Path(root or ROOT)
+    run = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True)
+    st = run("status", "--porcelain", "-z", "--untracked-files=all", "--", *COLLECT_OUTPUTS)
+    if st.returncode != 0:
+        raise RuntimeError(f"git status 失敗: {st.stderr.strip()[:200]}")
+    changed, entries, i = [], st.stdout.split("\0"), 0
+    while i < len(entries):
+        e = entries[i]
+        i += 1
+        if len(e) > 3:
+            changed.append(e[3:])
+            if e[0] in "RC":
+                i += 1        # 名前を変えた元のパス(使わない)
+    bad = {p: why for p in changed if (why := output_problem(root / p))}
+    if any(p.startswith("candidates/") for p in bad) and "stock/watch-state.json" in changed:
+        bad.setdefault("stock/watch-state.json", "素材を戻したので既読も戻す")
+    for p in bad:
+        if run("cat-file", "-e", f"HEAD:{p}").returncode == 0:
+            r = run("checkout", "-q", "HEAD", "--", p)
+            if r.returncode != 0:
+                raise RuntimeError(f"{p} を HEAD の中身へ戻せない: {r.stderr.strip()[:200]}")
+        else:
+            (root / p).unlink(missing_ok=True)
+    return [f"{p}: {why}" for p, why in bad.items()]
 
 
 def schema_ok(value, schema) -> bool:
@@ -1274,24 +1335,31 @@ _DATE_RE = re.compile(r"(?:\d{4}\s*年)?\s*\d{1,2}\s*月\s*\d{1,2}\s*日|\d{4}[/
 _TAG_RE = re.compile(r"(?is)<(script|style)[^>]*>.*?</\1>|<[^>]+>")
 
 
-def html_to_text(raw: bytes, charset: str | None = None) -> str:
-    # ヘッダに charset が無い古いサイト(Shift_JIS / EUC-JP の会社概要ページ等)は <meta> から拾う。
-    # 決め打ちの utf-8 だと文字化けして運営者名が読めない(実測 2026-09-13: ホビーストック会社概要)
-    if not charset:
-        m = re.search(rb'<meta[^>]+charset=["\']?\s*([A-Za-z0-9_-]+)', raw[:4000], re.I)
-        charset = m.group(1).decode("ascii", "ignore") if m else None
-    try:
-        t = raw.decode(charset or "utf-8", errors="strict")
-    except (UnicodeDecodeError, LookupError):
-        t = None
-        for enc in ("utf-8", "cp932", "euc_jp"):
+def decode_html(raw: bytes, charset: str | None = None) -> str:
+    """HTML のバイト列を文字列にする(ページの本文を取る経路はこれを共有する)。ヘッダの charset、<meta> の charset、utf-8・cp932・
+    euc_jp の順に、置換文字を出さずに読めるものを採る。
+    - ヘッダに charset が無い古いサイト(Shift_JIS / EUC-JP の会社概要ページ等)は <meta> から拾う。決め打ちの utf-8 だと文字化けして
+      運営者名が読めない(実測 2026-09-13: ホビーストック会社概要)
+    - Shift_JIS と宣言したページは CP932 の拡張文字(①・髙 など)を含むことがあり、宣言どおりには読めない。cp932 で読み直す
+      (2026-10-14 監査指摘: 定点観測の本文取得が cp932 を試さず、置換文字だらけの本文を「取得済み」として facts 化へ渡した)"""
+    m = re.search(rb'<meta[^>]+charset=["\']?\s*([A-Za-z0-9_-]+)', raw[:4000], re.I)
+    meta = m.group(1).decode("ascii", "ignore") if m else None
+    for enc in dict.fromkeys(e for e in (charset, meta, "utf-8", "cp932", "euc_jp") if e):
+        try:
+            return raw.decode(enc, errors="strict")
+        except (UnicodeDecodeError, LookupError):
+            continue
+    for enc in (charset, meta):      # どれでも読めなければ、宣言どおりに読んで読めない字だけを置き換える
+        if enc:
             try:
-                t = raw.decode(enc, errors="strict")
-                break
-            except UnicodeDecodeError:
+                return raw.decode(enc, errors="replace")
+            except LookupError:
                 continue
-        if t is None:
-            t = raw.decode(charset or "utf-8", errors="replace")
+    return raw.decode("utf-8", errors="replace")
+
+
+def html_to_text(raw: bytes, charset: str | None = None) -> str:
+    t = decode_html(raw, charset)
     t = _TAG_RE.sub("\n", t)
     t = html_lib.unescape(t)
     return re.sub(r"[ \t　]+", " ", t)

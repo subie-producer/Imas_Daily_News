@@ -2400,7 +2400,7 @@ def test_classify_posts_only(tmp: Path):
     post_a = tmp / "docs" / "_posts" / "2026-09-19-a.md"
     before = post_a.read_bytes()
     calls = []
-    def fake_run(cmd, **kw):
+    def fake_run(cmd, timeout):
         calls.append(cmd)
         if any("classify_sources.py" in str(c) for c in cmd):    # 合議が表と記事を書き換えたあと失敗
             (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n  - b.example\n", encoding="utf-8")
@@ -2408,30 +2408,52 @@ def test_classify_posts_only(tmp: Path):
             (tmp / "docs" / "_posts" / "2026-09-19-new.md").write_text("x", encoding="utf-8")
             return subprocess.CompletedProcess(cmd, 1, "", "boom")
         return subprocess.CompletedProcess(cmd, 0, "", "")
-    saved_run, saved_root = pipelib.subprocess.run, pipelib.ROOT
+    # 取引の段は pipelib._txn_run(子を自分のプロセスグループで起動し、止めてから戻す)。本物の子プロセスでの中断は
+    # test_classify_txn_interrupt が見る
+    saved_run, saved_root = pipelib._txn_run, pipelib.ROOT
+    journal = tmp / pipelib.TXN_JOURNAL
     try:
-        pipelib.subprocess.run, pipelib.ROOT = fake_run, tmp
+        pipelib._txn_run, pipelib.ROOT = fake_run, tmp
         ok, why = pipelib.classify_retag_lint("2026-09-19", posts_only=True, lint=False)
         check(not ok and "合議 exit 1" in why and "boom" in why and "戻せない" not in why, f"取引の失敗の扱い: {ok} {why}")
         check("--posts-only" in calls[0] and not any("lint.py" in str(c) for cmd in calls for c in cmd), f"組版前の旗と lint 無し: {calls}")
         check(post_a.read_bytes() == before and "b.example" not in (tmp / "source_types.yml").read_text(encoding="utf-8")
               and not (tmp / "docs" / "_posts" / "2026-09-19-new.md").exists(), "失敗した取引が開始時の中身へ戻っていない")
+        check(not journal.exists(), "戻せた取引の控えが残った")
         # 成功の経路(組版前): 合議 → 付け直し で終わり、lint は掛けない
         calls.clear()
-        pipelib.subprocess.run = lambda cmd, **kw: (calls.append(cmd), subprocess.CompletedProcess(cmd, 0, "", ""))[1]
+        pipelib._txn_run = lambda cmd, timeout: (calls.append(cmd), subprocess.CompletedProcess(cmd, 0, "", ""))[1]
         ok, why = pipelib.classify_retag_lint("2026-09-19", posts_only=True, lint=False)
         check(ok and len(calls) == 2, f"組版前の成功の経路: {ok} {len(calls)}")
         ok, why = pipelib.classify_retag_lint("2026-09-19")
         check(ok and any("lint.py" in str(c) for c in calls[-1]), "収集の取引で lint が掛からない")
-        # 戻せないとき
+        check(not journal.exists(), "成功した取引の控えが残った")
+        # 戻せないとき: 理由に「戻せない」。控えは残し、次の起動(recover_classify_txn)が戻し直す
         saved_restore = pipelib._restore
         pipelib._restore = lambda snap, new_under=None: "a.md: Permission denied"
-        pipelib.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 1, "", "cannot")
+        pipelib._txn_run = lambda cmd, timeout: ((tmp / "source_types.yml").write_text("official_domains:\n  - c.example\n", encoding="utf-8"),
+                                                 subprocess.CompletedProcess(cmd, 1, "", "cannot"))[1]
         ok, why = pipelib.classify_retag_lint("2026-09-19")
-        check(not ok and "戻せない" in why, f"戻せないときの理由: {why}")
+        check(not ok and "戻せない" in why and journal.exists(), f"戻せないときの理由・控え: {why} {journal.exists()}")
         pipelib._restore = saved_restore
+        back = pipelib.recover_classify_txn()
+        check("開始時へ戻した" in back and "a.example" in (tmp / "source_types.yml").read_text(encoding="utf-8") and not journal.exists(),
+              f"残った控えから次の起動が戻さない: {back}")
+        # 控えを書けない(空き容量が無い等)ときは、子を起こさずに失敗で返す(戻せない取引を始めない。工程は落とさない)
+        calls.clear()
+        pipelib._txn_run = lambda cmd, timeout: (calls.append(cmd), subprocess.CompletedProcess(cmd, 0, "", ""))[1]
+        saved_journal = pipelib._write_txn_journal
+        pipelib._write_txn_journal = lambda snap, posts: (_ for _ in ()).throw(OSError(28, "No space left on device"))
+        import signal as _signal
+        handlers = (_signal.getsignal(_signal.SIGTERM), _signal.getsignal(_signal.SIGINT))
+        try:
+            ok, why = pipelib.classify_retag_lint("2026-09-19")
+        finally:
+            pipelib._write_txn_journal = saved_journal
+        check(not ok and "控えを書けない" in why and not calls and not journal.exists(), f"控えを書けないのに取引を始めた: {ok} {why} {calls}")
+        check((_signal.getsignal(_signal.SIGTERM), _signal.getsignal(_signal.SIGINT)) == handlers, "取引が終わっても中断のハンドラが戻らない")
     finally:
-        pipelib.subprocess.run, pipelib.ROOT = saved_run, saved_root
+        pipelib._txn_run, pipelib.ROOT = saved_run, saved_root
 
 
 def test_table_write_and_reload(tmp: Path):
@@ -2475,7 +2497,7 @@ def test_table_write_and_reload(tmp: Path):
             check(False, "二重定義の表を書けてしまった")
         except SystemExit:
             pass
-        check(p.read_text(encoding="utf-8") == before and not list(tmp.glob("source_types.yml.tmp-*")),
+        check(p.read_text(encoding="utf-8") == before and not list(tmp.glob(".source_types.yml.*.tmp")),
               "検査に落ちた表が書かれた、または一時ファイルが残った")
         # 置き換えで権限を変えない
         os.chmod(p, 0o664)
@@ -8365,6 +8387,607 @@ def test_indexer_tag_dictionary(tmp: Path):
     check(got == want == (["正規タグ"], ["正規タグ"]), f"タグ辞書だけを直したとき差分の索引に反映しない: 差分 {got} / 全件 {want}")
 
 
+def test_shared_service_units(tmp: Path):
+    """共有サービス(短縮 URL・フォーム・メールフォーム)はドメイン全体では判定しない(監査指摘 2026-10-14: t.co と
+    forms.cloud.microsoft が丸ごと公式に登録され、どこへの短縮も・文書 ID の違うどのフォームも公式になった)。
+    短縮は展開先の種別を短縮1つずつへ写し(合議には掛けない)、フォームは文書 ID ごとに判定する。"""
+    import classify_sources as cs
+    import email.message
+    import io
+    import urllib.error
+    import urllib.request
+    import yaml
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    table = tmp / "source_types.yml"
+    short, dest = "https://t.co/YknRoOJtym", "https://asobistage.asobistore.jp/event/valiv_bd2026_cosmo/ticket"
+    form1 = "https://forms.cloud.microsoft/pages/responsepage.aspx?id=officialDocument0123456789&route=shorturl"
+    form2 = "https://forms.cloud.microsoft/pages/responsepage.aspx?id=unrelatedDocument0123456789"
+    # 撤去する前の表の形(ドメイン全体の登録)。union merge で行が戻ってきても、判定には使わない
+    table.write_text("official_domains:\n  - t.co\n  - forms.cloud.microsoft\nsemi_official_domains:\n  - asobistage.asobistore.jp\n"
+                     "  - krs.bz\nparty_domains:\n  - bit.ly\n", encoding="utf-8")
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, getattr(cs, "expand_short_fetch", None), cs.ask, cs.site_profile,
+             cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        getattr(cs, "_SHORT", {}).clear()
+        check(pipelib.classify_source(short) == "未確認" and pipelib.classify_source("https://bit.ly/abc") == "未確認",
+              f"短縮 URL がドメインの登録で種別を持った: {pipelib.classify_source(short)}")
+        check(pipelib.classify_source(form2) == "未確認", "文書 ID の違うフォームがドメインの登録で公式になった")
+        check(pipelib.classify_source("https://krs.bz/other/m/form") == "未確認", "別の会社のメールフォームがドメインの登録で準公式になった")
+        # 判定の単位: 短縮は1つずつ、フォームは文書 ID まで(id 以外のクエリは落とす)、メールフォームはアカウント
+        check(cs.platform_unit(short) == ("short", "t.co/YknRoOJtym"), f"短縮の単位: {cs.platform_unit(short)}")
+        k1, k2 = cs.platform_unit(form1)[1], cs.platform_unit(form2)[1]
+        check(k1 == "forms.cloud.microsoft/pages/responsepage.aspx?id=officialDocument0123456789" and k1 != k2 and cs.is_document(k1),
+              f"フォームの単位: {k1} / {k2}")
+        check(cs.platform_unit("https://forms.cloud.microsoft/pages/responsepage.aspx")[0] == "skip", "文書 ID の無いフォームを判定の対象にした")
+        check(cs._key_forms(k1)[0] != cs._key_forms(k2)[0], "合議の答えの対応付けで、別のフォームが同じ対象になる")
+        check(cs.platform_unit("https://krs.bz/columbia/m/morform") == ("path", "krs.bz/columbia"), "メールフォームの単位はアカウント")
+        # 合議がドメインと答えても、共有サービスはドメインとしては足さない
+        before = table.read_text(encoding="utf-8")
+        cs.add_domains({"t.co": ("公式", "x"), "forms.cloud.microsoft": ("公式", "y"), "krs.bz": ("準公式", "z")})
+        check(yaml.safe_load(table.read_text(encoding="utf-8")) == yaml.safe_load(before), "共有サービスをドメインとして表に足した")
+        # フォームは、文書のキーで登録したものにだけ当たる
+        cs.add_paths({k1: ("公式", "リンク元が公式")})
+        check(pipelib.classify_source(form1) == "公式" and pipelib.classify_source(form2) == "未確認", "フォームが文書 ID ごとに決まらない")
+        # 短縮: 候補の短縮 URL の展開先を判定の対象にし、決まった種別を短縮1つずつへ写す。短縮そのものは合議に掛けない
+        unknown = "https://t.co/Unknown0001"
+        (tmp / "candidates" / "2026-10-14.json").write_text(json.dumps([
+            {"url": short, "title": "誕生日ライブのチケット"}, {"url": unknown, "title": "コラボ商品"},
+            {"url": "https://t.co/Broken0001", "title": "展開できない"}], ensure_ascii=False), encoding="utf-8")
+        fetched, asked = [], []
+        dests = {short: dest, unknown: "https://shop.unknown.example/item/1"}
+        cs.expand_short_fetch = lambda u, hops=5: (fetched.append(u), dests.get(u, ""))[1]
+        cs.ask = lambda cmd, prompt, timeout=900: (asked.append(prompt), [
+            {"host": "shop.unknown.example", "operator": "雑貨店", "type": "当事者", "why": "コラボ商品の販売元"}])[1]
+        cs.site_profile = lambda *a, **k: "材料"
+        cs.POSTS_ONLY, cs.UNRESOLVED = None, tmp / "metrics" / "classify-unresolved.json"
+        sys.argv = ["classify_sources.py", "--date", "2026-10-14", "--apply"]
+        code = cs.main()
+        pipelib._ST_TABLE = None
+        check(code == 0 and pipelib.classify_source(short) == "準公式", f"短縮へ展開先の種別が写らない: {pipelib.classify_source(short)}")
+        check(pipelib.classify_source(unknown) == "当事者" and pipelib.classify_source("https://shop.unknown.example/") == "当事者",
+              "展開先が表に無い短縮: 展開先を合議で決めてから短縮へ写していない")
+        check(len(asked) == 2 and all("### shop.unknown.example" in p and "### t.co" not in p for p in asked),
+              f"合議の対象が展開先でない: {[p[-200:] for p in asked]}")
+        row = next((ln for ln in table.read_text(encoding="utf-8").splitlines() if "t.co/YknRoOJtym" in ln), "")
+        check("機械で追加" in row and dest in row, f"短縮の行に決め方と展開先が無い: {row}")
+        check(fetched.count(short) == 1, f"同じ短縮を何度も展開した: {fetched}")
+        rec = cs.load_unresolved()
+        check("展開先を引けない" in rec.get(cs.display_base("https://t.co/Broken0001"), ""), f"展開できない短縮の理由が watch のキーで残らない: {rec}")
+        # lint: 展開先が準公式の短縮を公式と書いた記事は、過大表示で止まる
+        rep = lint.Report()
+        lint.check_source_types(rep, lint.ROOT / "x.md", {"sources": [{"url": short, "type": "公式", "label": "l"}], "src": "公式"})
+        check(rep.errors == 2, f"展開先が準公式の短縮を公式と書いた記事が lint を通った: {rep.errors}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001  直す前の実装(関数が無い・表の検査で止まる等)でも、落ちたことを記録して先へ進む
+        check(False, f"共有サービスの判定のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.expand_short_fetch, cs.ask, cs.site_profile,
+         cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv) = saved
+    # 展開: リダイレクト(Location)とページで飛ばす形(meta refresh)を、短縮サービスの外へ出るまで辿る。展開先そのものは取りに行かない
+    opened = []
+
+    class Opener:
+        def open(self, req, timeout=None):
+            opened.append(req.full_url)
+            if req.full_url == "https://t.co/a1":
+                h = email.message.Message()
+                h["Location"] = "https://bit.ly/b2"
+                raise urllib.error.HTTPError(req.full_url, 301, "Moved", h, None)
+            if req.full_url == "https://bit.ly/b2":
+                return io.BytesIO(b'<meta http-equiv="refresh" content="0;URL=https://example.jp/page?x=1&amp;y=2">')
+            raise AssertionError(f"展開先まで取りに行った: {req.full_url}")
+    saved_bo = urllib.request.build_opener
+    try:
+        urllib.request.build_opener = lambda *h: Opener()
+        got = cs.expand_short_fetch("https://t.co/a1")
+        check(got == "https://example.jp/page?x=1&y=2" and opened == ["https://t.co/a1", "https://bit.ly/b2"], f"短縮の展開: {got} {opened}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"短縮の展開のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        urllib.request.build_opener = saved_bo
+    # 本番の判定表: ドメインの一覧に、ドメイン単位で決まらないホスト(短縮・フォーム・プラットフォーム)が載っていない
+    real = pipelib.parse_source_table((Path(__file__).resolve().parent.parent / "source_types.yml").read_text(encoding="utf-8"), "source_types.yml")
+    bad = [f"{k}: {h}" for k, v in real.items() if k.endswith("_domains") for h in v or []
+           if cs.platform_unit(f"https://{h}/") != ("domain", h)]
+    check(not bad, f"判定表にドメイン単位で決まらないホストがドメインとして載っている: {bad}")
+
+
+def test_document_id_case(tmp: Path):
+    """文書・短縮・動画の ID は大小文字を区別する(監査指摘 2026-10-14: Microsoft Forms の文書 ID を大小文字で同一視し、合議が
+    `abCd…` を公式と答えたのに、別の文書 `AbCd…` に公式が保存された)。合議の対応付け・表への追加・表の検査・merge 後の二重行の除去の
+    どれも同じ比べ方(pipelib.path_type_norm)。"""
+    import classify_sources as cs
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    f1 = "https://forms.cloud.microsoft/pages/responsepage.aspx?id=AbCdEfGhIjKlMnOpQr12&route=shorturl"
+    f2 = "https://forms.cloud.microsoft/pages/responsepage.aspx?id=abCdEfGhIjKlMnOpQr12"
+    g1 = "https://docs.google.com/forms/d/e/1FAIpQLSAbCdEfGhIjKlMnOpQrStUvWx/viewform"
+    g2 = "https://docs.google.com/forms/d/e/1FAIpQLSabCdEfGhIjKlMnOpQrStUvWx/viewform"
+    table = tmp / "source_types.yml"
+    table.write_text("official_domains:\n  - a.example\nvideo_ids:\n  公式:\n    - AAAAAAAAAAA\n", encoding="utf-8")
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask, cs.site_profile, cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        k1, k2 = cs.platform_unit(f1)[1], cs.platform_unit(f2)[1]
+        check(k1 != k2 and cs._key_forms(k1)[0] != cs._key_forms(k2)[0] and cs._key_forms(cs.platform_unit(g1)[1])[0] != cs._key_forms(cs.platform_unit(g2)[1])[0],
+              f"大小文字だけ違う文書が合議の同じ対象になる: {cs._key_forms(k1)} {cs._key_forms(k2)}")
+        # 経路: 候補の大小文字だけ違うフォーム(文書 ID のクエリの形と、短縮の /r/<ID> の形)→ 合議(両モデルが後者だけを公式と
+        # 答える)→ 表。前者は未確認のまま
+        r1, r2 = "https://forms.office.com/r/AbCdEfGh12", "https://forms.office.com/r/abCdEfGh12"
+        kr1, kr2 = cs.platform_unit(r1)[1], cs.platform_unit(r2)[1]
+        check(kr1 == "forms.office.com/r/AbCdEfGh12" and cs._key_forms(kr1)[0] != cs._key_forms(kr2)[0], f"短縮の形のフォームの単位: {kr1} {kr2}")
+        (tmp / "candidates" / "2026-10-14.json").write_text(json.dumps([{"url": u, "title": u[-4:]} for u in (f1, f2, r1, r2)]), encoding="utf-8")
+        cs.ask = lambda cmd, prompt, timeout=900: [{"host": k, "operator": "公式", "type": "公式", "why": "リンク元が公式"} for k in (k2, kr2)]
+        cs.site_profile = lambda *a, **k: "材料"
+        cs.POSTS_ONLY, cs.UNRESOLVED = None, tmp / "metrics" / "classify-unresolved.json"
+        sys.argv = ["classify_sources.py", "--date", "2026-10-14", "--apply"]
+        cs.main()
+        pipelib._ST_TABLE = None
+        got = [pipelib.classify_source(u) for u in (f1, f2, r1, r2)]
+        check(got == ["未確認", "公式", "未確認", "公式"], f"合議が答えた文書と違う文書に公式が付いた: {got}")
+        # 大小文字だけ違う文書を別々に足せる(表の検査で重複にしない)。Google の文書も同じ
+        cs.add_paths({k1: ("ファン", "x"), cs.platform_unit(g1)[1]: ("公式", "y"), cs.platform_unit(g2)[1]: ("ファン", "z")})
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source(f1) == "ファン" and pipelib.classify_source(f2) == "公式"
+              and pipelib.classify_source(g1) == "公式" and pipelib.classify_source(g2) == "ファン", "大小文字だけ違う文書を別々に判定できない")
+        # merge 後の二重行の除去も、大小文字だけ違う文書・動画 ID を消さない(同じ行は消す)
+        text = table.read_text(encoding="utf-8").replace("    - AAAAAAAAAAA\n", "    - AAAAAAAAAAA\n    - aaaaaaaaaaa\n    - AAAAAAAAAAA\n")
+        table.write_text(text, encoding="utf-8")
+        removed = pipelib.dedupe_source_table(table)
+        t = pipelib.parse_source_table(table.read_text(encoding="utf-8"), table)
+        check(removed == ["    - AAAAAAAAAAA"] and t["video_ids"]["公式"] == ["AAAAAAAAAAA", "aaaaaaaaaaa"]
+              and k1 in t["path_types"] and k2 in t["path_types"], f"二重行の除去が別の ID を消した: {removed} {t['video_ids']}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"文書 ID の大小文字のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask, cs.site_profile, cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv = saved
+
+
+def test_performer_domains(tmp: Path):
+    """合議が答えてよい種別(ALLOWED)は、どれもドメインとして保存でき、判定と表の検査が同じ種別で読み戻す(監査指摘 2026-10-14:
+    依頼文どおり所属事務所のサイトを演者と答えて2モデルが一致しても、保存先が無く KeyError('演者') で取引ごと落ちた)。"""
+    import classify_sources as cs
+    tmp.mkdir(parents=True, exist_ok=True)
+    p = tmp / "source_types.yml"
+    p.write_text("official_domains:\n  - a.example\n", encoding="utf-8")      # 演者などの一覧がまだ無い表
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        check(set(cs.LIST_OF) == set(cs.ALLOWED), f"合議の種別とドメインの一覧が対応していない: {set(cs.ALLOWED) ^ set(cs.LIST_OF)}")
+        check("所属事務所" in (pipelib.PROMPTS / "classify-rules.md").read_text(encoding="utf-8"), "依頼文の演者の定義が変わった(テストの前提)")
+        answer = [{"host": "actor-agency.example", "operator": "声優事務所", "type": "演者", "why": "出演者の所属事務所"}]
+        cs.ask = lambda *a, **k: answer
+        agreed, split = cs.consensus("p", ["actor-agency.example"])
+        check(agreed.get("actor-agency.example", ("",))[0] == "演者" and not split, f"演者の答えが一致しない: {agreed} {split}")
+        try:
+            cs.add_domains(agreed)
+            cs.add_domains({f"{t}-{i}.example": (t, "w") for i, t in enumerate(cs.ALLOWED)})
+        except (Exception, SystemExit) as e:      # noqa: BLE001
+            check(False, f"合議で一致した種別を保存できない: {type(e).__name__}: {e}")
+        pipelib._ST_TABLE = None
+        t = pipelib.parse_source_table(p.read_text(encoding="utf-8"), p)
+        check("actor-agency.example" in (t.get("performer_domains") or []), f"演者のドメインの保存先: {sorted(t)}")
+        for i, typ in enumerate(cs.ALLOWED):
+            got = pipelib.classify_source(f"https://{typ}-{i}.example/news")
+            check(got == typ, f"{typ} として保存したドメインの判定: {got}")
+        check(pipelib.classify_source("https://www.actor-agency.example/profile") == "演者"
+              and pipelib.classify_source("https://fc.actor-agency.example/") == "演者", "演者のドメインの配下が演者にならない")
+        rep = lint.Report()
+        lint.check_source_types(rep, lint.ROOT / "x.md", {"sources": [{"url": "https://actor-agency.example/n", "type": "演者", "label": "l"}], "src": "演者"})
+        check(rep.errors == 0, f"演者のドメインを演者と書いた記事が lint で止まる: {rep.errors}")
+        # 表の検査: 同じドメインを演者と別の種別に載せたら止める
+        try:
+            pipelib.parse_source_table("performer_domains:\n  - x.example\nparty_domains:\n  - x.example\n", p)
+            check(False, "演者と当事者に同じドメインが載った表を通した")
+        except SystemExit as e:
+            check("performer_domains" in str(e), f"重複の理由: {e}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"演者のドメインのテストが例外: {type(e).__name__}: {e}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask = saved
+
+
+def test_platform_owner_units(tmp: Path):
+    """プラットフォーム上の持ち主の単位: ニコニコの `/channel/<ch ID>` は ID まで(監査指摘 2026-10-14: 別のチャンネルが同じ
+    `ch.nicovideo.jp/channel` になり、1つを公式にすると別のチャンネルとその番組まで公式になった)。同じ型として、先頭の区切りが
+    持ち主でない投稿の URL(instagram.com/p/<ID>)を1つの主体にしない。"""
+    import classify_sources as cs
+    import html as _html
+    one, two = "https://ch.nicovideo.jp/channel/ch1111111", "https://ch.nicovideo.jp/channel/ch2222222"
+    k1 = "ch.nicovideo.jp/channel/ch1111111"
+    check(cs.path_key(one) == k1 and cs.path_key(two) == "ch.nicovideo.jp/channel/ch2222222", f"チャンネルの単位: {cs.path_key(one)} {cs.path_key(two)}")
+    check(cs.path_key(one + "/video?page=2") == k1 and cs.path_key("https://ch.nicovideo.jp/sidem/video") == "ch.nicovideo.jp/sidem"
+          and cs.path_key("https://ch.nicovideo.jp/channel") is None, "チャンネルの単位(配下・別名・ID 無し)")
+    check(cs.display_base(one) == "https://" + k1, f"表示の単位: {cs.display_base(one)}")
+    props = {"socialGroup": {"type": "channel", "id": "ch1111111", "socialGroupPageUrl": one}}
+    page = f'<title>番組 - ニコニコ生放送</title><script id="embedded-data" data-props="{_html.escape(json.dumps(props))}"></script>'
+    check(cs.nico_channel_fetch("lv1", page=page, fetch_alias=False)[0] == k1, "番組から引いたチャンネルとチャンネルの URL の単位が違う")
+    check(cs.path_key("https://www.instagram.com/p/AbCdEf/") is None and cs.platform_unit("https://www.instagram.com/p/AbCdEf/")[0] == "parser"
+          and cs.path_key("https://www.instagram.com/someone/") == "instagram.com/someone", "Instagram の投稿を1つの主体にした")
+    # 経路: 候補のチャンネル URL → 合議の対象 → 表。別のチャンネルとその番組は公式にならない
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.nico_channel)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        cs.POSTS_ONLY = None
+        (tmp / "candidates" / "2026-10-14.json").write_text(json.dumps([{"url": one, "title": "チャンネル告知"}]), encoding="utf-8")
+        _d, _a, paths = cs.unknown_targets("2026-10-14")
+        check(paths == {k1: one}, f"チャンネルの合議の対象: {paths}")
+        cs.add_paths({k: ("公式", "対象チャンネル") for k in paths})
+        check(pipelib.classify_source(one) == "公式" and pipelib.classify_source(two) == "未確認", "別のチャンネルまで公式になった")
+        (tmp / "candidates" / "2026-10-14.json").write_text(json.dumps([{"url": "https://live.nicovideo.jp/watch/lv2222222"}]), encoding="utf-8")
+        cs.nico_channel = lambda vid: ("ch.nicovideo.jp/channel/ch2222222", "ch2222222", "別番組")
+        left, unk = cs.resolve_nico("2026-10-14", True)
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source("https://live.nicovideo.jp/watch/lv2222222") == "未確認" and list(unk) == ["ch.nicovideo.jp/channel/ch2222222"],
+              f"別のチャンネルの番組が公式になった: {left} {unk}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"チャンネルの単位のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.nico_channel = saved
+
+
+def test_classify_txn_interrupt(tmp: Path):
+    """出典の判定の取引の途中(表を書いた後・付け直しの最中)に親へ SIGTERM・SIGINT が来ても、子をプロセスグループごと止めてから
+    判定表と記事を開始時へ戻し、中断はそのあとで元の扱いへ渡す(監査指摘 2026-10-14: 戻さずに終わって表だけが変わり、出典の lint が
+    赤く、次の工程の checkout が「未コミットの変更」で止まった)。親が SIGKILL で死んだら、次の工程の checkout が控えから戻す。
+    本物の親子のプロセスとシグナルで確かめる(合議・付け直しの子は、表と記事を書いて待つだけの代役)。"""
+    import signal as _signal
+    import time
+    scripts_dir = Path(__file__).resolve().parent
+    orig_table = "official_domains:\n  - a.example\n"
+    orig_post = "---\n" + article_fm("a", "2026-10-14") + "---\n本文\n"
+    # 合議の代役: 表と記事を書く。TXN_CLASSIFY で終わり方を変える(slow: 孫を起こして待つ / fail: 失敗で終わる /
+    # orphan-fail・orphan-ok: 孫(go が置かれたら・無くても数秒後に表を書き直す)を残して、失敗・成功で先に終わる)
+    classify = ("import os, subprocess, sys, time\nfrom pathlib import Path\n"
+                "Path('source_types.yml').write_text('official_domains:\\n  - b.example\\n')\n"
+                "Path('docs/_posts/2026-10-14-new.md').write_text('new')\n"
+                "Path('.source_types.yml.999.tmp').write_text('half')\n"
+                "mode = os.environ.get('TXN_CLASSIFY', '')\n"
+                "if mode == 'slow':\n"
+                "    g = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'])\n"
+                "    Path('ready').write_text(f'{os.getpid()} {g.pid}')\n    time.sleep(60)\n"
+                "if mode == 'fail':\n    sys.exit(1)\n"
+                "if mode in ('orphan-fail', 'orphan-ok'):\n"
+                "    g = subprocess.Popen([sys.executable, 'scripts/grandchild.py'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)\n"
+                "    Path('ready').write_text(f'{os.getpid()} {g.pid}')\n"
+                "    sys.exit(1 if mode == 'orphan-fail' else 0)\n")
+    grandchild = ("import time\nfrom pathlib import Path\nfor _ in range(60):\n    if Path('go').exists():\n        break\n"
+                  "    time.sleep(0.1)\nPath('source_types.yml').write_text('official_domains:\\n  - grandchild.example\\n')\n")
+    retag = ("import os, subprocess, sys, time\nfrom pathlib import Path\n"
+             "Path('docs/_posts/2026-10-14-a.md').write_text('retagged')\n"
+             "g = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(60)'])\n"
+             "Path('ready').write_text(f'{os.getpid()} {g.pid}')\ntime.sleep(60)\n")
+
+    def git_(root, *a):
+        return subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@example.invalid", *a], cwd=root,
+                              capture_output=True, text=True, stdin=subprocess.DEVNULL)
+
+    def setup(name):
+        root = tmp / name
+        (root / "scripts").mkdir(parents=True)
+        (root / "docs" / "_posts").mkdir(parents=True)
+        (root / "source_types.yml").write_text(orig_table, encoding="utf-8")
+        (root / "docs" / "_posts" / "2026-10-14-a.md").write_text(orig_post, encoding="utf-8")
+        (root / "scripts" / "classify_sources.py").write_text(classify, encoding="utf-8")
+        (root / "scripts" / "retag_sources.py").write_text(retag, encoding="utf-8")
+        (root / "scripts" / "grandchild.py").write_text(grandchild, encoding="utf-8")
+        (root / ".gitignore").write_text("/metrics/\n/ready\n/out\n/go\n/flag\n/sweeping\n", encoding="utf-8")
+        git_(root, "init", "-q", "-b", "edition/2026-10-14")
+        git_(root, "add", "-A")
+        git_(root, "commit", "-qm", "base")
+        return root
+
+    def alive(pid):
+        try:
+            return Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()[0] != "Z"
+        except (OSError, IndexError):
+            return False
+
+    run = "print(pipelib.classify_retag_lint('2026-10-14', posts_only=True, lint=False), flush=True)\n"
+
+    def start(root, handler="", body=run, wait_for="ready", env=None):
+        prog = (f"import os, signal, sys, time\nsys.path.insert(0, {str(scripts_dir)!r})\nfrom pathlib import Path\nimport pipelib\n"
+                f"pipelib.ROOT = Path({str(root)!r})\n{handler}\n{body}")
+        proc = subprocess.Popen([sys.executable, "-c", prog], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                                stdin=subprocess.DEVNULL, env={**os.environ, **(env or {})})
+        for _ in range(400 if wait_for else 0):
+            try:
+                pids = [int(x) for x in (root / "ready").read_text().split()]
+                if len(pids) == 2 and (wait_for == "ready" or (root / wait_for).exists()):
+                    return proc, pids
+            except (OSError, ValueError):
+                pass
+            if proc.poll() is not None:
+                break
+            time.sleep(0.05)
+        return proc, []
+
+    def settled(root, pids, label, need_pids=True):
+        (root / "go").write_text("go", encoding="utf-8")      # 残った孫がいれば、ここで表を書き直す
+        for _ in range(50):          # 止めた孫が回収されるまで(残っていれば書き直すまで)
+            if not any(alive(q) for q in pids):
+                break
+            time.sleep(0.1)
+        time.sleep(0.5)
+        for f in ("ready", "go"):
+            (root / f).unlink(missing_ok=True)
+        got = {"表": (root / "source_types.yml").read_text(encoding="utf-8") == orig_table,
+               "記事": (root / "docs" / "_posts" / "2026-10-14-a.md").read_text(encoding="utf-8") == orig_post,
+               "増えた記事": not (root / "docs" / "_posts" / "2026-10-14-new.md").exists(),
+               "書きかけの表": not (root / ".source_types.yml.999.tmp").exists(),
+               "子と孫": (bool(pids) or not need_pids) and not any(alive(q) for q in pids),
+               "作業ツリー": git_(root, "status", "--porcelain").stdout.strip() == "",
+               "控え": not (root / "metrics" / "work" / "classify-txn.json").exists()}
+        check(all(got.values()), f"{label}: 開始時へ戻っていない・止まっていない {[k for k, v in got.items() if not v]}")
+
+    def cleanup(pids):
+        for q in pids:
+            try:
+                os.kill(q, _signal.SIGKILL)
+            except OSError:
+                pass
+
+    tmp.mkdir(parents=True, exist_ok=True)
+    # 1. SIGTERM(既定の扱い): 戻してから SIGTERM で終わる
+    root = setup("term")
+    proc, pids = start(root)
+    try:
+        check(pids, "付け直しの子が始まらない")
+        os.kill(proc.pid, _signal.SIGTERM)
+        proc.communicate(timeout=30)
+        check(proc.returncode == -_signal.SIGTERM, f"SIGTERM の終わり方: {proc.returncode}")
+        settled(root, pids, "SIGTERM")
+    finally:
+        cleanup(pids)
+    # 2. SIGINT(Ctrl-C): 戻してから KeyboardInterrupt で終わる
+    root = setup("int")
+    proc, pids = start(root)
+    try:
+        os.kill(proc.pid, _signal.SIGINT)
+        _out, err = proc.communicate(timeout=30)
+        check(proc.returncode != 0 and "KeyboardInterrupt" in err, f"SIGINT の終わり方: {proc.returncode} {err[-200:]}")
+        settled(root, pids, "SIGINT")
+    finally:
+        cleanup(pids)
+    # 3. 組版のように SIGTERM の扱いを持つ親: 戻した**あと**で、その扱い(途中終了の後始末)が走る
+    root = setup("handler")
+    out = root / "out"
+    handler = ("import os, signal\n"
+               "def _h(s, f):\n"
+               f"    Path({str(out)!r}).write_text(Path({str(root / 'source_types.yml')!r}).read_text())\n"
+               "    os._exit(7)\n"
+               "signal.signal(signal.SIGTERM, _h)\n")
+    proc, pids = start(root, handler)
+    try:
+        os.kill(proc.pid, _signal.SIGTERM)
+        proc.communicate(timeout=30)
+        check(proc.returncode == 7 and out.exists() and out.read_text() == orig_table,
+              f"元の SIGTERM の扱いが、戻した後に走らない: {proc.returncode} {out.read_text() if out.exists() else '(走っていない)'}")
+        settled(root, pids, "SIGTERM(扱いを持つ親)")
+    finally:
+        cleanup(pids)
+    # 4. 時間切れ: 子と孫を止めてから戻す
+    def in_process(name, mode, label, call, need_pids=None):
+        """この process の中で取引を走らせる(合議の代役の終わり方は mode)。call は取引を呼ぶ関数(戻りは検める側が見る)"""
+        root = setup(name)
+        saved_root, saved_env, pids = pipelib.ROOT, os.environ.get("TXN_CLASSIFY"), []
+        try:
+            pipelib.ROOT = root
+            os.environ["TXN_CLASSIFY"] = mode
+            call(root)
+            pids = [int(x) for x in (root / "ready").read_text().split()] if (root / "ready").exists() else []
+            settled(root, pids, label, need_pids=(mode != "") if need_pids is None else need_pids)
+        except (Exception, SystemExit) as e:      # noqa: BLE001
+            check(False, f"{label}のテストが例外: {type(e).__name__}: {e}")
+        finally:
+            pipelib.ROOT = saved_root
+            if saved_env is None:
+                os.environ.pop("TXN_CLASSIFY", None)
+            else:
+                os.environ["TXN_CLASSIFY"] = saved_env
+            cleanup(pids)
+
+    def timed_out(root):
+        ok, why = pipelib.classify_retag_lint("2026-10-14", posts_only=True, timeout=3, lint=False)
+        check(not ok and "TimeoutExpired" in why, f"時間切れの扱い: {ok} {why}")
+    in_process("timeout", "slow", "時間切れ", timed_out)
+    # 4'. 合議の子が先に終わり、孫が残る(失敗で終わる・成功して付け直しへ進む): 孫も止めてから戻す。戻した後で孫に書き直させない
+    def failed_first(root):
+        ok, why = pipelib.classify_retag_lint("2026-10-14", posts_only=True, lint=False)
+        check(not ok and "合議 exit 1" in why, f"合議の失敗の扱い: {ok} {why}")
+    in_process("orphan-fail", "orphan-fail", "子が先に失敗して孫が残る", failed_first)
+    # 4'''. 子の記録を書けない(空き容量が無い等): 子を動かさずに止めて段を失敗にする(記録の無い子を残さない。親が SIGKILL で
+    #       死んでも次の起動が止められない子を作らない)
+    def no_record(root):
+        saved_w = pipelib._write_txn_child
+        pipelib._write_txn_child = lambda *a: (_ for _ in ()).throw(OSError(28, "No space left on device"))
+        try:
+            ok, why = pipelib.classify_retag_lint("2026-10-14", posts_only=True, lint=False)
+        finally:
+            pipelib._write_txn_child = saved_w
+        check(not ok and "OSError" in why and not (root / "ready").exists()
+              and (root / "source_types.yml").read_text(encoding="utf-8") == orig_table, f"子の記録を書けないのに子が動いた: {ok} {why}")
+    in_process("no-record", "orphan-ok", "子の記録を書けない", no_record, need_pids=False)
+    # 親が合図の前に死んだ(標準入力が閉じた)子は、本来のコマンドを動かさずに終わる
+    gate_dir = tmp / "gate"
+    gate_dir.mkdir(exist_ok=True)
+    try:
+        g = subprocess.Popen([sys.executable, "-c", pipelib._TXN_GATE, sys.executable, "-c", "open('ran', 'w').write('x')"],
+                             cwd=gate_dir, stdin=subprocess.PIPE)
+        g.stdin.close()
+        g.wait(timeout=30)
+        check(g.returncode == 125 and not (gate_dir / "ran").exists(), f"合図の無いまま取引の子が動いた: exit {g.returncode}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"取引の子の入口のテストが例外: {type(e).__name__}: {e}")
+    # 4''. 工程の終了の例外(収集の SIGTERM を例外にした Terminated のような BaseException)・KeyboardInterrupt が取引の中で
+    #      起きても、戻してから例外を通す
+    class Terminated(BaseException):
+        pass
+    for exc in (Terminated, KeyboardInterrupt):
+        def raised(root, exc=exc):
+            real = pipelib._txn_run
+
+            def after_classify(cmd, timeout):
+                r = real(cmd, timeout)
+                if "classify_sources.py" in str(cmd[1]):
+                    raise exc()
+                return r
+            pipelib._txn_run = after_classify
+            try:
+                pipelib.classify_retag_lint("2026-10-14", posts_only=True, lint=False)
+                check(False, f"{exc.__name__} が取引の外へ出ない")
+            except exc:
+                pass
+            finally:
+                pipelib._txn_run = real
+        in_process(f"raise-{exc.__name__}", "", f"取引の中の {exc.__name__}", raised)
+    # 5. 親が SIGKILL(後始末できない): 次の工程の checkout が、未コミットの変更を見る前に控えから戻し、残った子も止める
+    root = setup("kill")
+    proc, pids = start(root)
+    saved = (pipelib.ROOT, pipelib.notify, pipelib.git_net, list(pipelib.ANOMALIES))
+    try:
+        os.kill(proc.pid, _signal.SIGKILL)
+        proc.communicate(timeout=30)
+        check((root / "source_types.yml").read_text(encoding="utf-8") != orig_table, "SIGKILL の前提: 表が書き換わっていない")
+        notes = []
+        pipelib.ROOT = root
+        pipelib.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        pipelib.git_net = lambda *a, **k: subprocess.CompletedProcess(a, 1, "", "offline")
+        pipelib.checkout_edition_branch("2026-10-14", "collect")
+        check(notes and "未コミット" not in notes[0] and "fetch" in notes[0], f"checkout が控えから戻さずに止まった: {notes}")
+        settled(root, pids, "SIGKILL の後の checkout")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"SIGKILL の後の回復のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        pipelib.ROOT, pipelib.notify, pipelib.git_net = saved[:3]
+        pipelib.ANOMALIES[:] = saved[3]
+        cleanup(pids)
+    # 6. 合議の子が先に終わったあと・孫を止める前に親が SIGKILL: 次の工程の checkout が、直接の子が終わっていても孫を止めてから戻す
+    root = setup("kill-orphan")
+    slow_sweep = (f"_real = pipelib._stop_session\n"
+                  f"def _slow(*a, **k):\n    Path({str(root / 'sweeping')!r}).write_text('x')\n    time.sleep(60)\n    return _real(*a, **k)\n"
+                  "pipelib._stop_session = _slow\n")
+    proc, pids = start(root, slow_sweep, wait_for="sweeping", env={"TXN_CLASSIFY": "orphan-ok"})
+    saved = (pipelib.ROOT, pipelib.notify, pipelib.git_net, list(pipelib.ANOMALIES))
+    try:
+        check(len(pids) == 2 and not alive(pids[0]) and alive(pids[1]), f"前提: 合議の子は終わり、孫が残っている: {pids}")
+        os.kill(proc.pid, _signal.SIGKILL)
+        proc.communicate(timeout=30)
+        pipelib.ROOT = root
+        pipelib.notify = lambda job, msg, ok=True, require=False: True
+        pipelib.git_net = lambda *a, **k: subprocess.CompletedProcess(a, 1, "", "offline")
+        pipelib.checkout_edition_branch("2026-10-14", "collect")
+        (root / "sweeping").unlink(missing_ok=True)
+        settled(root, pids, "子が終わった後の SIGKILL の後の checkout")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"子が終わった後の SIGKILL のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        pipelib.ROOT, pipelib.notify, pipelib.git_net = saved[:3]
+        pipelib.ANOMALIES[:] = saved[3]
+        cleanup(pids)
+    # 7. 戻している最中に届いた SIGTERM・SIGINT も落とさない: 戻し終えてから元の扱いへ届く(合議の失敗で戻す最中に自分へ送る)
+    for sig, want in ((_signal.SIGTERM, "既定"), (_signal.SIGINT, "KeyboardInterrupt"), (_signal.SIGTERM, "扱いを持つ親")):
+        root = setup(f"during-{sig.name}-{len(want)}")
+        out = root / "out"
+        handler = (f"_real = pipelib._restore\n"
+                   f"def _r(*a, **k):\n    if not Path({str(root / 'flag')!r}).exists():\n"
+                   f"        Path({str(root / 'flag')!r}).write_text('x')\n        os.kill(os.getpid(), {int(sig)})\n"
+                   "    return _real(*a, **k)\npipelib._restore = _r\n")
+        if want == "扱いを持つ親":
+            handler += ("def _h(s, f):\n"
+                        f"    Path({str(out)!r}).write_text(Path({str(root / 'source_types.yml')!r}).read_text())\n    os._exit(7)\n"
+                        "signal.signal(signal.SIGTERM, _h)\n")
+        proc, _p = start(root, handler, wait_for=None, env={"TXN_CLASSIFY": "fail"})
+        try:
+            _out, err = proc.communicate(timeout=60)
+            if want == "既定":
+                ok_end = proc.returncode == -_signal.SIGTERM
+            elif want == "KeyboardInterrupt":
+                ok_end = proc.returncode != 0 and "KeyboardInterrupt" in err
+            else:
+                ok_end = proc.returncode == 7 and out.exists() and out.read_text() == orig_table
+            check(ok_end and (root / "flag").exists(), f"戻す最中の {sig.name}({want})を落とした: exit {proc.returncode} {err[-200:]}")
+            (root / "flag").unlink(missing_ok=True)
+            settled(root, [], f"戻す最中の {sig.name}({want})", need_pids=False)
+        finally:
+            if proc.poll() is None:
+                proc.kill()
+    # 8. SIGTERM を例外(収集の Terminated のような BaseException)に変える親: 戻してから、その例外が親へ届く
+    root = setup("terminated")
+    out = root / "out"
+    handler = ("class Terminated(BaseException):\n    pass\n"
+               "def _h(s, f):\n    raise Terminated()\nsignal.signal(signal.SIGTERM, _h)\n")
+    body = ("try:\n    " + run + "except Terminated:\n"
+            f"    Path({str(out)!r}).write_text(Path({str(root / 'source_types.yml')!r}).read_text())\n    sys.exit(5)\n")
+    proc, pids = start(root, handler, body)
+    try:
+        os.kill(proc.pid, _signal.SIGTERM)
+        proc.communicate(timeout=30)
+        check(proc.returncode == 5 and out.exists() and out.read_text() == orig_table,
+              f"SIGTERM を例外にする親へ、戻した後に例外が届かない: {proc.returncode} {out.read_text() if out.exists() else '(届いていない)'}")
+        settled(root, pids, "SIGTERM を例外にする親")
+    finally:
+        cleanup(pids)
+
+
+def test_tags_and_idols(tmp: Path):
+    """タグの正規化と名鑑のブランドの写像を、結果で検める(監査指摘 2026-10-14: 正規化を全消去にしても、名鑑 367件を全部 other で
+    作っても、既存のテストが 0 failures だった)。"""
+    import collections
+    import build_idols
+    import tags
+    spec = {"drop": {"公式", "未確認"}, "alias": {"shiny": "シャニマス", "765": "765AS", "シンデレラ": "シンデレラガールズ"}, "vocabulary": {}}
+    got = tags.normalize([" shiny ", "シャニマス", "公式", 765, "", "新しい固有名", "シンデレラ", "シンデレラガールズ", "未確認"], spec)
+    check(got == ["シャニマス", "765AS", "新しい固有名", "シンデレラガールズ"], f"タグの正規化(表記ゆれ・除外・重複・順序・自由な固有名): {got}")
+    real = tags.load()
+    check(real["alias"] and real["drop"], "語彙(docs/_data/tags.yml)の表記ゆれ・除外が読めない")
+    for k, v in real["alias"].items():
+        want = [] if v in real["drop"] else [v]
+        check(tags.normalize([k], real) == want, f"語彙の表記ゆれ {k} → {v} が効かない: {tags.normalize([k], real)}")
+    check(all(tags.normalize([d], real) == [] for d in real["drop"]), "語彙の除外が効かない")
+    # 名鑑: 原本の brandId は、原本に書かれたブランド名を通して本紙のブランドへ写る(写像の表とは別に、ここに持つ対応で検める)
+    name_of_id = {1: "765AS", 3: "DS", 4: "シンデレラ", 5: "ミリオン", 6: "SideM", 7: ".KR", 8: "シャニ", 9: "961プロ",
+                  10: "ヴイアラ", 11: "学園", 255: "その他"}
+    brand_of_name = {"765AS": "765", "DS": "dsva", "シンデレラ": "cg", "ミリオン": "million", "SideM": "sidem", ".KR": "other",
+                     "シャニ": "shiny", "961プロ": "other", "ヴイアラ": "dsva", "学園": "gaku", "その他": "other"}
+    repo = Path(__file__).resolve().parent.parent
+    raw = json.loads((repo / "birthdays.json").read_text(encoding="utf-8"))
+    tmp.mkdir(parents=True, exist_ok=True)
+    saved = (build_idols.SRC, build_idols.DST, build_idols.ROOT)
+    try:
+        build_idols.SRC, build_idols.DST, build_idols.ROOT = repo / "birthdays.json", tmp / "idols.json", tmp
+        rc = build_idols.main()
+    finally:
+        build_idols.SRC, build_idols.DST, build_idols.ROOT = saved
+    built = json.loads((tmp / "idols.json").read_text(encoding="utf-8")) if (tmp / "idols.json").exists() else []
+    by_id = {e["characterId"]: e for e in raw}
+    check(rc == 0 and len(built) == len(raw) == len(by_id) > 300, f"名鑑の件数: {rc} {len(built)} / 原本 {len(raw)}")
+    wrong = []
+    for item in built:
+        src = by_id.get(item["characterId"]) or {}
+        name = name_of_id.get(src.get("brandId"))
+        m, d = (int(x) for x in str(src.get("birthday", "0/0")).split("/"))
+        if (name not in (src.get("brands") or []) or item["brand"] != brand_of_name.get(name) or item["name"] != src.get("name")
+                or item["birthday"] != f"{m:02d}-{d:02d}"):
+            wrong.append(f"{item['name']}({src.get('brandId')}→{item['brand']})")
+    check(not wrong, f"名鑑のブランド・名前・誕生日が原本と合わない {len(wrong)}件: {wrong[:5]}")
+    counts = collections.Counter(i["brand"] for i in built)
+    check(counts["cg"] == sum(1 for e in raw if e["brandId"] == 4) and len(counts) == 8, f"名鑑のブランドの分布: {dict(counts)}")
+    check((repo / "docs" / "_data" / "idols.json").read_text(encoding="utf-8") == (tmp / "idols.json").read_text(encoding="utf-8"),
+          "公開している名鑑(docs/_data/idols.json)が原本から作り直したものと違う")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_stray_governed_write_is_caught(tmp / "sgw")
@@ -8419,6 +9042,12 @@ def main() -> int:
     test_classify_consensus(tmp / "cs")
     test_table_write_and_reload(tmp / "tw")
     test_classify_posts_only(tmp / "cp")
+    test_shared_service_units(tmp / "ssu")
+    test_document_id_case(tmp / "dic")
+    test_performer_domains(tmp / "pd")
+    test_platform_owner_units(tmp / "pou")
+    test_classify_txn_interrupt(tmp / "cti")
+    test_tags_and_idols(tmp / "ti")
     test_request_parsers(tmp / "rq")
     test_assemble_prompt_shape()
     test_ledger_facts_are_cited(tmp / "lfc")

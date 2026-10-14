@@ -301,7 +301,15 @@ def main() -> int:
         notify(str(e), ok=False)
         return 1
 
-    # 0. 作業ツリーが汚れていたら触らない(自動実行の安全弁)
+    # 0. 作業ツリーが汚れていたら触らない(自動実行の安全弁)。その前に、組版の出典の判定の取引が後始末できずに終わっていたら
+    #    (SIGKILL 等)開始時へ戻す(pipelib.recover_classify_txn。監査指摘 2026-10-14)
+    if not dry:
+        from pipelib import anomaly, recover_classify_txn
+        back = recover_classify_txn()
+        if back:
+            print(back, flush=True)
+            if "戻せない" not in back:
+                anomaly("release", back)
     dirty = git("status", "--porcelain").stdout.strip()
     if dirty:
         files = dirty.splitlines()

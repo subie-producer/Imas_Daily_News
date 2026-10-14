@@ -8018,8 +8018,8 @@ def test_writer_reads_only_fetched_pages(tmp: Path):
         check([v.get("url") for v in fm.get("verified_facts") or []] == [shop], f"読めたページの事実が記事に残らない: {fm.get('verified_facts')}")
         # 書き直し: 初稿のセッションの記録が無くても、現在の稿の根拠のページ(shop)は写して使える。書き直しで読んだ other も使える。
         # 読んでいない other を足した late の稿は採らない
-        rec.unlink()
-        before_late = path("late").read_bytes()
+        rec.unlink(missing_ok=True)
+        before_late = path("late").read_bytes() if path("late").exists() else b""
         issue = {"rule_id": "R1", "issue": "事実を直す", "quote": para, "repair": "rewrite_claim", "expected": "正しく書く", "fact_ids": ["F1"]}
         res = compose.revise_articles(date, {f"docs/_posts/{date}-{s}.md": [dict(issue)] for s in ("seen", "late")}, plan, {"c1": cand}, [])
         fm = compose.parse_front_matter(path("seen")) or {}

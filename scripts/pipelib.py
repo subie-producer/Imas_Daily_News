@@ -1449,11 +1449,18 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
     posts = ROOT / "docs" / "_posts"
     snap = _snapshot([ROOT / "source_types.yml"] + sorted(posts.glob("*.md")))
     _TXN.update(proc=None, signum=None, stray=[])
+    # 中断を受け止めてから控えを書く(書いた直後・受け止める前に、工程の終了の例外で抜けて控えだけが残る、を無くす)
+    prev = _arm_txn_signals()
     try:
         _write_txn_journal(snap, posts)
-    except OSError as e:        # 戻せる控えが無いまま表を書き換えない(まだ何も変えていない)
+    except BaseException as e:      # 戻せる控えが無いまま表を書き換えない(まだ何も変えていない)。控えを消して終える
+        (ROOT / TXN_JOURNAL).unlink(missing_ok=True)
+        _disarm_txn_signals(prev)
+        if _TXN["signum"] is not None:
+            signal.raise_signal(_TXN["signum"])
+        if not isinstance(e, OSError):
+            raise
         return False, f"取引の控えを書けない({type(e).__name__}: {str(e)[:160]})。判定表と記事は変えずに終えた"
-    prev = _arm_txn_signals()
     ok, why, done = False, "", False
     try:
         cmd = [sys.executable, str(scripts / "classify_sources.py"), "--date", date, "--apply"] + (["--posts-only"] if posts_only else [])

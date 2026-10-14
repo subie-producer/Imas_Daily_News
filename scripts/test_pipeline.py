@@ -2263,11 +2263,14 @@ def test_classify_posts_only(tmp: Path):
         pipelib._txn_run = lambda cmd, timeout: (calls.append(cmd), subprocess.CompletedProcess(cmd, 0, "", ""))[1]
         saved_journal = pipelib._write_txn_journal
         pipelib._write_txn_journal = lambda snap, posts: (_ for _ in ()).throw(OSError(28, "No space left on device"))
+        import signal as _signal
+        handlers = (_signal.getsignal(_signal.SIGTERM), _signal.getsignal(_signal.SIGINT))
         try:
             ok, why = pipelib.classify_retag_lint("2026-09-19")
         finally:
             pipelib._write_txn_journal = saved_journal
-        check(not ok and "控えを書けない" in why and not calls, f"控えを書けないのに取引を始めた: {ok} {why} {calls}")
+        check(not ok and "控えを書けない" in why and not calls and not journal.exists(), f"控えを書けないのに取引を始めた: {ok} {why} {calls}")
+        check((_signal.getsignal(_signal.SIGTERM), _signal.getsignal(_signal.SIGINT)) == handlers, "取引が終わっても中断のハンドラが戻らない")
     finally:
         pipelib._txn_run, pipelib.ROOT = saved_run, saved_root
 

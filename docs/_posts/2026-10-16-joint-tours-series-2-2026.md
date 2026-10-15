@@ -3,7 +3,7 @@ slug: joint-tours-series-2-2026
 edition: "2026-10-16"
 brand: joint
 src: 報道
-rank: small
+rank: lead
 corrected: false
 corrections: []
 candidate_ids:

@@ -108,6 +108,7 @@
   brand: shiny
   subject: シャニマス「トワコレP-SSR/S-SSRセレチケ付きステップアップガシャ」(72時間限定)
   watch: 終了の年月日時(投稿に数値なし、72時間限定とのみ。判明次第 triggers へ)
+  removed_on: '2026-10-16'
 - dedup_key: million-master-rank5-2026
   brand: million
   subject: ミリシタ マスターランク5記念ピックアップガシャ2種

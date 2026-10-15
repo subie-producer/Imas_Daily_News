@@ -227,12 +227,12 @@
   "deadline": "2026-10-25"
  },
  {
-  "id": "sched-2026-11-07-sidem-joypolis-3-2026-終了",
+  "id": "sched-2026-11-07-sidem-joypolis-3-2026-千秋楽",
   "dedup_key": "sidem-joypolis-3-2026",
   "brand": "sidem",
-  "subject": "SideM in JOYPOLIS 3 第2弾 最終日",
-  "kind": "終了",
-  "note": "東京ジョイポリスで第2弾スペシャルショーを見られる最終日",
+  "subject": "SideM in JOYPOLIS 3 第2弾スペシャルショー 最終日",
+  "kind": "千秋楽",
+  "note": "第2弾の最終日。東京ジョイポリス1Fメインステージでスペシャルショーを無料で観られる",
   "reserved_on": "2026-10-16",
   "occurs_on": "2026-11-07",
   "title": "『アイドルマスター SideM in JOYPOLIS 3』第2弾上映",

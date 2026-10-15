@@ -37,10 +37,17 @@ def candidate_misplaced(c: dict) -> bool:
 
 def merge_candidate_facts(tgt: dict, c: dict) -> bool:
     """同じページの候補 c の facts を tgt へ増分マージする(収集の再検出と、組版が前の号の未読の事実を引き継ぐときの共通)。
-    足したら裏取りの結果も引き継ぎ、弱いほうを採る。facts が増えたら True。"""
+    足したら裏取りの結果も引き継ぎ、弱いほうを採る。締切(deadline)は遅いほうを採る。facts か締切が変わったら True。"""
+    # **締切は facts と別に、遅いほうを採る。**同じページに締切が複数ある(受付締切と入金期限)と、候補ごとに deadline が違う。
+    # 既存の候補の早い締切のままだと、まとめた素材が翌号への戻しで締切切れとして捨てられる(2026-10-15 監査指摘: 入金期限
+    # 10/18 のレトラの予約の素材が、同じ URL の候補の受付締切 10/11 で 10/17 号に戻らない)。facts が増えなくても採る
+    dl_changed = False
+    dls = [d for d in (str(tgt.get("deadline") or ""), str(c.get("deadline") or "")) if re.fullmatch(r"\d{4}-\d{2}-\d{2}", d)]
+    if dls and max(dls) != tgt.get("deadline"):
+        tgt["deadline"], dl_changed = max(dls), True
     merged = list(dict.fromkeys((tgt.get("facts") or []) + (c.get("facts") or [])))
     if len(merged) <= len(tgt.get("facts") or []):
-        return False
+        return dl_changed
     tgt["facts"] = merged
     # **裏取りの結果も引き継ぐ。**facts だけ足して verify を据え置くと、
     # 後から来た「出典に無い事実」が confirmed の候補に紛れ込む(監査指摘)。

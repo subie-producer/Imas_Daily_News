@@ -1,0 +1,217 @@
+{
+ "decisions": {
+  "cg-15th-anniversary-orchestra-concert-goods-2026": {
+   "action": "article",
+   "angle": "オケ公演の公式グッズ事前販売が10月18日(日)で締切、残り2日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-isetan-osechi-campaign-2027": {
+   "action": "article",
+   "angle": "三越伊勢丹のおせち2027で、鷹富士茄子のBIGアクリルスタンドが当たるリポスト抽選が10月21日に始まる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-daily-hibikiatte-2026-10": {
+   "action": "article",
+   "angle": "公式が日常コンテンツ『響きあって、輝きあって』を公開した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-marui-popup-visit-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の訪問投稿のみ。有楽町POP UPは14日に終了済み"
+  },
+  "cinderella-15th-orchestra-concert": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/15の記事に全事実あり。締切は10/25で3日以内でもない"
+  },
+  "cg-genkayouenichi-animo-2026": {
+   "action": "article",
+   "angle": "『幻夏妖宴市』グッズのAnimo事後通販が本日17時で受付終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-pop-up-shop-magical-cheers-animo-2026": {
+   "action": "article",
+   "angle": "A MAGICAL CHEERSグッズの事後通販が本日17時で受付終了(Animo・通販ページの2件を統合)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cinderella-15th-anniversary-party-2026": {
+   "action": "article",
+   "angle": "15th PARTYの現地チケット一般会員先行が10月19日23時59分で締切、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-a-magical-cheers-aftermarket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-pop-up-shop-magical-cheers-animo-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ事後通販の締切"
+  },
+  "cg-magical-cheers-aftermarket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-pop-up-shop-magical-cheers-animo-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ事後通販の締切"
+  },
+  "cg-15th-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-15th-anniversary-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受付の締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-15th-anniversary-orchestra-concert-goods-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "オケ公演の公式グッズ事前販売が10月18日(日)で締切、残り2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cg-15th-anniversary-orchestra-concert-goods-2026",
+    "candidate_ids": [
+     "202610160229-grok-9"
+    ]
+   },
+   {
+    "slug": "cg-isetan-osechi-campaign-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "三越伊勢丹のおせち2027で、鷹富士茄子のBIGアクリルスタンドが当たるリポスト抽選が10月21日に始まる",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cg-isetan-osechi-campaign-2027",
+    "candidate_ids": [
+     "202610160229-grok-14"
+    ]
+   },
+   {
+    "slug": "cg-daily-hibikiatte-2026-10",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "公式が日常コンテンツ『響きあって、輝きあって』を公開した",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "cg-daily-hibikiatte-2026-10",
+    "candidate_ids": [
+     "202610160229-grok-16"
+    ]
+   },
+   {
+    "slug": "cg-genkayouenichi-animo-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "『幻夏妖宴市』グッズのAnimo事後通販が本日17時で受付終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "cg-genkayouenichi-animo-2026",
+    "candidate_ids": [
+     "sched-2026-10-16-cg-genkayouenichi-animo-2026-終了"
+    ]
+   },
+   {
+    "slug": "cg-pop-up-shop-magical-cheers-animo-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "A MAGICAL CHEERSグッズの事後通販が本日17時で受付終了(Animo・通販ページの2件を統合)",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "cg-pop-up-shop-magical-cheers-animo-2026",
+    "candidate_ids": [
+     "sched-2026-10-16-cg-pop-up-shop-magical-cheers-animo-2026-終了",
+     "sched-2026-10-16-cg-a-magical-cheers-aftermarket-2026-締切",
+     "sched-2026-10-16-cg-magical-cheers-aftermarket-2026-締切"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-15th-anniversary-party-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15th PARTYの現地チケット一般会員先行が10月19日23時59分で締切、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "cinderella-15th-anniversary-party-2026",
+    "candidate_ids": [
+     "sched-2026-10-16-cinderella-15th-anniversary-party-2026-締切前",
+     "sched-2026-10-16-cg-15th-party-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cg-marui-popup-visit-2026-10",
+    "reason": "個人の話題",
+    "note": "個人の訪問投稿のみ。有楽町POP UPは14日に終了済み"
+   },
+   {
+    "dedup_key": "cinderella-15th-orchestra-concert",
+    "reason": "既報",
+    "note": "10/15の記事に全事実あり。締切は10/25で3日以内でもない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

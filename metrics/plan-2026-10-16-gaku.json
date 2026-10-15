@@ -1,0 +1,230 @@
+{
+ "decisions": {
+  "gakumas-hatsuboshi-houkago-talk-20261020": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/14号の本文と同内容。配信は10/20で3日以内ではなく、新事実なし"
+  },
+  "gaku-hatsuboshi-after-school-talk-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じ配信の別URL。10/14号の本文に既出で新事実・当日トリガーなし"
+  },
+  "gaku-curtainsoul-goods-2026": {
+   "action": "article",
+   "angle": "カーテン魂から学マスのグラフィックTシャツ、特大アクスタ、B2タペストリー、クッションカバーの新グッズが登場し、価格が判明した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は二次情報のみ。出典が足りるかは執筆・校閲で判断"
+  },
+  "gaku-seibu-chichibu-yukemuri-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-seibu-chichibu-yukemuri-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ祭の湯コラボのフード・グッズ・手ぬぐい情報。開幕記事に統合"
+  },
+  "gaku-plv-cap-90-2026": {
+   "action": "article",
+   "angle": "10月15日からPLv上限が90に引き上げられた",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営まとめは3件に満たないため単独の small"
+  },
+  "gaku-mao-another-idol-gacha-2026": {
+   "action": "article",
+   "angle": "有村麻央のシーズン限定アナザーアイドル確定の無料1連ガシャが10月17日10時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内(翌日)に迫るトリガー"
+  },
+  "gaku-hatsuboshi-radio-guests-2026-10-21": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/15号の本文に既出。放送は10/21で3日以内ではなく新事実なし"
+  },
+  "gaku-jewel-login-gift-2026-10-14": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/15号の本文に既出。終了は10/21で3日以内ではなく新事実なし"
+  },
+  "gaku-kasou-kyousoukyoku-cover-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の歌ってみた投稿で出典は未確認の個人SNS"
+  },
+  "gaku-11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-seibu-chichibu-yukemuri-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "手ぬぐい付き入館プランの販売開始は同じ祭の湯コラボの開幕と同日・同施策。開幕記事に統合"
+  },
+  "gaku-12": {
+   "action": "article",
+   "angle": "花海咲季・月村手毬・藤田ことねの描き下ろし西武線1日フリーきっぷが本日8時30分から西武秩父駅で販売開始(5,000枚限定)",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "きっぷ購入という別の行動のため単独記事。販売開始が当日のトリガー"
+  },
+  "gakumas-seibu-chichibu-yukemuri-2026": {
+   "action": "article",
+   "angle": "学マス×祭の湯コラボが本日開幕。手ぬぐい付き入館プランの販売開始、コラボフード・ドリンク、グッズ、コースター配布など会場での楽しみ方を整理して伝える",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gaku-11とgaku-seibu-chichibu-yukemuri-2026を統合。開幕が当日のトリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-curtainsoul-goods-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "カーテン魂から学マスのグラフィックTシャツ、特大アクスタ、B2タペストリー、クッションカバーの新グッズが登場し、価格が判明した",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-curtainsoul-goods-2026",
+    "candidate_ids": [
+     "202610152332-explore-4"
+    ]
+   },
+   {
+    "slug": "gaku-plv-cap-90-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "10月15日からPLv上限が90に引き上げられた",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-plv-cap-90-2026",
+    "candidate_ids": [
+     "202610160229-grok-49"
+    ]
+   },
+   {
+    "slug": "gaku-mao-another-idol-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "有村麻央のシーズン限定アナザーアイドル確定の無料1連ガシャが10月17日10時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-mao-another-idol-gacha-2026",
+    "candidate_ids": [
+     "202610160229-grok-50"
+    ]
+   },
+   {
+    "slug": "gaku-12-61acd2",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "花海咲季・月村手毬・藤田ことねの描き下ろし西武線1日フリーきっぷが本日8時30分から西武秩父駅で販売開始(5,000枚限定)",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "gaku-12",
+    "candidate_ids": [
+     "sched-2026-10-16-gaku-12-発売"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-seibu-chichibu-yukemuri-2026",
+    "brand": "gaku",
+    "rank": "large",
+    "angle": "学マス×祭の湯コラボが本日開幕。手ぬぐい付き入館プランの販売開始、コラボフード・ドリンク、グッズ、コースター配布など会場での楽しみ方を整理して伝える",
+    "purpose": "期日の知らせ",
+    "lead_score": 80,
+    "dedup_key": "gakumas-seibu-chichibu-yukemuri-2026",
+    "candidate_ids": [
+     "sched-2026-10-16-gakumas-seibu-chichibu-yukemuri-2026-開幕",
+     "202610160229-explore-1",
+     "sched-2026-10-16-gaku-11-発売"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gakumas-hatsuboshi-houkago-talk-20261020",
+    "reason": "既報",
+    "note": "10/14号の本文と同内容。配信は10/20で3日以内ではなく、新事実なし"
+   },
+   {
+    "dedup_key": "gaku-hatsuboshi-after-school-talk-2026-10",
+    "reason": "既報",
+    "note": "同じ配信の別URL。10/14号の本文に既出で新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "gaku-hatsuboshi-radio-guests-2026-10-21",
+    "reason": "既報",
+    "note": "10/15号の本文に既出。放送は10/21で3日以内ではなく新事実なし"
+   },
+   {
+    "dedup_key": "gaku-jewel-login-gift-2026-10-14",
+    "reason": "既報",
+    "note": "10/15号の本文に既出。終了は10/21で3日以内ではなく新事実なし"
+   },
+   {
+    "dedup_key": "gaku-kasou-kyousoukyoku-cover-2026",
+    "reason": "個人の話題",
+    "note": "個人の歌ってみた投稿で出典は未確認の個人SNS"
+   }
+  ],
+  "cross_brand": []
+ }
+}

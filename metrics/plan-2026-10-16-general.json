@@ -1,0 +1,57 @@
+{
+ "decisions": {
+  "cg-gatamasu-fan-visit-2026-10": {
+   "action": "article",
+   "angle": "新潟市・佐渡市の「がたます」スタンプ巡りや筑西市のシャニマスコラボ訪問、ツアマスのライブフォト共有など、ファンの聖地巡礼と楽しみ方を1本にまとめて伝える",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "聖地巡礼・ファン創作系を culture 1本に束ねる。個人は主役にしない"
+  },
+  "shiny-chikusei-collaboration-fan-visits-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-gatamasu-fan-visit-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "筑西市コラボの聖地巡礼。culture 記事へ統合"
+  },
+  "tours-live-photo-starmas-guest-2026-10-14": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-gatamasu-fan-visit-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ツアマスのライブフォト共有。細切れのファン話題として culture 記事へ統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-cg-gatamasu-fan-visit-2026-10",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "新潟市・佐渡市の「がたます」スタンプ巡りや筑西市のシャニマスコラボ訪問、ツアマスのライブフォト共有など、ファンの聖地巡礼と楽しみ方を1本にまとめて伝える",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cg-gatamasu-fan-visit-2026-10",
+    "candidate_ids": [
+     "202610160229-grok-15",
+     "202610160229-grok-6",
+     "202610160229-grok-30"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

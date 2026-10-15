@@ -1,0 +1,66 @@
+{
+ "decisions": {
+  "starmas-kohaku-aya-solo-songs-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-14に「心白と亜夜のソロ曲制作決定」を記事化済み。765×961ライブの蘭子ゲストも10-14に記事化済みで、新事実・当日トリガー無し"
+  },
+  "tours-series-2-2026": {
+   "action": "article",
+   "angle": "ツアマスS2弾が10月29日に稼働開始。山下次郎・舞田類の登場、新曲、ツアーモードの中部エリア、プライムマッチフェスなど追加要素を整理して伝える",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "稼働開始日と追加要素は直近記事(静香・薫・美希・桃子カード)に無い新事実"
+  },
+  "starlit-season-fifth-anniversary-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/14の発売5周年の感謝投稿のみで新しい事実・当日のトリガーが無い。5周年企画は10-12〜10-15に記事化済み"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-series-2-2026",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "ツアマスS2弾が10月29日に稼働開始。山下次郎・舞田類の登場、新曲、ツアーモードの中部エリア、プライムマッチフェスなど追加要素を整理して伝える",
+    "purpose": "新情報",
+    "lead_score": 80,
+    "dedup_key": "tours-series-2-2026",
+    "candidate_ids": [
+     "202610160229-grok-57"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "starmas-kohaku-aya-solo-songs-2026",
+    "reason": "既報",
+    "note": "10-14に「心白と亜夜のソロ曲制作決定」を記事化済み。765×961ライブの蘭子ゲストも10-14に記事化済みで、新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "starlit-season-fifth-anniversary-2026",
+    "reason": "その他",
+    "note": "10/14の発売5周年の感謝投稿のみで新しい事実・当日のトリガーが無い。5周年企画は10-12〜10-15に記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

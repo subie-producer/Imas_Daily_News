@@ -1228,5 +1228,79 @@
   "verify": "confirmed",
   "src_candidate_id": "202610150225-grok-21",
   "deadline": "2026-10-18"
+ },
+ {
+  "id": "sched-2026-10-18-cg-orchestra-goods-2026-締切",
+  "dedup_key": "cg-orchestra-goods-2026",
+  "brand": "cg",
+  "subject": "シンデレラ15周年オケグッズ事前販売 最終日",
+  "kind": "締切",
+  "note": "ASOBI STOREの特設ページで事前販売の最終日に購入できる",
+  "reserved_on": "2026-10-16",
+  "occurs_on": "2026-10-18",
+  "title": "15周年オーケストラコンサート公式グッズ事前販売",
+  "url": "https://idolmaster-official.jp/news/01_20097",
+  "source_type": "公式",
+  "facts": [
+   "事前販売期間: 2026年10月8日(木)12:00～10月18日(日)",
+   "会場: パシフィコ横浜 国立大ホール",
+   "DAY1: 2027年1月11日(月・祝) 開場17:00 / 開演18:00",
+   "DAY2: 2027年1月12日(火) 開場18:00 / 開演19:00",
+   "販売グッズ: キービジュアルのアイドルたちのアクリルスタンド、マフラータオル、公式応援フラッグ、巾着付きフリースブランケットなど",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610160229-grok-9",
+  "event_date": "2027-01-11",
+  "deadline": "2026-10-18"
+ },
+ {
+  "id": "sched-2026-10-18-valiv-aikatsu-academy-collab-shorts-2026-開始",
+  "dedup_key": "valiv-aikatsu-academy-collab-shorts-2026",
+  "brand": "dsva",
+  "subject": "上水流宇宙×アイカツアカデミー！コラボショート公開(1回目)",
+  "kind": "開始",
+  "note": "18時から宇宙chでコラボダンスのショートを見られる",
+  "reserved_on": "2026-10-16",
+  "occurs_on": "2026-10-18",
+  "title": "上水流宇宙とアイカツアカデミー！のコラボショート公開予定",
+  "url": "https://x.com/KamizuruCosmo/status/2110689693071450489",
+  "source_type": "公式",
+  "facts": [
+   "上水流宇宙が「上水流 秋のコラボショート祭り」第二弾の相手としてアイカツアカデミー！を告知した。",
+   "上水流宇宙は、エリオントの皆とコラボで踊ったと投稿した。",
+   "10/18 18:00に宇宙chで公開予定。",
+   "10/19 18:00に宇宙chで公開予定。",
+   "エンゲージメント: 中",
+   "言及アイドル: 上水流宇宙、アイカツアカデミー！のエリオントメンバー"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610160229-grok-54",
+  "event_date": "2026-10-18"
+ },
+ {
+  "id": "sched-2026-10-18-shiny-orchestra-2027-premium-preorder-締切",
+  "dedup_key": "shiny-orchestra-2027-premium-preorder",
+  "brand": "shiny",
+  "subject": "Radiant Chord アソビストアプレミアム会員先行 締切",
+  "kind": "締切",
+  "note": "23時59分まで先行抽選に申し込める最終日",
+  "reserved_on": "2026-10-16",
+  "occurs_on": "2026-10-18",
+  "title": "シャニマスオケ2027 アソビストアプレミアム会員先行",
+  "url": "https://x.com/shinyc_official/status/2110203960598368512",
+  "source_type": "公式",
+  "facts": [
+   "アソビストアプレミアム会員先行を受付中。",
+   "スペシャルシートは前方席確約で、限定お土産グッズ付き。",
+   "申込締切は2026年10月18日(日)。",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610160229-grok-33",
+  "deadline": "2026-10-18"
  }
 ]

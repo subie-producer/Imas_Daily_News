@@ -1,0 +1,165 @@
+{
+ "decisions": {
+  "idolmaster-ch-radio-members-2026-10": {
+   "action": "article",
+   "angle": "10月21日19時からアイマスchで配信。冒頭15分は誰でも視聴でき、南早紀・香里有佐が出演するメンバー限定配信の日時と視聴方法を伝える",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-theaterdays-ver-90350-2026": {
+   "action": "article",
+   "angle": "ミリシタVer.9.0.350が配信開始、強制アップデートは本日13時頃の予定",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日トリガー(強制アップデート)"
+  },
+  "million-snapshot-memories-gasha-2026-10": {
+   "action": "article",
+   "angle": "Snapshot Memoriesガシャは18日14:59まで残り2日。大神環・田中琴葉の4コマ漫画が公開された",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "4コマ漫画公開はpriorに無い新事実。締切3日以内"
+  },
+  "million-cyber-planet-popup-restock-2026": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOPの品切れ商品が再入荷へ。朋花・杏奈の一部商品は東京再入荷なしで、大阪会場と事後通販で購入可",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当事者(販売元)発信で未確認。日程は画像のため記事化時に確認"
+  },
+  "million-30ms-kasuga-mirai-restock-2026-10": {
+   "action": "article",
+   "angle": "バンダイスピリッツ「30MS 春日未来(20th Anniv. YOU AND アイ！)」がAmazonで再入荷、税込3,444円",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-x-tream-hapipisu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "ファン運営DBアカウントの投稿のみで公式の裏付けが無い"
+  },
+  "million-sports-day-login-bonus-2026": {
+   "action": "article",
+   "angle": "ミリシタのスポーツの日ログインボーナスは18日23:59まで。7日間でミリオンジュエル計500個",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了3日以内。roundup対象は他に足りず単独small"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-idolmaster-ch-radio-members-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "10月21日19時からアイマスchで配信。冒頭15分は誰でも視聴でき、南早紀・香里有佐が出演するメンバー限定配信の日時と視聴方法を伝える",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "idolmaster-ch-radio-members-2026-10",
+    "candidate_ids": [
+     "202610151833-watch-0"
+    ]
+   },
+   {
+    "slug": "million-theaterdays-ver-90350-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタVer.9.0.350が配信開始、強制アップデートは本日13時頃の予定",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "million-theaterdays-ver-90350-2026",
+    "candidate_ids": [
+     "202610160229-grok-18"
+    ]
+   },
+   {
+    "slug": "million-snapshot-memories-gasha-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Snapshot Memoriesガシャは18日14:59まで残り2日。大神環・田中琴葉の4コマ漫画が公開された",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-snapshot-memories-gasha-2026-10",
+    "candidate_ids": [
+     "202610160229-grok-19"
+    ]
+   },
+   {
+    "slug": "million-cyber-planet-popup-restock-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Cyber Planet POP UP SHOPの品切れ商品が再入荷へ。朋花・杏奈の一部商品は東京再入荷なしで、大阪会場と事後通販で購入可",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-cyber-planet-popup-restock-2026",
+    "candidate_ids": [
+     "202610160229-grok-20"
+    ]
+   },
+   {
+    "slug": "million-30ms-kasuga-mirai-restock-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "バンダイスピリッツ「30MS 春日未来(20th Anniv. YOU AND アイ！)」がAmazonで再入荷、税込3,444円",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "million-30ms-kasuga-mirai-restock-2026-10",
+    "candidate_ids": [
+     "202610160229-grok-21"
+    ]
+   },
+   {
+    "slug": "million-sports-day-login-bonus-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタのスポーツの日ログインボーナスは18日23:59まで。7日間でミリオンジュエル計500個",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-sports-day-login-bonus-2026",
+    "candidate_ids": [
+     "202610131833-explore-3"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-x-tream-hapipisu-2026",
+    "reason": "出典不足",
+    "note": "ファン運営DBアカウントの投稿のみで公式の裏付けが無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -37,6 +37,7 @@ official_paths:
   - bilibili.com/opus/1244186744338776068
 
 official_domains:
+  - millionlive.idolmaster.jp # 合議で追加: ミリシタ作品の公式サイト（登録外でも定義に該当）
   - va-liv.booth.pm       # 合議で追加: idolmaster-official.jpの公式プロジェクト。BOOTHは販売
   - idolmaster-tours-w.bn-am.net # 合議で追加: TOURS公式マイページ、バンダイナムコアミューズメント直営の一次発信
   - idolmaster-official.jp                          # 公式ポータル
@@ -215,6 +216,7 @@ performer_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - jinseizura.com        # 合議で追加: 個人ブログ。プラポリに管理人が個人と明記。公式MVを転載
   - hoshitsukiyo.com      # 合議で追加: 個人のXアカウントに紐づく非公式ツールサイト
   - cruzchqn.com          # 合議で追加: 定義で『個人を二次情報にしない』と明記。個人運営ならファン
   - hrurukku.hatenablog.com # 合議で追加: 個人のはてなブログ。ライブ観賞の個人感想
@@ -237,6 +239,11 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - seibuen-amusement-park.jp # 合議で追加: SideMイベントの開催会場。アクスタの販売元
+  - perspect.co.jp        # 合議で追加: SideMのキャラクターデザイン担当者によるグッズ販売告知
+  - chikusei-hanabi.jp    # 合議で追加: 花火大会の主催。協賛・出店者募集の一次発信
+  - bandaispirits.co.jp   # 合議で追加: 30MSを企画・製造・販売する会社の企業サイト
+  - amazon.co.jp          # 合議で追加: 一般の通販サービス。30MSの販売元として掲載
   - info-anideal.com      # 合議で追加: SideM香水のライセンス販売元。特商法表記で販売事業者を確認
   - t2u.asia              # 合議で追加: CF23のチケット販売元。ページの主催者は別記載なし
   - comifuro.net          # 合議で追加: CF23の主催者による告知サイト。運営者情報は未確認
@@ -387,6 +394,7 @@ video_channels:
     - tokiwakaname        # 合議で追加: 個人チャンネルの踊ってみた投稿。公式・運営発信ではなく個人の二次創作
     - TogawaNonoha        # 合議で追加: YouTubeの個人チャンネル。個人アカウントに該当
   公式:
+    - imas-tours          # 合議で追加: 作品の公式チャンネル。紹介文と sameAs が公式サイト・公式X
     - imas-official        # アイドルマスターチャンネル
     - hatsuboshi_gakuen    # 初星学園(学マス)公式
     - project_imas_va-liv  # ヴイアラ(876プロ)公式
@@ -406,6 +414,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - 9LYcJoxB_r4         # 機械で追加: @imas-tours「『アイドルマスター TOURS』新シリーズ2弾情報発表【公式」
     - ioQmV7-M1z8         # 機械で追加: @KamizuruCosmo「Dance in the Light 踊ってみた with 」
     - Z-LWjF5J6Mw         # 機械で追加: @hatsuboshi_gakuen「初星学園 「キミとセミブルー」Official Music 」
     - Oq5n5dcZsm0         # 機械で追加: @imas-official「10/14 藤本里奈さん Happy Birthday‼」
@@ -487,6 +496,7 @@ video_ids:
 # 公式アカウント以外の X 投稿は公式ではない。表に無いアカウントは未確認になる。
 x_accounts:
   公式:
+    - imas_tours          # 合議で追加: ツアマス系。登録済み@TOURS_imasと同主体と推定
     - gkmas_goods         # 合議で追加: 学園アイマスの作品公式の運営によるグッズ情報。公式と同じ主体
     - imas_official                   # アイドルマスター公式
     - idolmaster_en                   # アイドルマスター公式(英語)
@@ -565,6 +575,13 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - zqzqmnth            # 合議で追加: フォトコンテスト参加者本人の受賞報告
+    - siy4715             # 合議で追加: コラボ会場を訪れた個人の投稿
+    - shuka_shake         # 合議で追加: 個人による歌ってみた動画の投稿
+    - sammy_sammy         # 合議で追加: 個人による聖地巡礼の投稿
+    - kawaii3sisters      # 合議で追加: 個人によるPOP UP SHOP訪問の投稿
+    - gunsou_765AS        # 合議で追加: 個人によるプロモカード受取の報告投稿
+    - Sakura_Kaiser_P     # 合議で追加: 個人アカウントによる作品紹介の投稿
     - seika_love_anzu     # 合議で追加: 双葉杏フラスタのデザイン案公開。個人ファンの発信
     - imen_dere           # 合議で追加: FABULOUS-Party出演アイドルへのフラワー企画。個人のファン発信
     - dark_blue_xxx       # 合議で追加: 上水流宇宙を陸上戦艦テーマで組んだ個人のファン投稿
@@ -794,6 +811,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - TokyoJoypolis       # 合議で追加: 上映会場の施設アカウントによる一次発信
     - kawashima_Fe        # 合議で追加: ８番らーめんのコラボキャンペーン。コラボ先の店舗側の発信
     - atimes_goods        # 合議で追加: 応援法被の予約受付。商品の販売元として一次発信
     - oinagoya            # 合議で追加: 金山観光案内所で丹羽仁美のフォトスポットを設置
@@ -891,6 +909,9 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/BycEJlR0rt: 公式                         # 機械で追加: 展開先 https://idolmaster-official.jp/live_event/shinycolors_orchestra_RC/#ticketCol
+  t.co/qs2xK8F5GV: 公式                         # 機械で追加: 展開先 https://www.youtube.com/live/9LYcJoxB_r4
+  t.co/qs2xK8ExRn: 公式                         # 機械で追加: 展開先 https://www.youtube.com/live/9LYcJoxB_r4
   nicovideo.jp/user/17835786: ファン              # 合議で追加: 個人のユーザーページ(ID 17835786)。個人に紐づく発信なのでファン
   note.com/mi_mei_: ファン                        # 合議で追加: noteの個人アカウント。ライブ参加者による個人レポート
   note.com/konpotap: ファン                       # 合議で追加: noteの個人アカウント。イベント参加者による個人レポート

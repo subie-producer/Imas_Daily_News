@@ -1,0 +1,486 @@
+{
+ "decisions": {
+  "sidem-sem-lifes-side-menu-2dmv": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2DMV公開は10/15号で記事化済み"
+  },
+  "sidem-sems-lifes-side-menu-2dmv": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "急上昇掲載のみ。公開は10/15号で報道済み"
+  },
+  "sidem-sems-lifes-side-menu-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/15号と同内容"
+  },
+  "sidem-2dmv-goods-vol3": {
+   "action": "article",
+   "angle": "2DMV公開記念グッズ第3弾の受注が11月1日23:59まで。4ユニットのMVイラストで缶バッジ・アクリルスタンド等、12月下旬以降発送",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策の2件を統合"
+  },
+  "sidem-2dmv-goods-vol3-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-2dmv-goods-vol3",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "取扱店舗などの素材を統合"
+  },
+  "sidem-2dmv-goods-3-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-2dmv-goods-vol3",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注期限の告知を統合"
+  },
+  "sidem-fbfes-wanna-step-in-goods-2026": {
+   "action": "article",
+   "angle": "F＠NTASTIC BATTLE FES ～Wanna step in～公式グッズの直前販売が10月15日〜25日23:59、数量限定・12月中旬以降発送",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "直前販売は事前販売(9/27終了)とは別の新しい販売"
+  },
+  "sidem-61": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-wanna-step-in-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ直前販売。価格などを統合"
+  },
+  "tourmas-series2-sidem-additions-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-tours-series-2-2026",
+   "reason": "",
+   "note": "ツアマス新シリーズ2弾(山下次郎・舞田類)は合同面の記事と同じ話題"
+  },
+  "sidem-fbfes-movie-2026": {
+   "action": "article",
+   "angle": "劇場版SideM「Who goes first」のムビチケ前売券が本日10月16日発売。カード券・アソビストア限定セット・オンライン券の購入方法と通販10時開始",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ムビチケ発売の7主題を1本に統合。週替わり映像も同記事で触れる"
+  },
+  "sidem-fbfes-movie-2026-11-20": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演のムビチケ発売"
+  },
+  "sidem-fantastic-battle-fes-movie-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演のムビチケ発売"
+  },
+  "sidem-wgf-movie-tickets-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演のムビチケ発売"
+  },
+  "sidem-fanfes-wgf-movie-movie-ticket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演のムビチケ発売"
+  },
+  "sidem-fantastic-battle-fes-movie-weekly-footage-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "週替わり映像は既報。同じ公演の記事に統合"
+  },
+  "sidem-fanfes-wgf-weekly-video-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-movie-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演のムビチケ発売"
+  },
+  "sidem-delight-excursion-100k-2026": {
+   "action": "article",
+   "angle": "DRAMATIC STARS「Delight Excursion」の2DMVが10万回再生を突破",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式Xの発表"
+  },
+  "sidem-315night-2026-10-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/9放送回は終了済み。既に10/9号で記事化"
+  },
+  "sidem-ultimate-flame-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/15号と同内容。公開は23日で3日以内ではない"
+  },
+  "deramas-sidem-myokoen-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11号と同内容。終了は10/31で期日が迫っていない"
+  },
+  "sidem-joypolis-3-2026": {
+   "action": "article",
+   "angle": "ジョイポリス30周年アンバサダーのHigh×Joker・神速一魂がアナウンス。SideM in JOYPOLIS 3第2弾は11月7日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アンバサダーのアナウンスが10/11号に無い新事実"
+  },
+  "sidem-cho-retroseparty-acrylic-2026": {
+   "action": "article",
+   "angle": "「SideM超!!レトローズパーティ」描き下ろしアクリルスタンドは1,980円(税込)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/15号は缶バッジ全16種で別商品"
+  },
+  "sidem-mfes-winter-wonderland-shop-2026": {
+   "action": "article",
+   "angle": "「Mフェス2026 in Winter Wonderland × 315!!!SHOP」特設ページ公開。アクリルスタンド・担当タオル・抽選くじリニューアル・カフェを予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-fifs-popup-fukuoka-2026": {
+   "action": "article",
+   "angle": "FiFS ILLUSTRATION POP-UP'26 FUKUOKAがキャナルシティ オーパで10月25日まで。SideMイラストグッズを販売、新規グッズは無し",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-315night-2026-10-23": {
+   "action": "article",
+   "angle": "「315プロNight!」10月23日放送回のパーソナリティは深町寿成・バレッタ裕・濱野大輝。11th感想を募集",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-315pronight-11th-feedback-october-2026": {
+   "action": "article",
+   "angle": "「315プロNight!」本日10月16日21時からニコニコ生放送。高塚智人・矢野奨吾・榎木淳弥・駒田航が出演",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。放送は本日"
+  },
+  "sidem-mfes-christmas-cruise-2026": {
+   "action": "article",
+   "angle": "SideM Mフェス2026クリスマスクルーズの当落が本日17:00(予定)に発表される",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。結果発表は本日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-2dmv-goods-vol3",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "2DMV公開記念グッズ第3弾の受注が11月1日23:59まで。4ユニットのMVイラストで缶バッジ・アクリルスタンド等、12月下旬以降発送",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-2dmv-goods-vol3",
+    "candidate_ids": [
+     "202610151232-watch-0",
+     "202610151232-watch-1",
+     "202610151232-explore-2",
+     "202610160229-grok-39"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-wanna-step-in-goods-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "F＠NTASTIC BATTLE FES ～Wanna step in～公式グッズの直前販売が10月15日〜25日23:59、数量限定・12月中旬以降発送",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-fbfes-wanna-step-in-goods-2026",
+    "candidate_ids": [
+     "202610151833-watch-3",
+     "202610160229-grok-35"
+    ]
+   },
+   {
+    "slug": "sidem-delight-excursion-100k-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "DRAMATIC STARS「Delight Excursion」の2DMVが10万回再生を突破",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-delight-excursion-100k-2026",
+    "candidate_ids": [
+     "202610160229-grok-38"
+    ]
+   },
+   {
+    "slug": "sidem-joypolis-3-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "ジョイポリス30周年アンバサダーのHigh×Joker・神速一魂がアナウンス。SideM in JOYPOLIS 3第2弾は11月7日まで",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-joypolis-3-2026",
+    "candidate_ids": [
+     "202610160229-grok-44"
+    ]
+   },
+   {
+    "slug": "sidem-cho-retroseparty-acrylic-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「SideM超!!レトローズパーティ」描き下ろしアクリルスタンドは1,980円(税込)",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-cho-retroseparty-acrylic-2026",
+    "candidate_ids": [
+     "202610160229-grok-45"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-winter-wonderland-shop-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「Mフェス2026 in Winter Wonderland × 315!!!SHOP」特設ページ公開。アクリルスタンド・担当タオル・抽選くじリニューアル・カフェを予定",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-mfes-winter-wonderland-shop-2026",
+    "candidate_ids": [
+     "202610160229-grok-46"
+    ]
+   },
+   {
+    "slug": "sidem-fifs-popup-fukuoka-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "FiFS ILLUSTRATION POP-UP'26 FUKUOKAがキャナルシティ オーパで10月25日まで。SideMイラストグッズを販売、新規グッズは無し",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "sidem-fifs-popup-fukuoka-2026",
+    "candidate_ids": [
+     "202610160229-grok-47"
+    ]
+   },
+   {
+    "slug": "sidem-315night-2026-10-23",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「315プロNight!」10月23日放送回のパーソナリティは深町寿成・バレッタ裕・濱野大輝。11th感想を募集",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "sidem-315night-2026-10-23",
+    "candidate_ids": [
+     "202610160229-grok-48"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-movie-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版SideM「Who goes first」のムビチケ前売券が本日10月16日発売。カード券・アソビストア限定セット・オンライン券の購入方法と通販10時開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 80,
+    "dedup_key": "sidem-fbfes-movie-2026",
+    "candidate_ids": [
+     "sched-2026-10-16-sidem-fbfes-movie-2026-発売",
+     "202610160229-grok-36",
+     "sched-2026-10-16-sidem-fbfes-movie-2026-11-20-開始",
+     "sched-2026-10-16-sidem-fantastic-battle-fes-movie-2026-発売",
+     "sched-2026-10-16-sidem-fanfes-wgf-movie-movie-ticket-2026-発売",
+     "sched-2026-10-16-sidem-fantastic-battle-fes-movie-weekly-footage-2026-発売",
+     "sched-2026-10-16-sidem-fanfes-wgf-weekly-video-2026-発売"
+    ]
+   },
+   {
+    "slug": "sidem-315pronight-11th-feedback-october-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「315プロNight!」本日10月16日21時からニコニコ生放送。高塚智人・矢野奨吾・榎木淳弥・駒田航が出演",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "sidem-315pronight-11th-feedback-october-2026",
+    "candidate_ids": [
+     "sched-2026-10-16-sidem-315pronight-11th-feedback-october-2026-開始"
+    ]
+   },
+   {
+    "slug": "sidem-mfes-christmas-cruise-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideM Mフェス2026クリスマスクルーズの当落が本日17:00(予定)に発表される",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-mfes-christmas-cruise-2026",
+    "candidate_ids": [
+     "sched-2026-10-16-sidem-mfes-christmas-cruise-2026-結果"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-sem-lifes-side-menu-2dmv",
+    "reason": "既報",
+    "note": "2DMV公開は10/15号で記事化済み"
+   },
+   {
+    "dedup_key": "sidem-sems-lifes-side-menu-2dmv",
+    "reason": "既報",
+    "note": "急上昇掲載のみ。公開は10/15号で報道済み"
+   },
+   {
+    "dedup_key": "sidem-315night-2026-10-09",
+    "reason": "その他",
+    "note": "10/9放送回は終了済み。既に10/9号で記事化"
+   },
+   {
+    "dedup_key": "sidem-ultimate-flame-2dmv-2026",
+    "reason": "既報",
+    "note": "10/15号と同内容。公開は23日で3日以内ではない"
+   },
+   {
+    "dedup_key": "sidem-sems-lifes-side-menu-2dmv-2026",
+    "reason": "既報",
+    "note": "10/15号と同内容"
+   },
+   {
+    "dedup_key": "deramas-sidem-myokoen-2026",
+    "reason": "既報",
+    "note": "10/11号と同内容。終了は10/31で期日が迫っていない"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-tours-series-2-2026",
+    "dedup_key": "tourmas-series2-sidem-additions-2026",
+    "note": "ツアマス新シリーズ2弾(山下次郎・舞田類)は合同面の記事と同じ話題"
+   }
+  ]
+ }
+}

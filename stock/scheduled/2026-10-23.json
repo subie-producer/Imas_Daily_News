@@ -564,5 +564,30 @@
   "verify": "unconfirmed",
   "src_candidate_id": "202610150225-grok-27",
   "event_date": "2026-10-23"
+ },
+ {
+  "id": "sched-2026-10-23-sidem-315night-2026-10-23-開始",
+  "dedup_key": "sidem-315night-2026-10-23",
+  "brand": "sidem",
+  "subject": "SideM「315プロNight!」10月23日回",
+  "kind": "開始",
+  "note": "21時からニコニコ生放送で視聴できる",
+  "reserved_on": "2026-10-16",
+  "occurs_on": "2026-10-23",
+  "title": "315プロNight! 10月23日放送回パーソナリティ決定",
+  "url": "https://x.com/SideM_lantis/status/2110211492742369567",
+  "source_type": "準公式",
+  "facts": [
+   "10月はSideM11th感想月間。",
+   "10月23日(金)放送回のパーソナリティは深町寿成さん、バレッタ裕さん、濱野大輝さん。",
+   "SideM11thの感想やイラスト、お便りを募集中。",
+   "投稿フォーム: https://t.co/mK2p6Ct60y",
+   "お便りは今週中に送付するよう案内。",
+   "エンゲージメント: 低"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610160229-grok-48",
+  "event_date": "2026-10-23"
  }
 ]

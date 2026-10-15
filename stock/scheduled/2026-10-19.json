@@ -84,5 +84,30 @@
   "src_candidate_id": "202610150225-grok-6",
   "event_date": "2026-11-28",
   "deadline": "2026-10-19"
+ },
+ {
+  "id": "sched-2026-10-19-valiv-aikatsu-academy-collab-shorts-2026-開始",
+  "dedup_key": "valiv-aikatsu-academy-collab-shorts-2026",
+  "brand": "dsva",
+  "subject": "上水流宇宙×アイカツアカデミー！コラボショート公開(2回目)",
+  "kind": "開始",
+  "note": "宇宙chで18時公開のコラボダンスショートを見られる",
+  "reserved_on": "2026-10-16",
+  "occurs_on": "2026-10-19",
+  "title": "上水流宇宙とアイカツアカデミー！のコラボショート公開予定",
+  "url": "https://x.com/KamizuruCosmo/status/2110689693071450489",
+  "source_type": "公式",
+  "facts": [
+   "上水流宇宙が「上水流 秋のコラボショート祭り」第二弾の相手としてアイカツアカデミー！を告知した。",
+   "上水流宇宙は、エリオントの皆とコラボで踊ったと投稿した。",
+   "10/18 18:00に宇宙chで公開予定。",
+   "10/19 18:00に宇宙chで公開予定。",
+   "エンゲージメント: 中",
+   "言及アイドル: 上水流宇宙、アイカツアカデミー！のエリオントメンバー"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610160229-grok-54",
+  "event_date": "2026-10-18"
  }
 ]

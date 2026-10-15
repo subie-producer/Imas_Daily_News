@@ -1,0 +1,128 @@
+{
+ "decisions": {
+  "cosmo-mystery-stream-2026-10-15": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "配信は10月15日で終了済み。愛夏のBOMBANANA!コラボは15日号で記事化済み"
+  },
+  "valiv-aikatsu-academy-collab-shorts-2026": {
+   "action": "article",
+   "angle": "上水流宇宙が「秋のコラボショート祭り」第二弾でアイカツアカデミー！のエリオントと踊ったショートを、10月18日・19日の各18時に宇宙chで公開する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "コラボ先名義のみで共同面にはならない。上水流宇宙のチャンネルでの公開"
+  },
+  "valiv-meecos-morning-stream-2026-10-21": {
+   "action": "article",
+   "angle": "10月21日(水)朝8時から、上水流宇宙の配信に真未夢メエが遊びに来る「メエこす 朝活」",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信出演の単独告知。roundup に入る件数に足りないため small の通常記事"
+  },
+  "valiv-maihama-zerogravity-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月15日号で同内容を記事化済み。新しい事実も当日のトリガーも無い"
+  },
+  "va-liv-manaka-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10月14日号の本文に日時・会場・出演・受付期間・コンビニ決済期限まで全て記載済み。当日のトリガーも無い(販売開始は17日)"
+  },
+  "valiv-letora-girls-frontier-cover-2026": {
+   "action": "article",
+   "angle": "レトラの「ガールズ・イン・ザ・フロンティア」カバー動画が、今夜20時からYouTubeでプレミア公開される",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。当日20時の公開で、見に行ける催しがある"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-aikatsu-academy-collab-shorts-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙が「秋のコラボショート祭り」第二弾でアイカツアカデミー！のエリオントと踊ったショートを、10月18日・19日の各18時に宇宙chで公開する",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "valiv-aikatsu-academy-collab-shorts-2026",
+    "candidate_ids": [
+     "202610160229-grok-54"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-meecos-morning-stream-2026-10-21",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "10月21日(水)朝8時から、上水流宇宙の配信に真未夢メエが遊びに来る「メエこす 朝活」",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "valiv-meecos-morning-stream-2026-10-21",
+    "candidate_ids": [
+     "202610160229-grok-55"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-letora-girls-frontier-cover-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラの「ガールズ・イン・ザ・フロンティア」カバー動画が、今夜20時からYouTubeでプレミア公開される",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "valiv-letora-girls-frontier-cover-2026",
+    "candidate_ids": [
+     "sched-2026-10-16-valiv-letora-girls-frontier-cover-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cosmo-mystery-stream-2026-10-15",
+    "reason": "その他",
+    "note": "配信は10月15日で終了済み。愛夏のBOMBANANA!コラボは15日号で記事化済み"
+   },
+   {
+    "dedup_key": "valiv-maihama-zerogravity-2026",
+    "reason": "既報",
+    "note": "10月15日号で同内容を記事化済み。新しい事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "va-liv-manaka-birthday-live-2026",
+    "reason": "既報",
+    "note": "10月14日号の本文に日時・会場・出演・受付期間・コンビニ決済期限まで全て記載済み。当日のトリガーも無い(販売開始は17日)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

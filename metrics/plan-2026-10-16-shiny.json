@@ -1,0 +1,237 @@
+{
+ "decisions": {
+  "shiny-madoka-effortless-figure": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/13「シャニマス×雀魂フィギュア」で価格・2027年6月発送まで掲載済み。新事実なし"
+  },
+  "chikusei-shiny-collab-2026": {
+   "action": "article",
+   "angle": "筑西市コラボのちくせい花火大会が明日10月17日18時開演(順延18日)、黛冬優子の場内アナウンスと音声スタンプラリー",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "shiny-chikusei-collaboration-2026 を統合。二次情報のため出典は校閲判断"
+  },
+  "shiny-85th-cascolle-stepup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-85th-towacolle-stepup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ8.5th 72時間限定ステップアップガシャ施策"
+  },
+  "shiny-85th-towacolle-stepup-2026": {
+   "action": "article",
+   "angle": "8.5th Anniversary 72時間限定ステップアップガシャ(キャスコレ・トワコレ各セレチケ付き)、トワコレ側は本日23:59まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-sweet-memories-focus-camera-2026": {
+   "action": "article",
+   "angle": "シャニソン縦画面フォーカスカメラに大崎甘奈歌唱『Sweet Memories』が追加",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "roundup 3件未満のため small 通常記事"
+  },
+  "shiny-dress-order-boost-week-2026": {
+   "action": "article",
+   "angle": "シャニソンでドレスオーダー強化週間開催、ミッションで無償プリズムジュエルとドレスオーダーチケット",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "roundup 3件未満のため small 通常記事"
+  },
+  "shiny-song-for-prism-focus-muku-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/15運営情報まとめで『無垢』追加とVer.2.19.0を掲載済み"
+  },
+  "shiny-runway-photo-contest-results-2026": {
+   "action": "article",
+   "angle": "Shiny Runway 2026 Master ShowPieceフォトコンテストの4部門の受賞者が発表",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-runway-contest-fan-reactions-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で未確認。結果発表の記事に含まれる"
+  },
+  "shiny-style-collection-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10「SHINY Style」第2弾の記事で商品・価格掲載済み。新事実なし"
+  },
+  "shiny-orchestra-concert-2027": {
+   "action": "article",
+   "angle": "『Radiant Chord』アソビストアプレミアム会員先行の申込締切は10月18日23:59、あと2日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内の当日トリガー"
+  },
+  "shiny-chikusei-collaboration-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chikusei-shiny-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ筑西市コラボ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-chikusei-shiny-collab-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "筑西市コラボのちくせい花火大会が明日10月17日18時開演(順延18日)、黛冬優子の場内アナウンスと音声スタンプラリー",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "chikusei-shiny-collab-2026",
+    "candidate_ids": [
+     "202610152332-explore-2",
+     "202610160229-grok-34"
+    ]
+   },
+   {
+    "slug": "shiny-85th-towacolle-stepup-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "8.5th Anniversary 72時間限定ステップアップガシャ(キャスコレ・トワコレ各セレチケ付き)、トワコレ側は本日23:59まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-85th-towacolle-stepup-2026",
+    "candidate_ids": [
+     "202610160229-grok-24",
+     "202610160229-grok-23"
+    ]
+   },
+   {
+    "slug": "shiny-song-sweet-memories-focus-camera-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン縦画面フォーカスカメラに大崎甘奈歌唱『Sweet Memories』が追加",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "shiny-song-sweet-memories-focus-camera-2026",
+    "candidate_ids": [
+     "202610160229-grok-25"
+    ]
+   },
+   {
+    "slug": "shiny-dress-order-boost-week-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンでドレスオーダー強化週間開催、ミッションで無償プリズムジュエルとドレスオーダーチケット",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "shiny-dress-order-boost-week-2026",
+    "candidate_ids": [
+     "202610160229-grok-26"
+    ]
+   },
+   {
+    "slug": "shiny-runway-photo-contest-results-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "Shiny Runway 2026 Master ShowPieceフォトコンテストの4部門の受賞者が発表",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-runway-photo-contest-results-2026",
+    "candidate_ids": [
+     "202610160229-grok-28"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-concert-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "『Radiant Chord』アソビストアプレミアム会員先行の申込締切は10月18日23:59、あと2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 55,
+    "dedup_key": "shiny-orchestra-concert-2027",
+    "candidate_ids": [
+     "202610160229-grok-33"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-madoka-effortless-figure",
+    "reason": "既報",
+    "note": "10/13「シャニマス×雀魂フィギュア」で価格・2027年6月発送まで掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "shiny-song-for-prism-focus-muku-2026",
+    "reason": "既報",
+    "note": "10/15運営情報まとめで『無垢』追加とVer.2.19.0を掲載済み"
+   },
+   {
+    "dedup_key": "shiny-runway-contest-fan-reactions-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で未確認。結果発表の記事に含まれる"
+   },
+   {
+    "dedup_key": "shiny-style-collection-2026",
+    "reason": "既報",
+    "note": "10/10「SHINY Style」第2弾の記事で商品・価格掲載済み。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

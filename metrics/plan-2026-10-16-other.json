@@ -1,0 +1,33 @@
+{
+ "decisions": {
+  "million-monthly-alternative-revive-2026-10": {
+   "action": "article",
+   "angle": "次回マンスリー・オルタナティブREVIVEガシャの限定SSRに水瀬伊織・天空橋朋花、セレクションチケット類も予告され、10月18日(日)15:00からの開催と案内された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新発表。他面・prior・直近記事に同話題なし。出典は2ch系まとめ経由で未確認のため、書けるかは執筆・校閲で判断"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "other-million-monthly-alternative-revive-2026-10",
+    "brand": "other",
+    "rank": "small",
+    "angle": "次回マンスリー・オルタナティブREVIVEガシャの限定SSRに水瀬伊織・天空橋朋花、セレクションチケット類も予告され、10月18日(日)15:00からの開催と案内された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-monthly-alternative-revive-2026-10",
+    "candidate_ids": [
+     "202610160229-grok-22"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

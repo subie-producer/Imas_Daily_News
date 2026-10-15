@@ -6492,6 +6492,50 @@ def test_carry_dropped_candidates_schema(tmp: Path):
         compose.DROP_LOG.update(saved_log)
 
 
+def test_carry_reservation_deadline(tmp: Path):
+    """続報予約の素材の締切は、予約が指す締切(締切前・締切は出来事の日)。予約に写した元の話題の deadline(受付締切など別の締切)で
+    翌号への戻しが締切切れと判定して捨てない(2026-10-15: 10/18 の入金期限を指すレトラの予約2件が、受付締切 10/11 の deadline で
+    10/16 号に戻らなかった)。出来事の日を決められない予約や、締切でない予約も、号より前の元の deadline は渡さない。"""
+    for sub in ("candidates", "metrics", "docs/_posts", "stock/scheduled"):
+        (tmp / sub).mkdir(parents=True, exist_ok=True)
+    saved_root = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        d0, d1 = "2026-10-15", "2026-10-16"
+        # 実データ stock/scheduled/2026-10-15.json のレトラ入金案内の形(facts は日付の要るものだけ)
+        pay = ["受付期間: 2026年10月1日(木)〜2026年10月11日(日)23:59", "当落発表: 2026年10月13日(火)(予定)",
+               "入金期間: 2026年10月13日(火)～2026年10月18日(日)23:59", "公演日時: 2026年11月11日(水)"]
+        rows = [sched_row("sched-2026-10-15-letora-締切前", "2026-10-12", kind="締切前", dedup_key="letora", brand="dsva",
+                          url="https://idolmaster-official.jp/news/01_20086", source_type="公式", verify="confirmed",
+                          note="入金期限の3日前", facts=pay, event_date="2026-11-11", deadline="2026-10-11"),
+                # 出来事の日を決められない締切前(4日後の 10/19 も書いてある): 号より前の元の deadline は渡さない
+                sched_row("sched-2026-10-15-amb-締切前", "2026-10-12", kind="締切前", dedup_key="amb", url="https://e.example/amb",
+                          facts=["受付は10月11日まで", "10月18日と10月19日に追加受付"], deadline="2026-10-11"),
+                # 締切でない予約の、号より後の元の deadline はそのまま
+                sched_row("sched-2026-10-15-open-開始", "2026-10-12", kind="開始", dedup_key="open", url="https://e.example/open",
+                          facts=["10月15日開始、10月20日まで"], deadline="2026-10-20")]
+        (tmp / "stock" / "scheduled" / f"{d0}.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+        got = {r["dedup_key"]: r.get("deadline") for r in compose.load_scheduled(d0)}
+        check(got == {"letora": "2026-10-18", "amb": None, "open": "2026-10-20"},
+              f"続報予約の素材の締切が、予約が指す締切にならない(元の話題の deadline のまま): {got}")
+        check(json.loads((tmp / "stock" / "scheduled" / f"{d0}.json").read_text(encoding="utf-8")) == rows, "予約のファイルを書き換えた")
+        plan = {"articles": [{"slug": "letora", "candidate_ids": [r["id"] for r in rows]}]}
+        (tmp / "metrics" / f"plan-{d0}.json").write_text(json.dumps(plan), encoding="utf-8")
+        (tmp / "metrics" / f"drops-{d0}.json").write_text(json.dumps({"letora": {
+            "title": "レトラ入金", "stage": "校閲ブロック", "why": "R1", "candidate_ids": [r["id"] for r in rows]}}, ensure_ascii=False),
+            encoding="utf-8")
+        compose.carry_dropped_candidates(d1)
+        out = json.loads((tmp / "candidates" / f"{d1}.json").read_text(encoding="utf-8"))
+        ids = sorted(x["id"] for x in out)
+        let = next((x for x in out if x["id"] == rows[0]["id"]), {})
+        check(ids == sorted(r["id"] for r in rows) and let.get("deadline") == "2026-10-18" and let.get("carried", {}).get("from") == d0,
+              f"入金期限前の予約の素材が、元の話題の受付締切で締切切れとされ翌号に戻らない: {ids} {let.get('deadline')}")
+        for x in out:
+            check(not x.get("deadline") or x["deadline"] >= d1, f"戻した素材に号より前の締切が残る: {x['id']} {x.get('deadline')}")
+    finally:
+        compose.ROOT = saved_root
+
+
 def test_carry_dropped_candidates(tmp: Path):
     """前の号の計画に入ったのに紙面に載らなかった記事の素材を、次の号の選定に戻す(2026-10-13: 報道を出典にしてよいと決めたログボが、
     翌号の選定に戻る経路が無かった)。組み直しで戻った記事は写さない。同じ素材は CARRY_DROPPED_MAX 回まで。冪等。選定に理由が見える。"""
@@ -9894,6 +9938,7 @@ def main() -> int:
     test_compose_classifies_after_revise(tmp / "car")
     test_carry_late_candidates(tmp / "clc")
     test_carry_dropped_candidates(tmp / "cdc")
+    test_carry_reservation_deadline(tmp / "crd")
     test_carry_dropped_candidates_schema(tmp / "cdcs")
     test_late_facts_reach_plan_index(tmp / "lfpi")
     test_release_reads_latest_run(tmp / "rlr")

@@ -70,7 +70,9 @@ RUN_ID = now_jst().strftime("%Y%m%dT%H%M%S.%f")
 def load_scheduled(date: str) -> list[dict]:
     """発行日の続報予約(素材スナップショット同梱)。過去の candidates を遡らないための日付別ストア。
     event_date は予約が指す出来事の日(reminder_event_date)に置き換える。決められない予約は event_date を外す(執筆が決める)。
-    予約のファイルは書き換えない(予約後は原則変更しない)。"""
+    deadline は予約が指す締切(reservation_deadline)に置き換える。予約に写した元の話題の deadline は受付締切など別の締切のことが
+    あり、そのまま渡すと翌号への戻し(carry_dropped_candidates)が締切切れとして捨てる(2026-10-15: 10/18 の入金期限を指す
+    レトラの予約の deadline が受付締切の 10/11 だった)。予約のファイルは書き換えない(予約後は原則変更しない)。"""
     p = ROOT / "stock" / "scheduled" / f"{date}.json"
     if not p.exists():
         return []
@@ -81,8 +83,22 @@ def load_scheduled(date: str) -> list[dict]:
         ev = reminder_event_date(r, date)
         if ev:
             row["event_date"] = ev
+        row.pop("deadline", None)
+        dl = reservation_deadline(r, date, ev)
+        if dl:
+            row["deadline"] = dl
         rows.append(row)
     return rows
+
+
+def reservation_deadline(row: dict, date: str, ev: str | None) -> str | None:
+    """続報予約の素材の締切(素材の deadline として渡す値)。締切前・締切の予約は、予約が指す出来事の日(ev = reminder_event_date)
+    が締切そのもの。ほかの予約と、出来事の日を決められない締切の予約は、元の話題の deadline を、予約を消化する号(date)より前
+    でなければ渡す。号より前の deadline はこの予約が指す締切ではない(締切の予約は締切の日までに消化する)ので渡さない。"""
+    if row.get("kind") in ("締切前", "締切") and ev:
+        return ev
+    dl = str(row.get("deadline") or "")
+    return dl if re.fullmatch(r"\d{4}-\d{2}-\d{2}", dl) and dl >= date else None
 
 
 def reminder_event_date(row: dict, date: str) -> str | None:

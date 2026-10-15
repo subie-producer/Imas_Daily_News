@@ -22,5 +22,50 @@
   "candidate_ids": [
    "202610160229-grok-22"
   ]
+ },
+ "765-starmas-5th-idol-intro-1-2026": {
+  "title": "スターリットシーズン本編、Steamで2,706円",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 記事の中核であるSteamセールは既報の販売状況の再掲で、今号で新しく発表・発生した事実がありません。",
+  "candidate_ids": [
+   "202610160229-grok-4",
+   "202610160229-grok-59"
+  ]
+ },
+ "765-xr-765vs961-guest-idols": {
+  "title": "765AS第1公演に美希・貴音ら4人",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 中核となる出演者、公演日時、ゲスト、先行受付・当落日程はいずれも既報で、2026年10月16日に新たに出た事実や当日のトリガーが素材にありません。重複記事となるため掲載しません。",
+  "candidate_ids": [
+   "202610160229-grok-3"
+  ]
+ },
+ "gaku-12-61acd2": {
+  "title": "学マス西武線1日券、秩父駅で本日発売",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 同じ西武線1日フリーきっぷの発売告知を祭の湯記事が詳しく伝えているため、この記事は重複として紙面から外します。",
+  "candidate_ids": [
+   "sched-2026-10-16-gaku-12-発売"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "gaku-gakumas-seibu-chichibu-yukemuri-2026"
+   ]
+  }
+ },
+ "sidem-315night-2026-10-23": {
+  "title": "SideM、315プロNight!へ11thの感想募集",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 校閲指摘I1により、本記事は同じ「315プロNight!」感想募集を扱う相手記事と重複しており、指示どおり記事を紙面から外します。",
+  "candidate_ids": [
+   "202610160229-grok-48"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "sidem-315pronight-11th-feedback-october-2026"
+   ]
+  }
  }
 }

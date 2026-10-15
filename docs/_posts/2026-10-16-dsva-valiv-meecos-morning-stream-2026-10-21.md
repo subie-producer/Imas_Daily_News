@@ -8,7 +8,7 @@ corrected: false
 corrections: []
 candidate_ids:
 - 202610160229-grok-55
-title: ヴイアラ宇宙の配信に真未夢メエ、10月21日朝
+title: 上水流宇宙の配信に真未夢メエ、10月21日朝
 lede: 上水流宇宙の「宇宙ch」で10月21日（水）朝8時から「メエこす 朝活」が配信され、真未夢メエが出演する。
 tags:
 - vα-liv
@@ -22,7 +22,6 @@ sources:
 event_date: "2026-10-21"
 title_fact_ids:
 - F1
-- F2
 lede_fact_ids:
 - F1
 - F2

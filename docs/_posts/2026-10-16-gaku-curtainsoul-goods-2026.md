@@ -8,7 +8,7 @@ corrected: false
 corrections: []
 candidate_ids:
 - 202610152332-explore-4
-title: 学マス、カーテン魂の新グッズ4種が発売
+title: 学マス、カーテン魂の新商品51種の販売開始
 lede: カーテン魂は10月14日、学園アイドルマスターの新商品51種の販売を開始し、グラフィックTシャツは7,700円、特大アクリルスタンドとB2タペストリーは各4,400円、クッションカバーは2,970円で販売している。
 tags:
 - 学マス
@@ -27,12 +27,9 @@ sources:
 event_date: "2026-10-14"
 title_fact_ids:
 - N1
-- F1
-- F2
-- F3
-- F4
 lede_fact_ids:
 - N1
+- N2
 - F1
 - F2
 - F3

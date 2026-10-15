@@ -388,6 +388,7 @@ video_channels:
     - tokiwakaname        # 合議で追加: 個人チャンネルの踊ってみた投稿。公式・運営発信ではなく個人の二次創作
     - TogawaNonoha        # 合議で追加: YouTubeの個人チャンネル。個人アカウントに該当
   公式:
+    - imas-tours          # 合議で追加: 作品の公式チャンネル。紹介文と sameAs が公式サイト・公式X
     - imas-official        # アイドルマスターチャンネル
     - hatsuboshi_gakuen    # 初星学園(学マス)公式
     - project_imas_va-liv  # ヴイアラ(876プロ)公式
@@ -407,6 +408,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - 9LYcJoxB_r4         # 機械で追加: @imas-tours「『アイドルマスター TOURS』新シリーズ2弾情報発表【公式」
     - ioQmV7-M1z8         # 機械で追加: @KamizuruCosmo「Dance in the Light 踊ってみた with 」
     - Z-LWjF5J6Mw         # 機械で追加: @hatsuboshi_gakuen「初星学園 「キミとセミブルー」Official Music 」
     - Oq5n5dcZsm0         # 機械で追加: @imas-official「10/14 藤本里奈さん Happy Birthday‼」
@@ -892,6 +894,8 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/qs2xK8F5GV: 公式                         # 機械で追加: 展開先 https://www.youtube.com/live/9LYcJoxB_r4
+  t.co/qs2xK8ExRn: 公式                         # 機械で追加: 展開先 https://www.youtube.com/live/9LYcJoxB_r4
   nicovideo.jp/user/17835786: ファン              # 合議で追加: 個人のユーザーページ(ID 17835786)。個人に紐づく発信なのでファン
   note.com/mi_mei_: ファン                        # 合議で追加: noteの個人アカウント。ライブ参加者による個人レポート
   note.com/konpotap: ファン                       # 合議で追加: noteの個人アカウント。イベント参加者による個人レポート

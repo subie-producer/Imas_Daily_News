@@ -6492,6 +6492,84 @@ def test_carry_dropped_candidates_schema(tmp: Path):
         compose.DROP_LOG.update(saved_log)
 
 
+def test_carry_reservation_deadline(tmp: Path):
+    """続報予約の素材の締切は、予約が指す締切(締切前・締切は出来事の日)。予約に写した元の話題の deadline(受付締切など別の締切)で
+    翌号への戻しが締切切れと判定して捨てない(2026-10-15: 10/18 の入金期限を指すレトラの予約2件が、受付締切 10/11 の deadline で
+    10/16 号に戻らなかった)。出来事の日を決められない予約や、締切でない予約も、号より前の元の deadline は渡さない。"""
+    for sub in ("candidates", "metrics", "docs/_posts", "stock/scheduled"):
+        (tmp / sub).mkdir(parents=True, exist_ok=True)
+    saved_root = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        d0, d1 = "2026-10-15", "2026-10-16"
+        # 実データ stock/scheduled/2026-10-15.json のレトラ入金案内の形(facts は日付の要るものだけ)
+        pay = ["受付期間: 2026年10月1日(木)〜2026年10月11日(日)23:59", "当落発表: 2026年10月13日(火)(予定)",
+               "入金期間: 2026年10月13日(火)～2026年10月18日(日)23:59", "公演日時: 2026年11月11日(水)"]
+        rows = [sched_row("sched-2026-10-15-letora-締切前", "2026-10-12", kind="締切前", dedup_key="letora", brand="dsva",
+                          url="https://idolmaster-official.jp/news/01_20086", source_type="公式", verify="confirmed",
+                          note="入金期限の3日前", facts=pay, event_date="2026-11-11", deadline="2026-10-11"),
+                # 出来事の日を決められない締切前(4日後の 10/19 も書いてある): 号より前の元の deadline は渡さない
+                sched_row("sched-2026-10-15-amb-締切前", "2026-10-12", kind="締切前", dedup_key="amb", url="https://e.example/amb",
+                          facts=["受付は10月11日まで", "10月18日と10月19日に追加受付"], deadline="2026-10-11"),
+                # 締切でない予約の、号より後の元の deadline はそのまま
+                sched_row("sched-2026-10-15-open-開始", "2026-10-12", kind="開始", dedup_key="open", url="https://e.example/open",
+                          facts=["10月15日開始、10月20日まで"], deadline="2026-10-20")]
+        (tmp / "stock" / "scheduled" / f"{d0}.json").write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+        got = {r["dedup_key"]: r.get("deadline") for r in compose.load_scheduled(d0)}
+        check(got == {"letora": "2026-10-18", "amb": None, "open": "2026-10-20"},
+              f"続報予約の素材の締切が、予約が指す締切にならない(元の話題の deadline のまま): {got}")
+        check(json.loads((tmp / "stock" / "scheduled" / f"{d0}.json").read_text(encoding="utf-8")) == rows, "予約のファイルを書き換えた")
+        plan = {"articles": [{"slug": "letora", "candidate_ids": [r["id"] for r in rows]}]}
+        (tmp / "metrics" / f"plan-{d0}.json").write_text(json.dumps(plan), encoding="utf-8")
+        (tmp / "metrics" / f"drops-{d0}.json").write_text(json.dumps({"letora": {
+            "title": "レトラ入金", "stage": "校閲ブロック", "why": "R1", "candidate_ids": [r["id"] for r in rows]}}, ensure_ascii=False),
+            encoding="utf-8")
+        compose.carry_dropped_candidates(d1)
+        out = json.loads((tmp / "candidates" / f"{d1}.json").read_text(encoding="utf-8"))
+        ids = sorted(x["id"] for x in out)
+        let = next((x for x in out if x["id"] == rows[0]["id"]), {})
+        check(ids == sorted(r["id"] for r in rows) and let.get("deadline") == "2026-10-18" and let.get("carried", {}).get("from") == d0,
+              f"入金期限前の予約の素材が、元の話題の受付締切で締切切れとされ翌号に戻らない: {ids} {let.get('deadline')}")
+        for x in out:
+            check(not x.get("deadline") or x["deadline"] >= d1, f"戻した素材に号より前の締切が残る: {x['id']} {x.get('deadline')}")
+        # 翌号に同じ URL の候補(収集の拾い直し。受付締切 10/11 の deadline)があり、その号の選定も選ばなかった: まとめた候補は
+        # 予約の締切 10/18 を持ち、翌々号へも戻る(監査指摘 reservation-deadline-merge: 既存候補の 10/11 が残り 10/17 号で捨てた)
+        for sub in ("candidates", "metrics"):
+            for f in (tmp / sub).glob("*.json"):
+                f.unlink()
+        d2 = "2026-10-17"
+        (tmp / "metrics" / f"plan-{d0}.json").write_text(json.dumps(plan), encoding="utf-8")
+        (tmp / "metrics" / f"drops-{d0}.json").write_text(json.dumps({"letora": {
+            "title": "レトラ入金", "stage": "校閲ブロック", "why": "R1", "candidate_ids": [rows[0]["id"]]}}, ensure_ascii=False),
+            encoding="utf-8")
+        pre = {"id": "202610111234-watch-1", "title": "レトラ", "brand": "dsva", "dedup_key": "letora", "url": rows[0]["url"],
+               "source_type": "公式", "verify": "confirmed", "found_at": "2026-10-15T08:00:00+09:00", "facts": pay[:2],
+               "deadline": "2026-10-11"}
+        (tmp / "candidates" / f"{d1}.json").write_text(json.dumps([pre], ensure_ascii=False), encoding="utf-8")
+        compose.carry_dropped_candidates(d1)
+        out1 = json.loads((tmp / "candidates" / f"{d1}.json").read_text(encoding="utf-8"))
+        check([(x["id"], x.get("deadline")) for x in out1] == [(pre["id"], "2026-10-18")],
+              f"同じ URL の候補へまとめた予約の素材の締切が、既存候補の受付締切のまま: {[(x['id'], x.get('deadline')) for x in out1]}")
+        compose.carry_dropped_candidates(d1)       # 冪等
+        check(json.loads((tmp / "candidates" / f"{d1}.json").read_text(encoding="utf-8")) == out1, "同じ号へ二度戻すと結果が変わる")
+        (tmp / "metrics" / f"plan-{d1}.json").write_text('{"articles": []}', encoding="utf-8")
+        compose.carry_dropped_candidates(d2)
+        p2 = tmp / "candidates" / f"{d2}.json"
+        out2 = json.loads(p2.read_text(encoding="utf-8")) if p2.exists() else []
+        check([(x["id"], x.get("deadline")) for x in out2] == [(pre["id"], "2026-10-18")],
+              f"同じ URL の候補へまとめた予約の素材が、入金期限 10/18 の前の {d2} 号に戻らない: {out2}")
+        # 収集の拾い直し・前の号の未読の引き継ぎ(同じ規則): facts が同じでも遅い締切を採り、早い締切では縮めない
+        a = {**pre, "facts": pay[:2]}
+        check(pipelib.merge_candidate_facts(a, {**pre, "deadline": "2026-10-18"}) and a["deadline"] == "2026-10-18",
+              f"同じページの候補をまとめると、遅い締切が落ちる: {a.get('deadline')}")
+        check(not pipelib.merge_candidate_facts(a, {**pre, "deadline": "2026-10-11"}) and a["deadline"] == "2026-10-18",
+              f"同じページの候補をまとめると、締切が早いほうへ戻る: {a.get('deadline')}")
+        b = {k: v for k, v in pre.items() if k != "deadline"}
+        check(pipelib.merge_candidate_facts(b, pre) and b.get("deadline") == "2026-10-11", "締切の無い候補へ、まとめた素材の締切が入らない")
+    finally:
+        compose.ROOT = saved_root
+
+
 def test_carry_dropped_candidates(tmp: Path):
     """前の号の計画に入ったのに紙面に載らなかった記事の素材を、次の号の選定に戻す(2026-10-13: 報道を出典にしてよいと決めたログボが、
     翌号の選定に戻る経路が無かった)。組み直しで戻った記事は写さない。同じ素材は CARRY_DROPPED_MAX 回まで。冪等。選定に理由が見える。"""
@@ -9894,6 +9972,7 @@ def main() -> int:
     test_compose_classifies_after_revise(tmp / "car")
     test_carry_late_candidates(tmp / "clc")
     test_carry_dropped_candidates(tmp / "cdc")
+    test_carry_reservation_deadline(tmp / "crd")
     test_carry_dropped_candidates_schema(tmp / "cdcs")
     test_late_facts_reach_plan_index(tmp / "lfpi")
     test_release_reads_latest_run(tmp / "rlr")

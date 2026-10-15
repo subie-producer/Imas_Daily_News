@@ -103,5 +103,47 @@
    },
    "duration_s": 1771
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-16T03:26:27+09:00",
+   "edition": "2026-10-16",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 43,
+   "written": 35,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 88,
+    "covered": 88,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "765-chibi-mako-yukiho-2026"
+   ],
+   "stages_min": {
+    "選定": 1.5001370986302693,
+    "執筆": 4.705969178676606,
+    "出典の判定": 0.8001525044441223,
+    "組版": 0.5895957787831624,
+    "校閲": 0.6711592237154643,
+    "校閲1波": 0.6711592237154643
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "cg-isetan-osechi-campaign-2027",
+    "million-sports-day-login-bonus-2026",
+    "other-million-monthly-alternative-revive-2026-10",
+    "765-starmas-5th-idol-intro-1-2026",
+    "765-xr-765vs961-guest-idols",
+    "gaku-12-61acd2",
+    "sidem-315night-2026-10-23"
+   ],
+   "duration_s": 1549
+  }
  ]
 }

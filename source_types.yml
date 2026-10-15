@@ -490,6 +490,7 @@ video_ids:
 # 公式アカウント以外の X 投稿は公式ではない。表に無いアカウントは未確認になる。
 x_accounts:
   公式:
+    - imas_tours          # 合議で追加: ツアマス系。登録済み@TOURS_imasと同主体と推定
     - gkmas_goods         # 合議で追加: 学園アイマスの作品公式の運営によるグッズ情報。公式と同じ主体
     - imas_official                   # アイドルマスター公式
     - idolmaster_en                   # アイドルマスター公式(英語)
@@ -568,6 +569,13 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - zqzqmnth            # 合議で追加: フォトコンテスト参加者本人の受賞報告
+    - siy4715             # 合議で追加: コラボ会場を訪れた個人の投稿
+    - shuka_shake         # 合議で追加: 個人による歌ってみた動画の投稿
+    - sammy_sammy         # 合議で追加: 個人による聖地巡礼の投稿
+    - kawaii3sisters      # 合議で追加: 個人によるPOP UP SHOP訪問の投稿
+    - gunsou_765AS        # 合議で追加: 個人によるプロモカード受取の報告投稿
+    - Sakura_Kaiser_P     # 合議で追加: 個人アカウントによる作品紹介の投稿
     - seika_love_anzu     # 合議で追加: 双葉杏フラスタのデザイン案公開。個人ファンの発信
     - imen_dere           # 合議で追加: FABULOUS-Party出演アイドルへのフラワー企画。個人のファン発信
     - dark_blue_xxx       # 合議で追加: 上水流宇宙を陸上戦艦テーマで組んだ個人のファン投稿
@@ -797,6 +805,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - TokyoJoypolis       # 合議で追加: 上映会場の施設アカウントによる一次発信
     - kawashima_Fe        # 合議で追加: ８番らーめんのコラボキャンペーン。コラボ先の店舗側の発信
     - atimes_goods        # 合議で追加: 応援法被の予約受付。商品の販売元として一次発信
     - oinagoya            # 合議で追加: 金山観光案内所で丹羽仁美のフォトスポットを設置

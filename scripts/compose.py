@@ -2000,21 +2000,31 @@ def drop_blocked_articles(date: str, review: dict, written: list[dict]) -> tuple
         if slug not in dropped:
             dropped.append(slug)
     written[:] = [a for a in written if a["slug"] not in dropped]
-
-    # 一面が落ちたら立て直す。pick_lead と同じく roundup だけを除外する
-    if written and not any(a.get("rank") == "lead" for a in written):
-        cand = [a for a in written if a.get("rank") != "roundup"] or written
-        top = max(cand, key=lambda a: a.get("lead_score") or 0)
-        top["rank"] = "lead"
-        p = ROOT / "docs" / "_posts" / f"{date}-{top['slug']}.md"
-        if p.exists():
-            txt = p.read_text(encoding="utf-8")
-            m = re.match(r"^---\n(.*?)\n---\n", txt, re.S)
-            if m:
-                head = re.sub(r"^rank:.*$", "rank: lead", m.group(1), count=1, flags=re.M)
-                write_checked(p, "---\n" + head + "\n---\n" + txt[m.end():])
-        print(f"一面が落ちたので {top['slug']} を一面に立てる(lead_score 最大)", flush=True)
+    restand_lead(date, written)
     return dropped, unresolved
+
+
+def restand_lead(date: str, written: list[dict]) -> str | None:
+    """**紙面に一面が無ければ、残りの記事から立て直す。**立てた記事の slug を返す(一面があれば何もしない)。
+
+    一面は校閲ブロックでも、書き直しの見送り(執筆側が不成立と判断)でも、lint 赤の落としでも外れる。
+    立て直しを校閲ブロックの経路だけに置いていたため、書き直しで一面が見送られた号は一面0本のまま組版され、
+    lint が赤くなった(2026-10-16号: 一面の 765×961 ライブの記事が書き直しで NOT_NEWS になった)。
+    枠を当て直す場所(assign_ranks)で必ず通す。pick_lead と同じく roundup だけを除外する"""
+    if not written or any(a.get("rank") == "lead" for a in written):
+        return None
+    cand = [a for a in written if a.get("rank") != "roundup"] or written
+    top = max(cand, key=lambda a: a.get("lead_score") or 0)
+    top["rank"] = "lead"
+    p = ROOT / "docs" / "_posts" / f"{date}-{top['slug']}.md"
+    if p.exists():
+        txt = p.read_text(encoding="utf-8")
+        m = re.match(r"^---\n(.*?)\n---\n", txt, re.S)
+        if m:
+            head = re.sub(r"^rank:.*$", "rank: lead", m.group(1), count=1, flags=re.M)
+            write_checked(p, "---\n" + head + "\n---\n" + txt[m.end():])
+    print(f"一面が落ちたので {top['slug']} を一面に立てる(lead_score 最大)", flush=True)
+    return top["slug"]
 
 
 def assign_ranks(date: str, plan: dict, written: list[dict], keep_lead: bool = False) -> dict:
@@ -2032,6 +2042,11 @@ def assign_ranks(date: str, plan: dict, written: list[dict], keep_lead: bool = F
     """
     from lint import BODY_RANGE
     by_slug = {a["slug"]: a for a in plan["articles"]}
+    if keep_lead:
+        # 一面を動かさない当て直しでも、一面が紙面から外れていたら立て直す(外す経路は校閲ブロックだけではない)
+        top = restand_lead(date, [a for a in written if (ROOT / "docs" / "_posts" / f"{date}-{a['slug']}.md").exists()])
+        if top and top in by_slug:
+            by_slug[top]["rank"] = "lead"
     sized = []
     for art in written:
         p = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"

@@ -8141,6 +8141,35 @@ def test_reassemble_reranks_rewritten(tmp: Path):
           "lint 赤の書き直しのあと、枠を当て直す前に lint を見ている(枠の不一致で記事を落とす)")
 
 
+def test_reassemble_restands_lead_after_revise_drop(tmp: Path):
+    """書き直しで一面が見送られた(記事ファイルが消えた)号を組み直すときは、残りの記事から lead_score 最大を一面に立てる。
+    立て直しが校閲ブロックの経路にしか無く、一面0本のまま組版されて lint が赤くなった(2026-10-16号: 一面の記事が書き直しで
+    NOT_NEWS になった)。roundup は一面にしない"""
+    import assemble as _assemble
+    d = "2026-10-16"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    a, b, r = posts / f"{d}-a.md", posts / f"{d}-b.md", posts / f"{d}-r.md"
+    a.write_text("---\n" + article_fm("a", d, rank="small") + "---\n" + "あ" * 200 + "\n", encoding="utf-8")
+    b.write_text("---\n" + article_fm("b", d, rank="small") + "---\n" + "い" * 200 + "\n", encoding="utf-8")
+    r.write_text("---\n" + article_fm("r", d, rank="roundup") + "---\n" + "う" * 200 + "\n", encoding="utf-8")
+    plan = {"articles": [{"slug": "gone", "lead_score": 99, "rank": "lead"}, {"slug": "a", "lead_score": 20, "rank": "small"},
+                         {"slug": "b", "lead_score": 60, "rank": "small"}, {"slug": "r", "lead_score": 90, "rank": "roundup"}]}
+    written = [dict(x, brand="cg") for x in plan["articles"]]   # 一面 gone は書き直しで見送られ、ファイルが無い
+    seen = []
+    saved = compose.ROOT, _assemble.run, compose.persist_records
+    try:
+        compose.ROOT = tmp
+        compose.persist_records = lambda *x, **k: None
+        _assemble.run = lambda date, number, **k: (seen.append(re.search(r"^rank: (\S+)$", b.read_text(encoding="utf-8"), re.M).group(1)), 0)[1]
+        compose.reassemble(d, 1, plan, written)
+    finally:
+        compose.ROOT, _assemble.run, compose.persist_records = saved
+    ranks = {p.stem[len(d) + 1:]: re.search(r"^rank: (\S+)$", p.read_text(encoding="utf-8"), re.M).group(1) for p in (a, b, r)}
+    check(seen == ["lead"] and ranks == {"a": "small", "b": "lead", "r": "roundup"} and plan["articles"][2]["rank"] == "lead",
+          f"一面が見送られた号を一面0本のまま組み直した(または roundup を一面にした): 組版が見た枠 {seen} / {ranks} / {plan}")
+
+
 def test_rewrite_past_apply_answer(tmp: Path):
     """過去記事の書き直しの差し替え(rewrite_past.apply_answer)と枠の付け直し(fix_rank)を見張りの下で通す: 元の記録(訂正・号・slug・
     候補)を残して内容を差し替え、短くなった記事の枠を付け直し、書式どおりに書く(監査指摘: 素通しに変えても全テストが通った)。"""
@@ -9904,6 +9933,7 @@ def main() -> int:
     test_failed_rollback_blocks_commit(tmp / "frb")
     test_canonicalize_and_assign_ranks(tmp / "car2")
     test_reassemble_reranks_rewritten(tmp / "rerank")
+    test_reassemble_restands_lead_after_revise_drop(tmp / "restand")
     test_rewrite_past_apply_answer(tmp / "rpa")
     test_slugify_format()
     test_escalate_is_module_global()

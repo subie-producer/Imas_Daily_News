@@ -1,0 +1,107 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-17T02:28:41+09:00",
+   "edition": "2026-10-17",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 350,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 6,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 2,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 0,
+    "grok_week_searches": 497,
+    "grok:765as": 2,
+    "grok:cinderella": 15,
+    "grok:million": 6,
+    "grok:shiny": 13,
+    "grok:sidem": 14,
+    "grok:gakuen": 5,
+    "grok:dsva": 7,
+    "grok:joint-other": 5,
+    "grok:trend": 13,
+    "grok_searches:million": 5,
+    "grok_searches:cg": 7,
+    "grok_searches:gaku": 8,
+    "grok_searches:sidem": 8,
+    "grok_searches:dsva": 6,
+    "grok_searches:general": 9,
+    "grok_searches:joint": 8,
+    "grok_searches:765": 8,
+    "grok_searches:shiny": 13
+   },
+   "normalized": 102,
+   "added": 66,
+   "verify": {
+    "confirmed": 66,
+    "unconfirmed": 28,
+    "failed": 8
+   },
+   "duration_s": 1683
+  }
+ ]
+}

@@ -35,8 +35,9 @@ PRIOR_DAYS = 36500      # 既報として渡す過去の記事の期間(=全期�
 # 催しの発表が重なると、公演ページは多くの記事・話題に出て hub(話題の照合に使わない)になるが、同じ催しの記事であることは変わらない
 EVENT_PAGE = re.compile(r"^(idolmaster-official\.jp/live_event/[^/?#]+|asobistage\.asobistore\.jp/event/[^/?#]+|livepocket\.jp/e/[^/?#]+)")
 LIST_TAILS = {"", "news", "information", "topics", "top", "index", "info", "blog", "list", "article", "articles"}
-BODY_LINK = re.compile(r"\]\((https?://[^)\s]+)\)")      # 本文の markdown のリンク先
-FACT_URL = re.compile(r"https?://[^\s)」』\]>]+")            # 候補の facts に書かれた url(投稿に貼られたリンク・配信 URL 等)
+# 文に書かれた url: 本文のリンク([..](url)・<url>・「視聴URL：url」の裸の url)と候補の facts の url(投稿に貼られたリンク・配信 URL 等)。
+# url に使える ASCII だけを取る(括弧・引用符・和文で切る。和文が続く「url で視聴」も url に含めない)
+TEXT_URL = re.compile(r"https?://[A-Za-z0-9\-._~:/?#@!$&*+,;=%]+")
 # 記事を見分けない問い合わせ(追跡・共有・ページ送り)。これ以外の問い合わせ(?id= など)は記事を見分けるので残す
 NOISE_QUERY = re.compile(r"^(utm_.*|s|t|ref|ref_src|fbclid|gclid|usp|si|feature|page|from|share|via)$")
 
@@ -113,7 +114,9 @@ def past_articles(date: str, root: Path = ROOT, days: int = LINK_DAYS) -> list[d
         urls = {url_key(s.get("url")) for s in fm.get("sources") or [] if isinstance(s, dict)}
         # 本文のリンク(読者に示した配信・販売のページ)も記事の一次情報。出典が告知ページでも、別の経路の候補(配信を告知する
         # X の投稿)は配信ページだけを共有する(2026-10-17号: 前日の記事が載せた配信ページの告知が、新規として選ばれた)
-        links = {url_key(u) for u in BODY_LINK.findall(re.sub(r"\A---\n.*?\n---\n", "", raw, flags=re.S))}
+        # markdown のリンクだけでなく裸の url も(2026-10-14号の IM@S RADIO は「視聴URL：https://www.youtube.com/live/…」と書き、
+        # 翌日に同じ配信 URL を facts に持つ公式ニュースの候補が既報につながらず、同じ放送を 10/15 号にもう一度載せた)
+        links = {url_key(u) for u in text_urls(re.sub(r"<!--.*?-->", "", re.sub(r"\A---\n.*?\n---\n", "", raw, flags=re.S), flags=re.S))}
         keys = {dk} if dk else set()
         if ids:
             if ed not in cand_keys:
@@ -200,11 +203,27 @@ def link(cands: dict, date: str, root: Path = ROOT) -> list[tuple[str, str, str,
             changed.append((c["id"], c["dedup_key"], a["dedup_key"], f"{a['edition']}「{a['title']}」と同じ一次情報"))
             relink(c, a["dedup_key"])
     # 2. 今日の候補どうしで同じ一次情報(最初に拾った候補の dedup_key へ。過去につないだものが先なら、それへ)
+    #    facts の url でも引く: 別の候補の url そのもの(告知の投稿が「詳細」に貼った告知ページ。2026-10-15号: 公式ニュースの
+    #    IM@S RADIO と、そのニュースを貼った公式 X の投稿が別の話題になり、10/14 号の既報と合わせて同じ放送を二度載せた)。
+    #    facts の url は候補が触れたページなので、2つ以上の別の話題の候補(または過去の記事)が facts に持つページでは束ねない
+    #    (催しのページを貼ったグッズの投稿とチケットの投稿を、催しの候補へまとめない)
     groups: dict[str, list[dict]] = collections.defaultdict(list)
     for c in live:
         k = url_key(c.get("url"))
         if k and k not in hub:
             groups[k].append(c)
+    #    別の2つ以上の話題の候補の url を facts に持つ候補(各企画のリンクを並べた投稿)は、話題を橋渡しするので束ねない
+    referrers: dict[str, list[dict]] = collections.defaultdict(list)
+    for c in live:
+        own = url_key(c.get("url"))
+        refs = [k for k in cand_url_keys(c) if k != own and k in groups]
+        if len({o["dedup_key"] for k in refs for o in groups[k]}) < 2:
+            for k in refs:
+                referrers[k].append(c)
+    for k, cs in referrers.items():
+        owners = {c["dedup_key"] for c in groups[k]}
+        if len({c["dedup_key"] for c in cs} - owners) < 2 and len(topics_of[k]) < 2:
+            groups[k] += cs
     for k, cs in groups.items():
         keys = {c["dedup_key"] for c in cs}
         if len(keys) < 2:
@@ -222,10 +241,15 @@ def link(cands: dict, date: str, root: Path = ROOT) -> list[tuple[str, str, str,
     return changed
 
 
+def text_urls(text: str) -> list[str]:
+    """文に書かれた url(末尾の句読点を除く)。"""
+    return [u.rstrip(".,;:!?") for u in TEXT_URL.findall(text)]
+
+
 def cand_url_keys(c: dict) -> list[str]:
     """候補の一次情報のキー: url と、facts に書かれた url(重複・記事を指さないものを除く。url が先)。"""
     return [k for k in dict.fromkeys([url_key(c.get("url")),
-                                      *(url_key(u) for f in c.get("facts") or [] for u in FACT_URL.findall(str(f)))]) if k]
+                                      *(url_key(u) for f in c.get("facts") or [] for u in text_urls(str(f)))]) if k]
 
 
 def event_key(uk: str) -> str:

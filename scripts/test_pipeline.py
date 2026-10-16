@@ -4662,6 +4662,47 @@ def test_storylink_links_via_post_links(tmp: Path):
          "[配信](https://www.youtube.com/live/E0d4UT59xM4)")
     sl.link(c2, d, tmp)
     check(c2["x"]["dedup_key"] == "other", f"本文のリンクとして2つの話題に出るページでつないだ: {c2['x']['dedup_key']}")
+    # 本文の裸の url(「視聴URL：https://…」)も既報の一次情報(監査指摘 R1: 2026-10-14号の IM@S RADIO は配信 URL を裸で書き、
+    # 10/15 に同じ配信 URL を facts に持つ公式ニュースの候補が既報につながらず、同じ放送をもう一度載せた)
+    post("2026-10-14", "imas-radio", "imas-radio-2026-10-27", ["https://x.com/imas_ch/status/2110000115251605510"],
+         "パーソナリティは平田宏美。 <!-- F3 -->\n\n視聴URL：https://www.youtube.com/live/RRByxc2z4eM <!-- F4 -->")
+    c3 = {"n": {"id": "n", "dedup_key": "im-s-radio-2026-10-27", "url": "https://idolmaster-official.jp/news/01_20101",
+                "facts": ["配信URL: https://youtube.com/live/RRByxc2z4eM"]}}
+    sl.link(c3, d, tmp)
+    check(c3["n"]["dedup_key"] == "imas-radio-2026-10-27", f"本文の裸の url で既報につながない: {c3['n']['dedup_key']}")
+    check(sl.text_urls("視聴URL：https://www.youtube.com/live/RRByxc2z4eMで配信。<https://a.jp/b>、[x](https://c.jp/d).")
+          == ["https://www.youtube.com/live/RRByxc2z4eM", "https://a.jp/b", "https://c.jp/d"], "文の url を和文・括弧で切らない")
+
+
+def test_storylink_same_day_fact_urls(tmp: Path):
+    """同じ日の候補どうしも facts の url で束ねる(監査指摘 R2: 2026-10-15 の公式ニュースの IM@S RADIO と、そのニュースを「詳細」に
+    貼った公式 X の投稿が別の話題のまま選定に渡った)。facts の url が別の候補の url そのもののときだけ束ね、2つ以上の別の話題の
+    候補が facts に持つページ(催しのページ)・2つ以上の別の話題の候補の url を facts に並べた候補(リンク集の投稿)では束ねない。"""
+    import storylink as sl
+    d = "2026-10-15"
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    cands = {
+        "w": {"id": "w", "dedup_key": "im-s-radio-2026-10-27", "url": "https://idolmaster-official.jp/news/01_20101",
+              "found_at": "2026-10-14T12:33", "facts": ["配信URL: https://youtube.com/live/RRByxc2z4eM"]},
+        "g": {"id": "g", "dedup_key": "imas-radio-2026-10-27", "url": "https://x.com/imas_official/status/2110188856045969519",
+              "found_at": "2026-10-15T02:25", "facts": ["詳細: https://idolmaster-official.jp/news/01_20101"]},
+        # 催しのページ(候補 e の url)を2つの別の話題の候補が facts に持つ: どちらも束ねない
+        "e": {"id": "e", "dedup_key": "live-2027", "url": "https://idolmaster-official.jp/live/abc", "facts": []},
+        "goods": {"id": "goods", "dedup_key": "live-goods", "url": "https://x.com/a/status/1", "facts": ["https://idolmaster-official.jp/live/abc"]},
+        "ticket": {"id": "ticket", "dedup_key": "live-ticket", "url": "https://x.com/a/status/2", "facts": ["https://idolmaster-official.jp/live/abc"]},
+        # 2つの別の話題の候補の url を並べたリンク集の投稿: 橋渡ししない
+        "v1": {"id": "v1", "dedup_key": "voice", "url": "https://va-liv.booth.pm/items/8830505", "facts": []},
+        "v2": {"id": "v2", "dedup_key": "third-live", "url": "https://idolmaster-official.jp/va-liv/event/3rd_live", "facts": []},
+        "r": {"id": "r", "dedup_key": "reply", "url": "https://x.com/valiv_official/status/3",
+              "facts": ["ティザー: https://idolmaster-official.jp/va-liv/event/3rd_live", "ボイス: https://va-liv.booth.pm/items/8830505"]},
+    }
+    sl.link(cands, d, tmp)
+    check(cands["w"]["dedup_key"] == cands["g"]["dedup_key"],
+          f"告知ページを facts に貼った投稿を、告知ページの候補と束ねない: {cands['w']['dedup_key']} / {cands['g']['dedup_key']}")
+    check([cands[i]["dedup_key"] for i in ("e", "goods", "ticket")] == ["live-2027", "live-goods", "live-ticket"],
+          f"2つの話題の候補が facts に持つページで束ねた: {[cands[i]['dedup_key'] for i in ('e', 'goods', 'ticket')]}")
+    check([cands[i]["dedup_key"] for i in ("v1", "v2", "r")] == ["voice", "third-live", "reply"],
+          f"リンク集の投稿で別の話題を橋渡しした: {[cands[i]['dedup_key'] for i in ('v1', 'v2', 'r')]}")
 
 
 def test_storylink_related_prior(tmp: Path):
@@ -10336,6 +10377,7 @@ def main() -> int:
     test_storylink(tmp / "sl")
     test_storylink_related_prior(tmp / "slr")
     test_storylink_links_via_post_links(tmp / "slp")
+    test_storylink_same_day_fact_urls(tmp / "sls")
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()
     test_oncall_report_text(tmp / "rp")

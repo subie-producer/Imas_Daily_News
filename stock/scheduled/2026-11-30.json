@@ -60,12 +60,12 @@
   "event_date": "2026-11-12"
  },
  {
-  "id": "sched-2026-11-30-cinderella-online-kuji-ggwp-2026-終了",
+  "id": "sched-2026-11-30-cinderella-online-kuji-ggwp-2026-締切",
   "dedup_key": "cinderella-online-kuji-ggwp-2026",
   "brand": "cg",
-  "subject": "GGWPオンラインくじ販売終了",
-  "kind": "終了",
-  "note": "23:59までくじぽっぷ！でオンラインくじを購入できる最終日",
+  "subject": "オンラインくじ GGWP ver. 販売終了",
+  "kind": "締切",
+  "note": "くじぽっぷ！で23:59まで購入できる最終日",
   "reserved_on": "2026-10-17",
   "occurs_on": "2026-11-30",
   "title": "シンデレラ オンラインくじGGWP ver.",

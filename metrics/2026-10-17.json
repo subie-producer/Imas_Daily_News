@@ -177,5 +177,42 @@
    },
    "duration_s": 14
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-17T03:26:38+09:00",
+   "edition": "2026-10-17",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 44,
+   "written": 40,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 100,
+    "covered": 100,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.8356024344762167,
+    "執筆": 4.54769333600998,
+    "出典の判定": 4.754578276475271,
+    "組版": 0.9668333729108175,
+    "校閲": 0.472372309366862,
+    "校閲1波": 0.472372309366862
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "other-million-monthly-alternative-revive-2026-10",
+    "sidem-remember-shot-fair-vol4-2026",
+    "cg-cinderella-party-10th-cd-2026",
+    "general-imas-channel-member-radio-2026-10"
+   ],
+   "duration_s": 1560
+  }
  ]
 }

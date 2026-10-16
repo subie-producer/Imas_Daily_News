@@ -738,17 +738,24 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
     # 候補の dedup_key は storylink.link で、同じ一次情報の過去の記事の話題につなぎ直してある
     # 既報は台帳の要約(1記事1〜4件)ではなく、過去の記事が**読者に出した本文**で渡す(要約で渡したら、価格・店舗を「新しい事実」と
     # 判断して同じ記事をもう一度載せた。実測 2026-10-01 の8番らーめん)
-    # 既報は主題のキーだけでなく、候補のつなぎ直す前のキー・候補の URL からも引き、同じ催しの別の話題の記事も添える
-    # (2026-10-16号: 765×961 ライブの出演者は 9/30 号の記事にあったが、ゲスト発表の話題の既報しか渡らず新情報として選んだ)
+    # 既報は主題のキーだけでなく、候補のつなぎ直す前のキー・候補の URL からも引き、同じ一次情報の別の話題の記事も添える
+    # (2026-10-16号: 765×961 ライブの出演者は 9/30 号の記事にあったが、ゲスト発表の話題の既報しか渡らず新情報として選んだ)。
+    # 同じ催しの記事は本数で切らずに全部を、催しごとに1度だけ plan-events に書き、主題には催しのキー(events)を付ける
+    # (主題ごとに写すと、発表の多い催しの主題が並ぶ面で索引が膨らむ。本数で切ると、発表が重なるにつれ古い発表の記事が
+    # 押し出されて同じことが起きる。監査指摘 related-prior-evicts-known-cast)
     prior = storylink.prior_lookup(date, ROOT)
     hidden: set[str] = set()
     for s in subjects.values():
         items = sorted(pool.get(s["dedup_key"], []), key=lambda t: t[1] not in late)
         s["facts"] = list(dict.fromkeys(t for t, _ in items))[:PLAN_FACTS_PER_SUBJECT]
         hidden |= {k for t, k in items if k in late and t not in s["facts"]}
-        rows = prior(storylink.prior_keys(cands[i] for i in s["ids"]), s["urls"])
+        keys = storylink.prior_keys(cands[i] for i in s["ids"])
+        rows = prior(keys, s["urls"], events=False)
         if rows:
             s["prior"] = rows
+        evs = prior.events(keys, s["urls"])
+        if evs:
+            s["events"] = evs
     # 1主題1行で書く(整形すると数千行になり、Read の既定上限 2000行で頭から切れて
     # 後半の主題が編集長の視野に入らなくなる。行数=主題数なら一度で読み切れる)
     def dump(rows: list[dict], path: Path) -> None:
@@ -756,12 +763,21 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
         path.write_text("[\n" + body + "\n]\n", encoding="utf-8")
 
     dump(list(subjects.values()), ROOT / "metrics" / f"plan-index-{date}.json")
+    events = {e: prior.event_rows(e) for s in subjects.values() for e in s.get("events", [])}
     by_brand: dict[str, list[dict]] = {}
     for s in subjects.values():
         by_brand.setdefault(s.get("brand") or "other", []).append(s)
     for b, rows in by_brand.items():
         dump(rows, ROOT / "metrics" / f"plan-index-{date}-{b}.json")
+        write_event_index(events, rows, ROOT / "metrics" / f"plan-events-{date}-{b}.json")
     return by_brand, len(subjects), hidden
+
+
+def write_event_index(events: dict[str, list[dict]], rows: list[dict], path: Path) -> None:
+    """選定に渡す、同じ催しの過去の記事(1催し1行。主題の `events` が指す催しだけ。冪等: 無ければ空の配列)。"""
+    evs = sorted({e for r in rows for e in r.get("events", [])})
+    body = ",\n".join(json.dumps({"event": e, "articles": events.get(e, [])}, ensure_ascii=False, separators=(",", ":")) for e in evs)
+    path.write_text("[\n" + body + "\n]\n" if body else "[]\n", encoding="utf-8")
 
 
 def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dict],
@@ -1650,6 +1666,9 @@ def replan_missing(date: str, plan: dict, by_brand: dict, cands: dict,
     idx = ROOT / "metrics" / f"plan-index-{date}-missing.json"
     idx.write_text("[\n" + ",\n".join(json.dumps(r, ensure_ascii=False, separators=(",", ":"))
                                          for r in subjects) + "\n]\n", encoding="utf-8")
+    prior = storylink.prior_lookup(date, ROOT)
+    write_event_index({e: prior.event_rows(e) for r in subjects for e in r.get("events", [])}, subjects,
+                      ROOT / "metrics" / f"plan-events-{date}-missing.json")
     out = ROOT / "metrics" / f"plan-{date}-missing.json"
     out.unlink(missing_ok=True)
     prompt = missing_plan_prompt(date, subjects, plan.get("articles", []))
@@ -2267,7 +2286,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
         dks = (storylink.prior_keys(materials) | {art.get("dedup_key")}) - {None}
         facts = [f for dk in dks if dk in stories for f in stories[dk]]
         # 既報には、この話題の過去の記事が**読者に出した本文**も渡す(台帳の要約だけだと、書いた価格・店舗をまた書く。2026-10-01)。
-        # 同じ催しの別の話題の記事も添える(選定と同じ範囲。2026-10-16号の 765×961 ライブの出演者)
+        # 同じ一次情報・同じ催しの別の話題の記事も添える(選定と同じ範囲。催しの記事は全部。2026-10-16号の 765×961 ライブの出演者)
         facts += [f"{p['edition']}号「{p['title']}」の本文{'(同じ催しの別の発表の記事)' if p.get('related') else ''}: {p['text']}"
                   for p in prior(dks, [c.get("url") for c in materials])]
         # 構造化モード: 素材の事実に id を振り、執筆は JSON を返す(ファイルはコードが作る)

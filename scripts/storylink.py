@@ -11,8 +11,8 @@
    多くの記事に出てくる URL(一覧ページ・ライブの特設ページなど。HUB_POSTS 本を超えるもの)は照合に使わない
 2. 今日の候補の URL が過去の記事と一致すれば、その記事の dedup_key へつなぎ直す(台帳の同じ話題に積まれ、執筆は既報を受け取る)
 3. 今日の候補どうしで URL が一致すれば、1つの dedup_key にまとめる(同じ日に定点観測と探索が拾った同じ知らせ)
-選定と執筆には、主題ごとの過去の記事(prior: 号・見出し・読者に出した本文。同じ催しの別の話題の記事も添える。
-同じ催しは、一次情報のページの共有と、公演ページ(EVENT_PAGE。hub になっていても)の共有で見分ける)、選定には面ごとの
+選定と執筆には、主題ごとの過去の記事(prior: 号・見出し・読者に出した本文。同じ一次情報・同じ催しの別の話題の記事も添える。
+同じ催しは公演ページ(EVENT_PAGE。hub になっていても)の共有で見分け、催しの記事は本数で切らずに全部渡す)、選定には面ごとの
 直近の見出し(recent_titles)を渡す。記事にするか
 (新しい事実・当日のトリガーがあるか)の判断はモデルがする(内容の判断はモデル。コードは照合だけ)。
 """
@@ -30,9 +30,7 @@ LINK_DAYS = 45          # 照合に使う過去の記事の日数
 HUB_POSTS = 3           # これを超える本数の記事に出てくる URL は、一覧・特設ページとみなして照合に使わない
 HUB_TOPICS = 3          # この数以上の別の話題(dedup_key)に使われた URL は、シリーズのページとみなして照合に使わない
 RECENT_DAYS = 7         # 選定に渡す、面ごとの直近の見出しの日数
-PRIOR_ARTICLES = 2      # 既報として渡す過去の記事の本数(新しい順)
 PRIOR_DAYS = 36500      # 既報として渡す過去の記事の期間(=全期間)
-PRIOR_RELATED = 2       # 既報に添える、同じ催しの**別の話題**の記事の本数(新しい順)
 # 1つの催し(公演)だけを扱うページ: 公式の公演ページとその下(goods・ticket・streaming 等)。キーは催しの根(公演の ID まで)。
 # 催しの発表が重なると、公演ページは多くの記事・話題に出て hub(話題の照合に使わない)になるが、同じ催しの記事であることは変わらない
 EVENT_PAGE = re.compile(r"^(idolmaster-official\.jp/live_event/[^/?#]+|asobistage\.asobistore\.jp/event/[^/?#]+|livepocket\.jp/e/[^/?#]+)")
@@ -219,40 +217,66 @@ def prior_keys(cands) -> set[str]:
     return {k for c in cands for k in [c.get("dedup_key"), *(c.get("linked_from") or [])] if k}
 
 
-def prior_lookup(date: str, root: Path = ROOT):
-    """既報を引く関数 (話題キー群, URL 群) → 過去の記事(号・見出し・**読者に出した本文**)の一覧を返す。
+class PriorIndex:
+    """既報を引く索引。`index(話題キー群, URL 群)` → 過去の記事(号・見出し・**読者に出した本文**)の一覧。**全期間**から取る
+    (URL の照合は LINK_DAYS 日だが、既報は古くても既報。監査指摘 r107)。
     - 既報: キーのどれか(計画のキー・候補のキー=別名)を持つ記事、または URL(一覧・特設ページを除く)が同じ記事。
-      キーごと・URL ごとに新しい順に PRIOR_ARTICLES 本まで。**全期間**から取る(URL の照合は LINK_DAYS 日だが、既報は古くても既報。監査指摘 r107)
-    - 同じ催しの別の話題(`related: true`): 候補・既報の記事と、話題を見分ける一次情報・特設ページ(hub_urls でないもの)を共有する
-      別の記事、または同じ催しの公演ページ(EVENT_PAGE。hub になっていても)を出典に持つ別の記事。ページを共有する記事が先、
-      それぞれ新しい順に PRIOR_RELATED 本まで。hub は話題の照合(link)から外すための条件で、関連の提示には使わない
-      (公演ページは発表が3つの話題に載ると hub になり、それ以降の発表で同じ催しの既報が渡らなくなる。監査指摘 event-page-becomes-hub)。
-      出演者・ゲスト・チケットが別々に発表される催しは発表ごとに話題キーが分かれ、
-      キーだけで引くと別の発表の記事が書いた事実(出演者など)が新しく見える(2026-10-16号: 765×961 ライブの 765側出演者は
-      9/30 号に載っていたが、ゲスト発表の 10/14 号の話題につながった候補には 10/14 号の本文しか渡らず、新情報として選ばれた)"""
-    past = sorted(past_articles(date, root, days=PRIOR_DAYS), key=lambda a: (a["edition"], a["slug"]), reverse=True)
-    hub = hub_urls(past)
-    by_key: dict[str, list[dict]] = collections.defaultdict(list)
-    by_url: dict[str, list[dict]] = collections.defaultdict(list)
-    for a in past:
-        for k in a["keys"]:              # 計画のキーと、候補が持っていたキー(別名)のどちらからも引ける
-            by_key[k].append(a)
-        for u in a["urls"] - hub:
-            by_url[u].append(a)
+      **本数で切らない**(新しい順の本数で切ると、同じ話題の古い記事が書いた事実が新しく見える。実データで 130 の話題が3本以上、
+      最大8本。hub でない URL は HUB_POSTS 本以下)
+    - 同じ一次情報の別の話題(`related: true`): 候補・既報の記事と、話題を見分ける一次情報・特設ページ(hub_urls でないもの)を
+      共有する別の記事。**本数で切らない**(hub でない URL は HUB_POSTS 本以下・3つ未満の話題にしか出ないので、それで有界)
+    - 同じ催しの記事(`related: true`): 候補・既報の記事の URL にある公演ページ(EVENT_PAGE。hub になっていても)を出典に持つ記事の
+      **全部**。`events=False` なら添えず、`events()` が催しのキーだけを返す(選定の索引は催しの記事を催しごとに1度だけ
+      別のファイルに書き、主題には催しのキーを付ける。`event_rows()`)。
+    出演者・ゲスト・チケットが別々に発表される催しは発表ごとに話題キーが分かれ、キーだけで引くと別の発表の記事が書いた事実(出演者など)
+    が新しく見える(2026-10-16号: 765×961 ライブの 765側出演者は 9/30 号に載っていたが、ゲスト発表の 10/14 号の話題につながった候補には
+    10/14 号の本文しか渡らず、新情報として選ばれた)。催しの記事を新しい順の本数で切ると、発表が重なるにつれて古い発表(出演者)の記事が
+    押し出されて同じことが起きる(監査指摘 related-prior-evicts-known-cast)。hub は話題の照合(link)から外すための条件で、関連の提示には
+    使わない(監査指摘 event-page-becomes-hub)"""
 
-    def lookup(keys, urls=()) -> list[dict]:
+    def __init__(self, date: str, root: Path = ROOT):
+        self.past = sorted(past_articles(date, root, days=PRIOR_DAYS), key=lambda a: (a["edition"], a["slug"]), reverse=True)
+        self.hub = hub_urls(self.past)
+        self.by_key: dict[str, list[dict]] = collections.defaultdict(list)
+        self.by_url: dict[str, list[dict]] = collections.defaultdict(list)
+        self.by_event: dict[str, list[dict]] = collections.defaultdict(list)
+        for a in self.past:
+            for k in a["keys"]:              # 計画のキーと、候補が持っていたキー(別名)のどちらからも引ける
+                self.by_key[k].append(a)
+            for u in a["urls"] - self.hub:
+                self.by_url[u].append(a)
+            for e in sorted({event_key(u) for u in a["urls"]} - {""}):
+                self.by_event[e].append(a)
+
+    def _direct(self, keys, urls) -> tuple[set[str], dict[int, dict]]:
         uks = {url_key(u) for u in urls} - {""}     # 催しは hub の公演ページからも見分けるので、hub を除く前のもの
-        direct = {id(a): a for k in sorted({k for k in keys if k}) for a in by_key.get(k, [])[:PRIOR_ARTICLES]}
-        direct.update({id(a): a for u in sorted(uks - hub) for a in by_url.get(u, [])[:PRIOR_ARTICLES]})
-        shared = set().union(uks, *(a["urls"] for a in direct.values()))
-        events = {event_key(u) for u in shared} - {""}
-        shared -= hub
-        rest = [a for a in past if id(a) not in direct]
+        direct = {id(a): a for k in sorted({k for k in keys if k}) for a in self.by_key.get(k, [])}
+        direct.update({id(a): a for u in sorted(uks - self.hub) for a in self.by_url.get(u, [])})
+        return set().union(uks, *(a["urls"] for a in direct.values())), direct
+
+    def events(self, keys, urls=()) -> list[str]:
+        """候補・既報の記事の URL にある催しのキー(過去の記事があるものだけ)。"""
+        shared, _ = self._direct(keys, urls)
+        return sorted(e for e in {event_key(u) for u in shared} - {""} if self.by_event.get(e))
+
+    def event_rows(self, ev: str) -> list[dict]:
+        """催しの過去の記事の全部(新しい順)。"""
+        return [{"edition": a["edition"], "title": a["title"], "text": a["text"]} for a in self.by_event.get(ev, [])]
+
+    def __call__(self, keys, urls=(), events: bool = True) -> list[dict]:
+        shared, direct = self._direct(keys, urls)
+        evs = {event_key(u) for u in shared} - {""} if events else set()
+        shared -= self.hub
+        rest = [a for a in self.past if id(a) not in direct]
         related = ([a for a in rest if a["urls"] & shared]
-                   + [a for a in rest if not a["urls"] & shared and events & {event_key(u) for u in a["urls"]}])[:PRIOR_RELATED]
-        rows = [{"edition": a["edition"], "title": a["title"], "text": a["text"]} for a in past if id(a) in direct]
+                   + [a for a in rest if not a["urls"] & shared and evs & {event_key(u) for u in a["urls"]}])
+        rows = [{"edition": a["edition"], "title": a["title"], "text": a["text"]} for a in self.past if id(a) in direct]
         return rows + [{"edition": a["edition"], "title": a["title"], "related": True, "text": a["text"]} for a in related]
-    return lookup
+
+
+def prior_lookup(date: str, root: Path = ROOT) -> PriorIndex:
+    """既報の索引(PriorIndex)。"""
+    return PriorIndex(date, root)
 
 
 def recent_titles(date: str, root: Path = ROOT, days: int = RECENT_DAYS) -> dict[str, list[str]]:

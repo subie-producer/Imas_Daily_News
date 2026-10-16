@@ -4628,9 +4628,45 @@ def test_storylink_related_prior(tmp: Path):
         c2 = {"id": "c2", "dedup_key": "ultimate-ticket-general", "url": u, "found_at": "2026-10-16T03:00"}
         sl.link({"c2": c2}, d, tmp)
         rows = sl.prior_lookup(d, tmp)(sl.prior_keys([c2]), [u])
-        check(c2["dedup_key"] == "ultimate-ticket-general" and [r["edition"] for r in rows] == ["2026-10-15", "2026-09-30"]
+        check(c2["dedup_key"] == "ultimate-ticket-general" and [r["edition"] for r in rows] == ["2026-10-15", "2026-09-30", "2026-09-07"]
               and all(r.get("related") for r in rows),
               f"公演ページが hub になった後、同じ催しの既報(出演者の 9/30 号)が渡らない({u}): {[(r['edition'], r.get('related')) for r in rows]}")
+    # 同じ催しの発表がさらに重なっても(第2・第3公演のゲストが別の話題の記事になる)、古い発表の記事(出演者の 9/30 号)は本数で
+    # 押し出されない。選定の索引では、催しの記事は催しごとに plan-events に全部書き、主題は催しのキーで指す(監査指摘 related-prior-evicts-known-cast)
+    post("2026-10-15", "guest3", "third-guest", "765×961ライブ第三公演のゲスト", "第三公演のゲストは如月千早。", [live + "ticket"])
+    c3 = {"id": "c3", "dedup_key": "cast-ticket-followup", "brand": "765", "url": live + "ticket", "facts": ["765側の出演者4人"],
+          "found_at": "2026-10-16T03:30"}
+    sl.link({"c3": c3}, d, tmp)
+    rows = sl.prior_lookup(d, tmp)(sl.prior_keys([c3]), [c3["url"]])
+    check(any("四条貴音" in r["text"] for r in rows) and [r["edition"] for r in rows] == ["2026-10-15", "2026-10-15", "2026-09-30", "2026-09-07"],
+          f"同じ催しの発表が重なると、出演者の既報が本数の上限で押し出された: {[(r['edition'], r['title']) for r in rows]}")
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        by_brand, _, _ = compose.write_plan_index(d, {"c3": c3}, {})
+        ev = json.loads((tmp / "metrics" / f"plan-events-{d}-765.json").read_text(encoding="utf-8"))
+        # 判定から漏れた主題の拾い直しにも、同じ催しの記事を渡す
+        saved_rp = (compose.subprocess.run, compose.prompt_file, compose.save_raw)
+        compose.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 1, "", "")
+        compose.prompt_file, compose.save_raw = (lambda *a, **kw: "p"), (lambda *a, **kw: None)
+        try:
+            compose.replan_missing(d, {"articles": []}, by_brand, {"c3": c3}, [c3["dedup_key"]])
+        finally:
+            compose.subprocess.run, compose.prompt_file, compose.save_raw = saved_rp
+        ev_m = json.loads((tmp / "metrics" / f"plan-events-{d}-missing.json").read_text(encoding="utf-8"))
+    finally:
+        compose.ROOT = saved
+    check(ev_m == ev, f"拾い直しに同じ催しの記事が渡らない: {ev_m}")
+    row = by_brand["765"][0]
+    arts = [a for e in ev if e["event"] in row.get("events", []) for a in e["articles"]]
+    check(row.get("events") == [sl.event_key(sl.url_key(live))] and any("四条貴音" in a["text"] for a in arts)
+          and [a["edition"] for a in arts] == ["2026-10-15", "2026-10-15", "2026-09-30", "2026-09-07"],
+          f"選定の索引で、同じ催しの記事が全部渡らない: events={row.get('events')} {[(a['edition'], a['title']) for a in arts]}")
+    # 同じ話題の記事も本数で切らない(3本目以降の古い記事が書いた事実が新しく見えないように)
+    for i, ed in enumerate(("2026-08-10", "2026-08-11", "2026-08-12")):
+        post(ed, f"bd{i}", "letora-bd", f"誕生日第{i + 1}報", f"第{i + 1}報の事実{i}。", [f"https://b.jp/n/{i}"], brand="dsva")
+    check([r["edition"] for r in sl.prior_lookup(d, tmp)(["letora-bd"])] == ["2026-08-12", "2026-08-11", "2026-08-10"],
+          f"同じ話題の古い記事が本数の上限で押し出された: {sl.prior_lookup(d, tmp)(['letora-bd'])}")
     check(sl.event_key(sl.url_key("https://shop.asobistore.jp/feature/cg_mp")) == ""
           and sl.event_key(sl.url_key("https://idolmaster-official.jp/live_event/")) == "",
           "シリーズの特設ページ・公演の一覧を、1つの催しのページとみなした")

@@ -9365,6 +9365,59 @@ def test_platform_owner_units(tmp: Path):
         cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.nico_channel = saved
 
 
+def test_youtube_playlist_owner(tmp: Path):
+    """YouTube の再生リストの持ち主(2026-10-17: `youtube.com/playlist?list=…` が出典に載り、持ち主を取るパーサが無かった)。
+    単位は list= の ID(`&si=` は含めない)、種別は oEmbed の author_url(持ち主のチャンネル)の種別を写す。偽の取得で確かめる。"""
+    import classify_sources as cs
+    url = "https://www.youtube.com/playlist?list=PLVWdhK_WANzc&si=fdk5wzD9IgCw1N-r"
+    key = "youtube.com/playlist?list=PLVWdhK_WANzc"
+    check(cs.platform_unit(url) == ("path", key), f"再生リストの単位: {cs.platform_unit(url)}")
+    check(cs.platform_unit("https://www.youtube.com/playlist")[0] == "skip", "list= の無い再生リストの URL を判定の対象にした")
+    check(pipelib.path_type_norm(key) == key, "再生リストの ID の大小文字を潰した")
+    calls: list[str] = []
+
+    def fake(u: str) -> str:
+        calls.append(u)
+        return json.dumps({"title": "シャニラジHBTK", "author_name": "x", "author_url": "/@imas-official"})
+    check(cs.playlist_author("PLVWdhK_WANzc", fetch=fake) == ("imas-official", "シャニラジHBTK")
+          and "list%3DPLVWdhK_WANzc" in calls[0], f"oEmbed の持ち主: {calls}")
+    check(cs.playlist_author("PLx0123456789", fetch=lambda u: json.dumps({"author_url": "https://www.youtube.com/channel/UCabc"}))[0] == "",
+          "ハンドルでない author_url をハンドルにした")
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\nvideo_channels:\n  公式:\n    - imas-official\n", encoding="utf-8")
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.playlist_author, dict(cs._PLAYLIST_CACHE))
+    other = "https://www.youtube.com/playlist?list=PLother00000"
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        cs.POSTS_ONLY = None
+        cs._PLAYLIST_CACHE.clear()
+        owners = {"PLVWdhK_WANzc": ("imas-official", "シャニラジHBTK"), "PLother00000": ("somefan", "切り抜き")}
+        cs.playlist_author = lambda lid, fetch=None: owners[lid]
+        check(cs.display_base(url) == "https://youtube.com/@imas-official", f"表示の単位: {cs.display_base(url)}")
+        (tmp / "candidates" / "2026-10-17.json").write_text(json.dumps([{"url": url, "title": "シャニソン"}, {"url": other, "title": "x"}]),
+                                                            encoding="utf-8")
+        d, a, paths = cs.unknown_targets("2026-10-17")
+        check(not cs.NEED_PARSER and not cs.SKIPPED and not d and not paths, f"再生リストがパーサ待ち・合議に回った: {cs.NEED_PARSER} {paths}")
+        left, unk = cs.resolve_playlists("2026-10-17", True)
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source(url) == "公式" and pipelib.classify_source(other) == "未確認", "持ち主の種別が再生リストに写らない")
+        check(list(unk) == ["somefan"] and unk["somefan"][0] == "youtube.com/playlist?list=PLother00000"
+              and len(left) == 1 and "(@somefan)" in left[0], f"表に無いチャンネルの再生リスト: {left} {unk}")
+        cs.add_video_channels({"somefan": ("ファン", "個人")})
+        left, unk = cs.resolve_playlists("2026-10-17", True)
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source(other) == "ファン" and not left and not unk, f"チャンネルが決まった後の再生リスト: {left} {unk}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"再生リストのテストが例外: {type(e).__name__}: {e}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, cs.playlist_author, cache = saved
+        cs._PLAYLIST_CACHE.clear()
+        cs._PLAYLIST_CACHE.update(cache)
+
+
 def test_classify_txn_interrupt(tmp: Path):
     """出典の判定の取引の途中(表を書いた後・付け直しの最中)に親へ SIGTERM・SIGINT が来ても、子をプロセスグループごと止めてから
     判定表と記事を開始時へ戻し、中断はそのあとで元の扱いへ渡す(監査指摘 2026-10-14: 戻さずに終わって表だけが変わり、出典の lint が
@@ -10150,6 +10203,7 @@ def main() -> int:
     test_document_id_case(tmp / "dic")
     test_performer_domains(tmp / "pd")
     test_platform_owner_units(tmp / "pou")
+    test_youtube_playlist_owner(tmp / "ytpl")
     test_classify_txn_interrupt(tmp / "cti")
     test_tags_and_idols(tmp / "ti")
     test_request_parsers(tmp / "rq")

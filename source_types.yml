@@ -928,6 +928,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  youtube.com/playlist?list=PLVWdhK_WANzc: 公式 # 機械で追加: 持ち主 @imas-official「シャニラジHBTK｜アイドルマスター シャイニーカラーズ公式」
   docs.google.com/forms/d/e/1FAIpQLSfMhjRS_SENvwIOAgkX9_pGuiIuFIZBpmI0f-7N-Jm_sIFD6w: 公式 # 合議で追加: リンク元の公式X(@TomoriManaka)と同企画。制作委託Activ8
   t.co/BycEJlR0rt: 公式                         # 機械で追加: 展開先 https://idolmaster-official.jp/live_event/shinycolors_orchestra_RC/#ticketCol
   t.co/qs2xK8F5GV: 公式                         # 機械で追加: 展開先 https://www.youtube.com/live/9LYcJoxB_r4

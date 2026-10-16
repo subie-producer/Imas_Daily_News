@@ -2,7 +2,7 @@
 slug: shiny-ops-roundup
 edition: "2026-10-17"
 brand: shiny
-src: 未確認
+src: 公式
 rank: roundup
 corrected: false
 corrections: []
@@ -32,7 +32,7 @@ sources:
   type: 公式
 - label: YouTube「まったりHBTK 切り抜き」(2026年10月16日)
   url: https://www.youtube.com/playlist?list=PLVWdhK_WANzc&si=fdk5wzD9IgCw1N-r
-  type: 未確認
+  type: 公式
 - label: シャニソン公式「第17回テクニカルチャレンジ杯」(2026年10月16日)
   url: https://x.com/imassc_prism/status/2110928970317230485
   type: 公式

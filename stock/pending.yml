@@ -123,6 +123,7 @@
   subject: シンデレラガールズ×伊勢丹のおせち2027 販売情報
   watch: SNSキャンペーン詳細(販売開始10/21・締切11/17は判明、SNS情報は追って公開予定、判明次第 triggers へ)
   added_on: '2026-09-17'
+  removed_on: '2026-10-17'
 - dedup_key: shiny-silver-week-cas-colle-gasha-2026
   brand: shiny
   subject: シルバーウィーク記念 キャスコレ確定ステップアップガシャ
@@ -287,3 +288,8 @@
   subject: 灯里愛夏『BIOHAZARD RE:2』初見配信(見送り分)
   watch: 配信の新日程が判明次第 triggers へ
   removed_on: '2026-10-12'
+- dedup_key: shiny-karaoke-tetsujin-refrac7ions-2026
+  brand: shiny
+  subject: シャニマス×カラオケの鉄人 PJ:REFRAC7IONS コラボの続報
+  watch: 記事で「続報は後日発表」とされたコラボの詳細(判明次第 triggers へ)
+  added_on: '2026-10-17'

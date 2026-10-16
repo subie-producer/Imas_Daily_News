@@ -1,0 +1,113 @@
+{
+ "decisions": {
+  "chibigurumi-pouch-set-preorder": {
+   "action": "article",
+   "angle": "ちびぐるみ＆ポーチセット(亜美真美・あずさ律子・美希響貴音・真雪歩の4種)のプレミアムバンダイ受注が、あす10月18日23時に締め切られる",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "真・雪歩の既報は9/20・9/21。今回は締切が主題で、受注期間の重複は期日の伝え直しとして扱う"
+  },
+  "765as-961-chibigumi-pouch-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chibigurumi-pouch-set-preorder",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品・同じ10月18日の予約期限の知らせ"
+  },
+  "stamas-5th-idol-video-aya-2026": {
+   "action": "article",
+   "angle": "スタマス5周年のアイドル紹介動画②で亜夜を紹介。Steam本編70%オフセールも実施中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "心白の動画(10/15)とは別の新規動画。素材は少ないので短い記事にする"
+  },
+  "x-vorder-runway-omni-verse-live-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の投稿1件のみで未確認。公式発表ではなく、単体では記事にしない"
+  },
+  "765-chibi-mako-yukiho-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chibigurumi-pouch-set-preorder",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "はんげつであえたら(真・雪歩)は4種のうちの1種。受注締切も同じ10月18日23時で、読者の行動も同じ"
+  },
+  "xr-765vs961-guest-idols": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公演日程・会場・出演は9/8・9/30・10/14の記事で既出。ゲストアイドルは10/14に記事化済み。新しい事実も当日のトリガーも無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-chibigurumi-pouch-set-preorder",
+    "brand": "765",
+    "rank": "medium",
+    "angle": "ちびぐるみ＆ポーチセット(亜美真美・あずさ律子・美希響貴音・真雪歩の4種)のプレミアムバンダイ受注が、あす10月18日23時に締め切られる",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "chibigurumi-pouch-set-preorder",
+    "candidate_ids": [
+     "202610161234-watch-4",
+     "202610170225-grok-10",
+     "sched-2026-10-15-765-chibi-mako-yukiho-2026-締切前"
+    ]
+   },
+   {
+    "slug": "765-stamas-5th-idol-video-aya-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "スタマス5周年のアイドル紹介動画②で亜夜を紹介。Steam本編70%オフセールも実施中",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "stamas-5th-idol-video-aya-2026",
+    "candidate_ids": [
+     "202610170225-grok-11"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "x-vorder-runway-omni-verse-live-video-2026",
+    "reason": "個人の話題",
+    "note": "個人の投稿1件のみで未確認。公式発表ではなく、単体では記事にしない"
+   },
+   {
+    "dedup_key": "xr-765vs961-guest-idols",
+    "reason": "既報",
+    "note": "公演日程・会場・出演は9/8・9/30・10/14の記事で既出。ゲストアイドルは10/14に記事化済み。新しい事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

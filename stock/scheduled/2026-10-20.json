@@ -488,5 +488,35 @@
   "verify": "confirmed",
   "src_candidate_id": "202610150225-grok-36",
   "deadline": "2026-10-21"
+ },
+ {
+  "id": "sched-2026-10-20-manaka-halloween-pumpkin-recipe-2026-締切",
+  "dedup_key": "manaka-halloween-pumpkin-recipe-2026",
+  "brand": "dsva",
+  "subject": "愛夏かぼちゃレシピ募集",
+  "kind": "締切",
+  "note": "本日23:59がレシピ募集の締切。募集フォームから応募できる最終日",
+  "reserved_on": "2026-10-17",
+  "occurs_on": "2026-10-20",
+  "title": "愛夏のハロウィンかぼちゃレシピ募集",
+  "url": "https://x.com/TomoriManaka/status/2111104480699986386",
+  "source_type": "公式",
+  "facts": [
+   "2026年10月31日実施のハロウィン企画「愛夏かぼちゃ１個食う」配信で発表するレシピを募集",
+   "募集〆切: 10月20日23:59まで",
+   "かぼちゃを使い、愛夏が作れそうな難易度のレシピを募集",
+   "愛夏がレシピを実際に調理し、食べてみたいと思ったものを配信中に食べる",
+   "実食したレシピを味・コスト・満腹度の三項目で審査して優勝を決める",
+   "家にある材料として小麦粉、片栗粉、サラダ油、その他調味料を使用",
+   "応募されたすべてのレシピを紹介できるとは限らない",
+   "募集フォーム: https://docs.google.com/forms/d/e/1FAIpQLSfMhjRS_SENvwIOAgkX9_pGuiIuFIZBpmI0f-7N-Jm_sIFD6w/viewform",
+   "エンゲージメント: 低",
+   "言及アイドル: 灯里愛夏"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610170225-grok-62",
+  "event_date": "2026-10-31",
+  "deadline": "2026-10-20"
  }
 ]

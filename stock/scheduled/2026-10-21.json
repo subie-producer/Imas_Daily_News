@@ -414,5 +414,62 @@
   "verify": "confirmed",
   "src_candidate_id": "202610151833-watch-0",
   "event_date": "2026-10-21"
+ },
+ {
+  "id": "sched-2026-10-21-sidem-producer-meeting-ajewelholic-2027-締切",
+  "dedup_key": "sidem-producer-meeting-ajewelholic-2027",
+  "brand": "sidem",
+  "subject": "SideM PRODUCER MEETING 先行当選者の入金",
+  "kind": "締切",
+  "note": "本日23時59分までに当選分を入金できる",
+  "reserved_on": "2026-10-17",
+  "occurs_on": "2026-10-21",
+  "title": "SideM PRODUCER MEETING AJewelholIc",
+  "url": "https://idolmaster-official.jp/live_event/sidem_pm2027/information/",
+  "source_type": "公式",
+  "facts": [
+   "公演名: THE IDOLM@STER SideM PRODUCER MEETING ～AJewelholIc!!!～",
+   "公演日時: 2027年3月13日(土) 16:00開場/17:00開演(予定)",
+   "公演日時: 2027年3月14日(日) 15:30開場/16:30開演(予定)",
+   "開催場所: 京王アリーナ TOKYO",
+   "主催・企画: 株式会社バンダイナムコエンターテインメント",
+   "制作: 株式会社バンダイナムコミュージックライブ",
+   "現地チケット全席指定: 11,000円(税込)",
+   "アソビストアプレミアム会員先行の受付期間: 2026年9月12日(土)21:00～10月4日(日)23:59",
+   "当落発表: 2026年10月17日(土)13:00～",
+   "入金期間: 2026年10月17日(土)13:00～10月21日(水)23:59",
+   "枚数制限: お一人様1公演につき4枚まで(複数公演申込可)",
+   "対象: アソビストアプレミアム12か月会員のみ。1か月会員は対象外",
+   "エンゲージメント: 高",
+   "言及アイドル: 天道輝、渡辺みのり、紅井朱雀、橘志狼、牙崎漣、伊集院北斗、神楽麗、蒼井享介、握野英雄、冬美旬、榊夏来、黒野玄武、岡村直央、信玄誠司、清澄九郎、若里春名、卯月巻緒、姫野かのん、北村想楽、木村龍、伊瀬谷四季、水嶋咲、円城寺道流、兜大吾、硲道夫、山下次郎、九十九一希、葛之葉雨彦、古論クリス、天峰秀、蒼井悠介、華村翔真、神谷幸広、花園百々人"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "sched-2026-10-17-sidem-producer-meeting-ajewelholic-2027-結果",
+  "event_date": "2027-03-13",
+  "deadline": "2026-10-04"
+ },
+ {
+  "id": "sched-2026-10-21-sidem-tvguide-2026-10-30-発売",
+  "dedup_key": "sidem-tvguide-2026-10-30",
+  "brand": "sidem",
+  "subject": "週刊TVガイド10/30号 SideM撮りおろし",
+  "kind": "発売",
+  "note": "書店で撮りおろし写真とインタビュー掲載号を購入できる",
+  "reserved_on": "2026-10-17",
+  "occurs_on": "2026-10-21",
+  "title": "週刊TVガイド10/30号にSideMキャストの撮りおろしとインタビュー",
+  "url": "https://x.com/SideM_official/status/2111066598329164056",
+  "source_type": "公式",
+  "facts": [
+   "週刊TVガイド10/30号にSideM 11th出演キャストからTRANSCENDENT T@LES 12メンバーの撮りおろし写真とインタビューを掲載予定。",
+   "週刊TVガイド10/30号は10月21日(水)発売予定。",
+   "掲載キャスト: 仲村宗悟、白井悠介、小林大紀、伊東健人、大塚剛央。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610170225-grok-39",
+  "event_date": "2026-10-21"
  }
 ]

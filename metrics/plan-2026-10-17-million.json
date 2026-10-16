@@ -1,0 +1,166 @@
+{
+ "decisions": {
+  "million-bot10-invisible-light": {
+   "action": "article",
+   "angle": "「THE IDOLM@STER MILLION BATTLE OF THE＠TER 10 INVISIBLE LIGHT」(10月28日発売、LACA-25290、1,870円)の店舗特典が決定した",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同CDの店舗特典の3主題を統合。発売は10/28"
+  },
+  "million-invisible-light-store-bonuses-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-bot10-invisible-light",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じCDの店舗特典の発表"
+  },
+  "million-bot10-invisible-light-store-bonus": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-bot10-invisible-light",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じCDの店舗特典の発表"
+  },
+  "million-opera-seria-popup-mail-order-2026": {
+   "action": "article",
+   "angle": "POP UP SHOP「オペラセリア」のグッズがAnimoで事後通販に。受注は10月16日17時から11月16日17時まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "EC購入には店舗特典は付かない。発送は2027年2月下旬から"
+  },
+  "million-arc-flags-pop-up-corner-2026": {
+   "action": "article",
+   "angle": "「ARC-FLAGS POP UP CORNER」の詳細が解禁され、ミニキャライラストと購入特典のポストカードが公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催は11月6日。2,000円ごとにランダムでポストカード1枚"
+  },
+  "million-idol-grand-prix-s-rank-retry-2026": {
+   "action": "article",
+   "angle": "ミリシタのアイドルグランプリに、決勝大会とiGPでSランクに再挑戦できる「大会Sランク再挑戦」機能が追加された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/12のアイグラ練習機能の記事とは別の機能"
+  },
+  "million-theaterdays-ver-90350-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16号が強制アップデート当日の記事にしており、新しい事実も当日のトリガーも無い"
+  },
+  "million-snapshot-memories-gasha-2026-10": {
+   "action": "article",
+   "angle": "「Snapshot Memoriesガシャ」は明日10月18日14時59分で終了する",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了まで3日以内の締切が当日のトリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-bot10-invisible-light",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "「THE IDOLM@STER MILLION BATTLE OF THE＠TER 10 INVISIBLE LIGHT」(10月28日発売、LACA-25290、1,870円)の店舗特典が決定した",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "million-bot10-invisible-light",
+    "candidate_ids": [
+     "202610160732-explore-1",
+     "202610161234-explore-8",
+     "202610162334-explore-8"
+    ]
+   },
+   {
+    "slug": "million-opera-seria-popup-mail-order-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "POP UP SHOP「オペラセリア」のグッズがAnimoで事後通販に。受注は10月16日17時から11月16日17時まで",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-opera-seria-popup-mail-order-2026",
+    "candidate_ids": [
+     "202610161835-watch-2"
+    ]
+   },
+   {
+    "slug": "million-arc-flags-pop-up-corner-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「ARC-FLAGS POP UP CORNER」の詳細が解禁され、ミニキャライラストと購入特典のポストカードが公開された",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-arc-flags-pop-up-corner-2026",
+    "candidate_ids": [
+     "202610161835-watch-3"
+    ]
+   },
+   {
+    "slug": "million-idol-grand-prix-s-rank-retry-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタのアイドルグランプリに、決勝大会とiGPでSランクに再挑戦できる「大会Sランク再挑戦」機能が追加された",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-idol-grand-prix-s-rank-retry-2026",
+    "candidate_ids": [
+     "202610170225-grok-21"
+    ]
+   },
+   {
+    "slug": "million-snapshot-memories-gasha-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「Snapshot Memoriesガシャ」は明日10月18日14時59分で終了する",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "million-snapshot-memories-gasha-2026-10",
+    "candidate_ids": [
+     "202610170225-grok-84"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-theaterdays-ver-90350-2026",
+    "reason": "既報",
+    "note": "10/16号が強制アップデート当日の記事にしており、新しい事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

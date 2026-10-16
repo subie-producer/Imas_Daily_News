@@ -1,0 +1,50 @@
+{
+ "decisions": {
+  "idolmaster-tours-s2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16に同じ公式ニュース(S2弾10/29稼働・S.E.M登場)を記事化済み。新事実も当日のトリガーも無い"
+  },
+  "producers-station-meeting-matsudo-2026": {
+   "action": "article",
+   "angle": "Pステ松戸で本日10月17日、PRODUCERS STATION MEETING(交流会)が開催される",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開幕)。9/17に告知済みだが開催当日のトリガーあり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-producers-station-meeting-matsudo-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "Pステ松戸で本日10月17日、PRODUCERS STATION MEETING(交流会)が開催される",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "producers-station-meeting-matsudo-2026",
+    "candidate_ids": [
+     "sched-2026-10-17-producers-station-meeting-matsudo-2026-開幕"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "idolmaster-tours-s2-2026",
+    "reason": "既報",
+    "note": "10/16に同じ公式ニュース(S2弾10/29稼働・S.E.M登場)を記事化済み。新事実も当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

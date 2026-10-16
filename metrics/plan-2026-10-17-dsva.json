@@ -1,0 +1,217 @@
+{
+ "decisions": {
+  "letora-girls-in-the-frontier-cover-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16付『レトラ「ガルフロ」カバー、今夜20時にプレミア公開』と同じ動画。新事実なし"
+  },
+  "valiv-letora-birthday-live-2026": {
+   "action": "article",
+   "angle": "レトラ誕生日ライブの現地LV先行抽選・二次受付が10月16日〜30日23:59に開始、当落は31日",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は一次受付。二次受付の期間・当落・入金期限が新情報"
+  },
+  "valiv-bombanana-joint-stream-2026-10-22": {
+   "action": "article",
+   "angle": "宇宙・愛夏・レトラが10月22日20時から『BOMBANANA!』合同プレイ配信",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/15の愛夏コラボとは別の新規発表"
+  },
+  "manaka-halloween-pumpkin-recipe-2026": {
+   "action": "article",
+   "angle": "愛夏のハロウィン配信「愛夏かぼちゃ１個食う」のレシピ募集、締切は10月20日23:59",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切まで3日以内。配信は10月31日"
+  },
+  "manaka-ittan-aishite-dance-short-2026-10-16": {
+   "action": "article",
+   "angle": "愛夏と宇宙が『一旦愛して♡』踊ってみたショート動画を公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "宇宙版を統合した1本"
+  },
+  "cosmo-ittan-aishite-dance-short-2026-10-16": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "manaka-ittan-aishite-dance-short-2026-10-16",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ『一旦愛して♡』踊ってみた企画"
+  },
+  "fan-excitement-shinkai-fes-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人のファン投稿のみで未確認。単体では記事にしない"
+  },
+  "dsva-shinkaifes-2026": {
+   "action": "article",
+   "angle": "深海フェス2026「超・深海」DAY1が本日開幕。宇宙・レトラが出演、13:30開演、渋谷ストリーム ホール",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕当日のトリガー。報道・タイムテーブルの主題を統合。DAY2は愛夏が18日"
+  },
+  "shinkai-fes-2026-dsva": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-shinkaifes-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ深海フェス開幕"
+  },
+  "shinkai-fes-2026-timetable": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "dsva-shinkaifes-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ深海フェスDAY1。タイムテーブル情報は統合"
+  },
+  "va-liv-manaka-birthday-live-2026": {
+   "action": "article",
+   "angle": "愛夏延期公演(10月28日)の限定グッズ付き現地LVチケットが本日12時から一般先着販売",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "販売開始当日のトリガー。深海フェスとは読者の行動が別"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-letora-birthday-live-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "レトラ誕生日ライブの現地LV先行抽選・二次受付が10月16日〜30日23:59に開始、当落は31日",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "valiv-letora-birthday-live-2026",
+    "candidate_ids": [
+     "202610162334-watch-0"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-bombanana-joint-stream-2026-10-22",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "宇宙・愛夏・レトラが10月22日20時から『BOMBANANA!』合同プレイ配信",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "valiv-bombanana-joint-stream-2026-10-22",
+    "candidate_ids": [
+     "202610170225-grok-61"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-halloween-pumpkin-recipe-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "愛夏のハロウィン配信「愛夏かぼちゃ１個食う」のレシピ募集、締切は10月20日23:59",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "manaka-halloween-pumpkin-recipe-2026",
+    "candidate_ids": [
+     "202610170225-grok-62"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-ittan-aishite-dance-short-2026-10-16",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "愛夏と宇宙が『一旦愛して♡』踊ってみたショート動画を公開",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "manaka-ittan-aishite-dance-short-2026-10-16",
+    "candidate_ids": [
+     "202610170225-grok-64",
+     "202610170225-grok-65"
+    ]
+   },
+   {
+    "slug": "dsva-shinkaifes-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "深海フェス2026「超・深海」DAY1が本日開幕。宇宙・レトラが出演、13:30開演、渋谷ストリーム ホール",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "dsva-shinkaifes-2026",
+    "candidate_ids": [
+     "sched-2026-10-17-dsva-shinkaifes-2026-開幕",
+     "sched-2026-10-17-shinkai-fes-2026-dsva-開幕",
+     "sched-2026-10-17-shinkai-fes-2026-timetable-開幕"
+    ]
+   },
+   {
+    "slug": "dsva-va-liv-manaka-birthday-live-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "愛夏延期公演(10月28日)の限定グッズ付き現地LVチケットが本日12時から一般先着販売",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "va-liv-manaka-birthday-live-2026",
+    "candidate_ids": [
+     "sched-2026-10-17-va-liv-manaka-birthday-live-2026-発売"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "letora-girls-in-the-frontier-cover-2026",
+    "reason": "既報",
+    "note": "10/16付『レトラ「ガルフロ」カバー、今夜20時にプレミア公開』と同じ動画。新事実なし"
+   },
+   {
+    "dedup_key": "fan-excitement-shinkai-fes-2026",
+    "reason": "出典不足",
+    "note": "個人のファン投稿のみで未確認。単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

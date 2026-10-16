@@ -1050,7 +1050,12 @@ def reset_edition(date: str, edition: str) -> str:
                 + list((ROOT / "metrics").glob(f"plan-{date}*.json")) + list((ROOT / "metrics").glob(f"review-{date}-*.json")):
             if p.exists():
                 p.unlink()
-        commit_paths(["docs/_posts", "docs/_editions", "docs/_editorials", "metrics", "stock"],
+        # 素材を今の収集のコードの形に揃える(投稿に貼られたリンクを、保存済みの投稿の原本から候補の facts へ写す)。揃えずに
+        # 作り直すと、収集側を直した効きがこの号に届かない(2026-10-17号: ラジオの候補が配信ページを持たず、前日の既報につながらない。
+        # 監査指摘 R3)
+        must(sh([sys.executable, "-c", BACKFILL_POST_LINKS, str(Path(__file__).resolve().parent), date, str(ROOT)], cwd=ROOT),
+             "投稿のリンクを素材へ写す")
+        commit_paths(["docs/_posts", "docs/_editions", "docs/_editorials", "metrics", "stock", f"candidates/{date}.json"],
                      f"oncall: {date} 号を作り直すため成果物と stock の寄与を外す(控え: {backup})", edition)
     except Exception as e:
         try:
@@ -1062,6 +1067,8 @@ def reset_edition(date: str, edition: str) -> str:
     return backup
 
 
+BACKFILL_POST_LINKS = ("import sys, pathlib; sys.path.insert(0, sys.argv[1]); import collect; "
+                       "print(f'投稿のリンクを素材へ写した: {collect.backfill_post_links(sys.argv[2], pathlib.Path(sys.argv[3]))} 件')")
 CLASSIFY_RERUN = ("import sys; sys.path.insert(0, 'scripts'); import pipelib; "
                   "ok, why = pipelib.classify_retag_lint(sys.argv[1], require_parsers=True); print(why); sys.exit(0 if ok else 1)")
 

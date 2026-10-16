@@ -11,7 +11,8 @@
    多くの記事に出てくる URL(一覧ページ・ライブの特設ページなど。HUB_POSTS 本を超えるもの)は照合に使わない
 2. 今日の候補の URL が過去の記事と一致すれば、その記事の dedup_key へつなぎ直す(台帳の同じ話題に積まれ、執筆は既報を受け取る)
 3. 今日の候補どうしで URL が一致すれば、1つの dedup_key にまとめる(同じ日に定点観測と探索が拾った同じ知らせ)
-選定と執筆には、主題ごとの過去の記事(prior: 号・見出し・読者に出した本文。同じ催しの別の話題の記事も添える)、選定には面ごとの
+選定と執筆には、主題ごとの過去の記事(prior: 号・見出し・読者に出した本文。同じ催しの別の話題の記事も添える。
+同じ催しは、一次情報のページの共有と、公演ページ(EVENT_PAGE。hub になっていても)の共有で見分ける)、選定には面ごとの
 直近の見出し(recent_titles)を渡す。記事にするか
 (新しい事実・当日のトリガーがあるか)の判断はモデルがする(内容の判断はモデル。コードは照合だけ)。
 """
@@ -32,6 +33,9 @@ RECENT_DAYS = 7         # 選定に渡す、面ごとの直近の見出しの日
 PRIOR_ARTICLES = 2      # 既報として渡す過去の記事の本数(新しい順)
 PRIOR_DAYS = 36500      # 既報として渡す過去の記事の期間(=全期間)
 PRIOR_RELATED = 2       # 既報に添える、同じ催しの**別の話題**の記事の本数(新しい順)
+# 1つの催し(公演)だけを扱うページ: 公式の公演ページとその下(goods・ticket・streaming 等)。キーは催しの根(公演の ID まで)。
+# 催しの発表が重なると、公演ページは多くの記事・話題に出て hub(話題の照合に使わない)になるが、同じ催しの記事であることは変わらない
+EVENT_PAGE = re.compile(r"^(idolmaster-official\.jp/live_event/[^/?#]+|asobistage\.asobistore\.jp/event/[^/?#]+|livepocket\.jp/e/[^/?#]+)")
 LIST_TAILS = {"", "news", "information", "topics", "top", "index", "info", "blog", "list", "article", "articles"}
 # 記事を見分けない問い合わせ(追跡・共有・ページ送り)。これ以外の問い合わせ(?id= など)は記事を見分けるので残す
 NOISE_QUERY = re.compile(r"^(utm_.*|s|t|ref|ref_src|fbclid|gclid|usp|si|feature|page|from|share|via)$")
@@ -196,6 +200,12 @@ def link(cands: dict, date: str, root: Path = ROOT) -> list[tuple[str, str, str,
     return changed
 
 
+def event_key(uk: str) -> str:
+    """url_key → 催しのキー(公演ページの根)。公演ページでなければ ""。"""
+    m = EVENT_PAGE.match(uk or "")
+    return m.group(1) if m else ""
+
+
 def relink(c: dict, key: str) -> None:
     """候補の話題を key へつなぎ直し、元の話題キーを `linked_from` に残す。元のキーの既報も引けるように(つなぎ先の話題の
     記事だけを既報にすると、元の話題で書いた記事の事実が新しく見える。2026-10-16号: 765×961 ライブの出演者)"""
@@ -213,8 +223,11 @@ def prior_lookup(date: str, root: Path = ROOT):
     """既報を引く関数 (話題キー群, URL 群) → 過去の記事(号・見出し・**読者に出した本文**)の一覧を返す。
     - 既報: キーのどれか(計画のキー・候補のキー=別名)を持つ記事、または URL(一覧・特設ページを除く)が同じ記事。
       キーごと・URL ごとに新しい順に PRIOR_ARTICLES 本まで。**全期間**から取る(URL の照合は LINK_DAYS 日だが、既報は古くても既報。監査指摘 r107)
-    - 同じ催しの別の話題(`related: true`): 既報の記事と、話題を見分ける一次情報・特設ページ(hub_urls でないもの)を共有する
-      別の記事。新しい順に PRIOR_RELATED 本まで。出演者・ゲスト・チケットが別々に発表される催しは発表ごとに話題キーが分かれ、
+    - 同じ催しの別の話題(`related: true`): 候補・既報の記事と、話題を見分ける一次情報・特設ページ(hub_urls でないもの)を共有する
+      別の記事、または同じ催しの公演ページ(EVENT_PAGE。hub になっていても)を出典に持つ別の記事。ページを共有する記事が先、
+      それぞれ新しい順に PRIOR_RELATED 本まで。hub は話題の照合(link)から外すための条件で、関連の提示には使わない
+      (公演ページは発表が3つの話題に載ると hub になり、それ以降の発表で同じ催しの既報が渡らなくなる。監査指摘 event-page-becomes-hub)。
+      出演者・ゲスト・チケットが別々に発表される催しは発表ごとに話題キーが分かれ、
       キーだけで引くと別の発表の記事が書いた事実(出演者など)が新しく見える(2026-10-16号: 765×961 ライブの 765側出演者は
       9/30 号に載っていたが、ゲスト発表の 10/14 号の話題につながった候補には 10/14 号の本文しか渡らず、新情報として選ばれた)"""
     past = sorted(past_articles(date, root, days=PRIOR_DAYS), key=lambda a: (a["edition"], a["slug"]), reverse=True)
@@ -228,11 +241,15 @@ def prior_lookup(date: str, root: Path = ROOT):
             by_url[u].append(a)
 
     def lookup(keys, urls=()) -> list[dict]:
-        uks = {url_key(u) for u in urls} - {""} - hub
+        uks = {url_key(u) for u in urls} - {""}     # 催しは hub の公演ページからも見分けるので、hub を除く前のもの
         direct = {id(a): a for k in sorted({k for k in keys if k}) for a in by_key.get(k, [])[:PRIOR_ARTICLES]}
-        direct.update({id(a): a for u in sorted(uks) for a in by_url.get(u, [])[:PRIOR_ARTICLES]})
-        shared = set().union(uks, *(a["urls"] for a in direct.values())) - hub
-        related = [a for a in past if id(a) not in direct and a["urls"] & shared][:PRIOR_RELATED]
+        direct.update({id(a): a for u in sorted(uks - hub) for a in by_url.get(u, [])[:PRIOR_ARTICLES]})
+        shared = set().union(uks, *(a["urls"] for a in direct.values()))
+        events = {event_key(u) for u in shared} - {""}
+        shared -= hub
+        rest = [a for a in past if id(a) not in direct]
+        related = ([a for a in rest if a["urls"] & shared]
+                   + [a for a in rest if not a["urls"] & shared and events & {event_key(u) for u in a["urls"]}])[:PRIOR_RELATED]
         rows = [{"edition": a["edition"], "title": a["title"], "text": a["text"]} for a in past if id(a) in direct]
         return rows + [{"edition": a["edition"], "title": a["title"], "related": True, "text": a["text"]} for a in related]
     return lookup

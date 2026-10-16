@@ -4620,6 +4620,20 @@ def test_storylink_related_prior(tmp: Path):
     check("linked_from" not in row, "選定の索引に内部の印を出した")
     check("2026-10-14 765×961ライブに蘭子・未来・果穂(合同面)" in recent and "2026-10-10 765 単独の記事" in recent,
           f"この面の直近の記事に合同面の見出しが無い: {recent}")
+    # 発表が重なり、公演ページが3つ目の話題に載って hub になっても、同じ催しの既報は渡る(監査指摘 event-page-becomes-hub)。
+    # 新しい候補は過去のキーも hub でない URL も持たない(公演ページの下の別のページだけ)
+    post("2026-10-15", "guest2", "second-guest", "765×961ライブ第二公演のゲスト", "第二公演のゲストは天海春香。", [live])
+    check(sl.url_key(live) in sl.hub_urls(sl.past_articles("2026-10-16", tmp, sl.PRIOR_DAYS)), "前提: 公演ページが hub になっていない")
+    for u in (live, live + "ticket"):
+        c2 = {"id": "c2", "dedup_key": "ultimate-ticket-general", "url": u, "found_at": "2026-10-16T03:00"}
+        sl.link({"c2": c2}, d, tmp)
+        rows = sl.prior_lookup(d, tmp)(sl.prior_keys([c2]), [u])
+        check(c2["dedup_key"] == "ultimate-ticket-general" and [r["edition"] for r in rows] == ["2026-10-15", "2026-09-30"]
+              and all(r.get("related") for r in rows),
+              f"公演ページが hub になった後、同じ催しの既報(出演者の 9/30 号)が渡らない({u}): {[(r['edition'], r.get('related')) for r in rows]}")
+    check(sl.event_key(sl.url_key("https://shop.asobistore.jp/feature/cg_mp")) == ""
+          and sl.event_key(sl.url_key("https://idolmaster-official.jp/live_event/")) == "",
+          "シリーズの特設ページ・公演の一覧を、1つの催しのページとみなした")
 
 
 def test_grok_roles(tmp: Path):

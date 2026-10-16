@@ -5481,6 +5481,64 @@ def test_grok_post_links_copied_to_facts():
     check(items[1]["facts"] == ["フェア"], f"リンクの無い投稿に facts を足した: {items[1]['facts']}")
 
 
+def test_rebuild_backfills_post_links(tmp: Path):
+    """号を作り直す前に、写す前に収集した素材の投稿の候補へ、保存済みの投稿の原本(生の出力)に貼られたリンクを写し、素材を commit に
+    含める(監査指摘 R3: 2026-10-17号のラジオの候補は配信ページを持たないまま作り直しに渡り、前日の既報につながらなかった)。冪等。"""
+    import collect
+    import oncall
+    d = "2026-10-17"
+    (tmp / "candidates").mkdir(parents=True, exist_ok=True)
+    raw = tmp / "metrics" / "work" / d / "raw"
+    raw.mkdir(parents=True, exist_ok=True)
+    cands = [
+        {"id": "r", "title": "ラジオ", "brand": "general", "source_type": "公式", "url": "https://x.com/imas_ch/status/2110658707336142874",
+         "found_at": "2026-10-17T02:25:32+09:00", "dedup_key": "imas-channel-member-radio-2026-10", "verify": "confirmed", "facts": ["冒頭15分は誰でも視聴できる。"]},
+        {"id": "f", "title": "フェア", "brand": "sidem", "source_type": "当事者", "url": "https://x.com/animatekasihara/status/2110958095530918280",
+         "found_at": "2026-10-17T02:25:32+09:00", "dedup_key": "fair", "verify": "confirmed", "facts": ["フェア"]},
+    ]
+    (tmp / "candidates" / f"{d}.json").write_text(json.dumps(cands, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (raw / "grok-verify-joint-other.txt").write_text("""# at: 2026-10-17T02:18:57+09:00
+# exit: 0
+# stdout
+
+# stderr
+
+# file: x-posts.md
+### 16
+- url: https://x.com/imas_ch/status/2110658707336142874
+- 本文:
+メンバー限定ラジオ
+- リンク:
+  - https://www.youtube.com/live/E0d4UT59xM4
+
+### 17
+- url: https://x.com/animatekasihara/status/2110958095530918280
+- 本文:
+フェア
+- リンク: なし
+# file: items.json
+[{"url": "https://x.com/other/status/1"}]
+# file: posts.json
+[]
+""", encoding="utf-8")
+    calls = []
+    saved = (oncall.ROOT, oncall.backup_edition, oncall.rollback_in_subprocess, oncall.commit_paths)
+    try:
+        oncall.ROOT = tmp
+        oncall.backup_edition = lambda date, edition: "backup/x"
+        oncall.rollback_in_subprocess = lambda date: []
+        oncall.commit_paths = lambda paths, msg, branch, **k: calls.append(paths)
+        check(oncall.reset_edition(d, f"edition/{d}") == "backup/x", "作り直しの準備が控えを返さない")
+    finally:
+        oncall.ROOT, oncall.backup_edition, oncall.rollback_in_subprocess, oncall.commit_paths = saved
+    got = {c["id"]: c["facts"] for c in json.loads((tmp / "candidates" / f"{d}.json").read_text(encoding="utf-8"))}
+    check(got == {"r": ["冒頭15分は誰でも視聴できる。", "リンク: https://www.youtube.com/live/E0d4UT59xM4"], "f": ["フェア"]},
+          f"作り直しの前に、保存済みの投稿の原本のリンクを素材へ写さない: {got}")
+    check(calls and f"candidates/{d}.json" in calls[0], f"写した素材を作り直しの commit に含めない: {calls}")
+    check(collect.backfill_post_links(d, tmp) == 0, "2回目にも素材を書き換えた(冪等でない)")
+    check(collect.backfill_post_links("2026-10-18", tmp) == 0, "素材・原本の無い号で 0 を返さない")
+
+
 def test_grok_repoint_uses_each_face_posts(tmp: Path):
     """付け直しには、その面の投稿を渡す(最後の面の投稿を全部の面に渡していた。監査指摘: 末尾に「なし」の面があると補正されない)。"""
     import collect
@@ -10357,6 +10415,7 @@ def main() -> int:
     test_grok_roles(tmp / "gro")
     test_grok_item_url_repointed_to_post()
     test_grok_post_links_copied_to_facts()
+    test_rebuild_backfills_post_links(tmp / "rbl")
     test_empty_answer_is_not_done(tmp / "ea")
     test_accept_only_normal_and_schema(tmp / "an")
     test_grok_repoint_uses_each_face_posts(tmp / "grp")

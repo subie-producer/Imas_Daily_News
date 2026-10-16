@@ -785,8 +785,22 @@ def repoint_to_post(items: list[dict], posts_md: str) -> list[dict]:
     url が投稿の候補には、その投稿に貼られたリンクを facts(「リンク: <url>」)に写す。
     事実は投稿の本文から読んだもので、リンク先は出典として確かめられない(2026-10-05: 公式 X の
     コラボ動画告知が YouTube の url で候補になり、未確認の出典として執筆に見送られた)。"""
-    # 投稿の区切りは突き合わせ(post_blocks / post_url)と共有する。url の無い塊(url の行が空・崩れた投稿)のリンクは
-    # どの投稿にも帰属させない(前の投稿へ付け直して、誤った出典にしない。監査指摘)
+    posts = post_links(posts_md)
+    posts.sort(key=lambda p: classify_source(p[0]) != "公式")
+    for it in items:
+        url = it["url"]
+        if is_x(url) or classify_source(url) in GOOD_SOURCE_TYPES:
+            continue
+        post = next((p for p, links in posts if url in links), None)
+        if post:
+            it["url"] = post
+            it["facts"] = [*(it.get("facts") or []), f"リンク: {url}"]
+    return copy_post_links(items, posts)
+
+
+def post_links(posts_md: str) -> list[tuple[str, list[str]]]:
+    """Grok の書き出しの投稿ごとの (url, 貼られたリンク)。投稿の区切りは突き合わせ(post_blocks / post_url)と共有する。
+    url の無い塊(url の行が空・崩れた投稿)のリンクはどの投稿にも帰属させない(前の投稿へ付け直して、誤った出典にしない。監査指摘)"""
     posts: list[tuple[str, list[str]]] = []
     for block in post_blocks(posts_md):
         url = post_url(block)
@@ -802,25 +816,48 @@ def repoint_to_post(items: list[dict], posts_md: str) -> list[dict]:
             elif not line.startswith(" "):
                 in_links = False
         posts.append((url, links))
-    posts.sort(key=lambda p: classify_source(p[0]) != "公式")
-    for it in items:
-        url = it["url"]
-        if is_x(url) or classify_source(url) in GOOD_SOURCE_TYPES:
-            continue
-        post = next((p for p, links in posts if url in links), None)
-        if post:
-            it["url"] = post
-            it["facts"] = [*(it.get("facts") or []), f"リンク: {url}"]
-    # 投稿を出典にする候補には、その投稿に貼られたリンクを facts に写す(「リンク: <url>」)。執筆が開くリンクと、既報の照合
-    # (storylink)の手がかりになる。写さないと、執筆は投稿のページに出る途中で切れた表示(youtube.com/live/E0d4UT59x…)から
-    # url を推し量って別の動画を出典にし、照合は同じ配信ページを載せた前日の記事に届かず既報を新規として選んだ(2026-10-17号)
-    links_of = {post_key(p): links for p, links in posts}
+    return posts
+
+
+def copy_post_links(items: list[dict], posts: list[tuple[str, list[str]]]) -> list[dict]:
+    """投稿を出典にする候補には、その投稿に貼られたリンクを facts に写す(「リンク: <url>」。既にあるものは重ねない)。
+    執筆が開くリンクと、既報の照合(storylink)の手がかりになる。写さないと、執筆は投稿のページに出る途中で切れた表示
+    (youtube.com/live/E0d4UT59x…)から url を推し量って別の動画を出典にし、照合は同じ配信ページを載せた前日の記事に届かず
+    既報を新規として選んだ(2026-10-17号)"""
+    links_of: dict[str, list[str]] = {}
+    for p, links in posts:
+        links_of.setdefault(post_key(p), []).extend(links)
     for it in items:
         if is_x(it["url"]):
             have = set(it.get("facts") or [])
             it["facts"] = [*(it.get("facts") or []),
                            *(f for f in dict.fromkeys(f"リンク: {u}" for u in links_of.get(post_key(it["url"]), [])) if f not in have)]
     return items
+
+
+def backfill_post_links(day: str, root: Path = ROOT) -> int:
+    """号の素材(candidates/<号>.json)の、投稿を出典にする候補へ、その号の確かめが読んだ投稿の原本(生の出力
+    metrics/work/<号>/raw/grok-verify-*.txt の x-posts.md)に貼られたリンクを写す(copy_post_links)。号を作り直す前に、
+    写す前に収集した候補を今のコードの形に揃える(2026-10-17号: 写さずに収集したラジオの候補が、作り直しでも配信ページを持たず、
+    前日の既報につながらなかった。監査指摘 R3)。冪等。書き換えた候補の数を返す。原本・素材が無ければ 0。"""
+    p = root / "candidates" / f"{day}.json"
+    if not p.exists():
+        return 0
+    posts: list[tuple[str, list[str]]] = []
+    for raw in sorted((root / "metrics" / "work" / day / "raw").glob("grok-verify-*.txt")):
+        text = raw.read_text(encoding="utf-8", errors="replace")
+        m = re.search(r"(?ms)^# file: x-posts\.md\n(.*?)(?=^# file: |\Z)", text)
+        if m:
+            posts += post_links(m.group(1))
+    if not posts:
+        return 0
+    cands = json.loads(p.read_text(encoding="utf-8"))
+    before = [list(c.get("facts") or []) for c in cands]
+    copy_post_links(cands, posts)
+    n = sum(1 for c, f in zip(cands, before) if list(c.get("facts") or []) != f)
+    if n:
+        write_checked(p, json.dumps(cands, ensure_ascii=False, indent=2) + "\n")   # 書式(candidates.schema)で検めてから書く
+    return n
 
 
 def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",

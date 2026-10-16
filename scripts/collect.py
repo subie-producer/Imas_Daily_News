@@ -48,6 +48,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author)
+from storylink import url_key
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
@@ -859,8 +860,8 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         left = (post_blocks(text) or [text]) if got is None else unaccounted_posts(text, read_json_list(wd / "posts.json"), got)
         # 付け直し・正規化へ渡すのは、形を揃えた候補だけ(崩れた要素で収集全体を止めない。監査指摘)
         items += repoint_to_post([s for s in (shape_item(x) for x in got or []) if s], text)
-        left_urls = {post_url(b) for b in left}
-        ledger["settled"] |= {u for u in map(post_url, post_blocks(text)) if u and u not in left_urls}
+        left_keys = {post_key(post_url(b)) for b in left}
+        ledger["settled"] |= {k for k in map(post_key, map(post_url, post_blocks(text))) if k and k not in left_keys}
         if left and not final:
             # 残った投稿だけを <key><suffix>-again.md に書き出し、もう1回だけ確かめさせる(下でまとめて)
             (outdir / f"{q['key']}{suffix}-again.md").write_text("\n\n".join(left) + "\n", encoding="utf-8")
@@ -896,7 +897,7 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
 
 
 def lost_posts_ledger() -> dict:
-    """X の投稿の確かめの記録(全段で共有)。lost: 面 → [(2回確かめても残った投稿の塊, 理由)] / settled: どこかの段で済んだ投稿の url。"""
+    """X の投稿の確かめの記録(全段で共有)。lost: 面 → [(2回確かめても残った投稿の塊, 理由)] / settled: どこかの段で済んだ投稿の鍵(post_key)。"""
     return {"lost": {}, "settled": set()}
 
 
@@ -909,9 +910,9 @@ def report_lost_posts(ledger: dict) -> None:
     for key in sorted(ledger["lost"]):
         for b, why in ledger["lost"][key]:
             u = post_url(b)
-            if u and u in ledger["settled"]:
+            if u and post_key(u) in ledger["settled"]:
                 continue
-            row = rows.setdefault(u or b, [u or "(投稿に分けられない書き出し) " + b[:80], [], []])
+            row = rows.setdefault(post_key(u) or b, [u or "(投稿に分けられない書き出し) " + b[:80], [], []])
             for lst, v in ((row[1], key), (row[2], why)):
                 if v not in lst:
                     lst.append(v)
@@ -969,21 +970,36 @@ def post_url(block: str) -> str:
     return m.group(1) if m else ""
 
 
+def post_key(url: str) -> str:
+    """投稿の同一性を比べる鍵。X の投稿は status ID(同じ投稿が x.com/i/status/<ID> と x.com/<アカウント>/status/<ID> の
+    どちらの形でも書かれる)、それ以外は url そのもの。url の文字列で比べると、深掘りで原本の形の url で済んだ投稿を
+    「失った」と通知した(2026-10-17: 返信先として x.com/i/status/… で書き出された投稿)。"""
+    u = (url or "").strip()
+    k = url_key(u) if is_x(u) else ""
+    return k if k.startswith("x:") else u
+
+
 def dedupe_posts(text: str) -> str:
-    """同じ url の投稿の塊を1つにする(最初のものを残す)。公式アカウントの遡りはページの境目が重なるので、同じ投稿が2回書かれうる。
+    """同じ投稿(post_key)の塊を1つにする。公式アカウントの遡りはページの境目が重なるので、同じ投稿が2回書かれうる。
     2回あると、確かめの結果が同じ url に2つ返り、突き合わせ(unaccounted_posts)が「結果が1つでない」で未処理にする(監査指摘)。
+    残すのは、url の行を除いた中身がいちばん多い塊(同じなら先のもの)を、最初に現れた位置に置く。先のものを残すと、
+    返信先として本文なしで書かれた投稿(x.com/i/status/<ID>)が、後ろの本文付きの同じ投稿を消した(監査指摘 dedupe-discards-readable-post)。
     重なりが無ければ書き出しをそのまま返す。url の無い塊は全部残す(突き合わせで未処理として名指しされる)。"""
     blocks = post_blocks(text)
-    urls = [post_url(b) for b in blocks]
+    urls = [post_key(post_url(b)) for b in blocks]
     if len([u for u in urls if u]) == len({u for u in urls if u}):
         return text
-    seen: set[str] = set()
+    size = lambda b: len(POST_URL_LINE.sub("", b, count=1).strip())
+    best: dict[str, str] = {}
+    for b, u in zip(blocks, urls):
+        if u and (u not in best or size(b) > size(best[u])):
+            best[u] = b
     kept = []
     for b, u in zip(blocks, urls):
-        if u and u in seen:
-            continue
-        seen.add(u)
-        kept.append(b)
+        if not u:
+            kept.append(b)
+        elif u in best:
+            kept.append(best.pop(u))
     return "\n\n".join(kept)
 
 
@@ -993,7 +1009,7 @@ def unaccounted_posts(text: str, results, written: list) -> list[str]:
     言って候補を書いていない投稿を済みにしない。監査指摘)。結果の一覧そのものが読めなければ、全部の投稿が未処理。
     書き出しが投稿に分けられない(形が崩れた)なら、書き出し全体を1つの未処理にする(黙って0件にしない。監査指摘)。"""
     # 後段(normalize)で捨てられる形・事実の無い候補は「書かれた候補」に数えない(判定は candidate_usable で共有。監査指摘)
-    items = {x["url"].strip() for x in written or [] if candidate_usable(x)}
+    items = {post_key(x["url"]) for x in written or [] if candidate_usable(x)}
     # 投稿1件ごとに結果を数え、**契約どおりの結果がちょうど1つ**ある投稿だけを済みにする
     # (同じ投稿に none と unreadable が返る矛盾を、none で済みにしない。監査指摘)
     # 形の検査(POST_RESULT_SCHEMA)より前に数える(崩れた結果も「同じ投稿への2つ目の結果」として矛盾に数える)
@@ -1001,18 +1017,18 @@ def unaccounted_posts(text: str, results, written: list) -> list[str]:
     for r in results if isinstance(results, list) else []:
         if not (isinstance(r, dict) and isinstance(r.get("url"), str) and r["url"].strip()):
             continue    # 空の url の結果は、どの投稿の結果にも数えない(url の無い塊を済みにしてしまう。監査指摘)
-        per_url.setdefault(r["url"].strip(), []).append(r)
+        per_url.setdefault(post_key(r["url"]), []).append(r)
 
     def settled(r) -> bool:
         # none は item が空、extracted は item が実際に書かれた候補の url(契約。依頼文 grok-verify 3b)
         if not schema_ok(r, POST_RESULT_SCHEMA):
             return False
-        return (r["status"] == "none" and not r["item"].strip()) or (r["status"] == "extracted" and r["item"].strip() in items)
+        return (r["status"] == "none" and not r["item"].strip()) or (r["status"] == "extracted" and post_key(r["item"]) in items)
     done = {u for u, rs in per_url.items() if len(rs) == 1 and settled(rs[0])}
     blocks = post_blocks(text)
     if not blocks:
         return [text] if text.strip() else []
-    return [b for b in blocks if not post_url(b) or post_url(b) not in done]     # url の無い塊は必ず未処理
+    return [b for b in blocks if not post_url(b) or post_key(post_url(b)) not in done]     # url の無い塊は必ず未処理
 
 
 def grok_week_usage(now_ts: float | None = None) -> int:

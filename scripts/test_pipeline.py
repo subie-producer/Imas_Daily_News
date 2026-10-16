@@ -1036,6 +1036,49 @@ def test_lost_post_notified_once(tmp: Path):
           "候補にした投稿(別の形の url)を、未処理として残した")
     check(len(collect.post_blocks(collect.dedupe_posts(anon + "\n\n### 2\n- url: https://x.com/a/status/9\n- 本文: x"))) == 1,
           "同じ投稿の別の形の url を1つにしない")
+    # 重なりの除去は、本文なしの返信先(先)で、同じ投稿の本文付きの塊(後)を消さない(監査指摘 dedupe-discards-readable-post)。
+    # 本文があれば候補に、無ければ読めないと答える確かめ役で、確かめまで通す
+    reply = ("### 1\n- url: https://x.com/a/status/1\n- 本文: 返信\n\n返信先:\nurl: https://x.com/i/status/9\n- リンク: なし\n\n"
+             "### 2\n- url: https://x.com/a/status/9\n- 本文: 告知の本文\n- リンク: なし")
+    got = collect.post_blocks(collect.dedupe_posts(reply))
+    check([collect.post_url(b) for b in got] == ["https://x.com/a/status/1", "https://x.com/a/status/9"] and "告知の本文" in got[1],
+          f"本文なしの返信先が、同じ投稿の本文付きの塊を消した: {got}")
+    vroot = tmp / "verify-order"
+    (vroot / "cg.md").parent.mkdir(parents=True)
+    (vroot / "cg.md").write_text(reply + "\n", encoding="utf-8")
+    class VP:
+        pid = 0
+        returncode = 0
+        def wait(self, timeout=None): return 0
+    def body_popen(args, cwd=None, **kw):
+        wd = Path(cwd)
+        res, its = [], []
+        for b in collect.post_blocks((wd / "x-posts.md").read_text(encoding="utf-8")):
+            u = collect.post_url(b)
+            if "本文" in b:
+                its.append({**item, "url": u, "title": f"投稿 {u}"})
+                res.append({"url": u, "status": "extracted", "item": u})
+            else:
+                res.append({"url": u, "status": "unreadable", "item": ""})
+        (wd / "items.json").write_text(json.dumps(its, ensure_ascii=False), encoding="utf-8")
+        (wd / "posts.json").write_text(json.dumps(res), encoding="utf-8")
+        return VP()
+    vnames = ("prompt_file", "save_raw", "explore_workdir")
+    vsaved = {n: getattr(collect, n) for n in vnames}
+    vpopen = collect.subprocess.Popen
+    try:
+        collect.prompt_file = lambda date, name, prompt, base=None: "p"
+        collect.save_raw = lambda *a, **kw: None
+        collect.explore_workdir = lambda key: (vroot / "wd" / key).mkdir(parents=True, exist_ok=True) or vroot / "wd" / key
+        collect.subprocess.Popen = body_popen
+        ledger = collect.lost_posts_ledger()
+        vitems, _ = collect.verify_grok_faces([{"key": "cg", "brand": "cg", "topic": "t"}], vroot, ledger=ledger)
+    finally:
+        for n, v in vsaved.items():
+            setattr(collect, n, v)
+        collect.subprocess.Popen = vpopen
+    check(any(collect.post_key(x["url"]) == collect.post_key("https://x.com/a/status/9") for x in vitems) and not ledger["lost"],
+          f"本文付きの塊を重なりの除去で落とし、候補にできなかった: {vitems} / {ledger['lost']}")
     check(collect.post_key("https://x.com/a/status/9?s=20") == collect.post_key("https://twitter.com/i/web/status/9")
           and collect.post_key("https://example.com/a") == "https://example.com/a", "投稿の鍵の取り方")
     # 面どうしで同じアカウントを検索するので、同じ投稿が複数の面で残る。面の数だけ通知しない(監査指摘 lost-post-cross-face)

@@ -980,20 +980,26 @@ def post_key(url: str) -> str:
 
 
 def dedupe_posts(text: str) -> str:
-    """同じ url の投稿の塊を1つにする(最初のものを残す)。公式アカウントの遡りはページの境目が重なるので、同じ投稿が2回書かれうる。
+    """同じ投稿(post_key)の塊を1つにする。公式アカウントの遡りはページの境目が重なるので、同じ投稿が2回書かれうる。
     2回あると、確かめの結果が同じ url に2つ返り、突き合わせ(unaccounted_posts)が「結果が1つでない」で未処理にする(監査指摘)。
+    残すのは、url の行を除いた中身がいちばん多い塊(同じなら先のもの)を、最初に現れた位置に置く。先のものを残すと、
+    返信先として本文なしで書かれた投稿(x.com/i/status/<ID>)が、後ろの本文付きの同じ投稿を消した(監査指摘 dedupe-discards-readable-post)。
     重なりが無ければ書き出しをそのまま返す。url の無い塊は全部残す(突き合わせで未処理として名指しされる)。"""
     blocks = post_blocks(text)
     urls = [post_key(post_url(b)) for b in blocks]
     if len([u for u in urls if u]) == len({u for u in urls if u}):
         return text
-    seen: set[str] = set()
+    size = lambda b: len(POST_URL_LINE.sub("", b, count=1).strip())
+    best: dict[str, str] = {}
+    for b, u in zip(blocks, urls):
+        if u and (u not in best or size(b) > size(best[u])):
+            best[u] = b
     kept = []
     for b, u in zip(blocks, urls):
-        if u and u in seen:
-            continue
-        seen.add(u)
-        kept.append(b)
+        if not u:
+            kept.append(b)
+        elif u in best:
+            kept.append(best.pop(u))
     return "\n\n".join(kept)
 
 

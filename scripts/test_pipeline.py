@@ -4625,6 +4625,45 @@ def test_storylink(tmp: Path):
     check("2026-09-17 那覇市でじますコラボ決定" in sl.recent_titles(d, tmp).get("cg", []), "直近の見出しが面ごとに出ない")
 
 
+def test_storylink_links_via_post_links(tmp: Path):
+    """告知の投稿の候補を、投稿に貼られたリンク(facts の url)と過去の記事の本文のリンクで既報につなぐ(2026-10-17号: アイマスch の
+    ラジオ。10/16 号は公式ニュースを出典に配信ページを本文でリンクし、10/17 は同じ配信を告知する X の投稿が新規として選ばれた)。
+    facts の url・本文だけのリンクは、2つの話題の記事に出るなら話題を見分けない(催しの記事とインタビューの記事の両方が示すページ)。"""
+    import storylink as sl
+    import yaml
+    d = "2026-10-17"
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "metrics").mkdir(exist_ok=True)
+    post = lambda ed, slug, key, srcs, body: (
+        (tmp / "docs" / "_posts" / f"{ed}-{slug}.md").write_text(
+            "---\n" + yaml.safe_dump({"slug": slug, "brand": "million", "title": slug, "candidate_ids": [],
+                                      "sources": [{"url": u, "label": "l"} for u in srcs]}, allow_unicode=True) + "---\n" + body + "\n",
+            encoding="utf-8"),
+        (tmp / "metrics" / f"plan-{ed}.json").write_text(json.dumps({"articles": [{"slug": slug, "dedup_key": key}]}), encoding="utf-8"))
+    post("2026-10-16", "radio", "idolmaster-ch-radio-members-2026-10", ["https://idolmaster-official.jp/news/01_20103"],
+         "配信は[YouTubeの配信ページ](https://youtube.com/live/E0d4UT59xM4)で視聴できます。")
+    post("2026-09-02", "party", "retrose-party", ["https://atfes.com/contents/cho-retroseparty"], "催し")
+    post("2026-09-04", "interview", "interview-2026", ["https://news.example.jp/interview/1", "https://atfes.com/contents/cho-retroseparty"],
+         "インタビュー")
+    cands = {
+        "r": {"id": "r", "dedup_key": "imas-channel-member-radio-2026-10", "url": "https://x.com/imas_ch/status/2110658707336142874",
+              "facts": ["冒頭15分は誰でも視聴できる。", "リンク: https://www.youtube.com/live/E0d4UT59xM4"]},
+        "g": {"id": "g", "dedup_key": "retrose-acrylic", "url": "https://x.com/Atfes_portal/status/2111004241741709421",
+              "facts": ["リンク: https://atfes.com/contents/cho-retroseparty"]},
+    }
+    sl.link(cands, d, tmp)
+    check(cands["r"]["dedup_key"] == "idolmaster-ch-radio-members-2026-10",
+          f"投稿に貼られた配信ページで、同じ配信ページを本文に載せた既報につながない: {cands['r']['dedup_key']}")
+    check(cands["g"]["dedup_key"] == "retrose-acrylic",
+          f"2つの話題の記事に出るページ(facts の url)で、新しいほうの別の話題につないだ: {cands['g']['dedup_key']}")
+    # 本文だけのリンクは2つの話題に出れば見分けない(候補の url そのものでも)
+    c2 = {"x": {"id": "x", "dedup_key": "other", "url": "https://youtube.com/live/E0d4UT59xM4", "facts": []}}
+    post("2026-10-15", "radio-b", "another-topic", ["https://idolmaster-official.jp/news/01_1"],
+         "[配信](https://www.youtube.com/live/E0d4UT59xM4)")
+    sl.link(c2, d, tmp)
+    check(c2["x"]["dedup_key"] == "other", f"本文のリンクとして2つの話題に出るページでつないだ: {c2['x']['dedup_key']}")
+
+
 def test_storylink_related_prior(tmp: Path):
     """同じ催しの別の発表の記事も既報として渡す(当番の指摘 0405461304。2026-10-16号: 765×961 ライブの 765側出演者は 9/30 号の
     記事にあったが、候補は URL で 10/14 号のゲスト発表の話題へつながり、選定には 10/14 号の本文しか渡らず、出演者を新情報として選んだ)。
@@ -5366,10 +5405,39 @@ def test_grok_item_url_repointed_to_post():
     finally:
         collect.classify_source = saved
     check(items[0]["url"] == "https://x.com/valiv_official/status/2106670673922064689"
-          and items[0]["facts"] == ["クライヤ", "リンク: https://www.youtube.com/shorts/YvB9Lkq5aOs"],
+          and items[0]["facts"] == ["クライヤ", "リンク: https://www.youtube.com/shorts/YvB9Lkq5aOs",
+                                    "リンク: https://www.tiktok.com/@valiv_official/video/7692091940719906055"],
           f"動画の url を貼った公式の投稿に付け直さない: {items[0]}")
     check(items[1]["url"] == "https://www.youtube.com/shorts/other" and items[2]["url"] == "https://x.com/a/status/1",
           f"投稿に無い url・X の url を書き換えた: {items[1:]}")
+
+
+def test_grok_post_links_copied_to_facts():
+    """投稿を出典にする候補に、投稿に貼られたリンクを facts(「リンク: <url>」)へ写す(2026-10-17号: 写さなかったので、執筆は
+    投稿のページの途中で切れた表示 youtube.com/live/E0d4UT59x… から別の動画の url を作って出典にし、既報の照合も配信ページで
+    前日の記事に届かなかった)。同じ投稿は x.com/i/status/<ID> の形でも引く。既にあるリンクは重ねない。リンクの無い投稿は足さない。"""
+    import collect
+    posts = """### 16
+- url: https://x.com/imas_ch/status/2110658707336142874
+- 本文:
+メンバー限定ラジオ
+- リンク:
+  - https://www.youtube.com/live/E0d4UT59xM4
+  - https://www.youtube.com/@imas-official/join
+
+### 17
+- url: https://x.com/animatekasihara/status/2110958095530918280
+- 本文:
+フェア
+- リンク: なし
+"""
+    items = collect.repoint_to_post([
+        {"url": "https://x.com/i/status/2110658707336142874", "facts": ["配信", "リンク: https://www.youtube.com/@imas-official/join"]},
+        {"url": "https://x.com/animatekasihara/status/2110958095530918280", "facts": ["フェア"]},
+    ], posts)
+    check(items[0]["facts"] == ["配信", "リンク: https://www.youtube.com/@imas-official/join", "リンク: https://www.youtube.com/live/E0d4UT59xM4"],
+          f"投稿に貼られたリンクを facts に写さない・重ねた: {items[0]['facts']}")
+    check(items[1]["facts"] == ["フェア"], f"リンクの無い投稿に facts を足した: {items[1]['facts']}")
 
 
 def test_grok_repoint_uses_each_face_posts(tmp: Path):
@@ -10247,6 +10315,7 @@ def main() -> int:
     test_collect_health()
     test_grok_roles(tmp / "gro")
     test_grok_item_url_repointed_to_post()
+    test_grok_post_links_copied_to_facts()
     test_empty_answer_is_not_done(tmp / "ea")
     test_accept_only_normal_and_schema(tmp / "an")
     test_grok_repoint_uses_each_face_posts(tmp / "grp")
@@ -10266,6 +10335,7 @@ def main() -> int:
     test_oncall_collect_rerun_settles_broken_output(tmp / "ocb")
     test_storylink(tmp / "sl")
     test_storylink_related_prior(tmp / "slr")
+    test_storylink_links_via_post_links(tmp / "slp")
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()
     test_oncall_report_text(tmp / "rp")

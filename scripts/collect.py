@@ -782,6 +782,7 @@ GOOD_SOURCE_TYPES = ("公式", "準公式", "当事者", "報道")
 def repoint_to_post(items: list[dict], posts_md: str) -> list[dict]:
     """候補の url が、X の投稿に貼られたリンク(動画など)で、種別が公式・準公式・当事者・報道でないなら、
     そのリンクを貼った投稿(公式の投稿を先)の url に付け直し、元の url は facts に残す。
+    url が投稿の候補には、その投稿に貼られたリンクを facts(「リンク: <url>」)に写す。
     事実は投稿の本文から読んだもので、リンク先は出典として確かめられない(2026-10-05: 公式 X の
     コラボ動画告知が YouTube の url で候補になり、未確認の出典として執筆に見送られた)。"""
     # 投稿の区切りは突き合わせ(post_blocks / post_url)と共有する。url の無い塊(url の行が空・崩れた投稿)のリンクは
@@ -810,6 +811,15 @@ def repoint_to_post(items: list[dict], posts_md: str) -> list[dict]:
         if post:
             it["url"] = post
             it["facts"] = [*(it.get("facts") or []), f"リンク: {url}"]
+    # 投稿を出典にする候補には、その投稿に貼られたリンクを facts に写す(「リンク: <url>」)。執筆が開くリンクと、既報の照合
+    # (storylink)の手がかりになる。写さないと、執筆は投稿のページに出る途中で切れた表示(youtube.com/live/E0d4UT59x…)から
+    # url を推し量って別の動画を出典にし、照合は同じ配信ページを載せた前日の記事に届かず既報を新規として選んだ(2026-10-17号)
+    links_of = {post_key(p): links for p, links in posts}
+    for it in items:
+        if is_x(it["url"]):
+            have = set(it.get("facts") or [])
+            it["facts"] = [*(it.get("facts") or []),
+                           *(f for f in dict.fromkeys(f"リンク: {u}" for u in links_of.get(post_key(it["url"]), [])) if f not in have)]
     return items
 
 

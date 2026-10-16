@@ -738,14 +738,17 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
     # 候補の dedup_key は storylink.link で、同じ一次情報の過去の記事の話題につなぎ直してある
     # 既報は台帳の要約(1記事1〜4件)ではなく、過去の記事が**読者に出した本文**で渡す(要約で渡したら、価格・店舗を「新しい事実」と
     # 判断して同じ記事をもう一度載せた。実測 2026-10-01 の8番らーめん)
-    prior = storylink.prior_by_key(date, ROOT)
+    # 既報は主題のキーだけでなく、候補のつなぎ直す前のキー・候補の URL からも引き、同じ催しの別の話題の記事も添える
+    # (2026-10-16号: 765×961 ライブの出演者は 9/30 号の記事にあったが、ゲスト発表の話題の既報しか渡らず新情報として選んだ)
+    prior = storylink.prior_lookup(date, ROOT)
     hidden: set[str] = set()
     for s in subjects.values():
         items = sorted(pool.get(s["dedup_key"], []), key=lambda t: t[1] not in late)
         s["facts"] = list(dict.fromkeys(t for t, _ in items))[:PLAN_FACTS_PER_SUBJECT]
         hidden |= {k for t, k in items if k in late and t not in s["facts"]}
-        if prior.get(s["dedup_key"]):
-            s["prior"] = prior[s["dedup_key"]]
+        rows = prior(storylink.prior_keys(cands[i] for i in s["ids"]), s["urls"])
+        if rows:
+            s["prior"] = rows
     # 1主題1行で書く(整形すると数千行になり、Read の既定上限 2000行で頭から切れて
     # 後半の主題が編集長の視野に入らなくなる。行数=主題数なら一度で読み切れる)
     def dump(rows: list[dict], path: Path) -> None:
@@ -776,9 +779,17 @@ def brand_plan_prompt(date: str, brand: str, n_subjects: int, triggers: list[dic
         TRIGGERS=json.dumps([{k: t.get(k) for k in ("id", "dedup_key", "brand", "subject", "kind", "note")}
                              for t in triggers], ensure_ascii=False, indent=1) if triggers else "(なし)",
         CLAIMED=json.dumps(claimed, ensure_ascii=False, indent=1) if claimed else "(なし)",
-        RECENT="\n".join(f"- {t}" for t in storylink.recent_titles(date, ROOT).get(brand, [])) or "(なし)",
+        RECENT="\n".join(f"- {t}" for t in recent_for_brand(date, brand)) or "(なし)",
         FEEDBACK_REF="「前回の機械検証エラー」" if feedback else "",
         FEEDBACK=f"\n## 前回の機械検証エラー(必ず解消する)\n{feedback}\n" if feedback else "")
+
+
+def recent_for_brand(date: str, brand: str) -> list[str]:
+    """選定に渡す「この面の直近の記事」: この面と、合同面(joint)の直近の見出し。合同の催し(765×961 ライブ等)の続報は
+    単独の面の主題として集まるので、面の見出しだけでは同じ催しの既報が見えない(2026-10-16号: 765 面の出演者の主題)。"""
+    recent = storylink.recent_titles(date, ROOT)
+    rows = recent.get(brand, []) + ([] if brand == "joint" else [f"{t}(合同面)" for t in recent.get("joint", [])])
+    return sorted(rows)
 
 
 def plan_rules() -> str:
@@ -2239,7 +2250,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
     """
     wave = wave or COMPOSE_WAVE
     trig_by_key = {t["dedup_key"]: t for t in triggers}
-    prior = storylink.prior_by_key(date, ROOT)
+    prior = storylink.prior_lookup(date, ROOT)
     jobs, written_before = [], []
     settled = settled_drops(date, ROOT) if reuse else {}
     for art in plan["articles"]:
@@ -2253,10 +2264,12 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
         # src も**申告ではなく判定表**から出す。素材の source_type には収集時点の
         # 古い申告が残っており、そのまま渡すと執筆が写して lint が毎回赤くなる
         src = weakest_src(classify_source(c.get("url", "") or "") for c in materials)
-        dks = {c.get("dedup_key") for c in materials} | {art.get("dedup_key")}
+        dks = (storylink.prior_keys(materials) | {art.get("dedup_key")}) - {None}
         facts = [f for dk in dks if dk in stories for f in stories[dk]]
-        # 既報には、この話題の過去の記事が**読者に出した本文**も渡す(台帳の要約だけだと、書いた価格・店舗をまた書く。2026-10-01)
-        facts += [f"{p['edition']}号「{p['title']}」の本文: {p['text']}" for dk in sorted(dks - {None}) for p in prior.get(dk, [])]
+        # 既報には、この話題の過去の記事が**読者に出した本文**も渡す(台帳の要約だけだと、書いた価格・店舗をまた書く。2026-10-01)。
+        # 同じ催しの別の話題の記事も添える(選定と同じ範囲。2026-10-16号の 765×961 ライブの出演者)
+        facts += [f"{p['edition']}号「{p['title']}」の本文{'(同じ催しの別の発表の記事)' if p.get('related') else ''}: {p['text']}"
+                  for p in prior(dks, [c.get("url") for c in materials])]
         # 構造化モード: 素材の事実に id を振り、執筆は JSON を返す(ファイルはコードが作る)
         mats_in, fact_by_id = (renderlib.materials_with_ids(materials) if STRUCTURED_WRITE else (materials, {}))
         jobs.append((art, src, article_prompt(date, art, mats_in, facts, trig_by_key.get(art.get("dedup_key"))),

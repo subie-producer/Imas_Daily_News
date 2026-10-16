@@ -1494,10 +1494,16 @@ PATH_FORM_HOSTS = ("krs.bz",)
 
 
 def query_doc_key(url: str) -> str | None:
-    """クエリの id で文書が決まる URL なら、判定表に書く文書のキー(`<host>/pages/responsepage.aspx?id=<ID>`)。それ以外は None。"""
+    """クエリの id で文書が決まる URL なら、判定表に書く文書のキー(`<host>/pages/responsepage.aspx?id=<ID>`、
+    YouTube の再生リストは `youtube.com/playlist?list=<ID>`)。それ以外は None。"""
     import urllib.parse
     u = urllib.parse.urlparse(url if "//" in url else "//" + url)
     host = (u.hostname or "").removeprefix("www.")
+    if host.removeprefix("m.") == "youtube.com" and u.path.rstrip("/") == "/playlist":
+        # YouTube の再生リストも、どれもパスが同じでクエリの list が1つの再生リスト。種別は持ち主のチャンネルを写す
+        # (classify_sources.resolve_playlists)。キーは `youtube.com/playlist?list=<ID>`(`&si=` などは含めない)
+        ids = urllib.parse.parse_qs(u.query).get("list") or []
+        return f"youtube.com/playlist?list={ids[0]}" if len(ids) == 1 and re.fullmatch(r"[A-Za-z0-9_-]{10,}", ids[0]) else None
     page = QUERY_DOC_PAGES.get(host)
     if not page or u.path.rstrip("/").lower() != page:
         return None
@@ -1516,7 +1522,8 @@ def path_type_norm(key) -> str:
     k = str(key).strip().rstrip("/")
     host, sep, rest = k.partition("/")
     host = host.lower()
-    return host + sep + (rest if host in ID_CASE_HOSTS else rest.lower())
+    # クエリの ID で決まるキー(再生リストの list=)も大小文字を区別する
+    return host + sep + (rest if host in ID_CASE_HOSTS or query_doc_key(k) else rest.lower())
 
 
 def shared_host(host: str) -> bool:

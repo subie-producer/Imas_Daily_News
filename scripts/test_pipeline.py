@@ -4542,12 +4542,12 @@ def test_storylink(tmp: Path):
         "---\nslug: dijimas\nbrand: cg\ntitle: 那覇市でじますコラボ決定\nlede: 第1弾は11月20日から。\ncandidate_ids: []\nsources:\n"
         "- url: https://idolmaster-official.jp/news/01_19889\n  label: l\n---\nAセットは税込2310円。 <!-- F1 F2 -->\n\n店舗は31店舗。 <!-- F3 -->\n",
         encoding="utf-8")
-    pr = sl.prior_by_key(d, tmp)["dijimas-cg-2026"][0]
+    pr = sl.prior_lookup(d, tmp)(["dijimas-cg-2026"])[0]
     check(pr["text"] == "第1弾は11月20日から。 Aセットは税込2310円。 店舗は31店舗。", f"読者に出した本文(リード+本文、注記なし): {pr['text']!r}")
     # 既報は照合の期間(45日)より古くても既報として渡す(監査指摘 r107)
     post("2026-06-01", "old-news", "6月の記事", ["https://a.jp/old/1"])
     (tmp / "metrics" / "plan-2026-06-01.json").write_text(json.dumps({"articles": [{"slug": "old-news", "dedup_key": "old-key"}]}), encoding="utf-8")
-    check(sl.prior_by_key(d, tmp).get("old-key", [{}])[0].get("edition") == "2026-06-01", "45日より古い既報が渡らない")
+    check((sl.prior_lookup(d, tmp)(["old-key"]) or [{}])[0].get("edition") == "2026-06-01", "45日より古い既報が渡らない")
     # 計画が別の主題に統合した記事は、候補が持っていた話題キー(別名)でも既報が引ける。本文は切り詰めない(監査指摘 r108)
     long_tail = "末尾の事実: 発送は2027年2月、シリアル500枚。"
     (tmp / "docs" / "_posts" / "2026-09-05-alias.md").write_text(
@@ -4555,11 +4555,121 @@ def test_storylink(tmp: Path):
         encoding="utf-8")
     (tmp / "candidates" / "2026-09-05.json").write_text(json.dumps([{"id": "c-al", "dedup_key": "nagoya-meeting", "url": "https://z.jp/a/1"}]), encoding="utf-8")
     (tmp / "metrics" / "plan-2026-09-05.json").write_text(json.dumps({"articles": [{"slug": "alias", "dedup_key": "matsudo-meeting"}]}), encoding="utf-8")
-    pb = sl.prior_by_key(d, tmp)
-    check(pb.get("nagoya-meeting", [{}])[0].get("edition") == "2026-09-05" and pb.get("matsudo-meeting", [{}])[0].get("edition") == "2026-09-05",
+    pb = sl.prior_lookup(d, tmp)
+    check((pb(["nagoya-meeting"]) or [{}])[0].get("edition") == "2026-09-05" and (pb(["matsudo-meeting"]) or [{}])[0].get("edition") == "2026-09-05",
           "候補側の話題キー(別名)で既報が引けない")
-    check(pb["matsudo-meeting"][0]["text"].endswith(long_tail), "長い記事の本文を切り詰めた(末尾の既報が渡らない)")
+    check(pb(["matsudo-meeting"])[0]["text"].endswith(long_tail), "長い記事の本文を切り詰めた(末尾の既報が渡らない)")
     check("2026-09-17 那覇市でじますコラボ決定" in sl.recent_titles(d, tmp).get("cg", []), "直近の見出しが面ごとに出ない")
+
+
+def test_storylink_related_prior(tmp: Path):
+    """同じ催しの別の発表の記事も既報として渡す(当番の指摘 0405461304。2026-10-16号: 765×961 ライブの 765側出演者は 9/30 号の
+    記事にあったが、候補は URL で 10/14 号のゲスト発表の話題へつながり、選定には 10/14 号の本文しか渡らず、出演者を新情報として選んだ)。
+    つなぎ直す前の話題キー(linked_from)・候補の URL・既報の記事と同じ一次情報/特設ページを持つ別の話題の記事まで広げる。
+    特設ページでも、多くの記事・3つ以上の話題に出るもの(hub)ではつながない。選定の「この面の直近の記事」には合同面の見出しも添える。"""
+    import storylink as sl
+    import yaml
+    d = "2026-10-16"
+    for sub in ("docs/_posts", "metrics", "candidates", "stock"):
+        (tmp / sub).mkdir(parents=True, exist_ok=True)
+
+    def post(ed, slug, key, title, body, urls, ids=(), brand="joint"):
+        (tmp / "docs" / "_posts" / f"{ed}-{slug}.md").write_text(
+            "---\n" + yaml.safe_dump({"slug": slug, "brand": brand, "title": title, "candidate_ids": list(ids),
+                                      "sources": [{"url": u, "label": "l"} for u in urls]}, allow_unicode=True) + "---\n" + body + "\n",
+            encoding="utf-8")
+        p = tmp / "metrics" / f"plan-{ed}.json"
+        arts = json.loads(p.read_text(encoding="utf-8"))["articles"] if p.exists() else []
+        p.write_text(json.dumps({"articles": arts + [{"slug": slug, "dedup_key": key}]}), encoding="utf-8")
+
+    live = "https://idolmaster-official.jp/live_event/IUOAFA/"
+    post("2026-09-07", "ticket", "ultimate-ticket", "765×961合同ライブ、チケット先行開始", "先行受付が始まった。", ["https://famitsu.com/a/1", live],
+         ids=["c-0907"])
+    (tmp / "candidates" / "2026-09-07.json").write_text(json.dumps([{"id": "c-0907", "dedup_key": "ultimate-2027", "url": "https://famitsu.com/a/1"}]),
+                                                        encoding="utf-8")
+    post("2026-09-30", "cast", "xr-live-2027", "765×961 xRライブ、7月に3公演", "第一公演の出演は星井美希、四条貴音、我那覇響、奥空心白。", [live])
+    post("2026-10-14", "guests", "guest-idols", "765×961ライブに蘭子・未来・果穂", "ゲストは神崎蘭子、春日未来、小宮果穂。",
+         ["https://t.co/abc", "https://x.com/imas/status/1"])
+    # 3つ以上の話題に出るシリーズの特設ページ(hub)では、別の催しの記事を添えない
+    for i in range(3):
+        post(f"2026-08-0{i + 1}", f"mp{i}", f"mp-{i}", f"Memory Pict.第{i + 5}弾", f"第{i + 5}弾の本文", ["https://shop.asobistore.jp/feature/cg_mp"],
+             brand="cg")
+    post("2026-10-10", "other", "other-key", "765 単独の記事", "単独の本文", ["https://a.jp/n/1"], brand="765")
+    cands = {"c1": {"id": "c1", "dedup_key": "ultimate-2027", "brand": "765", "url": "https://t.co/abc", "facts": ["765側の出演者4人"],
+                    "found_at": "2026-10-16T02:29"}}
+    sl.link(cands, d, tmp)
+    c = cands["c1"]
+    check(c["dedup_key"] == "guest-idols" and c.get("linked_from") == ["ultimate-2027"], f"つなぎ直す前の話題キーが残らない: {c}")
+    rows = sl.prior_lookup(d, tmp)(sl.prior_keys([c]), [c["url"]])
+    got = {r["edition"]: r.get("related", False) for r in rows}
+    check(got == {"2026-10-14": False, "2026-09-07": False, "2026-09-30": True},
+          f"同じ催しの別の発表の記事(出演者の 9/30 号)が既報に入らない、または関係の無い記事が入った: {got}")
+    check([r["edition"] for r in rows] == ["2026-10-14", "2026-09-07", "2026-09-30"], f"既報の並び(直接の既報が先、新しい順): {rows}")
+    mp = sl.prior_lookup(d, tmp)(["mp-0"])
+    check([r["edition"] for r in mp] == ["2026-08-01"], f"シリーズの特設ページ(hub)で別の回の記事を添えた: {mp}")
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        by_brand, _, _ = compose.write_plan_index(d, cands, {})
+        recent = compose.recent_for_brand(d, "765")
+    finally:
+        compose.ROOT = saved
+    row = by_brand["765"][0]
+    check(any(p.get("related") and "四条貴音" in p["text"] for p in row.get("prior") or []),
+          f"選定の索引に、同じ催しの別の発表の記事(出演者)が渡らない: {row.get('prior')}")
+    check("linked_from" not in row, "選定の索引に内部の印を出した")
+    check("2026-10-14 765×961ライブに蘭子・未来・果穂(合同面)" in recent and "2026-10-10 765 単独の記事" in recent,
+          f"この面の直近の記事に合同面の見出しが無い: {recent}")
+    # 発表が重なり、公演ページが3つ目の話題に載って hub になっても、同じ催しの既報は渡る(監査指摘 event-page-becomes-hub)。
+    # 新しい候補は過去のキーも hub でない URL も持たない(公演ページの下の別のページだけ)
+    post("2026-10-15", "guest2", "second-guest", "765×961ライブ第二公演のゲスト", "第二公演のゲストは天海春香。", [live])
+    check(sl.url_key(live) in sl.hub_urls(sl.past_articles("2026-10-16", tmp, sl.PRIOR_DAYS)), "前提: 公演ページが hub になっていない")
+    for u in (live, live + "ticket"):
+        c2 = {"id": "c2", "dedup_key": "ultimate-ticket-general", "url": u, "found_at": "2026-10-16T03:00"}
+        sl.link({"c2": c2}, d, tmp)
+        rows = sl.prior_lookup(d, tmp)(sl.prior_keys([c2]), [u])
+        check(c2["dedup_key"] == "ultimate-ticket-general" and [r["edition"] for r in rows] == ["2026-10-15", "2026-09-30", "2026-09-07"]
+              and all(r.get("related") for r in rows),
+              f"公演ページが hub になった後、同じ催しの既報(出演者の 9/30 号)が渡らない({u}): {[(r['edition'], r.get('related')) for r in rows]}")
+    # 同じ催しの発表がさらに重なっても(第2・第3公演のゲストが別の話題の記事になる)、古い発表の記事(出演者の 9/30 号)は本数で
+    # 押し出されない。選定の索引では、催しの記事は催しごとに plan-events に全部書き、主題は催しのキーで指す(監査指摘 related-prior-evicts-known-cast)
+    post("2026-10-15", "guest3", "third-guest", "765×961ライブ第三公演のゲスト", "第三公演のゲストは如月千早。", [live + "ticket"])
+    c3 = {"id": "c3", "dedup_key": "cast-ticket-followup", "brand": "765", "url": live + "ticket", "facts": ["765側の出演者4人"],
+          "found_at": "2026-10-16T03:30"}
+    sl.link({"c3": c3}, d, tmp)
+    rows = sl.prior_lookup(d, tmp)(sl.prior_keys([c3]), [c3["url"]])
+    check(any("四条貴音" in r["text"] for r in rows) and [r["edition"] for r in rows] == ["2026-10-15", "2026-10-15", "2026-09-30", "2026-09-07"],
+          f"同じ催しの発表が重なると、出演者の既報が本数の上限で押し出された: {[(r['edition'], r['title']) for r in rows]}")
+    saved = compose.ROOT
+    try:
+        compose.ROOT = tmp
+        by_brand, _, _ = compose.write_plan_index(d, {"c3": c3}, {})
+        ev = json.loads((tmp / "metrics" / f"plan-events-{d}-765.json").read_text(encoding="utf-8"))
+        # 判定から漏れた主題の拾い直しにも、同じ催しの記事を渡す
+        saved_rp = (compose.subprocess.run, compose.prompt_file, compose.save_raw)
+        compose.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 1, "", "")
+        compose.prompt_file, compose.save_raw = (lambda *a, **kw: "p"), (lambda *a, **kw: None)
+        try:
+            compose.replan_missing(d, {"articles": []}, by_brand, {"c3": c3}, [c3["dedup_key"]])
+        finally:
+            compose.subprocess.run, compose.prompt_file, compose.save_raw = saved_rp
+        ev_m = json.loads((tmp / "metrics" / f"plan-events-{d}-missing.json").read_text(encoding="utf-8"))
+    finally:
+        compose.ROOT = saved
+    check(ev_m == ev, f"拾い直しに同じ催しの記事が渡らない: {ev_m}")
+    row = by_brand["765"][0]
+    arts = [a for e in ev if e["event"] in row.get("events", []) for a in e["articles"]]
+    check(row.get("events") == [sl.event_key(sl.url_key(live))] and any("四条貴音" in a["text"] for a in arts)
+          and [a["edition"] for a in arts] == ["2026-10-15", "2026-10-15", "2026-09-30", "2026-09-07"],
+          f"選定の索引で、同じ催しの記事が全部渡らない: events={row.get('events')} {[(a['edition'], a['title']) for a in arts]}")
+    # 同じ話題の記事も本数で切らない(3本目以降の古い記事が書いた事実が新しく見えないように)
+    for i, ed in enumerate(("2026-08-10", "2026-08-11", "2026-08-12")):
+        post(ed, f"bd{i}", "letora-bd", f"誕生日第{i + 1}報", f"第{i + 1}報の事実{i}。", [f"https://b.jp/n/{i}"], brand="dsva")
+    check([r["edition"] for r in sl.prior_lookup(d, tmp)(["letora-bd"])] == ["2026-08-12", "2026-08-11", "2026-08-10"],
+          f"同じ話題の古い記事が本数の上限で押し出された: {sl.prior_lookup(d, tmp)(['letora-bd'])}")
+    check(sl.event_key(sl.url_key("https://shop.asobistore.jp/feature/cg_mp")) == ""
+          and sl.event_key(sl.url_key("https://idolmaster-official.jp/live_event/")) == "",
+          "シリーズの特設ページ・公演の一覧を、1つの催しのページとみなした")
 
 
 def test_grok_roles(tmp: Path):
@@ -7790,11 +7900,11 @@ def test_writer_children(tmp: Path):
             # 書き換え、検算で適用を拒まれる答え(tags 1個)を返す
             "revise-gamma": [{"touch": {f"docs/_posts/{date}-gamma.md": "拒まれた稿の直書き"}, "answer": dict(fixed, tags=["販売"])}]}
     spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
-    saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_by_key, compose.DEADLINE, os.environ.get("PATH"))
+    saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE, os.environ.get("PATH"))
     try:
         compose.ROOT = pipelib.ROOT = tmp
         compose.classify_source = lambda u: "公式"
-        compose.storylink.prior_by_key = lambda *a: {}
+        compose.storylink.prior_lookup = lambda *a: (lambda *b: [])
         compose.DEADLINE = None
         os.environ["PATH"] = f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}"
         os.environ["FAKE_CODEX_SPEC"] = str(spec_p)
@@ -7831,7 +7941,7 @@ def test_writer_children(tmp: Path):
         check(rec.get("probe") == {key0: fmap, key1: fmap} and renderlib.factmap_valid(rec),
               f"採った稿(初稿・改稿)の指紋と事実の対応がファイルに残らない: {rec.get('probe')}")
     finally:
-        compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_by_key, compose.DEADLINE = saved[:5]
+        compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE = saved[:5]
         os.environ["PATH"] = saved[5] or ""
         os.environ.pop("FAKE_CODEX_SPEC", None)
         compose.FACT_MAP.clear()
@@ -10038,6 +10148,7 @@ def main() -> int:
     test_collect_state_write_is_atomic(tmp / "csa")
     test_oncall_collect_rerun_settles_broken_output(tmp / "ocb")
     test_storylink(tmp / "sl")
+    test_storylink_related_prior(tmp / "slr")
     test_oncall_rollback_subprocess(tmp / "rs")
     test_oncall_apply_integrate()
     test_oncall_report_text(tmp / "rp")

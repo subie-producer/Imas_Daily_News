@@ -88,6 +88,9 @@ def path_key(url: str) -> str | None:
     if host in QUERY_DOC_PAGES:
         # 文書 ID はクエリの id か、短縮の /r/<ID>。取れなければ None(フォームのサービス全体を1つの主体にしない。監査指摘 2026-10-14)
         return query_doc_key(url) or (f"{host}/r/{seg[1]}" if len(seg) >= 2 and seg[0].lower() == "r" else None)
+    if host == "youtube.com" and seg == ["playlist"]:
+        # 再生リストは list= の ID までが1つの単位(種別は持ち主のチャンネルを写す。resolve_playlists)。ID が無ければ None
+        return query_doc_key(url)
     if host == "ch.nicovideo.jp" and seg and seg[0] == "channel":
         # `/channel/<ch ID>` は ID までが1つのチャンネル。先頭1区切りで切ると、別のチャンネルが同じ `ch.nicovideo.jp/channel` になり、
         # 1つを公式にすると他のチャンネル(とその番組)まで公式になった(監査指摘 2026-10-14)。別名の形(`/sidem`)は先頭1区切り
@@ -116,6 +119,11 @@ def display_base(url_or_key: str) -> str:
         # ニコニコの生放送・動画もチャンネルで決まる。チャンネルを引けなければ番組の URL
         key, _ch, _t = nico_channel(m.group(1))
         return f"https://{key}" if key else nico_watch_url(m.group(1))
+    pl = yt_playlist_key(s)
+    if pl:
+        # 再生リストも持ち主(チャンネル)で決まる。引けなければ再生リストの URL
+        handle, _ = playlist_owner(pl)
+        return f"https://youtube.com/@{handle}" if handle else f"https://{pl}"
     m = YT_ID.search(s)
     if m and host in ("youtube.com", "youtu.be"):
         # 動画は投稿者(チャンネル)で決まる。判定表に書く単位はチャンネルなので、投稿者を引いて出す。
@@ -162,6 +170,8 @@ def platform_unit(url: str) -> tuple[str, str]:
         return "path", pk
     if host in DOC_HOSTS or host in QUERY_DOC_PAGES:
         return "skip", f"{host} の文書 ID の無い URL(文書でなければ持ち主は無い)"
+    if host.removeprefix("m.") == "youtube.com" and u.path.rstrip("/") == "/playlist":
+        return "skip", "YouTube の再生リスト ID(list=)の無い URL"
     for q in SUBDOMAIN_PLATFORMS:
         if host.endswith("." + q):
             return "domain", host
@@ -227,6 +237,8 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
         host = (u.hostname or "").removeprefix("www.")
         if (YT_ID.search(url) and host.removeprefix("m.") in ("youtube.com", "youtu.be")) or NICO_ID.search(url):
             continue                       # 動画は投稿者で決まる(resolve_videos / resolve_nico が扱い、決まらなければそちらが報告する)
+        if yt_playlist_key(url):
+            continue                       # 再生リストも持ち主のチャンネルで決まる(resolve_playlists が扱う)
         pid, handle = anon_x_author(url)
         if pid:
             # 投稿者の無い X の投稿(`x.com/i/status/<ID>`)。URL は記事に載ったまま変えられないので、
@@ -1106,6 +1118,86 @@ def video_author(vid: str) -> tuple[str, str]:
     return "", ""
 
 
+def yt_playlist_key(url: str) -> str | None:
+    """YouTube の再生リストの URL なら、判定表(path_types)に書くキー `youtube.com/playlist?list=<ID>`。それ以外は None。"""
+    k = query_doc_key(url)
+    return k if k and k.startswith("youtube.com/playlist?") else None
+
+
+def playlist_author(list_id: str, fetch=None) -> tuple[str, str]:
+    """再生リストの持ち主のハンドルと題名を oEmbed で取る。(handle, title)。取れなければ ("", "")。
+    oEmbed の author_url(投稿主体の構造化フィールド)だけを見る。説明文や収録動画の投稿者からは推定しない
+    (他人の動画を集めた再生リストでは、収録動画の投稿者は持ち主ではない)。fetch(url) -> 本文 を渡せば取得しない(テスト用)。
+    実測 2026-10-17: list=PLVWdhK_WANzc の oEmbed は author_url "/@imas-official" を返す。"""
+    import urllib.request
+    q = urllib.parse.urlencode({"url": f"https://www.youtube.com/playlist?list={list_id}", "format": "json"})
+    try:
+        if fetch is None:
+            req = urllib.request.Request(f"https://www.youtube.com/oembed?{q}", headers={"User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                body = r.read().decode("utf-8")
+        else:
+            body = fetch(f"https://www.youtube.com/oembed?{q}")
+        d = json.loads(body)
+    except Exception as e:
+        print(f"  再生リストの oEmbed 取得できず {list_id}: {type(e).__name__}", flush=True)
+        return "", ""
+    last = urllib.parse.unquote(str(d.get("author_url") or "").rstrip("/").rsplit("/", 1)[-1])
+    # 判定表のチャンネルはハンドルで持つ。`/channel/UC…` の形はハンドルではないので取れなかったことにする
+    return (last[1:] if last.startswith("@") and len(last) > 1 else ""), str(d.get("title") or "")
+
+
+_PLAYLIST_CACHE: dict[str, tuple[str, str]] = {}
+
+
+def playlist_owner(key: str) -> tuple[str, str]:
+    """`playlist_author` を再生リストごとに1回だけ呼ぶ(display_base は出典行ごとに引く)。key は yt_playlist_key の形。"""
+    lid = key.split("list=", 1)[1]
+    if lid not in _PLAYLIST_CACHE:
+        _PLAYLIST_CACHE[lid] = playlist_author(lid)
+    return _PLAYLIST_CACHE[lid]
+
+
+def unknown_playlists(date: str) -> dict[str, str]:
+    """判定表に無い YouTube の再生リスト(キー → 代表 URL)。"""
+    out: dict[str, str] = {}
+    for c in target_rows(date):
+        url = ((c.get("url") or "").split() or [""])[0]
+        k = yt_playlist_key(url)
+        if k and classify_source(url) == "未確認":
+            out.setdefault(k, url)
+    return out
+
+
+def resolve_playlists(date: str, apply: bool) -> tuple[list[str], dict[str, tuple[str, str]]]:
+    """持ち主のチャンネルが表(video_channels)にある再生リストへ、チャンネルの種別を path_types に機械で写す(動画と同じ。
+    合議には掛けない)。戻り値は (決まらなかったものの説明, チャンネルが表に無いもの: handle → (再生リストのキー, 題名))。"""
+    lists = unknown_playlists(date)
+    if not lists:
+        return [], {}
+    t = source_type_table()
+    chans = {h.lower(): typ for typ, hs in (t.get("video_channels") or {}).items() for h in hs or []}
+    print(f"\n{date}: 判定表に無い YouTube 再生リスト {len(lists)}件", flush=True)
+    found: dict[str, tuple[str, str]] = {}
+    left: list[str] = []
+    unknown_chans: dict[str, tuple[str, str]] = {}
+    for key, url in sorted(lists.items()):
+        handle, title = playlist_owner(key)
+        typ = chans.get(handle.lower()) if handle else None
+        if typ:
+            found[key] = (typ, f"持ち主 @{handle}「{title[:30]}」")
+            print(f"  {typ}\t{key}\t@{handle} {title[:40]}")
+        elif handle:
+            left.append(f"https://www.{key}: 持ち主のチャンネル(@{handle})が判定表に無い(チャンネルの合議でも決まらなかった)")
+            unknown_chans.setdefault(handle, (key, title))
+        else:
+            left.append(f"https://www.{key}: 再生リストの持ち主を引けない(oEmbed が返さない。削除・非公開か)")
+    if found and apply:
+        add_paths(found, how="機械で追加")
+        print(f"  → 再生リスト {len(found)}件を表に追加(持ち主のチャンネルの種別を写した)")
+    return left, unknown_chans
+
+
 def add_video_ids(found: dict[str, tuple[str, str]]) -> None:
     """動画 ID を video_ids の該当種別へ足す。ID は大文字小文字を区別する。"""
     _add_labeled("video_ids", found, "機械で追加", ci=False)
@@ -1185,7 +1277,7 @@ def main() -> int:
             print(f"  パーサが無い\t{s}", flush=True)
         split_all += rows
     if (not doms and not accts and not paths and not X_POSTS and not SHORT_LINKS
-            and not unknown_videos(date) and not unknown_nico(date)):
+            and not unknown_videos(date) and not unknown_nico(date) and not unknown_playlists(date)):
         if not split_all:
             print(f"{date}: 判定表に無い出典はありません")
             return 0
@@ -1257,12 +1349,17 @@ def main() -> int:
     # チャンネルが表に無ければ、チャンネルのページ(概要)を材料に合議で種別を決めて表に足し、
     # そのうえで動画 ID を引き直す
     left, unknown_chans = resolve_videos(date, args.apply)
+    # 再生リストも持ち主のチャンネルで決まる。チャンネルが表に無ければ、動画のチャンネルと一緒に合議に掛ける
+    pl_left, pl_chans = resolve_playlists(date, args.apply)
+    left += pl_left
+    for h, v in pl_chans.items():
+        unknown_chans.setdefault(h, v)
     if unknown_chans:
         print(f"\n{date}: 判定表に無い YouTube チャンネル {len(unknown_chans)}件 → "
               + ", ".join(f"@{h}" for h in sorted(unknown_chans)), flush=True)
         items = [(f"youtube.com/@{h}", f"https://www.youtube.com/@{h}/about",
                   site_profile(f"youtube.com/@{h}", f"https://www.youtube.com/@{h}/about", top=f"https://www.youtube.com/@{h}")
-                  + f"\n表に載った動画: {vid}「{title[:60]}」")
+                  + f"\n表に載った動画・再生リスト: {vid}「{title[:60]}」")
                  for h, (vid, title) in sorted(unknown_chans.items())]
         agreed, split = consensus(lambda ks: build_prompt([it for it in items if it[0] in ks]),
                                   [f"youtube.com/@{h}" for h in sorted(unknown_chans)])
@@ -1275,6 +1372,7 @@ def main() -> int:
             add_video_channels(chans)
             print(f"  → チャンネル {len(chans)}件を表に追加")
             left, _ = resolve_videos(date, True)
+            left += resolve_playlists(date, True)[0]
         else:
             left = [x for x in left if not any(f"(@{h})" in x for h in chans)] + split
     split_all += left

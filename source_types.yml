@@ -240,6 +240,9 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - unitedcinemas.jp      # 合議で追加: 会場の劇場アクセス・チケット案内。会場側の一次発信
+  - kuji-pop.com          # 合議で追加: 販売中くじの販売開始を自ら告知。運営会社は検索で確認できず
+  - capsule.bushiroad-creative.com # 合議で追加: ライセンス商品の販売元。ブシカプ!の商品情報を自社で掲載
   - seibuen-amusement-park.jp # 合議で追加: SideMイベントの開催会場。アクスタの販売元
   - perspect.co.jp        # 合議で追加: SideMのキャラクターデザイン担当者によるグッズ販売告知
   - chikusei-hanabi.jp    # 合議で追加: 花火大会の主催。協賛・出店者募集の一次発信
@@ -924,6 +927,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  docs.google.com/forms/d/e/1FAIpQLSfMhjRS_SENvwIOAgkX9_pGuiIuFIZBpmI0f-7N-Jm_sIFD6w: 公式 # 合議で追加: リンク元の公式X(@TomoriManaka)と同企画。制作委託Activ8
   t.co/BycEJlR0rt: 公式                         # 機械で追加: 展開先 https://idolmaster-official.jp/live_event/shinycolors_orchestra_RC/#ticketCol
   t.co/qs2xK8F5GV: 公式                         # 機械で追加: 展開先 https://www.youtube.com/live/9LYcJoxB_r4
   t.co/qs2xK8ExRn: 公式                         # 機械で追加: 展開先 https://www.youtube.com/live/9LYcJoxB_r4

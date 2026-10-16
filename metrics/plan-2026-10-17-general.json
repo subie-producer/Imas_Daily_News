@@ -1,0 +1,96 @@
+{
+ "decisions": {
+  "plv-90-memory-farming-impressions-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "Reddit個人の感想1件のみ。未確認で単体記事にしない"
+  },
+  "fan-jizefie-street-fashion-2026-10-16": {
+   "action": "article",
+   "angle": "ジゼフィー風ストリートファッションに前年のジゼたんキャップを合わせたファン投稿が共有された",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作系の話題。個人を主役にせず界隈の楽しみ方として書く"
+  },
+  "imas-channel-member-radio-2026-10": {
+   "action": "article",
+   "angle": "アイマスchのメンバー限定ラジオが10月21日19時から配信、MCは香里有佐、ゲストは南早紀で冒頭15分は誰でも視聴できる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発表・確認済み。お便りとファンアートも募集"
+  },
+  "idolmaster-portal-maintenance-2026-10-22": {
+   "action": "article",
+   "angle": "アイドルマスターポータルのシステムメンテナンスが10月22日15時〜16時に実施される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発表・確認済み。短い告知記事"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-fan-jizefie-street-fashion-2026-10-16",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "ジゼフィー風ストリートファッションに前年のジゼたんキャップを合わせたファン投稿が共有された",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "fan-jizefie-street-fashion-2026-10-16",
+    "candidate_ids": [
+     "202610170225-grok-66"
+    ]
+   },
+   {
+    "slug": "general-imas-channel-member-radio-2026-10",
+    "brand": "general",
+    "rank": "small",
+    "angle": "アイマスchのメンバー限定ラジオが10月21日19時から配信、MCは香里有佐、ゲストは南早紀で冒頭15分は誰でも視聴できる",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "imas-channel-member-radio-2026-10",
+    "candidate_ids": [
+     "202610170225-grok-70"
+    ]
+   },
+   {
+    "slug": "general-idolmaster-portal-maintenance-2026-10-22",
+    "brand": "general",
+    "rank": "small",
+    "angle": "アイドルマスターポータルのシステムメンテナンスが10月22日15時〜16時に実施される",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "idolmaster-portal-maintenance-2026-10-22",
+    "candidate_ids": [
+     "202610170225-grok-71"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "plv-90-memory-farming-impressions-2026",
+    "reason": "個人の話題",
+    "note": "Reddit個人の感想1件のみ。未確認で単体記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

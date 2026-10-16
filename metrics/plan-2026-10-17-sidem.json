@@ -1,0 +1,397 @@
+{
+ "decisions": {
+  "tours-series-2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16 合同面の記事に全事実が既出。稼働は29日で3日以内ではない"
+  },
+  "sidem-2dmv-goods-third-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16『第3弾グッズ、受注締切は11月1日』と同じ商品。締切は16日先"
+  },
+  "sidem-2dmv-goods-vol3": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "価格・期間・販売先とも10/16の記事に既出。当日のトリガー無し"
+  },
+  "sidem-fbfes-wanna-step-in-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16の直前販売の記事に既出。締切25日は3日以内ではない"
+  },
+  "sidem-aji-na-yatsura-story-2026": {
+   "action": "article",
+   "angle": "「アイドルたちの1コマ」に、握野英雄・木村龍・信玄誠司が登場する新エピソード「守りたいもの」が本日0時に追加された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ボイス無し、閲覧にはアソビストア無料会員登録が必要"
+  },
+  "sidem-11th-setlist-playlists-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/10の記事と同じプレイリスト(同URL)"
+  },
+  "sidem-tvguide-2026-10-30": {
+   "action": "article",
+   "angle": "週刊TVガイド10/30号(21日発売)にSideM 11th出演キャスト5人の撮りおろしとインタビューが載る",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売は4日後。sidem-weekly-tvguide-2026-10-30の素材も統合"
+  },
+  "sidem-315-night-2026-10-23": {
+   "action": "article",
+   "angle": "10月23日放送の「315プロNight!」は深町寿成・バレッタ裕・濱野大輝が担当し、11th感想・イラスト・お便りを今週中に募集している",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "投稿フォームあり。募集は今週中"
+  },
+  "sidem-movie-who-goes-first-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/15・10/16にムビチケ発売の記事あり。同じ施策で新事実・当日トリガー無し(prior本文は未確認)"
+  },
+  "sidem-aji-project-episode-1": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/14・10/15に公開・無料範囲の記事あり"
+  },
+  "deramas-sidem-myokoen-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/11の記事に既出のマンガ展ポップアップ。期間末は10/31で3日以内ではない"
+  },
+  "sidem-cho-retroseparty-acrylic-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16に同じアクスタ1,980円の記事あり"
+  },
+  "sidem-joypolis-screening-2026-12-05": {
+   "action": "article",
+   "angle": "東京ジョイポリスで12月5日に開かれる「SideM in JOYPOLIS」貸切上映会の先行抽選が始まり、特典付き参加券が販売される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典はローソンチケット投稿(未確認)。10/16の第2弾期間記事とは別施策。出典は校閲で確認"
+  },
+  "fan-futamass-trip-milestone-2026-10-16": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。sidem面にはファン面(culture)が無い"
+  },
+  "sidem-delight-excursion-100k-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16に10万回再生の記事あり"
+  },
+  "sidem-315-night-clip-2026-10-09": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "終了済み放送回(10/9)の動画紹介で、新事実も当日トリガーも無い"
+  },
+  "sidem-remember-shot-fair-vol4-2026": {
+   "action": "article",
+   "angle": "アニメイトで「SideM リメンバーショットフェア第4弾」を開催中で、関連商品の購入で切手風ステッカー(全10種)を1枚もらえる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "店舗アカウントの投稿のみで期間・対象商品が不明。校閲で出典を確認し、足りなければ見送り"
+  },
+  "tours-sidem-study-equal-magic-s2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "二次情報。10/16の合同面の記事と同じ内容"
+  },
+  "sidem-weekly-tvguide-2026-10-30": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-tvguide-2026-10-30",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ号の同じ企画。TVガイド公式投稿を補強に使う"
+  },
+  "sidem-315night-fan-post-2026-10-16": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で、単体では記事にしない"
+  },
+  "sidem-producer-meeting-ajewelholic-2027": {
+   "action": "article",
+   "angle": "SideMプロミ「AJewelholIc!!!」のプレミアム会員先行の当落が本日13時から発表され、当選者の入金は21日23時59分までに行う",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 75,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(結果)。sidem-2027の素材も統合。入金期間13時〜10/21 23:59は既出だが当日トリガーで再掲"
+  },
+  "sidem-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-producer-meeting-ajewelholic-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演の同じ先行抽選。続報予約(結果)はこの記事で扱う"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-aji-na-yatsura-story-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「アイドルたちの1コマ」に、握野英雄・木村龍・信玄誠司が登場する新エピソード「守りたいもの」が本日0時に追加された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-aji-na-yatsura-story-2026",
+    "candidate_ids": [
+     "202610170225-grok-37"
+    ]
+   },
+   {
+    "slug": "sidem-tvguide-2026-10-30",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "週刊TVガイド10/30号(21日発売)にSideM 11th出演キャスト5人の撮りおろしとインタビューが載る",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-tvguide-2026-10-30",
+    "candidate_ids": [
+     "202610170225-grok-39",
+     "202610170225-grok-98"
+    ]
+   },
+   {
+    "slug": "sidem-315-night-2026-10-23",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "10月23日放送の「315プロNight!」は深町寿成・バレッタ裕・濱野大輝が担当し、11th感想・イラスト・お便りを今週中に募集している",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-315-night-2026-10-23",
+    "candidate_ids": [
+     "202610170225-grok-40"
+    ]
+   },
+   {
+    "slug": "sidem-joypolis-screening-2026-12-05",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "東京ジョイポリスで12月5日に開かれる「SideM in JOYPOLIS」貸切上映会の先行抽選が始まり、特典付き参加券が販売される",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-joypolis-screening-2026-12-05",
+    "candidate_ids": [
+     "202610170225-grok-47"
+    ]
+   },
+   {
+    "slug": "sidem-remember-shot-fair-vol4-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "アニメイトで「SideM リメンバーショットフェア第4弾」を開催中で、関連商品の購入で切手風ステッカー(全10種)を1枚もらえる",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "sidem-remember-shot-fair-vol4-2026",
+    "candidate_ids": [
+     "202610170225-grok-51"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-2027",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "SideMプロミ「AJewelholIc!!!」のプレミアム会員先行の当落が本日13時から発表され、当選者の入金は21日23時59分までに行う",
+    "purpose": "期日の知らせ",
+    "lead_score": 75,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027",
+    "candidate_ids": [
+     "sched-2026-10-17-sidem-producer-meeting-ajewelholic-2027-結果",
+     "sched-2026-10-17-sidem-2027-結果"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tours-series-2-2026",
+    "reason": "既報",
+    "note": "10/16 合同面の記事に全事実が既出。稼働は29日で3日以内ではない"
+   },
+   {
+    "dedup_key": "sidem-2dmv-goods-third-2026",
+    "reason": "既報",
+    "note": "10/16『第3弾グッズ、受注締切は11月1日』と同じ商品。締切は16日先"
+   },
+   {
+    "dedup_key": "sidem-2dmv-goods-vol3",
+    "reason": "既報",
+    "note": "価格・期間・販売先とも10/16の記事に既出。当日のトリガー無し"
+   },
+   {
+    "dedup_key": "sidem-fbfes-wanna-step-in-goods-2026",
+    "reason": "既報",
+    "note": "10/16の直前販売の記事に既出。締切25日は3日以内ではない"
+   },
+   {
+    "dedup_key": "sidem-11th-setlist-playlists-2026",
+    "reason": "既報",
+    "note": "10/10の記事と同じプレイリスト(同URL)"
+   },
+   {
+    "dedup_key": "sidem-movie-who-goes-first-ticket-2026",
+    "reason": "既報",
+    "note": "10/15・10/16にムビチケ発売の記事あり。同じ施策で新事実・当日トリガー無し(prior本文は未確認)"
+   },
+   {
+    "dedup_key": "sidem-aji-project-episode-1",
+    "reason": "既報",
+    "note": "10/14・10/15に公開・無料範囲の記事あり"
+   },
+   {
+    "dedup_key": "deramas-sidem-myokoen-2026",
+    "reason": "既報",
+    "note": "10/11の記事に既出のマンガ展ポップアップ。期間末は10/31で3日以内ではない"
+   },
+   {
+    "dedup_key": "sidem-cho-retroseparty-acrylic-2026",
+    "reason": "既報",
+    "note": "10/16に同じアクスタ1,980円の記事あり"
+   },
+   {
+    "dedup_key": "fan-futamass-trip-milestone-2026-10-16",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。sidem面にはファン面(culture)が無い"
+   },
+   {
+    "dedup_key": "sidem-delight-excursion-100k-2026",
+    "reason": "既報",
+    "note": "10/16に10万回再生の記事あり"
+   },
+   {
+    "dedup_key": "sidem-315-night-clip-2026-10-09",
+    "reason": "その他",
+    "note": "終了済み放送回(10/9)の動画紹介で、新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "tours-sidem-study-equal-magic-s2-2026",
+    "reason": "既報",
+    "note": "二次情報。10/16の合同面の記事と同じ内容"
+   },
+   {
+    "dedup_key": "sidem-315night-fan-post-2026-10-16",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で、単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

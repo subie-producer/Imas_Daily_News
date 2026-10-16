@@ -1,0 +1,363 @@
+{
+ "decisions": {
+  "shinycolors-8-5th-3rd-anniversary-live-2026": {
+   "action": "article",
+   "angle": "シャニマス＆シャニソン生配信(8.5th＆3rdアニバーサリースペシャル)が10月23日19時から、ニコ生・YouTube・enzaで配信される",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-cutie-finder-sweets-paradise-cafe-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/26の記事と同内容(期間・店舗・予約方法)。新事実も当日トリガーも無い"
+  },
+  "shiny-karaoke-tetsujin-refrac7ions-2026": {
+   "action": "article",
+   "angle": "カラオケの鉄人とのPJ:REFRAC7IONSコラボが11月19日から12月31日まで開催決定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-sweets-paradise-cafe-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "9/26の記事に期間・3店舗・80分制・アプリ予約まで全て既出。新事実なし"
+  },
+  "shiny-prism-focus-look-up-to-the-sky-2026": {
+   "action": "roundup",
+   "angle": "シャニソンの縦画面フォーカスカメラ追加楽曲(Look up to the sky・緋田美琴)など運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-sweet-memories-focus-camera-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16に記事化済み、新事実なし"
+  },
+  "shiny-prism-rerun-pickup-2026-10": {
+   "action": "roundup",
+   "angle": "シャニソン復刻ピックアップガシャ開催中(三峰結華・幽谷霧子)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-mattari-hbtk-clip-2026-10-16": {
+   "action": "roundup",
+   "angle": "配信番組「まったりHBTK」の切り抜き公開",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-prism-technical-challenge-cup-17-2026": {
+   "action": "roundup",
+   "angle": "シャニソン第17回テクニカルチャレンジ杯が10月17日開始(課題曲Black Reverie)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "月例イベントとして運営まとめへ"
+  },
+  "shiny-prism-xr-black-reverie-2026": {
+   "action": "roundup",
+   "angle": "xRライブ楽曲「Black Reverie」(白瀬咲耶)が10月17日12時に追加",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "楽曲追加として運営まとめへ"
+  },
+  "shiny-runway-photo-contest-results-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16に受賞者12人を記事化済み"
+  },
+  "shiny-dress-order-boost-week-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16に記事化済み、新事実なし"
+  },
+  "shiny-fam-kuji-vol-2-2026": {
+   "action": "article",
+   "angle": "FAMくじ『シャイニーカラーズ』vol.2が10月31日まで販売中、放クラとストレイライトのロリータ描き下ろし",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-chikusei-fireworks-fan-sponsorship-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン有志の協賛と個人SNS投稿が出典。単体では記事にしない"
+  },
+  "shiny-85th-free-daily-10-pull-wave-2-2026": {
+   "action": "roundup",
+   "angle": "8.5周年第2弾の限定入りスタンプ付き1日1回無料10連ガシャ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は個人投稿だが、開催中ガシャとして運営まとめへ"
+  },
+  "shiny-chikusei-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chikusei-shiny-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "花火大会当日の同一出来事"
+  },
+  "shiny-song-for-prism-merch-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-sanka-benibana-release-event-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ会場物販の主題"
+  },
+  "shiny-sanka-benibana-release-event-goods-2026": {
+   "action": "article",
+   "angle": "「散花／紅花」発売記念イベントの会場物販が本日12時30分から終演後30分程度まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日トリガー(販売開始)。購入制限・支払い方法は既報のため、当日の販売時間と注意点を中心に"
+  },
+  "shiny-collab-fes-2026-oct": {
+   "action": "article",
+   "angle": "シャニマスのコラボフェスは終了まで3日、10月20日11時59分(予定)まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内のトリガー"
+  },
+  "chikusei-shinycolors-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chikusei-shiny-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "花火大会当日のグッズ販売・ポストカード配布。同じ催し"
+  },
+  "chikusei-shiny-collab-2026": {
+   "action": "article",
+   "angle": "ちくせい花火大会2026が本日18時開演、シャニマスのコラボ花火と黛冬優子の場内アナウンス、会場のグッズ販売・ポストカード配布(荒天時は18日に順延)",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日開催。筑西関連の3主題を統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-shinycolors-8-5th-3rd-anniversary-live-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニマス＆シャニソン生配信(8.5th＆3rdアニバーサリースペシャル)が10月23日19時から、ニコ生・YouTube・enzaで配信される",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shinycolors-8-5th-3rd-anniversary-live-2026",
+    "candidate_ids": [
+     "202610161234-watch-3"
+    ]
+   },
+   {
+    "slug": "shiny-karaoke-tetsujin-refrac7ions-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "カラオケの鉄人とのPJ:REFRAC7IONSコラボが11月19日から12月31日まで開催決定",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-karaoke-tetsujin-refrac7ions-2026",
+    "candidate_ids": [
+     "202610161835-watch-1"
+    ]
+   },
+   {
+    "slug": "shiny-fam-kuji-vol-2-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "FAMくじ『シャイニーカラーズ』vol.2が10月31日まで販売中、放クラとストレイライトのロリータ描き下ろし",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-fam-kuji-vol-2-2026",
+    "candidate_ids": [
+     "202610170225-grok-34"
+    ]
+   },
+   {
+    "slug": "shiny-sanka-benibana-release-event-goods-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「散花／紅花」発売記念イベントの会場物販が本日12時30分から終演後30分程度まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-sanka-benibana-release-event-goods-2026",
+    "candidate_ids": [
+     "sched-2026-10-17-shiny-sanka-benibana-release-event-goods-2026-開始",
+     "sched-2026-10-17-shiny-song-for-prism-merch-2026-開始"
+    ]
+   },
+   {
+    "slug": "shiny-collab-fes-2026-oct",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマスのコラボフェスは終了まで3日、10月20日11時59分(予定)まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-collab-fes-2026-oct",
+    "candidate_ids": [
+     "sched-2026-10-17-shiny-collab-fes-2026-oct-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-chikusei-shiny-collab-2026",
+    "brand": "shiny",
+    "rank": "large",
+    "angle": "ちくせい花火大会2026が本日18時開演、シャニマスのコラボ花火と黛冬優子の場内アナウンス、会場のグッズ販売・ポストカード配布(荒天時は18日に順延)",
+    "purpose": "期日の知らせ",
+    "lead_score": 85,
+    "dedup_key": "chikusei-shiny-collab-2026",
+    "candidate_ids": [
+     "sched-2026-10-17-chikusei-shiny-collab-2026-開幕",
+     "sched-2026-10-17-shiny-chikusei-collab-2026-その他",
+     "sched-2026-10-17-chikusei-shinycolors-collab-2026-開幕"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シャニソンの縦画面フォーカスカメラ追加楽曲(Look up to the sky・緋田美琴)など運営情報",
+    "lead_score": 0,
+    "dedup_key": "shiny-prism-focus-look-up-to-the-sky-2026",
+    "candidate_ids": [
+     "202610170225-grok-24",
+     "202610170225-grok-26",
+     "202610170225-grok-27",
+     "202610170225-grok-30",
+     "202610170225-grok-31",
+     "202610170225-grok-36"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-cutie-finder-sweets-paradise-cafe-2026",
+    "reason": "既報",
+    "note": "9/26の記事と同内容(期間・店舗・予約方法)。新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "shiny-sweets-paradise-cafe-2026",
+    "reason": "既報",
+    "note": "9/26の記事に期間・3店舗・80分制・アプリ予約まで全て既出。新事実なし"
+   },
+   {
+    "dedup_key": "shiny-song-sweet-memories-focus-camera-2026",
+    "reason": "既報",
+    "note": "10/16に記事化済み、新事実なし"
+   },
+   {
+    "dedup_key": "shiny-runway-photo-contest-results-2026",
+    "reason": "既報",
+    "note": "10/16に受賞者12人を記事化済み"
+   },
+   {
+    "dedup_key": "shiny-dress-order-boost-week-2026",
+    "reason": "既報",
+    "note": "10/16に記事化済み、新事実なし"
+   },
+   {
+    "dedup_key": "shiny-chikusei-fireworks-fan-sponsorship-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファン有志の協賛と個人SNS投稿が出典。単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

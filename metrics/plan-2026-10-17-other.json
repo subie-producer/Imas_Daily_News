@@ -1,0 +1,66 @@
+{
+ "decisions": {
+  "starmas-5th-idol-intro-1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "15日号で心白の紹介動画とお礼メッセージ送付を報じ済み。facts に新事実・当日のトリガーなし。"
+  },
+  "stamaste-5th-fan-banners-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンが企画したのぼり・応援幕の話題で、公式の施策ではない。"
+  },
+  "million-monthly-alternative-revive-2026-10": {
+   "action": "article",
+   "angle": "ミリシタで10月18日15時から、水瀬伊織・天空橋朋花の限定SSRが登場するマンスリー・オルタナティブREVIVEガシャと、セレクションチケットが始まる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認(まとめブログ)。記事にできるかは執筆と校閲が判断する。roundup は3件に満たないため small の通常記事。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "other-million-monthly-alternative-revive-2026-10",
+    "brand": "other",
+    "rank": "small",
+    "angle": "ミリシタで10月18日15時から、水瀬伊織・天空橋朋花の限定SSRが登場するマンスリー・オルタナティブREVIVEガシャと、セレクションチケットが始まる",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-monthly-alternative-revive-2026-10",
+    "candidate_ids": [
+     "202610160229-grok-22"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "starmas-5th-idol-intro-1-2026",
+    "reason": "既報",
+    "note": "15日号で心白の紹介動画とお礼メッセージ送付を報じ済み。facts に新事実・当日のトリガーなし。"
+   },
+   {
+    "dedup_key": "stamaste-5th-fan-banners-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンが企画したのぼり・応援幕の話題で、公式の施策ではない。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

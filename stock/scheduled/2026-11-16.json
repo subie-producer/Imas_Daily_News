@@ -243,5 +243,33 @@
   "src_candidate_id": "202610080222-grok-10",
   "event_date": "2026-10-08",
   "deadline": "2026-11-16"
+ },
+ {
+  "id": "sched-2026-11-16-million-opera-seria-popup-mail-order-2026-締切",
+  "dedup_key": "million-opera-seria-popup-mail-order-2026",
+  "brand": "million",
+  "subject": "「オペラセリア」事後通販 受注締切",
+  "kind": "締切",
+  "note": "本日17時までAnimoで事後通販を注文できる",
+  "reserved_on": "2026-10-17",
+  "occurs_on": "2026-11-16",
+  "title": "ミリオン POP UP SHOP「オペラセリア」事後通販",
+  "url": "https://idolmaster-official.jp/news/01_20156",
+  "source_type": "公式",
+  "facts": [
+   "受注期間: 2026年10月16日（金）17:00 ～ 11月16日（月）17:00迄",
+   "発送予定: 2027年2月下旬より",
+   "予約受付: 本日11月16日（金）より予約受付を開始いたしました",
+   "通販: Animo通販ページ https://animall.jp/collections/idolmaster_millionlive_pus_opera_seria",
+   "POP UP SHOP「オペラセリア」にて展開していたグッズが、Animoにて販売決定",
+   "※EC販売でのご購入には店舗特典は付かない",
+   "※一部商品はなくなり次第、受付を終了",
+   "エンゲージメント: 中",
+   "POP UP SHOP『オペラセリア』商品の事後通販を実施。"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202610161835-watch-2",
+  "deadline": "2026-11-16"
  }
 ]

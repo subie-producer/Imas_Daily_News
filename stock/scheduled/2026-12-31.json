@@ -1,21 +1,50 @@
 [
-  {
-    "id": "sched-2026-12-31-gaku-garakuta-road-disc2-exchange-2026-締切",
-    "dedup_key": "gaku-garakuta-road-disc2-exchange-2026",
-    "brand": "gaku",
-    "subject": "「ガラクタロード」特装盤Disc2の12cm規格CD交換",
-    "kind": "締切",
-    "reserved_on": "2026-09-11",
-    "facts": [
-      "交換受付期限は2026年12月31日23時59分まで",
-      "交換対象は2026年9月10日11時59分までにASOBI STOREで注文した購入者、開封・使用済み品も対象"
-    ],
-    "title": "ガラクタロードDisc2、12cm CDへ交換対応",
-    "url": "https://shop.asobistore.jp/s/news/316",
-    "source_type": "準公式",
-    "verify": "confirmed",
-    "event_date": "2026-12-31",
-    "deadline": "2026-12-31",
-    "src_candidate_id": "202609100734-explore-5"
-  }
+ {
+  "id": "sched-2026-12-31-gaku-garakuta-road-disc2-exchange-2026-締切",
+  "dedup_key": "gaku-garakuta-road-disc2-exchange-2026",
+  "brand": "gaku",
+  "subject": "「ガラクタロード」特装盤Disc2の12cm規格CD交換",
+  "kind": "締切",
+  "reserved_on": "2026-09-11",
+  "facts": [
+   "交換受付期限は2026年12月31日23時59分まで",
+   "交換対象は2026年9月10日11時59分までにASOBI STOREで注文した購入者、開封・使用済み品も対象"
+  ],
+  "title": "ガラクタロードDisc2、12cm CDへ交換対応",
+  "url": "https://shop.asobistore.jp/s/news/316",
+  "source_type": "準公式",
+  "verify": "confirmed",
+  "event_date": "2026-12-31",
+  "deadline": "2026-12-31",
+  "src_candidate_id": "202609100734-explore-5"
+ },
+ {
+  "id": "sched-2026-12-31-shiny-karaoke-tetsujin-refrac7ions-2026-終了",
+  "dedup_key": "shiny-karaoke-tetsujin-refrac7ions-2026",
+  "brand": "shiny",
+  "subject": "シャニマス×カラオケの鉄人 コラボ最終日",
+  "kind": "終了",
+  "note": "コラボ最終日、期間内に店舗で楽しめる",
+  "reserved_on": "2026-10-17",
+  "occurs_on": "2026-12-31",
+  "title": "シャニマス×カラオケの鉄人 PJ:REFRAC7IONSコラボ",
+  "url": "https://idolmaster-official.jp/news/01_20155",
+  "source_type": "公式",
+  "facts": [
+   "コラボ名: 「アイドルマスター シャイニーカラーズ×カラオケの鉄人 PJ:REFRAC7IONS Special Collaboration」",
+   "開催期間: 2026年11月19日（木）〜12月31日（木）",
+   "続報は後日発表となります",
+   "カラオケの鉄人コラボ公式Xアカウント: @animegame_kt",
+   "エンゲージメント: 中",
+   "「アイドルマスター シャイニーカラーズ×カラオケの鉄人 PJ:REFRAC7IONS Special Collaboration」の開催が決定した。",
+   "続報は後日発表予定。",
+   "コラボ名は『アイドルマスター シャイニーカラーズ×カラオケの鉄人 PJ:REFRAC7IONS Special Collaboration』。",
+   "詳細は後日発表予定。"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202610161835-watch-1",
+  "event_date": "2026-11-19",
+  "deadline": "2026-12-31"
+ }
 ]

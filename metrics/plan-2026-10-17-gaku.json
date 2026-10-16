@@ -1,0 +1,207 @@
+{
+ "decisions": {
+  "gaku-plv-cap-90": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16号でPLv上限90を記事化済み。新事実なし"
+  },
+  "gaku-hoshigakuen-broadcast-clip-2026-10-16": {
+   "action": "article",
+   "angle": "公式Xが「初星学園放送部」の切り抜き(アイス好きとかき氷好き)をYouTubeで公開した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "運営情報2件のみで roundup 条件(3件以上)に満たないため単独"
+  },
+  "gaku-contest-season-54": {
+   "action": "article",
+   "angle": "コンテストシーズン54の開催が公式Xで告知された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "事実が少ないため短い記事"
+  },
+  "gaku-plv-cap-90-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "prior(10/16号)と同内容で新事実・当日トリガーなし"
+  },
+  "gaku-mao-another-idol-gacha-2026": {
+   "action": "article",
+   "angle": "有村麻央の無料確定ガシャは本日10時59分で終了する最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。当日トリガーあり"
+  },
+  "gaku-mugyumin-collection-figure-vol-1": {
+   "action": "article",
+   "angle": "「むぎゅみにコレクションフィギュア vol.1」全5種セットが2,500円で予約受付、2027年2月発売予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認の販売アカウント。出典が足りるかは校閲判断"
+  },
+  "gaku-chichibu-matsurinoyu-fan-report-2026-10-16": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の現地レポート。内容は祭の湯コラボの既報と重複"
+  },
+  "gaku-ladyrabbit-cosplay-aichi-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のコスプレ投稿。culture は general 面のみ"
+  },
+  "gaku-agitato-saki-gacha-2026": {
+   "action": "article",
+   "angle": "「Agitato」花海咲季ガシャは10月20日10時59分の終了まで3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。終了3日以内でトリガーあり"
+  },
+  "gaku-11": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "続報予約だが素材factsに池袋駅販売開始の記載がなく、本文の事実は10/16号に既出"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-hoshigakuen-broadcast-clip-2026-10-16",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "公式Xが「初星学園放送部」の切り抜き(アイス好きとかき氷好き)をYouTubeで公開した",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-hoshigakuen-broadcast-clip-2026-10-16",
+    "candidate_ids": [
+     "202610170225-grok-53"
+    ]
+   },
+   {
+    "slug": "gaku-contest-season-54",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "コンテストシーズン54の開催が公式Xで告知された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-contest-season-54",
+    "candidate_ids": [
+     "202610170225-grok-54"
+    ]
+   },
+   {
+    "slug": "gaku-mao-another-idol-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "有村麻央の無料確定ガシャは本日10時59分で終了する最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "gaku-mao-another-idol-gacha-2026",
+    "candidate_ids": [
+     "202610170225-grok-56",
+     "sched-2026-10-17-gaku-mao-another-idol-gacha-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-mugyumin-collection-figure-vol-1",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「むぎゅみにコレクションフィギュア vol.1」全5種セットが2,500円で予約受付、2027年2月発売予定",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-mugyumin-collection-figure-vol-1",
+    "candidate_ids": [
+     "202610170225-grok-57"
+    ]
+   },
+   {
+    "slug": "gaku-agitato-saki-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Agitato」花海咲季ガシャは10月20日10時59分の終了まで3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-agitato-saki-gacha-2026",
+    "candidate_ids": [
+     "sched-2026-10-17-gaku-agitato-saki-gacha-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-plv-cap-90",
+    "reason": "既報",
+    "note": "10/16号でPLv上限90を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "gaku-plv-cap-90-2026",
+    "reason": "既報",
+    "note": "prior(10/16号)と同内容で新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "gaku-chichibu-matsurinoyu-fan-report-2026-10-16",
+    "reason": "個人の話題",
+    "note": "個人の現地レポート。内容は祭の湯コラボの既報と重複"
+   },
+   {
+    "dedup_key": "gaku-ladyrabbit-cosplay-aichi-2026-10",
+    "reason": "個人の話題",
+    "note": "個人のコスプレ投稿。culture は general 面のみ"
+   },
+   {
+    "dedup_key": "gaku-11",
+    "reason": "既報",
+    "note": "続報予約だが素材factsに池袋駅販売開始の記載がなく、本文の事実は10/16号に既出"
+   }
+  ],
+  "cross_brand": []
+ }
+}

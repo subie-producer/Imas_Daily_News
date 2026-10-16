@@ -1,18 +1,47 @@
 [
-  {
-    "id": "sched-2026-11-19-cg-rose-tea-parlor-2026-ikebukuro-開幕",
-    "dedup_key": "cg-rose-tea-parlor-2026-ikebukuro",
-    "brand": "cg",
-    "subject": "Rose Tea Parlorコラボカフェ 池袋店",
-    "kind": "開幕",
-    "reserved_on": "2026-09-05",
-    "facts": [
-      "池袋店は11月19日から11月26日まで開催、テーマは「Rose Tea Parlor」「Crescent Princess」"
-    ],
-    "title": "シンデレラガールズ、Rose Tea Parlorコラボカフェ開催決定",
-    "url": "https://idolmaster-official.jp/news/01_19811",
-    "source_type": "公式",
-    "verify": "confirmed",
-    "src_candidate_id": "202609050237-grok-28"
-  }
+ {
+  "id": "sched-2026-11-19-cg-rose-tea-parlor-2026-ikebukuro-開幕",
+  "dedup_key": "cg-rose-tea-parlor-2026-ikebukuro",
+  "brand": "cg",
+  "subject": "Rose Tea Parlorコラボカフェ 池袋店",
+  "kind": "開幕",
+  "reserved_on": "2026-09-05",
+  "facts": [
+   "池袋店は11月19日から11月26日まで開催、テーマは「Rose Tea Parlor」「Crescent Princess」"
+  ],
+  "title": "シンデレラガールズ、Rose Tea Parlorコラボカフェ開催決定",
+  "url": "https://idolmaster-official.jp/news/01_19811",
+  "source_type": "公式",
+  "verify": "confirmed",
+  "src_candidate_id": "202609050237-grok-28"
+ },
+ {
+  "id": "sched-2026-11-19-shiny-karaoke-tetsujin-refrac7ions-2026-開始",
+  "dedup_key": "shiny-karaoke-tetsujin-refrac7ions-2026",
+  "brand": "shiny",
+  "subject": "シャニマス×カラオケの鉄人 コラボ開始",
+  "kind": "開始",
+  "note": "カラオケの鉄人でコラボが始まり、店舗で楽しめる",
+  "reserved_on": "2026-10-17",
+  "occurs_on": "2026-11-19",
+  "title": "シャニマス×カラオケの鉄人 PJ:REFRAC7IONSコラボ",
+  "url": "https://idolmaster-official.jp/news/01_20155",
+  "source_type": "公式",
+  "facts": [
+   "コラボ名: 「アイドルマスター シャイニーカラーズ×カラオケの鉄人 PJ:REFRAC7IONS Special Collaboration」",
+   "開催期間: 2026年11月19日（木）〜12月31日（木）",
+   "続報は後日発表となります",
+   "カラオケの鉄人コラボ公式Xアカウント: @animegame_kt",
+   "エンゲージメント: 中",
+   "「アイドルマスター シャイニーカラーズ×カラオケの鉄人 PJ:REFRAC7IONS Special Collaboration」の開催が決定した。",
+   "続報は後日発表予定。",
+   "コラボ名は『アイドルマスター シャイニーカラーズ×カラオケの鉄人 PJ:REFRAC7IONS Special Collaboration』。",
+   "詳細は後日発表予定。"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "src_candidate_id": "202610161835-watch-1",
+  "event_date": "2026-11-19",
+  "deadline": "2026-12-31"
+ }
 ]

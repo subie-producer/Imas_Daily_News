@@ -520,5 +520,53 @@
   "verify": "confirmed",
   "src_candidate_id": "202610151833-watch-3",
   "deadline": "2026-10-25"
+ },
+ {
+  "id": "sched-2026-10-22-valiv-bombanana-joint-stream-2026-10-22-開始",
+  "dedup_key": "valiv-bombanana-joint-stream-2026-10-22",
+  "brand": "dsva",
+  "subject": "愛夏・宇宙・レトラ『BOMBANANA!』合同配信",
+  "kind": "開始",
+  "note": "20:00から3人それぞれのYouTubeチャンネルで配信を見られる",
+  "reserved_on": "2026-10-17",
+  "occurs_on": "2026-10-22",
+  "title": "ライバーアイドル3人で『BOMBANANA!』プレイ配信",
+  "url": "https://x.com/valiv_official/status/2111041964678275103",
+  "source_type": "公式",
+  "facts": [
+   "2026年10月22日(木)20:00から、ライバーアイドル3人の合同配信を実施",
+   "配信内容: 『BOMBANANA!』プレイ配信",
+   "愛夏視点 YouTube: https://www.youtube.com/channel/UCuWoH9mx0EgT69UyVxaw1NQ",
+   "宇宙視点 YouTube: https://www.youtube.com/@KamizuruCosmo",
+   "レトラ視点 YouTube: https://www.youtube.com/@UtagawaLetora",
+   "エンゲージメント: 低",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610170225-grok-61",
+  "event_date": "2026-10-22"
+ },
+ {
+  "id": "sched-2026-10-22-idolmaster-portal-maintenance-2026-10-22-開始",
+  "dedup_key": "idolmaster-portal-maintenance-2026-10-22",
+  "brand": "general",
+  "subject": "アイドルマスターポータル システムメンテナンス",
+  "kind": "開始",
+  "note": "15時〜16時のメンテナンス日。この間はポータルを利用できない可能性がある",
+  "reserved_on": "2026-10-17",
+  "occurs_on": "2026-10-22",
+  "title": "アイドルマスターポータルのシステムメンテナンス",
+  "url": "https://x.com/imas_official/status/2110611636683936129",
+  "source_type": "公式",
+  "facts": [
+   "アイドルマスターポータルのシステムメンテナンスを2026年10月22日（木）15:00〜16:00に実施する。",
+   "エンゲージメント: 低",
+   "システムメンテナンス実施日時: 2026年10月22日(木) 15:00〜16:00"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610170225-grok-71",
+  "event_date": "2026-10-22"
  }
 ]

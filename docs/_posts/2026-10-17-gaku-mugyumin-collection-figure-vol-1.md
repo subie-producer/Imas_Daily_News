@@ -2,7 +2,7 @@
 slug: gaku-mugyumin-collection-figure-vol-1
 edition: "2026-10-17"
 brand: gaku
-src: 未確認
+src: 当事者
 rank: small
 corrected: false
 corrections: []
@@ -18,7 +18,7 @@ tags:
 sources:
 - label: ガチャ部！「【2027年2月予約】学園アイドルマスター むぎゅみにコレクションフィギュア vol.1 全5種 コンプリートセット ガチャ 送料無料」(2026年10月17日)
   url: https://itemhouse.skr.jp/gacha/20464/
-  type: 未確認
+  type: 当事者
 - label: ブシカプ！｜ブシロードカプセル公式サイト「商品情報」(日付記載なし)
   url: https://capsule.bushiroad-creative.com/product/?sr=57
   type: 当事者

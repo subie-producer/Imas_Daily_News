@@ -11,7 +11,7 @@ candidate_ids:
 - 202610161234-explore-8
 - 202610162334-explore-8
 title: ミリオン「INVISIBLE LIGHT」店舗特典決定
-lede: 「THE IDOLM@STER MILLION BATTLE OF THE＠TER 10 INVISIBLE LIGHT」の店舗特典が決定し、10月28日発売のCDを対象店舗で購入すると、店舗ごとに異なる特典が付く。
+lede: 「THE IDOLM@STER MILLION BATTLE OF THE＠TER 10 INVISIBLE LIGHT」の店舗特典が決定し、10月28日発売のCDを対象店舗で購入すると特典が付く。
 tags:
 - ミリオンライブ
 - CD

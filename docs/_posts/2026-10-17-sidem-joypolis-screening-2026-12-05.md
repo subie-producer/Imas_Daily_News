@@ -102,7 +102,7 @@ verified_facts:
   url: https://tokyo-joypolis.com/event/sidem_jp2026/index.html
 - id: N23
   text: 上映会で上映する楽曲はTHE 虎牙道「K.now O.nly」。
-  url: https://tokyo-joypolis.com/event/sidem_jp2026/index.html
+  url: https://tokyo-joypolis.com/event/sidem-joypolis-screening-2026-12-05.md
 - id: N24
   text: 上映会で上映する楽曲はC.FIRST「We’re the one」。
   url: https://tokyo-joypolis.com/event/sidem_jp2026/index.html
@@ -142,7 +142,7 @@ verified_facts:
 
 ## 参加券の購入・申込
 
-- 内容・価格：貸切上映会参加券とチケット風アクリルキーホルダー（全1種）のセット、3,500円（税込）
+- 内容・価格：貸切上映会参加券とチケット風アクリルキーホルダー（全1種）のセット、3,500円
 - 先行抽選の申込受付：10月16日12時～11月8日23時59分
 - 申込方法：ローソンチケット（Lコード33331）。1人各回2枚まで
 - 抽選結果発表：11月12日15時

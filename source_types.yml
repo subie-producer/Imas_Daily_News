@@ -240,6 +240,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - itemhouse.skr.jp      # 合議で追加: 複数店の商品を扱う販売サイト。対象品は販売元の予約商品(ショップ名記載)
   - unitedcinemas.jp      # 合議で追加: 会場の劇場アクセス・チケット案内。会場側の一次発信
   - kuji-pop.com          # 合議で追加: 販売中くじの販売開始を自ら告知。運営会社は検索で確認できず
   - capsule.bushiroad-creative.com # 合議で追加: ライセンス商品の販売元。ブシカプ!の商品情報を自社で掲載

@@ -966,8 +966,8 @@ def test_lost_post_notified_once(tmp: Path):
     実測 2026-10-07: 通常の確かめで読めなかった投稿を深掘り前に通知し、深掘りでも読めずにもう一度通知した)。
     深掘りで済んだ投稿は失ったと言わない。深掘りの確かめの問い(使わない)が読めなくても通知しない。"""
     import collect
-    def run(deep_status: str) -> list[str]:
-        root = tmp / deep_status
+    def run(deep_status: str, first: str = "- url: https://x.com/a/status/9\n- 本文: 告知", tag: str = "") -> list[str]:
+        root = tmp / (deep_status + tag)
         (root / "candidates").mkdir(parents=True)
         notes = []
         class P:
@@ -976,7 +976,7 @@ def test_lost_post_notified_once(tmp: Path):
             def wait(self, timeout=None): return 0
         def fake_popen(args, cwd=None, **kw):
             wd = Path(cwd)
-            urls = re.findall(r"(?m)^- url:\s*(\S+)", (wd / "x-posts.md").read_text(encoding="utf-8"))
+            urls = re.findall(r"(?m)^(?:- )?url:\s*(\S+)", (wd / "x-posts.md").read_text(encoding="utf-8"))
             deep_pass = "-deep" in wd.name
             st = (lambda u: deep_status if "status/9" in u else "none") if deep_pass else (lambda u: "unreadable" if "status/9" in u else "none")
             (wd / "items.json").write_text("[]", encoding="utf-8")
@@ -985,8 +985,7 @@ def test_lost_post_notified_once(tmp: Path):
                 (wd / "deep.json").write_text(json.dumps([{"question": "元の投稿", "why": "引用だけ"}]), encoding="utf-8")
             return P()
         def basic(queries, outdir, errs):
-            (outdir / "cg.md").write_text("### 1\n- url: https://x.com/a/status/9\n- 本文: 告知\n\n### 2\n- url: https://x.com/a/status/2\n- 本文: 雑談\n",
-                                          encoding="utf-8")
+            (outdir / "cg.md").write_text(f"### 1\n{first}\n\n### 2\n- url: https://x.com/a/status/2\n- 本文: 雑談\n", encoding="utf-8")
             return []
         def dive(queries, outdir, chosen, errs, suffix="-deep", retry=False):
             (outdir / f"cg{suffix}.md").write_text("### 1\n- url: https://x.com/a/status/9\n- 本文: 告知\n", encoding="utf-8")
@@ -1018,6 +1017,27 @@ def test_lost_post_notified_once(tmp: Path):
     check(not any("deep.json" in m for m in notes), f"使わない深掘りの確かめの問いが読めないことを通知した: {notes}")
     notes = run("none")
     check(not any("status/9" in m for m in notes), f"深掘りで済んだ投稿を失ったと通知した: {notes}")
+    # 同じ投稿が段によって別の形の url で書かれる(2026-10-17: 返信先として x.com/i/status/<ID> で書き出され、深掘りでは
+    # x.com/<アカウント>/status/<ID> で済んだのに、url の文字列が違うので「失った」と通知した)。投稿は status ID で見分ける
+    notes = run("none", first="- url: https://x.com/a/status/1\n- 本文: 返信\n\n返信先:\nurl: https://x.com/i/status/9\n- リンク: なし", tag="-anon")
+    check(not any("status/9" in m for m in notes), f"深掘りで原本の形の url で済んだ投稿を、別の形の url のまま失ったと通知した: {notes}")
+    notes = run("unreadable", first="url: https://x.com/i/status/9\n- リンク: なし", tag="-anon")
+    check(any("status/9" in m for m in notes), f"深掘りでも読めない投稿(別の形の url)の喪失を通知しない: {notes}")
+    # 突き合わせ・重なりの除去も同じ鍵で: 結果が原本の形の url で返っても、その投稿は済み。同じ投稿の2つの形は1つにする
+    anon = "### 1\nurl: https://x.com/i/status/9\n- 本文: x"
+    check(collect.unaccounted_posts(anon, [{"url": "https://x.com/a/status/9", "status": "none", "item": ""}], []) == [],
+          "結果が別の形の url で返った投稿を、未処理として残した")
+    item = {"title": "#315ナイトの感想", "brand": "sidem", "kind": "fan", "url": "https://x.com/a/status/9", "event_date": "",
+            "published_date": "2026-10-16", "deadline": "", "facts": ["ファン投稿は #315ナイト を付けている。"], "quote": "x",
+            "dedup_key": "sidem-315night-fan", "engagement": "低", "mentioned_idols": []}
+    check(collect.candidate_usable(item), "見本の候補が依頼した形でない(テストの前提)")
+    check(collect.unaccounted_posts(anon, [{"url": "https://x.com/a/status/9", "status": "extracted", "item": "https://x.com/i/status/9"}],
+                                    [item]) == [],
+          "候補にした投稿(別の形の url)を、未処理として残した")
+    check(len(collect.post_blocks(collect.dedupe_posts(anon + "\n\n### 2\n- url: https://x.com/a/status/9\n- 本文: x"))) == 1,
+          "同じ投稿の別の形の url を1つにしない")
+    check(collect.post_key("https://x.com/a/status/9?s=20") == collect.post_key("https://twitter.com/i/web/status/9")
+          and collect.post_key("https://example.com/a") == "https://example.com/a", "投稿の鍵の取り方")
     # 面どうしで同じアカウントを検索するので、同じ投稿が複数の面で残る。面の数だけ通知しない(監査指摘 lost-post-cross-face)
     notes = []
     saved = collect.notify
@@ -1028,7 +1048,7 @@ def test_lost_post_notified_once(tmp: Path):
         ledger["lost"]["765as"] = [(f"### 1\n- url: {u}\n- 本文: 告知", "時間切れ")]
         ledger["lost"]["joint-other"] = [(f"### 3\n- url: {u}\n- 本文: 告知", "時間切れ"),
                                          ("### 4\n- url: https://x.com/imas_official/status/7\n- 本文: 別", "時間切れ")]
-        ledger["settled"].add("https://x.com/imas_official/status/7")
+        ledger["settled"].add(collect.post_key("https://x.com/imas_official/status/7"))
         collect.report_lost_posts(ledger)
     finally:
         collect.notify = saved

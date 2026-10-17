@@ -3387,6 +3387,30 @@ def test_x_anonymous_post_url():
     check(cs.platform_unit(got[0]["url"]) == ("x", "ChuLo5738"), "判定の単位が付かない")
 
 
+def test_normalize_fixes_misnamed_brand():
+    """collector の面に候補のどこにも根拠が無く、見出し・主題キーが別の作品を1つだけ名指しするときは、名指しの作品の面へ直す
+    (2026-10-18号: トレンドの探索が vα-liv の告知に gaku を付け、学マス面と vα-liv 面に同じ話題の記事が立ち、校閲で2本を落とした)。
+    根拠のある面・合同・作品が名指しされない候補はそのまま"""
+    import collect
+    def one(**kw):
+        return collect.normalize([{"url": "https://example.com/" + kw.pop("u", "a"), "facts": kw.pop("facts", ["f"]),
+                                   "_via": "grok", **kw}])[0]["brand"]
+    check(one(title="ヴイアラ 1stLIVE全編の期間限定プレミア公開", brand="gaku", dedup_key="valiv-1st-live-full-premiere-2026",
+              facts=["ヴイアラ 1stLIVE全編をプレミア公開。", "公開期間: 10/17(土)22:30-10/18(日)23:59まで。"]) == "dsva",
+          "vα-liv の告知が学マス面のまま")
+    check(one(title="レトラ BIRTHDAY ONLINE LIVE 現地ライブビューイング先行", brand="gaku",
+              dedup_key="valiv-letora-birthday-live-lv-2nd-lottery-2026", facts=["先行抽選二次受付が開始。"]) == "dsva",
+          "主題キーが vα-liv を名指しする候補が学マス面のまま")
+    # ミリシタのガシャに 765 のアイドル(collector は million): 名鑑で million に当たらなくても、見出しが別の作品を名指ししないので直さない
+    check(one(title="菊地真Birthdayガシャ", brand="million", dedup_key="makoto-birthday-gasha", facts=["菊地真のガシャ"]) == "million",
+          "作品の名指しの無い候補の面を、アイドル名だけで動かした")
+    # シャニソンの 765 コラボ(collector は shiny): 見出しが 765 側を名指ししても、shiny の根拠があるので直さない
+    check(one(title="シャニソン 765プロコラボ第5弾", brand="shiny", dedup_key="shiny-765as-collab-5", facts=["765as とのコラボ"]) == "shiny",
+          "collector の面に根拠のある候補を動かした")
+    check(one(title="学マスとヴイアラの合同配信", brand="joint", dedup_key="valiv-gaku-joint") == "joint", "合同を動かした")
+    check(one(title="ヴイアラ 配信", brand="other", dedup_key="valiv-stream") == "dsva", "面の無い候補の補正が効かない")
+
+
 def test_x_anonymous_post_in_posts(tmp: Path):
     """紙面に**既に載った** `x.com/i/status/<ID>` も、投稿者を引いてアカウントを合議に掛け、決まった種別を
     投稿 ID で表(x_posts)に写し、付け直しで記事の種別まで届く。過去紙面の URL は書き換えない
@@ -10383,6 +10407,7 @@ def main() -> int:
     test_deadline_publish_boundary(tmp / "dpb")
     test_clean_url_and_table()
     test_x_anonymous_post_url()
+    test_normalize_fixes_misnamed_brand()
     test_x_anonymous_post_in_posts(tmp / "xap")
     test_collect_classify_gate(tmp / "ccg")
     test_no_prompt_in_argv()

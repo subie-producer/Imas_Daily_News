@@ -1422,10 +1422,15 @@ def guess_brand(text: str, idols: dict) -> str | None:
     dsva と付けた同じ話題と別の面に分かれて二重に記事化された。
     アイドル名は名鑑(docs/_data/idols.json)で面が確定するので、機械で直す。
     """
+    hit = brand_hits(text, idols)
+    return hit.pop() if len(hit) == 1 else None
+
+
+def brand_hits(text: str, idols: dict) -> set[str]:
+    """本文が指す面の全部(作品名・ブランド呼称と、名鑑のアイドル名)。idols を空にすると作品名・呼称だけ。"""
     low = text.lower()
     hit = {b for b, words in BRAND_WORDS.items() if any(w.lower() in low for w in words)}
-    hit |= {b for name, b in idols.items() if name and name in text}
-    return hit.pop() if len(hit) == 1 else None
+    return hit | {b for name, b in idols.items() if name and name in text}
 
 
 def load_idol_brands() -> dict:
@@ -1512,13 +1517,21 @@ def normalize(items: list[dict]) -> list[dict]:
             url = x_post_url(url)
             valid = {"general", "765", "cg", "million", "shiny", "sidem", "gaku", "dsva", "joint", "other"}
             brand = it.get("brand") if it.get("brand") in valid else "other"
+            head = " ".join([it.get("title") or "", it.get("dedup_key") or ""])
+            text = " ".join([head, *(it.get("facts") or [])])
             if brand in ("general", "other"):
-                # 面が付いていない候補だけ補正する。collector が具体的な面を選んで
-                # いるならその判断を尊重する(合同を各面へ割り直したりしない)
-                g = guess_brand(" ".join([it.get("title") or "", it.get("dedup_key") or "",
-                                          *(it.get("facts") or [])]), idols)
+                # 面が付いていない候補は、本文から面を1つに特定できれば補正する
+                g = guess_brand(text, idols)
                 if g:
                     brand = g
+            elif brand != "joint":
+                # collector が具体的な面を選んでいれば原則その判断を尊重する(合同を各面へ割り直したりしない)。
+                # ただし見出しか主題キーが別の作品を1つだけ名指しし、候補のどこにも collector の面の作品名・アイドル名が
+                # 無いときは、面の取り違えとして名指しの作品へ直す(2026-10-18号: トレンドの探索が vα-liv の告知に gaku を付け、
+                # 学マス面と vα-liv 面に同じ話題の記事が1本ずつ立った。面は並列に選ぶので、選定では重なりを見つけられない)
+                named = brand_hits(head, {})
+                if len(named) == 1 and brand not in brand_hits(text, idols):
+                    brand = named.pop()
             dk = re.sub(r"[^a-z0-9-]", "-", (it.get("dedup_key") or "").lower()).strip("-") or f"auto-{i}"
             facts = [f for f in (it.get("facts") or []) if isinstance(f, str) and f.strip()]
             if it.get("engagement"):

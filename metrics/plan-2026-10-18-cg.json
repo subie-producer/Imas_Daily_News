@@ -1,0 +1,412 @@
+{
+ "decisions": {
+  "cg-apple-of-my-ai-2027": {
+   "action": "article",
+   "angle": "ATHOME xR LIVE「Apple of my アイ」アソビストアプレミアム12か月会員先行の申込は本日23時59分が締切。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "山形公演の先行締切(素材4件を統合)"
+  },
+  "cg-xr-live-apple-of-my-ai-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-apple-of-my-ai-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-athome-apple-of-my-ai-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-apple-of-my-ai-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "athome-xr-live-apple-of-my-ai-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-apple-of-my-ai-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-orchestra-goods-2026": {
+   "action": "article",
+   "angle": "15周年オーケストラコンサートの公式グッズ事前販売は本日18日が最終日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "グッズ事前販売の最終日(素材4件を統合)"
+  },
+  "cg-orchestra-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-orchestra-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-15th-anniversary-orchestra-concert-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-orchestra-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cinderella-15th-orchestra-concert-2027": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-15th-orchestra-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2次先行は25日締切で既報のため、グッズ最終日の記事に統合"
+  },
+  "cg-15th-orchestra-ticket-premium2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/15に2次先行は25日までと報じ済み。締切は7日先で当日のトリガーなし"
+  },
+  "cg-memory-pict-7th-pict": {
+   "action": "article",
+   "angle": "Memory Pict.第7弾(佐藤心・白菊ほたる)のアソビストア受注は本日18日が最終日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 35,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "受注最終日(素材4件を統合)"
+  },
+  "cinderella-memory-pict-7th": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-memory-pict-7th-pict",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-memory-pict-7th-pict-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-memory-pict-7th-pict",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-memory-pict-7th-december-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-memory-pict-7th-pict",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-parfait-coquette-celebration-2026": {
+   "action": "article",
+   "angle": "15周年POPUP「Parfait Coquette Celebration」は本日18日が秋葉原の最終日。ポストカード特典も今日まで。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "千秋楽(素材3件を統合)"
+  },
+  "cg-15th-popup-parfait-coquette-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-parfait-coquette-celebration-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "x-com-animo-official-status-2100857365515915271": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cg-parfait-coquette-celebration-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-pop-up-sweet-melty-whip-2026": {
+   "action": "article",
+   "angle": "POP UP SHOP「Sweet Melty Whip」が10月23日から11月1日までアベノラクバスで開かれ、描き下ろしグッズを販売する。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。出典は未確認なので執筆と校閲で確認する"
+  },
+  "cg-birthdays-2026-10-18": {
+   "action": "article",
+   "angle": "小早川紗枝と水本ゆかりの誕生日(10月18日)に、公式のお祝いムービーが公開された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/14の並木・藤本Shortsと同系統の公式ムービー"
+  },
+  "cg-fan-birthday-posts-2026-10-18": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で、公式の誕生日記事に含まれる。culture はgeneral面だけ"
+  },
+  "cg-fan-visit-kotobukiya-popup-2026-10-17": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人の来店投稿。culture はgeneral面だけ"
+  },
+  "cg-15th-hourglass-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17に発売日・価格・収録内容まで報じ済み。新事実なし"
+  },
+  "cinderella-15th-anniversary-hourglass-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17の記事と同じ内容で、新事実も当日のトリガーも無い"
+  },
+  "cg-cinderella-party-10th-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "carried。10/8の記事に、発売日・価格・収録・特典まで全て書かれている。予約締切は11/18で当日のトリガー無し"
+  },
+  "cinderella-online-kuji-ggwp-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17に開始を報じ済み。新事実なし"
+  },
+  "cinderella-yokohama-cosmoworld-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17に横浜2施設のコラボとして報じ済み。詳細は後日公開で新事実なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-apple-of-my-ai-2027",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "ATHOME xR LIVE「Apple of my アイ」アソビストアプレミアム12か月会員先行の申込は本日23時59分が締切。",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "cg-apple-of-my-ai-2027",
+    "candidate_ids": [
+     "202610180226-grok-14",
+     "sched-2026-10-18-cg-apple-of-my-ai-2027-締切",
+     "202610171233-watch-0",
+     "sched-2026-10-18-cg-xr-live-apple-of-my-ai-2027-締切",
+     "sched-2026-10-18-cg-athome-apple-of-my-ai-2026-締切"
+    ]
+   },
+   {
+    "slug": "cg-15th-orchestra-goods-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年オーケストラコンサートの公式グッズ事前販売は本日18日が最終日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "cg-15th-orchestra-goods-2026",
+    "candidate_ids": [
+     "202610180226-grok-16",
+     "sched-2026-10-18-cg-15th-orchestra-goods-2026-締切",
+     "202610170732-explore-4",
+     "sched-2026-10-18-cg-15th-anniversary-orchestra-concert-goods-2026-締切",
+     "sched-2026-10-18-cg-orchestra-goods-2026-締切"
+    ]
+   },
+   {
+    "slug": "cg-pop-up-sweet-melty-whip-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "POP UP SHOP「Sweet Melty Whip」が10月23日から11月1日までアベノラクバスで開かれ、描き下ろしグッズを販売する。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "cg-pop-up-sweet-melty-whip-2026",
+    "candidate_ids": [
+     "202610180226-grok-18"
+    ]
+   },
+   {
+    "slug": "cg-birthdays-2026-10-18",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "小早川紗枝と水本ゆかりの誕生日(10月18日)に、公式のお祝いムービーが公開された。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cg-birthdays-2026-10-18",
+    "candidate_ids": [
+     "202610180226-grok-70"
+    ]
+   },
+   {
+    "slug": "cg-parfait-coquette-celebration-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年POPUP「Parfait Coquette Celebration」は本日18日が秋葉原の最終日。ポストカード特典も今日まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 45,
+    "dedup_key": "cg-parfait-coquette-celebration-2026",
+    "candidate_ids": [
+     "sched-2026-10-18-cg-parfait-coquette-celebration-2026-千秋楽",
+     "sched-2026-10-18-cg-15th-popup-parfait-coquette-2026-終了",
+     "sched-2026-10-18-x-com-animo-official-status-2100857365515915271-千秋楽"
+    ]
+   },
+   {
+    "slug": "cg-memory-pict-7th-pict",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "Memory Pict.第7弾(佐藤心・白菊ほたる)のアソビストア受注は本日18日が最終日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 35,
+    "dedup_key": "cg-memory-pict-7th-pict",
+    "candidate_ids": [
+     "sched-2026-10-18-cg-memory-pict-7th-pict-締切",
+     "202610170732-explore-3",
+     "sched-2026-10-18-cinderella-memory-pict-7th-締切",
+     "202610171233-watch-1",
+     "sched-2026-10-18-cg-memory-pict-7th-december-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-15th-anniversary-hourglass-cd-2026",
+    "reason": "既報",
+    "note": "10/17の記事と同じ内容で、新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "cinderella-online-kuji-ggwp-2026",
+    "reason": "既報",
+    "note": "10/17に開始を報じ済み。新事実なし"
+   },
+   {
+    "dedup_key": "cinderella-yokohama-cosmoworld-collab-2026",
+    "reason": "既報",
+    "note": "10/17に横浜2施設のコラボとして報じ済み。詳細は後日公開で新事実なし"
+   },
+   {
+    "dedup_key": "cg-15th-orchestra-ticket-premium2-2026",
+    "reason": "既報",
+    "note": "10/15に2次先行は25日までと報じ済み。締切は7日先で当日のトリガーなし"
+   },
+   {
+    "dedup_key": "cg-fan-birthday-posts-2026-10-18",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で、公式の誕生日記事に含まれる。culture はgeneral面だけ"
+   },
+   {
+    "dedup_key": "cg-fan-visit-kotobukiya-popup-2026-10-17",
+    "reason": "個人の話題",
+    "note": "ファン個人の来店投稿。culture はgeneral面だけ"
+   },
+   {
+    "dedup_key": "cg-15th-hourglass-cd-2026",
+    "reason": "既報",
+    "note": "10/17に発売日・価格・収録内容まで報じ済み。新事実なし"
+   },
+   {
+    "dedup_key": "cg-cinderella-party-10th-cd-2026",
+    "reason": "既報",
+    "note": "carried。10/8の記事に、発売日・価格・収録・特典まで全て書かれている。予約締切は11/18で当日のトリガー無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

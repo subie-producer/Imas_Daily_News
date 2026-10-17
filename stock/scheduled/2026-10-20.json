@@ -518,5 +518,50 @@
   "src_candidate_id": "202610170225-grok-62",
   "event_date": "2026-10-31",
   "deadline": "2026-10-20"
+ },
+ {
+  "id": "sched-2026-10-20-asobi-store-maintenance-2026-10-開始",
+  "dedup_key": "asobi-store-maintenance-2026-10",
+  "brand": "general",
+  "subject": "バンダイナムコIDメンテ（ASOBI各サービス）",
+  "kind": "開始",
+  "note": "6:00〜6:45はログイン不可、6:45〜8:00はコイン決済不可。予定時刻を確認できる",
+  "reserved_on": "2026-10-18",
+  "occurs_on": "2026-10-20",
+  "title": "ASOBI STORE等のシステムメンテナンス",
+  "url": "https://shop.asobistore.jp/news/320",
+  "source_type": "準公式",
+  "facts": [
+   "2026年10月20日（火）6:00～6:45（予定）: バンダイナムコIDのメンテナンスに伴い、ASOBI CHANNEL、ASOBI STAGE、ASOBI STORY、ASOBI STORE（グッズ・Steamコード・電子書籍・音楽DL・WEB STORE）へログイン不可",
+   "2026年10月20日（火）6:45～8:00（予定）: ASOBI STOREは利用可能だが、バンダイナムコ コイン決済は利用不可。クレジットカード等、その他の決済方法は通常どおり利用可能",
+   "2026年10月21日（水）10:00～13:00（予定）: ASOBI STOREのメンテナンスに伴い、ASOBI マイページおよびASOBI STORE（グッズ）が利用不可",
+   "メンテナンス時間は前後する可能性あり",
+   "エンゲージメント: 低"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610180226-grok-22"
+ },
+ {
+  "id": "sched-2026-10-20-shiny-web-store-maintenance-2026-10-20-開始",
+  "dedup_key": "shiny-web-store-maintenance-2026-10-20",
+  "brand": "other",
+  "subject": "WEB STOREメンテナンス",
+  "kind": "開始",
+  "note": "6:00～6:45の全体メンテ中はプリズムジュエルを購入できない",
+  "reserved_on": "2026-10-18",
+  "occurs_on": "2026-10-20",
+  "title": "ASOBI STORE WEB STOREメンテナンス",
+  "url": "https://x.com/imassc_prism/status/2111321305907867769",
+  "source_type": "公式",
+  "facts": [
+   "ASOBI STORE内『WEB STORE』の全体メンテナンス時間: 10月20日（火）6:00～6:45（予定）。",
+   "メンテナンス中はプリズムジュエルを購入できない。",
+   "エンゲージメント: 低"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610180226-grok-34",
+  "event_date": "2026-10-20"
  }
 ]

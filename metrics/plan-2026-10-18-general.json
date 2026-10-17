@@ -1,0 +1,79 @@
+{
+ "decisions": {
+  "asobi-store-maintenance-2026-10": {
+   "action": "article",
+   "angle": "10月20日朝のバンダイナムコIDメンテでASOBI STOREなどにログイン不可、21日昼はASOBI STORE(グッズ)が3時間利用不可になる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "20日は2日後。10/17のポータルメンテ(10/22)とは別件。"
+  },
+  "fan-sem-study-equal-magic-cover-2026": {
+   "action": "article",
+   "angle": "S.E.M「Study Equal Magic!」の歌ってみたショート動画がファンから投稿された。",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人SNS投稿は単体では記事にせず、他のファン創作と束ねて1本のculture記事にする。出典は未確認、校閲で判断。"
+  },
+  "imas-channel-member-radio-2026-10": {
+   "action": "article",
+   "angle": "アイマスchのメンバー限定ラジオが10月21日19時に配信され、MCは香里有佐、ゲストは南早紀。冒頭15分は誰でも視聴できる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式発表で既報なし。配信まで3日。お便りとファンアートも募集中。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-asobi-store-maintenance-2026-10",
+    "brand": "general",
+    "rank": "small",
+    "angle": "10月20日朝のバンダイナムコIDメンテでASOBI STOREなどにログイン不可、21日昼はASOBI STORE(グッズ)が3時間利用不可になる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "asobi-store-maintenance-2026-10",
+    "candidate_ids": [
+     "202610180226-grok-22"
+    ]
+   },
+   {
+    "slug": "general-fan-sem-study-equal-magic-cover-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "S.E.M「Study Equal Magic!」の歌ってみたショート動画がファンから投稿された。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "fan-sem-study-equal-magic-cover-2026",
+    "candidate_ids": [
+     "202610180226-grok-51"
+    ]
+   },
+   {
+    "slug": "general-imas-channel-member-radio-2026-10",
+    "brand": "general",
+    "rank": "small",
+    "angle": "アイマスchのメンバー限定ラジオが10月21日19時に配信され、MCは香里有佐、ゲストは南早紀。冒頭15分は誰でも視聴できる。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "imas-channel-member-radio-2026-10",
+    "candidate_ids": [
+     "202610170225-grok-70"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

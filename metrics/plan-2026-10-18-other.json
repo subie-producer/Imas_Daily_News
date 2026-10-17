@@ -1,0 +1,89 @@
+{
+ "decisions": {
+  "shiny-web-store-maintenance-2026-10-20": {
+   "action": "article",
+   "angle": "ASOBI STORE内WEB STOREが10月20日6:00〜6:45に全体メンテナンスとなり、その間はプリズムジュエルを購入できない。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "general面のBNIDメンテ記事とは別の告知(WEB STORE・プリズムジュエル購入)。"
+  },
+  "chikusei-fireworks-im-s-trend-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人の投稿のみで未確認。10月17日開催済みの催し。"
+  },
+  "million-monthly-alternative-revive-2026-10": {
+   "action": "article",
+   "angle": "マンスリー・オルタナティブREVIVEガシャが10月18日15:00に始まる予定で、限定SSRは水瀬伊織と天空橋朋花、セレクションチケット類も告知されている。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典はまとめブログのみで未確認。記事にできるかは執筆・校閲が判断する。"
+  },
+  "starmas-5th-idol-intro-1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "心白の紹介動画と抽選のお礼メッセージは10-15号の記事の本文にある。Steam70%オフは期日が無く、単独では記事にしない。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "other-shiny-web-store-maintenance-2026-10-20",
+    "brand": "other",
+    "rank": "small",
+    "angle": "ASOBI STORE内WEB STOREが10月20日6:00〜6:45に全体メンテナンスとなり、その間はプリズムジュエルを購入できない。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-web-store-maintenance-2026-10-20",
+    "candidate_ids": [
+     "202610180226-grok-34"
+    ]
+   },
+   {
+    "slug": "other-million-monthly-alternative-revive-2026-10",
+    "brand": "other",
+    "rank": "small",
+    "angle": "マンスリー・オルタナティブREVIVEガシャが10月18日15:00に始まる予定で、限定SSRは水瀬伊織と天空橋朋花、セレクションチケット類も告知されている。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-monthly-alternative-revive-2026-10",
+    "candidate_ids": [
+     "202610160229-grok-22"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "chikusei-fireworks-im-s-trend-2026",
+    "reason": "出典不足",
+    "note": "個人の投稿のみで未確認。10月17日開催済みの催し。"
+   },
+   {
+    "dedup_key": "starmas-5th-idol-intro-1-2026",
+    "reason": "既報",
+    "note": "心白の紹介動画と抽選のお礼メッセージは10-15号の記事の本文にある。Steam70%オフは期日が無く、単独では記事にしない。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

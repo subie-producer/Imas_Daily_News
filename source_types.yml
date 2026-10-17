@@ -241,6 +241,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - uzm.jp                # 合議で追加: 販売代理ファイス(f-ice.jp/uzm/gakumas)。相手の不明は運営者
   - itemhouse.skr.jp      # 合議で追加: 複数店の商品を扱う販売サイト。対象品は販売元の予約商品(ショップ名記載)
   - unitedcinemas.jp      # 合議で追加: 会場の劇場アクセス・チケット案内。会場側の一次発信
   - kuji-pop.com          # 合議で追加: 販売中くじの販売開始を自ら告知。運営会社は検索で確認できず
@@ -420,6 +421,9 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - PMe-Q5hKxac         # 機械で追加: @imas-official「10/18 小早川紗枝さん Happy Birthday‼」
+    - 4_EuV8zaiok         # 機械で追加: @imas-official「10/18 水本ゆかりさん Happy Birthday‼」
+    - 4YS_StMDK6I         # 機械で追加: @project_imas_va-liv「【期間限定公開中】PROJECT IM@S vα-liv 1」
     - 9LYcJoxB_r4         # 機械で追加: @imas-tours「『アイドルマスター TOURS』新シリーズ2弾情報発表【公式」
     - ioQmV7-M1z8         # 機械で追加: @KamizuruCosmo「Dance in the Light 踊ってみた with 」
     - Z-LWjF5J6Mw         # 機械で追加: @hatsuboshi_gakuen「初星学園 「キミとセミブルー」Official Music 」
@@ -836,6 +840,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - abenolucbus         # 合議で追加: シンデレラガールズのPOP UP SHOPを開催する主催・販売側の一次発信
     - lawson_ticket       # 合議で追加: SideM上映会のチケット先行抽選。チケット販売元
     - gacha_bu            # 合議で追加: コレクションフィギュアの予約販売。販売元
     - animatekasihara     # 合議で追加: アニメイト店舗のSideMフェア告知。販売元
@@ -937,6 +942,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/E8puMDO5Lq: 当事者                         # 機械で追加: 展開先 https://medicos-e.net/newsdetail/imas_millionlive_popup/
   youtube.com/playlist?list=PLVWdhK_WANzc: 公式 # 機械で追加: 持ち主 @imas-official「シャニラジHBTK｜アイドルマスター シャイニーカラーズ公式」
   docs.google.com/forms/d/e/1FAIpQLSfMhjRS_SENvwIOAgkX9_pGuiIuFIZBpmI0f-7N-Jm_sIFD6w: 公式 # 合議で追加: リンク元の公式X(@TomoriManaka)と同企画。制作委託Activ8
   t.co/BycEJlR0rt: 公式                         # 機械で追加: 展開先 https://idolmaster-official.jp/live_event/shinycolors_orchestra_RC/#ticketCol

@@ -81,5 +81,34 @@
   "src_candidate_id": "202610010734-explore-19",
   "event_date": "2027-02-13",
   "deadline": "2026-10-18"
+ },
+ {
+  "id": "sched-2027-02-13-cg-athome-xr-apple-of-my-ai-2027-開幕",
+  "dedup_key": "cg-athome-xr-apple-of-my-ai-2027",
+  "brand": "cg",
+  "subject": "ATHOME xR LIVE Apple of my アイ 公演初日",
+  "kind": "開幕",
+  "note": "18:00開場・19:00開演の公演が行われる",
+  "reserved_on": "2026-10-18",
+  "occurs_on": "2027-02-13",
+  "title": "ATHOME xR LIVE Apple of my アイ チケット先行",
+  "url": "https://x.com/imas_CGofficial/status/2111381713217855824",
+  "source_type": "公式",
+  "facts": [
+   "公演名: ATHOME xR LIVE Apple of my アイ",
+   "開催日: 2027年2月13日〜14日",
+   "会場: やまぎん県民ホール",
+   "現地チケットのアソビストアプレミアム会員最速先行(抽選)を受付中。",
+   "アソビストアプレミアム会員最速先行の受付期限: 2026年10月18日(日)。",
+   "公式告知では受付期限を10月18日23:59と明記。",
+   "リンク: https://t.co/F4IcLM9ABj",
+   "エンゲージメント: 高",
+   "言及アイドル: 佐久間まゆ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610180226-grok-14",
+  "event_date": "2027-02-13",
+  "deadline": "2026-10-18"
  }
 ]

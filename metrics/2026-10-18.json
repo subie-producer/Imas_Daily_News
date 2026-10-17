@@ -103,5 +103,45 @@
    },
    "duration_s": 1757
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-18T03:21:21+09:00",
+   "edition": "2026-10-18",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 37,
+   "written": 30,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 106,
+    "covered": 106,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.5110580960909525,
+    "執筆": 3.3212510347366333,
+    "出典の判定": 1.7841054757436117,
+    "組版": 0.6325698614120483,
+    "校閲": 0.7592316548029582,
+    "校閲1波": 0.7592316548029582
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "other-million-monthly-alternative-revive-2026-10",
+    "gaku-valiv-letora-birthday-live-2026",
+    "general-imas-channel-member-radio-2026-10",
+    "sidem-remember-shot-fair-vol4-2026",
+    "gaku-valiv-1st-live-full-premiere-2026",
+    "cg-pop-up-sweet-melty-whip-2026",
+    "other-shiny-web-store-maintenance-2026-10-20"
+   ],
+   "duration_s": 1243
+  }
  ]
 }

@@ -520,12 +520,35 @@
   "deadline": "2026-10-20"
  },
  {
+  "id": "sched-2026-10-20-gaku-jewel-login-gift-2026-10-14-終了",
+  "dedup_key": "gaku-jewel-login-gift-2026-10-14",
+  "brand": "gaku",
+  "subject": "学マス ログインジュエル250個配布",
+  "kind": "終了",
+  "note": "21日4:59の終了前、最後の1日にログインしてジュエルを受け取れる",
+  "reserved_on": "2026-10-18",
+  "occurs_on": "2026-10-21",
+  "title": "ジュエル250個配布",
+  "url": "https://x.com/gkmas_official/status/2110203949462749279",
+  "source_type": "公式",
+  "facts": [
+   "今週はジュエル250個を配布中と告知された。",
+   "ログインして受け取るよう案内された。",
+   "配布期間：10/21(水)4:59まで (予定)",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "sched-2026-10-18-gaku-jewel-login-gift-2026-10-14-締切前",
+  "deadline": "2026-10-21"
+ },
+ {
   "id": "sched-2026-10-20-asobi-store-maintenance-2026-10-開始",
   "dedup_key": "asobi-store-maintenance-2026-10",
   "brand": "general",
-  "subject": "バンダイナムコIDメンテ（ASOBI各サービス）",
+  "subject": "バンダイナムコIDメンテナンス",
   "kind": "開始",
-  "note": "6:00〜6:45はログイン不可、6:45〜8:00はコイン決済不可。予定時刻を確認できる",
+  "note": "6:00〜6:45(予定)はASOBI系サービスにログインできない。コイン決済は8:00まで不可",
   "reserved_on": "2026-10-18",
   "occurs_on": "2026-10-20",
   "title": "ASOBI STORE等のシステムメンテナンス",
@@ -541,27 +564,5 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202610180226-grok-22"
- },
- {
-  "id": "sched-2026-10-20-shiny-web-store-maintenance-2026-10-20-開始",
-  "dedup_key": "shiny-web-store-maintenance-2026-10-20",
-  "brand": "other",
-  "subject": "WEB STOREメンテナンス",
-  "kind": "開始",
-  "note": "6:00～6:45の全体メンテ中はプリズムジュエルを購入できない",
-  "reserved_on": "2026-10-18",
-  "occurs_on": "2026-10-20",
-  "title": "ASOBI STORE WEB STOREメンテナンス",
-  "url": "https://x.com/imassc_prism/status/2111321305907867769",
-  "source_type": "公式",
-  "facts": [
-   "ASOBI STORE内『WEB STORE』の全体メンテナンス時間: 10月20日（火）6:00～6:45（予定）。",
-   "メンテナンス中はプリズムジュエルを購入できない。",
-   "エンゲージメント: 低"
-  ],
-  "via": "grok",
-  "verify": "confirmed",
-  "src_candidate_id": "202610180226-grok-34",
-  "event_date": "2026-10-20"
  }
 ]

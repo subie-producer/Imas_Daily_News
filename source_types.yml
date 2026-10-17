@@ -216,6 +216,7 @@ performer_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - painful-cycle-jersey.info # 合議で追加: 個人管理人のブログ。FICE等の公式告知を紹介する記事が中心
   - reddit.com            # 合議で追加: 代表URLは個人u/hiyoko19の感想投稿。個人に紐づくのでファン
   - jinseizura.com        # 合議で追加: 個人ブログ。プラポリに管理人が個人と明記。公式MVを転載
   - hoshitsukiyo.com      # 合議で追加: 個人のXアカウントに紐づく非公式ツールサイト
@@ -581,6 +582,14 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - warashibe0214       # 合議で追加: 個人によるSideMムビチケ特典の交換投稿
+    - rynnikelddi         # 合議で追加: 個人によるシンデレラガールズ誕生日祝いの投稿
+    - pico_magic          # 合議で追加: 個人によるS.E.M.曲の踊ってみた動画
+    - midorino_o          # 合議で追加: 個人が日韓交流祭りで学マスコスプレを披露した動画
+    - iidakosan3          # 合議で追加: 個人によるアイマスコラボ花火への応援投稿
+    - gimgeondam1         # 合議で追加: 個人が4Luxuryぬいぐるみを撮った記念写真の投稿
+    - Moririn13487953     # 合議で追加: 個人の POP UP SHOP 訪問の感想投稿
+    - EcQCt8Q8RG54323     # 合議で追加: 個人アカウントによるS.E.M.曲のカバー動画投稿
     - yuiume_gkms         # 合議で追加: 個人が訪れた秩父コラボの現地レポート
     - venusandmars01      # 合議で追加: ファン有志による協賛。個人・サークルの発信
     - takyuuu_            # 合議で追加: 個人がLIVE映像を紹介する投稿

@@ -6,5 +6,72 @@
   "candidate_ids": [
    "202610160229-grok-22"
   ]
+ },
+ "gaku-valiv-letora-birthday-live-2026": {
+  "title": "レトラ誕生日LV、当選者の入金は本日まで",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 同じレトラ現地ライブビューイング先行抽選の入金締切を扱う記事が重複しており、校閲指示に従って本稿を取り下げます。ブランド側の記事を残します。",
+  "candidate_ids": [
+   "202610180226-grok-75",
+   "sched-2026-10-18-valiv-letora-birthday-live-2026-締切"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "dsva-va-liv-letora-birthday-2026"
+   ]
+  }
+ },
+ "general-imas-channel-member-radio-2026-10": {
+  "title": "ミリオンライブ、アイマスchラジオを10月21日配信",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 既報と同じ配信告知の再掲で、素材に既報にない新事実や発行日当日のトリガーがないため、記事として掲載しない。",
+  "candidate_ids": [
+   "202610170225-grok-70"
+  ]
+ },
+ "sidem-remember-shot-fair-vol4-2026": {
+  "title": "SideMフェア第4弾、10月25日まで開催",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS フェアは10月3日開始で既報であり、10月18日時点で新しく発表・発生した事実が記事の中核にありません。10月16日の店舗投稿も8月4日掲載の公式フェアページと同じ内容で、記事化を見送ります。",
+  "candidate_ids": [
+   "202610170225-grok-51"
+  ]
+ },
+ "gaku-valiv-1st-live-full-premiere-2026": {
+  "title": "ヴイアラ1stLIVE全編、公開は本日23時59分まで",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 校閲指摘I1がこの記事全体の削除を求めており、記事を残す理由がありません。",
+  "candidate_ids": [
+   "202610180226-grok-73"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "dsva-valiv-1stlive-limited-stream-2026"
+   ]
+  }
+ },
+ "cg-pop-up-sweet-melty-whip-2026": {
+  "title": "シンデレラガールズのPOP UP SHOP開催",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 台帳に2026年9月6日初出の記事があり、大阪会場の開催期間、新規描き下ろし商品、購入特典、パネル企画など今回の記事の主要内容は既報です。今回確認できる差分はOSMOスタンプの実施ですが、開催まで5日あり、開幕当日や3日以内の締切などの例外にも該当しません。新しい事実や報道トリガーがないため、記事を見",
+  "candidate_ids": [
+   "202610180226-grok-18"
+  ]
+ },
+ "other-shiny-web-store-maintenance-2026-10-20": {
+  "title": "シャニソン、10月20日朝にWEB STOREメンテ",
+  "stage": "書き直しで見送り",
+  "why": "OTHER 10月20日6:00〜6:45のASOBI STORE「WEB STORE」メンテナンスは、general-asobi-store-maintenance-2026-10 と同じ知らせの重複にあたるため、この記事を取り下げます。",
+  "candidate_ids": [
+   "202610180226-grok-34"
+  ],
+  "settled": {
+   "rule": "P1",
+   "dup_of": [
+    "general-asobi-store-maintenance-2026-10"
+   ]
+  }
  }
 }

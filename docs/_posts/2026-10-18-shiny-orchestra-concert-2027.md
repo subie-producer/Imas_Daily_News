@@ -24,6 +24,9 @@ sources:
 - label: アイドルマスター シャイニーカラーズ【ブランド公式】「シャニマスオケ2027 アソビストアプレミアム会員先行」(2026年10月14日)
   url: https://x.com/shinyc_official/status/2110203960598368512
   type: 公式
+- label: バンダイナムコエンターテインメント公式サイト「THE IDOLM@STER SHINY COLORS ORCHESTRA CONCERT -Radiant Chord-」(2026年9月26日)
+  url: https://idolmaster-official.jp/live_event/shinycolors_orchestra_RC/
+  type: 公式
 event_date: "2026-10-18"
 title_fact_ids:
 - F1
@@ -40,10 +43,10 @@ verified_facts:
   url: https://idolmaster-official.jp/news/01_19982
 - id: N3
   text: 申込はデジタルチケットのみ。
-  url: https://idolmaster-official.jp/news/01_19982
+  url: https://idolmaster-official.jp/live_event/shinycolors_orchestra_RC/
 - id: N4
   text: 未就学児は入場できない。
-  url: https://idolmaster-official.jp/news/01_19982
+  url: https://idolmaster-official.jp/live_event/shinycolors_orchestra_RC/
 - id: N5
   text: オーケストラによる豪華生演奏でシャニマスの楽曲を届ける。
   url: https://idolmaster-official.jp/news/01_19982

@@ -28,6 +28,12 @@ sources:
 - label: プレミアムバンダイ「菊地真・萩原雪歩の『ちびぐるみ』がおなまえ入りポーチとセットでプレミアムバンダイに登場」(日付不明)
   url: https://p-bandai.jp/item/item-1000254246/
   type: 準公式
+- label: プレミアムバンダイ「ちびぐるみ＆ポーチセット ～ふたごぼしのつばさ～／～つみまつよるまち～」(日付不明)
+  url: https://p-bandai.jp/item/item-1000254243/
+  type: 準公式
+- label: プレミアムバンダイ「ちびぐるみ＆ポーチセット ～961 PRODUCTION presents Re:FLAME～」(日付不明)
+  url: https://p-bandai.jp/item/item-1000256134/
+  type: 準公式
 event_date: "2026-10-18"
 title_fact_ids:
 - F5
@@ -51,4 +57,4 @@ verified_facts:
 
 ## 予約先
 
-予約はプレミアムバンダイの商品ページから。ふたごぼしのつばさ／つみまつよるまちは[こちら](https://p-bandai.jp/item/item-1000254243/)、961 PRODUCTION presents Re:FLAMEは[こちら](https://p-bandai.jp/item/item-1000256134/)、はんげつであえたらは[こちら](https://p-bandai.jp/item/item-1000254246/)。つみまつよるまちを含む商品ページでは、予定数に達した時点で受付を終了する場合がある。 <!-- F23 F24 F25 N1 -->
+予約はプレミアムバンダイの商品ページから。ふたごぼしのつばさ／つみまつよるまちは[こちら](https://p-bandai.jp/item/item-1000254243/)、961 PRODUCTION presents Re:FLAMEは[こちら](https://p-bandai.jp/item/item-1000256134/)、はんげつであえたらは[こちら](https://p-bandai.jp/item/item-1000254246/)。予定数に達した時点で注文受付を終了する場合がある。 <!-- F23 F24 F25 N1 -->

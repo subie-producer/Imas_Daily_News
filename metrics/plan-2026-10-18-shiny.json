@@ -1,0 +1,286 @@
+{
+ "decisions": {
+  "shiny-sweets-paradise-cafe-2026": {
+   "action": "article",
+   "angle": "スイパラのコラボカフェで、コラボグッズはコラボメニューを飲食した人のみ1人1来店1会計まで購入可、フード・ドリンクの注文ルールなど新たに分かった利用条件を伝える。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "I'm a Cutie Finder側の素材もここへ統合"
+  },
+  "shiny-karaoke-tetsujin-refrac7ions-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17号が期間・続報予定まで掲載済み。新事実なし"
+  },
+  "shiny-im-a-cutie-finder-sweets-paradise-cafe-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-sweets-paradise-cafe-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じスイパラコラボカフェ"
+  },
+  "shinycolors-8-5th-3rd-anniversary-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17号に日時・出演者・配信先掲載済み。配信は10/23で3日以内でもない"
+  },
+  "shiny-song-focus-yumemidori-2026": {
+   "action": "roundup",
+   "angle": "縦画面フォーカスカメラに『夢見鳥』(樋口円香)追加",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-en-route-rerun-2026": {
+   "action": "roundup",
+   "angle": "シナリオイベント『En Route』が10/20から復刻(10/30まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-autumn-idol-training-2026": {
+   "action": "roundup",
+   "angle": "育成イベント『秋のアイドル強化週間』が10/20から11/10まで開催",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior(9/9)は第16回で別回"
+  },
+  "shiny-maintenance-2026-10-20": {
+   "action": "roundup",
+   "angle": "10/20 12:00〜15:00にメンテナンス、10連無料スタンプガシャはその前まで",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-producers-cup-85th-2026": {
+   "action": "roundup",
+   "angle": "8.5周年記念プロデューサーズカップが開催中(10/17 15:00〜)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-prism-focus-look-up-to-the-sky-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17号が縦画面追加曲・チャレンジ杯・Black Reverieを掲載済み"
+  },
+  "shiny-xr-black-reverie-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17号に掲載済み"
+  },
+  "x-com-imassc-prism-status-2100782865265086577": {
+   "action": "article",
+   "angle": "シャニソンの新ピックアップガシャ(★3確率1.5倍)とデュアラブルインパクト記念ジュエルセールが10/21 11:59に終了、あと3日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Pioneer Impact関連のジュエルセール第2弾もここへ統合"
+  },
+  "shiny-orchestra-concert-2027": {
+   "action": "article",
+   "angle": "「Radiant Chord」アソビストアプレミアム会員先行の申込が本日23時59分で締切。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "premium-ticket/preorderを統合"
+  },
+  "shiny-msp-solo-collection-after-sale-2026": {
+   "action": "article",
+   "angle": "「Master ShowPiece」事後物販の受注が本日23時59分で締切。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-pioneer-impact-3dmv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-imassc-prism-status-2100782865265086577",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じデュアラブルインパクト記念の10/21終了キャンペーン"
+  },
+  "shiny-orchestra-2027-premium-ticket": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-orchestra-concert-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行締切"
+  },
+  "shiny-orchestra-2027-premium-preorder": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-orchestra-concert-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-sweets-paradise-cafe-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "スイパラのコラボカフェで、コラボグッズはコラボメニューを飲食した人のみ1人1来店1会計まで購入可、フード・ドリンクの注文ルールなど新たに分かった利用条件を伝える。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-sweets-paradise-cafe-2026",
+    "candidate_ids": [
+     "202610170732-explore-6",
+     "202610172334-explore-3",
+     "202610180226-grok-79"
+    ]
+   },
+   {
+    "slug": "shiny-x-com-imassc-prism-status-2100782865265086577",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンの新ピックアップガシャ(★3確率1.5倍)とデュアラブルインパクト記念ジュエルセールが10/21 11:59に終了、あと3日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "x-com-imassc-prism-status-2100782865265086577",
+    "candidate_ids": [
+     "sched-2026-10-18-x-com-imassc-prism-status-2100782865265086577-締切前",
+     "sched-2026-10-18-shiny-pioneer-impact-3dmv-2026-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-orchestra-concert-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "「Radiant Chord」アソビストアプレミアム会員先行の申込が本日23時59分で締切。",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "shiny-orchestra-concert-2027",
+    "candidate_ids": [
+     "sched-2026-10-18-shiny-orchestra-concert-2027-締切",
+     "sched-2026-10-18-shiny-orchestra-2027-premium-ticket-締切",
+     "sched-2026-10-18-shiny-orchestra-2027-premium-preorder-締切"
+    ]
+   },
+   {
+    "slug": "shiny-msp-solo-collection-after-sale-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「Master ShowPiece」事後物販の受注が本日23時59分で締切。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-msp-solo-collection-after-sale-2026",
+    "candidate_ids": [
+     "sched-2026-10-18-shiny-msp-solo-collection-after-sale-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "縦画面フォーカスカメラに『夢見鳥』(樋口円香)追加",
+    "lead_score": 0,
+    "dedup_key": "shiny-song-focus-yumemidori-2026",
+    "candidate_ids": [
+     "202610180226-grok-28",
+     "202610180226-grok-30",
+     "202610180226-grok-31",
+     "202610180226-grok-32",
+     "202610180226-grok-33"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-karaoke-tetsujin-refrac7ions-2026",
+    "reason": "既報",
+    "note": "10/17号が期間・続報予定まで掲載済み。新事実なし"
+   },
+   {
+    "dedup_key": "shinycolors-8-5th-3rd-anniversary-live-2026",
+    "reason": "既報",
+    "note": "10/17号に日時・出演者・配信先掲載済み。配信は10/23で3日以内でもない"
+   },
+   {
+    "dedup_key": "shiny-prism-focus-look-up-to-the-sky-2026",
+    "reason": "既報",
+    "note": "10/17号が縦画面追加曲・チャレンジ杯・Black Reverieを掲載済み"
+   },
+   {
+    "dedup_key": "shiny-xr-black-reverie-2026",
+    "reason": "既報",
+    "note": "10/17号に掲載済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

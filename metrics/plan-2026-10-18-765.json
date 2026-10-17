@@ -1,0 +1,75 @@
+{
+ "decisions": {
+  "chibigurumi-pouch-set-preorder": {
+   "action": "article",
+   "angle": "765・961ちびぐるみ＆ポーチセット全4種の受注が今夜23時で締切、プレミアムバンダイで予約できる最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "菊地真・萩原雪歩の「はんげつであえたら」を含む4種を1記事に。読者の行動は同じ(受注の申込)"
+  },
+  "xr-765vs961-guest-idols": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/14号の記事に公演名・日時・会場・出演者が既出で新事実なし。先行受付締切(10/28)は3日以内ではない"
+  },
+  "765-chibi-mako-yukiho-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chibigurumi-pouch-set-preorder",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "全4種のうち「はんげつであえたら」の同じ受注締切。同じ施策・同じ行動"
+  },
+  "chibi-plushie-pouch-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "chibigurumi-pouch-set-preorder",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "残り4種の同じ受注締切(23時)。やよい・伊織の9/27締切分は終了済みなので記事に含めない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-chibigurumi-pouch-set-preorder",
+    "brand": "765",
+    "rank": "small",
+    "angle": "765・961ちびぐるみ＆ポーチセット全4種の受注が今夜23時で締切、プレミアムバンダイで予約できる最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "chibigurumi-pouch-set-preorder",
+    "candidate_ids": [
+     "202610170732-explore-0",
+     "sched-2026-10-18-chibigurumi-pouch-set-preorder-締切",
+     "sched-2026-10-18-765-chibi-mako-yukiho-2026-締切",
+     "sched-2026-10-18-chibi-plushie-pouch-set-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "xr-765vs961-guest-idols",
+    "reason": "既報",
+    "note": "10/14号の記事に公演名・日時・会場・出演者が既出で新事実なし。先行受付締切(10/28)は3日以内ではない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,214 @@
+{
+ "decisions": {
+  "gaku-cycle-jersey-restock-2026": {
+   "action": "article",
+   "angle": "サイクルジャージ第1弾・第2弾の全13種が再受注開始、申込は11月8日まで",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認サイト。記事にできるかは執筆・校閲が判断"
+  },
+  "gaku-mugyumini-collection-figure-vol-1": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17「むぎゅみに全5種セットを2500円で予約」と同じ商品。価格・5種・発売時期も新しい事実なし"
+  },
+  "gaku-fujita-kotone-ameagari-iris-figure": {
+   "action": "article",
+   "angle": "藤田ことね「雨上がりのアイリス」特訓前Ver.の1/7フィギュアを案内、2027年7月発売予定で22,000円",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-ririya-another-idol-gasha-2026": {
+   "action": "article",
+   "angle": "葛城リーリヤのSSRアナザーアイドル確定無料ガシャは10月19日10時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が明日で3日以内のトリガー"
+  },
+  "gaku-hoshigakuen-broadcast-clip-2026-10-16": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17に同内容を記事化済み。新事実もトリガーも無い"
+  },
+  "gaku-contest-season-54": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17に開催を記事化済み。新事実もトリガーも無い"
+  },
+  "valiv-1st-live-full-premiere-2026": {
+   "action": "article",
+   "angle": "ヴイアラ1stLIVE全編のプレミア公開は本日10月18日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 55,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公開期間の終了が今日。公式発表で反応も高い"
+  },
+  "valiv-letora-birthday-live-2026": {
+   "action": "article",
+   "angle": "レトラBD現地LVの先行抽選当選者は本日10月18日23時59分までに入金",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "入金期限が今日。二次受付(30日締切)は10/17記事で既報なので主題にしない"
+  },
+  "gakumasu-cosplay-performance-video-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人のコスプレ動画で出典も未確認。ファン面(culture)は general 面だけ"
+  },
+  "gaku-jewel-login-gift-2026-10-14": {
+   "action": "article",
+   "angle": "ログインでもらえるジュエル250個の配布は10月21日4時59分まで、あと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。締切が3日以内"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-cycle-jersey-restock-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "サイクルジャージ第1弾・第2弾の全13種が再受注開始、申込は11月8日まで",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gaku-cycle-jersey-restock-2026",
+    "candidate_ids": [
+     "202610171233-explore-12"
+    ]
+   },
+   {
+    "slug": "gaku-fujita-kotone-ameagari-iris-figure",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "藤田ことね「雨上がりのアイリス」特訓前Ver.の1/7フィギュアを案内、2027年7月発売予定で22,000円",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-fujita-kotone-ameagari-iris-figure",
+    "candidate_ids": [
+     "202610172334-explore-5"
+    ]
+   },
+   {
+    "slug": "gaku-ririya-another-idol-gasha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "葛城リーリヤのSSRアナザーアイドル確定無料ガシャは10月19日10時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-ririya-another-idol-gasha-2026",
+    "candidate_ids": [
+     "202610180226-grok-52"
+    ]
+   },
+   {
+    "slug": "gaku-valiv-1st-live-full-premiere-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "ヴイアラ1stLIVE全編のプレミア公開は本日10月18日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 55,
+    "dedup_key": "valiv-1st-live-full-premiere-2026",
+    "candidate_ids": [
+     "202610180226-grok-73"
+    ]
+   },
+   {
+    "slug": "gaku-valiv-letora-birthday-live-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "レトラBD現地LVの先行抽選当選者は本日10月18日23時59分までに入金",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "valiv-letora-birthday-live-2026",
+    "candidate_ids": [
+     "202610180226-grok-75",
+     "sched-2026-10-18-valiv-letora-birthday-live-2026-締切"
+    ]
+   },
+   {
+    "slug": "gaku-jewel-login-gift-2026-10-14",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ログインでもらえるジュエル250個の配布は10月21日4時59分まで、あと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "gaku-jewel-login-gift-2026-10-14",
+    "candidate_ids": [
+     "sched-2026-10-18-gaku-jewel-login-gift-2026-10-14-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-mugyumini-collection-figure-vol-1",
+    "reason": "既報",
+    "note": "10/17「むぎゅみに全5種セットを2500円で予約」と同じ商品。価格・5種・発売時期も新しい事実なし"
+   },
+   {
+    "dedup_key": "gaku-hoshigakuen-broadcast-clip-2026-10-16",
+    "reason": "既報",
+    "note": "10/17に同内容を記事化済み。新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "gaku-contest-season-54",
+    "reason": "既報",
+    "note": "10/17に開催を記事化済み。新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "gakumasu-cosplay-performance-video-2026",
+    "reason": "同人・ファン主催",
+    "note": "個人のコスプレ動画で出典も未確認。ファン面(culture)は general 面だけ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

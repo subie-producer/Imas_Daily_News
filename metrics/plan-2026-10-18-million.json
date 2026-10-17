@@ -1,0 +1,271 @@
+{
+ "decisions": {
+  "million-bot10-invisible-light-store-bonuses-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17にINVISIBLE LIGHT店舗特典の記事あり。新事実なし"
+  },
+  "million-platinum-star-tiara-hapipisu-2026": {
+   "action": "article",
+   "angle": "プラチナスターティアラ～ハピピス♡～が本日10月18日15:00に開幕する。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "詳細は開催後案内。事実は少なく短い記事"
+  },
+  "million-idol-grand-prix-s-rank-retry-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17に同内容の記事あり"
+  },
+  "30ms-kasuga-mirai-you-and-ai-restock-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16に春日未来30MSのAmazon再入荷記事あり"
+  },
+  "fan-4luxury-plush-photo-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の投稿によるファン創作"
+  },
+  "arc-flags-pop-up-corner-aquarius-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17にARC-FLAGSミニキャラ公開の記事あり"
+  },
+  "million-cyber-planet-pop-up-tomoka-soldout-2026": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOP東京会場で天空橋朋花のBIGアクリルネームプレートが完売し、再入荷はない。大阪会場と事後通販は後日。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "完売は10/16の再入荷記事にない新事実"
+  },
+  "million-opera-seria-popup-mail-order-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17に事後通販記事あり。締切11/16でトリガーなし"
+  },
+  "million-kotobukiya-kuji-stage04-2026": {
+   "action": "article",
+   "angle": "コトブキヤくじ ミリオンライブ！ stage04は本日23:59が販売の最終日。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "stage04-2026を統合。当日締切"
+  },
+  "million-seasonal-snapshot-jan-2027": {
+   "action": "article",
+   "angle": "《SEASONAL SNAPSHOT》1月「初日の出」グッズのアソビストア受注は本日が最終日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "グッズ受注はくじと別の行動"
+  },
+  "stage04-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-kotobukiya-kuji-stage04-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じくじの販売終了"
+  },
+  "million-sports-day-login-2026": {
+   "action": "article",
+   "angle": "スポーツの日ログインボーナスは本日が最終日で、合計ミリオンジュエル500個を受け取れる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日終了のため単独記事"
+  },
+  "million-snapshot-memories-gasha-2026-10": {
+   "action": "article",
+   "angle": "Snapshot Memoriesガシャの琴葉・環SSR出現率UPは本日14:59で終了する。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "gacha側の2件を統合"
+  },
+  "million-snapshot-memories-gacha-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-snapshot-memories-gasha-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じガシャの終了"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-platinum-star-tiara-hapipisu-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "プラチナスターティアラ～ハピピス♡～が本日10月18日15:00に開幕する。",
+    "purpose": "新情報",
+    "lead_score": 40,
+    "dedup_key": "million-platinum-star-tiara-hapipisu-2026",
+    "candidate_ids": [
+     "202610180226-grok-21"
+    ]
+   },
+   {
+    "slug": "million-cyber-planet-pop-up-tomoka-soldout-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Cyber Planet POP UP SHOP東京会場で天空橋朋花のBIGアクリルネームプレートが完売し、再入荷はない。大阪会場と事後通販は後日。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-cyber-planet-pop-up-tomoka-soldout-2026",
+    "candidate_ids": [
+     "202610180226-grok-27"
+    ]
+   },
+   {
+    "slug": "million-kotobukiya-kuji-stage04-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "コトブキヤくじ ミリオンライブ！ stage04は本日23:59が販売の最終日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-kotobukiya-kuji-stage04-2026",
+    "candidate_ids": [
+     "sched-2026-10-18-million-kotobukiya-kuji-stage04-2026-締切",
+     "sched-2026-10-18-stage04-2026-締切",
+     "sched-2026-10-18-stage04-2026-終了"
+    ]
+   },
+   {
+    "slug": "million-seasonal-snapshot-jan-2027",
+    "brand": "million",
+    "rank": "small",
+    "angle": "《SEASONAL SNAPSHOT》1月「初日の出」グッズのアソビストア受注は本日が最終日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "million-seasonal-snapshot-jan-2027",
+    "candidate_ids": [
+     "sched-2026-10-18-million-seasonal-snapshot-jan-2027-締切"
+    ]
+   },
+   {
+    "slug": "million-sports-day-login-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "スポーツの日ログインボーナスは本日が最終日で、合計ミリオンジュエル500個を受け取れる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "million-sports-day-login-2026",
+    "candidate_ids": [
+     "sched-2026-10-18-million-sports-day-login-2026-終了"
+    ]
+   },
+   {
+    "slug": "million-snapshot-memories-gasha-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Snapshot Memoriesガシャの琴葉・環SSR出現率UPは本日14:59で終了する。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-snapshot-memories-gasha-2026-10",
+    "candidate_ids": [
+     "sched-2026-10-18-million-snapshot-memories-gasha-2026-10-締切",
+     "sched-2026-10-18-million-snapshot-memories-gasha-2026-10-終了",
+     "sched-2026-10-18-million-snapshot-memories-gacha-2026-10-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-bot10-invisible-light-store-bonuses-2026",
+    "reason": "既報",
+    "note": "10/17にINVISIBLE LIGHT店舗特典の記事あり。新事実なし"
+   },
+   {
+    "dedup_key": "million-idol-grand-prix-s-rank-retry-2026",
+    "reason": "既報",
+    "note": "10/17に同内容の記事あり"
+   },
+   {
+    "dedup_key": "30ms-kasuga-mirai-you-and-ai-restock-2026-10",
+    "reason": "既報",
+    "note": "10/16に春日未来30MSのAmazon再入荷記事あり"
+   },
+   {
+    "dedup_key": "fan-4luxury-plush-photo-2026-10",
+    "reason": "個人の話題",
+    "note": "個人の投稿によるファン創作"
+   },
+   {
+    "dedup_key": "arc-flags-pop-up-corner-aquarius-2026",
+    "reason": "既報",
+    "note": "10/17にARC-FLAGSミニキャラ公開の記事あり"
+   },
+   {
+    "dedup_key": "million-opera-seria-popup-mail-order-2026",
+    "reason": "既報",
+    "note": "10/17に事後通販記事あり。締切11/16でトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

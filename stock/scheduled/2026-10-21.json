@@ -471,5 +471,60 @@
   "verify": "confirmed",
   "src_candidate_id": "202610170225-grok-39",
   "event_date": "2026-10-21"
+ },
+ {
+  "id": "sched-2026-10-21-asobi-store-maintenance-2026-10-開始",
+  "dedup_key": "asobi-store-maintenance-2026-10",
+  "brand": "general",
+  "subject": "ASOBI STOREメンテナンス",
+  "kind": "開始",
+  "note": "10:00～13:00(予定)はグッズ購入とマイページが使えない。10時前に買い物を済ませられる。",
+  "reserved_on": "2026-10-18",
+  "occurs_on": "2026-10-21",
+  "title": "ASOBI STORE等のシステムメンテナンス",
+  "url": "https://shop.asobistore.jp/news/320",
+  "source_type": "準公式",
+  "facts": [
+   "2026年10月20日（火）6:00～6:45（予定）: バンダイナムコIDのメンテナンスに伴い、ASOBI CHANNEL、ASOBI STAGE、ASOBI STORY、ASOBI STORE（グッズ・Steamコード・電子書籍・音楽DL・WEB STORE）へログイン不可",
+   "2026年10月20日（火）6:45～8:00（予定）: ASOBI STOREは利用可能だが、バンダイナムコ コイン決済は利用不可。クレジットカード等、その他の決済方法は通常どおり利用可能",
+   "2026年10月21日（水）10:00～13:00（予定）: ASOBI STOREのメンテナンスに伴い、ASOBI マイページおよびASOBI STORE（グッズ）が利用不可",
+   "メンテナンス時間は前後する可能性あり",
+   "エンゲージメント: 低"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610180226-grok-22"
+ },
+ {
+  "id": "sched-2026-10-21-x-com-imassc-prism-status-2100782865265086577-締切",
+  "dedup_key": "x-com-imassc-prism-status-2100782865265086577",
+  "brand": "shiny",
+  "subject": "シャニソン ジュエルセール終了",
+  "kind": "締切",
+  "note": "11:59までにASOBI STOREでプリズムジュエル10,000個を購入できる最終日",
+  "reserved_on": "2026-10-18",
+  "occurs_on": "2026-10-21",
+  "title": "デュアラブルインパクトリリース記念 1回限定！ジュエルセール",
+  "url": "https://x.com/imassc_prism/status/2100782865265086577",
+  "source_type": "公式",
+  "facts": [
+   "投稿日時: 2026-09-18 03:04:00 GMT",
+   "見出し: デュアラブルインパクトリリース記念 1回限定！ジュエルセール開催中！",
+   "販売場所: ASOBI STORE限定",
+   "内容: お得なジュエルが販売中",
+   "開催期間: 10/21 11:59まで",
+   "アソビストア: https://webstore.asobistore.jp/shinycolors-song-for-prism",
+   "商品名: 円環 #01 アンティーカ×シーズ 1回限定！プリズムジュエル10,000個",
+   "価格: ¥10,000",
+   "購入回数: 1回のみ購入可能",
+   "内容: 有償ジュエル10,000個",
+   "期限表記: 2026/10/21 11:59:59(UTC+09:00)まで",
+   "注意: WEB STOREで購入した有償ジュエルは、DMM GAMESを除く全てのプラットフォームで利用可",
+   "注意: 本ページ記載の販売個数は有償プリズムジュエルと無償プリズムジュエルの合計値",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "sched-2026-10-18-x-com-imassc-prism-status-2100782865265086577-締切前"
  }
 ]

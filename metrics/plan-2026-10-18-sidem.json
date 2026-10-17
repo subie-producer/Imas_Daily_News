@@ -1,0 +1,185 @@
+{
+ "decisions": {
+  "tourmas-s2-sidem-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ツアマスは複数ブランド共同の作品で合同面の話題。SideMはゲスト出演・専用カードの扱いのため、この面では立てない"
+  },
+  "sidem-episode-one-frame-2026-10-17": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-17号『守りたいもの』1コマ追加の記事と同じ更新。新事実なし"
+  },
+  "sidem-episode-one-frame-2026-10-16": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "更新の告知のみで内容の事実が無く、当日のトリガーも無い"
+  },
+  "sidem-11th-setlist-playlists-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-10号と同じ内容(DAY1・DAY2のプレイリスト)。新事実もトリガーも無い"
+  },
+  "sidem-tvguide-2026-10-30": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-17号に同内容。発売は10-21で、3日以内に迫る締切・終了には当たらない"
+  },
+  "sidem-315pronight-2026-10-16": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-16放送で終了済み。10-16号に『今夜21時放送』の記事あり"
+  },
+  "sidem-315-night-2026-10-23": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-17号に同内容。新事実も当日のトリガーも無い"
+  },
+  "sidem-movie-ticket-benefit-trading-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人の交換希望投稿で、出典も未確認"
+  },
+  "sidem-remember-shot-fair-vol4-2026": {
+   "action": "article",
+   "angle": "アニメイトで『SideM リメンバーショットフェア第4弾』を開催中。関連商品の購入で切手風ステッカー(全10種)を1枚もらえる。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried。出典は店舗アカウントのみ。期間・対象店舗が確認できるかは執筆と校閲で判断"
+  },
+  "sidem-producer-meeting-ajewelholic-2027": {
+   "action": "article",
+   "angle": "SideMプロミ『AJewelholIc!!!』のアソビストアプレミアム会員先行に当選した人は、10月21日23時59分までに入金する(締切まで3日)。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。当選発表は10-17号で記事済みのため、記事は入金期限に絞る"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-remember-shot-fair-vol4-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "アニメイトで『SideM リメンバーショットフェア第4弾』を開催中。関連商品の購入で切手風ステッカー(全10種)を1枚もらえる。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-remember-shot-fair-vol4-2026",
+    "candidate_ids": [
+     "202610170225-grok-51"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-2027",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMプロミ『AJewelholIc!!!』のアソビストアプレミアム会員先行に当選した人は、10月21日23時59分までに入金する(締切まで3日)。",
+    "purpose": "期日の知らせ",
+    "lead_score": 45,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027",
+    "candidate_ids": [
+     "sched-2026-10-18-sidem-producer-meeting-ajewelholic-2027-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "tourmas-s2-sidem-2026",
+    "reason": "面違い",
+    "note": "ツアマスは複数ブランド共同の作品で合同面の話題。SideMはゲスト出演・専用カードの扱いのため、この面では立てない"
+   },
+   {
+    "dedup_key": "sidem-episode-one-frame-2026-10-17",
+    "reason": "既報",
+    "note": "10-17号『守りたいもの』1コマ追加の記事と同じ更新。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-episode-one-frame-2026-10-16",
+    "reason": "出典不足",
+    "note": "更新の告知のみで内容の事実が無く、当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-11th-setlist-playlists-2026",
+    "reason": "既報",
+    "note": "10-10号と同じ内容(DAY1・DAY2のプレイリスト)。新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-tvguide-2026-10-30",
+    "reason": "既報",
+    "note": "10-17号に同内容。発売は10-21で、3日以内に迫る締切・終了には当たらない"
+   },
+   {
+    "dedup_key": "sidem-315pronight-2026-10-16",
+    "reason": "既報",
+    "note": "10-16放送で終了済み。10-16号に『今夜21時放送』の記事あり"
+   },
+   {
+    "dedup_key": "sidem-315-night-2026-10-23",
+    "reason": "既報",
+    "note": "10-17号に同内容。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "sidem-movie-ticket-benefit-trading-2026",
+    "reason": "個人の話題",
+    "note": "個人の交換希望投稿で、出典も未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

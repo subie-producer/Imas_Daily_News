@@ -1,0 +1,272 @@
+{
+ "decisions": {
+  "va-liv-manaka-birthday-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/14・10/17の記事に同内容。28日の締切は3日以内でない"
+  },
+  "valiv-letora-girls-frontier-cover-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "16日公開済み、プレミア公開の記事が既出"
+  },
+  "va-liv-3rd-live-2027": {
+   "action": "article",
+   "angle": "vα-liv初の2都市開催3rdLIVE&MEETINGの名古屋公演の会場・日程・昼夜の開場開演時刻と現地チケット先行受付が公式に発表された。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報は9/25の開催告知のみで、時刻・チケット情報は新しい"
+  },
+  "valiv-study-equal-magic-dance-2026-10-06": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファン投稿で未確認。公式の動画は10/7に既報"
+  },
+  "valiv-1stlive-limited-stream-2026": {
+   "action": "article",
+   "angle": "ヴイアラ1stLIVE全編のYouTube期間限定公開が本日10月18日23時59分で終わる。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "未報の話題で、終了が本日"
+  },
+  "shinkai-fes-valiv-2026": {
+   "action": "article",
+   "angle": "深海フェス2026のDAY2が本日開かれ、グランドステージで灯里愛夏が17時10分から出演する。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ステージ別の出演時刻は既報に無い新しい事実。千秋楽の予約2件をここに統合"
+  },
+  "manaka-birthday-online-live-postponed-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/14・10/17の記事に同内容。新事実もトリガーも無い"
+  },
+  "va-liv-letora-birthday-2026": {
+   "action": "article",
+   "angle": "レトラ BIRTHDAY ONLINE LIVE 2026の現地ライブビューイング先行抽選の当選者は、本日10月18日23時59分が入金期限。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "入金締切の予約3件を1記事にまとめる。二次抽選は30日まで受付と既報の範囲で補足"
+  },
+  "valiv-bombanana-joint-stream-2026-10-22": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17に記事化済み。配信は22日でトリガーも無い"
+  },
+  "manaka-ittan-aishite-dance-short-2026-10-16": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17に両動画とも記事化済み"
+  },
+  "valiv-3rdlive-meeting-followup-space-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-3rd-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "3rdLIVE続報のX Space。未確認で内容も不明なため、その記事の素材に統合"
+  },
+  "dsva-shinkaifes-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shinkai-fes-valiv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ深海フェスDAY2の千秋楽予約"
+  },
+  "shinkai-fes-2026-timetable": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shinkai-fes-valiv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ深海フェスDAY2の千秋楽予約"
+  },
+  "valiv-letora-birthday-2026-lv-goods-lottery": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "va-liv-letora-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ入金期限(23:59)の予約"
+  },
+  "valiv-aikatsu-academy-collab-shorts-2026": {
+   "action": "article",
+   "angle": "上水流宇宙とアイカツアカデミー！のコラボダンスのショート1回目が、本日18時に宇宙chで公開される。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日開始の予約。2回目は19日18時"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-va-liv-3rd-live-2027",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "vα-liv初の2都市開催3rdLIVE&MEETINGの名古屋公演の会場・日程・昼夜の開場開演時刻と現地チケット先行受付が公式に発表された。",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "va-liv-3rd-live-2027",
+    "candidate_ids": [
+     "202610172334-watch-0",
+     "202610180226-grok-72",
+     "202610180226-grok-87"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-1stlive-limited-stream-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "ヴイアラ1stLIVE全編のYouTube期間限定公開が本日10月18日23時59分で終わる。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "valiv-1stlive-limited-stream-2026",
+    "candidate_ids": [
+     "202610180226-grok-57"
+    ]
+   },
+   {
+    "slug": "dsva-shinkai-fes-valiv-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "深海フェス2026のDAY2が本日開かれ、グランドステージで灯里愛夏が17時10分から出演する。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shinkai-fes-valiv-2026",
+    "candidate_ids": [
+     "202610180226-grok-58",
+     "sched-2026-10-18-dsva-shinkaifes-2026-千秋楽",
+     "sched-2026-10-18-shinkai-fes-2026-timetable-千秋楽"
+    ]
+   },
+   {
+    "slug": "dsva-va-liv-letora-birthday-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "レトラ BIRTHDAY ONLINE LIVE 2026の現地ライブビューイング先行抽選の当選者は、本日10月18日23時59分が入金期限。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "va-liv-letora-birthday-2026",
+    "candidate_ids": [
+     "202610180226-grok-60",
+     "sched-2026-10-18-va-liv-letora-birthday-2026-締切",
+     "sched-2026-10-18-valiv-letora-birthday-2026-lv-goods-lottery-締切"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-aikatsu-academy-collab-shorts-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙とアイカツアカデミー！のコラボダンスのショート1回目が、本日18時に宇宙chで公開される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "valiv-aikatsu-academy-collab-shorts-2026",
+    "candidate_ids": [
+     "sched-2026-10-18-valiv-aikatsu-academy-collab-shorts-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "va-liv-manaka-birthday-live-2026",
+    "reason": "既報",
+    "note": "10/14・10/17の記事に同内容。28日の締切は3日以内でない"
+   },
+   {
+    "dedup_key": "valiv-letora-girls-frontier-cover-2026",
+    "reason": "既報",
+    "note": "16日公開済み、プレミア公開の記事が既出"
+   },
+   {
+    "dedup_key": "valiv-study-equal-magic-dance-2026-10-06",
+    "reason": "同人・ファン主催",
+    "note": "ファン投稿で未確認。公式の動画は10/7に既報"
+   },
+   {
+    "dedup_key": "manaka-birthday-online-live-postponed-2026",
+    "reason": "既報",
+    "note": "10/14・10/17の記事に同内容。新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "valiv-bombanana-joint-stream-2026-10-22",
+    "reason": "既報",
+    "note": "10/17に記事化済み。配信は22日でトリガーも無い"
+   },
+   {
+    "dedup_key": "manaka-ittan-aishite-dance-short-2026-10-16",
+    "reason": "既報",
+    "note": "10/17に両動画とも記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

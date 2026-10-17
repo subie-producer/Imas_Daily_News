@@ -1,0 +1,181 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-18T02:29:55+09:00",
+   "edition": "2026-10-18",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 350,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 0,
+    "explore:shiny": 3,
+    "explore:sidem": 1,
+    "explore:gakuen": 0,
+    "explore:dsva": 1,
+    "explore:joint-other": 1,
+    "explore:trend": 4,
+    "grok_week_searches": 509,
+    "grok:765as": 1,
+    "grok:cinderella": 12,
+    "grok:million": 6,
+    "grok:shiny": 16,
+    "grok:sidem": 6,
+    "grok:gakuen": 9,
+    "grok:dsva": 11,
+    "grok:joint-other": 6,
+    "grok:trend": 7,
+    "grok_searches:joint": 12,
+    "grok_searches:cg": 9,
+    "grok_searches:general": 8,
+    "grok_searches:765": 7,
+    "grok_searches:dsva": 7,
+    "grok_searches:gaku": 6,
+    "grok_searches:shiny": 7,
+    "grok_searches:million": 5,
+    "grok_searches:sidem": 5
+   },
+   "normalized": 89,
+   "added": 70,
+   "verify": {
+    "confirmed": 54,
+    "unconfirmed": 24,
+    "failed": 11
+   },
+   "duration_s": 1757
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-18T03:21:21+09:00",
+   "edition": "2026-10-18",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 37,
+   "written": 30,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 106,
+    "covered": 106,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.5110580960909525,
+    "執筆": 3.3212510347366333,
+    "出典の判定": 1.7841054757436117,
+    "組版": 0.6325698614120483,
+    "校閲": 0.7592316548029582,
+    "校閲1波": 0.7592316548029582
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "other-million-monthly-alternative-revive-2026-10",
+    "gaku-valiv-letora-birthday-live-2026",
+    "general-imas-channel-member-radio-2026-10",
+    "sidem-remember-shot-fair-vol4-2026",
+    "gaku-valiv-1st-live-full-premiere-2026",
+    "cg-pop-up-sweet-melty-whip-2026",
+    "other-shiny-web-store-maintenance-2026-10-20"
+   ],
+   "duration_s": 1243
+  },
+  {
+   "at": "2026-10-18T03:38:49+09:00",
+   "edition": "2026-10-18",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 37,
+   "written": 30,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 106,
+    "covered": 106,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "執筆": 0.6019526322682699,
+    "出典の判定": 0.06087276538213094,
+    "組版": 0.6474685152371724,
+    "校閲": 0.7312161525090536,
+    "校閲1波": 0.7312161525090536
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "other-million-monthly-alternative-revive-2026-10",
+    "cg-pop-up-sweet-melty-whip-2026",
+    "general-imas-channel-member-radio-2026-10",
+    "sidem-remember-shot-fair-vol4-2026"
+   ],
+   "duration_s": 396
+  }
+ ]
+}

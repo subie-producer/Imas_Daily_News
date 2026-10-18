@@ -470,6 +470,16 @@ def carry_late_candidates(date: str) -> list[str]:
 
 
 CARRY_DROPPED_MAX = 2   # 前の号で記事にならなかった素材を、次の号の選定に戻す回数の上限(毎号同じ理由で落ち続けるのを止める)
+
+
+def carried_not_news(cr: dict | None) -> str:
+    """戻した印(carried)の理由が「既報と同じ内容で、新しい事実も当日のトリガーも無い」(執筆・書き直しの NOT_NEWS、校閲の R10)なら
+    その理由の本文、それ以外は空。既報かどうかは話題・URL の照合(storylink)で決まり、別の発信元の投稿で拾い直した素材は過去の記事に
+    つながらないので、この理由を捨てると選定には既報が見えない(2026-10-17〜19: 既報のラジオ・フェアを3号続けて新情報として選び、
+    執筆・校閲が毎号同じ理由で落とした)。"""
+    why = str((cr or {}).get("why") or "")
+    m = re.search(r"(?:執筆で見送り|書き直しで見送り): NOT_NEWS|校閲ブロック: R10", why)
+    return why[m.end():].strip().removesuffix(")").strip() or "(理由の本文なし)" if m else ""
 # 日付 → {slug: {稿の指紋: その稿を採ったときの F 番号 → 事実の文}}。台帳はこれで記事の根拠 id を引く(素材から番号を振り直すと、
 # 執筆の後に素材の事実が増減したとき番号がずれて、書いていない事実を「掲載済み」にする。監査指摘)。稿の指紋(renderlib.draft_key)ごとに
 # 残すので、除外・組み直しの失敗で記事を旧い稿へ巻き戻しても、旧い稿の対応が選ばれる(監査指摘)。metrics/factmap-<号>.json に残す
@@ -633,7 +643,11 @@ def carry_dropped_candidates(date: str) -> list[str]:
     picked_urls = {src[i].get("url") for i in picked if i in src}
     for cid, c in src.items():
         if c.get("carried") and cid not in picked and c.get("url") not in picked_urls:
-            g = groups.setdefault(c.get("url") or f"id:{cid}", {"srcs": {}, "why": f"{prev}号の選定で選ばれなかった(戻した素材)"})
+            # 既報と同じとして外れた理由は引き継ぐ(選定が外したのはその理由が成り立ったから。捨てると次の号の選定に既報が見えない)
+            why = f"{prev}号の選定で選ばれなかった(戻した素材)"
+            if carried_not_news(c["carried"]):
+                why += f" / {c['carried']['why']}"
+            g = groups.setdefault(c.get("url") or f"id:{cid}", {"srcs": {}, "why": why})
             g["srcs"][cid] = c
     # 締切を過ぎた素材は、どちらの経路でも戻さない(監査指摘: 外れた記事の経路だけ締切を見ていなかった)
     expired = lambda c: bool(re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(c.get("deadline") or ""))) and c["deadline"] < date
@@ -729,8 +743,13 @@ def write_plan_index(date: str, cands: dict, blocklist: dict,
         if cr.get("from") and int(cr.get("count") or 0) <= CARRY_DROPPED_MAX and not s.get("carried"):
             # 前の号で記事にならなかった印だけを見せ、理由は見せない(選定が前の号の理由を今日の判定と読んで外した。2026-10-14 の
             # ログボ: 報道を出典にしてよいと決めた後も「出典不足」で外れた)。記事にできるかは執筆と校閲が今日の規則で判断する。
-            # 上限を超えたら見せない
+            # 上限を超えたら見せない。
+            # ただし「既報と同じで新しい事実も当日のトリガーも無い」で外れた理由は見せる: 規則・道具の修正で変わる判定ではなく、
+            # 既報の照合(storylink)が別の発信元の投稿をつなげないと、選定には既報が見えず毎号新情報として選ぶ(2026-10-17〜19)
             s["carried"] = f"{cr['from']}号までに記事にならず、選定に戻した({int(cr.get('count') or 0)}回目)"
+            nn = carried_not_news(cr)
+            if nn:
+                s["carried"] += f"。既報と同じ内容で、新しい事実も当日のトリガーも無いとして外れた: {nn}"
         for f in c.get("facts", []):
             k = fact_key(f)
             pool.setdefault(dk, []).append((f if k in late else f[:PLAN_FACT_CHARS], k))

@@ -7085,6 +7085,55 @@ def test_carry_dropped_candidates(tmp: Path):
     check("`carried`" in rules, "選定の規則に、前の号で記事にならなかった主題の扱いが無い")
 
 
+def test_carry_not_news_reason(tmp: Path):
+    """前の号で「既報と同じ・新しい事実も当日のトリガーも無い」(執筆・書き直しの NOT_NEWS、校閲の R10)で外れた素材は、戻すときにその理由を
+    選定に見せる(2026-10-17〜19: 既報のラジオ・SideM フェアを、別アカウントの投稿で拾い直したため既報につながらず、理由も隠したので
+    3号続けて新情報として選び、毎号同じ理由で落とした)。出典など規則で変わる理由は見せないまま。選定が外した後の戻しでも理由を引き継ぐ。"""
+    for sub in ("candidates", "metrics", "docs/_posts"):
+        (tmp / sub).mkdir(parents=True, exist_ok=True)
+    saved_root, saved_log = compose.ROOT, dict(compose.DROP_LOG)
+    try:
+        compose.ROOT = tmp
+        d0, d1, d2 = "2026-10-18", "2026-10-19", "2026-10-20"
+        (tmp / "candidates" / f"{d0}.json").write_text(json.dumps([
+            cand_row("radio", "https://x.com/imas_ch/status/1", dedup_key="radio", brand="general", facts=["10月21日配信"]),
+            cand_row("fair", "https://x.com/shop/status/2", dedup_key="fair", brand="general", facts=["25日まで"]),
+            cand_row("src", "https://fan.example/3", dedup_key="src", brand="general", facts=["二次情報"]),
+        ], ensure_ascii=False), encoding="utf-8")
+        compose.DROP_LOG.clear()
+        compose.DROP_LOG[d0] = {"radio": ("ラジオ", "書き直しで見送り", "NOT_NEWS 10月16日号ですでに報じられており、新事実もトリガーも無い"),
+                                "fair": ("フェア", "校閲ブロック", "R10 既報と同じ内容で、新しい事実も当日のトリガーも無い(10/3号)"),
+                                "src": ("出典", "執筆で見送り", "NO_PRIMARY_SOURCE 公式の告知に届かない")}
+        (tmp / "metrics" / f"plan-{d0}.json").write_text(json.dumps({"articles": [
+            {"slug": k, "candidate_ids": [k]} for k in ("radio", "fair", "src")]}), encoding="utf-8")
+        compose.persist_drops(d0)
+        compose.carry_dropped_candidates(d1)
+        rows = {x["id"]: x for x in json.loads((tmp / "candidates" / f"{d1}.json").read_text(encoding="utf-8"))}
+        by_brand, _, _ = compose.write_plan_index(d1, rows, {})
+        shown = {s["dedup_key"]: str(s.get("carried") or "") for s in by_brand.get("general", [])}
+        check("10月16日号ですでに報じられており" in shown.get("radio", "") and "既報と同じ" in shown.get("radio", "")
+              and "10/3号" in shown.get("fair", "") and "記事にならず" in shown.get("src", "")
+              and "公式の告知" not in shown.get("src", "") and "NO_PRIMARY_SOURCE" not in shown.get("src", ""),
+              f"既報と同じとして外れた理由を選定に見せない・出典の理由まで見せている: {shown}")
+        # この号の選定が外した(計画に入らなかった)→ 次の号へ戻すときも、既報と同じという理由を引き継ぐ
+        (tmp / "metrics" / f"plan-{d1}.json").write_text(json.dumps({"articles": [{"slug": "src", "candidate_ids": ["src"]}]}),
+                                                         encoding="utf-8")
+        compose.carry_dropped_candidates(d2)
+        got = {x["id"]: x for x in json.loads((tmp / "candidates" / f"{d2}.json").read_text(encoding="utf-8"))}
+        b2, _, _ = compose.write_plan_index(d2, got, {})
+        s2 = {s["dedup_key"]: str(s.get("carried") or "") for s in b2.get("general", [])}
+        check(sorted(got) == ["fair", "radio"] and "選定" in got["radio"]["carried"]["why"]
+              and "10月16日号ですでに報じられており" in s2.get("radio", ""),
+              f"選定が外した後の戻しで、既報と同じという理由を落とした: {s2} {[(k, v['carried']) for k, v in got.items()]}")
+        rules = compose.plan_rules()
+        check("既報と同じ内容で、新しい事実も当日のトリガーも無いとして外れた" in rules and "不採用の理由にしない" in rules,
+              "選定の規則に、既報と同じとして外れた主題の扱いが無い")
+    finally:
+        compose.ROOT = saved_root
+        compose.DROP_LOG.clear()
+        compose.DROP_LOG.update(saved_log)
+
+
 def test_carry_late_candidates(tmp: Path):
     """前の号の選定が候補を読んだ後に、その号の候補ファイルへ入った候補(当番の取り直しが組版の開始後〜06:00 に終わった)を、
     次の号の候補へ写す。写さないと、収集は 06:00 前の分を前の号へ入れ、組版は自分の号のファイルしか読まないので、
@@ -10486,6 +10535,7 @@ def main() -> int:
     test_compose_classifies_after_revise(tmp / "car")
     test_carry_late_candidates(tmp / "clc")
     test_carry_dropped_candidates(tmp / "cdc")
+    test_carry_not_news_reason(tmp / "cnn")
     test_carry_reservation_deadline(tmp / "crd")
     test_carry_dropped_candidates_schema(tmp / "cdcs")
     test_late_facts_reach_plan_index(tmp / "lfpi")

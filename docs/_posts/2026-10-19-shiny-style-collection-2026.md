@@ -25,18 +25,12 @@ sources:
 event_date: "2026-10-25"
 title_fact_ids:
 - F1
-- N1
 lede_fact_ids:
 - F1
 - F2
 - F6
-- N1
-verified_facts:
-- id: N1
-  text: SHINY Style COLLECTIONの特設ページで、ページ内の商品はASOBI STOREにて2026年10月25日（日）まで受注販売すると案内されている。
-  url: https://shop.asobistore.jp/feature/shiny_style_collection
 ---
-購入先はASOBI STOREの「SHINY Style COLLECTION」特設ページ。商品は2026年10月25日（日）までの受注販売で、2027年1月中旬以降に順次届けられる予定。 <!-- F1 F2 N1 -->
+購入先はASOBI STOREの「SHINY Style COLLECTION」特設ページ。商品は2026年10月25日（日）までの受注販売で、2027年1月中旬以降に順次届けられる予定。 <!-- F1 F2 -->
 
 ## 商品と価格
 

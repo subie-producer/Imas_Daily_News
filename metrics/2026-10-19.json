@@ -102,5 +102,42 @@
    },
    "duration_s": 1395
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-19T03:12:33+09:00",
+   "edition": "2026-10-19",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 22,
+   "written": 18,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 56,
+    "covered": 56,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.2606194814046223,
+    "執筆": 2.6448814233144122,
+    "出典の判定": 0.06749645074208578,
+    "組版": 0.6592017571131389,
+    "校閲": 0.6170253316561382,
+    "校閲1波": 0.6170253316561382
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-technical-challenge-cup-17-2026",
+    "cg-pop-up-sweet-melty-whip-2026",
+    "general-imas-channel-member-radio-2026-10",
+    "sidem-remember-shot-fair-vol4-2026"
+   ],
+   "duration_s": 715
+  }
  ]
 }

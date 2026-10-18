@@ -9609,6 +9609,69 @@ def test_youtube_playlist_owner(tmp: Path):
         cs._PLAYLIST_CACHE.update(cache)
 
 
+def test_booth_item_owner(tmp: Path):
+    """BOOTH の商品の持ち主(2026-10-19: `booth.pm/ja/items/7563732` が出典に載り、持ち主を取るパーサが無かった)。
+    単位はショップ `<subdomain>.booth.pm`(ドメイン)。商品の JSON の shop.subdomain から引き、ショップの種別を商品へ写す。偽の取得で確かめる。"""
+    import classify_sources as cs
+    url = "https://booth.pm/ja/items/7563732"
+    key = "booth.pm/ja/items/7563732"
+    check(getattr(cs, "booth_item_key", lambda u: None)(url) == key, "BOOTH の商品のキーが取れない")
+    for u in ("https://booth.pm/", "https://booth.pm/ja/search/アイマス", "https://booth.pm/ja/browse/写真"):
+        check(cs.platform_unit(u)[0] == "skip", f"商品 ID の無い BOOTH の URL: {u} {cs.platform_unit(u)}")
+    calls: list[str] = []
+
+    def fake(u: str) -> str:
+        calls.append(u)
+        return json.dumps({"id": 7563732, "description": "https://other.booth.pm/ も見てね",
+                           "shop": {"name": "流れ星", "subdomain": "nagarestar", "url": "https://nagarestar.booth.pm/"}})
+    try:
+        check(cs.booth_item_shop("7563732", fetch=fake) == ("nagarestar.booth.pm", "流れ星")
+              and calls == ["https://booth.pm/ja/items/7563732.json"], f"商品の JSON のショップ: {calls}")
+        check(cs.booth_item_shop("1", fetch=lambda u: json.dumps({"shop": {"subdomain": "evil.example/x"}}))[0] == "",
+              "サブドメインでない subdomain をショップにした")
+        check(cs.booth_item_shop("1", fetch=lambda u: (_ for _ in ()).throw(OSError("404")))[0] == "", "取得の失敗でショップを返した")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"BOOTH のショップを引けない: {type(e).__name__}: {e}")
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "candidates").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\nsemi_official_domains:\n  - va-liv.booth.pm\n", encoding="utf-8")
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, getattr(cs, "booth_item_shop", None),
+             dict(getattr(cs, "_BOOTH_SHOP", {})))
+    other = "https://booth.pm/items/8830505"
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        cs.POSTS_ONLY = None
+        cs._BOOTH_SHOP.clear()
+        owners = {"7563732": ("nagarestar.booth.pm", "流れ星"), "8830505": ("va-liv.booth.pm", "vα-liv")}
+        cs.booth_item_shop = lambda iid, fetch=None: owners[iid]
+        check(cs.platform_unit(url) == ("domain", "nagarestar.booth.pm"), f"商品の単位: {cs.platform_unit(url)}")
+        check(cs.display_base(url) == "https://nagarestar.booth.pm", f"表示の単位: {cs.display_base(url)}")
+        (tmp / "candidates" / "2026-10-19.json").write_text(json.dumps([{"url": url, "title": "ボイス"}, {"url": other, "title": "x"}]),
+                                                            encoding="utf-8")
+        d, a, paths = cs.unknown_targets("2026-10-19")
+        check(not cs.NEED_PARSER and not cs.SKIPPED and d == {"nagarestar.booth.pm": url} and not paths,
+              f"BOOTH の商品がパーサ待ち・ショップ以外の単位で合議に回った: {cs.NEED_PARSER} {cs.SKIPPED} {d} {paths}")
+        left = cs.resolve_booth_items(True)
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source(other) == "準公式" and pipelib.classify_source(url) == "未確認"
+              and len(left) == 1 and left[0].startswith(url), f"表にあるショップの種別が商品に写らない: {left}")
+        cs.add_domains({"nagarestar.booth.pm": ("ファン", "個人のショップ")})
+        pipelib._ST_TABLE = None
+        left = cs.resolve_booth_items(True)
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source(url) == "ファン" and not left, f"ショップが決まった後の商品: {left}")
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"BOOTH の商品のテストが例外: {type(e).__name__}: {e}")
+    finally:
+        cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, fn, cache = saved
+        if fn is not None:
+            cs.booth_item_shop = fn
+            cs._BOOTH_SHOP.clear()
+            cs._BOOTH_SHOP.update(cache)
+
+
 def test_classify_txn_interrupt(tmp: Path):
     """出典の判定の取引の途中(表を書いた後・付け直しの最中)に親へ SIGTERM・SIGINT が来ても、子をプロセスグループごと止めてから
     判定表と記事を開始時へ戻し、中断はそのあとで元の扱いへ渡す(監査指摘 2026-10-14: 戻さずに終わって表だけが変わり、出典の lint が
@@ -10395,6 +10458,7 @@ def main() -> int:
     test_performer_domains(tmp / "pd")
     test_platform_owner_units(tmp / "pou")
     test_youtube_playlist_owner(tmp / "ytpl")
+    test_booth_item_owner(tmp / "booth")
     test_classify_txn_interrupt(tmp / "cti")
     test_tags_and_idols(tmp / "ti")
     test_request_parsers(tmp / "rq")

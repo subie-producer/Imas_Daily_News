@@ -175,6 +175,14 @@ def platform_unit(url: str) -> tuple[str, str]:
     for q in SUBDOMAIN_PLATFORMS:
         if host.endswith("." + q):
             return "domain", host
+    if host == "booth.pm":
+        # `booth.pm/<言語>/items/<ID>` は商品1つ。持ち主はショップ(`<名前>.booth.pm`)で、ドメインとして判定する。
+        # ショップは商品の JSON の shop.subdomain から引く(booth_item_shop)。商品 ID の無い URL(トップ・検索・カテゴリ・イベント)に持ち主は無い
+        item = booth_item_key(url)
+        if not item:
+            return "skip", "BOOTH の商品 ID の無い URL(トップ・検索・カテゴリなど。持ち主は無い)"
+        shop, _ = booth_shop(item)
+        return ("domain", shop) if shop else ("skip", "BOOTH の商品からショップを引けない(商品の JSON が返らない。削除・非公開の商品か)")
     for q in PLATFORMS:
         if host == q or host.endswith("." + q):
             return "parser", host
@@ -221,6 +229,7 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     USED_IN.clear()
     X_POSTS.clear()
     SHORT_LINKS.clear()
+    BOOTH_ITEMS.clear()
     rows = target_rows(date)
     if not rows:
         return {}, {}, {}
@@ -271,6 +280,13 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
             if c.get("title") and len(cur[1]) < 4:
                 cur[1].append(c["title"][:70])
             continue
+        item = booth_item_key(url)
+        if item:
+            # BOOTH の商品はショップで決まる。商品の URL は記事に載ったまま変えられないので、ショップの種別を商品へ写す
+            # (resolve_booth_items)。ショップが表にあれば合議に掛けない
+            BOOTH_ITEMS.setdefault(item, (key, url))
+            if classify_source(f"https://{key}/") != "未確認":
+                continue
         (paths if unit == "path" else doms).setdefault(key, url)
         # どの記事・候補で、何として使われているか(判定の材料。フォームや文書は、張った側の文脈が主体の手掛かりになる)
         if c.get("title") and len(USED_IN.setdefault(key, [])) < 3:
@@ -344,6 +360,7 @@ NEED_PARSER: dict[str, str] = {}      # 持ち主を取るパーサが無い URL
 USED_IN: dict[str, list[str]] = {}    # 判定のキー → 紙面・候補での使われ方(題名と出典の label)
 X_POSTS: dict[str, str] = {}          # 投稿者の無い X の投稿 ID → 投稿者(unknown_targets が埋める。resolve_x_posts が表へ)
 _X_AUTHOR: dict[str, str] = {}        # 投稿 ID → 投稿者(引けなければ "")。同じ実行で何度も問い合わせない
+BOOTH_ITEMS: dict[str, tuple[str, str]] = {}   # BOOTH の商品のキー → (ショップのホスト, URL)(unknown_targets が埋める。resolve_booth_items が表へ)
 SHORT_LINKS: dict[str, str] = {}      # 判定表に無い短縮 URL のキー(`t.co/<ID>`)→ URL(unknown_targets が埋める。resolve_short_links が表へ)
 _SHORT: dict[str, str] = {}           # 短縮 URL → 展開先(引けなければ "")。同じ実行で何度も問い合わせない
 
@@ -410,6 +427,71 @@ def resolve_short_links(apply: bool) -> list[str]:
     if found and apply:
         add_paths(found, how="機械で追加")
         print(f"  → 短縮 URL {len(found)}件を表に追加(展開先の種別を写した)", flush=True)
+    return left
+
+
+BOOTH_ITEM = re.compile(r"/(?:[a-z]{2}(?:-[a-z]{2})?/)?items/(\d+)/?", re.I)
+_BOOTH_SHOP: dict[str, tuple[str, str]] = {}   # 商品 ID → (ショップのホスト, ショップ名)。同じ実行で何度も問い合わせない
+
+
+def booth_item_key(url: str) -> str | None:
+    """`booth.pm/<言語>/items/<ID>` の商品の URL なら、判定表(path_types)に書くキー(`booth.pm/ja/items/<ID>`。URL のパスのまま)。"""
+    u = urllib.parse.urlparse(url)
+    if (u.hostname or "").removeprefix("www.") != "booth.pm":
+        return None
+    m = BOOTH_ITEM.fullmatch(u.path)
+    return "booth.pm" + u.path.rstrip("/") if m else None
+
+
+def booth_item_shop(item_id: str, fetch=None) -> tuple[str, str]:
+    """BOOTH の商品の持ち主のショップ。(ショップのホスト `<subdomain>.booth.pm`, ショップ名)。取れなければ ("", "")。
+    商品の JSON(`booth.pm/ja/items/<ID>.json`)の shop.subdomain(出品者の構造化フィールド)だけを見る。説明文からは推定しない。
+    fetch(url) -> 本文 を渡せば取得しない(テスト用)。
+    実測 2026-10-19: items/7563732.json は shop {"subdomain": "nagarestar", "name": "流れ星"} を返す。"""
+    url = f"https://booth.pm/ja/items/{item_id}.json"
+    try:
+        if fetch is None:
+            import urllib.request
+            req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                body = r.read().decode("utf-8")
+        else:
+            body = fetch(url)
+        shop = json.loads(body).get("shop") or {}
+    except Exception as e:
+        print(f"  BOOTH の商品の JSON を取得できず {item_id}: {type(e).__name__}", flush=True)
+        return "", ""
+    sub = str(shop.get("subdomain") or "").strip().lower()
+    if not re.fullmatch(r"[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", sub):
+        return "", ""
+    return f"{sub}.booth.pm", str(shop.get("name") or "")
+
+
+def booth_shop(item_key: str) -> tuple[str, str]:
+    """`booth_item_shop` を商品ごとに1回だけ呼ぶ(display_base は出典行ごとに引く)。item_key は booth_item_key の形。"""
+    iid = item_key.rsplit("/", 1)[1]
+    if iid not in _BOOTH_SHOP:
+        _BOOTH_SHOP[iid] = booth_item_shop(iid)
+    return _BOOTH_SHOP[iid]
+
+
+def resolve_booth_items(apply: bool) -> list[str]:
+    """判定表に無い BOOTH の商品へ、ショップの種別を機械で写す(path_types に商品1つずつ。x_posts・短縮 URL と同じ)。
+    ショップの合議の後に呼ぶ。戻り値は決まらなかったものの説明(`<URL>: 理由`)。"""
+    found: dict[str, tuple[str, str]] = {}
+    left: list[str] = []
+    for item, (shop, url) in sorted(BOOTH_ITEMS.items()):
+        if classify_source(url) != "未確認":
+            continue
+        typ = classify_source(f"https://{shop}/")
+        if typ == "未確認":
+            left.append(f"{url}: BOOTH の商品。ショップ {shop} の種別が決まらない(ショップの合議を参照)")
+        else:
+            found[item] = (typ, f"ショップ {shop}")
+            print(f"  {typ}\t{item}\t{shop}", flush=True)
+    if found and apply:
+        add_paths(found, how="機械で追加")
+        print(f"  → BOOTH の商品 {len(found)}件を表に追加(ショップの種別を写した)", flush=True)
     return left
 
 
@@ -1276,7 +1358,7 @@ def main() -> int:
         for s in rows:
             print(f"  パーサが無い\t{s}", flush=True)
         split_all += rows
-    if (not doms and not accts and not paths and not X_POSTS and not SHORT_LINKS
+    if (not doms and not accts and not paths and not X_POSTS and not SHORT_LINKS and not BOOTH_ITEMS
             and not unknown_videos(date) and not unknown_nico(date) and not unknown_playlists(date)):
         if not split_all:
             print(f"{date}: 判定表に無い出典はありません")
@@ -1396,6 +1478,9 @@ def main() -> int:
         else:
             left = [x for x in left if not any(f"({k})" in x for k in agreed)] + split
     split_all += left
+
+    # BOOTH の商品は、ショップの種別が上で決まってから、その種別を商品1つずつへ写す
+    split_all += resolve_booth_items(args.apply)
 
     # 短縮 URL は、展開先の種別が上で決まってから、その種別を短縮1つずつへ写す(展開先が決まらなければ理由を残す)
     split_all += resolve_short_links(args.apply)

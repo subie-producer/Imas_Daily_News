@@ -52,6 +52,7 @@ official_suffixes:
 
 # --- 準公式: 公式レーベル・公式ストア等のグループ/パートナー企業 ---
 semi_official_domains:
+  - enza.fun              # 合議で追加: シャニマス生配信を自ら出す公式配信場。バンダイナムコID・FAQ連携
   - asobistore.jp         # 合議で追加: アイマス商品を扱う公式ストア(アソビストア)。運営元の本体で準公式
   - akitashoten.co.jp     # 合議で追加: 週刊少年チャンピオンで学園アイドルマスター連載を掲載する出版社本体
   - onsen.ag              # 合議で追加: 公式ラジオ配信プラットフォーム、公式登録済み
@@ -216,6 +217,7 @@ performer_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - nagarestar.booth.pm   # 合議で追加: 個人名義の BOOTH 店。運営者情報なし、個人に紐づくのでファン
   - painful-cycle-jersey.info # 合議で追加: 個人管理人のブログ。FICE等の公式告知を紹介する記事が中心
   - reddit.com            # 合議で追加: 代表URLは個人u/hiyoko19の感想投稿。個人に紐づくのでファン
   - jinseizura.com        # 合議で追加: 個人ブログ。プラポリに管理人が個人と明記。公式MVを転載
@@ -241,6 +243,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - vitalartbox.info      # 合議で追加: 大阪で劇場運営とイベント制作。連絡先は同社。イベント頁に主催表記なし
   - uzm.jp                # 合議で追加: 販売代理ファイス(f-ice.jp/uzm/gakumas)。相手の不明は運営者
   - itemhouse.skr.jp      # 合議で追加: 複数店の商品を扱う販売サイト。対象品は販売元の予約商品(ショップ名記載)
   - unitedcinemas.jp      # 合議で追加: 会場の劇場アクセス・チケット案内。会場側の一次発信
@@ -546,6 +549,7 @@ x_accounts:
     - asobistore
     - imas_musicradio
   演者:
+    - T_Larissa_T         # 合議で追加: 武田羅梨沙本人の発信。喜多見柚への思いと公演の意気込みを投稿
     - AkihoSuzumoto       # 合議で追加: 有栖川夏葉役の声優・涼本あきほ本人
     - s_schisa            # 合議で追加: シャニマス放送後の出演者投稿
     - kisui_shio          # 合議で追加: シャニマス放送後の出演者投稿
@@ -586,6 +590,8 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - nenukorde           # 合議で追加: 個人アカウント。SideM営業マップの聖地を訪問した投稿
+    - mattsun_454         # 合議で追加: 個人アカウント。凛世の誕生日を祝う投稿
     - warashibe0214       # 合議で追加: 個人によるSideMムビチケ特典の交換投稿
     - rynnikelddi         # 合議で追加: 個人によるシンデレラガールズ誕生日祝いの投稿
     - pico_magic          # 合議で追加: 個人によるS.E.M.曲の踊ってみた動画
@@ -942,6 +948,8 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/smNOzH7hAc: 当事者                         # 機械で追加: 展開先 https://www.vitalartbox.info/imascg1023
+  booth.pm/ja/items/7563732: ファン               # 機械で追加: ショップ nagarestar.booth.pm
   t.co/E8puMDO5Lq: 当事者                         # 機械で追加: 展開先 https://medicos-e.net/newsdetail/imas_millionlive_popup/
   youtube.com/playlist?list=PLVWdhK_WANzc: 公式 # 機械で追加: 持ち主 @imas-official「シャニラジHBTK｜アイドルマスター シャイニーカラーズ公式」
   docs.google.com/forms/d/e/1FAIpQLSfMhjRS_SENvwIOAgkX9_pGuiIuFIZBpmI0f-7N-Jm_sIFD6w: 公式 # 合議で追加: リンク元の公式X(@TomoriManaka)と同企画。制作委託Activ8

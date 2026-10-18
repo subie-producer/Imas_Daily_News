@@ -1,0 +1,197 @@
+{
+ "decisions": {
+  "cinderella-yokohama-cosmoworld-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17号で開催概要・キービジュアルを記事化済み。新事実なし、開催は11/13でトリガーなし"
+  },
+  "cinderella-15th-anniversary-hourglass-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17号が価格・収録曲・予約締切まで記載済み。facts は全て既出"
+  },
+  "cg-memory-pict-7th-pict": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は10/18で終了済み。最終日の記事も10/18号で出ている"
+  },
+  "cinderella-online-kuji-ggwp-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17号で価格・特典・期間を記事化済み。新事実もトリガーも無い"
+  },
+  "cg-orchestra-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "事前販売は10/18で終了済み。10/18号まで連日記事化済み"
+  },
+  "cg-15th-anniversary-orchestra-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2次先行は10/15号で記事化済み。締切10/25は3日以内に入らず、新事実も無い"
+  },
+  "cg-cast-yuzu-stage-post-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人のSNS投稿で出典も未確認。単体では記事にしない"
+  },
+  "cg-pop-up-sweet-melty-whip-2026": {
+   "action": "article",
+   "angle": "POP UP SHOP「Sweet Melty Whip」がアベノラクバスで10月23日から開催、描き下ろしグッズと会場限定特典を用意",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried 2回目。既報なし。出典は未確認のX投稿なので校閲で確認"
+  },
+  "cg-cinderella-party-10th-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/8号が発売日・価格・収録・特典・予約締切まで記載済み。facts は全て既出"
+  },
+  "cinderella-15th-anniversary-party-2026": {
+   "action": "article",
+   "angle": "シンデレラ15thPARTY現地チケットのアソビストア一般会員先行は本日23時59分が最終受付、当落は10月31日13時発表",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。cg-15th-party-2026 を統合"
+  },
+  "cg-15th-party-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-15th-anniversary-party-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受付の締切。続報予約も同一の締切なので1記事に統合"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-pop-up-sweet-melty-whip-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "POP UP SHOP「Sweet Melty Whip」がアベノラクバスで10月23日から開催、描き下ろしグッズと会場限定特典を用意",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cg-pop-up-sweet-melty-whip-2026",
+    "candidate_ids": [
+     "202610180226-grok-18"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-15th-anniversary-party-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "シンデレラ15thPARTY現地チケットのアソビストア一般会員先行は本日23時59分が最終受付、当落は10月31日13時発表",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "cinderella-15th-anniversary-party-2026",
+    "candidate_ids": [
+     "sched-2026-10-19-cinderella-15th-anniversary-party-2026-締切",
+     "sched-2026-10-19-cg-15th-party-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-yokohama-cosmoworld-collab-2026",
+    "reason": "既報",
+    "note": "10/17号で開催概要・キービジュアルを記事化済み。新事実なし、開催は11/13でトリガーなし"
+   },
+   {
+    "dedup_key": "cinderella-15th-anniversary-hourglass-cd-2026",
+    "reason": "既報",
+    "note": "10/17号が価格・収録曲・予約締切まで記載済み。facts は全て既出"
+   },
+   {
+    "dedup_key": "cg-memory-pict-7th-pict",
+    "reason": "既報",
+    "note": "受注は10/18で終了済み。最終日の記事も10/18号で出ている"
+   },
+   {
+    "dedup_key": "cinderella-online-kuji-ggwp-2026",
+    "reason": "既報",
+    "note": "10/17号で価格・特典・期間を記事化済み。新事実もトリガーも無い"
+   },
+   {
+    "dedup_key": "cg-orchestra-goods-2026",
+    "reason": "既報",
+    "note": "事前販売は10/18で終了済み。10/18号まで連日記事化済み"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-orchestra-2027",
+    "reason": "既報",
+    "note": "2次先行は10/15号で記事化済み。締切10/25は3日以内に入らず、新事実も無い"
+   },
+   {
+    "dedup_key": "cg-cast-yuzu-stage-post-2026",
+    "reason": "個人の話題",
+    "note": "声優個人のSNS投稿で出典も未確認。単体では記事にしない"
+   },
+   {
+    "dedup_key": "cg-cinderella-party-10th-cd-2026",
+    "reason": "既報",
+    "note": "10/8号が発売日・価格・収録・特典・予約締切まで記載済み。facts は全て既出"
+   }
+  ],
+  "cross_brand": []
+ }
+}

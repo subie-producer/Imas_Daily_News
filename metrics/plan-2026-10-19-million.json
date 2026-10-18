@@ -1,0 +1,241 @@
+{
+ "decisions": {
+  "million-seasonal-snapshot-2027-jan": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "受注は10/18で終了済み。前日までに締切記事あり"
+  },
+  "million-radio-playlist-otayori-2026": {
+   "action": "article",
+   "angle": "ラジオ#プレイリストが「ハピピス♡」に合わせてお便り募集、10月25日23:59まで(テーマはお悩み相談とふつおた)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "採用分はX-STREAM THEATERのドラマパートに使用"
+  },
+  "million-platinum-tiara-happipisu-2026": {
+   "action": "article",
+   "angle": "「プラチナスターティアラ～ハピピス♡～」開催中、25日20:59まで。ハピピス♡の歌い分け、限定SR美奈子・エレナ、アピールボーナス120%、期間限定ショップ",
+   "purpose": "新情報",
+   "rank": "large",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕告知(10/18)の本文には名称と時刻のみで、詳細は新情報。happipisu重複主題を統合"
+  },
+  "million-platinum-star-tiara-hapipisu-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-platinum-tiara-happipisu-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベント。コミュ全7話・ショップ商品などを統合"
+  },
+  "monthly-alternative-revive-kuraki-hoshi-vol2-2026": {
+   "action": "article",
+   "angle": "「昏き星、遠い月」ガシャvol.2開催、限定SSR伊織・朋花と新規の未来・美也・千早",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "運営情報3件に満たないためroundupにせず小記事"
+  },
+  "platinum-selection-ticket-set-2026": {
+   "action": "article",
+   "angle": "セレクションチケットセットに有償ジュエル5000個の「プラチナ」版と2500個の通常版が登場、好きなカードを1枚選べる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策の2種を1記事にまとめる"
+  },
+  "selection-ticket-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "platinum-selection-ticket-set-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ施策の通常版"
+  },
+  "chloris-palesia-styling-lesson-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "costume-chloris-palesia-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ衣装「クロリス・パレシア」のスタイリングレッスン対応"
+  },
+  "costume-chloris-palesia-2026": {
+   "action": "article",
+   "angle": "衣装購入に「クロリス・パレシア」追加、無償ジュエル2500個で4グループ各13人分の衣装とプラチナガシャ10回チケット付き。スタイリングレッスンにも対応",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "yaso-reijo-theater-content-2026": {
+   "action": "article",
+   "angle": "「夜想令嬢 -GRAC&E NOCTURNE-」のドラマPV・イベントコミュ・ドラマ視聴が劇場バナー「ユニット・グループ紹介」から楽しめる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "30ms-kasuga-mirai-restock-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16に同商品のAmazon再入荷を記事化済み。出典も未確認"
+  },
+  "asobi-store-maintenance-2026-10": {
+   "action": "article",
+   "angle": "ASOBI STORE等のメンテナンスは明日20日朝(ログイン不可6:00～6:45)と21日昼(グッズ利用不可10:00～13:00)",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "20日の実施まで1日で当日のトリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-radio-playlist-otayori-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ラジオ#プレイリストが「ハピピス♡」に合わせてお便り募集、10月25日23:59まで(テーマはお悩み相談とふつおた)",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-radio-playlist-otayori-2026",
+    "candidate_ids": [
+     "202610182334-watch-0"
+    ]
+   },
+   {
+    "slug": "million-platinum-tiara-happipisu-2026",
+    "brand": "million",
+    "rank": "large",
+    "angle": "「プラチナスターティアラ～ハピピス♡～」開催中、25日20:59まで。ハピピス♡の歌い分け、限定SR美奈子・エレナ、アピールボーナス120%、期間限定ショップ",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "million-platinum-tiara-happipisu-2026",
+    "candidate_ids": [
+     "202610182334-watch-1",
+     "202610182334-explore-11",
+     "202610190222-grok-14"
+    ]
+   },
+   {
+    "slug": "million-monthly-alternative-revive-kuraki-hoshi-vol2-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「昏き星、遠い月」ガシャvol.2開催、限定SSR伊織・朋花と新規の未来・美也・千早",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "monthly-alternative-revive-kuraki-hoshi-vol2-2026",
+    "candidate_ids": [
+     "202610190222-grok-15"
+    ]
+   },
+   {
+    "slug": "million-platinum-selection-ticket-set-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "セレクションチケットセットに有償ジュエル5000個の「プラチナ」版と2500個の通常版が登場、好きなカードを1枚選べる",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "platinum-selection-ticket-set-2026",
+    "candidate_ids": [
+     "202610190222-grok-16",
+     "202610190222-grok-17"
+    ]
+   },
+   {
+    "slug": "million-costume-chloris-palesia-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "衣装購入に「クロリス・パレシア」追加、無償ジュエル2500個で4グループ各13人分の衣装とプラチナガシャ10回チケット付き。スタイリングレッスンにも対応",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "costume-chloris-palesia-2026",
+    "candidate_ids": [
+     "202610190222-grok-19",
+     "202610190222-grok-18"
+    ]
+   },
+   {
+    "slug": "million-yaso-reijo-theater-content-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "「夜想令嬢 -GRAC&E NOCTURNE-」のドラマPV・イベントコミュ・ドラマ視聴が劇場バナー「ユニット・グループ紹介」から楽しめる",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "yaso-reijo-theater-content-2026",
+    "candidate_ids": [
+     "202610190222-grok-20"
+    ]
+   },
+   {
+    "slug": "million-asobi-store-maintenance-2026-10",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ASOBI STORE等のメンテナンスは明日20日朝(ログイン不可6:00～6:45)と21日昼(グッズ利用不可10:00～13:00)",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "asobi-store-maintenance-2026-10",
+    "candidate_ids": [
+     "202610190222-grok-22"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-seasonal-snapshot-2027-jan",
+    "reason": "既報",
+    "note": "受注は10/18で終了済み。前日までに締切記事あり"
+   },
+   {
+    "dedup_key": "30ms-kasuga-mirai-restock-2026",
+    "reason": "既報",
+    "note": "10/16に同商品のAmazon再入荷を記事化済み。出典も未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

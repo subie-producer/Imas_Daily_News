@@ -449,5 +449,32 @@
   "verify": "confirmed",
   "src_candidate_id": "202610151232-watch-0",
   "deadline": "2026-11-01"
+ },
+ {
+  "id": "sched-2026-10-29-tourmas-s2-2026-sidem-開始",
+  "dedup_key": "tourmas-s2-2026-sidem",
+  "brand": "joint",
+  "subject": "ツアマスS2弾 稼働開始",
+  "kind": "開始",
+  "note": "SideM衣装やホラーライブをゲームセンターで遊べる",
+  "reserved_on": "2026-10-19",
+  "occurs_on": "2026-10-29",
+  "title": "ツアマスS2弾にSideMのS.E.Mなどが登場",
+  "url": "https://x.com/TOURS_imas/status/2110684623697023043",
+  "source_type": "公式",
+  "facts": [
+   "S2弾の稼働開始日は10月29日。",
+   "S2弾に『アイドルマスターSideM』から山下次郎と舞田類が登場する。",
+   "S2弾に『Study Equal Magic!』が登場する。",
+   "S2弾にSideM専用衣装『コズミック・レンジャー』が登場する。",
+   "S2弾にSideM専用SPアピール『情熱のポーズ!』が登場する。",
+   "S2弾にはハロウィンのアイテムが登場し、ホラーライブを開催できる。",
+   "YouTube: https://www.youtube.com/watch?v=9LYcJoxB_r4&t=2096s",
+   "エンゲージメント: 中",
+   "言及アイドル: 山下次郎、舞田類"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610190222-grok-49"
  }
 ]

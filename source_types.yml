@@ -217,6 +217,7 @@ performer_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - nagarestar.booth.pm   # 合議で追加: 個人名義の BOOTH 店。運営者情報なし、個人に紐づくのでファン
   - painful-cycle-jersey.info # 合議で追加: 個人管理人のブログ。FICE等の公式告知を紹介する記事が中心
   - reddit.com            # 合議で追加: 代表URLは個人u/hiyoko19の感想投稿。個人に紐づくのでファン
   - jinseizura.com        # 合議で追加: 個人ブログ。プラポリに管理人が個人と明記。公式MVを転載
@@ -946,6 +947,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  booth.pm/ja/items/7563732: ファン               # 機械で追加: ショップ nagarestar.booth.pm
   t.co/E8puMDO5Lq: 当事者                         # 機械で追加: 展開先 https://medicos-e.net/newsdetail/imas_millionlive_popup/
   youtube.com/playlist?list=PLVWdhK_WANzc: 公式 # 機械で追加: 持ち主 @imas-official「シャニラジHBTK｜アイドルマスター シャイニーカラーズ公式」
   docs.google.com/forms/d/e/1FAIpQLSfMhjRS_SENvwIOAgkX9_pGuiIuFIZBpmI0f-7N-Jm_sIFD6w: 公式 # 合議で追加: リンク元の公式X(@TomoriManaka)と同企画。制作委託Activ8

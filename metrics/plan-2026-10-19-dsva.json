@@ -1,0 +1,126 @@
+{
+ "decisions": {
+  "valiv-letora-girls-frontier-cover-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/13・10/16の記事で公開日時・視聴先とも既出。公開は10/16で終了済み"
+  },
+  "va-liv-3rd-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/18の記事に公演日程・時刻・先行抽選まで全て既出。新事実も当日のトリガーも無い"
+  },
+  "va-liv-letora-birthday-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "facts は10/8〜10/18の記事と催しの記事に既出。公演11/11で当日トリガー無し"
+  },
+  "manaka-birthday-online-live-2026-rescheduled": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/14・10/17の直近記事と同じ延期公演。facts に新事実無し、公演10/28は3日以内でもなく当日トリガー無し"
+  },
+  "valiv-aikatsu-academy-mankai-eliont-dance-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-aikatsu-academy-collab-shorts-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ宇宙×アイカツアカデミー！のコラボショートの話題"
+  },
+  "shinkai-fes-valiv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17・18開催で終了済み。DAY2出演は10/18の記事で既報"
+  },
+  "valiv-aikatsu-academy-collab-shorts-2026": {
+   "action": "article",
+   "angle": "上水流宇宙×アイカツアカデミー！のコラボショート2回目が、本日18時に宇宙chで公開される。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。1回目は10/18公開、動画リンク(YouTube/TikTok)も素材にある"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-aikatsu-academy-collab-shorts-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙×アイカツアカデミー！のコラボショート2回目が、本日18時に宇宙chで公開される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "valiv-aikatsu-academy-collab-shorts-2026",
+    "candidate_ids": [
+     "sched-2026-10-19-valiv-aikatsu-academy-collab-shorts-2026-開始",
+     "202610190222-grok-47"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-letora-girls-frontier-cover-2026",
+    "reason": "既報",
+    "note": "10/13・10/16の記事で公開日時・視聴先とも既出。公開は10/16で終了済み"
+   },
+   {
+    "dedup_key": "va-liv-3rd-live-2027",
+    "reason": "既報",
+    "note": "10/18の記事に公演日程・時刻・先行抽選まで全て既出。新事実も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "va-liv-letora-birthday-2026",
+    "reason": "既報",
+    "note": "facts は10/8〜10/18の記事と催しの記事に既出。公演11/11で当日トリガー無し"
+   },
+   {
+    "dedup_key": "manaka-birthday-online-live-2026-rescheduled",
+    "reason": "既報",
+    "note": "10/14・10/17の直近記事と同じ延期公演。facts に新事実無し、公演10/28は3日以内でもなく当日トリガー無し"
+   },
+   {
+    "dedup_key": "shinkai-fes-valiv-2026",
+    "reason": "既報",
+    "note": "10/17・18開催で終了済み。DAY2出演は10/18の記事で既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

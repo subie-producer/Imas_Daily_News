@@ -526,5 +526,58 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "sched-2026-10-18-x-com-imassc-prism-status-2100782865265086577-締切前"
+ },
+ {
+  "id": "sched-2026-10-21-imas-channel-member-radio-2026-10-開始",
+  "dedup_key": "imas-channel-member-radio-2026-10",
+  "brand": "general",
+  "subject": "アイマスch メンバー限定ラジオ配信",
+  "kind": "開始",
+  "note": "19時から配信、冒頭15分は誰でも視聴できる",
+  "reserved_on": "2026-10-19",
+  "occurs_on": "2026-10-21",
+  "title": "アイマスch 2026年10月メンバー限定ラジオ",
+  "url": "https://x.com/imas_ch/status/2110658707336142874",
+  "source_type": "公式",
+  "facts": [
+   "2026年10月21日（水）19:00からメンバー限定ラジオを配信予定。",
+   "冒頭15分は誰でも視聴できる。",
+   "MCは香里有佐、ゲストは南早紀。",
+   "エンゲージメント: 中",
+   "配信日時: 2026年10月21日(水) 19:00～",
+   "冒頭15分は誰でも視聴可能。",
+   "出演はMC香里有佐、ゲスト南早紀。",
+   "お便りとファンアートを募集。",
+   "エンゲージメント: 低"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610170225-grok-70",
+  "event_date": "2026-10-21"
+ },
+ {
+  "id": "sched-2026-10-21-asobi-store-maintenance-2026-10-20-21-開始",
+  "dedup_key": "asobi-store-maintenance-2026-10-20-21",
+  "brand": "million",
+  "subject": "ASOBI STORE メンテナンス",
+  "kind": "開始",
+  "note": "10:00〜13:00はグッズストアとASOBI マイページを利用できない",
+  "reserved_on": "2026-10-19",
+  "occurs_on": "2026-10-21",
+  "title": "ASOBI STORE等のシステムメンテナンス",
+  "url": "https://shop.asobistore.jp/news/320",
+  "source_type": "準公式",
+  "facts": [
+   "2026年10月20日（火）6:00～6:45（予定）: バンダイナムコIDのシステムメンテナンスに伴い、ASOBI CHANNEL、ASOBI STAGE、ASOBI STORY、ASOBI STORE（グッズ）、ASOBI STORE（ゲーム〈Steam®コード〉）、ASOBI STORE（電子書籍）、ASOBI STORE（音楽）DLページ、ASOBI STORE（WEB STORE）へログイン不可。",
+   "2026年10月20日（火）6:45～8:00（予定）: ASOBI STOREは通常利用可能だが、バンダイナムコ コイン決済は利用不可。",
+   "2026年10月20日（火）6:45～8:00（予定）: クレジットカード決済など、その他の決済方法は通常どおり利用可能。",
+   "2026年10月21日（水）10:00～13:00（予定）: ASOBI STOREのシステムメンテナンスに伴い、ASOBI マイページ、ASOBI STORE（グッズ）は利用不可。",
+   "メンテナンス時間は前後する可能性がある。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610190222-grok-22",
+  "deadline": "2026-10-21"
  }
 ]

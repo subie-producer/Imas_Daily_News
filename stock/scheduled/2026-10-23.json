@@ -641,5 +641,36 @@
   "verify": "unconfirmed",
   "src_candidate_id": "202610170225-grok-40",
   "event_date": "2026-10-23"
+ },
+ {
+  "id": "sched-2026-10-23-cg-pop-up-sweet-melty-whip-2026-開幕",
+  "dedup_key": "cg-pop-up-sweet-melty-whip-2026",
+  "brand": "cg",
+  "subject": "POP UP SHOP「Sweet Melty Whip」開幕(アベノラクバス)",
+  "kind": "開幕",
+  "note": "アベノラクバスで新規描き下ろしグッズの購入と購入特典の受け取りができる",
+  "reserved_on": "2026-10-19",
+  "occurs_on": "2026-10-23",
+  "title": "POP UP SHOP ~Sweet Melty Whip~",
+  "url": "https://x.com/abenolucbus/status/2110928720886456672",
+  "source_type": "当事者",
+  "facts": [
+   "開催期間: 2026年10月23日(金)〜11月1日(日)。",
+   "会場: アベノラクバス。",
+   "新規描き下ろしグッズを販売。",
+   "購入特典としてクリアカードを配布。",
+   "会場限定購入特典: イラストカード。",
+   "会場限定購入特典として等身大パネルキャンペーンを実施。",
+   "等身大パネルを設置。",
+   "OSMOスタンプを実施。",
+   "混雑状況により予告なく待機列形成・整理券配布などの入店制限を実施する場合がある。",
+   "リンク: https://t.co/smNOzH7hAc",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610180226-grok-18",
+  "event_date": "2026-10-23",
+  "deadline": "2026-11-01"
  }
 ]

@@ -1,0 +1,113 @@
+{
+ "decisions": {
+  "tours-s2-sidem-2026": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-tourmas-s2-2026-sidem",
+   "reason": "",
+   "note": "ツアマスS2弾は合同面が記事化済み"
+  },
+  "sidem-315-episode-idol-one-panel-update-2026-10": {
+   "action": "article",
+   "angle": "「315プロダクション エピソード」の「アイドルたちの1コマ」が更新され、315 PASSION CONTENTSで公開中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/17号の追加とは別の更新(10/18発表)。素材は短い"
+  },
+  "sidem-cardfolio-vol2-web-sale-2026": {
+   "action": "article",
+   "angle": "カードフォリオ SideM ver. vol.2のWeb販売が本日18時開始、数量限定でBOXのみ",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日18:00販売開始のトリガーあり"
+  },
+  "sidem-kichijoji-location-visit-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿単体で、出典も未確認。SideM面にculture枠は無い"
+  },
+  "sidem-remember-shot-fair-vol4-2026": {
+   "action": "article",
+   "angle": "アニメイトでSideMリメンバーショットフェア第4弾を開催中、購入特典は切手風ステッカー全10種から1枚",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典が店舗アカウントのみで未確認。出典が足りるかは執筆・校閲が判断"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-315-episode-idol-one-panel-update-2026-10",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「315プロダクション エピソード」の「アイドルたちの1コマ」が更新され、315 PASSION CONTENTSで公開中",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-315-episode-idol-one-panel-update-2026-10",
+    "candidate_ids": [
+     "202610190222-grok-39"
+    ]
+   },
+   {
+    "slug": "sidem-cardfolio-vol2-web-sale-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "カードフォリオ SideM ver. vol.2のWeb販売が本日18時開始、数量限定でBOXのみ",
+    "purpose": "新情報",
+    "lead_score": 40,
+    "dedup_key": "sidem-cardfolio-vol2-web-sale-2026",
+    "candidate_ids": [
+     "202610190222-grok-40"
+    ]
+   },
+   {
+    "slug": "sidem-remember-shot-fair-vol4-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "アニメイトでSideMリメンバーショットフェア第4弾を開催中、購入特典は切手風ステッカー全10種から1枚",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-remember-shot-fair-vol4-2026",
+    "candidate_ids": [
+     "202610170225-grok-51"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-kichijoji-location-visit-2026-10",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿単体で、出典も未確認。SideM面にculture枠は無い"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-tourmas-s2-2026-sidem",
+    "dedup_key": "tours-s2-sidem-2026",
+    "note": "ツアマスS2弾は合同面が記事化済み"
+   }
+  ]
+ }
+}

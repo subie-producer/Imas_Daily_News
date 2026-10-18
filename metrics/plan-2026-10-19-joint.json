@@ -1,0 +1,73 @@
+{
+ "decisions": {
+  "chibigurumi-pouch-set-preorder": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "締切の10月18日23時は過ぎており、10/17・10/18号の本文に価格・発送・予約先まで既出。新しい事実も当日のトリガーも無い。"
+  },
+  "tourmas-s2-2026-sidem": {
+   "action": "article",
+   "angle": "S2弾(10月29日稼働)にSideM専用衣装「コズミック・レンジャー」と専用SPアピール「情熱のポーズ!」、ハロウィンのホラーライブが加わる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "稼働日・次郎と類・S.E.Mの楽曲は10/16号で既報。専用衣装・SPアピール・ホラーライブは既報の本文に無い。"
+  },
+  "stamas-5th-idol-introduction-ranko-2026": {
+   "action": "article",
+   "angle": "スタマス5周年のアイドル紹介動画③で神崎蘭子を紹介、投稿は「765×961盛り上げ！」と記載",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "紹介動画①(心白、10/15号)・②(亜夜、10/17号)とは別の動画で、蘭子の動画は未報。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tourmas-s2-2026-sidem",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "S2弾(10月29日稼働)にSideM専用衣装「コズミック・レンジャー」と専用SPアピール「情熱のポーズ!」、ハロウィンのホラーライブが加わる",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "tourmas-s2-2026-sidem",
+    "candidate_ids": [
+     "202610190222-grok-49"
+    ]
+   },
+   {
+    "slug": "joint-stamas-5th-idol-introduction-ranko-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "スタマス5周年のアイドル紹介動画③で神崎蘭子を紹介、投稿は「765×961盛り上げ！」と記載",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "stamas-5th-idol-introduction-ranko-2026",
+    "candidate_ids": [
+     "202610190222-grok-50"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "chibigurumi-pouch-set-preorder",
+    "reason": "既報",
+    "note": "締切の10月18日23時は過ぎており、10/17・10/18号の本文に価格・発送・予約先まで既出。新しい事実も当日のトリガーも無い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

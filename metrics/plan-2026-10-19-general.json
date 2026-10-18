@@ -1,0 +1,33 @@
+{
+ "decisions": {
+  "imas-channel-member-radio-2026-10": {
+   "action": "article",
+   "angle": "アイマスchのメンバー限定ラジオが10月21日19:00から配信、冒頭15分は誰でも視聴でき、MCは香里有佐、ゲストは南早紀で、お便りとファンアートも募集",
+   "claimed_slug": "",
+   "lead_score": 10,
+   "merge_into": "",
+   "note": "prior・events なしで新規。21日は3日以内",
+   "purpose": "新情報",
+   "rank": "small",
+   "reason": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-imas-channel-member-radio-2026-10",
+    "brand": "general",
+    "rank": "small",
+    "angle": "アイマスchのメンバー限定ラジオが10月21日19:00から配信、冒頭15分は誰でも視聴でき、MCは香里有佐、ゲストは南早紀で、お便りとファンアートも募集",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "imas-channel-member-radio-2026-10",
+    "candidate_ids": [
+     "202610170225-grok-70"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

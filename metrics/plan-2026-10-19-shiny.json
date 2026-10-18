@@ -1,0 +1,262 @@
+{
+ "decisions": {
+  "shiny-anniversary-stream-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17号で同じ10/23生配信を記事化済み。新事実なし、配信は4日後でトリガー外"
+  },
+  "shinycolors-8-5th-3rd-anniversary-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "日時・出演者とも10/17号の本文と同じ。配信は4日後でトリガー外"
+  },
+  "shiny-technical-challenge-cup-17-2026": {
+   "action": "article",
+   "angle": "シャニソン第17回テクニカルチャレンジ杯は10月20日20:59まで。課題曲はBlack Reverie(xRライブver.)、TECカードキーは8枚、結果発表は21日から",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が翌日で3日以内。同じ催しの別主題2件を統合"
+  },
+  "shiny-technical-challenge-cup-17": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-technical-challenge-cup-17-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ催し"
+  },
+  "shiny-xr-black-reverie": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-technical-challenge-cup-17-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "課題曲の追加。同じ施策として統合"
+  },
+  "shiny-rinze-birthday-2026": {
+   "action": "article",
+   "angle": "10月19日は杜野凛世の誕生日。シャニマスで誕生日ミニコミュと、かさねいろ凛世が新登場するスタンプガシャ、ジュエル300個のプレゼント",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日の誕生日。ガシャの主題を統合"
+  },
+  "shiny-rinze-birthday-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-rinze-birthday-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じシャニマスの誕生日施策"
+  },
+  "shiny-prism-rinze-birthday-gasha-2026": {
+   "action": "article",
+   "angle": "シャニソンの凛世誕生日施策。凛世だけのガシャは10月25日23:59まで、誕生日ストーリー、記念パック、2025年衣装Pアイドルの復刻パック",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "シャニソンの誕生日施策4件を1記事に"
+  },
+  "shiny-prism-rinze-birthday-story-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-prism-rinze-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じシャニソンの誕生日施策"
+  },
+  "shiny-prism-rinze-birthday-packs-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-prism-rinze-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じシャニソンの誕生日施策"
+  },
+  "shiny-prism-rinze-2025-pack-rerun": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-prism-rinze-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じシャニソンの誕生日施策"
+  },
+  "shiny-style-collection-2026": {
+   "action": "article",
+   "angle": "SHINY Style COLLECTIONの新たな受注が10月25日まで。トレーディングアクリルカードは全8種、お届けは2027年1月中旬以降",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第1弾(全7種・12月中旬お届け)とは受注期間・種数・お届けが違う。価格は既報なので触れすぎない"
+  },
+  "shiny-song-focus-yumemidori-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "En Route復刻と秋のアイドル強化週間は10/18号の本文に日程まで掲載済み。開始は翌日でトリガー外"
+  },
+  "shiny-prism-focus-cmon-join-us": {
+   "action": "article",
+   "angle": "シャニソンの縦画面フォーカスカメラに、シャイニーカラーズ歌唱の『C'mon! Join Us』が追加された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "運営情報が1件のためroundupにせず小記事"
+  },
+  "shiny-rinze-birthday-fan-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。単体では記事にしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-technical-challenge-cup-17-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニソン第17回テクニカルチャレンジ杯は10月20日20:59まで。課題曲はBlack Reverie(xRライブver.)、TECカードキーは8枚、結果発表は21日から",
+    "purpose": "期日の知らせ",
+    "lead_score": 40,
+    "dedup_key": "shiny-technical-challenge-cup-17-2026",
+    "candidate_ids": [
+     "202610181832-explore-1",
+     "202610190222-grok-34",
+     "202610190222-grok-35"
+    ]
+   },
+   {
+    "slug": "shiny-rinze-birthday-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "10月19日は杜野凛世の誕生日。シャニマスで誕生日ミニコミュと、かさねいろ凛世が新登場するスタンプガシャ、ジュエル300個のプレゼント",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "shiny-rinze-birthday-2026",
+    "candidate_ids": [
+     "202610190222-grok-23",
+     "202610190222-grok-24"
+    ]
+   },
+   {
+    "slug": "shiny-prism-rinze-birthday-gasha-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニソンの凛世誕生日施策。凛世だけのガシャは10月25日23:59まで、誕生日ストーリー、記念パック、2025年衣装Pアイドルの復刻パック",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "shiny-prism-rinze-birthday-gasha-2026",
+    "candidate_ids": [
+     "202610190222-grok-25",
+     "202610190222-grok-26",
+     "202610190222-grok-27",
+     "202610190222-grok-28"
+    ]
+   },
+   {
+    "slug": "shiny-style-collection-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "SHINY Style COLLECTIONの新たな受注が10月25日まで。トレーディングアクリルカードは全8種、お届けは2027年1月中旬以降",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-style-collection-2026",
+    "candidate_ids": [
+     "202610190222-grok-29"
+    ]
+   },
+   {
+    "slug": "shiny-prism-focus-cmon-join-us",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンの縦画面フォーカスカメラに、シャイニーカラーズ歌唱の『C'mon! Join Us』が追加された",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-prism-focus-cmon-join-us",
+    "candidate_ids": [
+     "202610190222-grok-36"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-anniversary-stream-2026",
+    "reason": "既報",
+    "note": "10/17号で同じ10/23生配信を記事化済み。新事実なし、配信は4日後でトリガー外"
+   },
+   {
+    "dedup_key": "shinycolors-8-5th-3rd-anniversary-live-2026",
+    "reason": "既報",
+    "note": "日時・出演者とも10/17号の本文と同じ。配信は4日後でトリガー外"
+   },
+   {
+    "dedup_key": "shiny-song-focus-yumemidori-2026",
+    "reason": "既報",
+    "note": "En Route復刻と秋のアイドル強化週間は10/18号の本文に日程まで掲載済み。開始は翌日でトリガー外"
+   },
+   {
+    "dedup_key": "shiny-rinze-birthday-fan-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。単体では記事にしない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

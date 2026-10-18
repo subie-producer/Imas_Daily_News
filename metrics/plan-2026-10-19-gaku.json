@@ -1,0 +1,51 @@
+{
+ "decisions": {
+  "gaku-fujita-kotone-ameagari-iris-figure": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2026-10-18の記事に価格・発売日・サイズ・素材・予約先が既出。新事実も当日のトリガーも無い。"
+  },
+  "gaku-ririya-another-idol-gasha-2026": {
+   "action": "article",
+   "angle": "葛城リーリヤのアナザーアイドル確定無料1連ガシャは、きょう10月19日10時59分(予定)までが最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。当日が終了日のトリガー。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-ririya-another-idol-gasha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "葛城リーリヤのアナザーアイドル確定無料1連ガシャは、きょう10月19日10時59分(予定)までが最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "gaku-ririya-another-idol-gasha-2026",
+    "candidate_ids": [
+     "202610190222-grok-42",
+     "sched-2026-10-19-gaku-ririya-another-idol-gasha-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-fujita-kotone-ameagari-iris-figure",
+    "reason": "既報",
+    "note": "2026-10-18の記事に価格・発売日・サイズ・素材・予約先が既出。新事実も当日のトリガーも無い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

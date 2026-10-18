@@ -1,0 +1,106 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-19T02:23:53+09:00",
+   "edition": "2026-10-19",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 12,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 350,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 7,
+    "explore:shiny": 0,
+    "explore:sidem": 0,
+    "explore:gakuen": 0,
+    "explore:dsva": 1,
+    "explore:joint-other": 0,
+    "explore:trend": 0,
+    "grok:765as": 0,
+    "grok:cinderella": 6,
+    "grok:million": 9,
+    "grok:shiny": 15,
+    "grok:sidem": 2,
+    "grok:gakuen": 1,
+    "grok:dsva": 6,
+    "grok:joint-other": 2,
+    "grok:trend": 3,
+    "grok_searches:million": 9,
+    "grok_searches:joint": 9,
+    "grok_searches:dsva": 6,
+    "grok_searches:cg": 7,
+    "grok_searches:general": 9,
+    "grok_searches:shiny": 9,
+    "grok_searches:gaku": 12,
+    "grok_searches:765": 4,
+    "grok_searches:sidem": 11
+   },
+   "normalized": 52,
+   "added": 41,
+   "verify": {
+    "confirmed": 44,
+    "unconfirmed": 5,
+    "failed": 3
+   },
+   "duration_s": 1395
+  }
+ ]
+}

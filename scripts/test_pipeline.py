@@ -9635,7 +9635,8 @@ def test_booth_item_owner(tmp: Path):
     tmp.mkdir(parents=True, exist_ok=True)
     (tmp / "candidates").mkdir(exist_ok=True)
     (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
-    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\nsemi_official_domains:\n  - va-liv.booth.pm\n", encoding="utf-8")
+    # 実表(source_types.yml)と同じく va-liv.booth.pm は公式。ショップの種別がそのまま商品へ写ることを確かめる
+    (tmp / "source_types.yml").write_text("official_domains:\n  - va-liv.booth.pm\n", encoding="utf-8")
     saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.POSTS_ONLY, getattr(cs, "booth_item_shop", None),
              dict(getattr(cs, "_BOOTH_SHOP", {})))
     other = "https://booth.pm/items/8830505"
@@ -9655,7 +9656,7 @@ def test_booth_item_owner(tmp: Path):
               f"BOOTH の商品がパーサ待ち・ショップ以外の単位で合議に回った: {cs.NEED_PARSER} {cs.SKIPPED} {d} {paths}")
         left = cs.resolve_booth_items(True)
         pipelib._ST_TABLE = None
-        check(pipelib.classify_source(other) == "準公式" and pipelib.classify_source(url) == "未確認"
+        check(pipelib.classify_source(other) == "公式" and pipelib.classify_source(url) == "未確認"
               and len(left) == 1 and left[0].startswith(url), f"表にあるショップの種別が商品に写らない: {left}")
         cs.add_domains({"nagarestar.booth.pm": ("ファン", "個人のショップ")})
         pipelib._ST_TABLE = None

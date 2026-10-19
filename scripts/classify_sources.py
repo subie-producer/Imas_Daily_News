@@ -1506,27 +1506,38 @@ UNRESOLVED = ROOT / "metrics" / "classify-unresolved.json"    # Git 管理外。
 def save_unresolved(rows: list[str]) -> None:
     """決まらなかった対象と、両モデルの言い分を残す(キー → 説明)。次の判定で上書き。
     翌朝の watch が「未確認の出典」を出すとき、どこで割れたかを併記する(編集長: 何の記事のためのリンクか、
-    なぜ決まらないのかが無いと人は判断できない)。"""
-    out = {}
+    なぜ決まらないのかが無いと人は判断できない)。
+    別の行が同じキーに落ちる(BOOTH の商品 → ショップ、動画 → チャンネル、投稿 → アカウント)。後の行で先の理由を
+    上書きせず、違う理由は先の理由の後ろへ足す(合議の言い分を、後の「合議を参照」の行で消さない)。"""
+    out: dict[str, str] = {}
+
+    def put(k: str, why: str) -> None:
+        why = why.strip()
+        old = out.get(k, "")
+        if not old:
+            out[k] = why[:400]
+        elif why and why not in old:
+            out[k] = f"{old} / {why[:400]}"[:800]
+
     for s in rows:
         key, _, rest = s.partition(": ")
         key = key.strip()
         m = re.fullmatch(r"youtube:([A-Za-z0-9_-]{11})\(@([^)]*)\)", key)
         if m:      # 動画: チャンネルが表に無くて決まらなかった。表に書く単位はチャンネル。動画 ID でも引けるように両方残す
             rest = rest or "投稿者のチャンネルが判定表に無い(チャンネルの合議でも決まらなかった)"
-            out[f"https://youtube.com/watch?v={m.group(1)}"] = rest.strip()[:400]
+            put(f"https://youtube.com/watch?v={m.group(1)}", rest)
             if m.group(2) != "?":
-                out[f"https://youtube.com/@{m.group(2)}"] = rest.strip()[:400]
+                put(f"https://youtube.com/@{m.group(2)}", rest)
             continue
         m = re.fullmatch(r"nicovideo:((?:lv|sm|so|nm)\d+)\(([^)]*)\)", key)
         if m:      # ニコニコも同じ: 番組 ID とチャンネルの両方で引ける
             rest = rest or ("投稿者のチャンネルが判定表に無い(チャンネルの合議でも決まらなかった)" if m.group(2) != "?"
                             else "番組ページから投稿者を引けなかった(合議に掛かっていない)")
-            out[nico_watch_url(m.group(1))] = rest.strip()[:400]
+            put(nico_watch_url(m.group(1)), rest)
             if m.group(2) != "?":
-                out[f"https://{m.group(2)}"] = rest.strip()[:400]
+                put(f"https://{m.group(2)}", rest)
             continue
-        out[display_base(key)] = rest.strip()[:400]
+        put(display_base(key), rest)
     try:
         UNRESOLVED.parent.mkdir(parents=True, exist_ok=True)
         UNRESOLVED.write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")

@@ -2733,6 +2733,29 @@ def test_classify_posts_only(tmp: Path):
             check(got == want and got in rec, f"表示キーと記録キーが合わない: {url} → {got}(記録: {sorted(rec)[:3]}…)")
     finally:
         cs.video_author, cs.UNRESOLVED = saved_va, saved_unres
+    # 別の行が同じ記録キーに落ちても、先の理由(合議の言い分)を後の行で消さない(BOOTH の商品 → ショップ、動画 → チャンネル。保管指摘 9857d38eb3)
+    saved_va, saved_unres, saved_bs = cs.video_author, cs.UNRESOLVED, dict(cs._BOOTH_SHOP)
+    try:
+        cs.video_author = lambda vid: ("", "")
+        cs.UNRESOLVED = tmp / "metrics" / "classify-unresolved-merge.json"
+        cs._BOOTH_SHOP["7563732"] = ("nagarestar.booth.pm", "流れ星")
+        item = "https://booth.pm/ja/items/7563732"
+        cs.save_unresolved(["nagarestar.booth.pm: 両モデルの意見が不一致 当事者「a」 / ファン「b」",
+                            f"{item}: BOOTH の商品。ショップ nagarestar.booth.pm の種別が決まらない(ショップの合議を参照)",
+                            "youtube:BBBBBBBBBBB(@Bar)", "youtube.com/@Bar: 演者「c」 / ファン「d」",
+                            "nagarestar.booth.pm: 両モデルの意見が不一致 当事者「a」 / ファン「b」"])
+        rec = cs.load_unresolved()
+        shop = rec.get(cs.display_base(item), "")
+        check(cs.display_base(item) == "https://nagarestar.booth.pm" and "両モデルの意見が不一致" in shop and "ショップの合議を参照" in shop
+              and shop.count("両モデルの意見が不一致") == 1,
+              f"BOOTH の商品の行がショップの合議の理由を上書きした: {rec}")
+        chan = rec.get("https://youtube.com/@Bar", "")
+        check("演者「c」" in chan and "チャンネルが判定表に無い" in chan and rec.get("https://youtube.com/watch?v=BBBBBBBBBBB"),
+              f"動画の行とチャンネルの合議の理由が片方だけになった: {rec}")
+    finally:
+        cs.video_author, cs.UNRESOLVED = saved_va, saved_unres
+        cs._BOOTH_SHOP.clear()
+        cs._BOOTH_SHOP.update(saved_bs)
     # 取引: 失敗したら判定表と記事を**開始時の中身**へ戻す(未追跡の記事も。git の HEAD ではない。監査指摘)。
     # 組版前(lint=False)は lint を掛けない。戻せなければ理由に「戻せない」
     (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")

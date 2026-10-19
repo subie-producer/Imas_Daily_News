@@ -244,6 +244,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - shopblog.dmdepart.jp  # 合議で追加: 会場の大丸東京店の公式ブログで、展示の告知と販売情報を発信
   - vitalartbox.info      # 合議で追加: 大阪で劇場運営とイベント制作。連絡先は同社。イベント頁に主催表記なし
   - uzm.jp                # 合議で追加: 販売代理ファイス(f-ice.jp/uzm/gakumas)。相手の不明は運営者
   - itemhouse.skr.jp      # 合議で追加: 複数店の商品を扱う販売サイト。対象品は販売元の予約商品(ショップ名記載)

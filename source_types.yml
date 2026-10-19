@@ -217,6 +217,7 @@ performer_domains:
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
 fan_domains:
+  - vtuber-matomeruyon.blog.jp # 合議で追加: about.htmlは管理人のみ・法人名なし。個人なので内容によらずファン
   - nagarestar.booth.pm   # 合議で追加: 個人名義の BOOTH 店。運営者情報なし、個人に紐づくのでファン
   - painful-cycle-jersey.info # 合議で追加: 個人管理人のブログ。FICE等の公式告知を紹介する記事が中心
   - reddit.com            # 合議で追加: 代表URLは個人u/hiyoko19の感想投稿。個人に紐づくのでファン
@@ -418,6 +419,7 @@ video_ids:
   当事者:
     - YUWiY_qt3jM         # 機械で追加: @whatsupmcdonalds「今度いつきみに会えるのかな covered by 如月千早」
   ファン:
+    - sm46944609          # 機械で追加: nicovideo.jp/user/1633964「【もふM@S MV】 「シークレットジュエル ～魅惑の金剛石」
     - lixtC4sChpo         # 機械で追加: @kon_kitunebana「【Cosplay_学園アイドルマスター】仮装狂騒曲組で野外ラ」
     - 0pJbRoGru8E         # 機械で追加: @VTKazune「【#エムシャニ対バンライブ】カフェパレ&放クラPが愛を叫ぶ！」
     - lnlFRSXtUyY         # 機械で追加: @tokiwakaname「【踊ってみた】Poison Berry Daughters 」
@@ -590,6 +592,11 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - jegasumi            # 合議で追加: 個人アカウントによる誕生日祝いのファン投稿
+    - hotaru_osushi       # 合議で追加: 個人アカウントの感想・関心の発信
+    - harukey_BH_M        # 合議で追加: 個人によるファン制作の名刺作品
+    - donguri_283         # 合議で追加: 個人アカウントによるくじ賞品の交換募集
+    - Goh_Goh             # 合議で追加: 個人アカウントによるファン制作のMV投稿
     - nenukorde           # 合議で追加: 個人アカウント。SideM営業マップの聖地を訪問した投稿
     - mattsun_454         # 合議で追加: 個人アカウント。凛世の誕生日を祝う投稿
     - warashibe0214       # 合議で追加: 個人によるSideMムビチケ特典の交換投稿
@@ -846,6 +853,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - fullahead_osu       # 合議で追加: 店舗(大須1号店)によるくじパックの販売
     - abenolucbus         # 合議で追加: シンデレラガールズのPOP UP SHOPを開催する主催・販売側の一次発信
     - lawson_ticket       # 合議で追加: SideM上映会のチケット先行抽選。チケット販売元
     - gacha_bu            # 合議で追加: コレクションフィギュアの予約販売。販売元
@@ -948,6 +956,9 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/UWj9DyM42R: 二次情報                         # 機械で追加: 展開先 https://lnk.to/S.E.M_2DMV
+  t.co/Gt69PLU1aE: 当事者                         # 機械で追加: 展開先 https://pjblue.zaiko.io/ja/e/shinsea-fest-2026
+  nicovideo.jp/user/1633964: ファン               # 合議で追加: 個人のユーザーページ。動画紹介や声無し生放送などの個人発信
   t.co/smNOzH7hAc: 当事者                         # 機械で追加: 展開先 https://www.vitalartbox.info/imascg1023
   booth.pm/ja/items/7563732: ファン               # 機械で追加: ショップ nagarestar.booth.pm
   t.co/E8puMDO5Lq: 当事者                         # 機械で追加: 展開先 https://medicos-e.net/newsdetail/imas_millionlive_popup/

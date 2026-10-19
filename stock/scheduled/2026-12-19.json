@@ -21,6 +21,29 @@
   "event_date": "2026-12-19"
  },
  {
+  "id": "sched-2026-12-19-shiny-stillblue-asobipremium-lottery-開幕-src1",
+  "dedup_key": "shiny-stillblue-asobipremium-lottery",
+  "brand": "shiny",
+  "subject": "shiny, the first REFRAC7IONS \"Still blue\"",
+  "kind": "開幕",
+  "note": "公演初日",
+  "reserved_on": "2026-08-27",
+  "title": "REFRAC7IONS一般会員先行が8/27 12:00開始予定",
+  "url": "https://x.com/shinyc_official/status/2092221200181211561",
+  "source_type": "公式",
+  "facts": [
+   "shiny, the first REFRAC7IONS \" Still blue \"",
+   "8/27(木)12:00～ アソビストア一般会員先行が開始予定",
+   "チケット詳細: https://idolmaster-official.jp/live_event/REFRAC7IONS_Still_blue/ticket/",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-08-27",
+  "src_candidate_id": "202608270220-grok-44",
+  "companion_of": "sched-2026-12-19-shiny-stillblue-asobipremium-lottery-開幕"
+ },
+ {
   "id": "sched-2026-12-19-refrac7ions-still-blue-2026-開幕",
   "dedup_key": "refrac7ions-still-blue-2026",
   "brand": "shiny",

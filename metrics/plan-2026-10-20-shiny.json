@@ -1,0 +1,206 @@
+{
+ "decisions": {
+  "shiny-karatetsu-illustration-reaction-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "ブログ経由のファン反応のみで新事実なし。コラボ自体は10/17に既報"
+  },
+  "shinycolors-8-5th-3rd-anniversary-live-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17に日時・出演者・配信先まで報道済み。今日は開始でも締切でもない"
+  },
+  "shiny-new-idol-teaser-2026-10": {
+   "action": "article",
+   "angle": "シャニマス公式が、近日登場の新アイドルを本日10月20日15時からチラ見せすると予告した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-prism-rinze-birthday-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19の記事に同内容。期限は25日で3日以内でもない"
+  },
+  "shiny-prism-focus-cmon-join-us": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19の記事と同内容"
+  },
+  "shiny-song-2dmv-teaser-2026-10": {
+   "action": "article",
+   "angle": "シャニソンで近日実装予定の2DMVを公式がチラ見せした",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "日付や曲名は未発表なので短く書く"
+  },
+  "fan-rinze-birthday-celebrations-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿。culture は general 面のみ"
+  },
+  "shiny-casting-collection-amaboy-2026-09": {
+   "action": "article",
+   "angle": "「キャスティングコレクション～甘えん坊な妹編～」の白瀬咲耶・樋口円香は、本日11時59分が最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-collab-fes-2026-oct": {
+   "action": "article",
+   "angle": "シャニマス「コラボフェス」は本日11時59分終了予定で、最後に引ける日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-technical-challenge-cup-17-2026": {
+   "action": "article",
+   "angle": "シャニソン第17回テクニカルチャレンジ杯は本日20時59分まで。TECカードキーで「Black Reverie(xRライブ ver.)」に挑戦できる最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-new-idol-teaser-2026-10",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス公式が、近日登場の新アイドルを本日10月20日15時からチラ見せすると予告した",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "shiny-new-idol-teaser-2026-10",
+    "candidate_ids": [
+     "202610200229-grok-24"
+    ]
+   },
+   {
+    "slug": "shiny-song-2dmv-teaser-2026-10",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンで近日実装予定の2DMVを公式がチラ見せした",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-song-2dmv-teaser-2026-10",
+    "candidate_ids": [
+     "202610200229-grok-27"
+    ]
+   },
+   {
+    "slug": "shiny-casting-collection-amaboy-2026-09",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「キャスティングコレクション～甘えん坊な妹編～」の白瀬咲耶・樋口円香は、本日11時59分が最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-casting-collection-amaboy-2026-09",
+    "candidate_ids": [
+     "sched-2026-10-20-shiny-casting-collection-amaboy-2026-09-千秋楽"
+    ]
+   },
+   {
+    "slug": "shiny-collab-fes-2026-oct",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニマス「コラボフェス」は本日11時59分終了予定で、最後に引ける日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-collab-fes-2026-oct",
+    "candidate_ids": [
+     "sched-2026-10-20-shiny-collab-fes-2026-oct-終了"
+    ]
+   },
+   {
+    "slug": "shiny-technical-challenge-cup-17-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン第17回テクニカルチャレンジ杯は本日20時59分まで。TECカードキーで「Black Reverie(xRライブ ver.)」に挑戦できる最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "shiny-technical-challenge-cup-17-2026",
+    "candidate_ids": [
+     "sched-2026-10-20-shiny-technical-challenge-cup-17-2026-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-karatetsu-illustration-reaction-2026",
+    "reason": "その他",
+    "note": "ブログ経由のファン反応のみで新事実なし。コラボ自体は10/17に既報"
+   },
+   {
+    "dedup_key": "shinycolors-8-5th-3rd-anniversary-live-2026",
+    "reason": "既報",
+    "note": "10/17に日時・出演者・配信先まで報道済み。今日は開始でも締切でもない"
+   },
+   {
+    "dedup_key": "shiny-prism-rinze-birthday-gasha-2026",
+    "reason": "既報",
+    "note": "10/19の記事に同内容。期限は25日で3日以内でもない"
+   },
+   {
+    "dedup_key": "shiny-prism-focus-cmon-join-us",
+    "reason": "既報",
+    "note": "10/19の記事と同内容"
+   },
+   {
+    "dedup_key": "fan-rinze-birthday-celebrations-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿。culture は general 面のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

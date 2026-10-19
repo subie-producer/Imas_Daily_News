@@ -1,0 +1,154 @@
+{
+ "decisions": {
+  "million-platinum-star-tiara-hapipisu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19号の記事に全事実が既出。終了は25日で3日以内でなく、当日のトリガーも無い"
+  },
+  "monthly-alternative-revive-kuraki-hoshi-vol2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19号に同内容。終了は10/27で3日以内でなく、新事実も無い"
+  },
+  "platinum-selection-ticket-set-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19号に価格・内容とも既出。新事実なし"
+  },
+  "costume-chloris-palesia-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19号に購入内容・スタイリングレッスンとも既出"
+  },
+  "million-platinum-star-tiara-limited-shop-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19号のイベント記事にショップ内容・ドアデコ/いろどりパネルが既出"
+  },
+  "yaso-reijo-theater-content-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19号に同内容の記事あり"
+  },
+  "medicos-cyberplanet-popup-2026": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOP東京会場(MEDICOS SHOP 渋谷)がきょう最終日。特典クリアカードや等身大パネル応募券、会場限定OSMOスタンプは会場のみ(事後通販対象外)で、応募は11月16日まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約3件(終了/千秋楽/最終日)を1記事に統合"
+  },
+  "medicos-e-net-44": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "medicos-cyberplanet-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ東京会場の最終日"
+  },
+  "million-cyber-planet-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "medicos-cyberplanet-popup-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ東京会場の最終日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-medicos-cyberplanet-popup-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Cyber Planet POP UP SHOP東京会場(MEDICOS SHOP 渋谷)がきょう最終日。特典クリアカードや等身大パネル応募券、会場限定OSMOスタンプは会場のみ(事後通販対象外)で、応募は11月16日まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "medicos-cyberplanet-popup-2026",
+    "candidate_ids": [
+     "sched-2026-10-20-medicos-cyberplanet-popup-2026-終了",
+     "sched-2026-10-20-medicos-e-net-44-千秋楽",
+     "sched-2026-10-20-million-cyber-planet-popup-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-platinum-star-tiara-hapipisu-2026",
+    "reason": "既報",
+    "note": "10/19号の記事に全事実が既出。終了は25日で3日以内でなく、当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "monthly-alternative-revive-kuraki-hoshi-vol2-2026",
+    "reason": "既報",
+    "note": "10/19号に同内容。終了は10/27で3日以内でなく、新事実も無い"
+   },
+   {
+    "dedup_key": "platinum-selection-ticket-set-2026",
+    "reason": "既報",
+    "note": "10/19号に価格・内容とも既出。新事実なし"
+   },
+   {
+    "dedup_key": "costume-chloris-palesia-2026",
+    "reason": "既報",
+    "note": "10/19号に購入内容・スタイリングレッスンとも既出"
+   },
+   {
+    "dedup_key": "million-platinum-star-tiara-limited-shop-2026",
+    "reason": "既報",
+    "note": "10/19号のイベント記事にショップ内容・ドアデコ/いろどりパネルが既出"
+   },
+   {
+    "dedup_key": "yaso-reijo-theater-content-2026",
+    "reason": "既報",
+    "note": "10/19号に同内容の記事あり"
+   }
+  ],
+  "cross_brand": []
+ }
+}

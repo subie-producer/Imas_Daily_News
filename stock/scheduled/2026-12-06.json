@@ -83,5 +83,32 @@
   "src_candidate_id": "202609110736-explore-15",
   "event_date": "2026-09-12",
   "deadline": "2026-12-06"
+ },
+ {
+  "id": "sched-2026-12-06-sidem-joypolis-3-2026-終了-src1",
+  "dedup_key": "sidem-joypolis-3-2026",
+  "brand": "sidem",
+  "subject": "SideM×JOYPOLIS3",
+  "kind": "終了",
+  "note": "コラボ開催最終日",
+  "reserved_on": "2026-09-12",
+  "title": "SideM×JOYPOLIS第3弾が9月12日開幕",
+  "url": "https://collabo-cafe.com/zh-hans/events/collabo/idolmaster-sidem-theme-park-joypolis-2026/",
+  "source_type": "二次情報",
+  "facts": [
+   "《偶像大师 SideM》与东京Joypolis的第三弹联动活动名为“偶像大师 SideM in JOYPOLIS 3”",
+   "举办期间: 2026年9月12日至12月6日",
+   "活动采用全部16个组合的3D演唱会影像推出特别演出",
+   "活动推出3项联名游乐设施",
+   "活动推出联动美食",
+   "活动推出采用全新绘制插画的原创周边商品",
+   "エンゲージメント: 高"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-09-12",
+  "deadline": "2026-12-06",
+  "src_candidate_id": "202609111236-explore-14",
+  "companion_of": "sched-2026-12-06-sidem-joypolis-3-2026-終了"
  }
 ]

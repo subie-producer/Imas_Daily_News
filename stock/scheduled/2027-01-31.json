@@ -139,6 +139,38 @@
   "deadline": "2027-01-31"
  },
  {
+  "id": "sched-2027-01-31-gkmas-jinro-bunkasai-goods-mailorder-終了-src1",
+  "dedup_key": "gkmas-jinro-bunkasai-goods-mailorder",
+  "brand": "gaku",
+  "subject": "学マス脱出グッズ事後通販",
+  "kind": "終了",
+  "note": "事後通販の受付最終日(正午終了)",
+  "reserved_on": "2026-09-29",
+  "title": "学マス脱出オリジナルグッズ事後通販",
+  "url": "https://www.atpress.ne.jp/news/1005535",
+  "source_type": "二次情報",
+  "facts": [
+   "リアル脱出ゲーム×学園アイドルマスター「人狼潜む文化祭からの脱出」のオリジナルグッズ事後通販を行う。",
+   "販売期間: 2026年9月29日(火)12時〜2027年1月31日(日)12時",
+   "全12種のオリジナルグッズすべてが事後通販の対象。",
+   "脱出成功 / 失敗ステッカーセットは各500円。",
+   "脱出成功 / 失敗ステッカーセットは成功3種、失敗1種の2枚セットで、円形φ55mm、正方形W50×H50mm。",
+   "謎付きクリアファイルは各1,200円、全3種、A4。",
+   "謎付きクリアファイルセットは4,200円、全1種、A4。",
+   "アクリルスタンドは各1,700円、全13種、約W120mm×H160mm。",
+   "アクリルキーホルダーは800円、全13種ランダム、約W50mm×H60mm。",
+   "アクリルカラビナは900円、全13種ランダム、約W50mm×H50mm。",
+   "缶バッジは500円、全13種ランダム、φ56mm。",
+   "インスタントフォト風カードは700円、全13種ランダム、1パック2枚入り、約W54mm×H86mm。"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-09-29",
+  "deadline": "2027-01-31",
+  "src_candidate_id": "sched-2026-09-29-jinro-bunka-festival-goods-mail-order-2026-発売",
+  "companion_of": "sched-2027-01-31-gkmas-jinro-bunkasai-goods-mailorder-終了"
+ },
+ {
   "id": "sched-2027-01-31-va-liv-3rdlive-meeting-2027-千秋楽",
   "dedup_key": "va-liv-3rdlive-meeting-2027",
   "brand": "dsva",

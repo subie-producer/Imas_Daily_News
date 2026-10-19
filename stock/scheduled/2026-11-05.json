@@ -141,6 +141,38 @@
   "deadline": "2026-11-08"
  },
  {
+  "id": "sched-2026-11-05-shiny-hachiban-ramen-collab-2026-締切前-src1",
+  "dedup_key": "shiny-hachiban-ramen-collab-2026",
+  "brand": "shiny",
+  "subject": "シャニマス×8番らーめん DMM通販予約",
+  "kind": "締切前",
+  "note": "締切3日前。11/8 23:59までDMM通販で予約できる",
+  "reserved_on": "2026-10-07",
+  "title": "8番らーめんコラボ開催",
+  "url": "https://idolmaster-official.jp/news/01_20022",
+  "source_type": "公式",
+  "facts": [
+   "富山県の8番らーめん31店舗、岡山県の8番らーめん5店舗、金澤醤油豚骨8番らーめん4店舗でコラボを実施する。",
+   "開催期間: 2026年10月7日（水）～11月8日（日）。",
+   "描きおろしイラストを使用したグッズ販売と限定コラボセットを実施する。",
+   "対象メニュー注文者にAセットは特典会員証カード全6種と特典ポストカード全6種、Bセットは特典ポストカード全6種をランダムで1枚プレゼントする。",
+   "ミニキャラパネルを全店に展示する。",
+   "一部店舗でアルストロメリアとコメティックの等身大パネルを展示する。",
+   "グッズ販売店舗は8番らーめん6店舗、金澤醤油豚骨8番らーめん2店舗、AKIHABARAゲーマーズ本店。",
+   "オープン商品は1会計につき各3個まで、トレーディング商品は1会計につき2セットまで購入可能。",
+   "DMM通販の販売期間: 10月7日（水）12:00～11月8日（日）23:59まで。",
+   "DMM通販の商品は2027年2月より順次発送予定。",
+   "コラボ限定デザインの「8番箱らーめん」を数量限定でハチバンeSHOPにて販売する。",
+   "エンゲージメント: 高"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "event_date": "2026-10-07",
+  "deadline": "2026-11-08",
+  "src_candidate_id": "sched-2026-10-07-shiny-hachiban-collab-2026-開始",
+  "companion_of": "sched-2026-11-05-shiny-hachiban-ramen-collab-2026-締切前"
+ },
+ {
   "id": "sched-2026-11-05-cinderella-15th-anniversary-hourglass-cd-2026-締切前",
   "dedup_key": "cinderella-15th-anniversary-hourglass-cd-2026",
   "brand": "cg",
@@ -306,6 +338,33 @@
   "src_candidate_id": "202610161835-watch-5",
   "event_date": "2026-11-18",
   "deadline": "2026-11-18"
+ },
+ {
+  "id": "sched-2026-11-05-cinderella-15th-anniversary-hourglass-cd-2026-締切前-src1",
+  "dedup_key": "cinderella-15th-anniversary-hourglass-cd-2026",
+  "brand": "cg",
+  "subject": "「HOURGLASS」CD アソビストア予約締切の3日前",
+  "kind": "締切前",
+  "note": "アソビストアで予約できるのはあと3日(11/8 23:59まで)",
+  "reserved_on": "2026-10-17",
+  "occurs_on": "2026-11-08",
+  "title": "シンデレラガールズ15周年キービジュアルと記念楽曲を公開",
+  "url": "https://idolmaster-official.jp/lp/cinderellagirls-15th",
+  "source_type": "公式",
+  "facts": [
+   "2026年10月16日にシンデレラガールズ15周年特設ページが公開された。",
+   "15周年キービジュアルが公開された。",
+   "15周年記念楽曲「HOURGLASS」の情報が公開された。",
+   "エンゲージメント: 高",
+   "2026年10月16日に15周年特設ページが公開された。",
+   "2026年10月16日に15周年キービジュアルが公開された。",
+   "2026年10月16日に15周年記念楽曲「HOURGLASS」の情報が公開された。",
+   "特設ページでは「HOURGLASS」の発売日を2026年11月18日と案内。"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610162334-explore-15",
+  "companion_of": "sched-2026-11-05-cinderella-15th-anniversary-hourglass-cd-2026-締切前"
  },
  {
   "id": "sched-2026-11-05-gaku-cycle-jersey-restock-2026-締切前",

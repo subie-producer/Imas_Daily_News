@@ -1,0 +1,177 @@
+{
+ "decisions": {
+  "hachinohe-cinderella-collab-2026": {
+   "action": "article",
+   "angle": "はちます×シンデレラの有料デジタルスタンプラリー(2,500円)の申込が、きょう12時に始まる",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。開始が今日のトリガー"
+  },
+  "cinderella-sega-lucky-kuji-vol1-cute": {
+   "action": "article",
+   "angle": "セガ ラッキーくじオンライン『シンデレラガールズ Vol.1キュート』が12月4日まで販売中。A〜F賞の賞品が判明",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。同じ商品の他2主題を統合"
+  },
+  "cg-sega-lucky-kuji-cute-vol1-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-sega-lucky-kuji-vol1-cute",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品・同じ販売開始"
+  },
+  "cg-sega-lucky-kuji-vol1-cute-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-sega-lucky-kuji-vol1-cute",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ商品・同じ販売開始"
+  },
+  "cinderella-online-kuji-ggwp-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17号が価格・特典・期間を既報。新事実・当日トリガーなし"
+  },
+  "cinderella-15th-anniversary-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "先行受付は昨日締切済み。facts は既報と同じ"
+  },
+  "cinderella-15th-anniversary-hourglass-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17号が全内容を既報。予約締切は11/8で3日以内でない"
+  },
+  "cg-15th-anniversary-orchestra-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2次先行の期間は10/15号が既報。締切10/25は3日以内でない"
+  },
+  "cg-lucky-kuji-fan-trading-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人の交換募集投稿"
+  },
+  "cg-pop-up-sweet-melty-whip-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "carried の理由どおり新事実なし。開始は10/23で当日トリガーでない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-cinderella-sega-lucky-kuji-vol1-cute",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "セガ ラッキーくじオンライン『シンデレラガールズ Vol.1キュート』が12月4日まで販売中。A〜F賞の賞品が判明",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "cinderella-sega-lucky-kuji-vol1-cute",
+    "candidate_ids": [
+     "202610191233-watch-1",
+     "202610191833-explore-3",
+     "202610200229-explore-0"
+    ]
+   },
+   {
+    "slug": "cg-hachinohe-cinderella-collab-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "はちます×シンデレラの有料デジタルスタンプラリー(2,500円)の申込が、きょう12時に始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "hachinohe-cinderella-collab-2026",
+    "candidate_ids": [
+     "sched-2026-10-20-hachinohe-cinderella-collab-2026-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-online-kuji-ggwp-2026",
+    "reason": "既報",
+    "note": "10/17号が価格・特典・期間を既報。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "cinderella-15th-anniversary-party-2026",
+    "reason": "既報",
+    "note": "先行受付は昨日締切済み。facts は既報と同じ"
+   },
+   {
+    "dedup_key": "cinderella-15th-anniversary-hourglass-cd-2026",
+    "reason": "既報",
+    "note": "10/17号が全内容を既報。予約締切は11/8で3日以内でない"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-orchestra-2027",
+    "reason": "既報",
+    "note": "2次先行の期間は10/15号が既報。締切10/25は3日以内でない"
+   },
+   {
+    "dedup_key": "cg-lucky-kuji-fan-trading-2026",
+    "reason": "同人・ファン主催",
+    "note": "個人の交換募集投稿"
+   },
+   {
+    "dedup_key": "cg-pop-up-sweet-melty-whip-2026",
+    "reason": "既報",
+    "note": "carried の理由どおり新事実なし。開始は10/23で当日トリガーでない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

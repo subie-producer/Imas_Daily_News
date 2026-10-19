@@ -135,6 +135,29 @@
   "deadline": "2026-10-12"
  },
  {
+  "id": "sched-2027-01-11-cg-15th-anniversary-orchestra-2027-開幕-src1",
+  "dedup_key": "cg-15th-anniversary-orchestra-2027",
+  "brand": "cg",
+  "subject": "シンデレラ15周年オケコンDAY1",
+  "kind": "開幕",
+  "note": "パシフィコ横浜でDAY1開演を観られる",
+  "reserved_on": "2026-09-17",
+  "title": "シンデレラガールズ15周年記念オーケストラコンサート",
+  "url": "https://idolmaster-official.jp/live_event/cg_15th_orchestra/",
+  "source_type": "公式",
+  "facts": [
+   "シンデレラガールズ15周年記念オーケストラコンサートの開催が決定",
+   "アソビストアプレミアム会員先行の受付期間: 2026年9月16日(水)12:00～2026年9月27日(日)23:59",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2027-01-11",
+  "deadline": "2026-09-27",
+  "src_candidate_id": "202609170229-grok-52",
+  "companion_of": "sched-2027-01-11-cg-15th-anniversary-orchestra-2027-開幕"
+ },
+ {
   "id": "sched-2027-01-11-cg-15th-orchestra-2027-開幕",
   "dedup_key": "cg-15th-orchestra-2027",
   "brand": "cg",

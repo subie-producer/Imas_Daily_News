@@ -597,6 +597,19 @@ def scheduled_as_candidate(s: dict) -> dict | None:
     return c
 
 
+def attach_companions(plan: dict, cands: dict) -> None:
+    """続報予約に添えた素材(companion_of。予約を付けた記事が出典にしたほかの素材)を、その予約を素材にした記事の candidate_ids に足す。
+    選定し直した計画では主題の ids から入っているが、保存した計画(--reuse-plan)は添える前の ids のままのことがある
+    (2026-10-20: 予約に添えた公式の投稿が、落とした締切の知らせの書き直しに渡らない)。冪等。"""
+    heads: dict[str, list[str]] = {}
+    for i, c in cands.items():
+        if c.get("companion_of"):
+            heads.setdefault(c["companion_of"], []).append(i)
+    for a in plan.get("articles") or []:
+        ids = a.get("candidate_ids") or []
+        a["candidate_ids"] = list(dict.fromkeys(ids + [x for i in ids for x in heads.get(i, [])]))
+
+
 def carry_dropped_candidates(date: str) -> list[str]:
     """前の号の計画に入ったのに紙面に載らなかった記事(執筆の見送り・校閲のブロック・検算の不合格)の素材を、この号の候補へ写す。
     選定は自分の号の候補しか読まないので、写さなければ、直したあと(規則・道具の修正)でも二度と選定に掛からない
@@ -3435,7 +3448,8 @@ def main() -> int:
             os._exit(1)
 
         signal.signal(signal.SIGTERM, _on_term)
-    triggers = load_scheduled(date)
+    # 予約に添えた素材(companion_of)は素材で、予約(トリガー)ではない
+    triggers = [t for t in load_scheduled(date) if not t.get("companion_of")]
     number = next_number(date)
     if args.plan:
         print(brand_plan_prompt(date, args.plan, 0,
@@ -3465,7 +3479,7 @@ def main() -> int:
     # 1a. 選定: 記事計画の生成と機械検証(1回だけ再計画を許す)
     # 旧い組版が先頭12件で切った予約の facts を、素材として読む前に元素材から復元する(実測 2026-10-07)
     import assemble as _assemble
-    for line in _assemble.restore_reservation_facts(date):
+    for line in _assemble.restore_reservation_facts(date) + _assemble.restore_reservation_companions(date):
         print(line, flush=True)
     for line in carry_late_candidates(date):
         print(line, flush=True)
@@ -3503,6 +3517,7 @@ def main() -> int:
         with stage("選定"):
             plan = run_plan(date, by_brand, triggers)
         pick_lead(date, plan)
+    attach_companions(plan, cands)
     plan_path.write_text(json.dumps(plan, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     # **素材を先に確定させてから、紙面の形を直す。**
     # 逆にすると、形を直したあとで素材が減って形が崩れる(監査指摘):

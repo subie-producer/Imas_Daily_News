@@ -647,6 +647,81 @@ def test_reservation_keeps_all_facts(tmp: Path):
         assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = saved
 
 
+def test_reservation_keeps_article_sources(tmp: Path):
+    """続報予約は、予約を付けた記事が出典にしたほかの素材(公式の投稿)も添えて写す。添えは素材として執筆に渡り、予約(トリガー)にはならない。
+    予約の素材(日付の載った二次情報のページ)だけを写すと、締切当日の執筆が公式の出典に届かず見送る
+    (実測 2026-10-20: シャニソン第17回テクニカルチャレンジ杯の最終日)。添えの無い既存の予約は compose の前に添え、
+    保存した計画(--reuse-plan)にも足す。冪等。"""
+    import yaml
+    st = tmp / "stock"; (st / "scheduled").mkdir(parents=True)
+    (tmp / "metrics").mkdir(); (tmp / "docs" / "_editions").mkdir(parents=True); (tmp / "docs" / "_posts").mkdir(parents=True)
+    (tmp / "candidates").mkdir()
+    assemble.dump_yaml(st / "stories.yml", [])
+    assemble.dump_yaml(st / "pending.yml", [])
+    sec = {"id": "202610181832-explore-1", "dedup_key": "tec17", "title": "第17回テクニカルチャレンジ杯 開催情報",
+           "url": "https://melonpapapapa-n.com/sc-prism_ev123/", "facts": ["開催期間: 2026/10/17(土) 12:00 ~ 2026/10/20(火) 20:59"]}
+    off = {"id": "202610190222-grok-34", "dedup_key": "tec17", "title": "第17回テクニカルチャレンジ杯",
+           "url": "https://x.com/imassc_prism/status/2111291358019514716", "facts": ["課題曲は『Black Reverie(xRライブ ver.)』。"]}
+    unused = {"id": "202610190222-grok-99", "dedup_key": "tec17", "title": "出典にしなかった投稿",
+              "url": "https://x.com/imassc_prism/status/2111291358019514799", "facts": ["x"]}
+    mats = {c["id"]: c for c in (sec, off, unused)}
+    fm = {"slug": "shiny-tec17", "brand": "shiny", "candidate_ids": [sec["id"], off["id"], unused["id"]],
+          "sources": [{"url": sec["url"], "label": "a"}, {"url": off["url"], "label": "b"}]}
+    out = {"stories": [], "pending_add": [], "pending_remove": [], "digest": [],
+           "reservations": [{"candidate_id": sec["id"], "date": "2026-10-20", "kind": "締切", "slug": "shiny-tec17",
+                             "subject": "テクニカルチャレンジ杯 最終日", "note": "20時59分まで", "occurs_on": "2026-10-20"}]}
+    saved = (assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS)
+    croot = compose.ROOT
+    try:
+        assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = \
+            tmp, st / "stories.yml", st / "scheduled", st / "pending.yml", tmp / "docs" / "_editions"
+        compose.ROOT = tmp
+        assemble.apply("2026-10-19", 1, out, [fm], mats, False, stories=[])
+        p = st / "scheduled" / "2026-10-20.json"
+        text = p.read_text(encoding="utf-8")
+        rows = json.loads(text)
+        check(pipelib.schema_errors(p, text) == [], f"添えた予約が書式に合わない: {pipelib.schema_errors(p, text)}")
+        head = rows[0]["id"]
+        comp = [r for r in rows if r.get("companion_of") == head]
+        check([r["url"] for r in comp] == [off["url"]] and comp[0]["source_type"] == "公式" and comp[0]["facts"] == off["facts"]
+              and comp[0]["dedup_key"] == "tec17" and comp[0]["occurs_on"] == "2026-10-20",
+              f"記事が出典にした公式の投稿を予約に添えない(出典にしなかった素材は添えない): {comp}")
+        # 当日: 添えは素材(選定の主題・執筆の素材)に入り、予約(トリガー)にはならない
+        window = compose.load_window_candidates("2026-10-20")
+        check({head, comp[0]["id"]} <= set(window), "添えた素材が当日の素材に入らない")
+        by_brand, _, _ = compose.write_plan_index("2026-10-20", window, {})
+        subj = next(s for rows_ in by_brand.values() for s in rows_ if s["dedup_key"] == "tec17")
+        check(comp[0]["id"] in subj["ids"], f"添えた素材が予約と同じ主題に束ならない: {subj['ids']}")
+        src = Path(compose.__file__).read_text(encoding="utf-8")
+        check('triggers = [t for t in load_scheduled(date) if not t.get("companion_of")]' in src, "添えた素材を予約(トリガー)として選定に渡す")
+        plan = {"articles": [{"slug": "shiny-tec17", "candidate_ids": [head]}]}
+        compose.attach_companions(plan, window); compose.attach_companions(plan, window)
+        check(plan["articles"][0]["candidate_ids"] == [head, comp[0]["id"]], f"保存した計画に添えた素材が足されない: {plan}")
+        # 添えの無い既存の予約(2026-10-20 より前の組版): 予約した号の記事と素材から添える。過去日は触らない。冪等
+        (tmp / "candidates" / "2026-10-19.json").write_text(json.dumps([sec, off, unused], ensure_ascii=False), encoding="utf-8")
+        (tmp / "docs" / "_posts" / "2026-10-19-shiny-tec17.md").write_text(
+            "---\n" + yaml.safe_dump(fm, allow_unicode=True) + "---\n本文\n", encoding="utf-8")
+        old = [r for r in rows if not r.get("companion_of")]
+        p.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+        (st / "scheduled" / "2026-10-18.json").write_text(json.dumps([dict(old[0], id="past")], ensure_ascii=False), encoding="utf-8")
+        log = assemble.restore_reservation_companions("2026-10-20")
+        got = json.loads(p.read_text(encoding="utf-8"))
+        check([r["url"] for r in got if r.get("companion_of") == head] == [off["url"]], f"既存の予約に公式の投稿を添えない: {log}")
+        check(len(json.loads((st / "scheduled" / "2026-10-18.json").read_text(encoding="utf-8"))) == 1, "過去日の予約を書き換えた")
+        check(assemble.restore_reservation_companions("2026-10-20") == [], "添えが冪等でない")
+    finally:
+        assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = saved
+        compose.ROOT = croot
+
+
+def test_grok_verify_keeps_new_announcement_separate():
+    """grok-verify は、前の投稿に無い新しい発表(セットリスト・結果など)を載せた投稿を、元の告知の候補へまとめない
+    (実測 2026-10-19: 深海フェス2026 のセットリストの投稿が 10/17 の出演告知の候補へまとめられ、選定が既報として落とした)。"""
+    text = (Path(compose.__file__).resolve().parent.parent / "prompts" / "grok-verify.md").read_text(encoding="utf-8")
+    check("同じ施策の複数の投稿は1件にまとめ" not in text and "同じ施策でも別の候補にし、その投稿の url と投稿日" in text,
+          "新しい発表を載せた投稿を元の告知の候補へまとめる依頼のまま")
+
+
 def test_restore_reservation_facts(tmp: Path):
     """保存済みの予約で先頭12件に切れた facts を元素材から復元する(2026-10-10 with glasses の締切予約)。
     元と食い違う・元が無い・過去日の予約は触らない。2回目は何も変えない。"""
@@ -10504,6 +10579,8 @@ def main() -> int:
     test_rollback(tmp / "rb")
     test_reservation_keeps_all_facts(tmp / "rkf")
     test_restore_reservation_facts(tmp / "rrf")
+    test_reservation_keeps_article_sources(tmp / "rkas")
+    test_grok_verify_keeps_new_announcement_separate()
     test_restore_chained_reservation_facts(tmp / "rcf")
     test_lost_post_notified_once(tmp / "lpn")
     test_grok_deep_retry(tmp / "gdr")

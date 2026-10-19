@@ -24,7 +24,8 @@
       "verify": {"enum": ["confirmed", "unconfirmed", "failed"]},
       "event_date": {"type": "string"},
       "deadline": {"type": "string"},
-      "src_candidate_id": {"type": "string", "description": "スナップショット元の candidates id(監査用)"}
+      "src_candidate_id": {"type": "string", "description": "スナップショット元の candidates id(監査用)"},
+      "companion_of": {"type": "string", "minLength": 1, "description": "予約に添えた素材の行のとき、添え先の予約の id(予約を付けた記事が出典にしたほかの素材。素材として渡り、予約(トリガー)にはならない)"}
     }
   }
 }

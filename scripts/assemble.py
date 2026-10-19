@@ -106,6 +106,73 @@ def restore_reservation_facts(date: str) -> list[str]:
     return log
 
 
+SNAP_SOURCE_TYPES = ("公式", "準公式", "当事者", "演者", "報道", "ファン", "二次情報", "もちより", "未確認")
+
+
+def material_snapshot(c: dict) -> dict:
+    """続報予約に写す素材1件の中身(title・url・出典の種別・facts 全部・日付)。出典の種別は判定表から出す。"""
+    st = classify_source(c.get("url") or "")
+    snap = {"title": c.get("title") or "", "url": c.get("url") or "",
+            "source_type": st if st in SNAP_SOURCE_TYPES else "未確認", "facts": list(c.get("facts") or []),
+            "via": c.get("via") or "", "verify": c.get("verify") or "unconfirmed"}
+    for k in ("event_date", "deadline"):
+        if c.get(k):
+            snap[k] = str(c[k])
+    return snap
+
+
+def companion_rows(entry: dict, fm: dict, mats: dict) -> list[dict]:
+    """続報予約 entry に添える、予約を付けた記事(frontmatter fm)のほかの素材。記事が出典(sources)にした url の素材だけを、
+    予約の素材と同じ url は除いて1素材1行で写す(id は <予約の id>-src<n>、companion_of に予約の id)。予約の欄(話題・種別・
+    出来事の日)は予約のものを写すので、選定では予約と同じ主題に束なり、執筆には予約の素材と一緒に渡る。予約(トリガー)にはならない。
+    以前は組版が予約に選んだ1素材(日付の載った二次情報のページ)だけを写し、記事が出典にした公式の投稿を落とした。当日の執筆は
+    公式の出典に届かず、締切の知らせを見送った(実測 2026-10-20: シャニソン第17回テクニカルチャレンジ杯の最終日)。"""
+    used = {s.get("url") for s in fm.get("sources") or [] if isinstance(s, dict) and s.get("url")}
+    seen, out = {entry.get("url")}, []
+    for cid in fm.get("candidate_ids") or []:
+        c = mats.get(cid)
+        if cid == entry.get("src_candidate_id") or not c or c.get("url") not in used or c.get("url") in seen:
+            continue
+        seen.add(c.get("url"))
+        out.append({"id": f"{entry['id']}-src{len(out) + 1}",
+                    **{k: entry[k] for k in ("dedup_key", "brand", "subject", "kind", "note", "reserved_on", "occurs_on") if k in entry},
+                    **material_snapshot(c), "src_candidate_id": cid, "companion_of": entry["id"]})
+    return out
+
+
+def restore_reservation_companions(date: str) -> list[str]:
+    """発行日以降の続報予約のうち、添える素材(companion_rows)の無いものに、予約を付けた記事(予約した号の記事で、candidate_ids に
+    予約の元の素材を含み、予約の url を出典にしたもの)の素材から添える。予約を付けた号の素材は load_materials と同じに引く。
+    2026-10-20 より前の組版は添えなかった。記事が見つからなければそのまま。過去日の予約は書き換えない。冪等。"""
+    log, posts, mats = [], {}, {}
+    for p in sorted(SCHEDULED.glob("*.json")):
+        if p.stem < date:
+            continue
+        rows = json.loads(p.read_text(encoding="utf-8"))
+        has = {r.get("companion_of") for r in rows if r.get("companion_of")}
+        out, n = [], 0
+        for r in rows:
+            out.append(r)
+            on = r.get("reserved_on")
+            if r.get("companion_of") or r.get("id") in has or not on:
+                continue
+            if on not in posts:
+                posts[on] = []
+                for q in sorted((ROOT / "docs" / "_posts").glob(f"{on}-*.md")):
+                    m = FM_RE.match(q.read_text(encoding="utf-8"))
+                    if m:
+                        posts[on].append(yaml.safe_load(m.group(1)) or {})
+                mats[on] = load_materials(on)
+            fm = next((f for f in posts[on] if r.get("src_candidate_id") in (f.get("candidate_ids") or [])
+                       and r.get("url") in {s.get("url") for s in f.get("sources") or [] if isinstance(s, dict)}), None)
+            add = companion_rows(r, fm, mats[on]) if fm else []
+            out += add; n += len(add)
+        if n:
+            write_checked(p, json.dumps(out, ensure_ascii=False, indent=1) + "\n")
+            log.append(f"予約 {p.name}: 予約を付けた記事の出典の素材を {n} 件添えた")
+    return log
+
+
 def source_facts(on, cid, cache: dict, depth: int = 0) -> list | None:
     """予約を付けた号 on の素材 cid の facts を、元の候補までたどって返す(load_materials と同じ引き方: 候補が先、
     無ければその号の予約)。素材が予約なら、その予約の facts が元の facts の先頭部分であるときだけ元の facts を採る
@@ -972,6 +1039,7 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
     stories = strip_edition(date, load_yaml_list(STORIES))
     by_id = {e.get("story_id"): e for e in stories}
     brand_of = {fm.get("slug"): fm.get("brand") for fm in posts}
+    fm_of = {fm.get("slug"): fm for fm in posts}
     n_new = n_app = 0
     for s in out["stories"]:
         e = by_id.get(s["story_id"])
@@ -1012,16 +1080,9 @@ def apply(date: str, number: int, out: dict, posts: list[dict], mats: dict, dry:
         entry = {"id": rid, "dedup_key": dk, "brand": brand_of.get(r["slug"]) or c.get("brand") or "other",
                  "subject": r["subject"] or c.get("title") or dk, "kind": r["kind"], "note": r["note"],
                  "reserved_on": date, **({"occurs_on": r["occurs_on"]} if r.get("occurs_on") else {}),
-                 "title": c.get("title") or "", "url": c.get("url") or "",
-                 "source_type": classify_source(c.get("url") or ""), "facts": list(c.get("facts") or []),
-                 "via": c.get("via") or "", "verify": c.get("verify") or "unconfirmed",
-                 "src_candidate_id": r["candidate_id"]}
-        if entry["source_type"] not in ("公式", "準公式", "当事者", "演者", "報道", "ファン", "二次情報", "もちより", "未確認"):
-            entry["source_type"] = "未確認"
-        for k in ("event_date", "deadline"):
-            if c.get(k):
-                entry[k] = str(c[k])
-        rows.append(entry); files[p] = rows; n_res += 1
+                 **material_snapshot(c), "src_candidate_id": r["candidate_id"]}
+        # 記事が出典にしたほかの素材も添える(予約はその日の唯一の素材。1つだけ写すと、記事を成り立たせた公式の出典が落ちる)
+        rows += [entry] + companion_rows(entry, fm_of.get(r["slug"]) or {}, mats); files[p] = rows; n_res += 1
     log.append(f"予約: {n_res} 件")
 
     # 3. pending(この号の足し引きを、いまの pending に当て直す。後の号の足し引きは残す。rebase_pending)

@@ -1,0 +1,253 @@
+{
+ "decisions": {
+  "gakumas-mugyumini-figure-vol1": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17「むぎゅみに全5種セットを2500円で予約」と同じ商品(500円×5)。新事実なし"
+  },
+  "gaku-hif-tsubame-garakt-road-gacha-announcement-2026": {
+   "action": "article",
+   "angle": "H.I.F編で雨夜燕を実装し、ガラクタロードの燕・美鈴・千奈ガシャ開催を告知、詳細は今夜20時の生配信で発表",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "はつぼし放課後とーく(同じ20時配信)を統合"
+  },
+  "gaku-asari-produce-seminar-2026": {
+   "action": "article",
+   "angle": "あさり先生のプロデュースゼミ(ロジック対象)は本日10時59分で終了、回せる最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "二次情報の同名主題を統合"
+  },
+  "gaku-ssr-select-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-another-idol-2026-little-devil-gacha",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "'26小悪魔アナザーアイドル関連の同じ終了日の施策"
+  },
+  "gaku-another-idol-2026-little-devil-gacha": {
+   "action": "article",
+   "angle": "アナザーアイドル'26小悪魔ガシャ(初回10連無料)と有償限定のSSR確定セレクトガシャが本日10時59分で終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-agitato-saki-gacha-2026": {
+   "action": "article",
+   "angle": "【Agitato】花海咲季ガシャが本日10時59分で終了、引ける最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "asariゼミとは別施策のため別記事"
+  },
+  "gaku-roar-sena-gacha-2026": {
+   "action": "article",
+   "angle": "新プロデュースアイドル【Roar】十王星南のガシャが本日11時に開始、サポートカード2種と楽曲「Roar」も登場",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "楽曲Roar情報を統合"
+  },
+  "gaku-roar-song-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-roar-sena-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じガシャ・同じ開始日時"
+  },
+  "gaku-china-another-idol-guaranteed-gacha-2026": {
+   "action": "article",
+   "angle": "倉本千奈のSSRアナザーアイドル確定無料1連ガシャは10月21日10時59分まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。終了まで約1日"
+  },
+  "gaku-agitato-lilja-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "ガシャは10/9 10:59に終了済み。終了予約の10/20は誤りで、二次情報のみ"
+  },
+  "asari-produce-seminar-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-asari-produce-seminar-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じゼミの終了。公式側の主題に統合"
+  },
+  "gakumas-hatsuboshi-houkago-talk-20261020": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-hif-tsubame-garakt-road-gacha-announcement-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ20時の生配信(燕・千奈・美鈴の出演者)。配信が詳細発表の場"
+  },
+  "gaku-jewel-login-gift-2026-10-14": {
+   "action": "article",
+   "angle": "ログインジュエル250個の配布は明日4時59分まで、本日中にログインすれば受け取れる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-hif-tsubame-garakt-road-gacha-announcement-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "H.I.F編で雨夜燕を実装し、ガラクタロードの燕・美鈴・千奈ガシャ開催を告知、詳細は今夜20時の生配信で発表",
+    "purpose": "新情報",
+    "lead_score": 40,
+    "dedup_key": "gaku-hif-tsubame-garakt-road-gacha-announcement-2026",
+    "candidate_ids": [
+     "202610200229-grok-33",
+     "sched-2026-10-20-gakumas-hatsuboshi-houkago-talk-20261020-開始"
+    ]
+   },
+   {
+    "slug": "gaku-asari-produce-seminar-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "あさり先生のプロデュースゼミ(ロジック対象)は本日10時59分で終了、回せる最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "gaku-asari-produce-seminar-2026",
+    "candidate_ids": [
+     "202610200229-grok-34",
+     "sched-2026-10-20-asari-produce-seminar-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-another-idol-2026-little-devil-gacha",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "アナザーアイドル'26小悪魔ガシャ(初回10連無料)と有償限定のSSR確定セレクトガシャが本日10時59分で終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-another-idol-2026-little-devil-gacha",
+    "candidate_ids": [
+     "202610200229-grok-36",
+     "202610200229-grok-35"
+    ]
+   },
+   {
+    "slug": "gaku-agitato-saki-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "【Agitato】花海咲季ガシャが本日10時59分で終了、引ける最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-agitato-saki-gacha-2026",
+    "candidate_ids": [
+     "202610200229-grok-37",
+     "sched-2026-10-20-gaku-agitato-saki-gacha-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-roar-sena-gacha-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "新プロデュースアイドル【Roar】十王星南のガシャが本日11時に開始、サポートカード2種と楽曲「Roar」も登場",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "gaku-roar-sena-gacha-2026",
+    "candidate_ids": [
+     "202610200229-grok-38",
+     "202610200229-grok-39"
+    ]
+   },
+   {
+    "slug": "gaku-china-another-idol-guaranteed-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "倉本千奈のSSRアナザーアイドル確定無料1連ガシャは10月21日10時59分まで",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gaku-china-another-idol-guaranteed-gacha-2026",
+    "candidate_ids": [
+     "202610200229-grok-40"
+    ]
+   },
+   {
+    "slug": "gaku-jewel-login-gift-2026-10-14",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ログインジュエル250個の配布は明日4時59分まで、本日中にログインすれば受け取れる",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gaku-jewel-login-gift-2026-10-14",
+    "candidate_ids": [
+     "sched-2026-10-20-gaku-jewel-login-gift-2026-10-14-締切"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gakumas-mugyumini-figure-vol1",
+    "reason": "既報",
+    "note": "10/17「むぎゅみに全5種セットを2500円で予約」と同じ商品(500円×5)。新事実なし"
+   },
+   {
+    "dedup_key": "gaku-agitato-lilja-gasha-2026",
+    "reason": "その他",
+    "note": "ガシャは10/9 10:59に終了済み。終了予約の10/20は誤りで、二次情報のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

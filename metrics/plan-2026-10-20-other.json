@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "fullahead-osu-imas-lottery-pack-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "店舗の個人投稿1件のみ(未確認・エンゲージメント低)。商品名・価格・販売日・期間など具体的な事実が無く、当日のトリガーも無い。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "fullahead-osu-imas-lottery-pack-2026-10",
+    "reason": "出典不足",
+    "note": "店舗の個人投稿1件のみ(未確認・エンゲージメント低)。商品名・価格・販売日・期間など具体的な事実が無く、当日のトリガーも無い。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,45 @@
+{
+ "decisions": {
+  "fan-secret-jewel-rabbit-girls-mv-2026": {
+   "action": "article",
+   "angle": "ファンが『シークレットジュエル』Rabbit Girls ver.の海美・恵美が登場するMVを制作・投稿した、ファン創作の広がり",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作。IWSF主題を同じ culture 記事に束ねる"
+  },
+  "fan-iwsf-idol-interest-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "fan-secret-jewel-rabbit-girls-mv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "個人のSNS投稿は単体で記事にせず、ファン面の1本に束ねる。投稿者個人は主役にしない"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-fan-secret-jewel-rabbit-girls-mv-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "ファンが『シークレットジュエル』Rabbit Girls ver.の海美・恵美が登場するMVを制作・投稿した、ファン創作の広がり",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "fan-secret-jewel-rabbit-girls-mv-2026",
+    "candidate_ids": [
+     "202610200229-grok-21",
+     "202610200229-grok-50"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

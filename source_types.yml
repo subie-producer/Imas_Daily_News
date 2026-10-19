@@ -418,6 +418,7 @@ video_ids:
   当事者:
     - YUWiY_qt3jM         # 機械で追加: @whatsupmcdonalds「今度いつきみに会えるのかな covered by 如月千早」
   ファン:
+    - sm46944609          # 機械で追加: nicovideo.jp/user/1633964「【もふM@S MV】 「シークレットジュエル ～魅惑の金剛石」
     - lixtC4sChpo         # 機械で追加: @kon_kitunebana「【Cosplay_学園アイドルマスター】仮装狂騒曲組で野外ラ」
     - 0pJbRoGru8E         # 機械で追加: @VTKazune「【#エムシャニ対バンライブ】カフェパレ&放クラPが愛を叫ぶ！」
     - lnlFRSXtUyY         # 機械で追加: @tokiwakaname「【踊ってみた】Poison Berry Daughters 」
@@ -954,6 +955,9 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/UWj9DyM42R: 二次情報                         # 機械で追加: 展開先 https://lnk.to/S.E.M_2DMV
+  t.co/Gt69PLU1aE: 当事者                         # 機械で追加: 展開先 https://pjblue.zaiko.io/ja/e/shinsea-fest-2026
+  nicovideo.jp/user/1633964: ファン               # 合議で追加: 個人のユーザーページ。動画紹介や声無し生放送などの個人発信
   t.co/smNOzH7hAc: 当事者                         # 機械で追加: 展開先 https://www.vitalartbox.info/imascg1023
   booth.pm/ja/items/7563732: ファン               # 機械で追加: ショップ nagarestar.booth.pm
   t.co/E8puMDO5Lq: 当事者                         # 機械で追加: 展開先 https://medicos-e.net/newsdetail/imas_millionlive_popup/

@@ -1,0 +1,156 @@
+{
+ "decisions": {
+  "va-liv-3rd-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/18号に日程・時刻・先行抽選(11/15締切)すべて掲載済み。新事実も当日トリガーも無い"
+  },
+  "manaka-pumpkin-recipe-fan-replies-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "manaka-halloween-pumpkin-recipe-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ募集企画のまとめブログ(未確認)。締切の記事に統合し単体では扱わない"
+  },
+  "dsva-2026-2nd-liver-ability-results": {
+   "action": "article",
+   "angle": "2026年度第2回ライバーアイドル能力評価の結果が公表され、プロデューサー評価がメンバーの正式ステータスとして掲載された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "dsva-aikatsu-academy-dance-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16・10/18・10/19号で同コラボのダンス/ショート公開を記事化済み。新事実なし"
+  },
+  "dsva-shinkai-fes-2026-performance": {
+   "action": "article",
+   "angle": "深海フェス2026のグランドステージで、ヴイアラ3名が披露したセットリストが公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出演告知は既報だが、セトリは新しい事実"
+  },
+  "dsva-letora-drinking-chat-2026-10-19": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/19夜の配信は終了済み。定常配信は3件に満たず roundup 不成立"
+  },
+  "dsva-manaka-morning-stream-2026-10-19": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/19朝の配信は終了済み。roundup 不成立"
+  },
+  "manaka-halloween-pumpkin-recipe-2026": {
+   "action": "article",
+   "angle": "愛夏のかぼちゃレシピ募集は本日23時59分が締切で、募集フォームから応募できる最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切)。当日トリガーあり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-2026-2nd-liver-ability-results",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "2026年度第2回ライバーアイドル能力評価の結果が公表され、プロデューサー評価がメンバーの正式ステータスとして掲載された",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "dsva-2026-2nd-liver-ability-results",
+    "candidate_ids": [
+     "202610200229-grok-42"
+    ]
+   },
+   {
+    "slug": "dsva-shinkai-fes-2026-performance",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "深海フェス2026のグランドステージで、ヴイアラ3名が披露したセットリストが公開された",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "dsva-shinkai-fes-2026-performance",
+    "candidate_ids": [
+     "202610200229-grok-44"
+    ]
+   },
+   {
+    "slug": "dsva-manaka-halloween-pumpkin-recipe-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "愛夏のかぼちゃレシピ募集は本日23時59分が締切で、募集フォームから応募できる最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "manaka-halloween-pumpkin-recipe-2026",
+    "candidate_ids": [
+     "sched-2026-10-20-manaka-halloween-pumpkin-recipe-2026-締切",
+     "202610192332-explore-5"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "va-liv-3rd-live-2027",
+    "reason": "既報",
+    "note": "10/18号に日程・時刻・先行抽選(11/15締切)すべて掲載済み。新事実も当日トリガーも無い"
+   },
+   {
+    "dedup_key": "dsva-aikatsu-academy-dance-collab-2026",
+    "reason": "既報",
+    "note": "10/16・10/18・10/19号で同コラボのダンス/ショート公開を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "dsva-letora-drinking-chat-2026-10-19",
+    "reason": "その他",
+    "note": "10/19夜の配信は終了済み。定常配信は3件に満たず roundup 不成立"
+   },
+   {
+    "dedup_key": "dsva-manaka-morning-stream-2026-10-19",
+    "reason": "その他",
+    "note": "10/19朝の配信は終了済み。roundup 不成立"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -613,5 +613,29 @@
   "src_candidate_id": "202610181832-explore-1",
   "event_date": "2026-10-17",
   "deadline": "2026-10-20"
+ },
+ {
+  "id": "sched-2026-10-21-gaku-china-another-idol-guaranteed-gacha-2026-締切",
+  "dedup_key": "gaku-china-another-idol-guaranteed-gacha-2026",
+  "brand": "gaku",
+  "subject": "学マス 倉本千奈 アナザーアイドル確定無料ガシャ",
+  "kind": "締切",
+  "note": "10時59分までに無料1連ガシャを引ける最終日",
+  "reserved_on": "2026-10-20",
+  "occurs_on": "2026-10-21",
+  "title": "倉本千奈SSRアナザーアイドル確定無料ガシャ",
+  "url": "https://x.com/gkmas_official/status/2112015899582771272",
+  "source_type": "公式",
+  "facts": [
+   "アナザーアイドルアップデート記念としてSSR アナザーアイドル確定ガシャを告知した。",
+   "【倉本千奈】のシーズン限定「アナザーアイドル」がいずれか確定で手に入る無料1連ガシャ。",
+   "ガシャ開催時期：10/21(水) 10:59まで（予定）",
+   "エンゲージメント: 中",
+   "言及アイドル: 倉本千奈"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610200229-grok-40",
+  "deadline": "2026-10-21"
  }
 ]

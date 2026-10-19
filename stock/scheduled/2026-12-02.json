@@ -220,5 +220,31 @@
   "verify": "confirmed",
   "src_candidate_id": "sched-2026-10-09-sidem-producer-card-wave3-2026-締切前",
   "deadline": "2026-10-12"
+ },
+ {
+  "id": "sched-2026-12-02-sidem-m-fes-winter-wonderland-theme-cd-2026-発売",
+  "dedup_key": "sidem-m-fes-winter-wonderland-theme-cd-2026",
+  "brand": "sidem",
+  "subject": "SideM Mフェス2026テーマソングCD「Season's Greetings Party!」",
+  "kind": "発売",
+  "note": "CD発売日。店頭・通販で購入でき、初回生産分の特製ブロマイドを確認できる",
+  "reserved_on": "2026-10-20",
+  "occurs_on": "2026-12-02",
+  "title": "Mフェス2026テーマソングCDのジャケット公開",
+  "url": "https://x.com/SideM_lantis/status/2112106492723879941",
+  "source_type": "準公式",
+  "facts": [
+   "発売日: 2026年12月2日",
+   "THE IDOLM@STER SideM Mフェス 2026 in Winter Wonderland テーマソングのタイトルは「Season's Greetings Party！」",
+   "W & 神速一魂 & C.FIRSTで歌うテーマソングと、各メンバーのソロVer.を収録",
+   "初回生産特典: 特製ブロマイド（全7種のうちランダム2種）を封入",
+   "試聴動画は後日公開予定",
+   "YouTube: 該当URLなし",
+   "リンク: https://lnk.to/LACM-25317",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "src_candidate_id": "202610200229-grok-30"
  }
 ]

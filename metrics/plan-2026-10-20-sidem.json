@@ -1,0 +1,188 @@
+{
+ "decisions": {
+  "sidem-aji-na-yatsura-story-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19号「アイドルたちの1コマ」更新で記事化済み(10/18 0時追加分)。新事実なし"
+  },
+  "sidem-315pro-night-goods-2026": {
+   "action": "article",
+   "angle": "12月12日の「315プロNight!」出張版公開録音イベントの開催が決まり、パーカーと手書き缶バッジの先行受注が11月1日23:59まで始まった",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催決定・グッズ先行受注・店頭販売を1記事に統合"
+  },
+  "sidem-seibuen-retrose-party-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "期間・ユニット・トークショー等すべて10/9・10/10号の本文にあり。新事実も当日トリガーも無い(開幕は10/30)"
+  },
+  "sidem-315pronight-event-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315pro-night-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受注の告知"
+  },
+  "sidem-m-fes-winter-wonderland-theme-cd-2026": {
+   "action": "article",
+   "angle": "Mフェス2026テーマソングCD「Season's Greetings Party!」は12月2日発売で、ジャケットが公開され、初回特典は全7種からランダム2種のブロマイド",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は準公式Xのみ。校閲で確認"
+  },
+  "sidem-cardfolio-vol2-web-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19号「カードフォリオvol.2、19日18時Web販売」と同じ施策"
+  },
+  "sidem-sems-lifes-side-menu-2dmv-100k-2026": {
+   "action": "article",
+   "angle": "S.E.M「Life's Side Menu!」の2DMVが公開から数日で10万回再生を突破した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/16号の別曲10万再生記事と同型。再生数の突破は新事実"
+  },
+  "sidem-315pronight-travel-recording-event-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315pro-night-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公開録音イベントの開催決定"
+  },
+  "sidem-mfes-315pronight-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-315pro-night-goods-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ先行受注の告知"
+  },
+  "sidem-royal-chess-lounge-2026": {
+   "action": "article",
+   "angle": "「Royal Chess Lounge」池袋店は本日10月20日が最終日で、営業は昼の部①のみ",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(終了)。当日が最終日で、読者が行ける最後の日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-315pro-night-goods-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "12月12日の「315プロNight!」出張版公開録音イベントの開催が決まり、パーカーと手書き缶バッジの先行受注が11月1日23:59まで始まった",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "sidem-315pro-night-goods-2026",
+    "candidate_ids": [
+     "202610191833-watch-0",
+     "202610191833-watch-2",
+     "202610200229-grok-29",
+     "202610200229-grok-53",
+     "202610200229-grok-56"
+    ]
+   },
+   {
+    "slug": "sidem-m-fes-winter-wonderland-theme-cd-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "Mフェス2026テーマソングCD「Season's Greetings Party!」は12月2日発売で、ジャケットが公開され、初回特典は全7種からランダム2種のブロマイド",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-m-fes-winter-wonderland-theme-cd-2026",
+    "candidate_ids": [
+     "202610200229-grok-30"
+    ]
+   },
+   {
+    "slug": "sidem-sems-lifes-side-menu-2dmv-100k-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "S.E.M「Life's Side Menu!」の2DMVが公開から数日で10万回再生を突破した",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "sidem-sems-lifes-side-menu-2dmv-100k-2026",
+    "candidate_ids": [
+     "202610200229-grok-32"
+    ]
+   },
+   {
+    "slug": "sidem-royal-chess-lounge-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「Royal Chess Lounge」池袋店は本日10月20日が最終日で、営業は昼の部①のみ",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "sidem-royal-chess-lounge-2026",
+    "candidate_ids": [
+     "sched-2026-10-20-sidem-royal-chess-lounge-2026-終了"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-aji-na-yatsura-story-2026",
+    "reason": "既報",
+    "note": "10/19号「アイドルたちの1コマ」更新で記事化済み(10/18 0時追加分)。新事実なし"
+   },
+   {
+    "dedup_key": "sidem-seibuen-retrose-party-2026",
+    "reason": "既報",
+    "note": "期間・ユニット・トークショー等すべて10/9・10/10号の本文にあり。新事実も当日トリガーも無い(開幕は10/30)"
+   },
+   {
+    "dedup_key": "sidem-cardfolio-vol2-web-2026",
+    "reason": "既報",
+    "note": "10/19号「カードフォリオvol.2、19日18時Web販売」と同じ施策"
+   }
+  ],
+  "cross_brand": []
+ }
+}

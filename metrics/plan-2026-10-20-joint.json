@@ -1,0 +1,73 @@
+{
+ "decisions": {
+  "tours-s2-halloween-2026": {
+   "action": "article",
+   "angle": "S2弾の演出セットカード『ハッピーハロウィン!』は、クリエイトライブ専用で5つの演出が使える",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "稼働日とホラーアイテムは10/16・10/19に既報。ハッピーハロウィン!カードは過去の記事に無く、新しい事実。"
+  },
+  "stamas-5th-idol-introduction-ranko-2026": {
+   "action": "article",
+   "angle": "スタマスのSteam本編が70%オフセール中。蘭子の紹介動画③に合わせて告知された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "蘭子の紹介動画③は10/19に既報。Steam70%オフセールは既報の本文に無い新しい事実。セールの終了日は素材に無い。"
+  },
+  "fan-rinami-tours-style-card-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンが作ったツアマス風の名刺で、個人のSNS投稿。出典も未確認。ファン面の culture はgeneral面だけが扱う。"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-s2-halloween-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "S2弾の演出セットカード『ハッピーハロウィン!』は、クリエイトライブ専用で5つの演出が使える",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "tours-s2-halloween-2026",
+    "candidate_ids": [
+     "202610200229-grok-47"
+    ]
+   },
+   {
+    "slug": "joint-stamas-5th-idol-introduction-ranko-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "スタマスのSteam本編が70%オフセール中。蘭子の紹介動画③に合わせて告知された",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "stamas-5th-idol-introduction-ranko-2026",
+    "candidate_ids": [
+     "202610200229-grok-48"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "fan-rinami-tours-style-card-2026-10",
+    "reason": "同人・ファン主催",
+    "note": "ファンが作ったツアマス風の名刺で、個人のSNS投稿。出典も未確認。ファン面の culture はgeneral面だけが扱う。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

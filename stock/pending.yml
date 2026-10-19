@@ -139,6 +139,7 @@
   subject: 十王星南「Roar」ガシャ
   watch: 10月開催予定と発表。正式な開催日(判明次第 triggers へ)
   added_on: '2026-09-25'
+  removed_on: '2026-10-20'
 - dedup_key: gaku-battle-spirits-collab-2027
   brand: gaku
   subject: 学マス×バトスピ、2027年春に2商品
@@ -293,3 +294,8 @@
   subject: シャニマス×カラオケの鉄人 PJ:REFRAC7IONS コラボの続報
   watch: 記事で「続報は後日発表」とされたコラボの詳細(判明次第 triggers へ)
   added_on: '2026-10-17'
+- dedup_key: gaku-hif-tsubame-garakt-road-gacha-announcement-2026
+  brand: gaku
+  subject: 学マス H.I.F編 雨夜燕実装とガラクタロードガシャ
+  watch: 10/20 20時の生配信で発表される燕実装日・ガラクタロードガシャ3種の開催期間(判明次第 triggers へ)
+  added_on: '2026-10-20'

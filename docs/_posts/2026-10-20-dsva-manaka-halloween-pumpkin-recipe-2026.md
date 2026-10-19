@@ -2,7 +2,7 @@
 slug: dsva-manaka-halloween-pumpkin-recipe-2026
 edition: "2026-10-20"
 brand: dsva
-src: 未確認
+src: ファン
 rank: small
 corrected: false
 corrections: []
@@ -21,7 +21,10 @@ sources:
   type: 公式
 - label: Vtuberまとめるよ～ん「【ヴイアラ】灯里愛夏、10/31の配信で使うカボチャレシピを大募集っ✨」(2026年10月19日)
   url: https://vtuber-matomeruyon.blog.jp/archives/31794150.html
-  type: 未確認
+  type: ファン
+- label: 公式「愛夏のハロウィンかぼちゃレシピ募集」(2026年10月16日)
+  url: https://x.com/TomoriManaka/status/2111104480699986386
+  type: 公式
 event_date: "2026-10-20"
 title_fact_ids:
 - F2

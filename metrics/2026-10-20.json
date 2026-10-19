@@ -103,5 +103,40 @@
    },
    "duration_s": 1799
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-20T03:15:51+09:00",
+   "edition": "2026-10-20",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 25,
+   "written": 23,
+   "roundups": 0,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 66,
+    "covered": 66,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.721218478679657,
+    "執筆": 2.9127344886461892,
+    "出典の判定": 2.6543186664581295,
+    "組版": 0.5881589333216349,
+    "校閲": 0.839509908358256,
+    "校閲1波": 0.839509908358256
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "shiny-technical-challenge-cup-17-2026",
+    "dsva-shinkai-fes-2026-performance"
+   ],
+   "duration_s": 913
+  }
  ]
 }

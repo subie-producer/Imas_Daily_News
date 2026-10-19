@@ -56,12 +56,12 @@
   "deadline": "2026-12-20"
  },
  {
-  "id": "sched-2026-12-04-cinderella-sega-lucky-kuji-vol1-cute-終了",
+  "id": "sched-2026-12-04-cinderella-sega-lucky-kuji-vol1-cute-締切",
   "dedup_key": "cinderella-sega-lucky-kuji-vol1-cute",
   "brand": "cg",
   "subject": "セガ ラッキーくじ シンデレラ Vol.1キュート 販売最終日",
-  "kind": "終了",
-  "note": "23:59の販売終了まで、くじを購入できる最終日",
+  "kind": "締切",
+  "note": "23:59まで購入できる最終日",
   "reserved_on": "2026-10-20",
   "occurs_on": "2026-12-04",
   "title": "セガ ラッキーくじオンライン「アイドルマスター シンデレラガールズ Vol.1キュート」販売開始",

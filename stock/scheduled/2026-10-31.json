@@ -508,17 +508,17 @@
   "event_date": "2027-03-22"
  },
  {
-  "id": "sched-2026-10-31-manaka-pumpkin-recipe-fan-replies-2026-その他",
+  "id": "sched-2026-10-31-manaka-pumpkin-recipe-fan-replies-2026-開始",
   "dedup_key": "manaka-pumpkin-recipe-fan-replies-2026",
   "brand": "dsva",
   "subject": "愛夏「愛夏かぼちゃ１個食う」ハロウィン配信",
-  "kind": "その他",
-  "note": "募集したレシピが配信中に発表される企画の実施日",
+  "kind": "開始",
+  "note": "募集レシピが配信で発表される実施日",
   "reserved_on": "2026-10-20",
   "occurs_on": "2026-10-31",
   "title": "灯里愛夏のカボチャレシピ募集にファンから提案",
   "url": "https://vtuber-matomeruyon.blog.jp/archives/31794150.html",
-  "source_type": "未確認",
+  "source_type": "ファン",
   "facts": [
    "記事は2026年10月19日付で掲載された。",
    "記事内で、灯里愛夏が10月31日の配信で使うカボチャレシピを募集する投稿が紹介されている。",

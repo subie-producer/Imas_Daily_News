@@ -709,6 +709,21 @@ def test_reservation_keeps_article_sources(tmp: Path):
         check([r["url"] for r in got if r.get("companion_of") == head] == [off["url"]], f"既存の予約に公式の投稿を添えない: {log}")
         check(len(json.loads((st / "scheduled" / "2026-10-18.json").read_text(encoding="utf-8"))) == 1, "過去日の予約を書き換えた")
         check(assemble.restore_reservation_companions("2026-10-20") == [], "添えが冪等でない")
+        # 記事が予約の素材(日付確認の二次情報)を出典にせず、公式の投稿だけを出典にした(実測 2026-10-11 学マスの運営情報まとめ)
+        (tmp / "docs" / "_posts" / "2026-10-19-shiny-tec17.md").write_text(
+            "---\n" + yaml.safe_dump(dict(fm, sources=[{"url": off["url"], "label": "b"}]), allow_unicode=True) + "---\n本文\n",
+            encoding="utf-8")
+        p.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+        assemble.restore_reservation_companions("2026-10-20")
+        got = json.loads(p.read_text(encoding="utf-8"))
+        check([r["url"] for r in got if r.get("companion_of") == head] == [off["url"]],
+              "予約の素材を出典にしなかった記事から、公式の投稿を添えない")
+        # 同じ素材を2本の記事が使い、どちらも予約の url を出典にしていなければ、どの記事か決まらないので添えない
+        (tmp / "docs" / "_posts" / "2026-10-19-shiny-tec17-b.md").write_text(
+            "---\n" + yaml.safe_dump(dict(fm, slug="shiny-tec17-b", sources=[{"url": unused["url"], "label": "c"}]),
+                                     allow_unicode=True) + "---\n本文\n", encoding="utf-8")
+        p.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+        check(assemble.restore_reservation_companions("2026-10-20") == [], "どの記事か決まらない予約に添えた")
     finally:
         assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = saved
         compose.ROOT = croot

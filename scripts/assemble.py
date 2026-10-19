@@ -142,7 +142,8 @@ def companion_rows(entry: dict, fm: dict, mats: dict) -> list[dict]:
 
 def restore_reservation_companions(date: str) -> list[str]:
     """発行日以降の続報予約のうち、添える素材(companion_rows)の無いものに、予約を付けた記事(予約した号の記事で、candidate_ids に
-    予約の元の素材を含み、予約の url を出典にしたもの)の素材から添える。予約を付けた号の素材は load_materials と同じに引く。
+    予約の元の素材を含むもの。複数あれば予約の url を出典にしたもの)の素材から添える。予約の素材を記事が出典にしていなくても引く
+    (実測 2026-10-11 学マスの運営情報まとめ: 日付確認の二次情報を素材に使い、出典は公式の投稿だけ)。予約を付けた号の素材は load_materials と同じに引く。
     2026-10-20 より前の組版は添えなかった。記事が見つからなければそのまま。過去日の予約は書き換えない。冪等。"""
     log, posts, mats = [], {}, {}
     for p in sorted(SCHEDULED.glob("*.json")):
@@ -163,8 +164,12 @@ def restore_reservation_companions(date: str) -> list[str]:
                     if m:
                         posts[on].append(yaml.safe_load(m.group(1)) or {})
                 mats[on] = load_materials(on)
-            fm = next((f for f in posts[on] if r.get("src_candidate_id") in (f.get("candidate_ids") or [])
-                       and r.get("url") in {s.get("url") for s in f.get("sources") or [] if isinstance(s, dict)}), None)
+            # 予約の素材(日付の載った二次情報など)を記事が出典にしないことがあるので、元の素材の id で記事を引く。
+            # 同じ素材を複数の記事が使っていたら、予約の url を出典にした記事に絞る。それでも1本に決まらなければ添えない
+            hits = [f for f in posts[on] if r.get("src_candidate_id") in (f.get("candidate_ids") or [])]
+            if len(hits) > 1:
+                hits = [f for f in hits if r.get("url") in {s.get("url") for s in f.get("sources") or [] if isinstance(s, dict)}]
+            fm = hits[0] if len(hits) == 1 else None
             add = companion_rows(r, fm, mats[on]) if fm else []
             out += add; n += len(add)
         if n:

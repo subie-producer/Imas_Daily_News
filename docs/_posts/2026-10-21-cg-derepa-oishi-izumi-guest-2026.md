@@ -28,4 +28,4 @@ lede_fact_ids:
 - F1
 - F2
 ---
-放送は2026年10月21日。大木咲絵子宛てのメールは「CINDERELLA PARTY!」メールフォーム（https://columbia.jp/idolmaster/derepaform/）から送れる。 <!-- F1 F2 -->
+放送は2026年10月21日。番組ではメールを公式フォームから募集している。 <!-- F1 F2 -->

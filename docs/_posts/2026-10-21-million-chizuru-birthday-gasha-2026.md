@@ -28,17 +28,13 @@ sources:
 - label: ミリオンライブ！ シアターデイズ【公式】「二階堂千鶴Birthdayセット2026」(2026年10月20日)
   url: https://x.com/imasml_theater/status/2112559716484231547
   type: 公式
-- label: アイドルマスターチャンネル／アイマスch「二階堂千鶴の誕生日を祝う動画公開」(2026年10月20日)
+- label: アイドルマスターチャンネル／アイマスch「二階堂千鶴の誕生日を祝う動画公開」(2026年10月21日)
   url: https://x.com/imas_ch/status/2112559471121912272
   type: 公式
-- label: アイドルマスターチャンネル「二階堂千鶴さん お誕生日おめでとうございます」(2026年10月20日)
-  url: https://www.youtube.com/shorts/bbvPICVDOk4
-  type: 公式
-event_date: "2026-10-20"
+event_date: "2026-10-21"
 title_fact_ids:
 - F1
 - F19
-- F9
 lede_fact_ids:
 - F1
 - F19
@@ -58,4 +54,4 @@ lede_fact_ids:
 
 10月20日の千鶴の誕生日に合わせ、バースデーライブが行われ、ミリシタの劇場外観が千鶴の特別仕様に装飾された。ホワイトボードにはロコ、横山奈緒、豊川風花、最上静香、四条貴音がメッセージを書いた。 <!-- F10 F11 F12 F13 -->
 
-アイマスchは10月21日に千鶴のお祝いムービーを公開した。YouTube Shortsで視聴できる：https://www.youtube.com/shorts/bbvPICVDOk4 <!-- F28 F29 F30 F31 -->
+アイマスchは10月21日、千鶴の誕生日を祝う投稿を行い、お祝いムービーを公開した。 <!-- F28 F29 -->

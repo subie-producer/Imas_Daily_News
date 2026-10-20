@@ -21,6 +21,9 @@ sources:
 - label: アイドルマスター公式「初星学園放送部 お便り投稿フォーム」(日付記載なし)
   url: https://idolmaster-official.jp/gakuen/gakuenradio/contact/
   type: 公式
+- label: 初星学園放送部 10月21日放送回ゲスト
+  url: https://x.com/gkmas_official/status/2110352420979228694
+  type: 公式
 event_date: "2026-10-21"
 title_fact_ids:
 - F6

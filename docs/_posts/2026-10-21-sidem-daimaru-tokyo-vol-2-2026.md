@@ -19,6 +19,9 @@ sources:
 - label: 大丸東京店公式 SHOP BLOG「THE IDOLM@STER SideM vol.2」(2026年10月19日)
   url: https://shopblog.dmdepart.jp/tokyo/detail/?cd=029172&scd=000770
   type: 当事者
+- label: 【SideM】「THE IDOLM@STER SideM × DAIMARU MATSUZAKAYA」ポップアップショップが大丸東京店・大丸梅田店にて開催！ (2026年10月7日)
+  url: https://idolmaster-official.jp/news/01_20080
+  type: 公式
 event_date: "2026-10-28"
 title_fact_ids:
 - F1
@@ -34,6 +37,9 @@ verified_facts:
 - id: N2
   text: 大丸東京店の所在地は東京都千代田区丸の内1-9-1。
   url: https://shopblog.dmdepart.jp/tokyo/detail/?cd=029172&scd=000770
+- id: N3
+  text: 公式告知は「THE IDOLM@STER SideM × DAIMARU MATSUZAKAYA」ポップアップショップの大丸東京店開催を案内し、会期を2026年10月28日から11月10日、会場を大丸東京店3階イベントスペースと記載している。描き下ろしビジュアルやアパレル・雑貨の展開も告知している。
+  url: https://idolmaster-official.jp/news/01_20080
 ---
 会場は大丸東京店3階イベントスペースA（東京都千代田区丸の内1-9-1）。会期は10月28日（水）から11月10日（火）まで。一部日程・時間帯は入場にデジタル入場整理券が必要で、配布方法などは決まり次第掲載される。 <!-- F1 F2 F3 F4 N1 N2 -->
 

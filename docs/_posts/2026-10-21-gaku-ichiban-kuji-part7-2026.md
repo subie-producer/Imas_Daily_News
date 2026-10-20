@@ -9,7 +9,7 @@ corrections: []
 candidate_ids:
 - 202610210224-grok-51
 title: 学マス一番くじPart7、12月12日発売
-lede: 「一番くじ 学園アイドルマスター Part7」が12月12日から順次発売され、1回850円で、ローソンなどで取り扱う。
+lede: 「一番くじ 学園アイドルマスター Part7」は12月12日から順次発売予定で、1回850円。ローソンなどで取り扱う。
 tags:
 - 学マス
 - くじ
@@ -25,7 +25,6 @@ sources:
 event_date: "2026-12-12"
 title_fact_ids:
 - F1
-- N1
 lede_fact_ids:
 - F1
 - N1

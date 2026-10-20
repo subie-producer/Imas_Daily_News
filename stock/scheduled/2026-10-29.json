@@ -357,7 +357,8 @@
   "event_date": "2026-12-12",
   "deadline": "2026-11-01",
   "src_candidate_id": "202610060732-explore-2",
-  "companion_of": "sched-2026-10-29-xr-live-revival-asobistore-general-advance-2026-締切前"
+  "companion_of": "sched-2026-10-29-xr-live-revival-asobistore-general-advance-2026-締切前",
+  "src_dedup_key": "xr-live-revival-2026"
  },
  {
   "id": "sched-2026-10-29-valiv-situation-voice-2026-10-締切前",
@@ -511,7 +512,8 @@
   "verify": "confirmed",
   "event_date": "2026-10-29",
   "src_candidate_id": "202610152332-explore-3",
-  "companion_of": "sched-2026-10-29-tours-series-2-2026-開始"
+  "companion_of": "sched-2026-10-29-tours-series-2-2026-開始",
+  "src_dedup_key": "tourmas-series2-sidem-additions-2026"
  },
  {
   "id": "sched-2026-10-29-sidem-2dmv-goods-vol3-締切前",
@@ -600,7 +602,8 @@
   "verify": "confirmed",
   "deadline": "2026-11-01",
   "src_candidate_id": "202610151232-watch-1",
-  "companion_of": "sched-2026-10-29-sidem-2dmv-goods-vol3-締切前"
+  "companion_of": "sched-2026-10-29-sidem-2dmv-goods-vol3-締切前",
+  "src_dedup_key": "sidem-2dmv-goods-vol3"
  },
  {
   "id": "sched-2026-10-29-tourmas-s2-2026-sidem-開始",
@@ -706,7 +709,8 @@
   "verify": "confirmed",
   "event_date": "2026-10-29",
   "src_candidate_id": "202610180732-explore-0",
-  "companion_of": "sched-2026-10-29-tourmas-s2-2026-sidem-開始"
+  "companion_of": "sched-2026-10-29-tourmas-s2-2026-sidem-開始",
+  "src_dedup_key": "tours-s2-sidem-2026"
  },
  {
   "id": "sched-2026-10-29-tours-s2-halloween-2026-開始",
@@ -808,7 +812,8 @@
   "event_date": "2026-12-12",
   "deadline": "2026-11-01",
   "src_candidate_id": "202610191833-watch-2",
-  "companion_of": "sched-2026-10-29-sidem-315pro-night-goods-2026-締切前"
+  "companion_of": "sched-2026-10-29-sidem-315pro-night-goods-2026-締切前",
+  "src_dedup_key": "sidem-315pro-night-goods-2026"
  },
  {
   "id": "sched-2026-10-29-sidem-315pro-night-goods-2026-締切前-src2",
@@ -848,6 +853,31 @@
   "verify": "unconfirmed",
   "deadline": "2026-11-01",
   "src_candidate_id": "202610200229-grok-56",
-  "companion_of": "sched-2026-10-29-sidem-315pro-night-goods-2026-締切前"
+  "companion_of": "sched-2026-10-29-sidem-315pro-night-goods-2026-締切前",
+  "src_dedup_key": "sidem-mfes-315pronight-goods-2026"
+ },
+ {
+  "id": "sched-2026-10-29-tours-s2-happy-halloween-card-2026-開始",
+  "dedup_key": "tours-s2-happy-halloween-card-2026",
+  "brand": "joint",
+  "subject": "ツアマスS2弾 稼働開始",
+  "kind": "開始",
+  "note": "S2弾が稼働し、クリエイトライブ専用『ハッピーハロウィン!』カードで5演出を試せる",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-29",
+  "title": "ツアマス S2弾カード『ハッピーハロウィン!』",
+  "url": "https://x.com/TOURS_imas/status/2112121586379542777",
+  "source_type": "公式",
+  "facts": [
+   "S2弾に演出セットカード『ハッピーハロウィン!』が登場する。",
+   "クリエイトライブを選択してカードをスキャンすると、5つの演出が使える。",
+   "このカードはクリエイトライブ専用。",
+   "S2弾は10月29日稼働開始予定。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-29",
+  "src_candidate_id": "202610210224-grok-77"
  }
 ]

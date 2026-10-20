@@ -1,0 +1,33 @@
+{
+ "decisions": {
+  "x-com-5": {
+   "action": "article",
+   "angle": "アイマスMOR419が本日放送され、若林直美さん・汐谷文康さんの新パーソナリティ初回を聴ける",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。当日トリガーあり。既報(10/1・10/8)のメール締切は過ぎており、放送開始を伝える"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-x-com-5",
+    "brand": "765",
+    "rank": "small",
+    "angle": "アイマスMOR419が本日放送され、若林直美さん・汐谷文康さんの新パーソナリティ初回を聴ける",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "x-com-5",
+    "candidate_ids": [
+     "sched-2026-10-21-x-com-5-開始"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

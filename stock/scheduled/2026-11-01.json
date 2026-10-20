@@ -60,7 +60,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202609012336-watch-3",
-  "companion_of": "sched-2026-11-01-sidem-super-retrose-party-2026-その他"
+  "companion_of": "sched-2026-11-01-sidem-super-retrose-party-2026-その他",
+  "src_dedup_key": "sidem-seibu-yuen-2026"
  },
  {
   "id": "sched-2026-11-01-sidem-super-retrose-party-2026-その他-src2",
@@ -91,7 +92,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202609020238-grok-39",
-  "companion_of": "sched-2026-11-01-sidem-super-retrose-party-2026-その他"
+  "companion_of": "sched-2026-11-01-sidem-super-retrose-party-2026-その他",
+  "src_dedup_key": "sidem-super-retrose-party-2026"
  },
  {
   "id": "sched-2026-11-01-gaku-after-school-namco-2026-終了",
@@ -232,7 +234,8 @@
   "event_date": "2026-09-25",
   "deadline": "2026-11-01",
   "src_candidate_id": "202609160734-explore-8",
-  "companion_of": "sched-2026-11-01-gaku-after-school-namco-2026-終了"
+  "companion_of": "sched-2026-11-01-gaku-after-school-namco-2026-終了",
+  "src_dedup_key": "gaku-after-school-namco-2026"
  },
  {
   "id": "sched-2026-11-01-sidem-popup-werewolf-2026-10-終了",
@@ -619,7 +622,8 @@
   "event_date": "2026-12-12",
   "deadline": "2026-11-01",
   "src_candidate_id": "202610060732-explore-2",
-  "companion_of": "sched-2026-11-01-xr-live-revival-asobistore-general-advance-2026-締切"
+  "companion_of": "sched-2026-11-01-xr-live-revival-asobistore-general-advance-2026-締切",
+  "src_dedup_key": "xr-live-revival-2026"
  },
  {
   "id": "sched-2026-11-01-valiv-situation-voice-2026-10-締切",
@@ -797,7 +801,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "sched-2026-10-13-sidem-seibuen-retro-rose-party-2026-発売",
-  "companion_of": "sched-2026-11-01-sidem-seibuen-retro-party-2026-その他"
+  "companion_of": "sched-2026-11-01-sidem-seibuen-retro-party-2026-その他",
+  "src_dedup_key": "sidem-seibuen-retro-rose-party-2026"
  },
  {
   "id": "sched-2026-11-01-miki-hoshii-future-spotlight-comifuro-2026-開幕",
@@ -870,7 +875,8 @@
   "verify": "unconfirmed",
   "event_date": "2026-11-01",
   "src_candidate_id": "202610132336-watch-10",
-  "companion_of": "sched-2026-11-01-miki-hoshii-future-spotlight-comifuro-2026-開幕"
+  "companion_of": "sched-2026-11-01-miki-hoshii-future-spotlight-comifuro-2026-開幕",
+  "src_dedup_key": "miki-hoshii-future-spotlight-comifuro-2026"
  },
  {
   "id": "sched-2026-11-01-sidem-2dmv-goods-vol3-締切",
@@ -959,7 +965,8 @@
   "verify": "confirmed",
   "deadline": "2026-11-01",
   "src_candidate_id": "202610151232-watch-1",
-  "companion_of": "sched-2026-11-01-sidem-2dmv-goods-vol3-締切"
+  "companion_of": "sched-2026-11-01-sidem-2dmv-goods-vol3-締切",
+  "src_dedup_key": "sidem-2dmv-goods-vol3"
  },
  {
   "id": "sched-2026-11-01-cg-apple-of-my-ai-2027-締切前",
@@ -1069,7 +1076,8 @@
   "event_date": "2027-02-13",
   "deadline": "2026-10-18",
   "src_candidate_id": "202610171233-watch-0",
-  "companion_of": "sched-2026-11-01-cg-apple-of-my-ai-2027-締切前"
+  "companion_of": "sched-2026-11-01-cg-apple-of-my-ai-2027-締切前",
+  "src_dedup_key": "athome-xr-live-apple-of-my-ai-2027"
  },
  {
   "id": "sched-2026-11-01-cg-apple-of-my-ai-2027-締切前-src2",
@@ -1111,7 +1119,8 @@
   "verify": "confirmed",
   "deadline": "2026-11-04",
   "src_candidate_id": "sched-2026-10-18-cg-xr-live-apple-of-my-ai-2027-締切",
-  "companion_of": "sched-2026-11-01-cg-apple-of-my-ai-2027-締切前"
+  "companion_of": "sched-2026-11-01-cg-apple-of-my-ai-2027-締切前",
+  "src_dedup_key": "cg-xr-live-apple-of-my-ai-2027"
  },
  {
   "id": "sched-2026-11-01-cg-apple-of-my-ai-2027-締切前-src3",
@@ -1156,7 +1165,8 @@
   "event_date": "2027-02-13",
   "deadline": "2026-10-18",
   "src_candidate_id": "sched-2026-10-18-cg-athome-apple-of-my-ai-2026-締切",
-  "companion_of": "sched-2026-11-01-cg-apple-of-my-ai-2027-締切前"
+  "companion_of": "sched-2026-11-01-cg-apple-of-my-ai-2027-締切前",
+  "src_dedup_key": "cg-athome-apple-of-my-ai-2026"
  },
  {
   "id": "sched-2026-11-01-cinderella-15th-anniversary-party-2026-締切前",
@@ -1244,7 +1254,8 @@
   "event_date": "2026-11-28",
   "deadline": "2026-10-19",
   "src_candidate_id": "sched-2026-10-19-cg-15th-party-2026-締切",
-  "companion_of": "sched-2026-11-01-cinderella-15th-anniversary-party-2026-締切前"
+  "companion_of": "sched-2026-11-01-cinderella-15th-anniversary-party-2026-締切前",
+  "src_dedup_key": "cg-15th-party-2026"
  },
  {
   "id": "sched-2026-11-01-sidem-315pro-night-goods-2026-締切",
@@ -1317,7 +1328,8 @@
   "event_date": "2026-12-12",
   "deadline": "2026-11-01",
   "src_candidate_id": "202610191833-watch-2",
-  "companion_of": "sched-2026-11-01-sidem-315pro-night-goods-2026-締切"
+  "companion_of": "sched-2026-11-01-sidem-315pro-night-goods-2026-締切",
+  "src_dedup_key": "sidem-315pro-night-goods-2026"
  },
  {
   "id": "sched-2026-11-01-sidem-315pro-night-goods-2026-締切-src2",
@@ -1357,6 +1369,7 @@
   "verify": "unconfirmed",
   "deadline": "2026-11-01",
   "src_candidate_id": "202610200229-grok-56",
-  "companion_of": "sched-2026-11-01-sidem-315pro-night-goods-2026-締切"
+  "companion_of": "sched-2026-11-01-sidem-315pro-night-goods-2026-締切",
+  "src_dedup_key": "sidem-mfes-315pronight-goods-2026"
  }
 ]

@@ -47,7 +47,8 @@
   "verify": "unconfirmed",
   "event_date": "2026-08-30",
   "src_candidate_id": "202608310229-grok-120",
-  "companion_of": "sched-2026-12-12-sidem-joypolis3-2026-開始"
+  "companion_of": "sched-2026-12-12-sidem-joypolis3-2026-開始",
+  "src_dedup_key": "sidem-topic-095"
  },
  {
   "id": "sched-2026-12-12-sidem-m-fes-2026-theme-cd-その他",
@@ -192,7 +193,8 @@
   "event_date": "2026-12-12",
   "deadline": "2026-11-17",
   "src_candidate_id": "202609130733-explore-11",
-  "companion_of": "sched-2026-12-12-sidem-m-fes-2026-theme-cd-その他"
+  "companion_of": "sched-2026-12-12-sidem-m-fes-2026-theme-cd-その他",
+  "src_dedup_key": "sidem-315pronight-mfest-2026"
  },
  {
   "id": "sched-2026-12-12-sidem-315pronight-public-recording-2026-開始",
@@ -634,5 +636,30 @@
   "src_candidate_id": "202610060732-explore-2",
   "event_date": "2026-12-12",
   "deadline": "2026-11-01"
+ },
+ {
+  "id": "sched-2026-12-12-ichiban-kuji-part7-2026-発売",
+  "dedup_key": "ichiban-kuji-part7-2026",
+  "brand": "gaku",
+  "subject": "一番くじ 学園アイドルマスター Part7発売",
+  "kind": "発売",
+  "note": "ローソンなどの店頭で順次発売。1回850円でくじを引ける",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-12-12",
+  "title": "一番くじ 学園アイドルマスター Part7",
+  "url": "https://x.com/gkmas_official/status/2112504923975979353",
+  "source_type": "公式",
+  "facts": [
+   "12月12日から順次発売。",
+   "描きおろしイラストのテーマは「聖歌隊×星座」。",
+   "フィギュア賞にリーリヤ、清夏、莉波が登場。",
+   "詳細ページ: https://1kuji.com/products/gkmas07",
+   "リンク: https://1kuji.com/products/gkmas07",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-12-12",
+  "src_candidate_id": "202610210224-grok-51"
  }
 ]

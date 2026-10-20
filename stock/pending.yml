@@ -299,6 +299,7 @@
   subject: 学マス H.I.F編 燕実装・ガラクタロードガシャ
   watch: 10/20 20時の生配信で発表される詳細(ガシャ開催期間・燕実装時期)。判明次第 triggers へ
   added_on: '2026-10-20'
+  removed_on: '2026-10-21'
 - dedup_key: shiny-song-2dmv-teaser-2026-10
   brand: shiny
   subject: シャニソン 近日実装予定の2DMV

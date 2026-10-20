@@ -61,7 +61,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202609012336-watch-3",
-  "companion_of": "sched-2026-11-22-sidem-super-retrose-party-2026-その他"
+  "companion_of": "sched-2026-11-22-sidem-super-retrose-party-2026-その他",
+  "src_dedup_key": "sidem-seibu-yuen-2026"
  },
  {
   "id": "sched-2026-11-22-sidem-super-retrose-party-2026-その他-src2",
@@ -92,7 +93,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202609020238-grok-39",
-  "companion_of": "sched-2026-11-22-sidem-super-retrose-party-2026-その他"
+  "companion_of": "sched-2026-11-22-sidem-super-retrose-party-2026-その他",
+  "src_dedup_key": "sidem-super-retrose-party-2026"
  },
  {
   "id": "sched-2026-11-22-sidem-seibuen-retro-party-2026-その他",
@@ -229,6 +231,7 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "sched-2026-10-13-sidem-seibuen-retro-rose-party-2026-発売",
-  "companion_of": "sched-2026-11-22-sidem-seibuen-retro-party-2026-その他"
+  "companion_of": "sched-2026-11-22-sidem-seibuen-retro-party-2026-その他",
+  "src_dedup_key": "sidem-seibuen-retro-rose-party-2026"
  }
 ]

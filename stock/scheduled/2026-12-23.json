@@ -70,7 +70,8 @@
   "verify": "confirmed",
   "event_date": "2026-12-23",
   "src_candidate_id": "202609110225-explore-7",
-  "companion_of": "sched-2026-12-23-shiny-song-for-prism-album-2026-発売"
+  "companion_of": "sched-2026-12-23-shiny-song-for-prism-album-2026-発売",
+  "src_dedup_key": "shanison-new-album-store-bonus-2026"
  },
  {
   "id": "sched-2026-12-23-sidem-monthly-theme-song-14-beit-tokuten-発売",

@@ -1,5 +1,9 @@
 {
  "imas-portal": [
+  "https://idolmaster-official.jp/news/01_20075",
+  "https://idolmaster-official.jp/news/01_20151",
+  "https://idolmaster-official.jp/news/01_20090",
+  "https://idolmaster-official.jp/news/01_20182",
   "https://idolmaster-official.jp/news/01_20147",
   "https://idolmaster-official.jp/news/01_20170",
   "https://idolmaster-official.jp/news/01_20179",
@@ -769,6 +773,8 @@
   "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20230623.html"
  ],
  "imasnews765": [
+  "https://imasnews765.com/?p=32579",
+  "https://imasnews765.com/?p=32576",
   "https://imasnews765.com/?p=32571",
   "https://imasnews765.com/?p=32568",
   "https://imasnews765.com/?p=32566",
@@ -980,5 +986,15 @@
   "https://lantis.jp/sidem/extra/index.html#20260912_2"
  ],
  "_pending": [],
- "_given_up": []
+ "_given_up": [
+  {
+   "source_id": "imasnews765",
+   "brand": "general",
+   "url": "https://imasnews765.com/?p=32576",
+   "title": "「劇場版 アイドルマスター SideM F＠NTASTIC BATTLE FES ～Who goes first～」公開記念舞台挨拶の実施が決定",
+   "source_type": "ファン",
+   "csr": false,
+   "given_up_at": "2026-10-20T20:30:21+09:00"
+  }
+ ]
 }

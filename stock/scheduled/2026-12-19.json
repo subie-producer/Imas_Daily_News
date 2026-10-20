@@ -41,7 +41,8 @@
   "verify": "confirmed",
   "event_date": "2026-08-27",
   "src_candidate_id": "202608270220-grok-44",
-  "companion_of": "sched-2026-12-19-shiny-stillblue-asobipremium-lottery-開幕"
+  "companion_of": "sched-2026-12-19-shiny-stillblue-asobipremium-lottery-開幕",
+  "src_dedup_key": "shiny-refrac7ions-general-preorder-2026-08-27"
  },
  {
   "id": "sched-2026-12-19-refrac7ions-still-blue-2026-開幕",

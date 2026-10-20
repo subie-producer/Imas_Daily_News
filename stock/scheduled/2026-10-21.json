@@ -44,7 +44,8 @@
   "via": "grok",
   "verify": "unconfirmed",
   "src_candidate_id": "202609110225-grok-82",
-  "companion_of": "sched-2026-10-21-sidem-monthly-theme-song-12-cafe-parade-2026-発売"
+  "companion_of": "sched-2026-10-21-sidem-monthly-theme-song-12-cafe-parade-2026-発売",
+  "src_dedup_key": "2-caf-parade-cd"
  },
  {
   "id": "sched-2026-10-21-sidem-monthly-theme-song-12-cafe-parade-2026-発売-src2",
@@ -115,7 +116,8 @@
   "verify": "unconfirmed",
   "event_date": "2026-10-21",
   "src_candidate_id": "202609110225-grok-83",
-  "companion_of": "sched-2026-10-21-sidem-monthly-theme-song-12-cafe-parade-2026-発売"
+  "companion_of": "sched-2026-10-21-sidem-monthly-theme-song-12-cafe-parade-2026-発売",
+  "src_dedup_key": "3-cd-p-ssion-challenge-we-are-315-monthly-theme-song-12-caf-parade"
  },
  {
   "id": "sched-2026-10-21-cg-isetan-osechi-2027-開始",
@@ -310,7 +312,8 @@
   "via": "explore",
   "verify": "confirmed",
   "src_candidate_id": "202609170735-explore-31",
-  "companion_of": "sched-2026-10-21-cg-isetan-osechi-2027-開始"
+  "companion_of": "sched-2026-10-21-cg-isetan-osechi-2027-開始",
+  "src_dedup_key": "cg-isetan-osechi-2027"
  },
  {
   "id": "sched-2026-10-21-joint-topic-37-開始",
@@ -383,7 +386,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609260237-grok-49",
-  "companion_of": "sched-2026-10-21-joint-topic-37-開始"
+  "companion_of": "sched-2026-10-21-joint-topic-37-開始",
+  "src_dedup_key": "joint-topic-38"
  },
  {
   "id": "sched-2026-10-21-x-com-5-開始",
@@ -509,7 +513,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202610110238-grok-98",
-  "companion_of": "sched-2026-10-21-shiny-party-2026-終了"
+  "companion_of": "sched-2026-10-21-shiny-party-2026-終了",
+  "src_dedup_key": "shiny-casting-theme-voice-gacha-monster-2026"
  },
  {
   "id": "sched-2026-10-21-shiny-party-2026-終了-src2",
@@ -539,7 +544,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202610110238-grok-99",
-  "companion_of": "sched-2026-10-21-shiny-party-2026-終了"
+  "companion_of": "sched-2026-10-21-shiny-party-2026-終了",
+  "src_dedup_key": "shiny-casting-theme-voice-gacha-hazuki-2026"
  },
  {
   "id": "sched-2026-10-21-sidem-fes-parade-story-2026-発売",
@@ -730,7 +736,8 @@
   "verify": "unconfirmed",
   "event_date": "2026-10-21",
   "src_candidate_id": "202610170225-grok-98",
-  "companion_of": "sched-2026-10-21-sidem-tvguide-2026-10-30-発売"
+  "companion_of": "sched-2026-10-21-sidem-tvguide-2026-10-30-発売",
+  "src_dedup_key": "sidem-weekly-tvguide-2026-10-30"
  },
  {
   "id": "sched-2026-10-21-asobi-store-maintenance-2026-10-開始",
@@ -894,7 +901,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202610190222-grok-34",
-  "companion_of": "sched-2026-10-21-shiny-technical-challenge-cup-17-2026-結果"
+  "companion_of": "sched-2026-10-21-shiny-technical-challenge-cup-17-2026-結果",
+  "src_dedup_key": "shiny-technical-challenge-cup-17"
  },
  {
   "id": "sched-2026-10-21-shiny-technical-challenge-cup-17-2026-結果-src2",
@@ -917,7 +925,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202610190222-grok-35",
-  "companion_of": "sched-2026-10-21-shiny-technical-challenge-cup-17-2026-結果"
+  "companion_of": "sched-2026-10-21-shiny-technical-challenge-cup-17-2026-結果",
+  "src_dedup_key": "shiny-xr-black-reverie"
  },
  {
   "id": "sched-2026-10-21-gaku-china-another-idol-guaranteed-gacha-2026-終了",

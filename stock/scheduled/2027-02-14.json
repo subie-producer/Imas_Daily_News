@@ -242,7 +242,8 @@
   "event_date": "2027-02-13",
   "deadline": "2026-10-18",
   "src_candidate_id": "202609290228-explore-0",
-  "companion_of": "sched-2027-02-14-cg-xr-live-apple-of-my-ai-2027-千秋楽"
+  "companion_of": "sched-2027-02-14-cg-xr-live-apple-of-my-ai-2027-千秋楽",
+  "src_dedup_key": "cg-athome-xr-live-apple-of-my-ai-2027"
  },
  {
   "id": "sched-2027-02-14-cg-athome-apple-of-my-ai-2026-千秋楽",
@@ -395,7 +396,8 @@
   "event_date": "2027-02-13",
   "deadline": "2026-10-18",
   "src_candidate_id": "202610171233-watch-0",
-  "companion_of": "sched-2027-02-14-cg-apple-of-my-ai-2027-千秋楽"
+  "companion_of": "sched-2027-02-14-cg-apple-of-my-ai-2027-千秋楽",
+  "src_dedup_key": "athome-xr-live-apple-of-my-ai-2027"
  },
  {
   "id": "sched-2027-02-14-cg-apple-of-my-ai-2027-千秋楽-src2",
@@ -437,7 +439,8 @@
   "verify": "confirmed",
   "deadline": "2026-11-04",
   "src_candidate_id": "sched-2026-10-18-cg-xr-live-apple-of-my-ai-2027-締切",
-  "companion_of": "sched-2027-02-14-cg-apple-of-my-ai-2027-千秋楽"
+  "companion_of": "sched-2027-02-14-cg-apple-of-my-ai-2027-千秋楽",
+  "src_dedup_key": "cg-xr-live-apple-of-my-ai-2027"
  },
  {
   "id": "sched-2027-02-14-cg-apple-of-my-ai-2027-千秋楽-src3",
@@ -482,6 +485,7 @@
   "event_date": "2027-02-13",
   "deadline": "2026-10-18",
   "src_candidate_id": "sched-2026-10-18-cg-athome-apple-of-my-ai-2026-締切",
-  "companion_of": "sched-2027-02-14-cg-apple-of-my-ai-2027-千秋楽"
+  "companion_of": "sched-2027-02-14-cg-apple-of-my-ai-2027-千秋楽",
+  "src_dedup_key": "cg-athome-apple-of-my-ai-2026"
  }
 ]

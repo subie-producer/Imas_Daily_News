@@ -43,7 +43,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202609012336-watch-3",
-  "companion_of": "sched-2026-10-30-sidem-super-retrose-party-2026-開幕"
+  "companion_of": "sched-2026-10-30-sidem-super-retrose-party-2026-開幕",
+  "src_dedup_key": "sidem-seibu-yuen-2026"
  },
  {
   "id": "sched-2026-10-30-sidem-super-retrose-party-2026-開幕-src2",
@@ -73,7 +74,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202609020238-grok-39",
-  "companion_of": "sched-2026-10-30-sidem-super-retrose-party-2026-開幕"
+  "companion_of": "sched-2026-10-30-sidem-super-retrose-party-2026-開幕",
+  "src_dedup_key": "sidem-super-retrose-party-2026"
  },
  {
   "id": "sched-2026-10-30-gaku-tsukimura-temarite-figure-締切",
@@ -327,7 +329,8 @@
   "event_date": "2026-10-10",
   "deadline": "2026-10-10",
   "src_candidate_id": "202610071233-watch-0",
-  "companion_of": "sched-2026-10-30-deremi-warmup-stream-2026-10-30-開始"
+  "companion_of": "sched-2026-10-30-deremi-warmup-stream-2026-10-30-開始",
+  "src_dedup_key": "deremi-live-fure-aka-radio-2026"
  },
  {
   "id": "sched-2026-10-30-sidem-seibuen-retro-party-2026-開幕",
@@ -428,7 +431,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202610082332-explore-1",
-  "companion_of": "sched-2026-10-30-sidem-seibuen-retro-party-2026-開幕"
+  "companion_of": "sched-2026-10-30-sidem-seibuen-retro-party-2026-開幕",
+  "src_dedup_key": "sidem-seibuen-cho-retroseparty-2026"
  },
  {
   "id": "sched-2026-10-30-sidem-seibuen-retro-rose-party-2026-開幕",
@@ -547,7 +551,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202610100218-grok-78",
-  "companion_of": "sched-2026-10-30-sidem-seibuen-retro-rose-party-2026-開幕"
+  "companion_of": "sched-2026-10-30-sidem-seibuen-retro-rose-party-2026-開幕",
+  "src_dedup_key": "sidem-seibuen-retrose-party-2026"
  },
  {
   "id": "sched-2026-10-30-valiv-letora-birthday-live-2026-締切",
@@ -626,5 +631,129 @@
   "src_candidate_id": "202610162334-watch-0",
   "event_date": "2026-11-11",
   "deadline": "2026-12-13"
+ },
+ {
+  "id": "sched-2026-10-30-gamushara-rerun-gacha-2026-開始",
+  "dedup_key": "gamushara-rerun-gacha-2026",
+  "brand": "gaku",
+  "subject": "学マス 燕アナザー＆がむしゃらに行こう！復刻ガシャ開始",
+  "kind": "開始",
+  "note": "11時から燕アナザーガシャ(初回10連無料)と復刻ガシャを引ける",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-30",
+  "title": "がむしゃらに行こう！復刻ガシャ",
+  "url": "https://x.com/gkmas_official/status/2112509513790320757",
+  "source_type": "公式",
+  "facts": [
+   "復刻「がむしゃらに行こう！」ことね＆手毬ガシャ開催予定。",
+   "雨夜 燕のアナザーアイドルが新登場。",
+   "アナザーアイドルガシャは初回10連無料。",
+   "有償1回限定SSR確定アナザーセレクトガシャも同時開催予定。",
+   "開催期間: 10/30(金) 11:00～11/7(土) 10:59まで(予定)",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-07",
+  "src_candidate_id": "202610210224-grok-39"
+ },
+ {
+  "id": "sched-2026-10-30-miracle-rerun-gacha-2026-終了",
+  "dedup_key": "miracle-rerun-gacha-2026",
+  "brand": "gaku",
+  "subject": "ナナウ復刻ガシャ終了",
+  "kind": "終了",
+  "note": "10時59分で終了。最終日にガシャを引ける",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-30",
+  "title": "ミラクルナナウ復刻・アナザーアイドルガシャ",
+  "url": "https://x.com/gkmas_official/status/2112509412581749216",
+  "source_type": "公式",
+  "facts": [
+   "復刻「ミラクルナナウ(ﾟ∀ﾟ)！」麻央＆広ガシャ開催予定。",
+   "雨夜 燕のアナザーアイドルが新登場。",
+   "アナザーアイドルガシャは初回10連無料。",
+   "有償1回限定SSR確定アナザーセレクトガシャも同時開催予定。",
+   "開催期間: 10/22(木) 11:00～10/30(金) 10:59まで(予定)",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-30",
+  "src_candidate_id": "202610210224-grok-38"
+ },
+ {
+  "id": "sched-2026-10-30-miracle-rerun-gacha-2026-終了-src1",
+  "dedup_key": "miracle-rerun-gacha-2026",
+  "brand": "gaku",
+  "subject": "ナナウ復刻ガシャ終了",
+  "kind": "終了",
+  "note": "10時59分で終了。最終日にガシャを引ける",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-30",
+  "title": "ミラクルナナウ(ﾟ∀ﾟ)！雨夜燕歌唱紹介",
+  "url": "https://x.com/gkmas_official/status/2112509611219828991",
+  "source_type": "公式",
+  "facts": [
+   "雨夜 燕が「ミラクルナナウ(ﾟ∀ﾟ)！」を歌唱するライブシーンを紹介。",
+   "作詞・作曲・編曲：YUC'e",
+   "ガシャ開催期間: 10/22(木) 11:00～10/30(金) 10:59まで(予定)",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-30",
+  "src_candidate_id": "202610210224-grok-37",
+  "companion_of": "sched-2026-10-30-miracle-rerun-gacha-2026-終了",
+  "src_dedup_key": "miracle-nanau-2026"
+ },
+ {
+  "id": "sched-2026-10-30-producer-seminar-2026-開始",
+  "dedup_key": "producer-seminar-2026",
+  "brand": "gaku",
+  "subject": "あさり先生のプロデュースゼミ開始",
+  "kind": "開始",
+  "note": "11時から普段と異なるプロデュースを遊べる",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-30",
+  "title": "あさり先生のプロデュースゼミ",
+  "url": "https://x.com/gkmas_official/status/2112509166912946627",
+  "source_type": "公式",
+  "facts": [
+   "開催期間: 10/30(金) 11:00～11/9(月) 10:59まで(予定)",
+   "普段とは異なるプロデュースを楽しめる。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-09",
+  "src_candidate_id": "202610210224-grok-40"
+ },
+ {
+  "id": "sched-2026-10-30-sidem-315-night-2026-10-30-開始",
+  "dedup_key": "sidem-315-night-2026-10-30",
+  "brand": "sidem",
+  "subject": "315プロNight! 10/30放送回",
+  "kind": "開始",
+  "note": "寺島拓篤さん・土岐隼一さん・比留間俊哉さん出演回を視聴できる(放送時間は変更予定)",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-30",
+  "title": "315プロNight! 10月30日放送回のパーソナリティと感想募集",
+  "url": "https://x.com/SideM_lantis/status/2112514173733122376",
+  "source_type": "準公式",
+  "facts": [
+   "10月はSideM11th感想月間と告知された。",
+   "10月30日放送回のパーソナリティは寺島拓篤さん、土岐隼一さん、比留間俊哉さん。",
+   "10月30日の放送時間は変更となり、変更後の時間は後日案内予定。",
+   "SideM11thの感想・イラスト・お便りを募集中。",
+   "お便りは今週中に送るよう案内された。",
+   "応募フォーム: https://t.co/mK2p6Csyb0",
+   "リンク: https://t.co/mK2p6Csyb0",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-10-30",
+  "src_candidate_id": "202610210224-grok-115"
  }
 ]

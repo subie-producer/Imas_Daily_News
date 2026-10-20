@@ -254,6 +254,7 @@
   "event_date": "2027-03-27",
   "deadline": "2026-10-28",
   "src_candidate_id": "202609272335-watch-1",
-  "companion_of": "sched-2027-03-28-shiny-283-production-live-performance-noctchill-千秋楽"
+  "companion_of": "sched-2027-03-28-shiny-283-production-live-performance-noctchill-千秋楽",
+  "src_dedup_key": "shiny-noctchill-live-2027"
  }
 ]

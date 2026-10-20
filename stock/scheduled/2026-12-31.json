@@ -44,6 +44,7 @@
   "verify": "confirmed",
   "deadline": "2026-12-31",
   "src_candidate_id": "202609102333-explore-15",
-  "companion_of": "sched-2026-12-31-gaku-garakuta-road-disc2-exchange-2026-締切"
+  "companion_of": "sched-2026-12-31-gaku-garakuta-road-disc2-exchange-2026-締切",
+  "src_dedup_key": "gaku-garaku-road-disc2-exchange-2026"
  }
 ]

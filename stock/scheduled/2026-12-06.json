@@ -109,6 +109,7 @@
   "event_date": "2026-09-12",
   "deadline": "2026-12-06",
   "src_candidate_id": "202609111236-explore-14",
-  "companion_of": "sched-2026-12-06-sidem-joypolis-3-2026-終了"
+  "companion_of": "sched-2026-12-06-sidem-joypolis-3-2026-終了",
+  "src_dedup_key": "sidem-joypolis-3-2026"
  }
 ]

@@ -53,7 +53,8 @@
   "verify": "confirmed",
   "event_date": "2027-07-24",
   "src_candidate_id": "202609070234-explore-8",
-  "companion_of": "sched-2027-07-24-765-961-idol-ultimate-once-and-for-all-2027-開幕"
+  "companion_of": "sched-2027-07-24-765-961-idol-ultimate-once-and-for-all-2027-開幕",
+  "src_dedup_key": "765-961-idol-ultimate-once-and-for-all"
  },
  {
   "id": "sched-2027-07-24-765-961-xr-live-2027-開幕",
@@ -170,6 +171,7 @@
   "event_date": "2027-07-24",
   "deadline": "2026-10-28",
   "src_candidate_id": "202609292335-watch-0",
-  "companion_of": "sched-2027-07-24-765-961-xr-live-2027-開幕"
+  "companion_of": "sched-2027-07-24-765-961-xr-live-2027-開幕",
+  "src_dedup_key": "765-961-ultimate-live-2027"
  }
 ]

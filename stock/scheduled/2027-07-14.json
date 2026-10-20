@@ -66,7 +66,8 @@
   "verify": "confirmed",
   "event_date": "2026-09-12",
   "src_candidate_id": "202609140234-explore-9",
-  "companion_of": "sched-2027-07-14-sidem-11th-live-bluray-2027-発売"
+  "companion_of": "sched-2027-07-14-sidem-11th-live-bluray-2027-発売",
+  "src_dedup_key": "sidem-11th-live-bluray-store-benefits-2026"
  },
  {
   "id": "sched-2027-07-14-sidem-11th-live-bluray-store-benefits-2026-発売",

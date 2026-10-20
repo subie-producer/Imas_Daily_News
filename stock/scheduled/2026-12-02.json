@@ -142,7 +142,8 @@
   "event_date": "2026-12-12",
   "deadline": "2026-11-17",
   "src_candidate_id": "202609130733-explore-11",
-  "companion_of": "sched-2026-12-02-sidem-m-fes-2026-theme-cd-発売"
+  "companion_of": "sched-2026-12-02-sidem-m-fes-2026-theme-cd-発売",
+  "src_dedup_key": "sidem-315pronight-mfest-2026"
  },
  {
   "id": "sched-2026-12-02-sidem-m-fes-seasons-greetings-party-2026-発売",
@@ -253,7 +254,8 @@
   "verify": "confirmed",
   "deadline": "2026-10-12",
   "src_candidate_id": "202609251835-watch-1",
-  "companion_of": "sched-2026-12-02-sidem-topic-60-発売"
+  "companion_of": "sched-2026-12-02-sidem-topic-60-発売",
+  "src_dedup_key": "sidem-producer-card-wave3-2026"
  },
  {
   "id": "sched-2026-12-02-2nd-single-3rd-single-asobi-store-2026-発売",
@@ -358,7 +360,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "sched-2026-10-04-x-com-26-締切",
-  "companion_of": "sched-2026-12-02-2nd-single-3rd-single-asobi-store-2026-発売"
+  "companion_of": "sched-2026-12-02-2nd-single-3rd-single-asobi-store-2026-発売",
+  "src_dedup_key": "x-com-26"
  },
  {
   "id": "sched-2026-12-02-sidem-producer-card-wave3-2026-発売",

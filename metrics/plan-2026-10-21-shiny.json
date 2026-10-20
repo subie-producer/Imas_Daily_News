@@ -1,0 +1,275 @@
+{
+ "decisions": {
+  "shiny-rinze-birthday-jewel-sale-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "2日間限定セールは10/19〜20で終了済み"
+  },
+  "shiny-rinze-birthday-fan-posts-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿で単体記事にしない。shiny面はculture枠なし"
+  },
+  "shiny-mattari-hbtk-october-2026": {
+   "action": "article",
+   "angle": "まったりHBTK10月度放送。ゲストは涼本あきほさん・河野ひよりさん、おたよりは10/22頃まで、CHAIN悩み相談室へのアドバイスも募集",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ゲスト・相談室・来週放送は既報に無い新事実、おたより締切も3日以内"
+  },
+  "shiny-style-collection-2026": {
+   "action": "article",
+   "angle": "SHINY Style COLLECTION第2弾の新商品「Sonic Heart (and Signal)」キーホルダー。フレーム内でユニットロゴやモチーフが動く(受注は10/25まで)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/19既報に無い動くキーホルダーの仕様が新事実"
+  },
+  "shiny-luka-piece-package-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・パッケージ(8.5th第3弾スタンプガシャ、UR斑鳩ルカ/風野灯織ピース付きパッケージ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "販売中の定常運営"
+  },
+  "shiny-hiori-piece-package-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・パッケージ(8.5th第3弾スタンプガシャ、UR斑鳩ルカ/風野灯織ピース付きパッケージ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ルカと同じ定常運営まとめへ"
+  },
+  "shiny-web-manga-660-2026": {
+   "action": "article",
+   "angle": "web4コマ漫画第660話『プロとして』を公開、風野灯織の話",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "事実は少ないが新規公開なので短い記事"
+  },
+  "shiny-kondo-reina-hong-kong-fanmeeting-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "声優個人の香港ファンミ、出典も未確認"
+  },
+  "shiny-85-anniversary-stamp-gacha-phase3-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・パッケージ(8.5th第3弾スタンプガシャ、UR斑鳩ルカ/風野灯織ピース付きパッケージ)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "期間中最大110連無料のガシャ。単体のトリガー無し"
+  },
+  "taiyoukei-rinze-fan-post-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人のSNS投稿"
+  },
+  "shiny-pioneer-impact-3dmv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "x-com-imassc-prism-status-2100782865265086577",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "3DMVは10/1既報、ジュエルセール第2弾の終了が本日で同一出来事"
+  },
+  "shiny-party-2026": {
+   "action": "article",
+   "angle": "シャニソン シャイニーパーティーが本日23時59分に終了。ログインでSSRサポート【スプーキー・パーリー】郁田はるきを入手、交換所とミッションも最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の終了日"
+  },
+  "x-com-imassc-prism-status-2100782865265086577": {
+   "action": "article",
+   "angle": "シャニソンのデュアラブルインパクト記念ジュエルセールは本日11時59分まで、ASOBI STOREで10,000円のプリズムジュエル10,000個を購入できる最終日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Pioneer Impact 3DMVの主題を統合"
+  },
+  "shiny-technical-challenge-cup-17-2026": {
+   "action": "article",
+   "angle": "第17回テクニカルチャレンジ杯の結果発表期間が本日12時から24日11時59分まで始まる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の結果発表開始日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-mattari-hbtk-october-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "まったりHBTK10月度放送。ゲストは涼本あきほさん・河野ひよりさん、おたよりは10/22頃まで、CHAIN悩み相談室へのアドバイスも募集",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-mattari-hbtk-october-2026",
+    "candidate_ids": [
+     "202610210224-grok-25"
+    ]
+   },
+   {
+    "slug": "shiny-style-collection-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "SHINY Style COLLECTION第2弾の新商品「Sonic Heart (and Signal)」キーホルダー。フレーム内でユニットロゴやモチーフが動く(受注は10/25まで)",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-style-collection-2026",
+    "candidate_ids": [
+     "202610210224-grok-26"
+    ]
+   },
+   {
+    "slug": "shiny-web-manga-660-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "web4コマ漫画第660話『プロとして』を公開、風野灯織の話",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "shiny-web-manga-660-2026",
+    "candidate_ids": [
+     "202610210224-grok-30"
+    ]
+   },
+   {
+    "slug": "shiny-party-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン シャイニーパーティーが本日23時59分に終了。ログインでSSRサポート【スプーキー・パーリー】郁田はるきを入手、交換所とミッションも最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-party-2026",
+    "candidate_ids": [
+     "sched-2026-10-21-shiny-party-2026-終了",
+     "sched-2026-10-21-shiny-party-2026-終了-src1",
+     "sched-2026-10-21-shiny-party-2026-終了-src2"
+    ]
+   },
+   {
+    "slug": "shiny-x-com-imassc-prism-status-2100782865265086577",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニソンのデュアラブルインパクト記念ジュエルセールは本日11時59分まで、ASOBI STOREで10,000円のプリズムジュエル10,000個を購入できる最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "x-com-imassc-prism-status-2100782865265086577",
+    "candidate_ids": [
+     "sched-2026-10-21-x-com-imassc-prism-status-2100782865265086577-締切",
+     "sched-2026-10-21-shiny-pioneer-impact-3dmv-2026-締切"
+    ]
+   },
+   {
+    "slug": "shiny-technical-challenge-cup-17-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "第17回テクニカルチャレンジ杯の結果発表期間が本日12時から24日11時59分まで始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "shiny-technical-challenge-cup-17-2026",
+    "candidate_ids": [
+     "sched-2026-10-21-shiny-technical-challenge-cup-17-2026-結果",
+     "sched-2026-10-21-shiny-technical-challenge-cup-17-2026-結果-src1",
+     "sched-2026-10-21-shiny-technical-challenge-cup-17-2026-結果-src2"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "開催中のガシャ・パッケージ(8.5th第3弾スタンプガシャ、UR斑鳩ルカ/風野灯織ピース付きパッケージ)",
+    "lead_score": 0,
+    "dedup_key": "shiny-luka-piece-package-2026",
+    "candidate_ids": [
+     "202610210224-grok-27",
+     "202610210224-grok-29",
+     "202610210224-grok-32"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-rinze-birthday-jewel-sale-2026",
+    "reason": "その他",
+    "note": "2日間限定セールは10/19〜20で終了済み"
+   },
+   {
+    "dedup_key": "shiny-rinze-birthday-fan-posts-2026",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿で単体記事にしない。shiny面はculture枠なし"
+   },
+   {
+    "dedup_key": "shiny-kondo-reina-hong-kong-fanmeeting-goods-2026",
+    "reason": "個人の話題",
+    "note": "声優個人の香港ファンミ、出典も未確認"
+   },
+   {
+    "dedup_key": "taiyoukei-rinze-fan-post-2026",
+    "reason": "個人の話題",
+    "note": "ファン個人のSNS投稿"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -224,6 +224,7 @@
   "event_date": "2026-10-16",
   "deadline": "2026-11-29",
   "src_candidate_id": "sched-2026-10-16-gakumas-seibu-chichibu-yukemuri-2026-開幕",
-  "companion_of": "sched-2026-11-26-gaku-seibu-chichibu-yukemuri-2026-締切前"
+  "companion_of": "sched-2026-11-26-gaku-seibu-chichibu-yukemuri-2026-締切前",
+  "src_dedup_key": "gakumas-seibu-chichibu-yukemuri-2026"
  }
 ]

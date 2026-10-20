@@ -1,0 +1,26 @@
+{
+ "decisions": {
+  "asobi-store-maintenance-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "ミリオン面が同じ21日10〜13時のメンテを記事化済み(million-asobi-store-maintenance-2026-10-20-21)。既報(10/18・10/19号)にも無い新事実なし。"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "asobi-store-maintenance-2026-10",
+    "reason": "重複",
+    "note": "ミリオン面が同じ21日10〜13時のメンテを記事化済み(million-asobi-store-maintenance-2026-10-20-21)。既報(10/18・10/19号)にも無い新事実なし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

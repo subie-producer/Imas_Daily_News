@@ -254,7 +254,8 @@
   "event_date": "2027-03-27",
   "deadline": "2026-10-28",
   "src_candidate_id": "202609272335-watch-1",
-  "companion_of": "sched-2027-03-27-shiny-283-production-live-performance-noctchill-開幕"
+  "companion_of": "sched-2027-03-27-shiny-283-production-live-performance-noctchill-開幕",
+  "src_dedup_key": "shiny-noctchill-live-2027"
  },
  {
   "id": "sched-2027-03-27-shiny-noctchill-live-2027-開幕",
@@ -376,7 +377,8 @@
   "event_date": "2027-03-27",
   "deadline": "2026-10-12",
   "src_candidate_id": "202610111234-watch-4",
-  "companion_of": "sched-2027-03-27-shiny-noctchill-live-2027-開幕"
+  "companion_of": "sched-2027-03-27-shiny-noctchill-live-2027-開幕",
+  "src_dedup_key": "shiny-noctchill-2027-live-presale"
  },
  {
   "id": "sched-2027-03-27-shiny-noctchill-live-2027-開幕-src2",
@@ -588,6 +590,7 @@
   "event_date": "2027-03-27",
   "deadline": "2026-09-27",
   "src_candidate_id": "sched-2026-10-12-shiny-283-production-live-performance-noctchill-締切",
-  "companion_of": "sched-2027-03-27-shiny-noctchill-live-2027-開幕"
+  "companion_of": "sched-2027-03-27-shiny-noctchill-live-2027-開幕",
+  "src_dedup_key": "shiny-283-production-live-performance-noctchill"
  }
 ]

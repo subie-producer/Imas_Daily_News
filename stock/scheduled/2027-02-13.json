@@ -215,7 +215,8 @@
   "event_date": "2027-02-13",
   "deadline": "2026-10-18",
   "src_candidate_id": "202609290228-explore-0",
-  "companion_of": "sched-2027-02-13-cg-xr-live-apple-of-my-ai-2027-開幕"
+  "companion_of": "sched-2027-02-13-cg-xr-live-apple-of-my-ai-2027-開幕",
+  "src_dedup_key": "cg-athome-xr-live-apple-of-my-ai-2027"
  },
  {
   "id": "sched-2027-02-13-cg-athome-apple-of-my-ai-2026-開幕",
@@ -368,7 +369,8 @@
   "event_date": "2027-02-13",
   "deadline": "2026-10-18",
   "src_candidate_id": "202610171233-watch-0",
-  "companion_of": "sched-2027-02-13-cg-apple-of-my-ai-2027-開幕"
+  "companion_of": "sched-2027-02-13-cg-apple-of-my-ai-2027-開幕",
+  "src_dedup_key": "athome-xr-live-apple-of-my-ai-2027"
  },
  {
   "id": "sched-2027-02-13-cg-apple-of-my-ai-2027-開幕-src2",
@@ -410,7 +412,8 @@
   "verify": "confirmed",
   "deadline": "2026-11-04",
   "src_candidate_id": "sched-2026-10-18-cg-xr-live-apple-of-my-ai-2027-締切",
-  "companion_of": "sched-2027-02-13-cg-apple-of-my-ai-2027-開幕"
+  "companion_of": "sched-2027-02-13-cg-apple-of-my-ai-2027-開幕",
+  "src_dedup_key": "cg-xr-live-apple-of-my-ai-2027"
  },
  {
   "id": "sched-2027-02-13-cg-apple-of-my-ai-2027-開幕-src3",
@@ -455,6 +458,7 @@
   "event_date": "2027-02-13",
   "deadline": "2026-10-18",
   "src_candidate_id": "sched-2026-10-18-cg-athome-apple-of-my-ai-2026-締切",
-  "companion_of": "sched-2027-02-13-cg-apple-of-my-ai-2027-開幕"
+  "companion_of": "sched-2027-02-13-cg-apple-of-my-ai-2027-開幕",
+  "src_dedup_key": "cg-athome-apple-of-my-ai-2026"
  }
 ]

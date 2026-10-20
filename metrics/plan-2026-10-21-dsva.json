@@ -1,0 +1,153 @@
+{
+ "decisions": {
+  "va-liv-3rd-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/18号に名古屋・東京の日程と時刻、先行抽選まで掲載済み。新事実なし、先行締切(11/15)も3日以内でない"
+  },
+  "valiv-aikatsu-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/16・10/18・10/19号で同じ宇宙×アイカツアカデミー！のコラボダンスを記事化済み"
+  },
+  "manaka-japanese-ramen-simulator-stream-2026-10-20": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/20 21時の配信で既に終了。当日のトリガーも無い"
+  },
+  "dsva-2026-2nd-liver-ability-results": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/20号で能力評価の正式ステータス化を掲載済み。facts に新事実なし"
+  },
+  "manaka-halloween-pumpkin-recipe-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "募集は10/20に締切済み。10/17・10/20号で掲載済みで、10/31の企画は今日のトリガーでない"
+  },
+  "valiv-situation-voice-2026-oct": {
+   "action": "article",
+   "angle": "vα-liv10月のシチュエーションボイス「今日からいきなり!?お義兄ちゃんボイス」が各3,300円で11月1日まで販売中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "過去の記事・prior なし。灯里愛夏・上水流宇宙・レトラ・全員集合の4種、販売期間は10/10 18:00〜11/1 23:59"
+  },
+  "letora-birthday-online-live-2026-lv": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17号に二次受付(10/30締切、10/31当落)を掲載済み。今日は締切3日以内でもなく新事実も無い"
+  },
+  "valiv-meecos-morning-stream-2026-10-21": {
+   "action": "article",
+   "angle": "きょう朝8時から宇宙chで「メエこす 朝活」、真未夢メエが上水流宇宙の配信に出演",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。10/16号の予告の当日の知らせ。視聴先は宇宙ch"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-situation-voice-2026-oct",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "vα-liv10月のシチュエーションボイス「今日からいきなり!?お義兄ちゃんボイス」が各3,300円で11月1日まで販売中",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "valiv-situation-voice-2026-oct",
+    "candidate_ids": [
+     "202610210224-grok-73"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-meecos-morning-stream-2026-10-21",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "きょう朝8時から宇宙chで「メエこす 朝活」、真未夢メエが上水流宇宙の配信に出演",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "valiv-meecos-morning-stream-2026-10-21",
+    "candidate_ids": [
+     "sched-2026-10-21-valiv-meecos-morning-stream-2026-10-21-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "va-liv-3rd-live-2027",
+    "reason": "既報",
+    "note": "10/18号に名古屋・東京の日程と時刻、先行抽選まで掲載済み。新事実なし、先行締切(11/15)も3日以内でない"
+   },
+   {
+    "dedup_key": "valiv-aikatsu-collab-2026",
+    "reason": "既報",
+    "note": "10/16・10/18・10/19号で同じ宇宙×アイカツアカデミー！のコラボダンスを記事化済み"
+   },
+   {
+    "dedup_key": "manaka-japanese-ramen-simulator-stream-2026-10-20",
+    "reason": "その他",
+    "note": "10/20 21時の配信で既に終了。当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "dsva-2026-2nd-liver-ability-results",
+    "reason": "既報",
+    "note": "10/20号で能力評価の正式ステータス化を掲載済み。facts に新事実なし"
+   },
+   {
+    "dedup_key": "manaka-halloween-pumpkin-recipe-2026",
+    "reason": "既報",
+    "note": "募集は10/20に締切済み。10/17・10/20号で掲載済みで、10/31の企画は今日のトリガーでない"
+   },
+   {
+    "dedup_key": "letora-birthday-online-live-2026-lv",
+    "reason": "既報",
+    "note": "10/17号に二次受付(10/30締切、10/31当落)を掲載済み。今日は締切3日以内でもなく新事実も無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

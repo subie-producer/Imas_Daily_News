@@ -119,7 +119,8 @@
   "event_date": "2026-10-22",
   "deadline": "2026-11-29",
   "src_candidate_id": "202609161837-explore-30",
-  "companion_of": "sched-2026-11-29-sidem-renaissance-315-fitness-2026-終了"
+  "companion_of": "sched-2026-11-29-sidem-renaissance-315-fitness-2026-終了",
+  "src_dedup_key": "sidem-315-fitness-renaissance-2026"
  },
  {
   "id": "sched-2026-11-29-sidem-renaissance-315-fitness-2026-終了-src2",
@@ -196,7 +197,8 @@
   "event_date": "2026-10-22",
   "deadline": "2026-11-29",
   "src_candidate_id": "202609161837-watch-2",
-  "companion_of": "sched-2026-11-29-sidem-renaissance-315-fitness-2026-終了"
+  "companion_of": "sched-2026-11-29-sidem-renaissance-315-fitness-2026-終了",
+  "src_dedup_key": "sidem-renaissance-2026"
  },
  {
   "id": "sched-2026-11-29-sidem-renaissance-2026-終了",
@@ -673,6 +675,7 @@
   "event_date": "2026-10-16",
   "deadline": "2026-11-29",
   "src_candidate_id": "sched-2026-10-16-gakumas-seibu-chichibu-yukemuri-2026-開幕",
-  "companion_of": "sched-2026-11-29-gaku-seibu-chichibu-yukemuri-2026-終了"
+  "companion_of": "sched-2026-11-29-gaku-seibu-chichibu-yukemuri-2026-終了",
+  "src_dedup_key": "gakumas-seibu-chichibu-yukemuri-2026"
  }
 ]

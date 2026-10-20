@@ -244,6 +244,9 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - smt-cinema.com        # 合議で追加: 会場の新宿ピカデリーで舞台挨拶を催し、前売りを販売する映画館運営側
+  - sega.jp               # 合議で追加: セガのラッキーくじ販売元。sega.co.jpで社名確認、sega.jpは403
+  - shopblog.dmdepart.jp  # 合議で追加: 会場の大丸東京店の公式ブログで、展示の告知と販売情報を発信
   - vitalartbox.info      # 合議で追加: 大阪で劇場運営とイベント制作。連絡先は同社。イベント頁に主催表記なし
   - uzm.jp                # 合議で追加: 販売代理ファイス(f-ice.jp/uzm/gakumas)。相手の不明は運営者
   - itemhouse.skr.jp      # 合議で追加: 複数店の商品を扱う販売サイト。対象品は販売元の予約商品(ショップ名記載)
@@ -426,6 +429,8 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - bbvPICVDOk4         # 機械で追加: @imas-official「10/21 二階堂千鶴さん Happy Birthday‼」
+    - Mdyk3h5-TQE         # 機械で追加: @hatsuboshi_gakuen「初星学園 「Roar」Official Music Vide」
     - PMe-Q5hKxac         # 機械で追加: @imas-official「10/18 小早川紗枝さん Happy Birthday‼」
     - 4_EuV8zaiok         # 機械で追加: @imas-official「10/18 水本ゆかりさん Happy Birthday‼」
     - 4YS_StMDK6I         # 機械で追加: @project_imas_va-liv「【期間限定公開中】PROJECT IM@S vα-liv 1」
@@ -592,6 +597,12 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - koge_asupara        # 合議で追加: 個人アカウントによる学マス篠澤広のファン投稿
+    - ddeumbugi           # 合議で追加: 個人アカウントによる北上麗花の秋のファンイラスト投稿
+    - KuR35231710         # 合議で追加: 個人アカウントによる太陽系凛世のファン投稿
+    - Houjitya_Cream      # 合議で追加: 個人アカウントによるSideMでらますコラボ店舗訪問の報告
+    - Fuzuki_myb_x86      # 合議で追加: 個人アカウントによる二階堂千鶴の誕生日祝いのファン投稿
+    - Corospo_Lilja       # 合議で追加: 個人アカウントによる秩父祭の湯コラボ訪問の感想報告
     - jegasumi            # 合議で追加: 個人アカウントによる誕生日祝いのファン投稿
     - hotaru_osushi       # 合議で追加: 個人アカウントの感想・関心の発信
     - harukey_BH_M        # 合議で追加: 個人によるファン制作の名刺作品
@@ -853,6 +864,10 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - tllkame             # 合議で追加: 東京レジャーランド亀有店(ゲームセンター)によるツアマス稼働終了告知
+    - seganewsnavi        # 合議で追加: 販売側サイトによるシンデレラくじ発売キャンペーン告知、独立報道ではない
+    - kawasaki_full       # 合議で追加: フルコンプ川崎店によるツアマス確定くじの販売告知
+    - ___na__10           # 合議で追加: 京まふ物販グッズのミニキャライラスト担当として自ら告知
     - fullahead_osu       # 合議で追加: 店舗(大須1号店)によるくじパックの販売
     - abenolucbus         # 合議で追加: シンデレラガールズのPOP UP SHOPを開催する主催・販売側の一次発信
     - lawson_ticket       # 合議で追加: SideM上映会のチケット先行抽選。チケット販売元
@@ -956,6 +971,11 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/odKdocfVW3: 準公式                         # 機械で追加: 展開先 https://asobistore.jp/content/title/Idolmaster/shinyradio/contact/
+  t.co/PHXTrZXZFE: 公式                         # 機械で追加: 展開先 https://va-liv.booth.pm/items/8959817
+  t.co/MdlrfC0LCI: 準公式                         # 機械で追加: 展開先 https://shop.asobistore.jp/products/detail/250322-00-00-comp_01
+  t.co/7vGeJPaJ4M: 公式                         # 機械で追加: 展開先 https://twitter.com/gkmas_official/status/2112504712830574836/photo/1
+  note.com/kijo_mio: ファン                       # 合議で追加: 個人名のnoteで日記を発信。運営者情報なし、個人に紐づく発信
   t.co/UWj9DyM42R: 二次情報                         # 機械で追加: 展開先 https://lnk.to/S.E.M_2DMV
   t.co/Gt69PLU1aE: 当事者                         # 機械で追加: 展開先 https://pjblue.zaiko.io/ja/e/shinsea-fest-2026
   nicovideo.jp/user/1633964: ファン               # 合議で追加: 個人のユーザーページ。動画紹介や声無し生放送などの個人発信

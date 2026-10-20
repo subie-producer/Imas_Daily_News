@@ -41,7 +41,8 @@
   "verify": "confirmed",
   "event_date": "2026-11-21",
   "src_candidate_id": "202608312333-explore-1",
-  "companion_of": "sched-2026-12-27-cg-yamanashi-walk-wander-2026-終了"
+  "companion_of": "sched-2026-12-27-cg-yamanashi-walk-wander-2026-終了",
+  "src_dedup_key": "cg-yamanashi-walk-wander-2026"
  },
  {
   "id": "sched-2026-12-27-cg-yamanashi-walk-wander-2026-終了-src2",
@@ -84,7 +85,8 @@
   "event_date": "2026-11-21",
   "deadline": "2026-12-27",
   "src_candidate_id": "202608312333-explore-25",
-  "companion_of": "sched-2026-12-27-cg-yamanashi-walk-wander-2026-終了"
+  "companion_of": "sched-2026-12-27-cg-yamanashi-walk-wander-2026-終了",
+  "src_dedup_key": "cg-yamanashi-walk-wander-2026"
  },
  {
   "id": "sched-2026-12-27-cg-yamanashi-walk-wander-2026-終了-src3",
@@ -123,7 +125,8 @@
   "event_date": "2026-11-21",
   "deadline": "2026-12-27",
   "src_candidate_id": "202608312333-explore-2",
-  "companion_of": "sched-2026-12-27-cg-yamanashi-walk-wander-2026-終了"
+  "companion_of": "sched-2026-12-27-cg-yamanashi-walk-wander-2026-終了",
+  "src_dedup_key": "cg-yamanashi-walk-wander-overview-2026"
  },
  {
   "id": "sched-2026-12-27-cg-yamanashi-walk-wander-2026-終了-src4",
@@ -165,7 +168,8 @@
   "verify": "unconfirmed",
   "deadline": "2026-09-09",
   "src_candidate_id": "202608312333-explore-3",
-  "companion_of": "sched-2026-12-27-cg-yamanashi-walk-wander-2026-終了"
+  "companion_of": "sched-2026-12-27-cg-yamanashi-walk-wander-2026-終了",
+  "src_dedup_key": "cg-yamanashi-walk-wander-pedometer-2026"
  },
  {
   "id": "sched-2026-12-27-cg-rose-tea-parlor-2026-seoul-終了",

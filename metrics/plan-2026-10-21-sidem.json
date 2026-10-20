@@ -1,0 +1,288 @@
+{
+ "decisions": {
+  "sidem-daimaru-tokyo-vol-2-2026": {
+   "action": "article",
+   "angle": "大丸東京店3階で10月28日〜11月10日にSideMのポップアップ vol.2、描き下ろしビジュアルのトートバッグ・ポーチ・スカーフを販売",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-fbfes-wgf-2026-stage-greeting": {
+   "action": "article",
+   "angle": "劇場版SideMの公開記念舞台挨拶(応援上映)が11月21日に新宿ピカデリーで3回実施、キャスト8名が登壇",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "premiere-stage-greeting(料金3,500円・購入制限)の素材も統合"
+  },
+  "sidem-story-fan-reaction-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のnote投稿の感想で単体記事にしない"
+  },
+  "sidem-315pro-night-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/20記事と同内容。締切11/1は3日以内でなく新事実も無い"
+  },
+  "sidem-fantastic-battle-fes-premiere-stage-greeting-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-fbfes-wgf-2026-stage-greeting",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ舞台挨拶。料金・購入制限の素材を統合"
+  },
+  "sidem-315-night-2026-10-30": {
+   "action": "article",
+   "angle": "「315プロNight!」10月30日回のパーソナリティは寺島拓篤・土岐隼一・比留間俊哉、放送時間は変更で後日案内、11th感想募集中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-m-fes-winter-wonderland-theme-cd-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/20記事に全事実あり、新事実・トリガー無し"
+  },
+  "sidem-cardfolio-vol2-web-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19記事「カードフォリオvol.2、19日18時Web販売」と同じ施策"
+  },
+  "sidem-sems-lifes-side-menu-2dmv-100k-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/14・10/20記事と同内容"
+  },
+  "sidem-royal-chess-lounge-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "池袋店は10/20終了済みで10/20記事に事実あり"
+  },
+  "sidem-deramasu-fan-visit-2026-10-20": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "個人のSNS投稿"
+  },
+  "sidem-monthly-theme-song-12-cafe-parade-2026": {
+   "action": "article",
+   "angle": "MONTHLY THEME SONG 12「Café Parade」が本日発売、店舗特典が各店で付き、封入シリアルコードで『Fes Parade！』も読める",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "fes-parade-storyを統合"
+  },
+  "sidem-fes-parade-story-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-monthly-theme-song-12-cafe-parade-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じCD発売日の特典ストーリー"
+  },
+  "sidem-producer-meeting-ajewelholic-2027": {
+   "action": "article",
+   "angle": "SideMプロミ『AJewelholIc!!!』プレミアム会員先行の当選者の入金は本日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "sidem-tvguide-2026-10-30": {
+   "action": "article",
+   "angle": "週刊TVガイド10/30号が本日発売、SideM 11thキャスト5人の撮りおろしと座談会を掲載",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-daimaru-tokyo-vol-2-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "大丸東京店3階で10月28日〜11月10日にSideMのポップアップ vol.2、描き下ろしビジュアルのトートバッグ・ポーチ・スカーフを販売",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "sidem-daimaru-tokyo-vol-2-2026",
+    "candidate_ids": [
+     "202610200733-explore-10"
+    ]
+   },
+   {
+    "slug": "sidem-fbfes-wgf-2026-stage-greeting",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "劇場版SideMの公開記念舞台挨拶(応援上映)が11月21日に新宿ピカデリーで3回実施、キャスト8名が登壇",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "sidem-fbfes-wgf-2026-stage-greeting",
+    "candidate_ids": [
+     "202610201234-watch-0",
+     "202610202340-explore-35"
+    ]
+   },
+   {
+    "slug": "sidem-315-night-2026-10-30",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「315プロNight!」10月30日回のパーソナリティは寺島拓篤・土岐隼一・比留間俊哉、放送時間は変更で後日案内、11th感想募集中",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "sidem-315-night-2026-10-30",
+    "candidate_ids": [
+     "202610210224-grok-115"
+    ]
+   },
+   {
+    "slug": "sidem-monthly-theme-song-12-cafe-parade-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "MONTHLY THEME SONG 12「Café Parade」が本日発売、店舗特典が各店で付き、封入シリアルコードで『Fes Parade！』も読める",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "sidem-monthly-theme-song-12-cafe-parade-2026",
+    "candidate_ids": [
+     "sched-2026-10-21-sidem-monthly-theme-song-12-cafe-parade-2026-発売",
+     "sched-2026-10-21-sidem-monthly-theme-song-12-cafe-parade-2026-発売-src1",
+     "sched-2026-10-21-sidem-monthly-theme-song-12-cafe-parade-2026-発売-src2",
+     "sched-2026-10-21-sidem-fes-parade-story-2026-発売"
+    ]
+   },
+   {
+    "slug": "sidem-producer-meeting-ajewelholic-2027",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "SideMプロミ『AJewelholIc!!!』プレミアム会員先行の当選者の入金は本日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-producer-meeting-ajewelholic-2027",
+    "candidate_ids": [
+     "sched-2026-10-21-sidem-producer-meeting-ajewelholic-2027-締切"
+    ]
+   },
+   {
+    "slug": "sidem-tvguide-2026-10-30",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "週刊TVガイド10/30号が本日発売、SideM 11thキャスト5人の撮りおろしと座談会を掲載",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "sidem-tvguide-2026-10-30",
+    "candidate_ids": [
+     "sched-2026-10-21-sidem-tvguide-2026-10-30-発売",
+     "sched-2026-10-21-sidem-tvguide-2026-10-30-発売-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-story-fan-reaction-2026-10",
+    "reason": "個人の話題",
+    "note": "個人のnote投稿の感想で単体記事にしない"
+   },
+   {
+    "dedup_key": "sidem-315pro-night-goods-2026",
+    "reason": "既報",
+    "note": "10/20記事と同内容。締切11/1は3日以内でなく新事実も無い"
+   },
+   {
+    "dedup_key": "sidem-m-fes-winter-wonderland-theme-cd-2026",
+    "reason": "既報",
+    "note": "10/20記事に全事実あり、新事実・トリガー無し"
+   },
+   {
+    "dedup_key": "sidem-cardfolio-vol2-web-2026",
+    "reason": "既報",
+    "note": "10/19記事「カードフォリオvol.2、19日18時Web販売」と同じ施策"
+   },
+   {
+    "dedup_key": "sidem-sems-lifes-side-menu-2dmv-100k-2026",
+    "reason": "既報",
+    "note": "10/14・10/20記事と同内容"
+   },
+   {
+    "dedup_key": "sidem-royal-chess-lounge-2026",
+    "reason": "既報",
+    "note": "池袋店は10/20終了済みで10/20記事に事実あり"
+   },
+   {
+    "dedup_key": "sidem-deramasu-fan-visit-2026-10-20",
+    "reason": "個人の話題",
+    "note": "個人のSNS投稿"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -81,7 +81,8 @@
   "via": "explore",
   "verify": "confirmed",
   "src_candidate_id": "202609102333-explore-9",
-  "companion_of": "sched-2026-11-25-sidem-monthly-theme-song-13-jupiter-2026-発売"
+  "companion_of": "sched-2026-11-25-sidem-monthly-theme-song-13-jupiter-2026-発売",
+  "src_dedup_key": "sidem-monthly-theme-song-13-jupiter-benefits-2026"
  },
  {
   "id": "sched-2026-11-25-million-battle-of-theater11-black-lips-2026-発売",
@@ -564,5 +565,28 @@
   "via": "explore",
   "verify": "confirmed",
   "src_candidate_id": "202610140732-explore-1"
+ },
+ {
+  "id": "sched-2026-11-25-derepa-master-cd-2026-発売",
+  "dedup_key": "derepa-master-cd-2026",
+  "brand": "cg",
+  "subject": "デレパCD『でれぱ 拾年の宴＆デレパの神曲』発売日",
+  "kind": "発売",
+  "note": "2枚組CD(税込4,000円)がコロムビアミュージックショップ限定で発売される",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-11-25",
+  "title": "デレパカバーCD発売決定",
+  "url": "https://x.com/imas_columbia/status/2112113227077222686",
+  "source_type": "準公式",
+  "facts": [
+   "『THE IDOLM@STER CINDERELLA PARTY! M@STER ~でれぱ 拾年の宴＆デレパの神曲~』は11月25日発売。",
+   "カバー30曲を収録する。",
+   "リンク: https://x.com/i/article/2107041315649417216",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-25",
+  "src_candidate_id": "202610210224-grok-87"
  }
 ]

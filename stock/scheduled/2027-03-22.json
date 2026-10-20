@@ -53,7 +53,8 @@
   "verify": "confirmed",
   "event_date": "2026-09-24",
   "src_candidate_id": "202609240734-explore-8",
-  "companion_of": "sched-2027-03-22-va-liv-3rd-live-2027-千秋楽"
+  "companion_of": "sched-2027-03-22-va-liv-3rd-live-2027-千秋楽",
+  "src_dedup_key": "valiv-latest-info-special-2026-09-24"
  },
  {
   "id": "sched-2027-03-22-va-liv-3rd-live-2027-千秋楽-src2",
@@ -85,7 +86,8 @@
   "verify": "confirmed",
   "event_date": "2027-01-30",
   "src_candidate_id": "202609250223-grok-40",
-  "companion_of": "sched-2027-03-22-va-liv-3rd-live-2027-千秋楽"
+  "companion_of": "sched-2027-03-22-va-liv-3rd-live-2027-千秋楽",
+  "src_dedup_key": "dsva-24"
  },
  {
   "id": "sched-2027-03-22-va-liv-3rd-live-2027-千秋楽-src3",
@@ -113,7 +115,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609250223-grok-41",
-  "companion_of": "sched-2027-03-22-va-liv-3rd-live-2027-千秋楽"
+  "companion_of": "sched-2027-03-22-va-liv-3rd-live-2027-千秋楽",
+  "src_dedup_key": "dsva-25"
  },
  {
   "id": "sched-2027-03-22-va-liv-3rd-live-2027-千秋楽-src4",
@@ -140,7 +143,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609250223-grok-43",
-  "companion_of": "sched-2027-03-22-va-liv-3rd-live-2027-千秋楽"
+  "companion_of": "sched-2027-03-22-va-liv-3rd-live-2027-千秋楽",
+  "src_dedup_key": "dsva-27"
  },
  {
   "id": "sched-2027-03-22-shiny-orchestra-radiant-chord-2027-開始",
@@ -221,6 +225,7 @@
   "verify": "confirmed",
   "event_date": "2027-03-22",
   "src_candidate_id": "202609262335-watch-1",
-  "companion_of": "sched-2027-03-22-shiny-orchestra-radiant-chord-2027-開始"
+  "companion_of": "sched-2027-03-22-shiny-orchestra-radiant-chord-2027-開始",
+  "src_dedup_key": "shiny-orchestra-concert-2027"
  }
 ]

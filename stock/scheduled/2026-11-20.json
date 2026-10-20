@@ -139,7 +139,8 @@
   "verify": "confirmed",
   "event_date": "2026-11-20",
   "src_candidate_id": "202609150230-explore-8",
-  "companion_of": "sched-2026-11-20-sidem-fantastic-battle-fes-movie-2026-開幕"
+  "companion_of": "sched-2026-11-20-sidem-fantastic-battle-fes-movie-2026-開幕",
+  "src_dedup_key": "sidem-fantastic-battle-fes-movie-2026"
  },
  {
   "id": "sched-2026-11-20-dijimas-cg-2026-開幕",
@@ -432,7 +433,8 @@
   "event_date": "2027-07-24",
   "deadline": "2026-10-28",
   "src_candidate_id": "202609292335-watch-0",
-  "companion_of": "sched-2026-11-20-765-961-xr-live-2027-締切前"
+  "companion_of": "sched-2026-11-20-765-961-xr-live-2027-締切前",
+  "src_dedup_key": "765-961-ultimate-live-2027"
  },
  {
   "id": "sched-2026-11-20-sidem-fantastic-battle-fes-movie-weekly-footage-2026-開幕",

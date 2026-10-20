@@ -140,7 +140,8 @@
   "verify": "unconfirmed",
   "deadline": "2026-11-13",
   "src_candidate_id": "202609172335-explore-6",
-  "companion_of": "sched-2026-11-13-million-anime-onkyo-earphone-2026-締切"
+  "companion_of": "sched-2026-11-13-million-anime-onkyo-earphone-2026-締切",
+  "src_dedup_key": "million-ova-voice-earphone-2026"
  },
  {
   "id": "sched-2026-11-13-medicos-e-net-44-締切前",
@@ -314,7 +315,8 @@
   "verify": "confirmed",
   "event_date": "2026-10-08",
   "src_candidate_id": "sched-2026-10-08-medicos-cyberplanet-popup-2026-開幕",
-  "companion_of": "sched-2026-11-13-million-cyber-planet-popup-2026-締切前"
+  "companion_of": "sched-2026-11-13-million-cyber-planet-popup-2026-締切前",
+  "src_dedup_key": "medicos-cyberplanet-popup-2026"
  },
  {
   "id": "sched-2026-11-13-million-cyber-planet-popup-2026-締切前-src2",
@@ -430,7 +432,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "sched-2026-10-08-medicos-e-net-44-開幕",
-  "companion_of": "sched-2026-11-13-million-cyber-planet-popup-2026-締切前"
+  "companion_of": "sched-2026-11-13-million-cyber-planet-popup-2026-締切前",
+  "src_dedup_key": "medicos-e-net-44"
  },
  {
   "id": "sched-2026-11-13-cinderella-yokohama-cosmoworld-collab-2026-開幕",

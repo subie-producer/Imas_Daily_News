@@ -244,6 +244,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - smt-cinema.com        # 合議で追加: 会場の新宿ピカデリーで舞台挨拶を催し、前売りを販売する映画館運営側
   - sega.jp               # 合議で追加: セガのラッキーくじ販売元。sega.co.jpで社名確認、sega.jpは403
   - shopblog.dmdepart.jp  # 合議で追加: 会場の大丸東京店の公式ブログで、展示の告知と販売情報を発信
   - vitalartbox.info      # 合議で追加: 大阪で劇場運営とイベント制作。連絡先は同社。イベント頁に主催表記なし
@@ -958,6 +959,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/7vGeJPaJ4M: 公式                         # 機械で追加: 展開先 https://twitter.com/gkmas_official/status/2112504712830574836/photo/1
   note.com/kijo_mio: ファン                       # 合議で追加: 個人名のnoteで日記を発信。運営者情報なし、個人に紐づく発信
   t.co/UWj9DyM42R: 二次情報                         # 機械で追加: 展開先 https://lnk.to/S.E.M_2DMV
   t.co/Gt69PLU1aE: 当事者                         # 機械で追加: 展開先 https://pjblue.zaiko.io/ja/e/shinsea-fest-2026

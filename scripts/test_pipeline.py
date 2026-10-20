@@ -1894,6 +1894,41 @@ def test_compose_carry_kept_paper():
 
 
 
+def test_watch_reads_pages_with_fetch_page(tmp: Path):
+    """定点観測の facts 化はページを fetch_page.py で読む。WebFetch は JS を描画せず、まとめサイトの一次ソース(公式ポータルの告知)が
+    見出しだけに見えて、本文を渡したまとめの新着を unreadable と返し、2度目で諦めた(2026-10-20: SideM 劇場版の舞台挨拶)"""
+    import collect
+    argvs = []
+    saved = (pipelib.ROOT, collect.subprocess.run, collect.notify, collect.urllib.request.urlopen)
+
+    class R:
+        returncode, stdout, stderr = 0, '[{"page": 1, "status": "none", "items": []}]', ""
+    try:
+        pipelib.ROOT = tmp
+        collect.subprocess.run = lambda argv, **k: argvs.append(argv) or R()
+        collect.notify = lambda *a, **k: None
+        def boom(req, timeout=20):
+            raise OSError("Connection reset by peer")
+        collect.urllib.request.urlopen = boom
+        got = collect.claude_exec("依頼", timeout=1)
+        prompts = []
+        collect.facts_batch([{"url": "https://example.com/a", "title": "t", "brand": "imas", "csr": False}],
+                            lambda prompt, timeout=0: prompts.append(prompt) or None, {})
+    finally:
+        pipelib.ROOT, collect.subprocess.run, collect.notify, collect.urllib.request.urlopen = saved
+    check(got == [{"page": 1, "status": "none", "items": []}], f"facts 化の出力が読めない: {got!r}")
+    a = argvs[0] if argvs else []
+    allowed = a[a.index("--allowedTools") + 1].split(",") if "--allowedTools" in a else []
+    denied = a[a.index("--disallowedTools") + 1].split(",") if "--disallowedTools" in a else []
+    check("WebFetch" not in allowed and "WebFetch" in denied, f"facts 化が WebFetch でページを読める(JS を描画しない): {a}")
+    check("Bash(python3 scripts/fetch_page.py:*)" in allowed and "Read" in allowed, f"facts 化が fetch_page.py・Read を使えない: {a}")
+    check(prompts and "fetch_page.py" in prompts[0] and "WebFetch で読" not in prompts[0],
+          f"facts 化の依頼にページの読み方(fetch_page.py)が無い: {prompts[:1]!r}")
+    body = prompts[0].split("## 新着ページ")[-1] if prompts else ""
+    check("Connection reset by peer" in body and "fetch_page.py で読むこと" in body,
+          f"取得できなかった新着を fetch_page.py へ回さない: {body!r}")
+
+
 def test_review_reads_sources_like_writer():
     """校閲は出典を執筆と同じ fetch_page.py で読む。WebFetch は JS を描画せず、公式ポータルの告知が見出しだけに見えて、
     執筆が読めた事実を「確認できない」と3巡ブロックし、スタマス5周年の IM＠S RADIO の記事が落ちた(2026-10-13)"""
@@ -10833,6 +10868,7 @@ def main() -> int:
     test_watch_static_page_body(tmp / "ws")
     test_fetch_page_renders_whitespace_only_page()
     test_review_reads_sources_like_writer()
+    test_watch_reads_pages_with_fetch_page(tmp / "wfp")
     test_fetch_rendered_skips_images()
     test_render_failure_keeps_cause(tmp / "rf")
     test_render_failure_reaches_classify_and_verify(tmp / "rfc")

@@ -135,7 +135,7 @@ def fetch_rendered(url: str, timeout: int = 30) -> str:
 
 def rendered_or_note(url: str) -> tuple[str, str]:
     """描画を補いとして使う呼び出し側(facts 化の本文・裏取りの読み直し)向け: (HTML, 失敗の要点)。
-    失敗しても素の HTML や WebFetch で続けられるので止めないが、原因はログと呼び出し側の記録に残す"""
+    失敗しても素の HTML や fetch_page.py で続けられるので止めないが、原因はログと呼び出し側の記録に残す"""
     try:
         return fetch_rendered(url) or "", ""
     except RenderFailed as e:
@@ -145,7 +145,7 @@ def rendered_or_note(url: str) -> tuple[str, str]:
 
 def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     """facts 化に渡す新着ページの HTML: (HTML, 失敗の要点)。描画必須の観測先は描画し、それ以外は素の HTML を取る
-    (素の HTML で本文が空同然なら描画し直す)。取れなければ ("", 要点) で、呼び出し側は WebFetch に任せる。
+    (素の HTML で本文が空同然なら描画し直す)。取れなければ ("", 要点) で、呼び出し側はセッションの fetch_page.py に任せる。
     素の HTML のページも本文を渡す。WebFetch は要約しか返さず、写し(原文どおりの引用)が取れないので読めなかった扱いになる
     (2026-10-09: ランティスの SideM 特典告知2件)"""
     if csr:
@@ -351,7 +351,7 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
         material = "\n\n".join(
             f"### {i + 1}. {b['url']}\n- title: {b['title'] or '(なし)'}\n- brand_hint: {b['brand_hint']}\n"
             + ("- 本文(取得済み):\n" + b["rendered_text"].strip() if b["rendered_text"].strip()
-               else f"- 本文: (取得できず{'(' + b['render_error'][:200] + ')' if b['render_error'] else ''}。URL を WebFetch で読むこと)")
+               else f"- 本文: (取得できず{'(' + b['render_error'][:200] + ')' if b['render_error'] else ''}。URL を fetch_page.py で読むこと)")
             for i, b in enumerate(blobs))
         prompt = render_prompt("watch-facts", RULES=COLLECT_RULES, ITEM=COLLECT_ITEM, MATERIAL=material)
         got = claude_call(prompt, timeout=420)
@@ -686,7 +686,11 @@ def claude_exec(prompt: str, timeout: int = 300):
              "--model", COLLECT_MODEL,
              # 指示と素材はファイルなので **Read が要る**。WebSearch/WebFetch だけに絞っていたら、ファイルを読めずに
              # 420 秒待って落ちた(実測 2026-09-17)
-             "--allowedTools", "Read,WebSearch,WebFetch",
+             # ページは fetch_page.py(JS を描画する)で読ませ、WebFetch は外す。WebFetch は描画しないので、まとめサイトの一次ソース
+             # (公式ポータルの告知)が見出しだけに見え、本文を渡したまとめの新着まで読めなかった扱いになった
+             # (2026-10-20: SideM 劇場版の舞台挨拶。校閲で 10-13 に起きたのと同じ型)
+             "--allowedTools", "Read,WebSearch,Bash(python3 scripts/fetch_page.py:*)",
+             "--disallowedTools", "WebFetch",
              "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
             capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
     except (subprocess.TimeoutExpired, OSError) as e:

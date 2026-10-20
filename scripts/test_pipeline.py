@@ -797,6 +797,8 @@ def test_companion_keeps_source_topic(tmp: Path):
         for name in ("write-article.md", "review-article.md"):
             body = (Path(compose.__file__).resolve().parent.parent / "prompts" / name).read_text(encoding="utf-8")
             check(("other_topic" if name.startswith("write") else "src_dedup_key") in body, f"{name} が別の話題の添えの扱いを指示しない")
+            # キーの表記が違うだけの同じ話題(実データ: 杯の結果発表の予約に添えた杯の公式の投稿)を別の話題として避けさせない
+            check("キーの表記が違うだけ" in body and "同じ出来事・商品" in body, f"{name} がキーの違うだけの同じ話題の素材を使わせない")
     finally:
         assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = saved
 

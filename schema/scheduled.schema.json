@@ -25,7 +25,7 @@
       "event_date": {"type": "string"},
       "deadline": {"type": "string"},
       "src_candidate_id": {"type": "string", "description": "スナップショット元の candidates id(監査用)"},
-      "src_dedup_key": {"type": "string", "minLength": 1, "description": "予約に添えた素材の行のとき、その素材の元の話題(元候補の dedup_key)。dedup_key は添え先の予約のものを写すので、まとめ記事の別の話題から来た素材をこれで見分ける"},
+      "src_dedup_key": {"type": "string", "minLength": 1, "description": "予約に添えた素材の行、または添えた素材から付けた予約のとき、その素材の元の話題(元候補の dedup_key。添えを素材にしたときも元の候補までの話題を引き継ぐ)。dedup_key は添え先の予約のものを写すので、まとめ記事の別の話題から来た素材をこれで見分ける"},
       "companion_of": {"type": "string", "minLength": 1, "description": "予約に添えた素材の行のとき、添え先の予約の id(予約を付けた記事が出典にしたほかの素材。素材として渡り、予約(トリガー)にはならない)"}
     }
   }

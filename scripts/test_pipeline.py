@@ -801,6 +801,83 @@ def test_companion_keeps_source_topic(tmp: Path):
         assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = saved
 
 
+def test_companion_topic_survives_second_reservation(tmp: Path):
+    """添えを素材にして次の予約を付けても、添えに残した元の話題(src_dedup_key)を予約の話題で上書きしない(組版・既存の添えへの補完の両方)。
+    添えそのものから付けた予約にも元の話題を残す。元の話題の無い古い添えは元の候補までたどる。
+    以前は素材の dedup_key(添え先の予約の話題)を写した(監査指摘: 山梨の WALK & WANDER 開幕の予約に添えた歩数計の素材が、終了の予約で
+    開幕の話題に変わり、執筆の other_topic が消えた)。"""
+    import yaml
+    st = tmp / "stock"; (st / "scheduled").mkdir(parents=True)
+    (tmp / "metrics").mkdir(); (tmp / "docs" / "_editions").mkdir(parents=True); (tmp / "docs" / "_posts").mkdir(parents=True)
+    (tmp / "candidates").mkdir()
+    assemble.dump_yaml(st / "stories.yml", [])
+    assemble.dump_yaml(st / "pending.yml", [])
+    walk = {"id": "202608311234-explore-18", "dedup_key": "cg-yamanashi-walk-wander-2026", "title": "やまなし WALK & WANDER",
+            "url": "https://example.com/walk", "facts": ["11/21〜12/27 開催"]}
+    pedo = {"id": "202608312333-explore-1", "dedup_key": "cg-yamanashi-walk-wander-pedometer-2026", "title": "歩数計キャンペーン",
+            "url": "https://example.com/pedometer", "facts": ["歩数計で特典"]}
+    fm1 = {"slug": "yamanashi", "brand": "cg", "candidate_ids": [walk["id"], pedo["id"]],
+           "sources": [{"url": c["url"], "label": "a"} for c in (walk, pedo)]}
+    res = lambda cid, date, kind: {"stories": [], "pending_add": [], "pending_remove": [], "digest": [],
+                                   "reservations": [{"candidate_id": cid, "date": date, "kind": kind, "slug": "yamanashi",
+                                                     "subject": f"WALK & WANDER {kind}", "note": "", "occurs_on": date}]}
+    saved = (assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS)
+    try:
+        assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = \
+            tmp, st / "stories.yml", st / "scheduled", st / "pending.yml", tmp / "docs" / "_editions"
+        (tmp / "candidates" / "2026-09-01.json").write_text(json.dumps([walk, pedo], ensure_ascii=False), encoding="utf-8")
+        assemble.apply("2026-09-01", 1, res(walk["id"], "2026-11-21", "開幕"), [fm1], {c["id"]: c for c in (walk, pedo)}, False, stories=[])
+        first = json.loads((st / "scheduled" / "2026-11-21.json").read_text(encoding="utf-8"))
+        head = next(r for r in first if not r.get("companion_of"))
+        comp1 = next(r for r in first if r.get("companion_of"))
+        check(comp1.get("src_dedup_key") == pedo["dedup_key"], f"1代目の添えに元の話題が無い: {comp1}")
+        # 2代目: 開幕の予約から書いた記事が添えも出典にして、終了の予約を付ける
+        mats2 = assemble.load_materials("2026-11-21")
+        fm2 = {"slug": "yamanashi", "brand": "cg", "candidate_ids": [head["id"], comp1["id"]],
+               "sources": [{"url": r["url"], "label": "a"} for r in (head, comp1)]}
+        # 添えそのものから付けた予約(12/01 の締切)も同じ号で付ける(同じ号の apply は、その号が付けた予約を剥がして付け直す)
+        out2 = res(head["id"], "2026-12-27", "終了")
+        out2["reservations"] += res(comp1["id"], "2026-12-01", "締切")["reservations"]
+        assemble.apply("2026-11-21", 1, out2, [fm2], mats2, False, stories=[])
+        p = st / "scheduled" / "2026-12-27.json"
+        text = p.read_text(encoding="utf-8")
+        check(pipelib.schema_errors(p, text) == [], f"2代目の予約が書式に合わない: {pipelib.schema_errors(p, text)}")
+        comp2 = next(r for r in json.loads(text) if r["url"] == pedo["url"])
+        check(comp2.get("src_dedup_key") == pedo["dedup_key"], f"2代目の添えで元の話題を予約の話題で上書きした: {comp2.get('src_dedup_key')}")
+        shown, _ = renderlib.materials_with_ids([comp2])
+        check(shown[0].get("other_topic") == pedo["dedup_key"], f"2代目の添えの別の話題を執筆に見せない: {shown}")
+        # 添えそのものから付けた予約: 話題は添え先の予約のまま、元の話題を残す
+        q = st / "scheduled" / "2026-12-01.json"
+        qtext = q.read_text(encoding="utf-8")
+        entry = next(r for r in json.loads(qtext) if not r.get("companion_of"))
+        check(entry.get("src_dedup_key") == pedo["dedup_key"] and entry["dedup_key"] == walk["dedup_key"],
+              f"添えから付けた予約に元の話題が残らない: {entry}")
+        check(pipelib.schema_errors(q, qtext) == [], f"添えから付けた予約が書式に合わない: {pipelib.schema_errors(q, qtext)}")
+        # 前の号の予約から戻した候補(companion_of は落ちる)を素材にしても元の話題を残す
+        back = {**compose.scheduled_as_candidate(comp1), "id": "carried-pedo"}
+        got = assemble.companion_rows({"id": "sched-x", "url": walk["url"], "dedup_key": walk["dedup_key"]},
+                                      {"candidate_ids": ["carried-pedo"], "sources": [{"url": pedo["url"]}]}, {"carried-pedo": back})
+        check(got and got[0].get("src_dedup_key") == pedo["dedup_key"], f"戻した候補の添えで元の話題を上書きした: {got}")
+        # 既存の添えへの補完: 1代目も2代目も元の話題が無い(2026-10-20 の組版)。元の候補までたどって足す。冪等
+        strip = lambda path: path.write_text(json.dumps([{k: v for k, v in r.items() if k != "src_dedup_key"}
+                                                         for r in json.loads(path.read_text(encoding="utf-8"))], ensure_ascii=False), encoding="utf-8")
+        strip(st / "scheduled" / "2026-11-21.json"); strip(p)
+        for on, f in (("2026-09-01", fm1), ("2026-11-21", fm2)):
+            (tmp / "docs" / "_posts" / f"{on}-yamanashi.md").write_text("---\n" + yaml.safe_dump(f, allow_unicode=True) + "---\n本文\n", encoding="utf-8")
+        log = assemble.restore_reservation_companions("2026-11-22")
+        comp2 = next(r for r in json.loads(p.read_text(encoding="utf-8")) if r["url"] == pedo["url"])
+        check(comp2.get("src_dedup_key") == pedo["dedup_key"], f"補完で2代目の添えに予約の話題を元の話題として書いた: {comp2.get('src_dedup_key')} {log}")
+        check(assemble.restore_reservation_companions("2026-11-22") == [], "2代目の添えへの補完が冪等でない")
+        # 元の候補までたどれない古い添えには、予約の話題を元の話題として書かない
+        (tmp / "candidates" / "2026-09-01.json").unlink()
+        strip(st / "scheduled" / "2026-11-21.json"); strip(p)
+        assemble.restore_reservation_companions("2026-11-22")
+        comp2 = next(r for r in json.loads(p.read_text(encoding="utf-8")) if r["url"] == pedo["url"])
+        check(comp2.get("src_dedup_key") is None, f"たどれない添えに予約の話題を書いた: {comp2.get('src_dedup_key')}")
+    finally:
+        assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = saved
+
+
 def test_grok_verify_keeps_new_announcement_separate():
     """grok-verify は、前の投稿に無い新しい発表(セットリスト・結果など)を載せた投稿を、元の告知の候補へまとめない
     (実測 2026-10-19: 深海フェス2026 のセットリストの投稿が 10/17 の出演告知の候補へまとめられ、選定が既報として落とした)。"""
@@ -10668,6 +10745,7 @@ def main() -> int:
     test_restore_reservation_facts(tmp / "rrf")
     test_reservation_keeps_article_sources(tmp / "rkas")
     test_companion_keeps_source_topic(tmp / "ckst")
+    test_companion_topic_survives_second_reservation(tmp / "ctsr")
     test_grok_verify_keeps_new_announcement_separate()
     test_restore_chained_reservation_facts(tmp / "rcf")
     test_lost_post_notified_once(tmp / "lpn")

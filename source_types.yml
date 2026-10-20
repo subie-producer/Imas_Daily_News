@@ -957,6 +957,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  note.com/kijo_mio: ファン                       # 合議で追加: 個人名のnoteで日記を発信。運営者情報なし、個人に紐づく発信
   t.co/UWj9DyM42R: 二次情報                         # 機械で追加: 展開先 https://lnk.to/S.E.M_2DMV
   t.co/Gt69PLU1aE: 当事者                         # 機械で追加: 展開先 https://pjblue.zaiko.io/ja/e/shinsea-fest-2026
   nicovideo.jp/user/1633964: ファン               # 合議で追加: 個人のユーザーページ。動画紹介や声無し生放送などの個人発信

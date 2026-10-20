@@ -151,6 +151,7 @@
   "event_date": "2026-10-19",
   "deadline": "2026-12-04",
   "src_candidate_id": "202610191833-explore-3",
-  "companion_of": "sched-2026-12-04-cinderella-sega-lucky-kuji-vol1-cute-終了"
+  "companion_of": "sched-2026-12-04-cinderella-sega-lucky-kuji-vol1-cute-終了",
+  "src_dedup_key": "cg-sega-lucky-kuji-cute-vol1-2026"
  }
 ]

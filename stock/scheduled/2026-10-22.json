@@ -38,7 +38,8 @@
   "verify": "confirmed",
   "deadline": "2026-10-14",
   "src_candidate_id": "202608281836-watch-0",
-  "companion_of": "sched-2026-10-22-million-kyoto-popup-2026-終了"
+  "companion_of": "sched-2026-10-22-million-kyoto-popup-2026-終了",
+  "src_dedup_key": "cg-kyoto-popup-2026"
  },
  {
   "id": "sched-2026-10-22-sidem-renaissance-2026-開幕",
@@ -166,7 +167,8 @@
   "event_date": "2026-10-22",
   "deadline": "2026-11-29",
   "src_candidate_id": "202609161837-explore-30",
-  "companion_of": "sched-2026-10-22-sidem-renaissance-2026-開幕"
+  "companion_of": "sched-2026-10-22-sidem-renaissance-2026-開幕",
+  "src_dedup_key": "sidem-315-fitness-renaissance-2026"
  },
  {
   "id": "sched-2026-10-22-sidem-renaissance-2026-開始",
@@ -408,7 +410,8 @@
   "event_date": "2026-10-10",
   "deadline": "2026-10-22",
   "src_candidate_id": "202610100218-grok-25",
-  "companion_of": "sched-2026-10-22-million-kyoto-popup-2026-千秋楽"
+  "companion_of": "sched-2026-10-22-million-kyoto-popup-2026-千秋楽",
+  "src_dedup_key": "million-yurakucho-popup-2026"
  },
  {
   "id": "sched-2026-10-22-shiny-style-collection-wave2-2026-締切前",
@@ -661,7 +664,8 @@
   "verify": "confirmed",
   "deadline": "2026-10-22",
   "src_candidate_id": "202610150225-grok-18",
-  "companion_of": "sched-2026-10-22-million-yurakucho-pop-up-shop-2026-千秋楽"
+  "companion_of": "sched-2026-10-22-million-yurakucho-pop-up-shop-2026-千秋楽",
+  "src_dedup_key": "million-yurakucho-popup-kunoichi-2026"
  },
  {
   "id": "sched-2026-10-22-sidem-fbfes-wanna-step-in-goods-2026-締切前",
@@ -769,7 +773,8 @@
   "verify": "confirmed",
   "deadline": "2026-10-25",
   "src_candidate_id": "202610160229-grok-35",
-  "companion_of": "sched-2026-10-22-sidem-fbfes-wanna-step-in-goods-2026-締切前"
+  "companion_of": "sched-2026-10-22-sidem-fbfes-wanna-step-in-goods-2026-締切前",
+  "src_dedup_key": "sidem-fbfes-wsi-goods-2026"
  },
  {
   "id": "sched-2026-10-22-valiv-bombanana-joint-stream-2026-10-22-開始",
@@ -1109,7 +1114,8 @@
   "event_date": "2026-10-18",
   "deadline": "2026-11-17",
   "src_candidate_id": "202610182334-explore-11",
-  "companion_of": "sched-2026-10-22-million-platinum-star-tiara-happy-pease-2026-開始"
+  "companion_of": "sched-2026-10-22-million-platinum-star-tiara-happy-pease-2026-開始",
+  "src_dedup_key": "million-platinum-tiara-happipisu-2026"
  },
  {
   "id": "sched-2026-10-22-million-platinum-star-tiara-happy-pease-2026-開始-src2",
@@ -1141,7 +1147,8 @@
   "verify": "confirmed",
   "event_date": "2026-10-18",
   "src_candidate_id": "202610190222-grok-14",
-  "companion_of": "sched-2026-10-22-million-platinum-star-tiara-happy-pease-2026-開始"
+  "companion_of": "sched-2026-10-22-million-platinum-star-tiara-happy-pease-2026-開始",
+  "src_dedup_key": "platinum-star-tiara-hapipisu-2026"
  },
  {
   "id": "sched-2026-10-22-million-radio-playlist-otayori-2026-締切前",
@@ -1207,5 +1214,131 @@
   "verify": "confirmed",
   "src_candidate_id": "202610190222-grok-29",
   "deadline": "2026-10-25"
+ },
+ {
+  "id": "sched-2026-10-22-misuzu-temari-goods-2026-締切前",
+  "dedup_key": "misuzu-temari-goods-2026",
+  "brand": "gaku",
+  "subject": "学マス ハリネズミゆたんぽ＆アクスタ 受注締切まで3日",
+  "kind": "締切前",
+  "note": "アソビストアで10月25日の受注締切前に注文できる",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-25",
+  "title": "美鈴・手毬ゆたんぽ等 受注締切",
+  "url": "https://x.com/gkmas_official/status/2112504597617238234",
+  "source_type": "公式",
+  "facts": [
+   "美鈴、手毬の新規描きおろしアクリルスタンドと月村手毬のハリネズミゆたんぽを受注中。",
+   "受注期限: 10月25日(日)",
+   "リンク: https://shop.asobistore.jp/category/gkms_tmr_msz_ytmp",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-25",
+  "src_candidate_id": "202610210224-grok-53"
+ },
+ {
+  "id": "sched-2026-10-22-miracle-rerun-gacha-2026-開始",
+  "dedup_key": "miracle-rerun-gacha-2026",
+  "brand": "gaku",
+  "subject": "ナナウ復刻ガシャ・燕アナザーガシャ開始",
+  "kind": "開始",
+  "note": "11時からガシャを引ける。アナザーアイドルガシャは初回10連無料",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-22",
+  "title": "ミラクルナナウ復刻・アナザーアイドルガシャ",
+  "url": "https://x.com/gkmas_official/status/2112509412581749216",
+  "source_type": "公式",
+  "facts": [
+   "復刻「ミラクルナナウ(ﾟ∀ﾟ)！」麻央＆広ガシャ開催予定。",
+   "雨夜 燕のアナザーアイドルが新登場。",
+   "アナザーアイドルガシャは初回10連無料。",
+   "有償1回限定SSR確定アナザーセレクトガシャも同時開催予定。",
+   "開催期間: 10/22(木) 11:00～10/30(金) 10:59まで(予定)",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-30",
+  "src_candidate_id": "202610210224-grok-38"
+ },
+ {
+  "id": "sched-2026-10-22-miracle-rerun-gacha-2026-開始-src1",
+  "dedup_key": "miracle-rerun-gacha-2026",
+  "brand": "gaku",
+  "subject": "ナナウ復刻ガシャ・燕アナザーガシャ開始",
+  "kind": "開始",
+  "note": "11時からガシャを引ける。アナザーアイドルガシャは初回10連無料",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-22",
+  "title": "ミラクルナナウ(ﾟ∀ﾟ)！雨夜燕歌唱紹介",
+  "url": "https://x.com/gkmas_official/status/2112509611219828991",
+  "source_type": "公式",
+  "facts": [
+   "雨夜 燕が「ミラクルナナウ(ﾟ∀ﾟ)！」を歌唱するライブシーンを紹介。",
+   "作詞・作曲・編曲：YUC'e",
+   "ガシャ開催期間: 10/22(木) 11:00～10/30(金) 10:59まで(予定)",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-30",
+  "src_candidate_id": "202610210224-grok-37",
+  "companion_of": "sched-2026-10-22-miracle-rerun-gacha-2026-開始",
+  "src_dedup_key": "miracle-nanau-2026"
+ },
+ {
+  "id": "sched-2026-10-22-shiny-mattari-hbtk-october-2026-締切",
+  "dedup_key": "shiny-mattari-hbtk-october-2026",
+  "brand": "shiny",
+  "subject": "まったりHBTK 10月度おたより受付",
+  "kind": "締切",
+  "note": "おたより・CHAINお悩み相談室へのアドバイス受付の締切頃",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-22",
+  "title": "まったりHBTK 10月度放送",
+  "url": "https://x.com/shinyc_official/status/2112559715754639519",
+  "source_type": "公式",
+  "facts": [
+   "10月度MCは西城樹里役 永井真里子さん、杜野凛世役 丸岡和佳奈さん。",
+   "ゲストは涼本あきほさん（有栖川夏葉役）。",
+   "ゲストは河野ひよりさん（小宮果穂役）。",
+   "おたよりは10/22(木)頃まで受付。",
+   "番組内「55:30」をチェックして、恋鐘と凛世のCHAINお悩み相談室にアドバイスを送るよう案内。",
+   "放送終了後、アーカイブURLを案内し、来週の放送は23時からと告知。",
+   "リンク: https://t.co/odKdocfVW3",
+   "エンゲージメント: 中",
+   "言及アイドル: 西城樹里、杜野凛世、有栖川夏葉、小宮果穂、月岡恋鐘"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-22",
+  "src_candidate_id": "202610210224-grok-25"
+ },
+ {
+  "id": "sched-2026-10-22-shiny-style-collection-vol2-keyholder-2026-締切前",
+  "dedup_key": "shiny-style-collection-vol2-keyholder-2026",
+  "brand": "shiny",
+  "subject": "Sonic Heart (and Signal)キーホルダー受注締切",
+  "kind": "締切前",
+  "note": "ASOBI STOREで10/25の受注締切までに注文できる",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-25",
+  "title": "SHINY Style COLLECTION 第2弾キーホルダー受注",
+  "url": "https://x.com/shinyc_official/status/2112483973611864279",
+  "source_type": "公式",
+  "facts": [
+   "#SHINY_Style_COLLECTION第2弾グッズを受注中。",
+   "「Sonic Heart (and Signal)」のキーホルダーが登場。",
+   "フレームの中でユニットロゴやモチーフが動く。",
+   "受注は10/25(日)まで。",
+   "リンク: https://shop.asobistore.jp/feature/shiny_style_collection",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-25",
+  "src_candidate_id": "202610210224-grok-26"
  }
 ]

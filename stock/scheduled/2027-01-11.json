@@ -155,7 +155,8 @@
   "event_date": "2027-01-11",
   "deadline": "2026-09-27",
   "src_candidate_id": "202609170229-grok-52",
-  "companion_of": "sched-2027-01-11-cg-15th-anniversary-orchestra-2027-開幕"
+  "companion_of": "sched-2027-01-11-cg-15th-anniversary-orchestra-2027-開幕",
+  "src_dedup_key": "cg-15th-orchestra-2027"
  },
  {
   "id": "sched-2027-01-11-cg-15th-orchestra-2027-開幕",

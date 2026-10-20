@@ -88,7 +88,8 @@
   "event_date": "2026-11-20",
   "deadline": "2027-02-28",
   "src_candidate_id": "202609161837-watch-1",
-  "companion_of": "sched-2027-01-29-dijimas-cinderella-naha-2026-開幕"
+  "companion_of": "sched-2027-01-29-dijimas-cinderella-naha-2026-開幕",
+  "src_dedup_key": "dijimas-cg-2026"
  },
  {
   "id": "sched-2027-01-29-cg-dejimas-naha-2026-開始",

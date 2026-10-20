@@ -45,7 +45,8 @@
   "verify": "confirmed",
   "event_date": "2026-09-12",
   "src_candidate_id": "202609010227-grok-50",
-  "companion_of": "sched-2026-11-15-sidem-cardfolio-vol2-2026-締切"
+  "companion_of": "sched-2026-11-15-sidem-cardfolio-vol2-2026-締切",
+  "src_dedup_key": "sidem-cardfolio-vol2-product-2026"
  },
  {
   "id": "sched-2026-11-15-medicos-cyberplanet-popup-2026-終了",
@@ -539,7 +540,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202610010223-grok-63",
-  "companion_of": "sched-2026-11-15-x-com-43-千秋楽"
+  "companion_of": "sched-2026-11-15-x-com-43-千秋楽",
+  "src_dedup_key": "medicos-e-net-44"
  },
  {
   "id": "sched-2026-11-15-cg-cinderella-party-10th-cd-2026-締切前",
@@ -849,5 +851,56 @@
   "src_candidate_id": "202610172334-watch-0",
   "event_date": "2027-01-30",
   "deadline": "2026-11-15"
+ },
+ {
+  "id": "sched-2026-11-15-anniversary-login-2026-終了",
+  "dedup_key": "anniversary-login-2026",
+  "brand": "gaku",
+  "subject": "学マス2.5thアニバーサリー前夜祭ログインボーナス終了",
+  "kind": "終了",
+  "note": "11月16日4:59の終了前に受け取れる最終日(予定)",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-11-16",
+  "title": "2.5thアニバーサリー前夜祭ログインボーナス",
+  "url": "https://x.com/gkmas_official/status/2112510074933432669",
+  "source_type": "公式",
+  "facts": [
+   "SSR Pアイドル1人確定の1連ガシャチケット、または出現率10倍の5連ガシャチケットを選べる。",
+   "開催期間: 11/6(金) 11:00～11/16(月) 4:59まで(予定)",
+   "エンゲージメント: 中",
+   "2.5thアニバーサリー前夜祭ログインボーナスを開催予定。",
+   "開催期間: 11/6(金) 11:00 ～ 11/16(月) 4:59まで(予定)",
+   "ログインボーナスの選択肢はSSR Pアイドル1人確定の1連ガシャチケット、または出現率10倍の5連ガシャチケット。",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-16",
+  "src_candidate_id": "202610210224-grok-36"
+ },
+ {
+  "id": "sched-2026-11-15-conceptual-single-collection-2026-締切",
+  "dedup_key": "conceptual-single-collection-2026",
+  "brand": "gaku",
+  "subject": "学マスCD Conceptual Single Collection 予約締切",
+  "kind": "締切",
+  "note": "本日がASOBI STOREでの予約期限",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-11-15",
+  "title": "Conceptual Single Collection 予約",
+  "url": "https://x.com/gkmas_official/status/2112502309670535387",
+  "source_type": "公式",
+  "facts": [
+   "Vol.1～Vol.3の3種類のCDシリーズを予約受付中。",
+   "スペシャルセットにはCD3種、ライブツアービジュアルクラフトボックス、標ロゴキーホルダーが付属する。",
+   "『Roar』はVol.3に収録される。",
+   "予約期限: 11月15日(日)",
+   "リンク: https://t.co/MdlrfC0LCI",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-15",
+  "src_candidate_id": "202610210224-grok-33"
  }
 ]

@@ -41,7 +41,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202609012336-watch-3",
-  "companion_of": "sched-2026-12-01-sidem-super-retrose-party-2026-終了"
+  "companion_of": "sched-2026-12-01-sidem-super-retrose-party-2026-終了",
+  "src_dedup_key": "sidem-seibu-yuen-2026"
  },
  {
   "id": "sched-2026-12-01-sidem-super-retrose-party-2026-終了-src2",
@@ -71,7 +72,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202609020238-grok-39",
-  "companion_of": "sched-2026-12-01-sidem-super-retrose-party-2026-終了"
+  "companion_of": "sched-2026-12-01-sidem-super-retrose-party-2026-終了",
+  "src_dedup_key": "sidem-super-retrose-party-2026"
  },
  {
   "id": "sched-2026-12-01-sidem-mfes2026-ornament-acrylic-keyholder-発売",
@@ -120,7 +122,8 @@
   "via": "explore",
   "verify": "unconfirmed",
   "src_candidate_id": "202609192336-explore-29",
-  "companion_of": "sched-2026-12-01-sidem-mfes2026-ornament-acrylic-keyholder-発売"
+  "companion_of": "sched-2026-12-01-sidem-mfes2026-ornament-acrylic-keyholder-発売",
+  "src_dedup_key": "sidem-mfes2026-glitter-character-badge"
  },
  {
   "id": "sched-2026-12-01-sidem-seibuen-retro-party-2026-千秋楽",
@@ -221,7 +224,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202610082332-explore-1",
-  "companion_of": "sched-2026-12-01-sidem-seibuen-retro-party-2026-千秋楽"
+  "companion_of": "sched-2026-12-01-sidem-seibuen-retro-party-2026-千秋楽",
+  "src_dedup_key": "sidem-seibuen-cho-retroseparty-2026"
  },
  {
   "id": "sched-2026-12-01-cinderella-sega-lucky-kuji-vol1-cute-締切前",
@@ -319,6 +323,31 @@
   "event_date": "2026-10-19",
   "deadline": "2026-12-04",
   "src_candidate_id": "202610191833-explore-3",
-  "companion_of": "sched-2026-12-01-cinderella-sega-lucky-kuji-vol1-cute-締切前"
+  "companion_of": "sched-2026-12-01-cinderella-sega-lucky-kuji-vol1-cute-締切前",
+  "src_dedup_key": "cg-sega-lucky-kuji-cute-vol1-2026"
+ },
+ {
+  "id": "sched-2026-12-01-jewel-sale-2026-終了",
+  "dedup_key": "jewel-sale-2026",
+  "brand": "gaku",
+  "subject": "ジュエルセール終了",
+  "kind": "終了",
+  "note": "10時59分までが購入期限(予定)。最終日に購入できる",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-12-01",
+  "title": "お得なジュエルセール",
+  "url": "https://x.com/gkmas_official/status/2112509076924244385",
+  "source_type": "公式",
+  "facts": [
+   "ジュエル12,300個を9,800円で販売。",
+   "購入は1人1回まで。",
+   "開催期間: 10/28(水) 11:00～12/1(火) 10:59(予定)",
+   "詳細はゲーム内お知らせで確認するよう案内。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-12-01",
+  "src_candidate_id": "202610210224-grok-41"
  }
 ]

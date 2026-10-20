@@ -86,7 +86,8 @@
   "event_date": "2026-09-05",
   "deadline": "2026-09-21",
   "src_candidate_id": "202609042337-watch-4",
-  "companion_of": "sched-2026-11-04-gakumas-shugakuryoko-single-2026-発売"
+  "companion_of": "sched-2026-11-04-gakumas-shugakuryoko-single-2026-発売",
+  "src_dedup_key": "gaku-livetour-fukuoka-2026"
  },
  {
   "id": "sched-2026-11-04-gakumas-shugakuryoko-single-2026-発売-src2",
@@ -145,7 +146,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609050237-grok-40",
-  "companion_of": "sched-2026-11-04-gakumas-shugakuryoko-single-2026-発売"
+  "companion_of": "sched-2026-11-04-gakumas-shugakuryoko-single-2026-発売",
+  "src_dedup_key": "x-com-gkmas-official-status-2095829224385118363-2"
  },
  {
   "id": "sched-2026-11-04-gakumas-shugakuryoko-single-2026-発売-src3",
@@ -166,7 +168,8 @@
   "verify": "confirmed",
   "event_date": "2026-09-05",
   "src_candidate_id": "sched-2026-09-05-gaku-shirube-livetour-fukuoka-show-2026-開幕",
-  "companion_of": "sched-2026-11-04-gakumas-shugakuryoko-single-2026-発売"
+  "companion_of": "sched-2026-11-04-gakumas-shugakuryoko-single-2026-発売",
+  "src_dedup_key": "gaku-shirube-livetour-fukuoka-show-2026"
  },
  {
   "id": "sched-2026-11-04-cg-xr-live-apple-of-my-ai-2027-締切",
@@ -384,7 +387,8 @@
   "event_date": "2027-02-13",
   "deadline": "2026-10-18",
   "src_candidate_id": "202609290228-explore-0",
-  "companion_of": "sched-2026-11-04-cg-xr-live-apple-of-my-ai-2027-締切"
+  "companion_of": "sched-2026-11-04-cg-xr-live-apple-of-my-ai-2027-締切",
+  "src_dedup_key": "cg-athome-xr-live-apple-of-my-ai-2027"
  },
  {
   "id": "sched-2026-11-04-cg-apple-of-my-ai-2027-締切",
@@ -494,7 +498,8 @@
   "event_date": "2027-02-13",
   "deadline": "2026-10-18",
   "src_candidate_id": "202610171233-watch-0",
-  "companion_of": "sched-2026-11-04-cg-apple-of-my-ai-2027-締切"
+  "companion_of": "sched-2026-11-04-cg-apple-of-my-ai-2027-締切",
+  "src_dedup_key": "athome-xr-live-apple-of-my-ai-2027"
  },
  {
   "id": "sched-2026-11-04-cg-apple-of-my-ai-2027-締切-src2",
@@ -536,7 +541,8 @@
   "verify": "confirmed",
   "deadline": "2026-11-04",
   "src_candidate_id": "sched-2026-10-18-cg-xr-live-apple-of-my-ai-2027-締切",
-  "companion_of": "sched-2026-11-04-cg-apple-of-my-ai-2027-締切"
+  "companion_of": "sched-2026-11-04-cg-apple-of-my-ai-2027-締切",
+  "src_dedup_key": "cg-xr-live-apple-of-my-ai-2027"
  },
  {
   "id": "sched-2026-11-04-cg-apple-of-my-ai-2027-締切-src3",
@@ -581,7 +587,8 @@
   "event_date": "2027-02-13",
   "deadline": "2026-10-18",
   "src_candidate_id": "sched-2026-10-18-cg-athome-apple-of-my-ai-2026-締切",
-  "companion_of": "sched-2026-11-04-cg-apple-of-my-ai-2027-締切"
+  "companion_of": "sched-2026-11-04-cg-apple-of-my-ai-2027-締切",
+  "src_dedup_key": "cg-athome-apple-of-my-ai-2026"
  },
  {
   "id": "sched-2026-11-04-cinderella-15th-anniversary-party-2026-締切",
@@ -669,6 +676,7 @@
   "event_date": "2026-11-28",
   "deadline": "2026-10-19",
   "src_candidate_id": "sched-2026-10-19-cg-15th-party-2026-締切",
-  "companion_of": "sched-2026-11-04-cinderella-15th-anniversary-party-2026-締切"
+  "companion_of": "sched-2026-11-04-cinderella-15th-anniversary-party-2026-締切",
+  "src_dedup_key": "cg-15th-party-2026"
  }
 ]

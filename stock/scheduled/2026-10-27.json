@@ -216,5 +216,55 @@
   "src_candidate_id": "202610162334-watch-0",
   "event_date": "2026-11-11",
   "deadline": "2026-12-13"
+ },
+ {
+  "id": "sched-2026-10-27-miracle-rerun-gacha-2026-締切前",
+  "dedup_key": "miracle-rerun-gacha-2026",
+  "brand": "gaku",
+  "subject": "ナナウ復刻ガシャ終了3日前",
+  "kind": "締切前",
+  "note": "10月30日10時59分の終了前にガシャを引ける",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-30",
+  "title": "ミラクルナナウ復刻・アナザーアイドルガシャ",
+  "url": "https://x.com/gkmas_official/status/2112509412581749216",
+  "source_type": "公式",
+  "facts": [
+   "復刻「ミラクルナナウ(ﾟ∀ﾟ)！」麻央＆広ガシャ開催予定。",
+   "雨夜 燕のアナザーアイドルが新登場。",
+   "アナザーアイドルガシャは初回10連無料。",
+   "有償1回限定SSR確定アナザーセレクトガシャも同時開催予定。",
+   "開催期間: 10/22(木) 11:00～10/30(金) 10:59まで(予定)",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-30",
+  "src_candidate_id": "202610210224-grok-38"
+ },
+ {
+  "id": "sched-2026-10-27-miracle-rerun-gacha-2026-締切前-src1",
+  "dedup_key": "miracle-rerun-gacha-2026",
+  "brand": "gaku",
+  "subject": "ナナウ復刻ガシャ終了3日前",
+  "kind": "締切前",
+  "note": "10月30日10時59分の終了前にガシャを引ける",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-30",
+  "title": "ミラクルナナウ(ﾟ∀ﾟ)！雨夜燕歌唱紹介",
+  "url": "https://x.com/gkmas_official/status/2112509611219828991",
+  "source_type": "公式",
+  "facts": [
+   "雨夜 燕が「ミラクルナナウ(ﾟ∀ﾟ)！」を歌唱するライブシーンを紹介。",
+   "作詞・作曲・編曲：YUC'e",
+   "ガシャ開催期間: 10/22(木) 11:00～10/30(金) 10:59まで(予定)",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-30",
+  "src_candidate_id": "202610210224-grok-37",
+  "companion_of": "sched-2026-10-27-miracle-rerun-gacha-2026-締切前",
+  "src_dedup_key": "miracle-nanau-2026"
  }
 ]

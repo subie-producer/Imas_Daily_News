@@ -208,7 +208,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609130227-grok-91",
-  "companion_of": "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果"
+  "companion_of": "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果",
+  "src_dedup_key": "grok-061"
  },
  {
   "id": "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果-src2",
@@ -251,7 +252,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609130227-grok-52",
-  "companion_of": "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果"
+  "companion_of": "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果",
+  "src_dedup_key": "grok-018"
  },
  {
   "id": "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果-src3",
@@ -296,7 +298,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609130227-grok-50",
-  "companion_of": "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果"
+  "companion_of": "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果",
+  "src_dedup_key": "grok-016"
  },
  {
   "id": "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果-src4",
@@ -384,7 +387,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609130227-grok-51",
-  "companion_of": "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果"
+  "companion_of": "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果",
+  "src_dedup_key": "grok-017"
  },
  {
   "id": "sched-2026-10-24-shiny-283-production-live-performance-noctchill-結果",
@@ -641,7 +645,8 @@
   "event_date": "2027-03-27",
   "deadline": "2026-10-28",
   "src_candidate_id": "202609272335-watch-1",
-  "companion_of": "sched-2026-10-24-shiny-283-production-live-performance-noctchill-結果"
+  "companion_of": "sched-2026-10-24-shiny-283-production-live-performance-noctchill-結果",
+  "src_dedup_key": "shiny-noctchill-live-2027"
  },
  {
   "id": "sched-2026-10-24-shiny-noctchill-live-2027-結果",
@@ -757,7 +762,8 @@
   "event_date": "2027-03-27",
   "deadline": "2026-10-12",
   "src_candidate_id": "202609280733-explore-1",
-  "companion_of": "sched-2026-10-24-shiny-noctchill-live-2027-結果"
+  "companion_of": "sched-2026-10-24-shiny-noctchill-live-2027-結果",
+  "src_dedup_key": "shiny-noctchill-live-2027"
  },
  {
   "id": "sched-2026-10-24-sidem-fantastic-battle-fes-2026-締切前",
@@ -808,5 +814,90 @@
   "src_candidate_id": "sched-2026-10-12-sidem-fantastic-battle-fes-2026-締切",
   "event_date": "2026-12-26",
   "deadline": "2026-10-27"
+ },
+ {
+  "id": "sched-2026-10-24-shiny-technical-challenge-cup-17-2026-終了",
+  "dedup_key": "shiny-technical-challenge-cup-17-2026",
+  "brand": "shiny",
+  "subject": "第17回テクニカルチャレンジ杯 結果発表期間終了",
+  "kind": "終了",
+  "note": "11時59分までなら結果を確認できる",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-24",
+  "title": "シャニソン「第17回テクニカルチャレンジ杯」開催情報",
+  "url": "https://melonpapapapa-n.com/sc-prism_ev123/",
+  "source_type": "二次情報",
+  "facts": [
+   "開催期間: 2026/10/17(土) 12:00 ~ 2026/10/20(火) 20:59",
+   "結果発表期間: 2026/10/21(水) 12:00 ~ 2026/10/24(土) 11:59",
+   "課題曲は『Black Reverie(xRライブ ver.)』[白瀬 咲耶]。",
+   "イベントミッションから獲得できるTECカードキーを使い、課題曲のテクニカルスコアアタックに挑戦する。",
+   "TECカードキーは8枚しか入手できない。",
+   "EXPERT部門はLv27で、常に通常判定モード、AP（ALL PERFECT）が上限。テクニカルランク「名匠」まで到達可能。",
+   "MASTER部門はLv30で、常に上位判定モード、AS（ALL SHINY）が上限。テクニカルランク「至高」まで到達可能。",
+   "イベント報酬は期間中に到達したテクニカルランクに応じて付与され、EXPERT部門またはMASTER部門のうち記録した高いランクの報酬が付与される。",
+   "ランク「至高」の目標スコアは1,010,000で、称号「第17回テクニカルチャレンジ杯『至高』」、ドレスオーダーチケット×200、虹の結晶×110、イベントシール×500が報酬。",
+   "ランク「名匠+++」の目標スコアは1,009,000で、称号「第17回テクニカルチャレンジ杯『名匠+++』」、ドレスオーダーチケット×180、虹の結晶×80、イベントシール×440が報酬。",
+   "ランク「名匠++」の目標スコアは1,007,000で、称号「第17回テクニカルチャレンジ杯『名匠++』」、ドレスオーダーチケット×160、虹の結晶×70、イベントシール×420が報酬。",
+   "ランク「名匠+」の目標スコアは1,005,000で、称号「第17回テクニカルチャレンジ杯『名匠+』」、ドレスオーダーチケット×150、虹の結晶×60、イベントシール×400が報酬。",
+   "ランク「名匠」の目標スコアは1,000,000で、称号「第17回テクニカルチャレンジ杯『名匠』」、ドレスオーダーチケット×120、虹の結晶×50、イベントシール×350が報酬。",
+   "ランク「極+」の目標スコアは990,000で、称号「第17回テクニカルチャレンジ杯『極+』」、ドレスオーダーチケット×110、虹の結晶×40、イベントシール×300が報酬。",
+   "ランク「極」の目標スコアは970,000で、称号「第17回テクニカルチャレンジ杯『極』」、ドレスオーダーチケット×80、虹の結晶×30、イベントシール×250が報酬。",
+   "ランク「優+」の目標スコアは950,000で、称号「第17回テクニカルチャレンジ杯『優+』」、ドレスオーダーチケット×60、虹の結晶×20、イベントシール×200が報酬。",
+   "ランク「優」の目標スコアは900,000で、称号「第17回テクニカルチャレンジ杯『優』」、ドレスオーダーチケット×30、虹の結晶×15、イベントシール×110が報酬。",
+   "ランク「良」の目標スコアは800,000で、称号「第17回テクニカルチャレンジ杯『良』」、ドレスオーダーチケット×20、虹の結晶×11、イベントシール×50が報酬。",
+   "ランク「可」の目標スコアは500,000で、称号「第17回テクニカルチャレンジ杯『可』」、ドレスオーダーチケット×11、虹の結晶×5、イベントシール×20が報酬。",
+   "イベントミッションでTECカードキーを獲得できるのは、ログインとLB消費のミッション。",
+   "合計1日ログインしよう：TECカードキー×1。",
+   "合計2日ログインしよう：TECカードキー×1。",
+   "合計3日ログインしよう：TECカードキー×1。",
+   "合計4日ログインしよう：TECカードキー×1。",
+   "LBを合計20消費しよう：TECカードキー×1。",
+   "LBを合計50消費しよう：TECカードキー×1。",
+   "LBを合計80消費しよう：TECカードキー×1。",
+   "LBを合計120消費しよう：TECカードキー×1。",
+   "テクニカルチャレンジモードを1回プレイしよう：共通覚醒ブック（大）×1、練習ノート×250、マニー×1,000。",
+   "ランク「可」に到達しよう：共通覚醒ブック（大）×1、練習ノート×250、マニー×1,000。",
+   "ランク「良」に到達しよう：共通覚醒ブック（大）×1、練習ノート×500、マニー×1,000。",
+   "ランク「優」に到達しよう：共通覚醒ブック（大）×1、練習ノート×500、マニー×2,500。",
+   "ランク「優+」に到達しよう：共通覚醒ブック（大）×1、練習ノート×500、マニー×2,500。",
+   "ランク「極」に到達しよう：共通覚醒ブック（大）×2、練習ノート×500、マニー×5,000。",
+   "ランク「極+」に到達しよう：共通覚醒ブック（大）×2、練習ノート×500、マニー×5,000。",
+   "ランク「名匠」に到達しよう：共通覚醒ブック（大）×4、練習ノート×1,000、マニー×5,000。",
+   "ランク「名匠+」に到達しよう：共通覚醒ブック（大）×4、練習ノート×1,000、マニー×10,000。",
+   "ランク「名匠++」に到達しよう：共通覚醒ブック（大）×4、練習ノート×1,000、マニー×10,000。",
+   "ランク「名匠+++」に到達しよう：共通覚醒ブック（大）×4、練習ノート×1,000、マニー×10,000。",
+   "ランク「至高」に到達しよう：共通覚醒ブック（大）×5、練習ノート×3,000、マニー×25,000。",
+   "エンゲージメント: 中",
+   "言及アイドル: 白瀬 咲耶"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-10-17",
+  "deadline": "2026-10-20",
+  "src_candidate_id": "sched-2026-10-21-shiny-technical-challenge-cup-17-2026-結果"
+ },
+ {
+  "id": "sched-2026-10-24-shiny-technical-challenge-cup-17-2026-終了-src1",
+  "dedup_key": "shiny-technical-challenge-cup-17-2026",
+  "brand": "shiny",
+  "subject": "第17回テクニカルチャレンジ杯 結果発表期間終了",
+  "kind": "終了",
+  "note": "11時59分までなら結果を確認できる",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-10-24",
+  "title": "第17回テクニカルチャレンジ杯",
+  "url": "https://x.com/imassc_prism/status/2111291358019514716",
+  "source_type": "公式",
+  "facts": [
+   "課題曲は『Black Reverie(xRライブ ver.)』。",
+   "最高テクニカルランクに応じた報酬を後日獲得可能。",
+   "エンゲージメント: 低"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "sched-2026-10-21-shiny-technical-challenge-cup-17-2026-結果-src1",
+  "companion_of": "sched-2026-10-24-shiny-technical-challenge-cup-17-2026-終了",
+  "src_dedup_key": "shiny-technical-challenge-cup-17"
  }
 ]

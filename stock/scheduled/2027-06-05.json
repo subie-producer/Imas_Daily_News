@@ -208,7 +208,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609130227-grok-91",
-  "companion_of": "sched-2027-06-05-sidem-shinycolors-sparkle-showdown-2027-06-開幕"
+  "companion_of": "sched-2027-06-05-sidem-shinycolors-sparkle-showdown-2027-06-開幕",
+  "src_dedup_key": "grok-061"
  },
  {
   "id": "sched-2027-06-05-sidem-shinycolors-sparkle-showdown-2027-06-開幕-src2",
@@ -251,7 +252,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609130227-grok-52",
-  "companion_of": "sched-2027-06-05-sidem-shinycolors-sparkle-showdown-2027-06-開幕"
+  "companion_of": "sched-2027-06-05-sidem-shinycolors-sparkle-showdown-2027-06-開幕",
+  "src_dedup_key": "grok-018"
  },
  {
   "id": "sched-2027-06-05-sidem-shinycolors-sparkle-showdown-2027-06-開幕-src3",
@@ -296,7 +298,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609130227-grok-50",
-  "companion_of": "sched-2027-06-05-sidem-shinycolors-sparkle-showdown-2027-06-開幕"
+  "companion_of": "sched-2027-06-05-sidem-shinycolors-sparkle-showdown-2027-06-開幕",
+  "src_dedup_key": "grok-016"
  },
  {
   "id": "sched-2027-06-05-sidem-shinycolors-sparkle-showdown-2027-06-開幕-src4",
@@ -384,7 +387,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202609130227-grok-51",
-  "companion_of": "sched-2027-06-05-sidem-shinycolors-sparkle-showdown-2027-06-開幕"
+  "companion_of": "sched-2027-06-05-sidem-shinycolors-sparkle-showdown-2027-06-開幕",
+  "src_dedup_key": "grok-017"
  },
  {
   "id": "sched-2027-06-05-sidem-shiny-sparkle-showdown-2027-開幕",

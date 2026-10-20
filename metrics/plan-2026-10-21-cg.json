@@ -1,0 +1,161 @@
+{
+ "decisions": {
+  "cinderella-sega-lucky-kuji-vol1-cute": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-20号で販売期間・賞品・価格を記事化済み。新事実も当日トリガーも無い(終了は12/4)"
+  },
+  "cinderella-sega-lucky-kuji-vol1-cute-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "上の主題と同じくじ。10-20号で既報、素材も告知のみ"
+  },
+  "cg-15th-anniversary-orchestra-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "2次先行は10-15号で記事化済み。締切10/25は4日先で3日以内に当たらず、新事実も無い"
+  },
+  "deresute-maintenance-2026-10-20": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/20のメンテナンス終了済みの知らせで、発行日時点で新しい出来事ではない"
+  },
+  "derepa-master-cd-2026": {
+   "action": "article",
+   "angle": "『CINDERELLA PARTY! M@STER ~でれぱ 拾年の宴＆デレパの神曲~』が11月25日に発売され、カバー30曲を収録する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "準公式(コロムビア)発信で未確認扱い。出典は執筆・校閲で確認"
+  },
+  "cinderella-master-hourglass-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10-17号『HOURGLASS』CD発売へと同じ商品。素材は発売日11/18のみで新事実無し"
+  },
+  "cg-isetan-osechi-2027": {
+   "action": "article",
+   "angle": "伊勢丹×シンデレラガールズのおせち2027が本日10時から三越伊勢丹オンラインストアで販売開始",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。当日トリガーあり"
+  },
+  "derepa-oishi-izumi-guest-2026": {
+   "action": "article",
+   "angle": "デレパ本日21日の放送に大石泉役の大木咲絵子が出演",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。放送日が当日で、出演回を聴ける"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-derepa-master-cd-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "『CINDERELLA PARTY! M@STER ~でれぱ 拾年の宴＆デレパの神曲~』が11月25日に発売され、カバー30曲を収録する",
+    "purpose": "新情報",
+    "lead_score": 45,
+    "dedup_key": "derepa-master-cd-2026",
+    "candidate_ids": [
+     "202610210224-grok-87"
+    ]
+   },
+   {
+    "slug": "cg-isetan-osechi-2027",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "伊勢丹×シンデレラガールズのおせち2027が本日10時から三越伊勢丹オンラインストアで販売開始",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cg-isetan-osechi-2027",
+    "candidate_ids": [
+     "sched-2026-10-21-cg-isetan-osechi-2027-開始",
+     "sched-2026-10-21-cg-isetan-osechi-2027-開始-src1"
+    ]
+   },
+   {
+    "slug": "cg-derepa-oishi-izumi-guest-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレパ本日21日の放送に大石泉役の大木咲絵子が出演",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "derepa-oishi-izumi-guest-2026",
+    "candidate_ids": [
+     "sched-2026-10-21-derepa-oishi-izumi-guest-2026-その他"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-sega-lucky-kuji-vol1-cute",
+    "reason": "既報",
+    "note": "10-20号で販売期間・賞品・価格を記事化済み。新事実も当日トリガーも無い(終了は12/4)"
+   },
+   {
+    "dedup_key": "cinderella-sega-lucky-kuji-vol1-cute-2026",
+    "reason": "既報",
+    "note": "上の主題と同じくじ。10-20号で既報、素材も告知のみ"
+   },
+   {
+    "dedup_key": "cg-15th-anniversary-orchestra-2027",
+    "reason": "既報",
+    "note": "2次先行は10-15号で記事化済み。締切10/25は4日先で3日以内に当たらず、新事実も無い"
+   },
+   {
+    "dedup_key": "deresute-maintenance-2026-10-20",
+    "reason": "その他",
+    "note": "10/20のメンテナンス終了済みの知らせで、発行日時点で新しい出来事ではない"
+   },
+   {
+    "dedup_key": "cinderella-master-hourglass-2026",
+    "reason": "既報",
+    "note": "10-17号『HOURGLASS』CD発売へと同じ商品。素材は発売日11/18のみで新事実無し"
+   }
+  ],
+  "cross_brand": []
+ }
+}

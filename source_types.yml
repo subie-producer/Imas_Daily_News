@@ -429,6 +429,8 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - bbvPICVDOk4         # 機械で追加: @imas-official「10/21 二階堂千鶴さん Happy Birthday‼」
+    - Mdyk3h5-TQE         # 機械で追加: @hatsuboshi_gakuen「初星学園 「Roar」Official Music Vide」
     - PMe-Q5hKxac         # 機械で追加: @imas-official「10/18 小早川紗枝さん Happy Birthday‼」
     - 4_EuV8zaiok         # 機械で追加: @imas-official「10/18 水本ゆかりさん Happy Birthday‼」
     - 4YS_StMDK6I         # 機械で追加: @project_imas_va-liv「【期間限定公開中】PROJECT IM@S vα-liv 1」
@@ -969,6 +971,9 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/odKdocfVW3: 準公式                         # 機械で追加: 展開先 https://asobistore.jp/content/title/Idolmaster/shinyradio/contact/
+  t.co/PHXTrZXZFE: 公式                         # 機械で追加: 展開先 https://va-liv.booth.pm/items/8959817
+  t.co/MdlrfC0LCI: 準公式                         # 機械で追加: 展開先 https://shop.asobistore.jp/products/detail/250322-00-00-comp_01
   t.co/7vGeJPaJ4M: 公式                         # 機械で追加: 展開先 https://twitter.com/gkmas_official/status/2112504712830574836/photo/1
   note.com/kijo_mio: ファン                       # 合議で追加: 個人名のnoteで日記を発信。運営者情報なし、個人に紐づく発信
   t.co/UWj9DyM42R: 二次情報                         # 機械で追加: 展開先 https://lnk.to/S.E.M_2DMV

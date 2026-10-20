@@ -116,7 +116,8 @@
   "via": "watch",
   "verify": "confirmed",
   "src_candidate_id": "202609161237-watch-3",
-  "companion_of": "sched-2026-11-17-million-mitsukoshi-osechi-2027-締切"
+  "companion_of": "sched-2026-11-17-million-mitsukoshi-osechi-2027-締切",
+  "src_dedup_key": "million-mitsukoshi-osechi-2027"
  },
  {
   "id": "sched-2026-11-17-cg-isetan-osechi-2027-締切",
@@ -311,7 +312,8 @@
   "via": "explore",
   "verify": "confirmed",
   "src_candidate_id": "202609170735-explore-31",
-  "companion_of": "sched-2026-11-17-cg-isetan-osechi-2027-締切"
+  "companion_of": "sched-2026-11-17-cg-isetan-osechi-2027-締切",
+  "src_dedup_key": "cg-isetan-osechi-2027"
  },
  {
   "id": "sched-2026-11-17-cg-isetan-osechi-campaign-2027-締切",

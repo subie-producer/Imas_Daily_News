@@ -164,7 +164,8 @@
   "verify": "confirmed",
   "deadline": "2026-10-12",
   "src_candidate_id": "202609161237-watch-2",
-  "companion_of": "sched-2027-01-12-cg-15th-anniversary-orchestra-news-千秋楽"
+  "companion_of": "sched-2027-01-12-cg-15th-anniversary-orchestra-news-千秋楽",
+  "src_dedup_key": "cg-15th-anniversary-orchestra-2027"
  },
  {
   "id": "sched-2027-01-12-cg-15th-anniversary-orchestra-news-千秋楽-src2",
@@ -187,7 +188,8 @@
   "event_date": "2027-01-11",
   "deadline": "2026-09-27",
   "src_candidate_id": "202609170229-grok-52",
-  "companion_of": "sched-2027-01-12-cg-15th-anniversary-orchestra-news-千秋楽"
+  "companion_of": "sched-2027-01-12-cg-15th-anniversary-orchestra-news-千秋楽",
+  "src_dedup_key": "cg-15th-orchestra-2027"
  },
  {
   "id": "sched-2027-01-12-cg-15th-orchestra-concert-2027-千秋楽",
@@ -545,7 +547,8 @@
   "event_date": "2027-01-11",
   "deadline": "2026-09-27",
   "src_candidate_id": "202609261234-watch-1",
-  "companion_of": "sched-2027-01-12-cg-15th-orchestra-2027-千秋楽"
+  "companion_of": "sched-2027-01-12-cg-15th-orchestra-2027-千秋楽",
+  "src_dedup_key": "cg-cinderella-orchestra-concert-2027"
  },
  {
   "id": "sched-2027-01-12-cg-15th-orchestra-2027-千秋楽-src2",
@@ -583,7 +586,8 @@
   "event_date": "2027-01-11",
   "deadline": "2026-09-27",
   "src_candidate_id": "202609270227-grok-23",
-  "companion_of": "sched-2027-01-12-cg-15th-orchestra-2027-千秋楽"
+  "companion_of": "sched-2027-01-12-cg-15th-orchestra-2027-千秋楽",
+  "src_dedup_key": "cg-15th-orchestra-concert-2027"
  },
  {
   "id": "sched-2027-01-12-cg-15th-orchestra-goods-2026-千秋楽",

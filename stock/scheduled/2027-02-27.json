@@ -45,7 +45,8 @@
   "verify": "confirmed",
   "event_date": "2027-02-27",
   "src_candidate_id": "202608270220-grok-102",
-  "companion_of": "sched-2027-02-27-cg-million-coming-soon-2026-08-26-開幕"
+  "companion_of": "sched-2027-02-27-cg-million-coming-soon-2026-08-26-開幕",
+  "src_dedup_key": "joint-cg-million-clash-match-2027-02"
  },
  {
   "id": "sched-2027-02-27-cg-million-coming-soon-2026-08-26-開幕-src2",
@@ -72,7 +73,8 @@
   "verify": "confirmed",
   "event_date": "2027-02-27",
   "src_candidate_id": "202608270220-grok-103",
-  "companion_of": "sched-2027-02-27-cg-million-coming-soon-2026-08-26-開幕"
+  "companion_of": "sched-2027-02-27-cg-million-coming-soon-2026-08-26-開幕",
+  "src_dedup_key": "joint-clash-match-dates-venue-2026-08-26"
  },
  {
   "id": "sched-2027-02-27-cg-million-coming-soon-2026-08-26-開幕-src3",
@@ -98,7 +100,8 @@
   "verify": "confirmed",
   "event_date": "2027-02-27",
   "src_candidate_id": "202608270220-grok-104",
-  "companion_of": "sched-2027-02-27-cg-million-coming-soon-2026-08-26-開幕"
+  "companion_of": "sched-2027-02-27-cg-million-coming-soon-2026-08-26-開幕",
+  "src_dedup_key": "joint-clash-match-cast-band-strings-2026-08-26"
  },
  {
   "id": "sched-2027-02-27-cg-million-coming-soon-2026-08-26-開幕-src4",
@@ -122,6 +125,7 @@
   "verify": "confirmed",
   "deadline": "2026-09-13",
   "src_candidate_id": "202608270220-grok-105",
-  "companion_of": "sched-2027-02-27-cg-million-coming-soon-2026-08-26-開幕"
+  "companion_of": "sched-2027-02-27-cg-million-coming-soon-2026-08-26-開幕",
+  "src_dedup_key": "joint-clash-match-premium-preorder-2026-08-26"
  }
 ]

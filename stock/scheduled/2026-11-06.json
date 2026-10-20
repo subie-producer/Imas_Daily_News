@@ -74,5 +74,101 @@
   "src_candidate_id": "202610161835-watch-3",
   "event_date": "2026-11-06",
   "deadline": "2026-12-20"
+ },
+ {
+  "id": "sched-2026-11-06-anniversary-login-2026-開始",
+  "dedup_key": "anniversary-login-2026",
+  "brand": "gaku",
+  "subject": "学マス2.5thアニバーサリー前夜祭ログインボーナス開始",
+  "kind": "開始",
+  "note": "11時からログインしてガシャチケットを受け取れる",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-11-06",
+  "title": "2.5thアニバーサリー前夜祭ログインボーナス",
+  "url": "https://x.com/gkmas_official/status/2112510074933432669",
+  "source_type": "公式",
+  "facts": [
+   "SSR Pアイドル1人確定の1連ガシャチケット、または出現率10倍の5連ガシャチケットを選べる。",
+   "開催期間: 11/6(金) 11:00～11/16(月) 4:59まで(予定)",
+   "エンゲージメント: 中",
+   "2.5thアニバーサリー前夜祭ログインボーナスを開催予定。",
+   "開催期間: 11/6(金) 11:00 ～ 11/16(月) 4:59まで(予定)",
+   "ログインボーナスの選択肢はSSR Pアイドル1人確定の1連ガシャチケット、または出現率10倍の5連ガシャチケット。",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-16",
+  "src_candidate_id": "202610210224-grok-36"
+ },
+ {
+  "id": "sched-2026-11-06-garakuta-china-misuzu-gacha-2026-開始",
+  "dedup_key": "garakuta-china-misuzu-gacha-2026",
+  "brand": "gaku",
+  "subject": "学マス ガラクタロード千奈＆美鈴ガシャ開始",
+  "kind": "開始",
+  "note": "11時からSSRサポートカード『みんなも読んでみてっ！』登場ガシャが引ける",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-11-06",
+  "title": "ガラクタロード 千奈・美鈴ガシャ サポートカード",
+  "url": "https://x.com/gkmas_official/status/2112507995536208293",
+  "source_type": "公式",
+  "facts": [
+   "登場予定のSSRサポートカード：『みんなも読んでみてっ！』",
+   "ガシャ開催期間: 11/6(金) 11:00～11/16(月) 9:59まで(予定)",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-16",
+  "src_candidate_id": "202610210224-grok-42"
+ },
+ {
+  "id": "sched-2026-11-06-gold-rush-vol8-2026-発売",
+  "dedup_key": "gold-rush-vol8-2026",
+  "brand": "gaku",
+  "subject": "学マス GOLD RUSH 第8巻 発売",
+  "kind": "発売",
+  "note": "第8巻と沖乃ゆう描き下ろし名刺付き特装版を購入できる",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-11-06",
+  "title": "学園アイドルマスター GOLD RUSH 第8巻",
+  "url": "https://x.com/gkmas_official/status/2112505517809832308",
+  "source_type": "公式",
+  "facts": [
+   "第8巻は11/6(金)発売予定。",
+   "特装版には沖乃ゆう先生描き下ろし「オリジナル名刺」が付属。",
+   "名刺はゲームでも使用可能。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-06",
+  "src_candidate_id": "202610210224-grok-46"
+ },
+ {
+  "id": "sched-2026-11-06-hatsuboshi-store-cheer-2026-発売",
+  "dedup_key": "hatsuboshi-store-cheer-2026",
+  "brand": "gaku",
+  "subject": "ハツボシストア応援部グッズ発売",
+  "kind": "発売",
+  "note": "応援部グッズの販売開始。団服の受注や店頭の先行販売を確認できる",
+  "reserved_on": "2026-10-21",
+  "occurs_on": "2026-11-06",
+  "title": "ハツボシストア応援部グッズ",
+  "url": "https://x.com/gkmas_official/status/2112505297403285885",
+  "source_type": "公式",
+  "facts": [
+   "「ハツボシストア応援部」イラストを初公開。",
+   "テーマは咲季を中心にした「応援」。",
+   "11月6日から販売スタート。",
+   "団服はオンライン受注販売、店頭でサンプル展示および数量限定の先行販売。",
+   "リンク: https://x.com/hatsuboshistore",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-06",
+  "src_candidate_id": "202610210224-grok-49"
  }
 ]

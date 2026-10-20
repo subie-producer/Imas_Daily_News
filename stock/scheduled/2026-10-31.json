@@ -39,7 +39,8 @@
   "verify": "unconfirmed",
   "event_date": "2026-07-13",
   "src_candidate_id": "202607131241-grok-36",
-  "companion_of": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽"
+  "companion_of": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽",
+  "src_dedup_key": "deramasu-sidem-special-site-update-20260713"
  },
  {
   "id": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽-src2",
@@ -69,7 +70,8 @@
   "verify": "unconfirmed",
   "event_date": "2026-08-03",
   "src_candidate_id": "202607131241-grok-37",
-  "companion_of": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽"
+  "companion_of": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽",
+  "src_dedup_key": "deramasu-myokoen-collab-2026"
  },
  {
   "id": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽-src3",
@@ -93,7 +95,8 @@
   "via": "grok",
   "verify": "unconfirmed",
   "src_candidate_id": "202607131241-grok-38",
-  "companion_of": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽"
+  "companion_of": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽",
+  "src_dedup_key": "deramasu-kohgen-mizushima-saki-2026"
  },
  {
   "id": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽-src4",
@@ -118,7 +121,8 @@
   "via": "grok",
   "verify": "unconfirmed",
   "src_candidate_id": "202607131241-grok-39",
-  "companion_of": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽"
+  "companion_of": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽",
+  "src_dedup_key": "deramasu-yabaton-collab-2026"
  },
  {
   "id": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽-src5",
@@ -141,7 +145,8 @@
   "via": "grok",
   "verify": "unconfirmed",
   "src_candidate_id": "202607140344-grok-39",
-  "companion_of": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽"
+  "companion_of": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽",
+  "src_dedup_key": "deramas-kohgen-papikawa-berry-2026"
  },
  {
   "id": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽-src6",
@@ -173,7 +178,8 @@
   "event_date": "2026-08-03",
   "deadline": "2026-10-31",
   "src_candidate_id": "202607131841-grok-63",
-  "companion_of": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽"
+  "companion_of": "sched-2026-10-31-deramasu-sidem-special-site-update-20260713-千秋楽",
+  "src_dedup_key": "sidem-deramas-popup-balletcore-2026"
  },
  {
   "id": "sched-2026-10-31-sidem-super-retrose-party-2026-その他",
@@ -217,7 +223,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202609012336-watch-3",
-  "companion_of": "sched-2026-10-31-sidem-super-retrose-party-2026-その他"
+  "companion_of": "sched-2026-10-31-sidem-super-retrose-party-2026-その他",
+  "src_dedup_key": "sidem-seibu-yuen-2026"
  },
  {
   "id": "sched-2026-10-31-sidem-super-retrose-party-2026-その他-src2",
@@ -248,7 +255,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "202609020238-grok-39",
-  "companion_of": "sched-2026-10-31-sidem-super-retrose-party-2026-その他"
+  "companion_of": "sched-2026-10-31-sidem-super-retrose-party-2026-その他",
+  "src_dedup_key": "sidem-super-retrose-party-2026"
  },
  {
   "id": "sched-2026-10-31-cinderella-15th-anniversary-party-2026-結果",
@@ -523,7 +531,8 @@
   "event_date": "2027-02-13",
   "deadline": "2026-10-18",
   "src_candidate_id": "202609290228-explore-0",
-  "companion_of": "sched-2026-10-31-cg-xr-live-apple-of-my-ai-2027-結果"
+  "companion_of": "sched-2026-10-31-cg-xr-live-apple-of-my-ai-2027-結果",
+  "src_dedup_key": "cg-athome-xr-live-apple-of-my-ai-2027"
  },
  {
   "id": "sched-2026-10-31-cg-athome-apple-of-my-ai-2026-結果",
@@ -665,7 +674,8 @@
   "verify": "unconfirmed",
   "event_date": "2026-10-31",
   "src_candidate_id": "202610090223-grok-85",
-  "companion_of": "sched-2026-10-31-dsva-kimchikura-vol-13-2026-開幕"
+  "companion_of": "sched-2026-10-31-dsva-kimchikura-vol-13-2026-開幕",
+  "src_dedup_key": "kimchikura-vol-13-2026"
  },
  {
   "id": "sched-2026-10-31-cg-apple-of-my-ai-2027-結果",
@@ -838,7 +848,8 @@
   "event_date": "2026-10-30",
   "deadline": "2026-12-01",
   "src_candidate_id": "sched-2026-10-13-sidem-seibuen-retro-rose-party-2026-発売",
-  "companion_of": "sched-2026-10-31-sidem-seibuen-retro-party-2026-その他"
+  "companion_of": "sched-2026-10-31-sidem-seibuen-retro-party-2026-その他",
+  "src_dedup_key": "sidem-seibuen-retro-rose-party-2026"
  },
  {
   "id": "sched-2026-10-31-manaka-halloween-pumpkin-recipe-2026-開始",
@@ -1046,7 +1057,8 @@
   "verify": "confirmed",
   "deadline": "2026-10-18",
   "src_candidate_id": "sched-2026-10-18-shiny-orchestra-2027-premium-ticket-締切",
-  "companion_of": "sched-2026-10-31-shiny-orchestra-concert-2027-結果"
+  "companion_of": "sched-2026-10-31-shiny-orchestra-concert-2027-結果",
+  "src_dedup_key": "shiny-orchestra-2027-premium-ticket"
  },
  {
   "id": "sched-2026-10-31-manaka-pumpkin-recipe-fan-replies-2026-開始",
@@ -1104,6 +1116,7 @@
   "event_date": "2026-10-31",
   "deadline": "2026-10-20",
   "src_candidate_id": "sched-2026-10-20-manaka-halloween-pumpkin-recipe-2026-締切",
-  "companion_of": "sched-2026-10-31-manaka-pumpkin-recipe-fan-replies-2026-開始"
+  "companion_of": "sched-2026-10-31-manaka-pumpkin-recipe-fan-replies-2026-開始",
+  "src_dedup_key": "manaka-halloween-pumpkin-recipe-2026"
  }
 ]

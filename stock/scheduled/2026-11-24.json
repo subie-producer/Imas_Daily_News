@@ -73,7 +73,8 @@
   "event_date": "2026-10-28",
   "deadline": "2026-11-24",
   "src_candidate_id": "202610081233-explore-5",
-  "companion_of": "sched-2026-11-24-sidem-daimaru-vol2-2026-千秋楽"
+  "companion_of": "sched-2026-11-24-sidem-daimaru-vol2-2026-千秋楽",
+  "src_dedup_key": "sidem-daimaru-matsuzakaya-vol-2-2026"
  },
  {
   "id": "sched-2026-11-24-sidem-daimaru-vol2-2026-千秋楽-src2",
@@ -94,6 +95,7 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202610090223-grok-82",
-  "companion_of": "sched-2026-11-24-sidem-daimaru-vol2-2026-千秋楽"
+  "companion_of": "sched-2026-11-24-sidem-daimaru-vol2-2026-千秋楽",
+  "src_dedup_key": "sidem-daimaru-matsuzakaya-popup-2026"
  }
 ]

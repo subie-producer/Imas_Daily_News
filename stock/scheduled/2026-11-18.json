@@ -252,7 +252,8 @@
   "event_date": "2026-10-28",
   "deadline": "2026-11-24",
   "src_candidate_id": "202610081233-explore-5",
-  "companion_of": "sched-2026-11-18-sidem-daimaru-vol2-2026-開幕"
+  "companion_of": "sched-2026-11-18-sidem-daimaru-vol2-2026-開幕",
+  "src_dedup_key": "sidem-daimaru-matsuzakaya-vol-2-2026"
  },
  {
   "id": "sched-2026-11-18-sidem-daimaru-vol2-2026-開幕-src2",
@@ -273,7 +274,8 @@
   "via": "grok",
   "verify": "confirmed",
   "src_candidate_id": "202610090223-grok-82",
-  "companion_of": "sched-2026-11-18-sidem-daimaru-vol2-2026-開幕"
+  "companion_of": "sched-2026-11-18-sidem-daimaru-vol2-2026-開幕",
+  "src_dedup_key": "sidem-daimaru-matsuzakaya-popup-2026"
  },
  {
   "id": "sched-2026-11-18-cinderella-party-master-album-2026-締切",
@@ -606,6 +608,7 @@
   "via": "explore",
   "verify": "unconfirmed",
   "src_candidate_id": "202610162334-explore-15",
-  "companion_of": "sched-2026-11-18-cinderella-15th-anniversary-hourglass-cd-2026-発売"
+  "companion_of": "sched-2026-11-18-cinderella-15th-anniversary-hourglass-cd-2026-発売",
+  "src_dedup_key": "cinderella-girls-15th-visual-song-2026"
  }
 ]

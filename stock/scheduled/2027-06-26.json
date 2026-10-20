@@ -104,7 +104,8 @@
   "event_date": "2027-06-26",
   "deadline": "2026-10-11",
   "src_candidate_id": "202609210225-grok-36",
-  "companion_of": "sched-2027-06-26-million-10th-anniversary-live-2027-開幕"
+  "companion_of": "sched-2027-06-26-million-10th-anniversary-live-2027-開幕",
+  "src_dedup_key": "10thlive-2027-6-26-27-k-765-millionstars-14th-day2"
  },
  {
   "id": "sched-2027-06-26-million-10th-anniversary-live-2027-開幕-src2",
@@ -145,7 +146,8 @@
   "verify": "confirmed",
   "event_date": "2026-09-19",
   "src_candidate_id": "202609210225-grok-82",
-  "companion_of": "sched-2027-06-26-million-10th-anniversary-live-2027-開幕"
+  "companion_of": "sched-2027-06-26-million-10th-anniversary-live-2027-開幕",
+  "src_dedup_key": "10"
  },
  {
   "id": "sched-2027-06-26-million-10th-anniversary-live-2027-開幕-src3",
@@ -229,6 +231,7 @@
   "event_date": "2026-09-20",
   "deadline": "2026-10-11",
   "src_candidate_id": "202609210225-grok-87",
-  "companion_of": "sched-2027-06-26-million-10th-anniversary-live-2027-開幕"
+  "companion_of": "sched-2027-06-26-million-10th-anniversary-live-2027-開幕",
+  "src_dedup_key": "14th-day2-3"
  }
 ]

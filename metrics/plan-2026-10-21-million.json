@@ -1,0 +1,342 @@
+{
+ "decisions": {
+  "million-hapipisu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/18開幕・10/19に25日まで記事化済み。締切は4日後で3日以内ではない"
+  },
+  "million-chizuru-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-chizuru-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "劇場外観の特別仕様と誕生日施策を統合"
+  },
+  "million-chizuru-birthday-gasha-2026": {
+   "action": "article",
+   "angle": "二階堂千鶴の誕生日に合わせ、Birthdayガシャ・Birthdayセット2026・劇場の特別仕様装飾・お祝いムービーが登場",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ガシャ・セット・装飾・動画を1記事に束ねる"
+  },
+  "million-chizuru-birthday-set-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-chizuru-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ誕生日施策"
+  },
+  "million-dance-dance-dance-implementation-2026": {
+   "action": "article",
+   "angle": "『ダンス・ダンス・ダンス』のミリシタ実装が決定し、イベント「プラチナスタートレジャー～ダンス・ダンス・ダンス～」を11月末から開催予定",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "面の最大ニュース"
+  },
+  "million-stamas-5th-anniversary-ssr-2026": {
+   "action": "article",
+   "angle": "スタマス5周年を記念し、くろごま描きおろし衣装のSSRを制作決定、イベントと同時期のガシャで登場予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-kuraki-hoshi-tooi-tsuki-gasha-vol2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19にvol.2を記事化済み。終了27日は3日以内ではない"
+  },
+  "million-cyber-planet-popup-osaka-2026": {
+   "action": "article",
+   "angle": "Cyber Planet POP UP SHOPが東京会場を終え、大阪会場を11月7日〜15日にアベノラクバスで開催、美希キーホルダー完売分は大阪・事後通販で購入可",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "美希キーホルダー完売の話題を統合"
+  },
+  "million-cyber-planet-miki-keyholder-soldout-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-cyber-planet-popup-osaka-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP SHOPの施策"
+  },
+  "million-kyomaf-2026-megumi-microfiber-soldout": {
+   "action": "article",
+   "angle": "京まふ2026事後物販の「マイクロファイバー 所恵美 くのいち ver.」が完売、再入荷予定は未定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-kyomaf-after-sale-mini-character-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "イラスト担当者個人のSNS投稿のみで出典不足"
+  },
+  "general-chizuru-birthday-fan-posts-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン投稿はgeneral面のculture対象。million面では記事にしない"
+  },
+  "general-emily-moon-viewing-fan-ai-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファンAIイラストはgeneral面の対象"
+  },
+  "chizuru-birthday-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-chizuru-birthday-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アイマスchのお祝いムービーを統合"
+  },
+  "reika-autumn-fan-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファンイラスト単体の投稿"
+  },
+  "million-hapipisu-event-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ハピピス♡の既報と同じ内容"
+  },
+  "million-radio-playlist-otayori-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19に記事化済み。締切25日は3日以内ではない"
+  },
+  "idolmaster-ch-radio-members-2026-10": {
+   "action": "cross_brand",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "joint-topic-37",
+   "reason": "",
+   "note": "アイマスch配信で合同面が同内容を記事化済み"
+  },
+  "asobi-store-maintenance-2026-10-20-21": {
+   "action": "article",
+   "angle": "ASOBI STOREのシステムメンテナンスが本日10〜13時に実施され、グッズストアとASOBIマイページが使えない",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-chizuru-birthday-gasha-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "二階堂千鶴の誕生日に合わせ、Birthdayガシャ・Birthdayセット2026・劇場の特別仕様装飾・お祝いムービーが登場",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-chizuru-birthday-gasha-2026",
+    "candidate_ids": [
+     "202610210224-grok-14",
+     "202610210224-grok-13",
+     "202610210224-grok-15",
+     "202610210224-grok-81"
+    ]
+   },
+   {
+    "slug": "million-dance-dance-dance-implementation-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "『ダンス・ダンス・ダンス』のミリシタ実装が決定し、イベント「プラチナスタートレジャー～ダンス・ダンス・ダンス～」を11月末から開催予定",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "million-dance-dance-dance-implementation-2026",
+    "candidate_ids": [
+     "202610210224-grok-16"
+    ]
+   },
+   {
+    "slug": "million-stamas-5th-anniversary-ssr-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "スタマス5周年を記念し、くろごま描きおろし衣装のSSRを制作決定、イベントと同時期のガシャで登場予定",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-stamas-5th-anniversary-ssr-2026",
+    "candidate_ids": [
+     "202610210224-grok-17"
+    ]
+   },
+   {
+    "slug": "million-cyber-planet-popup-osaka-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Cyber Planet POP UP SHOPが東京会場を終え、大阪会場を11月7日〜15日にアベノラクバスで開催、美希キーホルダー完売分は大阪・事後通販で購入可",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-cyber-planet-popup-osaka-2026",
+    "candidate_ids": [
+     "202610210224-grok-19",
+     "202610210224-grok-20"
+    ]
+   },
+   {
+    "slug": "million-kyomaf-2026-megumi-microfiber-soldout",
+    "brand": "million",
+    "rank": "small",
+    "angle": "京まふ2026事後物販の「マイクロファイバー 所恵美 くのいち ver.」が完売、再入荷予定は未定",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-kyomaf-2026-megumi-microfiber-soldout",
+    "candidate_ids": [
+     "202610210224-grok-21"
+    ]
+   },
+   {
+    "slug": "million-asobi-store-maintenance-2026-10-20-21",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ASOBI STOREのシステムメンテナンスが本日10〜13時に実施され、グッズストアとASOBIマイページが使えない",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "asobi-store-maintenance-2026-10-20-21",
+    "candidate_ids": [
+     "sched-2026-10-21-asobi-store-maintenance-2026-10-20-21-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-hapipisu-2026",
+    "reason": "既報",
+    "note": "10/18開幕・10/19に25日まで記事化済み。締切は4日後で3日以内ではない"
+   },
+   {
+    "dedup_key": "million-kuraki-hoshi-tooi-tsuki-gasha-vol2-2026",
+    "reason": "既報",
+    "note": "10/19にvol.2を記事化済み。終了27日は3日以内ではない"
+   },
+   {
+    "dedup_key": "million-kyomaf-after-sale-mini-character-art-2026",
+    "reason": "個人の話題",
+    "note": "イラスト担当者個人のSNS投稿のみで出典不足"
+   },
+   {
+    "dedup_key": "general-chizuru-birthday-fan-posts-2026",
+    "reason": "面違い",
+    "note": "ファン投稿はgeneral面のculture対象。million面では記事にしない"
+   },
+   {
+    "dedup_key": "general-emily-moon-viewing-fan-ai-art-2026",
+    "reason": "面違い",
+    "note": "ファンAIイラストはgeneral面の対象"
+   },
+   {
+    "dedup_key": "reika-autumn-fan-art-2026",
+    "reason": "面違い",
+    "note": "ファンイラスト単体の投稿"
+   },
+   {
+    "dedup_key": "million-hapipisu-event-2026",
+    "reason": "既報",
+    "note": "ハピピス♡の既報と同じ内容"
+   },
+   {
+    "dedup_key": "million-radio-playlist-otayori-2026",
+    "reason": "既報",
+    "note": "10/19に記事化済み。締切25日は3日以内ではない"
+   }
+  ],
+  "cross_brand": [
+   {
+    "slug": "joint-topic-37",
+    "dedup_key": "idolmaster-ch-radio-members-2026-10",
+    "note": "アイマスch配信で合同面が同内容を記事化済み"
+   }
+  ]
+ }
+}

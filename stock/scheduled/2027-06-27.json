@@ -56,7 +56,8 @@
   "verify": "unconfirmed",
   "event_date": "2027-06-26",
   "src_candidate_id": "202609202336-watch-15",
-  "companion_of": "sched-2027-06-27-10-2027-6-k-千秋楽"
+  "companion_of": "sched-2027-06-27-10-2027-6-k-千秋楽",
+  "src_dedup_key": "million-10th-anniversary-live-2027"
  },
  {
   "id": "sched-2027-06-27-10-2027-6-k-千秋楽-src2",
@@ -140,7 +141,8 @@
   "event_date": "2027-06-26",
   "deadline": "2026-10-11",
   "src_candidate_id": "202609210225-grok-36",
-  "companion_of": "sched-2027-06-27-10-2027-6-k-千秋楽"
+  "companion_of": "sched-2027-06-27-10-2027-6-k-千秋楽",
+  "src_dedup_key": "10thlive-2027-6-26-27-k-765-millionstars-14th-day2"
  },
  {
   "id": "sched-2027-06-27-10-2027-6-k-千秋楽-src3",
@@ -181,7 +183,8 @@
   "verify": "confirmed",
   "event_date": "2026-09-19",
   "src_candidate_id": "202609210225-grok-82",
-  "companion_of": "sched-2027-06-27-10-2027-6-k-千秋楽"
+  "companion_of": "sched-2027-06-27-10-2027-6-k-千秋楽",
+  "src_dedup_key": "10"
  },
  {
   "id": "sched-2027-06-27-10-2027-6-k-千秋楽-src4",
@@ -265,6 +268,7 @@
   "event_date": "2026-09-20",
   "deadline": "2026-10-11",
   "src_candidate_id": "202609210225-grok-87",
-  "companion_of": "sched-2027-06-27-10-2027-6-k-千秋楽"
+  "companion_of": "sched-2027-06-27-10-2027-6-k-千秋楽",
+  "src_dedup_key": "14th-day2-3"
  }
 ]

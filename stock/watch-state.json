@@ -863,7 +863,9 @@
   "https://imasnews765.com/?p=32178",
   "https://imasnews765.com/?p=32175"
  ],
- "_unreadable": {},
+ "_unreadable": {
+  "https://imasnews765.com/?p=32576": 1
+ },
  "pylonport-sidem": [
   "https://pylonport.bandainamcomusiclive.co.jp/more/861",
   "https://pylonport.bandainamcomusiclive.co.jp/more/831",
@@ -980,6 +982,15 @@
   "https://lantis.jp/sidem/extra/index.html#20260925",
   "https://lantis.jp/sidem/extra/index.html#20260912_2"
  ],
- "_pending": [],
+ "_pending": [
+  {
+   "source_id": "imasnews765",
+   "brand": "general",
+   "url": "https://imasnews765.com/?p=32576",
+   "title": "「劇場版 アイドルマスター SideM F＠NTASTIC BATTLE FES ～Who goes first～」公開記念舞台挨拶の実施が決定",
+   "source_type": "ファン",
+   "csr": false
+  }
+ ],
  "_given_up": []
 }

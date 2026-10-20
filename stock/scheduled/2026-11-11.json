@@ -999,12 +999,12 @@
   "src_dedup_key": "valiv-letora-birthday-2026-lv-goods-lottery"
  },
  {
-  "id": "sched-2026-11-11-sidem-fbfes-wgf-2026-stage-greeting-開始",
+  "id": "sched-2026-11-11-sidem-fbfes-wgf-2026-stage-greeting-発売",
   "dedup_key": "sidem-fbfes-wgf-2026-stage-greeting",
   "brand": "sidem",
-  "subject": "SideM劇場版 舞台挨拶 一般発売(先着)開始",
-  "kind": "開始",
-  "note": "12:00から先着の一般発売で申し込める",
+  "subject": "SideM劇場版 舞台挨拶 一般発売(先着)",
+  "kind": "発売",
+  "note": "12時から一般発売の受付開始。チケットを申し込める",
   "reserved_on": "2026-10-21",
   "occurs_on": "2026-11-11",
   "title": "劇場版 SideM 公開記念舞台挨拶（新宿ピカデリー）",
@@ -1204,12 +1204,12 @@
   "src_candidate_id": "202610201234-watch-0"
  },
  {
-  "id": "sched-2026-11-11-sidem-fbfes-wgf-2026-stage-greeting-開始-src1",
+  "id": "sched-2026-11-11-sidem-fbfes-wgf-2026-stage-greeting-発売-src1",
   "dedup_key": "sidem-fbfes-wgf-2026-stage-greeting",
   "brand": "sidem",
-  "subject": "SideM劇場版 舞台挨拶 一般発売(先着)開始",
-  "kind": "開始",
-  "note": "12:00から先着の一般発売で申し込める",
+  "subject": "SideM劇場版 舞台挨拶 一般発売(先着)",
+  "kind": "発売",
+  "note": "12時から一般発売の受付開始。チケットを申し込める",
   "reserved_on": "2026-10-21",
   "occurs_on": "2026-11-11",
   "title": "劇場版SideM公開記念舞台挨拶",
@@ -1281,7 +1281,7 @@
   "event_date": "2026-11-21",
   "deadline": "2026-11-19",
   "src_candidate_id": "202610202340-explore-35",
-  "companion_of": "sched-2026-11-11-sidem-fbfes-wgf-2026-stage-greeting-開始",
+  "companion_of": "sched-2026-11-11-sidem-fbfes-wgf-2026-stage-greeting-発売",
   "src_dedup_key": "sidem-fantastic-battle-fes-premiere-stage-greeting-2026"
  }
 ]

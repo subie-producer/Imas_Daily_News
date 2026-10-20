@@ -1371,35 +1371,5 @@
   "src_candidate_id": "202610200229-grok-56",
   "companion_of": "sched-2026-11-01-sidem-315pro-night-goods-2026-締切",
   "src_dedup_key": "sidem-mfes-315pronight-goods-2026"
- },
- {
-  "id": "sched-2026-11-01-valiv-situation-voice-2026-oct-締切",
-  "dedup_key": "valiv-situation-voice-2026-oct",
-  "brand": "dsva",
-  "subject": "vα-liv 10月シチュエーションボイス販売期間の最終日",
-  "kind": "締切",
-  "note": "23:59までBOOTHでボイス4種を購入できる最終日",
-  "reserved_on": "2026-10-21",
-  "occurs_on": "2026-11-01",
-  "title": "vα-liv 10月シチュエーションボイス「今日からいきなり!?お義兄ちゃんボイス」",
-  "url": "https://x.com/valiv_official/status/2112027206545199264",
-  "source_type": "公式",
-  "facts": [
-   "10月のお題は「妹が……三人できる！？」。",
-   "ダウンロード商品として灯里愛夏、上水流宇宙、レトラ、全員集合の各ボイスを販売。",
-   "各商品価格は3,300円。",
-   "販売期間: 2026年10月10日(土) 18:00～2026年11月1日(日) 23:59。",
-   "ボイスドラマのあらすじでは、父の再婚相手の連れ子である三姉妹との交流期間を描く。",
-   "リンク: https://t.co/PHXTrZXZFE",
-   "リンク: https://t.co/ZyJdI7787q",
-   "リンク: https://t.co/ON7vMQoxvl",
-   "リンク: https://t.co/RNamvtRoVm",
-   "エンゲージメント: 低",
-   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
-  ],
-  "via": "grok",
-  "verify": "confirmed",
-  "deadline": "2026-11-01",
-  "src_candidate_id": "202610210224-grok-73"
  }
 ]

@@ -3,7 +3,7 @@ slug: million-chizuru-birthday-gasha-2026
 edition: "2026-10-21"
 brand: million
 src: 公式
-rank: medium
+rank: small
 corrected: false
 corrections: []
 candidate_ids:

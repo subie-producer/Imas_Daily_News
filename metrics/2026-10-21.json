@@ -103,5 +103,39 @@
    },
    "duration_s": 1564
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-21T03:29:50+09:00",
+   "edition": "2026-10-21",
+   "rounds": 4,
+   "approved": true,
+   "lint_green": true,
+   "planned": 52,
+   "written": 51,
+   "roundups": 2,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 114,
+    "covered": 114,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "選定": 1.7054052035013834,
+    "執筆": 5.60749028523763,
+    "出典の判定": 2.073987408479055,
+    "組版": 1.3522380431493124,
+    "校閲": 0.8536741097768148,
+    "校閲1波": 0.8536741097768148
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "dsva-valiv-situation-voice-2026-oct"
+   ],
+   "duration_s": 1752
+  }
  ]
 }

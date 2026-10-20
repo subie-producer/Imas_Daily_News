@@ -267,8 +267,8 @@ def relink(c: dict, key: str) -> None:
 
 
 def prior_keys(cands) -> set[str]:
-    """候補群の既報を引く話題キー: いまの dedup_key と、つなぎ直す前のキー(linked_from)。"""
-    return {k for c in cands for k in [c.get("dedup_key"), *(c.get("linked_from") or [])] if k}
+    """候補群の既報を引く話題キー: いまの dedup_key と、つなぎ直す前のキー(linked_from)と、続報予約に添えた素材の元の話題(src_dedup_key)。"""
+    return {k for c in cands for k in [c.get("dedup_key"), *(c.get("linked_from") or []), c.get("src_dedup_key")] if k}
 
 
 class PriorIndex:

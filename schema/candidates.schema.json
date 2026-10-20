@@ -73,6 +73,11 @@
         "type": "string",
         "description": "重複排除キー"
       },
+      "src_dedup_key": {
+        "type": "string",
+        "minLength": 1,
+        "description": "続報予約に添えた素材(schema/scheduled の companion_of の行)を候補へ戻したときの、その素材の元の話題(元候補の dedup_key)。dedup_key は添え先の予約のもの。執筆には予約と違うときだけ other_topic として見せる"
+      },
       "facts": {
         "type": "array",
         "items": {

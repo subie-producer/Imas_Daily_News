@@ -729,6 +729,78 @@ def test_reservation_keeps_article_sources(tmp: Path):
         compose.ROOT = croot
 
 
+def test_companion_keeps_source_topic(tmp: Path):
+    """複数の話題を扱うまとめ記事から付けた続報予約の添えは、素材の元の話題(src_dedup_key)を残す。執筆・書き直しには予約と違うときだけ
+    other_topic として見せ、既報もその話題から引く。元の話題の無い既存の添えには compose の前に足す(過去日は触らない)。冪等。
+    予約の話題キーで上書きすると、別の話題の素材が予約の話題の素材に見えた(当番の指摘 34fdc7491c: あさり先生のゼミ終了の予約に
+    Agitato花海咲季ガシャの公式投稿が添わった)。"""
+    import yaml
+    import storylink
+    st = tmp / "stock"; (st / "scheduled").mkdir(parents=True)
+    (tmp / "metrics").mkdir(); (tmp / "docs" / "_editions").mkdir(parents=True); (tmp / "docs" / "_posts").mkdir(parents=True)
+    (tmp / "candidates").mkdir()
+    assemble.dump_yaml(st / "stories.yml", [])
+    assemble.dump_yaml(st / "pending.yml", [])
+    seminar = {"id": "202610101834-explore-9", "dedup_key": "asari-produce-seminar-2026", "title": "あさり先生のプロデュースゼミ",
+               "url": "https://game8.jp/gakuen-idolmaster/610573", "facts": ["開催期間: 10/11〜10/20 11:59"]}
+    same = {"id": "202610110238-grok-55", "dedup_key": "asari-produce-seminar-2026", "title": "あさり先生のプロデュースゼミ開催",
+            "url": "https://x.com/gkmas_official/status/2108389738277183532", "facts": ["ゼミ開催"]}
+    gacha = {"id": "202610110238-grok-56", "dedup_key": "gaku-agitato-saki-gacha-2026", "title": "Agitato花海咲季ガシャ",
+             "url": "https://x.com/gkmas_official/status/2108384513445572998", "facts": ["咲季ガシャ開催"]}
+    mats = {c["id"]: c for c in (seminar, same, gacha)}
+    fm = {"slug": "gaku-unei-matome", "brand": "gaku", "candidate_ids": [seminar["id"], same["id"], gacha["id"]],
+          "sources": [{"url": c["url"], "label": "a"} for c in (seminar, same, gacha)]}
+    out = {"stories": [], "pending_add": [], "pending_remove": [], "digest": [],
+           "reservations": [{"candidate_id": seminar["id"], "date": "2026-10-20", "kind": "終了", "slug": "gaku-unei-matome",
+                             "subject": "あさり先生のプロデュースゼミ終了", "note": "11時59分まで", "occurs_on": "2026-10-20"}]}
+    saved = (assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS)
+    try:
+        assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = \
+            tmp, st / "stories.yml", st / "scheduled", st / "pending.yml", tmp / "docs" / "_editions"
+        assemble.apply("2026-10-19", 1, out, [fm], mats, False, stories=[])
+        p = st / "scheduled" / "2026-10-20.json"
+        text = p.read_text(encoding="utf-8")
+        check(pipelib.schema_errors(p, text) == [], f"添えた予約が書式に合わない: {pipelib.schema_errors(p, text)}")
+        rows = json.loads(text)
+        comp = {r["url"]: r for r in rows if r.get("companion_of")}
+        check(comp[gacha["url"]].get("src_dedup_key") == gacha["dedup_key"]
+              and comp[same["url"]].get("src_dedup_key") == same["dedup_key"],
+              f"添えた素材に元の話題が残らない: {[(r['url'], r.get('src_dedup_key')) for r in comp.values()]}")
+        # 執筆・書き直しの素材: 予約と別の話題から来た添えだけに other_topic。既報はその話題からも引く
+        shown, _ = renderlib.materials_with_ids(rows)
+        tag = {r["url"]: r.get("other_topic") for r in shown}
+        check(tag == {seminar["url"]: None, same["url"]: None, gacha["url"]: gacha["dedup_key"]},
+              f"別の話題から来た添えを執筆に見せない: {tag}")
+        check(gacha["dedup_key"] in storylink.prior_keys(rows), "添えの元の話題の既報を引かない")
+        # 前の号の予約から候補へ戻す(carry_dropped_candidates)ときも元の話題を残す
+        back = compose.scheduled_as_candidate(comp[gacha["url"]])
+        check(back.get("src_dedup_key") == gacha["dedup_key"], f"予約の添えを候補へ戻すと元の話題が落ちる: {back}")
+        ctext = json.dumps([back], ensure_ascii=False)
+        check(pipelib.schema_errors(tmp / "candidates" / "2026-10-20.json", ctext) == [],
+              f"元の話題を残した候補が書式に合わない: {pipelib.schema_errors(tmp / 'candidates' / '2026-10-20.json', ctext)}")
+        # 元の話題の無い既存の添え(2026-10-20 の組版): 予約を付けた号の素材から足す。過去日は触らない。冪等
+        (tmp / "candidates" / "2026-10-19.json").write_text(json.dumps(list(mats.values()), ensure_ascii=False), encoding="utf-8")
+        (tmp / "docs" / "_posts" / "2026-10-19-gaku-unei-matome.md").write_text(
+            "---\n" + yaml.safe_dump(fm, allow_unicode=True) + "---\n本文\n", encoding="utf-8")
+        old = [{k: v for k, v in r.items() if k != "src_dedup_key"} for r in rows]
+        p.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+        past = st / "scheduled" / "2026-10-18.json"
+        past.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+        log = assemble.restore_reservation_companions("2026-10-20")
+        text = p.read_text(encoding="utf-8")
+        got = {r["url"]: r.get("src_dedup_key") for r in json.loads(text) if r.get("companion_of")}
+        check(got == {same["url"]: same["dedup_key"], gacha["url"]: gacha["dedup_key"]}, f"既存の添えに元の話題を足さない: {got} {log}")
+        check(len(json.loads(text)) == len(old), "元の話題を足すときに添えを足し直した")
+        check(pipelib.schema_errors(p, text) == [], f"足した予約が書式に合わない: {pipelib.schema_errors(p, text)}")
+        check(all("src_dedup_key" not in r for r in json.loads(past.read_text(encoding="utf-8"))), "過去日の予約を書き換えた")
+        check(assemble.restore_reservation_companions("2026-10-20") == [], "元の話題の足しが冪等でない")
+        for name in ("write-article.md", "review-article.md"):
+            body = (Path(compose.__file__).resolve().parent.parent / "prompts" / name).read_text(encoding="utf-8")
+            check(("other_topic" if name.startswith("write") else "src_dedup_key") in body, f"{name} が別の話題の添えの扱いを指示しない")
+    finally:
+        assemble.ROOT, assemble.STORIES, assemble.SCHEDULED, assemble.PENDING, assemble.EDITIONS = saved
+
+
 def test_grok_verify_keeps_new_announcement_separate():
     """grok-verify は、前の投稿に無い新しい発表(セットリスト・結果など)を載せた投稿を、元の告知の候補へまとめない
     (実測 2026-10-19: 深海フェス2026 のセットリストの投稿が 10/17 の出演告知の候補へまとめられ、選定が既報として落とした)。"""
@@ -10595,6 +10667,7 @@ def main() -> int:
     test_reservation_keeps_all_facts(tmp / "rkf")
     test_restore_reservation_facts(tmp / "rrf")
     test_reservation_keeps_article_sources(tmp / "rkas")
+    test_companion_keeps_source_topic(tmp / "ckst")
     test_grok_verify_keeps_new_announcement_separate()
     test_restore_chained_reservation_facts(tmp / "rcf")
     test_lost_post_notified_once(tmp / "lpn")

@@ -78,6 +78,9 @@ def materials_with_ids(materials: list[dict]) -> tuple[list[dict], dict[str, str
             facts.append({"id": fid, "text": str(f)})
         row = {k: c.get(k) for k in ("id", "title", "url", "source_type", "published_date", "event_date",
                                      "deadline", "verify", "via", "unbacked_facts") if c.get(k) not in (None, "", [])}
+        # 続報予約に添えた素材が予約と別の話題から来たとき(まとめ記事の別の話題)、元の話題を見せる
+        if c.get("src_dedup_key") and c.get("src_dedup_key") != c.get("dedup_key"):
+            row["other_topic"] = c["src_dedup_key"]
         row["facts"] = facts
         out.append(row)
     return out, fact_by_id

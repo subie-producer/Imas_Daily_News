@@ -244,6 +244,7 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - sega.jp               # 合議で追加: セガのラッキーくじ販売元。sega.co.jpで社名確認、sega.jpは403
   - shopblog.dmdepart.jp  # 合議で追加: 会場の大丸東京店の公式ブログで、展示の告知と販売情報を発信
   - vitalartbox.info      # 合議で追加: 大阪で劇場運営とイベント制作。連絡先は同社。イベント頁に主催表記なし
   - uzm.jp                # 合議で追加: 販売代理ファイス(f-ice.jp/uzm/gakumas)。相手の不明は運営者

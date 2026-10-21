@@ -469,12 +469,17 @@ def expand_short_fetch(url: str, hops: int = 5) -> str:
 def resolve_short_links(apply: bool, date: str | None = None) -> list[str]:
     """判定表に無い短縮 URL へ、展開先の種別を機械で写す(path_types に短縮1つずつ。合議には掛けない。x_posts と同じ)。
     展開先が表に無ければ、展開先は target_rows で合議・機械の判定に掛かっている(この関数は main の最後に呼ぶ)。
-    戻り値は決まらなかったものの説明(`<短縮のキー>: 理由`)。date を渡すと、展開先が上位になった判定済みの短縮の書き換えで、
-    号 date より前の公開済みの記事が出典にしている短縮は変えない(published_citations)。"""
+    戻り値は決まらなかったものの説明(`<短縮のキー>: 理由`)。date を渡すと、号 date より前の公開済みの記事が出典にしている
+    短縮は、足すのも書き換えるのもしない(published_citations。訂正の手順へ回す記録に残す)。"""
     found: dict[str, tuple[str, str]] = {}
     left: list[str] = []
+    pub = published_citations(date) if date else {}
     for key, url in sorted(SHORT_LINKS.items()):
         if classify_source(url) != "未確認":
+            continue
+        if pub.get(link_key(url)):
+            # 公開済みの記事が出典にしている未確認の短縮も自動では変えない(監査 r12 の later: 変えると公開済みの記事が変わる)
+            left.append(held_for_correction(key, pub[link_key(url)]))
             continue
         dest = expand_short(url)
         typ = classify_source(dest) if dest else "未確認"
@@ -487,7 +492,6 @@ def resolve_short_links(apply: bool, date: str | None = None) -> list[str]:
             print(f"  {typ}\t{key}\t→ {dest[:80]}", flush=True)
     # 判定済みの短縮でも、展開先そのものの種別が今の種別(リンク元から引き継いだ種別を含む)より上位なら、上位で書き換える
     # (編集長 2026-10-21: リンク先そのものの種別が上位なら上位)
-    pub = published_citations(date) if date else {}
     for key, url in sorted(ALL_SHORTS.items()):
         cur = classify_source(url)
         if key in found or cur == "未確認":

@@ -9796,6 +9796,11 @@ def test_link_key_and_table():
                      ("https://x.com/a/status/123/../../status/456", "https://x.com/a/status/123"),
                      ("https://docs.google.com/document/d/AAAAAAAAAAAAAAAAAAAAAAAA/../../d/BBBBBBBBBBBBBBBBBBBBBBBB/edit",
                       "https://docs.google.com/document/d/AAAAAAAAAAAAAAAAAAAAAAAA"),
+                     # r12: 生のバックスラッシュ(ブラウザは区切りとして読む)
+                     ("https://x.com/a/status/123/xx\\..\\..\\456", "https://x.com/a/status/123"),
+                     ("https://docs.google.com/document/d/AAAAAAAAAAAAAAAAAAAAAAAA/x\\..\\..\\d\\BBBBBBBBBBBBBBBBBBBBBBBB",
+                      "https://docs.google.com/document/d/AAAAAAAAAAAAAAAAAAAAAAAA"),
+                     ("https://drive.google.com/drive/folders/AAAAAAAAAAAAAAAAAAAAAAAA/x\\..\\B", "https://drive.google.com/drive/folders/AAAAAAAAAAAAAAAAAAAAAAAA"),
                      # r11: 符号化したクエリの名前(復号すると同じ名前)
                      ("https://www.youtube.com/watch?v=AAAAAAAAAAA&%76=BBBBBBBBBBB", "https://www.youtube.com/watch?v=AAAAAAAAAAA"),
                      ("https://forms.office.com/pages/responsepage.aspx?id=officialDocument0123456789&%69d=",
@@ -9874,7 +9879,8 @@ def test_link_inheritance(tmp: Path):
     (tmp / "docs" / "_editions" / "2026-09-10.md").write_text("---\nnumber: 0\n---\n", encoding="utf-8")
     (tmp / "docs" / "_posts" / "2026-10-20-old.md").write_text("---\n" + article_fm("old", "2026-10-20", sources=[
         {"label": "a", "url": old_ticket, "type": "当事者"}, {"label": "b", "url": old_form, "type": "未確認"},
-        {"label": "c", "url": pub_short, "type": "当事者"}]) + "---\n本文\n", encoding="utf-8")
+        {"label": "c", "url": pub_short, "type": "当事者"}, {"label": "d", "url": "https://t.co/PubNew0001", "type": "未確認"}])
+        + "---\n本文\n", encoding="utf-8")
     (tmp / "docs" / "_posts" / "2026-09-10-test.md").write_text("---\n" + article_fm("test", "2026-09-10", sources=[
         {"label": "a", "url": test_ticket, "type": "当事者"}]) + "---\n本文\n", encoding="utf-8")
     (tmp / "candidates" / "2026-09-26.json").write_text(json.dumps([cand_row("p", post, facts=[
@@ -10020,7 +10026,8 @@ def test_link_inheritance(tmp: Path):
                              "  t.co/Pub0000001: 当事者   # 機械で追加: 展開先 https://idolmaster-official.jp/news/9\n"), encoding="utf-8")
         pipelib._ST_TABLE = None
         (tmp / "candidates" / "2026-10-22.json").write_text(json.dumps([cand_row("u", "https://t.co/Up0000001", source_type="当事者"),
-                                                                        cand_row("v", pub_short, source_type="当事者")]), encoding="utf-8")
+                                                                        cand_row("v", pub_short, source_type="当事者"),
+                                                                        cand_row("n", "https://t.co/PubNew0001", source_type="未確認")]), encoding="utf-8")
         cs.POSTS_ONLY = None
         cs.expand_short_fetch = lambda u, hops=5: "https://idolmaster-official.jp/news/9"
         cs._SHORT.clear()
@@ -10029,6 +10036,7 @@ def test_link_inheritance(tmp: Path):
         pipelib._ST_TABLE = None
         check(pipelib.classify_source("https://t.co/Up0000001") == "公式", "展開先そのものが上位になった短縮を書き換えない")
         check(pipelib.classify_source(pub_short) == "当事者", "公開済みの記事が出典にしている短縮を書き換えた(公開済みの記事が変わる)")
+        check(pipelib.classify_source("https://t.co/PubNew0001") == "未確認", "公開済みの記事が出典にしている未確認の短縮に種別を足した")
         # 上限で見せなかった組は「関係しない」と記録しない(次の判定で問う。監査指摘 2026-10-21)
         shop3, p1, p2 = "https://shop.example/goods/3", "https://x.com/imas_ch/status/1", "https://x.com/imas_ch/status/2"
         (tmp / "candidates" / "2026-10-18.json").write_text(json.dumps([cand_row("a1", p1, facts=[f"物販 {shop3}"]),

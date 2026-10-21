@@ -597,9 +597,10 @@ def link_source_text(s: str) -> str:
     return f"リンク元: {s}\n  題名: {t or '-'}\n  内容: " + (" / ".join(facts)[:1500] or "(素材に内容なし)")
 
 
-def add_links(found: dict[str, tuple[str, str]]) -> None:
+def add_links(found: dict[str, tuple[str, str]]) -> int:
     """リンク元から引き継いだ種別を link_types(リンク先1つ → 種別)へ足す。既にあれば、強くなるときだけ書き換える。
-    行の根拠に、どのリンク元から引き継いだかを残す(後から確かめられるように)。"""
+    行の根拠に、どのリンク元から引き継いだかを残す(後から確かめられるように)。戻り値は実際に書いた行の数。"""
+    n = 0
     p = ROOT / "source_types.yml"
     text = p.read_text(encoding="utf-8")
     if not _span(text, "link_types"):
@@ -607,18 +608,19 @@ def add_links(found: dict[str, tuple[str, str]]) -> None:
                                    "いると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---\n"
                                    "link_types:\n")
     for k, (t, why) in found.items():
-        if not re.fullmatch(r"[A-Za-z0-9._~/?=&%+@!$*,;-]+", k):
-            print(f"  ★{k} は判定表のキーに書けない文字を含むので足さない", flush=True)
+        if link_key("https://" + k) != k:      # link_key が判定表に書ける形しか返さないので、ここに来るのはコードの欠陥
+            print(f"  ★{k} はリンク先のキーの形でないので足さない", flush=True)
             continue
         a, b = _span(text, "link_types")
         why = re.sub(r"\s+", " ", str(why))     # 根拠に改行があると表が壊れる
         line = f"  {k}: {t}{' ' * max(1, 40 - len(k))}# {why}\n"
         old = re.compile(rf"^  {re.escape(k)}:\s*(\S+).*\n?", re.M).search(text, a, b)
         if old is None:
-            text = text[:a] + line + text[a:]
+            text, n = text[:a] + line + text[a:], n + 1
         elif src_rank(t) < src_rank(old.group(1)):
-            text = text[:old.start()] + line + text[old.end():]
+            text, n = text[:old.start()] + line + text[old.end():], n + 1
     write_source_table(text, p)
+    return n
 
 
 def inherit_from_links(date: str, apply: bool, limit: int = 60) -> list[str]:
@@ -663,8 +665,7 @@ def inherit_from_links(date: str, apply: bool, limit: int = 60) -> list[str]:
             left.append(f"{k}: リンク元 {s}({t})の種別を引き継ぐかで合議が割れた: {rest}")
     if apply:
         if found:
-            add_links(found)
-            print(f"  → リンク元から引き継いだ種別 {len(found)}件を表に追加", flush=True)
+            print(f"  → リンク元から引き継いだ種別 {add_links(found)}件を表に追加", flush=True)
         try:
             link_checked_path().parent.mkdir(parents=True, exist_ok=True)
             link_checked_path().write_text(json.dumps(checked, ensure_ascii=False, indent=1), encoding="utf-8")

@@ -1544,11 +1544,24 @@ def src_rank(t) -> int:
     return SRC_ORDER.index(t) if t in SRC_ORDER else len(SRC_ORDER)
 
 
-# リンク先のキーで落とすクエリ(追跡・共有の印。どのページを指すかを変えない)
-LINK_NOISE_QUERY = re.compile(r"^(utm_.*|usp|s|t|ref|ref_src|fbclid|gclid|si|feature|share|via|igsh|igshid)$")
+# リンク先のキーで落とすクエリ(どのサイトでも追跡の印でしかないものだけ。`s`・`ref` などはサイトによって中身を区別するので
+# 残す。監査指摘 2026-10-21: `?s=event-A` だけを確かめたのに `?s=event-B` まで同じキーになった)
+LINK_NOISE_QUERY = re.compile(r"^(utm_.*|fbclid|gclid|igsh|igshid|ref_src)$")
+# リンク先のキーに使う文字(判定表に書ける形。ほかは百分率符号化する)
+LINK_KEY_SAFE = "/-._~!$*+,;=@"
+
+
+LINK_KEY_RE = re.compile(r"[A-Za-z0-9._~/?=&%+@!$*,;-]+")     # 判定表 link_types に書けるキーの文字
 
 
 def link_key(url) -> str | None:
+    """リンク先のキー(_link_key)。判定表に書けない文字が残るキーは None(引き継ぎの対象にしない。書けないまま合議を
+    繰り返さない。監査指摘 2026-10-21)。"""
+    k = _link_key(url)
+    return k if k and LINK_KEY_RE.fullmatch(k) else None
+
+
+def _link_key(url) -> str | None:
     """リンク元から種別を引き継ぐ単位(判定表 link_types のキー)。リンク先1つを指す形で、同じ先を指す URL の書き方の揺れ
     (`/viewform?usp=…`、`youtu.be/<ID>`、`x.com/<名>/status/<ID>/photo/1` など)は同じキーになる。読めない URL は None。
     短縮は `<host>/<ID>`、X の投稿は `x.com/i/status/<ID>`、YouTube の動画は `youtube.com/watch?v=<ID>`、ニコニコは
@@ -1601,7 +1614,14 @@ def link_key(url) -> str | None:
         return f"{host}/{seg[0]}" if seg else None
     raw = re.sub(r"%2e", ".", u.path, flags=re.I)
     path = posixpath.normpath(raw).rstrip("/") if raw.strip("/") else ""
-    keep = sorted((k, v) for k, vs in q.items() if not LINK_NOISE_QUERY.match(k) for v in vs)
+    # パスは一度復号して符号化し直す(括弧・日本語のパスも判定表に書ける形にし、符号化の有無・大小文字の揺れを同じキーにする)
+    path = urllib.parse.quote(urllib.parse.unquote(path), safe=LINK_KEY_SAFE)
+    try:
+        host = host.encode("idna").decode("ascii")
+    except UnicodeError:
+        return None
+    keep = sorted((k, v) for k, vs in urllib.parse.parse_qs(u.query, keep_blank_values=True).items()
+                  if not LINK_NOISE_QUERY.match(k) for v in vs)
     return host + path + ("?" + urllib.parse.urlencode(keep) if keep else "")
 
 
@@ -2068,6 +2088,7 @@ def dedupe_source_table(path=None) -> list[str]:
     p = Path(path) if path else ROOT / "source_types.yml"
     lines = p.read_text(encoding="utf-8").splitlines(keepends=True)
     out, seen, section, label, removed = [], set(), None, None, []
+    link_pos: dict[tuple, tuple[int, str]] = {}      # link_types のキー → (out の位置, 値)
     for ln in lines:
         m_top = re.match(r"^([a-z_]+):", ln)
         if m_top:
@@ -2077,6 +2098,21 @@ def dedupe_source_table(path=None) -> list[str]:
             label = m_label.group(1)
         m_item = re.match(r"^\s+-\s+(\S+)", ln)
         m_kv = re.match(r"^  (\S+?):\s*(\S+)", ln)         # path_types / suffix_types のキー: 値
+        if section == "link_types" and m_kv:
+            # リンク元から引き継いだ種別は、どちらも合議で関係を確かめた値。同じリンク先が2つのブランチで別の値になったら
+            # 強いほうを残す(種別 = max の決まり。競合として表の検査で止めると組版・付け直しが止まる。監査指摘 2026-10-21)
+            k = ("link_types", m_kv.group(1))
+            if k in link_pos:
+                i, v = link_pos[k]
+                if src_rank(m_kv.group(2)) < src_rank(v):
+                    removed.append(out[i].rstrip("\n"))
+                    out[i], link_pos[k] = ln, (i, m_kv.group(2))
+                else:
+                    removed.append(ln.rstrip("\n"))
+                continue
+            link_pos[k] = (len(out), m_kv.group(2))
+            out.append(ln)
+            continue
         if section and (m_item or m_kv):
             # 同じ節・**同じ種別**・同じ値のものだけが二重。種別や値が違う同一キーは分類の競合なので
             # ここでは消さず、_check_table に止めさせる(監査指摘)

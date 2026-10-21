@@ -9752,6 +9752,11 @@ def test_link_key_and_table():
               "短縮のキー(ID の大小文字を区別する)")
         check(lk("https://shop.example/a/?utm_source=x&id=3&b=1") == "shop.example/a?b=1&id=3", f"ページのキー: {lk('https://shop.example/a/?utm_source=x&id=3&b=1')}")
         check(lk("javascript://x.com/a") is None and lk("https://evil.example\\@x.com/a") is None, "読めない URL にキーを付けた")
+        # 中身を区別するクエリは残す(`?s=` を落として、確かめていない別のページまで同じキーにしない。監査指摘 2026-10-21)
+        check(lk("https://shop.example/search?s=event-A") != lk("https://shop.example/search?s=event-B"), "中身を区別するクエリを落とした")
+        # 括弧・日本語のパスも、判定表に書ける形の同じキーになる(符号化の有無で揺れない)
+        k1, k2 = lk("https://shop.example/ticket(1)/チケット"), lk("https://shop.example/ticket%281%29/%E3%83%81%E3%82%B1%E3%83%83%E3%83%88")
+        check(k1 and k1 == k2 and pipelib.LINK_KEY_RE.fullmatch(k1) and lk("https://" + k1) == k1, f"括弧・日本語のパスのキー: {k1} / {k2}")
         # 検査: 値域・キーの形(正規形でないと当たらない)・字面の二重定義
         for bad, why in (({"link_types": {"t.co/AbC": "神"}}, "値域"), ({"link_types": {"https://t.co/AbC": "公式"}}, "scheme 付き"),
                          ({"link_types": {"youtu.be/E0d4UT59xM4": "公式"}}, "正規形でないキー"), ({"link_types": ["t.co/AbC"]}, "形")):
@@ -9766,6 +9771,15 @@ def test_link_key_and_table():
         except SystemExit:
             pass
         pipelib._check_table_text("link_types:\n  t.co/AbC: 公式\n  t.co/abc: 準公式\n", "t")   # ID の大小文字違いは別のリンク先
+        # merge=union で同じリンク先に別の値が並んだら、強いほうを残す(種別 = max。表の検査で組版を止めない)
+        import tempfile as _tf
+        with _tf.TemporaryDirectory() as d:
+            tp = Path(d) / "source_types.yml"
+            tp.write_text("link_types:\n  t.co/AbC: 準公式   # a\n  t.co/abc: 当事者\n  t.co/AbC: 公式   # b\n", encoding="utf-8")
+            removed = pipelib.dedupe_source_table(tp)
+            t = pipelib.parse_source_table(tp.read_text(encoding="utf-8"), tp)
+            check(t["link_types"] == {"t.co/AbC": "公式", "t.co/abc": "当事者"} and len(removed) == 1,
+                  f"union で並んだ link_types の別の値: {t.get('link_types')} / {removed}")
     except (Exception, SystemExit) as e:      # noqa: BLE001  直す前の実装(関数が無い)でも、落ちたことを記録して先へ進む
         check(False, f"リンク先のキー・link_types の検査のテストが例外: {type(e).__name__}: {e}")
 
@@ -9915,6 +9929,14 @@ def test_link_inheritance(tmp: Path):
               and f"リンク先: {shop2}" not in again,
               "2回目に、決まった組を問い直した(または割れた組を問い直さない)")
         check(table == (tmp / "source_types.yml").read_text(encoding="utf-8"), "2回目で判定表が変わった(冪等でない)")
+        # 括弧・日本語のパスのリンク先も判定表に書け、書いた数を正しく返す(書けないまま「追加」と言って合議を繰り返さない)
+        paren = "https://livepocket.jp/e/ticket(1)/チケット"
+        n_added = cs.add_links({pipelib.link_key(paren): ("公式", "テスト")})
+        pipelib._ST_TABLE = None
+        check(n_added == 1 and pipelib.classify_source(paren) == "公式", f"括弧・日本語のパスのリンク先を判定表に書けない: {n_added}")
+        (tmp / "source_types.yml").write_text(table, encoding="utf-8")
+        pipelib._ST_TABLE = None
+        table = (tmp / "source_types.yml").read_text(encoding="utf-8")
         # 短縮: 展開先そのものの種別が今の種別より上位なら、上位で書き換える(引き継いだ種別より展開先が強いとき)
         (tmp / "source_types.yml").write_text(table.replace(
             "path_types:\n", "path_types:\n  t.co/Up0000001: 当事者   # 機械で追加: 展開先 https://idolmaster-official.jp/news/9\n"
@@ -9965,6 +9987,11 @@ def test_collect_keeps_link_from(tmp: Path):
                                  {"url": "https://a.example/4", "facts": ["f"], "link_from": "なし"}])
         check(got[0].get("link_from") == post and "link_from" not in got[1] and "link_from" not in got[2],
               f"候補のリンク元: {[c.get('link_from') for c in got]}")
+        # 同じ url の2件を結合するとき、後の候補だけが持つリンク元も残す(監査指摘 2026-10-21)
+        both = collect.normalize([{"url": "https://a.example/9", "facts": ["f1"]},
+                                  {"url": "https://a.example/9", "facts": ["f2"], "link_from": post}])
+        check(len(both) == 1 and both[0]["facts"] == ["f1", "f2"] and both[0].get("link_from") == post,
+              f"同じ url の候補の結合でリンク元を落とした: {both}")
         # 投稿に貼られたリンクを候補の url にしたら、その投稿がリンク元(付け直しの対象でない種別のとき)
         saved_cs = collect.classify_source
         collect.classify_source = lambda u: "公式" if "idolmaster-official.jp" in u or "valiv_official" in u else "未確認"

@@ -1581,6 +1581,8 @@ def normalize(items: list[dict]) -> list[dict]:
             if url in seen_url and not c.get("quotes") and not seen_url[url].get("quotes"):  # URL 重複は facts をマージ
                 tgt = seen_url[url]
                 tgt["facts"] = list(dict.fromkeys(tgt["facts"] + c["facts"]))
+                if c.get("link_from") and not tgt.get("link_from"):     # 後から得たリンク元も落とさない(監査指摘 2026-10-21)
+                    tgt["link_from"] = c["link_from"]
                 continue
             if url in seen_url:
                 # 写しのある候補は、裏取り(写しの照合)の**前に**混ぜない。取り違えた候補の事実と写しを混ぜると、

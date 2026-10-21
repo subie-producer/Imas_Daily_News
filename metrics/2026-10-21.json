@@ -265,6 +265,84 @@
     "failed": 0
    },
    "duration_s": 95
+  },
+  {
+   "at": "2026-10-21T18:33:12+09:00",
+   "edition": "2026-10-22",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "error": "https://idolmaster-official.jp/news の描画に失敗: 終了コード 1: RENDER_FAILED: NoSuchDriverException: Unable to obtain driver for chrome; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors/driver_location"
+     },
+     "pylonport-sidem": {
+      "found": 20,
+      "pages": 2,
+      "new": 1,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "error": "https://columbia.jp/idolmaster/ の描画に失敗: 終了コード 1: RENDER_FAILED: NoSuchDriverException: Unable to obtain driver for chrome; For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors/driver_location"
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 1,
+    "facted": 2,
+    "deferred": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 0,
+    "explore:million": 0,
+    "explore:shiny": 0,
+    "explore:sidem": 2,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 0
+   },
+   "normalized": 4,
+   "added": 3,
+   "verify": {
+    "confirmed": 4,
+    "unconfirmed": 0,
+    "failed": 0
+   },
+   "duration_s": 155
   }
  ],
  "compose": [

@@ -2428,7 +2428,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                 log_of(out_path).unlink(missing_ok=True)
                 _late_article(date, art, outcomes, aborted)
             for job in procs:
-                se, timed_out = finish_guarded(job[-1], remaining_seconds())   # CLI と道具の実行を止めさせてから答えのファイルを読む
+                se, timed_out = finish_guarded(job[-1], remaining_seconds(), tracker)   # CLI と道具の実行を止めさせてから答えを読む
                 if not guard_result(job[3], f"執筆 {job[0]['slug']}"):
                     cannot.append(job[0]["slug"])
                 waited.append((*job, se, timed_out))
@@ -2956,18 +2956,34 @@ def end_guarded(p, grace: int = 15) -> None:
         reap(p)
 
 
-def finish_guarded(p, timeout: float | None) -> tuple[str, bool]:
+GUARD_GRACE = 15      # 時間切れの子(child_guard)に片付けを待つ秒数。束ねの全員で共有する
+
+
+def finish_guarded(p, timeout: float | None, tracker: "ChildTracker | None" = None) -> tuple[str, bool]:
     """child_guard 越しに起動した子(start_group)の終わりを待つ。戻りは (標準エラー, 時間切れか)(出力はファイルで受ける)。
     時間切れは SIGTERM を先に送り(child_guard が CLI を止め、CLI が残した道具の実行を片付けて結果のファイルを書く)、待ちきれなければ
     グループと子孫ごと止める(end_guarded)。どちらでも最後に finish_group で、印を受け継いで残った道具を止めて回収する。
-    中断(例外・SIGTERM の SystemExit)は止めて回収してから上げる(2026-10-21 組 P の起動の関数と組 W の child_guard の取り込み)。"""
+    中断(例外・SIGTERM の SystemExit)は止めて回収してから上げる(2026-10-21 組 P の起動の関数と組 W の child_guard の取り込み)。
+    tracker を渡すと、最初の時間切れで束ねの残りの子にもまとめて SIGTERM を送り、片付けの待ちを束ねで GUARD_GRACE 秒に揃える
+    (1本ずつ 15 秒待つと、応答しない8本で締切を約2分越えた。2026-10-21 取り込みの監査)。"""
     if isinstance(p, LaunchFailed):
         return finish_group(p, timeout)[1], False
     timed_out = False
     try:
         p.communicate(timeout=None if timeout is None else max(0, timeout))
     except subprocess.TimeoutExpired:
-        end_guarded(p)
+        grace = GUARD_GRACE
+        if tracker is not None:
+            if tracker.term_until is None:
+                tracker.term_until = time.monotonic() + GUARD_GRACE
+                for q in tracker.procs:
+                    if q is not p and not isinstance(q, LaunchFailed) and q.poll() is None:
+                        try:
+                            q.send_signal(signal.SIGTERM)
+                        except (OSError, AttributeError):
+                            pass
+            grace = max(1, tracker.term_until - time.monotonic())
+        end_guarded(p, grace)
         timed_out = True
     except BaseException:
         stop_groups([p])
@@ -3092,6 +3108,7 @@ class ChildTracker:
     def __init__(self, interval: float = 0.25):
         self.roots: dict[int, int] = {}            # child_guard の pid → 起動時刻
         self.procs: list = []                       # 起動した子(束ねを抜けるとき stop_groups で止めて回収する)
+        self.term_until: float | None = None        # 時間切れで束ねの子に SIGTERM を送ったときの、片付けを待つ期限(finish_guarded)
         self.marks: list[str] = []
         self.seen: set[tuple[int, int]] = set()     # (pid, 起動時刻)
         self.interval = interval
@@ -3308,7 +3325,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                 REVISE_NOTES.setdefault(date, {})[art["slug"]] = "締切を過ぎ、書き直しを始めなかった"
                 results[art["slug"]] = "not_started"
             for job in procs:
-                se, timed_out = finish_guarded(job[-1], remaining_seconds())   # CLI と道具の実行を止めさせてから答えのファイルを読む
+                se, timed_out = finish_guarded(job[-1], remaining_seconds(), tracker)   # CLI と道具の実行を止めさせてから答えを読む
                 if not guard_result(job[5], f"書き直し {job[0]['slug']}"):
                     cannot.append(job[0]["slug"])
                 waited.append((*job, se, timed_out))

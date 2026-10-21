@@ -9137,6 +9137,24 @@ def test_guarded_launch_seams(tmp: Path):
               f"束ねが例外で抜けたとき、子・抜けた道具を止めて記事を控えへ戻さない: {p2.poll()} 道具 {tool2} "
               f"{post.read_text(encoding='utf-8')[:20]!r}")
         compose.guard_status_of(out2).unlink(missing_ok=True)
+        # 3) SIGTERM に応じない子が束ねに並んでも、片付けの待ちは束ねで共有する(1本ずつ待つと、8本で締切を約2分越えた。監査)
+        saved_grace = compose.GUARD_GRACE
+        compose.GUARD_GRACE = 3
+        deaf = "import signal, time; signal.signal(signal.SIGTERM, signal.SIG_IGN); time.sleep(60)"
+        try:
+            with compose.guarded_batch(date, compose.posts_snapshot(date), "テスト") as tr:
+                ps = [pipelib.start_group([sys.executable, "-c", deaf], cwd=tmp, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                      for _ in range(6)]
+                for k, q in enumerate(ps):
+                    tr.add(q, f"deaf{k}")
+                time.sleep(0.3)
+                t0 = time.monotonic()
+                outs = [compose.finish_guarded(q, 0.1, tr) for q in ps]
+                took = time.monotonic() - t0
+        finally:
+            compose.GUARD_GRACE = saved_grace
+        check(all(t for _, t in outs) and all(q.poll() is not None for q in ps) and took < 13,
+              f"SIGTERM に応じない子の片付けの待ちを、1本ずつ足し算にした({took:.1f}秒。束ねで共有すれば 3秒+1本1秒程度)")
     finally:
         compose.ROOT, pipelib.ROOT = saved
         pipelib.STOPPING.clear()
@@ -10818,6 +10836,70 @@ def test_booth_item_owner(tmp: Path):
             cs.booth_item_shop = fn
             cs._BOOTH_SHOP.clear()
             cs._BOOTH_SHOP.update(cache)
+
+
+def test_classify_txn_escaped_model(tmp: Path):
+    """出典の判定の取引の中断・親の死で、合議の子が start_group で別のセッションに起動したモデルも止めてから戻す
+    (2026-10-21 取り込みの監査: 子のセッションだけを見て、残ったモデルが戻したあとの判定表を書き直した)。
+    本物の classify_retag_lint・start_group を、合議の子とモデルだけ代役にして、SIGTERM・SIGINT・SIGKILL(次の起動の復旧)で検める。"""
+    import signal
+    import time as _t
+    scripts = Path(__file__).resolve().parent
+    for sig in (signal.SIGTERM, signal.SIGINT, signal.SIGKILL):
+        w = tmp / sig.name
+        (w / "scripts").mkdir(parents=True)
+        (w / "docs" / "_posts").mkdir(parents=True)
+        table = w / "source_types.yml"
+        table.write_text("official_domains:\n- original.example\n", encoding="utf-8")
+        (w / "model.py").write_text("import os, time\nfrom pathlib import Path\nPath('model.pid').write_text(str(os.getpid()))\n"
+                                    "while not Path('go').exists():\n    time.sleep(0.01)\n"
+                                    "Path('source_types.yml').write_text('official_domains:\\n- late-write.example\\n')\n"
+                                    "Path('wrote').touch()\n", encoding="utf-8")
+        (w / "scripts" / "classify_sources.py").write_text(
+            f"import sys, subprocess\nsys.path.insert(0, {str(scripts)!r})\nimport pipelib\nfrom pathlib import Path\n"
+            "Path('source_types.yml').write_text('official_domains:\\n- changed.example\\n')\n"
+            "pipelib.finish_group(pipelib.start_group([sys.executable, 'model.py'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL), 60)\n",
+            encoding="utf-8")
+        prog = (f"import sys, signal, json\nfrom pathlib import Path\nsys.path.insert(0, {str(scripts)!r})\nimport pipelib\n"
+                f"pipelib.ROOT = Path({str(w)!r})\n"
+                "def handler(s, f):\n    raise SystemExit(128 + s)\n"
+                "signal.signal(signal.SIGTERM, handler)\nsignal.signal(signal.SIGINT, handler)\n"
+                "pipelib.classify_retag_lint('2026-10-22', lint=False, timeout=30)\n")
+        proc = subprocess.Popen([sys.executable, "-c", prog], cwd=w, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
+        model = 0
+        try:
+            ready = _wait_files(w / "model.pid", limit=20)
+            _t.sleep(0.1)
+            model = int((w / "model.pid").read_text() or 0) if ready else 0
+            os.kill(proc.pid, sig)
+            try:
+                proc.communicate(timeout=30)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.communicate()
+            if sig == signal.SIGKILL:
+                saved = pipelib.ROOT
+                try:
+                    pipelib.ROOT = w
+                    back = pipelib.recover_classify_txn()
+                finally:
+                    pipelib.ROOT = saved
+            else:
+                back = ""
+            restored = table.read_text(encoding="utf-8")
+            (w / "go").touch()
+            _t.sleep(1.0)
+            after = table.read_text(encoding="utf-8")
+            check(ready and "original.example" in restored and after == restored and not (w / "wrote").exists()
+                  and not (model and _pid_alive(model)) and not (w / pipelib.TXN_JOURNAL).exists(),
+                  f"{sig.name}: 取引を戻したあとに、別のセッションの合議のモデルが残って判定表を書き直した"
+                  f"(戻した表 {restored.strip()!r} / のち {after.strip()!r} / モデル生存 {bool(model and _pid_alive(model))} / {back})")
+        finally:
+            if proc.poll() is None:
+                proc.kill()
+                proc.wait()
+            if model and _pid_alive(model):
+                os.kill(model, signal.SIGKILL)
 
 
 def test_classify_txn_interrupt(tmp: Path):
@@ -12609,6 +12691,7 @@ def main() -> int:
     test_youtube_playlist_owner(tmp / "ytpl")
     test_booth_item_owner(tmp / "booth")
     test_classify_txn_interrupt(tmp / "cti")
+    test_classify_txn_escaped_model(tmp / "cte2")
     test_tags_and_idols(tmp / "ti")
     test_request_parsers(tmp / "rq")
     test_assemble_prompt_shape()

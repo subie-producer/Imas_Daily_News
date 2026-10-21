@@ -2083,11 +2083,11 @@ _TXN_GATE = ("import os, sys\n"
              "os.execv(sys.argv[1], sys.argv[1:])\n")
 
 
-def _write_txn_child(child: Path, pid: int, started: str) -> None:
-    """取引の子の記録(pid・起動時刻)を書く(一時ファイル → 置き換え)。書けなければ OSError(段の失敗にする)。"""
+def _write_txn_child(child: Path, pid: int, started: str, mark: str = "") -> None:
+    """取引の子の記録(pid・起動時刻・取引の印)を書く(一時ファイル → 置き換え)。書けなければ OSError(段の失敗にする)。"""
     tmp = child.with_name(f".{child.name}.{os.getpid()}.tmp")
     try:
-        tmp.write_text(json.dumps({"pid": pid, "started": started}), encoding="utf-8")
+        tmp.write_text(json.dumps({"pid": pid, "started": started, "mark": mark}), encoding="utf-8")
         os.replace(tmp, child)
     finally:
         tmp.unlink(missing_ok=True)
@@ -2112,15 +2112,22 @@ def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
     抜ける。中断のシグナルはハンドラが子を止める(communicate が子の終わりで戻る)。"""
     # 子は、親が子の記録(TXN_CHILD)を書き終えて合図を送るまで動き出さない(_TXN_GATE)。記録の無い子を残さない: 書けなければ
     # 子を動かさずに止めて段を失敗にし、親が合図の前に死ねば子は動かずに終わる(監査指摘 2026-10-14)
+    # 子には取引の印(SESSION_ENV)を渡す。子が start_group で別のセッションに起動したモデル・道具も印を受け継ぐので、中断・親の死の
+    # あとの後始末が印で見つけて止める(2026-10-21 取り込みの監査: セッションだけを見ると、合議のモデルが残って戻したあとに書いた)
+    import uuid
+    mark = uuid.uuid4().hex
+    env = dict(os.environ)
+    env[SESSION_ENV] = f"{env.get(SESSION_ENV, '')} {mark}".strip()
     p = subprocess.Popen([sys.executable, "-c", _TXN_GATE, *cmd], cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE, text=True, start_new_session=True)
+                         stderr=subprocess.PIPE, text=True, start_new_session=True, env=env)
     _TXN["proc"] = p
+    p.session_mark = mark       # 時間切れ・例外の reap(stop_tree)も印で探す
     started = _proc_started(p.pid)
     child = ROOT / TXN_CHILD
     try:
         if _TXN["signum"] is not None:      # 起動の直前に中断を受けていた
             _txn_stop_child()
-        _write_txn_child(child, p.pid, started)
+        _write_txn_child(child, p.pid, started, mark)
         out, err = p.communicate(input="1", timeout=timeout)
     except subprocess.TimeoutExpired:
         out, err = reap(p)
@@ -2130,8 +2137,8 @@ def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
         raise
     finally:
         _TXN["proc"] = None
-        # 子が先に終わっても、子が起こした孫(同じセッション)が残っていれば止める。成功した段でも残さない
-        stray = _stop_session(p.pid, started)
+        # 子が先に終わっても、子が起こした孫(同じセッション・印を受け継いだ別のセッション)が残っていれば止める。成功した段でも残さない
+        stray = _stop_session(p.pid, started, mark=mark)
         if stray:
             _TXN["stray"] = stray
         else:
@@ -2215,12 +2222,34 @@ def _session_members(sid: int, started: str = "") -> list[int]:
     return out
 
 
-def _stop_session(sid: int, started: str = "", wait: float = 10.0) -> list[int]:
-    """取引の子のセッション(子は start_new_session で起動するので、子と、子が起こした孫は setsid しない限り同じセッション)を、
-    残らなくなるまで止める。直接の子が先に終わっていても、残った孫を止める(止めずに戻すと、戻した後で孫が判定表を書き直す。
-    監査指摘 2026-10-14)。戻りは止めきれなかった pid。"""
+def _txn_members(sid: int, started: str = "", mark: str = "") -> list[int]:
+    """取引の子のセッション sid に残っているプロセスと、取引の印 mark を環境に受け継いだプロセス(合議のモデル・道具は start_group で
+    別のセッションに起動されるので、セッションでは見つからない)と、それらの子孫(ゾンビ・自分は除く)。"""
+    found = set(_session_members(sid, started)) if sid > 1 else set()
+    table = _proc_table() if mark else None
+    if table:
+        found |= _proc_marked(table, mark)
+        kids: dict[int, list[int]] = {}
+        for q, (pp, _, _) in table.items():
+            kids.setdefault(pp, []).append(q)
+        todo = list(found)
+        while todo:
+            for c in kids.get(todo.pop(), []):
+                if c not in found:
+                    found.add(c)
+                    todo.append(c)
+        found = {q for q in found if q in table and table[q][2] not in ("Z", "X")}
+    return sorted(found - {os.getpid()})
+
+
+def _stop_session(sid: int, started: str = "", wait: float = 10.0, mark: str = "") -> list[int]:
+    """取引の子のセッション(子は start_new_session で起動するので、子と、子が起こした孫は setsid しない限り同じセッション)と、
+    取引の印 mark を受け継いだプロセスとその子孫を、残らなくなるまで止める。直接の子が先に終わっていても、残った孫を止める
+    (止めずに戻すと、戻した後で孫が判定表を書き直す。監査指摘 2026-10-14)。合議のモデルは start_group で別のセッションに
+    起動されるので、印でも探す(2026-10-21 取り込みの監査: 中断で子のグループだけを落とすと、別のセッションのモデルが残り、
+    戻したあとに判定表を書き直した)。戻りは止めきれなかった pid。"""
     end = time.monotonic() + wait
-    left = _session_members(sid, started)
+    left = _txn_members(sid, started, mark)
     while left:
         for q in left:
             try:
@@ -2230,7 +2259,7 @@ def _stop_session(sid: int, started: str = "", wait: float = 10.0) -> list[int]:
         if time.monotonic() > end:
             break
         time.sleep(0.05)
-        left = _session_members(sid, started)
+        left = _txn_members(sid, started, mark)
     return left
 
 
@@ -2240,10 +2269,10 @@ def _stop_txn_orphan() -> list[int]:
     c = ROOT / TXN_CHILD
     try:
         rec = json.loads(c.read_text(encoding="utf-8"))
-        pid, started = int(rec.get("pid") or 0), str(rec.get("started") or "")
+        pid, started, mark = int(rec.get("pid") or 0), str(rec.get("started") or ""), str(rec.get("mark") or "")
     except (OSError, ValueError, TypeError, AttributeError):
         return []
-    left = _stop_session(pid, started) if pid else []
+    left = _stop_session(pid, started, mark=mark) if pid or mark else []
     if not left:
         c.unlink(missing_ok=True)
     return left

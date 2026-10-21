@@ -50,6 +50,13 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      X_ANON_POST, x_post_author, link_key)
 from storylink import url_key
 
+
+def page_key(url) -> str | None:
+    """収集が「同じページか(リンク元を付けるか)」を見る比べ方: リンク先のキー(link_key)を、末尾の / を除いて比べる。
+    リンク元の記録は判定の材料なので、末尾の / の違いだけの自分自身をリンク元にしない(種別の引き継ぎは link_key のまま)。"""
+    s = str(url or "")
+    return link_key(s.rstrip("/") if s.rstrip("/").count("/") >= 3 else s)
+
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。
 WATCH_BATCH = int(ENV.get("WATCH_BATCH", "12"))
@@ -390,7 +397,7 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
             # 新着ページと違う url の候補は、そのページに載っていたリンク(まとめの一次ソースなど)。リンク元にそのページを残す
             page = batch[i - 1]["url"]
             for c in done[i]:
-                if not c.get("link_from") and link_key(clean_url(c.get("url")) or "") not in (None, link_key(page)):
+                if not c.get("link_from") and page_key(clean_url(c.get("url")) or "") not in (None, page_key(page)):
                     c["link_from"] = page
         for c in cands:
             c["_via"] = "watch"
@@ -798,8 +805,8 @@ def repoint_to_post(items: list[dict], posts_md: str) -> list[dict]:
         if is_x(url) or classify_source(url) in GOOD_SOURCE_TYPES:
             # 投稿に貼られたリンクを候補の url にしたなら、その投稿をリンク元に残す(公式を先。2026-10-08 のレトラの t.co は
             # @valiv_official の投稿に載っていたが、素材に残らず判定に使えなかった)
-            k = link_key(url)
-            post = next((p for p, links in posts if k and k in {link_key(x) for x in links}), None) if not is_x(url) else None
+            k = page_key(url)
+            post = next((p for p, links in posts if k and k in {page_key(x) for x in links}), None) if not is_x(url) else None
             if post and not it.get("link_from"):
                 it["link_from"] = post
             continue
@@ -1576,7 +1583,7 @@ def normalize(items: list[dict]) -> list[dict]:
                 c["quotes"] = [it["quote"].strip()[:200]]
             # リンク元(url がリンクとして載っていた投稿・ページ)。出典の種別の判定が、リンク元の種別を引き継ぐかを確かめる材料
             lf = clean_url(it.get("link_from") or "")
-            if lf and link_key(lf) and link_key(lf) != link_key(url):
+            if lf and link_key(lf) and page_key(lf) != page_key(url):
                 c["link_from"] = lf
             if url in seen_url and not c.get("quotes") and not seen_url[url].get("quotes"):  # URL 重複は facts をマージ
                 tgt = seen_url[url]

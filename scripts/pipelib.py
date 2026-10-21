@@ -1572,7 +1572,6 @@ def _link_key(url) -> str | None:
     (`/viewform?usp=…`、`youtu.be/<ID>`、`x.com/<名>/status/<ID>/photo/1` など)は同じキーになる。読めない URL は None。
     短縮は `<host>/<ID>`、X の投稿は `x.com/i/status/<ID>`、YouTube の動画は `youtube.com/watch?v=<ID>`、ニコニコは
     `nicovideo.jp/watch/<ID>`、文書は文書 ID まで、ほかは host + パス(+ 追跡の印を除いたクエリを並べ替えたもの)。"""
-    import posixpath
     import urllib.parse
     s = str(url or "").strip()
     u = urllib.parse.urlparse(s if "//" in s else "//" + s)
@@ -1631,8 +1630,11 @@ def _link_key(url) -> str | None:
                 return host + "/" + "/".join(seg[:i + 1])
     if host == "forms.gle":
         return f"{host}/{seg[0]}" if seg else None
-    raw = re.sub(r"%2e", ".", u.path, flags=re.I)
-    path = posixpath.normpath(raw).rstrip("/") if raw.strip("/") else ""
+    # パスは書かれたまま(末尾の / も)。`//`・`.`・`..` の区切りを含むパスは、畳むと別のページを同じキーにしうるので対象外
+    # (監査指摘 2026-10-21: /event/A・/event/A/・/event//A が同じキーになった)
+    if re.search(r"//|(^|/)\.\.?(/|$)", re.sub(r"%2e", ".", u.path, flags=re.I)):
+        return None
+    path = u.path
     # パスは一度復号して符号化し直す(括弧・日本語のパスも判定表に書ける形にし、符号化の有無・大小文字の揺れを同じキーにする)。
     # UTF-8 として読めないバイト列は None(置換文字に潰すと別のバイト列が同じキーになる)
     try:

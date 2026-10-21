@@ -9750,7 +9750,11 @@ def test_link_key_and_table():
               "YouTube の動画のキー")
         check(lk("https://t.co/ON7vMQp5kT") == "t.co/ON7vMQp5kT" and lk("https://t.co/on7vmqp5kt") != lk("https://t.co/ON7vMQp5kT"),
               "短縮のキー(ID の大小文字を区別する)")
-        check(lk("https://shop.example/a/?utm_source=x&id=3&b=1") == "shop.example/a?b=1&id=3", f"ページのキー: {lk('https://shop.example/a/?utm_source=x&id=3&b=1')}")
+        check(lk("https://shop.example/a/?utm_source=x&id=3&b=1") == "shop.example/a/?b=1&id=3", f"ページのキー: {lk('https://shop.example/a/?utm_source=x&id=3&b=1')}")
+        # パスは書かれたまま。末尾の /・途中の // は別のページでありうる(畳んで同じキーにしない。監査指摘 2026-10-21)
+        check(len({lk("https://d.example/event/A"), lk("https://d.example/event/A/")} - {None}) == 2
+              and lk("https://d.example/event//A") is None and lk("https://d.example/event/./A") is None,
+              f"末尾・重複の / を畳んで別のページを同じキーにした: {lk('https://d.example/event/A/')} / {lk('https://d.example/event//A')}")
         check(lk("javascript://x.com/a") is None and lk("https://evil.example\\@x.com/a") is None, "読めない URL にキーを付けた")
         # 中身を区別するクエリは残す(`?s=` を落として、確かめていない別のページまで同じキーにしない。監査指摘 2026-10-21)
         check(lk("https://shop.example/search?s=event-A") != lk("https://shop.example/search?s=event-B"), "中身を区別するクエリを落とした")

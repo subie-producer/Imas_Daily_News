@@ -1569,36 +1569,28 @@ def _link_key(url) -> str | None:
     """リンク元から種別を引き継ぐ単位(判定表 link_types のキー)。リンク先1つを指す形で、同じ先を指す URL の書き方の揺れ
     (`/viewform?usp=…`、`youtu.be/<ID>`、`x.com/<名>/status/<ID>/photo/1` など)は同じキーになる。読めない URL は None。
     短縮は `<host>/<ID>`、X の投稿は `x.com/i/status/<ID>`、YouTube の動画は `youtube.com/watch?v=<ID>`、ニコニコは
-    `nicovideo.jp/watch/<ID>`、文書は文書 ID まで、ほかは host + パス(+ 追跡の印を除いたクエリを並べ替えたもの)。"""
-    import urllib.parse
+    `nicovideo.jp/watch/<ID>`、文書は文書 ID まで、ほかは書かれたままの host + パス + クエリ(追跡の印の項だけ除く)。"""
     s = str(url or "").strip()
-    u = urllib.parse.urlparse(s if "//" in s else "//" + s)
-    if "\\" in u.netloc or u.scheme not in ("", "http", "https"):
+    # 入口: 書かれた形のまま判定表に書ける ASCII の https/http の URL だけ。ホストは小文字の ASCII、認証情報・ポート・フラグメント
+    # は持たない。別の先を同じキーにしうる形(パスのパラメータ `;`、`//`・`.`・`..` の区切り、区切り・ドットの符号化、末尾の `?`、
+    # 空のクエリの項、同じ名前のクエリ)は None。サービス固有の形にもここで効かせる(監査指摘 2026-10-21: r3〜r10 で
+    # 書き換え・切り捨て・畳み込みのたびに別の先が同じキーになった。キーは書き換えず、揺れの吸収は決まったサービスの形だけ)
+    m = re.fullmatch(r"(https?)://([a-z0-9.-]+)(/[^?#\s]*)?(?:\?([^#\s]*))?", s)
+    if not m:
         return None
-    try:
-        port = u.port
-    except ValueError:
+    scheme, host, path, query = m.group(1), m.group(2), m.group(3) or "", m.group(4)
+    if (query == "" or ";" in path or re.search(r"//|(^|/)\.\.?(/|$)", path)
+            or re.search(r"%(2F|3B|3F|23|25|5C|2E)", s, re.I)):
         return None
-    host = (u.hostname or "").removeprefix("www.")
-    if not host:
+    parts = query.split("&") if query else []
+    names = [p.split("=", 1)[0] for p in parts]
+    if "" in parts or len(set(names)) != len(names):
         return None
-    # 別のページを同じキーにしうる形(パスのパラメータ `;id=`、スキームの既定でないポート、符号化された区切り `%2F` など)は
-    # 引き継ぎの対象にしない(確かめていないページまで同じ種別になる。監査指摘 2026-10-21)。短縮・文書などの専用の形より先に見る
-    if (u.params or (port is not None and port != {"http": 80, "https": 443}.get(u.scheme))
-            or re.search(r"%(2F|3B|3F|23|25|5C)", u.path, re.I)):
-        return None
-    # クエリも UTF-8 として読めないもの、同じ名前が2つ以上あるもの(値の順序・どれを採るかで別の要求になりうる)は対象外。
-    # 専用の形(動画・フォーム)のクエリにも効くよう、ここで見る(監査指摘 2026-10-21)
-    try:
-        pairs = urllib.parse.parse_qsl(u.query, keep_blank_values=True, errors="strict")
-    except UnicodeDecodeError:
-        return None
-    if len({k for k, _ in pairs}) != len(pairs):
-        return None
-    seg = [x for x in u.path.split("/") if x]
-    q = {k: [v] for k, v in pairs}
+    q = {n: [p.split("=", 1)[1] if "=" in p else ""] for n, p in zip(names, parts)}
+    host_given, host = host, host.removeprefix("www.")
+    seg = [x for x in path.split("/") if x]
     if host in SHORTENERS:
-        return f"{host}/{seg[0]}" if seg else None
+        return f"{host}/{seg[0]}" if len(seg) == 1 else None
     if host in ("x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com"):
         sid = (seg[2] if len(seg) >= 3 and seg[1] in ("status", "statuses") else
                seg[2] if seg[:2] == ["i", "status"] and len(seg) >= 3 else
@@ -1627,26 +1619,13 @@ def _link_key(url) -> str | None:
             if i >= 1 and seg[i - 1] in ("d", "e", "folders") and len(x) >= 20:
                 return host + "/" + "/".join(seg[:i + 1])
     if host == "forms.gle":
-        return f"{host}/{seg[0]}" if seg else None
-    # 一般のページは、ホストを書かれたまま(`www.` も)区別し、https だけを対象にする(http と https、www の有無は別の内容を
-    # 返しうる。監査指摘 2026-10-21)。`www.` を同じとみなすのは、上の決まったサービスの形だけ
-    if u.scheme != "https":
+        return f"{host}/{seg[0]}" if len(seg) == 1 else None
+    # 一般のページは書かれたまま: ホスト(`www.` も)・パス(末尾の / も、符号化も)・クエリ(並びも)を変えない。https だけ。
+    # 落とすのは、どのサイトでも追跡の印でしかないクエリの項だけ
+    if scheme != "https":
         return None
-    host = u.hostname or ""
-    # パスは書かれたまま(末尾の / も)。`//`・`.`・`..` の区切りを含むパスは、畳むと別のページを同じキーにしうるので対象外
-    # (監査指摘 2026-10-21: /event/A・/event/A/・/event//A が同じキーになった)
-    if re.search(r"//|(^|/)\.\.?(/|$)", re.sub(r"%2e", ".", u.path, flags=re.I)):
-        return None
-    # パスの百分率符号化は復号しない(`+` と `%2B`、`(` と `%28` は別のページでありうる。監査指摘 2026-10-21)。
-    # 符号化されていない ASCII 以外の文字(日本語)だけを UTF-8 で符号化し、%xx の16進は大文字にそろえる(どちらも同じ先の書き方)
-    path = re.sub(r"%[0-9a-fA-F]{2}", lambda m: m.group(0).upper(),
-                  "".join(urllib.parse.quote(ch) if ord(ch) > 127 else ch for ch in u.path))
-    try:
-        host = host.encode("idna").decode("ascii")
-    except UnicodeError:
-        return None
-    keep = [(k, v) for k, v in pairs if not LINK_NOISE_QUERY.match(k)]
-    return host + path + ("?" + urllib.parse.urlencode(sorted(keep)) if keep else "")
+    keep = [p for p, n in zip(parts, names) if not LINK_NOISE_QUERY.match(n)]
+    return host_given + path + ("?" + "&".join(keep) if keep else "")
 
 
 def parse_source_table(text: str, p) -> dict:

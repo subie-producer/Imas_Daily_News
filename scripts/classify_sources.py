@@ -309,21 +309,24 @@ def is_document(key: str) -> bool:
     return key.split("/")[0] in DOC_HOSTS + ("forms.gle",) + tuple(QUERY_DOC_PAGES)
 
 
-URL_IN_TEXT = re.compile(r"https?://[^\s\"'<>（）「」『』【】、。]+")
-
-
-URL_END_OK = "、。」』】）"      # URL の直後に来てよい文字(空白・文の終わりのほか。和文の句読点・閉じ括弧)
+URL_START_OK = "（「『【(:："     # URL の直前に来てよい ASCII 以外の区切り・開き括弧・コロン(空白・文の始まり・和文の文字のほか)
 
 
 def fact_urls(text: str) -> list[str]:
-    """facts の文から切り出した URL。URL の一部とも文の区切りとも読めるものは入れない(削って別の URL を作らない。
-    監査指摘 2026-10-21: `/event(1)` から `/event`、`?id=A!` から `?id=A`、`/event'B`・`/event（B）` から `/event` を作り、
-    張られていない先を公式にした): 末尾が句読点とも読める・括弧の対が合わない・直後が空白・文の終わり・和文の句読点と閉じ括弧の
-    どれでもない(途中で切れたかもしれない)もの。"""
+    """facts の文から切り出した URL。空白で区切った語ごとに見て、URL の範囲が曖昧なものは入れない(削って・途中から切り出して
+    別の URL を作らない。監査指摘 2026-10-21: `/event(1)` から `/event`、`/event'B`・`/event（B）`・`/event、B` から `/event`、
+    `…'https://other…` から後半を作り、張られていない先を公式にした)。
+    入れるのは: 語の中の最初の `http(s)://` の直前が語の始まり・和文の文字・開き括弧・コロンで、そこから語の終わりまでが URL の文字
+    だけのもの、または URL の後ろが和文の閉じ括弧・句読点だけのもの。末尾が句読点とも読める・括弧の対が合わないものは入れない。"""
     out = []
-    for m in URL_IN_TEXT.finditer(text):
-        u, nxt = m.group(0), text[m.end():m.end() + 1]
-        if u[-1] in ".,;:!?…" or u.count("(") != u.count(")") or (nxt and not nxt.isspace() and nxt not in URL_END_OK):
+    for word in text.split():
+        i = min((j for j in (word.find("http://"), word.find("https://")) if j >= 0), default=-1)
+        if i < 0 or (i > 0 and word[i - 1].isascii() and word[i - 1] not in URL_START_OK):
+            continue
+        m = re.match(r"https?://[A-Za-z0-9._~/?#=&%+@!$*,;:()'\[\]-]+", word[i:])
+        u, rest = m.group(0), word[i + len(m.group(0)):]
+        if ((rest and not re.fullmatch(r"[）」』】、。]+", rest)) or u[-1] in ".,;:!?…" or u.count("(") != u.count(")")
+                or u.count("://") != 1):
             continue
         out.append(u)
     return out

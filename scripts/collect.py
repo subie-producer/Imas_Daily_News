@@ -55,7 +55,10 @@ def page_key(url) -> str | None:
     """収集が「同じページか(リンク元を付けるか)」を見る比べ方: リンク先のキー(link_key)を、末尾の / を除いて比べる。
     リンク元の記録は判定の材料なので、末尾の / の違いだけの自分自身をリンク元にしない(種別の引き継ぎは link_key のまま)。"""
     s = str(url or "")
-    return link_key(s.rstrip("/") if s.rstrip("/").count("/") >= 3 else s)
+    # 末尾の / を除くのはクエリ・フラグメントの無い URL のパスだけ(クエリの値の / は削らない。監査指摘 2026-10-21)
+    if "?" in s or "#" in s or s.rstrip("/").count("/") < 3:
+        return link_key(s)
+    return link_key(s.rstrip("/"))
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
 # 区切るだけであり、超過分は捨てずに次回へ繰り越す(run_watch の状態保存を参照)。

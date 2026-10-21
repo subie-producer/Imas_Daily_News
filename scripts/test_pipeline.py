@@ -9750,7 +9750,7 @@ def test_link_key_and_table():
               "YouTube の動画のキー")
         check(lk("https://t.co/ON7vMQp5kT") == "t.co/ON7vMQp5kT" and lk("https://t.co/on7vmqp5kt") != lk("https://t.co/ON7vMQp5kT"),
               "短縮のキー(ID の大小文字を区別する)")
-        check(lk("https://shop.example/a/?utm_source=x&id=3&b=1") == "shop.example/a/?b=1&id=3", f"ページのキー: {lk('https://shop.example/a/?utm_source=x&id=3&b=1')}")
+        check(lk("https://shop.example/a/?utm_source=x&id=3&b=1") == "shop.example/a/?id=3&b=1", f"ページのキー: {lk('https://shop.example/a/?utm_source=x&id=3&b=1')}")
         # パスは書かれたまま。末尾の /・途中の // は別のページでありうる(畳んで同じキーにしない。監査指摘 2026-10-21)
         check(len({lk("https://d.example/event/A"), lk("https://d.example/event/A/")} - {None}) == 2
               and lk("https://d.example/event//A") is None and lk("https://d.example/event/./A") is None,
@@ -9758,9 +9758,10 @@ def test_link_key_and_table():
         check(lk("javascript://x.com/a") is None and lk("https://evil.example\\@x.com/a") is None, "読めない URL にキーを付けた")
         # 中身を区別するクエリは残す(`?s=` を落として、確かめていない別のページまで同じキーにしない。監査指摘 2026-10-21)
         check(lk("https://shop.example/search?s=event-A") != lk("https://shop.example/search?s=event-B"), "中身を区別するクエリを落とした")
-        # 括弧・日本語のパスも、判定表に書ける形の同じキーになる(符号化の有無で揺れない)
-        k1, k2 = lk("https://shop.example/ticket(1)/チケット"), lk("https://shop.example/ticket(1)/%e3%83%81%E3%82%B1%E3%83%83%E3%83%88")
-        check(k1 and k1 == k2 and pipelib.LINK_KEY_RE.fullmatch(k1) and lk("https://" + k1) == k1, f"括弧・日本語のパスのキー: {k1} / {k2}")
+        # 一般のページは書かれたまま: 括弧・符号化された日本語のパスは判定表に書ける形のまま。符号化されていない日本語は対象外
+        k1 = lk("https://shop.example/ticket(1)/%E3%83%81%E3%82%B1%E3%83%83%E3%83%88")
+        check(k1 and pipelib.LINK_KEY_RE.fullmatch(k1) and lk("https://" + k1) == k1 and lk("https://shop.example/ticket(1)/チケット") is None,
+              f"括弧・日本語のパスのキー: {k1}")
         # 百分率符号化された予約文字は復号しない(`+` と `%2B`、`(` と `%28` は別のページでありうる。監査指摘 2026-10-21)
         check(lk("https://d.example/event/A+B") != lk("https://d.example/event/A%2BB")
               and lk("https://d.example/ticket(1)") != lk("https://d.example/ticket%281%29"), "符号化された予約文字を復号して同じキーにした")
@@ -9782,7 +9783,19 @@ def test_link_key_and_table():
                      ("https://www.youtube.com/watch?v=AAAAAAAAAAA&v=BBBBBBBBBBB",
                       "https://www.youtube.com/watch?v=AAAAAAAAAAA&v=CCCCCCCCCCC"),
                      ("https://forms.cloud.microsoft/pages/responsepage.aspx?id=officialDocument0123456789&route=A&route=B",
-                      "https://forms.cloud.microsoft/pages/responsepage.aspx?id=officialDocument0123456789&route=A&route=C")):
+                      "https://forms.cloud.microsoft/pages/responsepage.aspx?id=officialDocument0123456789&route=A&route=C"),
+                     # r10: クエリの書き換え・フラグメント・認証情報・IDNA・多段の短縮・専用の形の dot segment
+                     ("https://d.example/e?a=1&b=2", "https://d.example/e?b=2&a=1"), ("https://d.example/e?flag", "https://d.example/e?flag="),
+                     ("https://d.example/e?a=1&&b=2", "https://d.example/e?a=1&b=2"), ("https://d.example/e?", "https://d.example/e"),
+                     ("https://d.example/e?q=a+b", "https://d.example/e?q=a%20b"), ("https://d.example/e?p=%2F", "https://d.example/e?p=/"),
+                     ("https://d.example/#/event-A", "https://d.example/#/event-B"),
+                     ("https://alice:pw@d.example/event", "https://d.example/event"),
+                     ("https://faß.example/e", "https://fass.example/e"),
+                     ("https://amzn.asia/d/AbCd123", "https://amzn.asia/d/ZyX9876"), ("https://goo.gl/maps/AbCd123", "https://goo.gl/maps/ZyX9876"),
+                     ("https://t.co/A/../B", "https://t.co/A"),
+                     ("https://x.com/a/status/123/../../status/456", "https://x.com/a/status/123"),
+                     ("https://docs.google.com/document/d/AAAAAAAAAAAAAAAAAAAAAAAA/../../d/BBBBBBBBBBBBBBBBBBBBBBBB/edit",
+                      "https://docs.google.com/document/d/AAAAAAAAAAAAAAAAAAAAAAAA")):
             check(lk(a) is None or lk(a) != lk(b), f"別のページが同じキーになった: {a} / {b} → {lk(a)}")
         # 返すキーは、読み直しても同じキー(判定表に書いて引ける)
         check(lk("https://[broken]/event") is None, "読めない URL で例外・キー")
@@ -9913,7 +9926,9 @@ def test_link_inheritance(tmp: Path):
         check(cs.link_sources("https://shop.example/goods/1(2)") == [] and cs.link_sources("https://press.example/a") == []
               and cs.link_sources("https://shop.example/evt?id=A") == [] and cs.link_sources("https://shop.example/evt(9)") == [(post, "公式")]
               and cs.link_sources("https://shop.example/q") == [] and cs.link_sources("https://shop.example/r") == []
-              and cs.fact_urls("フォーム（https://a.example/f）から。https://a.example/g、") == ["https://a.example/f", "https://a.example/g"],
+              and cs.fact_urls("フォーム（https://a.example/f） 申込：https://a.example/g、 x") == ["https://a.example/f", "https://a.example/g"]
+              # 和文の記号の後に続きがある・途中の別の URL・ASCII の記号に続く URL は入れない(監査指摘 2026-10-21 r10)
+              and cs.fact_urls("https://a.example/e、B https://a.example/e'https://b.example/x custom+https://c.example/y") == [],
               f"facts の URL を削った別の URL にリンク元を付けた: {cs.link_sources('https://shop.example/evt?id=A')}")
         sys.argv = ["classify_sources.py", "--date", "2026-10-21", "--posts-only", "--apply"]
         code = cs.main()
@@ -9971,7 +9986,7 @@ def test_link_inheritance(tmp: Path):
               "2回目に、決まった組を問い直した(または割れた組を問い直さない)")
         check(table == (tmp / "source_types.yml").read_text(encoding="utf-8"), "2回目で判定表が変わった(冪等でない)")
         # 括弧・日本語のパスのリンク先も判定表に書け、書いた数を正しく返す(書けないまま「追加」と言って合議を繰り返さない)
-        paren = "https://livepocket.jp/e/ticket(1)/チケット"
+        paren = "https://livepocket.jp/e/ticket(1)/%E3%83%81%E3%82%B1%E3%83%83%E3%83%88"
         n_added = cs.add_links({pipelib.link_key(paren): ("公式", "テスト")})
         pipelib._ST_TABLE = None
         check(n_added == 1 and pipelib.classify_source(paren) == "公式", f"括弧・日本語のパスのリンク先を判定表に書けない: {n_added}")
@@ -10048,6 +10063,9 @@ def test_collect_keeps_link_from(tmp: Path):
             collect.classify_source = saved_cs
         check(items[0]["url"] == "https://idolmaster-official.jp/news/2" and items[0].get("link_from") == post,
               f"投稿に貼られたリンクの候補にリンク元が付かない: {items[0]}")
+        # 末尾の / を同じとみなすのはパスだけ(クエリの値の / を削って、張られていない URL にリンク元を付けない。監査指摘 r10)
+        check(collect.page_key("https://d.example/f?route=A/") != collect.page_key("https://d.example/f?route=A")
+              and collect.page_key("https://d.example/f/") == collect.page_key("https://d.example/f"), "収集の同じページの比べ方")
         # 定点観測: 新着ページと違う url の候補は、そのページがリンク元
         saved_ph = collect.page_html_or_note
         collect.page_html_or_note = lambda url, csr: ("<p>本文</p>", "")

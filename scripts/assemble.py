@@ -110,12 +110,12 @@ SNAP_SOURCE_TYPES = ("公式", "準公式", "当事者", "演者", "報道", "�
 
 
 def material_snapshot(c: dict) -> dict:
-    """続報予約に写す素材1件の中身(title・url・出典の種別・facts 全部・日付)。出典の種別は判定表から出す。"""
+    """続報予約に写す素材1件の中身(title・url・出典の種別・facts 全部・日付・リンク元)。出典の種別は判定表から出す。"""
     st = classify_source(c.get("url") or "")
     snap = {"title": c.get("title") or "", "url": c.get("url") or "",
             "source_type": st if st in SNAP_SOURCE_TYPES else "未確認", "facts": list(c.get("facts") or []),
             "via": c.get("via") or "", "verify": c.get("verify") or "unconfirmed"}
-    for k in ("event_date", "deadline"):
+    for k in ("event_date", "deadline", "link_from"):
         if c.get(k):
             snap[k] = str(c[k])
     return snap

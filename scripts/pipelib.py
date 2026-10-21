@@ -37,7 +37,7 @@ def candidate_misplaced(c: dict) -> bool:
 
 def merge_candidate_facts(tgt: dict, c: dict) -> bool:
     """同じページの候補 c の facts を tgt へ増分マージする(収集の再検出と、組版が前の号の未読の事実を引き継ぐときの共通)。
-    足したら裏取りの結果も引き継ぎ、弱いほうを採る。締切(deadline)は遅いほうを採る。facts か締切が変わったら True。"""
+    足したら裏取りの結果も引き継ぎ、弱いほうを採る。締切(deadline)は遅いほうを採る。facts か締切かリンク元が変わったら True。"""
     # **締切は facts と別に、遅いほうを採る。**同じページに締切が複数ある(受付締切と入金期限)と、候補ごとに deadline が違う。
     # 既存の候補の早い締切のままだと、まとめた素材が翌号への戻しで締切切れとして捨てられる(2026-10-15 監査指摘: 入金期限
     # 10/18 のレトラの予約の素材が、同じ URL の候補の受付締切 10/11 で 10/17 号に戻らない)。facts が増えなくても採る
@@ -45,6 +45,9 @@ def merge_candidate_facts(tgt: dict, c: dict) -> bool:
     dls = [d for d in (str(tgt.get("deadline") or ""), str(c.get("deadline") or "")) if re.fullmatch(r"\d{4}-\d{2}-\d{2}", d)]
     if dls and max(dls) != tgt.get("deadline"):
         tgt["deadline"], dl_changed = max(dls), True
+    # リンク元(そのリンクが載っていた投稿・ページ)も、無ければ引き継ぐ。出典の種別の判定がリンク元を引く(classify_sources)
+    if c.get("link_from") and not tgt.get("link_from"):
+        tgt["link_from"], dl_changed = c["link_from"], True
     merged = list(dict.fromkeys((tgt.get("facts") or []) + (c.get("facts") or [])))
     if len(merged) <= len(tgt.get("facts") or []):
         return dl_changed
@@ -1532,6 +1535,76 @@ def shared_host(host: str) -> bool:
     return host in SHORTENERS or host in QUERY_DOC_PAGES or host in PATH_FORM_HOSTS
 
 
+# 出典種別の強い順(retag_sources・lint・compose と同じ並び)
+SRC_ORDER = ("公式", "準公式", "当事者", "演者", "報道", "ファン", "二次情報", "もちより", "未確認")
+
+
+def src_rank(t) -> int:
+    """種別の順位(小さいほど強い)。知らない値は未確認より弱い。"""
+    return SRC_ORDER.index(t) if t in SRC_ORDER else len(SRC_ORDER)
+
+
+# リンク先のキーで落とすクエリ(追跡・共有の印。どのページを指すかを変えない)
+LINK_NOISE_QUERY = re.compile(r"^(utm_.*|usp|s|t|ref|ref_src|fbclid|gclid|si|feature|share|via|igsh|igshid)$")
+
+
+def link_key(url) -> str | None:
+    """リンク元から種別を引き継ぐ単位(判定表 link_types のキー)。リンク先1つを指す形で、同じ先を指す URL の書き方の揺れ
+    (`/viewform?usp=…`、`youtu.be/<ID>`、`x.com/<名>/status/<ID>/photo/1` など)は同じキーになる。読めない URL は None。
+    短縮は `<host>/<ID>`、X の投稿は `x.com/i/status/<ID>`、YouTube の動画は `youtube.com/watch?v=<ID>`、ニコニコは
+    `nicovideo.jp/watch/<ID>`、文書は文書 ID まで、ほかは host + パス(+ 追跡の印を除いたクエリを並べ替えたもの)。"""
+    import posixpath
+    import urllib.parse
+    s = str(url or "").strip()
+    u = urllib.parse.urlparse(s if "//" in s else "//" + s)
+    if "\\" in u.netloc or u.scheme not in ("", "http", "https"):
+        return None
+    try:
+        u.port
+    except ValueError:
+        return None
+    host = (u.hostname or "").removeprefix("www.")
+    if not host:
+        return None
+    seg = [x for x in u.path.split("/") if x]
+    q = urllib.parse.parse_qs(u.query)
+    if host in SHORTENERS:
+        return f"{host}/{seg[0]}" if seg else None
+    if host in ("x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com"):
+        sid = (seg[2] if len(seg) >= 3 and seg[1] in ("status", "statuses") else
+               seg[2] if seg[:2] == ["i", "status"] and len(seg) >= 3 else
+               seg[3] if seg[:3] == ["i", "web", "status"] and len(seg) >= 4 else "")
+        if sid.isdigit():
+            return f"x.com/i/status/{sid}"
+        return f"x.com/{seg[0].lower()}" if len(seg) == 1 else None
+    yt = host.removeprefix("m.")
+    vid = ""
+    if yt == "youtube.com":
+        if seg == ["watch"]:
+            vid = (q.get("v") or [""])[0]
+        elif len(seg) == 2 and seg[0] in ("live", "shorts", "embed"):
+            vid = seg[1]
+    elif yt == "youtu.be" and len(seg) == 1:
+        vid = seg[0]
+    if vid:
+        return f"youtube.com/watch?v={vid}" if re.fullmatch(r"[A-Za-z0-9_-]{11}", vid) else None
+    if (host == "nicovideo.jp" or host.endswith(".nicovideo.jp")) and len(seg) == 2 and seg[0] == "watch":
+        return f"nicovideo.jp/watch/{seg[1]}"
+    qdoc = query_doc_key(s)
+    if qdoc:
+        return qdoc
+    if host in ("docs.google.com", "drive.google.com"):
+        for i, x in enumerate(seg):
+            if i >= 1 and seg[i - 1] in ("d", "e", "folders") and len(x) >= 20:
+                return host + "/" + "/".join(seg[:i + 1])
+    if host == "forms.gle":
+        return f"{host}/{seg[0]}" if seg else None
+    raw = re.sub(r"%2e", ".", u.path, flags=re.I)
+    path = posixpath.normpath(raw).rstrip("/") if raw.strip("/") else ""
+    keep = sorted((k, v) for k, vs in q.items() if not LINK_NOISE_QUERY.match(k) for v in vs)
+    return host + path + ("?" + urllib.parse.urlencode(keep) if keep else "")
+
+
 def parse_source_table(text: str, p) -> dict:
     """判定表の本文を検査して dict にする。読むときも書くときも**同じ検査**を通す。"""
     import yaml
@@ -2012,8 +2085,8 @@ def dedupe_source_table(path=None) -> list[str]:
                 item = m_item.group(1).rstrip("/")
                 key = (section, label, item if section == "video_ids" else item.lower(), None)
             else:
-                key = (section, None, path_type_norm(m_kv.group(1)) if section == "path_types" else m_kv.group(1).rstrip("/").lower(),
-                       m_kv.group(2))
+                key = (section, None, path_type_norm(m_kv.group(1)) if section == "path_types" else m_kv.group(1)
+                       if section == "link_types" else m_kv.group(1).rstrip("/").lower(), m_kv.group(2))
             if key in seen:
                 removed.append(ln.rstrip("\n"))
                 continue
@@ -2052,11 +2125,13 @@ def _check_table_text(text: str, p) -> None:
         tops[name] = line
     for k_node, v_node in root.value:
         section = getattr(k_node, "value", None)
-        if section not in ("path_types", "suffix_types") or not isinstance(v_node, yaml.MappingNode):
+        if section not in ("path_types", "suffix_types", "link_types") or not isinstance(v_node, yaml.MappingNode):
             continue
         seen: dict[str, int] = {}
         for kk, _vv in v_node.value:
-            key = path_type_norm(getattr(kk, "value", "")) if section == "path_types" else str(getattr(kk, "value", "")).rstrip("/").lower()
+            # link_types のキーは link_key の正規形そのもの(ID の大小文字を区別する)
+            key = (path_type_norm(getattr(kk, "value", "")) if section == "path_types" else str(getattr(kk, "value", ""))
+                   if section == "link_types" else str(getattr(kk, "value", "")).rstrip("/").lower())
             line = kk.start_mark.line + 1
             if key in seen:
                 raise SystemExit(f"{p} の {section}: {kk.value} が {seen[key]} 行目と {line} 行目に二重に書かれている"
@@ -2120,6 +2195,16 @@ def _check_table(t: dict, p) -> None:
             if a != b and b.startswith(a + "/") and ta != tb:
                 raise SystemExit(f"{p}: {fa} の {a}({ta}) と {fb} の {b}({tb}) が親子で種別が違う"
                                  "(先に当たる親が勝ち、子の指定は届かない)")
+    # link_types(リンク先1つ → リンク元から引き継いだ種別): 値域と、キーが link_key の正規形であること(違う形だと当たらない)。
+    # 完全一致で引き、リンク先そのものの種別と強いほうを採るので、親子の競合は無い
+    lt = t.get("link_types") or {}
+    if not isinstance(lt, dict):
+        raise SystemExit(f"{p} の link_types はリンク先 → 種別の対応でなければならない")
+    for k, v in lt.items():
+        if str(v) not in allowed:
+            raise SystemExit(f"{p} の link_types: {k} の種別 {v!r} は使えない({'/'.join(sorted(allowed))})")
+        if link_key("https://" + str(k)) != str(k):
+            raise SystemExit(f"{p} の link_types: {k} はリンク先のキーの形でない({link_key('https://' + str(k))} と書く)")
 
 
 # 投稿者の無い X の投稿 URL(`x.com/i/status/<ID>`・`i/web/status/<ID>`)。種別はアカウントで決まるので、
@@ -2154,7 +2239,19 @@ def x_post_author(post_id: str, fetch=None) -> str:
 
 
 def classify_source(url: str) -> str:
-    """出典 URL から種別を決める。**収集役の自己申告は使わない。**
+    """出典 URL の種別。リンク先そのものの種別(own_source_type)と、リンク元から引き継いだ種別(判定表 link_types。
+    合議がリンク元の告知と関係していると確かめたものだけが載る)の**強いほう**(編集長 2026-10-21: 公式の投稿・ページから
+    リンクで行った先は公式、準公式からなら準公式。リンク先そのものが上位なら上位)。"""
+    t = source_type_table()
+    own = own_source_type(url, t)
+    lt = t.get("link_types") or {}
+    k = link_key(url) if lt else None
+    got = str(lt.get(k)) if k and k in lt else None
+    return got if got and src_rank(got) < src_rank(own) else own
+
+
+def own_source_type(url: str, t: dict | None = None) -> str:
+    """出典 URL **そのもの**から種別を決める(リンク元から引き継いだ種別は見ない)。**収集役の自己申告は使わない。**
 
     以前は種別が申告任せで、lint も「記事の src == 出典の最弱種別」という
     ラベル同士の照合しかしていなかった。攻略サイトを「公式」と申告すれば
@@ -2167,7 +2264,7 @@ def classify_source(url: str) -> str:
     """
     import posixpath
     import urllib.parse
-    t = source_type_table()
+    t = source_type_table() if t is None else t
     u = urllib.parse.urlparse(url if "//" in url else "//" + url)
     # netloc をそのまま切ると userinfo をホストと取り違える。
     # `https://idolmaster-official.jp:443@evil.example/...` が公式になった(監査指摘)。

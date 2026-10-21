@@ -38,6 +38,10 @@
         "type": "string",
         "description": "一次ソースまたは代表ポストのURL(実在するもののみ)"
       },
+      "link_from": {
+        "type": "string",
+        "description": "url を投稿・ページに貼られたリンクから開いたとき、そのリンクが載っていた投稿・ページの URL(そうでなければ空文字)"
+      },
       "event_date": {
         "type": "string",
         "description": "出来事・開始日 YYYY-MM-DD(不明なら空文字)"
@@ -83,6 +87,7 @@
       "brand",
       "kind",
       "url",
+      "link_from",
       "facts",
       "dedup_key",
       "engagement",

@@ -73,6 +73,11 @@
         "type": "string",
         "description": "重複排除キー"
       },
+      "link_from": {
+        "type": "string",
+        "pattern": "^https?://",
+        "description": "リンク元: url がリンクとして載っていた投稿・ページの URL(収集がリンクを辿って url に来たとき)。出典の種別の判定(classify_sources)が、リンク元の種別を引き継ぐかを合議に確かめさせる材料"
+      },
       "src_dedup_key": {
         "type": "string",
         "minLength": 1,

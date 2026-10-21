@@ -358,6 +358,12 @@ def load_window_candidates(date: str) -> dict:
     return items
 
 
+def with_current_type(c: dict) -> dict:
+    """執筆・書き直しに見せる素材。出典の種別は判定表から引き直す(素材の source_type は収集・予約の時点の値。その後に決まった
+    種別(リンク元から引き継いだ種別など。2026-10-21)を、紙面に付く種別(pipelib.classify_source)と同じ値で見せる)。"""
+    return {**c, "source_type": classify_source(c["url"])} if str(c.get("url") or "").startswith(("http://", "https://")) else c
+
+
 # 選定が読んだ後に前の号の候補ファイルへ入った候補を、何号前まで遡って引き継ぐか
 LATE_LOOKBACK = 3
 
@@ -2311,7 +2317,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
         if art["slug"] in settled:
             print(f"記事 {art['slug']} は書き直さない(前の実行で外した理由がいまも成り立つ: {settled[art['slug']]})", flush=True)
             continue
-        materials = [cands[cid] for cid in art["candidate_ids"]]
+        materials = [with_current_type(cands[cid]) for cid in art["candidate_ids"]]
         # src も**申告ではなく判定表**から出す。素材の source_type には収集時点の
         # 古い申告が残っており、そのまま渡すと執筆が写して lint が毎回赤くなる
         src = weakest_src(classify_source(c.get("url", "") or "") for c in materials)
@@ -2859,7 +2865,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
         path = ROOT / f
         if art is None or not path.exists():
             continue
-        materials = [cands[c] for c in art["candidate_ids"] if c in cands]
+        materials = [with_current_type(cands[c]) for c in art["candidate_ids"] if c in cands]
         mats_in, fact_by_id = renderlib.materials_with_ids(materials)
         REVISE_NOTES.setdefault(date, {}).pop(slug, None)    # この巡の書き直しの結果だけを校閲に伝える(古い巡を引きずらない)
         OFFSCOPE_NOTES.setdefault(date, {}).pop(slug, None)

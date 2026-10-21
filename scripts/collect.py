@@ -47,7 +47,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
-                     X_ANON_POST, x_post_author)
+                     X_ANON_POST, x_post_author, link_key)
 from storylink import url_key
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
@@ -386,6 +386,12 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
             if i + 1 in done:
                 bad.pop(it["url"], None)
         cands = [c for i in sorted(done) for c in done[i]]
+        for i in sorted(done):
+            # 新着ページと違う url の候補は、そのページに載っていたリンク(まとめの一次ソースなど)。リンク元にそのページを残す
+            page = batch[i - 1]["url"]
+            for c in done[i]:
+                if not c.get("link_from") and link_key(clean_url(c.get("url")) or "") not in (None, link_key(page)):
+                    c["link_from"] = page
         for c in cands:
             c["_via"] = "watch"
         batch = [it for i, it in enumerate(batch) if i + 1 in done] + give_up
@@ -790,6 +796,12 @@ def repoint_to_post(items: list[dict], posts_md: str) -> list[dict]:
     for it in items:
         url = it["url"]
         if is_x(url) or classify_source(url) in GOOD_SOURCE_TYPES:
+            # 投稿に貼られたリンクを候補の url にしたなら、その投稿をリンク元に残す(公式を先。2026-10-08 のレトラの t.co は
+            # @valiv_official の投稿に載っていたが、素材に残らず判定に使えなかった)
+            k = link_key(url)
+            post = next((p for p, links in posts if k and k in {link_key(x) for x in links}), None) if not is_x(url) else None
+            if post and not it.get("link_from"):
+                it["link_from"] = post
             continue
         post = next((p for p, links in posts if url in links), None)
         if post:
@@ -1443,7 +1455,8 @@ def load_idol_brands() -> dict:
         return {}
 
 
-ITEM_STR_KEYS = ("title", "brand", "kind", "url", "event_date", "published_date", "deadline", "dedup_key", "engagement", "quote", "_via")
+ITEM_STR_KEYS = ("title", "brand", "kind", "url", "event_date", "published_date", "deadline", "dedup_key", "engagement", "quote",
+                 "link_from", "_via")
 
 
 def shape_item(it) -> dict | None:
@@ -1469,7 +1482,7 @@ ITEM_SCHEMA = {"type": "object", "required": ["url", "facts"],
                               "event_date": _DATE, "published_date": _DATE, "deadline": _DATE,
                               # 空白だけの事実は正規化で消える(事実なしで処理済みにしない。監査指摘)
                               "facts": {"type": "array", "items": {"type": "string", "pattern": r"\S"}, "minItems": 1},
-                              "quote": _S, "dedup_key": _S, "engagement": _S,
+                              "quote": _S, "dedup_key": _S, "engagement": _S, "link_from": _S,
                               "mentioned_idols": {"type": "array", "items": {"type": "string"}}}}
 WATCH_PAGE_SCHEMA = {"type": "object", "required": ["page", "status", "items"],
                      "properties": {"page": {"type": "integer"}, "status": {"enum": ["extracted", "none", "unreadable"]},
@@ -1561,6 +1574,10 @@ def normalize(items: list[dict]) -> list[dict]:
             # 出典ページからの写し(verify が本文と照らして URL の取り違えを捕まえる)
             if isinstance(it.get("quote"), str) and it["quote"].strip():
                 c["quotes"] = [it["quote"].strip()[:200]]
+            # リンク元(url がリンクとして載っていた投稿・ページ)。出典の種別の判定が、リンク元の種別を引き継ぐかを確かめる材料
+            lf = clean_url(it.get("link_from") or "")
+            if lf and link_key(lf) and link_key(lf) != link_key(url):
+                c["link_from"] = lf
             if url in seen_url and not c.get("quotes") and not seen_url[url].get("quotes"):  # URL 重複は facts をマージ
                 tgt = seen_url[url]
                 tgt["facts"] = list(dict.fromkeys(tgt["facts"] + c["facts"]))

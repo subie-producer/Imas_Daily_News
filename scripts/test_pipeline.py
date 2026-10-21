@@ -2432,6 +2432,8 @@ def test_revise_apply_decline(tmp: Path):
     saved_rp, saved_popen, saved_root, saved_proot = compose.revise_prompt, compose.subprocess.Popen, compose.ROOT, pipelib.ROOT
     try:
         compose.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")   # 書き直しは素材の種別を判定表から引く
         (tmp / "schema").mkdir(exist_ok=True)
         (tmp / "schema" / "article-out.schema.json").write_text("{}", encoding="utf-8")
         (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
@@ -2863,7 +2865,8 @@ def test_classify_posts_only(tmp: Path):
         check(cs.by_link_source(fkey) is None, "公式が張っているだけで、機械的に公式と決めた(紹介かもしれない)")
         check("https://x.com/valiv_official/status/1(公式)" in cs.link_hint(fkey), f"合議の材料にリンク元が付かない: {cs.link_hint(fkey)}")
         rule = (pipelib.PROMPTS / "classify-site.md").read_text(encoding="utf-8")
-        check("リンク元と同じ種別" in rule and "紹介しているだけ" in rule, "依頼文に、リンク元での決め方(自身の文書か紹介か)が無い")
+        # 編集長 2026-10-21: 告知と関係していればリンク元の種別、複数なら強いほう(弱いほう・第三者の種別ではない)
+        check("リンク元と同じ種別" in rule and "強いほう" in rule and "弱いほう" not in rule, "依頼文に、リンク元での決め方(関係していれば強いほう)が無い")
         cands([{"url": "https://x.com/fan1/status/3", "facts": [form]}])
         check(cs.by_link_source(fkey)[0] == "ファン", "ファンだけが張っている文書がファンにならない")
         cands([{"url": "https://news.example/a", "facts": [form]}, {"url": "https://x.com/fan1/status/3", "facts": [form]}])
@@ -3298,7 +3301,7 @@ def test_assemble_prompt_shape():
 ACTIVE_PROMPTS = ("plan-brand", "plan-rules", "plan-lead", "plan-missing", "write-article", "write-article.roundup",
                   "write-article.culture", "revise-article", "review-article", "review-paper", "assemble-digest", "assemble-ledger",
                   "collect-rules", "collect-item", "grok-collect", "grok-verify", "grok-deep", "explore", "watch-facts",
-                  "classify-rules", "classify-site", "classify-x", "classify-debate",
+                  "classify-rules", "classify-site", "classify-x", "classify-debate", "classify-link",
                   "oncall-fix", "oncall-fix.objections", "oncall-review", "oncall-parser", "oncall-whywhy")
 
 
@@ -9727,6 +9730,215 @@ def test_shared_service_units(tmp: Path):
     check(not bad, f"判定表にドメイン単位で決まらないホストがドメインとして載っている: {bad}")
 
 
+def test_link_key_and_table():
+    """リンク先のキー(pipelib.link_key)と、判定表 link_types の検査・強いほうの採り方(編集長 2026-10-21)。"""
+    try:
+        lk = pipelib.link_key
+        form = "https://docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg"
+        check(lk(form + "/viewform?usp=send_form") == lk(form + "/formResponse") == form.removeprefix("https://"),
+              f"同じフォームの書き方の揺れが同じキーにならない: {lk(form + '/viewform?usp=send_form')}")
+        check(lk("https://x.com/imas_ch/status/2103468242568417348/photo/1") == lk("https://twitter.com/i/web/status/2103468242568417348")
+              == "x.com/i/status/2103468242568417348", "X の投稿のキー")
+        check(lk("https://youtu.be/E0d4UT59xM4") == lk("https://www.youtube.com/live/E0d4UT59xM4?si=x") == "youtube.com/watch?v=E0d4UT59xM4",
+              "YouTube の動画のキー")
+        check(lk("https://t.co/ON7vMQp5kT") == "t.co/ON7vMQp5kT" and lk("https://t.co/on7vmqp5kt") != lk("https://t.co/ON7vMQp5kT"),
+              "短縮のキー(ID の大小文字を区別する)")
+        check(lk("https://shop.example/a/?utm_source=x&id=3&b=1") == "shop.example/a?b=1&id=3", f"ページのキー: {lk('https://shop.example/a/?utm_source=x&id=3&b=1')}")
+        check(lk("javascript://x.com/a") is None and lk("https://evil.example\\@x.com/a") is None, "読めない URL にキーを付けた")
+        # 検査: 値域・キーの形(正規形でないと当たらない)・字面の二重定義
+        for bad, why in (({"link_types": {"t.co/AbC": "神"}}, "値域"), ({"link_types": {"https://t.co/AbC": "公式"}}, "scheme 付き"),
+                         ({"link_types": {"youtu.be/E0d4UT59xM4": "公式"}}, "正規形でないキー"), ({"link_types": ["t.co/AbC"]}, "形")):
+            try:
+                pipelib._check_table(bad, "t")
+                check(False, f"link_types の{why}が検査を通った")
+            except SystemExit:
+                pass
+        try:
+            pipelib._check_table_text("link_types:\n  t.co/AbC: 公式\n  t.co/AbC: 準公式\n", "t")
+            check(False, "link_types の二重定義が字面の検査を通った")
+        except SystemExit:
+            pass
+        pipelib._check_table_text("link_types:\n  t.co/AbC: 公式\n  t.co/abc: 準公式\n", "t")   # ID の大小文字違いは別のリンク先
+    except (Exception, SystemExit) as e:      # noqa: BLE001  直す前の実装(関数が無い)でも、落ちたことを記録して先へ進む
+        check(False, f"リンク先のキー・link_types の検査のテストが例外: {type(e).__name__}: {e}")
+
+
+def test_link_inheritance(tmp: Path):
+    """リンク元から種別を引き継ぐ(編集長 2026-10-21): 公式の投稿・ページから張られた先は、合議がその告知の内容と関係していると
+    確かめたときだけ公式(準公式からなら準公式)。種別 = max(リンク元の種別, リンク先そのものの種別)。強いほうを採るのは
+    pipelib.classify_source で、執筆・校閲・lint・付け直しは同じ値を見る。
+    2026-10-21 号: アイマスch 公式の 9/26 の投稿が張ったお便りフォームが、7号より前の素材でリンク元が「無い」とされ、
+    合議が「準公式 / 不明」に割れて未確認のまま載った。"""
+    import classify_sources as cs
+    import retag_sources
+    import yaml
+    for d in ("candidates", "docs/_posts", "stock/scheduled", "metrics"):
+        (tmp / d).mkdir(parents=True, exist_ok=True)
+    form = "https://docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg/viewform?usp=send_form"
+    fkey = "docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg"
+    post = "https://x.com/imas_ch/status/2103468242568417348"
+    ticket, shop, press = "https://livepocket.jp/e/imas-event", "https://shop.example/goods/1", "https://press.example/a/1"
+    short, official_page = "https://t.co/AbCdEf1234", "https://idolmaster-official.jp/news/1"
+    (tmp / "source_types.yml").write_text(
+        "official_domains:\n  - idolmaster-official.jp\nsemi_official_domains:\n  - asobistore.jp\npress_domains:\n  - press.example\n"
+        "party_domains:\n  - livepocket.jp\n  - shop.example\nx_accounts:\n  公式:\n    - imas_ch\n"
+        "path_types:\n  t.co/AbCdEf1234: 当事者   # 機械で追加: 展開先 https://livepocket.jp/e/other\n", encoding="utf-8")
+    # 9/26 の公式の投稿がフォームを facts に張っている。その後に8号ぶんの素材(以前の「直近7号」の外)
+    (tmp / "candidates" / "2026-09-26.json").write_text(json.dumps([cand_row("p", post, facts=[
+        "#アイマスch メンバー限定配信 10月ゲスト決定", f"お便りフォーム: {form}", f"物販: {shop}", f"記事: {press}"])], ensure_ascii=False), encoding="utf-8")
+    for i in range(10, 21):
+        (tmp / "candidates" / f"2026-10-{i}.json").write_text(json.dumps([cand_row(f"f{i}", f"https://a.example/{i}")]), encoding="utf-8")
+    # 当日の素材: リンクを辿って見つけたチケットと短縮(link_from がリンク元)、準公式の投稿が張った公式ページ
+    (tmp / "candidates" / "2026-10-21.json").write_text(json.dumps([
+        cand_row("t", ticket, source_type="当事者", link_from=post, facts=["抽選受付"]),
+        cand_row("s", short, source_type="当事者", link_from=post, facts=["チケット"]),
+        cand_row("o", official_page, link_from="https://asobistore.jp/x", facts=["告知"])], ensure_ascii=False), encoding="utf-8")
+    srcs = [{"label": "公式", "url": post, "type": "公式"}, {"label": "フォーム", "url": form, "type": "未確認"},
+            {"label": "チケット", "url": ticket, "type": "当事者"}, {"label": "物販", "url": shop, "type": "当事者"},
+            {"label": "記事", "url": press, "type": "報道"}, {"label": "短縮", "url": short, "type": "当事者"},
+            {"label": "公式ページ", "url": official_page, "type": "公式"}]
+    art = tmp / "docs" / "_posts" / "2026-10-21-joint-topic-37.md"
+    art.write_text("---\n" + article_fm("joint-topic-37", "2026-10-21", sources=srcs) + "---\n本文\n", encoding="utf-8")
+    verdicts = {fkey: "関係する", "livepocket.jp/e/imas-event": "関係する", "t.co/AbCdEf1234": "関係する",
+                "shop.example/goods/1": "関係しない"}
+    asked: list[str] = []
+
+    def fake_ask(cmd, prompt, timeout=900):
+        asked.append(prompt)
+        if "related" not in prompt:
+            return []
+        keys = re.findall(r"(?m)^### (\S+)$", prompt.split("## 対象", 1)[-1])
+        return [{"host": k, "related": verdicts.get(k, "関係する" if cmd[0] == "claude" else "関係しない"), "why": "同じ企画"} for k in keys]
+    saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask, cs.site_profile, cs.page_meta, cs.page_excerpt,
+             cs.expand_short_fetch, cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv)
+    try:
+        cs.ROOT = pipelib.ROOT = tmp
+        pipelib._ST_TABLE = pipelib._ST_KEY = None
+        cs._SHORT.clear()
+        cs.ask, cs.site_profile = fake_ask, (lambda *a, **k: "材料")
+        cs.page_meta, cs.page_excerpt = (lambda u: ("ページの題名", "説明", "")), (lambda u, chars=1200: "ページの本文")
+        cs.expand_short_fetch = lambda u, hops=5: "https://livepocket.jp/e/imas-event2"
+        cs.UNRESOLVED = tmp / "metrics" / "classify-unresolved.json"
+        check(cs.link_sources(form) == [(post, "公式")], f"7号より前の公式の投稿がリンク元にならない: {cs.link_sources(form)}")
+        check(cs.link_sources(ticket) == [(post, "公式")], f"素材の link_from がリンク元にならない: {cs.link_sources(ticket)}")
+        sys.argv = ["classify_sources.py", "--date", "2026-10-21", "--posts-only", "--apply"]
+        code = cs.main()
+        pipelib._ST_TABLE = None
+        link_prompts = [p for p in asked if "related" in p]
+        check(code == 0 and len(link_prompts) >= 2, f"リンク先の関係を合議に掛けない: exit {code} / {len(link_prompts)}")
+        first = link_prompts[0] if link_prompts else ""
+        check(f"### {fkey}" in first and "10月ゲスト決定" in first and "ページの題名" in first,
+              "合議の材料に、リンク元の告知の中身とリンク先のページが無い")
+        check("### idolmaster-official.jp/news/1" not in first and "### x.com" not in first,
+              "リンク先そのもののほうが強い・リンク元の無い出典まで合議に掛けた")
+        check(pipelib.classify_source(form) == "公式" and pipelib.own_source_type(form) == "未確認",
+              f"関係すると確かめたフォームが公式にならない: {pipelib.classify_source(form)}")
+        check(pipelib.classify_source(ticket) == "公式" and pipelib.classify_source("https://livepocket.jp/e/other") == "当事者",
+              "関係すると確かめたチケットのページだけが公式になる(同じサイトの別のページは当事者のまま)")
+        check(pipelib.classify_source(short) == "公式", f"短縮がリンク元から引き継がない: {pipelib.classify_source(short)}")
+        check(pipelib.classify_source(shop) == "当事者", "関係しないと一致したリンク先まで引き継いだ")
+        check(pipelib.classify_source(press) == "報道", "割れたリンク先を引き継いだ")
+        table = (tmp / "source_types.yml").read_text(encoding="utf-8")
+        row = next((ln for ln in table.splitlines() if ln.startswith(f"  {fkey}:")), "")
+        check("リンク元から引き継ぎ" in row and post in row, f"引き継いだ種別の行に、どのリンク元からかが残らない: {row}")
+        check(yaml.safe_load(table)["path_types"]["t.co/AbCdEf1234"] == "当事者", "リンク先そのものの種別(短縮の展開先)の行を書き換えた")
+        rec = cs.load_unresolved()
+        check(any("press.example/a/1" in k for k in rec), f"割れたリンク先が決まらなかった記録に残らない: {list(rec)}")
+        # 執筆・校閲・lint・付け直しは同じ判定を見る(pipelib.classify_source)
+        fm = yaml.safe_load(art.read_text(encoding="utf-8").split("---\n")[1])
+        types, src = retag_sources.resolve(fm)
+        check(types == ["公式", "公式", "公式", "当事者", "報道", "公式", "公式"] and src == "報道", f"付け直しの種別: {types} {src}")
+        rep = lint.Report()
+        lint.check_source_types(rep, lint.ROOT / "x.md", {"sources": [{"url": form, "type": "公式", "label": "l"}], "src": "公式"})
+        check(rep.errors == 0, "引き継いだ種別で書いた記事が lint に落ちた")
+        stored = json.loads((tmp / "candidates" / "2026-10-21.json").read_text(encoding="utf-8"))[0]
+        shown = compose.with_current_type(stored)
+        check(stored["source_type"] == "当事者" and shown["source_type"] == "公式",
+              f"執筆に見せる素材の種別が、収集時点の値のまま: {shown['source_type']}")
+        # 冪等: 2回目は、引き継いだもの・関係しないと一致した組を問い直さない
+        asked.clear()
+        cs.main()
+        again = "".join(p for p in asked if "related" in p)
+        check(f"### {fkey}" not in again and "### shop.example/goods/1" not in again and "### press.example/a/1" in again,
+              "2回目に、決まった組を問い直した(または割れた組を問い直さない)")
+        check(table == (tmp / "source_types.yml").read_text(encoding="utf-8"), "2回目で判定表が変わった(冪等でない)")
+        # 短縮: 展開先そのものの種別が今の種別より上位なら、上位で書き換える(引き継いだ種別より展開先が強いとき)
+        (tmp / "source_types.yml").write_text(table.replace(
+            "path_types:\n", "path_types:\n  t.co/Up0000001: 当事者   # 機械で追加: 展開先 https://idolmaster-official.jp/news/9\n"), encoding="utf-8")
+        pipelib._ST_TABLE = None
+        (tmp / "candidates" / "2026-10-22.json").write_text(json.dumps([cand_row("u", "https://t.co/Up0000001", source_type="当事者")]),
+                                                            encoding="utf-8")
+        cs.POSTS_ONLY = None
+        cs.expand_short_fetch = lambda u, hops=5: "https://idolmaster-official.jp/news/9"
+        cs._SHORT.clear()
+        sys.argv = ["classify_sources.py", "--date", "2026-10-22", "--apply"]
+        cs.main()
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source("https://t.co/Up0000001") == "公式", "展開先そのものが上位になった短縮を書き換えない")
+    except (Exception, SystemExit) as e:      # noqa: BLE001  直す前の実装(関数が無い等)でも、落ちたことを記録して先へ進む
+        check(False, f"リンク元からの引き継ぎのテストが例外: {type(e).__name__}: {e}")
+    finally:
+        (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask, cs.site_profile, cs.page_meta, cs.page_excerpt,
+         cs.expand_short_fetch, cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv) = saved
+        cs._SHORT.clear()
+
+
+def test_collect_keeps_link_from(tmp: Path):
+    """収集が素材にリンク元(link_from)を残す: モデルの答え・投稿に貼られたリンク・新着ページと違う url。書式・予約の写し・
+    重複の結合でも落とさない(2026-10-21: t.co がどの投稿に載っていたかが素材に残らず、判定に使えなかった)。"""
+    import collect
+    try:
+        post = "https://x.com/valiv_official/status/2107048150620099061"
+        got = collect.normalize([{"url": "https://idolmaster-official.jp/news/2", "facts": ["f"], "link_from": post},
+                                 {"url": "https://a.example/3", "facts": ["f"], "link_from": "https://a.example/3"},
+                                 {"url": "https://a.example/4", "facts": ["f"], "link_from": "なし"}])
+        check(got[0].get("link_from") == post and "link_from" not in got[1] and "link_from" not in got[2],
+              f"候補のリンク元: {[c.get('link_from') for c in got]}")
+        # 投稿に貼られたリンクを候補の url にしたら、その投稿がリンク元(付け直しの対象でない種別のとき)
+        saved_cs = collect.classify_source
+        collect.classify_source = lambda u: "公式" if "idolmaster-official.jp" in u or "valiv_official" in u else "未確認"
+        try:
+            items = collect.repoint_to_post([{"url": "https://idolmaster-official.jp/news/2", "facts": ["f"]}],
+                                            f"### 1\n- url: {post}\n- 本文:\nお知らせ\n- リンク:\n  - https://idolmaster-official.jp/news/2/\n")
+        finally:
+            collect.classify_source = saved_cs
+        check(items[0]["url"] == "https://idolmaster-official.jp/news/2" and items[0].get("link_from") == post,
+              f"投稿に貼られたリンクの候補にリンク元が付かない: {items[0]}")
+        # 定点観測: 新着ページと違う url の候補は、そのページがリンク元
+        saved_ph = collect.page_html_or_note
+        collect.page_html_or_note = lambda url, csr: ("<p>本文</p>", "")
+        try:
+            page = "https://matome.example/entry/1"
+            out, _ = collect.facts_batch(
+                [{"url": page, "csr": False, "title": "t", "brand": "cg"}],
+                lambda prompt, timeout=420: [{"page": 1, "status": "extracted", "items": [
+                    {"url": "https://idolmaster-official.jp/news/5", "facts": ["f"]}, {"url": page + "/", "facts": ["g"]}]}],
+                {})
+        finally:
+            collect.page_html_or_note = saved_ph
+        check(out[0].get("link_from") == page and not out[1].get("link_from"), f"定点観測の候補のリンク元: {out}")
+        # 重複の結合・予約の写し・予約から候補へ戻す形でも落とさない
+        a, b = cand_row("a", "https://a.example/1", facts=["x"]), cand_row("b", "https://a.example/1", facts=["x"], link_from=post)
+        check(pipelib.merge_candidate_facts(a, b) and a.get("link_from") == post, "同じページの候補を結合してリンク元を落とした")
+        snap = assemble.material_snapshot(b)
+        check(snap.get("link_from") == post, "続報予約の写しがリンク元を落とした")
+        back = compose.scheduled_as_candidate({**sched_row("s1", "2026-10-21"), **snap})
+        check(back.get("link_from") == post, "予約から候補へ戻す形がリンク元を落とした")
+        # 書式: 候補・予約のファイルに link_from を書ける(IMAS_STRICT_WRITES=1 で検める)
+        (tmp / "candidates").mkdir(parents=True, exist_ok=True)
+        (tmp / "stock" / "scheduled").mkdir(parents=True, exist_ok=True)
+        pipelib.write_checked(tmp / "candidates" / "2026-10-21.json", json.dumps([b], ensure_ascii=False))
+        pipelib.write_checked(tmp / "stock" / "scheduled" / "2026-10-21.json",
+                              json.dumps([{**sched_row("s1", "2026-10-21"), **snap}], ensure_ascii=False))
+        try:
+            pipelib.write_checked(tmp / "candidates" / "2026-10-22.json", json.dumps([{**b, "link_from": "なし"}], ensure_ascii=False))
+            check(False, "URL でないリンク元が書式の検査を通った")
+        except pipelib.SchemaViolation:
+            pass
+    except (Exception, SystemExit) as e:      # noqa: BLE001
+        check(False, f"収集のリンク元のテストが例外: {type(e).__name__}: {e}")
+
+
 def test_document_id_case(tmp: Path):
     """文書・短縮・動画の ID は大小文字を区別する(監査指摘 2026-10-14: Microsoft Forms の文書 ID を大小文字で同一視し、合議が
     `abCd…` を公式と答えたのに、別の文書 `AbCd…` に公式が保存された)。合議の対応付け・表への追加・表の検査・merge 後の二重行の除去の
@@ -10772,6 +10984,9 @@ def main() -> int:
     test_table_write_and_reload(tmp / "tw")
     test_classify_posts_only(tmp / "cp")
     test_shared_service_units(tmp / "ssu")
+    test_link_key_and_table()
+    test_link_inheritance(tmp / "lin")
+    test_collect_keeps_link_from(tmp / "ckl")
     test_document_id_case(tmp / "dic")
     test_performer_domains(tmp / "pd")
     test_platform_owner_units(tmp / "pou")

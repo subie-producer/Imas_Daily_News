@@ -310,8 +310,8 @@
   subject: シャニマス 近日登場アイドルのチラ見せ
   watch: 10月20日15時のチラ見せで明かされる登場アイドルと登場時期(判明次第 triggers へ)
   added_on: '2026-10-20'
-- dedup_key: imas-portal-maintenance-2026-10-21
-  brand: joint
-  subject: アイドルマスターポータル 緊急メンテナンス(10月21日19時〜)
-  watch: 終了時刻は未定。メンテナンス終了・復旧の案内(判明次第 triggers へ)
+- dedup_key: gakumas-dmm-maintenance-2026-10-21
+  brand: gaku
+  subject: 学マス DMM GAMES版 臨時メンテナンス
+  watch: メンテナンスの終了時刻・復旧(終了時刻は改めて告知予定。判明次第 triggers へ)
   added_on: '2026-10-22'

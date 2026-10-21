@@ -104,5 +104,50 @@
    },
    "duration_s": 2330
   }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-22T03:31:47+09:00",
+   "edition": "2026-10-22",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 44,
+   "written": 33,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 112,
+    "covered": 112,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "cg-sakuma-mayu-necklace-bound-to-you",
+    "million-mitsukoshi-osechi-2027",
+    "sidem-renaissance-2026"
+   ],
+   "stages_min": {
+    "選定": 1.8166945854822794,
+    "執筆": 6.225944979985555,
+    "出典の判定": 2.4554622213045754,
+    "組版": 2.301758356889089,
+    "校閲": 1.0008049885431924,
+    "校閲1波": 1.0008049885431924
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-gakuen-hif-tsubame-2026",
+    "gaku-shirube-final-streaming-2026",
+    "gaku-gakumas-hatsuboshi-autograph-campaign-2026",
+    "million-platinum-star-tiara-happy-pease-2026",
+    "million-radio-playlist-otayori-2026",
+    "sidem-fbfes-wanna-step-in-goods-2026",
+    "general-starlit-season-5th-steam-sale-2026",
+    "gaku-gamushara-rerun-gacha-2026"
+   ],
+   "duration_s": 1869
+  }
  ]
 }

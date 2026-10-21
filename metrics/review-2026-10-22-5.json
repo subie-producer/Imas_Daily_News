@@ -1,0 +1,410 @@
+{
+ "verdict": "approve",
+ "blockers": [],
+ "comments": [
+  {
+   "file": "-",
+   "issue": "面のバランス: 本日33本のうち学マス10本、シャニマス7本に対し、ミリオン2本・SideM 0本・シンデレラ4本。二階堂千鶴は ranking 2位だが、千鶴の誕生日関連（誕生日演出・Birthdayガシャ・Birthdayセット2026・お祝いムービー）の公式候補が紙面にも digest にも無い。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "公式発表が candidates にあるのに紙面に無い（落とされた理由は確認できない）: 三越おせち2027（ミリオン・シンデレラ、販売11/17まで）、劇場版SideM公開記念舞台挨拶の実施決定（公式）、学マス LIVE TOUR -標- ファイナル後の「ばくすて！とーく」配信（公式、11/7・11/8）、765 IM@S RADIO 第5回 天音ゆかり出演（11/10 20時）、学マス×ローソンのコラボ（11/10開始）、ジュエルセール（10/28〜12/1）、ミリオン「ダンス・ダンス・ダンス」実装決定とスタマス5周年SSR制作決定。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "digest 本日の3行（ミラクルナナウ復刻ガシャ・BOMBANANA・BIGアクスタ受注）に、千鶴の誕生日関連や上水流宇宙の動きが無い。その日いちばん大きい話題がどれかは紙面側の判断になるが、digest の本日欄が学マス偏重に見える。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-gakumas-hedgehog-hot-water-bottle-2026.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は約115字。出典にある事実で埋まる。公式Xの告知は10月12日に受注受付開始、10月20日に締切間近の告知。美鈴・手毬のアクリルスタンドの描きおろしと受注対象の内容は本文に既にあるので、受付開始と締切前告知の経緯を足す余地がある。水増しは不要。",
+   "scope": "article:2026-10-22-gaku-gakumas-hedgehog-hot-water-bottle-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-million-yurakucho-pop-up-shop-2026.md",
+   "issue": "分量不足(rank small の目安250字に対し本文は約200字)。出典にある最終日18:00まで・施設営業時間に準じる(collabo-cafe のページ、THEキャラSHOP 告知)を本文に入れると、本日最終日の読者に要る情報が埋まる。",
+   "scope": "article:2026-10-22-million-yurakucho-pop-up-shop-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-million-yurakucho-pop-up-shop-2026.md",
+   "issue": "素材の注意(執筆の直し対象ではない): 控えの F36 の出典 idolmaster-official.jp/news/01_19735 は、開いても『システムメンテナンスのお知らせ』しか出ず、POP UP の情報が無い。開催期間・会場の主張は、掲載されている collabo-cafe(N1・実際に開いて『2026年10月10日～10月22日』『有楽町マルイ 7F』『最終日は18:00まで』を確認)で支えられているため、記事の見える出典では成立している。素材側の url は直すこと。",
+   "scope": "article:2026-10-22-million-yurakucho-pop-up-shop-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-million-yurakucho-pop-up-shop-2026.md",
+   "issue": "出典の種別: THEキャラSHOP の X 投稿は『当事者』、collabo-cafe は『二次情報』で、R5 の『公式・準公式・報道』に明確には当てはまらない。今回は、会場の店舗が公式に告知した POP UP であることと、collabo-cafe が公式告知の内容を伝えていることから R5 は満たすと判断して block にしていない。種別の付け方は確認しておくとよい。",
+   "scope": "article:2026-10-22-million-yurakucho-pop-up-shop-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-dsva-valiv-cosmo-wake-up-my-music-short-2026.md",
+   "issue": "前回のブロック指摘 I1(YouTube・TikTok の url が sources に無い)は解消されている。sources に YouTube Shorts と TikTok の2件が加わり、本文の「YouTube ShortsとTikTokで視聴できる」の根拠 F3・F4 と一致する。",
+   "scope": "article:2026-10-22-dsva-valiv-cosmo-wake-up-my-music-short-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-dsva-valiv-cosmo-wake-up-my-music-short-2026.md",
+   "issue": "分量不足(rank: small の目安 250字に対し、本文は1文・リードと合わせて約90字)。素材の事実は公開者・曲名・動画内容・公開先・公開日だけで、これ以上は素材から拾えない。水増しはしないこと。",
+   "scope": "article:2026-10-22-dsva-valiv-cosmo-wake-up-my-music-short-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-dsva-valiv-cosmo-wake-up-my-music-short-2026.md",
+   "issue": "出典の中身は素材の facts と照合した。x.com は機械から開けず、YouTube・TikTok は fetch_page.py で取得したが、タイトルも本文も読めなかった(JavaScript の殻のみ)。素材の候補は verify: confirmed、種別は公式で、事実に食い違いは見当たらないため R4 は立てない。",
+   "scope": "article:2026-10-22-dsva-valiv-cosmo-wake-up-my-music-short-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-hatsuboshi-radio-guests-20261028.md",
+   "issue": "分量が small の目安(250字)に届かず、本文は約140字。ただし素材の2件の投稿(10/28 ゲスト告知、10/21 放送回のアーカイブ)に、これ以上書ける具体は無い(素材の本文に放送内容・コーナーの記載は無い)。水増しは勧めない。",
+   "scope": "article:2026-10-22-gaku-hatsuboshi-radio-guests-20261028.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-song-prism-dmm-maintenance-2026-10-21.md",
+   "issue": "段落3の「メンテナンス開始前までに行うよう案内されている」は、読者が06:00の時点ではもう実行できない期限の案内です(開始は10月21日23時と22時)。ブロックはしませんが、削るか「案内されていた」と過去形で書くと、読者が今日できる事実として読まれずに済みます(R12に近い)。",
+   "scope": "article:2026-10-22-shiny-song-prism-dmm-maintenance-2026-10-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-song-prism-dmm-maintenance-2026-10-21.md",
+   "issue": "事実照合の結果: 見出し・リード・本文の日時(10/21 22:00 DMM版、23:00 バンダイナムコID、終了時刻未定)、引き継ぎ設定・解除・実行と端末移行の制限は、候補 202610220239-grok-19 / grok-20 の facts と一致しています。出典 2 件は公式(type 公式)で、R5 の条件を満たします。x.com は機械から開けないため、素材 facts との照合で確認しました。",
+   "scope": "article:2026-10-22-shiny-song-prism-dmm-maintenance-2026-10-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-song-prism-dmm-maintenance-2026-10-21.md",
+   "issue": "続報予約(sched-)の素材はこの依頼に載っておらず、candidate_ids も sched- で始まるものはありません。ledger(metrics/stories-before-2026-10-22.yml)に同じ DMM 版メンテの既報は無く、R10 には当たりません。grok-101 は未確認で別ハンドルの URL ですが、記事では使っていないため問題ありません。",
+   "scope": "article:2026-10-22-shiny-song-prism-dmm-maintenance-2026-10-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-cg-cinderella-15th-orchestra-concert.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は約60字で、素材にある公演名・会場(パシフィコ横浜 国立大ホール)・日程(DAY1 2027/1/11、DAY2 2027/1/12)・受付対象席種(S席スペシャルシート20,000円、A席全席指定12,000円、いずれも税込)・当落発表(11/7 13:00〜)を拾えば埋まる。素材は続報予約の素材と candidate 202610220239-grok-7 にある。",
+   "scope": "article:2026-10-22-cg-cinderella-15th-orchestra-concert.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-cg-cinderella-15th-orchestra-concert.md",
+   "issue": "本文の公式ページリンク(idolmaster-official.jp/live_event/cg_15th_orchestra/ticket/)は、機械取得では現在システムメンテナンス中の案内しか返らず、中身は確認できなかった。素材の facts に載っている url なので block にはしないが、掲載時点で開けるかは確かめてほしい。出典の news/01_20141 も同様にメンテナンス表示だった。",
+   "scope": "article:2026-10-22-cg-cinderella-15th-orchestra-concert.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-cg-topic-012-2026.md",
+   "issue": "AMNIBUS の商品一覧(title/324)には「描き下ろし 集合 レース着物ver. マルチデスクマット」(3,960円税込・予約受付中)も載っており、本文の『全10種』の10体に含まれていない。出典の X 投稿は『全10種』としか言っていないので誤りではないが、読者が AMNIBUS で探すと11点目が見つかる。『集合版は含まない』と書くか、そのままにするかを判断してほしい(ブロックではない)。",
+   "scope": "article:2026-10-22-cg-topic-012-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-cg-topic-012-2026.md",
+   "issue": "受注締切 10月25日 の出典は TCGサプライナビの X 投稿だけ(F3・F6)。AMNIBUS の商品ページには締切日の記載がない。今回 X 投稿の本文を取得して『受注は10月25日まで』を確認できたので問題はないが、N(一次確認)には入っていない。",
+   "scope": "article:2026-10-22-cg-topic-012-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-dsva-valiv-bombanana-joint-stream-2026-10-22.md",
+   "issue": "分量不足: rank small の目安250字に対して本文が短い。素材には配信日時(10/22 20:00)・3人の合同配信・『BOMBANANA!』プレイ・各自のYouTube視点の4点が出典どおりにあり、この範囲で書き足せる(推測や言い換えでの水増しは不要)。ブロックではない。",
+   "scope": "article:2026-10-22-dsva-valiv-bombanana-joint-stream-2026-10-22.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md",
+   "issue": "分量不足。rank は small(目安250字)に対し本文は約120字。素材 202610220239-grok-72 の facts は少ないが、配信先・次回の時刻(21時)はすでに入っている。一般論での水増しは不要。",
+   "scope": "article:2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md",
+   "issue": "本文の「D.D.について記した」は読者に意味が分からない。素材には「どんでん返しさん(D.D.)」とあるので、初出で読みを添えるか、外すかを検討してほしい。",
+   "scope": "article:2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md",
+   "issue": "ニュース性は次回配信の告知(10/27 21時)が新しい中核で、R11 は満たす。ただし記事の大半は10/21の配信の振り返りで、見出しとリードは次回配信に寄せている。本文の比重も次回配信寄りにすると読みやすい。",
+   "scope": "article:2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md",
+   "issue": "出典 x.com は機械から開けないため、R4 は素材 facts(202610220239-grok-72)と照合して判定した。記事の日時・配信先・煙・制服・D.D. の記述は facts と一致。素材の quote にある「世界が煙だらけ」を「煙だらけ」と縮めている点は、素材の facts と矛盾しないので問題なし。",
+   "scope": "article:2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md",
+   "issue": "ACE COMBAT 8 は声優個人のアイマス外の活動に当たり得るが、R15 の対象は rank: culture の記事。この記事は rank small なので、ブロックしていない。",
+   "scope": "article:2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-dsva-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026.md",
+   "issue": "本文の「第4弾は10月24日」の日付は、引用されている F7・F8 の facts 本文には無く、候補 202610220239-grok-71 の event_date(2026-10-24)から来ている。同じ企画の別候補 grok-103(unconfirmed、個人の投稿)も「投稿は24日から」と述べていて整合するため、ブロックはしない。日付を根拠どおりに示すなら、event_date を根拠に入れるか、本文の根拠の控えを整える余地がある。",
+   "scope": "article:2026-10-22-dsva-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-dsva-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026.md",
+   "issue": "見出しの「宇宙の秋ショート祭り」は、公式の企画名「上水流 秋のコラボショート祭り」と違う略称で、主体が名前(上水流宇宙)で分からない。「上水流宇宙の秋のコラボショート祭り」などにすると、企画名どおりになる。",
+   "scope": "article:2026-10-22-dsva-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-dsva-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026.md",
+   "issue": "分量が薄い(リードと本文を合わせて約150字、small の目安 250 字に届かない)。ただし素材の facts は第3弾・第4弾の日時と相手に限られ、一般論で埋めるべきでないので、対応は不要。",
+   "scope": "article:2026-10-22-dsva-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-contemporary-dance-2m-2026.md",
+   "issue": "分量不足: rank は small(目安250字)だが本文は MV への案内の1行のみ。素材 202610220239-grok-53 の facts は「MV が200万再生を突破したと公式が発表」と YouTube の URL だけで、これ以上埋める出典事実は無いため、水増しは勧めない。",
+   "scope": "article:2026-10-22-gaku-contemporary-dance-2m-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-gakumas-dmm-maintenance-2026-10-21.md",
+   "issue": "リードの「閲覧できなくなった」は過去形で書いているが、素材はどちらも予定日時(2026/10/21 21:00～終了時刻未定)の告知。告知どおりに過去として書いたものなので今回はブロックしないが、締切・公開以外の予定の過去形化なので、執筆側は「21時から緊急メンテナンスに入り、閲覧できない状態となった」程度に留めるかを判断してよい。",
+   "scope": "article:2026-10-22-gaku-gakumas-dmm-maintenance-2026-10-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-gakumas-dmm-maintenance-2026-10-21.md",
+   "issue": "rank small に対して本文が短い(250字目安に届かない)。ただし両公式投稿の本文を開いて確認したところ、出典に残りの会場・価格・対象条件などは無く、埋められる事実が無いので水増しは不要。",
+   "scope": "article:2026-10-22-gaku-gakumas-dmm-maintenance-2026-10-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-gakumas-mugyumin-collection-figure-vol1-2026.md",
+   "issue": "分量不足: rank small の目安250字に対し本文は約80字。candidates/2026-10-20.json の公式ページ由来の素材(カプセルトイ発売日「2027年2月下旬より順次」・500円、BUSHIROAD THE BOX「2027年3月26日発売予定」・PACK 660円/BOX 3,960円、全5種)を使えば埋まる。ただし sources への追加が要るので、執筆側が出典を足す場合は idolmaster-official.jp/news/01_20150 を開いて照合すること。",
+   "scope": "article:2026-10-22-gaku-gakumas-mugyumin-collection-figure-vol1-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-gakumas-mugyumin-collection-figure-vol1-2026.md",
+   "issue": "既報との重なり: metrics/stories-before-2026-10-22.yml の gaku-mugyumin-collection-figure-vol-1(2026-10-17)が同じ商品・全5種・2500円の予約を報じている。今回の新しい要素はカプセルトイ/BOX展開と10/19の公式告知なので、R10 の判定はしない(ブロックしない)が、本文で既報との違い(展開方法の告知)が読者に分かる書き方が望ましい。",
+   "scope": "article:2026-10-22-gaku-gakumas-mugyumin-collection-figure-vol1-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-gravure-solo-collection-vol1-2026.md",
+   "issue": "予約期間が書かれていない。準公式の告知(lnk.to 先の公式サイト, 2026.08.14)は予約を2026年9月27日（日）までとし、既報台帳にも9月27日まで・店舗ごとに特典が違うと記録がある。一方、本文末は「ショップによって予約開始時刻が異なる」と書き、10/21の公式X告知は予約リンクを案内しているので、読者は今も予約できると読める。予約期間を明記するか、10/21の告知で予約が再開されたのかを確かめて書き分けること。",
+   "scope": "article:2026-10-22-gaku-gravure-solo-collection-vol1-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-gravure-solo-collection-vol1-2026.md",
+   "issue": "見出し・frontmatter の rank は medium だが、計画上は small(lead_score 10)。本文は約537字で medium の目安450字は満たしているので分量の問題ではない。rank の記録だけ計画と合わせるか確認すること。",
+   "scope": "article:2026-10-22-gaku-gravure-solo-collection-vol1-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-kiyoka-another-guaranteed-2026.md",
+   "issue": "分量不足(rank: small, 目安250字): 本文は1段落で約100字。素材 candidates/2026-10-22.json の 202610220239-grok-43 にある事実は「記念のSSRアナザーアイドル確定ガシャ」「紫雲清夏のシーズン限定アナザーアイドルのいずれかが確定」「無料1連」「10/23 10:59まで(予定)」だけで、これ以上の事実は素材に無い。一般論での水増しは勧めない。",
+   "scope": "article:2026-10-22-gaku-kiyoka-another-guaranteed-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-me-mv-1m-2026.md",
+   "issue": "分量不足: rank small(目安250字)に対して本文が1文(MVのYouTube視聴リンクのみ)。素材の候補 202610220239-grok-54 には出典の事実がほぼこれで全部で、水増しは勧めない。見出し・リードの事実以外に書ける確かな事実が素材に無いなら、この薄さは許容範囲。",
+   "scope": "article:2026-10-22-gaku-me-mv-1m-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-me-mv-1m-2026.md",
+   "issue": "出典: 本文のYouTubeリンク(lYafXo-rjU8)は sources に無く、根拠は素材の公式X投稿内の記載。リンク先を開くと YouTube のページは返ったが、本文テキストからは動画タイトルと再生数を確認できなかった(ブロックにはしない)。",
+   "scope": "article:2026-10-22-gaku-me-mv-1m-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-me-mv-1m-2026.md",
+   "issue": "確認範囲: 出典 x.com の投稿は機械から開けないため、『め』のMVが100万再生を突破したという記述は素材の facts(公式発表・quotes)と照合した。素材ファイル(candidates/2026-10-22.json の 202610220239-grok-54)に記述は一致し、既報台帳 metrics/stories-before-2026-10-22.yml に同じ話題の記事は無い。",
+   "scope": "article:2026-10-22-gaku-me-mv-1m-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-gaku-miracle-rerun-gacha-2026.md",
+   "issue": "frontmatter の tags に「ミリオンライブ」があるが、本文・見出し・リードは学マスの話だけで、素材にもミリオンライブの要素は無い。タグは記事の内容に合わせて外すか、学マスの話題として正しいものに直すとよい(R1 の対象外の表記上の指摘)。",
+   "scope": "article:2026-10-22-gaku-miracle-rerun-gacha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-general-idolmaster-portal-maintenance-2026-10-22.md",
+   "issue": "分量不足(rank small の目安250字に対し本文は約50字)。既報(stories-before-2026-10-22.yml の idolmaster-portal-maintenance-2026-10-22、2026-10-17号)の published_facts にある『作業状況によりメンテナンスの終了時間が前後する場合がある』を入れると、『16時までの予定』の注記として読者の役に立つ。ただし候補 202610170225-grok-71 の facts には無いので、既報の根拠を使うこと。一般論での水増しは不要。",
+   "scope": "article:2026-10-22-general-idolmaster-portal-maintenance-2026-10-22.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-general-idolmaster-portal-maintenance-2026-10-22.md",
+   "issue": "本文の『実施時間中にポータルが利用できるか確認できる』は、読者が何をできるのか曖昧。素材の note(『15時から16時のメンテナンス時間中、ポータルが利用できるか確認できる』)の言い換えとして根拠はあるが、『利用できないかもしれない時間帯』だと分かる書き方にすると読者に伝わりやすい。",
+   "scope": "article:2026-10-22-general-idolmaster-portal-maintenance-2026-10-22.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-general-idolmaster-portal-maintenance-2026-10-22.md",
+   "issue": "判断の記録: R10(既報と同内容の続報)は、10-17号と事実が同じだが、当日15時の開始という本日の出来事が記事の中核のため、『本日の開始』として免除に当たると判断しブロックしなかった。R4(x.com)は機械から開けないため、素材の facts との照合のみ行った。facts は素材 sched-…-開始 と一致。",
+   "scope": "article:2026-10-22-general-idolmaster-portal-maintenance-2026-10-22.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-joint-imas-ch-members-radio-archive-2026-10.md",
+   "issue": "2段落目「アーカイブはYouTubeの配信ページで視聴できる」は、メンバー限定であることが読めない。素材(F2)では香里有佐と南早紀のトークはメンバー登録で視聴する形式で、リードと3段落目ではそれが分かる。2段落目にも「メンバー登録者向け」など条件を一言添えると、読者が無料で見られると誤解しない。",
+   "scope": "article:2026-10-22-joint-imas-ch-members-radio-archive-2026-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-joint-imas-ch-members-radio-archive-2026-10.md",
+   "issue": "見出し・タグの「メン限」は俗称。本文の「メンバー限定」と揃えると表記ゆれがなくなる(表記の指摘で、verdictには影響しない)。",
+   "scope": "article:2026-10-22-joint-imas-ch-members-radio-archive-2026-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-joint-imas-portal-maintenance-2026-10-21.md",
+   "issue": "分量不足: rank small の目安250字に対し本文は約170字。出典で確かめられる内容は限られるため、水増しはせず、出典にある「詳細は公式Xで告知」「作業状況により終了時間が前後」などの範囲で整理すれば足りる。",
+   "scope": "article:2026-10-22-joint-imas-portal-maintenance-2026-10-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-joint-imas-portal-maintenance-2026-10-21.md",
+   "issue": "リード「10月21日19時から緊急メンテナンス中」は、開始時刻が予定で前後すると本文が書いているのに、リードでは断定に読める。「19時から予定されていた緊急メンテナンス」など予定の注記を入れると出典の書き方に合う(不一致ではなく表現の精度の指摘)。",
+   "scope": "article:2026-10-22-joint-imas-portal-maintenance-2026-10-21.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-joint-tours-mypage-maintenance-2026-10.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は約140字。ただし素材の facts(F1〜F5)はすべて本文に入っており、出典 x.com の本文にも他の会場・価格・対象条件は無い。一般論や推測で埋めないこと。",
+   "scope": "article:2026-10-22-joint-tours-mypage-maintenance-2026-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-joint-tours-s2-study-equal-magic-tips-2026.md",
+   "issue": "分量不足: rank small(目安250字)に対して本文が約160字と薄い。出典の公式サイト(2026.10.16)にあるS2弾のテーマ(ハロウィン)、SideM専用衣装カード・女性専用衣装カード、UR衣装カードの公開予定(10月26日)を足せば埋まる。ただし一般論での水増しは不要。",
+   "scope": "article:2026-10-22-joint-tours-s2-study-equal-magic-tips-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-hyakkiyako-pop-up-after-sales-2026.md",
+   "issue": "frontmatter の rank は large だが、計画(metrics/plan-2026-10-22-shiny.json)は small。本文の分量は large の目安(700字)を超えているので本文は直さなくてよいが、rank の値を計画と揃えるかどうかは執筆側で決めること。",
+   "scope": "article:2026-10-22-shiny-hyakkiyako-pop-up-after-sales-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-mattari-hbtk-october-2026.md",
+   "issue": "「おたよりは番組ページのフォームから送れる」の『フォーム』は、この記事の根拠(F21)では確かめられない。F21 は番組ページへのリンクだけで、フォームとは書かれていない。フォームの記述は 2026-09-30 の候補にあるが、この記事の根拠に入っていない。番組ページは取得時点でシステムメンテナンス中で、今は中身を確かめられなかった。『フォーム』を外すか、根拠を足すこと。(ブロックしない)",
+   "scope": "article:2026-10-22-shiny-mattari-hbtk-october-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-mattari-hbtk-october-2026.md",
+   "issue": "分量不足(rank small の目安 250字に対し、本文は約200字)。出典にある『来週の放送は23時から』や、恋鐘と凛世の CHAIN お悩み相談室の内容(55:30 での案内)を具体的に書けば埋まる。推測や言い換えでの水増しは不要。",
+   "scope": "article:2026-10-22-shiny-mattari-hbtk-october-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-mattari-hbtk-october-2026.md",
+   "issue": "見出しの『便り』は『おたより』の略で、読者には少し分かりにくい。『おたより』に直すか、『まったりHBTK』『おたより』の語を入れると何の話か伝わりやすい。(表記の提案)",
+   "scope": "article:2026-10-22-shiny-mattari-hbtk-october-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-shhis-break-chain-2dmv-2026.md",
+   "issue": "本文が「アイドルマスターchで視聴する」のリンク1行だけで、rank: small の目安(250字)に届かない。出典の facts には公開と視聴先のほかに書けることがないので、一般論で埋めないこと。",
+   "scope": "article:2026-10-22-shiny-shhis-break-chain-2dmv-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-shhis-break-chain-2dmv-2026.md",
+   "issue": "リンク先の YouTube(GLf8ESwc0T0)を scripts/fetch_page.py で開いたが、取得できた本文に動画タイトルが出ず、『Break Chain』2DMVかどうかは機械的に確認できなかった。候補の facts(公式投稿の引用と YouTube の URL、verify: confirmed)とは一致しているので、R4 のブロックにはしていない。x.com の公式投稿も機械から開けないため、facts との照合で判定した。",
+   "scope": "article:2026-10-22-shiny-shhis-break-chain-2dmv-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-style-collection-wave2-2026.md",
+   "issue": "出典の公式ページ https://idolmaster-official.jp/news/01_20095.html は、2回読み直しても「システムメンテナンスのお知らせ」が返り、受注の本文を確かめられなかった。R4 では不一致とは断定できないためブロックしない。記事の価格・受注期間・ラインナップは素材の facts(公式の告知を引いた sched 候補)と一致している。公開時点の本文が取れるなら、受注期間と価格だけでも再確認するとよい。",
+   "scope": "article:2026-10-22-shiny-style-collection-wave2-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-style-collection-wave2-2026.md",
+   "issue": "sources の X 投稿 3 件(2112483973611864279・2112846360743723152・2111728992218644640)は機械から開けないため、素材の facts と照合した。キーホルダー 2 件の内容、受注 10/25(日)まで、グッズ価格はいずれも素材と一致している。",
+   "scope": "article:2026-10-22-shiny-style-collection-wave2-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-style-collection-wave2-2026.md",
+   "issue": "締切まで 3 日の告知で、R10 の例外に当たるため、既報(2026-10-10 の受注開始)と同内容でも指摘しない。本文は rank large の目安 700 字を超えている。",
+   "scope": "article:2026-10-22-shiny-style-collection-wave2-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-22-shiny-web-comic-661-cat-2026.md",
+   "issue": "分量不足(rank small の目安250字に対し本文は1行のみ)。出典にある公開日時(2026-10-21 の告知投稿)・話の主役が斑鳩ルカであること・web4コマ第661話「猫」の公開という事実を本文で一通り書けば埋まる。一般論での水増しは不要。",
+   "scope": "article:2026-10-22-shiny-web-comic-661-cat-2026.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-22-cg-cinderella-15th-orchestra-concert.md",
+  "article:2026-10-22-cg-cinderella-popup-shop-after-sales-2026.md",
+  "article:2026-10-22-cg-deresute-emergency-maintenance-endtime-2026-10-22.md",
+  "article:2026-10-22-cg-sakuma-mayu-necklace-bound-to-you.md",
+  "article:2026-10-22-cg-topic-012-2026.md",
+  "article:2026-10-22-dsva-valiv-bombanana-joint-stream-2026-10-22.md",
+  "article:2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md",
+  "article:2026-10-22-dsva-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026.md",
+  "article:2026-10-22-dsva-valiv-cosmo-wake-up-my-music-short-2026.md",
+  "article:2026-10-22-gaku-contemporary-dance-2m-2026.md",
+  "article:2026-10-22-gaku-gakumas-dmm-maintenance-2026-10-21.md",
+  "article:2026-10-22-gaku-gakumas-hedgehog-hot-water-bottle-2026.md",
+  "article:2026-10-22-gaku-gakumas-mugyumin-collection-figure-vol1-2026.md",
+  "article:2026-10-22-gaku-gamushara-rerun-gacha-2026.md",
+  "article:2026-10-22-gaku-gravure-solo-collection-vol1-2026.md",
+  "article:2026-10-22-gaku-hatsuboshi-classical-autumn-2026.md",
+  "article:2026-10-22-gaku-hatsuboshi-radio-guests-20261028.md",
+  "article:2026-10-22-gaku-kiyoka-another-guaranteed-2026.md",
+  "article:2026-10-22-gaku-me-mv-1m-2026.md",
+  "article:2026-10-22-gaku-miracle-rerun-gacha-2026.md",
+  "article:2026-10-22-general-idolmaster-portal-maintenance-2026-10-22.md",
+  "article:2026-10-22-joint-imas-ch-members-radio-archive-2026-10.md",
+  "article:2026-10-22-joint-imas-portal-maintenance-2026-10-21.md",
+  "article:2026-10-22-joint-topic-37.md",
+  "article:2026-10-22-joint-tours-mypage-maintenance-2026-10.md",
+  "article:2026-10-22-joint-tours-s2-study-equal-magic-tips-2026.md",
+  "article:2026-10-22-million-glow-together-cd-2026.md",
+  "article:2026-10-22-million-mitsukoshi-osechi-2027.md",
+  "article:2026-10-22-million-yurakucho-pop-up-shop-2026.md",
+  "article:2026-10-22-shiny-hyakkiyako-pop-up-after-sales-2026.md",
+  "article:2026-10-22-shiny-mattari-hbtk-october-2026.md",
+  "article:2026-10-22-shiny-ops-roundup.md",
+  "article:2026-10-22-shiny-shhis-break-chain-2dmv-2026.md",
+  "article:2026-10-22-shiny-song-prism-dmm-maintenance-2026-10-21.md",
+  "article:2026-10-22-shiny-style-collection-wave2-2026.md",
+  "article:2026-10-22-shiny-web-comic-661-cat-2026.md",
+  "article:2026-10-22-sidem-renaissance-2026.md",
+  "paper"
+ ],
+ "checked": {
+  "article:2026-10-22-gaku-gakumas-dmm-maintenance-2026-10-21.md": "22282b3198b41632bedb0df44ef40c2dbf10d8ba7a86d6e3883be6a555d2933b",
+  "article:2026-10-22-dsva-valiv-cosmo-wake-up-my-music-short-2026.md": "0e67f47ca289059abcc537d4ee18bfd325fe2dcf06011e0dda4d0e5bb95ff1d4",
+  "article:2026-10-22-general-idolmaster-portal-maintenance-2026-10-22.md": "8481f0a1658e91731277b27028774a3ce1d4495953e381cb6e8ddbd85baf08a7",
+  "article:2026-10-22-joint-imas-portal-maintenance-2026-10-21.md": "e7a757c01a6644e0d39e13fb676155f744fb3cf90eb353354a60a5f10ad19c13",
+  "article:2026-10-22-cg-deresute-emergency-maintenance-endtime-2026-10-22.md": "31bb821eb8c6dba7c74a3ba45e5625221f7b798250b5a79bf5323b5cc07fff18",
+  "article:2026-10-22-cg-topic-012-2026.md": "8ea0c62cf9b963b1abecaa1d5b28aeb685ff5ed0e416699f6fbf792fc33f3f3b",
+  "article:2026-10-22-joint-topic-37.md": "e0c92c214333b6ee674d8be69cdcc5332563bd86e7d9f8e0ad43ed5f87556a34",
+  "article:2026-10-22-shiny-style-collection-wave2-2026.md": "9e117b8cce693406cf0ddb84308c9c168eeb6c2a720716da3d82c335a4abc493",
+  "article:2026-10-22-joint-imas-ch-members-radio-archive-2026-10.md": "039161d19397422f8ccd33ca4f529df872366851990c2b35cab139c26c2b85f9",
+  "article:2026-10-22-cg-cinderella-15th-orchestra-concert.md": "be4da5fe8a38e493c4791cb714dc0ee1c84587b10621233710ddb82b3224268d",
+  "article:2026-10-22-million-yurakucho-pop-up-shop-2026.md": "516be6af45384fad6af97c2ea9d8799d3e55fa34b8fac1f662a09dbf34b87d60",
+  "article:2026-10-22-dsva-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026.md": "f880bb4ef4062085cf5390e92ee3eb67fd09cbf9f7501f3abf46a595c2f40f79",
+  "article:2026-10-22-shiny-song-prism-dmm-maintenance-2026-10-21.md": "7f992e90188ccfeb1259bcfeb910cef885b22105271f8b224068f8b831106e23",
+  "article:2026-10-22-gaku-contemporary-dance-2m-2026.md": "798db4c91378351dcdc11a69ac43d5513139a9b8711dba55592d0c4e1c19943f",
+  "article:2026-10-22-shiny-ops-roundup.md": "2d6e413e4c3387cd9b4ea40103c8260fd6e562fd2ba8548cae15b72de90f86b0",
+  "article:2026-10-22-million-glow-together-cd-2026.md": "e4bf403f4166e2618c5238f51d6df32805247a92173321f2311c8f8605ed0470",
+  "article:2026-10-22-shiny-shhis-break-chain-2dmv-2026.md": "31ffd2f508ad0bd603a3438628094dab0cbb3c5c77126f23cf93ad3ee9866ed1",
+  "article:2026-10-22-cg-cinderella-popup-shop-after-sales-2026.md": "76d38c248c0b9b1e60c9468b921ea1566662bfee37f42df1a7891b136ad7388c",
+  "article:2026-10-22-gaku-miracle-rerun-gacha-2026.md": "21e9cce83a2cba9caafab24d815d0e50bce39a640f79cf36033f40b4d067317c",
+  "article:2026-10-22-joint-tours-s2-study-equal-magic-tips-2026.md": "020b5b400f7142b1f734644d1f5dada2fe233804467d3d9647ee69ea50c6f371",
+  "article:2026-10-22-gaku-hatsuboshi-radio-guests-20261028.md": "6d32f7c8c573a0d5196b72aa088fe55960e790fa3b460d49d2d12d768e891272",
+  "article:2026-10-22-gaku-gakumas-hedgehog-hot-water-bottle-2026.md": "87e298dcbbc5c772b8754f3206783a380b2226613187d2ec5b025e294ceb4886",
+  "article:2026-10-22-shiny-hyakkiyako-pop-up-after-sales-2026.md": "a6a17f6e30853ef5792813b5f8ef292b29666c2d5121625eb8794fb09a8d0911",
+  "article:2026-10-22-shiny-web-comic-661-cat-2026.md": "f622d4585c5072b84972216d6958604ed7bff7eb43474d162c2943a3b3f63e64",
+  "article:2026-10-22-dsva-valiv-bombanana-joint-stream-2026-10-22.md": "e0e10a0021a6a3fb0740e2b802831d387d7572df5ee11bcbc9cc4142f0640e81",
+  "article:2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md": "cb178d18e0724d2285db262c96dd4e07268e77d59296c76c849211e65259ac13",
+  "article:2026-10-22-gaku-hatsuboshi-classical-autumn-2026.md": "61e16e7975d6f8e6cf70852e44531e08c8c373123bd9048f349e82d23c8d9bd1",
+  "article:2026-10-22-gaku-gravure-solo-collection-vol1-2026.md": "fbeb694592b05e37fe23c1aa649feb597231804ec8658eea2b2ba37c145fb003",
+  "article:2026-10-22-joint-tours-mypage-maintenance-2026-10.md": "b18e46815a27e607db7eceed560db1d377b92b9d93bd682fb40ad8817a439092",
+  "article:2026-10-22-gaku-kiyoka-another-guaranteed-2026.md": "731f565a1cb5bd4e42dde74179147b0ec985848386d370e3bc8f2749fa93784e",
+  "article:2026-10-22-shiny-mattari-hbtk-october-2026.md": "4d00d3c1a7732e2052121cb45525472b7e9ddeed2a9526b0123e2f8050812773",
+  "article:2026-10-22-gaku-gakumas-mugyumin-collection-figure-vol1-2026.md": "12c1e8c2644aec6ba5683bb0c0714e1943d8fd86aee17b8a9e8909512ff4c7c0",
+  "article:2026-10-22-gaku-me-mv-1m-2026.md": "34f9d93fe1681b45e12bb32f0c0fa9315fdb54ad86bc9101ea330ad98ebe4878",
+  "paper": "0124d15d2f796264087811dbbb6b4a9d20cea85796f9a3f7e01b95aea3eb3d0e"
+ },
+ "hashes": {
+  "docs/_posts/2026-10-22-cg-cinderella-15th-orchestra-concert.md": "be4da5fe8a38e493c4791cb714dc0ee1c84587b10621233710ddb82b3224268d",
+  "docs/_posts/2026-10-22-cg-cinderella-popup-shop-after-sales-2026.md": "76d38c248c0b9b1e60c9468b921ea1566662bfee37f42df1a7891b136ad7388c",
+  "docs/_posts/2026-10-22-cg-deresute-emergency-maintenance-endtime-2026-10-22.md": "31bb821eb8c6dba7c74a3ba45e5625221f7b798250b5a79bf5323b5cc07fff18",
+  "docs/_posts/2026-10-22-cg-topic-012-2026.md": "8ea0c62cf9b963b1abecaa1d5b28aeb685ff5ed0e416699f6fbf792fc33f3f3b",
+  "docs/_posts/2026-10-22-dsva-valiv-bombanana-joint-stream-2026-10-22.md": "e0e10a0021a6a3fb0740e2b802831d387d7572df5ee11bcbc9cc4142f0640e81",
+  "docs/_posts/2026-10-22-dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21.md": "cb178d18e0724d2285db262c96dd4e07268e77d59296c76c849211e65259ac13",
+  "docs/_posts/2026-10-22-dsva-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026.md": "f880bb4ef4062085cf5390e92ee3eb67fd09cbf9f7501f3abf46a595c2f40f79",
+  "docs/_posts/2026-10-22-dsva-valiv-cosmo-wake-up-my-music-short-2026.md": "0fa3e9dd72e95d42e3f866d1fccd169fdace497de64e23fd4705379075bb0827",
+  "docs/_posts/2026-10-22-gaku-contemporary-dance-2m-2026.md": "798db4c91378351dcdc11a69ac43d5513139a9b8711dba55592d0c4e1c19943f",
+  "docs/_posts/2026-10-22-gaku-gakumas-dmm-maintenance-2026-10-21.md": "22282b3198b41632bedb0df44ef40c2dbf10d8ba7a86d6e3883be6a555d2933b",
+  "docs/_posts/2026-10-22-gaku-gakumas-hedgehog-hot-water-bottle-2026.md": "87e298dcbbc5c772b8754f3206783a380b2226613187d2ec5b025e294ceb4886",
+  "docs/_posts/2026-10-22-gaku-gakumas-mugyumin-collection-figure-vol1-2026.md": "12c1e8c2644aec6ba5683bb0c0714e1943d8fd86aee17b8a9e8909512ff4c7c0",
+  "docs/_posts/2026-10-22-gaku-gravure-solo-collection-vol1-2026.md": "fbeb694592b05e37fe23c1aa649feb597231804ec8658eea2b2ba37c145fb003",
+  "docs/_posts/2026-10-22-gaku-hatsuboshi-classical-autumn-2026.md": "61e16e7975d6f8e6cf70852e44531e08c8c373123bd9048f349e82d23c8d9bd1",
+  "docs/_posts/2026-10-22-gaku-hatsuboshi-radio-guests-20261028.md": "6d32f7c8c573a0d5196b72aa088fe55960e790fa3b460d49d2d12d768e891272",
+  "docs/_posts/2026-10-22-gaku-kiyoka-another-guaranteed-2026.md": "731f565a1cb5bd4e42dde74179147b0ec985848386d370e3bc8f2749fa93784e",
+  "docs/_posts/2026-10-22-gaku-me-mv-1m-2026.md": "34f9d93fe1681b45e12bb32f0c0fa9315fdb54ad86bc9101ea330ad98ebe4878",
+  "docs/_posts/2026-10-22-gaku-miracle-rerun-gacha-2026.md": "21e9cce83a2cba9caafab24d815d0e50bce39a640f79cf36033f40b4d067317c",
+  "docs/_posts/2026-10-22-general-idolmaster-portal-maintenance-2026-10-22.md": "8481f0a1658e91731277b27028774a3ce1d4495953e381cb6e8ddbd85baf08a7",
+  "docs/_posts/2026-10-22-joint-imas-ch-members-radio-archive-2026-10.md": "039161d19397422f8ccd33ca4f529df872366851990c2b35cab139c26c2b85f9",
+  "docs/_posts/2026-10-22-joint-imas-portal-maintenance-2026-10-21.md": "e7a757c01a6644e0d39e13fb676155f744fb3cf90eb353354a60a5f10ad19c13",
+  "docs/_posts/2026-10-22-joint-topic-37.md": "e0c92c214333b6ee674d8be69cdcc5332563bd86e7d9f8e0ad43ed5f87556a34",
+  "docs/_posts/2026-10-22-joint-tours-mypage-maintenance-2026-10.md": "b18e46815a27e607db7eceed560db1d377b92b9d93bd682fb40ad8817a439092",
+  "docs/_posts/2026-10-22-joint-tours-s2-study-equal-magic-tips-2026.md": "020b5b400f7142b1f734644d1f5dada2fe233804467d3d9647ee69ea50c6f371",
+  "docs/_posts/2026-10-22-million-glow-together-cd-2026.md": "e4bf403f4166e2618c5238f51d6df32805247a92173321f2311c8f8605ed0470",
+  "docs/_posts/2026-10-22-million-yurakucho-pop-up-shop-2026.md": "516be6af45384fad6af97c2ea9d8799d3e55fa34b8fac1f662a09dbf34b87d60",
+  "docs/_posts/2026-10-22-shiny-hyakkiyako-pop-up-after-sales-2026.md": "a6a17f6e30853ef5792813b5f8ef292b29666c2d5121625eb8794fb09a8d0911",
+  "docs/_posts/2026-10-22-shiny-mattari-hbtk-october-2026.md": "4d00d3c1a7732e2052121cb45525472b7e9ddeed2a9526b0123e2f8050812773",
+  "docs/_posts/2026-10-22-shiny-ops-roundup.md": "2d6e413e4c3387cd9b4ea40103c8260fd6e562fd2ba8548cae15b72de90f86b0",
+  "docs/_posts/2026-10-22-shiny-shhis-break-chain-2dmv-2026.md": "31ffd2f508ad0bd603a3438628094dab0cbb3c5c77126f23cf93ad3ee9866ed1",
+  "docs/_posts/2026-10-22-shiny-song-prism-dmm-maintenance-2026-10-21.md": "7f992e90188ccfeb1259bcfeb910cef885b22105271f8b224068f8b831106e23",
+  "docs/_posts/2026-10-22-shiny-style-collection-wave2-2026.md": "9e117b8cce693406cf0ddb84308c9c168eeb6c2a720716da3d82c335a4abc493",
+  "docs/_posts/2026-10-22-shiny-web-comic-661-cat-2026.md": "f622d4585c5072b84972216d6958604ed7bff7eb43474d162c2943a3b3f63e64",
+  "docs/_editions/2026-10-22.md": "44e29ff6cbaa3d80ea7705a6508156eff329dd6894127f5f1c9426a78fb6f145",
+  "metrics/stories-before-2026-10-22.yml": "15d1abb0aa5d7501755c4b2f838f926c49a5d0323b0cb668de6d127a3909636d"
+ },
+ "run": "20261022T030037.790582"
+}

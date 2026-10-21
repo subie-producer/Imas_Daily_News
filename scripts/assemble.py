@@ -1227,6 +1227,8 @@ def run(date: str, number: int | None = None, dry: bool = False, budget=None) ->
 
 
 def main() -> int:
+    from pipelib import exit_on_term
+    exit_on_term()      # SIGTERM でも、起動した組版のセッションを子孫ごと止めてから終わる
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", required=True)
     ap.add_argument("--number", type=int, default=None)

@@ -80,6 +80,7 @@ from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_t
                      job_lock, loads_strict, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, settled_drops,
                      tool_path, CLI_BLOCKED_EXIT, CliBlocked, cli_check, oncall_clis_blocked, scratch_dir)
+from pipelib import exit_on_term, run_group   # モデルのセッションは自前のグループで起動し、時間切れ・中断では道具ごと止める
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")
@@ -490,11 +491,12 @@ def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -
     short = prompt_file("oncall", name, prompt, base=cwd)
     tmp = scratch_dir("oncall-fix-tmp-")
     try:
-        r = subprocess.run(["claude", "-p", short, "--model", ONCALL_MODEL, "--dangerously-skip-permissions",
-                            "--json-schema", schema_file.read_text(encoding="utf-8"),
-                            "--max-budget-usd", ONCALL_MAX_BUDGET_USD],
-                           cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
-                           env=session_env(tmp))
+        # 自前のグループで起動し、時間切れ・中断(SIGTERM)では道具ごと止める。親だけを止めると、失敗を返したあとも道具が
+        # 作業ツリーへ書き続けた(監査指摘 2026-10-14)
+        r = run_group(["claude", "-p", short, "--model", ONCALL_MODEL, "--dangerously-skip-permissions",
+                       "--json-schema", schema_file.read_text(encoding="utf-8"),
+                       "--max-budget-usd", ONCALL_MAX_BUDGET_USD],
+                      timeout=timeout, cwd=cwd, env=session_env(tmp))
     except subprocess.TimeoutExpired as e:
         save_raw("oncall", name, *partial_output(e))      # 時間切れの回も、それまでの出力を残す
         raise
@@ -597,10 +599,9 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
         name = "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
         short = prompt_file("oncall", name, prompt, base=aw)
         try:
-            r = subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
-                                "-C", str(aw), "--output-schema", str(schema_file), "-o", str(out_path), short],
-                               cwd=aw, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
-                               env=session_env(tmp))
+            r = run_group(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
+                           "-C", str(aw), "--output-schema", str(schema_file), "-o", str(out_path), short],
+                          timeout=timeout, cwd=aw, env=session_env(tmp))
             so, se, code = r.stdout, r.stderr, r.returncode
         except subprocess.TimeoutExpired as e:
             (so, se), code = partial_output(e), None
@@ -812,9 +813,8 @@ def arm_backlog_exit(keys: list[str], date: str) -> None:
     既定の SIGTERM では atexit が走らないので、通常の終了(SystemExit)に変える(監査指摘)。
     SIGKILL などで報告できなくても、指摘は保管に残り翌朝また渡る。"""
     import atexit
-    import signal as _signal
     atexit.register(lambda: report_left_backlog(keys, date))
-    _signal.signal(_signal.SIGTERM, lambda *_: sys.exit(143))
+    exit_on_term()      # 起動したセッションを子孫ごと止めてから、通常の終了(SystemExit 143)にする
 
 
 def report_left_backlog(keys: list[str], date: str) -> None:
@@ -1326,25 +1326,29 @@ def ensure_pushed(branch: str, what: str, budget: int = 300) -> bool:
 
 
 def run_stage(cmd: list[str], log: Path, timeout: int) -> int:
-    """再実行する工程を走らせる。時間切れなら子(モデルのセッション)ごと落とす(親だけ落とすと子が作業ツリーを触り続ける)。"""
-    from pipelib import reap
+    """再実行する工程を走らせる。時間切れなら子(モデルのセッション)ごと落とす(親だけ落とすと子が作業ツリーを触り続ける)。
+    起動はモデル・道具と同じ start_group(自前のグループ・セッションの印・起動から控えるまでの信号の保留。SIGTERM の後始末の
+    一覧に載る)。起動の直後に中断されても工程を残さないよう、後始末は起動を含む範囲で行う(監査指摘 2026-10-14)。"""
+    from pipelib import LaunchFailed, finish_group, start_group, stop_groups
     become_subreaper()
+    p = None
     with log.open("a", encoding="utf-8") as f:
-        p = subprocess.Popen(cmd, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
-                             env={**os.environ, "ONCALL": "off", "IMAS_JOB_LOCK": "held"}, start_new_session=True)
         # 組版は執筆・校閲のセッションを別のセッション(プロセスグループ)で起動するので、親のグループを落としても残る。
         # 当番は subreaper なので、親を失った孫もこの process の子に付け替わる。**終わり方を問わず**(時間切れ・異常終了・
         # 正常終了・待機中の例外)、子孫が1つも残らなくなるまで、辿って落として刈り取るのを繰り返してから返す(写しを
         # 1回取るだけだと取ったあとに生まれた孫が、時間切れのときだけだと異常終了で残った孫が、控えへ戻した作業ツリーに
         # 書き込み、発行の clean 判定を壊す。監査指摘)
         try:
-            return p.wait(timeout=timeout)
-        except subprocess.TimeoutExpired:
-            reap(p)
-            return 124
+            p = start_group(cmd, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT,
+                            env={**os.environ, "ONCALL": "off", "IMAS_JOB_LOCK": "held"})
+            if isinstance(p, LaunchFailed):
+                f.write(p.error + "\n")
+                return 127
+            _, _, timed_out = finish_group(p, timeout)
+            return 124 if timed_out else p.returncode
         finally:
-            if p.poll() is None:
-                reap(p)
+            if p is not None:
+                stop_groups([p])
             kill_all_descendants()
 
 
@@ -1566,6 +1570,9 @@ def main() -> int:
     """当番の本体(_main)のあと、落とした記事を戻す当番(--recover)で組み直しをまだ試していなければ、いまのコードで1回試す。
     往復が承認されなかった・時間切れ・試行の上限・例外のどれで終わっても、戻すのを諦めない(編集長 2026-10-10
     「復帰保証までが Opus/Sol の仕事だ」)。直せなかったことと、戻せたかどうかは別に報告する。"""
+    # SIGTERM(unit の停止)でも、起動したセッション(当番・監査)を子孫ごと止めてから終わる。既定の SIGTERM は後始末を
+    # 走らせず、CLI と道具が当番の終了後も作業ツリーへ書いた(監査指摘 2026-10-14)。保管の指摘の当番は、このあと自前の報告付きに変える
+    exit_on_term()
     try:
         code = _main()
     except Exception as e:      # noqa: BLE001

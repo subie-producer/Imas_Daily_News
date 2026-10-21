@@ -53,7 +53,8 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      SETTLED_DROP_RULES, settled_drops,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
-                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked)
+                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked,
+                     FETCH_RECORD_ENV, fetched_urls)
 # モデルのセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
 from pipelib import LaunchFailed, finish_group, run_group, start_group, stop_groups
 
@@ -2301,6 +2302,36 @@ def _late_article(date: str, art: dict, outcomes: dict, aborted: list) -> None:
     DROP_LOG.setdefault(date, {})[art["slug"]] = (str(art.get("angle") or ""), "締切で未着手", outcomes[art["slug"]][4:])
 
 
+def fetch_record(date: str, slug: str) -> Path:
+    """記事ごとの、fetch_page.py が本文を取れたページの記録(pipelib.note_fetched。Git 管理外)。初稿・差し戻し・書き直しの
+    セッションが同じ記録に書き足す(書き直しは、初稿のセッションが読んだページの事実を verified_facts から写して使う)。"""
+    return ROOT / "metrics" / "work" / date / "fetched" / f"{slug}.jsonl"
+
+
+FETCH_RECORD_BROKEN: set[str] = set()     # 置き場を作れなかった記録のフォルダ(同じ障害を記事ごとに重ねて申告しない)
+
+
+def fetch_env(date: str, slug: str) -> dict:
+    """執筆・書き直しの子に渡す環境。子が走らせた fetch_page.py が、この記事の記録に書き足す。
+    置き場を作れなくても工程は止めない(例外を外へ出さない。2026-10-14 監査指摘: フォルダの作成の失敗で執筆ごと止まった)。
+    記録は空のまま検算へ進み(素材の外のページは根拠にできないので、差し戻し・元の稿のまま)、障害は異常として申告する"""
+    rec = fetch_record(date, slug)
+    try:
+        rec.parent.mkdir(parents=True, exist_ok=True)
+    except OSError as e:
+        if str(rec.parent) not in FETCH_RECORD_BROKEN:
+            FETCH_RECORD_BROKEN.add(str(rec.parent))
+            anomaly("compose", f"fetch_page.py の記録の置き場 {rec.parent} を作れない({type(e).__name__}: {str(e)[:120]})。"
+                               "執筆・書き直しは素材の外のページを根拠にできず、差し戻し・元の稿のままになる")
+    return {**os.environ, FETCH_RECORD_ENV: str(rec)}
+
+
+def draft_urls(fm: dict | None) -> set[str]:
+    """現在の稿の verified_facts・sources の url(書いたときに検算を通ったもの)。書き直しが verified_facts を写して使うとき、
+    初稿のセッションで読んだページを読み直させない。"""
+    return {str(x["url"]) for k in ("verified_facts", "sources") for x in (fm or {}).get(k) or [] if isinstance(x, dict) and x.get("url")}
+
+
 def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                    stories: dict, wave: int = 0,
                    reuse: bool = False) -> tuple[list[dict], list[str]]:
@@ -2385,8 +2416,10 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                 short = prompt_file(date, f"write-{art['slug']}-{tries}", prompt)
                 with open(log_of(out_path), "w", encoding="utf-8") as lf:
                     if not deadline_passed():       # 準備のあいだに締切を過ぎることもあるので、起動の直前にも確かめる
-                        # child_guard 越しに起動し、印は答えのファイル名(子ごとに一意)
-                        p = start_group(guarded(cmd + [short], out_path), cwd=ROOT, env=child_env(out_path.name),
+                        # child_guard 越しに起動し、印は答えのファイル名(子ごとに一意)。子の fetch_page.py が本文を取れたページは、
+                        # この記事の記録に残る(fetch_env。検算が根拠の URL と照らす)
+                        p = start_group(guarded(cmd + [short], out_path), cwd=ROOT,
+                                        env=child_env(out_path.name, fetch_env(date, art["slug"])),
                                         stdout=lf, stderr=subprocess.STDOUT)
                         procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, p))
                         tracker.add(p, out_path.name)
@@ -2451,7 +2484,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                     # 検算を status の分岐より**先に**掛ける(理由の無い見送りを素通りさせない。監査指摘)
                     try:
                         problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "",
-                                                          edition=date)
+                                                          edition=date, fetched=fetched_urls(fetch_record(date, art["slug"])))
                     except Exception as e:
                         # 中の要素の形が崩れた答え(null の段落など)で検算が例外になっても、号全体を止めない。
                         # 検算の不合格として差し戻しへ回す(監査指摘)
@@ -2840,8 +2873,10 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     if ans.get("status") != "decline" and old_fm and not event_date_targeted(issues, old_fm):
         ev = old_fm.get("event_date")
         ans = dict(ans, event_date=ev.isoformat() if hasattr(ev, "isoformat") else (str(ev) if ev else None))
+    # 根拠にできるページ: 素材と、この記事のセッション(初稿・書き直し)で fetch_page.py が本文を取れたページと、現在の稿の根拠のページ
+    fetched = fetched_urls(fetch_record(date, art["slug"])) | draft_urls(old_fm)
     try:
-        problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date)
+        problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date, fetched=fetched)
     except Exception as e:
         # 中の要素の形が崩れた答えで検算が例外になっても号全体を止めない。元の稿のまま(監査指摘)
         return "kept", f"答えの形が崩れていて検算できない({type(e).__name__}: {str(e)[:80]})。元の稿のまま"
@@ -2971,9 +3006,9 @@ def guarded_batch(date: str, kept_posts: dict[Path, bytes], who: str):
 CHILD_MARK = "IMAS_WRITER_RUN"
 
 
-def child_env(mark: str) -> dict:
-    """子に渡す環境: いまの環境に印(CHILD_MARK=mark)を足したもの。mark は子ごとに一意にする。"""
-    return dict(os.environ, **{CHILD_MARK: mark})
+def child_env(mark: str, base: dict | None = None) -> dict:
+    """子に渡す環境: base(既定はいまの環境。執筆・書き直しは fetch_env)に印(CHILD_MARK=mark)を足したもの。mark は子ごとに一意にする。"""
+    return dict(os.environ if base is None else base, **{CHILD_MARK: mark})
 
 
 def live_procs(pgid: int | None, mark: str = "") -> list[int]:
@@ -3245,12 +3280,13 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                     # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(執筆と同じ)
                     with open(log_of(Path(out_name)), "w", encoding="utf-8") as lf:
                         if not deadline_passed():       # 準備のあいだに締切を過ぎることもあるので、起動の直前にも確かめる
-                            # child_guard 越しに起動し、印は答えのファイル名(子ごとに一意)
+                            # child_guard 越しに起動し、印は答えのファイル名(子ごとに一意)。fetch_page.py の記録は記事ごと(fetch_env)
                             p = start_group(guarded(["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
                                                      "-c", "sandbox_workspace_write.network_access=true",
                                                      "--output-last-message", out_name, "--output-schema", str(schema_out), short],
                                                     Path(out_name)),
-                                            cwd=ROOT, env=child_env(Path(out_name).name), stdout=lf, stderr=subprocess.STDOUT)
+                                            cwd=ROOT, env=child_env(Path(out_name).name, fetch_env(date, art["slug"])),
+                                            stdout=lf, stderr=subprocess.STDOUT)
                             procs.append((art, path, fact_by_id, materials, issues, Path(out_name), p))
                             tracker.add(p, Path(out_name).name)
                             continue

@@ -5,10 +5,12 @@
 - 指摘の `quote` の記述ごとに、素材と出典に照らして次のどれかを選ぶ。`repair` は校閲の提案で、決めるのはあなた
   - 出典どおりに書き直す(`rewrite_claim`)。段落の fact_ids に根拠を付ける
   - 消す(`drop_claim`)。段落が空になるなら段落ごと消す
-  - 一次情報(または、公式の告知を取材・引用した報道)を `python3 scripts/fetch_page.py <url>` で読んで正しいと確かめ、残す。new_facts に読んだ url と事実を書き、根拠の id を付ける
-- `add_source`: 足りない出典を sources に加える。素材にある url か、読んで確かめた一次情報・報道の url(後者は new_facts にも書く)。指摘に url があれば、それを読んで加える
+  - 一次情報(または、公式の発表・ゲーム内のお知らせを報じた報道。告知文を引用していなくてよい)を `python3 scripts/fetch_page.py <url>` で読んで正しいと確かめ、残す。new_facts に読んだ url と事実を書き、根拠の id を付ける
+- `add_source`: 足りない出典を sources に加える。素材にある url か、fetch_page.py で読んで確かめた一次情報・報道の url(後者は new_facts にも書く)。指摘に url があれば、それを fetch_page.py で読んで加える
 - `drop_source`: 食い違う弱い出典を sources から外し、記事は強い出典に合わせる
 - `drop_article`: 記事として成立しないなら、status を decline にして decline_code と decline_detail を書く
+- ページは fetch_page.py で読む。Web 検索はページを探すのに使い、検索結果や fetch_page.py 以外の手段で読んだ内容は根拠にしない。
+  素材と現在の記事の外のページで fetch_page.py で本文を取れなかったものは、new_facts・sources に書かない
 - 指摘に無い箇所(見出し・他の段落・出典)は変えない。ただし指摘に応じるのに要る変更(区分・並びの誤りを直す組み直し、同じ誤りが別の段落にもある 等)はしてよい
 - 対応した指摘の issue_id を addressed_issue_ids に列挙する
 

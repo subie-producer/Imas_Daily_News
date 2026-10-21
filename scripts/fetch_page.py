@@ -17,6 +17,9 @@
 **既定の出力上限は大きく取る。**6000字にしていたとき、本文8,219字のページが
 末尾(出演者一覧・注意事項)ごと切れていた。切るくらいなら全部渡す。
 1ページの本文はたいてい数千字で、読ませても執筆1回ぶんの負担は小さい。
+
+本文を取れたページは、環境変数 IMAS_FETCH_RECORD の記録に残す(pipelib.note_fetched)。執筆が根拠にできるのは
+素材のページと、この記録にあるページだけ(検算 renderlib.check_output が見る。校閲もこのスクリプトだけで出典を読む)。
 """
 import argparse
 import json
@@ -27,10 +30,11 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import RenderFailed, extract_periods, html_to_text, needs_render, render_page
+from pipelib import RenderFailed, extract_periods, html_to_text, needs_render, note_fetched, render_page
 
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
 FIXED_PAGES_ENV = "IMAS_FETCH_PAGES"
+FINAL_URL: dict[str, str] = {}     # 頼んだ URL → リダイレクトの行き先(本文を取れたページの記録に両方を残す。執筆は行き先を出典に書くことがある)
 
 
 def fetch(url: str) -> str:
@@ -38,6 +42,7 @@ def fetch(url: str) -> str:
     with urllib.request.urlopen(req, timeout=25) as res:
         if res.status >= 400:
             return ""
+        FINAL_URL[url] = res.geturl()
         return html_to_text(res.read(400_000), res.headers.get_content_charset())
 
 
@@ -80,6 +85,8 @@ def main() -> int:
     if not text.strip():
         print("FETCH_FAILED: 本文を取得できませんでした" + (f"({render_error})" if render_error else ""))
         return 1
+    # 本文を取れたページを、執筆・書き直しのセッションの記録に残す(検算は、根拠の URL が素材かこの記録にあるかを見る)
+    note_fetched(args.url, FINAL_URL.get(args.url))
 
     periods = extract_periods(text)
     print(f"URL: {args.url}")

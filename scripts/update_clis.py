@@ -19,11 +19,12 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (ROOT, CODEX_WRITE_MODEL, JobLockTimeout, diagnose_anomalies, edition_date, job_lock, notify, now_jst,
-                     exit_on_term, run_group, tool_path)
+from pipelib import (ROOT, CODEX_WRITE_MODEL, JobLockTimeout, cli_check, diagnose_anomalies, edition_date, grok_session_reasons,
+                     job_lock, notify, now_jst, exit_on_term, run_group, tool_path)
 
 RECORD = ROOT / "metrics" / "cli-versions.json"
 QUESTION = "1+1は? 半角の数字だけを答えて"
@@ -61,10 +62,18 @@ def run(args: list[str], timeout: int = 600, cwd: Path | None = None) -> subproc
         return subprocess.CompletedProcess(args, 124, "", f"{type(e).__name__}: {e}")
 
 
+def timed_out(r: subprocess.CompletedProcess) -> bool:
+    """run が時間切れを置き換えた結果か(時間切れは認証切れ・利用上限の見分けに掛けない。監査指摘 r3)。"""
+    return r.returncode == 124 and (r.stderr or "").startswith("TimeoutExpired")
+
+
 def version(tool: str) -> str:
     r = run([tool, "--version"], timeout=60)
     m = re.search(r"\d+\.\d+\.\d+", r.stdout or "")
     return m.group(0) if m else f"(不明: {(r.stderr or r.stdout).strip()[-80:]})"
+
+
+LAST_SMOKE: dict[str, subprocess.CompletedProcess] = {}   # 道具ごとの最後の動作確認の実行(認証切れ・利用上限の見分けに使う)
 
 
 def smoke(tool: str, workdir: Path) -> tuple[bool, str]:
@@ -78,7 +87,14 @@ def smoke(tool: str, workdir: Path) -> tuple[bool, str]:
     else:
         pf = workdir / "grok-smoke.md"
         pf.write_text(QUESTION + "\n", encoding="utf-8")
+        t0 = time.time()
         r = run(["grok", "--prompt-file", str(pf), "--always-approve", "--max-turns", "1"], timeout=300, cwd=workdir)
+        # Grok は API に拒まれても終了コード 0 で、理由はセッション記録にだけ残る。動作確認の作業ディレクトリ(この回だけのもの)の
+        # セッションの失敗理由も、認証切れ・利用上限の見分けに渡す(監査指摘 r2)
+        if not timed_out(r):
+            r = subprocess.CompletedProcess(r.args, r.returncode, r.stdout,
+                                            "\n".join(x for x in (r.stderr or "", grok_session_reasons(workdir, t0)) if x))
+    LAST_SMOKE[tool] = r
     out = (r.stdout or "").strip()
     if r.returncode == 0 and out and out.splitlines()[-1].strip() == "2":
         return True, ""
@@ -114,12 +130,19 @@ def main() -> int:
                 up = run([tool, "update"], timeout=900)
             after = version(tool)
             ok, why = smoke(tool, Path(wd))
-            rows[tool] = {"before": before, "after": after, "update_exit": up.returncode if up else None, "works": ok, "why": why}
+            # 認証切れ・利用上限で答えなかったのは CLI の壊れではない: すぐ投稿し(ログインし直せば 02:00 の収集に間に合う)、
+            # 異常の台帳には積まない(当番も同じ CLI で止まる)
+            sr = LAST_SMOKE.get(tool)
+            blk = cli_check(tool, "update", f"{now_jst():%H:%M} の道具の動作確認",
+                            sr.returncode if sr and not timed_out(sr) else None,
+                            (sr.stdout if sr else ""), (sr.stderr if sr else ""), answered=ok)
+            rows[tool] = {"before": before, "after": after, "update_exit": up.returncode if up else None, "works": ok, "why": why,
+                          "blocked": bool(blk)}
             if before != after:
                 changed.append(f"{tool} {before} → {after}")
             if up is not None and up.returncode != 0:
                 failed.append(f"{tool} の更新が失敗(exit {up.returncode}): {(up.stderr or up.stdout or '').strip()[-240:]}")
-            if not ok:
+            if not ok and not blk:
                 failed.append(f"{tool} {after} が答えを返さない: {why}")
             print(f"{tool}: {before} → {after} / 動作 {'OK' if ok else 'NG'}", flush=True)
     try:

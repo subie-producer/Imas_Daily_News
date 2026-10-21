@@ -47,7 +47,9 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
-                     X_ANON_POST, x_post_author)
+                     X_ANON_POST, x_post_author, x_status_time, align_x_published_date,
+                     CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_blocked_reason, cli_check, grok_session_reasons,
+                     scratch_dir)
 from storylink import url_key
 # モデル・道具のセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
 from pipelib import STOPPING, exit_on_term, finish_group, next_slot_end, run_group, start_group, stop_groups
@@ -252,7 +254,7 @@ def watch_fetch(s: dict):
 
 def rendered_or_note(url: str, limit: float | None = None) -> tuple[str, str]:
     """描画を補いとして使う呼び出し側(facts 化の本文・裏取りの読み直し)向け: (HTML, 失敗の要点)。
-    失敗しても素の HTML や WebFetch で続けられるので止めないが、原因はログと呼び出し側の記録に残す"""
+    失敗しても素の HTML やセッション側の fetch_page.py で続けられるので止めないが、原因はログと呼び出し側の記録に残す"""
     try:
         return (fetch_rendered(url) if limit is None else fetch_rendered(url, limit=limit)) or "", ""
     except RenderFailed as e:
@@ -262,7 +264,7 @@ def rendered_or_note(url: str, limit: float | None = None) -> tuple[str, str]:
 
 def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     """facts 化に渡す新着ページの HTML: (HTML, 失敗の要点)。描画必須の観測先は描画し、それ以外は素の HTML を取る
-    (素の HTML で本文が空同然なら描画し直す)。取れなければ ("", 要点) で、呼び出し側は WebFetch に任せる。
+    (素の HTML で本文が空同然なら描画し直す)。取れなければ ("", 要点) で、呼び出し側はセッションの fetch_page.py に任せる。
     素の HTML のページも本文を渡す。WebFetch は要約しか返さず、写し(原文どおりの引用)が取れないので読めなかった扱いになる
     (2026-10-09: ランティスの SideM 特典告知2件)"""
     if csr:
@@ -454,10 +456,10 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
     # 次回へ回るのは、出力が読めなかったバッチ(やり直し)だけ
     from concurrent.futures import ThreadPoolExecutor
     batches = [new_items[i:i + WATCH_BATCH] for i in range(0, len(new_items), WATCH_BATCH)]
-    cands, attempted = [], set()
+    cands, attempted, blocked = [], set(), set()
     with ThreadPoolExecutor(max_workers=max(1, WATCH_PARALLEL)) as ex:
         try:
-            for got, tried in ex.map(lambda b: facts_batch(b, claude_call, state, oncall_rerun), batches):
+            for got, tried in ex.map(lambda b: facts_batch(b, claude_call, state, oncall_rerun, blocked), batches):
                 cands += got
                 attempted |= tried
         except BaseException:
@@ -466,12 +468,20 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
             ex.shutdown(wait=False, cancel_futures=True)
             raise
     return finish_watch(new_items, attempted, found_by_source, stats, state, cands,
-                        retried_given_up={it["url"] for it in state.get("_given_up", []) if isinstance(it, dict)} if oncall_rerun else set())
+                        retried_given_up={it["url"] for it in state.get("_given_up", []) if isinstance(it, dict)} if oncall_rerun else set(),
+                        blocked=blocked)
 
 
-def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool = False) -> tuple[list[dict], set[str]]:
-    """新着1バッチを facts 化する。戻りは (候補, 処理を試みた URL)。読めなかったページは、2回目で諦めたもの以外は試みたことにしない。"""
+def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool = False,
+                blocked: set | None = None) -> tuple[list[dict], set[str]]:
+    """新着1バッチを facts 化する。戻りは (候補, 処理を試みた URL)。読めなかったページは、2回目で諦めたもの以外は試みたことにしない。
+    モデルの CLI が認証切れ・利用上限で答えなかったバッチは、読めなかった回に数えず、全部を未処理の列に残す(URL を blocked に足す)。"""
     cands = []
+    if batch and claude_call and "claude" in CLI_BLOCKED:
+        # この収集で既に認証切れ・利用上限を見た: 本文を取りに行かず、そのまま未処理の列へ(下と同じ扱い)
+        if blocked is not None:
+            blocked |= {it["url"] for it in batch}
+        return [], set()
     if batch and claude_call:
         blobs = []
         for it in batch:
@@ -487,10 +497,18 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
         material = "\n\n".join(
             f"### {i + 1}. {b['url']}\n- title: {b['title'] or '(なし)'}\n- brand_hint: {b['brand_hint']}\n"
             + ("- 本文(取得済み):\n" + b["rendered_text"].strip() if b["rendered_text"].strip()
-               else f"- 本文: (取得できず{'(' + b['render_error'][:200] + ')' if b['render_error'] else ''}。URL を WebFetch で読むこと)")
+               else f"- 本文: (取得できず{'(' + b['render_error'][:200] + ')' if b['render_error'] else ''}。URL を fetch_page.py で読むこと)")
             for i, b in enumerate(blobs))
         prompt = render_prompt("watch-facts", RULES=COLLECT_RULES, ITEM=COLLECT_ITEM, MATERIAL=material)
-        got = DEADLINE_CUT if deadline_passed() or STOPPING.is_set() else claude_call(prompt, timeout=420)
+        try:
+            got = DEADLINE_CUT if deadline_passed() or STOPPING.is_set() else claude_call(prompt, timeout=420)
+        except CliBlocked:
+            # 認証切れ・利用上限(投稿は済み)。新着の失敗ではない: 回数(_unreadable)を進めず、諦めず、異常にもしない。
+            # 試みたことにしないので、全部が未処理の列(_pending)に残り、次の収集が一覧より先に読む
+            # (2026-10-20 18:30 の認証切れを「読めなかった1回目」と数え、20:29 の再実行で新着を諦めた)
+            if blocked is not None:
+                blocked |= {it["url"] for it in batch}
+            return [], set()
         if got is DEADLINE_CUT or STOPPING.is_set():
             # 収集の締切を過ぎたら facts 化を始めない・締切で打ち切った(本文の取得・依頼文の準備のあいだに過ぎることもあるので、
             # 起動の直前にも確かめる: claude_exec。取得の待ちは残り時間で切ってある: watch_limit)。工程を終えるところも同じ。
@@ -563,7 +581,8 @@ def watch_page_results(got, n: int) -> dict[int, list[dict]]:
 
 
 def finish_watch(new_items: list[dict], attempted: set[str], found_by_source: dict, stats: dict, state: dict,
-                 cands: list[dict], retried_given_up: set[str] = frozenset()) -> tuple[list[dict], dict]:
+                 cands: list[dict], retried_given_up: set[str] = frozenset(),
+                 blocked: set[str] = frozenset()) -> tuple[list[dict], dict]:
     # 状態の保存は facts 化の**後**。既知にするのは「今回処理を試みた URL」だけで、
     # 上限を超えて手つかずのまま残った新着は未読のままにする。
     #   - 巡回直後に全件を既知にすると、上限超過分は次回 new と判定されず、
@@ -600,8 +619,9 @@ def finish_watch(new_items: list[dict], attempted: set[str], found_by_source: di
     if deferred:
         print(f"定点観測: 新着 {len(new_items)}件のうち {len(attempted)}件を処理、"
               f"{len(deferred)}件を次回へ繰り越し", flush=True)
+    # 繰り越しのうち、モデルの CLI が認証切れ・利用上限で答えなかった分(取得の失敗ではない。異常にしない。投稿は済み)
     return cands, {"stats": stats, "new": len(new_items), "facted": len(cands),
-                   "deferred": len(deferred)}
+                   "deferred": len(deferred), "blocked": len([n for n in deferred if n["url"] in blocked])}
 
 
 # ---- A-2 / B 探索 --------------------------------------------------------------
@@ -625,6 +645,14 @@ def read_written(p: Path) -> str:
 STUCK_OUTPUTS: dict[Path, str] = {}
 
 
+GROK_BLOCKED_MARK = "CLI 停止"      # errs の印: Grok が認証切れ・利用上限で答えなかった面
+
+
+def grok_blocked(errs: dict, key: str) -> bool:
+    """その面の最後の試みが、Grok の認証切れ・利用上限で答えなかったか(調べの失敗に数えない)。"""
+    return str(errs.get(key, "")).startswith(GROK_BLOCKED_MARK)
+
+
 def grok_wrote(outdir: Path, q: dict) -> bool:
     """その面の Grok がまとめのファイルを残したか(「なし」と書いた面も残したことになる)。
     退けられなかった書きかけ(STUCK_OUTPUTS)は、その後の試みが正常に終わっても完了と読まない(監査指摘)。"""
@@ -644,12 +672,14 @@ def grok_basic(queries: list[dict], outdir: Path, grok_errs: dict) -> list[str]:
     (実測 2026-10-03: 学マスの面が打ち切られてファイルを書けず0件。公式Xの4コマ第174話を1日遅れで載せた)。
     未完了は終了状態と書き出しの両方で決める(書きかけを退けられずに残った面を完了とみなさない。監査指摘)。"""
     failed = run_grok_faces(queries, outdir, grok_errs)
-    missing = [q for q in queries if not grok_wrote(outdir, q) or q["key"] in failed]
+    # 認証切れ・利用上限で答えなかった面はやり直さない(同じ理由で止まるだけ)。失敗にも数えない(投稿は済み)
+    missing = [q for q in queries if (not grok_wrote(outdir, q) or q["key"] in failed) and not grok_blocked(grok_errs, q["key"])]
     if not missing:
         return []
     print(f"grok: まとめを残せなかった面 {', '.join(q['key'] for q in missing)} をやり直す", flush=True)
     failed = run_grok_faces(missing, outdir, grok_errs, retry=True)
-    still = [q["key"] for q in missing if not grok_wrote(outdir, q) or q["key"] in failed]
+    still = [q["key"] for q in missing
+             if (not grok_wrote(outdir, q) or q["key"] in failed) and not grok_blocked(grok_errs, q["key"])]
     # やり直しも時間切れ・異常終了した面は、途中までの書き出しがあればそれを使う(全部は失わない)。未完了は下で名指しする
     for k in still:
         if read_written(outdir / f"{k}.md").strip():
@@ -677,6 +707,11 @@ def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> set[str]:
     戻りは、正常に終わらなかった(時間切れ・非0終了)面のキー(書き出しの有無では判定しない。監査指摘)。"""
     failed: set[str] = set()
     for i in range(0, len(targets), GROK_WAVE):
+        if "grok" in CLI_BLOCKED:
+            # この収集で既に認証切れ・利用上限を見た: 残りの面は起動しない(同じ理由で止まるだけ。投稿は済み)
+            for q, _ in targets[i:]:
+                errs[q["key"]] = f"{GROK_BLOCKED_MARK}: この収集で既に止まっている"
+            break
         wave = targets[i:i + GROK_WAVE]
         if deadline_passed():
             # 収集の締切を過ぎたら、残りの面を起動しない(組版の開始を妨げない)。正常に終わらなかった面として、やり直し・名指しの異常へ
@@ -687,6 +722,7 @@ def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> set[str]:
         # **締切は起動時に絶対時刻で決め、残り時間で回収する。**1本ずつ GROK_TIMEOUT を与え直すと、応答しない面が並ぶほど
         # 待ちが足し算になる(3本で 3×GROK_TIMEOUT。監査指摘 2026-10-14)。収集の締切も越えない
         wave_end = time.time() + session_left(GROK_TIMEOUT)
+        wave_started = time.time()     # この波のセッションの記録だけを、この試行の失敗理由として読む(grok_session_reasons)
         procs, finished = [], []
         try:
             for q, pp in wave:
@@ -717,7 +753,19 @@ def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> set[str]:
             # エラー出力の全文と、この試みの書き出しを、基本の調べ・やり直し・深掘りの別に残す(要約は末尾 300 字だけ。
             # 書き出しは次の試み・次の収集で消える。監査指摘)。経過は Grok のセッション記録に残る
             save_raw(edition_date(), f"grok-{pp.stem}", "", err or "", pr.returncode, files={out.name: read_for_raw(out)})
-            if timed_out or pr.returncode != 0:
+            # 認証切れ・利用上限(Grok は API に拒まれても終了コード 0 で、理由はセッション記録にだけ残る)は、面の調べの失敗に
+            # 数えない(やり直さない・異常にしない。投稿は済み)。印を errs に残し、呼び側が grok_blocked で見分ける
+            # 書き出しがあっても、この試行のセッション記録は必ず読む(途中まで書いてから利用上限で止まり、終了 0 で終わることがある。
+            # 依頼文は見つけた投稿を先に書かせる。監査指摘 r8)。止まっていれば答えたことにしない
+            reasons = "" if timed_out else grok_session_reasons(ROOT, wave_started, str(out))
+            stopped = not timed_out and cli_blocked_reason("grok", err or "", reasons) is not None
+            answered = not timed_out and pr.returncode == 0 and bool(read_written(out).strip()) and not stopped
+            blk = cli_check("grok", "collect", f"{now_jst():%H:%M} の収集 X の調べ {pp.stem.removeprefix('prompt-')} 面",
+                            None if timed_out else pr.returncode, err or "", reasons, answered=answered)
+            if blk:
+                errs[q["key"]] = f"{GROK_BLOCKED_MARK}: {blk.get('detail', '')}"
+            if timed_out or pr.returncode != 0 or blk:
+                # 止まった試行の書き出しも途中のもの(退けて、keep_blocked_partials が読み直しの列へ回す)
                 failed.add(q["key"])
                 # 時間切れ・異常終了の回が書いた書き出し(一部の投稿だけ・途中の「なし」)は答えにしない。試みごとに別の
                 # <名前>.partial-<n>.md に退けて、面の書き出しが無い状態にする(基本の調べは「書けなかった面」としてやり直し・異常へ、
@@ -791,7 +839,7 @@ def parse_grok(out: str) -> list:
     return extract_json_array(out)
 
 
-def explore_workdir(key: str) -> Path:
+def explore_workdir(key: str, entry: str = "fetch_page.py") -> Path:
     """探索セッション専用の作業ディレクトリを作る(**リポジトリの外**)。
 
     探索は取得したページの中身を読む。そこに「このファイルを書き換えろ」と
@@ -804,14 +852,23 @@ def explore_workdir(key: str) -> Path:
     ここで止める。**探索に妙なページを踏ませない運用のほうが本筋**であり、
     セッション同士の相互汚染まで機械で塞ごうとすると、得るものに対して
     仕掛けが重くなりすぎる。
+
+    entry は入口の置き場(cwd からの相対)。出典の判定の依頼文は `scripts/fetch_page.py` で読ませる
+    (classify_sources.ask の codex 側。2026-10-21)。
     """
-    wd = Path(tempfile.mkdtemp(prefix=f"explore-{key}-"))
-    (wd / "fetch_page.py").write_text(
-        "#!/usr/bin/env python3\n"
-        "# 本体はリポジトリ側(読み取り専用)。ここは呼び出すだけの入口\n"
-        "import os, sys\n"
-        f"os.execv(sys.executable, [sys.executable, {str(ROOT / 'scripts' / 'fetch_page.py')!r}]\n"
-        "         + sys.argv[1:])\n", encoding="utf-8")
+    wd = scratch_dir(f"explore-{key}-")     # /tmp(tmpfs)に置かない。呼び側が消し、消し損ねは次に作るとき片付く
+    try:
+        (wd / entry).parent.mkdir(parents=True, exist_ok=True)
+        (wd / entry).write_text(
+            "#!/usr/bin/env python3\n"
+            "# 本体はリポジトリ側(読み取り専用)。ここは呼び出すだけの入口\n"
+            "import os, sys\n"
+            f"os.execv(sys.executable, [sys.executable, {str(ROOT / 'scripts' / 'fetch_page.py')!r}]\n"
+            "         + sys.argv[1:])\n", encoding="utf-8")
+    except BaseException:
+        # 入口を書けない(容量不足など)ときも作業ディレクトリを残さない。呼び出し側は wd を受け取れず片付けられない(監査指摘 2026-10-21)
+        shutil.rmtree(wd, ignore_errors=True)
+        raise
     return wd
 
 
@@ -822,7 +879,7 @@ def explore_argv(short: str) -> list[str]:
     動かない)。`sandbox_workspace_write.network_access` は名前のとおり
     workspace-write 用の設定なので、通信を使う以上 workspace-write で走らせる。
     ただし cwd は `explore_workdir()` が作るリポジトリ外のディレクトリなので、
-    書き込めるのはそこと `/tmp` に限られ、リポジトリには手が届かない。
+    書き込めるのはそこと一時ファイルの置き場(TMPDIR)に限られ、リポジトリには手が届かない。
     """
     return ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "workspace-write",
             # cwd が git リポジトリでないため、codex の作業前確認を外す
@@ -850,7 +907,10 @@ def claude_exec(prompt: str, timeout: int = 300):
              "--model", COLLECT_MODEL,
              # 指示と素材はファイルなので **Read が要る**。WebSearch/WebFetch だけに絞っていたら、ファイルを読めずに
              # 420 秒待って落ちた(実測 2026-09-17)
-             "--allowedTools", "Read,WebSearch,WebFetch",
+             # ページは執筆・校閲と同じ fetch_page.py で読ませ、WebFetch は外す。WebFetch は JS を描画せず、まとめサイトの
+             # 新着の一次ソース(公式ポータル)がタイトルだけに見えて unreadable にした(2026-10-21: imasnews765 ?p=32576)
+             "--allowedTools", "Read,WebSearch,Bash(python3 scripts/fetch_page.py:*)",
+             "--disallowedTools", "WebFetch",
              "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
             timeout=session_left(timeout), cwd=ROOT)
     except (subprocess.TimeoutExpired, OSError) as e:
@@ -863,6 +923,9 @@ def claude_exec(prompt: str, timeout: int = 300):
     # 生の出力を必ず残す(依頼文 metrics/work/<日付>/<name>.md と同じ名前。候補が出なかった理由を後から確かめるため。
     # 2026-10-04: まとめサイトの新着1件を失ったが出力が残っておらず、当番も原因を確定できなかった。当番の指摘 b39801ce34・8bdc37f36c)
     save_raw(edition_date(), name, r.stdout, r.stderr, r.returncode)
+    blocked = cli_check("claude", "collect", f"{now_jst():%H:%M} の収集 定点観測の facts 化", r.returncode, r.stdout, r.stderr)
+    if blocked:
+        raise CliBlocked(blocked)      # 読めなかった回ではない(facts_batch が数えずに未処理の列へ残す)
     if r.returncode != 0:
         # 異常終了の間際の出力は答えにしない(読めなかった扱い。既読にしない。監査指摘)
         print(f"定点観測: facts 化のセッションが異常終了(exit {r.returncode})。このバッチは既読にしない", flush=True)
@@ -913,8 +976,9 @@ def collect_health(watch_info, per_query: dict) -> list[str]:
     for sid, st in stats.items():
         if isinstance(st, dict) and st.get("error"):
             out.append(f"定点観測 {sid}: 一覧を読めなかった({st['error'][:80]})")
-    if isinstance(watch_info, dict) and watch_info.get("deferred"):
-        out.append(f"定点観測: 事実に起こせず次回へ回した新着 {watch_info['deferred']}件")
+    # モデルの CLI の認証切れ・利用上限で答えなかった分は取得の失敗に数えない(人には見つけたときに投稿済み。当番に回さない)
+    if isinstance(watch_info, dict) and watch_info.get("deferred", 0) - watch_info.get("blocked", 0) > 0:
+        out.append(f"定点観測: 事実に起こせず次回へ回した新着 {watch_info['deferred'] - watch_info.get('blocked', 0)}件")
     out += [f"探索 {k.split(':', 1)[1]}: 出力が読めない・打ち切られた" for k, v in per_query.items() if k.startswith("explore_failed:") and v]
     return out
 
@@ -1041,6 +1105,12 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
             if not text or re.fullmatch(r"(なし|見つからない)[。\s]*", text):
                 continue
             text = dedupe_posts(text)   # 公式アカウントの遡りのページの境目で重なった投稿を1つにする
+            text = with_jst_post_time(text)
+            if "codex" in CLI_BLOCKED:
+                # この収集で確かめ役の CLI が止まっている: 起動せず読み直しの列へ(下の止まった面と同じ扱い。投稿は済み)
+                ledger.setdefault("blocked", set()).add(q["key"])
+                keep_pending_posts(q["key"], text)
+                continue
             wd = explore_workdir(f"verify-{q['key']}{suffix}")
             (wd / "x-posts.md").write_text(text + "\n", encoding="utf-8")
             if not deadline_passed():
@@ -1067,8 +1137,18 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         save_raw(edition_date(), f"grok-verify-{q['key']}{suffix}", "", "収集の締切を過ぎたので起動しなかった" if late else "",
                  None if late else p.returncode,
                  files={n: read_for_raw(wd / n) for n in ("x-posts.md", "items.json", "posts.json", "deep.json", "session.log")})
+        # 認証切れ・利用上限で答えなかった面は、投稿の確かめの失敗(やり直し・喪失の異常)に数えない(投稿は済み。当番に回さない)
+        if not late and cli_check("codex", "collect", f"{now_jst():%H:%M} の収集 X の投稿の確かめ {q['key']} 面{suffix}",
+                                  p.returncode if in_time else None, read_for_raw(wd / "session.log") or ""):
+            ledger.setdefault("blocked", set()).add(q["key"])
+            keep_pending_posts(q["key"], text)      # 捨てずに読み直しの列へ(次の収集で確かめ直す)
+            shutil.rmtree(wd, ignore_errors=True)
+            continue
         # 時間切れ・異常終了のセッションが書いたファイルは答えにしない(全投稿を未処理としてやり直し・異常へ。監査指摘)
         got = read_json_list(wd / "items.json") if in_time and p.returncode == 0 else None
+        # 終わり方(通知・記録用)。異常終了を「締切内に終わった」と書くと、原因(落ちた)が見えない
+        ended = ("収集の締切を過ぎて起動しなかった" if late else "時間切れ" if not in_time
+                 else (f"異常終了(exit {p.returncode})" if p.returncode else "締切内に終わった"))
         # 投稿1件ずつの結果を、入力の投稿と突き合わせる。結果の無い・読めなかった投稿を黙って捨てない
         # (2026-10-06 の洗い出しで判明: 候補の配列だけを受けていたので、Luna が開けなかった・飛ばした投稿が記録なしに消えた。
         #  定点観測で新着を失ったのと同じ型)。候補そのものが読めなければ「候補にした」の申告も当てにならないので、全投稿が残り
@@ -1083,15 +1163,16 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
             again.append(q)
         elif left:
             # 2回目でも残った投稿は、申告で終えない(当番のなぜなぜへ)。どの投稿を失うかを最後の段のあとで名指しする
-            why = (f"{'候補の一覧が読めない' if got is None else '投稿ごとの結果に無い・読めなかった'}、"
-                   f"{'締切内に終わった' if in_time else ('収集の締切を過ぎて起動しなかった' if late else '時間切れ')}")
+            why = f"{'候補の一覧が読めない' if got is None else '投稿ごとの結果に無い・読めなかった'}、{ended}"
             ledger["lost"].setdefault(q["key"], []).extend((b, why) for b in left)
         raw_asks = read_json_list(wd / "deep.json") if in_time and p.returncode == 0 else None
-        if raw_asks is None and wants_deep:
+        # 候補の一覧も読めなかった回は、全投稿を -again でもう1回確かめるので、問いもそこで出し直される(失っていない)。
+        # 以前はここでも「深掘りの機会を失う」と通知していた(2026-10-21 02:19 の sidem 面: /tmp が満杯で Luna が exit 101 で
+        # 落ちたが、-again が問いを書き、深掘りも回っていた)
+        if raw_asks is None and wants_deep and not (got is None and not final):
             # 「問いなし([])」と「書けなかった」を分ける。原本の確かめを黙って失わない(監査指摘 r116)
             notify("collect", f"Grok の {q['key']} 面: X の原本でしか確かめられない問い(deep.json)が読めない"
-                              f"({'締切内に終わった' if in_time else ('収集の締切を過ぎて起動しなかった' if late else '時間切れ')})。"
-                              "深掘りの機会を失う", ok=False)
+                              f"({ended})。深掘りの機会を失う", ok=False)
         asks = [a for a in (raw_asks or []) if schema_ok(a, DEEP_ASK_SCHEMA) and a["question"].strip()]
         if wants_deep and raw_asks is not None and len(asks) < len(raw_asks):
             # 崩れた問いを「問いなし」にしない(深掘りの機会を黙って失わない。監査指摘)。正しい問いは使う
@@ -1113,8 +1194,53 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
 
 
 def lost_posts_ledger() -> dict:
-    """X の投稿の確かめの記録(全段で共有)。lost: 面 → [(2回確かめても残った投稿の塊, 理由)] / settled: どこかの段で済んだ投稿の鍵(post_key)。"""
-    return {"lost": {}, "settled": set()}
+    """X の投稿の確かめの記録(全段で共有)。lost: 面 → [(2回確かめても残った投稿の塊, 理由)] / settled: どこかの段で済んだ投稿の鍵(post_key)
+    / blocked: 確かめ役の CLI が認証切れ・利用上限で答えなかった面(投稿は読み直しの列 GROK_PENDING へ)。"""
+    return {"lost": {}, "settled": set(), "blocked": set()}
+
+
+# 確かめ役(Luna)が認証切れ・利用上限で答えなかった面の X の投稿(読み直しの列。Git 管理外)。Grok の調べは週の枠を使い、回す時刻も
+# 限られるので、確かめられなかった投稿を捨てずに次の収集で確かめ直す
+GROK_PENDING = Path("metrics") / "work" / "grok-pending"
+
+
+def keep_pending_posts(key: str, text: str) -> None:
+    """確かめられなかった面の投稿を、読み直しの列に足す(同じ投稿は次に読むとき dedupe_posts が1つにする)。"""
+    p = ROOT / GROK_PENDING / f"{key}.md"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with p.open("a", encoding="utf-8") as f:
+        f.write(text.strip() + "\n\n")
+
+
+def keep_blocked_partials(outdir: Path, keys, pattern: str) -> None:
+    """Grok が認証切れ・利用上限で止まる前に書いた途中の書き出し(退けた <pattern>)の投稿を、読み直しの列に残す
+    (止まった面は途中の書き出しを使うやり直しにも入らないので、そのままでは次の収集で .grok ごと消える。監査指摘 r5)。"""
+    for k in keys:
+        text = "\n\n".join(t for t in (read_written(p).strip() for p in sorted(outdir.glob(pattern.format(k=k))))
+                           if t and not re.fullmatch(r"(なし|見つからない)[。\s]*", t))
+        if post_blocks(text):
+            keep_pending_posts(k, text)
+
+
+def take_pending_posts(outdir: Path, keys: list[str]) -> list[Path]:
+    """読み直しの列の投稿を、その面の書き出し(<key>.md)へ足す(「なし」だけの書き出しは置き換える)。列のファイルは確かめが
+    終わるまで消さず .taken に退ける(呼び側が確かめのあとで消す。止まれば確かめ役がまた列に足す)。戻りは退けたファイル。"""
+    taken = []
+    for k in keys:
+        p = ROOT / GROK_PENDING / f"{k}.md"
+        t = p.with_suffix(".taken")
+        # 前の回が確かめの途中で落ちて残した .taken も読み直す(消すのは確かめ終えてから)
+        text = "\n\n".join(x for x in (read_written(t).strip(), read_written(p).strip()) if x)
+        if not text:
+            continue
+        out = outdir / f"{k}.md"
+        cur = read_written(out).strip()
+        out.write_text((text if not cur or re.fullmatch(r"(なし|見つからない)[。\s]*", cur) else cur + "\n\n" + text) + "\n",
+                       encoding="utf-8")
+        t.write_text(text + "\n", encoding="utf-8")
+        p.unlink(missing_ok=True)
+        taken.append(t)
+    return taken
 
 
 def report_lost_posts(ledger: dict) -> None:
@@ -1123,6 +1249,12 @@ def report_lost_posts(ledger: dict) -> None:
     複数の面で残っても(面どうしで同じアカウントを検索するので、同じ投稿が複数の面に書き出される)1行にし、所属の面を併記する
     (面ごとに数えると、同じ投稿の喪失を面の数だけ通知した。監査指摘 lost-post-cross-face)。"""
     rows: dict[str, list] = {}  # 投稿 → [表示, 面の並び, 理由の並び](最初に現れた順)
+    # 後の段(深掘りの確かめ)で確かめ役の CLI が認証切れ・利用上限で止まった面は、まだ確かめ終えていない: 残った投稿を失ったと
+    # 言わず、読み直しの列に残して次の収集で確かめ直す(そこでも済まなければ、そのとき名指しする。監査指摘 r3)
+    for key in sorted(set(ledger["lost"]) & set(ledger.get("blocked") or ())):
+        left = [b for b, _ in ledger["lost"].pop(key) if not (post_url(b) and post_key(post_url(b)) in ledger["settled"])]
+        if left:
+            keep_pending_posts(key, "\n\n".join(left))
     for key in sorted(ledger["lost"]):
         for b, why in ledger["lost"][key]:
             u = post_url(b)
@@ -1359,6 +1491,9 @@ def collect_explore(key: str, proc, out_f, err_f, deadline: float) -> tuple[list
             err = text
     err = (err or "") + note + cut
     save_raw(edition_date(), f"explore-{key}-{time.time_ns() % 10**6}", out, err, proc.returncode)   # 生の出力を必ず残す
+    # 認証切れ・利用上限は面の取得の失敗ではない(異常にしない。投稿は済み)。次の収集がまた探す
+    if not cut and cli_check("codex", "collect", f"{now_jst():%H:%M} の収集 探索 {key} 面", proc.returncode, out, err):
+        return [], (err or "") + "\n[CLI 停止]"
     from pipelib import extract_json_array_strict
     # 打ち切り・異常終了の間際の出力は答えにしない(途中までの候補を「全部」と読まない。監査指摘)
     got = extract_json_array_strict(out) if not cut and proc.returncode == 0 else None
@@ -1435,6 +1570,8 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
             per[f"explore:{key}"] = len(got)
             if "[出力が読めない]" in err or "[打ち切り]" in err:
                 per[f"explore_failed:{key}"] = 1     # 0件(正常な空振り)と取得の失敗を分ける(collect_health)
+            elif err.endswith("[CLI 停止]"):
+                per[f"explore_blocked:{key}"] = 1    # CLI の認証切れ・利用上限(取得の失敗に数えない)
             shutil.rmtree(wd, ignore_errors=True)
     finally:
         stop_groups([p for _, p, _, _, _ in explore_procs])
@@ -1456,6 +1593,9 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         grok_errs: dict[str, str] = {}
         grok_started = time.time()
         grok_basic(queries, outdir, grok_errs)
+        keep_blocked_partials(outdir, [q["key"] for q in queries if grok_blocked(grok_errs, q["key"])], "{k}.partial-*.md")
+        # 前の収集で確かめ役が止まって確かめられなかった投稿(読み直しの列)も、同じ面の書き出しに足して確かめる
+        taken = take_pending_posts(outdir, [q["key"] for q in queries])
         # Luna が面ごとに確かめて候補にする。X の原本でしか確かめられない問いは、予算を確かめて Grok に深掘りさせ、もう一度 Luna が確かめる
         # 投稿の喪失は、深掘りの確かめまで終えた最終結果で1度だけ通知する(当番の指摘 11fc3de74b)
         ledger = lost_posts_ledger()
@@ -1472,8 +1612,13 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                 # 選んだ問いの確かめを失う。名指しで異常にする(判定は終了状態と書き出しの両方。監査指摘)
                 deep_started = time.time()
                 failed = deep_dive_grok(queries, outdir, chosen, grok_errs)
+                # 深掘りの Grok が認証切れ・利用上限で止まった面は、まだ確かめ終えていない: 残った投稿を失ったと言わず、
+                # 読み直しの列に残す(report_lost_posts。監査指摘 r4)
+                ledger["blocked"] |= {k for k in chosen if grok_blocked(grok_errs, k)}
+                keep_blocked_partials(outdir, [k for k in chosen if grok_blocked(grok_errs, k)], "{k}-deep.partial-*.md")
                 spent1 = sum(grok_search_counts(deep_started).values())   # 1回目の実際の検索回数(指示は厳密には守られない)
-                lost = sorted(failed | {k for k in chosen if not read_written(outdir / f"{k}-deep.md").strip()})
+                lost = sorted(k for k in failed | {k for k in chosen if not read_written(outdir / f"{k}-deep.md").strip()}
+                              if not grok_blocked(grok_errs, k))
                 if lost:
                     notify("collect", "Grok の深掘りが時間切れ・異常終了し、X の原本の確かめを失った面: "
                                       + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost), ok=False)
@@ -1493,7 +1638,10 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                           f"{sum(len(v) for v in chosen2.values())}件を投げ直す(予算 {budget2}回)", flush=True)
                 if chosen2:
                     failed2 = deep_dive_grok(queries, outdir, chosen2, grok_errs, suffix="-deep2", retry=True)
-                    lost2 = sorted(failed2 | {k for k in chosen2 if not read_written(outdir / f"{k}-deep2.md").strip()})
+                    ledger["blocked"] |= {k for k in chosen2 if grok_blocked(grok_errs, k)}
+                    keep_blocked_partials(outdir, [k for k in chosen2 if grok_blocked(grok_errs, k)], "{k}-deep2.partial-*.md")
+                    lost2 = sorted(k for k in failed2 | {k for k in chosen2 if not read_written(outdir / f"{k}-deep2.md").strip()}
+                                   if not grok_blocked(grok_errs, k))
                     if lost2:
                         # 投げ直しの失敗も、1回目と同じく名指しで異常にする(黙って問いの確かめを失わない。監査指摘)
                         notify("collect", "Grok の深掘りの投げ直しが時間切れ・異常終了し、X の原本の確かめを失った面: "
@@ -1501,11 +1649,17 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                     more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen2], outdir, suffix="-deep2", ledger=ledger)
                     got += more
         report_lost_posts(ledger)
+        for t in taken:     # 読み直しの列は確かめ終えたら消す(止まった面は確かめ役が列に足し直している)
+            t.unlink(missing_ok=True)
         # 全面が正常に終わって明示的に「なし」と書いた(エラー出力も無い)なら、正常な空振りで異常ではない(監査指摘)
-        explicit_none = not grok_errs and all(
-            re.fullmatch(r"(なし|見つからない)[。\s]*", read_written(outdir / f"{q['key']}.md").strip()) for q in queries)
+        is_none = lambda k: re.fullmatch(r"(なし|見つからない)[。\s]*", read_written(outdir / f"{k}.md").strip())
+        explicit_none = not grok_errs and all(is_none(q["key"]) for q in queries)
+        # 調べか確かめの CLI が認証切れ・利用上限で答えなかった面(投稿は済み。確かめの投稿は読み直しの列にある)
+        stopped = {q["key"] for q in queries if grok_blocked(grok_errs, q["key"]) or q["key"] in ledger["blocked"]}
         if not got and explicit_none:
             print("grok 0件(全面が正常に終わり「なし」)", flush=True)
+        elif not got and stopped and all(q["key"] in stopped or is_none(q["key"]) for q in queries):
+            print(f"grok 0件(認証切れ・利用上限で答えなかった面 {', '.join(sorted(stopped))}。ほかは「なし」。投稿は済み)", flush=True)
         elif not got:
             print("grok 0件", flush=True)
             # 全面0件を黙って流さない(2026-10-02: CLI が古く API に 426 で拒まれ、9面すべて0件。記録は「grok 0件」だけで、
@@ -1524,6 +1678,10 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
             by_brand[b] = by_brand.get(b, 0) + 1
         for q in queries:
             per[f"grok:{q['key']}"] = by_brand.get(q["brand"], 0)
+            if q["key"] in stopped:
+                per[f"grok_blocked:{q['key']}"] = 1     # 認証切れ・利用上限(watch の全滅検知に数えない)
+            elif is_none(q["key"]) and q["key"] not in grok_errs:
+                per[f"grok_none:{q['key']}"] = 1        # 正常に終わって「なし」と書いた面(停止した面と混ざっても watch が全滅にしない)
         print(f"grok: {len(queries)}面を面別セッションで {len(got)}件(面別 {by_brand})", flush=True)
         # 週次上限を消費するのは X 検索の回数だけ。面ごとに実数を記録し、指示の2倍を超えた面は異常にする(依頼文の数字は厳密には守られない)
         searches = grok_search_counts(grok_started)
@@ -1535,6 +1693,23 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         if over:
             notify("collect", f"Grok(X 調査)の検索が指示(角度 {GROK_MAX_SEARCHES}回+公式の遡り {GROK_OFFICIAL_PAGES}回/面)の2倍を超えた面: "
                               f"{over}。週次の利用枠を余分に消費している", ok=False)
+    elif (ROOT / GROK_PENDING).is_dir() and any(p.suffix in (".md", ".taken") for p in (ROOT / GROK_PENDING).iterdir()):
+        # Grok を回さない回でも、前の収集で確かめ役が止まって確かめられなかった投稿は確かめる(週の検索枠は使わない。紙面を1日遅らせない)
+        outdir = ROOT / "metrics" / "work" / "grok-pending-run"
+        shutil.rmtree(outdir, ignore_errors=True)
+        outdir.mkdir(parents=True, exist_ok=True)
+        keys = [q["key"] for q in queries if any((ROOT / GROK_PENDING / f"{q['key']}{s}").exists() for s in (".md", ".taken"))]
+        taken = take_pending_posts(outdir, keys)
+        ledger = lost_posts_ledger()
+        got, _ = verify_grok_faces([q for q in queries if q["key"] in keys], outdir, suffix="", ledger=ledger)
+        report_lost_posts(ledger)
+        for t in taken:
+            t.unlink(missing_ok=True)
+        shutil.rmtree(outdir, ignore_errors=True)
+        for it in got:
+            it["_via"] = "grok"
+        items += got
+        print(f"grok: 読み直しの列の投稿 {len(keys)}面を確かめて {len(got)}件", flush=True)
 
     return items, per
 
@@ -1731,6 +1906,8 @@ def normalize(items: list[dict]) -> list[dict]:
                 v = (it.get(k) or "").strip()
                 if re.match(r"^\d{4}-\d{2}-\d{2}$", v):
                     c[k] = v
+            # X の投稿の掲載日は投稿 ID から日本時間で決める(モデルの申告は採らない。pipelib.align_x_published_date)
+            align_x_published_date(c)
             # 出典ページからの写し(verify が本文と照らして URL の取り違えを捕まえる)
             if isinstance(it.get("quote"), str) and it["quote"].strip():
                 c["quotes"] = [it["quote"].strip()[:200]]
@@ -1757,12 +1934,28 @@ STALE_DAYS = 14  # 収集窓は48〜72時間。これを大きく超えて古い
 
 
 def x_status_date(url: str) -> datetime.date | None:
-    """x.com/twitter.com の status ID(Snowflake)から投稿日を復元する(機械検証可能な鮮度情報)。"""
-    m = re.search(r"/status(?:es)?/(\d{15,20})", url)
-    if not m:
-        return None
-    ms = (int(m.group(1)) >> 22) + 1288834974657  # Twitter epoch
-    return datetime.datetime.fromtimestamp(ms / 1000, tz=JST).date()
+    """x.com/twitter.com の status ID(Snowflake)から投稿日(日本時間)を復元する(機械検証可能な鮮度情報)。"""
+    t = x_status_time(url)
+    return t.date() if t else None
+
+
+# Grok の書き出しの投稿に、コードが足す日本時間の投稿日時の行(grok-verify の依頼文がこの名前で指す)
+JST_POST_TIME = "投稿日時(日本時間・投稿 ID から)"
+
+
+def with_jst_post_time(text: str) -> str:
+    """Grok の書き出しの X の投稿ごとに、投稿 ID から復元した日本時間の投稿日時の行を url の行の次に足す。
+    2026-10-21号: Grok は `投稿日時` を GMT で書く(Tue, 20 Oct 2026 15:00:03 GMT)。10/21 0:00 JST の「本日は千鶴さんの誕生日」を、
+    確かめ役が 10/20 の出来事・掲載日として素材にした。すでに足してある投稿(やり直しの書き出し)には足さない。"""
+    lines = text.split("\n")
+    out = []
+    for i, line in enumerate(lines):
+        out.append(line)
+        m = POST_URL_LINE.match(line)
+        t = x_status_time(m.group(1)) if m and is_x(m.group(1)) else None
+        if t and not (i + 1 < len(lines) and JST_POST_TIME in lines[i + 1]):
+            out.append(f"- {JST_POST_TIME}: {t.strftime('%Y-%m-%d %H:%M')}")
+    return "\n".join(out)
 
 
 def check_stale(c: dict) -> str | None:
@@ -1907,6 +2100,10 @@ def merge_into_day_file(cands: list[dict], day: str) -> int:
             existing.append(c)
             by_url[c["url"]] = c
             added += 1
+    # 保存済みの候補(直す前に GMT の日付で入ったもの)も、X の投稿の掲載日を投稿 ID の日本時間に揃える(監査指摘: マージは
+    # published_date を引き継がず、再収集しても 10/20 のまま選定・執筆へ渡った)
+    for c in existing:
+        align_x_published_date(c)
     write_checked(p, json.dumps(existing, ensure_ascii=False, indent=2) + "\n")   # 書式(candidates.schema)で検めてから書く
     return added
 
@@ -2027,8 +2224,11 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
                 if "戻せない" in why:
                     notify("collect", f"{date}: 判定表の取引に失敗({why[:400]})。commit せずに終える。作業ツリーを確かめること", ok=False)
                     return 1
-                notify("collect", f"{date}: 判定表の更新〜紙面の付け直し〜lint で失敗({why[:400]})。判定表と記事を"
-                                  f"戻した(候補は残す)。次回の収集で再試行する", ok=False)
+                if why.startswith(CLI_STOPPED):
+                    print(f"{date}: 出典の判定は次回の収集でやり直す({why[:300]})", flush=True)   # 投稿は判定が済ませた
+                else:
+                    notify("collect", f"{date}: 判定表の更新〜紙面の付け直し〜lint で失敗({why[:400]})。判定表と記事を"
+                                      f"戻した(候補は残す)。次回の収集で再試行する", ok=False)
     if not args.no_git:
         _TERM["defer"] = True     # 確定の途中では SIGTERM で中断しない(受けたら確定のあとで終える)
         pushed = commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect")
@@ -2057,10 +2257,14 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
         print(f"新規0件({'/'.join(skipped)} を手動でスキップ中のため通知しない)", flush=True)
     # 当番の拾い直しで、読めないバッチが残った(=諦めずに繰り越した)場合は、直しが効いていない。
     # 読めた分と繰り越しは保存済み(既読にしていない)。成功として終えず、当番へ非0で返す(監査指摘)
-    if args.oncall_rerun and (watch_info.get("deferred", 0) if isinstance(watch_info, dict) else 0) > 0:
-        notify("collect", f"{date}: 当番の拾い直しでも facts 化できないバッチが {watch_info['deferred']}件 残った。"
+    if args.oncall_rerun and (watch_info.get("deferred", 0) - watch_info.get("blocked", 0) if isinstance(watch_info, dict) else 0) > 0:
+        notify("collect", f"{date}: 当番の拾い直しでも facts 化できないバッチが {watch_info['deferred'] - watch_info.get('blocked', 0)}件 残った。"
                           f"繰り越しは既読にせず保持した。直しが効いていない(原因が未確定の可能性)", ok=False)
         return 1
+    if args.oncall_rerun and isinstance(watch_info, dict) and watch_info.get("blocked"):
+        # 取り直しの途中でモデルの CLI が止まった(投稿は済み)。直しが効いていないのではないが、新着はまだ素材に無い
+        print(f"{date}: 取り直しの {watch_info['blocked']}件は CLI の停止で読めず、未処理の列に残した", flush=True)
+        return CLI_BLOCKED_EXIT
     # 当番の取り直しで、観測先の一覧がまた取れなかったら成功にしない(一覧から新着を見つけられないので deferred は0のまま。
     # 落とした新着がその号の素材に入っていない。監査指摘)
     list_failed = sorted(sid for sid, st in ((watch_info or {}).get("stats") or {}).items()

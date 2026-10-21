@@ -55,7 +55,8 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
                      collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked,
-                     FETCH_RECORD_ENV, fetched_urls)
+                     FETCH_RECORD_ENV, fetched_urls,
+                     align_x_published_date, CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_check)
 # モデルのセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
 from pipelib import LaunchFailed, finish_group, run_group, start_group, stop_groups
 
@@ -366,6 +367,9 @@ def load_window_candidates(date: str) -> dict:
                 items[c["id"]] = c
     for s in load_scheduled(date):
         items[s["id"]] = s
+    # X の投稿の掲載日は投稿 ID の日本時間(収集し直さずに組み直す号・続報予約の素材も。保存済みのファイルは書き換えない)
+    for c in items.values():
+        align_x_published_date(c)
     return items
 
 
@@ -1181,6 +1185,13 @@ def reassemble(date: str, number: int, plan: dict, written: list[dict]) -> None:
     run_assemble(date, number)
 
 
+def cli_stop(tool: str, where: str, rc, *texts) -> dict | None:
+    """組版のモデル CLI の1回の後に呼ぶ。認証切れ・利用上限で答えなかったなら、その理由(投稿は済み)。呼び側は失敗に数えず
+    (記事を落とさない・面を不採用にしない)、その回の並列の子を回収し終えてから CliBlocked で工程を止める。
+    号の締切までに CLI は戻らないことが多く、校閲も執筆も同じ CLI なので、続けても記事を落とすだけになる。"""
+    return cli_check(tool, "compose", where, rc, *texts)
+
+
 def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str:
     try:
         r = run_group(
@@ -1195,6 +1206,9 @@ def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> st
     # digest と台帳が半端なまま lint が16件赤くなった日がある(2026-08-31)。
     # 戻り値を見ないので呼び出し側は気づけない。ここで鳴らす
     save_raw(edition_date(), f"claude-run-{time.time_ns() % 10**9}", r.stdout, r.stderr, r.returncode)
+    blocked = cli_stop("claude", "Claude のセッション", r.returncode, r.stdout, r.stderr)
+    if blocked:
+        raise CliBlocked(blocked)
     out = (r.stdout or "") + (r.stderr or "")
     if "Exceeded USD budget" in out or r.returncode != 0:
         # 途中で終わったセッションの出力は答えにしない(異常終了の間際の出力を「直すものなし」などと読まない。監査指摘)。
@@ -1238,6 +1252,9 @@ def codex_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str
     out_path.unlink(missing_ok=True)
     # 最終メッセージに加え、進行ログ(標準出力・エラー)と終了状態も残す(時間切れの回も)
     save_raw(edition_date(), f"codex-run-{time.time_ns() % 10**9}", so, se, code, files={"last-message": text})
+    blocked = cli_stop("codex", "Codex のセッション", code, so, se)
+    if blocked:
+        raise CliBlocked(blocked)
     return text
 
 
@@ -1489,6 +1506,7 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
         # 起動は1面ずつ一覧に足し、例外・中断で抜けても finally で起動済みの面を止めて回収する。起動できない面は
         # その面だけの異常終了(start_group が返す LaunchFailed)として下で扱う(2本目の起動の失敗で例外になり、1本目が
         # 回収されずに残った。監査指摘 2026-10-14)
+        blocked = None
         try:
             for b in group:
                 out = ROOT / "metrics" / f"plan-{date}-{b}.json"
@@ -1509,6 +1527,11 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
                 # 時間切れは子も含めて落とし、時間切れまでに出ていた出力を上限つきで回収する(原因を追えるように)
                 so, se, timed_out = finish_group(p, remaining_seconds())
                 save_raw(date, f"plan-{b}", so, se, p.returncode)
+                # 認証切れ・利用上限はその面の計画の失敗ではない(不採用扱いにしない)。この回の子を全部回収してから止める
+                got_blocked = cli_stop("claude", f"選定 {b} 面", None if timed_out else p.returncode, so, se)
+                if got_blocked:
+                    blocked = got_blocked
+                    continue
                 try:
                     if timed_out or p.returncode != 0:
                         # 途中までの出力・異常終了の間際の出力は判定に使わない(その面の主題は取りこぼしとして拾い直す)
@@ -1545,6 +1568,8 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
                 print(f"選定: {b} 面 {len(by_brand[b])}主題 → 記事{n_a}本 / 不採用{n_d}件", flush=True)
         finally:
             stop_groups([p for _, _, p in procs])
+        if blocked:
+            raise CliBlocked(blocked)
     arts, dropped, seen = [], [], set()
     by_slug: dict[str, dict] = {}
     for b, r in results.items():
@@ -1632,6 +1657,9 @@ def pick_lead(date: str, plan: dict) -> None:
             save_raw(date, "lead", *partial_output(e))     # 時間切れの回も、それまでの出力を残す
             raise
         save_raw(date, "lead", r.stdout, r.stderr, r.returncode)
+        blocked = cli_stop("claude", "一面の選定", r.returncode, r.stdout, r.stderr)
+        if blocked:
+            raise CliBlocked(blocked)    # 機械のフォールバックで一面を決めて進めない(このあとの執筆・校閲も同じ CLI で止まる)
         if r.returncode != 0:
             raise RuntimeError(f"exit {r.returncode}")
         text = (r.stdout or "").strip()
@@ -1724,6 +1752,9 @@ def replan_missing(date: str, plan: dict, by_brand: dict, cands: dict,
     # 答えのファイルを書かずに終わったときに理由を追えるよう、標準出力・エラー・答えのファイルを残す
     save_raw(date, "plan-missing", so, se, code,
              files={"answer": read_for_raw(out)})
+    blocked = cli_stop("claude", "取りこぼしの拾い直し", code, so, se)
+    if blocked:
+        raise CliBlocked(blocked)
     try:
         # 採るのは正常に終わったセッションの答えだけ(時間切れの間際に書かれた不採用で主題を消さない)。
         # 3つの欄は、あれば配列(単一の object などは読めない答え。矛盾の検査ができない)。重複キーも読めない(監査指摘)
@@ -2446,11 +2477,21 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                 w[3].unlink(missing_ok=True)
                 take_log(w[3])
             raise FileNotFoundError(f"執筆の子の CLI を起動できない: {', '.join(cannot)}")
+        blocked = None
         for art, src, prompt, out_path, fact_by_id, materials, tries, p, se, timed_out in waited:
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             out_path.unlink(missing_ok=True)
             # 進行ログに、起動できなかった理由・時間切れの印(finish_group の標準エラー)も添える
-            save_raw(date, f"write-{art['slug']}-{tries}", "", take_log(out_path) + se, p.returncode, files={"last-message": out})
+            log = take_log(out_path) + se
+            save_raw(date, f"write-{art['slug']}-{tries}", "", log, p.returncode, files={"last-message": out})
+            # 認証切れ・利用上限は記事の失敗ではない: 読めなかった回(unreadable)にも差し戻しにも数えず、落とさない。
+            # この回の子を全部回収してから工程を止める(記事は組み直しでそのまま書かれる)
+            got_blocked = cli_stop("codex", f"執筆 {art['slug']}({tries + 1}回目の依頼)", None if timed_out else p.returncode, log, out)
+            if got_blocked:
+                blocked = got_blocked
+                if STRUCTURED_WRITE:     # 書きかけを残さない(組み直しは「ファイルがある記事」を書けたとみなす)
+                    (ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md").unlink(missing_ok=True)
+                continue
             target = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
             if STRUCTURED_WRITE:
                 # 判断と文章を JSON で受け、検算して、コードがファイルを作る(renderlib)。
@@ -2534,6 +2575,8 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                     bad.unlink()
             else:
                 written.append(art)
+        if blocked:
+            raise CliBlocked(blocked)
     return written, aborted
 
 
@@ -2579,11 +2622,14 @@ def run_parallel(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[
     (以前は起動しっぱなしで、失敗しても成功したように見えていた=監査指摘)。
     """
     errs: dict[str, str] = {}
+    blocked: list[CliBlocked] = []
 
     def wrap(name, fn):
         def run():
             try:
                 fn()
+            except CliBlocked as e:     # モデル CLI の認証切れ・利用上限: 工程の失敗ではない。全部を回収してから親で止める
+                blocked.append(e)
             except Exception as e:
                 traceback.print_exc()
                 errs[name] = f"{type(e).__name__}: {e}"
@@ -2596,6 +2642,12 @@ def run_parallel(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[
         t.join(timeout=timeout)
         if t.is_alive():
             errs[n] = "時間切れ(スレッドが終わっていない)"
+    if blocked:
+        raise blocked[0]
+    if errs and CLI_BLOCKED:
+        # 失敗したスレッドの中で CLI の停止を見たのに、ふつうの失敗として上がってきた(中の並列が先の失敗で停止を隠した等。
+        # 監査指摘 r6)。停止として止める(失敗の工程として先へ進まない)
+        raise CliBlocked(next(iter(CLI_BLOCKED.values())))
     return [f"{n}: {why}" for n, why in errs.items()]
 
 
@@ -3330,10 +3382,17 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                 w[5].unlink(missing_ok=True)
                 take_log(w[5])
             raise FileNotFoundError(f"書き直しの子の CLI を起動できない: {', '.join(cannot)}")
+        blocked = None
         for art, path, fact_by_id, materials, issues, out_path, p, se, timed_out in waited:
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             out_path.unlink(missing_ok=True)
-            save_raw(date, f"revise-{art['slug']}", "", take_log(out_path) + se, p.returncode, files={"last-message": out})
+            log = take_log(out_path) + se
+            save_raw(date, f"revise-{art['slug']}", "", log, p.returncode, files={"last-message": out})
+            # 認証切れ・利用上限は書き直しの失敗ではない(読めなかったと数えない)。この回を回収し終えてから止める
+            got_blocked = cli_stop("codex", f"書き直し {art['slug']}", None if timed_out else p.returncode, log, out)
+            if got_blocked:
+                blocked = got_blocked
+                continue
             try:
                 # 採るのは正常に終わったセッションの、schema どおりの答えだけ(時間切れの間際に書かれた見送りで
                 # 既存の記事を消さない・{} の理由を理由と認めない。執筆と同じ。監査指摘)
@@ -3363,6 +3422,8 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
                 n_dropped += 1
             elif outcome == "fixed":
                 n_fixed += 1
+        if blocked:
+            raise CliBlocked(blocked)
     print(f"校閲の指摘で執筆側が {n_fixed}本を書き直し、{n_dropped}本を落とした", flush=True)
     return results
 
@@ -3380,6 +3441,7 @@ def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
                  "書いてあるか、candidates の facts にその事実の出典 URL があるなら、それを sources に"
                  "足してください(label は出典元表記「告知タイトル」(日付) の形)。記述を削って逃げないこと。\n"
                  "修正できない(出典に無い事実で、消すしかない)なら、その記述を削ってください。\n"
+                 "出典のページを開くときは `python3 scripts/fetch_page.py <url>` で読んでください(WebFetch は使えません)。\n"
                  "**出典同士が食い違っているなら、公式・当事者の記述に合わせ、食い違う弱いほうの出典を "
                  "sources から外してください。**記事を弱い出典に合わせて書き換えてはいけません"
                  "(実測 2026-09-07: 公式と電撃が『開場11時』、ファミ通だけ『12時』。記事は正しかったのに、"
@@ -3396,21 +3458,29 @@ def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
     for i in range(0, len(jobs), COMPOSE_WAVE):
         procs = []
         # 自前のグループで起動し、時間切れ・中断では道具ごと止める(親だけ kill すると道具が記事を書き続ける)
+        blocked = None
         try:
             for f, prompt in jobs[i:i + COMPOSE_WAVE]:
                 short = None if deadline_passed() else prompt_file(date, "fix-" + Path(f).stem, prompt)
                 if short is None or deadline_passed():      # 準備のあいだに締切を過ぎることもあるので、起動の直前にも確かめる
                     print(f"記事の修正 {Path(f).name}: 締切を過ぎたので始めない", flush=True)
                     continue
-                procs.append(start_group(
+                procs.append((f, start_group(
                     ["claude", "-p", short, "--model", REVIEW_MODEL,
                      "--dangerously-skip-permissions",
+                     # 出典は執筆・校閲と同じ fetch_page.py で読ませる(WebFetch は JS を描画しない。2026-10-21)
+                     "--disallowedTools", "WebFetch",
                      "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                    cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL))
-            for p in procs:
-                finish_group(p, remaining_seconds())
+                    # 出力は認証切れ・利用上限を見分けるためだけに受ける(答えは記事のファイル)
+                    cwd=ROOT)))
+            for f, p in procs:
+                so, se, timed_out = finish_group(p, remaining_seconds())
+                if not timed_out:
+                    blocked = cli_stop("claude", f"校閲の指摘の修正 {Path(f).name}", p.returncode, so, se) or blocked
         finally:
-            stop_groups(procs)
+            stop_groups([p for _, p in procs])
+        if blocked:
+            raise CliBlocked(blocked)
     # **何も変えなかった修正セッションを見えるようにする。**同じ指摘が次の巡にも
     # そのまま出て、最後に記事ごと落ちる。黙って通り過ぎると誰も気づけない
     untouched = [f for f, _ in jobs if digest(f) == before[f]]
@@ -3596,6 +3666,10 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
         # 時間切れは子(道具)ごと止め、それまでの出力も残す(判定には使わない)
         so, se, timed_out = finish_group(p, remaining_seconds())
         save_raw(date, f"review-r{round_no}-{where}", so, se, p.returncode)
+        # 認証切れ・利用上限は担当の失敗ではない(やり直し・「校閲できなかった記事は載せない」に数えない)。この回を回収し終えてから止める
+        blocked = cli_stop("claude", f"校閲 {round_no}巡目 {where}", None if timed_out else p.returncode, so, se)
+        if blocked:
+            return {"verdict": "error", "error": "CLI 停止", "blocked": blocked, "blockers": [], "comments": []}
         # 採るのは正常に終わったセッションの答えだけ(異常終了の間際に出た approve で校閲済みにしない。監査指摘)
         if timed_out or p.returncode != 0:
             why = "時間切れ" if timed_out else f"exit {p.returncode}: {(se or so or '')[-200:].strip()}"
@@ -3640,7 +3714,7 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     late = "締切を過ぎたので起動しなかった"
     retry: list[tuple[str, str, str]] = []
     for i in range(0, len(jobs), COMPOSE_WAVE):
-        procs = []
+        procs, rs = [], []
         try:
             for what, prompt, where, scope in jobs[i:i + COMPOSE_WAVE]:
                 p = spawn(prompt)
@@ -3648,18 +3722,22 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                     failed.append((scope, late))
                     continue
                 procs.append((scope, where, prompt, p))
-            for scope, where, prompt, p in procs:
-                r = collect(p, where)
-                if r.get("verdict") != "error":
-                    absorb(scope, where, r)
-                elif any(q.lower() in str(r.get("error", "")).lower() for q in QUOTA):
-                    failed.append((scope, r.get("error", "")))
-                else:
-                    retry.append((scope, where, prompt))
+            rs = [(scope, where, prompt, collect(p, where)) for scope, where, prompt, p in procs]
         finally:
             stop_groups([p for *_, p in procs])
+        # 認証切れ・利用上限: この回の子を全部回収し終えてから工程を止める(組 U)
+        stop = [r["blocked"] for *_, r in rs if r.get("blocked")]
+        if stop:
+            raise CliBlocked(stop[0])
+        for scope, where, prompt, r in rs:
+            if r.get("verdict") != "error":
+                absorb(scope, where, r)
+            elif any(q.lower() in str(r.get("error", "")).lower() for q in QUOTA):
+                failed.append((scope, r.get("error", "")))
+            else:
+                retry.append((scope, where, prompt))
     for i in range(0, len(retry), COMPOSE_WAVE):
-        procs = []
+        procs, rs = [], []
         try:
             for scope, where, prompt in retry[i:i + COMPOSE_WAVE]:
                 p = spawn(prompt)
@@ -3667,14 +3745,17 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
                     failed.append((scope, "やり直し: " + late))
                     continue
                 procs.append((scope, where, p))
-            for scope, where, p in procs:
-                r = collect(p, where)
-                if r.get("verdict") != "error":
-                    absorb(scope, where, r)
-                else:
-                    failed.append((scope, "2回とも: " + str(r.get("error", ""))[:60]))
+            rs = [(scope, where, collect(p, where)) for scope, where, p in procs]
         finally:
             stop_groups([p for *_, p in procs])
+        stop = [r["blocked"] for *_, r in rs if r.get("blocked")]
+        if stop:
+            raise CliBlocked(stop[0])
+        for scope, where, r in rs:
+            if r.get("verdict") != "error":
+                absorb(scope, where, r)
+            else:
+                failed.append((scope, "2回とも: " + str(r.get("error", ""))[:60]))
     # 引き継ぎは**セッションを走らせたあと**に決める。今回見た担当の指摘だけが
     # 差し替わり、見なかった担当と**動かなかった担当**は前回の指摘を引き継ぐ
     # (動かなかった担当を「見た」扱いにすると、前回のブロックが消えて approve になる)
@@ -3816,6 +3897,9 @@ def classify_post_sources(date: str, branch: str) -> bool:
             commit_and_push(branch, f"compose {date}: 出典の判定に失敗(当番へ)", "compose")
             escalate("compose", date, f"紙面の出典の判定で判定表と記事を戻せなかった: {why_cls[:300]}")
             return False
+        if why_cls.startswith(CLI_STOPPED) and CLI_BLOCKED:
+            # 判定のモデル(執筆・校閲と同じ CLI)が認証切れ・利用上限で答えない。判定の失敗ではない。投稿は判定が済ませた
+            raise CliBlocked(next(iter(CLI_BLOCKED.values())))
         notify("compose", f"{date}: 紙面の出典の判定で失敗({why_cls[:300]})。判定表と記事は戻した。未確認のまま先へ進む(翌朝の watch に出る)", ok=False)
     return True
 
@@ -4661,6 +4745,13 @@ if __name__ == "__main__":
                 escalate("compose", STARTED_DATE or edition_date(), f"SystemExit で停止: {e.code}")
             except Exception:
                 pass
+    except CliBlocked as e:
+        # モデル CLI が認証切れ・利用上限で答えない(投稿は見つけたときに済んでいる)。記事・面を失敗に数えずに止め、
+        # 書けた記事と計画は残す(ログインし直し・上限が戻ったあと `compose.py --reuse-plan` で、書けていない記事から組み直せる)。
+        # 当番には回さない(当番も同じ CLI で止まる。escalate も CLI_BLOCKED を見て呼ばない)
+        print(f"組版を止めた: {e}", flush=True)
+        _leave_tree_clean(f"CLI 停止: {e}"[:120])
+        code = CLI_BLOCKED_EXIT
     except Exception as e:
         notify_crash("compose", e)
         _leave_tree_clean(f"{type(e).__name__}: {e}")

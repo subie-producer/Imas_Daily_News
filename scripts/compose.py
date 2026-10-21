@@ -2912,6 +2912,20 @@ def event_date_targeted(issues: list[dict], old_fm: dict) -> bool:
     return False
 
 
+def carry_verified_facts(ans: dict, old_fm: dict) -> dict:
+    """書き直しが根拠 id で指したのに new_facts に書かなかった N を、現在の稿の verified_facts から同じ id・text・url で写す
+    (写すのはコード)。書き手は書き写しの指示があっても new_facts を空にして N を指し、「無い事実 id」で元の稿のまま戻された
+    (2026-10-22号: 公式の出典を足して R4・R5 に応じた三越おせち・佐久間まゆの稿と、ルネサンスの稿が戻され、3本とも校閲ブロックで落ちた)。
+    new_facts に同じ id があれば書き手のものを採る(写さない)"""
+    have = {str(f.get("id")) for f in ans.get("new_facts") or [] if isinstance(f, dict)}
+    used = {str(i) for k in ("title_fact_ids", "lede_fact_ids") for i in (ans.get(k) or [])}
+    used |= {str(i) for b in (ans.get("blocks") or []) if isinstance(b, dict) for i in (b.get("fact_ids") or [])}
+    carried = [{"id": str(f["id"]), "text": str(f.get("text") or ""), "url": str(f.get("url") or "")}
+               for f in old_fm.get("verified_facts") or []
+               if isinstance(f, dict) and str(f.get("id")) in used - have]
+    return dict(ans, new_facts=[*(ans.get("new_facts") or []), *carried]) if carried else ans
+
+
 def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, materials: list[dict],
                  issues: list[dict]) -> tuple[str, str]:
     """書き直しの答えを記事に反映する。戻りは ("fixed"|"dropped"|"kept", 説明)。
@@ -2929,6 +2943,8 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     # 根拠にできるページ: 素材と、この記事のセッション(初稿・書き直し)で fetch_page.py が本文を取れたページと、現在の稿の根拠のページ
     fetched = fetched_urls(fetch_record(date, art["slug"])) | draft_urls(old_fm)
     try:
+        if ans.get("status") != "decline" and old_fm:
+            ans = carry_verified_facts(ans, old_fm)
         problems = renderlib.check_output(ans, fact_by_id, materials, rank=art.get("rank") or "", edition=date, fetched=fetched)
     except Exception as e:
         # 中の要素の形が崩れた答えで検算が例外になっても号全体を止めない。元の稿のまま(監査指摘)

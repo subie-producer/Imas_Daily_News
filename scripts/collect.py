@@ -42,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, decode_html, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
-                     RenderFailed, render_page, candidate_misplaced, merge_candidate_facts,
+                     RenderFailed, render_page, candidate_misplaced, maintenance_redirect, merge_candidate_facts,
                      set_quiet, unbacked_facts,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
@@ -1153,18 +1153,29 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         # (2026-10-06 の洗い出しで判明: 候補の配列だけを受けていたので、Luna が開けなかった・飛ばした投稿が記録なしに消えた。
         #  定点観測で新着を失ったのと同じ型)。候補そのものが読めなければ「候補にした」の申告も当てにならないので、全投稿が残り
         left = (post_blocks(text) or [text]) if got is None else unaccounted_posts(text, read_json_list(wd / "posts.json"), got)
-        # 付け直し・正規化へ渡すのは、形を揃えた候補だけ(崩れた要素で収集全体を止めない。監査指摘)
-        items += repoint_to_post([s for s in (shape_item(x) for x in got or []) if s], text)
+        # 候補にするのは、投稿を済みと数えるのと同じ判定(candidate_usable)を通ったものだけ。崩れた候補を欄を落として候補にしながら
+        # 投稿は未処理と数えると、候補にした投稿を「失った」と通知する(2026-10-22 02:39 の gakuen 面)。崩れた候補の元の投稿は
+        # 未処理として確かめ直し(-again)へ回り、どの投稿にも結び付かない崩れた候補は、確かめ直せないのでここで名指しする
+        items += repoint_to_post([shape_item(x) for x in got or [] if candidate_usable(x)], text)
+        tied, stray = broken_items(text, got)
+        # 確かめ直し(-again)では、1回目に崩れた候補のために残した投稿も崩れの喪失として数える(確かめ直しの答えが空でも、
+        # 1回目の崩れた候補の中身は戻っていない。Sol 監査 r2)
+        tied |= ledger.setdefault("tied", {}).pop((q["key"], suffix.removesuffix("-again")), set()) if final else set()
+        ledger.setdefault("stray", []).extend((q["key"], u) for u in stray)
         left_keys = {post_key(post_url(b)) for b in left}
         ledger["settled"] |= {k for k in map(post_key, map(post_url, post_blocks(text))) if k and k not in left_keys}
         if left and not final:
             # 残った投稿だけを <key><suffix>-again.md に書き出し、もう1回だけ確かめさせる(下でまとめて)
             (outdir / f"{q['key']}{suffix}-again.md").write_text("\n\n".join(left) + "\n", encoding="utf-8")
             again.append(q)
+            ledger.setdefault("tied", {})[(q["key"], suffix)] = tied & left_keys
         elif left:
             # 2回目でも残った投稿は、申告で終えない(当番のなぜなぜへ)。どの投稿を失うかを最後の段のあとで名指しする
             why = f"{'候補の一覧が読めない' if got is None else '投稿ごとの結果に無い・読めなかった'}、{ended}"
-            ledger["lost"].setdefault(q["key"], []).extend((b, why) for b in left)
+            ledger["lost"].setdefault(q["key"], []).extend(
+                (b, f"候補の形が崩れていた、{ended}" if post_key(post_url(b)) in tied else why) for b in left)
+            # 崩れて候補にしなかった候補の中身は、ほかの段でこの投稿が済んでいても戻らない(その段の答えにしか無い)。済みで消さない
+            ledger.setdefault("broken", set()).update(k for k in map(post_key, map(post_url, left)) if k in tied)
         raw_asks = read_json_list(wd / "deep.json") if in_time and p.returncode == 0 else None
         # 候補の一覧も読めなかった回は、全投稿を -again でもう1回確かめるので、問いもそこで出し直される(失っていない)。
         # 以前はここでも「深掘りの機会を失う」と通知していた(2026-10-21 02:19 の sidem 面: /tmp が満杯で Luna が exit 101 で
@@ -1195,8 +1206,11 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
 
 def lost_posts_ledger() -> dict:
     """X の投稿の確かめの記録(全段で共有)。lost: 面 → [(2回確かめても残った投稿の塊, 理由)] / settled: どこかの段で済んだ投稿の鍵(post_key)
-    / blocked: 確かめ役の CLI が認証切れ・利用上限で答えなかった面(投稿は読み直しの列 GROK_PENDING へ)。"""
-    return {"lost": {}, "settled": set(), "blocked": set()}
+    / blocked: 確かめ役の CLI が認証切れ・利用上限で答えなかった面(投稿は読み直しの列 GROK_PENDING へ)
+    / broken: 形の崩れた候補を候補にしないまま確かめ直しでも直らなかった投稿の鍵(ほかの段で済んでいても、その中身は失っている)
+    / stray: [(面, 候補の url)] どの投稿にも結び付かない崩れた候補(確かめ直せない。投稿ではないので読み直しの列にも入れない)
+    / tied: (面, 段) → 崩れた候補のために確かめ直しへ回した投稿の鍵(確かめ直しの段へ引き継ぐ)。"""
+    return {"lost": {}, "settled": set(), "blocked": set(), "broken": set(), "stray": [], "tied": {}}
 
 
 # 確かめ役(Luna)が認証切れ・利用上限で答えなかった面の X の投稿(読み直しの列。Git 管理外)。Grok の調べは週の枠を使い、回す時刻も
@@ -1249,28 +1263,40 @@ def report_lost_posts(ledger: dict) -> None:
     複数の面で残っても(面どうしで同じアカウントを検索するので、同じ投稿が複数の面に書き出される)1行にし、所属の面を併記する
     (面ごとに数えると、同じ投稿の喪失を面の数だけ通知した。監査指摘 lost-post-cross-face)。"""
     rows: dict[str, list] = {}  # 投稿 → [表示, 面の並び, 理由の並び](最初に現れた順)
+    # 済んだ投稿は失っていない。ただし崩れた候補を候補にしなかった投稿(broken)は、ほかの段で済んでもその中身が戻らない
+    done = ledger["settled"] - (ledger.get("broken") or set())
     # 後の段(深掘りの確かめ)で確かめ役の CLI が認証切れ・利用上限で止まった面は、まだ確かめ終えていない: 残った投稿を失ったと
     # 言わず、読み直しの列に残して次の収集で確かめ直す(そこでも済まなければ、そのとき名指しする。監査指摘 r3)
     for key in sorted(set(ledger["lost"]) & set(ledger.get("blocked") or ())):
-        left = [b for b, _ in ledger["lost"].pop(key) if not (post_url(b) and post_key(post_url(b)) in ledger["settled"])]
+        left = [b for b, _ in ledger["lost"].pop(key) if not (post_url(b) and post_key(post_url(b)) in done)]
         if left:
             keep_pending_posts(key, "\n\n".join(left))
     for key in sorted(ledger["lost"]):
         for b, why in ledger["lost"][key]:
             u = post_url(b)
-            if u and post_key(u) in ledger["settled"]:
+            if u and post_key(u) in done:
                 continue
             row = rows.setdefault(post_key(u) or b, [u or "(投稿に分けられない書き出し) " + b[:80], [], []])
             for lst, v in ((row[1], key), (row[2], why)):
                 if v not in lst:
                     lst.append(v)
-    if not rows:
+    strays: dict[str, list] = {}    # 候補の url → 面の並び
+    for key, u in ledger.get("stray") or []:
+        if key not in strays.setdefault(u, []):
+            strays[u].append(key)
+    if not rows and not strays:
         return
     lines = [f"- {shown}(面: {', '.join(keys)}。{' / '.join(whys)})" for shown, keys, whys in rows.values()]
-    faces = sorted({k for _, keys, _ in rows.values() for k in keys})
-    notify("collect", f"Grok の {', '.join(faces)} 面: X の投稿 {len(lines)}件を、深掘りまで確かめても候補にも「事実なし」にもできなかった。"
-                      "この投稿の X の動きを失う:\n" + "\n".join(lines[:10])
-                      + (f"\n- ほか {len(lines) - 10}件" if len(lines) > 10 else ""), ok=False)
+    faces = sorted({k for _, keys, _ in rows.values() for k in keys} | {k for keys in strays.values() for k in keys})
+    msg = f"Grok の {', '.join(faces)} 面: "
+    if lines:
+        msg += (f"X の投稿 {len(lines)}件を、深掘りまで確かめても候補にも「事実なし」にもできなかった。この投稿の X の動きを失う:\n"
+                + "\n".join(lines[:10]) + (f"\n- ほか {len(lines) - 10}件" if len(lines) > 10 else ""))
+    if strays:
+        msg += (("\n" if lines else "") + f"確かめ役が書いた候補 {len(strays)}件の形が崩れていて、どの投稿にも結び付かない(確かめ直せない)。この候補の中身を失う:\n"
+                + "\n".join(f"- {u}(面: {', '.join(keys)})" for u, keys in list(strays.items())[:10])
+                + (f"\n- ほか {len(strays) - 10}件" if len(strays) > 10 else ""))
+    notify("collect", msg, ok=False)
 
 
 # 投稿の url の行。見本は `- url: …` だが、行頭の記号が抜けた・全角のコロンなどの崩れも投稿の区切りとして拾う
@@ -1372,11 +1398,30 @@ def unaccounted_posts(text: str, results, written: list) -> list[str]:
         if not schema_ok(r, POST_RESULT_SCHEMA):
             return False
         return (r["status"] == "none" and not r["item"].strip()) or (r["status"] == "extracted" and post_key(r["item"]) in items)
-    done = {u for u, rs in per_url.items() if len(rs) == 1 and settled(rs[0])}
+    # 形の崩れた候補は候補にしない(verify_grok_faces)。その候補の元の投稿(候補の url がその投稿か、投稿に貼られたリンク)は、
+    # 結果がほかの候補を指していても済みにしない(確かめ直しで候補にし直す。崩れた候補の中身を黙って捨てない)
+    done = {u for u, rs in per_url.items() if len(rs) == 1 and settled(rs[0])} - broken_items(text, written)[0]
     blocks = post_blocks(text)
     if not blocks:
         return [text] if text.strip() else []
     return [b for b in blocks if not post_url(b) or post_key(post_url(b)) not in done]     # url の無い塊は必ず未処理
+
+
+def broken_items(text: str, written) -> tuple[set[str], list[str]]:
+    """確かめ役が書いた候補のうち形の崩れたもの(candidate_usable でない)について、(結び付く投稿の鍵, どの投稿にも結び付かない候補の url)。
+    結び付きは形で決める: 候補の url がその投稿そのもの(post_key が同じ)か、その投稿に貼られたリンク(repoint_to_post と同じ結び付き)。"""
+    links = [(post_key(u), set(ls)) for u, ls in post_links(text)]
+    tied, stray = set(), []
+    for x in written if isinstance(written, list) else []:
+        if x is None or candidate_usable(x):
+            continue    # null は中身が無い。配列・文字列など dict でない要素は中身があり得るので、結び付かない崩れた候補として名指しする
+        u = x.get("url") if isinstance(x, dict) else None
+        hit = {k for k, ls in links if isinstance(u, str) and u.strip() and (k == post_key(u) or u in ls)}
+        if hit:
+            tied |= hit
+        else:
+            stray.append(u if isinstance(u, str) and u.strip() else f"(url の崩れた候補) {json.dumps(x, ensure_ascii=False)[:80]}")
+    return tied, stray
 
 
 def grok_week_usage(now_ts: float | None = None) -> int:
@@ -1718,7 +1763,9 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
 
 # 収集役が申告する kind は**種別の判定には使わない**(source_types.yml が決める)。
 # 申告を採っていたころ、攻略サイトを「公式」と申告した候補がそのまま紙面の
-# バッジになっていた。kind は収集役の見立てとして残すが、紙面には出ない
+# バッジになっていた。kind は候補に写さない(shape_item で落とし、正規化も使わない)ので、崩れていても中身は何も失わない。
+# だから形の検査(ITEM_SCHEMA)にも入れない(2026-10-22: Luna が kind にアイドル名の配列を入れ、候補にはなったのに
+# 投稿を「結果が無い」と数え、確かめ直しでも済まずに「失った」と通知した)
 
 
 def is_x(url: str) -> bool:
@@ -1791,7 +1838,7 @@ def load_idol_brands() -> dict:
         return {}
 
 
-ITEM_STR_KEYS = ("title", "brand", "kind", "url", "event_date", "published_date", "deadline", "dedup_key", "engagement", "quote", "_via")
+ITEM_STR_KEYS = ("title", "brand", "url", "event_date", "published_date", "deadline", "dedup_key", "engagement", "quote", "_via")
 
 
 def shape_item(it) -> dict | None:
@@ -1809,11 +1856,12 @@ def shape_item(it) -> dict | None:
 
 # モデルの出力の契約(prompts/collect-item.md ほか)の形。**処理済みにしてよいかの判定は、この schema で検める**
 # (手で欄を1つずつ足すと、日付の形・真偽値の番号・重複など崩れ方が尽きなかった。2026-10-06 の監査)。
-# 文字列の欄の null は「空」で何も失わないので許す。日付は YYYY-MM-DD か空
+# 文字列の欄の null は「空」で何も失わないので許す。日付は YYYY-MM-DD か空。
+# 検めるのは候補に写す欄(ITEM_STR_KEYS・facts・mentioned_idols)だけ。写さない欄(kind)は崩れても何も失わないので検めない
 _S = {"type": ["string", "null"]}
 _DATE = {"anyOf": [{"type": "null"}, {"type": "string", "pattern": r"^(\d{4}-\d{2}-\d{2})?$"}]}
 ITEM_SCHEMA = {"type": "object", "required": ["url", "facts"],
-               "properties": {"url": {"type": "string", "minLength": 1}, "title": _S, "brand": _S, "kind": _S,
+               "properties": {"url": {"type": "string", "minLength": 1}, "title": _S, "brand": _S,
                               "event_date": _DATE, "published_date": _DATE, "deadline": _DATE,
                               # 空白だけの事実は正規化で消える(事実なしで処理済みにしない。監査指摘)
                               "facts": {"type": "array", "items": {"type": "string", "pattern": r"\S"}, "minItems": 1},
@@ -2001,6 +2049,14 @@ def verify(cands: list[dict]) -> dict:
                     ok = res.status < 400
                     body = res.read(400_000) if ok else b""
                     cs = res.headers.get_content_charset()
+                    final = res.geturl()
+                # メンテナンス画面へ転送されたら、案内は出典の本文ではない。写しが無いのは URL の取り違えではなく、今は確かめられないだけ
+                # (failed にすると、メンテナンスのあいだに集めた公式の候補を使えなくする)
+                if ok and maintenance_redirect(c["url"], final):
+                    c["verify"] = "unconfirmed"
+                    c["verify_note"] = f"出典がメンテナンス中({final} へ転送)で、facts を本文で確かめられない"[:300]
+                    counts["unconfirmed"] += 1
+                    continue
                 if ok:
                     text = html_to_text(body, cs)
                     # 描画の失敗は素の本文で続けるが、原因は判定の記録に残す。捨てると、描画の時間切れで写しが見えなかったのを

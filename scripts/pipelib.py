@@ -1446,6 +1446,21 @@ def clean_url(raw) -> str | None:
 FETCH_RECORD_ENV = "IMAS_FETCH_RECORD"
 
 
+# サイト全体のメンテナンス画面(公式ポータルは告知の URL を /mainte/index.html へ転送する。2026-10-21〜22)
+MAINTENANCE_PATH = re.compile(r"/(?:mainte|maintenance)(?:[/._-]|$)", re.I)
+
+
+def maintenance_redirect(url: str, final: str | None) -> bool:
+    """頼んだページがメンテナンス画面へ転送されたか。転送先の本文はメンテナンスの案内で、頼んだページの中身ではない。
+    これを本文として読むと、収集時に本文で確かめた素材の facts を「出典と食い違う」とし、公式の出典を「別の話題のページ」として
+    記事を落とす(2026-10-22号: 公式ポータルのメンテナンスで見送り7本・校閲ブロック2本)"""
+    import urllib.parse
+    if not final or final == url:
+        return False
+    return (bool(MAINTENANCE_PATH.search(urllib.parse.urlsplit(final).path))
+            and not MAINTENANCE_PATH.search(urllib.parse.urlsplit(url).path))
+
+
 def note_fetched(url: str, final: str | None = None) -> None:
     """本文を取れたページを FETCH_RECORD_ENV の記録に書き足す(変数が無ければ何もしない)。書けなくても読み取りは止めない
     (stderr に出す。記録に無いページは検算が差し戻すので、黙って通ることはない)。"""

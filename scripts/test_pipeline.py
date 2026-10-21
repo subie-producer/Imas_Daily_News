@@ -1273,6 +1273,116 @@ def test_grok_deep_retry(tmp: Path):
     check(any("投げ直し" in m and "cg" in m for m in notes), f"投げ直しの失敗を知らせない: {notes}")
 
 
+def test_grok_verify_keeps_what_it_counts(tmp: Path):
+    """X の投稿の確かめで、候補にする判定と投稿を済みと数える判定が同じ(candidate_usable)。2026-10-22 02:39 の gakuen 面: 確かめ役が
+    kind にアイドル名の配列を入れた候補は、欄を落として候補になったのに投稿は「結果が無い」と数え、「失った」と通知した。
+    kind は候補に写さない欄なので崩れても済み。中身の欄(締切など)が崩れた候補は候補にせず、元の投稿を確かめ直す。
+    どの投稿にも結び付かない崩れた候補は名指しする。確かめ役・通知は差し替え、実際の verify_grok_faces を通す"""
+    import collect
+    base = {"title": "t", "brand": "gaku", "kind": "official", "event_date": "", "published_date": "2026-10-20", "deadline": "2026-10-30",
+            "facts": ["事実"], "quote": "q", "dedup_key": "k", "engagement": "中", "mentioned_idols": []}
+    p9, p1, goods = "https://x.com/gkmas_official/status/9", "https://x.com/gkmas_official/status/1", "https://example.com/goods"
+    posts = (f"### 1\n- url: {p9}\n- 本文: くじの告知\n- リンク: なし\n\n"
+             f"### 2\n- url: {p1}\n- 本文: グッズの告知\n- リンク:\n  - {goods}\n")
+
+    def run(first: list, again: list, tag: str, ledger=None, suffix: str = "", report: bool = False):
+        root = tmp / tag
+        root.mkdir(parents=True, exist_ok=True)
+        (root / f"gakuen{suffix}.md").write_text(posts, encoding="utf-8")
+        notes, passes = [], []
+        class VP:
+            pid = 0
+            returncode = 0
+            def wait(self, timeout=None): return 0
+            def poll(self): return 0
+            def communicate(self, timeout=None): return "", ""
+            def kill(self): pass
+        def fake_popen(args, cwd=None, **kw):
+            wd = Path(cwd)
+            text = (wd / "x-posts.md").read_text(encoding="utf-8")
+            passes.append([collect.post_url(b) for b in collect.post_blocks(text)])
+            # 候補は (元の投稿, 書く要素) の組。要素は dict でないこともある(崩れた答え)
+            answer = again if "-again" in wd.name else first
+            if answer is None:      # 何も答えない(候補も投稿ごとの結果も空)
+                for n in ("items.json", "posts.json", "deep.json"):
+                    (wd / n).write_text("[]", encoding="utf-8")
+                return VP()
+            its = [(p, x) for p, x in answer if any(p == collect.post_url(b) for b in collect.post_blocks(text))]
+            (wd / "items.json").write_text(json.dumps([x for _, x in its], ensure_ascii=False), encoding="utf-8")
+            res = {}
+            for p, x in its:
+                if isinstance(x, dict):
+                    res.setdefault(p, x["url"])
+            (wd / "posts.json").write_text(json.dumps([{"url": collect.post_url(b), "status": "extracted" if collect.post_url(b) in res else "none",
+                                                        "item": res.get(collect.post_url(b), "")} for b in collect.post_blocks(text)]), encoding="utf-8")
+            (wd / "deep.json").write_text("[]", encoding="utf-8")
+            return VP()
+        names = ("prompt_file", "save_raw", "explore_workdir", "notify")
+        saved = {n: getattr(collect, n) for n in names}
+        saved_popen = collect.subprocess.Popen
+        try:
+            collect.prompt_file = lambda date, name, prompt, base=None: "p"
+            collect.save_raw = lambda *a, **kw: None
+            collect.explore_workdir = lambda key: (root / "wd" / key).mkdir(parents=True, exist_ok=True) or root / "wd" / key
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+            collect.subprocess.Popen = fake_popen
+            items, _ = collect.verify_grok_faces([{"key": "gakuen", "brand": "gaku", "topic": "t"}], root, suffix=suffix, ledger=ledger)
+            if report:
+                collect.report_lost_posts(ledger)
+        finally:
+            for n, v in saved.items():
+                setattr(collect, n, v)
+            collect.subprocess.Popen = saved_popen
+        return items, notes, passes
+
+    # kind にアイドル名の配列(実データの崩れ方)。2回とも同じ答えでも、候補になり、確かめ直さず、失ったと言わない
+    shifted = {**base, "kind": ["リーリヤ", "紫雲清夏", "姫崎莉波"], "url": p9}
+    check(collect.candidate_usable(shifted), "kind が崩れただけの候補を、依頼した形でないとした")
+    items, notes, passes = run([(p9, shifted)], [(p9, shifted)], "kind")
+    check([x["url"] for x in items] == [p9] and len(passes) == 1 and not notes,
+          f"kind の崩れた候補を候補にしたのに、投稿を確かめ直し・失ったと通知した: {items} / {passes} / {notes}")
+    # kind は候補に写さない(崩れていても正しくても)
+    items_ok, _, _ = run([(p9, {**base, "url": p9})], [], "kind-ok")
+    check(all("kind" not in x for x in items + items_ok) and all("kind" not in x for x in collect.normalize(items_ok)),
+          f"写さない欄 kind を候補に運んだ: {items} / {items_ok}")
+    # 締切の崩れた候補は候補にせず(欄を落とした候補を作らない)、元の投稿を確かめ直す。直った答えだけが候補になる
+    items, notes, passes = run([(p9, {**base, "deadline": "2026/10/30", "url": p9})], [(p9, {**base, "url": p9})], "deadline")
+    check([(x["url"], x.get("deadline")) for x in items] == [(p9, "2026-10-30")] and passes[1:] == [[p9]] and not notes,
+          f"締切の崩れた候補を候補にした・確かめ直さなかった: {items} / {passes} / {notes}")
+    # 投稿に貼られたリンクの候補が崩れていたら、その投稿は(投稿そのものの候補が正しくても)済みにしない
+    items, notes, passes = run([(p1, {**base, "url": p1}), (p1, {**base, "url": goods, "deadline": "11月"})],
+                               [(p1, {**base, "url": p1}), (p1, {**base, "url": goods})], "link")
+    # (リンク先は未確認の出典なので、付け直しで投稿の url になる)
+    check([(x["url"], x.get("deadline")) for x in items] == [(p1, "2026-10-30")] * 3 and passes[1:] == [[p1]] and not notes,
+          f"リンク先の候補が崩れた投稿を済みにした: {items} / {passes} / {notes}")
+    # どの投稿にも結び付かない崩れた候補は、確かめ直せないので名指しする(欄を落として黙って候補にしない)。
+    # dict でない要素(配列・文字列)も中身があり得るので同じ。null は中身が無いので名指ししない
+    stray = {**base, "url": "https://example.com/stray", "deadline": "未定"}
+    items, notes, passes = run([(p9, {**base, "url": p9}), (p9, stray), (p9, [p9, "締切2026-11-30の新商品"]), (p9, None)], [], "stray")
+    check([x["url"] for x in items] == [p9] and len(passes) == 1 and len(notes) == 1 and "https://example.com/stray" in notes[0]
+          and "新商品" in notes[0] and "null" not in notes[0] and "X の投稿" not in notes[0],
+          f"どの投稿にも結び付かない崩れた候補を名指ししない: {items} / {passes} / {notes}")
+    # 段をまたぐ: 通常の確かめで済んだ投稿でも、深掘りの確かめで崩れた候補(新しい事実)が2回とも直らなければ、その中身を失ったと名指しする
+    # (投稿が別の段で済んでいることで、崩れた候補の喪失を消さない。Sol 監査 r1)
+    ledger = collect.lost_posts_ledger()
+    run([(p9, {**base, "url": p9})], [], "cross", ledger=ledger)
+    broken_deep = (p9, {**base, "url": p9, "facts": ["追加の発表"], "deadline": "11月末"})
+    items, notes, passes = run([broken_deep], [broken_deep], "cross", ledger=ledger, suffix="-deep", report=True)
+    check(items == [] and len(notes) == 1 and p9 in notes[0] and "候補の形が崩れていた" in notes[0],
+          f"別の段で済んだ投稿の、深掘りで崩れた候補の喪失を名指ししない: {items} / {notes}")
+    # 確かめ直しが何も答えなくても(候補も投稿ごとの結果も空)、1回目の崩れた候補の喪失として名指しする(Sol 監査 r2)
+    ledger = collect.lost_posts_ledger()
+    run([(p9, {**base, "url": p9})], [], "cross3", ledger=ledger)
+    items, notes, passes = run([broken_deep], None, "cross3", ledger=ledger, suffix="-deep", report=True)
+    check(items == [] and len(passes) == 2 and len(notes) == 1 and p9 in notes[0] and "候補の形が崩れていた" in notes[0],
+          f"確かめ直しが空のとき、深掘りで崩れた候補の喪失を名指ししない: {items} / {passes} / {notes}")
+    # 深掘りの答えが「事実なし」なら、通常の段で済んだ投稿は失っていない(従来どおり)
+    ledger = collect.lost_posts_ledger()
+    run([(p9, {**base, "url": p9})], [], "cross2", ledger=ledger)
+    items, notes, passes = run([], [], "cross2", ledger=ledger, suffix="-deep", report=True)
+    check(not notes, f"深掘りで事実なしの投稿を失ったと通知した: {notes}")
+
+
 def test_lost_post_notified_once(tmp: Path):
     """X の投稿の喪失は、深掘りの確かめまで終えた最終結果で、投稿ごとに1度だけ通知する(当番の指摘 11fc3de74b。
     実測 2026-10-07: 通常の確かめで読めなかった投稿を深掘り前に通知し、深掘りでも読めずにもう一度通知した)。
@@ -2699,6 +2809,120 @@ def test_oncall_apply_integrate():
         oncall.apply_integrate(fix4, {"status": "unchanged", "rerun_mode": "unchanged", "risk": "情報漏えい\n予約消失"})
     check(fix4["risk"].splitlines() == ["重大な情報漏えい", "[監査後の変更で] 情報漏えい", "[監査後の変更で] 予約消失"],
           f"複数行の risk の重複除去: {fix4}")
+
+
+def test_maintenance_page_is_not_read(tmp: Path):
+    """メンテナンス画面へ転送された出典は、本文を読めたことにしない(2026-10-22号: 公式ポータルが告知の URL を /mainte/index.html へ
+    転送していたあいだ、fetch_page.py が案内を本文として返し、執筆は収集時に確かめた素材の facts を「出典で確認できない」として7本を見送り、
+    校閲は公式の出典を「別の話題のページ」として2本をブロックした)。収集の裏取りも、写しが無いのを URL の取り違え(failed)にしない"""
+    import contextlib, io
+    import collect
+    import fetch_page
+    tmp.mkdir(parents=True, exist_ok=True)
+    news, mainte = "https://idolmaster-official.jp/news/01_20037", "https://idolmaster-official.jp/mainte/index.html"
+    check(pipelib.maintenance_redirect(news, mainte) and not pipelib.maintenance_redirect(news, news)
+          and not pipelib.maintenance_redirect(news, None) and not pipelib.maintenance_redirect(news, news + ".html")
+          and not pipelib.maintenance_redirect(mainte, mainte + "?x=1")
+          and not pipelib.maintenance_redirect("https://a.example/maintenance-info", "https://a.example/maintenance-info/"),
+          "メンテナンス画面への転送の見分け")
+    page = "<html><body><p>" + "システムメンテナンスのお知らせ。メンテナンス日時: 未定。" * 20 + "</p></body></html>"
+
+    class U:
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
+        def geturl(self): return mainte
+        def read(self, n=None): return page.encode("utf-8")
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    rec = tmp / "rec.jsonl"
+    saved = (sys.argv, fetch_page.urllib.request.urlopen, fetch_page.needs_render, os.environ.get(pipelib.FETCH_RECORD_ENV))
+    out = io.StringIO()
+    try:
+        os.environ[pipelib.FETCH_RECORD_ENV] = str(rec)
+        fetch_page.urllib.request.urlopen = lambda req, timeout=25: U()
+        fetch_page.needs_render = lambda u, t: False
+        sys.argv = ["fetch_page.py", news]
+        with contextlib.redirect_stdout(out):
+            rc = fetch_page.main()
+    finally:
+        sys.argv, fetch_page.urllib.request.urlopen, fetch_page.needs_render, env = saved
+        if env is None:
+            os.environ.pop(pipelib.FETCH_RECORD_ENV, None)
+        else:
+            os.environ[pipelib.FETCH_RECORD_ENV] = env
+    check(rc == 1 and out.getvalue().startswith("FETCH_FAILED: メンテナンス中") and "システムメンテナンスのお知らせ" not in out.getvalue(),
+          f"メンテナンス画面を本文として返した: {rc} {out.getvalue()[:120]!r}")
+    check(not rec.exists(), "メンテナンス画面へ転送されたページを、本文を読めたページとして記録した")
+    # 収集の裏取り: 写しはメンテナンスの案内に無いが、URL の取り違えではない。failed にせず、確かめられなかったことを残す
+    saved_c = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=15: U()
+        collect.fetch_rendered = lambda url, **k: page
+        collect.classify_source = lambda u: "公式"
+        cv = collect.normalize([{"url": news, "title": "お便り募集", "facts": ["募集期間: 2026年10月18日～10月25日"],
+                                 "quotes": ["お便りテーマは「お悩み相談」と「ふつおた」です"], "_via": "explore"}])
+        counts = collect.verify(cv)
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved_c
+    check(cv[0].get("verify") == "unconfirmed" and "メンテナンス" in (cv[0].get("verify_note") or "") and counts["unconfirmed"] == 1,
+          f"メンテナンス中の出典の候補を URL の取り違えとして使えなくした: {cv[0].get('verify')} {cv[0].get('verify_note')}")
+    # 依頼文: 執筆・書き直し・校閲とも、メンテナンス中の url は読めないだけで、confirmed の素材の facts を使う・照合する
+    for name in ("write-article", "revise-article", "review-article"):
+        text = (Path(compose.__file__).resolve().parent.parent / "prompts" / f"{name}.md").read_text(encoding="utf-8")
+        check("FETCH_FAILED: メンテナンス中" in text and "confirmed" in text, f"{name} にメンテナンス中の url の扱いが無い")
+
+
+def test_revise_carries_verified_facts(tmp: Path):
+    """書き直しが前の稿の verified_facts(N)を指して new_facts を空にしても、コードが同じ id・text・url で写して採る
+    (2026-10-22号: 公式の出典を足して R4・R5 に応じた三越おせち・佐久間まゆの稿が「無い事実 id: N1…」で元の稿のまま戻され、校閲ブロックで落ちた)"""
+    tmp.mkdir(parents=True, exist_ok=True)
+    _, fb = renderlib.materials_with_ids(MATS)
+    art = {"slug": "x", "brand": "million", "candidate_ids": ["c1"], "rank": "small"}
+    p = tmp / "2026-10-22-x.md"
+    shop = "https://shop.example/osechi"
+    nf = {"id": "N1", "text": "販売期間は10月21日から11月17日まで", "url": shop}
+    old = ("---\n" + compose.yaml_dump_keeping_strings({
+        "title": "t", "lede": "l", "tags": ["a", "b"], "event_date": "2026-09-13", "verified_facts": [nf],
+        "sources": [{"url": shop, "label": "店", "type": "当事者"}]}) + "---\n販売は11月17日まで。 <!-- N1 -->\n")
+    p.write_text(old, encoding="utf-8")
+    iss = [{"issue_id": "I1", "rule_id": "R5", "repair": "add_source", "quote": "販売は11月17日まで"}]
+    ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "販売は11月17日まで。", "fact_ids": ["N1", "F1"]}],
+               sources=[{"url": shop, "label": "店"}, {"url": "https://a.example/1", "label": "公式"}], new_facts=[])
+    outcome, msg = compose.revise_apply("2026-10-22", art, p, ans, fb, MATS, iss)
+    vf = (compose.parse_front_matter(p) or {}).get("verified_facts") or []
+    check(outcome == "fixed" and vf == [nf], f"前の稿の N を写さず、指摘に応じた稿を戻した: {outcome} {msg} {vf}")
+    # 書き手が同じ id を new_facts に書いたら、そちらを採る(写して重ねない)
+    p.write_text(old, encoding="utf-8")
+    mine = dict(nf, text="販売期間は10月21日10時から11月17日23時59分まで")
+    outcome, msg = compose.revise_apply("2026-10-22", art, p, dict(ans, new_facts=[mine]), fb, MATS, iss)
+    vf = (compose.parse_front_matter(p) or {}).get("verified_facts") or []
+    check(outcome == "fixed" and vf == [mine], f"書き手の new_facts より前の稿を採った・重ねた: {outcome} {msg} {vf}")
+    # 前の稿にも無い N は従来どおり「無い事実 id」で戻す
+    p.write_text(old, encoding="utf-8")
+    bad = dict(ans, blocks=[{"markdown": "販売は11月17日まで。", "fact_ids": ["N2"]}])
+    outcome, msg = compose.revise_apply("2026-10-22", art, p, bad, fb, MATS, iss)
+    check(outcome == "kept" and "無い事実 id" in msg and p.read_text(encoding="utf-8") == old, f"どの稿にも無い N を通した: {outcome} {msg}")
+
+
+def test_classify_prompt_not_swallowed():
+    """出典の判定の claude の起動で、末尾に足す依頼文が値を幾つでも取る旗(--disallowedTools 等)に呑まれない
+    (2026-10-22: 「Permission deny rule "…依頼文…" matches no known tool」「Input must be provided」で毎回 exit 1、claude 側の判定が全部無回答)"""
+    import classify_sources as cs
+    variadic = {"--disallowedTools", "--disallowed-tools", "--tools", "--add-dir", "--mcp-config", "--betas", "--plugin-dir",
+                "--allowed-tools", "--allowedTools"}
+    takes_one = {"--model", "--max-budget-usd", "--json-schema", "--output-format", "--permission-mode", "--fallback-model"}
+    argv = cs.CMD_A + ["依頼文"]
+    positional, i, eating = [], 2, False
+    while i < len(argv):
+        a = argv[i]
+        if a.startswith("--"):
+            eating = a.split("=", 1)[0] in variadic and "=" not in a
+            i += 2 if (a in takes_one) else 1
+            continue
+        if not eating:
+            positional.append(a)
+        i += 1
+    check(positional == ["依頼文"], f"判定の依頼文が旗の値に呑まれる: {cs.CMD_A}")
 
 
 def test_revise_apply_decline(tmp: Path):
@@ -4419,6 +4643,7 @@ def test_fetch_page_renders_whitespace_only_page():
     import collect
     class U:
         status = 200
+        def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
         def read(self, n=None): return ("<p>" + nav + "</p>").encode("utf-8")
         def __enter__(self): return self
@@ -4697,6 +4922,7 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
     # 裏取り: 描画できずに写しが見えなかった候補は、描画の失敗を記録に残す(URL の取り違えとだけ書かない)
     class Res:
         status = 200
+        def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": staticmethod(lambda: "utf-8")})()
         def read(self, n=-1):
             return menu.encode()
@@ -6120,6 +6346,7 @@ def test_empty_answer_is_not_done(tmp: Path):
     saved = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.ROOT)
     class R:
         status = 200
+        def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
         def read(self, n=None): return ("<p>" + page + "</p>" + "あ" * 500).encode("utf-8")
         def __enter__(self): return self
@@ -6171,6 +6398,7 @@ def test_accept_only_normal_and_schema(tmp: Path):
     page = "<p>" + "シャイニーカラーズの公演グッズの事後通販が10月10日から始まります。" + "あ" * 500 + "</p>"
     class R:
         status = 200
+        def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
         def read(self, n=None): return page.encode("utf-8")
         def __enter__(self): return self
@@ -14263,6 +14491,7 @@ def main() -> int:
     test_grok_verify_keeps_new_announcement_separate()
     test_restore_chained_reservation_facts(tmp / "rcf")
     test_lost_post_notified_once(tmp / "lpn")
+    test_grok_verify_keeps_what_it_counts(tmp / "gvk")
     test_grok_deep_retry(tmp / "gdr")
     test_review_failed_changed_article(tmp / "rfc")
     test_review_unchecked_scope_not_approved(tmp / "rus")
@@ -14277,6 +14506,9 @@ def main() -> int:
     test_compose_carry_kept_paper()
     test_compose_recover(tmp / "recover")
     test_revise_apply_decline(tmp / "ra")
+    test_maintenance_page_is_not_read(tmp / "mpr")
+    test_revise_carries_verified_facts(tmp / "rcv")
+    test_classify_prompt_not_swallowed()
     test_notify_long()
     test_oncall_state(tmp / "st")
     test_oncall_restore_cleans_untracked()

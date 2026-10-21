@@ -726,11 +726,12 @@ def ask(cmd: list[str], prompt: str, timeout: int = 900) -> list[dict]:
         # read-only では名前解決が通らず、依頼文どおり fetch_page.py で運営者情報を読もうとして毎回失敗していた
         # (2026-10-18 classify-codex-c9936bed: Temporary failure in name resolution)
         wd = None
-        if cmd[0] == "codex":
-            from collect import explore_workdir
-            wd = explore_workdir("classify", entry="scripts/fetch_page.py")
-            short = prompt_file(edition_date(), name, prompt, base=wd)
         try:
+            if cmd[0] == "codex":
+                from collect import explore_workdir
+                wd = explore_workdir("classify", entry="scripts/fetch_page.py")
+                # 依頼文を書く失敗(容量不足など)でも作業ディレクトリを残さない(監査指摘 2026-10-21)
+                short = prompt_file(edition_date(), name, prompt, base=wd)
             r = subprocess.run(cmd + [short], capture_output=True, text=True,
                                timeout=timeout, stdin=subprocess.DEVNULL, cwd=wd or ROOT)
         except subprocess.TimeoutExpired as e:

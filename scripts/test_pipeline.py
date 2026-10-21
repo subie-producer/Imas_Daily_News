@@ -2002,6 +2002,20 @@ def test_collect_sessions_read_with_fetch_page(tmp: Path):
         cs.subprocess.run = fake_run
         cs.ask(cs.CMD_A, "依頼")
         cs.ask(cs.CMD_B, "依頼")
+        # 作業ディレクトリに依頼文を書けない(容量不足)ときも、作業ディレクトリを残さない
+        leftovers = lambda: set(Path(tempfile.gettempdir()).glob("explore-classify-*"))
+        before, real_pf = leftovers(), pipelib.prompt_file
+
+        def no_space(date, name, text, base=None):
+            if base is not None:
+                raise OSError(28, "No space left on device")
+            return real_pf(date, name, text, base)
+        pipelib.prompt_file = no_space
+        try:
+            cs.ask(cs.CMD_B, "依頼")
+        finally:
+            pipelib.prompt_file = real_pf
+        left = leftovers() - before
     finally:
         (pipelib.ROOT, collect.subprocess.run, collect.save_raw, collect.notify, collect.fetch_rendered,
          collect.urllib.request.urlopen, cs.subprocess.run) = saved
@@ -2018,6 +2032,7 @@ def test_collect_sessions_read_with_fetch_page(tmp: Path):
     check("受付期間" in out and "本文の事実" in out, f"facts 化の cwd で依頼文どおりに打っても本文が読めない: {out[:200]!r}")
     cl = [c for c in calls if c[0] == "classify"]
     check(len(cl) == 2, f"出典の判定の2モデルを起動しない: {cl}")
+    check(not left, f"依頼文を書けなかった出典の判定が作業ディレクトリを残した: {left}")
     for _, argv, cwd, readable, got, _ in cl:
         check("受付期間" in got and readable, f"出典の判定({argv[0]})が依頼文どおりにページ・依頼文を読めない: {got[:200]!r} {cwd}")
     if len(cl) == 2:
@@ -5283,8 +5298,10 @@ def test_verify_crash_reasks_deep(tmp: Path):
     notes = []
     ask = [{"question": "元の告知", "why": "引用だけ"}]
 
-    def run(crash_again: bool):
-        out = tmp / f"g{int(crash_again)}"
+    def run(mode: str):
+        """mode: recover = 1回目が落ち -again が答える / crash2 = 2回とも落ちる /
+        nodeep = 1回目が正常に終わり候補は読めるが deep.json が無い / again_nodeep = 1回目が落ち -again は正常だが deep.json が無い"""
+        out = tmp / mode
         out.mkdir()
         (out / "sidem.md").write_text("### 1\n- url: https://x.com/a/status/1\n- 本文: 本文", encoding="utf-8")
 
@@ -5299,30 +5316,36 @@ def test_verify_crash_reasks_deep(tmp: Path):
 
         def fake_popen(args, cwd=None, **kw):
             again = "-again" in Path(cwd).name
-            if again and not crash_again:
+            if (again and mode in ("recover", "again_nodeep")) or (not again and mode == "nodeep"):
                 (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "sidem", "facts": ["f"]}]),
                                                       encoding="utf-8")
                 (Path(cwd) / "posts.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted",
                                                                    "item": "https://x.com/a/status/1"}]), encoding="utf-8")
-                (Path(cwd) / "deep.json").write_text(json.dumps(ask), encoding="utf-8")
+                if mode == "recover":
+                    (Path(cwd) / "deep.json").write_text(json.dumps(ask), encoding="utf-8")
                 return P(0)
             return P(101)      # 書き出す前に落ちた(/tmp が満杯で exit 101)
         saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw)
         try:
             collect.subprocess.Popen = fake_popen
-            collect.notify = lambda job, msg, ok=True, require=False: notes.append((crash_again, msg, ok)) or True
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append((mode, msg, ok)) or True
             collect.prompt_file = lambda date, name, prompt, base=None: "p"
             collect.save_raw = lambda *a, **k: None
             return collect.verify_grok_faces([{"key": "sidem", "brand": "sidem", "topic": "t"}], out)
         finally:
             collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw = saved
-    items, deep = run(False)
+    lost = lambda mode: [m for c, m, ok in notes if c == mode and not ok and "deep.json" in m]
+    items, deep = run("recover")
     check(deep == {"sidem": ask} and len(items) == 1, f"落ちた面を確かめ直した問い・候補を使わない: {items} {deep}")
-    check(not [m for c, m, ok in notes if not c and not ok], f"確かめ直して問いが出たのに、深掘りの機会を失ったと通知した: {notes}")
-    _, deep = run(True)
-    lost = [m for c, m, ok in notes if c and not ok and "deep.json" in m]
-    check(deep == {} and len(lost) == 1 and "異常終了(exit 101)" in lost[0],
-          f"確かめ直しでも落ちた面の問いの喪失を、終わり方を添えて1度だけ通知しない: {lost}")
+    check(not [m for c, m, ok in notes if c == "recover" and not ok], f"確かめ直して問いが出たのに、深掘りの機会を失ったと通知した: {notes}")
+    _, deep = run("crash2")
+    check(deep == {} and len(lost("crash2")) == 1 and "異常終了(exit 101)" in lost("crash2")[0],
+          f"確かめ直しでも落ちた面の問いの喪失を、終わり方を添えて1度だけ通知しない: {lost('crash2')}")
+    # 正常に終わり候補は読めるのに deep.json が無い: 確かめ直さないので、問いは本当に失う。どの段でも通知する
+    for mode in ("nodeep", "again_nodeep"):
+        _, deep = run(mode)
+        check(deep == {} and len(lost(mode)) == 1 and "締切内に終わった" in lost(mode)[0],
+              f"正常に終わった段の deep.json の喪失を通知しない({mode}): {lost(mode)}")
 
 
 def test_empty_answer_is_not_done(tmp: Path):

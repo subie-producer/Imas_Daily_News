@@ -14059,7 +14059,6 @@
   - 10月10日(土)はLINEアプリmogilyによるデジタル整理券を先着配布し、整理券取得開始時間は10月9日(金)18:00。整理券1枚につき1名入場。
   - 京まふ2026 THEキャラブース掲出8名(伊吹翼・大神環・高坂海美・佐竹美奈子・所恵美・舞浜歩・松田亜利沙・横山奈緒)の描き下ろしグッズを再販、追加商品もあり
   - 営業時間は施設営業時間に準じ、最終日は18:00まで。
-  - '開催期間: 2026年10月10日(土)～10月22日(木)。'
   - 税込3,000円の購入ごとに特典ブロマイド1枚と抽選会参加1回。
   - 特典ブロマイドは全8種で、絵柄は選べない。
   - 抽選会景品は特大アクリルフィギュア全8種で、好きな絵柄を選べるが、来店時刻によって希望の絵柄を選べない場合がある。
@@ -14070,7 +14069,6 @@
     - 京まふ2026 THEキャラブース掲出8名(伊吹翼・大神環・高坂海美・佐竹美奈子・所恵美・舞浜歩・松田亜利沙・横山奈緒)の描き下ろしグッズを再販、追加商品もあり
     - 営業時間は施設営業時間に準じ、最終日は18:00まで。
     '2026-10-22':
-    - '開催期間: 2026年10月10日(土)～10月22日(木)。'
     - 税込3,000円の購入ごとに特典ブロマイド1枚と抽選会参加1回。
     - 特典ブロマイドは全8種で、絵柄は選べない。
     - 抽選会景品は特大アクリルフィギュア全8種で、好きな絵柄を選べるが、来店時刻によって希望の絵柄を選べない場合がある。
@@ -14126,7 +14124,7 @@
   - 「SHINY Style COLLECTION」第2弾は「Sonic Heart (and Signal)」と「No 1 feel alone」が登場する。
   - 公式グッズセットは、アクリルスタンド、雑誌の表紙をイメージしたアクリルブロック、複製サイン入りブロマイドの3点入り。
   - 「公式グッズセット【八宮めぐる】」は5,000円(税込)。
-  - '「PJ: REFRAC7IONS」の新ユニットに焦点をあてた、全7つの「Style」に沿った撮りおろしビジュアルが用いられている。'
+  - 「SHINY Style COLLECTION」第2弾の受注が始まった。
   - Sonic Heart (and Signal)のStyleは「デコラStyle」。
   - No 1 feel aloneのStyleは「Academic Style」。
   edition_facts:
@@ -14136,7 +14134,7 @@
     - 公式グッズセットは、アクリルスタンド、雑誌の表紙をイメージしたアクリルブロック、複製サイン入りブロマイドの3点入り。
     - 「公式グッズセット【八宮めぐる】」は5,000円(税込)。
     '2026-10-22':
-    - '「PJ: REFRAC7IONS」の新ユニットに焦点をあてた、全7つの「Style」に沿った撮りおろしビジュアルが用いられている。'
+    - 「SHINY Style COLLECTION」第2弾の受注が始まった。
     - Sonic Heart (and Signal)のStyleは「デコラStyle」。
     - No 1 feel aloneのStyleは「Academic Style」。
 - story_id: sidem-11th-setlist-playlists-2026
@@ -14385,7 +14383,6 @@
   - 美鈴・手毬の新規描きおろしを使用したアクリルスタンドも登場。
   - 月村手毬のハリネズミゆたんぽも再登場。
   - '受注期限: 10月25日(日)'
-  - 'リンク: https://shop.asobistore.jp/category/gkms_tmr_msz_ytmp'
   edition_facts:
     '2026-10-11':
     - 受注は10月25日まで。
@@ -14394,7 +14391,6 @@
     - 月村手毬のハリネズミゆたんぽも再登場。
     '2026-10-22':
     - '受注期限: 10月25日(日)'
-    - 'リンク: https://shop.asobistore.jp/category/gkms_tmr_msz_ytmp'
 - story_id: asari-produce-seminar-2026
   brand: gaku
   subject: 学マス 開催中の運営情報(プロデュースゼミ・咲季ガシャ)
@@ -17483,6 +17479,8 @@
   - 雨夜 燕のアナザーアイドルが新登場。
   - アナザーアイドルガシャは初回10連無料。
   - '開催期間: 10/22(木) 11:00 ～ 10/30(金) 10:59まで(予定)'
+  - 復刻SSRサポートカード『ｖギャルピーーースッｖ』が10月22日11時より復刻ミラクルナナウ麻央＆広ガシャで登場予定。
+  - 復刻SSRサポートカード『おっと、危ないよ』を10月22日11時より復刻ミラクルナナウ麻央＆広ガシャで登場予定。
   edition_facts:
     '2026-10-21':
     - '開催期間: 10/22(木) 11:00～10/30(金) 10:59まで(予定)'
@@ -17491,6 +17489,8 @@
     - アナザーアイドルガシャは初回10連無料。
     '2026-10-22':
     - '開催期間: 10/22(木) 11:00 ～ 10/30(金) 10:59まで(予定)'
+    - 復刻SSRサポートカード『ｖギャルピーーースッｖ』が10月22日11時より復刻ミラクルナナウ麻央＆広ガシャで登場予定。
+    - 復刻SSRサポートカード『おっと、危ないよ』を10月22日11時より復刻ミラクルナナウ麻央＆広ガシャで登場予定。
 - story_id: roar-gacha-2026
   brand: gaku
   subject: 学マス運営情報まとめ:販売・開催中の施策
@@ -17799,23 +17799,21 @@
     - 'オーロラカンバッジ(ランダム) 陰陽師 ver.: 1個770円（税込）、セット6,160円（税込）、全8種。ランダム仕様のため絵柄は選べない。'
 - story_id: deresute-emergency-maintenance-endtime-2026-10-22
   brand: cg
-  subject: デレステ緊急メンテナンス開始前倒し
+  subject: デレステ緊急メンテナンス 開始前倒し・終了予定
   status: active
   first_published: '2026-10-22'
   published_facts:
-  - 緊急メンテナンスの終了予定時刻は10月22日(木)02:10。
   - システムの安全性確保のため、緊急メンテナンスの開始時間を22時に変更すると告知された。
+  - 緊急メンテナンスの終了予定時刻は10月22日(木)02:10。
   - システムのセキュリティ対策に伴う緊急メンテナンスを実施予定。
-  - 'メンテナンス期間(予定): 10/21(水)22:00～未定。'
   edition_facts:
     '2026-10-22':
-    - 緊急メンテナンスの終了予定時刻は10月22日(木)02:10。
     - システムの安全性確保のため、緊急メンテナンスの開始時間を22時に変更すると告知された。
+    - 緊急メンテナンスの終了予定時刻は10月22日(木)02:10。
     - システムのセキュリティ対策に伴う緊急メンテナンスを実施予定。
-    - 'メンテナンス期間(予定): 10/21(水)22:00～未定。'
 - story_id: cg-sakuma-mayu-necklace-bound-to-you
   brand: cg
-  subject: 佐久間まゆ イメージネックレス Bound to you.(TUfave)
+  subject: 佐久間まゆ イメージネックレス「Bound to you.」予約
   status: active
   first_published: '2026-10-22'
   published_facts:
@@ -17831,7 +17829,7 @@
     - 2027年2月下旬から順次発送予定。注文後のキャンセル・返品はできない。
 - story_id: valiv-cosmo-ace-combat-8-stream-report-2026-10-21
   brand: dsva
-  subject: 上水流宇宙 ACE COMBAT 8配信の振り返りと次回予告
+  subject: 上水流宇宙 ACE COMBAT 8配信
   status: active
   first_published: '2026-10-22'
   published_facts:
@@ -17850,18 +17848,18 @@
   first_published: '2026-10-22'
   published_facts:
   - 投稿予定は10月23日18:00、宇宙ch。
+  - 企画名は「上水流 秋のコラボショート祭り」。
   - 第三弾のコラボ相手はキズナアイ。
   - 第四弾のコラボ相手はしぐれうい。
-  - 10日連続投稿。
   edition_facts:
     '2026-10-22':
     - 投稿予定は10月23日18:00、宇宙ch。
+    - 企画名は「上水流 秋のコラボショート祭り」。
     - 第三弾のコラボ相手はキズナアイ。
     - 第四弾のコラボ相手はしぐれうい。
-    - 10日連続投稿。
 - story_id: valiv-cosmo-wake-up-my-music-short-2026
   brand: dsva
-  subject: 上水流宇宙「Wake up my music」踊ってみたショート公開
+  subject: 上水流宇宙「Wake up my music」踊ってみたショート動画
   status: active
   first_published: '2026-10-22'
   published_facts:
@@ -17883,7 +17881,7 @@
     - 「コンテンポラリのダンス」のMusic Videoが200万再生を突破したと公式が発表。
 - story_id: gakumas-dmm-maintenance-2026-10-21
   brand: gaku
-  subject: 学マス DMM GAMES版・公式サイト臨時メンテナンス
+  subject: 学マスDMM GAMES版・公式サイトの臨時メンテナンス
   status: active
   first_published: '2026-10-22'
   published_facts:
@@ -17909,25 +17907,9 @@
     '2026-10-22':
     - ブシロードクリエイティブから「学園アイドルマスター むぎゅみにコレクションフィギュア vol.1」が登場。
     - カプセルトイおよびBUSHIROAD THE BOXで展開。
-- story_id: gamushara-revival-gacha-2026
-  brand: gaku
-  subject: 学マス 雨夜燕アナザーアイドルガシャと「がむしゃらに行こう！」復刻ガシャ
-  status: active
-  first_published: '2026-10-22'
-  published_facts:
-  - '開催期間: 10/30(金) 11:00 ～ 11/7(土) 10:59まで(予定)。'
-  - 雨夜燕が歌唱する「がむしゃらに行こう！」のライブシーンを紹介。
-  - 雨夜燕のアナザーアイドルが新登場。
-  - アナザーアイドルガシャは初回10連無料。
-  edition_facts:
-    '2026-10-22':
-    - '開催期間: 10/30(金) 11:00 ～ 11/7(土) 10:59まで(予定)。'
-    - 雨夜燕が歌唱する「がむしゃらに行こう！」のライブシーンを紹介。
-    - 雨夜燕のアナザーアイドルが新登場。
-    - アナザーアイドルガシャは初回10連無料。
 - story_id: gravure-solo-collection-vol1-2026
   brand: gaku
-  subject: 学マス Gravure Solo Collection Vol.1 ショップ別特典デザイン公開
+  subject: 学マス Gravure Solo Collection Vol.1 ショップ別特典
   status: active
   first_published: '2026-10-22'
   published_facts:
@@ -17959,29 +17941,33 @@
     - BIGアクリルスタンドは全13種。ラインアップは花海咲季、月村手毬、藤田ことね、雨夜 燕、有村麻央、葛城リーリヤ、倉本千奈、紫雲清夏、篠澤 広、十王星南、秦谷美鈴、花海佑芽、姫崎莉波。
 - story_id: hatsuboshi-radio-guests-20261028
   brand: gaku
-  subject: 学マス放送部 10月28日回のゲストに小鹿なお・川村玲奈
+  subject: 初星学園放送部 10月28日回のゲスト
   status: active
   first_published: '2026-10-22'
   published_facts:
   - 10/28(水)放送回のゲストは小鹿なおさん（月村手毬役）、川村玲奈さん（篠澤広役）。
+  - 翌週も21時から配信すると告知。
   edition_facts:
     '2026-10-22':
     - 10/28(水)放送回のゲストは小鹿なおさん（月村手毬役）、川村玲奈さん（篠澤広役）。
+    - 翌週も21時から配信すると告知。
 - story_id: kiyoka-another-guaranteed-2026
   brand: gaku
-  subject: 学マス 紫雲清夏アナザーアイドル確定の無料1連ガシャ
+  subject: 学マス 紫雲清夏 アナザーアイドル確定無料ガシャ
   status: active
   first_published: '2026-10-22'
   published_facts:
   - 'ガシャ開催時期: 10/23(金) 10:59まで（予定）'
   - 紫雲清夏のシーズン限定アナザーアイドルがいずれか確定で手に入る無料1連ガシャ。
+  - アナザーアイドルアップデート記念のSSRアナザーアイドル確定ガシャ。
   edition_facts:
     '2026-10-22':
     - 'ガシャ開催時期: 10/23(金) 10:59まで（予定）'
     - 紫雲清夏のシーズン限定アナザーアイドルがいずれか確定で手に入る無料1連ガシャ。
+    - アナザーアイドルアップデート記念のSSRアナザーアイドル確定ガシャ。
 - story_id: me-mv-1m-2026
   brand: gaku
-  subject: 学マス「め」MV 100万再生突破
+  subject: 学マス「め」MVが100万再生突破
   status: active
   first_published: '2026-10-22'
   published_facts:
@@ -17996,10 +17982,12 @@
   first_published: '2026-10-22'
   published_facts:
   - 香里有佐と南早紀によるトークはメンバー登録で視聴できる。
+  - 2026年10月のアイマスchメンバー限定ラジオを配信開始した。
   - 出演はMC香里有佐、ゲスト南早紀。
   edition_facts:
     '2026-10-22':
     - 香里有佐と南早紀によるトークはメンバー登録で視聴できる。
+    - 2026年10月のアイマスchメンバー限定ラジオを配信開始した。
     - 出演はMC香里有佐、ゲスト南早紀。
 - story_id: imas-portal-maintenance-2026-10-21
   brand: joint
@@ -18009,10 +17997,12 @@
   published_facts:
   - 'メンテナンス期間(予定): 2026/10/21（水）19:00～終了時刻未定'
   - セキュリティ強化に伴う緊急メンテナンスを実施。
+  - メンテナンス中は閲覧、ログインを含むサイトの機能を利用できない。
   edition_facts:
     '2026-10-22':
     - 'メンテナンス期間(予定): 2026/10/21（水）19:00～終了時刻未定'
     - セキュリティ強化に伴う緊急メンテナンスを実施。
+    - メンテナンス中は閲覧、ログインを含むサイトの機能を利用できない。
 - story_id: imas-ch-members-stream-2026-11
   brand: joint
   subject: アイマスch 2026年11月メンバー限定配信(南早紀・宮﨑雅也)
@@ -18021,13 +18011,15 @@
   published_facts:
   - 現在募集中の配信は『2026年11月メンバー限定配信』で、配信日時は2026年11月18日（水）。
   - アイマスchの11月メンバー限定配信の出演者はMC南早紀（白石紬役）、ゲスト宮﨑雅也（花園百々人役）。
+  - パーソナリティーが次のゲストを指名していくリレー形式で行う雑談番組。
   edition_facts:
     '2026-10-22':
     - 現在募集中の配信は『2026年11月メンバー限定配信』で、配信日時は2026年11月18日（水）。
     - アイマスchの11月メンバー限定配信の出演者はMC南早紀（白石紬役）、ゲスト宮﨑雅也（花園百々人役）。
+    - パーソナリティーが次のゲストを指名していくリレー形式で行う雑談番組。
 - story_id: tours-mypage-maintenance-2026-10
   brand: joint
-  subject: ツアマスマイページ メンテナンス(10/21 22時〜10/22 12時)
+  subject: アイドルマスター TOURS マイページ停止(10月21日〜22日)
   status: active
   first_published: '2026-10-22'
   published_facts:
@@ -18043,35 +18035,35 @@
     - 対象にはアミューズメントICカードなどのオンラインサービス・連動サイトが含まれる。
 - story_id: tours-s2-study-equal-magic-tips-2026
   brand: joint
-  subject: ツアマスS2『Study Equal Magic!』の振り付けとアナザーカラー
+  subject: ツアマスS2『Study Equal Magic!』の振り付けと専用衣装
   status: active
   first_published: '2026-10-22'
   published_facts:
   - 'S2弾稼働開始: 10月29日'
   - 『Study Equal Magic!』では女性アイドルの振り付けの一部が異なる。
   - 山下次郎・舞田類のSideM専用衣装『ノーブルプライド』のアナザーカラーはピンク。
-  - S2弾ではアイドルマスター SideMから山下次郎、舞田類が登場し、『Study Equal Magic!』とツアマスオリジナル楽曲『SYMPHONY』が追加される。
+  - 『Study Equal Magic!』はすべてのアイドルでプレイ可能。
   edition_facts:
     '2026-10-22':
     - 'S2弾稼働開始: 10月29日'
     - 『Study Equal Magic!』では女性アイドルの振り付けの一部が異なる。
     - 山下次郎・舞田類のSideM専用衣装『ノーブルプライド』のアナザーカラーはピンク。
-    - S2弾ではアイドルマスター SideMから山下次郎、舞田類が登場し、『Study Equal Magic!』とツアマスオリジナル楽曲『SYMPHONY』が追加される。
+    - 『Study Equal Magic!』はすべてのアイドルでプレイ可能。
 - story_id: million-glow-together-cd-2026
   brand: million
-  subject: ミリオンライブ「Glow Together」CD予約開始
+  subject: ミリオンライブ CD「Glow Together」予約開始
   status: active
   first_published: '2026-10-22'
   published_facts:
   - '発売日: 2026/12/23 発売。'
-  - 商品名は「THE IDOLM＠STER MILLION BATTLE OF THE＠TER ED Glow Together」。
   - 価格は1,870円。
+  - Neowingの商品説明には、表題曲「Glow Together」とCDのみで聴けるドラマパートを収録し、描き下ろしイラストジャケットと記載されている。初回仕様・特典は「THE IDOLM＠STER MILLION BATTLE OF THE＠TER 09 100てん☆ナンバーワ
   - '出演者は二階堂千鶴（CV: 野村香菜子）、春日未来（CV: 山崎はるか）、北沢志保（CV: 雨宮天）、木下ひなた（CV: 田村奈央）、桜守歌織（CV: 香里有佐）、矢吹可奈（CV: 木戸衣吹）。'
   edition_facts:
     '2026-10-22':
     - '発売日: 2026/12/23 発売。'
-    - 商品名は「THE IDOLM＠STER MILLION BATTLE OF THE＠TER ED Glow Together」。
     - 価格は1,870円。
+    - Neowingの商品説明には、表題曲「Glow Together」とCDのみで聴けるドラマパートを収録し、描き下ろしイラストジャケットと記載されている。初回仕様・特典は「THE IDOLM＠STER MILLION BATTLE OF THE＠TER 09 100てん☆ナンバーワ
     - '出演者は二階堂千鶴（CV: 野村香菜子）、春日未来（CV: 山崎はるか）、北沢志保（CV: 雨宮天）、木下ひなた（CV: 田村奈央）、桜守歌織（CV: 香里有佐）、矢吹可奈（CV: 木戸衣吹）。'
 - story_id: shiny-hyakkiyako-pop-up-after-sales-2026
   brand: shiny
@@ -18079,19 +18071,19 @@
   status: active
   first_published: '2026-10-22'
   published_facts:
-  - 株式会社コンテンツシードは、2026年10月21日(水)より「アイドルマスター シャイニーカラーズ」百鬼夜行 POP UP SHOPの事後通販を開始した。
   - '注文受付期間: 2026年10月21日(水)18:00～11月5日(木)23:59'
+  - 有楽町マルイ 8Fで開催していた同POP UP SHOPの商品を、THEキャラ通販サイトで販売する。
   - '発送予定日: 2027年1月下旬～2月中旬以降順次発送'
   - '特典: シャイニーカラーズ商品を税込3,000円購入ごとに、全5種のましかくブロマイドをランダムで1枚プレゼント。'
   edition_facts:
     '2026-10-22':
-    - 株式会社コンテンツシードは、2026年10月21日(水)より「アイドルマスター シャイニーカラーズ」百鬼夜行 POP UP SHOPの事後通販を開始した。
     - '注文受付期間: 2026年10月21日(水)18:00～11月5日(木)23:59'
+    - 有楽町マルイ 8Fで開催していた同POP UP SHOPの商品を、THEキャラ通販サイトで販売する。
     - '発送予定日: 2027年1月下旬～2月中旬以降順次発送'
     - '特典: シャイニーカラーズ商品を税込3,000円購入ごとに、全5種のましかくブロマイドをランダムで1枚プレゼント。'
 - story_id: shiny-mattari-hbtk-october-2026-cast
   brand: shiny
-  subject: シャニマス10月度「まったりHBTK」おたより募集
+  subject: シャニマス「まったりHBTK」10月度おたより募集
   status: active
   first_published: '2026-10-22'
   published_facts:
@@ -18112,18 +18104,18 @@
   first_published: '2026-10-22'
   published_facts:
   - 限定★3【毒を喰らわばなんとやら】樋口 円香がピックアップで登場。
-  - 育成イベント「秋のアイドル強化週間」のイベント報酬アイドルとして、SRサポートアイドル【支え合えばどこまでも】八宮 めぐるを紹介。
   - 新ピックアップガシャ「夜色アティテュード」のステップアップガシャを開催中。
   - シーズの新曲イベント「Shatter the Limits」を開催中。
+  - Ver.2.19.0アップデートで、イベント獲得の★2セレクトBOXに獲得状況の絞り込み機能が追加。
   edition_facts:
     '2026-10-22':
     - 限定★3【毒を喰らわばなんとやら】樋口 円香がピックアップで登場。
-    - 育成イベント「秋のアイドル強化週間」のイベント報酬アイドルとして、SRサポートアイドル【支え合えばどこまでも】八宮 めぐるを紹介。
     - 新ピックアップガシャ「夜色アティテュード」のステップアップガシャを開催中。
     - シーズの新曲イベント「Shatter the Limits」を開催中。
+    - Ver.2.19.0アップデートで、イベント獲得の★2セレクトBOXに獲得状況の絞り込み機能が追加。
 - story_id: shiny-shhis-break-chain-2dmv-2026
   brand: shiny
-  subject: シーズ「Break Chain」2DMV公開
+  subject: シーズ『Break Chain』2DMV公開
   status: active
   first_published: '2026-10-22'
   published_facts:
@@ -18135,7 +18127,7 @@
     - 'YouTube: https://www.youtube.com/watch?v=GLf8ESwc0T0&feature=youtu.be'
 - story_id: shiny-song-for-prism-dmm-maintenance-2026-10-21
   brand: shiny
-  subject: シャニソンDMM版 臨時メンテナンス
+  subject: シャニソンDMM版 臨時メンテナンス(10月21日)
   status: active
   first_published: '2026-10-22'
   published_facts:
@@ -18151,13 +18143,11 @@
     - 端末データの引き継ぎ設定やデータ移行を予定している場合は、メンテナンス開始前までの実施を呼びかけている。
 - story_id: shiny-web-comic-661-cat-2026
   brand: shiny
-  subject: シャニマスweb4コマ漫画第661話「猫」
+  subject: シャニマス web4コマ漫画第661話「猫」(斑鳩ルカ)
   status: active
   first_published: '2026-10-22'
   published_facts:
   - web4コマ漫画第661話「猫」を公開。
-  - 斑鳩 ルカの話。
   edition_facts:
     '2026-10-22':
     - web4コマ漫画第661話「猫」を公開。
-    - 斑鳩 ルカの話。

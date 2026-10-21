@@ -75,5 +75,35 @@
    "202610220239-grok-66",
    "202610220239-grok-52"
   ]
+ },
+ "cg-sakuma-mayu-necklace-bound-to-you": {
+  "title": "佐久間まゆのネックレス、予約は11月30日まで",
+  "stage": "校閲ブロック",
+  "why": "R4 sources の1件目「アイドルマスター公式『佐久間まゆイメージネックレス〜Bound to you.〜 予約受付開始』(2026-10-21)」の url https://idolmaster-official.jp/news/01_2",
+  "candidate_ids": [
+   "202610211840-watch-0",
+   "202610220239-grok-85"
+  ]
+ },
+ "million-mitsukoshi-osechi-2027": {
+  "title": "ミリオン×三越おせち、11月17日まで販売",
+  "stage": "校閲ブロック",
+  "why": "R5 R5: ミリオンライブ！×三越のおせち2027(公式が関わるコラボ)の販売開始を扱うのに、sources は種別「当事者」の三越伊勢丹オンラインストア1件だけで、公式・準公式の出典も、公式の発表を報じた報道もない。素材には公式X(@imas",
+  "candidate_ids": [
+   "202610211231-explore-1",
+   "202610211840-watch-1",
+   "202610220239-grok-86"
+  ]
+ },
+ "sidem-renaissance-2026": {
+  "title": "SideM×ルネサンス、今日49店舗で開幕",
+  "stage": "校閲ブロック",
+  "why": "R5 R5: 記事は公式(アイマス公式)が関わるコラボを扱うが、sources は3件とも種別「当事者」(オリグレス・ルネサンスの発表と店舗の特設サイト)。sources に公式・準公式・報道が1つも無い。素材の公式 URL(https://id",
+  "candidate_ids": [
+   "sched-2026-10-22-sidem-renaissance-2026-開幕",
+   "sched-2026-10-22-sidem-renaissance-2026-開幕-src1",
+   "sched-2026-10-22-sidem-renaissance-2026-開始",
+   "sched-2026-10-22-sidem-315-fitness-project-renaissance-2026-開幕"
+  ]
  }
 }

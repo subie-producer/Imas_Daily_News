@@ -3,7 +3,7 @@ slug: gaku-miracle-rerun-gacha-2026
 edition: "2026-10-22"
 brand: gaku
 src: 公式
-rank: small
+rank: lead
 corrected: false
 corrections: []
 candidate_ids:

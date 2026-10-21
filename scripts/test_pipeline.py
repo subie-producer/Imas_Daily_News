@@ -8101,7 +8101,7 @@ def test_oncall_report_concurrence(tmp: Path):
         oncall.MAX_ROUNDS = 4
         oncall.PAPER_RECORD = "## 掲載の記録(2026-10-15号)\n- dsva-letora: レトラ誕生日LV"
 
-        def run(reviews: list[dict], accepts: list[dict], wip: dict | None = None):
+        def run(reviews: list[dict], accepts: list[dict], wip: dict | None = None, during_accept=None):
             calls, prompts = [], []
             rv, ac = iter(reviews), iter(accepts)
 
@@ -8111,6 +8111,8 @@ def test_oncall_report_concurrence(tmp: Path):
                 if Path(schema).name == "oncall-fix.schema.json":
                     return {"status": "fixed", "rerun_mode": "resume", "diagnosis": "d", "editor_summary": dict(own)}
                 if Path(schema).name == "oncall-accept.schema.json":
+                    if during_accept:
+                        during_accept()
                     return next(ac)
                 return {"accepted": [], "refuted": [], "status": "unchanged", "rerun_mode": "unchanged"}
             rprompts = []
@@ -8198,6 +8200,16 @@ def test_oncall_report_concurrence(tmp: Path):
                                   review(verdict="approve", must_fix=[])], [])
         check("oncall-accept.schema.json" not in calls and not r["fix"].get("report_authorship"),
               f"走らせた記録の無い監査の文面で取り込もうとした: {calls}")
+        # (5) 了承のセッションが本体の作業ツリー・origin/main・.env に触ったら、了承でも取り込まない(Sol 監査2巡目の later)
+        for what, touch in (("本体の作業ツリー", lambda: setattr(oncall, "root_clean", lambda: False)),
+                            ("origin/main", lambda: setattr(oncall, "remote_main", lambda: "C" * 40)),
+                            (".env", lambda: setattr(oncall, "env_fingerprint", lambda: "changed"))):
+            r, tr, calls, _, _ = run([review(editor_summary=audit1)], [{"decision": "accept", "evidence": "x", "editor_summary": None}],
+                                     during_accept=touch)
+            check(not r["approved"] and r["fix"].get("status") == "cannot_fix" and not r["fix"].get("report_authorship")
+                  and calls == ["oncall-fix.schema.json", "oncall-accept.schema.json"],
+                  f"了承のセッションが{what}に触ったのに取り込んだ: {r.get('approved')} {r['fix'].get('status')} {calls}")
+            oncall.root_clean, oncall.remote_main, oncall.env_fingerprint = (lambda: True), (lambda: "B" * 40), (lambda: "env")
     finally:
         for n, v in saved.items():
             setattr(oncall, n, v)

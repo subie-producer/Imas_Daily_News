@@ -22,6 +22,7 @@
 import argparse
 import json
 import re
+import shutil
 import subprocess
 import sys
 import urllib.parse
@@ -33,7 +34,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, ID_CASE_HOSTS, QUERY_DOC_PAGES, SHORTENERS, classify_source,
                      source_type_table, write_source_table, prompt_part, render_prompt, query_doc_key, path_type_norm,
                      edition_date, extract_json_array, html_to_text, notify, render_failure, set_quiet,
-                     X_ANON_POST, x_post_author, link_key, src_rank)
+                     X_ANON_POST, x_post_author, CLI_BLOCKED_EXIT, CliBlocked, cli_check, link_key, src_rank)
+from pipelib import run_group   # モデル・道具は自前のグループで起動し、時間切れでは子孫まで止める
 
 # 合議で足してよい種別。公式・準公式も答えさせる(作品・ブランドの公式アカウントを「不明」で人へ回して
 # いたら、@idolmaster_en もジムシャニ公式も未確認のまま紙面に載った。編集長の指摘)。
@@ -927,8 +929,8 @@ def rendered_excerpt(url: str, chars: int = 1200) -> tuple[str, str]:
     分類の材料がメニューだけになっても、それが描画の時間切れのせいだと分類側にも当番にも見えなかった(監査指摘
     render-diagnostic-lost-in-classification)"""
     try:
-        r = subprocess.run([sys.executable, str(ROOT / "scripts" / "fetch_page.py"), url, "--chars", str(chars)],
-                           capture_output=True, text=True, timeout=150, stdin=subprocess.DEVNULL, cwd=ROOT)
+        r = run_group([sys.executable, str(ROOT / "scripts" / "fetch_page.py"), url, "--chars", str(chars)],
+                      timeout=150, cwd=ROOT)
     except Exception as e:
         return "", f"取得できず: {type(e).__name__}: {e}"[:300]
     if r.returncode != 0 or "--- 本文(要約なし) ---" not in r.stdout:
@@ -996,14 +998,31 @@ def ask(cmd: list[str], prompt: str, timeout: int = 900) -> list[dict]:
         from pipelib import partial_output, prompt_file, save_raw
         name = f"classify-{cmd[0]}-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
         short = prompt_file(edition_date(), name, prompt)
+        # codex は通信を開いた workspace-write で、リポジトリ外の作業ディレクトリ(fetch_page.py の入口つき)で走らせる。
+        # read-only では名前解決が通らず、依頼文どおり fetch_page.py で運営者情報を読もうとして毎回失敗していた
+        # (2026-10-18 classify-codex-c9936bed: Temporary failure in name resolution)
+        wd = None
         try:
-            r = subprocess.run(cmd + [short], capture_output=True, text=True,
-                               timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
+            if cmd[0] == "codex":
+                from collect import explore_workdir
+                wd = explore_workdir("classify", entry="scripts/fetch_page.py")
+                # 依頼文を書く失敗(容量不足など)でも作業ディレクトリを残さない(監査指摘 2026-10-21)
+                short = prompt_file(edition_date(), name, prompt, base=wd)
+            # モデル・道具は自前のグループで起動し、時間切れでは子孫まで止める(組 P)
+            r = run_group(cmd + [short], timeout=timeout, cwd=wd or ROOT)
         except subprocess.TimeoutExpired as e:
             save_raw(edition_date(), name, *partial_output(e))     # 時間切れの回も、それまでの出力を残す
             raise
+        finally:
+            if wd:
+                shutil.rmtree(wd, ignore_errors=True)
         # 答えが読めた・読めないに関係なく生の出力を残す(決まらなかった分類の理由を後から確かめるため)
         save_raw(edition_date(), name, r.stdout, r.stderr, r.returncode)
+        # 認証切れ・利用上限で答えなかったのは「決まらなかった」ではない(無回答として議論・人へ回さない)。判定を丸ごとやめて、
+        # 次の判定でやり直す(main が CLI_BLOCKED_EXIT で終え、取引が判定表を開始時へ戻す)
+        blocked = cli_check(cmd[0], "compose" if POSTS_ONLY else "collect", "出典の判定(合議)", r.returncode, r.stdout, r.stderr)
+        if blocked:
+            raise CliBlocked(blocked)
         # 異常終了の間際の出力は答えにしない(無回答として議論・人へ。監査指摘)
         rows = (extract_json_array(r.stdout) or []) if r.returncode == 0 else []
         if not rows:    # 答えが空のまま「—」で議論が流れると、なぜ決まらなかったのか後から追えない
@@ -1026,8 +1045,10 @@ def build_x_prompt(accts: dict[str, tuple[str, list[str]]]) -> str:
                                            for a, (_, t) in sorted(accts.items())))
 
 
-CMD_A = ["claude", "-p", "--model", COLLECT_MODEL, "--dangerously-skip-permissions"]
-CMD_B = ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "read-only", "--skip-git-repo-check"]
+# ページは依頼文どおり fetch_page.py で読ませる。WebFetch は JS を描画せず、公式ポータルが見出しだけに見える(2026-10-21)
+CMD_A = ["claude", "-p", "--model", COLLECT_MODEL, "--dangerously-skip-permissions", "--disallowedTools", "WebFetch"]
+CMD_B = ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
+         "-c", "sandbox_workspace_write.network_access=true"]
 
 
 def _key_forms(s: str) -> tuple[str, str]:
@@ -1603,6 +1624,8 @@ def resolve_videos(date: str, apply: bool) -> tuple[list[str], dict]:
 
 
 def main() -> int:
+    from pipelib import exit_on_term
+    exit_on_term()      # SIGTERM でも、起動した分類のセッションを子孫ごと止めてから終わる
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", default=None)
     ap.add_argument("--apply", action="store_true", help="一致したものを source_types.yml に足す")
@@ -1849,4 +1872,9 @@ def load_unresolved() -> dict[str, str]:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except CliBlocked as e:
+        # 投稿は見つけたときに済んでいる。決まらなかったものの記録(classify-unresolved.json)は書き換えない
+        print(f"出典の判定をやめた(次の判定でやり直す): {e}", flush=True)
+        sys.exit(CLI_BLOCKED_EXIT)

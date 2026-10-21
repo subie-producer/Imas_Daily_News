@@ -37,7 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import renderlib
 from pipelib import (ROOT, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, COMPOSE_WAVE, classify_source,
                      anomaly, claude_traced, err_tail, extract_json_array, loads_strict, notify, prompt_file, render_prompt,
-                     schema_ok, write_checked)
+                     schema_ok, write_checked, align_x_published_date, CliBlocked)
 
 POSTS = ROOT / "docs" / "_posts"
 EDITIONS = ROOT / "docs" / "_editions"
@@ -77,6 +77,9 @@ def load_materials(date: str) -> dict[str, dict]:
     if q.exists():
         for s in json.loads(q.read_text(encoding="utf-8")):
             mats.setdefault(s["id"], {**s, "origin": "scheduled"})
+    # X の投稿の掲載日は投稿 ID の日本時間(compose.load_window_candidates と同じ。保存済みのファイルは書き換えない)
+    for c in mats.values():
+        align_x_published_date(c)
     return mats
 
 
@@ -512,6 +515,13 @@ def judge(date: str, inp: dict, budget=None) -> dict:
              for i, ch in enumerate(chunks)]
     with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, min(len(jobs), COMPOSE_WAVE))) as ex:
         futs = [ex.submit(run_session, text, date, name, schema, budget) for name, text, schema in jobs]
+        # 全部を回収してから上げる。モデル CLI の認証切れ・利用上限(CliBlocked)は、先に終わったふつうの失敗より先に上げる
+        # (先頭の失敗で止めると、後の組の停止が隠れて組版が先へ進んだ。監査指摘 r6)
+        concurrent.futures.wait(futs)
+        errs = [f.exception() for f in futs if f.exception() is not None]
+        stop = [e for e in errs if isinstance(e, CliBlocked)]
+        if stop or errs:
+            raise (stop or errs)[0]
         outs = [f.result() for f in futs]        # 1本でも答えが無ければ、その経過を付けて上がる
     ledger_outs = outs[1:]
     # **記事ごとの答えを入力と突き合わせる。**stories は記事ごとに必ず1件の契約なので、stories の無い記事は
@@ -1217,6 +1227,8 @@ def run(date: str, number: int | None = None, dry: bool = False, budget=None) ->
 
 
 def main() -> int:
+    from pipelib import exit_on_term
+    exit_on_term()      # SIGTERM でも、起動した組版のセッションを子孫ごと止めてから終わる
     ap = argparse.ArgumentParser()
     ap.add_argument("--date", required=True)
     ap.add_argument("--number", type=int, default=None)

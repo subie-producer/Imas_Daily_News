@@ -17,6 +17,7 @@
   sources と new_facts の url。校閲は claude_review がまとめた blockers の rule_id と file。内容の良し悪しはコードで判定しない。
   本番の検算(書き直しは指摘の外の照合も)に通らない答えは、本番では採らないので「形」の不合格として別に出す
 - 出典のページは毎回取りに行かない: 事例の本文を置いたファイルを環境変数 IMAS_FETCH_PAGES で渡し、fetch_page.py はそれを返す(事例に無いページは取れない)。
+  本文を返したページは本番と同じくセッションの記録(IMAS_FETCH_RECORD)に残り、検算は根拠の URL がそれか素材かを見る
   ただし執筆(codex)の Web 検索は本物の Web に届く。「公式・報道に届かない」ことを前提にする事例は、Web に出典の無い話題で作る
   (2026-10-14 の初回: 本物の話題のまとめ記事の事例で、執筆が Web 検索で本物の報道を見つけて書いた)
 - 1事例1回(揺れを見る繰り返しはしない)。不合格は依頼文の欠陥の候補で、直すかは人が決める
@@ -141,10 +142,12 @@ def case_problems(case: dict) -> list[str]:
             bad = [i for i in exp.get(k) or [] if i not in ids]
             if bad:
                 p.append(f"expect.{k} に素材に無い事実 id: {bad}")
+        # 期待に書ける url は素材か、事例が本文を持たせたページ(素材がリンクする告知を執筆が fetch_page.py で読んで出典にする事例)
+        known = urls | {norm_url(u) for u in pages}
         for k in ("sources", "not_sources", "cite_sources"):
-            bad = [u for u in exp.get(k) or [] if norm_url(u) not in urls]
+            bad = [u for u in exp.get(k) or [] if norm_url(u) not in known]
             if bad:
-                p.append(f"expect.{k} に素材に無い url: {bad}")
+                p.append(f"expect.{k} に素材にも pages にも無い url: {bad}")
         if exp.get("status") == "ok" and not any(exp.get(k) for k in ("cite", "not_cite", "sources", "not_sources", "cite_sources")):
             p.append("書くことを期待する事例に、使う・使わない素材の期待(cite / not_cite / sources / not_sources / cite_sources)が無い")
         return p
@@ -292,14 +295,16 @@ def run_write(name: str, case: dict, label: str, work: Path) -> dict:
     short = pipelib.prompt_file("bench", f"rules-{label}-{name}", prompt)
     res = writer_bench.write_one(f"rules-{name}", short, label, CODEX_WRITE_MODEL)
     ans = res["answer"]
+    fetched = sorted(res.get("fetched") or [])      # このセッションで fetch_page.py が本文を取れたページ(本番の検算と同じく照らす)
     check = []
     if ans:
         # 本番の検算(status の分岐より先に掛ける。通らなければ本番では差し戻し)
         try:
-            check = renderlib.check_output(copy.deepcopy(ans), fact_by_id, case["materials"], rank=case["rank"], edition=case["date"])
+            check = renderlib.check_output(copy.deepcopy(ans), fact_by_id, case["materials"], rank=case["rank"], edition=case["date"],
+                                           fetched=fetched)
         except Exception as e:      # noqa: BLE001
             check = [f"検算できない({type(e).__name__})"]
-    return {"answer": ans, "exit": res["exit"], "check_problems": check}
+    return {"answer": ans, "exit": res["exit"], "check_problems": check, "fetched": fetched}
 
 
 def run_revise(name: str, case: dict, label: str, work: Path) -> dict:
@@ -319,6 +324,7 @@ def run_revise(name: str, case: dict, label: str, work: Path) -> dict:
     short = pipelib.prompt_file("bench", f"rules-{label}-{name}", prompt)
     res = writer_bench.write_one(f"rules-{name}", short, label, CODEX_WRITE_MODEL)
     ans = res["answer"]
+    fetched = sorted(res.get("fetched") or [])
     check = []
     if ans:
         try:
@@ -327,12 +333,14 @@ def run_revise(name: str, case: dict, label: str, work: Path) -> dict:
             if a.get("status") != "decline" and old_fm and not compose.event_date_targeted(issues, old_fm):
                 ev = old_fm.get("event_date")
                 a["event_date"] = ev.isoformat() if hasattr(ev, "isoformat") else (str(ev) if ev else None)
-            check = renderlib.check_output(a, fact_by_id, case["materials"], rank=case["rank"], edition=date)
+            # 根拠にできるページは本番の revise_apply と同じ(素材・このセッションで読めたページ・現在の稿の根拠のページ)
+            check = renderlib.check_output(a, fact_by_id, case["materials"], rank=case["rank"], edition=date,
+                                           fetched=set(fetched) | compose.draft_urls(old_fm))
             if a.get("status") != "decline":
                 check += compose.revise_check(a, issues, old_fm, re.split(r"\n---\n", current, maxsplit=1)[-1])
         except Exception as e:      # noqa: BLE001
             check = [f"検算できない({type(e).__name__})"]
-    return {"answer": ans, "exit": res["exit"], "check_problems": check}
+    return {"answer": ans, "exit": res["exit"], "check_problems": check, "fetched": fetched}
 
 
 def run_review(name: str, case: dict, label: str, work: Path) -> dict:
@@ -405,9 +413,13 @@ def run(names: list[str], label: str) -> int:
                                               "cases": sorted(cases)}, ensure_ascii=False), encoding="utf-8")
 
     def child(n: str) -> dict:
-        # 事例ごとに別のプロセス(出典の本文の環境変数と、校閲の作業フォルダを事例ごとに分ける)
-        r = subprocess.run([sys.executable, str(Path(__file__).resolve()), "--one", n, "--label", label],
-                           capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=3600)
+        # 事例ごとに別のプロセス(出典の本文の環境変数と、校閲の作業フォルダを事例ごとに分ける)。子は codex・claude を起こすので、
+        # 本番と同じ run_group で起動し、時間切れでは子孫まで止めてその事例だけ不合格にする(2026-10-21 組 P の取り込み)
+        try:
+            r = pipelib.run_group([sys.executable, str(Path(__file__).resolve()), "--one", n, "--label", label], timeout=3600)
+        except subprocess.TimeoutExpired as e:
+            so, se = pipelib.partial_output(e)
+            r = subprocess.CompletedProcess(e.cmd, 124, so, se)
         (d / f"{n}.log").write_text((r.stdout or "") + (r.stderr or ""), encoding="utf-8")
         f = d / f"{n}.json"
         if r.returncode != 0 or not f.exists():
@@ -427,6 +439,7 @@ def run(names: list[str], label: str) -> int:
 
 
 def main() -> int:
+    pipelib.exit_on_term()      # SIGTERM でも、起動した事例・執筆・校閲のセッションを子孫ごと止めてから終わる
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", nargs="*", metavar="CASE", help="事例を走らせる(名指しが無ければ全部)")
     ap.add_argument("--label", default=datetime.datetime.now().strftime("%Y%m%dT%H%M%S"))

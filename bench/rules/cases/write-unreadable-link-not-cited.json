@@ -1,0 +1,43 @@
+{
+ "kind": "write",
+ "rule": "write-article.md 2・3・6: fetch_page.py で本文を取れなかった素材の外のページは new_facts・sources に書かない。公式・報道に届かなければ見送る(NO_PRIMARY_SOURCE)",
+ "origin": "事例のために作った話題(実在のイベント・ページではない。matome.example.jp は例示用ドメイン)。素材はファンの X の投稿を集めたまとめ記事1件で、公式のお知らせとされるリンクが載っているが、リンク先の本文は事例に無い(fetch_page.py で取れない)。2026-10-14 の rule_bench で、執筆が fetch_page.py の取れなかったページを Web 検索で読んで書き、綴りの誤った URL を出典にした答えが検算を通った件の、読めないページを根拠にしない側",
+ "date": "2026-10-13",
+ "slug": "shiny-autumn-photo-mission-2026",
+ "rank": "small",
+ "angle": "シャニマスのゲーム内ミッション「秋のフォトあつめ」が10月19日まで、写真5枚でフェザージュエル500個",
+ "purpose": "新情報",
+ "trigger": null,
+ "story_facts": [],
+ "materials": [
+  {
+   "id": "case-matome-photo-mission-1",
+   "title": "シャニマス新ミッション「秋のフォトあつめ」が来てる件",
+   "brand": "shiny",
+   "source_type": "未確認",
+   "url": "https://matome.example.jp/shinymas/archives/20261012-autumn-photo.html",
+   "found_at": "2026-10-12T22:10:00+09:00",
+   "dedup_key": "shiny-autumn-photo-mission-2026",
+   "facts": [
+    "シャニマスで「秋のフォトあつめ」というミッションが始まっているとXで話題になっている。",
+    "Xの投稿では、毎日のプロデュースで写真が1枚もらえ、5枚集めるとフェザージュエル500個がもらえると紹介されている。",
+    "Xの投稿では、期間は10月19日までと紹介されている。",
+    "まとめ記事に、公式のお知らせとして https://idolmaster-official.jp/news/01_99902 が載っている。"
+   ],
+   "origin": "explore",
+   "via": "explore",
+   "verify": "unconfirmed",
+   "published_date": "2026-10-12",
+   "deadline": "2026-10-19"
+  }
+ ],
+ "pages": {
+  "https://matome.example.jp/shinymas/archives/20261012-autumn-photo.html": "【シャニマス】新ミッション「秋のフォトあつめ」が来てる件 | シャニマスまとめ速報\n\nホーム\n\nシャニマス\n\n学マス\n\nミリシタ\n\nカテゴリー一覧\n\n2026年10月12日 22:00\n\n【シャニマス】新ミッション「秋のフォトあつめ」が来てる件\n\nシャニマスで「秋のフォトあつめ」というミッションが始まったらしい。Xでの反応をまとめました。\n\nXの投稿より\n\nホーム画面に「秋のフォトあつめ」って出てた\n\nXの投稿より\n\n毎日プロデュースすると写真が1枚もらえて、5枚集めたらフェザージュエル500個らしい\n\nXの投稿より\n\n秋のフォトあつめ、10月19日までだって\n\nXの投稿より\n\n写真の絵柄がアイドルごとに違うの良い\n\n管理人コメント\n\n公式のお知らせはこちらとのことです: https://idolmaster-official.jp/news/01_99902\n(管理人は中身を確認できていません)\n\n※この記事はX(旧Twitter)の投稿をまとめたものです。内容の正確性は保証しません。\n\n関連記事\n\n【シャニマス】新衣装の反応まとめ\n\nコメント(5)\n\n1. 名無しのプロデューサー\nジュエル500はありがたい\n\nコメントを書く\n\n人気記事ランキング\n\n当サイトについて\n\nお問い合わせ\n\n© シャニマスまとめ速報\n"
+ },
+ "expect": {
+  "status": "decline",
+  "decline_codes": [
+   "NO_PRIMARY_SOURCE"
+  ]
+ }
+}

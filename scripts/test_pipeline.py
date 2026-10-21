@@ -20,14 +20,18 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 os.environ["IMAS_STRICT_WRITES"] = "1"
 # テストの一時ファイルは全部1つのディレクトリの下に作り、終わったら消す。子プロセスも同じ置き場(TMPDIR)。/tmp は 3.8GB の tmpfs で、
 # 走らせるたびに一時ディレクトリを残して埋まり、監査のテストが容量不足で止まった(2026-10-14。selfcheck・当番の往復でも走る)
+# 置き場は /tmp でなく /home 側(pipelib を先に読むと、TMPDIR が /tmp か未設定なら ~/.cache/imas-news/tmp へ向く)。
+# 本番のコードが作る使い捨ての作業場所(IMAS_SCRATCH)とモデル CLI の停止の記録も、この中へ向ける(本物の置き場・記録に触らない)
+import pipelib
 TEST_TMP = Path(tempfile.mkdtemp(prefix="imas-test-"))
 tempfile.tempdir = str(TEST_TMP)
 os.environ["TMPDIR"] = str(TEST_TMP)
+os.environ["IMAS_SCRATCH"] = str(TEST_TMP / "scratch")
+pipelib.CLI_BLOCK_STATE = TEST_TMP / "cli-blocked.json"
 atexit.register(shutil.rmtree, TEST_TMP, True)
 import assemble
 import compose
 import lint
-import pipelib
 import renderlib
 
 FAILS: list[str] = []
@@ -164,9 +168,11 @@ def test_check_output():
     good = dict(OK, sources=OK["sources"] + [{"url": "https://z.example/9", "label": "w"}],
                 new_facts=[{"id": "N1", "text": "9月25日発売", "url": "https://z.example/9"}], event_date="2026-09-25",
                 blocks=[{"markdown": "x", "fact_ids": ["F1", "F3", "F4", "N1"]}])
-    check(C(good) == [], f"new_facts 付きの出力が落ちた: {C(good)}")
-    # 素材に無い URL(執筆が見つけた出典)は許す。実在・一致の確認は校閲(項目3)
-    check(C(dict(OK, sources=OK["sources"] + [{"url": "https://q.example", "label": "q"}])) == [], "素材に無い出典 URL を機械が落とした")
+    check(C(good, fetched={"https://z.example/9"}) == [], f"new_facts 付きの出力が落ちた: {C(good, fetched={'https://z.example/9'})}")
+    # 素材に無い URL(執筆が見つけた出典)は、fetch_page.py で本文を取れたページなら許す。中身の一致の確認は校閲(項目3)
+    # (読めたかの検査は test_check_output_unread_pages)
+    check(C(dict(OK, sources=OK["sources"] + [{"url": "https://q.example", "label": "q"}]), fetched=["https://q.example/"]) == [],
+          "読めた素材の外の出典 URL を機械が落とした")
     check(C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "#タグ_付き ID"}])) == [], "label の # や _ を落とした")
     check(any("Markdown" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "[リンク](x)"}]))),
           "label の Markdown リンクが通った")
@@ -219,6 +225,69 @@ def test_check_output():
     check(len(C({"status": "decline", "decline_code": "", "decline_detail": ""})) == 2, "理由の無い decline が通った")
     check(C({"status": "decline", "decline_code": "NOT_NEWS", "decline_detail": "x"}) == [], "正当な decline が落ちた")
     check(any("decline_code" in p for p in C(dict(OK, decline_code="OTHER"))), "ok なのに decline_code ありが通った")
+
+
+def test_check_output_unread_pages():
+    """執筆の根拠の URL(new_facts・sources)は、素材の url か、fetch_page.py が本文を取れたページ(セッションの記録)だけ。2026-10-14 の rule_bench:
+    執筆が fetch_page.py の取れなかった報道を Web 検索で読んで期間を断定し、綴りの誤った URL(news.denfamicogamer.jp)を new_facts と出典に
+    書いた答えが検算を通った(校閲は fetch_page.py だけで読むので確かめられない)。素材・読んだページと書き方が違うだけ(末尾の /・scheme・
+    共有用のクエリ・%エンコード・リダイレクトの行き先)の正しい答えは落とさない"""
+    import copy
+    _, fb = renderlib.materials_with_ids(MATS)
+    C = lambda o, fetched=(): renderlib.check_output(copy.deepcopy(o), fb, MATS, fetched=fetched)
+    unread = lambda ps: [p for p in ps if "fetch_page.py で本文を取れていない" in p]
+    press, typo = "https://news.denfaminicogamer.jp/news/261009y", "https://news.denfamicogamer.jp/news/261009y"
+    ans = dict(OK, new_facts=[{"id": "N1", "text": "10月15日3:59まで", "url": press}], blocks=[{"markdown": "x", "fact_ids": ["F1", "F3", "F4", "N1"]}],
+               sources=OK["sources"] + [{"url": press, "label": "電ファミニコゲーマー"}])
+    check(unread(C(ans)), "fetch_page.py で読めていない素材の外のページを根拠にした答えが検算を通った")
+    check(C(ans, fetched={press}) == [], f"fetch_page.py で読めたページを根拠にした答えを落とした: {C(ans, fetched={press})}")
+    # 綴りの誤った URL(実在しないページ)は、正しい綴りのページを読んでいても通さない。new_facts だけ・sources だけでも
+    only_n = dict(ans, new_facts=[dict(ans["new_facts"][0], url=typo)])
+    only_s = dict(ans, sources=OK["sources"] + [{"url": typo, "label": "電ファミニコゲーマー"}])
+    check(unread(C(only_n, fetched={press})) and unread(C(only_s, fetched={press})), "綴りの誤った URL を根拠にした答えが検算を通った")
+    check(typo in " ".join(unread(C(only_s, fetched={press}))), "差し戻しの理由に、読めていない URL が無い(書き手が直せない)")
+    # 書き方が違うだけの同じページは落とさない(共有・計測用のクエリは、片側だけでも、両側で値・種類が違っても同じページ)
+    for cited, pool in ((press + "/", {press}), ("http://news.denfaminicogamer.jp/news/261009y", {press}),
+                        ("https://www.youtube.com/watch?v=abc", {"https://youtube.com/watch?v=abc&si=xyz"}),
+                        ("https://www.youtube.com/watch?v=abc&si=AAA&t=30", {"https://youtube.com/watch?si=BBB&v=abc"}),
+                        ("https://shop.example.jp/item?id=1&utm_source=cite", {"https://shop.example.jp/item?utm_source=fetch&id=1"}),
+                        ("https://shop.example.jp/item?id=1&fbclid=x", {"https://shop.example.jp/item?gclid=y&id=1"}),
+                        ("https://example.jp/商品/1", {"https://example.jp/%E5%95%86%E5%93%81/1"}),
+                        ("https://www.lantis.jp/release_1.html", {"https://lnk.to/1", "https://www.lantis.jp/release_1.html"}),
+                        ("https://twitter.com/imas/status/1", {"https://x.com/imas/status/1?s=20"}),
+                        ("https://x.com/imas/status/1?s=46&t=abc", {"https://x.com/imas/status/1?s=20"}),
+                        ("https://example.jp:443/a", {"https://example.jp/a"}), ("http://example.jp:80/a", {"https://example.jp/a"}),
+                        ("https://example.jp/a%2fb", {"https://example.jp/a%2Fb"}), ("https://example.jp/%7Euser", {"https://example.jp/~user"}),
+                        ("https://example.jp/s?q=商品", {"https://example.jp/s?q=%E5%95%86%E5%93%81"}),
+                        ("https://example.jp/s?q=a+b", {"https://example.jp/s?q=a%20b"})):
+        a = dict(ans, new_facts=[dict(ans["new_facts"][0], url=cited)], sources=OK["sources"] + [{"url": cited, "label": "l"}])
+        check(C(a, fetched=pool) == [], f"同じページの書き方の違いで落とした: {cited} / {sorted(pool)}: {C(a, fetched=pool)}")
+    # 素材の url は記録が無くても根拠にできる(FETCH_FAILED の素材・X の投稿も出典には書く)。書き方が違うだけでも同じ
+    mat = dict(OK, sources=[{"url": "https://a.example/1/?utm_source=x", "label": "x"}, {"url": "http://b.example/2", "label": "y"}],
+               new_facts=[{"id": "N1", "text": "t", "url": "https://c.example/3/"}], blocks=[{"markdown": "x", "fact_ids": ["F1", "N1"]}])
+    check(C(mat) == [], f"素材の url(書き方違い)を根拠にした答えを落とした: {C(mat)}")
+    # ページを選ぶクエリが違う・片方にしか無い・個数が違う、別のパス・ポート・%2F は別のページ(読んだ /item で、読んでいない別の商品
+    # /item?id=2 を通さない。2026-10-14 監査指摘)。素材と同じパスの別のページも同じ
+    for cited, pool in (("https://www.youtube.com/watch?v=B", {"https://www.youtube.com/watch?v=A"}),
+                        ("https://shop.example.jp/item?id=2", {"https://shop.example.jp/item"}),
+                        ("https://shop.example.jp/item", {"https://shop.example.jp/item?id=1"}),
+                        ("https://shop.example.jp/item?id=1&id=2", {"https://shop.example.jp/item?id=1"}),
+                        ("https://shop.example.jp/item?id=1&s=20", {"https://shop.example.jp/item?id=1"}),
+                        ("https://a.example/1?id=2", set()), ("https://example.jp:8080/a", {"https://example.jp/a"}),
+                        # 既定のポートは scheme ごと: http の 443・https の 80 は既定ではない(2026-10-14 監査指摘)
+                        ("http://shop.example.jp:443/item", {"http://shop.example.jp:80/item"}),
+                        ("https://shop.example.jp:80/item", {"https://shop.example.jp/item"}),
+                        ("https://example.jp/a%2Fb", {"https://example.jp/a/b"}), ("https://example.jp/a/b", {"https://example.jp/a%2Fb"}),
+                        # 二重の %エンコード(%252F は「%2F」という文字列)・不正な UTF-8 の別のバイトは別のページ(2026-10-14 監査指摘)
+                        ("https://example.jp/a%252Fb", {"https://example.jp/a%2Fb"}), ("https://example.jp/a%2Fb", {"https://example.jp/a%252Fb"}),
+                        ("https://example.jp/%FF", {"https://example.jp/%FE"}), ("https://example.jp/s?q=%FF", {"https://example.jp/s?q=%FE"}),
+                        ("https://example.jp/s?q=a%26b", {"https://example.jp/s?q=a&b"}),
+                        ("https://a.example/12", {"https://a.example/1"}), ("https://a.example.evil/1", set())):
+        a = dict(ans, new_facts=[dict(ans["new_facts"][0], url=cited)], sources=OK["sources"])
+        check(unread(C(a, fetched=pool)), f"別のページを読めたページ・素材として通した: {cited} / {sorted(pool)}")
+    # 見送りは根拠の URL を持たない。記録の無い答え(記録を始める前の答えを読み直す道具が fetched=None を渡す)は読めたかを見ない
+    check(C({"status": "decline", "decline_code": "NOT_NEWS", "decline_detail": "x"}) == [], "見送りを根拠の URL で落とした")
+    check(C(ans, fetched=None) == [], "記録の無い答え(fetched=None)で、読めたかを見た")
 
 
 def test_render_and_length():
@@ -1118,6 +1187,7 @@ def test_leave_tree_clean_partial(tmp: Path):
         compose._leave_tree_clean("テスト: 号を作る前に停止")
     finally:
         compose.ROOT, pipelib.ROOT, compose.STARTED_ON, compose.STARTED_DATE, compose.notify, pipelib.notify = saved
+        pipelib.STOPPING.clear()    # 途中終了の後始末(stop_groups)が立てた「終えるところ」を、後のテストのために戻す
     left = g("status", "--porcelain", "--untracked-files=all").stdout.splitlines()
     committed = set(g("show", "--name-only", "--format=", "HEAD").stdout.split())
     check(left == [" M scripts/other.py"], f"途中終了の後始末のあとに compose の成果物が残った/成果物でない変更まで commit した: {left} / {notes}")
@@ -1144,6 +1214,7 @@ def test_grok_deep_retry(tmp: Path):
             pid = 0
             returncode = 0
             def wait(self, timeout=None): return 0
+            def communicate(self, timeout=None): return None, None
 
         def fake_popen(args, cwd=None, **kw):
             wd = Path(cwd)
@@ -1202,6 +1273,116 @@ def test_grok_deep_retry(tmp: Path):
     check(any("投げ直し" in m and "cg" in m for m in notes), f"投げ直しの失敗を知らせない: {notes}")
 
 
+def test_grok_verify_keeps_what_it_counts(tmp: Path):
+    """X の投稿の確かめで、候補にする判定と投稿を済みと数える判定が同じ(candidate_usable)。2026-10-22 02:39 の gakuen 面: 確かめ役が
+    kind にアイドル名の配列を入れた候補は、欄を落として候補になったのに投稿は「結果が無い」と数え、「失った」と通知した。
+    kind は候補に写さない欄なので崩れても済み。中身の欄(締切など)が崩れた候補は候補にせず、元の投稿を確かめ直す。
+    どの投稿にも結び付かない崩れた候補は名指しする。確かめ役・通知は差し替え、実際の verify_grok_faces を通す"""
+    import collect
+    base = {"title": "t", "brand": "gaku", "kind": "official", "event_date": "", "published_date": "2026-10-20", "deadline": "2026-10-30",
+            "facts": ["事実"], "quote": "q", "dedup_key": "k", "engagement": "中", "mentioned_idols": []}
+    p9, p1, goods = "https://x.com/gkmas_official/status/9", "https://x.com/gkmas_official/status/1", "https://example.com/goods"
+    posts = (f"### 1\n- url: {p9}\n- 本文: くじの告知\n- リンク: なし\n\n"
+             f"### 2\n- url: {p1}\n- 本文: グッズの告知\n- リンク:\n  - {goods}\n")
+
+    def run(first: list, again: list, tag: str, ledger=None, suffix: str = "", report: bool = False):
+        root = tmp / tag
+        root.mkdir(parents=True, exist_ok=True)
+        (root / f"gakuen{suffix}.md").write_text(posts, encoding="utf-8")
+        notes, passes = [], []
+        class VP:
+            pid = 0
+            returncode = 0
+            def wait(self, timeout=None): return 0
+            def poll(self): return 0
+            def communicate(self, timeout=None): return "", ""
+            def kill(self): pass
+        def fake_popen(args, cwd=None, **kw):
+            wd = Path(cwd)
+            text = (wd / "x-posts.md").read_text(encoding="utf-8")
+            passes.append([collect.post_url(b) for b in collect.post_blocks(text)])
+            # 候補は (元の投稿, 書く要素) の組。要素は dict でないこともある(崩れた答え)
+            answer = again if "-again" in wd.name else first
+            if answer is None:      # 何も答えない(候補も投稿ごとの結果も空)
+                for n in ("items.json", "posts.json", "deep.json"):
+                    (wd / n).write_text("[]", encoding="utf-8")
+                return VP()
+            its = [(p, x) for p, x in answer if any(p == collect.post_url(b) for b in collect.post_blocks(text))]
+            (wd / "items.json").write_text(json.dumps([x for _, x in its], ensure_ascii=False), encoding="utf-8")
+            res = {}
+            for p, x in its:
+                if isinstance(x, dict):
+                    res.setdefault(p, x["url"])
+            (wd / "posts.json").write_text(json.dumps([{"url": collect.post_url(b), "status": "extracted" if collect.post_url(b) in res else "none",
+                                                        "item": res.get(collect.post_url(b), "")} for b in collect.post_blocks(text)]), encoding="utf-8")
+            (wd / "deep.json").write_text("[]", encoding="utf-8")
+            return VP()
+        names = ("prompt_file", "save_raw", "explore_workdir", "notify")
+        saved = {n: getattr(collect, n) for n in names}
+        saved_popen = collect.subprocess.Popen
+        try:
+            collect.prompt_file = lambda date, name, prompt, base=None: "p"
+            collect.save_raw = lambda *a, **kw: None
+            collect.explore_workdir = lambda key: (root / "wd" / key).mkdir(parents=True, exist_ok=True) or root / "wd" / key
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+            collect.subprocess.Popen = fake_popen
+            items, _ = collect.verify_grok_faces([{"key": "gakuen", "brand": "gaku", "topic": "t"}], root, suffix=suffix, ledger=ledger)
+            if report:
+                collect.report_lost_posts(ledger)
+        finally:
+            for n, v in saved.items():
+                setattr(collect, n, v)
+            collect.subprocess.Popen = saved_popen
+        return items, notes, passes
+
+    # kind にアイドル名の配列(実データの崩れ方)。2回とも同じ答えでも、候補になり、確かめ直さず、失ったと言わない
+    shifted = {**base, "kind": ["リーリヤ", "紫雲清夏", "姫崎莉波"], "url": p9}
+    check(collect.candidate_usable(shifted), "kind が崩れただけの候補を、依頼した形でないとした")
+    items, notes, passes = run([(p9, shifted)], [(p9, shifted)], "kind")
+    check([x["url"] for x in items] == [p9] and len(passes) == 1 and not notes,
+          f"kind の崩れた候補を候補にしたのに、投稿を確かめ直し・失ったと通知した: {items} / {passes} / {notes}")
+    # kind は候補に写さない(崩れていても正しくても)
+    items_ok, _, _ = run([(p9, {**base, "url": p9})], [], "kind-ok")
+    check(all("kind" not in x for x in items + items_ok) and all("kind" not in x for x in collect.normalize(items_ok)),
+          f"写さない欄 kind を候補に運んだ: {items} / {items_ok}")
+    # 締切の崩れた候補は候補にせず(欄を落とした候補を作らない)、元の投稿を確かめ直す。直った答えだけが候補になる
+    items, notes, passes = run([(p9, {**base, "deadline": "2026/10/30", "url": p9})], [(p9, {**base, "url": p9})], "deadline")
+    check([(x["url"], x.get("deadline")) for x in items] == [(p9, "2026-10-30")] and passes[1:] == [[p9]] and not notes,
+          f"締切の崩れた候補を候補にした・確かめ直さなかった: {items} / {passes} / {notes}")
+    # 投稿に貼られたリンクの候補が崩れていたら、その投稿は(投稿そのものの候補が正しくても)済みにしない
+    items, notes, passes = run([(p1, {**base, "url": p1}), (p1, {**base, "url": goods, "deadline": "11月"})],
+                               [(p1, {**base, "url": p1}), (p1, {**base, "url": goods})], "link")
+    # (リンク先は未確認の出典なので、付け直しで投稿の url になる)
+    check([(x["url"], x.get("deadline")) for x in items] == [(p1, "2026-10-30")] * 3 and passes[1:] == [[p1]] and not notes,
+          f"リンク先の候補が崩れた投稿を済みにした: {items} / {passes} / {notes}")
+    # どの投稿にも結び付かない崩れた候補は、確かめ直せないので名指しする(欄を落として黙って候補にしない)。
+    # dict でない要素(配列・文字列)も中身があり得るので同じ。null は中身が無いので名指ししない
+    stray = {**base, "url": "https://example.com/stray", "deadline": "未定"}
+    items, notes, passes = run([(p9, {**base, "url": p9}), (p9, stray), (p9, [p9, "締切2026-11-30の新商品"]), (p9, None)], [], "stray")
+    check([x["url"] for x in items] == [p9] and len(passes) == 1 and len(notes) == 1 and "https://example.com/stray" in notes[0]
+          and "新商品" in notes[0] and "null" not in notes[0] and "X の投稿" not in notes[0],
+          f"どの投稿にも結び付かない崩れた候補を名指ししない: {items} / {passes} / {notes}")
+    # 段をまたぐ: 通常の確かめで済んだ投稿でも、深掘りの確かめで崩れた候補(新しい事実)が2回とも直らなければ、その中身を失ったと名指しする
+    # (投稿が別の段で済んでいることで、崩れた候補の喪失を消さない。Sol 監査 r1)
+    ledger = collect.lost_posts_ledger()
+    run([(p9, {**base, "url": p9})], [], "cross", ledger=ledger)
+    broken_deep = (p9, {**base, "url": p9, "facts": ["追加の発表"], "deadline": "11月末"})
+    items, notes, passes = run([broken_deep], [broken_deep], "cross", ledger=ledger, suffix="-deep", report=True)
+    check(items == [] and len(notes) == 1 and p9 in notes[0] and "候補の形が崩れていた" in notes[0],
+          f"別の段で済んだ投稿の、深掘りで崩れた候補の喪失を名指ししない: {items} / {notes}")
+    # 確かめ直しが何も答えなくても(候補も投稿ごとの結果も空)、1回目の崩れた候補の喪失として名指しする(Sol 監査 r2)
+    ledger = collect.lost_posts_ledger()
+    run([(p9, {**base, "url": p9})], [], "cross3", ledger=ledger)
+    items, notes, passes = run([broken_deep], None, "cross3", ledger=ledger, suffix="-deep", report=True)
+    check(items == [] and len(passes) == 2 and len(notes) == 1 and p9 in notes[0] and "候補の形が崩れていた" in notes[0],
+          f"確かめ直しが空のとき、深掘りで崩れた候補の喪失を名指ししない: {items} / {passes} / {notes}")
+    # 深掘りの答えが「事実なし」なら、通常の段で済んだ投稿は失っていない(従来どおり)
+    ledger = collect.lost_posts_ledger()
+    run([(p9, {**base, "url": p9})], [], "cross2", ledger=ledger)
+    items, notes, passes = run([], [], "cross2", ledger=ledger, suffix="-deep", report=True)
+    check(not notes, f"深掘りで事実なしの投稿を失ったと通知した: {notes}")
+
+
 def test_lost_post_notified_once(tmp: Path):
     """X の投稿の喪失は、深掘りの確かめまで終えた最終結果で、投稿ごとに1度だけ通知する(当番の指摘 11fc3de74b。
     実測 2026-10-07: 通常の確かめで読めなかった投稿を深掘り前に通知し、深掘りでも読めずにもう一度通知した)。
@@ -1215,6 +1396,7 @@ def test_lost_post_notified_once(tmp: Path):
             pid = 0
             returncode = 0
             def wait(self, timeout=None): return 0
+            def communicate(self, timeout=None): return None, None
         def fake_popen(args, cwd=None, **kw):
             wd = Path(cwd)
             urls = re.findall(r"(?m)^(?:- )?url:\s*(\S+)", (wd / "x-posts.md").read_text(encoding="utf-8"))
@@ -1287,10 +1469,13 @@ def test_lost_post_notified_once(tmp: Path):
     vroot = tmp / "verify-order"
     (vroot / "cg.md").parent.mkdir(parents=True)
     (vroot / "cg.md").write_text(reply + "\n", encoding="utf-8")
-    class VP:
+    class VP:       # 起動は pipelib.start_group 越し(待ち・回収は finish_group が communicate・kill で行う)
         pid = 0
         returncode = 0
         def wait(self, timeout=None): return 0
+        def poll(self): return 0
+        def communicate(self, timeout=None): return "", ""
+        def kill(self): pass
     def body_popen(args, cwd=None, **kw):
         wd = Path(cwd)
         res, its = [], []
@@ -1351,17 +1536,21 @@ def test_official_topic_accepts_press():
     code = next((l for l in w.splitlines() if l.startswith("- NO_PRIMARY_SOURCE:")), "")
     r5 = "\n".join(l for l in r.splitlines()[next((i for i, l in enumerate(r.splitlines()) if l.startswith("- R5 ")), 0):][:2])
     check("報道" in rule and "報道" in code and "報道" in r5, f"報道を認める基準が執筆・理由コード・校閲で揃っていない: {rule[:60]} / {code[:60]} / {r5[:80]}")
-    # 報道は「公式の告知を取材・引用したもの」に限る(ファンの投稿を集めた記事・転載は除く)。公式と食い違う値は公式を採る。両方とも
-    # 執筆と校閲の両側にある(片側だけ旧状態に戻ると、まとめ記事や報道の誤った値で書いた記事が通る。監査指摘)
-    limit = "公式の告知を取材・引用した報道"
+    # 報道は「公式の発表・ゲーム内のお知らせを報じたもの」に限る(ファンの投稿を集めた記事・転載は除く)。公式と食い違う値は公式を採る。両方とも
+    # 執筆と校閲の両側にある(片側だけ旧状態に戻ると、まとめ記事や報道の誤った値で書いた記事が通る。監査指摘)。
+    # 報道の範囲は執筆・校閲・書き直しで同じ書き方で、告知文の引用を条件にしない(2026-10-14: 「公式の告知を取材・引用した報道」を、校閲が
+    # 「告知文を引用しておらず R5 は境界線上」と読んだ。規則が効くかは rule_bench の事例 review-article-press-only-no-r5 が見る)
+    limit = "公式の発表・ゲーム内のお知らせを報じた報道"
     r5_full = "\n".join(r.splitlines()[next((i for i, l in enumerate(r.splitlines()) if l.startswith("- R5 ")), 0):][:3])
-    check(limit in w and limit in r5_full and "ファンの投稿を集めた記事・転載は除く" in w and "ファンの投稿を集めた記事・転載は除く" in r5_full,
-          "報道の限定条件が執筆・校閲の両方に無い")
+    rv = (pipelib.ROOT / "prompts" / "revise-article.md").read_text(encoding="utf-8")
+    check(limit in w and limit in r5_full and limit in rv and "ファンの投稿を集めた記事・転載は除く" in w and "ファンの投稿を集めた記事・転載は除く" in r5_full,
+          "報道の限定条件が執筆・校閲・書き直しに同じ書き方で無い")
+    check(all("告知文を引用していなくてよい" in t for t in (w, r5_full, rv)) and not any("取材・引用" in t for t in (w, r, rv)),
+          "報道の範囲に告知文の引用を条件と読める書き方が残っている")
     check("公式と食い違う値は、どの出典で書くときも公式を採る" in w and "食い違う値" in r5_full and "公式を採る" in r5_full,
           "公式と食い違う値は公式を採る、が執筆・校閲の両方に無い")
     # 報道で書く記事でも、報道の本文で確かめた具体を足せる(素材に無い事実の確かめの元に報道を含める。執筆・校閲・書き直し)
-    rv = (pipelib.ROOT / "prompts" / "revise-article.md").read_text(encoding="utf-8")
-    check("3 で出典にできる報道" in w and "R5 の条件を満たす報道" in r and "公式の告知を取材・引用した報道" in rv,
+    check("3 で出典にできる報道" in w and "R5 の条件を満たす報道" in r and limit in rv,
           "報道の本文で確かめた事実を足せない(素材に無い事実の確かめの元が一次情報だけ)")
 
 
@@ -1380,6 +1569,7 @@ RULE_CASES = {
     "review-article-fan-matome-only-r5": "review_article", "review-article-press-price-conflict-r5": "review_article",
     "review-paper-same-event-different-news-kept": "review_paper", "review-paper-same-news-twice-drops-one": "review_paper",
     "revise-press-price-conflict-uses-official": "revise",
+    "write-linked-official-read-by-fetch-page": "write", "write-unreadable-link-not-cited": "write",
 }
 
 
@@ -1426,6 +1616,15 @@ def test_rule_bench_cases():
           "素材に無い出典を cite_sources にできる")
     check(broken("revise-press-price-conflict-uses-official", lambda c: c.update(issues=[])), "指摘の無い書き直しの事例を通す")
     check(broken("revise-press-price-conflict-uses-official", lambda c: c.update(slug="other")), "書き直す記事と slug が合わない事例を通す")
+    # 素材の外のページの事例: 読めるリンク先(本文を持たせた素材の外のページ)を出典に期待する / 読めないリンク先(本文が無い)は見送りを期待する
+    lo, ul = cases["write-linked-official-read-by-fetch-page"], cases["write-unreadable-link-not-cited"]
+    off = (lo["expect"].get("sources") or [""])[0]
+    check(off in lo["pages"] and off not in {m["url"] for m in lo["materials"]} and any(off in f for m in lo["materials"] for f in m["facts"]),
+          f"読めるリンク先の事例: 期待の出典が、素材がリンクする素材の外のページ(本文あり)でない: {off}")
+    link = re.findall(r"https://\S+", " ".join(f for m in ul["materials"] for f in m["facts"]))
+    check(link and not any(u in ul["pages"] for u in link) and ul["expect"].get("status") == "decline",
+          f"読めないリンク先の事例: リンク先の本文を持たせている・見送りを期待しない: {link}")
+    check(broken("write-linked-official-read-by-fetch-page", lambda c: c["pages"].pop(off, None)), "期待の出典が素材にも pages にも無い事例を通す")
 
 
 def test_rule_bench_judges_shape(tmp: Path):
@@ -1527,19 +1726,19 @@ def test_rule_bench_judges_shape(tmp: Path):
         r = rule_bench.run_one("write-fan-matome-only-declines", "t2b")
         check(not r["pass"] and r["problems"] == [] and r["shape_problems"], f"本番の検算に通らない答えを合格にした: {r.get('shape_problems')}")
         # 答えの読み込みは本番と同じ(同じキーが2回ある答え・出力 schema に合わない答えは読めない答え)
-        saved_run = writer_bench.subprocess.run
+        saved_run = writer_bench.run_group      # 執筆の起動は本番と同じ run_group(自前のグループ。時間切れで子孫まで止める)
         try:
             whole = json.dumps(good, ensure_ascii=False)
             off_schema = json.dumps(dict(good, addressed_issue_ids="I1"), ensure_ascii=False)
             for text, readable in (('{"status": "decline", ' + whole[1:], False), (off_schema, False), (whole, True)):
-                def fake_run(cmd, **kw):
+                def fake_run(cmd, timeout=None, **kw):
                     Path(cmd[cmd.index("--output-last-message") + 1]).write_text(text, encoding="utf-8")
                     return subprocess.CompletedProcess(cmd, 0, "", "")
-                writer_bench.subprocess.run = fake_run
+                writer_bench.run_group = fake_run
                 got = saved[3]("x", "p", "t", "m")["answer"]
                 check((got is not None) == readable, f"答えの読み込みが本番と違う(同じキーが2回ある答え・schema 違反・正しい答え): {text[:40]} → {got}")
         finally:
-            writer_bench.subprocess.run = saved_run
+            writer_bench.run_group = saved_run
         # 書き直し: 本番と同じ依頼文(指摘に I1 を振る・現在の記事・素材)で書かせ、報道の食い違う価格を根拠に残さない答えだけを合格にする
         import yaml
         rv = rule_bench.load_cases(["revise-press-price-conflict-uses-official"])["revise-press-price-conflict-uses-official"]
@@ -1646,6 +1845,143 @@ def test_rule_bench_judges_shape(tmp: Path):
           f"事例の本文を本番と同じ形(期間・本文)で返さない: {outs[:1]}")
     check(len(outs) == 2 and outs[1][0] == 1 and outs[1][1].startswith("FETCH_FAILED"), f"事例に無いページを取れたことにした: {outs[1:]}")
     check(not wrong, f"事例の固定の本文が、そのままの中身で返らない: {wrong[:3]}")
+
+
+def test_bench_tools_check_read_pages(tmp: Path):
+    """執筆の品質の測定(writer_bench.metrics)と過去記事の書き直し(rewrite_past)も、本番と同じく根拠の URL を記録と照らす:
+    空の記録なら素材の外のページを根拠にした答えを不合格にし(rewrite_past は記事を書き換えない)、読めた記録なら合格、記録の無い古い答え
+    (None)は読めたかを見ない。rewrite_past は記事ごとの記録を検算に渡す(2026-10-14 監査指摘: この経路で記録を捨てても全テストが通った)"""
+    import copy
+    import rewrite_past
+    import writer_bench
+    unread_url = "https://unread.example.jp/news"
+    mats, _ = renderlib.materials_with_ids(MATS)
+    case = {"materials": mats, "rank": "small", "date": "2026-10-14"}
+    ans = dict(OK, new_facts=[{"id": "N1", "text": "追加の事実", "url": unread_url}], blocks=[{"markdown": "x", "fact_ids": ["F1", "F3", "F4", "N1"]}],
+               sources=OK["sources"] + [{"url": unread_url, "label": "追加の出典"}])
+    unread = lambda ps: any("fetch_page.py で本文を取れていない" in p for p in ps)
+    m = {str(f): writer_bench.metrics(case, copy.deepcopy(ans), fetched=f)["check_problems"] for f in ([], [unread_url], None)}
+    check(unread(m["[]"]) and m[str([unread_url])] == [] and m["None"] == [],
+          f"writer_bench の測定が根拠の URL を記録と照らさない(空・読めた・記録なし): {m}")
+    p = tmp / "docs" / "_posts" / "2026-10-14-probe.md"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    got = {}
+    for f in ([], [unread_url], None):
+        write_checked_text = "---\n" + article_fm(slug="probe", edition="2026-10-14") + "---\n元の記事\n"
+        pipelib.write_checked(p, write_checked_text)
+        probs = rewrite_past.apply_answer(p, case, copy.deepcopy(ans), fetched=f)
+        got[str(f)] = (unread(probs), p.read_text(encoding="utf-8") != write_checked_text)
+    check(got == {"[]": (True, False), str([unread_url]): (False, True), "None": (False, True)},
+          f"rewrite_past が根拠の URL を記録と照らさない(不合格か・記事を書き換えたか。空・読めた・記録なし): {got}")
+    # 書かせた答えの記録は記事ごとに apply_answer へ渡る(生の出力から読み直した答えは記録が無いので None)
+    seen = {}
+    saved = (rewrite_past.ROOT, rewrite_past.apply_answer, compose.claude_review)
+    pipelib.write_checked(p.with_name("2026-10-14-raw.md"), "---\n" + article_fm(slug="raw", edition="2026-10-14") + "---\n元の記事\n")
+
+    def fake_apply(path, c, a, fetched=None):
+        seen[path.name] = fetched
+        return ["検算不合格(テスト)"]
+    try:
+        rewrite_past.ROOT, rewrite_past.apply_answer = tmp, fake_apply
+        compose.claude_review = lambda *a, **k: {"verdict": "approve", "blockers": []}
+        rewrite_past.replace_and_review({p.name: {"status": "ok"}, "2026-10-14-raw.md": {"status": "ok"}}, {p.name: case, "2026-10-14-raw.md": case},
+                                        {}, {}, {}, set(), {p.name: [unread_url]})
+    finally:
+        rewrite_past.ROOT, rewrite_past.apply_answer, compose.claude_review = saved
+    check(seen == {p.name: [unread_url], "2026-10-14-raw.md": None}, f"rewrite_past が記事ごとの記録を検算に渡さない: {seen}")
+
+
+def test_rule_bench_checks_read_pages(tmp: Path):
+    """規則の事例でも本番と同じく、根拠の URL をセッションの記録と照らす: writer_bench.write_one は子に記録の置き場を渡し、子の fetch_page.py が
+    本文を取れたページを返す。rule_bench はそれで本番の検算を掛け、読んでいないページを根拠にした答えを「形」の不合格にする
+    (2026-10-14: 素材の外の読めないページを出典にした答えが、本番の検算を通る形のまま合格・不合格を判定されていた)"""
+    import copy
+    import rule_bench
+    import writer_bench
+    cases = rule_bench.load_cases()
+    names = ("write-linked-official-read-by-fetch-page", "write-unreadable-link-not-cited")
+    if not all(n in cases for n in names):
+        check(False, f"素材の外のページの事例が無い: {names}")
+        return
+    off = cases[names[0]]["expect"]["sources"][0]
+    link = re.findall(r"https://\S+", " ".join(f for m in cases[names[1]]["materials"] for f in m["facts"]))[0]
+    good = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "ミリシタ、秋のしおりログボ", "title_fact_ids": ["N1"],
+            "lede": "l", "lede_fact_ids": ["N1"], "blocks": [{"markdown": "m", "fact_ids": ["N1", "F2"]}], "tags": ["ミリシタ", "ログインボーナス"],
+            "new_facts": [{"id": "N1", "text": "10月20日14:59まで", "url": off}], "event_date": "2026-10-12", "addressed_issue_ids": [],
+            "sources": [{"url": off, "label": "アイドルマスター ポータル「秋のしおり集めログインボーナス」(2026年10月12日)"}]}
+    saved = (rule_bench.OUT, pipelib.ROOT, compose.ROOT, writer_bench.write_one, writer_bench.run_group, os.environ.get(rule_bench.FIXED_PAGES_ENV))
+    try:
+        rule_bench.OUT = tmp / "out"
+        pipelib.ROOT = compose.ROOT = tmp / "root"
+        # 素材がリンクする告知を読んで書いた答え: 読めた記録があれば合格、記録が無ければ「形」の不合格(本番なら差し戻し)
+        for fetched, ok in (([off], True), ([], False)):
+            writer_bench.write_one = lambda name, short, label, model, f=fetched: {"case": name, "answer": copy.deepcopy(good), "exit": 0,
+                                                                                   "fetched": list(f)}
+            r = rule_bench.run_one(names[0], f"rp{len(fetched)}")
+            check(r["pass"] == ok and r["problems"] == [] and bool(r["shape_problems"]) != ok and r.get("fetched") == fetched,
+                  f"読めた記録 {fetched} で、告知を読んで書いた答えの判定が違う: {r.get('pass')} {r.get('problems')} {r.get('shape_problems')}")
+        # 読めないリンク先を出典にして書いた答え: 規則(見送り)の不合格と、形(読めていないページ)の不合格の両方
+        bad = dict(good, new_facts=[{"id": "N1", "text": "t", "url": link}], sources=[{"url": link, "label": "公式のお知らせ"}])
+        writer_bench.write_one = lambda name, short, label, model: {"case": name, "answer": copy.deepcopy(bad), "exit": 0, "fetched": []}
+        r = rule_bench.run_one(names[1], "ul")
+        check(not r["pass"] and r["problems"] and any(link in x for x in r["shape_problems"]),
+              f"読めないリンク先を出典にした答えを、形の不合格にしない: {r.get('problems')} {r.get('shape_problems')}")
+        # 書き直し(run_revise)も本番の revise_apply と同じ: 素材の外のページは、このセッションで読めたか、現在の稿の根拠(verified_facts)に
+        # あるときだけ根拠にできる(2026-10-14 監査指摘: run_revise の検算で記録を捨てても全テストが通った)
+        import yaml
+        rv_name = "revise-press-price-conflict-uses-official"
+        rv = copy.deepcopy(rule_bench.load_cases([rv_name])[rv_name])
+        (pn, post_text), = rv["posts"].items()
+        mt = re.match(r"\A---\n(.*?)\n---\n(.*)\Z", post_text, re.S)
+        fm = yaml.safe_load(mt.group(1))
+        draft_page, new_page = "https://shop.example.jp/figure/1", "https://unread.example.jp/figure"
+        fm["verified_facts"] = [{"id": "N1", "text": "予約特典はアクリル麻雀牌", "url": draft_page}]
+        rv["posts"] = {pn: "---\n" + compose.yaml_dump_keeping_strings(fm) + "---\n" + mt.group(2)}
+        paras = [re.match(r"(.*) <!-- (.*) -->$", x, re.S) for x in mt.group(2).strip().split("\n\n")]
+        blocks = [{"markdown": p_.group(1), "fact_ids": p_.group(2).split()} for p_ in paras]
+        rev = {"status": "ok", "decline_code": "", "decline_detail": "", "title": fm["title"], "title_fact_ids": fm["title_fact_ids"],
+               "lede": fm["lede"], "lede_fact_ids": fm["lede_fact_ids"], "tags": fm["tags"], "event_date": None, "addressed_issue_ids": ["I1"],
+               "new_facts": [{"id": "N1", "text": "予約特典はアクリル麻雀牌", "url": draft_page}],
+               "blocks": [{"markdown": blocks[0]["markdown"].replace("18,700", "19,800"), "fact_ids": ["F3", "F2", "F7", "N1"]}] + blocks[1:],
+               "sources": [{"url": s["url"], "label": s["label"]} for s in fm["sources"]]}
+        with_new = dict(rev, new_facts=rev["new_facts"] + [{"id": "N2", "text": "受注は11月まで", "url": new_page}],
+                        blocks=[dict(rev["blocks"][0], fact_ids=rev["blocks"][0]["fact_ids"] + ["N2"])] + rev["blocks"][1:],
+                        sources=rev["sources"] + [{"url": new_page, "label": "受注のページ"}])
+        saved_load = rule_bench.load_cases
+        try:
+            rule_bench.load_cases = lambda names=None: {rv_name: copy.deepcopy(rv)}
+            got = {}
+            for key, answer, fetched in (("写した", rev, []), ("未読", with_new, []), ("読めた", with_new, [new_page])):
+                writer_bench.write_one = lambda name, short, label, model, a=answer, f=fetched: {"case": name, "answer": copy.deepcopy(a), "exit": 0,
+                                                                                                 "fetched": list(f)}
+                r = rule_bench.run_one(rv_name, f"rv-{len(got)}")
+                got[key] = (r["pass"], any("fetch_page.py で本文を取れていない" in x for x in r["shape_problems"]), r["shape_problems"])
+        finally:
+            rule_bench.load_cases = saved_load
+        check({k: v[:2] for k, v in got.items()} == {"写した": (True, False), "未読": (False, True), "読めた": (True, False)},
+              f"書き直しの事例の検算が、読めたページ・現在の稿の根拠を本番と同じに扱わない: {got}")
+        # writer_bench.write_one(本物)は子に記録の置き場を渡し、子が書いたページを返して、記録を消す
+        writer_bench.write_one = saved[3]
+        seen = {}
+
+        def fake_run(cmd, timeout=None, **kw):     # 執筆の起動は本番と同じ run_group(組 P)
+            seen["rec"] = (kw.get("env") or {}).get(pipelib.FETCH_RECORD_ENV, "")
+            if seen["rec"]:
+                Path(seen["rec"]).write_text(json.dumps({"url": off, "final": None}) + "\n", encoding="utf-8")
+            Path(cmd[cmd.index("--output-last-message") + 1]).write_text(json.dumps(good, ensure_ascii=False), encoding="utf-8")
+            return subprocess.CompletedProcess(cmd, 0, "", "")
+        writer_bench.run_group = fake_run
+        got = writer_bench.write_one("x", "p", "t", "m")
+        rec = Path(seen.get("rec") or "/nonexistent")
+        check(got.get("fetched") == [off] and got.get("answer") == good and not rec.exists()
+              and rec.parent == tmp / "root" / "metrics" / "work" / "bench" / "fetched",
+              f"write_one が子に記録の置き場を渡さない・読めたページを返さない・記録を残す: {seen} {got.get('fetched')}")
+    finally:
+        (rule_bench.OUT, pipelib.ROOT, compose.ROOT, writer_bench.write_one, writer_bench.run_group, env) = saved
+        if env is None:
+            os.environ.pop(rule_bench.FIXED_PAGES_ENV, None)
+        else:
+            os.environ[rule_bench.FIXED_PAGES_ENV] = env
 
 
 def test_job_lock():
@@ -1947,6 +2283,140 @@ def test_review_reads_sources_like_writer():
     sec = w.split("## 6. 見送り", 1)[-1].split("## 7.", 1)[0]
     check("一部の素材だけがそうなら" in sec and "残りの素材で書く" in sec,
           "執筆の見送りに、一部の素材だけが食い違うときは残りで書く決まりが無い")
+
+
+def test_collect_sessions_read_with_fetch_page(tmp: Path):
+    """収集のなかでページを読むモデルのセッション(facts 化・出典の判定・校閲の指摘の修正)は、執筆・校閲と同じ fetch_page.py で読む。
+    WebFetch は JS を描画せず、まとめサイトの新着の一次ソース(公式ポータル)がタイトルだけに見え、facts 化が unreadable にした
+    (2026-10-21: imasnews765 ?p=32576)。出典の判定の codex は read-only で名前解決が通らず、fetch_page.py が毎回失敗していた"""
+    import collect, classify_sources as cs
+    tmp.mkdir(parents=True, exist_ok=True)
+    repo = Path(__file__).resolve().parents[1]
+    url = "https://idolmaster-official.jp/news/01_20182"
+    pages = tmp / "pages.json"
+    pages.write_text(json.dumps({url: "受付期間: 2026年10月21日(水)12:00～2026年11月3日(火)23:59\n本文の事実"}, ensure_ascii=False),
+                     encoding="utf-8")
+    env = dict(os.environ, IMAS_FETCH_PAGES=str(pages))
+    real_run = subprocess.run      # 下で起動を差し替える(subprocess はモジュール共通)前の本物
+
+    def run_cmd(cmd: str, cwd) -> str:
+        """セッションが依頼文どおりに打つコマンドを、そのセッションの cwd で実際に走らせる"""
+        return real_run(cmd.split(), cwd=cwd, env=env, capture_output=True, text=True, timeout=60).stdout
+
+    def allowed_by(pattern: str, cmd: str) -> bool:
+        """Claude の Bash(<前方一致>:*) の許可に、そのコマンドが当たるか"""
+        m = re.fullmatch(r"Bash\((.+):\*\)", pattern)
+        return bool(m) and cmd.startswith(m.group(1))
+
+    calls = []
+
+    class R:
+        returncode, stdout, stderr = 0, "[]", ""
+    # モデルの起動は組 P の run_group(自前のグループ)。同じ偽物で受ける
+    saved = (pipelib.ROOT, collect.run_group, collect.save_raw, collect.notify, collect.fetch_rendered,
+             collect.urllib.request.urlopen, cs.run_group)
+    try:
+        pipelib.ROOT = tmp / "root"     # 依頼文と生の出力の置き場だけを一時に(fetch_page.py の実体はリポジトリ側)
+        collect.save_raw = lambda *a, **k: None
+        collect.notify = lambda *a, **k: True
+        # 1. facts 化: 描画できなかった新着の素材と、セッションの道具
+        collect.run_group = lambda argv, timeout=None, **k: calls.append(("facts", argv, k.get("cwd"))) or R()
+
+        def fail(u, timeout=30):
+            raise pipelib.RenderFailed(f"{u} の描画に失敗: 終了コード 1")
+        collect.fetch_rendered = fail
+        collect.facts_batch([{"url": "https://imasnews765.com/?p=32576", "title": "t", "brand": "imas", "csr": True}],
+                            collect.claude_exec, {})
+        prompt = "\n".join(p.read_text(encoding="utf-8") for p in (tmp / "root" / "metrics" / "work").glob("*/watch-*.md"))
+        # 2. 出典の判定: 2モデルとも、依頼文の読み方(python3 scripts/fetch_page.py)で実際にページを読めるか
+        def fake_run(argv, timeout=None, **k):
+            cwd = k.get("cwd")
+            short = argv[-1]
+            pf = re.search(r"`([^`]+\.md)`", short)
+            readable = bool(pf) and (Path(cwd) / pf.group(1)).exists()
+            calls.append(("classify", argv, cwd, readable, run_cmd(f"python3 scripts/fetch_page.py {url}", cwd), Path(cwd).exists()))
+            return R()
+        cs.run_group = fake_run
+        cs.ask(cs.CMD_A, "依頼")
+        cs.ask(cs.CMD_B, "依頼")
+        # 作業ディレクトリに依頼文を書けない(容量不足)ときも、作業ディレクトリを残さない
+        leftovers = lambda: set(Path(tempfile.gettempdir()).glob("explore-classify-*"))
+        before, real_pf = leftovers(), pipelib.prompt_file
+
+        def no_space(date, name, text, base=None):
+            if base is not None:
+                raise OSError(28, "No space left on device")
+            return real_pf(date, name, text, base)
+        pipelib.prompt_file = no_space
+        try:
+            cs.ask(cs.CMD_B, "依頼")
+        finally:
+            pipelib.prompt_file = real_pf
+        # 入口(fetch_page.py)を書けないときも同じ
+        real_wt = Path.write_text
+
+        def no_space_entry(self, *a, **k):
+            if self.name == "fetch_page.py" and "explore-classify-" in str(self):
+                raise OSError(28, "No space left on device")
+            return real_wt(self, *a, **k)
+        Path.write_text = no_space_entry
+        try:
+            cs.ask(cs.CMD_B, "依頼")
+        finally:
+            Path.write_text = real_wt
+        left = leftovers() - before
+    finally:
+        (pipelib.ROOT, collect.run_group, collect.save_raw, collect.notify, collect.fetch_rendered,
+         collect.urllib.request.urlopen, cs.run_group) = saved
+    facts = [c for c in calls if c[0] == "facts"]
+    check(len(facts) == 1, f"facts 化のセッションを1回起動しない: {facts}")
+    a, cwd = (facts[0][1], facts[0][2]) if facts else ([], repo)
+    allowed = a[a.index("--allowedTools") + 1].split(",") if "--allowedTools" in a else []
+    denied = a[a.index("--disallowedTools") + 1].split(",") if "--disallowedTools" in a else []
+    cmd = re.search(r"`(python3 [^`<]*fetch_page\.py) <url>`", prompt)
+    check("WebFetch" not in allowed and "WebFetch" in denied, f"facts 化が WebFetch でページを読める(JS を描画しない): {a}")
+    # 道具は読むのに要るものだけ(Bash は fetch_page.py の起動だけ。広げるとページに仕込まれた指示で何でも走らせられる)
+    check(sorted(allowed) == sorted(["Read", "WebSearch", "Bash(python3 scripts/fetch_page.py:*)"]),
+          f"facts 化の道具の許可が読むのに要る範囲を超える: {allowed}")
+    check("WebFetch で" not in prompt and cmd and any(allowed_by(p, cmd.group(1) + " " + url) for p in allowed),
+          f"facts 化の依頼文の読み方が、許した道具で打てない: {cmd and cmd.group(1)} / {allowed}")
+    out = run_cmd(f"{cmd.group(1)} {url}", cwd) if cmd else ""
+    check("受付期間" in out and "本文の事実" in out, f"facts 化の cwd で依頼文どおりに打っても本文が読めない: {out[:200]!r}")
+    cl = [c for c in calls if c[0] == "classify"]
+    check(len(cl) == 2, f"出典の判定の2モデルを起動しない: {cl}")
+    check(not left, f"依頼文を書けなかった出典の判定が作業ディレクトリを残した: {left}")
+    for _, argv, cwd, readable, got, _ in cl:
+        check("受付期間" in got and readable, f"出典の判定({argv[0]})が依頼文どおりにページ・依頼文を読めない: {got[:200]!r} {cwd}")
+    if len(cl) == 2:
+        a_argv, b_argv, b_cwd = cl[0][1], cl[1][1], Path(cl[1][2])
+        check("WebFetch" in a_argv[a_argv.index("--disallowedTools") + 1].split(",") if "--disallowedTools" in a_argv else False,
+              f"出典の判定の claude が WebFetch でページを読める: {a_argv}")
+        sandbox = b_argv[b_argv.index("-s") + 1] if "-s" in b_argv else ""
+        check("sandbox_workspace_write.network_access=true" in b_argv and sandbox == "workspace-write"
+              and repo not in b_cwd.resolve().parents and b_cwd.resolve() != repo and not b_cwd.exists(),
+              f"出典の判定の codex が通信できない・リポジトリの中で書ける・作業ディレクトリを残した: {b_argv} {b_cwd}")
+    # 3. 校閲の指摘の修正: 出典を開くなら fetch_page.py(WebFetch は外す)
+    argvs = []
+    d = "2099-01-01"
+    saved = (compose.ROOT, pipelib.ROOT, compose.subprocess.Popen)
+
+    class P:
+        returncode = 0      # 正常に終わった子(認証切れ・利用上限の見分けが終了コードを読む)
+
+        def communicate(self, timeout=None):
+            return ("", "")
+    try:
+        compose.ROOT = pipelib.ROOT = tmp / "c"
+        (tmp / "c" / "docs" / "_posts").mkdir(parents=True)
+        (tmp / "c" / "docs" / "_posts" / f"{d}-a.md").write_text("x", encoding="utf-8")
+        compose.subprocess.Popen = lambda argv, **k: argvs.append(argv) or P()
+        compose.fix_articles(d, {f"docs/_posts/{d}-a.md": [{"rule": "R2"}]})
+        fp = "\n".join(p.read_text(encoding="utf-8") for p in (tmp / "c" / "metrics" / "work" / d).glob("fix-*.md"))
+    finally:
+        compose.ROOT, pipelib.ROOT, compose.subprocess.Popen = saved
+    a = argvs[0] if argvs else []
+    check("--disallowedTools" in a and "WebFetch" in a[a.index("--disallowedTools") + 1].split(",")
+          and "scripts/fetch_page.py" in fp, f"校閲の指摘の修正が WebFetch で出典を読める: {a}")
 
 def test_compose_recover(tmp: Path):
     """承認まで進んでも記事を落とした号は、当番が直したあとこの号に戻す(2026-10-10 編集長「復帰保証までが Opus/Sol の仕事だ」)。
@@ -2443,7 +2913,9 @@ def test_revise_apply_decline(tmp: Path):
         class P:
             returncode = 0
             def __init__(self, out_path): self.out_path = out_path
-            def communicate(self, timeout=None): Path(self.out_path).write_text("これは JSON ではない", encoding="utf-8")
+            def communicate(self, timeout=None):
+                Path(self.out_path).write_text("これは JSON ではない", encoding="utf-8")
+                return None, None
             def kill(self): pass
         def fake_popen(cmd, **kw):
             return P(cmd[cmd.index("--output-last-message") + 1])
@@ -3447,14 +3919,12 @@ def test_claude_traced(tmp: Path):
         slow = pipelib.claude_traced(["SLOW"], tmp / "t2.jsonl", timeout=2, cwd=tmp)
         check(slow["timed_out"] and not slow["ok"] and slow["structured"] is None
               and "時間切れ" in slow["summary"] and "Read(" in slow["summary"], f"時間切れ時に経過が残らない: {slow}")
-        # 時間切れでは子孫(道具が起動したプロセス)まで止める。残すと、やり直しのセッションと並走する(監査指摘)
-        gpid = int((tmp / "grandchild.pid").read_text().strip())
-        try:
-            os.kill(gpid, 0)
-            alive = "Z" not in Path(f"/proc/{gpid}/stat").read_text().split(")")[-1].split()[0]   # ゾンビは止まっている
-        except (ProcessLookupError, FileNotFoundError):
-            alive = False
-        check(not alive, f"時間切れのあとに孫プロセス {gpid} が残った")
+        # 時間切れでは子孫(道具が起動したプロセス)まで止める。残すと、やり直しのセッションと並走する(監査指摘)。
+        # 回収は死んだのを確かめてから返すので、返った直後に見てよい(待ち時間に頼らない)。孫を起こす前に時間切れになったら、
+        # 確かめられなかったとして落とす(例外で止めない)
+        gp = tmp / "grandchild.pid"
+        gpid = int(gp.read_text().strip() or 0) if gp.exists() else 0
+        check(gpid and not _pid_alive(gpid), f"時間切れのあとに孫プロセス {gpid or '(起こす前に時間切れ)'} が残った")
         # 正常に終わらなかったセッションの出力は、形が合っていても採らない
         half = dict(slow, structured={"digest": 9})
         saved_h = assemble.claude_traced
@@ -3618,6 +4088,7 @@ def test_deadline_publish_boundary(tmp: Path):
         (compose.time, compose.job_lock, compose.checkout_edition_branch, sys.argv, oncall.BACKLOG,
          pipelib.job_lock, pipelib.checkout_edition_branch, pipelib.escalate, pipelib._ESCALATED, anomalies, _time.time) = saved
         pipelib.ANOMALIES[:] = anomalies
+        pipelib.STOPPING.clear()    # 途中終了の後始末(stop_groups)が立てた「終えるところ」を、後のテストのために戻す
 
 
 def test_x_anonymous_post_url():
@@ -3652,6 +4123,94 @@ def test_x_anonymous_post_url():
     check([c["url"] for c in got] == ["https://x.com/ChuLo5738/status/2105957772651385193"], f"収集の正規化で直らない: {got}")
     import classify_sources as cs
     check(cs.platform_unit(got[0]["url"]) == ("x", "ChuLo5738"), "判定の単位が付かない")
+
+
+def test_x_post_date_is_jst(tmp: Path):
+    """X の投稿の日付は投稿 ID から日本時間で決める(2026-10-21号: Grok が投稿日時を GMT で書き、10/21 0:00 JST の公式の投稿が
+    published_date 10/20・「10月20日は誕生日」の素材になって、出典 label の日付が 10/20 で書かれ校閲 R8 が2巡ブロックした)。
+    素材の published_date はコードが付け、確かめ役(Luna)へ渡す書き出しには日本時間の投稿日時の行が付く(やり直しでも1行だけ)。"""
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    u = "https://x.com/imasml_theater/status/2112559475794039099"   # 2026-10-20 15:00:03 GMT = 2026-10-21 00:00 JST
+    got = collect.normalize([{"url": u, "title": "t", "brand": "million", "dedup_key": "k", "facts": ["f"], "_via": "grok",
+                              "published_date": "2026-10-20", "event_date": "2026-10-20"},
+                             {"url": "https://x.com/imas_ch/status/2112559471121912272", "title": "t", "brand": "million",
+                              "dedup_key": "k2", "facts": ["f"], "_via": "grok"},
+                             {"url": "https://example.com/news/1", "title": "t", "dedup_key": "k3", "facts": ["f"], "_via": "explore",
+                              "published_date": "2026-10-20"}])
+    check([c.get("published_date") for c in got] == ["2026-10-21", "2026-10-21", "2026-10-20"],
+          f"X の投稿の掲載日が投稿 ID の日本時間でない(X 以外は申告のまま): {[c.get('published_date') for c in got]}")
+    check(got[0].get("event_date") == "2026-10-20", "出来事の日(内容の判断)までコードが変えた")
+    # 確かめ役への書き出し: 1回目で結果を返さない → やり直しの書き出しにも日本時間の行が1行だけ
+    out = tmp / "g"
+    out.mkdir()
+    (out / "million.md").write_text(f"### 1\n- url: {u}\n- 投稿者: ミリシタ (@imasml_theater)\n- 投稿日時: Tue, 20 Oct 2026 15:00:03 GMT\n"
+                                    "- 本文: 本日は二階堂千鶴さんの誕生日です！\n", encoding="utf-8")
+    inputs = {}
+    class P:        # 起動は pipelib.start_group 越し(回収は finish_group が communicate・kill・poll で行う)
+        pid = 0
+        returncode = 0
+        def wait(self, timeout=None): return 0
+        def poll(self): return 0
+        def communicate(self, timeout=None): return "", ""
+        def kill(self): pass
+    def fake_popen(args, cwd=None, **kw):
+        inputs[re.sub(r"^explore-|-[^-]+$", "", Path(cwd).name)] = (Path(cwd) / "x-posts.md").read_text(encoding="utf-8")
+        (Path(cwd) / "items.json").write_text("[]", encoding="utf-8")
+        (Path(cwd) / "posts.json").write_text("[]", encoding="utf-8")
+        (Path(cwd) / "deep.json").write_text("[]", encoding="utf-8")
+        return P()
+    saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw)
+    try:
+        collect.subprocess.Popen = fake_popen
+        collect.notify = lambda job, msg, ok=True, require=False: True
+        collect.prompt_file = lambda date, name, prompt, base=None: "p"
+        collect.save_raw = lambda *a, **kw: None
+        collect.verify_grok_faces([{"key": "million", "brand": "million", "topic": "t"}], out)
+    finally:
+        collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw = saved
+    line = "- 投稿日時(日本時間・投稿 ID から): 2026-10-21 00:00"
+    check(sorted(inputs) == ["verify-million", "verify-million-again"]
+          and all(t.count(line) == 1 and t.count("投稿 ID から") == 1 for t in inputs.values()),
+          f"確かめ役への書き出しに日本時間の投稿日時が1行だけ付かない: {inputs}")
+    # 保存済みの候補(直す前に GMT の日付で入ったもの): 再収集の書き込みで揃い、収集し直さない組版(選定・執筆の素材・組版の素材)
+    # でも揃う。保存済みのファイルは読む側では書き換えない(監査指摘 r1: マージが published_date を引き継がず 10/20 のまま渡った)
+    import compose, assemble, renderlib
+    repo = tmp / "repo"
+    (repo / "candidates").mkdir(parents=True)
+    (repo / "stock" / "scheduled").mkdir(parents=True)
+    old = [cand_row("202610210224-grok-13", u, brand="million", dedup_key="chizuru", facts=["本日は誕生日"], published_date="2026-10-20"),
+           cand_row("c-web", "https://example.com/n/1", dedup_key="web", facts=["w"], published_date="2026-10-19")]
+    day = repo / "candidates" / "2026-10-22.json"
+    day.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+    pipelib.write_checked(repo / "stock" / "scheduled" / "2026-10-22.json", json.dumps(
+        [sched_row("sched-1", "2026-10-21", url="https://x.com/imas_ch/status/2112559471121912272", facts=["f"])], ensure_ascii=False))
+    before = day.read_text(encoding="utf-8")
+    saved = (compose.ROOT, assemble.ROOT, assemble.SCHEDULED)
+    try:
+        compose.ROOT, assemble.ROOT, assemble.SCHEDULED = repo, repo, repo / "stock" / "scheduled"
+        window = compose.load_window_candidates("2026-10-22")
+        mats = assemble.load_materials("2026-10-22")
+    finally:
+        compose.ROOT, assemble.ROOT, assemble.SCHEDULED = saved
+    check(day.read_text(encoding="utf-8") == before, "読む側が候補ファイルを書き換えた")
+    for name, got_ in (("選定・執筆の素材", window), ("組版の素材", mats)):
+        check({k: v.get("published_date") for k, v in got_.items()}
+              == {"202610210224-grok-13": "2026-10-21", "c-web": "2026-10-19", "sched-1": "2026-10-21"},
+              f"{name}の X の投稿の掲載日が投稿 ID の日本時間でない: {[(k, v.get('published_date')) for k, v in got_.items()]}")
+    rows, _ = renderlib.materials_with_ids([window["202610210224-grok-13"]])
+    check(rows[0].get("published_date") == "2026-10-21", f"執筆に渡す素材の掲載日: {rows[0]}")
+    saved = collect.ROOT
+    try:
+        collect.ROOT = repo
+        collect.merge_into_day_file([dict(old[0], id="new", facts=["本日は誕生日"], published_date="2026-10-21")], "2026-10-22")
+    finally:
+        collect.ROOT = saved
+    check([c.get("published_date") for c in json.loads(day.read_text(encoding="utf-8"))] == ["2026-10-21", "2026-10-19"],
+          f"再収集の書き込みで、保存済みの X の投稿の掲載日が揃わない: {day.read_text(encoding='utf-8')[:300]}")
+    check(collect.JST_POST_TIME in collect.render_prompt("grok-verify", INPUT="i", OUT="o", DEEP="d", POSTS="p", BRAND="b",
+                                                                   TOPIC="t", TODAY="2026-10-21", RULES="", ITEM=""),
+          "grok-verify の依頼文が、コードの足す行の名前で日付を指していない")
 
 
 def test_normalize_fixes_misnamed_brand():
@@ -3940,17 +4499,17 @@ def test_fetch_page_renders_whitespace_only_page():
     calls = []
     class R:
         returncode, stdout = 0, "<html><body><p>（2026.10.7 変更）営利を目的とした制作・配信は行わないでください。</p></body></html>"
-    saved = (fetch_page.fetch, pipelib.subprocess.run, sys.argv)
+    saved = (fetch_page.fetch, pipelib.run_group, sys.argv)
     try:
         fetch_page.fetch = lambda url: thin
-        pipelib.subprocess.run = lambda *a, **k: calls.append(a) or R()
+        pipelib.run_group = lambda *a, **k: calls.append(a) or R()
         sys.argv = ["fetch_page.py", "https://idolmaster-official.jp/lp/x"]
         import contextlib, io
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             fetch_page.main()
     finally:
-        fetch_page.fetch, pipelib.subprocess.run, sys.argv = saved
+        fetch_page.fetch, pipelib.run_group, sys.argv = saved
     check(calls and "2026.10.7 変更" in buf.getvalue(), f"改行だらけのページを描画し直さなかった: {buf.getvalue()[:120]!r}")
     # 描画必須と分かっているサイト(sources.yml の portal)は、メニューだけで非空白 400字を超えても描画して読む
     # (公式ポータルはナビだけで非空白 3千字を超える。監査指摘 render-detection-navigation)
@@ -3961,13 +4520,13 @@ def test_fetch_page_renders_whitespace_only_page():
     calls.clear()
     try:
         fetch_page.fetch = lambda url: nav
-        pipelib.subprocess.run = lambda *a, **k: calls.append(a) or R()
+        pipelib.run_group = lambda *a, **k: calls.append(a) or R()
         sys.argv = ["fetch_page.py", "https://idolmaster-official.jp/news/01_99999"]
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             fetch_page.main()
     finally:
-        fetch_page.fetch, pipelib.subprocess.run, sys.argv = saved
+        fetch_page.fetch, pipelib.run_group, sys.argv = saved
     check(calls and "2026.10.7 変更" in buf.getvalue(), f"公式ポータルの長いナビのページを描画し直さなかった: {buf.getvalue()[:120]!r}")
     # 収集の裏取りも同じ: 公式ポータルの長いナビのページは描画して期間を抜き出す
     import collect
@@ -3989,6 +4548,71 @@ def test_fetch_page_renders_whitespace_only_page():
         collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved_c
     check(rcalls and cv[0].get("periods") == ["受付期間: 2026年10月8日(木)12:00〜10月12日(日)23:59"],
           f"裏取りが公式ポータルの長いナビのページを描画せず期間を落とした: {rcalls} {cv[0].get('periods')}")
+
+
+def test_fetch_page_records_read_pages(tmp: Path):
+    """fetch_page.py は本文を取れたページだけを、環境変数 IMAS_FETCH_RECORD の記録に残す(頼んだ URL とリダイレクトの行き先)。
+    取れなかったページ(FETCH_FAILED)は残さない。記録を書けなくても読み取りは止めない。検算はこの記録で根拠の URL を照らす
+    (2026-10-14 rule_bench: 執筆が fetch_page.py の取れなかった報道を Web 検索で読んで書いた答えが検算を通った)"""
+    import contextlib, io
+    import fetch_page
+    tmp.mkdir(parents=True, exist_ok=True)
+    rec = tmp / "rec" / "slug.jsonl"            # 置き場のフォルダが無くても作って書く
+    pages = tmp / "pages.json"
+    pages.write_text(json.dumps({"https://a.example/x": "告知の本文"}, ensure_ascii=False), encoding="utf-8")
+    page = "<html><body><p>" + "公式の告知の本文。" * 80 + "</p></body></html>"
+
+    class U:
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
+        def geturl(self): return "https://www.lantis.jp/release_1.html"
+        def read(self, n=None): return page.encode("utf-8")
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+
+    def run(url, record=None, fixed=None):
+        env_keys = (pipelib.FETCH_RECORD_ENV, fetch_page.FIXED_PAGES_ENV)
+        saved_env = {k: os.environ.get(k) for k in env_keys}
+        saved = (sys.argv, fetch_page.urllib.request.urlopen, fetch_page.needs_render)
+        out, err = io.StringIO(), io.StringIO()
+        try:
+            for k, v in zip(env_keys, (record, fixed)):
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = str(v)
+            fetch_page.urllib.request.urlopen = lambda req, timeout=25: U()
+            fetch_page.needs_render = lambda u, t: False
+            sys.argv = ["fetch_page.py", url]
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                rc = fetch_page.main()
+        finally:
+            sys.argv, fetch_page.urllib.request.urlopen, fetch_page.needs_render = saved
+            for k, v in saved_env.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+        return rc, out.getvalue(), err.getvalue()
+    rc1, _, _ = run("https://a.example/x", rec, pages)              # 事例の本文(取れる)
+    rc2, out2, _ = run("https://a.example/missing", rec, pages)     # 事例に無い(取れない)
+    rc3, _, _ = run("https://lnk.to/1", rec)                         # 本物の取得の経路: リダイレクトの行き先も残す
+    lines = [json.loads(l) for l in rec.read_text(encoding="utf-8").splitlines()] if rec.exists() else []
+    check(rc1 == 0 and rc2 == 1 and out2.startswith("FETCH_FAILED") and rc3 == 0, f"fetch_page の終了: {rc1} {rc2} {rc3}")
+    check(lines == [{"url": "https://a.example/x", "final": None}, {"url": "https://lnk.to/1", "final": "https://www.lantis.jp/release_1.html"}],
+          f"本文を取れたページ(とリダイレクトの行き先)だけを記録しない: {lines}")
+    check(pipelib.fetched_urls(rec) == {"https://a.example/x", "https://lnk.to/1", "https://www.lantis.jp/release_1.html"},
+          f"記録から読めたページを読めない: {pipelib.fetched_urls(rec)}")
+    # 記録を書けない(置き場がフォルダ)ときも本文は返し、書けなかったことを stderr に出す。記録の変数が無ければ何も書かない
+    rc4, out4, err4 = run("https://a.example/x", tmp, pages)
+    check(rc4 == 0 and "告知の本文" in out4 and "FETCH_RECORD_FAILED" in err4, f"記録を書けないと読み取りが止まる・黙る: {rc4} {err4[:80]}")
+    before = rec.read_text(encoding="utf-8")
+    rc5, _, _ = run("https://a.example/x", None, pages)
+    check(rc5 == 0 and rec.read_text(encoding="utf-8") == before, "記録の変数が無いのに記録に書いた")
+    # 壊れた行・無い記録は飛ばす(読めた分だけ返す)
+    rec.write_text(before + "{壊れた行\n[1]\n", encoding="utf-8")
+    check(pipelib.fetched_urls(rec) == {"https://a.example/x", "https://lnk.to/1", "https://www.lantis.jp/release_1.html"}
+          and pipelib.fetched_urls(tmp / "none.jsonl") == set(), "壊れた行・無い記録で、読めたページの読み方が崩れる")
 
 
 def test_fetch_rendered_skips_images():
@@ -4039,18 +4663,18 @@ def test_render_failure_keeps_cause(tmp: Path):
         returncode, stdout, stderr = 1, "", tb
     def timeout_run(*a, **k):
         raise subprocess.TimeoutExpired(a[0], 90, output=b"", stderr=b"RENDER_FAILED: TimeoutException: page load\n")
-    saved = pipelib.subprocess.run
+    saved = pipelib.run_group
     errs = []
     try:
         for run in (lambda *a, **k: Bad(), timeout_run):
-            pipelib.subprocess.run = run
+            pipelib.run_group = run
             try:
                 pipelib.render_page("https://columbia.jp/idolmaster/")
                 errs.append("")
             except pipelib.RenderFailed as e:
                 errs.append(str(e))
         # 定点観測の一覧(portal): 失敗の原因が観測先の失敗の記録に載る
-        pipelib.subprocess.run = lambda *a, **k: Bad()
+        pipelib.run_group = lambda *a, **k: Bad()
         try:
             collect.list_source({"id": "c", "type": "portal", "url": "https://columbia.jp/idolmaster/", "base": "https://columbia.jp",
                                  "list_regex": '<a href="([^"]+)">(.*?)</a>'}, set())
@@ -4068,7 +4692,7 @@ def test_render_failure_keeps_cause(tmp: Path):
         finally:
             fetch_page.fetch, sys.argv = saved_f, saved_argv
     finally:
-        pipelib.subprocess.run = saved
+        pipelib.run_group = saved
     check("終了コード 1" in errs[0] and "TimeoutException" in errs[0] and "#0" not in errs[0],
           f"描画の失敗に終了コード・例外の要点が無い(またはスタックの屑が入った): {errs[0]!r}")
     check("時間切れ" in errs[1] and "TimeoutException" in errs[1], f"描画の打ち切りに原因が無い: {errs[1]!r}")
@@ -4156,10 +4780,10 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
         finally:
             sys.argv = saved_argv
         return subprocess.CompletedProcess(cmd, rc, out.getvalue(), err.getvalue())
-    saved = (cs.subprocess.run, fetch_page.fetch, fetch_page.render_page, cs.page_meta)
+    saved = (cs.run_group, fetch_page.fetch, fetch_page.render_page, cs.page_meta)
     try:
         fetch_page.render_page = render_fail
-        cs.subprocess.run = run_fetch_page
+        cs.run_group = run_fetch_page
         fetch_page.fetch = lambda url: plain["body"]
         body, status = cs.rendered_excerpt("https://idolmaster-official.jp/")
         cs.page_meta = lambda url: ("t", "d", "")
@@ -4167,7 +4791,7 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
         plain["body"] = ""
         body2, status2 = cs.rendered_excerpt("https://idolmaster-official.jp/")
     finally:
-        cs.subprocess.run, fetch_page.fetch, fetch_page.render_page, cs.page_meta = saved
+        cs.run_group, fetch_page.fetch, fetch_page.render_page, cs.page_meta = saved
     check("メニュー1" in body and "描画できず" in status and "TimeoutException" in status and "終了コード 0" in status,
           f"分類の材料が描画の失敗を捨てた: {body[:60]!r} / {status!r}")
     check(profile.count("取得状態: 描画できず") == 2 and "TimeoutException" in profile,
@@ -4177,10 +4801,10 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
     # 正常なら取得状態は空(材料に余計な行を足さない)
     ok_run = lambda cmd, **k: subprocess.CompletedProcess(cmd, 0, "URL: x\n--- 本文(要約なし) ---\n会社概要 株式会社X\n", "")
     try:
-        cs.subprocess.run = ok_run
+        cs.run_group = ok_run
         body3, status3 = cs.rendered_excerpt("https://example.com/")
     finally:
-        cs.subprocess.run = saved[0]
+        cs.run_group = saved[0]
     check(body3 == "会社概要 株式会社X" and status3 == "", f"正常な取得に取得状態が付いた: {body3!r} {status3!r}")
 
     # 裏取り: 描画できずに写しが見えなかった候補は、描画の失敗を記録に残す(URL の取り違えとだけ書かない)
@@ -4212,6 +4836,68 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
     row = cand_row("c-render", cv[1]["url"], **{k: x for k, x in cv[1].items() if k != "url"})
     errs = pipelib.schema_errors(Path("candidates") / "2026-10-14.json", json.dumps([row], ensure_ascii=False))
     check(row.get("render_error") and errs == [], f"描画の失敗の記録が候補の書式に通らない: {errs}")
+
+
+def test_watch_deadline_carryover(tmp: Path):
+    """定時の収集の締切(組 P)で打ち切った定点観測の新着は、次の回に持ち越して候補にする(2026-10-21 取り込みの確かめ):
+    - 一覧を読んだあとに締切を過ぎた観測先の新着は facts 化を始めず、既読にせず未処理の列(_pending)に残す
+    - 締切を過ぎてから順番が来た観測先は一覧を読まず、既読も境界(_cut)も変えない
+    - 次の回(締切なし)は、未処理の列と読まなかった観測先の新着を全部 facts 化して候補にし、列を空にする"""
+    import time as _t
+    import collect
+    import yaml
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "sources.yml").write_text(yaml.safe_dump([
+        {"id": "a", "brand": "general", "type": "html", "url": "https://a.jp/", "base": "https://a.jp", "list_regex": "x", "enabled": True},
+        {"id": "b", "brand": "sidem", "type": "html", "url": "https://b.jp/", "base": "https://b.jp", "list_regex": "x", "enabled": True}]),
+        encoding="utf-8")
+    cut_b = [{"page": 3, "after": ["https://b.jp/old"]}]
+    (tmp / "watch-state.json").write_text(json.dumps({"a": ["https://a.jp/seen"], "b": ["https://b.jp/seen"], "_cut": {"b": cut_b}}),
+                                          encoding="utf-8")
+    listings = {"a": [(f"https://a.jp/n{i}", "") for i in range(3)] + [("https://a.jp/seen", "")],
+                "b": [("https://b.jp/n0", ""), ("https://b.jp/seen", "")]}
+    listed, calls, notes = [], [], []
+
+    def fake_list(s, known, fetch=None, resume=None):
+        listed.append(s["id"])
+        if state_deadline["arm"]:
+            collect.DEADLINE = _t.time() - 1        # 最初の観測先の一覧を読んだところで締切を過ぎる
+        return listings[s["id"]], 1, []
+    state_deadline = {"arm": True}
+
+    def extract(prompt, timeout=0):
+        urls = re.findall(r"^### \d+\. (\S+)", prompt, re.M)
+        calls.append(urls)
+        return [{"page": i + 1, "status": "extracted", "items": [{"title": "t", "url": u, "facts": ["f"]}]} for i, u in enumerate(urls)]
+    saved = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.render_prompt, collect.page_html_or_note,
+             collect.DEADLINE)
+    try:
+        collect.ROOT, collect.STATE_PATH = tmp, tmp / "watch-state.json"
+        collect.list_source = fake_list
+        collect.page_html_or_note = lambda url, csr: ("", "")
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+        collect.DEADLINE = _t.time() + 3600
+        cands, info = collect.run_watch(extract)
+        st = info["stats"]["_state"]
+        pend = [it["url"] for it in st.get("_pending") or []]
+        check(listed == ["a"] and not calls and not cands and pend == [f"https://a.jp/n{i}" for i in range(3)]
+              and not any(u in st["a"] for u in pend) and st["b"] == ["https://b.jp/seen"] and st.get("_cut") == {"b": cut_b}
+              and not st.get("_unreadable"),
+              f"締切で打ち切った新着を持ち越さない(既読にした・読めなかった数に入れた・境界を変えた): 一覧 {listed} facts {calls} "
+              f"pending {pend} 状態 {st}")
+        (tmp / "watch-state.json").write_text(json.dumps(st), encoding="utf-8")      # main が候補の保存のあとに書くのと同じ
+        state_deadline["arm"], collect.DEADLINE = False, None
+        listed.clear()
+        cands, info = collect.run_watch(extract)
+        st = info["stats"]["_state"]
+        got = sorted(c["url"] for c in cands)
+        want = sorted([f"https://a.jp/n{i}" for i in range(3)] + ["https://b.jp/n0"])
+        check(got == want and not st.get("_pending") and all(u in st["a"] + st["b"] for u in want),
+              f"次の回に、持ち越した新着・読まなかった観測先の新着を候補にしない: {got} pending {st.get('_pending')}")
+    finally:
+        (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.render_prompt, collect.page_html_or_note,
+         collect.DEADLINE) = saved
 
 
 def test_watch_pagination_and_batches(tmp: Path):
@@ -5080,13 +5766,14 @@ def test_storylink_related_prior(tmp: Path):
         by_brand, _, _ = compose.write_plan_index(d, {"c3": c3}, {})
         ev = json.loads((tmp / "metrics" / f"plan-events-{d}-765.json").read_text(encoding="utf-8"))
         # 判定から漏れた主題の拾い直しにも、同じ催しの記事を渡す
-        saved_rp = (compose.subprocess.run, compose.prompt_file, compose.save_raw)
-        compose.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 1, "", "")
+        # モデルの起動は組 P の run_group(本物の CLI を起動しない)
+        saved_rp = (compose.run_group, compose.prompt_file, compose.save_raw)
+        compose.run_group = lambda cmd, timeout=None, **kw: subprocess.CompletedProcess(cmd, 1, "", "")
         compose.prompt_file, compose.save_raw = (lambda *a, **kw: "p"), (lambda *a, **kw: None)
         try:
             compose.replan_missing(d, {"articles": []}, by_brand, {"c3": c3}, [c3["dedup_key"]])
         finally:
-            compose.subprocess.run, compose.prompt_file, compose.save_raw = saved_rp
+            compose.run_group, compose.prompt_file, compose.save_raw = saved_rp
         ev_m = json.loads((tmp / "metrics" / f"plan-events-{d}-missing.json").read_text(encoding="utf-8"))
     finally:
         compose.ROOT = saved
@@ -5138,6 +5825,7 @@ def test_grok_roles(tmp: Path):
         pid = 0
         returncode = 0
         def wait(self, timeout=None): return 0
+        def communicate(self, timeout=None): return None, None
     def fake_popen(args, cwd=None, **kw):
         started.append(Path(cwd).name)
         if "sidem" in Path(cwd).name:
@@ -5177,6 +5865,74 @@ def test_grok_roles(tmp: Path):
             os.environ["HOME"] = saved_home
 
 
+def test_verify_crash_reasks_deep(tmp: Path):
+    """確かめる段(Luna)が落ちた面は、全投稿を -again で確かめ直し、原本の問い(deep.json)もそこで出し直される。
+    その段で「深掘りの機会を失う」と通知しない(2026-10-21 02:19 の sidem 面: /tmp が満杯で exit 101。-again が問いを書き、
+    深掘りも回ったのに失ったと通知した)。-again でも落ちたら、異常終了だったことを添えて通知する"""
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    notes = []
+    ask = [{"question": "元の告知", "why": "引用だけ"}]
+
+    def run(mode: str):
+        """mode: recover = 1回目が落ち -again が答える / crash2 = 2回とも落ちる /
+        nodeep = 1回目が正常に終わり候補は読めるが deep.json が無い / again_nodeep = 1回目が落ち -again は正常だが deep.json が無い"""
+        out = tmp / mode
+        out.mkdir()
+        (out / "sidem.md").write_text("### 1\n- url: https://x.com/a/status/1\n- 本文: 本文", encoding="utf-8")
+
+        class P:
+            pid = 0
+
+            def __init__(self, rc):
+                self.returncode = rc
+
+            def wait(self, timeout=None):
+                return self.returncode
+
+            def poll(self):         # 回収は組 P の finish_group(communicate・kill・poll を使う)
+                return self.returncode
+
+            def communicate(self, timeout=None):
+                return "", ""
+
+            def kill(self):
+                pass
+
+        def fake_popen(args, cwd=None, **kw):
+            again = "-again" in Path(cwd).name
+            ok = (again and mode in ("recover", "again_nodeep")) or (not again and mode == "nodeep")
+            # 落ちる回も正しい形のファイルを書いてから exit 101 で終える(異常終了の答えは、形が正しくても採らない)
+            (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "sidem", "facts": ["f"]}]),
+                                                  encoding="utf-8")
+            (Path(cwd) / "posts.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted",
+                                                               "item": "https://x.com/a/status/1"}]), encoding="utf-8")
+            if not ok or mode == "recover":
+                (Path(cwd) / "deep.json").write_text(json.dumps(ask), encoding="utf-8")
+            return P(0 if ok else 101)      # 101: 落ちた(/tmp が満杯で exit 101)
+        saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw)
+        try:
+            collect.subprocess.Popen = fake_popen
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append((mode, msg, ok)) or True
+            collect.prompt_file = lambda date, name, prompt, base=None: "p"
+            collect.save_raw = lambda *a, **k: None
+            return collect.verify_grok_faces([{"key": "sidem", "brand": "sidem", "topic": "t"}], out)
+        finally:
+            collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw = saved
+    lost = lambda mode: [m for c, m, ok in notes if c == mode and not ok and "deep.json" in m]
+    items, deep = run("recover")
+    check(deep == {"sidem": ask} and len(items) == 1, f"落ちた面を確かめ直した問い・候補を使わない: {items} {deep}")
+    check(not [m for c, m, ok in notes if c == "recover" and not ok], f"確かめ直して問いが出たのに、深掘りの機会を失ったと通知した: {notes}")
+    items, deep = run("crash2")
+    check(items == [] and deep == {} and len(lost("crash2")) == 1 and "異常終了(exit 101)" in lost("crash2")[0],
+          f"確かめ直しでも落ちた面の問いの喪失を、終わり方を添えて1度だけ通知しない: {lost('crash2')}")
+    # 正常に終わり候補は読めるのに deep.json が無い: 確かめ直さないので、問いは本当に失う。どの段でも通知する
+    for mode in ("nodeep", "again_nodeep"):
+        _, deep = run(mode)
+        check(deep == {} and len(lost(mode)) == 1 and "締切内に終わった" in lost(mode)[0],
+              f"正常に終わった段の deep.json の喪失を通知しない({mode}): {lost(mode)}")
+
+
 def test_empty_answer_is_not_done(tmp: Path):
     """空・部分的なモデルの答えを『処理した・何も無い』と解釈しない(2026-10-06 の洗い出し)。
     入力1件ごとの答えをコードが入力と突き合わせ、答えの無いものだけやり直し、それでも無ければ名指しで異常にする。"""
@@ -5192,6 +5948,7 @@ def test_empty_answer_is_not_done(tmp: Path):
         pid = 0
         returncode = 0
         def wait(self, timeout=None): return 0
+        def communicate(self, timeout=None): return None, None
     def fake_popen(args, cwd=None, **kw):
         inputs[re.sub(r"^explore-|-[^-]+$", "", Path(cwd).name)] = (Path(cwd) / "x-posts.md").read_text(encoding="utf-8")
         (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "cg", "facts": ["f"]}]), encoding="utf-8")
@@ -5259,12 +6016,12 @@ def test_empty_answer_is_not_done(tmp: Path):
         pipelib.ROOT = saved_root
     check(a != b and "1回目" in a.read_text(encoding="utf-8") and "2回目" in b.read_text(encoding="utf-8"), f"生の出力を上書きした: {a} {b}")
     # 時間切れの回も、それまでの出力を残す(判定には使わない)
-    saved_rs = (compose.subprocess.run, compose.save_raw, compose.prompt_file)
+    saved_rs = (compose.run_group, compose.save_raw, compose.prompt_file)
     kept = []
     def timeout_run(cmd, **kw):
         raise subprocess.TimeoutExpired(cmd, 1, output=b'{"partial', stderr=b"working")
     try:
-        compose.subprocess.run, compose.prompt_file = timeout_run, (lambda d, n, p, base=None: "p")
+        compose.run_group, compose.prompt_file = timeout_run, (lambda d, n, p, base=None: "p")
         compose.save_raw = lambda date, name, out="", err="", code=None, files=None: kept.append((name, out, err))
         try:
             compose.claude_run("x", timeout=5)
@@ -5272,7 +6029,7 @@ def test_empty_answer_is_not_done(tmp: Path):
             pass
         compose.codex_run("x", timeout=5)
     finally:
-        compose.subprocess.run, compose.save_raw, compose.prompt_file = saved_rs
+        compose.run_group, compose.save_raw, compose.prompt_file = saved_rs
     check(len(kept) == 2 and all('{"partial' in o and "working" in e for _, o, e in kept), f"時間切れの回の出力を残さない: {kept}")
     # 3. 面別選定: 判定の無い主題を「不採用」にしない(取りこぼしとして拾い直しに回る)
     rows = [{"dedup_key": "a", "ids": ["1"]}, {"dedup_key": "b", "ids": ["2"]}]
@@ -5288,6 +6045,7 @@ def test_empty_answer_is_not_done(tmp: Path):
     class EP:
         pid, returncode, args = 0, 0, []
         def wait(self, timeout=None): return 0
+        def communicate(self, timeout=None): return None, None
     saved_sr = collect.save_raw
     try:
         collect.save_raw = lambda *a, **kw: None
@@ -5402,7 +6160,7 @@ def test_empty_answer_is_not_done(tmp: Path):
     check(rp[0]["url"] == "https://www.youtube.com/watch?v=b", f"url の無い投稿のリンクを前の投稿へ付け直した: {rp}")
     # 拾い直しの答えが null・崩れた要素でも号を止めない(取りこぼしのまま残す)
     # (テスト用のディレクトリで動かす。本体の metrics に書かない)
-    saved_rp = (compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.missing_plan_prompt, compose.ROOT)
+    saved_rp = (compose.run_group, compose.prompt_file, compose.save_raw, compose.missing_plan_prompt, compose.ROOT)
     def replan_with(ans: str, keys: list[str]) -> tuple[list, dict]:
         try:
             compose.ROOT = tmp / "rp"
@@ -5410,13 +6168,13 @@ def test_empty_answer_is_not_done(tmp: Path):
             def fake_run(cmd, **kw):
                 (compose.ROOT / "metrics" / "plan-2099-01-01-missing.json").write_text(ans, encoding="utf-8")
                 return subprocess.CompletedProcess(cmd, 0, "", "")
-            compose.subprocess.run, compose.prompt_file = fake_run, (lambda d, n, p, base=None: "p")
+            compose.run_group, compose.prompt_file = fake_run, (lambda d, n, p, base=None: "p")
             compose.save_raw, compose.missing_plan_prompt = (lambda *a, **kw: None), (lambda *a, **kw: "")
             pl = {"articles": [{"slug": "cg-old", "brand": "cg", "candidate_ids": ["c0"]}]}
             cands_t = {f"c-{k}": {"id": f"c-{k}"} for k in keys} | {"c0": {"id": "c0"}}
             return compose.replan_missing("2099-01-01", pl, {"cg": [{"dedup_key": k, "ids": [f"c-{k}"]} for k in keys]}, cands_t, keys), pl
         finally:
-            compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.missing_plan_prompt, compose.ROOT = saved_rp
+            compose.run_group, compose.prompt_file, compose.save_raw, compose.missing_plan_prompt, compose.ROOT = saved_rp
     art = lambda k, **kw: dict({"slug": "cg_new", "brand": "cg", "dedup_key": k, "candidate_ids": ["c"], "rank": "small", "angle": "",
                                 "purpose": "新情報", "lead_score": 0}, **kw)
     for ans in ("null", '{"articles": [null], "dropped": [{"dedup_key": ["x"]}]}', '{"dropped": [{"dedup_key": "k"}]}',
@@ -5543,23 +6301,23 @@ def test_accept_only_normal_and_schema(tmp: Path):
         collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved
     check([c["verify"] for c in cs] == ["unconfirmed", "confirmed"], f"写しの無い候補を confirmed にした: {[(c['verify'], c.get('verify_note')) for c in cs]}")
     # 一面選定: schema どおりでない答えはフォールバックへ
-    saved = (compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.ROOT)
+    saved = (compose.run_group, compose.prompt_file, compose.save_raw, compose.ROOT)
     try:
         compose.ROOT = tmp / "lead"
         (compose.ROOT / "metrics").mkdir(parents=True, exist_ok=True)
-        compose.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 0, '{"lead_slug": []}', "")
+        compose.run_group = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 0, '{"lead_slug": []}', "")
         compose.prompt_file, compose.save_raw = (lambda d, n, p, base=None: "p"), (lambda *a, **kw: None)
         pl = {"articles": [{"slug": "a", "rank": "small", "lead_score": 5}, {"slug": "b", "rank": "small", "lead_score": 9}]}
         compose.pick_lead("2026-10-06", pl)
     finally:
-        compose.subprocess.run, compose.prompt_file, compose.save_raw, compose.ROOT = saved
+        compose.run_group, compose.prompt_file, compose.save_raw, compose.ROOT = saved
     check([a["slug"] for a in pl["articles"] if a["rank"] == "lead"] == ["b"], f"崩れた一面の答えで止まった・フォールバックしない: {pl}")
     # 当番・監査: schema どおりでない答えは使わない
     sf = tmp / "s.json"
     sf.write_text(json.dumps({"type": "object", "required": ["status", "editor_summary"]}), encoding="utf-8")
-    saved = (oncall.subprocess.run, oncall.prompt_file, oncall.save_raw)
+    saved = (oncall.run_group, oncall.prompt_file, oncall.save_raw)
     try:
-        oncall.subprocess.run = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 0, '{"status": "no_fix_needed"}', "")
+        oncall.run_group = lambda cmd, **kw: subprocess.CompletedProcess(cmd, 0, '{"status": "no_fix_needed"}', "")
         oncall.prompt_file, oncall.save_raw = (lambda d, n, p, base=None: "p"), (lambda *a, **kw: None)
         try:
             oncall.run_claude("x", sf, tmp)
@@ -5567,7 +6325,7 @@ def test_accept_only_normal_and_schema(tmp: Path):
         except RuntimeError:
             pass
     finally:
-        oncall.subprocess.run, oncall.prompt_file, oncall.save_raw = saved
+        oncall.run_group, oncall.prompt_file, oncall.save_raw = saved
     # 16巡目: 重複キーは入口ごとに読めない答え / 真偽値の番号 / 日付の形 / item の契約 / 前置きの投稿 / Grok の書きかけ
     (tmp / "dup.json").write_text('[{"url": "u", "status": "unreadable", "status": "none", "item": ""}]', encoding="utf-8")
     check(collect.read_json_list(tmp / "dup.json") is None, "重複キーのファイルを読んだ")
@@ -5850,6 +6608,7 @@ def test_grok_repoint_uses_each_face_posts(tmp: Path):
         pid = 0
         returncode = 0
         def wait(self, timeout=None): return 0
+        def communicate(self, timeout=None): return None, None
     def fake_popen(args, cwd=None, **kw):
         items = ([{"url": "https://www.youtube.com/shorts/YvB9Lkq5aOs", "brand": "dsva", "facts": ["クライヤ"]}]
                  if "dsva" in Path(cwd).name else [])
@@ -6559,7 +7318,7 @@ def test_rewrites(tmp: Path):
     (posts / n).write_text("元の記事", encoding="utf-8")
     saved = (rewrite_past.ROOT, rewrite_past.apply_answer, _c.claude_review)
 
-    def fake_apply(path, case, ans):
+    def fake_apply(path, case, ans, fetched=None):
         path.write_text("差し替えた記事", encoding="utf-8")
         return []
 
@@ -8069,6 +8828,235 @@ def test_oncall_fix_until_clean(tmp: Path):
         oncall.BACKLOG = saved_b
 
 
+def test_oncall_report_concurrence(tmp: Path):
+    """取り込みの条件 C(編集長 2026-10-21): 監査の must_fix が編集長への報告の誤り(misreport)だけになったら、監査が直した
+    報告の文面を書いて宣告し、当番が了承すればコードの修正を取り込み、その文面で報告する(「監査が書き、当番が了承した」)。
+    当番が異を唱えたら往復を続ける。2026-10-15: 当番の報告がレトラの記事を「外れた・最大3日遅れ」と書き(実際は 10/15号に掲載)、
+    監査がその報告の誤りだけを6往復指摘して直し切れず、正しいコードの修正も取り込まれなかった。
+    あわせて、当番に渡す材料に、話題に関係する号の掲載・外れた記事・校閲の判定の記録を載せる(報告の誤りの原因)。"""
+    import oncall
+    tmp.mkdir(parents=True, exist_ok=True)
+    summary = lambda tag: {k: f"{tag}の{k}" for k in oncall.SUMMARY_KEYS}
+    own, audit1, audit2, own2 = summary("当番"), summary("監査1"), summary("監査2"), summary("当番2")
+    mis = {"id": "m1", "claim": "報告が掲載済みの記事を外れたと書いた", "evidence": "docs/_posts/…", "occurs": "この報告を読むとき",
+           "severity": "misreport"}
+    bad = dict(mis, id="b1", severity="blocks_publish", claim="原因に当たっていない")
+    schema_dir = Path(oncall.__file__).resolve().parent.parent / "schema"
+    rs = json.loads((schema_dir / "oncall-review.schema.json").read_text(encoding="utf-8"))
+    review = lambda **kw: {"verdict": "reject", "verification": AUDIT_RAN, "must_fix": [mis], "later": [], "notes": "",
+                           "editor_summary": None, **kw}
+    check(oncall.schema_ok(review(editor_summary=audit1), rs) and oncall.schema_ok(review(), rs)
+          and not oncall.schema_ok(review(editor_summary={"why": "x"}), rs) and "editor_summary" in rs["required"],
+          "監査の書式に、監査が直した報告の文面の欄(5つの欄そろい、または null)が無い")
+    acs = json.loads((schema_dir / "oncall-accept.schema.json").read_text(encoding="utf-8"))
+    check(oncall.schema_ok({"decision": "accept", "evidence": "確かめた", "editor_summary": None}, acs)
+          and not oncall.schema_ok({"decision": "ok", "evidence": "x", "editor_summary": None}, acs),
+          "当番の了承の書式(accept / object・根拠・当番の文面)")
+    names = ("run_claude", "run_codex", "freeze", "root_clean", "remote_main", "env_fingerprint", "sh", "MAX_ROUNDS", "PAPER_RECORD")
+    saved = {n: getattr(oncall, n) for n in names}
+    try:
+        oncall.root_clean = lambda: True
+        oncall.remote_main = lambda: "B" * 40
+        oncall.env_fingerprint = lambda: "env"
+        oncall.freeze = lambda wt, base, rnd: ("H%039d" % rnd, "diff --git a/scripts/x.py b/scripts/x.py", ["scripts/x.py"])
+        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
+        oncall.MAX_ROUNDS = 4
+        oncall.PAPER_RECORD = "## 掲載の記録(2026-10-15号)\n- dsva-letora: レトラ誕生日LV"
+
+        def run(reviews: list[dict], accepts: list[dict], wip: dict | None = None, during_accept=None):
+            calls, prompts = [], []
+            rv, ac = iter(reviews), iter(accepts)
+
+            def claude(prompt, schema, cwd, timeout=1800):
+                calls.append(Path(schema).name)
+                prompts.append(prompt)
+                if Path(schema).name == "oncall-fix.schema.json":
+                    return {"status": "fixed", "rerun_mode": "resume", "diagnosis": "d", "editor_summary": dict(own)}
+                if Path(schema).name == "oncall-accept.schema.json":
+                    if during_accept:
+                        during_accept()
+                    a = next(ac)
+                    if isinstance(a, BaseException):
+                        raise a
+                    return a
+                return {"accepted": [], "refuted": [], "status": "unchanged", "rerun_mode": "unchanged"}
+            rprompts = []
+            oncall.run_claude = claude
+            oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (rprompts.append(prompt) or next(rv))
+            tr: list[dict] = []
+            r = oncall.run_rounds("compose", "2026-10-15", "ctx", tmp, "B" * 40, wip, "env", tr)
+            return r, tr, calls, prompts, rprompts
+
+        # (1) misreport だけ → 監査の文面 → 当番が了承 → 取り込む(承認)。報告は監査の文面で、誰が書き誰が了承したかが残る
+        r, tr, calls, prompts, rprompts = run([review(editor_summary=audit1)],
+                                              [{"decision": "accept", "evidence": "掲載の記録と合う", "editor_summary": None}])
+        who = r["fix"].get("report_authorship") or {}
+        check(r["approved"] and not r["error"] and r["head"] == "H%039d" % 1 and r["fix"].get("editor_summary") == audit1
+              and calls == ["oncall-fix.schema.json", "oncall-accept.schema.json"] and len(rprompts) == 1,
+              f"監査の must_fix が報告の誤りだけで監査が文面を書いたのに、当番の了承で取り込まない: {r.get('approved')} {calls} {r['error']}")
+        check(who.get("written_by") == "audit" and who.get("accepted_by") == "oncall" and who.get("round") == 1
+              and who.get("audit_model") == oncall.AUDIT_MODEL and who.get("oncall_model") == oncall.ONCALL_MODEL
+              and who.get("must_fix") == ["m1"] and who.get("evidence") == "掲載の記録と合う"
+              and who.get("own_summary") == own and r["kept"]["open"] == [],
+              f"誰が書き誰が了承したか(当番の元の文面も)が記録に残らない: {who}")
+        check(any(t.get("report_concurrence", {}).get("decision") == "accept" for t in tr), "往復の記録に了承が残らない")
+        check(all(audit1[k] in prompts[-1] for k in oncall.SUMMARY_KEYS) and all(own[k] in prompts[-1] for k in oncall.SUMMARY_KEYS)
+              and mis["claim"] in prompts[-1] and "掲載の記録(2026-10-15号)" in prompts[-1],
+              "当番の了承の依頼に、監査の文面・当番の文面・指摘・掲載の記録が載っていない")
+        text = oncall.editor_report("compose", "2026-10-15", r["fix"], "reject", 1, 0, "metrics/x.md", "")
+        check("監査が書き、当番が了承した" in text and audit1["paper_impact"] in text and own["paper_impact"] not in text,
+              f"報告に「監査が書き、当番が了承した」が無い・監査の文面で報告しない: {text[:400]}")
+        check(oncall.report_authorship_text(r["fix"]) and not oncall.report_authorship_text({"editor_summary": own}),
+              "記録ファイル向けの「誰が書き誰が了承したか」の文")
+        # (2) 当番が異を唱える → 往復を続ける(当番の修正のやり直しは挟まず、異議と当番の文面を監査に渡す)→ 監査が直した文面に了承
+        r, tr, calls, prompts, rprompts = run(
+            [review(editor_summary=audit1), review(editor_summary=audit2)],
+            [{"decision": "object", "evidence": "10/16号の記録ではレトラは載っていない", "editor_summary": dict(own2)},
+             {"decision": "accept", "evidence": "直った", "editor_summary": None}])
+        check(r["approved"] and r["fix"].get("editor_summary") == audit2 and len(rprompts) == 2
+              and calls == ["oncall-fix.schema.json", "oncall-accept.schema.json", "oncall-accept.schema.json"]
+              and (r["fix"].get("report_authorship") or {}).get("round") == 2,
+              f"当番が異を唱えたあと往復を続けない: {calls} {r.get('approved')} {r['fix'].get('report_authorship')}")
+        check("10/16号の記録ではレトラは載っていない" in rprompts[1] and own2["paper_impact"] in rprompts[1]
+              and audit1["paper_impact"] in rprompts[1],
+              "異議の根拠・当番の文面・監査の前の文面が、次の監査に渡らない")
+        objs = [t["report_concurrence"] for t in tr if "report_concurrence" in t]
+        check([o.get("decision") for o in objs] == ["object", "accept"] and objs[0].get("written_by") == "audit"
+              and objs[0].get("objected_by") == "oncall" and objs[0].get("audit_summary") == audit1,
+              f"異を唱えた記録(誰が書き誰が異を唱えたか)が残らない: {objs}")
+        # (2b) 異を唱え、監査が当番の文面を認めて must_fix を空にした → 普通の承認(当番の文面で報告。監査が書いたことにしない)
+        r, tr, calls, _, _ = run([review(editor_summary=audit1), review(verdict="approve", must_fix=[])],
+                                 [{"decision": "object", "evidence": "記録と違う", "editor_summary": dict(own2)}])
+        check(r["approved"] and r["fix"].get("editor_summary") == own2 and not r["fix"].get("report_authorship"),
+              f"監査が当番の異議を認めたのに当番の文面で報告しない: {r['fix'].get('editor_summary')} {r['fix'].get('report_authorship')}")
+        # (2c) 異を唱え続けたら上限まで往復し、取り込まない(残った指摘は報告の誤り)
+        r, tr, calls, _, _ = run([review(editor_summary=audit1)] * 4,
+                                 [{"decision": "object", "evidence": "違う", "editor_summary": None}] * 4)
+        check(not r["approved"] and [o["id"] for o in r["kept"]["open"]] == ["m1"] and calls.count("oncall-accept.schema.json") == 4,
+              f"異を唱え続けたのに取り込んだ・往復しない: {r.get('approved')} {calls}")
+        # (2d) 最後の往復で異を唱えて終わった → 続き(wip)に当番の最新の文面と異議一式が残り、次の試行は当番の修正を挟まず
+        #      異議を監査に渡すところから(監査指摘: 異議の直後に上限で終わると、根拠・文面が失われ、続きで当番の修正が挟まった)
+        own3 = summary("当番3")
+        oncall.MAX_ROUNDS = 2
+        r, tr, calls, _, _ = run([review(editor_summary=audit1), review(editor_summary=audit2)],
+                                 [{"decision": "object", "evidence": "一度目の異議", "editor_summary": dict(own2)},
+                                  {"decision": "object", "evidence": "二度目の異議: 10/15号に載っている", "editor_summary": dict(own3)}])
+        k = json.loads(json.dumps(r["kept"]))     # state に保存して読み戻す
+        check(not r["approved"] and k["fix"].get("editor_summary") == own3 and (k.get("objection") or {}).get("report_objection", {}).get(
+                  "evidence") == "二度目の異議: 10/15号に載っている" and k["objection"]["report_objection"]["audit_summary"] == audit2,
+              f"異議で終わった続きに、当番の最新の文面・異議の根拠・監査の文面が残らない: {k.get('objection')} {k['fix'].get('editor_summary')}")
+        oncall.MAX_ROUNDS = 4
+        wip = {"base": "B" * 40, "head": k["head"], "fix": k["fix"], "open": k["open"], "later": [], "objection": k["objection"]}
+        r, tr, calls, _, rprompts = run([review(verdict="approve", must_fix=[])], [], wip=wip)
+        check(r["approved"] and calls == [] and len(rprompts) == 1 and "二度目の異議: 10/15号に載っている" in rprompts[0]
+              and own3["paper_impact"] in rprompts[0] and audit2["paper_impact"] in rprompts[0] and r["fix"].get("editor_summary") == own3,
+              f"異議の続きが、当番の修正を挟まず異議を監査に渡すところから始まらない: {calls} {r.get('approved')}")
+        # (3) must_fix に報告の誤り以外があれば C ではない(当番の了承を求めず、修正の往復を続ける)
+        r, tr, calls, _, _ = run([review(must_fix=[mis, bad], editor_summary=audit1),
+                                  review(verdict="approve", must_fix=[])], [])
+        check(r["approved"] and "oncall-accept.schema.json" not in calls and calls.count("oncall-integrate.schema.json") == 1
+              and r["fix"].get("editor_summary") == own and not r["fix"].get("report_authorship"),
+              f"報告の誤り以外の指摘があるのに監査の文面で取り込もうとした: {calls}")
+        # (4) 監査が文面を書かなかった・テストを走らせた記録が無いときも C にしない
+        r, tr, calls, _, _ = run([review(), review(verdict="approve", must_fix=[])], [])
+        check(r["approved"] and "oncall-accept.schema.json" not in calls and not r["fix"].get("report_authorship"),
+              f"監査が文面を書いていないのに了承を求めた: {calls}")
+        r, tr, calls, _, _ = run([review(editor_summary=audit1, verification=[{"command": "読んだ", "exit_code": None, "result": ""}]),
+                                  review(verdict="approve", must_fix=[])], [])
+        check("oncall-accept.schema.json" not in calls and not r["fix"].get("report_authorship"),
+              f"走らせた記録の無い監査の文面で取り込もうとした: {calls}")
+        # (5) 了承のセッションが本体の作業ツリー・origin/main・.env に触ったら、了承でも取り込まない(Sol 監査2巡目の later)
+        for what, touch in (("本体の作業ツリー", lambda: setattr(oncall, "root_clean", lambda: False)),
+                            ("origin/main", lambda: setattr(oncall, "remote_main", lambda: "C" * 40)),
+                            (".env", lambda: setattr(oncall, "env_fingerprint", lambda: "changed"))):
+            r, tr, calls, _, _ = run([review(editor_summary=audit1)], [{"decision": "accept", "evidence": "x", "editor_summary": None}],
+                                     during_accept=touch)
+            check(not r["approved"] and r["fix"].get("status") == "cannot_fix" and not r["fix"].get("report_authorship")
+                  and calls == ["oncall-fix.schema.json", "oncall-accept.schema.json"],
+                  f"了承のセッションが{what}に触ったのに取り込んだ: {r.get('approved')} {r['fix'].get('status')} {calls}")
+            oncall.root_clean, oncall.remote_main, oncall.env_fingerprint = (lambda: True), (lambda: "B" * 40), (lambda: "env")
+        # (6) 了承のセッションが認証切れ・利用上限(CliBlocked)で止まった → 続きに「了承待ち」(最新の指摘・監査の文面)が残り、
+        #     再開は当番の修正・検査・監査を挟まず了承から(監査指摘 2026-10-22: 続きに残らず、再開で余分に回した)
+        blocked = pipelib.CliBlocked({"tool": "claude", "kind": "auth", "detail": "OAuth の期限切れ"})
+        # 偽の freeze は、続きの確かめ(0往復目)では作業ツリーに何も足されていない = 1往復目と同じ commit を返す
+        # (commit は 16進の40桁。resume_point は形の違うハッシュを続きにしない)
+        oncall.freeze = lambda wt, base, rnd: ("a%039d" % (rnd or 1), "diff --git a/scripts/x.py b/scripts/x.py", ["scripts/x.py"])
+        r, tr, calls, _, _ = run([review(editor_summary=audit1)], [blocked])
+        # _main と同じ道で state に保存し、読み戻して続きを取る(wip_of → save_state → load_state → resume_point)
+        st_p = tmp / "state.json"
+        oncall.save_state(st_p, {"log": [], "wip": oncall.wip_of("B" * 40, r["kept"], r["approved"])})
+        k = oncall.resume_point(oncall.load_state(st_p), "B" * 40) or {}
+        check(not r["approved"] and r.get("blocked") and [o["id"] for o in k.get("open") or []] == ["m1"]
+              and (k.get("accept") or {}).get("editor_summary") == audit1 and [m["id"] for m in k["accept"].get("must_fix") or []] == ["m1"]
+              and k["accept"].get("verification") == AUDIT_RAN,
+              f"了承の途中で止まった続きに、最新の指摘と監査の文面が残らない: {k.get('open')} {k.get('accept')}")
+        h0 = "a%039d" % 1
+        wip = k
+        r, tr, calls, _, rprompts = run([], [{"decision": "accept", "evidence": "掲載の記録と合う", "editor_summary": None}], wip=wip)
+        check(r["approved"] and calls == ["oncall-accept.schema.json"] and rprompts == [] and r["head"] == h0 and r["diff"].strip()
+              and r["fix"].get("editor_summary") == audit1 and (r["fix"].get("report_authorship") or {}).get("round") == 1,
+              f"了承待ちの続きが、了承から始まらない・取り込む差分が無い: {calls} {len(rprompts)} {r.get('approved')} {r['head'][:10]}")
+        # 続きの了承で異を唱えた → 当番の修正を挟まず異議を監査へ
+        r, tr, calls, _, rprompts = run([review(verdict="approve", must_fix=[])],
+                                        [{"decision": "object", "evidence": "続きでの異議", "editor_summary": dict(own2)}], wip=wip)
+        check(r["approved"] and calls == ["oncall-accept.schema.json"] and len(rprompts) == 1 and "続きでの異議" in rprompts[0]
+              and r["fix"].get("editor_summary") == own2,
+              f"続きの了承で異を唱えたあと、異議が監査に渡らない: {calls} {len(rprompts)}")
+        # 作業ツリーの commit が監査したものと違えば、了承からは始めない(普通の続き)
+        r, tr, calls, _, _ = run([review(verdict="approve", must_fix=[])], [], wip=dict(wip, head="a%039d" % 7))
+        check("oncall-accept.schema.json" not in calls and calls[:1] == ["oncall-integrate.schema.json"] and r["approved"]
+              and any("accept_skipped" in t for t in tr),
+              f"監査していない commit の続きを了承から始めた: {calls}")
+        # 了承待ちの形が条件 C を満たさない(misreport 以外・走らせた記録が無い・文面が欠ける)なら、了承からは始めない(再開時にも検める)
+        for what, acc in (("misreport 以外", dict(wip["accept"], must_fix=[mis, bad])),
+                          ("走らせた記録が無い", dict(wip["accept"], verification=[])),
+                          ("文面が欠ける", dict(wip["accept"], editor_summary={"why": "x"}))):
+            r, tr, calls, _, _ = run([review(verdict="approve", must_fix=[])], [], wip=dict(wip, accept=acc))
+            check("oncall-accept.schema.json" not in calls and calls[:1] == ["oncall-integrate.schema.json"]
+                  and not r["fix"].get("report_authorship"),
+                  f"条件 C を満たさない了承待ち({what})の続きを了承から始めた: {calls}")
+        # 続きの checkout が失敗しても、了承待ちは続きに残る(監査指摘)
+        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 1 if "checkout" in args else 0, "", "index.lock")
+        r, tr, calls, _, _ = run([], [], wip=wip)
+        nxt = oncall.wip_of("B" * 40, r["kept"], r["approved"]) or {}
+        check(r["error"] and calls == [] and (nxt.get("accept") or {}).get("editor_summary") == audit1,
+              f"続きの checkout の失敗で了承待ちが消えた: {r['error']} {nxt.get('accept')}")
+        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
+    finally:
+        for n, v in saved.items():
+            setattr(oncall, n, v)
+    # 報告の誤りの原因: 当番に渡す材料に、関係する号の載った記事・外れた記事・校閲の判定を載せる(当番は確かめずに「外れた」と書いた)
+    root = tmp / "root"
+    d = "2026-10-15"
+    (root / "docs" / "_posts").mkdir(parents=True)
+    (root / "metrics").mkdir(parents=True)
+    (root / "docs" / "_posts" / f"{d}-letora.md").write_text(
+        "---\n" + article_fm("letora", d, title="レトラ誕生日LV、入金期限まであと3日",
+                             candidate_ids=["sched-2026-10-15-letora-締切前"]) + "---\n本文\n", encoding="utf-8")
+    (root / "metrics" / f"drops-{d}.json").write_text(json.dumps(
+        {"gaku-single": {"title": "学マス「修楽旅行」", "stage": "書き直しで見送り", "why": "NOT_NEWS 既報", "candidate_ids": ["c9"]}},
+        ensure_ascii=False), encoding="utf-8")
+    (root / "metrics" / f"review-{d}-1.json").write_text(json.dumps({"verdict": "reject", "run": "r1", "blockers": [{"rule": "R1"}]}), encoding="utf-8")
+    (root / "metrics" / f"review-{d}-2.json").write_text(json.dumps({"verdict": "approve", "run": "r1", "blockers": []}), encoding="utf-8")
+    rec = oncall.paper_record([d, "2026-10-16"], root)
+    posted, _, rest = rec.partition("外れた記事")
+    check("letora" in posted and "レトラ誕生日LV" in posted and "sched-2026-10-15-letora-締切前" in posted and "gaku-single" not in posted
+          and "gaku-single" in rest and "書き直しで見送り" in rest and "letora" not in rest,
+          f"掲載の記録に、載った記事と外れた記事が分かれて載らない:\n{rec}")
+    check("approve" in rec and f"review-{d}-2.json" in rec and "2026-10-16" in rec, f"掲載の記録に校閲の最後の判定・記録の無い号が載らない:\n{rec}")
+    check(oncall.related_editions(d, "2026-10-16", [{"date": "2026-10-13"}, {"date": "x"}]) == ["2026-10-13", "2026-10-14", d, "2026-10-16", "2026-10-17"]
+          and oncall.related_editions(d, d, []) == [d, "2026-10-16"],
+          f"関係する号(呼ばれた号・取り込み先・保管の指摘の号と、それぞれの次の号): {oncall.related_editions(d, '2026-10-16', [{'date': '2026-10-13'}])}")
+    saved_rec = oncall.PAPER_RECORD
+    try:
+        oncall.PAPER_RECORD = rec
+        fp = oncall.fix_prompt("compose", d, "ctx", None)
+        rp = oncall.review_prompt("compose", d, {"status": "fixed"}, "diff", None)
+    finally:
+        oncall.PAPER_RECORD = saved_rec
+    check(rec in rp and rec in fp and str(oncall.ROOT) in fp, "当番・監査の依頼に掲載の記録が載らない・当番の依頼に記録の場所が無い")
+
+
 def test_slugify_format():
     import re
     import planlib
@@ -8405,8 +9393,9 @@ def test_reservation_occurs_on(tmp: Path):
 
 FAKE_CODEX = r'''#!/usr/bin/env python3
 # テスト用の偽の codex(本物の子プロセスとして起動される)。依頼の種類と記事(write-<slug> / revise-<slug>)ごとに、呼ばれた回数番目の
-# 手順を FAKE_CODEX_SPEC から引く: touch(作業ツリーのファイルを直接書く・消す)→ answer(最終メッセージ)→ sleep → exit
-import json, os, pathlib, re, sys, time
+# 手順を FAKE_CODEX_SPEC から引く: touch(作業ツリーのファイルを直接書く・消す)→ fetch(本物の fetch_page.py で読む。FAKE_FETCH_PAGE)
+# → answer(最終メッセージ)→ sleep → exit
+import json, os, pathlib, re, subprocess, sys, time
 spec_p = pathlib.Path(os.environ["FAKE_CODEX_SPEC"])
 m = re.search(r"/metrics/work/[^/]+/(write|revise)-([a-z]+(?:-[a-z]+)*)(?:-\d+)?\.md", sys.argv[-1])
 key = m.group(1) + "-" + m.group(2)
@@ -8420,8 +9409,20 @@ for rel, text in (step.get("touch") or {}).items():
         pathlib.Path(rel).unlink()
     else:
         pathlib.Path(rel).write_text(text, encoding="utf-8")
+for u in step.get("fetch") or []:
+    subprocess.run([sys.executable, os.environ["FAKE_FETCH_PAGE"], u], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+if step.get("say"):
+    print(step["say"], file=sys.stderr)
 if step.get("answer") is not None:
     pathlib.Path(sys.argv[sys.argv.index("--output-last-message") + 1]).write_text(json.dumps(step["answer"], ensure_ascii=False), encoding="utf-8")
+if step.get("background"):      # 道具の実行を残して終わる(あとから書く。detach なら別のセッション・プロセスグループに抜け、
+    import subprocess             # nodump なら /proc/<pid>/environ を読めなくする)
+    code = ("import ctypes; ctypes.CDLL(None).prctl(4, 0, 0, 0, 0)\n" if step.get("nodump") else "") + step["background"]
+    subprocess.Popen([sys.executable, "-c", code], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                     start_new_session=bool(step.get("detach")))
+if step.get("kill_guard"):      # 自分を包む child_guard を SIGKILL する(OOM などで監督だけが落ちた形)
+    import signal
+    os.kill(os.getppid(), signal.SIGKILL)
 time.sleep(step.get("sleep", 0))
 sys.exit(step.get("exit", 0))
 '''
@@ -8460,12 +9461,21 @@ def test_writer_children(tmp: Path):
     issue = {"rule_id": "R1", "issue": "事実を直す", "quote": "販売を開始する。価格は3000円。", "repair": "rewrite_claim",
              "expected": "正しく書く", "fact_ids": ["F1"]}
     fixed = dict(base, addressed_issue_ids=["I1"], blocks=[{"markdown": "販売を開始した。価格は3000円。", "fact_ids": ["F1", "F2"]}])
+    # 子の CLI が終わったあとも同じプロセスグループに残り、テストが合図(release-<段>)を置いてから記事を書き換える道具の実行
+    # (書き換えが控えへ戻したあとに来るように。合図が来なければ 20 秒で書かずに終わる)
+    late_write = lambda s, phase: (f"import time,pathlib\nfor _ in range(400):\n    if pathlib.Path({str(tmp / ('release-' + phase))!r}).exists():\n"
+                                   f"        pathlib.Path('docs/_posts/{date}-{s}.md').write_text('残った道具の書き込み')\n        break\n"
+                                   f"    time.sleep(0.05)\n")
     spec = {"write-probe": [{"answer": dict(base, title="**販売開始**", lede="**販売開始**する。")}, {"answer": base}],
             **{f"write-{s}": [{"answer": base}] for s in slugs[1:]},
-            "revise-probe": [{"answer": fixed}],
-            # 記事を直接書き換え、ほかの記事も書き換え、新しい記事ファイルを作って異常終了
+            # 書かせる記事を直接書いて 96 で異常終了(CLI の普通の終了コード。起動の失敗ではない)→ やり直しで答えから書く(監査指摘)
+            "write-alpha": [{"touch": {f"docs/_posts/{date}-alpha.md": "不採用の直書き"}, "exit": 96}, {"answer": base}],
+            # 正常終了して、別のセッションに抜け、環境を読めなくした道具を残す
+            "revise-probe": [{"answer": fixed, "background": late_write("delta", "revise"), "detach": True, "nodump": True}],
+            # 記事を直接書き換え、ほかの記事も書き換え、新しい記事ファイルを作り、道具を残して異常終了
             "revise-alpha": [{"touch": {f"docs/_posts/{date}-alpha.md": "壊れた直書き", f"docs/_posts/{date}-delta.md": "よその記事も直書き",
-                                        f"docs/_posts/{date}-zeta.md": "勝手に作った記事"}, "answer": fixed, "exit": 1}],
+                                        f"docs/_posts/{date}-zeta.md": "勝手に作った記事"}, "answer": fixed, "exit": 97,
+                              "background": late_write("beta", "revise")}],
             # 書き換えて時間切れ
             "revise-beta": [{"touch": {f"docs/_posts/{date}-beta.md": "時間切れの直書き"}, "answer": fixed, "sleep": 20}],
             # 書き換え、検算で適用を拒まれる答え(tags 1個)を返す
@@ -8487,6 +9497,9 @@ def test_writer_children(tmp: Path):
         with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
             _lint.check_plain_text(rep, "-", "title", fm.get("title"))
             _lint.check_plain_text(rep, "-", "lede", fm.get("lede"))
+        check((spec_p.parent / "count-write-alpha").read_text() == "2" and "不採用の直書き" not in path("alpha").read_text(encoding="utf-8")
+              and (compose.parse_front_matter(path("alpha")) or {}).get("title") == base["title"],
+              f"96 で終わった CLI を起動の失敗と取り違えた・やり直さない: {path('alpha').read_text(encoding='utf-8')[:40]!r}")
         check(sorted(a["slug"] for a in written) == sorted(slugs) and fm.get("title") == base["title"] and rep.errors == 0
               and (spec_p.parent / "count-write-probe").read_text() == "2",
               f"見出し・リードの Markdown 記法を差し戻さずに採った: {fm.get('title')!r} {fm.get('lede')!r} lint {rep.errors}件 {aborted}")
@@ -8499,7 +9512,10 @@ def test_writer_children(tmp: Path):
         compose.DEADLINE = time.time() + 3      # beta の子だけが時間切れになる
         res = compose.revise_articles(date, by_file, plan, {"c1": cand}, [])
         compose.DEADLINE = None
-        # 3) 子の直接の書き込みは、異常終了・時間切れ・適用の拒否のどれでも控えへ戻る(よその記事・新しいファイルも)
+        (tmp / "release-revise").write_text("", encoding="utf-8")    # 控えへ戻したあと: 残った道具の実行に書かせる合図
+        time.sleep(0.6)
+        # 3) 子の直接の書き込みは、異常終了・時間切れ・適用の拒否のどれでも控えへ戻る(よその記事・新しいファイルも)。
+        #    子が残した道具の実行も止めてから戻すので、戻したあとに書き換えられない(監査指摘)
         check(res == {"probe": "fixed", "alpha": "unreadable", "beta": "unreadable", "gamma": "kept"}, f"書き直しの結果: {res}")
         for s in ("alpha", "beta", "gamma", "delta"):
             check(path(s).read_bytes() == before[s], f"書き直しの子が直接書き換えた {s} が控えに戻らない: {path(s).read_text(encoding='utf-8')[:40]!r}")
@@ -8511,18 +9527,494 @@ def test_writer_children(tmp: Path):
         rec = json.loads((tmp / "metrics" / f"factmap-{date}.json").read_text(encoding="utf-8"))
         check(rec.get("probe") == {key0: fmap, key1: fmap} and renderlib.factmap_valid(rec),
               f"採った稿(初稿・改稿)の指紋と事実の対応がファイルに残らない: {rec.get('probe')}")
-        # 5) 執筆・書き直しに見せる素材の種別は、素材に残った収集時点の値(当事者)ではなく判定表の値(紙面と同じ。2026-10-21)
+        # 4b) 執筆・書き直しに見せる素材の種別は、素材に残った収集時点の値(当事者)ではなく判定表の値(紙面と同じ。2026-10-21)
         shown = {p.name: p.read_text(encoding="utf-8") for p in (tmp / "metrics" / "work" / date).glob("*.md")
                  if p.name.startswith(("write-probe", "revise-probe"))}
         check(any(n.startswith("write-") for n in shown) and any(n.startswith("revise-") for n in shown)
               and all('"source_type": "公式"' in t and '"source_type": "当事者"' not in t for t in shown.values()),
               f"執筆・書き直しに、素材の古い種別を見せた: {sorted(shown)}")
+        # 5) 組み直し(--reuse-plan・--recover)の初稿の子が、この号のほかの記事(承認済み)を直接書き換え・消し・作っても採らない。
+        #    正常終了・異常終了・時間切れのどれでも、書かせた記事以外は控えへ戻り、書かせた記事は答えから書く
+        #    (監査: 書き直しと同じ型が初稿の執筆に残っていた)
+        spec.update({
+            "write-fresh": [{"touch": {f"docs/_posts/{date}-fresh.md": "子が直接書いた稿", f"docs/_posts/{date}-alpha.md": "承認済みを直書き",
+                                       f"docs/_posts/{date}-delta.md": None, f"docs/_posts/{date}-ghost.md": "勝手に作った記事"},
+                             "answer": base, "background": late_write("probe", "reuse")}],
+            # 異常終了して、別のセッションに抜け環境を読めなくした道具を残す(やり直しは正常)
+            "write-late": [{"touch": {f"docs/_posts/{date}-gamma.md": "異常終了の直書き"}, "exit": 1, "background": late_write("alpha", "reuse"),
+                            "detach": True, "nodump": True}, {"answer": base}],
+            # 時間切れになり、別のセッションに抜け環境を読めなくした道具を残す(やり直しは正常)
+            "write-slow": [{"touch": {f"docs/_posts/{date}-beta.md": "時間切れの直書き"}, "answer": base, "sleep": 20,
+                            "background": late_write("gamma", "reuse"), "detach": True, "nodump": True}, {"answer": base}]})
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        before2 = {s: path(s).read_bytes() for s in slugs}
+        plan2 = {"articles": [art(s) for s in slugs + ("fresh", "late", "slow")]}
+        compose.DEADLINE = time.time() + 3      # slow の子の1回目だけが時間切れになる
+        written2, aborted2 = compose.write_articles(date, plan2, {"c1": cand}, [], {}, reuse=True)
+        compose.DEADLINE = None
+        (tmp / "release-reuse").write_text("", encoding="utf-8")     # 控えへ戻したあと: 残った道具の実行に書かせる合図
+        time.sleep(0.6)
+        for s in slugs:
+            check(path(s).exists() and path(s).read_bytes() == before2[s],
+                  f"組み直しの初稿の子が直接書き換え・消した既存の記事 {s} が控えに戻らない: {path(s).read_text(encoding='utf-8')[:40] if path(s).exists() else '(消えた)'!r}")
+        check(not path("ghost").exists(), "組み直しの初稿の子が勝手に作った記事ファイルが残った")
+        # late・slow のやり直しは、slow の時間切れ(締切の間際。待ちは秒に切り捨てる)のあとに起動する。締切を過ぎていれば起動せず
+        # 締切で落とした記事になる(組 P)、過ぎていなければ答えから書く。どちらでも子の直書きは残さない
+        outs2 = compose.WRITE_OUTCOMES.get(date) or {}
+        redo_ok = all(((compose.parse_front_matter(path(s)) or {}).get("title") == base["title"] and s not in aborted2) if path(s).exists()
+                      else (s in aborted2 and "締切" in outs2.get(s, "")) for s in ("late", "slow"))
+        check(sorted(a["slug"] for a in written2) == sorted(slugs + ("fresh",) + tuple(s for s in ("late", "slow") if s not in aborted2))
+              and set(aborted2) <= {"late", "slow"} and redo_ok
+              and (compose.parse_front_matter(path("fresh")) or {}).get("title") == base["title"]
+              and "子が直接書いた稿" not in path("fresh").read_text(encoding="utf-8"),
+              f"組み直しで書かせた記事が答えから書かれない・締切後にやり直した: {[a['slug'] for a in written2]} {aborted2} "
+              f"{ {s: (compose.WRITE_OUTCOMES.get(date) or {}).get(s) for s in ('late', 'slow')} }")
+        # 6) CLI を本当に起動できない(PATH に codex が無い): 直接起動したときと同じく FileNotFoundError で止まり、書かせる記事を残さず、
+        #    ほかの記事は変えない(出力の読めない回としてやり直し・落とすことはしない)
+        before3 = {p_.name: p_.read_bytes() for p_ in posts.glob(f"{date}-*.md")}
+        empty = tmp / "nobin"
+        empty.mkdir()
+        os.environ["PATH"] = str(empty)
+        try:
+            compose.write_articles(date, {"articles": [art(s) for s in slugs + ("fresh", "late", "slow", "nocli")]}, {"c1": cand}, [], {},
+                                   reuse=True)
+            check(False, "CLI を起動できないのに、出力の読めない回として扱った(FileNotFoundError にしない)")
+        except FileNotFoundError as e:
+            check("起動できない" in str(e) and "nocli" in str(e), f"起動できない理由が違う: {e}")
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[5] or ''}"
+        check({p_.name: p_.read_bytes() for p_ in posts.glob(f"{date}-*.md")} == before3 and not path("nocli").exists(),
+              "CLI を起動できないときに、記事が変わった・書かせる記事が残った")
+        # 7) child_guard だけが SIGKILL で落ちた(OOM など): CLI が別のセッションに抜けて環境を読めなくした道具を残していても、
+        #    compose が記録していた子孫として止めてから控えへ戻す(監査指摘)。初稿(組み直し)と書き直しの両方
+        spec.update({"write-crash": [{"background": late_write("probe", "crash"), "detach": True, "nodump": True, "kill_guard": True,
+                                      "sleep": 0.3}, {"answer": base}],
+                     "revise-probe": [{"answer": fixed}, {"background": late_write("delta", "crash"), "detach": True, "nodump": True,
+                                                          "kill_guard": True, "sleep": 0.3}]})
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        before4 = {s: path(s).read_bytes() for s in ("probe", "delta")}
+        w4, a4 = compose.write_articles(date, {"articles": [art(s) for s in slugs + ("crash",)]}, {"c1": cand}, [], {}, reuse=True)
+        res4 = compose.revise_articles(date, {f"docs/_posts/{date}-probe.md": [dict(issue)]}, plan, {"c1": cand}, [])
+        (tmp / "release-crash").write_text("", encoding="utf-8")      # 控えへ戻したあと: 残った道具の実行に書かせる合図
+        time.sleep(0.6)
+        check("crash" in [a["slug"] for a in w4] and res4 == {"probe": "unreadable"}
+              and all(path(s).read_bytes() == before4[s] for s in ("probe", "delta")),
+              f"child_guard が落ちたあと、残った道具が控えへ戻した記事を書き換えた: {[a['slug'] for a in w4]} {res4}")
+        # 8) 校閲の往復で、社説の書き直し(子を起こす別の工程)と記事の書き直しを並べない(run_in_turn)。子が記録の間隔より先に
+        #    child_guard を SIGKILL して、環境を読めなくした道具を残しても、付け替わった孤児として止めてから控えへ戻す(監査指摘:
+        #    並べたとき、記録・グループ・印のどれでも拾えず、過去号の書き直しで記事が書き換わった)
+        spec["revise-probe"] = [{"answer": fixed}, {"answer": fixed}, {"background": late_write("delta", "turn"), "detach": True,
+                                                                        "nodump": True, "kill_guard": True}]
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        before5 = path("delta").read_bytes()
+        res5: dict = {}
+        spans: list = []
+
+        def editorial_like():           # 社説の書き直しのように、子を起こして待つ工程
+            t = time.monotonic()
+            subprocess.run([sys.executable, "-c", "import time; time.sleep(0.4)"])
+            spans.append(("社説", t, time.monotonic()))
+
+        def revise_job():
+            t = time.monotonic()
+            res5.update(compose.revise_articles(date, {f"docs/_posts/{date}-probe.md": [dict(issue)]}, plan, {"c1": cand}, []))
+            spans.append(("書き直し", t, time.monotonic()))
+        pipelib.ANOMALIES.clear()
+        errs = compose.run_in_turn([("社説", editorial_like), ("記事の書き直し", revise_job)])
+        (tmp / "release-turn").write_text("", encoding="utf-8")
+        time.sleep(0.6)
+        (_, a0, a1), (_, b0, b1) = sorted(spans, key=lambda x: x[1])
+        check(not errs and res5 == {"probe": "unreadable"} and a1 <= b0 and path("delta").read_bytes() == before5
+              and not any("止められない" in a for a in pipelib.ANOMALIES),
+              f"社説と並べた・付け替わった孤児を止めない: {errs} {res5} {spans} {pipelib.ANOMALIES}")
+        # ほかに子を起こしうるスレッドが動いているあいだは、片付けを確かめたとは言わない(異常として申告させる)
+        hold = __import__("threading").Event()
+        other = __import__("threading").Thread(target=hold.wait, daemon=True)
+        other.start()
+        check(compose.ChildTracker().start().sweep() is False, "ほかのスレッドが動いているのに、片付けを確かめたとした")
+        hold.set()
+        other.join()
+        check(compose.ChildTracker().start().sweep() is True, "ほかのスレッドが無いのに、片付けを確かめられないとした")
     finally:
         compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE = saved[:5]
         os.environ["PATH"] = saved[5] or ""
         os.environ.pop("FAKE_CODEX_SPEC", None)
         compose.FACT_MAP.clear()
         pipelib.ANOMALIES.clear()
+
+
+def test_child_guard(tmp: Path):
+    """child_guard(執筆・書き直しの子の CLI を包む)を実際に走らせる: 終了コードは CLI のもの(96・97 などどの値も)をそのまま返し、
+    起動できたか・片付けを確かめられたかは結果のファイルで返す(2026-10-14 監査: 96 を起動の失敗に使い、CLI が普通に返した 96 を取り違えた)。
+    起動できなければ compose は直接起動したときと同じく FileNotFoundError にする。CLI が終わったら(SIGTERM で止められても)、CLI が残した
+    道具の実行を、別のセッションに抜けて環境を読めなくしたものまで止めてから終わる(監査: 印で探す止め方では見落とした)"""
+    import time
+    tmp.mkdir(parents=True, exist_ok=True)
+
+    def run(cmd, name):
+        out_path = tmp / f"{name}.txt"
+        r = subprocess.run(compose.guarded(cmd, out_path), capture_output=True, text=True)
+        st = json.loads(compose.guard_status_of(out_path).read_text(encoding="utf-8")) if compose.guard_status_of(out_path).exists() else None
+        return r, st, out_path
+    for code in (0, 3, 96, 97, 127):
+        r, st, out_path = run(["sh", "-c", f"exit {code}"], f"rc{code}")
+        check(r.returncode == code and st == {"started": True, "cleaned": True, "note": ""} and compose.guard_result(out_path, "test") is True
+              and not compose.guard_status_of(out_path).exists(), f"CLI の終了コード {code} の返し方・結果: {r.returncode} {st}")
+    r, st, out_path = run(["no-such-cli-imas-test"], "missing")
+    check(st and st["started"] is False and "起動できない" in r.stderr and compose.guard_result(out_path, "test") is False,
+          f"起動できない CLI を結果で返さない: {r.returncode} {st}")
+    # 別のセッションに抜け、環境を読めなくし、あとから書く道具を残して終わる CLI(正常終了・SIGTERM で止められた)
+    for name, sleep in (("exit", 0), ("term", 30)):
+        out = tmp / f"left-{name}.txt"
+        tool = (f"import ctypes, time, pathlib; ctypes.CDLL(None).prctl(4, 0, 0, 0, 0); time.sleep(0.8); "
+                f"pathlib.Path({str(out)!r}).write_text('残った道具の書き込み')")
+        cli = (f"import subprocess, sys, time; subprocess.Popen([sys.executable, '-c', {tool!r}], start_new_session=True, "
+               f"stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL); time.sleep({sleep})")
+        p = subprocess.Popen(compose.guarded([sys.executable, "-c", cli], tmp / f"g-{name}.txt"), start_new_session=True)
+        if sleep:
+            # child_guard が CLI を起動した(=SIGTERM の扱いを決め終えた)のを待ってから送る(混んだ機械で 0.3 秒では間に合わず、
+            # 既定の SIGTERM で child_guard が結果を書かずに落ちた。2026-10-21)
+            end = time.time() + 20
+            while time.time() < end and not any(pp == p.pid for pp, _, _ in (pipelib._proc_table() or {}).values()):
+                time.sleep(0.02)
+            compose.end_guarded(p)
+        else:
+            p.wait(timeout=10)
+        time.sleep(1.2)
+        st = json.loads(compose.guard_status_of(tmp / f"g-{name}.txt").read_text(encoding="utf-8"))
+        check(not out.exists() and p.returncode is not None and st["cleaned"] is True,
+              f"CLI が残した道具の実行が child_guard のあとも書いた({name}): rc {p.returncode} {st}")
+
+
+def test_child_tracker_edges(tmp: Path):
+    """ChildTracker と run_in_turn の境目(監査指摘 later):
+    - 始める前からの子は、起動時刻が同じ時計刻みでも止めない(止めると終了状態を横取りし、Popen が 0 を返す)
+    - 所属を確かめた、すでに終わった孤児も回収する(ゾンビを残さない)
+    - run_in_turn は、前の工程が時間切れで動いているあいだ、あとの工程を始めない"""
+    import time
+    tmp.mkdir(parents=True, exist_ok=True)
+    # 前のテストが回収せずに残したゾンビの子は「始める前からの子」で、束ねは回収しない(ここでは数えない)
+    zombies_before = {pid for pid, (s, ppid, _, _) in compose.proc_table().items() if ppid == os.getpid() and s == "Z"}
+    early = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(3)"])
+    # 始める前からの子が、始めたあとに別のセッションの道具を起こして終わる(道具はここへ付け替わる)。束ねの孤児として止めない
+    go, tool_pid = tmp / "go", tmp / "tool.pid"
+    pre = subprocess.Popen([sys.executable, "-c",
+                            "import pathlib, subprocess, sys, time\n"
+                            f"while not pathlib.Path({str(go)!r}).exists(): time.sleep(0.02)\n"
+                            "q = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(3)'], start_new_session=True)\n"
+                            f"pathlib.Path({str(tool_pid)!r}).write_text(str(q.pid)); time.sleep(0.3)\n"])
+    tr = compose.ChildTracker().start()
+    tr.t0 = 0       # 起動時刻が始まりと同じ刻みになった場合を、いつでも起こす(時刻では見分けられない)
+    go.write_text("", encoding="utf-8")
+    pre.wait(timeout=10)
+    # 親が先に終わり、付け替わった子も終わる(ここの子のゾンビになる)
+    mid = subprocess.Popen([sys.executable, "-c", "import subprocess, sys; subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(0.2)'])"])
+    mid.wait()
+    time.sleep(0.6)
+    ok = tr.sweep()
+    zombies = [pid for pid, (s, ppid, _, _) in compose.proc_table().items()
+               if ppid == os.getpid() and s == "Z" and pid not in zombies_before]
+    check(ok and early.poll() is None and zombies == [], f"始める前からの子を止めた・終わった孤児を回収しない: {early.poll()} {zombies}")
+    tool = int(tool_pid.read_text())
+    tool_alive = compose.proc_table().get(tool, ("X",))[0] not in ("Z", "X")
+    check(tool_alive, "始める前からの子が、始めたあとに起こした道具を、束ねの孤児として止めた")
+    for q in (tool,):
+        try:
+            os.kill(q, 9)
+            os.waitpid(q, 0)
+        except (OSError, ChildProcessError):
+            pass
+    early.kill()
+    early.wait()
+    started: list = []
+    errs = compose.run_in_turn([("前", lambda: time.sleep(0.4)), ("あと", lambda: started.append(1))], timeout=0.05)
+    check(started == [] and any("始めない" in e for e in errs), f"前の工程が時間切れで動いているのに、あとの工程を始めた: {errs}")
+    time.sleep(0.5)
+
+
+def test_guarded_launch_seams(tmp: Path):
+    """組 P(start_group・finish_group・stop_groups)と組 W(child_guard・ChildTracker・控え)の継ぎ目(2026-10-21 の取り込み):
+    - 時間切れの子(child_guard 越し)には SIGTERM を先に送り、child_guard に CLI と残した道具の実行を片付けさせてから回収する
+      (いきなりグループごと SIGKILL すると、child_guard が片付けも結果も残せない)
+    - 束ねが例外・中断で抜けても、起動した子を止め、記録した子孫(別のセッションに抜けた道具)も止め、記事を控えへ戻してから上げる"""
+    import time
+    date = "2026-10-14"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    post = posts / f"{date}-kept.md"
+    post.write_text("---\n" + article_fm("kept", date) + "---\n元の本文\n", encoding="utf-8")
+    # CLI の代役: 別のセッションに抜けてあとから記事を書く道具を残し、自分は長く待つ
+    tool_pid = tmp / "tool.pid"
+    tool = (f"import os, time, pathlib; pathlib.Path({str(tool_pid)!r}).write_text(str(os.getpid())); time.sleep(1.5); "
+            f"pathlib.Path({str(post)!r}).write_text('残った道具の書き込み')")
+    cli = (f"import subprocess, sys, time; subprocess.Popen([sys.executable, '-c', {tool!r}], start_new_session=True, "
+           f"stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL); time.sleep(30)")
+    saved = (compose.ROOT, pipelib.ROOT)
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        # 1) 時間切れ: SIGTERM を先に送るので、child_guard が片付けて結果のファイル(cleaned)を書く
+        out = tmp / "t-timeout.txt"
+        with open(tmp / "log1", "w", encoding="utf-8") as lf:
+            p = pipelib.start_group(compose.guarded([sys.executable, "-c", cli], out), cwd=tmp, env=compose.child_env(out.name),
+                                    stdout=lf, stderr=subprocess.STDOUT)
+        _wait_files(tool_pid)
+        se, timed_out = compose.finish_guarded(p, 0.5)
+        st = compose.guard_status_of(out)
+        got = json.loads(st.read_text(encoding="utf-8")) if st.exists() else None
+        tool = int(tool_pid.read_text()) if tool_pid.exists() else 0
+        check(timed_out and p.returncode is not None and got and got.get("cleaned") is True and not (tool and _pid_alive(tool)),
+              f"時間切れの子に SIGTERM を先に送らず、child_guard が片付け・結果を残せない: {timed_out} {got} 道具 {tool}")
+        st.unlink(missing_ok=True)
+        tool_pid.unlink(missing_ok=True)
+        # 2) 束ねが例外で抜ける: 起動した子・抜けた道具を止め、記事を控えへ戻してから例外を上げる
+        snap = compose.posts_snapshot(date)
+        out2 = tmp / "t-raise.txt"
+        raised = None
+        try:
+            with compose.guarded_batch(date, snap, "テスト") as tr:
+                with open(tmp / "log2", "w", encoding="utf-8") as lf:
+                    p2 = pipelib.start_group(compose.guarded([sys.executable, "-c", cli], out2), cwd=tmp,
+                                             env=compose.child_env(out2.name), stdout=lf, stderr=subprocess.STDOUT)
+                tr.add(p2, out2.name)
+                _wait_files(tool_pid)
+                post.write_text("子の直書き", encoding="utf-8")
+                raise RuntimeError("中断の代役")
+        except RuntimeError as e:
+            raised = e
+        tool2 = int(tool_pid.read_text()) if tool_pid.exists() else 0
+        time.sleep(2)       # 道具が生きていれば書く時刻を過ぎる
+        check(raised is not None and p2.poll() is not None and not (tool2 and _pid_alive(tool2))
+              and "元の本文" in post.read_text(encoding="utf-8"),
+              f"束ねが例外で抜けたとき、子・抜けた道具を止めて記事を控えへ戻さない: {p2.poll()} 道具 {tool2} "
+              f"{post.read_text(encoding='utf-8')[:20]!r}")
+        compose.guard_status_of(out2).unlink(missing_ok=True)
+        # 3) SIGTERM に応じない子が束ねに並んでも、片付けの待ちは束ねで共有する(1本ずつ待つと、8本で締切を約2分越えた。監査)
+        saved_grace = compose.GUARD_GRACE
+        compose.GUARD_GRACE = 3
+        deaf = "import signal, time; signal.signal(signal.SIGTERM, signal.SIG_IGN); time.sleep(60)"
+        try:
+            with compose.guarded_batch(date, compose.posts_snapshot(date), "テスト") as tr:
+                ps = [pipelib.start_group([sys.executable, "-c", deaf], cwd=tmp, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                      for _ in range(6)]
+                for k, q in enumerate(ps):
+                    tr.add(q, f"deaf{k}")
+                time.sleep(0.3)
+                t0 = time.monotonic()
+                outs = [compose.finish_guarded(q, 0.1, tr) for q in ps]
+                took = time.monotonic() - t0
+        finally:
+            compose.GUARD_GRACE = saved_grace
+        check(all(t for _, t in outs) and all(q.poll() is not None for q in ps) and took < 13,
+              f"SIGTERM に応じない子の片付けの待ちを、1本ずつ足し算にした({took:.1f}秒。束ねで共有すれば 3秒+1本1秒程度)")
+    finally:
+        compose.ROOT, pipelib.ROOT = saved
+        pipelib.STOPPING.clear()
+
+
+def test_restore_posts_skip(tmp: Path):
+    """控えへ戻す(compose.restore_posts)は、skip に渡した記事(呼び出し側が答えから書く・消す記事)には触らない: 控えにある記事の書き換えも、
+    控えに無い新しい記事も、そのまま残す。ほかの記事だけを戻し、子が作った記事を消す(監査指摘: skip を壊してもテストが通った)"""
+    date = "2026-10-14"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    p = lambda s: posts / f"{date}-{s}.md"
+    for s in ("kept", "target", "other"):
+        p(s).write_text("---\n" + article_fm(s, date) + "---\n元の本文\n", encoding="utf-8")
+    saved, saved_p = compose.ROOT, pipelib.ROOT
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        snap = compose.posts_snapshot(date)
+        before = {s: p(s).read_bytes() for s in ("kept", "target", "other")}
+        p("target").write_text("書かせる記事の書き換え", encoding="utf-8")     # 控えにある・skip
+        p("newtarget").write_text("書かせる新しい記事", encoding="utf-8")       # 控えに無い・skip
+        p("other").write_text("ほかの記事の書き換え", encoding="utf-8")
+        p("ghost").write_text("子が作った記事", encoding="utf-8")
+        p("kept").unlink()
+        back = compose.restore_posts(date, snap, skip={p("target"), p("newtarget")})
+    finally:
+        compose.ROOT, pipelib.ROOT = saved, saved_p
+    check(p("target").read_text(encoding="utf-8") == "書かせる記事の書き換え" and p("newtarget").exists()
+          and p("other").read_bytes() == before["other"] and p("kept").read_bytes() == before["kept"] and not p("ghost").exists()
+          and sorted(back) == sorted(f"{date}-{s}.md" for s in ("other", "kept", "ghost")),
+          f"skip の記事に触った・ほかの記事を戻さない: {back}")
+
+
+def test_writer_reads_only_fetched_pages(tmp: Path):
+    """執筆・書き直しを本物の子プロセス(偽の codex が本物の fetch_page.py を走らせる)で通し、根拠の URL を検める。2026-10-14 の rule_bench:
+    執筆が fetch_page.py の取れなかった報道を Web 検索で読んで期間を断定し、綴りの誤った URL を出典に書いた答えが検算を通った。
+    - 子の fetch_page.py が本文を取れたページは、compose が渡した記事ごとの記録に残り、そのページを根拠にした稿は採る
+    - 読んでいない・綴りの誤った・取れなかった(FETCH_FAILED)ページを根拠にした稿は差し戻し、読み直して出せば採る。2回とも通らなければ落とす
+    - 書き直しは、現在の稿の根拠のページと書き直しのセッションで読めたページを使える。読んでいないページを足した稿は採らない(元の稿のまま)"""
+    import shutil
+    date = "2026-10-14"
+    repo = Path(__file__).resolve().parent.parent
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    shutil.copytree(repo / "schema", tmp / "schema")
+    bindir = tmp / "bin"
+    bindir.mkdir()
+    (bindir / "codex").write_text(FAKE_CODEX, encoding="utf-8")
+    os.chmod(bindir / "codex", 0o755)
+    spec_p = tmp / "spec" / "spec.json"
+    spec_p.parent.mkdir()
+    cand = cand_row("c1", "https://example.com/news", facts=["販売開始", "価格は3000円"], dedup_key="x")
+    shop, other = "https://shop.example.jp/item/1", "https://other.example.jp/p"
+    typo, gone = "https://shop.exampel.jp/item/1", "https://gone.example.jp/x"
+    # 共有用のクエリだけが両側で違う同じページ(読んだのは utm_source=fetch、答えは utm_source=cite)と、読んだページと同じパスの別の商品
+    shop_q, shop_sib = shop + "?utm_source=fetch", shop + "?id=2"
+    pages = tmp / "spec" / "pages.json"         # 子の fetch_page.py が返す本文(取りに行かない)。gone は無い = FETCH_FAILED
+    pages.write_text(json.dumps({cand["url"]: "告知の本文", shop: "商品ページの本文", other: "別の店舗の本文", shop_q: "商品ページの本文",
+                                 shop_sib: "別の商品の本文"}, ensure_ascii=False), encoding="utf-8")
+    base = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
+            "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "tags": ["シンデレラガールズ", "販売"], "event_date": None, "addressed_issue_ids": []}
+    para = "販売を開始する。価格は3000円。店舗で受け取れる。"
+    n1 = lambda url: {"id": "N1", "text": "店舗で受け取れる", "url": url}
+    with_page = lambda url: dict(base, new_facts=[n1(url)], blocks=[{"markdown": para, "fact_ids": ["F1", "F2", "N1"]}],
+                                 sources=[{"url": cand["url"], "label": "公式告知"}, {"url": url, "label": "商品ページ"}])
+    # 書き直し: 指摘の段落だけを直し、現在の稿の N1 を写して、別のページの N2 を足す
+    revised = lambda: dict(with_page(shop), addressed_issue_ids=["I1"], new_facts=[n1(shop), {"id": "N2", "text": "別の店舗でも扱う", "url": other}],
+                           blocks=[{"markdown": "販売を開始した。価格は3000円。店舗で受け取れる。別の店舗でも扱う。", "fact_ids": ["F1", "F2", "N1", "N2"]}],
+                           sources=[{"url": cand["url"], "label": "公式告知"}, {"url": shop, "label": "商品ページ"}, {"url": other, "label": "別の店舗"}])
+    spec = {"write-seen": [{"fetch": [cand["url"], shop], "answer": with_page(shop)}],
+            "write-late": [{"answer": with_page(shop)}, {"fetch": [shop], "answer": with_page(shop)}],
+            "write-typo": [{"fetch": [shop], "answer": with_page(typo)}],
+            "write-gone": [{"fetch": [gone], "answer": with_page(gone)}],
+            "write-utm": [{"fetch": [shop_q], "answer": with_page(shop + "?utm_source=cite")}],
+            "write-sibling": [{"fetch": [shop], "answer": with_page(shop_sib)}],
+            "revise-seen": [{"fetch": [other], "answer": revised()}],
+            "revise-late": [{"answer": revised()}]}
+    spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+    art = lambda s: {"slug": s, "brand": "cg", "rank": "small", "angle": "知らせ", "candidate_ids": ["c1"], "dedup_key": "x"}
+    slugs = ("seen", "late", "typo", "gone", "utm", "sibling")
+    plan = {"articles": [art(s) for s in slugs]}
+    path = lambda s: posts / f"{date}-{s}.md"
+    env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "IMAS_FETCH_PAGES", "PATH")
+    saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE,
+             {k: os.environ.get(k) for k in env_keys})
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        compose.classify_source = lambda u: "公式"
+        compose.storylink.prior_lookup = lambda *a: (lambda *b: [])     # 既報の引き方(main で prior_by_key から変わった)
+        compose.DEADLINE = None
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}"
+        os.environ.update(FAKE_CODEX_SPEC=str(spec_p), FAKE_FETCH_PAGE=str(repo / "scripts" / "fetch_page.py"), IMAS_FETCH_PAGES=str(pages))
+        compose.FACT_MAP.clear()
+        written, aborted = compose.write_articles(date, plan, {"c1": cand}, [], {})
+        counts = {s: (spec_p.parent / f"count-write-{s}").read_text() for s in slugs}
+        outcomes = compose.WRITE_OUTCOMES.get(date) or {}
+        check(sorted(a["slug"] for a in written) == ["late", "seen", "utm"] and sorted(aborted) == ["gone", "sibling", "typo"],
+              f"読めたページを根拠にした稿だけを採る、になっていない: 採った {[a['slug'] for a in written]} / 外した {aborted}")
+        check(counts == {"seen": "1", "late": "2", "typo": "2", "gone": "2", "utm": "1", "sibling": "2"}, f"差し戻しの回数: {counts}")
+        check(all("fetch_page.py で本文を取れていない" in outcomes.get(s, "") for s in ("typo", "gone", "sibling")),
+              f"読めていないページで落とした理由が残らない: {outcomes}")
+        ret = tmp / "metrics" / "work" / date / "write-late-1.md"
+        check(ret.exists() and "fetch_page.py で本文を取れていない" in ret.read_text(encoding="utf-8") and shop in ret.read_text(encoding="utf-8"),
+              "差し戻しの依頼に、読めていないページと直し方が無い")
+        rec = compose.fetch_record(date, "seen")
+        check(pipelib.fetched_urls(rec) == {cand["url"], shop} and not pipelib.fetched_urls(compose.fetch_record(date, "gone")),
+              f"子の fetch_page.py が記事ごとの記録に、取れたページだけを残さない: {pipelib.fetched_urls(rec)}")
+        fm = compose.parse_front_matter(path("seen")) or {}
+        check([v.get("url") for v in fm.get("verified_facts") or []] == [shop], f"読めたページの事実が記事に残らない: {fm.get('verified_facts')}")
+        # 書き直し: 初稿のセッションの記録が無くても、現在の稿の根拠のページ(shop)は写して使える。書き直しで読んだ other も使える。
+        # 読んでいない other を足した late の稿は採らない
+        rec.unlink(missing_ok=True)
+        before_late = path("late").read_bytes() if path("late").exists() else b""
+        issue = {"rule_id": "R1", "issue": "事実を直す", "quote": para, "repair": "rewrite_claim", "expected": "正しく書く", "fact_ids": ["F1"]}
+        res = compose.revise_articles(date, {f"docs/_posts/{date}-{s}.md": [dict(issue)] for s in ("seen", "late")}, plan, {"c1": cand}, [])
+        fm = compose.parse_front_matter(path("seen")) or {}
+        check(res == {"seen": "fixed", "late": "kept"}, f"書き直しの結果: {res} {compose.REVISE_NOTES.get(date)}")
+        check([v.get("url") for v in fm.get("verified_facts") or []] == [shop, other] and path("late").read_bytes() == before_late,
+              f"書き直しの稿の当て方: {fm.get('verified_facts')}")
+        check("fetch_page.py で本文を取れていない" in (compose.REVISE_NOTES.get(date) or {}).get("late", ""),
+              f"採らなかった書き直しの理由が次の巡の校閲に渡らない: {compose.REVISE_NOTES.get(date)}")
+    finally:
+        compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE = saved[:5]
+        for k, v in saved[5].items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        compose.FACT_MAP.clear()
+        for d in (compose.WRITE_OUTCOMES, compose.REVISE_NOTES, compose.OFFSCOPE_NOTES, compose.DROP_LOG, compose.STUCK):
+            d.pop(date, None)
+        pipelib.ANOMALIES.clear()
+
+
+def test_fetch_record_place_broken(tmp: Path):
+    """fetch_page.py の記録の置き場を作れなくても(置き場の場所が通常のファイル)、執筆・書き直しは例外で止まらない(2026-10-14 監査指摘:
+    フォルダの作成の失敗が write_articles / revise_articles の外へ抜け、組版が止まる経路だった)。記録は空のまま検算へ進み
+    (素材だけを根拠にした稿は採る・素材の外のページを根拠にした稿は差し戻して落とす・書き直しは結果を返す)、障害は異常として1度だけ申告する"""
+    import shutil
+    date = "2026-10-14"
+    repo = Path(__file__).resolve().parent.parent
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics" / "work" / date).mkdir(parents=True)
+    (tmp / "metrics" / "work" / date / "fetched").write_text("置き場の場所にあるファイル", encoding="utf-8")
+    shutil.copytree(repo / "schema", tmp / "schema")
+    bindir = tmp / "bin"
+    bindir.mkdir()
+    (bindir / "codex").write_text(FAKE_CODEX, encoding="utf-8")
+    os.chmod(bindir / "codex", 0o755)
+    spec_p = tmp / "spec" / "spec.json"
+    spec_p.parent.mkdir()
+    cand = cand_row("c1", "https://example.com/news", facts=["販売開始", "価格は3000円"], dedup_key="x")
+    shop = "https://shop.example.jp/item/1"
+    pages = tmp / "spec" / "pages.json"
+    pages.write_text(json.dumps({cand["url"]: "告知の本文", shop: "商品ページの本文"}, ensure_ascii=False), encoding="utf-8")
+    base = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
+            "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "tags": ["シンデレラガールズ", "販売"], "event_date": None, "addressed_issue_ids": [],
+            "new_facts": [], "blocks": [{"markdown": "販売を開始する。価格は3000円。", "fact_ids": ["F1", "F2"]}],
+            "sources": [{"url": cand["url"], "label": "公式告知"}]}
+    outer = dict(base, new_facts=[{"id": "N1", "text": "店舗で受け取れる", "url": shop}],
+                 blocks=[{"markdown": "販売を開始する。価格は3000円。店舗で受け取れる。", "fact_ids": ["F1", "F2", "N1"]}],
+                 sources=base["sources"] + [{"url": shop, "label": "商品ページ"}])
+    fixed = dict(base, addressed_issue_ids=["I1"], blocks=[{"markdown": "販売を開始した。価格は3000円。", "fact_ids": ["F1", "F2"]}])
+    spec = {"write-plain": [{"fetch": [cand["url"]], "answer": base}], "write-outer": [{"fetch": [shop], "answer": outer}],
+            "revise-plain": [{"fetch": [cand["url"]], "answer": fixed}]}
+    spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+    art = lambda s: {"slug": s, "brand": "cg", "rank": "small", "angle": "知らせ", "candidate_ids": ["c1"], "dedup_key": "x"}
+    plan = {"articles": [art("plain"), art("outer")]}
+    env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "IMAS_FETCH_PAGES", "PATH")
+    saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE,
+             {k: os.environ.get(k) for k in env_keys})
+    written = aborted = res = None
+    errors = []
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        compose.classify_source = lambda u: "公式"
+        compose.storylink.prior_lookup = lambda *a: (lambda *b: [])     # 既報の引き方(main で prior_by_key から変わった)
+        compose.DEADLINE = None
+        getattr(compose, "FETCH_RECORD_BROKEN", set()).clear()      # 同じ障害を重ねて申告しないための控え(前のテストの分を消す)
+        pipelib.ANOMALIES.clear()
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}"
+        os.environ.update(FAKE_CODEX_SPEC=str(spec_p), FAKE_FETCH_PAGE=str(repo / "scripts" / "fetch_page.py"), IMAS_FETCH_PAGES=str(pages))
+        compose.FACT_MAP.clear()
+        try:
+            written, aborted = compose.write_articles(date, plan, {"c1": cand}, [], {})
+            issue = {"rule_id": "R1", "issue": "事実を直す", "quote": "販売を開始する。価格は3000円。", "repair": "rewrite_claim",
+                     "expected": "正しく書く", "fact_ids": ["F1"]}
+            res = compose.revise_articles(date, {f"docs/_posts/{date}-plain.md": [issue]}, plan, {"c1": cand}, [])
+        except Exception as e:      # noqa: BLE001
+            errors.append(f"{type(e).__name__}: {e}")
+        noted = [a for a in pipelib.ANOMALIES if "記録の置き場" in a]
+    finally:
+        compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE = saved[:5]
+        for k, v in saved[5].items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        compose.FACT_MAP.clear()
+        getattr(compose, "FETCH_RECORD_BROKEN", set()).clear()
+        for d in (compose.WRITE_OUTCOMES, compose.REVISE_NOTES, compose.OFFSCOPE_NOTES, compose.DROP_LOG, compose.STUCK):
+            d.pop(date, None)
+        pipelib.ANOMALIES.clear()
+    check(not errors, f"記録の置き場を作れないと執筆・書き直しが例外で止まる: {errors}")
+    check(written is not None and [a["slug"] for a in written] == ["plain"] and aborted == ["outer"],
+          f"記録が空のときの検算(素材だけの稿は採り、素材の外のページの稿は落とす): {written} {aborted}")
+    check(res == {"plain": "fixed"}, f"記録の置き場を作れないときの書き直しの結果: {res}")
+    check(len(noted) == 1, f"記録の置き場を作れない障害を1度だけ異常として申告しない: {noted}")
 
 
 def test_restore_files_ledger(tmp: Path):
@@ -8620,7 +10112,10 @@ def test_oncall_collect_rerun_killed_classify(tmp: Path):
         "from pathlib import Path\np=Path('source_types.yml');p.write_text(p.read_text()+'\\n# txn unfinished\\n')\n", encoding="utf-8")
     (root / "scripts" / "retag_sources.py").write_text(
         "from pathlib import Path\nimport os,signal\np=next(Path('docs/_posts').glob('*.md'));p.write_text(p.read_text()+'\\n<!-- txn unfinished -->\\n')\n"
-        "os.kill(os.getppid(),signal.SIGKILL)\n", encoding="utf-8")
+        # 取引の段は child_guard 越しに動くので、child_guard を遡った先(取引を持つ収集)を殺す
+        "pp=os.getppid()\nwhile b'child_guard' in open(f'/proc/{pp}/cmdline','rb').read():\n"
+        "    pp=int(open(f'/proc/{pp}/stat').read().rsplit(')',1)[1].split()[1])\n"
+        "os.kill(pp,signal.SIGKILL)\n", encoding="utf-8")
     (root / "scripts" / "collect.py").write_text(
         "import pipelib\nfrom pathlib import Path\nPath('metrics/2026-10-15.json').write_text('{\"collect\":[{\"added\":1}]}')\n"
         "pipelib.classify_retag_lint('2026-10-15')\n", encoding="utf-8")
@@ -8672,7 +10167,10 @@ def test_failed_rollback_blocks_commit(tmp: Path):
     # 記事を書き換えて書き込めなくし(戻しが失敗する)、親に SIGTERM を送る
     (root / "scripts" / "retag_sources.py").write_text(
         "from pathlib import Path\nimport os,signal,time\np=next(Path('docs/_posts').glob('*.md'));p.write_text(p.read_text()+'\\n<!-- txn unfinished -->\\n')\n"
-        "p.chmod(0o444)\nos.kill(os.getppid(),signal.SIGTERM)\ntime.sleep(30)\n", encoding="utf-8")
+        # 取引の段は child_guard 越しに動くので、child_guard を遡った先(取引を持つ工程)に送る
+        "p.chmod(0o444)\npp=os.getppid()\nwhile b'child_guard' in open(f'/proc/{pp}/cmdline','rb').read():\n"
+        "    pp=int(open(f'/proc/{pp}/stat').read().rsplit(')',1)[1].split()[1])\n"
+        "os.kill(pp,signal.SIGTERM)\ntime.sleep(30)\n", encoding="utf-8")
     g("add", "."); g("commit", "-qm", "base"); g("remote", "add", "origin", str(remote)); g("push", "-qu", "origin", "main")
     branch = "edition/2026-10-15"
     g("checkout", "-qb", branch); g("push", "-qu", "origin", branch)
@@ -8918,7 +10416,8 @@ def test_run_codex_isolation(tmp: Path):
     g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
     (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
     log, fail_flag = tmp / "codex-calls.jsonl", tmp / "fail"
-    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "notes": ""}, ensure_ascii=False)
+    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None, "notes": ""},
+                        ensure_ascii=False)
     fake = bindir / "codex"
     fake.write_text(f"#!{sys.executable}\n"
                     "import json, os, sys\n"
@@ -10391,6 +11890,101 @@ def test_booth_item_owner(tmp: Path):
             cs._BOOTH_SHOP.update(cache)
 
 
+def test_classify_txn_escaped_model(tmp: Path):
+    """出典の判定の取引の中断・親の死で、合議の子が start_group で別のセッションに起動したモデルも止めてから戻す
+    (2026-10-21 取り込みの監査: 子のセッションだけを見て、残ったモデルが戻したあとの判定表を書き直した)。
+    本物の classify_retag_lint・start_group を、合議の子とモデルだけ代役にして、SIGTERM・SIGINT・SIGKILL(次の起動の復旧)で検める。
+    - model: モデル自身が残って書く
+    - hidden: モデルが、別のセッションに抜けて環境を読めなくした道具を残して先に終わる(道具は孤児。2巡目の監査の再現と同じ形)"""
+    import signal
+    import time as _t
+    scripts = Path(__file__).resolve().parent
+    late = ("while not Path('go').exists():\n    time.sleep(0.01)\n"
+            "Path('source_types.yml').write_text('official_domains:\\n- late-write.example\\n')\nPath('wrote').touch()\n")
+    models = {
+        "model": "import os, time\nfrom pathlib import Path\nPath('model.pid').write_text(str(os.getpid()))\n" + late,
+        "hidden": ("import subprocess, sys, time\nfrom pathlib import Path\n"
+                   "subprocess.Popen([sys.executable, 'tool.py'], start_new_session=True, stdin=subprocess.DEVNULL, "
+                   "stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)\n"
+                   "while not Path('model.pid').exists():\n    time.sleep(0.01)\n")}
+    tool = ("import ctypes, os, time\nfrom pathlib import Path\nctypes.CDLL(None).prctl(4, 0, 0, 0, 0)\n"
+            "Path('model.pid').write_text(str(os.getpid()))\n" + late)
+    # who: 信号を送る相手。parent=取引を持つ工程 / guard・inner=段の child_guard の外側・内側だけ(OOM など。3・4巡目の監査)
+    cases = ([(k, s, "parent") for k in models for s in (signal.SIGTERM, signal.SIGINT, signal.SIGKILL)]
+             + [("hidden", signal.SIGKILL, "guard"), ("hidden", signal.SIGKILL, "inner")])
+
+    def inner_guard(outer: int) -> int:
+        for d in os.listdir("/proc"):
+            try:
+                if (d.isdigit() and int(Path(f"/proc/{d}/stat").read_text().rsplit(")", 1)[1].split()[1]) == outer
+                        and b"child_guard" in Path(f"/proc/{d}/cmdline").read_bytes()):
+                    return int(d)
+            except (OSError, ValueError, IndexError):
+                continue
+        return 0
+    for kind, sig, who in cases:
+        w = tmp / f"{kind}-{sig.name}-{who}"
+        (w / "scripts").mkdir(parents=True)
+        (w / "docs" / "_posts").mkdir(parents=True)
+        table = w / "source_types.yml"
+        table.write_text("official_domains:\n- original.example\n", encoding="utf-8")
+        (w / "model.py").write_text(models[kind], encoding="utf-8")
+        (w / "tool.py").write_text(tool, encoding="utf-8")
+        (w / "scripts" / "classify_sources.py").write_text(
+            f"import sys, subprocess, time\nsys.path.insert(0, {str(scripts)!r})\nimport pipelib\nfrom pathlib import Path\n"
+            "Path('source_types.yml').write_text('official_domains:\\n- changed.example\\n')\n"
+            "pipelib.finish_group(pipelib.start_group([sys.executable, 'model.py'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL), 60)\n"
+            "time.sleep(60)\n",
+            encoding="utf-8")
+        prog = (f"import sys, signal, json\nfrom pathlib import Path\nsys.path.insert(0, {str(scripts)!r})\nimport pipelib\n"
+                f"pipelib.ROOT = Path({str(w)!r})\n"
+                "def handler(s, f):\n    raise SystemExit(128 + s)\n"
+                "signal.signal(signal.SIGTERM, handler)\nsignal.signal(signal.SIGINT, handler)\n"
+                "pipelib.classify_retag_lint('2026-10-22', lint=False, timeout=30)\n")
+        proc = subprocess.Popen([sys.executable, "-c", prog], cwd=w, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
+        model = 0
+        try:
+            ready = _wait_files(w / "model.pid", limit=20)
+            _t.sleep(0.1)
+            model = int((w / "model.pid").read_text() or 0) if ready else 0
+            if who in ("guard", "inner"):
+                outer = int(json.loads((w / pipelib.TXN_CHILD).read_text(encoding="utf-8"))["pid"])
+                target = outer if who == "guard" else inner_guard(outer)
+                check(target > 1, f"前提: 段の child_guard({who})が見つからない")
+                if target > 1:          # 0 を送ると自分のプロセスグループを落とす
+                    os.kill(target, sig)
+            else:
+                os.kill(proc.pid, sig)
+            try:
+                proc.communicate(timeout=30)
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                proc.communicate()
+            if sig == signal.SIGKILL and who == "parent":
+                saved = pipelib.ROOT
+                try:
+                    pipelib.ROOT = w
+                    back = pipelib.recover_classify_txn()
+                finally:
+                    pipelib.ROOT = saved
+            else:
+                back = ""
+            restored = table.read_text(encoding="utf-8")
+            (w / "go").touch()
+            _t.sleep(1.0)
+            after = table.read_text(encoding="utf-8")
+            check(ready and "original.example" in restored and after == restored and not (w / "wrote").exists()
+                  and not (model and _pid_alive(model)) and not (w / pipelib.TXN_JOURNAL).exists(),
+                  f"{kind} {sig.name}({who}): 取引を戻したあとに、別のセッションの合議のモデル・道具が残って判定表を書き直した"
+                  f"(戻した表 {restored.strip()!r} / のち {after.strip()!r} / モデル生存 {bool(model and _pid_alive(model))} / {back})")
+        finally:
+            if proc.poll() is None:
+                proc.kill()
+                proc.wait()
+            if model and _pid_alive(model):
+                os.kill(model, signal.SIGKILL)
+
+
 def test_classify_txn_interrupt(tmp: Path):
     """出典の判定の取引の途中(表を書いた後・付け直しの最中)に親へ SIGTERM・SIGINT が来ても、子をプロセスグループごと止めてから
     判定表と記事を開始時へ戻し、中断はそのあとで元の扱いへ渡す(監査指摘 2026-10-14: 戻さずに終わって表だけが変わり、出典の lint が
@@ -10635,7 +12229,9 @@ def test_classify_txn_interrupt(tmp: Path):
     proc, pids = start(root, slow_sweep, wait_for="sweeping", env={"TXN_CLASSIFY": "orphan-ok"})
     saved = (pipelib.ROOT, pipelib.notify, pipelib.git_net, list(pipelib.ANOMALIES))
     try:
-        check(len(pids) == 2 and not alive(pids[0]) and alive(pids[1]), f"前提: 合議の子は終わり、孫が残っている: {pids}")
+        # 合議の子は child_guard 越しに動くので、子が終わると child_guard が孫を止めてから終わる(2026-10-21)。孫が残っていても
+        # いなくても、次の工程の checkout が止めてから戻すことを見る
+        check(len(pids) == 2 and not alive(pids[0]), f"前提: 合議の子は終わった: {pids}")
         os.kill(proc.pid, _signal.SIGKILL)
         proc.communicate(timeout=30)
         pipelib.ROOT = root
@@ -11113,6 +12709,2014 @@ def test_pending_keeps_later_editions(tmp: Path):
     check(rebuilt == ["k2", "k9"], f"巻き戻した号の組み直しで、後の号が決着させた追跡事項がよみがえった: {rebuilt}")
 
 
+# --- モデル・道具のセッションの起動と回収(2026-10-14 の再監査) ------------------------------------------------------
+# 子孫が死んだかは、関数が返った直後に /proc で見る(回収は死んだのを確かめてから返す。待ち時間に頼らない)
+
+# 偽の CLI: 子を2つ起こす(同じグループの子と、自分でセッションを分けた子)。どちらも 30 秒後に書く。親は 60 秒待つ。
+# 起動が速い sh で書き、子の pid は起こした直後に置き換えで書く(時間切れの前に子が揃う。読む側が書きかけを読まない)
+_PROBE_CLI = ('d="$SESSION_PROBE"\n'
+              '( sleep 30; echo x > "$d/group.wrote" ) &\n'
+              'echo $! > "$d/group.pid.tmp" && mv "$d/group.pid.tmp" "$d/group.pid"\n'
+              'setsid sh -c \'sleep 30; echo x > "$1/escaped.wrote"\' sh "$d" &\n'
+              'echo $! > "$d/escaped.pid.tmp" && mv "$d/escaped.pid.tmp" "$d/escaped.pid"\n'
+              'sleep 60\n')
+_NO_PID = 4194311     # どのプロセスにも当たらない pid(pid_max の外。偽のプロセスの回収が本物のグループに触れない)
+
+
+def _pid_alive(pid: int) -> bool:
+    try:
+        return Path(f"/proc/{pid}/stat").read_text().rsplit(")", 1)[1].split()[0] not in ("Z", "X")
+    except (OSError, IndexError):
+        return False
+
+
+def _probe_bin(tmp: Path) -> Path:
+    """偽の claude / codex / grok を置いたディレクトリ(PATH の先頭に足す)。"""
+    b = tmp / "bin"
+    b.mkdir(parents=True, exist_ok=True)
+    for name in ("claude", "codex", "grok"):
+        (b / name).write_text("#!/bin/sh\n" + _PROBE_CLI, encoding="utf-8")
+        (b / name).chmod(0o755)
+    return b
+
+
+def _wait_files(*paths: Path, limit: float = 30) -> bool:
+    """子の準備ができた(pid のファイルが揃った)のを待つ。時間切れ・中断を起こす前に、相手が揃ったことを確かめる。"""
+    import time as _t
+    end = _t.time() + limit
+    while not all(p.exists() for p in paths):
+        if _t.time() > end:
+            return False
+        _t.sleep(0.005)
+    return True
+
+
+def _left_after(tmp: Path, name: str, call) -> list[str]:
+    """call(偽の CLI を時間切れ・中断まで走らせる)が返った直後に、生き残っている・時間切れのあとに書いた子孫。"""
+    import signal
+    d = tmp / name.replace(".", "-")
+    d.mkdir(parents=True, exist_ok=True)
+    saved = os.environ.get("SESSION_PROBE")
+    os.environ["SESSION_PROBE"] = str(d)
+    try:
+        call()
+    except (subprocess.TimeoutExpired, KeyboardInterrupt):
+        pass
+    finally:
+        if saved is None:
+            os.environ.pop("SESSION_PROBE", None)
+        else:
+            os.environ["SESSION_PROBE"] = saved
+    left = []
+    for n in ("group", "escaped"):
+        pf = d / f"{n}.pid"
+        if not pf.exists():
+            left.append(f"{n}(子を起こす前に止まった)")
+            continue
+        pid = int(pf.read_text())
+        if _pid_alive(pid):
+            left.append(f"{n}(生きている)")
+            try:
+                os.kill(pid, signal.SIGKILL)    # 後片付け
+            except OSError:
+                pass
+        if (d / f"{n}.wrote").exists():
+            left.append(f"{n}(書いた)")
+    return left
+
+
+def _raise_interrupt(signum, frame):
+    raise KeyboardInterrupt
+
+
+def test_session_timeout_stops_descendants(tmp: Path):
+    """モデル・道具を時間切れ・中断で止めたら、CLI が起動した道具(同じグループの子も、自分でセッションを分けた子も)まで止まり、
+    関数が返った時点で死んでいる(監査指摘 2026-10-14: compose.claude_run・oncall.run_claude の時間切れのあとに孫がファイルを
+    書いた。codex_run・run_codex・定点観測・分類・ベンチ・道具の更新・経過を残す実行も同じ形だった)。
+    起動できない CLI は例外にせず、終了コード 127 と理由を返す"""
+    import signal
+    import threading
+    import collect
+    import classify_sources as cs
+    import oncall
+    import update_clis as uc
+    import writer_bench as wb
+    tmp.mkdir(parents=True, exist_ok=True)
+    b = _probe_bin(tmp)
+    sf = tmp / "answer.schema.json"
+    sf.write_text('{"type": "object"}', encoding="utf-8")
+    repo = tmp / "repo"     # 監査(run_codex)は commit から作業ツリーを切り出す
+    subprocess.run(["git", "init", "-q", str(repo)], check=True, capture_output=True)
+    subprocess.run(["git", "-C", str(repo), "-c", "user.email=t@example.com", "-c", "user.name=t", "commit", "-q",
+                    "--allow-empty", "-m", "x"], check=True, capture_output=True)
+    names = [(compose, "prompt_file"), (compose, "save_raw"), (oncall, "prompt_file"), (oncall, "save_raw"),
+             (oncall, "session_env"), (collect, "save_raw"), (pipelib, "prompt_file"), (pipelib, "save_raw"),
+             (wb, "save_raw"), (wb, "run_group")]
+    saved = [(m, n, getattr(m, n, None)) for m, n in names]
+    saved_path = os.environ.get("PATH", "")
+    real_group = getattr(pipelib, "run_group", None)
+    try:
+        os.environ["PATH"] = f"{b}:{saved_path}"
+        nop = lambda *a, **k: None
+        compose.prompt_file = oncall.prompt_file = pipelib.prompt_file = lambda *a, **k: "p"
+        compose.save_raw = oncall.save_raw = collect.save_raw = pipelib.save_raw = wb.save_raw = nop
+        oncall.session_env = lambda tmpdir=None: dict(os.environ)     # 組 U で一時の置き場を受け取るようになった
+        # ベンチの 1500 秒は縮める(run_group 経由で起動していなければ縮まらず、偽の CLI の親が 60 秒で終わったあとに子が書く)
+        wb.run_group = lambda cmd, timeout=None, **k: real_group(cmd, timeout=2, **k)
+        cases = {
+            "compose.claude_run": lambda: compose.claude_run("x", timeout=2),
+            "compose.codex_run": lambda: compose.codex_run("x", timeout=2),
+            "oncall.run_claude": lambda: oncall.run_claude("x", sf, tmp, timeout=2),
+            "oncall.run_codex": lambda: oncall.run_codex("x", sf, repo, timeout=2),
+            "collect.claude_exec": lambda: collect.claude_exec("x", timeout=2),
+            "classify_sources.ask": lambda: cs.ask(["claude"], "x", timeout=2),
+            "writer_bench.write_one": lambda: wb.write_one("probe", "x", "probe", "m"),
+            "update_clis.run": lambda: uc.run([str(b / "codex")], timeout=2, cwd=tmp),
+            "pipelib.claude_traced": lambda: pipelib.claude_traced(["x"], tmp / "trace.jsonl", timeout=2, cwd=tmp),
+        }
+        for name, call in cases.items():
+            left = _left_after(tmp, name, call)
+            check(not left, f"{name}: 時間切れで止めたあとに子孫が残った・書いた({', '.join(left)})")
+
+        # 中断(Ctrl-C・SIGTERM を変えた SystemExit など、待っている間の例外)でも、道具まで止めてから上げる。
+        # 中断は子が揃ってから起こす(揃う前に止めると、確かめられない)
+        def interrupted():
+            d = tmp / "interrupted"
+
+            def fire():
+                if _wait_files(d / "group.pid", d / "escaped.pid"):
+                    os.kill(os.getpid(), signal.SIGUSR1)
+            old = signal.signal(signal.SIGUSR1, _raise_interrupt)
+            t = threading.Thread(target=fire, daemon=True)
+            t.start()
+            try:
+                compose.claude_run("x", timeout=60)
+            finally:
+                t.join()
+                signal.signal(signal.SIGUSR1, old)
+        left = _left_after(tmp, "interrupted", interrupted)
+        check(not left, f"中断で止めたあとに子孫が残った・書いた({', '.join(left)})")
+        # 起動できない CLI: 例外にせず、その担当だけの異常終了(127)と理由を返す
+        if real_group is None:
+            check(False, "モデル・道具の起動の関数(pipelib.run_group)が無い")
+        else:
+            r = real_group([str(tmp / "no-such-cli")], timeout=5, cwd=tmp)
+            check(r.returncode == 127 and "起動できない" in r.stderr, f"起動できない CLI の結果: {r.returncode} {r.stderr!r}")
+    finally:
+        os.environ["PATH"] = saved_path
+        for m, n, v in saved:
+            setattr(m, n, v)
+
+
+def test_parallel_launch_failure_reaps(tmp: Path):
+    """並列に起動している途中で、2本目の起動が失敗(OSError)しても、例外で抜けずにその担当だけの失敗として扱い、
+    先に起動した担当を止めて回収する(監査指摘 2026-10-14: 選定 run_plan・校閲 claude_review の2本目の起動の失敗で例外になり、
+    1本目が回収されずに残って、確定後の記事に書いた)。起動以外の例外で抜けても、起動済みの担当は止めて回収してから上げる"""
+    import time as _t
+    real_popen = subprocess.Popen
+    d = "2099-03-01"
+    started: list = []
+
+    def popen(fail_from: int):
+        def fake(argv, **kw):
+            if len(started) >= fail_from:
+                raise OSError("injected: 起動できない")
+            p = real_popen([sys.executable, "-c", "import time; time.sleep(30)"], **kw)
+            started.append(p)
+            return p
+        return fake
+
+    def alive() -> list:
+        return [p.pid for p in started if p.poll() is None]
+
+    def cleanup():
+        for p in started:
+            if p.poll() is None:
+                p.kill()
+                p.wait()
+        started.clear()
+
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "metrics").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts" / f"{d}-a.md").write_text("---\nslug: a\ntitle: a\n---\n本文\n", encoding="utf-8")
+    saved = (compose.ROOT, pipelib.ROOT, compose.DEADLINE, subprocess.Popen, compose.brand_plan_prompt, compose.prompt_file,
+             compose.save_raw)
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        compose.save_raw = lambda *a, **k: None
+        compose.brand_plan_prompt = lambda *a, **k: "x"
+        # 選定: 2面を同じ波で起動し、2面目の起動が失敗する
+        compose.DEADLINE = _t.time() + 2
+        subprocess.Popen = popen(1)
+        by_brand = {"cg": [{"dedup_key": "k1", "ids": ["c1"]}], "765": [{"dedup_key": "k2", "ids": ["c2"]}]}
+        try:
+            compose.run_plan(d, by_brand, [], wave=2)
+            raised = ""
+        except Exception as e:      # noqa: BLE001
+            raised = f"{type(e).__name__}: {e}"
+        check(not raised, f"選定: 2面目の起動の失敗で例外になった({raised})")
+        check(started and not alive(), f"選定: 起動に失敗した波で、先に起動した面が回収されずに残った({alive()})")
+        cleanup()
+        # 校閲: 記事担当を起動したあと、紙面担当の起動が失敗する
+        compose.DEADLINE = _t.time() + 2
+        subprocess.Popen = popen(1)
+        try:
+            r = compose.claude_review(d, 1, targets=[f"{d}-a.md"], editorial=False, paper=True)
+            raised = ""
+        except Exception as e:      # noqa: BLE001
+            r, raised = {}, f"{type(e).__name__}: {e}"
+        check(not raised and r.get("verdict") == "error", f"校閲: 2件目の起動の失敗で例外になった・判定ありにした({raised} {r.get('verdict')})")
+        check(started and not alive(), f"校閲: 起動に失敗した波で、先に起動した担当が回収されずに残った({alive()})")
+        cleanup()
+        # 起動以外の例外(2件目の依頼文が書けない)で抜けても、起動済みの担当を止めて回収してから上げる
+        compose.DEADLINE = _t.time() + 30
+        subprocess.Popen = popen(99)
+        n_pf = []
+
+        def pf(*a, **k):
+            n_pf.append(1)
+            if len(n_pf) >= 2:
+                raise OSError("injected: 依頼文を書けない")
+            return "p"
+        compose.prompt_file = pf
+        try:
+            compose.claude_review(d, 1, targets=[f"{d}-a.md"], editorial=False, paper=True)
+        except OSError:
+            pass
+        check(started and not alive(), f"校閲: 例外で抜けたとき、起動済みの担当が回収されずに残った({alive()})")
+    finally:
+        cleanup()
+        (compose.ROOT, pipelib.ROOT, compose.DEADLINE, subprocess.Popen, compose.brand_plan_prompt, compose.prompt_file,
+         compose.save_raw) = saved
+
+
+def test_compose_no_launch_after_deadline(tmp: Path):
+    """締切を過ぎたら、執筆・校閲・書き直し・修正の担当を(やり直し・差し戻しも)起動しない。未着手の記事は理由付きで記録して
+    後始末へ進む(監査指摘 2026-10-14: 待ち時間を縮めるだけで起動は止まらず、締切後も後続の記事・紙面とその再試行を起動した)。
+    締切前に起動した分は今どおり書く(打ち切りは締切だけ)"""
+    import time as _t
+    d = "2099-03-02"
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_posts").mkdir(parents=True, exist_ok=True)
+    (tmp / "metrics").mkdir(exist_ok=True)
+    (tmp / "docs" / "_posts" / f"{d}-a.md").write_text("---\nslug: a\ntitle: a\n---\n本文\n", encoding="utf-8")
+    # 書き直しは素材の種別を判定表から引く(with_current_type)。判定表の無い ROOT では工程が止まるので、最小の表を置く
+    (tmp / "source_types.yml").write_text("official_domains:\n  - a.example\n", encoding="utf-8")
+    launched: list = []
+
+    class P:
+        pid, returncode = _NO_PID, 0
+
+        def communicate(self, timeout=None):
+            compose.DEADLINE = _t.time() - 1        # 1本目の担当が動いている間に締切を過ぎる
+            return None, None
+
+        def kill(self):
+            pass
+
+        def poll(self):
+            return 0
+
+        def wait(self, timeout=None):
+            return 0
+    cands = {"c1": dict(MATS[0], id="c1"), "c2": dict(MATS[1], id="c2")}
+    plan = {"articles": [{"slug": s, "rank": "small", "brand": "765", "candidate_ids": [c], "dedup_key": s, "angle": s}
+                         for s, c in (("w1", "c1"), ("w2", "c2"))]}
+    saved = (compose.ROOT, pipelib.ROOT, compose.DEADLINE, subprocess.Popen, compose.article_prompt, compose.prompt_file,
+             compose.save_raw)
+    try:
+        compose.ROOT = tmp
+        compose.save_raw = lambda *a, **k: None
+        compose.prompt_file = lambda *a, **k: "p"
+        compose.article_prompt = lambda *a, **k: "x"
+        subprocess.Popen = lambda argv, **k: launched.append(argv) or P()
+        # 執筆: 1本目の執筆中に締切を過ぎる → 2本目と、1本目のやり直しを起動しない
+        compose.DEADLINE = _t.time() + 600
+        written, aborted = compose.write_articles(d, plan, cands, [], {}, wave=1)
+        drops = compose.DROP_LOG.get(d) or {}
+        check(len(launched) == 1 and not written and sorted(aborted) == ["w1", "w2"]
+              and all((drops.get(s) or ("", ""))[1] == "締切で未着手" for s in ("w1", "w2")),
+              f"執筆: 締切後に記事の担当を起動した・未着手を記録しない(起動 {len(launched)}本 / 外した {aborted} / 記録 {drops})")
+        # 校閲・書き直し・修正: 締切を過ぎていれば1本も起動しない。校閲は担当が動かなかった巡(判定なし)になる
+        compose.ROOT = pipelib.ROOT = tmp
+        launched.clear()
+        compose.DEADLINE = _t.time() - 60
+        r = compose.claude_review(d, 1, targets=[f"{d}-a.md"], editorial=False, paper=True)
+        check(not launched and r.get("verdict") == "error" and all("締切" in f for f in r.get("failed") or ["(なし)"]),
+              f"校閲: 締切後に担当を起動した・判定ありにした(起動 {len(launched)}本 / {r.get('verdict')} {r.get('failed')})")
+        arts = {"articles": [{"slug": "a", "rank": "small", "brand": "765", "candidate_ids": ["c1"], "dedup_key": "a"}]}
+        res = compose.revise_articles(d, {f"docs/_posts/{d}-a.md": [{"rule_id": "R1", "issue": "x", "quote": "本文"}]},
+                                      arts, cands, [])
+        compose.fix_articles(d, {f"docs/_posts/{d}-a.md": [{"rule_id": "R1", "issue": "x"}]})
+        check(not launched and res.get("a") == "not_started", f"書き直し・修正: 締切後に担当を起動した(起動 {len(launched)}本 / {res})")
+        # 依頼文を書くあいだに締切を過ぎても起動しない(起動の直前にも確かめる)
+        def slow_prompt(*a, **k):
+            _t.sleep(0.1)
+            return "p"
+        compose.prompt_file = slow_prompt
+        compose.DEADLINE = _t.time() + 0.05
+        r = compose.claude_review(d, 2, targets=[f"{d}-a.md"], editorial=False, paper=False)
+        compose.DEADLINE = _t.time() + 0.05
+        compose.DROP_LOG.pop(d, None)
+        pipelib.ROOT = saved[1]     # 出典の種別の判定表は本体のものを読む(書かない)
+        written, aborted = compose.write_articles(d, {"articles": plan["articles"][:1]}, cands, [], {}, wave=1)
+        check(not launched and r.get("verdict") == "error" and aborted == ["w1"],
+              f"準備のあいだに締切を過ぎた担当を起動した(起動 {len(launched)}本 / 校閲 {r.get('verdict')} / 執筆で外した {aborted})")
+    finally:
+        compose.DROP_LOG.pop(d, None)
+        compose.WRITE_OUTCOMES.pop(d, None)
+        compose.REVISE_NOTES.pop(d, None)
+        (compose.ROOT, pipelib.ROOT, compose.DEADLINE, subprocess.Popen, compose.article_prompt, compose.prompt_file,
+         compose.save_raw) = saved
+
+
+def test_leave_tree_clean_stops_sessions(tmp: Path):
+    """組版が例外・SIGTERM で途中終了するときは、確定(commit)の前に、起動したまま回収していないセッションを子孫ごと止める
+    (残すと確定のあとに記事を書き、作業ツリーがまた dirty になる。監査指摘 2026-10-14)"""
+    start = getattr(pipelib, "start_group", None)
+    if start is None:
+        check(False, "セッションを起動して控える関数(pipelib.start_group)が無い")
+        return
+    tmp.mkdir(parents=True, exist_ok=True)
+    p = start([sys.executable, "-c", "import time; time.sleep(30)"], cwd=tmp)
+    saved = compose.STARTED_ON
+    try:
+        compose.STARTED_ON = None       # commit はしない経路(開始前)。止めるのはその前
+        compose._leave_tree_clean("test")
+        # 後始末のあとは、別スレッドの担当が次の担当を起動しない(工程を終えるところ)
+        later = start([sys.executable, "-c", "pass"], cwd=tmp)
+        check(isinstance(later, pipelib.LaunchFailed), "途中終了の後始末のあとに、新しい担当を起動した")
+        if not isinstance(later, pipelib.LaunchFailed):
+            pipelib.finish_group(later, 10)
+    finally:
+        compose.STARTED_ON = saved
+        if hasattr(pipelib, "STOPPING"):
+            pipelib.STOPPING.clear()    # 途中終了の後始末が立てた「終えるところ」を、後のテストのために戻す
+        if p.poll() is None:
+            p.kill()
+            p.wait()
+            check(False, "途中終了の確定の前に、起動したままのセッションを止めない")
+
+
+def test_session_escaped_and_term(tmp: Path):
+    """セッションの親(CLI)が先に終わっても、自分でセッションを分けて残った道具を止める(正常終了でも、時間切れでも)。
+    回収は、この process 自身・この process の子でない pid を起点にしない。工程の入口は、実際の SIGTERM でも起動した CLI を
+    子孫ごと止めてから終わる(監査指摘 2026-10-14: 親が先に終わると別セッションの子が残った。既定の SIGTERM は後始末を走らせず、
+    手で回した update_clis を止めると CLI が残った。自分を指す偽の対象の回収が無関係な子を止めた)"""
+    import signal
+    import time as _t
+    tmp.mkdir(parents=True, exist_ok=True)
+    run = getattr(pipelib, "run_group", None)
+    check(run is not None and hasattr(pipelib, "stop_tree"), "モデル・道具の起動・回収の関数(pipelib.run_group・stop_tree)が無い")
+    # 親は、自分でセッションを分けた子が揃うのを待ってから終わる(正常終了 / 子が出力のパイプを持ったまま、時間切れ)
+    for case, closes, timeout in ((("normal", True, 30), ("pipe", False, 1)) if run else ()):
+        pf = tmp / f"{case}.pid"
+        code = ("import os, sys, time\n"
+                "from pathlib import Path\n"
+                "if os.fork() == 0:\n"
+                "    os.setsid()\n"
+                + ("    os.close(1); os.close(2)\n" if closes else "")
+                + f"    Path({str(pf) + '.tmp'!r}).write_text(str(os.getpid())); os.replace({str(pf) + '.tmp'!r}, {str(pf)!r})\n"
+                "    time.sleep(30)\n"
+                "    os._exit(0)\n"
+                f"while not Path({str(pf)!r}).exists(): time.sleep(0.005)\n")
+        t0 = _t.time()
+        try:
+            r = run([sys.executable, "-c", code], timeout=timeout, cwd=tmp)
+            how = f"exit {r.returncode}"
+        except subprocess.TimeoutExpired:
+            how = "時間切れ"
+        took = _t.time() - t0
+        pid = int(pf.read_text()) if pf.exists() else 0
+        alive = bool(pid) and _pid_alive(pid)
+        check(pid and not alive and took < 8,
+              f"親が先に終わったセッション({case}: {how})で、自分でセッションを分けた子が残った・回収を待ち続けた"
+              f"(pid {pid} 生存 {alive} / {took:.1f}秒)")
+        if alive:
+            os.kill(pid, signal.SIGKILL)
+    # 自分を指す偽の対象・この process の子でない pid を起点に、無関係な子を止めない
+    class Self:
+        pid, returncode = os.getpid(), None
+
+        def kill(self):
+            pass
+
+        def communicate(self, timeout=None):
+            return "", ""
+    # (回収の関数が無い実装では確かめない。上で落としてある)
+    peers = [subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"]) for _ in range(2)] \
+        if hasattr(pipelib, "stop_tree") else []
+    try:
+        if peers:
+            pipelib.reap(Self(), grace=1)
+            pipelib.stop_tree(peers[0].pid, root=peers[0].pid)     # 頭でない(自分のグループの)子: グループは無く、辿るのは子からだけ
+            check(not _pid_alive(peers[0].pid) and _pid_alive(peers[1].pid),
+                  "自分を指す偽の対象・グループの頭でない pid の回収で、無関係な子を止めた(または対象を止めない)")
+            # 頭でない子が、兄弟(別のグループの頭)のグループに入っている: その子だけを止め、兄弟のグループには広げない
+            sib = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"], process_group=0)
+            kid = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(30)"], process_group=sib.pid)
+            peers += [sib, kid]
+            pipelib.stop_tree(kid.pid, root=kid.pid)
+            check(not _pid_alive(kid.pid) and _pid_alive(sib.pid),
+                  "頭でない子の回収で、その子が入った兄弟のグループ(自分のものと分からないグループ)まで止めた")
+    finally:
+        for q in peers:
+            if q.poll() is None:
+                q.kill()
+            q.wait()
+    # 工程の入口: 実際の SIGTERM でも、起動した CLI を子孫ごと止めてから終わる(手で回したとき。systemd の外)
+    b = _probe_bin(tmp / "term-bin")
+    scripts = Path(__file__).resolve().parent
+    harness = {
+        "update_clis": ("import sys; sys.path.insert(0, sys.argv[1]); import update_clis as m\n"
+                        "m.job_lock = lambda *a, **k: None; m.notify = lambda *a, **k: True\n"
+                        "sys.argv = ['update_clis', '--no-update']; m.main()\n"),
+        "collect": ("import sys; sys.path.insert(0, sys.argv[1]); import collect as m, pipelib\n"
+                    "from pathlib import Path; m.ROOT = pipelib.ROOT = Path(sys.argv[2])     # 本体の作業ツリーに書かない\n"
+                    "m.job_lock = lambda *a, **k: None; pipelib.prompt_file = lambda *a, **k: 'p'\n"
+                    "m.run_watch = lambda call, oncall_rerun=False: (call('x', timeout=120), ([], {}))[1]\n"
+                    "m.prompt_file = lambda *a, **k: 'p'; m.save_raw = lambda *a, **k: None\n"
+                    "sys.argv = ['collect', '--no-git', '--skip-explore', '--skip-grok', '--date', '2099-01-01']\n"
+                    "try:\n    m.main()\nexcept m.Terminated:\n    sys.exit(143)     # collect の入口(__main__)と同じ扱い\n"),
+        "oncall": ("import os, sys; sys.path.insert(0, sys.argv[1]); import oncall as m\n"
+                   "from pathlib import Path; d = Path(sys.argv[2]); sf = d / 's.json'; sf.write_text('{\"type\": \"object\"}')\n"
+                   "m.prompt_file = lambda *a, **k: 'p'; m.save_raw = lambda *a, **k: None; m.session_env = lambda tmpdir=None: dict(os.environ)\n"
+                   "m._main = lambda: m.run_claude('x', sf, d, timeout=60)     # 通常の当番(どの工程でも入口は main)\n"
+                   "m.main()\n"),
+    }
+    for name, code in harness.items():
+        d = tmp / f"term-{name}"
+        d.mkdir(parents=True, exist_ok=True)
+        env = {k: v for k, v in os.environ.items() if k != "INVOCATION_ID"}
+        env.update(PATH=f"{b}:{os.environ.get('PATH', '')}", SESSION_PROBE=str(d))
+        h = subprocess.Popen([sys.executable, "-c", code, str(scripts), str(d)], env=env, cwd=tmp, start_new_session=True,
+                             stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
+        ready = _wait_files(d / "group.pid", d / "escaped.pid")
+        h.terminate()       # 実際の SIGTERM
+        try:
+            _, err = h.communicate(timeout=30)
+        except subprocess.TimeoutExpired:
+            h.kill()
+            _, err = h.communicate()
+        left = []
+        for n in ("group", "escaped"):
+            pf = d / f"{n}.pid"
+            pid = int(pf.read_text()) if pf.exists() else 0
+            if pid and _pid_alive(pid):
+                left.append(n)
+                os.kill(pid, signal.SIGKILL)
+        check(ready and h.returncode == 143 and not left,
+              f"{name}: SIGTERM で、起動した CLI を止めずに終わった(準備 {ready} / 終了 {h.returncode} / 残った {left} / "
+              f"{(err or '').strip()[-200:]})")
+    # 工程が例外(Ctrl-C を含む)で終わるときも、回収していないセッション(別スレッドの担当も)を残さない
+    d = tmp / "exit-int"
+    d.mkdir(parents=True, exist_ok=True)
+    code = ("import sys, threading; sys.path.insert(0, sys.argv[1]); import pipelib\n"
+            "from pathlib import Path; d = Path(sys.argv[2])\n"
+            "threading.Thread(target=lambda: pipelib.start_group([sys.argv[3]], cwd=d), daemon=True).start()\n"
+            "import time\n"
+            "while not ((d / 'group.pid').exists() and (d / 'escaped.pid').exists()): time.sleep(0.005)\n"
+            "raise KeyboardInterrupt\n")
+    env = dict(os.environ, SESSION_PROBE=str(d))
+    h = subprocess.run([sys.executable, "-c", code, str(scripts), str(d), str(b / "claude")], env=env, cwd=tmp,
+                       capture_output=True, text=True, timeout=60, start_new_session=True)
+    left = []
+    for n in ("group", "escaped"):
+        pf = d / f"{n}.pid"
+        pid = int(pf.read_text()) if pf.exists() else 0
+        if pid and _pid_alive(pid):
+            left.append(n)
+            os.kill(pid, signal.SIGKILL)
+    check(h.returncode != 0 and not left, f"例外で終わった工程が、別スレッドで起動した CLI を残した(終了 {h.returncode} / 残った {left})")
+
+
+def test_session_signal_windows(tmp: Path):
+    """中断の隙間を残さない(Sol 監査2巡目の指摘 2026-10-14):
+    - 起動から控えるまでのあいだに届いた SIGINT・SIGTERM でも、起動した担当を見失わずに止める
+    - 収集の SIGTERM のあと、待っていた定点観測のバッチが CLI を起動しない(工程を終えるところでは起動しない)
+    - 依頼文を書くあいだに収集の締切を過ぎたら facts 化を起動せず、読めなかった回数にも数えない
+    - 正常に終わったあとの後始末の途中の中断でも、残った道具を凍らせたまま忘れない
+    - この process の子でない対象(ほかの親の独立したセッション)は、グループも含めて止めない"""
+    import signal
+    import time as _t
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    real_popen = subprocess.Popen
+    started: list = []
+
+    def popen_then(sig):
+        def fake(argv, **kw):
+            p = real_popen([sys.executable, "-c", "import time; time.sleep(30)"], **kw)
+            started.append(p)
+            os.kill(os.getpid(), sig)       # 起動から控えるまでのあいだに届く信号
+            return p
+        return fake
+
+    def cleanup():
+        for p in started:
+            if p.poll() is None:
+                p.kill()
+                p.wait()
+        started.clear()
+    start = getattr(pipelib, "start_group", None)
+    check(start is not None, "セッションを起動して控える関数(pipelib.start_group)が無い")
+    # 起動の隙間の SIGINT(既定の扱い: KeyboardInterrupt)・SIGTERM(exit_on_term)。モデル・道具の起動(start_group)と、
+    # 当番が工程を再実行する起動(oncall.run_stage)の両方
+    import oncall
+    old_int = signal.signal(signal.SIGINT, signal.default_int_handler)
+    old_term = signal.getsignal(signal.SIGTERM)
+    try:
+        for (sig, want), via in [(c, v) for v in ("start_group", "run_stage")
+                                 for c in ((signal.SIGINT, "KeyboardInterrupt"), (signal.SIGTERM, "SystemExit 143"))]:
+            if start is None:
+                break
+            if sig == signal.SIGTERM:
+                pipelib.exit_on_term()
+            subprocess.Popen = popen_then(sig)
+            try:
+                if via == "run_stage":
+                    oncall.run_stage(["probe"], tmp / "stage.log", 30)
+                else:
+                    start(["probe"], cwd=tmp)
+                got = "返った"
+            except KeyboardInterrupt:
+                got = "KeyboardInterrupt"
+            except SystemExit as e:
+                got = f"SystemExit {e.code}"
+            finally:
+                subprocess.Popen = real_popen
+            check(got == want and started and started[-1].poll() is not None,
+                  f"{via}: 起動から控えるまでのあいだの {signal.Signals(sig).name} で、起動した担当を見失った({got} / "
+                  f"生きている {[p.pid for p in started if p.poll() is None]})")
+            cleanup()
+            if hasattr(pipelib, "STOPPING"):
+                pipelib.STOPPING.clear()    # SIGTERM の後始末が立てた「終えるところ」を、次の確かめのために戻す
+    finally:
+        subprocess.Popen = real_popen
+        signal.signal(signal.SIGINT, old_int)
+        signal.signal(signal.SIGTERM, old_term if old_term is not None else signal.SIG_DFL)
+        if hasattr(pipelib, "STOPPING"):
+            pipelib.STOPPING.clear()        # SIGTERM の後始末が立てた「終えるところ」を、後のテストのために戻す
+        cleanup()
+    # 別スレッドで起動してから控えるまでのあいだに、主スレッドが終了の後始末(stop_groups)をしても、その担当を止める
+    # (後始末の一覧に載らないまま待ち続けない。Sol 監査3巡目の指摘)
+    if start is not None:
+        import threading
+        launched, resume, res = threading.Event(), threading.Event(), {}
+
+        def held(argv, **kw):
+            p = real_popen([sys.executable, "-c", "import time; time.sleep(30)"], **kw)
+            started.append(p)
+            launched.set()
+            resume.wait(10)         # 主スレッドの後始末が済むまで、控える前で止まる
+            return p
+        subprocess.Popen = held
+        try:
+            t = threading.Thread(target=lambda: res.setdefault("r", start(["probe"], cwd=tmp)), daemon=True)
+            t.start()
+            launched.wait(10)
+            pipelib.stop_groups()           # 終了の後始末(主スレッド。SIGTERM のハンドラと同じ)
+            resume.set()
+            t.join(30)
+        finally:
+            subprocess.Popen = real_popen
+            if hasattr(pipelib, "STOPPING"):
+                pipelib.STOPPING.clear()
+        r = res.get("r")
+        check(isinstance(r, getattr(pipelib, "LaunchFailed", ())) and started and started[-1].poll() is not None,
+              f"別スレッドの起動のあいだに始まった終了の後始末から、その担当が漏れた({type(r).__name__} / "
+              f"生きている {[p.pid for p in started if p.poll() is None]})")
+        if r is not None and not isinstance(r, getattr(pipelib, "LaunchFailed", ())):
+            pipelib.stop_groups([r])
+        cleanup()
+    # 収集の SIGTERM: 待っていたバッチが CLI を起動しない(実際の collect.main・run_watch・定点観測の並列)
+    d = tmp / "watch-term"
+    (d / "bin").mkdir(parents=True, exist_ok=True)
+    (d / "bin" / "claude").write_text(f'#!/bin/sh\necho $$ >> "{d}/launches"\nexec sleep 30\n', encoding="utf-8")
+    (d / "bin" / "claude").chmod(0o755)
+    (d / "sources.yml").write_text("[]\n", encoding="utf-8")
+    (d / "state.json").write_text(json.dumps({"_pending": [{"url": f"https://a.example/p{i}", "title": "t", "brand": "cg",
+                                                            "source_id": "s", "csr": False} for i in range(3)]}), encoding="utf-8")
+    code = ("import sys; sys.path.insert(0, sys.argv[1]); import collect as m, pipelib\n"
+            "from pathlib import Path; m.ROOT = pipelib.ROOT = Path(sys.argv[2]); m.STATE_PATH = m.ROOT / 'state.json'\n"
+            "m.job_lock = lambda *a, **k: None; pipelib.prompt_file = lambda *a, **k: 'p'; m.save_raw = lambda *a, **k: None\n"
+            "m.page_html_or_note = lambda url, csr: ('<p>本文</p>', ''); m.WATCH_BATCH = m.WATCH_PARALLEL = 1\n"
+            "sys.argv = ['collect', '--no-git', '--skip-explore', '--skip-grok', '--date', '2099-01-01']\n"
+            "try:\n    m.main()\nexcept m.Terminated:\n    sys.exit(143)     # collect の入口(__main__)と同じ扱い\n")
+    env = {k: v for k, v in os.environ.items() if k != "INVOCATION_ID"}
+    env["PATH"] = f"{d / 'bin'}:{os.environ.get('PATH', '')}"
+    h = subprocess.Popen([sys.executable, "-c", code, str(Path(__file__).resolve().parent), str(d)], env=env, cwd=d,
+                         start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, text=True)
+    ready = _wait_files(d / "launches")     # 1本目が起動して待っているあいだに送る(待っている担当は時間切れまで返らない)
+    h.terminate()
+    try:
+        _, err = h.communicate(timeout=20)
+    except subprocess.TimeoutExpired:
+        h.kill()
+        _, err = h.communicate()
+    pids = [int(x) for x in (d / "launches").read_text().split()] if (d / "launches").exists() else []
+    left = [q for q in pids if _pid_alive(q)]
+    for q in left:
+        os.kill(q, signal.SIGKILL)
+    check(ready and h.returncode == 143 and len(pids) == 1 and not left,
+          f"収集の SIGTERM のあと、待っていたバッチが CLI を起動した・止めずに終わった(起動 {len(pids)}本 / 残った {left} / "
+          f"終了 {h.returncode} / {(err or '').strip()[-200:]})")
+    # 依頼文を書くあいだに収集の締切を過ぎた facts 化: 起動せず、読めなかった回数にも数えない
+    saved_c = (getattr(collect, "DEADLINE", None), pipelib.prompt_file, collect.save_raw, collect.notify, collect.page_html_or_note)
+    launched: list = []
+
+    def slow_prompt(*a, **k):
+        _t.sleep(0.1)
+        return "p"
+    try:
+        collect.DEADLINE = _t.time() + 0.05
+        pipelib.prompt_file = slow_prompt
+        collect.save_raw = collect.notify = lambda *a, **k: None
+        collect.page_html_or_note = lambda url, csr: ("<p>本文</p>", "")
+        subprocess.Popen = lambda argv, **kw: launched.append(argv) or real_popen([sys.executable, "-c", "import time; time.sleep(30)"], **kw)
+        state = {"_unreadable": {"https://a.example/u1": 1}}
+        _, tried = collect.facts_batch([{"url": "https://a.example/u1", "title": "t", "brand": "cg", "csr": False}],
+                                       collect.claude_exec, state)
+        check(not launched and not tried and state.get("_unreadable") == {"https://a.example/u1": 1} and not state.get("_given_up"),
+              f"依頼文を書くあいだに収集の締切を過ぎた facts 化を起動した・読めなかった回数に数えた(起動 {len(launched)}本 / {state})")
+    finally:
+        subprocess.Popen = real_popen
+        (collect.DEADLINE, pipelib.prompt_file, collect.save_raw, collect.notify, collect.page_html_or_note) = saved_c
+    # 正常に終わったあとの後始末の途中の中断: 残った道具を忘れずに止めてから上げる
+    if start is not None:
+        pf = tmp / "after.pid"
+        code = ("import os, sys, time\nfrom pathlib import Path\n"
+                "if os.fork() == 0:\n    os.setsid(); os.close(1); os.close(2)\n"
+                f"    Path({str(pf) + '.tmp'!r}).write_text(str(os.getpid())); os.replace({str(pf) + '.tmp'!r}, {str(pf)!r})\n"
+                "    time.sleep(30); os._exit(0)\n"
+                f"while not Path({str(pf)!r}).exists(): time.sleep(0.005)\n")
+        p = start([sys.executable, "-c", code], cwd=tmp)
+        real_stop, n = pipelib.stop_tree, []
+
+        def interrupted_once(*a, **k):
+            n.append(1)
+            if len(n) == 1:
+                raise KeyboardInterrupt
+            return real_stop(*a, **k)
+        pipelib.stop_tree = interrupted_once
+        try:
+            pipelib.finish_group(p, 30)
+            got = "返った"
+        except KeyboardInterrupt:
+            got = "中断"
+        finally:
+            pipelib.stop_tree = real_stop
+        pid = int(pf.read_text()) if pf.exists() else 0
+        alive = bool(pid) and _pid_alive(pid)
+        if alive:
+            os.kill(pid, signal.SIGKILL)
+        check(got == "中断" and pid and not alive, f"後始末の途中の中断で、残った道具を止めずに忘れた({got} / pid {pid} 生存 {alive})")
+        # 時間切れの回収の途中の中断(Ctrl-C)でも、凍らせた子を残さず、一覧からも漏らさない
+        d2 = tmp / "timeout-int"
+        d2.mkdir(parents=True, exist_ok=True)
+        b2 = _probe_bin(tmp / "timeout-int-bin")
+        saved_probe = os.environ.get("SESSION_PROBE")
+        os.environ["SESSION_PROBE"] = str(d2)
+        try:
+            p = start([str(b2 / "claude")], cwd=tmp)
+            ready = _wait_files(d2 / "group.pid", d2 / "escaped.pid")
+            n.clear()
+            pipelib.stop_tree = interrupted_once
+            try:
+                pipelib.finish_group(p, 0.2)
+                got = "返った"
+            except KeyboardInterrupt:
+                got = "中断"
+            finally:
+                pipelib.stop_tree = real_stop
+        finally:
+            if saved_probe is None:
+                os.environ.pop("SESSION_PROBE", None)
+            else:
+                os.environ["SESSION_PROBE"] = saved_probe
+        left = []
+        for name in ("group", "escaped"):
+            q = int((d2 / f"{name}.pid").read_text()) if (d2 / f"{name}.pid").exists() else 0
+            if q and _pid_alive(q):
+                left.append(name)
+                os.kill(q, signal.SIGKILL)
+        kept = p in getattr(pipelib, "_SESSIONS", set())
+        if kept:
+            pipelib.stop_groups([p])
+        check(ready and got == "中断" and not left and p.poll() is not None and not kept,
+              f"時間切れの回収の途中の中断で、子を残した・一覧から漏らさない(準備 {ready} / {got} / 残った {left} / 一覧に残る {kept})")
+    # この process の子でない対象(ほかの親が起こした独立したセッション)は、グループも含めて止めない
+    pf = tmp / "foreign.pid"
+    helper = real_popen([sys.executable, "-c",
+                         "import os, subprocess, sys, time\n"
+                         "q = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(30)'], start_new_session=True)\n"
+                         f"open({str(pf) + '.tmp'!r}, 'w').write(str(q.pid)); os.replace({str(pf) + '.tmp'!r}, {str(pf)!r})\n"
+                         "time.sleep(30)\n"])
+    try:
+        fpid = int(pf.read_text()) if _wait_files(pf) else 0
+
+        class Foreign:
+            pid, returncode = fpid, None
+
+            def kill(self):
+                pass
+
+            def communicate(self, timeout=None):
+                return "", ""
+        class Reaped(Foreign):          # 回収済みの頭(番号がほかの親のグループに使われている)・印が違う
+            returncode, session_mark = 0, "0" * 32
+        if fpid:
+            pipelib.reap(Foreign(), grace=1)
+            pipelib.reap(Reaped(), grace=1)
+            pipelib.stop_tree(fpid, mark="0" * 32)       # 正常に終わったあとの後始末と同じ呼び方
+        check(fpid and _pid_alive(fpid), f"この process の子でない対象・回収済みの頭の番号(pid {fpid})のグループを止めた")
+    finally:
+        if pf.exists():
+            try:
+                os.kill(int(pf.read_text()), signal.SIGKILL)
+            except (OSError, ValueError):
+                pass
+        helper.kill()
+        helper.wait()
+
+
+def test_collect_handover_deadline(tmp: Path):
+    """収集は組版へ引き渡す締切を持つ(監査指摘 2026-10-14: Grok の面を順に待つたびに GROK_TIMEOUT を与え直し、応答しない面が
+    並ぶと1波で 3×GROK_TIMEOUT になって、02:00 の収集が排他を持ったまま 03:00 の組版を妨げた)。
+    - Grok の1波は起動時に決めた絶対の締切で回収する(待ちが面の数だけ足し算にならない)
+    - 定時の収集の締切は次の定時工程の15分前(02:00 の収集なら 02:45)。手で回したとき・当番の取り直しには付けない
+    - 締切を越えて待たず、過ぎたら Grok・確かめ・探索・定点観測の facts 化を起動しない(定点観測の新着は読めなかった回数に数えない)"""
+    import datetime as _dt
+    import time as _t
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    waits: list = []
+    launched: list = []
+
+    class GP:      # 応答しない Grok(時間切れまで返らない。止められたら空で返る)
+        pid, returncode = _NO_PID, None
+
+        def __init__(self):
+            self.killed = False
+
+        def communicate(self, timeout=None):
+            if self.killed:
+                return "", ""
+            waits.append(timeout)
+            _t.sleep(min(timeout or 0, 1))
+            raise subprocess.TimeoutExpired("grok", timeout)
+
+        def kill(self):
+            self.killed, self.returncode = True, -9
+
+        def poll(self):
+            return self.returncode
+
+        def wait(self, timeout=None):
+            return self.returncode
+    names = ("GROK_TIMEOUT", "GROK_WAVE", "save_raw", "notify", "prompt_file", "explore_workdir", "page_html_or_note", "DEADLINE",
+             "list_source", "render_page")
+    saved = {n: getattr(collect, n, None) for n in names}
+    saved_popen, saved_inv = subprocess.Popen, os.environ.get("INVOCATION_ID")
+    notes: list = []
+    try:
+        collect.GROK_TIMEOUT, collect.GROK_WAVE = 0.3, 3
+        collect.save_raw = lambda *a, **k: None
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        collect.prompt_file = lambda *a, **k: "p"
+        collect.explore_workdir = lambda key: (tmp / "wd" / key).mkdir(parents=True, exist_ok=True) or tmp / "wd" / key
+        collect.page_html_or_note = lambda url, csr: ("<p>本文</p>", "")
+        collect.DEADLINE = None
+        subprocess.Popen = lambda *a, **k: launched.append(a) or GP()
+        targets = [({"key": f"f{i}"}, tmp / f"prompt-f{i}.md") for i in range(3)]
+        failed = collect.run_grok_prompts(targets, {})
+        check(failed == {"f0", "f1", "f2"} and sum(waits) <= 0.45,
+              f"Grok の1波の待ちが面ごとに足し算になった(待った秒 {waits}。上限は GROK_TIMEOUT 0.3 秒)")
+        # 収集の締切が先なら、そこまでしか待たない
+        waits.clear()
+        collect.GROK_TIMEOUT = 100
+        collect.DEADLINE = _t.time() + 0.2
+        collect.run_grok_prompts(targets[:1], {})
+        check(waits and waits[0] <= 0.25, f"収集の締切を越えて Grok を待った(待った秒 {waits})")
+        # 締切を過ぎたら起動しない
+        launched.clear()
+        collect.DEADLINE = _t.time() - 1
+        errs: dict = {}
+        failed = collect.run_grok_prompts(targets, errs)
+        check(not launched and failed == {"f0", "f1", "f2"} and all("締切" in errs.get(k, "") for k in failed),
+              f"Grok: 締切後に面を起動した・理由を残さない(起動 {len(launched)}本 / {errs})")
+        # 波の途中で締切を過ぎたら、同じ波の残りの面も起動しない(1本目の起動に時間が掛かった)
+        def slow_first(*a, **k):
+            launched.append(a)
+            if len(launched) == 1:
+                _t.sleep(0.2)
+            return GP()
+        subprocess.Popen = slow_first
+        collect.DEADLINE = _t.time() + 0.15
+        errs = {}
+        failed = collect.run_grok_prompts(targets, errs)
+        check(len(launched) == 1 and failed == {"f0", "f1", "f2"} and all("締切" in errs.get(k, "") for k in ("f1", "f2")),
+              f"Grok: 波の途中で締切を過ぎたのに、同じ波の残りの面を起動した(起動 {len(launched)}本 / {errs})")
+        launched.clear()
+        subprocess.Popen = lambda *a, **k: launched.append(a) or GP()
+        collect.DEADLINE = _t.time() - 1
+        od = tmp / "grok"
+        od.mkdir(exist_ok=True)
+        (od / "cg.md").write_text("### 1\n- url: https://x.com/a/status/9\n- 本文: 告知\n", encoding="utf-8")
+        items, _ = collect.verify_grok_faces([{"key": "cg", "brand": "cg", "topic": "t"}], od)
+        check(not launched and not items and any("status/9" in m and "締切" in m for m in notes),
+              f"確かめ: 締切後に起動した・失う投稿を理由付きで名指ししない(起動 {len(launched)}本 / {notes[-1:]})")
+        items, per = collect.run_explores(False, True)
+        check(not launched and per and all(k.startswith("explore_failed:") for k in per),
+              f"探索: 締切後に起動した・取得の失敗として残さない(起動 {len(launched)}本 / {per})")
+        called: list = []
+        state: dict = {}
+        got, tried = collect.facts_batch([{"url": "https://a.example/n1", "title": "t", "brand": "cg", "csr": False}],
+                                         lambda prompt, timeout=0: called.append(1) or [], state)
+        check(not called and not tried and not state.get("_unreadable"),
+              f"定点観測: 締切後に facts 化を起動した・読めなかった回数に数えた({called} {tried} {state})")
+        # 定点観測: 締切を過ぎたら、一覧も新着の本文も取らない(監査指摘 2026-10-14: 締切後に新着48件の描画を起動して、組版の排他を妨げた)
+        listed, fetched = [], []
+        collect.list_source = lambda s, known, fetch=None: listed.append(s["id"]) or ([("https://a.example/n2", "t")], 1, False)
+        collect.page_html_or_note = lambda url, csr: fetched.append(url) or ("", "")
+        _, info = collect.run_watch(lambda prompt, timeout=0: called.append(1) or [])
+        errs_w = [v.get("error", "") for k, v in ((info or {}).get("stats") or {}).items() if k != "_state" and isinstance(v, dict)]
+        check(not listed and not fetched and not called and errs_w and all("締切" in e for e in errs_w),
+              f"定点観測: 締切後に一覧・本文を取った・facts 化を起動した(一覧 {listed} / 本文 {fetched} / 起動 {len(called)})")
+        # 締切の前でも、新着の本文の描画は収集の締切までしか待たない
+        limits: list = []
+        collect.render_page = lambda url, timeout=30, limit=None: limits.append(limit) or "<p>本文</p>"
+        collect.DEADLINE = _t.time() + 5
+        saved["page_html_or_note"]("https://a.example/n3", True)
+        check(limits and isinstance(limits[0], (int, float)) and limits[0] <= 5.1,
+              f"定点観測: 新着の本文の描画が収集の締切を越えて待つ(待つ上限 {limits})")
+        # 少しずつ届く応答(1回の受信は速いが、全部で 2.5 秒)も、収集の締切で打ち切る。socket の待ち時間は1回の受信ごとにしか効かない
+        class Drip:
+            status = 200
+            headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
+
+            def __init__(self):
+                self.n = 0
+
+            def read1(self, n=-1):
+                _t.sleep(0.1)
+                self.n += 1
+                return b"x" if self.n < 25 else b""
+
+            def read(self, n=-1):
+                out = b""
+                while (b := self.read1(n)):
+                    out += b
+                return out
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+        saved_open = collect.urllib.request.urlopen
+        collect.urllib.request.urlopen = lambda req, timeout=None: Drip()
+        try:
+            collect.DEADLINE = _t.time() + 0.3
+            t0 = _t.time()
+            _, why = saved["page_html_or_note"]("https://a.example/drip", False)
+            took1 = _t.time() - t0
+            collect.DEADLINE = _t.time() + 0.3
+            t0 = _t.time()
+            try:
+                collect.watch_fetch({"type": "html"})("https://a.example/list")
+                err2 = ""
+            except Exception as e:      # noqa: BLE001
+                err2 = str(e)
+            took2 = _t.time() - t0
+        finally:
+            collect.urllib.request.urlopen = saved_open
+        check(took1 < 1.5 and "締切" in why and took2 < 1.5 and "締切" in err2,
+              f"定点観測: 少しずつ届く応答を、収集の締切を越えて読み続けた(本文 {took1:.1f}秒 {why!r} / 一覧 {took2:.1f}秒 {err2!r})")
+        # 応答の下の受信(socket から1回読む)の待ち時間: 応答の形を本物(http.client の応答 → BufferedReader → raw.readinto →
+        # socket)に合わせた偽物で確かめる。plan は受信ごとの (届くまでの秒, 中身)。待ち時間を越えれば時間切れ
+        class Sock:
+            def __init__(self, t):
+                self.timeout = t
+
+            def settimeout(self, t):
+                self.timeout = t
+
+            def gettimeout(self):
+                return self.timeout
+
+        class Raw:
+            def __init__(self, plan, cap):
+                self._sock, self.plan = Sock(cap), list(plan)
+
+            def readinto(self, b):
+                delay, data = self.plan.pop(0) if self.plan else (0, b"")
+                t = self._sock.timeout
+                if t is not None and delay > t:
+                    _t.sleep(t)
+                    raise TimeoutError("timed out")
+                _t.sleep(delay)
+                b[:len(data)] = data
+                return len(data)
+
+        class Wire(Drip):       # read1 は下の受信を per 回まとめて呼ぶ(chunked の長さの行を1字ずつ読むのと同じ形)
+            def __init__(self, plan, cap, per=1):
+                super().__init__()
+                self.fp = type("F", (), {})()
+                self.fp.raw, self.per = Raw(plan, cap), per
+
+            def read1(self, n=-1):
+                out = b""
+                for _ in range(self.per):
+                    buf = bytearray(64)
+                    k = self.fp.raw.readinto(buf)
+                    if not k:
+                        break
+                    out += bytes(buf[:k])
+                return out
+
+        def fetch_took(resp, deadline_in):
+            collect.urllib.request.urlopen = lambda req, timeout=None: resp
+            try:
+                collect.DEADLINE = _t.time() + deadline_in
+                t0 = _t.time()
+                _, why = saved["page_html_or_note"]("https://a.example/wire", False)
+                return _t.time() - t0, why
+            finally:
+                collect.urllib.request.urlopen = saved_open
+        # 締切の直前に1回受信してから応答が止まっても、最初に決めた受信の待ち時間(20 秒)まで待たない
+        took3, why3 = fetch_took(Wire([(0.25, b"x"), (20, b"")], 20.0), 0.3)
+        # 締切が遠いときは、1回の受信の上限(urlopen が決めた待ち時間。ここでは 0.15 秒)を残り時間で延ばさない
+        took4, why4 = fetch_took(Wire([(2.0, b"")], 0.15), 5)
+        # 1回の read1 の中で何度も受信する応答(chunked の長さの行を少しずつ送る)も、受信のたびに締切で切る
+        took5, why5 = fetch_took(Wire([(0.1, b"1")] * 25, 20.0, per=30), 0.3)
+        check(took3 < 1.0 and "締切" in why3,
+              f"定点観測: 締切の直前に止まった応答を、最初の受信の待ち時間まで待った({took3:.1f}秒 {why3!r})")
+        check(took4 < 1.0 and "TimeoutError" in why4,
+              f"定点観測: 1回の受信の上限を、収集の締切までの残り時間で延ばした({took4:.1f}秒 {why4!r})")
+        check(took5 < 1.0 and "締切" in why5,
+              f"定点観測: 1回の読み込みの中で何度も受信する応答を、締切を越えて読み続けた({took5:.1f}秒 {why5!r})")
+        # ヘッダーが少しずつ届く(urlopen はヘッダーを読み終えるまで返らない)ときも、接続・ヘッダーを含めて締切までしか待たない
+        def slow_headers(req, timeout=None):
+            _t.sleep(2.5)
+            return Wire([(0, b"")], 20.0)
+        collect.urllib.request.urlopen = slow_headers
+        try:
+            collect.DEADLINE = _t.time() + 0.3
+            t0 = _t.time()
+            _, why6 = saved["page_html_or_note"]("https://a.example/headers", False)
+            took6 = _t.time() - t0
+            collect.DEADLINE = _t.time() + 0.3
+            t0 = _t.time()
+            try:
+                collect.watch_fetch({"type": "html"})("https://a.example/list")
+                err7 = ""
+            except Exception as e:      # noqa: BLE001
+                err7 = str(e)
+            took7 = _t.time() - t0
+        finally:
+            collect.urllib.request.urlopen = saved_open
+        check(took6 < 1.0 and "締切" in why6 and took7 < 1.0 and "締切" in err7,
+              f"定点観測: 少しずつ届くヘッダーを、収集の締切を越えて待った(本文 {took6:.1f}秒 {why6!r} / 一覧 {took7:.1f}秒 {err7!r})")
+        # 締切の決め方
+        deadline_of = getattr(collect, "collect_deadline", None)
+        if deadline_of is None:
+            check(False, "収集の締切を決める関数(collect.collect_deadline)が無い")
+        else:
+            now = _dt.datetime(2026, 10, 14, 2, 0, tzinfo=pipelib.JST)
+            os.environ.pop("INVOCATION_ID", None)
+            check(deadline_of(False, now) is None, "手で回した収集に締切を付けた")
+            os.environ["INVOCATION_ID"] = "test"
+            want = _dt.datetime(2026, 10, 14, 2, 45, tzinfo=pipelib.JST).timestamp()
+            check(deadline_of(False, now) == want, f"02:00 の定時の収集の締切が 02:45 でない: {deadline_of(False, now)}")
+            check(deadline_of(True, now) is None, "当番の取り直し(当番が時刻を決めて止める)に収集の締切を付けた")
+    finally:
+        for n, v in saved.items():
+            setattr(collect, n, v)
+        subprocess.Popen = saved_popen
+        if saved_inv is None:
+            os.environ.pop("INVOCATION_ID", None)
+        else:
+            os.environ["INVOCATION_ID"] = saved_inv
+
+
+# モデル CLI の認証切れ・利用上限の実物の文言(claude は ops の生の出力 2026-10-20 18:30、codex 0.163.0・grok 1.0.62 は実行ファイルの文字列)
+CLAUDE_OAUTH = "Failed to authenticate: OAuth session expired and could not be refreshed"
+CODEX_LIMIT = ("ERROR: You've hit your usage limit. Visit https://chatgpt.com/settings/usage to purchase more credits "
+               "or try again at 3:05 AM.")
+GROK_LIMIT = "You've hit the rate limit for your plan. Upgrade your account or try again later."
+
+
+def fake_cli(bindir: Path, name: str, out: str = "", err: str = "", code: int = 0) -> None:
+    """PATH の先頭に置く偽の CLI(本物の子プロセスとして起動される)。"""
+    bindir.mkdir(parents=True, exist_ok=True)
+    p = bindir / name
+    p.write_text(f"#!{sys.executable}\nimport sys\nsys.stdout.write({out!r})\nsys.stderr.write({err!r})\nsys.exit({code})\n",
+                 encoding="utf-8")
+    p.chmod(0o755)
+
+
+class cli_posts:
+    """モデル CLI の停止の投稿(pipelib.notify)を受け止め、この process で見た停止と記録を空にして始める(本物の Discord に送らない)。"""
+
+    def __enter__(self):
+        self.saved = (pipelib.notify, dict(pipelib.CLI_BLOCKED), list(pipelib.ANOMALIES), pipelib._ESCALATED)
+        self.posts: list[tuple[str, str, bool, bool]] = []
+        pipelib.notify = lambda job, msg, ok=True, require=False, ledger=True: self.posts.append((job, msg, ok, ledger)) or True
+        pipelib.CLI_BLOCKED.clear()
+        pipelib.CLI_BLOCK_STATE.unlink(missing_ok=True)
+        return self
+
+    def __exit__(self, *exc):
+        pipelib.notify = self.saved[0]
+        pipelib.CLI_BLOCKED.clear()
+        pipelib.CLI_BLOCKED.update(self.saved[1])
+        pipelib.ANOMALIES[:] = self.saved[2]
+        pipelib._ESCALATED = self.saved[3]
+        pipelib.CLI_BLOCK_STATE.unlink(missing_ok=True)
+        return False
+
+    def blocked_posts(self) -> list[str]:
+        return [m for _, m, ok, _ in self.posts if not ok]
+
+
+def test_cli_blocked_watch_not_counted(tmp: Path):
+    """定点観測の facts 化でモデルの CLI が認証切れ・利用上限で答えなかった回は、新着の「読めなかった回」に数えず、未処理の列に残す。
+    人には1回だけ投稿し(続く収集で連投しない)、異常の台帳に積まず、当番を呼ばない(2026-10-20 18:30 に Claude の OAuth が切れ、
+    その1回を数えたため 20:29 の再実行で新着を諦めた。18:34・18:35 の当番は同じ認証切れで2回とも即死した)。
+    本物の claude_exec と偽の claude(実物の文言を出して exit 1)で、収集を2回続けて走らせる。"""
+    import collect
+    import yaml
+    tmp.mkdir(parents=True, exist_ok=True)
+    bindir, u = tmp / "bin", "https://f.jp/?p=32576"
+    fake_cli(bindir, "claude", out=CLAUDE_OAUTH + "\n", code=1)
+    (tmp / "sources.yml").write_text(yaml.safe_dump([{"id": "fan", "brand": "sidem", "type": "html", "url": "https://f.jp/",
+                                                       "base": "https://f.jp", "list_regex": "x", "enabled": True}]), encoding="utf-8")
+    (tmp / "watch-state.json").write_text(json.dumps({"fan": ["https://f.jp/old"]}), encoding="utf-8")
+    listing = [(u, "舞台挨拶"), ("https://f.jp/old", "")]
+    notes = []
+    (tmp / "metrics").mkdir(exist_ok=True)
+    saved = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.render_prompt, collect.page_html_or_note,
+             pipelib.ROOT, os.environ.get("PATH", ""), os.environ.pop("INVOCATION_ID", None), pipelib._QUIET,
+             pipelib.ENV.pop("ONCALL", None), os.environ.pop("ONCALL", None))
+    with cli_posts() as cp:
+        try:
+            collect.ROOT = pipelib.ROOT = tmp
+            collect.STATE_PATH = tmp / "watch-state.json"
+            collect.list_source = lambda s, known, fetch=None, resume=None: (listing, 1, [])
+            collect.page_html_or_note = lambda url, csr: ("", "")
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[7]}"
+            for _ in (1, 2):     # 18:30 の収集と 20:29 の再実行(別の process なので、この process で見た停止は持ち越さない)
+                pipelib.CLI_BLOCKED.clear()
+                _, info = collect.run_watch(collect.claude_exec)
+                st = info["stats"].pop("_state")
+                (tmp / "watch-state.json").write_text(json.dumps(st), encoding="utf-8")
+            check([it["url"] for it in st.get("_pending") or []] == [u] and not st.get("_given_up")
+                  and not (st.get("_unreadable") or {}).get(u) and u not in st["fan"],
+                  f"認証切れの回を読めなかった回に数えた・新着を諦めた: pending={st.get('_pending')} given_up={st.get('_given_up')} "
+                  f"unreadable={st.get('_unreadable')}")
+            check(info.get("blocked") == 1 and collect.collect_health(info, {}) == [],
+                  f"認証切れの繰り越しを取得の失敗に数えた: {info.get('blocked')} {collect.collect_health(info, {})}")
+            posts = cp.blocked_posts()
+            check(len(posts) == 1 and "認証が切れて" in posts[0] and "/login" in posts[0] and "facts 化" in posts[0]
+                  and all(not ledger for *_, ledger in cp.posts),
+                  f"認証切れを1回だけ・ログインし直しと工程を添えて投稿しない(または当番の台帳に積んだ): {cp.posts}")
+            check(not [m for m, ok in notes if not ok] and not pipelib.ANOMALIES,
+                  f"認証切れを異常として通知した(当番のなぜなぜに回る): {notes} {pipelib.ANOMALIES}")
+            # 当番は呼ばない: 起動できる偽の当番を置いても起動しない(当番も同じ CLI で止まる)
+            (tmp / "scripts").mkdir(exist_ok=True)
+            (tmp / "scripts" / "oncall.py").write_text("import sys\nsys.exit(0)\n", encoding="utf-8")
+            pipelib._QUIET = False
+            check(not pipelib.escalate("collect", "2026-10-21", "なぜなぜ", rerun=False),
+                  "Claude が認証切れの process から当番を起動した(当番も同じ理由で即死し、1日2回の枠を使う)")
+            # 戻ったら、未処理の列から先に読み、記録を消し、戻ったことを1回だけ知らせる
+            fake_cli(bindir, "claude", out='[{"page": 1, "status": "none", "items": []}]', code=0)
+            pipelib.CLI_BLOCKED.clear()
+            _, info = collect.run_watch(collect.claude_exec)
+            st = info["stats"].pop("_state")
+            state = json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8"))
+            check(not st.get("_pending") and u in st["fan"] and "claude" not in state
+                  and len([m for _, m, ok, _ in cp.posts if ok and "また答える" in m]) == 1,
+                  f"戻った後に未処理の列を読まない・記録が残る・戻ったと知らせない: {st.get('_pending')} {state} {cp.posts}")
+        finally:
+            (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.render_prompt,
+             collect.page_html_or_note, pipelib.ROOT) = saved[:7]
+            os.environ["PATH"] = saved[7]
+            if saved[8] is not None:
+                os.environ["INVOCATION_ID"] = saved[8]
+            pipelib._QUIET = saved[9]
+            if saved[10] is not None:
+                pipelib.ENV["ONCALL"] = saved[10]
+            if saved[11] is not None:
+                os.environ["ONCALL"] = saved[11]
+
+
+def test_cli_blocked_compose(tmp: Path):
+    """組版でモデルの CLI が認証切れ・利用上限で答えなかったら、記事・担当の失敗に数えない(差し戻し・やり直しを使わない、落とさない、
+    「校閲できなかった記事は載せない」にしない、異常の台帳に積まない)。同じ回の子を回収して書けた記事は残し、CliBlocked で工程を止める。
+    執筆は偽の codex(本物の子プロセス)、校閲は偽の Popen、候補 ID の修復は偽の claude で確かめる。"""
+    import shutil as _sh
+    from pipelib import CliBlocked
+    date = "2026-10-14"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    _sh.copytree(Path(__file__).resolve().parent.parent / "schema", tmp / "schema")
+    bindir = tmp / "bin"
+    bindir.mkdir()
+    (bindir / "codex").write_text(FAKE_CODEX, encoding="utf-8")
+    os.chmod(bindir / "codex", 0o755)
+    fake_cli(bindir, "claude", out=CLAUDE_OAUTH + "\n", code=1)
+    spec_p = tmp / "spec" / "spec.json"
+    spec_p.parent.mkdir()
+    cand = cand_row("c1", "https://example.com/news", facts=["販売開始", "価格は3000円"], dedup_key="x")
+    base = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
+            "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "blocks": [{"markdown": "販売を開始する。価格は3000円。", "fact_ids": ["F1", "F2"]}],
+            "tags": ["シンデレラガールズ", "販売"], "sources": [{"url": cand["url"], "label": "公式告知"}], "event_date": None,
+            "new_facts": [], "addressed_issue_ids": []}
+    art = lambda s: {"slug": s, "brand": "cg", "rank": "small", "angle": "知らせ", "candidate_ids": ["c1"], "dedup_key": "x"}
+    plan = {"articles": [art("alpha"), art("beta")]}
+    spec_p.write_text(json.dumps({"write-alpha": [{"say": CODEX_LIMIT, "exit": 1}], "write-beta": [{"answer": base}]},
+                                 ensure_ascii=False), encoding="utf-8")
+    saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE,
+             os.environ.get("PATH", ""), compose.subprocess.Popen)
+    with cli_posts() as cp:
+        try:
+            compose.ROOT = pipelib.ROOT = tmp
+            compose.classify_source = lambda u: "公式"
+            compose.storylink.prior_lookup = lambda *a: (lambda *b: [])
+            compose.DEADLINE = None
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[5]}"
+            os.environ["FAKE_CODEX_SPEC"] = str(spec_p)
+            compose.DROP_LOG.pop(date, None)
+            stopped = None
+            try:
+                compose.write_articles(date, plan, {"c1": cand}, [], {}, wave=2)
+            except CliBlocked as e:
+                stopped = e
+            cnt = spec_p.with_name("count-write-alpha")
+            check(stopped is not None and cnt.read_text() == "1" and "alpha" not in (compose.DROP_LOG.get(date) or {})
+                  and (posts / f"{date}-beta.md").exists() and not (posts / f"{date}-alpha.md").exists()
+                  and not any("alpha" in a for a in pipelib.ANOMALIES),
+                  f"執筆の利用上限を記事の失敗に数えた(やり直し・落とした・異常)か、工程を止めない・同じ回の稿を捨てた: "
+                  f"止めた={stopped is not None} 依頼={cnt.read_text() if cnt.exists() else '-'} 外した={compose.DROP_LOG.get(date)} "
+                  f"異常={pipelib.ANOMALIES}")
+            check(len(cp.blocked_posts()) == 1 and "利用上限" in cp.blocked_posts()[0] and "3:05 AM" in cp.blocked_posts()[0]
+                  and "--reuse-plan" in cp.blocked_posts()[0],
+                  f"利用上限の投稿(戻る時刻・組み直し方)が無い・連投した: {cp.posts}")
+            # 校閲: 担当が認証切れで答えない → やり直さず、「校閲できなかった記事は載せない」にせず、止める
+            (posts / f"{date}-a.md").write_text("---\n" + article_fm("a", date) + "---\n本文\n", encoding="utf-8")
+            spawned = []
+
+            class FakeP:
+                returncode, pid = 1, 0
+
+                def communicate(self, timeout=None):
+                    return CLAUDE_OAUTH + "\n", ""
+
+            compose.subprocess.Popen = lambda argv, **k: spawned.append(argv) or FakeP()
+            stopped = None
+            try:
+                r = compose.claude_review(date, 1, targets=[f"{date}-a.md"], editorial=False, paper=False)
+            except CliBlocked as e:
+                stopped, r = e, None
+            check(stopped is not None and len(spawned) == 1,
+                  f"校閲の認証切れで止まらない・やり直した(記事を「校閲できなかった」で落とす): {len(spawned)}回 {r and r.get('blockers')}")
+            compose.subprocess.Popen = saved[6]
+            # 候補 ID の修復(claude_run): 認証切れを「答えが読めなかった」として記事を外さない
+            pipelib.ANOMALIES.clear()
+            stopped = None
+            try:
+                compose.repair_invalid_ids(date, {"articles": [{"slug": "s", "candidate_ids": ["bad"]}]}, {"good": {"id": "good"}})
+            except CliBlocked as e:
+                stopped = e
+            check(stopped is not None and not pipelib.ANOMALIES,
+                  f"修復の認証切れを「答えが2回とも読めない」として記事を外した: {pipelib.ANOMALIES}")
+        finally:
+            (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE) = saved[:5]
+            os.environ["PATH"] = saved[5]
+            compose.subprocess.Popen = saved[6]
+            os.environ.pop("FAKE_CODEX_SPEC", None)
+
+
+def test_cli_blocked_oncall_not_counted(tmp: Path):
+    """当番の修正(claude)が認証切れで答えなかった回は、試行の回数(1日2回)に数えず、「取り込めませんでした」の報告も出さず、
+    異常終了にしない(systemd の起動し直しで同じ即死を重ねない)。投稿は同じ原因で1回(2026-10-20 18:34・18:35 の当番は2回とも
+    認証切れで即死し、枠を使い切った)。本物の _main・run_rounds・run_claude を一時リポジトリと偽の claude で2回走らせる。"""
+    import shutil as _sh
+    import oncall
+    date, edition = "2026-10-20", "edition/2026-10-21"
+    tmp.mkdir(parents=True, exist_ok=True)
+    root, remote, bindir = tmp / "ops", tmp / "ops.git", tmp / "bin"
+    g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True, capture_output=True)
+    g("config", "user.email", "t@example"); g("config", "user.name", "t")
+    (root / "scripts").mkdir(); (root / "metrics").mkdir()
+    _sh.copytree(Path(__file__).resolve().parent.parent / "schema", root / "schema")
+    (root / ".gitignore").write_text("metrics/oncall-*\nmetrics/jobs.lock\nmetrics/work/\n", encoding="utf-8")
+    (root / "scripts" / "x.py").write_text("x = 0\n", encoding="utf-8")
+    g("add", "-A"); g("commit", "-q", "-m", "base")
+    g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", "main")
+    g("checkout", "-q", "-b", edition); g("push", "-q", "-u", "origin", edition)
+    fake_cli(bindir, "claude", out=CLAUDE_OAUTH + "\n", code=1)
+    names = ("ROOT", "notify", "job_lock", "gather_context", "env_fingerprint", "save_raw", "DEADLINE_AT", "STAGE_END_AT", "RECOVER")
+    saved, saved_argv, saved_path, notes = {k: getattr(oncall, k) for k in names}, sys.argv, os.environ.get("PATH", ""), []
+    with cli_posts() as cp:
+        try:
+            oncall.ROOT = root
+            oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            oncall.job_lock = lambda *a, **k: os.open(os.devnull, os.O_RDONLY)
+            oncall.gather_context = lambda *a: "ctx"
+            oncall.env_fingerprint = lambda: ""
+            oncall.save_raw = lambda *a, **k: None
+            oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+            oncall.RECOVER = False
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+            sys.argv = ["oncall", "--stage", "collect", "--date", date, "--edition", "2026-10-21", "--no-rerun"]
+            codes = []
+            for _ in (1, 2):     # 18:34 と 18:35(別の process)
+                pipelib.CLI_BLOCKED.clear()
+                codes.append(oncall._main())
+            left = sorted(p.name for p in (root / "metrics").glob(f"oncall-{date}-collect-attempt-*"))
+            check(codes == [0, 0] and not left and not [m for m, ok in notes if not ok],
+                  f"当番の認証切れを試行の回数に数えた・異常終了・「取り込めませんでした」を出した: exit {codes} 試行の印 {left} "
+                  f"{[m[:80] for m, ok in notes if not ok]}")
+            check(len(cp.blocked_posts()) == 1 and "当番の修正" in cp.blocked_posts()[0],
+                  f"当番の認証切れを1回だけ投稿しない: {cp.posts}")
+            check(not g("worktree", "list", "--porcelain").count("worktree ") > 1 and not g("status", "--porcelain"),
+                  "当番の作業ツリーが残った")
+        finally:
+            for k, v in saved.items():
+                setattr(oncall, k, v)
+            sys.argv = saved_argv
+            os.environ["PATH"] = saved_path
+
+
+def test_cli_block_detect_and_post(tmp: Path):
+    """認証切れ・利用上限の見分け(実物の文言)・投稿のまとめ方(同じ原因は1回、止まったままなら間を置いて1回、戻ったら1回)・
+    道具の動作確認・出典の判定・探索・Grok の各経路で失敗に数えないこと。"""
+    import time
+    import collect
+    import classify_sources
+    import update_clis as uc
+    from pipelib import CliBlocked, cli_blocked_reason
+    tmp.mkdir(parents=True, exist_ok=True)
+    # 見分け: 実物の文言は止まった、ふつうの失敗・本文の奥にある語は止まっていない
+    for tool, text, kind, resets in (("claude", CLAUDE_OAUTH, "auth", ""), ("codex", CODEX_LIMIT, "limit", "3:05 AM"),
+                                     ("grok", GROK_LIMIT, "limit", ""),
+                                     ("claude", "You've hit your session limit · resets 4am (Asia/Tokyo)", "limit", "4am (Asia/Tokyo)"),
+                                     ("claude", "Credit balance is too low", "limit", ""),
+                                     ("codex", "ERROR: Your access token could not be refreshed. Please log out and sign in again.", "auth", ""),
+                                     ("claude", "API Error: 401 Invalid API key · Please run /login", "auth", "")):
+        got = cli_blocked_reason(tool, "", text)
+        check(got and got["kind"] == kind and got["resets"] == resets, f"{tool} の {text[:40]!r} を見分けない: {got}")
+    for text in ("Error: model returned malformed JSON", "Not logged in の説明ページ\n" + "本文 " * 800 + "\n終わり"):
+        check(cli_blocked_reason("claude", text) is None, f"ふつうの失敗・本文の奥の語を認証切れにした: {text[:40]!r}")
+    with cli_posts() as cp:
+        # まとめ方: 同じ原因は1回、止まったままなら CLI_BLOCK_REMIND_SEC 後に1回、別の CLI は別に1回、戻ったら1回
+        info = cli_blocked_reason("codex", CODEX_LIMIT)
+        for _ in range(3):
+            pipelib.report_cli_blocked(info, "compose", "執筆")
+        st = json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8"))
+        check(len(cp.blocked_posts()) == 1 and st["codex"]["count"] == 3, f"同じ原因を連投した: {cp.posts}")
+        st["codex"]["posted_at"] -= pipelib.CLI_BLOCK_REMIND_SEC + 1
+        pipelib.CLI_BLOCK_STATE.write_text(json.dumps(st), encoding="utf-8")
+        pipelib.report_cli_blocked(info, "collect", "探索")
+        pipelib.report_cli_blocked(cli_blocked_reason("claude", CLAUDE_OAUTH), "collect", "facts 化")
+        check(len(cp.blocked_posts()) == 3 and "4回目" in cp.blocked_posts()[1], f"止まったままの知らせ直し・別の CLI の投稿: {cp.posts}")
+        pipelib.CLI_BLOCKED.clear()      # 戻ったかどうかは次の工程(別の process)の答えで決める
+        pipelib.cli_check("codex", "compose", "執筆", 0, "")
+        pipelib.cli_check("codex", "compose", "執筆", 0, "")
+        check(len([m for _, m, ok, _ in cp.posts if ok]) == 1 and "codex" not in json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8")),
+              f"戻ったことを1回だけ知らせない・記録が残る: {cp.posts}")
+    with cli_posts() as cp:
+        # 道具の動作確認(01:30): 認証切れは「壊れた CLI」として当番に回さず、すぐ投稿する
+        notes = []
+
+        def fake_run(args, timeout=600, cwd=None):
+            if args[1:] == ["--version"]:
+                return subprocess.CompletedProcess(args, 0, f"{args[0]} 1.0.0\n", "")
+            if args[0] == "claude" and args[1] == "-p":
+                return subprocess.CompletedProcess(args, 1, CLAUDE_OAUTH + "\n", "")
+            return subprocess.CompletedProcess(args, 0, "2\n", "")
+        saved = (uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies, sys.argv, os.environ.pop("INVOCATION_ID", None))
+        try:
+            uc.run, uc.RECORD = fake_run, tmp / "cli-versions.json"
+            uc.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            uc.job_lock = lambda job, wait_min=0: None
+            uc.diagnose_anomalies = lambda *a, **k: False
+            sys.argv = ["update_clis.py", "--no-update"]
+            code = uc.main()
+        finally:
+            uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies, sys.argv = saved[:6]
+            if saved[6] is not None:
+                os.environ["INVOCATION_ID"] = saved[6]
+        check(code == 0 and not [m for m, ok in notes if not ok] and len(cp.blocked_posts()) == 1 and not pipelib.ANOMALIES,
+              f"動作確認の認証切れを CLI の壊れとして異常にした・投稿しない: exit {code} {notes} {cp.posts}")
+    with cli_posts() as cp:
+        # 出典の判定: 認証切れを「決まらなかった(無回答)」にせず、判定ごとやめる
+        bindir = tmp / "bin-cls"
+        fake_cli(bindir, "claude", out=CLAUDE_OAUTH + "\n", code=1)
+        saved = (os.environ.get("PATH", ""), pipelib.ROOT)
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
+            pipelib.ROOT = tmp
+            stopped = None
+            try:
+                got = classify_sources.ask(classify_sources.CMD_A, "判定して")
+            except CliBlocked as e:
+                stopped, got = e, None
+        finally:
+            os.environ["PATH"], pipelib.ROOT = saved
+        check(stopped is not None, f"出典の判定の認証切れを無回答(決まらない → 人へ)にした: {got}")
+    with cli_posts() as cp:
+        # 探索(Luna): 利用上限は面の取得の失敗(出力が読めない → 異常)にしない
+        class P:        # 回収は組 P の finish_group(communicate・kill・poll を使う)
+            returncode, args, pid = 1, ["codex"], 0
+
+            def wait(self, timeout=None):
+                return 1
+
+            def poll(self):
+                return 1
+
+            def communicate(self, timeout=None):
+                return None, None
+
+            def kill(self):
+                pass
+        of, ef = (open(tmp / n, "w+", encoding="utf-8") for n in ("ex.out", "ex.err"))
+        ef.write(CODEX_LIMIT + "\n")
+        saved = pipelib.ROOT
+        try:
+            pipelib.ROOT = tmp
+            got, err = collect.collect_explore("cg", P(), of, ef, time.time() + 60)
+        finally:
+            pipelib.ROOT = saved
+        check(got == [] and "[CLI 停止]" in err and "[出力が読めない]" not in err and len(cp.blocked_posts()) == 1,
+              f"探索の利用上限を取得の失敗にした: {err[-80:]!r} {cp.posts}")
+    with cli_posts() as cp:
+        # Grok: API に拒まれても終了コード 0。理由はセッション記録にだけ残る。やり直さず、面の失敗の異常にもしない
+        import urllib.parse
+        home, repo, outdir, gbin = tmp / "home", tmp / "repo", tmp / "repo" / "candidates" / ".grok", tmp / "bin-grok"
+        outdir.mkdir(parents=True)
+        sess = home / ".grok" / "sessions" / urllib.parse.quote(str(repo), safe="")
+        gbin.mkdir()
+        (gbin / "grok").write_text(
+            f"#!{sys.executable}\nimport json, os, pathlib, sys, time\n"
+            f"d = pathlib.Path({str(sess)!r}) / str(time.time_ns()); d.mkdir(parents=True)\n"
+            "pf = sys.argv[sys.argv.index('--prompt-file') + 1]\n"
+            "(d / 'chat_history.jsonl').write_text(json.dumps({'content': pathlib.Path(pf).read_text(encoding='utf-8')}) + '\\n')\n"
+            f"(d / 'updates.jsonl').write_text(json.dumps({{'agent_result': 'error: ' + {GROK_LIMIT!r}}}, separators=(',', ':')) + '\\n')\n"
+            f"pathlib.Path({str(tmp / 'grok-calls')!r}).open('a').write('x')\n", encoding="utf-8")
+        (gbin / "grok").chmod(0o755)
+        notes = []
+        saved = (collect.ROOT, pipelib.ROOT, collect.notify, os.environ.get("HOME"), os.environ.get("PATH", ""))
+        try:
+            collect.ROOT = pipelib.ROOT = repo
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            os.environ["HOME"], os.environ["PATH"] = str(home), f"{gbin}{os.pathsep}{saved[4]}"
+            qs = [{"key": k, "brand": "cg", "topic": "t", "accounts": []} for k in ("cg", "shiny")]
+            errs = {}
+            still = collect.grok_basic(qs, outdir, errs)
+        finally:
+            collect.ROOT, pipelib.ROOT, collect.notify = saved[:3]
+            os.environ["PATH"] = saved[4]
+            if saved[3] is not None:
+                os.environ["HOME"] = saved[3]
+        calls = (tmp / "grok-calls").read_text() if (tmp / "grok-calls").exists() else ""
+        check(still == [] and len(calls) <= 2 and not [m for m, ok in notes if not ok] and len(cp.blocked_posts()) == 1,
+              f"Grok の利用上限で面をやり直した・面の失敗の異常にした: 残り {still} 起動 {len(calls)}回 {notes} {cp.posts}")
+
+
+def test_cli_blocked_paths_r2(tmp: Path):
+    """Sol 監査 r1 の指摘の再発防止(どれも実物の子プロセス・偽の CLI で確かめる):
+    (1) 並列のラッパー(compose.run_parallel)のスレッドで止まっても、親が CliBlocked で止まる(親が先へ進まない)
+    (2) Grok の調べは済み、確かめ役(Luna)だけが止まった面を「Grok 全面0件」の異常にせず、投稿を読み直しの列に残し、
+        Grok を回さない次の収集で確かめ直す
+    (3) 止まる前に起動していた並列の子が後から成功で回収されても、戻ったことにして同じ原因を投稿し直さない
+    (4) 道具の出力(素材の本文)にある語を認証切れと取り違えない(codex の進行ログ・claude の Read の結果。終了 0 の壊れた答えも)"""
+    import json as _json
+    import time
+    import assemble
+    import collect
+    from pipelib import CliBlocked
+    tmp.mkdir(parents=True, exist_ok=True)
+    bindir = tmp / "bin"
+    saved_path = os.environ.get("PATH", "")
+    # (1)
+    with cli_posts() as cp:
+        fake_cli(bindir, "claude", err=CLAUDE_OAUTH + "\n", code=1)
+        saved = (assemble.ROOT, assemble.prompt_file)
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+            assemble.ROOT, assemble.prompt_file = tmp, (lambda *a, **k: "p")
+            stopped = None
+            try:
+                compose.run_parallel([("組版", lambda: assemble.run_session("x", "2099-01-01", "audit", "{}"))])
+            except CliBlocked as e:
+                stopped = e
+        finally:
+            assemble.ROOT, assemble.prompt_file = saved
+            os.environ["PATH"] = saved_path
+        check(stopped is not None, "並列のラッパーのスレッドで止まった CLI を親へ伝えず、工程が先へ進んだ")
+    # (3)
+    with cli_posts() as cp:
+        for rc, text in ((1, CODEX_LIMIT), (0, "[]"), (1, CODEX_LIMIT)):
+            pipelib.cli_check("codex", "collect", "並列の面", rc, "", text)
+        check(len(cp.posts) == 1, f"止まる前に起動していた子の成功で戻ったことにし、同じ原因を投稿し直した: {cp.posts}")
+    # (4)
+    with cli_posts() as cp:
+        body = "exec\nfetch_page.py https://example.com\n本文: Not logged in と表示されるページの紹介\nYou've hit your usage limit の解説\n"
+        check(pipelib.cli_check("codex", "collect", "探索", 1, body, "ERROR: model returned malformed JSON") is None,
+              "codex の道具の出力にある語を認証切れ・利用上限と取り違えた")
+        event = _json.dumps({"type": "user", "message": {"content": [{"type": "tool_result", "content": "本文: Not logged in の説明"}]}})
+        fake_cli(bindir, "claude", out=event + "\n", code=0)
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+            r = pipelib.claude_traced(["x"], tmp / "t.jsonl", timeout=20, cwd=tmp)
+            ok4 = not r["ok"]
+        except CliBlocked:
+            ok4 = False
+        finally:
+            os.environ["PATH"] = saved_path
+        check(ok4 and not cp.posts, f"claude の Read の結果にある語を、終了 0 の壊れた答えで認証切れにした: {cp.posts}")
+    # (2)
+    with cli_posts() as cp:
+        notes = []
+        root = tmp / "repo"
+        root.mkdir()
+        shutil.copy(Path(__file__).resolve().parent.parent / "source_types.yml", root / "source_types.yml")
+        post ="### 1\n- url: https://x.com/a/status/1\n- 本文: 新しい公演の告知\n"
+        fake_cli(bindir, "codex", err=CODEX_LIMIT + "\n", code=1)
+        qs = [{"key": "cg", "brand": "cg", "topic": "t", "accounts": []}]
+
+        def basic(queries, outdir, errs):
+            (outdir / "cg.md").write_text(post, encoding="utf-8")
+            return []
+        saved = (collect.ROOT, pipelib.ROOT, collect.notify, collect.build_prompts, collect.grok_basic, collect.grok_session_error,
+                 collect.grok_search_counts)
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+            collect.ROOT = pipelib.ROOT = root
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            collect.build_prompts, collect.grok_basic = (lambda: qs), basic
+            collect.grok_session_error, collect.grok_search_counts = (lambda *a: ""), (lambda *a: {})
+            _, per = collect.run_explores(skip_explore=True, skip_grok=False)
+            pend = root / collect.GROK_PENDING / "cg.md"
+            check(not [m for m, ok in notes if not ok] and per.get("grok_blocked:cg") == 1 and "status/1" in collect.read_written(pend),
+                  f"確かめ役の利用上限を Grok の全滅の異常にした・投稿を読み直しの列に残さない: {notes} {per}")
+            # 戻った次の収集(Grok は回さない回): 読み直しの列の投稿を確かめ直し、列を空にする
+            seen = tmp / "verify-input.txt"
+            (bindir / "codex").write_text(
+                f"#!{sys.executable}\nimport pathlib\n"
+                f"pathlib.Path({str(seen)!r}).write_text(pathlib.Path('x-posts.md').read_text(encoding='utf-8'), encoding='utf-8')\n"
+                "for n in ('items.json', 'posts.json', 'deep.json'):\n    pathlib.Path(n).write_text('[]')\n", encoding="utf-8")
+            pipelib.CLI_BLOCKED.clear()
+            collect.run_explores(skip_explore=True, skip_grok=True)
+            left = [p.name for p in (root / collect.GROK_PENDING).iterdir()]
+            check(seen.exists() and "status/1" in seen.read_text(encoding="utf-8") and not left,
+                  f"読み直しの列の投稿を次の収集で確かめ直さない・列が残った: {seen.exists()} {left}")
+        finally:
+            (collect.ROOT, pipelib.ROOT, collect.notify, collect.build_prompts, collect.grok_basic, collect.grok_session_error,
+             collect.grok_search_counts) = saved
+            os.environ["PATH"] = saved_path
+
+
+def test_cli_blocked_grok_sessions_r3(tmp: Path):
+    """Sol 監査 r2 の指摘の再発防止(偽の grok を本物の子プロセスとして起動する):
+    (1) 道具の動作確認で、Grok がセッション記録にだけ残した利用上限(終了 0)を、CLI の壊れとして当番に回さない
+    (2) 同じ cwd の前の試行・別の面のセッションの拒否を、この試行の本物の失敗(壊れた出力で終了 1)の理由と取り違えない
+    (3) 戻ったことの知らせが届かなければ記録を残し、次に答えたときにもう一度知らせる"""
+    import time
+    import urllib.parse
+    import collect
+    import update_clis as uc
+    tmp.mkdir(parents=True, exist_ok=True)
+    home, bindir = tmp / "home", tmp / "bin"
+    saved_env = {k: os.environ.get(k) for k in ("HOME", "PATH", "INVOCATION_ID")}
+    deny = json.dumps({"agent_result": "error: " + GROK_LIMIT}, separators=(",", ":"))
+    try:
+        os.environ["HOME"], os.environ["PATH"] = str(home), f"{bindir}{os.pathsep}{saved_env['PATH'] or ''}"
+        os.environ.pop("INVOCATION_ID", None)
+        # (1)
+        with cli_posts() as cp:
+            for t in ("claude", "codex"):
+                fake_cli(bindir, t, out="2\n")
+            (bindir / "grok").write_text(
+                f"#!{sys.executable}\nimport os, pathlib, urllib.parse\n"
+                "d = pathlib.Path.home() / '.grok' / 'sessions' / urllib.parse.quote(os.getcwd(), safe='') / 's1'\n"
+                f"d.mkdir(parents=True, exist_ok=True)\n(d / 'updates.jsonl').write_text({deny!r} + '\\n')\n", encoding="utf-8")
+            (bindir / "grok").chmod(0o755)
+            notes = []
+            saved = (uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies, uc.tool_path, sys.argv)
+            try:
+                uc.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+                uc.RECORD, uc.job_lock = tmp / "cli-versions.json", (lambda job, wait_min=0: None)
+                uc.diagnose_anomalies, uc.tool_path = (lambda *a, **k: False), (lambda: os.environ["PATH"])
+                sys.argv = ["update_clis.py", "--no-update"]
+                code = uc.main()
+            finally:
+                uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies, uc.tool_path, sys.argv = saved
+            row = json.loads((tmp / "cli-versions.json").read_text(encoding="utf-8"))["tools"]["grok"]
+            check(code == 0 and row.get("blocked") and not [m for m, ok in notes if not ok] and len(cp.blocked_posts()) == 1,
+                  f"動作確認で Grok のセッション記録だけの利用上限を CLI の壊れにした: exit {code} {row} {notes} {cp.posts}")
+        # (2)
+        with cli_posts() as cp:
+            repo = tmp / "repo"
+            outdir = repo / "candidates" / ".grok"
+            outdir.mkdir(parents=True)
+            old = home / ".grok" / "sessions" / urllib.parse.quote(str(repo), safe="") / "old"
+            old.mkdir(parents=True)
+            (old / "updates.jsonl").write_text(deny + "\n", encoding="utf-8")
+            (old / "chat_history.jsonl").write_text(json.dumps({"content": str(outdir / "cg.md")}) + "\n", encoding="utf-8")
+            os.utime(old, (time.time() - 600,) * 2)
+            calls = tmp / "grok-calls"
+            (bindir / "grok").write_text(
+                f"#!{sys.executable}\nimport sys\nopen({str(calls)!r}, 'a').write('x')\n"
+                "sys.stderr.write('model returned malformed JSON\\n')\nsys.exit(1)\n", encoding="utf-8")
+            notes = []
+            saved = (collect.ROOT, pipelib.ROOT, collect.notify)
+            try:
+                collect.ROOT = pipelib.ROOT = repo
+                collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+                errs = {}
+                still = collect.grok_basic([{"key": "cg", "brand": "cg", "topic": "t", "accounts": []}], outdir, errs)
+            finally:
+                collect.ROOT, pipelib.ROOT, collect.notify = saved
+            check(still == ["cg"] and len(calls.read_text()) == 2 and not cp.posts and not collect.grok_blocked(errs, "cg"),
+                  f"前の試行の拒否を、この試行の本物の失敗の理由にした(やり直さない・失敗を隠す): {still} {errs} {cp.posts}")
+        # (3)
+        with cli_posts() as cp:
+            pipelib.report_cli_blocked(pipelib.cli_blocked_reason("codex", CODEX_LIMIT), "compose", "執筆")
+            pipelib.CLI_BLOCKED.clear()
+            pipelib.notify = lambda job, msg, ok=True, require=False, ledger=True: cp.posts.append((job, msg, ok, ledger)) and False
+            pipelib.cli_check("codex", "collect", "探索", 0, "")
+            kept = "codex" in json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8"))
+            pipelib.notify = lambda job, msg, ok=True, require=False, ledger=True: cp.posts.append((job, msg, ok, ledger)) or True
+            pipelib.cli_check("codex", "collect", "探索", 0, "")
+            ok_posts = [m for _, m, ok, _ in cp.posts if ok and "また答える" in m]
+            check(kept and len(ok_posts) == 2 and "codex" not in json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8")),
+                  f"戻ったことの知らせが届かないまま記録を消した: kept={kept} {cp.posts}")
+    finally:
+        for k, v in saved_env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+
+def test_cli_blocked_r4(tmp: Path):
+    """Sol 監査 r3 の指摘の再発防止:
+    (1) 入口の確かめのあとに並列の別スレッドが止まったのを記録したら、成功した側はその記録を消さない(戻ったと知らせて再投稿しない)
+    (2) 深掘りの確かめ役が止まった面の、前の段で残った投稿を「失った」と異常にせず、読み直しの列に残す
+    (3) 道具の動作確認の時間切れを、セッション記録の拒否で利用上限扱いにしない(本物の子プロセスの時間切れで確かめる)
+    (4) 送り先が未設定で届いていない投稿を「投稿済み」にしない(設定を直した次の工程で黙らない)"""
+    import collect
+    import update_clis as uc
+    tmp.mkdir(parents=True, exist_ok=True)
+    # (1)
+    with cli_posts() as cp:
+        pipelib.report_cli_blocked(pipelib.cli_blocked_reason("codex", CODEX_LIMIT), "compose", "執筆")
+        pipelib.CLI_BLOCKED.clear()                    # 成功した側のスレッドは、入口ではまだ止まったのを見ていない
+        saved_io = pipelib._cli_state_io
+
+        def racing(update):
+            pipelib.CLI_BLOCKED["codex"] = {"tool": "codex"}    # 排他を取る直前に、別のスレッドが止まったのを記録した
+            return saved_io(update)
+        pipelib._cli_state_io = racing
+        try:
+            pipelib.cli_check("codex", "compose", "執筆", 0, "")
+        finally:
+            pipelib._cli_state_io = saved_io
+        check("codex" in json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8")) and not [m for _, m, ok, _ in cp.posts if ok],
+              f"並列の別スレッドが止まった記録を、成功した側が消して戻ったと知らせた: {cp.posts}")
+    # (2)
+    root = tmp / "repo"
+    root.mkdir()
+    notes = []
+    saved = (collect.ROOT, collect.notify)
+    try:
+        collect.ROOT = root
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        block = "### 1\n- url: https://x.com/a/status/7\n- 本文: 告知"
+        collect.report_lost_posts({"lost": {"cg": [(block, "結果に無い")]}, "settled": set(), "blocked": {"cg"}})
+    finally:
+        collect.ROOT, collect.notify = saved
+    pend = root / collect.GROK_PENDING / "cg.md"
+    check(not notes and "status/7" in collect.read_written(pend),
+          f"確かめ役が止まった面の残った投稿を「失った」と異常にした・読み直しの列に残さない: {notes}")
+    # (3)
+    with cli_posts() as cp:
+        import urllib.parse
+        home, bindir = tmp / "home", tmp / "bin"
+        for t in ("claude", "codex"):
+            fake_cli(bindir, t, out="2\n")
+        deny = json.dumps({"agent_result": "error: " + GROK_LIMIT}, separators=(",", ":"))
+        (bindir / "grok").write_text(
+            f"#!{sys.executable}\nimport os, pathlib, time\n"
+            "d = pathlib.Path.home() / '.grok' / 'sessions' / __import__('urllib.parse').parse.quote(os.getcwd(), safe='') / 's'\n"
+            f"d.mkdir(parents=True, exist_ok=True)\n(d / 'updates.jsonl').write_text({deny!r} + '\\n')\ntime.sleep(5)\n",
+            encoding="utf-8")
+        (bindir / "grok").chmod(0o755)
+        notes = []
+        saved_env = {k: os.environ.get(k) for k in ("HOME", "PATH", "INVOCATION_ID")}
+        saved = (uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies, uc.tool_path, sys.argv)
+        try:
+            os.environ["HOME"], os.environ["PATH"] = str(home), f"{bindir}{os.pathsep}{saved_env['PATH'] or ''}"
+            os.environ.pop("INVOCATION_ID", None)
+            real_run = saved[0]
+            uc.run = lambda args, timeout=600, cwd=None: real_run(args, timeout=1 if args[0] == "grok" and "--version" not in args else timeout, cwd=cwd)
+            uc.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            uc.RECORD, uc.job_lock = tmp / "cli-versions.json", (lambda job, wait_min=0: None)
+            uc.diagnose_anomalies, uc.tool_path = (lambda *a, **k: False), (lambda: os.environ["PATH"])
+            sys.argv = ["update_clis.py", "--no-update"]
+            code = uc.main()
+        finally:
+            uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies, uc.tool_path, sys.argv = saved
+            for k, v in saved_env.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+        row = json.loads((tmp / "cli-versions.json").read_text(encoding="utf-8"))["tools"]["grok"]
+        check(code == 1 and not row.get("blocked") and not cp.posts,
+              f"動作確認の時間切れを、セッション記録の拒否で利用上限扱いにした: exit {code} {row} {cp.posts}")
+    # (4)
+    with cli_posts() as cp:
+        saved = (pipelib.notify, pipelib.ENV.pop("DISCORD_WEBHOOK_URL", None), pipelib._QUIET)
+        try:
+            pipelib.notify, pipelib._QUIET = cp.saved[0], False     # 本物の notify(送り先は未設定なので送らない)
+            pipelib.report_cli_blocked(pipelib.cli_blocked_reason("claude", CLAUDE_OAUTH), "collect", "facts 化")
+        finally:
+            pipelib.notify, pipelib._QUIET = saved[0], saved[2]
+            if saved[1] is not None:
+                pipelib.ENV["DISCORD_WEBHOOK_URL"] = saved[1]
+        st = json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8"))
+        check(float(st["claude"]["posted_at"]) == 0 and not pipelib.ANOMALIES,
+              f"送り先が未設定で届いていない投稿を投稿済みにした(設定を直しても12時間黙る): {st}")
+
+
+def test_cli_blocked_r5(tmp: Path):
+    """Sol 監査 r4 の指摘の再発防止(偽の grok・codex を本物の子プロセスとして run_explores を通す):
+    (1) 深掘りの Grok が利用上限で止まった面の、確かめ切れなかった投稿を「失う」と異常にせず、読み直しの列に残す
+    (2) 確かめ役が止まった面と、正常に「なし」と書いた面だけの回を、watch が全クエリ0件の異常(当番)にしない"""
+    import datetime
+    from unittest.mock import patch
+    import collect
+    import watch
+    src = Path(__file__).resolve().parent.parent / "source_types.yml"
+    # (1)
+    root, bindir = tmp / "deep-repo", tmp / "bin-deep"
+    root.mkdir(parents=True)
+    bindir.mkdir()
+    shutil.copy(src, root / "source_types.yml")
+    post = "### 1\n- url: https://x.com/a/status/7\n- 本文: 公演の開催を予告。詳細は返信先を参照\n"
+    (bindir / "grok").write_text(
+        f"#!{sys.executable}\nimport pathlib, sys\npp = pathlib.Path(sys.argv[sys.argv.index('--prompt-file') + 1])\n"
+        f"if '-deep' in pp.name:\n    sys.stderr.write({GROK_LIMIT!r})\n    sys.exit(1)\n"
+        f"pp.with_name(pp.name.removeprefix('prompt-')).write_text({post!r}, encoding='utf-8')\n", encoding="utf-8")
+    (bindir / "codex").write_text(
+        f"#!{sys.executable}\nimport json, pathlib\npathlib.Path('items.json').write_text('[]')\npathlib.Path('posts.json').write_text('[]')\n"
+        "pathlib.Path('deep.json').write_text(json.dumps([{'question': '返信先の公演日を確かめる'}]))\n", encoding="utf-8")
+    for n in ("grok", "codex"):
+        (bindir / n).chmod(0o755)
+    notes = []
+    qs = [{"key": "cg", "brand": "cg", "topic": "t", "accounts": []}]
+    with cli_posts() as cp, patch.dict(os.environ, PATH=f"{bindir}{os.pathsep}{os.environ['PATH']}"), \
+            patch.object(collect, "ROOT", root), patch.object(pipelib, "ROOT", root), \
+            patch.object(collect, "build_prompts", lambda: qs), patch.object(collect, "grok_week_usage", lambda: 0), \
+            patch.object(collect, "grok_search_counts", lambda *a: {}), \
+            patch.object(collect, "notify", lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True):
+        _, per = collect.run_explores(True, False)
+        pending = root / collect.GROK_PENDING / "cg.md"
+        check(len(cp.blocked_posts()) == 1 and not [m for m, ok in notes if not ok] and "status/7" in collect.read_written(pending),
+              f"深掘りの Grok の利用上限で、投稿を「失う」と異常にした・読み直しの列に残さない: {notes} {cp.posts}")
+    # (2)
+    root, bindir = tmp / "watch-repo", tmp / "bin-mixed"
+    (root / "metrics").mkdir(parents=True)
+    bindir.mkdir()
+    shutil.copy(src, root / "source_types.yml")
+    (bindir / "grok").write_text(
+        f"#!{sys.executable}\nimport pathlib, sys\npp = pathlib.Path(sys.argv[sys.argv.index('--prompt-file') + 1])\n"
+        "pp.with_name(pp.name.removeprefix('prompt-')).write_text('なし' if 'shiny' in pp.name else "
+        "'### 1\\n- url: https://x.com/a/status/9\\n- 本文: 公演告知\\n', encoding='utf-8')\n", encoding="utf-8")
+    (bindir / "grok").chmod(0o755)
+    fake_cli(bindir, "codex", err=CODEX_LIMIT + "\n", code=1)
+    qs = [{"key": k, "brand": k, "topic": "t", "accounts": []} for k in ("cg", "shiny")]
+    notes = []
+    with cli_posts(), patch.dict(os.environ, PATH=f"{bindir}{os.pathsep}{os.environ['PATH']}"), \
+            patch.object(collect, "ROOT", root), patch.object(pipelib, "ROOT", root), \
+            patch.object(collect, "build_prompts", lambda: qs), patch.object(collect, "grok_search_counts", lambda *a: {}), \
+            patch.object(collect, "notify", lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True):
+        _, per = collect.run_explores(True, False)
+    check(per.get("grok_blocked:cg") == 1 and per.get("grok_none:shiny") == 1 and not [m for m, ok in notes if not ok],
+          f"確かめ役の停止と「なし」の面の記録が無い・異常にした: {per} {notes}")
+    now = datetime.datetime(2026, 10, 21, 9, tzinfo=pipelib.JST)
+    (root / "metrics" / "2026-10-21.json").write_text(json.dumps({"collect": [{"at": now.isoformat(), "per_query": per}]}), encoding="utf-8")
+    wnotes, calls = [], []
+    env = {k: "x" for k in ("CODEX_WRITE_MODEL", "EDITORIAL_MODEL", "COLLECT_MODEL", "GROK_HOURS", "SITE_URL")}
+    env["REVIEW_MODEL"] = "haiku"
+    done = lambda *a, **kw: subprocess.CompletedProcess([], 0, "", "")
+    with patch.object(watch, "ROOT", root), patch.object(watch, "now_jst", lambda: now), patch.object(watch, "ENV", env), \
+            patch.object(watch, "git", done), patch.object(watch.subprocess, "run", done), patch.object(watch, "hand_backlog", lambda *a: []), \
+            patch.object(watch, "notify", lambda job, msg, **kw: wnotes.append(msg) or True), \
+            patch.object(watch, "diagnose_anomalies", lambda *a, **kw: calls.append(a)):
+        watch.main()
+    check(not any("全クエリ0件" in m for m in wnotes), f"停止した面と「なし」の面だけの回を、watch が全滅の異常にした: {wnotes}")
+    # 本物の失敗が混ざれば検知する(「なし」の記録が無い面がある)
+    per2 = {k: v for k, v in per.items() if not k.startswith("grok_none:")}
+    (root / "metrics" / "2026-10-21.json").write_text(json.dumps({"collect": [{"at": now.isoformat(), "per_query": per2}]}), encoding="utf-8")
+    wnotes.clear()
+    with patch.object(watch, "ROOT", root), patch.object(watch, "now_jst", lambda: now), patch.object(watch, "ENV", env), \
+            patch.object(watch, "git", done), patch.object(watch.subprocess, "run", done), patch.object(watch, "hand_backlog", lambda *a: []), \
+            patch.object(watch, "notify", lambda job, msg, **kw: wnotes.append(msg) or True), \
+            patch.object(watch, "diagnose_anomalies", lambda *a, **kw: calls.append(a)):
+        watch.main()
+    check(any("grok" in m and "全クエリ0件" in m for m in wnotes), f"停止に本物の失敗が混ざった回を、watch が検知しない: {wnotes}")
+
+
+def test_cli_blocked_r6(tmp: Path):
+    """Sol 監査 r5 の指摘の再発防止(偽の CLI を本物の子プロセスとして起動する):
+    (1) Grok が投稿を書いてから利用上限で止まった面の途中の書き出しを、確かめに回すか読み直しの列に残す(.grok ごと消えない)
+    (2) codex の道具の出力の `ERROR: Not logged in` を、codex 自身のふつうの失敗(壊れた JSON)より優先して認証切れにしない"""
+    import time
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    bindir, saved_path = tmp / "bin", os.environ.get("PATH", "")
+    bindir.mkdir()
+    # (1)
+    with cli_posts():
+        post = "### 1\n- url: https://x.com/a/status/777\n- 本文: 新しい公演告知\n"
+        (bindir / "grok").write_text(
+            f"#!{sys.executable}\nimport pathlib, sys\npf = pathlib.Path(sys.argv[sys.argv.index('--prompt-file') + 1])\n"
+            f"pf.with_name(pf.name.removeprefix('prompt-')).write_text({post!r})\nsys.stderr.write({GROK_LIMIT!r})\nsys.exit(1)\n",
+            encoding="utf-8")
+        (bindir / "grok").chmod(0o755)
+        seen = tmp / "verify-input.txt"
+        (bindir / "codex").write_text(          # 確かめ役は動く(この回のうちに確かめる)。読んだ投稿を控え、結果は空
+            f"#!{sys.executable}\nimport pathlib\n"
+            f"pathlib.Path({str(seen)!r}).open('a', encoding='utf-8').write(pathlib.Path('x-posts.md').read_text(encoding='utf-8'))\n"
+            "for n in ('items.json', 'posts.json', 'deep.json'):\n    pathlib.Path(n).write_text('[]')\n", encoding="utf-8")
+        (bindir / "codex").chmod(0o755)
+        shutil.copy(Path(__file__).resolve().parent.parent / "source_types.yml", tmp / "source_types.yml")
+        saved = (collect.ROOT, pipelib.ROOT, collect.build_prompts, collect.grok_search_counts, collect.notify)
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+            collect.ROOT = pipelib.ROOT = tmp
+            collect.build_prompts = lambda: [{"key": "cg", "brand": "cg", "topic": "t", "accounts": []}]
+            collect.grok_search_counts, collect.notify = (lambda *a: {}), (lambda *a, **k: True)
+            collect.run_explores(True, False)
+        finally:
+            collect.ROOT, pipelib.ROOT, collect.build_prompts, collect.grok_search_counts, collect.notify = saved
+            os.environ["PATH"] = saved_path
+        pending = collect.read_written(tmp / collect.GROK_PENDING / "cg.md")
+        verified = collect.read_written(seen)
+        check("status/777" in verified + pending,
+              f"止まる前に Grok が書いた投稿を確かめにも読み直しの列にも回さない(次の収集で消える): {verified!r} {pending!r}")
+    # (2)
+    with cli_posts() as cp:
+        transcript = "exec\n/bin/bash -lc 'cat material.txt' in /work succeeded in 4ms:\nERROR: Not logged in\n"
+        fake_cli(bindir, "codex", out=transcript, err="ERROR: model returned malformed JSON\n", code=1)
+        of, ef = (open(tmp / n, "w+", encoding="utf-8") for n in ("o.txt", "e.txt"))
+        saved = pipelib.ROOT
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+            pipelib.ROOT = tmp
+            proc = subprocess.Popen(["codex"], stdout=of, stderr=ef)
+            _, err = collect.collect_explore("cg", proc, of, ef, time.time() + 20)
+        finally:
+            pipelib.ROOT = saved
+            os.environ["PATH"] = saved_path
+        check("[CLI 停止]" not in err and "[出力が読めない]" in err and not cp.posts,
+              f"道具の出力の `ERROR: Not logged in` を認証切れにして、codex のふつうの失敗を隠した: {err[-120:]!r} {cp.posts}")
+
+
+def test_cli_blocked_r7(tmp: Path):
+    """Sol 監査 r6 の指摘の再発防止: 組版の判断を並列に取る assemble.judge で、先に終わった組のふつうの失敗が、後の組の
+    認証切れ(CliBlocked)を隠さない(偽の claude を本物の子プロセスとして起動する)。並列のラッパーも、失敗したスレッドの中で
+    停止を見ていれば止める。"""
+    import shutil as _sh
+    import assemble
+    from pipelib import CliBlocked
+    tmp.mkdir(parents=True, exist_ok=True)
+    _sh.copytree(Path(__file__).resolve().parent.parent / "schema", tmp / "schema")
+    bindir = tmp / "bin"
+    bindir.mkdir()
+    (bindir / "claude").write_text(
+        f"#!{sys.executable}\nimport json, sys, time\n"
+        "if 'ledger' in ' '.join(sys.argv):\n    time.sleep(0.5)\n"
+        f"    print({CLAUDE_OAUTH!r})\n    sys.exit(1)\n"
+        "print(json.dumps({'type': 'result', 'is_error': False, 'result': '{}', 'structured_output': {}}))\n", encoding="utf-8")
+    (bindir / "claude").chmod(0o755)
+    saved = (os.environ.get("PATH", ""), pipelib.ROOT, assemble.ROOT, assemble.prompt_digest, assemble.prompt_ledger,
+             assemble.prompt_file)
+    with cli_posts() as cp:
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
+            pipelib.ROOT = assemble.ROOT = tmp
+            assemble.prompt_digest, assemble.prompt_ledger = (lambda *a: "digest"), (lambda *a: "ledger")
+            assemble.prompt_file = lambda d, name, text, base=None: f"{text}-{name}"
+            got = None
+            try:
+                assemble.judge("2099-01-01", {"articles": [{"slug": "one"}]})
+            except CliBlocked as e:
+                got = e
+            except Exception as e:      # noqa: BLE001
+                got = e
+            check(isinstance(got, CliBlocked) and len(cp.blocked_posts()) == 1,
+                  f"先の組のふつうの失敗が、後の組の認証切れを隠した: {type(got).__name__}: {got}")
+            # 並列のラッパー: 失敗したスレッドの中で停止を見ていれば、ふつうの失敗として返さず止める
+            pipelib.CLI_BLOCKED["claude"] = {"tool": "claude", "kind": "auth", "detail": CLAUDE_OAUTH, "resets": ""}
+
+            def boom():
+                raise RuntimeError("組版セッションが答えを返さなかった")
+            stopped = None
+            try:
+                compose.run_parallel([("組版", boom)])
+            except CliBlocked as e:
+                stopped = e
+            check(stopped is not None, "停止を見た process の並列のラッパーが、ふつうの失敗として返した(組版が先へ進む)")
+        finally:
+            os.environ["PATH"] = saved[0]
+            (pipelib.ROOT, assemble.ROOT, assemble.prompt_digest, assemble.prompt_ledger, assemble.prompt_file) = saved[1:]
+
+
+def test_cli_blocked_r8(tmp: Path):
+    """Sol 監査 r7 の指摘の再発防止(当番の再実行の経路):
+    (1) 出典の判定の再実行(oncall.CLASSIFY_RERUN)が、合議の CLI の停止を終了 1(再実行の失敗)にせず、CLI_BLOCKED_EXIT で返す
+        (実物の ask・取引・再実行の文字列を、偽の claude と一時リポジトリで本物の子プロセスとして走らせる)
+    (2) --recover の後段の組み直しが CLI の停止(75)で止まったら、控えへは戻すが、「戻らない」「作り直しが失敗」を重ねて知らせず、
+        当番の process は異常終了にしない"""
+    import time
+    from contextlib import ExitStack
+    from unittest.mock import patch
+    import oncall
+    src = Path(pipelib.__file__)
+    tmp.mkdir(parents=True, exist_ok=True)
+    # (1)
+    repo = tmp / "classify"
+    for d in ("scripts", "metrics", "docs/_posts"):
+        (repo / d).mkdir(parents=True)
+    shutil.copy(src, repo / "scripts" / "pipelib.py")
+    shutil.copy(src.with_name("child_guard.py"), repo / "scripts" / "child_guard.py")    # 取引の段は child_guard 越しに走る
+    shutil.copytree(src.parent.parent / "prompts", repo / "prompts")
+    (repo / "source_types.yml").write_text("official_domains: []\n", encoding="utf-8")
+    shutil.copy(src.with_name("classify_sources.py"), repo / "scripts" / "classifier_impl.py")
+    (repo / "scripts" / "classify_sources.py").write_text(
+        "import sys\nimport pipelib as p, classifier_impl as c\np.notify = lambda *a, **k: True\n"
+        "try:\n    c.ask(c.CMD_A, '出典を判定する')\nexcept p.CliBlocked as e:\n    print(e)\n    sys.exit(p.CLI_BLOCKED_EXIT)\n",
+        encoding="utf-8")
+    bindir = repo / "bin"
+    fake_cli(bindir, "claude", out=CLAUDE_OAUTH + "\n", code=1)
+    for args in (("init", "-q"), ("config", "user.email", "a@b"), ("config", "user.name", "t"), ("add", "."), ("commit", "-qm", "base")):
+        subprocess.run(["git", *args], cwd=repo, check=True, capture_output=True)
+    r = subprocess.run([sys.executable, "-c", oncall.CLASSIFY_RERUN, "2026-10-21"], cwd=repo, text=True, capture_output=True,
+                       env={**os.environ, "PATH": f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}",
+                            "IMAS_SCRATCH": str(tmp / "scratch")})
+    check(r.returncode == pipelib.CLI_BLOCKED_EXIT and pipelib.CLI_STOPPED in r.stdout,
+          f"出典の判定の再実行が CLI の停止を終了 {r.returncode} にした: {r.stdout[-300:]} {r.stderr[-300:]}")
+    # (2)
+    rec = tmp / "recover"
+    for d in ("scripts", "metrics", "docs/_posts"):
+        (rec / d).mkdir(parents=True)
+    (rec / "scripts" / "compose.py").write_text(f"import sys\nprint('CLI の停止')\nsys.exit({pipelib.CLI_BLOCKED_EXIT})\n", encoding="utf-8")
+    (rec / "metrics" / "plan-2026-10-21.json").write_text(json.dumps({"articles": [{"slug": "a"}, {"slug": "b"}]}), encoding="utf-8")
+    (rec / "docs" / "_posts" / "2026-10-21-a.md").write_text("承認済みの記事", encoding="utf-8")
+    for n in (1, 2):
+        (rec / "metrics" / f"oncall-2026-10-21-compose-attempt-{n}").touch()
+    notes, restores = [], []
+    values = dict(ROOT=rec, RECOVER=True, RECOVER_TARGET=("2026-10-21", "edition/2026-10-21"), RECOVER_TRIED=False,
+                  STAGE_END_AT=time.time() + 3600, release_held_job_locks=lambda: None,
+                  job_lock=lambda *a, **k: os.open(os.devnull, os.O_RDONLY), root_clean=lambda: True, ensure_edition=lambda *a: "",
+                  sh=lambda *a, **k: subprocess.CompletedProcess([], 0, "", ""), commit_paths=lambda *a, **k: None,
+                  untracked_files=lambda: set(), backup_edition=lambda *a: "backup/test",
+                  restore_edition=lambda *a: restores.append(a), notify=lambda job, msg, ok=True, **kw: notes.append((msg, ok)) or True)
+    with ExitStack() as s:
+        for k, v in values.items():
+            s.enter_context(patch.object(oncall, k, v))
+        s.enter_context(patch.object(sys, "argv", ["oncall", "--stage", "compose", "--date", "2026-10-21", "--recover",
+                                                    "--end-at", str(time.time() + 3600)]))
+        code = oncall.exit_code(oncall.main())
+    bad = [m for m, ok in notes if not ok and ("75" in m or "戻らない" in m)]
+    check(code == 0 and len(restores) == 1 and not bad,
+          f"組み直しの CLI の停止を異常終了・失敗の通知にした(または控えへ戻さない): exit {code} 戻し {len(restores)} {bad}")
+
+
+def test_cli_blocked_r9(tmp: Path):
+    """Sol 監査 r8 の指摘の再発防止(偽の grok・codex を本物の子プロセスとして run_explores を通す):
+    (1) Grok が投稿を途中まで書いてから利用上限で止まり、終了 0 で終わっても、この試行のセッション記録から止まったと見分け、
+        異常(全面0件)にせず、書けた投稿は確かめに回す
+    (2) Grok の無料枠の上限の実物の文言(`You’ve reached your free Grok Build usage limit`)も利用上限と見分ける"""
+    from unittest.mock import patch
+    import collect
+    free = ("You’ve reached your free Grok Build usage limit for now. Get SuperGrok for much higher limits, or try again later: "
+            "https://grok.com/supergrok?referrer=grok-build")
+    for name, label, reason, partial in (("partial", "途中まで書いて終了 0", GROK_LIMIT, True), ("free", "無料枠の上限", free, False)):
+        root = tmp / name
+        repo, home, bindir = root / "repo", root / "home", root / "bin"
+        repo.mkdir(parents=True)
+        bindir.mkdir()
+        shutil.copy(Path(__file__).resolve().parent.parent / "source_types.yml", repo / "source_types.yml")
+        post = "### 1\n- url: https://x.com/a/status/777\n- 本文: 新しい公演告知\n"
+        (bindir / "grok").write_text(
+            f"#!{sys.executable}\nimport os, pathlib, sys, json, urllib.parse, time\n"
+            "pf = pathlib.Path(sys.argv[sys.argv.index('--prompt-file') + 1])\nout = pf.with_name(pf.name.removeprefix('prompt-'))\n"
+            f"if {partial!r}:\n    out.write_text({post!r})\n"
+            "d = pathlib.Path.home() / '.grok' / 'sessions' / urllib.parse.quote(os.getcwd(), safe='') / str(time.time_ns())\n"
+            "d.mkdir(parents=True)\n(d / 'chat_history.jsonl').write_text(json.dumps({'content': pf.read_text()}))\n"
+            f"(d / 'updates.jsonl').write_text(json.dumps({{'agent_result': 'error: ' + {reason!r}}}, ensure_ascii=False, separators=(',', ':')))\n",
+            encoding="utf-8")
+        seen = root / "verify-input.txt"
+        (bindir / "codex").write_text(          # 確かめ役は動き、投稿ごとに「事実なし」と答える
+            f"#!{sys.executable}\nimport json, re\nfrom pathlib import Path\ntext = Path('x-posts.md').read_text()\n"
+            f"Path({str(seen)!r}).open('a').write(text)\n"
+            "for n in ('items.json', 'deep.json'):\n    Path(n).write_text('[]')\n"
+            "Path('posts.json').write_text(json.dumps([{'url': u, 'status': 'none', 'item': ''} for u in re.findall(r'- url: (\\S+)', text)]))\n",
+            encoding="utf-8")
+        for n in ("grok", "codex"):
+            (bindir / n).chmod(0o755)
+        notes = []
+        with cli_posts() as cp, patch.dict(os.environ, HOME=str(home), PATH=f"{bindir}{os.pathsep}{os.environ['PATH']}"), \
+                patch.object(collect, "ROOT", repo), patch.object(pipelib, "ROOT", repo), \
+                patch.object(collect, "build_prompts", lambda: [{"key": "cg", "brand": "cg", "topic": "t", "accounts": []}]), \
+                patch.object(collect, "grok_search_counts", lambda *a: {}), \
+                patch.object(collect, "notify", lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True):
+            _, per = collect.run_explores(True, False)
+            posts = cp.blocked_posts()
+        verified = collect.read_written(seen)
+        check(per.get("grok_blocked:cg") == 1 and len(posts) == 1 and not [m for m, ok in notes if not ok]
+              and (not partial or "status/777" in verified),
+              f"{label}: Grok の利用上限を見分けない・異常にした・書けた投稿を確かめない: {per} {posts} {notes} {verified!r}")
+
+
+def test_scratch_not_tmp(tmp: Path):
+    """本番のコードが作る使い捨てのもの(当番の監査の作業ツリー・答えのファイル・Sol の一時ファイル、探索の作業ディレクトリ)は、
+    /tmp(3.8GB の tmpfs)でなく置き場(IMAS_SCRATCH、既定 ~/.cache/imas-news)に作り、終わったら消す。消し損ねは次に作るとき
+    古い順に片付く。TMPDIR が /tmp か未設定なら置き場の tmp/ へ向ける(2026-10-21 に /tmp が 100% になり、当番の作業ツリー作成・
+    描画・回帰テストが全部止まった)。"""
+    import time
+    import collect
+    import oncall
+    root = pipelib.scratch_root()
+    check(str(root).startswith(os.environ["IMAS_SCRATCH"]), f"置き場が IMAS_SCRATCH を見ない: {root}")
+    # TMPDIR: /tmp の下・未設定なら置き場の tmp/、それ以外はそのまま
+    import tempfile as _tf
+    saved = (os.environ.get("TMPDIR"), _tf.tempdir)
+    try:
+        for given, want in (("/tmp/x", str(root / "tmp")), ("", str(root / "tmp")), (str(tmp), str(tmp))):
+            os.environ["TMPDIR"] = given
+            pipelib.use_scratch_tmpdir()
+            check(os.environ["TMPDIR"] == want, f"TMPDIR {given!r} → {os.environ['TMPDIR']}(期待 {want})")
+    finally:
+        os.environ["TMPDIR"], _tf.tempdir = saved
+    # 片付け損ねの掃除: 古いものだけ消す
+    old, new = root / "oncall-old", root / "oncall-new"
+    for d in (old, new, root / "tmp" / "tmp-old"):
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "f").write_text("x", encoding="utf-8")
+    for d in (old, root / "tmp" / "tmp-old"):
+        os.utime(d, (time.time() - pipelib.SCRATCH_MAX_AGE_SEC - 60,) * 2)
+    made = pipelib.scratch_dir("probe-")
+    check(not old.exists() and not (root / "tmp" / "tmp-old").exists() and new.exists() and made.parent == root,
+          f"置き場の古い残り物を片付けない・新しいものを消した: old={old.exists()} new={new.exists()} {made}")
+    # 探索の作業ディレクトリ
+    wd = collect.explore_workdir("cg")
+    check(wd.parent == root, f"探索の作業ディレクトリが置き場に無い: {wd}")
+    # 当番の監査: 作業ツリー(-C)・答えのファイル(-o)・TMPDIR が置き場の下にあり、終わったら消える
+    repo, bindir, log = tmp / "repo", tmp / "bin", tmp / "codex-env.jsonl"
+    repo.mkdir(parents=True)
+    g = lambda *a: subprocess.run(["git", *a], cwd=repo, capture_output=True, text=True, check=True).stdout
+    g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
+    (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
+    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None, "notes": ""},
+                        ensure_ascii=False)
+    bindir.mkdir()
+    (bindir / "codex").write_text(
+        f"#!{sys.executable}\nimport json, os, sys, tempfile\na = sys.argv[1:]\n"
+        "c, o = a[a.index('-C') + 1], a[a.index('-o') + 1]\n"
+        "t = tempfile.mkdtemp(prefix='sol-')\n"
+        f"open({str(log)!r}, 'a').write(json.dumps({{'C': c, 'o': o, 'TMPDIR': os.environ.get('TMPDIR', ''), 't': t}}) + '\\n')\n"
+        f"open(o, 'w', encoding='utf-8').write({answer!r})\n", encoding="utf-8")
+    (bindir / "codex").chmod(0o755)
+    schema = Path(__file__).resolve().parent.parent / "schema" / "oncall-review.schema.json"
+    saved = (os.environ.get("PATH", ""), pipelib.ROOT)
+    try:
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
+        pipelib.ROOT = tmp
+        oncall.run_codex("監査して", schema, repo)
+    finally:
+        os.environ["PATH"], pipelib.ROOT = saved
+    c = json.loads(log.read_text(encoding="utf-8").splitlines()[-1]) if log.exists() else {}
+    inside = lambda p: bool(p) and Path(p).resolve().is_relative_to(root.resolve())
+    check(all(inside(c.get(k)) for k in ("C", "o", "TMPDIR", "t")) and not any(Path(c[k]).exists() for k in ("C", "o", "TMPDIR", "t")),
+          f"監査の作業ツリー・答え・一時ファイルが置き場に無い・残った: {c}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_stray_governed_write_is_caught(tmp / "sgw")
@@ -11125,6 +14729,19 @@ def main() -> int:
     test_indexer_tag_dictionary(tmp / "itd")
     test_remove_worktree(tmp / "rmw")
     test_run_codex_isolation(tmp / "rci")
+    test_cli_blocked_watch_not_counted(tmp / "cbw")
+    test_cli_blocked_compose(tmp / "cbc")
+    test_cli_blocked_oncall_not_counted(tmp / "cbo")
+    test_cli_block_detect_and_post(tmp / "cbd")
+    test_cli_blocked_paths_r2(tmp / "cb2")
+    test_cli_blocked_grok_sessions_r3(tmp / "cb3")
+    test_cli_blocked_r4(tmp / "cb4")
+    test_cli_blocked_r5(tmp / "cb5")
+    test_cli_blocked_r6(tmp / "cb6")
+    test_cli_blocked_r7(tmp / "cb7")
+    test_cli_blocked_r8(tmp / "cb8")
+    test_cli_blocked_r9(tmp / "cb9")
+    test_scratch_not_tmp(tmp / "snt")
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")
     test_compose_run_derive(tmp / "crd")
@@ -11141,8 +14758,15 @@ def main() -> int:
     test_reminder_event_date(tmp / "red")
     test_reservation_occurs_on(tmp / "roo")
     test_writer_children(tmp / "wch")
+    test_restore_posts_skip(tmp / "rps")
+    test_child_guard(tmp / "cg")
+    test_child_tracker_edges(tmp / "cte")
+    test_guarded_launch_seams(tmp / "gls")
+    test_writer_reads_only_fetched_pages(tmp / "wrf")
+    test_fetch_record_place_broken(tmp / "frb")
     test_restore_files_ledger(tmp / "rsfl")
     test_check_output()
+    test_check_output_unread_pages()
     test_render_and_length()
     test_earliest_date()
     test_schema_hash_dates()
@@ -11156,6 +14780,7 @@ def main() -> int:
     test_grok_verify_keeps_new_announcement_separate()
     test_restore_chained_reservation_facts(tmp / "rcf")
     test_lost_post_notified_once(tmp / "lpn")
+    test_grok_verify_keeps_what_it_counts(tmp / "gvk")
     test_grok_deep_retry(tmp / "gdr")
     test_review_failed_changed_article(tmp / "rfc")
     test_review_unchecked_scope_not_approved(tmp / "rus")
@@ -11186,6 +14811,7 @@ def main() -> int:
     test_youtube_playlist_owner(tmp / "ytpl")
     test_booth_item_owner(tmp / "booth")
     test_classify_txn_interrupt(tmp / "cti")
+    test_classify_txn_escaped_model(tmp / "cte2")
     test_tags_and_idols(tmp / "ti")
     test_request_parsers(tmp / "rq")
     test_assemble_prompt_shape()
@@ -11198,6 +14824,7 @@ def main() -> int:
     test_clean_url_and_table()
     test_x_anonymous_post_url()
     test_normalize_fixes_misnamed_brand()
+    test_x_post_date_is_jst(tmp / "xjst")
     test_x_anonymous_post_in_posts(tmp / "xap")
     test_collect_classify_gate(tmp / "ccg")
     test_no_prompt_in_argv()
@@ -11236,11 +14863,15 @@ def main() -> int:
     test_accept_only_normal_and_schema(tmp / "an")
     test_grok_repoint_uses_each_face_posts(tmp / "grp")
     test_watch_pagination_and_batches(tmp / "wp")
+    test_watch_deadline_carryover(tmp / "wdc")
     test_watch_resume_after_cut(tmp / "wr")
     test_watch_body_cp932(tmp / "wc")
     test_watch_static_page_body(tmp / "ws")
     test_fetch_page_renders_whitespace_only_page()
+    test_fetch_page_records_read_pages(tmp / "fpr")
     test_review_reads_sources_like_writer()
+    test_collect_sessions_read_with_fetch_page(tmp / "csf")
+    test_verify_crash_reasks_deep(tmp / "vcd")
     test_fetch_rendered_skips_images()
     test_render_failure_keeps_cause(tmp / "rf")
     test_render_failure_reaches_classify_and_verify(tmp / "rfc")
@@ -11260,6 +14891,7 @@ def main() -> int:
     test_oncall_restore_to_backup(tmp / "rtb")
     test_oncall_merge_push_settles(tmp / "mps")
     test_oncall_fix_until_clean(tmp / "of")
+    test_oncall_report_concurrence(tmp / "orc")
     test_settled_drops_not_rewritten(tmp / "sd")
     test_rule_bench_cases()
     test_rule_bench_judges_shape(tmp / "rb")
@@ -11268,6 +14900,15 @@ def main() -> int:
     test_assemble_interrupted_writes(tmp / "aiw")
     test_assemble_checks_exit_codes(tmp / "ace")
     test_pending_keeps_later_editions(tmp / "pkl")
+    test_session_timeout_stops_descendants(tmp / "sts")
+    test_parallel_launch_failure_reaps(tmp / "plf")
+    test_compose_no_launch_after_deadline(tmp / "nld")
+    test_leave_tree_clean_stops_sessions(tmp / "ltcs")
+    test_session_escaped_and_term(tmp / "set")
+    test_session_signal_windows(tmp / "ssw")
+    test_collect_handover_deadline(tmp / "chd")
+    test_rule_bench_checks_read_pages(tmp / "rbp")
+    test_bench_tools_check_read_pages(tmp / "btr")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:

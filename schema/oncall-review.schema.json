@@ -2,7 +2,7 @@
   "title": "oncall-review",
   "description": "監査(Sol)の敵対的レビューの判定",
   "type": "object",
-  "required": ["verdict", "verification", "must_fix", "later", "notes"],
+  "required": ["verdict", "verification", "must_fix", "later", "editor_summary", "notes"],
   "additionalProperties": false,
   "properties": {
     "verdict": {"enum": ["approve", "reject"]},
@@ -50,6 +50,17 @@
           "evidence": {"type": "string", "maxLength": 600, "description": "根拠と直し方の案(ファイル:行)"},
           "occurs": {"type": "string", "maxLength": 400, "description": "どういうときに起きるか(現実に到達する道筋)と、どのくらい起きそうか。書けない指摘は出さない"}
         }
+      }
+    },
+    "editor_summary": {
+      "type": ["object", "null"], "required": ["what_happened", "why", "what_changed", "similar", "paper_impact"], "additionalProperties": false,
+      "description": "must_fix が全部 misreport のとき: あなたが直した編集長への報告の全文(当番の editor_summary と同じ5つの欄・同じ書き方)。この文面で報告する。それ以外のときは null",
+      "properties": {
+        "what_happened": {"type": "string", "minLength": 1, "maxLength": 1200},
+        "why": {"type": "string", "minLength": 1, "maxLength": 1500},
+        "what_changed": {"type": "string", "minLength": 1, "maxLength": 1500},
+        "similar": {"type": "string", "minLength": 1, "maxLength": 1500},
+        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 600}
       }
     },
     "notes": {"type": "string", "maxLength": 800}

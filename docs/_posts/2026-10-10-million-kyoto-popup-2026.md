@@ -2,10 +2,15 @@
 slug: million-kyoto-popup-2026
 edition: "2026-10-10"
 brand: million
-src: 公式
+src: 当事者
 rank: large
-corrected: false
-corrections: []
+corrected: true
+corrections:
+- at: "2026-10-21T19:51:42+09:00"
+  by: 編集部(出典の種別の判定の欠陥の修正)
+  initial: "出典「ザッキャラ本店「アイドルマスター ミリオンライブ！ POP UP SHOPが有楽町マルイ 7FにOPEN決定！」」の種別: 公式(記事の出典の表示: 公式)"
+  corrected_to: "同じ出典の種別: 当事者(記事の出典の表示: 当事者)"
+  note: 短縮URL(t.co)をドメイン全体で公式と判定していた。リンクを載せた投稿(THEキャラSHOP@有楽町店)もリンク先(ザッキャラ)も当事者のため当事者に改めた。本文は変えていない
 candidate_ids:
 - sched-2026-10-10-million-kyoto-popup-2026-開幕
 - 202610100218-grok-25
@@ -22,7 +27,7 @@ sources:
   type: 公式
 - label: ザッキャラ本店「アイドルマスター ミリオンライブ！ POP UP SHOPが有楽町マルイ 7FにOPEN決定！」(2026年10月6日)
   url: https://t.co/3gNh7QxFR7
-  type: 公式
+  type: 当事者
 event_date: "2026-10-10"
 title_fact_ids:
 - F1

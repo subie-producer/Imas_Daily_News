@@ -36,6 +36,8 @@
    保管の失敗は発行を妨げない(報告には必ず載る)
 4. 合意したもの(approve で must_fix が空)だけ、**監査した commit のハッシュそのもの**を
    main へ merge し、`edition/<日付>` へ取り込み、止まった工程を再実行する
+4a. **取り込みの条件 C**(編集長 2026-10-21): must_fix が編集長への報告の誤り(misreport)だけなら、監査が直した報告の文面を書き、
+   当番が了承すれば取り込んで監査の文面で報告する(「監査が書き、当番が了承した」)。異を唱えたら往復を続ける(report_only)
 5. 上限までに合意できなければ、そこまでの修正(commit)と残った指摘を state に残して人へ渡す。
    次の試行は**その続きから**始める(同じ基準の main なら。以前は毎回ゼロから診断し直し、
    1回目と2回目で別々の仮説を立てて、どちらも途中で終わっていた。実測 2026-09-18)
@@ -67,7 +69,6 @@ import re
 import shutil
 import subprocess
 import sys
-import tempfile
 import time
 from pathlib import Path
 
@@ -78,7 +79,8 @@ from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_t
                      JobLockTimeout, anomaly,
                      job_lock, loads_strict, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, settled_drops,
-                     tool_path)
+                     tool_path, CLI_BLOCKED_EXIT, CliBlocked, cli_check, oncall_clis_blocked, scratch_dir)
+from pipelib import exit_on_term, run_group   # モデルのセッションは自前のグループで起動し、時間切れ・中断では道具ごと止める
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")
@@ -164,9 +166,13 @@ def merge_and_push(branch: str, before: str, merge: list[str], push: list[str]) 
     return ("unknown" if tip is None else "absent"), why
 
 
-def session_env() -> dict:
+def session_env(tmpdir: Path | None = None) -> dict:
+    """当番・監査のセッションの環境。tmpdir を渡したら、セッション(とその中で走るテスト・道具)の一時ファイルはそこへ書かせる
+    (/tmp の tmpfs を埋めない。呼び側がセッションの後で消す。2026-10-21 に /tmp が 100% になり当番も描画もテストも止まった)。"""
     env = {k: v for k, v in os.environ.items() if k in ENV_ALLOW}
     env["PATH"] = tool_path()   # service 由来の PATH には ~/.local/bin(claude/codex)が無い(実測 2026-09-17)
+    if tmpdir is not None:
+        env["TMPDIR"] = str(tmpdir)
     return env
 
 
@@ -286,6 +292,72 @@ def gather_context(stage: str, date: str, reason: str) -> str:
     return "\n\n".join(parts)
 
 
+# 関係する号の掲載の記録(_main が related_editions → paper_record で作る)。当番・監査・了承の依頼文に載せる
+# (2026-10-15: 当番が記録を確かめずに、10/15号に載ったレトラの記事を「外れた・最大3日遅れ」と報告した)
+PAPER_RECORD = ""
+
+
+def related_editions(date: str, edition_date: str, rows: list[dict]) -> list[str]:
+    """紙面への影響を書くのに関係する号: 呼ばれた号・取り込み先の号・保管の指摘が出た号と、それぞれの次の号(載るべき号と実際の号)。"""
+    out: set[str] = set()
+    for d in [date, edition_date] + [str(r.get("date") or "") for r in rows]:
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", d):
+            continue
+        try:
+            day = datetime.date.fromisoformat(d)
+        except ValueError:
+            continue
+        out |= {day.isoformat(), (day + datetime.timedelta(days=1)).isoformat()}
+    return sorted(out)
+
+
+def paper_record(dates: list[str], root: Path) -> str:
+    """号ごとの掲載の記録(事実の写しだけ): 載った記事(docs/_posts)・外れた記事(metrics/drops)・校閲の判定(いちばん新しい
+    組版の実行の最後の巡。pipelib.last_review_record)。読めないものは読めないと書く。"""
+    import yaml
+    from pipelib import last_review_record
+    out = ["## 掲載の記録(関係する号。本体の作業ツリーの記録の写し)"]
+    for d in dates:
+        lines = [f"### {d}号",
+                 f"- 号のページ(docs/_editions/{d}.md): {'あり' if (root / 'docs' / '_editions' / f'{d}.md').exists() else 'なし'}"]
+        rv = last_review_record(d, root)
+        if rv is None:
+            lines.append("- 校閲の記録: なし")
+        else:
+            try:
+                verdict = str(json.loads(rv.read_text(encoding="utf-8")).get("verdict"))
+            except (OSError, ValueError, AttributeError) as e:
+                verdict = f"読めない({type(e).__name__})"
+            lines.append(f"- 校閲の判定(いちばん新しい組版の実行の最後の巡 metrics/{rv.name}。それより前の巡は途中経過): {verdict}")
+        posts = sorted((root / "docs" / "_posts").glob(f"{d}-*.md"))
+        lines.append(f"- 載った記事 {len(posts)}本(docs/_posts/{d}-*.md):")
+        for p in posts:
+            try:
+                m = re.match(r"\A---\n(.*?)\n---\n", p.read_text(encoding="utf-8"), re.S)
+                fm = (yaml.safe_load(m.group(1)) if m else None) or {}
+            except (OSError, ValueError, yaml.YAMLError):
+                fm = {}
+            fm = fm if isinstance(fm, dict) else {}
+            cids = [str(c) for c in fm.get("candidate_ids") or [] if c]
+            lines.append(f"  - {p.stem[len(d) + 1:]}: {fm.get('title') or '(題を読めない)'}"
+                         + (f"(素材 {', '.join(cids)})" if cids else ""))
+        dp = root / "metrics" / f"drops-{d}.json"
+        try:
+            drops = json.loads(dp.read_text(encoding="utf-8")) if dp.exists() else {}
+        except (OSError, ValueError) as e:
+            drops = None
+            lines.append(f"- 紙面から外れた記録(metrics/drops-{d}.json): 読めない({type(e).__name__})")
+        if isinstance(drops, dict):
+            lines.append(f"- 外れた記事 {len(drops)}本(metrics/drops-{d}.json):")
+            for slug, r in drops.items():
+                r = r if isinstance(r, dict) else {}
+                lines.append(f"  - {slug}: {r.get('title') or ''}({r.get('stage') or ''}){str(r.get('why') or '')[:160]}")
+        elif drops is not None:
+            lines.append(f"- 紙面から外れた記録(metrics/drops-{d}.json): 形が違う({type(drops).__name__})")
+        out.append("\n".join(lines))
+    return "\n\n".join(out)
+
+
 # --stage backlog で渡された保管の指摘(main が設定する)。監査の依頼文に元の指摘を全件載せ、1件ずつの扱いを確かめさせる
 BACKLOG_ROWS: list[dict] = []
 # 往復を終える時刻の上限(None なら ONCALL_LIMIT_MIN だけ)。backlog は次の定時工程の前に終える(backlog_deadline)
@@ -330,7 +402,8 @@ def fix_prompt(stage: str, date: str, context: str, objections: list[dict] | Non
     obj = render_prompt("oncall-fix.objections", POLICY=_policy_lines(),
                         ITEMS=json.dumps(objections, ensure_ascii=False, indent=1)) if objections else ""
     scope = render_prompt("oncall-scope.backlog" if stage == BACKLOG_STAGE else "oncall-scope")
-    return render_prompt("oncall-fix", STAGE=stage, DATE=date, SCOPE=scope, OBJECTIONS=obj, CONTEXT=context)
+    return render_prompt("oncall-fix", STAGE=stage, DATE=date, SCOPE=scope, OBJECTIONS=obj, CONTEXT=context,
+                         ROOT=str(ROOT), RECORD=PAPER_RECORD)
 
 
 def backlog_items_text(rows: list[dict]) -> str:
@@ -358,10 +431,44 @@ def review_prompt(stage: str, date: str, fix_report: dict, diff: str, integ: dic
     scope = (render_prompt("oncall-review.scope.backlog", N=len(BACKLOG_ROWS), ITEMS=backlog_items_text(BACKLOG_ROWS))
              if stage == BACKLOG_STAGE else render_prompt("oncall-review.scope"))
     return render_prompt(
-        "oncall-review", STAGE=stage, DATE=date, SCOPE=scope, POLICY=_policy_lines(),
+        "oncall-review", STAGE=stage, DATE=date, SCOPE=scope, POLICY=_policy_lines(), RECORD=PAPER_RECORD,
         REPORT=json.dumps(fix_report, ensure_ascii=False, indent=1),
         PREVIOUS=("\n## 前回の指摘に対する当番の対応\n" + json.dumps(integ, ensure_ascii=False, indent=1) + "\n") if integ else "",
         DIFF=f"```diff\n{diff}\n```" if diff.strip() else "(変更なし。当番は「コードの欠陥ではない」と判断した)")
+
+
+def full_summary(s) -> bool:
+    """編集長への報告の5つの欄が全部書かれているか(形だけ)。"""
+    return isinstance(s, dict) and all(str(s.get(k) or "").strip() for k in SUMMARY_KEYS)
+
+
+def summary_text(s) -> str:
+    s = s if isinstance(s, dict) else {}
+    return "\n".join(f"- {label}: {s.get(k) or '(書かれていない)'}" for k, label in SUMMARY_LABELS)
+
+
+def report_only(must_fix: list, rev: dict) -> bool:
+    """取り込みの条件 C(編集長 2026-10-21): 監査の must_fix が編集長への報告の誤り(misreport)だけで、監査が直した報告の文面を
+    書き、テスト・selfcheck・lint を走らせた記録がある。このとき当番が文面を了承すれば、コードの修正を取り込み、監査の文面で報告する
+    (2026-10-15: 報告の誤りだけを6往復直し切れず、正しいコードの修正も取り込まれなかった)。"""
+    return (bool(must_fix) and all(isinstance(m, dict) and m.get("severity") == "misreport" for m in must_fix)
+            and full_summary(rev.get("editor_summary")) and audit_ran_checks(rev))
+
+
+def accept_prompt(stage: str, date: str, fix: dict, rev: dict, must_fix: list, context: str) -> str:
+    """監査が書いた報告の文面を、当番が了承するか異を唱えるかの依頼(本文は prompts/oncall-accept.md)。"""
+    return render_prompt("oncall-accept", STAGE=stage, DATE=date, ITEMS=json.dumps(must_fix, ensure_ascii=False, indent=1),
+                         AUDIT=summary_text(rev.get("editor_summary")), OWN=summary_text(fix.get("editor_summary")),
+                         RECORD=PAPER_RECORD, ROOT=str(ROOT), CONTEXT=context)
+
+
+def report_authorship_text(fix: dict) -> str:
+    """報告の文面を誰が書き誰が了承したか(条件 C で取り込んだときだけ。それ以外は "")。"""
+    a = fix.get("report_authorship")
+    if not isinstance(a, dict):
+        return ""
+    return (f"この報告は監査が書き、当番が了承した(監査 {a.get('audit_model')}・当番 {a.get('oncall_model')}・{a.get('round')}往復目。"
+            f"コードの修正には指摘が無く、当番の書いた報告の誤りだけが指摘された)")
 
 
 def parse_json(text: str) -> dict | None:
@@ -382,17 +489,25 @@ def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -
     # 指示は作業ツリー側のファイルで渡す(引数に詰めない。作業ツリーの metrics/work/ は Git 管理外)
     name = "fix-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
     short = prompt_file("oncall", name, prompt, base=cwd)
+    tmp = scratch_dir("oncall-fix-tmp-")
     try:
-        r = subprocess.run(["claude", "-p", short, "--model", ONCALL_MODEL, "--dangerously-skip-permissions",
-                            "--json-schema", schema_file.read_text(encoding="utf-8"),
-                            "--max-budget-usd", ONCALL_MAX_BUDGET_USD],
-                           cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
-                           env=session_env())
+        # 自前のグループで起動し、時間切れ・中断(SIGTERM)では道具ごと止める。親だけを止めると、失敗を返したあとも道具が
+        # 作業ツリーへ書き続けた(監査指摘 2026-10-14)
+        r = run_group(["claude", "-p", short, "--model", ONCALL_MODEL, "--dangerously-skip-permissions",
+                       "--json-schema", schema_file.read_text(encoding="utf-8"),
+                       "--max-budget-usd", ONCALL_MAX_BUDGET_USD],
+                      timeout=timeout, cwd=cwd, env=session_env(tmp))
     except subprocess.TimeoutExpired as e:
         save_raw("oncall", name, *partial_output(e))      # 時間切れの回も、それまでの出力を残す
         raise
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
     # 作業ツリーは取り込み後に消えるので、生の出力は本体側(metrics/work/oncall/raw/)に残す
     save_raw("oncall", name, r.stdout, r.stderr, r.returncode)
+    # 認証切れ・利用上限は当番の失敗ではない(試行の回数に数えない。_main が引き取る)
+    blocked = cli_check("claude", "oncall", f"当番の修正({name})", r.returncode, r.stdout, r.stderr)
+    if blocked:
+        raise CliBlocked(blocked)
     # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ。{"status":"no_fix_needed"} だけの答えを
     # 診断も報告も無いまま「修正不要」にしない(監査指摘)
     ans = parse_json(r.stdout or "") if r.returncode == 0 else None
@@ -471,21 +586,22 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
     読み取り専用では何も走らせられず、走らせないまま承認していた(2026-10-14: 承認済みの変更が素材ファイルの書式に無い欄を
     書いて発行前の検査で号が止まった。編集長「ずさんな承認は全部ゴミ」)。当番の作業ツリーでは書かせない(Sol の一時ファイルが
     次の往復の修正に紛れる)。"""
-    fd, out_name = tempfile.mkstemp(prefix="oncall-review-", suffix=".json")
-    os.close(fd)
-    out_path = Path(out_name)
+    # 答えのファイル・使い捨ての作業ツリー・監査中の一時ファイル(TMPDIR)は全部 /home 側の置き場に作り、終わったら消す
+    # (2026-10-21: /tmp(3.8GB の tmpfs)が 100% になり、監査用の作業ツリーを作れずに当番が止まった)
+    box = scratch_dir("oncall-audit-")
+    out_path = box / "review.json"
+    aw = box / "wt"
+    tmp = box / "tmp"
+    tmp.mkdir()
     head = sh(["git", "rev-parse", "HEAD"], cwd=cwd).stdout.strip()
-    aw = Path(tempfile.mkdtemp(prefix="oncall-audit-"))
-    shutil.rmtree(aw)
     try:
         must(sh(["git", "worktree", "add", "--detach", str(aw), head], cwd=cwd, timeout=120), "監査用の作業ツリー")
         name = "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
         short = prompt_file("oncall", name, prompt, base=aw)
         try:
-            r = subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
-                                "-C", str(aw), "--output-schema", str(schema_file), "-o", str(out_path), short],
-                               cwd=aw, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
-                               env=session_env())
+            r = run_group(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
+                           "-C", str(aw), "--output-schema", str(schema_file), "-o", str(out_path), short],
+                          timeout=timeout, cwd=aw, env=session_env(tmp))
             so, se, code = r.stdout, r.stderr, r.returncode
         except subprocess.TimeoutExpired as e:
             (so, se), code = partial_output(e), None
@@ -496,8 +612,12 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
         text = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
         save_raw("oncall", name, so, se, code, files={"answer": text})
     finally:
-        out_path.unlink(missing_ok=True)
         remove_worktree(aw, cwd)
+        shutil.rmtree(box, ignore_errors=True)    # 消し損ねても、次に置き場を作るとき古い順に片付く(pipelib.sweep_scratch)
+    # 認証切れ・利用上限は監査の失敗ではない(試行の回数に数えない。_main が引き取る)
+    blocked = cli_check("codex", "oncall", f"当番の監査({name})", code, so, se)
+    if blocked:
+        raise CliBlocked(blocked)
     # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ({"verdict":"approve"} だけの答えで承認にしない。監査指摘)
     ans = parse_json(text) if code == 0 else None
     if ans is None or not schema_ok(ans, schema_file.read_text(encoding="utf-8")):
@@ -551,6 +671,8 @@ def report_change(stage: str, date: str, fix: dict, transcript: list[dict], base
     integ = [t.get("integrate") for t in transcript if t.get("integrate")]
     last = reviews[-1] if reviews else {}
     verdict = f"{last.get('verdict', '?')}(往復 {len(reviews)}回)"
+    if report_authorship_text(fix):
+        verdict += " / " + report_authorship_text(fix)
     if integ:
         verdict += (f" / 当番が受け入れた指摘 {sum(len(x.get('accepted') or []) for x in integ)}件"
                     f"・反論 {sum(len(x.get('refuted') or []) for x in integ)}件")
@@ -587,10 +709,13 @@ def editor_report(stage: str, date: str, fix: dict, verdict: str | None, rounds:
     s = fix.get("editor_summary") if isinstance(fix.get("editor_summary"), dict) else {}
     head = {"fixed": "🛠 当番が直しました", "no_fix_needed": "🛠 当番が調べました(直す箇所なし)"}.get(fix.get("status"), "🛠 当番が調べました")
     md = f"{int(date[5:7])}/{int(date[8:10])}" if re.fullmatch(r"\d{4}-\d{2}-\d{2}", date) else date
-    footer = (f"記録(差分・検証の全文): {path} / 監査: {'承認' if verdict == 'approve' else (verdict or '不明')}({rounds}往復)"
+    who = report_authorship_text(fix)
+    audit = "コードは承認・報告の文面は監査が書いた" if who else ("承認" if verdict == "approve" else (verdict or "不明"))
+    footer = (f"記録(差分・検証の全文): {path} / 監査: {audit}({rounds}往復)"
               + (f" / 後で直す指摘 {n_later}件" if n_later else ""))
     return editor_notice(f"{head}: {md}号の{STAGE_JA.get(stage, stage)}",
-                         [(label, s.get(k) or "(書かれていない。記録を参照)") for k, label in SUMMARY_LABELS], footer=footer)
+                         ([("この報告の書き手", who)] if who else [])
+                         + [(label, s.get(k) or "(書かれていない。記録を参照)") for k, label in SUMMARY_LABELS], footer=footer)
 
 
 # 編集長への報告の項目(編集長 2026-10-04「何故こういう事が起きたか、どう修正したか、他に当該事象の類似が起きないことは説明できるのか」)
@@ -688,9 +813,8 @@ def arm_backlog_exit(keys: list[str], date: str) -> None:
     既定の SIGTERM では atexit が走らないので、通常の終了(SystemExit)に変える(監査指摘)。
     SIGKILL などで報告できなくても、指摘は保管に残り翌朝また渡る。"""
     import atexit
-    import signal as _signal
     atexit.register(lambda: report_left_backlog(keys, date))
-    _signal.signal(_signal.SIGTERM, lambda *_: sys.exit(143))
+    exit_on_term()      # 起動したセッションを子孫ごと止めてから、通常の終了(SystemExit 143)にする
 
 
 def report_left_backlog(keys: list[str], date: str) -> None:
@@ -746,6 +870,41 @@ def resume_point(state: dict, base: str) -> dict | None:
 MIN_STEP_SEC = 120      # これより残りが短ければ、次のセッション(当番・監査)を始めない
 
 
+def wip_of(base: str, kept: dict, approved: bool) -> dict | None:
+    """次の試行に残す続き(state["wip"])。直し切れなかったら、最後に内容を固定できたところまでの修正と残った指摘、
+    監査の文面への当番の異議(objection: 続きは異議を監査に渡すところから)、了承待ち(accept: 続きは了承のセッションから)。
+    直し切れた・人が要る(cannot_fix)・残った指摘が無いなら None。"""
+    if approved or not kept.get("fix") or not kept.get("open") or kept["fix"].get("status") == "cannot_fix":
+        return None
+    wip = {"base": base, "head": kept["head"], "fix": kept["fix"], "open": kept["open"], "later": kept.get("later") or []}
+    for k in ("objection", "accept"):
+        if isinstance(kept.get(k), dict):
+            wip[k] = kept[k]
+    return wip
+
+
+class _RoundsDone(Exception):
+    """run_rounds の中だけで使う: 往復を回さずに終える(続きの了承で決着した)。"""
+
+
+def outside_touched(rnd: int, base: str, env_before: str, transcript: list[dict], fix: dict) -> bool:
+    """当番のセッションの、作業ツリーの外への副作用を検める(答えが何であれ毎回。cannot_fix でも省かない。監査指摘):
+    本体が汚れた / origin/main が動いた / 本体の .env(Git 管理外)が変わった。あれば fix を cannot_fix にして True。"""
+    if not root_clean():
+        transcript.append({"round": rnd, "root_touched": sh(["git", "status", "--short"], cwd=ROOT).stdout[:500]})
+        fix.update(status="cannot_fix", notes="当番が本体の作業ツリーに触った。取り込まない")
+        return True
+    if remote_main() != base:
+        transcript.append({"round": rnd, "remote_moved": True})
+        fix.update(status="cannot_fix", notes="セッション中に origin/main が動いた(当番が push した疑い、または他の工程)。取り込まない")
+        return True
+    if env_fingerprint() != env_before:
+        transcript.append({"round": rnd, "env_touched": True})
+        fix.update(status="cannot_fix", notes="当番が本体の .env に触った。取り込まない")
+        return True
+    return False
+
+
 def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: dict | None,
                env_before: str, transcript: list[dict]) -> dict:
     """当番の修正 → 監査、の往復。指摘が無くなる(approve で must_fix が空)まで回す。
@@ -767,22 +926,90 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
     kept = {"head": base, "fix": {}, "open": []}
     res = {"approved": False, "error": ""}
     later: list[dict] = list((wip or {}).get("later") or [])     # 発行後でよい指摘(往復・試行をまたいで積む)
+    objected = False        # 監査の文面に当番が異を唱えた直後の往復: 当番の修正を挟まず、異議を監査に渡す
+
+    def concur(rnd: int, acc: dict) -> str:
+        """条件 C の了承のセッション(acc = その監査の指摘・文面・走らせた記録)。戻りは approved / objected / stop。
+        了承ならこの commit を取り込み、監査の文面で報告する。誰が書き誰が了承したかを残す(報告が事実と違ったとき両方を挙げる)。
+        セッションの前に「了承待ち」を続きに残す: 了承の途中で止まっても(認証切れ・利用上限 CliBlocked・時間切れ・例外)、
+        次の試行は了承のところから始める(監査指摘 2026-10-22: 止まると続きに最新の指摘と監査の文面が残らず、再開で当番の修正・検査・
+        監査を余分に回した)"""
+        nonlocal integ, objected, objections
+        must_fix = list(acc["must_fix"])
+        kept.update(fix=json.loads(json.dumps(fix)), open=list(must_fix), accept=json.loads(json.dumps(acc)))
+        kept.pop("objection", None)     # 異議は監査に渡り、監査が答えた
+        if left() < MIN_STEP_SEC:
+            transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
+            return "stop"
+        ans = run_claude(accept_prompt(stage, date, fix, acc, must_fix, context), schemas / "oncall-accept.schema.json", wt,
+                         timeout=min(900, left()))
+        who = {"written_by": "audit", "audit_model": AUDIT_MODEL, "oncall_model": ONCALL_MODEL, "round": acc.get("round", rnd),
+               "must_fix": [str(m.get("id") or "") for m in must_fix], "evidence": str(ans.get("evidence") or ""),
+               "audit_summary": dict(acc["editor_summary"]), "own_summary": fix.get("editor_summary")}
+        kept.pop("accept", None)        # 了承のセッションは答えた(以下、どの結果でも了承待ちではない)
+        if outside_touched(rnd, base, env_before, transcript, fix):
+            return "stop"
+        if ans.get("decision") == "accept":
+            transcript.append({"round": rnd, "report_concurrence": dict(who, decision="accept", accepted_by="oncall")})
+            fix["editor_summary"] = dict(acc["editor_summary"])
+            fix["report_authorship"] = {k: v for k, v in who.items() if k != "audit_summary"} | {"accepted_by": "oncall"}
+            res["approved"] = True
+            kept["open"] = []
+            return "approved"
+        transcript.append({"round": rnd, "report_concurrence": dict(who, decision="object", objected_by="oncall")})
+        if full_summary(ans.get("editor_summary")):
+            fix["editor_summary"] = dict(ans["editor_summary"])     # 当番が正しいと考える文面(次の監査の「当番の報告」)
+        integ = {"accepted": [], "refuted": [{"id": i, "evidence": who["evidence"]} for i in who["must_fix"]],
+                 "report_objection": {"audit_summary": who["audit_summary"], "evidence": who["evidence"]}}
+        objected = True
+        objections = list(must_fix)
+        # 続きにも、当番の最新の文面と異議一式を残す(上限・時間切れで終わっても、次の試行は異議を監査に渡すところから)
+        kept.update(fix=json.loads(json.dumps(fix)), open=list(objections), objection=integ)
+        return "objected"
+
     try:
         if wip:    # 前の試行の続き: その commit と、残った指摘から始める
             # kept を**先に**前の続きで満たす(この先の checkout が失敗しても、残してあった続きを消さない。監査指摘)
             kept = {"head": wip["head"], "fix": json.loads(json.dumps(wip["fix"])), "open": list(wip["open"])}
+            if isinstance(wip.get("objection"), dict):
+                kept["objection"] = wip["objection"]
+            if isinstance(wip.get("accept"), dict):
+                kept["accept"] = wip["accept"]      # checkout の前に移す(checkout が失敗しても了承待ちを消さない。監査指摘)
             if wip["head"] != base:
                 must(sh(["git", "checkout", "-q", "--detach", wip["head"]], cwd=wt), "前の試行の続きの checkout")
             fix, objections = dict(wip["fix"]), list(wip["open"])
             head = wip["head"]
-            transcript.append({"round": 0, "resumed_from": head, "open": objections, "carried_later": list(later)})
-            print(f"前の試行の続きから({head[:10]}、残った指摘 {len(objections)}件)", flush=True)
+            if isinstance(wip.get("objection"), dict):
+                # 前の試行は、監査の文面に当番が異を唱えたところで終わった。続きは当番の修正を挟まず、異議を監査に渡すところから
+                # (監査指摘: 異議の直後に上限・時間切れで終わると、異議の根拠・当番の最新の文面・監査の前の文面が失われた)
+                integ, objected = dict(wip["objection"]), True
+            acc = wip.get("accept")
+            # 了承待ちで終わった続き: 監査した commit(head)のまま、了承のセッションから始める。形が揃わなければ普通の続き(当番の修正から)
+            pending_accept = acc if (isinstance(acc, dict) and isinstance(acc.get("must_fix"), list)
+                                     and report_only(acc["must_fix"], acc)) else None
+            if not pending_accept:
+                kept.pop("accept", None)            # 形が揃わない了承待ちは使わない(普通の続き)
+            transcript.append({"round": 0, "resumed_from": head, "open": objections, "carried_later": list(later),
+                               "objection": kept.get("objection"), "accept_pending": bool(pending_accept)})
+            print(f"前の試行の続きから({head[:10]}、残った指摘 {len(objections)}件"
+                  + ("、監査の文面の了承から" if pending_accept else "") + ")", flush=True)
+            if pending_accept:
+                # 取り込む差分は監査した commit そのもの。作業ツリーに何か残っていて commit が変われば、了承からは始めない
+                head, diff, changed = freeze(wt, base, 0)
+                if head != wip["head"]:
+                    transcript.append({"round": 0, "accept_skipped": f"commit が監査したもの({wip['head'][:10]})と違う({head[:10]})"})
+                    kept.pop("accept", None)        # 普通の続き(当番の修正 → 検査 → 監査)へ
+                elif concur(0, pending_accept) != "objected":
+                    raise _RoundsDone()
         for rnd in range(1, MAX_ROUNDS + 1):
             if left() < MIN_STEP_SEC:
                 transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
                 break
             print(f"当番 {rnd}回目", flush=True)
-            if not fix:
+            carry_objection = integ if objected else None   # この往復の監査が終わるまで、異議を続きに残す
+            if objected:
+                objected = False    # 当番の答えは前の往復の異議(integ に入っている)。そのまま監査へ
+            elif not fix:
                 fix = run_claude(fix_prompt(stage, date, context, None), schemas / "oncall-fix.schema.json", wt,
                                  timeout=min(1800, left()))
                 transcript.append({"round": rnd, "fix": fix})
@@ -792,19 +1019,7 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                 transcript.append({"round": rnd, "integrate": integ})
                 # 監査の指摘で status(誤診の訂正)や再実行の仕方を改めたなら、それを最終判断にする(監査指摘)
                 apply_integrate(fix, integ)
-            # 作業ツリーの外への副作用は、答えが何であれ**毎回**検める(cannot_fix でも省かない。監査指摘):
-            # 本体が汚れた / origin/main が動いた / 本体の .env(Git 管理外)が変わった
-            if not root_clean():
-                transcript.append({"round": rnd, "root_touched": sh(["git", "status", "--short"], cwd=ROOT).stdout[:500]})
-                fix.update(status="cannot_fix", notes="当番が本体の作業ツリーに触った。取り込まない")
-                break
-            if remote_main() != base:
-                transcript.append({"round": rnd, "remote_moved": True})
-                fix.update(status="cannot_fix", notes="セッション中に origin/main が動いた(当番が push した疑い、または他の工程)。取り込まない")
-                break
-            if env_fingerprint() != env_before:
-                transcript.append({"round": rnd, "env_touched": True})
-                fix.update(status="cannot_fix", notes="当番が本体の .env に触った。取り込まない")
+            if outside_touched(rnd, base, env_before, transcript, fix):
                 break
             if fix.get("status") == "cannot_fix":
                 break
@@ -829,6 +1044,8 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                               "claim": f"{rnd}往復目の修正は監査が終わっていない(前の指摘が直ったかは未確認)。直っているか確かめ、足りなければ直す"}
             objections = [o for o in (objections or []) if o.get("id") != "review-incomplete"]   # 印は毎往復1つだけ
             kept = {"head": head, "fix": json.loads(json.dumps(fix)), "open": objections + [pending_review]}
+            if carry_objection:
+                kept["objection"] = carry_objection
             if left() < 30:
                 transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
                 break
@@ -884,10 +1101,24 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                 res["approved"] = True
                 kept["open"] = []
                 break
+            if report_only(must_fix, rev):
+                # 取り込みの条件 C(編集長 2026-10-21): 指摘が報告の誤りだけなら、監査が直した文面を当番が読み、了承か異議かを答える
+                step = concur(rnd, {"round": rnd, "must_fix": must_fix, "editor_summary": rev["editor_summary"],
+                                    "verification": rev.get("verification")})
+                if step == "objected":
+                    continue
+                break
             # reject なのに must_fix が空、という答えでも次の往復が「指摘なし」で始まらないようにする
             objections = must_fix or [{"id": "reject-without-items", "severity": "quality", "evidence": "",
                                                   "claim": "監査は reject したが must_fix が空だった: " + str(rev.get("notes") or "")[:600]}]
             kept["open"] = list(objections)
+            kept.pop("objection", None)     # 異議は監査に渡り、監査が答えた(続きは当番の修正から)
+    except _RoundsDone:         # 続きの了承で終わった(承認・時間切れ・外への副作用)。往復は回さない
+        pass
+    except CliBlocked as e:     # 認証切れ・利用上限(投稿は済み)。固定できたところまでは次へ残し、_main が試行を数えずに終える
+        res["error"] = f"CliBlocked: {str(e)[:300]}"
+        res["blocked"] = e.info
+        transcript.append({"error": res["error"]})
     except Exception as e:      # noqa: BLE001 — 何で終わっても、固定できたところまでは次へ残す
         res["error"] = f"{type(e).__name__}: {str(e)[:300]}"
         transcript.append({"error": res["error"]})
@@ -1070,7 +1301,9 @@ def reset_edition(date: str, edition: str) -> str:
 BACKFILL_POST_LINKS = ("import sys, pathlib; sys.path.insert(0, sys.argv[1]); import collect; "
                        "print(f'投稿のリンクを素材へ写した: {collect.backfill_post_links(sys.argv[2], pathlib.Path(sys.argv[3]))} 件')")
 CLASSIFY_RERUN = ("import sys; sys.path.insert(0, 'scripts'); import pipelib; "
-                  "ok, why = pipelib.classify_retag_lint(sys.argv[1], require_parsers=True); print(why); sys.exit(0 if ok else 1)")
+                  "ok, why = pipelib.classify_retag_lint(sys.argv[1], require_parsers=True); print(why); "
+                  # 合議のモデル CLI が認証切れ・利用上限で答えなかった(表は開始時へ戻した)なら、その終了コードで返す(監査指摘 r7)
+                  "sys.exit(0 if ok else pipelib.CLI_BLOCKED_EXIT if why.startswith(pipelib.CLI_STOPPED) else 1)")
 
 
 def ensure_pushed(branch: str, what: str, budget: int = 300) -> bool:
@@ -1093,25 +1326,29 @@ def ensure_pushed(branch: str, what: str, budget: int = 300) -> bool:
 
 
 def run_stage(cmd: list[str], log: Path, timeout: int) -> int:
-    """再実行する工程を走らせる。時間切れなら子(モデルのセッション)ごと落とす(親だけ落とすと子が作業ツリーを触り続ける)。"""
-    from pipelib import reap
+    """再実行する工程を走らせる。時間切れなら子(モデルのセッション)ごと落とす(親だけ落とすと子が作業ツリーを触り続ける)。
+    起動はモデル・道具と同じ start_group(自前のグループ・セッションの印・起動から控えるまでの信号の保留。SIGTERM の後始末の
+    一覧に載る)。起動の直後に中断されても工程を残さないよう、後始末は起動を含む範囲で行う(監査指摘 2026-10-14)。"""
+    from pipelib import LaunchFailed, finish_group, start_group, stop_groups
     become_subreaper()
+    p = None
     with log.open("a", encoding="utf-8") as f:
-        p = subprocess.Popen(cmd, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT, stdin=subprocess.DEVNULL,
-                             env={**os.environ, "ONCALL": "off", "IMAS_JOB_LOCK": "held"}, start_new_session=True)
         # 組版は執筆・校閲のセッションを別のセッション(プロセスグループ)で起動するので、親のグループを落としても残る。
         # 当番は subreaper なので、親を失った孫もこの process の子に付け替わる。**終わり方を問わず**(時間切れ・異常終了・
         # 正常終了・待機中の例外)、子孫が1つも残らなくなるまで、辿って落として刈り取るのを繰り返してから返す(写しを
         # 1回取るだけだと取ったあとに生まれた孫が、時間切れのときだけだと異常終了で残った孫が、控えへ戻した作業ツリーに
         # 書き込み、発行の clean 判定を壊す。監査指摘)
         try:
-            return p.wait(timeout=timeout)
-        except subprocess.TimeoutExpired:
-            reap(p)
-            return 124
+            p = start_group(cmd, cwd=ROOT, stdout=f, stderr=subprocess.STDOUT,
+                            env={**os.environ, "ONCALL": "off", "IMAS_JOB_LOCK": "held"})
+            if isinstance(p, LaunchFailed):
+                f.write(p.error + "\n")
+                return 127
+            _, _, timed_out = finish_group(p, timeout)
+            return 124 if timed_out else p.returncode
         finally:
-            if p.poll() is None:
-                reap(p)
+            if p is not None:
+                stop_groups([p])
             kill_all_descendants()
 
 
@@ -1239,7 +1476,11 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
                 p.unlink()   # 古い校閲記録が残ると release が最大巡数の古い判定を読む(監査指摘)
             commit_paths(["metrics"], f"oncall: {date} の古い校閲記録を外す", edition)
             code = run_stage([sys.executable, compose_py, "--date", date, "--reuse-plan", *extra], log, limit)
-            if recover:
+            if recover and code == CLI_BLOCKED_EXIT:
+                # 組み直しのモデル CLI が認証切れ・利用上限で止まった(組版が投稿済み)。控えへ戻すのは下の finally。
+                # 「戻らなかった」とは言わない(戻ったら --reuse-plan で組み直せる。監査指摘 r7)
+                print(f"{date} compose: 落とした記事を戻す組み直しはモデル CLI の停止で止まった。承認済みの紙面(控え)に戻す", flush=True)
+            elif recover:
                 back, still, lost = recover_outcome(before, posted_slugs(date), planned)
                 if code == 0 and lost:
                     code = 1   # 戻すために承認済みの記事を失うなら採らない(下で控えに戻す)
@@ -1308,7 +1549,10 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
         if not done and backup:
             try:
                 restore_edition(date, edition, backup, untracked_before)
-                notify("oncall", f"{date} {stage}: 作り直しが失敗(exit {code})したので {edition} を控え {backup} に戻した", ok=False)
+                if code == CLI_BLOCKED_EXIT:    # モデル CLI の停止(投稿は再実行の工程が済ませた)。失敗として重ねて知らせない
+                    print(f"{date} {stage}: モデル CLI の停止で作り直しが止まったので {edition} を控え {backup} に戻した", flush=True)
+                else:
+                    notify("oncall", f"{date} {stage}: 作り直しが失敗(exit {code})したので {edition} を控え {backup} に戻した", ok=False)
             except Exception as e:
                 notify("oncall", f"{date} {stage}: 作り直しが失敗し、控え {backup} への復元も失敗: {e}。**手で戻すこと**", ok=False)
     return code
@@ -1317,10 +1561,18 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
 RECOVER_TARGET: tuple[str, str] | None = None   # 落とした記事を戻す号(日付, edition ブランチ)。main が設定する
 
 
+def exit_code(code: int) -> int:
+    """当番の process の終了コード。モデル CLI の停止(CLI_BLOCKED_EXIT)で終わった回は 0(systemd に起動し直させない)。"""
+    return 0 if code == CLI_BLOCKED_EXIT else code
+
+
 def main() -> int:
     """当番の本体(_main)のあと、落とした記事を戻す当番(--recover)で組み直しをまだ試していなければ、いまのコードで1回試す。
     往復が承認されなかった・時間切れ・試行の上限・例外のどれで終わっても、戻すのを諦めない(編集長 2026-10-10
     「復帰保証までが Opus/Sol の仕事だ」)。直せなかったことと、戻せたかどうかは別に報告する。"""
+    # SIGTERM(unit の停止)でも、起動したセッション(当番・監査)を子孫ごと止めてから終わる。既定の SIGTERM は後始末を
+    # 走らせず、CLI と道具が当番の終了後も作業ツリーへ書いた(監査指摘 2026-10-14)。保管の指摘の当番は、このあと自前の報告付きに変える
+    exit_on_term()
     try:
         code = _main()
     except Exception as e:      # noqa: BLE001
@@ -1331,6 +1583,10 @@ def main() -> int:
                          "落とした記事を戻す組み直しは続ける", ok=False)
         code = 1
     if not (RECOVER and RECOVER_TARGET and not RECOVER_TRIED):
+        return code
+    if oncall_clis_blocked():
+        # 組み直しの執筆・校閲も同じ CLI で止まる(投稿は済み。上限が戻る・ログインし直したら --reuse-plan で組み直せる)
+        print(f"落とした記事を戻す組み直しはしない: {', '.join(oncall_clis_blocked())} が認証切れ・利用上限で答えない", flush=True)
         return code
     release_held_job_locks()   # _main が例外で抜けて掴んだままの工程の排他があれば離す(同じ process の別 fd でも flock は競合する)
     date, edition = RECOVER_TARGET
@@ -1383,7 +1639,7 @@ def recover_rerun(date: str, edition: str) -> int | None:
 
 
 def _main() -> int:
-    global DEADLINE_AT, STAGE_END_AT, RECOVER, RECOVER_TARGET
+    global DEADLINE_AT, STAGE_END_AT, RECOVER, RECOVER_TARGET, PAPER_RECORD
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", choices=list(STAGES))
     ap.add_argument("--date")
@@ -1532,10 +1788,11 @@ def _main() -> int:
     notify("oncall", f"{date} {stage} {CALLED_BECAUSE.get(stage, 'が止まった')}。当番({ONCALL_MODEL})が診断・修正に入る({attempt_no}回目)")
 
     context = gather_context(stage, date, a.reason)
-    (ROOT / "metrics" / f"oncall-{date}-{stage}-context.txt").write_text(context, encoding="utf-8")
+    PAPER_RECORD = paper_record(related_editions(date, a.edition or date, BACKLOG_ROWS), ROOT)
+    (ROOT / "metrics" / f"oncall-{date}-{stage}-context.txt").write_text(context + "\n\n" + PAPER_RECORD, encoding="utf-8")
     base = remote_main()
     env_before = env_fingerprint()
-    wt = Path(tempfile.mkdtemp(prefix=f"oncall-{date}-{stage}-"))
+    wt = scratch_dir(f"oncall-{date}-{stage}-")    # /tmp(tmpfs)に置かない。finally で消し、消し損ねは次に作るとき片付く
     shutil.rmtree(wt)
     sh(["git", "worktree", "prune"], cwd=ROOT)
     must(sh(["git", "worktree", "add", "--detach", str(wt), base], cwd=ROOT, timeout=120), "worktree の作成")
@@ -1547,17 +1804,28 @@ def _main() -> int:
         (ROOT / "metrics" / f"oncall-{date}-{stage}-transcript.json").write_text(
             json.dumps(transcript, ensure_ascii=False, indent=1), encoding="utf-8")
         state["log"].append({"at": datetime.datetime.now().isoformat(timespec="minutes"), "approved": approved,
-                             "status": fix.get("status"), "diagnosis": (fix.get("diagnosis") or "")[:300]})
+                             "status": fix.get("status"), "diagnosis": (fix.get("diagnosis") or "")[:300],
+                             # 報告の文面を誰が書き誰が了承したか(条件 C。あとで報告が事実と違うと分かったとき両方を挙げる)
+                             "report_by": ({k: v for k, v in fix["report_authorship"].items() if k != "own_summary"}
+                                           if isinstance(fix.get("report_authorship"), dict) else "oncall")})
         # 直し切れなかったら、**最後に内容を固定できたところまで**の修正と残った指摘を残す(次の試行はこの続きから)。
         # 例外・時間切れで終わった往復でも残す。差分が無い診断(no_fix_needed)への指摘も残す。直し切れたら消す
         kept = res["kept"]
-        if not approved and kept["fix"] and kept["open"] and kept["fix"].get("status") != "cannot_fix":
-            state["wip"] = {"base": base, "head": kept["head"], "fix": kept["fix"], "open": kept["open"],
-                            "later": kept.get("later") or []}
+        wip_next = wip_of(base, kept, approved)
+        if wip_next:
+            state["wip"] = wip_next
         else:
             state.pop("wip", None)
         save_state(state_p, state)
         open_left = (state.get("wip") or {}).get("open") or []
+
+        if res.get("blocked"):
+            # 当番・監査の CLI が認証切れ・利用上限で答えなかった(投稿は済み)。直せなかったのではないので、この回は試行の
+            # 回数に数えない(印を消す)。途中までの修正は wip として次の試行の続きに残してある。異常終了にしない(systemd の
+            # 起動し直しで同じ理由の即死を重ねない。2026-10-20 18:34・18:35 の当番は2回とも認証切れで即死し、1日2回の枠を使い切った)
+            (ROOT / "metrics" / f"oncall-{date}-{stage}-attempt-{attempt_no}").unlink(missing_ok=True)
+            print(f"{date} {stage}: 当番を止めた({res['error']})。試行の回数に数えない", flush=True)
+            return 0
 
         if not approved:
             last = transcript[-1] if transcript else {}
@@ -1699,6 +1967,11 @@ def _main() -> int:
             return 1
         must(sh(["git", "checkout", "-q", edition], cwd=ROOT), f"{edition} の checkout")
         code = rerun_stage(stage, date, edition, full, recover=RECOVER)
+        if code == CLI_BLOCKED_EXIT:
+            # 再実行のモデル CLI が認証切れ・利用上限で答えなかった(再実行の工程が投稿済み。読めなかった分は読み直しの列に残る)
+            # 異常終了にしない(systemd の起動し直しで、同じ理由で止まる再実行を重ねない)
+            print(f"{date} {stage}: 再実行はモデル CLI の停止で途中まで(exit {code})", flush=True)
+            return 0
         notify("oncall", f"{date} {stage}: 再実行({rerun_mode})が終わった(exit {code})。"
                          f"{'成功' if code == 0 else '失敗。metrics/oncall-' + date + '-' + stage + '-rerun.log を見ること'}",
                ok=(code == 0))
@@ -1708,10 +1981,12 @@ def _main() -> int:
         return 1
     finally:
         sh(["git", "worktree", "remove", "--force", str(wt)], cwd=ROOT)
+        shutil.rmtree(wt, ignore_errors=True)      # git で消せなかった残り(登録は下の prune が掃除する)
         sh(["git", "worktree", "prune"], cwd=ROOT)
         if lock_fd is not None:
             os.close(lock_fd)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    # モデル CLI の停止で終わった回は異常終了にしない(systemd の起動し直しで同じ理由の即死を重ねない。監査指摘 r7)
+    sys.exit(exit_code(main()))

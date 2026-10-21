@@ -1,4 +1,6 @@
 """パイプライン共通ユーティリティ(collect/compose/release/watch)。標準ライブラリのみ。"""
+import atexit
+import contextlib
 import datetime
 import html as html_lib
 import json
@@ -8,6 +10,7 @@ import shutil
 import signal
 import subprocess
 import sys
+import threading
 import time
 import traceback
 import urllib.request
@@ -28,6 +31,27 @@ def edition_date(now: datetime.datetime | None = None) -> str:
     now = now or now_jst()
     d = now.date() if now.hour < 6 else now.date() + datetime.timedelta(days=1)
     return d.isoformat()
+
+
+def x_status_time(url: str) -> datetime.datetime | None:
+    """x.com/twitter.com の投稿の status ID(Snowflake)から投稿日時を日本時間で復元する。X の投稿でなければ None。"""
+    m = re.match(r"https?://(?:[\w-]+\.)?(?:x|twitter)\.com/[^?#\s]*?/status(?:es)?/(\d{15,20})", str(url or ""))
+    if not m:
+        return None
+    ms = (int(m.group(1)) >> 22) + 1288834974657  # Twitter epoch
+    return datetime.datetime.fromtimestamp(ms / 1000, tz=JST)
+
+
+def align_x_published_date(c: dict) -> bool:
+    """X の投稿の素材(候補・続報予約)の published_date を、投稿 ID の日本時間の日付に揃える。変えたら True。
+    収集の正規化・候補ファイルへの書き込み(保存済みの候補を含む)・組版の素材の読み込みが同じこれを使う(冪等)。
+    2026-10-21号: Grok が投稿日時を GMT で書き、10/21 0:00 JST の公式の投稿3件が published_date 10/20 の素材になって、
+    出典 label の日付が 10/20 で書かれた(校閲 R8 が2巡ブロック)。"""
+    t = x_status_time(c.get("url")) if isinstance(c, dict) else None
+    if not t or c.get("published_date") == t.date().isoformat():
+        return False
+    c["published_date"] = t.date().isoformat()
+    return True
 
 
 def candidate_misplaced(c: dict) -> bool:
@@ -98,6 +122,75 @@ EDITORIAL_MODEL = ENV.get("EDITORIAL_MODEL", "gpt-6.1-sol")
 # 校閲・機械検収エラーの修正に使う Claude モデル(claude -p --model に渡す)。
 # 執筆(Codex)と別ベンダーにするため Claude 側。既定は haiku(検品はコスト重視)
 REVIEW_MODEL = ENV.get("REVIEW_MODEL", "haiku")
+
+
+# --- 使い捨ての作業場所(/tmp に置かない) ---------------------------------------------------
+# /tmp は 3.8GB の tmpfs。当番の作業ツリー・監査の使い捨ての作業ツリー・Sol が監査中に作る一時ファイル・テストの一時ディレクトリ・
+# 描画の Chrome の一時ディレクトリが溜まって 100% になり、当番の作業ツリー作成・描画・回帰テストが全部止まった(2026-10-21)。
+# 本番の工程が作る一時のものは /home 側(既定 ~/.cache/imas-news。IMAS_SCRATCH で変えられる)に置き、片付けに失敗して残ったものは
+# 次に作業場所を作るとき古い順に消す(sweep_scratch)。子プロセス(モデルの CLI・テスト・Chrome)の TMPDIR も同じ置き場の tmp/ へ向ける
+SCRATCH_MAX_AGE_SEC = 24 * 3600     # これより古い残り物は片付け損ねたもの(工程は最長でも数時間)
+
+
+def scratch_root() -> Path:
+    """使い捨ての作業場所の置き場(呼ぶたびに環境から決める。テストは IMAS_SCRATCH で一時ディレクトリの中へ向ける)。"""
+    p = Path(os.environ.get("IMAS_SCRATCH") or ENV.get("IMAS_SCRATCH") or (Path.home() / ".cache" / "imas-news"))
+    p.mkdir(parents=True, exist_ok=True)
+    return p
+
+
+def _under_tmp(p: str) -> bool:
+    try:
+        return not p or Path(p).resolve().is_relative_to("/tmp")
+    except (OSError, ValueError):
+        return True
+
+
+def use_scratch_tmpdir() -> None:
+    """この process と子プロセスの一時ファイルの置き場(TMPDIR)を、/tmp でなければそのまま、/tmp(か未設定)なら置き場の tmp/ にする。"""
+    import tempfile
+    if not _under_tmp(os.environ.get("TMPDIR", "")):
+        return
+    t = scratch_root() / "tmp"
+    t.mkdir(parents=True, exist_ok=True)
+    os.environ["TMPDIR"] = str(t)
+    tempfile.tempdir = str(t)
+
+
+def sweep_scratch(max_age: float = SCRATCH_MAX_AGE_SEC) -> list[str]:
+    """置き場(と TMPDIR の置き場)に残った、max_age より古いものを消す。戻りは消したもの。消せないものは飛ばす(次の回にまた試す)。"""
+    gone = []
+    root = scratch_root()
+    for base in (root, root / "tmp"):
+        try:
+            entries = list(base.iterdir())
+        except OSError:
+            continue
+        for e in entries:
+            if e.name == "tmp" and base == root:
+                continue
+            try:
+                if time.time() - e.lstat().st_mtime < max_age:
+                    continue
+                if e.is_dir() and not e.is_symlink():
+                    shutil.rmtree(e, ignore_errors=True)
+                else:
+                    e.unlink()
+            except OSError:
+                continue
+            if not e.exists():
+                gone.append(str(e))
+    return gone
+
+
+def scratch_dir(prefix: str) -> Path:
+    """使い捨ての作業ディレクトリを置き場の下に作る(作る前に古い残り物を片付ける)。片付けは呼び側の finally。"""
+    import tempfile
+    sweep_scratch()
+    return Path(tempfile.mkdtemp(prefix=prefix, dir=scratch_root()))
+
+
+use_scratch_tmpdir()
 
 # **社説は 2026-09-06 号までで終了。**面白く作れなかったため断念(2026-09-06 決定)。
 # 過去号の社説は append-only でそのまま残す。日付で切るのは、既存号の lint と
@@ -274,6 +367,11 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
         return False
     if ENV.get("ONCALL", "on").lower() == "off" or os.environ.get("ONCALL", "").lower() == "off":
         return False
+    if oncall_clis_blocked():
+        # 当番も同じ CLI で同じ理由で止まり、1日2回の枠を使うだけになる(2026-10-20 18:34・18:35 の当番が2回とも認証切れで即死)。
+        # 人への投稿は見つけたときに済んでいる(report_cli_blocked)
+        print(f"当番を呼ばない({stage} {date}): {', '.join(oncall_clis_blocked())} が認証切れ・利用上限で答えない", flush=True)
+        return False
     script = ROOT / "scripts" / "oncall.py"
     if not script.exists():
         return False
@@ -435,13 +533,14 @@ def set_quiet(on: bool) -> None:
     _QUIET = on
 
 
-def notify(job: str, msg: str, ok: bool = True, require: bool = False) -> bool:
+def notify(job: str, msg: str, ok: bool = True, require: bool = False, ledger: bool = True) -> bool:
     """Discord へ通知する。戻り値は**届いたか**。
     require=True は「人に届かなければ先へ進んではいけない」通知(当番の修正報告)で、webhook 未設定・
-    試験実行も**届いていない**として False を返す(監査指摘)。通常の通知は未設定なら True(黙認)。"""
+    試験実行も**届いていない**として False を返す(監査指摘)。通常の通知は未設定なら True(黙認)。
+    ledger=False は異常の台帳に積まない(当番に回さない。モデル CLI の認証切れ・利用上限: 当番も同じ CLI で止まる)。"""
     prefix = "✅" if ok else "🚨"
     text = f"{prefix} アイマスNEWS {job}: {msg}"
-    if not ok and job != "oncall":     # 人に見せる異常は当番のなぜなぜの対象(当番自身の通知は除く)
+    if not ok and job != "oncall" and ledger:     # 人に見せる異常は当番のなぜなぜの対象(当番自身の通知は除く)
         anomaly(job, msg)
     if _QUIET:
         print(f"[試験実行・通知しない] {text}", flush=True)
@@ -520,6 +619,247 @@ def notify_long(job: str, text: str, ok: bool = True, limit: int = DISCORD_LIMIT
     return notify(job, text, ok=ok, require=True)
 
 
+# --- モデル CLI の認証切れ・利用上限 ---------------------------------------------------------
+# CLI(claude・codex・grok)が認証切れ・利用上限で答えなかった回は、新着・素材・記事の失敗ではない。失敗の回数に数えず、
+# 読み直しの列に残す。人にすぐ知らせる(ログインし直す・戻る時刻を待つのは人の仕事)が、当番には回さない(当番も同じ CLI で止まる)。
+# 実測 2026-10-20 18:30: Claude の OAuth が切れて facts 化が読めなかった1回を新着の「読めなかった1回目」と数え、20:29 の再実行で
+# 新着を諦めた。18:34・18:35 の当番は2回とも同じ認証切れで即死し、1日2回の枠を使い切った。
+# 文言は各 CLI の実物(claude 2.1.304・codex 0.163.0・grok 1.0.62 の実行ファイルの文字列と ops の生の出力)から採った
+CLI_BLOCK_RULES = (
+    ("auth", re.compile(
+        r"Failed to authenticate|OAuth (?:session|token) (?:expired|revoked)|\bNot logged in\b|Please run /login"
+        r"|Invalid API key|access token could not be refreshed|authentication session could not be refreshed"
+        r"|log out and sign in again|re-?run `?codex login|\b401 Unauthorized|Auth retry budget exhausted", re.I)),
+    ("limit", re.compile(
+        r"\bhit (?:your|the) [\w'’ -]{0,40}limit|reached your [\w'’ -]{0,40}limit|usage limit reached|You're out of credits|out of credits\."
+        r"|credit balance (?:is )?too low|rate_limit_error|429 Too Many Requests|API Error: 429"
+        r"|monthly spend limit|team's shared budget|credit limit for your plan", re.I)),
+)
+CLI_RESETS = re.compile(r"(?:resets?|try again)\s+(?:at\s+|in\s+)?([0-9][^\n·|]{0,40})", re.I)
+CLI_SCAN_CHARS = 1500           # 出力の末尾だけを見る(素材の本文に同じ語があっても拾わない。CLI の失敗の文言は最後に出る)
+CLI_NAMES = {"claude": "Claude", "codex": "Codex(GPT)", "grok": "Grok"}
+CLI_LOGIN = {"claude": "ops のターミナルで `claude` を開いて /login(または `claude auth login`)",
+             "codex": "ops のターミナルで `codex login`(headless なら `codex login --device-auth`)",
+             "grok": "ops のターミナルで `grok login`"}
+CLI_BLOCK_STATE = ROOT / "metrics" / "cli-blocked.json"   # Git 管理外。どの CLI がいつから止まっているか(工程をまたいで連投しない)
+CLI_BLOCK_REMIND_SEC = 12 * 3600   # 止まったままなら、この間隔で1回だけ知らせ直す
+CLI_BLOCKED: dict[str, dict] = {}  # この process で見つけた {CLI: 理由}(当番を呼ばない判断・工程の打ち切りに使う)
+_CLI_LOCK = __import__("threading").Lock()
+
+
+class CliBlocked(BaseException):
+    """モデル CLI が認証切れ・利用上限で答えなかった。BaseException なのは、途中の `except Exception`(1件の失敗として数えて
+    続ける所)に飲まれずに、工程の入口まで上がって「数えずに止める」ため(collect の Terminated と同じ扱い)。"""
+
+    def __init__(self, info: dict):
+        self.info = info
+        super().__init__(f"{CLI_NAMES.get(info.get('tool'), info.get('tool'))} が{cli_block_kind(info)}で答えない: {info.get('detail', '')}")
+
+
+def cli_block_kind(info: dict) -> str:
+    return "認証切れ" if info.get("kind") == "auth" else "利用上限"
+
+
+CODEX_ERROR_LINE = re.compile(r"^(?:\[[^\]]*\]\s*)?ERROR:")   # codex exec 自身が最後に出す失敗の行(`ERROR: …`)
+CODEX_ERROR_TAIL = 5      # codex は失敗の行を出して終わる。最後の数行の中にあるものだけを CLI 自身の失敗とみる
+
+
+def cli_error_lines(tool: str, text) -> list[str]:
+    """CLI の出力のうち、**CLI 自身の**エラーとして読める行だけ(素材の本文・道具の出力を見ない。監査指摘: 探索のログの道具の
+    出力に `Not logged in` があると認証切れと取り違えた)。codex は進行ログに道具の出力が混ざるので、出力の最後の数行のうち
+    最後の `ERROR:` の行だけ(道具が `ERROR: …` を出しても、そのあとに codex 自身の失敗の行か進行ログが続く。監査指摘 r5)、
+    claude -p は答えかエラーの1行だけを出すので最後の1行だけ、grok はエラー出力とセッション記録の失敗理由(呼び側が渡す)だけ。"""
+    lines = [ln.strip() for ln in str(text or "")[-CLI_SCAN_CHARS:].splitlines() if ln.strip()]
+    if tool == "codex":
+        return [ln for ln in lines[-CODEX_ERROR_TAIL:] if CODEX_ERROR_LINE.match(ln)][-1:]
+    if tool == "claude":
+        return lines[-1:]
+    return lines
+
+
+def cli_blocked_reason(tool: str, *texts) -> dict | None:
+    """CLI 自身のエラーの行(cli_error_lines)から、認証切れ・利用上限の文言を探す。無ければ None(本物の失敗)。
+    codex は標準出力・エラーのどれかの最後の `ERROR:` が認証切れ・利用上限でない(ふつうの失敗)なら止まったとしない
+    (別々に受けた出力の片方の末尾に道具の出力の `ERROR:` が来ても、codex 自身のふつうの失敗を隠さない。監査指摘 r5)。"""
+    found = [ln for t in texts for ln in cli_error_lines(tool, t)]
+    if tool == "codex" and any(not any(pat.search(ln) for _, pat in CLI_BLOCK_RULES) for ln in found):
+        return None
+    tail = "\n".join(found)
+    for kind, pat in CLI_BLOCK_RULES:
+        m = pat.search(tail)
+        if m:
+            start = tail.rfind("\n", 0, m.start()) + 1
+            end = tail.find("\n", m.end())
+            line = tail[start:end if end >= 0 else None].strip()[:240]
+            r = CLI_RESETS.search(line) or CLI_RESETS.search(tail)
+            return {"tool": tool, "kind": kind, "detail": line, "resets": r.group(1).strip().rstrip(".") if r else ""}
+    return None
+
+
+def _cli_state_io(update):
+    """止まっている CLI の記録を、工程どうし(別 process)・並列のバッチどうしで食い違わずに読み書きする。"""
+    import fcntl
+    with _CLI_LOCK:
+        CLI_BLOCK_STATE.parent.mkdir(parents=True, exist_ok=True)
+        with open(CLI_BLOCK_STATE.with_suffix(".lock"), "a") as lk:
+            fcntl.flock(lk, fcntl.LOCK_EX)
+            try:
+                st = json.loads(CLI_BLOCK_STATE.read_text(encoding="utf-8"))
+                st = st if isinstance(st, dict) else {}
+            except (OSError, ValueError):
+                st = {}
+            out = update(st)
+            write_atomic(CLI_BLOCK_STATE, json.dumps(st, ensure_ascii=False, indent=1) + "\n")
+            return out
+
+
+def cli_block_text(info: dict, job: str, where: str, n: int, since: str) -> str:
+    name = CLI_NAMES.get(info["tool"], info["tool"])
+    if info["kind"] == "auth":
+        what = f"🔑 {name} の認証が切れて答えない。ログインし直しが要る: {CLI_LOGIN.get(info['tool'], 'その CLI にログインし直す')}"
+    else:
+        what = (f"⏳ {name} が利用上限で答えない。戻るのは "
+                + (f"{info['resets']}(CLI の表示)" if info.get("resets") else "CLI の表示に無い(各 CLI の使用量の画面で確かめる)"))
+    return (f"{what}\n- 工程: {job} {where}(この原因で {n}回目。{since} から)\n- CLI の出力: {info.get('detail') or '(なし)'}\n"
+            "- 答えなかった回は失敗に数えず、読み直しの列に残す(素材・記事は諦めない)。当番には回さない(同じ CLI で止まる)"
+            + (f"\n- 戻ったら: {CLI_RESUME[job]}" if job in CLI_RESUME else ""))
+
+
+CLI_RESUME = {   # 戻ったあとに続きをどう拾うか(工程ごと)
+    "collect": "次の収集が、読めなかった新着を読み直しの列から先に読む",
+    "compose": "組版はここで止めた(書けた記事と計画は残してある)。計画まで済んでいれば ops で "
+               "`python3 scripts/compose.py --reuse-plan` で書けていない記事から組み直す。済んでいなければ `python3 scripts/compose.py`",
+    "oncall": "当番はこの回を試行の回数に数えずに終えた(途中までの修正は次の試行の続きに残す)。次に工程が当番を呼べば続きから直す",
+    "update": "翌日 01:30 の道具の更新がもう一度確かめる",
+}
+
+
+def report_cli_blocked(info: dict, job: str, where: str) -> bool:
+    """認証切れ・利用上限を記録し、その CLI の同じ原因では1回だけ Discord に投稿する(同じ工程の中・続く工程で連投しない。
+    止まったままなら CLI_BLOCK_REMIND_SEC ごとに1回)。異常の台帳には積まない(当番に回さない)。戻りは投稿したか。"""
+    tool = info["tool"]
+    CLI_BLOCKED[tool] = info
+    now = time.time()
+    stamp = now_jst().isoformat(timespec="minutes")
+
+    def upd(st):
+        cur = st.get(tool) if isinstance(st.get(tool), dict) and st[tool].get("kind") == info["kind"] else None
+        post = cur is None or now - float(cur.get("posted_at") or 0) >= CLI_BLOCK_REMIND_SEC
+        st[tool] = {"kind": info["kind"], "detail": info.get("detail", ""), "resets": info.get("resets", ""),
+                    "since": (cur or {}).get("since") or stamp, "count": int((cur or {}).get("count") or 0) + 1,
+                    "posted_at": now if post else float(cur.get("posted_at") or 0), "last": f"{job} {where}".strip(),
+                    "last_at": now}
+        return post, st[tool]["count"], st[tool]["since"]
+    try:
+        post, n, since = _cli_state_io(upd)
+    except OSError as e:          # 記録できなくても知らせる(黙って止まらない)
+        print(f"(CLI の停止の記録を書けない: {e})", flush=True)
+        post, n, since = True, 1, stamp
+    if not post:
+        print(f"{CLI_NAMES.get(tool, tool)} が{cli_block_kind(info)}で答えない({job} {where}。この原因で {n}回目。投稿は済み)", flush=True)
+        return False
+    # 届いたか(require=True: 送り先が未設定・試験実行も「届いていない」)で決める。届いていないのに投稿済みにすると、
+    # 送り先を直した次の工程でも12時間黙る(監査指摘 r3)
+    if not notify(job, cli_block_text(info, job, where, n, since), ok=False, ledger=False, require=True):
+        try:     # 届かなければ、次の回にもう一度投稿する
+            _cli_state_io(lambda st: st.get(tool, {}).update(posted_at=0))
+        except OSError:
+            pass
+    return True
+
+
+def cli_recovered(tool: str, job: str) -> None:
+    """CLI が答えた。止まっていた記録があれば消し、戻ったことを1回だけ知らせる。
+    この process で既に止まったのを見た CLI は、戻ったことにしない: 止まる前に起動していた並列の子が後から成功で回収されると、
+    記録を消して同じ原因をまた投稿していた(監査指摘)。戻ったかどうかは次の工程(別の process)の最初の答えで決める。"""
+    if tool in CLI_BLOCKED:
+        return
+    try:      # 記録に無ければ何もしない(答えるたびに排他を取って書き直さない)
+        if tool not in json.loads(CLI_BLOCK_STATE.read_text(encoding="utf-8")):
+            return
+    except (OSError, ValueError, TypeError):
+        return
+    try:
+        # 消すかどうかは排他の中で決め直す(入口の確かめのあとに、並列の別のスレッドが止まったのを記録していれば消さない。監査指摘 r3)
+        old = _cli_state_io(lambda st: None if tool in CLI_BLOCKED else st.pop(tool, None))
+    except OSError:
+        return
+    if isinstance(old, dict) and float(old.get("posted_at") or 0) > 0:
+        if not notify(job, f"{CLI_NAMES.get(tool, tool)} がまた答えるようになった({old.get('since', '')} から"
+                           f"{'認証切れ' if old.get('kind') == 'auth' else '利用上限'}で {old.get('count', '?')}回止まっていた)",
+                      require=True):
+            # 届かなければ記録を戻し、次に答えたときにもう一度知らせる(監査指摘 r2)。その間に止まり直していれば、そちらを残す
+            try:
+                _cli_state_io(lambda st: st.setdefault(tool, old))
+            except OSError:
+                pass
+
+
+def cli_check(tool: str, job: str, where: str, rc, *texts, answered: bool | None = None) -> dict | None:
+    """モデル CLI を1回走らせた後に呼ぶ。答えた(既定は終了コード 0)なら止まっていた記録を消して None。答えなかった回は出力から
+    認証切れ・利用上限を探し、見つかれば記録・投稿して理由を返す(呼び側は失敗に数えない)。時間切れ(rc が None)は判定しない。
+    Grok は API に拒まれても終了コードが 0 なので、呼び側が answered(書き出しがあるか)を渡す。"""
+    if answered if answered is not None else rc == 0:
+        cli_recovered(tool, job)
+        return None
+    if rc is None:
+        return None
+    info = cli_blocked_reason(tool, *texts)
+    if info:
+        report_cli_blocked(info, job, where)
+    return info
+
+
+def grok_session_reasons(cwd: Path, since_ts: float, needle: str = "") -> str:
+    """cwd で since_ts 以降に始まった Grok セッションの失敗理由(Grok は API に拒まれても終了コード 0 で、理由はセッション記録
+    updates.jsonl にしか残らない)。needle を渡したら、会話の記録(chat_history.jsonl)にそれを含むセッションだけ(同じ cwd で並列に
+    走る別の面・前の試行の拒否を、この試行の理由と取り違えない。監査指摘 r2)。"""
+    import urllib.parse as _up
+    base = Path.home() / ".grok" / "sessions" / _up.quote(str(cwd), safe="")
+    reasons: list[str] = []
+    try:
+        dirs = [d for d in base.iterdir() if d.is_dir() and d.stat().st_mtime >= since_ts - 1]
+    except OSError:
+        return ""
+    for d in dirs:
+        try:
+            ch = (d / "chat_history.jsonl").read_text(encoding="utf-8", errors="replace") if needle else ""
+            # 記録の JSON が ASCII 以外や / を escape して書いていても見つける
+            if needle and not any(n in ch for n in (needle, json.dumps(needle)[1:-1], json.dumps(needle)[1:-1].replace("/", "\\/"))):
+                continue
+            up = (d / "updates.jsonl").read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        for m in re.finditer(r'"agent_result":\s*"([^"]{0,300})"', up):
+            if "error" in m.group(1).lower() and m.group(1) not in reasons:
+                reasons.append(m.group(1))
+    return "\n".join(reasons)
+
+
+def oncall_clis_blocked() -> list[str]:
+    """当番が使う CLI(修正の claude・監査の codex)のうち、この process で認証切れ・利用上限を見たもの。"""
+    return [t for t in ("claude", "codex") if t in CLI_BLOCKED]
+
+
+CLI_BLOCKED_EXIT = 75     # 子の工程(出典の判定)が CLI の停止でやめたときの終了コード(EX_TEMPFAIL)
+CLI_STOPPED = "モデル CLI が認証切れ・利用上限で答えない"   # 取引の失敗の理由の頭。呼び側は異常にしない(投稿は子が済ませた)
+
+
+def adopt_cli_blocked(since: float) -> list[str]:
+    """子の工程が since 以降に記録した CLI の停止を、この process で見たものとして引き取る(当番を呼ばない判断に使う)。
+    戻りは引き取った CLI。"""
+    try:
+        st = json.loads(CLI_BLOCK_STATE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    got = []
+    for tool, e in (st.items() if isinstance(st, dict) else []):
+        if isinstance(e, dict) and float(e.get("last_at") or 0) >= since:
+            CLI_BLOCKED[tool] = {"tool": tool, "kind": e.get("kind", ""), "detail": e.get("detail", ""), "resets": e.get("resets", "")}
+            got.append(tool)
+    return sorted(got)
+
+
 def partial_output(e: BaseException) -> tuple[str, str]:
     """subprocess の時間切れ(TimeoutExpired)が持っている、それまでの標準出力・エラー(bytes のこともある)を文字列で返す。
     時間切れの回こそ、どこまで進んで何を言っていたかを残す(save_raw へ渡す)。"""
@@ -531,11 +871,20 @@ def reap(p, grace: int = 10) -> tuple[str, str]:
     """時間切れのセッションを落とし、それまでの出力を回収する。**回収にも上限を付ける。**
     claude / codex が起動した子(道具の実行)が出力のパイプを持ったまま残ると、親だけを kill しても
     上限なしの communicate() が子の終了まで待ち、締切を越えて工程が止まる(監査指摘)。
-    start_new_session=True で起動したものはプロセスグループごと落とす。"""
+    プロセスグループと子孫(自分でグループを分けた道具も、親が先に終わって辿れなくなった道具も)を止め、死んだのを確かめてから
+    出力を読む(stop_tree)。"""
+    if isinstance(p, LaunchFailed):
+        return "", p.error
+    pid = getattr(p, "pid", None)
     try:
-        os.killpg(p.pid, signal.SIGKILL)
-    except (ProcessLookupError, PermissionError, OSError):
+        # 頭がまだ回収前(生きている・ゾンビ)なら pid は再利用されていないので、頭から子孫を辿ってよい
+        stop_tree(pid, root=pid if p.returncode is None else None, mark=getattr(p, "session_mark", None))
+    except Exception:       # noqa: BLE001  止め方の失敗で回収を飛ばさない(下で頭だけは必ず落とす)
+        traceback.print_exc()
+    try:
         p.kill()
+    except OSError:
+        pass
     try:
         so, se = p.communicate(timeout=grace)
     except subprocess.TimeoutExpired as e:
@@ -543,7 +892,335 @@ def reap(p, grace: int = 10) -> tuple[str, str]:
         se += "\n(出力を回収しきれなかった)"
     except ValueError:      # すでに回収済み・パイプが閉じている
         so, se = "", ""
+    finally:
+        _forget(p)
     return so or "", (se or "") + "\n(時間切れ)"
+
+
+# --- モデル・道具のセッションの起動と回収 ---------------------------------------------------------
+# モデルの CLI(claude・codex・grok)と、それが起動する道具(Bash・fetch_page.py・描画のブラウザ)は、すべて start_group / run_group で
+# 自前のセッション(プロセスグループ)に起動し、時間切れ・中断(例外・SIGTERM)ではグループと子孫を止めて、死んだのを確かめてから返す。
+# subprocess.run(timeout=) は直接の子しか止めず、CLI が起動した道具が残って、失敗を返したあとも作業ツリーへ書き続けた
+# (監査指摘 2026-10-14: compose.claude_run・oncall.run_claude の時間切れのあとに孫がファイルを書いた)
+_SESSIONS: set = set()          # 起動して、まだ回収していないセッション(中断のとき stop_groups がまとめて止める)
+_SESSIONS_LOCK = threading.RLock()     # SIGTERM の後始末(同じスレッドの割り込み)から取り直せるように RLock
+# セッションごとの印。起動するときに環境変数へ足し(入れ子のセッションは空白区切りで足していく)、子孫は受け継ぐ。親が先に終わって
+# 親子の関係から辿れなくなった道具(自分でセッションを分けて親より長く生きる子)も、この印で見つけて止める(監査指摘 2026-10-14)
+SESSION_ENV = "IMAS_SESSION"
+# 工程を終えるところ(SIGTERM・途中終了の後始末で stop_groups() を呼んだ)。以後の起動は断る(別スレッドの担当が、後始末のあとに
+# 次の担当を起動しない。監査指摘 2026-10-14: 収集の SIGTERM のあと、待っていたバッチが CLI を起動した)
+STOPPING = threading.Event()
+
+
+class LaunchFailed:
+    """起動できなかったセッション(Popen の OSError)。その担当だけの異常終了(終了コード 127、理由は標準エラー)として扱う。
+    並列に起動している途中で1つが起動できなくても、例外で抜けて先に起動した担当を置き去りにしない(監査指摘 2026-10-14:
+    選定・校閲の2本目の起動の失敗で、1本目が回収されずに残った)。"""
+    pid = None
+    returncode = 127
+
+    def __init__(self, args, err: OSError):
+        self.args = args
+        self.error = f"起動できない({type(err).__name__}: {err})"
+
+    def poll(self):
+        return self.returncode
+
+    def wait(self, timeout=None):
+        return self.returncode
+
+    def communicate(self, timeout=None):
+        return "", self.error
+
+    def kill(self):
+        pass
+
+
+def _forget(p) -> None:
+    with _SESSIONS_LOCK:
+        _SESSIONS.discard(p)
+
+
+def _proc_table() -> dict[int, tuple[int, int, str]] | None:
+    """/proc の全プロセス: pid → (親の pid, プロセスグループ, 状態)。/proc が無ければ None。"""
+    try:
+        names = os.listdir("/proc")
+    except OSError:
+        return None
+    out: dict[int, tuple[int, int, str]] = {}
+    for d in names:
+        if not d.isdigit():
+            continue
+        try:
+            with open(f"/proc/{d}/stat", "rb") as f:
+                rest = f.read().decode("utf-8", "replace").rsplit(")", 1)[1].split()
+            out[int(d)] = (int(rest[1]), int(rest[2]), rest[0])
+        except (OSError, ValueError, IndexError):
+            continue
+    return out
+
+
+def _proc_gone(pid: int) -> bool:
+    """死んだ(消えた・ゾンビ)か。"""
+    try:
+        with open(f"/proc/{pid}/stat", "rb") as f:
+            return f.read().decode("utf-8", "replace").rsplit(")", 1)[1].split()[0] in ("Z", "X")
+    except (OSError, IndexError):
+        return True
+
+
+_SUBREAPER = {"n": 0, "lock": threading.Lock(), "was": 0}
+
+
+def subreaper(on: bool) -> None:
+    """この process を孤児の受け皿(PR_SET_CHILD_SUBREAPER)にする/やめる。重なっても最後の1つが終わるまで続け、終わったら
+    始める前の状態に戻す(当番のように、もとから受け皿の process の受け皿を外さない)。使うのは compose の ChildTracker と、
+    出典の判定の取引(_txn_run)。"""
+    import ctypes
+    with _SUBREAPER["lock"]:
+        try:
+            libc = ctypes.CDLL(None, use_errno=True)
+            if on and _SUBREAPER["n"] == 0:
+                cur = ctypes.c_int(0)
+                libc.prctl(37, ctypes.byref(cur), 0, 0, 0)     # PR_GET_CHILD_SUBREAPER
+                _SUBREAPER["was"] = cur.value
+            _SUBREAPER["n"] = max(0, _SUBREAPER["n"] + (1 if on else -1))
+            libc.prctl(36, 1 if _SUBREAPER["n"] > 0 else _SUBREAPER["was"], 0, 0, 0)     # PR_SET_CHILD_SUBREAPER
+        except (OSError, AttributeError):
+            pass
+
+
+def _proc_marked(table: dict, mark: str) -> set[int]:
+    """環境変数にセッションの印 mark を受け継いでいるプロセス(読めないものは除く)。"""
+    key = (SESSION_ENV + "=").encode()
+    out = set()
+    for q in table:
+        try:
+            with open(f"/proc/{q}/environ", "rb") as f:
+                env = f.read()
+        except OSError:
+            continue
+        for kv in env.split(b"\0"):
+            if kv.startswith(key) and mark.encode() in kv[len(key):].split():
+                out.add(q)
+                break
+    return out
+
+
+def stop_tree(pgid: int | None, root: int | None = None, wait: float = 5, mark: str | None = None) -> list[int]:
+    """プロセスグループ pgid の全員と、その子孫(自分でグループ・セッションを分けた道具も)と、セッションの印 mark を受け継いだ
+    プロセス(親が先に終わって辿れなくなった道具も)を止め、死んだのを確かめる(上限 wait 秒)。
+    root はまだ回収していないセッションの頭(この process の子。グループの頭でなくても、そこから子孫を辿る)。CLI が道具を別の
+    グループ・セッションで起動すると、グループだけを落としても残る。先に SIGSTOP で凍らせてから辿り直す(止めている間に起動された
+    子を取りこぼさない)。この process・そのグループ・この process の子でない root には触らない。頭が回収済み(root なし)のときは、
+    グループ pgid は印を受け継いだメンバーがいるときだけ自分のものとして止める(番号が別のグループに再利用されていても触らない)。
+    戻りは止めた pid。"""
+    if not isinstance(pgid, int) or pgid <= 1:
+        return []
+    me, own = os.getpid(), os.getpgrp()
+    if pgid in (me, own) or root == me:      # 自分自身・自分のグループを指す回収は断る(この process とその子を止めてしまう)
+        return []
+    caught: set[int] = set()
+    groups: set[int] = set()
+    table = _proc_table()
+    if table is None:           # /proc が無い: 生きている頭のグループを落とすだけ
+        if root is not None:
+            try:
+                os.killpg(pgid, signal.SIGKILL)
+            except OSError:
+                pass
+        return []
+    if root is not None and root not in table:
+        root = None             # 頭はもう無い(回収済み)
+    if root is not None and table[root][0] != me:
+        # この process の子でない対象は回収しない(グループも辿らない。再利用された番号・偽の対象で、無関係なプロセスを止めない)
+        return []
+    marked = _proc_marked(table, mark) if mark else set()
+    # グループ pgid が自分のものか: 生きている頭(この process の子)がいる、または印を受け継いだメンバーがいる
+    mine = root is not None or any(table[q][1] == pgid for q in marked if q in table)
+    for _ in range(50):
+        marked = _proc_marked(table, mark) if mark else set()
+        # 止めたプロセスのグループに広げるのは、そのグループが自分のものと分かるときだけ: グループの頭を止めた(この
+        # セッションの子孫が作ったグループ)か、印を受け継いだメンバーがいる。分からないグループ(頭でない子が入った、ほかの親の
+        # グループ)は広げない。止めたプロセス自身は下で1つずつ止める
+        trusted = {table[q][1] for q in marked if q in table}
+        groups = (({pgid} if mine else set())
+                  | {g for g in (table[q][1] for q in caught if q in table) if g in caught or g in trusted}) - {own, 0}
+        found = {q for q, (_, pg, _) in table.items() if pg in groups} | caught | marked
+        if root and root in table:
+            found.add(root)
+        kids: dict[int, list[int]] = {}
+        for q, (pp, _, _) in table.items():
+            kids.setdefault(pp, []).append(q)
+        todo = list(found)
+        while todo:
+            for c in kids.get(todo.pop(), []):
+                if c not in found:
+                    found.add(c)
+                    todo.append(c)
+        new = {q for q in found - caught - {me, 1} if table.get(q, (0, 0, "X"))[2] not in ("Z", "X")}
+        if not new:
+            break
+        for q in new:
+            try:
+                os.kill(q, signal.SIGSTOP)
+            except OSError:
+                pass
+        caught |= new
+        table = _proc_table() or {}
+    # 自分のものと分かったグループのうち、止めたプロセスのいるグループにだけ送る(誰もいないグループの番号は再利用されうる)
+    for g in {pg for q, (_, pg, _) in table.items() if q in caught} & groups:
+        try:
+            os.killpg(g, signal.SIGKILL)
+        except OSError:
+            pass
+    for q in caught:
+        try:
+            os.kill(q, signal.SIGKILL)
+        except OSError:
+            pass
+    end = time.time() + wait
+    while time.time() < end and not all(_proc_gone(q) for q in caught):
+        time.sleep(0.01)
+    return sorted(caught)
+
+
+def start_group(cmd: list[str], *, cwd=None, env: dict | None = None, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
+    """モデル・道具のセッションを自前のセッション(プロセスグループ)で起動する。回収は finish_group。
+    並列に起動するときは、起動のたびに一覧へ足し、finally で stop_groups(一覧) を呼ぶ(途中の例外・中断で置き去りにしない)。
+    起動できなければ例外にせず LaunchFailed(その担当だけの異常終了)を返す。
+    環境変数にセッションの印(SESSION_ENV)を足して起動する(親が先に終わった道具も、回収のときに印で見つける)。
+    工程を終えるところ(STOPPING)なら起動しない。起動から控えるまでのあいだに届いた SIGTERM・SIGINT は、控えたあとで扱う
+    (控える前に中断されると、起動した担当を見失う。監査指摘 2026-10-14)。"""
+    import uuid
+    if STOPPING.is_set():
+        return LaunchFailed(cmd, OSError("工程を終えるところなので起動しない"))
+    mark = uuid.uuid4().hex
+    env = dict(os.environ if env is None else env)
+    env[SESSION_ENV] = f"{env.get(SESSION_ENV, '')} {mark}".strip()
+    p = None
+    late = False
+    try:
+        with _hold_signals():
+            p = subprocess.Popen(cmd, cwd=cwd, env=env, stdout=stdout, stderr=stderr, text=True,
+                                 stdin=subprocess.DEVNULL, start_new_session=True)
+            try:
+                p.session_mark = mark
+            except AttributeError:      # 差し替えた起動(テストの偽物)が属性を持てないときは、印なしで回収する
+                pass
+            # 控えるのと「終えるところ」を確かめるのは、終了の後始末(stop_groups)と同じ鍵の中で一度に行う。起動のあいだに
+            # 別のスレッドで後始末が始まっていたら控えずに自分で止める(後始末の一覧に載らないまま待ち続けない。監査指摘 2026-10-14)
+            with _SESSIONS_LOCK:
+                late = STOPPING.is_set()
+                if not late:
+                    _SESSIONS.add(p)
+            if late:
+                reap(p, grace=2)
+                return LaunchFailed(cmd, OSError("工程を終えるところなので起動しない"))
+    except OSError as e:
+        if p is None:
+            return LaunchFailed(cmd, e)
+        stop_groups([p])
+        raise
+    except BaseException:
+        if p is not None:
+            stop_groups([p])        # 控えたあとで扱った中断: この担当を止めてから上げる
+        raise
+    return p
+
+
+@contextlib.contextmanager
+def _hold_signals():
+    """主スレッドで、起動から控えるまでのあいだ SIGTERM・SIGINT を後回しにし、抜けるときにもとの扱いで処理する
+    (ハンドラは主スレッドでしか動かないので、ほかのスレッドの起動は中断されない)。"""
+    if threading.current_thread() is not threading.main_thread():
+        yield
+        return
+    got: list[int] = []
+    old = {}
+    for s in (signal.SIGTERM, signal.SIGINT):
+        prev = signal.getsignal(s)
+        if prev is not None:        # Python の外で決めた扱いは触らない
+            old[s] = signal.signal(s, lambda signum, frame: got.append(signum))
+    try:
+        yield
+    finally:
+        for s, h in old.items():
+            signal.signal(s, h)
+        for s in got:
+            h = old[s]
+            if callable(h):
+                h(s, None)
+            elif h == signal.SIG_DFL:   # 既定の扱い(終了): 起動したセッションを止めてから、同じ信号で終わる
+                stop_groups()
+                os.kill(os.getpid(), s)
+
+
+def finish_group(p, timeout: float | None) -> tuple[str, str, bool]:
+    """セッションの終わりを待ち、(標準出力, 標準エラー, 時間切れか) を返す(ファイルに出させたものは空)。timeout は秒(None は無制限)。
+    時間切れはグループと子孫を止めて、それまでの出力を回収する(reap)。中断(例外・SIGTERM を変えた SystemExit・Ctrl-C)でも
+    止めて回収してから上げる。正常に終わっても、グループに残った道具は止める(答えを読んだあとに作業ツリーへ書かせない)。"""
+    if isinstance(p, LaunchFailed):
+        return "", p.error, False
+    try:
+        so, se = p.communicate(timeout=None if timeout is None else max(0, timeout))
+    except subprocess.TimeoutExpired:
+        try:
+            so, se = reap(p)
+        except BaseException:
+            stop_groups([p])    # 回収の途中の中断: 控えたまま止め直してから上げる(凍らせたまま残さない)
+            raise
+        return so, se, True
+    except BaseException:
+        stop_groups([p])        # 中断でも止めて回収してから、元の例外を上げる
+        raise
+    try:
+        stop_tree(getattr(p, "pid", None), mark=getattr(p, "session_mark", None))
+    except BaseException:
+        stop_groups([p])        # 残った道具を止めている途中の中断: 控えたまま止め直してから上げる(凍らせたまま残さない)
+        raise
+    _forget(p)
+    return so or "", se or "", False
+
+
+def run_group(cmd: list[str], timeout: float | None, *, cwd=None, env: dict | None = None) -> subprocess.CompletedProcess:
+    """モデル・道具を1つ走らせて終わりを待つ(subprocess.run(capture_output=True, text=True, stdin=DEVNULL, timeout=) の代わり)。
+    時間切れは TimeoutExpired(それまでの出力を持つ。partial_output で読める)で上げる。起動できなければ終了コード 127(理由は stderr)。"""
+    p = start_group(cmd, cwd=cwd, env=env)
+    so, se, timed_out = finish_group(p, timeout)
+    if timed_out:
+        raise subprocess.TimeoutExpired(cmd, timeout, output=so, stderr=se)
+    return subprocess.CompletedProcess(cmd, p.returncode, so, se)
+
+
+def stop_groups(procs=None) -> None:
+    """起動して、まだ回収していないセッションを止めて回収する。並列の起動・回収の finally(procs にその一覧)と、
+    SIGTERM・途中終了の後始末(引数なし=この process の全部。以後の起動も断る: STOPPING)から呼ぶ。回収済みのものには何もしない。"""
+    with _SESSIONS_LOCK:        # 「終えるところ」を立てるのと一覧を写すのを一度に(起動の控えと同じ鍵。どちらかに必ず載る)
+        if procs is None:
+            STOPPING.set()
+        live = [p for p in (list(_SESSIONS) if procs is None else procs) if p in _SESSIONS]
+    for p in live:
+        try:
+            reap(p, grace=2)
+        except Exception:       # noqa: BLE001  後始末の途中で止めない(finally から呼ばれ、元の例外を隠さない)
+            traceback.print_exc()
+            _forget(p)
+
+
+def exit_on_term() -> None:
+    """SIGTERM を「起動したセッションを子孫ごと止めてから終わる」終了(SystemExit 143)に変える。モデル・道具を起動する工程の
+    入口(main の最初)で呼ぶ。既定の SIGTERM は Python の後始末(finally・回収)を走らせずに落ち、起動した CLI が残った
+    (監査指摘 2026-10-14: 手で回した update_clis を止めると、CLI が生き残った)。別スレッドのセッションも先に止める。"""
+    def _term(signum, frame):
+        stop_groups()
+        raise SystemExit(143)
+    signal.signal(signal.SIGTERM, _term)
+
+
+# 工程が例外・Ctrl-C・SystemExit で終わるときも、回収していないセッション(別スレッドの担当も)を残さない(interpreter の終わりに
+# 止める。os._exit・既定の SIGTERM では走らないので、それは exit_on_term・組版の SIGTERM の後始末が受け持つ)
+atexit.register(stop_groups)
 
 
 def read_for_raw(p: Path) -> str | None:
@@ -670,7 +1347,8 @@ def trace_summary(trace: Path) -> str:
     return f"{turns}ターン / 道具 {len(tools)}回: {' → '.join(tools[-12:]) or 'なし'}" + (f" / 最後の発言: {last}" if last else "")
 
 
-def claude_traced(args: list[str], trace: Path, timeout: int, cwd: Path | None = None) -> dict:
+def claude_traced(args: list[str], trace: Path, timeout: int, cwd: Path | None = None,
+                  job: str = "compose", where: str = "") -> dict:
     """`claude -p` を**経過を残しながら**走らせる。戻り値は
     {"ok", "timed_out", "returncode", "structured", "result", "seconds", "cost", "summary"}。
 
@@ -683,34 +1361,11 @@ def claude_traced(args: list[str], trace: Path, timeout: int, cwd: Path | None =
     cmd = ["claude", "-p", *args, "--output-format", "stream-json", "--verbose"]
     t0, timed_out, rc, err = time.time(), False, None, ""
     with open(trace, "w", encoding="utf-8") as out:
-        # 自前のプロセスグループで起動し、時間切れには**グループごと**止める。直系の claude だけを殺すと、
-        # それが起動した道具(Bash の find など)が残り、やり直しのセッションと並走する(監査指摘)
-        proc = subprocess.Popen(cmd, stdout=out, stderr=subprocess.PIPE, text=True, stdin=subprocess.DEVNULL,
-                                cwd=cwd or ROOT, start_new_session=True)
-        try:
-            _, err = proc.communicate(timeout=timeout)
-            rc = proc.returncode
-        except subprocess.TimeoutExpired:
-            timed_out = True
-            for sig, grace in ((signal.SIGTERM, 5), (signal.SIGKILL, 5)):
-                try:
-                    os.killpg(proc.pid, sig)
-                except ProcessLookupError:
-                    break
-                try:
-                    proc.wait(timeout=grace)
-                except subprocess.TimeoutExpired:
-                    continue
-                # 親が終わっても、TERM を無視する子孫がグループに残っていれば KILL まで進む
-                try:
-                    os.killpg(proc.pid, 0)
-                except ProcessLookupError:
-                    break
-            try:
-                _, err = proc.communicate(timeout=5)
-            except (subprocess.TimeoutExpired, ValueError, OSError):
-                err = ""
-        err = err or ""
+        # 自前のプロセスグループで起動し、時間切れ・中断には**グループと子孫ごと**止める(start_group / finish_group)。直系の claude
+        # だけを殺すと、それが起動した道具(Bash の find など)が残り、やり直しのセッションと並走する(監査指摘)
+        proc = start_group(cmd, cwd=cwd or ROOT, stdout=out)
+        _, err, timed_out = finish_group(proc, timeout)
+        rc = None if timed_out else proc.returncode
     if err.strip():
         # 標準エラーは全文を経過の記録の隣に残す(要約は末尾 200 字だけで、先頭の原因が消える。監査指摘)
         try:
@@ -729,6 +1384,19 @@ def claude_traced(args: list[str], trace: Path, timeout: int, cwd: Path | None =
     secs = int(time.time() - t0)
     summary = (("時間切れ" if timed_out else f"exit {rc}") + f" {secs}秒 / " + trace_summary(trace)
                + (f" / stderr: {err.strip()[-200:]}" if err.strip() else ""))
+    # 認証切れ・利用上限で答えなかった回は、呼び側のやり直しの回数に数えずに工程の入口まで上げる(CliBlocked)
+    # 見るのは CLI 自身のエラーだけ: エラーで終わった result の本文と、経過のうち JSON の事象でない行(CLI が直に出す失敗)。
+    # 道具の結果(Read した本文など)は JSON の事象の中にあるので見ない(監査指摘: 本文の `Not logged in` を認証切れと取り違えた)
+    try:
+        plain = "\n".join(ln for ln in trace.read_text(encoding="utf-8", errors="replace").splitlines()
+                          if ln.strip() and not ln.lstrip().startswith("{"))
+    except OSError:
+        plain = ""
+    blocked = cli_check("claude", job, where or trace.stem, None if timed_out else rc,
+                        str(final.get("result") or "") if final.get("is_error") else "", plain, err,
+                        answered=bool(final) and not final.get("is_error") and rc == 0)
+    if blocked:
+        raise CliBlocked(blocked)
     return {"ok": bool(final) and not final.get("is_error") and rc == 0, "timed_out": timed_out, "returncode": rc,
             "structured": final.get("structured_output"), "result": final.get("result") or "",
             "seconds": secs, "cost": final.get("total_cost_usd"), "summary": summary}
@@ -772,6 +1440,48 @@ def clean_url(raw) -> str | None:
         return None
     netloc = u.hostname.lower() + (f":{u.port}" if u.port else "")
     return urllib.parse.urlunsplit((u.scheme, netloc, u.path, u.query, u.fragment))
+
+
+# fetch_page.py が本文を取れたページの記録(JSON Lines。1行 {"url": 頼んだ URL, "final": リダイレクトの行き先 or null})。
+# 置き場は執筆・書き直しのセッションを起動する側(compose・writer_bench)が決め、この環境変数で子に渡す。検算は、根拠にした URL が
+# 素材かこの記録にあるかを見る(2026-10-14 rule_bench: 執筆が fetch_page.py の取れなかった報道を Web 検索で読んで期間を断定し、
+# 綴りの誤った URL を出典に書いた答えが検算を通った。校閲は fetch_page.py だけで出典を読むので確かめられない)
+FETCH_RECORD_ENV = "IMAS_FETCH_RECORD"
+
+
+def note_fetched(url: str, final: str | None = None) -> None:
+    """本文を取れたページを FETCH_RECORD_ENV の記録に書き足す(変数が無ければ何もしない)。書けなくても読み取りは止めない
+    (stderr に出す。記録に無いページは検算が差し戻すので、黙って通ることはない)。"""
+    rec = os.environ.get(FETCH_RECORD_ENV)
+    if not rec:
+        return
+    line = json.dumps({"url": url, "final": final if final and final != url else None}, ensure_ascii=False) + "\n"
+    try:
+        Path(rec).parent.mkdir(parents=True, exist_ok=True)
+        fd = os.open(rec, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
+        try:
+            os.write(fd, line.encode("utf-8"))      # 1回の追記(並列の fetch_page.py が同じ記録に書いても行が混ざらない)
+        finally:
+            os.close(fd)
+    except OSError as e:
+        print(f"FETCH_RECORD_FAILED: {type(e).__name__}: {e}", file=sys.stderr)
+
+
+def fetched_urls(path) -> set[str]:
+    """記録(note_fetched)にある、本文を取れたページの URL(頼んだ URL とリダイレクトの行き先)。記録が無ければ空。読めない行は飛ばす。"""
+    try:
+        lines = Path(path).read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError:
+        return set()
+    out: set[str] = set()
+    for ln in lines:
+        try:
+            row = json.loads(ln)
+        except ValueError:
+            continue
+        if isinstance(row, dict):
+            out |= {row[k] for k in ("url", "final") if isinstance(row.get(k), str) and row[k]}
+    return out
 
 
 class JobLockTimeout(RuntimeError):
@@ -1421,16 +2131,20 @@ def render_failure(returncode, stderr: str) -> str:
     return f"終了コード {returncode}: " + (" / ".join(key[-2:])[:300] if key else "(stderr なし)")
 
 
-def render_page(url: str, timeout: int = 30) -> str:
+def render_page(url: str, timeout: int = 30, limit: float | None = None) -> str:
     """ヘッドレスブラウザで描画したページの HTML。**失敗を空で返さない**: 非正常終了・時間切れ・空の出力は、
     終了コードと stderr の要点を持った RenderFailed で上げる。以前は空文字に変えていて、呼び出し側の記録は「空の応答」
-    だけになり、原因(2026-10-07 コロムビアの一覧の TimeoutException)を当番が別に再現して確かめていた(当番の指摘 dc23e62472)"""
+    だけになり、原因(2026-10-07 コロムビアの一覧の TimeoutException)を当番が別に再現して確かめていた(当番の指摘 dc23e62472)。
+    limit は待ってよい秒数の上限(工程の締切の残り。0 以下なら起動しない)。"""
+    wait = timeout + 60 if limit is None else min(timeout + 60, limit)
+    if wait <= 0:
+        raise RenderFailed(f"{url} を描画しない: 工程の締切を過ぎた")
     try:
-        r = subprocess.run(
-            [str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"), url, "--timeout", str(timeout)],
-            capture_output=True, text=True, timeout=timeout + 60, stdin=subprocess.DEVNULL, cwd=ROOT)
+        # ブラウザ(chromedriver・chrome)ごと止めるため、自前のグループで起動する(run_group)
+        r = run_group([str(ROOT / ".venv" / "bin" / "python"), str(ROOT / "scripts" / "fetch_rendered.py"), url, "--timeout", str(timeout)],
+                      timeout=wait, cwd=ROOT)
     except subprocess.TimeoutExpired as e:
-        raise RenderFailed(f"{url} の描画が {timeout + 60} 秒で終わらず打ち切った: "
+        raise RenderFailed(f"{url} の描画が {int(wait)} 秒で終わらず打ち切った: "
                            + render_failure("(時間切れ)", partial_output(e)[1])) from None
     except OSError as e:
         raise RenderFailed(f"{url} の描画を起動できない: {type(e).__name__}: {e}") from None
@@ -1786,10 +2500,13 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
             raise
         return False, f"取引の控えを書けない({type(e).__name__}: {str(e)[:160]})。判定表と記事は変えずに終えた"
     ok, why, done = False, "", False
+    txn_started = time.time()
     try:
         cmd = [sys.executable, str(scripts / "classify_sources.py"), "--date", date, "--apply"] + (["--posts-only"] if posts_only else [])
         if require_parsers:      # 当番の再実行: パーサの無い URL が残っていたら失敗(成功扱いにしない。監査指摘 r85)
             cmd.append("--require-parsers")
+        # 各段は _txn_run(自前のセッションで起動し、時間切れ・中断は reap=stop_tree で子孫まで止める)。合議のモデルのセッションは
+        # classify_sources.py の中で start_group 越しに起動する
         steps = [("合議", cmd, timeout), ("付け直し", [sys.executable, str(scripts / "retag_sources.py"), "--apply"], 600)]
         if lint:
             steps.append(("lint", [sys.executable, str(scripts / "lint.py"), "--base", lint_base], 600))
@@ -1803,6 +2520,10 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
                 tail = (r.stdout or "").strip().splitlines()[-1:] if r.stdout else []
                 print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r.returncode}"), flush=True)
             if _TXN["signum"] is not None:
+                break
+            if name == "合議" and r.returncode == CLI_BLOCKED_EXIT:
+                # 判定のモデルが認証切れ・利用上限で答えなかった(子が投稿済み)。判定の失敗ではないので、開始時へ戻して次回やり直す
+                why = f"{CLI_STOPPED}({', '.join(adopt_cli_blocked(txn_started)) or '?'})。判定表と記事は開始時のまま、次の判定でやり直す"
                 break
             if r.returncode != 0:
                 why = f"{name} exit {r.returncode}: {err_tail(r)}"
@@ -1849,27 +2570,36 @@ _TXN: dict = {"proc": None, "signum": None, "stray": []}
 TXN_JOURNAL = Path("metrics") / "work" / "classify-txn.json"   # 取引の開始時の中身の控え(ROOT から。Git 管理外)
 TXN_CHILD = Path("metrics") / "work" / "classify-txn.child.json"   # 動いている取引の子(pid・起動時刻)。親が死んでも次の起動が止める
 TXN_SIGNALS = (signal.SIGTERM, signal.SIGINT)
-# 取引の子の入口: 標準入力から合図("1")を受けてから本来のコマンドに置き換わる(pid と起動時刻は変わらない)。合図が来なければ動かない
+# 取引の子の入口: 標準入力から合図("1")を受けてから child_guard(孤児の受け皿)に置き換わり、本来のコマンドを起動する(pid と起動時刻は
+# 変わらない)。合図が来なければ動かない。child_guard は、コマンドの子孫が別のセッションに抜けて環境を読めなくし、親が先に終わっても
+# 自分の子として受け、コマンドが終わったら全部止めてから終わる。止めるときも、受けた孤児が親子関係で辿れる(2026-10-21 取り込みの
+# 監査: 環境を読めない孤児の道具が、取引を戻したあとの判定表を書き直した)
 _TXN_GATE = ("import os, sys\n"
              "if sys.stdin.buffer.read(1) != b'1':\n    sys.exit(125)\n"
-             "os.execv(sys.argv[1], sys.argv[1:])\n")
+             "os.execv(sys.executable, [sys.executable] + sys.argv[1:])\n")
+_TXN_GUARD = Path(__file__).resolve().parent / "child_guard.py"
 
 
-def _write_txn_child(child: Path, pid: int, started: str) -> None:
-    """取引の子の記録(pid・起動時刻)を書く(一時ファイル → 置き換え)。書けなければ OSError(段の失敗にする)。"""
+def _write_txn_child(child: Path, pid: int, started: str, mark: str = "") -> None:
+    """取引の子の記録(pid・起動時刻・取引の印)を書く(一時ファイル → 置き換え)。書けなければ OSError(段の失敗にする)。"""
     tmp = child.with_name(f".{child.name}.{os.getpid()}.tmp")
     try:
-        tmp.write_text(json.dumps({"pid": pid, "started": started}), encoding="utf-8")
+        tmp.write_text(json.dumps({"pid": pid, "started": started, "mark": mark}), encoding="utf-8")
         os.replace(tmp, child)
     finally:
         tmp.unlink(missing_ok=True)
 
 
 def _txn_stop_child() -> None:
-    """取引の子をプロセスグループごと止める(止めずに戻すと、戻した後で子が判定表を書き直す)。"""
+    """取引の子をプロセスグループ・子孫・印ごと止める(止めずに戻すと、戻した後で子が判定表を書き直す)。子(child_guard)を先に
+    落とすと、受けていた孤児が init へ移って辿れなくなるので、凍らせてから子孫を辿って止める(stop_tree)。"""
     p = _TXN.get("proc")
     if p is None or p.poll() is not None:
         return
+    try:
+        stop_tree(p.pid, root=p.pid, mark=getattr(p, "session_mark", None))
+    except Exception:       # noqa: BLE001  止め方の失敗でも、下でグループだけは落とす
+        traceback.print_exc()
     try:
         os.killpg(p.pid, signal.SIGKILL)
     except OSError:
@@ -1884,15 +2614,25 @@ def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
     抜ける。中断のシグナルはハンドラが子を止める(communicate が子の終わりで戻る)。"""
     # 子は、親が子の記録(TXN_CHILD)を書き終えて合図を送るまで動き出さない(_TXN_GATE)。記録の無い子を残さない: 書けなければ
     # 子を動かさずに止めて段を失敗にし、親が合図の前に死ねば子は動かずに終わる(監査指摘 2026-10-14)
-    p = subprocess.Popen([sys.executable, "-c", _TXN_GATE, *cmd], cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE, text=True, start_new_session=True)
+    # 子には取引の印(SESSION_ENV)を渡す。子が start_group で別のセッションに起動したモデル・道具も印を受け継ぐので、中断・親の死の
+    # あとの後始末が印で見つけて止める(2026-10-21 取り込みの監査: セッションだけを見ると、合議のモデルが残って戻したあとに書いた)
+    import uuid
+    mark = uuid.uuid4().hex
+    env = dict(os.environ)
+    env[SESSION_ENV] = f"{env.get(SESSION_ENV, '')} {mark}".strip()
+    # 段は child_guard を2重にして走らせる(外側 → 内側 → 段のコマンド)。内側だけが SIGKILL で落ちても、受けていた孤児は外側へ移り、
+    # 外側が全部止めてから終わる。外側だけが落ちても、内側は取引の子のセッションに残り、受けた孤児ごと親子関係で辿れる。
+    # 取引を持つ工程を受け皿にすると、ほかのスレッドの子と取り違えた(2026-10-21 取り込みの監査)
+    p = subprocess.Popen([sys.executable, "-c", _TXN_GATE, str(_TXN_GUARD), sys.executable, str(_TXN_GUARD), *cmd], cwd=ROOT,
+                         stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True, env=env)
     _TXN["proc"] = p
+    p.session_mark = mark       # 時間切れ・例外の reap(stop_tree)も印で探す
     started = _proc_started(p.pid)
     child = ROOT / TXN_CHILD
     try:
         if _TXN["signum"] is not None:      # 起動の直前に中断を受けていた
             _txn_stop_child()
-        _write_txn_child(child, p.pid, started)
+        _write_txn_child(child, p.pid, started, mark)
         out, err = p.communicate(input="1", timeout=timeout)
     except subprocess.TimeoutExpired:
         out, err = reap(p)
@@ -1902,8 +2642,8 @@ def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
         raise
     finally:
         _TXN["proc"] = None
-        # 子が先に終わっても、子が起こした孫(同じセッション)が残っていれば止める。成功した段でも残さない
-        stray = _stop_session(p.pid, started)
+        # 子が先に終わっても、子が起こした孫(同じセッション・印を受け継いだ別のセッション)が残っていれば止める。成功した段でも残さない
+        stray = _stop_session(p.pid, started, mark=mark)
         if stray:
             _TXN["stray"] = stray
         else:
@@ -1987,14 +2727,51 @@ def _session_members(sid: int, started: str = "") -> list[int]:
     return out
 
 
-def _stop_session(sid: int, started: str = "", wait: float = 10.0) -> list[int]:
-    """取引の子のセッション(子は start_new_session で起動するので、子と、子が起こした孫は setsid しない限り同じセッション)を、
-    残らなくなるまで止める。直接の子が先に終わっていても、残った孫を止める(止めずに戻すと、戻した後で孫が判定表を書き直す。
-    監査指摘 2026-10-14)。戻りは止めきれなかった pid。"""
+def _txn_members(sid: int, started: str = "", mark: str = "") -> list[int]:
+    """取引の子のセッション sid に残っているプロセス(段の child_guard の外側・内側と、内側が受けた孤児)と、取引の印 mark を環境に
+    受け継いだプロセス(合議のモデル・道具は start_group で別のセッションに起動されるので、セッションでは見つからない)と、
+    それらの子孫(ゾンビ・自分は除く)。"""
+    found = set(_session_members(sid, started)) if sid > 1 else set()
+    table = _proc_table()
+    if table:
+        if mark:
+            found |= _proc_marked(table, mark)
+        kids: dict[int, list[int]] = {}
+        for q, (pp, _, _) in table.items():
+            kids.setdefault(pp, []).append(q)
+        todo = list(found)
+        while todo:
+            for c in kids.get(todo.pop(), []):
+                if c not in found:
+                    found.add(c)
+                    todo.append(c)
+        found = {q for q in found if q in table and table[q][2] not in ("Z", "X")}
+    return sorted(found - {os.getpid()})
+
+
+def _stop_session(sid: int, started: str = "", wait: float = 10.0, mark: str = "") -> list[int]:
+    """取引の子のセッション(子は start_new_session で起動するので、子と、子が起こした孫は setsid しない限り同じセッション)と、
+    取引の印 mark を受け継いだプロセスとその子孫を、残らなくなるまで止める。直接の子が先に終わっていても、残った孫を止める
+    (止めずに戻すと、戻した後で孫が判定表を書き直す。監査指摘 2026-10-14)。合議のモデルは start_group で別のセッションに
+    起動されるので、印でも探す(2026-10-21 取り込みの監査: 中断で子のグループだけを落とすと、別のセッションのモデルが残り、
+    戻したあとに判定表を書き直した)。戻りは止めきれなかった pid。"""
+    # 先に全員を凍らせてから止める(子(child_guard)を先に落とすと、受けていた孤児が init へ移り、親子関係で辿れなくなる)
     end = time.monotonic() + wait
-    left = _session_members(sid, started)
+    left = _txn_members(sid, started, mark)
     while left:
-        for q in left:
+        frozen: set[int] = set()
+        for _ in range(50):
+            new = set(left) - frozen
+            if not new:
+                break
+            for q in new:
+                try:
+                    os.kill(q, signal.SIGSTOP)
+                except OSError:
+                    pass
+            frozen |= new
+            left = _txn_members(sid, started, mark)
+        for q in frozen | set(left):
             try:
                 os.kill(q, signal.SIGKILL)
             except OSError:
@@ -2002,7 +2779,7 @@ def _stop_session(sid: int, started: str = "", wait: float = 10.0) -> list[int]:
         if time.monotonic() > end:
             break
         time.sleep(0.05)
-        left = _session_members(sid, started)
+        left = _txn_members(sid, started, mark)
     return left
 
 
@@ -2012,10 +2789,10 @@ def _stop_txn_orphan() -> list[int]:
     c = ROOT / TXN_CHILD
     try:
         rec = json.loads(c.read_text(encoding="utf-8"))
-        pid, started = int(rec.get("pid") or 0), str(rec.get("started") or "")
+        pid, started, mark = int(rec.get("pid") or 0), str(rec.get("started") or ""), str(rec.get("mark") or "")
     except (OSError, ValueError, TypeError, AttributeError):
         return []
-    left = _stop_session(pid, started) if pid else []
+    left = _stop_session(pid, started, mark=mark) if pid or mark else []
     if not left:
         c.unlink(missing_ok=True)
     return left

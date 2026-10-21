@@ -1,0 +1,23 @@
+{
+  "title": "oncall-accept",
+  "description": "監査が書いた編集長への報告の文面を、当番(Opus)が了承するか、根拠を付けて異を唱えるか",
+  "type": "object",
+  "required": ["decision", "evidence", "editor_summary"],
+  "additionalProperties": false,
+  "properties": {
+    "decision": {"enum": ["accept", "object"], "description": "accept=監査の文面で報告する / object=事実と違う箇所がある(往復を続ける)"},
+    "evidence": {"type": "string", "minLength": 1, "maxLength": 800,
+                 "description": "accept: 何と照らして確かめたか。object: どこがなぜ事実と違うか(記録・ファイル・ログの根拠)"},
+    "editor_summary": {
+      "type": ["object", "null"], "required": ["what_happened", "why", "what_changed", "similar", "paper_impact"], "additionalProperties": false,
+      "description": "object のとき: あなたが正しいと考える編集長への報告の全文(最初の依頼文と同じ書き方)。accept のときは null",
+      "properties": {
+        "what_happened": {"type": "string", "minLength": 1, "maxLength": 1200},
+        "why": {"type": "string", "minLength": 1, "maxLength": 1500},
+        "what_changed": {"type": "string", "minLength": 1, "maxLength": 1500},
+        "similar": {"type": "string", "minLength": 1, "maxLength": 1500},
+        "paper_impact": {"type": "string", "minLength": 1, "maxLength": 600}
+      }
+    }
+  }
+}

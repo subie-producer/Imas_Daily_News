@@ -8430,6 +8430,14 @@ for rel, text in (step.get("touch") or {}).items():
         pathlib.Path(rel).write_text(text, encoding="utf-8")
 if step.get("answer") is not None:
     pathlib.Path(sys.argv[sys.argv.index("--output-last-message") + 1]).write_text(json.dumps(step["answer"], ensure_ascii=False), encoding="utf-8")
+if step.get("background"):      # 道具の実行を残して終わる(あとから書く。detach なら別のセッション・プロセスグループに抜け、
+    import subprocess             # nodump なら /proc/<pid>/environ を読めなくする)
+    code = ("import ctypes; ctypes.CDLL(None).prctl(4, 0, 0, 0, 0)\n" if step.get("nodump") else "") + step["background"]
+    subprocess.Popen([sys.executable, "-c", code], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                     start_new_session=bool(step.get("detach")))
+if step.get("kill_guard"):      # 自分を包む child_guard を SIGKILL する(OOM などで監督だけが落ちた形)
+    import signal
+    os.kill(os.getppid(), signal.SIGKILL)
 time.sleep(step.get("sleep", 0))
 sys.exit(step.get("exit", 0))
 '''
@@ -8467,12 +8475,21 @@ def test_writer_children(tmp: Path):
     issue = {"rule_id": "R1", "issue": "事実を直す", "quote": "販売を開始する。価格は3000円。", "repair": "rewrite_claim",
              "expected": "正しく書く", "fact_ids": ["F1"]}
     fixed = dict(base, addressed_issue_ids=["I1"], blocks=[{"markdown": "販売を開始した。価格は3000円。", "fact_ids": ["F1", "F2"]}])
+    # 子の CLI が終わったあとも同じプロセスグループに残り、テストが合図(release-<段>)を置いてから記事を書き換える道具の実行
+    # (書き換えが控えへ戻したあとに来るように。合図が来なければ 20 秒で書かずに終わる)
+    late_write = lambda s, phase: (f"import time,pathlib\nfor _ in range(400):\n    if pathlib.Path({str(tmp / ('release-' + phase))!r}).exists():\n"
+                                   f"        pathlib.Path('docs/_posts/{date}-{s}.md').write_text('残った道具の書き込み')\n        break\n"
+                                   f"    time.sleep(0.05)\n")
     spec = {"write-probe": [{"answer": dict(base, title="**販売開始**", lede="**販売開始**する。")}, {"answer": base}],
             **{f"write-{s}": [{"answer": base}] for s in slugs[1:]},
-            "revise-probe": [{"answer": fixed}],
-            # 記事を直接書き換え、ほかの記事も書き換え、新しい記事ファイルを作って異常終了
+            # 書かせる記事を直接書いて 96 で異常終了(CLI の普通の終了コード。起動の失敗ではない)→ やり直しで答えから書く(監査指摘)
+            "write-alpha": [{"touch": {f"docs/_posts/{date}-alpha.md": "不採用の直書き"}, "exit": 96}, {"answer": base}],
+            # 正常終了して、別のセッションに抜け、環境を読めなくした道具を残す
+            "revise-probe": [{"answer": fixed, "background": late_write("delta", "revise"), "detach": True, "nodump": True}],
+            # 記事を直接書き換え、ほかの記事も書き換え、新しい記事ファイルを作り、道具を残して異常終了
             "revise-alpha": [{"touch": {f"docs/_posts/{date}-alpha.md": "壊れた直書き", f"docs/_posts/{date}-delta.md": "よその記事も直書き",
-                                        f"docs/_posts/{date}-zeta.md": "勝手に作った記事"}, "answer": fixed, "exit": 1}],
+                                        f"docs/_posts/{date}-zeta.md": "勝手に作った記事"}, "answer": fixed, "exit": 97,
+                              "background": late_write("beta", "revise")}],
             # 書き換えて時間切れ
             "revise-beta": [{"touch": {f"docs/_posts/{date}-beta.md": "時間切れの直書き"}, "answer": fixed, "sleep": 20}],
             # 書き換え、検算で適用を拒まれる答え(tags 1個)を返す
@@ -8494,6 +8511,9 @@ def test_writer_children(tmp: Path):
         with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
             _lint.check_plain_text(rep, "-", "title", fm.get("title"))
             _lint.check_plain_text(rep, "-", "lede", fm.get("lede"))
+        check((spec_p.parent / "count-write-alpha").read_text() == "2" and "不採用の直書き" not in path("alpha").read_text(encoding="utf-8")
+              and (compose.parse_front_matter(path("alpha")) or {}).get("title") == base["title"],
+              f"96 で終わった CLI を起動の失敗と取り違えた・やり直さない: {path('alpha').read_text(encoding='utf-8')[:40]!r}")
         check(sorted(a["slug"] for a in written) == sorted(slugs) and fm.get("title") == base["title"] and rep.errors == 0
               and (spec_p.parent / "count-write-probe").read_text() == "2",
               f"見出し・リードの Markdown 記法を差し戻さずに採った: {fm.get('title')!r} {fm.get('lede')!r} lint {rep.errors}件 {aborted}")
@@ -8506,7 +8526,10 @@ def test_writer_children(tmp: Path):
         compose.DEADLINE = time.time() + 3      # beta の子だけが時間切れになる
         res = compose.revise_articles(date, by_file, plan, {"c1": cand}, [])
         compose.DEADLINE = None
-        # 3) 子の直接の書き込みは、異常終了・時間切れ・適用の拒否のどれでも控えへ戻る(よその記事・新しいファイルも)
+        (tmp / "release-revise").write_text("", encoding="utf-8")    # 控えへ戻したあと: 残った道具の実行に書かせる合図
+        time.sleep(0.6)
+        # 3) 子の直接の書き込みは、異常終了・時間切れ・適用の拒否のどれでも控えへ戻る(よその記事・新しいファイルも)。
+        #    子が残した道具の実行も止めてから戻すので、戻したあとに書き換えられない(監査指摘)
         check(res == {"probe": "fixed", "alpha": "unreadable", "beta": "unreadable", "gamma": "kept"}, f"書き直しの結果: {res}")
         for s in ("alpha", "beta", "gamma", "delta"):
             check(path(s).read_bytes() == before[s], f"書き直しの子が直接書き換えた {s} が控えに戻らない: {path(s).read_text(encoding='utf-8')[:40]!r}")
@@ -8518,12 +8541,287 @@ def test_writer_children(tmp: Path):
         rec = json.loads((tmp / "metrics" / f"factmap-{date}.json").read_text(encoding="utf-8"))
         check(rec.get("probe") == {key0: fmap, key1: fmap} and renderlib.factmap_valid(rec),
               f"採った稿(初稿・改稿)の指紋と事実の対応がファイルに残らない: {rec.get('probe')}")
+        # 5) 組み直し(--reuse-plan・--recover)の初稿の子が、この号のほかの記事(承認済み)を直接書き換え・消し・作っても採らない。
+        #    正常終了・異常終了・時間切れのどれでも、書かせた記事以外は控えへ戻り、書かせた記事は答えから書く
+        #    (監査: 書き直しと同じ型が初稿の執筆に残っていた)
+        spec.update({
+            "write-fresh": [{"touch": {f"docs/_posts/{date}-fresh.md": "子が直接書いた稿", f"docs/_posts/{date}-alpha.md": "承認済みを直書き",
+                                       f"docs/_posts/{date}-delta.md": None, f"docs/_posts/{date}-ghost.md": "勝手に作った記事"},
+                             "answer": base, "background": late_write("probe", "reuse")}],
+            # 異常終了して、別のセッションに抜け環境を読めなくした道具を残す(やり直しは正常)
+            "write-late": [{"touch": {f"docs/_posts/{date}-gamma.md": "異常終了の直書き"}, "exit": 1, "background": late_write("alpha", "reuse"),
+                            "detach": True, "nodump": True}, {"answer": base}],
+            # 時間切れになり、別のセッションに抜け環境を読めなくした道具を残す(やり直しは正常)
+            "write-slow": [{"touch": {f"docs/_posts/{date}-beta.md": "時間切れの直書き"}, "answer": base, "sleep": 20,
+                            "background": late_write("gamma", "reuse"), "detach": True, "nodump": True}, {"answer": base}]})
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        before2 = {s: path(s).read_bytes() for s in slugs}
+        plan2 = {"articles": [art(s) for s in slugs + ("fresh", "late", "slow")]}
+        compose.DEADLINE = time.time() + 3      # slow の子の1回目だけが時間切れになる
+        written2, aborted2 = compose.write_articles(date, plan2, {"c1": cand}, [], {}, reuse=True)
+        compose.DEADLINE = None
+        (tmp / "release-reuse").write_text("", encoding="utf-8")     # 控えへ戻したあと: 残った道具の実行に書かせる合図
+        time.sleep(0.6)
+        for s in slugs:
+            check(path(s).exists() and path(s).read_bytes() == before2[s],
+                  f"組み直しの初稿の子が直接書き換え・消した既存の記事 {s} が控えに戻らない: {path(s).read_text(encoding='utf-8')[:40] if path(s).exists() else '(消えた)'!r}")
+        check(not path("ghost").exists(), "組み直しの初稿の子が勝手に作った記事ファイルが残った")
+        # late・slow のやり直しは、slow の時間切れ(締切の間際。待ちは秒に切り捨てる)のあとに起動する。締切を過ぎていれば起動せず
+        # 締切で落とした記事になる(組 P)、過ぎていなければ答えから書く。どちらでも子の直書きは残さない
+        outs2 = compose.WRITE_OUTCOMES.get(date) or {}
+        redo_ok = all(((compose.parse_front_matter(path(s)) or {}).get("title") == base["title"] and s not in aborted2) if path(s).exists()
+                      else (s in aborted2 and "締切" in outs2.get(s, "")) for s in ("late", "slow"))
+        check(sorted(a["slug"] for a in written2) == sorted(slugs + ("fresh",) + tuple(s for s in ("late", "slow") if s not in aborted2))
+              and set(aborted2) <= {"late", "slow"} and redo_ok
+              and (compose.parse_front_matter(path("fresh")) or {}).get("title") == base["title"]
+              and "子が直接書いた稿" not in path("fresh").read_text(encoding="utf-8"),
+              f"組み直しで書かせた記事が答えから書かれない・締切後にやり直した: {[a['slug'] for a in written2]} {aborted2} "
+              f"{ {s: (compose.WRITE_OUTCOMES.get(date) or {}).get(s) for s in ('late', 'slow')} }")
+        # 6) CLI を本当に起動できない(PATH に codex が無い): 直接起動したときと同じく FileNotFoundError で止まり、書かせる記事を残さず、
+        #    ほかの記事は変えない(出力の読めない回としてやり直し・落とすことはしない)
+        before3 = {p_.name: p_.read_bytes() for p_ in posts.glob(f"{date}-*.md")}
+        empty = tmp / "nobin"
+        empty.mkdir()
+        os.environ["PATH"] = str(empty)
+        try:
+            compose.write_articles(date, {"articles": [art(s) for s in slugs + ("fresh", "late", "slow", "nocli")]}, {"c1": cand}, [], {},
+                                   reuse=True)
+            check(False, "CLI を起動できないのに、出力の読めない回として扱った(FileNotFoundError にしない)")
+        except FileNotFoundError as e:
+            check("起動できない" in str(e) and "nocli" in str(e), f"起動できない理由が違う: {e}")
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[5] or ''}"
+        check({p_.name: p_.read_bytes() for p_ in posts.glob(f"{date}-*.md")} == before3 and not path("nocli").exists(),
+              "CLI を起動できないときに、記事が変わった・書かせる記事が残った")
+        # 7) child_guard だけが SIGKILL で落ちた(OOM など): CLI が別のセッションに抜けて環境を読めなくした道具を残していても、
+        #    compose が記録していた子孫として止めてから控えへ戻す(監査指摘)。初稿(組み直し)と書き直しの両方
+        spec.update({"write-crash": [{"background": late_write("probe", "crash"), "detach": True, "nodump": True, "kill_guard": True,
+                                      "sleep": 0.3}, {"answer": base}],
+                     "revise-probe": [{"answer": fixed}, {"background": late_write("delta", "crash"), "detach": True, "nodump": True,
+                                                          "kill_guard": True, "sleep": 0.3}]})
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        before4 = {s: path(s).read_bytes() for s in ("probe", "delta")}
+        w4, a4 = compose.write_articles(date, {"articles": [art(s) for s in slugs + ("crash",)]}, {"c1": cand}, [], {}, reuse=True)
+        res4 = compose.revise_articles(date, {f"docs/_posts/{date}-probe.md": [dict(issue)]}, plan, {"c1": cand}, [])
+        (tmp / "release-crash").write_text("", encoding="utf-8")      # 控えへ戻したあと: 残った道具の実行に書かせる合図
+        time.sleep(0.6)
+        check("crash" in [a["slug"] for a in w4] and res4 == {"probe": "unreadable"}
+              and all(path(s).read_bytes() == before4[s] for s in ("probe", "delta")),
+              f"child_guard が落ちたあと、残った道具が控えへ戻した記事を書き換えた: {[a['slug'] for a in w4]} {res4}")
+        # 8) 校閲の往復で、社説の書き直し(子を起こす別の工程)と記事の書き直しを並べない(run_in_turn)。子が記録の間隔より先に
+        #    child_guard を SIGKILL して、環境を読めなくした道具を残しても、付け替わった孤児として止めてから控えへ戻す(監査指摘:
+        #    並べたとき、記録・グループ・印のどれでも拾えず、過去号の書き直しで記事が書き換わった)
+        spec["revise-probe"] = [{"answer": fixed}, {"answer": fixed}, {"background": late_write("delta", "turn"), "detach": True,
+                                                                        "nodump": True, "kill_guard": True}]
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        before5 = path("delta").read_bytes()
+        res5: dict = {}
+        spans: list = []
+
+        def editorial_like():           # 社説の書き直しのように、子を起こして待つ工程
+            t = time.monotonic()
+            subprocess.run([sys.executable, "-c", "import time; time.sleep(0.4)"])
+            spans.append(("社説", t, time.monotonic()))
+
+        def revise_job():
+            t = time.monotonic()
+            res5.update(compose.revise_articles(date, {f"docs/_posts/{date}-probe.md": [dict(issue)]}, plan, {"c1": cand}, []))
+            spans.append(("書き直し", t, time.monotonic()))
+        pipelib.ANOMALIES.clear()
+        errs = compose.run_in_turn([("社説", editorial_like), ("記事の書き直し", revise_job)])
+        (tmp / "release-turn").write_text("", encoding="utf-8")
+        time.sleep(0.6)
+        (_, a0, a1), (_, b0, b1) = sorted(spans, key=lambda x: x[1])
+        check(not errs and res5 == {"probe": "unreadable"} and a1 <= b0 and path("delta").read_bytes() == before5
+              and not any("止められない" in a for a in pipelib.ANOMALIES),
+              f"社説と並べた・付け替わった孤児を止めない: {errs} {res5} {spans} {pipelib.ANOMALIES}")
+        # ほかに子を起こしうるスレッドが動いているあいだは、片付けを確かめたとは言わない(異常として申告させる)
+        hold = __import__("threading").Event()
+        other = __import__("threading").Thread(target=hold.wait, daemon=True)
+        other.start()
+        check(compose.ChildTracker().start().sweep() is False, "ほかのスレッドが動いているのに、片付けを確かめたとした")
+        hold.set()
+        other.join()
+        check(compose.ChildTracker().start().sweep() is True, "ほかのスレッドが無いのに、片付けを確かめられないとした")
     finally:
         compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE = saved[:5]
         os.environ["PATH"] = saved[5] or ""
         os.environ.pop("FAKE_CODEX_SPEC", None)
         compose.FACT_MAP.clear()
         pipelib.ANOMALIES.clear()
+
+
+def test_child_guard(tmp: Path):
+    """child_guard(執筆・書き直しの子の CLI を包む)を実際に走らせる: 終了コードは CLI のもの(96・97 などどの値も)をそのまま返し、
+    起動できたか・片付けを確かめられたかは結果のファイルで返す(2026-10-14 監査: 96 を起動の失敗に使い、CLI が普通に返した 96 を取り違えた)。
+    起動できなければ compose は直接起動したときと同じく FileNotFoundError にする。CLI が終わったら(SIGTERM で止められても)、CLI が残した
+    道具の実行を、別のセッションに抜けて環境を読めなくしたものまで止めてから終わる(監査: 印で探す止め方では見落とした)"""
+    import time
+    tmp.mkdir(parents=True, exist_ok=True)
+
+    def run(cmd, name):
+        out_path = tmp / f"{name}.txt"
+        r = subprocess.run(compose.guarded(cmd, out_path), capture_output=True, text=True)
+        st = json.loads(compose.guard_status_of(out_path).read_text(encoding="utf-8")) if compose.guard_status_of(out_path).exists() else None
+        return r, st, out_path
+    for code in (0, 3, 96, 97, 127):
+        r, st, out_path = run(["sh", "-c", f"exit {code}"], f"rc{code}")
+        check(r.returncode == code and st == {"started": True, "cleaned": True, "note": ""} and compose.guard_result(out_path, "test") is True
+              and not compose.guard_status_of(out_path).exists(), f"CLI の終了コード {code} の返し方・結果: {r.returncode} {st}")
+    r, st, out_path = run(["no-such-cli-imas-test"], "missing")
+    check(st and st["started"] is False and "起動できない" in r.stderr and compose.guard_result(out_path, "test") is False,
+          f"起動できない CLI を結果で返さない: {r.returncode} {st}")
+    # 別のセッションに抜け、環境を読めなくし、あとから書く道具を残して終わる CLI(正常終了・SIGTERM で止められた)
+    for name, sleep in (("exit", 0), ("term", 30)):
+        out = tmp / f"left-{name}.txt"
+        tool = (f"import ctypes, time, pathlib; ctypes.CDLL(None).prctl(4, 0, 0, 0, 0); time.sleep(0.8); "
+                f"pathlib.Path({str(out)!r}).write_text('残った道具の書き込み')")
+        cli = (f"import subprocess, sys, time; subprocess.Popen([sys.executable, '-c', {tool!r}], start_new_session=True, "
+               f"stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL); time.sleep({sleep})")
+        p = subprocess.Popen(compose.guarded([sys.executable, "-c", cli], tmp / f"g-{name}.txt"), start_new_session=True)
+        if sleep:
+            time.sleep(0.3)
+            compose.end_guarded(p)
+        else:
+            p.wait(timeout=10)
+        time.sleep(1.2)
+        st = json.loads(compose.guard_status_of(tmp / f"g-{name}.txt").read_text(encoding="utf-8"))
+        check(not out.exists() and p.returncode is not None and st["cleaned"] is True,
+              f"CLI が残した道具の実行が child_guard のあとも書いた({name}): rc {p.returncode} {st}")
+
+
+def test_child_tracker_edges(tmp: Path):
+    """ChildTracker と run_in_turn の境目(監査指摘 later):
+    - 始める前からの子は、起動時刻が同じ時計刻みでも止めない(止めると終了状態を横取りし、Popen が 0 を返す)
+    - 所属を確かめた、すでに終わった孤児も回収する(ゾンビを残さない)
+    - run_in_turn は、前の工程が時間切れで動いているあいだ、あとの工程を始めない"""
+    import time
+    tmp.mkdir(parents=True, exist_ok=True)
+    # 前のテストが回収せずに残したゾンビの子は「始める前からの子」で、束ねは回収しない(ここでは数えない)
+    zombies_before = {pid for pid, (s, ppid, _, _) in compose.proc_table().items() if ppid == os.getpid() and s == "Z"}
+    early = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(3)"])
+    # 始める前からの子が、始めたあとに別のセッションの道具を起こして終わる(道具はここへ付け替わる)。束ねの孤児として止めない
+    go, tool_pid = tmp / "go", tmp / "tool.pid"
+    pre = subprocess.Popen([sys.executable, "-c",
+                            "import pathlib, subprocess, sys, time\n"
+                            f"while not pathlib.Path({str(go)!r}).exists(): time.sleep(0.02)\n"
+                            "q = subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(3)'], start_new_session=True)\n"
+                            f"pathlib.Path({str(tool_pid)!r}).write_text(str(q.pid)); time.sleep(0.3)\n"])
+    tr = compose.ChildTracker().start()
+    tr.t0 = 0       # 起動時刻が始まりと同じ刻みになった場合を、いつでも起こす(時刻では見分けられない)
+    go.write_text("", encoding="utf-8")
+    pre.wait(timeout=10)
+    # 親が先に終わり、付け替わった子も終わる(ここの子のゾンビになる)
+    mid = subprocess.Popen([sys.executable, "-c", "import subprocess, sys; subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(0.2)'])"])
+    mid.wait()
+    time.sleep(0.6)
+    ok = tr.sweep()
+    zombies = [pid for pid, (s, ppid, _, _) in compose.proc_table().items()
+               if ppid == os.getpid() and s == "Z" and pid not in zombies_before]
+    check(ok and early.poll() is None and zombies == [], f"始める前からの子を止めた・終わった孤児を回収しない: {early.poll()} {zombies}")
+    tool = int(tool_pid.read_text())
+    tool_alive = compose.proc_table().get(tool, ("X",))[0] not in ("Z", "X")
+    check(tool_alive, "始める前からの子が、始めたあとに起こした道具を、束ねの孤児として止めた")
+    for q in (tool,):
+        try:
+            os.kill(q, 9)
+            os.waitpid(q, 0)
+        except (OSError, ChildProcessError):
+            pass
+    early.kill()
+    early.wait()
+    started: list = []
+    errs = compose.run_in_turn([("前", lambda: time.sleep(0.4)), ("あと", lambda: started.append(1))], timeout=0.05)
+    check(started == [] and any("始めない" in e for e in errs), f"前の工程が時間切れで動いているのに、あとの工程を始めた: {errs}")
+    time.sleep(0.5)
+
+
+def test_guarded_launch_seams(tmp: Path):
+    """組 P(start_group・finish_group・stop_groups)と組 W(child_guard・ChildTracker・控え)の継ぎ目(2026-10-21 の取り込み):
+    - 時間切れの子(child_guard 越し)には SIGTERM を先に送り、child_guard に CLI と残した道具の実行を片付けさせてから回収する
+      (いきなりグループごと SIGKILL すると、child_guard が片付けも結果も残せない)
+    - 束ねが例外・中断で抜けても、起動した子を止め、記録した子孫(別のセッションに抜けた道具)も止め、記事を控えへ戻してから上げる"""
+    import time
+    date = "2026-10-14"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    post = posts / f"{date}-kept.md"
+    post.write_text("---\n" + article_fm("kept", date) + "---\n元の本文\n", encoding="utf-8")
+    # CLI の代役: 別のセッションに抜けてあとから記事を書く道具を残し、自分は長く待つ
+    tool_pid = tmp / "tool.pid"
+    tool = (f"import os, time, pathlib; pathlib.Path({str(tool_pid)!r}).write_text(str(os.getpid())); time.sleep(1.5); "
+            f"pathlib.Path({str(post)!r}).write_text('残った道具の書き込み')")
+    cli = (f"import subprocess, sys, time; subprocess.Popen([sys.executable, '-c', {tool!r}], start_new_session=True, "
+           f"stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL); time.sleep(30)")
+    saved = (compose.ROOT, pipelib.ROOT)
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        # 1) 時間切れ: SIGTERM を先に送るので、child_guard が片付けて結果のファイル(cleaned)を書く
+        out = tmp / "t-timeout.txt"
+        with open(tmp / "log1", "w", encoding="utf-8") as lf:
+            p = pipelib.start_group(compose.guarded([sys.executable, "-c", cli], out), cwd=tmp, env=compose.child_env(out.name),
+                                    stdout=lf, stderr=subprocess.STDOUT)
+        _wait_files(tool_pid)
+        se, timed_out = compose.finish_guarded(p, 0.5)
+        st = compose.guard_status_of(out)
+        got = json.loads(st.read_text(encoding="utf-8")) if st.exists() else None
+        tool = int(tool_pid.read_text()) if tool_pid.exists() else 0
+        check(timed_out and p.returncode is not None and got and got.get("cleaned") is True and not (tool and _pid_alive(tool)),
+              f"時間切れの子に SIGTERM を先に送らず、child_guard が片付け・結果を残せない: {timed_out} {got} 道具 {tool}")
+        st.unlink(missing_ok=True)
+        tool_pid.unlink(missing_ok=True)
+        # 2) 束ねが例外で抜ける: 起動した子・抜けた道具を止め、記事を控えへ戻してから例外を上げる
+        snap = compose.posts_snapshot(date)
+        out2 = tmp / "t-raise.txt"
+        raised = None
+        try:
+            with compose.guarded_batch(date, snap, "テスト") as tr:
+                with open(tmp / "log2", "w", encoding="utf-8") as lf:
+                    p2 = pipelib.start_group(compose.guarded([sys.executable, "-c", cli], out2), cwd=tmp,
+                                             env=compose.child_env(out2.name), stdout=lf, stderr=subprocess.STDOUT)
+                tr.add(p2, out2.name)
+                _wait_files(tool_pid)
+                post.write_text("子の直書き", encoding="utf-8")
+                raise RuntimeError("中断の代役")
+        except RuntimeError as e:
+            raised = e
+        tool2 = int(tool_pid.read_text()) if tool_pid.exists() else 0
+        time.sleep(2)       # 道具が生きていれば書く時刻を過ぎる
+        check(raised is not None and p2.poll() is not None and not (tool2 and _pid_alive(tool2))
+              and "元の本文" in post.read_text(encoding="utf-8"),
+              f"束ねが例外で抜けたとき、子・抜けた道具を止めて記事を控えへ戻さない: {p2.poll()} 道具 {tool2} "
+              f"{post.read_text(encoding='utf-8')[:20]!r}")
+        compose.guard_status_of(out2).unlink(missing_ok=True)
+    finally:
+        compose.ROOT, pipelib.ROOT = saved
+        pipelib.STOPPING.clear()
+
+
+def test_restore_posts_skip(tmp: Path):
+    """控えへ戻す(compose.restore_posts)は、skip に渡した記事(呼び出し側が答えから書く・消す記事)には触らない: 控えにある記事の書き換えも、
+    控えに無い新しい記事も、そのまま残す。ほかの記事だけを戻し、子が作った記事を消す(監査指摘: skip を壊してもテストが通った)"""
+    date = "2026-10-14"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    p = lambda s: posts / f"{date}-{s}.md"
+    for s in ("kept", "target", "other"):
+        p(s).write_text("---\n" + article_fm(s, date) + "---\n元の本文\n", encoding="utf-8")
+    saved, saved_p = compose.ROOT, pipelib.ROOT
+    try:
+        compose.ROOT = pipelib.ROOT = tmp
+        snap = compose.posts_snapshot(date)
+        before = {s: p(s).read_bytes() for s in ("kept", "target", "other")}
+        p("target").write_text("書かせる記事の書き換え", encoding="utf-8")     # 控えにある・skip
+        p("newtarget").write_text("書かせる新しい記事", encoding="utf-8")       # 控えに無い・skip
+        p("other").write_text("ほかの記事の書き換え", encoding="utf-8")
+        p("ghost").write_text("子が作った記事", encoding="utf-8")
+        p("kept").unlink()
+        back = compose.restore_posts(date, snap, skip={p("target"), p("newtarget")})
+    finally:
+        compose.ROOT, pipelib.ROOT = saved, saved_p
+    check(p("target").read_text(encoding="utf-8") == "書かせる記事の書き換え" and p("newtarget").exists()
+          and p("other").read_bytes() == before["other"] and p("kept").read_bytes() == before["kept"] and not p("ghost").exists()
+          and sorted(back) == sorted(f"{date}-{s}.md" for s in ("other", "kept", "ghost")),
+          f"skip の記事に触った・ほかの記事を戻さない: {back}")
 
 
 def test_restore_files_ledger(tmp: Path):
@@ -11737,6 +12035,10 @@ def main() -> int:
     test_reminder_event_date(tmp / "red")
     test_reservation_occurs_on(tmp / "roo")
     test_writer_children(tmp / "wch")
+    test_restore_posts_skip(tmp / "rps")
+    test_child_guard(tmp / "cg")
+    test_child_tracker_edges(tmp / "cte")
+    test_guarded_launch_seams(tmp / "gls")
     test_restore_files_ledger(tmp / "rsfl")
     test_check_output()
     test_render_and_length()

@@ -1559,8 +1559,12 @@ def link_key(url) -> str | None:
     繰り返さない。監査指摘 2026-10-21)。"""
     # 返すキーは、読み直しても同じキーになる(判定表に書いて引ける)ものだけ(監査指摘 2026-10-21: `event%3Bid=A` のキーが
     # 読み直すと `event` になり、保存できないまま合議を繰り返した)
-    k = _link_key(url)
-    return k if k and LINK_KEY_RE.fullmatch(k) and _link_key("https://" + k) == k else None
+    # 読めない URL(`https://[broken]/` など。urlparse が ValueError)は None。過去の素材の facts にあっても索引を止めない
+    try:
+        k = _link_key(url)
+        return k if k and LINK_KEY_RE.fullmatch(k) and _link_key("https://" + k) == k else None
+    except ValueError:
+        return None
 
 
 def _link_key(url) -> str | None:
@@ -1575,11 +1579,16 @@ def _link_key(url) -> str | None:
     if "\\" in u.netloc or u.scheme not in ("", "http", "https"):
         return None
     try:
-        u.port
+        port = u.port
     except ValueError:
         return None
     host = (u.hostname or "").removeprefix("www.")
     if not host:
+        return None
+    # 別のページを同じキーにしうる形(パスのパラメータ `;id=`、スキームの既定でないポート、符号化された区切り `%2F` など)は
+    # 引き継ぎの対象にしない(確かめていないページまで同じ種別になる。監査指摘 2026-10-21)。短縮・文書などの専用の形より先に見る
+    if (u.params or (port is not None and port != {"http": 80, "https": 443}.get(u.scheme))
+            or re.search(r"%(2F|3B|3F|23|25|5C)", u.path, re.I)):
         return None
     seg = [x for x in u.path.split("/") if x]
     q = urllib.parse.parse_qs(u.query)
@@ -1614,21 +1623,19 @@ def _link_key(url) -> str | None:
                 return host + "/" + "/".join(seg[:i + 1])
     if host == "forms.gle":
         return f"{host}/{seg[0]}" if seg else None
-    # 別のページを同じキーにしうる形(パスのパラメータ `;id=`、既定でないポート、符号化された区切り `%2F` など)は引き継ぎの
-    # 対象にしない(確かめていないページまで同じ種別になる。監査指摘 2026-10-21)
-    if u.params or u.port not in (None, 80, 443) or re.search(r"%(2F|3B|3F|23|25|5C)", u.path, re.I):
-        return None
     raw = re.sub(r"%2e", ".", u.path, flags=re.I)
     path = posixpath.normpath(raw).rstrip("/") if raw.strip("/") else ""
-    # パスは一度復号して符号化し直す(括弧・日本語のパスも判定表に書ける形にし、符号化の有無・大小文字の揺れを同じキーにする)
-    path = urllib.parse.quote(urllib.parse.unquote(path), safe=LINK_KEY_SAFE)
+    # パスは一度復号して符号化し直す(括弧・日本語のパスも判定表に書ける形にし、符号化の有無・大小文字の揺れを同じキーにする)。
+    # UTF-8 として読めないバイト列は None(置換文字に潰すと別のバイト列が同じキーになる)
     try:
+        path = urllib.parse.quote(urllib.parse.unquote(path, errors="strict"), safe=LINK_KEY_SAFE)
         host = host.encode("idna").decode("ascii")
     except UnicodeError:
         return None
-    keep = sorted((k, v) for k, vs in urllib.parse.parse_qs(u.query, keep_blank_values=True).items()
-                  if not LINK_NOISE_QUERY.match(k) for v in vs)
-    return host + path + ("?" + urllib.parse.urlencode(keep) if keep else "")
+    keep = [(k, v) for k, v in urllib.parse.parse_qsl(u.query, keep_blank_values=True) if not LINK_NOISE_QUERY.match(k)]
+    if len({k for k, _ in keep}) != len(keep):
+        return None     # 同じ名前のクエリが2つ以上(値の順序で別の要求になりうる)は引き継ぎの対象にしない
+    return host + path + ("?" + urllib.parse.urlencode(sorted(keep)) if keep else "")
 
 
 def parse_source_table(text: str, p) -> dict:

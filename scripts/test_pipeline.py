@@ -9761,9 +9761,16 @@ def test_link_key_and_table():
         for a, b in (("https://d.example/event/A%2FB", "https://d.example/event/A/B"),
                      ("https://d.example/event;id=A", "https://d.example/event;id=B"),
                      ("https://d.example:8443/event", "https://d.example:9443/event"),
-                     ("https://d.example/event%3Bid=A", "https://d.example/event")):
+                     ("https://d.example/event%3Bid=A", "https://d.example/event"),
+                     ("https://forms.gle/AbCd123;id=A", "https://forms.gle/AbCd123;id=B"),
+                     ("https://t.co:8443/AbCd123", "https://t.co:9443/AbCd123"),
+                     ("https://forms.gle:8443/AbCd123", "https://forms.gle:9443/AbCd123"),
+                     ("https://d.example:80/event", "https://d.example/event"),
+                     ("https://d.example/event/%FE", "https://d.example/event/%FF"),
+                     ("https://d.example/e?id=A&id=B", "https://d.example/e?id=B&id=A")):
             check(lk(a) is None or lk(a) != lk(b), f"別のページが同じキーになった: {a} / {b} → {lk(a)}")
         # 返すキーは、読み直しても同じキー(判定表に書いて引ける)
+        check(lk("https://[broken]/event") is None, "読めない URL で例外・キー")
         for u in ("https://d.example/event%3Bid=A", "https://d.example/a;b/c", "https://d.example/x?q=a%26b&r=1", "https://d.example/%E3%81%82"):
             k = lk(u)
             check(k is None or (pipelib.LINK_KEY_RE.fullmatch(k) and lk("https://" + k) == k), f"読み直すと変わるキー: {u} → {k}")
@@ -9832,7 +9839,8 @@ def test_link_inheritance(tmp: Path):
         {"label": "a", "url": test_ticket, "type": "当事者"}]) + "---\n本文\n", encoding="utf-8")
     (tmp / "candidates" / "2026-09-26.json").write_text(json.dumps([cand_row("p", post, facts=[
         "#アイマスch メンバー限定配信 10月ゲスト決定", f"お便りフォーム: {form}", f"物販: {shop}", f"記事: {press}",
-        f"前回: {old_ticket}", f"前回のフォーム: {old_form}", f"試験: {test_ticket}", f"ほか: {shop2}"])], ensure_ascii=False), encoding="utf-8")
+        f"前回: {old_ticket}", f"前回のフォーム: {old_form}", f"試験: {test_ticket}", f"ほか: {shop2}",
+        "参照 https://[broken]/event"])], ensure_ascii=False), encoding="utf-8")   # 読めない URL が facts にあっても判定を止めない
     for i in range(10, 21):
         (tmp / "candidates" / f"2026-10-{i}.json").write_text(json.dumps([cand_row(f"f{i}", f"https://a.example/{i}")]), encoding="utf-8")
     # いちばん強いリンク元(公式の投稿)とは関係しないが、次に強いリンク元(準公式のページ)とは関係するリンク先は、準公式を引き継ぐ

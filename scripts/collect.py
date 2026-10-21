@@ -1021,6 +1021,16 @@ def keep_pending_posts(key: str, text: str) -> None:
         f.write(text.strip() + "\n\n")
 
 
+def keep_blocked_partials(outdir: Path, keys, pattern: str) -> None:
+    """Grok が認証切れ・利用上限で止まる前に書いた途中の書き出し(退けた <pattern>)の投稿を、読み直しの列に残す
+    (止まった面は途中の書き出しを使うやり直しにも入らないので、そのままでは次の収集で .grok ごと消える。監査指摘 r5)。"""
+    for k in keys:
+        text = "\n\n".join(t for t in (read_written(p).strip() for p in sorted(outdir.glob(pattern.format(k=k))))
+                           if t and not re.fullmatch(r"(なし|見つからない)[。\s]*", t))
+        if post_blocks(text):
+            keep_pending_posts(k, text)
+
+
 def take_pending_posts(outdir: Path, keys: list[str]) -> list[Path]:
     """読み直しの列の投稿を、その面の書き出し(<key>.md)へ足す(「なし」だけの書き出しは置き換える)。列のファイルは確かめが
     終わるまで消さず .taken に退ける(呼び側が確かめのあとで消す。止まれば確かめ役がまた列に足す)。戻りは退けたファイル。"""
@@ -1388,6 +1398,7 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         grok_errs: dict[str, str] = {}
         grok_started = time.time()
         grok_basic(queries, outdir, grok_errs)
+        keep_blocked_partials(outdir, [q["key"] for q in queries if grok_blocked(grok_errs, q["key"])], "{k}.partial-*.md")
         # 前の収集で確かめ役が止まって確かめられなかった投稿(読み直しの列)も、同じ面の書き出しに足して確かめる
         taken = take_pending_posts(outdir, [q["key"] for q in queries])
         # Luna が面ごとに確かめて候補にする。X の原本でしか確かめられない問いは、予算を確かめて Grok に深掘りさせ、もう一度 Luna が確かめる
@@ -1409,6 +1420,7 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                 # 深掘りの Grok が認証切れ・利用上限で止まった面は、まだ確かめ終えていない: 残った投稿を失ったと言わず、
                 # 読み直しの列に残す(report_lost_posts。監査指摘 r4)
                 ledger["blocked"] |= {k for k in chosen if grok_blocked(grok_errs, k)}
+                keep_blocked_partials(outdir, [k for k in chosen if grok_blocked(grok_errs, k)], "{k}-deep.partial-*.md")
                 spent1 = sum(grok_search_counts(deep_started).values())   # 1回目の実際の検索回数(指示は厳密には守られない)
                 lost = sorted(k for k in failed | {k for k in chosen if not read_written(outdir / f"{k}-deep.md").strip()}
                               if not grok_blocked(grok_errs, k))
@@ -1432,6 +1444,7 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                 if chosen2:
                     failed2 = deep_dive_grok(queries, outdir, chosen2, grok_errs, suffix="-deep2", retry=True)
                     ledger["blocked"] |= {k for k in chosen2 if grok_blocked(grok_errs, k)}
+                    keep_blocked_partials(outdir, [k for k in chosen2 if grok_blocked(grok_errs, k)], "{k}-deep2.partial-*.md")
                     lost2 = sorted(k for k in failed2 | {k for k in chosen2 if not read_written(outdir / f"{k}-deep2.md").strip()}
                                    if not grok_blocked(grok_errs, k))
                     if lost2:

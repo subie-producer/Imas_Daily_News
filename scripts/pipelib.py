@@ -633,24 +633,31 @@ def cli_block_kind(info: dict) -> str:
     return "認証切れ" if info.get("kind") == "auth" else "利用上限"
 
 
-CODEX_ERROR_LINE = re.compile(r"^(?:\[[^\]]*\]\s*|\S+Z\s+)?ERROR\b")   # codex exec 自身のエラーの行(`ERROR: …` / ログの `… ERROR …`)
+CODEX_ERROR_LINE = re.compile(r"^(?:\[[^\]]*\]\s*)?ERROR:")   # codex exec 自身が最後に出す失敗の行(`ERROR: …`)
+CODEX_ERROR_TAIL = 5      # codex は失敗の行を出して終わる。最後の数行の中にあるものだけを CLI 自身の失敗とみる
 
 
 def cli_error_lines(tool: str, text) -> list[str]:
     """CLI の出力のうち、**CLI 自身の**エラーとして読める行だけ(素材の本文・道具の出力を見ない。監査指摘: 探索のログの道具の
-    出力に `Not logged in` があると認証切れと取り違えた)。codex は進行ログに道具の出力が混ざるので `ERROR` で始まる行だけ、
+    出力に `Not logged in` があると認証切れと取り違えた)。codex は進行ログに道具の出力が混ざるので、出力の最後の数行のうち
+    最後の `ERROR:` の行だけ(道具が `ERROR: …` を出しても、そのあとに codex 自身の失敗の行か進行ログが続く。監査指摘 r5)、
     claude -p は答えかエラーの1行だけを出すので最後の1行だけ、grok はエラー出力とセッション記録の失敗理由(呼び側が渡す)だけ。"""
     lines = [ln.strip() for ln in str(text or "")[-CLI_SCAN_CHARS:].splitlines() if ln.strip()]
     if tool == "codex":
-        return [ln for ln in lines if CODEX_ERROR_LINE.match(ln)]
+        return [ln for ln in lines[-CODEX_ERROR_TAIL:] if CODEX_ERROR_LINE.match(ln)][-1:]
     if tool == "claude":
         return lines[-1:]
     return lines
 
 
 def cli_blocked_reason(tool: str, *texts) -> dict | None:
-    """CLI 自身のエラーの行(cli_error_lines)から、認証切れ・利用上限の文言を探す。無ければ None(本物の失敗)。"""
-    tail = "\n".join(ln for t in texts for ln in cli_error_lines(tool, t))
+    """CLI 自身のエラーの行(cli_error_lines)から、認証切れ・利用上限の文言を探す。無ければ None(本物の失敗)。
+    codex は標準出力・エラーのどれかの最後の `ERROR:` が認証切れ・利用上限でない(ふつうの失敗)なら止まったとしない
+    (別々に受けた出力の片方の末尾に道具の出力の `ERROR:` が来ても、codex 自身のふつうの失敗を隠さない。監査指摘 r5)。"""
+    found = [ln for t in texts for ln in cli_error_lines(tool, t)]
+    if tool == "codex" and any(not any(pat.search(ln) for _, pat in CLI_BLOCK_RULES) for ln in found):
+        return None
+    tail = "\n".join(found)
     for kind, pat in CLI_BLOCK_RULES:
         m = pat.search(tail)
         if m:

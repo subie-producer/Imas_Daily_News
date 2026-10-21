@@ -11444,6 +11444,62 @@ def test_cli_blocked_r5(tmp: Path):
     check(any("grok" in m and "全クエリ0件" in m for m in wnotes), f"停止に本物の失敗が混ざった回を、watch が検知しない: {wnotes}")
 
 
+def test_cli_blocked_r6(tmp: Path):
+    """Sol 監査 r5 の指摘の再発防止(偽の CLI を本物の子プロセスとして起動する):
+    (1) Grok が投稿を書いてから利用上限で止まった面の途中の書き出しを、確かめに回すか読み直しの列に残す(.grok ごと消えない)
+    (2) codex の道具の出力の `ERROR: Not logged in` を、codex 自身のふつうの失敗(壊れた JSON)より優先して認証切れにしない"""
+    import time
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    bindir, saved_path = tmp / "bin", os.environ.get("PATH", "")
+    bindir.mkdir()
+    # (1)
+    with cli_posts():
+        post = "### 1\n- url: https://x.com/a/status/777\n- 本文: 新しい公演告知\n"
+        (bindir / "grok").write_text(
+            f"#!{sys.executable}\nimport pathlib, sys\npf = pathlib.Path(sys.argv[sys.argv.index('--prompt-file') + 1])\n"
+            f"pf.with_name(pf.name.removeprefix('prompt-')).write_text({post!r})\nsys.stderr.write({GROK_LIMIT!r})\nsys.exit(1)\n",
+            encoding="utf-8")
+        (bindir / "grok").chmod(0o755)
+        seen = tmp / "verify-input.txt"
+        (bindir / "codex").write_text(          # 確かめ役は動く(この回のうちに確かめる)。読んだ投稿を控え、結果は空
+            f"#!{sys.executable}\nimport pathlib\n"
+            f"pathlib.Path({str(seen)!r}).open('a', encoding='utf-8').write(pathlib.Path('x-posts.md').read_text(encoding='utf-8'))\n"
+            "for n in ('items.json', 'posts.json', 'deep.json'):\n    pathlib.Path(n).write_text('[]')\n", encoding="utf-8")
+        (bindir / "codex").chmod(0o755)
+        shutil.copy(Path(__file__).resolve().parent.parent / "source_types.yml", tmp / "source_types.yml")
+        saved = (collect.ROOT, pipelib.ROOT, collect.build_prompts, collect.grok_search_counts, collect.notify)
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+            collect.ROOT = pipelib.ROOT = tmp
+            collect.build_prompts = lambda: [{"key": "cg", "brand": "cg", "topic": "t", "accounts": []}]
+            collect.grok_search_counts, collect.notify = (lambda *a: {}), (lambda *a, **k: True)
+            collect.run_explores(True, False)
+        finally:
+            collect.ROOT, pipelib.ROOT, collect.build_prompts, collect.grok_search_counts, collect.notify = saved
+            os.environ["PATH"] = saved_path
+        pending = collect.read_written(tmp / collect.GROK_PENDING / "cg.md")
+        verified = collect.read_written(seen)
+        check("status/777" in verified + pending,
+              f"止まる前に Grok が書いた投稿を確かめにも読み直しの列にも回さない(次の収集で消える): {verified!r} {pending!r}")
+    # (2)
+    with cli_posts() as cp:
+        transcript = "exec\n/bin/bash -lc 'cat material.txt' in /work succeeded in 4ms:\nERROR: Not logged in\n"
+        fake_cli(bindir, "codex", out=transcript, err="ERROR: model returned malformed JSON\n", code=1)
+        of, ef = (open(tmp / n, "w+", encoding="utf-8") for n in ("o.txt", "e.txt"))
+        saved = pipelib.ROOT
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+            pipelib.ROOT = tmp
+            proc = subprocess.Popen(["codex"], stdout=of, stderr=ef)
+            _, err = collect.collect_explore("cg", proc, of, ef, time.time() + 20)
+        finally:
+            pipelib.ROOT = saved
+            os.environ["PATH"] = saved_path
+        check("[CLI 停止]" not in err and "[出力が読めない]" in err and not cp.posts,
+              f"道具の出力の `ERROR: Not logged in` を認証切れにして、codex のふつうの失敗を隠した: {err[-120:]!r} {cp.posts}")
+
+
 def test_scratch_not_tmp(tmp: Path):
     """本番のコードが作る使い捨てのもの(当番の監査の作業ツリー・答えのファイル・Sol の一時ファイル、探索の作業ディレクトリ)は、
     /tmp(3.8GB の tmpfs)でなく置き場(IMAS_SCRATCH、既定 ~/.cache/imas-news)に作り、終わったら消す。消し損ねは次に作るとき
@@ -11526,6 +11582,7 @@ def main() -> int:
     test_cli_blocked_grok_sessions_r3(tmp / "cb3")
     test_cli_blocked_r4(tmp / "cb4")
     test_cli_blocked_r5(tmp / "cb5")
+    test_cli_blocked_r6(tmp / "cb6")
     test_scratch_not_tmp(tmp / "snt")
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")

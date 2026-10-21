@@ -9759,8 +9759,11 @@ def test_link_key_and_table():
         # 中身を区別するクエリは残す(`?s=` を落として、確かめていない別のページまで同じキーにしない。監査指摘 2026-10-21)
         check(lk("https://shop.example/search?s=event-A") != lk("https://shop.example/search?s=event-B"), "中身を区別するクエリを落とした")
         # 括弧・日本語のパスも、判定表に書ける形の同じキーになる(符号化の有無で揺れない)
-        k1, k2 = lk("https://shop.example/ticket(1)/チケット"), lk("https://shop.example/ticket%281%29/%E3%83%81%E3%82%B1%E3%83%83%E3%83%88")
+        k1, k2 = lk("https://shop.example/ticket(1)/チケット"), lk("https://shop.example/ticket(1)/%e3%83%81%E3%82%B1%E3%83%83%E3%83%88")
         check(k1 and k1 == k2 and pipelib.LINK_KEY_RE.fullmatch(k1) and lk("https://" + k1) == k1, f"括弧・日本語のパスのキー: {k1} / {k2}")
+        # 百分率符号化された予約文字は復号しない(`+` と `%2B`、`(` と `%28` は別のページでありうる。監査指摘 2026-10-21)
+        check(lk("https://d.example/event/A+B") != lk("https://d.example/event/A%2BB")
+              and lk("https://d.example/ticket(1)") != lk("https://d.example/ticket%281%29"), "符号化された予約文字を復号して同じキーにした")
         # 別のページを同じキーにしない(符号化された区切り・パスのパラメータ・既定でないポート)。同一を保証できない形は None
         for a, b in (("https://d.example/event/A%2FB", "https://d.example/event/A/B"),
                      ("https://d.example/event;id=A", "https://d.example/event;id=B"),
@@ -9850,7 +9853,8 @@ def test_link_inheritance(tmp: Path):
     (tmp / "candidates" / "2026-09-26.json").write_text(json.dumps([cand_row("p", post, facts=[
         "#アイマスch メンバー限定配信 10月ゲスト決定", f"お便りフォーム: {form}", f"物販: {shop}", f"記事: {press}",
         f"前回: {old_ticket}", f"前回のフォーム: {old_form}", f"試験: {test_ticket}", f"ほか: {shop2}",
-        "参照 https://[broken]/event"])], ensure_ascii=False), encoding="utf-8")   # 読めない URL が facts にあっても判定を止めない
+        "参照 https://[broken]/event", "申込 https://shop.example/evt?id=A!", "詳細 https://shop.example/evt(9)"])],
+        ensure_ascii=False), encoding="utf-8")   # 読めない URL が facts にあっても判定を止めない
     for i in range(10, 21):
         (tmp / "candidates" / f"2026-10-{i}.json").write_text(json.dumps([cand_row(f"f{i}", f"https://a.example/{i}")]), encoding="utf-8")
     # いちばん強いリンク元(公式の投稿)とは関係しないが、次に強いリンク元(準公式のページ)とは関係するリンク先は、準公式を引き継ぐ
@@ -9902,6 +9906,10 @@ def test_link_inheritance(tmp: Path):
         cs.UNRESOLVED = tmp / "metrics" / "classify-unresolved.json"
         check(cs.link_sources(form) == [(post, "公式")], f"7号より前の公式の投稿がリンク元にならない: {cs.link_sources(form)}")
         check(cs.link_sources(ticket) == [(post, "公式")], f"素材の link_from がリンク元にならない: {cs.link_sources(ticket)}")
+        # facts の URL を削って別の URL を作らない(`/event(1)` → `/event`、`?id=A!` → `?id=A`。監査指摘 2026-10-21)
+        check(cs.link_sources("https://shop.example/goods/1(2)") == [] and cs.link_sources("https://press.example/a") == []
+              and cs.link_sources("https://shop.example/evt?id=A") == [] and cs.link_sources("https://shop.example/evt(9)") == [(post, "公式")],
+              f"facts の URL を削った別の URL にリンク元を付けた: {cs.link_sources('https://shop.example/evt?id=A')}")
         sys.argv = ["classify_sources.py", "--date", "2026-10-21", "--posts-only", "--apply"]
         code = cs.main()
         pipelib._ST_TABLE = None

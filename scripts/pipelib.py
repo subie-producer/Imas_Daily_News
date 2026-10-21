@@ -1547,11 +1547,9 @@ def src_rank(t) -> int:
 # リンク先のキーで落とすクエリ(どのサイトでも追跡の印でしかないものだけ。`s`・`ref` などはサイトによって中身を区別するので
 # 残す。監査指摘 2026-10-21: `?s=event-A` だけを確かめたのに `?s=event-B` まで同じキーになった)
 LINK_NOISE_QUERY = re.compile(r"^(utm_.*|fbclid|gclid|igsh|igshid|ref_src)$")
-# リンク先のキーに使う文字(判定表に書ける形。ほかは百分率符号化する)
-LINK_KEY_SAFE = "/-._~!$*+,;=@"
 
 
-LINK_KEY_RE = re.compile(r"[A-Za-z0-9._~/?=&%+@!$*,;-]+")     # 判定表 link_types に書けるキーの文字
+LINK_KEY_RE = re.compile(r"[A-Za-z0-9._~/?=&%+@!$*,;()'-]+")     # 判定表 link_types に書けるキーの文字
 
 
 def link_key(url) -> str | None:
@@ -1634,11 +1632,11 @@ def _link_key(url) -> str | None:
     # (監査指摘 2026-10-21: /event/A・/event/A/・/event//A が同じキーになった)
     if re.search(r"//|(^|/)\.\.?(/|$)", re.sub(r"%2e", ".", u.path, flags=re.I)):
         return None
-    path = u.path
-    # パスは一度復号して符号化し直す(括弧・日本語のパスも判定表に書ける形にし、符号化の有無・大小文字の揺れを同じキーにする)。
-    # UTF-8 として読めないバイト列は None(置換文字に潰すと別のバイト列が同じキーになる)
+    # パスの百分率符号化は復号しない(`+` と `%2B`、`(` と `%28` は別のページでありうる。監査指摘 2026-10-21)。
+    # 符号化されていない ASCII 以外の文字(日本語)だけを UTF-8 で符号化し、%xx の16進は大文字にそろえる(どちらも同じ先の書き方)
+    path = re.sub(r"%[0-9a-fA-F]{2}", lambda m: m.group(0).upper(),
+                  "".join(urllib.parse.quote(ch) if ord(ch) > 127 else ch for ch in u.path))
     try:
-        path = urllib.parse.quote(urllib.parse.unquote(path, errors="strict"), safe=LINK_KEY_SAFE)
         host = host.encode("idna").decode("ascii")
     except UnicodeError:
         return None

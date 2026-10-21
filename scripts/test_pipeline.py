@@ -8394,7 +8394,10 @@ def test_oncall_report_concurrence(tmp: Path):
                 if Path(schema).name == "oncall-accept.schema.json":
                     if during_accept:
                         during_accept()
-                    return next(ac)
+                    a = next(ac)
+                    if isinstance(a, BaseException):
+                        raise a
+                    return a
                 return {"accepted": [], "refuted": [], "status": "unchanged", "rerun_mode": "unchanged"}
             rprompts = []
             oncall.run_claude = claude
@@ -8491,6 +8494,32 @@ def test_oncall_report_concurrence(tmp: Path):
                   and calls == ["oncall-fix.schema.json", "oncall-accept.schema.json"],
                   f"了承のセッションが{what}に触ったのに取り込んだ: {r.get('approved')} {r['fix'].get('status')} {calls}")
             oncall.root_clean, oncall.remote_main, oncall.env_fingerprint = (lambda: True), (lambda: "B" * 40), (lambda: "env")
+        # (6) 了承のセッションが認証切れ・利用上限(CliBlocked)で止まった → 続きに「了承待ち」(最新の指摘・監査の文面)が残り、
+        #     再開は当番の修正・検査・監査を挟まず了承から(監査指摘 2026-10-22: 続きに残らず、再開で余分に回した)
+        blocked = pipelib.CliBlocked({"tool": "claude", "kind": "auth", "detail": "OAuth の期限切れ"})
+        r, tr, calls, _, _ = run([review(editor_summary=audit1)], [blocked])
+        k = json.loads(json.dumps(r["kept"]))     # state に保存して読み戻す
+        check(not r["approved"] and r.get("blocked") and [o["id"] for o in k["open"]] == ["m1"]
+              and (k.get("accept") or {}).get("editor_summary") == audit1 and [m["id"] for m in k["accept"].get("must_fix") or []] == ["m1"]
+              and k["accept"].get("verification") == AUDIT_RAN,
+              f"了承の途中で止まった続きに、最新の指摘と監査の文面が残らない: {k.get('open')} {k.get('accept')}")
+        h0 = "H%039d" % 0          # 偽の freeze が続きの確かめ(0往復目)で返す commit を、監査した commit とする
+        wip = {"base": "B" * 40, "head": h0, "fix": k["fix"], "open": k["open"], "later": [], "accept": k["accept"]}
+        r, tr, calls, _, rprompts = run([], [{"decision": "accept", "evidence": "掲載の記録と合う", "editor_summary": None}], wip=wip)
+        check(r["approved"] and calls == ["oncall-accept.schema.json"] and rprompts == [] and r["head"] == h0 and r["diff"].strip()
+              and r["fix"].get("editor_summary") == audit1 and (r["fix"].get("report_authorship") or {}).get("round") == 1,
+              f"了承待ちの続きが、了承から始まらない・取り込む差分が無い: {calls} {len(rprompts)} {r.get('approved')} {r['head'][:10]}")
+        # 続きの了承で異を唱えた → 当番の修正を挟まず異議を監査へ
+        r, tr, calls, _, rprompts = run([review(verdict="approve", must_fix=[])],
+                                        [{"decision": "object", "evidence": "続きでの異議", "editor_summary": dict(own2)}], wip=wip)
+        check(r["approved"] and calls == ["oncall-accept.schema.json"] and len(rprompts) == 1 and "続きでの異議" in rprompts[0]
+              and r["fix"].get("editor_summary") == own2,
+              f"続きの了承で異を唱えたあと、異議が監査に渡らない: {calls} {len(rprompts)}")
+        # 作業ツリーの commit が監査したものと違えば、了承からは始めない(普通の続き)
+        r, tr, calls, _, _ = run([review(verdict="approve", must_fix=[])], [], wip=dict(wip, head="H%039d" % 7))
+        check("oncall-accept.schema.json" not in calls and calls[:1] == ["oncall-integrate.schema.json"] and r["approved"]
+              and any("accept_skipped" in t for t in tr),
+              f"監査していない commit の続きを了承から始めた: {calls}")
     finally:
         for n, v in saved.items():
             setattr(oncall, n, v)

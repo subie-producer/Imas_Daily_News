@@ -1,0 +1,131 @@
+{
+ "decisions": {
+  "valiv-bombanana-joint-stream-2026-10-22": {
+   "action": "article",
+   "angle": "灯里愛夏・上水流宇宙・レトラが本日20時から『BOMBANANA!』を合同プレイ配信、視聴は各自のYouTubeチャンネル",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の開始日。当日のトリガーあり"
+  },
+  "valiv-cosmo-wake-up-my-music-short-2026": {
+   "action": "article",
+   "angle": "vα-liv公式が上水流宇宙の「Wake up my music」踊ってみたショート動画をYouTubeとTikTokで公開した",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026": {
+   "action": "article",
+   "angle": "上水流宇宙の「秋のコラボショート祭り」第3弾はキズナアイ、10月23日18時に宇宙chで投稿予定(第4弾しぐれういも同企画として併記)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "第4弾を統合して1記事"
+  },
+  "valiv-cosmo-autumn-collab-shorts-shigure-ui-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ「秋のコラボショート祭り」の施策のため第3弾と1記事に"
+  },
+  "valiv-cosmo-ace-combat-8-stream-report-2026-10-21": {
+   "action": "article",
+   "angle": "上水流宇宙のACE COMBAT 8配信、次回は10月27日21時と告知",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信後の振り返りと次回日時の告知"
+  },
+  "valiv-situation-voice-2026-oct": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "価格・販売期間・対象は10月11日号の既報と同じ。締切11/1は3日以内でなく新事実も無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-valiv-cosmo-wake-up-my-music-short-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "vα-liv公式が上水流宇宙の「Wake up my music」踊ってみたショート動画をYouTubeとTikTokで公開した",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "valiv-cosmo-wake-up-my-music-short-2026",
+    "candidate_ids": [
+     "202610220239-grok-69"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙の「秋のコラボショート祭り」第3弾はキズナアイ、10月23日18時に宇宙chで投稿予定(第4弾しぐれういも同企画として併記)",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026",
+    "candidate_ids": [
+     "202610220239-grok-70",
+     "202610220239-grok-71"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-cosmo-ace-combat-8-stream-report-2026-10-21",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "上水流宇宙のACE COMBAT 8配信、次回は10月27日21時と告知",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "valiv-cosmo-ace-combat-8-stream-report-2026-10-21",
+    "candidate_ids": [
+     "202610220239-grok-72"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-bombanana-joint-stream-2026-10-22",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "灯里愛夏・上水流宇宙・レトラが本日20時から『BOMBANANA!』を合同プレイ配信、視聴は各自のYouTubeチャンネル",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "valiv-bombanana-joint-stream-2026-10-22",
+    "candidate_ids": [
+     "sched-2026-10-22-valiv-bombanana-joint-stream-2026-10-22-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-situation-voice-2026-oct",
+    "reason": "既報",
+    "note": "価格・販売期間・対象は10月11日号の既報と同じ。締切11/1は3日以内でなく新事実も無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -108,5 +108,36 @@
   "src_candidate_id": "202610161835-watch-4",
   "event_date": "2026-10-16",
   "deadline": "2026-11-30"
+ },
+ {
+  "id": "sched-2026-11-30-cg-sakuma-mayu-necklace-bound-to-you-締切",
+  "dedup_key": "cg-sakuma-mayu-necklace-bound-to-you",
+  "brand": "cg",
+  "subject": "佐久間まゆ ネックレス Bound to you. 予約",
+  "kind": "締切",
+  "note": "23:59の予約締切まで、TUfave・プレミアムバンダイで予約できる最終日",
+  "reserved_on": "2026-10-22",
+  "occurs_on": "2026-11-30",
+  "title": "佐久間まゆイメージネックレス〜Bound to you.〜 予約受付開始",
+  "url": "https://idolmaster-official.jp/news/01_20188",
+  "source_type": "公式",
+  "facts": [
+   "販売: 株式会社バンダイ とアクセサリーブランド「TUfave（ティーユーフェイブ）」が展開する「アイドルマスター シンデレラガールズ」コレクションから、佐久間まゆのイメージネックレス〜Bound to you.〜が登場",
+   "予約期間: 10/21（水）12時～11/30（月）23時",
+   "お届け: 2027年2月より順次",
+   "モチーフ: 「永遠」を象徴するサークルと「愛」を象徴するハート",
+   "デザイン: 二つのサークルにチェーンを通して重ねる着け方や、片側にチェーンを通して揺らす着け方など、形を変えて楽しめる",
+   "デザイン: 長めのチェーンとシンプルなデザインでユニセックスに使える",
+   "購入特典: 描き下ろしイラストを使用した【アクリルネックレススタンド】と【メッセージレター＆クリアカード】が付属",
+   "販売サイト: https://www.tufave.com/pages/mayu_sakuma",
+   "販売サイト: https://p-bandai.jp/fashion/c0009/c000901/c0004/list-da10-n0/",
+   "最新情報: 「TUfave」・「バンコレ！」公式X https://x.com/BANDAIFN",
+   "エンゲージメント: 中",
+   "言及アイドル: 佐久間まゆ"
+  ],
+  "via": "watch",
+  "verify": "confirmed",
+  "deadline": "2026-11-30",
+  "src_candidate_id": "202610211840-watch-0"
  }
 ]

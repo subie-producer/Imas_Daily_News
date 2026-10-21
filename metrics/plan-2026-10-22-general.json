@@ -1,0 +1,73 @@
+{
+ "decisions": {
+  "kamizuru-autumn-collab-shorts-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "上水流宇宙の秋のコラボショート祭りは dsva 面が記事化済み。出典も個人SNS投稿のみ(未確認)"
+  },
+  "starlit-season-5th-steam-sale-2026": {
+   "action": "article",
+   "angle": "スターリットシーズン5周年Steamセール(本編70%OFF)は10月23日2時終了で、実質きょうが購入できる最終日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約の締切。終了が3日以内に迫る当日のトリガーあり"
+  },
+  "idolmaster-portal-maintenance-2026-10-22": {
+   "action": "article",
+   "angle": "アイドルマスターポータルのシステムメンテナンスが本日15時から16時に実施される",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日開始のトリガー。21日の緊急メンテ(joint面)とは別の予定メンテ"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-starlit-season-5th-steam-sale-2026",
+    "brand": "general",
+    "rank": "small",
+    "angle": "スターリットシーズン5周年Steamセール(本編70%OFF)は10月23日2時終了で、実質きょうが購入できる最終日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "starlit-season-5th-steam-sale-2026",
+    "candidate_ids": [
+     "sched-2026-10-22-starlit-season-5th-steam-sale-2026-締切"
+    ]
+   },
+   {
+    "slug": "general-idolmaster-portal-maintenance-2026-10-22",
+    "brand": "general",
+    "rank": "small",
+    "angle": "アイドルマスターポータルのシステムメンテナンスが本日15時から16時に実施される",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "idolmaster-portal-maintenance-2026-10-22",
+    "candidate_ids": [
+     "sched-2026-10-22-idolmaster-portal-maintenance-2026-10-22-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "kamizuru-autumn-collab-shorts-2026",
+    "reason": "重複",
+    "note": "上水流宇宙の秋のコラボショート祭りは dsva 面が記事化済み。出典も個人SNS投稿のみ(未確認)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

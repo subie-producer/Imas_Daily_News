@@ -110,5 +110,35 @@
   "verify": "confirmed",
   "src_candidate_id": "202610091245-watch-0",
   "event_date": "2026-12-23"
+ },
+ {
+  "id": "sched-2026-12-23-million-glow-together-cd-2026-発売",
+  "dedup_key": "million-glow-together-cd-2026",
+  "brand": "million",
+  "subject": "MILLION BATTLE OF THE@TER ED「Glow Together」発売",
+  "kind": "発売",
+  "note": "CDが発売され、店頭や通販で購入できる(税込1,870円)。",
+  "reserved_on": "2026-10-22",
+  "occurs_on": "2026-12-23",
+  "title": "「Glow Together」CD予約開始",
+  "url": "https://x.com/neowing_anime/status/2112386601825489136",
+  "source_type": "未確認",
+  "facts": [
+   "商品名は「THE IDOLM＠STER MILLION BATTLE OF THE＠TER ED Glow Together」。",
+   "CDアルバム、商品番号LACA-25292、JAN/ISBN 4540774252923。",
+   "価格は1,870円。",
+   "発売日: 2026/12/23 発売。",
+   "出演者は二階堂千鶴（CV: 野村香菜子）、春日未来（CV: 山崎はるか）、北沢志保（CV: 雨宮天）、木下ひなた（CV: 田村奈央）、桜守歌織（CV: 香里有佐）、矢吹可奈（CV: 木戸衣吹）。",
+   "初回仕様・特典は「THE IDOLM＠STER MILLION BATTLE OF THE＠TER 09 100てん☆ナンバーワン!」「10 INVISIBLE LIGHT」「11 BLACK LIPS」との「BATTLE OF THE＠TER」合同リリースイベント応募券封入。",
+   "表題曲「Glow Together」とCDのみで聴けるドラマパートを収録。",
+   "描き下ろしイラストジャケット。",
+   "リンク: https://www.neowing.co.jp/product/LACA-25292?utm_source=SNS&utm_medium=twitter&utm_campaign=a261020LACA-25292",
+   "エンゲージメント: 中",
+   "言及アイドル: 二階堂千鶴、春日未来、北沢志保、木下ひなた、桜守歌織、矢吹可奈"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-12-23",
+  "src_candidate_id": "202610220239-grok-18"
  }
 ]

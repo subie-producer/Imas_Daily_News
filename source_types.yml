@@ -971,6 +971,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/oPYZEyxHYF: 公式                         # 機械で追加: 展開先 https://idolmaster-official.jp/
   t.co/odKdocfVW3: 準公式                         # 機械で追加: 展開先 https://asobistore.jp/content/title/Idolmaster/shinyradio/contact/
   t.co/PHXTrZXZFE: 公式                         # 機械で追加: 展開先 https://va-liv.booth.pm/items/8959817
   t.co/MdlrfC0LCI: 準公式                         # 機械で追加: 展開先 https://shop.asobistore.jp/products/detail/250322-00-00-comp_01

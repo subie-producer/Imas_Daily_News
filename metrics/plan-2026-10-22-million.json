@@ -1,0 +1,226 @@
+{
+ "decisions": {
+  "million-mitsukoshi-osechi-2027": {
+   "action": "article",
+   "angle": "三越のおせち2027の販売が10月21日に始まり、11月17日23:59まで三越伊勢丹オンラインストア限定で、店頭の予約・販売は無い",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "9/17の既報は販売予定の案内。販売開始と店頭販売なしが新しい点"
+  },
+  "million-chizuru-birthday-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号でガシャ・セット・劇場装飾・メッセージまで記事化済み"
+  },
+  "million-stamas-5th-anniversary-ssr-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号で記事化済み。日程などの新情報なし"
+  },
+  "million-dance-dance-dance-implementation-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号で記事化済み。新情報も当日のトリガーも無い"
+  },
+  "million-kuraki-hoshi-gasha-vol2-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/19号でvol.2を記事化済み。終了は10/27で3日以内ではない"
+  },
+  "fan-chizuru-birthday-art-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "個人のファンイラスト投稿で未確認。million面にcultureは無い"
+  },
+  "million-glow-together-cd-2026": {
+   "action": "article",
+   "angle": "BATTLE OF THE@TER EDのCD「Glow Together」が12月23日発売、1,870円で予約開始。千鶴・未来・志保・ひなた・歌織・可奈が出演",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報なし。出典は販売店の掲載で未確認扱い。校閲で確認"
+  },
+  "million-kyoto-popup-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-yurakucho-pop-up-shop-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ有楽町マルイ7FのPOP UP SHOP。本日が最終日(18:00まで)で、再販グッズを買える最後の日"
+  },
+  "million-yurakucho-pop-up-shop-2026": {
+   "action": "article",
+   "angle": "有楽町マルイ7Fのミリオンライブ！POP UP SHOP(京まふ事後物販)が本日最終日、18:00まで。3,000円ごとのブロマイドと抽選会の特典も今日まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "千秋楽と終了の予約2件を統合した記事"
+  },
+  "million-platinum-star-tiara-happy-pease-2026": {
+   "action": "article",
+   "angle": "ハピピス♡が本日15:00に折り返し。めちゃカワ弁当を最大4倍消費できるなど後半戦に入り、25日20:59の終了まで3日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/19号の本文に折り返し後の仕様はあるが、本日15時の折り返し開始がトリガー"
+  },
+  "million-radio-playlist-otayori-2026": {
+   "action": "article",
+   "angle": "ラジオ#プレイリストのお便り募集(お悩み相談・ふつおた)は10月25日23:59まで、締切まであと3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日前の続報予約"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-mitsukoshi-osechi-2027",
+    "brand": "million",
+    "rank": "small",
+    "angle": "三越のおせち2027の販売が10月21日に始まり、11月17日23:59まで三越伊勢丹オンラインストア限定で、店頭の予約・販売は無い",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-mitsukoshi-osechi-2027",
+    "candidate_ids": [
+     "202610211231-explore-1",
+     "202610211840-watch-1",
+     "202610220239-grok-86"
+    ]
+   },
+   {
+    "slug": "million-glow-together-cd-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "BATTLE OF THE@TER EDのCD「Glow Together」が12月23日発売、1,870円で予約開始。千鶴・未来・志保・ひなた・歌織・可奈が出演",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "million-glow-together-cd-2026",
+    "candidate_ids": [
+     "202610220239-grok-18"
+    ]
+   },
+   {
+    "slug": "million-yurakucho-pop-up-shop-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "有楽町マルイ7Fのミリオンライブ！POP UP SHOP(京まふ事後物販)が本日最終日、18:00まで。3,000円ごとのブロマイドと抽選会の特典も今日まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 30,
+    "dedup_key": "million-yurakucho-pop-up-shop-2026",
+    "candidate_ids": [
+     "sched-2026-10-22-million-yurakucho-pop-up-shop-2026-千秋楽",
+     "sched-2026-10-22-million-yurakucho-pop-up-shop-2026-千秋楽-src1",
+     "sched-2026-10-22-million-kyoto-popup-2026-終了",
+     "sched-2026-10-22-million-kyoto-popup-2026-終了-src1",
+     "sched-2026-10-22-million-kyoto-popup-2026-千秋楽",
+     "sched-2026-10-22-million-kyoto-popup-2026-千秋楽-src1"
+    ]
+   },
+   {
+    "slug": "million-platinum-star-tiara-happy-pease-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "ハピピス♡が本日15:00に折り返し。めちゃカワ弁当を最大4倍消費できるなど後半戦に入り、25日20:59の終了まで3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "million-platinum-star-tiara-happy-pease-2026",
+    "candidate_ids": [
+     "sched-2026-10-22-million-platinum-star-tiara-happy-pease-2026-開始",
+     "sched-2026-10-22-million-platinum-star-tiara-happy-pease-2026-開始-src1",
+     "sched-2026-10-22-million-platinum-star-tiara-happy-pease-2026-開始-src2"
+    ]
+   },
+   {
+    "slug": "million-radio-playlist-otayori-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ラジオ#プレイリストのお便り募集(お悩み相談・ふつおた)は10月25日23:59まで、締切まであと3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "million-radio-playlist-otayori-2026",
+    "candidate_ids": [
+     "sched-2026-10-22-million-radio-playlist-otayori-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-chizuru-birthday-gasha-2026",
+    "reason": "既報",
+    "note": "10/21号でガシャ・セット・劇場装飾・メッセージまで記事化済み"
+   },
+   {
+    "dedup_key": "million-stamas-5th-anniversary-ssr-2026",
+    "reason": "既報",
+    "note": "10/21号で記事化済み。日程などの新情報なし"
+   },
+   {
+    "dedup_key": "million-dance-dance-dance-implementation-2026",
+    "reason": "既報",
+    "note": "10/21号で記事化済み。新情報も当日のトリガーも無い"
+   },
+   {
+    "dedup_key": "million-kuraki-hoshi-gasha-vol2-2026",
+    "reason": "既報",
+    "note": "10/19号でvol.2を記事化済み。終了は10/27で3日以内ではない"
+   },
+   {
+    "dedup_key": "fan-chizuru-birthday-art-2026",
+    "reason": "同人・ファン主催",
+    "note": "個人のファンイラスト投稿で未確認。million面にcultureは無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

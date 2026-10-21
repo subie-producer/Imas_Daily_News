@@ -1,0 +1,70 @@
+{
+ "gaku-gakuen-hif-tsubame-2026": {
+  "title": "ガラクタロードvol.7の千奈・美鈴ガシャ(11/6)と、佑芽・ことね(年末ごろ)、清夏・麻央(年始ごろ)の初星フェスガシャの予定",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 記事の軸となる花海佑芽・藤田ことねの年末ごろ、紫雲清夏・有村麻央の年始ごろの初星フェス開催予定を公式本文で確認できませんでした。公式ポータルの素材URLはシステムメンテナンス画面を返し、代替URLも同じ内容でした。",
+  "candidate_ids": [
+   "202610210732-explore-4",
+   "202610220239-grok-45",
+   "202610220239-grok-46",
+   "202610220239-grok-48",
+   "202610220239-grok-90",
+   "202610220239-grok-47"
+  ]
+ },
+ "gaku-shirube-final-streaming-2026": {
+  "title": "標ファイナルの配信券は両日13,000円・各日6,500円、11/23まで販売。アーカイブ期間と公演後の配信を案内",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 配信券の価格、販売期限、アーカイブ期間を案内する公式ページと、ばくすて！とーくの告知ページを fetch_page.py で確認しましたが、いずれもシステムメンテナンスの案内が表示され、記事の中核となる情報を本文で確かめられませんでした。",
+  "candidate_ids": [
+   "202610211840-explore-7",
+   "202610210732-explore-3",
+   "202610220239-grok-62",
+   "202610220239-grok-91",
+   "202610220239-grok-92"
+  ]
+ },
+ "gaku-gakumas-hatsuboshi-autograph-campaign-2026": {
+  "title": "「はつぼし放課後とーく」配信記念で、出演キャスト全員のサイン色紙プレゼントキャンペーンを開催中",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 公式X投稿は、配信記念のサイン色紙プレゼントキャンペーン開催中であることを確認できますが、リンク先の公式告知ページはメンテナンス画面で、応募条件や締切を確認できません。参加方法まで伝える記事に必要な情報を確かめられませんでした。",
+  "candidate_ids": [
+   "202610220239-grok-93"
+  ]
+ },
+ "million-platinum-star-tiara-happy-pease-2026": {
+  "title": "ハピピス♡が本日15:00に折り返し。めちゃカワ弁当を最大4倍消費できるなど後半戦に入り、25日20:59の終了まで3日",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 折り返し時刻・イベント終了時刻など記事の中核となる事実の公式告知ページを取得しましたが、両URLともメンテナンス案内のみで、内容を確認できませんでした。確認できた公式X投稿の素材 facts には、折り返しや終了日時の記載がありません。",
+  "candidate_ids": [
+   "sched-2026-10-22-million-platinum-star-tiara-happy-pease-2026-開始",
+   "sched-2026-10-22-million-platinum-star-tiara-happy-pease-2026-開始-src1",
+   "sched-2026-10-22-million-platinum-star-tiara-happy-pease-2026-開始-src2"
+  ]
+ },
+ "million-radio-playlist-otayori-2026": {
+  "title": "ラジオ#プレイリストのお便り募集(お悩み相談・ふつおた)は10月25日23:59まで、締切まであと3日",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 素材の公式告知URLを指定の方法で取得しましたが、募集告知ではなくシステムメンテナンスのお知らせが表示されました。締切や募集内容を確認できる公式本文に届かず、記事の中核事実を照合できませんでした。",
+  "candidate_ids": [
+   "sched-2026-10-22-million-radio-playlist-otayori-2026-締切前"
+  ]
+ },
+ "sidem-fbfes-wanna-step-in-goods-2026": {
+  "title": "Wanna step inのイベント公式グッズ直前販売が25日23:59まで、終了まであと3日",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 公式告知ページとASOBI STORE特設ページを指定の fetch_page.py で確認しましたが、どちらもグッズ販売の本文を取得できず、メンテナンス案内だけでした。指定された照合手順では販売期限や商品情報を確認できる公式・準公式の出典",
+  "candidate_ids": [
+   "sched-2026-10-22-sidem-fbfes-wanna-step-in-goods-2026-締切前",
+   "sched-2026-10-22-sidem-fbfes-wanna-step-in-goods-2026-締切前-src1"
+  ]
+ },
+ "general-starlit-season-5th-steam-sale-2026": {
+  "title": "スターリットシーズン5周年Steamセール(本編70%OFF)は10月23日2時終了で、実質きょうが購入できる最終日",
+  "stage": "執筆で見送り",
+  "why": "SOURCE_MISMATCH 素材の公式告知URLを指定スクリプトで取得したところ、セール告知ではなくシステムメンテナンスのお知らせが表示され、セール終了日時を確認できませんでした。Steamストアでは本編とデジタルデラックスエディションの70％OFFは確認できましたが",
+  "candidate_ids": [
+   "sched-2026-10-22-starlit-season-5th-steam-sale-2026-締切"
+  ]
+ }
+}

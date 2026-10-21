@@ -696,5 +696,81 @@
   "event_date": "2026-10-23",
   "deadline": "2026-12-27",
   "src_candidate_id": "sched-2026-10-20-hachinohe-cinderella-collab-2026-開始"
+ },
+ {
+  "id": "sched-2026-10-23-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026-開始",
+  "dedup_key": "valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026",
+  "brand": "dsva",
+  "subject": "上水流 秋のコラボショート祭り 第3弾(キズナアイ)",
+  "kind": "開始",
+  "note": "18:00に宇宙chへキズナアイとのコラボショート動画が投稿され視聴できる",
+  "reserved_on": "2026-10-22",
+  "occurs_on": "2026-10-23",
+  "title": "上水流宇宙の秋のコラボショート祭り第3弾はキズナアイ",
+  "url": "https://x.com/KamizuruCosmo/status/2112864436784693285",
+  "source_type": "公式",
+  "facts": [
+   "企画名は「上水流 秋のコラボショート祭り」。",
+   "第三弾のコラボ相手はキズナアイ。",
+   "投稿予定は10月23日18:00、宇宙ch。",
+   "エンゲージメント: 中",
+   "言及アイドル: 上水流宇宙"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-23",
+  "src_candidate_id": "202610220239-grok-70"
+ },
+ {
+  "id": "sched-2026-10-23-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026-開始-src1",
+  "dedup_key": "valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026",
+  "brand": "dsva",
+  "subject": "上水流 秋のコラボショート祭り 第3弾(キズナアイ)",
+  "kind": "開始",
+  "note": "18:00に宇宙chへキズナアイとのコラボショート動画が投稿され視聴できる",
+  "reserved_on": "2026-10-22",
+  "occurs_on": "2026-10-23",
+  "title": "上水流宇宙の秋のコラボショート祭り第4弾はしぐれうい",
+  "url": "https://x.com/KamizuruCosmo/status/2112864578984169777",
+  "source_type": "公式",
+  "facts": [
+   "企画名は「上水流 秋のコラボショート祭り」。",
+   "第四弾のコラボ相手はしぐれうい。",
+   "10日連続投稿。",
+   "投稿チャンネルは画像で案内すると投稿に記載。",
+   "エンゲージメント: 中",
+   "言及アイドル: 上水流宇宙"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-24",
+  "deadline": "2026-11-02",
+  "src_candidate_id": "202610220239-grok-71",
+  "companion_of": "sched-2026-10-23-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026-開始",
+  "src_dedup_key": "valiv-cosmo-autumn-collab-shorts-shigure-ui-2026"
+ },
+ {
+  "id": "sched-2026-10-23-kiyoka-another-guaranteed-2026-終了",
+  "dedup_key": "kiyoka-another-guaranteed-2026",
+  "brand": "gaku",
+  "subject": "学マス 清夏の無料確定ガシャ",
+  "kind": "終了",
+  "note": "10時59分までなら無料1連ガシャを引ける最終日",
+  "reserved_on": "2026-10-22",
+  "occurs_on": "2026-10-23",
+  "title": "紫雲清夏アナザーアイドル確定無料ガシャ",
+  "url": "https://x.com/gkmas_official/status/2112740673564877294",
+  "source_type": "公式",
+  "facts": [
+   "アナザーアイドルアップデート記念のSSRアナザーアイドル確定ガシャ。",
+   "紫雲清夏のシーズン限定アナザーアイドルがいずれか確定で手に入る無料1連ガシャ。",
+   "ガシャ開催時期: 10/23(金) 10:59まで（予定）",
+   "エンゲージメント: 中",
+   "言及アイドル: 紫雲清夏"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-23",
+  "src_candidate_id": "202610220239-grok-43"
  }
 ]

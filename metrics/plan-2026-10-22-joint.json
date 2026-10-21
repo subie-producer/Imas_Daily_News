@@ -1,0 +1,186 @@
+{
+ "decisions": {
+  "tours-mypage-maintenance-2026-10": {
+   "action": "article",
+   "angle": "TOURSマイページがセキュリティ対策で10月21日22時〜22日12時(予定)まで停止、ICカード連動サービスも対象",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "imas-ch-fan-art-call-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "ファンアート募集は10/21・9/26の記事本文に既出。新事実なし"
+  },
+  "joint-topic-37": {
+   "action": "article",
+   "angle": "アイマスch11月メン限配信はMC南早紀(白石紬役)、ゲスト宮﨑雅也(花園百々人役)に決定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 40,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "お便り・ファンアート募集は既報なので付記程度"
+  },
+  "imas-ch-members-radio-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "imas-ch-members-radio-archive-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信開始は10/21記事で既報。同じ出来事としてアーカイブ記事へ"
+  },
+  "imas-ch-members-radio-archive-2026-10": {
+   "action": "article",
+   "angle": "アイマスch10月メン限ラジオが終了し、約2時間のアーカイブがメンバー向けに公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "tours-s2-study-equal-magic-tips-2026": {
+   "action": "article",
+   "angle": "S2弾(10月29日稼働)『Study Equal Magic!』は女性アイドルの振り付けが一部異なり、SideM衣装『ノーブルプライド』のアナザーカラーはピンク",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/19のSideM衣装記事と重なる可能性があり校閲で要確認"
+  },
+  "imas-portal-maintenance-2026-10-21": {
+   "action": "article",
+   "angle": "アイドルマスターポータルが10月21日19時からセキュリティ強化の緊急メンテナンス、終了時刻は未定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "starlit-season-5th-idol-intro-4-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21に春日未来の紹介動画④として記事化済み。新事実なし"
+  },
+  "starmas-steam-sale-2026-10": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/20『スタマス本編がSteamで70％オフ』で記事化済み。セール期間も不明で当日のトリガーなし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-mypage-maintenance-2026-10",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "TOURSマイページがセキュリティ対策で10月21日22時〜22日12時(予定)まで停止、ICカード連動サービスも対象",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "tours-mypage-maintenance-2026-10",
+    "candidate_ids": [
+     "202610220239-grok-73"
+    ]
+   },
+   {
+    "slug": "joint-topic-37",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "アイマスch11月メン限配信はMC南早紀(白石紬役)、ゲスト宮﨑雅也(花園百々人役)に決定",
+    "purpose": "新情報",
+    "lead_score": 40,
+    "dedup_key": "joint-topic-37",
+    "candidate_ids": [
+     "202610220239-grok-75"
+    ]
+   },
+   {
+    "slug": "joint-imas-ch-members-radio-archive-2026-10",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "アイマスch10月メン限ラジオが終了し、約2時間のアーカイブがメンバー向けに公開",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "imas-ch-members-radio-archive-2026-10",
+    "candidate_ids": [
+     "202610220239-grok-77",
+     "202610220239-grok-76"
+    ]
+   },
+   {
+    "slug": "joint-tours-s2-study-equal-magic-tips-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "S2弾(10月29日稼働)『Study Equal Magic!』は女性アイドルの振り付けが一部異なり、SideM衣装『ノーブルプライド』のアナザーカラーはピンク",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "tours-s2-study-equal-magic-tips-2026",
+    "candidate_ids": [
+     "202610220239-grok-78"
+    ]
+   },
+   {
+    "slug": "joint-imas-portal-maintenance-2026-10-21",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "アイドルマスターポータルが10月21日19時からセキュリティ強化の緊急メンテナンス、終了時刻は未定",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "imas-portal-maintenance-2026-10-21",
+    "candidate_ids": [
+     "202610220239-grok-79"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "imas-ch-fan-art-call-2026-10",
+    "reason": "既報",
+    "note": "ファンアート募集は10/21・9/26の記事本文に既出。新事実なし"
+   },
+   {
+    "dedup_key": "starlit-season-5th-idol-intro-4-2026",
+    "reason": "既報",
+    "note": "10/21に春日未来の紹介動画④として記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "starmas-steam-sale-2026-10",
+    "reason": "既報",
+    "note": "10/20『スタマス本編がSteamで70％オフ』で記事化済み。セール期間も不明で当日のトリガーなし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

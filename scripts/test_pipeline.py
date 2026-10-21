@@ -11365,6 +11365,85 @@ def test_cli_blocked_r4(tmp: Path):
               f"送り先が未設定で届いていない投稿を投稿済みにした(設定を直しても12時間黙る): {st}")
 
 
+def test_cli_blocked_r5(tmp: Path):
+    """Sol 監査 r4 の指摘の再発防止(偽の grok・codex を本物の子プロセスとして run_explores を通す):
+    (1) 深掘りの Grok が利用上限で止まった面の、確かめ切れなかった投稿を「失う」と異常にせず、読み直しの列に残す
+    (2) 確かめ役が止まった面と、正常に「なし」と書いた面だけの回を、watch が全クエリ0件の異常(当番)にしない"""
+    import datetime
+    from unittest.mock import patch
+    import collect
+    import watch
+    src = Path(__file__).resolve().parent.parent / "source_types.yml"
+    # (1)
+    root, bindir = tmp / "deep-repo", tmp / "bin-deep"
+    root.mkdir(parents=True)
+    bindir.mkdir()
+    shutil.copy(src, root / "source_types.yml")
+    post = "### 1\n- url: https://x.com/a/status/7\n- 本文: 公演の開催を予告。詳細は返信先を参照\n"
+    (bindir / "grok").write_text(
+        f"#!{sys.executable}\nimport pathlib, sys\npp = pathlib.Path(sys.argv[sys.argv.index('--prompt-file') + 1])\n"
+        f"if '-deep' in pp.name:\n    sys.stderr.write({GROK_LIMIT!r})\n    sys.exit(1)\n"
+        f"pp.with_name(pp.name.removeprefix('prompt-')).write_text({post!r}, encoding='utf-8')\n", encoding="utf-8")
+    (bindir / "codex").write_text(
+        f"#!{sys.executable}\nimport json, pathlib\npathlib.Path('items.json').write_text('[]')\npathlib.Path('posts.json').write_text('[]')\n"
+        "pathlib.Path('deep.json').write_text(json.dumps([{'question': '返信先の公演日を確かめる'}]))\n", encoding="utf-8")
+    for n in ("grok", "codex"):
+        (bindir / n).chmod(0o755)
+    notes = []
+    qs = [{"key": "cg", "brand": "cg", "topic": "t", "accounts": []}]
+    with cli_posts() as cp, patch.dict(os.environ, PATH=f"{bindir}{os.pathsep}{os.environ['PATH']}"), \
+            patch.object(collect, "ROOT", root), patch.object(pipelib, "ROOT", root), \
+            patch.object(collect, "build_prompts", lambda: qs), patch.object(collect, "grok_week_usage", lambda: 0), \
+            patch.object(collect, "grok_search_counts", lambda *a: {}), \
+            patch.object(collect, "notify", lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True):
+        _, per = collect.run_explores(True, False)
+        pending = root / collect.GROK_PENDING / "cg.md"
+        check(len(cp.blocked_posts()) == 1 and not [m for m, ok in notes if not ok] and "status/7" in collect.read_written(pending),
+              f"深掘りの Grok の利用上限で、投稿を「失う」と異常にした・読み直しの列に残さない: {notes} {cp.posts}")
+    # (2)
+    root, bindir = tmp / "watch-repo", tmp / "bin-mixed"
+    (root / "metrics").mkdir(parents=True)
+    bindir.mkdir()
+    shutil.copy(src, root / "source_types.yml")
+    (bindir / "grok").write_text(
+        f"#!{sys.executable}\nimport pathlib, sys\npp = pathlib.Path(sys.argv[sys.argv.index('--prompt-file') + 1])\n"
+        "pp.with_name(pp.name.removeprefix('prompt-')).write_text('なし' if 'shiny' in pp.name else "
+        "'### 1\\n- url: https://x.com/a/status/9\\n- 本文: 公演告知\\n', encoding='utf-8')\n", encoding="utf-8")
+    (bindir / "grok").chmod(0o755)
+    fake_cli(bindir, "codex", err=CODEX_LIMIT + "\n", code=1)
+    qs = [{"key": k, "brand": k, "topic": "t", "accounts": []} for k in ("cg", "shiny")]
+    notes = []
+    with cli_posts(), patch.dict(os.environ, PATH=f"{bindir}{os.pathsep}{os.environ['PATH']}"), \
+            patch.object(collect, "ROOT", root), patch.object(pipelib, "ROOT", root), \
+            patch.object(collect, "build_prompts", lambda: qs), patch.object(collect, "grok_search_counts", lambda *a: {}), \
+            patch.object(collect, "notify", lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True):
+        _, per = collect.run_explores(True, False)
+    check(per.get("grok_blocked:cg") == 1 and per.get("grok_none:shiny") == 1 and not [m for m, ok in notes if not ok],
+          f"確かめ役の停止と「なし」の面の記録が無い・異常にした: {per} {notes}")
+    now = datetime.datetime(2026, 10, 21, 9, tzinfo=pipelib.JST)
+    (root / "metrics" / "2026-10-21.json").write_text(json.dumps({"collect": [{"at": now.isoformat(), "per_query": per}]}), encoding="utf-8")
+    wnotes, calls = [], []
+    env = {k: "x" for k in ("CODEX_WRITE_MODEL", "EDITORIAL_MODEL", "COLLECT_MODEL", "GROK_HOURS", "SITE_URL")}
+    env["REVIEW_MODEL"] = "haiku"
+    done = lambda *a, **kw: subprocess.CompletedProcess([], 0, "", "")
+    with patch.object(watch, "ROOT", root), patch.object(watch, "now_jst", lambda: now), patch.object(watch, "ENV", env), \
+            patch.object(watch, "git", done), patch.object(watch.subprocess, "run", done), patch.object(watch, "hand_backlog", lambda *a: []), \
+            patch.object(watch, "notify", lambda job, msg, **kw: wnotes.append(msg) or True), \
+            patch.object(watch, "diagnose_anomalies", lambda *a, **kw: calls.append(a)):
+        watch.main()
+    check(not any("全クエリ0件" in m for m in wnotes), f"停止した面と「なし」の面だけの回を、watch が全滅の異常にした: {wnotes}")
+    # 本物の失敗が混ざれば検知する(「なし」の記録が無い面がある)
+    per2 = {k: v for k, v in per.items() if not k.startswith("grok_none:")}
+    (root / "metrics" / "2026-10-21.json").write_text(json.dumps({"collect": [{"at": now.isoformat(), "per_query": per2}]}), encoding="utf-8")
+    wnotes.clear()
+    with patch.object(watch, "ROOT", root), patch.object(watch, "now_jst", lambda: now), patch.object(watch, "ENV", env), \
+            patch.object(watch, "git", done), patch.object(watch.subprocess, "run", done), patch.object(watch, "hand_backlog", lambda *a: []), \
+            patch.object(watch, "notify", lambda job, msg, **kw: wnotes.append(msg) or True), \
+            patch.object(watch, "diagnose_anomalies", lambda *a, **kw: calls.append(a)):
+        watch.main()
+    check(any("grok" in m and "全クエリ0件" in m for m in wnotes), f"停止に本物の失敗が混ざった回を、watch が検知しない: {wnotes}")
+
+
 def test_scratch_not_tmp(tmp: Path):
     """本番のコードが作る使い捨てのもの(当番の監査の作業ツリー・答えのファイル・Sol の一時ファイル、探索の作業ディレクトリ)は、
     /tmp(3.8GB の tmpfs)でなく置き場(IMAS_SCRATCH、既定 ~/.cache/imas-news)に作り、終わったら消す。消し損ねは次に作るとき
@@ -11446,6 +11525,7 @@ def main() -> int:
     test_cli_blocked_paths_r2(tmp / "cb2")
     test_cli_blocked_grok_sessions_r3(tmp / "cb3")
     test_cli_blocked_r4(tmp / "cb4")
+    test_cli_blocked_r5(tmp / "cb5")
     test_scratch_not_tmp(tmp / "snt")
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")

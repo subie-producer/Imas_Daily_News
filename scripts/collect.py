@@ -1406,6 +1406,9 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                 # 選んだ問いの確かめを失う。名指しで異常にする(判定は終了状態と書き出しの両方。監査指摘)
                 deep_started = time.time()
                 failed = deep_dive_grok(queries, outdir, chosen, grok_errs)
+                # 深掘りの Grok が認証切れ・利用上限で止まった面は、まだ確かめ終えていない: 残った投稿を失ったと言わず、
+                # 読み直しの列に残す(report_lost_posts。監査指摘 r4)
+                ledger["blocked"] |= {k for k in chosen if grok_blocked(grok_errs, k)}
                 spent1 = sum(grok_search_counts(deep_started).values())   # 1回目の実際の検索回数(指示は厳密には守られない)
                 lost = sorted(k for k in failed | {k for k in chosen if not read_written(outdir / f"{k}-deep.md").strip()}
                               if not grok_blocked(grok_errs, k))
@@ -1428,6 +1431,7 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                           f"{sum(len(v) for v in chosen2.values())}件を投げ直す(予算 {budget2}回)", flush=True)
                 if chosen2:
                     failed2 = deep_dive_grok(queries, outdir, chosen2, grok_errs, suffix="-deep2", retry=True)
+                    ledger["blocked"] |= {k for k in chosen2 if grok_blocked(grok_errs, k)}
                     lost2 = sorted(k for k in failed2 | {k for k in chosen2 if not read_written(outdir / f"{k}-deep2.md").strip()}
                                    if not grok_blocked(grok_errs, k))
                     if lost2:
@@ -1468,6 +1472,8 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
             per[f"grok:{q['key']}"] = by_brand.get(q["brand"], 0)
             if q["key"] in stopped:
                 per[f"grok_blocked:{q['key']}"] = 1     # 認証切れ・利用上限(watch の全滅検知に数えない)
+            elif is_none(q["key"]) and q["key"] not in grok_errs:
+                per[f"grok_none:{q['key']}"] = 1        # 正常に終わって「なし」と書いた面(停止した面と混ざっても watch が全滅にしない)
         print(f"grok: {len(queries)}面を面別セッションで {len(got)}件(面別 {by_brand})", flush=True)
         # 週次上限を消費するのは X 検索の回数だけ。面ごとに実数を記録し、指示の2倍を超えた面は異常にする(依頼文の数字は厳密には守られない)
         searches = grok_search_counts(grok_started)

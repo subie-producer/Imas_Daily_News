@@ -85,8 +85,10 @@ def main() -> int:
         last = max(ran, key=lambda r: r.get("at", ""))
         keys = [k for k in last["per_query"] if k.startswith(engine + ":")]
         # 全クエリがモデルの CLI の認証切れ・利用上限で答えなかった回は、見つけたときに投稿済み(当番に回さない。2026-10-21)
-        blocked = [k for k in last["per_query"] if k.startswith(engine + "_blocked:") and last["per_query"][k]]
-        if sum(last["per_query"][k] for k in keys) == 0 and len(blocked) < len(keys):
+        # 停止した面と、正常に終わって「なし」と書いた面(Grok)だけの回も同じ(本物の失敗が混ざれば検知する。監査指摘 r4)
+        face = lambda pre: {k.split(":", 1)[1] for k in last["per_query"] if k.startswith(pre) and last["per_query"][k]}
+        blocked, empty = face(engine + "_blocked:"), face(engine + "_none:")
+        if sum(last["per_query"][k] for k in keys) == 0 and not (blocked and {k.split(":", 1)[1] for k in keys} <= blocked | empty):
             problems.append(
                 f"{engine} を回した直近の collect({last['at'][5:16]})で取得が全クエリ0件"
                 "(認証切れ・CLI の版切れ・仕様変更・引数エラーの疑い)")

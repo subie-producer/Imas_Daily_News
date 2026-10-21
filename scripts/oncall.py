@@ -870,6 +870,19 @@ def resume_point(state: dict, base: str) -> dict | None:
 MIN_STEP_SEC = 120      # これより残りが短ければ、次のセッション(当番・監査)を始めない
 
 
+def wip_of(base: str, kept: dict, approved: bool) -> dict | None:
+    """次の試行に残す続き(state["wip"])。直し切れなかったら、最後に内容を固定できたところまでの修正と残った指摘、
+    監査の文面への当番の異議(objection: 続きは異議を監査に渡すところから)、了承待ち(accept: 続きは了承のセッションから)。
+    直し切れた・人が要る(cannot_fix)・残った指摘が無いなら None。"""
+    if approved or not kept.get("fix") or not kept.get("open") or kept["fix"].get("status") == "cannot_fix":
+        return None
+    wip = {"base": base, "head": kept["head"], "fix": kept["fix"], "open": kept["open"], "later": kept.get("later") or []}
+    for k in ("objection", "accept"):
+        if isinstance(kept.get(k), dict):
+            wip[k] = kept[k]
+    return wip
+
+
 class _RoundsDone(Exception):
     """run_rounds の中だけで使う: 往復を回さずに終える(続きの了承で決着した)。"""
 
@@ -960,6 +973,8 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
             kept = {"head": wip["head"], "fix": json.loads(json.dumps(wip["fix"])), "open": list(wip["open"])}
             if isinstance(wip.get("objection"), dict):
                 kept["objection"] = wip["objection"]
+            if isinstance(wip.get("accept"), dict):
+                kept["accept"] = wip["accept"]      # checkout の前に移す(checkout が失敗しても了承待ちを消さない。監査指摘)
             if wip["head"] != base:
                 must(sh(["git", "checkout", "-q", "--detach", wip["head"]], cwd=wt), "前の試行の続きの checkout")
             fix, objections = dict(wip["fix"]), list(wip["open"])
@@ -972,8 +987,8 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
             # 了承待ちで終わった続き: 監査した commit(head)のまま、了承のセッションから始める。形が揃わなければ普通の続き(当番の修正から)
             pending_accept = acc if (isinstance(acc, dict) and isinstance(acc.get("must_fix"), list)
                                      and report_only(acc["must_fix"], acc)) else None
-            if pending_accept:
-                kept["accept"] = pending_accept
+            if not pending_accept:
+                kept.pop("accept", None)            # 形が揃わない了承待ちは使わない(普通の続き)
             transcript.append({"round": 0, "resumed_from": head, "open": objections, "carried_later": list(later),
                                "objection": kept.get("objection"), "accept_pending": bool(pending_accept)})
             print(f"前の試行の続きから({head[:10]}、残った指摘 {len(objections)}件"
@@ -1789,13 +1804,9 @@ def _main() -> int:
         # 直し切れなかったら、**最後に内容を固定できたところまで**の修正と残った指摘を残す(次の試行はこの続きから)。
         # 例外・時間切れで終わった往復でも残す。差分が無い診断(no_fix_needed)への指摘も残す。直し切れたら消す
         kept = res["kept"]
-        if not approved and kept["fix"] and kept["open"] and kept["fix"].get("status") != "cannot_fix":
-            state["wip"] = {"base": base, "head": kept["head"], "fix": kept["fix"], "open": kept["open"],
-                            "later": kept.get("later") or []}
-            if isinstance(kept.get("objection"), dict):
-                state["wip"]["objection"] = kept["objection"]   # 監査の文面への当番の異議(続きは異議を監査に渡すところから)
-            if isinstance(kept.get("accept"), dict):
-                state["wip"]["accept"] = kept["accept"]         # 監査の文面の了承待ち(続きは了承のセッションから)
+        wip_next = wip_of(base, kept, approved)
+        if wip_next:
+            state["wip"] = wip_next
         else:
             state.pop("wip", None)
         save_state(state_p, state)

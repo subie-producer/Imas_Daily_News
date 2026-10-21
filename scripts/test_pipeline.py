@@ -8497,14 +8497,20 @@ def test_oncall_report_concurrence(tmp: Path):
         # (6) 了承のセッションが認証切れ・利用上限(CliBlocked)で止まった → 続きに「了承待ち」(最新の指摘・監査の文面)が残り、
         #     再開は当番の修正・検査・監査を挟まず了承から(監査指摘 2026-10-22: 続きに残らず、再開で余分に回した)
         blocked = pipelib.CliBlocked({"tool": "claude", "kind": "auth", "detail": "OAuth の期限切れ"})
+        # 偽の freeze は、続きの確かめ(0往復目)では作業ツリーに何も足されていない = 1往復目と同じ commit を返す
+        # (commit は 16進の40桁。resume_point は形の違うハッシュを続きにしない)
+        oncall.freeze = lambda wt, base, rnd: ("a%039d" % (rnd or 1), "diff --git a/scripts/x.py b/scripts/x.py", ["scripts/x.py"])
         r, tr, calls, _, _ = run([review(editor_summary=audit1)], [blocked])
-        k = json.loads(json.dumps(r["kept"]))     # state に保存して読み戻す
-        check(not r["approved"] and r.get("blocked") and [o["id"] for o in k["open"]] == ["m1"]
+        # _main と同じ道で state に保存し、読み戻して続きを取る(wip_of → save_state → load_state → resume_point)
+        st_p = tmp / "state.json"
+        oncall.save_state(st_p, {"log": [], "wip": oncall.wip_of("B" * 40, r["kept"], r["approved"])})
+        k = oncall.resume_point(oncall.load_state(st_p), "B" * 40) or {}
+        check(not r["approved"] and r.get("blocked") and [o["id"] for o in k.get("open") or []] == ["m1"]
               and (k.get("accept") or {}).get("editor_summary") == audit1 and [m["id"] for m in k["accept"].get("must_fix") or []] == ["m1"]
               and k["accept"].get("verification") == AUDIT_RAN,
               f"了承の途中で止まった続きに、最新の指摘と監査の文面が残らない: {k.get('open')} {k.get('accept')}")
-        h0 = "H%039d" % 0          # 偽の freeze が続きの確かめ(0往復目)で返す commit を、監査した commit とする
-        wip = {"base": "B" * 40, "head": h0, "fix": k["fix"], "open": k["open"], "later": [], "accept": k["accept"]}
+        h0 = "a%039d" % 1
+        wip = k
         r, tr, calls, _, rprompts = run([], [{"decision": "accept", "evidence": "掲載の記録と合う", "editor_summary": None}], wip=wip)
         check(r["approved"] and calls == ["oncall-accept.schema.json"] and rprompts == [] and r["head"] == h0 and r["diff"].strip()
               and r["fix"].get("editor_summary") == audit1 and (r["fix"].get("report_authorship") or {}).get("round") == 1,
@@ -8516,10 +8522,25 @@ def test_oncall_report_concurrence(tmp: Path):
               and r["fix"].get("editor_summary") == own2,
               f"続きの了承で異を唱えたあと、異議が監査に渡らない: {calls} {len(rprompts)}")
         # 作業ツリーの commit が監査したものと違えば、了承からは始めない(普通の続き)
-        r, tr, calls, _, _ = run([review(verdict="approve", must_fix=[])], [], wip=dict(wip, head="H%039d" % 7))
+        r, tr, calls, _, _ = run([review(verdict="approve", must_fix=[])], [], wip=dict(wip, head="a%039d" % 7))
         check("oncall-accept.schema.json" not in calls and calls[:1] == ["oncall-integrate.schema.json"] and r["approved"]
               and any("accept_skipped" in t for t in tr),
               f"監査していない commit の続きを了承から始めた: {calls}")
+        # 了承待ちの形が条件 C を満たさない(misreport 以外・走らせた記録が無い・文面が欠ける)なら、了承からは始めない(再開時にも検める)
+        for what, acc in (("misreport 以外", dict(wip["accept"], must_fix=[mis, bad])),
+                          ("走らせた記録が無い", dict(wip["accept"], verification=[])),
+                          ("文面が欠ける", dict(wip["accept"], editor_summary={"why": "x"}))):
+            r, tr, calls, _, _ = run([review(verdict="approve", must_fix=[])], [], wip=dict(wip, accept=acc))
+            check("oncall-accept.schema.json" not in calls and calls[:1] == ["oncall-integrate.schema.json"]
+                  and not r["fix"].get("report_authorship"),
+                  f"条件 C を満たさない了承待ち({what})の続きを了承から始めた: {calls}")
+        # 続きの checkout が失敗しても、了承待ちは続きに残る(監査指摘)
+        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 1 if "checkout" in args else 0, "", "index.lock")
+        r, tr, calls, _, _ = run([], [], wip=wip)
+        nxt = oncall.wip_of("B" * 40, r["kept"], r["approved"]) or {}
+        check(r["error"] and calls == [] and (nxt.get("accept") or {}).get("editor_summary") == audit1,
+              f"続きの checkout の失敗で了承待ちが消えた: {r['error']} {nxt.get('accept')}")
+        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
     finally:
         for n, v in saved.items():
             setattr(oncall, n, v)

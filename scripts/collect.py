@@ -1153,8 +1153,13 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         # (2026-10-06 の洗い出しで判明: 候補の配列だけを受けていたので、Luna が開けなかった・飛ばした投稿が記録なしに消えた。
         #  定点観測で新着を失ったのと同じ型)。候補そのものが読めなければ「候補にした」の申告も当てにならないので、全投稿が残り
         left = (post_blocks(text) or [text]) if got is None else unaccounted_posts(text, read_json_list(wd / "posts.json"), got)
-        # 付け直し・正規化へ渡すのは、形を揃えた候補だけ(崩れた要素で収集全体を止めない。監査指摘)
-        items += repoint_to_post([s for s in (shape_item(x) for x in got or []) if s], text)
+        # 候補にするのは、投稿を済みと数えるのと同じ判定(candidate_usable)を通ったものだけ。崩れた候補を欄を落として候補にしながら
+        # 投稿は未処理と数えると、候補にした投稿を「失った」と通知する(2026-10-22 02:39 の gakuen 面)。崩れた候補の元の投稿は
+        # 未処理として確かめ直し(-again)へ回り、どの投稿にも結び付かない崩れた候補は、確かめ直せないのでここで名指しする
+        items += repoint_to_post([shape_item(x) for x in got or [] if candidate_usable(x)], text)
+        stray = broken_items(text, got)[1]
+        if stray:
+            ledger["lost"].setdefault(q["key"], []).extend((f"- url: {u}", "候補の形が崩れていて、どの投稿にも結び付かない") for u in stray)
         left_keys = {post_key(post_url(b)) for b in left}
         ledger["settled"] |= {k for k in map(post_key, map(post_url, post_blocks(text))) if k and k not in left_keys}
         if left and not final:
@@ -1372,11 +1377,30 @@ def unaccounted_posts(text: str, results, written: list) -> list[str]:
         if not schema_ok(r, POST_RESULT_SCHEMA):
             return False
         return (r["status"] == "none" and not r["item"].strip()) or (r["status"] == "extracted" and post_key(r["item"]) in items)
-    done = {u for u, rs in per_url.items() if len(rs) == 1 and settled(rs[0])}
+    # 形の崩れた候補は候補にしない(verify_grok_faces)。その候補の元の投稿(候補の url がその投稿か、投稿に貼られたリンク)は、
+    # 結果がほかの候補を指していても済みにしない(確かめ直しで候補にし直す。崩れた候補の中身を黙って捨てない)
+    done = {u for u, rs in per_url.items() if len(rs) == 1 and settled(rs[0])} - broken_items(text, written)[0]
     blocks = post_blocks(text)
     if not blocks:
         return [text] if text.strip() else []
     return [b for b in blocks if not post_url(b) or post_key(post_url(b)) not in done]     # url の無い塊は必ず未処理
+
+
+def broken_items(text: str, written) -> tuple[set[str], list[str]]:
+    """確かめ役が書いた候補のうち形の崩れたもの(candidate_usable でない)について、(結び付く投稿の鍵, どの投稿にも結び付かない候補の url)。
+    結び付きは形で決める: 候補の url がその投稿そのもの(post_key が同じ)か、その投稿に貼られたリンク(repoint_to_post と同じ結び付き)。"""
+    links = [(post_key(u), set(ls)) for u, ls in post_links(text)]
+    tied, stray = set(), []
+    for x in written if isinstance(written, list) else []:
+        if not isinstance(x, dict) or candidate_usable(x):
+            continue    # 候補の形でない要素(null など)は中身が無い
+        u = x.get("url")
+        hit = {k for k, ls in links if isinstance(u, str) and u.strip() and (k == post_key(u) or u in ls)}
+        if hit:
+            tied |= hit
+        else:
+            stray.append(u if isinstance(u, str) and u.strip() else f"(url の崩れた候補) {json.dumps(x, ensure_ascii=False)[:80]}")
+    return tied, stray
 
 
 def grok_week_usage(now_ts: float | None = None) -> int:
@@ -1718,7 +1742,9 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
 
 # 収集役が申告する kind は**種別の判定には使わない**(source_types.yml が決める)。
 # 申告を採っていたころ、攻略サイトを「公式」と申告した候補がそのまま紙面の
-# バッジになっていた。kind は収集役の見立てとして残すが、紙面には出ない
+# バッジになっていた。kind は候補に写さない(shape_item で落とし、正規化も使わない)ので、崩れていても中身は何も失わない。
+# だから形の検査(ITEM_SCHEMA)にも入れない(2026-10-22: Luna が kind にアイドル名の配列を入れ、候補にはなったのに
+# 投稿を「結果が無い」と数え、確かめ直しでも済まずに「失った」と通知した)
 
 
 def is_x(url: str) -> bool:
@@ -1791,7 +1817,7 @@ def load_idol_brands() -> dict:
         return {}
 
 
-ITEM_STR_KEYS = ("title", "brand", "kind", "url", "event_date", "published_date", "deadline", "dedup_key", "engagement", "quote", "_via")
+ITEM_STR_KEYS = ("title", "brand", "url", "event_date", "published_date", "deadline", "dedup_key", "engagement", "quote", "_via")
 
 
 def shape_item(it) -> dict | None:
@@ -1809,11 +1835,12 @@ def shape_item(it) -> dict | None:
 
 # モデルの出力の契約(prompts/collect-item.md ほか)の形。**処理済みにしてよいかの判定は、この schema で検める**
 # (手で欄を1つずつ足すと、日付の形・真偽値の番号・重複など崩れ方が尽きなかった。2026-10-06 の監査)。
-# 文字列の欄の null は「空」で何も失わないので許す。日付は YYYY-MM-DD か空
+# 文字列の欄の null は「空」で何も失わないので許す。日付は YYYY-MM-DD か空。
+# 検めるのは候補に写す欄(ITEM_STR_KEYS・facts・mentioned_idols)だけ。写さない欄(kind)は崩れても何も失わないので検めない
 _S = {"type": ["string", "null"]}
 _DATE = {"anyOf": [{"type": "null"}, {"type": "string", "pattern": r"^(\d{4}-\d{2}-\d{2})?$"}]}
 ITEM_SCHEMA = {"type": "object", "required": ["url", "facts"],
-               "properties": {"url": {"type": "string", "minLength": 1}, "title": _S, "brand": _S, "kind": _S,
+               "properties": {"url": {"type": "string", "minLength": 1}, "title": _S, "brand": _S,
                               "event_date": _DATE, "published_date": _DATE, "deadline": _DATE,
                               # 空白だけの事実は正規化で消える(事実なしで処理済みにしない。監査指摘)
                               "facts": {"type": "array", "items": {"type": "string", "pattern": r"\S"}, "minItems": 1},

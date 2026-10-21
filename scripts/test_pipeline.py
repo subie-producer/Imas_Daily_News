@@ -1948,6 +1948,137 @@ def test_review_reads_sources_like_writer():
     check("一部の素材だけがそうなら" in sec and "残りの素材で書く" in sec,
           "執筆の見送りに、一部の素材だけが食い違うときは残りで書く決まりが無い")
 
+
+def test_collect_sessions_read_with_fetch_page(tmp: Path):
+    """収集のなかでページを読むモデルのセッション(facts 化・出典の判定・校閲の指摘の修正)は、執筆・校閲と同じ fetch_page.py で読む。
+    WebFetch は JS を描画せず、まとめサイトの新着の一次ソース(公式ポータル)がタイトルだけに見え、facts 化が unreadable にした
+    (2026-10-21: imasnews765 ?p=32576)。出典の判定の codex は read-only で名前解決が通らず、fetch_page.py が毎回失敗していた"""
+    import collect, classify_sources as cs
+    tmp.mkdir(parents=True, exist_ok=True)
+    repo = Path(__file__).resolve().parents[1]
+    url = "https://idolmaster-official.jp/news/01_20182"
+    pages = tmp / "pages.json"
+    pages.write_text(json.dumps({url: "受付期間: 2026年10月21日(水)12:00～2026年11月3日(火)23:59\n本文の事実"}, ensure_ascii=False),
+                     encoding="utf-8")
+    env = dict(os.environ, IMAS_FETCH_PAGES=str(pages))
+    real_run = subprocess.run      # 下で起動を差し替える(subprocess はモジュール共通)前の本物
+
+    def run_cmd(cmd: str, cwd) -> str:
+        """セッションが依頼文どおりに打つコマンドを、そのセッションの cwd で実際に走らせる"""
+        return real_run(cmd.split(), cwd=cwd, env=env, capture_output=True, text=True, timeout=60).stdout
+
+    def allowed_by(pattern: str, cmd: str) -> bool:
+        """Claude の Bash(<前方一致>:*) の許可に、そのコマンドが当たるか"""
+        m = re.fullmatch(r"Bash\((.+):\*\)", pattern)
+        return bool(m) and cmd.startswith(m.group(1))
+
+    calls = []
+
+    class R:
+        returncode, stdout, stderr = 0, "[]", ""
+    saved = (pipelib.ROOT, collect.subprocess.run, collect.save_raw, collect.notify, collect.fetch_rendered,
+             collect.urllib.request.urlopen, cs.subprocess.run)
+    try:
+        pipelib.ROOT = tmp / "root"     # 依頼文と生の出力の置き場だけを一時に(fetch_page.py の実体はリポジトリ側)
+        collect.save_raw = lambda *a, **k: None
+        collect.notify = lambda *a, **k: True
+        # 1. facts 化: 描画できなかった新着の素材と、セッションの道具
+        collect.subprocess.run = lambda argv, **k: calls.append(("facts", argv, k.get("cwd"))) or R()
+
+        def fail(u, timeout=30):
+            raise pipelib.RenderFailed(f"{u} の描画に失敗: 終了コード 1")
+        collect.fetch_rendered = fail
+        collect.facts_batch([{"url": "https://imasnews765.com/?p=32576", "title": "t", "brand": "imas", "csr": True}],
+                            collect.claude_exec, {})
+        prompt = "\n".join(p.read_text(encoding="utf-8") for p in (tmp / "root" / "metrics" / "work").glob("*/watch-*.md"))
+        # 2. 出典の判定: 2モデルとも、依頼文の読み方(python3 scripts/fetch_page.py)で実際にページを読めるか
+        def fake_run(argv, **k):
+            cwd = k.get("cwd")
+            short = argv[-1]
+            pf = re.search(r"`([^`]+\.md)`", short)
+            readable = bool(pf) and (Path(cwd) / pf.group(1)).exists()
+            calls.append(("classify", argv, cwd, readable, run_cmd(f"python3 scripts/fetch_page.py {url}", cwd), Path(cwd).exists()))
+            return R()
+        cs.subprocess.run = fake_run
+        cs.ask(cs.CMD_A, "依頼")
+        cs.ask(cs.CMD_B, "依頼")
+        # 作業ディレクトリに依頼文を書けない(容量不足)ときも、作業ディレクトリを残さない
+        leftovers = lambda: set(Path(tempfile.gettempdir()).glob("explore-classify-*"))
+        before, real_pf = leftovers(), pipelib.prompt_file
+
+        def no_space(date, name, text, base=None):
+            if base is not None:
+                raise OSError(28, "No space left on device")
+            return real_pf(date, name, text, base)
+        pipelib.prompt_file = no_space
+        try:
+            cs.ask(cs.CMD_B, "依頼")
+        finally:
+            pipelib.prompt_file = real_pf
+        # 入口(fetch_page.py)を書けないときも同じ
+        real_wt = Path.write_text
+
+        def no_space_entry(self, *a, **k):
+            if self.name == "fetch_page.py" and "explore-classify-" in str(self):
+                raise OSError(28, "No space left on device")
+            return real_wt(self, *a, **k)
+        Path.write_text = no_space_entry
+        try:
+            cs.ask(cs.CMD_B, "依頼")
+        finally:
+            Path.write_text = real_wt
+        left = leftovers() - before
+    finally:
+        (pipelib.ROOT, collect.subprocess.run, collect.save_raw, collect.notify, collect.fetch_rendered,
+         collect.urllib.request.urlopen, cs.subprocess.run) = saved
+    facts = [c for c in calls if c[0] == "facts"]
+    check(len(facts) == 1, f"facts 化のセッションを1回起動しない: {facts}")
+    a, cwd = (facts[0][1], facts[0][2]) if facts else ([], repo)
+    allowed = a[a.index("--allowedTools") + 1].split(",") if "--allowedTools" in a else []
+    denied = a[a.index("--disallowedTools") + 1].split(",") if "--disallowedTools" in a else []
+    cmd = re.search(r"`(python3 [^`<]*fetch_page\.py) <url>`", prompt)
+    check("WebFetch" not in allowed and "WebFetch" in denied, f"facts 化が WebFetch でページを読める(JS を描画しない): {a}")
+    # 道具は読むのに要るものだけ(Bash は fetch_page.py の起動だけ。広げるとページに仕込まれた指示で何でも走らせられる)
+    check(sorted(allowed) == sorted(["Read", "WebSearch", "Bash(python3 scripts/fetch_page.py:*)"]),
+          f"facts 化の道具の許可が読むのに要る範囲を超える: {allowed}")
+    check("WebFetch で" not in prompt and cmd and any(allowed_by(p, cmd.group(1) + " " + url) for p in allowed),
+          f"facts 化の依頼文の読み方が、許した道具で打てない: {cmd and cmd.group(1)} / {allowed}")
+    out = run_cmd(f"{cmd.group(1)} {url}", cwd) if cmd else ""
+    check("受付期間" in out and "本文の事実" in out, f"facts 化の cwd で依頼文どおりに打っても本文が読めない: {out[:200]!r}")
+    cl = [c for c in calls if c[0] == "classify"]
+    check(len(cl) == 2, f"出典の判定の2モデルを起動しない: {cl}")
+    check(not left, f"依頼文を書けなかった出典の判定が作業ディレクトリを残した: {left}")
+    for _, argv, cwd, readable, got, _ in cl:
+        check("受付期間" in got and readable, f"出典の判定({argv[0]})が依頼文どおりにページ・依頼文を読めない: {got[:200]!r} {cwd}")
+    if len(cl) == 2:
+        a_argv, b_argv, b_cwd = cl[0][1], cl[1][1], Path(cl[1][2])
+        check("WebFetch" in a_argv[a_argv.index("--disallowedTools") + 1].split(",") if "--disallowedTools" in a_argv else False,
+              f"出典の判定の claude が WebFetch でページを読める: {a_argv}")
+        sandbox = b_argv[b_argv.index("-s") + 1] if "-s" in b_argv else ""
+        check("sandbox_workspace_write.network_access=true" in b_argv and sandbox == "workspace-write"
+              and repo not in b_cwd.resolve().parents and b_cwd.resolve() != repo and not b_cwd.exists(),
+              f"出典の判定の codex が通信できない・リポジトリの中で書ける・作業ディレクトリを残した: {b_argv} {b_cwd}")
+    # 3. 校閲の指摘の修正: 出典を開くなら fetch_page.py(WebFetch は外す)
+    argvs = []
+    d = "2099-01-01"
+    saved = (compose.ROOT, pipelib.ROOT, compose.subprocess.Popen)
+
+    class P:
+        def communicate(self, timeout=None):
+            return ("", "")
+    try:
+        compose.ROOT = pipelib.ROOT = tmp / "c"
+        (tmp / "c" / "docs" / "_posts").mkdir(parents=True)
+        (tmp / "c" / "docs" / "_posts" / f"{d}-a.md").write_text("x", encoding="utf-8")
+        compose.subprocess.Popen = lambda argv, **k: argvs.append(argv) or P()
+        compose.fix_articles(d, {f"docs/_posts/{d}-a.md": [{"rule": "R2"}]})
+        fp = "\n".join(p.read_text(encoding="utf-8") for p in (tmp / "c" / "metrics" / "work" / d).glob("fix-*.md"))
+    finally:
+        compose.ROOT, pipelib.ROOT, compose.subprocess.Popen = saved
+    a = argvs[0] if argvs else []
+    check("--disallowedTools" in a and "WebFetch" in a[a.index("--disallowedTools") + 1].split(",")
+          and "scripts/fetch_page.py" in fp, f"校閲の指摘の修正が WebFetch で出典を読める: {a}")
+
 def test_compose_recover(tmp: Path):
     """承認まで進んでも記事を落とした号は、当番が直したあとこの号に戻す(2026-10-10 編集長「復帰保証までが Opus/Sol の仕事だ」)。
     組み直しは控えを取ってから --reuse-plan。承認済みだった記事を失う・承認されないなら控えに戻す。戻った・戻らない記事を名指しする。"""
@@ -5257,6 +5388,65 @@ def test_grok_roles(tmp: Path):
     finally:
         if saved_home is not None:
             os.environ["HOME"] = saved_home
+
+
+def test_verify_crash_reasks_deep(tmp: Path):
+    """確かめる段(Luna)が落ちた面は、全投稿を -again で確かめ直し、原本の問い(deep.json)もそこで出し直される。
+    その段で「深掘りの機会を失う」と通知しない(2026-10-21 02:19 の sidem 面: /tmp が満杯で exit 101。-again が問いを書き、
+    深掘りも回ったのに失ったと通知した)。-again でも落ちたら、異常終了だったことを添えて通知する"""
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    notes = []
+    ask = [{"question": "元の告知", "why": "引用だけ"}]
+
+    def run(mode: str):
+        """mode: recover = 1回目が落ち -again が答える / crash2 = 2回とも落ちる /
+        nodeep = 1回目が正常に終わり候補は読めるが deep.json が無い / again_nodeep = 1回目が落ち -again は正常だが deep.json が無い"""
+        out = tmp / mode
+        out.mkdir()
+        (out / "sidem.md").write_text("### 1\n- url: https://x.com/a/status/1\n- 本文: 本文", encoding="utf-8")
+
+        class P:
+            pid = 0
+
+            def __init__(self, rc):
+                self.returncode = rc
+
+            def wait(self, timeout=None):
+                return self.returncode
+
+        def fake_popen(args, cwd=None, **kw):
+            again = "-again" in Path(cwd).name
+            ok = (again and mode in ("recover", "again_nodeep")) or (not again and mode == "nodeep")
+            # 落ちる回も正しい形のファイルを書いてから exit 101 で終える(異常終了の答えは、形が正しくても採らない)
+            (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "sidem", "facts": ["f"]}]),
+                                                  encoding="utf-8")
+            (Path(cwd) / "posts.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted",
+                                                               "item": "https://x.com/a/status/1"}]), encoding="utf-8")
+            if not ok or mode == "recover":
+                (Path(cwd) / "deep.json").write_text(json.dumps(ask), encoding="utf-8")
+            return P(0 if ok else 101)      # 101: 落ちた(/tmp が満杯で exit 101)
+        saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw)
+        try:
+            collect.subprocess.Popen = fake_popen
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append((mode, msg, ok)) or True
+            collect.prompt_file = lambda date, name, prompt, base=None: "p"
+            collect.save_raw = lambda *a, **k: None
+            return collect.verify_grok_faces([{"key": "sidem", "brand": "sidem", "topic": "t"}], out)
+        finally:
+            collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw = saved
+    lost = lambda mode: [m for c, m, ok in notes if c == mode and not ok and "deep.json" in m]
+    items, deep = run("recover")
+    check(deep == {"sidem": ask} and len(items) == 1, f"落ちた面を確かめ直した問い・候補を使わない: {items} {deep}")
+    check(not [m for c, m, ok in notes if c == "recover" and not ok], f"確かめ直して問いが出たのに、深掘りの機会を失ったと通知した: {notes}")
+    items, deep = run("crash2")
+    check(items == [] and deep == {} and len(lost("crash2")) == 1 and "異常終了(exit 101)" in lost("crash2")[0],
+          f"確かめ直しでも落ちた面の問いの喪失を、終わり方を添えて1度だけ通知しない: {lost('crash2')}")
+    # 正常に終わり候補は読めるのに deep.json が無い: 確かめ直さないので、問いは本当に失う。どの段でも通知する
+    for mode in ("nodeep", "again_nodeep"):
+        _, deep = run(mode)
+        check(deep == {} and len(lost(mode)) == 1 and "締切内に終わった" in lost(mode)[0],
+              f"正常に終わった段の deep.json の喪失を通知しない({mode}): {lost(mode)}")
 
 
 def test_empty_answer_is_not_done(tmp: Path):
@@ -11099,6 +11289,8 @@ def main() -> int:
     test_watch_static_page_body(tmp / "ws")
     test_fetch_page_renders_whitespace_only_page()
     test_review_reads_sources_like_writer()
+    test_collect_sessions_read_with_fetch_page(tmp / "csf")
+    test_verify_crash_reasks_deep(tmp / "vcd")
     test_fetch_rendered_skips_images()
     test_render_failure_keeps_cause(tmp / "rf")
     test_render_failure_reaches_classify_and_verify(tmp / "rfc")

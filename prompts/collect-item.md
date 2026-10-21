@@ -4,6 +4,7 @@
  "brand": "general|765|cg|million|shiny|sidem|gaku|dsva|joint|other",
  "kind": "official|semi|party|media|fan|trend",
  "url": "実在する URL",
+ "link_from": "url を投稿・ページに貼られたリンクから開いたとき、そのリンクが載っていた投稿・ページの URL。そうでなければ空文字",
  "event_date": "YYYY-MM-DD か空文字",
  "published_date": "情報の初出日(ページの掲載日・投稿日)YYYY-MM-DD か空文字",
  "deadline": "締切・終了日 YYYY-MM-DD か空文字",

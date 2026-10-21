@@ -34,7 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, ID_CASE_HOSTS, QUERY_DOC_PAGES, SHORTENERS, classify_source,
                      source_type_table, write_source_table, prompt_part, render_prompt, query_doc_key, path_type_norm,
                      edition_date, extract_json_array, html_to_text, notify, render_failure, set_quiet,
-                     X_ANON_POST, x_post_author, CLI_BLOCKED_EXIT, CliBlocked, cli_check)
+                     X_ANON_POST, x_post_author, CLI_BLOCKED_EXIT, CliBlocked, cli_check, link_key, src_rank)
 from pipelib import run_group   # モデル・道具は自前のグループで起動し、時間切れでは子孫まで止める
 
 # 合議で足してよい種別。公式・準公式も答えさせる(作品・ブランドの公式アカウントを「不明」で人へ回して
@@ -231,8 +231,15 @@ def unknown_targets(date: str) -> tuple[dict[str, str], dict[str, tuple[str, lis
     USED_IN.clear()
     X_POSTS.clear()
     SHORT_LINKS.clear()
+    ALL_SHORTS.clear()
     BOOTH_ITEMS.clear()
     rows = target_rows(date)
+    # 判定済みの短縮も、展開先が上位になっていないかを見る(resolve_short_links)。組版前はその号の記事の出典の全部から集める
+    # (target_rows は未確認の出典だけ。監査指摘 2026-10-21)
+    for c in rows + (unresolved_post_sources(POSTS_ONLY, every=True) if POSTS_ONLY else []):
+        url = ((c.get("url") or "").split() or [""])[0]
+        if url and (urllib.parse.urlparse(url).hostname or "").removeprefix("www.") in SHORTENERS and link_key(url):
+            ALL_SHORTS.setdefault(link_key(url), url)
     if not rows:
         return {}, {}, {}
     doms: dict[str, str] = {}
@@ -304,43 +311,96 @@ def is_document(key: str) -> bool:
     return key.split("/")[0] in DOC_HOSTS + ("forms.gle",) + tuple(QUERY_DOC_PAGES)
 
 
-def doc_id_of(key: str) -> str:
-    """文書の単位のキーから文書 ID(Microsoft Forms はクエリの id、ほかは最後の区切り)。"""
-    return key.split("?id=", 1)[1] if "?id=" in key else key.rsplit("/", 1)[-1]
+URL_START_OK = "（「『【(:："     # URL の直前に来てよい ASCII 以外の区切り・開き括弧・コロン(空白・文の始まり・和文の文字のほか)
 
 
-def link_sources(key: str, days: int = 7) -> list[tuple[str, str]]:
-    """その文書を**張っている**候補(リンク元)の (URL, 種別)。直近 days 号ぶんの候補から、url や facts に
-    文書 ID が現れるものを探す。リンク元が分かれば、モデルに推測させるまでもない(編集長の指摘 2026-09-20:
-    「どこに書いてあって、どこにリンクされているかで決まる」。実測: 公式 X の投稿の facts に
-    「配信へのお便り募集: https://docs.google.com/forms/…」とあるのに、フォームを未確認のまま合議に回していた)。"""
-    doc_id = doc_id_of(key)
-    out: list[tuple[str, str]] = []
-    for p in sorted((ROOT / "candidates").glob("????-??-??.json"))[-days:]:
-        text = p.read_text(encoding="utf-8", errors="replace")
-        if doc_id not in text:
+def fact_urls(text: str) -> list[str]:
+    """facts の文から切り出した URL。空白で区切った語ごとに見て、URL の範囲が曖昧なものは入れない(削って・途中から切り出して
+    別の URL を作らない。監査指摘 2026-10-21: `/event(1)` から `/event`、`/event'B`・`/event（B）`・`/event、B` から `/event`、
+    `…'https://other…` から後半を作り、張られていない先を公式にした)。
+    入れるのは: 語の中の最初の `http(s)://` の直前が語の始まり・和文の文字・開き括弧・コロンで、そこから語の終わりまでが URL の文字
+    だけのもの、または URL の後ろが和文の閉じ括弧・句読点だけのもの。末尾が句読点とも読める・括弧の対が合わないものは入れない。"""
+    out = []
+    for word in text.split():
+        # 語の中の `://` は1つだけ(別の URL の中から切り出さない。`ftp://…:https://…`・`HTTPS://…:https://…` を入れない)
+        if word.count("://") != 1:
             continue
-        try:
-            rows = json.loads(text)
-        except ValueError:
+        m = re.search(r"https?://", word)
+        i = m.start() if m else -1
+        # 前置きは全部が和文(かな・漢字・全角)か開き括弧・コロン(`blob:`・`data:…,`・`//…/:` など別の URL に包まれたものを入れない)
+        if i < 0 or not all(ch in URL_START_OK or re.match(r"[぀-ヿ㐀-鿿！-｠]", ch) for ch in word[:i]):
             continue
-        for c in rows:
-            url = ((c.get("url") or "").split() or [""])[0]
-            if not url or doc_id in url:          # 文書そのものの候補はリンク元ではない
-                continue
-            if doc_id in json.dumps(c, ensure_ascii=False) and (url, classify_source(url)) not in out:
-                out.append((url, classify_source(url)))
+        m = re.match(r"https?://[A-Za-z0-9._~/?#=&%+@!$*,;:()'\[\]-]+", word[i:])
+        if not m:
+            continue        # `https://` だけ・直後が URL の文字でないものは入れない(過去の素材にあっても判定を止めない)
+        u, rest = m.group(0), word[i + len(m.group(0)):]
+        if ((rest and not re.fullmatch(r"[）」』】、。]+", rest)) or u[-1] in ".,;:!?…" or u.count("(") != u.count(")")
+                or u.count("://") != 1):
+            continue
+        out.append(u)
     return out
+_LINK_INDEX: list = [None, {}, {}]    # [素材ファイルの同一性, リンク先のキー → リンク元の URL の並び, リンク元の URL → (題名, facts)]
+
+
+def link_index() -> tuple[dict[str, list[str]], dict[str, tuple[str, list[str]]]]:
+    """素材(候補 candidates/*.json と続報予約 stock/scheduled/*.json の全部)から引いた、リンク先 → リンク元。
+    リンク元は2通り: 候補の link_from(url をリンクとして載せていた投稿・ページ)と、facts に url を載せている候補自身
+    (Grok の投稿の「リンク: <url>」、告知ページの申込先など)。キーは pipelib.link_key(書き方の揺れを同じ先にまとめる)。
+    以前は直近7号の候補の facts だけを文書 ID で探していたので、9/26 の公式の投稿が張ったフォームは 10/21 号の判定で
+    リンク元が「無い」とされ、合議が割れて未確認のまま載った(2026-10-21)。素材ファイルが変わっていなければ前回の結果を使う。"""
+    files = sorted((ROOT / "candidates").glob("????-??-??.json")) + sorted((ROOT / "stock" / "scheduled").glob("*.json"))
+    ident = (str(ROOT), tuple((p.name, p.stat().st_mtime_ns, p.stat().st_size) for p in files))
+    if _LINK_INDEX[0] == ident:
+        return _LINK_INDEX[1], _LINK_INDEX[2]
+    idx: dict[str, list[str]] = {}
+    rows_of: dict[str, tuple[str, list[str]]] = {}   # 素材の url → (題名, facts)。リンク元の告知の中身として合議に見せる
+
+    def add(k: str, src: str) -> None:
+        if src not in idx.setdefault(k, []):
+            idx[k].append(src)
+    for p in files:
+        try:
+            rows = json.loads(p.read_text(encoding="utf-8", errors="replace"))
+        except (OSError, ValueError):
+            continue
+        for c in rows if isinstance(rows, list) else []:
+            if not isinstance(c, dict):
+                continue
+            url = ((c.get("url") or "").split() or [""])[0]
+            own = link_key(url) if url else None
+            lf = c.get("link_from")
+            if own and isinstance(lf, str) and lf.startswith(("http://", "https://")) and link_key(lf) not in (None, own):
+                add(own, lf)
+            if not own:
+                continue
+            if url not in rows_of or not rows_of[url][1]:
+                rows_of[url] = (str(c.get("title") or ""), [str(f) for f in c.get("facts") or []][:40])
+            for f in c.get("facts") or []:
+                for u in fact_urls(str(f)):
+                    k = link_key(u)
+                    if k and k != own:
+                        add(k, url)
+    about = {u: rows_of.get(u, ("", [])) for srcs in idx.values() for u in srcs}
+    _LINK_INDEX[:] = [ident, idx, about]
+    return idx, about
+
+
+def link_sources(key: str) -> list[tuple[str, str]]:
+    """そのリンク先(URL か判定の単位のキー)を**張っている**素材(リンク元)の (URL, 種別)。リンク元が分かれば、
+    モデルに推測させるまでもない(編集長の指摘 2026-09-20:「どこに書いてあって、どこにリンクされているかで決まる」。
+    実測: 公式 X の投稿の facts に「配信へのお便り募集: https://docs.google.com/forms/…」とあるのに、フォームを未確認の
+    まま合議に回していた)。"""
+    k = link_key(key if "://" in key else "https://" + key)
+    return [(u, classify_source(u)) for u in link_index()[0].get(k, [])] if k else []
 
 
 def by_link_source(key: str) -> tuple[str, str] | None:
     """リンク元だけで機械的に決められる文書の (種別, 根拠)。決められなければ None(リンク元を材料に付けて合議へ)。
 
     - リンク元が全部ファンなら、ファン(個人の文書。過大表示にならない)
-    - 一次発信(公式・準公式・当事者・演者)が張っている文書は、**機械では決めない**。リンク元の主体自身の文書か、
-      コラボ先・主催者の受付を紹介しているだけかは、リンク元だけでは分からない(実データ: 公式ページが LivePocket や
-      アニメイトの受付を張っている。それがフォームなら「公式」で恒久登録される。監査指摘 r69)。
-      リンク元を決め手の材料として渡し、その一点だけを合議に確かめさせる(`link_hint`)
+    - 一次発信(公式・準公式・当事者・演者)が張っている文書は、**機械では決めない**。リンク元の告知と関係しているかは
+      リンク元だけでは分からない(監査指摘 r69)。関係を合議に確かめさせ(inherit_from_links)、確かめたものだけリンク元の
+      種別を引き継ぐ(編集長 2026-10-21)。決まらなければリンク元を材料に付けて文書の合議へ(`link_hint`)
     - リンク元が無い・報道や二次情報だけ、も合議へ。報道が紹介したフォームは報道のものではない
     """
     srcs = link_sources(key)
@@ -353,8 +413,8 @@ def link_hint(key: str) -> str:
     """合議に渡す材料: この文書を張っている候補(リンク元)と、その種別。どう使うかの規則は依頼文(classify-site)にある。"""
     srcs = link_sources(key)
     if not srcs:
-        return "\nリンク元: 手元の候補には、この文書を張っているものが無い"
-    return "\nリンク元(この文書を張っている候補): " + " / ".join(f"{u}({t})" for u, t in srcs[:4])
+        return "\nリンク元: 手元の素材には、この文書を張っているものが無い"
+    return "\nリンク元(この文書を張っている素材): " + " / ".join(f"{u}({t})" for u, t in srcs[:4])
 
 
 SKIPPED: dict[str, str] = {}          # 持ち主の無い URL → 理由(unknown_targets が埋める)
@@ -364,6 +424,7 @@ X_POSTS: dict[str, str] = {}          # 投稿者の無い X の投稿 ID → �
 _X_AUTHOR: dict[str, str] = {}        # 投稿 ID → 投稿者(引けなければ "")。同じ実行で何度も問い合わせない
 BOOTH_ITEMS: dict[str, tuple[str, str]] = {}   # BOOTH の商品のキー → (ショップのホスト, URL)(unknown_targets が埋める。resolve_booth_items が表へ)
 SHORT_LINKS: dict[str, str] = {}      # 判定表に無い短縮 URL のキー(`t.co/<ID>`)→ URL(unknown_targets が埋める。resolve_short_links が表へ)
+ALL_SHORTS: dict[str, str] = {}       # 判定の対象の短縮 URL の全部(判定済みも)。キー → URL(unknown_targets が埋める)
 _SHORT: dict[str, str] = {}           # 短縮 URL → 展開先(引けなければ "")。同じ実行で何度も問い合わせない
 
 
@@ -408,14 +469,20 @@ def expand_short_fetch(url: str, hops: int = 5) -> str:
     return ""
 
 
-def resolve_short_links(apply: bool) -> list[str]:
+def resolve_short_links(apply: bool, date: str | None = None) -> list[str]:
     """判定表に無い短縮 URL へ、展開先の種別を機械で写す(path_types に短縮1つずつ。合議には掛けない。x_posts と同じ)。
     展開先が表に無ければ、展開先は target_rows で合議・機械の判定に掛かっている(この関数は main の最後に呼ぶ)。
-    戻り値は決まらなかったものの説明(`<短縮のキー>: 理由`)。"""
+    戻り値は決まらなかったものの説明(`<短縮のキー>: 理由`)。date を渡すと、号 date より前の公開済みの記事が出典にしている
+    短縮は、足すのも書き換えるのもしない(published_citations。訂正の手順へ回す記録に残す)。"""
     found: dict[str, tuple[str, str]] = {}
     left: list[str] = []
+    pub = published_citations(date) if date else {}
     for key, url in sorted(SHORT_LINKS.items()):
         if classify_source(url) != "未確認":
+            continue
+        if pub.get(link_key(url)):
+            # 公開済みの記事が出典にしている未確認の短縮も自動では変えない(監査 r12 の later: 変えると公開済みの記事が変わる)
+            left.append(held_for_correction(key, pub[link_key(url)]))
             continue
         dest = expand_short(url)
         typ = classify_source(dest) if dest else "未確認"
@@ -426,9 +493,217 @@ def resolve_short_links(apply: bool) -> list[str]:
         else:
             found[key] = (typ, f"展開先 {dest[:160]}")
             print(f"  {typ}\t{key}\t→ {dest[:80]}", flush=True)
+    # 判定済みの短縮でも、展開先そのものの種別が今の種別(リンク元から引き継いだ種別を含む)より上位なら、上位で書き換える
+    # (編集長 2026-10-21: リンク先そのものの種別が上位なら上位)
+    for key, url in sorted(ALL_SHORTS.items()):
+        cur = classify_source(url)
+        if key in found or cur == "未確認":
+            continue
+        dest = expand_short(url)
+        typ = classify_source(dest) if dest else "未確認"
+        if typ != "未確認" and src_rank(typ) < src_rank(cur) and pub.get(key):
+            left.append(held_for_correction(key, pub[key]) + f"。展開先 {dest[:160]}({typ})")
+        elif typ != "未確認" and src_rank(typ) < src_rank(cur):
+            found[key] = (typ, f"展開先 {dest[:160]}")
+            print(f"  {cur} → {typ}\t{key}\t→ {dest[:80]}(展開先そのものが上位)", flush=True)
     if found and apply:
-        add_paths(found, how="機械で追加")
-        print(f"  → 短縮 URL {len(found)}件を表に追加(展開先の種別を写した)", flush=True)
+        add_paths(found, how="機械で追加", upgrade=True)
+        print(f"  → 短縮 URL {len(found)}件を表に追加・更新(展開先の種別を写した)", flush=True)
+    return left
+
+
+# --- リンク元からの種別の引き継ぎ(編集長 2026-10-21) ------------------------------------------------------
+# 公式の投稿・ページからリンクで行った先は公式、準公式からなら準公式。ただしリンク先がその告知の内容と関係していると
+# 確かめたときだけ。種別 = max(リンク元の種別(関係を確かめたときだけ), リンク先そのものの種別)。
+# 関係の判断は合議(prompts/classify-link.md)、コードは強いほうを採って判定表 link_types に1件ずつ残すだけ。
+# 2026-10-21 号: アイマスch 公式の配信告知が張ったお便りフォームが、合議で「準公式 / 不明」に割れて未確認のまま載った
+ANSWER_LINK = ("host", "related", "why")           # prompts/classify-link.md の答えの欄
+RELATED = ("関係する", "関係しない")
+
+
+def link_checked_path() -> Path:
+    """合議が「関係しない」で一致したリンク先とリンク元の組(Git 管理外)。同じ組を判定のたびに問い直さない。"""
+    return ROOT / "metrics" / "link-checked.json"
+
+
+def load_link_checked() -> dict[str, str]:
+    try:
+        d = json.loads(link_checked_path().read_text(encoding="utf-8"))
+        return d if isinstance(d, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+_PUBLISHED: dict = {}     # (ROOT, 号) → published_citations の結果(同じ実行で何度も読まない)
+
+
+def published_citations(date: str) -> dict[str, list[str]]:
+    """号 date より前の、追記だけの号(試験発行 number: 0 の号は除く)の記事が出典にしているリンク先: キー(link_key)→ 記事。
+    ここにあるリンク先の種別を変えると、付け直し(retag_sources)が公開済みの記事を書き換え、append-only の lint で取引ごと
+    戻る(組版前なら発行前の lint で止まる)。公開済みの記事の種別は訂正の手順で直すので、自動では変えない。"""
+    if (str(ROOT), date) in _PUBLISHED:
+        return _PUBLISHED[(str(ROOT), date)]
+    live: dict[str, bool] = {}
+    out: dict[str, list[str]] = {}
+    for post in sorted((ROOT / "docs" / "_posts").glob("????-??-??-*.md")):
+        d = post.name[:10]
+        if d >= date:
+            continue
+        if d not in live:
+            ed = ROOT / "docs" / "_editions" / f"{d}.md"
+            m = re.search(r"(?m)^number:\s*(\d+)", ed.read_text(encoding="utf-8")) if ed.exists() else None
+            live[d] = not (m and int(m.group(1)) == 0)
+        if not live[d]:
+            continue
+        m = re.match(r"^---\n(.*?)\n---\n", post.read_text(encoding="utf-8"), re.S)
+        try:
+            fm = (yaml.safe_load(m.group(1)) or {}) if m else {}
+        except yaml.YAMLError:
+            continue
+        for s in fm.get("sources") or [] if isinstance(fm, dict) else []:
+            k = link_key(s.get("url")) if isinstance(s, dict) and s.get("url") else None
+            if k and post.stem not in out.setdefault(k, []):
+                out[k].append(post.stem)
+    _PUBLISHED.clear()
+    _PUBLISHED[(str(ROOT), date)] = out
+    return out
+
+
+def held_for_correction(k: str, posts: list[str]) -> str:
+    """公開済みの記事が引用しているので自動では種別を変えないリンク先の記録(決まらなかったものの説明の形)。"""
+    return (f"{k}: 公開済みの記事 {', '.join(posts[:3])}{' ほか' if len(posts) > 3 else ''} が出典にしている。種別を変えると公開済みの"
+            "記事が変わるので、自動では変えない(訂正の手順で直す)")
+
+
+def own_link_type(url: str) -> str:
+    """リンク先そのものの種別。短縮 URL は展開先の種別とも比べ、強いほう(短縮そのものは持ち主を持たない)。"""
+    t = classify_source(url)
+    if (urllib.parse.urlparse(url).hostname or "").removeprefix("www.") in SHORTENERS:
+        dest = expand_short(url)
+        if dest:
+            t = min((t, classify_source(dest)), key=src_rank)
+    return t
+
+
+def link_candidates(date: str) -> tuple[dict[str, tuple[str, str, list[tuple[str, str]]]], dict[str, str]]:
+    """リンク元の種別を引き継ぐかを確かめる対象: リンク先のキー → (URL, リンク先そのものの種別, [(リンク元, 種別)…])。
+    リンク元はリンク先そのものより強いものだけ、強い順。合議が「関係しない」と一致した組(リンク先とリンク元)は除く
+    (除いたあとに残る弱いリンク元は対象のまま)。対象は判定の対象(target_rows)と、組版前(POSTS_ONLY)はその号の記事の出典の
+    全部(未確認でないものも)。公開済みの記事が出典にしているリンク先は対象にせず、2つ目の戻り値(キー → 説明)に分ける
+    (published_citations)。"""
+    idx, _ = link_index()
+    checked = load_link_checked()
+    pub = published_citations(date)
+    rows = target_rows(date) + (unresolved_post_sources(POSTS_ONLY, every=True) if POSTS_ONLY else [])
+    out: dict[str, tuple[str, str, list[tuple[str, str]]]] = {}
+    held: dict[str, str] = {}
+    for r in rows:
+        url = ((r.get("url") or "").split() or [""])[0]
+        k = link_key(url) if url else None
+        if not k or k in out or k in held or not idx.get(k):
+            continue
+        own = own_link_type(url)
+        srcs = sorted(((s, t) for s in idx[k] for t in [classify_source(s)]
+                       if t != "未確認" and src_rank(t) < src_rank(own) and f"{k} <- {s}" not in checked),
+                      key=lambda st: src_rank(st[1]))
+        if not srcs:
+            continue
+        if pub.get(k):
+            held[k] = held_for_correction(k, pub[k]) + f"。リンク元 {srcs[0][0]}({srcs[0][1]})"
+            continue
+        out[k] = (url, own, srcs)
+    return out, held
+
+
+def link_page(url: str) -> str:
+    """合議の材料: リンク先のページ(短縮は展開先)の題名・説明・冒頭。"""
+    dest = expand_short(url) if (urllib.parse.urlparse(url).hostname or "").removeprefix("www.") in SHORTENERS else ""
+    page = dest or url
+    title, desc, _ = page_meta(page)
+    return "\n".join([f"リンク先: {url}" + (f"(展開先 {dest})" if dest else ""), f"title: {title or '-'}",
+                      f"description: {desc or '-'}", f"ページ冒頭: {page_excerpt(page, 800)}"])
+
+
+def link_source_text(s: str) -> str:
+    """合議の材料: リンク元の告知(素材の題名と facts)。"""
+    t, facts = link_index()[1].get(s, ("", []))
+    return f"リンク元: {s}\n  題名: {t or '-'}\n  内容: " + (" / ".join(facts)[:1500] or "(素材に内容なし)")
+
+
+def add_links(found: dict[str, tuple[str, str]]) -> int:
+    """リンク元から引き継いだ種別を link_types(リンク先1つ → 種別)へ足す。既にあれば、強くなるときだけ書き換える。
+    行の根拠に、どのリンク元から引き継いだかを残す(後から確かめられるように)。戻り値は実際に書いた行の数。"""
+    n = 0
+    p = ROOT / "source_types.yml"
+    text = p.read_text(encoding="utf-8")
+    if not _span(text, "link_types"):
+        text = text.rstrip("\n") + ("\n\n# --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係して"
+                                   "いると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---\n"
+                                   "link_types:\n")
+    for k, (t, why) in found.items():
+        if link_key("https://" + k) != k:      # link_key が判定表に書ける形しか返さないので、ここに来るのはコードの欠陥
+            print(f"  ★{k} はリンク先のキーの形でないので足さない", flush=True)
+            continue
+        a, b = _span(text, "link_types")
+        why = re.sub(r"\s+", " ", str(why))     # 根拠に改行があると表が壊れる
+        line = f"  {k}: {t}{' ' * max(1, 40 - len(k))}# {why}\n"
+        old = re.compile(rf"^  {re.escape(k)}:\s*(\S+).*\n?", re.M).search(text, a, b)
+        if old is None:
+            text, n = text[:a] + line + text[a:], n + 1
+        elif src_rank(t) < src_rank(old.group(1)):
+            text, n = text[:old.start()] + line + text[old.end():], n + 1
+    write_source_table(text, p)
+    return n
+
+
+def inherit_from_links(date: str, apply: bool, limit: int = 60) -> list[str]:
+    """リンク元のほうが強いリンク先について、リンク先とリンク元の**組ごと**に、告知と関係しているかを合議に確かめさせる。
+    関係すると一致した組のうち最も強いリンク元の種別を link_types に残す(リンク先そのものと強いほうを採るのは
+    pipelib.classify_source)。「関係しない」と一致した組だけを記録し、見せていない組・割れた組は次の判定でまた問う。
+    戻り値は決まらなかったものの説明。"""
+    todo, held = link_candidates(date)
+    for s in held.values():
+        print(f"  引き継がない(公開済み)\t{s}", flush=True)
+    pairs = [(k, s, t) for k in sorted(todo) for s, t in todo[k][2]]
+    if not pairs:
+        return list(held.values())
+    ids = {f"L{i + 1}": p for i, p in enumerate(pairs[:limit])}
+    left = list(held.values()) + [f"{k}: リンク元 {s}({t})の種別を引き継ぐかの確かめが上限を超え、次の判定に回した"
+                                  for k, s, t in pairs[limit:]]
+    print(f"\n{date}: リンク元のほうが強いリンク先 {len(todo)}件・組 {len(pairs)}件(今回 {len(ids)}組)→ "
+          + ", ".join(f"{k}({todo[k][1]}←{t})" for k, _, t in ids.values()), flush=True)
+    from concurrent.futures import ThreadPoolExecutor
+    targets = sorted({k for k, _, _ in ids.values()})
+    with ThreadPoolExecutor(max_workers=8) as ex:
+        pages = dict(zip(targets, ex.map(lambda k: link_page(todo[k][0]), targets)))
+    mats = {i: f"### {i}\n{pages[k]}\n{link_source_text(s)}" for i, (k, s, _) in ids.items()}
+    agreed, split = consensus(lambda ks: render_prompt("classify-link", TARGETS="\n\n".join(mats[i] for i in ks)),
+                              list(ids), need=ANSWER_LINK, field="related", accept=RELATED)
+    best: dict[str, tuple[str, str, str]] = {}     # リンク先 → (種別, リンク元, 根拠)。関係すると一致した組のうち最も強いもの
+    checked = load_link_checked()
+    for i, (verdict, why) in agreed.items():
+        k, s, t = ids[i]
+        print(f"  {verdict}\t{k}\tリンク元 {s}({t})\t{why}", flush=True)
+        if verdict == "関係する":
+            if k not in best or src_rank(t) < src_rank(best[k][0]):
+                best[k] = (t, s, why)
+        else:
+            checked[f"{k} <- {s}"] = f"{date} 関係しない: {why}"
+    found = {k: (t, f"リンク元から引き継ぎ(合議で関係を確認): {s}({t})。{why}") for k, (t, s, why) in best.items()}
+    for row in split:
+        i, _, rest = row.partition(": ")
+        k, s, t = ids.get(i, (i, "", ""))
+        print(f"  不一致・保留\t{k}\tリンク元 {s}({t})\t{rest}", flush=True)
+        if k not in best:
+            left.append(f"{k}: リンク元 {s}({t})の種別を引き継ぐかで合議が割れた: {rest}")
+    if apply:
+        if found:
+            print(f"  → リンク元から引き継いだ種別 {add_links(found)}件を表に追加", flush=True)
+        try:
+            link_checked_path().parent.mkdir(parents=True, exist_ok=True)
+            link_checked_path().write_text(json.dumps(checked, ensure_ascii=False, indent=1), encoding="utf-8")
+        except OSError as e:
+            print(f"  関係しないと決まった組を保存できない({e})", flush=True)
     return left
 
 
@@ -609,16 +884,16 @@ def target_rows(date: str) -> list[dict]:
     return rows + dests
 
 
-def unresolved_post_sources(date: str | None = None, only: set[str] | None = None) -> list[dict]:
-    """紙面に載っている**未確認**の出典(全号。date を渡すとその号だけ。only を渡すとそのファイル名の記事だけ)。
-    執筆が自分で見つけた URL は候補に無いので、候補だけ見ていると紙面の未確認が残る。収集は次号の日付で走るので、
-    既定では号で絞らない。"""
+def unresolved_post_sources(date: str | None = None, only: set[str] | None = None, every: bool = False) -> list[dict]:
+    """紙面に載っている**未確認**の出典(全号。date を渡すとその号だけ。only を渡すとそのファイル名の記事だけ。every なら
+    未確認でない出典も)。執筆が自分で見つけた URL は候補に無いので、候補だけ見ていると紙面の未確認が残る。収集は次号の日付で
+    走るので、既定では号で絞らない。"""
     rows = []
     for post in sorted((ROOT / "docs" / "_posts").glob(f"{date}-*.md" if date else "*.md")):
         if only is not None and post.name not in only:
             continue
         text = post.read_text(encoding="utf-8")
-        if "未確認" not in text:
+        if not every and "未確認" not in text:
             continue
         m = re.match(r"^---\n(.*?)\n---\n", text, re.S)
         if not m:
@@ -628,7 +903,7 @@ def unresolved_post_sources(date: str | None = None, only: set[str] | None = Non
         except Exception:
             continue
         for s in fm.get("sources") or []:
-            if isinstance(s, dict) and s.get("url") and s.get("type") == "未確認":
+            if isinstance(s, dict) and s.get("url") and (every or s.get("type") == "未確認"):
                 rows.append({"url": s["url"], "title": f"{fm.get('title') or ''}(記事の出典: {s.get('label') or ''})"})
     return rows
 
@@ -844,17 +1119,18 @@ def _by_host(rows: list, keys: list[str] | None = None, need: tuple = ANSWER_X) 
     return {k: d for k, d in out.items() if shaped(d)}
 
 
-def debate_prompt(prompt: str, split_keys: list[str], mine: dict, theirs: dict) -> str:
+def debate_prompt(prompt: str, split_keys: list[str], mine: dict, theirs: dict, field: str = "type") -> str:
     """2巡目: 割れた対象について、相手の答えと根拠を見せ、検証して賛成か反論かを答えさせる。"""
     rows = []
     for k in split_keys:
         m, t = mine.get(k) or {}, theirs.get(k) or {}
-        rows.append(f"- {k}: あなた={m.get('type') or '—'}({m.get('why') or '根拠なし'}) / "
-                    f"相手={t.get('type') or '—'}({t.get('why') or '根拠なし'})")
+        rows.append(f"- {k}: あなた={m.get(field) or '—'}({m.get('why') or '根拠なし'}) / "
+                    f"相手={t.get(field) or '—'}({t.get('why') or '根拠なし'})")
     return render_prompt("classify-debate", FIRST=prompt.rstrip("\n"), ROWS="\n".join(rows))
 
 
-def consensus(prompt: str, keys: list[str], need: tuple = ANSWER_SITE) -> tuple[dict, list[str]]:
+def consensus(prompt: str, keys: list[str], need: tuple = ANSWER_SITE, field: str = "type",
+              accept: tuple = ALLOWED) -> tuple[dict, list[str]]:
     """別ベンダーの2モデルの合議。1巡目は独立に答え、割れたものは**議論**する(2巡目)。
 
     同じベンダーだと同じ誤りを共有するので、Claude と Codex に分ける。
@@ -870,17 +1146,18 @@ def consensus(prompt: str, keys: list[str], need: tuple = ANSWER_SITE) -> tuple[
     a = _by_host(ask(CMD_A, make(keys)), keys, need)
     b = _by_host(ask(CMD_B, make(keys)), keys, need)
 
+    # field は答えの欄(種別なら type、リンク先の関係なら related)、accept は一致として採る値
     def agree(k):
-        ta, tb = (a.get(k) or {}).get("type"), (b.get(k) or {}).get("type")
-        return ta if (ta and ta == tb and ta in ALLOWED) else None
+        ta, tb = (a.get(k) or {}).get(field), (b.get(k) or {}).get(field)
+        return ta if (ta and ta == tb and ta in accept) else None
 
     split_keys = [k for k in keys if not agree(k)]
     if split_keys:
         print(f"  1巡目で割れた {len(split_keys)}件を議論させる: "
-              + ", ".join(f"{k}({(a.get(k) or {}).get('type') or '—'}/{(b.get(k) or {}).get('type') or '—'})" for k in split_keys),
+              + ", ".join(f"{k}({(a.get(k) or {}).get(field) or '—'}/{(b.get(k) or {}).get(field) or '—'})" for k in split_keys),
               flush=True)
-        a2 = _by_host(ask(CMD_A, debate_prompt(make(split_keys), split_keys, a, b)), split_keys, need)
-        b2 = _by_host(ask(CMD_B, debate_prompt(make(split_keys), split_keys, b, a)), split_keys, need)
+        a2 = _by_host(ask(CMD_A, debate_prompt(make(split_keys), split_keys, a, b, field)), split_keys, need)
+        b2 = _by_host(ask(CMD_B, debate_prompt(make(split_keys), split_keys, b, a, field)), split_keys, need)
         # 議論した対象は2巡目の答えで置き換える。2巡目に形の揃った答えが無ければ無回答にする(1巡目の答えを残すと、
         # 崩れた・矛盾した2巡目を出した側の古い答えで一致が成立してしまう。監査指摘)
         for k in split_keys:
@@ -893,8 +1170,8 @@ def consensus(prompt: str, keys: list[str], need: tuple = ANSWER_SITE) -> tuple[
             agreed[k] = (t, str((a.get(k) or {}).get("why", ""))[:40])
         else:
             da, db = a.get(k) or {}, b.get(k) or {}
-            split.append(f"{k}: {da.get('type') or '—'}「{str(da.get('why') or '')[:60]}」 / "
-                         f"{db.get('type') or '—'}「{str(db.get('why') or '')[:60]}」")
+            split.append(f"{k}: {da.get(field) or '—'}「{str(da.get('why') or '')[:60]}」 / "
+                         f"{db.get(field) or '—'}「{str(db.get('why') or '')[:60]}」")
     return agreed, split
 
 
@@ -968,9 +1245,10 @@ def add_domains(agreed: dict) -> None:
     write_source_table(text, p)
 
 
-def add_paths(agreed: dict, how: str = "合議で追加") -> None:
+def add_paths(agreed: dict, how: str = "合議で追加", upgrade: bool = False) -> None:
     """プラットフォーム上のアカウント・チャンネル・作品ページ・文書を path_types(パス → 種別)へ足す。
-    how は**どうやって決めたか**(合議で追加 / 機械で追加)。決め方を偽って記録しない。"""
+    how は**どうやって決めたか**(合議で追加 / 機械で追加)。決め方を偽って記録しない。
+    upgrade なら、既にある行も新しい種別のほうが上位のときだけ書き換える(短縮の展開先が上位になったとき)。"""
     p = ROOT / "source_types.yml"
     text = p.read_text(encoding="utf-8")
     if not _span(text, "path_types"):
@@ -979,10 +1257,15 @@ def add_paths(agreed: dict, how: str = "合議で追加") -> None:
                                    "path_types:\n")
     for k, (t, why) in agreed.items():
         a, b = _span(text, "path_types")
+        why = re.sub(r"\s+", " ", str(why))     # 根拠に改行があると表が壊れる
+        line = f"  {k}: {t}{' ' * max(1, 40 - len(k))}# {how}: {why}\n"
         # 既にあるかは、表の検査と同じ比べ方で見る(文書・短縮の ID は大小文字を区別する。pipelib.path_type_norm)
-        if path_type_norm(k) in {path_type_norm(x) for x in re.findall(r"^  (\S+?):\s", text[a:b], re.M)}:
-            continue
-        text = text[:a] + f"  {k}: {t}{' ' * max(1, 40 - len(k))}# {how}: {why}\n" + text[a:]
+        old = next((m for m in re.finditer(r"^  (\S+?):\s*(\S+).*\n?", text[a:b], re.M)
+                    if path_type_norm(m.group(1)) == path_type_norm(k)), None)
+        if old is None:
+            text = text[:a] + line + text[a:]
+        elif upgrade and src_rank(t) < src_rank(old.group(2)):
+            text = text[:a + old.start()] + line + text[a + old.end():]
     write_source_table(text, p)
 
 
@@ -1362,11 +1645,14 @@ def main() -> int:
         global POSTS_ONLY
         POSTS_ONLY = date
 
+    # リンク元のほうが強いリンク先は、先にリンク元の告知との関係を確かめて引き継ぐ(引き継いだものは下の合議に掛からない)
+    split_links = inherit_from_links(date, args.apply, args.limit)
     doms, accts, paths = unknown_targets(date)
     # 持ち主の無い URL は、黙って飛ばさず理由ごと残す(決まらなかったものとして下でまとめて出る)
     split_all = [f"{u}: 判定できない({why})" for u, why in sorted(SKIPPED.items())]
     for s in split_all:
         print(f"  判定の対象にできない\t{s}", flush=True)
+    split_all += split_links
     # 持ち主を取るパーサが無い URL は、人に「決まらない」と申告する前に、当番にパーサを書かせる(下見では依頼しない)
     if NEED_PARSER and args.require_parsers:
         # 当番の再実行: パーサを足したのに同じ種類が残っている(ホスト内の別の形の URL を取り漏らした等)なら失敗にする
@@ -1383,7 +1669,7 @@ def main() -> int:
         for s in rows:
             print(f"  パーサが無い\t{s}", flush=True)
         split_all += rows
-    if (not doms and not accts and not paths and not X_POSTS and not SHORT_LINKS and not BOOTH_ITEMS
+    if (not doms and not accts and not paths and not X_POSTS and not SHORT_LINKS and not ALL_SHORTS and not BOOTH_ITEMS
             and not unknown_videos(date) and not unknown_nico(date) and not unknown_playlists(date)):
         if not split_all:
             print(f"{date}: 判定表に無い出典はありません")
@@ -1402,6 +1688,15 @@ def main() -> int:
             add_domains(agreed)
             print(f"  → ドメイン {len(agreed)}件を表に追加")
 
+    # 公開済みの記事が出典にしている文書は、自動では種別を決めない(決めると付け直しが公開済みの記事を書き換え、append-only の
+    # lint で取引ごと戻る。リンク元の索引を広げたので、公開済みの未確認のフォームにもリンク元が付いて合議が一致しうる。2026-10-21)
+    pub = published_citations(date)
+    for k in sorted(paths):
+        lk = link_key("https://" + k)
+        if is_document(k) and lk and pub.get(lk):
+            split_all.append(held_for_correction(k, pub[lk]))
+            print(f"  決めない(公開済み)\t{split_all[-1]}", flush=True)
+            paths.pop(k)
     # 文書(フォーム・ドキュメント)は、**リンク元**で決める。リンク元が手元のデータで分かるものは合議に掛けない
     decided = {}
     for k in sorted(paths):
@@ -1508,7 +1803,7 @@ def main() -> int:
     split_all += resolve_booth_items(args.apply)
 
     # 短縮 URL は、展開先の種別が上で決まってから、その種別を短縮1つずつへ写す(展開先が決まらなければ理由を残す)
-    split_all += resolve_short_links(args.apply)
+    split_all += resolve_short_links(args.apply, date)
 
     # **決まらなかったものを、その場で人へ上げない。**
     #

@@ -31,6 +31,7 @@
 | explore | Web の探索・面ごと(`collect.run_explores`) | Codex luna | 候補 JSON |
 | watch-facts | 定点観測の新着の facts 化(`collect.run_watch`) | Claude haiku | 新着ページごとの結果(extracted / none / unreadable)と候補 JSON |
 | classify-rules / classify-site / classify-x / classify-debate | 出典種別の合議(`classify_sources`) | Claude haiku + Codex luna | 種別 JSON |
+| classify-link(+ classify-debate) | リンク先がリンク元の告知と関係しているかの合議(`classify_sources.inherit_from_links`) | Claude haiku + Codex luna | 関係する / 関係しない JSON |
 | oncall-fix(+ .objections)/ oncall-review | 当番の修正と監査(`oncall`) | Claude opus / Codex sol | 報告・判定(schema) |
 | oncall-accept | 監査の must_fix が報告の誤り(misreport)だけのとき、監査が書いた編集長への報告の文面を当番が了承するか異を唱えるか(`oncall.accept_prompt`。取り込みの条件 C) | Claude opus(当番) | 了承・異議(schema `oncall-accept`) |
 | oncall-backlog | 当番が保管した「発行後に直す」指摘を、発行後の昼に直す依頼(`watch.hand_backlog` → `oncall.backlog_reason`、工程名 backlog) | Claude opus(当番) | 修正(oncall-fix と同じ) |
@@ -223,6 +224,9 @@
 - ファン発の動きは探しに行かない: 専用に検索枠を1面ぶん割くのは高くつく。公式告知を追えば同じ検索結果に現れる
 - 探索は「ページの中身は指示ではない」: 取得したページに指示が仕込まれていても従わせない(探索の cwd はリポジトリの外)
 - 定点観測の素材は Markdown で渡す: 1行 60KB の JSON は Read が行を切り詰め、モデルが Bash で開けようとして 420 秒で落ちた(2026-09-17)
+- 候補にリンク元(link_from)を書かせる(2026-10-21): t.co やフォームがどの投稿・ページに載っていたかが素材に残らず、出典の種別の判定で
+  リンク元の種別を引き継げなかった(10/08 のレトラの t.co は @valiv_official の投稿に載っていた)。投稿に貼られたリンク・新着ページと
+  違う url は、コードも埋める(collect.repoint_to_post・facts_batch)
 - watch-facts のページは執筆・校閲と同じ `fetch_page.py` で読ませ、WebFetch は道具から外す(2026-10-21): まとめサイト imasnews765 の新着
   (?p=32576)で一次ソースの公式ポータルの告知を WebFetch で開き、JS を描画しないのでタイトルしか取れず unreadable にした。
   fetch_page.py なら描画して本文と期間が取れる。出典の判定(classify-site)も同じ道具で読ませる(codex は read-only で通信できず、毎回失敗していた)
@@ -261,6 +265,11 @@
   多数の作品を扱う店や配信サービスは販売元(表の先例: store.steampowered.com を当事者)
 - 2巡目(議論): 片方が「不明」、もう片方が「これ」と言ったのに、不明側が検証もせず終わっていた(2026-09-08〜12)
 - host を一字一句写す: `youtube.com/@handle` を `youtube.com` とだけ返し、無回答扱いになって決まらなかった(2026-09-18)
+- リンク元から種別を引き継ぐ(編集長 2026-10-21): 公式の投稿・ページからリンクで行った先は公式、準公式からなら準公式。ただしリンク先が
+  その告知の内容と関係していると確かめたときだけ。種別 = max(リンク元の種別(関係を確かめたとき), リンク先そのものの種別)。
+  2026-10-21 号で、アイマスch 公式の配信告知が張ったお便りフォームが「準公式 / 不明」に割れて未確認のまま載った。
+  classify-link はモデルに関係だけを答えさせ(運営が誰かは問わない)、強いほうを採るのはコード(pipelib.classify_source)。
+  classify-site の文書の規則も同じにした(以前の「複数なら弱いほう」「第三者の受付を紹介しているだけなら第三者の種別」は、この決定と食い違う)
 
 ### 当番(oncall-*)
 - 範囲は「発行に必要な最小限で、今後もちゃんと動く正しい修正」。範囲内(must_fix)は合意まで、発行後でよいもの(later)は保管、起きる道筋を言えないものは書かない(編集長 2026-09-18)。

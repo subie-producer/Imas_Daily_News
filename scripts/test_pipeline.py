@@ -2051,7 +2051,8 @@ def test_collect_sessions_read_with_fetch_page(tmp: Path):
         a_argv, b_argv, b_cwd = cl[0][1], cl[1][1], Path(cl[1][2])
         check("WebFetch" in a_argv[a_argv.index("--disallowedTools") + 1].split(",") if "--disallowedTools" in a_argv else False,
               f"出典の判定の claude が WebFetch でページを読める: {a_argv}")
-        check("sandbox_workspace_write.network_access=true" in b_argv and "read-only" not in b_argv
+        sandbox = b_argv[b_argv.index("-s") + 1] if "-s" in b_argv else ""
+        check("sandbox_workspace_write.network_access=true" in b_argv and sandbox == "workspace-write"
               and repo not in b_cwd.resolve().parents and b_cwd.resolve() != repo and not b_cwd.exists(),
               f"出典の判定の codex が通信できない・リポジトリの中で書ける・作業ディレクトリを残した: {b_argv} {b_cwd}")
     # 3. 校閲の指摘の修正: 出典を開くなら fetch_page.py(WebFetch は外す)

@@ -2015,6 +2015,18 @@ def test_collect_sessions_read_with_fetch_page(tmp: Path):
             cs.ask(cs.CMD_B, "依頼")
         finally:
             pipelib.prompt_file = real_pf
+        # 入口(fetch_page.py)を書けないときも同じ
+        real_wt = Path.write_text
+
+        def no_space_entry(self, *a, **k):
+            if self.name == "fetch_page.py" and "explore-classify-" in str(self):
+                raise OSError(28, "No space left on device")
+            return real_wt(self, *a, **k)
+        Path.write_text = no_space_entry
+        try:
+            cs.ask(cs.CMD_B, "依頼")
+        finally:
+            Path.write_text = real_wt
         left = leftovers() - before
     finally:
         (pipelib.ROOT, collect.subprocess.run, collect.save_raw, collect.notify, collect.fetch_rendered,

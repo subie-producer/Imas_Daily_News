@@ -649,13 +649,18 @@ def explore_workdir(key: str, entry: str = "fetch_page.py") -> Path:
     (classify_sources.ask の codex 側。2026-10-21)。
     """
     wd = Path(tempfile.mkdtemp(prefix=f"explore-{key}-"))
-    (wd / entry).parent.mkdir(parents=True, exist_ok=True)
-    (wd / entry).write_text(
-        "#!/usr/bin/env python3\n"
-        "# 本体はリポジトリ側(読み取り専用)。ここは呼び出すだけの入口\n"
-        "import os, sys\n"
-        f"os.execv(sys.executable, [sys.executable, {str(ROOT / 'scripts' / 'fetch_page.py')!r}]\n"
-        "         + sys.argv[1:])\n", encoding="utf-8")
+    try:
+        (wd / entry).parent.mkdir(parents=True, exist_ok=True)
+        (wd / entry).write_text(
+            "#!/usr/bin/env python3\n"
+            "# 本体はリポジトリ側(読み取り専用)。ここは呼び出すだけの入口\n"
+            "import os, sys\n"
+            f"os.execv(sys.executable, [sys.executable, {str(ROOT / 'scripts' / 'fetch_page.py')!r}]\n"
+            "         + sys.argv[1:])\n", encoding="utf-8")
+    except BaseException:
+        # 入口を書けない(容量不足など)ときも作業ディレクトリを残さない。呼び出し側は wd を受け取れず片付けられない(監査指摘 2026-10-21)
+        shutil.rmtree(wd, ignore_errors=True)
+        raise
     return wd
 
 

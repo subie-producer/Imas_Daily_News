@@ -881,6 +881,7 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         if not text or re.fullmatch(r"(なし|見つからない)[。\s]*", text):
             continue
         text = dedupe_posts(text)   # 公式アカウントの遡りのページの境目で重なった投稿を1つにする
+        text = with_jst_post_time(text)
         wd = explore_workdir(f"verify-{q['key']}{suffix}")
         (wd / "x-posts.md").write_text(text + "\n", encoding="utf-8")
         prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json", POSTS=wd / "posts.json",
@@ -1558,6 +1559,11 @@ def normalize(items: list[dict]) -> list[dict]:
                 v = (it.get(k) or "").strip()
                 if re.match(r"^\d{4}-\d{2}-\d{2}$", v):
                     c[k] = v
+            # X の投稿の掲載日は投稿 ID から日本時間で決める(モデルの申告は採らない)。2026-10-21号: Grok が投稿日時を GMT で書き、
+            # 10/21 0:00 JST の公式の投稿3件が published_date 10/20 の素材になって、出典 label の日付が 10/20 で書かれた
+            posted = x_status_date(url) if is_x(url) else None
+            if posted:
+                c["published_date"] = posted.isoformat()
             # 出典ページからの写し(verify が本文と照らして URL の取り違えを捕まえる)
             if isinstance(it.get("quote"), str) and it["quote"].strip():
                 c["quotes"] = [it["quote"].strip()[:200]]
@@ -1583,13 +1589,38 @@ def normalize(items: list[dict]) -> list[dict]:
 STALE_DAYS = 14  # 収集窓は48〜72時間。これを大きく超えて古い情報は鮮度切れ(2025年告知を新報扱いした事故の再発防止)
 
 
-def x_status_date(url: str) -> datetime.date | None:
-    """x.com/twitter.com の status ID(Snowflake)から投稿日を復元する(機械検証可能な鮮度情報)。"""
+def x_status_time(url: str) -> datetime.datetime | None:
+    """x.com/twitter.com の status ID(Snowflake)から投稿日時を日本時間で復元する。"""
     m = re.search(r"/status(?:es)?/(\d{15,20})", url)
     if not m:
         return None
     ms = (int(m.group(1)) >> 22) + 1288834974657  # Twitter epoch
-    return datetime.datetime.fromtimestamp(ms / 1000, tz=JST).date()
+    return datetime.datetime.fromtimestamp(ms / 1000, tz=JST)
+
+
+def x_status_date(url: str) -> datetime.date | None:
+    """x.com/twitter.com の status ID(Snowflake)から投稿日(日本時間)を復元する(機械検証可能な鮮度情報)。"""
+    t = x_status_time(url)
+    return t.date() if t else None
+
+
+# Grok の書き出しの投稿に、コードが足す日本時間の投稿日時の行(grok-verify の依頼文がこの名前で指す)
+JST_POST_TIME = "投稿日時(日本時間・投稿 ID から)"
+
+
+def with_jst_post_time(text: str) -> str:
+    """Grok の書き出しの X の投稿ごとに、投稿 ID から復元した日本時間の投稿日時の行を url の行の次に足す。
+    2026-10-21号: Grok は `投稿日時` を GMT で書く(Tue, 20 Oct 2026 15:00:03 GMT)。10/21 0:00 JST の「本日は千鶴さんの誕生日」を、
+    確かめ役が 10/20 の出来事・掲載日として素材にした。すでに足してある投稿(やり直しの書き出し)には足さない。"""
+    lines = text.split("\n")
+    out = []
+    for i, line in enumerate(lines):
+        out.append(line)
+        m = POST_URL_LINE.match(line)
+        t = x_status_time(m.group(1)) if m and is_x(m.group(1)) else None
+        if t and not (i + 1 < len(lines) and JST_POST_TIME in lines[i + 1]):
+            out.append(f"- {JST_POST_TIME}: {t.strftime('%Y-%m-%d %H:%M')}")
+    return "\n".join(out)
 
 
 def check_stale(c: dict) -> str | None:

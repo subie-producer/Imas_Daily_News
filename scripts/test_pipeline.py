@@ -3651,6 +3651,56 @@ def test_x_anonymous_post_url():
     check(cs.platform_unit(got[0]["url"]) == ("x", "ChuLo5738"), "判定の単位が付かない")
 
 
+def test_x_post_date_is_jst(tmp: Path):
+    """X の投稿の日付は投稿 ID から日本時間で決める(2026-10-21号: Grok が投稿日時を GMT で書き、10/21 0:00 JST の公式の投稿が
+    published_date 10/20・「10月20日は誕生日」の素材になって、出典 label の日付が 10/20 で書かれ校閲 R8 が2巡ブロックした)。
+    素材の published_date はコードが付け、確かめ役(Luna)へ渡す書き出しには日本時間の投稿日時の行が付く(やり直しでも1行だけ)。"""
+    import collect
+    tmp.mkdir(parents=True, exist_ok=True)
+    u = "https://x.com/imasml_theater/status/2112559475794039099"   # 2026-10-20 15:00:03 GMT = 2026-10-21 00:00 JST
+    got = collect.normalize([{"url": u, "title": "t", "brand": "million", "dedup_key": "k", "facts": ["f"], "_via": "grok",
+                              "published_date": "2026-10-20", "event_date": "2026-10-20"},
+                             {"url": "https://x.com/imas_ch/status/2112559471121912272", "title": "t", "brand": "million",
+                              "dedup_key": "k2", "facts": ["f"], "_via": "grok"},
+                             {"url": "https://example.com/news/1", "title": "t", "dedup_key": "k3", "facts": ["f"], "_via": "explore",
+                              "published_date": "2026-10-20"}])
+    check([c.get("published_date") for c in got] == ["2026-10-21", "2026-10-21", "2026-10-20"],
+          f"X の投稿の掲載日が投稿 ID の日本時間でない(X 以外は申告のまま): {[c.get('published_date') for c in got]}")
+    check(got[0].get("event_date") == "2026-10-20", "出来事の日(内容の判断)までコードが変えた")
+    # 確かめ役への書き出し: 1回目で結果を返さない → やり直しの書き出しにも日本時間の行が1行だけ
+    out = tmp / "g"
+    out.mkdir()
+    (out / "million.md").write_text(f"### 1\n- url: {u}\n- 投稿者: ミリシタ (@imasml_theater)\n- 投稿日時: Tue, 20 Oct 2026 15:00:03 GMT\n"
+                                    "- 本文: 本日は二階堂千鶴さんの誕生日です！\n", encoding="utf-8")
+    inputs = {}
+    class P:
+        pid = 0
+        returncode = 0
+        def wait(self, timeout=None): return 0
+    def fake_popen(args, cwd=None, **kw):
+        inputs[re.sub(r"^explore-|-[^-]+$", "", Path(cwd).name)] = (Path(cwd) / "x-posts.md").read_text(encoding="utf-8")
+        (Path(cwd) / "items.json").write_text("[]", encoding="utf-8")
+        (Path(cwd) / "posts.json").write_text("[]", encoding="utf-8")
+        (Path(cwd) / "deep.json").write_text("[]", encoding="utf-8")
+        return P()
+    saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw)
+    try:
+        collect.subprocess.Popen = fake_popen
+        collect.notify = lambda job, msg, ok=True, require=False: True
+        collect.prompt_file = lambda date, name, prompt, base=None: "p"
+        collect.save_raw = lambda *a, **kw: None
+        collect.verify_grok_faces([{"key": "million", "brand": "million", "topic": "t"}], out)
+    finally:
+        collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw = saved
+    line = "- 投稿日時(日本時間・投稿 ID から): 2026-10-21 00:00"
+    check(sorted(inputs) == ["verify-million", "verify-million-again"]
+          and all(t.count(line) == 1 and t.count("投稿 ID から") == 1 for t in inputs.values()),
+          f"確かめ役への書き出しに日本時間の投稿日時が1行だけ付かない: {inputs}")
+    check(collect.JST_POST_TIME in collect.render_prompt("grok-verify", INPUT="i", OUT="o", DEEP="d", POSTS="p", BRAND="b",
+                                                                   TOPIC="t", TODAY="2026-10-21", RULES="", ITEM=""),
+          "grok-verify の依頼文が、コードの足す行の名前で日付を指していない")
+
+
 def test_normalize_fixes_misnamed_brand():
     """collector の面に候補のどこにも根拠が無く、見出し・主題キーが別の作品を1つだけ名指しするときは、名指しの作品の面へ直す
     (2026-10-18号: トレンドの探索が vα-liv の告知に gaku を付け、学マス面と vα-liv 面に同じ話題の記事が立ち、校閲で2本を落とした)。
@@ -10790,6 +10840,7 @@ def main() -> int:
     test_clean_url_and_table()
     test_x_anonymous_post_url()
     test_normalize_fixes_misnamed_brand()
+    test_x_post_date_is_jst(tmp / "xjst")
     test_x_anonymous_post_in_posts(tmp / "xap")
     test_collect_classify_gate(tmp / "ccg")
     test_no_prompt_in_argv()

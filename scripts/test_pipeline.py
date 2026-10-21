@@ -9810,7 +9810,8 @@ def test_link_key_and_table():
         # 返すキーは、読み直しても同じキー(判定表に書いて引ける)
         check(lk("https://[broken]/event") is None, "読めない URL で例外・キー")
         # 判定表の YAML で文字列にならないキー(数・真偽値・null)は返さない。表の検査も文字列でないキーを止める
-        check(all(lk(u) is None for u in ("https://123", "https://1.2", "https://yes", "https://null")), "YAML で文字列にならないキーを返した")
+        check(all(lk(u) is None for u in ("https://123", "https://1.2", "https://yes", "https://null", "https://1.e-3", "https://1.0e-3",
+                                          "https://12.3e-4", "https://1.e-03", "https://1.e-3?utm_source=x")), "YAML で文字列にならないキーを返した")
         # r13: X の機能のページ(検索)は検索語が違えば別の先。長すぎるキーは判定表に書けない
         check(lk("https://x.com/search?q=event-A") is None and lk("https://x.com/search") is None and lk("https://x.com/imas_ch") == "x.com/imas_ch",
               "X の検索のページにキーを付けた")

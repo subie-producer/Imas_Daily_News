@@ -1550,6 +1550,7 @@ LINK_NOISE_QUERY = re.compile(r"^(utm_.*|fbclid|gclid|igsh|igshid|ref_src)$")
 
 
 LINK_KEY_RE = re.compile(r"[A-Za-z0-9._~/?=&%+@!$*,;()'-]+")     # 判定表 link_types に書けるキーの文字
+_YAML_RESOLVER = None     # (YAML のスカラーの型を決める Resolver, ScalarNode)。link_key が毎回作り直さない
 
 
 def link_key(url) -> str | None:
@@ -1561,7 +1562,15 @@ def link_key(url) -> str | None:
     try:
         k = _link_key(url)
         # 1000 字を超えるキーは判定表の YAML のキーに書けない(1024 字まで)ので対象外(監査指摘 2026-10-21)
-        return k if k and len(k) <= 1000 and LINK_KEY_RE.fullmatch(k) and _link_key("https://" + k) == k else None
+        if not (k and len(k) <= 1000 and LINK_KEY_RE.fullmatch(k) and _link_key("https://" + k) == k):
+            return None
+        # 判定表の YAML が文字列として同じ値に読むキーだけ(`1.e-3`・`.nan` は数として読まれる。監査指摘 2026-10-21)
+        global _YAML_RESOLVER
+        if _YAML_RESOLVER is None:
+            import yaml
+            _YAML_RESOLVER = (yaml.resolver.Resolver(), yaml.ScalarNode)
+        tag = _YAML_RESOLVER[0].resolve(_YAML_RESOLVER[1], k, (True, False))    # 引用符の無いスカラーの型(YAML の読み方)
+        return k if tag == "tag:yaml.org,2002:str" else None
     except ValueError:
         return None
 

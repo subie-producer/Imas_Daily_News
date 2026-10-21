@@ -1158,6 +1158,9 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         # 未処理として確かめ直し(-again)へ回り、どの投稿にも結び付かない崩れた候補は、確かめ直せないのでここで名指しする
         items += repoint_to_post([shape_item(x) for x in got or [] if candidate_usable(x)], text)
         tied, stray = broken_items(text, got)
+        # 確かめ直し(-again)では、1回目に崩れた候補のために残した投稿も崩れの喪失として数える(確かめ直しの答えが空でも、
+        # 1回目の崩れた候補の中身は戻っていない。Sol 監査 r2)
+        tied |= ledger.setdefault("tied", {}).pop((q["key"], suffix.removesuffix("-again")), set()) if final else set()
         ledger.setdefault("stray", []).extend((q["key"], u) for u in stray)
         left_keys = {post_key(post_url(b)) for b in left}
         ledger["settled"] |= {k for k in map(post_key, map(post_url, post_blocks(text))) if k and k not in left_keys}
@@ -1165,6 +1168,7 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
             # 残った投稿だけを <key><suffix>-again.md に書き出し、もう1回だけ確かめさせる(下でまとめて)
             (outdir / f"{q['key']}{suffix}-again.md").write_text("\n\n".join(left) + "\n", encoding="utf-8")
             again.append(q)
+            ledger.setdefault("tied", {})[(q["key"], suffix)] = tied & left_keys
         elif left:
             # 2回目でも残った投稿は、申告で終えない(当番のなぜなぜへ)。どの投稿を失うかを最後の段のあとで名指しする
             why = f"{'候補の一覧が読めない' if got is None else '投稿ごとの結果に無い・読めなかった'}、{ended}"
@@ -1204,8 +1208,9 @@ def lost_posts_ledger() -> dict:
     """X の投稿の確かめの記録(全段で共有)。lost: 面 → [(2回確かめても残った投稿の塊, 理由)] / settled: どこかの段で済んだ投稿の鍵(post_key)
     / blocked: 確かめ役の CLI が認証切れ・利用上限で答えなかった面(投稿は読み直しの列 GROK_PENDING へ)
     / broken: 形の崩れた候補を候補にしないまま確かめ直しでも直らなかった投稿の鍵(ほかの段で済んでいても、その中身は失っている)
-    / stray: [(面, 候補の url)] どの投稿にも結び付かない崩れた候補(確かめ直せない。投稿ではないので読み直しの列にも入れない)。"""
-    return {"lost": {}, "settled": set(), "blocked": set(), "broken": set(), "stray": []}
+    / stray: [(面, 候補の url)] どの投稿にも結び付かない崩れた候補(確かめ直せない。投稿ではないので読み直しの列にも入れない)
+    / tied: (面, 段) → 崩れた候補のために確かめ直しへ回した投稿の鍵(確かめ直しの段へ引き継ぐ)。"""
+    return {"lost": {}, "settled": set(), "blocked": set(), "broken": set(), "stray": [], "tied": {}}
 
 
 # 確かめ役(Luna)が認証切れ・利用上限で答えなかった面の X の投稿(読み直しの列。Git 管理外)。Grok の調べは週の枠を使い、回す時刻も

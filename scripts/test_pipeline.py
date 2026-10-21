@@ -1302,7 +1302,12 @@ def test_grok_verify_keeps_what_it_counts(tmp: Path):
             text = (wd / "x-posts.md").read_text(encoding="utf-8")
             passes.append([collect.post_url(b) for b in collect.post_blocks(text)])
             # 候補は (元の投稿, 書く要素) の組。要素は dict でないこともある(崩れた答え)
-            its = [(p, x) for p, x in (again if "-again" in wd.name else first) if any(p == collect.post_url(b) for b in collect.post_blocks(text))]
+            answer = again if "-again" in wd.name else first
+            if answer is None:      # 何も答えない(候補も投稿ごとの結果も空)
+                for n in ("items.json", "posts.json", "deep.json"):
+                    (wd / n).write_text("[]", encoding="utf-8")
+                return VP()
+            its = [(p, x) for p, x in answer if any(p == collect.post_url(b) for b in collect.post_blocks(text))]
             (wd / "items.json").write_text(json.dumps([x for _, x in its], ensure_ascii=False), encoding="utf-8")
             res = {}
             for p, x in its:
@@ -1365,6 +1370,12 @@ def test_grok_verify_keeps_what_it_counts(tmp: Path):
     items, notes, passes = run([broken_deep], [broken_deep], "cross", ledger=ledger, suffix="-deep", report=True)
     check(items == [] and len(notes) == 1 and p9 in notes[0] and "候補の形が崩れていた" in notes[0],
           f"別の段で済んだ投稿の、深掘りで崩れた候補の喪失を名指ししない: {items} / {notes}")
+    # 確かめ直しが何も答えなくても(候補も投稿ごとの結果も空)、1回目の崩れた候補の喪失として名指しする(Sol 監査 r2)
+    ledger = collect.lost_posts_ledger()
+    run([(p9, {**base, "url": p9})], [], "cross3", ledger=ledger)
+    items, notes, passes = run([broken_deep], None, "cross3", ledger=ledger, suffix="-deep", report=True)
+    check(items == [] and len(passes) == 2 and len(notes) == 1 and p9 in notes[0] and "候補の形が崩れていた" in notes[0],
+          f"確かめ直しが空のとき、深掘りで崩れた候補の喪失を名指ししない: {items} / {passes} / {notes}")
     # 深掘りの答えが「事実なし」なら、通常の段で済んだ投稿は失っていない(従来どおり)
     ledger = collect.lost_posts_ledger()
     run([(p9, {**base, "url": p9})], [], "cross2", ledger=ledger)

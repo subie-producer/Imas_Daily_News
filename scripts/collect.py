@@ -42,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, decode_html, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
-                     RenderFailed, render_page, candidate_misplaced, merge_candidate_facts,
+                     RenderFailed, render_page, candidate_misplaced, maintenance_redirect, merge_candidate_facts,
                      set_quiet, unbacked_facts,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
@@ -2049,6 +2049,14 @@ def verify(cands: list[dict]) -> dict:
                     ok = res.status < 400
                     body = res.read(400_000) if ok else b""
                     cs = res.headers.get_content_charset()
+                    final = res.geturl()
+                # メンテナンス画面へ転送されたら、案内は出典の本文ではない。写しが無いのは URL の取り違えではなく、今は確かめられないだけ
+                # (failed にすると、メンテナンスのあいだに集めた公式の候補を使えなくする)
+                if ok and maintenance_redirect(c["url"], final):
+                    c["verify"] = "unconfirmed"
+                    c["verify_note"] = f"出典がメンテナンス中({final} へ転送)で、facts を本文で確かめられない"[:300]
+                    counts["unconfirmed"] += 1
+                    continue
                 if ok:
                     text = html_to_text(body, cs)
                     # 描画の失敗は素の本文で続けるが、原因は判定の記録に残す。捨てると、描画の時間切れで写しが見えなかったのを

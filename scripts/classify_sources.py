@@ -771,7 +771,9 @@ def build_x_prompt(accts: dict[str, tuple[str, list[str]]]) -> str:
 
 
 # ページは依頼文どおり fetch_page.py で読ませる。WebFetch は JS を描画せず、公式ポータルが見出しだけに見える(2026-10-21)
-CMD_A = ["claude", "-p", "--model", COLLECT_MODEL, "--dangerously-skip-permissions", "--disallowedTools", "WebFetch"]
+# 依頼文は ask が末尾に足す。--disallowedTools は値を幾つでも取るので、末尾に置くと依頼文まで道具の名前として呑み、
+# 依頼文の無い起動になって毎回 exit 1 で答えなかった(2026-10-22: claude 側の判定が全部「答えが読めない」)。値を1つ取る旗の後ろに置かない
+CMD_A = ["claude", "-p", "--disallowedTools", "WebFetch", "--model", COLLECT_MODEL, "--dangerously-skip-permissions"]
 CMD_B = ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
          "-c", "sandbox_workspace_write.network_access=true"]
 

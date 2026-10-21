@@ -47,7 +47,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
-                     X_ANON_POST, x_post_author, CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_check, grok_session_reasons,
+                     X_ANON_POST, x_post_author, CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_blocked_reason, cli_check, grok_session_reasons,
                      scratch_dir)
 from storylink import url_key
 
@@ -594,13 +594,17 @@ def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> set[str]:
             save_raw(edition_date(), f"grok-{pp.stem}", "", err or "", pr.returncode, files={out.name: read_for_raw(out)})
             # 認証切れ・利用上限(Grok は API に拒まれても終了コード 0 で、理由はセッション記録にだけ残る)は、面の調べの失敗に
             # 数えない(やり直さない・異常にしない。投稿は済み)。印を errs に残し、呼び側が grok_blocked で見分ける
-            answered = not timed_out and pr.returncode == 0 and bool(read_written(out).strip())
+            # 書き出しがあっても、この試行のセッション記録は必ず読む(途中まで書いてから利用上限で止まり、終了 0 で終わることがある。
+            # 依頼文は見つけた投稿を先に書かせる。監査指摘 r8)。止まっていれば答えたことにしない
+            reasons = "" if timed_out else grok_session_reasons(ROOT, wave_started, str(out))
+            stopped = not timed_out and cli_blocked_reason("grok", err or "", reasons) is not None
+            answered = not timed_out and pr.returncode == 0 and bool(read_written(out).strip()) and not stopped
             blk = cli_check("grok", "collect", f"{now_jst():%H:%M} の収集 X の調べ {pp.stem.removeprefix('prompt-')} 面",
-                            None if timed_out else pr.returncode, err or "",
-                            "" if answered else grok_session_reasons(ROOT, wave_started, str(out)), answered=answered)
+                            None if timed_out else pr.returncode, err or "", reasons, answered=answered)
             if blk:
                 errs[q["key"]] = f"{GROK_BLOCKED_MARK}: {blk.get('detail', '')}"
-            if timed_out or pr.returncode != 0:
+            if timed_out or pr.returncode != 0 or blk:
+                # 止まった試行の書き出しも途中のもの(退けて、keep_blocked_partials が読み直しの列へ回す)
                 failed.add(q["key"])
                 # 時間切れ・異常終了の回が書いた書き出し(一部の投稿だけ・途中の「なし」)は答えにしない。試みごとに別の
                 # <名前>.partial-<n>.md に退けて、面の書き出しが無い状態にする(基本の調べは「書けなかった面」としてやり直し・異常へ、

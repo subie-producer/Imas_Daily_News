@@ -11610,6 +11610,53 @@ def test_cli_blocked_r8(tmp: Path):
           f"組み直しの CLI の停止を異常終了・失敗の通知にした(または控えへ戻さない): exit {code} 戻し {len(restores)} {bad}")
 
 
+def test_cli_blocked_r9(tmp: Path):
+    """Sol 監査 r8 の指摘の再発防止(偽の grok・codex を本物の子プロセスとして run_explores を通す):
+    (1) Grok が投稿を途中まで書いてから利用上限で止まり、終了 0 で終わっても、この試行のセッション記録から止まったと見分け、
+        異常(全面0件)にせず、書けた投稿は確かめに回す
+    (2) Grok の無料枠の上限の実物の文言(`You’ve reached your free Grok Build usage limit`)も利用上限と見分ける"""
+    from unittest.mock import patch
+    import collect
+    free = ("You’ve reached your free Grok Build usage limit for now. Get SuperGrok for much higher limits, or try again later: "
+            "https://grok.com/supergrok?referrer=grok-build")
+    for name, label, reason, partial in (("partial", "途中まで書いて終了 0", GROK_LIMIT, True), ("free", "無料枠の上限", free, False)):
+        root = tmp / name
+        repo, home, bindir = root / "repo", root / "home", root / "bin"
+        repo.mkdir(parents=True)
+        bindir.mkdir()
+        shutil.copy(Path(__file__).resolve().parent.parent / "source_types.yml", repo / "source_types.yml")
+        post = "### 1\n- url: https://x.com/a/status/777\n- 本文: 新しい公演告知\n"
+        (bindir / "grok").write_text(
+            f"#!{sys.executable}\nimport os, pathlib, sys, json, urllib.parse, time\n"
+            "pf = pathlib.Path(sys.argv[sys.argv.index('--prompt-file') + 1])\nout = pf.with_name(pf.name.removeprefix('prompt-'))\n"
+            f"if {partial!r}:\n    out.write_text({post!r})\n"
+            "d = pathlib.Path.home() / '.grok' / 'sessions' / urllib.parse.quote(os.getcwd(), safe='') / str(time.time_ns())\n"
+            "d.mkdir(parents=True)\n(d / 'chat_history.jsonl').write_text(json.dumps({'content': pf.read_text()}))\n"
+            f"(d / 'updates.jsonl').write_text(json.dumps({{'agent_result': 'error: ' + {reason!r}}}, ensure_ascii=False, separators=(',', ':')))\n",
+            encoding="utf-8")
+        seen = root / "verify-input.txt"
+        (bindir / "codex").write_text(          # 確かめ役は動き、投稿ごとに「事実なし」と答える
+            f"#!{sys.executable}\nimport json, re\nfrom pathlib import Path\ntext = Path('x-posts.md').read_text()\n"
+            f"Path({str(seen)!r}).open('a').write(text)\n"
+            "for n in ('items.json', 'deep.json'):\n    Path(n).write_text('[]')\n"
+            "Path('posts.json').write_text(json.dumps([{'url': u, 'status': 'none', 'item': ''} for u in re.findall(r'- url: (\\S+)', text)]))\n",
+            encoding="utf-8")
+        for n in ("grok", "codex"):
+            (bindir / n).chmod(0o755)
+        notes = []
+        with cli_posts() as cp, patch.dict(os.environ, HOME=str(home), PATH=f"{bindir}{os.pathsep}{os.environ['PATH']}"), \
+                patch.object(collect, "ROOT", repo), patch.object(pipelib, "ROOT", repo), \
+                patch.object(collect, "build_prompts", lambda: [{"key": "cg", "brand": "cg", "topic": "t", "accounts": []}]), \
+                patch.object(collect, "grok_search_counts", lambda *a: {}), \
+                patch.object(collect, "notify", lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True):
+            _, per = collect.run_explores(True, False)
+            posts = cp.blocked_posts()
+        verified = collect.read_written(seen)
+        check(per.get("grok_blocked:cg") == 1 and len(posts) == 1 and not [m for m, ok in notes if not ok]
+              and (not partial or "status/777" in verified),
+              f"{label}: Grok の利用上限を見分けない・異常にした・書けた投稿を確かめない: {per} {posts} {notes} {verified!r}")
+
+
 def test_scratch_not_tmp(tmp: Path):
     """本番のコードが作る使い捨てのもの(当番の監査の作業ツリー・答えのファイル・Sol の一時ファイル、探索の作業ディレクトリ)は、
     /tmp(3.8GB の tmpfs)でなく置き場(IMAS_SCRATCH、既定 ~/.cache/imas-news)に作り、終わったら消す。消し損ねは次に作るとき
@@ -11695,6 +11742,7 @@ def main() -> int:
     test_cli_blocked_r6(tmp / "cb6")
     test_cli_blocked_r7(tmp / "cb7")
     test_cli_blocked_r8(tmp / "cb8")
+    test_cli_blocked_r9(tmp / "cb9")
     test_scratch_not_tmp(tmp / "snt")
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")

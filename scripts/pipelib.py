@@ -604,7 +604,7 @@ CLI_BLOCK_RULES = (
         r"|Invalid API key|access token could not be refreshed|authentication session could not be refreshed"
         r"|log out and sign in again|re-?run `?codex login|\b401 Unauthorized|Auth retry budget exhausted", re.I)),
     ("limit", re.compile(
-        r"\bhit (?:your|the) [\w'’ -]{0,40}limit|usage limit reached|You're out of credits|out of credits\."
+        r"\bhit (?:your|the) [\w'’ -]{0,40}limit|reached your [\w'’ -]{0,40}limit|usage limit reached|You're out of credits|out of credits\."
         r"|credit balance (?:is )?too low|rate_limit_error|429 Too Many Requests|API Error: 429"
         r"|monthly spend limit|team's shared budget|credit limit for your plan", re.I)),
 )
@@ -796,7 +796,9 @@ def grok_session_reasons(cwd: Path, since_ts: float, needle: str = "") -> str:
         return ""
     for d in dirs:
         try:
-            if needle and needle not in (d / "chat_history.jsonl").read_text(encoding="utf-8", errors="replace"):
+            ch = (d / "chat_history.jsonl").read_text(encoding="utf-8", errors="replace") if needle else ""
+            # 記録の JSON が ASCII 以外や / を escape して書いていても見つける
+            if needle and not any(n in ch for n in (needle, json.dumps(needle)[1:-1], json.dumps(needle)[1:-1].replace("/", "\\/"))):
                 continue
             up = (d / "updates.jsonl").read_text(encoding="utf-8", errors="replace")
         except OSError:

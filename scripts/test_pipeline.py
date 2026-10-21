@@ -9811,6 +9811,10 @@ def test_link_key_and_table():
         check(lk("https://[broken]/event") is None, "読めない URL で例外・キー")
         # 判定表の YAML で文字列にならないキー(数・真偽値・null)は返さない。表の検査も文字列でないキーを止める
         check(all(lk(u) is None for u in ("https://123", "https://1.2", "https://yes", "https://null")), "YAML で文字列にならないキーを返した")
+        # r13: X の機能のページ(検索)は検索語が違えば別の先。長すぎるキーは判定表に書けない
+        check(lk("https://x.com/search?q=event-A") is None and lk("https://x.com/search") is None and lk("https://x.com/imas_ch") == "x.com/imas_ch",
+              "X の検索のページにキーを付けた")
+        check(lk("https://d.example/e?token=" + "a" * 1100) is None, "判定表に書けない長さのキーを返した")
         try:
             pipelib._check_table({"link_types": {123: "公式"}}, "t")
             check(False, "文字列でない link_types のキーが表の検査を通った")
@@ -9950,7 +9954,9 @@ def test_link_inheritance(tmp: Path):
               # r11: 別のスキーム・大文字のスキームの URL の中、和文でない文字に続く URL、途切れた URL(例外で止めない)
               and cs.fact_urls("ftp://a.example/:https://d.example/e HTTPS://a.example/:https://d.example/e éhttps://d.example/e "
                                "https:// http:// https://） https://あ") == []
-              and cs.fact_urls("こちらhttps://d.example/e") == ["https://d.example/e"],
+              and cs.fact_urls("こちらhttps://d.example/e") == ["https://d.example/e"]
+              # r13: 別の URL・スキームに包まれた https(前置きに ASCII の英数・記号がある)は入れない
+              and cs.fact_urls("blob:https://d.example/1 data:text/plain,参照：https://d.example/2 //a.example/:https://d.example/3") == [],
               f"facts の URL を削った別の URL にリンク元を付けた: {cs.link_sources('https://shop.example/evt?id=A')}")
         sys.argv = ["classify_sources.py", "--date", "2026-10-21", "--posts-only", "--apply"]
         code = cs.main()

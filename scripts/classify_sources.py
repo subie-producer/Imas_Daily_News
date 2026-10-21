@@ -325,7 +325,8 @@ def fact_urls(text: str) -> list[str]:
             continue
         m = re.search(r"https?://", word)
         i = m.start() if m else -1
-        if i < 0 or (i > 0 and not (word[i - 1] in URL_START_OK or re.match(r"[぀-ヿ㐀-鿿！-｠]", word[i - 1]))):
+        # 前置きは全部が和文(かな・漢字・全角)か開き括弧・コロン(`blob:`・`data:…,`・`//…/:` など別の URL に包まれたものを入れない)
+        if i < 0 or not all(ch in URL_START_OK or re.match(r"[぀-ヿ㐀-鿿！-｠]", ch) for ch in word[:i]):
             continue
         m = re.match(r"https?://[A-Za-z0-9._~/?#=&%+@!$*,;:()'\[\]-]+", word[i:])
         if not m:

@@ -1560,7 +1560,8 @@ def link_key(url) -> str | None:
     # 読めない URL(`https://[broken]/` など。urlparse が ValueError)は None。過去の素材の facts にあっても索引を止めない
     try:
         k = _link_key(url)
-        return k if k and LINK_KEY_RE.fullmatch(k) and _link_key("https://" + k) == k else None
+        # 1000 字を超えるキーは判定表の YAML のキーに書けない(1024 字まで)ので対象外(監査指摘 2026-10-21)
+        return k if k and len(k) <= 1000 and LINK_KEY_RE.fullmatch(k) and _link_key("https://" + k) == k else None
     except ValueError:
         return None
 
@@ -1603,7 +1604,11 @@ def _link_key(url) -> str | None:
                seg[3] if seg[:3] == ["i", "web", "status"] and len(seg) >= 4 else "")
         if sid.isdigit():
             return f"x.com/i/status/{sid}"
-        return f"x.com/{seg[0].lower()}" if len(seg) == 1 else None
+        # アカウントのページはクエリの無い `x.com/<ハンドル>` だけ(`search?q=…` などの機能のページは対象外。監査指摘 2026-10-21)
+        ok = (len(seg) == 1 and not parts and re.fullmatch(r"[A-Za-z0-9_]{1,15}", seg[0])
+              and seg[0].lower() not in ("search", "hashtag", "home", "explore", "i", "intent", "share", "settings",
+                                         "notifications", "messages", "login", "signup", "compose", "tos", "privacy"))
+        return f"x.com/{seg[0].lower()}" if ok else None
     yt = host.removeprefix("m.")
     vid = ""
     if yt == "youtube.com":

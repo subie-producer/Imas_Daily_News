@@ -2811,6 +2811,120 @@ def test_oncall_apply_integrate():
           f"複数行の risk の重複除去: {fix4}")
 
 
+def test_maintenance_page_is_not_read(tmp: Path):
+    """メンテナンス画面へ転送された出典は、本文を読めたことにしない(2026-10-22号: 公式ポータルが告知の URL を /mainte/index.html へ
+    転送していたあいだ、fetch_page.py が案内を本文として返し、執筆は収集時に確かめた素材の facts を「出典で確認できない」として7本を見送り、
+    校閲は公式の出典を「別の話題のページ」として2本をブロックした)。収集の裏取りも、写しが無いのを URL の取り違え(failed)にしない"""
+    import contextlib, io
+    import collect
+    import fetch_page
+    tmp.mkdir(parents=True, exist_ok=True)
+    news, mainte = "https://idolmaster-official.jp/news/01_20037", "https://idolmaster-official.jp/mainte/index.html"
+    check(pipelib.maintenance_redirect(news, mainte) and not pipelib.maintenance_redirect(news, news)
+          and not pipelib.maintenance_redirect(news, None) and not pipelib.maintenance_redirect(news, news + ".html")
+          and not pipelib.maintenance_redirect(mainte, mainte + "?x=1")
+          and not pipelib.maintenance_redirect("https://a.example/maintenance-info", "https://a.example/maintenance-info/"),
+          "メンテナンス画面への転送の見分け")
+    page = "<html><body><p>" + "システムメンテナンスのお知らせ。メンテナンス日時: 未定。" * 20 + "</p></body></html>"
+
+    class U:
+        status = 200
+        headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
+        def geturl(self): return mainte
+        def read(self, n=None): return page.encode("utf-8")
+        def __enter__(self): return self
+        def __exit__(self, *a): return False
+    rec = tmp / "rec.jsonl"
+    saved = (sys.argv, fetch_page.urllib.request.urlopen, fetch_page.needs_render, os.environ.get(pipelib.FETCH_RECORD_ENV))
+    out = io.StringIO()
+    try:
+        os.environ[pipelib.FETCH_RECORD_ENV] = str(rec)
+        fetch_page.urllib.request.urlopen = lambda req, timeout=25: U()
+        fetch_page.needs_render = lambda u, t: False
+        sys.argv = ["fetch_page.py", news]
+        with contextlib.redirect_stdout(out):
+            rc = fetch_page.main()
+    finally:
+        sys.argv, fetch_page.urllib.request.urlopen, fetch_page.needs_render, env = saved
+        if env is None:
+            os.environ.pop(pipelib.FETCH_RECORD_ENV, None)
+        else:
+            os.environ[pipelib.FETCH_RECORD_ENV] = env
+    check(rc == 1 and out.getvalue().startswith("FETCH_FAILED: メンテナンス中") and "システムメンテナンスのお知らせ" not in out.getvalue(),
+          f"メンテナンス画面を本文として返した: {rc} {out.getvalue()[:120]!r}")
+    check(not rec.exists(), "メンテナンス画面へ転送されたページを、本文を読めたページとして記録した")
+    # 収集の裏取り: 写しはメンテナンスの案内に無いが、URL の取り違えではない。failed にせず、確かめられなかったことを残す
+    saved_c = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=15: U()
+        collect.fetch_rendered = lambda url, **k: page
+        collect.classify_source = lambda u: "公式"
+        cv = collect.normalize([{"url": news, "title": "お便り募集", "facts": ["募集期間: 2026年10月18日～10月25日"],
+                                 "quotes": ["お便りテーマは「お悩み相談」と「ふつおた」です"], "_via": "explore"}])
+        counts = collect.verify(cv)
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved_c
+    check(cv[0].get("verify") == "unconfirmed" and "メンテナンス" in (cv[0].get("verify_note") or "") and counts["unconfirmed"] == 1,
+          f"メンテナンス中の出典の候補を URL の取り違えとして使えなくした: {cv[0].get('verify')} {cv[0].get('verify_note')}")
+    # 依頼文: 執筆・書き直し・校閲とも、メンテナンス中の url は読めないだけで、confirmed の素材の facts を使う・照合する
+    for name in ("write-article", "revise-article", "review-article"):
+        text = (Path(compose.__file__).resolve().parent.parent / "prompts" / f"{name}.md").read_text(encoding="utf-8")
+        check("FETCH_FAILED: メンテナンス中" in text and "confirmed" in text, f"{name} にメンテナンス中の url の扱いが無い")
+
+
+def test_revise_carries_verified_facts(tmp: Path):
+    """書き直しが前の稿の verified_facts(N)を指して new_facts を空にしても、コードが同じ id・text・url で写して採る
+    (2026-10-22号: 公式の出典を足して R4・R5 に応じた三越おせち・佐久間まゆの稿が「無い事実 id: N1…」で元の稿のまま戻され、校閲ブロックで落ちた)"""
+    tmp.mkdir(parents=True, exist_ok=True)
+    _, fb = renderlib.materials_with_ids(MATS)
+    art = {"slug": "x", "brand": "million", "candidate_ids": ["c1"], "rank": "small"}
+    p = tmp / "2026-10-22-x.md"
+    shop = "https://shop.example/osechi"
+    nf = {"id": "N1", "text": "販売期間は10月21日から11月17日まで", "url": shop}
+    old = ("---\n" + compose.yaml_dump_keeping_strings({
+        "title": "t", "lede": "l", "tags": ["a", "b"], "event_date": "2026-09-13", "verified_facts": [nf],
+        "sources": [{"url": shop, "label": "店", "type": "当事者"}]}) + "---\n販売は11月17日まで。 <!-- N1 -->\n")
+    p.write_text(old, encoding="utf-8")
+    iss = [{"issue_id": "I1", "rule_id": "R5", "repair": "add_source", "quote": "販売は11月17日まで"}]
+    ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "販売は11月17日まで。", "fact_ids": ["N1", "F1"]}],
+               sources=[{"url": shop, "label": "店"}, {"url": "https://a.example/1", "label": "公式"}], new_facts=[])
+    outcome, msg = compose.revise_apply("2026-10-22", art, p, ans, fb, MATS, iss)
+    vf = (compose.parse_front_matter(p) or {}).get("verified_facts") or []
+    check(outcome == "fixed" and vf == [nf], f"前の稿の N を写さず、指摘に応じた稿を戻した: {outcome} {msg} {vf}")
+    # 書き手が同じ id を new_facts に書いたら、そちらを採る(写して重ねない)
+    p.write_text(old, encoding="utf-8")
+    mine = dict(nf, text="販売期間は10月21日10時から11月17日23時59分まで")
+    outcome, msg = compose.revise_apply("2026-10-22", art, p, dict(ans, new_facts=[mine]), fb, MATS, iss)
+    vf = (compose.parse_front_matter(p) or {}).get("verified_facts") or []
+    check(outcome == "fixed" and vf == [mine], f"書き手の new_facts より前の稿を採った・重ねた: {outcome} {msg} {vf}")
+    # 前の稿にも無い N は従来どおり「無い事実 id」で戻す
+    p.write_text(old, encoding="utf-8")
+    bad = dict(ans, blocks=[{"markdown": "販売は11月17日まで。", "fact_ids": ["N2"]}])
+    outcome, msg = compose.revise_apply("2026-10-22", art, p, bad, fb, MATS, iss)
+    check(outcome == "kept" and "無い事実 id" in msg and p.read_text(encoding="utf-8") == old, f"どの稿にも無い N を通した: {outcome} {msg}")
+
+
+def test_classify_prompt_not_swallowed():
+    """出典の判定の claude の起動で、末尾に足す依頼文が値を幾つでも取る旗(--disallowedTools 等)に呑まれない
+    (2026-10-22: 「Permission deny rule "…依頼文…" matches no known tool」「Input must be provided」で毎回 exit 1、claude 側の判定が全部無回答)"""
+    import classify_sources as cs
+    variadic = {"--disallowedTools", "--disallowed-tools", "--tools", "--add-dir", "--mcp-config", "--betas", "--plugin-dir",
+                "--allowed-tools", "--allowedTools"}
+    takes_one = {"--model", "--max-budget-usd", "--json-schema", "--output-format", "--permission-mode", "--fallback-model"}
+    argv = cs.CMD_A + ["依頼文"]
+    positional, i, eating = [], 2, False
+    while i < len(argv):
+        a = argv[i]
+        if a.startswith("--"):
+            eating = a.split("=", 1)[0] in variadic and "=" not in a
+            i += 2 if (a in takes_one) else 1
+            continue
+        if not eating:
+            positional.append(a)
+        i += 1
+    check(positional == ["依頼文"], f"判定の依頼文が旗の値に呑まれる: {cs.CMD_A}")
+
+
 def test_revise_apply_decline(tmp: Path):
     """書き直しの decline は理由付きだけが記事を消す。理由なしは元の稿を残す(監査指摘 R21-P1-2)。"""
     tmp.mkdir(parents=True, exist_ok=True)
@@ -4529,6 +4643,7 @@ def test_fetch_page_renders_whitespace_only_page():
     import collect
     class U:
         status = 200
+        def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
         def read(self, n=None): return ("<p>" + nav + "</p>").encode("utf-8")
         def __enter__(self): return self
@@ -4807,6 +4922,7 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
     # 裏取り: 描画できずに写しが見えなかった候補は、描画の失敗を記録に残す(URL の取り違えとだけ書かない)
     class Res:
         status = 200
+        def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": staticmethod(lambda: "utf-8")})()
         def read(self, n=-1):
             return menu.encode()
@@ -6230,6 +6346,7 @@ def test_empty_answer_is_not_done(tmp: Path):
     saved = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.ROOT)
     class R:
         status = 200
+        def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
         def read(self, n=None): return ("<p>" + page + "</p>" + "あ" * 500).encode("utf-8")
         def __enter__(self): return self
@@ -6281,6 +6398,7 @@ def test_accept_only_normal_and_schema(tmp: Path):
     page = "<p>" + "シャイニーカラーズの公演グッズの事後通販が10月10日から始まります。" + "あ" * 500 + "</p>"
     class R:
         status = 200
+        def geturl(self): return ""
         headers = type("H", (), {"get_content_charset": lambda self: "utf-8"})()
         def read(self, n=None): return page.encode("utf-8")
         def __enter__(self): return self
@@ -14388,6 +14506,9 @@ def main() -> int:
     test_compose_carry_kept_paper()
     test_compose_recover(tmp / "recover")
     test_revise_apply_decline(tmp / "ra")
+    test_maintenance_page_is_not_read(tmp / "mpr")
+    test_revise_carries_verified_facts(tmp / "rcv")
+    test_classify_prompt_not_swallowed()
     test_notify_long()
     test_oncall_state(tmp / "st")
     test_oncall_restore_cleans_untracked()

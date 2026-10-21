@@ -11,13 +11,14 @@
 - `drop_article`: 記事として成立しないなら、status を decline にして decline_code と decline_detail を書く
 - ページは fetch_page.py で読む。Web 検索はページを探すのに使い、検索結果や fetch_page.py 以外の手段で読んだ内容は根拠にしない。
   素材と現在の記事の外のページで fetch_page.py で本文を取れなかったものは、new_facts・sources に書かない
+- `FETCH_FAILED: メンテナンス中` の素材の url は、今は読めないだけ。素材の verify が `confirmed` なら、facts をそのまま使い、sources に残す
 - 指摘に無い箇所(見出し・他の段落・出典)は変えない。ただし指摘に応じるのに要る変更(区分・並びの誤りを直す組み直し、同じ誤りが別の段落にもある 等)はしてよい
 - 対応した指摘の issue_id を addressed_issue_ids に列挙する
 
 ## 2. 出力の注意
 - 現在の記事の段落末にある `<!-- F1 F3 -->` は根拠 id の控え。markdown には含めず、fact_ids に書く
-- 現在の記事の frontmatter にある `verified_facts`(N1, N2 …)は、この稿でも根拠に使うなら **new_facts に同じ id・text・url で書き写す**
-  (書き写さずに fact_ids で N1 を指すと、無い id として検算で戻される)。使わなくなったものは書かなくてよい
+- 現在の記事の frontmatter にある `verified_facts`(N1, N2 …)は、この稿でも根拠に使うなら fact_ids で同じ id を指す(new_facts に書かなければ、
+  コードが現在の稿から写す)。同じ id で text・url を変えるときだけ new_facts に書く。使わなくなったものは指さない
 - event_date は、指摘が event_date に掛かっているときだけ直す(YYYY-MM-DD を1つだけか null)。それ以外はコードが現在の記事の値を使う
 - slug・brand・candidate_ids・rank・src・出典の種別は書かない(コードが付ける)
 

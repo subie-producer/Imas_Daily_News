@@ -8446,7 +8446,8 @@ def test_writer_children(tmp: Path):
     os.chmod(bindir / "codex", 0o755)
     spec_p = tmp / "spec" / "spec.json"
     spec_p.parent.mkdir()
-    cand = cand_row("c1", "https://example.com/news", facts=["販売開始", "価格は3000円"], dedup_key="x")
+    # 素材の source_type は収集時点の値(当事者)。執筆・書き直しには判定表の値(この試験では公式)を見せる
+    cand = cand_row("c1", "https://example.com/news", facts=["販売開始", "価格は3000円"], dedup_key="x", source_type="当事者")
     _, fmap = renderlib.materials_with_ids([cand])
     base = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
             "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "blocks": [{"markdown": "販売を開始する。価格は3000円。", "fact_ids": ["F1", "F2"]}],
@@ -8510,6 +8511,12 @@ def test_writer_children(tmp: Path):
         rec = json.loads((tmp / "metrics" / f"factmap-{date}.json").read_text(encoding="utf-8"))
         check(rec.get("probe") == {key0: fmap, key1: fmap} and renderlib.factmap_valid(rec),
               f"採った稿(初稿・改稿)の指紋と事実の対応がファイルに残らない: {rec.get('probe')}")
+        # 5) 執筆・書き直しに見せる素材の種別は、素材に残った収集時点の値(当事者)ではなく判定表の値(紙面と同じ。2026-10-21)
+        shown = {p.name: p.read_text(encoding="utf-8") for p in (tmp / "metrics" / "work" / date).glob("*.md")
+                 if p.name.startswith(("write-probe", "revise-probe"))}
+        check(any(n.startswith("write-") for n in shown) and any(n.startswith("revise-") for n in shown)
+              and all('"source_type": "公式"' in t and '"source_type": "当事者"' not in t for t in shown.values()),
+              f"執筆・書き直しに、素材の古い種別を見せた: {sorted(shown)}")
     finally:
         compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE = saved[:5]
         os.environ["PATH"] = saved[5] or ""
@@ -9779,15 +9786,35 @@ def test_link_inheritance(tmp: Path):
     post = "https://x.com/imas_ch/status/2103468242568417348"
     ticket, shop, press = "https://livepocket.jp/e/imas-event", "https://shop.example/goods/1", "https://press.example/a/1"
     short, official_page = "https://t.co/AbCdEf1234", "https://idolmaster-official.jp/news/1"
+    shop2, semi_src = "https://shop.example/goods/2", "https://asobistore.jp/item/9"
+    post_up = "https://t.co/PostUp0001"      # 判定済み(準公式)の短縮。展開先そのものが公式になったら公式へ(組版前でも)
     (tmp / "source_types.yml").write_text(
         "official_domains:\n  - idolmaster-official.jp\nsemi_official_domains:\n  - asobistore.jp\npress_domains:\n  - press.example\n"
         "party_domains:\n  - livepocket.jp\n  - shop.example\nx_accounts:\n  公式:\n    - imas_ch\n"
         "path_types:\n  t.co/AbCdEf1234: 当事者   # 機械で追加: 展開先 https://livepocket.jp/e/other\n", encoding="utf-8")
     # 9/26 の公式の投稿がフォームを facts に張っている。その後に8号ぶんの素材(以前の「直近7号」の外)
+    # 公開済みの記事(10/20 号)が出典にしているリンク先は、自動では種別を変えない(付け直しが公開済みの記事を書き換え、append-only の
+    # lint で取引ごと戻る)。試験発行(number: 0)の号は対象外
+    old_ticket = "https://livepocket.jp/e/old-event"
+    old_form = "https://docs.google.com/forms/d/e/1FAIpQLSoldOLDoldOLDoldOLDoldOLDold/viewform"
+    test_ticket, pub_short = "https://livepocket.jp/e/test-event", "https://t.co/Pub0000001"
+    (tmp / "docs" / "_editions").mkdir(parents=True, exist_ok=True)
+    (tmp / "docs" / "_editions" / "2026-10-20.md").write_text("---\nnumber: 36\n---\n", encoding="utf-8")
+    (tmp / "docs" / "_editions" / "2026-09-10.md").write_text("---\nnumber: 0\n---\n", encoding="utf-8")
+    (tmp / "docs" / "_posts" / "2026-10-20-old.md").write_text("---\n" + article_fm("old", "2026-10-20", sources=[
+        {"label": "a", "url": old_ticket, "type": "当事者"}, {"label": "b", "url": old_form, "type": "未確認"},
+        {"label": "c", "url": pub_short, "type": "当事者"}]) + "---\n本文\n", encoding="utf-8")
+    (tmp / "docs" / "_posts" / "2026-09-10-test.md").write_text("---\n" + article_fm("test", "2026-09-10", sources=[
+        {"label": "a", "url": test_ticket, "type": "当事者"}]) + "---\n本文\n", encoding="utf-8")
     (tmp / "candidates" / "2026-09-26.json").write_text(json.dumps([cand_row("p", post, facts=[
-        "#アイマスch メンバー限定配信 10月ゲスト決定", f"お便りフォーム: {form}", f"物販: {shop}", f"記事: {press}"])], ensure_ascii=False), encoding="utf-8")
+        "#アイマスch メンバー限定配信 10月ゲスト決定", f"お便りフォーム: {form}", f"物販: {shop}", f"記事: {press}",
+        f"前回: {old_ticket}", f"前回のフォーム: {old_form}", f"試験: {test_ticket}", f"ほか: {shop2}"])], ensure_ascii=False), encoding="utf-8")
     for i in range(10, 21):
         (tmp / "candidates" / f"2026-10-{i}.json").write_text(json.dumps([cand_row(f"f{i}", f"https://a.example/{i}")]), encoding="utf-8")
+    # いちばん強いリンク元(公式の投稿)とは関係しないが、次に強いリンク元(準公式のページ)とは関係するリンク先は、準公式を引き継ぐ
+    # (組ごとに問う。監査指摘 2026-10-21: 最強のリンク元だけを問い、否定されると次のリンク元を永久に問わなかった)
+    (tmp / "candidates" / "2026-10-19.json").write_text(json.dumps([cand_row("q", semi_src, source_type="準公式",
+                                                                             facts=[f"購入はこちら: {shop2}"])], ensure_ascii=False), encoding="utf-8")
     # 当日の素材: リンクを辿って見つけたチケットと短縮(link_from がリンク元)、準公式の投稿が張った公式ページ
     (tmp / "candidates" / "2026-10-21.json").write_text(json.dumps([
         cand_row("t", ticket, source_type="当事者", link_from=post, facts=["抽選受付"]),
@@ -9796,19 +9823,30 @@ def test_link_inheritance(tmp: Path):
     srcs = [{"label": "公式", "url": post, "type": "公式"}, {"label": "フォーム", "url": form, "type": "未確認"},
             {"label": "チケット", "url": ticket, "type": "当事者"}, {"label": "物販", "url": shop, "type": "当事者"},
             {"label": "記事", "url": press, "type": "報道"}, {"label": "短縮", "url": short, "type": "当事者"},
-            {"label": "公式ページ", "url": official_page, "type": "公式"}]
+            {"label": "公式ページ", "url": official_page, "type": "公式"}, {"label": "前回", "url": old_ticket, "type": "当事者"},
+            {"label": "前回のフォーム", "url": old_form, "type": "未確認"}, {"label": "試験", "url": test_ticket, "type": "当事者"},
+            {"label": "ほか", "url": shop2, "type": "当事者"}, {"label": "短縮2", "url": post_up, "type": "準公式"}]
     art = tmp / "docs" / "_posts" / "2026-10-21-joint-topic-37.md"
     art.write_text("---\n" + article_fm("joint-topic-37", "2026-10-21", sources=srcs) + "---\n本文\n", encoding="utf-8")
+    (tmp / "source_types.yml").write_text((tmp / "source_types.yml").read_text(encoding="utf-8")
+                                          + "  t.co/PostUp0001: 準公式   # 機械で追加: 展開先 https://asobistore.jp/y\n", encoding="utf-8")
     verdicts = {fkey: "関係する", "livepocket.jp/e/imas-event": "関係する", "t.co/AbCdEf1234": "関係する",
-                "shop.example/goods/1": "関係しない"}
+                "shop.example/goods/1": "関係しない", "livepocket.jp/e/old-event": "関係する", "livepocket.jp/e/test-event": "関係する",
+                ("shop.example/goods/2", post): "関係しない", ("shop.example/goods/2", semi_src): "関係する"}
     asked: list[str] = []
 
     def fake_ask(cmd, prompt, timeout=900):
+        # 対象は組(リンク先とリンク元)ごと。見出しは組の番号、中身にリンク先とリンク元
         asked.append(prompt)
         if "related" not in prompt:
             return []
-        keys = re.findall(r"(?m)^### (\S+)$", prompt.split("## 対象", 1)[-1])
-        return [{"host": k, "related": verdicts.get(k, "関係する" if cmd[0] == "claude" else "関係しない"), "why": "同じ企画"} for k in keys]
+        out = []
+        for block in re.split(r"(?m)^### ", prompt.split("## 対象", 1)[-1])[1:]:
+            tgt = pipelib.link_key(re.search(r"リンク先: (\S+)", block).group(1).split("(展開先")[0])
+            src = re.search(r"リンク元: (\S+)", block).group(1)
+            v = verdicts.get((tgt, src), verdicts.get(tgt, "関係する" if cmd[0] == "claude" else "関係しない"))
+            out.append({"host": block.split("\n", 1)[0].strip(), "related": v, "why": "同じ企画"})
+        return out
     saved = (cs.ROOT, pipelib.ROOT, pipelib._ST_TABLE, pipelib._ST_KEY, cs.ask, cs.site_profile, cs.page_meta, cs.page_excerpt,
              cs.expand_short_fetch, cs.POSTS_ONLY, cs.UNRESOLVED, sys.argv)
     try:
@@ -9817,7 +9855,8 @@ def test_link_inheritance(tmp: Path):
         cs._SHORT.clear()
         cs.ask, cs.site_profile = fake_ask, (lambda *a, **k: "材料")
         cs.page_meta, cs.page_excerpt = (lambda u: ("ページの題名", "説明", "")), (lambda u, chars=1200: "ページの本文")
-        cs.expand_short_fetch = lambda u, hops=5: "https://livepocket.jp/e/imas-event2"
+        dests = {post_up: "https://idolmaster-official.jp/news/7"}
+        cs.expand_short_fetch = lambda u, hops=5: dests.get(u, "https://livepocket.jp/e/imas-event2")
         cs.UNRESOLVED = tmp / "metrics" / "classify-unresolved.json"
         check(cs.link_sources(form) == [(post, "公式")], f"7号より前の公式の投稿がリンク元にならない: {cs.link_sources(form)}")
         check(cs.link_sources(ticket) == [(post, "公式")], f"素材の link_from がリンク元にならない: {cs.link_sources(ticket)}")
@@ -9827,10 +9866,14 @@ def test_link_inheritance(tmp: Path):
         link_prompts = [p for p in asked if "related" in p]
         check(code == 0 and len(link_prompts) >= 2, f"リンク先の関係を合議に掛けない: exit {code} / {len(link_prompts)}")
         first = link_prompts[0] if link_prompts else ""
-        check(f"### {fkey}" in first and "10月ゲスト決定" in first and "ページの題名" in first,
+        check(f"リンク先: {form}" in first and "10月ゲスト決定" in first and "ページの題名" in first,
               "合議の材料に、リンク元の告知の中身とリンク先のページが無い")
-        check("### idolmaster-official.jp/news/1" not in first and "### x.com" not in first,
+        check(f"リンク先: {official_page}" not in first and "リンク先: https://x.com" not in first,
               "リンク先そのもののほうが強い・リンク元の無い出典まで合議に掛けた")
+        check(pipelib.classify_source(shop2) == "準公式" and "shop.example/goods/2 <- " + post in cs.load_link_checked()
+              and "shop.example/goods/2 <- " + semi_src not in cs.load_link_checked(),
+              f"いちばん強いリンク元と関係しないとき、次に強いリンク元を確かめない: {pipelib.classify_source(shop2)}")
+        check(pipelib.classify_source(post_up) == "公式", f"組版前に、展開先そのものが上位になった判定済みの短縮を書き換えない: {pipelib.classify_source(post_up)}")
         check(pipelib.classify_source(form) == "公式" and pipelib.own_source_type(form) == "未確認",
               f"関係すると確かめたフォームが公式にならない: {pipelib.classify_source(form)}")
         check(pipelib.classify_source(ticket) == "公式" and pipelib.classify_source("https://livepocket.jp/e/other") == "当事者",
@@ -9838,16 +9881,25 @@ def test_link_inheritance(tmp: Path):
         check(pipelib.classify_source(short) == "公式", f"短縮がリンク元から引き継がない: {pipelib.classify_source(short)}")
         check(pipelib.classify_source(shop) == "当事者", "関係しないと一致したリンク先まで引き継いだ")
         check(pipelib.classify_source(press) == "報道", "割れたリンク先を引き継いだ")
+        everything = "".join(asked)
+        check(pipelib.classify_source(old_ticket) == "当事者" and f"リンク先: {old_ticket}" not in everything
+              and f"リンク先: {old_form}" not in everything and "### docs.google.com/forms/d/e/1FAIpQLSoldOLD" not in everything,
+              "公開済みの記事が出典にしているリンク先・文書の種別を自動で変えようとした(公開済みの記事が変わる)")
+        check(pipelib.classify_source(test_ticket) == "公式", "試験発行(number: 0)の号の記事が出典にしているだけのリンク先まで止めた")
         table = (tmp / "source_types.yml").read_text(encoding="utf-8")
         row = next((ln for ln in table.splitlines() if ln.startswith(f"  {fkey}:")), "")
         check("リンク元から引き継ぎ" in row and post in row, f"引き継いだ種別の行に、どのリンク元からかが残らない: {row}")
         check(yaml.safe_load(table)["path_types"]["t.co/AbCdEf1234"] == "当事者", "リンク先そのものの種別(短縮の展開先)の行を書き換えた")
         rec = cs.load_unresolved()
         check(any("press.example/a/1" in k for k in rec), f"割れたリンク先が決まらなかった記録に残らない: {list(rec)}")
+        check(all(any(x in k and "公開済みの記事 2026-10-20-old" in v for k, v in rec.items()) for x in ("old-event", "1FAIpQLSoldOLD")),
+              f"公開済みの記事のために変えなかったリンク先が、訂正の手順へ回す記録に残らない: {rec}")
         # 執筆・校閲・lint・付け直しは同じ判定を見る(pipelib.classify_source)
         fm = yaml.safe_load(art.read_text(encoding="utf-8").split("---\n")[1])
         types, src = retag_sources.resolve(fm)
-        check(types == ["公式", "公式", "公式", "当事者", "報道", "公式", "公式"] and src == "報道", f"付け直しの種別: {types} {src}")
+        got = {s["url"]: t for s, t in zip(fm["sources"], types)}
+        check([got[u] for u in (post, form, ticket, shop, press, short, official_page, old_ticket, old_form)]
+              == ["公式", "公式", "公式", "当事者", "報道", "公式", "公式", "当事者", "未確認"] and src == "未確認", f"付け直しの種別: {got} {src}")
         rep = lint.Report()
         lint.check_source_types(rep, lint.ROOT / "x.md", {"sources": [{"url": form, "type": "公式", "label": "l"}], "src": "公式"})
         check(rep.errors == 0, "引き継いだ種別で書いた記事が lint に落ちた")
@@ -9859,15 +9911,17 @@ def test_link_inheritance(tmp: Path):
         asked.clear()
         cs.main()
         again = "".join(p for p in asked if "related" in p)
-        check(f"### {fkey}" not in again and "### shop.example/goods/1" not in again and "### press.example/a/1" in again,
+        check(f"リンク先: {form}" not in again and f"リンク先: {shop}" not in again and f"リンク先: {press}" in again
+              and f"リンク先: {shop2}" not in again,
               "2回目に、決まった組を問い直した(または割れた組を問い直さない)")
         check(table == (tmp / "source_types.yml").read_text(encoding="utf-8"), "2回目で判定表が変わった(冪等でない)")
         # 短縮: 展開先そのものの種別が今の種別より上位なら、上位で書き換える(引き継いだ種別より展開先が強いとき)
         (tmp / "source_types.yml").write_text(table.replace(
-            "path_types:\n", "path_types:\n  t.co/Up0000001: 当事者   # 機械で追加: 展開先 https://idolmaster-official.jp/news/9\n"), encoding="utf-8")
+            "path_types:\n", "path_types:\n  t.co/Up0000001: 当事者   # 機械で追加: 展開先 https://idolmaster-official.jp/news/9\n"
+                             "  t.co/Pub0000001: 当事者   # 機械で追加: 展開先 https://idolmaster-official.jp/news/9\n"), encoding="utf-8")
         pipelib._ST_TABLE = None
-        (tmp / "candidates" / "2026-10-22.json").write_text(json.dumps([cand_row("u", "https://t.co/Up0000001", source_type="当事者")]),
-                                                            encoding="utf-8")
+        (tmp / "candidates" / "2026-10-22.json").write_text(json.dumps([cand_row("u", "https://t.co/Up0000001", source_type="当事者"),
+                                                                        cand_row("v", pub_short, source_type="当事者")]), encoding="utf-8")
         cs.POSTS_ONLY = None
         cs.expand_short_fetch = lambda u, hops=5: "https://idolmaster-official.jp/news/9"
         cs._SHORT.clear()
@@ -9875,6 +9929,23 @@ def test_link_inheritance(tmp: Path):
         cs.main()
         pipelib._ST_TABLE = None
         check(pipelib.classify_source("https://t.co/Up0000001") == "公式", "展開先そのものが上位になった短縮を書き換えない")
+        check(pipelib.classify_source(pub_short) == "当事者", "公開済みの記事が出典にしている短縮を書き換えた(公開済みの記事が変わる)")
+        # 上限で見せなかった組は「関係しない」と記録しない(次の判定で問う。監査指摘 2026-10-21)
+        shop3, p1, p2 = "https://shop.example/goods/3", "https://x.com/imas_ch/status/1", "https://x.com/imas_ch/status/2"
+        (tmp / "candidates" / "2026-10-18.json").write_text(json.dumps([cand_row("a1", p1, facts=[f"物販 {shop3}"]),
+                                                                        cand_row("a2", p2, facts=[f"物販 {shop3}"])]), encoding="utf-8")
+        (tmp / "candidates" / "2026-10-23.json").write_text(json.dumps([cand_row("w", shop3, source_type="当事者")]), encoding="utf-8")
+        verdicts["shop.example/goods/3"] = "関係しない"
+        asked.clear()
+        left = cs.inherit_from_links("2026-10-23", True, limit=1)
+        shown3 = [s for s in (p1, p2) if any(f"リンク元: {s}\n" in p for p in asked)]
+        rec3 = {k for k in cs.load_link_checked() if k.startswith("shop.example/goods/3 <- ")}
+        check(len(shown3) == 1 and rec3 == {f"shop.example/goods/3 <- {shown3[0]}"} and any("上限" in x for x in left),
+              f"見せていない組まで関係しないと記録した: 見せた {shown3} / 記録 {rec3}")
+        asked.clear()
+        cs.inherit_from_links("2026-10-23", True, limit=1)
+        check({k for k in cs.load_link_checked() if k.startswith("shop.example/goods/3 <- ")}
+              == {f"shop.example/goods/3 <- {p1}", f"shop.example/goods/3 <- {p2}"}, "上限で見せなかった組を次の判定で問わない")
     except (Exception, SystemExit) as e:      # noqa: BLE001  直す前の実装(関数が無い等)でも、落ちたことを記録して先へ進む
         check(False, f"リンク元からの引き継ぎのテストが例外: {type(e).__name__}: {e}")
     finally:

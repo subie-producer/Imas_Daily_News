@@ -2952,6 +2952,7 @@ def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
                  "書いてあるか、candidates の facts にその事実の出典 URL があるなら、それを sources に"
                  "足してください(label は出典元表記「告知タイトル」(日付) の形)。記述を削って逃げないこと。\n"
                  "修正できない(出典に無い事実で、消すしかない)なら、その記述を削ってください。\n"
+                 "出典のページを開くときは `python3 scripts/fetch_page.py <url>` で読んでください(WebFetch は使えません)。\n"
                  "**出典同士が食い違っているなら、公式・当事者の記述に合わせ、食い違う弱いほうの出典を "
                  "sources から外してください。**記事を弱い出典に合わせて書き換えてはいけません"
                  "(実測 2026-09-07: 公式と電撃が『開場11時』、ファミ通だけ『12時』。記事は正しかったのに、"
@@ -2971,6 +2972,8 @@ def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
             procs.append(subprocess.Popen(
                 ["claude", "-p", prompt_file(date, "fix-" + Path(f).stem, prompt), "--model", REVIEW_MODEL,
                  "--dangerously-skip-permissions",
+                 # 出典は執筆・校閲と同じ fetch_page.py で読ませる(WebFetch は JS を描画しない。2026-10-21)
+                 "--disallowedTools", "WebFetch",
                  "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
                 stdin=subprocess.DEVNULL, cwd=ROOT))

@@ -22,6 +22,7 @@
 import argparse
 import json
 import re
+import shutil
 import subprocess
 import sys
 import urllib.parse
@@ -721,12 +722,23 @@ def ask(cmd: list[str], prompt: str, timeout: int = 900) -> list[dict]:
         from pipelib import partial_output, prompt_file, save_raw
         name = f"classify-{cmd[0]}-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
         short = prompt_file(edition_date(), name, prompt)
+        # codex は通信を開いた workspace-write で、リポジトリ外の作業ディレクトリ(fetch_page.py の入口つき)で走らせる。
+        # read-only では名前解決が通らず、依頼文どおり fetch_page.py で運営者情報を読もうとして毎回失敗していた
+        # (2026-10-18 classify-codex-c9936bed: Temporary failure in name resolution)
+        wd = None
+        if cmd[0] == "codex":
+            from collect import explore_workdir
+            wd = explore_workdir("classify", entry="scripts/fetch_page.py")
+            short = prompt_file(edition_date(), name, prompt, base=wd)
         try:
             r = subprocess.run(cmd + [short], capture_output=True, text=True,
-                               timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
+                               timeout=timeout, stdin=subprocess.DEVNULL, cwd=wd or ROOT)
         except subprocess.TimeoutExpired as e:
             save_raw(edition_date(), name, *partial_output(e))     # 時間切れの回も、それまでの出力を残す
             raise
+        finally:
+            if wd:
+                shutil.rmtree(wd, ignore_errors=True)
         # 答えが読めた・読めないに関係なく生の出力を残す(決まらなかった分類の理由を後から確かめるため)
         save_raw(edition_date(), name, r.stdout, r.stderr, r.returncode)
         # 異常終了の間際の出力は答えにしない(無回答として議論・人へ。監査指摘)
@@ -751,8 +763,10 @@ def build_x_prompt(accts: dict[str, tuple[str, list[str]]]) -> str:
                                            for a, (_, t) in sorted(accts.items())))
 
 
-CMD_A = ["claude", "-p", "--model", COLLECT_MODEL, "--dangerously-skip-permissions"]
-CMD_B = ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "read-only", "--skip-git-repo-check"]
+# ページは依頼文どおり fetch_page.py で読ませる。WebFetch は JS を描画せず、公式ポータルが見出しだけに見える(2026-10-21)
+CMD_A = ["claude", "-p", "--model", COLLECT_MODEL, "--dangerously-skip-permissions", "--disallowedTools", "WebFetch"]
+CMD_B = ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
+         "-c", "sandbox_workspace_write.network_access=true"]
 
 
 def _key_forms(s: str) -> tuple[str, str]:

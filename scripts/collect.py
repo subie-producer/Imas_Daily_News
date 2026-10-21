@@ -135,7 +135,7 @@ def fetch_rendered(url: str, timeout: int = 30) -> str:
 
 def rendered_or_note(url: str) -> tuple[str, str]:
     """描画を補いとして使う呼び出し側(facts 化の本文・裏取りの読み直し)向け: (HTML, 失敗の要点)。
-    失敗しても素の HTML や WebFetch で続けられるので止めないが、原因はログと呼び出し側の記録に残す"""
+    失敗しても素の HTML やセッション側の fetch_page.py で続けられるので止めないが、原因はログと呼び出し側の記録に残す"""
     try:
         return fetch_rendered(url) or "", ""
     except RenderFailed as e:
@@ -145,7 +145,7 @@ def rendered_or_note(url: str) -> tuple[str, str]:
 
 def page_html_or_note(url: str, csr: bool) -> tuple[str, str]:
     """facts 化に渡す新着ページの HTML: (HTML, 失敗の要点)。描画必須の観測先は描画し、それ以外は素の HTML を取る
-    (素の HTML で本文が空同然なら描画し直す)。取れなければ ("", 要点) で、呼び出し側は WebFetch に任せる。
+    (素の HTML で本文が空同然なら描画し直す)。取れなければ ("", 要点) で、呼び出し側はセッションの fetch_page.py に任せる。
     素の HTML のページも本文を渡す。WebFetch は要約しか返さず、写し(原文どおりの引用)が取れないので読めなかった扱いになる
     (2026-10-09: ランティスの SideM 特典告知2件)"""
     if csr:
@@ -351,7 +351,7 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
         material = "\n\n".join(
             f"### {i + 1}. {b['url']}\n- title: {b['title'] or '(なし)'}\n- brand_hint: {b['brand_hint']}\n"
             + ("- 本文(取得済み):\n" + b["rendered_text"].strip() if b["rendered_text"].strip()
-               else f"- 本文: (取得できず{'(' + b['render_error'][:200] + ')' if b['render_error'] else ''}。URL を WebFetch で読むこと)")
+               else f"- 本文: (取得できず{'(' + b['render_error'][:200] + ')' if b['render_error'] else ''}。URL を fetch_page.py で読むこと)")
             for i, b in enumerate(blobs))
         prompt = render_prompt("watch-facts", RULES=COLLECT_RULES, ITEM=COLLECT_ITEM, MATERIAL=material)
         got = claude_call(prompt, timeout=420)
@@ -631,7 +631,7 @@ def parse_grok(out: str) -> list:
     return extract_json_array(out)
 
 
-def explore_workdir(key: str) -> Path:
+def explore_workdir(key: str, entry: str = "fetch_page.py") -> Path:
     """探索セッション専用の作業ディレクトリを作る(**リポジトリの外**)。
 
     探索は取得したページの中身を読む。そこに「このファイルを書き換えろ」と
@@ -644,9 +644,13 @@ def explore_workdir(key: str) -> Path:
     ここで止める。**探索に妙なページを踏ませない運用のほうが本筋**であり、
     セッション同士の相互汚染まで機械で塞ごうとすると、得るものに対して
     仕掛けが重くなりすぎる。
+
+    entry は入口の置き場(cwd からの相対)。出典の判定の依頼文は `scripts/fetch_page.py` で読ませる
+    (classify_sources.ask の codex 側。2026-10-21)。
     """
     wd = Path(tempfile.mkdtemp(prefix=f"explore-{key}-"))
-    (wd / "fetch_page.py").write_text(
+    (wd / entry).parent.mkdir(parents=True, exist_ok=True)
+    (wd / entry).write_text(
         "#!/usr/bin/env python3\n"
         "# 本体はリポジトリ側(読み取り専用)。ここは呼び出すだけの入口\n"
         "import os, sys\n"
@@ -686,7 +690,10 @@ def claude_exec(prompt: str, timeout: int = 300):
              "--model", COLLECT_MODEL,
              # 指示と素材はファイルなので **Read が要る**。WebSearch/WebFetch だけに絞っていたら、ファイルを読めずに
              # 420 秒待って落ちた(実測 2026-09-17)
-             "--allowedTools", "Read,WebSearch,WebFetch",
+             # ページは執筆・校閲と同じ fetch_page.py で読ませ、WebFetch は外す。WebFetch は JS を描画せず、まとめサイトの
+             # 新着の一次ソース(公式ポータル)がタイトルだけに見えて unreadable にした(2026-10-21: imasnews765 ?p=32576)
+             "--allowedTools", "Read,WebSearch,Bash(python3 scripts/fetch_page.py:*)",
+             "--disallowedTools", "WebFetch",
              "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
             capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL, cwd=ROOT)
     except (subprocess.TimeoutExpired, OSError) as e:
@@ -901,6 +908,8 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
                  files={n: read_for_raw(wd / n) for n in ("x-posts.md", "items.json", "posts.json", "deep.json", "session.log")})
         # 時間切れ・異常終了のセッションが書いたファイルは答えにしない(全投稿を未処理としてやり直し・異常へ。監査指摘)
         got = read_json_list(wd / "items.json") if in_time and p.returncode == 0 else None
+        # 終わり方(通知・記録用)。異常終了を「締切内に終わった」と書くと、原因(落ちた)が見えない
+        ended = "時間切れ" if not in_time else (f"異常終了(exit {p.returncode})" if p.returncode else "締切内に終わった")
         # 投稿1件ずつの結果を、入力の投稿と突き合わせる。結果の無い・読めなかった投稿を黙って捨てない
         # (2026-10-06 の洗い出しで判明: 候補の配列だけを受けていたので、Luna が開けなかった・飛ばした投稿が記録なしに消えた。
         #  定点観測で新着を失ったのと同じ型)。候補そのものが読めなければ「候補にした」の申告も当てにならないので、全投稿が残り
@@ -915,14 +924,16 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
             again.append(q)
         elif left:
             # 2回目でも残った投稿は、申告で終えない(当番のなぜなぜへ)。どの投稿を失うかを最後の段のあとで名指しする
-            why = (f"{'候補の一覧が読めない' if got is None else '投稿ごとの結果に無い・読めなかった'}、"
-                   f"{'締切内に終わった' if in_time else '時間切れ'}")
+            why = f"{'候補の一覧が読めない' if got is None else '投稿ごとの結果に無い・読めなかった'}、{ended}"
             ledger["lost"].setdefault(q["key"], []).extend((b, why) for b in left)
         raw_asks = read_json_list(wd / "deep.json") if in_time and p.returncode == 0 else None
-        if raw_asks is None and wants_deep:
+        # 候補の一覧も読めなかった回は、全投稿を -again でもう1回確かめるので、問いもそこで出し直される(失っていない)。
+        # 以前はここでも「深掘りの機会を失う」と通知していた(2026-10-21 02:19 の sidem 面: /tmp が満杯で Luna が exit 101 で
+        # 落ちたが、-again が問いを書き、深掘りも回っていた)
+        if raw_asks is None and wants_deep and not (got is None and not final):
             # 「問いなし([])」と「書けなかった」を分ける。原本の確かめを黙って失わない(監査指摘 r116)
             notify("collect", f"Grok の {q['key']} 面: X の原本でしか確かめられない問い(deep.json)が読めない"
-                              f"({'締切内に終わった' if in_time else '時間切れ'})。深掘りの機会を失う", ok=False)
+                              f"({ended})。深掘りの機会を失う", ok=False)
         asks = [a for a in (raw_asks or []) if schema_ok(a, DEEP_ASK_SCHEMA) and a["question"].strip()]
         if wants_deep and raw_asks is not None and len(asks) < len(raw_asks):
             # 崩れた問いを「問いなし」にしない(深掘りの機会を黙って失わない。監査指摘)。正しい問いは使う

@@ -2038,6 +2038,9 @@ def test_collect_sessions_read_with_fetch_page(tmp: Path):
     denied = a[a.index("--disallowedTools") + 1].split(",") if "--disallowedTools" in a else []
     cmd = re.search(r"`(python3 [^`<]*fetch_page\.py) <url>`", prompt)
     check("WebFetch" not in allowed and "WebFetch" in denied, f"facts 化が WebFetch でページを読める(JS を描画しない): {a}")
+    # 道具は読むのに要るものだけ(Bash は fetch_page.py の起動だけ。広げるとページに仕込まれた指示で何でも走らせられる)
+    check(sorted(allowed) == sorted(["Read", "WebSearch", "Bash(python3 scripts/fetch_page.py:*)"]),
+          f"facts 化の道具の許可が読むのに要る範囲を超える: {allowed}")
     check("WebFetch で" not in prompt and cmd and any(allowed_by(p, cmd.group(1) + " " + url) for p in allowed),
           f"facts 化の依頼文の読み方が、許した道具で打てない: {cmd and cmd.group(1)} / {allowed}")
     out = run_cmd(f"{cmd.group(1)} {url}", cwd) if cmd else ""

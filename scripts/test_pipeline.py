@@ -11550,6 +11550,66 @@ def test_cli_blocked_r7(tmp: Path):
             (pipelib.ROOT, assemble.ROOT, assemble.prompt_digest, assemble.prompt_ledger, assemble.prompt_file) = saved[1:]
 
 
+def test_cli_blocked_r8(tmp: Path):
+    """Sol 監査 r7 の指摘の再発防止(当番の再実行の経路):
+    (1) 出典の判定の再実行(oncall.CLASSIFY_RERUN)が、合議の CLI の停止を終了 1(再実行の失敗)にせず、CLI_BLOCKED_EXIT で返す
+        (実物の ask・取引・再実行の文字列を、偽の claude と一時リポジトリで本物の子プロセスとして走らせる)
+    (2) --recover の後段の組み直しが CLI の停止(75)で止まったら、控えへは戻すが、「戻らない」「作り直しが失敗」を重ねて知らせず、
+        当番の process は異常終了にしない"""
+    import time
+    from contextlib import ExitStack
+    from unittest.mock import patch
+    import oncall
+    src = Path(pipelib.__file__)
+    tmp.mkdir(parents=True, exist_ok=True)
+    # (1)
+    repo = tmp / "classify"
+    for d in ("scripts", "metrics", "docs/_posts"):
+        (repo / d).mkdir(parents=True)
+    shutil.copy(src, repo / "scripts" / "pipelib.py")
+    shutil.copytree(src.parent.parent / "prompts", repo / "prompts")
+    (repo / "source_types.yml").write_text("official_domains: []\n", encoding="utf-8")
+    shutil.copy(src.with_name("classify_sources.py"), repo / "scripts" / "classifier_impl.py")
+    (repo / "scripts" / "classify_sources.py").write_text(
+        "import sys\nimport pipelib as p, classifier_impl as c\np.notify = lambda *a, **k: True\n"
+        "try:\n    c.ask(c.CMD_A, '出典を判定する')\nexcept p.CliBlocked as e:\n    print(e)\n    sys.exit(p.CLI_BLOCKED_EXIT)\n",
+        encoding="utf-8")
+    bindir = repo / "bin"
+    fake_cli(bindir, "claude", out=CLAUDE_OAUTH + "\n", code=1)
+    for args in (("init", "-q"), ("config", "user.email", "a@b"), ("config", "user.name", "t"), ("add", "."), ("commit", "-qm", "base")):
+        subprocess.run(["git", *args], cwd=repo, check=True, capture_output=True)
+    r = subprocess.run([sys.executable, "-c", oncall.CLASSIFY_RERUN, "2026-10-21"], cwd=repo, text=True, capture_output=True,
+                       env={**os.environ, "PATH": f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}",
+                            "IMAS_SCRATCH": str(tmp / "scratch")})
+    check(r.returncode == pipelib.CLI_BLOCKED_EXIT and pipelib.CLI_STOPPED in r.stdout,
+          f"出典の判定の再実行が CLI の停止を終了 {r.returncode} にした: {r.stdout[-300:]} {r.stderr[-300:]}")
+    # (2)
+    rec = tmp / "recover"
+    for d in ("scripts", "metrics", "docs/_posts"):
+        (rec / d).mkdir(parents=True)
+    (rec / "scripts" / "compose.py").write_text(f"import sys\nprint('CLI の停止')\nsys.exit({pipelib.CLI_BLOCKED_EXIT})\n", encoding="utf-8")
+    (rec / "metrics" / "plan-2026-10-21.json").write_text(json.dumps({"articles": [{"slug": "a"}, {"slug": "b"}]}), encoding="utf-8")
+    (rec / "docs" / "_posts" / "2026-10-21-a.md").write_text("承認済みの記事", encoding="utf-8")
+    for n in (1, 2):
+        (rec / "metrics" / f"oncall-2026-10-21-compose-attempt-{n}").touch()
+    notes, restores = [], []
+    values = dict(ROOT=rec, RECOVER=True, RECOVER_TARGET=("2026-10-21", "edition/2026-10-21"), RECOVER_TRIED=False,
+                  STAGE_END_AT=time.time() + 3600, release_held_job_locks=lambda: None,
+                  job_lock=lambda *a, **k: os.open(os.devnull, os.O_RDONLY), root_clean=lambda: True, ensure_edition=lambda *a: "",
+                  sh=lambda *a, **k: subprocess.CompletedProcess([], 0, "", ""), commit_paths=lambda *a, **k: None,
+                  untracked_files=lambda: set(), backup_edition=lambda *a: "backup/test",
+                  restore_edition=lambda *a: restores.append(a), notify=lambda job, msg, ok=True, **kw: notes.append((msg, ok)) or True)
+    with ExitStack() as s:
+        for k, v in values.items():
+            s.enter_context(patch.object(oncall, k, v))
+        s.enter_context(patch.object(sys, "argv", ["oncall", "--stage", "compose", "--date", "2026-10-21", "--recover",
+                                                    "--end-at", str(time.time() + 3600)]))
+        code = oncall.exit_code(oncall.main())
+    bad = [m for m, ok in notes if not ok and ("75" in m or "戻らない" in m)]
+    check(code == 0 and len(restores) == 1 and not bad,
+          f"組み直しの CLI の停止を異常終了・失敗の通知にした(または控えへ戻さない): exit {code} 戻し {len(restores)} {bad}")
+
+
 def test_scratch_not_tmp(tmp: Path):
     """本番のコードが作る使い捨てのもの(当番の監査の作業ツリー・答えのファイル・Sol の一時ファイル、探索の作業ディレクトリ)は、
     /tmp(3.8GB の tmpfs)でなく置き場(IMAS_SCRATCH、既定 ~/.cache/imas-news)に作り、終わったら消す。消し損ねは次に作るとき
@@ -11634,6 +11694,7 @@ def main() -> int:
     test_cli_blocked_r5(tmp / "cb5")
     test_cli_blocked_r6(tmp / "cb6")
     test_cli_blocked_r7(tmp / "cb7")
+    test_cli_blocked_r8(tmp / "cb8")
     test_scratch_not_tmp(tmp / "snt")
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")

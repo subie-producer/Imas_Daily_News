@@ -1090,7 +1090,9 @@ def reset_edition(date: str, edition: str) -> str:
 BACKFILL_POST_LINKS = ("import sys, pathlib; sys.path.insert(0, sys.argv[1]); import collect; "
                        "print(f'投稿のリンクを素材へ写した: {collect.backfill_post_links(sys.argv[2], pathlib.Path(sys.argv[3]))} 件')")
 CLASSIFY_RERUN = ("import sys; sys.path.insert(0, 'scripts'); import pipelib; "
-                  "ok, why = pipelib.classify_retag_lint(sys.argv[1], require_parsers=True); print(why); sys.exit(0 if ok else 1)")
+                  "ok, why = pipelib.classify_retag_lint(sys.argv[1], require_parsers=True); print(why); "
+                  # 合議のモデル CLI が認証切れ・利用上限で答えなかった(表は開始時へ戻した)なら、その終了コードで返す(監査指摘 r7)
+                  "sys.exit(0 if ok else pipelib.CLI_BLOCKED_EXIT if why.startswith(pipelib.CLI_STOPPED) else 1)")
 
 
 def ensure_pushed(branch: str, what: str, budget: int = 300) -> bool:
@@ -1259,7 +1261,11 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
                 p.unlink()   # 古い校閲記録が残ると release が最大巡数の古い判定を読む(監査指摘)
             commit_paths(["metrics"], f"oncall: {date} の古い校閲記録を外す", edition)
             code = run_stage([sys.executable, compose_py, "--date", date, "--reuse-plan", *extra], log, limit)
-            if recover:
+            if recover and code == CLI_BLOCKED_EXIT:
+                # 組み直しのモデル CLI が認証切れ・利用上限で止まった(組版が投稿済み)。控えへ戻すのは下の finally。
+                # 「戻らなかった」とは言わない(戻ったら --reuse-plan で組み直せる。監査指摘 r7)
+                print(f"{date} compose: 落とした記事を戻す組み直しはモデル CLI の停止で止まった。承認済みの紙面(控え)に戻す", flush=True)
+            elif recover:
                 back, still, lost = recover_outcome(before, posted_slugs(date), planned)
                 if code == 0 and lost:
                     code = 1   # 戻すために承認済みの記事を失うなら採らない(下で控えに戻す)
@@ -1328,13 +1334,21 @@ def rerun_stage(stage: str, date: str, edition: str, full: bool, recover: bool =
         if not done and backup:
             try:
                 restore_edition(date, edition, backup, untracked_before)
-                notify("oncall", f"{date} {stage}: 作り直しが失敗(exit {code})したので {edition} を控え {backup} に戻した", ok=False)
+                if code == CLI_BLOCKED_EXIT:    # モデル CLI の停止(投稿は再実行の工程が済ませた)。失敗として重ねて知らせない
+                    print(f"{date} {stage}: モデル CLI の停止で作り直しが止まったので {edition} を控え {backup} に戻した", flush=True)
+                else:
+                    notify("oncall", f"{date} {stage}: 作り直しが失敗(exit {code})したので {edition} を控え {backup} に戻した", ok=False)
             except Exception as e:
                 notify("oncall", f"{date} {stage}: 作り直しが失敗し、控え {backup} への復元も失敗: {e}。**手で戻すこと**", ok=False)
     return code
 
 
 RECOVER_TARGET: tuple[str, str] | None = None   # 落とした記事を戻す号(日付, edition ブランチ)。main が設定する
+
+
+def exit_code(code: int) -> int:
+    """当番の process の終了コード。モデル CLI の停止(CLI_BLOCKED_EXIT)で終わった回は 0(systemd に起動し直させない)。"""
+    return 0 if code == CLI_BLOCKED_EXIT else code
 
 
 def main() -> int:
@@ -1752,4 +1766,5 @@ def _main() -> int:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    # モデル CLI の停止で終わった回は異常終了にしない(systemd の起動し直しで同じ理由の即死を重ねない。監査指摘 r7)
+    sys.exit(exit_code(main()))

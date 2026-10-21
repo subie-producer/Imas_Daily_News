@@ -9767,7 +9767,13 @@ def test_link_key_and_table():
                      ("https://forms.gle:8443/AbCd123", "https://forms.gle:9443/AbCd123"),
                      ("https://d.example:80/event", "https://d.example/event"),
                      ("https://d.example/event/%FE", "https://d.example/event/%FF"),
-                     ("https://d.example/e?id=A&id=B", "https://d.example/e?id=B&id=A")):
+                     ("https://d.example/e?id=A&id=B", "https://d.example/e?id=B&id=A"),
+                     ("https://d.example/event?id=%FE", "https://d.example/event?id=%FF"),
+                     ("https://d.example/event?%FE=1", "https://d.example/event?%FF=1"),
+                     ("https://www.youtube.com/watch?v=AAAAAAAAAAA&v=BBBBBBBBBBB",
+                      "https://www.youtube.com/watch?v=AAAAAAAAAAA&v=CCCCCCCCCCC"),
+                     ("https://forms.cloud.microsoft/pages/responsepage.aspx?id=officialDocument0123456789&route=A&route=B",
+                      "https://forms.cloud.microsoft/pages/responsepage.aspx?id=officialDocument0123456789&route=A&route=C")):
             check(lk(a) is None or lk(a) != lk(b), f"別のページが同じキーになった: {a} / {b} → {lk(a)}")
         # 返すキーは、読み直しても同じキー(判定表に書いて引ける)
         check(lk("https://[broken]/event") is None, "読めない URL で例外・キー")

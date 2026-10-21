@@ -1590,8 +1590,16 @@ def _link_key(url) -> str | None:
     if (u.params or (port is not None and port != {"http": 80, "https": 443}.get(u.scheme))
             or re.search(r"%(2F|3B|3F|23|25|5C)", u.path, re.I)):
         return None
+    # クエリも UTF-8 として読めないもの、同じ名前が2つ以上あるもの(値の順序・どれを採るかで別の要求になりうる)は対象外。
+    # 専用の形(動画・フォーム)のクエリにも効くよう、ここで見る(監査指摘 2026-10-21)
+    try:
+        pairs = urllib.parse.parse_qsl(u.query, keep_blank_values=True, errors="strict")
+    except UnicodeDecodeError:
+        return None
+    if len({k for k, _ in pairs}) != len(pairs):
+        return None
     seg = [x for x in u.path.split("/") if x]
-    q = urllib.parse.parse_qs(u.query)
+    q = {k: [v] for k, v in pairs}
     if host in SHORTENERS:
         return f"{host}/{seg[0]}" if seg else None
     if host in ("x.com", "twitter.com", "mobile.x.com", "mobile.twitter.com"):
@@ -1632,9 +1640,7 @@ def _link_key(url) -> str | None:
         host = host.encode("idna").decode("ascii")
     except UnicodeError:
         return None
-    keep = [(k, v) for k, v in urllib.parse.parse_qsl(u.query, keep_blank_values=True) if not LINK_NOISE_QUERY.match(k)]
-    if len({k for k, _ in keep}) != len(keep):
-        return None     # 同じ名前のクエリが2つ以上(値の順序で別の要求になりうる)は引き継ぎの対象にしない
+    keep = [(k, v) for k, v in pairs if not LINK_NOISE_QUERY.match(k)]
     return host + path + ("?" + urllib.parse.urlencode(sorted(keep)) if keep else "")
 
 

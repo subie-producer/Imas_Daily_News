@@ -9795,10 +9795,22 @@ def test_link_key_and_table():
                      ("https://t.co/A/../B", "https://t.co/A"),
                      ("https://x.com/a/status/123/../../status/456", "https://x.com/a/status/123"),
                      ("https://docs.google.com/document/d/AAAAAAAAAAAAAAAAAAAAAAAA/../../d/BBBBBBBBBBBBBBBBBBBBBBBB/edit",
-                      "https://docs.google.com/document/d/AAAAAAAAAAAAAAAAAAAAAAAA")):
+                      "https://docs.google.com/document/d/AAAAAAAAAAAAAAAAAAAAAAAA"),
+                     # r11: 符号化したクエリの名前(復号すると同じ名前)
+                     ("https://www.youtube.com/watch?v=AAAAAAAAAAA&%76=BBBBBBBBBBB", "https://www.youtube.com/watch?v=AAAAAAAAAAA"),
+                     ("https://forms.office.com/pages/responsepage.aspx?id=officialDocument0123456789&%69d=",
+                      "https://forms.office.com/pages/responsepage.aspx?id=officialDocument0123456789"),
+                     ("https://www.youtube.com/playlist?list=PLabcdefghij1234&%6cist=", "https://www.youtube.com/playlist?list=PLabcdefghij1234")):
             check(lk(a) is None or lk(a) != lk(b), f"別のページが同じキーになった: {a} / {b} → {lk(a)}")
         # 返すキーは、読み直しても同じキー(判定表に書いて引ける)
         check(lk("https://[broken]/event") is None, "読めない URL で例外・キー")
+        # 判定表の YAML で文字列にならないキー(数・真偽値・null)は返さない。表の検査も文字列でないキーを止める
+        check(all(lk(u) is None for u in ("https://123", "https://1.2", "https://yes", "https://null")), "YAML で文字列にならないキーを返した")
+        try:
+            pipelib._check_table({"link_types": {123: "公式"}}, "t")
+            check(False, "文字列でない link_types のキーが表の検査を通った")
+        except SystemExit:
+            pass
         for u in ("https://d.example/event%3Bid=A", "https://d.example/a;b/c", "https://d.example/x?q=a%26b&r=1", "https://d.example/%E3%81%82"):
             k = lk(u)
             check(k is None or (pipelib.LINK_KEY_RE.fullmatch(k) and lk("https://" + k) == k), f"読み直すと変わるキー: {u} → {k}")
@@ -9869,7 +9881,7 @@ def test_link_inheritance(tmp: Path):
         "#アイマスch メンバー限定配信 10月ゲスト決定", f"お便りフォーム: {form}", f"物販: {shop}", f"記事: {press}",
         f"前回: {old_ticket}", f"前回のフォーム: {old_form}", f"試験: {test_ticket}", f"ほか: {shop2}",
         "参照 https://[broken]/event", "申込 https://shop.example/evt?id=A!", "詳細 https://shop.example/evt(9)",
-        "別 https://shop.example/q'B", "別 https://shop.example/r（B）"])],
+        "別 https://shop.example/q'B", "別 https://shop.example/r（B）", "途切れ https://"])],
         ensure_ascii=False), encoding="utf-8")   # 読めない URL が facts にあっても判定を止めない
     for i in range(10, 21):
         (tmp / "candidates" / f"2026-10-{i}.json").write_text(json.dumps([cand_row(f"f{i}", f"https://a.example/{i}")]), encoding="utf-8")
@@ -9928,7 +9940,11 @@ def test_link_inheritance(tmp: Path):
               and cs.link_sources("https://shop.example/q") == [] and cs.link_sources("https://shop.example/r") == []
               and cs.fact_urls("フォーム（https://a.example/f） 申込：https://a.example/g、 x") == ["https://a.example/f", "https://a.example/g"]
               # 和文の記号の後に続きがある・途中の別の URL・ASCII の記号に続く URL は入れない(監査指摘 2026-10-21 r10)
-              and cs.fact_urls("https://a.example/e、B https://a.example/e'https://b.example/x custom+https://c.example/y") == [],
+              and cs.fact_urls("https://a.example/e、B https://a.example/e'https://b.example/x custom+https://c.example/y") == []
+              # r11: 別のスキーム・大文字のスキームの URL の中、和文でない文字に続く URL、途切れた URL(例外で止めない)
+              and cs.fact_urls("ftp://a.example/:https://d.example/e HTTPS://a.example/:https://d.example/e éhttps://d.example/e "
+                               "https:// http:// https://） https://あ") == []
+              and cs.fact_urls("こちらhttps://d.example/e") == ["https://d.example/e"],
               f"facts の URL を削った別の URL にリンク元を付けた: {cs.link_sources('https://shop.example/evt?id=A')}")
         sys.argv = ["classify_sources.py", "--date", "2026-10-21", "--posts-only", "--apply"]
         code = cs.main()

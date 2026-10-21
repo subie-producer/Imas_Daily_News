@@ -1579,12 +1579,16 @@ def _link_key(url) -> str | None:
     if not m:
         return None
     scheme, host, path, query = m.group(1), m.group(2), m.group(3) or "", m.group(4)
+    # ホストは英字を含むドメイン名だけ(`123`・`yes`・`null` のようなキーは判定表の YAML で文字列にならない。監査指摘 2026-10-21)
+    if "." not in host or not re.search(r"[a-z]", host):
+        return None
     if (query == "" or ";" in path or re.search(r"//|(^|/)\.\.?(/|$)", path)
             or re.search(r"%(2F|3B|3F|23|25|5C|2E)", s, re.I)):
         return None
     parts = query.split("&") if query else []
     names = [p.split("=", 1)[0] for p in parts]
-    if "" in parts or len(set(names)) != len(names):
+    # クエリの名前に符号化(%)があるものも対象外(復号すると同じ名前になりうる。`%76=` は `v=`。監査指摘 2026-10-21)
+    if "" in parts or len(set(names)) != len(names) or any("%" in n or "+" in n for n in names):
         return None
     q = {n: [p.split("=", 1)[1] if "=" in p else ""] for n, p in zip(names, parts)}
     host_given, host = host, host.removeprefix("www.")
@@ -2240,6 +2244,8 @@ def _check_table(t: dict, p) -> None:
     if not isinstance(lt, dict):
         raise SystemExit(f"{p} の link_types はリンク先 → 種別の対応でなければならない")
     for k, v in lt.items():
+        if not isinstance(k, str):
+            raise SystemExit(f"{p} の link_types: {k!r} のキーが文字列でない(YAML が数・真偽値として読んだ)")
         if str(v) not in allowed:
             raise SystemExit(f"{p} の link_types: {k} の種別 {v!r} は使えない({'/'.join(sorted(allowed))})")
         if link_key("https://" + str(k)) != str(k):

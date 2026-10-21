@@ -320,10 +320,16 @@ def fact_urls(text: str) -> list[str]:
     だけのもの、または URL の後ろが和文の閉じ括弧・句読点だけのもの。末尾が句読点とも読める・括弧の対が合わないものは入れない。"""
     out = []
     for word in text.split():
-        i = min((j for j in (word.find("http://"), word.find("https://")) if j >= 0), default=-1)
-        if i < 0 or (i > 0 and word[i - 1].isascii() and word[i - 1] not in URL_START_OK):
+        # 語の中の `://` は1つだけ(別の URL の中から切り出さない。`ftp://…:https://…`・`HTTPS://…:https://…` を入れない)
+        if word.count("://") != 1:
+            continue
+        m = re.search(r"https?://", word)
+        i = m.start() if m else -1
+        if i < 0 or (i > 0 and not (word[i - 1] in URL_START_OK or re.match(r"[぀-ヿ㐀-鿿！-｠]", word[i - 1]))):
             continue
         m = re.match(r"https?://[A-Za-z0-9._~/?#=&%+@!$*,;:()'\[\]-]+", word[i:])
+        if not m:
+            continue        # `https://` だけ・直後が URL の文字でないものは入れない(過去の素材にあっても判定を止めない)
         u, rest = m.group(0), word[i + len(m.group(0)):]
         if ((rest and not re.fullmatch(r"[）」』】、。]+", rest)) or u[-1] in ".,;:!?…" or u.count("(") != u.count(")")
                 or u.count("://") != 1):

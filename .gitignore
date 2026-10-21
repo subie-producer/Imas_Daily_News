@@ -33,5 +33,7 @@ metrics/work/
 metrics/classify-unresolved.json
 # 道具の CLI の版と動作確認の記録(update_clis.py が毎日書き換える)
 metrics/cli-versions.json
+# モデル CLI の認証切れ・利用上限の記録(どの CLI がいつから止まっているか。同じ原因の投稿を工程をまたいで1回にまとめる)
+metrics/cli-blocked.json
 # 持ち主を取るパーサが無い URL の種類について、当番に依頼した日(同じ依頼を出し直さないための記録)
 metrics/parser-requests.json

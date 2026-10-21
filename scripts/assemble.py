@@ -37,7 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import renderlib
 from pipelib import (ROOT, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, COMPOSE_WAVE, classify_source,
                      anomaly, claude_traced, err_tail, extract_json_array, loads_strict, notify, prompt_file, render_prompt,
-                     schema_ok, write_checked, align_x_published_date)
+                     schema_ok, write_checked, align_x_published_date, CliBlocked)
 
 POSTS = ROOT / "docs" / "_posts"
 EDITIONS = ROOT / "docs" / "_editions"
@@ -515,6 +515,13 @@ def judge(date: str, inp: dict, budget=None) -> dict:
              for i, ch in enumerate(chunks)]
     with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, min(len(jobs), COMPOSE_WAVE))) as ex:
         futs = [ex.submit(run_session, text, date, name, schema, budget) for name, text, schema in jobs]
+        # 全部を回収してから上げる。モデル CLI の認証切れ・利用上限(CliBlocked)は、先に終わったふつうの失敗より先に上げる
+        # (先頭の失敗で止めると、後の組の停止が隠れて組版が先へ進んだ。監査指摘 r6)
+        concurrent.futures.wait(futs)
+        errs = [f.exception() for f in futs if f.exception() is not None]
+        stop = [e for e in errs if isinstance(e, CliBlocked)]
+        if stop or errs:
+            raise (stop or errs)[0]
         outs = [f.result() for f in futs]        # 1本でも答えが無ければ、その経過を付けて上がる
     ledger_outs = outs[1:]
     # **記事ごとの答えを入力と突き合わせる。**stories は記事ごとに必ず1件の契約なので、stories の無い記事は

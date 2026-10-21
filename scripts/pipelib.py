@@ -1628,6 +1628,11 @@ def _link_key(url) -> str | None:
                 return host + "/" + "/".join(seg[:i + 1])
     if host == "forms.gle":
         return f"{host}/{seg[0]}" if seg else None
+    # 一般のページは、ホストを書かれたまま(`www.` も)区別し、https だけを対象にする(http と https、www の有無は別の内容を
+    # 返しうる。監査指摘 2026-10-21)。`www.` を同じとみなすのは、上の決まったサービスの形だけ
+    if u.scheme != "https":
+        return None
+    host = u.hostname or ""
     # パスは書かれたまま(末尾の / も)。`//`・`.`・`..` の区切りを含むパスは、畳むと別のページを同じキーにしうるので対象外
     # (監査指摘 2026-10-21: /event/A・/event/A/・/event//A が同じキーになった)
     if re.search(r"//|(^|/)\.\.?(/|$)", re.sub(r"%2e", ".", u.path, flags=re.I)):

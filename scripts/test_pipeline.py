@@ -9776,6 +9776,8 @@ def test_link_key_and_table():
                      ("https://d.example/event/%FE", "https://d.example/event/%FF"),
                      ("https://d.example/e?id=A&id=B", "https://d.example/e?id=B&id=A"),
                      ("https://d.example/event?id=%FE", "https://d.example/event?id=%FF"),
+                     ("https://d.example/event", "https://www.d.example/event"),
+                     ("http://d.example/event", "https://d.example/event"),
                      ("https://d.example/event?%FE=1", "https://d.example/event?%FF=1"),
                      ("https://www.youtube.com/watch?v=AAAAAAAAAAA&v=BBBBBBBBBBB",
                       "https://www.youtube.com/watch?v=AAAAAAAAAAA&v=CCCCCCCCCCC"),

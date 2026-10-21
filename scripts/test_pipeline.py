@@ -9462,8 +9462,9 @@ def test_oncall_collect_rerun_killed_classify(tmp: Path):
         "from pathlib import Path\np=Path('source_types.yml');p.write_text(p.read_text()+'\\n# txn unfinished\\n')\n", encoding="utf-8")
     (root / "scripts" / "retag_sources.py").write_text(
         "from pathlib import Path\nimport os,signal\np=next(Path('docs/_posts').glob('*.md'));p.write_text(p.read_text()+'\\n<!-- txn unfinished -->\\n')\n"
-        # 取引の段は child_guard 越しに動くので、親の親(取引を持つ収集)を殺す
-        "pp=int(open(f'/proc/{os.getppid()}/stat').read().rsplit(')',1)[1].split()[1])\n"
+        # 取引の段は child_guard 越しに動くので、child_guard を遡った先(取引を持つ収集)を殺す
+        "pp=os.getppid()\nwhile b'child_guard' in open(f'/proc/{pp}/cmdline','rb').read():\n"
+        "    pp=int(open(f'/proc/{pp}/stat').read().rsplit(')',1)[1].split()[1])\n"
         "os.kill(pp,signal.SIGKILL)\n", encoding="utf-8")
     (root / "scripts" / "collect.py").write_text(
         "import pipelib\nfrom pathlib import Path\nPath('metrics/2026-10-15.json').write_text('{\"collect\":[{\"added\":1}]}')\n"
@@ -9516,8 +9517,9 @@ def test_failed_rollback_blocks_commit(tmp: Path):
     # 記事を書き換えて書き込めなくし(戻しが失敗する)、親に SIGTERM を送る
     (root / "scripts" / "retag_sources.py").write_text(
         "from pathlib import Path\nimport os,signal,time\np=next(Path('docs/_posts').glob('*.md'));p.write_text(p.read_text()+'\\n<!-- txn unfinished -->\\n')\n"
-        # 取引の段は child_guard 越しに動くので、親の親(取引を持つ工程)に送る
-        "p.chmod(0o444)\npp=int(open(f'/proc/{os.getppid()}/stat').read().rsplit(')',1)[1].split()[1])\n"
+        # 取引の段は child_guard 越しに動くので、child_guard を遡った先(取引を持つ工程)に送る
+        "p.chmod(0o444)\npp=os.getppid()\nwhile b'child_guard' in open(f'/proc/{pp}/cmdline','rb').read():\n"
+        "    pp=int(open(f'/proc/{pp}/stat').read().rsplit(')',1)[1].split()[1])\n"
         "os.kill(pp,signal.SIGTERM)\ntime.sleep(30)\n", encoding="utf-8")
     g("add", "."); g("commit", "-qm", "base"); g("remote", "add", "origin", str(remote)); g("push", "-qu", "origin", "main")
     branch = "edition/2026-10-15"
@@ -10861,8 +10863,19 @@ def test_classify_txn_escaped_model(tmp: Path):
                    "while not Path('model.pid').exists():\n    time.sleep(0.01)\n")}
     tool = ("import ctypes, os, time\nfrom pathlib import Path\nctypes.CDLL(None).prctl(4, 0, 0, 0, 0)\n"
             "Path('model.pid').write_text(str(os.getpid()))\n" + late)
-    # who: 信号を送る相手。parent=取引を持つ工程 / guard=段の child_guard だけ(OOM など。受けていた孤児は工程(受け皿)へ移る。3巡目の監査)
-    cases = [(k, s, "parent") for k in models for s in (signal.SIGTERM, signal.SIGINT, signal.SIGKILL)] + [("hidden", signal.SIGKILL, "guard")]
+    # who: 信号を送る相手。parent=取引を持つ工程 / guard・inner=段の child_guard の外側・内側だけ(OOM など。3・4巡目の監査)
+    cases = ([(k, s, "parent") for k in models for s in (signal.SIGTERM, signal.SIGINT, signal.SIGKILL)]
+             + [("hidden", signal.SIGKILL, "guard"), ("hidden", signal.SIGKILL, "inner")])
+
+    def inner_guard(outer: int) -> int:
+        for d in os.listdir("/proc"):
+            try:
+                if (d.isdigit() and int(Path(f"/proc/{d}/stat").read_text().rsplit(")", 1)[1].split()[1]) == outer
+                        and b"child_guard" in Path(f"/proc/{d}/cmdline").read_bytes()):
+                    return int(d)
+            except (OSError, ValueError, IndexError):
+                continue
+        return 0
     for kind, sig, who in cases:
         w = tmp / f"{kind}-{sig.name}-{who}"
         (w / "scripts").mkdir(parents=True)
@@ -10888,8 +10901,12 @@ def test_classify_txn_escaped_model(tmp: Path):
             ready = _wait_files(w / "model.pid", limit=20)
             _t.sleep(0.1)
             model = int((w / "model.pid").read_text() or 0) if ready else 0
-            if who == "guard":
-                os.kill(int(json.loads((w / pipelib.TXN_CHILD).read_text(encoding="utf-8"))["pid"]), sig)
+            if who in ("guard", "inner"):
+                outer = int(json.loads((w / pipelib.TXN_CHILD).read_text(encoding="utf-8"))["pid"])
+                target = outer if who == "guard" else inner_guard(outer)
+                check(target > 1, f"前提: 段の child_guard({who})が見つからない")
+                if target > 1:          # 0 を送ると自分のプロセスグループを落とす
+                    os.kill(target, sig)
             else:
                 os.kill(proc.pid, sig)
             try:

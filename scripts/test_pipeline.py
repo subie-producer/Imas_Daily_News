@@ -11500,6 +11500,56 @@ def test_cli_blocked_r6(tmp: Path):
               f"道具の出力の `ERROR: Not logged in` を認証切れにして、codex のふつうの失敗を隠した: {err[-120:]!r} {cp.posts}")
 
 
+def test_cli_blocked_r7(tmp: Path):
+    """Sol 監査 r6 の指摘の再発防止: 組版の判断を並列に取る assemble.judge で、先に終わった組のふつうの失敗が、後の組の
+    認証切れ(CliBlocked)を隠さない(偽の claude を本物の子プロセスとして起動する)。並列のラッパーも、失敗したスレッドの中で
+    停止を見ていれば止める。"""
+    import shutil as _sh
+    import assemble
+    from pipelib import CliBlocked
+    tmp.mkdir(parents=True, exist_ok=True)
+    _sh.copytree(Path(__file__).resolve().parent.parent / "schema", tmp / "schema")
+    bindir = tmp / "bin"
+    bindir.mkdir()
+    (bindir / "claude").write_text(
+        f"#!{sys.executable}\nimport json, sys, time\n"
+        "if 'ledger' in ' '.join(sys.argv):\n    time.sleep(0.5)\n"
+        f"    print({CLAUDE_OAUTH!r})\n    sys.exit(1)\n"
+        "print(json.dumps({'type': 'result', 'is_error': False, 'result': '{}', 'structured_output': {}}))\n", encoding="utf-8")
+    (bindir / "claude").chmod(0o755)
+    saved = (os.environ.get("PATH", ""), pipelib.ROOT, assemble.ROOT, assemble.prompt_digest, assemble.prompt_ledger,
+             assemble.prompt_file)
+    with cli_posts() as cp:
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
+            pipelib.ROOT = assemble.ROOT = tmp
+            assemble.prompt_digest, assemble.prompt_ledger = (lambda *a: "digest"), (lambda *a: "ledger")
+            assemble.prompt_file = lambda d, name, text, base=None: f"{text}-{name}"
+            got = None
+            try:
+                assemble.judge("2099-01-01", {"articles": [{"slug": "one"}]})
+            except CliBlocked as e:
+                got = e
+            except Exception as e:      # noqa: BLE001
+                got = e
+            check(isinstance(got, CliBlocked) and len(cp.blocked_posts()) == 1,
+                  f"先の組のふつうの失敗が、後の組の認証切れを隠した: {type(got).__name__}: {got}")
+            # 並列のラッパー: 失敗したスレッドの中で停止を見ていれば、ふつうの失敗として返さず止める
+            pipelib.CLI_BLOCKED["claude"] = {"tool": "claude", "kind": "auth", "detail": CLAUDE_OAUTH, "resets": ""}
+
+            def boom():
+                raise RuntimeError("組版セッションが答えを返さなかった")
+            stopped = None
+            try:
+                compose.run_parallel([("組版", boom)])
+            except CliBlocked as e:
+                stopped = e
+            check(stopped is not None, "停止を見た process の並列のラッパーが、ふつうの失敗として返した(組版が先へ進む)")
+        finally:
+            os.environ["PATH"] = saved[0]
+            (pipelib.ROOT, assemble.ROOT, assemble.prompt_digest, assemble.prompt_ledger, assemble.prompt_file) = saved[1:]
+
+
 def test_scratch_not_tmp(tmp: Path):
     """本番のコードが作る使い捨てのもの(当番の監査の作業ツリー・答えのファイル・Sol の一時ファイル、探索の作業ディレクトリ)は、
     /tmp(3.8GB の tmpfs)でなく置き場(IMAS_SCRATCH、既定 ~/.cache/imas-news)に作り、終わったら消す。消し損ねは次に作るとき
@@ -11583,6 +11633,7 @@ def main() -> int:
     test_cli_blocked_r4(tmp / "cb4")
     test_cli_blocked_r5(tmp / "cb5")
     test_cli_blocked_r6(tmp / "cb6")
+    test_cli_blocked_r7(tmp / "cb7")
     test_scratch_not_tmp(tmp / "snt")
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")

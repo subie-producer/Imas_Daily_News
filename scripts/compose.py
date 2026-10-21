@@ -2558,6 +2558,10 @@ def run_parallel(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[
             errs[n] = "時間切れ(スレッドが終わっていない)"
     if blocked:
         raise blocked[0]
+    if errs and CLI_BLOCKED:
+        # 失敗したスレッドの中で CLI の停止を見たのに、ふつうの失敗として上がってきた(中の並列が先の失敗で停止を隠した等。
+        # 監査指摘 r6)。停止として止める(失敗の工程として先へ進まない)
+        raise CliBlocked(next(iter(CLI_BLOCKED.values())))
     return [f"{n}: {why}" for n, why in errs.items()]
 
 

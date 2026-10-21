@@ -312,12 +312,21 @@ def is_document(key: str) -> bool:
 URL_IN_TEXT = re.compile(r"https?://[^\s\"'<>（）「」『』【】、。]+")
 
 
-def fact_url(u: str) -> str | None:
-    """facts の文から切り出した URL。末尾が文の句読点とも URL の一部とも読める・括弧の対が合わないものは None(削って別の
-    URL を作らない。監査指摘 2026-10-21: `/event(1)` から `/event`、`?id=A!` から `?id=A` を作り、張られていない先を公式にした)。"""
-    if u[-1] in ".,;:!?…" or u.count("(") != u.count(")"):
-        return None
-    return u
+URL_END_OK = "、。」』】）"      # URL の直後に来てよい文字(空白・文の終わりのほか。和文の句読点・閉じ括弧)
+
+
+def fact_urls(text: str) -> list[str]:
+    """facts の文から切り出した URL。URL の一部とも文の区切りとも読めるものは入れない(削って別の URL を作らない。
+    監査指摘 2026-10-21: `/event(1)` から `/event`、`?id=A!` から `?id=A`、`/event'B`・`/event（B）` から `/event` を作り、
+    張られていない先を公式にした): 末尾が句読点とも読める・括弧の対が合わない・直後が空白・文の終わり・和文の句読点と閉じ括弧の
+    どれでもない(途中で切れたかもしれない)もの。"""
+    out = []
+    for m in URL_IN_TEXT.finditer(text):
+        u, nxt = m.group(0), text[m.end():m.end() + 1]
+        if u[-1] in ".,;:!?…" or u.count("(") != u.count(")") or (nxt and not nxt.isspace() and nxt not in URL_END_OK):
+            continue
+        out.append(u)
+    return out
 _LINK_INDEX: list = [None, {}, {}]    # [素材ファイルの同一性, リンク先のキー → リンク元の URL の並び, リンク元の URL → (題名, facts)]
 
 
@@ -355,8 +364,8 @@ def link_index() -> tuple[dict[str, list[str]], dict[str, tuple[str, list[str]]]
             if url not in rows_of or not rows_of[url][1]:
                 rows_of[url] = (str(c.get("title") or ""), [str(f) for f in c.get("facts") or []][:40])
             for f in c.get("facts") or []:
-                for u in URL_IN_TEXT.findall(str(f)):
-                    k = link_key(fact_url(u))
+                for u in fact_urls(str(f)):
+                    k = link_key(u)
                     if k and k != own:
                         add(k, url)
     about = {u: rows_of.get(u, ("", [])) for srcs in idx.values() for u in srcs}

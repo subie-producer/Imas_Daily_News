@@ -9853,7 +9853,8 @@ def test_link_inheritance(tmp: Path):
     (tmp / "candidates" / "2026-09-26.json").write_text(json.dumps([cand_row("p", post, facts=[
         "#アイマスch メンバー限定配信 10月ゲスト決定", f"お便りフォーム: {form}", f"物販: {shop}", f"記事: {press}",
         f"前回: {old_ticket}", f"前回のフォーム: {old_form}", f"試験: {test_ticket}", f"ほか: {shop2}",
-        "参照 https://[broken]/event", "申込 https://shop.example/evt?id=A!", "詳細 https://shop.example/evt(9)"])],
+        "参照 https://[broken]/event", "申込 https://shop.example/evt?id=A!", "詳細 https://shop.example/evt(9)",
+        "別 https://shop.example/q'B", "別 https://shop.example/r（B）"])],
         ensure_ascii=False), encoding="utf-8")   # 読めない URL が facts にあっても判定を止めない
     for i in range(10, 21):
         (tmp / "candidates" / f"2026-10-{i}.json").write_text(json.dumps([cand_row(f"f{i}", f"https://a.example/{i}")]), encoding="utf-8")
@@ -9908,7 +9909,9 @@ def test_link_inheritance(tmp: Path):
         check(cs.link_sources(ticket) == [(post, "公式")], f"素材の link_from がリンク元にならない: {cs.link_sources(ticket)}")
         # facts の URL を削って別の URL を作らない(`/event(1)` → `/event`、`?id=A!` → `?id=A`。監査指摘 2026-10-21)
         check(cs.link_sources("https://shop.example/goods/1(2)") == [] and cs.link_sources("https://press.example/a") == []
-              and cs.link_sources("https://shop.example/evt?id=A") == [] and cs.link_sources("https://shop.example/evt(9)") == [(post, "公式")],
+              and cs.link_sources("https://shop.example/evt?id=A") == [] and cs.link_sources("https://shop.example/evt(9)") == [(post, "公式")]
+              and cs.link_sources("https://shop.example/q") == [] and cs.link_sources("https://shop.example/r") == []
+              and cs.fact_urls("フォーム（https://a.example/f）から。https://a.example/g、") == ["https://a.example/f", "https://a.example/g"],
               f"facts の URL を削った別の URL にリンク元を付けた: {cs.link_sources('https://shop.example/evt?id=A')}")
         sys.argv = ["classify_sources.py", "--date", "2026-10-21", "--posts-only", "--apply"]
         code = cs.main()

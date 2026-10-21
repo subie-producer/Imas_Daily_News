@@ -1,0 +1,42 @@
+{
+ "decisions": {
+  "765-961-duel-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "個人のX投稿のみで未確認。公式の裏付けが無く、個人のSNS投稿は単体で記事にしない"
+  },
+  "imas-radio-5-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号の既報と同内容(ゲスト・日時・パーソナリティ)。新事実なし、放送は11/10で当日のトリガーも無い"
+  }
+ },
+ "plan": {
+  "articles": [],
+  "dropped": [
+   {
+    "dedup_key": "765-961-duel-live-2027",
+    "reason": "出典不足",
+    "note": "個人のX投稿のみで未確認。公式の裏付けが無く、個人のSNS投稿は単体で記事にしない"
+   },
+   {
+    "dedup_key": "imas-radio-5-2026",
+    "reason": "既報",
+    "note": "10/21号の既報と同内容(ゲスト・日時・パーソナリティ)。新事実なし、放送は11/10で当日のトリガーも無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -411,5 +411,31 @@
   "src_candidate_id": "202610210224-grok-101",
   "companion_of": "sched-2026-10-27-idol-training-month-2026-終了",
   "src_dedup_key": "hatsuboshi-store-autumn-2026"
+ },
+ {
+  "id": "sched-2026-10-27-valiv-cosmo-ace-combat-8-stream-report-2026-10-21-開始",
+  "dedup_key": "valiv-cosmo-ace-combat-8-stream-report-2026-10-21",
+  "brand": "dsva",
+  "subject": "上水流宇宙 ACE COMBAT 8次回配信",
+  "kind": "開始",
+  "note": "21時からYouTubeで上水流宇宙のACE COMBAT 8配信を視聴できる",
+  "reserved_on": "2026-10-22",
+  "occurs_on": "2026-10-27",
+  "title": "上水流宇宙がACE COMBAT 8配信の進行を報告",
+  "url": "https://x.com/KamizuruCosmo/status/2112942686907027774",
+  "source_type": "公式",
+  "facts": [
+   "上水流宇宙がACE COMBAT 8の配信後に、ミッションを振り返った。",
+   "煙だらけになるのを防いだこと、制服と声が素晴らしい人物と出会ったこと、D.D.について知ったことを記した。",
+   "次回は10/27 21:00と告知した。",
+   "YouTube: https://www.youtube.com/live/v8jNrG-NR70?si=YUe_8Ss2dI7ZJsKI",
+   "リンク: https://www.youtube.com/live/v8jNrG-NR70?si=YUe_8Ss2dI7ZJsKI",
+   "エンゲージメント: 低",
+   "言及アイドル: 上水流宇宙"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-21",
+  "src_candidate_id": "202610220239-grok-72"
  }
 ]

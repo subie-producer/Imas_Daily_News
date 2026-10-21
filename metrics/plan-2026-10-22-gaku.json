@@ -1,0 +1,668 @@
+{
+ "decisions": {
+  "shirube-final-stream-ticket-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-shirube-final-streaming-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ばくすて！とーく配信は既報。配信券の記事へ統合"
+  },
+  "gakuen-hif-tsubame-2026": {
+   "action": "article",
+   "angle": "ガラクタロードvol.7の千奈・美鈴ガシャ(11/6)と、佑芽・ことね(年末ごろ)、清夏・麻央(年始ごろ)の初星フェスガシャの予定",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "燕vol.6・STEP4は既報。年末・年始のガシャ予定が新情報"
+  },
+  "sena-roar-mv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号でRoar MV公開を記事化済み。二次情報でローソン情報も混在"
+  },
+  "gaku-shirube-final-streaming-2026": {
+   "action": "article",
+   "angle": "標ファイナルの配信券は両日13,000円・各日6,500円、11/23まで販売。アーカイブ期間と公演後の配信を案内",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報本文に無い価格・販売終了・アーカイブ期間が新情報。ばくすて！とーくの配信も同記事に統合"
+  },
+  "miracle-rerun-gacha-2026": {
+   "action": "article",
+   "angle": "本日11時から麻央＆広のナナウ復刻ガシャと燕のアナザーガシャ(初回10連無料)開始。復刻サポートカードと楽曲追加も同時",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(開始)。セレクトガシャ・サポカ2種・楽曲追加・アナザーガシャを統合"
+  },
+  "nanau-select-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "miracle-rerun-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "kiyoka-another-guaranteed-2026": {
+   "action": "article",
+   "angle": "紫雲清夏のアナザーアイドル確定の無料1連ガシャは10月23日10時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が明日で3日以内。既報なし"
+  },
+  "roar-wednesday-ticket-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/21の学マ水曜日の配布で、終了済み"
+  },
+  "garakuta-china-misuzu-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-hif-tsubame-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ガラクタロードvol.7は同じ施策。サポカ・期間は既報"
+  },
+  "producer-seminar-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号で10/30開始を記事化済み。新事実なし、開始は8日後"
+  },
+  "jewel-sale-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号と同内容。開始は6日後"
+  },
+  "anniversary-login-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号と同内容。開始は15日後"
+  },
+  "gamushara-tsubame-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gamushara-rerun-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ10/30開始のガシャ"
+  },
+  "contemporary-dance-2m-2026": {
+   "action": "article",
+   "angle": "「コンテンポラリのダンス」のMVが200万再生を突破したと公式が発表",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "me-mv-1m-2026": {
+   "action": "article",
+   "angle": "「め」のMVが100万再生を突破したと公式が発表",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "hatsuboshi-radio-20261021": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "hatsuboshi-radio-guests-20261028",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "21日回のアーカイブ公開と次回案内を統合"
+  },
+  "hatsuboshi-radio-guests-20261028": {
+   "action": "article",
+   "angle": "初星学園放送部の10月28日回ゲストは小鹿なお(手毬役)と川村玲奈(広役)。21日回のアーカイブも公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "hatsuboshi-radio-time-correction-20261021": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "21日の放送は終了済みで訂正の意味が無い"
+  },
+  "3rd-single-completion-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号で受注開始を記事化済み。新事実・期日なし"
+  },
+  "gold-rush-vol8-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号と同内容"
+  },
+  "lawson-collab-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号と同内容。開始は19日後"
+  },
+  "ichiban-kuji-part7-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号に価格・賞・日付まで掲載済み"
+  },
+  "hatsuboshi-store-cheer-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号と同内容"
+  },
+  "hatsuboshi-classical-autumn-2026": {
+   "action": "article",
+   "angle": "クラシカル制服Autumn ver.のBIGアクリルスタンド(全13種4,950円)のEC受注は本日23時59分まで。スタンプカード特典も秋版に",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切が本日。締切は10/21号の運営まとめ記事に記載"
+  },
+  "gamushara-rerun-gacha-2026": {
+   "action": "article",
+   "angle": "10月30日11時からことね＆手毬の復刻ガシャと燕のアナザーガシャ。燕歌唱曲のライブシーンとクレジットを紹介",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催期間は既報。ライブシーンと作詞作曲編曲のクレジットが新情報"
+  },
+  "conceptual-single-collection-vol3-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号で予約11/15までを記事化済み"
+  },
+  "gravure-solo-collection-vol1-2026": {
+   "action": "article",
+   "angle": "Gravure Solo Collection Vol.1(11/18発売)のショップ別特典デザイン公開。「ねえ言っちゃうよ」ソロ音源はCD限定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "発売日・価格は8/26号で既報。特典デザイン公開が新情報"
+  },
+  "gakumas-hatsuboshi-autograph-campaign-2026": {
+   "action": "article",
+   "angle": "「はつぼし放課後とーく」配信記念で、出演キャスト全員のサイン色紙プレゼントキャンペーンを開催中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "応募条件・締切は未確認。校閲で判断"
+  },
+  "gakumas-mugyumin-collection-figure-vol1-2026": {
+   "action": "article",
+   "angle": "ブシロードクリエイティブの「むぎゅみにコレクションフィギュアvol.1」がカプセルトイとBUSHIROAD THE BOXで登場",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/17号のむぎゅみに全5種セットとは別商品。価格・時期は未確認"
+  },
+  "gakumas-dmm-maintenance-2026-10-21": {
+   "action": "article",
+   "angle": "セキュリティ強化の臨時メンテで、DMM GAMES版学マスは21日22時から終了未定で遊べない。公式サイトも21時から緊急メンテ",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式サイトの緊急メンテを統合。終了は未定で、記事では現況を確認して書く"
+  },
+  "gakumas-site-maintenance-2026-10-21": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-dmm-maintenance-2026-10-21",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "学マス公式サイトの緊急メンテ。ポータルのメンテは合同面が記事化済みで別のサイト"
+  },
+  "gaku-another-idol-miracle-now-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "miracle-rerun-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-miracle-now-support-vgalpeace-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "miracle-rerun-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-miracle-now-song-add-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "miracle-rerun-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gaku-miracle-now-support-otto-abunai-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "miracle-rerun-gacha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "gakumas-hedgehog-hot-water-bottle-2026": {
+   "action": "article",
+   "angle": "美鈴・手毬のハリネズミゆたんぽとアクスタの受注は10月25日まで。締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(締切前)。価格・配送時期は既報"
+  },
+  "misuzu-temari-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakumas-hedgehog-hot-water-bottle-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ受注・同じ締切"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-gakuen-hif-tsubame-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "ガラクタロードvol.7の千奈・美鈴ガシャ(11/6)と、佑芽・ことね(年末ごろ)、清夏・麻央(年始ごろ)の初星フェスガシャの予定",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "gakuen-hif-tsubame-2026",
+    "candidate_ids": [
+     "202610210732-explore-4",
+     "202610220239-grok-45",
+     "202610220239-grok-46",
+     "202610220239-grok-48",
+     "202610220239-grok-90",
+     "202610220239-grok-47"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-streaming-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "標ファイナルの配信券は両日13,000円・各日6,500円、11/23まで販売。アーカイブ期間と公演後の配信を案内",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gaku-shirube-final-streaming-2026",
+    "candidate_ids": [
+     "202610211840-explore-7",
+     "202610210732-explore-3",
+     "202610220239-grok-62",
+     "202610220239-grok-91",
+     "202610220239-grok-92"
+    ]
+   },
+   {
+    "slug": "gaku-miracle-rerun-gacha-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "本日11時から麻央＆広のナナウ復刻ガシャと燕のアナザーガシャ(初回10連無料)開始。復刻サポートカードと楽曲追加も同時",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "miracle-rerun-gacha-2026",
+    "candidate_ids": [
+     "202610220239-grok-41",
+     "202610220239-grok-121",
+     "sched-2026-10-22-miracle-rerun-gacha-2026-開始",
+     "sched-2026-10-22-miracle-rerun-gacha-2026-開始-src1",
+     "202610220239-grok-42",
+     "202610220239-grok-111",
+     "202610220239-grok-113",
+     "202610220239-grok-114",
+     "202610220239-grok-127"
+    ]
+   },
+   {
+    "slug": "gaku-kiyoka-another-guaranteed-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "紫雲清夏のアナザーアイドル確定の無料1連ガシャは10月23日10時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "kiyoka-another-guaranteed-2026",
+    "candidate_ids": [
+     "202610220239-grok-43"
+    ]
+   },
+   {
+    "slug": "gaku-contemporary-dance-2m-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「コンテンポラリのダンス」のMVが200万再生を突破したと公式が発表",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "contemporary-dance-2m-2026",
+    "candidate_ids": [
+     "202610220239-grok-53"
+    ]
+   },
+   {
+    "slug": "gaku-me-mv-1m-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「め」のMVが100万再生を突破したと公式が発表",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "me-mv-1m-2026",
+    "candidate_ids": [
+     "202610220239-grok-54"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-radio-guests-20261028",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "初星学園放送部の10月28日回ゲストは小鹿なお(手毬役)と川村玲奈(広役)。21日回のアーカイブも公開",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "hatsuboshi-radio-guests-20261028",
+    "candidate_ids": [
+     "202610220239-grok-56",
+     "202610220239-grok-55"
+    ]
+   },
+   {
+    "slug": "gaku-hatsuboshi-classical-autumn-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "クラシカル制服Autumn ver.のBIGアクリルスタンド(全13種4,950円)のEC受注は本日23時59分まで。スタンプカード特典も秋版に",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "hatsuboshi-classical-autumn-2026",
+    "candidate_ids": [
+     "202610220239-grok-64",
+     "202610220239-grok-65"
+    ]
+   },
+   {
+    "slug": "gaku-gamushara-rerun-gacha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "10月30日11時からことね＆手毬の復刻ガシャと燕のアナザーガシャ。燕歌唱曲のライブシーンとクレジットを紹介",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gamushara-rerun-gacha-2026",
+    "candidate_ids": [
+     "202610220239-grok-66",
+     "202610220239-grok-52"
+    ]
+   },
+   {
+    "slug": "gaku-gravure-solo-collection-vol1-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "Gravure Solo Collection Vol.1(11/18発売)のショップ別特典デザイン公開。「ねえ言っちゃうよ」ソロ音源はCD限定",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gravure-solo-collection-vol1-2026",
+    "candidate_ids": [
+     "202610220239-grok-68"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-hatsuboshi-autograph-campaign-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「はつぼし放課後とーく」配信記念で、出演キャスト全員のサイン色紙プレゼントキャンペーンを開催中",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "gakumas-hatsuboshi-autograph-campaign-2026",
+    "candidate_ids": [
+     "202610220239-grok-93"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-mugyumin-collection-figure-vol1-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "ブシロードクリエイティブの「むぎゅみにコレクションフィギュアvol.1」がカプセルトイとBUSHIROAD THE BOXで登場",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "gakumas-mugyumin-collection-figure-vol1-2026",
+    "candidate_ids": [
+     "202610220239-grok-97"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-dmm-maintenance-2026-10-21",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "セキュリティ強化の臨時メンテで、DMM GAMES版学マスは21日22時から終了未定で遊べない。公式サイトも21時から緊急メンテ",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "gakumas-dmm-maintenance-2026-10-21",
+    "candidate_ids": [
+     "202610220239-grok-100",
+     "202610220239-grok-102"
+    ]
+   },
+   {
+    "slug": "gaku-gakumas-hedgehog-hot-water-bottle-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "美鈴・手毬のハリネズミゆたんぽとアクスタの受注は10月25日まで。締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "gakumas-hedgehog-hot-water-bottle-2026",
+    "candidate_ids": [
+     "sched-2026-10-22-gakumas-hedgehog-hot-water-bottle-2026-締切前",
+     "sched-2026-10-22-misuzu-temari-goods-2026-締切前"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sena-roar-mv-2026",
+    "reason": "既報",
+    "note": "10/21号でRoar MV公開を記事化済み。二次情報でローソン情報も混在"
+   },
+   {
+    "dedup_key": "roar-wednesday-ticket-2026",
+    "reason": "その他",
+    "note": "10/21の学マ水曜日の配布で、終了済み"
+   },
+   {
+    "dedup_key": "producer-seminar-2026",
+    "reason": "既報",
+    "note": "10/21号で10/30開始を記事化済み。新事実なし、開始は8日後"
+   },
+   {
+    "dedup_key": "jewel-sale-2026",
+    "reason": "既報",
+    "note": "10/21号と同内容。開始は6日後"
+   },
+   {
+    "dedup_key": "anniversary-login-2026",
+    "reason": "既報",
+    "note": "10/21号と同内容。開始は15日後"
+   },
+   {
+    "dedup_key": "hatsuboshi-radio-time-correction-20261021",
+    "reason": "その他",
+    "note": "21日の放送は終了済みで訂正の意味が無い"
+   },
+   {
+    "dedup_key": "3rd-single-completion-goods-2026",
+    "reason": "既報",
+    "note": "10/21号で受注開始を記事化済み。新事実・期日なし"
+   },
+   {
+    "dedup_key": "gold-rush-vol8-2026",
+    "reason": "既報",
+    "note": "10/21号と同内容"
+   },
+   {
+    "dedup_key": "lawson-collab-2026",
+    "reason": "既報",
+    "note": "10/21号と同内容。開始は19日後"
+   },
+   {
+    "dedup_key": "ichiban-kuji-part7-2026",
+    "reason": "既報",
+    "note": "10/21号に価格・賞・日付まで掲載済み"
+   },
+   {
+    "dedup_key": "hatsuboshi-store-cheer-2026",
+    "reason": "既報",
+    "note": "10/21号と同内容"
+   },
+   {
+    "dedup_key": "conceptual-single-collection-vol3-2026",
+    "reason": "既報",
+    "note": "10/21号で予約11/15までを記事化済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

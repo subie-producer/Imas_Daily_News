@@ -1,0 +1,390 @@
+{
+ "decisions": {
+  "shiny-iroduku-kaze-hiori-luca-gasha-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・強化週間・イベント・運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hyakkiyako-pop-up-after-sales-2026": {
+   "action": "article",
+   "angle": "百鬼夜行POP UP SHOPの事後通販が11月5日23時59分まで、3,000円購入ごとにブロマイド特典",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-autumn-idol-training-week-17-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・強化週間・イベント・運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-en-route-rerun-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/18の運営まとめに開催期間が既出。新事実・当日トリガー無し"
+  },
+  "shiny-song-prism-dmm-maintenance-2026-10-21": {
+   "action": "article",
+   "angle": "DMM GAMES版シャニソンが10/21 22時から臨時メンテナンス、終了時刻未定。バンダイナムコIDの引き継ぎ機能も23時から停止",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-bandai-namco-id-maintenance-2026-10-21": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-prism-dmm-maintenance-2026-10-21",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-madoka-poison-gasha-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・強化週間・イベント・運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-style-collection-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-style-collection-wave2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-autumn-idol-training-week-reward-meguru-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・強化週間・イベント・運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-hiori-chest-light-ur-introduction-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・強化週間・イベント・運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-shhis-break-chain-2dmv-2026": {
+   "action": "article",
+   "angle": "シーズの『Break Chain』2DMVがアイドルマスターchで公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-yorui-attitude-step-up-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・強化週間・イベント・運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-v2190-select-box-filter-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・強化週間・イベント・運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-shatter-the-limits-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ・強化週間・イベント・運営情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-web-comic-661-cat-2026": {
+   "action": "article",
+   "angle": "web4コマ漫画第661話「猫」(斑鳩ルカ)を公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-mattari-hbtk-october-2026": {
+   "action": "article",
+   "angle": "「まったりHBTK」10月度のおたよりとCHAINお悩み相談室へのアドバイスは22日頃が締切",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。hbt-kと10/20放送アーカイブ案内を統合"
+  },
+  "shiny-hbt-k-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-mattari-hbtk-october-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-mattari-hbtk-2026-10-20-archive": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-mattari-hbtk-october-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-luka-piece-package-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21の記事に同内容。新事実無し"
+  },
+  "general-chikusei-shiny-idol-card-board-full-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "ファン面(general)の話題。事実も1文のみ"
+  },
+  "shiny-song-pickup-gacha-madoka-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-for-prism-madoka-poison-gasha-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-style-collection-wave2-2026": {
+   "action": "article",
+   "angle": "SHINY Style COLLECTION第2弾(Sonic Heart/No 1 feel alone)のASOBI STORE受注は10月25日まで、締切3日前",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "goods・vol2-keyholder・style-collectionを統合(同じ受注締切)"
+  },
+  "shiny-style-collection-goods-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-style-collection-wave2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-style-collection-vol2-keyholder-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-style-collection-wave2-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-hyakkiyako-pop-up-after-sales-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "百鬼夜行POP UP SHOPの事後通販が11月5日23時59分まで、3,000円購入ごとにブロマイド特典",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-hyakkiyako-pop-up-after-sales-2026",
+    "candidate_ids": [
+     "202610211840-explore-4"
+    ]
+   },
+   {
+    "slug": "shiny-song-prism-dmm-maintenance-2026-10-21",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "DMM GAMES版シャニソンが10/21 22時から臨時メンテナンス、終了時刻未定。バンダイナムコIDの引き継ぎ機能も23時から停止",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-song-prism-dmm-maintenance-2026-10-21",
+    "candidate_ids": [
+     "202610220239-grok-19",
+     "202610220239-grok-101",
+     "202610220239-grok-20"
+    ]
+   },
+   {
+    "slug": "shiny-shhis-break-chain-2dmv-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シーズの『Break Chain』2DMVがアイドルマスターchで公開",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "shiny-shhis-break-chain-2dmv-2026",
+    "candidate_ids": [
+     "202610220239-grok-25"
+    ]
+   },
+   {
+    "slug": "shiny-web-comic-661-cat-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "web4コマ漫画第661話「猫」(斑鳩ルカ)を公開",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-web-comic-661-cat-2026",
+    "candidate_ids": [
+     "202610220239-grok-29"
+    ]
+   },
+   {
+    "slug": "shiny-mattari-hbtk-october-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「まったりHBTK」10月度のおたよりとCHAINお悩み相談室へのアドバイスは22日頃が締切",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-mattari-hbtk-october-2026",
+    "candidate_ids": [
+     "202610220239-grok-30",
+     "sched-2026-10-22-shiny-mattari-hbtk-october-2026-締切",
+     "202610220239-grok-31",
+     "202610220239-grok-32"
+    ]
+   },
+   {
+    "slug": "shiny-style-collection-wave2-2026",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "SHINY Style COLLECTION第2弾(Sonic Heart/No 1 feel alone)のASOBI STORE受注は10月25日まで、締切3日前",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "shiny-style-collection-wave2-2026",
+    "candidate_ids": [
+     "sched-2026-10-22-shiny-style-collection-wave2-2026-締切前",
+     "202610220239-grok-22",
+     "202610220239-grok-33",
+     "sched-2026-10-22-shiny-style-collection-goods-2026-締切前",
+     "sched-2026-10-22-shiny-style-collection-vol2-keyholder-2026-締切前"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "開催中のガシャ・強化週間・イベント・運営情報",
+    "lead_score": 0,
+    "dedup_key": "shiny-iroduku-kaze-hiori-luca-gasha-2026",
+    "candidate_ids": [
+     "202610210732-explore-1",
+     "202610212334-explore-5",
+     "202610220239-grok-21",
+     "202610220239-grok-23",
+     "202610220239-grok-24",
+     "202610220239-grok-26",
+     "202610220239-grok-27",
+     "202610220239-grok-28",
+     "202610220239-grok-104"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-en-route-rerun-2026",
+    "reason": "既報",
+    "note": "10/18の運営まとめに開催期間が既出。新事実・当日トリガー無し"
+   },
+   {
+    "dedup_key": "shiny-luka-piece-package-2026",
+    "reason": "既報",
+    "note": "10/21の記事に同内容。新事実無し"
+   },
+   {
+    "dedup_key": "general-chikusei-shiny-idol-card-board-full-2026",
+    "reason": "面違い",
+    "note": "ファン面(general)の話題。事実も1文のみ"
+   }
+  ],
+  "cross_brand": []
+ }
+}

@@ -1,0 +1,195 @@
+{
+ "decisions": {
+  "cinderella-sega-lucky-kuji-vol1-cute": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/20号で販売期間・価格・A〜F賞まで報道済み。新事実・当日トリガーなし"
+  },
+  "cg-sakuma-mayu-necklace-bound-to-you": {
+   "action": "article",
+   "angle": "バンダイ×TUfaveから佐久間まゆのイメージネックレス「Bound to you.」の予約が10/21から11/30まで始まった",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cg-isetan-osechi-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号で販売開始・商品・特典を報道済み。BIGスタンド抽選も10/17号で報道済み"
+  },
+  "cinderella-popup-shop-after-sales-2026": {
+   "action": "article",
+   "angle": "開催済みのPOP UP SHOP商品がTHEキャラで事後通販、10/21〜11/5受注で陰陽師verのカンバッジ等が対象",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "deresute-emergency-maintenance-2026-10": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "deresute-emergency-maintenance-endtime-2026-10-22",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ緊急メンテナンス"
+  },
+  "cg-15th-orchestra-premium-presale-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "cinderella-15th-orchestra-concert",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2次先行の受付(10/25期限)"
+  },
+  "deresute-emergency-maintenance-time-change-2026-10-21": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "deresute-emergency-maintenance-endtime-2026-10-22",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ緊急メンテナンス(開始22時へ前倒し)"
+  },
+  "deresute-emergency-maintenance-endtime-2026-10-22": {
+   "action": "article",
+   "angle": "デレステの緊急メンテナンスが開始を22時に前倒しして実施され、終了予定は10/22 2:10と告知された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "topic-012-2026": {
+   "action": "article",
+   "angle": "レース着物ver.マルチデスクマット全10種(各3,960円)の再販受注は10/25まで、締切まで3日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "cinderella-15th-orchestra-concert": {
+   "action": "article",
+   "angle": "15周年オーケストラコンサートのアソビストアプレミアム会員2次先行は10/25 23:59まで、締切まで3日",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 50,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-sakuma-mayu-necklace-bound-to-you",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "バンダイ×TUfaveから佐久間まゆのイメージネックレス「Bound to you.」の予約が10/21から11/30まで始まった",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "cg-sakuma-mayu-necklace-bound-to-you",
+    "candidate_ids": [
+     "202610211840-watch-0",
+     "202610220239-grok-85"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-popup-shop-after-sales-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "開催済みのPOP UP SHOP商品がTHEキャラで事後通販、10/21〜11/5受注で陰陽師verのカンバッジ等が対象",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cinderella-popup-shop-after-sales-2026",
+    "candidate_ids": [
+     "202610212334-explore-4"
+    ]
+   },
+   {
+    "slug": "cg-deresute-emergency-maintenance-endtime-2026-10-22",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "デレステの緊急メンテナンスが開始を22時に前倒しして実施され、終了予定は10/22 2:10と告知された",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "deresute-emergency-maintenance-endtime-2026-10-22",
+    "candidate_ids": [
+     "202610220239-grok-10",
+     "202610220239-explore-0",
+     "202610220239-grok-9"
+    ]
+   },
+   {
+    "slug": "cg-topic-012-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "レース着物ver.マルチデスクマット全10種(各3,960円)の再販受注は10/25まで、締切まで3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "topic-012-2026",
+    "candidate_ids": [
+     "sched-2026-10-22-topic-012-2026-締切前"
+    ]
+   },
+   {
+    "slug": "cg-cinderella-15th-orchestra-concert",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "15周年オーケストラコンサートのアソビストアプレミアム会員2次先行は10/25 23:59まで、締切まで3日",
+    "purpose": "期日の知らせ",
+    "lead_score": 50,
+    "dedup_key": "cinderella-15th-orchestra-concert",
+    "candidate_ids": [
+     "sched-2026-10-22-cinderella-15th-orchestra-concert-締切前",
+     "202610220239-grok-7"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "cinderella-sega-lucky-kuji-vol1-cute",
+    "reason": "既報",
+    "note": "10/20号で販売期間・価格・A〜F賞まで報道済み。新事実・当日トリガーなし"
+   },
+   {
+    "dedup_key": "cg-isetan-osechi-2027",
+    "reason": "既報",
+    "note": "10/21号で販売開始・商品・特典を報道済み。BIGスタンド抽選も10/17号で報道済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

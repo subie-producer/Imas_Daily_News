@@ -244,6 +244,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - tufave.com            # 合議で追加: 特商法表記で運営を確認。ライセンス商品を作って売る会社
+  - neowing.co.jp         # 合議で追加: 特商法表記で販売事業者を確認。多作品を扱う一般通販の販売元
   - smt-cinema.com        # 合議で追加: 会場の新宿ピカデリーで舞台挨拶を催し、前売りを販売する映画館運営側
   - sega.jp               # 合議で追加: セガのラッキーくじ販売元。sega.co.jpで社名確認、sega.jpは403
   - shopblog.dmdepart.jp  # 合議で追加: 会場の大丸東京店の公式ブログで、展示の告知と販売情報を発信
@@ -429,6 +431,7 @@ video_ids:
     - sm18526341          # 機械で追加: nicovideo.jp/user/17835786「iM@S 6th Anniversary Live - キラ」
     - LSkzNm3AzHk         # 機械で追加: @TogawaNonoha「〖 世界のアソビ大全51 〗遊び…？いいえ、ののは vs ま」
   公式:
+    - _nj8uSouS6c         # 機械で追加: @KamizuruCosmo「Wake up my music 踊ってみた #Shorts」
     - bbvPICVDOk4         # 機械で追加: @imas-official「10/21 二階堂千鶴さん Happy Birthday‼」
     - Mdyk3h5-TQE         # 機械で追加: @hatsuboshi_gakuen「初星学園 「Roar」Official Music Vide」
     - PMe-Q5hKxac         # 機械で追加: @imas-official「10/18 小早川紗枝さん Happy Birthday‼」
@@ -864,6 +867,7 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - neowing_anime       # 合議で追加: Neowingは一般のアニメ・音楽通販店で、CD予約の販売元として発信している
     - tllkame             # 合議で追加: 東京レジャーランド亀有店(ゲームセンター)によるツアマス稼働終了告知
     - seganewsnavi        # 合議で追加: 販売側サイトによるシンデレラくじ発売キャンペーン告知、独立報道ではない
     - kawasaki_full       # 合議で追加: フルコンプ川崎店によるツアマス確定くじの販売告知
@@ -971,6 +975,8 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg: 公式 # 合議で追加: リンク元@imas_chは登録済み公式。同じ配信企画のフォーム
+  t.co/oPYZEyxHYF: 公式                         # 機械で追加: 展開先 https://idolmaster-official.jp/
   t.co/odKdocfVW3: 準公式                         # 機械で追加: 展開先 https://asobistore.jp/content/title/Idolmaster/shinyradio/contact/
   t.co/PHXTrZXZFE: 公式                         # 機械で追加: 展開先 https://va-liv.booth.pm/items/8959817
   t.co/MdlrfC0LCI: 準公式                         # 機械で追加: 展開先 https://shop.asobistore.jp/products/detail/250322-00-00-comp_01

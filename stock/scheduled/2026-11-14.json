@@ -557,5 +557,30 @@
   "src_candidate_id": "sched-2026-10-21-cg-isetan-osechi-2027-開始-src1",
   "companion_of": "sched-2026-11-14-cg-isetan-osechi-2027-締切前",
   "src_dedup_key": "cg-isetan-osechi-2027"
+ },
+ {
+  "id": "sched-2026-11-14-million-mitsukoshi-osechi-2027-締切前",
+  "dedup_key": "million-mitsukoshi-osechi-2027",
+  "brand": "million",
+  "subject": "ミリオン×三越おせち 販売締切まであと3日",
+  "kind": "締切前",
+  "note": "締切の3日前。三越伊勢丹オンラインストアで予約できる",
+  "reserved_on": "2026-10-22",
+  "occurs_on": "2026-11-17",
+  "title": "ミリオンライブ！×三越のおせち2027の販売開始",
+  "url": "https://gamebiz.jp/news/434437",
+  "source_type": "報道",
+  "facts": [
+   "「アイドルマスター ミリオンライブ！×三越のおせち 2027」の販売が10月21日よりスタートした。",
+   "彩り豊かなおせちと本企画限定の特典がある。",
+   "販売期間: 2026年10月21日(水)午前10時～11月17日(火)午後11時59分",
+   "三越伊勢丹オンラインストアで販売し、店頭での予約・販売はない。",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "event_date": "2026-10-21",
+  "deadline": "2026-11-17",
+  "src_candidate_id": "202610211231-explore-1"
  }
 ]

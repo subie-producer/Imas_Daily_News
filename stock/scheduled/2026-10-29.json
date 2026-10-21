@@ -879,5 +879,29 @@
   "verify": "confirmed",
   "event_date": "2026-10-29",
   "src_candidate_id": "202610210224-grok-77"
+ },
+ {
+  "id": "sched-2026-10-29-tours-s2-study-equal-magic-tips-2026-開始",
+  "dedup_key": "tours-s2-study-equal-magic-tips-2026",
+  "brand": "joint",
+  "subject": "ツアマスS2弾 稼働開始",
+  "kind": "開始",
+  "note": "山下次郎・舞田類が登場するS2弾を店舗で遊べる",
+  "reserved_on": "2026-10-22",
+  "occurs_on": "2026-10-29",
+  "title": "ツアマス S2弾の『Study Equal Magic!』TIPS",
+  "url": "https://x.com/TOURS_imas/status/2112847613175136280",
+  "source_type": "公式",
+  "facts": [
+   "『Study Equal Magic!』では女性アイドルの振り付けの一部が異なる。",
+   "山下次郎・舞田類のSideM専用衣装『ノーブルプライド』のアナザーカラーはピンク。",
+   "S2弾稼働開始: 10月29日",
+   "エンゲージメント: 中",
+   "言及アイドル: 山下次郎、舞田類"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-29",
+  "src_candidate_id": "202610220239-grok-78"
  }
 ]

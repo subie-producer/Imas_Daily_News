@@ -1730,5 +1730,60 @@
   "src_candidate_id": "202610202340-explore-35",
   "companion_of": "sched-2026-10-28-sidem-fbfes-wgf-2026-stage-greeting-締切",
   "src_dedup_key": "sidem-fantastic-battle-fes-premiere-stage-greeting-2026"
+ },
+ {
+  "id": "sched-2026-10-28-hatsuboshi-radio-guests-20261028-開始",
+  "dedup_key": "hatsuboshi-radio-guests-20261028",
+  "brand": "gaku",
+  "subject": "学マス放送部 小鹿なお・川村玲奈ゲスト回",
+  "kind": "開始",
+  "note": "21時からの放送を視聴できる",
+  "reserved_on": "2026-10-22",
+  "occurs_on": "2026-10-28",
+  "title": "初星学園放送部 10月28日ゲスト告知",
+  "url": "https://x.com/gkmas_official/status/2112889135891697749",
+  "source_type": "公式",
+  "facts": [
+   "10/28(水)放送回のゲストは小鹿なおさん（月村手毬役）、川村玲奈さん（篠澤広役）。",
+   "ゲストを迎えて放送すると告知。",
+   "エンゲージメント: 中",
+   "10月28日(水)放送回のゲストは小鹿なおさん(月村手毬役)。",
+   "10月28日(水)放送回のゲストは川村玲奈さん(篠澤広役)。",
+   "言及アイドル: 月村手毬、篠澤広"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-28",
+  "src_candidate_id": "202610220239-grok-56"
+ },
+ {
+  "id": "sched-2026-10-28-hatsuboshi-radio-guests-20261028-開始-src1",
+  "dedup_key": "hatsuboshi-radio-guests-20261028",
+  "brand": "gaku",
+  "subject": "学マス放送部 小鹿なお・川村玲奈ゲスト回",
+  "kind": "開始",
+  "note": "21時からの放送を視聴できる",
+  "reserved_on": "2026-10-22",
+  "occurs_on": "2026-10-28",
+  "title": "初星学園放送部 10月21日放送回終了・アーカイブ",
+  "url": "https://x.com/gkmas_official/status/2112890394295845016",
+  "source_type": "公式",
+  "facts": [
+   "初星学園放送部の放送回が終了。",
+   "翌週も21時から配信すると告知。",
+   "アーカイブ YouTube: https://www.youtube.com/watch?v=FYA01EKks6g&feature=youtu.be",
+   "リンク: https://www.youtube.com/watch?v=FYA01EKks6g&feature=youtu.be",
+   "エンゲージメント: 中",
+   "10月21日放送回の視聴への謝辞が投稿された。",
+   "次回も21時から放送すると案内された。",
+   "アーカイブ動画が公開された。",
+   "YouTube: https://www.youtube.com/watch?v=FYA01EKks6g&feature=youtu.be"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-21",
+  "src_candidate_id": "202610220239-grok-55",
+  "companion_of": "sched-2026-10-28-hatsuboshi-radio-guests-20261028-開始",
+  "src_dedup_key": "hatsuboshi-radio-20261021"
  }
 ]

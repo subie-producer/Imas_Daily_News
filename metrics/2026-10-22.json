@@ -1,0 +1,185 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-22T02:39:27+09:00",
+   "edition": "2026-10-22",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 0,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 350,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 2,
+    "explore:million": 0,
+    "explore:shiny": 1,
+    "explore:sidem": 1,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 1,
+    "explore:trend": 0,
+    "grok_week_searches": 477,
+    "grok:765as": 2,
+    "grok:cinderella": 7,
+    "grok:million": 9,
+    "grok:shiny": 18,
+    "grok:sidem": 5,
+    "grok:gakuen": 65,
+    "grok:dsva": 4,
+    "grok:joint-other": 9,
+    "grok:trend": 9,
+    "grok_searches:joint": 7,
+    "grok_searches:sidem": 7,
+    "grok_searches:million": 6,
+    "grok_searches:765": 11,
+    "grok_searches:shiny": 9,
+    "grok_searches:dsva": 5,
+    "grok_searches:general": 6,
+    "grok_searches:gaku": 11,
+    "grok_searches:cg": 5
+   },
+   "normalized": 134,
+   "added": 101,
+   "verify": {
+    "confirmed": 122,
+    "unconfirmed": 11,
+    "failed": 1
+   },
+   "duration_s": 2330
+  }
+ ],
+ "compose": [
+  {
+   "at": "2026-10-22T03:31:47+09:00",
+   "edition": "2026-10-22",
+   "rounds": 5,
+   "approved": true,
+   "lint_green": true,
+   "planned": 44,
+   "written": 33,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 112,
+    "covered": 112,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [
+    "cg-sakuma-mayu-necklace-bound-to-you",
+    "million-mitsukoshi-osechi-2027",
+    "sidem-renaissance-2026"
+   ],
+   "stages_min": {
+    "選定": 1.8166945854822794,
+    "執筆": 6.225944979985555,
+    "出典の判定": 2.4554622213045754,
+    "組版": 2.301758356889089,
+    "校閲": 1.0008049885431924,
+    "校閲1波": 1.0008049885431924
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-gakuen-hif-tsubame-2026",
+    "gaku-shirube-final-streaming-2026",
+    "gaku-gakumas-hatsuboshi-autograph-campaign-2026",
+    "million-platinum-star-tiara-happy-pease-2026",
+    "million-radio-playlist-otayori-2026",
+    "sidem-fbfes-wanna-step-in-goods-2026",
+    "general-starlit-season-5th-steam-sale-2026",
+    "gaku-gamushara-rerun-gacha-2026"
+   ],
+   "duration_s": 1869
+  },
+  {
+   "at": "2026-10-22T04:16:16+09:00",
+   "edition": "2026-10-22",
+   "rounds": 3,
+   "approved": true,
+   "lint_green": true,
+   "planned": 44,
+   "written": 42,
+   "roundups": 1,
+   "dropped": 0,
+   "coverage": {
+    "subjects": 112,
+    "covered": 112,
+    "missing": 0,
+    "missing_keys": []
+   },
+   "dropped_by_review": [],
+   "stages_min": {
+    "執筆": 1.4534899751345316,
+    "出典の判定": 1.5625320196151733,
+    "組版": 0.8959576765696208,
+    "校閲": 1.0324398756027222,
+    "校閲1波": 1.0324398756027222
+   },
+   "target_min": 60,
+   "over_target": false,
+   "aborted": [
+    "gaku-gakuen-hif-tsubame-2026",
+    "gaku-gakumas-hatsuboshi-autograph-campaign-2026"
+   ],
+   "duration_s": 882
+  }
+ ]
+}

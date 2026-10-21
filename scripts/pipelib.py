@@ -30,6 +30,27 @@ def edition_date(now: datetime.datetime | None = None) -> str:
     return d.isoformat()
 
 
+def x_status_time(url: str) -> datetime.datetime | None:
+    """x.com/twitter.com の投稿の status ID(Snowflake)から投稿日時を日本時間で復元する。X の投稿でなければ None。"""
+    m = re.match(r"https?://(?:[\w-]+\.)?(?:x|twitter)\.com/[^?#\s]*?/status(?:es)?/(\d{15,20})", str(url or ""))
+    if not m:
+        return None
+    ms = (int(m.group(1)) >> 22) + 1288834974657  # Twitter epoch
+    return datetime.datetime.fromtimestamp(ms / 1000, tz=JST)
+
+
+def align_x_published_date(c: dict) -> bool:
+    """X の投稿の素材(候補・続報予約)の published_date を、投稿 ID の日本時間の日付に揃える。変えたら True。
+    収集の正規化・候補ファイルへの書き込み(保存済みの候補を含む)・組版の素材の読み込みが同じこれを使う(冪等)。
+    2026-10-21号: Grok が投稿日時を GMT で書き、10/21 0:00 JST の公式の投稿3件が published_date 10/20 の素材になって、
+    出典 label の日付が 10/20 で書かれた(校閲 R8 が2巡ブロック)。"""
+    t = x_status_time(c.get("url")) if isinstance(c, dict) else None
+    if not t or c.get("published_date") == t.date().isoformat():
+        return False
+    c["published_date"] = t.date().isoformat()
+    return True
+
+
 def candidate_misplaced(c: dict) -> bool:
     """写しの照合で落ちた候補(URL の取り違え)。事実がこのページのものではない。"""
     return bool(c.get("quotes")) and str(c.get("verify_note") or "").startswith("写しが出典の本文に無い")

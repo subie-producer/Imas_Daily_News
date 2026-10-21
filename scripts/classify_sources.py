@@ -34,7 +34,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, EXPLORE_MODEL, ID_CASE_HOSTS, QUERY_DOC_PAGES, SHORTENERS, classify_source,
                      source_type_table, write_source_table, prompt_part, render_prompt, query_doc_key, path_type_norm,
                      edition_date, extract_json_array, html_to_text, notify, render_failure, set_quiet,
-                     X_ANON_POST, x_post_author)
+                     X_ANON_POST, x_post_author, CLI_BLOCKED_EXIT, CliBlocked, cli_check)
 
 # 合議で足してよい種別。公式・準公式も答えさせる(作品・ブランドの公式アカウントを「不明」で人へ回して
 # いたら、@idolmaster_en もジムシャニ公式も未確認のまま紙面に載った。編集長の指摘)。
@@ -742,6 +742,11 @@ def ask(cmd: list[str], prompt: str, timeout: int = 900) -> list[dict]:
                 shutil.rmtree(wd, ignore_errors=True)
         # 答えが読めた・読めないに関係なく生の出力を残す(決まらなかった分類の理由を後から確かめるため)
         save_raw(edition_date(), name, r.stdout, r.stderr, r.returncode)
+        # 認証切れ・利用上限で答えなかったのは「決まらなかった」ではない(無回答として議論・人へ回さない)。判定を丸ごとやめて、
+        # 次の判定でやり直す(main が CLI_BLOCKED_EXIT で終え、取引が判定表を開始時へ戻す)
+        blocked = cli_check(cmd[0], "compose" if POSTS_ONLY else "collect", "出典の判定(合議)", r.returncode, r.stdout, r.stderr)
+        if blocked:
+            raise CliBlocked(blocked)
         # 異常終了の間際の出力は答えにしない(無回答として議論・人へ。監査指摘)
         rows = (extract_json_array(r.stdout) or []) if r.returncode == 0 else []
         if not rows:    # 答えが空のまま「—」で議論が流れると、なぜ決まらなかったのか後から追えない
@@ -1569,4 +1574,9 @@ def load_unresolved() -> dict[str, str]:
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except CliBlocked as e:
+        # 投稿は見つけたときに済んでいる。決まらなかったものの記録(classify-unresolved.json)は書き換えない
+        print(f"出典の判定をやめた(次の判定でやり直す): {e}", flush=True)
+        sys.exit(CLI_BLOCKED_EXIT)

@@ -898,17 +898,25 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
         if wip:    # 前の試行の続き: その commit と、残った指摘から始める
             # kept を**先に**前の続きで満たす(この先の checkout が失敗しても、残してあった続きを消さない。監査指摘)
             kept = {"head": wip["head"], "fix": json.loads(json.dumps(wip["fix"])), "open": list(wip["open"])}
+            if isinstance(wip.get("objection"), dict):
+                kept["objection"] = wip["objection"]
             if wip["head"] != base:
                 must(sh(["git", "checkout", "-q", "--detach", wip["head"]], cwd=wt), "前の試行の続きの checkout")
             fix, objections = dict(wip["fix"]), list(wip["open"])
             head = wip["head"]
-            transcript.append({"round": 0, "resumed_from": head, "open": objections, "carried_later": list(later)})
+            if isinstance(wip.get("objection"), dict):
+                # 前の試行は、監査の文面に当番が異を唱えたところで終わった。続きは当番の修正を挟まず、異議を監査に渡すところから
+                # (監査指摘: 異議の直後に上限・時間切れで終わると、異議の根拠・当番の最新の文面・監査の前の文面が失われた)
+                integ, objected = dict(wip["objection"]), True
+            transcript.append({"round": 0, "resumed_from": head, "open": objections, "carried_later": list(later),
+                               "objection": kept.get("objection")})
             print(f"前の試行の続きから({head[:10]}、残った指摘 {len(objections)}件)", flush=True)
         for rnd in range(1, MAX_ROUNDS + 1):
             if left() < MIN_STEP_SEC:
                 transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
                 break
             print(f"当番 {rnd}回目", flush=True)
+            carry_objection = integ if objected else None   # この往復の監査が終わるまで、異議を続きに残す
             if objected:
                 objected = False    # 当番の答えは前の往復の異議(integ に入っている)。そのまま監査へ
             elif not fix:
@@ -946,6 +954,8 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                               "claim": f"{rnd}往復目の修正は監査が終わっていない(前の指摘が直ったかは未確認)。直っているか確かめ、足りなければ直す"}
             objections = [o for o in (objections or []) if o.get("id") != "review-incomplete"]   # 印は毎往復1つだけ
             kept = {"head": head, "fix": json.loads(json.dumps(fix)), "open": objections + [pending_review]}
+            if carry_objection:
+                kept["objection"] = carry_objection
             if left() < 30:
                 transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
                 break
@@ -1029,12 +1039,14 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                          "report_objection": {"audit_summary": who["audit_summary"], "evidence": who["evidence"]}}
                 objected = True
                 objections = list(must_fix)
-                kept["open"] = list(objections)
+                # 続きにも、当番の最新の文面と異議一式を残す(上限・時間切れで終わっても、次の試行は異議を監査に渡すところから)
+                kept.update(fix=json.loads(json.dumps(fix)), open=list(objections), objection=integ)
                 continue
             # reject なのに must_fix が空、という答えでも次の往復が「指摘なし」で始まらないようにする
             objections = must_fix or [{"id": "reject-without-items", "severity": "quality", "evidence": "",
                                                   "claim": "監査は reject したが must_fix が空だった: " + str(rev.get("notes") or "")[:600]}]
             kept["open"] = list(objections)
+            kept.pop("objection", None)     # 異議は監査に渡り、監査が答えた(続きは当番の修正から)
     except Exception as e:      # noqa: BLE001 — 何で終わっても、固定できたところまでは次へ残す
         res["error"] = f"{type(e).__name__}: {str(e)[:300]}"
         transcript.append({"error": res["error"]})
@@ -1705,6 +1717,8 @@ def _main() -> int:
         if not approved and kept["fix"] and kept["open"] and kept["fix"].get("status") != "cannot_fix":
             state["wip"] = {"base": base, "head": kept["head"], "fix": kept["fix"], "open": kept["open"],
                             "later": kept.get("later") or []}
+            if isinstance(kept.get("objection"), dict):
+                state["wip"]["objection"] = kept["objection"]   # 監査の文面への当番の異議(続きは異議を監査に渡すところから)
         else:
             state.pop("wip", None)
         save_state(state_p, state)

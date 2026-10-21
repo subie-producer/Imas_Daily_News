@@ -8101,7 +8101,7 @@ def test_oncall_report_concurrence(tmp: Path):
         oncall.MAX_ROUNDS = 4
         oncall.PAPER_RECORD = "## 掲載の記録(2026-10-15号)\n- dsva-letora: レトラ誕生日LV"
 
-        def run(reviews: list[dict], accepts: list[dict]):
+        def run(reviews: list[dict], accepts: list[dict], wip: dict | None = None):
             calls, prompts = [], []
             rv, ac = iter(reviews), iter(accepts)
 
@@ -8117,7 +8117,7 @@ def test_oncall_report_concurrence(tmp: Path):
             oncall.run_claude = claude
             oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (rprompts.append(prompt) or next(rv))
             tr: list[dict] = []
-            r = oncall.run_rounds("compose", "2026-10-15", "ctx", tmp, "B" * 40, None, "env", tr)
+            r = oncall.run_rounds("compose", "2026-10-15", "ctx", tmp, "B" * 40, wip, "env", tr)
             return r, tr, calls, prompts, rprompts
 
         # (1) misreport だけ → 監査の文面 → 当番が了承 → 取り込む(承認)。報告は監査の文面で、誰が書き誰が了承したかが残る
@@ -8167,6 +8167,23 @@ def test_oncall_report_concurrence(tmp: Path):
                                  [{"decision": "object", "evidence": "違う", "editor_summary": None}] * 4)
         check(not r["approved"] and [o["id"] for o in r["kept"]["open"]] == ["m1"] and calls.count("oncall-accept.schema.json") == 4,
               f"異を唱え続けたのに取り込んだ・往復しない: {r.get('approved')} {calls}")
+        # (2d) 最後の往復で異を唱えて終わった → 続き(wip)に当番の最新の文面と異議一式が残り、次の試行は当番の修正を挟まず
+        #      異議を監査に渡すところから(監査指摘: 異議の直後に上限で終わると、根拠・文面が失われ、続きで当番の修正が挟まった)
+        own3 = summary("当番3")
+        oncall.MAX_ROUNDS = 2
+        r, tr, calls, _, _ = run([review(editor_summary=audit1), review(editor_summary=audit2)],
+                                 [{"decision": "object", "evidence": "一度目の異議", "editor_summary": dict(own2)},
+                                  {"decision": "object", "evidence": "二度目の異議: 10/15号に載っている", "editor_summary": dict(own3)}])
+        k = json.loads(json.dumps(r["kept"]))     # state に保存して読み戻す
+        check(not r["approved"] and k["fix"].get("editor_summary") == own3 and (k.get("objection") or {}).get("report_objection", {}).get(
+                  "evidence") == "二度目の異議: 10/15号に載っている" and k["objection"]["report_objection"]["audit_summary"] == audit2,
+              f"異議で終わった続きに、当番の最新の文面・異議の根拠・監査の文面が残らない: {k.get('objection')} {k['fix'].get('editor_summary')}")
+        oncall.MAX_ROUNDS = 4
+        wip = {"base": "B" * 40, "head": k["head"], "fix": k["fix"], "open": k["open"], "later": [], "objection": k["objection"]}
+        r, tr, calls, _, rprompts = run([review(verdict="approve", must_fix=[])], [], wip=wip)
+        check(r["approved"] and calls == [] and len(rprompts) == 1 and "二度目の異議: 10/15号に載っている" in rprompts[0]
+              and own3["paper_impact"] in rprompts[0] and audit2["paper_impact"] in rprompts[0] and r["fix"].get("editor_summary") == own3,
+              f"異議の続きが、当番の修正を挟まず異議を監査に渡すところから始まらない: {calls} {r.get('approved')}")
         # (3) must_fix に報告の誤り以外があれば C ではない(当番の了承を求めず、修正の往復を続ける)
         r, tr, calls, _, _ = run([review(must_fix=[mis, bad], editor_summary=audit1),
                                   review(verdict="approve", must_fix=[])], [])

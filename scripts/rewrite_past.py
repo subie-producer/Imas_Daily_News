@@ -56,13 +56,15 @@ def build_cases(ops: Path, dates: list[str]) -> dict[str, dict]:
     return cases
 
 
-def apply_answer(path: Path, case: dict, ans: dict) -> list[str]:
-    """検算して、元の frontmatter の記録(訂正・号・slug・候補)を残したまま本文と内容の欄を差し替える。戻りは不合格の理由。"""
+def apply_answer(path: Path, case: dict, ans: dict, fetched=None) -> list[str]:
+    """検算して、元の frontmatter の記録(訂正・号・slug・候補)を残したまま本文と内容の欄を差し替える。戻りは不合格の理由。
+    fetched は書いたセッションで fetch_page.py が本文を取れたページ(writer_bench.write_one の記録)。生の出力から読み直した答えには
+    記録が無いので None(根拠のページを読めたかは見ない)"""
     import renderlib
     import yaml
     from compose import RANK_BY_LENGTH, body_length, classify_source, weakest_src, yaml_dump_keeping_strings
     fact_by_id = {f["id"]: f["text"] for m in case["materials"] for f in (m.get("facts") or []) if isinstance(f, dict)}
-    problems = renderlib.check_output(ans, fact_by_id, case["materials"], rank=case["rank"], edition=case["date"])
+    problems = renderlib.check_output(ans, fact_by_id, case["materials"], rank=case["rank"], edition=case["date"], fetched=fetched)
     if problems:
         return problems
     old_fm, _ = front(path)
@@ -119,6 +121,8 @@ def latest_raw_answer(label: str, stem: str) -> dict | None:
 
 
 def main() -> int:
+    from pipelib import exit_on_term
+    exit_on_term()      # SIGTERM でも、起動した執筆・校閲のセッションを子孫ごと止めてから終わる
     ap = argparse.ArgumentParser()
     ap.add_argument("dates", nargs="+")
     ap.add_argument("--ops", default=str(Path.home() / "git" / "imas-ops"))
@@ -130,7 +134,7 @@ def main() -> int:
     if a.only:
         cases = {k: v for k, v in cases.items() if k in a.only}
     print(f"書き直す記事: {len(cases)}本", flush=True)
-    answers = {}
+    answers, fetched = {}, {}
     if a.from_raw:
         # 書いた答えを、生の出力の記録(metrics/work/bench/raw/<ラベル>-<記事>[-n].txt)から読む(書き直し直さない)
         for n in cases:
@@ -143,13 +147,14 @@ def main() -> int:
         with concurrent.futures.ThreadPoolExecutor(wb.PARALLEL) as ex:
             for res in ex.map(lambda n: wb.write_one(n[:-3], shorts[n], a.label, wb.CODEX_WRITE_MODEL), cases):
                 answers[res["case"] + ".md"] = res["answer"]
+                fetched[res["case"] + ".md"] = res["fetched"]
                 print(f"書いた: {res['case']} {(res['answer'] or {}).get('status')}", flush=True)
     kept: dict[str, str] = {}
     applied: dict[str, list[str]] = {}
     backups: dict[str, str] = {}
     confirmed: set[str] = set()
     try:
-        replace_and_review(answers, cases, kept, applied, backups, confirmed)
+        replace_and_review(answers, cases, kept, applied, backups, confirmed, fetched)
     except BaseException:
         # 校閲を通ったと確かめる前に止まったら(例外・中断)、差し替えた記事を全部元に戻す(未校閲の記事を残さない。監査指摘)
         for n, text in backups.items():
@@ -186,15 +191,17 @@ def classify_replaced(done: list[str], cases: dict) -> int:
     return rc
 
 
-def replace_and_review(answers: dict, cases: dict, kept: dict, applied: dict, backups: dict, confirmed: set) -> None:
-    """検算を通った答えで差し替え、号ごとに校閲する。校閲を通ったものだけ confirmed に入れる(それ以外は元に戻す)。"""
+def replace_and_review(answers: dict, cases: dict, kept: dict, applied: dict, backups: dict, confirmed: set,
+                       fetched: dict | None = None) -> None:
+    """検算を通った答えで差し替え、号ごとに校閲する。校閲を通ったものだけ confirmed に入れる(それ以外は元に戻す)。
+    fetched は記事ごとの、書いたセッションで fetch_page.py が本文を取れたページ(書かせたときだけ。生の出力から読んだ答えは無い)"""
     for n, ans in answers.items():
         path = ROOT / "docs" / "_posts" / n
         if not ans or ans.get("status") != "ok":
             kept[n] = f"見送り・答えなし({(ans or {}).get('decline_code')})"
             continue
         backups[n] = path.read_text(encoding="utf-8")
-        probs = apply_answer(path, cases[n], ans)
+        probs = apply_answer(path, cases[n], ans, (fetched or {}).get(n))
         if probs:
             kept[n] = "検算不合格: " + " / ".join(probs[:2])
             continue

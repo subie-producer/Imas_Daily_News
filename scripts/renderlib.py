@@ -289,17 +289,70 @@ def split_heading_blocks(out: dict) -> int:
     return n
 
 
+# ページを選ばない共有・計測用のクエリ(比べる前に外す)。どのホストでも外すものと、そのホストでだけ外すもの。
+# ここに無いクエリはページを選ぶものとして扱い、名前・値・個数まで一致を求める(2026-10-14 監査指摘: 「片方がもう片方を含めば同じ」
+# にしたら、読んだ /item と読んでいない別の商品 /item?id=2 が同じになり、utm_source の値が両側で違う同じ商品は別になった)
+SHARE_QUERY = re.compile(r"^(?:utm_\w+|fbclid|gclid|yclid|igshid|igsh|_ga|_gl|mc_cid|mc_eid)$", re.I)
+SHARE_QUERY_BY_HOST = {"x.com": ("s", "t", "ref_src", "ref_url"), "youtube.com": ("si", "feature", "pp", "t", "ab_channel"),
+                       "youtu.be": ("si", "feature", "t"), "open.spotify.com": ("si",)}
+
+
+_UNRESERVED = frozenset("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~")
+
+
+def norm_escapes(s: str) -> str:
+    """%エンコードの書き方だけを揃える(RFC 3986 6.2.2 の同値): ASCII の外の文字は UTF-8 のバイトの %XX に、%xx は大文字に、
+    非予約文字(英数字と - . _ ~)の %XX は文字に戻す。予約文字(/ ? & = % など)の %XX は戻さない(%2F とパスの区切りの /、
+    %252F と %2F は別のページ。2026-10-14 監査指摘: 退避の置き換えで %2F と %252F が同じになった)。バイトのまま扱い、不正な UTF-8 も潰さない"""
+    import urllib.parse
+    s = urllib.parse.quote(s, safe="".join(chr(i) for i in range(0x21, 0x7f)))
+    return re.sub(r"%([0-9A-Fa-f]{2})",
+                  lambda m: chr(int(m.group(1), 16)) if chr(int(m.group(1), 16)) in _UNRESERVED else "%" + m.group(1).upper(), s)
+
+
+def page_key(url) -> tuple | None:
+    """同じページかを比べる形: ホスト(小文字。www.・m.・mobile. を外し、twitter.com は x.com)、ポート(http の 80・https の 443 は無し)、
+    パス(%エンコードの書き方を揃え(norm_escapes)、末尾の / を外す)、共有・計測用を外したクエリの並び(名前順。値はバイトのまま比べる)。
+    scheme と # 以降は見ない。"""
+    import urllib.parse
+    try:
+        u = urllib.parse.urlsplit(str(url or "").strip())
+        host, port = (u.hostname or "").lower(), u.port
+    except ValueError:
+        return None
+    if not host:
+        return None
+    host = re.sub(r"^(?:www|m|mobile)\.", "", host)
+    host = "x.com" if host == "twitter.com" else host
+    path = norm_escapes(u.path).rstrip("/")
+    drop = SHARE_QUERY_BY_HOST.get(host, ())
+    # latin-1 はバイトと1対1(不正な UTF-8 の値を置換文字に潰して別の値を同じにしない)
+    query = tuple(sorted((k, v) for k, v in urllib.parse.parse_qsl(norm_escapes(u.query), keep_blank_values=True, encoding="latin-1")
+                         if not SHARE_QUERY.match(k) and k not in drop))
+    # 既定のポートは scheme ごと(http の 443・https の 80 は既定ではなく、別のサービスを指す。2026-10-14 監査指摘)
+    return host, (None if (u.scheme.lower(), port) in (("http", 80), ("https", 443)) else port), path, query
+
+
+def same_page(a, b) -> bool:
+    """a と b が同じページか(page_key が一致する)。共有用の ?si=・utm_* などの有無・値の違いでは素材・読んだページと同じ出典を落とさず、
+    ページを選ぶクエリ(?id=・?v= など)が違えば・片方にしか無ければ別のページ。"""
+    ka = page_key(a)
+    return ka is not None and ka == page_key(b)
+
+
 def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], rank: str = "",
-                 edition: str = "") -> list[str]:
+                 edition: str = "", fetched=()) -> list[str]:
     """出力の**形**の検算(schema は型しか見ない)。通らない理由を返す(空なら合格)。
 
-    見るのは形だけ: 見出し・リード・段落に根拠 id が付いていて実在する / 出典 URL は素材か new_facts の
-    もの / tags は2〜4 / event_date は日付の形 / 見送りは理由付き / 1 block = 1 段落 /
+    見るのは形だけ: 見出し・リード・段落に根拠 id が付いていて実在する / new_facts・sources の url は素材の url か、
+    fetch_page.py が本文を取れたページ(fetched: セッションの記録 pipelib.fetched_urls) / tags は2〜4 / event_date は日付の形 /
+    見送りは理由付き / 1 block = 1 段落 /
     HTML・参照リンク・不可視文字・制御文字を書いていない / 見出し・リードに Markdown 記法が無い(lint と同じ markdown_in_plain) /
     label は不可視文字を除いた値が空でなく Markdown 記号を含まない
     (roundup・culture の素材の件数は検めない。残った項目が1件でも載せる)。
-    **中身の判断(出典を隠していないか、日付が素材と合うか、new_facts を本当に読んだか)は校閲(モデル)の
-    仕事で、ここではしない**(校閲の機械化はしない。編集長の指示)
+    **中身の判断(出典を隠していないか、日付が素材と合うか、new_facts の事実が読んだページに本当にあるか)は校閲(モデル)の
+    仕事で、ここではしない**(校閲の機械化はしない。編集長の指示)。fetched は「ページを読めたか」の記録で、中身は見ない。
+    fetched=None は記録が無い答え(記録を始める前に書かれた答えを読み直す道具)だけが渡す。そのときは読めたかを見ない
     検算の前に、文字として残った `\\n` を本物の改行に戻し(unescape_newlines)、中見出しと本文を束ねた block を
     分ける(split_heading_blocks)。どちらも out をその場で直す。
     """
@@ -385,9 +438,9 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
         u = s.get("url") or ""
         if not re.match(r"^https?://", u) or clean_url(u) != u:
             problems.append(f"出典 url の形が不正: {u[:60]}")
-        # 素材に無い URL(執筆が自分で見つけた出典)は許す。実在と一致の確認は校閲(項目3)の仕事。
-        # 「new_facts に書いたものだけ」と縛ったら、公式ストアやチケットページを出典にした記事が
-        # 4本落ちた(実測 2026-09-13)
+        # 素材に無い URL(執筆が自分で見つけた出典)も、fetch_page.py で本文を取れたページなら許す(下の fetched の検査)。
+        # 中身が記事と一致するかの確認は校閲(項目3)の仕事。「new_facts に書いたものだけ」と縛ったら、公式ストアや
+        # チケットページを出典にした記事が4本落ちた(実測 2026-09-13)
         if u in seen:
             problems.append(f"出典 url が重複: {u[:60]}")
         seen.add(u)
@@ -407,8 +460,19 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
             problems.append(f"出典 label に Markdown 記号: {s.get('label')!r}")
     if any(unicodedata.category(ch) == "Cc" and ch not in "\n\t" for x in texts for ch in x):
         problems.append("本文・見出し・リードに制御文字がある(壊れたテキスト)")
-    # 「使った事実の出典を隠していないか」「素材に無い URL を本当に読んだか」は校閲(モデル)の判断。
-    # ここでは見ない(校閲の機械化はしない。編集長の指示)
+    # 根拠にしたページ(new_facts・sources の url)は、素材の url か、fetch_page.py が本文を取れたページ(fetched)だけ。
+    # 校閲は出典を fetch_page.py だけで読むので、ほかの手段(Web 検索・curl)で読んだページや存在しない URL は確かめられない
+    # (2026-10-14 rule_bench: 執筆が fetch_page.py の取れなかった報道を Web 検索で読んで期間を断定し、綴りの誤った URL
+    # news.denfamicogamer.jp を new_facts と出典に書いた答えが検算を通った)。見るのは記録の有無(形)で、
+    # 「使った事実の出典を隠していないか」「読んだページに書いた事実が本当にあるか」は校閲(モデル)の判断(校閲の機械化はしない)
+    if fetched is not None:
+        pool = [str(m.get("url") or "") for m in materials if isinstance(m, dict)] + [str(u) for u in fetched]
+        cited = [str(f.get("url") or "") for f in new_facts] + [str(s.get("url") or "") for s in out.get("sources") or []]
+        unread = [u for u in dict.fromkeys(cited) if u and not any(same_page(u, p) for p in pool)]
+        if unread:
+            problems.append("fetch_page.py で本文を取れていないページを根拠にしている: " + " / ".join(u[:100] for u in unread[:4])
+                            + "(new_facts・sources の url は、素材の url か、python3 scripts/fetch_page.py で本文を取れたページだけ。"
+                            "そのページを fetch_page.py で読み直すか、そのページの事実と出典を外す)")
     tags = [str(t).strip() for t in (out.get("tags") or []) if str(t).strip()]
     if not 2 <= len(tags) <= 4:
         problems.append(f"tags が {len(tags)} 個(2〜4個)")

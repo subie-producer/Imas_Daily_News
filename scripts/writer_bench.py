@@ -20,6 +20,7 @@ import argparse
 import concurrent.futures
 import hashlib
 import json
+import os
 import random
 import re
 import subprocess
@@ -28,7 +29,8 @@ import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import CODEX_WRITE_MODEL, ENV, ROOT, loads_strict, prompt_file, save_raw, schema_ok  # noqa: E402
+from pipelib import (CODEX_WRITE_MODEL, ENV, FETCH_RECORD_ENV, ROOT, fetched_urls, loads_strict, prompt_file,  # noqa: E402
+                     run_group, save_raw, schema_ok)
 
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")      # 読み比べの判定(当番の監査と同じモデル)
 
@@ -75,15 +77,28 @@ def render(case: dict) -> str:
 
 
 def write_one(name: str, short: str, label: str, model: str) -> dict:
+    """本番と同じ codex exec で1本書かせる。戻りの fetched は、このセッションで fetch_page.py が本文を取れたページ
+    (本番の検算と同じく、根拠の URL と照らすのに使う)。"""
     fd, out_name = tempfile.mkstemp(prefix=f"bench-{name}-", suffix=".txt")
     Path(out_name).unlink()
+    # fetch_page.py の記録は作業フォルダの下に置く(codex の sandbox が書ける場所。本番の compose.fetch_record と同じ)。
+    # 置き場は生の出力(save_raw)と同じく pipelib.ROOT から引く(テストが一時フォルダへ向けられるように)
+    import pipelib
+    rec_dir = pipelib.ROOT / "metrics" / "work" / "bench" / "fetched"
+    rec_dir.mkdir(parents=True, exist_ok=True)
+    rfd, rec = tempfile.mkstemp(prefix=f"{label}-{name}-", suffix=".jsonl", dir=rec_dir)
+    os.close(rfd)
     cmd = ["codex", "exec", "-m", model, "-s", "workspace-write", "-c", "sandbox_workspace_write.network_access=true",
            "--output-last-message", out_name, "--output-schema", str(SCHEMA_OUT), short]
     try:
-        r = subprocess.run(cmd, capture_output=True, text=True, timeout=1500, stdin=subprocess.DEVNULL, cwd=ROOT)
+        # 自前のグループで起動し、時間切れ・中断では道具ごと止める(手で回して時間切れになった後も子孫が書き続けた。監査指摘 2026-10-14)。
+        # fetch_page.py の記録の置き場は環境で渡す
+        r = run_group(cmd, timeout=1500, cwd=ROOT, env={**os.environ, FETCH_RECORD_ENV: rec})
         code, log = r.returncode, (r.stdout or "") + (r.stderr or "")
     except subprocess.TimeoutExpired:
         code, log = None, "時間切れ"
+    fetched = sorted(fetched_urls(rec))
+    Path(rec).unlink(missing_ok=True)
     out = Path(out_name).read_text(encoding="utf-8") if Path(out_name).exists() else ""
     Path(out_name).unlink(missing_ok=True)
     save_raw("bench", f"{label}-{name}", "", log[-20000:], code, files={"last-message": out})
@@ -94,7 +109,7 @@ def write_one(name: str, short: str, label: str, model: str) -> dict:
         ans = None
     if ans is not None and not schema_ok(ans, json.loads(SCHEMA_OUT.read_text(encoding="utf-8"))):
         ans = None
-    return {"case": name, "answer": ans, "exit": code}
+    return {"case": name, "answer": ans, "exit": code, "fetched": fetched}
 
 
 def body_text(ans: dict | None) -> str:
@@ -110,7 +125,9 @@ def material_numbers(case: dict) -> set[str]:
     return set(re.findall(r"\d[\d,]*(?:円|日|時|分|個|種|枚|名|店|件|%|月)", unicodedata.normalize("NFKC", text)))
 
 
-def metrics(case: dict, ans: dict | None) -> dict:
+def metrics(case: dict, ans: dict | None, fetched=None) -> dict:
+    """fetched は書いたセッションで fetch_page.py が本文を取れたページ(write_one の記録)。記録の無い古い結果は None
+    (根拠のページを読めたかは数えない)。"""
     import unicodedata
     body = unicodedata.normalize("NFKC", body_text(ans))
     nums = material_numbers(case)
@@ -121,7 +138,8 @@ def metrics(case: dict, ans: dict | None) -> dict:
         import renderlib
         fact_by_id = {f["id"]: f["text"] for m in case["materials"] for f in (m.get("facts") or []) if isinstance(f, dict)}
         try:
-            problems = renderlib.check_output(ans, fact_by_id, case["materials"], rank=case["rank"], edition=case["date"])
+            problems = renderlib.check_output(ans, fact_by_id, case["materials"], rank=case["rank"], edition=case["date"],
+                                              fetched=fetched)
         except Exception as e:      # noqa: BLE001
             problems = [f"検算できない({type(e).__name__})"]
     return {"status": (ans or {}).get("status") if ans else "unreadable", "chars": len(re.sub(r"\s", "", body)),
@@ -136,7 +154,8 @@ def remeasure(label: str) -> None:
         f = OUT / label / f"{n}.json"
         if not f.exists():
             continue
-        m = metrics(c, json.loads(f.read_text(encoding="utf-8")).get("answer"))
+        res = json.loads(f.read_text(encoding="utf-8"))
+        m = metrics(c, res.get("answer"), res.get("fetched"))
         tot = [tot[0] + m["chars"], tot[1] + m["numbers_in_body"], tot[2] + m["material_numbers"]]
         print(f"{label} {n}: {m['status']} {m['chars']}字 数値 {m['numbers_in_body']}/{m['material_numbers']}"
               + (f" 検算 ✗ {m['check_problems']}" if m["check_problems"] else ""))
@@ -152,7 +171,7 @@ def run(label: str, model: str) -> None:
     (d / "_meta.json").write_text(json.dumps({"model": model, "prompt_hash": prompt_hash()}, ensure_ascii=False), encoding="utf-8")
     with concurrent.futures.ThreadPoolExecutor(PARALLEL) as ex:
         for res in ex.map(lambda n: write_one(n, shorts[n], label, model), cases):
-            res["metrics"] = metrics(cases[res["case"]], res["answer"])
+            res["metrics"] = metrics(cases[res["case"]], res["answer"], res["fetched"])
             (d / f"{res['case']}.json").write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
             m = res["metrics"]
             print(f"{res['case']}: {m['status']} {m['chars']}字 素材の数値 {m['numbers_in_body']}/{m['material_numbers']}", flush=True)
@@ -194,10 +213,10 @@ def judge_one(name: str, case: dict, a: dict | None, b: dict | None) -> dict:
     sf.write_text(json.dumps(JUDGE_SCHEMA, ensure_ascii=False), encoding="utf-8")
     Path(out_name).unlink()
     # 判定役も new_facts の url を読んで確かめられるよう、通信を許す(書き込みは作業用の記録だけ)
-    r = subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "-c", "sandbox_workspace_write.network_access=true",
-                        "--skip-git-repo-check",
-                        "--output-schema", str(sf), "-o", out_name, prompt_file("bench", f"judge-{name}", prompt)],
-                       capture_output=True, text=True, timeout=1200, stdin=subprocess.DEVNULL, cwd=ROOT)
+    r = run_group(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "-c", "sandbox_workspace_write.network_access=true",
+                   "--skip-git-repo-check",
+                   "--output-schema", str(sf), "-o", out_name, prompt_file("bench", f"judge-{name}", prompt)],
+                  timeout=1200, cwd=ROOT)
     sf.unlink(missing_ok=True)
     try:
         v = json.loads(Path(out_name).read_text(encoding="utf-8")) if r.returncode == 0 else None
@@ -255,6 +274,8 @@ def record(label: str, judge_file: str) -> None:
 
 
 def main() -> int:
+    from pipelib import exit_on_term
+    exit_on_term()      # SIGTERM でも、起動した執筆・判定のセッションを子孫ごと止めてから終わる
     ap = argparse.ArgumentParser()
     ap.add_argument("--make", nargs="+", metavar=("DATE", "SLUG"))
     ap.add_argument("--ops", default=str(Path.home() / "git" / "imas-ops"))

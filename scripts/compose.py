@@ -40,6 +40,7 @@ from pathlib import Path
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import pipelib
 import planlib
 import renderlib
 import storylink
@@ -3057,20 +3058,12 @@ def live_procs(pgid: int | None, mark: str = "") -> list[int]:
     return found
 
 
-PR_SET_CHILD_SUBREAPER = 36
-_SUBREAPER = {"n": 0, "lock": threading.Lock()}
 
 
 def subreaper(on: bool) -> None:
-    """compose を孤児の受け皿にする/やめる(ChildTracker が使っているあいだだけ。重なっても最後の1つが終わるまで続ける)。"""
-    import ctypes
-    with _SUBREAPER["lock"]:
-        _SUBREAPER["n"] += 1 if on else -1
-        want = 1 if _SUBREAPER["n"] > 0 else 0
-        try:
-            ctypes.CDLL(None, use_errno=True).prctl(PR_SET_CHILD_SUBREAPER, want, 0, 0, 0)
-        except (OSError, AttributeError):
-            pass
+    """compose を孤児の受け皿にする/やめる(ChildTracker が使っているあいだだけ。重なっても最後の1つが終わるまで続ける)。
+    出典の判定の取引(pipelib)も受け皿を使うので、数えるのは pipelib.subreaper に任せる(片方がやめて、もう片方の受け皿を外さない)。"""
+    pipelib.subreaper(on)
 
 
 def proc_table() -> dict[int, tuple[str, int, int, int]]:

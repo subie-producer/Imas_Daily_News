@@ -10861,8 +10861,10 @@ def test_classify_txn_escaped_model(tmp: Path):
                    "while not Path('model.pid').exists():\n    time.sleep(0.01)\n")}
     tool = ("import ctypes, os, time\nfrom pathlib import Path\nctypes.CDLL(None).prctl(4, 0, 0, 0, 0)\n"
             "Path('model.pid').write_text(str(os.getpid()))\n" + late)
-    for kind, sig in [(k, s) for k in models for s in (signal.SIGTERM, signal.SIGINT, signal.SIGKILL)]:
-        w = tmp / f"{kind}-{sig.name}"
+    # who: 信号を送る相手。parent=取引を持つ工程 / guard=段の child_guard だけ(OOM など。受けていた孤児は工程(受け皿)へ移る。3巡目の監査)
+    cases = [(k, s, "parent") for k in models for s in (signal.SIGTERM, signal.SIGINT, signal.SIGKILL)] + [("hidden", signal.SIGKILL, "guard")]
+    for kind, sig, who in cases:
+        w = tmp / f"{kind}-{sig.name}-{who}"
         (w / "scripts").mkdir(parents=True)
         (w / "docs" / "_posts").mkdir(parents=True)
         table = w / "source_types.yml"
@@ -10886,13 +10888,16 @@ def test_classify_txn_escaped_model(tmp: Path):
             ready = _wait_files(w / "model.pid", limit=20)
             _t.sleep(0.1)
             model = int((w / "model.pid").read_text() or 0) if ready else 0
-            os.kill(proc.pid, sig)
+            if who == "guard":
+                os.kill(int(json.loads((w / pipelib.TXN_CHILD).read_text(encoding="utf-8"))["pid"]), sig)
+            else:
+                os.kill(proc.pid, sig)
             try:
                 proc.communicate(timeout=30)
             except subprocess.TimeoutExpired:
                 proc.kill()
                 proc.communicate()
-            if sig == signal.SIGKILL:
+            if sig == signal.SIGKILL and who == "parent":
                 saved = pipelib.ROOT
                 try:
                     pipelib.ROOT = w
@@ -10907,7 +10912,7 @@ def test_classify_txn_escaped_model(tmp: Path):
             after = table.read_text(encoding="utf-8")
             check(ready and "original.example" in restored and after == restored and not (w / "wrote").exists()
                   and not (model and _pid_alive(model)) and not (w / pipelib.TXN_JOURNAL).exists(),
-                  f"{kind} {sig.name}: 取引を戻したあとに、別のセッションの合議のモデル・道具が残って判定表を書き直した"
+                  f"{kind} {sig.name}({who}): 取引を戻したあとに、別のセッションの合議のモデル・道具が残って判定表を書き直した"
                   f"(戻した表 {restored.strip()!r} / のち {after.strip()!r} / モデル生存 {bool(model and _pid_alive(model))} / {back})")
         finally:
             if proc.poll() is None:

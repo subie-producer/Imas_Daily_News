@@ -629,6 +629,27 @@ def _proc_gone(pid: int) -> bool:
         return True
 
 
+_SUBREAPER = {"n": 0, "lock": threading.Lock(), "was": 0}
+
+
+def subreaper(on: bool) -> None:
+    """この process を孤児の受け皿(PR_SET_CHILD_SUBREAPER)にする/やめる。重なっても最後の1つが終わるまで続け、終わったら
+    始める前の状態に戻す(当番のように、もとから受け皿の process の受け皿を外さない)。使うのは compose の ChildTracker と、
+    出典の判定の取引(_txn_run)。"""
+    import ctypes
+    with _SUBREAPER["lock"]:
+        try:
+            libc = ctypes.CDLL(None, use_errno=True)
+            if on and _SUBREAPER["n"] == 0:
+                cur = ctypes.c_int(0)
+                libc.prctl(37, ctypes.byref(cur), 0, 0, 0)     # PR_GET_CHILD_SUBREAPER
+                _SUBREAPER["was"] = cur.value
+            _SUBREAPER["n"] = max(0, _SUBREAPER["n"] + (1 if on else -1))
+            libc.prctl(36, 1 if _SUBREAPER["n"] > 0 else _SUBREAPER["was"], 0, 0, 0)     # PR_SET_CHILD_SUBREAPER
+        except (OSError, AttributeError):
+            pass
+
+
 def _proc_marked(table: dict, mark: str) -> set[int]:
     """環境変数にセッションの印 mark を受け継いでいるプロセス(読めないものは除く)。"""
     key = (SESSION_ENV + "=").encode()
@@ -2127,6 +2148,19 @@ def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
     mark = uuid.uuid4().hex
     env = dict(os.environ)
     env[SESSION_ENV] = f"{env.get(SESSION_ENV, '')} {mark}".strip()
+    # 段のあいだ、この process も孤児の受け皿にする。child_guard 自身が SIGKILL で落ちても、受けていた孤児は init でなくここへ移り、
+    # 段の後始末が見つけて止める(2026-10-21 取り込みの監査)
+    subreaper(True)
+    t0 = _clock_ticks()
+    before = {(q, _proc_started(q)) for q, (pp, _, _) in (_proc_table() or {}).items() if pp == os.getpid()}
+    try:
+        return _txn_run_guarded(cmd, timeout, env, mark, (t0, before))
+    finally:
+        subreaper(False)
+
+
+def _txn_run_guarded(cmd: list[str], timeout: int, env: dict, mark: str, since: tuple[int, set]) -> subprocess.CompletedProcess:
+    """_txn_run の本体(受け皿にしたあと)。"""
     p = subprocess.Popen([sys.executable, "-c", _TXN_GATE, str(_TXN_GUARD), *cmd], cwd=ROOT, stdin=subprocess.PIPE,
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True, env=env)
     _TXN["proc"] = p
@@ -2147,7 +2181,7 @@ def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
     finally:
         _TXN["proc"] = None
         # 子が先に終わっても、子が起こした孫(同じセッション・印を受け継いだ別のセッション)が残っていれば止める。成功した段でも残さない
-        stray = _stop_session(p.pid, started, mark=mark)
+        stray = _stop_session(p.pid, started, mark=mark, adopted=since)
         if stray:
             _TXN["stray"] = stray
         else:
@@ -2231,14 +2265,51 @@ def _session_members(sid: int, started: str = "") -> list[int]:
     return out
 
 
-def _txn_members(sid: int, started: str = "", mark: str = "") -> list[int]:
+def _clock_ticks() -> int:
+    """いまの時刻(起動からの時計刻み。/proc/<pid>/stat の起動時刻と比べる)。"""
+    try:
+        return int(float(Path("/proc/uptime").read_text().split()[0]) * os.sysconf("SC_CLK_TCK"))
+    except (OSError, ValueError):
+        return 0
+
+
+def _txn_adopted(table: dict, since: tuple[int, set], mark: str) -> set[int]:
+    """取引の段のあいだに受け皿(この process)へ付け替わった孤児: この process の子で、段を始めたあとに生まれ、始める前からの子でなく、
+    取引の印を受け継いでいるか環境を読めないもの(ほかのスレッドが起こした子は環境を読めて印が無いので含めない)。
+    child_guard が SIGKILL で落ちたとき、受けていた孤児はここへ移る(2026-10-21 取り込みの監査)。"""
+    t0, before = since
+    me, out = os.getpid(), set()
+    key = (SESSION_ENV + "=").encode()
+    for q, (pp, _, st) in table.items():
+        if pp != me or st in ("Z", "X"):
+            continue
+        born = _proc_started(q)
+        if not born or int(born) < t0 or (q, born) in before:
+            continue
+        try:
+            with open(f"/proc/{q}/environ", "rb") as f:
+                env = f.read()
+        except PermissionError:
+            out.add(q)          # 環境を読めなくした孤児
+            continue
+        except OSError:
+            continue
+        if any(kv.startswith(key) and mark.encode() in kv[len(key):].split() for kv in env.split(b"\0")):
+            out.add(q)
+    return out
+
+
+def _txn_members(sid: int, started: str = "", mark: str = "", adopted: tuple[int, set] | None = None) -> list[int]:
     """取引の子のセッション sid に残っているプロセスと、取引の印 mark を環境に受け継いだプロセス(合議のモデル・道具は start_group で
-    別のセッションに起動されるので、セッションでは見つからない)と、それらの子孫(ゾンビ・自分は除く)。"""
+    別のセッションに起動されるので、セッションでは見つからない)と、受け皿へ付け替わった孤児(adopted=(段を始めた時刻, 始める前からの子))
+    と、それらの子孫(ゾンビ・自分は除く)。"""
     found = set(_session_members(sid, started)) if sid > 1 else set()
     table = _proc_table()
     if table:
         if mark:
             found |= _proc_marked(table, mark)
+        if adopted is not None:
+            found |= _txn_adopted(table, adopted, mark)
         kids: dict[int, list[int]] = {}
         for q, (pp, _, _) in table.items():
             kids.setdefault(pp, []).append(q)
@@ -2252,15 +2323,18 @@ def _txn_members(sid: int, started: str = "", mark: str = "") -> list[int]:
     return sorted(found - {os.getpid()})
 
 
-def _stop_session(sid: int, started: str = "", wait: float = 10.0, mark: str = "") -> list[int]:
+def _stop_session(sid: int, started: str = "", wait: float = 10.0, mark: str = "",
+                  adopted: tuple[int, set] | None = None) -> list[int]:
     """取引の子のセッション(子は start_new_session で起動するので、子と、子が起こした孫は setsid しない限り同じセッション)と、
     取引の印 mark を受け継いだプロセスとその子孫を、残らなくなるまで止める。直接の子が先に終わっていても、残った孫を止める
     (止めずに戻すと、戻した後で孫が判定表を書き直す。監査指摘 2026-10-14)。合議のモデルは start_group で別のセッションに
     起動されるので、印でも探す(2026-10-21 取り込みの監査: 中断で子のグループだけを落とすと、別のセッションのモデルが残り、
-    戻したあとに判定表を書き直した)。戻りは止めきれなかった pid。"""
+    戻したあとに判定表を書き直した)。adopted を渡すと、段のあいだにこの process(受け皿)へ付け替わった孤児も止めて回収する
+    (child_guard が SIGKILL で落ちたとき)。戻りは止めきれなかった pid。"""
     # 先に全員を凍らせてから止める(子(child_guard)を先に落とすと、受けていた孤児が init へ移り、親子関係で辿れなくなる)
     end = time.monotonic() + wait
-    left = _txn_members(sid, started, mark)
+    killed: set[int] = set()
+    left = _txn_members(sid, started, mark, adopted)
     while left:
         frozen: set[int] = set()
         for _ in range(50):
@@ -2273,16 +2347,27 @@ def _stop_session(sid: int, started: str = "", wait: float = 10.0, mark: str = "
                 except OSError:
                     pass
             frozen |= new
-            left = _txn_members(sid, started, mark)
+            left = _txn_members(sid, started, mark, adopted)
         for q in frozen | set(left):
             try:
                 os.kill(q, signal.SIGKILL)
             except OSError:
                 pass
+        killed |= frozen | set(left)
         if time.monotonic() > end:
             break
         time.sleep(0.05)
-        left = _txn_members(sid, started, mark)
+        left = _txn_members(sid, started, mark, adopted)
+    # 止めた孤児のうち、この process の子になったものを回収する(ゾンビを残さない)
+    me = os.getpid()
+    for q in killed:
+        try:
+            with open(f"/proc/{q}/stat", "rb") as f:
+                if int(f.read().decode("utf-8", "replace").rsplit(")", 1)[1].split()[1]) != me:
+                    continue
+            os.waitpid(q, os.WNOHANG)
+        except (OSError, ValueError, IndexError, ChildProcessError):
+            continue
     return left
 
 

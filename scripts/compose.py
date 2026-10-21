@@ -3058,12 +3058,21 @@ def subreaper(on: bool) -> None:
 
 
 def proc_table() -> dict[int, tuple[str, int, int, int]]:
-    """プロセスの表 {pid: (状態, 親, プロセスグループ, 起動時刻)}(/proc/<pid>/stat。環境を読めなくした道具のものも読める)。"""
+    """プロセスの表 {pid: (状態, 親, プロセスグループ, 起動時刻)}(/proc/<pid>/stat。環境を読めなくした道具のものも読める)。
+    記録のスレッドが繰り返し読むので、Path を通さずに読む(2026-10-21 実測: 300 プロセスで 1回 15ms → 8ms 程度)。"""
     table = {}
-    for st in Path("/proc").glob("[0-9]*/stat"):
+    try:
+        names = os.listdir("/proc")
+    except OSError:
+        return table
+    for name in names:
+        if not name.isdigit():
+            continue
         try:
-            f = st.read_text().rsplit(")", 1)[1].split()
-            table[int(st.parent.name)] = (f[0], int(f[1]), int(f[2]), int(f[19]))
+            with open(f"/proc/{name}/stat", "rb") as fh:
+                s = fh.read()
+            f = s[s.rindex(b")") + 1:].split()
+            table[int(name)] = (f[0].decode(), int(f[1]), int(f[2]), int(f[19]))
         except (OSError, ValueError, IndexError):
             continue
     return table
@@ -3078,7 +3087,9 @@ class ChildTracker:
     プロセス / ほかのスレッドが子を起こしていないときは、束ねの間に起動してここへ付け替わった孤児。起こしうるスレッドがあれば、
     孤児がどの仕事のものか決められないので、片付けたとは言わない(記事の書き直しはほかの工程と並べない: run_in_turn)。"""
 
-    def __init__(self, interval: float = 0.05):
+    # 記録の間隔。孤児はここ(受け皿)へ付け替わるので、記録は付け替わる前の親子の手がかりを残す備え。50ms ごとに /proc を全部読むと、
+    # 300 プロセスで1コアの約25%を使った(2026-10-21 実測)。0.25 秒で約3%
+    def __init__(self, interval: float = 0.25):
         self.roots: dict[int, int] = {}            # child_guard の pid → 起動時刻
         self.procs: list = []                       # 起動した子(束ねを抜けるとき stop_groups で止めて回収する)
         self.marks: list[str] = []

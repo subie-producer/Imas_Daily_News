@@ -4499,6 +4499,68 @@ def test_render_failure_reaches_classify_and_verify(tmp: Path):
     check(row.get("render_error") and errs == [], f"描画の失敗の記録が候補の書式に通らない: {errs}")
 
 
+def test_watch_deadline_carryover(tmp: Path):
+    """定時の収集の締切(組 P)で打ち切った定点観測の新着は、次の回に持ち越して候補にする(2026-10-21 取り込みの確かめ):
+    - 一覧を読んだあとに締切を過ぎた観測先の新着は facts 化を始めず、既読にせず未処理の列(_pending)に残す
+    - 締切を過ぎてから順番が来た観測先は一覧を読まず、既読も境界(_cut)も変えない
+    - 次の回(締切なし)は、未処理の列と読まなかった観測先の新着を全部 facts 化して候補にし、列を空にする"""
+    import time as _t
+    import collect
+    import yaml
+    tmp.mkdir(parents=True, exist_ok=True)
+    (tmp / "sources.yml").write_text(yaml.safe_dump([
+        {"id": "a", "brand": "general", "type": "html", "url": "https://a.jp/", "base": "https://a.jp", "list_regex": "x", "enabled": True},
+        {"id": "b", "brand": "sidem", "type": "html", "url": "https://b.jp/", "base": "https://b.jp", "list_regex": "x", "enabled": True}]),
+        encoding="utf-8")
+    cut_b = [{"page": 3, "after": ["https://b.jp/old"]}]
+    (tmp / "watch-state.json").write_text(json.dumps({"a": ["https://a.jp/seen"], "b": ["https://b.jp/seen"], "_cut": {"b": cut_b}}),
+                                          encoding="utf-8")
+    listings = {"a": [(f"https://a.jp/n{i}", "") for i in range(3)] + [("https://a.jp/seen", "")],
+                "b": [("https://b.jp/n0", ""), ("https://b.jp/seen", "")]}
+    listed, calls, notes = [], [], []
+
+    def fake_list(s, known, fetch=None, resume=None):
+        listed.append(s["id"])
+        if state_deadline["arm"]:
+            collect.DEADLINE = _t.time() - 1        # 最初の観測先の一覧を読んだところで締切を過ぎる
+        return listings[s["id"]], 1, []
+    state_deadline = {"arm": True}
+
+    def extract(prompt, timeout=0):
+        urls = re.findall(r"^### \d+\. (\S+)", prompt, re.M)
+        calls.append(urls)
+        return [{"page": i + 1, "status": "extracted", "items": [{"title": "t", "url": u, "facts": ["f"]}]} for i, u in enumerate(urls)]
+    saved = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.render_prompt, collect.page_html_or_note,
+             collect.DEADLINE)
+    try:
+        collect.ROOT, collect.STATE_PATH = tmp, tmp / "watch-state.json"
+        collect.list_source = fake_list
+        collect.page_html_or_note = lambda url, csr: ("", "")
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
+        collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+        collect.DEADLINE = _t.time() + 3600
+        cands, info = collect.run_watch(extract)
+        st = info["stats"]["_state"]
+        pend = [it["url"] for it in st.get("_pending") or []]
+        check(listed == ["a"] and not calls and not cands and pend == [f"https://a.jp/n{i}" for i in range(3)]
+              and not any(u in st["a"] for u in pend) and st["b"] == ["https://b.jp/seen"] and st.get("_cut") == {"b": cut_b}
+              and not st.get("_unreadable"),
+              f"締切で打ち切った新着を持ち越さない(既読にした・読めなかった数に入れた・境界を変えた): 一覧 {listed} facts {calls} "
+              f"pending {pend} 状態 {st}")
+        (tmp / "watch-state.json").write_text(json.dumps(st), encoding="utf-8")      # main が候補の保存のあとに書くのと同じ
+        state_deadline["arm"], collect.DEADLINE = False, None
+        listed.clear()
+        cands, info = collect.run_watch(extract)
+        st = info["stats"]["_state"]
+        got = sorted(c["url"] for c in cands)
+        want = sorted([f"https://a.jp/n{i}" for i in range(3)] + ["https://b.jp/n0"])
+        check(got == want and not st.get("_pending") and all(u in st["a"] + st["b"] for u in want),
+              f"次の回に、持ち越した新着・読まなかった観測先の新着を候補にしない: {got} pending {st.get('_pending')}")
+    finally:
+        (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.render_prompt, collect.page_html_or_note,
+         collect.DEADLINE) = saved
+
+
 def test_watch_pagination_and_batches(tmp: Path):
     """定点観測(編集長 2026-09-30「公式のニュース12件しか見ないとか設計不備過ぎる」):
     一覧は既に見た記事だけのページに行き当たるまで遡る。上限まで読んでも新着が続けば打ち切りを返す。
@@ -12597,6 +12659,7 @@ def main() -> int:
     test_accept_only_normal_and_schema(tmp / "an")
     test_grok_repoint_uses_each_face_posts(tmp / "grp")
     test_watch_pagination_and_batches(tmp / "wp")
+    test_watch_deadline_carryover(tmp / "wdc")
     test_watch_resume_after_cut(tmp / "wr")
     test_watch_body_cp932(tmp / "wc")
     test_watch_static_page_body(tmp / "ws")

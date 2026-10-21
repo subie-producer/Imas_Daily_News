@@ -1557,8 +1557,10 @@ LINK_KEY_RE = re.compile(r"[A-Za-z0-9._~/?=&%+@!$*,;-]+")     # 判定表 link_t
 def link_key(url) -> str | None:
     """リンク先のキー(_link_key)。判定表に書けない文字が残るキーは None(引き継ぎの対象にしない。書けないまま合議を
     繰り返さない。監査指摘 2026-10-21)。"""
+    # 返すキーは、読み直しても同じキーになる(判定表に書いて引ける)ものだけ(監査指摘 2026-10-21: `event%3Bid=A` のキーが
+    # 読み直すと `event` になり、保存できないまま合議を繰り返した)
     k = _link_key(url)
-    return k if k and LINK_KEY_RE.fullmatch(k) else None
+    return k if k and LINK_KEY_RE.fullmatch(k) and _link_key("https://" + k) == k else None
 
 
 def _link_key(url) -> str | None:
@@ -1612,6 +1614,10 @@ def _link_key(url) -> str | None:
                 return host + "/" + "/".join(seg[:i + 1])
     if host == "forms.gle":
         return f"{host}/{seg[0]}" if seg else None
+    # 別のページを同じキーにしうる形(パスのパラメータ `;id=`、既定でないポート、符号化された区切り `%2F` など)は引き継ぎの
+    # 対象にしない(確かめていないページまで同じ種別になる。監査指摘 2026-10-21)
+    if u.params or u.port not in (None, 80, 443) or re.search(r"%(2F|3B|3F|23|25|5C)", u.path, re.I):
+        return None
     raw = re.sub(r"%2e", ".", u.path, flags=re.I)
     path = posixpath.normpath(raw).rstrip("/") if raw.strip("/") else ""
     # パスは一度復号して符号化し直す(括弧・日本語のパスも判定表に書ける形にし、符号化の有無・大小文字の揺れを同じキーにする)

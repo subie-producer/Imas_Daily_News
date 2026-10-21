@@ -9757,6 +9757,16 @@ def test_link_key_and_table():
         # 括弧・日本語のパスも、判定表に書ける形の同じキーになる(符号化の有無で揺れない)
         k1, k2 = lk("https://shop.example/ticket(1)/チケット"), lk("https://shop.example/ticket%281%29/%E3%83%81%E3%82%B1%E3%83%83%E3%83%88")
         check(k1 and k1 == k2 and pipelib.LINK_KEY_RE.fullmatch(k1) and lk("https://" + k1) == k1, f"括弧・日本語のパスのキー: {k1} / {k2}")
+        # 別のページを同じキーにしない(符号化された区切り・パスのパラメータ・既定でないポート)。同一を保証できない形は None
+        for a, b in (("https://d.example/event/A%2FB", "https://d.example/event/A/B"),
+                     ("https://d.example/event;id=A", "https://d.example/event;id=B"),
+                     ("https://d.example:8443/event", "https://d.example:9443/event"),
+                     ("https://d.example/event%3Bid=A", "https://d.example/event")):
+            check(lk(a) is None or lk(a) != lk(b), f"別のページが同じキーになった: {a} / {b} → {lk(a)}")
+        # 返すキーは、読み直しても同じキー(判定表に書いて引ける)
+        for u in ("https://d.example/event%3Bid=A", "https://d.example/a;b/c", "https://d.example/x?q=a%26b&r=1", "https://d.example/%E3%81%82"):
+            k = lk(u)
+            check(k is None or (pipelib.LINK_KEY_RE.fullmatch(k) and lk("https://" + k) == k), f"読み直すと変わるキー: {u} → {k}")
         # 検査: 値域・キーの形(正規形でないと当たらない)・字面の二重定義
         for bad, why in (({"link_types": {"t.co/AbC": "神"}}, "値域"), ({"link_types": {"https://t.co/AbC": "公式"}}, "scheme 付き"),
                          ({"link_types": {"youtu.be/E0d4UT59xM4": "公式"}}, "正規形でないキー"), ({"link_types": ["t.co/AbC"]}, "形")):
@@ -9934,6 +9944,11 @@ def test_link_inheritance(tmp: Path):
         n_added = cs.add_links({pipelib.link_key(paren): ("公式", "テスト")})
         pipelib._ST_TABLE = None
         check(n_added == 1 and pipelib.classify_source(paren) == "公式", f"括弧・日本語のパスのリンク先を判定表に書けない: {n_added}")
+        # max: 引き継いだ種別(準公式)がリンク先そのもの(公式)より弱ければ、リンク先そのものの種別のまま
+        cs.add_links({pipelib.link_key(official_page): ("準公式", "テスト")})
+        pipelib._ST_TABLE = None
+        check(pipelib.classify_source(official_page) == "公式" and pipelib.source_type_table()["link_types"].get(pipelib.link_key(official_page)) == "準公式",
+              f"引き継いだ弱い種別でリンク先そのものの種別を下げた: {pipelib.classify_source(official_page)}")
         (tmp / "source_types.yml").write_text(table, encoding="utf-8")
         pipelib._ST_TABLE = None
         table = (tmp / "source_types.yml").read_text(encoding="utf-8")

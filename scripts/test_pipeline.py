@@ -5328,15 +5328,15 @@ def test_verify_crash_reasks_deep(tmp: Path):
 
         def fake_popen(args, cwd=None, **kw):
             again = "-again" in Path(cwd).name
-            if (again and mode in ("recover", "again_nodeep")) or (not again and mode == "nodeep"):
-                (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "sidem", "facts": ["f"]}]),
-                                                      encoding="utf-8")
-                (Path(cwd) / "posts.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted",
-                                                                   "item": "https://x.com/a/status/1"}]), encoding="utf-8")
-                if mode == "recover":
-                    (Path(cwd) / "deep.json").write_text(json.dumps(ask), encoding="utf-8")
-                return P(0)
-            return P(101)      # 書き出す前に落ちた(/tmp が満杯で exit 101)
+            ok = (again and mode in ("recover", "again_nodeep")) or (not again and mode == "nodeep")
+            # 落ちる回も正しい形のファイルを書いてから exit 101 で終える(異常終了の答えは、形が正しくても採らない)
+            (Path(cwd) / "items.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "brand": "sidem", "facts": ["f"]}]),
+                                                  encoding="utf-8")
+            (Path(cwd) / "posts.json").write_text(json.dumps([{"url": "https://x.com/a/status/1", "status": "extracted",
+                                                               "item": "https://x.com/a/status/1"}]), encoding="utf-8")
+            if not ok or mode == "recover":
+                (Path(cwd) / "deep.json").write_text(json.dumps(ask), encoding="utf-8")
+            return P(0 if ok else 101)      # 101: 落ちた(/tmp が満杯で exit 101)
         saved = (collect.subprocess.Popen, collect.notify, collect.prompt_file, collect.save_raw)
         try:
             collect.subprocess.Popen = fake_popen
@@ -5350,8 +5350,8 @@ def test_verify_crash_reasks_deep(tmp: Path):
     items, deep = run("recover")
     check(deep == {"sidem": ask} and len(items) == 1, f"落ちた面を確かめ直した問い・候補を使わない: {items} {deep}")
     check(not [m for c, m, ok in notes if c == "recover" and not ok], f"確かめ直して問いが出たのに、深掘りの機会を失ったと通知した: {notes}")
-    _, deep = run("crash2")
-    check(deep == {} and len(lost("crash2")) == 1 and "異常終了(exit 101)" in lost("crash2")[0],
+    items, deep = run("crash2")
+    check(items == [] and deep == {} and len(lost("crash2")) == 1 and "異常終了(exit 101)" in lost("crash2")[0],
           f"確かめ直しでも落ちた面の問いの喪失を、終わり方を添えて1度だけ通知しない: {lost('crash2')}")
     # 正常に終わり候補は読めるのに deep.json が無い: 確かめ直さないので、問いは本当に失う。どの段でも通知する
     for mode in ("nodeep", "again_nodeep"):

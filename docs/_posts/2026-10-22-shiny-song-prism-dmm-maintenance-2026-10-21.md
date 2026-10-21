@@ -10,7 +10,7 @@ candidate_ids:
 - 202610220239-grok-19
 - 202610220239-grok-101
 - 202610220239-grok-20
-title: シャニソンDMM版、臨時メンテ継続中
+title: シャニソンDMM版、臨時メンテを10月21日22時から実施
 lede: DMM GAMES版「アイドルマスター シャイニーカラーズ Song for Prism」は、システムセキュリティ強化のため10月21日22時から臨時メンテナンスに入り、終了時刻は未定で、バンダイナムコIDの引き継ぎ機能も同日23時から利用できない。
 tags:
 - シャニマス
@@ -25,7 +25,6 @@ sources:
   type: 公式
 event_date: "2026-10-21"
 title_fact_ids:
-- F1
 - F2
 lede_fact_ids:
 - F1

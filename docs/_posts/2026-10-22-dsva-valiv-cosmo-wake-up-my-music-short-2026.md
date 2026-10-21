@@ -19,6 +19,12 @@ sources:
 - label: vα-liv公式「上水流宇宙が『Wake up my music』を踊ってみたショート動画を公開」(2026-10-21)
   url: https://x.com/valiv_official/status/2112831263354781804
   type: 公式
+- label: 上水流宇宙「Wake up my music」踊ってみたショート動画 (2026-10-21)
+  url: https://www.youtube.com/shorts/_nj8uSouS6c
+  type: 公式
+- label: 上水流宇宙「Wake up my music」踊ってみたショート動画 (2026-10-21)
+  url: https://www.tiktok.com/@valiv_official/video/7698983822460898580
+  type: 公式
 event_date: "2026-10-21"
 title_fact_ids:
 - F1

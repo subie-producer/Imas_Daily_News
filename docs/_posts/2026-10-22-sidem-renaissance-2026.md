@@ -25,6 +25,9 @@ sources:
 - label: スポーツクラブ ルネサンス「315 Fitness Project in RENAISSANCE」
   url: https://ip.s-re.jp/lp/315fitness-project
   type: 当事者
+- label: スポーツクラブ ルネサンスで会える「アイドルマスター SideM」 コラボキャンペーンを開催―「315 Fitness Project in RENAISSANCE―からだも、こころも、315更新！」(2026年9月17日)
+  url: https://www.s-renaissance.co.jp/news/detail/?did=2562&p=1&stb=tab2&y=
+  type: 当事者
 event_date: "2026-10-22"
 title_fact_ids:
 - F2
@@ -84,8 +87,11 @@ verified_facts:
 - id: N16
   text: 等身大スタンディは両国24、名古屋熱田24、福岡大橋24の3店舗にアンバサダー5名の描き下ろしデザインを設置し、その他46店舗には「THE IDOLM@STER SideM 10th ANNIVERSARY P@SSION TOUR」の公式ビジュアルを使用する。
   url: https://ip.s-re.jp/lp/315fitness-project
+- id: N17
+  text: 株式会社ルネサンスは、2026年10月22日から11月29日まで、スポーツクラブ49店舗で「アイドルマスター SideM」とのコラボレーションキャンペーンを開催すると発表した。
+  url: https://www.s-renaissance.co.jp/news/detail/?did=2562&p=1&stb=tab2&y=
 ---
-『アイドルマスター SideM』とスポーツクラブ ルネサンスの企画「315 Fitness Project in RENAISSANCE – からだも、こころも、315更新！」は、10月22日から11月29日まで開催。蒼井悠介（W）、蒼井享介（W）、信玄誠司（FRAME）、山下次郎（S.E.M）、大河タケル（THE 虎牙道）がアンバサダーを務める。 <!-- F1 F2 F3 F35 -->
+『アイドルマスター SideM』とスポーツクラブ ルネサンスの企画「315 Fitness Project in RENAISSANCE – からだも、こころも、315更新！」は、10月22日から11月29日まで開催。蒼井悠介（W）、蒼井享介（W）、信玄誠司（FRAME）、山下次郎（S.E.M）、大河タケル（THE 虎牙道）がアンバサダーを務める。 <!-- F1 F2 F3 F35 N17 -->
 
 ## 対象店舗
 

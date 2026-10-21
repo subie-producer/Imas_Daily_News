@@ -23,6 +23,9 @@ sources:
 - label: TUfave「『アイドルマスター シンデレラガールズ』 佐久間まゆ コラボレーションジュエリー」
   url: https://www.tufave.com/pages/mayu_sakuma
   type: 未確認
+- label: プレミアムバンダイ「佐久間まゆイメージネックレス〜Bound to you.〜」(2026-10-21)
+  url: https://p-bandai.jp/fashion/c0009/c000901/c0004/list-da10-n0/
+  type: 準公式
 event_date: "2026-10-21"
 title_fact_ids:
 - F2

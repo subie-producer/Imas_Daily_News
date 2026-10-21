@@ -2077,10 +2077,14 @@ _TXN: dict = {"proc": None, "signum": None, "stray": []}
 TXN_JOURNAL = Path("metrics") / "work" / "classify-txn.json"   # 取引の開始時の中身の控え(ROOT から。Git 管理外)
 TXN_CHILD = Path("metrics") / "work" / "classify-txn.child.json"   # 動いている取引の子(pid・起動時刻)。親が死んでも次の起動が止める
 TXN_SIGNALS = (signal.SIGTERM, signal.SIGINT)
-# 取引の子の入口: 標準入力から合図("1")を受けてから本来のコマンドに置き換わる(pid と起動時刻は変わらない)。合図が来なければ動かない
+# 取引の子の入口: 標準入力から合図("1")を受けてから child_guard(孤児の受け皿)に置き換わり、本来のコマンドを起動する(pid と起動時刻は
+# 変わらない)。合図が来なければ動かない。child_guard は、コマンドの子孫が別のセッションに抜けて環境を読めなくし、親が先に終わっても
+# 自分の子として受け、コマンドが終わったら全部止めてから終わる。止めるときも、受けた孤児が親子関係で辿れる(2026-10-21 取り込みの
+# 監査: 環境を読めない孤児の道具が、取引を戻したあとの判定表を書き直した)
 _TXN_GATE = ("import os, sys\n"
              "if sys.stdin.buffer.read(1) != b'1':\n    sys.exit(125)\n"
-             "os.execv(sys.argv[1], sys.argv[1:])\n")
+             "os.execv(sys.executable, [sys.executable] + sys.argv[1:])\n")
+_TXN_GUARD = Path(__file__).resolve().parent / "child_guard.py"
 
 
 def _write_txn_child(child: Path, pid: int, started: str, mark: str = "") -> None:
@@ -2094,10 +2098,15 @@ def _write_txn_child(child: Path, pid: int, started: str, mark: str = "") -> Non
 
 
 def _txn_stop_child() -> None:
-    """取引の子をプロセスグループごと止める(止めずに戻すと、戻した後で子が判定表を書き直す)。"""
+    """取引の子をプロセスグループ・子孫・印ごと止める(止めずに戻すと、戻した後で子が判定表を書き直す)。子(child_guard)を先に
+    落とすと、受けていた孤児が init へ移って辿れなくなるので、凍らせてから子孫を辿って止める(stop_tree)。"""
     p = _TXN.get("proc")
     if p is None or p.poll() is not None:
         return
+    try:
+        stop_tree(p.pid, root=p.pid, mark=getattr(p, "session_mark", None))
+    except Exception:       # noqa: BLE001  止め方の失敗でも、下でグループだけは落とす
+        traceback.print_exc()
     try:
         os.killpg(p.pid, signal.SIGKILL)
     except OSError:
@@ -2118,8 +2127,8 @@ def _txn_run(cmd: list[str], timeout: int) -> subprocess.CompletedProcess:
     mark = uuid.uuid4().hex
     env = dict(os.environ)
     env[SESSION_ENV] = f"{env.get(SESSION_ENV, '')} {mark}".strip()
-    p = subprocess.Popen([sys.executable, "-c", _TXN_GATE, *cmd], cwd=ROOT, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                         stderr=subprocess.PIPE, text=True, start_new_session=True, env=env)
+    p = subprocess.Popen([sys.executable, "-c", _TXN_GATE, str(_TXN_GUARD), *cmd], cwd=ROOT, stdin=subprocess.PIPE,
+                         stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True, env=env)
     _TXN["proc"] = p
     p.session_mark = mark       # 時間切れ・例外の reap(stop_tree)も印で探す
     started = _proc_started(p.pid)
@@ -2226,9 +2235,10 @@ def _txn_members(sid: int, started: str = "", mark: str = "") -> list[int]:
     """取引の子のセッション sid に残っているプロセスと、取引の印 mark を環境に受け継いだプロセス(合議のモデル・道具は start_group で
     別のセッションに起動されるので、セッションでは見つからない)と、それらの子孫(ゾンビ・自分は除く)。"""
     found = set(_session_members(sid, started)) if sid > 1 else set()
-    table = _proc_table() if mark else None
+    table = _proc_table()
     if table:
-        found |= _proc_marked(table, mark)
+        if mark:
+            found |= _proc_marked(table, mark)
         kids: dict[int, list[int]] = {}
         for q, (pp, _, _) in table.items():
             kids.setdefault(pp, []).append(q)
@@ -2248,10 +2258,23 @@ def _stop_session(sid: int, started: str = "", wait: float = 10.0, mark: str = "
     (止めずに戻すと、戻した後で孫が判定表を書き直す。監査指摘 2026-10-14)。合議のモデルは start_group で別のセッションに
     起動されるので、印でも探す(2026-10-21 取り込みの監査: 中断で子のグループだけを落とすと、別のセッションのモデルが残り、
     戻したあとに判定表を書き直した)。戻りは止めきれなかった pid。"""
+    # 先に全員を凍らせてから止める(子(child_guard)を先に落とすと、受けていた孤児が init へ移り、親子関係で辿れなくなる)
     end = time.monotonic() + wait
     left = _txn_members(sid, started, mark)
     while left:
-        for q in left:
+        frozen: set[int] = set()
+        for _ in range(50):
+            new = set(left) - frozen
+            if not new:
+                break
+            for q in new:
+                try:
+                    os.kill(q, signal.SIGSTOP)
+                except OSError:
+                    pass
+            frozen |= new
+            left = _txn_members(sid, started, mark)
+        for q in frozen | set(left):
             try:
                 os.kill(q, signal.SIGKILL)
             except OSError:

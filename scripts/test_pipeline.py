@@ -9462,7 +9462,9 @@ def test_oncall_collect_rerun_killed_classify(tmp: Path):
         "from pathlib import Path\np=Path('source_types.yml');p.write_text(p.read_text()+'\\n# txn unfinished\\n')\n", encoding="utf-8")
     (root / "scripts" / "retag_sources.py").write_text(
         "from pathlib import Path\nimport os,signal\np=next(Path('docs/_posts').glob('*.md'));p.write_text(p.read_text()+'\\n<!-- txn unfinished -->\\n')\n"
-        "os.kill(os.getppid(),signal.SIGKILL)\n", encoding="utf-8")
+        # 取引の段は child_guard 越しに動くので、親の親(取引を持つ収集)を殺す
+        "pp=int(open(f'/proc/{os.getppid()}/stat').read().rsplit(')',1)[1].split()[1])\n"
+        "os.kill(pp,signal.SIGKILL)\n", encoding="utf-8")
     (root / "scripts" / "collect.py").write_text(
         "import pipelib\nfrom pathlib import Path\nPath('metrics/2026-10-15.json').write_text('{\"collect\":[{\"added\":1}]}')\n"
         "pipelib.classify_retag_lint('2026-10-15')\n", encoding="utf-8")
@@ -9514,7 +9516,9 @@ def test_failed_rollback_blocks_commit(tmp: Path):
     # 記事を書き換えて書き込めなくし(戻しが失敗する)、親に SIGTERM を送る
     (root / "scripts" / "retag_sources.py").write_text(
         "from pathlib import Path\nimport os,signal,time\np=next(Path('docs/_posts').glob('*.md'));p.write_text(p.read_text()+'\\n<!-- txn unfinished -->\\n')\n"
-        "p.chmod(0o444)\nos.kill(os.getppid(),signal.SIGTERM)\ntime.sleep(30)\n", encoding="utf-8")
+        # 取引の段は child_guard 越しに動くので、親の親(取引を持つ工程)に送る
+        "p.chmod(0o444)\npp=int(open(f'/proc/{os.getppid()}/stat').read().rsplit(')',1)[1].split()[1])\n"
+        "os.kill(pp,signal.SIGTERM)\ntime.sleep(30)\n", encoding="utf-8")
     g("add", "."); g("commit", "-qm", "base"); g("remote", "add", "origin", str(remote)); g("push", "-qu", "origin", "main")
     branch = "edition/2026-10-15"
     g("checkout", "-qb", branch); g("push", "-qu", "origin", branch)
@@ -10841,24 +10845,35 @@ def test_booth_item_owner(tmp: Path):
 def test_classify_txn_escaped_model(tmp: Path):
     """出典の判定の取引の中断・親の死で、合議の子が start_group で別のセッションに起動したモデルも止めてから戻す
     (2026-10-21 取り込みの監査: 子のセッションだけを見て、残ったモデルが戻したあとの判定表を書き直した)。
-    本物の classify_retag_lint・start_group を、合議の子とモデルだけ代役にして、SIGTERM・SIGINT・SIGKILL(次の起動の復旧)で検める。"""
+    本物の classify_retag_lint・start_group を、合議の子とモデルだけ代役にして、SIGTERM・SIGINT・SIGKILL(次の起動の復旧)で検める。
+    - model: モデル自身が残って書く
+    - hidden: モデルが、別のセッションに抜けて環境を読めなくした道具を残して先に終わる(道具は孤児。2巡目の監査の再現と同じ形)"""
     import signal
     import time as _t
     scripts = Path(__file__).resolve().parent
-    for sig in (signal.SIGTERM, signal.SIGINT, signal.SIGKILL):
-        w = tmp / sig.name
+    late = ("while not Path('go').exists():\n    time.sleep(0.01)\n"
+            "Path('source_types.yml').write_text('official_domains:\\n- late-write.example\\n')\nPath('wrote').touch()\n")
+    models = {
+        "model": "import os, time\nfrom pathlib import Path\nPath('model.pid').write_text(str(os.getpid()))\n" + late,
+        "hidden": ("import subprocess, sys, time\nfrom pathlib import Path\n"
+                   "subprocess.Popen([sys.executable, 'tool.py'], start_new_session=True, stdin=subprocess.DEVNULL, "
+                   "stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)\n"
+                   "while not Path('model.pid').exists():\n    time.sleep(0.01)\n")}
+    tool = ("import ctypes, os, time\nfrom pathlib import Path\nctypes.CDLL(None).prctl(4, 0, 0, 0, 0)\n"
+            "Path('model.pid').write_text(str(os.getpid()))\n" + late)
+    for kind, sig in [(k, s) for k in models for s in (signal.SIGTERM, signal.SIGINT, signal.SIGKILL)]:
+        w = tmp / f"{kind}-{sig.name}"
         (w / "scripts").mkdir(parents=True)
         (w / "docs" / "_posts").mkdir(parents=True)
         table = w / "source_types.yml"
         table.write_text("official_domains:\n- original.example\n", encoding="utf-8")
-        (w / "model.py").write_text("import os, time\nfrom pathlib import Path\nPath('model.pid').write_text(str(os.getpid()))\n"
-                                    "while not Path('go').exists():\n    time.sleep(0.01)\n"
-                                    "Path('source_types.yml').write_text('official_domains:\\n- late-write.example\\n')\n"
-                                    "Path('wrote').touch()\n", encoding="utf-8")
+        (w / "model.py").write_text(models[kind], encoding="utf-8")
+        (w / "tool.py").write_text(tool, encoding="utf-8")
         (w / "scripts" / "classify_sources.py").write_text(
-            f"import sys, subprocess\nsys.path.insert(0, {str(scripts)!r})\nimport pipelib\nfrom pathlib import Path\n"
+            f"import sys, subprocess, time\nsys.path.insert(0, {str(scripts)!r})\nimport pipelib\nfrom pathlib import Path\n"
             "Path('source_types.yml').write_text('official_domains:\\n- changed.example\\n')\n"
-            "pipelib.finish_group(pipelib.start_group([sys.executable, 'model.py'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL), 60)\n",
+            "pipelib.finish_group(pipelib.start_group([sys.executable, 'model.py'], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL), 60)\n"
+            "time.sleep(60)\n",
             encoding="utf-8")
         prog = (f"import sys, signal, json\nfrom pathlib import Path\nsys.path.insert(0, {str(scripts)!r})\nimport pipelib\n"
                 f"pipelib.ROOT = Path({str(w)!r})\n"
@@ -10892,7 +10907,7 @@ def test_classify_txn_escaped_model(tmp: Path):
             after = table.read_text(encoding="utf-8")
             check(ready and "original.example" in restored and after == restored and not (w / "wrote").exists()
                   and not (model and _pid_alive(model)) and not (w / pipelib.TXN_JOURNAL).exists(),
-                  f"{sig.name}: 取引を戻したあとに、別のセッションの合議のモデルが残って判定表を書き直した"
+                  f"{kind} {sig.name}: 取引を戻したあとに、別のセッションの合議のモデル・道具が残って判定表を書き直した"
                   f"(戻した表 {restored.strip()!r} / のち {after.strip()!r} / モデル生存 {bool(model and _pid_alive(model))} / {back})")
         finally:
             if proc.poll() is None:
@@ -11146,7 +11161,9 @@ def test_classify_txn_interrupt(tmp: Path):
     proc, pids = start(root, slow_sweep, wait_for="sweeping", env={"TXN_CLASSIFY": "orphan-ok"})
     saved = (pipelib.ROOT, pipelib.notify, pipelib.git_net, list(pipelib.ANOMALIES))
     try:
-        check(len(pids) == 2 and not alive(pids[0]) and alive(pids[1]), f"前提: 合議の子は終わり、孫が残っている: {pids}")
+        # 合議の子は child_guard 越しに動くので、子が終わると child_guard が孫を止めてから終わる(2026-10-21)。孫が残っていても
+        # いなくても、次の工程の checkout が止めてから戻すことを見る
+        check(len(pids) == 2 and not alive(pids[0]), f"前提: 合議の子は終わった: {pids}")
         os.kill(proc.pid, _signal.SIGKILL)
         proc.communicate(timeout=30)
         pipelib.ROOT = root

@@ -777,7 +777,6 @@
  ],
  "imasnews765": [
   "https://imasnews765.com/?p=32579",
-  "https://imasnews765.com/?p=32576",
   "https://imasnews765.com/?p=32571",
   "https://imasnews765.com/?p=32568",
   "https://imasnews765.com/?p=32566",
@@ -786,6 +785,7 @@
   "https://imasnews765.com/?p=32557",
   "https://imasnews765.com/?p=32553",
   "https://imasnews765.com/?p=32550",
+  "https://imasnews765.com/?p=32576",
   "https://imasnews765.com/?p=32547",
   "https://imasnews765.com/?p=32544",
   "https://imasnews765.com/?p=32539",
@@ -989,8 +989,7 @@
   "https://lantis.jp/sidem/extra/index.html#20260925",
   "https://lantis.jp/sidem/extra/index.html#20260912_2"
  ],
- "_pending": [],
- "_given_up": [
+ "_pending": [
   {
    "source_id": "imasnews765",
    "brand": "general",
@@ -1000,5 +999,6 @@
    "csr": false,
    "given_up_at": "2026-10-20T20:30:21+09:00"
   }
- ]
+ ],
+ "_given_up": []
 }

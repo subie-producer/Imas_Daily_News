@@ -1157,9 +1157,8 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         # 投稿は未処理と数えると、候補にした投稿を「失った」と通知する(2026-10-22 02:39 の gakuen 面)。崩れた候補の元の投稿は
         # 未処理として確かめ直し(-again)へ回り、どの投稿にも結び付かない崩れた候補は、確かめ直せないのでここで名指しする
         items += repoint_to_post([shape_item(x) for x in got or [] if candidate_usable(x)], text)
-        stray = broken_items(text, got)[1]
-        if stray:
-            ledger["lost"].setdefault(q["key"], []).extend((f"- url: {u}", "候補の形が崩れていて、どの投稿にも結び付かない") for u in stray)
+        tied, stray = broken_items(text, got)
+        ledger.setdefault("stray", []).extend((q["key"], u) for u in stray)
         left_keys = {post_key(post_url(b)) for b in left}
         ledger["settled"] |= {k for k in map(post_key, map(post_url, post_blocks(text))) if k and k not in left_keys}
         if left and not final:
@@ -1169,7 +1168,10 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         elif left:
             # 2回目でも残った投稿は、申告で終えない(当番のなぜなぜへ)。どの投稿を失うかを最後の段のあとで名指しする
             why = f"{'候補の一覧が読めない' if got is None else '投稿ごとの結果に無い・読めなかった'}、{ended}"
-            ledger["lost"].setdefault(q["key"], []).extend((b, why) for b in left)
+            ledger["lost"].setdefault(q["key"], []).extend(
+                (b, f"候補の形が崩れていた、{ended}" if post_key(post_url(b)) in tied else why) for b in left)
+            # 崩れて候補にしなかった候補の中身は、ほかの段でこの投稿が済んでいても戻らない(その段の答えにしか無い)。済みで消さない
+            ledger.setdefault("broken", set()).update(k for k in map(post_key, map(post_url, left)) if k in tied)
         raw_asks = read_json_list(wd / "deep.json") if in_time and p.returncode == 0 else None
         # 候補の一覧も読めなかった回は、全投稿を -again でもう1回確かめるので、問いもそこで出し直される(失っていない)。
         # 以前はここでも「深掘りの機会を失う」と通知していた(2026-10-21 02:19 の sidem 面: /tmp が満杯で Luna が exit 101 で
@@ -1200,8 +1202,10 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
 
 def lost_posts_ledger() -> dict:
     """X の投稿の確かめの記録(全段で共有)。lost: 面 → [(2回確かめても残った投稿の塊, 理由)] / settled: どこかの段で済んだ投稿の鍵(post_key)
-    / blocked: 確かめ役の CLI が認証切れ・利用上限で答えなかった面(投稿は読み直しの列 GROK_PENDING へ)。"""
-    return {"lost": {}, "settled": set(), "blocked": set()}
+    / blocked: 確かめ役の CLI が認証切れ・利用上限で答えなかった面(投稿は読み直しの列 GROK_PENDING へ)
+    / broken: 形の崩れた候補を候補にしないまま確かめ直しでも直らなかった投稿の鍵(ほかの段で済んでいても、その中身は失っている)
+    / stray: [(面, 候補の url)] どの投稿にも結び付かない崩れた候補(確かめ直せない。投稿ではないので読み直しの列にも入れない)。"""
+    return {"lost": {}, "settled": set(), "blocked": set(), "broken": set(), "stray": []}
 
 
 # 確かめ役(Luna)が認証切れ・利用上限で答えなかった面の X の投稿(読み直しの列。Git 管理外)。Grok の調べは週の枠を使い、回す時刻も
@@ -1254,28 +1258,40 @@ def report_lost_posts(ledger: dict) -> None:
     複数の面で残っても(面どうしで同じアカウントを検索するので、同じ投稿が複数の面に書き出される)1行にし、所属の面を併記する
     (面ごとに数えると、同じ投稿の喪失を面の数だけ通知した。監査指摘 lost-post-cross-face)。"""
     rows: dict[str, list] = {}  # 投稿 → [表示, 面の並び, 理由の並び](最初に現れた順)
+    # 済んだ投稿は失っていない。ただし崩れた候補を候補にしなかった投稿(broken)は、ほかの段で済んでもその中身が戻らない
+    done = ledger["settled"] - (ledger.get("broken") or set())
     # 後の段(深掘りの確かめ)で確かめ役の CLI が認証切れ・利用上限で止まった面は、まだ確かめ終えていない: 残った投稿を失ったと
     # 言わず、読み直しの列に残して次の収集で確かめ直す(そこでも済まなければ、そのとき名指しする。監査指摘 r3)
     for key in sorted(set(ledger["lost"]) & set(ledger.get("blocked") or ())):
-        left = [b for b, _ in ledger["lost"].pop(key) if not (post_url(b) and post_key(post_url(b)) in ledger["settled"])]
+        left = [b for b, _ in ledger["lost"].pop(key) if not (post_url(b) and post_key(post_url(b)) in done)]
         if left:
             keep_pending_posts(key, "\n\n".join(left))
     for key in sorted(ledger["lost"]):
         for b, why in ledger["lost"][key]:
             u = post_url(b)
-            if u and post_key(u) in ledger["settled"]:
+            if u and post_key(u) in done:
                 continue
             row = rows.setdefault(post_key(u) or b, [u or "(投稿に分けられない書き出し) " + b[:80], [], []])
             for lst, v in ((row[1], key), (row[2], why)):
                 if v not in lst:
                     lst.append(v)
-    if not rows:
+    strays: dict[str, list] = {}    # 候補の url → 面の並び
+    for key, u in ledger.get("stray") or []:
+        if key not in strays.setdefault(u, []):
+            strays[u].append(key)
+    if not rows and not strays:
         return
     lines = [f"- {shown}(面: {', '.join(keys)}。{' / '.join(whys)})" for shown, keys, whys in rows.values()]
-    faces = sorted({k for _, keys, _ in rows.values() for k in keys})
-    notify("collect", f"Grok の {', '.join(faces)} 面: X の投稿 {len(lines)}件を、深掘りまで確かめても候補にも「事実なし」にもできなかった。"
-                      "この投稿の X の動きを失う:\n" + "\n".join(lines[:10])
-                      + (f"\n- ほか {len(lines) - 10}件" if len(lines) > 10 else ""), ok=False)
+    faces = sorted({k for _, keys, _ in rows.values() for k in keys} | {k for keys in strays.values() for k in keys})
+    msg = f"Grok の {', '.join(faces)} 面: "
+    if lines:
+        msg += (f"X の投稿 {len(lines)}件を、深掘りまで確かめても候補にも「事実なし」にもできなかった。この投稿の X の動きを失う:\n"
+                + "\n".join(lines[:10]) + (f"\n- ほか {len(lines) - 10}件" if len(lines) > 10 else ""))
+    if strays:
+        msg += (("\n" if lines else "") + f"確かめ役が書いた候補 {len(strays)}件の形が崩れていて、どの投稿にも結び付かない(確かめ直せない)。この候補の中身を失う:\n"
+                + "\n".join(f"- {u}(面: {', '.join(keys)})" for u, keys in list(strays.items())[:10])
+                + (f"\n- ほか {len(strays) - 10}件" if len(strays) > 10 else ""))
+    notify("collect", msg, ok=False)
 
 
 # 投稿の url の行。見本は `- url: …` だが、行頭の記号が抜けた・全角のコロンなどの崩れも投稿の区切りとして拾う
@@ -1392,9 +1408,9 @@ def broken_items(text: str, written) -> tuple[set[str], list[str]]:
     links = [(post_key(u), set(ls)) for u, ls in post_links(text)]
     tied, stray = set(), []
     for x in written if isinstance(written, list) else []:
-        if not isinstance(x, dict) or candidate_usable(x):
-            continue    # 候補の形でない要素(null など)は中身が無い
-        u = x.get("url")
+        if x is None or candidate_usable(x):
+            continue    # null は中身が無い。配列・文字列など dict でない要素は中身があり得るので、結び付かない崩れた候補として名指しする
+        u = x.get("url") if isinstance(x, dict) else None
         hit = {k for k, ls in links if isinstance(u, str) and u.strip() and (k == post_key(u) or u in ls)}
         if hit:
             tied |= hit

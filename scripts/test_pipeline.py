@@ -1285,10 +1285,10 @@ def test_grok_verify_keeps_what_it_counts(tmp: Path):
     posts = (f"### 1\n- url: {p9}\n- 本文: くじの告知\n- リンク: なし\n\n"
              f"### 2\n- url: {p1}\n- 本文: グッズの告知\n- リンク:\n  - {goods}\n")
 
-    def run(first: list[dict], again: list[dict], tag: str):
+    def run(first: list, again: list, tag: str, ledger=None, suffix: str = "", report: bool = False):
         root = tmp / tag
-        root.mkdir(parents=True)
-        (root / "gakuen.md").write_text(posts, encoding="utf-8")
+        root.mkdir(parents=True, exist_ok=True)
+        (root / f"gakuen{suffix}.md").write_text(posts, encoding="utf-8")
         notes, passes = [], []
         class VP:
             pid = 0
@@ -1301,11 +1301,13 @@ def test_grok_verify_keeps_what_it_counts(tmp: Path):
             wd = Path(cwd)
             text = (wd / "x-posts.md").read_text(encoding="utf-8")
             passes.append([collect.post_url(b) for b in collect.post_blocks(text)])
-            its = [x for x in (again if "-again" in wd.name else first) if any(x["_post"] == collect.post_url(b) for b in collect.post_blocks(text))]
-            (wd / "items.json").write_text(json.dumps([{k: v for k, v in x.items() if k != "_post"} for x in its], ensure_ascii=False), encoding="utf-8")
+            # 候補は (元の投稿, 書く要素) の組。要素は dict でないこともある(崩れた答え)
+            its = [(p, x) for p, x in (again if "-again" in wd.name else first) if any(p == collect.post_url(b) for b in collect.post_blocks(text))]
+            (wd / "items.json").write_text(json.dumps([x for _, x in its], ensure_ascii=False), encoding="utf-8")
             res = {}
-            for x in its:
-                res.setdefault(x["_post"], x["url"])
+            for p, x in its:
+                if isinstance(x, dict):
+                    res.setdefault(p, x["url"])
             (wd / "posts.json").write_text(json.dumps([{"url": collect.post_url(b), "status": "extracted" if collect.post_url(b) in res else "none",
                                                         "item": res.get(collect.post_url(b), "")} for b in collect.post_blocks(text)]), encoding="utf-8")
             (wd / "deep.json").write_text("[]", encoding="utf-8")
@@ -1319,7 +1321,9 @@ def test_grok_verify_keeps_what_it_counts(tmp: Path):
             collect.explore_workdir = lambda key: (root / "wd" / key).mkdir(parents=True, exist_ok=True) or root / "wd" / key
             collect.notify = lambda job, msg, ok=True, require=False: notes.append(msg) or True
             collect.subprocess.Popen = fake_popen
-            items, _ = collect.verify_grok_faces([{"key": "gakuen", "brand": "gaku", "topic": "t"}], root)
+            items, _ = collect.verify_grok_faces([{"key": "gakuen", "brand": "gaku", "topic": "t"}], root, suffix=suffix, ledger=ledger)
+            if report:
+                collect.report_lost_posts(ledger)
         finally:
             for n, v in saved.items():
                 setattr(collect, n, v)
@@ -1327,26 +1331,45 @@ def test_grok_verify_keeps_what_it_counts(tmp: Path):
         return items, notes, passes
 
     # kind にアイドル名の配列(実データの崩れ方)。2回とも同じ答えでも、候補になり、確かめ直さず、失ったと言わない
-    shifted = {**base, "kind": ["リーリヤ", "紫雲清夏", "姫崎莉波"], "url": p9, "_post": p9}
-    check(collect.candidate_usable({k: v for k, v in shifted.items() if k != "_post"}), "kind が崩れただけの候補を、依頼した形でないとした")
-    items, notes, passes = run([shifted], [shifted], "kind")
+    shifted = {**base, "kind": ["リーリヤ", "紫雲清夏", "姫崎莉波"], "url": p9}
+    check(collect.candidate_usable(shifted), "kind が崩れただけの候補を、依頼した形でないとした")
+    items, notes, passes = run([(p9, shifted)], [(p9, shifted)], "kind")
     check([x["url"] for x in items] == [p9] and len(passes) == 1 and not notes,
           f"kind の崩れた候補を候補にしたのに、投稿を確かめ直し・失ったと通知した: {items} / {passes} / {notes}")
+    # kind は候補に写さない(崩れていても正しくても)
+    items_ok, _, _ = run([(p9, {**base, "url": p9})], [], "kind-ok")
+    check(all("kind" not in x for x in items + items_ok) and all("kind" not in x for x in collect.normalize(items_ok)),
+          f"写さない欄 kind を候補に運んだ: {items} / {items_ok}")
     # 締切の崩れた候補は候補にせず(欄を落とした候補を作らない)、元の投稿を確かめ直す。直った答えだけが候補になる
-    items, notes, passes = run([{**base, "deadline": "2026/10/30", "url": p9, "_post": p9}], [{**base, "url": p9, "_post": p9}], "deadline")
+    items, notes, passes = run([(p9, {**base, "deadline": "2026/10/30", "url": p9})], [(p9, {**base, "url": p9})], "deadline")
     check([(x["url"], x.get("deadline")) for x in items] == [(p9, "2026-10-30")] and passes[1:] == [[p9]] and not notes,
           f"締切の崩れた候補を候補にした・確かめ直さなかった: {items} / {passes} / {notes}")
     # 投稿に貼られたリンクの候補が崩れていたら、その投稿は(投稿そのものの候補が正しくても)済みにしない
-    items, notes, passes = run([{**base, "url": p1, "_post": p1}, {**base, "url": goods, "deadline": "11月", "_post": p1}],
-                               [{**base, "url": p1, "_post": p1}, {**base, "url": goods, "_post": p1}], "link")
+    items, notes, passes = run([(p1, {**base, "url": p1}), (p1, {**base, "url": goods, "deadline": "11月"})],
+                               [(p1, {**base, "url": p1}), (p1, {**base, "url": goods})], "link")
     # (リンク先は未確認の出典なので、付け直しで投稿の url になる)
     check([(x["url"], x.get("deadline")) for x in items] == [(p1, "2026-10-30")] * 3 and passes[1:] == [[p1]] and not notes,
           f"リンク先の候補が崩れた投稿を済みにした: {items} / {passes} / {notes}")
-    # どの投稿にも結び付かない崩れた候補は、確かめ直せないので名指しする(欄を落として黙って候補にしない)
-    stray = {**base, "url": "https://example.com/stray", "deadline": "未定", "_post": p9}
-    items, notes, passes = run([{**base, "url": p9, "_post": p9}, stray], [], "stray")
+    # どの投稿にも結び付かない崩れた候補は、確かめ直せないので名指しする(欄を落として黙って候補にしない)。
+    # dict でない要素(配列・文字列)も中身があり得るので同じ。null は中身が無いので名指ししない
+    stray = {**base, "url": "https://example.com/stray", "deadline": "未定"}
+    items, notes, passes = run([(p9, {**base, "url": p9}), (p9, stray), (p9, [p9, "締切2026-11-30の新商品"]), (p9, None)], [], "stray")
     check([x["url"] for x in items] == [p9] and len(passes) == 1 and len(notes) == 1 and "https://example.com/stray" in notes[0]
-          and p9 not in notes[0], f"どの投稿にも結び付かない崩れた候補を名指ししない: {items} / {passes} / {notes}")
+          and "新商品" in notes[0] and "null" not in notes[0] and "X の投稿" not in notes[0],
+          f"どの投稿にも結び付かない崩れた候補を名指ししない: {items} / {passes} / {notes}")
+    # 段をまたぐ: 通常の確かめで済んだ投稿でも、深掘りの確かめで崩れた候補(新しい事実)が2回とも直らなければ、その中身を失ったと名指しする
+    # (投稿が別の段で済んでいることで、崩れた候補の喪失を消さない。Sol 監査 r1)
+    ledger = collect.lost_posts_ledger()
+    run([(p9, {**base, "url": p9})], [], "cross", ledger=ledger)
+    broken_deep = (p9, {**base, "url": p9, "facts": ["追加の発表"], "deadline": "11月末"})
+    items, notes, passes = run([broken_deep], [broken_deep], "cross", ledger=ledger, suffix="-deep", report=True)
+    check(items == [] and len(notes) == 1 and p9 in notes[0] and "候補の形が崩れていた" in notes[0],
+          f"別の段で済んだ投稿の、深掘りで崩れた候補の喪失を名指ししない: {items} / {notes}")
+    # 深掘りの答えが「事実なし」なら、通常の段で済んだ投稿は失っていない(従来どおり)
+    ledger = collect.lost_posts_ledger()
+    run([(p9, {**base, "url": p9})], [], "cross2", ledger=ledger)
+    items, notes, passes = run([], [], "cross2", ledger=ledger, suffix="-deep", report=True)
+    check(not notes, f"深掘りで事実なしの投稿を失ったと通知した: {notes}")
 
 
 def test_lost_post_notified_once(tmp: Path):

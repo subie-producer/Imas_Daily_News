@@ -405,9 +405,13 @@ def run(names: list[str], label: str) -> int:
                                               "cases": sorted(cases)}, ensure_ascii=False), encoding="utf-8")
 
     def child(n: str) -> dict:
-        # 事例ごとに別のプロセス(出典の本文の環境変数と、校閲の作業フォルダを事例ごとに分ける)
-        r = subprocess.run([sys.executable, str(Path(__file__).resolve()), "--one", n, "--label", label],
-                           capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=3600)
+        # 事例ごとに別のプロセス(出典の本文の環境変数と、校閲の作業フォルダを事例ごとに分ける)。子は codex・claude を起こすので、
+        # 本番と同じ run_group で起動し、時間切れでは子孫まで止めてその事例だけ不合格にする(2026-10-21 組 P の取り込み)
+        try:
+            r = pipelib.run_group([sys.executable, str(Path(__file__).resolve()), "--one", n, "--label", label], timeout=3600)
+        except subprocess.TimeoutExpired as e:
+            so, se = pipelib.partial_output(e)
+            r = subprocess.CompletedProcess(e.cmd, 124, so, se)
         (d / f"{n}.log").write_text((r.stdout or "") + (r.stderr or ""), encoding="utf-8")
         f = d / f"{n}.json"
         if r.returncode != 0 or not f.exists():
@@ -427,6 +431,7 @@ def run(names: list[str], label: str) -> int:
 
 
 def main() -> int:
+    pipelib.exit_on_term()      # SIGTERM でも、起動した事例・執筆・校閲のセッションを子孫ごと止めてから終わる
     ap = argparse.ArgumentParser()
     ap.add_argument("--run", nargs="*", metavar="CASE", help="事例を走らせる(名指しが無ければ全部)")
     ap.add_argument("--label", default=datetime.datetime.now().strftime("%Y%m%dT%H%M%S"))

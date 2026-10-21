@@ -53,6 +53,8 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
                      collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked)
+# モデルのセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
+from pipelib import finish_group, run_group, start_group, stop_groups
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
 # 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
@@ -287,6 +289,12 @@ def remaining_seconds(cap: int = 900) -> int:
     if not DEADLINE:
         return cap
     return int(max(1, min(cap, DEADLINE - time.time())))
+
+
+def deadline_passed() -> bool:
+    """締切(DEADLINE)を過ぎたか。過ぎたら新しいセッション(やり直し・差し戻しも)を起動しない。待ち時間を縮めるだけでは
+    起動は止まらない(監査指摘 2026-10-14: 締切後も後続の執筆・校閲とその再試行を起動した)。締切前は今どおり全部を起動する。"""
+    return bool(DEADLINE) and time.time() >= DEADLINE
 
 
 def terminal_cost() -> float:
@@ -1172,11 +1180,11 @@ def reassemble(date: str, number: int, plan: dict, written: list[dict]) -> None:
 
 def claude_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str:
     try:
-        r = subprocess.run(
+        r = run_group(
             ["claude", "-p", prompt_file(edition_date(), "claude-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt),
              "--model", model or CLAUDE_MODEL, "--dangerously-skip-permissions",
              "--max-budget-usd", COMPOSE_WHOLE_MAX_BUDGET_USD],
-            capture_output=True, text=True, timeout=remaining_seconds(cap=timeout), stdin=subprocess.DEVNULL, cwd=ROOT)
+            timeout=remaining_seconds(cap=timeout), cwd=ROOT)
     except subprocess.TimeoutExpired as e:
         save_raw(edition_date(), f"claude-run-{time.time_ns() % 10**9}", *partial_output(e))   # 時間切れの回の出力も残す
         raise
@@ -1215,12 +1223,11 @@ def codex_run(prompt: str, timeout: int = 2400, model: str | None = None) -> str
     out_path = Path(out_name)
     so, se, code = "", "", None
     try:
-        r = subprocess.run(
+        r = run_group(
             ["codex", "exec", "-m", model or CODEX_WRITE_MODEL, "-s", "workspace-write",
              "--output-last-message", str(out_path),
              prompt_file(edition_date(), "codex-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt)],
-            capture_output=True, text=True,
-            timeout=remaining_seconds(cap=timeout), stdin=subprocess.DEVNULL, cwd=ROOT)
+            timeout=remaining_seconds(cap=timeout), cwd=ROOT)
         so, se, code = r.stdout, r.stderr, r.returncode
     except subprocess.TimeoutExpired as e:
         so, se = partial_output(e)
@@ -1476,65 +1483,65 @@ def run_plan(date: str, by_brand: dict, triggers: list[dict], wave: int = 0) -> 
             groups.append(present[i:i + wave])
     for group in groups:
         procs = []
-        for b in group:
-            out = ROOT / "metrics" / f"plan-{date}-{b}.json"
-            out.unlink(missing_ok=True)  # 残骸の誤読防止
-            prompt = brand_plan_prompt(date, b, len(by_brand[b]), trig_by_brand.get(b, []),
-                                       claimed=claimed)
-            # **主題ごとに必ず1つの判定**を schema で求める(planlib)。id や slug は書かせない。
-            # 以前はファイルに JSON を書かせ、id の写し間違いを別セッションで直し、
-            # 漏れを別セッションで拾い直していた(監査指摘 P1-1/P1-2)
-            keys = [s["dedup_key"] for s in by_brand[b]]
-            schema = planlib.plan_schema(keys, b, [c.get("slug") for c in claimed])
-            plan_schemas[b] = schema          # 答えを検めるときに、その面に渡した schema を使う
-            procs.append((b, out, subprocess.Popen(
-                ["claude", "-p", prompt_file(date, f"plan-{b}", prompt), "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
-                 "--json-schema", json.dumps(schema, ensure_ascii=False),
-                 "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-                stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True)))
-        for b, out, p in procs:
-            timed_out = False
-            try:
-                so, se = p.communicate(timeout=remaining_seconds())
-            except subprocess.TimeoutExpired:
-                # 子も含めて落とし、時間切れまでに出ていた出力を上限つきで回収する(原因を追えるように)
-                (so, se), timed_out = reap(p), True
-            save_raw(date, f"plan-{b}", so, se, p.returncode)
-            try:
-                if timed_out or p.returncode != 0:
-                    # 途中までの出力・異常終了の間際の出力は判定に使わない(その面の主題は取りこぼしとして拾い直す)
-                    raise TimeoutError("時間切れ" if timed_out else f"exit {p.returncode}")
-                text = (so or "").strip()
-                # 同じ主題のキーが2回ある答えは読めない(後の判定で黙って上書きされる。loads_strict。監査指摘)
+        # 起動は1面ずつ一覧に足し、例外・中断で抜けても finally で起動済みの面を止めて回収する。起動できない面は
+        # その面だけの異常終了(start_group が返す LaunchFailed)として下で扱う(2本目の起動の失敗で例外になり、1本目が
+        # 回収されずに残った。監査指摘 2026-10-14)
+        try:
+            for b in group:
+                out = ROOT / "metrics" / f"plan-{date}-{b}.json"
+                out.unlink(missing_ok=True)  # 残骸の誤読防止
+                prompt = brand_plan_prompt(date, b, len(by_brand[b]), trig_by_brand.get(b, []),
+                                           claimed=claimed)
+                # **主題ごとに必ず1つの判定**を schema で求める(planlib)。id や slug は書かせない。
+                # 以前はファイルに JSON を書かせ、id の写し間違いを別セッションで直し、
+                # 漏れを別セッションで拾い直していた(監査指摘 P1-1/P1-2)
+                keys = [s["dedup_key"] for s in by_brand[b]]
+                schema = planlib.plan_schema(keys, b, [c.get("slug") for c in claimed])
+                plan_schemas[b] = schema          # 答えを検めるときに、その面に渡した schema を使う
+                procs.append((b, out, start_group(
+                    ["claude", "-p", prompt_file(date, f"plan-{b}", prompt), "--model", CLAUDE_MODEL, "--dangerously-skip-permissions",
+                     "--json-schema", json.dumps(schema, ensure_ascii=False),
+                     "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD], cwd=ROOT)))
+            for b, out, p in procs:
+                # 時間切れは子も含めて落とし、時間切れまでに出ていた出力を上限つきで回収する(原因を追えるように)
+                so, se, timed_out = finish_group(p, remaining_seconds())
+                save_raw(date, f"plan-{b}", so, se, p.returncode)
                 try:
-                    ans = loads_strict(text)
-                except json.JSONDecodeError:
-                    ans = loads_strict(re.search(r"\{.*\}", text, re.S).group(0))
-                if not isinstance(ans, dict):
-                    raise ValueError("答えが JSON の object でない")
-                if not isinstance(ans.get("decisions"), dict):
-                    raise ValueError("判定(decisions)が無い")   # 空の判定を「全部不採用」にしない(下で取りこぼしとして拾い直す)
-                # 判定は1主題ずつ schema(planlib.plan_schema)で検め、形の崩れた判定は「判定なし」にする(その主題だけ
-                # 取りこぼしとして拾い直す。崩れた1件で面全体を落とさない・崩れた値で計画を作らない。監査指摘)
-                from jsonschema import Draft202012Validator
-                per_key = plan_schemas[b]["properties"]["decisions"]["properties"]
-                ans["decisions"] = {k: d for k, d in ans["decisions"].items()
-                                    if k in per_key and Draft202012Validator(per_key[k]).is_valid(d)}
-                results[b] = planlib.decisions_to_plan(b, by_brand[b], ans["decisions"], taken)
-                out.write_text(json.dumps({"decisions": ans.get("decisions"), "plan": results[b]},
-                                          ensure_ascii=False, indent=1), encoding="utf-8")
-            except Exception as e:
-                print(f"選定: {b} 面が計画を出せず({type(e).__name__}: {(se or '')[-120:]})。"
-                      "この面は不採用扱いで続行", flush=True)
-                continue
-            n_a = len(results[b].get("articles") or [])
-            n_d = len(results[b].get("dropped") or [])
-            # 後続の面へ「もう記事化した話題」として渡す。dedup_key が一致しなくても
-            # 同じ話題だと分かるよう、面・切り口・主題キーをまとめて見せる
-            for a in results[b].get("articles") or []:
-                claimed.append({k: a.get(k) for k in ("brand", "slug", "dedup_key", "angle")})
-            print(f"選定: {b} 面 {len(by_brand[b])}主題 → 記事{n_a}本 / 不採用{n_d}件", flush=True)
+                    if timed_out or p.returncode != 0:
+                        # 途中までの出力・異常終了の間際の出力は判定に使わない(その面の主題は取りこぼしとして拾い直す)
+                        raise TimeoutError("時間切れ" if timed_out else f"exit {p.returncode}")
+                    text = (so or "").strip()
+                    # 同じ主題のキーが2回ある答えは読めない(後の判定で黙って上書きされる。loads_strict。監査指摘)
+                    try:
+                        ans = loads_strict(text)
+                    except json.JSONDecodeError:
+                        ans = loads_strict(re.search(r"\{.*\}", text, re.S).group(0))
+                    if not isinstance(ans, dict):
+                        raise ValueError("答えが JSON の object でない")
+                    if not isinstance(ans.get("decisions"), dict):
+                        raise ValueError("判定(decisions)が無い")   # 空の判定を「全部不採用」にしない(下で取りこぼしとして拾い直す)
+                    # 判定は1主題ずつ schema(planlib.plan_schema)で検め、形の崩れた判定は「判定なし」にする(その主題だけ
+                    # 取りこぼしとして拾い直す。崩れた1件で面全体を落とさない・崩れた値で計画を作らない。監査指摘)
+                    from jsonschema import Draft202012Validator
+                    per_key = plan_schemas[b]["properties"]["decisions"]["properties"]
+                    ans["decisions"] = {k: d for k, d in ans["decisions"].items()
+                                        if k in per_key and Draft202012Validator(per_key[k]).is_valid(d)}
+                    results[b] = planlib.decisions_to_plan(b, by_brand[b], ans["decisions"], taken)
+                    out.write_text(json.dumps({"decisions": ans.get("decisions"), "plan": results[b]},
+                                              ensure_ascii=False, indent=1), encoding="utf-8")
+                except Exception as e:
+                    print(f"選定: {b} 面が計画を出せず({type(e).__name__}: {(se or '')[-120:]})。"
+                          "この面は不採用扱いで続行", flush=True)
+                    continue
+                n_a = len(results[b].get("articles") or [])
+                n_d = len(results[b].get("dropped") or [])
+                # 後続の面へ「もう記事化した話題」として渡す。dedup_key が一致しなくても
+                # 同じ話題だと分かるよう、面・切り口・主題キーをまとめて見せる
+                for a in results[b].get("articles") or []:
+                    claimed.append({k: a.get(k) for k in ("brand", "slug", "dedup_key", "angle")})
+                print(f"選定: {b} 面 {len(by_brand[b])}主題 → 記事{n_a}本 / 不採用{n_d}件", flush=True)
+        finally:
+            stop_groups([p for _, _, p in procs])
     arts, dropped, seen = [], [], set()
     by_slug: dict[str, dict] = {}
     for b, r in results.items():
@@ -1614,10 +1621,10 @@ def pick_lead(date: str, plan: dict) -> None:
     pick = {}
     try:
         try:
-            r = subprocess.run(["claude", "-p", prompt_file(date, "lead", lead_prompt(date, arts)), "--model", CLAUDE_MODEL,
-                                "--json-schema", schema, "--dangerously-skip-permissions",
-                                "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                               capture_output=True, text=True, timeout=remaining_seconds(cap=600), stdin=subprocess.DEVNULL, cwd=ROOT)
+            r = run_group(["claude", "-p", prompt_file(date, "lead", lead_prompt(date, arts)), "--model", CLAUDE_MODEL,
+                           "--json-schema", schema, "--dangerously-skip-permissions",
+                           "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+                          timeout=remaining_seconds(cap=600), cwd=ROOT)
         except subprocess.TimeoutExpired as e:
             save_raw(date, "lead", *partial_output(e))     # 時間切れの回も、それまでの出力を残す
             raise
@@ -1705,10 +1712,9 @@ def replan_missing(date: str, plan: dict, by_brand: dict, cands: dict,
     out.unlink(missing_ok=True)
     prompt = missing_plan_prompt(date, subjects, plan.get("articles", []))
     try:
-        pr = subprocess.run(["claude", "-p", prompt_file(date, "plan-missing", prompt), "--model", CLAUDE_MODEL,
-                             "--dangerously-skip-permissions", "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                            capture_output=True, text=True,
-                            stdin=subprocess.DEVNULL, cwd=ROOT, timeout=remaining_seconds(cap=600))
+        pr = run_group(["claude", "-p", prompt_file(date, "plan-missing", prompt), "--model", CLAUDE_MODEL,
+                        "--dangerously-skip-permissions", "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+                       timeout=remaining_seconds(cap=600), cwd=ROOT)
         so, se, code = pr.stdout, pr.stderr, pr.returncode
     except subprocess.TimeoutExpired as e:
         (so, se), code = partial_output(e), None
@@ -2284,6 +2290,16 @@ def returned_note(problems: list[str]) -> str:
             + "\n記事として成立しないと判断するなら status を decline にし、理由コードと説明を書く。")
 
 
+def _late_article(date: str, art: dict, outcomes: dict, aborted: list) -> None:
+    """締切を過ぎて執筆を始めなかった記事(差し戻し・やり直しを含む)を、理由付きで外れた記事に記録する(後始末・当番へ流れる)。
+    締切後も後続の記事の担当を起動していた(監査指摘 2026-10-14)。打ち切りは締切だけで、締切前は今どおり全部書く"""
+    outcomes[art["slug"]] = "落とした(締切を過ぎ、執筆を始めなかった)"
+    print(f"記事 {art['slug']} を{outcomes[art['slug']]}", flush=True)
+    if art["slug"] not in aborted:
+        aborted.append(art["slug"])
+    DROP_LOG.setdefault(date, {})[art["slug"]] = (str(art.get("angle") or ""), "締切で未着手", outcomes[art["slug"]][4:])
+
+
 def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                    stories: dict, wave: int = 0,
                    reuse: bool = False) -> tuple[list[dict], list[str]]:
@@ -2339,35 +2355,45 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
     unreadable: set[str] = set()   # 出力が読めず、同じ依頼でもう1回書かせた記事(実行の失敗のやり直しは1回だけ)
     while queue:
         batch, queue = queue[:wave], queue[wave:]
-        procs = []
-        for art, src, prompt, fact_by_id, materials, tries in batch:
-            fd, out_name = tempfile.mkstemp(prefix=f"codexwrite-{art['slug']}-", suffix=".txt")
-            os.close(fd)
-            out_path = Path(out_name)
-            cmd = ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
-                   # 既定では sandbox が通信を遮断する。これが無いと出典照合が
-                   # 実行できず、収集段階の誤りがそのまま紙面に出る
-                   "-c", "sandbox_workspace_write.network_access=true",
-                   "--output-last-message", str(out_path)]
-            if STRUCTURED_WRITE:
-                cmd += ["--output-schema", str(schema_out)]
-            # 素材と指示はファイルで渡す(引数に詰めると 128KB で落ちる。エージェントは自分で読める)。
-            # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(最終メッセージを残さず終わった回の原因を追うため)
-            with open(log_of(out_path), "w", encoding="utf-8") as lf:
-                procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, subprocess.Popen(
-                    cmd + [prompt_file(date, f"write-{art['slug']}-{tries}", prompt)],
-                    stdout=lf, stderr=subprocess.STDOUT, text=True,
-                    stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True)))
-        for art, src, prompt, out_path, fact_by_id, materials, tries, p in procs:
-            timed_out = False
-            try:
-                p.communicate(timeout=remaining_seconds())
-            except subprocess.TimeoutExpired:
-                reap(p)              # 子(道具の実行)も落としてから答えのファイルを読む
-                timed_out = True
+        procs, finished = [], []
+        # 起動は1本ずつ一覧に足し、全員の終わり(時間切れは子(道具の実行)も落とす)を待ってから答えを読む。例外・中断で抜けても
+        # finally で起動済みの担当を止めて回収する(置き去りの担当が、後始末のあとに記事を書かない)
+        try:
+            for art, src, prompt, fact_by_id, materials, tries in batch:
+                if deadline_passed():
+                    _late_article(date, art, outcomes, aborted)
+                    continue
+                fd, out_name = tempfile.mkstemp(prefix=f"codexwrite-{art['slug']}-", suffix=".txt")
+                os.close(fd)
+                out_path = Path(out_name)
+                cmd = ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
+                       # 既定では sandbox が通信を遮断する。これが無いと出典照合が
+                       # 実行できず、収集段階の誤りがそのまま紙面に出る
+                       "-c", "sandbox_workspace_write.network_access=true",
+                       "--output-last-message", str(out_path)]
+                if STRUCTURED_WRITE:
+                    cmd += ["--output-schema", str(schema_out)]
+                # 素材と指示はファイルで渡す(引数に詰めると 128KB で落ちる。エージェントは自分で読める)。
+                # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(最終メッセージを残さず終わった回の原因を追うため)
+                short = prompt_file(date, f"write-{art['slug']}-{tries}", prompt)
+                with open(log_of(out_path), "w", encoding="utf-8") as lf:
+                    if not deadline_passed():       # 準備のあいだに締切を過ぎることもあるので、起動の直前にも確かめる
+                        procs.append((art, src, prompt, out_path, fact_by_id, materials, tries, start_group(
+                            cmd + [short], cwd=ROOT, stdout=lf, stderr=subprocess.STDOUT)))
+                        continue
+                out_path.unlink(missing_ok=True)
+                log_of(out_path).unlink(missing_ok=True)
+                _late_article(date, art, outcomes, aborted)
+            for job in procs:
+                _, se, timed_out = finish_group(job[-1], remaining_seconds())
+                finished.append((*job, se, timed_out))
+        finally:
+            stop_groups([job[-1] for job in procs])
+        for art, src, prompt, out_path, fact_by_id, materials, tries, p, se, timed_out in finished:
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             out_path.unlink(missing_ok=True)
-            save_raw(date, f"write-{art['slug']}-{tries}", "", take_log(out_path), p.returncode, files={"last-message": out})
+            # 進行ログに、起動できなかった理由・時間切れの印(finish_group の標準エラー)も添える
+            save_raw(date, f"write-{art['slug']}-{tries}", "", take_log(out_path) + se, p.returncode, files={"last-message": out})
             target = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
             if STRUCTURED_WRITE:
                 # 判断と文章を JSON で受け、検算して、コードがファイルを作る(renderlib)。
@@ -2845,7 +2871,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
 
     直した稿は初稿と同じ検算(事実 id・出典・タグ・日付)を通してからファイルにする。子が記事を直接書き換えても採らない(控えへ戻す)。
     decline(見送り)が返れば記事を落とす。何も直せないままなら次の巡でまたブロックが付き、上限で落ちる。
-    戻り値は {slug: 結果}(fixed / kept / dropped / unreadable)。呼び出し側は「書き手が書き直した(fixed / kept)」記事に
+    戻り値は {slug: 結果}(fixed / kept / dropped / unreadable / not_started=締切を過ぎて始めなかった)。呼び出し側は「書き手が書き直した(fixed / kept)」記事に
     同じ指摘が残ったときだけ「直せなかった」と記録する(実行の失敗を契約の欠陥と取り違えない。監査指摘 r86)。
     """
     by_slug_plan = {a["slug"]: a for a in plan.get("articles") or []}
@@ -2877,35 +2903,41 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
         # 書き込みは採らない: この号の記事を控え、子が全部終わったら(異常終了・時間切れでも)控えへ戻してから答えを当てる
         # (2026-10-14 監査指摘: 記事を直接書き換えて異常終了した子の変更が残り、答えは不採用なのに記事は書き換わっていた)
         kept_posts = posts_snapshot(date)
-        procs = []
-        for art, path, fact_by_id, materials, issues, prompt in jobs[i:i + COMPOSE_WAVE]:
-            fd, out_name = tempfile.mkstemp(prefix=f"codexrevise-{art['slug']}-", suffix=".txt")
-            os.close(fd)
-            # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(執筆と同じ)
-            with open(log_of(Path(out_name)), "w", encoding="utf-8") as lf:
-                procs.append((art, path, fact_by_id, materials, issues, Path(out_name), subprocess.Popen(
-                    ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
-                     "-c", "sandbox_workspace_write.network_access=true",
-                     "--output-last-message", out_name, "--output-schema", str(schema_out),
-                     prompt_file(date, f"revise-{art['slug']}", prompt)],
-                    stdout=lf, stderr=subprocess.STDOUT, text=True, stdin=subprocess.DEVNULL, cwd=ROOT,
-                    start_new_session=True)))
-        waited = []
-        for art, path, fact_by_id, materials, issues, out_path, p in procs:
-            timed_out = False
-            try:
-                p.communicate(timeout=remaining_seconds())
-            except subprocess.TimeoutExpired:
-                reap(p)              # 子(道具の実行)も落としてから答えのファイルを読む
-                timed_out = True
-            waited.append((art, path, fact_by_id, materials, issues, out_path, p, timed_out))
+        procs, finished = [], []
+        # 執筆と同じ: 1本ずつ一覧に足し、全員の終わりを待ってから答えを読む。例外・中断でも finally で起動済みの担当を止めて回収する
+        try:
+            for art, path, fact_by_id, materials, issues, prompt in jobs[i:i + COMPOSE_WAVE]:
+                if not deadline_passed():
+                    fd, out_name = tempfile.mkstemp(prefix=f"codexrevise-{art['slug']}-", suffix=".txt")
+                    os.close(fd)
+                    short = prompt_file(date, f"revise-{art['slug']}", prompt)
+                    # 進行ログ(標準出力・エラー)は一時ファイルで受けて生の出力に残す(執筆と同じ)
+                    with open(log_of(Path(out_name)), "w", encoding="utf-8") as lf:
+                        if not deadline_passed():       # 準備のあいだに締切を過ぎることもあるので、起動の直前にも確かめる
+                            procs.append((art, path, fact_by_id, materials, issues, Path(out_name), start_group(
+                                ["codex", "exec", "-m", CODEX_WRITE_MODEL, "-s", "workspace-write",
+                                 "-c", "sandbox_workspace_write.network_access=true",
+                                 "--output-last-message", out_name, "--output-schema", str(schema_out), short],
+                                cwd=ROOT, stdout=lf, stderr=subprocess.STDOUT)))
+                            continue
+                    Path(out_name).unlink(missing_ok=True)
+                    log_of(Path(out_name)).unlink(missing_ok=True)
+                # 締切を過ぎたら書き直しを始めない(稿はそのまま。指摘は次の判断へ残る)
+                print(f"書き直し {art['slug']}: 締切を過ぎたので始めない", flush=True)
+                REVISE_NOTES.setdefault(date, {})[art["slug"]] = "締切を過ぎ、書き直しを始めなかった"
+                results[art["slug"]] = "not_started"
+            for job in procs:
+                _, se, timed_out = finish_group(job[-1], remaining_seconds())   # 子(道具の実行)も落としてから答えのファイルを読む
+                finished.append((*job, se, timed_out))
+        finally:
+            stop_groups([job[-1] for job in procs])
         back = restore_posts(date, kept_posts)
         if back:
             print(f"書き直しの子が直接書き換えた記事を控えへ戻した(稿は答えから書く): {', '.join(back[:8])}", flush=True)
-        for art, path, fact_by_id, materials, issues, out_path, p, timed_out in waited:
+        for art, path, fact_by_id, materials, issues, out_path, p, se, timed_out in finished:
             out = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
             out_path.unlink(missing_ok=True)
-            save_raw(date, f"revise-{art['slug']}", "", take_log(out_path), p.returncode, files={"last-message": out})
+            save_raw(date, f"revise-{art['slug']}", "", take_log(out_path) + se, p.returncode, files={"last-message": out})
             try:
                 # 採るのは正常に終わったセッションの、schema どおりの答えだけ(時間切れの間際に書かれた見送りで
                 # 既存の記事を消さない・{} の理由を理由と認めない。執筆と同じ。監査指摘)
@@ -2967,18 +2999,22 @@ def fix_articles(date: str, by_file: dict[str, list[dict]]) -> None:
     before = {f: digest(f) for f, _ in jobs}
     for i in range(0, len(jobs), COMPOSE_WAVE):
         procs = []
-        for f, prompt in jobs[i:i + COMPOSE_WAVE]:
-            procs.append(subprocess.Popen(
-                ["claude", "-p", prompt_file(date, "fix-" + Path(f).stem, prompt), "--model", REVIEW_MODEL,
-                 "--dangerously-skip-permissions",
-                 "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, text=True,
-                stdin=subprocess.DEVNULL, cwd=ROOT))
-        for p in procs:
-            try:
-                p.communicate(timeout=remaining_seconds())
-            except subprocess.TimeoutExpired:
-                p.kill()
+        # 自前のグループで起動し、時間切れ・中断では道具ごと止める(親だけ kill すると道具が記事を書き続ける)
+        try:
+            for f, prompt in jobs[i:i + COMPOSE_WAVE]:
+                short = None if deadline_passed() else prompt_file(date, "fix-" + Path(f).stem, prompt)
+                if short is None or deadline_passed():      # 準備のあいだに締切を過ぎることもあるので、起動の直前にも確かめる
+                    print(f"記事の修正 {Path(f).name}: 締切を過ぎたので始めない", flush=True)
+                    continue
+                procs.append(start_group(
+                    ["claude", "-p", short, "--model", REVIEW_MODEL,
+                     "--dangerously-skip-permissions",
+                     "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
+                    cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL))
+            for p in procs:
+                finish_group(p, remaining_seconds())
+        finally:
+            stop_groups(procs)
     # **何も変えなかった修正セッションを見えるようにする。**同じ指摘が次の巡にも
     # そのまま出て、最後に記事ごと落ちる。黙って通り過ぎると誰も気づけない
     untouched = [f for f, _ in jobs if digest(f) == before[f]]
@@ -3143,8 +3179,14 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     QUOTA = ("session limit", "Exceeded USD budget", "rate limit", "usage limit")
 
     def spawn(prompt: str):
+        """担当を起動する。締切を過ぎていれば起動せず None(依頼文を書くあいだに過ぎることもあるので、起動の直前にも確かめる)。"""
+        if deadline_passed():
+            return None
         short = prompt_file(date, "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8], prompt)
-        return subprocess.Popen(
+        if deadline_passed():
+            return None
+        # 起動できなければ、その担当だけの異常終了(LaunchFailed)として collect が扱う(例外で抜けない)
+        return start_group(
             ["claude", "-p", short, "--model", REVIEW_MODEL,
              "--json-schema", schema, "--dangerously-skip-permissions",
              # 出典は執筆と同じ fetch_page.py で読ませる。WebFetch は JS を描画せず、公式ポータルの告知が見出しだけに見えて
@@ -3152,16 +3194,11 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
              "--disallowedTools", "WebFetch",
              # 1本ずつなので上限も1本分でよい(紙面まるごとの額を配ると
              # 並列数ぶんの掛け算になる)
-             "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
-            stdin=subprocess.DEVNULL, cwd=ROOT, start_new_session=True)
+             "--max-budget-usd", COMPOSE_ARTICLE_MAX_BUDGET_USD], cwd=ROOT)
 
     def collect(p, where):
-        timed_out = False
-        try:
-            so, se = p.communicate(timeout=remaining_seconds())
-        except subprocess.TimeoutExpired:
-            (so, se), timed_out = reap(p), True      # 時間切れまでの出力も残す(判定には使わない)
+        # 時間切れは子(道具)ごと止め、それまでの出力も残す(判定には使わない)
+        so, se, timed_out = finish_group(p, remaining_seconds())
         save_raw(date, f"review-r{round_no}-{where}", so, se, p.returncode)
         # 採るのは正常に終わったセッションの答えだけ(異常終了の間際に出た approve で校閲済みにしない。監査指摘)
         if timed_out or p.returncode != 0:
@@ -3201,26 +3238,47 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
     # 一度だけ同じプロンプトでやり直す。枠切れ(QUOTA)は待っても戻らないので再試行しない。
     # 実測 2026-09-08: 23件中1件が「出力が読めない」だっただけで、残り4件の指摘の
     # 修正も除外もせずに号ごと止めていた
+    # 起動は1件ずつ一覧に足し、例外・中断で抜けても finally で起動済みの担当を止めて回収する(2件目の起動の失敗で例外になり、
+    # 1件目が残って確定後の記事に書いた。監査指摘 2026-10-14)。締切を過ぎたら新しい担当もやり直しも起動せず、その担当は
+    # 動かなかった担当(failed)として下の既存の扱い(判定なし・未校閲の記事は落とす・前の判定の引き継ぎ)へ回す
+    late = "締切を過ぎたので起動しなかった"
     retry: list[tuple[str, str, str]] = []
     for i in range(0, len(jobs), COMPOSE_WAVE):
-        procs = [(scope, where, prompt, spawn(prompt))
-                 for what, prompt, where, scope in jobs[i:i + COMPOSE_WAVE]]
-        for scope, where, prompt, p in procs:
-            r = collect(p, where)
-            if r.get("verdict") != "error":
-                absorb(scope, where, r)
-            elif any(q.lower() in str(r.get("error", "")).lower() for q in QUOTA):
-                failed.append((scope, r.get("error", "")))
-            else:
-                retry.append((scope, where, prompt))
+        procs = []
+        try:
+            for what, prompt, where, scope in jobs[i:i + COMPOSE_WAVE]:
+                p = spawn(prompt)
+                if p is None:
+                    failed.append((scope, late))
+                    continue
+                procs.append((scope, where, prompt, p))
+            for scope, where, prompt, p in procs:
+                r = collect(p, where)
+                if r.get("verdict") != "error":
+                    absorb(scope, where, r)
+                elif any(q.lower() in str(r.get("error", "")).lower() for q in QUOTA):
+                    failed.append((scope, r.get("error", "")))
+                else:
+                    retry.append((scope, where, prompt))
+        finally:
+            stop_groups([p for *_, p in procs])
     for i in range(0, len(retry), COMPOSE_WAVE):
-        procs = [(scope, where, spawn(prompt)) for scope, where, prompt in retry[i:i + COMPOSE_WAVE]]
-        for scope, where, p in procs:
-            r = collect(p, where)
-            if r.get("verdict") != "error":
-                absorb(scope, where, r)
-            else:
-                failed.append((scope, "2回とも: " + str(r.get("error", ""))[:60]))
+        procs = []
+        try:
+            for scope, where, prompt in retry[i:i + COMPOSE_WAVE]:
+                p = spawn(prompt)
+                if p is None:
+                    failed.append((scope, "やり直し: " + late))
+                    continue
+                procs.append((scope, where, p))
+            for scope, where, p in procs:
+                r = collect(p, where)
+                if r.get("verdict") != "error":
+                    absorb(scope, where, r)
+                else:
+                    failed.append((scope, "2回とも: " + str(r.get("error", ""))[:60]))
+        finally:
+            stop_groups([p for *_, p in procs])
     # 引き継ぎは**セッションを走らせたあと**に決める。今回見た担当の指摘だけが
     # 差し替わり、見なかった担当と**動かなかった担当**は前回の指摘を引き継ぐ
     # (動かなかった担当を「見た」扱いにすると、前回のブロックが消えて approve になる)
@@ -4162,6 +4220,12 @@ def _leave_tree_clean(reason: str) -> None:
     ただし commit するのは、main が edition ブランチを checkout できた後(STARTED_ON)で、いまも
     そのブランチにいて、かつ compose 自身の成果物(own_artifacts)だけ。checkout 前に既にあった
     変更や、別ブランチ・別工程の変更を compose 名義で commit しない(監査指摘)。"""
+    # 起動したまま回収していないセッション(例外・SIGTERM で抜けた担当。別スレッドの担当も)を、確定の前に子孫ごと止めて回収する。
+    # 残すと commit のあとに記事を書き、作業ツリーがまた dirty になる(監査指摘 2026-10-14)
+    try:
+        stop_groups()
+    except Exception as e:      # noqa: BLE001  後始末を止めない
+        print(f"途中終了時にセッションを止められない: {e}", flush=True)
     date = STARTED_DATE or edition_date()
     if not STARTED_ON or git("branch", "--show-current", check=False).stdout.strip() != STARTED_ON:
         print("途中終了: 開始前の状態か別ブランチなので commit しない", flush=True)

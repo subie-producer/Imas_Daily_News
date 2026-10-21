@@ -52,6 +52,8 @@ def fixed_page(pages_file: str, url: str) -> str:
 
 
 def main() -> int:
+    from pipelib import exit_on_term
+    exit_on_term()      # SIGTERM(道具の時間切れ)でも、描画のブラウザを子孫ごと止めてから終わる
     ap = argparse.ArgumentParser()
     ap.add_argument("url")
     ap.add_argument("--chars", type=int, default=40000, help="本文の出力上限")

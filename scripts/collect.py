@@ -47,7 +47,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
-                     X_ANON_POST, x_post_author)
+                     X_ANON_POST, x_post_author, x_status_time, align_x_published_date)
 from storylink import url_key
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
@@ -1559,11 +1559,8 @@ def normalize(items: list[dict]) -> list[dict]:
                 v = (it.get(k) or "").strip()
                 if re.match(r"^\d{4}-\d{2}-\d{2}$", v):
                     c[k] = v
-            # X の投稿の掲載日は投稿 ID から日本時間で決める(モデルの申告は採らない)。2026-10-21号: Grok が投稿日時を GMT で書き、
-            # 10/21 0:00 JST の公式の投稿3件が published_date 10/20 の素材になって、出典 label の日付が 10/20 で書かれた
-            posted = x_status_date(url) if is_x(url) else None
-            if posted:
-                c["published_date"] = posted.isoformat()
+            # X の投稿の掲載日は投稿 ID から日本時間で決める(モデルの申告は採らない。pipelib.align_x_published_date)
+            align_x_published_date(c)
             # 出典ページからの写し(verify が本文と照らして URL の取り違えを捕まえる)
             if isinstance(it.get("quote"), str) and it["quote"].strip():
                 c["quotes"] = [it["quote"].strip()[:200]]
@@ -1587,15 +1584,6 @@ def normalize(items: list[dict]) -> list[dict]:
 
 
 STALE_DAYS = 14  # 収集窓は48〜72時間。これを大きく超えて古い情報は鮮度切れ(2025年告知を新報扱いした事故の再発防止)
-
-
-def x_status_time(url: str) -> datetime.datetime | None:
-    """x.com/twitter.com の status ID(Snowflake)から投稿日時を日本時間で復元する。"""
-    m = re.search(r"/status(?:es)?/(\d{15,20})", url)
-    if not m:
-        return None
-    ms = (int(m.group(1)) >> 22) + 1288834974657  # Twitter epoch
-    return datetime.datetime.fromtimestamp(ms / 1000, tz=JST)
 
 
 def x_status_date(url: str) -> datetime.date | None:
@@ -1765,6 +1753,10 @@ def merge_into_day_file(cands: list[dict], day: str) -> int:
             existing.append(c)
             by_url[c["url"]] = c
             added += 1
+    # 保存済みの候補(直す前に GMT の日付で入ったもの)も、X の投稿の掲載日を投稿 ID の日本時間に揃える(監査指摘: マージは
+    # published_date を引き継がず、再収集しても 10/20 のまま選定・執筆へ渡った)
+    for c in existing:
+        align_x_published_date(c)
     write_checked(p, json.dumps(existing, ensure_ascii=False, indent=2) + "\n")   # 書式(candidates.schema)で検めてから書く
     return added
 

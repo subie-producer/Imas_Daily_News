@@ -37,7 +37,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import renderlib
 from pipelib import (ROOT, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, COMPOSE_WAVE, classify_source,
                      anomaly, claude_traced, err_tail, extract_json_array, loads_strict, notify, prompt_file, render_prompt,
-                     schema_ok, write_checked)
+                     schema_ok, write_checked, align_x_published_date)
 
 POSTS = ROOT / "docs" / "_posts"
 EDITIONS = ROOT / "docs" / "_editions"
@@ -77,6 +77,9 @@ def load_materials(date: str) -> dict[str, dict]:
     if q.exists():
         for s in json.loads(q.read_text(encoding="utf-8")):
             mats.setdefault(s["id"], {**s, "origin": "scheduled"})
+    # X の投稿の掲載日は投稿 ID の日本時間(compose.load_window_candidates と同じ。保存済みのファイルは書き換えない)
+    for c in mats.values():
+        align_x_published_date(c)
     return mats
 
 

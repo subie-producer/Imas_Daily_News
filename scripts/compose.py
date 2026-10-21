@@ -52,7 +52,8 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      SETTLED_DROP_RULES, settled_drops,
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
-                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked)
+                     collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked,
+                     align_x_published_date)
 
 # 執筆の出力形式。structured = 判断と文章を JSON で受けてコードがファイルを作る(構造は生成時に強制)。
 # 執筆の依頼文(prompts/write-article.md)は structured 専用。以前の file(執筆セッションが Markdown を書く)は
@@ -355,6 +356,9 @@ def load_window_candidates(date: str) -> dict:
                 items[c["id"]] = c
     for s in load_scheduled(date):
         items[s["id"]] = s
+    # X の投稿の掲載日は投稿 ID の日本時間(収集し直さずに組み直す号・続報予約の素材も。保存済みのファイルは書き換えない)
+    for c in items.values():
+        align_x_published_date(c)
     return items
 
 

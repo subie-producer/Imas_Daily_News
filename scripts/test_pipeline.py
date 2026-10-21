@@ -3696,6 +3696,41 @@ def test_x_post_date_is_jst(tmp: Path):
     check(sorted(inputs) == ["verify-million", "verify-million-again"]
           and all(t.count(line) == 1 and t.count("投稿 ID から") == 1 for t in inputs.values()),
           f"確かめ役への書き出しに日本時間の投稿日時が1行だけ付かない: {inputs}")
+    # 保存済みの候補(直す前に GMT の日付で入ったもの): 再収集の書き込みで揃い、収集し直さない組版(選定・執筆の素材・組版の素材)
+    # でも揃う。保存済みのファイルは読む側では書き換えない(監査指摘 r1: マージが published_date を引き継がず 10/20 のまま渡った)
+    import compose, assemble, renderlib
+    repo = tmp / "repo"
+    (repo / "candidates").mkdir(parents=True)
+    (repo / "stock" / "scheduled").mkdir(parents=True)
+    old = [cand_row("202610210224-grok-13", u, brand="million", dedup_key="chizuru", facts=["本日は誕生日"], published_date="2026-10-20"),
+           cand_row("c-web", "https://example.com/n/1", dedup_key="web", facts=["w"], published_date="2026-10-19")]
+    day = repo / "candidates" / "2026-10-22.json"
+    day.write_text(json.dumps(old, ensure_ascii=False), encoding="utf-8")
+    pipelib.write_checked(repo / "stock" / "scheduled" / "2026-10-22.json", json.dumps(
+        [sched_row("sched-1", "2026-10-21", url="https://x.com/imas_ch/status/2112559471121912272", facts=["f"])], ensure_ascii=False))
+    before = day.read_text(encoding="utf-8")
+    saved = (compose.ROOT, assemble.ROOT, assemble.SCHEDULED)
+    try:
+        compose.ROOT, assemble.ROOT, assemble.SCHEDULED = repo, repo, repo / "stock" / "scheduled"
+        window = compose.load_window_candidates("2026-10-22")
+        mats = assemble.load_materials("2026-10-22")
+    finally:
+        compose.ROOT, assemble.ROOT, assemble.SCHEDULED = saved
+    check(day.read_text(encoding="utf-8") == before, "読む側が候補ファイルを書き換えた")
+    for name, got_ in (("選定・執筆の素材", window), ("組版の素材", mats)):
+        check({k: v.get("published_date") for k, v in got_.items()}
+              == {"202610210224-grok-13": "2026-10-21", "c-web": "2026-10-19", "sched-1": "2026-10-21"},
+              f"{name}の X の投稿の掲載日が投稿 ID の日本時間でない: {[(k, v.get('published_date')) for k, v in got_.items()]}")
+    rows, _ = renderlib.materials_with_ids([window["202610210224-grok-13"]])
+    check(rows[0].get("published_date") == "2026-10-21", f"執筆に渡す素材の掲載日: {rows[0]}")
+    saved = collect.ROOT
+    try:
+        collect.ROOT = repo
+        collect.merge_into_day_file([dict(old[0], id="new", facts=["本日は誕生日"], published_date="2026-10-21")], "2026-10-22")
+    finally:
+        collect.ROOT = saved
+    check([c.get("published_date") for c in json.loads(day.read_text(encoding="utf-8"))] == ["2026-10-21", "2026-10-19"],
+          f"再収集の書き込みで、保存済みの X の投稿の掲載日が揃わない: {day.read_text(encoding='utf-8')[:300]}")
     check(collect.JST_POST_TIME in collect.render_prompt("grok-verify", INPUT="i", OUT="o", DEEP="d", POSTS="p", BRAND="b",
                                                                    TOPIC="t", TODAY="2026-10-21", RULES="", ITEM=""),
           "grok-verify の依頼文が、コードの足す行の名前で日付を指していない")

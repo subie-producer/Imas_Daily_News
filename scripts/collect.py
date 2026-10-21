@@ -47,7 +47,8 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
-                     X_ANON_POST, x_post_author, CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_check, scratch_dir)
+                     X_ANON_POST, x_post_author, CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_check, grok_session_reasons,
+                     scratch_dir)
 from storylink import url_key
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
@@ -500,7 +501,6 @@ STUCK_OUTPUTS: dict[Path, str] = {}
 
 
 GROK_BLOCKED_MARK = "CLI 停止"      # errs の印: Grok が認証切れ・利用上限で答えなかった面
-GROK_BLOCK_SINCE_SEC = 900          # 失敗理由を探すセッション記録の範囲(この回の調べの分だけ。古い回の拒否を拾わない)
 
 
 def grok_blocked(errs: dict, key: str) -> bool:
@@ -568,6 +568,7 @@ def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> set[str]:
                 errs[q["key"]] = f"{GROK_BLOCKED_MARK}: この収集で既に止まっている"
             break
         procs = []
+        wave_started = time.time()     # この波のセッションの記録だけを、この試行の失敗理由として読む(grok_session_reasons)
         for q, pp in targets[i:i + GROK_WAVE]:
             procs.append((q, subprocess.Popen(
                 ["grok", "--prompt-file", str(pp), "--always-approve",
@@ -596,7 +597,7 @@ def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> set[str]:
             answered = not timed_out and pr.returncode == 0 and bool(read_written(out).strip())
             blk = cli_check("grok", "collect", f"{now_jst():%H:%M} の収集 X の調べ {pp.stem.removeprefix('prompt-')} 面",
                             None if timed_out else pr.returncode, err or "",
-                            "" if answered else grok_session_error(GROK_BLOCK_SINCE_SEC), answered=answered)
+                            "" if answered else grok_session_reasons(ROOT, wave_started, str(out)), answered=answered)
             if blk:
                 errs[q["key"]] = f"{GROK_BLOCKED_MARK}: {blk.get('detail', '')}"
             if timed_out or pr.returncode != 0:

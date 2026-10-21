@@ -19,11 +19,12 @@ import re
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (ROOT, CODEX_WRITE_MODEL, JobLockTimeout, cli_check, diagnose_anomalies, edition_date, job_lock, notify, now_jst,
-                     tool_path)
+from pipelib import (ROOT, CODEX_WRITE_MODEL, JobLockTimeout, cli_check, diagnose_anomalies, edition_date, grok_session_reasons,
+                     job_lock, notify, now_jst, tool_path)
 
 RECORD = ROOT / "metrics" / "cli-versions.json"
 QUESTION = "1+1は? 半角の数字だけを答えて"
@@ -80,7 +81,12 @@ def smoke(tool: str, workdir: Path) -> tuple[bool, str]:
     else:
         pf = workdir / "grok-smoke.md"
         pf.write_text(QUESTION + "\n", encoding="utf-8")
+        t0 = time.time()
         r = run(["grok", "--prompt-file", str(pf), "--always-approve", "--max-turns", "1"], timeout=300, cwd=workdir)
+        # Grok は API に拒まれても終了コード 0 で、理由はセッション記録にだけ残る。動作確認の作業ディレクトリ(この回だけのもの)の
+        # セッションの失敗理由も、認証切れ・利用上限の見分けに渡す(監査指摘 r2)
+        r = subprocess.CompletedProcess(r.args, r.returncode, r.stdout,
+                                        "\n".join(x for x in (r.stderr or "", grok_session_reasons(workdir, t0)) if x))
     LAST_SMOKE[tool] = r
     out = (r.stdout or "").strip()
     if r.returncode == 0 and out and out.splitlines()[-1].strip() == "2":

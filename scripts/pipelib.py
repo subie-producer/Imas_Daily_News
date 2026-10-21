@@ -748,8 +748,13 @@ def cli_recovered(tool: str, job: str) -> None:
     except OSError:
         return
     if isinstance(old, dict) and float(old.get("posted_at") or 0) > 0:
-        notify(job, f"{CLI_NAMES.get(tool, tool)} がまた答えるようになった({old.get('since', '')} から"
-                    f"{'認証切れ' if old.get('kind') == 'auth' else '利用上限'}で {old.get('count', '?')}回止まっていた)")
+        if not notify(job, f"{CLI_NAMES.get(tool, tool)} がまた答えるようになった({old.get('since', '')} から"
+                           f"{'認証切れ' if old.get('kind') == 'auth' else '利用上限'}で {old.get('count', '?')}回止まっていた)"):
+            # 届かなければ記録を戻し、次に答えたときにもう一度知らせる(監査指摘 r2)。その間に止まり直していれば、そちらを残す
+            try:
+                _cli_state_io(lambda st: st.setdefault(tool, old))
+            except OSError:
+                pass
 
 
 def cli_check(tool: str, job: str, where: str, rc, *texts, answered: bool | None = None) -> dict | None:
@@ -765,6 +770,30 @@ def cli_check(tool: str, job: str, where: str, rc, *texts, answered: bool | None
     if info:
         report_cli_blocked(info, job, where)
     return info
+
+
+def grok_session_reasons(cwd: Path, since_ts: float, needle: str = "") -> str:
+    """cwd で since_ts 以降に始まった Grok セッションの失敗理由(Grok は API に拒まれても終了コード 0 で、理由はセッション記録
+    updates.jsonl にしか残らない)。needle を渡したら、会話の記録(chat_history.jsonl)にそれを含むセッションだけ(同じ cwd で並列に
+    走る別の面・前の試行の拒否を、この試行の理由と取り違えない。監査指摘 r2)。"""
+    import urllib.parse as _up
+    base = Path.home() / ".grok" / "sessions" / _up.quote(str(cwd), safe="")
+    reasons: list[str] = []
+    try:
+        dirs = [d for d in base.iterdir() if d.is_dir() and d.stat().st_mtime >= since_ts - 1]
+    except OSError:
+        return ""
+    for d in dirs:
+        try:
+            if needle and needle not in (d / "chat_history.jsonl").read_text(encoding="utf-8", errors="replace"):
+                continue
+            up = (d / "updates.jsonl").read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        for m in re.finditer(r'"agent_result":\s*"([^"]{0,300})"', up):
+            if "error" in m.group(1).lower() and m.group(1) not in reasons:
+                reasons.append(m.group(1))
+    return "\n".join(reasons)
 
 
 def oncall_clis_blocked() -> list[str]:

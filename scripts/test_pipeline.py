@@ -11071,8 +11071,10 @@ def test_cli_block_detect_and_post(tmp: Path):
         sess = home / ".grok" / "sessions" / urllib.parse.quote(str(repo), safe="")
         gbin.mkdir()
         (gbin / "grok").write_text(
-            f"#!{sys.executable}\nimport json, os, pathlib, time\n"
+            f"#!{sys.executable}\nimport json, os, pathlib, sys, time\n"
             f"d = pathlib.Path({str(sess)!r}) / str(time.time_ns()); d.mkdir(parents=True)\n"
+            "pf = sys.argv[sys.argv.index('--prompt-file') + 1]\n"
+            "(d / 'chat_history.jsonl').write_text(json.dumps({'content': pathlib.Path(pf).read_text(encoding='utf-8')}) + '\\n')\n"
             f"(d / 'updates.jsonl').write_text(json.dumps({{'agent_result': 'error: ' + {GROK_LIMIT!r}}}, separators=(',', ':')) + '\\n')\n"
             f"pathlib.Path({str(tmp / 'grok-calls')!r}).open('a').write('x')\n", encoding="utf-8")
         (gbin / "grok").chmod(0o755)
@@ -11189,6 +11191,89 @@ def test_cli_blocked_paths_r2(tmp: Path):
             os.environ["PATH"] = saved_path
 
 
+def test_cli_blocked_grok_sessions_r3(tmp: Path):
+    """Sol 監査 r2 の指摘の再発防止(偽の grok を本物の子プロセスとして起動する):
+    (1) 道具の動作確認で、Grok がセッション記録にだけ残した利用上限(終了 0)を、CLI の壊れとして当番に回さない
+    (2) 同じ cwd の前の試行・別の面のセッションの拒否を、この試行の本物の失敗(壊れた出力で終了 1)の理由と取り違えない
+    (3) 戻ったことの知らせが届かなければ記録を残し、次に答えたときにもう一度知らせる"""
+    import time
+    import urllib.parse
+    import collect
+    import update_clis as uc
+    tmp.mkdir(parents=True, exist_ok=True)
+    home, bindir = tmp / "home", tmp / "bin"
+    saved_env = {k: os.environ.get(k) for k in ("HOME", "PATH", "INVOCATION_ID")}
+    deny = json.dumps({"agent_result": "error: " + GROK_LIMIT}, separators=(",", ":"))
+    try:
+        os.environ["HOME"], os.environ["PATH"] = str(home), f"{bindir}{os.pathsep}{saved_env['PATH'] or ''}"
+        os.environ.pop("INVOCATION_ID", None)
+        # (1)
+        with cli_posts() as cp:
+            for t in ("claude", "codex"):
+                fake_cli(bindir, t, out="2\n")
+            (bindir / "grok").write_text(
+                f"#!{sys.executable}\nimport os, pathlib, urllib.parse\n"
+                "d = pathlib.Path.home() / '.grok' / 'sessions' / urllib.parse.quote(os.getcwd(), safe='') / 's1'\n"
+                f"d.mkdir(parents=True, exist_ok=True)\n(d / 'updates.jsonl').write_text({deny!r} + '\\n')\n", encoding="utf-8")
+            (bindir / "grok").chmod(0o755)
+            notes = []
+            saved = (uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies, uc.tool_path, sys.argv)
+            try:
+                uc.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+                uc.RECORD, uc.job_lock = tmp / "cli-versions.json", (lambda job, wait_min=0: None)
+                uc.diagnose_anomalies, uc.tool_path = (lambda *a, **k: False), (lambda: os.environ["PATH"])
+                sys.argv = ["update_clis.py", "--no-update"]
+                code = uc.main()
+            finally:
+                uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies, uc.tool_path, sys.argv = saved
+            row = json.loads((tmp / "cli-versions.json").read_text(encoding="utf-8"))["tools"]["grok"]
+            check(code == 0 and row.get("blocked") and not [m for m, ok in notes if not ok] and len(cp.blocked_posts()) == 1,
+                  f"動作確認で Grok のセッション記録だけの利用上限を CLI の壊れにした: exit {code} {row} {notes} {cp.posts}")
+        # (2)
+        with cli_posts() as cp:
+            repo = tmp / "repo"
+            outdir = repo / "candidates" / ".grok"
+            outdir.mkdir(parents=True)
+            old = home / ".grok" / "sessions" / urllib.parse.quote(str(repo), safe="") / "old"
+            old.mkdir(parents=True)
+            (old / "updates.jsonl").write_text(deny + "\n", encoding="utf-8")
+            (old / "chat_history.jsonl").write_text(json.dumps({"content": str(outdir / "cg.md")}) + "\n", encoding="utf-8")
+            os.utime(old, (time.time() - 600,) * 2)
+            calls = tmp / "grok-calls"
+            (bindir / "grok").write_text(
+                f"#!{sys.executable}\nimport sys\nopen({str(calls)!r}, 'a').write('x')\n"
+                "sys.stderr.write('model returned malformed JSON\\n')\nsys.exit(1)\n", encoding="utf-8")
+            notes = []
+            saved = (collect.ROOT, pipelib.ROOT, collect.notify)
+            try:
+                collect.ROOT = pipelib.ROOT = repo
+                collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+                errs = {}
+                still = collect.grok_basic([{"key": "cg", "brand": "cg", "topic": "t", "accounts": []}], outdir, errs)
+            finally:
+                collect.ROOT, pipelib.ROOT, collect.notify = saved
+            check(still == ["cg"] and len(calls.read_text()) == 2 and not cp.posts and not collect.grok_blocked(errs, "cg"),
+                  f"前の試行の拒否を、この試行の本物の失敗の理由にした(やり直さない・失敗を隠す): {still} {errs} {cp.posts}")
+        # (3)
+        with cli_posts() as cp:
+            pipelib.report_cli_blocked(pipelib.cli_blocked_reason("codex", CODEX_LIMIT), "compose", "執筆")
+            pipelib.CLI_BLOCKED.clear()
+            pipelib.notify = lambda job, msg, ok=True, require=False, ledger=True: cp.posts.append((job, msg, ok, ledger)) and False
+            pipelib.cli_check("codex", "collect", "探索", 0, "")
+            kept = "codex" in json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8"))
+            pipelib.notify = lambda job, msg, ok=True, require=False, ledger=True: cp.posts.append((job, msg, ok, ledger)) or True
+            pipelib.cli_check("codex", "collect", "探索", 0, "")
+            ok_posts = [m for _, m, ok, _ in cp.posts if ok and "また答える" in m]
+            check(kept and len(ok_posts) == 2 and "codex" not in json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8")),
+                  f"戻ったことの知らせが届かないまま記録を消した: kept={kept} {cp.posts}")
+    finally:
+        for k, v in saved_env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+
 def test_scratch_not_tmp(tmp: Path):
     """本番のコードが作る使い捨てのもの(当番の監査の作業ツリー・答えのファイル・Sol の一時ファイル、探索の作業ディレクトリ)は、
     /tmp(3.8GB の tmpfs)でなく置き場(IMAS_SCRATCH、既定 ~/.cache/imas-news)に作り、終わったら消す。消し損ねは次に作るとき
@@ -11268,6 +11353,7 @@ def main() -> int:
     test_cli_blocked_oncall_not_counted(tmp / "cbo")
     test_cli_block_detect_and_post(tmp / "cbd")
     test_cli_blocked_paths_r2(tmp / "cb2")
+    test_cli_blocked_grok_sessions_r3(tmp / "cb3")
     test_scratch_not_tmp(tmp / "snt")
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")

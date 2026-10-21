@@ -20,14 +20,18 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 os.environ["IMAS_STRICT_WRITES"] = "1"
 # テストの一時ファイルは全部1つのディレクトリの下に作り、終わったら消す。子プロセスも同じ置き場(TMPDIR)。/tmp は 3.8GB の tmpfs で、
 # 走らせるたびに一時ディレクトリを残して埋まり、監査のテストが容量不足で止まった(2026-10-14。selfcheck・当番の往復でも走る)
+# 置き場は /tmp でなく /home 側(pipelib を先に読むと、TMPDIR が /tmp か未設定なら ~/.cache/imas-news/tmp へ向く)。
+# 本番のコードが作る使い捨ての作業場所(IMAS_SCRATCH)とモデル CLI の停止の記録も、この中へ向ける(本物の置き場・記録に触らない)
+import pipelib
 TEST_TMP = Path(tempfile.mkdtemp(prefix="imas-test-"))
 tempfile.tempdir = str(TEST_TMP)
 os.environ["TMPDIR"] = str(TEST_TMP)
+os.environ["IMAS_SCRATCH"] = str(TEST_TMP / "scratch")
+pipelib.CLI_BLOCK_STATE = TEST_TMP / "cli-blocked.json"
 atexit.register(shutil.rmtree, TEST_TMP, True)
 import assemble
 import compose
 import lint
-import pipelib
 import renderlib
 
 FAILS: list[str] = []
@@ -8417,6 +8421,8 @@ for rel, text in (step.get("touch") or {}).items():
         pathlib.Path(rel).unlink()
     else:
         pathlib.Path(rel).write_text(text, encoding="utf-8")
+if step.get("say"):
+    print(step["say"], file=sys.stderr)
 if step.get("answer") is not None:
     pathlib.Path(sys.argv[sys.argv.index("--output-last-message") + 1]).write_text(json.dumps(step["answer"], ensure_ascii=False), encoding="utf-8")
 time.sleep(step.get("sleep", 0))
@@ -10708,6 +10714,448 @@ def test_pending_keeps_later_editions(tmp: Path):
     check(rebuilt == ["k2", "k9"], f"巻き戻した号の組み直しで、後の号が決着させた追跡事項がよみがえった: {rebuilt}")
 
 
+# モデル CLI の認証切れ・利用上限の実物の文言(claude は ops の生の出力 2026-10-20 18:30、codex 0.163.0・grok 1.0.62 は実行ファイルの文字列)
+CLAUDE_OAUTH = "Failed to authenticate: OAuth session expired and could not be refreshed"
+CODEX_LIMIT = ("ERROR: You've hit your usage limit. Visit https://chatgpt.com/settings/usage to purchase more credits "
+               "or try again at 3:05 AM.")
+GROK_LIMIT = "You've hit the rate limit for your plan. Upgrade your account or try again later."
+
+
+def fake_cli(bindir: Path, name: str, out: str = "", err: str = "", code: int = 0) -> None:
+    """PATH の先頭に置く偽の CLI(本物の子プロセスとして起動される)。"""
+    bindir.mkdir(parents=True, exist_ok=True)
+    p = bindir / name
+    p.write_text(f"#!{sys.executable}\nimport sys\nsys.stdout.write({out!r})\nsys.stderr.write({err!r})\nsys.exit({code})\n",
+                 encoding="utf-8")
+    p.chmod(0o755)
+
+
+class cli_posts:
+    """モデル CLI の停止の投稿(pipelib.notify)を受け止め、この process で見た停止と記録を空にして始める(本物の Discord に送らない)。"""
+
+    def __enter__(self):
+        self.saved = (pipelib.notify, dict(pipelib.CLI_BLOCKED), list(pipelib.ANOMALIES), pipelib._ESCALATED)
+        self.posts: list[tuple[str, str, bool, bool]] = []
+        pipelib.notify = lambda job, msg, ok=True, require=False, ledger=True: self.posts.append((job, msg, ok, ledger)) or True
+        pipelib.CLI_BLOCKED.clear()
+        pipelib.CLI_BLOCK_STATE.unlink(missing_ok=True)
+        return self
+
+    def __exit__(self, *exc):
+        pipelib.notify = self.saved[0]
+        pipelib.CLI_BLOCKED.clear()
+        pipelib.CLI_BLOCKED.update(self.saved[1])
+        pipelib.ANOMALIES[:] = self.saved[2]
+        pipelib._ESCALATED = self.saved[3]
+        pipelib.CLI_BLOCK_STATE.unlink(missing_ok=True)
+        return False
+
+    def blocked_posts(self) -> list[str]:
+        return [m for _, m, ok, _ in self.posts if not ok]
+
+
+def test_cli_blocked_watch_not_counted(tmp: Path):
+    """定点観測の facts 化でモデルの CLI が認証切れ・利用上限で答えなかった回は、新着の「読めなかった回」に数えず、未処理の列に残す。
+    人には1回だけ投稿し(続く収集で連投しない)、異常の台帳に積まず、当番を呼ばない(2026-10-20 18:30 に Claude の OAuth が切れ、
+    その1回を数えたため 20:29 の再実行で新着を諦めた。18:34・18:35 の当番は同じ認証切れで2回とも即死した)。
+    本物の claude_exec と偽の claude(実物の文言を出して exit 1)で、収集を2回続けて走らせる。"""
+    import collect
+    import yaml
+    tmp.mkdir(parents=True, exist_ok=True)
+    bindir, u = tmp / "bin", "https://f.jp/?p=32576"
+    fake_cli(bindir, "claude", out=CLAUDE_OAUTH + "\n", code=1)
+    (tmp / "sources.yml").write_text(yaml.safe_dump([{"id": "fan", "brand": "sidem", "type": "html", "url": "https://f.jp/",
+                                                       "base": "https://f.jp", "list_regex": "x", "enabled": True}]), encoding="utf-8")
+    (tmp / "watch-state.json").write_text(json.dumps({"fan": ["https://f.jp/old"]}), encoding="utf-8")
+    listing = [(u, "舞台挨拶"), ("https://f.jp/old", "")]
+    notes = []
+    (tmp / "metrics").mkdir(exist_ok=True)
+    saved = (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.render_prompt, collect.page_html_or_note,
+             pipelib.ROOT, os.environ.get("PATH", ""), os.environ.pop("INVOCATION_ID", None), pipelib._QUIET,
+             pipelib.ENV.pop("ONCALL", None), os.environ.pop("ONCALL", None))
+    with cli_posts() as cp:
+        try:
+            collect.ROOT = pipelib.ROOT = tmp
+            collect.STATE_PATH = tmp / "watch-state.json"
+            collect.list_source = lambda s, known, fetch=None, resume=None: (listing, 1, [])
+            collect.page_html_or_note = lambda url, csr: ("", "")
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            collect.render_prompt = lambda name, **kw: kw.get("MATERIAL", "")
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[7]}"
+            for _ in (1, 2):     # 18:30 の収集と 20:29 の再実行(別の process なので、この process で見た停止は持ち越さない)
+                pipelib.CLI_BLOCKED.clear()
+                _, info = collect.run_watch(collect.claude_exec)
+                st = info["stats"].pop("_state")
+                (tmp / "watch-state.json").write_text(json.dumps(st), encoding="utf-8")
+            check([it["url"] for it in st.get("_pending") or []] == [u] and not st.get("_given_up")
+                  and not (st.get("_unreadable") or {}).get(u) and u not in st["fan"],
+                  f"認証切れの回を読めなかった回に数えた・新着を諦めた: pending={st.get('_pending')} given_up={st.get('_given_up')} "
+                  f"unreadable={st.get('_unreadable')}")
+            check(info.get("blocked") == 1 and collect.collect_health(info, {}) == [],
+                  f"認証切れの繰り越しを取得の失敗に数えた: {info.get('blocked')} {collect.collect_health(info, {})}")
+            posts = cp.blocked_posts()
+            check(len(posts) == 1 and "認証が切れて" in posts[0] and "/login" in posts[0] and "facts 化" in posts[0]
+                  and all(not ledger for *_, ledger in cp.posts),
+                  f"認証切れを1回だけ・ログインし直しと工程を添えて投稿しない(または当番の台帳に積んだ): {cp.posts}")
+            check(not [m for m, ok in notes if not ok] and not pipelib.ANOMALIES,
+                  f"認証切れを異常として通知した(当番のなぜなぜに回る): {notes} {pipelib.ANOMALIES}")
+            # 当番は呼ばない: 起動できる偽の当番を置いても起動しない(当番も同じ CLI で止まる)
+            (tmp / "scripts").mkdir(exist_ok=True)
+            (tmp / "scripts" / "oncall.py").write_text("import sys\nsys.exit(0)\n", encoding="utf-8")
+            pipelib._QUIET = False
+            check(not pipelib.escalate("collect", "2026-10-21", "なぜなぜ", rerun=False),
+                  "Claude が認証切れの process から当番を起動した(当番も同じ理由で即死し、1日2回の枠を使う)")
+            # 戻ったら、未処理の列から先に読み、記録を消し、戻ったことを1回だけ知らせる
+            fake_cli(bindir, "claude", out='[{"page": 1, "status": "none", "items": []}]', code=0)
+            pipelib.CLI_BLOCKED.clear()
+            _, info = collect.run_watch(collect.claude_exec)
+            st = info["stats"].pop("_state")
+            state = json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8"))
+            check(not st.get("_pending") and u in st["fan"] and "claude" not in state
+                  and len([m for _, m, ok, _ in cp.posts if ok and "また答える" in m]) == 1,
+                  f"戻った後に未処理の列を読まない・記録が残る・戻ったと知らせない: {st.get('_pending')} {state} {cp.posts}")
+        finally:
+            (collect.ROOT, collect.STATE_PATH, collect.list_source, collect.notify, collect.render_prompt,
+             collect.page_html_or_note, pipelib.ROOT) = saved[:7]
+            os.environ["PATH"] = saved[7]
+            if saved[8] is not None:
+                os.environ["INVOCATION_ID"] = saved[8]
+            pipelib._QUIET = saved[9]
+            if saved[10] is not None:
+                pipelib.ENV["ONCALL"] = saved[10]
+            if saved[11] is not None:
+                os.environ["ONCALL"] = saved[11]
+
+
+def test_cli_blocked_compose(tmp: Path):
+    """組版でモデルの CLI が認証切れ・利用上限で答えなかったら、記事・担当の失敗に数えない(差し戻し・やり直しを使わない、落とさない、
+    「校閲できなかった記事は載せない」にしない、異常の台帳に積まない)。同じ回の子を回収して書けた記事は残し、CliBlocked で工程を止める。
+    執筆は偽の codex(本物の子プロセス)、校閲は偽の Popen、候補 ID の修復は偽の claude で確かめる。"""
+    import shutil as _sh
+    from pipelib import CliBlocked
+    date = "2026-10-14"
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    (tmp / "metrics").mkdir()
+    _sh.copytree(Path(__file__).resolve().parent.parent / "schema", tmp / "schema")
+    bindir = tmp / "bin"
+    bindir.mkdir()
+    (bindir / "codex").write_text(FAKE_CODEX, encoding="utf-8")
+    os.chmod(bindir / "codex", 0o755)
+    fake_cli(bindir, "claude", out=CLAUDE_OAUTH + "\n", code=1)
+    spec_p = tmp / "spec" / "spec.json"
+    spec_p.parent.mkdir()
+    cand = cand_row("c1", "https://example.com/news", facts=["販売開始", "価格は3000円"], dedup_key="x")
+    base = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
+            "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "blocks": [{"markdown": "販売を開始する。価格は3000円。", "fact_ids": ["F1", "F2"]}],
+            "tags": ["シンデレラガールズ", "販売"], "sources": [{"url": cand["url"], "label": "公式告知"}], "event_date": None,
+            "new_facts": [], "addressed_issue_ids": []}
+    art = lambda s: {"slug": s, "brand": "cg", "rank": "small", "angle": "知らせ", "candidate_ids": ["c1"], "dedup_key": "x"}
+    plan = {"articles": [art("alpha"), art("beta")]}
+    spec_p.write_text(json.dumps({"write-alpha": [{"say": CODEX_LIMIT, "exit": 1}], "write-beta": [{"answer": base}]},
+                                 ensure_ascii=False), encoding="utf-8")
+    saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE,
+             os.environ.get("PATH", ""), compose.subprocess.Popen)
+    with cli_posts() as cp:
+        try:
+            compose.ROOT = pipelib.ROOT = tmp
+            compose.classify_source = lambda u: "公式"
+            compose.storylink.prior_lookup = lambda *a: (lambda *b: [])
+            compose.DEADLINE = None
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[5]}"
+            os.environ["FAKE_CODEX_SPEC"] = str(spec_p)
+            compose.DROP_LOG.pop(date, None)
+            stopped = None
+            try:
+                compose.write_articles(date, plan, {"c1": cand}, [], {}, wave=2)
+            except CliBlocked as e:
+                stopped = e
+            cnt = spec_p.with_name("count-write-alpha")
+            check(stopped is not None and cnt.read_text() == "1" and "alpha" not in (compose.DROP_LOG.get(date) or {})
+                  and (posts / f"{date}-beta.md").exists() and not (posts / f"{date}-alpha.md").exists()
+                  and not any("alpha" in a for a in pipelib.ANOMALIES),
+                  f"執筆の利用上限を記事の失敗に数えた(やり直し・落とした・異常)か、工程を止めない・同じ回の稿を捨てた: "
+                  f"止めた={stopped is not None} 依頼={cnt.read_text() if cnt.exists() else '-'} 外した={compose.DROP_LOG.get(date)} "
+                  f"異常={pipelib.ANOMALIES}")
+            check(len(cp.blocked_posts()) == 1 and "利用上限" in cp.blocked_posts()[0] and "3:05 AM" in cp.blocked_posts()[0]
+                  and "--reuse-plan" in cp.blocked_posts()[0],
+                  f"利用上限の投稿(戻る時刻・組み直し方)が無い・連投した: {cp.posts}")
+            # 校閲: 担当が認証切れで答えない → やり直さず、「校閲できなかった記事は載せない」にせず、止める
+            (posts / f"{date}-a.md").write_text("---\n" + article_fm("a", date) + "---\n本文\n", encoding="utf-8")
+            spawned = []
+
+            class FakeP:
+                returncode, pid = 1, 0
+
+                def communicate(self, timeout=None):
+                    return CLAUDE_OAUTH + "\n", ""
+
+            compose.subprocess.Popen = lambda argv, **k: spawned.append(argv) or FakeP()
+            stopped = None
+            try:
+                r = compose.claude_review(date, 1, targets=[f"{date}-a.md"], editorial=False, paper=False)
+            except CliBlocked as e:
+                stopped, r = e, None
+            check(stopped is not None and len(spawned) == 1,
+                  f"校閲の認証切れで止まらない・やり直した(記事を「校閲できなかった」で落とす): {len(spawned)}回 {r and r.get('blockers')}")
+            compose.subprocess.Popen = saved[6]
+            # 候補 ID の修復(claude_run): 認証切れを「答えが読めなかった」として記事を外さない
+            pipelib.ANOMALIES.clear()
+            stopped = None
+            try:
+                compose.repair_invalid_ids(date, {"articles": [{"slug": "s", "candidate_ids": ["bad"]}]}, {"good": {"id": "good"}})
+            except CliBlocked as e:
+                stopped = e
+            check(stopped is not None and not pipelib.ANOMALIES,
+                  f"修復の認証切れを「答えが2回とも読めない」として記事を外した: {pipelib.ANOMALIES}")
+        finally:
+            (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE) = saved[:5]
+            os.environ["PATH"] = saved[5]
+            compose.subprocess.Popen = saved[6]
+            os.environ.pop("FAKE_CODEX_SPEC", None)
+
+
+def test_cli_blocked_oncall_not_counted(tmp: Path):
+    """当番の修正(claude)が認証切れで答えなかった回は、試行の回数(1日2回)に数えず、「取り込めませんでした」の報告も出さず、
+    異常終了にしない(systemd の起動し直しで同じ即死を重ねない)。投稿は同じ原因で1回(2026-10-20 18:34・18:35 の当番は2回とも
+    認証切れで即死し、枠を使い切った)。本物の _main・run_rounds・run_claude を一時リポジトリと偽の claude で2回走らせる。"""
+    import shutil as _sh
+    import oncall
+    date, edition = "2026-10-20", "edition/2026-10-21"
+    tmp.mkdir(parents=True, exist_ok=True)
+    root, remote, bindir = tmp / "ops", tmp / "ops.git", tmp / "bin"
+    g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True, capture_output=True)
+    g("config", "user.email", "t@example"); g("config", "user.name", "t")
+    (root / "scripts").mkdir(); (root / "metrics").mkdir()
+    _sh.copytree(Path(__file__).resolve().parent.parent / "schema", root / "schema")
+    (root / ".gitignore").write_text("metrics/oncall-*\nmetrics/jobs.lock\nmetrics/work/\n", encoding="utf-8")
+    (root / "scripts" / "x.py").write_text("x = 0\n", encoding="utf-8")
+    g("add", "-A"); g("commit", "-q", "-m", "base")
+    g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", "main")
+    g("checkout", "-q", "-b", edition); g("push", "-q", "-u", "origin", edition)
+    fake_cli(bindir, "claude", out=CLAUDE_OAUTH + "\n", code=1)
+    names = ("ROOT", "notify", "job_lock", "gather_context", "env_fingerprint", "save_raw", "DEADLINE_AT", "STAGE_END_AT", "RECOVER")
+    saved, saved_argv, saved_path, notes = {k: getattr(oncall, k) for k in names}, sys.argv, os.environ.get("PATH", ""), []
+    with cli_posts() as cp:
+        try:
+            oncall.ROOT = root
+            oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            oncall.job_lock = lambda *a, **k: os.open(os.devnull, os.O_RDONLY)
+            oncall.gather_context = lambda *a: "ctx"
+            oncall.env_fingerprint = lambda: ""
+            oncall.save_raw = lambda *a, **k: None
+            oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+            oncall.RECOVER = False
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+            sys.argv = ["oncall", "--stage", "collect", "--date", date, "--edition", "2026-10-21", "--no-rerun"]
+            codes = []
+            for _ in (1, 2):     # 18:34 と 18:35(別の process)
+                pipelib.CLI_BLOCKED.clear()
+                codes.append(oncall._main())
+            left = sorted(p.name for p in (root / "metrics").glob(f"oncall-{date}-collect-attempt-*"))
+            check(codes == [0, 0] and not left and not [m for m, ok in notes if not ok],
+                  f"当番の認証切れを試行の回数に数えた・異常終了・「取り込めませんでした」を出した: exit {codes} 試行の印 {left} "
+                  f"{[m[:80] for m, ok in notes if not ok]}")
+            check(len(cp.blocked_posts()) == 1 and "当番の修正" in cp.blocked_posts()[0],
+                  f"当番の認証切れを1回だけ投稿しない: {cp.posts}")
+            check(not g("worktree", "list", "--porcelain").count("worktree ") > 1 and not g("status", "--porcelain"),
+                  "当番の作業ツリーが残った")
+        finally:
+            for k, v in saved.items():
+                setattr(oncall, k, v)
+            sys.argv = saved_argv
+            os.environ["PATH"] = saved_path
+
+
+def test_cli_block_detect_and_post(tmp: Path):
+    """認証切れ・利用上限の見分け(実物の文言)・投稿のまとめ方(同じ原因は1回、止まったままなら間を置いて1回、戻ったら1回)・
+    道具の動作確認・出典の判定・探索・Grok の各経路で失敗に数えないこと。"""
+    import time
+    import collect
+    import classify_sources
+    import update_clis as uc
+    from pipelib import CliBlocked, cli_blocked_reason
+    tmp.mkdir(parents=True, exist_ok=True)
+    # 見分け: 実物の文言は止まった、ふつうの失敗・本文の奥にある語は止まっていない
+    for tool, text, kind, resets in (("claude", CLAUDE_OAUTH, "auth", ""), ("codex", CODEX_LIMIT, "limit", "3:05 AM"),
+                                     ("grok", GROK_LIMIT, "limit", ""),
+                                     ("claude", "You've hit your session limit · resets 4am (Asia/Tokyo)", "limit", "4am (Asia/Tokyo)"),
+                                     ("claude", "Credit balance is too low", "limit", ""),
+                                     ("codex", "Your access token could not be refreshed. Please log out and sign in again.", "auth", ""),
+                                     ("claude", "API Error: 401 Invalid API key · Please run /login", "auth", "")):
+        got = cli_blocked_reason(tool, "", text)
+        check(got and got["kind"] == kind and got["resets"] == resets, f"{tool} の {text[:40]!r} を見分けない: {got}")
+    for text in ("Error: model returned malformed JSON", "Not logged in の説明ページ\n" + "本文 " * 800 + "\n終わり"):
+        check(cli_blocked_reason("claude", text) is None, f"ふつうの失敗・本文の奥の語を認証切れにした: {text[:40]!r}")
+    with cli_posts() as cp:
+        # まとめ方: 同じ原因は1回、止まったままなら CLI_BLOCK_REMIND_SEC 後に1回、別の CLI は別に1回、戻ったら1回
+        info = cli_blocked_reason("codex", CODEX_LIMIT)
+        for _ in range(3):
+            pipelib.report_cli_blocked(info, "compose", "執筆")
+        st = json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8"))
+        check(len(cp.blocked_posts()) == 1 and st["codex"]["count"] == 3, f"同じ原因を連投した: {cp.posts}")
+        st["codex"]["posted_at"] -= pipelib.CLI_BLOCK_REMIND_SEC + 1
+        pipelib.CLI_BLOCK_STATE.write_text(json.dumps(st), encoding="utf-8")
+        pipelib.report_cli_blocked(info, "collect", "探索")
+        pipelib.report_cli_blocked(cli_blocked_reason("claude", CLAUDE_OAUTH), "collect", "facts 化")
+        check(len(cp.blocked_posts()) == 3 and "4回目" in cp.blocked_posts()[1], f"止まったままの知らせ直し・別の CLI の投稿: {cp.posts}")
+        pipelib.cli_check("codex", "compose", "執筆", 0, "")
+        pipelib.cli_check("codex", "compose", "執筆", 0, "")
+        check(len([m for _, m, ok, _ in cp.posts if ok]) == 1 and "codex" not in json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8")),
+              f"戻ったことを1回だけ知らせない・記録が残る: {cp.posts}")
+    with cli_posts() as cp:
+        # 道具の動作確認(01:30): 認証切れは「壊れた CLI」として当番に回さず、すぐ投稿する
+        notes = []
+
+        def fake_run(args, timeout=600, cwd=None):
+            if args[1:] == ["--version"]:
+                return subprocess.CompletedProcess(args, 0, f"{args[0]} 1.0.0\n", "")
+            if args[0] == "claude" and args[1] == "-p":
+                return subprocess.CompletedProcess(args, 1, CLAUDE_OAUTH + "\n", "")
+            return subprocess.CompletedProcess(args, 0, "2\n", "")
+        saved = (uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies, sys.argv, os.environ.pop("INVOCATION_ID", None))
+        try:
+            uc.run, uc.RECORD = fake_run, tmp / "cli-versions.json"
+            uc.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            uc.job_lock = lambda job, wait_min=0: None
+            uc.diagnose_anomalies = lambda *a, **k: False
+            sys.argv = ["update_clis.py", "--no-update"]
+            code = uc.main()
+        finally:
+            uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies, sys.argv = saved[:6]
+            if saved[6] is not None:
+                os.environ["INVOCATION_ID"] = saved[6]
+        check(code == 0 and not [m for m, ok in notes if not ok] and len(cp.blocked_posts()) == 1 and not pipelib.ANOMALIES,
+              f"動作確認の認証切れを CLI の壊れとして異常にした・投稿しない: exit {code} {notes} {cp.posts}")
+    with cli_posts() as cp:
+        # 出典の判定: 認証切れを「決まらなかった(無回答)」にせず、判定ごとやめる
+        bindir = tmp / "bin-cls"
+        fake_cli(bindir, "claude", out=CLAUDE_OAUTH + "\n", code=1)
+        saved = (os.environ.get("PATH", ""), pipelib.ROOT)
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
+            pipelib.ROOT = tmp
+            stopped = None
+            try:
+                got = classify_sources.ask(classify_sources.CMD_A, "判定して")
+            except CliBlocked as e:
+                stopped, got = e, None
+        finally:
+            os.environ["PATH"], pipelib.ROOT = saved
+        check(stopped is not None, f"出典の判定の認証切れを無回答(決まらない → 人へ)にした: {got}")
+    with cli_posts() as cp:
+        # 探索(Luna): 利用上限は面の取得の失敗(出力が読めない → 異常)にしない
+        class P:
+            returncode, args, pid = 1, ["codex"], 0
+
+            def wait(self, timeout=None):
+                return 1
+        of, ef = (open(tmp / n, "w+", encoding="utf-8") for n in ("ex.out", "ex.err"))
+        ef.write(CODEX_LIMIT + "\n")
+        saved = pipelib.ROOT
+        try:
+            pipelib.ROOT = tmp
+            got, err = collect.collect_explore("cg", P(), of, ef, time.time() + 60)
+        finally:
+            pipelib.ROOT = saved
+        check(got == [] and "[CLI 停止]" in err and "[出力が読めない]" not in err and len(cp.blocked_posts()) == 1,
+              f"探索の利用上限を取得の失敗にした: {err[-80:]!r} {cp.posts}")
+    with cli_posts() as cp:
+        # Grok: API に拒まれても終了コード 0。理由はセッション記録にだけ残る。やり直さず、面の失敗の異常にもしない
+        import urllib.parse
+        home, repo, outdir, gbin = tmp / "home", tmp / "repo", tmp / "repo" / "candidates" / ".grok", tmp / "bin-grok"
+        outdir.mkdir(parents=True)
+        sess = home / ".grok" / "sessions" / urllib.parse.quote(str(repo), safe="")
+        gbin.mkdir()
+        (gbin / "grok").write_text(
+            f"#!{sys.executable}\nimport json, os, pathlib, time\n"
+            f"d = pathlib.Path({str(sess)!r}) / str(time.time_ns()); d.mkdir(parents=True)\n"
+            f"(d / 'updates.jsonl').write_text(json.dumps({{'agent_result': 'error: ' + {GROK_LIMIT!r}}}, separators=(',', ':')) + '\\n')\n"
+            f"pathlib.Path({str(tmp / 'grok-calls')!r}).open('a').write('x')\n", encoding="utf-8")
+        (gbin / "grok").chmod(0o755)
+        notes = []
+        saved = (collect.ROOT, pipelib.ROOT, collect.notify, os.environ.get("HOME"), os.environ.get("PATH", ""))
+        try:
+            collect.ROOT = pipelib.ROOT = repo
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            os.environ["HOME"], os.environ["PATH"] = str(home), f"{gbin}{os.pathsep}{saved[4]}"
+            qs = [{"key": k, "brand": "cg", "topic": "t", "accounts": []} for k in ("cg", "shiny")]
+            errs = {}
+            still = collect.grok_basic(qs, outdir, errs)
+        finally:
+            collect.ROOT, pipelib.ROOT, collect.notify = saved[:3]
+            os.environ["PATH"] = saved[4]
+            if saved[3] is not None:
+                os.environ["HOME"] = saved[3]
+        calls = (tmp / "grok-calls").read_text() if (tmp / "grok-calls").exists() else ""
+        check(still == [] and len(calls) <= 2 and not [m for m, ok in notes if not ok] and len(cp.blocked_posts()) == 1,
+              f"Grok の利用上限で面をやり直した・面の失敗の異常にした: 残り {still} 起動 {len(calls)}回 {notes} {cp.posts}")
+
+
+def test_scratch_not_tmp(tmp: Path):
+    """本番のコードが作る使い捨てのもの(当番の監査の作業ツリー・答えのファイル・Sol の一時ファイル、探索の作業ディレクトリ)は、
+    /tmp(3.8GB の tmpfs)でなく置き場(IMAS_SCRATCH、既定 ~/.cache/imas-news)に作り、終わったら消す。消し損ねは次に作るとき
+    古い順に片付く。TMPDIR が /tmp か未設定なら置き場の tmp/ へ向ける(2026-10-21 に /tmp が 100% になり、当番の作業ツリー作成・
+    描画・回帰テストが全部止まった)。"""
+    import time
+    import collect
+    import oncall
+    root = pipelib.scratch_root()
+    check(str(root).startswith(os.environ["IMAS_SCRATCH"]), f"置き場が IMAS_SCRATCH を見ない: {root}")
+    # TMPDIR: /tmp の下・未設定なら置き場の tmp/、それ以外はそのまま
+    import tempfile as _tf
+    saved = (os.environ.get("TMPDIR"), _tf.tempdir)
+    try:
+        for given, want in (("/tmp/x", str(root / "tmp")), ("", str(root / "tmp")), (str(tmp), str(tmp))):
+            os.environ["TMPDIR"] = given
+            pipelib.use_scratch_tmpdir()
+            check(os.environ["TMPDIR"] == want, f"TMPDIR {given!r} → {os.environ['TMPDIR']}(期待 {want})")
+    finally:
+        os.environ["TMPDIR"], _tf.tempdir = saved
+    # 片付け損ねの掃除: 古いものだけ消す
+    old, new = root / "oncall-old", root / "oncall-new"
+    for d in (old, new, root / "tmp" / "tmp-old"):
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "f").write_text("x", encoding="utf-8")
+    for d in (old, root / "tmp" / "tmp-old"):
+        os.utime(d, (time.time() - pipelib.SCRATCH_MAX_AGE_SEC - 60,) * 2)
+    made = pipelib.scratch_dir("probe-")
+    check(not old.exists() and not (root / "tmp" / "tmp-old").exists() and new.exists() and made.parent == root,
+          f"置き場の古い残り物を片付けない・新しいものを消した: old={old.exists()} new={new.exists()} {made}")
+    # 探索の作業ディレクトリ
+    wd = collect.explore_workdir("cg")
+    check(wd.parent == root, f"探索の作業ディレクトリが置き場に無い: {wd}")
+    # 当番の監査: 作業ツリー(-C)・答えのファイル(-o)・TMPDIR が置き場の下にあり、終わったら消える
+    repo, bindir, log = tmp / "repo", tmp / "bin", tmp / "codex-env.jsonl"
+    repo.mkdir(parents=True)
+    g = lambda *a: subprocess.run(["git", *a], cwd=repo, capture_output=True, text=True, check=True).stdout
+    g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
+    (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
+    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "notes": ""}, ensure_ascii=False)
+    bindir.mkdir()
+    (bindir / "codex").write_text(
+        f"#!{sys.executable}\nimport json, os, sys, tempfile\na = sys.argv[1:]\n"
+        "c, o = a[a.index('-C') + 1], a[a.index('-o') + 1]\n"
+        "t = tempfile.mkdtemp(prefix='sol-')\n"
+        f"open({str(log)!r}, 'a').write(json.dumps({{'C': c, 'o': o, 'TMPDIR': os.environ.get('TMPDIR', ''), 't': t}}) + '\\n')\n"
+        f"open(o, 'w', encoding='utf-8').write({answer!r})\n", encoding="utf-8")
+    (bindir / "codex").chmod(0o755)
+    schema = Path(__file__).resolve().parent.parent / "schema" / "oncall-review.schema.json"
+    saved = (os.environ.get("PATH", ""), pipelib.ROOT)
+    try:
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
+        pipelib.ROOT = tmp
+        oncall.run_codex("監査して", schema, repo)
+    finally:
+        os.environ["PATH"], pipelib.ROOT = saved
+    c = json.loads(log.read_text(encoding="utf-8").splitlines()[-1]) if log.exists() else {}
+    inside = lambda p: bool(p) and Path(p).resolve().is_relative_to(root.resolve())
+    check(all(inside(c.get(k)) for k in ("C", "o", "TMPDIR", "t")) and not any(Path(c[k]).exists() for k in ("C", "o", "TMPDIR", "t")),
+          f"監査の作業ツリー・答え・一時ファイルが置き場に無い・残った: {c}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_stray_governed_write_is_caught(tmp / "sgw")
@@ -10720,6 +11168,11 @@ def main() -> int:
     test_indexer_tag_dictionary(tmp / "itd")
     test_remove_worktree(tmp / "rmw")
     test_run_codex_isolation(tmp / "rci")
+    test_cli_blocked_watch_not_counted(tmp / "cbw")
+    test_cli_blocked_compose(tmp / "cbc")
+    test_cli_blocked_oncall_not_counted(tmp / "cbo")
+    test_cli_block_detect_and_post(tmp / "cbd")
+    test_scratch_not_tmp(tmp / "snt")
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")
     test_compose_run_derive(tmp / "crd")

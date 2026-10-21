@@ -67,7 +67,6 @@ import re
 import shutil
 import subprocess
 import sys
-import tempfile
 import time
 from pathlib import Path
 
@@ -78,7 +77,7 @@ from pipelib import (COLLECT_ONCALL_MARK, COLLECT_OUTPUTS, ENV, ROOT, classify_t
                      JobLockTimeout, anomaly,
                      job_lock, loads_strict, mark_collect_oncall,
                      next_slot_end, notify, now_jst, partial_output, prompt_file, render_prompt, save_raw, schema_ok, settled_drops,
-                     tool_path)
+                     tool_path, CLI_BLOCKED_EXIT, CliBlocked, cli_check, oncall_clis_blocked, scratch_dir)
 
 ONCALL_MODEL = ENV.get("ONCALL_MODEL", "opus")
 AUDIT_MODEL = ENV.get("AUDIT_MODEL", "gpt-6.1-sol")
@@ -164,9 +163,13 @@ def merge_and_push(branch: str, before: str, merge: list[str], push: list[str]) 
     return ("unknown" if tip is None else "absent"), why
 
 
-def session_env() -> dict:
+def session_env(tmpdir: Path | None = None) -> dict:
+    """当番・監査のセッションの環境。tmpdir を渡したら、セッション(とその中で走るテスト・道具)の一時ファイルはそこへ書かせる
+    (/tmp の tmpfs を埋めない。呼び側がセッションの後で消す。2026-10-21 に /tmp が 100% になり当番も描画もテストも止まった)。"""
     env = {k: v for k, v in os.environ.items() if k in ENV_ALLOW}
     env["PATH"] = tool_path()   # service 由来の PATH には ~/.local/bin(claude/codex)が無い(実測 2026-09-17)
+    if tmpdir is not None:
+        env["TMPDIR"] = str(tmpdir)
     return env
 
 
@@ -382,17 +385,24 @@ def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -
     # 指示は作業ツリー側のファイルで渡す(引数に詰めない。作業ツリーの metrics/work/ は Git 管理外)
     name = "fix-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
     short = prompt_file("oncall", name, prompt, base=cwd)
+    tmp = scratch_dir("oncall-fix-tmp-")
     try:
         r = subprocess.run(["claude", "-p", short, "--model", ONCALL_MODEL, "--dangerously-skip-permissions",
                             "--json-schema", schema_file.read_text(encoding="utf-8"),
                             "--max-budget-usd", ONCALL_MAX_BUDGET_USD],
                            cwd=cwd, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
-                           env=session_env())
+                           env=session_env(tmp))
     except subprocess.TimeoutExpired as e:
         save_raw("oncall", name, *partial_output(e))      # 時間切れの回も、それまでの出力を残す
         raise
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
     # 作業ツリーは取り込み後に消えるので、生の出力は本体側(metrics/work/oncall/raw/)に残す
     save_raw("oncall", name, r.stdout, r.stderr, r.returncode)
+    # 認証切れ・利用上限は当番の失敗ではない(試行の回数に数えない。_main が引き取る)
+    blocked = cli_check("claude", "oncall", f"当番の修正({name})", r.returncode, r.stdout, r.stderr)
+    if blocked:
+        raise CliBlocked(blocked)
     # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ。{"status":"no_fix_needed"} だけの答えを
     # 診断も報告も無いまま「修正不要」にしない(監査指摘)
     ans = parse_json(r.stdout or "") if r.returncode == 0 else None
@@ -471,12 +481,14 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
     読み取り専用では何も走らせられず、走らせないまま承認していた(2026-10-14: 承認済みの変更が素材ファイルの書式に無い欄を
     書いて発行前の検査で号が止まった。編集長「ずさんな承認は全部ゴミ」)。当番の作業ツリーでは書かせない(Sol の一時ファイルが
     次の往復の修正に紛れる)。"""
-    fd, out_name = tempfile.mkstemp(prefix="oncall-review-", suffix=".json")
-    os.close(fd)
-    out_path = Path(out_name)
+    # 答えのファイル・使い捨ての作業ツリー・監査中の一時ファイル(TMPDIR)は全部 /home 側の置き場に作り、終わったら消す
+    # (2026-10-21: /tmp(3.8GB の tmpfs)が 100% になり、監査用の作業ツリーを作れずに当番が止まった)
+    box = scratch_dir("oncall-audit-")
+    out_path = box / "review.json"
+    aw = box / "wt"
+    tmp = box / "tmp"
+    tmp.mkdir()
     head = sh(["git", "rev-parse", "HEAD"], cwd=cwd).stdout.strip()
-    aw = Path(tempfile.mkdtemp(prefix="oncall-audit-"))
-    shutil.rmtree(aw)
     try:
         must(sh(["git", "worktree", "add", "--detach", str(aw), head], cwd=cwd, timeout=120), "監査用の作業ツリー")
         name = "review-" + hashlib.sha256(prompt.encode("utf-8")).hexdigest()[:8]
@@ -485,7 +497,7 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
             r = subprocess.run(["codex", "exec", "-m", AUDIT_MODEL, "-s", "workspace-write", "--skip-git-repo-check",
                                 "-C", str(aw), "--output-schema", str(schema_file), "-o", str(out_path), short],
                                cwd=aw, capture_output=True, text=True, timeout=timeout, stdin=subprocess.DEVNULL,
-                               env=session_env())
+                               env=session_env(tmp))
             so, se, code = r.stdout, r.stderr, r.returncode
         except subprocess.TimeoutExpired as e:
             (so, se), code = partial_output(e), None
@@ -496,8 +508,12 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
         text = out_path.read_text(encoding="utf-8") if out_path.exists() else ""
         save_raw("oncall", name, so, se, code, files={"answer": text})
     finally:
-        out_path.unlink(missing_ok=True)
         remove_worktree(aw, cwd)
+        shutil.rmtree(box, ignore_errors=True)    # 消し損ねても、次に置き場を作るとき古い順に片付く(pipelib.sweep_scratch)
+    # 認証切れ・利用上限は監査の失敗ではない(試行の回数に数えない。_main が引き取る)
+    blocked = cli_check("codex", "oncall", f"当番の監査({name})", code, so, se)
+    if blocked:
+        raise CliBlocked(blocked)
     # 採るのは正常に終わったセッションの、渡した schema どおりの答えだけ({"verdict":"approve"} だけの答えで承認にしない。監査指摘)
     ans = parse_json(text) if code == 0 else None
     if ans is None or not schema_ok(ans, schema_file.read_text(encoding="utf-8")):
@@ -888,6 +904,10 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
             objections = must_fix or [{"id": "reject-without-items", "severity": "quality", "evidence": "",
                                                   "claim": "監査は reject したが must_fix が空だった: " + str(rev.get("notes") or "")[:600]}]
             kept["open"] = list(objections)
+    except CliBlocked as e:     # 認証切れ・利用上限(投稿は済み)。固定できたところまでは次へ残し、_main が試行を数えずに終える
+        res["error"] = f"CliBlocked: {str(e)[:300]}"
+        res["blocked"] = e.info
+        transcript.append({"error": res["error"]})
     except Exception as e:      # noqa: BLE001 — 何で終わっても、固定できたところまでは次へ残す
         res["error"] = f"{type(e).__name__}: {str(e)[:300]}"
         transcript.append({"error": res["error"]})
@@ -1332,6 +1352,10 @@ def main() -> int:
         code = 1
     if not (RECOVER and RECOVER_TARGET and not RECOVER_TRIED):
         return code
+    if oncall_clis_blocked():
+        # 組み直しの執筆・校閲も同じ CLI で止まる(投稿は済み。上限が戻る・ログインし直したら --reuse-plan で組み直せる)
+        print(f"落とした記事を戻す組み直しはしない: {', '.join(oncall_clis_blocked())} が認証切れ・利用上限で答えない", flush=True)
+        return code
     release_held_job_locks()   # _main が例外で抜けて掴んだままの工程の排他があれば離す(同じ process の別 fd でも flock は競合する)
     date, edition = RECOVER_TARGET
     left = (STAGE_END_AT or 0) - time.time()
@@ -1535,7 +1559,7 @@ def _main() -> int:
     (ROOT / "metrics" / f"oncall-{date}-{stage}-context.txt").write_text(context, encoding="utf-8")
     base = remote_main()
     env_before = env_fingerprint()
-    wt = Path(tempfile.mkdtemp(prefix=f"oncall-{date}-{stage}-"))
+    wt = scratch_dir(f"oncall-{date}-{stage}-")    # /tmp(tmpfs)に置かない。finally で消し、消し損ねは次に作るとき片付く
     shutil.rmtree(wt)
     sh(["git", "worktree", "prune"], cwd=ROOT)
     must(sh(["git", "worktree", "add", "--detach", str(wt), base], cwd=ROOT, timeout=120), "worktree の作成")
@@ -1558,6 +1582,14 @@ def _main() -> int:
             state.pop("wip", None)
         save_state(state_p, state)
         open_left = (state.get("wip") or {}).get("open") or []
+
+        if res.get("blocked"):
+            # 当番・監査の CLI が認証切れ・利用上限で答えなかった(投稿は済み)。直せなかったのではないので、この回は試行の
+            # 回数に数えない(印を消す)。途中までの修正は wip として次の試行の続きに残してある。異常終了にしない(systemd の
+            # 起動し直しで同じ理由の即死を重ねない。2026-10-20 18:34・18:35 の当番は2回とも認証切れで即死し、1日2回の枠を使い切った)
+            (ROOT / "metrics" / f"oncall-{date}-{stage}-attempt-{attempt_no}").unlink(missing_ok=True)
+            print(f"{date} {stage}: 当番を止めた({res['error']})。試行の回数に数えない", flush=True)
+            return 0
 
         if not approved:
             last = transcript[-1] if transcript else {}
@@ -1699,6 +1731,11 @@ def _main() -> int:
             return 1
         must(sh(["git", "checkout", "-q", edition], cwd=ROOT), f"{edition} の checkout")
         code = rerun_stage(stage, date, edition, full, recover=RECOVER)
+        if code == CLI_BLOCKED_EXIT:
+            # 再実行のモデル CLI が認証切れ・利用上限で答えなかった(再実行の工程が投稿済み。読めなかった分は読み直しの列に残る)
+            # 異常終了にしない(systemd の起動し直しで、同じ理由で止まる再実行を重ねない)
+            print(f"{date} {stage}: 再実行はモデル CLI の停止で途中まで(exit {code})", flush=True)
+            return 0
         notify("oncall", f"{date} {stage}: 再実行({rerun_mode})が終わった(exit {code})。"
                          f"{'成功' if code == 0 else '失敗。metrics/oncall-' + date + '-' + stage + '-rerun.log を見ること'}",
                ok=(code == 0))
@@ -1708,6 +1745,7 @@ def _main() -> int:
         return 1
     finally:
         sh(["git", "worktree", "remove", "--force", str(wt)], cwd=ROOT)
+        shutil.rmtree(wt, ignore_errors=True)      # git で消せなかった残り(登録は下の prune が掃除する)
         sh(["git", "worktree", "prune"], cwd=ROOT)
         if lock_fd is not None:
             os.close(lock_fd)

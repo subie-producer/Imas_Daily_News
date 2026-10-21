@@ -47,7 +47,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
-                     X_ANON_POST, x_post_author)
+                     X_ANON_POST, x_post_author, CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_check, scratch_dir)
 from storylink import url_key
 
 # 定点観測の新着を1回の実行で facts 化する上限。1回の Claude 呼び出しに載る量の都合で
@@ -326,18 +326,26 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
     # 次回へ回るのは、出力が読めなかったバッチ(やり直し)だけ
     from concurrent.futures import ThreadPoolExecutor
     batches = [new_items[i:i + WATCH_BATCH] for i in range(0, len(new_items), WATCH_BATCH)]
-    cands, attempted = [], set()
+    cands, attempted, blocked = [], set(), set()
     with ThreadPoolExecutor(max_workers=max(1, WATCH_PARALLEL)) as ex:
-        for got, tried in ex.map(lambda b: facts_batch(b, claude_call, state, oncall_rerun), batches):
+        for got, tried in ex.map(lambda b: facts_batch(b, claude_call, state, oncall_rerun, blocked), batches):
             cands += got
             attempted |= tried
     return finish_watch(new_items, attempted, found_by_source, stats, state, cands,
-                        retried_given_up={it["url"] for it in state.get("_given_up", []) if isinstance(it, dict)} if oncall_rerun else set())
+                        retried_given_up={it["url"] for it in state.get("_given_up", []) if isinstance(it, dict)} if oncall_rerun else set(),
+                        blocked=blocked)
 
 
-def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool = False) -> tuple[list[dict], set[str]]:
-    """新着1バッチを facts 化する。戻りは (候補, 処理を試みた URL)。読めなかったページは、2回目で諦めたもの以外は試みたことにしない。"""
+def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool = False,
+                blocked: set | None = None) -> tuple[list[dict], set[str]]:
+    """新着1バッチを facts 化する。戻りは (候補, 処理を試みた URL)。読めなかったページは、2回目で諦めたもの以外は試みたことにしない。
+    モデルの CLI が認証切れ・利用上限で答えなかったバッチは、読めなかった回に数えず、全部を未処理の列に残す(URL を blocked に足す)。"""
     cands = []
+    if batch and claude_call and "claude" in CLI_BLOCKED:
+        # この収集で既に認証切れ・利用上限を見た: 本文を取りに行かず、そのまま未処理の列へ(下と同じ扱い)
+        if blocked is not None:
+            blocked |= {it["url"] for it in batch}
+        return [], set()
     if batch and claude_call:
         blobs = []
         for it in batch:
@@ -354,7 +362,15 @@ def facts_batch(batch: list[dict], claude_call, state: dict, oncall_rerun: bool 
                else f"- 本文: (取得できず{'(' + b['render_error'][:200] + ')' if b['render_error'] else ''}。URL を WebFetch で読むこと)")
             for i, b in enumerate(blobs))
         prompt = render_prompt("watch-facts", RULES=COLLECT_RULES, ITEM=COLLECT_ITEM, MATERIAL=material)
-        got = claude_call(prompt, timeout=420)
+        try:
+            got = claude_call(prompt, timeout=420)
+        except CliBlocked:
+            # 認証切れ・利用上限(投稿は済み)。新着の失敗ではない: 回数(_unreadable)を進めず、諦めず、異常にもしない。
+            # 試みたことにしないので、全部が未処理の列(_pending)に残り、次の収集が一覧より先に読む
+            # (2026-10-20 18:30 の認証切れを「読めなかった1回目」と数え、20:29 の再実行で新着を諦めた)
+            if blocked is not None:
+                blocked |= {it["url"] for it in batch}
+            return [], set()
         # 出力は新着ページごとの結果(抽出済み/対象外/読めなかった)。処理済みにするのは、結果が契約どおりに返った
         # extracted・none のページだけ。読めなかった・応答に無い・形が崩れたページは未処理(0件の [] とは別)。
         # 以前は候補の配列だけを受け、[] をバッチ全件の「候補なし」として既読にしていたので、WebFetch で
@@ -419,7 +435,8 @@ def watch_page_results(got, n: int) -> dict[int, list[dict]]:
 
 
 def finish_watch(new_items: list[dict], attempted: set[str], found_by_source: dict, stats: dict, state: dict,
-                 cands: list[dict], retried_given_up: set[str] = frozenset()) -> tuple[list[dict], dict]:
+                 cands: list[dict], retried_given_up: set[str] = frozenset(),
+                 blocked: set[str] = frozenset()) -> tuple[list[dict], dict]:
     # 状態の保存は facts 化の**後**。既知にするのは「今回処理を試みた URL」だけで、
     # 上限を超えて手つかずのまま残った新着は未読のままにする。
     #   - 巡回直後に全件を既知にすると、上限超過分は次回 new と判定されず、
@@ -456,8 +473,9 @@ def finish_watch(new_items: list[dict], attempted: set[str], found_by_source: di
     if deferred:
         print(f"定点観測: 新着 {len(new_items)}件のうち {len(attempted)}件を処理、"
               f"{len(deferred)}件を次回へ繰り越し", flush=True)
+    # 繰り越しのうち、モデルの CLI が認証切れ・利用上限で答えなかった分(取得の失敗ではない。異常にしない。投稿は済み)
     return cands, {"stats": stats, "new": len(new_items), "facted": len(cands),
-                   "deferred": len(deferred)}
+                   "deferred": len(deferred), "blocked": len([n for n in deferred if n["url"] in blocked])}
 
 
 # ---- A-2 / B 探索 --------------------------------------------------------------
@@ -481,6 +499,15 @@ def read_written(p: Path) -> str:
 STUCK_OUTPUTS: dict[Path, str] = {}
 
 
+GROK_BLOCKED_MARK = "CLI 停止"      # errs の印: Grok が認証切れ・利用上限で答えなかった面
+GROK_BLOCK_SINCE_SEC = 900          # 失敗理由を探すセッション記録の範囲(この回の調べの分だけ。古い回の拒否を拾わない)
+
+
+def grok_blocked(errs: dict, key: str) -> bool:
+    """その面の最後の試みが、Grok の認証切れ・利用上限で答えなかったか(調べの失敗に数えない)。"""
+    return str(errs.get(key, "")).startswith(GROK_BLOCKED_MARK)
+
+
 def grok_wrote(outdir: Path, q: dict) -> bool:
     """その面の Grok がまとめのファイルを残したか(「なし」と書いた面も残したことになる)。
     退けられなかった書きかけ(STUCK_OUTPUTS)は、その後の試みが正常に終わっても完了と読まない(監査指摘)。"""
@@ -500,12 +527,14 @@ def grok_basic(queries: list[dict], outdir: Path, grok_errs: dict) -> list[str]:
     (実測 2026-10-03: 学マスの面が打ち切られてファイルを書けず0件。公式Xの4コマ第174話を1日遅れで載せた)。
     未完了は終了状態と書き出しの両方で決める(書きかけを退けられずに残った面を完了とみなさない。監査指摘)。"""
     failed = run_grok_faces(queries, outdir, grok_errs)
-    missing = [q for q in queries if not grok_wrote(outdir, q) or q["key"] in failed]
+    # 認証切れ・利用上限で答えなかった面はやり直さない(同じ理由で止まるだけ)。失敗にも数えない(投稿は済み)
+    missing = [q for q in queries if (not grok_wrote(outdir, q) or q["key"] in failed) and not grok_blocked(grok_errs, q["key"])]
     if not missing:
         return []
     print(f"grok: まとめを残せなかった面 {', '.join(q['key'] for q in missing)} をやり直す", flush=True)
     failed = run_grok_faces(missing, outdir, grok_errs, retry=True)
-    still = [q["key"] for q in missing if not grok_wrote(outdir, q) or q["key"] in failed]
+    still = [q["key"] for q in missing
+             if (not grok_wrote(outdir, q) or q["key"] in failed) and not grok_blocked(grok_errs, q["key"])]
     # やり直しも時間切れ・異常終了した面は、途中までの書き出しがあればそれを使う(全部は失わない)。未完了は下で名指しする
     for k in still:
         if read_written(outdir / f"{k}.md").strip():
@@ -533,6 +562,11 @@ def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> set[str]:
     戻りは、正常に終わらなかった(時間切れ・非0終了)面のキー(書き出しの有無では判定しない。監査指摘)。"""
     failed: set[str] = set()
     for i in range(0, len(targets), GROK_WAVE):
+        if "grok" in CLI_BLOCKED:
+            # この収集で既に認証切れ・利用上限を見た: 残りの面は起動しない(同じ理由で止まるだけ。投稿は済み)
+            for q, _ in targets[i:]:
+                errs[q["key"]] = f"{GROK_BLOCKED_MARK}: この収集で既に止まっている"
+            break
         procs = []
         for q, pp in targets[i:i + GROK_WAVE]:
             procs.append((q, subprocess.Popen(
@@ -557,6 +591,14 @@ def run_grok_prompts(targets: list[tuple[dict, Path]], errs: dict) -> set[str]:
             # エラー出力の全文と、この試みの書き出しを、基本の調べ・やり直し・深掘りの別に残す(要約は末尾 300 字だけ。
             # 書き出しは次の試み・次の収集で消える。監査指摘)。経過は Grok のセッション記録に残る
             save_raw(edition_date(), f"grok-{pp.stem}", "", err or "", pr.returncode, files={out.name: read_for_raw(out)})
+            # 認証切れ・利用上限(Grok は API に拒まれても終了コード 0 で、理由はセッション記録にだけ残る)は、面の調べの失敗に
+            # 数えない(やり直さない・異常にしない。投稿は済み)。印を errs に残し、呼び側が grok_blocked で見分ける
+            answered = not timed_out and pr.returncode == 0 and bool(read_written(out).strip())
+            blk = cli_check("grok", "collect", f"{now_jst():%H:%M} の収集 X の調べ {pp.stem.removeprefix('prompt-')} 面",
+                            None if timed_out else pr.returncode, err or "",
+                            "" if answered else grok_session_error(GROK_BLOCK_SINCE_SEC), answered=answered)
+            if blk:
+                errs[q["key"]] = f"{GROK_BLOCKED_MARK}: {blk.get('detail', '')}"
             if timed_out or pr.returncode != 0:
                 failed.add(q["key"])
                 # 時間切れ・異常終了の回が書いた書き出し(一部の投稿だけ・途中の「なし」)は答えにしない。試みごとに別の
@@ -645,7 +687,7 @@ def explore_workdir(key: str) -> Path:
     セッション同士の相互汚染まで機械で塞ごうとすると、得るものに対して
     仕掛けが重くなりすぎる。
     """
-    wd = Path(tempfile.mkdtemp(prefix=f"explore-{key}-"))
+    wd = scratch_dir(f"explore-{key}-")     # /tmp(tmpfs)に置かない。呼び側が消し、消し損ねは次に作るとき片付く
     (wd / "fetch_page.py").write_text(
         "#!/usr/bin/env python3\n"
         "# 本体はリポジトリ側(読み取り専用)。ここは呼び出すだけの入口\n"
@@ -662,7 +704,7 @@ def explore_argv(short: str) -> list[str]:
     動かない)。`sandbox_workspace_write.network_access` は名前のとおり
     workspace-write 用の設定なので、通信を使う以上 workspace-write で走らせる。
     ただし cwd は `explore_workdir()` が作るリポジトリ外のディレクトリなので、
-    書き込めるのはそこと `/tmp` に限られ、リポジトリには手が届かない。
+    書き込めるのはそこと一時ファイルの置き場(TMPDIR)に限られ、リポジトリには手が届かない。
     """
     return ["codex", "exec", "-m", EXPLORE_MODEL, "-s", "workspace-write",
             # cwd が git リポジトリでないため、codex の作業前確認を外す
@@ -697,6 +739,9 @@ def claude_exec(prompt: str, timeout: int = 300):
     # 生の出力を必ず残す(依頼文 metrics/work/<日付>/<name>.md と同じ名前。候補が出なかった理由を後から確かめるため。
     # 2026-10-04: まとめサイトの新着1件を失ったが出力が残っておらず、当番も原因を確定できなかった。当番の指摘 b39801ce34・8bdc37f36c)
     save_raw(edition_date(), name, r.stdout, r.stderr, r.returncode)
+    blocked = cli_check("claude", "collect", f"{now_jst():%H:%M} の収集 定点観測の facts 化", r.returncode, r.stdout, r.stderr)
+    if blocked:
+        raise CliBlocked(blocked)      # 読めなかった回ではない(facts_batch が数えずに未処理の列へ残す)
     if r.returncode != 0:
         # 異常終了の間際の出力は答えにしない(読めなかった扱い。既読にしない。監査指摘)
         print(f"定点観測: facts 化のセッションが異常終了(exit {r.returncode})。このバッチは既読にしない", flush=True)
@@ -747,8 +792,9 @@ def collect_health(watch_info, per_query: dict) -> list[str]:
     for sid, st in stats.items():
         if isinstance(st, dict) and st.get("error"):
             out.append(f"定点観測 {sid}: 一覧を読めなかった({st['error'][:80]})")
-    if isinstance(watch_info, dict) and watch_info.get("deferred"):
-        out.append(f"定点観測: 事実に起こせず次回へ回した新着 {watch_info['deferred']}件")
+    # モデルの CLI の認証切れ・利用上限で答えなかった分は取得の失敗に数えない(人には見つけたときに投稿済み。当番に回さない)
+    if isinstance(watch_info, dict) and watch_info.get("deferred", 0) - watch_info.get("blocked", 0) > 0:
+        out.append(f"定点観測: 事実に起こせず次回へ回した新着 {watch_info['deferred'] - watch_info.get('blocked', 0)}件")
     out += [f"探索 {k.split(':', 1)[1]}: 出力が読めない・打ち切られた" for k, v in per_query.items() if k.startswith("explore_failed:") and v]
     return out
 
@@ -899,6 +945,11 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         # 何より先に、Luna が書いたものを生の出力として残す(このあとの処理で止まっても原因を追えるように)
         save_raw(edition_date(), f"grok-verify-{q['key']}{suffix}", "", "", p.returncode,
                  files={n: read_for_raw(wd / n) for n in ("x-posts.md", "items.json", "posts.json", "deep.json", "session.log")})
+        # 認証切れ・利用上限で答えなかった面は、投稿の確かめの失敗(やり直し・喪失の異常)に数えない(投稿は済み。当番に回さない)
+        if cli_check("codex", "collect", f"{now_jst():%H:%M} の収集 X の投稿の確かめ {q['key']} 面{suffix}",
+                     p.returncode if in_time else None, read_for_raw(wd / "session.log") or ""):
+            shutil.rmtree(wd, ignore_errors=True)
+            continue
         # 時間切れ・異常終了のセッションが書いたファイルは答えにしない(全投稿を未処理としてやり直し・異常へ。監査指摘)
         got = read_json_list(wd / "items.json") if in_time and p.returncode == 0 else None
         # 投稿1件ずつの結果を、入力の投稿と突き合わせる。結果の無い・読めなかった投稿を黙って捨てない
@@ -1201,6 +1252,9 @@ def collect_explore(key: str, proc, out_f, err_f, deadline: float) -> tuple[list
             err = text
     err = (err or "") + cut
     save_raw(edition_date(), f"explore-{key}-{time.time_ns() % 10**6}", out, err, proc.returncode)   # 生の出力を必ず残す
+    # 認証切れ・利用上限は面の取得の失敗ではない(異常にしない。投稿は済み)。次の収集がまた探す
+    if not cut and cli_check("codex", "collect", f"{now_jst():%H:%M} の収集 探索 {key} 面", proc.returncode, out, err):
+        return [], (err or "") + "\n[CLI 停止]"
     from pipelib import extract_json_array_strict
     # 打ち切り・異常終了の間際の出力は答えにしない(途中までの候補を「全部」と読まない。監査指摘)
     got = extract_json_array_strict(out) if not cut and proc.returncode == 0 else None
@@ -1264,6 +1318,8 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         per[f"explore:{key}"] = len(got)
         if "[出力が読めない]" in err or "[打ち切り]" in err:
             per[f"explore_failed:{key}"] = 1     # 0件(正常な空振り)と取得の失敗を分ける(collect_health)
+        elif err.endswith("[CLI 停止]"):
+            per[f"explore_blocked:{key}"] = 1    # CLI の認証切れ・利用上限(取得の失敗に数えない)
         shutil.rmtree(wd, ignore_errors=True)
 
     # -- Grok(X 動向) --
@@ -1300,7 +1356,8 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                 deep_started = time.time()
                 failed = deep_dive_grok(queries, outdir, chosen, grok_errs)
                 spent1 = sum(grok_search_counts(deep_started).values())   # 1回目の実際の検索回数(指示は厳密には守られない)
-                lost = sorted(failed | {k for k in chosen if not read_written(outdir / f"{k}-deep.md").strip()})
+                lost = sorted(k for k in failed | {k for k in chosen if not read_written(outdir / f"{k}-deep.md").strip()}
+                              if not grok_blocked(grok_errs, k))
                 if lost:
                     notify("collect", "Grok の深掘りが時間切れ・異常終了し、X の原本の確かめを失った面: "
                                       + ", ".join(f"{k}({grok_errs.get(k, '')[:120]})" for k in lost), ok=False)
@@ -1320,7 +1377,8 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                           f"{sum(len(v) for v in chosen2.values())}件を投げ直す(予算 {budget2}回)", flush=True)
                 if chosen2:
                     failed2 = deep_dive_grok(queries, outdir, chosen2, grok_errs, suffix="-deep2", retry=True)
-                    lost2 = sorted(failed2 | {k for k in chosen2 if not read_written(outdir / f"{k}-deep2.md").strip()})
+                    lost2 = sorted(k for k in failed2 | {k for k in chosen2 if not read_written(outdir / f"{k}-deep2.md").strip()}
+                                   if not grok_blocked(grok_errs, k))
                     if lost2:
                         # 投げ直しの失敗も、1回目と同じく名指しで異常にする(黙って問いの確かめを失わない。監査指摘)
                         notify("collect", "Grok の深掘りの投げ直しが時間切れ・異常終了し、X の原本の確かめを失った面: "
@@ -1333,6 +1391,8 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
             re.fullmatch(r"(なし|見つからない)[。\s]*", read_written(outdir / f"{q['key']}.md").strip()) for q in queries)
         if not got and explicit_none:
             print("grok 0件(全面が正常に終わり「なし」)", flush=True)
+        elif not got and all(grok_blocked(grok_errs, q["key"]) for q in queries):
+            print("grok 0件(全面が認証切れ・利用上限で答えなかった。投稿は済み)", flush=True)
         elif not got:
             print("grok 0件", flush=True)
             # 全面0件を黙って流さない(2026-10-02: CLI が古く API に 426 で拒まれ、9面すべて0件。記録は「grok 0件」だけで、
@@ -1351,6 +1411,8 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
             by_brand[b] = by_brand.get(b, 0) + 1
         for q in queries:
             per[f"grok:{q['key']}"] = by_brand.get(q["brand"], 0)
+            if grok_blocked(grok_errs, q["key"]):
+                per[f"grok_blocked:{q['key']}"] = 1     # 認証切れ・利用上限(watch の全滅検知に数えない)
         print(f"grok: {len(queries)}面を面別セッションで {len(got)}件(面別 {by_brand})", flush=True)
         # 週次上限を消費するのは X 検索の回数だけ。面ごとに実数を記録し、指示の2倍を超えた面は異常にする(依頼文の数字は厳密には守られない)
         searches = grok_search_counts(grok_started)
@@ -1846,8 +1908,11 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
                 if "戻せない" in why:
                     notify("collect", f"{date}: 判定表の取引に失敗({why[:400]})。commit せずに終える。作業ツリーを確かめること", ok=False)
                     return 1
-                notify("collect", f"{date}: 判定表の更新〜紙面の付け直し〜lint で失敗({why[:400]})。判定表と記事を"
-                                  f"戻した(候補は残す)。次回の収集で再試行する", ok=False)
+                if why.startswith(CLI_STOPPED):
+                    print(f"{date}: 出典の判定は次回の収集でやり直す({why[:300]})", flush=True)   # 投稿は判定が済ませた
+                else:
+                    notify("collect", f"{date}: 判定表の更新〜紙面の付け直し〜lint で失敗({why[:400]})。判定表と記事を"
+                                      f"戻した(候補は残す)。次回の収集で再試行する", ok=False)
     if not args.no_git:
         _TERM["defer"] = True     # 確定の途中では SIGTERM で中断しない(受けたら確定のあとで終える)
         pushed = commit_and_push(branch, f"collect {now_jst().strftime('%H:%M')}: +{added}件", "collect")
@@ -1876,10 +1941,14 @@ def run_collect(args, date: str, branch: str, t0: float) -> int:
         print(f"新規0件({'/'.join(skipped)} を手動でスキップ中のため通知しない)", flush=True)
     # 当番の拾い直しで、読めないバッチが残った(=諦めずに繰り越した)場合は、直しが効いていない。
     # 読めた分と繰り越しは保存済み(既読にしていない)。成功として終えず、当番へ非0で返す(監査指摘)
-    if args.oncall_rerun and (watch_info.get("deferred", 0) if isinstance(watch_info, dict) else 0) > 0:
-        notify("collect", f"{date}: 当番の拾い直しでも facts 化できないバッチが {watch_info['deferred']}件 残った。"
+    if args.oncall_rerun and (watch_info.get("deferred", 0) - watch_info.get("blocked", 0) if isinstance(watch_info, dict) else 0) > 0:
+        notify("collect", f"{date}: 当番の拾い直しでも facts 化できないバッチが {watch_info['deferred'] - watch_info.get('blocked', 0)}件 残った。"
                           f"繰り越しは既読にせず保持した。直しが効いていない(原因が未確定の可能性)", ok=False)
         return 1
+    if args.oncall_rerun and isinstance(watch_info, dict) and watch_info.get("blocked"):
+        # 取り直しの途中でモデルの CLI が止まった(投稿は済み)。直しが効いていないのではないが、新着はまだ素材に無い
+        print(f"{date}: 取り直しの {watch_info['blocked']}件は CLI の停止で読めず、未処理の列に残した", flush=True)
+        return CLI_BLOCKED_EXIT
     # 当番の取り直しで、観測先の一覧がまた取れなかったら成功にしない(一覧から新着を見つけられないので deferred は0のまま。
     # 落とした新着がその号の素材に入っていない。監査指摘)
     list_failed = sorted(sid for sid, st in ((watch_info or {}).get("stats") or {}).items()

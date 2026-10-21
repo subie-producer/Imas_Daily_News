@@ -96,6 +96,75 @@ EDITORIAL_MODEL = ENV.get("EDITORIAL_MODEL", "gpt-6.1-sol")
 # 執筆(Codex)と別ベンダーにするため Claude 側。既定は haiku(検品はコスト重視)
 REVIEW_MODEL = ENV.get("REVIEW_MODEL", "haiku")
 
+
+# --- 使い捨ての作業場所(/tmp に置かない) ---------------------------------------------------
+# /tmp は 3.8GB の tmpfs。当番の作業ツリー・監査の使い捨ての作業ツリー・Sol が監査中に作る一時ファイル・テストの一時ディレクトリ・
+# 描画の Chrome の一時ディレクトリが溜まって 100% になり、当番の作業ツリー作成・描画・回帰テストが全部止まった(2026-10-21)。
+# 本番の工程が作る一時のものは /home 側(既定 ~/.cache/imas-news。IMAS_SCRATCH で変えられる)に置き、片付けに失敗して残ったものは
+# 次に作業場所を作るとき古い順に消す(sweep_scratch)。子プロセス(モデルの CLI・テスト・Chrome)の TMPDIR も同じ置き場の tmp/ へ向ける
+SCRATCH_MAX_AGE_SEC = 24 * 3600     # これより古い残り物は片付け損ねたもの(工程は最長でも数時間)
+
+
+def scratch_root() -> Path:
+    """使い捨ての作業場所の置き場(呼ぶたびに環境から決める。テストは IMAS_SCRATCH で一時ディレクトリの中へ向ける)。"""
+    p = Path(os.environ.get("IMAS_SCRATCH") or ENV.get("IMAS_SCRATCH") or (Path.home() / ".cache" / "imas-news"))
+    p.mkdir(parents=True, exist_ok=True)
+    return p
+
+
+def _under_tmp(p: str) -> bool:
+    try:
+        return not p or Path(p).resolve().is_relative_to("/tmp")
+    except (OSError, ValueError):
+        return True
+
+
+def use_scratch_tmpdir() -> None:
+    """この process と子プロセスの一時ファイルの置き場(TMPDIR)を、/tmp でなければそのまま、/tmp(か未設定)なら置き場の tmp/ にする。"""
+    import tempfile
+    if not _under_tmp(os.environ.get("TMPDIR", "")):
+        return
+    t = scratch_root() / "tmp"
+    t.mkdir(parents=True, exist_ok=True)
+    os.environ["TMPDIR"] = str(t)
+    tempfile.tempdir = str(t)
+
+
+def sweep_scratch(max_age: float = SCRATCH_MAX_AGE_SEC) -> list[str]:
+    """置き場(と TMPDIR の置き場)に残った、max_age より古いものを消す。戻りは消したもの。消せないものは飛ばす(次の回にまた試す)。"""
+    gone = []
+    root = scratch_root()
+    for base in (root, root / "tmp"):
+        try:
+            entries = list(base.iterdir())
+        except OSError:
+            continue
+        for e in entries:
+            if e.name == "tmp" and base == root:
+                continue
+            try:
+                if time.time() - e.lstat().st_mtime < max_age:
+                    continue
+                if e.is_dir() and not e.is_symlink():
+                    shutil.rmtree(e, ignore_errors=True)
+                else:
+                    e.unlink()
+            except OSError:
+                continue
+            if not e.exists():
+                gone.append(str(e))
+    return gone
+
+
+def scratch_dir(prefix: str) -> Path:
+    """使い捨ての作業ディレクトリを置き場の下に作る(作る前に古い残り物を片付ける)。片付けは呼び側の finally。"""
+    import tempfile
+    sweep_scratch()
+    return Path(tempfile.mkdtemp(prefix=prefix, dir=scratch_root()))
+
+
+use_scratch_tmpdir()
+
 # **社説は 2026-09-06 号までで終了。**面白く作れなかったため断念(2026-09-06 決定)。
 # 過去号の社説は append-only でそのまま残す。日付で切るのは、既存号の lint と
 # 表示を壊さずに、翌号から書かない・求めない・校閲しないを一度に切り替えるため。
@@ -271,6 +340,11 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
         return False
     if ENV.get("ONCALL", "on").lower() == "off" or os.environ.get("ONCALL", "").lower() == "off":
         return False
+    if oncall_clis_blocked():
+        # 当番も同じ CLI で同じ理由で止まり、1日2回の枠を使うだけになる(2026-10-20 18:34・18:35 の当番が2回とも認証切れで即死)。
+        # 人への投稿は見つけたときに済んでいる(report_cli_blocked)
+        print(f"当番を呼ばない({stage} {date}): {', '.join(oncall_clis_blocked())} が認証切れ・利用上限で答えない", flush=True)
+        return False
     script = ROOT / "scripts" / "oncall.py"
     if not script.exists():
         return False
@@ -432,13 +506,14 @@ def set_quiet(on: bool) -> None:
     _QUIET = on
 
 
-def notify(job: str, msg: str, ok: bool = True, require: bool = False) -> bool:
+def notify(job: str, msg: str, ok: bool = True, require: bool = False, ledger: bool = True) -> bool:
     """Discord へ通知する。戻り値は**届いたか**。
     require=True は「人に届かなければ先へ進んではいけない」通知(当番の修正報告)で、webhook 未設定・
-    試験実行も**届いていない**として False を返す(監査指摘)。通常の通知は未設定なら True(黙認)。"""
+    試験実行も**届いていない**として False を返す(監査指摘)。通常の通知は未設定なら True(黙認)。
+    ledger=False は異常の台帳に積まない(当番に回さない。モデル CLI の認証切れ・利用上限: 当番も同じ CLI で止まる)。"""
     prefix = "✅" if ok else "🚨"
     text = f"{prefix} アイマスNEWS {job}: {msg}"
-    if not ok and job != "oncall":     # 人に見せる異常は当番のなぜなぜの対象(当番自身の通知は除く)
+    if not ok and job != "oncall" and ledger:     # 人に見せる異常は当番のなぜなぜの対象(当番自身の通知は除く)
         anomaly(job, msg)
     if _QUIET:
         print(f"[試験実行・通知しない] {text}", flush=True)
@@ -515,6 +590,187 @@ def internal_names(text: str) -> list[str]:
 def notify_long(job: str, text: str, ok: bool = True, limit: int = DISCORD_LIMIT) -> bool:
     """必須の長い通知(当番の修正報告)。notify が分割するので、require=True で送るだけ。"""
     return notify(job, text, ok=ok, require=True)
+
+
+# --- モデル CLI の認証切れ・利用上限 ---------------------------------------------------------
+# CLI(claude・codex・grok)が認証切れ・利用上限で答えなかった回は、新着・素材・記事の失敗ではない。失敗の回数に数えず、
+# 読み直しの列に残す。人にすぐ知らせる(ログインし直す・戻る時刻を待つのは人の仕事)が、当番には回さない(当番も同じ CLI で止まる)。
+# 実測 2026-10-20 18:30: Claude の OAuth が切れて facts 化が読めなかった1回を新着の「読めなかった1回目」と数え、20:29 の再実行で
+# 新着を諦めた。18:34・18:35 の当番は2回とも同じ認証切れで即死し、1日2回の枠を使い切った。
+# 文言は各 CLI の実物(claude 2.1.304・codex 0.163.0・grok 1.0.62 の実行ファイルの文字列と ops の生の出力)から採った
+CLI_BLOCK_RULES = (
+    ("auth", re.compile(
+        r"Failed to authenticate|OAuth (?:session|token) (?:expired|revoked)|\bNot logged in\b|Please run /login"
+        r"|Invalid API key|access token could not be refreshed|authentication session could not be refreshed"
+        r"|log out and sign in again|re-?run `?codex login|\b401 Unauthorized|Auth retry budget exhausted", re.I)),
+    ("limit", re.compile(
+        r"\bhit (?:your|the) [\w'’ -]{0,40}limit|usage limit reached|You're out of credits|out of credits\."
+        r"|credit balance (?:is )?too low|rate_limit_error|429 Too Many Requests|API Error: 429"
+        r"|monthly spend limit|team's shared budget|credit limit for your plan", re.I)),
+)
+CLI_RESETS = re.compile(r"(?:resets?|try again)\s+(?:at\s+|in\s+)?([0-9][^\n·|]{0,40})", re.I)
+CLI_SCAN_CHARS = 1500           # 出力の末尾だけを見る(素材の本文に同じ語があっても拾わない。CLI の失敗の文言は最後に出る)
+CLI_NAMES = {"claude": "Claude", "codex": "Codex(GPT)", "grok": "Grok"}
+CLI_LOGIN = {"claude": "ops のターミナルで `claude` を開いて /login(または `claude auth login`)",
+             "codex": "ops のターミナルで `codex login`(headless なら `codex login --device-auth`)",
+             "grok": "ops のターミナルで `grok login`"}
+CLI_BLOCK_STATE = ROOT / "metrics" / "cli-blocked.json"   # Git 管理外。どの CLI がいつから止まっているか(工程をまたいで連投しない)
+CLI_BLOCK_REMIND_SEC = 12 * 3600   # 止まったままなら、この間隔で1回だけ知らせ直す
+CLI_BLOCKED: dict[str, dict] = {}  # この process で見つけた {CLI: 理由}(当番を呼ばない判断・工程の打ち切りに使う)
+_CLI_LOCK = __import__("threading").Lock()
+
+
+class CliBlocked(BaseException):
+    """モデル CLI が認証切れ・利用上限で答えなかった。BaseException なのは、途中の `except Exception`(1件の失敗として数えて
+    続ける所)に飲まれずに、工程の入口まで上がって「数えずに止める」ため(collect の Terminated と同じ扱い)。"""
+
+    def __init__(self, info: dict):
+        self.info = info
+        super().__init__(f"{CLI_NAMES.get(info.get('tool'), info.get('tool'))} が{cli_block_kind(info)}で答えない: {info.get('detail', '')}")
+
+
+def cli_block_kind(info: dict) -> str:
+    return "認証切れ" if info.get("kind") == "auth" else "利用上限"
+
+
+def cli_blocked_reason(tool: str, *texts) -> dict | None:
+    """CLI の出力(標準出力・エラー・セッション記録)の末尾から、認証切れ・利用上限の文言を探す。無ければ None(本物の失敗)。"""
+    tail = "\n".join(str(t or "")[-CLI_SCAN_CHARS:] for t in texts)
+    for kind, pat in CLI_BLOCK_RULES:
+        m = pat.search(tail)
+        if m:
+            start = tail.rfind("\n", 0, m.start()) + 1
+            end = tail.find("\n", m.end())
+            line = tail[start:end if end >= 0 else None].strip()[:240]
+            r = CLI_RESETS.search(line) or CLI_RESETS.search(tail)
+            return {"tool": tool, "kind": kind, "detail": line, "resets": r.group(1).strip().rstrip(".") if r else ""}
+    return None
+
+
+def _cli_state_io(update):
+    """止まっている CLI の記録を、工程どうし(別 process)・並列のバッチどうしで食い違わずに読み書きする。"""
+    import fcntl
+    with _CLI_LOCK:
+        CLI_BLOCK_STATE.parent.mkdir(parents=True, exist_ok=True)
+        with open(CLI_BLOCK_STATE.with_suffix(".lock"), "a") as lk:
+            fcntl.flock(lk, fcntl.LOCK_EX)
+            try:
+                st = json.loads(CLI_BLOCK_STATE.read_text(encoding="utf-8"))
+                st = st if isinstance(st, dict) else {}
+            except (OSError, ValueError):
+                st = {}
+            out = update(st)
+            write_atomic(CLI_BLOCK_STATE, json.dumps(st, ensure_ascii=False, indent=1) + "\n")
+            return out
+
+
+def cli_block_text(info: dict, job: str, where: str, n: int, since: str) -> str:
+    name = CLI_NAMES.get(info["tool"], info["tool"])
+    if info["kind"] == "auth":
+        what = f"🔑 {name} の認証が切れて答えない。ログインし直しが要る: {CLI_LOGIN.get(info['tool'], 'その CLI にログインし直す')}"
+    else:
+        what = (f"⏳ {name} が利用上限で答えない。戻るのは "
+                + (f"{info['resets']}(CLI の表示)" if info.get("resets") else "CLI の表示に無い(各 CLI の使用量の画面で確かめる)"))
+    return (f"{what}\n- 工程: {job} {where}(この原因で {n}回目。{since} から)\n- CLI の出力: {info.get('detail') or '(なし)'}\n"
+            "- 答えなかった回は失敗に数えず、読み直しの列に残す(素材・記事は諦めない)。当番には回さない(同じ CLI で止まる)"
+            + (f"\n- 戻ったら: {CLI_RESUME[job]}" if job in CLI_RESUME else ""))
+
+
+CLI_RESUME = {   # 戻ったあとに続きをどう拾うか(工程ごと)
+    "collect": "次の収集が、読めなかった新着を読み直しの列から先に読む",
+    "compose": "組版はここで止めた(書けた記事と計画は残してある)。計画まで済んでいれば ops で "
+               "`python3 scripts/compose.py --reuse-plan` で書けていない記事から組み直す。済んでいなければ `python3 scripts/compose.py`",
+    "oncall": "当番はこの回を試行の回数に数えずに終えた(途中までの修正は次の試行の続きに残す)。次に工程が当番を呼べば続きから直す",
+    "update": "翌日 01:30 の道具の更新がもう一度確かめる",
+}
+
+
+def report_cli_blocked(info: dict, job: str, where: str) -> bool:
+    """認証切れ・利用上限を記録し、その CLI の同じ原因では1回だけ Discord に投稿する(同じ工程の中・続く工程で連投しない。
+    止まったままなら CLI_BLOCK_REMIND_SEC ごとに1回)。異常の台帳には積まない(当番に回さない)。戻りは投稿したか。"""
+    tool = info["tool"]
+    CLI_BLOCKED[tool] = info
+    now = time.time()
+    stamp = now_jst().isoformat(timespec="minutes")
+
+    def upd(st):
+        cur = st.get(tool) if isinstance(st.get(tool), dict) and st[tool].get("kind") == info["kind"] else None
+        post = cur is None or now - float(cur.get("posted_at") or 0) >= CLI_BLOCK_REMIND_SEC
+        st[tool] = {"kind": info["kind"], "detail": info.get("detail", ""), "resets": info.get("resets", ""),
+                    "since": (cur or {}).get("since") or stamp, "count": int((cur or {}).get("count") or 0) + 1,
+                    "posted_at": now if post else float(cur.get("posted_at") or 0), "last": f"{job} {where}".strip(),
+                    "last_at": now}
+        return post, st[tool]["count"], st[tool]["since"]
+    try:
+        post, n, since = _cli_state_io(upd)
+    except OSError as e:          # 記録できなくても知らせる(黙って止まらない)
+        print(f"(CLI の停止の記録を書けない: {e})", flush=True)
+        post, n, since = True, 1, stamp
+    if not post:
+        print(f"{CLI_NAMES.get(tool, tool)} が{cli_block_kind(info)}で答えない({job} {where}。この原因で {n}回目。投稿は済み)", flush=True)
+        return False
+    if not notify(job, cli_block_text(info, job, where, n, since), ok=False, ledger=False):
+        try:     # 届かなければ、次の回にもう一度投稿する
+            _cli_state_io(lambda st: st.get(tool, {}).update(posted_at=0))
+        except OSError:
+            pass
+    return True
+
+
+def cli_recovered(tool: str, job: str) -> None:
+    """CLI が答えた。止まっていた記録があれば消し、戻ったことを1回だけ知らせる。"""
+    CLI_BLOCKED.pop(tool, None)
+    try:      # 記録に無ければ何もしない(答えるたびに排他を取って書き直さない)
+        if tool not in json.loads(CLI_BLOCK_STATE.read_text(encoding="utf-8")):
+            return
+    except (OSError, ValueError, TypeError):
+        return
+    try:
+        old = _cli_state_io(lambda st: st.pop(tool, None))
+    except OSError:
+        return
+    if isinstance(old, dict) and float(old.get("posted_at") or 0) > 0:
+        notify(job, f"{CLI_NAMES.get(tool, tool)} がまた答えるようになった({old.get('since', '')} から"
+                    f"{'認証切れ' if old.get('kind') == 'auth' else '利用上限'}で {old.get('count', '?')}回止まっていた)")
+
+
+def cli_check(tool: str, job: str, where: str, rc, *texts, answered: bool | None = None) -> dict | None:
+    """モデル CLI を1回走らせた後に呼ぶ。答えた(既定は終了コード 0)なら止まっていた記録を消して None。答えなかった回は出力から
+    認証切れ・利用上限を探し、見つかれば記録・投稿して理由を返す(呼び側は失敗に数えない)。時間切れ(rc が None)は判定しない。
+    Grok は API に拒まれても終了コードが 0 なので、呼び側が answered(書き出しがあるか)を渡す。"""
+    if answered if answered is not None else rc == 0:
+        cli_recovered(tool, job)
+        return None
+    if rc is None:
+        return None
+    info = cli_blocked_reason(tool, *texts)
+    if info:
+        report_cli_blocked(info, job, where)
+    return info
+
+
+def oncall_clis_blocked() -> list[str]:
+    """当番が使う CLI(修正の claude・監査の codex)のうち、この process で認証切れ・利用上限を見たもの。"""
+    return [t for t in ("claude", "codex") if t in CLI_BLOCKED]
+
+
+CLI_BLOCKED_EXIT = 75     # 子の工程(出典の判定)が CLI の停止でやめたときの終了コード(EX_TEMPFAIL)
+CLI_STOPPED = "モデル CLI が認証切れ・利用上限で答えない"   # 取引の失敗の理由の頭。呼び側は異常にしない(投稿は子が済ませた)
+
+
+def adopt_cli_blocked(since: float) -> list[str]:
+    """子の工程が since 以降に記録した CLI の停止を、この process で見たものとして引き取る(当番を呼ばない判断に使う)。
+    戻りは引き取った CLI。"""
+    try:
+        st = json.loads(CLI_BLOCK_STATE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return []
+    got = []
+    for tool, e in (st.items() if isinstance(st, dict) else []):
+        if isinstance(e, dict) and float(e.get("last_at") or 0) >= since:
+            CLI_BLOCKED[tool] = {"tool": tool, "kind": e.get("kind", ""), "detail": e.get("detail", ""), "resets": e.get("resets", "")}
+            got.append(tool)
+    return sorted(got)
 
 
 def partial_output(e: BaseException) -> tuple[str, str]:
@@ -667,7 +923,8 @@ def trace_summary(trace: Path) -> str:
     return f"{turns}ターン / 道具 {len(tools)}回: {' → '.join(tools[-12:]) or 'なし'}" + (f" / 最後の発言: {last}" if last else "")
 
 
-def claude_traced(args: list[str], trace: Path, timeout: int, cwd: Path | None = None) -> dict:
+def claude_traced(args: list[str], trace: Path, timeout: int, cwd: Path | None = None,
+                  job: str = "compose", where: str = "") -> dict:
     """`claude -p` を**経過を残しながら**走らせる。戻り値は
     {"ok", "timed_out", "returncode", "structured", "result", "seconds", "cost", "summary"}。
 
@@ -726,6 +983,16 @@ def claude_traced(args: list[str], trace: Path, timeout: int, cwd: Path | None =
     secs = int(time.time() - t0)
     summary = (("時間切れ" if timed_out else f"exit {rc}") + f" {secs}秒 / " + trace_summary(trace)
                + (f" / stderr: {err.strip()[-200:]}" if err.strip() else ""))
+    # 認証切れ・利用上限で答えなかった回は、呼び側のやり直しの回数に数えずに工程の入口まで上げる(CliBlocked)
+    try:
+        trace_tail = trace.read_text(encoding="utf-8", errors="replace")[-CLI_SCAN_CHARS:]
+    except OSError:
+        trace_tail = ""
+    blocked = cli_check("claude", job, where or trace.stem, None if timed_out else rc,
+                        str(final.get("result") or ""), trace_tail, err,
+                        answered=bool(final) and not final.get("is_error") and rc == 0)
+    if blocked:
+        raise CliBlocked(blocked)
     return {"ok": bool(final) and not final.get("is_error") and rc == 0, "timed_out": timed_out, "returncode": rc,
             "structured": final.get("structured_output"), "result": final.get("result") or "",
             "seconds": secs, "cost": final.get("total_cost_usd"), "summary": summary}
@@ -1670,6 +1937,7 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
             raise
         return False, f"取引の控えを書けない({type(e).__name__}: {str(e)[:160]})。判定表と記事は変えずに終えた"
     ok, why, done = False, "", False
+    txn_started = time.time()
     try:
         cmd = [sys.executable, str(scripts / "classify_sources.py"), "--date", date, "--apply"] + (["--posts-only"] if posts_only else [])
         if require_parsers:      # 当番の再実行: パーサの無い URL が残っていたら失敗(成功扱いにしない。監査指摘 r85)
@@ -1687,6 +1955,10 @@ def classify_retag_lint(date: str, posts_only: bool = False, lint_base: str = "o
                 tail = (r.stdout or "").strip().splitlines()[-1:] if r.stdout else []
                 print("紙面の種別付け直し: " + (tail[0] if tail else f"exit {r.returncode}"), flush=True)
             if _TXN["signum"] is not None:
+                break
+            if name == "合議" and r.returncode == CLI_BLOCKED_EXIT:
+                # 判定のモデルが認証切れ・利用上限で答えなかった(子が投稿済み)。判定の失敗ではないので、開始時へ戻して次回やり直す
+                why = f"{CLI_STOPPED}({', '.join(adopt_cli_blocked(txn_started)) or '?'})。判定表と記事は開始時のまま、次の判定でやり直す"
                 break
             if r.returncode != 0:
                 why = f"{name} exit {r.returncode}: {err_tail(r)}"

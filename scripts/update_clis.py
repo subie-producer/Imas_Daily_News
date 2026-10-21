@@ -22,7 +22,7 @@ import tempfile
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (ROOT, CODEX_WRITE_MODEL, JobLockTimeout, diagnose_anomalies, edition_date, job_lock, notify, now_jst,
+from pipelib import (ROOT, CODEX_WRITE_MODEL, JobLockTimeout, cli_check, diagnose_anomalies, edition_date, job_lock, notify, now_jst,
                      tool_path)
 
 RECORD = ROOT / "metrics" / "cli-versions.json"
@@ -66,6 +66,9 @@ def version(tool: str) -> str:
     return m.group(0) if m else f"(不明: {(r.stderr or r.stdout).strip()[-80:]})"
 
 
+LAST_SMOKE: dict[str, subprocess.CompletedProcess] = {}   # 道具ごとの最後の動作確認の実行(認証切れ・利用上限の見分けに使う)
+
+
 def smoke(tool: str, workdir: Path) -> tuple[bool, str]:
     """小さな問いを投げて、求めたとおりの答えが返るか。戻りは (動いたか, 失敗なら理由)。
     正常終了(exit 0)で、答え(標準出力の最後の行)がちょうど「2」のときだけ動いたとする(形の検査。監査指摘 2026-10-14 ar9:
@@ -78,6 +81,7 @@ def smoke(tool: str, workdir: Path) -> tuple[bool, str]:
         pf = workdir / "grok-smoke.md"
         pf.write_text(QUESTION + "\n", encoding="utf-8")
         r = run(["grok", "--prompt-file", str(pf), "--always-approve", "--max-turns", "1"], timeout=300, cwd=workdir)
+    LAST_SMOKE[tool] = r
     out = (r.stdout or "").strip()
     if r.returncode == 0 and out and out.splitlines()[-1].strip() == "2":
         return True, ""
@@ -112,12 +116,18 @@ def main() -> int:
                 up = run([tool, "update"], timeout=900)
             after = version(tool)
             ok, why = smoke(tool, Path(wd))
-            rows[tool] = {"before": before, "after": after, "update_exit": up.returncode if up else None, "works": ok, "why": why}
+            # 認証切れ・利用上限で答えなかったのは CLI の壊れではない: すぐ投稿し(ログインし直せば 02:00 の収集に間に合う)、
+            # 異常の台帳には積まない(当番も同じ CLI で止まる)
+            sr = LAST_SMOKE.get(tool)
+            blk = cli_check(tool, "update", f"{now_jst():%H:%M} の道具の動作確認", sr.returncode if sr else None,
+                            (sr.stdout if sr else ""), (sr.stderr if sr else ""), answered=ok)
+            rows[tool] = {"before": before, "after": after, "update_exit": up.returncode if up else None, "works": ok, "why": why,
+                          "blocked": bool(blk)}
             if before != after:
                 changed.append(f"{tool} {before} → {after}")
             if up is not None and up.returncode != 0:
                 failed.append(f"{tool} の更新が失敗(exit {up.returncode}): {(up.stderr or up.stdout or '').strip()[-240:]}")
-            if not ok:
+            if not ok and not blk:
                 failed.append(f"{tool} {after} が答えを返さない: {why}")
             print(f"{tool}: {before} → {after} / 動作 {'OK' if ok else 'NG'}", flush=True)
     try:

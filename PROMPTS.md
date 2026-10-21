@@ -32,6 +32,7 @@
 | watch-facts | 定点観測の新着の facts 化(`collect.run_watch`) | Claude haiku | 新着ページごとの結果(extracted / none / unreadable)と候補 JSON |
 | classify-rules / classify-site / classify-x / classify-debate | 出典種別の合議(`classify_sources`) | Claude haiku + Codex luna | 種別 JSON |
 | oncall-fix(+ .objections)/ oncall-review | 当番の修正と監査(`oncall`) | Claude opus / Codex sol | 報告・判定(schema) |
+| oncall-accept | 監査の must_fix が報告の誤り(misreport)だけのとき、監査が書いた編集長への報告の文面を当番が了承するか異を唱えるか(`oncall.accept_prompt`。取り込みの条件 C) | Claude opus(当番) | 了承・異議(schema `oncall-accept`) |
 | oncall-backlog | 当番が保管した「発行後に直す」指摘を、発行後の昼に直す依頼(`watch.hand_backlog` → `oncall.backlog_reason`、工程名 backlog) | Claude opus(当番) | 修正(oncall-fix と同じ) |
 | oncall-scope(.backlog)/ oncall-review.scope(.backlog) | 当番・監査の仕事の範囲。工程が止まった依頼と、保管の指摘を直す依頼(backlog)で切り替える(`oncall.fix_prompt` / `review_prompt`) | — | — |
 | oncall-parser | 持ち主を取るパーサが無い URL の種類について、当番へのパーサの依頼(`classify_sources.request_parsers` → oncall-fix の「何が起きたか」) | Claude opus(当番) | 修正(oncall-fix と同じ) |
@@ -238,6 +239,11 @@
   範囲を「発行に必要な最小限に絞らない」のは、発行の時間帯ではなく、絞ると同じ指摘がまた later に戻るから。同じ理由で、
   この工程では監査の later も must_fix として扱い、保管に積まない
 - 編集方針で決着済みの事項(`oncall.POLICY_EXCLUDED`): 内容判断の機械化の要求、HOME / OS 隔離の要求
+- 取り込みの条件 C と掲載の記録(編集長 2026-10-21): 2026-10-15 の backlog の当番は、予約の締切の欠陥を正しく直したが、報告で 10/15号に
+  載ったレトラの記事を「外れた・最大3日遅れ」と書いた(校閲1巡目の書き直しの指示を「外れた」と読み、載った記事・外れた記事の記録を確かめなかった)。
+  監査はその報告の誤りだけを must_fix にし、6往復で直し切れず、正しいコードの修正も取り込まれなかった(ops の `metrics/oncall-2026-10-15-backlog-failed.md`)。
+  そこで、指摘が報告の誤りだけになったら監査が文面を書き、当番が了承すれば取り込む(oncall-accept。異を唱えたら往復を続け、誰が書き誰が了承したかを残す)。
+  あわせて当番・監査・了承の依頼文に、関係する号の掲載の記録を載せ、確かめてから紙面への影響を書かせる
 - oncall-parser(2026-09-26): ニコニコ生放送の URL を「判定の単位を取れない」として人に回した → 編集長「これくらい curl して取れよ」
   「この手のやつが来たら『パースしろ』という判定をしろ」「なんでその設計判断なしにこっちに決まりませんなんて言ってんだ」「申告前に診断しろ」。
   持ち主を URL から取れないのはコードの不足(パーサが無い)で、人に申告する事象ではない。当番がパーサを書き監査が査読する(`classify` 工程)。

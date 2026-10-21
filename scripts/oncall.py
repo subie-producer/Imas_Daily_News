@@ -36,6 +36,8 @@
    保管の失敗は発行を妨げない(報告には必ず載る)
 4. 合意したもの(approve で must_fix が空)だけ、**監査した commit のハッシュそのもの**を
    main へ merge し、`edition/<日付>` へ取り込み、止まった工程を再実行する
+4a. **取り込みの条件 C**(編集長 2026-10-21): must_fix が編集長への報告の誤り(misreport)だけなら、監査が直した報告の文面を書き、
+   当番が了承すれば取り込んで監査の文面で報告する(「監査が書き、当番が了承した」)。異を唱えたら往復を続ける(report_only)
 5. 上限までに合意できなければ、そこまでの修正(commit)と残った指摘を state に残して人へ渡す。
    次の試行は**その続きから**始める(同じ基準の main なら。以前は毎回ゼロから診断し直し、
    1回目と2回目で別々の仮説を立てて、どちらも途中で終わっていた。実測 2026-09-18)
@@ -286,6 +288,72 @@ def gather_context(stage: str, date: str, reason: str) -> str:
     return "\n\n".join(parts)
 
 
+# 関係する号の掲載の記録(_main が related_editions → paper_record で作る)。当番・監査・了承の依頼文に載せる
+# (2026-10-15: 当番が記録を確かめずに、10/15号に載ったレトラの記事を「外れた・最大3日遅れ」と報告した)
+PAPER_RECORD = ""
+
+
+def related_editions(date: str, edition_date: str, rows: list[dict]) -> list[str]:
+    """紙面への影響を書くのに関係する号: 呼ばれた号・取り込み先の号・保管の指摘が出た号と、それぞれの次の号(載るべき号と実際の号)。"""
+    out: set[str] = set()
+    for d in [date, edition_date] + [str(r.get("date") or "") for r in rows]:
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", d):
+            continue
+        try:
+            day = datetime.date.fromisoformat(d)
+        except ValueError:
+            continue
+        out |= {day.isoformat(), (day + datetime.timedelta(days=1)).isoformat()}
+    return sorted(out)
+
+
+def paper_record(dates: list[str], root: Path) -> str:
+    """号ごとの掲載の記録(事実の写しだけ): 載った記事(docs/_posts)・外れた記事(metrics/drops)・校閲の判定(いちばん新しい
+    組版の実行の最後の巡。pipelib.last_review_record)。読めないものは読めないと書く。"""
+    import yaml
+    from pipelib import last_review_record
+    out = ["## 掲載の記録(関係する号。本体の作業ツリーの記録の写し)"]
+    for d in dates:
+        lines = [f"### {d}号",
+                 f"- 号のページ(docs/_editions/{d}.md): {'あり' if (root / 'docs' / '_editions' / f'{d}.md').exists() else 'なし'}"]
+        rv = last_review_record(d, root)
+        if rv is None:
+            lines.append("- 校閲の記録: なし")
+        else:
+            try:
+                verdict = str(json.loads(rv.read_text(encoding="utf-8")).get("verdict"))
+            except (OSError, ValueError, AttributeError) as e:
+                verdict = f"読めない({type(e).__name__})"
+            lines.append(f"- 校閲の判定(いちばん新しい組版の実行の最後の巡 metrics/{rv.name}。それより前の巡は途中経過): {verdict}")
+        posts = sorted((root / "docs" / "_posts").glob(f"{d}-*.md"))
+        lines.append(f"- 載った記事 {len(posts)}本(docs/_posts/{d}-*.md):")
+        for p in posts:
+            try:
+                m = re.match(r"\A---\n(.*?)\n---\n", p.read_text(encoding="utf-8"), re.S)
+                fm = (yaml.safe_load(m.group(1)) if m else None) or {}
+            except (OSError, ValueError, yaml.YAMLError):
+                fm = {}
+            fm = fm if isinstance(fm, dict) else {}
+            cids = [str(c) for c in fm.get("candidate_ids") or [] if c]
+            lines.append(f"  - {p.stem[len(d) + 1:]}: {fm.get('title') or '(題を読めない)'}"
+                         + (f"(素材 {', '.join(cids)})" if cids else ""))
+        dp = root / "metrics" / f"drops-{d}.json"
+        try:
+            drops = json.loads(dp.read_text(encoding="utf-8")) if dp.exists() else {}
+        except (OSError, ValueError) as e:
+            drops = None
+            lines.append(f"- 紙面から外れた記録(metrics/drops-{d}.json): 読めない({type(e).__name__})")
+        if isinstance(drops, dict):
+            lines.append(f"- 外れた記事 {len(drops)}本(metrics/drops-{d}.json):")
+            for slug, r in drops.items():
+                r = r if isinstance(r, dict) else {}
+                lines.append(f"  - {slug}: {r.get('title') or ''}({r.get('stage') or ''}){str(r.get('why') or '')[:160]}")
+        elif drops is not None:
+            lines.append(f"- 紙面から外れた記録(metrics/drops-{d}.json): 形が違う({type(drops).__name__})")
+        out.append("\n".join(lines))
+    return "\n\n".join(out)
+
+
 # --stage backlog で渡された保管の指摘(main が設定する)。監査の依頼文に元の指摘を全件載せ、1件ずつの扱いを確かめさせる
 BACKLOG_ROWS: list[dict] = []
 # 往復を終える時刻の上限(None なら ONCALL_LIMIT_MIN だけ)。backlog は次の定時工程の前に終える(backlog_deadline)
@@ -330,7 +398,8 @@ def fix_prompt(stage: str, date: str, context: str, objections: list[dict] | Non
     obj = render_prompt("oncall-fix.objections", POLICY=_policy_lines(),
                         ITEMS=json.dumps(objections, ensure_ascii=False, indent=1)) if objections else ""
     scope = render_prompt("oncall-scope.backlog" if stage == BACKLOG_STAGE else "oncall-scope")
-    return render_prompt("oncall-fix", STAGE=stage, DATE=date, SCOPE=scope, OBJECTIONS=obj, CONTEXT=context)
+    return render_prompt("oncall-fix", STAGE=stage, DATE=date, SCOPE=scope, OBJECTIONS=obj, CONTEXT=context,
+                         ROOT=str(ROOT), RECORD=PAPER_RECORD)
 
 
 def backlog_items_text(rows: list[dict]) -> str:
@@ -358,10 +427,44 @@ def review_prompt(stage: str, date: str, fix_report: dict, diff: str, integ: dic
     scope = (render_prompt("oncall-review.scope.backlog", N=len(BACKLOG_ROWS), ITEMS=backlog_items_text(BACKLOG_ROWS))
              if stage == BACKLOG_STAGE else render_prompt("oncall-review.scope"))
     return render_prompt(
-        "oncall-review", STAGE=stage, DATE=date, SCOPE=scope, POLICY=_policy_lines(),
+        "oncall-review", STAGE=stage, DATE=date, SCOPE=scope, POLICY=_policy_lines(), RECORD=PAPER_RECORD,
         REPORT=json.dumps(fix_report, ensure_ascii=False, indent=1),
         PREVIOUS=("\n## 前回の指摘に対する当番の対応\n" + json.dumps(integ, ensure_ascii=False, indent=1) + "\n") if integ else "",
         DIFF=f"```diff\n{diff}\n```" if diff.strip() else "(変更なし。当番は「コードの欠陥ではない」と判断した)")
+
+
+def full_summary(s) -> bool:
+    """編集長への報告の5つの欄が全部書かれているか(形だけ)。"""
+    return isinstance(s, dict) and all(str(s.get(k) or "").strip() for k in SUMMARY_KEYS)
+
+
+def summary_text(s) -> str:
+    s = s if isinstance(s, dict) else {}
+    return "\n".join(f"- {label}: {s.get(k) or '(書かれていない)'}" for k, label in SUMMARY_LABELS)
+
+
+def report_only(must_fix: list, rev: dict) -> bool:
+    """取り込みの条件 C(編集長 2026-10-21): 監査の must_fix が編集長への報告の誤り(misreport)だけで、監査が直した報告の文面を
+    書き、テスト・selfcheck・lint を走らせた記録がある。このとき当番が文面を了承すれば、コードの修正を取り込み、監査の文面で報告する
+    (2026-10-15: 報告の誤りだけを6往復直し切れず、正しいコードの修正も取り込まれなかった)。"""
+    return (bool(must_fix) and all(isinstance(m, dict) and m.get("severity") == "misreport" for m in must_fix)
+            and full_summary(rev.get("editor_summary")) and audit_ran_checks(rev))
+
+
+def accept_prompt(stage: str, date: str, fix: dict, rev: dict, must_fix: list, context: str) -> str:
+    """監査が書いた報告の文面を、当番が了承するか異を唱えるかの依頼(本文は prompts/oncall-accept.md)。"""
+    return render_prompt("oncall-accept", STAGE=stage, DATE=date, ITEMS=json.dumps(must_fix, ensure_ascii=False, indent=1),
+                         AUDIT=summary_text(rev.get("editor_summary")), OWN=summary_text(fix.get("editor_summary")),
+                         RECORD=PAPER_RECORD, ROOT=str(ROOT), CONTEXT=context)
+
+
+def report_authorship_text(fix: dict) -> str:
+    """報告の文面を誰が書き誰が了承したか(条件 C で取り込んだときだけ。それ以外は "")。"""
+    a = fix.get("report_authorship")
+    if not isinstance(a, dict):
+        return ""
+    return (f"この報告は監査が書き、当番が了承した(監査 {a.get('audit_model')}・当番 {a.get('oncall_model')}・{a.get('round')}往復目。"
+            f"コードの修正には指摘が無く、当番の書いた報告の誤りだけが指摘された)")
 
 
 def parse_json(text: str) -> dict | None:
@@ -551,6 +654,8 @@ def report_change(stage: str, date: str, fix: dict, transcript: list[dict], base
     integ = [t.get("integrate") for t in transcript if t.get("integrate")]
     last = reviews[-1] if reviews else {}
     verdict = f"{last.get('verdict', '?')}(往復 {len(reviews)}回)"
+    if report_authorship_text(fix):
+        verdict += " / " + report_authorship_text(fix)
     if integ:
         verdict += (f" / 当番が受け入れた指摘 {sum(len(x.get('accepted') or []) for x in integ)}件"
                     f"・反論 {sum(len(x.get('refuted') or []) for x in integ)}件")
@@ -587,10 +692,13 @@ def editor_report(stage: str, date: str, fix: dict, verdict: str | None, rounds:
     s = fix.get("editor_summary") if isinstance(fix.get("editor_summary"), dict) else {}
     head = {"fixed": "🛠 当番が直しました", "no_fix_needed": "🛠 当番が調べました(直す箇所なし)"}.get(fix.get("status"), "🛠 当番が調べました")
     md = f"{int(date[5:7])}/{int(date[8:10])}" if re.fullmatch(r"\d{4}-\d{2}-\d{2}", date) else date
-    footer = (f"記録(差分・検証の全文): {path} / 監査: {'承認' if verdict == 'approve' else (verdict or '不明')}({rounds}往復)"
+    who = report_authorship_text(fix)
+    audit = "コードは承認・報告の文面は監査が書いた" if who else ("承認" if verdict == "approve" else (verdict or "不明"))
+    footer = (f"記録(差分・検証の全文): {path} / 監査: {audit}({rounds}往復)"
               + (f" / 後で直す指摘 {n_later}件" if n_later else ""))
     return editor_notice(f"{head}: {md}号の{STAGE_JA.get(stage, stage)}",
-                         [(label, s.get(k) or "(書かれていない。記録を参照)") for k, label in SUMMARY_LABELS], footer=footer)
+                         ([("この報告の書き手", who)] if who else [])
+                         + [(label, s.get(k) or "(書かれていない。記録を参照)") for k, label in SUMMARY_LABELS], footer=footer)
 
 
 # 編集長への報告の項目(編集長 2026-10-04「何故こういう事が起きたか、どう修正したか、他に当該事象の類似が起きないことは説明できるのか」)
@@ -746,6 +854,24 @@ def resume_point(state: dict, base: str) -> dict | None:
 MIN_STEP_SEC = 120      # これより残りが短ければ、次のセッション(当番・監査)を始めない
 
 
+def outside_touched(rnd: int, base: str, env_before: str, transcript: list[dict], fix: dict) -> bool:
+    """当番のセッションの、作業ツリーの外への副作用を検める(答えが何であれ毎回。cannot_fix でも省かない。監査指摘):
+    本体が汚れた / origin/main が動いた / 本体の .env(Git 管理外)が変わった。あれば fix を cannot_fix にして True。"""
+    if not root_clean():
+        transcript.append({"round": rnd, "root_touched": sh(["git", "status", "--short"], cwd=ROOT).stdout[:500]})
+        fix.update(status="cannot_fix", notes="当番が本体の作業ツリーに触った。取り込まない")
+        return True
+    if remote_main() != base:
+        transcript.append({"round": rnd, "remote_moved": True})
+        fix.update(status="cannot_fix", notes="セッション中に origin/main が動いた(当番が push した疑い、または他の工程)。取り込まない")
+        return True
+    if env_fingerprint() != env_before:
+        transcript.append({"round": rnd, "env_touched": True})
+        fix.update(status="cannot_fix", notes="当番が本体の .env に触った。取り込まない")
+        return True
+    return False
+
+
 def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: dict | None,
                env_before: str, transcript: list[dict]) -> dict:
     """当番の修正 → 監査、の往復。指摘が無くなる(approve で must_fix が空)まで回す。
@@ -768,6 +894,7 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
     res = {"approved": False, "error": ""}
     later: list[dict] = list((wip or {}).get("later") or [])     # 発行後でよい指摘(往復・試行をまたいで積む)
     try:
+        objected = False        # 監査の文面に当番が異を唱えた直後の往復: 当番の修正を挟まず、異議を監査に渡す
         if wip:    # 前の試行の続き: その commit と、残った指摘から始める
             # kept を**先に**前の続きで満たす(この先の checkout が失敗しても、残してあった続きを消さない。監査指摘)
             kept = {"head": wip["head"], "fix": json.loads(json.dumps(wip["fix"])), "open": list(wip["open"])}
@@ -782,7 +909,9 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                 transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
                 break
             print(f"当番 {rnd}回目", flush=True)
-            if not fix:
+            if objected:
+                objected = False    # 当番の答えは前の往復の異議(integ に入っている)。そのまま監査へ
+            elif not fix:
                 fix = run_claude(fix_prompt(stage, date, context, None), schemas / "oncall-fix.schema.json", wt,
                                  timeout=min(1800, left()))
                 transcript.append({"round": rnd, "fix": fix})
@@ -792,19 +921,7 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                 transcript.append({"round": rnd, "integrate": integ})
                 # 監査の指摘で status(誤診の訂正)や再実行の仕方を改めたなら、それを最終判断にする(監査指摘)
                 apply_integrate(fix, integ)
-            # 作業ツリーの外への副作用は、答えが何であれ**毎回**検める(cannot_fix でも省かない。監査指摘):
-            # 本体が汚れた / origin/main が動いた / 本体の .env(Git 管理外)が変わった
-            if not root_clean():
-                transcript.append({"round": rnd, "root_touched": sh(["git", "status", "--short"], cwd=ROOT).stdout[:500]})
-                fix.update(status="cannot_fix", notes="当番が本体の作業ツリーに触った。取り込まない")
-                break
-            if remote_main() != base:
-                transcript.append({"round": rnd, "remote_moved": True})
-                fix.update(status="cannot_fix", notes="セッション中に origin/main が動いた(当番が push した疑い、または他の工程)。取り込まない")
-                break
-            if env_fingerprint() != env_before:
-                transcript.append({"round": rnd, "env_touched": True})
-                fix.update(status="cannot_fix", notes="当番が本体の .env に触った。取り込まない")
+            if outside_touched(rnd, base, env_before, transcript, fix):
                 break
             if fix.get("status") == "cannot_fix":
                 break
@@ -884,6 +1001,36 @@ def run_rounds(stage: str, date: str, context: str, wt: Path, base: str, wip: di
                 res["approved"] = True
                 kept["open"] = []
                 break
+            if report_only(must_fix, rev):
+                # 取り込みの条件 C(編集長 2026-10-21): 指摘が報告の誤りだけなら、監査が直した文面を当番が読み、了承か異議かを答える。
+                # 了承ならこの commit を取り込み、監査の文面で報告する。誰が書き誰が了承したかを残す(報告が事実と違ったとき両方を挙げる)
+                if left() < MIN_STEP_SEC:
+                    transcript.append({"round": rnd, "time_up": ONCALL_LIMIT_MIN})
+                    kept["open"] = list(must_fix)
+                    break
+                ans = run_claude(accept_prompt(stage, date, fix, rev, must_fix, context), schemas / "oncall-accept.schema.json", wt,
+                                 timeout=min(900, left()))
+                who = {"written_by": "audit", "audit_model": AUDIT_MODEL, "oncall_model": ONCALL_MODEL, "round": rnd,
+                       "must_fix": [str(m.get("id") or "") for m in must_fix], "evidence": str(ans.get("evidence") or ""),
+                       "audit_summary": dict(rev["editor_summary"]), "own_summary": fix.get("editor_summary")}
+                if outside_touched(rnd, base, env_before, transcript, fix):
+                    break
+                if ans.get("decision") == "accept":
+                    transcript.append({"round": rnd, "report_concurrence": dict(who, decision="accept", accepted_by="oncall")})
+                    fix["editor_summary"] = dict(rev["editor_summary"])
+                    fix["report_authorship"] = {k: v for k, v in who.items() if k != "audit_summary"} | {"accepted_by": "oncall"}
+                    res["approved"] = True
+                    kept["open"] = []
+                    break
+                transcript.append({"round": rnd, "report_concurrence": dict(who, decision="object", objected_by="oncall")})
+                if full_summary(ans.get("editor_summary")):
+                    fix["editor_summary"] = dict(ans["editor_summary"])     # 当番が正しいと考える文面(次の監査の「当番の報告」)
+                integ = {"accepted": [], "refuted": [{"id": i, "evidence": who["evidence"]} for i in who["must_fix"]],
+                         "report_objection": {"audit_summary": who["audit_summary"], "evidence": who["evidence"]}}
+                objected = True
+                objections = list(must_fix)
+                kept["open"] = list(objections)
+                continue
             # reject なのに must_fix が空、という答えでも次の往復が「指摘なし」で始まらないようにする
             objections = must_fix or [{"id": "reject-without-items", "severity": "quality", "evidence": "",
                                                   "claim": "監査は reject したが must_fix が空だった: " + str(rev.get("notes") or "")[:600]}]
@@ -1383,7 +1530,7 @@ def recover_rerun(date: str, edition: str) -> int | None:
 
 
 def _main() -> int:
-    global DEADLINE_AT, STAGE_END_AT, RECOVER, RECOVER_TARGET
+    global DEADLINE_AT, STAGE_END_AT, RECOVER, RECOVER_TARGET, PAPER_RECORD
     ap = argparse.ArgumentParser()
     ap.add_argument("--stage", choices=list(STAGES))
     ap.add_argument("--date")
@@ -1532,7 +1679,8 @@ def _main() -> int:
     notify("oncall", f"{date} {stage} {CALLED_BECAUSE.get(stage, 'が止まった')}。当番({ONCALL_MODEL})が診断・修正に入る({attempt_no}回目)")
 
     context = gather_context(stage, date, a.reason)
-    (ROOT / "metrics" / f"oncall-{date}-{stage}-context.txt").write_text(context, encoding="utf-8")
+    PAPER_RECORD = paper_record(related_editions(date, a.edition or date, BACKLOG_ROWS), ROOT)
+    (ROOT / "metrics" / f"oncall-{date}-{stage}-context.txt").write_text(context + "\n\n" + PAPER_RECORD, encoding="utf-8")
     base = remote_main()
     env_before = env_fingerprint()
     wt = Path(tempfile.mkdtemp(prefix=f"oncall-{date}-{stage}-"))
@@ -1547,7 +1695,10 @@ def _main() -> int:
         (ROOT / "metrics" / f"oncall-{date}-{stage}-transcript.json").write_text(
             json.dumps(transcript, ensure_ascii=False, indent=1), encoding="utf-8")
         state["log"].append({"at": datetime.datetime.now().isoformat(timespec="minutes"), "approved": approved,
-                             "status": fix.get("status"), "diagnosis": (fix.get("diagnosis") or "")[:300]})
+                             "status": fix.get("status"), "diagnosis": (fix.get("diagnosis") or "")[:300],
+                             # 報告の文面を誰が書き誰が了承したか(条件 C。あとで報告が事実と違うと分かったとき両方を挙げる)
+                             "report_by": ({k: v for k, v in fix["report_authorship"].items() if k != "own_summary"}
+                                           if isinstance(fix.get("report_authorship"), dict) else "oncall")})
         # 直し切れなかったら、**最後に内容を固定できたところまで**の修正と残った指摘を残す(次の試行はこの続きから)。
         # 例外・時間切れで終わった往復でも残す。差分が無い診断(no_fix_needed)への指摘も残す。直し切れたら消す
         kept = res["kept"]

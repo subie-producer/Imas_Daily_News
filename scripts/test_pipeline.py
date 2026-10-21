@@ -8066,6 +8066,156 @@ def test_oncall_fix_until_clean(tmp: Path):
         oncall.BACKLOG = saved_b
 
 
+def test_oncall_report_concurrence(tmp: Path):
+    """取り込みの条件 C(編集長 2026-10-21): 監査の must_fix が編集長への報告の誤り(misreport)だけになったら、監査が直した
+    報告の文面を書いて宣告し、当番が了承すればコードの修正を取り込み、その文面で報告する(「監査が書き、当番が了承した」)。
+    当番が異を唱えたら往復を続ける。2026-10-15: 当番の報告がレトラの記事を「外れた・最大3日遅れ」と書き(実際は 10/15号に掲載)、
+    監査がその報告の誤りだけを6往復指摘して直し切れず、正しいコードの修正も取り込まれなかった。
+    あわせて、当番に渡す材料に、話題に関係する号の掲載・外れた記事・校閲の判定の記録を載せる(報告の誤りの原因)。"""
+    import oncall
+    tmp.mkdir(parents=True, exist_ok=True)
+    summary = lambda tag: {k: f"{tag}の{k}" for k in oncall.SUMMARY_KEYS}
+    own, audit1, audit2, own2 = summary("当番"), summary("監査1"), summary("監査2"), summary("当番2")
+    mis = {"id": "m1", "claim": "報告が掲載済みの記事を外れたと書いた", "evidence": "docs/_posts/…", "occurs": "この報告を読むとき",
+           "severity": "misreport"}
+    bad = dict(mis, id="b1", severity="blocks_publish", claim="原因に当たっていない")
+    schema_dir = Path(oncall.__file__).resolve().parent.parent / "schema"
+    rs = json.loads((schema_dir / "oncall-review.schema.json").read_text(encoding="utf-8"))
+    review = lambda **kw: {"verdict": "reject", "verification": AUDIT_RAN, "must_fix": [mis], "later": [], "notes": "",
+                           "editor_summary": None, **kw}
+    check(oncall.schema_ok(review(editor_summary=audit1), rs) and oncall.schema_ok(review(), rs)
+          and not oncall.schema_ok(review(editor_summary={"why": "x"}), rs) and "editor_summary" in rs["required"],
+          "監査の書式に、監査が直した報告の文面の欄(5つの欄そろい、または null)が無い")
+    acs = json.loads((schema_dir / "oncall-accept.schema.json").read_text(encoding="utf-8"))
+    check(oncall.schema_ok({"decision": "accept", "evidence": "確かめた", "editor_summary": None}, acs)
+          and not oncall.schema_ok({"decision": "ok", "evidence": "x", "editor_summary": None}, acs),
+          "当番の了承の書式(accept / object・根拠・当番の文面)")
+    names = ("run_claude", "run_codex", "freeze", "root_clean", "remote_main", "env_fingerprint", "sh", "MAX_ROUNDS", "PAPER_RECORD")
+    saved = {n: getattr(oncall, n) for n in names}
+    try:
+        oncall.root_clean = lambda: True
+        oncall.remote_main = lambda: "B" * 40
+        oncall.env_fingerprint = lambda: "env"
+        oncall.freeze = lambda wt, base, rnd: ("H%039d" % rnd, "diff --git a/scripts/x.py b/scripts/x.py", ["scripts/x.py"])
+        oncall.sh = lambda args, cwd, timeout=600: subprocess.CompletedProcess(args, 0, "", "")
+        oncall.MAX_ROUNDS = 4
+        oncall.PAPER_RECORD = "## 掲載の記録(2026-10-15号)\n- dsva-letora: レトラ誕生日LV"
+
+        def run(reviews: list[dict], accepts: list[dict]):
+            calls, prompts = [], []
+            rv, ac = iter(reviews), iter(accepts)
+
+            def claude(prompt, schema, cwd, timeout=1800):
+                calls.append(Path(schema).name)
+                prompts.append(prompt)
+                if Path(schema).name == "oncall-fix.schema.json":
+                    return {"status": "fixed", "rerun_mode": "resume", "diagnosis": "d", "editor_summary": dict(own)}
+                if Path(schema).name == "oncall-accept.schema.json":
+                    return next(ac)
+                return {"accepted": [], "refuted": [], "status": "unchanged", "rerun_mode": "unchanged"}
+            rprompts = []
+            oncall.run_claude = claude
+            oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: (rprompts.append(prompt) or next(rv))
+            tr: list[dict] = []
+            r = oncall.run_rounds("compose", "2026-10-15", "ctx", tmp, "B" * 40, None, "env", tr)
+            return r, tr, calls, prompts, rprompts
+
+        # (1) misreport だけ → 監査の文面 → 当番が了承 → 取り込む(承認)。報告は監査の文面で、誰が書き誰が了承したかが残る
+        r, tr, calls, prompts, rprompts = run([review(editor_summary=audit1)],
+                                              [{"decision": "accept", "evidence": "掲載の記録と合う", "editor_summary": None}])
+        who = r["fix"].get("report_authorship") or {}
+        check(r["approved"] and not r["error"] and r["head"] == "H%039d" % 1 and r["fix"].get("editor_summary") == audit1
+              and calls == ["oncall-fix.schema.json", "oncall-accept.schema.json"] and len(rprompts) == 1,
+              f"監査の must_fix が報告の誤りだけで監査が文面を書いたのに、当番の了承で取り込まない: {r.get('approved')} {calls} {r['error']}")
+        check(who.get("written_by") == "audit" and who.get("accepted_by") == "oncall" and who.get("round") == 1
+              and who.get("audit_model") == oncall.AUDIT_MODEL and who.get("oncall_model") == oncall.ONCALL_MODEL
+              and who.get("must_fix") == ["m1"] and who.get("evidence") == "掲載の記録と合う"
+              and who.get("own_summary") == own and r["kept"]["open"] == [],
+              f"誰が書き誰が了承したか(当番の元の文面も)が記録に残らない: {who}")
+        check(any(t.get("report_concurrence", {}).get("decision") == "accept" for t in tr), "往復の記録に了承が残らない")
+        check(all(audit1[k] in prompts[-1] for k in oncall.SUMMARY_KEYS) and all(own[k] in prompts[-1] for k in oncall.SUMMARY_KEYS)
+              and mis["claim"] in prompts[-1] and "掲載の記録(2026-10-15号)" in prompts[-1],
+              "当番の了承の依頼に、監査の文面・当番の文面・指摘・掲載の記録が載っていない")
+        text = oncall.editor_report("compose", "2026-10-15", r["fix"], "reject", 1, 0, "metrics/x.md", "")
+        check("監査が書き、当番が了承した" in text and audit1["paper_impact"] in text and own["paper_impact"] not in text,
+              f"報告に「監査が書き、当番が了承した」が無い・監査の文面で報告しない: {text[:400]}")
+        check(oncall.report_authorship_text(r["fix"]) and not oncall.report_authorship_text({"editor_summary": own}),
+              "記録ファイル向けの「誰が書き誰が了承したか」の文")
+        # (2) 当番が異を唱える → 往復を続ける(当番の修正のやり直しは挟まず、異議と当番の文面を監査に渡す)→ 監査が直した文面に了承
+        r, tr, calls, prompts, rprompts = run(
+            [review(editor_summary=audit1), review(editor_summary=audit2)],
+            [{"decision": "object", "evidence": "10/16号の記録ではレトラは載っていない", "editor_summary": dict(own2)},
+             {"decision": "accept", "evidence": "直った", "editor_summary": None}])
+        check(r["approved"] and r["fix"].get("editor_summary") == audit2 and len(rprompts) == 2
+              and calls == ["oncall-fix.schema.json", "oncall-accept.schema.json", "oncall-accept.schema.json"]
+              and (r["fix"].get("report_authorship") or {}).get("round") == 2,
+              f"当番が異を唱えたあと往復を続けない: {calls} {r.get('approved')} {r['fix'].get('report_authorship')}")
+        check("10/16号の記録ではレトラは載っていない" in rprompts[1] and own2["paper_impact"] in rprompts[1]
+              and audit1["paper_impact"] in rprompts[1],
+              "異議の根拠・当番の文面・監査の前の文面が、次の監査に渡らない")
+        objs = [t["report_concurrence"] for t in tr if "report_concurrence" in t]
+        check([o.get("decision") for o in objs] == ["object", "accept"] and objs[0].get("written_by") == "audit"
+              and objs[0].get("objected_by") == "oncall" and objs[0].get("audit_summary") == audit1,
+              f"異を唱えた記録(誰が書き誰が異を唱えたか)が残らない: {objs}")
+        # (2b) 異を唱え、監査が当番の文面を認めて must_fix を空にした → 普通の承認(当番の文面で報告。監査が書いたことにしない)
+        r, tr, calls, _, _ = run([review(editor_summary=audit1), review(verdict="approve", must_fix=[])],
+                                 [{"decision": "object", "evidence": "記録と違う", "editor_summary": dict(own2)}])
+        check(r["approved"] and r["fix"].get("editor_summary") == own2 and not r["fix"].get("report_authorship"),
+              f"監査が当番の異議を認めたのに当番の文面で報告しない: {r['fix'].get('editor_summary')} {r['fix'].get('report_authorship')}")
+        # (2c) 異を唱え続けたら上限まで往復し、取り込まない(残った指摘は報告の誤り)
+        r, tr, calls, _, _ = run([review(editor_summary=audit1)] * 4,
+                                 [{"decision": "object", "evidence": "違う", "editor_summary": None}] * 4)
+        check(not r["approved"] and [o["id"] for o in r["kept"]["open"]] == ["m1"] and calls.count("oncall-accept.schema.json") == 4,
+              f"異を唱え続けたのに取り込んだ・往復しない: {r.get('approved')} {calls}")
+        # (3) must_fix に報告の誤り以外があれば C ではない(当番の了承を求めず、修正の往復を続ける)
+        r, tr, calls, _, _ = run([review(must_fix=[mis, bad], editor_summary=audit1),
+                                  review(verdict="approve", must_fix=[])], [])
+        check(r["approved"] and "oncall-accept.schema.json" not in calls and calls.count("oncall-integrate.schema.json") == 1
+              and r["fix"].get("editor_summary") == own and not r["fix"].get("report_authorship"),
+              f"報告の誤り以外の指摘があるのに監査の文面で取り込もうとした: {calls}")
+        # (4) 監査が文面を書かなかった・テストを走らせた記録が無いときも C にしない
+        r, tr, calls, _, _ = run([review(), review(verdict="approve", must_fix=[])], [])
+        check(r["approved"] and "oncall-accept.schema.json" not in calls and not r["fix"].get("report_authorship"),
+              f"監査が文面を書いていないのに了承を求めた: {calls}")
+        r, tr, calls, _, _ = run([review(editor_summary=audit1, verification=[{"command": "読んだ", "exit_code": None, "result": ""}]),
+                                  review(verdict="approve", must_fix=[])], [])
+        check("oncall-accept.schema.json" not in calls and not r["fix"].get("report_authorship"),
+              f"走らせた記録の無い監査の文面で取り込もうとした: {calls}")
+    finally:
+        for n, v in saved.items():
+            setattr(oncall, n, v)
+    # 報告の誤りの原因: 当番に渡す材料に、関係する号の載った記事・外れた記事・校閲の判定を載せる(当番は確かめずに「外れた」と書いた)
+    root = tmp / "root"
+    d = "2026-10-15"
+    (root / "docs" / "_posts").mkdir(parents=True)
+    (root / "metrics").mkdir(parents=True)
+    (root / "docs" / "_posts" / f"{d}-letora.md").write_text(
+        "---\n" + article_fm("letora", d, title="レトラ誕生日LV、入金期限まであと3日",
+                             candidate_ids=["sched-2026-10-15-letora-締切前"]) + "---\n本文\n", encoding="utf-8")
+    (root / "metrics" / f"drops-{d}.json").write_text(json.dumps(
+        {"gaku-single": {"title": "学マス「修楽旅行」", "stage": "書き直しで見送り", "why": "NOT_NEWS 既報", "candidate_ids": ["c9"]}},
+        ensure_ascii=False), encoding="utf-8")
+    (root / "metrics" / f"review-{d}-1.json").write_text(json.dumps({"verdict": "reject", "run": "r1", "blockers": [{"rule": "R1"}]}), encoding="utf-8")
+    (root / "metrics" / f"review-{d}-2.json").write_text(json.dumps({"verdict": "approve", "run": "r1", "blockers": []}), encoding="utf-8")
+    rec = oncall.paper_record([d, "2026-10-16"], root)
+    posted, _, rest = rec.partition("外れた記事")
+    check("letora" in posted and "レトラ誕生日LV" in posted and "sched-2026-10-15-letora-締切前" in posted and "gaku-single" not in posted
+          and "gaku-single" in rest and "書き直しで見送り" in rest and "letora" not in rest,
+          f"掲載の記録に、載った記事と外れた記事が分かれて載らない:\n{rec}")
+    check("approve" in rec and f"review-{d}-2.json" in rec and "2026-10-16" in rec, f"掲載の記録に校閲の最後の判定・記録の無い号が載らない:\n{rec}")
+    check(oncall.related_editions(d, "2026-10-16", [{"date": "2026-10-13"}, {"date": "x"}]) == ["2026-10-13", "2026-10-14", d, "2026-10-16", "2026-10-17"]
+          and oncall.related_editions(d, d, []) == [d, "2026-10-16"],
+          f"関係する号(呼ばれた号・取り込み先・保管の指摘の号と、それぞれの次の号): {oncall.related_editions(d, '2026-10-16', [{'date': '2026-10-13'}])}")
+    saved_rec = oncall.PAPER_RECORD
+    try:
+        oncall.PAPER_RECORD = rec
+        fp = oncall.fix_prompt("compose", d, "ctx", None)
+        rp = oncall.review_prompt("compose", d, {"status": "fixed"}, "diff", None)
+    finally:
+        oncall.PAPER_RECORD = saved_rec
+    check(rec in rp and rec in fp and str(oncall.ROOT) in fp, "当番・監査の依頼に掲載の記録が載らない・当番の依頼に記録の場所が無い")
+
+
 def test_slugify_format():
     import re
     import planlib
@@ -8908,7 +9058,8 @@ def test_run_codex_isolation(tmp: Path):
     g("init", "-q", "-b", "main"); g("config", "user.email", "t@example.com"); g("config", "user.name", "t")
     (repo / "a").write_text("1"); g("add", "a"); g("commit", "-q", "-m", "base")
     log, fail_flag = tmp / "codex-calls.jsonl", tmp / "fail"
-    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "notes": ""}, ensure_ascii=False)
+    answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None, "notes": ""},
+                        ensure_ascii=False)
     fake = bindir / "codex"
     fake.write_text(f"#!{sys.executable}\n"
                     "import json, os, sys\n"
@@ -10852,6 +11003,7 @@ def main() -> int:
     test_oncall_restore_to_backup(tmp / "rtb")
     test_oncall_merge_push_settles(tmp / "mps")
     test_oncall_fix_until_clean(tmp / "of")
+    test_oncall_report_concurrence(tmp / "orc")
     test_settled_drops_not_rewritten(tmp / "sd")
     test_rule_bench_cases()
     test_rule_bench_judges_shape(tmp / "rb")

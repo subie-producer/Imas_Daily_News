@@ -633,9 +633,24 @@ def cli_block_kind(info: dict) -> str:
     return "認証切れ" if info.get("kind") == "auth" else "利用上限"
 
 
+CODEX_ERROR_LINE = re.compile(r"^(?:\[[^\]]*\]\s*|\S+Z\s+)?ERROR\b")   # codex exec 自身のエラーの行(`ERROR: …` / ログの `… ERROR …`)
+
+
+def cli_error_lines(tool: str, text) -> list[str]:
+    """CLI の出力のうち、**CLI 自身の**エラーとして読める行だけ(素材の本文・道具の出力を見ない。監査指摘: 探索のログの道具の
+    出力に `Not logged in` があると認証切れと取り違えた)。codex は進行ログに道具の出力が混ざるので `ERROR` で始まる行だけ、
+    claude -p は答えかエラーの1行だけを出すので最後の1行だけ、grok はエラー出力とセッション記録の失敗理由(呼び側が渡す)だけ。"""
+    lines = [ln.strip() for ln in str(text or "")[-CLI_SCAN_CHARS:].splitlines() if ln.strip()]
+    if tool == "codex":
+        return [ln for ln in lines if CODEX_ERROR_LINE.match(ln)]
+    if tool == "claude":
+        return lines[-1:]
+    return lines
+
+
 def cli_blocked_reason(tool: str, *texts) -> dict | None:
-    """CLI の出力(標準出力・エラー・セッション記録)の末尾から、認証切れ・利用上限の文言を探す。無ければ None(本物の失敗)。"""
-    tail = "\n".join(str(t or "")[-CLI_SCAN_CHARS:] for t in texts)
+    """CLI 自身のエラーの行(cli_error_lines)から、認証切れ・利用上限の文言を探す。無ければ None(本物の失敗)。"""
+    tail = "\n".join(ln for t in texts for ln in cli_error_lines(tool, t))
     for kind, pat in CLI_BLOCK_RULES:
         m = pat.search(tail)
         if m:
@@ -718,8 +733,11 @@ def report_cli_blocked(info: dict, job: str, where: str) -> bool:
 
 
 def cli_recovered(tool: str, job: str) -> None:
-    """CLI が答えた。止まっていた記録があれば消し、戻ったことを1回だけ知らせる。"""
-    CLI_BLOCKED.pop(tool, None)
+    """CLI が答えた。止まっていた記録があれば消し、戻ったことを1回だけ知らせる。
+    この process で既に止まったのを見た CLI は、戻ったことにしない: 止まる前に起動していた並列の子が後から成功で回収されると、
+    記録を消して同じ原因をまた投稿していた(監査指摘)。戻ったかどうかは次の工程(別の process)の最初の答えで決める。"""
+    if tool in CLI_BLOCKED:
+        return
     try:      # 記録に無ければ何もしない(答えるたびに排他を取って書き直さない)
         if tool not in json.loads(CLI_BLOCK_STATE.read_text(encoding="utf-8")):
             return
@@ -984,12 +1002,15 @@ def claude_traced(args: list[str], trace: Path, timeout: int, cwd: Path | None =
     summary = (("時間切れ" if timed_out else f"exit {rc}") + f" {secs}秒 / " + trace_summary(trace)
                + (f" / stderr: {err.strip()[-200:]}" if err.strip() else ""))
     # 認証切れ・利用上限で答えなかった回は、呼び側のやり直しの回数に数えずに工程の入口まで上げる(CliBlocked)
+    # 見るのは CLI 自身のエラーだけ: エラーで終わった result の本文と、経過のうち JSON の事象でない行(CLI が直に出す失敗)。
+    # 道具の結果(Read した本文など)は JSON の事象の中にあるので見ない(監査指摘: 本文の `Not logged in` を認証切れと取り違えた)
     try:
-        trace_tail = trace.read_text(encoding="utf-8", errors="replace")[-CLI_SCAN_CHARS:]
+        plain = "\n".join(ln for ln in trace.read_text(encoding="utf-8", errors="replace").splitlines()
+                          if ln.strip() and not ln.lstrip().startswith("{"))
     except OSError:
-        trace_tail = ""
+        plain = ""
     blocked = cli_check("claude", job, where or trace.stem, None if timed_out else rc,
-                        str(final.get("result") or ""), trace_tail, err,
+                        str(final.get("result") or "") if final.get("is_error") else "", plain, err,
                         answered=bool(final) and not final.get("is_error") and rc == 0)
     if blocked:
         raise CliBlocked(blocked)

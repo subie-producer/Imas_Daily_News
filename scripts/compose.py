@@ -2536,11 +2536,14 @@ def run_parallel(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[
     (以前は起動しっぱなしで、失敗しても成功したように見えていた=監査指摘)。
     """
     errs: dict[str, str] = {}
+    blocked: list[CliBlocked] = []
 
     def wrap(name, fn):
         def run():
             try:
                 fn()
+            except CliBlocked as e:     # モデル CLI の認証切れ・利用上限: 工程の失敗ではない。全部を回収してから親で止める
+                blocked.append(e)
             except Exception as e:
                 traceback.print_exc()
                 errs[name] = f"{type(e).__name__}: {e}"
@@ -2553,6 +2556,8 @@ def run_parallel(jobs: list[tuple[str, callable]], timeout: int = 2500) -> list[
         t.join(timeout=timeout)
         if t.is_alive():
             errs[n] = "時間切れ(スレッドが終わっていない)"
+    if blocked:
+        raise blocked[0]
     return [f"{n}: {why}" for n, why in errs.items()]
 
 

@@ -10983,7 +10983,7 @@ def test_cli_block_detect_and_post(tmp: Path):
                                      ("grok", GROK_LIMIT, "limit", ""),
                                      ("claude", "You've hit your session limit · resets 4am (Asia/Tokyo)", "limit", "4am (Asia/Tokyo)"),
                                      ("claude", "Credit balance is too low", "limit", ""),
-                                     ("codex", "Your access token could not be refreshed. Please log out and sign in again.", "auth", ""),
+                                     ("codex", "ERROR: Your access token could not be refreshed. Please log out and sign in again.", "auth", ""),
                                      ("claude", "API Error: 401 Invalid API key · Please run /login", "auth", "")):
         got = cli_blocked_reason(tool, "", text)
         check(got and got["kind"] == kind and got["resets"] == resets, f"{tool} の {text[:40]!r} を見分けない: {got}")
@@ -11001,6 +11001,7 @@ def test_cli_block_detect_and_post(tmp: Path):
         pipelib.report_cli_blocked(info, "collect", "探索")
         pipelib.report_cli_blocked(cli_blocked_reason("claude", CLAUDE_OAUTH), "collect", "facts 化")
         check(len(cp.blocked_posts()) == 3 and "4回目" in cp.blocked_posts()[1], f"止まったままの知らせ直し・別の CLI の投稿: {cp.posts}")
+        pipelib.CLI_BLOCKED.clear()      # 戻ったかどうかは次の工程(別の process)の答えで決める
         pipelib.cli_check("codex", "compose", "執筆", 0, "")
         pipelib.cli_check("codex", "compose", "執筆", 0, "")
         check(len([m for _, m, ok, _ in cp.posts if ok]) == 1 and "codex" not in json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8")),
@@ -11094,6 +11095,100 @@ def test_cli_block_detect_and_post(tmp: Path):
               f"Grok の利用上限で面をやり直した・面の失敗の異常にした: 残り {still} 起動 {len(calls)}回 {notes} {cp.posts}")
 
 
+def test_cli_blocked_paths_r2(tmp: Path):
+    """Sol 監査 r1 の指摘の再発防止(どれも実物の子プロセス・偽の CLI で確かめる):
+    (1) 並列のラッパー(compose.run_parallel)のスレッドで止まっても、親が CliBlocked で止まる(親が先へ進まない)
+    (2) Grok の調べは済み、確かめ役(Luna)だけが止まった面を「Grok 全面0件」の異常にせず、投稿を読み直しの列に残し、
+        Grok を回さない次の収集で確かめ直す
+    (3) 止まる前に起動していた並列の子が後から成功で回収されても、戻ったことにして同じ原因を投稿し直さない
+    (4) 道具の出力(素材の本文)にある語を認証切れと取り違えない(codex の進行ログ・claude の Read の結果。終了 0 の壊れた答えも)"""
+    import json as _json
+    import time
+    import assemble
+    import collect
+    from pipelib import CliBlocked
+    tmp.mkdir(parents=True, exist_ok=True)
+    bindir = tmp / "bin"
+    saved_path = os.environ.get("PATH", "")
+    # (1)
+    with cli_posts() as cp:
+        fake_cli(bindir, "claude", err=CLAUDE_OAUTH + "\n", code=1)
+        saved = (assemble.ROOT, assemble.prompt_file)
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+            assemble.ROOT, assemble.prompt_file = tmp, (lambda *a, **k: "p")
+            stopped = None
+            try:
+                compose.run_parallel([("組版", lambda: assemble.run_session("x", "2099-01-01", "audit", "{}"))])
+            except CliBlocked as e:
+                stopped = e
+        finally:
+            assemble.ROOT, assemble.prompt_file = saved
+            os.environ["PATH"] = saved_path
+        check(stopped is not None, "並列のラッパーのスレッドで止まった CLI を親へ伝えず、工程が先へ進んだ")
+    # (3)
+    with cli_posts() as cp:
+        for rc, text in ((1, CODEX_LIMIT), (0, "[]"), (1, CODEX_LIMIT)):
+            pipelib.cli_check("codex", "collect", "並列の面", rc, "", text)
+        check(len(cp.posts) == 1, f"止まる前に起動していた子の成功で戻ったことにし、同じ原因を投稿し直した: {cp.posts}")
+    # (4)
+    with cli_posts() as cp:
+        body = "exec\nfetch_page.py https://example.com\n本文: Not logged in と表示されるページの紹介\nYou've hit your usage limit の解説\n"
+        check(pipelib.cli_check("codex", "collect", "探索", 1, body, "ERROR: model returned malformed JSON") is None,
+              "codex の道具の出力にある語を認証切れ・利用上限と取り違えた")
+        event = _json.dumps({"type": "user", "message": {"content": [{"type": "tool_result", "content": "本文: Not logged in の説明"}]}})
+        fake_cli(bindir, "claude", out=event + "\n", code=0)
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+            r = pipelib.claude_traced(["x"], tmp / "t.jsonl", timeout=20, cwd=tmp)
+            ok4 = not r["ok"]
+        except CliBlocked:
+            ok4 = False
+        finally:
+            os.environ["PATH"] = saved_path
+        check(ok4 and not cp.posts, f"claude の Read の結果にある語を、終了 0 の壊れた答えで認証切れにした: {cp.posts}")
+    # (2)
+    with cli_posts() as cp:
+        notes = []
+        root = tmp / "repo"
+        root.mkdir()
+        shutil.copy(Path(__file__).resolve().parent.parent / "source_types.yml", root / "source_types.yml")
+        post ="### 1\n- url: https://x.com/a/status/1\n- 本文: 新しい公演の告知\n"
+        fake_cli(bindir, "codex", err=CODEX_LIMIT + "\n", code=1)
+        qs = [{"key": "cg", "brand": "cg", "topic": "t", "accounts": []}]
+
+        def basic(queries, outdir, errs):
+            (outdir / "cg.md").write_text(post, encoding="utf-8")
+            return []
+        saved = (collect.ROOT, pipelib.ROOT, collect.notify, collect.build_prompts, collect.grok_basic, collect.grok_session_error,
+                 collect.grok_search_counts)
+        try:
+            os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+            collect.ROOT = pipelib.ROOT = root
+            collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            collect.build_prompts, collect.grok_basic = (lambda: qs), basic
+            collect.grok_session_error, collect.grok_search_counts = (lambda *a: ""), (lambda *a: {})
+            _, per = collect.run_explores(skip_explore=True, skip_grok=False)
+            pend = root / collect.GROK_PENDING / "cg.md"
+            check(not [m for m, ok in notes if not ok] and per.get("grok_blocked:cg") == 1 and "status/1" in collect.read_written(pend),
+                  f"確かめ役の利用上限を Grok の全滅の異常にした・投稿を読み直しの列に残さない: {notes} {per}")
+            # 戻った次の収集(Grok は回さない回): 読み直しの列の投稿を確かめ直し、列を空にする
+            seen = tmp / "verify-input.txt"
+            (bindir / "codex").write_text(
+                f"#!{sys.executable}\nimport pathlib\n"
+                f"pathlib.Path({str(seen)!r}).write_text(pathlib.Path('x-posts.md').read_text(encoding='utf-8'), encoding='utf-8')\n"
+                "for n in ('items.json', 'posts.json', 'deep.json'):\n    pathlib.Path(n).write_text('[]')\n", encoding="utf-8")
+            pipelib.CLI_BLOCKED.clear()
+            collect.run_explores(skip_explore=True, skip_grok=True)
+            left = [p.name for p in (root / collect.GROK_PENDING).iterdir()]
+            check(seen.exists() and "status/1" in seen.read_text(encoding="utf-8") and not left,
+                  f"読み直しの列の投稿を次の収集で確かめ直さない・列が残った: {seen.exists()} {left}")
+        finally:
+            (collect.ROOT, pipelib.ROOT, collect.notify, collect.build_prompts, collect.grok_basic, collect.grok_session_error,
+             collect.grok_search_counts) = saved
+            os.environ["PATH"] = saved_path
+
+
 def test_scratch_not_tmp(tmp: Path):
     """本番のコードが作る使い捨てのもの(当番の監査の作業ツリー・答えのファイル・Sol の一時ファイル、探索の作業ディレクトリ)は、
     /tmp(3.8GB の tmpfs)でなく置き場(IMAS_SCRATCH、既定 ~/.cache/imas-news)に作り、終わったら消す。消し損ねは次に作るとき
@@ -11172,6 +11267,7 @@ def main() -> int:
     test_cli_blocked_compose(tmp / "cbc")
     test_cli_blocked_oncall_not_counted(tmp / "cbo")
     test_cli_block_detect_and_post(tmp / "cbd")
+    test_cli_blocked_paths_r2(tmp / "cb2")
     test_scratch_not_tmp(tmp / "snt")
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")

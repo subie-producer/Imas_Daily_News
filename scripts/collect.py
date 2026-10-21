@@ -927,6 +927,11 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         if not text or re.fullmatch(r"(なし|見つからない)[。\s]*", text):
             continue
         text = dedupe_posts(text)   # 公式アカウントの遡りのページの境目で重なった投稿を1つにする
+        if "codex" in CLI_BLOCKED:
+            # この収集で確かめ役の CLI が止まっている: 起動せず読み直しの列へ(下の止まった面と同じ扱い。投稿は済み)
+            ledger.setdefault("blocked", set()).add(q["key"])
+            keep_pending_posts(q["key"], text)
+            continue
         wd = explore_workdir(f"verify-{q['key']}{suffix}")
         (wd / "x-posts.md").write_text(text + "\n", encoding="utf-8")
         prompt = render_prompt("grok-verify", INPUT=wd / "x-posts.md", OUT=wd / "items.json", DEEP=wd / "deep.json", POSTS=wd / "posts.json",
@@ -948,6 +953,8 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
         # 認証切れ・利用上限で答えなかった面は、投稿の確かめの失敗(やり直し・喪失の異常)に数えない(投稿は済み。当番に回さない)
         if cli_check("codex", "collect", f"{now_jst():%H:%M} の収集 X の投稿の確かめ {q['key']} 面{suffix}",
                      p.returncode if in_time else None, read_for_raw(wd / "session.log") or ""):
+            ledger.setdefault("blocked", set()).add(q["key"])
+            keep_pending_posts(q["key"], text)      # 捨てずに読み直しの列へ(次の収集で確かめ直す)
             shutil.rmtree(wd, ignore_errors=True)
             continue
         # 時間切れ・異常終了のセッションが書いたファイルは答えにしない(全投稿を未処理としてやり直し・異常へ。監査指摘)
@@ -995,8 +1002,43 @@ def verify_grok_faces(queries: list[dict], outdir: Path, suffix: str = "",
 
 
 def lost_posts_ledger() -> dict:
-    """X の投稿の確かめの記録(全段で共有)。lost: 面 → [(2回確かめても残った投稿の塊, 理由)] / settled: どこかの段で済んだ投稿の鍵(post_key)。"""
-    return {"lost": {}, "settled": set()}
+    """X の投稿の確かめの記録(全段で共有)。lost: 面 → [(2回確かめても残った投稿の塊, 理由)] / settled: どこかの段で済んだ投稿の鍵(post_key)
+    / blocked: 確かめ役の CLI が認証切れ・利用上限で答えなかった面(投稿は読み直しの列 GROK_PENDING へ)。"""
+    return {"lost": {}, "settled": set(), "blocked": set()}
+
+
+# 確かめ役(Luna)が認証切れ・利用上限で答えなかった面の X の投稿(読み直しの列。Git 管理外)。Grok の調べは週の枠を使い、回す時刻も
+# 限られるので、確かめられなかった投稿を捨てずに次の収集で確かめ直す
+GROK_PENDING = Path("metrics") / "work" / "grok-pending"
+
+
+def keep_pending_posts(key: str, text: str) -> None:
+    """確かめられなかった面の投稿を、読み直しの列に足す(同じ投稿は次に読むとき dedupe_posts が1つにする)。"""
+    p = ROOT / GROK_PENDING / f"{key}.md"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with p.open("a", encoding="utf-8") as f:
+        f.write(text.strip() + "\n\n")
+
+
+def take_pending_posts(outdir: Path, keys: list[str]) -> list[Path]:
+    """読み直しの列の投稿を、その面の書き出し(<key>.md)へ足す(「なし」だけの書き出しは置き換える)。列のファイルは確かめが
+    終わるまで消さず .taken に退ける(呼び側が確かめのあとで消す。止まれば確かめ役がまた列に足す)。戻りは退けたファイル。"""
+    taken = []
+    for k in keys:
+        p = ROOT / GROK_PENDING / f"{k}.md"
+        t = p.with_suffix(".taken")
+        # 前の回が確かめの途中で落ちて残した .taken も読み直す(消すのは確かめ終えてから)
+        text = "\n\n".join(x for x in (read_written(t).strip(), read_written(p).strip()) if x)
+        if not text:
+            continue
+        out = outdir / f"{k}.md"
+        cur = read_written(out).strip()
+        out.write_text((text if not cur or re.fullmatch(r"(なし|見つからない)[。\s]*", cur) else cur + "\n\n" + text) + "\n",
+                       encoding="utf-8")
+        t.write_text(text + "\n", encoding="utf-8")
+        p.unlink(missing_ok=True)
+        taken.append(t)
+    return taken
 
 
 def report_lost_posts(ledger: dict) -> None:
@@ -1339,6 +1381,8 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         grok_errs: dict[str, str] = {}
         grok_started = time.time()
         grok_basic(queries, outdir, grok_errs)
+        # 前の収集で確かめ役が止まって確かめられなかった投稿(読み直しの列)も、同じ面の書き出しに足して確かめる
+        taken = take_pending_posts(outdir, [q["key"] for q in queries])
         # Luna が面ごとに確かめて候補にする。X の原本でしか確かめられない問いは、予算を確かめて Grok に深掘りさせ、もう一度 Luna が確かめる
         # 投稿の喪失は、深掘りの確かめまで終えた最終結果で1度だけ通知する(当番の指摘 11fc3de74b)
         ledger = lost_posts_ledger()
@@ -1386,13 +1430,17 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
                     more, _ = verify_grok_faces([q for q in queries if q["key"] in chosen2], outdir, suffix="-deep2", ledger=ledger)
                     got += more
         report_lost_posts(ledger)
+        for t in taken:     # 読み直しの列は確かめ終えたら消す(止まった面は確かめ役が列に足し直している)
+            t.unlink(missing_ok=True)
         # 全面が正常に終わって明示的に「なし」と書いた(エラー出力も無い)なら、正常な空振りで異常ではない(監査指摘)
-        explicit_none = not grok_errs and all(
-            re.fullmatch(r"(なし|見つからない)[。\s]*", read_written(outdir / f"{q['key']}.md").strip()) for q in queries)
+        is_none = lambda k: re.fullmatch(r"(なし|見つからない)[。\s]*", read_written(outdir / f"{k}.md").strip())
+        explicit_none = not grok_errs and all(is_none(q["key"]) for q in queries)
+        # 調べか確かめの CLI が認証切れ・利用上限で答えなかった面(投稿は済み。確かめの投稿は読み直しの列にある)
+        stopped = {q["key"] for q in queries if grok_blocked(grok_errs, q["key"]) or q["key"] in ledger["blocked"]}
         if not got and explicit_none:
             print("grok 0件(全面が正常に終わり「なし」)", flush=True)
-        elif not got and all(grok_blocked(grok_errs, q["key"]) for q in queries):
-            print("grok 0件(全面が認証切れ・利用上限で答えなかった。投稿は済み)", flush=True)
+        elif not got and stopped and all(q["key"] in stopped or is_none(q["key"]) for q in queries):
+            print(f"grok 0件(認証切れ・利用上限で答えなかった面 {', '.join(sorted(stopped))}。ほかは「なし」。投稿は済み)", flush=True)
         elif not got:
             print("grok 0件", flush=True)
             # 全面0件を黙って流さない(2026-10-02: CLI が古く API に 426 で拒まれ、9面すべて0件。記録は「grok 0件」だけで、
@@ -1411,7 +1459,7 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
             by_brand[b] = by_brand.get(b, 0) + 1
         for q in queries:
             per[f"grok:{q['key']}"] = by_brand.get(q["brand"], 0)
-            if grok_blocked(grok_errs, q["key"]):
+            if q["key"] in stopped:
                 per[f"grok_blocked:{q['key']}"] = 1     # 認証切れ・利用上限(watch の全滅検知に数えない)
         print(f"grok: {len(queries)}面を面別セッションで {len(got)}件(面別 {by_brand})", flush=True)
         # 週次上限を消費するのは X 検索の回数だけ。面ごとに実数を記録し、指示の2倍を超えた面は異常にする(依頼文の数字は厳密には守られない)
@@ -1424,6 +1472,23 @@ def run_explores(skip_explore: bool, skip_grok: bool) -> tuple[list[dict], dict]
         if over:
             notify("collect", f"Grok(X 調査)の検索が指示(角度 {GROK_MAX_SEARCHES}回+公式の遡り {GROK_OFFICIAL_PAGES}回/面)の2倍を超えた面: "
                               f"{over}。週次の利用枠を余分に消費している", ok=False)
+    elif (ROOT / GROK_PENDING).is_dir() and any(p.suffix in (".md", ".taken") for p in (ROOT / GROK_PENDING).iterdir()):
+        # Grok を回さない回でも、前の収集で確かめ役が止まって確かめられなかった投稿は確かめる(週の検索枠は使わない。紙面を1日遅らせない)
+        outdir = ROOT / "metrics" / "work" / "grok-pending-run"
+        shutil.rmtree(outdir, ignore_errors=True)
+        outdir.mkdir(parents=True, exist_ok=True)
+        keys = [q["key"] for q in queries if any((ROOT / GROK_PENDING / f"{q['key']}{s}").exists() for s in (".md", ".taken"))]
+        taken = take_pending_posts(outdir, keys)
+        ledger = lost_posts_ledger()
+        got, _ = verify_grok_faces([q for q in queries if q["key"] in keys], outdir, suffix="", ledger=ledger)
+        report_lost_posts(ledger)
+        for t in taken:
+            t.unlink(missing_ok=True)
+        shutil.rmtree(outdir, ignore_errors=True)
+        for it in got:
+            it["_via"] = "grok"
+        items += got
+        print(f"grok: 読み直しの列の投稿 {len(keys)}面を確かめて {len(got)}件", flush=True)
 
     return items, per
 

@@ -1048,6 +1048,12 @@ def report_lost_posts(ledger: dict) -> None:
     複数の面で残っても(面どうしで同じアカウントを検索するので、同じ投稿が複数の面に書き出される)1行にし、所属の面を併記する
     (面ごとに数えると、同じ投稿の喪失を面の数だけ通知した。監査指摘 lost-post-cross-face)。"""
     rows: dict[str, list] = {}  # 投稿 → [表示, 面の並び, 理由の並び](最初に現れた順)
+    # 後の段(深掘りの確かめ)で確かめ役の CLI が認証切れ・利用上限で止まった面は、まだ確かめ終えていない: 残った投稿を失ったと
+    # 言わず、読み直しの列に残して次の収集で確かめ直す(そこでも済まなければ、そのとき名指しする。監査指摘 r3)
+    for key in sorted(set(ledger["lost"]) & set(ledger.get("blocked") or ())):
+        left = [b for b, _ in ledger["lost"].pop(key) if not (post_url(b) and post_key(post_url(b)) in ledger["settled"])]
+        if left:
+            keep_pending_posts(key, "\n\n".join(left))
     for key in sorted(ledger["lost"]):
         for b, why in ledger["lost"][key]:
             u = post_url(b)

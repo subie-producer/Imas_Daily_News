@@ -61,6 +61,11 @@ def run(args: list[str], timeout: int = 600, cwd: Path | None = None) -> subproc
         return subprocess.CompletedProcess(args, 124, "", f"{type(e).__name__}: {e}")
 
 
+def timed_out(r: subprocess.CompletedProcess) -> bool:
+    """run が時間切れを置き換えた結果か(時間切れは認証切れ・利用上限の見分けに掛けない。監査指摘 r3)。"""
+    return r.returncode == 124 and (r.stderr or "").startswith("TimeoutExpired")
+
+
 def version(tool: str) -> str:
     r = run([tool, "--version"], timeout=60)
     m = re.search(r"\d+\.\d+\.\d+", r.stdout or "")
@@ -85,8 +90,9 @@ def smoke(tool: str, workdir: Path) -> tuple[bool, str]:
         r = run(["grok", "--prompt-file", str(pf), "--always-approve", "--max-turns", "1"], timeout=300, cwd=workdir)
         # Grok は API に拒まれても終了コード 0 で、理由はセッション記録にだけ残る。動作確認の作業ディレクトリ(この回だけのもの)の
         # セッションの失敗理由も、認証切れ・利用上限の見分けに渡す(監査指摘 r2)
-        r = subprocess.CompletedProcess(r.args, r.returncode, r.stdout,
-                                        "\n".join(x for x in (r.stderr or "", grok_session_reasons(workdir, t0)) if x))
+        if not timed_out(r):
+            r = subprocess.CompletedProcess(r.args, r.returncode, r.stdout,
+                                            "\n".join(x for x in (r.stderr or "", grok_session_reasons(workdir, t0)) if x))
     LAST_SMOKE[tool] = r
     out = (r.stdout or "").strip()
     if r.returncode == 0 and out and out.splitlines()[-1].strip() == "2":
@@ -125,7 +131,8 @@ def main() -> int:
             # 認証切れ・利用上限で答えなかったのは CLI の壊れではない: すぐ投稿し(ログインし直せば 02:00 の収集に間に合う)、
             # 異常の台帳には積まない(当番も同じ CLI で止まる)
             sr = LAST_SMOKE.get(tool)
-            blk = cli_check(tool, "update", f"{now_jst():%H:%M} の道具の動作確認", sr.returncode if sr else None,
+            blk = cli_check(tool, "update", f"{now_jst():%H:%M} の道具の動作確認",
+                            sr.returncode if sr and not timed_out(sr) else None,
                             (sr.stdout if sr else ""), (sr.stderr if sr else ""), answered=ok)
             rows[tool] = {"before": before, "after": after, "update_exit": up.returncode if up else None, "works": ok, "why": why,
                           "blocked": bool(blk)}

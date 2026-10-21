@@ -11274,6 +11274,97 @@ def test_cli_blocked_grok_sessions_r3(tmp: Path):
                 os.environ[k] = v
 
 
+def test_cli_blocked_r4(tmp: Path):
+    """Sol 監査 r3 の指摘の再発防止:
+    (1) 入口の確かめのあとに並列の別スレッドが止まったのを記録したら、成功した側はその記録を消さない(戻ったと知らせて再投稿しない)
+    (2) 深掘りの確かめ役が止まった面の、前の段で残った投稿を「失った」と異常にせず、読み直しの列に残す
+    (3) 道具の動作確認の時間切れを、セッション記録の拒否で利用上限扱いにしない(本物の子プロセスの時間切れで確かめる)
+    (4) 送り先が未設定で届いていない投稿を「投稿済み」にしない(設定を直した次の工程で黙らない)"""
+    import collect
+    import update_clis as uc
+    tmp.mkdir(parents=True, exist_ok=True)
+    # (1)
+    with cli_posts() as cp:
+        pipelib.report_cli_blocked(pipelib.cli_blocked_reason("codex", CODEX_LIMIT), "compose", "執筆")
+        pipelib.CLI_BLOCKED.clear()                    # 成功した側のスレッドは、入口ではまだ止まったのを見ていない
+        saved_io = pipelib._cli_state_io
+
+        def racing(update):
+            pipelib.CLI_BLOCKED["codex"] = {"tool": "codex"}    # 排他を取る直前に、別のスレッドが止まったのを記録した
+            return saved_io(update)
+        pipelib._cli_state_io = racing
+        try:
+            pipelib.cli_check("codex", "compose", "執筆", 0, "")
+        finally:
+            pipelib._cli_state_io = saved_io
+        check("codex" in json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8")) and not [m for _, m, ok, _ in cp.posts if ok],
+              f"並列の別スレッドが止まった記録を、成功した側が消して戻ったと知らせた: {cp.posts}")
+    # (2)
+    root = tmp / "repo"
+    root.mkdir()
+    notes = []
+    saved = (collect.ROOT, collect.notify)
+    try:
+        collect.ROOT = root
+        collect.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        block = "### 1\n- url: https://x.com/a/status/7\n- 本文: 告知"
+        collect.report_lost_posts({"lost": {"cg": [(block, "結果に無い")]}, "settled": set(), "blocked": {"cg"}})
+    finally:
+        collect.ROOT, collect.notify = saved
+    pend = root / collect.GROK_PENDING / "cg.md"
+    check(not notes and "status/7" in collect.read_written(pend),
+          f"確かめ役が止まった面の残った投稿を「失った」と異常にした・読み直しの列に残さない: {notes}")
+    # (3)
+    with cli_posts() as cp:
+        import urllib.parse
+        home, bindir = tmp / "home", tmp / "bin"
+        for t in ("claude", "codex"):
+            fake_cli(bindir, t, out="2\n")
+        deny = json.dumps({"agent_result": "error: " + GROK_LIMIT}, separators=(",", ":"))
+        (bindir / "grok").write_text(
+            f"#!{sys.executable}\nimport os, pathlib, time\n"
+            "d = pathlib.Path.home() / '.grok' / 'sessions' / __import__('urllib.parse').parse.quote(os.getcwd(), safe='') / 's'\n"
+            f"d.mkdir(parents=True, exist_ok=True)\n(d / 'updates.jsonl').write_text({deny!r} + '\\n')\ntime.sleep(5)\n",
+            encoding="utf-8")
+        (bindir / "grok").chmod(0o755)
+        notes = []
+        saved_env = {k: os.environ.get(k) for k in ("HOME", "PATH", "INVOCATION_ID")}
+        saved = (uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies, uc.tool_path, sys.argv)
+        try:
+            os.environ["HOME"], os.environ["PATH"] = str(home), f"{bindir}{os.pathsep}{saved_env['PATH'] or ''}"
+            os.environ.pop("INVOCATION_ID", None)
+            real_run = saved[0]
+            uc.run = lambda args, timeout=600, cwd=None: real_run(args, timeout=1 if args[0] == "grok" and "--version" not in args else timeout, cwd=cwd)
+            uc.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+            uc.RECORD, uc.job_lock = tmp / "cli-versions.json", (lambda job, wait_min=0: None)
+            uc.diagnose_anomalies, uc.tool_path = (lambda *a, **k: False), (lambda: os.environ["PATH"])
+            sys.argv = ["update_clis.py", "--no-update"]
+            code = uc.main()
+        finally:
+            uc.run, uc.notify, uc.RECORD, uc.job_lock, uc.diagnose_anomalies, uc.tool_path, sys.argv = saved
+            for k, v in saved_env.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
+        row = json.loads((tmp / "cli-versions.json").read_text(encoding="utf-8"))["tools"]["grok"]
+        check(code == 1 and not row.get("blocked") and not cp.posts,
+              f"動作確認の時間切れを、セッション記録の拒否で利用上限扱いにした: exit {code} {row} {cp.posts}")
+    # (4)
+    with cli_posts() as cp:
+        saved = (pipelib.notify, pipelib.ENV.pop("DISCORD_WEBHOOK_URL", None), pipelib._QUIET)
+        try:
+            pipelib.notify, pipelib._QUIET = cp.saved[0], False     # 本物の notify(送り先は未設定なので送らない)
+            pipelib.report_cli_blocked(pipelib.cli_blocked_reason("claude", CLAUDE_OAUTH), "collect", "facts 化")
+        finally:
+            pipelib.notify, pipelib._QUIET = saved[0], saved[2]
+            if saved[1] is not None:
+                pipelib.ENV["DISCORD_WEBHOOK_URL"] = saved[1]
+        st = json.loads(pipelib.CLI_BLOCK_STATE.read_text(encoding="utf-8"))
+        check(float(st["claude"]["posted_at"]) == 0 and not pipelib.ANOMALIES,
+              f"送り先が未設定で届いていない投稿を投稿済みにした(設定を直しても12時間黙る): {st}")
+
+
 def test_scratch_not_tmp(tmp: Path):
     """本番のコードが作る使い捨てのもの(当番の監査の作業ツリー・答えのファイル・Sol の一時ファイル、探索の作業ディレクトリ)は、
     /tmp(3.8GB の tmpfs)でなく置き場(IMAS_SCRATCH、既定 ~/.cache/imas-news)に作り、終わったら消す。消し損ねは次に作るとき
@@ -11354,6 +11445,7 @@ def main() -> int:
     test_cli_block_detect_and_post(tmp / "cbd")
     test_cli_blocked_paths_r2(tmp / "cb2")
     test_cli_blocked_grok_sessions_r3(tmp / "cb3")
+    test_cli_blocked_r4(tmp / "cb4")
     test_scratch_not_tmp(tmp / "snt")
     test_restore_files(tmp / "rsf")
     test_derive_write(tmp / "dw")

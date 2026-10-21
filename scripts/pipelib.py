@@ -724,7 +724,9 @@ def report_cli_blocked(info: dict, job: str, where: str) -> bool:
     if not post:
         print(f"{CLI_NAMES.get(tool, tool)} が{cli_block_kind(info)}で答えない({job} {where}。この原因で {n}回目。投稿は済み)", flush=True)
         return False
-    if not notify(job, cli_block_text(info, job, where, n, since), ok=False, ledger=False):
+    # 届いたか(require=True: 送り先が未設定・試験実行も「届いていない」)で決める。届いていないのに投稿済みにすると、
+    # 送り先を直した次の工程でも12時間黙る(監査指摘 r3)
+    if not notify(job, cli_block_text(info, job, where, n, since), ok=False, ledger=False, require=True):
         try:     # 届かなければ、次の回にもう一度投稿する
             _cli_state_io(lambda st: st.get(tool, {}).update(posted_at=0))
         except OSError:
@@ -744,12 +746,14 @@ def cli_recovered(tool: str, job: str) -> None:
     except (OSError, ValueError, TypeError):
         return
     try:
-        old = _cli_state_io(lambda st: st.pop(tool, None))
+        # 消すかどうかは排他の中で決め直す(入口の確かめのあとに、並列の別のスレッドが止まったのを記録していれば消さない。監査指摘 r3)
+        old = _cli_state_io(lambda st: None if tool in CLI_BLOCKED else st.pop(tool, None))
     except OSError:
         return
     if isinstance(old, dict) and float(old.get("posted_at") or 0) > 0:
         if not notify(job, f"{CLI_NAMES.get(tool, tool)} がまた答えるようになった({old.get('since', '')} から"
-                           f"{'認証切れ' if old.get('kind') == 'auth' else '利用上限'}で {old.get('count', '?')}回止まっていた)"):
+                           f"{'認証切れ' if old.get('kind') == 'auth' else '利用上限'}で {old.get('count', '?')}回止まっていた)",
+                      require=True):
             # 届かなければ記録を戻し、次に答えたときにもう一度知らせる(監査指摘 r2)。その間に止まり直していれば、そちらを残す
             try:
                 _cli_state_io(lambda st: st.setdefault(tool, old))

@@ -2906,10 +2906,16 @@ def test_revise_carries_verified_facts(tmp: Path):
 
 FAKE_FETCH_MAINTE = r'''#!/usr/bin/env python3
 # テスト用: 本物の fetch_page.py を、通信だけ差し替えて走らせる。FAKE_MAINTE=1 なら公式ポータルへの要求を /mainte/ へ転送する
-import os, sys
+# (once なら、同じ URL の最初の1回だけ転送し、読み直すと本文を返す。回数は FAKE_STATE のフォルダに残す)
+import hashlib, os, pathlib, sys
 sys.path.insert(0, os.environ["FAKE_SCRIPTS"])
 import fetch_page
 MAINTE = os.environ.get("FAKE_MAINTE") == "1"
+if os.environ.get("FAKE_MAINTE") == "once" and "idolmaster-official.jp" in sys.argv[1]:
+    seen = pathlib.Path(os.environ["FAKE_STATE"]) / hashlib.sha256(sys.argv[1].encode()).hexdigest()
+    MAINTE = not seen.exists()
+    seen.parent.mkdir(parents=True, exist_ok=True)
+    seen.write_text("1")
 class U:
     status = 200
     def __init__(self, final, body):
@@ -2975,7 +2981,7 @@ def test_portal_maintenance_window(tmp: Path):
     spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
     art = lambda s, c: {"slug": s, "brand": "cg", "rank": "small", "angle": "知らせ", "candidate_ids": [c], "dedup_key": "x"}
     plan = {"articles": [art("portal", "cp"), art("unread", "cp"), art("plain", "co")]}
-    env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "FAKE_SCRIPTS", "FAKE_MAINTE", "IMAS_FETCH_PAGES", "PATH")
+    env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "FAKE_SCRIPTS", "FAKE_MAINTE", "FAKE_STATE", "IMAS_FETCH_PAGES", "PATH")
     saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE,
              {k: os.environ.get(k) for k in env_keys}, compose.subprocess.Popen)
     lint_keys = ("ROOT", "DOCS", "POSTS", "EDITIONS", "EDITORIALS", "CANDIDATES", "IDOLS", "WITHDRAWN", "REWRITES")
@@ -3013,8 +3019,9 @@ def test_portal_maintenance_window(tmp: Path):
               f"断り書きが本文の末尾に無い・字数に数えた: {compose.body_length(p)} / {body[-160:]!r}")
         # 書き直し: 書き手に見せる稿から断り書きを外し、直した稿にコードが付け直す(重ねない。指摘の外の変更にも数えない)
         issue = {"rule_id": "R1", "issue": "事実を直す", "quote": para, "repair": "rewrite_claim", "expected": "正しく書く", "fact_ids": ["F1"]}
+        os.environ["FAKE_MAINTE"] = "1"         # 書き直しのセッションでもメンテナンスが続いている
         res = compose.revise_articles(d, {f"docs/_posts/{d}-portal.md": [dict(issue)]}, plan, cands, [])
-        rp = "".join(f.read_text(encoding="utf-8") for f in (tmp / "metrics" / "work" / d).glob("revise-portal*.md"))
+        rp ="".join(f.read_text(encoding="utf-8") for f in (tmp / "metrics" / "work" / d).glob("revise-portal*.md"))
         check(res == {"portal": "fixed"} and marked("portal", d) == 1 and "開始した" in p.read_text(encoding="utf-8")
               and "portal" not in (compose.OFFSCOPE_NOTES.get(d) or {}),
               f"書き直しの稿に断り書きを付け直さない・重ねた・指摘の外に数えた: {res} {marked('portal', d)} {compose.OFFSCOPE_NOTES.get(d)}")
@@ -3032,6 +3039,29 @@ def test_portal_maintenance_window(tmp: Path):
             lint.main()
         errs = [l for l in out.getvalue().splitlines() if l.startswith(f"::error file=docs/_posts/{d}-") and ("本文" in l or "枠" in l)]
         check(not errs, f"断り書きを付けた記事が lint の本文・枠の検査で赤: {errs[:3]}")
+
+        def fresh(dd: str) -> None:
+            shutil.rmtree(tmp / "metrics" / "work" / dd / "fetched", ignore_errors=True)
+            for f in [*posts.glob(f"{dd}-*.md"), *spec_p.parent.glob("count-*")]:
+                f.unlink()
+        # 束をまたぐ: 先の束の記事(公式ポータルを読みに行かない)にも、後の束の記事が見分けたメンテナンスで断り書きが付く(Sol 監査 r1)
+        dd = "2026-10-24"
+        fresh(dd)
+        os.environ["FAKE_MAINTE"] = "1"
+        compose.write_articles(dd, {"articles": [art("unread", "cp"), art("portal", "cp"), art("plain", "co")]}, cands, [], {}, wave=1)
+        got = {s: marked(s, dd) for s in ("portal", "unread", "plain")}
+        check(got == {"portal": 1, "unread": 1, "plain": 0} and n24 in (posts / f"{dd}-unread.md").read_text(encoding="utf-8"),
+              f"後の束で見分けたメンテナンスが、先に書いた記事の断り書きに効かない: {got}")
+        # 一度メンテナンスに当たっても、同じページを読み直して本文を取れたなら付けない(Sol 監査 r1)
+        fresh(dd)
+        os.environ.update(FAKE_MAINTE="once", FAKE_STATE=str(tmp / "spec" / "state"))
+        spec["write-portal"] = [{"fetch": [portal, portal], "answer": ans(portal)}]
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        compose.write_articles(dd, {"articles": [art("portal", "cp")]}, cands, [], {}, wave=1)
+        rec = compose.fetch_record(dd, "portal")
+        check(marked("portal", dd) == 0 and portal in pipelib.fetched_urls(rec) and portal in pipelib.maintenance_urls(rec),
+              f"読み直して本文を取れた公式ポータルのページに「確認できていません」を付けた: {marked('portal', dd)} "
+              f"{pipelib.fetched_urls(rec)} {pipelib.maintenance_urls(rec)}")
         # 校閲: 期限内の号だけ指示を足す
         seen: dict[str, str] = {}
 

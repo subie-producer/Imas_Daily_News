@@ -2368,13 +2368,15 @@ def fetch_env(date: str, slug: str) -> dict:
 
 def portal_unreadable(date: str, slug: str, urls) -> bool:
     """この記事が公式ポータルを読めないまま書かれたか(形だけの判定)。道具が見分けたメンテナンス(fetch_page.py の記録)だけを見る:
-    この記事のセッションが公式ポータルでメンテナンスに当たった、または、この記事の出典・素材の公式ポータルのページを本文で読めておらず、
-    この号のどれかの記事のセッションが公式ポータルでメンテナンスに当たった"""
+    この記事のセッションが公式ポータルのページでメンテナンスに当たり、そのページをあとで読めてもいない、または、この記事の出典・素材の
+    公式ポータルのページを本文で読めておらず、この号のどれかの記事のセッションが公式ポータルでメンテナンスに当たった
+    (読み直して本文を取れたページは、読めたページとして扱う。Sol 監査 r1)"""
     rec = fetch_record(date, slug)
-    if any(is_portal(u) for u in maintenance_urls(rec)):
-        return True
     read = fetched_urls(rec)
-    unread = [u for u in urls if is_portal(u) and not any(renderlib.same_page(u, r) for r in read)]
+    was_read = lambda u: any(renderlib.same_page(u, r) for r in read)
+    if any(is_portal(u) and not was_read(u) for u in maintenance_urls(rec)):
+        return True
+    unread = [u for u in urls if is_portal(u) and not was_read(u)]
     return bool(unread) and any(is_portal(u) for f in sorted(rec.parent.glob("*.mainte")) for u in maintenance_urls(f))
 
 
@@ -2384,14 +2386,19 @@ def attach_portal_notice(date: str, slug: str, path: Path, materials: list[dict]
     notice = portal_maintenance_notice(date)
     if not notice or not path.exists():
         return False
-    fm = parse_front_matter(path) or {}
-    urls = [str(x.get("url") or "") for x in [*(materials or []), *(fm.get("sources") or [])] if isinstance(x, dict)]
-    text = path.read_text(encoding="utf-8")
-    on = portal_unreadable(date, slug, urls)
-    new = renderlib.with_notice(text, notice if on else None)
-    if new != text:
-        write_checked(path, new)
-    return on
+    try:
+        fm = parse_front_matter(path) or {}
+        urls = [str(x.get("url") or "") for x in [*(materials or []), *(fm.get("sources") or [])] if isinstance(x, dict)]
+        text = path.read_text(encoding="utf-8")
+        on = portal_unreadable(date, slug, urls)
+        new = renderlib.with_notice(text, notice if on else None)
+        if new != text:
+            write_checked(path, new)
+        return on
+    except Exception as e:
+        # 断り書きの付け外しの失敗で組版を止めない(記事は残す)。異常として申告する
+        anomaly("compose", f"記事 {slug}: 公式ポータルのメンテナンスの断り書きを付けられない({type(e).__name__}: {str(e)[:120]})")
+        return False
 
 
 def draft_urls(fm: dict | None) -> set[str]:
@@ -2614,6 +2621,10 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                 written.append(art)
         if blocked:
             raise CliBlocked(blocked)
+    # 後の束の記事が見分けたメンテナンスも、先に書いた記事(再利用した稿を含む)の断り書きに効かせる。校閲の前に全部掛け直す(Sol 監査 r1)
+    for art in written:
+        attach_portal_notice(date, art["slug"], ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md",
+                             [cands[c] for c in art.get("candidate_ids") or [] if c in cands])
     return written, aborted
 
 

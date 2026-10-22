@@ -97,6 +97,11 @@ def main() -> int:
 
     periods = extract_periods(text)
     print(f"URL: {args.url}")
+    # 転送された(短縮 URL など)ときは行き先も見せる。見せないと、執筆は出典に書く行き先の url を本文から推して組み立て、
+    # 読んでいない url を書く(2026-10-23: t.co の行き先 …_whanm_1023 を …_whanm_10231023 と書き、差し戻しても直らず記事が落ちた)
+    final = FINAL_URL.get(args.url)
+    if final and final != args.url:
+        print(f"転送先 URL: {final}")
     if periods:
         print("--- 期間(原文ラベルのまま。本文と食い違う場合はこちらが正) ---")
         for p in periods:

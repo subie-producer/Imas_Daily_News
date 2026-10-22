@@ -73,6 +73,8 @@ def main() -> int:
         return 1
     # メンテナンス画面へ転送されたら、その案内はこのページの本文ではない。読めたことにしない(記録にも残さない)
     if maintenance_redirect(args.url, FINAL_URL.get(args.url)):
+        # 読めなかったことは隣の記録に残す(組版が、公式ポータルが読めないまま書いた記事に断り書きを付けるのに使う)
+        note_fetched(args.url, FINAL_URL[args.url], maintenance=True)
         print(f"FETCH_FAILED: メンテナンス中({FINAL_URL[args.url]} へ転送された)。このページの本文は今は読めない")
         return 1
 

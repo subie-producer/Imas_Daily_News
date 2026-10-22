@@ -545,6 +545,27 @@ def strip_fact_notes(body: str) -> str:
     return re.sub(r"\s*<!--\s*(?:[FN]\d+\s*)+-->", "", body)
 
 
+# 本文の末尾にコードが付ける断り書きの段落(公式ポータルのメンテナンス。2026-10-22 編集長の決定)。印で見分け、
+# 字数(枠)・書き直しの段落の照合・書き手に見せる稿からは外す(書き手の言葉ではない)
+NOTICE_MARK = "<!-- notice:portal-maintenance -->"
+NOTICE_PARA = re.compile(r"(?:\A|\n\s*\n)[^\n]*" + re.escape(NOTICE_MARK) + r"[ \t]*(?=\n|\Z)")
+
+
+def strip_notice(body: str) -> str:
+    """本文から断り書きの段落を外す(無ければそのまま)。"""
+    return NOTICE_PARA.sub("", body or "")
+
+
+def with_notice(text: str, notice: str | None) -> str:
+    """記事ファイルの本文の末尾の断り書きを、notice(None なら無し)に揃える。何度掛けても同じ(冪等)。"""
+    m = re.match(r"\A(---\n.*?\n---\n)(.*)\Z", text, flags=re.S)
+    head, body = (m.group(1), m.group(2)) if m else ("", text)
+    body = strip_notice(body).rstrip("\n")
+    if notice:
+        body = f"{body}\n\n{notice} {NOTICE_MARK}"
+    return head + body + "\n"
+
+
 def render_article(path: Path, date: str, art: dict, out: dict, source_type_of, weakest_src,
                    dump_yaml) -> None:
     """検算済みの出力から記事ファイルを作る。段落の根拠 id は HTML コメントで残す。"""

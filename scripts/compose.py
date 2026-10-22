@@ -55,7 +55,8 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
                      collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked,
-                     FETCH_RECORD_ENV, fetched_urls,
+                     FETCH_RECORD_ENV, fetched_urls, is_portal, maintenance_urls, portal_maintenance_notice,
+                     portal_maintenance_rules,
                      align_x_published_date, CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_check)
 # モデルのセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
 from pipelib import LaunchFailed, finish_group, run_group, start_group, stop_groups
@@ -886,6 +887,7 @@ def article_prompt(date: str, art: dict, materials: list[dict], story_facts: lis
         PURPOSE=("期日の知らせ" if trigger or art.get("purpose") == "期日の知らせ" else "新情報"),
         TRIGGER=(f"- 続報予約: {trigger['kind']}(読者がその日にできること: {trigger.get('note') or trigger['subject']})\n" if trigger else ""),
         RANK_RULES=rank_file.read_text(encoding="utf-8") if rank_file.exists() else "",
+        PORTAL_MAINTENANCE=portal_maintenance_rules(date, "write"),
         TAG_VOCAB=tags_lib.vocabulary_block(),
         STORY_FACTS="\n".join(f"- {f}" for f in story_facts) or "(なし)",
         MATERIALS=json.dumps(materials, ensure_ascii=False, indent=2))
@@ -2024,7 +2026,7 @@ def validate_article_file(date: str, art: dict, cands: dict) -> list[str]:
 def body_length(path: Path) -> int:
     """本文の非空白文字数(中見出し行は除く)。lint の分量計算と同じ定義。"""
     text = path.read_text(encoding="utf-8")
-    body = renderlib.strip_fact_notes(re.split(r"\n---\n", text, maxsplit=1)[-1])
+    body = renderlib.strip_notice(renderlib.strip_fact_notes(re.split(r"\n---\n", text, maxsplit=1)[-1]))
     return len(re.sub(r"\s", "", re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)))
 
 
@@ -2364,6 +2366,34 @@ def fetch_env(date: str, slug: str) -> dict:
     return {**os.environ, FETCH_RECORD_ENV: str(rec)}
 
 
+def portal_unreadable(date: str, slug: str, urls) -> bool:
+    """この記事が公式ポータルを読めないまま書かれたか(形だけの判定)。道具が見分けたメンテナンス(fetch_page.py の記録)だけを見る:
+    この記事のセッションが公式ポータルでメンテナンスに当たった、または、この記事の出典・素材の公式ポータルのページを本文で読めておらず、
+    この号のどれかの記事のセッションが公式ポータルでメンテナンスに当たった"""
+    rec = fetch_record(date, slug)
+    if any(is_portal(u) for u in maintenance_urls(rec)):
+        return True
+    read = fetched_urls(rec)
+    unread = [u for u in urls if is_portal(u) and not any(renderlib.same_page(u, r) for r in read)]
+    return bool(unread) and any(is_portal(u) for f in sorted(rec.parent.glob("*.mainte")) for u in maintenance_urls(f))
+
+
+def attach_portal_notice(date: str, slug: str, path: Path, materials: list[dict]) -> bool:
+    """公式ポータルのメンテナンスの断り書きを本文の末尾にコードで付ける(許可の期限内の号で、公式ポータルを読めないまま書いた記事だけ。
+    pipelib.PORTAL_MAINTENANCE_NOTICES)。何度掛けても同じ。付けたら True"""
+    notice = portal_maintenance_notice(date)
+    if not notice or not path.exists():
+        return False
+    fm = parse_front_matter(path) or {}
+    urls = [str(x.get("url") or "") for x in [*(materials or []), *(fm.get("sources") or [])] if isinstance(x, dict)]
+    text = path.read_text(encoding="utf-8")
+    on = portal_unreadable(date, slug, urls)
+    new = renderlib.with_notice(text, notice if on else None)
+    if new != text:
+        write_checked(path, new)
+    return on
+
+
 def draft_urls(fm: dict | None) -> set[str]:
     """現在の稿の verified_facts・sources の url(書いたときに検算を通ったもの)。書き直しが verified_facts を写して使うとき、
     初稿のセッションで読んだページを読み直させない。"""
@@ -2558,6 +2588,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                         note_stuck(date, "機械検算", f"docs/_posts/{date}-{art['slug']}.md", "", " / ".join(problems[:4]), 2)
                     continue
                 renderlib.render_article(target, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
+                attach_portal_notice(date, art["slug"], target, materials)
                 remember_fact_map(date, art["slug"], target, fact_by_id)
                 if tries:
                     print(f"記事 {art['slug']}: 差し戻し後に合格", flush=True)
@@ -2674,7 +2705,9 @@ def revise_prompt(date: str, art: dict, mats_in: list[dict], current: str, issue
     """校閲の指摘を受けた**執筆側(Codex)**の書き直し。同じ出力契約(article-out)で返す。"""
     iss = json.dumps([{k: b.get(k) for k in ("issue_id", "rule_id", "issue", "quote", "repair", "fact_ids", "expected")}
                       for b in issues], ensure_ascii=False, indent=1)
-    return render_prompt("revise-article", DATE=date, ISSUES=iss, CURRENT=current[:12000],
+    # 断り書きはコードが付ける(書き手の稿に見せない)
+    return render_prompt("revise-article", DATE=date, ISSUES=iss, CURRENT=renderlib.strip_notice(current)[:12000],
+                         PORTAL_MAINTENANCE=portal_maintenance_rules(date, "revise"),
                          MATERIALS=json.dumps(mats_in, ensure_ascii=False, indent=1))
 
 
@@ -2965,7 +2998,7 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     old_text = path.read_text(encoding="utf-8") if path.exists() else ""
     try:
         problems += revise_check(ans, issues, old_fm,
-                                 re.split(r"\n---\n", old_text, maxsplit=1)[-1])
+                                 renderlib.strip_notice(re.split(r"\n---\n", old_text, maxsplit=1)[-1]))
     except Exception as e:
         # 欄の形が崩れた答え(addressed_issue_ids が数値など)で号全体を止めない。元の稿のまま(監査指摘)
         return "kept", f"答えの形が崩れていて照合できない({type(e).__name__}: {str(e)[:80]})。元の稿のまま"
@@ -2978,6 +3011,7 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     if hard:
         return "kept", "検算不合格 " + " / ".join(hard[:3]) + "(元の稿のまま)"
     renderlib.render_article(path, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
+    attach_portal_notice(date, art["slug"], path, materials)
     remember_fact_map(date, art["slug"], path, fact_by_id)
     if scope:
         OFFSCOPE_NOTES.setdefault(date, {})[art["slug"]] = " / ".join(scope)[:400]
@@ -3635,9 +3669,10 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
         m3 = re.match(r"::warning file=(docs/_posts/[^:]+)::(\[所見\].*)$", l)
         if m3:
             notes_by_file.setdefault(m3.group(1), []).append(m3.group(2))
+    portal_rules = portal_maintenance_rules(date, "review")     # 許可の期限内の号だけ(期限外は空)
     for n in names:
         hint = review_hint(date, n, notes_by_file)
-        jobs.append((n, art_ck.replace("{DATE}", date).replace("{FILE}", n) + hint + again,
+        jobs.append((n, art_ck.replace("{DATE}", date).replace("{FILE}", n) + (f"\n\n{portal_rules.rstrip()}" if portal_rules else "") + hint + again,
                      f"docs/_posts/{n}", f"article:{n}"))
     if editorial and (ROOT / "docs" / "_editorials" / f"{date}.md").exists():
         jobs.append(("社説",

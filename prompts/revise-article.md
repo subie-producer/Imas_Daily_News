@@ -11,6 +11,7 @@
 - `drop_article`: 記事として成立しないなら、status を decline にして decline_code と decline_detail を書く
 - ページは fetch_page.py で読む。Web 検索はページを探すのに使い、検索結果や fetch_page.py 以外の手段で読んだ内容は根拠にしない。
   素材と現在の記事の外のページで fetch_page.py で本文を取れなかったものは、new_facts・sources に書かない
+  読んだページの url は、fetch_page.py の出力の `URL:` か `転送先 URL:` の行の url をそのまま写す(本文に出てくる url から組み立てない)
 - `FETCH_FAILED: メンテナンス中` の素材の url は、今は読めないだけ。素材の verify が `confirmed` なら、facts をそのまま使い、sources に残す
 {PORTAL_MAINTENANCE}- 指摘に無い箇所(見出し・他の段落・出典)は変えない。ただし指摘に応じるのに要る変更(区分・並びの誤りを直す組み直し、同じ誤りが別の段落にもある 等)はしてよい
 - 対応した指摘の issue_id を addressed_issue_ids に列挙する

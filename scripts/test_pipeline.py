@@ -1847,6 +1847,98 @@ def test_rule_bench_judges_shape(tmp: Path):
     check(not wrong, f"事例の固定の本文が、そのままの中身で返らない: {wrong[:3]}")
 
 
+def test_fetch_page_shows_redirect_target(tmp: Path):
+    """fetch_page.py は転送された(短縮 URL など)ときに行き先の url を出す。出さないと執筆は行き先を本文から推して組み立て、読んでいない url を
+    書く(2026-10-23: t.co の行き先 …_whanm_1023 を …_whanm_10231023 と書き、差し戻しても直らず SideM の POP UP 記事が落ちた)。
+    出した行き先の url は記録にもあり、検算を通る。"""
+    import contextlib
+    import io
+    import fetch_page
+    short, final = "https://t.co/abc", "https://livepocket.jp/e/idolmaster_sidem_whanm_1023"
+    rec = tmp / "fetched.jsonl"
+    tmp.mkdir(parents=True, exist_ok=True)
+
+    def fake_fetch(url):
+        fetch_page.FINAL_URL[url] = final
+        return "整理券の申込ページ 受付期間: 2026年10月16日(金) 17:00〜"
+    saved = (fetch_page.fetch, fetch_page.needs_render, sys.argv, os.environ.get("IMAS_FETCH_RECORD"))
+    out = io.StringIO()
+    try:
+        fetch_page.fetch, fetch_page.needs_render = fake_fetch, (lambda u, t: False)
+        sys.argv = ["fetch_page.py", short]
+        os.environ["IMAS_FETCH_RECORD"] = str(rec)
+        with contextlib.redirect_stdout(out):
+            rc = fetch_page.main()
+    finally:
+        fetch_page.fetch, fetch_page.needs_render, sys.argv, env = saved
+        if env is None:
+            os.environ.pop("IMAS_FETCH_RECORD", None)
+        else:
+            os.environ["IMAS_FETCH_RECORD"] = env
+    shown = re.findall(r"^転送先 URL: (\S+)$", out.getvalue(), flags=re.M)
+    check(rc == 0 and shown == [final], f"転送された行き先の url を出さない: {out.getvalue()[:200]!r}")
+    fetched = pipelib.fetched_urls(rec)
+    ans = {"status": "ok", "title": "t", "title_fact_ids": ["N1"], "lede": "l", "lede_fact_ids": ["N1"],
+           "blocks": [{"markdown": "m", "fact_ids": ["N1"]}], "tags": ["SideM", "POP UP"],
+           "new_facts": [{"id": "N1", "text": "整理券", "url": (shown or [""])[0]}],
+           "sources": [{"url": (shown or [""])[0], "label": "LivePocket「整理券」"}]}
+    probs = [x for x in renderlib.check_output(ans, {}, [], fetched=fetched) if "本文を取れていない" in x]
+    check(not probs, f"出した行き先の url を根拠にした答えが検算を通らない: {probs}")
+    # 転送されていないときは出さない
+    out = io.StringIO()
+    saved = (fetch_page.fetch, fetch_page.needs_render, sys.argv, os.environ.get("IMAS_FETCH_RECORD"))
+    try:
+        fetch_page.FINAL_URL.clear()
+        fetch_page.fetch = lambda u: (fetch_page.FINAL_URL.__setitem__(u, u), "本文")[1]
+        fetch_page.needs_render = lambda u, t: False
+        sys.argv = ["fetch_page.py", final]
+        os.environ["IMAS_FETCH_RECORD"] = str(rec)
+        with contextlib.redirect_stdout(out):
+            fetch_page.main()
+    finally:
+        fetch_page.fetch, fetch_page.needs_render, sys.argv, env = saved
+        if env is None:
+            os.environ.pop("IMAS_FETCH_RECORD", None)
+        else:
+            os.environ["IMAS_FETCH_RECORD"] = env
+    check("転送先 URL:" not in out.getvalue(), "転送されていないのに行き先を出した")
+
+
+def test_draft_key_ignores_portal_notice(tmp: Path):
+    """稿の指紋は公式ポータルのメンテナンスの断り書きを含めない。稿を記録した後で別のセッションが見分けたメンテナンスにより断り書きが付いても、
+    台帳はその稿の事実の記録を引く(2026-10-23: SideM×ルネサンスの記事で「記録は別の稿のもの」となり、台帳が見出しだけになった)。
+    断り書きを含めた指紋で残した、この直しより前の記録も引く。"""
+    posts = tmp / "docs" / "_posts"
+    posts.mkdir(parents=True)
+    notice = pipelib.PORTAL_MAINTENANCE_NOTICES["2026-10-23"]
+    text = ("---\nslug: a\ncandidate_ids: [c1]\ntitle_fact_ids: [F1]\nlede_fact_ids: [F1]\n---\n"
+            "12枚セットが完売。 <!-- F1 -->\n")
+    f = posts / "2026-10-23-a.md"
+    f.write_text(text, encoding="utf-8")
+    key = renderlib.draft_key(f)
+    f.write_text(renderlib.with_notice(text, notice), encoding="utf-8")
+    check(renderlib.draft_key(f) == key, "断り書きを付けただけで稿の指紋が変わる")
+    fm = {"slug": "a", "candidate_ids": ["c1"], "title_fact_ids": ["F1"], "lede_fact_ids": ["F1"], "_name": f.name}
+    saved = assemble.POSTS
+    try:
+        assemble.POSTS = posts
+        pipelib.ANOMALIES.clear()
+        got = assemble.cited_facts(fm, {key: {"F1": "12枚セットが完売"}})
+        check(got == ["12枚セットが完売"] and not pipelib.ANOMALIES,
+              f"断り書きが後から付いた稿の事実の記録を引けない: {got} {pipelib.ANOMALIES}")
+        # 断り書きを含めた指紋で残した記録(この直しより前)も引く
+        legacy = renderlib.draft_key(f, keep_notice=True)
+        check(legacy != key, "断り書きを含めた指紋が、含めない指紋と同じ")
+        got = assemble.cited_facts(fm, {legacy: {"F1": "12枚セットが完売"}})
+        check(got == ["12枚セットが完売"] and not pipelib.ANOMALIES, f"断り書きを含めた指紋の記録を引けない: {got} {pipelib.ANOMALIES}")
+        # 本文が変わった稿は、従来どおり別の稿
+        f.write_text(renderlib.with_notice(text.replace("完売", "再入荷"), notice), encoding="utf-8")
+        check(assemble.cited_facts(fm, {key: {"F1": "x"}}) == [] and pipelib.ANOMALIES, "本文が変わった稿に、旧い稿の記録を引いた")
+    finally:
+        assemble.POSTS = saved
+        pipelib.ANOMALIES.clear()
+
+
 def test_bench_tools_check_read_pages(tmp: Path):
     """執筆の品質の測定(writer_bench.metrics)と過去記事の書き直し(rewrite_past)も、本番と同じく根拠の URL を記録と照らす:
     空の記録なら素材の外のページを根拠にした答えを不合格にし(rewrite_past は記事を書き換えない)、読めた記録なら合格、記録の無い古い答え
@@ -15264,6 +15356,8 @@ def main() -> int:
     test_collect_handover_deadline(tmp / "chd")
     test_rule_bench_checks_read_pages(tmp / "rbp")
     test_bench_tools_check_read_pages(tmp / "btr")
+    test_fetch_page_shows_redirect_target(tmp / "fpr")
+    test_draft_key_ignores_portal_notice(tmp / "dkn")
     check(not STRAY_WRITES, "書式で決めたファイルを write_checked を通さずに書いた本番のコード(書く前に書式で検めること): "
           + "; ".join(sorted(set(STRAY_WRITES))[:10]))
     for f in FAILS:

@@ -2401,6 +2401,17 @@ def attach_portal_notice(date: str, slug: str, path: Path, materials: list[dict]
         return False
 
 
+def refresh_portal_notices(date: str, arts: list[dict], cands: dict) -> None:
+    """この号の記事(ファイルのあるもの)の断り書きを、いまの記録で掛け直す。セッションが後から見分けたメンテナンスを先の記事にも効かせる。
+    断り書きは承認の指紋(pipelib.article_hash)に入らないので、承認済みの記事に付け直しても承認は外れない"""
+    if not portal_maintenance_notice(date):
+        return
+    for art in arts:
+        path = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
+        if path.exists():
+            attach_portal_notice(date, art["slug"], path, [cands[c] for c in art.get("candidate_ids") or [] if c in cands])
+
+
 def draft_urls(fm: dict | None) -> set[str]:
     """現在の稿の verified_facts・sources の url(書いたときに検算を通ったもの)。書き直しが verified_facts を写して使うとき、
     初稿のセッションで読んだページを読み直させない。"""
@@ -2622,9 +2633,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
         if blocked:
             raise CliBlocked(blocked)
     # 後の束の記事が見分けたメンテナンスも、先に書いた記事(再利用した稿を含む)の断り書きに効かせる。校閲の前に全部掛け直す(Sol 監査 r1)
-    for art in written:
-        attach_portal_notice(date, art["slug"], ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md",
-                             [cands[c] for c in art.get("candidate_ids") or [] if c in cands])
+    refresh_portal_notices(date, written, cands)
     return written, aborted
 
 
@@ -3492,6 +3501,8 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
         if blocked:
             raise CliBlocked(blocked)
     print(f"校閲の指摘で執筆側が {n_fixed}本を書き直し、{n_dropped}本を落とした", flush=True)
+    # 書き直しのセッションが初めて見分けたメンテナンスも、ほかの記事の断り書きに効かせる(Sol 監査 r2)
+    refresh_portal_notices(date, plan.get("articles") or [], cands)
     return results
 
 

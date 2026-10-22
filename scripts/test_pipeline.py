@@ -3062,6 +3062,23 @@ def test_portal_maintenance_window(tmp: Path):
         check(marked("portal", dd) == 0 and portal in pipelib.fetched_urls(rec) and portal in pipelib.maintenance_urls(rec),
               f"読み直して本文を取れた公式ポータルのページに「確認できていません」を付けた: {marked('portal', dd)} "
               f"{pipelib.fetched_urls(rec)} {pipelib.maintenance_urls(rec)}")
+        # 書き直しのセッションで初めて見分けたメンテナンスも、ほかの記事に効かせる。付け直しで承認の指紋は変わらない(Sol 監査 r2)
+        fresh(dd)
+        os.environ["FAKE_MAINTE"] = "1"
+        spec.update({"write-portal": [{"answer": ans(portal)}], "write-unread": [{"answer": ans(portal)}],
+                     "revise-portal": [{"fetch": [portal], "answer": fixed}]})
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        compose.write_articles(dd, plan, cands, [], {}, wave=3)
+        before = {s: marked(s, dd) for s in ("portal", "unread", "plain")}
+        h_unread = pipelib.article_hash(posts / f"{dd}-unread.md")
+        res = compose.revise_articles(dd, {f"docs/_posts/{dd}-portal.md": [dict(issue)]}, plan, cands, [])
+        after = {s: marked(s, dd) for s in ("portal", "unread", "plain")}
+        check(before == {"portal": 0, "unread": 0, "plain": 0} and res == {"portal": "fixed"}
+              and after == {"portal": 1, "unread": 1, "plain": 0} and pipelib.article_hash(posts / f"{dd}-unread.md") == h_unread,
+              f"書き直しで見分けたメンテナンスがほかの記事に効かない・承認の指紋が変わった: {before} → {after} {res}")
+        # 外すのは決まった文面の断り書きだけ(書き手の文に印が紛れても、字数・指紋から外さない)
+        fake = f"本文。\n\n書き手の文 {renderlib.NOTICE_MARK}\n"
+        check(renderlib.strip_notice(fake) == fake, "決まった文面でない段落を断り書きとして外した")
         # 校閲: 期限内の号だけ指示を足す
         seen: dict[str, str] = {}
 

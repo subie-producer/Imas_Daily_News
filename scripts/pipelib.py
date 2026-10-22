@@ -437,6 +437,10 @@ def article_hash(path) -> str:
     m = _re.match(r"^---\n(.*?)\n---\n", text, _re.S)
     fm = (_yaml.safe_load(m.group(1)) or {}) if m else {}
     body = text[m.end():] if m else text
+    # 公式ポータルのメンテナンスの断り書き(コードが決まった文面で付ける段落)は入れない。後のセッションが見分けたメンテナンスで
+    # 承認済みの記事に付け直しても、承認を外さない(2026-10-22 Sol 監査 r2)
+    from renderlib import strip_notice
+    body = strip_notice(body)
     # 校閲が判断に使う項目と、読者に表示される項目を全部入れる(監査指摘)。
     # event_date は時制・鮮度の判断対象、tags と corrections は記事ページに出る
     seen = {"title": fm.get("title"), "lede": fm.get("lede"), "brand": fm.get("brand"),

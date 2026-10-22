@@ -166,6 +166,10 @@
   期限外の号には足さない。断り書きは書き手に書かせず、組版が本文の末尾にコードで付ける(compose.attach_portal_notice。この記事か号のセッションの
   fetch_page.py がメンテナンスに当たり、記事が公式ポータルを読めないまま書かれたときだけ)。字数(枠)には数えない。
   素材に無い公式ポータルの url は従来どおり書かせない(根拠の URL は素材か読めたページ)。ほかの規則(公式の出典が要る 等)は変えない
+- 根拠の url は fetch_page.py の出力の `URL:`・`転送先 URL:` の行から写す(write-article・revise-article。2026-10-23): fetch_page.py は頼んだ url しか
+  出さず、X の投稿のリンク(t.co)を読んだ書き手は、行き先の url を本文から推して …_whanm_1023 を …_whanm_10231023 と組み立てた。
+  読んでいない url なので検算が差し戻したが、差し戻しでも t.co を読み直すだけで同じ url を書き、渋谷 MODI の SideM POP UP の記事が落ちた。
+  いまは fetch_page.py が転送されたときに行き先を出す
 
 ### 書き直し(revise-article)
 - event_date は指摘が掛かっていなければコードが元の稿の値を写す(2026-10-03): 「現在の記事」の frontmatter には null の event_date が出ないので、

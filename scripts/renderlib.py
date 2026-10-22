@@ -24,10 +24,12 @@ FACT_NOTE = re.compile(r"\s*<!--\s*((?:[FN]\d+\s*)+)-->\s*$")
 _ZEN = str.maketrans("０１２３４５６７８９／．－", "0123456789/.-")
 
 
-def draft_key(path) -> str:
+def draft_key(path, keep_notice: bool = False) -> str:
     """稿の指紋(見出し・リード・本文と、見出し・リードの根拠 id・verified_facts)。稿ごとの「F 番号 → 事実」の記録を、どの稿のものかに
     結び付ける(巻き戻しで旧い稿に戻っても、その稿の記録が選ばれる)。根拠だけを付け替えた改稿も別の稿になる(監査指摘)。
-    枠・出典の種別など、稿を採った後にコードが付け直す欄は含めない。"""
+    枠・出典の種別など、稿を採った後にコードが付け直す欄は含めない。公式ポータルのメンテナンスの断り書き(コードが後から付け外しする段落)も
+    含めない(2026-10-23: 稿を記録した後に、別のセッションが見分けたメンテナンスで断り書きが付き、記録が「別の稿のもの」になって
+    台帳が見出しだけになった)。keep_notice=True は断り書きを含めた旧い指紋(この直しより前に残した記録を引く台帳だけが使う)"""
     import hashlib
     import json as _json
     import yaml
@@ -35,6 +37,8 @@ def draft_key(path) -> str:
     m = re.match(r"^---\n(.*?)\n---\n", text, re.S)
     fm = (yaml.safe_load(m.group(1)) or {}) if m else {}
     body = text[m.end():] if m else text
+    if not keep_notice:
+        body = strip_notice(body)
     cites = _json.dumps([fm.get("title_fact_ids") or [], fm.get("lede_fact_ids") or [], fm.get("verified_facts") or []],
                         ensure_ascii=False, sort_keys=True, default=str)
     return hashlib.sha256("\n\0".join([str(fm.get("title") or ""), str(fm.get("lede") or ""), body.strip(), cites])

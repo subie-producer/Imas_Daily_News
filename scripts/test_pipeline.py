@@ -2376,8 +2376,15 @@ def test_collect_sessions_read_with_fetch_page(tmp: Path):
     cmd = re.search(r"`(python3 [^`<]*fetch_page\.py) <url>`", prompt)
     check("WebFetch" not in allowed and "WebFetch" in denied, f"facts 化が WebFetch でページを読める(JS を描画しない): {a}")
     # 道具は読むのに要るものだけ(Bash は fetch_page.py の起動だけ。広げるとページに仕込まれた指示で何でも走らせられる)
-    check(sorted(allowed) == sorted(["Read", "WebSearch", "Bash(python3 scripts/fetch_page.py:*)"]),
+    abs_fp = str(collect.ROOT / "scripts" / "fetch_page.py")
+    check(sorted(allowed) == sorted(["Read", "WebSearch", "Bash(python3 scripts/fetch_page.py:*)", f"Bash(python3 {abs_fp}:*)"]),
           f"facts 化の道具の許可が読むのに要る範囲を超える: {allowed}")
+    # 非対話では許可に当たらない形は拒まれる。モデルが打ち直しがちな絶対パスの形も通る(2026-10-22 23:30: imasnews765 ?p=32585 の
+    # 一次ソース t.co を絶対パスで打って拒まれ、unreadable にした)。依頼文は、通る形だけで1ページずつ打つよう指示する
+    check(any(allowed_by(p, f"python3 {abs_fp} https://t.co/3hmncJBhSz") for p in allowed),
+          f"facts 化で fetch_page.py を絶対パスで打つと拒まれる: {allowed}")
+    check("1回の Bash に1ページずつ" in prompt and "拒まれたら" in prompt,
+          "facts 化の依頼文が、許可に当たる形だけで fetch_page.py を打つよう指示していない")
     check("WebFetch で" not in prompt and cmd and any(allowed_by(p, cmd.group(1) + " " + url) for p in allowed),
           f"facts 化の依頼文の読み方が、許した道具で打てない: {cmd and cmd.group(1)} / {allowed}")
     out = run_cmd(f"{cmd.group(1)} {url}", cwd) if cmd else ""

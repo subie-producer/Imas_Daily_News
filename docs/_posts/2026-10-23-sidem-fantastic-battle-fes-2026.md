@@ -19,7 +19,7 @@ sources:
 - label: アイドルマスター公式サイト「315 Production presents F@NTASTIC BATTLE FES ～Wanna step in～ アソビストアプレミアム会員2次先行受付開始」
   url: https://idolmaster-official.jp/news/01_20039
   type: 公式
-event_date: "2026-10-27"
+event_date: "2026-10-23"
 title_fact_ids:
 - F2
 lede_fact_ids:

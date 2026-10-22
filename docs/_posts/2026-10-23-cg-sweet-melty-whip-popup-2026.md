@@ -19,6 +19,9 @@ sources:
 - label: コラボカフェ編集部「デレマス スイーツドレス ストア in 渋谷・大阪 9月10日より開催!」(2026年8月28日)
   url: https://collabo-cafe.com/events/collabo/imascg-sweet-melty-whip-popup-shop-2026/
   type: 二次情報
+- label: メディコス・エンタテインメント「2026年9月10日(木)より東京・大阪にて 「アイドルマスター シンデレラガールズ」POP UP SHOP開催決定！」(2026年?)
+  url: https://www.medicos-e.net/newsdetail/imas_cinderella_popup2/
+  type: 当事者
 event_date: "2026-10-23"
 title_fact_ids:
 - N1
@@ -28,6 +31,9 @@ lede_fact_ids:
 - N2
 - N3
 verified_facts:
+- id: N29
+  text: メディコス・エンタテインメント公式告知は、「アイドルマスター シンデレラガールズ」POP UP SHOP ~Sweet Melty Whip~を東京・大阪で開催すると発表し、大阪会場の期間を2026年10月23日～11月1日、場所をアベノラクバス（あべのHoop）と案内している。会場ではスイーツドレスをモチーフにした描き下ろしイラストの新商品や特典クリアカードを扱う。
+  url: https://www.medicos-e.net/newsdetail/imas_cinderella_popup2/
 - id: N1
   text: 「アイドルマスター シンデレラガールズ」POP UP SHOP ~Sweet Melty Whip~の大阪会場は2026年10月23日(金)〜11月1日(日)に開催。
   url: https://collabo-cafe.com/events/collabo/imascg-sweet-melty-whip-popup-shop-2026/

@@ -776,6 +776,7 @@
   "https://bandainamco-am.co.jp/am/vg/idolmaster-tours/news/20230623.html"
  ],
  "imasnews765": [
+  "https://imasnews765.com/?p=32582",
   "https://imasnews765.com/?p=32579",
   "https://imasnews765.com/?p=32576",
   "https://imasnews765.com/?p=32571",
@@ -871,7 +872,9 @@
   "https://imasnews765.com/?p=32178",
   "https://imasnews765.com/?p=32175"
  ],
- "_unreadable": {},
+ "_unreadable": {
+  "https://imasnews765.com/?p=32585": 1
+ },
  "pylonport-sidem": [
   "https://pylonport.bandainamcomusiclive.co.jp/more/900",
   "https://pylonport.bandainamcomusiclive.co.jp/more/861",
@@ -989,6 +992,15 @@
   "https://lantis.jp/sidem/extra/index.html#20260925",
   "https://lantis.jp/sidem/extra/index.html#20260912_2"
  ],
- "_pending": [],
+ "_pending": [
+  {
+   "source_id": "imasnews765",
+   "brand": "general",
+   "url": "https://imasnews765.com/?p=32585",
+   "title": "Nostalgic Orchestraがアイマスミリオンライブ！への提供曲を収録したセルフカバーアルバムをリリース",
+   "source_type": "ファン",
+   "csr": false
+  }
+ ],
  "_given_up": []
 }

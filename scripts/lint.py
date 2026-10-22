@@ -315,7 +315,7 @@ def src_rank(t):
 # 見出し・リード・ダイジェストの行は、テンプレートが**そのまま文字として**出す欄。
 # ここに Markdown 記法が混ざると、読者には `**強調**` がそのまま見える。
 # 本文(Markdown)では正しく太字になるので、混同しやすい。
-from renderlib import markdown_in_plain  # noqa: E402  検算(執筆の答えの検め)と同じ基準を1つの定義で持つ
+from renderlib import markdown_in_plain, strip_notice  # noqa: E402  検算(執筆の答えの検め)と同じ基準を1つの定義で持つ
 
 
 def check_plain_text(rep, path, label, value):
@@ -542,6 +542,8 @@ def main() -> int:
             prose = re.sub(r"^#{1,6} .*$", "", body, flags=re.MULTILINE)
             # 段落末の根拠 id コメント(<!-- F1 N2 -->。renderlib が付ける)は字数に入れない
             prose = re.sub(r"<!--\s*(?:[FN]\d+\s*)+-->", "", prose)
+            # 末尾の断り書き(公式ポータルのメンテナンス。コードが付ける)も入れない(枠は書き手の本文で決める。compose.body_length と同じ)
+            prose = strip_notice(prose)
             body_len = len(re.sub(r"\s", "", prose))
             # 枠と長さの整合は、**その規則で組まれた号だけ**に適用する。
             # それ以前は字数を先に決めて書かせていたので、いまの範囲には収まらない。

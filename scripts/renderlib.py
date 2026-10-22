@@ -545,6 +545,32 @@ def strip_fact_notes(body: str) -> str:
     return re.sub(r"\s*<!--\s*(?:[FN]\d+\s*)+-->", "", body)
 
 
+# 本文の末尾にコードが付ける断り書きの段落(公式ポータルのメンテナンス。2026-10-22 編集長の決定)。印で見分け、
+# 字数(枠)・書き直しの段落の照合・書き手に見せる稿からは外す(書き手の言葉ではない)
+# 外すのは、決まった文面(pipelib.PORTAL_MAINTENANCE_NOTICES)に印が付いた段落だけ(書き手の文に印が紛れても外さない)。
+# 断り書きは承認の指紋(pipelib.article_hash)にも入れない(コードの文面で、校閲の判断の対象ではない)
+NOTICE_MARK = "<!-- notice:portal-maintenance -->"
+
+
+def strip_notice(body: str) -> str:
+    """本文から断り書きの段落を外す(無ければそのまま)。"""
+    from pipelib import PORTAL_MAINTENANCE_NOTICES      # 循環を避けて関数の中で読む
+    alts = "|".join(re.escape(f"{n} {NOTICE_MARK}") for n in PORTAL_MAINTENANCE_NOTICES.values())
+    if not alts:
+        return body or ""
+    return re.sub(r"(?:\A|\n[ \t]*\n)(?:" + alts + r")[ \t]*(?=\n|\Z)", "", body or "")
+
+
+def with_notice(text: str, notice: str | None) -> str:
+    """記事ファイルの本文の末尾の断り書きを、notice(None なら無し)に揃える。何度掛けても同じ(冪等)。"""
+    m = re.match(r"\A(---\n.*?\n---\n)(.*)\Z", text, flags=re.S)
+    head, body = (m.group(1), m.group(2)) if m else ("", text)
+    body = strip_notice(body).rstrip("\n")
+    if notice:
+        body = f"{body}\n\n{notice} {NOTICE_MARK}"
+    return head + body + "\n"
+
+
 def render_article(path: Path, date: str, art: dict, out: dict, source_type_of, weakest_src,
                    dump_yaml) -> None:
     """検算済みの出力から記事ファイルを作る。段落の根拠 id は HTML コメントで残す。"""

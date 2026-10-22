@@ -437,6 +437,10 @@ def article_hash(path) -> str:
     m = _re.match(r"^---\n(.*?)\n---\n", text, _re.S)
     fm = (_yaml.safe_load(m.group(1)) or {}) if m else {}
     body = text[m.end():] if m else text
+    # 公式ポータルのメンテナンスの断り書き(コードが決まった文面で付ける段落)は入れない。後のセッションが見分けたメンテナンスで
+    # 承認済みの記事に付け直しても、承認を外さない(2026-10-22 Sol 監査 r2)
+    from renderlib import strip_notice
+    body = strip_notice(body)
     # 校閲が判断に使う項目と、読者に表示される項目を全部入れる(監査指摘)。
     # event_date は時制・鮮度の判断対象、tags と corrections は記事ページに出る
     seen = {"title": fm.get("title"), "lede": fm.get("lede"), "brand": fm.get("brand"),
@@ -1464,12 +1468,65 @@ def maintenance_redirect(url: str, final: str | None) -> bool:
             and not MAINTENANCE_PATH.search(urllib.parse.urlsplit(url).path))
 
 
-def note_fetched(url: str, final: str | None = None) -> None:
+# 公式ポータル(サイト全体のメンテナンスで告知を読めなくなることがある)
+PORTAL_HOST = "idolmaster-official.jp"
+# 公式ポータルがメンテナンスで読めないまま書いた記事の、号ごとの断り書き。ここに無い号には効かない(期限付きの許可)。
+# 編集長の決定 2026-10-22: 10/23 号に限り断り書きを付けて掲載してよい。10/24 号もメンテナンスが続いていれば、その旨を書いて掲載してよい
+PORTAL_MAINTENANCE_NOTICES = {
+    "2026-10-23": "※公式ポータルがシステムメンテナンス中のため、公式サイトの告知ページは確認できていません(2026年10月23日時点)。"
+                  "内容は収集時点の公式の告知・公式Xなどに基づきます。",
+    "2026-10-24": "※公式ポータルのシステムメンテナンスが続いているため、公式サイトの告知ページは確認できていません(2026年10月24日時点)。"
+                  "内容は収集時点の公式の告知・公式Xなどに基づきます。",
+}
+
+
+def is_portal(url) -> bool:
+    import urllib.parse
+    host = (urllib.parse.urlsplit(str(url or "")).hostname or "").lower()
+    return host == PORTAL_HOST or host.endswith("." + PORTAL_HOST)
+
+
+def portal_maintenance_notice(edition: str) -> str | None:
+    """その号の断り書き(許可の期限内の号だけ)。期限外は None で、断り書きも依頼文の追加も付かない。"""
+    return PORTAL_MAINTENANCE_NOTICES.get(str(edition))
+
+
+def portal_maintenance_rules(edition: str, role: str) -> str:
+    """許可の期限内の号だけ、執筆・書き直し・校閲の依頼文に足す指示(prompts/portal-maintenance.<role>.md)。期限外は空。"""
+    return render_prompt(f"portal-maintenance.{role}") if portal_maintenance_notice(edition) else ""
+
+
+def maintenance_record(rec) -> Path:
+    """fetch_page.py がメンテナンス画面へ転送されたページの記録(本文を取れたページの記録の隣。読めたことにはしない)。"""
+    return Path(rec).with_suffix(".mainte")
+
+
+def maintenance_urls(rec) -> set[str]:
+    """記録(note_fetched(maintenance=True))にある、メンテナンスで読めなかったページの URL(頼んだ URL)。記録が無ければ空。"""
+    try:
+        lines = maintenance_record(rec).read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError:
+        return set()
+    out: set[str] = set()
+    for ln in lines:
+        try:
+            row = json.loads(ln)
+        except ValueError:
+            continue
+        if isinstance(row, dict) and isinstance(row.get("url"), str) and row["url"]:
+            out.add(row["url"])
+    return out
+
+
+def note_fetched(url: str, final: str | None = None, maintenance: bool = False) -> None:
     """本文を取れたページを FETCH_RECORD_ENV の記録に書き足す(変数が無ければ何もしない)。書けなくても読み取りは止めない
-    (stderr に出す。記録に無いページは検算が差し戻すので、黙って通ることはない)。"""
+    (stderr に出す。記録に無いページは検算が差し戻すので、黙って通ることはない)。
+    maintenance=True はメンテナンス画面へ転送されたページで、隣の記録(maintenance_record)へ書く(根拠にできるページには入れない)。"""
     rec = os.environ.get(FETCH_RECORD_ENV)
     if not rec:
         return
+    if maintenance:
+        rec = str(maintenance_record(rec))
     line = json.dumps({"url": url, "final": final if final and final != url else None}, ensure_ascii=False) + "\n"
     try:
         Path(rec).parent.mkdir(parents=True, exist_ok=True)

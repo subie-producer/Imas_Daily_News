@@ -2979,7 +2979,8 @@ def test_portal_maintenance_window(tmp: Path):
     spec = {"write-portal": [{"fetch": [portal], "answer": ans(portal)}], "write-unread": [{"answer": ans(portal)}],
             "write-plain": [{"fetch": [other], "answer": ans(other)}], "revise-portal": [{"fetch": [portal], "answer": fixed}]}
     spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
-    art = lambda s, c: {"slug": s, "brand": "cg", "rank": "small", "angle": "知らせ", "candidate_ids": [c], "dedup_key": "x"}
+    # portal は号の一面(lint の号の検査のため)。unread・plain は枠 small(449字まで)
+    art = lambda s, c: {"slug": s, "brand": "cg", "rank": "lead" if s == "portal" else "small", "angle": "知らせ", "candidate_ids": [c], "dedup_key": "x"}
     plan = {"articles": [art("portal", "cp"), art("unread", "cp"), art("plain", "co")]}
     env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "FAKE_SCRIPTS", "FAKE_MAINTE", "FAKE_STATE", "IMAS_FETCH_PAGES", "PATH")
     saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE,
@@ -2989,7 +2990,7 @@ def test_portal_maintenance_window(tmp: Path):
     marked = lambda s, d: (posts / f"{d}-{s}.md").read_text(encoding="utf-8").count(renderlib.NOTICE_MARK)
     try:
         compose.ROOT = pipelib.ROOT = tmp
-        compose.classify_source = lambda u: "公式"
+        compose.classify_source = pipelib.classify_source      # 写した判定表のとおり(lint の出典種別の検査と揃える)
         compose.storylink.prior_lookup = lambda *a: (lambda *b: [])
         compose.DEADLINE = None
         os.environ["PATH"] = f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}"
@@ -3033,12 +3034,26 @@ def test_portal_maintenance_window(tmp: Path):
         lint.POSTS, lint.EDITIONS, lint.EDITORIALS = posts, tmp / "docs" / "_editions", tmp / "docs" / "_editorials"
         lint.CANDIDATES, lint.IDOLS = tmp / "candidates", tmp / "docs" / "_data" / "idols.json"
         lint.WITHDRAWN, lint.REWRITES = tmp / "withdrawn.yml", tmp / "rewrites.yml"
+        # lint 全体を通す下準備: 名鑑と、書いた号ごとの号スナップショット(一面は portal。Sol 監査 r3 の later)
+        import datetime
+        idols = json.loads((repo / "docs" / "_data" / "idols.json").read_text(encoding="utf-8"))
+        lint.IDOLS.parent.mkdir(parents=True, exist_ok=True)
+        lint.IDOLS.write_text(json.dumps(idols, ensure_ascii=False), encoding="utf-8")
+        lint.EDITIONS.mkdir(parents=True, exist_ok=True)
+        for j, dd in enumerate(("2026-10-23", "2026-10-24", "2026-10-25")):
+            ed = {"number": 0, "date": dd, "weekday": "月火水木金土日"[datetime.date.fromisoformat(dd).weekday()],
+                  "issued_at": dd + "T06:00:00+09:00", "pages": 1, "article_count": len(list(posts.glob(f"{dd}-*.md"))),
+                  "corrected_count": 0, "lead_slug": "portal", "digest": [{"label": s, "rows": []} for s in lint.DIGEST_LABELS],
+                  "ranking": [{"n": i + 1, "name": x["name"], "brand": x["brand"], "delta": "new" if j == 0 else "stay"} for i, x in enumerate(idols[:8])],
+                  "birthdays": [{"name": x["name"], "brand": x["brand"]} for x in idols if x.get("birthday") == dd[5:]]}
+            (lint.EDITIONS / f"{dd}.md").write_text("---\n" + json.dumps(ed, ensure_ascii=False) + "\n---\n", encoding="utf-8")
         out = io.StringIO()
         sys.argv = ["lint.py", "--no-net"]
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
-            lint.main()
-        errs = [l for l in out.getvalue().splitlines() if l.startswith(f"::error file=docs/_posts/{d}-") and ("本文" in l or "枠" in l)]
-        check(not errs, f"断り書きを付けた記事が lint の本文・枠の検査で赤: {errs[:3]}")
+            code = lint.main()
+        errs = [l for l in out.getvalue().splitlines() if l.startswith("::error")]
+        check(code == 0 and not errs and "lint: 0 errors" in out.getvalue(),
+              f"断り書きを付けた記事の号が lint で赤(枠 small の unread は断り書きを数えると 449字を超える): {code} {errs[:3]}")
 
         def fresh(dd: str) -> None:
             shutil.rmtree(tmp / "metrics" / "work" / dd / "fetched", ignore_errors=True)

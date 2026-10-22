@@ -13,7 +13,11 @@
       "メンテナンス開始時刻は前後する場合がある。",
       "終了時刻は改めて連絡するとしている。",
       "メンテナンス中に一時的な通信エラーが発生する場合がある。",
-      "エンゲージメント: 高"
+      "エンゲージメント: 高",
+      "システムのセキュリティ対策に伴う緊急メンテナンスを実施予定と告知した。",
+      "メンテナンス期間(予定): 10/21(水)23:00～未定。",
+      "メンテナンス開始時刻は前後する場合があり、終了時刻は改めて連絡するとした。",
+      "一時的に通信エラーが発生する場合があると告知した。"
     ],
     "origin": "explore",
     "via": "explore",
@@ -332,7 +336,28 @@
       "オーロラアクリルキーホルダー 陰陽師ミニキャラ ver.は全8種、各1,155円（税込）。",
       "アクリルネームバッジは全8種、各1,045円（税込）。",
       "ダイカットステッカー 陰陽師ミニキャラ ver.は全8種、各550円（税込）。",
-      "エンゲージメント: 中"
+      "エンゲージメント: 中",
+      "株式会社コンテンツシードは「アイドルマスター シンデレラガールズ POP UP SHOP」の商品をTHEキャラ通販サイトで事後通販している。",
+      "注文受付期間: 2026年10月21日(水)18:00～11月5日(木)23:59。",
+      "発送予定日: 2027年1月下旬～2月中旬以降順次発送。",
+      "オーロラカンバッジ（ランダム）陰陽師 ver.は税込770円、セット税込6,160円、全8種。ランダム仕様のため絵柄は選べない。",
+      "オーロラクリアカード（ランダム）陰陽師 ver.は税込550円、セット税込4,400円、全8種。ランダム仕様のため絵柄は選べない。",
+      "硬質カードケースセット 陰陽師 ver.は各税込1,870円、全8種。",
+      "デカアクリルスタンド 陰陽師 ver.は各税込2,420円、全8種。",
+      "ワイヤーキーホルダー 陰陽師 ver.は各税込1,375円、全8種。",
+      "特大ダイカットアクリルボード 陰陽師 ver.は各税込6,600円、全8種。",
+      "キャンバスプレート 陰陽師 ver.は税込2,310円、全1種。",
+      "マイクロファイバー 陰陽師 ver.は各税込825円、全8種。",
+      "フェイスタオル 陰陽師 ver.は税込3,300円、全1種。",
+      "フルカラーTシャツ 陰陽師 ver.は各税込4,400円、全8種。",
+      "特大タペストリー 陰陽師 ver.は各税込8,800円、全8種。",
+      "ラバーデスクマット 陰陽師 ver.は税込4,400円、全1種。",
+      "ハート型カンバッジ（ランダム）陰陽師ミニキャラ ver.は税込770円、セット税込6,160円、全8種。ランダム仕様のため絵柄は選べない。",
+      "アクリルマスコット（ランダム）陰陽師ミニキャラ ver.は税込880円、セット税込7,040円、全8種。ランダム仕様のため絵柄は選べない。",
+      "オーロラアクリルキーホルダー 陰陽師ミニキャラ ver.は各税込1,155円、全8種。",
+      "アクリルネームバッジは各税込1,045円、全8種。",
+      "ダイカットステッカー 陰陽師ミニキャラ ver.は各税込550円、全8種。",
+      "エンゲージメント: 低"
     ],
     "origin": "explore",
     "via": "explore",
@@ -673,5 +698,1557 @@
       "”ノスオケ”初のセルフカバーアルバム「Nostalgic Orchestra Works」リリース!!"
     ],
     "link_from": "https://imasnews765.com/?p=32585"
+  },
+  {
+    "id": "202610230227-grok-1",
+    "title": "西川保奈美の誕生日",
+    "brand": "765",
+    "source_type": "公式",
+    "url": "https://x.com/imas_ch/status/2113284251797827675",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "honami-nishikawa-birthday-2026",
+    "facts": [
+      "アイドルマスターチャンネルが10月23日に西川保奈美の誕生日を祝った。",
+      "投稿にお祝いムービーとしてYouTube Shortsへのリンクが掲載されている。",
+      "YouTube: https://www.youtube.com/shorts/_zMFHbnJifM",
+      "リンク: https://www.youtube.com/shorts/_zMFHbnJifM",
+      "エンゲージメント: 中",
+      "言及アイドル: 西川保奈美",
+      "アイドルマスターチャンネルが10月23日に西川保奈美の誕生日を祝う投稿をした。",
+      "西川保奈美の誕生日祝いムービーを公開した。",
+      "エンゲージメント: 低",
+      "お祝いムービーをYouTube Shortsで公開した。YouTube: https://www.youtube.com/shorts/_zMFHbnJifM"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-10-23",
+    "published_date": "2026-10-23",
+    "quotes": [
+      "10/23 西川保奈美さん お誕生日おめでとうございます🎂"
+    ]
+  },
+  {
+    "id": "202610230227-grok-2",
+    "title": "「おねがいスクエア」公開",
+    "brand": "cg",
+    "source_type": "公式",
+    "url": "https://x.com/imas_CGofficial/status/2113208752723660906",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "cg-onegai-square-2026",
+    "facts": [
+      "シンデレラガールズ公式が「おねがいスクエア」を公開したと告知した。",
+      "YouTube: https://www.youtube.com/watch?v=Vp_yS3E3d7A&feature=youtu.be",
+      "リンク: https://www.youtube.com/watch?v=Vp_yS3E3d7A&feature=youtu.be",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "「おねがいスクエア」を公開しました📢"
+    ]
+  },
+  {
+    "id": "202610230227-grok-3",
+    "title": "シンデレラガールズオーケストラ アソビストアプレミアム会員2次先行",
+    "brand": "cg",
+    "source_type": "公式",
+    "url": "https://x.com/imas_CGofficial/status/2112831256756990454",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "cg-orchestra-premium-second-lottery-2026",
+    "facts": [
+      "シンデレラガールズオーケストラのアソビストアプレミアム会員2次先行は抽選。",
+      "受付期間: 10/25(日)まで受付中。",
+      "本公演の出演キャストを改めて紹介すると告知した。",
+      "詳細ページはメンテナンスページへ転送され、追加情報は確認できなかった。",
+      "リンク: https://idolmaster-official.jp/live_event/cg_15th_orchestra/ticket/",
+      "エンゲージメント: 高"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "deadline": "2026-10-25",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "アソビストアプレミアム会員2次先行(抽選) 10/25(日)まで受付中♪"
+    ]
+  },
+  {
+    "id": "202610230227-grok-5",
+    "title": "デレステ緊急メンテナンス開始時刻変更",
+    "brand": "cg",
+    "source_type": "公式",
+    "url": "https://x.com/imascg_stage/status/2112884956284518864",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "deresute-emergency-maintenance-2026-10-21-start-change",
+    "facts": [
+      "システムの安全性確保のため、緊急メンテナンスの開始時間を22時に変更した。",
+      "メンテナンス期間(予定): 10/21(水)22:00～未定。",
+      "直前の変更について謝罪した。",
+      "エンゲージメント: 高"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-10-21",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "システムの安全性確保のため、緊急メンテナンスの開始時間を22時からに変更いたします。"
+    ]
+  },
+  {
+    "id": "202610230227-grok-6",
+    "title": "デレステ緊急メンテナンス終了予定時刻告知",
+    "brand": "cg",
+    "source_type": "公式",
+    "url": "https://x.com/imascg_stage/status/2112951778610438644",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "deresute-emergency-maintenance-2026-10-22-end-time",
+    "facts": [
+      "緊急メンテナンスの終了予定時刻を02:10と告知した。",
+      "＜メンテナンス終了予定時刻＞10月22日(木) 02:10。",
+      "エンゲージメント: 高"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-10-22",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "緊急メンテナンスの終了予定時刻をお知らせいたします。"
+    ]
+  },
+  {
+    "id": "202610230227-grok-7",
+    "title": "デレステ緊急メンテナンス終了",
+    "brand": "cg",
+    "source_type": "公式",
+    "url": "https://x.com/imascg_stage/status/2112955020446691623",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "deresute-emergency-maintenance-2026-10-22-ended",
+    "facts": [
+      "10月21日(水)22:00より実施していた緊急メンテナンスを、10月22日(木)02:10に終了した。",
+      "利用者に迷惑をかけたことを謝罪した。",
+      "エンゲージメント: 高"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-10-22",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "10月21日(水)22:00より実施していた緊急メンテナンスを、10月22日(木)02:10に終了いたしました。"
+    ]
+  },
+  {
+    "id": "202610230227-grok-8",
+    "title": "Off Time Voice Series vol.4の販売日決定",
+    "brand": "million",
+    "source_type": "公式",
+    "url": "https://x.com/imasml_theater/status/2113244728884170813",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "million-off-time-voice-series-vol-4-2026",
+    "facts": [
+      "2026年10月26日15:00より販売予定。",
+      "Off Time Voice Series vol.4のボイスアイテムとして、真とこのみの商品が登場する。",
+      "真とこのみの両方を購入すると、琴葉の『ちょこっとおふたいむ ～ 片恋ハッピーエンド ～』も入手できる。",
+      "エンゲージメント: 中",
+      "言及アイドル: 菊地真、馬場このみ、田中琴葉"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-10-26",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "10/26 15:00より 販売予定！アイドルとのオフタイムを臨場感たっぷりに楽しめるボイスアイテム"
+    ]
+  },
+  {
+    "id": "202610230227-grok-9",
+    "title": "『週末だけのハーレクイン』iDOL GRAND-PRIX PV予告",
+    "brand": "million",
+    "source_type": "公式",
+    "url": "https://x.com/imasml_theater/status/2113244477418615038",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "million-harleyquin-idol-grand-prix-pv-2026",
+    "facts": [
+      "『週末だけのハーレクイン』のiDOL GRAND-PRIX PVが2026年10月26日14:50に公開予定。",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-10-26",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "2026/10/26 14:50 『週末だけのハーレクイン』 iDOL GRAND-PRIX PV coming soon..."
+    ]
+  },
+  {
+    "id": "202610230227-grok-10",
+    "title": "プラチナスターティアラ～ハピピス♡～公演折り返し",
+    "brand": "million",
+    "source_type": "公式",
+    "url": "https://x.com/imasml_theater/status/2113148343639486640",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "million-platinum-star-tiara-hapipisu-2026",
+    "facts": [
+      "イベント『プラチナスターティアラ～ハピピス♡～』が公演折り返しとなった。",
+      "イベント楽曲をプレイする際、『めちゃカワ弁当』を最大4倍消費できる。",
+      "イベント楽曲をプレイする際、『めちゃカワ弁当』を1日1回まで10倍消費できる。",
+      "10倍消費では一度に大量のイベントptを獲得できる。",
+      "イベントは2026年10月25日（日）20:59まで（予定）。",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-10-25",
+    "deadline": "2026-10-25",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "イベント『プラチナスターティアラ～ハピピス♡～』公演折り返し！イベント楽曲をプレイする際に『めちゃカワ弁当』を最大4倍消費できるようになるほか、1日1回まで10倍消費もできるようになります！"
+    ]
+  },
+  {
+    "id": "202610230227-grok-11",
+    "title": "シャニマス＆シャニソン周年生配信",
+    "brand": "shiny",
+    "source_type": "公式",
+    "url": "https://idolmaster-official.jp/news/01_19927",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-anniversary-stream-2026",
+    "facts": [
+      "2026年10月23日（金）19:00から生配信予定。",
+      "シャニマスから8.5周年に関する最新情報を届ける予定。",
+      "シャニソンから3周年に関する最新情報を届ける予定。",
+      "出演者: 結名美月（幽谷霧子役）。",
+      "出演者: 和久井優（浅倉透役）。",
+      "出演者: 「シャイニーカラーズ」プロデューサー 高山祐介。",
+      "エンゲージメント: 中",
+      "言及アイドル: 幽谷霧子、浅倉透"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "event_date": "2026-10-23",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "シャニマスからは、8.5周年に関する最新情報をお届け予定ですよ～✨ ぜひチェックしてくださいね♪"
+    ],
+    "link_from": "https://x.com/imassc_official/status/2113238616944349219",
+    "verify_note": "出典がメンテナンス中(https://idolmaster-official.jp/mainte/index.html へ転送)で、facts を本文で確かめられない"
+  },
+  {
+    "id": "202610230227-grok-12",
+    "title": "DMM GAMES版シャニソン臨時メンテナンス終了",
+    "brand": "shiny",
+    "source_type": "公式",
+    "url": "https://x.com/imassc_prism/status/2113228757024842081",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-song-for-prism-maintenance-ended-2026",
+    "facts": [
+      "DMM GAMES版『アイドルマスター シャイニーカラーズ Song for Prism』の臨時メンテナンスが終了した。",
+      "解消日時: 2026年10月22日 19:00頃。",
+      "エンゲージメント: 低"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-10-22",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "DMM GAMESにおける臨時メンテナンスが終了いたしました。"
+    ]
+  },
+  {
+    "id": "202610230227-grok-13",
+    "title": "シャニソン3周年記念ストーリー公開",
+    "brand": "shiny",
+    "source_type": "公式",
+    "url": "https://x.com/imassc_prism/status/2113103048105242970",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-song-for-prism-anniversary-story-2026",
+    "facts": [
+      "3rd Anniversary Storyのプロローグ題名は「形状総論」。",
+      "3周年記念ストーリーは毎日1話ずつ公開。",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "3rd Anniversary Story　プロローグ「形状総論」"
+    ]
+  },
+  {
+    "id": "202610230227-grok-14",
+    "title": "シャニソン「Shatter the Limits」新曲イベント",
+    "brand": "shiny",
+    "source_type": "公式",
+    "url": "https://x.com/imassc_prism/status/2112740665511534839",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-shatter-the-limits-event-2026",
+    "facts": [
+      "シーズの新曲イベント名は「Shatter the Limits」。",
+      "イベントは開催中。",
+      "新曲は『Break Chain』。",
+      "イベント報酬で「★2セレクトBOX vol.3」を獲得できる。",
+      "エンゲージメント: 中",
+      "言及アイドル: 七草にちか、緋田美琴"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "シーズの新曲イベント「Shatter the Limits」が開催中ですよ～✨"
+    ]
+  },
+  {
+    "id": "202610230227-grok-15",
+    "title": "シャニソン新ピックアップガシャ「夜色アティテュード」",
+    "brand": "shiny",
+    "source_type": "公式",
+    "url": "https://x.com/imassc_prism/status/2112741162037412094",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-song-for-prism-pickup-yohiro-attitude-2026",
+    "facts": [
+      "新ピックアップガシャで限定★3【毒を喰らわばなんとやら】樋口円香が登場。",
+      "エンゲージメント: 中",
+      "言及アイドル: 樋口円香"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "限定★3【毒を喰らわばなんとやら】樋口 円香"
+    ]
+  },
+  {
+    "id": "202610230227-grok-16",
+    "title": "シャニマス育成イベント「秋のアイドル強化週間」報酬",
+    "brand": "shiny",
+    "source_type": "公式",
+    "url": "https://x.com/imassc_official/status/2112786207855804735",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-autumn-idol-training-week-2026",
+    "facts": [
+      "育成イベント名は「秋のアイドル強化週間」。",
+      "イベント報酬アイドルはSRサポートアイドル【支え合えばどこまでも】八宮めぐる。",
+      "エンゲージメント: 低",
+      "言及アイドル: 八宮めぐる"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "育成イベント「秋のアイドル強化週間」にてイベント報酬のアイドルをご紹介します！"
+    ]
+  },
+  {
+    "id": "202610230227-grok-17",
+    "title": "シャニマスURプロデュースアイドル登場",
+    "brand": "shiny",
+    "source_type": "公式",
+    "url": "https://x.com/imassc_official/status/2112785960236970386",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-hiori-ur-chest-lighting-2026",
+    "facts": [
+      "URプロデュースアイドル【胸の奥に灯る】風野灯織が登場。",
+      "エンゲージメント: 低",
+      "言及アイドル: 風野灯織"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "URプロデュースアイドル【胸の奥に灯る】風野 灯織さん登場時の動画を特別にご紹介します～♪"
+    ]
+  },
+  {
+    "id": "202610230227-grok-18",
+    "title": "シャニマスweb4コマ第661話「猫」",
+    "brand": "shiny",
+    "source_type": "公式",
+    "url": "https://x.com/imassc_official/status/2112740663372480548",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-web-manga-661-cat-2026",
+    "facts": [
+      "web4コマ漫画第661話「猫」を公開。",
+      "今回の話は斑鳩ルカ。",
+      "エンゲージメント: 低",
+      "言及アイドル: 斑鳩ルカ"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "第661話 『猫』を公開しました～！"
+    ]
+  },
+  {
+    "id": "202610230227-grok-19",
+    "title": "シャイニーカラーズ ダークガーリーファッションver.グッズ予約",
+    "brand": "shiny",
+    "source_type": "未確認",
+    "url": "https://x.com/imas_goodscheck/status/2113290557774766489",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-dark-girly-fashion-goods-2026",
+    "facts": [
+      "『アイドルマスター シャイニーカラーズ』ダークガーリーファッションver.のグッズは全23商品。",
+      "予約期間: 2026年11月4日まで。",
+      "アクリルスタンド（描き下ろしイラスト）: 各1,925円（税込）。大崎甘奈、大崎甜花、桑山千雪。",
+      "アクリルスタンドプレート（ミニキャライラスト）: 各1,815円（税込）。",
+      "アクリルジオラマ（ミニキャライラスト）: 各3,850円（税込）。アルストロメリア、ストレイライト、ノクチル。",
+      "スマキャラスタンド（ミニキャライラスト）: 各1,980円（税込）。アルストロメリア、ストレイライト、ノクチル。",
+      "トレーディング缶バッジ（描き下ろしイラスト）: コンプリートセット全6種・6個入り、3,300円（税込）。",
+      "トレーディング缶バッジ（ミニキャライラスト）: コンプリートセット全10種・10個入り、5,500円（税込）。",
+      "トレーディングアクリルカード（描き下ろしイラスト）: コンプリートセット全6種・6個入り、3,960円（税込）。",
+      "トレーディングアクリルキーホルダー（ミニキャライラスト）: コンプリートセット全10種・10個入り、8,800円（税込）。",
+      "リンク: https://j-hobby.net/clz/1690827.html#ttl",
+      "エンゲージメント: 中",
+      "言及アイドル: 大崎甘奈、大崎甜花、桑山千雪、芹沢あさひ、黛冬優子、和泉愛依、浅倉透、樋口円香、福丸小糸、市川雛菜"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "deadline": "2026-11-04",
+    "published_date": "2026-10-23",
+    "quotes": [
+      "『シャイニーカラーズ』ダークガーリーファッションver.のグッズ全23商品をまとめました。"
+    ]
+  },
+  {
+    "id": "202610230227-grok-20",
+    "title": "シャニマス「SHINY Style COLLECTION」第2弾キーホルダー",
+    "brand": "shiny",
+    "source_type": "公式",
+    "url": "https://x.com/shinyc_official/status/2112846360743723152",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-style-collection-vol2-keyholder-2026",
+    "facts": [
+      "「SHINY Style COLLECTION」第2弾グッズを受注中。",
+      "「No 1 feel alone」のユニットロゴとキャッチコピーをあしらったキーホルダー。",
+      "受注は10月25日（日）まで。",
+      "リンク: https://shop.asobistore.jp/feature/shiny_style_collection",
+      "エンゲージメント: 低",
+      "言及アイドル: 浅倉透、樋口円香、福丸小糸、市川雛菜"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "deadline": "2026-10-25",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "「No 1 feel alone」のユニットロゴとキャッチコピーをあしらったキーホルダー🏙️"
+    ]
+  },
+  {
+    "id": "202610230227-grok-21",
+    "title": "FRAME「ULTIMATE FLAME」2DMV公開予定",
+    "brand": "sidem",
+    "source_type": "準公式",
+    "url": "https://x.com/SideM_lantis/status/2113223847012896838",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "fram-ultimate-flame-2dmv-2026",
+    "facts": [
+      "FRAME「ULTIMATE FLAME」の2DMVを公開予定。",
+      "公開日：2026年10月23日(金)22:00（予定）。",
+      "YouTube: https://www.youtube.com/watch?v=Iu3hlREXqQo&feature=youtu.be",
+      "リンク: https://www.youtube.com/watch?v=Iu3hlREXqQo&feature=youtu.be",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "event_date": "2026-10-23",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "🗓️公開日：10月23日(金)22:00（予定）"
+    ]
+  },
+  {
+    "id": "202610230227-grok-22",
+    "title": "315プロNight! 第577回チラ見せ動画公開",
+    "brand": "sidem",
+    "source_type": "準公式",
+    "url": "https://x.com/SideM_lantis/status/2113103053083804124",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "315pronight-577-teaser-2026",
+    "facts": [
+      "2026年10月16日(金)放送回の「チラ見せ聞かせ」動画を公開。",
+      "パーソナリティ：高塚智人さん、矢野奨吾さん、榎木淳弥さん、駒田航さん。",
+      "本編タイムシフト：https://live.nicovideo.jp/watch/lv351405581",
+      "リンク: https://live.nicovideo.jp/watch/lv351405581",
+      "エンゲージメント: 低"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "👀”チラ見せ聞かせ”動画公開👂️"
+    ]
+  },
+  {
+    "id": "202610230227-grok-23",
+    "title": "2DMVシリーズ制作コメント＆グッズサンプル紹介記事",
+    "brand": "sidem",
+    "source_type": "準公式",
+    "url": "https://pylonport.bandainamcomusiclive.co.jp/",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "sidem-2dmv-pylonport-ds-altessimo-2026",
+    "facts": [
+      "PYLON PORTで『アイドルマスター SideM』2DMVシリーズの制作コメントとグッズサンプル紹介記事が公開された。",
+      "対象楽曲はDRAMATIC STARS「Delight Excursion」。",
+      "対象楽曲はAltessimo「Panorama's Fanfare」。",
+      "エンゲージメント: 低"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "『アイドルマスター SideM』2DMVの制作コメントとグッズをご紹介！"
+    ],
+    "link_from": "https://x.com/SideM_lantis/status/2112833016146124929",
+    "periods": [
+      "発売日: 順・50音順）■2026年10月05日TVアニメ『..."
+    ]
+  },
+  {
+    "id": "202610230227-grok-24",
+    "title": "Café Parade MONTHLY THEME SONG 12発売",
+    "brand": "sidem",
+    "source_type": "準公式",
+    "url": "https://x.com/SideM_lantis/status/2112710462903083078",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "cafeparade-monthly-theme-song-12-2026",
+    "facts": [
+      "「P@SSION CHALLENGE We are 315！ MONTHLY THEME SONG 12 Café Parade」が2026年10月21日発売。",
+      "315プロダクションの冠番組「P@SSION CHALLENGE We are 315！」のマンスリーテーマソングを16ユニットで繋いでいくシリーズ。",
+      "封入特典：ポータルサイトでCD特典ストーリーが閲覧できるストーリー解放用シリアルコード。",
+      "初回生産特典：ユニットメンバー全員分の特製ブロマイド。",
+      "試聴動画：YouTube: https://www.youtube.com/watch?v=xPnbCuHfozk&feature=youtu.be",
+      "CD SHOP: https://lnk.to/LACM-24792",
+      "リンク: https://www.youtube.com/watch?v=xPnbCuHfozk&feature=youtu.be",
+      "リンク: https://lnk.to/LACM-24792",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "P@SSION CHALLENGE We are 315！ MONTHLY THEME SONG 12 Café Parade"
+    ]
+  },
+  {
+    "id": "202610230227-grok-26",
+    "title": "315!!!SHOP「いらっしゃいませ315にゃお店屋さん mini ver.」公開",
+    "brand": "sidem",
+    "source_type": "準公式",
+    "url": "https://x.com/ImasShop_bnam/status/2113152118601458040",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "315shop-nyashop-mini-2026",
+    "facts": [
+      "「いらっしゃいませ315にゃお店屋さん mini ver.」を公開。",
+      "「スーパーウルトラプロデュース大作戦！」で15名が選出された。",
+      "グッズ詳細は後日公開予定。",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "#スーパーウルトラプロデュース大作戦！ にてこちらの1⃣5⃣名が選出されました✨"
+    ]
+  },
+  {
+    "id": "202610230227-grok-27",
+    "title": "リメンバーショットフェア第4弾の特典付与条件と終了日",
+    "brand": "sidem",
+    "source_type": "未確認",
+    "url": "https://x.com/animateunagi/status/2113151914829648027",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "remember-shot-fair-4-2026",
+    "facts": [
+      "「アイドルマスター SideM リメンバーショットフェア第4弾」は10月25日(日)まで。",
+      "SideM関連グッズの購入・予約内金税込1,100円毎に切手風ステッカーを1枚進呈。",
+      "書籍・オーディオ・ビジュアル商品の購入・予約は、内金税込1,100円以上必須で1点毎に切手風ステッカーを1枚進呈。",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "deadline": "2026-10-25",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "「アイドルマスター SideM リメンバーショットフェア第4弾」は〈10/25(日)〉まで♬"
+    ]
+  },
+  {
+    "id": "202610230227-grok-28",
+    "title": "ルネサンスコラボ版わくわくチケット12枚セット完売",
+    "brand": "sidem",
+    "source_type": "未確認",
+    "url": "https://x.com/renaissance_IP/status/2113113612705480843",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "sidem-renaissance-ticket-soldout-2026-10-22",
+    "facts": [
+      "両国・港南中央店舗で、コラボ版わくわくチケット12枚セットが完売。",
+      "再入荷情報は随時Xにて告知予定。",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "グッズ： コラボ版わくわくチケット12枚セット"
+    ]
+  },
+  {
+    "id": "202610230227-grok-29",
+    "title": "ミラクルナナウ麻央・広ガシャ復刻",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2112786207713394873",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-miracle-nanau-revival-2026",
+    "facts": [
+      "開催期間: 10/22 (木) 11:00 ～ (予定)",
+      "復刻ライブツアー限定Pアイドル【ミラクルナナウ(ﾟ∀ﾟ)！】有村麻央",
+      "復刻ライブツアー限定Pアイドル【ミラクルナナウ(ﾟ∀ﾟ)！】篠澤 広",
+      "復刻SSRサポートカード『ｖギャルピーーースッｖ』",
+      "復刻SSRサポートカード『おっと、危ないよ』",
+      "復刻SRサポートカード『師弟の修行』",
+      "復刻SRサポートカード『トゲトゲ注意報』",
+      "エンゲージメント: 中",
+      "言及アイドル: 有村麻央、篠澤広"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "deadline": "2026-10-30",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "📢 明日11時より！\n📌復刻ライブツアー限定Pアイドル\n【ミラクルナナウ(ﾟ∀ﾟ)！】有村麻央\n【ミラクルナナウ(ﾟ∀ﾟ)！】篠澤 広"
+    ]
+  },
+  {
+    "id": "202610230227-grok-30",
+    "title": "アナザーアイドル’26ミラクルナナウ！ガシャ",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2112789730589077592",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-another-miracle-nanau-2026",
+    "facts": [
+      "開催期間: 10/22 (木) 11:00 ～ (予定)",
+      "初回10連無料",
+      "エンゲージメント: 中",
+      "言及アイドル: 雨夜燕"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "deadline": "2026-10-30",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "📢 明日11時より！初回10連無料 🎁\n『アナザーアイドル'26ミラクルナナウ(ﾟ∀ﾟ)！ガシャ』"
+    ]
+  },
+  {
+    "id": "202610230227-grok-31",
+    "title": "SSR確定セレクトガシャ",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2112790233997623690",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-ssr-select-miracle-2026",
+    "facts": [
+      "開催期間: 10/22 (木) 11:00 ～ (予定)",
+      "選択した'26 ミラクルナナウ(ﾟ∀ﾟ)！アナザーアイドルを確定で入手",
+      "有償限定",
+      "一回限り",
+      "エンゲージメント: 中",
+      "言及アイドル: 有村麻央、篠澤広"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "deadline": "2026-10-30",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "📢 明日11時より！アナザーガシャと同時開催✨\n『SSR確定セレクトガシャ』"
+    ]
+  },
+  {
+    "id": "202610230227-grok-32",
+    "title": "「最強のスマイルスカート」衣装ショップ追加",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2113118899944444210",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-smile-skirt-2026",
+    "facts": [
+      "有村麻央と篠澤広の「最強のスマイルスカート」が衣装ショップに追加",
+      "有償ジュエル: 500個",
+      "販売期間: 10/30 (金) 10:59まで（予定）",
+      "エンゲージメント: 中",
+      "言及アイドル: 有村麻央、篠澤広"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "deadline": "2026-10-30",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "📢最強のスマイルスカート 販売中！\n麻央と広の「最強のスマイルスカート」が\n衣装ショップに追加✨"
+    ]
+  },
+  {
+    "id": "202610230227-grok-33",
+    "title": "初星学園放送部 第110回",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2112823707043266582",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-hajihoshi-radio-110-2026-10-21",
+    "facts": [
+      "放送日時: 2026年10月21日 21:00",
+      "出演: 薄井友里さん（姫崎莉波役）",
+      "出演: 松田彩音さん（花海佑芽役）",
+      "「Agitato」や「どんどこ🥁どんどこ🥁どんどこ🥁どんタスティック!!!」などについて語る",
+      "YouTube: https://www.youtube.com/watch?v=FYA01EKks6g&feature=youtu.be",
+      "リンク: https://t.co/r8F8Yy0I3j",
+      "エンゲージメント: 中",
+      "言及アイドル: 姫崎莉波、花海佑芽"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-10-21",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "今回は薄井友里さん、松田彩音さんのお2人がゲストで登場🥕\n「Agitato」や「どんどこ🥁どんどこ🥁どんどこ🥁どんどこ🥁どんタスティック!!!」などのお話をたっぷり語っていただきました✨️"
+    ]
+  },
+  {
+    "id": "202610230227-grok-34",
+    "title": "初星学園放送部 10月28日放送回ゲスト",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2112889135891697749",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-radio-guest-2026-10-28",
+    "facts": [
+      "放送日: 10/28(水)",
+      "ゲスト: 小鹿なおさん（月村 手毬役）",
+      "ゲスト: 川村玲奈さん（篠澤 広役）",
+      "エンゲージメント: 中",
+      "言及アイドル: 月村手毬、篠澤広"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-10-28",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "🔶10/28(水)放送回　ゲスト\n小鹿なお さん (月村 手毬役)\n川村玲奈 さん (篠澤 広役)"
+    ]
+  },
+  {
+    "id": "202610230227-grok-35",
+    "title": "DMM GAMES版の臨時メンテナンス完了",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2113228106546983032",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-dmm-maintenance-complete-2026-10-22",
+    "facts": [
+      "メンテナンスは2026年10月22日19:00頃に完了",
+      "現在はDMM GAMES版『学園アイドルマスター』を利用可能",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "2026年10月21日（水）22:00～ 実施しておりました、DMM GAMES版『学園アイドルマスター』のメンテナンスが19:00頃に完了いたしました。"
+    ]
+  },
+  {
+    "id": "202610230227-grok-36",
+    "title": "バンダイナムコIDの一部機能が利用可能に",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2113153487878094915",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-bandainamco-id-restored-2026-10-22",
+    "facts": [
+      "データ連携と公式WEB SHOPへのログインが利用可能になった",
+      "「バンダイナムコID」のメンテナンスは継続中",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "昨日夜にご案内した「バンダイナムコID」のメンテナンスにつきまして、データ連携ならびに公式WEB SHOPへのログインがご利用いただけるようになりました。"
+    ]
+  },
+  {
+    "id": "202610230227-grok-37",
+    "title": "「コンテンポラリのダンス」MVが200万再生",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2112853903868051859",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-contemporary-dance-2m-2026",
+    "facts": [
+      "「コンテンポラリのダンス」のMusic Videoが200万再生を突破",
+      "YouTube: https://www.youtube.com/watch?v=82SGsHkhySg&feature=youtu.be",
+      "リンク: https://www.youtube.com/watch?v=82SGsHkhySg&feature=youtu.be",
+      "エンゲージメント: 中",
+      "言及アイドル: 花海咲季"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "『コンテンポラリのダンス』のMusic Videoが200万再生を突破しました🎉"
+    ]
+  },
+  {
+    "id": "202610230227-grok-38",
+    "title": "「め」MVが100万再生",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2112846356922634653",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-me-1m-2026",
+    "facts": [
+      "「め」のMusic Videoが100万再生を突破",
+      "YouTube: https://www.youtube.com/watch?v=lYafXo-rjU8&feature=youtu.be",
+      "リンク: https://www.youtube.com/watch?v=lYafXo-rjU8&feature=youtu.be",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "『め』のMusic Videoが100万再生を突破しました🎉"
+    ]
+  },
+  {
+    "id": "202610230227-grok-39",
+    "title": "学園アイドルマスター公式ウェブサイト緊急メンテナンス",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2112873257611284783",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-website-maintenance-2026-10-21",
+    "facts": [
+      "メンテナンス期間(予定): 2026/10/21（水）21:00～終了時刻未定",
+      "メンテナンス中はサイトを閲覧できない",
+      "メンテナンス開始時刻は前後することがある",
+      "終了時刻は改めて連絡予定",
+      "リンク: https://t.co/oPYZEyxHYF",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "/／\n今日は学マ水曜日！\n今週は『学マ水曜日ガシャチケット × 1』を配布中🎁ログインで「Roar ガシャ」を1回引けますよ♪\n#学マス"
+    ]
+  },
+  {
+    "id": "202610230227-grok-40",
+    "title": "学マ水曜日ガシャチケット配布",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2112743174149955887",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-wednesday-ticket-2026-10-21",
+    "facts": [
+      "今週は『学マ水曜日ガシャチケット × 1』を配布中",
+      "ログインで「Roar ガシャ」を1回引ける",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "今週は『学マ水曜日ガシャチケット × 1』を配布中🎁"
+    ]
+  },
+  {
+    "id": "202610230227-grok-41",
+    "title": "紫雲清夏SSRアナザーアイドル確定無料1連ガシャ",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2112740673564877294",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-shiun-kiyoka-another-free-gacha-2026",
+    "facts": [
+      "【紫雲清夏】のシーズン限定「アナザーアイドル」がいずれか確定で手に入る無料1連ガシャ",
+      "ガシャ開催時期: 10/23(金) 10:59まで（予定）",
+      "エンゲージメント: 中",
+      "言及アイドル: 紫雲清夏"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "deadline": "2026-10-23",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "【紫雲清夏】のシーズン限定「アナザーアイドル」が\nいずれか確定で手に入る無料1連ガシャ！"
+    ]
+  },
+  {
+    "id": "202610230227-grok-42",
+    "title": "『冠菊』カバー動画のプレミア公開告知",
+    "brand": "gaku",
+    "source_type": "未確認",
+    "url": "https://x.com/qx_maru/status/2113314444248051767",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-fan-cover-kanmuri-giku-2026",
+    "facts": [
+      "『冠菊』/ 初星学園をカバー",
+      "プレミア公開日時: 2026.10.23 (Fri) 20:00",
+      "YouTube: https://www.youtube.com/watch?si=Ah7d4sudPoCfmga3&v=_BxREspHOFg&feature=youtu.be",
+      "リンク: https://www.youtube.com/watch?si=Ah7d4sudPoCfmga3&v=_BxREspHOFg&feature=youtu.be",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "event_date": "2026-10-23",
+    "published_date": "2026-10-23",
+    "quotes": [
+      "『冠菊』/ 初星学園\n\nCovered by まるた\n\n2026.10.23 (Fri) 20:00 プレミア公開"
+    ]
+  },
+  {
+    "id": "202610230227-grok-43",
+    "title": "バトルスピリッツ 学園アイドルマスター コラボブースター予約",
+    "brand": "gaku",
+    "source_type": "当事者",
+    "url": "https://www.amazon.co.jp/BANDAI-%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84-%E3%82%B3%E3%83%A9%E3%83%9C%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC-%E5%AD%A6%E5%9C%92%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC-%E8%BC%9D%E3%81%91%E3%82%8B%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E3%80%9026RCB03%E3%80%91/dp/B0HN6T84GW",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-battlespirits-collab-booster-2027",
+    "facts": [
+      "商品名: バンダイ(BANDAI) バトルスピリッツ コラボブースター 学園アイドルマスター 輝けるアイドル【26RCB03】 (BOX)",
+      "セット内容: 16パック入り",
+      "価格: 5,808円（税込）",
+      "発売予定日: 2027年2月27日",
+      "予約受付中",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-23",
+    "quotes": [
+      "バンダイ(BANDAI) バトルスピリッツ コラボブースター 学園アイドルマスター 輝けるアイドル【26RCB03】 (BOX) 16 パック入り"
+    ],
+    "link_from": "https://x.com/202407hajimeru/status/2113303365387993396"
+  },
+  {
+    "id": "202610230227-grok-44",
+    "title": "ヴイアライヴ 3rdLIVE＆MEETING「QONNECT AS ONE」開催・最速先行受付",
+    "brand": "dsva",
+    "source_type": "公式",
+    "url": "https://x.com/valiv_official/status/2113266096036065319",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "valiv-3rd-live-meeting-qonnect-as-one-2027",
+    "facts": [
+      "初の二都市開催と告知された。",
+      "イベント名は「ヴイアラ 3rdLIVE＆MEETING -QONNECT AS ONE-」。",
+      "名古屋公演は2027年1月30日・31日、愛知県芸術劇場 大ホールで開催予定。",
+      "東京公演は2027年3月21日・22日、日本工学院アリーナで開催予定。",
+      "現地チケット最速先行の申込を受け付けている。",
+      "グッズ付きチケットのグッズはおすわりぬいぐるみ。",
+      "申込期限: 2026年11月15日(日)23:59まで。",
+      "リンク: https://t.co/dVaE8WMfgp",
+      "エンゲージメント: 高",
+      "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "deadline": "2026-11-15",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "📢初の二都市開催！ #ヴイアラ 3rdLIVE＆MEETING -QONNECT AS ONE-"
+    ]
+  },
+  {
+    "id": "202610230227-grok-45",
+    "title": "上水流宇宙「Wake up my music」踊ってみたショート動画公開",
+    "brand": "dsva",
+    "source_type": "公式",
+    "url": "https://x.com/valiv_official/status/2112831263354781804",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "kamizuru-wake-up-my-music-dance-short-2026-10-21",
+    "facts": [
+      "上水流宇宙のショート動画が公開された。",
+      "動画の内容は「Wake up my music」踊ってみた。",
+      "YouTube: https://www.youtube.com/shorts/_nj8uSouS6c",
+      "TikTok: https://www.tiktok.com/@valiv_official/video/7698983822460898580",
+      "リンク: https://www.youtube.com/shorts/_nj8uSouS6c",
+      "リンク: https://www.tiktok.com/@valiv_official/video/7698983822460898580",
+      "リンク: https://x.com/KamizuruCosmo",
+      "エンゲージメント: 中",
+      "言及アイドル: 上水流宇宙"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "「Wake up my music」 踊ってみた"
+    ]
+  },
+  {
+    "id": "202610230227-grok-46",
+    "title": "ヴイアライヴ3人で「BOMBANANA!」コラボ配信を実施",
+    "brand": "dsva",
+    "source_type": "公式",
+    "url": "https://x.com/TomoriManaka/status/2113273799454183700",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "valiv-bombanana-collab-2026-10-22",
+    "facts": [
+      "灯里愛夏が、ヴイアライヴ3人で「BOMBANANA!」をプレイしたと投稿した。",
+      "投稿では配信を楽しかったと振り返っている。",
+      "配信出演者は灯里愛夏、上水流宇宙、レトラ。",
+      "リンク: https://www.youtube.com/live/A68M3Gef0rM",
+      "エンゲージメント: 中",
+      "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-10-22",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "#ヴイアラ 3人で「BOMBANANA!」🐒✨️ たのしかったー！！！！"
+    ]
+  },
+  {
+    "id": "202610230227-grok-48",
+    "title": "ヴイアラ3rdLIVE＆MEETING 現地チケット最速先行",
+    "brand": "joint",
+    "source_type": "公式",
+    "url": "https://x.com/imas_official/status/2113267406470803691",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "v-aliv-3rd-live-ticket-2026",
+    "facts": [
+      "#ヴイアラ 3rdLIVE＆MEETINGの現地チケット最速先行申込を案内した。",
+      "グッズ付きチケットのグッズはおすわりぬいぐるみ。",
+      "申込期限: 2026年11月15日(日)23:59まで",
+      "申込ページ: https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+      "リンク: https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+      "エンゲージメント: 中",
+      "現地チケット最速先行の申込を案内した。",
+      "グッズ付きチケットの特典はおすわりぬいぐるみ。",
+      "申込期限：2026年11月15日(日)23:59まで。",
+      "申込ページ：https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+      "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "deadline": "2026-11-15",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "#ヴイアラ 3rdLIVE＆MEETING お申込み直リンクは下記から！"
+    ]
+  },
+  {
+    "id": "202610230227-grok-49",
+    "title": "スタマス PS4版デジタルデラックスエディションのセール",
+    "brand": "joint",
+    "source_type": "公式",
+    "url": "https://x.com/imas_official/status/2113229817999213055",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "starlit-season-ps4-sale-2026",
+    "facts": [
+      "「アイドルマスター スターリットシーズン」PS4版デジタルデラックスエディションのセールを実施中と告知した。",
+      "セール期限: 11月4日23時59分まで",
+      "リンク: https://store.playstation.com/ja-jp/product/JP0700-CUSA18927_00-IMASSGAMDELX0001",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "deadline": "2026-11-04",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "「アイドルマスター スターリットシーズン」PS4版 デジタルデラックスエディションのセールが実施中！"
+    ]
+  },
+  {
+    "id": "202610230227-grok-50",
+    "title": "スタマス5周年 アイドル紹介動画⑤ 小宮果穂",
+    "brand": "joint",
+    "source_type": "公式",
+    "url": "https://x.com/imas_official/status/2113087954709098925",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "starlit-season-5th-idol-intro-kaho-komiya",
+    "facts": [
+      "スタマス5周年のアイドル紹介動画⑤として、小宮果穂を紹介した。",
+      "投稿では「765×961盛り上げ！」と案内した。",
+      "YouTube: https://www.youtube.com/watch?v=dq-UoJRndUg",
+      "リンク: https://www.youtube.com/watch?v=dq-UoJRndUg",
+      "エンゲージメント: 中",
+      "言及アイドル: 小宮果穂",
+      "スターリットシーズン5周年のアイドル紹介動画⑤として小宮果穂を紹介した。",
+      "投稿では「765×961盛り上げ！」と紹介。",
+      "動画：YouTube https://www.youtube.com/watch?v=dq-UoJRndUg",
+      "エンゲージメント: 低"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "765×961盛り上げ！ 本日は、小宮 果穂（こみや かほ）さんをご紹介！"
+    ]
+  },
+  {
+    "id": "202610230227-grok-51",
+    "title": "ツアマスのマイページとオンラインゲームモードが復旧",
+    "brand": "joint",
+    "source_type": "公式",
+    "url": "https://x.com/TOURS_imas/status/2113218411962781817",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "tours-service-restored-2026",
+    "facts": [
+      "連動サイト「アイドルマスター TOURS マイページ」の緊急メンテナンスが終了し、利用可能になった。",
+      "アミューズメントICカードを使用したプレイについて、ALL․Netのメンテナンス終了を受けオンラインによるゲームモードも順次正常稼働していることを確認した。",
+      "復旧していない筐体がある場合は店舗スタッフに再起動を依頼するよう案内した。",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-10-22",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "連動サイト「アイドルマスター TOURS マイページ」の緊急メンテナンスが終了し、ご利用いただけるようになりましたことをお知らせいたします。"
+    ]
+  },
+  {
+    "id": "202610230227-grok-52",
+    "title": "ツアマス RHYTHM LIVE FESTIVAL 2027 大会予選の詳細公開",
+    "brand": "joint",
+    "source_type": "公式",
+    "url": "https://x.com/TOURS_imas/status/2113193941290070518",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "tours-rhythm-live-festival-2027-qualifier",
+    "facts": [
+      "『ツアマス』RHYTHM LIVE FESTIVAL 2027の大会予選の詳細を公式サイトで公開した。",
+      "マスター部門の難易度はMASTER。",
+      "チャレンジ部門の難易度はVETERAN。",
+      "予選開始: 11月12日",
+      "リンク: https://t.co/oXqVG6t5e5",
+      "エンゲージメント: 高"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-11-12",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "今回も多くのプロデューサーさんにご参加いただきたく、マスター部門（難易度：MASTER）チャレンジ部門（難易度：VETERAN）の2部門にて開催いたします!"
+    ]
+  },
+  {
+    "id": "202610230227-grok-55",
+    "title": "シンデレラガールズ・ミリオンライブ！×伊勢丹のおせち2027",
+    "brand": "joint",
+    "source_type": "二次情報",
+    "url": "https://x.com/imasnews765/status/2113246834785435692",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "imas-isetan-osechi-2027",
+    "facts": [
+      "2026年10月21日(水)午前10時～11月17日(火)午後11時59分、三越伊勢丹オンラインストアで予約を受け付ける。",
+      "店頭での予約・販売はない。",
+      "シンデレラガールズ：【A】「幸」個食おせち二客(冷凍) 鷹富士 茄子 限定Ver. 24,840円（税込）。",
+      "ミリオンライブ！：【A】「真」個食おせち二客(冷凍) 白石 紬 限定Ver. 24,840円（税込）。",
+      "リンク: https://imasnews765.com/?p=32582",
+      "エンゲージメント: 高",
+      "言及アイドル: 鷹富士茄子、白石紬",
+      "「アイドルマスター シンデレラガールズ」と伊勢丹のおせち2027がコラボレーションする。",
+      "「アイドルマスター ミリオンライブ！」と三越のおせち2027がコラボレーションする。",
+      "シンデレラガールズのおせちは2026年10月21日(水)午前10時～11月17日(火)午後11時59分に予約を受け付ける。",
+      "シンデレラガールズのおせちの予約先は三越伊勢丹オンラインストア。",
+      "シンデレラガールズの【A】は「幸」個食おせち二客(冷凍) 鷹富士 茄子 限定Ver.で、24,840円（税込）。",
+      "ミリオンライブ！のおせちは2026年10月21日(水)午前10時～11月17日(火)午後11時59分に予約を受け付ける。",
+      "ミリオンライブ！のおせちの予約先は三越伊勢丹オンラインストア。",
+      "ミリオンライブ！の【A】は「真」個食おせち二客(冷凍) 白石 紬 限定Ver.で、24,840円（税込）。",
+      "エンゲージメント: 中",
+      "言及アイドル: 鷹富士 茄子、白石 紬"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "deadline": "2026-11-17",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "2026年10月21日(水)午前10時～11月17日(火)午後11時59分"
+    ]
+  },
+  {
+    "id": "202610230227-grok-57",
+    "title": "アイマスch 11月メンバー限定配信の出演者決定・お便り募集",
+    "brand": "general",
+    "source_type": "公式",
+    "url": "https://x.com/imas_ch/status/2112889965373956590",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "imas-ch-members-stream-2026-11",
+    "facts": [
+      "アイマスchメンバー限定配信の11月ゲストが決定し、お便りを募集している。",
+      "出演：MC 南早紀、ゲスト 宮﨑雅也。",
+      "お便り投稿は誰でも可能。",
+      "お便りフォーム：https://docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg/viewform?usp=send_form",
+      "リンク: https://docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg/viewform?usp=send_form",
+      "リンク: https://www.youtube.com/@imas-official/join",
+      "エンゲージメント: 低"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "#アイマスch メンバー限定配信 11月ゲスト決定&お便り募集中！"
+    ]
+  },
+  {
+    "id": "202610230227-grok-59",
+    "title": "やまなし WALK & WANDER 描き下ろしイラスト公開",
+    "brand": "cg",
+    "source_type": "当事者",
+    "url": "https://imas-cinderella-yamanashi.com/2026/",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "cg-yamanashi-walk-wander-art-2026",
+    "facts": [
+      "2026年10月22日、描き下ろしイラスト・ミニキャライラストとスポット音声ガイドの情報を公開した。",
+      "山梨PR担当アイドルは輿水幸子、柊志乃、橘ありす、久川颯、依田芳乃。",
+      "山梨応援アイドルは氏家むつみ、鷺沢文香、佐藤心、高森藍子、松尾千鶴。",
+      "山梨観光をご案内する仕事として、エリアは「甲府＆石和」「勝沼」。",
+      "エンゲージメント: 中",
+      "言及アイドル: 輿水幸子、柊志乃、橘ありす、久川颯、依田芳乃、氏家むつみ、鷺沢文香、佐藤心、高森藍子、松尾千鶴"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "2026.10.22 描き下ろしイラスト・ミニキャライラストと、スポット音声ガイドの情報を公開"
+    ],
+    "link_from": "https://x.com/hiromedo/status/2113193653913211151",
+    "unbacked_facts": [
+      "2026-10-22",
+      "10月22日"
+    ]
+  },
+  {
+    "id": "202610230227-grok-60",
+    "title": "SideM POP UP SHOP ～Who howls at night?～ marche",
+    "brand": "sidem",
+    "source_type": "当事者",
+    "url": "https://x.com/Animo_official_/status/2113178552665596350",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "sidem-who-howls-at-night-marche-2026",
+    "facts": [
+      "開催期間：2026年10月23日（金）～11月1日（日）。",
+      "会場：渋谷MODI 1F。",
+      "10月23日・24日・25日は混雑緩和のため事前電子整理券を発行。",
+      "10月23日分：https://t.co/nAIB7ev8FL",
+      "10月24日・25日分：https://t.co/od8SIHhnL7",
+      "リンク: https://t.co/nAIB7ev8FL",
+      "リンク: https://t.co/od8SIHhnL7",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "event_date": "2026-10-23",
+    "deadline": "2026-11-01",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "アイドルマスター SideM POP UP SHOP 🐺🌕～Who howls at night?～ marche🐺🌕"
+    ]
+  },
+  {
+    "id": "202610230227-grok-61",
+    "title": "シンデレラガールズ POP UP SHOP ～Sweet Melty Whip～",
+    "brand": "cg",
+    "source_type": "当事者",
+    "url": "https://x.com/abenolucbus/status/2113103055482769785",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "cg-sweet-melty-whip-popup-2026",
+    "facts": [
+      "開催期間：10月23日(金)～11月1日(日)。",
+      "会場：アベノラクバス。",
+      "新規描き下ろしグッズを販売。",
+      "購入特典クリアカード、会場限定購入特典イラストカード、会場限定購入特典等身大パネルキャンペーンを実施。",
+      "等身大パネルを設置し、OSMOスタンプを実施。",
+      "混雑時は待機列形成や整理券配布など入店制限を実施する場合がある。",
+      "リンク: https://t.co/smNOzH6JKE",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "event_date": "2026-10-23",
+    "deadline": "2026-11-01",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "「アイドルマスター シンデレラガールズ」POP UP SHOP ~Sweet Melty Whip~"
+    ]
+  },
+  {
+    "id": "202610230227-grok-63",
+    "title": "シャニソン「Break Chain」2DMV公開",
+    "brand": "shiny",
+    "source_type": "公式",
+    "url": "https://x.com/imassc_prism/status/2112748211894911127",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-break-chain-2dmv-2026",
+    "facts": [
+      "「Break Chain」の2DMVを公開した。",
+      "歌唱：シーズ。",
+      "YouTube: https://www.youtube.com/watch?v=GLf8ESwc0T0&feature=youtu.be",
+      "リンク: https://www.youtube.com/watch?v=GLf8ESwc0T0&feature=youtu.be",
+      "エンゲージメント: 中",
+      "言及アイドル: 七草にちか、緋田美琴"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "『Break Chain』 🎤シーズ 📺アイドルマスターchで公開中！"
+    ]
+  },
+  {
+    "id": "202610230227-grok-64",
+    "title": "シャイニーカラーズ×湯～ねる コラボライブロウリュ予告",
+    "brand": "shiny",
+    "source_type": "未確認",
+    "url": "https://x.com/uneru55/status/2112846366686786037",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-yunerl-collab-live-rolyu-2026",
+    "facts": [
+      "シャイニーカラーズのコラボで、スペシャルなライブロウリュを開催予定と発表した。",
+      "熱波師の熱気とアイドルたちの音楽が融合するロウリュ体験として告知した。",
+      "エンゲージメント: 低"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "スペシャルなライブロウリュを開催予定‼️"
+    ]
+  },
+  {
+    "id": "202610230227-grok-65",
+    "title": "SideM×ルネサンス 315 Fitness Project",
+    "brand": "sidem",
+    "source_type": "未確認",
+    "url": "https://x.com/renaissance_IP/status/2112408475233886524",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "sidem-315-fitness-renaissance-2026",
+    "facts": [
+      "館内に「THE IDOLM@STER SideM 10th ANNIVERSARY P@SSION TOUR」公式ジャージを着たアイドルたちの等身大スタンディを設置。",
+      "開催期間：10月22日～11月29日まで。",
+      "詳細ページ：https://t.co/QDBSyi99WZ",
+      "リンク: https://t.co/QDBSyi99WZ",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "event_date": "2026-10-22",
+    "deadline": "2026-11-29",
+    "published_date": "2026-10-20",
+    "quotes": [
+      "10月22日～11月29日までの期間限定、この機会を絶対にお見逃しなく！"
+    ]
+  },
+  {
+    "id": "202610230227-grok-66",
+    "title": "灯里愛夏のラーメン愛を紹介する記事がYahoo!ニュースに掲載",
+    "brand": "dsva",
+    "source_type": "報道",
+    "url": "https://news.yahoo.co.jp/articles/11ba30600c280e0544d438e582793a16314ce4d4?source=sns&dv=pc&mid=other&date=20261022&ctg=ent&bt=tw_up",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "viala-manaka-ramen-kaiyou-2026",
+    "facts": [
+      "灯里愛夏の豚骨ラーメン愛と持論を扱ったKAI-YOU記事がYahoo!ニュースに掲載された。",
+      "記事タイトル：「バイトに麺なんか茹でさせるわけなかろうが！」アイマス発VTuber灯里愛夏の豚骨ラーメン愛と強烈な持論がおもしろい。",
+      "エンゲージメント: 高",
+      "言及アイドル: 灯里愛夏"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "「バイトに麺なんか茹でさせるわけなかろうが！」アイマス発VTuber灯里愛夏の豚骨ラーメン愛と強烈な持論がおもしろい(KAI-YOU)"
+    ],
+    "link_from": "https://x.com/dark_blue_xxx/status/2113283534639202666"
+  },
+  {
+    "id": "202610230227-grok-67",
+    "title": "765プロと961プロのライブ告知にファンが反応",
+    "brand": "general",
+    "source_type": "未確認",
+    "url": "https://x.com/ayame_digi/status/2112831259022160256",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "765-961-live-fan-reactions-2026",
+    "facts": [
+      "ファン投稿が、765プロと961プロのライブ開催告知に注目するよう呼びかけた。",
+      "別のファン投稿は、来年7月に765プロと961プロの対バン形式3Dモデルライブが開催されると述べた。",
+      "その投稿は、Jupiterが961プロに在籍し続けた世界線で出演すると述べた。",
+      "その投稿は、現地チケットの最速受付中と述べた。",
+      "2件の投稿は2026-10-21に投稿された。",
+      "エンゲージメント: 低",
+      "言及アイドル: Jupiter"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "unconfirmed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "「アイマス」のライブ開催！ 765プロと961プロの熱い激突に注目"
+    ]
+  },
+  {
+    "id": "202610230227-grok-68",
+    "title": "Gravure Solo Collection Vol.1「ねえ、言っちゃうよ。」特典デザイン公開・予約案内",
+    "brand": "gaku",
+    "source_type": "公式",
+    "url": "https://x.com/gkmas_official/status/2112816165642735912",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "gaku-gravure-solo-collection-vol1-2026",
+    "facts": [
+      "商品名: Gravure Solo Collection Vol.1「ねえ、言っちゃうよ。」",
+      "2026/11/18 Release",
+      "ショップ別特典デザインを公開した。",
+      "各アイドルの「ねえ言っちゃうよ」ソロ歌唱音源を本CD限定で収録する。",
+      "予約を案内している。",
+      "リンク: https://lnk.to/UmBHry",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "confirmed",
+    "event_date": "2026-11-18",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "Gravure Solo Collection Vol.1 ショップ別特典デザインを公開🌻 各アイドルの #ねえ言っちゃうよ ソロ歌唱音源を本CD限定で収録✨"
+    ]
+  },
+  {
+    "id": "202610230227-grok-25",
+    "title": "SideM超レトローズパーティ ステッカー販売情報",
+    "brand": "sidem",
+    "source_type": "当事者",
+    "url": "https://atfes.com/contents/cho-retroseparty",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "sidem-cho-retroseparty-stickers-2026",
+    "facts": [
+      "トレーディングダイカットステッカーはランダム全16種。",
+      "単品価格：770円（税込）。",
+      "コンプリート価格：12,320円（税込）。",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "failed",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "トレーディングダイカットステッカー（ランダム全16種）"
+    ],
+    "link_from": "https://x.com/Atfes_portal/status/2113193668555530600",
+    "unbacked_facts": [
+      "770円",
+      "12320円"
+    ],
+    "verify_note": "写しが出典の本文に無い(URL の取り違えの疑い): トレーディングダイカットステッカー（ランダム全16種）"
+  },
+  {
+    "id": "202610230227-grok-56",
+    "title": "スターリットシーズン PS4版デジタルデラックスエディションのセール",
+    "brand": "general",
+    "source_type": "当事者",
+    "url": "https://store.playstation.com/ja-jp/product/JP0700-CUSA18927_00-IMASSGAMDELX0001",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "starlit-season-ps4-sale-2026",
+    "facts": [
+      "PS4版デジタルデラックスエディションが70%オフ。",
+      "セール価格は4,125円、通常価格は13,750円。",
+      "セール終了：2026年11月4日23時59分（ストア表示は2026/11/4 02:59 PM UTC）。",
+      "エディション内容：スペシャルコミュ「シークレットメッセージ編」、楽曲DLC「M@STERPIECE」、衣装DLC「スターピースメモリーズ」「ピュアホワイトミズギ」。",
+      "エンゲージメント: 中"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "failed",
+    "deadline": "2026-11-04",
+    "published_date": "2026-10-22",
+    "quotes": [
+      "「アイドルマスター スターリットシーズン」PS4版 デジタルデラックスエディションのセールが実施中！"
+    ],
+    "link_from": "https://x.com/imas_official/status/2113229817999213055",
+    "verify_note": "写しが出典の本文に無い(URL の取り違えの疑い): 「アイドルマスター スターリットシーズン」PS4版 デジタルデラックスエディションのセールが実施中！"
+  },
+  {
+    "id": "202610230227-grok-62",
+    "title": "シャイニーカラーズ POP UP SHOP 事後通販",
+    "brand": "shiny",
+    "source_type": "当事者",
+    "url": "https://eeo.today/store/101/title/3664?utm_source=twitter&utm_medium=social&utm_campaign=20261021_IMSC",
+    "found_at": "2026-10-23T02:27:44+09:00",
+    "dedup_key": "shiny-ueno-marui-popup-afterorder-2026",
+    "facts": [
+      "「アイドルマスター シャイニーカラーズ POP UP SHOP in 上野マルイ」の事後通販をeeo Store onlineで開始した。",
+      "企画名：「ちょっぴり小悪魔になってみたい」。",
+      "ダークガーリーファッションのグッズを販売。",
+      "エンゲージメント: 低"
+    ],
+    "origin": "explore",
+    "via": "grok",
+    "verify": "failed",
+    "published_date": "2026-10-21",
+    "quotes": [
+      "大好評につき、本日よりeeo Store onlineに登場！"
+    ],
+    "link_from": "https://x.com/eeo_store/status/2112816188640387528",
+    "verify_note": "写しが出典の本文に無い(URL の取り違えの疑い): 大好評につき、本日よりeeo Store onlineに登場！"
   }
 ]

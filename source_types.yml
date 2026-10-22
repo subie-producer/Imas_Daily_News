@@ -603,6 +603,8 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - qx_maru             # 合議で追加: 個人のカバー動画のプレミア公開告知
+    - ayame_digi          # 合議で追加: 個人アカウントによるライブ告知へのファン反応
     - koge_asupara        # 合議で追加: 個人アカウントによる学マス篠澤広のファン投稿
     - ddeumbugi           # 合議で追加: 個人アカウントによる北上麗花の秋のファンイラスト投稿
     - KuR35231710         # 合議で追加: 個人アカウントによる太陽系凛世のファン投稿
@@ -870,6 +872,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - uneru55             # 合議で追加: 湯～ねるのコラボライブロウリュ予告、会場側の一次発信
+    - renaissance_IP      # 合議で追加: コラボ版チケット販売を行うルネサンス側の一次発信
+    - animateunagi        # 合議で追加: 特典付与条件と終了日を告知する販売元の一次発信
     - neowing_anime       # 合議で追加: Neowingは一般のアニメ・音楽通販店で、CD予約の販売元として発信している
     - tllkame             # 合議で追加: 東京レジャーランド亀有店(ゲームセンター)によるツアマス稼働終了告知
     - seganewsnavi        # 合議で追加: 販売側サイトによるシンデレラくじ発売キャンペーン告知、独立報道ではない
@@ -1035,3 +1040,9 @@ x_posts:
   ファン:
     - 2105957772651385193 # 機械で追加: @ChuLo5738
     - 2105254556238291021 # 機械で追加: @mkzk_CRESCENT
+
+# --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
+link_types:
+  t.co/3hmncJBhSz: 二次情報                         # リンク元から引き継ぎ(合議で関係を確認): https://imasnews765.com/?p=32585(二次情報)。リンク元はこのCDの発売告知。リンク先はそのCDの特設サイト
+  store.playstation.com/ja-jp/product/JP0700-CUSA18927_00-IMASSGAMDELX0001: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_official/status/2113229817999213055(公式)。告知のセール対象と同じデジタルデラックス版の購入ページ
+  imas-cinderella-yamanashi.com/2026/: 公式     # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19733(公式)。同じ周遊イベントの公式サイトで、告知の開催内容と一致する

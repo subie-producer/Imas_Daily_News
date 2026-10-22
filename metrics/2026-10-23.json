@@ -1,0 +1,108 @@
+{
+ "collect": [
+  {
+   "at": "2026-10-23T02:28:19+09:00",
+   "edition": "2026-10-23",
+   "watch": {
+    "stats": {
+     "imas-portal": {
+      "found": 0,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-sidem": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "pylonport-million": {
+      "found": 9,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-shiny": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "lantis-sidem": {
+      "found": 4,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "columbia-imas": {
+      "found": 350,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "bnam-tours": {
+      "found": 69,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     },
+     "imasnews765": {
+      "found": 10,
+      "pages": 1,
+      "new": 0,
+      "deferred": 0
+     }
+    },
+    "new": 0,
+    "facted": 0,
+    "deferred": 0,
+    "blocked": 0
+   },
+   "per_query": {
+    "explore:765as": 0,
+    "explore:cinderella": 1,
+    "explore:million": 0,
+    "explore:shiny": 0,
+    "explore:sidem": 0,
+    "explore:gakuen": 0,
+    "explore:dsva": 0,
+    "explore:joint-other": 0,
+    "explore:trend": 0,
+    "grok_week_searches": 479,
+    "grok:765as": 1,
+    "grok:cinderella": 7,
+    "grok:million": 3,
+    "grok:shiny": 11,
+    "grok:sidem": 7,
+    "grok:gakuen": 17,
+    "grok:dsva": 3,
+    "grok:joint-other": 8,
+    "grok:trend": 4,
+    "grok_searches:sidem": 5,
+    "grok_searches:gaku": 8,
+    "grok_searches:765": 19,
+    "grok_searches:million": 7,
+    "grok_searches:joint": 10,
+    "grok_searches:shiny": 6,
+    "grok_searches:cg": 5,
+    "grok_searches:general": 4,
+    "grok_searches:dsva": 5
+   },
+   "normalized": 70,
+   "added": 63,
+   "verify": {
+    "confirmed": 50,
+    "unconfirmed": 17,
+    "failed": 3
+   },
+   "duration_s": 1661
+  }
+ ]
+}

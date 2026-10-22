@@ -1,0 +1,263 @@
+{
+ "decisions": {
+  "deresute-emergency-maintenance-endtime-2026-10-22": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号で前倒し・終了予定まで報じ済み。新事実なし"
+  },
+  "cinderella-pop-up-after-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号の事後通販記事と同内容。締切11/5は3日以内でない"
+  },
+  "mayu-bound-to-you-necklace-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号『予約は11月30日まで』で報じ済み。当日トリガーなし"
+  },
+  "cinderella-popup-shop-after-sales-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "prior(10/22号)の本文と同じ事実のみ"
+  },
+  "isetan-osechi-2027-cinderella": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号『販売は本日10時開始』で報じ済み。新事実なし"
+  },
+  "cg-onmyoji-popup-shop-mail-order-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "同じ事後通販の別URL。10/22号で報じ済み"
+  },
+  "cg-daily-hibikiatte-2026-10": {
+   "action": "article",
+   "angle": "シンデレラガールズ公式が10月22日に新たな動画「おねがいスクエア」を公開した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior(10/16)は別回の公開。リンクが前回MVと同一なので執筆時に要確認"
+  },
+  "cg-orchestra-premium-second-lottery-2026": {
+   "action": "article",
+   "angle": "アソビストアプレミアム会員2次先行(抽選)の受付は10月25日まで、締切まであと2日。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "締切3日以内のトリガー。10/22号に続く期日の知らせ"
+  },
+  "deresute-emergency-maintenance-2026-10-22-ended": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "終了(10/22 2:10)は昨日の出来事で、終了予定時刻は10/22号で既報"
+  },
+  "cg-yamanashi-walk-wander-art-2026": {
+   "action": "article",
+   "angle": "やまなしWALK & WANDERの描き下ろし・ミニキャライラストとスポット音声ガイドが公開され、PR担当・応援アイドルが判明。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式特設サイト由来。出典は執筆で確認"
+  },
+  "cg-sweet-melty-whip-popup-2026": {
+   "action": "article",
+   "angle": "POP UP SHOP「Sweet Melty Whip」がきょう10月23日からアベノラクバスで開幕(11月1日まで)。描き下ろしグッズと会場限定特典。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "本日開幕のトリガー。既報なし"
+  },
+  "hachimas-cg-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "hachinohe-cinderella-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "はちます開幕の同一出来事"
+  },
+  "cg-hachimastu-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "hachinohe-cinderella-collab-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "はちます開幕の同一出来事"
+  },
+  "hachinohe-cinderella-collab-2026": {
+   "action": "article",
+   "angle": "「はちます」×シンデレラガールズが本日10月23日、八戸市で開幕し、有料デジタルスタンプラリーも今日から参加できる(12月27日まで)。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕と開始が当日のトリガー。詳細は既報なので、今日から何ができるかを中心に"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "cg-daily-hibikiatte-2026-10",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "シンデレラガールズ公式が10月22日に新たな動画「おねがいスクエア」を公開した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "cg-daily-hibikiatte-2026-10",
+    "candidate_ids": [
+     "202610230227-grok-2"
+    ]
+   },
+   {
+    "slug": "cg-orchestra-premium-second-lottery-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "アソビストアプレミアム会員2次先行(抽選)の受付は10月25日まで、締切まであと2日。",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "cg-orchestra-premium-second-lottery-2026",
+    "candidate_ids": [
+     "202610230227-grok-3"
+    ]
+   },
+   {
+    "slug": "cg-yamanashi-walk-wander-art-2026",
+    "brand": "cg",
+    "rank": "small",
+    "angle": "やまなしWALK & WANDERの描き下ろし・ミニキャライラストとスポット音声ガイドが公開され、PR担当・応援アイドルが判明。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "cg-yamanashi-walk-wander-art-2026",
+    "candidate_ids": [
+     "202610230227-grok-59"
+    ]
+   },
+   {
+    "slug": "cg-sweet-melty-whip-popup-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "POP UP SHOP「Sweet Melty Whip」がきょう10月23日からアベノラクバスで開幕(11月1日まで)。描き下ろしグッズと会場限定特典。",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "cg-sweet-melty-whip-popup-2026",
+    "candidate_ids": [
+     "202610230227-grok-61"
+    ]
+   },
+   {
+    "slug": "cg-hachinohe-cinderella-collab-2026",
+    "brand": "cg",
+    "rank": "medium",
+    "angle": "「はちます」×シンデレラガールズが本日10月23日、八戸市で開幕し、有料デジタルスタンプラリーも今日から参加できる(12月27日まで)。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "hachinohe-cinderella-collab-2026",
+    "candidate_ids": [
+     "sched-2026-10-23-hachinohe-cinderella-collab-2026-開幕",
+     "sched-2026-10-23-hachinohe-cinderella-collab-2026-開始",
+     "sched-2026-10-23-hachimas-cg-2026-開幕",
+     "sched-2026-10-23-cg-hachimastu-2026-開幕"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "deresute-emergency-maintenance-endtime-2026-10-22",
+    "reason": "既報",
+    "note": "10/22号で前倒し・終了予定まで報じ済み。新事実なし"
+   },
+   {
+    "dedup_key": "cinderella-pop-up-after-sales-2026",
+    "reason": "既報",
+    "note": "10/22号の事後通販記事と同内容。締切11/5は3日以内でない"
+   },
+   {
+    "dedup_key": "mayu-bound-to-you-necklace-2026",
+    "reason": "既報",
+    "note": "10/22号『予約は11月30日まで』で報じ済み。当日トリガーなし"
+   },
+   {
+    "dedup_key": "cinderella-popup-shop-after-sales-2026",
+    "reason": "既報",
+    "note": "prior(10/22号)の本文と同じ事実のみ"
+   },
+   {
+    "dedup_key": "isetan-osechi-2027-cinderella",
+    "reason": "既報",
+    "note": "10/21号『販売は本日10時開始』で報じ済み。新事実なし"
+   },
+   {
+    "dedup_key": "cg-onmyoji-popup-shop-mail-order-2026",
+    "reason": "既報",
+    "note": "同じ事後通販の別URL。10/22号で報じ済み"
+   },
+   {
+    "dedup_key": "deresute-emergency-maintenance-2026-10-22-ended",
+    "reason": "既報",
+    "note": "終了(10/22 2:10)は昨日の出来事で、終了予定時刻は10/22号で既報"
+   }
+  ],
+  "cross_brand": []
+ }
+}

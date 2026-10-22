@@ -119,5 +119,50 @@
   "src_candidate_id": "202610132336-watch-5",
   "event_date": "2026-10-28",
   "deadline": "2026-11-29"
+ },
+ {
+  "id": "sched-2026-10-26-million-harleyquin-idol-grand-prix-pv-2026-開始",
+  "dedup_key": "million-harleyquin-idol-grand-prix-pv-2026",
+  "brand": "million",
+  "subject": "『週末だけのハーレクイン』iDOL GRAND-PRIX PV公開",
+  "kind": "開始",
+  "note": "14:50からPVを視聴できる",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-10-26",
+  "title": "『週末だけのハーレクイン』iDOL GRAND-PRIX PV予告",
+  "url": "https://x.com/imasml_theater/status/2113244477418615038",
+  "source_type": "公式",
+  "facts": [
+   "『週末だけのハーレクイン』のiDOL GRAND-PRIX PVが2026年10月26日14:50に公開予定。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-26",
+  "src_candidate_id": "202610230227-grok-9"
+ },
+ {
+  "id": "sched-2026-10-26-million-off-time-voice-series-vol-4-2026-発売",
+  "dedup_key": "million-off-time-voice-series-vol-4-2026",
+  "brand": "million",
+  "subject": "ミリシタ Off Time Voice Series vol.4",
+  "kind": "発売",
+  "note": "15:00から真・このみのボイスアイテムを購入できる",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-10-26",
+  "title": "Off Time Voice Series vol.4の販売日決定",
+  "url": "https://x.com/imasml_theater/status/2113244728884170813",
+  "source_type": "公式",
+  "facts": [
+   "2026年10月26日15:00より販売予定。",
+   "Off Time Voice Series vol.4のボイスアイテムとして、真とこのみの商品が登場する。",
+   "真とこのみの両方を購入すると、琴葉の『ちょこっとおふたいむ ～ 片恋ハッピーエンド ～』も入手できる。",
+   "エンゲージメント: 中",
+   "言及アイドル: 菊地真、馬場このみ、田中琴葉"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-26",
+  "src_candidate_id": "202610230227-grok-8"
  }
 ]

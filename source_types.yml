@@ -247,6 +247,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - status.games.dmm.com  # 合議で追加: DMM GAMES障害情報。学マスDMM版を配信する一般プラットフォーム
+  - battlespirits.com     # 合議で追加: サイトはBANDAI CO.,LTD.©。学マスコラボのカード商品の販売元
   - tufave.com            # 合議で追加: 特商法表記で運営を確認。ライセンス商品を作って売る会社
   - neowing.co.jp         # 合議で追加: 特商法表記で販売事業者を確認。多作品を扱う一般通販の販売元
   - smt-cinema.com        # 合議で追加: 会場の新宿ピカデリーで舞台挨拶を催し、前売りを販売する映画館運営側
@@ -983,6 +985,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/oXqVG6t5e5: 公式                         # 機械で追加: 展開先 https://bandainamco-am.co.jp/am/vg/idolmaster-tours/rhythmlivefestival2027/
   docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg: 公式 # 合議で追加: リンク元@imas_chは登録済み公式。同じ配信企画のフォーム
   t.co/oPYZEyxHYF: 公式                         # 機械で追加: 展開先 https://idolmaster-official.jp/
   t.co/odKdocfVW3: 準公式                         # 機械で追加: 展開先 https://asobistore.jp/content/title/Idolmaster/shinyradio/contact/

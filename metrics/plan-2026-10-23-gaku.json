@@ -1,0 +1,354 @@
+{
+ "decisions": {
+  "lawson-collab-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-lawson-collaboration-2026-autumn",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じコラボ。既報の事実のみで、新事実は相手側の13名"
+  },
+  "gaku-roar-sena-appstore-rank-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の二次情報。ランキング順位の一時点の話題"
+  },
+  "gaku-lawson-collaboration-2026-autumn": {
+   "action": "article",
+   "angle": "学マス×ローソン「2026秋」は11月10日開始で、花海咲季ら13名のアイドルが青いリボンとレースの衣装で登場する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報本文に無い新事実は「13名」。出典は二次情報のため執筆・校閲で確認"
+  },
+  "gaku-miracle-nanau-revival-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ(ミラクルナナウ復刻、SR復刻サポート含む)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営まとめ。SRサポート2種は既報に無い"
+  },
+  "miracle-rerun-gacha-2026": {
+   "action": "roundup",
+   "angle": "開催中のガシャ(燕のアナザーアイドルガシャ、初回10連無料、期間は10月30日10時59分まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報と同内容。開催中施策としてまとめに入れる"
+  },
+  "gaku-smile-skirt-2026": {
+   "action": "roundup",
+   "angle": "衣装ショップ「最強のスマイルスカート」(500ジュエル、10月30日10時59分まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開催中の販売施策"
+  },
+  "hatsuboshi-radio-guests-20261028": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21放送回の話題で、アーカイブも10/22号が既報"
+  },
+  "gaku-dmm-maintenance-complete-2026-10-22": {
+   "action": "article",
+   "angle": "DMM GAMES版学マスの臨時メンテナンスが10月22日19時ごろ完了し、プレイ可能に。バンダイナムコIDの一部機能も復旧",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/22号のメンテ開始記事の続報。バンナムIDの復旧を含める"
+  },
+  "gaku-bandainamco-id-restored-2026-10-22": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gaku-dmm-maintenance-complete-2026-10-22",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じメンテナンス障害の復旧情報。データ連携と公式WEB SHOPのログインが可能、ID側メンテは継続中"
+  },
+  "contemporary-dance-2m-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号が同内容を記事化済み"
+  },
+  "me-mv-1m-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号が同内容を記事化済み"
+  },
+  "gakumas-dmm-maintenance-2026-10-21": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "公式サイト緊急メンテの開始告知は10/22号が記事化済み"
+  },
+  "gaku-wednesday-ticket-2026-10-21": {
+   "action": "roundup",
+   "angle": "今週の学マス水曜日ガシャチケット配布(ログインでRoarガシャ1回)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "定常運営"
+  },
+  "kiyoka-another-guaranteed-2026": {
+   "action": "article",
+   "angle": "紫雲清夏のシーズン限定アナザーアイドル確定の無料1連ガシャは本日10時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約。終了日"
+  },
+  "gaku-fan-cover-kanmuri-giku-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "ファンのカバー動画"
+  },
+  "gaku-battlespirits-collab-booster-2027": {
+   "action": "article",
+   "angle": "バトルスピリッツ コラボブースター「学園アイドルマスター 輝けるアイドル」が2027年2月27日発売、BOX5,808円で予約受付中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "16パック入り、26RCB03"
+  },
+  "gravure-solo-collection-vol1-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号が特典デザイン・価格・発売日を記事化済み"
+  },
+  "gakuen-hif-tsubame-2026": {
+   "action": "article",
+   "angle": "H.I.F編の燕実装に続き、ガラクタロードvol.7(千奈・美鈴、11月6日)と、佑芽・ことねは年末ごろ、清夏・麻央は年始ごろのフェスガシャ予定が判明",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "燕のH.I.F編・vol.6は既報。新事実は年末年始の予定とvol.7のログボ。千奈・美鈴ガシャを統合"
+  },
+  "garakuta-china-misuzu-gacha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "gakuen-hif-tsubame-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "vol.7の同じ施策。11月6日のログボ(SSR確定1連チケットまたは10倍5連チケット)が新事実"
+  },
+  "gakumas-hatsuboshi-autograph-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10月20日23時59分に終了済み。新事実もトリガーも無く、carried の理由どおり"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-lawson-collaboration-2026-autumn",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "学マス×ローソン「2026秋」は11月10日開始で、花海咲季ら13名のアイドルが青いリボンとレースの衣装で登場する",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "gaku-lawson-collaboration-2026-autumn",
+    "candidate_ids": [
+     "202610221831-explore-4",
+     "202610220731-explore-3"
+    ]
+   },
+   {
+    "slug": "gaku-dmm-maintenance-complete-2026-10-22",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "DMM GAMES版学マスの臨時メンテナンスが10月22日19時ごろ完了し、プレイ可能に。バンダイナムコIDの一部機能も復旧",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-dmm-maintenance-complete-2026-10-22",
+    "candidate_ids": [
+     "202610230227-grok-35",
+     "202610230227-grok-36"
+    ]
+   },
+   {
+    "slug": "gaku-kiyoka-another-guaranteed-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "紫雲清夏のシーズン限定アナザーアイドル確定の無料1連ガシャは本日10時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "kiyoka-another-guaranteed-2026",
+    "candidate_ids": [
+     "202610230227-grok-41",
+     "sched-2026-10-23-kiyoka-another-guaranteed-2026-終了"
+    ]
+   },
+   {
+    "slug": "gaku-battlespirits-collab-booster-2027",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "バトルスピリッツ コラボブースター「学園アイドルマスター 輝けるアイドル」が2027年2月27日発売、BOX5,808円で予約受付中",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "gaku-battlespirits-collab-booster-2027",
+    "candidate_ids": [
+     "202610230227-grok-43"
+    ]
+   },
+   {
+    "slug": "gaku-gakuen-hif-tsubame-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "H.I.F編の燕実装に続き、ガラクタロードvol.7(千奈・美鈴、11月6日)と、佑芽・ことねは年末ごろ、清夏・麻央は年始ごろのフェスガシャ予定が判明",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "gakuen-hif-tsubame-2026",
+    "candidate_ids": [
+     "202610210732-explore-4",
+     "202610220239-grok-45",
+     "202610220239-grok-46",
+     "202610220239-grok-48",
+     "202610220239-grok-90",
+     "202610220239-grok-47"
+    ]
+   },
+   {
+    "slug": "gaku-ops-roundup",
+    "brand": "gaku",
+    "rank": "roundup",
+    "angle": "開催中のガシャ(ミラクルナナウ復刻、SR復刻サポート含む)",
+    "lead_score": 0,
+    "dedup_key": "gaku-miracle-nanau-revival-2026",
+    "candidate_ids": [
+     "202610230227-grok-29",
+     "202610230227-grok-30",
+     "202610230227-grok-31",
+     "202610230227-grok-32",
+     "202610230227-grok-40"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-roar-sena-appstore-rank-2026",
+    "reason": "出典不足",
+    "note": "未確認の二次情報。ランキング順位の一時点の話題"
+   },
+   {
+    "dedup_key": "hatsuboshi-radio-guests-20261028",
+    "reason": "既報",
+    "note": "10/21放送回の話題で、アーカイブも10/22号が既報"
+   },
+   {
+    "dedup_key": "contemporary-dance-2m-2026",
+    "reason": "既報",
+    "note": "10/22号が同内容を記事化済み"
+   },
+   {
+    "dedup_key": "me-mv-1m-2026",
+    "reason": "既報",
+    "note": "10/22号が同内容を記事化済み"
+   },
+   {
+    "dedup_key": "gakumas-dmm-maintenance-2026-10-21",
+    "reason": "既報",
+    "note": "公式サイト緊急メンテの開始告知は10/22号が記事化済み"
+   },
+   {
+    "dedup_key": "gaku-fan-cover-kanmuri-giku-2026",
+    "reason": "同人・ファン主催",
+    "note": "ファンのカバー動画"
+   },
+   {
+    "dedup_key": "gravure-solo-collection-vol1-2026",
+    "reason": "既報",
+    "note": "10/22号が特典デザイン・価格・発売日を記事化済み"
+   },
+   {
+    "dedup_key": "gakumas-hatsuboshi-autograph-campaign-2026",
+    "reason": "その他",
+    "note": "10月20日23時59分に終了済み。新事実もトリガーも無く、carried の理由どおり"
+   }
+  ],
+  "cross_brand": []
+ }
+}

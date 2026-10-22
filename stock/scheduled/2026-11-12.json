@@ -480,5 +480,60 @@
   "verify": "confirmed",
   "deadline": "2026-11-15",
   "src_candidate_id": "202610210224-grok-33"
+ },
+ {
+  "id": "sched-2026-11-12-tours-rhythm-live-festival-2027-qualifier-開始",
+  "dedup_key": "tours-rhythm-live-festival-2027-qualifier",
+  "brand": "joint",
+  "subject": "ツアマス大会 オンライン予選開始",
+  "kind": "開始",
+  "note": "7時から全国のオンライン予選に参加できる",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-11-12",
+  "title": "ツアマス RHYTHM LIVE FESTIVAL 2027 大会予選の詳細公開",
+  "url": "https://x.com/TOURS_imas/status/2113193941290070518",
+  "source_type": "公式",
+  "facts": [
+   "『ツアマス』RHYTHM LIVE FESTIVAL 2027の大会予選の詳細を公式サイトで公開した。",
+   "マスター部門の難易度はMASTER。",
+   "チャレンジ部門の難易度はVETERAN。",
+   "予選開始: 11月12日",
+   "リンク: https://t.co/oXqVG6t5e5",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-12",
+  "src_candidate_id": "202610230227-grok-52"
+ },
+ {
+  "id": "sched-2026-11-12-v-aliv-3rd-live-ticket-2026-締切前",
+  "dedup_key": "v-aliv-3rd-live-ticket-2026",
+  "brand": "joint",
+  "subject": "vα-liv 3rdLIVE 最速先行 締切3日前",
+  "kind": "締切前",
+  "note": "グッズ付きチケットの最速先行を11月15日23:59まで申し込める",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-11-15",
+  "title": "ヴイアラ3rdLIVE＆MEETING 現地チケット最速先行",
+  "url": "https://x.com/imas_official/status/2113267406470803691",
+  "source_type": "公式",
+  "facts": [
+   "#ヴイアラ 3rdLIVE＆MEETINGの現地チケット最速先行申込を案内した。",
+   "グッズ付きチケットのグッズはおすわりぬいぐるみ。",
+   "申込期限: 2026年11月15日(日)23:59まで",
+   "申込ページ: https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+   "リンク: https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+   "エンゲージメント: 中",
+   "現地チケット最速先行の申込を案内した。",
+   "グッズ付きチケットの特典はおすわりぬいぐるみ。",
+   "申込期限：2026年11月15日(日)23:59まで。",
+   "申込ページ：https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-15",
+  "src_candidate_id": "202610230227-grok-48"
  }
 ]

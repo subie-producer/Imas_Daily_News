@@ -1,0 +1,33 @@
+{
+ "decisions": {
+  "honami-nishikawa-birthday-2026": {
+   "action": "article",
+   "angle": "アイマスchが10月23日の西川保奈美の誕生日に、お祝いムービー(YouTube Shorts)を公開した",
+   "claimed_slug": "",
+   "lead_score": 10,
+   "merge_into": "",
+   "note": "既報・催しの過去記事なし。公式出典で当日の出来事。事実は少ないが短い記事にする",
+   "purpose": "新情報",
+   "rank": "small",
+   "reason": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "765-honami-nishikawa-birthday-2026",
+    "brand": "765",
+    "rank": "small",
+    "angle": "アイマスchが10月23日の西川保奈美の誕生日に、お祝いムービー(YouTube Shorts)を公開した",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "honami-nishikawa-birthday-2026",
+    "candidate_ids": [
+     "202610230227-grok-1"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

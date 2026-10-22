@@ -1,0 +1,226 @@
+{
+ "decisions": {
+  "shiny-shatter-the-limits-2026": {
+   "action": "roundup",
+   "angle": "シーズ新曲イベント「Shatter the Limits」(27日まで)など開催中のシャニソン施策",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-night-attitude-2026": {
+   "action": "roundup",
+   "angle": "樋口円香ピックアップ「夜色アティテュード」ガシャ(31日まで)",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shinycolors-8-5th-3rd-anniversary-live-2026": {
+   "action": "article",
+   "angle": "シャニマス8.5周年・シャニソン3周年の生配信が今夜19時からニコ生・YouTube Live・enzaで始まる",
+   "purpose": "期日の知らせ",
+   "rank": "large",
+   "lead_score": 80,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-3rd-anniversary-story-2026": {
+   "action": "article",
+   "angle": "シャニソン3周年記念ストーリーのプロローグ「形状総論」が公開され、以後毎日1話ずつ公開される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-maintenance-ended-2026": {
+   "action": "roundup",
+   "angle": "DMM GAMES版の臨時メンテナンスが10月22日19時頃に終了",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-song-for-prism-anniversary-story-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-song-for-prism-3rd-anniversary-story-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ3周年記念ストーリー"
+  },
+  "shiny-iroduku-kaze-hiori-luca-gasha-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-shatter-the-limits-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "実体は同イベントと円香ガシャで、10/22のまとめに既報"
+  },
+  "shiny-web-comic-661-cat-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22に記事化済み、新事実なし"
+  },
+  "shiny-dark-girly-fashion-goods-2026": {
+   "action": "article",
+   "angle": "ダークガーリーファッションver.グッズ全23商品の予約が11月4日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認のグッズ情報アカウント"
+  },
+  "shiny-style-collection-wave2-2026": {
+   "action": "article",
+   "angle": "「SHINY Style COLLECTION」第2弾の受注締切が10月25日まであと2日",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-shhis-break-chain-2dmv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22に記事化済み、新事実なし"
+  },
+  "shiny-yunerl-collab-live-rolyu-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "未確認の第三者投稿で日時・内容が無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-shinycolors-8-5th-3rd-anniversary-live-2026",
+    "brand": "shiny",
+    "rank": "large",
+    "angle": "シャニマス8.5周年・シャニソン3周年の生配信が今夜19時からニコ生・YouTube Live・enzaで始まる",
+    "purpose": "期日の知らせ",
+    "lead_score": 80,
+    "dedup_key": "shinycolors-8-5th-3rd-anniversary-live-2026",
+    "candidate_ids": [
+     "202610222333-explore-2",
+     "202610230227-grok-11",
+     "sched-2026-10-23-shinycolors-8-5th-3rd-anniversary-live-2026-開始"
+    ]
+   },
+   {
+    "slug": "shiny-song-for-prism-3rd-anniversary-story-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン3周年記念ストーリーのプロローグ「形状総論」が公開され、以後毎日1話ずつ公開される",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-song-for-prism-3rd-anniversary-story-2026",
+    "candidate_ids": [
+     "202610222333-explore-3",
+     "202610230227-grok-13"
+    ]
+   },
+   {
+    "slug": "shiny-dark-girly-fashion-goods-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ダークガーリーファッションver.グッズ全23商品の予約が11月4日まで",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "shiny-dark-girly-fashion-goods-2026",
+    "candidate_ids": [
+     "202610230227-grok-19"
+    ]
+   },
+   {
+    "slug": "shiny-style-collection-wave2-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "「SHINY Style COLLECTION」第2弾の受注締切が10月25日まであと2日",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "shiny-style-collection-wave2-2026",
+    "candidate_ids": [
+     "202610230227-grok-20"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "シーズ新曲イベント「Shatter the Limits」(27日まで)など開催中のシャニソン施策",
+    "lead_score": 0,
+    "dedup_key": "shiny-shatter-the-limits-2026",
+    "candidate_ids": [
+     "202610220731-explore-1",
+     "202610221831-explore-2",
+     "202610230227-grok-12",
+     "202610230227-grok-14",
+     "202610230227-grok-15",
+     "202610230227-grok-16",
+     "202610230227-grok-17"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-web-comic-661-cat-2026",
+    "reason": "既報",
+    "note": "10/22に記事化済み、新事実なし"
+   },
+   {
+    "dedup_key": "shiny-shhis-break-chain-2dmv-2026",
+    "reason": "既報",
+    "note": "10/22に記事化済み、新事実なし"
+   },
+   {
+    "dedup_key": "shiny-yunerl-collab-live-rolyu-2026",
+    "reason": "出典不足",
+    "note": "未確認の第三者投稿で日時・内容が無い"
+   }
+  ],
+  "cross_brand": []
+ }
+}

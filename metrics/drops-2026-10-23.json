@@ -1,0 +1,19 @@
+{
+ "shiny-dark-girly-fashion-goods-2026": {
+  "title": "ダークガーリーファッションver.グッズ全23商品の予約が11月4日まで",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE 公式・準公式の告知や報道の出典を確認できませんでした。確認できたのは商品情報をまとめた二次情報のページだけです。",
+  "candidate_ids": [
+   "202610230227-grok-19"
+  ]
+ },
+ "sidem-popup-werewolf-2026-10": {
+  "title": "渋谷MODI 1FでPOP UP SHOP「Who howls at night?」marcheが本日開幕、23〜25日は事前電子整理券を発行",
+  "stage": "執筆で落とした",
+  "why": "fetch_page.py で本文を取れていないページを根拠にしている: https://livepocket.jp/e/idolmaster_sidem_whanm_10231023(new_facts・sources の url は、素材の url か、python3 scripts/fetch_page.py で",
+  "candidate_ids": [
+   "sched-2026-10-23-sidem-popup-werewolf-2026-10-開幕",
+   "202610230227-grok-60"
+  ]
+ }
+}

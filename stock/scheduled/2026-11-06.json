@@ -170,5 +170,60 @@
   "verify": "confirmed",
   "deadline": "2026-11-06",
   "src_candidate_id": "202610210224-grok-49"
+ },
+ {
+  "id": "sched-2026-11-06-garakuta-tsubame-gacha-2026-開始",
+  "dedup_key": "garakuta-tsubame-gacha-2026",
+  "brand": "gaku",
+  "subject": "学マス ガラクタロードvol.7 倉本千奈・秦谷美鈴ガシャ開始",
+  "kind": "開始",
+  "note": "11時から千奈・美鈴のガシャとログインボーナスが利用できる",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-11-06",
+  "title": "ガラクタロード 燕ガシャ",
+  "url": "https://x.com/gkmas_official/status/2112505755597488219",
+  "source_type": "公式",
+  "facts": [
+   "新たに登場するSSR Pアイドルは【ガラクタロード】雨夜 燕。",
+   "新効果「熱意延長」が登場。",
+   "新登場SSRサポートカードは「……騒々しいお祭りね」「私たちも成長していくぞ！」「私を楽しませろ」。",
+   "ガシャ開催期間: 10/28(水) 11:00 ～ 11/6(金) 10:59まで(予定)",
+   "ガシャ内で「ミラクルナナウ(ﾟ∀ﾟ)！」を燕が歌唱するライブシーンを紹介。",
+   "ミラクルナナウ(ﾟ∀ﾟ)！ 作詞・作曲・編曲: YUC'e。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-28",
+  "deadline": "2026-11-06",
+  "src_candidate_id": "202610220239-grok-45"
+ },
+ {
+  "id": "sched-2026-11-06-garakuta-tsubame-gacha-2026-開始-src1",
+  "dedup_key": "garakuta-tsubame-gacha-2026",
+  "brand": "gaku",
+  "subject": "学マス ガラクタロードvol.7 倉本千奈・秦谷美鈴ガシャ開始",
+  "kind": "開始",
+  "note": "11時から千奈・美鈴のガシャとログインボーナスが利用できる",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-11-06",
+  "title": "ガラクタロード 千奈・美鈴ガシャ",
+  "url": "https://x.com/gkmas_official/status/2112507067911303330",
+  "source_type": "公式",
+  "facts": [
+   "新たに登場するSSR Pアイドルは【ガラクタロード】秦谷美鈴と倉本千奈。",
+   "登場予定のSSRサポートカードは「みんなも読んでみてっ！」。",
+   "ガシャ開催期間: 11/6(金) 11:00 ～ 11/16(月) 9:59まで(予定)",
+   "ログインボーナス開催予定: 11/6(金) 11:00 ～ 11/16(月) 4:59まで(予定)。",
+   "ログインボーナスではSSR Pアイドル1人確定の1連ガシャチケット、または出現率10倍の5連ガシャチケットのいずれかを案内。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-11-06",
+  "deadline": "2026-11-16",
+  "src_candidate_id": "202610220239-grok-47",
+  "companion_of": "sched-2026-11-06-garakuta-tsubame-gacha-2026-開始",
+  "src_dedup_key": "garakuta-china-misuzu-gacha-2026"
  }
 ]

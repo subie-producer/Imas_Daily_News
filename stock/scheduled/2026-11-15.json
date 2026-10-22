@@ -954,5 +954,35 @@
   "src_candidate_id": "202610210224-grok-20",
   "companion_of": "sched-2026-11-15-million-cyber-planet-popup-osaka-2026-千秋楽",
   "src_dedup_key": "million-cyber-planet-miki-keyholder-soldout-2026"
+ },
+ {
+  "id": "sched-2026-11-15-v-aliv-3rd-live-ticket-2026-締切",
+  "dedup_key": "v-aliv-3rd-live-ticket-2026",
+  "brand": "joint",
+  "subject": "vα-liv 3rdLIVE 最速先行 締切",
+  "kind": "締切",
+  "note": "23:59まで現地チケット最速先行に申し込める",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-11-15",
+  "title": "ヴイアラ3rdLIVE＆MEETING 現地チケット最速先行",
+  "url": "https://x.com/imas_official/status/2113267406470803691",
+  "source_type": "公式",
+  "facts": [
+   "#ヴイアラ 3rdLIVE＆MEETINGの現地チケット最速先行申込を案内した。",
+   "グッズ付きチケットのグッズはおすわりぬいぐるみ。",
+   "申込期限: 2026年11月15日(日)23:59まで",
+   "申込ページ: https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+   "リンク: https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+   "エンゲージメント: 中",
+   "現地チケット最速先行の申込を案内した。",
+   "グッズ付きチケットの特典はおすわりぬいぐるみ。",
+   "申込期限：2026年11月15日(日)23:59まで。",
+   "申込ページ：https://asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c",
+   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-15",
+  "src_candidate_id": "202610230227-grok-48"
  }
 ]

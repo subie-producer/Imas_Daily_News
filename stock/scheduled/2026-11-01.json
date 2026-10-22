@@ -1371,5 +1371,56 @@
   "src_candidate_id": "202610200229-grok-56",
   "companion_of": "sched-2026-11-01-sidem-315pro-night-goods-2026-締切",
   "src_dedup_key": "sidem-mfes-315pronight-goods-2026"
+ },
+ {
+  "id": "sched-2026-11-01-cg-sweet-melty-whip-popup-2026-千秋楽",
+  "dedup_key": "cg-sweet-melty-whip-popup-2026",
+  "brand": "cg",
+  "subject": "Sweet Melty Whip 大阪会場",
+  "kind": "千秋楽",
+  "note": "大阪会場の最終日。パネルプレゼント応募も23:59まで",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-11-01",
+  "title": "シンデレラガールズ POP UP SHOP ～Sweet Melty Whip～",
+  "url": "https://x.com/abenolucbus/status/2113103055482769785",
+  "source_type": "当事者",
+  "facts": [
+   "開催期間：10月23日(金)～11月1日(日)。",
+   "会場：アベノラクバス。",
+   "新規描き下ろしグッズを販売。",
+   "購入特典クリアカード、会場限定購入特典イラストカード、会場限定購入特典等身大パネルキャンペーンを実施。",
+   "等身大パネルを設置し、OSMOスタンプを実施。",
+   "混雑時は待機列形成や整理券配布など入店制限を実施する場合がある。",
+   "リンク: https://t.co/smNOzH6JKE",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-10-23",
+  "deadline": "2026-11-01",
+  "src_candidate_id": "202610230227-grok-61"
+ },
+ {
+  "id": "sched-2026-11-01-starlit-season-ps4-sale-2026-締切前",
+  "dedup_key": "starlit-season-ps4-sale-2026",
+  "brand": "joint",
+  "subject": "スタマスPS4版セール 期限3日前",
+  "kind": "締切前",
+  "note": "PS Storeでデジタルデラックスエディションを4,125円で買えるのはあと3日",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-11-04",
+  "title": "スタマス PS4版デジタルデラックスエディションのセール",
+  "url": "https://x.com/imas_official/status/2113229817999213055",
+  "source_type": "公式",
+  "facts": [
+   "「アイドルマスター スターリットシーズン」PS4版デジタルデラックスエディションのセールを実施中と告知した。",
+   "セール期限: 11月4日23時59分まで",
+   "リンク: https://store.playstation.com/ja-jp/product/JP0700-CUSA18927_00-IMASSGAMDELX0001",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-04",
+  "src_candidate_id": "202610230227-grok-49"
  }
 ]

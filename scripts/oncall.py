@@ -1807,6 +1807,39 @@ def _main() -> int:
         return 1
     if stage == "collect" and not a.no_rerun and time.time() < (STAGE_END_AT or 0):
         mark_collect_oncall(STAGE_END_AT, date, held=True)   # 受け渡しは済んだ(組版は譲るのをやめ、印の end_at まで待つ)
+    # 試行回数はロックの中で数える・判定する・増やす(同時起動で上限をすり抜けない。監査指摘)。
+    # 回数は印ファイルの個数(JSON の壊れ・書き換えで緩まない)、記録(log)は JSON。
+    # 判定済みの照合と枠切れは、残り時間の判定より先に見る(残りが少ない 02:00 の収集の当番でも、判定済みを人に渡さない。監査指摘 r1)
+    state_p = ROOT / "metrics" / f"oncall-{date}-{stage}.json"
+    state = load_state(state_p)
+    if state is None:
+        os.close(lock_fd)
+        return 1
+    if a.finished and a.anomaly_keys and set(a.anomaly_keys) <= settled_keys_of(state):
+        # 渡された事柄は全部、この号・この工程で診断し監査が承認した型(起動し直し・手での起動で同じ依頼が来た)。判定し直さない
+        print(f"{date} {stage}: 渡された異常は全部、診断し監査が承認した型。当番は起動しない", flush=True)
+        os.close(lock_fd)
+        return 0
+    if attempt_count(date, stage) >= MAX_ATTEMPTS:
+        os.close(lock_fd)
+        if a.finished:
+            # 工程は止まっていない。異常は見つけたときに人へ通知してあり、工程も号も止まっていないので、人の判断を求めない・
+            # 異常終了にしない(2026-10-24 02:29: 23:30・02:00 の収集が同じ 503 で当番を呼ぶたびに「既に2回試みた。人の判断が要る」が届き、
+            # exit 1 の起動し直しで重なった)
+            print(f"{date} {stage}: 当番は既に{MAX_ATTEMPTS}回試みた。工程は止まっていないので、人に渡さず終える。渡された異常:\n"
+                  + a.reason[-1500:], flush=True)
+            return 0
+        # 止まった工程は人に渡す。通知は号・工程ごとに1度だけ(同じ日の別の起動・起動し直しで同じ通知を重ねない)。
+        # 組版の --recover は、このあと main の後段が組み直しを試みる(戻すのを諦めない)
+        told = ROOT / "metrics" / f"oncall-{date}-{stage}-exhausted"
+        try:
+            os.close(os.open(told, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644))
+            if not notify("oncall", f"{date} {stage}: 当番は既に{MAX_ATTEMPTS}回試みた。人の判断が要る:\n"
+                                    + "\n".join(str(x)[:200] for x in state["log"][-3:]), ok=False, require=True):
+                told.unlink(missing_ok=True)      # 届かなかったら、次の起動でまた知らせる
+        except FileExistsError:
+            print(f"{date} {stage}: 当番は既に{MAX_ATTEMPTS}回試みた(人へは通知済み)", flush=True)
+        return ONCALL_HANDED_EXIT
     need_min = 30 if stage == BACKLOG_STAGE else COLLECT_MIN_WINDOW_MIN - COLLECT_RERUN_RESERVE_MIN
     if DEADLINE_AT is not None and DEADLINE_AT - time.time() < need_min * 60:
         # ロックを取れた時点で、1往復(当番・監査)と取り込みの時間が残っていなければ始めない
@@ -1832,47 +1865,18 @@ def _main() -> int:
         notify("oncall", f"{date} collect: 次の定時工程までに、直して取り直す時間が無い(残り {int((STAGE_END_AT or 0) - time.time()) // 60}分)。"
                          "収集で落とした新着は、この号に載らず1号遅れうる。異常の一覧:\n" + a.reason[-1500:], ok=False)
         return ONCALL_HANDED_EXIT
-    # 試行回数はロックの中で数える・判定する・増やす(同時起動で上限をすり抜けない。監査指摘)。
-    # 回数は印ファイルの個数(JSON の壊れ・書き換えで緩まない)、記録(log)は JSON
-    state_p = ROOT / "metrics" / f"oncall-{date}-{stage}.json"
-    state = load_state(state_p)
-    if state is None:
-        os.close(lock_fd)
-        return 1
-    if a.finished and a.anomaly_keys and set(a.anomaly_keys) <= settled_keys_of(state):
-        # 渡された事柄は全部、この号・この工程で診断し監査が承認した型(起動し直し・手での起動で同じ依頼が来た)。判定し直さない
-        print(f"{date} {stage}: 渡された異常は全部、診断し監査が承認した型。当番は起動しない", flush=True)
-        os.close(lock_fd)
-        return 0
-    if attempt_count(date, stage) >= MAX_ATTEMPTS:
-        os.close(lock_fd)
-        if a.finished:
-            # 工程は止まっていない。異常は見つけたときに人へ通知してあり、工程も号も止まっていないので、人の判断を求めない・
-            # 異常終了にしない(2026-10-24 02:29: 23:30・02:00 の収集が同じ 503 で当番を呼ぶたびに「既に2回試みた。人の判断が要る」が届き、
-            # exit 1 の起動し直しで重なった)
-            print(f"{date} {stage}: 当番は既に{MAX_ATTEMPTS}回試みた。工程は止まっていないので、人に渡さず終える。渡された異常:\n"
-                  + a.reason[-1500:], flush=True)
-            return 0
-        # 止まった工程は人に渡す。通知は号・工程ごとに1度だけ(同じ日の別の起動・起動し直しで同じ通知を重ねない)
-        told = ROOT / "metrics" / f"oncall-{date}-{stage}-exhausted"
-        try:
-            os.close(os.open(told, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644))
-            if not notify("oncall", f"{date} {stage}: 当番は既に{MAX_ATTEMPTS}回試みた。人の判断が要る:\n"
-                                    + "\n".join(str(x)[:200] for x in state["log"][-3:]), ok=False):
-                told.unlink(missing_ok=True)      # 届かなかったら、次の起動でまた知らせる
-        except FileExistsError:
-            print(f"{date} {stage}: 当番は既に{MAX_ATTEMPTS}回試みた(人へは通知済み)", flush=True)
-        return ONCALL_HANDED_EXIT
-    # 前提を全部確かめてから試行を消費する(dirty で何もしなかった回で回数を減らさない。監査指摘)
+    # 前提を全部確かめてから試行を消費する(dirty で何もしなかった回で回数を減らさない。監査指摘)。
+    # 作業ツリーの汚れ・号のブランチの食い違いは、60秒後に起動し直しても変わらない。人に渡し終えたので起動し直させない
+    # (同じ通知を重ねない。監査指摘 2026-10-24 r1)。通信の失敗(RuntimeError)は起動し直しで通りうるので 1 のまま
     try:
         if not root_clean():
             notify("oncall", f"{date} {stage}: 本体の作業ツリーが clean でない。当番は何もしない:\n"
                              + sh(["git", "status", "--short"], cwd=ROOT).stdout[:500], ok=False)
-            return 1
+            return ONCALL_HANDED_EXIT
         problem = ensure_edition(edition, ROOT)
         if problem:
             notify("oncall", f"{date} {stage}: {problem}。当番は何もしない", ok=False)
-            return 1
+            return ONCALL_HANDED_EXIT
     except RuntimeError as e:
         notify("oncall", f"{date} {stage}: 前提の確認に失敗: {e}", ok=False)
         return 1
@@ -2043,8 +2047,9 @@ def _main() -> int:
             path.write_text(f"診断: {fix.get('diagnosis') or ''}\n再実行の根拠: {fix.get('recovery') or ''}\n再実行: {rerun_mode}\n"
                             f"{later_text(res['later'])}\n\n## 往復の記録\n" + json.dumps(transcript, ensure_ascii=False, indent=1), encoding="utf-8")
             reviews = [t.get("review") for t in transcript if t.get("review")]
+            # 届いたことを確かめる(webhook 未設定・試験実行は届いていない)。届いていない診断を「判定済み」にしない(監査指摘 r1)
             reported = notify("oncall", editor_report(stage, date, fix, (reviews[-1] or {}).get("verdict") if reviews else None,
-                                                      len(reviews), len(res["later"]), path.relative_to(ROOT), ""))
+                                                      len(reviews), len(res["later"]), path.relative_to(ROOT), ""), require=True)
         if stage == BACKLOG_STAGE and a.backlog_keys:
             # 監査が承認して取り込めた(直す箇所なしの承認を含む)。消し込むのは、当番の最終報告が1件ずつ扱った指摘だけ
             # (監査はその扱いを元の指摘と突き合わせて確かめている)。扱わなかった指摘・取り込めなかったときは残り、

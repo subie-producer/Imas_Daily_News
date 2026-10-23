@@ -15787,6 +15787,52 @@ def test_oncall_judged_not_rejudged(tmp: Path):
             subprocess.run, _sh.which = saved_run, saved_which
             os.environ.pop("INVOCATION_ID", None)
         r["systemd"] = runs[0] if runs else []
+
+        # 鍵を残すのは「承認された no_fix_needed で、報告が人に届いた」回だけ(監査指摘 r1)。日付ごとに別の記録で確かめる
+        k = ["collect:watch-unreadable:lantis-sidem:HTTP503"]
+        def case(day: str, fix: dict, review: dict, note_fn, minutes: int = 180, finished: bool = True) -> tuple:
+            fake_cli(bindir, "claude", out=json.dumps(fix, ensure_ascii=False))
+            if fix.get("status") == "fixed":
+                # 直した当番: 作業ツリー(cwd)のコードを実際に変えて答える(差分の無い fixed は承認に進まない)
+                (bindir / "claude").write_text(
+                    f"#!{sys.executable}\nimport sys\nfrom pathlib import Path\n"
+                    f"Path('scripts/fix_note.py').write_text('print(1)\\n')\nsys.stdout.write({json.dumps(fix, ensure_ascii=False)!r})\n",
+                    encoding="utf-8")
+            oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: dict(review)
+            oncall.notify = note_fn
+            oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+            notes.clear()
+            code = run_oncall(["py", "oncall.py", "--stage", "collect", "--date", day, "--edition", "2026-10-24", "--reason", "x",
+                               "--end-at", str(int(time.time()) + minutes * 60), *(["--finished"] if finished else []),
+                               "--anomaly-keys", *k])
+            p = root / "metrics" / f"oncall-{day}-collect.json"
+            log = json.loads(p.read_text(encoding="utf-8"))["log"] if p.exists() else []
+            return code, list(notes), [e.get("settled_keys") for e in log]
+        record = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        undelivered = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or not require
+        block = {"verdict": "block", "verification": AUDIT_RAN, "editor_summary": None, "notes": "",
+                 "must_fix": [{"id": "M1", "severity": "must_fix", "claim": "診断が違う", "occurs": "毎回", "evidence": "ログ"}], "later": []}
+        r["fixed"] = case("2026-11-01", dict(INCIDENT_FIX, status="fixed", changed_files=["scripts/fix_note.py"]), approve, record)
+        r["差し戻し"] = case("2026-11-02", INCIDENT_FIX, block, record)
+        r["届かない"] = case("2026-11-03", INCIDENT_FIX, approve, undelivered)
+        saved_env2 = pipelib.ENV
+        pipelib.ENV = {k_: v for k_, v in pipelib.ENV.items() if k_ != "DISCORD_WEBHOOK_URL"}
+        try:
+            r["webhook 未設定"] = case("2026-11-04", INCIDENT_FIX, approve, pipelib.notify)
+        finally:
+            pipelib.ENV = saved_env2
+        r["承認"] = case("2026-11-05", INCIDENT_FIX, approve, record)
+        # 残り30分未満の当番でも、判定済みの照合と枠切れを先に見る(時間切れの通知で人に渡さない)
+        r["残り少ない・判定済み"] = case("2026-11-05", INCIDENT_FIX, approve, record, minutes=29)
+        for n in (1, 2):
+            (root / "metrics" / f"oncall-2026-11-06-collect-attempt-{n}").write_text("x", encoding="utf-8")
+        r["残り少ない・枠切れ"] = case("2026-11-06", INCIDENT_FIX, approve, record, minutes=29)
+        r["残り少ない・枠切れ・止まった1"] = case("2026-11-06", INCIDENT_FIX, approve, record, minutes=29, finished=False)
+        r["残り少ない・枠切れ・止まった2"] = case("2026-11-06", INCIDENT_FIX, approve, record, minutes=29, finished=False)
+        # 前提(作業ツリーが clean)を満たさない: 起動し直しても変わらないので、起動し直させない終了値
+        (root / "scripts" / "lint.py").write_text("print('dirty')\n", encoding="utf-8")
+        r["汚れ"] = case("2026-11-07", INCIDENT_FIX, approve, record)
+        g("checkout", "--", "scripts/lint.py")
     finally:
         for k, v in saved.items():
             setattr(oncall, k, v)
@@ -15822,6 +15868,25 @@ def test_oncall_judged_not_rejudged(tmp: Path):
     check(f"--property=RestartPreventExitStatus={HANDED}" in r["systemd"] and "--property=Restart=on-failure" in r["systemd"]
           and oncall.exit_code(HANDED) == HANDED if isinstance(HANDED, int) else False,
           f"systemd の起動し直しを、人に渡し終えた終了値で止めない: {[x for x in r['systemd'] if 'Restart' in x]}")
+    for what in ("fixed", "差し戻し", "届かない", "webhook 未設定"):
+        code, ns, logged = r.get(what, (None, [], [None]))
+        check(logged and not any(logged), f"{what}の回で、判定済みの鍵を残した(次の収集が当番を起こさなくなる): exit {code} 記録 {logged}")
+    code, ns, logged = r["fixed"]
+    check(code == 0 and any("取り込みました" in m for m, ok in ns),
+          f"fixed の回が承認・取り込みまで進まない(鍵を残さないことを確かめられない): exit {code} {[m[:50] for m, ok in ns]}")
+    code, ns, logged = r["承認"]
+    check(code == 0 and logged == [[k503]], f"承認され報告が届いた no_fix_needed の回で鍵を残さない: exit {code} 記録 {logged}")
+    for what in ("残り少ない・判定済み", "残り少ない・枠切れ"):
+        code, ns, logged = r[what]
+        check(code == 0 and not [m for m, ok in ns if not ok],
+              f"{what}: 残り30分未満の止まっていない工程の当番が、人に渡した・異常終了した: exit {code} {[m[:60] for m, ok in ns if not ok]}")
+    (c1, n1, _), (c2, n2, _) = r["残り少ない・枠切れ・止まった1"], r["残り少ない・枠切れ・止まった2"]
+    bad1, bad2 = [m for m, ok in n1 if not ok], [m for m, ok in n2 if not ok]
+    check(c1 == c2 == HANDED and len(bad1) == 1 and "既に2回" in bad1[0] and not bad2,
+          f"残り30分未満の止まった工程の枠切れの通知が1度だけでない: exit {c1}/{c2} 通知 {[m[:40] for m in bad1]} / {[m[:40] for m in bad2]}")
+    code, ns, _ = r["汚れ"]
+    check(code == HANDED and [m for m, ok in ns if not ok and "clean でない" in m],
+          f"作業ツリーが汚れていて何もしない当番が、起動し直させる終了値で終えた(同じ通知が重なる): exit {code} {[m[:40] for m, ok in ns]}")
 
 
 def main() -> int:

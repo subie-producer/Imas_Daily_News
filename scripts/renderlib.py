@@ -261,6 +261,31 @@ def unescape_newlines(out: dict) -> int:
     return n
 
 
+def strip_invisible(out: dict) -> int:
+    """見出し・リード・段落から不可視文字(is_ignorable)を取り除く(その場で書き換える)。直した欄の数を返す。
+
+    公式の告知を写すと、絵文字に付く異体字セレクタ(🗓️ の U+FE0F)や結合子が付いてくる。書き手には見えず、
+    「不可視文字がある」と差し戻しても同じ告知を写すので直らない(実測 2026-10-24: High×Joker の 2DMV の記事が
+    2回とも戻されて落ちた)。出典 label(clean_label)と同じく、形の欠陥として機械で落とす。
+    落としたあとの値を検算・紙面が使うので、見えない字で字面を変える手は残らない。取り除くと空になる欄は
+    そのままにする(検算の不可視文字の検査が戻す)。
+    """
+    n = 0
+    def strip(v):
+        return "".join(ch for ch in v if not is_ignorable(ch))
+    for key in ("title", "lede"):
+        v = out.get(key)
+        if isinstance(v, str) and strip(v) != v and strip(v).strip():
+            out[key] = strip(v)
+            n += 1
+    for b in out.get("blocks") or []:
+        v = b.get("markdown") if isinstance(b, dict) else None
+        if isinstance(v, str) and strip(v) != v and strip(v).strip():
+            b["markdown"] = strip(v)
+            n += 1
+    return n
+
+
 def split_heading_blocks(out: dict) -> int:
     """中見出し(`## …` 1行)と本文を空行で1 block に束ねた段落を、見出しの block と本文の block に分ける
     (その場で書き換える)。分けた block の数を返す。
@@ -366,7 +391,7 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
     仕事で、ここではしない**(校閲の機械化はしない。編集長の指示)。fetched は「ページを読めたか」の記録で、中身は見ない。
     fetched=None は記録が無い答え(記録を始める前に書かれた答えを読み直す道具)だけが渡す。そのときは読めたかを見ない
     検算の前に、文字として残った `\\n` を本物の改行に戻し(unescape_newlines)、中見出しと本文を束ねた block を
-    分ける(split_heading_blocks)。どちらも out をその場で直す。
+    分け(split_heading_blocks)、見出し・リード・段落の不可視文字を取り除く(strip_invisible)。どれも out をその場で直す。
     """
     fixed = unescape_newlines(out)
     if fixed:
@@ -374,6 +399,9 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
     split = split_heading_blocks(out)
     if split:
         print(f"  中見出し・箇条書きと本文を束ねた段落を分けた({split} か所)", flush=True)
+    stripped = strip_invisible(out)
+    if stripped:
+        print(f"  見出し・リード・段落から不可視文字を取り除いた({stripped} か所)", flush=True)
     problems = []
     if out.get("status") == "decline":
         if out.get("decline_code") not in DECLINE_CODES:
@@ -429,6 +457,7 @@ def check_output(out: dict, fact_by_id: dict[str, str], materials: list[dict], r
     import unicodedata
     if any(re.search(r"</?[A-Za-z][^>]*>|&#?\w+;", x) for x in texts):
         problems.append("本文・見出し・リードに HTML タグか文字参照がある")
+    # 不可視文字は検算の前に取り除いてある(strip_invisible)。ここに残るのは取り除くと空になる欄だけ
     if any(is_ignorable(ch) for x in texts for ch in x):
         problems.append("本文・見出し・リードに不可視文字(ゼロ幅・異体字セレクタ・書式制御)がある")
     # 参照形式のリンク・参照定義行も書かせない(表示文を変えずに字面を変える手)

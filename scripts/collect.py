@@ -46,7 +46,7 @@ from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      RenderFailed, render_page, candidate_misplaced, maintenance_http_error, maintenance_redirect,
                      merge_candidate_facts,
                      set_quiet, unbacked_facts,
-                     anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
+                     anomaly, anomaly_shape, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
                      extract_json_array, git, notify, notify_crash, now_jst, prompt_part, render_prompt,
                      X_ANON_POST, x_post_author, x_status_time, align_x_published_date,
@@ -443,7 +443,12 @@ def run_watch(claude_call, oncall_rerun: bool = False) -> tuple[list[dict], dict
             # 既読は更新しない(found_by_source に入れない)ので、次回同じ境界からやり直す。見えない失敗にしない(当番のなぜなぜへ)
             # 原因(描画取得なら終了コードと stderr の要点)まで残す。切り詰めて「空の応答」だけにしない
             stats[s["id"]] = {"error": str(e)[:400]}
-            notify("collect", f"定点観測 {s['id']}: 一覧を読めなかった({str(e)[:400]})。既読は更新せず、次回やり直す", ok=False)
+            msg = f"定点観測 {s['id']}: 一覧を読めなかった({str(e)[:400]})。既読は更新せず、次回やり直す"
+            # 形の鍵は観測先と失敗の種類(HTTP の状態コード、それ以外は例外の型)。同じ号で当番が診断し監査が承認した型なら、
+            # 次の収集は当番を起こさない(2026-10-23〜24: ランティスのメンテナンスの 503 を 3回の収集が当番に渡した)
+            anomaly_shape("collect", msg, f"watch-unreadable:{s['id']}:"
+                          + (f"HTTP{e.code}" if isinstance(getattr(e, "code", None), int) else type(e).__name__))
+            notify("collect", msg, ok=False)
     if cuts:
         state["_cut"] = cuts
     else:

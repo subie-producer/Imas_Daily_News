@@ -256,12 +256,48 @@ def tool_path() -> str:
 # 「申告前に診断しろ」)。工程の終わりに diagnose_anomalies が当番へ渡し、escalate は毎回この台帳を依頼文に付ける
 ANOMALIES: list[str] = []
 _ESCALATED = False
+# 台帳の1件(文面)→ 形の鍵。同じ号・同じ工程で当番が診断し監査が承認した事柄(同じ原因の同じ型)を、止まっていない工程の
+# 終わりに当番へ渡し直さないための照合に使う。鍵は呼び出し側がコードで形だけ決める(観測先・失敗の種類。本文の細部で別物にしない)。
+# 鍵の無い事柄は文面そのもの(空白を詰めた全文)で照合する(2026-10-24: lantis-sidem の 503 を、承認済みの診断のあとも
+# 23:30・02:00 の収集が当番に渡し直し、「人の判断が要る」が繰り返し届いた)
+ANOMALY_KEYS: dict[str, str] = {}
 
 
 def anomaly(job: str, text: str) -> None:
     """人に「異常」として見せる事柄を台帳に積む(通知の成否とは独立)。空文字は積まない。"""
     if text and text.strip():
         ANOMALIES.append(f"[{job}] {text.strip()}")
+
+
+def anomaly_shape(job: str, text: str, key: str) -> None:
+    """これから積む(notify(ok=False) / anomaly で)事柄の文面に、形の鍵を付ける。key は観測先・失敗の種類などをコードで決めた文字列。"""
+    if text and text.strip() and key:
+        ANOMALY_KEYS[f"[{job}] {text.strip()}"] = f"{job}:{key}"
+
+
+def anomaly_key(entry: str) -> str:
+    """台帳の1件の形の鍵。積んだときに鍵を付けていなければ、文面の全文(空白を詰めたもの)の指紋。"""
+    import hashlib
+    return ANOMALY_KEYS.get(entry) or "text:" + hashlib.sha256(" ".join(entry.split()).encode("utf-8")).hexdigest()[:16]
+
+
+def settled_anomaly_keys(date: str, stage: str) -> set[str]:
+    """同じ号・同じ工程で、当番が診断し監査が承認した(コードの欠陥ではない = no_fix_needed)事柄の鍵。
+    当番の試行の記録(metrics/oncall-<date>-<stage>.json の log の settled_keys)から読む。読めなければ空(当番を起こす側に倒す)。
+    直した(fixed)事柄は数えない: 直したあとにまた起きたなら、直し方が足りないという新しい事実である。"""
+    try:
+        return settled_keys_of(json.loads((ROOT / "metrics" / f"oncall-{date}-{stage}.json").read_text(encoding="utf-8")))
+    except (OSError, ValueError):
+        return set()
+
+
+def settled_keys_of(state) -> set[str]:
+    """当番の試行の記録(読み込んだ JSON)から、承認された no_fix_needed の回が残した鍵。形が違えば空。"""
+    log = state.get("log") if isinstance(state, dict) else None
+    if not isinstance(log, list):
+        return set()
+    return {k for e in log if isinstance(e, dict) and e.get("approved") is True and e.get("status") == "no_fix_needed"
+            and isinstance(e.get("settled_keys"), list) for k in e["settled_keys"] if isinstance(k, str)}
 
 
 # --- 定時工程の時刻(当番が工程の排他を手放すべき時刻の計算) ------------------------------------------
@@ -341,26 +377,47 @@ def diagnose_anomalies(stage: str, date: str, rerun: bool = False, reason: str =
     edition に生きている号の日付を渡す。戻り値は当番を呼んだか。"""
     if not ANOMALIES or _ESCALATED:
         return False
+    items = None
+    if not reason:
+        # 工程は止まっていない: 同じ号・同じ工程で当番が診断し監査が承認した事柄(同じ形の鍵)は、判定し直させない。
+        # 新しい事柄だけを渡す。全部が判定済みなら当番を起こさない(人への通知は見つけたときに済んでいる)
+        settled = settled_anomaly_keys(date, stage)
+        items = [a for a in ANOMALIES if anomaly_key(a) not in settled]
+        if not items:
+            print(f"当番を起こさない({stage} {date}): 異常は全部、この号・この工程で当番が診断し監査が承認した事柄と同じ型"
+                  f"({len(ANOMALIES)}件)", flush=True)
+            return False
     # reason が無い = 工程は止まっていない。当番に伝え、「いま再実行しても変わらない」を「人の判断が要る」にさせない(oncall --finished)
     return escalate(stage, date, reason or "工程は終わった(止まっていない)が、人に異常として通知した事柄がある。下の一覧をなぜなぜすること",
-                    rerun=rerun, edition=edition, extra_args=list(extra_args or []) + ([] if reason else ["--finished"]))
+                    rerun=rerun, edition=edition, extra_args=list(extra_args or []) + ([] if reason else ["--finished"]), items=items)
 
 
-def escalate_reason(reason: str) -> str:
-    """当番に渡す理由 = 呼び出し側の理由 + 異常の台帳(なぜなぜの依頼文 prompts/oncall-whywhy)。台帳が空なら理由だけ。"""
-    if not ANOMALIES:
+ESCALATE_ITEMS_MAX = 30      # 当番に渡す台帳の件数の上限(引数1つの上限 128KB に収める: 30件 × 1200 字まで)
+# 当番が「人に渡し終えた」で終わるときの終了値(止まった工程で試行の枠を使い切った・承認された「再実行しても通らない」・
+# 時間切れ)。起動し直しても同じ判断と同じ通知を繰り返すだけなので、systemd に起動し直させない(RestartPreventExitStatus)。
+# 異常終了のままにして、unit の失敗としては見えるようにする(2026-10-24 02:29: 枠切れの通知が起動し直しで重なった)
+ONCALL_HANDED_EXIT = 79
+
+
+def escalate_reason(reason: str, items: list[str] | None = None) -> str:
+    """当番に渡す理由 = 呼び出し側の理由 + 異常の台帳(なぜなぜの依頼文 prompts/oncall-whywhy)。台帳が空なら理由だけ。
+    items を渡したら、台帳の代わりにその事柄だけ(判定済みを除いた残り)。"""
+    items = ANOMALIES if items is None else items
+    if not items:
         return reason[:4000]
-    # 引数1つの上限(128KB)に収める: 30件 × 1200 字まで
-    return reason[:4000] + "\n\n" + render_prompt("oncall-whywhy", ITEMS="\n".join(f"- {a[:1200]}" for a in ANOMALIES[:30]))
+    return reason[:4000] + "\n\n" + render_prompt("oncall-whywhy", ITEMS="\n".join(f"- {a[:1200]}" for a in items[:ESCALATE_ITEMS_MAX]))
 
 
 def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: str = "",
-             extra_args: list[str] | None = None, ledger: bool = True, restart: bool = True) -> bool:
+             extra_args: list[str] | None = None, ledger: bool = True, restart: bool = True,
+             items: list[str] | None = None) -> bool:
     """当番(oncall)を起動する。依頼の理由に、この process の異常の台帳(なぜなぜの対象)を必ず付ける。
     rerun=False は「止まった工程を再実行しない」(号が確定している・工程が終わっている)。
     edition は修正を取り込む号の日付(既定は date。発行後の工程では生きている次の号を渡す)。
     ledger=False は台帳を付けない(保管していた指摘を直す依頼 backlog は、その指摘だけを渡す)。extra_args は当番への追加の引数。
-    restart=False は当番が失敗しても起動し直さない(backlog: やり直しは翌朝。起動し直すと次の定時工程の排他を奪う)。"""
+    restart=False は当番が失敗しても起動し直さない(backlog: やり直しは翌朝。起動し直すと次の定時工程の排他を奪う)。
+    items は台帳の代わりに渡す事柄(判定済みを除いた残り。diagnose_anomalies)。渡した事柄の形の鍵は --anomaly-keys で当番に渡し、
+    当番が診断し監査が承認したら試行の記録に残す(次から同じ型を判定し直さない)。"""
     import os
     global _ESCALATED
     if _QUIET:                 # 試験実行(通知しない)では当番も呼ばない
@@ -379,10 +436,12 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
     # _ESCALATED は**起動を確かめてから**立てる(起動に失敗したのに立てると、工程末尾の diagnose が二度目を抑止して、
     # 当番が誰も呼ばれないまま終わる。監査指摘 r87)
     log = ROOT / "metrics" / f"oncall-{date}-{stage}.log"
+    handed = (ANOMALIES if items is None else items)[:ESCALATE_ITEMS_MAX] if ledger else []
+    keys = list(dict.fromkeys(anomaly_key(a) for a in handed))
     args = ([sys.executable, str(script), "--stage", stage, "--date", date,
-             "--reason", escalate_reason(reason) if ledger else reason[:100_000]]
+             "--reason", escalate_reason(reason, items) if ledger else reason[:100_000]]
             + (["--no-rerun"] if not rerun else []) + (["--edition", edition] if edition and edition != date else [])
-            + list(extra_args or []))
+            + list(extra_args or []) + (["--anomaly-keys", *keys] if keys else []))
     # **systemd の service から呼ばれたときは、別の transient unit として起動する。**
     # Popen(start_new_session=True) で子を切り離しても cgroup は同じなので、compose の service が
     # 終わった瞬間に systemd が当番ごと殺す(実測 2026-09-13 04:15: 当番のログが空のまま消えた)
@@ -392,8 +451,10 @@ def escalate(stage: str, date: str, reason: str, rerun: bool = True, edition: st
                             f"--working-directory={ROOT}", f"--setenv=PATH={tool_path()}",
                             f"--setenv=HOME={os.environ.get('HOME', '')}",
                             f"--property=StandardOutput=append:{log}", "--property=StandardError=inherit",
-                            # 当番自身が落ちたら1回だけ起動し直す(2回目は attempt の印と flock が二重起動を防ぐ)
+                            # 当番自身が落ちたら1回だけ起動し直す(2回目は attempt の印と flock が二重起動を防ぐ)。
+                            # 人に渡し終えた終わり方(ONCALL_HANDED_EXIT)は起動し直さない(同じ通知を繰り返さない)
                             *(["--property=Restart=on-failure", "--property=RestartSec=60",
+                               f"--property=RestartPreventExitStatus={ONCALL_HANDED_EXIT}",
                                "--property=StartLimitBurst=2", "--property=StartLimitIntervalSec=3600"] if restart else [])] + args,
                            capture_output=True, text=True, stdin=subprocess.DEVNULL)
         if r.returncode == 0:

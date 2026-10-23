@@ -9849,7 +9849,7 @@ def test_anomaly_ledger_and_whywhy(tmp: Path):
     # oncall: --no-rerun は「再実行しても通らない(none)」より先に見る(号が確定した工程の当番は再実行せず 0 で終わる)
     import oncall
     src = (pipelib.ROOT / "scripts" / "oncall.py").read_text(encoding="utf-8")
-    check(src.index("if a.no_rerun:") < src.index('if rerun_mode == "none":\n            if a.finished:'), "no_rerun の判定が none の後にある")
+    check(src.index("if a.no_rerun:") < src.index('if rerun_mode == "none":\n            settle()\n            if a.finished:'), "no_rerun の判定が none の後にある")
     check(set(oncall.STAGES) >= {"compose", "release", "classify", "collect", "watch", "update"}, f"oncall の工程: {oncall.STAGES}")
     # compose の例外・SystemExit・終了時の当番は、対象の号(STARTED_DATE。--date で過去号を組み直したとき)を渡す(監査指摘 r87)
     csrc = (pipelib.ROOT / "scripts" / "compose.py").read_text(encoding="utf-8")
@@ -15601,7 +15601,8 @@ def test_oncall_finished_rerun_none(tmp: Path):
           f"止まっていない工程の当番が、承認された none で「人の判断が要る」と届けた・異常終了した・報告を出さない: exit {code} "
           f"{[(m[:60], ok) for m, ok in ns]}")
     code, ns = codes["2026-10-22"]
-    check(code == 1 and any("工程は止まったまま" in m and "人の判断が要る" in m and not ok for m, ok in ns),
+    # 人に渡し終えた終わり方は、systemd に起動し直させない終了値(2026-10-24。起動し直すと2回目の試行で同じ通知を重ねる)
+    check(code == getattr(pipelib, "ONCALL_HANDED_EXIT", 1) and any("工程は止まったまま" in m and "人の判断が要る" in m and not ok for m, ok in ns),
           f"止まった工程の none を人に渡さない: exit {code} {[(m[:60], ok) for m, ok in ns]}")
     code, ns = codes["2026-10-21"]
     bad = [m for m, ok in ns if not ok]
@@ -15632,6 +15633,378 @@ def test_oncall_finished_rerun_none(tmp: Path):
           f"--finished の渡し方が違う(止まった収集に付けた・止まっていない収集に付けない): {[(a, r[:30]) for a, r in calls]}")
 
 
+def test_oncall_judged_not_rejudged(tmp: Path):
+    """判定済みを判定し直さない(編集長 2026-10-24「ジャッジ済みをジャッジするな」)。10/23 18:33 の収集で定点観測 lantis-sidem が
+    HTTP 503(ランティスのメンテナンス)になり、当番の1回目は答えが読めず(18:56)、起動し直した2回目で「直す箇所なし」を監査が承認した
+    (19:06)。23:30・02:00 の収集も同じ 503 で当番を起こし、「当番は既に2回試みた。人の判断が要る」が exit 1 の起動し直しのたびに届いた。
+    この記録の形で、本物の run_watch(一覧の取得だけ偽)→ diagnose_anomalies → escalate(起動の Popen だけ偽)→ 本物の oncall._main
+    (偽の claude・監査は承認)を通して確かめる:
+    - 2回目以降の同じ 503 では当番を起こさない。新しい事柄(別の観測先の失敗・同じ観測先の別の種類の失敗)が混ざれば、その事柄だけで起こす
+    - 止まった収集は、判定済みの事柄でも従来どおり起こす
+    - 枠切れ: 止まっていない工程は通知も異常終了もしない。止まった工程は人への通知が1度だけで、systemd に起動し直させない終了値で終える"""
+    import shutil as _sh
+    import time
+    import types
+    import urllib.error
+    import collect
+    import oncall
+    import yaml
+    HANDED = getattr(pipelib, "ONCALL_HANDED_EXIT", "未定義")
+    date, edition = "2026-10-24", "edition/2026-10-24"
+    tmp.mkdir(parents=True, exist_ok=True)
+    root, remote, bindir, col = tmp / "ops", tmp / "ops.git", tmp / "bin", tmp / "col"
+    g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+    subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+    subprocess.run(["git", "init", "-q", "-b", "main", str(root)], check=True, capture_output=True)
+    g("config", "user.email", "t@example"); g("config", "user.name", "t")
+    (root / "scripts").mkdir(); (root / "metrics").mkdir()
+    _sh.copytree(SCHEMAS, root / "schema")
+    (root / ".gitignore").write_text("metrics/oncall-*\nmetrics/jobs.lock\nmetrics/work/\n", encoding="utf-8")
+    for s in ("selfcheck", "lint", "oncall"):
+        (root / "scripts" / f"{s}.py").write_text(f"print('{s}: 0 errors')\n", encoding="utf-8")
+    g("add", "-A"); g("commit", "-q", "-m", "base")
+    g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", "main")
+    g("checkout", "-q", "-b", edition); g("push", "-q", "-u", "origin", edition)
+    col.mkdir()
+    (col / "sources.yml").write_text(yaml.safe_dump([
+        {"id": "lantis-sidem", "brand": "sidem", "type": "html", "url": "https://lantis.jp/sidem/", "base": "https://lantis.jp",
+         "list_regex": "x", "enabled": True},
+        {"id": "columbia", "brand": "general", "type": "html", "url": "https://columbia.jp/idolmaster/", "base": "https://columbia.jp",
+         "list_regex": "x", "enabled": True}]), encoding="utf-8")
+    seen = {"lantis-sidem": ["https://lantis.jp/sidem/old"], "columbia": ["https://columbia.jp/old"]}
+    fails: dict = {}
+
+    def fake_list(s, known, fetch=None, resume=None):
+        f = fails.get(s["id"])
+        if isinstance(f, int):
+            raise urllib.error.HTTPError(s["url"], f, {503: "Service Temporarily Unavailable", 404: "Not Found"}[f], None, None)
+        if f:
+            raise RuntimeError(f)
+        return [(u, "") for u in seen[s["id"]]], 1, []
+
+    one = json.dumps(INCIDENT_FIX, ensure_ascii=False)
+    twice = lambda: fake_cli(bindir, "claude", out=one + "\n\n" + one + "\n")       # 19:06 の2回目(読める答え)
+    stuck = lambda: (bindir / "claude").write_text(                                   # 18:56 の1回目(読めない答え)
+        f"#!{sys.executable}\nimport sys, time\nif '--resume' in sys.argv:\n    time.sleep(5)\nsys.stdout.write({one[:-60]!r})\n",
+        encoding="utf-8")
+    approve = {"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None, "notes": ""}
+    launches: list[list[str]] = []
+    notes: list = []
+    end_at = str(int(time.time()) + 3 * 3600)
+
+    def collect_run(failing: dict) -> None:
+        """定時の収集1回(一覧の取得 → 台帳 → 工程の終わりの diagnose_anomalies)。止まっていない収集"""
+        fails.clear(); fails.update(failing)
+        pipelib.ANOMALIES.clear()
+        pipelib._ESCALATED = False
+        (col / "watch-state.json").write_text(json.dumps(seen), encoding="utf-8")
+        pipelib.set_quiet(True)
+        try:
+            collect.run_watch(lambda prompt, timeout=0: [])
+        finally:
+            pipelib.set_quiet(False)
+
+    def diagnose(reason: str = "") -> list[str] | None:
+        n = len(launches)
+        saved_popen = subprocess.Popen
+        subprocess.Popen = lambda args, **k: launches.append(list(args))
+        try:
+            pipelib.diagnose_anomalies("collect", date, rerun=True, reason=reason, extra_args=["--end-at", end_at])
+        finally:
+            subprocess.Popen = saved_popen
+        return launches[-1] if len(launches) > n else None
+
+    def run_oncall(args: list[str]):
+        notes.clear()
+        sys.argv = ["oncall", *args[2:]]
+        try:
+            return oncall._main()
+        except SystemExit as e:          # 直す前の実装は --anomaly-keys を知らない
+            return f"SystemExit {e.code}"
+
+    def reason_of(args) -> str:
+        return args[args.index("--reason") + 1] if args and "--reason" in args else ""
+
+    def keys_of(args) -> list[str]:
+        if not args or "--anomaly-keys" not in args:
+            return []
+        rest = args[args.index("--anomaly-keys") + 1:]
+        return [k for k in rest[:next((i for i, x in enumerate(rest) if x.startswith("--")), len(rest))]]
+
+    names = ("ROOT", "notify", "job_lock", "gather_context", "env_fingerprint", "save_raw", "run_codex", "keep_later",
+             "DEADLINE_AT", "STAGE_END_AT", "RECOVER", "REFORMAT_TIMEOUT_SEC", "mark_collect_oncall", "COLLECT_ONCALL_MARK",
+             "ALREADY_SETTLED")
+    names = tuple(n for n in names if hasattr(oncall, n))
+    saved = {k: getattr(oncall, k) for k in names}
+    saved_p = (pipelib.ROOT, pipelib.ENV, pipelib.oncall_clis_blocked, list(pipelib.ANOMALIES), pipelib._ESCALATED)
+    saved_c = (collect.ROOT, collect.STATE_PATH, collect.list_source)
+    saved_argv, saved_path, saved_inv = sys.argv, os.environ.get("PATH", ""), os.environ.pop("INVOCATION_ID", None)
+    r = {}
+    try:
+        oncall.ROOT = pipelib.ROOT = root
+        pipelib.ENV = dict(pipelib.ENV, ONCALL="on")
+        pipelib.oncall_clis_blocked = lambda: []
+        collect.ROOT, collect.STATE_PATH, collect.list_source = col, col / "watch-state.json", fake_list
+        oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        oncall.job_lock = lambda *a, **k: os.open(os.devnull, os.O_RDONLY)
+        oncall.gather_context = lambda *a: "ctx"
+        oncall.env_fingerprint = lambda: ""
+        oncall.save_raw = lambda *a, **k: None
+        oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: dict(approve)
+        oncall.keep_later = lambda *a: 0
+        oncall.mark_collect_oncall = lambda *a, **k: None
+        oncall.COLLECT_ONCALL_MARK = tmp / "collect-oncall-mark.json"
+        oncall.RECOVER = False
+        oncall.REFORMAT_TIMEOUT_SEC = 1
+        os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
+
+        # 10/23 18:33 の収集: lantis-sidem が 503 → 当番(1回目は答えが読めない、起動し直した2回目で直す箇所なしを承認)
+        collect_run({"lantis-sidem": 503})
+        a1833 = diagnose()
+        r["18:33 鍵"] = keys_of(a1833)
+        twice()          # 偽の CLI を置き(実行権付き)、中身を読めない答えに差し替える
+        stuck()
+        r["18:56"] = run_oncall(a1833 or [])
+        twice()
+        r["19:06"] = run_oncall(a1833 or [])
+        r["19:06 通知"] = list(notes)
+        st = json.loads((root / "metrics" / f"oncall-{date}-collect.json").read_text(encoding="utf-8"))
+        r["記録"] = st["log"]
+        # 23:30 の収集: 同じ 503(エラーの文面が同じ)→ 当番を起こさない
+        collect_run({"lantis-sidem": 503})
+        r["23:30"] = diagnose()
+        # 起動し直し・手での起動で、判定済みの事柄だけの依頼が当番に来ても、判定し直さない(通知も異常終了もしない)
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        r["判定済みの依頼"] = (run_oncall(a1833 or []), list(notes))
+        # 02:00 の収集: 同じ 503 に、別の観測先の新しい失敗が混ざる → その事柄だけで起こす
+        collect_run({"lantis-sidem": 503, "columbia": 404})
+        a0200 = diagnose()
+        r["02:00"] = (reason_of(a0200), keys_of(a0200))
+        # 同じ観測先でも別の種類の失敗は新しい事柄
+        collect_run({"lantis-sidem": "描画に失敗: 終了コード 1"})
+        r["別の種類"] = keys_of(diagnose())
+        # 枠切れ(2回使った)で、止まっていない工程の当番に新しい事柄が来た: 人に渡さない・異常終了しない
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        r["枠切れ・止まっていない"] = (run_oncall(a0200 or []), list(notes))
+        # 止まった収集は、判定済みの事柄でも起こす。枠切れなら人への通知は1度だけ、起動し直させない終了値
+        collect_run({"lantis-sidem": 503})
+        stop = diagnose("収集が止まった(exit 1)。下の一覧をなぜなぜし、原因を直して取り直すこと")
+        r["止まった"] = (stop is not None and "--finished" not in stop, "lantis-sidem" in reason_of(stop))
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        r["枠切れ・止まった1"] = (run_oncall(stop or []), list(notes))
+        oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+        r["枠切れ・止まった2"] = (run_oncall(stop or []), list(notes))
+        # systemd の下での起動: 人に渡し終えた終了値では起動し直させない
+        runs = []
+        saved_run, saved_which = subprocess.run, _sh.which
+        os.environ["INVOCATION_ID"] = "test"
+        subprocess.run = lambda args, **k: runs.append(list(args)) or types.SimpleNamespace(returncode=0, stdout="active\n", stderr="")
+        _sh.which = lambda name, *a, **k: "/usr/bin/" + name
+        try:
+            pipelib._ESCALATED = False
+            pipelib.escalate("collect", date, "x", extra_args=["--end-at", end_at])
+        finally:
+            subprocess.run, _sh.which = saved_run, saved_which
+            os.environ.pop("INVOCATION_ID", None)
+        r["systemd"] = runs[0] if runs else []
+
+        # 鍵を残すのは「承認された no_fix_needed で、報告が人に届いた」回だけ(監査指摘 r1)。日付ごとに別の記録で確かめる
+        k = ["collect:watch-unreadable:lantis-sidem:HTTP503"]
+        def case(day: str, fix: dict, review: dict, note_fn, minutes: int = 180, finished: bool = True) -> tuple:
+            fake_cli(bindir, "claude", out=json.dumps(fix, ensure_ascii=False))
+            if fix.get("status") == "fixed":
+                # 直した当番: 作業ツリー(cwd)のコードを実際に変えて答える(差分の無い fixed は承認に進まない)
+                (bindir / "claude").write_text(
+                    f"#!{sys.executable}\nimport sys\nfrom pathlib import Path\n"
+                    f"Path('scripts/fix_note.py').write_text('print(1)\\n')\nsys.stdout.write({json.dumps(fix, ensure_ascii=False)!r})\n",
+                    encoding="utf-8")
+            oncall.run_codex = lambda prompt, schema, cwd, timeout=1800: dict(review)
+            oncall.notify = note_fn
+            oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+            notes.clear()
+            code = run_oncall(["py", "oncall.py", "--stage", "collect", "--date", day, "--edition", "2026-10-24", "--reason", "x",
+                               "--end-at", str(int(time.time()) + minutes * 60), *(["--finished"] if finished else []),
+                               "--anomaly-keys", *k])
+            p = root / "metrics" / f"oncall-{day}-collect.json"
+            log = json.loads(p.read_text(encoding="utf-8"))["log"] if p.exists() else []
+            return code, list(notes), [e.get("settled_keys") for e in log]
+        record = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+        undelivered = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or not require
+        block = {"verdict": "block", "verification": AUDIT_RAN, "editor_summary": None, "notes": "",
+                 "must_fix": [{"id": "M1", "severity": "must_fix", "claim": "診断が違う", "occurs": "毎回", "evidence": "ログ"}], "later": []}
+        r["fixed"] = case("2026-11-01", dict(INCIDENT_FIX, status="fixed", changed_files=["scripts/fix_note.py"]), approve, record)
+        r["差し戻し"] = case("2026-11-02", INCIDENT_FIX, block, record)
+        r["届かない"] = case("2026-11-03", INCIDENT_FIX, approve, undelivered)
+        saved_env2 = pipelib.ENV
+        pipelib.ENV = {k_: v for k_, v in pipelib.ENV.items() if k_ != "DISCORD_WEBHOOK_URL"}
+        try:
+            r["webhook 未設定"] = case("2026-11-04", INCIDENT_FIX, approve, pipelib.notify)
+        finally:
+            pipelib.ENV = saved_env2
+        # 承認された「取り直す(resume)」の取り直しが一度失敗した: 鍵を残さず、起動し直した当番が取り直して新着を拾う(監査指摘 r4)
+        (root / "scripts" / "collect.py").write_text(
+            "from pathlib import Path\np = Path('metrics/oncall-probe-runs')\nn = int(p.read_text()) + 1 if p.exists() else 1\n"
+            "p.write_text(str(n))\nif n > 1:\n    Path('metrics/oncall-picked').write_text('new item')\nraise SystemExit(1 if n == 1 else 0)\n",
+            encoding="utf-8")
+        g("add", "scripts/collect.py"); g("commit", "-q", "-m", "一度だけ失敗する取り直し"); g("push", "-q", "origin", edition)
+        resume = dict(INCIDENT_FIX, rerun_mode="resume", recovery="保守が終わったので、定点観測を取り直して新着を素材へ戻す")
+        r["取り直し失敗"] = case("2026-11-08", resume, approve, record)
+        r["取り直し再起動"] = case("2026-11-08", resume, approve, record)
+        r["取り直し"] = ((root / "metrics" / "oncall-probe-runs").read_text(encoding="utf-8"), (root / "metrics" / "oncall-picked").exists())
+        r["承認"] = case("2026-11-05", INCIDENT_FIX, approve, record)
+        # 残り30分未満の当番でも、判定済みの照合と枠切れを先に見る(時間切れの通知で人に渡さない)
+        r["残り少ない・判定済み"] = case("2026-11-05", INCIDENT_FIX, approve, record, minutes=29)
+        for n in (1, 2):
+            (root / "metrics" / f"oncall-2026-11-06-collect-attempt-{n}").write_text("x", encoding="utf-8")
+        r["残り少ない・枠切れ"] = case("2026-11-06", INCIDENT_FIX, approve, record, minutes=29)
+        r["残り少ない・枠切れ・止まった1"] = case("2026-11-06", INCIDENT_FIX, approve, record, minutes=29, finished=False)
+        r["残り少ない・枠切れ・止まった2"] = case("2026-11-06", INCIDENT_FIX, approve, record, minutes=29, finished=False)
+        # 前提(作業ツリーが clean)を満たさない: 起動し直しても変わらないので、起動し直させない終了値
+        (root / "scripts" / "lint.py").write_text("print('dirty')\n", encoding="utf-8")
+        r["汚れ"] = case("2026-11-07", INCIDENT_FIX, approve, record)
+        g("checkout", "--", "scripts/lint.py")
+    finally:
+        for k, v in saved.items():
+            setattr(oncall, k, v)
+        pipelib.ROOT, pipelib.ENV, pipelib.oncall_clis_blocked = saved_p[:3]
+        pipelib.ANOMALIES[:] = saved_p[3]
+        pipelib._ESCALATED = saved_p[4]
+        collect.ROOT, collect.STATE_PATH, collect.list_source = saved_c
+        sys.argv = saved_argv
+        os.environ["PATH"] = saved_path
+        if saved_inv is not None:
+            os.environ["INVOCATION_ID"] = saved_inv
+    k503 = "collect:watch-unreadable:lantis-sidem:HTTP503"
+    check(r["18:33 鍵"] == [k503], f"18:33 の 503 の形の鍵(観測先と失敗の種類)を当番に渡さない: {r['18:33 鍵']}")
+    check(r["18:56"] == 1 and r["19:06"] == 0 and [e.get("settled_keys") for e in r["記録"]] == [None, [k503]],
+          f"承認された直す箇所なしの診断が、渡された鍵を記録に残さない: 18:56 exit {r['18:56']} / 19:06 exit {r['19:06']} "
+          f"記録 {[(e.get('approved'), e.get('status'), e.get('settled_keys')) for e in r['記録']]}")
+    check(r["23:30"] is None, f"判定済みの 503 で 23:30 の収集が当番を起こした: {reason_of(r['23:30'])[-200:]}")
+    code, ns = r["判定済みの依頼"]
+    check(code == 0 and not [m for m, ok in ns if not ok], f"判定済みの事柄だけの依頼で、当番が通知した・異常終了した: exit {code} {ns}")
+    why, keys = r["02:00"]
+    check(keys == ["collect:watch-unreadable:columbia:HTTP404"] and "columbia" in why and "lantis-sidem" not in why,
+          f"新しい事柄だけで当番を起こさない(判定済みの 503 を混ぜた・新しい失敗を落とした): 鍵 {keys} 依頼 {why[-300:]}")
+    check(r["別の種類"] == ["collect:watch-unreadable:lantis-sidem:RuntimeError"],
+          f"同じ観測先の別の種類の失敗を、判定済みとして当番を起こさない: {r['別の種類']}")
+    code, ns = r["枠切れ・止まっていない"]
+    check(code == 0 and not [m for m, ok in ns if not ok],
+          f"枠切れで、止まっていない工程の当番が人に渡した・異常終了した(起動し直しで重なる): exit {code} {[m[:60] for m, ok in ns]}")
+    check(r["止まった"] == (True, True), f"止まった収集の当番を、判定済みの事柄で起こさない(--finished を付けた): {r['止まった']}")
+    (c1, n1), (c2, n2) = r["枠切れ・止まった1"], r["枠切れ・止まった2"]
+    bad1, bad2 = [m for m, ok in n1 if not ok], [m for m, ok in n2 if not ok]
+    check(c1 == c2 == HANDED and HANDED not in (0, 1) and len(bad1) == 1 and "人の判断が要る" in bad1[0] and not bad2,
+          f"止まった工程の枠切れの通知が1度だけでない・起動し直させる終了値で終えた: exit {c1}/{c2}(期待 {HANDED}) 通知 {bad1} / {bad2}")
+    check(f"--property=RestartPreventExitStatus={HANDED}" in r["systemd"] and "--property=Restart=on-failure" in r["systemd"]
+          and oncall.exit_code(HANDED) == HANDED if isinstance(HANDED, int) else False,
+          f"systemd の起動し直しを、人に渡し終えた終了値で止めない: {[x for x in r['systemd'] if 'Restart' in x]}")
+    for what in ("fixed", "差し戻し", "届かない", "webhook 未設定"):
+        code, ns, logged = r.get(what, (None, [], [None]))
+        check(logged and not any(logged), f"{what}の回で、判定済みの鍵を残した(次の収集が当番を起こさなくなる): exit {code} 記録 {logged}")
+    code, ns, logged = r["fixed"]
+    check(code == 0 and any("取り込みました" in m for m, ok in ns),
+          f"fixed の回が承認・取り込みまで進まない(鍵を残さないことを確かめられない): exit {code} {[m[:50] for m, ok in ns]}")
+    (c1, _, l1), (c2, _, l2) = r["取り直し失敗"], r["取り直し再起動"]
+    check(c1 == 1 and not any(l1) and c2 == 0 and r["取り直し"] == ("2", True) and l2[-1] == [k503],
+          f"取り直しが失敗した回で鍵を残した・起動し直した当番が取り直さない: exit {c1}/{c2} 記録 {l1}/{l2} 取り直し(回数, 拾えた) {r['取り直し']}")
+    code, ns, logged = r["承認"]
+    check(code == 0 and logged == [[k503]], f"承認され報告が届いた no_fix_needed の回で鍵を残さない: exit {code} 記録 {logged}")
+    for what in ("残り少ない・判定済み", "残り少ない・枠切れ"):
+        code, ns, logged = r[what]
+        check(code == 0 and not [m for m, ok in ns if not ok],
+              f"{what}: 残り30分未満の止まっていない工程の当番が、人に渡した・異常終了した: exit {code} {[m[:60] for m, ok in ns if not ok]}")
+    (c1, n1, _), (c2, n2, _) = r["残り少ない・枠切れ・止まった1"], r["残り少ない・枠切れ・止まった2"]
+    bad1, bad2 = [m for m, ok in n1 if not ok], [m for m, ok in n2 if not ok]
+    check(c1 == c2 == HANDED and len(bad1) == 1 and "既に2回" in bad1[0] and not bad2,
+          f"残り30分未満の止まった工程の枠切れの通知が1度だけでない: exit {c1}/{c2} 通知 {[m[:40] for m in bad1]} / {[m[:40] for m in bad2]}")
+    code, ns, _ = r["汚れ"]
+    check(code == HANDED and [m for m, ok in ns if not ok and "clean でない" in m],
+          f"作業ツリーが汚れていて何もしない当番が、起動し直させる終了値で終えた(同じ通知が重なる): exit {code} {[m[:40] for m, ok in ns]}")
+
+
+def test_oncall_recover_keeps_handed_exit(tmp: Path):
+    """落とした記事を戻す当番(--recover)の後段(main)が、人に渡し終えた終わり方を 1 に上書きして systemd に起動し直させない
+    (監査指摘 2026-10-24 r2: 枠切れで _main が 0 / 79 を返しても、後段の「戻す時間が無い」「組み直しが失敗」で 1 になり、
+    起動し直しのたびに同じ通知と組み直しを重ねた)。本物の main を、試行を2回使った一時リポジトリと、失敗する偽の compose で走らせる。"""
+    import time
+    import oncall
+    HANDED = getattr(pipelib, "ONCALL_HANDED_EXIT", "未定義")
+    date, edition = "2026-10-24", "edition/2026-10-24"
+    out = {}
+    # short: 枠切れ・残り時間が無い / stopped: 枠切れ・後段の組み直しが失敗 / direct: 往復の時間は無いが組み直しの時間はある
+    # (_main の中で組み直す) / approved: 当番の診断を監査が承認し、承認後の再実行で組み直す(監査指摘 r3)
+    def approved_rounds(stage, date_, context, wt, base, resume, env, transcript):
+        transcript.append({"review": {"verdict": "approve"}})
+        return dict(approved=True, fix=dict(INCIDENT_FIX), head=base, diff="", changed=[], kept={}, later=[], error=None)
+    # settled: 承認・報告・組み直しの成功で鍵が残ったあと、同じ依頼がまた来た(手での再投入)。後段で組み直しを重ねない(監査指摘 r5)
+    minutes = {"short": 10, "stopped": 120, "direct": 30, "approved": 120, "settled": 120}
+    for case in ("short", "stopped", "direct", "approved", "settled"):
+        root, remote = tmp / case / "ops", tmp / case / "ops.git"
+        root.mkdir(parents=True)
+        g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+        subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+        g("init", "-q", "-b", "main"); g("config", "user.email", "t@example"); g("config", "user.name", "t")
+        (root / "metrics").mkdir(); (root / "scripts").mkdir()
+        (root / ".gitignore").write_text("metrics/oncall-*\nmetrics/jobs.lock\nmetrics/work/\n", encoding="utf-8")
+        (root / "scripts" / "compose.py").write_text(
+            "from pathlib import Path\np = Path('metrics/oncall-child-count')\np.write_text(str(int(p.read_text()) + 1 if p.exists() else 1))\n"
+            if case == "settled" else "print('組版の失敗'); raise SystemExit(1)\n", encoding="utf-8")
+        (root / "metrics" / f"plan-{date}.json").write_text(json.dumps({"articles": [{"slug": "dropped"}]}), encoding="utf-8")
+        g("add", "-A"); g("commit", "-q", "-m", "base")
+        g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", "main")
+        g("checkout", "-q", "-b", edition); g("push", "-q", "-u", "origin", edition)
+        for n in ((1, 2) if case in ("short", "stopped") else ()):
+            (root / "metrics" / f"oncall-{date}-compose-attempt-{n}").write_text("used", encoding="utf-8")
+        args = ["oncall", "--stage", "compose", "--date", date, "--reason", "dropped article", "--recover",
+                "--end-at", str(int(time.time()) + minutes[case] * 60)] + (["--finished"] if case == "short" else []) \
+            + (["--finished", "--anomaly-keys", "compose:known"] if case == "settled" else [])
+        names = ("ROOT", "notify", "oncall_clis_blocked", "RECOVER", "RECOVER_TARGET", "RECOVER_TRIED", "DEADLINE_AT", "STAGE_END_AT",
+                 "run_rounds", "gather_context", "ALREADY_SETTLED")
+        names = tuple(n for n in names if hasattr(oncall, n))
+        saved = {k: getattr(oncall, k) for k in names}
+        saved_p, saved_argv, runs = (pipelib.ROOT, pipelib.oncall_clis_blocked), sys.argv, []
+        try:
+            oncall.ROOT = pipelib.ROOT = root
+            oncall.oncall_clis_blocked = pipelib.oncall_clis_blocked = lambda: []
+            oncall.gather_context = lambda *a: "ctx"
+            if case in ("approved", "settled"):
+                oncall.run_rounds = approved_rounds
+            for _ in range(2):          # systemd の起動し直し相当
+                notes = []
+                oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+                oncall.RECOVER, oncall.RECOVER_TARGET, oncall.RECOVER_TRIED = False, None, False
+                oncall.ALREADY_SETTLED = False
+                oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+                sys.argv = list(args)
+                runs.append((oncall.exit_code(oncall.main()), [m for m, ok in notes if not ok]))
+                if case == "settled":
+                    p = root / "metrics" / "oncall-child-count"
+                    runs[-1] = runs[-1] + (p.read_text(encoding="utf-8") if p.exists() else "0",
+                                           pipelib.settled_anomaly_keys(date, "compose") if hasattr(pipelib, "settled_anomaly_keys") else set())
+                time.sleep(1.1)         # 控えのブランチ名(時刻)を分ける
+        finally:
+            for k, v in saved.items():
+                setattr(oncall, k, v)
+            pipelib.ROOT, pipelib.oncall_clis_blocked = saved_p
+            sys.argv = saved_argv
+        out[case] = runs
+    (c1, n1), _ = out["short"]
+    check(c1 == HANDED and any("戻す時間が無い" in m for m in n1),
+          f"枠切れ・残り時間の無い復帰の当番が、起動し直させる終了値で終えた(同じ通知が重なる): exit {c1} 期待 {HANDED} {[m[:40] for m in n1]}")
+    (c1, n1), (c2, n2) = out["stopped"]
+    check(c1 == HANDED and sum("既に2回" in m for m in n1 + n2) == 1,
+          f"枠切れ・組み直しが失敗した復帰の当番が、起動し直させる終了値で終えた・枠切れの通知を重ねた: exit {c1}/{c2} 期待 {HANDED} "
+          f"{[m[:40] for m in n1]} / {[m[:40] for m in n2]}")
+    (c1, _, k1, s1), (c2, _, k2, s2) = out["settled"]
+    check(c1 == c2 == 0 and (k1, k2) == ("1", "1") and s1 == s2 == {"compose:known"},
+          f"判定済みの --finished --recover の依頼で、後段が組み直しを重ねた(または1回目で鍵を残さない): exit {c1}/{c2} 組版の起動 {k1}/{k2} 鍵 {s1}/{s2}")
+    for case in ("direct", "approved"):
+        (c1, n1), (c2, n2) = out[case]
+        check(c1 == c2 == HANDED and any("組み直し" in m for m in n1),
+              f"{case}: _main の中で組み直しを試みて戻せなかった当番が、起動し直させる終了値で終えた(同じ組み直しと通知を重ねる): "
+              f"exit {c1}/{c2} 期待 {HANDED} {[m[:40] for m in n1]}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_stray_governed_write_is_caught(tmp / "sgw")
@@ -15649,6 +16022,8 @@ def main() -> int:
     test_cli_blocked_oncall_not_counted(tmp / "cbo")
     test_oncall_answer_reformat(tmp / "oar")
     test_oncall_finished_rerun_none(tmp / "ofr")
+    test_oncall_judged_not_rejudged(tmp / "ojn")
+    test_oncall_recover_keeps_handed_exit(tmp / "orh")
     test_cli_block_detect_and_post(tmp / "cbd")
     test_cli_blocked_paths_r2(tmp / "cb2")
     test_cli_blocked_grok_sessions_r3(tmp / "cb3")

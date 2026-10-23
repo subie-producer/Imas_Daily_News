@@ -661,28 +661,5 @@
   "verify": "confirmed",
   "deadline": "2026-12-12",
   "src_candidate_id": "202610210224-grok-51"
- },
- {
-  "id": "sched-2026-12-12-gaku-ichiban-kuji-part7-illustration-2026-発売",
-  "dedup_key": "gaku-ichiban-kuji-part7-illustration-2026",
-  "brand": "gaku",
-  "subject": "一番くじ 学園アイドルマスター Part7 発売",
-  "kind": "発売",
-  "note": "くじの順次発売日。取扱店で1回850円で引ける",
-  "reserved_on": "2026-10-24",
-  "occurs_on": "2026-12-12",
-  "title": "一番くじ Part7の描き下ろしイラスト公開",
-  "url": "https://moca-news.net/artdisp.php?artid=202610221600a01",
-  "source_type": "二次情報",
-  "facts": [
-   "「一番くじ 学園アイドルマスター Part7」は2026年12月12日（土）発売予定。",
-   "同くじの描き下ろしイラストが公開された。",
-   "イラストを使用したフィギュアなどが景品として用意される予定。",
-   "エンゲージメント: 低"
-  ],
-  "via": "explore",
-  "verify": "unconfirmed",
-  "event_date": "2026-12-12",
-  "src_candidate_id": "202610240226-explore-4"
  }
 ]

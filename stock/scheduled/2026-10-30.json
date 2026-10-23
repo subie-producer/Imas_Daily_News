@@ -1136,12 +1136,12 @@
   "src_dedup_key": "gaku-wednesday-ticket-2026-10-21"
  },
  {
-  "id": "sched-2026-10-30-auto-73-開始",
+  "id": "sched-2026-10-30-auto-73-開幕",
   "dedup_key": "auto-73",
   "brand": "shiny",
-  "subject": "シーズのシナリオイベント「果てにふれるのなら」開始",
-  "kind": "開始",
-  "note": "イベントが始まり、シーズの物語を読み始められる",
+  "subject": "シャニマス シナリオイベント「果てにふれるのなら」開幕",
+  "kind": "開幕",
+  "note": "シーズの物語を描くシナリオイベントが始まり、ゲーム内で読み始められる",
   "reserved_on": "2026-10-24",
   "occurs_on": "2026-10-30",
   "title": "シナリオイベント「果てにふれるのなら」",
@@ -1158,12 +1158,12 @@
   "src_candidate_id": "202610240226-grok-73"
  },
  {
-  "id": "sched-2026-10-30-beam-mv-発売",
+  "id": "sched-2026-10-30-beam-mv-開始",
   "dedup_key": "beam-mv",
   "brand": "shiny",
-  "subject": "アルストロメリア「BEAM」配信開始・MV公開",
-  "kind": "発売",
-  "note": "0時から音楽配信で聴け、15時にMVが見られる",
+  "subject": "「BEAM」配信開始・MV公開",
+  "kind": "開始",
+  "note": "0時から各種音楽配信で「BEAM」を聴け、15時からMVを見られる",
   "reserved_on": "2026-10-24",
   "occurs_on": "2026-10-30",
   "title": "アルストロメリア新曲「BEAM」配信・MV公開",

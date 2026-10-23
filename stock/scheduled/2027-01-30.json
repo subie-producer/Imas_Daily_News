@@ -223,33 +223,5 @@
   "src_candidate_id": "202610172334-watch-0",
   "event_date": "2027-01-30",
   "deadline": "2026-11-15"
- },
- {
-  "id": "sched-2027-01-30-dsva-3rd-live-meeting-qonnect-as-one-開幕",
-  "dedup_key": "dsva-3rd-live-meeting-qonnect-as-one",
-  "brand": "dsva",
-  "subject": "vα-liv QONNECT AS ONE 愛知公演",
-  "kind": "開幕",
-  "note": "愛知県芸術劇場 大ホールで愛知公演が始まる(31日まで)",
-  "reserved_on": "2026-10-24",
-  "occurs_on": "2027-01-30",
-  "title": "vα-liv 3rdLIVE＆MEETING 最速先行",
-  "url": "https://x.com/valiv_official/status/2113266096036065319",
-  "source_type": "公式",
-  "facts": [
-   "vα-liv 3rdLIVE＆MEETING -QONNECT AS ONE-を初の二都市開催。",
-   "愛知公演は2027年1月30日・31日、愛知県芸術劇場 大ホールで開催。",
-   "東京公演は2027年3月21日・22日、日本工学院アリーナで開催。",
-   "現地チケット最速先行申込を実施。",
-   "最速先行の申込期限: 2026年11月15日(日)23:59まで。",
-   "グッズ付きチケットのグッズはおすわりぬいぐるみ。",
-   "リンク: https://t.co/dVaE8WMfgp",
-   "エンゲージメント: 高",
-   "言及アイドル: 灯里愛夏、上水流宇宙、レトラ"
-  ],
-  "via": "grok",
-  "verify": "confirmed",
-  "deadline": "2026-11-15",
-  "src_candidate_id": "202610240226-grok-105"
  }
 ]

@@ -1,0 +1,105 @@
+{
+ "decisions": {
+  "dsva-manaka-ramen-simulator-stream-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23に「灯里愛夏、豚骨愛を語る配信がYahoo!に」で記事化済み。同じ配信で新事実なし"
+  },
+  "million-ittan-aishite-dance-collab-reaction-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "宇宙の「一旦愛して♡」コラボは10/17・10/18・10/19に記事化済み。個人SNS投稿のファン反応のみ"
+  },
+  "dsva-manaka-birthday-online-live-2026-platform-change": {
+   "action": "article",
+   "angle": "灯里愛夏バースデー延期公演(10月28日19時)の配信先がASOBI STAGEからZ-aNに変更。旧チケットは無効で払い戻し、一般販売は10月23日22時から11月29日まで。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 45,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信先変更・払い戻し・配信チケット販売は新事実。LVは変更なし"
+  },
+  "dsva-3rd-live-meeting-qonnect-as-one": {
+   "action": "article",
+   "angle": "vα-liv 3rdLIVEが初の二都市開催に。既報の愛知に加え、東京公演が2027年3月21・22日に日本工学院アリーナで開催、現地最速先行は11月15日23:59まで。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "東京公演の会場・日程は既報に無い新事実。愛知分は10/18、おすわりぬいは10/23に既報なので重複は短くまとめる"
+  },
+  "dsva-cosmo-kizuna-ai-monster-factory-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22「第3弾はキズナアイ」と10/23「今日18時にショート公開」で記事化済み。新事実なし"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-manaka-birthday-online-live-2026-platform-change",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "灯里愛夏バースデー延期公演(10月28日19時)の配信先がASOBI STAGEからZ-aNに変更。旧チケットは無効で払い戻し、一般販売は10月23日22時から11月29日まで。",
+    "purpose": "新情報",
+    "lead_score": 45,
+    "dedup_key": "dsva-manaka-birthday-online-live-2026-platform-change",
+    "candidate_ids": [
+     "202610240226-grok-104"
+    ]
+   },
+   {
+    "slug": "dsva-3rd-live-meeting-qonnect-as-one",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "vα-liv 3rdLIVEが初の二都市開催に。既報の愛知に加え、東京公演が2027年3月21・22日に日本工学院アリーナで開催、現地最速先行は11月15日23:59まで。",
+    "purpose": "新情報",
+    "lead_score": 70,
+    "dedup_key": "dsva-3rd-live-meeting-qonnect-as-one",
+    "candidate_ids": [
+     "202610240226-grok-105"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "dsva-manaka-ramen-simulator-stream-2026",
+    "reason": "既報",
+    "note": "10/23に「灯里愛夏、豚骨愛を語る配信がYahoo!に」で記事化済み。同じ配信で新事実なし"
+   },
+   {
+    "dedup_key": "million-ittan-aishite-dance-collab-reaction-2026",
+    "reason": "既報",
+    "note": "宇宙の「一旦愛して♡」コラボは10/17・10/18・10/19に記事化済み。個人SNS投稿のファン反応のみ"
+   },
+   {
+    "dedup_key": "dsva-cosmo-kizuna-ai-monster-factory-short-2026",
+    "reason": "既報",
+    "note": "10/22「第3弾はキズナアイ」と10/23「今日18時にショート公開」で記事化済み。新事実なし"
+   }
+  ],
+  "cross_brand": []
+ }
+}

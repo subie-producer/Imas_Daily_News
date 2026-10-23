@@ -1,0 +1,341 @@
+{
+ "decisions": {
+  "gaku-miracle-nanau-mao-hiro-gacha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22・10/23の記事に同内容。新事実なし、終了は10/30で3日以内でない"
+  },
+  "gakuen-hif-tsubame-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21放送回は終了済みで、10/21・10/22に放送とアーカイブを記事化済み"
+  },
+  "gaku-lawson-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21に11月10日開始、10/23に13人の衣装公開を記事化済み。新事実なし"
+  },
+  "gaku-kotone-iris-figure-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/18に22,000円で予約中と記事化済み。新事実なし"
+  },
+  "gaku-ichiban-kuji-part7-illustration-2026": {
+   "action": "article",
+   "angle": "一番くじ 学園アイドルマスター Part7(12月12日発売)の描き下ろしイラストが公開された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は未確認。発売日は10/21に既報なので、イラスト公開に絞る"
+  },
+  "hatsuboshi-radio-guests-20261028": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22の記事に同じYouTube URLがあり、新事実なし。10/28回のゲストも既報"
+  },
+  "agitato-mv-two-million-views": {
+   "action": "article",
+   "angle": "「Agitato」のMusic Videoが200万再生を突破した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式X。10/22の「コンテンポラリのダンス」200万再生とは別の曲"
+  },
+  "yorunite-mv-one-million-views": {
+   "action": "article",
+   "angle": "「ヨルニテ」のMusic Videoが100万再生を突破した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式X"
+  },
+  "roar-jouo-sena-2026": {
+   "action": "article",
+   "angle": "「Roar」Official Music Videoのショート動画が公開された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "MV本編と制作スタッフは10/21に既報。ショート動画の公開だけが新しい"
+  },
+  "gaku-shirube-final-merch-2026": {
+   "action": "article",
+   "angle": "「標」ファイナル(11月7日・8日、Kアリーナ横浜)の会場物販の整理券受付が10月28日23時59分まで。当落は11月3日13時から。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "配信券は別の行動なので別記事。会場物販の整理券は初出。受付期間は10/23〜10/28"
+  },
+  "hiro-another-idol-guaranteed-gasha-2026": {
+   "action": "article",
+   "angle": "篠澤広のSSRアナザーアイドル確定無料1連ガシャが10月25日10時59分まで。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内。既報の記事にこのガシャは無い"
+  },
+  "gaku-dmm-maintenance-complete-2026-10-22": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23に「DMM版、臨時メンテナンス完了」を記事化済み。事実は同じ"
+  },
+  "gaku-miracle-nanau-revival-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23のまとめに最強のスマイルスカート(500ジュエル、10/30 10:59まで)が載っている。終了は3日以内でない"
+  },
+  "miracle-nanau-select-guaranteed-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22・10/23の記事にSSR確定セレクトガシャがある。新事実なし"
+  },
+  "another-idol-miracle-nanau-gasha-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22・10/23の記事に同じガシャがある。新事実なし"
+  },
+  "miracle-nanau-mao-hiro-gasha-rerun-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22・10/23の記事に同じ復刻ガシャがある。新事実なし"
+  },
+  "valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "面違い",
+   "note": "vα-livの上水流宇宙の活動で、学マスの話題ではない。ゲストのしぐれういも含め、アイマス外のコラボ"
+  },
+  "gakumas-hatsuboshi-autograph-campaign-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "応募は10/20 23:59に終了済み。新事実も当日のトリガーも無い(carriedの理由のとおり)"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "gaku-ichiban-kuji-part7-illustration-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "一番くじ 学園アイドルマスター Part7(12月12日発売)の描き下ろしイラストが公開された。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "gaku-ichiban-kuji-part7-illustration-2026",
+    "candidate_ids": [
+     "202610240226-explore-4"
+    ]
+   },
+   {
+    "slug": "gaku-agitato-mv-two-million-views",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Agitato」のMusic Videoが200万再生を突破した。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "agitato-mv-two-million-views",
+    "candidate_ids": [
+     "202610240226-grok-93"
+    ]
+   },
+   {
+    "slug": "gaku-yorunite-mv-one-million-views",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「ヨルニテ」のMusic Videoが100万再生を突破した。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "yorunite-mv-one-million-views",
+    "candidate_ids": [
+     "202610240226-grok-94"
+    ]
+   },
+   {
+    "slug": "gaku-roar-jouo-sena-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "「Roar」Official Music Videoのショート動画が公開された。",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "roar-jouo-sena-2026",
+    "candidate_ids": [
+     "202610240226-grok-95"
+    ]
+   },
+   {
+    "slug": "gaku-shirube-final-merch-2026",
+    "brand": "gaku",
+    "rank": "medium",
+    "angle": "「標」ファイナル(11月7日・8日、Kアリーナ横浜)の会場物販の整理券受付が10月28日23時59分まで。当落は11月3日13時から。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "gaku-shirube-final-merch-2026",
+    "candidate_ids": [
+     "202610240226-grok-96"
+    ]
+   },
+   {
+    "slug": "gaku-hiro-another-idol-guaranteed-gasha-2026",
+    "brand": "gaku",
+    "rank": "small",
+    "angle": "篠澤広のSSRアナザーアイドル確定無料1連ガシャが10月25日10時59分まで。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "hiro-another-idol-guaranteed-gasha-2026",
+    "candidate_ids": [
+     "202610240226-grok-97"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "gaku-miracle-nanau-mao-hiro-gacha-2026",
+    "reason": "既報",
+    "note": "10/22・10/23の記事に同内容。新事実なし、終了は10/30で3日以内でない"
+   },
+   {
+    "dedup_key": "gakuen-hif-tsubame-2026",
+    "reason": "既報",
+    "note": "10/21放送回は終了済みで、10/21・10/22に放送とアーカイブを記事化済み"
+   },
+   {
+    "dedup_key": "gaku-lawson-campaign-2026",
+    "reason": "既報",
+    "note": "10/21に11月10日開始、10/23に13人の衣装公開を記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "gaku-kotone-iris-figure-2027",
+    "reason": "既報",
+    "note": "10/18に22,000円で予約中と記事化済み。新事実なし"
+   },
+   {
+    "dedup_key": "hatsuboshi-radio-guests-20261028",
+    "reason": "既報",
+    "note": "10/22の記事に同じYouTube URLがあり、新事実なし。10/28回のゲストも既報"
+   },
+   {
+    "dedup_key": "gaku-dmm-maintenance-complete-2026-10-22",
+    "reason": "既報",
+    "note": "10/23に「DMM版、臨時メンテナンス完了」を記事化済み。事実は同じ"
+   },
+   {
+    "dedup_key": "gaku-miracle-nanau-revival-2026",
+    "reason": "既報",
+    "note": "10/23のまとめに最強のスマイルスカート(500ジュエル、10/30 10:59まで)が載っている。終了は3日以内でない"
+   },
+   {
+    "dedup_key": "miracle-nanau-select-guaranteed-gasha-2026",
+    "reason": "既報",
+    "note": "10/22・10/23の記事にSSR確定セレクトガシャがある。新事実なし"
+   },
+   {
+    "dedup_key": "another-idol-miracle-nanau-gasha-2026",
+    "reason": "既報",
+    "note": "10/22・10/23の記事に同じガシャがある。新事実なし"
+   },
+   {
+    "dedup_key": "miracle-nanau-mao-hiro-gasha-rerun-2026",
+    "reason": "既報",
+    "note": "10/22・10/23の記事に同じ復刻ガシャがある。新事実なし"
+   },
+   {
+    "dedup_key": "valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026",
+    "reason": "面違い",
+    "note": "vα-livの上水流宇宙の活動で、学マスの話題ではない。ゲストのしぐれういも含め、アイマス外のコラボ"
+   },
+   {
+    "dedup_key": "gakumas-hatsuboshi-autograph-campaign-2026",
+    "reason": "既報",
+    "note": "応募は10/20 23:59に終了済み。新事実も当日のトリガーも無い(carriedの理由のとおり)"
+   }
+  ],
+  "cross_brand": []
+ }
+}

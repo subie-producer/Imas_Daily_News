@@ -219,6 +219,8 @@ secondary_domains:
 # 出演したことや現場の様子については強い一次情報だが、価格・日程・仕様のような
 # 運営側の事実は当事者・公式のほうが正確なので、信頼順では当事者の次に置く。
 performer_domains:
+  - konomi-suzuki.net     # 合議で追加: 出演者本人の公式サイト。ソウル公演出演の一次発信
+  - burnoutsyndromes.com  # 合議で追加: 出演者本人の公式サイト。ソウル公演出演の一次発信
 
 # --- ファン: ファン・サークル活動等の**当事者発信** ---
 # 自分の営みを自分で発信しているもの。他所の発表を写しているものは 二次情報 へ。
@@ -250,6 +252,10 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - kinoco-plus.com       # 合議で追加: 提供曲の作家が運営し、ノスオケCDの制作・発売元
+  - fujidou.co.jp         # 合議で追加: A3ライセンス商品の卸・予約受付を行う販売元
+  - edith.co.jp           # 合議で追加: コラボ企画運営会社。吾妻6町村・彩のイベントの運営側
+  - dmm.com               # 合議で追加: 通販サイト。雀魂コラボ円香フィギュアの販売元
   - agakanren.com         # 合議で追加: イベントの主催側の観光団体が、彩とのコラボを自ら告知
   - status.games.dmm.com  # 合議で追加: DMM GAMES障害情報。学マスDMM版を配信する一般プラットフォーム
   - battlespirits.com     # 合議で追加: サイトはBANDAI CO.,LTD.©。学マスコラボのカード商品の販売元
@@ -1060,6 +1066,11 @@ x_posts:
 
 # --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
 link_types:
+  t.co/dVaE8WMfgp: 公式                         # リンク元から引き継ぎ(合議で関係を確認): https://x.com/valiv_official/status/2113266096036065319(公式)。告知のURLが展開する3rdLIVE現地チケット先行受付ページ
+  nicovideo.jp/watch/lv351405530: 準公式          # リンク元から引き継ぎ(合議で関係を確認): https://columbia.jp/idolmaster/imasnews/261023.html(準公式)。告知の番組配信URLで、HOURGLASS初公開回のCINDERELLA PAR
+  lnk.to/FRAME_2DMV: 準公式                       # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SideM_lantis/status/2113616430545686544(準公式)。ULTIMATE FLAMEの配信・DLページで、2DMV告知と同じ楽曲
+  esusokuhou.blog.jp/archives/21947646.html: ファン # リンク元から引き継ぎ(合議で関係を確認): https://x.com/SSmaniax/status/2113639171688464663(ファン)。投稿が紹介するSS記事本文のページ（765プロ題材のエヴァSS）
+  asobiticket2.asobistore.jp/receptions/a911b189-ae4a-4bc6-9f15-729201d4ff7c: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_20181(公式)。告知の受付URLと同じ、3rdLIVE現地チケットの先行受付ページ
   t.co/3hmncJBhSz: 二次情報                         # リンク元から引き継ぎ(合議で関係を確認): https://imasnews765.com/?p=32585(二次情報)。リンク元はこのCDの発売告知。リンク先はそのCDの特設サイト
   store.playstation.com/ja-jp/product/JP0700-CUSA18927_00-IMASSGAMDELX0001: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_official/status/2113229817999213055(公式)。告知のセール対象と同じデジタルデラックス版の購入ページ
   imas-cinderella-yamanashi.com/2026/: 公式     # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19733(公式)。同じ周遊イベントの公式サイトで、告知の開催内容と一致する

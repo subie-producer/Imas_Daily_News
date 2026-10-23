@@ -1,0 +1,171 @@
+{
+ "decisions": {
+  "ibuki-tsubasa-figure-reservation-postponed-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tsubasa-the-animation-figure-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じフィギュアの予約をめぐる出来事。22日の延期は予約開始の記事に含める"
+  },
+  "tsubasa-animation-figure-reservation-delay-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tsubasa-the-animation-figure-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じフィギュアの予約をめぐる出来事。延期の経緯は予約開始の記事に含める"
+  },
+  "tsubasa-the-animation-figure-2026": {
+   "action": "article",
+   "angle": "コトブキヤ「伊吹 翼-The Animation-」(1/8、23,100円、2027年6月発売予定)の予約開始。22日の予約開始延期を経ての展開で、ミリアニ記念フィギュア第2弾。",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "延期2主題の素材を統合。予約開始日・受付先は出典で確認すること"
+  },
+  "million-hapipisu-event-2026": {
+   "action": "article",
+   "angle": "ミリシタ「プラチナスターティアラ～ハピピス♡～」は明日10月25日20:59に終了。歌唱は佐竹美奈子・島原エレナ・篠宮可憐・真壁瑞希で、めちゃカワ弁当のブーストも終了前に使える。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内の当日トリガー。歌唱メンバーは既報本文に無い新事実。ブースト主題を統合"
+  },
+  "million-platinum-star-tiara-hapipisu-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-hapipisu-event-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じイベントの施策。ブースト情報は終了告知の記事に含める"
+  },
+  "million-off-time-voice-series-vol-4-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23号で記事化済みで新事実なし。販売開始は26日で今日ではない"
+  },
+  "million-harleyquin-idol-grand-prix-pv-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23号で記事化済みで新事実なし。公開は26日で今日ではない"
+  },
+  "million-kasuga-mirai-30ms-restock-2026": {
+   "action": "article",
+   "angle": "BANDAI SPIRITS 30MS 春日未来(20th Anniv. YOU AND アイ！)がAmazon.co.jpで再入荷し、税込2,974円で在庫ありと表示されている。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日付の再入荷。在庫は変動するため確認時点を明記"
+  },
+  "nostalgic-orchestra-works-2026": {
+   "action": "article",
+   "angle": "Nostalgic Orchestraがミリオンライブ！への提供曲を収録した初のセルフカバーアルバム『Nostalgic Orchestra Works』のリリースを告知した。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は二次情報で未確認。発売日などは校閲で確認、足りなければ短く"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-tsubasa-the-animation-figure-2026",
+    "brand": "million",
+    "rank": "medium",
+    "angle": "コトブキヤ「伊吹 翼-The Animation-」(1/8、23,100円、2027年6月発売予定)の予約開始。22日の予約開始延期を経ての展開で、ミリアニ記念フィギュア第2弾。",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "tsubasa-the-animation-figure-2026",
+    "candidate_ids": [
+     "202610240226-explore-1",
+     "202610231232-explore-0",
+     "202610231832-explore-6"
+    ]
+   },
+   {
+    "slug": "million-hapipisu-event-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ミリシタ「プラチナスターティアラ～ハピピス♡～」は明日10月25日20:59に終了。歌唱は佐竹美奈子・島原エレナ・篠宮可憐・真壁瑞希で、めちゃカワ弁当のブーストも終了前に使える。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "million-hapipisu-event-2026",
+    "candidate_ids": [
+     "202610240226-grok-15",
+     "202610240226-grok-16"
+    ]
+   },
+   {
+    "slug": "million-kasuga-mirai-30ms-restock-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "BANDAI SPIRITS 30MS 春日未来(20th Anniv. YOU AND アイ！)がAmazon.co.jpで再入荷し、税込2,974円で在庫ありと表示されている。",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "million-kasuga-mirai-30ms-restock-2026",
+    "candidate_ids": [
+     "202610240226-grok-19"
+    ]
+   },
+   {
+    "slug": "million-nostalgic-orchestra-works-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Nostalgic Orchestraがミリオンライブ！への提供曲を収録した初のセルフカバーアルバム『Nostalgic Orchestra Works』のリリースを告知した。",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "nostalgic-orchestra-works-2026",
+    "candidate_ids": [
+     "202610240226-grok-115"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "million-off-time-voice-series-vol-4-2026",
+    "reason": "既報",
+    "note": "10/23号で記事化済みで新事実なし。販売開始は26日で今日ではない"
+   },
+   {
+    "dedup_key": "million-harleyquin-idol-grand-prix-pv-2026",
+    "reason": "既報",
+    "note": "10/23号で記事化済みで新事実なし。公開は26日で今日ではない"
+   }
+  ],
+  "cross_brand": []
+ }
+}

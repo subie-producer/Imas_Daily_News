@@ -1,0 +1,56 @@
+{
+ "decisions": {
+  "eva-765pro-fan-ss-2026": {
+   "action": "article",
+   "angle": "765プロのライブBDをレイがカヲルに見せる、エヴァと765プロを掛け合わせたファンSSがまとめサイトに載った",
+   "purpose": "新情報",
+   "rank": "culture",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ファン創作。出典は未確認なので、執筆と校閲で確認する"
+  },
+  "portal-security-maintenance-2026-10": {
+   "action": "article",
+   "angle": "ポータルNEWSの先行ポストは予約投稿の自動ポストで削除された。セキュリティ強化のメンテ中でNEWSを含むページは閲覧できず、詳細は改めて告知される",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "直近のポータルメンテ記事(10/22)に無い新事実は、自動ポストの削除とセキュリティ強化の目的。prior は無い"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "general-eva-765pro-fan-ss-2026",
+    "brand": "general",
+    "rank": "culture",
+    "angle": "765プロのライブBDをレイがカヲルに見せる、エヴァと765プロを掛け合わせたファンSSがまとめサイトに載った",
+    "purpose": "新情報",
+    "lead_score": 0,
+    "dedup_key": "eva-765pro-fan-ss-2026",
+    "candidate_ids": [
+     "202610240226-grok-8"
+    ]
+   },
+   {
+    "slug": "general-portal-security-maintenance-2026-10",
+    "brand": "general",
+    "rank": "small",
+    "angle": "ポータルNEWSの先行ポストは予約投稿の自動ポストで削除された。セキュリティ強化のメンテ中でNEWSを含むページは閲覧できず、詳細は改めて告知される",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "portal-security-maintenance-2026-10",
+    "candidate_ids": [
+     "202610240226-grok-121"
+    ]
+   }
+  ],
+  "dropped": [],
+  "cross_brand": []
+ }
+}

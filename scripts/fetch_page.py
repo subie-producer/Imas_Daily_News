@@ -87,6 +87,9 @@ def main() -> int:
         print(f"FETCH_FAILED: メンテナンス中({e})。このページの本文は今は読めない")
         return 1
     except Exception as e:
+        # メンテナンスでない失敗(404・表示の無い 5xx・時間切れ 等)も記録する。同じホストの別のページがメンテナンスでも、
+        # このページに断り書きを付けない(Sol 監査 Z2 r1)
+        note_fetched(args.url, failed=True)
         print(f"FETCH_FAILED: {type(e).__name__}: {e}")
         return 1
     # メンテナンス画面へ転送されたら、その案内はこのページの本文ではない。読めたことにしない(記録にも残さない)
@@ -108,6 +111,7 @@ def main() -> int:
             print(f"RENDER_FAILED: {e}", file=sys.stderr)
 
     if not text.strip():
+        note_fetched(args.url, FINAL_URL.get(args.url), failed=True)
         print("FETCH_FAILED: 本文を取得できませんでした" + (f"({render_error})" if render_error else ""))
         return 1
     # 本文を取れたページを、執筆・書き直しのセッションの記録に残す(検算は、根拠の URL が素材かこの記録にあるかを見る)

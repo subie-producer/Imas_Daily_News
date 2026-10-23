@@ -55,7 +55,7 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
                      collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked,
-                     FETCH_RECORD_ENV, fetched_urls, maintenance_urls, maintenance_notice, maintenance_rules, site_host,
+                     FETCH_RECORD_ENV, fetched_urls, failed_urls, maintenance_urls, maintenance_notice, maintenance_rules, site_host,
                      MAINTENANCE_LEGACY_NOTICES, MAINTENANCE_NOTICE_FROM,
                      align_x_published_date, CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_check)
 # モデルのセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
@@ -2377,8 +2377,32 @@ def maintenance_unread_hosts(date: str, slug: str, urls) -> set[str]:
     was_read = lambda u: any(renderlib.same_page(u, r) for r in read)
     hosts = {site_host(u) for u in maintenance_urls(rec) if not was_read(u)}
     hit = {site_host(u) for f in sorted(rec.parent.glob("*.mainte")) for u in maintenance_urls(f)}
-    hosts |= {site_host(u) for u in urls if site_host(u) in hit and not was_read(u)}
+    # この号のどれかのセッションが、メンテナンスでない理由(404・表示の無い 5xx 等)で読めなかったと記録したページには、
+    # 同じホストの別のページがメンテナンスでも付けない(Sol 監査 Z2 r1)
+    failed = {u for f in sorted(rec.parent.glob("*.failed")) for u in failed_urls(f.with_suffix(".jsonl"))}
+    was_failed = lambda u: any(renderlib.same_page(u, x) for x in failed)
+    hosts |= {site_host(u) for u in urls if site_host(u) in hit and not was_read(u) and not was_failed(u)}
     return {h for h in hosts if h}
+
+
+RECORD_FAILED_SEEN: set[str] = set()      # 申告済みの「記録を書けなかった」印(同じ印を記事ごとに重ねて申告しない)
+
+
+def report_record_failures(date: str) -> None:
+    """fetch_page.py が記録(本文・メンテナンス・取得失敗)を書けなかった印を、異常として申告する。子の stderr は組版に届かないので、
+    印のファイルで受け取る(Sol 監査 Z2 r1: .mainte を書けず、断り書きが黙って付かなかった)。組版は止めない"""
+    folder = ROOT / "metrics" / "work" / date / "fetched"
+    for f in sorted(folder.glob("*.record-failed")) if folder.is_dir() else []:
+        try:
+            rows = f.read_text(encoding="utf-8", errors="replace").splitlines()
+        except OSError:
+            rows = []
+        key = f"{f}:{len(rows)}"
+        if key in RECORD_FAILED_SEEN:
+            continue
+        RECORD_FAILED_SEEN.add(key)
+        anomaly("compose", f"記事 {f.stem}: fetch_page.py が読み取りの記録を書けなかった({len(rows)}件。{(rows[-1] if rows else '')[:200]})。"
+                           "メンテナンスの断り書き・根拠の照合が欠けうる")
 
 
 def attach_maintenance_notice(date: str, slug: str, path: Path, materials: list[dict]) -> bool:
@@ -2387,11 +2411,15 @@ def attach_maintenance_notice(date: str, slug: str, path: Path, materials: list[
     if str(date) < min([*MAINTENANCE_LEGACY_NOTICES, MAINTENANCE_NOTICE_FROM]) or not path.exists():
         return False        # 断り書きを始める前に発行した号は触らない
     try:
+        report_record_failures(date)
         fm = parse_front_matter(path) or {}
         urls = [str(x.get("url") or "") for x in [*(materials or []), *(fm.get("sources") or [])] if isinstance(x, dict)]
         text = path.read_text(encoding="utf-8")
         notice = maintenance_notice(date, maintenance_unread_hosts(date, slug, urls))
         new = renderlib.with_notice(text, notice)
+        if renderlib.with_notice(new, notice) != new:
+            # 外せない文面(strip_notice の型に合わないホスト名)を付けると、掛け直すたびに重なり字数・指紋にも入る。付けずに申告する
+            raise ValueError(f"断り書きを外せない形: {notice!r}")
         if new != text:
             write_checked(path, new)
         return bool(notice)

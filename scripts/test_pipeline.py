@@ -2934,6 +2934,12 @@ def fake_urlopen(url, mainte):
         raise http_error(url, 503, page("503 Service Unavailable", "混み合っています。"))
     if host == "notice.example":
         return U(url, page("システムメンテナンスのお知らせ", "メンテナンスのお知らせ。販売を開始する。価格は3000円。"))
+    if host == "mixed.example" and "/gone" in url:          # 同じホストで、メンテナンスの最中でも 404・ただの 503 のページ
+        raise http_error(url, 404, page("404 Not Found", "ページが見つかりません。"))
+    if host == "mixed.example" and "/down" in url:
+        raise http_error(url, 503, page("503 Service Unavailable", "混み合っています。"))
+    if mainte and host == "mixed.example":
+        return U("https://mixed.example/maintenance/", page("お知らせ", "作業中です。"))
     if mainte and host.endswith("idolmaster-official.jp"):
         return U("https://idolmaster-official.jp/mainte/index.html", page("メンテナンス", "システムメンテナンスのお知らせ。"))
     if mainte and host.endswith("asobistore.jp") and host != "asobiticket2.asobistore.jp":
@@ -2972,6 +2978,7 @@ def test_site_maintenance_notice(tmp: Path):
     asobi, lantis = "https://shop.asobistore.jp/products/detail/?product_id=1", "https://lantis.jp/sidem/extra/index.html"
     ticket, odd = "https://asobiticket2.asobistore.jp/receptions/1", "https://www.maint-shop.example/item/1"
     gone, down, notice_pg = "https://gone.example/news/1", "https://down.example/news/1", "https://notice.example/info/1"
+    mix_main, mix_gone, mix_down = "https://mixed.example/news/1", "https://mixed.example/gone/1", "https://mixed.example/down/1"
     # 見分け: 転送先のパス・ホスト、5xx のメンテナンスの画面。404・ただの 503・普通の 200 は含めない
     mr = pipelib.maintenance_redirect
     check(mr(portal, "https://idolmaster-official.jp/mainte/index.html") and mr("https://asobistore.jp/", "https://mainte.asobistore.jp/")
@@ -3042,7 +3049,8 @@ def test_site_maintenance_notice(tmp: Path):
     spec_p = tmp / "spec" / "spec.json"
     mat = lambda i, u, k: cand_row(i, u, facts=["販売開始", "価格は3000円"], dedup_key=k)
     cands = {"cp": mat("cp", portal, "x"), "co": mat("co", other, "y"), "ca": mat("ca", asobi, "a"), "cl": mat("cl", lantis, "l"),
-             "ct": mat("ct", ticket, "t"), "cg": mat("cg", gone, "g"), "cn": mat("cn", notice_pg, "n"), "cd": mat("cd", odd, "d")}
+             "ct": mat("ct", ticket, "t"), "cg": mat("cg", gone, "g"), "cn": mat("cn", notice_pg, "n"), "cd": mat("cd", odd, "d"),
+             "cm": mat("cm", mix_main, "m"), "cmg": mat("cmg", mix_gone, "mg"), "cmd": mat("cmd", mix_down, "md")}
     para = "販売を開始する。価格は3000円。" * 24      # 408字: 枠 small(449字まで)。断り書きを数えると超える
     ans = lambda *urls: {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
                          "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "tags": ["シンデレラガールズ", "販売"], "event_date": None,
@@ -3057,13 +3065,15 @@ def test_site_maintenance_notice(tmp: Path):
             "write-asobi": [{"fetch": [asobi], "answer": ans(asobi)}], "write-lantis": [{"fetch": [lantis], "answer": ans(lantis)}],
             "write-multi": [{"fetch": [asobi, lantis], "answer": ans(asobi, lantis)}], "write-ticket": [{"answer": ans(ticket)}],
             "write-gone": [{"fetch": [gone], "answer": ans(gone)}], "write-notice": [{"fetch": [notice_pg], "answer": ans(notice_pg)}],
-            "write-odd": [{"fetch": [odd], "answer": ans(odd)}]}
+            "write-odd": [{"fetch": [odd], "answer": ans(odd)}], "write-mixmain": [{"fetch": [mix_main], "answer": ans(mix_main)}],
+            "write-mixgone": [{"fetch": [mix_gone], "answer": ans(mix_gone)}], "write-mixdown": [{"fetch": [mix_down], "answer": ans(mix_down)}]}
     spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
     # portal は号の一面(lint の号の検査のため)。ほかは枠 small(449字まで)
     art = lambda s, *c: {"slug": s, "brand": "cg", "rank": "lead" if s == "portal" else "small", "angle": "知らせ", "candidate_ids": list(c),
                          "dedup_key": "x"}
     plan = {"articles": [art("portal", "cp"), art("unread", "cp"), art("plain", "co"), art("asobi", "ca"), art("lantis", "cl"),
-                         art("multi", "ca", "cl"), art("ticket", "ct"), art("gone", "cg"), art("notice", "cn"), art("odd", "cd")]}
+                         art("multi", "ca", "cl"), art("ticket", "ct"), art("gone", "cg"), art("notice", "cn"), art("odd", "cd"),
+                         art("mixmain", "cm"), art("mixgone", "cmg"), art("mixdown", "cmd")]}
     slugs = [a["slug"] for a in plan["articles"]]
     env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "FAKE_SCRIPTS", "FAKE_MAINTE", "FAKE_STATE", "IMAS_FETCH_PAGES", "PATH")
     saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE,
@@ -3097,11 +3107,12 @@ def test_site_maintenance_notice(tmp: Path):
         on = lambda *ss: {s: int(s in ss) for s in slugs}
         mk = lambda d, name: f"※{name}がメンテナンス中のため、原本は確認できていません({d}時点)。内容は収集時点の公式の告知・公式Xなどに基づきます。 {renderlib.NOTICE_MARK}"
         for d, jd in (("2026-10-24", "2026年10月24日"), ("2026-10-26", "2026年10月26日")):
-            check(results[d] == on("portal", "unread", "asobi", "lantis", "multi", "odd"),
+            check(results[d] == on("portal", "unread", "asobi", "lantis", "multi", "odd", "mixmain"),
                   f"{d}: メンテナンスで原本を読めないまま書いた記事にだけ断り書きを1つ付ける、になっていない: {results[d]}")
             check(notices[d]["portal"] == notices[d]["unread"] == mk(jd, "公式ポータル") and notices[d]["asobi"] == mk(jd, "ASOBI STORE")
                   and notices[d]["lantis"] == mk(jd, "ランティス") and notices[d]["multi"] == mk(jd, "ASOBI STORE・ランティス")
-                  and notices[d]["odd"] == mk(jd, "maint-shop.example"), f"{d}: 断り書きの文面: {notices[d]}")
+                  and notices[d]["odd"] == mk(jd, "maint-shop.example") and notices[d]["mixmain"] == mk(jd, "mixed.example"),
+                  f"{d}: 断り書きの文面: {notices[d]}")
         check(results["2026-10-25"] == on(), f"メンテナンスでないのに断り書きを付けた: {results['2026-10-25']}")
         check(results["2026-10-23"] == on("portal", "unread") and notices["2026-10-23"]["portal"] == f"{n23} {renderlib.NOTICE_MARK}",
               f"10/23 号の再生成で、発行したときの断り書き(公式ポータルだけ)と変わった: {notices['2026-10-23']}")
@@ -3194,6 +3205,42 @@ def test_site_maintenance_notice(tmp: Path):
         # 外すのは決まった文面の断り書きだけ(書き手の文に印が紛れても、字数・指紋から外さない)
         fake = f"本文。\n\n書き手の文 {renderlib.NOTICE_MARK}\n"
         check(renderlib.strip_notice(fake) == fake, "決まった文面でない段落を断り書きとして外した")
+        # ホストの表記: 末尾ドット・大文字・www・英数字でない名前を揃え、付けた断り書きを外せる(重ならない・字数と指紋に入らない。Sol 監査 Z2 r1)
+        check(pipelib.site_host("https://Unknown.Example./news") == "unknown.example" and pipelib.site_host("https://www.lantis.jp/") == "lantis.jp"
+              and pipelib.site_host("https://例え.jp/x").startswith("xn--"), "ホストの表記の揃え")
+        for h in ("unknown.example", pipelib.site_host("https://例え.jp/x"), "a_b.example"):
+            nn = pipelib.maintenance_notice("2026-10-25", {h})
+            t1 = renderlib.with_notice("---\ntitle: t\n---\n本文。\n", nn)
+            check(renderlib.with_notice(t1, nn) == t1 and renderlib.strip_notice(t1.split("---\n", 2)[2]).strip() == "本文。",
+                  f"断り書きを外せない・重なる: {h} {t1[-80:]!r}")
+        pp = posts / f"{dd}-plain.md"
+        txt = pp.read_text(encoding="utf-8")
+        # 外せない形の断り書き(型に合わないホスト名)は付けず、異常として申告する。付け損ない(書けない)も申告して記事は残す
+        saved_hosts, saved_wc = compose.maintenance_unread_hosts, compose.write_checked
+        try:
+            pipelib.ANOMALIES.clear()
+            compose.maintenance_unread_hosts = lambda *a: {"localhost"}
+            got_on = compose.attach_maintenance_notice(dd, "plain", pp, [])
+            check(not got_on and pp.read_text(encoding="utf-8") == txt and any("断り書きを付けられない" in str(a) for a in pipelib.ANOMALIES),
+                  f"外せない形の断り書きを付けた・申告しない: {got_on} {pipelib.ANOMALIES}")
+            pipelib.ANOMALIES.clear()
+            compose.maintenance_unread_hosts = lambda *a: {"lantis.jp"}
+            compose.write_checked = lambda *a, **k: (_ for _ in ()).throw(OSError("disk full"))
+            got_on = compose.attach_maintenance_notice(dd, "plain", pp, [])
+            check(not got_on and pp.read_text(encoding="utf-8") == txt and any("断り書きを付けられない" in str(a) for a in pipelib.ANOMALIES),
+                  f"断り書きの書き込みの失敗を申告しない: {got_on} {pipelib.ANOMALIES}")
+        finally:
+            compose.maintenance_unread_hosts, compose.write_checked = saved_hosts, saved_wc
+        # fetch_page.py が記録(.mainte)を書けなければ、組版が異常として申告する(子の stderr は届かない。Sol 監査 Z2 r1)
+        fresh(dd)
+        pipelib.ANOMALIES.clear()
+        os.environ["FAKE_MAINTE"] = "1"
+        spec["write-asobi"] = [{"fetch": [asobi], "answer": ans(asobi)}]
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        (tmp / "metrics" / "work" / dd / "fetched" / "asobi.mainte").mkdir(parents=True)     # 記録の置き場がフォルダで書けない
+        compose.write_articles(dd, {"articles": [art("asobi", "ca")]}, cands, [], {}, wave=1)
+        check(any("読み取りの記録を書けなかった" in str(a) and "asobi" in str(a) for a in pipelib.ANOMALIES),
+              f"メンテナンスの記録を書けなかったのを申告しない: {pipelib.ANOMALIES}")
         # 校閲: どの号にも指示を足す(常設)
         seen: dict[str, str] = {}
 

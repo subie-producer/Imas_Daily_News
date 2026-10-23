@@ -556,7 +556,7 @@ NOTICE_MARK = "<!-- notice:portal-maintenance -->"
 def strip_notice(body: str) -> str:
     """本文から断り書きの段落を外す(無ければそのまま)。"""
     from pipelib import MAINTENANCE_LEGACY_NOTICES, MAINTENANCE_NOTICE_TAIL, MAINTENANCE_SITE_NAMES   # 循環を避けて関数の中で読む
-    name = "(?:" + "|".join([*(re.escape(n) for n in MAINTENANCE_SITE_NAMES.values()), r"[a-z0-9-]+(?:\.[a-z0-9-]+)+"]) + ")"
+    name = "(?:" + "|".join([*(re.escape(n) for n in MAINTENANCE_SITE_NAMES.values()), r"[a-z0-9_-]+(?:\.[a-z0-9_-]+)+"]) + ")"
     head, tail = MAINTENANCE_NOTICE_TAIL.split("{date}")
     generic = "※" + name + "(?:・" + name + ")*" + re.escape(head) + r"\d{4}年\d{1,2}月\d{1,2}日" + re.escape(tail)
     alts = "|".join([generic, *(re.escape(n) for n in MAINTENANCE_LEGACY_NOTICES.values())])

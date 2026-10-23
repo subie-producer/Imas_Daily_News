@@ -1512,9 +1512,15 @@ MAINTENANCE_NOTICE_TAIL = "がメンテナンス中のため、原本は確認�
 
 
 def site_host(url) -> str:
-    """URL のホスト(小文字。先頭の www. は外す)。同じサイトの www の有無を同じホストとして扱う。"""
+    """URL のホスト(小文字。末尾のドットと先頭の www. は外し、英数字でない名前は IDNA の表記にする)。同じサイトの www の有無を
+    同じホストとして扱い、断り書きに書くホスト名を renderlib.strip_notice が外せる形に揃える(Sol 監査 Z2 r1: 末尾ドットで断り書きが重なった)"""
     import urllib.parse
-    host = (urllib.parse.urlsplit(str(url or "")).hostname or "").lower()
+    host = (urllib.parse.urlsplit(str(url or "")).hostname or "").lower().rstrip(".")
+    if not host.isascii():
+        try:
+            host = host.encode("idna").decode("ascii")
+        except UnicodeError:
+            return ""
     return host[4:] if host.startswith("www.") else host
 
 
@@ -1551,10 +1557,26 @@ def maintenance_record(rec) -> Path:
     return Path(rec).with_suffix(".mainte")
 
 
-def maintenance_urls(rec) -> set[str]:
+def failed_record(rec) -> Path:
+    """fetch_page.py がメンテナンスでない理由(404・メンテナンスの表示の無い 5xx・時間切れ・本文が空 など)で読めなかったページの記録。
+    同じホストの別のページがメンテナンスでも、これらのページに断り書きを付けない(Sol 監査 Z2 r1)"""
+    return Path(rec).with_suffix(".failed")
+
+
+def record_failed_marker(rec) -> Path:
+    """記録(本文・メンテナンス・取得失敗)を書けなかった印。組版が異常として申告する(子の fetch_page.py の stderr は組版に届かない)。"""
+    return Path(rec).with_suffix(".record-failed")
+
+
+def failed_urls(rec) -> set[str]:
+    """記録(note_fetched(failed=True))にある、メンテナンスでない理由で読めなかったページの URL。記録が無ければ空。"""
+    return maintenance_urls(rec, failed_record(rec))
+
+
+def maintenance_urls(rec, path: Path | None = None) -> set[str]:
     """記録(note_fetched(maintenance=True))にある、メンテナンスで読めなかったページの URL(頼んだ URL)。記録が無ければ空。"""
     try:
-        lines = maintenance_record(rec).read_text(encoding="utf-8", errors="replace").splitlines()
+        lines = (path or maintenance_record(rec)).read_text(encoding="utf-8", errors="replace").splitlines()
     except OSError:
         return set()
     out: set[str] = set()
@@ -1568,25 +1590,34 @@ def maintenance_urls(rec) -> set[str]:
     return out
 
 
-def note_fetched(url: str, final: str | None = None, maintenance: bool = False) -> None:
+def _append_line(path, line: str) -> None:
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    fd = os.open(path, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
+    try:
+        os.write(fd, line.encode("utf-8"))      # 1回の追記(並列の fetch_page.py が同じ記録に書いても行が混ざらない)
+    finally:
+        os.close(fd)
+
+
+def note_fetched(url: str, final: str | None = None, maintenance: bool = False, failed: bool = False) -> None:
     """本文を取れたページを FETCH_RECORD_ENV の記録に書き足す(変数が無ければ何もしない)。書けなくても読み取りは止めない
-    (stderr に出す。記録に無いページは検算が差し戻すので、黙って通ることはない)。
-    maintenance=True はメンテナンス画面へ転送されたページで、隣の記録(maintenance_record)へ書く(根拠にできるページには入れない)。"""
-    rec = os.environ.get(FETCH_RECORD_ENV)
-    if not rec:
+    (stderr に出し、書けなかった印(record_failed_marker)を残す。組版が異常として申告する。記録に無いページは検算が差し戻す)。
+    maintenance=True はメンテナンス画面へ転送されたページで、隣の記録(maintenance_record)へ書く(根拠にできるページには入れない)。
+    failed=True はメンテナンスでない理由で読めなかったページで、隣の記録(failed_record)へ書く"""
+    base = os.environ.get(FETCH_RECORD_ENV)
+    if not base:
         return
-    if maintenance:
-        rec = str(maintenance_record(rec))
+    rec = str(maintenance_record(base) if maintenance else failed_record(base) if failed else base)
     line = json.dumps({"url": url, "final": final if final and final != url else None}, ensure_ascii=False) + "\n"
     try:
-        Path(rec).parent.mkdir(parents=True, exist_ok=True)
-        fd = os.open(rec, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
-        try:
-            os.write(fd, line.encode("utf-8"))      # 1回の追記(並列の fetch_page.py が同じ記録に書いても行が混ざらない)
-        finally:
-            os.close(fd)
+        _append_line(rec, line)
     except OSError as e:
         print(f"FETCH_RECORD_FAILED: {type(e).__name__}: {e}", file=sys.stderr)
+        try:
+            _append_line(record_failed_marker(base), json.dumps({"record": Path(rec).name, "url": url,
+                                                                 "error": f"{type(e).__name__}: {e}"[:200]}, ensure_ascii=False) + "\n")
+        except OSError:
+            pass
 
 
 def fetched_urls(path) -> set[str]:

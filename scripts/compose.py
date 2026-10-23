@@ -2374,7 +2374,10 @@ def maintenance_unread_hosts(date: str, slug: str, urls) -> set[str]:
     2026-10-23 ASOBI STORE のメンテナンス中も ASOBI TICKET は読めた)"""
     rec = fetch_record(date, slug)
     read = fetched_urls(rec)
-    was_read = lambda u: any(renderlib.same_page(u, r) for r in read)
+    # ページの照合はホストの一致も要る(same_page は m.・mobile. も外すが、メンテナンスはホストごと。Sol 監査 Z2 r4:
+    # m. のホストで読めた・404 だったページが、本体のホストのメンテナンスを打ち消した)
+    same = lambda a, b: site_host(a) == site_host(b) and renderlib.same_page(a, b)
+    was_read = lambda u: any(same(u, r) for r in read)
     hosts = {site_host(u) for u in maintenance_urls(rec) if not was_read(u)}
     mainte_all = {u for f in sorted(rec.parent.glob("*.mainte")) for u in maintenance_urls(f)}
     hit = {site_host(u) for u in mainte_all}
@@ -2382,8 +2385,7 @@ def maintenance_unread_hosts(date: str, slug: str, urls) -> set[str]:
     # 同じホストの別のページがメンテナンスでも付けない(Sol 監査 Z2 r1)。ただし同じページをどれかのセッションがメンテナンスとして
     # 記録していれば、そちらを採る(先の取得失敗が、後で確かめたメンテナンスを打ち消さない。Sol 監査 Z2 r2)
     failed = {u for f in sorted(rec.parent.glob("*.failed")) for u in failed_urls(f.with_suffix(".jsonl"))}
-    was_failed = lambda u: (any(renderlib.same_page(u, x) for x in failed)
-                            and not any(renderlib.same_page(u, m) for m in mainte_all))
+    was_failed = lambda u: any(same(u, x) for x in failed) and not any(same(u, m) for m in mainte_all)
     hosts |= {site_host(u) for u in urls if site_host(u) in hit and not was_read(u) and not was_failed(u)}
     return {h for h in hosts if h}
 

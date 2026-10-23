@@ -2937,6 +2937,10 @@ def fake_urlopen(url, mainte):
     if host == "dot.example.":          # 末尾ドットの表記だけメンテナンスへ転送(同じページを末尾ドット無しで読み直すと読める)
         return U("https://dot.example./maintenance/", page("お知らせ", "作業中です。"))
     host = host.rstrip(".")
+    if host == "mob.example":           # 本体のホストはメンテナンス、m. のホストは動いている(/gone は 404)
+        return U("https://mob.example/maintenance/", page("お知らせ", "作業中です。"))
+    if host == "m.mob.example" and "/gone" in url:
+        raise http_error(url, 404, page("404 Not Found", "ページが見つかりません。"))
     if host == "mixed.example" and "/gone" in url:          # 同じホストで、メンテナンスの最中でも 404・ただの 503 のページ
         raise http_error(url, 404, page("404 Not Found", "ページが見つかりません。"))
     if host == "mixed.example" and "/down" in url:
@@ -3279,6 +3283,17 @@ def test_site_maintenance_notice(tmp: Path):
         got = {s: marked(s, dd) for s in ("mixmain", "dot", "dotgone")}
         check(got == {"mixmain": 1, "dot": 0, "dotgone": 0} and dot_m in pipelib.maintenance_urls(compose.fetch_record(dd, "dot")),
               f"末尾ドットの表記の違いで、読めたページ・404 のページに断り書きを付けた: {got}")
+        # 別のホスト(m.)で同じパスを読めた・404 だったことで、本体のホストのメンテナンスを打ち消さない(Sol 監査 Z2 r4)
+        fresh(dd)
+        mob_n, mob_m, mob_g, mob_mg = ("https://mob.example/news/1", "https://m.mob.example/news/1",
+                                       "https://mob.example/gone/1", "https://m.mob.example/gone/1")
+        cands.update(cmob=mat("cmob", mob_n, "mb"), cmobg=mat("cmobg", mob_g, "mbg"))
+        spec.update({"write-mobread": [{"fetch": [mob_n, mob_m], "answer": ans(mob_n)}],
+                     "write-mobgone": [{"fetch": [mob_mg], "answer": ans(mob_g)}]})
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        compose.write_articles(dd, {"articles": [art("mobread", "cmob"), art("mobgone", "cmobg")]}, cands, [], {}, wave=1)
+        got = {s: marked(s, dd) for s in ("mobread", "mobgone")}
+        check(got == {"mobread": 1, "mobgone": 1}, f"m. のホストで読めた・404 のページが本体のホストのメンテナンスを打ち消した: {got}")
         # 記録の置き場そのものに書けないと子は印も残せない。組版が置き場に書いて確かめ、申告する(Sol 監査 Z2 r3)
         folder = tmp / "metrics" / "work" / dd / "fetched"
         pipelib.ANOMALIES.clear()

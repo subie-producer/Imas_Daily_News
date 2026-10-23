@@ -130,6 +130,9 @@ discovery_only_domains:
 # --- 二次情報: 他所の発表を写して伝えている情報源(規程2.5) ---
 # 法人運営か個人運営かは問わない。自ら取材・発表していないものはここ。
 secondary_domains:
+  - premium.gamepedia.jp  # 合議で追加: 公式発表の言い換えを編集部名で載せる媒体。取材形跡なし
+  - article.yahoo.co.jp   # 合議で追加: コンテンツシードの事後通販告知を写して伝える配信記事。情報提供元は表示なし
+  - kabuline.com          # 合議で追加: ツイート・ニュースを自動集計して載せる媒体。独自取材の形跡なし。相手は根拠なし
   - pixivision.net        # 合議で追加: pixiv運営。他者投稿のファンアートを集めて紹介するまとめ特集
   - hon-hikidashi.jp      # 合議で追加: 書籍情報メディア。発売情報は公式発表の転載
   - sina.cn               # 合議で追加: 公式発表をそのまま掲載。独自取材の形跡なし
@@ -244,6 +247,8 @@ party_paths:
   - item.rakuten.co.jp/f272078-takatsuki        # 高槻市ふるさと納税
 
 party_domains:
+  - status.games.dmm.com  # 合議で追加: DMM GAMES障害情報。学マスDMM版を配信する一般プラットフォーム
+  - battlespirits.com     # 合議で追加: サイトはBANDAI CO.,LTD.©。学マスコラボのカード商品の販売元
   - tufave.com            # 合議で追加: 特商法表記で運営を確認。ライセンス商品を作って売る会社
   - neowing.co.jp         # 合議で追加: 特商法表記で販売事業者を確認。多作品を扱う一般通販の販売元
   - smt-cinema.com        # 合議で追加: 会場の新宿ピカデリーで舞台挨拶を催し、前売りを販売する映画館運営側
@@ -600,6 +605,8 @@ x_accounts:
     - imasnews765
     - zutapoke
   ファン:
+    - qx_maru             # 合議で追加: 個人のカバー動画のプレミア公開告知
+    - ayame_digi          # 合議で追加: 個人アカウントによるライブ告知へのファン反応
     - koge_asupara        # 合議で追加: 個人アカウントによる学マス篠澤広のファン投稿
     - ddeumbugi           # 合議で追加: 個人アカウントによる北上麗花の秋のファンイラスト投稿
     - KuR35231710         # 合議で追加: 個人アカウントによる太陽系凛世のファン投稿
@@ -867,6 +874,9 @@ x_accounts:
     - procinen1
     - yutaleP
   当事者:
+    - uneru55             # 合議で追加: 湯～ねるのコラボライブロウリュ予告、会場側の一次発信
+    - renaissance_IP      # 合議で追加: コラボ版チケット販売を行うルネサンス側の一次発信
+    - animateunagi        # 合議で追加: 特典付与条件と終了日を告知する販売元の一次発信
     - neowing_anime       # 合議で追加: Neowingは一般のアニメ・音楽通販店で、CD予約の販売元として発信している
     - tllkame             # 合議で追加: 東京レジャーランド亀有店(ゲームセンター)によるツアマス稼働終了告知
     - seganewsnavi        # 合議で追加: 販売側サイトによるシンデレラくじ発売キャンペーン告知、独立報道ではない
@@ -975,6 +985,7 @@ x_accounts:
 # tiktok.com/@…、ch.nicovideo.jp/…、manga.nicovideo.jp/comic/… など。ドメイン(プラットフォーム)では
 # 決まらず、そのパスの主体で決まる。合議が足す(classify_sources.add_paths)。
 path_types:
+  t.co/oXqVG6t5e5: 公式                         # 機械で追加: 展開先 https://bandainamco-am.co.jp/am/vg/idolmaster-tours/rhythmlivefestival2027/
   docs.google.com/forms/d/e/1FAIpQLSfZVNOhPhPThv8acFBOEkdlxhDAGTNUuYtKUJn7gZZd1CjfWg: 公式 # 合議で追加: リンク元@imas_chは登録済み公式。同じ配信企画のフォーム
   t.co/oPYZEyxHYF: 公式                         # 機械で追加: 展開先 https://idolmaster-official.jp/
   t.co/odKdocfVW3: 準公式                         # 機械で追加: 展開先 https://asobistore.jp/content/title/Idolmaster/shinyradio/contact/
@@ -1032,3 +1043,9 @@ x_posts:
   ファン:
     - 2105957772651385193 # 機械で追加: @ChuLo5738
     - 2105254556238291021 # 機械で追加: @mkzk_CRESCENT
+
+# --- リンク元から引き継いだ種別(リンク先1つずつ。キーは pipelib.link_key)。合議がリンク元の告知と関係していると確かめたものだけ(classify_sources.inherit_from_links)。リンク先そのものの種別より強いときだけ効く ---
+link_types:
+  t.co/3hmncJBhSz: 二次情報                         # リンク元から引き継ぎ(合議で関係を確認): https://imasnews765.com/?p=32585(二次情報)。リンク元はこのCDの発売告知。リンク先はそのCDの特設サイト
+  store.playstation.com/ja-jp/product/JP0700-CUSA18927_00-IMASSGAMDELX0001: 公式 # リンク元から引き継ぎ(合議で関係を確認): https://x.com/imas_official/status/2113229817999213055(公式)。告知のセール対象と同じデジタルデラックス版の購入ページ
+  imas-cinderella-yamanashi.com/2026/: 公式     # リンク元から引き継ぎ(合議で関係を確認): https://idolmaster-official.jp/news/01_19733(公式)。同じ周遊イベントの公式サイトで、告知の開催内容と一致する

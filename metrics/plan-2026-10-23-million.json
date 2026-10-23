@@ -1,0 +1,108 @@
+{
+ "decisions": {
+  "million-off-time-voice-series-vol-4-date-announcement-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "million-off-time-voice-series-vol-4-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "販売日発表予告と試聴データ公開は同じ出来事。販売日決定の記事に統合"
+  },
+  "nostalgic-orchestra-works-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "同人・ファン主催",
+   "note": "M3(同人即売会)で先行販売される個人サークルのセルフカバーCD。出典も未確認"
+  },
+  "million-off-time-voice-series-vol-4-2026": {
+   "action": "article",
+   "angle": "Off Time Voice Series vol.4が10月26日15時に販売開始、真・このみのボイスを両方買うと琴葉の『ちょこっとおふたいむ』も入手できる",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "試聴データ一部公開の事実も含める"
+  },
+  "million-harleyquin-idol-grand-prix-pv-2026": {
+   "action": "article",
+   "angle": "『週末だけのハーレクイン』のiDOL GRAND-PRIX PVが10月26日14時50分に公開予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "million-platinum-star-tiara-hapipisu-2026": {
+   "action": "article",
+   "angle": "ハピピス♡は25日20:59まで、折り返しで『めちゃカワ弁当』を最大4倍、1日1回は10倍消費でき、一度に大量のイベントptを稼げる",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内。弁当の倍率消費は既報本文に無い新事実"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "million-off-time-voice-series-vol-4-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "Off Time Voice Series vol.4が10月26日15時に販売開始、真・このみのボイスを両方買うと琴葉の『ちょこっとおふたいむ』も入手できる",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "million-off-time-voice-series-vol-4-2026",
+    "candidate_ids": [
+     "202610230227-grok-8",
+     "202610221231-explore-2"
+    ]
+   },
+   {
+    "slug": "million-harleyquin-idol-grand-prix-pv-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "『週末だけのハーレクイン』のiDOL GRAND-PRIX PVが10月26日14時50分に公開予定",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "million-harleyquin-idol-grand-prix-pv-2026",
+    "candidate_ids": [
+     "202610230227-grok-9"
+    ]
+   },
+   {
+    "slug": "million-platinum-star-tiara-hapipisu-2026",
+    "brand": "million",
+    "rank": "small",
+    "angle": "ハピピス♡は25日20:59まで、折り返しで『めちゃカワ弁当』を最大4倍、1日1回は10倍消費でき、一度に大量のイベントptを稼げる",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "million-platinum-star-tiara-hapipisu-2026",
+    "candidate_ids": [
+     "202610230227-grok-10"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "nostalgic-orchestra-works-2026",
+    "reason": "同人・ファン主催",
+    "note": "M3(同人即売会)で先行販売される個人サークルのセルフカバーCD。出典も未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

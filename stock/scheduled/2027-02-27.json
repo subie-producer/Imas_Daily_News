@@ -127,5 +127,30 @@
   "src_candidate_id": "202608270220-grok-105",
   "companion_of": "sched-2027-02-27-cg-million-coming-soon-2026-08-26-開幕",
   "src_dedup_key": "joint-clash-match-premium-preorder-2026-08-26"
+ },
+ {
+  "id": "sched-2027-02-27-gaku-battlespirits-collab-booster-2027-発売",
+  "dedup_key": "gaku-battlespirits-collab-booster-2027",
+  "brand": "gaku",
+  "subject": "バトスピ コラボブースター 学園アイドルマスター 輝けるアイドル発売",
+  "kind": "発売",
+  "note": "この日から店頭などでブースターBOXを買える",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2027-02-27",
+  "title": "バトルスピリッツ 学園アイドルマスター コラボブースター予約",
+  "url": "https://www.amazon.co.jp/BANDAI-%E3%83%90%E3%83%88%E3%83%AB%E3%82%B9%E3%83%94%E3%83%AA%E3%83%83%E3%83%84-%E3%82%B3%E3%83%A9%E3%83%9C%E3%83%96%E3%83%BC%E3%82%B9%E3%82%BF%E3%83%BC-%E5%AD%A6%E5%9C%92%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E3%83%9E%E3%82%B9%E3%82%BF%E3%83%BC-%E8%BC%9D%E3%81%91%E3%82%8B%E3%82%A2%E3%82%A4%E3%83%89%E3%83%AB%E3%80%9026RCB03%E3%80%91/dp/B0HN6T84GW",
+  "source_type": "当事者",
+  "facts": [
+   "商品名: バンダイ(BANDAI) バトルスピリッツ コラボブースター 学園アイドルマスター 輝けるアイドル【26RCB03】 (BOX)",
+   "セット内容: 16パック入り",
+   "価格: 5,808円（税込）",
+   "発売予定日: 2027年2月27日",
+   "予約受付中",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "link_from": "https://x.com/202407hajimeru/status/2113303365387993396",
+  "src_candidate_id": "202610230227-grok-43"
  }
 ]

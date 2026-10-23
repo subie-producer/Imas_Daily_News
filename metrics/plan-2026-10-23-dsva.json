@@ -1,0 +1,145 @@
+{
+ "decisions": {
+  "valiv-3rd-live-meeting-qonnect-as-one-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "重複",
+   "note": "合同面が同じ公演・同じ施策(最速先行・おすわりぬいぐるみ・11/15締切)を joint-va-liv-3rd-live-2027 で記事化済み。"
+  },
+  "valiv-cosmo-wake-up-my-music-short-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/22号の記事と同内容で新事実なし。"
+  },
+  "valiv-bombanana-collab-2026-10-22": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/17・10/22号で配信を告知済み。素材は灯里愛夏の個人SNS投稿による振り返りのみで、新事実なし。"
+  },
+  "viala-manaka-ramen-kaiyou-2026": {
+   "action": "article",
+   "angle": "KAI-YOUがアイマス発VTuber・灯里愛夏の豚骨ラーメン愛と持論を取り上げた記事が、Yahoo!ニュースに掲載された。",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-situation-voice-2026-oct": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "販売期間・価格・対象ボイスは10/11号の既報と同じ。締切は11/1で3日以内でもなく、当日のトリガーなし。"
+  },
+  "va-liv-manaka-birthday-live-2026": {
+   "action": "article",
+   "angle": "灯里愛夏 延期公演の現地ライブビューイングチケットは、コンビニ決済の受付が10月26日23時59分で締め切られる(あと3日)。",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026": {
+   "action": "article",
+   "angle": "「上水流 秋のコラボショート祭り」第3弾、キズナアイとのコラボショートが今日18時に宇宙chへ投稿される。",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "dsva-viala-manaka-ramen-kaiyou-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "KAI-YOUがアイマス発VTuber・灯里愛夏の豚骨ラーメン愛と持論を取り上げた記事が、Yahoo!ニュースに掲載された。",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "viala-manaka-ramen-kaiyou-2026",
+    "candidate_ids": [
+     "202610230227-grok-66"
+    ]
+   },
+   {
+    "slug": "dsva-va-liv-manaka-birthday-live-2026",
+    "brand": "dsva",
+    "rank": "medium",
+    "angle": "灯里愛夏 延期公演の現地ライブビューイングチケットは、コンビニ決済の受付が10月26日23時59分で締め切られる(あと3日)。",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "va-liv-manaka-birthday-live-2026",
+    "candidate_ids": [
+     "sched-2026-10-23-va-liv-manaka-birthday-live-2026-締切前"
+    ]
+   },
+   {
+    "slug": "dsva-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026",
+    "brand": "dsva",
+    "rank": "small",
+    "angle": "「上水流 秋のコラボショート祭り」第3弾、キズナアイとのコラボショートが今日18時に宇宙chへ投稿される。",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026",
+    "candidate_ids": [
+     "sched-2026-10-23-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026-開始",
+     "sched-2026-10-23-valiv-cosmo-autumn-collab-shorts-kizuna-ai-2026-開始-src1"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "valiv-3rd-live-meeting-qonnect-as-one-2027",
+    "reason": "重複",
+    "note": "合同面が同じ公演・同じ施策(最速先行・おすわりぬいぐるみ・11/15締切)を joint-va-liv-3rd-live-2027 で記事化済み。"
+   },
+   {
+    "dedup_key": "valiv-cosmo-wake-up-my-music-short-2026",
+    "reason": "既報",
+    "note": "10/22号の記事と同内容で新事実なし。"
+   },
+   {
+    "dedup_key": "valiv-bombanana-collab-2026-10-22",
+    "reason": "既報",
+    "note": "10/17・10/22号で配信を告知済み。素材は灯里愛夏の個人SNS投稿による振り返りのみで、新事実なし。"
+   },
+   {
+    "dedup_key": "valiv-situation-voice-2026-oct",
+    "reason": "既報",
+    "note": "販売期間・価格・対象ボイスは10/11号の既報と同じ。締切は11/1で3日以内でもなく、当日のトリガーなし。"
+   }
+  ],
+  "cross_brand": []
+ }
+}

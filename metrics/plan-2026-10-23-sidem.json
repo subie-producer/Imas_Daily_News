@@ -1,0 +1,315 @@
+{
+ "decisions": {
+  "sidem-fbfes-wgf-2026-stage-greeting": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号の本文と同内容。プレリク締切10/28は3日以内でない"
+  },
+  "sidem-315pronight-goods-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/20号で記事化済み。受注締切11/1は3日以内でない"
+  },
+  "sidem-who-goes-first-stage-greeting-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号の舞台挨拶記事と同内容(二次情報で新事実なし)"
+  },
+  "fram-ultimate-flame-2dmv-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-ultimate-flame-2dmv-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ2DMV公開の別URL"
+  },
+  "315pronight-577-teaser-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "その他",
+   "note": "10/16放送済み回のチラ見せ動画で、当日のトリガーなし"
+  },
+  "sidem-2dmv-pylonport-ds-altessimo-2026": {
+   "action": "article",
+   "angle": "PYLON PORTでDRAMATIC STARS「Delight Excursion」とAltessimo「Panorama's Fanfare」の2DMV制作コメントとグッズサンプル紹介記事が公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公式サイトの記事。新情報"
+  },
+  "cafeparade-monthly-theme-song-12-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/21号「Café ParadeのCD本日発売」で記事化済み"
+  },
+  "315shop-nyashop-mini-2026": {
+   "action": "article",
+   "angle": "315!!!SHOP「いらっしゃいませ315にゃお店屋さん mini ver.」が公開され、「スーパーウルトラプロデュース大作戦！」で15名が選出、グッズ詳細は後日公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "出典は準公式X、校閲で確認"
+  },
+  "remember-shot-fair-4-2026": {
+   "action": "article",
+   "angle": "アニメイト「リメンバーショットフェア第4弾」は25日まで、1,100円ごとに切手風ステッカーを進呈",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "終了が3日以内。出典は未確認区分なので校閲で確認"
+  },
+  "sidem-renaissance-ticket-soldout-2026-10-22": {
+   "action": "article",
+   "angle": "ルネサンスコラボのわくわくチケット12枚セットが両国・港南中央で完売、再入荷はXで告知予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報に無い完売の事実。出典は未確認区分なので校閲で確認"
+  },
+  "sidem-who-howls-at-night-marche-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "sidem-popup-werewolf-2026-10",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じPOP UP SHOP。事前電子整理券の情報を統合"
+  },
+  "sidem-315-fitness-renaissance-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "スタンディ設置・会期は9/18・10/22号に記載済み"
+  },
+  "sidem-fantastic-battle-fes-2026": {
+   "action": "article",
+   "angle": "F@NTASTIC BATTLE FES第2弾の2次先行の当落が本日13時から確認でき、当選者の入金は10月27日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "当日のトリガー(当落発表)"
+  },
+  "sidem-popup-werewolf-2026-10": {
+   "action": "article",
+   "angle": "渋谷MODI 1FでPOP UP SHOP「Who howls at night?」marcheが本日開幕、23〜25日は事前電子整理券を発行",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "開幕当日。整理券は新情報"
+  },
+  "sidem-ultimate-flame-2dmv-2026": {
+   "action": "article",
+   "angle": "FRAME「ULTIMATE FLAME」の2DMVが本日22時に公開予定",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "公開当日のトリガー"
+  },
+  "sidem-315-night-2026-10-23": {
+   "action": "article",
+   "angle": "「315プロNight!」を本日21時からニコニコ生放送、深町寿成・バレッタ裕・濱野大輝が出演",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "放送当日のトリガー"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "sidem-2dmv-pylonport-ds-altessimo-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "PYLON PORTでDRAMATIC STARS「Delight Excursion」とAltessimo「Panorama's Fanfare」の2DMV制作コメントとグッズサンプル紹介記事が公開",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-2dmv-pylonport-ds-altessimo-2026",
+    "candidate_ids": [
+     "202610230227-grok-23"
+    ]
+   },
+   {
+    "slug": "sidem-315shop-nyashop-mini-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "315!!!SHOP「いらっしゃいませ315にゃお店屋さん mini ver.」が公開され、「スーパーウルトラプロデュース大作戦！」で15名が選出、グッズ詳細は後日公開",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "315shop-nyashop-mini-2026",
+    "candidate_ids": [
+     "202610230227-grok-26"
+    ]
+   },
+   {
+    "slug": "sidem-remember-shot-fair-4-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "アニメイト「リメンバーショットフェア第4弾」は25日まで、1,100円ごとに切手風ステッカーを進呈",
+    "purpose": "期日の知らせ",
+    "lead_score": 10,
+    "dedup_key": "remember-shot-fair-4-2026",
+    "candidate_ids": [
+     "202610230227-grok-27"
+    ]
+   },
+   {
+    "slug": "sidem-renaissance-ticket-soldout-2026-10-22",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "ルネサンスコラボのわくわくチケット12枚セットが両国・港南中央で完売、再入荷はXで告知予定",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "sidem-renaissance-ticket-soldout-2026-10-22",
+    "candidate_ids": [
+     "202610230227-grok-28"
+    ]
+   },
+   {
+    "slug": "sidem-fantastic-battle-fes-2026",
+    "brand": "sidem",
+    "rank": "medium",
+    "angle": "F@NTASTIC BATTLE FES第2弾の2次先行の当落が本日13時から確認でき、当選者の入金は10月27日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 60,
+    "dedup_key": "sidem-fantastic-battle-fes-2026",
+    "candidate_ids": [
+     "sched-2026-10-23-sidem-fantastic-battle-fes-2026-結果"
+    ]
+   },
+   {
+    "slug": "sidem-popup-werewolf-2026-10",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "渋谷MODI 1FでPOP UP SHOP「Who howls at night?」marcheが本日開幕、23〜25日は事前電子整理券を発行",
+    "purpose": "期日の知らせ",
+    "lead_score": 25,
+    "dedup_key": "sidem-popup-werewolf-2026-10",
+    "candidate_ids": [
+     "sched-2026-10-23-sidem-popup-werewolf-2026-10-開幕",
+     "202610230227-grok-60"
+    ]
+   },
+   {
+    "slug": "sidem-ultimate-flame-2dmv-2026",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "FRAME「ULTIMATE FLAME」の2DMVが本日22時に公開予定",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-ultimate-flame-2dmv-2026",
+    "candidate_ids": [
+     "sched-2026-10-23-sidem-ultimate-flame-2dmv-2026-開始",
+     "202610230227-grok-21"
+    ]
+   },
+   {
+    "slug": "sidem-315-night-2026-10-23",
+    "brand": "sidem",
+    "rank": "small",
+    "angle": "「315プロNight!」を本日21時からニコニコ生放送、深町寿成・バレッタ裕・濱野大輝が出演",
+    "purpose": "期日の知らせ",
+    "lead_score": 20,
+    "dedup_key": "sidem-315-night-2026-10-23",
+    "candidate_ids": [
+     "sched-2026-10-23-sidem-315-night-2026-10-23-開始"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "sidem-fbfes-wgf-2026-stage-greeting",
+    "reason": "既報",
+    "note": "10/21号の本文と同内容。プレリク締切10/28は3日以内でない"
+   },
+   {
+    "dedup_key": "sidem-315pronight-goods-2026",
+    "reason": "既報",
+    "note": "10/20号で記事化済み。受注締切11/1は3日以内でない"
+   },
+   {
+    "dedup_key": "sidem-who-goes-first-stage-greeting-2026",
+    "reason": "既報",
+    "note": "10/21号の舞台挨拶記事と同内容(二次情報で新事実なし)"
+   },
+   {
+    "dedup_key": "315pronight-577-teaser-2026",
+    "reason": "その他",
+    "note": "10/16放送済み回のチラ見せ動画で、当日のトリガーなし"
+   },
+   {
+    "dedup_key": "cafeparade-monthly-theme-song-12-2026",
+    "reason": "既報",
+    "note": "10/21号「Café ParadeのCD本日発売」で記事化済み"
+   },
+   {
+    "dedup_key": "sidem-315-fitness-renaissance-2026",
+    "reason": "既報",
+    "note": "スタンディ設置・会期は9/18・10/22号に記載済み"
+   }
+  ],
+  "cross_brand": []
+ }
+}

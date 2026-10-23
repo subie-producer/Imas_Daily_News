@@ -903,5 +903,33 @@
   "verify": "confirmed",
   "event_date": "2026-10-29",
   "src_candidate_id": "202610220239-grok-78"
+ },
+ {
+  "id": "sched-2026-10-29-cg-sweet-melty-whip-popup-2026-締切前",
+  "dedup_key": "cg-sweet-melty-whip-popup-2026",
+  "brand": "cg",
+  "subject": "Sweet Melty Whip 等身大パネルプレゼント応募 締切3日前",
+  "kind": "締切前",
+  "note": "等身大パネルのプレゼント応募が11月1日23:59まで可能",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-11-01",
+  "title": "シンデレラガールズ POP UP SHOP ～Sweet Melty Whip～",
+  "url": "https://x.com/abenolucbus/status/2113103055482769785",
+  "source_type": "当事者",
+  "facts": [
+   "開催期間：10月23日(金)～11月1日(日)。",
+   "会場：アベノラクバス。",
+   "新規描き下ろしグッズを販売。",
+   "購入特典クリアカード、会場限定購入特典イラストカード、会場限定購入特典等身大パネルキャンペーンを実施。",
+   "等身大パネルを設置し、OSMOスタンプを実施。",
+   "混雑時は待機列形成や整理券配布など入店制限を実施する場合がある。",
+   "リンク: https://t.co/smNOzH6JKE",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-10-23",
+  "deadline": "2026-11-01",
+  "src_candidate_id": "202610230227-grok-61"
  }
 ]

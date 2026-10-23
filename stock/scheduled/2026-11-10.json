@@ -277,5 +277,61 @@
   "event_date": "2026-10-28",
   "deadline": "2026-11-10",
   "src_candidate_id": "202610200733-explore-10"
+ },
+ {
+  "id": "sched-2026-11-10-gaku-lawson-collaboration-2026-autumn-開始",
+  "dedup_key": "gaku-lawson-collaboration-2026-autumn",
+  "brand": "gaku",
+  "subject": "学マス×ローソンコラボキャンペーン 2026秋 開始",
+  "kind": "開始",
+  "note": "全国のローソンでコラボキャンペーンが始まる",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-11-10",
+  "title": "学園アイドルマスター×ローソンコラボ 2026秋",
+  "url": "https://convenicheck.com/news/news_lawson/139094/",
+  "source_type": "二次情報",
+  "facts": [
+   "「学園アイドルマスター×ローソンコラボキャンペーン 2026秋」は2026年11月10日(火)からスタートする。",
+   "学園アイドルマスターとローソンが2026年11月にコラボレーションする。",
+   "コラボキャンペーンは全国のローソンで実施される。",
+   "花海咲季たち13名のアイドルが登場する。",
+   "アイドルたちは「青いリボンとレース」をテーマにした衣装で登場する。",
+   "エンゲージメント: 中",
+   "言及アイドル: 花海咲季"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-10",
+  "src_candidate_id": "202610221831-explore-4"
+ },
+ {
+  "id": "sched-2026-11-10-gaku-lawson-collaboration-2026-autumn-開始-src1",
+  "dedup_key": "gaku-lawson-collaboration-2026-autumn",
+  "brand": "gaku",
+  "subject": "学マス×ローソンコラボキャンペーン 2026秋 開始",
+  "kind": "開始",
+  "note": "全国のローソンでコラボキャンペーンが始まる",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-11-10",
+  "title": "学園アイドルマスター×ローソン コラボ決定",
+  "url": "https://news.denfaminicogamer.jp/news/2610203c",
+  "source_type": "報道",
+  "facts": [
+   "2026年11月10日から全国のローソンでコラボキャンペーンを実施する。",
+   "アイドルたちが青いリボンとレースをテーマにした衣装で登場する。",
+   "キャンペーンの詳細は続報で案内される予定。",
+   "エンゲージメント: 中",
+   "学園アイドルマスターとローソンのコラボキャンペーンが11月10日から全国のローソンで実施される。",
+   "アイドルたちは青いリボンとレースをテーマにした衣装で登場する。",
+   "キャンペーンの詳細は続報で案内される。",
+   "『学園アイドルマスター』とローソンのコラボキャンペーンが11月10日から全国のローソンで実施されると発表された。",
+   "コラボでは、アイドルたちが青いリボンとレースをテーマにした衣装で登場する。"
+  ],
+  "via": "explore",
+  "verify": "confirmed",
+  "event_date": "2026-11-10",
+  "src_candidate_id": "202610220731-explore-3",
+  "companion_of": "sched-2026-11-10-gaku-lawson-collaboration-2026-autumn-開始",
+  "src_dedup_key": "gaku-lawson-collaboration-2026"
  }
 ]

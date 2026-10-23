@@ -1,0 +1,18 @@
+{
+ "shiny-dark-girly-fashion-goods-2026": {
+  "title": "ダークガーリーファッションver.グッズ全23商品の予約が11月4日まで",
+  "stage": "執筆で見送り",
+  "why": "NO_PRIMARY_SOURCE シャイニーカラーズの公式グッズ販売に関する話題だが、確認できたのは二次情報の商品まとめページと卸売業者の案内ページで、公式・準公式の告知または報道の出典を確保できなかった。",
+  "candidate_ids": [
+   "202610230227-grok-19"
+  ]
+ },
+ "sidem-renaissance-ticket-soldout-2026-10-22": {
+  "title": "SideMルネサンス、両国・港南中央で12枚券完売",
+  "stage": "書き直しで見送り",
+  "why": "SOURCE_MISMATCH 指定された公式告知URLは fetch_page.py で読み込めず、メンテナンス中のページへ転送されました。素材に含まれるURLでも、本文を確認できた一次情報・報道のURLでもないため、指示された出典条件に従って sources に追加できません。",
+  "candidate_ids": [
+   "202610230227-grok-28"
+  ]
+ }
+}

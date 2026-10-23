@@ -1,0 +1,142 @@
+{
+ "decisions": {
+  "va-liv-3rd-live-2027": {
+   "action": "article",
+   "angle": "現地チケット最速先行のグッズ付きチケットの特典が「おすわりぬいぐるみ」と判明、申込は11月15日23時59分まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "既報(10/18)に無い新事実はぬいぐるみ特典のみ。期限・申込ページは既報"
+  },
+  "starlit-season-ps4-sale-2026": {
+   "action": "article",
+   "angle": "スターリットシーズンPS4版デジタルデラックスエディションが11月4日23時59分までセール中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/20のSteam本編セールとは別商品・別施策"
+  },
+  "starlit-season-5th-idol-intro-kaho-komiya": {
+   "action": "article",
+   "angle": "スタマス5周年アイドル紹介動画⑤で小宮果穂を紹介、「765×961盛り上げ！」",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "③④と同様に個別記事"
+  },
+  "tours-service-restored-2026": {
+   "action": "article",
+   "angle": "ツアマスのマイページ緊急メンテが終了し、オンラインゲームモードも順次復旧。未復旧の筐体は店舗スタッフへ再起動を依頼",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "10/22の停止予告記事の結果(復旧)という新事実"
+  },
+  "tours-rhythm-live-festival-2027-qualifier": {
+   "action": "article",
+   "angle": "RHYTHM LIVE FESTIVAL 2027の大会予選詳細が公開、マスター部門はMASTER・チャレンジ部門はVETERAN、予選は11月12日開始",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 60,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "この面でいちばん大きな新発表"
+  },
+  "imas-isetan-osechi-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "出典不足",
+   "note": "二次情報のみで verify が unconfirmed。公式の出典が確認できれば記事化可"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-va-liv-3rd-live-2027",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "現地チケット最速先行のグッズ付きチケットの特典が「おすわりぬいぐるみ」と判明、申込は11月15日23時59分まで",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "va-liv-3rd-live-2027",
+    "candidate_ids": [
+     "202610230227-grok-48"
+    ]
+   },
+   {
+    "slug": "joint-starlit-season-ps4-sale-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "スターリットシーズンPS4版デジタルデラックスエディションが11月4日23時59分までセール中",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "starlit-season-ps4-sale-2026",
+    "candidate_ids": [
+     "202610230227-grok-49"
+    ]
+   },
+   {
+    "slug": "joint-starlit-season-5th-idol-intro-kaho-komiya",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "スタマス5周年アイドル紹介動画⑤で小宮果穂を紹介、「765×961盛り上げ！」",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "starlit-season-5th-idol-intro-kaho-komiya",
+    "candidate_ids": [
+     "202610230227-grok-50"
+    ]
+   },
+   {
+    "slug": "joint-tours-service-restored-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスのマイページ緊急メンテが終了し、オンラインゲームモードも順次復旧。未復旧の筐体は店舗スタッフへ再起動を依頼",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "tours-service-restored-2026",
+    "candidate_ids": [
+     "202610230227-grok-51"
+    ]
+   },
+   {
+    "slug": "joint-tours-rhythm-live-festival-2027-qualifier",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "RHYTHM LIVE FESTIVAL 2027の大会予選詳細が公開、マスター部門はMASTER・チャレンジ部門はVETERAN、予選は11月12日開始",
+    "purpose": "新情報",
+    "lead_score": 60,
+    "dedup_key": "tours-rhythm-live-festival-2027-qualifier",
+    "candidate_ids": [
+     "202610230227-grok-52"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "imas-isetan-osechi-2027",
+    "reason": "出典不足",
+    "note": "二次情報のみで verify が unconfirmed。公式の出典が確認できれば記事化可"
+   }
+  ],
+  "cross_brand": []
+ }
+}

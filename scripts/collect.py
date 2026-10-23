@@ -925,7 +925,10 @@ def claude_exec(prompt: str, timeout: int = 300):
              # 420 秒待って落ちた(実測 2026-09-17)
              # ページは執筆・校閲と同じ fetch_page.py で読ませ、WebFetch は外す。WebFetch は JS を描画せず、まとめサイトの
              # 新着の一次ソース(公式ポータル)がタイトルだけに見えて unreadable にした(2026-10-21: imasnews765 ?p=32576)
-             "--allowedTools", "Read,WebSearch,Bash(python3 scripts/fetch_page.py:*)",
+             # 許可は前方一致で、非対話では許可に当たらない形(絶対パス・前に cd や ls を繋ぐ・括弧でまとめる・grep/sed へ流す)は
+             # 承認待ちのまま拒まれる。モデルは絶対パスで打ち直しがちなので、その形も許す(2026-10-22 23:30: imasnews765 ?p=32585 の
+             # 一次ソースを絶対パスで打って拒まれ、unreadable にした)。どちらも fetch_page.py の起動だけ
+             "--allowedTools", f"Read,WebSearch,Bash(python3 scripts/fetch_page.py:*),Bash(python3 {ROOT / 'scripts' / 'fetch_page.py'}:*)",
              "--disallowedTools", "WebFetch",
              "--max-budget-usd", EXPLORE_MAX_BUDGET_USD],
             timeout=session_left(timeout), cwd=ROOT)

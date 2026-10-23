@@ -1772,5 +1772,79 @@
   "src_candidate_id": "sched-2026-10-22-shiny-style-collection-goods-2026-締切前",
   "companion_of": "sched-2026-10-25-shiny-style-collection-sonic-heart-keyholder-2026-締切",
   "src_dedup_key": "shiny-style-collection-goods-2026"
+ },
+ {
+  "id": "sched-2026-10-25-cg-orchestra-premium-second-lottery-2026-締切",
+  "dedup_key": "cg-orchestra-premium-second-lottery-2026",
+  "brand": "cg",
+  "subject": "シンデレラガールズオーケストラ アソビストアプレミアム2次先行 締切",
+  "kind": "締切",
+  "note": "2次先行(抽選)に申し込める最終日",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-10-25",
+  "title": "シンデレラガールズオーケストラ アソビストアプレミアム会員2次先行",
+  "url": "https://x.com/imas_CGofficial/status/2112831256756990454",
+  "source_type": "公式",
+  "facts": [
+   "シンデレラガールズオーケストラのアソビストアプレミアム会員2次先行は抽選。",
+   "受付期間: 10/25(日)まで受付中。",
+   "本公演の出演キャストを改めて紹介すると告知した。",
+   "詳細ページはメンテナンスページへ転送され、追加情報は確認できなかった。",
+   "リンク: https://idolmaster-official.jp/live_event/cg_15th_orchestra/ticket/",
+   "エンゲージメント: 高"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-10-25",
+  "src_candidate_id": "202610230227-grok-3"
+ },
+ {
+  "id": "sched-2026-10-25-million-platinum-star-tiara-hapipisu-2026-終了",
+  "dedup_key": "million-platinum-star-tiara-hapipisu-2026",
+  "brand": "million",
+  "subject": "ミリシタ「ハピピス♡」",
+  "kind": "終了",
+  "note": "最終日。20:59まで、めちゃカワ弁当を使ってイベント楽曲をプレイできる",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-10-25",
+  "title": "プラチナスターティアラ～ハピピス♡～公演折り返し",
+  "url": "https://x.com/imasml_theater/status/2113148343639486640",
+  "source_type": "公式",
+  "facts": [
+   "イベント『プラチナスターティアラ～ハピピス♡～』が公演折り返しとなった。",
+   "イベント楽曲をプレイする際、『めちゃカワ弁当』を最大4倍消費できる。",
+   "イベント楽曲をプレイする際、『めちゃカワ弁当』を1日1回まで10倍消費できる。",
+   "10倍消費では一度に大量のイベントptを獲得できる。",
+   "イベントは2026年10月25日（日）20:59まで（予定）。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-25",
+  "deadline": "2026-10-25",
+  "src_candidate_id": "202610230227-grok-10"
+ },
+ {
+  "id": "sched-2026-10-25-remember-shot-fair-4-2026-締切",
+  "dedup_key": "remember-shot-fair-4-2026",
+  "brand": "sidem",
+  "subject": "SideM リメンバーショットフェア第4弾 最終日",
+  "kind": "締切",
+  "note": "アニメイト店頭・通販で対象商品を購入・予約して切手風ステッカーをもらえる最終日",
+  "reserved_on": "2026-10-23",
+  "occurs_on": "2026-10-25",
+  "title": "リメンバーショットフェア第4弾の特典付与条件と終了日",
+  "url": "https://x.com/animateunagi/status/2113151914829648027",
+  "source_type": "当事者",
+  "facts": [
+   "「アイドルマスター SideM リメンバーショットフェア第4弾」は10月25日(日)まで。",
+   "SideM関連グッズの購入・予約内金税込1,100円毎に切手風ステッカーを1枚進呈。",
+   "書籍・オーディオ・ビジュアル商品の購入・予約は、内金税込1,100円以上必須で1点毎に切手風ステッカーを1枚進呈。",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "deadline": "2026-10-25",
+  "src_candidate_id": "202610230227-grok-27"
  }
 ]

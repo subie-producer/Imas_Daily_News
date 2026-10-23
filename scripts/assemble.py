@@ -284,6 +284,9 @@ def cited_facts(fm: dict, drafts: dict | None) -> list[str] | None:
     if drafts:
         try:
             fmap = drafts.get(renderlib.draft_key(POSTS / fm["_name"]))
+            if fmap is None:
+                # 指紋から断り書きを外す前に残した記録(断り書きを含めた指紋)も引く
+                fmap = drafts.get(renderlib.draft_key(POSTS / fm["_name"], keep_notice=True))
         except (OSError, KeyError):
             fmap = None
         if fmap is None or "__conflict__" in fmap:

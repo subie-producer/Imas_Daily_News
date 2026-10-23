@@ -15889,6 +15889,61 @@ def test_oncall_judged_not_rejudged(tmp: Path):
           f"作業ツリーが汚れていて何もしない当番が、起動し直させる終了値で終えた(同じ通知が重なる): exit {code} {[m[:40] for m, ok in ns]}")
 
 
+def test_oncall_recover_keeps_handed_exit(tmp: Path):
+    """落とした記事を戻す当番(--recover)の後段(main)が、人に渡し終えた終わり方を 1 に上書きして systemd に起動し直させない
+    (監査指摘 2026-10-24 r2: 枠切れで _main が 0 / 79 を返しても、後段の「戻す時間が無い」「組み直しが失敗」で 1 になり、
+    起動し直しのたびに同じ通知と組み直しを重ねた)。本物の main を、試行を2回使った一時リポジトリと、失敗する偽の compose で走らせる。"""
+    import time
+    import oncall
+    HANDED = getattr(pipelib, "ONCALL_HANDED_EXIT", "未定義")
+    date, edition = "2026-10-24", "edition/2026-10-24"
+    out = {}
+    for case in ("short", "stopped"):
+        root, remote = tmp / case / "ops", tmp / case / "ops.git"
+        root.mkdir(parents=True)
+        g = lambda *a: subprocess.run(["git", *a], cwd=root, capture_output=True, text=True, check=True).stdout.strip()
+        subprocess.run(["git", "init", "-q", "--bare", "-b", "main", str(remote)], check=True, capture_output=True)
+        g("init", "-q", "-b", "main"); g("config", "user.email", "t@example"); g("config", "user.name", "t")
+        (root / "metrics").mkdir(); (root / "scripts").mkdir()
+        (root / ".gitignore").write_text("metrics/oncall-*\nmetrics/jobs.lock\nmetrics/work/\n", encoding="utf-8")
+        (root / "scripts" / "compose.py").write_text("print('組版の失敗'); raise SystemExit(1)\n", encoding="utf-8")
+        (root / "metrics" / f"plan-{date}.json").write_text(json.dumps({"articles": [{"slug": "dropped"}]}), encoding="utf-8")
+        g("add", "-A"); g("commit", "-q", "-m", "base")
+        g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", "main")
+        g("checkout", "-q", "-b", edition); g("push", "-q", "-u", "origin", edition)
+        for n in (1, 2):
+            (root / "metrics" / f"oncall-{date}-compose-attempt-{n}").write_text("used", encoding="utf-8")
+        args = ["oncall", "--stage", "compose", "--date", date, "--reason", "dropped article", "--recover",
+                "--end-at", str(int(time.time()) + (600 if case == "short" else 7200))] + (["--finished"] if case == "short" else [])
+        names = ("ROOT", "notify", "oncall_clis_blocked", "RECOVER", "RECOVER_TARGET", "RECOVER_TRIED", "DEADLINE_AT", "STAGE_END_AT")
+        saved = {k: getattr(oncall, k) for k in names}
+        saved_p, saved_argv, runs = (pipelib.ROOT, pipelib.oncall_clis_blocked), sys.argv, []
+        try:
+            oncall.ROOT = pipelib.ROOT = root
+            oncall.oncall_clis_blocked = pipelib.oncall_clis_blocked = lambda: []
+            for _ in range(2):          # systemd の起動し直し相当
+                notes = []
+                oncall.notify = lambda job, msg, ok=True, require=False: notes.append((msg, ok)) or True
+                oncall.RECOVER, oncall.RECOVER_TARGET, oncall.RECOVER_TRIED = False, None, False
+                oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
+                sys.argv = list(args)
+                runs.append((oncall.exit_code(oncall.main()), [m for m, ok in notes if not ok]))
+                time.sleep(1.1)         # 控えのブランチ名(時刻)を分ける
+        finally:
+            for k, v in saved.items():
+                setattr(oncall, k, v)
+            pipelib.ROOT, pipelib.oncall_clis_blocked = saved_p
+            sys.argv = saved_argv
+        out[case] = runs
+    (c1, n1), _ = out["short"]
+    check(c1 == HANDED and any("戻す時間が無い" in m for m in n1),
+          f"枠切れ・残り時間の無い復帰の当番が、起動し直させる終了値で終えた(同じ通知が重なる): exit {c1} 期待 {HANDED} {[m[:40] for m in n1]}")
+    (c1, n1), (c2, n2) = out["stopped"]
+    check(c1 == HANDED and sum("既に2回" in m for m in n1 + n2) == 1,
+          f"枠切れ・組み直しが失敗した復帰の当番が、起動し直させる終了値で終えた・枠切れの通知を重ねた: exit {c1}/{c2} 期待 {HANDED} "
+          f"{[m[:40] for m in n1]} / {[m[:40] for m in n2]}")
+
+
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="imas-test-"))
     test_stray_governed_write_is_caught(tmp / "sgw")
@@ -15907,6 +15962,7 @@ def main() -> int:
     test_oncall_answer_reformat(tmp / "oar")
     test_oncall_finished_rerun_none(tmp / "ofr")
     test_oncall_judged_not_rejudged(tmp / "ojn")
+    test_oncall_recover_keeps_handed_exit(tmp / "orh")
     test_cli_block_detect_and_post(tmp / "cbd")
     test_cli_blocked_paths_r2(tmp / "cb2")
     test_cli_blocked_grok_sessions_r3(tmp / "cb3")

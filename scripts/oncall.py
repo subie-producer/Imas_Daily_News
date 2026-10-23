@@ -1663,20 +1663,23 @@ def main() -> int:
     release_held_job_locks()   # _main が例外で抜けて掴んだままの工程の排他があれば離す(同じ process の別 fd でも flock は競合する)
     date, edition = RECOVER_TARGET
     left = (STAGE_END_AT or 0) - time.time()
+    # 後段で人に渡し終えた終わり方(時間が無い・前提を満たさず入れない・組み直しを試みて戻せなかった)は ONCALL_HANDED_EXIT。
+    # 残り時間・前提は起動し直しても変わらず、組み直しの結果は報告済みなので、systemd の起動し直しで同じ通知と組み直しを
+    # 重ねない(監査指摘 2026-10-24 r2: 枠切れで _main が 0 / 79 を返しても、ここで 1 に上書きして起動し直させていた)
     if left < RECOVER_RERUN_RESERVE_MIN * 60:
         notify("oncall", f"{date} compose: 発行の締切までに、落とした記事を戻す時間が無い(残り {int(left) // 60}分)。"
                          f"戻せない記事: {', '.join(s for s in planned_slugs(date) if s not in posted_slugs(date)) or 'なし'}", ok=False)
-        return code or 1
+        return ONCALL_HANDED_EXIT
     try:
         lock_fd = job_lock("oncall", wait_min=2)
     except JobLockTimeout as e:
         notify("oncall", f"{date} compose: 落とした記事を戻す組み直しに入れない({e})", ok=False)
-        return code or 1
+        return code or 1          # 排他は起動し直したあと空いていれば取れる
     try:
         got = recover_rerun(date, edition)
-        return got if got is not None else (code or 1)
     finally:
         os.close(lock_fd)
+    return got if got in (0, CLI_BLOCKED_EXIT) else ONCALL_HANDED_EXIT
 
 
 def release_held_job_locks() -> None:

@@ -32,6 +32,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -42,7 +43,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, decode_html, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
-                     RenderFailed, render_page, candidate_misplaced, maintenance_redirect, merge_candidate_facts,
+                     RenderFailed, render_page, candidate_misplaced, maintenance_http_error, maintenance_redirect,
+                     merge_candidate_facts,
                      set_quiet, unbacked_facts,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
@@ -2077,7 +2079,18 @@ def verify(cands: list[dict]) -> dict:
                 c["verify"] = "confirmed" if (c["via"] == "grok" and c["source_type"] == "公式") else "unconfirmed"
             else:
                 req = urllib.request.Request(c["url"], headers={"User-Agent": UA})
-                with urllib.request.urlopen(req, timeout=15) as res:
+                try:
+                    opened = urllib.request.urlopen(req, timeout=15)
+                except urllib.error.HTTPError as e:
+                    # 転送せずに 5xx でメンテナンスの画面を返すサイト(2026-10-23: ランティスの 503)も、今は確かめられないだけ。
+                    # 404・メンテナンスの表示の無い 5xx は従来どおり取得できない(failed)
+                    if not maintenance_http_error(e):
+                        raise
+                    c["verify"] = "unconfirmed"
+                    c["verify_note"] = f"出典がメンテナンス中(HTTP {e.code} でメンテナンスの画面)で、facts を本文で確かめられない"
+                    counts["unconfirmed"] += 1
+                    continue
+                with opened as res:
                     ok = res.status < 400
                     body = res.read(400_000) if ok else b""
                     cs = res.headers.get_content_charset()

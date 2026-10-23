@@ -154,6 +154,7 @@ OK = {"status": "ok", "decline_code": "", "decline_detail": "", "title": "t", "t
 
 
 def test_check_output():
+    import copy
     _, fb = renderlib.materials_with_ids(MATS)
     C = lambda o, **k: renderlib.check_output(o, fb, MATS, **k)
     check(C(OK) == [], f"合格するはずの出力が落ちた: {C(OK)}")
@@ -176,6 +177,14 @@ def test_check_output():
     check(C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "#タグ_付き ID"}])) == [], "label の # や _ を落とした")
     check(any("Markdown" in p for p in C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "[リンク](x)"}]))),
           "label の Markdown リンクが通った")
+    # 見出し・リード・段落の不可視文字も差し戻さず取り除く(告知を写した「🗓️」の U+FE0F で初稿・差し戻しとも落ち、
+    # High×Joker の 2DMV の記事が号から外れた。2026-10-24)。検査は取り除いたあとの値で、取り除くと空になる欄は戻す
+    vs = dict(copy.deepcopy(OK), title="2DMV公開日決定🎸 🗓️", lede="公開は11月4日​21時。",
+              blocks=[{"markdown": "🗓️公開日：11月4日(水)21:00（予定）", "fact_ids": ["F1", "F3", "F4"]}])
+    check(C(vs) == [] and vs["title"] == "2DMV公開日決定🎸 🗓" and vs["lede"] == "公開は11月4日21時。"
+          and vs["blocks"][0]["markdown"] == "🗓公開日：11月4日(水)21:00（予定）", f"本文の不可視文字を取り除いて通さなかった: {C(vs)} {vs}")
+    check(any("Markdown" in p for p in C(dict(copy.deepcopy(OK), title="*​*販売開始*‍*"))), "不可視文字で割った見出しの Markdown 記法が通った")
+    check(any("不可視" in p for p in C(dict(copy.deepcopy(OK), blocks=[{"markdown": "​", "fact_ids": ["F1"]}]))), "不可視文字だけの段落が通った")
     # label の制御文字・不可視文字は差し戻さず、書き出しで取り除く(出典ページの題名のゼロ幅空白を執筆が写す。2026-09-19)
     check(C(dict(OK, sources=OK["sources"][:2] + [{"url": "https://c.example/3", "label": "お​知らせ ~ for\x044"}])) == [], "label の不可視文字で差し戻した")
     check(renderlib.clean_label("お​知らせ\n ~  for\x044  ") == "お知らせ ~ for4", f"clean_label: {renderlib.clean_label('お​知らせ ~ for\x044')!r}")
@@ -3491,13 +3500,22 @@ def test_revise_apply_decline(tmp: Path):
                                                          "sources": [{"url": u["url"], "label": "x", "type": "公式"} for u in OK["sources"]]})
            + "---\n価格は三千円である。 <!-- F1 -->\n")
     iss = [{"issue_id": "I1", "rule_id": "R1", "repair": "drop_claim", "quote": "価格は三千円である"}]
-    for md in ("価格は<!-- F1 -->三千円である。", "価格は<span>三千円</span>である。", "価格は三​千円である。",
-               "価格は三&#21315;円である。", "価格は三͏千円である。", "価格は三ᅟ千円である。",
+    for md in ("価格は<!-- F1 -->三千円である。", "価格は<span>三千円</span>である。", "​",
+               "価格は三&#21315;円である。", "͏ᅟ",
                "[p]: https://a.example/1\n価格は[三千円][p]である。"):
         p.write_text(old, encoding="utf-8")
         ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": md, "fact_ids": ["F1"]}])
         outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
         check(outcome == "kept" and p.read_text(encoding="utf-8") == old, f"形の崩れた稿が通った: {md!r} → {outcome} {msg}")
+    # 不可視文字は差し戻さず取り除いて通す(取り除いた値で検算し、紙面にも残さない)。取り除くと空になる段落は上で戻す
+    # (2026-10-24: 告知を写した「🗓️」の U+FE0F で初稿・差し戻しとも検算に落ち、High×Joker の 2DMV の記事が号から外れた)
+    for md in ("価格は三​千円である。", "価格は三͏千円である。", "価格は三ᅟ千円である。", "価格は三千円である。🗓️"):
+        p.write_text(old, encoding="utf-8")
+        ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": md, "fact_ids": ["F1"]}])
+        outcome, msg = compose.revise_apply("2026-09-12", art, p, ans, fb, MATS, iss)
+        t = p.read_text(encoding="utf-8")
+        check(outcome == "fixed" and not any(renderlib.is_ignorable(ch) for ch in t) and "価格は三千円である。" in t,
+              f"不可視文字を取り除いて通さなかった: {md!r} → {outcome} {msg}")
     # 指摘の記述を(根拠付きで)残した稿は形が正しければ通す。正しいかは校閲が見る
     p.write_text(old, encoding="utf-8")
     ans = dict(OK, addressed_issue_ids=["I1"], blocks=[{"markdown": "価格は三千円である。", "fact_ids": ["F1"]}])

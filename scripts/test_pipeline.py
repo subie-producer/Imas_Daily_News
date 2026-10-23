@@ -2938,6 +2938,14 @@ def fake_urlopen(url, mainte):
         raise http_error(url, 404, page("404 Not Found", "ページが見つかりません。"))
     if host == "mixed.example" and "/down" in url:
         raise http_error(url, 503, page("503 Service Unavailable", "混み合っています。"))
+    if host == "flaky.example":         # 最初の1回はメンテナンスの表示の無い 503、2回目からメンテナンスへ転送(回数は FAKE_STATE)
+        seen = pathlib.Path(os.environ["FAKE_STATE"]) / ("flaky-" + hashlib.sha256(url.encode()).hexdigest())
+        first = not seen.exists()
+        seen.parent.mkdir(parents=True, exist_ok=True)
+        seen.write_text("1")
+        if first:
+            raise http_error(url, 503, page("503 Service Unavailable", "混み合っています。"))
+        return U("https://flaky.example/maintenance/", page("お知らせ", "作業中です。"))
     if mainte and host == "mixed.example":
         return U("https://mixed.example/maintenance/", page("お知らせ", "作業中です。"))
     if mainte and host.endswith("idolmaster-official.jp"):
@@ -3241,6 +3249,21 @@ def test_site_maintenance_notice(tmp: Path):
         compose.write_articles(dd, {"articles": [art("asobi", "ca")]}, cands, [], {}, wave=1)
         check(any("読み取りの記録を書けなかった" in str(a) and "asobi" in str(a) for a in pipelib.ANOMALIES),
               f"メンテナンスの記録を書けなかったのを申告しない: {pipelib.ANOMALIES}")
+        # 先の記事が同じ URL をただの 503 で読めず、後の記事がメンテナンスと確かめたら、先の記事・読みに行かない記事にも付ける
+        # (先の取得失敗が後のメンテナンスを打ち消さない。Sol 監査 Z2 r2)
+        fresh(dd)
+        flaky = "https://flaky.example/news/1"
+        cands["cf"] = mat("cf", flaky, "f")
+        os.environ.update(FAKE_STATE=str(tmp / "spec" / "state-flaky"))
+        spec.update({"write-flaky": [{"fetch": [flaky], "answer": ans(flaky)}], "write-flakyb": [{"fetch": [flaky], "answer": ans(flaky)}],
+                     "write-flakyc": [{"answer": ans(flaky)}]})
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        compose.write_articles(dd, {"articles": [art("flaky", "cf"), art("flakyb", "cf"), art("flakyc", "cf")]}, cands, [], {}, wave=1)
+        frec = compose.fetch_record(dd, "flaky")
+        got = {s: marked(s, dd) for s in ("flaky", "flakyb", "flakyc")}
+        check(flaky in pipelib.failed_urls(frec) and flaky in pipelib.maintenance_urls(compose.fetch_record(dd, "flakyb"))
+              and got == {"flaky": 1, "flakyb": 1, "flakyc": 1},
+              f"先の取得失敗が、後で同じ URL に確かめたメンテナンスを打ち消した: {got} {pipelib.failed_urls(frec)}")
         # 校閲: どの号にも指示を足す(常設)
         seen: dict[str, str] = {}
 

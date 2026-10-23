@@ -2376,11 +2376,14 @@ def maintenance_unread_hosts(date: str, slug: str, urls) -> set[str]:
     read = fetched_urls(rec)
     was_read = lambda u: any(renderlib.same_page(u, r) for r in read)
     hosts = {site_host(u) for u in maintenance_urls(rec) if not was_read(u)}
-    hit = {site_host(u) for f in sorted(rec.parent.glob("*.mainte")) for u in maintenance_urls(f)}
+    mainte_all = {u for f in sorted(rec.parent.glob("*.mainte")) for u in maintenance_urls(f)}
+    hit = {site_host(u) for u in mainte_all}
     # この号のどれかのセッションが、メンテナンスでない理由(404・表示の無い 5xx 等)で読めなかったと記録したページには、
-    # 同じホストの別のページがメンテナンスでも付けない(Sol 監査 Z2 r1)
+    # 同じホストの別のページがメンテナンスでも付けない(Sol 監査 Z2 r1)。ただし同じページをどれかのセッションがメンテナンスとして
+    # 記録していれば、そちらを採る(先の取得失敗が、後で確かめたメンテナンスを打ち消さない。Sol 監査 Z2 r2)
     failed = {u for f in sorted(rec.parent.glob("*.failed")) for u in failed_urls(f.with_suffix(".jsonl"))}
-    was_failed = lambda u: any(renderlib.same_page(u, x) for x in failed)
+    was_failed = lambda u: (any(renderlib.same_page(u, x) for x in failed)
+                            and not any(renderlib.same_page(u, m) for m in mainte_all))
     hosts |= {site_host(u) for u in urls if site_host(u) in hit and not was_read(u) and not was_failed(u)}
     return {h for h in hosts if h}
 

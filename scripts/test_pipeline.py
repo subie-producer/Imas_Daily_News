@@ -15087,7 +15087,8 @@ def test_oncall_answer_reformat(tmp: Path):
           "同じ答えの繰り返しを1つとして読まない(2026-10-23 18:56 の当番の出力)")
     check(pipelib.read_answer("答えです\n" + one + "\n念のため再掲\n" + one)[0] == INCIDENT_FIX, "地の文をはさんだ同じ答えの繰り返しを読まない")
     for bad, what in ((one + "\n\n" + json.dumps(dict(INCIDENT_FIX, rerun_mode="resume"), ensure_ascii=False), "違う答えが2つ"),
-                      (one[:-60], "途中で切れた答え"), ('{"a": 1}\n{"a": 1, "a": 2}', "同じキーが2回ある答え"), ("", "空の答え")):
+                      (one[:-60], "途中で切れた答え"), ('{"a": 1}\n{"a": 1, "a": 2}', "同じキーが2回ある答え"), ("", "空の答え"),
+                      ("[\n" + one + ",\n" + one, "閉じていない配列の内側の答え"), ('{"x": [\n' + one + ",\n" + one, "閉じていない object の内側の答え")):
         got, why = pipelib.read_answer(bad)
         check(got is None and why, f"{what}を読んだ: {got!r} {why!r}")
     check(pipelib.schema_error({"status": "x"}, (SCHEMAS / "oncall-fix.schema.json").read_text(encoding="utf-8")) != ""
@@ -15097,22 +15098,24 @@ def test_oncall_answer_reformat(tmp: Path):
     bindir, log, mode = tmp / "bin", tmp / "claude-calls.jsonl", tmp / "mode"
     bindir.mkdir(exist_ok=True)
     (bindir / "claude").write_text(
-        f"#!{sys.executable}\nimport json, sys\na = sys.argv[1:]\n"
+        f"#!{sys.executable}\nimport json, sys, time\na = sys.argv[1:]\n"
         f"m = open({str(mode)!r}).read()\none = {one!r}\n"
         f"open({str(log)!r}, 'a').write(json.dumps(a) + '\\n')\n"
-        "first = {'twice': one + '\\n\\n' + one, 'cut': one[:-60], 'bad': one[:-60]}\n"
-        "again = {'twice': 'x', 'cut': one, 'bad': '{\"status\": \"no_fix_needed\"}'}\n"
+        "first = {'twice': one + '\\n\\n' + one, 'cut': one[:-60], 'bad': one[:-60], 'slow': one[:-60]}\n"
+        "again = {'twice': 'x', 'cut': one, 'bad': '{\"status\": \"no_fix_needed\"}', 'slow': one}\n"
+        "if m == 'slow' and '--resume' in a:\n    time.sleep(5)\n"
         "sys.stdout.write(first[m] if '--session-id' in a else again[m])\n", encoding="utf-8")
     (bindir / "claude").chmod(0o755)
     wt = tmp / "wt"
     wt.mkdir(exist_ok=True)
     sf = SCHEMAS / "oncall-fix.schema.json"
-    saved = (os.environ.get("PATH", ""), pipelib.ROOT)
+    saved = (os.environ.get("PATH", ""), pipelib.ROOT, oncall.REFORMAT_TIMEOUT_SEC)
     got = {}
     try:
         os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
         pipelib.ROOT = tmp           # 生の出力の控え(save_raw)も一時ディレクトリへ
-        for m in ("twice", "cut", "bad"):
+        oncall.REFORMAT_TIMEOUT_SEC = 1
+        for m in ("twice", "cut", "bad", "slow"):
             mode.write_text(m, encoding="utf-8")
             log.unlink(missing_ok=True)
             try:
@@ -15122,7 +15125,7 @@ def test_oncall_answer_reformat(tmp: Path):
             calls = [json.loads(ln) for ln in log.read_text(encoding="utf-8").splitlines()]
             got[m] = (ans, calls)
     finally:
-        os.environ["PATH"], pipelib.ROOT = saved
+        os.environ["PATH"], pipelib.ROOT, oncall.REFORMAT_TIMEOUT_SEC = saved
     ans, calls = got["twice"]
     check(ans == INCIDENT_FIX and len(calls) == 1, f"同じ答えを2回続けた当番の答えを読まない・余分に呼んだ: {type(ans).__name__} {len(calls)}回")
     ans, calls = got["cut"]
@@ -15133,6 +15136,9 @@ def test_oncall_answer_reformat(tmp: Path):
     ans, calls = got["bad"]
     check(isinstance(ans, oncall.AnswerUnreadable) and ans.who == "当番" and len(calls) == 2,
           f"形を直させても読めない答えを AnswerUnreadable にしない: {ans!r} {len(calls)}回")
+    ans, calls = got["slow"]
+    check(isinstance(ans, oncall.AnswerUnreadable) and "時間切れ" in str(ans) and len(calls) == 2,
+          f"形を直させる回の時間切れを AnswerUnreadable にしない(「途中で止まった」に戻る): {ans!r} {len(calls)}回")
     # 監査(codex): 切れた答えを同じセッション(session id)に、書き込ませずに直させる
     repo = tmp / "repo"
     repo.mkdir(exist_ok=True)
@@ -15143,29 +15149,46 @@ def test_oncall_answer_reformat(tmp: Path):
     answer = json.dumps({"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None,
                          "notes": ""}, ensure_ascii=False)
     clog = tmp / "codex-calls.jsonl"
+    # 直させる回: ok=正しい答え / exit1=正しい答えを書いて異常終了 / badschema=形の違う答え / slow=時間切れ
     (bindir / "codex").write_text(
-        f"#!{sys.executable}\nimport json, sys\na = sys.argv[1:]\no = a[a.index('-o') + 1]\n"
+        f"#!{sys.executable}\nimport json, sys, time\na = sys.argv[1:]\no = a[a.index('-o') + 1]\n"
+        f"m = open({str(mode)!r}).read()\n"
         f"open({str(clog)!r}, 'a').write(json.dumps(a) + '\\n')\nans = {answer!r}\n"
-        f"if a[:2] == ['exec', 'resume']:\n    open(o, 'w', encoding='utf-8').write(ans if a[-2] == {sid!r} else 'x')\n"
-        f"else:\n    sys.stderr.write('session id: {sid}\\n')\n    open(o, 'w', encoding='utf-8').write(ans[:-30])\n",
+        f"if a[:2] == ['exec', 'resume']:\n"
+        "    if m == 'slow':\n        time.sleep(5)\n"
+        f"    open(o, 'w', encoding='utf-8').write('{{\"verdict\": \"approve\"}}' if m == 'badschema' else ans if a[-2] == {sid!r} else 'x')\n"
+        "    sys.exit(1 if m == 'exit1' else 0)\n"
+        f"sys.stderr.write('session id: {sid}\\n')\nopen(o, 'w', encoding='utf-8').write(ans[:-30])\n",
         encoding="utf-8")
     (bindir / "codex").chmod(0o755)
     schema = SCHEMAS / "oncall-review.schema.json"
-    saved = (os.environ.get("PATH", ""), pipelib.ROOT)
+    saved = (os.environ.get("PATH", ""), pipelib.ROOT, oncall.REFORMAT_TIMEOUT_SEC)
+    revs = {}
     try:
         os.environ["PATH"] = f"{bindir}{os.pathsep}{saved[0]}"
         pipelib.ROOT = tmp
-        try:
-            rev = oncall.run_codex("監査して", schema, repo)
-        except RuntimeError as e:
-            rev = e
+        oncall.REFORMAT_TIMEOUT_SEC = 1
+        for m in ("ok", "exit1", "badschema", "slow"):
+            mode.write_text(m, encoding="utf-8")
+            clog.unlink(missing_ok=True)
+            try:
+                rev = oncall.run_codex("監査して", schema, repo)
+            except RuntimeError as e:
+                rev = e
+            calls = [json.loads(ln) for ln in clog.read_text(encoding="utf-8").splitlines()] if clog.exists() else []
+            clean = (g("status", "--porcelain") == ""
+                     and sum(1 for ln in g("worktree", "list", "--porcelain").splitlines() if ln.startswith("worktree ")) == 1)
+            revs[m] = (rev, calls, clean)
     finally:
-        os.environ["PATH"], pipelib.ROOT = saved
-    calls = [json.loads(ln) for ln in clog.read_text(encoding="utf-8").splitlines()] if clog.exists() else []
+        os.environ["PATH"], pipelib.ROOT, oncall.REFORMAT_TIMEOUT_SEC = saved
+    rev, calls, clean = revs["ok"]
     check(isinstance(rev, dict) and rev.get("verdict") == "approve" and len(calls) == 2 and calls[1][:2] == ["exec", "resume"]
-          and 'sandbox_mode="read-only"' in calls[1] and g("status", "--porcelain") == ""
-          and sum(1 for ln in g("worktree", "list", "--porcelain").splitlines() if ln.startswith("worktree ")) == 1,
+          and 'sandbox_mode="read-only"' in calls[1] and clean,
           f"監査の切れた答えを同じセッションに(書き込ませずに)直させない・作業ツリーが残った: {rev!r} {[c[:3] for c in calls]}")
+    for m in ("exit1", "badschema", "slow"):
+        rev, calls, clean = revs[m]
+        check(isinstance(rev, oncall.AnswerUnreadable) and rev.who == "監査" and len(calls) == 2 and clean,
+              f"監査の形を直させる回({m})の答えを採った・AnswerUnreadable にしない・作業ツリーが残った: {rev!r} {len(calls)}回 {clean}")
 
 
 def test_oncall_finished_rerun_none(tmp: Path):
@@ -15192,10 +15215,14 @@ def test_oncall_finished_rerun_none(tmp: Path):
     g("remote", "add", "origin", str(remote)); g("push", "-q", "-u", "origin", "main")
     g("checkout", "-q", "-b", edition); g("push", "-q", "-u", "origin", edition)
     one = json.dumps(INCIDENT_FIX, ensure_ascii=False)
-    fake_cli(bindir, "claude", out=one + "\n\n" + one + "\n")
+    # 18:56 の当番の出力(同じ答えを2回)/ 切れた答えを出し、形を直させる回が時間切れ
+    twice = lambda: fake_cli(bindir, "claude", out=one + "\n\n" + one + "\n")
+    stuck = lambda: (bindir / "claude").write_text(
+        f"#!{sys.executable}\nimport sys, time\nif '--resume' in sys.argv:\n    time.sleep(5)\nsys.stdout.write({one[:-60]!r})\n",
+        encoding="utf-8")
     approve = {"verdict": "approve", "verification": AUDIT_RAN, "must_fix": [], "later": [], "editor_summary": None, "notes": ""}
     names = ("ROOT", "notify", "job_lock", "gather_context", "env_fingerprint", "save_raw", "run_codex", "keep_later",
-             "DEADLINE_AT", "STAGE_END_AT", "RECOVER")
+             "DEADLINE_AT", "STAGE_END_AT", "RECOVER", "REFORMAT_TIMEOUT_SEC")
     saved, saved_argv, saved_path, notes = {k: getattr(oncall, k) for k in names}, sys.argv, os.environ.get("PATH", ""), []
     codes = {}
     try:
@@ -15209,8 +15236,10 @@ def test_oncall_finished_rerun_none(tmp: Path):
         oncall.keep_later = lambda *a: 0
         oncall.DEADLINE_AT = oncall.STAGE_END_AT = None
         oncall.RECOVER = False
+        oncall.REFORMAT_TIMEOUT_SEC = 1
         os.environ["PATH"] = f"{bindir}{os.pathsep}{saved_path}"
-        for date, extra in (("2026-10-23", ["--finished"]), ("2026-10-22", [])):
+        for date, extra, fake in (("2026-10-23", ["--finished"], twice), ("2026-10-22", [], twice), ("2026-10-21", ["--finished"], stuck)):
+            fake()
             notes.clear()
             sys.argv = ["oncall", "--stage", "watch", "--date", date, "--edition", "2026-10-24", *extra]
             try:
@@ -15230,6 +15259,11 @@ def test_oncall_finished_rerun_none(tmp: Path):
     code, ns = codes["2026-10-22"]
     check(code == 1 and any("工程は止まったまま" in m and "人の判断が要る" in m and not ok for m, ok in ns),
           f"止まった工程の none を人に渡さない: exit {code} {[(m[:60], ok) for m, ok in ns]}")
+    code, ns = codes["2026-10-21"]
+    bad = [m for m, ok in ns if not ok]
+    check(code == 1 and len(bad) == 1 and "答えが読めなかった" in bad[0] and "途中で止まったのではない" in bad[0]
+          and "当番の作業が途中で止まった" not in bad[0] and "人の判断が要る" not in bad[0],
+          f"形を直させる回が時間切れの当番を、答えが読めなかったと届けない: exit {code} {[m[:160] for m in bad]}")
     # 呼び出し側: 理由が無い(止まっていない)ときだけ --finished を渡す
     calls = []
     saved_esc = (pipelib.escalate, list(pipelib.ANOMALIES), pipelib._ESCALATED)

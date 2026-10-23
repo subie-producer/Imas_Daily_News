@@ -2086,14 +2086,21 @@ def read_answer(text: str) -> tuple[object, str]:
     except ValueError:
         pass
     dec = json.JSONDecoder(object_pairs_hook=_no_duplicate_keys)
-    found, i = [], m.start()
+    # 答えと答えの間・前後は地の文だけ(JSON の記号があれば、閉じていない配列・object の内側の答えかもしれないので読まない。
+    # 監査指摘: `[` A `,` A(閉じない配列)の内側の2つを繰り返しとして採った)
+    loose = lambda t: not re.search(r'[\[\]{},"]', t)
+    found, i, j = [], m.start(), 0
     while i >= 0:
+        if not loose(s[j:i]):
+            return None, "答えの外に JSON の記号がある(閉じていない配列・object の内側かもしれない)"
         try:
-            v, i = dec.raw_decode(s, i)
+            v, j = dec.raw_decode(s, i)
         except ValueError as e:
             return None, f"JSON が途中で切れている・形が崩れている({str(e)[:120]})"
         found.append(v)
-        i = s.find("{", i)
+        i = s.find("{", j)
+    if not loose(s[j:]):
+        return None, "答えの外に JSON の記号がある(閉じていない配列・object の内側かもしれない)"
     if len({json.dumps(v, ensure_ascii=False, sort_keys=True) for v in found}) > 1:
         return None, f"違う答えが {len(found)}個並んでいる(どれを採るか決められない)"
     return found[0], ""

@@ -545,8 +545,12 @@ def run_claude(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) -
         # 正常に終わったのに答えが読めない・形が違う: 作業をやり直させず、同じセッションに答えの形だけを直させる(1回)。
         # 2026-10-23 18:56 の当番は正しい答えを2回続けて出して読めない答えになり、作業を終えていた試行を1回失った
         ask = prompt_file("oncall", name + "-reformat", render_prompt("oncall-reformat", WHY=why), base=cwd)
-        r2 = _claude([ask, "--resume", sid, *opts], name + "-reformat", cwd, min(REFORMAT_TIMEOUT_SEC, rest))
-        ans, why2 = take_answer(r2.stdout or "", schema) if r2.returncode == 0 else (None, f"異常終了(exit {r2.returncode})")
+        try:
+            r2 = _claude([ask, "--resume", sid, *opts], name + "-reformat", cwd, min(REFORMAT_TIMEOUT_SEC, rest))
+            ans, why2 = take_answer(r2.stdout or "", schema) if r2.returncode == 0 else (None, f"異常終了(exit {r2.returncode})")
+        except subprocess.TimeoutExpired:
+            # 形を直させる回の時間切れも、答えが読めなかったこと(作業は最初の回で終わっている。監査指摘: 「途中で止まった」に戻った)
+            ans, why2 = None, "時間切れ"
         if ans is None:
             why = f"{why}。同じセッションに形を直させても: {why2}"
     if ans is None:
@@ -671,10 +675,13 @@ def run_codex(prompt: str, schema_file: Path, cwd: Path, timeout: int = 1800) ->
             # 正常に終わったのに答えが読めない・形が違う: 監査をやり直させず、同じセッションに答えの形だけを直させる(1回。
             # 当番の答えと同じ扱い)。作業ツリーはまだ消していない。直させる回は書き込ませない
             ask = prompt_file("oncall", name + "-reformat", render_prompt("oncall-reformat", WHY=why), base=aw)
-            _, _, code2, text2 = run(["codex", "exec", "resume", "-m", AUDIT_MODEL, "--skip-git-repo-check", "-c", 'sandbox_mode="read-only"',
-                                      "--output-schema", str(schema_file), "-o", str(out_path), sid.group(1), ask],
-                                     name + "-reformat", min(REFORMAT_TIMEOUT_SEC, rest))
-            ans, why2 = take_answer(text2, schema) if code2 == 0 else (None, f"異常終了(exit {code2})")
+            try:
+                _, _, code2, text2 = run(["codex", "exec", "resume", "-m", AUDIT_MODEL, "--skip-git-repo-check", "-c",
+                                          'sandbox_mode="read-only"', "--output-schema", str(schema_file), "-o", str(out_path),
+                                          sid.group(1), ask], name + "-reformat", min(REFORMAT_TIMEOUT_SEC, rest))
+                ans, why2 = take_answer(text2, schema) if code2 == 0 else (None, f"異常終了(exit {code2})")
+            except subprocess.TimeoutExpired:       # 形を直させる回の時間切れも、答えが読めなかったこと(当番と同じ)
+                ans, why2 = None, "時間切れ"
             if ans is None:
                 why = f"{why}。同じセッションに形を直させても: {why2}"
         if ans is None:

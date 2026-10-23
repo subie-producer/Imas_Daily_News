@@ -36,7 +36,7 @@ import yaml
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import renderlib
 from pipelib import (ROOT, CLAUDE_MODEL, COMPOSE_ARTICLE_MAX_BUDGET_USD, COMPOSE_WAVE, classify_source,
-                     anomaly, claude_traced, err_tail, extract_json_array, loads_strict, notify, prompt_file, render_prompt,
+                     anomaly, claude_traced, err_tail, extract_json_array, read_answer, notify, prompt_file, render_prompt,
                      schema_ok, write_checked, align_x_published_date, CliBlocked)
 
 POSTS = ROOT / "docs" / "_posts"
@@ -486,11 +486,7 @@ def run_session(text: str, date: str, name: str, schema: str, budget=None) -> di
         # 答えを採るのは**正常に終わったセッションだけ**。時間切れ・異常終了の間際に出た出力は採らない(監査指摘)
         out = r["structured"] if r["ok"] else None
         if r["ok"] and not isinstance(out, dict):
-            m = re.search(r"\{.*\}", r["result"] or "", re.S)
-            try:
-                out = loads_strict(m.group(0)) if m else None
-            except ValueError:
-                out = None
+            out, _ = read_answer(r["result"] or "")     # 同じ答えの繰り返しは1つとして読む(2026-10-23 の当番の答えと同じ型)
         # 採るのは、渡した schema どおりの答えだけ(本文の JSON を拾う経路では形が守られない。{"digest":[null]} で
         # 検算が止まる・{} が空の digest として補われる、を防ぐ。崩れた答えは答えなしとしてやり直す。監査指摘)
         if isinstance(out, dict) and schema_ok(out, schema):

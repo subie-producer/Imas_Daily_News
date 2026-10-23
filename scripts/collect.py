@@ -32,6 +32,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -42,7 +43,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipelib import (ENV, ROOT, COLLECT_MODEL, CODEX_WRITE_MODEL, EXPLORE_MODEL,
                      EXPLORE_MAX_BUDGET_USD, JST, JobLockTimeout, job_lock, prompt_file, clean_url, append_metric, classify_source,
                      extract_periods, decode_html, html_to_text, loads_strict, needs_render, partial_output, quote_on_page, read_for_raw, reap, save_raw, schema_ok,
-                     RenderFailed, render_page, candidate_misplaced, maintenance_redirect, merge_candidate_facts,
+                     RenderFailed, render_page, candidate_misplaced, maintenance_http_error, maintenance_redirect,
+                     merge_candidate_facts,
                      set_quiet, unbacked_facts,
                      anomaly, checkout_edition_branch, classify_retag_lint, collect_oncall_end, commit_and_push, diagnose_anomalies,
                      edition_date, mark_collect_oncall, write_checked, write_atomic, COLLECT_OUTPUTS, settle_collect_outputs,
@@ -2077,7 +2079,18 @@ def verify(cands: list[dict]) -> dict:
                 c["verify"] = "confirmed" if (c["via"] == "grok" and c["source_type"] == "公式") else "unconfirmed"
             else:
                 req = urllib.request.Request(c["url"], headers={"User-Agent": UA})
-                with urllib.request.urlopen(req, timeout=15) as res:
+                try:
+                    opened = urllib.request.urlopen(req, timeout=15)
+                except urllib.error.HTTPError as e:
+                    # 転送せずに 5xx でメンテナンスの画面を返すサイト(2026-10-23: ランティスの 503)も、今は確かめられないだけ。
+                    # 404・メンテナンスの表示の無い 5xx は従来どおり取得できない(failed)
+                    if not maintenance_http_error(e):
+                        raise
+                    c["verify"] = "unconfirmed"
+                    c["verify_note"] = f"出典がメンテナンス中(HTTP {e.code} でメンテナンスの画面)で、facts を本文で確かめられない"
+                    counts["unconfirmed"] += 1
+                    continue
+                with opened as res:
                     ok = res.status < 400
                     body = res.read(400_000) if ok else b""
                     cs = res.headers.get_content_charset()
@@ -2196,7 +2209,7 @@ def merge_into_day_file(cands: list[dict], day: str) -> int:
     return added
 
 
-def hand_to_oncall() -> None:
+def hand_to_oncall(code: int = 0) -> None:
     """人に「異常」として通知したものは、申告で終えずに当番がなぜなぜする。直したら定点観測を取り直し、落とした新着を
     この号の選定リストに入れるまでが当番の仕事(編集長 2026-10-07「やらかしてドロップしたのは責任を持って修正して紙面に乗せろ」。
     以前は「収集は終わっているので再実行しない」で、直しても次の定時収集まで拾われず、最後の収集なら1号遅れた)。
@@ -2205,7 +2218,10 @@ def hand_to_oncall() -> None:
     当番は取り直せない。組版は印を見て待ち、受け渡しの間は譲る。監査指摘)"""
     end_at = collect_oncall_end(now_jst())
     date = edition_date()
-    if diagnose_anomalies("collect", date, rerun=True, extra_args=["--end-at", str(int(end_at))]):
+    # 収集が止まった(例外・SIGTERM・非0)なら理由を渡す。理由の無い呼び出しは「工程は止まっていない」(--finished)になり、
+    # 当番の「いま再実行しない」が人に渡らなくなる(監査指摘 2026-10-24)
+    stopped = f"収集が止まった(exit {code})。下の一覧をなぜなぜし、原因を直して取り直すこと" if code else ""
+    if diagnose_anomalies("collect", date, rerun=True, reason=stopped, extra_args=["--end-at", str(int(end_at))]):
         mark_collect_oncall(end_at, date)
 
 
@@ -2423,5 +2439,5 @@ if __name__ == "__main__":
     except Exception as e:
         notify_crash("collect", e)
         code = 1
-    hand_to_oncall()
+    hand_to_oncall(code)
     sys.exit(code)

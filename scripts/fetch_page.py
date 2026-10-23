@@ -26,21 +26,35 @@ import json
 import os
 import re
 import sys
+import urllib.error
 import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipelib import (RenderFailed, extract_periods, html_to_text, maintenance_redirect, needs_render, note_fetched,
-                     render_page)
+from pipelib import (RenderFailed, extract_periods, html_to_text, maintenance_http_error, maintenance_redirect, needs_render,
+                     note_fetched, render_page)
 
 UA = "Mozilla/5.0 (compatible; ImasNewsCollect/1.0)"
 FIXED_PAGES_ENV = "IMAS_FETCH_PAGES"
 FINAL_URL: dict[str, str] = {}     # 頼んだ URL → リダイレクトの行き先(本文を取れたページの記録に両方を残す。執筆は行き先を出典に書くことがある)
 
 
+class Maintenance(Exception):
+    """サイトが転送せずに 5xx でメンテナンスの画面を返した(2026-10-23: ランティスの 503「現在メンテナンス中です」)"""
+    def __init__(self, url: str, code: int):
+        super().__init__(f"{url} が HTTP {code} でメンテナンスの画面を返した")
+        self.url = url
+
+
 def fetch(url: str) -> str:
     req = urllib.request.Request(url, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=25) as res:
+    try:
+        res = urllib.request.urlopen(req, timeout=25)
+    except urllib.error.HTTPError as e:
+        if maintenance_http_error(e):
+            raise Maintenance(e.geturl() or url, e.code) from None
+        raise
+    with res:
         if res.status >= 400:
             return ""
         FINAL_URL[url] = res.geturl()
@@ -68,12 +82,21 @@ def main() -> int:
     fixed = os.environ.get(FIXED_PAGES_ENV, "")
     try:
         text = fixed_page(fixed, args.url) if fixed else fetch(args.url)
+    except Maintenance as e:
+        note_fetched(args.url, e.url, maintenance=True)
+        print(f"FETCH_FAILED: メンテナンス中({e})。このページの本文は今は読めない")
+        return 1
     except Exception as e:
+        # メンテナンスでない失敗(404・表示の無い 5xx・時間切れ 等)も記録する。同じホストの別のページがメンテナンスでも、
+        # このページに断り書きを付けない(Sol 監査 Z2 r1)
+        # 転送先で失敗したら(/old → /gone → 404)転送先も残す(Sol 監査 Z2 r5)
+        final = e.geturl() if isinstance(e, urllib.error.HTTPError) else None
+        note_fetched(args.url, final, failed=True)
         print(f"FETCH_FAILED: {type(e).__name__}: {e}")
         return 1
     # メンテナンス画面へ転送されたら、その案内はこのページの本文ではない。読めたことにしない(記録にも残さない)
     if maintenance_redirect(args.url, FINAL_URL.get(args.url)):
-        # 読めなかったことは隣の記録に残す(組版が、公式ポータルが読めないまま書いた記事に断り書きを付けるのに使う)
+        # 読めなかったことは隣の記録に残す(組版が、原本を読めないまま書いた記事に断り書きを付けるのに使う)
         note_fetched(args.url, FINAL_URL[args.url], maintenance=True)
         print(f"FETCH_FAILED: メンテナンス中({FINAL_URL[args.url]} へ転送された)。このページの本文は今は読めない")
         return 1
@@ -90,6 +113,7 @@ def main() -> int:
             print(f"RENDER_FAILED: {e}", file=sys.stderr)
 
     if not text.strip():
+        note_fetched(args.url, FINAL_URL.get(args.url), failed=True)
         print("FETCH_FAILED: 本文を取得できませんでした" + (f"({render_error})" if render_error else ""))
         return 1
     # 本文を取れたページを、執筆・書き直しのセッションの記録に残す(検算は、根拠の URL が素材かこの記録にあるかを見る)

@@ -341,8 +341,9 @@ def diagnose_anomalies(stage: str, date: str, rerun: bool = False, reason: str =
     edition に生きている号の日付を渡す。戻り値は当番を呼んだか。"""
     if not ANOMALIES or _ESCALATED:
         return False
+    # reason が無い = 工程は止まっていない。当番に伝え、「いま再実行しても変わらない」を「人の判断が要る」にさせない(oncall --finished)
     return escalate(stage, date, reason or "工程は終わった(止まっていない)が、人に異常として通知した事柄がある。下の一覧をなぜなぜすること",
-                    rerun=rerun, edition=edition, extra_args=extra_args)
+                    rerun=rerun, edition=edition, extra_args=list(extra_args or []) + ([] if reason else ["--finished"]))
 
 
 def escalate_reason(reason: str) -> str:
@@ -1453,47 +1454,103 @@ def clean_url(raw) -> str | None:
 FETCH_RECORD_ENV = "IMAS_FETCH_RECORD"
 
 
-# サイト全体のメンテナンス画面(公式ポータルは告知の URL を /mainte/index.html へ転送する。2026-10-21〜22)
+# サイト全体のメンテナンス画面(公式ポータルは告知の URL を /mainte/index.html へ、ASOBI STORE は mainte.asobistore.jp へ転送する。
+# 2026-10-21〜23)
 MAINTENANCE_PATH = re.compile(r"/(?:mainte|maintenance)(?:[/._-]|$)", re.I)
+MAINTENANCE_HOST = re.compile(r"^(?:mainte|maintenance)[.-]", re.I)
+# メンテナンスの画面の言葉(5xx の応答の title・本文で見分ける。2026-10-23: ランティスは転送せず 503 で「現在メンテナンス中です」を返す)
+MAINTENANCE_WORD = re.compile(r"メンテナンス|maintenance", re.I)
 
 
 def maintenance_redirect(url: str, final: str | None) -> bool:
-    """頼んだページがメンテナンス画面へ転送されたか。転送先の本文はメンテナンスの案内で、頼んだページの中身ではない。
-    これを本文として読むと、収集時に本文で確かめた素材の facts を「出典と食い違う」とし、公式の出典を「別の話題のページ」として
-    記事を落とす(2026-10-22号: 公式ポータルのメンテナンスで見送り7本・校閲ブロック2本)"""
+    """頼んだページがメンテナンス画面へ転送されたか(転送先のパスが /mainte/・/maintenance/、またはホストが mainte.・maintenance. で始まる)。
+    転送先の本文はメンテナンスの案内で、頼んだページの中身ではない。これを本文として読むと、収集時に本文で確かめた素材の facts を
+    「出典と食い違う」とし、公式の出典を「別の話題のページ」として記事を落とす(2026-10-22号: 公式ポータルのメンテナンスで見送り7本・
+    校閲ブロック2本)。404 などの読めないページ・ただの転送は含めない"""
     import urllib.parse
     if not final or final == url:
         return False
-    return (bool(MAINTENANCE_PATH.search(urllib.parse.urlsplit(final).path))
-            and not MAINTENANCE_PATH.search(urllib.parse.urlsplit(url).path))
+    a, b = urllib.parse.urlsplit(url), urllib.parse.urlsplit(final)
+    by_path = bool(MAINTENANCE_PATH.search(b.path)) and not MAINTENANCE_PATH.search(a.path)
+    by_host = bool(MAINTENANCE_HOST.match(b.hostname or "")) and not MAINTENANCE_HOST.match(a.hostname or "")
+    return by_path or by_host
 
 
-# 公式ポータル(サイト全体のメンテナンスで告知を読めなくなることがある)
-PORTAL_HOST = "idolmaster-official.jp"
-# 公式ポータルがメンテナンスで読めないまま書いた記事の、号ごとの断り書き。ここに無い号には効かない(期限付きの許可)。
-# 編集長の決定 2026-10-22: 10/23 号に限り断り書きを付けて掲載してよい。10/24 号もメンテナンスが続いていれば、その旨を書いて掲載してよい
-PORTAL_MAINTENANCE_NOTICES = {
+def maintenance_screen(status: int, body: bytes, charset: str | None = None) -> bool:
+    """5xx の応答がメンテナンスの画面か(title か本文にメンテナンスの言葉がある)。200 の普通のページ(メンテナンスのお知らせの記事を含む)・
+    404・メンテナンスの表示の無い 5xx は含めない(読めなかっただけで、メンテナンスとは限らない)"""
+    if not (500 <= int(status or 0) < 600):
+        return False
+    text = html_to_text(body or b"", charset)
+    m = re.search(rb"<title[^>]*>(.*?)</title>", body or b"", re.S | re.I)
+    title = m.group(1).decode(charset or "utf-8", "replace") if m else ""
+    return bool(MAINTENANCE_WORD.search(title) or MAINTENANCE_WORD.search(text))
+
+
+def maintenance_http_error(e: BaseException) -> bool:
+    """urlopen の HTTPError がメンテナンスの画面の応答か(maintenance_screen)。本文を読むので、1つの例外に1回だけ呼ぶ。"""
+    import urllib.error
+    if not isinstance(e, urllib.error.HTTPError) or not (500 <= e.code < 600):
+        return False
+    try:
+        body = e.read(400_000)
+    except Exception:
+        return False
+    return maintenance_screen(e.code, body, e.headers.get_content_charset() if e.headers else None)
+
+
+# メンテナンスで読めなかったサイトの、断り書きでの呼び名(ここに無いサイトはホスト名で書く)
+MAINTENANCE_SITE_NAMES = {"idolmaster-official.jp": "公式ポータル", "lantis.jp": "ランティス", "asobistore.jp": "ASOBI STORE"}
+# 断り書きを付け始めた号と、それより前に発行した号の文面(発行済みの号は再生成しても文面を変えない)。
+# 編集長の決定 2026-10-22: 10/23 号は公式ポータルのメンテナンスに限って断り書きを付けて掲載。2026-10-23: どのサイトでも、読んだときに
+# メンテナンスの画面だった出典は「確認できていない」と断って掲載する(常設)
+MAINTENANCE_NOTICE_FROM = "2026-10-24"
+MAINTENANCE_LEGACY_NOTICES = {
     "2026-10-23": "※公式ポータルがシステムメンテナンス中のため、公式サイトの告知ページは確認できていません(2026年10月23日時点)。"
                   "内容は収集時点の公式の告知・公式Xなどに基づきます。",
-    "2026-10-24": "※公式ポータルのシステムメンテナンスが続いているため、公式サイトの告知ページは確認できていません(2026年10月24日時点)。"
-                  "内容は収集時点の公式の告知・公式Xなどに基づきます。",
 }
+MAINTENANCE_NOTICE_TAIL = "がメンテナンス中のため、原本は確認できていません({date}時点)。内容は収集時点の公式の告知・公式Xなどに基づきます。"
 
 
-def is_portal(url) -> bool:
+def site_host(url) -> str:
+    """URL のホスト(小文字。末尾のドットと先頭の www. は外し、英数字でない名前は IDNA の表記にする)。同じサイトの www の有無を
+    同じホストとして扱い、断り書きに書くホスト名を renderlib.strip_notice が外せる形に揃える(Sol 監査 Z2 r1: 末尾ドットで断り書きが重なった)"""
     import urllib.parse
-    host = (urllib.parse.urlsplit(str(url or "")).hostname or "").lower()
-    return host == PORTAL_HOST or host.endswith("." + PORTAL_HOST)
+    host = (urllib.parse.urlsplit(str(url or "")).hostname or "").lower().rstrip(".")
+    if not host.isascii():
+        try:
+            host = host.encode("idna").decode("ascii")
+        except UnicodeError:
+            return ""
+    return host[4:] if host.startswith("www.") else host
 
 
-def portal_maintenance_notice(edition: str) -> str | None:
-    """その号の断り書き(許可の期限内の号だけ)。期限外は None で、断り書きも依頼文の追加も付かない。"""
-    return PORTAL_MAINTENANCE_NOTICES.get(str(edition))
+def maintenance_site_name(host: str) -> str:
+    """断り書きに書くサイトの名前(MAINTENANCE_SITE_NAMES。無ければホスト名)。"""
+    for dom, name in MAINTENANCE_SITE_NAMES.items():
+        if host == dom or host.endswith("." + dom):
+            return name
+    return host
 
 
-def portal_maintenance_rules(edition: str, role: str) -> str:
-    """許可の期限内の号だけ、執筆・書き直し・校閲の依頼文に足す指示(prompts/portal-maintenance.<role>.md)。期限外は空。"""
-    return render_prompt(f"portal-maintenance.{role}") if portal_maintenance_notice(edition) else ""
+def maintenance_notice(edition: str, hosts) -> str | None:
+    """メンテナンスで原本を読めなかったホスト(hosts)の断り書き(1つにまとめる)。無ければ None。
+    MAINTENANCE_NOTICE_FROM より前の号は発行したときの規則のまま(10/23 号は公式ポータルだけ、その前の号は付けない)"""
+    import datetime
+    hosts = sorted({h for h in hosts if h})
+    edition = str(edition)
+    if edition in MAINTENANCE_LEGACY_NOTICES:
+        return MAINTENANCE_LEGACY_NOTICES[edition] if any(maintenance_site_name(h) == "公式ポータル" for h in hosts) else None
+    if not hosts or edition < MAINTENANCE_NOTICE_FROM:
+        return None
+    names = sorted({maintenance_site_name(h) for h in hosts})       # 同じサイトの別ホストは1つにまとめ、並びは名前で決める
+    d = datetime.date.fromisoformat(edition)
+    return "※" + "・".join(names) + MAINTENANCE_NOTICE_TAIL.format(date=f"{d.year}年{d.month}月{d.day}日")
+
+
+def maintenance_rules(role: str) -> str:
+    """執筆・書き直し・校閲の依頼文に足す、メンテナンス中の出典の扱い(prompts/site-maintenance.<role>.md。常設)。"""
+    return render_prompt(f"site-maintenance.{role}")
 
 
 def maintenance_record(rec) -> Path:
@@ -1501,10 +1558,27 @@ def maintenance_record(rec) -> Path:
     return Path(rec).with_suffix(".mainte")
 
 
-def maintenance_urls(rec) -> set[str]:
+def failed_record(rec) -> Path:
+    """fetch_page.py がメンテナンスでない理由(404・メンテナンスの表示の無い 5xx・時間切れ・本文が空 など)で読めなかったページの記録。
+    同じホストの別のページがメンテナンスでも、これらのページに断り書きを付けない(Sol 監査 Z2 r1)"""
+    return Path(rec).with_suffix(".failed")
+
+
+def record_failed_marker(rec) -> Path:
+    """記録(本文・メンテナンス・取得失敗)を書けなかった印。組版が異常として申告する(子の fetch_page.py の stderr は組版に届かない)。"""
+    return Path(rec).with_suffix(".record-failed")
+
+
+def failed_urls(rec) -> set[str]:
+    """記録(note_fetched(failed=True))にある、メンテナンスでない理由で読めなかったページの URL(頼んだ URL と転送先。
+    /old → /gone → 404 の /gone も読めなかったページ。Sol 監査 Z2 r5)。記録が無ければ空。"""
+    return fetched_urls(failed_record(rec))
+
+
+def maintenance_urls(rec, path: Path | None = None) -> set[str]:
     """記録(note_fetched(maintenance=True))にある、メンテナンスで読めなかったページの URL(頼んだ URL)。記録が無ければ空。"""
     try:
-        lines = maintenance_record(rec).read_text(encoding="utf-8", errors="replace").splitlines()
+        lines = (path or maintenance_record(rec)).read_text(encoding="utf-8", errors="replace").splitlines()
     except OSError:
         return set()
     out: set[str] = set()
@@ -1518,25 +1592,34 @@ def maintenance_urls(rec) -> set[str]:
     return out
 
 
-def note_fetched(url: str, final: str | None = None, maintenance: bool = False) -> None:
+def _append_line(path, line: str) -> None:
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    fd = os.open(path, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
+    try:
+        os.write(fd, line.encode("utf-8"))      # 1回の追記(並列の fetch_page.py が同じ記録に書いても行が混ざらない)
+    finally:
+        os.close(fd)
+
+
+def note_fetched(url: str, final: str | None = None, maintenance: bool = False, failed: bool = False) -> None:
     """本文を取れたページを FETCH_RECORD_ENV の記録に書き足す(変数が無ければ何もしない)。書けなくても読み取りは止めない
-    (stderr に出す。記録に無いページは検算が差し戻すので、黙って通ることはない)。
-    maintenance=True はメンテナンス画面へ転送されたページで、隣の記録(maintenance_record)へ書く(根拠にできるページには入れない)。"""
-    rec = os.environ.get(FETCH_RECORD_ENV)
-    if not rec:
+    (stderr に出し、書けなかった印(record_failed_marker)を残す。組版が異常として申告する。記録に無いページは検算が差し戻す)。
+    maintenance=True はメンテナンス画面へ転送されたページで、隣の記録(maintenance_record)へ書く(根拠にできるページには入れない)。
+    failed=True はメンテナンスでない理由で読めなかったページで、隣の記録(failed_record)へ書く"""
+    base = os.environ.get(FETCH_RECORD_ENV)
+    if not base:
         return
-    if maintenance:
-        rec = str(maintenance_record(rec))
+    rec = str(maintenance_record(base) if maintenance else failed_record(base) if failed else base)
     line = json.dumps({"url": url, "final": final if final and final != url else None}, ensure_ascii=False) + "\n"
     try:
-        Path(rec).parent.mkdir(parents=True, exist_ok=True)
-        fd = os.open(rec, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
-        try:
-            os.write(fd, line.encode("utf-8"))      # 1回の追記(並列の fetch_page.py が同じ記録に書いても行が混ざらない)
-        finally:
-            os.close(fd)
+        _append_line(rec, line)
     except OSError as e:
         print(f"FETCH_RECORD_FAILED: {type(e).__name__}: {e}", file=sys.stderr)
+        try:
+            _append_line(record_failed_marker(base), json.dumps({"record": Path(rec).name, "url": url,
+                                                                 "error": f"{type(e).__name__}: {e}"[:200]}, ensure_ascii=False) + "\n")
+        except OSError:
+            pass
 
 
 def fetched_urls(path) -> set[str]:
@@ -2049,6 +2132,63 @@ def schema_ok(value, schema) -> bool:
     from jsonschema import Draft202012Validator
     s = json.loads(schema) if isinstance(schema, str) else schema
     return Draft202012Validator(s).is_valid(value)
+
+
+def schema_error(value, schema) -> str:
+    """schema_ok の裏: 答えが schema のとおりでない箇所を1つ、短く返す(とおりなら "")。形を直させる依頼に添える。"""
+    from jsonschema import Draft202012Validator
+    from jsonschema.exceptions import best_match
+    s = json.loads(schema) if isinstance(schema, str) else schema
+    e = best_match(Draft202012Validator(s).iter_errors(value))
+    if e is None:
+        return ""
+    where = "/".join(str(p) for p in e.absolute_path) or "(全体)"
+    return f"{where}: {e.message[:300]}"
+
+
+def read_answer(text: str) -> tuple[object, str]:
+    """モデルの答え(標準出力・答えのファイル)から JSON を1つ取り出す。戻りは (答え, 読めない理由)。読めなければ (None, 理由)。
+    1. 全体が1つの JSON ならそれ。2. 前後に地の文があれば、最初の `{` から最後の `}` まで
+    3. それでも読めなければ、最初の `{` から JSON の object を順に読み、**同じ答えの繰り返しだけなら**その1つ
+       (2026-10-23 18:56 の当番は正しい答えを空行をはさんで2回出し、2で2つを1つとして読んで「読めない答え」にした。
+       作業は終わっていたのに、試行を1回失い「当番の作業が途中で止まった」と人に届いた)。
+    違う答えが並ぶ(どれを採るかを決めない)・途中で切れている・同じキーが2回ある(loads_strict)は読めない。"""
+    s = (text or "").strip()
+    if not s:
+        return None, "答えが空"
+    try:
+        return loads_strict(s), ""
+    except ValueError:
+        pass
+    m = re.search(r"\{.*\}", s, re.S)
+    if not m:
+        return None, "JSON の object が無い"
+    # 答えの前後は地の文だけ。閉じていない配列の内側(前に `[`)・続きの JSON(後ろに `[ ] {`)なら読まない(監査指摘: `[` A、
+    # A `{"verdict":"reject", …` を承認として採った)。開いた object は最初の `{` より前に来ないので、前は `[` だけを見る
+    outside = "答えの外に JSON の記号がある(閉じていない配列・object の内側か、続きの答えがあるかもしれない)"
+    if "[" in s[:m.start()] or re.search(r"[\[\]{]", s[m.end():]):
+        return None, outside
+    try:
+        return loads_strict(m.group(0)), ""
+    except ValueError:
+        pass
+    dec = json.JSONDecoder(object_pairs_hook=_no_duplicate_keys)
+    # 答えと答えの間も地の文だけ(監査指摘: `[` A `,` A(閉じない配列)の内側の2つを繰り返しとして採った)
+    found, i, j = [], m.start(), m.start()
+    while i >= 0:
+        if re.search(r'[\[\]{},"]', s[j:i]):
+            return None, outside
+        try:
+            v, j = dec.raw_decode(s, i)
+        except ValueError as e:
+            return None, f"JSON が途中で切れている・形が崩れている({str(e)[:120]})"
+        found.append(v)
+        i = s.find("{", j)
+    if re.search(r'[\[\]{},"]', s[j:]):
+        return None, outside
+    if len({json.dumps(v, ensure_ascii=False, sort_keys=True) for v in found}) > 1:
+        return None, f"違う答えが {len(found)}個並んでいる(どれを採るか決められない)"
+    return found[0], ""
 
 
 def extract_json_array(text: str):

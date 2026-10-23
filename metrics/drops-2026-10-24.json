@@ -41,5 +41,21 @@
   "candidate_ids": [
    "202610240226-grok-77"
   ]
+ },
+ "gaku-ichiban-kuji-part7-illustration-2026": {
+  "title": "学マス一番くじPart7の描き下ろし公開",
+  "stage": "書き直しで見送り",
+  "why": "NOT_NEWS 校閲指摘のとおり、記事の中核となる描き下ろしイラスト公開、発売日、価格、フィギュア景品の情報は既報台帳に掲載済みで、新しい事実や当日のトリガーがありません。",
+  "candidate_ids": [
+   "202610240226-explore-4"
+  ]
+ },
+ "shiny-dark-girly-fashion-goods-2026": {
+  "title": "シャニマス、ダークガーリーグッズ23商品が11月4日まで予約",
+  "stage": "書き直しで見送り",
+  "why": "NO_PRIMARY_SOURCE 公式・準公式の告知、または公式発表を報じた報道を確認できず、素材の候補も未確認のため、記事の根拠要件を満たしません。",
+  "candidate_ids": [
+   "202610230227-grok-19"
+  ]
  }
 }

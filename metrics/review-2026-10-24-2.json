@@ -1,0 +1,640 @@
+{
+ "verdict": "block",
+ "blockers": [
+  {
+   "file": "docs/_posts/2026-10-24-cg-sakuma-mayu-necklace-bound-to-you.md",
+   "issue": "sources に公式・準公式の出典が1つも無い。tufave.com は source_types.yml で「当事者」(販売元)に分類されており、R5 の公式・準公式には当たらない。inside-games の記事は PR TIMES のプレスリリース転載(「プレスリリース提供：PR TIMES」)で、R5 が除く転載にあたる。公式が関わるコラボ(「アイドルマスター シンデレラガールズ」コレクション、(C)Bandai Namco)の話題なので、公式または準公式の告知(例: cinderellagirls.idolmaster-official.jp のお知らせ、公式X)を sources に加えるか、公式の発表を報じた非転載の報道を加える必要がある。",
+   "quote": "https://www.inside-games.jp/release/prtimes/20261021/313772.html",
+   "rule_id": "R5",
+   "repair": "add_source",
+   "fact_ids": [
+    "202610230731-explore-2",
+    "202610232333-explore-10"
+   ],
+   "expected": "sources に公式・準公式(公式ポータル配下のサイト・公式X 等)の告知、または公式の発表を報じた非転載の報道が1つ以上あり、記事の予約期間・価格・素材・サイズ・発送時期と食い違わない。",
+   "scope": "article:2026-10-24-cg-sakuma-mayu-necklace-bound-to-you.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-gaku-roar-jouo-sena-2026.md",
+   "issue": "リードが、YouTubeに載っているのはショート動画だと書いている。出典の公式Xの投稿は、ショート動画の公開を告知し、「▽MV本編はこちら」として youtu.be/Mdyk3h5-TQE を載せている。開いた YouTube の url は MV 本編の方で、ショート動画がそこで視聴できるとは出典から言えない。",
+   "quote": "リード「「Roar」Official Music Videoのショート動画が公開され、YouTubeで視聴できる。」",
+   "rule_id": "R4",
+   "repair": "rewrite_claim",
+   "fact_ids": [
+    "F1",
+    "F2"
+   ],
+   "expected": "リードは、ショート動画の公開を公式Xが告知したことだけを書き、YouTube のリンクは MV 本編として示す(ショート動画が YouTube にあると書かない)。",
+   "scope": "article:2026-10-24-gaku-roar-jouo-sena-2026.md"
+  }
+ ],
+ "comments": [
+  {
+   "file": "docs/_posts/2026-10-24-gaku-roar-jouo-sena-2026.md",
+   "issue": "分量不足: rank が small(目安 250字)に対し本文は1行のリンクだけ。出典にある公開日(2026-10-23 9:00 頃・公式X投稿)、ショート動画の公開と MV 本編の場所の区別を書けば埋まる。推測や言い換えでの水増しは勧めない。",
+   "scope": "article:2026-10-24-gaku-roar-jouo-sena-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-gaku-roar-jouo-sena-2026.md",
+   "issue": "tags の「十王星南」は素材の facts・出典のどちらにも名前が無い。本文・見出し・リードには出ていないので verdict には影響しないが、素材の言及アイドル欄に無いなら外すか根拠を確かめる。",
+   "scope": "article:2026-10-24-gaku-roar-jouo-sena-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-gaku-roar-jouo-sena-2026.md",
+   "issue": "既報との関係: 10-21 の roar-jouo-sena-2026 で MV 公開は報じ済み。今号はショート動画の公開という新事実なので R10 には当たらないが、既報の MV 公開を前提に書くと読者が区別しづらい。",
+   "scope": "article:2026-10-24-gaku-roar-jouo-sena-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-3-77de68.md",
+   "issue": "前回の書き直しで、指摘に無い小見出し「3周年記念イベントとログインボーナス」「新衣装「ひとひら」とログインボーナスパス」が消えている(本文の段落は字面も根拠 id も変わっていない)。事実の誤りではないため blocker にはしないが、構造の変更として執筆が意図したものか確認するとよい。",
+   "scope": "article:2026-10-24-shiny-3-77de68.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-auto-70.md",
+   "issue": "分量不足: rank small の目安 250字に対し本文は1段落(約60字)。素材 202610240226-grok-70 の facts は登場アイドルとカード名だけで、出典から拾える会場・価格・期間などは無い。一般論での水増しは勧めない。",
+   "scope": "article:2026-10-24-shiny-auto-70.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-dark-girly-fashion-goods-2026.md",
+   "issue": "(対象の記事を指していないためコメント扱い) グッズの予約開始・予約期間(2026年11月4日まで)を、公式・準公式の告知も、公式の発表を報じた報道も無い出典だけで書いている。sources は j-hobby Collection(種別: 二次情報、複数店舗のまとめ記事)と Fujidou(種別: 当事者、卸売業者のニュースで A3 の案内を載せたもの)。どちらも R5 の公式・準公式・報道の条件を満たさない。素材の 202610230227-grok-19 は出典が x.com で verify が unconfirmed。2026-10-23 号の見送り理由 NO_PRIMARY_SOURCE も解消していない。候補の検索場所(candidates/2026-10-24.json、candidates/2026-10-23.json、stock/scheduled/)にも公式の告知は見つからなかった。",
+   "quote": "見出し「シャニマス、ダークガーリーグッズ23商品が11月4日まで予約」 リード「『アイドルマスター シャイニーカラーズ』のダークガーリーファッションver.グッズ全23商品は、2026年11月4日まで予約できる。」",
+   "rule_id": "R5",
+   "repair": "add_source",
+   "fact_ids": [
+    "F1",
+    "F2",
+    "N1"
+   ],
+   "expected": "sources に、このグッズの販売を公式(シャニマス公式サイト・公式X・版元の公式発表など)または準公式が告知したページ、もしくは公式の発表を報じた報道を入れ、予約期間・商品数が食い違わないこと。そのような出典が得られないなら drop_article にする。",
+   "scope": "article:2026-10-24-shiny-dark-girly-fashion-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-dark-girly-fashion-goods-2026.md",
+   "issue": "作業ツリーでは当該ファイルが削除されている(git status の D)。この校閲は HEAD(69221fc)の版を対象にした。校閲後に記事を残すなら、ファイルの扱いを確認すること。",
+   "scope": "article:2026-10-24-shiny-dark-girly-fashion-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-dark-girly-fashion-goods-2026.md",
+   "issue": "Fujidou の種別は「当事者」で、本文は卸売業者による A3 の案内の転載。R5 の出典としては数えられない。j-hobby の予約期間・商品数・価格は素材(F1〜F10)と一致し、R1〜R4 の確認では問題はなかった。",
+   "scope": "article:2026-10-24-shiny-dark-girly-fashion-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-dark-girly-fashion-goods-2026.md",
+   "issue": "R11 の参考: 販売の告知は 2026-10-21〜22 のもので、10月24日時点で新しく発表された事実は記事の中核に無い。予約受付中の状態を伝える記事として残すなら、公式告知を足すときに新規性の根拠も示すとよい(判定には含めない)。",
+   "scope": "article:2026-10-24-shiny-dark-girly-fashion-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-ops-roundup.md",
+   "issue": "見出し「## 72時間限定のパッケージ」の下に、72時間限定でもパッケージでもない項目(「ユニットセレクト」「SSR8.5倍スタンプガシャ」などのガシャ、「8.5周年記念ログインプレゼント」「8周年衣装「こどもたち」のS-SSRプレゼント」)が並んでいる。見出しを「72時間限定の施策」など全体を覆う語にするか、ログイン・プレゼントの項目を分けると、見出しと本文が合う。",
+   "scope": "article:2026-10-24-shiny-ops-roundup.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-renaissance-ticket-soldout-2026-10-22.md",
+   "issue": "見出しは「タオル付チケット」、本文は「フェイスタオル付チケット」と、同じ商品の呼び名が揺れている。本文の表記に合わせるとよい。",
+   "scope": "article:2026-10-24-sidem-renaissance-ticket-soldout-2026-10-22.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-renaissance-ticket-soldout-2026-10-22.md",
+   "issue": "本文の「有効期限は購入後、各店舗の2026年12月最終営業日まで」の「購入後」は、N4 の出典(ip.s-re.jp/lp/315fitness-project)の「購入いただいてから〇ヶ月間です」という未完成の文に由来する。同じページの「有効期限は、2026年12月の各店舗の最終営業日までです」だけで足りるので、「購入後」は外すほうが確かな書き方になる。",
+   "scope": "article:2026-10-24-sidem-renaissance-ticket-soldout-2026-10-22.md"
+  },
+  {
+   "file": "-",
+   "issue": "面のバランス: 本日49本のうちシャニマス系が約20本と4割強を占め、shiny-auto-* の短い記事が多い。ブランド別の分量が偏っている。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "候補にあり公式発表で日付もあるのに紙面に無い話題: ミリオン「Off Time Voice Series vol.4」の販売開始(10月26日)と「週末だけのハーレクイン」iDOL GRAND-PRIX PVの公開(10月26日)。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "候補にあり公式発表で締切もある話題が紙面に無い: 上水流宇宙「秋コラボショート祭り」(締切11月2日)、ツアマス「RHYTHM LIVE FESTIVAL 2027」大会予選詳細。",
+   "scope": "paper"
+  },
+  {
+   "file": "-",
+   "issue": "候補にあり公式発表で日付もある話題が紙面に無い: 学マス「復刻ミラクルナナウ 麻央&広ガシャ」(10月30日開始)。篠澤広の無料ガシャは載っているが、同じ復刻系の10月30日開始ガシャは無い。",
+   "scope": "paper"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-765-961-idol-ultimate-2027-ticket.md",
+   "issue": "分量不足(rank small の目安250字に対し、リードと本文を合わせて200字前後)。素材 candidate 202610240226-grok-6 の facts にある公演名「765 PRO×961 PRO IDOL ULTIMATE “ONCE AND FOR ALL”」、会場、受付締切の時刻(10/28 23:59)の書き方の補足で埋められる。推測や一般論での水増しは不要。",
+   "scope": "article:2026-10-24-765-961-idol-ultimate-2027-ticket.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-765-961-idol-ultimate-2027-ticket.md",
+   "issue": "現地チケット受付が先行(アソビストアプレミアム会員)か一般かを書いていない。既報の台帳 metrics/stories-before-2026-10-24.yml(765-961-idol-ultimate-once-and-for-all-2027 と 765-961-xr-live-2027)では同じ10/28締切が会員先行の受付期間として出ている。今回の素材(公式Xの投稿)は先行・一般を区別していないため、そのまま書くのは出典どおりで問題ないが、読者が申込みできるかを判断できるよう、対象を書けるなら書く。",
+   "scope": "article:2026-10-24-765-961-idol-ultimate-2027-ticket.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-765-961-idol-ultimate-2027-ticket.md",
+   "issue": "R10/R11 の境界例。締切は4日後で、R10 の免除(3日以内)には当たらない。ただし公式が10/23に「現地チケット受付中・締切まであと5日」を投稿したこと自体を当日のトリガーとみて、ブロックはしていない。新事実は無く、既報(2026-09-04、2026-09-30)と同じ内容なので、編集長が載せる意味があるか判断してよい。",
+   "scope": "article:2026-10-24-765-961-idol-ultimate-2027-ticket.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-765-961-idol-ultimate-2027-ticket.md",
+   "issue": "frontmatter の event_date は 2026-10-28(受付締切の日)で、素材の event_date は 2027-07-24(公演日)。締切の日付は素材の deadline と一致し、年も合っているためR8とはしていない。公演の記事として event_date を公演日にするかは判断事項。",
+   "scope": "article:2026-10-24-765-961-idol-ultimate-2027-ticket.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-cg-cinderella-party-10th-cd-2026.md",
+   "issue": "放送概要の出演は河瀬茉希・中島由貴の2名だけだが、ニコニコの番組ページには、通常パーソナリティの原紗友里・青木瑠璃子が体調不良のため今回は出ず、この2名で送ると告知されている。読者に関係する事情なので、一文足すと親切(任意)。",
+   "scope": "article:2026-10-24-cg-cinderella-party-10th-cd-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-cg-cinderella-party-10th-cd-2026.md",
+   "issue": "CD収録内容の「HOURGLASS ソロ・リミックス」は出典では Tr.05〜09 の5曲(それぞれ1人ずつ歌唱)。1行に5人をまとめると1曲に見える。5曲と分けて書くか、『各1人ずつの5曲』と添えると正確(任意)。",
+   "scope": "article:2026-10-24-cg-cinderella-party-10th-cd-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-cg-orchestra-premium-second-lottery-2026.md",
+   "issue": "分量不足(rank small の目安250字に対し本文は約75字)。素材の facts と公式Xの本文には、受付の対象・期限・スペシャルシートのお土産以外の具体情報が無いので、一般論での水増しは勧めない。",
+   "scope": "article:2026-10-24-cg-orchestra-premium-second-lottery-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-cg-popntoybox-revival-general-lottery-2026.md",
+   "issue": "分量不足(rank small、目安250字)。本文は2文で、出典(公式X 2026-10-23投稿、素材 202610240226-grok-10)にあるのは会場・受付方法・申込期限だけなので、埋めるには出典にある事実のみを使う。一般論での水増しは不要。",
+   "scope": "article:2026-10-24-cg-popntoybox-revival-general-lottery-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-cg-popntoybox-revival-general-lottery-2026.md",
+   "issue": "判定の確認(指摘ではない): 既報台帳 concept-xr-live-pop-n-toybox-2026(2026-10-04)に「アソビストア一般会員先行受付中」「大阪・オリックス劇場」があるが、今号の新しい事実は申込期限 11月1日(日)で、台帳に無い。締切まで8日なので R10 の対象外、R11 も新事実の告知として成立すると判定。",
+   "scope": "article:2026-10-24-cg-popntoybox-revival-general-lottery-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-dsva-3rd-live-meeting-qonnect-as-one.md",
+   "issue": "分量不足(rank small、本文は約175字)。素材 facts にある東京公演の会場(日本工学院アリーナ)や二都市開催の位置づけは、リードにしか入っていない。出典にある事実を本文に拾えば埋まる(一般論での水増しは不要)。",
+   "scope": "article:2026-10-24-dsva-3rd-live-meeting-qonnect-as-one.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-dsva-3rd-live-meeting-qonnect-as-one.md",
+   "issue": "ブロック判定の確認範囲: 根拠の素材 candidate 202610240226-grok-105(verify: confirmed、公式X)の facts は、記事の日時・会場・申込期限(2026-11-15 23:59)・グッズ(おすわりぬいぐるみ)と一致。event_date 2027-03-21 も素材の 2027.3.21-22 と一致。公式ポータルはメンテナンス中で未確認、X は機械から開けないため、素材の facts で照合した。ASOBI TICKET の受付ページ(t.co の遷移先)は取得できたが、本文にイベント名・日付が読み取れず、記事の記述との一致は確かめられなかった(ブロックにはしない。申込先の URL 自体は t.co の遷移先と一致)。",
+   "scope": "article:2026-10-24-dsva-3rd-live-meeting-qonnect-as-one.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-gaku-agitato-mv-two-million-views.md",
+   "issue": "分量不足(small、目安250字)。本文は1文のみ。素材(202610240226-grok-93)の facts は「200万再生突破」と MV の YouTube リンクだけで、会場・価格などの拾える情報が無いため、水増しせず現状でよい。",
+   "scope": "article:2026-10-24-gaku-agitato-mv-two-million-views.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-gaku-hiro-another-idol-guaranteed-gasha-2026.md",
+   "issue": "分量不足(rank small, 目安250字)。本文はリードと本文2段落を合わせて約180字。素材 202610240226-grok-97 の facts は、ガシャ名・期間(10/25 10:59まで予定)・無料1連・アナザーアイドル確定・アップデート記念の5点で、出典にあるのはこれだけなので、一般論や推測で埋める必要はない。",
+   "scope": "article:2026-10-24-gaku-hiro-another-idol-guaranteed-gasha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-gaku-hiro-another-idol-guaranteed-gasha-2026.md",
+   "issue": "tags に「学マス」が2つ入っている(表記の重複)。1つにまとめるとよい。",
+   "scope": "article:2026-10-24-gaku-hiro-another-idol-guaranteed-gasha-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-gaku-shirube-final-merch-2026.md",
+   "issue": "申込先の ASOBI TICKET 受付ページ(candidates の facts 由来の url)は取得すると JS 描画用の殻だけで、受付期間や物販日時の記述を確認できなかった。本文の日時・期限はすべて出典の X 公式投稿(confirmed、公式)の記載と一致しており、そちらで確かめられている。見出し・リード・本文に問題は見つからなかった。",
+   "scope": "article:2026-10-24-gaku-shirube-final-merch-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-gaku-yorunite-mv-one-million-views.md",
+   "issue": "分量不足(small の目安 250字)。本文は約60字で、素材(202610240226-grok-94)にはMV再生数到達とYouTubeリンク以外の事実が無いため、水増しは勧めない。現状のままでよい。",
+   "scope": "article:2026-10-24-gaku-yorunite-mv-one-million-views.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-gaku-yorunite-mv-one-million-views.md",
+   "issue": "出典の公式X投稿(2026-10-23 10:00 JST、@gkmas_official)を fetch_page.py で開いて照合した。『ヨルニテ』MVの100万再生突破、YouTube の video ID X1xcOhkgc4c への案内が一致した。YouTube ページは取得できたがタイトルは抽出できず、動画の内容は未確認(X 投稿が同じ ID を案内しているため問題とはしない)。",
+   "scope": "article:2026-10-24-gaku-yorunite-mv-one-million-views.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-general-eva-765pro-fan-ss-2026.md",
+   "issue": "リードは「ライブBDを見せる」、本文は「貸し」。出典(SSまにあっくす！本文)は「これを貸すわ」なので、リードも「貸す」に合わせると一致する(分量・表記の指摘で、verdict には影響しない)。",
+   "scope": "article:2026-10-24-general-eva-765pro-fan-ss-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-general-portal-security-maintenance-2026-10.md",
+   "issue": "分量不足: rank small の目安(250字)に対し本文は約140字。素材 202610240226-grok-121 の facts は3件(先行ポストの自動投稿と削除、メンテナンス中でNEWSを含むページが閲覧不可、詳細は改めて告知)で、出典の公式ポストも同じ内容。出典にある未記載の具体情報は無いので、水増しは不要。",
+   "scope": "article:2026-10-24-general-portal-security-maintenance-2026-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-joint-sidem-shinycolors-sparkle-showdown-2027-06.md",
+   "issue": "分量不足: rank が lead(目安 1000字)に対して本文が約500字と薄い。素材の出演者(DAY1・DAY2 の各ユニット・声優名)、特設サイトの配信チケット後日発表、限定グッズ(SPプロデューサーシート特典)、受付期間(〜10月12日)など、出典にある事実で埋められる。一般論での水増しは不要。",
+   "scope": "article:2026-10-24-joint-sidem-shinycolors-sparkle-showdown-2027-06.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-joint-sidem-shinycolors-sparkle-showdown-2027-06.md",
+   "issue": "出典確認: 3つの公式 url(news/01_19789・ticket・information)は今回の読み取りで全て『メンテナンス中』(mainte へ転送)。読めないことだけではブロックしない(§6)。素材(sched 系、verify: confirmed)の facts と照合し、価格・日時・会場・会員条件・入金期間が一致した。ただし素材の一部は当落発表の曜日を『木』、Ticket ページを『土』としており、2026-10-24 は土曜。記事は曜日を書いていないので問題なし。",
+   "scope": "article:2026-10-24-joint-sidem-shinycolors-sparkle-showdown-2027-06.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-joint-tours-s2-cyber-core-green-2026.md",
+   "issue": "見出しとリードの「SPアピールカード2種」「SPアピールカード」の『カード』は、Imperial Command 側の素材(202610240226-grok-109)では「SPアピール『Imperial Command』」とだけ書かれ、カードとは書かれていない。カードと言い切る根拠が素材に無いので、「SPアピール2種」に揃えるか、Imperial Command がカードである根拠を素材に足してから書く。",
+   "scope": "article:2026-10-24-joint-tours-s2-cyber-core-green-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-joint-tours-s2-cyber-core-green-2026.md",
+   "issue": "分量不足: rank small の目安 250字に対し本文は約110字。公式サイトの『ツアマス』S2弾10月29日稼働開始!(2026.10.16、出典3)で確認できた、S2弾の登場キャラ(SideM『山下次郎』『舞田類』)、追加楽曲(『Study Equal Magic!』『SYMPHONY』)、S2弾のコンセプト(ハロウィン)を拾うと埋まる。ただし出典3の注目SSR SPアピールカードの効果は、本記事の2枚と対応するか確認できないので使わない。",
+   "scope": "article:2026-10-24-joint-tours-s2-cyber-core-green-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-joint-tours-s2-cyber-core-green-2026.md",
+   "issue": "本文の「エンゲージメント『中』」が何を指すかの説明が無く、読者には意味が分からない。素材の表現どおりに書くなら『エンゲージメント: 中』と項目名を残すか、出典の文言を確かめて説明を足す。",
+   "scope": "article:2026-10-24-joint-tours-s2-cyber-core-green-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-million-hapipisu-event-2026.md",
+   "issue": "見出し「ミリシタ「ハピピス♡」25日20:59終了」は、イベント名（プラチナスターティアラ～ハピピス♡～）ではなく楽曲名で話題を示し、月も省いている。「ミリシタ「プラチナスターティアラ」ハピピス♡ 10月25日20:59終了」など、催しの名前と月日を入れると何の話か伝わりやすい。",
+   "scope": "article:2026-10-24-million-hapipisu-event-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-million-hapipisu-event-2026.md",
+   "issue": "「終了までに使えるブースト」の段落は、4倍・10倍消費が公演折り返し後（2026/10/22 15:00より）から使えることを書いていない。出典の告知（grok-16）にも折り返し後と明記されているので、一文足すと読者が使える時期を取り違えにくい。素材にあるため指摘ではなくコメント。",
+   "scope": "article:2026-10-24-million-hapipisu-event-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-million-hapipisu-event-2026.md",
+   "issue": "R10 は締切が3日以内なので対象外、R11 は終了（10/25 20:59）が発行日以降に起きることを記事の中核にしているため満たす、と判定した。既報（2026-10-23）と同じブースト・終了時刻の内容だが、締切の告知が記事の目的なのでブロックしない。",
+   "scope": "article:2026-10-24-million-hapipisu-event-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-million-kasuga-mirai-30ms-restock-2026.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は約100字。出典の商品ページ(2026-10-24 に開いて確認)に、参考価格 ￥5,060(41%割引)、最も早い配送は明日10月25日・無料配送は10月26日、ポイント30pt、販売元・出荷元 Amazon.co.jp、在庫あり、が載っている。これらは出典どおりに書ける。一般論での水増しは不要。",
+   "scope": "article:2026-10-24-million-kasuga-mirai-30ms-restock-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-million-kasuga-mirai-30ms-restock-2026.md",
+   "issue": "ニュースの核が本文にない。この商品の再入荷は 2026-10-16 に既報(台帳 million-30ms-kasuga-mirai-restock-2026-10)で、10-18・10-19 の候補も同じ再入荷の告知。本文は「在庫あり・2,974円」という商品ページの表示だけで、再入荷・告知の話に触れていない。今回の新しい事実(価格・在庫)を出典どおりに示すか、告知の時期をリードに入れると、既報との差が読者に分かる。根拠の X 投稿は sources にないので、本文で告知を断定しないこと。",
+   "scope": "article:2026-10-24-million-kasuga-mirai-30ms-restock-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-million-nostalgic-orchestra-works-2026.md",
+   "issue": "リード「10月25日に発売され、歌入り5曲と各曲のインストゥルメンタルを収録する」は、未来の発売日に『発売され』を使い、後半の『収録する』と時制がそろっていない(不自然な日本語)。例: 『10月25日発売で、歌入り5曲と各曲のインストゥルメンタルを収録する』。",
+   "scope": "article:2026-10-24-million-nostalgic-orchestra-works-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-million-nostalgic-orchestra-works-2026.md",
+   "issue": "出典(特設サイト)には、10月25日のM3-2026秋での先行販売(サ-21ab)と、11月20日の神楽坂天窓での物販予定がある。本文は『M3-2026秋での先行販売後』とだけ書いており、先行販売の日付と場所が読者に伝わらない。分量を埋める一般論ではなく、出典にある日付・場所を足すとよい(任意)。",
+   "scope": "article:2026-10-24-million-nostalgic-orchestra-works-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-million-tsubasa-the-animation-figure-2026.md",
+   "issue": "見出しの「ミリアニ」は略称で、本文には出てこない(本文は「アイドルマスター ミリオンライブ！」と書いている)。読者向けには見出しの略称を外すか、本文と同じ作品名にそろえるとよい(表記の提案で、verdict には影響しない)。",
+   "scope": "article:2026-10-24-million-tsubasa-the-animation-figure-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-2-da4b92.md",
+   "issue": "分量不足(rank: small、目安 250字)。本文は2段落で約70字。素材 202610240226-grok-52 の facts には復刻の期間・金電話セレクトパックの価格や内容が無く、出典(x.com 投稿。機械からは開けず、verify: confirmed)にも届かないため、ここでは埋められない。執筆が確かめられる具体があれば足す。",
+   "scope": "article:2026-10-24-shiny-2-da4b92.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-2-da4b92.md",
+   "issue": "表記の不整合: リードは「金電話入りセレクトパックはショップに登場する」だが、本文 F3 と素材は「ショップで販売予定」。登場と断定せず、リードも「販売予定」に合わせるのがよい。",
+   "scope": "article:2026-10-24-shiny-2-da4b92.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-2-da4b92.md",
+   "issue": "R4・R5・R10 は問題なし。出典 url(公式 X 投稿)は素材 202610240226-grok-52 と一致し、公式の発表なので R5 も満たす。既報台帳 metrics/stories-before-2026-10-24.yml と candidates の別日分にもシャニソン2周年電話の既報は無い。",
+   "scope": "article:2026-10-24-shiny-2-da4b92.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-283-3032a4.md",
+   "issue": "分量不足(rank small 目安250字)。ただし素材の facts には日程・価格・仕様などの追加情報が無いため、一般論での水増しは勧めない。",
+   "scope": "article:2026-10-24-shiny-283-3032a4.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-283-3032a4.md",
+   "issue": "リードの「283ステージで育成した「ステージアイドル」で挑む新対戦コンテンツ「283ステージショー」が開発中です。」と本文1段落目がほぼ同じ内容で重複している。本文側を別の情報に寄せるか、どちらかを削るとよい。",
+   "scope": "article:2026-10-24-shiny-283-3032a4.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-3-pv-c33c4f.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は1文のみ。素材(candidate 202610240226-grok-35)には公開場所と動画名以外の事実がなく、埋められる情報は無いので、一般論での水増しは不要。",
+   "scope": "article:2026-10-24-shiny-3-pv-c33c4f.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-7-902ba3.md",
+   "issue": "分量が rank small の目安(250字)に比べて薄い。素材(202610240226-grok-71)の facts は「第7弾に登場する七草 にちかさんをご紹介」「登場アイドル: S-SSR 【約いもうと】」の2点だけで、出典から拾える事実が少ないため、水増しは勧めない。",
+   "scope": "article:2026-10-24-shiny-7-902ba3.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-auto-36.md",
+   "issue": "分量不足(small 目安250字に対して本文は短い)。ただし素材 grok-36・grok-37 の facts に、これ以上拾える会場・価格・日時・仕様はないため、直す必要は無い。",
+   "scope": "article:2026-10-24-shiny-auto-36.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-auto-38.md",
+   "issue": "分量不足(small の目安250字に対し本文は約110字)。ただし候補 202610240226-grok-38・grok-39 の facts には本文以上の会場・価格・日時・対象条件が無く、埋める素材が無いので直さなくてよい。",
+   "scope": "article:2026-10-24-shiny-auto-38.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-auto-49.md",
+   "issue": "本文に「アイキュー」の説明がない。出典では「アイキューガシャ」「アイキューの復刻」と書かれ、「I'm a Cutie Finder」との関係が本文だけでは読者に分からない。初出で一言添えると読みやすくなる(例: 「I'm a Cutie Finder」の復刻を「アイキュー」として)。",
+   "scope": "article:2026-10-24-shiny-auto-49.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-auto-49.md",
+   "issue": "4段落目「受け取るには期間中にログインする」は、出典「ぜひ期間中にログインしてくださいね」を条件として書き直したもの。出典の文言に近づけるなら「期間中のログインが呼びかけられている」程度にとどめるとよい(判定には影響しない)。",
+   "scope": "article:2026-10-24-shiny-auto-49.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-auto-50.md",
+   "issue": "分量不足(コメント項目): 本文が1段落(約70字)で、rank small の目安 250字に届いていない。ただし素材(candidate 202610240226-grok-50)の facts には、ガシャの開催期間・排出条件・価格などの情報が無いため、出典にある範囲では埋められない。素材が増えない限り、これ以上書けることは無い。",
+   "scope": "article:2026-10-24-shiny-auto-50.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-auto-73.md",
+   "issue": "分量不足(rank: small の目安 250字に対し本文は約70字)。出典の公式投稿にある作品名「果てにふれるのなら」・開始日(10月30日より)・開催期間の表記は、本文に入れれば埋まる。事実の追加はせず、出典の範囲で書くこと。",
+   "scope": "article:2026-10-24-shiny-auto-73.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-beam-mv.md",
+   "issue": "分量不足: rank small の目安 250字に対し本文は1段落(約50字)。素材の facts は配信開始 10/30 0:00 と MV 公開 10/30 15:00 の2件だけで、出典 x.com の投稿は機械から開けないため、埋めるには素材の facts か既に確かめられた具体が要る。一般論での水増しは勧めない。",
+   "scope": "article:2026-10-24-shiny-beam-mv.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-beam-mv.md",
+   "issue": "参考: 素材の quotes に「Project \"ReLight\" AXE8の第1弾で登場したアルストロメリアの皆さんの」とあり、BEAM が AXE8 第1弾と関係する話題だと読者に伝えられる。ただし facts には無いので、書く場合は一次情報で確かめてから。",
+   "scope": "article:2026-10-24-shiny-beam-mv.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-beam-mv.md",
+   "issue": "依頼ファイルは「この依頼の末尾」の『続報予約の素材』に触れるが、ファイルは85行目で終わり、その節は無い。この記事は sched- の候補 id を持たないので判定には影響しなかった。",
+   "scope": "article:2026-10-24-shiny-beam-mv.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-mei-leashanai-outfit-2026.md",
+   "issue": "分量不足: rank は small(目安 250字)に対して本文が約60字。出典の投稿には「◆登場アイドル P-SSR 【離さない♡】」と「#シャニマス生配信」のタグがあり、生配信で紹介された旨を出典どおりに書ける。一般論での水増しは不要。",
+   "scope": "article:2026-10-24-shiny-mei-leashanai-outfit-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-mei-leashanai-outfit-2026.md",
+   "issue": "見出しの「公開」は出典の「ご紹介しました」より強い言い方。リードの「紹介された」に合わせるか、出典どおりの言い回しにするとよい。",
+   "scope": "article:2026-10-24-shiny-mei-leashanai-outfit-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-mei-leashanai-outfit-2026.md",
+   "issue": "ニュース性は薄い: 出典は公式Xの1投稿で、衣装イラストの紹介のみ(発売日・価格・配布などの新事実なし)。R1〜R12 には当たらないと判断したので承認するが、紙面に載せる価値は編集側で見直してよい。",
+   "scope": "article:2026-10-24-shiny-mei-leashanai-outfit-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-overlay-of-hopes.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は1段落約80字で、素材 202610240226-grok-56 の facts は『OVERLAY OF HOPES』が7名登場・歌い分けモード対応・全28名歌唱の3点だけ。出典にない内容で水増ししない方がよい。",
+   "scope": "article:2026-10-24-shiny-overlay-of-hopes.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-pj-refrac7ions-enza.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は3段落で約150字。素材(202610240226-grok-31/58/59/60)には、10/23の紹介告知→10/24のゲーム内追加という経緯があり、「10月23日に紹介、後日ゲーム内に追加予定とされていた「Monad」が10月24日に追加された」と時系列で書けば補える。推測での水増しは不要。",
+   "scope": "article:2026-10-24-shiny-pj-refrac7ions-enza.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-shiny-pj-refrac7ions-enza.md",
+   "issue": "tags の「ガシャ」は、この記事の4素材(grok-31/58/59/60)のどの facts にも無い。本文・見出し・リードに無いので R1 の対象外だが、根拠の無いタグは外すか素材で確かめる。",
+   "scope": "article:2026-10-24-shiny-pj-refrac7ions-enza.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-agatsuma-nin-nin-2026.md",
+   "issue": "本文「達成賞引換場所でアプリ内「特典」画面を提示」「町村・スポットの指定はない」は出典 edith.co.jp/lp/agatsuma-sidem/ の本文に載っていて事実として正しい。ただし verified_facts の N4 にはこの2点が無い。執筆が台帳に残すなら N4 に書き足すとよい(今回は指摘にしない)。",
+   "scope": "article:2026-10-24-sidem-agatsuma-nin-nin-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-agatsuma-nin-nin-2026.md",
+   "issue": "frontmatter の tags「コラボカフェ」は、本文の協力店が観光案内所・飲食店(寿司店・ティースタンド)でカフェ業態の記述が無いため、タグとして合わない。表記上の任意の見直し。",
+   "scope": "article:2026-10-24-sidem-agatsuma-nin-nin-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-agatsuma-nin-nin-2026.md",
+   "issue": "見出し・リード・本文の日付・金額・店舗情報・スタンプスポット・グッズ・立看板の担当アイドルは、出典2件の本文と照合して一致した。既報台帳(sidem-agatsuma-collab-2026, 2026-10-02)と重なるのは開催期間・18か所・達成条件だけで、広報大使の就任・メニュー・グッズは新しい事実なので R10 には当たらない。",
+   "scope": "article:2026-10-24-sidem-agatsuma-nin-nin-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-fanfes-wsi-nagano-general-presale-2026.md",
+   "issue": "2段落目の「公演回ごとにデザインが異なる」は、出典(facts F8・X投稿)の「回替わりデザイン」を言い換えたもの。出典には日替わりか公演回ごとかの区別が無いので、出典の語「回替わり」のままにするか、「回ごとに異なる」と断定しない形にするのが安全。",
+   "scope": "article:2026-10-24-sidem-fanfes-wsi-nagano-general-presale-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-fanfes-wsi-nagano-general-presale-2026.md",
+   "issue": "本文が約170字で、small の目安250字に届いていない。素材には長野の日時・会場・受付期間が無いので、補うなら素材にある情報(幕張公演の受付時期の対比など)に限ること。一般論で水増ししないこと。",
+   "scope": "article:2026-10-24-sidem-fanfes-wsi-nagano-general-presale-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-fantastic-battle-fes-2026.md",
+   "issue": "分量不足(rank: small、目安250字)。本文は約150字で、素材にある対象条件を足せば埋まる。例: 当落発表が10/23 13:00だったこと、枚数制限(SP席は1公演2枚、S席・A席は1公演4枚、複数公演申込可)、入金期間の開始日時(10/23 13:00)と当落発表の日時。一般論での水増しは不要。",
+   "scope": "article:2026-10-24-sidem-fantastic-battle-fes-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-fantastic-battle-fes-2026.md",
+   "issue": "出典(公式サイト)は今日メンテナンス中で本文を開けなかった。R4・R5 は section 6 に従い、素材の facts(公式・confirmed)と照合して問題なし。期日・会場・公演日はすべて素材の facts と一致した。",
+   "scope": "article:2026-10-24-sidem-fantastic-battle-fes-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-monthly-theme-song-vol-3-goods-2026.md",
+   "issue": "分量不足ではないが、読者が買える先が本文に無い。出典の Animate 通販ページと素材 (grok-127) には「予約はA-on STORE・アニメイト通販、アニメイト各店でも受付」とあり、アソビストアは第3弾の販売を見送っている。購入先を1文入れると、今日できることが読者に伝わる(R12 の (a) に当たる)。素材に載っている事実なので足せる。",
+   "scope": "article:2026-10-24-sidem-monthly-theme-song-vol-3-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-monthly-theme-song-vol-3-goods-2026.md",
+   "issue": "受注期間「11月8日（日）23時59分まで」は、開ける出典では確かめきれていない。Animate ページの取得結果には受注期間が出ず、根拠は準公式 X (x.com、開けない) の投稿の素材 (F18) と、verify が unconfirmed の素材 (grok-127) の facts だけ。ページと食い違うものは見当たらないので今回はブロックしないが、締切は記事の中核なので、執筆は X の投稿と Animate の受注表示のどちらで確かめたかを控えに残すとよい。",
+   "scope": "article:2026-10-24-sidem-monthly-theme-song-vol-3-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-monthly-theme-song-vol-3-goods-2026.md",
+   "issue": "リードが「受注販売している」だけで、受注が始まった日時(素材では 2026年10月23日 18:00)が書かれていない。発行日の 1 日前に始まった新しい受注だと読者に分かるよう、リードか本文に 10月23日 18:00 からの受注開始を入れると、ニュース性が伝わる。",
+   "scope": "article:2026-10-24-sidem-monthly-theme-song-vol-3-goods-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-promi-2027-payment-deadline-extension.md",
+   "issue": "分量不足(rank small の目安250字に対し本文が短い)。出典の公式告知(ASOBI TICKET のお知らせ、2026-10-23 掲載の本文を fetch_rendered.py で確認)には、延長後の入金期間(予定)が『2026年10月26日(月)15:00～10月28日(水)23:59まで』と書かれている。これを本文に入れると、読者が今日取れる行動(未入金なら10/28 23:59まで)が本文で分かる。ただし素材 F1・F2 には日時が無いので、入れる場合は新しい事実 N として ASOBI TICKET のお知らせ URL(https://asobiticket2.asobistore.jp/news/022a9df8-fb50-48fe-b21d-aea1b06953a7)を読んだうえで書くこと。",
+   "scope": "article:2026-10-24-sidem-promi-2027-payment-deadline-extension.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-promi-2027-payment-deadline-extension.md",
+   "issue": "リードの『ASOBI STOREの緊急メンテナンス中に入金できなかった人』は、メンテナンスの期間(2026年10月21日20時頃～10月22日14時頃、公式告知の記述)が本文に無いので、いつの話か読者に分からない。『中』は現在進行の印象を与えるため、『メンテナンスにより入金できなかった人』など過去形の書き方も考えられる。表記の任意の修正で、判定には影響しない。",
+   "scope": "article:2026-10-24-sidem-promi-2027-payment-deadline-extension.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-story-release-delay-2026-10.md",
+   "issue": "分量不足(rank small の目安 250字)。本文は約150字。素材(grok-82・grok-83 の facts)は延期の日付・メンテナンス開始・後日案内の3点で尽きており、一般論での水増しは勧めない。現状のままでよい。",
+   "scope": "article:2026-10-24-sidem-story-release-delay-2026-10.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-ultimate-flame-2dmv-2026.md",
+   "issue": "分量不足(small 目安250字)。本文は約90字で、出典 lnk.to の配信ページにある配信形態(Play・DL・ハイレゾDL の案内)と、候補 202610240226-grok-78 の facts にある連動ストーリー名『復活！炎のスポーツバラエティ』を加えれば埋まる。推測や言い換えでの水増しは不要。",
+   "scope": "article:2026-10-24-sidem-ultimate-flame-2dmv-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-ultimate-flame-2dmv-2026.md",
+   "issue": "R3 の確認: 根拠の素材 202610240226-grok-78 の url(x.com/SideM_lantis/status/2113616430545686544)は sources に無い。ただし同じ事実(2DMV公開中)は sources の lnk.to 配信ページで確認でき、R3 の『弱い出典を外した』には当たらないため、ブロックしていない。",
+   "scope": "article:2026-10-24-sidem-ultimate-flame-2dmv-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-ultimate-flame-2dmv-2026.md",
+   "issue": "YouTube 2DMV のページ(https://www.youtube.com/watch?v=Iu3hlREXqQo)は取得できたが、動画タイトルは取り出せなかった(返ってきたのは再生基盤の設定 JSON のみ)。公開の事実は lnk.to の『2DMV公開中！』で確認済み。",
+   "scope": "article:2026-10-24-sidem-ultimate-flame-2dmv-2026.md"
+  },
+  {
+   "file": "docs/_posts/2026-10-24-sidem-ultimate-flame-2dmv-2026.md",
+   "issue": "時制・日付は問題なし。既報(2026-10-15 号)は『公開日 10月23日22:00（予定）』で、今号は公開済みとして書いており、R10 の新事実(公開された)を満たす。event_date 2026-10-23 も素材と一致。",
+   "scope": "article:2026-10-24-sidem-ultimate-flame-2dmv-2026.md"
+  }
+ ],
+ "reviewed": [
+  "article:2026-10-24-765-961-idol-ultimate-2027-ticket.md",
+  "article:2026-10-24-cg-cinderella-party-10th-cd-2026.md",
+  "article:2026-10-24-cg-orchestra-premium-second-lottery-2026.md",
+  "article:2026-10-24-cg-popntoybox-revival-general-lottery-2026.md",
+  "article:2026-10-24-cg-sakuma-mayu-necklace-bound-to-you.md",
+  "article:2026-10-24-dsva-3rd-live-meeting-qonnect-as-one.md",
+  "article:2026-10-24-dsva-manaka-birthday-online-live-2026-platform-change.md",
+  "article:2026-10-24-gaku-agitato-mv-two-million-views.md",
+  "article:2026-10-24-gaku-hiro-another-idol-guaranteed-gasha-2026.md",
+  "article:2026-10-24-gaku-ichiban-kuji-part7-illustration-2026.md",
+  "article:2026-10-24-gaku-roar-jouo-sena-2026.md",
+  "article:2026-10-24-gaku-shirube-final-merch-2026.md",
+  "article:2026-10-24-gaku-yorunite-mv-one-million-views.md",
+  "article:2026-10-24-general-eva-765pro-fan-ss-2026.md",
+  "article:2026-10-24-general-portal-security-maintenance-2026-10.md",
+  "article:2026-10-24-joint-sidem-shinycolors-sparkle-showdown-2027-06.md",
+  "article:2026-10-24-joint-tours-s2-cyber-core-green-2026.md",
+  "article:2026-10-24-million-hapipisu-event-2026.md",
+  "article:2026-10-24-million-kasuga-mirai-30ms-restock-2026.md",
+  "article:2026-10-24-million-nostalgic-orchestra-works-2026.md",
+  "article:2026-10-24-million-tsubasa-the-animation-figure-2026.md",
+  "article:2026-10-24-shiny-2-da4b92.md",
+  "article:2026-10-24-shiny-283-3032a4.md",
+  "article:2026-10-24-shiny-3-77de68.md",
+  "article:2026-10-24-shiny-3-pv-c33c4f.md",
+  "article:2026-10-24-shiny-7-902ba3.md",
+  "article:2026-10-24-shiny-auto-32.md",
+  "article:2026-10-24-shiny-auto-36.md",
+  "article:2026-10-24-shiny-auto-38.md",
+  "article:2026-10-24-shiny-auto-49.md",
+  "article:2026-10-24-shiny-auto-50.md",
+  "article:2026-10-24-shiny-auto-70.md",
+  "article:2026-10-24-shiny-auto-73.md",
+  "article:2026-10-24-shiny-beam-mv.md",
+  "article:2026-10-24-shiny-dark-girly-fashion-goods-2026.md",
+  "article:2026-10-24-shiny-higuchi-madoka-figure-2027.md",
+  "article:2026-10-24-shiny-kimchikura-anisama-seoul-2027.md",
+  "article:2026-10-24-shiny-mei-leashanai-outfit-2026.md",
+  "article:2026-10-24-shiny-noctchill-live-2027.md",
+  "article:2026-10-24-shiny-ops-roundup.md",
+  "article:2026-10-24-shiny-overlay-of-hopes.md",
+  "article:2026-10-24-shiny-pj-refrac7ions-enza.md",
+  "article:2026-10-24-shiny-project-relight-axe8-4.md",
+  "article:2026-10-24-sidem-agatsuma-nin-nin-2026.md",
+  "article:2026-10-24-sidem-fanfes-wsi-nagano-general-presale-2026.md",
+  "article:2026-10-24-sidem-fantastic-battle-fes-2026.md",
+  "article:2026-10-24-sidem-monthly-theme-song-vol-3-goods-2026.md",
+  "article:2026-10-24-sidem-promi-2027-payment-deadline-extension.md",
+  "article:2026-10-24-sidem-renaissance-ticket-soldout-2026-10-22.md",
+  "article:2026-10-24-sidem-story-release-delay-2026-10.md",
+  "article:2026-10-24-sidem-ultimate-flame-2dmv-2026.md",
+  "paper"
+ ],
+ "checked": {
+  "article:2026-10-24-shiny-ops-roundup.md": "29f522043224212426f739a5cbbb8ff0e338c923df53db88acaa7ac0100aa8aa",
+  "article:2026-10-24-general-eva-765pro-fan-ss-2026.md": "2bce1863166a7d83dbb6db328efc90df698f551289e36fbae5c61097599aacaf",
+  "article:2026-10-24-shiny-mei-leashanai-outfit-2026.md": "7dfe47f3a4b3bd2dfbcded26997e952298492fecdec20efccf3ad2da01180a74",
+  "article:2026-10-24-sidem-monthly-theme-song-vol-3-goods-2026.md": "9d6b5e4e6dd30a4dd91f420a46054b78a9eb3cc9c60639f72867f002382c9f67",
+  "article:2026-10-24-765-961-idol-ultimate-2027-ticket.md": "753144ef0153b8b405b7d66741b9fa053caaf61688701ca342a44750e79e6e11",
+  "article:2026-10-24-shiny-auto-38.md": "4a95cbc6c0dac4975454782e1d1db6d45966d6419153c212f18aaaf74489fb5d",
+  "article:2026-10-24-dsva-manaka-birthday-online-live-2026-platform-change.md": "e4f3b7eaa058917053135e1256c668585e49712fcedcc8af77a5f26add8f5410",
+  "article:2026-10-24-shiny-auto-49.md": "b3071a2cf08ce083c8aca2e351bcd2452bafdc54b85bf6ecca75d80837ca5345",
+  "article:2026-10-24-shiny-beam-mv.md": "c4220255bb4374c5cbb0f5d3781689dc832933cd33481134feeb5bb69102bd8d",
+  "article:2026-10-24-sidem-promi-2027-payment-deadline-extension.md": "b22e8a5f96a80148f63abefa939bc4ae41dfcb9b3ee256a994b43e19f19bd54d",
+  "article:2026-10-24-million-tsubasa-the-animation-figure-2026.md": "17d1daa85ba4e686bc6ea97b4ba647d1072f9de8924d89ccc4c9eed1bd56f100",
+  "article:2026-10-24-shiny-overlay-of-hopes.md": "12975be8fbe0534e601f16206f9dd03f3762d088dc8345a45132a67555a5b07f",
+  "article:2026-10-24-shiny-project-relight-axe8-4.md": "5e1a23ab733f72c0dda7e50959c299d34774ba34d28e016da7f150e6dbcc3e1a",
+  "article:2026-10-24-million-nostalgic-orchestra-works-2026.md": "396cbfc27b1231b2cab0af0f0e9a81805b564d6988199dc7eb67e31fb4c97e45",
+  "article:2026-10-24-sidem-story-release-delay-2026-10.md": "0bbd00b9e61e95c43795c761d73aa0069191e7a5e211b99977ce32cbff972e03",
+  "article:2026-10-24-gaku-shirube-final-merch-2026.md": "7b4989f1e57afd30b9b65f50e5c3e43a888fe15cefb50f3f14fb2b0e0cc01d0a",
+  "article:2026-10-24-shiny-auto-73.md": "288c9cbbe0aaa9e3fafe94fa484c2390c33267ba7791f07859cc36d7f036a5cb",
+  "article:2026-10-24-cg-sakuma-mayu-necklace-bound-to-you.md": "aee068662485118e699a8ef8ca09d8740f06c9af8db2d527c67cdfaa4f6626b2",
+  "article:2026-10-24-sidem-fantastic-battle-fes-2026.md": "009e6ec511a58654f89ffb944beac5552c89967ecb30b25f74b721b44b3df873",
+  "article:2026-10-24-sidem-renaissance-ticket-soldout-2026-10-22.md": "b612dd212a0c9e4b6a9e8b97ea9c61a6bb5eec51097f2fe712d7a404b19057fd",
+  "paper": "d2924e31e6d3a99180bad97a13d7b7089db8eaf8c032b52b8f54694d6e1801b2",
+  "article:2026-10-24-sidem-agatsuma-nin-nin-2026.md": "921e4c4e5b2f3acba008d2441064a98237d97dc03147403096a2eaf8e6d0fa3b",
+  "article:2026-10-24-shiny-pj-refrac7ions-enza.md": "9c2aceb1248c47764084ef3f1a1124da774b2c91dadc2ab2e6c2ae5e389ba627",
+  "article:2026-10-24-shiny-auto-50.md": "7c41be501d9255e30c8c3f717c1fb2dee021507f835ff27fe873b23d25b745f0",
+  "article:2026-10-24-million-hapipisu-event-2026.md": "ccb1c5cab70eb617f7ce5b67eca421c71c9855a7e5f709918a0f0e1c284dd8c5",
+  "article:2026-10-24-shiny-auto-70.md": "27f0bb8fdcc1943fc45e995e65853a2b62dd8920a4dbae40a32e12ae2389485c",
+  "article:2026-10-24-shiny-7-902ba3.md": "9d43f4d19e8b72e3345bf3009748a250f35933b78fbdd65a066578c72ae661df",
+  "article:2026-10-24-gaku-agitato-mv-two-million-views.md": "305975f006f2a45248f8460a520afe227054a9472a949384420d8030a6e662f0",
+  "article:2026-10-24-shiny-3-pv-c33c4f.md": "b77211cfac3c3ab67be38e1f6eec8481a5618cbbb0e81efce80f795cd6b2519d",
+  "article:2026-10-24-shiny-higuchi-madoka-figure-2027.md": "25da31ceb32073dd2e921fddfde6f689af3708edba93fcdaed8fb82f3d5705e7",
+  "article:2026-10-24-million-kasuga-mirai-30ms-restock-2026.md": "685ecaeac680974c0f0ea7d67946e990858605e8b1bdb98d41512ad2a5f66f29",
+  "article:2026-10-24-gaku-yorunite-mv-one-million-views.md": "1c746ea1aea70fd941e0a8a9489b5f9dd1ed7e252045ac2c424285478252180d",
+  "article:2026-10-24-shiny-283-3032a4.md": "80c2629d990ee34bed5f82e82206cf03de8b82a407326d459d83e2efb1b7d85a",
+  "article:2026-10-24-shiny-3-77de68.md": "a0371fd9ca52e625c8f2e280dcc2a77de742b0461517e1e7d2d43d36075ab017",
+  "article:2026-10-24-dsva-3rd-live-meeting-qonnect-as-one.md": "0e9e07cc7c5f193fb73f09a62d6f826dd4fabdf60afb4251c8fe3c097833bb0a",
+  "article:2026-10-24-sidem-fanfes-wsi-nagano-general-presale-2026.md": "bac4982118b30c5daf0c35ec62f263cf7080c0db8fd35453680910be5348346d",
+  "article:2026-10-24-cg-popntoybox-revival-general-lottery-2026.md": "7c502118f29499d199d2398f8902ccbb4f94490ddff3a51a4a9d395163c9ee9c",
+  "article:2026-10-24-shiny-kimchikura-anisama-seoul-2027.md": "18b958c98419867c1515020ff90e971c6e68edeab898494b13de721d37edfc28",
+  "article:2026-10-24-gaku-hiro-another-idol-guaranteed-gasha-2026.md": "aceb51f1639b87cd084d0213c3a902d954881d6ac02ca2f0a9ec28cd8015e017",
+  "article:2026-10-24-general-portal-security-maintenance-2026-10.md": "fe1b00e5eafb588697fce2a0ede9c3bbb3bb4cf18f95f43a6e3f963984d86233",
+  "article:2026-10-24-shiny-noctchill-live-2027.md": "00e2ef76a5421da91a7cdcc272daab013b20bf9fa7b31930d06962ab47cf76c4",
+  "article:2026-10-24-joint-tours-s2-cyber-core-green-2026.md": "1a6813d716d15bf5cf901e23f37492b9d8959a6b21f2ee66acaace99f141a75f",
+  "article:2026-10-24-cg-orchestra-premium-second-lottery-2026.md": "9f689761004f5dbb8aa668ded63d5092a1aa24daf663da4739c344b34bfacdd0",
+  "article:2026-10-24-cg-cinderella-party-10th-cd-2026.md": "777c6caee1ac6b91defaf58ee7ec9ddee7b5496b0bec6e40cf92b23d18653a6d",
+  "article:2026-10-24-sidem-ultimate-flame-2dmv-2026.md": "284ab69a89baee9564a989d99a117d5f821026034dd8bd458d110f2270a3fbe4",
+  "article:2026-10-24-shiny-auto-36.md": "6a3a588f0a98d7ec395b228289b022d2f8714f75057cc45d2cea15f45b7763ff",
+  "article:2026-10-24-gaku-roar-jouo-sena-2026.md": "ade7b56d4a31e267f768ff50aeb1e46729fc60ed3cbfebcebd4b13c403feca1d",
+  "article:2026-10-24-joint-sidem-shinycolors-sparkle-showdown-2027-06.md": "ae0c5ce772f63ef65448f865368973a8d2a149c88bc56e6eaa606f72b3565f67",
+  "article:2026-10-24-shiny-auto-32.md": "bbfc27b71df760c906baee47794f562a44fd89105c9f1721ddb67d690992ddab",
+  "article:2026-10-24-shiny-2-da4b92.md": "285998b944c61f439dd228a322d2d3ac9b1069d87c5ea900355595a17fbbf3b4"
+ },
+ "failed": [
+  "article:2026-10-24-gaku-ichiban-kuji-part7-illustration-2026.md: 2回とも: 出力が読めない"
+ ],
+ "hashes": {
+  "docs/_posts/2026-10-24-765-961-idol-ultimate-2027-ticket.md": "753144ef0153b8b405b7d66741b9fa053caaf61688701ca342a44750e79e6e11",
+  "docs/_posts/2026-10-24-cg-cinderella-party-10th-cd-2026.md": "777c6caee1ac6b91defaf58ee7ec9ddee7b5496b0bec6e40cf92b23d18653a6d",
+  "docs/_posts/2026-10-24-cg-orchestra-premium-second-lottery-2026.md": "9f689761004f5dbb8aa668ded63d5092a1aa24daf663da4739c344b34bfacdd0",
+  "docs/_posts/2026-10-24-cg-popntoybox-revival-general-lottery-2026.md": "7c502118f29499d199d2398f8902ccbb4f94490ddff3a51a4a9d395163c9ee9c",
+  "docs/_posts/2026-10-24-cg-sakuma-mayu-necklace-bound-to-you.md": "aee068662485118e699a8ef8ca09d8740f06c9af8db2d527c67cdfaa4f6626b2",
+  "docs/_posts/2026-10-24-dsva-3rd-live-meeting-qonnect-as-one.md": "0e9e07cc7c5f193fb73f09a62d6f826dd4fabdf60afb4251c8fe3c097833bb0a",
+  "docs/_posts/2026-10-24-dsva-manaka-birthday-online-live-2026-platform-change.md": "e4f3b7eaa058917053135e1256c668585e49712fcedcc8af77a5f26add8f5410",
+  "docs/_posts/2026-10-24-gaku-agitato-mv-two-million-views.md": "305975f006f2a45248f8460a520afe227054a9472a949384420d8030a6e662f0",
+  "docs/_posts/2026-10-24-gaku-hiro-another-idol-guaranteed-gasha-2026.md": "aceb51f1639b87cd084d0213c3a902d954881d6ac02ca2f0a9ec28cd8015e017",
+  "docs/_posts/2026-10-24-gaku-roar-jouo-sena-2026.md": "ade7b56d4a31e267f768ff50aeb1e46729fc60ed3cbfebcebd4b13c403feca1d",
+  "docs/_posts/2026-10-24-gaku-shirube-final-merch-2026.md": "7b4989f1e57afd30b9b65f50e5c3e43a888fe15cefb50f3f14fb2b0e0cc01d0a",
+  "docs/_posts/2026-10-24-gaku-yorunite-mv-one-million-views.md": "1c746ea1aea70fd941e0a8a9489b5f9dd1ed7e252045ac2c424285478252180d",
+  "docs/_posts/2026-10-24-general-eva-765pro-fan-ss-2026.md": "2bce1863166a7d83dbb6db328efc90df698f551289e36fbae5c61097599aacaf",
+  "docs/_posts/2026-10-24-general-portal-security-maintenance-2026-10.md": "fe1b00e5eafb588697fce2a0ede9c3bbb3bb4cf18f95f43a6e3f963984d86233",
+  "docs/_posts/2026-10-24-joint-sidem-shinycolors-sparkle-showdown-2027-06.md": "ae0c5ce772f63ef65448f865368973a8d2a149c88bc56e6eaa606f72b3565f67",
+  "docs/_posts/2026-10-24-joint-tours-s2-cyber-core-green-2026.md": "1a6813d716d15bf5cf901e23f37492b9d8959a6b21f2ee66acaace99f141a75f",
+  "docs/_posts/2026-10-24-million-hapipisu-event-2026.md": "ccb1c5cab70eb617f7ce5b67eca421c71c9855a7e5f709918a0f0e1c284dd8c5",
+  "docs/_posts/2026-10-24-million-kasuga-mirai-30ms-restock-2026.md": "685ecaeac680974c0f0ea7d67946e990858605e8b1bdb98d41512ad2a5f66f29",
+  "docs/_posts/2026-10-24-million-nostalgic-orchestra-works-2026.md": "396cbfc27b1231b2cab0af0f0e9a81805b564d6988199dc7eb67e31fb4c97e45",
+  "docs/_posts/2026-10-24-million-tsubasa-the-animation-figure-2026.md": "17d1daa85ba4e686bc6ea97b4ba647d1072f9de8924d89ccc4c9eed1bd56f100",
+  "docs/_posts/2026-10-24-shiny-2-da4b92.md": "285998b944c61f439dd228a322d2d3ac9b1069d87c5ea900355595a17fbbf3b4",
+  "docs/_posts/2026-10-24-shiny-283-3032a4.md": "80c2629d990ee34bed5f82e82206cf03de8b82a407326d459d83e2efb1b7d85a",
+  "docs/_posts/2026-10-24-shiny-3-77de68.md": "a0371fd9ca52e625c8f2e280dcc2a77de742b0461517e1e7d2d43d36075ab017",
+  "docs/_posts/2026-10-24-shiny-3-pv-c33c4f.md": "b77211cfac3c3ab67be38e1f6eec8481a5618cbbb0e81efce80f795cd6b2519d",
+  "docs/_posts/2026-10-24-shiny-7-902ba3.md": "9d43f4d19e8b72e3345bf3009748a250f35933b78fbdd65a066578c72ae661df",
+  "docs/_posts/2026-10-24-shiny-auto-32.md": "bbfc27b71df760c906baee47794f562a44fd89105c9f1721ddb67d690992ddab",
+  "docs/_posts/2026-10-24-shiny-auto-36.md": "6a3a588f0a98d7ec395b228289b022d2f8714f75057cc45d2cea15f45b7763ff",
+  "docs/_posts/2026-10-24-shiny-auto-38.md": "4a95cbc6c0dac4975454782e1d1db6d45966d6419153c212f18aaaf74489fb5d",
+  "docs/_posts/2026-10-24-shiny-auto-49.md": "b3071a2cf08ce083c8aca2e351bcd2452bafdc54b85bf6ecca75d80837ca5345",
+  "docs/_posts/2026-10-24-shiny-auto-50.md": "7c41be501d9255e30c8c3f717c1fb2dee021507f835ff27fe873b23d25b745f0",
+  "docs/_posts/2026-10-24-shiny-auto-70.md": "27f0bb8fdcc1943fc45e995e65853a2b62dd8920a4dbae40a32e12ae2389485c",
+  "docs/_posts/2026-10-24-shiny-auto-73.md": "288c9cbbe0aaa9e3fafe94fa484c2390c33267ba7791f07859cc36d7f036a5cb",
+  "docs/_posts/2026-10-24-shiny-beam-mv.md": "c4220255bb4374c5cbb0f5d3781689dc832933cd33481134feeb5bb69102bd8d",
+  "docs/_posts/2026-10-24-shiny-higuchi-madoka-figure-2027.md": "25da31ceb32073dd2e921fddfde6f689af3708edba93fcdaed8fb82f3d5705e7",
+  "docs/_posts/2026-10-24-shiny-kimchikura-anisama-seoul-2027.md": "18b958c98419867c1515020ff90e971c6e68edeab898494b13de721d37edfc28",
+  "docs/_posts/2026-10-24-shiny-mei-leashanai-outfit-2026.md": "7dfe47f3a4b3bd2dfbcded26997e952298492fecdec20efccf3ad2da01180a74",
+  "docs/_posts/2026-10-24-shiny-noctchill-live-2027.md": "00e2ef76a5421da91a7cdcc272daab013b20bf9fa7b31930d06962ab47cf76c4",
+  "docs/_posts/2026-10-24-shiny-ops-roundup.md": "29f522043224212426f739a5cbbb8ff0e338c923df53db88acaa7ac0100aa8aa",
+  "docs/_posts/2026-10-24-shiny-overlay-of-hopes.md": "12975be8fbe0534e601f16206f9dd03f3762d088dc8345a45132a67555a5b07f",
+  "docs/_posts/2026-10-24-shiny-pj-refrac7ions-enza.md": "9c2aceb1248c47764084ef3f1a1124da774b2c91dadc2ab2e6c2ae5e389ba627",
+  "docs/_posts/2026-10-24-shiny-project-relight-axe8-4.md": "5e1a23ab733f72c0dda7e50959c299d34774ba34d28e016da7f150e6dbcc3e1a",
+  "docs/_posts/2026-10-24-sidem-agatsuma-nin-nin-2026.md": "921e4c4e5b2f3acba008d2441064a98237d97dc03147403096a2eaf8e6d0fa3b",
+  "docs/_posts/2026-10-24-sidem-fanfes-wsi-nagano-general-presale-2026.md": "bac4982118b30c5daf0c35ec62f263cf7080c0db8fd35453680910be5348346d",
+  "docs/_posts/2026-10-24-sidem-fantastic-battle-fes-2026.md": "009e6ec511a58654f89ffb944beac5552c89967ecb30b25f74b721b44b3df873",
+  "docs/_posts/2026-10-24-sidem-monthly-theme-song-vol-3-goods-2026.md": "9d6b5e4e6dd30a4dd91f420a46054b78a9eb3cc9c60639f72867f002382c9f67",
+  "docs/_posts/2026-10-24-sidem-promi-2027-payment-deadline-extension.md": "b22e8a5f96a80148f63abefa939bc4ae41dfcb9b3ee256a994b43e19f19bd54d",
+  "docs/_posts/2026-10-24-sidem-renaissance-ticket-soldout-2026-10-22.md": "b612dd212a0c9e4b6a9e8b97ea9c61a6bb5eec51097f2fe712d7a404b19057fd",
+  "docs/_posts/2026-10-24-sidem-story-release-delay-2026-10.md": "0bbd00b9e61e95c43795c761d73aa0069191e7a5e211b99977ce32cbff972e03",
+  "docs/_posts/2026-10-24-sidem-ultimate-flame-2dmv-2026.md": "284ab69a89baee9564a989d99a117d5f821026034dd8bd458d110f2270a3fbe4",
+  "docs/_editions/2026-10-24.md": "c4ab98753ee65fbfe20b10ae78a6cad6879dc4c37e8471aeafccf0b789464957",
+  "metrics/stories-before-2026-10-24.yml": "00b95190d257f66dc7ca7433b4594f1b4f202c6007e3885c80dcf8fdfa001f89"
+ },
+ "run": "20261024T030037.757285"
+}

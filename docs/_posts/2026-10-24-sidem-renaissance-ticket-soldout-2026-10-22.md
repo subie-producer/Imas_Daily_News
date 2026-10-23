@@ -8,7 +8,7 @@ corrected: false
 corrections: []
 candidate_ids:
 - 202610230227-grok-28
-title: SideMルネサンス、両国などでタオル付チケット完売
+title: SideMルネサンス、両国・港南中央でタオル付チケット完売
 lede: 「315 Fitness Project in RENAISSANCE」のフェイスタオル付チケットがルネサンス両国24と港南中央24で完売し、再入荷情報はXで随時告知される。
 tags:
 - SideM

@@ -9,7 +9,7 @@ corrections: []
 candidate_ids:
 - 202610240226-grok-95
 title: 学マス「Roar」MVのショート動画公開
-lede: 初星学園「Roar」Official Music Videoのショート動画が公開され、YouTubeで視聴できる。
+lede: 「Roar」Official Music Videoのショート動画公開を公式Xが告知し、投稿にはMV本編のYouTubeリンクが掲載された。
 tags:
 - 学マス
 - MV
@@ -28,4 +28,4 @@ lede_fact_ids:
 - F1
 - F2
 ---
-[YouTubeで視聴する](https://www.youtube.com/watch?v=Mdyk3h5-TQE&feature=youtu.be) <!-- F2 -->
+[「Roar」Official Music Video本編はこちら](https://www.youtube.com/watch?v=Mdyk3h5-TQE&feature=youtu.be) <!-- F2 -->

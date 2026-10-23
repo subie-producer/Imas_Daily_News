@@ -2941,6 +2941,10 @@ def fake_urlopen(url, mainte):
         return U("https://mob.example/maintenance/", page("お知らせ", "作業中です。"))
     if host == "m.mob.example" and "/gone" in url:
         raise http_error(url, 404, page("404 Not Found", "ページが見つかりません。"))
+    if host == "mixed.example" and "/old/" in url:          # 転送された先で 404(/old → /gone)
+        raise http_error(url.replace("/old/", "/gone/"), 404, page("404 Not Found", "ページが見つかりません。"))
+    if host == "mixed.example" and "/blank/" in url:        # 転送された先の本文が空
+        return U(url.replace("/blank/", "/empty/"), "<html><body></body></html>")
     if host == "mixed.example" and "/gone" in url:          # 同じホストで、メンテナンスの最中でも 404・ただの 503 のページ
         raise http_error(url, 404, page("404 Not Found", "ページが見つかりません。"))
     if host == "mixed.example" and "/down" in url:
@@ -3294,6 +3298,16 @@ def test_site_maintenance_notice(tmp: Path):
         compose.write_articles(dd, {"articles": [art("mobread", "cmob"), art("mobgone", "cmobg")]}, cands, [], {}, wave=1)
         got = {s: marked(s, dd) for s in ("mobread", "mobgone")}
         check(got == {"mobread": 1, "mobgone": 1}, f"m. のホストで読めた・404 のページが本体のホストのメンテナンスを打ち消した: {got}")
+        # 転送された先で 404・本文が空だったページ(素材は転送先の URL)にも付けない(Sol 監査 Z2 r5)
+        fresh(dd)
+        cands.update(credir=mat("credir", "https://mixed.example/gone/9", "rd"), cblank=mat("cblank", "https://mixed.example/empty/9", "bl"))
+        spec.update({"write-redir": [{"fetch": ["https://mixed.example/old/9"], "answer": ans("https://mixed.example/gone/9")}],
+                     "write-blank": [{"fetch": ["https://mixed.example/blank/9"], "answer": ans("https://mixed.example/empty/9")}]})
+        spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
+        compose.write_articles(dd, {"articles": [art("mixmain", "cm"), art("redir", "credir"), art("blank", "cblank")]}, cands, [], {}, wave=1)
+        got = {s: marked(s, dd) for s in ("mixmain", "redir", "blank")}
+        check(got == {"mixmain": 1, "redir": 0, "blank": 0} and "https://mixed.example/gone/9" in pipelib.failed_urls(compose.fetch_record(dd, "redir")),
+              f"転送された先で読めなかったページに断り書きを付けた: {got}")
         # 記録の置き場そのものに書けないと子は印も残せない。組版が置き場に書いて確かめ、申告する(Sol 監査 Z2 r3)
         folder = tmp / "metrics" / "work" / dd / "fetched"
         pipelib.ANOMALIES.clear()

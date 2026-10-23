@@ -89,7 +89,9 @@ def main() -> int:
     except Exception as e:
         # メンテナンスでない失敗(404・表示の無い 5xx・時間切れ 等)も記録する。同じホストの別のページがメンテナンスでも、
         # このページに断り書きを付けない(Sol 監査 Z2 r1)
-        note_fetched(args.url, failed=True)
+        # 転送先で失敗したら(/old → /gone → 404)転送先も残す(Sol 監査 Z2 r5)
+        final = e.geturl() if isinstance(e, urllib.error.HTTPError) else None
+        note_fetched(args.url, final, failed=True)
         print(f"FETCH_FAILED: {type(e).__name__}: {e}")
         return 1
     # メンテナンス画面へ転送されたら、その案内はこのページの本文ではない。読めたことにしない(記録にも残さない)

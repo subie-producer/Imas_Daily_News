@@ -1569,8 +1569,9 @@ def record_failed_marker(rec) -> Path:
 
 
 def failed_urls(rec) -> set[str]:
-    """記録(note_fetched(failed=True))にある、メンテナンスでない理由で読めなかったページの URL。記録が無ければ空。"""
-    return maintenance_urls(rec, failed_record(rec))
+    """記録(note_fetched(failed=True))にある、メンテナンスでない理由で読めなかったページの URL(頼んだ URL と転送先。
+    /old → /gone → 404 の /gone も読めなかったページ。Sol 監査 Z2 r5)。記録が無ければ空。"""
+    return fetched_urls(failed_record(rec))
 
 
 def maintenance_urls(rec, path: Path | None = None) -> set[str]:

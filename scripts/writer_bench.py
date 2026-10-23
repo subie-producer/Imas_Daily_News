@@ -66,13 +66,13 @@ def make_case(ops: Path, date: str, slug: str) -> dict:
 def render(case: dict) -> str:
     import datetime
     import tags as tags_lib
-    from pipelib import portal_maintenance_rules, render_prompt
+    from pipelib import maintenance_rules, render_prompt
     rank_file = ROOT / "prompts" / f"write-article.{case['rank']}.md"
     return render_prompt(
         "write-article", DATE=case["date"], WEEKDAY="月火水木金土日"[datetime.date.fromisoformat(case["date"]).weekday()],
         ANGLE=case["angle"], PURPOSE=case["purpose"], TRIGGER=case["trigger"],
         RANK_RULES=rank_file.read_text(encoding="utf-8") if rank_file.exists() else "",
-        PORTAL_MAINTENANCE=portal_maintenance_rules(case["date"], "write"),
+        SITE_MAINTENANCE=maintenance_rules("write"),
         TAG_VOCAB=tags_lib.vocabulary_block(), STORY_FACTS=case["story_facts"],
         MATERIALS=json.dumps(case["materials"], ensure_ascii=False, indent=2))
 

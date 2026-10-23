@@ -12,7 +12,7 @@
 - ページは fetch_page.py で読む。Web 検索はページを探すのに使い、検索結果や fetch_page.py 以外の手段で読んだ内容は根拠にしない。
   素材と現在の記事の外のページで fetch_page.py で本文を取れなかったものは、new_facts・sources に書かない
 - `FETCH_FAILED: メンテナンス中` の素材の url は、今は読めないだけ。素材の verify が `confirmed` なら、facts をそのまま使い、sources に残す
-{PORTAL_MAINTENANCE}- 指摘に無い箇所(見出し・他の段落・出典)は変えない。ただし指摘に応じるのに要る変更(区分・並びの誤りを直す組み直し、同じ誤りが別の段落にもある 等)はしてよい
+{SITE_MAINTENANCE}- 指摘に無い箇所(見出し・他の段落・出典)は変えない。ただし指摘に応じるのに要る変更(区分・並びの誤りを直す組み直し、同じ誤りが別の段落にもある 等)はしてよい
 - 対応した指摘の issue_id を addressed_issue_ids に列挙する
 
 ## 2. 出力の注意

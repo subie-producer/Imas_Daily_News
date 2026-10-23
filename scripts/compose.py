@@ -55,8 +55,8 @@ from pipelib import (ENV, ROOT, CLAUDE_MODEL, CODEX_WRITE_MODEL, COMPOSE_WAVE, E
                      notify, notify_crash, now_jst, render_prompt, PROMPTS, ANOMALIES, anomaly, diagnose_anomalies, save_raw,
                      partial_output, reap, loads_strict, schema_ok, read_for_raw, compose_lock_wait_min,
                      collect_oncall_handover_pending, candidate_misplaced, merge_candidate_facts, write_checked,
-                     FETCH_RECORD_ENV, fetched_urls, is_portal, maintenance_urls, portal_maintenance_notice,
-                     portal_maintenance_rules,
+                     FETCH_RECORD_ENV, fetched_urls, maintenance_urls, maintenance_notice, maintenance_rules, site_host,
+                     MAINTENANCE_LEGACY_NOTICES, MAINTENANCE_NOTICE_FROM,
                      align_x_published_date, CLI_BLOCKED, CLI_BLOCKED_EXIT, CLI_STOPPED, CliBlocked, cli_check)
 # モデルのセッションの起動と回収(自前のプロセスグループ。時間切れ・中断では子孫まで止める)
 from pipelib import LaunchFailed, finish_group, run_group, start_group, stop_groups
@@ -887,7 +887,7 @@ def article_prompt(date: str, art: dict, materials: list[dict], story_facts: lis
         PURPOSE=("期日の知らせ" if trigger or art.get("purpose") == "期日の知らせ" else "新情報"),
         TRIGGER=(f"- 続報予約: {trigger['kind']}(読者がその日にできること: {trigger.get('note') or trigger['subject']})\n" if trigger else ""),
         RANK_RULES=rank_file.read_text(encoding="utf-8") if rank_file.exists() else "",
-        PORTAL_MAINTENANCE=portal_maintenance_rules(date, "write"),
+        SITE_MAINTENANCE=maintenance_rules("write"),
         TAG_VOCAB=tags_lib.vocabulary_block(),
         STORY_FACTS="\n".join(f"- {f}" for f in story_facts) or "(なし)",
         MATERIALS=json.dumps(materials, ensure_ascii=False, indent=2))
@@ -2366,50 +2366,48 @@ def fetch_env(date: str, slug: str) -> dict:
     return {**os.environ, FETCH_RECORD_ENV: str(rec)}
 
 
-def portal_unreadable(date: str, slug: str, urls) -> bool:
-    """この記事が公式ポータルを読めないまま書かれたか(形だけの判定)。道具が見分けたメンテナンス(fetch_page.py の記録)だけを見る:
-    この記事のセッションが公式ポータルのページでメンテナンスに当たり、そのページをあとで読めてもいない、または、この記事の出典・素材の
-    公式ポータルのページを本文で読めておらず、この号のどれかの記事のセッションが公式ポータルでメンテナンスに当たった
-    (読み直して本文を取れたページは、読めたページとして扱う。Sol 監査 r1)"""
+def maintenance_unread_hosts(date: str, slug: str, urls) -> set[str]:
+    """この記事が、メンテナンスで原本を読めないまま書かれたサイトのホスト(形だけの判定)。道具が見分けたメンテナンス(fetch_page.py の
+    記録)だけを見る: この記事のセッションがメンテナンスに当たり、そのページをあとで読めてもいない、または、この記事の出典・素材の
+    ページを本文で読めておらず、そのホストでこの号のどれかの記事のセッションがメンテナンスに当たった
+    (読み直して本文を取れたページは、読めたページとして扱う。Sol 監査 r1。同じサイトでも別のホストは動いていることがある:
+    2026-10-23 ASOBI STORE のメンテナンス中も ASOBI TICKET は読めた)"""
     rec = fetch_record(date, slug)
     read = fetched_urls(rec)
     was_read = lambda u: any(renderlib.same_page(u, r) for r in read)
-    if any(is_portal(u) and not was_read(u) for u in maintenance_urls(rec)):
-        return True
-    unread = [u for u in urls if is_portal(u) and not was_read(u)]
-    return bool(unread) and any(is_portal(u) for f in sorted(rec.parent.glob("*.mainte")) for u in maintenance_urls(f))
+    hosts = {site_host(u) for u in maintenance_urls(rec) if not was_read(u)}
+    hit = {site_host(u) for f in sorted(rec.parent.glob("*.mainte")) for u in maintenance_urls(f)}
+    hosts |= {site_host(u) for u in urls if site_host(u) in hit and not was_read(u)}
+    return {h for h in hosts if h}
 
 
-def attach_portal_notice(date: str, slug: str, path: Path, materials: list[dict]) -> bool:
-    """公式ポータルのメンテナンスの断り書きを本文の末尾にコードで付ける(許可の期限内の号で、公式ポータルを読めないまま書いた記事だけ。
-    pipelib.PORTAL_MAINTENANCE_NOTICES)。何度掛けても同じ。付けたら True"""
-    notice = portal_maintenance_notice(date)
-    if not notice or not path.exists():
-        return False
+def attach_maintenance_notice(date: str, slug: str, path: Path, materials: list[dict]) -> bool:
+    """出典のサイトのメンテナンスの断り書きを本文の末尾にコードで付ける(メンテナンスで原本を読めないまま書いた記事だけ。当たったサイトを
+    まとめて1つ。pipelib.maintenance_notice)。何度掛けても同じ。付けたら True"""
+    if str(date) < min([*MAINTENANCE_LEGACY_NOTICES, MAINTENANCE_NOTICE_FROM]) or not path.exists():
+        return False        # 断り書きを始める前に発行した号は触らない
     try:
         fm = parse_front_matter(path) or {}
         urls = [str(x.get("url") or "") for x in [*(materials or []), *(fm.get("sources") or [])] if isinstance(x, dict)]
         text = path.read_text(encoding="utf-8")
-        on = portal_unreadable(date, slug, urls)
-        new = renderlib.with_notice(text, notice if on else None)
+        notice = maintenance_notice(date, maintenance_unread_hosts(date, slug, urls))
+        new = renderlib.with_notice(text, notice)
         if new != text:
             write_checked(path, new)
-        return on
+        return bool(notice)
     except Exception as e:
         # 断り書きの付け外しの失敗で組版を止めない(記事は残す)。異常として申告する
-        anomaly("compose", f"記事 {slug}: 公式ポータルのメンテナンスの断り書きを付けられない({type(e).__name__}: {str(e)[:120]})")
+        anomaly("compose", f"記事 {slug}: 出典のサイトのメンテナンスの断り書きを付けられない({type(e).__name__}: {str(e)[:120]})")
         return False
 
 
-def refresh_portal_notices(date: str, arts: list[dict], cands: dict) -> None:
+def refresh_maintenance_notices(date: str, arts: list[dict], cands: dict) -> None:
     """この号の記事(ファイルのあるもの)の断り書きを、いまの記録で掛け直す。セッションが後から見分けたメンテナンスを先の記事にも効かせる。
     断り書きは承認の指紋(pipelib.article_hash)に入らないので、承認済みの記事に付け直しても承認は外れない"""
-    if not portal_maintenance_notice(date):
-        return
     for art in arts:
         path = ROOT / "docs" / "_posts" / f"{date}-{art['slug']}.md"
         if path.exists():
-            attach_portal_notice(date, art["slug"], path, [cands[c] for c in art.get("candidate_ids") or [] if c in cands])
+            attach_maintenance_notice(date, art["slug"], path, [cands[c] for c in art.get("candidate_ids") or [] if c in cands])
 
 
 def draft_urls(fm: dict | None) -> set[str]:
@@ -2606,7 +2604,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
                         note_stuck(date, "機械検算", f"docs/_posts/{date}-{art['slug']}.md", "", " / ".join(problems[:4]), 2)
                     continue
                 renderlib.render_article(target, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
-                attach_portal_notice(date, art["slug"], target, materials)
+                attach_maintenance_notice(date, art["slug"], target, materials)
                 remember_fact_map(date, art["slug"], target, fact_by_id)
                 if tries:
                     print(f"記事 {art['slug']}: 差し戻し後に合格", flush=True)
@@ -2633,7 +2631,7 @@ def write_articles(date: str, plan: dict, cands: dict, triggers: list[dict],
         if blocked:
             raise CliBlocked(blocked)
     # 後の束の記事が見分けたメンテナンスも、先に書いた記事(再利用した稿を含む)の断り書きに効かせる。校閲の前に全部掛け直す(Sol 監査 r1)
-    refresh_portal_notices(date, written, cands)
+    refresh_maintenance_notices(date, written, cands)
     return written, aborted
 
 
@@ -2727,7 +2725,7 @@ def revise_prompt(date: str, art: dict, mats_in: list[dict], current: str, issue
                       for b in issues], ensure_ascii=False, indent=1)
     # 断り書きはコードが付ける(書き手の稿に見せない)
     return render_prompt("revise-article", DATE=date, ISSUES=iss, CURRENT=renderlib.strip_notice(current)[:12000],
-                         PORTAL_MAINTENANCE=portal_maintenance_rules(date, "revise"),
+                         SITE_MAINTENANCE=maintenance_rules("revise"),
                          MATERIALS=json.dumps(mats_in, ensure_ascii=False, indent=1))
 
 
@@ -3031,7 +3029,7 @@ def revise_apply(date: str, art: dict, path: Path, ans: dict, fact_by_id: dict, 
     if hard:
         return "kept", "検算不合格 " + " / ".join(hard[:3]) + "(元の稿のまま)"
     renderlib.render_article(path, date, art, ans, classify_source, weakest_src, yaml_dump_keeping_strings)
-    attach_portal_notice(date, art["slug"], path, materials)
+    attach_maintenance_notice(date, art["slug"], path, materials)
     remember_fact_map(date, art["slug"], path, fact_by_id)
     if scope:
         OFFSCOPE_NOTES.setdefault(date, {})[art["slug"]] = " / ".join(scope)[:400]
@@ -3502,7 +3500,7 @@ def revise_articles(date: str, by_file: dict[str, list[dict]], plan: dict, cands
             raise CliBlocked(blocked)
     print(f"校閲の指摘で執筆側が {n_fixed}本を書き直し、{n_dropped}本を落とした", flush=True)
     # 書き直しのセッションが初めて見分けたメンテナンスも、ほかの記事の断り書きに効かせる(Sol 監査 r2)
-    refresh_portal_notices(date, plan.get("articles") or [], cands)
+    refresh_maintenance_notices(date, plan.get("articles") or [], cands)
     return results
 
 
@@ -3691,10 +3689,10 @@ def claude_review(date: str, round_no: int, targets: list[str] | None = None,
         m3 = re.match(r"::warning file=(docs/_posts/[^:]+)::(\[所見\].*)$", l)
         if m3:
             notes_by_file.setdefault(m3.group(1), []).append(m3.group(2))
-    portal_rules = portal_maintenance_rules(date, "review")     # 許可の期限内の号だけ(期限外は空)
+    mainte_rules = maintenance_rules("review")     # 出典のサイトのメンテナンスの扱い(常設)
     for n in names:
         hint = review_hint(date, n, notes_by_file)
-        jobs.append((n, art_ck.replace("{DATE}", date).replace("{FILE}", n) + (f"\n\n{portal_rules.rstrip()}" if portal_rules else "") + hint + again,
+        jobs.append((n, art_ck.replace("{DATE}", date).replace("{FILE}", n) + f"\n\n{mainte_rules.rstrip()}" + hint + again,
                      f"docs/_posts/{n}", f"article:{n}"))
     if editorial and (ROOT / "docs" / "_editorials" / f"{date}.md").exists():
         jobs.append(("社説",

@@ -2905,17 +2905,12 @@ def test_revise_carries_verified_facts(tmp: Path):
 
 
 FAKE_FETCH_MAINTE = r'''#!/usr/bin/env python3
-# テスト用: 本物の fetch_page.py を、通信だけ差し替えて走らせる。FAKE_MAINTE=1 なら公式ポータルへの要求を /mainte/ へ転送する
-# (once なら、同じ URL の最初の1回だけ転送し、読み直すと本文を返す。回数は FAKE_STATE のフォルダに残す)
-import hashlib, os, pathlib, sys
-sys.path.insert(0, os.environ["FAKE_SCRIPTS"])
-import fetch_page
-MAINTE = os.environ.get("FAKE_MAINTE") == "1"
-if os.environ.get("FAKE_MAINTE") == "once" and "idolmaster-official.jp" in sys.argv[1]:
-    seen = pathlib.Path(os.environ["FAKE_STATE"]) / hashlib.sha256(sys.argv[1].encode()).hexdigest()
-    MAINTE = not seen.exists()
-    seen.parent.mkdir(parents=True, exist_ok=True)
-    seen.write_text("1")
+# テスト用: 本物の fetch_page.py を、通信だけ差し替えて走らせる(fake_urlopen)。FAKE_MAINTE=1 なら、メンテナンス中のサイトが実測の形で応える:
+# 公式ポータルは /mainte/ へ転送(200)、ASOBI STORE は mainte.asobistore.jp へ転送(200)、ランティスは転送せず 503 でメンテナンスの画面、
+# maint-shop.example は maintenance.maint-shop.example へ転送。ASOBI TICKET(asobiticket2.asobistore.jp)はいつも読める。
+# メンテナンスと関係なく、gone.example は 404、down.example はメンテナンスの表示の無い 503、notice.example は「メンテナンスのお知らせ」の普通の 200
+# (once なら、メンテナンス中のサイトは同じ URL の最初の1回だけメンテナンスで、読み直すと本文を返す。回数は FAKE_STATE のフォルダに残す)
+import email.message, hashlib, io, os, pathlib, sys, urllib.error, urllib.parse
 class U:
     status = 200
     def __init__(self, final, body):
@@ -2925,34 +2920,116 @@ class U:
     def read(self, n=None): return self.body.encode("utf-8")
     def __enter__(self): return self
     def __exit__(self, *a): return False
-def urlopen(req, timeout=25):
-    url = req.full_url
-    final = "https://idolmaster-official.jp/mainte/index.html" if MAINTE and "idolmaster-official.jp" in url else url
-    text = "システムメンテナンスのお知らせ。" if final != url else "告知の本文。販売を開始する。価格は3000円。"
-    return U(final, "<html><body><p>" + text * 5 + "</p></body></html>")
-fetch_page.urllib.request.urlopen = urlopen
-fetch_page.needs_render = lambda u, t: False
-sys.exit(fetch_page.main())
+def page(title, text):
+    return f"<html><head><title>{title}</title></head><body><p>" + text * 5 + "</p></body></html>"
+def http_error(url, code, body):
+    h = email.message.Message()
+    h["Content-Type"] = "text/html; charset=utf-8"
+    return urllib.error.HTTPError(url, code, "x", h, io.BytesIO(body.encode("utf-8")))
+def fake_urlopen(url, mainte):
+    host = urllib.parse.urlsplit(url).hostname or ""
+    if host == "gone.example":
+        raise http_error(url, 404, page("404 Not Found", "ページが見つかりません。メンテナンス中の可能性もあります。"))
+    if host == "down.example":
+        raise http_error(url, 503, page("503 Service Unavailable", "混み合っています。"))
+    if host == "notice.example":
+        return U(url, page("システムメンテナンスのお知らせ", "メンテナンスのお知らせ。販売を開始する。価格は3000円。"))
+    if mainte and host.endswith("idolmaster-official.jp"):
+        return U("https://idolmaster-official.jp/mainte/index.html", page("メンテナンス", "システムメンテナンスのお知らせ。"))
+    if mainte and host.endswith("asobistore.jp") and host != "asobiticket2.asobistore.jp":
+        return U("https://mainte.asobistore.jp/", page("只今メンテナンス中です｜ASOBI STORE", "ただいまメンテナンス中です。"))
+    if mainte and host.endswith("lantis.jp"):
+        raise http_error(url, 503, page("現在メンテナンス中です - 503 Service Temporarily Unavailable", "ご迷惑をおかけします。"))
+    if mainte and host.endswith("maint-shop.example"):
+        return U("https://maintenance.maint-shop.example/", page("お知らせ", "ただいま作業中です。"))
+    return U(url, page("告知", "告知の本文。販売を開始する。価格は3000円。"))
+if __name__ == "__main__":
+    sys.path.insert(0, os.environ["FAKE_SCRIPTS"])
+    import fetch_page
+    MAINTE = os.environ.get("FAKE_MAINTE") == "1"
+    if os.environ.get("FAKE_MAINTE") == "once":
+        seen = pathlib.Path(os.environ["FAKE_STATE"]) / hashlib.sha256(sys.argv[1].encode()).hexdigest()
+        MAINTE = not seen.exists()
+        seen.parent.mkdir(parents=True, exist_ok=True)
+        seen.write_text("1")
+    fetch_page.urllib.request.urlopen = lambda req, timeout=25: fake_urlopen(req.full_url, MAINTE)
+    fetch_page.needs_render = lambda u, t: False
+    sys.exit(fetch_page.main())
 '''
 
 
-def test_portal_maintenance_window(tmp: Path):
-    """公式ポータルのメンテナンス中の号の期限付きの許可(編集長の決定 2026-10-22: 10/23 号に限り免責事項を付けて掲載してよい。10/24 号も
-    続いていればその旨を書いて掲載してよい)。期限内の号で、道具がメンテナンスを見分け、記事が公式ポータルを読めないまま書かれたときだけ、
-    断り書きをコードが本文の末尾に付ける(枠の字数に数えない)。執筆・書き直し・校閲の依頼文にも期限内の号だけ指示を足す。
-    期限外の号・メンテナンスでないときは何も変えない"""
-    import contextlib, io, shutil
+def test_site_maintenance_notice(tmp: Path):
+    """出典のサイトのメンテナンス(常設。編集長の決定 2026-10-22・23): どのサイトでも、読んだときにメンテナンスの画面だった出典は
+    「原本は確認できていない」と断って載せる。道具がメンテナンスを見分ける形は、メンテナンス用のパスへの転送(公式ポータル)・メンテナンス用の
+    ホストへの転送(ASOBI STORE)・5xx でメンテナンスの画面(ランティスの 503)。404・ただの 503・「メンテナンスのお知らせ」の普通のページは
+    メンテナンスにしない。断り書きはコードが本文の末尾に、当たったサイトをまとめて1つ付ける(枠の字数・承認の指紋に数えない)。
+    断り書きを始める前に発行した号(10/23 号は公式ポータルだけの文面、その前は無し)は再生成しても変わらない"""
+    import contextlib, io, shutil, subprocess as sp
+    import collect
     import lint
     repo = Path(__file__).resolve().parent.parent
-    # 期限: 設定の値(号の日付)で決まり、期限外の号には効かない
-    n23, n24 = pipelib.portal_maintenance_notice("2026-10-23"), pipelib.portal_maintenance_notice("2026-10-24")
-    check(bool(n23) and "2026年10月23日時点" in n23 and bool(n24) and "続いている" in n24 and "2026年10月24日時点" in n24
-          and all(pipelib.portal_maintenance_notice(d) is None for d in ("2026-10-22", "2026-10-25", "2027-10-23"))
-          and pipelib.portal_maintenance_rules("2026-10-25", "write") == "",
-          f"許可の期限: {n23!r} {n24!r}")
-    check(pipelib.is_portal("https://idolmaster-official.jp/news/01_1") and pipelib.is_portal("https://www.idolmaster-official.jp/x")
-          and not pipelib.is_portal("https://idolmaster-official.jp.example/x") and not pipelib.is_portal("https://x.com/imas_official"),
-          "公式ポータルの見分け")
+    portal, other = "https://idolmaster-official.jp/news/01_20110", "https://example.com/news"
+    asobi, lantis = "https://shop.asobistore.jp/products/detail/?product_id=1", "https://lantis.jp/sidem/extra/index.html"
+    ticket, odd = "https://asobiticket2.asobistore.jp/receptions/1", "https://www.maint-shop.example/item/1"
+    gone, down, notice_pg = "https://gone.example/news/1", "https://down.example/news/1", "https://notice.example/info/1"
+    # 見分け: 転送先のパス・ホスト、5xx のメンテナンスの画面。404・ただの 503・普通の 200 は含めない
+    mr = pipelib.maintenance_redirect
+    check(mr(portal, "https://idolmaster-official.jp/mainte/index.html") and mr("https://asobistore.jp/", "https://mainte.asobistore.jp/")
+          and mr(odd, "https://maintenance.maint-shop.example/") and not mr("https://mainte.asobistore.jp/", "https://mainte.asobistore.jp/x")
+          and not mr(asobi, "https://webstore.asobistore.jp/") and not mr("https://maintenance-news.example/", "https://maintenance-news.example/a"),
+          "メンテナンス画面への転送の見分け(パス・ホスト)")
+    ms = pipelib.maintenance_screen
+    html = lambda t, b: f"<html><head><title>{t}</title></head><body>{b}</body></html>".encode("utf-8")
+    check(ms(503, html("現在メンテナンス中です - 503 Service Temporarily Unavailable", "")) and ms(503, html("503", "ただいまメンテナンス中です"))
+          and ms(502, html("Maintenance", "")) and not ms(503, html("503 Service Unavailable", "混み合っています"))
+          and not ms(404, html("404 Not Found", "メンテナンス中の可能性もあります")) and not ms(200, html("システムメンテナンスのお知らせ", "メンテナンス")),
+          "5xx のメンテナンスの画面の見分け(404・ただの 503・普通の 200 は含めない)")
+    # 断り書きの文面: 当たったサイトをまとめて1つ。名前の分からないサイトはホスト名。10/23 号は発行したときの文面、その前の号は無し
+    nt = pipelib.maintenance_notice
+    tail = "がメンテナンス中のため、原本は確認できていません(2026年10月25日時点)。内容は収集時点の公式の告知・公式Xなどに基づきます。"
+    n23 = pipelib.MAINTENANCE_LEGACY_NOTICES["2026-10-23"]
+    check(nt("2026-10-25", {"shop.asobistore.jp"}) == "※ASOBI STORE" + tail
+          and nt("2026-10-25", {"shop.asobistore.jp", "asobistore.jp", "lantis.jp"}) == "※ASOBI STORE・ランティス" + tail
+          and nt("2026-10-25", {"maint-shop.example"}) == "※maint-shop.example" + tail and nt("2026-10-25", set()) is None
+          and nt("2026-10-23", {"idolmaster-official.jp"}) == n23 and "公式ポータルがシステムメンテナンス中" in n23
+          and nt("2026-10-23", {"lantis.jp"}) is None and nt("2026-10-22", {"idolmaster-official.jp"}) is None
+          and nt("2027-10-23", {"idolmaster-official.jp"}) == "※公式ポータル" + tail.replace("2026年10月25日", "2027年10月23日"),
+          f"断り書きの文面: {nt('2026-10-25', {'lantis.jp', 'asobistore.jp'})!r}")
+    # 本物の fetch_page.py(通信だけ差し替え): メンテナンスは FETCH_FAILED: メンテナンス中 と .mainte の記録、ほかは従来どおり
+    fake_fetch = tmp / "spec" / "fake_fetch.py"
+    fake_fetch.parent.mkdir(parents=True)
+    fake_fetch.write_text(FAKE_FETCH_MAINTE, encoding="utf-8")
+    rec = tmp / "fp" / "rec.jsonl"
+    env = {**os.environ, "FAKE_MAINTE": "1", "FAKE_SCRIPTS": str(repo / "scripts"), pipelib.FETCH_RECORD_ENV: str(rec)}
+    env.pop("IMAS_FETCH_PAGES", None)
+    outs = {u: sp.run([sys.executable, str(fake_fetch), u], env=env, capture_output=True, text=True, timeout=60)
+            for u in (portal, asobi, lantis, odd, ticket, gone, down, notice_pg)}
+    is_mainte = {u: o.stdout.startswith("FETCH_FAILED: メンテナンス中") for u, o in outs.items()}
+    check(is_mainte == {portal: True, asobi: True, lantis: True, odd: True, ticket: False, gone: False, down: False, notice_pg: False}
+          and outs[gone].stdout.startswith("FETCH_FAILED: HTTPError") and outs[down].stdout.startswith("FETCH_FAILED: HTTPError")
+          and outs[notice_pg].returncode == 0 and "ただいまメンテナンス中" not in outs[asobi].stdout,
+          f"fetch_page.py のメンテナンスの見分け: {is_mainte} {[o.stdout[:80] for o in outs.values()]}")
+    check(pipelib.maintenance_urls(rec) == {portal, asobi, lantis, odd} and pipelib.fetched_urls(rec) >= {ticket, notice_pg}
+          and not pipelib.fetched_urls(rec) & {portal, asobi, lantis, odd, gone, down},
+          f"メンテナンスの記録: {pipelib.maintenance_urls(rec)} / {pipelib.fetched_urls(rec)}")
+    # 収集の裏取りも同じ見分け: メンテナンスは unconfirmed(今は確かめられないだけ)、404・ただの 503 は failed
+    import importlib.util
+    ff_spec = importlib.util.spec_from_file_location("fake_fetch_mainte", fake_fetch)
+    ff = importlib.util.module_from_spec(ff_spec)
+    ff_spec.loader.exec_module(ff)          # 同じ偽の通信(fake_urlopen)を収集にも使う
+    saved_c = (collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source)
+    try:
+        collect.urllib.request.urlopen = lambda req, timeout=15: ff.fake_urlopen(req.full_url, True)
+        collect.fetch_rendered = lambda url, **k: ""
+        collect.classify_source = lambda u: "公式"
+        cv = collect.normalize([{"url": u, "title": f"t{i}", "facts": ["価格は3000円"], "_via": "explore"}
+                                for i, u in enumerate((portal, asobi, lantis, gone, down))])
+        collect.verify(cv)
+    finally:
+        collect.urllib.request.urlopen, collect.fetch_rendered, collect.classify_source = saved_c
+    got = {c["url"]: (c.get("verify"), "メンテナンス" in (c.get("verify_note") or "")) for c in cv}
+    check(got == {portal: ("unconfirmed", True), asobi: ("unconfirmed", True), lantis: ("unconfirmed", True),
+                  gone: ("failed", False), down: ("failed", False)}, f"収集の裏取りのメンテナンスの見分け: {got}")
     posts = tmp / "docs" / "_posts"
     posts.mkdir(parents=True)
     (tmp / "metrics").mkdir()
@@ -2963,25 +3040,31 @@ def test_portal_maintenance_window(tmp: Path):
     (bindir / "codex").write_text(FAKE_CODEX, encoding="utf-8")
     os.chmod(bindir / "codex", 0o755)
     spec_p = tmp / "spec" / "spec.json"
-    spec_p.parent.mkdir()
-    fake_fetch = tmp / "spec" / "fake_fetch.py"
-    fake_fetch.write_text(FAKE_FETCH_MAINTE, encoding="utf-8")
-    portal, other = "https://idolmaster-official.jp/news/01_20110", "https://example.com/news"
-    cands = {"cp": cand_row("cp", portal, facts=["販売開始", "価格は3000円"], dedup_key="x"),
-             "co": cand_row("co", other, facts=["販売開始", "価格は3000円"], dedup_key="y")}
+    mat = lambda i, u, k: cand_row(i, u, facts=["販売開始", "価格は3000円"], dedup_key=k)
+    cands = {"cp": mat("cp", portal, "x"), "co": mat("co", other, "y"), "ca": mat("ca", asobi, "a"), "cl": mat("cl", lantis, "l"),
+             "ct": mat("ct", ticket, "t"), "cg": mat("cg", gone, "g"), "cn": mat("cn", notice_pg, "n"), "cd": mat("cd", odd, "d")}
     para = "販売を開始する。価格は3000円。" * 24      # 408字: 枠 small(449字まで)。断り書きを数えると超える
-    ans = lambda url: {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
-                       "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "tags": ["シンデレラガールズ", "販売"], "event_date": None,
-                       "new_facts": [], "addressed_issue_ids": [], "blocks": [{"markdown": para, "fact_ids": ["F1", "F2"]}],
-                       "sources": [{"url": url, "label": "公式告知"}]}
+    ans = lambda *urls: {"status": "ok", "decline_code": "", "decline_detail": "", "title": "シンデレラガールズ販売開始", "title_fact_ids": ["F1"],
+                         "lede": "販売を開始する。", "lede_fact_ids": ["F1"], "tags": ["シンデレラガールズ", "販売"], "event_date": None,
+                         "new_facts": [], "addressed_issue_ids": [], "blocks": [{"markdown": para, "fact_ids": ["F1", "F2"]}],
+                         "sources": [{"url": u, "label": "告知"} for u in urls]}
     fixed = dict(ans(portal), addressed_issue_ids=["I1"], blocks=[{"markdown": para.replace("開始する", "開始した", 1), "fact_ids": ["F1", "F2"]}])
-    # portal: 公式ポータルの素材を読みに行きメンテナンスに当たる / unread: 公式ポータルの素材を読みに行かない / plain: 公式ポータルと無関係
+    # portal: 公式ポータルの素材を読みに行きメンテナンスに当たる / unread: 公式ポータルの素材を読みに行かない / plain: メンテナンスと無関係
+    # asobi: 別ホストへ転送(ASOBI STORE)/ lantis: 503 のメンテナンスの画面 / multi: 両方に当たる / ticket: 同じサイトの動いている別ホスト(読まない)
+    # gone: 404 / notice: 「メンテナンスのお知らせ」の普通のページ / odd: 名前の分からないサイト(ホスト名で書く)
     spec = {"write-portal": [{"fetch": [portal], "answer": ans(portal)}], "write-unread": [{"answer": ans(portal)}],
-            "write-plain": [{"fetch": [other], "answer": ans(other)}], "revise-portal": [{"fetch": [portal], "answer": fixed}]}
+            "write-plain": [{"fetch": [other], "answer": ans(other)}], "revise-portal": [{"fetch": [portal], "answer": fixed}],
+            "write-asobi": [{"fetch": [asobi], "answer": ans(asobi)}], "write-lantis": [{"fetch": [lantis], "answer": ans(lantis)}],
+            "write-multi": [{"fetch": [asobi, lantis], "answer": ans(asobi, lantis)}], "write-ticket": [{"answer": ans(ticket)}],
+            "write-gone": [{"fetch": [gone], "answer": ans(gone)}], "write-notice": [{"fetch": [notice_pg], "answer": ans(notice_pg)}],
+            "write-odd": [{"fetch": [odd], "answer": ans(odd)}]}
     spec_p.write_text(json.dumps(spec, ensure_ascii=False), encoding="utf-8")
-    # portal は号の一面(lint の号の検査のため)。unread・plain は枠 small(449字まで)
-    art = lambda s, c: {"slug": s, "brand": "cg", "rank": "lead" if s == "portal" else "small", "angle": "知らせ", "candidate_ids": [c], "dedup_key": "x"}
-    plan = {"articles": [art("portal", "cp"), art("unread", "cp"), art("plain", "co")]}
+    # portal は号の一面(lint の号の検査のため)。ほかは枠 small(449字まで)
+    art = lambda s, *c: {"slug": s, "brand": "cg", "rank": "lead" if s == "portal" else "small", "angle": "知らせ", "candidate_ids": list(c),
+                         "dedup_key": "x"}
+    plan = {"articles": [art("portal", "cp"), art("unread", "cp"), art("plain", "co"), art("asobi", "ca"), art("lantis", "cl"),
+                         art("multi", "ca", "cl"), art("ticket", "ct"), art("gone", "cg"), art("notice", "cn"), art("odd", "cd")]}
+    slugs = [a["slug"] for a in plan["articles"]]
     env_keys = ("FAKE_CODEX_SPEC", "FAKE_FETCH_PAGE", "FAKE_SCRIPTS", "FAKE_MAINTE", "FAKE_STATE", "IMAS_FETCH_PAGES", "PATH")
     saved = (compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE,
              {k: os.environ.get(k) for k in env_keys}, compose.subprocess.Popen)
@@ -2996,28 +3079,44 @@ def test_portal_maintenance_window(tmp: Path):
         os.environ["PATH"] = f"{bindir}{os.pathsep}{os.environ.get('PATH', '')}"
         os.environ.pop("IMAS_FETCH_PAGES", None)
         os.environ.update(FAKE_CODEX_SPEC=str(spec_p), FAKE_FETCH_PAGE=str(fake_fetch), FAKE_SCRIPTS=str(repo / "scripts"))
-        results = {}
-        # 期限内でメンテナンス中(10/23)/ 期限外でメンテナンス中(10/25)/ 期限内でメンテナンスでない(10/24)
-        for d, mainte in (("2026-10-23", "1"), ("2026-10-25", "1"), ("2026-10-24", "0")):
+        results, notices = {}, {}
+        # メンテナンス中の号(10/24・10/26)/ メンテナンスでない号(10/25)/ 断り書きを始める前に発行した号の再生成(10/23 は公式ポータルだけの
+        # 発行時の文面、10/22 は無し)
+        for d, mainte in (("2026-10-24", "1"), ("2026-10-25", "0"), ("2026-10-23", "1"), ("2026-10-22", "1"), ("2026-10-26", "1")):
             os.environ["FAKE_MAINTE"] = mainte
             for f in spec_p.parent.glob("count-*"):
                 f.unlink()
             compose.FACT_MAP.clear()
             written, aborted = compose.write_articles(d, plan, cands, [], {}, wave=3)
-            results[d] = {s: marked(s, d) for s in ("portal", "unread", "plain")}
-            check(sorted(a["slug"] for a in written) == ["plain", "portal", "unread"], f"{d}: 書けた記事 {[a['slug'] for a in written]} {aborted}")
+            results[d] = {s: marked(s, d) for s in slugs}
+            notices[d] = {s: next((l for l in (posts / f"{d}-{s}.md").read_text(encoding="utf-8").splitlines() if renderlib.NOTICE_MARK in l), "")
+                          for s in slugs}
+            check(sorted(a["slug"] for a in written) == sorted(slugs), f"{d}: 書けた記事 {[a['slug'] for a in written]} {aborted}")
             wp = (tmp / "metrics" / "work" / d / "write-portal-0.md").read_text(encoding="utf-8")
-            on = d in ("2026-10-23", "2026-10-24")
-            check(("見送りの理由にしない" in wp) == on and "{PORTAL_MAINTENANCE}" not in wp, f"{d}: 執筆の依頼文の期限付きの指示")
-        check(results["2026-10-23"] == {"portal": 1, "unread": 1, "plain": 0},
-              f"期限内でメンテナンス中の号: 公式ポータルを読めないまま書いた記事にだけ断り書きを1つ付ける、になっていない: {results['2026-10-23']}")
-        check(results["2026-10-25"] == {"portal": 0, "unread": 0, "plain": 0}, f"期限外の号に断り書きを付けた: {results['2026-10-25']}")
-        check(results["2026-10-24"] == {"portal": 0, "unread": 0, "plain": 0}, f"メンテナンスでないのに断り書きを付けた: {results['2026-10-24']}")
-        d = "2026-10-23"
+            check("見送りの理由にしない" in wp and "{SITE_MAINTENANCE}" not in wp, f"{d}: 執筆の依頼文にメンテナンスの扱いが無い")
+        on = lambda *ss: {s: int(s in ss) for s in slugs}
+        mk = lambda d, name: f"※{name}がメンテナンス中のため、原本は確認できていません({d}時点)。内容は収集時点の公式の告知・公式Xなどに基づきます。 {renderlib.NOTICE_MARK}"
+        for d, jd in (("2026-10-24", "2026年10月24日"), ("2026-10-26", "2026年10月26日")):
+            check(results[d] == on("portal", "unread", "asobi", "lantis", "multi", "odd"),
+                  f"{d}: メンテナンスで原本を読めないまま書いた記事にだけ断り書きを1つ付ける、になっていない: {results[d]}")
+            check(notices[d]["portal"] == notices[d]["unread"] == mk(jd, "公式ポータル") and notices[d]["asobi"] == mk(jd, "ASOBI STORE")
+                  and notices[d]["lantis"] == mk(jd, "ランティス") and notices[d]["multi"] == mk(jd, "ASOBI STORE・ランティス")
+                  and notices[d]["odd"] == mk(jd, "maint-shop.example"), f"{d}: 断り書きの文面: {notices[d]}")
+        check(results["2026-10-25"] == on(), f"メンテナンスでないのに断り書きを付けた: {results['2026-10-25']}")
+        check(results["2026-10-23"] == on("portal", "unread") and notices["2026-10-23"]["portal"] == f"{n23} {renderlib.NOTICE_MARK}",
+              f"10/23 号の再生成で、発行したときの断り書き(公式ポータルだけ)と変わった: {notices['2026-10-23']}")
+        check(results["2026-10-22"] == on(), f"断り書きを始める前の号に断り書きを付けた: {results['2026-10-22']}")
+        d = "2026-10-24"
         p = posts / f"{d}-portal.md"
         body = p.read_text(encoding="utf-8").split("\n---\n", 1)[1]
-        check(body.rstrip("\n").endswith(f"{n23} {renderlib.NOTICE_MARK}") and compose.body_length(p) == len(para),
+        check(body.rstrip("\n").endswith(mk("2026年10月24日", "公式ポータル")) and compose.body_length(p) == len(para),
               f"断り書きが本文の末尾に無い・字数に数えた: {compose.body_length(p)} / {body[-160:]!r}")
+        # 発行済みの 10/23 号の記事(公式ポータルの断り書き付き)は、組版で掛け直しても1字も変わらない
+        p23 = posts / "2026-10-23-portal.md"
+        before23 = p23.read_text(encoding="utf-8")
+        os.environ["FAKE_MAINTE"] = "1"
+        compose.refresh_maintenance_notices("2026-10-23", plan["articles"], cands)
+        check(p23.read_text(encoding="utf-8") == before23, "発行済みの 10/23 号の記事の断り書きを掛け直しで変えた")
         # 書き直し: 書き手に見せる稿から断り書きを外し、直した稿にコードが付け直す(重ねない。指摘の外の変更にも数えない)
         issue = {"rule_id": "R1", "issue": "事実を直す", "quote": para, "repair": "rewrite_claim", "expected": "正しく書く", "fact_ids": ["F1"]}
         os.environ["FAKE_MAINTE"] = "1"         # 書き直しのセッションでもメンテナンスが続いている
@@ -3027,7 +3126,8 @@ def test_portal_maintenance_window(tmp: Path):
               and "portal" not in (compose.OFFSCOPE_NOTES.get(d) or {}),
               f"書き直しの稿に断り書きを付け直さない・重ねた・指摘の外に数えた: {res} {marked('portal', d)} {compose.OFFSCOPE_NOTES.get(d)}")
         check(rp and renderlib.NOTICE_MARK not in rp and "読めないことを理由に decline しない" in rp, "書き直しの依頼文: 断り書きを見せた・指示が無い")
-        check(renderlib.with_notice(p.read_text(encoding="utf-8"), n23) == p.read_text(encoding="utf-8")
+        n24 = pipelib.maintenance_notice(d, {"idolmaster-official.jp"})
+        check(renderlib.with_notice(p.read_text(encoding="utf-8"), n24) == p.read_text(encoding="utf-8")
               and renderlib.NOTICE_MARK not in renderlib.with_notice(p.read_text(encoding="utf-8"), None), "断り書きの付け外しが冪等でない")
         # lint: 断り書きは枠の字数に入れない(408字の small のまま)
         lint.ROOT, lint.DOCS = tmp, tmp / "docs"
@@ -3040,7 +3140,7 @@ def test_portal_maintenance_window(tmp: Path):
         lint.IDOLS.parent.mkdir(parents=True, exist_ok=True)
         lint.IDOLS.write_text(json.dumps(idols, ensure_ascii=False), encoding="utf-8")
         lint.EDITIONS.mkdir(parents=True, exist_ok=True)
-        for j, dd in enumerate(("2026-10-23", "2026-10-24", "2026-10-25")):
+        for j, dd in enumerate(("2026-10-22", "2026-10-23", "2026-10-24", "2026-10-25", "2026-10-26")):
             ed = {"number": 0, "date": dd, "weekday": "月火水木金土日"[datetime.date.fromisoformat(dd).weekday()],
                   "issued_at": dd + "T06:00:00+09:00", "pages": 1, "article_count": len(list(posts.glob(f"{dd}-*.md"))),
                   "corrected_count": 0, "lead_slug": "portal", "digest": [{"label": s, "rows": []} for s in lint.DIGEST_LABELS],
@@ -3094,7 +3194,7 @@ def test_portal_maintenance_window(tmp: Path):
         # 外すのは決まった文面の断り書きだけ(書き手の文に印が紛れても、字数・指紋から外さない)
         fake = f"本文。\n\n書き手の文 {renderlib.NOTICE_MARK}\n"
         check(renderlib.strip_notice(fake) == fake, "決まった文面でない段落を断り書きとして外した")
-        # 校閲: 期限内の号だけ指示を足す
+        # 校閲: どの号にも指示を足す(常設)
         seen: dict[str, str] = {}
 
         class FakeP:
@@ -3109,8 +3209,8 @@ def test_portal_maintenance_window(tmp: Path):
         compose.subprocess.Popen = fake_popen
         for dd in ("2026-10-23", "2026-10-25"):
             compose.claude_review(dd, 1, targets=[f"{dd}-portal.md"], editorial=False, paper=False)
-        check("## 6. 公式ポータルのメンテナンス" in seen.get("2026-10-23", "") and "## 6. 公式ポータルのメンテナンス" not in seen.get("2026-10-25", "-")
-              and "2026-10-25" in seen, f"校閲の依頼文の期限付きの指示: {sorted(seen)}")
+        check(all("## 6. 出典のサイトのメンテナンス" in seen.get(dd, "") for dd in ("2026-10-23", "2026-10-25")),
+              f"校閲の依頼文にメンテナンスの扱いが無い: {sorted(seen)}")
     finally:
         compose.ROOT, pipelib.ROOT, compose.classify_source, compose.storylink.prior_lookup, compose.DEADLINE = saved[:5]
         compose.subprocess.Popen = saved[6]
@@ -3123,7 +3223,7 @@ def test_portal_maintenance_window(tmp: Path):
             setattr(lint, k, v)
         sys.argv = saved_argv
         compose.FACT_MAP.clear()
-        for dd in ("2026-10-23", "2026-10-24", "2026-10-25"):
+        for dd in ("2026-10-22", "2026-10-23", "2026-10-24", "2026-10-25", "2026-10-26"):
             for m in (compose.WRITE_OUTCOMES, compose.REVISE_NOTES, compose.OFFSCOPE_NOTES, compose.DROP_LOG, compose.STUCK):
                 m.pop(dd, None)
         pipelib.ANOMALIES.clear()
@@ -4114,7 +4214,7 @@ ACTIVE_PROMPTS = ("plan-brand", "plan-rules", "plan-lead", "plan-missing", "writ
                   "collect-rules", "collect-item", "grok-collect", "grok-verify", "grok-deep", "explore", "watch-facts",
                   "classify-rules", "classify-site", "classify-x", "classify-debate", "classify-link",
                   "oncall-fix", "oncall-fix.objections", "oncall-review", "oncall-parser", "oncall-whywhy",
-                  "portal-maintenance.write", "portal-maintenance.revise", "portal-maintenance.review")
+                  "site-maintenance.write", "site-maintenance.revise", "site-maintenance.review")
 
 
 def test_prompts_are_instructions_only():
@@ -15141,7 +15241,7 @@ def main() -> int:
     test_revise_apply_decline(tmp / "ra")
     test_maintenance_page_is_not_read(tmp / "mpr")
     test_revise_carries_verified_facts(tmp / "rcv")
-    test_portal_maintenance_window(tmp / "pmw")
+    test_site_maintenance_notice(tmp / "pmw")
     test_classify_prompt_not_swallowed()
     test_notify_long()
     test_oncall_state(tmp / "st")

@@ -1453,47 +1453,97 @@ def clean_url(raw) -> str | None:
 FETCH_RECORD_ENV = "IMAS_FETCH_RECORD"
 
 
-# サイト全体のメンテナンス画面(公式ポータルは告知の URL を /mainte/index.html へ転送する。2026-10-21〜22)
+# サイト全体のメンテナンス画面(公式ポータルは告知の URL を /mainte/index.html へ、ASOBI STORE は mainte.asobistore.jp へ転送する。
+# 2026-10-21〜23)
 MAINTENANCE_PATH = re.compile(r"/(?:mainte|maintenance)(?:[/._-]|$)", re.I)
+MAINTENANCE_HOST = re.compile(r"^(?:mainte|maintenance)[.-]", re.I)
+# メンテナンスの画面の言葉(5xx の応答の title・本文で見分ける。2026-10-23: ランティスは転送せず 503 で「現在メンテナンス中です」を返す)
+MAINTENANCE_WORD = re.compile(r"メンテナンス|maintenance", re.I)
 
 
 def maintenance_redirect(url: str, final: str | None) -> bool:
-    """頼んだページがメンテナンス画面へ転送されたか。転送先の本文はメンテナンスの案内で、頼んだページの中身ではない。
-    これを本文として読むと、収集時に本文で確かめた素材の facts を「出典と食い違う」とし、公式の出典を「別の話題のページ」として
-    記事を落とす(2026-10-22号: 公式ポータルのメンテナンスで見送り7本・校閲ブロック2本)"""
+    """頼んだページがメンテナンス画面へ転送されたか(転送先のパスが /mainte/・/maintenance/、またはホストが mainte.・maintenance. で始まる)。
+    転送先の本文はメンテナンスの案内で、頼んだページの中身ではない。これを本文として読むと、収集時に本文で確かめた素材の facts を
+    「出典と食い違う」とし、公式の出典を「別の話題のページ」として記事を落とす(2026-10-22号: 公式ポータルのメンテナンスで見送り7本・
+    校閲ブロック2本)。404 などの読めないページ・ただの転送は含めない"""
     import urllib.parse
     if not final or final == url:
         return False
-    return (bool(MAINTENANCE_PATH.search(urllib.parse.urlsplit(final).path))
-            and not MAINTENANCE_PATH.search(urllib.parse.urlsplit(url).path))
+    a, b = urllib.parse.urlsplit(url), urllib.parse.urlsplit(final)
+    by_path = bool(MAINTENANCE_PATH.search(b.path)) and not MAINTENANCE_PATH.search(a.path)
+    by_host = bool(MAINTENANCE_HOST.match(b.hostname or "")) and not MAINTENANCE_HOST.match(a.hostname or "")
+    return by_path or by_host
 
 
-# 公式ポータル(サイト全体のメンテナンスで告知を読めなくなることがある)
-PORTAL_HOST = "idolmaster-official.jp"
-# 公式ポータルがメンテナンスで読めないまま書いた記事の、号ごとの断り書き。ここに無い号には効かない(期限付きの許可)。
-# 編集長の決定 2026-10-22: 10/23 号に限り断り書きを付けて掲載してよい。10/24 号もメンテナンスが続いていれば、その旨を書いて掲載してよい
-PORTAL_MAINTENANCE_NOTICES = {
+def maintenance_screen(status: int, body: bytes, charset: str | None = None) -> bool:
+    """5xx の応答がメンテナンスの画面か(title か本文にメンテナンスの言葉がある)。200 の普通のページ(メンテナンスのお知らせの記事を含む)・
+    404・メンテナンスの表示の無い 5xx は含めない(読めなかっただけで、メンテナンスとは限らない)"""
+    if not (500 <= int(status or 0) < 600):
+        return False
+    text = html_to_text(body or b"", charset)
+    m = re.search(rb"<title[^>]*>(.*?)</title>", body or b"", re.S | re.I)
+    title = m.group(1).decode(charset or "utf-8", "replace") if m else ""
+    return bool(MAINTENANCE_WORD.search(title) or MAINTENANCE_WORD.search(text))
+
+
+def maintenance_http_error(e: BaseException) -> bool:
+    """urlopen の HTTPError がメンテナンスの画面の応答か(maintenance_screen)。本文を読むので、1つの例外に1回だけ呼ぶ。"""
+    import urllib.error
+    if not isinstance(e, urllib.error.HTTPError) or not (500 <= e.code < 600):
+        return False
+    try:
+        body = e.read(400_000)
+    except Exception:
+        return False
+    return maintenance_screen(e.code, body, e.headers.get_content_charset() if e.headers else None)
+
+
+# メンテナンスで読めなかったサイトの、断り書きでの呼び名(ここに無いサイトはホスト名で書く)
+MAINTENANCE_SITE_NAMES = {"idolmaster-official.jp": "公式ポータル", "lantis.jp": "ランティス", "asobistore.jp": "ASOBI STORE"}
+# 断り書きを付け始めた号と、それより前に発行した号の文面(発行済みの号は再生成しても文面を変えない)。
+# 編集長の決定 2026-10-22: 10/23 号は公式ポータルのメンテナンスに限って断り書きを付けて掲載。2026-10-23: どのサイトでも、読んだときに
+# メンテナンスの画面だった出典は「確認できていない」と断って掲載する(常設)
+MAINTENANCE_NOTICE_FROM = "2026-10-24"
+MAINTENANCE_LEGACY_NOTICES = {
     "2026-10-23": "※公式ポータルがシステムメンテナンス中のため、公式サイトの告知ページは確認できていません(2026年10月23日時点)。"
                   "内容は収集時点の公式の告知・公式Xなどに基づきます。",
-    "2026-10-24": "※公式ポータルのシステムメンテナンスが続いているため、公式サイトの告知ページは確認できていません(2026年10月24日時点)。"
-                  "内容は収集時点の公式の告知・公式Xなどに基づきます。",
 }
+MAINTENANCE_NOTICE_TAIL = "がメンテナンス中のため、原本は確認できていません({date}時点)。内容は収集時点の公式の告知・公式Xなどに基づきます。"
 
 
-def is_portal(url) -> bool:
+def site_host(url) -> str:
+    """URL のホスト(小文字。先頭の www. は外す)。同じサイトの www の有無を同じホストとして扱う。"""
     import urllib.parse
     host = (urllib.parse.urlsplit(str(url or "")).hostname or "").lower()
-    return host == PORTAL_HOST or host.endswith("." + PORTAL_HOST)
+    return host[4:] if host.startswith("www.") else host
 
 
-def portal_maintenance_notice(edition: str) -> str | None:
-    """その号の断り書き(許可の期限内の号だけ)。期限外は None で、断り書きも依頼文の追加も付かない。"""
-    return PORTAL_MAINTENANCE_NOTICES.get(str(edition))
+def maintenance_site_name(host: str) -> str:
+    """断り書きに書くサイトの名前(MAINTENANCE_SITE_NAMES。無ければホスト名)。"""
+    for dom, name in MAINTENANCE_SITE_NAMES.items():
+        if host == dom or host.endswith("." + dom):
+            return name
+    return host
 
 
-def portal_maintenance_rules(edition: str, role: str) -> str:
-    """許可の期限内の号だけ、執筆・書き直し・校閲の依頼文に足す指示(prompts/portal-maintenance.<role>.md)。期限外は空。"""
-    return render_prompt(f"portal-maintenance.{role}") if portal_maintenance_notice(edition) else ""
+def maintenance_notice(edition: str, hosts) -> str | None:
+    """メンテナンスで原本を読めなかったホスト(hosts)の断り書き(1つにまとめる)。無ければ None。
+    MAINTENANCE_NOTICE_FROM より前の号は発行したときの規則のまま(10/23 号は公式ポータルだけ、その前の号は付けない)"""
+    import datetime
+    hosts = sorted({h for h in hosts if h})
+    edition = str(edition)
+    if edition in MAINTENANCE_LEGACY_NOTICES:
+        return MAINTENANCE_LEGACY_NOTICES[edition] if any(maintenance_site_name(h) == "公式ポータル" for h in hosts) else None
+    if not hosts or edition < MAINTENANCE_NOTICE_FROM:
+        return None
+    names = sorted({maintenance_site_name(h) for h in hosts})       # 同じサイトの別ホストは1つにまとめ、並びは名前で決める
+    d = datetime.date.fromisoformat(edition)
+    return "※" + "・".join(names) + MAINTENANCE_NOTICE_TAIL.format(date=f"{d.year}年{d.month}月{d.day}日")
+
+
+def maintenance_rules(role: str) -> str:
+    """執筆・書き直し・校閲の依頼文に足す、メンテナンス中の出典の扱い(prompts/site-maintenance.<role>.md。常設)。"""
+    return render_prompt(f"site-maintenance.{role}")
 
 
 def maintenance_record(rec) -> Path:

@@ -545,20 +545,22 @@ def strip_fact_notes(body: str) -> str:
     return re.sub(r"\s*<!--\s*(?:[FN]\d+\s*)+-->", "", body)
 
 
-# 本文の末尾にコードが付ける断り書きの段落(公式ポータルのメンテナンス。2026-10-22 編集長の決定)。印で見分け、
+# 本文の末尾にコードが付ける断り書きの段落(出典のサイトのメンテナンス。2026-10-22・23 編集長の決定)。印で見分け、
 # 字数(枠)・書き直しの段落の照合・書き手に見せる稿からは外す(書き手の言葉ではない)
-# 外すのは、決まった文面(pipelib.PORTAL_MAINTENANCE_NOTICES)に印が付いた段落だけ(書き手の文に印が紛れても外さない)。
-# 断り書きは承認の指紋(pipelib.article_hash)にも入れない(コードの文面で、校閲の判断の対象ではない)
+# 外すのは、決まった文面(pipelib.maintenance_notice の型・発行済みの号の文面)に印が付いた段落だけ(書き手の文に印が紛れても外さない)。
+# 断り書きは承認の指紋(pipelib.article_hash)にも入れない(コードの文面で、校閲の判断の対象ではない)。
+# 印は 10/23 号(公式ポータルだけ)で付けた記事と同じものを使い続ける
 NOTICE_MARK = "<!-- notice:portal-maintenance -->"
 
 
 def strip_notice(body: str) -> str:
     """本文から断り書きの段落を外す(無ければそのまま)。"""
-    from pipelib import PORTAL_MAINTENANCE_NOTICES      # 循環を避けて関数の中で読む
-    alts = "|".join(re.escape(f"{n} {NOTICE_MARK}") for n in PORTAL_MAINTENANCE_NOTICES.values())
-    if not alts:
-        return body or ""
-    return re.sub(r"(?:\A|\n[ \t]*\n)(?:" + alts + r")[ \t]*(?=\n|\Z)", "", body or "")
+    from pipelib import MAINTENANCE_LEGACY_NOTICES, MAINTENANCE_NOTICE_TAIL, MAINTENANCE_SITE_NAMES   # 循環を避けて関数の中で読む
+    name = "(?:" + "|".join([*(re.escape(n) for n in MAINTENANCE_SITE_NAMES.values()), r"[a-z0-9-]+(?:\.[a-z0-9-]+)+"]) + ")"
+    head, tail = MAINTENANCE_NOTICE_TAIL.split("{date}")
+    generic = "※" + name + "(?:・" + name + ")*" + re.escape(head) + r"\d{4}年\d{1,2}月\d{1,2}日" + re.escape(tail)
+    alts = "|".join([generic, *(re.escape(n) for n in MAINTENANCE_LEGACY_NOTICES.values())])
+    return re.sub(r"(?:\A|\n[ \t]*\n)(?:" + alts + r") " + re.escape(NOTICE_MARK) + r"[ \t]*(?=\n|\Z)", "", body or "")
 
 
 def with_notice(text: str, notice: str | None) -> str:

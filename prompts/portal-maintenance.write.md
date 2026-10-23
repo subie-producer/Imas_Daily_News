@@ -1,5 +1,0 @@
-- 公式ポータル(idolmaster-official.jp)のメンテナンス: fetch_page.py が公式ポータルの url で `FETCH_FAILED: メンテナンス中` を返したら、次のとおりに書く(2・3・6 より優先)
-  - 公式ポータルが読めないことは見送りの理由にしない(それだけで NO_PRIMARY_SOURCE・SOURCE_MISMATCH にしない)
-  - 公式ポータルの素材は公式の出典として使う。verify が `confirmed` なら facts をそのまま使い、url を sources に載せる。`confirmed` でない素材の facts は、読める出典(公式・準公式・当事者の X の投稿、報道など)で確かめられたものだけを使う
-  - 素材に無い公式ポータルの url は、sources・new_facts に書かない
-  - 公式ポータルが読めないことの断り書きは書かない(コードが本文の末尾に付ける)

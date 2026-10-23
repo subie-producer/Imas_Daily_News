@@ -931,5 +931,75 @@
   "event_date": "2026-10-23",
   "deadline": "2026-11-01",
   "src_candidate_id": "202610230227-grok-61"
+ },
+ {
+  "id": "sched-2026-10-29-cg-popntoybox-revival-general-lottery-2026-締切前",
+  "dedup_key": "cg-popntoybox-revival-general-lottery-2026",
+  "brand": "cg",
+  "subject": "Pop'n ToyBox!! もういっかい！ 一般会員先行",
+  "kind": "締切前",
+  "note": "1日の締切まであと3日。アソビチケットで先行(抽選)に申し込める",
+  "reserved_on": "2026-10-24",
+  "occurs_on": "2026-11-01",
+  "title": "CONCEPT xR LIVE「Pop'n ToyBox!! もういっかい！」一般会員先行",
+  "url": "https://x.com/imas_CGofficial/status/2113586241862009161",
+  "source_type": "公式",
+  "facts": [
+   "CONCEPT xR LIVE「Pop'n ToyBox!! もういっかい！」がオリックス劇場で開催される。",
+   "アソビチケットで一般会員先行（抽選）の受付中。",
+   "お申込みは11月1日(日)まで。",
+   "リンク: https://t.co/9Lg9jKLCgy",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "deadline": "2026-11-01",
+  "src_candidate_id": "202610240226-grok-10"
+ },
+ {
+  "id": "sched-2026-10-29-tours-s2-cyber-core-green-2026-開始",
+  "dedup_key": "tours-s2-cyber-core-green-2026",
+  "brand": "joint",
+  "subject": "ツアマスS2弾 稼働開始",
+  "kind": "開始",
+  "note": "S2弾が稼働し、SPアピールカードを遊べる",
+  "reserved_on": "2026-10-24",
+  "occurs_on": "2026-10-29",
+  "title": "ツアマスS2弾 SPアピールカード「Cyber Core : Green」",
+  "url": "https://x.com/TOURS_imas/status/2113571129524916418",
+  "source_type": "公式",
+  "facts": [
+   "S2弾SPアピールカード「Cyber Core : Green」が紹介された。",
+   "S2弾稼働開始: 2026年10月29日",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-29",
+  "src_candidate_id": "202610240226-grok-108"
+ },
+ {
+  "id": "sched-2026-10-29-tours-s2-cyber-core-green-2026-開始-src1",
+  "dedup_key": "tours-s2-cyber-core-green-2026",
+  "brand": "joint",
+  "subject": "ツアマスS2弾 稼働開始",
+  "kind": "開始",
+  "note": "S2弾が稼働し、SPアピールカードを遊べる",
+  "reserved_on": "2026-10-24",
+  "occurs_on": "2026-10-29",
+  "title": "ツアマスS2弾 SPアピール「Imperial Command」",
+  "url": "https://x.com/TOURS_imas/status/2113563583686816052",
+  "source_type": "公式",
+  "facts": [
+   "S2弾SPアピール「Imperial Command」が紹介された。",
+   "S2弾稼働開始: 2026年10月29日",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-29",
+  "src_candidate_id": "202610240226-grok-109",
+  "companion_of": "sched-2026-10-29-tours-s2-cyber-core-green-2026-開始",
+  "src_dedup_key": "tours-s2-imperial-command-2026"
  }
 ]

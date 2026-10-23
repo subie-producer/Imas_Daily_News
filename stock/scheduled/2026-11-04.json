@@ -701,5 +701,27 @@
   "verify": "confirmed",
   "deadline": "2026-11-04",
   "src_candidate_id": "202610230227-grok-49"
+ },
+ {
+  "id": "sched-2026-11-04-sidem-poppin-planet-2dmv-2026-開始",
+  "dedup_key": "sidem-poppin-planet-2dmv-2026",
+  "brand": "sidem",
+  "subject": "High×Joker「POPPIN' PLANET」2DMV",
+  "kind": "開始",
+  "note": "21時の公開でHigh×Jokerの2DMVを視聴できる",
+  "reserved_on": "2026-10-24",
+  "occurs_on": "2026-11-04",
+  "title": "High×Joker「POPPIN' PLANET」2DMV公開日決定",
+  "url": "https://x.com/SideM_lantis/status/2113618944967750011",
+  "source_type": "準公式",
+  "facts": [
+   "High×Joker「POPPIN' PLANET」の2DMV公開日は11月4日(水)21:00予定。",
+   "エンゲージメント: 中",
+   "言及アイドル: High×Joker"
+  ],
+  "via": "grok",
+  "verify": "unconfirmed",
+  "event_date": "2026-11-04",
+  "src_candidate_id": "202610240226-grok-77"
  }
 ]

@@ -1134,5 +1134,69 @@
   "src_candidate_id": "202610230227-grok-40",
   "companion_of": "sched-2026-10-30-gaku-another-miracle-nanau-2026-終了",
   "src_dedup_key": "gaku-wednesday-ticket-2026-10-21"
+ },
+ {
+  "id": "sched-2026-10-30-auto-73-開始",
+  "dedup_key": "auto-73",
+  "brand": "shiny",
+  "subject": "シナリオイベント「果てにふれるのなら」開始",
+  "kind": "開始",
+  "note": "イベント開幕日。シーズの物語を読み始められる",
+  "reserved_on": "2026-10-24",
+  "occurs_on": "2026-10-30",
+  "title": "シナリオイベント「果てにふれるのなら」",
+  "url": "https://x.com/imassc_official/status/2113577621858762986",
+  "source_type": "公式",
+  "facts": [
+   "開催期間: 2026年10月30日～2026年11月10日 11:59（予定）",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2026-10-30",
+  "deadline": "2026-11-10",
+  "src_candidate_id": "202610240226-grok-73"
+ },
+ {
+  "id": "sched-2026-10-30-beam-mv-発売",
+  "dedup_key": "beam-mv",
+  "brand": "shiny",
+  "subject": "アルストロメリア「BEAM」各種音楽配信開始",
+  "kind": "発売",
+  "note": "0時から配信開始。各種音楽配信サービスで新曲を聴ける",
+  "reserved_on": "2026-10-24",
+  "occurs_on": "2026-10-30",
+  "title": "アルストロメリア新曲「BEAM」配信・MV公開",
+  "url": "https://x.com/imassc_official/status/2113585010477498471",
+  "source_type": "公式",
+  "facts": [
+   "「BEAM」MV公開: 2026年10月30日 15:00",
+   "「BEAM」各種音楽配信開始: 2026年10月30日 0:00",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610240226-grok-62"
+ },
+ {
+  "id": "sched-2026-10-30-beam-mv-開始",
+  "dedup_key": "beam-mv",
+  "brand": "shiny",
+  "subject": "アルストロメリア「BEAM」MV公開",
+  "kind": "開始",
+  "note": "15時にMV公開。公開と同時に視聴できる",
+  "reserved_on": "2026-10-24",
+  "occurs_on": "2026-10-30",
+  "title": "アルストロメリア新曲「BEAM」配信・MV公開",
+  "url": "https://x.com/imassc_official/status/2113585010477498471",
+  "source_type": "公式",
+  "facts": [
+   "「BEAM」MV公開: 2026年10月30日 15:00",
+   "「BEAM」各種音楽配信開始: 2026年10月30日 0:00",
+   "エンゲージメント: 中"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "src_candidate_id": "202610240226-grok-62"
  }
 ]

@@ -1,0 +1,42 @@
+[
+ {
+  "id": "sched-2027-01-23-kimchikura-anisama-seoul-2027-開幕",
+  "dedup_key": "kimchikura-anisama-seoul-2027",
+  "brand": "shiny",
+  "subject": "KIMCHIKURA×ANISAMA SEOUL 2027 DAY1",
+  "kind": "開幕",
+  "note": "DAY1、イルミネーションスターズの出演を見に行ける(開場14:30・開演16:00)",
+  "reserved_on": "2026-10-24",
+  "occurs_on": "2027-01-23",
+  "title": "KIMCHIKURA×ANISAMA SEOUL 2027 シャニマス出演",
+  "url": "https://x.com/shinyc_official/status/2113595606359027846",
+  "source_type": "公式",
+  "facts": [
+   "【お知らせ】",
+   "KIMCHIKURA×ANISAMA SEOUL 2027",
+   "＃シャニマス より",
+   "DAY1 イルミネーションスターズ🌟",
+   "DAY2 シーズ💎",
+   "の出演が決定✨",
+   "📅2027.01.23（土）– 01.24（日）",
+   "📍Seoul, BLUESQUARE Woori WON Banking Hall",
+   "ぜひチェックしてくださいね♪",
+   "開催日: 2027年1月23日–24日",
+   "会場: Seoul, BLUESQUARE Woori WON Banking Hall",
+   "DAY1: イルミネーションスターズ",
+   "DAY2: シーズ",
+   "チケット販売スケジュールなど詳細は後日発表",
+   "エンゲージメント: 中",
+   "イベント名: KIMCHIKURA×ANISAMA SEOUL 2027",
+   "DAY1の出演者: イルミネーションスターズ",
+   "DAY2の出演者: シーズ",
+   "開催日: 2027-01-23",
+   "開催日: 2027-01-24",
+   "エンゲージメント: 低"
+  ],
+  "via": "grok",
+  "verify": "confirmed",
+  "event_date": "2027-01-23",
+  "src_candidate_id": "202610240226-grok-51"
+ }
+]

@@ -315,3 +315,23 @@
   subject: シャニソンDMM版 臨時メンテナンスの終了時刻
   watch: 10月21日22時開始のメンテ終了時刻と引き継ぎ機能の再開(終了時刻・引き継ぎ再開は未定。判明次第 triggers へ)
   added_on: '2026-10-22'
+- dedup_key: portal-security-maintenance-2026-10
+  brand: general
+  subject: アイマスポータル メンテナンスと各発表の詳細
+  watch: メンテ終了とNEWS閲覧再開、「改めて知らせる」とされた各発表内容の詳細(判明次第 triggers へ)
+  added_on: '2026-10-24'
+- dedup_key: sidem-story-release-delay-2026-10
+  brand: sidem
+  subject: SideM「アイドルたちの1コマ」High×Joker編・神速一魂編の公開日
+  watch: メンテナンス終了と、High×Joker編・神速一魂編の新しい公開日時の案内(判明次第 triggers へ)
+  added_on: '2026-10-24'
+- dedup_key: tsubasa-the-animation-figure-2026
+  brand: million
+  subject: コトブキヤ「伊吹 翼-The Animation-」フィギュア
+  watch: 2027年6月予定の正式発売日(判明次第 triggers へ)
+  added_on: '2026-10-24'
+- dedup_key: sidem-promi-2027-payment-deadline-extension
+  brand: sidem
+  subject: SideMプロミ2027 先行の延長後の入金期限
+  watch: 延長後の入金期限の日時(詳細ページで案内、判明次第 triggers へ)
+  added_on: '2026-10-24'

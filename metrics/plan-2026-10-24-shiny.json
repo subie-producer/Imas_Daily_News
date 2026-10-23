@@ -1,0 +1,870 @@
+{
+ "decisions": {
+  "2": {
+   "action": "article",
+   "angle": "シャニソン2周年記念電話が復刻、銅・銀電話はメダル交換所、金電話入りセレクトパックはショップで販売予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior は無関係な別話題"
+  },
+  "3": {
+   "action": "article",
+   "angle": "シャニソン3周年記念ログインボーナスパス販売予定、最大150連無料ガシャと新衣装「ひとひら」",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 28,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "3周年施策をまとめる"
+  },
+  "7": {
+   "action": "article",
+   "angle": "ささやきボイス第7弾は七草にちか、S-SSR【約いもうと】が登場",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "prior はミリシタの別話題で無関係"
+  },
+  "11": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "auto-36",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "11月スケジュール告知"
+  },
+  "283": {
+   "action": "article",
+   "angle": "新対戦コンテンツ「283ステージショー」を開発中、283ステージにノクチルのコミュ(A.X.E.8.編)とクロマティックシフト衣装報酬を追加予定",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 28,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "shiny-higuchi-madoka-figure-2027": {
+   "action": "article",
+   "angle": "SSR FIGUREが雀魂コラボの樋口円香1/7フィギュアを2027年6月発売、19,800円で予約受付中",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "報道のみ・未確認、執筆で出典確認"
+  },
+  "8-5-s-ssr-s-ssr": {
+   "action": "roundup",
+   "angle": "8.5周年72時間限定のセレチケ付きパッケージ・ガシャの開催中情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "8-5-p-ssr-p-ssr": {
+   "action": "roundup",
+   "angle": "8.5周年72時間限定のセレチケ付きパッケージ・ガシャの開催中情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "8-5-ur-p-ssr": {
+   "action": "roundup",
+   "angle": "8.5周年72時間限定のセレチケ付きパッケージ・ガシャの開催中情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "8-5-ur": {
+   "action": "roundup",
+   "angle": "8.5周年72時間限定のセレチケ付きパッケージ・ガシャの開催中情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "auto-26": {
+   "action": "roundup",
+   "angle": "浅倉透ピース付きパッケージなど開催中のガシャ・パッケージ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "refrac7ions": {
+   "action": "roundup",
+   "angle": "REFRAC7IONS浅倉透スタンプガシャなど開催中のガシャ",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "8-5-ssr8-5": {
+   "action": "roundup",
+   "angle": "8.5周年72時間限定のセレチケ付きパッケージ・ガシャの開催中情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "8-5": {
+   "action": "roundup",
+   "angle": "8.5周年72時間限定のセレチケ付きパッケージ・ガシャの開催中情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "8-5-p-ur-s-ur": {
+   "action": "roundup",
+   "angle": "8.5周年72時間限定のセレチケ付きパッケージ・ガシャの開催中情報",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "monad": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pj-refrac7ions-enza",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Fumage新曲Monadのゲーム内追加"
+  },
+  "auto-32": {
+   "action": "article",
+   "angle": "プレコレアイドルのホームボイス30パターンと会話270パターンが追加された(追加予定の告知も統合)",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "8-5-s-ssr": {
+   "action": "roundup",
+   "angle": "8.5周年記念の「こどもたち」S-SSR28人分プレゼント(11月18日11:59まで)ほか開催中施策",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "3-pv": {
+   "action": "article",
+   "angle": "シャニソン3周年記念PVがアイドルマスターチャンネルで公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "auto-36": {
+   "action": "article",
+   "angle": "シャニソンの今後のロードマップ(新楽曲展開・グラフィック更新)と11月スケジュールが公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "auto-38": {
+   "action": "article",
+   "angle": "シャニソンのイノセントセーラーと放クラ【パジャマ・デ】衣装が恒常販売化へ、新衣装アイテムも登場予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "auto-39": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "auto-38",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "新衣装アイテム予告"
+  },
+  "3-150": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "3",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "auto-45": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "auto-49",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アイキュー復刻の関連施策"
+  },
+  "auto-46": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "auto-49",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アイキュー復刻の関連施策"
+  },
+  "auto-47": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "auto-49",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アイキュー復刻の関連施策"
+  },
+  "auto-48": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "auto-49",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "アイキュー復刻の関連施策"
+  },
+  "auto-49": {
+   "action": "article",
+   "angle": "シャニソンでアイキューガシャが復刻、ログインボーナスパス・ジュエルセール・アナザーイベントも予定",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "auto-50": {
+   "action": "article",
+   "angle": "シャニソン新ピックアップガシャ「反射する星々、その先へ」で幽谷霧子と和泉愛依の限定★3が登場予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "kimchikura-anisama-seoul-2027": {
+   "action": "article",
+   "angle": "KIMCHIKURA×ANISAMA SEOUL 2027にシャニマスからイルミネーションスターズ(1日目)とシーズ(2日目)が出演",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "2027年1月23〜24日、ソウル"
+  },
+  "overlay-of-hopes": {
+   "action": "article",
+   "angle": "シャニソンに新全体曲「OVERLAY OF HOPES」が登場予定、歌い分けモードで全28名の歌唱に対応",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "asobi-store": {
+   "action": "roundup",
+   "angle": "ASOBI STOREのシャニソン向けジュエル販売など開催中施策",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "fumage-monad": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pj-refrac7ions-enza",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Fumage新曲Monad紹介"
+  },
+  "fumage-s-ssr": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "pj-refrac7ions-enza",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "Fumage浅倉透S-SSR予告"
+  },
+  "pj-refrac7ions-enza": {
+   "action": "article",
+   "angle": "PJ:REFRAC7IONSのユニットがenzaのシャニマスにも登場、第1弾はFumageで新曲Monadと浅倉透S-SSRを展開",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 28,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "beam-mv": {
+   "action": "article",
+   "angle": "アルストロメリアの新曲「BEAM」が10月30日0時に配信開始、15時にMV公開",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 20,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "auto-64": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "project-relight-axe8-4",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ノクチル新曲「凪ぐ」"
+  },
+  "s-ssr": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "project-relight-axe8-4",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ノクチル市川雛菜S-SSR予告ほか"
+  },
+  "project-relight-axe8-4": {
+   "action": "article",
+   "angle": "Project ReLight AXE8第4弾はノクチル、新曲「凪ぐ」と市川雛菜のS-SSRが後日登場",
+   "purpose": "新情報",
+   "rank": "medium",
+   "lead_score": 30,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "auto-67": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "auto-32",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "ホームボイス追加予告"
+  },
+  "auto-70": {
+   "action": "article",
+   "angle": "今年のハロウィンに田中摩美々のS-SSR【魔の罠に捕われ惑う影】が登場",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 10,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "auto-73": {
+   "action": "article",
+   "angle": "シナリオイベント「果てにふれるのなら」が10月30日から11月10日11:59まで開催予定",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": ""
+  },
+  "mei-leashanai-outfit-2026": {
+   "action": "article",
+   "angle": "P-SSR【離さない♡】和泉愛依のアイドル衣装イラストが公開された",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 5,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "事実が少ない短い記事"
+  },
+  "shiny-8-5-anniversary-fan-congratulations-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "個人の話題",
+   "note": "ファン個人のSNS投稿、未確認"
+  },
+  "shiny-song-third-anniversary-hitohira-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "3",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "3周年記念施策"
+  },
+  "shiny-dark-girly-fashion-goods-2026": {
+   "action": "article",
+   "angle": "ダークガーリーファッションver.グッズ全23商品の予約が11月4日まで",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "carried、未確認の出典のため執筆で確認"
+  },
+  "shiny-283-production-live-performance-noctchill": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "shiny-noctchill-live-2027",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じ公演・同じ当落発表"
+  },
+  "shiny-noctchill-live-2027": {
+   "action": "article",
+   "angle": "ノクチル単独ライブのプレミアム先行当落が本日13時から発表、当選者の入金は10月28日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 85,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約・当日のトリガー"
+  },
+  "shiny-technical-challenge-cup-17-2026": {
+   "action": "article",
+   "angle": "シャニソン第17回テクニカルチャレンジ杯の結果発表期間は本日11時59分で終了",
+   "purpose": "期日の知らせ",
+   "rank": "small",
+   "lead_score": 15,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約・最終日"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "shiny-higuchi-madoka-figure-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "SSR FIGUREが雀魂コラボの樋口円香1/7フィギュアを2027年6月発売、19,800円で予約受付中",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "shiny-higuchi-madoka-figure-2027",
+    "candidate_ids": [
+     "202610231832-explore-5"
+    ]
+   },
+   {
+    "slug": "shiny-auto-32",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "プレコレアイドルのホームボイス30パターンと会話270パターンが追加された(追加予定の告知も統合)",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "auto-32",
+    "candidate_ids": [
+     "202610240226-grok-32",
+     "202610240226-grok-67"
+    ]
+   },
+   {
+    "slug": "shiny-3-pv-c33c4f",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン3周年記念PVがアイドルマスターチャンネルで公開された",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "3-pv",
+    "candidate_ids": [
+     "202610240226-grok-35"
+    ]
+   },
+   {
+    "slug": "shiny-auto-36",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンの今後のロードマップ(新楽曲展開・グラフィック更新)と11月スケジュールが公開された",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "auto-36",
+    "candidate_ids": [
+     "202610240226-grok-36",
+     "202610240226-grok-37"
+    ]
+   },
+   {
+    "slug": "shiny-auto-38",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンのイノセントセーラーと放クラ【パジャマ・デ】衣装が恒常販売化へ、新衣装アイテムも登場予定",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "auto-38",
+    "candidate_ids": [
+     "202610240226-grok-38",
+     "202610240226-grok-39"
+    ]
+   },
+   {
+    "slug": "shiny-3-77de68",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニソン3周年記念ログインボーナスパス販売予定、最大150連無料ガシャと新衣装「ひとひら」",
+    "purpose": "新情報",
+    "lead_score": 28,
+    "dedup_key": "3",
+    "candidate_ids": [
+     "202610240226-grok-40",
+     "202610240226-grok-41",
+     "202610240226-grok-42",
+     "202610240226-grok-43",
+     "202610240226-grok-53",
+     "202610240226-grok-54",
+     "202610240226-grok-55",
+     "202610240226-grok-44",
+     "202610240226-grok-123"
+    ]
+   },
+   {
+    "slug": "shiny-auto-49",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "シャニソンでアイキューガシャが復刻、ログインボーナスパス・ジュエルセール・アナザーイベントも予定",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "auto-49",
+    "candidate_ids": [
+     "202610240226-grok-49",
+     "202610240226-grok-45",
+     "202610240226-grok-46",
+     "202610240226-grok-47",
+     "202610240226-grok-48"
+    ]
+   },
+   {
+    "slug": "shiny-auto-50",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン新ピックアップガシャ「反射する星々、その先へ」で幽谷霧子と和泉愛依の限定★3が登場予定",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "auto-50",
+    "candidate_ids": [
+     "202610240226-grok-50"
+    ]
+   },
+   {
+    "slug": "shiny-kimchikura-anisama-seoul-2027",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "KIMCHIKURA×ANISAMA SEOUL 2027にシャニマスからイルミネーションスターズ(1日目)とシーズ(2日目)が出演",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "kimchikura-anisama-seoul-2027",
+    "candidate_ids": [
+     "202610240226-grok-51"
+    ]
+   },
+   {
+    "slug": "shiny-2-da4b92",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン2周年記念電話が復刻、銅・銀電話はメダル交換所、金電話入りセレクトパックはショップで販売予定",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "2",
+    "candidate_ids": [
+     "202610240226-grok-52"
+    ]
+   },
+   {
+    "slug": "shiny-overlay-of-hopes",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソンに新全体曲「OVERLAY OF HOPES」が登場予定、歌い分けモードで全28名の歌唱に対応",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "overlay-of-hopes",
+    "candidate_ids": [
+     "202610240226-grok-56"
+    ]
+   },
+   {
+    "slug": "shiny-pj-refrac7ions-enza",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "PJ:REFRAC7IONSのユニットがenzaのシャニマスにも登場、第1弾はFumageで新曲Monadと浅倉透S-SSRを展開",
+    "purpose": "新情報",
+    "lead_score": 28,
+    "dedup_key": "pj-refrac7ions-enza",
+    "candidate_ids": [
+     "202610240226-grok-60",
+     "202610240226-grok-31",
+     "202610240226-grok-58",
+     "202610240226-grok-59"
+    ]
+   },
+   {
+    "slug": "shiny-283-3032a4",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "新対戦コンテンツ「283ステージショー」を開発中、283ステージにノクチルのコミュ(A.X.E.8.編)とクロマティックシフト衣装報酬を追加予定",
+    "purpose": "新情報",
+    "lead_score": 28,
+    "dedup_key": "283",
+    "candidate_ids": [
+     "202610240226-grok-61",
+     "202610240226-grok-63",
+     "202610240226-grok-68"
+    ]
+   },
+   {
+    "slug": "shiny-beam-mv",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "アルストロメリアの新曲「BEAM」が10月30日0時に配信開始、15時にMV公開",
+    "purpose": "新情報",
+    "lead_score": 20,
+    "dedup_key": "beam-mv",
+    "candidate_ids": [
+     "202610240226-grok-62"
+    ]
+   },
+   {
+    "slug": "shiny-project-relight-axe8-4",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "Project ReLight AXE8第4弾はノクチル、新曲「凪ぐ」と市川雛菜のS-SSRが後日登場",
+    "purpose": "新情報",
+    "lead_score": 30,
+    "dedup_key": "project-relight-axe8-4",
+    "candidate_ids": [
+     "202610240226-grok-66",
+     "202610240226-grok-64",
+     "202610240226-grok-65",
+     "202610240226-grok-69",
+     "202610240226-grok-72"
+    ]
+   },
+   {
+    "slug": "shiny-auto-70",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "今年のハロウィンに田中摩美々のS-SSR【魔の罠に捕われ惑う影】が登場",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "auto-70",
+    "candidate_ids": [
+     "202610240226-grok-70"
+    ]
+   },
+   {
+    "slug": "shiny-7-902ba3",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ささやきボイス第7弾は七草にちか、S-SSR【約いもうと】が登場",
+    "purpose": "新情報",
+    "lead_score": 10,
+    "dedup_key": "7",
+    "candidate_ids": [
+     "202610240226-grok-71"
+    ]
+   },
+   {
+    "slug": "shiny-auto-73",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シナリオイベント「果てにふれるのなら」が10月30日から11月10日11:59まで開催予定",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "auto-73",
+    "candidate_ids": [
+     "202610240226-grok-73"
+    ]
+   },
+   {
+    "slug": "shiny-mei-leashanai-outfit-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "P-SSR【離さない♡】和泉愛依のアイドル衣装イラストが公開された",
+    "purpose": "新情報",
+    "lead_score": 5,
+    "dedup_key": "mei-leashanai-outfit-2026",
+    "candidate_ids": [
+     "202610240226-grok-74"
+    ]
+   },
+   {
+    "slug": "shiny-dark-girly-fashion-goods-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "ダークガーリーファッションver.グッズ全23商品の予約が11月4日まで",
+    "purpose": "新情報",
+    "lead_score": 15,
+    "dedup_key": "shiny-dark-girly-fashion-goods-2026",
+    "candidate_ids": [
+     "202610230227-grok-19"
+    ]
+   },
+   {
+    "slug": "shiny-noctchill-live-2027",
+    "brand": "shiny",
+    "rank": "medium",
+    "angle": "ノクチル単独ライブのプレミアム先行当落が本日13時から発表、当選者の入金は10月28日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 85,
+    "dedup_key": "shiny-noctchill-live-2027",
+    "candidate_ids": [
+     "sched-2026-10-24-shiny-noctchill-live-2027-結果",
+     "sched-2026-10-24-shiny-noctchill-live-2027-結果-src1",
+     "sched-2026-10-24-shiny-283-production-live-performance-noctchill-結果",
+     "sched-2026-10-24-shiny-283-production-live-performance-noctchill-結果-src1"
+    ]
+   },
+   {
+    "slug": "shiny-technical-challenge-cup-17-2026",
+    "brand": "shiny",
+    "rank": "small",
+    "angle": "シャニソン第17回テクニカルチャレンジ杯の結果発表期間は本日11時59分で終了",
+    "purpose": "期日の知らせ",
+    "lead_score": 15,
+    "dedup_key": "shiny-technical-challenge-cup-17-2026",
+    "candidate_ids": [
+     "sched-2026-10-24-shiny-technical-challenge-cup-17-2026-終了",
+     "sched-2026-10-24-shiny-technical-challenge-cup-17-2026-終了-src1"
+    ]
+   },
+   {
+    "slug": "shiny-ops-roundup",
+    "brand": "shiny",
+    "rank": "roundup",
+    "angle": "8.5周年72時間限定のセレチケ付きパッケージ・ガシャの開催中情報",
+    "lead_score": 0,
+    "dedup_key": "8-5-s-ssr-s-ssr",
+    "candidate_ids": [
+     "202610240226-grok-21",
+     "202610240226-grok-22",
+     "202610240226-grok-23",
+     "202610240226-grok-24",
+     "202610240226-grok-25",
+     "202610240226-grok-26",
+     "202610240226-grok-27",
+     "202610240226-grok-28",
+     "202610240226-grok-29",
+     "202610240226-grok-34",
+     "202610240226-grok-30",
+     "202610240226-grok-33",
+     "202610240226-grok-57"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "shiny-8-5-anniversary-fan-congratulations-2026",
+    "reason": "個人の話題",
+    "note": "ファン個人のSNS投稿、未確認"
+   }
+  ],
+  "cross_brand": []
+ }
+}

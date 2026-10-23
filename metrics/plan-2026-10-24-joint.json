@@ -1,0 +1,137 @@
+{
+ "decisions": {
+  "tours-s2-cyber-core-green-2026": {
+   "action": "article",
+   "angle": "ツアマスS2弾(10月29日稼働開始)のSPアピールカード「Cyber Core : Green」と「Imperial Command」を紹介する",
+   "purpose": "新情報",
+   "rank": "small",
+   "lead_score": 25,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "同じS2弾のSPアピール紹介として imperial-command を統合"
+  },
+  "tours-s2-imperial-command-2026": {
+   "action": "merge",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "tours-s2-cyber-core-green-2026",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "S2弾SPアピールの紹介として1記事にまとめる"
+  },
+  "va-liv-3rd-live-2027": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23の記事に同じ特典・期限(11/15)が既出。新事実なし、期限も3日以内でない"
+  },
+  "starlit-season-ps4-sale-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23の記事に同内容。期限11/4は3日以内でなく新事実もない"
+  },
+  "tours-rhythm-live-festival-2027-qualifier": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23の記事に部門・予選開始日とも既出。エントリー開始10/29も3日以内でない"
+  },
+  "tours-service-restored-2026": {
+   "action": "drop",
+   "angle": "",
+   "purpose": "",
+   "rank": "",
+   "lead_score": 0,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "既報",
+   "note": "10/23の記事と同内容の復旧告知"
+  },
+  "sidem-shinycolors-sparkle-showdown-2027-06": {
+   "action": "article",
+   "angle": "SideM×シャニマス合同ライブのアソビストアプレミアム先行抽選の当落が本日13時から発表され、当選者の入金は10月28日23時59分まで",
+   "purpose": "期日の知らせ",
+   "rank": "medium",
+   "lead_score": 70,
+   "merge_into": "",
+   "claimed_slug": "",
+   "reason": "",
+   "note": "続報予約(結果)。当日のトリガーあり。素材5件で medium"
+  }
+ },
+ "plan": {
+  "articles": [
+   {
+    "slug": "joint-tours-s2-cyber-core-green-2026",
+    "brand": "joint",
+    "rank": "small",
+    "angle": "ツアマスS2弾(10月29日稼働開始)のSPアピールカード「Cyber Core : Green」と「Imperial Command」を紹介する",
+    "purpose": "新情報",
+    "lead_score": 25,
+    "dedup_key": "tours-s2-cyber-core-green-2026",
+    "candidate_ids": [
+     "202610240226-grok-108",
+     "202610240226-grok-109"
+    ]
+   },
+   {
+    "slug": "joint-sidem-shinycolors-sparkle-showdown-2027-06",
+    "brand": "joint",
+    "rank": "medium",
+    "angle": "SideM×シャニマス合同ライブのアソビストアプレミアム先行抽選の当落が本日13時から発表され、当選者の入金は10月28日23時59分まで",
+    "purpose": "期日の知らせ",
+    "lead_score": 70,
+    "dedup_key": "sidem-shinycolors-sparkle-showdown-2027-06",
+    "candidate_ids": [
+     "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果",
+     "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果-src1",
+     "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果-src2",
+     "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果-src3",
+     "sched-2026-10-24-sidem-shinycolors-sparkle-showdown-2027-06-結果-src4"
+    ]
+   }
+  ],
+  "dropped": [
+   {
+    "dedup_key": "va-liv-3rd-live-2027",
+    "reason": "既報",
+    "note": "10/23の記事に同じ特典・期限(11/15)が既出。新事実なし、期限も3日以内でない"
+   },
+   {
+    "dedup_key": "starlit-season-ps4-sale-2026",
+    "reason": "既報",
+    "note": "10/23の記事に同内容。期限11/4は3日以内でなく新事実もない"
+   },
+   {
+    "dedup_key": "tours-rhythm-live-festival-2027-qualifier",
+    "reason": "既報",
+    "note": "10/23の記事に部門・予選開始日とも既出。エントリー開始10/29も3日以内でない"
+   },
+   {
+    "dedup_key": "tours-service-restored-2026",
+    "reason": "既報",
+    "note": "10/23の記事と同内容の復旧告知"
+   }
+  ],
+  "cross_brand": []
+ }
+}

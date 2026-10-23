@@ -314,5 +314,31 @@
   "verify": "confirmed",
   "src_candidate_id": "202610050733-explore-3",
   "deadline": "2026-11-01"
+ },
+ {
+  "id": "sched-2026-12-13-sidem-agatsuma-nin-nin-2026-千秋楽",
+  "dedup_key": "sidem-agatsuma-nin-nin-2026",
+  "brand": "sidem",
+  "subject": "SideM彩×吾妻6町村 忍者コラボ",
+  "kind": "千秋楽",
+  "note": "コラボの最終日。スタンプラリーやコラボメニューを楽しめる",
+  "reserved_on": "2026-10-24",
+  "occurs_on": "2026-12-13",
+  "title": "彩×吾妻地域「あがつまニンニン！」コラボイベント",
+  "url": "https://agakanren.com/news/3750/",
+  "source_type": "当事者",
+  "facts": [
+   "「アイドルマスター SideM」のユニット「彩」が「あがつまニンニン！広報大使」となる。",
+   "開催期間: 令和８年１０月２８日（水）～１２月１３日（日）",
+   "吾妻忍者ゆかりのスポットを巡るコラボイベントを開催する。",
+   "吾妻地域６町村（中之条町、長野原町、嬬恋村、草津町、高山村、東吾妻町）のデジタルスタンプラリーを実施する。",
+   "コラボメニューとオリジナルグッズを販売する予定。",
+   "エンゲージメント: 中"
+  ],
+  "via": "explore",
+  "verify": "unconfirmed",
+  "event_date": "2026-10-28",
+  "deadline": "2026-12-13",
+  "src_candidate_id": "202610240226-explore-3"
  }
 ]
